@@ -1,0 +1,193 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<savedModList>
+	<meta>
+		<gameVersion>1.5.4085 rev545</gameVersion>
+		<modIds>
+			<li>brrainz.harmony</li>
+			<li>ludeon.rimworld</li>
+			<li>ludeon.rimworld.royalty</li>
+			<li>ludeon.rimworld.ideology</li>
+			<li>ludeon.rimworld.biotech</li>
+			<li>ludeon.rimworld.anomaly</li>
+			<li>unlimitedhugs.hugslib</li>
+			<li>brrainz.achtung</li>
+			<li>unlimitedhugs.allowtool</li>
+			<li>automatic.autolinks</li>
+			<li>void.charactereditor</li>
+			<li>petetimessix.compacthediffs</li>
+			<li>taggerung.customuiscales</li>
+			<li>merthsoft.designatorshapes</li>
+			<li>telardo.dragselect</li>
+			<li>dubwise.dubsperformanceanalyzer.steam</li>
+			<li>taggerung.iaintbuildingthat</li>
+			<li>superniquito.modoptionssort</li>
+			<li>sirrandoo.mpe</li>
+			<li>doug.nojobauthors</li>
+			<li>fed1splay.pawntargetfix</li>
+			<li>taranchuk.performanceoptimizer</li>
+			<li>uuugggg.replacestuff</li>
+			<li>jaxe.rimhud</li>
+			<li>arandomkiwi.rimsaves</li>
+			<li>katana.scenarioamender</li>
+			<li>nimrag.scenariosearchbar</li>
+			<li>kathanon.floatsubmenu</li>
+			<li>kathanon.searchablemenus</li>
+			<li>ray1203.simplecamerasetting</li>
+			<li>sarg.smartspeed</li>
+			<li>revolus.whatsmissing.15tmp</li>
+			<li>co.uk.epicguru.whatsthatmod</li>
+			<li>frozensnowfox.nodefaultshelfstorage</li>
+			<li>krkr.rocketman</li>
+		</modIds>
+		<modSteamIds>
+			<li>0</li>
+			<li>0</li>
+			<li>1149640</li>
+			<li>1392840</li>
+			<li>1826140</li>
+			<li>2380740</li>
+			<li>0</li>
+			<li>730936602</li>
+			<li>0</li>
+			<li>0</li>
+			<li>0</li>
+			<li>0</li>
+			<li>0</li>
+			<li>0</li>
+			<li>0</li>
+			<li>0</li>
+			<li>0</li>
+			<li>0</li>
+			<li>0</li>
+			<li>0</li>
+			<li>0</li>
+			<li>0</li>
+			<li>0</li>
+			<li>0</li>
+			<li>0</li>
+			<li>0</li>
+			<li>0</li>
+			<li>0</li>
+			<li>0</li>
+			<li>0</li>
+			<li>0</li>
+			<li>0</li>
+			<li>0</li>
+			<li>0</li>
+			<li>0</li>
+		</modSteamIds>
+		<modNames>
+			<li>Harmony</li>
+			<li>Core</li>
+			<li>Royalty</li>
+			<li>Ideology</li>
+			<li>Biotech</li>
+			<li>Anomaly</li>
+			<li>HugsLib</li>
+			<li>Achtung!</li>
+			<li>Allow Tool</li>
+			<li>Auto links</li>
+			<li>Character Editor</li>
+			<li>Compact Hediffs</li>
+			<li>CustomUIScales</li>
+			<li>Designator Shapes</li>
+			<li>DragSelect</li>
+			<li>Dubs Performance Analyzer</li>
+			<li>I Aint Building That</li>
+			<li>Mod Options Sort</li>
+			<li>More Pause Events</li>
+			<li>No Job Authors</li>
+			<li>PawnTargetFix</li>
+			<li>Performance Optimizer</li>
+			<li>Replace Stuff</li>
+			<li>RimHUD</li>
+			<li>RimSaves</li>
+			<li>Scenario Amender [1.5]</li>
+			<li>Scenario Searchbars</li>
+			<li>Float Sub-Menus</li>
+			<li>Searchable Menus</li>
+			<li>SimpleCameraSetting</li>
+			<li>Smart Speed</li>
+			<li>What's Missing? 1.5 temp</li>
+			<li>What's That Mod</li>
+			<li>[FSF] No Default Shelf Storage</li>
+			<li>RocketMan - Performance Mod</li>
+		</modNames>
+	</meta>
+	<modList>
+		<ids>
+			<li>brrainz.harmony</li>
+			<li>ludeon.rimworld</li>
+			<li>ludeon.rimworld.royalty</li>
+			<li>ludeon.rimworld.ideology</li>
+			<li>ludeon.rimworld.biotech</li>
+			<li>ludeon.rimworld.anomaly</li>
+			<li>unlimitedhugs.hugslib</li>
+			<li>brrainz.achtung</li>
+			<li>unlimitedhugs.allowtool</li>
+			<li>automatic.autolinks</li>
+			<li>void.charactereditor</li>
+			<li>petetimessix.compacthediffs</li>
+			<li>taggerung.customuiscales</li>
+			<li>merthsoft.designatorshapes</li>
+			<li>telardo.dragselect</li>
+			<li>dubwise.dubsperformanceanalyzer.steam</li>
+			<li>taggerung.iaintbuildingthat</li>
+			<li>superniquito.modoptionssort</li>
+			<li>sirrandoo.mpe</li>
+			<li>doug.nojobauthors</li>
+			<li>fed1splay.pawntargetfix</li>
+			<li>taranchuk.performanceoptimizer</li>
+			<li>uuugggg.replacestuff</li>
+			<li>jaxe.rimhud</li>
+			<li>arandomkiwi.rimsaves</li>
+			<li>katana.scenarioamender</li>
+			<li>nimrag.scenariosearchbar</li>
+			<li>kathanon.floatsubmenu</li>
+			<li>kathanon.searchablemenus</li>
+			<li>ray1203.simplecamerasetting</li>
+			<li>sarg.smartspeed</li>
+			<li>revolus.whatsmissing.15tmp</li>
+			<li>co.uk.epicguru.whatsthatmod</li>
+			<li>frozensnowfox.nodefaultshelfstorage</li>
+			<li>krkr.rocketman</li>
+		</ids>
+		<names>
+			<li>Harmony</li>
+			<li>Core</li>
+			<li>Royalty</li>
+			<li>Ideology</li>
+			<li>Biotech</li>
+			<li>Anomaly</li>
+			<li>HugsLib</li>
+			<li>Achtung!</li>
+			<li>Allow Tool</li>
+			<li>Auto links</li>
+			<li>Character Editor</li>
+			<li>Compact Hediffs</li>
+			<li>CustomUIScales</li>
+			<li>Designator Shapes</li>
+			<li>DragSelect</li>
+			<li>Dubs Performance Analyzer</li>
+			<li>I Aint Building That</li>
+			<li>Mod Options Sort</li>
+			<li>More Pause Events</li>
+			<li>No Job Authors</li>
+			<li>PawnTargetFix</li>
+			<li>Performance Optimizer</li>
+			<li>Replace Stuff</li>
+			<li>RimHUD</li>
+			<li>RimSaves</li>
+			<li>Scenario Amender [1.5]</li>
+			<li>Scenario Searchbars</li>
+			<li>Float Sub-Menus</li>
+			<li>Searchable Menus</li>
+			<li>SimpleCameraSetting</li>
+			<li>Smart Speed</li>
+			<li>What's Missing? 1.5 temp</li>
+			<li>What's That Mod</li>
+			<li>[FSF] No Default Shelf Storage</li>
+			<li>RocketMan - Performance Mod</li>
+		</names>
+	</modList>
+</savedModList>

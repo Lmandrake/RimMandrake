@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ModsConfigData>
+    <version>1.5.4085 rev545</version>
+    <activeMods>
+        <li>brrainz.harmony</li>
+        <li>ludeon.rimworld</li>
+        <li>ludeon.rimworld.royalty</li>
+        <li>ludeon.rimworld.ideology</li>
+        <li>ludeon.rimworld.biotech</li>
+        <li>ludeon.rimworld.anomaly</li>
+        <li>unlimitedhugs.hugslib</li>
+        <li>brrainz.achtung</li>
+        <li>unlimitedhugs.allowtool</li>
+        <li>automatic.autolinks</li>
+        <li>void.charactereditor</li>
+        <li>petetimessix.compacthediffs</li>
+        <li>taggerung.customuiscales</li>
+        <li>merthsoft.designatorshapes</li>
+        <li>telardo.dragselect</li>
+        <li>dubwise.dubsperformanceanalyzer.steam</li>
+        <li>taggerung.iaintbuildingthat</li>
+        <li>superniquito.modoptionssort</li>
+        <li>sirrandoo.mpe</li>
+        <li>doug.nojobauthors</li>
+        <li>fed1splay.pawntargetfix</li>
+        <li>taranchuk.performanceoptimizer</li>
+        <li>uuugggg.replacestuff</li>
+        <li>jaxe.rimhud</li>
+        <li>arandomkiwi.rimsaves</li>
+        <li>katana.scenarioamender</li>
+        <li>nimrag.scenariosearchbar</li>
+        <li>kathanon.floatsubmenu</li>
+        <li>kathanon.searchablemenus</li>
+        <li>ray1203.simplecamerasetting</li>
+        <li>sarg.smartspeed</li>
+        <li>revolus.whatsmissing.15tmp</li>
+        <li>co.uk.epicguru.whatsthatmod</li>
+        <li>frozensnowfox.nodefaultshelfstorage</li>
+        <li>krkr.rocketman</li>
+    </activeMods>
+    <knownExpansions>
+        <li>ludeon.rimworld</li>
+        <li>ludeon.rimworld.royalty</li>
+        <li>ludeon.rimworld.ideology</li>
+        <li>ludeon.rimworld.biotech</li>
+        <li>ludeon.rimworld.anomaly</li>
+    </knownExpansions>
+</ModsConfigData>

@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  Attaches the extracted SW desert/hazard weather (see Defs/WeatherDefs/SWDesertWeather.xml) to the biomes
+  where it belongs. A WeatherDef does NOTHING on its own — a biome must list it in <baseWeatherCommonalities>.
+
+  DESIGN:
+    - Sandstorm + Dry sandstorm  -> hot/arid biomes (the Tatooine feel: brown-outs that gut ranged accuracy).
+    - Red fog + Red foggy rain   -> volcanic/exotic biomes (the Mustafar feel: haze that spoils shooting).
+  Commonality values are deliberately modest so vanilla weather still dominates; these are occasional hazards,
+  not the everyday sky.
+
+  SAFETY: every operation is wrapped in PatchOperationConditional testing that the biome's
+  <baseWeatherCommonalities> node exists. If a targeted biome mod isn't loaded (or a def was renamed in an
+  update), the op is a silent no-op instead of a red error. Load this mod LAST (after all biome mods).
+
+  Targets & source:
+    Vanilla/Odyssey : Desert, ExtremeDesert, AridShrubland            (🔎 stable base-game defNames)
+    Alpha Biomes    : AB_PyroclasticConflagration                    (✅ verified from 1.6 defs)
+    Advanced Biomes : Volcano                                        (✅ verified; ⚠️ unprefixed defName)
+    More Vanilla B. : ZBiome_DesertOasis, ZBiome_Badlands            (✅ verified from 1.6 defs)
+-->
+<Patch>
+
+  <!-- ================= DESERT / ARID → SANDSTORMS ================= -->
+
+  <!-- Vanilla Desert -->
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/BiomeDef[defName="Desert"]/baseWeatherCommonalities</xpath>
+    <match Class="PatchOperationAdd">
+      <xpath>/Defs/BiomeDef[defName="Desert"]/baseWeatherCommonalities</xpath>
+      <value>
+        <li><weather>SW_Sandstorm</weather><commonality>8</commonality></li>
+        <li><weather>SW_DrySandstorm</weather><commonality>6</commonality></li>
+      </value>
+    </match>
+  </Operation>
+
+  <!-- Vanilla Extreme Desert -->
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/BiomeDef[defName="ExtremeDesert"]/baseWeatherCommonalities</xpath>
+    <match Class="PatchOperationAdd">
+      <xpath>/Defs/BiomeDef[defName="ExtremeDesert"]/baseWeatherCommonalities</xpath>
+      <value>
+        <li><weather>SW_Sandstorm</weather><commonality>12</commonality></li>
+        <li><weather>SW_DrySandstorm</weather><commonality>10</commonality></li>
+      </value>
+    </match>
+  </Operation>
+
+  <!-- Vanilla Arid Shrubland -->
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/BiomeDef[defName="AridShrubland"]/baseWeatherCommonalities</xpath>
+    <match Class="PatchOperationAdd">
+      <xpath>/Defs/BiomeDef[defName="AridShrubland"]/baseWeatherCommonalities</xpath>
+      <value>
+        <li><weather>SW_Sandstorm</weather><commonality>5</commonality></li>
+      </value>
+    </match>
+  </Operation>
+
+  <!-- More Vanilla Biomes: Desert Oasis -->
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/BiomeDef[defName="ZBiome_DesertOasis"]/baseWeatherCommonalities</xpath>
+    <match Class="PatchOperationAdd">
+      <xpath>/Defs/BiomeDef[defName="ZBiome_DesertOasis"]/baseWeatherCommonalities</xpath>
+      <value>
+        <li><weather>SW_Sandstorm</weather><commonality>6</commonality></li>
+      </value>
+    </match>
+  </Operation>
+
+  <!-- More Vanilla Biomes: Badlands -->
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/BiomeDef[defName="ZBiome_Badlands"]/baseWeatherCommonalities</xpath>
+    <match Class="PatchOperationAdd">
+      <xpath>/Defs/BiomeDef[defName="ZBiome_Badlands"]/baseWeatherCommonalities</xpath>
+      <value>
+        <li><weather>SW_Sandstorm</weather><commonality>8</commonality></li>
+        <li><weather>SW_DrySandstorm</weather><commonality>6</commonality></li>
+      </value>
+    </match>
+  </Operation>
+
+  <!-- ================= VOLCANIC / EXOTIC → RED FOG ================= -->
+
+  <!-- Alpha Biomes: Pyroclastic Conflagration -->
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/BiomeDef[defName="AB_PyroclasticConflagration"]/baseWeatherCommonalities</xpath>
+    <match Class="PatchOperationAdd">
+      <xpath>/Defs/BiomeDef[defName="AB_PyroclasticConflagration"]/baseWeatherCommonalities</xpath>
+      <value>
+        <li><weather>SW_RedFog</weather><commonality>8</commonality></li>
+      </value>
+    </match>
+  </Operation>
+
+  <!-- Advanced Biomes: Volcano (⚠️ unprefixed defName — collision-watch) -->
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/BiomeDef[defName="Volcano"]/baseWeatherCommonalities</xpath>
+    <match Class="PatchOperationAdd">
+      <xpath>/Defs/BiomeDef[defName="Volcano"]/baseWeatherCommonalities</xpath>
+      <value>
+        <li><weather>SW_RedFog</weather><commonality>8</commonality></li>
+        <li><weather>SW_RedFoggyRain</weather><commonality>5</commonality></li>
+      </value>
+    </match>
+  </Operation>
+
+</Patch>
