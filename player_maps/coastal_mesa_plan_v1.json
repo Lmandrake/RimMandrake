@@ -1,0 +1,108 @@
+{
+  "base": "coastal_mesa.map.json",
+  "stem": "coastal_mesa",
+  "iteration": 1,
+  "regions": [
+    {
+      "name": "Ocean (W strip, x0-21)",
+      "judgment": {"realism": 3, "interest": 2, "tactical": 5, "artificiality": 9},
+      "problem": "ruler-straight coast, hard sand/ocean line, only 2 depth bands - reads stamped-on",
+      "intent": "fractalize the shoreline and lay a proper deep->shallow->beach->flat gradient"
+    },
+    {
+      "name": "Central sand flat (x22-55)",
+      "judgment": {"realism": 5, "interest": 2, "tactical": 2, "artificiality": 4},
+      "problem": "large featureless dead zone - no cover, no reason to move through it",
+      "intent": "add a dry wash/old path across it and a scatter of vegetation + a small hill for cover"
+    },
+    {
+      "name": "Rock massif (NE + SE lobes)",
+      "judgment": {"realism": 6, "interest": 4, "tactical": 7, "artificiality": 3},
+      "problem": "solid inert stone - a mountain with no interior and abrupt feet",
+      "intent": "carve a mysterious cave chamber into the SE core; add talus/hill at a foot"
+    },
+    {
+      "name": "Gravel outcrops (scattered)",
+      "judgment": {"realism": 6, "interest": 3, "tactical": 4, "artificiality": 4},
+      "problem": "fine as texture but a bit noisy; one can host a ruined structure",
+      "intent": "site an old ruin on the mid-west outcrop as a landmark; smooth confetti"
+    }
+  ],
+  "edits": [
+    {
+      "region": "Ocean",
+      "op": "fractalize_edge",
+      "what": "Roughen the coastline",
+      "rationale": "A dead-straight N-S coast is the map's biggest artificiality tell. Push shallow water in/out irregularly so the land/sea boundary meanders like a real shore.",
+      "args": {"from_family": "water", "to_terrain": "Sand",
+               "coast_terrain": "WaterOceanShallow", "amount": 0.55, "seed": 3}
+    },
+    {
+      "region": "Ocean",
+      "op": "terrain_gradient",
+      "what": "Deep->shallow->beach->flat gradient",
+      "rationale": "Real coasts ramp through depth then a wet beach then dry flat. Repaint the coastal band x0-30 W->E as ocean deep, ocean shallow, wet sand, dry sand so there is no hard line.",
+      "args": {"region_bbox": [0, 0, 30, 119],
+               "order": ["WaterOceanDeep", "WaterOceanShallow", "Mud", "Sand", "Sand"],
+               "axis": "h", "noise": 0.18, "seed": 5}
+    },
+    {
+      "region": "Central sand flat",
+      "op": "path",
+      "what": "Old dry wash / trail across the flat",
+      "rationale": "A gravel wash from the SW toward the NE massif gives the empty center a line of movement, a subtle chokepoint, and a story (old traffic). Waypoints stay in open sand per the briefing.",
+      "args": {"waypoints": [[24, 20], [34, 40], [44, 62], [55, 78]],
+               "terrain": "Gravel", "width": 1}
+    },
+    {
+      "region": "Central sand flat",
+      "op": "scatter",
+      "what": "Sparse hardy vegetation on the flat",
+      "rationale": "Bare sand with zero flora looks lifeless. Sprinkle mossy/soil patches (desert scrub) lightly, clumped, only over sand, so a few plants cluster in hollows.",
+      "args": {"region_bbox": [22, 5, 55, 115], "terrain": "MossyTerrain",
+               "density": 0.05, "clump": 0.8, "only_families": ["sand"], "seed": 8}
+    },
+    {
+      "region": "Central sand flat",
+      "op": "hill",
+      "what": "Small outcrop hill mid-flat",
+      "rationale": "A lone low hill at ~(38,52) breaks the dead zone, gives high-ground cover, and reads as a natural erosional remnant near the wash.",
+      "args": {"cx": 38, "cz": 52, "radius": 5, "seed": 2}
+    },
+    {
+      "region": "Rock massif",
+      "op": "carve_chamber",
+      "what": "Mysterious cave chamber in the SE massif",
+      "rationale": "Region #3 (mountain, centroid ~92,92) is solid RockFace. Carve a chamber into its core - carve_chamber only eats solid rock, so it stays enclosed. A cave gives a fortress/high-risk interior.",
+      "args": {"cx": 95, "cz": 92, "radius": 9, "require_family": ["mountain"], "seed": 4}
+    },
+    {
+      "region": "Rock massif",
+      "op": "hill",
+      "what": "Talus foot at the NE lobe",
+      "rationale": "The NE rock lobe (~70,32) meets sand abruptly. A rubble hill at its foot softens the transition and adds light cover on that approach.",
+      "args": {"cx": 66, "cz": 44, "radius": 4, "ring_terrain": "RockRubble",
+               "core_terrain": "RockRubble", "seed": 6}
+    },
+    {
+      "region": "Gravel outcrops",
+      "op": "rect",
+      "what": "Ruined structure on the mid-west outcrop",
+      "rationale": "Outcrop #6 (~28,61) is a natural landmark site. Lay an ancient-concrete footprint as a ruined building pad - a story beat and a defensible strongpoint.",
+      "args": {"x0": 25, "z0": 58, "x1": 31, "z1": 64, "terrain": "AncientConcrete"}
+    },
+    {
+      "region": "Gravel outcrops",
+      "op": "smooth",
+      "what": "Kill single-cell confetti",
+      "rationale": "7 tiny patches flagged by the fragmentation metric. Majority-smooth non-water families so lone specks dissolve into their surroundings.",
+      "args": {"passes": 1}
+    }
+  ],
+  "notes": [
+    "Cave chamber: layer ancient danger or an infestation deep in - the interior is not free real estate.",
+    "Ruined structure: a few slain ancients + salvage; ties to the crashed-Factory-ship scavenger theme.",
+    "Old wash/path: expect raiders to path along it - anchor a killbox where it meets the base.",
+    "Coastal mud beach: brackish, non-potable - reinforces the water-scarcity pillar (must desalinate)."
+  ]
+}

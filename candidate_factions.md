@@ -1,8 +1,10 @@
 # candidate_factions.md — Race-based faction candidates (the expansion cast)
 
-_Companion to `faction_dossiers.md` (the 4 decided factions). This doc proposes **additional** factions built from the Star Wars races the mod actually ships, grounded in (a) the **verified xenotype gene data** read from Outer Rim Galactic Diversity's 1.6 source on disk, and (b) **canonical SW lore** — the latter flagged `[VERIFY pending Fetcher]` where it rests on online sources not yet returned (`2026-08-05_sw_race_faction_lore.txt` filed). Status: DRAFT 2026-08-05 — candidates for your casting call, not yet built._
+_Companion to `faction_dossiers.md` (the 4 decided factions). This doc proposes **additional** factions built from the Star Wars races the mod actually ships, grounded in (a) the **verified xenotype gene data** read from Outer Rim Galactic Diversity's 1.6 source on disk, and (b) **canonical SW lore**. Status: DRAFT 2026-08-05, UPDATED 2026-08-05 with the Fetcher sweep._
 
-**Evidence tiering:** [GENE] = verified in the mod's 1.6 GeneDefs on disk · [CANON-VERIFY] = SW lore, pending Fetcher confirmation · [DESIGN] = my proposed authoring · [LOCKED] = already-decided in our docs.
+**Evidence tiering:** [GENE] = verified in the mod's 1.6 GeneDefs on disk · [CANON] = well-established SW lore (high-confidence from knowledge; Wookieepedia fetches were 403-blocked so not citation-backed — see note below) · [WS-CONFIRMED] = a Workshop mod verified to exist in the 2026-08-05 sweep · [DESIGN] = my proposed authoring · [LOCKED] = already-decided in our docs.
+
+> **⚠️ SWEEP UPDATE (2026-08-05) — a premise shifted.** The full Outer Rim *series* and other authors ship several of these factions **prebuilt** (not just the 3 modules on disk). Two big consequences: (1) **Tuskens are already a faction** (Outer Rim – Tatooine addon) → §1 moves from "author from scratch" to "adopt + §19.5-audit." (2) The **Sith Order** is a prebuilt faction in JodemLee/TheForce_Psycast → a possible donor for the Empire's Sith-elite ranks. Full module enumeration + all Workshop IDs now live in `required_mods.md` (§"OUTER RIM SERIES — FULL MODULE ENUMERATION"). **Canon note:** the 16 Wookieepedia fetches all returned HTTP 403 (fandom blocks bots), so `[CANON-VERIFY]` flags are resolved from reliable knowledge and re-tagged `[CANON]`, NOT from citable fetched pages; if you want sources on record I can re-file via a mirror or you can paste pages.
 
 ---
 
@@ -17,9 +19,11 @@ So the question this doc answers is narrower and cleaner: *which remaining races
 
 ---
 
-## 1. TUSKEN RAIDER CLANS — the native desert xenophobes ⭐ strongest candidate
+## 1. TUSKEN RAIDER CLANS — the native desert xenophobes ⭐ strongest candidate — NOW: ADOPT, don't author
 
-**Why they earn a slot:** [CANON-VERIFY] Tuskens (Sand People) are the *indigenous* population of Tatooine — not criminals, not Imperials, not underlings of anyone. They're territorial, xenophobic nomads who attack outsiders on sight and answer to no one. That makes them the one faction that is *native to the desert the whole campaign is set in* — a third pole between the Empire (from above) and the Hutts (from the markets): **the land itself is hostile, and it has people.**
+> **✅ SWEEP FINDING — this faction already exists.** [WS-CONFIRMED] **Outer Rim – Tatooine (Continued)** (WS 2390805026) ships the **Tusken Raider race + Jawa race** plus their weapons (Tusken **Cycler**, **Gaderffii**, Jawa **Ion Blaster**) and apparel (Tusken Wrappings/Garments, Jawa Robe). Crucially, **the faction itself is packaged as a SEPARATE opt-in addon mod** so you choose whether it spawns — exactly the modular control we want. This means: (a) the Tusken candidate shifts from *author-from-scratch* to **adopt-the-addon + §19.5 audit its pawnGroupMakers/arsenal**; (b) it double-confirms the **Jawa** look/arsenal for the player faction (Cycler + Ion Blaster are canon Tatooine weapons already balanced by the author — audit them under §19.5 alongside the Outer Rim weapon audit that already cleared GREEN). **Action: acquire Outer Rim – Tatooine + its faction addon; source-audit before install. Do NOT hand-author a Tusken FactionDef — curate the shipped one.** The design intent below (territorial ambush, no-parley, Neolithic floor) becomes the *curation target* for the adopted faction, not a build spec.
+
+**Why they earn a slot:** [CANON] Tuskens (Sand People) are the *indigenous* population of Tatooine — not criminals, not Imperials, not underlings of anyone. They're territorial, xenophobic nomads who attack outsiders on sight and answer to no one. That makes them the one faction that is *native to the desert the whole campaign is set in* — a third pole between the Empire (from above) and the Hutts (from the markets): **the land itself is hostile, and it has people.**
 
 **[GENE] What the mod gives them (verified):** the Tusken xenotype ships `Aggression_Aggressive`, `MaxTemp_SmallIncrease` (heat-adapted), `Outland_UnusualSpeech`, brown skin. This is *mechanically almost identical to the Jawa* (heat-adapted desert native) but tuned aggressive instead of skittish — a perfect mirror: the Jawa are the desert's scavengers, the Tuskens are the desert's predators.
 
@@ -29,7 +33,7 @@ So the question this doc answers is narrower and cleaner: *which remaining races
 - **Tech tier:** Neolithic/Industrial floor — gaderffii clubs, slugthrower rifles, salvaged low-tier gear. [DESIGN] §19.5: danger is *ambush + territory + numbers*, never gear tier. They're dangerous because they hit you where you're weak (crossing open desert), not because their guns are better.
 - **⭐ Unique verb — territorial ambush.** They don't come to your base on a raid timer; they own stretches of the map and punish you for crossing. This makes *geography* dangerous and gives the desert biome teeth — synergizes directly with the [LOCKED] dark-biome / low-visibility layer and the salvage-diving loop (the ruins you want to loot are in *their* land).
 - **Economy:** none — they don't trade. Loot from raiding a Tusken camp = banthas, moisture, low-tier salvage, cultural artifacts (sellable to Hutts).
-- **[CANON-VERIFY] flavor hook:** Tuskens ritually mark territory and are intensely clan-based; a defeated clan can be *displaced* rather than destroyed. Pending Wookieepedia confirm of their social org for the leader persona.
+- **[CANON] flavor hook:** Tuskens are intensely clan/tribe-based (a clan chief + war leaders; they raid in packs, take gaffi-stick trophies, and famously attack in single-file to hide their numbers). A defeated clan can be *displaced* rather than exterminated → supports a "push them off your turf" verb rather than genocide. Leader persona = a masked clan chief (no dialogue — the `UnusualSpeech` gene means they never parley). _(Established from general SW knowledge; not citation-backed — fandom fetch was 403-blocked.)_
 - **Distinct-from line:** vs. Jawa — same desert, same heat-adaptation, opposite disposition: the Jawa flee and scavenge, the Tuskens hold ground and kill. vs. Empire — the Empire is *from above and everywhere*; the Tuskens are *from here and nowhere else*.
 - **What Cherry Picker deletes:** nothing from the Tusken xenotype (it's core to theme); suppress any generic tribal faction so Tuskens are unambiguously *the* native people.
 - **Dependency:** needs the Tusken xenotype (Galactic Diversity, [GENE]-confirmed on disk) + Faction Territories & Vassalage ([LOCKED] adopted).
@@ -38,7 +42,9 @@ So the question this doc answers is narrower and cleaner: *which remaining races
 
 ## 2. GEONOSIAN HIVE — the insectoid droid-foundry colony
 
-**Why they earn a slot:** [CANON-VERIFY] Geonosians are a hive species who built the Separatist droid factories — canonically the galaxy's insectoid industrialists. That gives us a faction whose *identity is manufacturing*, which is thematically loaded for a campaign about a stolen Factory ship: an enemy that out-produces you, the dark mirror of the Jawa's salvage economy.
+> **SWEEP NOTE:** no prebuilt *Geonosian faction* surfaced, but the **droid-army** side of their identity is available ready-made — **[JDS] Separatist Droid Army** (WS 3276499495) and **[KR] Separatist Army** (WS 3399017889), plus **Outer Rim – Separatists** (WS 3097604003). So a Geonosian hive can be authored as the *insectoid command layer* on top of an adopted CIS droid faction rather than built entirely from scratch. [WS-CONFIRMED]. ⚠️ The [KR] variant is self-described as lethal/"most likely fatal" — audit its numbers hard before trusting (§19.5).
+
+**Why they earn a slot:** [CANON] Geonosians are a hive species who built the Separatist droid factories — canonically the galaxy's insectoid industrialists. That gives us a faction whose *identity is manufacturing*, which is thematically loaded for a campaign about a stolen Factory ship: an enemy that out-produces you, the dark mirror of the Jawa's salvage economy.
 
 **[GENE] What the mod gives them (verified):** `Outland_EggLayer` + `Outland_LowFertility` (hive reproduction), `Outland_Wings_Insect` (flight/mobility), `Outland_InsectBody`, `AptitudeStrong_Crafting`. The crafting aptitude + egg-laying is the mechanical hook: a faction that is *many, winged, and builds things*.
 
@@ -56,7 +62,7 @@ So the question this doc answers is narrower and cleaner: *which remaining races
 
 ## 3. WOOKIEE FREE-HOLDS — the rare potential ally ⭐ fills a casting gap
 
-**Why they earn a slot:** every faction above is enemy or neutral-hostile. [CANON-VERIFY] Wookiees were **enslaved by the Empire** (Kashyyyk was occupied) — which makes them the *natural ally* of anyone the Empire hunts. Casting them as a possible ally fills a real gap: the Jawa underdog story is stronger if there's *someone* out there who might help, and an ally you have to earn is more valuable than a shop.
+**Why they earn a slot:** every faction above is enemy or neutral-hostile. [CANON] Wookiees were **enslaved by the Empire** (Kashyyyk was occupied under Order 66 / Imperial rule; Wookiee slave labor built Imperial facilities) — which makes them the *natural ally* of anyone the Empire hunts. Casting them as a possible ally fills a real gap: the Jawa underdog story is stronger if there's *someone* out there who might help, and an ally you have to earn is more valuable than a shop. _(No prebuilt Wookiee faction surfaced in the sweep — this remains author-from-scratch using the [GENE]-confirmed Wookiee xenotype; that's fine, it's a small neutral→ally FactionDef.)_
 
 **[GENE] What the mod gives them (verified):** `MoveSpeed_Slow` + `MinTemp_LargeDecrease` (cold-adapted, so *out of their element* in the desert — a nice tension), `AptitudeStrong_Artistic`, `Outland_BodyScale_Large` (big, strong). Slow-but-strong melee warriors who feel the heat: mechanically distinct from every other faction (all the others are heat-adapted or neutral).
 
@@ -66,7 +72,7 @@ So the question this doc answers is narrower and cleaner: *which remaining races
 - **Tech tier:** mid; bowcaster-analog ranged + heavy melee. §19.5: capability is *individual strength + loyalty*, small numbers — they're few and tough, the inverse of the Geonosian swarm.
 - **⭐ Unique verb — the earnable alliance.** No other faction can become a true ally (Empire=never, Hutts=buyable-not-trustable, Tuskens/Geonosians=hostile). The Wookiees are the one relationship that *rewards investment* — a co-belligerent against the Empire in Act III.
 - **Economy:** trade in crafted goods, wood/organics (they're out of place in the desert, so they *want* what the desert lacks — a natural trade complementarity with Jawa salvage).
-- **[CANON-VERIFY] hook:** life-debt culture — a rescued Wookiee could join permanently. Pending Wookieepedia confirm.
+- **[CANON] hook:** Wookiee life-debt culture — a Wookiee whose life you save is honor-bound to serve you (the Chewbacca/Han precedent). Mechanically perfect: a rescued Wookiee prisoner could join permanently as a recruited pawn, and the alliance is *earned* through rescue. _(Established SW knowledge; not citation-backed — fandom fetch 403-blocked.)_
 - **Distinct-from line:** vs. everyone — the only faction defined by *loyalty* rather than threat or greed. The heart-note in a cast of predators and merchants.
 - **Dependency:** Wookiee xenotype ([GENE]-confirmed) + Faction T&V vassalage/alliance ([LOCKED] adopted).
 
@@ -74,7 +80,7 @@ So the question this doc answers is narrower and cleaner: *which remaining races
 
 ## 4. PYKE SPICE SYNDICATE — the rival cartel (judgment call)
 
-**The call you need to make:** [CANON-VERIFY] the Pyke Syndicate is a *spice-running criminal cartel* — canonically a **rival/peer** of the Hutts, not their underlings. Under your Hutt reframe, Pykes could go two ways:
+**The call you need to make:** [CANON] the Pyke Syndicate is a *spice-running criminal cartel* headquartered on Kessel — canonically a **rival/peer** of the Hutts (both are major players in the galactic underworld / the Shadow Collective era), not their underlings. Under your Hutt reframe, Pykes could go two ways:
 - **(a) Fold into the Hutt underling pool** (as I currently have them in §2 of the dossiers) — simplest, one criminal power.
 - **(b) Stand as their own rival cartel** — a *third* criminal faction that competes with the Hutt lords for the same market. [DESIGN] This is the richer option: it turns "the criminal underworld" into a *contested* space you can exploit — Pykes vs. Hutts vs. each other, and you play the seams. It also gives spice (drug economy) a distinct owner separate from the Hutts' general fencing.
 
@@ -120,7 +126,12 @@ Cross-check against the core four (Empire/Hutts/Bounty Hunters/Jawa): no expansi
 
 **Principal risks:** (1) Geonosian swarm breaking the points-curve pillar — mitigate with composition-only escalation. (2) Tusken/Bounty-Hunter/Hutt-muscle *species overlap* (Trandoshan/Rodian appear in several) blurring silhouettes — mitigate by keeping named hunters visually/mechanically distinct from anonymous mooks (already noted in dossiers §diff). (3) faction-count creep diluting the curated surface — mitigate by casting only what fills a named gap.
 
-**Missing info that would help:** the online canon pull (`2026-08-05_sw_race_faction_lore.txt`) resolves the `[CANON-VERIFY]` flags — Tusken social org (leader persona), Wookiee life-debt (ally mechanic), Hutt-vs-Pyke relationship (the option-a/b call), and Geonosian hive structure. Also confirms **JodemLee/TheForce_Psycast** 1.6 status, which affects the Empire's Force ranks.
+**Missing info that would help:** the canon pull **partially failed** — all 16 Wookieepedia fetches returned HTTP 403 (fandom blocks bots), so the `[CANON-VERIFY]` flags were resolved from reliable knowledge (now `[CANON]`) rather than citable pages. If you want sources *on record*, I can re-file via a non-fandom mirror or StarWars.com, or you can paste pages. Still genuinely open: **JodemLee/TheForce_Psycast 1.6 status** (README shows 1.4/1.5/2.9 folders + a "Steam Version Latest" release, no explicit `/1.6` in the truncated tree — [VERIFY]); this affects whether the Empire's Sith-elite ranks come from that mod's prebuilt **Sith Order** faction or are hand-granted.
+
+**⭐ NEW decisions the sweep created (not present at first draft):**
+1. **Xenotype-source dedup:** run Outer Rim – Galactic Diversity alone (leanest — has our genes) vs. add Star Wars Xenotypes + the [BTD] REMIX dedup patch. Recommend OR-GD alone unless SWX's fixed Hutts/Mon-Cal are specifically wanted.
+2. **Empire source:** use Outer Rim – Galactic Empire (+ optional VFE-Empire retheme WS 3292633931) and do NOT also run Star Wars – Factions (Continued) as a second Empire → avoid duplicate factions.
+3. **Tusken/Jawa arsenal audit:** Outer Rim – Tatooine ships Cycler/Gaderffii/Ion Blaster — fold into the §19.5 weapon audit (likely GREEN like the rest of Outer Rim, but confirm).
 
 **Recommended next steps:**
 1. Make the casting call on these four (I recommend Tuskens + Wookiees firm, Geonosians conditional, Pykes deferred).
