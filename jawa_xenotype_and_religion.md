@@ -182,6 +182,17 @@ Your docs cap this at one relic of modest mechanical value. Recommended:
 
 **Why Nomad-primary over Tunneler-primary:** Nomad is the cleaner mechanical fit for a *mobile gravship* (it rewards the thing you'll do constantly — move) and carries less risk of chronic mood penalties than Tunneler's outdoor/darkness aversion, which fights against surface expeditions you *need* to run. Tunneler as secondary still delivers the burrowing-scavenger flavor and leverages `DarkVision`. If you'd rather maximize flavor and accept the expedition mood-tax as deliberate friction, swap them (Tunneler primary, Nomad secondary) — both are pillar-legal.
 
+### 2.7 Comedy-via-precepts — strange scrapper behavior (user greenlit 2026-08-05)
+
+The user **loves the ideoligion-expansion route as the home for Jawa comedy** — the belief system is where the humor becomes *diegetic* ("these little guys genuinely worship working machinery") rather than a bolted-on gag. This slots directly onto the "automation reverence" spine already in §2.2 and the meme-expansion mods promoted in `required_mods.md` (🃏 COMEDY / LEVITY LAYER). Design intent: use extra precept slots from **meme-expansion mods (Alpha Memes / More Memes-type, 🔎 1.6 confirm via Fetcher `2026-08-05_jawa_flavor_confirm_1p6`)** to hang *charming scrapper gags* that stay pillar-clean —
+
+- **Reverence for scrap / functional machinery** — a "the working part is sacred" precept; wasting a repairable component is sin (reinforces "repair the discarded, don't breed new hands").
+- **Haggling as ritual** — trade isn't just permitted, it's a *devotional act*; a bad trade is a minor moral failing. Compounds the frequent-heterogeneous-trader plan.
+- **Droid veneration** — functional droids treated as revered relics (funeral rites for a dead droid; §2.4 machine-retirement funeral already exists — lean comedic here).
+- **Junk-hoarding taboos** — taboo on discarding "still-good" scrap; comedic clutter as faith.
+
+**Guardrail (unchanged):** comedic precepts must remain *identity/mood* flavor — no precept may grant a production multiplier, specialist role, ritual material payout, or fluid-development hook (§2.0 / §2.2 rules still bind). The joke is that they *worship* scrap, not that worship *manufactures* scrap. Any meme-expansion mod adopted gets the same 7-question pass as everything else; we take the precept *slots + flavor*, not any economic precept the pack ships.
+
 ---
 
 ## Part 3 — Decision translation

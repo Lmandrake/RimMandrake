@@ -2,7 +2,7 @@
 
 _Our working recipe for authoring storytelling-centric worlds, reverse-engineered from Mr Samuel Streamer's published configs + mod-lists and adapted to our anti-exponential Jawa / crashed-Factory-ship gravship run. This file grows as we uncover more. Full evidence + per-file citations live in `samuel_streamer_study/02_TECHNIQUE_ANALYSIS.md`._
 
-**Last updated:** 2026-08-02
+**Last updated:** 2026-08-05 (comedy/levity layer + no-crater assumption added)
 
 ---
 
@@ -13,6 +13,40 @@ _Our working recipe for authoring storytelling-centric worlds, reverse-engineere
 **OUR run WILL be a large library (confirmed 2026-08-02).** The user likes a lot of flavor / QoL / graphics / sound / UI / cosmetic-content mods, and that is fully endorsed and expected. This is NOT a contradiction of the pillars: **the anti-exponential principle constrains scalable progression *trees*, not mod *count*.** Cosmetic and convenience mods don't add a competing exponential economy — they ARE the "invariant foundation layer." So our discipline is precisely Samuel's: run the big library we enjoy, then use the director mods (**Cherry Picker** to delete off-theme *functional* defs, **Faction Filter** to control spawns) to keep the *gameplay surface* lean and coherent. The one thing we keep small is the set of scalable progression ladders (gravship + VFE-Factory, and nothing else); the flavor layer around them can be as rich as we want.
 
 **Separate invariant plumbing from variable theme.** Freeze a foundation layer (QoL/UI/performance/graphics) once; swap only the theme layer to make a new world. This is why he ships packs fast — and it's how we reconcile "lots of mods" with "constrained progression."
+
+---
+
+## 🅿️⭐ PARKED — GREAT IMPORTANCE: Per-Faction Definition to the "Samuel Streamer level"
+
+**Status:** MECHANISM DESIGNED (2026-08-05) → `faction_authoring_mechanism.md`. The *how* is now built: the 3-layer pipeline (Curation → Generation → Instance/placement), the 5 differentiation axes mapped 1:1 to real FactionDef fields (verified against Outer Rim's own 1.6 source), the per-faction dossier template, and the diff-forcing step. Still PARKED on *execution* (filling the roster), which is gated on the Sensible Factions casting decision below. Workaround in the design doc: fill dossiers for the ~4 already-decided factions now without waiting on full casting.
+
+**The ask, in one line:** define *each faction* in our world to the depth Samuel Streamer achieves — so every faction feels **distinct, thematic, and uniquely capable/restricted** as appropriate, rather than a generic re-skin of "hostile outlander #3."
+
+**Why this is high-leverage (the decision translation).** Everything else in this playbook shapes the *stage* — biomes, tiles, salvage density, the pursuit timer. Factions are the *cast*, and a crafted world lives or dies on whether its cast reads as a set of genuinely different powers with their own doctrine, arsenal, economy, and behavior. This is the difference between "a Star Wars mod is installed" and "the Empire, the Hutts, the Separatist remnants, and the desert scavenger clans each feel like a distinct faction you'd describe differently to a friend." It's plausibly the single biggest lever on how *authored* the world feels — which is exactly the user's stated goal (an *exceptionally* interesting hand-crafted world).
+
+**What "the Samuel Streamer level" concretely means here (evidence-grounded, from `02_TECHNIQUE_ANALYSIS.md`).** His faction distinctiveness is not one mod — it's a *stack of levers applied per-faction*:
+- **Casting by allow-list (Sensible Factions / Faction Filter, WS 3531306011):** decide the exact roster; every faction present is there on purpose. Distinctiveness starts by *excluding* the soup.
+- **Subtractive identity (Cherry Picker, WS 3521312241):** delete the off-theme xenotypes/factions each faction's source mod drags in, so a faction's roster reads clean.
+- **Per-faction arsenal & apparel:** each faction should field a recognizable weapon/armor signature (this is where §19.5 lives — *qualitative* capability, not point-inflation; and where our "don't amputate vanilla, let SW gear be mid/high flavor" ruling and VWE-Makeshift's junk tier give us a *tiered* arsenal to distribute across factions — scavengers get scrap, the Empire gets charge-tier).
+- **Behavior / doctrine:** raid style, tech level, whether they colonize/patrol/ambush (Faction Territories & Vassalage gives in-turf ambush texture; Faction Raid Cooldown makes each faction's pressure *coherent* rather than spammy; CAI-5000 shapes *how* they fight).
+- **Economy & interaction:** what they trade, whether they can be allied/vassalized/tithed, what they want.
+- **Named leadership & lore (Backstory Constructor, WS 2907131508):** faction leaders and signature pawns authored as personas — lore + skill/work-disable tables — so a faction has a *face*, not just a color.
+
+**The gap this parks (the honest scope).** We have the *machinery* catalogued (the director-mod toolkit below) and several *individual* faction decisions already made (Empire-as-pursuer, Hutt trade layer, Bounty Hunters as Act-II pursuer). What we do **not** yet have is a **systematic per-faction design pass** that runs every faction in our final roster through a consistent template so each is deliberately differentiated on every axis above. That template + the filled-in pass is the parked deliverable.
+
+**Proposed shape when we take it up (so future-us starts fast, not from zero):**
+1. **Lock the roster first** (depends on the Sensible Factions casting decision — still TODO in the status board below). Can't define factions we haven't cast.
+2. **Build a per-faction template** — one profile per faction with fixed fields: *Premise (one line) · Emotional register · Tech tier · Signature arsenal/apparel · Raid & movement doctrine · Economy/trade goods · Alliance/vassal stance · Named leader persona · What Cherry Picker deletes from their source · §19.5 note · Distinct-from line (how they contrast with the faction nearest them).*
+3. **Fill it per faction**, then **diff across factions** to force contrast — if two factions' profiles read the same, one isn't pulling its weight.
+4. **Cross-check the whole set against the pillars** (no faction hands the player an exponential ladder; danger is qualitative) and the 3-act arc (which factions carry which act's pressure).
+
+**Dependencies:** the Sensible Factions roster decision (TODO) gates step 1; the §19.5 arsenal audits (Outer Rim done; Bounty Hunters + Faction T&V in-turf ambush still open) feed the arsenal/doctrine fields; the in-game Cherry Picker defName confirmation feeds the "what we delete" field.
+
+**Principal risk if skipped or done shallow:** the world reverts to "lots of Star Wars mods installed" instead of "a cast of distinct powers" — the exact failure mode Samuel's method exists to prevent, and the one most visible to anyone watching or playing.
+
+**Related material already on disk:** the director toolkit (below), `cherry_picker_killlist.md` (the subtractive-identity draft), the Bounty Hunter #24 reference list in `samuel_streamer_study/`, and the per-faction decisions scattered in `context.md` (Empire-pursuer, Hutt trade, Droid Depot) — the parked pass would *consolidate* those into the per-faction template rather than leaving them scattered.
+
+**Highest-value enabling pull (optional, when we commit):** Samuel's actual *starting saves* (Bounty Hunter's + Gravtasm's) — not yet downloaded — would show exactly how he assembles placed factions + leader pawns + faction-specific map edits in practice, turning several `[inference]` items above into `[evidence]`.
 
 ---
 
@@ -62,6 +96,7 @@ These ~10 "director" mods do the world-shaping. Learn these, not the content mod
 - **Faction alignment = casting:** the roster sets the mood.
 - **Named characters carry lore AND mechanics** simultaneously.
 - **Immersion by amputation:** remove the vanilla default so the setting stands alone.
+- **Comedy is emergent + diegetic, not bolted-on (user, 2026-08-05; mods 1.6-confirmed via Fetcher `2026-08-05_jawa_flavor_confirm_1p6`):** the funny in a crafted RimWorld comes from *emergent social* (Vanilla Social Interactions Expanded `2439736083` + growth-arc-choice mods like RandomGrowthChoices `3413983862`, both verified in Samuel's Gravtasm list) + *speech bubbles carrying the setting's voice* (Interaction Bubbles `1516158345` **driven by SpeakUp `2502518544`, a Social Interaction Framework that renders player-authored lines** — so the Jawa trade-babble is *written* content, not a vanilla-def hack) + *the belief system itself* (comedic ideoligion precepts via VIE-Memes `2636329500` + Alpha Memes `2661356814`, the latter confirmed 1.6 at v4.0). Avoid meme/crossover gag-packs that shatter the theme. (NB on AI-dialogue: an LLM that *reframes* SpeakUp's already-raised text into a Jawa register — e.g. `johndroper/RimDialogueClient` — is ON-plan as a flavor layer over hand-authored anchor lines, esp. since RimMaster already runs LLM against the user's own endpoint; under investigation 2026-08-05. Only *originator*-style AI chatter is deprioritized. See required_mods.md 🃏 COMEDY §(1) LLM-REFRAME sub-bullet.) The register is set by the cast (small greedy scavengers) — so the humor reinforces the world instead of breaking it. Full plan in `required_mods.md` 🃏 COMEDY / LEVITY LAYER + `jawa_xenotype_and_religion.md` §2.7.
 
 ---
 

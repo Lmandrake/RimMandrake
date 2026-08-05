@@ -1,0 +1,188 @@
+{
+  "base": "river_valley.map.json",
+  "seed": 7,
+  "analysis": {
+    "dominant_family": "sand",
+    "open_cells": 13768,
+    "open_centroid": [
+      59.5005810575247,
+      59.664003486345145
+    ],
+    "has_fresh": true,
+    "has_saline": false,
+    "rock_cells": 0,
+    "edges": {
+      "N": 1.0,
+      "S": 1.0,
+      "E": 0.9833333333333333,
+      "W": 0.9833333333333333
+    }
+  },
+  "total_cells_changed": 1611,
+  "changes": [
+    {
+      "op": "eco",
+      "what": "Silt banks along the fresh water",
+      "where": "1-cell fringe on both sides of the river/lake",
+      "why": "Rivers deposit silt; bare sand abutting moving fresh water is ecologically wrong. Fertile banks also give the colony its only no-irrigation farmland \u2014 a deliberate scarcity anchor (desert_world_design 'why land here').",
+      "cells": 6,
+      "features": [],
+      "notes": [
+        "Layer riverbank flora (reeds, a few trees) on the SoilRich cells.",
+        "This is the natural farm start \u2014 expect raids to approach along the open banks."
+      ]
+    },
+    {
+      "op": "eco",
+      "what": "Smoothed single-cell terrain noise",
+      "where": "scattered across the map",
+      "why": "Isolated 1-tile terrain specks look like generator artifacts. Absorbing them into the surrounding material makes the map read as a real place.",
+      "cells": 2,
+      "features": [],
+      "notes": []
+    },
+    {
+      "op": "tactical",
+      "what": "Firm landing/base apron",
+      "where": "map center-of-open-space (~59,59), radius 10",
+      "why": "The gravship sets down on soft sand/soil that is slow to build on and offers no natural footing. A firm gravel apron gives an immediate buildable core and a clean field of fire around the hull.",
+      "cells": 284,
+      "features": [
+        {
+          "kind": "structure",
+          "x": 59,
+          "z": 59,
+          "label": "gravship set-down"
+        }
+      ],
+      "notes": [
+        "Place the gravship + starting crew on the apron.",
+        "Keep the apron's perimeter clear for turrets/killbox."
+      ]
+    },
+    {
+      "op": "cavern",
+      "what": "Cavern system \u2014 SKIPPED (no host rock mass)",
+      "where": "n/a",
+      "why": "The map lacks a solid mountain/rock formation large enough to hollow a believable cave into. Rather than carve a cave across open ground (which reads as a generator artifact), the operator declines. Add a rock massif first, or run --ops without 'cavern'.",
+      "cells": 0,
+      "features": [],
+      "notes": [
+        "To host a cavern here, first grow a rock mass on an edge (a future 'op_massif' operator), then re-run cavern."
+      ]
+    },
+    {
+      "op": "mine",
+      "what": "Abandoned open-pit mine",
+      "where": "open-pit dig in the flats at (29,73)",
+      "why": "An exotic 'someone was here first' set-piece. The cut floor, tailings apron and haul road tell a story and seed a resource pocket \u2014 but the collapsed adit is the anti-exponential catch: reopening it costs labor and risks an infestation/roof-fall, so the ore isn't free.",
+      "cells": 123,
+      "features": [
+        {
+          "kind": "mine",
+          "x": 29,
+          "z": 73,
+          "label": "mine adit (collapsed)"
+        },
+        {
+          "kind": "relic",
+          "x": 30,
+          "z": 74,
+          "label": "rusted ore cart"
+        }
+      ],
+      "notes": [
+        "Layer: a small deep-ore vein + steel/components chunks in the adit; a dead prospector corpse w/ a note; 1-2 stone chunks on the tailings.",
+        "Hazard hook (Family-11 pre-placed): a dormant insect hive just inside the adit \u2014 mining vibration wakes it."
+      ]
+    },
+    {
+      "op": "refinery",
+      "what": "Half-working chem/oil refinery",
+      "where": "hardpan at (78,30)",
+      "why": "A landmark ruin that reads instantly as 'industrial past'. The lit flare implies it still runs on a trickle \u2014 a reason to fight over it. The leaking sludge ring is the price: fouled ground you must contain, supporting the terrain-souring / water-denial hazard axis.",
+      "cells": 310,
+      "features": [
+        {
+          "kind": "refinery",
+          "x": 78,
+          "z": 30,
+          "label": "cracking tower (flare lit)"
+        },
+        {
+          "kind": "refinery",
+          "x": 74,
+          "z": 32,
+          "label": "sludge pond"
+        },
+        {
+          "kind": "relic",
+          "x": 83,
+          "z": 28,
+          "label": "chemfuel drums"
+        }
+      ],
+      "notes": [
+        "Layer: a working chemfuel source (slow), a few steel/plasteel drums, an ancient security mech guarding it.",
+        "Hazard: sludge pond as toxic terrain; wildlife avoids it \u2014 a visual tell for the poison layer."
+      ]
+    },
+    {
+      "op": "droid",
+      "what": "Dead droid in its impact crater",
+      "where": "open ground at (43,44) with a NE debris streak",
+      "why": "Pure Star-Wars-theme flavor and a scavenge magnet: a machine that fell from space and augered in. The fused-glass center + ejecta ring + entry streak make the physics legible at a glance. Fits the crashed-Factory-ship / Jawa scavenger premise directly.",
+      "cells": 307,
+      "features": [
+        {
+          "kind": "droid",
+          "x": 43,
+          "z": 44,
+          "label": "dead droid (impact)"
+        },
+        {
+          "kind": "relic",
+          "x": 43,
+          "z": 44,
+          "label": "salvageable core"
+        }
+      ],
+      "notes": [
+        "Layer: an inert mechanoid/droid corpse w/ salvage (components, a unique weapon or AI core relic).",
+        "Jawa hook: this is exactly what the scavengers came for \u2014 a quest/relic seed.",
+        "Optional risk: the core is dormant, not dead (reactivation event) \u2014 keeps the loot from being free."
+      ]
+    },
+    {
+      "op": "wreck",
+      "what": "Crashed Factory-ship hull-scar",
+      "where": "long diagonal gouge from (26,85) to the buried prow (77,74)",
+      "why": "THE anchor set-piece of the campaign: the derelict the Jawa-analog crew scavenges. A narrowing metal/concrete scar with a churned-earth gouge and debris field reads unmistakably as a ship that came in hard and skidded. It gives the map a narrative spine and a central objective.",
+      "cells": 579,
+      "features": [
+        {
+          "kind": "wreck",
+          "x": 77,
+          "z": 74,
+          "label": "Factory-ship prow (buried)"
+        },
+        {
+          "kind": "wreck",
+          "x": 26,
+          "z": 85,
+          "label": "torn stern section"
+        },
+        {
+          "kind": "relic",
+          "x": 51,
+          "z": 79,
+          "label": "intact cargo bay"
+        }
+      ],
+      "notes": [
+        "Layer: salvageable hull plating, a sealed cargo bay (loot), dormant factory mechs, and Jawa scavenger camp hooks.",
+        "This is the 'why this map' \u2014 expedition destination, not free loot: mechs + structural collapse gate the reward."
+      ]
+    }
+  ]
+}

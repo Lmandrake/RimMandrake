@@ -110,6 +110,18 @@ _(GravTech WS 3545374124 was moved to `forbidden_mods.md` on 2026-08-03 — craf
 - Note commonality of each so Tier-2 pacing (~every 2–3 tiles) can be tuned against real spawn rates — this feeds the deferred arc-closing-rate playtest.
 - Cross-check against the Sarlacc (`sw_Sarlacc`) and any other mod-added `LandmarkDef`s already in the stack so authored beats don't collide with mod landmarks.
 
+## 13. Faction Territories & Vassalage — 1.6 confirm, required dep, and stability audit (HIGH PRIORITY — accept is conditional on this)
+
+**Why:** FULL ACCEPT (WS 3626725895), and the 2026-08-05 Fetcher pull confirmed **"Mod, 1.6"** (updated Apr 11 2026) — BUT the same pull surfaced (a) a **new hard dependency** the earlier notes lacked and (b) **material reports of performance/stability problems**. The accept is explicitly *conditional on this in-game check* — F&T is additive flavor, not the pursuit spine (CQF + Storyteller Enhanced + Faction Raid Cooldown), so it's **cut-on-sight if TPS suffers**. Details in `required_mods.md` (Faction Territories entry).
+
+**Steps:**
+- **Dependency:** subscribe **Map Mode Framework** (F&T's listed "Required item") alongside F&T, plus Harmony. Confirm F&T shows the **1.6** tag and loads with **no red errors** on the splash / in Player.log. Without Map Mode Framework it won't run.
+- **Vassals OFF posture:** in F&T mod settings, **disable the vassal system** before testing (multiple recent comments call the vassal mechanic buggy and "too OP"; author appears inactive). We want the territory/ambush layer, not vassalage. Confirm the setting exists and sticks.
+- **Coverage guardrail:** a user report says going **over ~30% world coverage breaks the mod**. Confirm our small-world scenario keeps planet coverage well under that (it should by design) — note the actual coverage % we generate at, so we have a margin on record.
+- **TPS / lag test (the decisive one):** on a throwaway world with our faction roster, let it run at 3× speed for several in-game days and watch for the reported **"severe lag spikes every couple of seconds."** Open the log for repeating F&T exceptions. **Decision rule:** if TPS visibly degrades or the log spams F&T errors, **cut it** — it's not load-bearing.
+- **Territory behavior sanity:** confirm territory regions actually draw around faction settlements and that in-turf ambush/patrol density rises inside a faction's ground (the feature we adopted it for). Watch for the reported bugs: friendly troops loitering on the player map eating food / fighting each other, and wrong-tech-tier bases spawning during map generation.
+- **§19.5 in-turf ambush audit (moved here from the source-audit plan — no public source exists to read):** confirm the in-turf ambush pressure raises **qualitative** threat (better-positioned / more-coordinated attackers on held ground), NOT just inflated raid points. Tune per-faction ambush/caravan density so Imperial turf bites hardest on the tiles the Empire actually holds; keep the *primary* pursuit timer on the orbital model, not on territory.
+
 ---
 
 ## Quick reference — dependencies to have subscribed for these tests

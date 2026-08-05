@@ -13,3 +13,11 @@ mod_sources/
 *.swp
 *~
 Thumbs.db
+
+# Generated report artifacts (reproducible via the Utils/ tools)
+*_preview.png
+*_legend.json
+*_items.md
+*_items.json
+*_ideoligions.md
+*_ideoligions.json

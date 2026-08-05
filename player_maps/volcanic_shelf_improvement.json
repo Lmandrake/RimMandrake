@@ -1,0 +1,167 @@
+{
+  "base": "volcanic_shelf.map.json",
+  "seed": 7,
+  "analysis": {
+    "dominant_family": "volcanic",
+    "open_cells": 14062,
+    "open_centroid": [
+      59.496657658938986,
+      59.691722372351016
+    ],
+    "has_fresh": false,
+    "has_saline": false,
+    "rock_cells": 0,
+    "edges": {
+      "N": 1.0,
+      "S": 1.0,
+      "E": 0.9833333333333333,
+      "W": 0.975
+    }
+  },
+  "total_cells_changed": 1425,
+  "changes": [
+    {
+      "op": "tactical",
+      "what": "Firm landing/base apron",
+      "where": "map center-of-open-space (~59,59), radius 10",
+      "why": "The gravship sets down on soft sand/soil that is slow to build on and offers no natural footing. A firm gravel apron gives an immediate buildable core and a clean field of fire around the hull.",
+      "cells": 176,
+      "features": [
+        {
+          "kind": "structure",
+          "x": 59,
+          "z": 59,
+          "label": "gravship set-down"
+        }
+      ],
+      "notes": [
+        "Place the gravship + starting crew on the apron.",
+        "Keep the apron's perimeter clear for turrets/killbox."
+      ]
+    },
+    {
+      "op": "cavern",
+      "what": "Cavern system \u2014 SKIPPED (no host rock mass)",
+      "where": "n/a",
+      "why": "The map lacks a solid mountain/rock formation large enough to hollow a believable cave into. Rather than carve a cave across open ground (which reads as a generator artifact), the operator declines. Add a rock massif first, or run --ops without 'cavern'.",
+      "cells": 0,
+      "features": [],
+      "notes": [
+        "To host a cavern here, first grow a rock mass on an edge (a future 'op_massif' operator), then re-run cavern."
+      ]
+    },
+    {
+      "op": "mine",
+      "what": "Abandoned open-pit mine",
+      "where": "open-pit dig in the flats at (33,83)",
+      "why": "An exotic 'someone was here first' set-piece. The cut floor, tailings apron and haul road tell a story and seed a resource pocket \u2014 but the collapsed adit is the anti-exponential catch: reopening it costs labor and risks an infestation/roof-fall, so the ore isn't free.",
+      "cells": 129,
+      "features": [
+        {
+          "kind": "mine",
+          "x": 33,
+          "z": 83,
+          "label": "mine adit (collapsed)"
+        },
+        {
+          "kind": "relic",
+          "x": 34,
+          "z": 84,
+          "label": "rusted ore cart"
+        }
+      ],
+      "notes": [
+        "Layer: a small deep-ore vein + steel/components chunks in the adit; a dead prospector corpse w/ a note; 1-2 stone chunks on the tailings.",
+        "Hazard hook (Family-11 pre-placed): a dormant insect hive just inside the adit \u2014 mining vibration wakes it."
+      ]
+    },
+    {
+      "op": "refinery",
+      "what": "Half-working chem/oil refinery",
+      "where": "hardpan at (68,25)",
+      "why": "A landmark ruin that reads instantly as 'industrial past'. The lit flare implies it still runs on a trickle \u2014 a reason to fight over it. The leaking sludge ring is the price: fouled ground you must contain, supporting the terrain-souring / water-denial hazard axis.",
+      "cells": 214,
+      "features": [
+        {
+          "kind": "refinery",
+          "x": 68,
+          "z": 25,
+          "label": "cracking tower (flare lit)"
+        },
+        {
+          "kind": "refinery",
+          "x": 64,
+          "z": 27,
+          "label": "sludge pond"
+        },
+        {
+          "kind": "relic",
+          "x": 73,
+          "z": 23,
+          "label": "chemfuel drums"
+        }
+      ],
+      "notes": [
+        "Layer: a working chemfuel source (slow), a few steel/plasteel drums, an ancient security mech guarding it.",
+        "Hazard: sludge pond as toxic terrain; wildlife avoids it \u2014 a visual tell for the poison layer."
+      ]
+    },
+    {
+      "op": "droid",
+      "what": "Dead droid in its impact crater",
+      "where": "open ground at (30,51) with a NE debris streak",
+      "why": "Pure Star-Wars-theme flavor and a scavenge magnet: a machine that fell from space and augered in. The fused-glass center + ejecta ring + entry streak make the physics legible at a glance. Fits the crashed-Factory-ship / Jawa scavenger premise directly.",
+      "cells": 277,
+      "features": [
+        {
+          "kind": "droid",
+          "x": 30,
+          "z": 51,
+          "label": "dead droid (impact)"
+        },
+        {
+          "kind": "relic",
+          "x": 30,
+          "z": 51,
+          "label": "salvageable core"
+        }
+      ],
+      "notes": [
+        "Layer: an inert mechanoid/droid corpse w/ salvage (components, a unique weapon or AI core relic).",
+        "Jawa hook: this is exactly what the scavengers came for \u2014 a quest/relic seed.",
+        "Optional risk: the core is dormant, not dead (reactivation event) \u2014 keeps the loot from being free."
+      ]
+    },
+    {
+      "op": "wreck",
+      "what": "Crashed Factory-ship hull-scar",
+      "where": "long diagonal gouge from (18,88) to the buried prow (82,59)",
+      "why": "THE anchor set-piece of the campaign: the derelict the Jawa-analog crew scavenges. A narrowing metal/concrete scar with a churned-earth gouge and debris field reads unmistakably as a ship that came in hard and skidded. It gives the map a narrative spine and a central objective.",
+      "cells": 629,
+      "features": [
+        {
+          "kind": "wreck",
+          "x": 82,
+          "z": 59,
+          "label": "Factory-ship prow (buried)"
+        },
+        {
+          "kind": "wreck",
+          "x": 18,
+          "z": 88,
+          "label": "torn stern section"
+        },
+        {
+          "kind": "relic",
+          "x": 50,
+          "z": 73,
+          "label": "intact cargo bay"
+        }
+      ],
+      "notes": [
+        "Layer: salvageable hull plating, a sealed cargo bay (loot), dormant factory mechs, and Jawa scavenger camp hooks.",
+        "This is the 'why this map' \u2014 expedition destination, not free loot: mechs + structural collapse gate the reward."
+      ]
+    }
+  ]
+}
