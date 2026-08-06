@@ -61,11 +61,10 @@ identifiers.
 | Ocean | `Ocean` 🔎 | Deep saltwater tile | The **tiny oceans** (keep few) | water source (saline) |
 | Lake | `Lake` 🔎 | Inland freshwater tile | **Rare rivers/lakes** (keep few) | fresh surface water |
 
-**Odyssey note — CORRECTED 2026-08-04 (search `2026-08-04ai`):** an earlier draft said Odyssey adds
-only orbital/gravship map contexts. That was wrong. Multiple independent sources (Ludeon blog,
+**Odyssey note:** Multiple independent sources (Ludeon blog,
 RimWorld Wiki, SteamDB patch notes) confirm **Odyssey adds FIVE new planet-surface biomes** plus
 40+ new animals and reworked map generation. Three are named directly in the sources and are ⭐
-highly relevant to this campaign; the other two are not named in the snippets I pulled:
+highly relevant to this campaign; the other two are not named in the snippets pulled:
 
 | Odyssey biome | label (search-confirmed) | defName | Relevance |
 |---|---|---|---|

@@ -85,9 +85,9 @@ To keep it anti-exponential and *interesting*, layer in downside risk:
 
 ---
 
-# BUILDABLE SPEC (Task B — 2026-08-06)
+# BUILDABLE SPEC — implementation architecture
 
-Grounded in real RimWorld 1.6 classes (verified against vanilla + the Droid Depot 1.6 source we already have as a template). This is the from-XML-and-a-little-C# build plan. Def prefix: **`SWC_`** (Star Wars Carbonite) to avoid any `OuterRim_*` collision.
+Grounded in real RimWorld 1.6 classes (verified against vanilla + the Droid Depot 1.6 source we already have as a template). This is the from-XML-and-a-little-C# build plan. Def prefix: **`SWC_`** (Star Wars Carbonite) to avoid any `OuterRim_*` collision. **For final concrete numbers (costs, inputs, power, slab behavior) the CANONICAL SPEC below governs; this section owns the class/def/JobDriver architecture.**
 
 ## Design pivot after reading vanilla hooks: the slab IS a container Thing
 The cleanest real implementation is a **minifiable Building that contains a Pawn**, exactly like vanilla `Building_CryptosleepCasket` (which already stores a live pawn, suspends needs, and survives save/load via `ThingOwner`). We subclass that pattern so the engine does the hard part (pawn suspension, serialization) for free.
@@ -150,9 +150,9 @@ where `gradeMult` ≈ 1.0 common / 1.5 named / 2.0+ Force-user. Selling nets rou
 
 ---
 
-# CANONICAL SPEC v3 — user directives 2026-08-06 (supersedes numbers above where they conflict)
+# CANONICAL SPEC — concrete design (user directives)
 
-The user pinned down the concrete design. Where this conflicts with Task B, **v3 wins**; deltas are flagged.
+This section owns all concrete numbers; the implementation-architecture section above owns the class/def structure.
 
 ## Station: **Class 3 Carbon Freezing Chamber** (`SWC_CarboniteChamber`)
 - Diegetic name is now fixed: **"Class 3 Carbon Freezing Chamber."**
@@ -165,8 +165,7 @@ The user pinned down the concrete design. Where this conflicts with Task B, **v3
 - Once a slab is frozen, **the slab itself needs no power thereafter** (passive-permanent is the DECIDED default — no standing-power-to-stay-frozen requirement). The duty-cycle above is the *chamber's* draw, distinct from the slab.
 
 ## Freeze recipe inputs (`SWC_FreezeInCarbonite`) — DECIDED
-Per unit: **a lot of Chemfuel** (the carbon-bearing bulk medium — tune high, e.g. ~75–150) **+ 2 Components + 2 Steel + 1 Plasteel + 1 Uranium + the target (a Pawn or a material stack).**
-- **DELTA vs Task B:** mineral counts drop sharply (was Steel 50 / Plasteel 20) and **Uranium ×1 is newly required** (the stasis-core element). Chemfuel stays the bulk carbon feedstock. Advanced-component upgrade for high-value/Force targets is retained as an optional grade input.
+Per unit: **a lot of Chemfuel** (the carbon-bearing bulk medium — tune high, e.g. ~75–150) **+ 2 Components + 2 Steel + 1 Plasteel + 1 Uranium + the target (a Pawn or a material stack).** Chemfuel is the bulk carbon feedstock; Uranium ×1 is the stasis-core element. Advanced-component upgrade for high-value/Force targets is an optional grade input.
 
 ## Two freeze targets (NEW — the slab is now general-purpose)
 1. **Pawn freeze** (the trophy/vault use): downed pawn or prisoner → `SWC_CarboniteSlab` containing that pawn. Also an effective **emergency stasis for a dying/injured pawn** — like a sleep casket but requiring **no power once frozen** (freeze to halt bleed-out/infection, thaw when you can treat them).
@@ -177,7 +176,7 @@ Per unit: **a lot of Chemfuel** (the carbon-bearing bulk medium — tune high, e
 - **Value:** ≈ **occupant/contents value + one hypersleep (cryptosleep) casket's worth** (the stasis apparatus premium). Restates the anti-exponential conversion: contents value passes through, plus a fixed apparatus value, not minted wealth.
 - **Contents shown:** the slab's **label + description/inspect string display what's frozen inside** (which pawn, or what item×count).
 - **Near-indestructible:** very high HitPoints. **Does NOT release its contents when destroyed** — a broken slab yields only **burning debris** (contents are lost/incinerated, so smashing is not a free extraction route; use the control panel to thaw).
-- **Debuff on thawed pawns (`SWC_HibernationSickness`):** reduces functionality for **~half a day** (DELTA: was ~1 day), **blinds** them, and causes **disorientation** for the duration. Self-healing. Blocks thaw-for-instant-combat cheese; canon Han-Solo nod.
+- **Debuff on thawed pawns (`SWC_HibernationSickness`):** reduces functionality for **~half a day**, **blinds** them, and causes **disorientation** for the duration. Self-healing. Blocks thaw-for-instant-combat cheese; canon Han-Solo nod.
 
 ## Placement / storage (NEW — furniture behavior)
 - **On display = Furniture.** Placed like a **Wardrobe/dresser**: **rotatable** and set flush **against a wall** (edifice-style footprint, wall-adjacent orientation). Beauty + impressiveness apply here (throne-room / Hutt-court trophy).

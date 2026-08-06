@@ -8,7 +8,7 @@ _How we build an exceptionally hand-crafted world by editing files directly inst
 
 ## The headline finding
 
-**A RimWorld `.rws` save is plain, human-readable XML, and every element we'd normally set by hand in the UI is an editable node with legible values.** The teardown killed my earlier worry that a save is an opaque ID-soup. It has ID cross-references, yes — but the *authoring-relevant* parts (scenario, pawns, research, items, xenotype refs) read like a config file, not a memory dump. This makes the save-based pipeline not just viable but the *better* path for a hand-crafted world.
+**A RimWorld `.rws` save is plain, human-readable XML, and every element we'd normally set by hand in the UI is an editable node with legible values.** It has ID cross-references, yes — but the *authoring-relevant* parts (scenario, pawns, research, items, xenotype refs) read like a config file, not an opaque memory dump. This makes the save-based pipeline not just viable but the *better* path for a hand-crafted world.
 
 **Established evidence (verified in the Gravtasm save):**
 

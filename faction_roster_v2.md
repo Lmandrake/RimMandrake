@@ -1,44 +1,30 @@
 # RimWorld 1.6 Desert-World Faction Roster — v2
 
-> ## Reconciliation decisions (user, 2026-08-06 — updated with second design stream)
-> This roster was re-adopted from an improved, more canon/disk-correct second design
-> stream (the "-beed27a9" revision). That stream is adopted **wholesale** because it
-> independently converged on our verified on-disk race inventory and improved several
-> mechanics. The rulings below override the body text only where noted:
+> ## Rulings that override the body text
+> Where these conflict with the body below, these win:
 >
 > 1. **Jedi placement — BOTH are true (OVERRIDES this doc's factionless-only line).**
 >    The body's "Jedi are factionless, Empire-hunted wanderers" is the *primary* Jedi
 >    presence (psylink 3–6, ≤1 per group, no faction membership). In **addition**, a
->    **rare Jedi may shelter within a sympathetic Homestead / Moisture-Farmer group**
->    (our earlier locked call, reaffirmed 2026-08-06). Both channels coexist; VPE remains
->    the sole Force substrate and the NPC-only gate still holds (no player Force ceiling).
->    The body's "Global system 5 — Jedi and Sith" section is edited in place to reflect this.
+>    **rare Jedi may shelter within a sympathetic Homestead / Moisture-Farmer group**.
+>    Both channels coexist; VPE remains the sole Force substrate and the NPC-only gate
+>    still holds (no player Force ceiling). The body's "Global system 5 — Jedi and Sith"
+>    section reflects this.
 >
-> 2. **Miraluka — BROADER placement ADOPTED (SUPERSEDES the 2026-08-05/-06 "prisoners only" ruling).**
->    The prior "Miraluka = prisoners only" call is **retired.** Miraluka now appear in the
->    four roles this doc specifies: (a) **Imperial prisoners / rescue-quest targets**,
->    (b) **rare Homestead "seers" (~1%)**, (c) **Gene Consortium research subjects (~2%)**,
->    and (d) a **Jedi-eligible race** for the factionless wanderers. Rationale: Force
->    sensitivity leaks quietly into the fringe factions, but *trained* Jedi remain factionless.
->    `OuterRim_Miraluka` is confirmed on disk.
+> 2. **Miraluka — FOUR-ROLE placement.** Miraluka appear in four roles:
+>    (a) **Imperial prisoners / rescue-quest targets**, (b) **rare Homestead "seers" (~1%)**,
+>    (c) **Gene Consortium research subjects (~2%)**, and (d) a **Jedi-eligible race** for
+>    the factionless wanderers. Rationale: Force sensitivity leaks quietly into the fringe
+>    factions, but *trained* Jedi remain factionless. `OuterRim_Miraluka` is confirmed on disk.
 >
-> 3. **Race inventory — CONFIRMED, no new races/dependencies.** This doc's "Global system 3 —
->    Available races" matches our verified on-disk inventory exactly (42 Outer Rim – Galactic
->    Diversity species + 6 reflavored vanilla-Biotech bases incl. baseliner Humanity + Custom
->    Hutt + Custom droid chassis). It correctly omits Skakoan, Houk, Kel Dor, Nautolan,
->    Klatooinian, and Vodran (none ship on disk), and treats Arkanian-Offshoot as **Brute stock
->    (Neanderthal)** reflavored faction-side — not a new xenotype. Ghorfa remains a Tusken lore
->    line only. The old "sealed / pressure-suit species" immunity mechanic is **replaced** by the
->    body's **reduced-thirst-rate gene/trait tier** (a consumption modifier, NOT immunity) — more
->    implementable and more anti-exponential. `cherry_picker_killlist.md` §2 remains the single
->    source of truth for the race roster and agrees with this doc.
->
-> 4. Everything else — water/thirst doctrine, the low-water species tier, NPC-vs-NPC relations
->    matrix, the ten faction designs (Aquifer/Homestead Compact, Hutt Cartel with Nikto
->    consolidation, Free Droid Enclaves, Geonosian Foundry Hive, Arkanian–Kaminoan Gene
->    Consortium, Tusken clans, Wookiee freeholds, Imperial Directorate, Bounty Hunters), the
->    Race→Appears-in coverage matrix, settlement-count tiers, and equipment discipline — is
->    adopted as canonical.
+> 3. **Race inventory.** This doc's "Global system 3 — Available races" matches the verified
+>    on-disk inventory (42 Outer Rim – Galactic Diversity species + 6 reflavored vanilla-Biotech
+>    bases incl. baseliner Humanity + Custom Hutt + Custom droid chassis). No Skakoan, Houk,
+>    Kel Dor, Nautolan, Klatooinian, or Vodran (none ship on disk); Arkanian-Offshoot is **Brute
+>    stock (Neanderthal)** reflavored faction-side, not a new xenotype; Ghorfa is a Tusken lore
+>    line only. Low-water species use a **reduced-thirst-rate gene/trait tier** (a consumption
+>    modifier, NOT immunity). `cherry_picker_killlist.md` §2 is the single source of truth for
+>    the race roster and agrees with this doc.
 
 ## Purpose
 
@@ -144,7 +130,7 @@ Conversely, **Wookiee, Wookiee-kin, Herglic, Mon Calamari, Quarren, Selkath, Gun
 
 Everything in this document draws from what is on disk. Nothing else is used.
 
-**→ The canonical, verified race inventory is `cherry_picker_killlist.md` §2** (the "✅ VERIFIED IN-HAND RACE INVENTORY" block, which supersedes the former standalone `races.md` as the single source of truth). The full Outer Rim / Galactic Diversity species list (Abednedo … Zeltron, 42 species + bundled Chiss) is enumerated there and is **not repeated here** to avoid drift. This section keeps only the roster-specific interpretation: how the reflavoured vanilla xenotypes and bespoke races are cast.
+**→ The canonical, verified race inventory is `cherry_picker_killlist.md` §2** (the "✅ VERIFIED IN-HAND RACE INVENTORY" block — the single source of truth for the race inventory). The full Outer Rim / Galactic Diversity species list (Abednedo … Zeltron, 42 species + bundled Chiss) is enumerated there and is **not repeated here** to avoid drift. This section keeps only the roster-specific interpretation: how the reflavoured vanilla xenotypes and bespoke races are cast.
 
 ### Reflavoured vanilla Biotech xenotypes, plus baseline Humanity
 

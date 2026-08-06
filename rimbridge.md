@@ -64,7 +64,7 @@ reimplementing gameplay logic outside the game" (architecture.md).
   modes: **GABS** (launcher discovers the surface + manages port/token) or **Direct mode**
   (start RimWorld, read `[RimBridge] GABP server running standalone on port 5174` + a bridge
   token from the log, connect client to `127.0.0.1:port` with that token).
-- ✅ **RESOLVED — it IS rich enough for enrichment, contradicting my earlier caution.** The
+- ✅ **It IS rich enough for enrichment.** The
   tool surface (full schema in `mod_sources/.../docs/tool-reference.md`) includes real
   content/map mutation tools, not just QA:
   - `rimworld/spawn_thing` (defName + x/z + stackCount) — direct thing spawn.

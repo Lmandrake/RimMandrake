@@ -2,7 +2,7 @@
 
 _Companion to `desert_world_design.md`, `faction_roster_v2.md`. Created 2026-08-06 (originally `VGE_1_6_Alien_World_Bestiary.md`, renamed to `Alien_Bestiary.md` as scope broadened toward all creature mods). The left-column names in §3 are the literal VGE ThingDef in-game labels._
 
-**Scope decision:** the source doc names ~27 creatures in its "recommended core set" lists. This file names **all 104**, plus the four special outputs. Nothing is left as an Earth portmanteau, because a half-renamed bestiary is worse than an unrenamed one — one stray "bearchicken" in a spawn log breaks the whole illusion.
+**Scope decision:** this file names **all 104** VGE creatures plus the four special outputs. Nothing is left as an Earth portmanteau, because a half-renamed bestiary is worse than an unrenamed one — one stray "bearchicken" in a spawn log breaks the whole illusion.
 
 **Every entry gets two names:** a **vernacular** name (what Jawas, homesteaders and Tuskens call it — this is the one that appears in-game) and a **registry/faction** name (what the Consortium, Imperial Directorate or Foundry Hive calls the same organism). The second name is not decoration: it is how a C- or D-grade creature earns its place in the world. A "bearman" is nonsense as wildlife; **Consortium Model UR-7 "Vhek," an abandoned labour-line prototype**, is exactly the kind of thing your Gene Consortium leaves lying around.
 
