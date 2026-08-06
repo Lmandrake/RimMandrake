@@ -147,3 +147,50 @@ where `gradeMult` ≈ 1.0 common / 1.5 named / 2.0+ Force-user. Selling nets rou
 4. Value/beauty comp + quality-from-skill + trade wiring.
 5. Danger hooks: malfunction roll → then (optional) power-decay setting → then (optional) extraction-raid incident.
 6. §-balance pass + Hutt-market tie-in verify.
+
+---
+
+# CANONICAL SPEC v3 — user directives 2026-08-06 (supersedes numbers above where they conflict)
+
+The user pinned down the concrete design. Where this conflicts with Task B, **v3 wins**; deltas are flagged.
+
+## Station: **Class 3 Carbon Freezing Chamber** (`SWC_CarboniteChamber`)
+- Diegetic name is now fixed: **"Class 3 Carbon Freezing Chamber."**
+- **Integrated control panel** (part of the same building, not a separate def) maintains stasis and runs the **unfreeze/restore** operation — thaw is driven from the chamber's controls, restoring contents to their previous state.
+- **Build cost = ~2× a cryptosleep casket (DECIDED).** Vanilla cryptosleep casket ≈ Steel 100 + Component 4 (🔎 re-confirm exact 1.6 values at authoring), so target ≈ **Steel 200 + Components 8** (plus a little plasteel/adv-component flavor if desired). Anchor the `costList` to whatever the casket actually costs in-game rather than the numbers here, so "twice a casket" stays true if vanilla shifts.
+- **Power (DECIDED): duty-cycled, not constant.**
+  - **While actively freezing/thawing:** heavy draw ≈ a working **electric smelter** (vanilla ≈ **400 W**, 🔎 confirm 1.6). This is the brownout-risk logistics cost.
+  - **Otherwise (idle/maintaining):** **inert — only a tiny trickle draw** (a few W, e.g. ~10–50 W for the control panel), not the full cycle load.
+  - Implement as a `CompPowerTrader` whose `PowerOutput` is switched between the low idle value and the smelter-equivalent value by the active bill (vanilla smelters/nutrient-paste do exactly this — `PowerConsumption` swapped on/off with work state).
+- Once a slab is frozen, **the slab itself needs no power thereafter** (passive-permanent is the DECIDED default — no standing-power-to-stay-frozen requirement). The duty-cycle above is the *chamber's* draw, distinct from the slab.
+
+## Freeze recipe inputs (`SWC_FreezeInCarbonite`) — DECIDED
+Per unit: **a lot of Chemfuel** (the carbon-bearing bulk medium — tune high, e.g. ~75–150) **+ 2 Components + 2 Steel + 1 Plasteel + 1 Uranium + the target (a Pawn or a material stack).**
+- **DELTA vs Task B:** mineral counts drop sharply (was Steel 50 / Plasteel 20) and **Uranium ×1 is newly required** (the stasis-core element). Chemfuel stays the bulk carbon feedstock. Advanced-component upgrade for high-value/Force targets is retained as an optional grade input.
+
+## Two freeze targets (NEW — the slab is now general-purpose)
+1. **Pawn freeze** (the trophy/vault use): downed pawn or prisoner → `SWC_CarboniteSlab` containing that pawn. Also an effective **emergency stasis for a dying/injured pawn** — like a sleep casket but requiring **no power once frozen** (freeze to halt bleed-out/infection, thaw when you can treat them).
+2. **Stack freeze** (NEW): freeze **a full stack of ANY material** into a single slab object. Frozen contents **do not decay** with time or weather, and **volatile items stay frozen in time** — e.g. explosives/chemfuel/rotting food are suspended, not merely stored. A preservation + hazard-safing vault, not just a captive sink.
+
+## The Carbonite Slab (`SWC_CarboniteSlab`) — properties DECIDED
+- **Appearance:** a **black monolith** ("Carbonite Slab").
+- **Value:** ≈ **occupant/contents value + one hypersleep (cryptosleep) casket's worth** (the stasis apparatus premium). Restates the anti-exponential conversion: contents value passes through, plus a fixed apparatus value, not minted wealth.
+- **Contents shown:** the slab's **label + description/inspect string display what's frozen inside** (which pawn, or what item×count).
+- **Near-indestructible:** very high HitPoints. **Does NOT release its contents when destroyed** — a broken slab yields only **burning debris** (contents are lost/incinerated, so smashing is not a free extraction route; use the control panel to thaw).
+- **Debuff on thawed pawns (`SWC_HibernationSickness`):** reduces functionality for **~half a day** (DELTA: was ~1 day), **blinds** them, and causes **disorientation** for the duration. Self-healing. Blocks thaw-for-instant-combat cheese; canon Han-Solo nod.
+
+## Placement / storage (NEW — furniture behavior)
+- **On display = Furniture.** Placed like a **Wardrobe/dresser**: **rotatable** and set flush **against a wall** (edifice-style footprint, wall-adjacent orientation). Beauty + impressiveness apply here (throne-room / Hutt-court trophy).
+- **Minifiable** (retained), and when minified can be **stacked 5 high** in a dedicated **Carbonite storage rack** (`SWC_CarboniteRack`) — a new storage building that holds up to 5 minified slabs in one cell (vertical display/warehouse).
+
+## New/changed defs implied by v3
+- `SWC_CarboniteRack` — storage Building holding 5 minified slabs (Building_Storage variant with a 5-cap + vertical stacking graphic).
+- Slab gains a **wall-adjacent, rotatable furniture** placement worker (like `PlaceWorker` for wall furniture) + Furniture `designationCategory`.
+- Stack-freeze path: recipe/JobDriver accepts an **item stack** as the target (in addition to a pawn); slab comp stores either a `Pawn` (via `ThingOwner`) **or** an item stack (count+def) and reports it in the label.
+- Slab HitPoints set very high; on `Destroy`, spawn burning debris and **do not** eject `ThingOwner` contents.
+
+## Reconciled open decisions (now closed)
+- Standing power to stay frozen → **NO** (passive-permanent). Brownout-thaw crisis dropped for the base slab.
+- Slab as building-only vs minifiable → **both** (placeable furniture AND minifiable for the rack/trade).
+- Reagent → **Chemfuel** (bulk) + Uranium (core); custom "carbonite compound" supply-chain shelved as optional.
+- Extraction-raid incident → still optional/deferrable.
