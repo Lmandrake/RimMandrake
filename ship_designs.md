@@ -34,15 +34,21 @@ inherits._
   5-wide spokes at deliberately irregular ("semi-random") angles, one enlarged pod = the shuttle
   bay, thrown furthest out. Net: **eight designs**, all 14 regions, all verified liftable.
 - **2026-08-06 (derelict-halo pass):** Added **#9 Derelict Halo** — the eerie variant. Same ring +
-  irregular circular pods, but the pods are **free-floating** (NO radial spokes joining them to the
-  ring); instead "strange" **curved perimeter walkways** arc around the *outside* of the hull, two of
-  them **overshooting a little past everything into empty space** for reasons long forgotten. Nothing
-  is straight. The interior is a **hollow void** except a **single spiral causeway** curving inward to
-  the ship's heart: the **grav-engine core**, ringed by a small consecrated floor bearing the Jawa's
-  **worshipful scrap totems** (the carbonite/sacred-scrap block). Needed a new curved-corridor
-  primitive (`arc()` in `ship_designs.py`). Rendered as its own **large standalone panel**
-  (`render_single.py`, ~3× fonts) after feedback that the grid text was too small. Net: **nine
-  designs**, all 14 regions, all verified liftable.
+  irregular circular pods; "strange" **curved walkways** (never straight), two **overshooting past
+  everything into empty space** for reasons long forgotten; **hollow void** interior except a **single
+  spiral causeway** curving inward to the ship's heart: the **grav-engine core** ringed by a small
+  consecrated floor of the Jawa's **worshipful scrap totems** (carbonite/sacred-scrap). Needed a new
+  curved-corridor primitive (`arc()`) + a large-panel renderer (`render_single.py`, ~3× fonts) after
+  "text too small" feedback.
+- **2026-08-06 (contiguity guardrail + fix pass):** ⚠️ Added a **CONTIGUITY CHECK** to the verifier
+  (`_count_components` in `ship_designs.py`): a real gravship is **one physically connected structure**
+  — all parts must touch — so `liftable` now also requires `n_components == 1`. This caught that the
+  first #9 had the pods *genuinely floating* (8 parts) **and** that **#3 (corvette, 5 parts — engine
+  fins detached)** and **#4 (catamaran, 2 parts — bow command block detached)** had latent one-row gaps
+  the old coverage-only check silently passed. **All three fixed** (pods now hang on **curved spiral
+  tethers** that overlap the ring; corvette fins tied in by a stern deck; catamaran bow extended to the
+  hull). Re-verified: all nine report `parts=1`. Net: **nine designs**, all 14 regions, all genuinely
+  contiguous and liftable. New stats: #3 3849(951)/cargo616, #4 4113(687), #9 4228(572)/cargo1092.
 
 ---
 
@@ -256,34 +262,35 @@ pods — accepting a lighter factory.
 
 ---
 
-### 9 · Derelict Halo — *floating pods, curved perimeter walks, a shrine at the dead centre*
-**4,186 tiles · 614 headroom · 10 extenders · cargo 1,165 · shuttle ~317 · farthest 29.83**
+### 9 · Derelict Halo — *pods on curved tethers, dangling perimeter walks, a shrine at the dead centre*
+**4,228 tiles · 572 headroom · 10 extenders · cargo 1,092 · shuttle ~317 · farthest 29.83**
 
 The **eerie sibling of #8.** Same monumental cargo ring with the core systems set into its band
 (command / thrusters+power / water / fuel), and the same **eight irregular circular pods** for the
-six factory wings + habitat + the enlarged white shuttle bay. But here the pods are **free-floating**
-— **no radial spokes connect them to the ring at all.** They simply hang in the black, held to the
-ship only by the grav field (the pale connection halos), never by a walkway. Instead, **"strange"
-curved perimeter catwalks** arc around the *outside* of the hull — never straight, always arc-like —
-and **two of them overshoot a little past everything, dangling off into empty space** for reasons
-long forgotten. The whole interior is a **hollow void** save one thing: a **single spiral causeway**
-that curves inward from the ring to the ship's heart at the dead centre — the **grav-engine core**,
-ringed by a small consecrated floor bearing the Jawa's **worshipful scrap totems** (the black
-carbonite / sacred-scrap block). That lone sacred path is the only thing that reaches the middle.
+six factory wings + habitat + the enlarged white shuttle bay. The twist is *how* the pods attach:
+instead of #8's clean straight radial spokes, each pod hangs off a **curved spiral tether** that eases
+out from the ring band and sweeps as it goes — so the connectors read as **strange curved walkways,
+never straight lines**. A few of those tethers **overshoot past their pod and dangle off into empty
+space** for reasons long forgotten (each such stub is *anchored to a pod*, so it's real ship, not
+debris). The interior is otherwise a **hollow void** save one thing: a **single spiral causeway** that
+curves inward from the ring to the ship's heart at the dead centre — the **grav-engine core**, ringed
+by a small consecrated floor bearing the Jawa's **worshipful scrap totems** (the black carbonite /
+sacred-scrap block). That lone sacred path is the only thing that reaches the middle.
 
-For: it is by far the most *atmospheric* and unsettling silhouette — a hollow derelict wheel with
-organs floating around it and a shrine at its core, which is exactly the crashed-Factory-ship /
-Jawa-salvage mood; huge cargo (1,165, second only to #8); the floating pods are the ultimate
-isolatable units (each is a self-contained sealed room, maps perfectly onto the wing-by-wing repair
-gate); the perimeter walks give a *lot* of exterior/defensible edge; comfortable coverage slack
-(614). Against: it is **not physically sensible as a working ship** — pods you can only reach by the
-grav field, not on foot, plus walkways that lead nowhere — so it is the **hardest to actually play**
-(hauling, pathing, defence between disconnected pods) and the **hardest to hand-author**; light on
-walkable connective floor; the "mysterious dangling" catwalks are pure flavour tiles. Best if: you
-want a *set-piece / GM-mood* hull — a haunted salvaged wheel — and you're willing to trade practical
-playability for the strongest possible atmosphere. (This one is more art object than optimised base;
-if you love the look but want it playable, we can re-connect the pods with short curved skyways and
-keep the shrine-at-centre motif.)
+**Correction (2026-08-06):** the first cut of this design had the pods *genuinely floating* (no
+connector at all), which is **not a valid gravship** — a gravship is one physically contiguous
+structure; every part must touch. That version failed the new contiguity guardrail (8 disconnected
+parts). This entry describes the fixed, **single-piece** design (verified `parts=1`).
+
+For: the most *atmospheric* and unsettling silhouette in the set — a salvaged wheel with organs slung
+around it on curling gangways and a shrine at its core, exactly the crashed-Factory-ship / Jawa mood;
+big cargo (1,092, third behind #8 and #4); each pod is a clean isolatable unit (maps onto the
+wing-by-wing repair gate); the curved perimeter walks give a lot of exterior/defensible edge; decent
+coverage slack (572). Against: it is the **hardest to hand-author** (curved tethers + a spiral core
+path placed tile-by-tile); the tethers are long and thin, so foot-hauling between pods is slow and the
+ship is corridor-heavy; the "mysterious dangling" stubs are deliberate flavour tiles that cost a
+little wealth for no function. Best if: you want a *set-piece / GM-mood* hull — a haunted salvaged
+wheel — and you accept a corridor-heavy, hauling-slow layout for the strongest atmosphere.
 
 *Rendered on its own large panel:* `player_maps/design_9_derelict_halo_large.png` (built by
 `render_single.py`, ~3× the comparison-grid font size for legibility).
@@ -302,13 +309,13 @@ doctrine, and campaign hooks apply to *whichever* you pick.
 |---|------|-------------|-----|-------|---------|---------|-------------|-----------|----------------------|
 | 1 | Spinal freighter | 4499 (301) | 5 | 702 | 1404 | 234 | no | none | easiest (rectangular) |
 | 2 | Nebulon-B | 3741 (1059) | 4 | 562 | 1754 | 126 | fore/aft | none | medium |
-| 3 | Corellian corvette | 3827 (973) | 4 | 660 | 1080 | 189 | mild (bow) | none | hard (round bow) |
-| 4 | Catamaran | 4068 (732) | 4 | **970** | 1174 | 122 | no | **2 courts** | medium |
+| 3 | Corellian corvette | 3849 (951) | 4 | 616 | 1080 | 189 | mild (bow) | none | hard (round bow) |
+| 4 | Catamaran | 4113 (687) | 4 | **970** | 1174 | 122 | no | **2 courts** | medium |
 | 5 | Ring station | 4702 (98) | 6 | 421 | **2537** | 185 | no | **hangar** | hardest (ring) |
 | 6 | Salvage hulk | 4604 (196) | 4 | 622 | 1700 | 288 | **yes (L/R)** | derelict gap | medium |
 | 7 | Nodal station | 4607 (193) | 9 | 357 | 1107 | **357** | **yes (spokes)** | **inter-spoke** | hard (spokes) |
 | 8 | Ring-and-spur | 3837 (963) | 10 | **1279** | 894 | 317 | **yes (pods)** | **ring core + gaps** | hard (ring+pods) |
-| 9 | Derelict halo | 4186 (614) | 10 | 1165 | ~360 | 317 | **yes (floating)** | **hollow core + void** | **hardest (floating pods)** |
+| 9 | Derelict halo | 4228 (572) | 10 | 1092 | ~330 | 317 | **yes (tethered pods)** | **hollow core + void** | **hardest (curved-tether pods)** |
 
 **Tradeoffs, distilled:** *most cargo* → **8** (Ring-and-Spur, 1,279), then **4** (Catamaran, 970);
 *most factory* → **5** (Ring), then **2** (Nebulon-B); *most shuttle capacity* → **7** and **6**;
@@ -331,10 +338,11 @@ extenders would be the first thing to bite if the mod caps `N_EXT` below 12.)
 force a re-tune (most likely affecting the near-cap designs 5, 6, 7, and the high-extender designs
 7/8/9 if `N_EXT` is capped low); (b) start-save authoring of a large pre-broken hull is still the one
 true blocker regardless of shape — the ring (5), the spoked station (7), the ring-and-spur (8), and
-especially the **floating-pod halo (9)** are hardest to hand-place; (c) designs 5–7 have little
-coverage slack, so any later deck-widening needs a re-verify; (d) **#9 is not physically playable as
-drawn** — its pods are field-connected but foot-disconnected — so it's a mood/set-piece candidate
-unless the pods are re-linked with skyways.
+especially the **curved-tether halo (9)** are hardest to hand-place; (c) designs 5–7 have little
+coverage slack, so any later deck-widening needs a re-verify; (d) **#9 is corridor-heavy and
+hauling-slow** — its pods hang on long thin curved tethers — so it's best as a mood/set-piece hull
+rather than an efficiency pick (it *is* now fully contiguous and playable, just not fast to move
+around in).
 
 **Missing info that would help:** the real Bigger Gravships slider ranges (pending Fetcher); and
 your priority weighting — *maximum cargo* (→8, then 4/9), *maximum factory* (→5/2), *the asymmetry you
@@ -343,7 +351,8 @@ atmosphere* (→9), *a playable open courtyard* (→4/5), *the modular station l
 iconic silhouette* (→3).
 
 **Recommendation:** for the crashed-Factory-ship / Jawa-salvage theme, **6 (Salvage Hulk)** remains
-the strongest single pick — its missing/rebuilt section literally *is* the repair story. **7 (Nodal
+the strongest single pick — its missing/rebuilt section literally *is* the repair story. (Note: the
+"factory" figures for #3/#4/#9 shifted slightly after the contiguity fixes — see the table.) **7 (Nodal
 Station)** and **8 (Ring-and-Spur)** are the boldest station-style options and map cleanly onto the
 wing-by-wing repair gate (each pod/cell is an isolatable unit); pick 8 over 7 if you want a ring
 silhouette and maximum cargo, 7 if you want the twin-nucleus industrial heart. If you want the most

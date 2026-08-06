@@ -91,8 +91,9 @@ def d_corvette():
     c.rect(cx-13,92,cx-4,110,'W'); c.rect(cx+4,92,cx+13,110,'U') # water / fuel
     c.rect(cx-13,112,cx+13,118,'H')                             # SHUTTLE BAY (wide aft-body dock)
     c.rect(cx-3,108,cx+3,111,'T')                               # carbonite vault (compact)
+    c.rect(cx-11,119,cx+11,121,'S')                             # stern thruster deck (ties fins to body)
     for dx in (-10,-5,0,5,10):                                  # tail engine cluster
-        c.rect(cx+dx-1,122,cx+dx+1,132,'S')
+        c.rect(cx+dx-1,120,cx+dx+1,132,'S')                     # fins overlap the deck (contiguous)
     c.crop(); return c
 designs['3_corellian_corvette']=d_corvette()
 
@@ -106,7 +107,7 @@ def d_catamaran():
     c.rect(xL-9,y0,xL+6,y1,'G'); c.rect(xR-6,y0,xR+9,y1,'G')     # two hull cores
     c.rect(xL,y0,xL,y1,'K'); c.backbone_rect(xL,y0+2,xL,y1-2)
     c.rect(xR,y0,xR,y1,'K'); c.backbone_rect(xR,y0+2,xR,y1-2)
-    c.rect(xL-9,5,xR+9,12,'M'); c.backbone_rect(xL,8,xR,8)       # bow command cross-deck
+    c.rect(xL-9,5,xR+9,13,'M'); c.backbone_rect(xL,8,xR,8)       # bow command cross-deck (reaches hull row 14)
     c.rect(xL-9,117,xR+9,125,'S'); c.backbone_rect(xL,121,xR,121) # stern thruster deck
     # PORT hull = the four "clean" factory wings + habitat + water + shuttle
     a,b=xL-9,xL+6
@@ -267,6 +268,22 @@ designs['8_ring_spur']=d_ring_spur()
 #   small consecrated floor bearing the Jawa's worshipful scrap totems (T).
 #   (Field coverage, not corridors, keeps the floating pods liftable.)
 # =====================================================================
+def _spiral(c, cx, cy, r0, r1, a_deg, sweep_deg, half, code, backbone=True):
+    """A CURVED tether: radius eases r0->r1 while the angle sweeps, tracing an
+    arc/spiral (never a straight radial line). Stamps a (2*half+1) brush so it
+    stays 4-connected, and overlaps whatever sits at r0 and r1 (so it physically
+    JOINS them). Returns the (x,y) of the far end."""
+    a0=math.radians(a_deg); span=math.radians(sweep_deg)
+    steps=max(4,int(abs(r1-r0)+abs(span)*max(r0,r1))+1)
+    ex=ey=0
+    for t in np.linspace(0,1,steps):
+        r=r0+(r1-r0)*t; a=a0+span*t
+        xi=int(round(cx+r*math.cos(a))); yi=int(round(cy+r*math.sin(a)))
+        c.rect(xi-half,yi-half,xi+half,yi+half,code)
+        if backbone and 0<=yi<c.h and 0<=xi<c.w: c.bb[yi,xi]=True
+        ex,ey=xi,yi
+    return ex,ey
+
 def d_halo():
     c=Canvas(210,210); cx=cy=105
     Rin=24; Rout=34; Rmid=(Rin+Rout)//2          # main ring band 24..34
@@ -284,32 +301,40 @@ def d_halo():
     c.rect(cx-2,cy-2,cx+2,cy+2,'T')              # the worshipful scrap totems / relic core
     c.backbone_rect(cx-6,cy-6,cx+6,cy+6)         # engine may seat here (ship's heart)
     # ---- single arcing causeway: ring inner edge -> the core ----------------
-    # a curved path (constant-ish sweep, radius easing inward), never straight
+    # a curved path (constant-ish sweep, radius easing inward), never straight.
+    # r0=Rmid (23) so it overlaps the keel band and JOINS ring->core physically.
     a_start=math.radians(300)                    # springs from the ring low-right
-    segs=48
+    segs=64
     for t in np.linspace(0,1,segs):
-        r=Rin-(Rin-6)*t                          # ease from ring (24) to core (6)
+        r=Rmid-(Rmid-3)*t                        # ease from ring band (28) to core (3)
         a=a_start+math.radians(150)*t            # sweep 150 deg as it descends
         xi=int(round(cx+r*math.cos(a))); yi=int(round(cy+r*math.sin(a)))
         c.rect(xi-1,yi-1,xi+1,yi+1,'.')          # 3-wide causeway
         c.bb[yi,xi]=True                         # backbone along the causeway
-    # ---- free-floating pods (no spokes): jittered angle + radial distance ---
-    # (deg, pod-centre radius from ship centre, pod radius, code). Shuttle H is
-    # bigger and flung furthest out. Deterministic but deliberately irregular.
-    pods=[( 22,46, 7,'F'),( 63,50, 7,'E'),(107,44, 7,'A'),(148,52, 7,'B'),
-          (196,47, 7,'C'),(243,45, 7,'D'),(292,49, 7,'R'),(334,60,10,'H')]
-    for (deg,pod_r,pr,code) in pods:
+    # ---- pods on CURVED tethers (arc/spiral, never a straight radial spoke) --
+    # Every pod is joined to the ring by a curved tether that eases from the ring
+    # band out to the pod (they physically TOUCH — a gravship is one contiguous
+    # structure). The tethers sweep, so they read as "strange curved walkways",
+    # not clean spokes. (deg, pod-centre radius, pod radius, tether-sweep deg, code)
+    pods=[( 22,46, 7, 34,'F'),( 63,50, 7,-30,'E'),(107,44, 7, 30,'A'),
+          (148,52, 7,-28,'B'),(196,47, 7, 32,'C'),(243,45, 7,-30,'D'),
+          (292,49, 7, 30,'R'),(334,62,10,-26,'H')]   # shuttle bigger, furthest
+    pod_ctr={}
+    for (deg,pod_r,pr,sweep,code) in pods:
+        # curved tether: ring band (r=Rmid) -> pod centre, sweeping `sweep` deg
+        _spiral(c,cx,cy, Rmid, pod_r, deg-sweep, sweep, 1, '.')
         a=math.radians(deg)
-        px=cx+pod_r*math.cos(a); py=cy+pod_r*math.sin(a)
-        c.disk(int(round(px)),int(round(py)),pr,code)
-        c.backbone_rect(int(round(px)),int(round(py)),int(round(px)),int(round(py)))
-    # ---- strange curved perimeter walkways (arc-like, some overshooting) ----
-    # (radius, deg0, deg1, half). Radii sit just outside the pod belt; a couple
-    # dangle a little past everything into empty space "for mysterious reasons".
-    walks=[(41, 8, 78,1),(45,-30, 12,1),(55,150,205,1),(43,214,262,1),
-           (58,300,348,1),(66,320,344,1)]        # last two overshoot outward
-    for (r,d0,d1,half) in walks:
-        c.arc(cx,cy,r,d0,d1,half,'.')
+        px=int(round(cx+pod_r*math.cos(a))); py=int(round(cy+pod_r*math.sin(a)))
+        c.disk(px,py,pr,code)                    # the ball (drawn over tether tip)
+        c.backbone_rect(px,py,px,py)
+        pod_ctr[code]=(px,py,pod_r,deg,pr)
+    # ---- strange perimeter walks that OVERSHOOT past the hull "for mysterious
+    #      reasons" — but each is ANCHORED to a pod (starts on the pod, arcs
+    #      outward into empty space), so it's part of the ship, not debris. -----
+    for code,extra_sweep,extra_reach in [('H',40,10),('R',34,8),('E',-30,7)]:
+        px,py,pod_r,deg,pr=pod_ctr[code]
+        # begin just inside the pod edge, spiral outward beyond it and dangle off
+        _spiral(c,cx,cy, pod_r-pr+1, pod_r+extra_reach, deg, extra_sweep, 1, '.')
     c.crop(); return c
 designs['9_derelict_halo']=d_halo()
 
@@ -326,8 +351,8 @@ for name,c in designs.items():
     report[name]=rep
     flag='OK' if (rep['liftable'] and not missing) else 'FAIL'
     print(f"[{flag}] {name:22s} tiles={rep['tiles']:4d}/{CAP} ext={rep['n_ext_used']}/{N_EXT} "
-          f"cov={rep['cover_pct']}% uncov={rep['uncovered']} maxd={rep['max_dist']} "
-          f"lift={rep['liftable']} missing={missing}")
+          f"cov={rep['cover_pct']}% uncov={rep['uncovered']} parts={rep['n_components']} "
+          f"maxd={rep['max_dist']} lift={rep['liftable']} missing={missing}")
 json.dump(report, open('designs_report.json','w'), indent=1, default=str)
 print(f"\nrequired regions ({len(REQUIRED)}): {''.join(sorted(REQUIRED))}")
 print(f"limits: R_ENG={R_ENG} R_EXT={R_EXT} CAP={CAP} N_EXT={N_EXT}")

@@ -6,7 +6,7 @@ from PIL import Image, ImageDraw, ImageFont
 from ship_designs import COL, R_ENG, R_EXT, CAP, N_EXT
 
 name = sys.argv[1] if len(sys.argv)>1 else '9_derelict_halo'
-TITLES={'9_derelict_halo':'9 · Derelict Halo — floating pods, curved perimeter walks, a shrine at the dead centre'}
+TITLES={'9_derelict_halo':'9 · Derelict Halo — pods on curved tethers, dangling perimeter walks, a shrine at the dead centre'}
 title = TITLES.get(name, name)
 
 def font(sz,bold=True):

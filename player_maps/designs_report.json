@@ -49,6 +49,9 @@
   "r_eng": 34,
   "r_ext": 30,
   "chain_ok": true,
+  "n_components": 1,
+  "biggest_comp": 4499,
+  "contiguous": true,
   "max_dist": 29.61,
   "liftable": true,
   "zones": {
@@ -114,6 +117,9 @@
   "r_eng": 34,
   "r_ext": 30,
   "chain_ok": true,
+  "n_components": 1,
+  "biggest_comp": 3741,
+  "contiguous": true,
   "max_dist": 29.97,
   "liftable": true,
   "zones": {
@@ -136,10 +142,10 @@
   "missing_required": []
  },
  "3_corellian_corvette": {
-  "tiles": 3827,
+  "tiles": 3849,
   "cap": 4800,
-  "headroom": 973,
-  "covered": 3827,
+  "headroom": 951,
+  "covered": 3849,
   "uncovered": 0,
   "cover_pct": 100.0,
   "placements": [
@@ -179,6 +185,9 @@
   "r_eng": 34,
   "r_ext": 30,
   "chain_ok": true,
+  "n_components": 1,
+  "biggest_comp": 3849,
+  "contiguous": true,
   "max_dist": 29.15,
   "liftable": true,
   "zones": {
@@ -188,12 +197,12 @@
    "D": 165,
    "E": 195,
    "F": 195,
-   "G": 660,
+   "G": 616,
    "H": 189,
-   "K": 103,
+   "K": 100,
    "M": 582,
    "R": 640,
-   "S": 165,
+   "S": 234,
    "T": 28,
    "U": 190,
    "W": 190
@@ -201,41 +210,41 @@
   "missing_required": []
  },
  "4_catamaran_courtyard": {
-  "tiles": 4068,
+  "tiles": 4113,
   "cap": 4800,
-  "headroom": 732,
-  "covered": 4068,
+  "headroom": 687,
+  "covered": 4113,
   "uncovered": 0,
   "cover_pct": 100.0,
   "placements": [
    [
     "ENGINE",
     23,
-    87,
+    34,
     34
    ],
    [
     "EXT",
     23,
-    53,
+    68,
     30
    ],
    [
     "EXT",
     23,
-    23,
-    30
-   ],
-   [
-    "EXT",
-    23,
-    101,
+    98,
     30
    ],
    [
     "EXT",
     16,
     4,
+    30
+   ],
+   [
+    "EXT",
+    23,
+    101,
     30
    ]
   ],
@@ -244,7 +253,10 @@
   "r_eng": 34,
   "r_ext": 30,
   "chain_ok": true,
-  "max_dist": 29.73,
+  "n_components": 1,
+  "biggest_comp": 4113,
+  "contiguous": true,
+  "max_dist": 30.36,
   "liftable": true,
   "zones": {
    ".": 201,
@@ -257,7 +269,7 @@
    "G": 970,
    "H": 122,
    "K": 69,
-   "M": 360,
+   "M": 405,
    "R": 390,
    "S": 405,
    "T": 107,
@@ -322,6 +334,9 @@
   "r_eng": 34,
   "r_ext": 30,
   "chain_ok": true,
+  "n_components": 1,
+  "biggest_comp": 4702,
+  "contiguous": true,
   "max_dist": 29.02,
   "liftable": true,
   "zones": {
@@ -388,6 +403,9 @@
   "r_eng": 34,
   "r_ext": 30,
   "chain_ok": true,
+  "n_components": 1,
+  "biggest_comp": 4604,
+  "contiguous": true,
   "max_dist": 30.23,
   "liftable": true,
   "zones": {
@@ -483,6 +501,9 @@
   "r_eng": 34,
   "r_ext": 30,
   "chain_ok": true,
+  "n_components": 1,
+  "biggest_comp": 4607,
+  "contiguous": true,
   "max_dist": 29.83,
   "liftable": true,
   "zones": {
@@ -584,6 +605,9 @@
   "r_eng": 34,
   "r_ext": 30,
   "chain_ok": true,
+  "n_components": 1,
+  "biggest_comp": 3837,
+  "contiguous": true,
   "max_dist": 29.97,
   "liftable": true,
   "zones": {
@@ -607,77 +631,77 @@
   "missing_required": []
  },
  "9_derelict_halo": {
-  "tiles": 4186,
+  "tiles": 4228,
   "cap": 4800,
-  "headroom": 614,
-  "covered": 4186,
+  "headroom": 572,
+  "covered": 4228,
   "uncovered": 0,
   "cover_pct": 100.0,
   "placements": [
    [
     "ENGINE",
-    57,
+    53,
     53,
     34
    ],
    [
     "EXT",
-    78,
+    74,
     74,
     30
    ],
    [
     "EXT",
-    33,
-    35,
-    30
-   ],
-   [
-    "EXT",
-    79,
-    33,
-    30
-   ],
-   [
-    "EXT",
-    101,
-    15,
-    30
-   ],
-   [
-    "EXT",
-    34,
-    72,
-    30
-   ],
-   [
-    "EXT",
-    27,
-    53,
-    30
-   ],
-   [
-    "EXT",
-    64,
-    81,
-    30
-   ],
-   [
-    "EXT",
     75,
+    33,
+    30
+   ],
+   [
+    "EXT",
+    31,
+    73,
+    30
+   ],
+   [
+    "EXT",
+    98,
+    43,
+    30
+   ],
+   [
+    "EXT",
+    30,
+    34,
+    30
+   ],
+   [
+    "EXT",
+    114,
+    44,
+    30
+   ],
+   [
+    "EXT",
+    69,
     8,
     30
    ],
    [
     "EXT",
-    109,
-    28,
+    60,
+    81,
     30
    ],
    [
     "EXT",
-    3,
-    44,
+    19,
+    59,
+    30
+   ],
+   [
+    "EXT",
+    91,
+    58,
     30
    ]
   ],
@@ -686,25 +710,28 @@
   "r_eng": 34,
   "r_ext": 30,
   "chain_ok": true,
+  "n_components": 1,
+  "biggest_comp": 4228,
+  "contiguous": true,
   "max_dist": 29.83,
   "liftable": true,
   "zones": {
-   ".": 1169,
+   ".": 1328,
    "A": 149,
-   "B": 133,
-   "C": 147,
-   "D": 101,
-   "E": 149,
-   "F": 121,
-   "G": 1165,
-   "H": 186,
-   "K": 296,
-   "M": 99,
-   "R": 149,
-   "S": 99,
-   "T": 25,
-   "U": 99,
-   "W": 99
+   "B": 149,
+   "C": 149,
+   "D": 149,
+   "E": 132,
+   "F": 149,
+   "G": 1092,
+   "H": 276,
+   "K": 259,
+   "M": 63,
+   "R": 125,
+   "S": 51,
+   "T": 22,
+   "U": 77,
+   "W": 58
   },
   "missing_required": []
  }

@@ -186,12 +186,34 @@ def _disk_mask(h,w,cx,cy,r):
     yy,xx=np.mgrid[0:h,0:w]
     return (xx-cx)**2+(yy-cy)**2 <= r*r
 
+def _count_components(ship):
+    """Number of 4-connected components of the ship mask. A real gravship must
+    be ONE contiguous structure (all parts touch), so a liftable design needs
+    exactly 1. BFS flood fill over the boolean mask."""
+    h,w=ship.shape
+    seen=np.zeros_like(ship,dtype=bool)
+    comps=0; biggest=0
+    for sy in range(h):
+        for sx in range(w):
+            if ship[sy,sx] and not seen[sy,sx]:
+                comps+=1; size=0
+                stack=[(sy,sx)]; seen[sy,sx]=True
+                while stack:
+                    y,x=stack.pop(); size+=1
+                    for dy,dx in ((1,0),(-1,0),(0,1),(0,-1)):
+                        ny,nx=y+dy,x+dx
+                        if 0<=ny<h and 0<=nx<w and ship[ny,nx] and not seen[ny,nx]:
+                            seen[ny,nx]=True; stack.append((ny,nx))
+                biggest=max(biggest,size)
+    return comps,biggest
+
 def place_and_verify(canvas):
     """Greedily place engine + 6 extenders on the backbone to maximise
     coverage of ship tiles, obeying the chain rule. Returns a report dict."""
     g=canvas.g; h,w=g.shape
     ship=canvas.ship_mask()
     n_tiles=int(ship.sum())
+    n_components,biggest_comp=_count_components(ship)
     # candidate node positions = backbone tiles that are also ship tiles
     cand=[(int(x),int(y)) for y in range(h) for x in range(w)
           if canvas.bb[y,x] and ship[y,x]]
@@ -245,12 +267,16 @@ def place_and_verify(canvas):
     d=np.sqrt(((xs[:,None]-nodes[:,0][None,:])**2 +
                (ys[:,None]-nodes[:,1][None,:])**2)).min(axis=1)
     max_dist=float(d.max())
-    liftable = (n_tiles<=CAP) and (uncovered==0) and chain_ok and (n_ext_used<=N_EXT)
+    contiguous = (n_components==1)
+    liftable = (n_tiles<=CAP) and (uncovered==0) and chain_ok \
+               and (n_ext_used<=N_EXT) and contiguous
     return dict(tiles=n_tiles, cap=CAP, headroom=CAP-n_tiles,
                 covered=covered, uncovered=uncovered,
                 cover_pct=round(100*covered/max(1,n_tiles),2),
                 placements=placements, n_ext_used=n_ext_used, n_ext_max=N_EXT,
                 r_eng=R_ENG, r_ext=R_EXT, chain_ok=chain_ok,
+                n_components=n_components, biggest_comp=biggest_comp,
+                contiguous=bool(contiguous),
                 max_dist=round(max_dist,2), liftable=bool(liftable))
 
 # ---- zone tally ---------------------------------------------------------
