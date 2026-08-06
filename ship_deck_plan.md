@@ -74,11 +74,7 @@ mostly **dead**. Concretely:
   disconnected substructure displays red and isn't carried by the ship.
 - **Hull walls:** large sections **missing** — open to the desert (temperature bleed, sightlines, raid
   ingress). Sealing the hull is early-game pressure #1.
-- **Factory machines:** present as **broken scrap** in their wings. **[DECIDE A]** whether "broken" is
-  (i) *decorative rubble/filth* you clear then build fresh on the cleared floor (simplest to author), or
-  (ii) a real **damaged/deconstructable** building state that yields partial materials on repair (richer,
-  needs a damaged-variant def or a "wreck" ThingDef per machine). Recommend **(i) for v1** (author as
-  rubble + a few salvageable component stacks), keep (ii) as a stretch if we build the custom mod anyway.
+- **Factory machines:** present as **broken scrap** in their wings. **[DECIDE A — RESOLVED by user 2026-08-06: the "SACRED SCRAP" rule.]** Destroyed/derelict factory machines are **sacred scrap that cannot be touched, cleared, deconstructed, or reprocessed until they are *repaired*.** You may not salvage a broken machine for materials, nor bulldoze its rubble to build fresh on the cleared floor — the wreck is inviolate until the crew *restores* it in place. This **forecloses option (i)** (clear-and-rebuild) for the machines themselves and mandates a variant of **(ii): a real damaged/immovable building state that can only be *repaired* into function**, never demolished or harvested. [inference] cleanest implementation = a "wreck" ThingDef per machine (or a damaged state) that (a) has **no deconstruct designation** and **no clear/haul-away**, (b) is repaired-in-place by a construction/repair job consuming feedstock, and (c) yields *nothing* if merely destroyed further. This is stronger than the earlier "recommend (i)" note and **overrides it.** Design pay-off: it hard-couples "restore the ship" to "restore *these specific* machines" — you can't strip the wreck for a quick material windfall, which both reinforces the anti-exponential feedstock discipline (no free salvage bolus from your own hull) and gives the Jawa reverence a mechanical teeth. See the ideoligion precept in `jawa_xenotype_and_religion.md` Part 4 and the "sacred relic" framing in `context.md` §D.
 - **Grav engine:** intact but the ship is **grounded** — not enough connected substructure to lift.
   First strategic goal = reconnect enough deck to fly. Natural, diegetic tutorial.
 
@@ -170,9 +166,13 @@ Restoration order — each step is a **physical repair** (re-plate floor, seal w
 machines) gated by salvage feedstock / components / quests, *layered on top of* the research tiers
 (VFE_BasicFactories → VFE_ComplexFactories) rather than replacing them.
 
+> **⚠️ PROGRESSION SOURCE = QUESTS + TRADE, not research (user ruling 2026-08-06; full detail in `required_mods.md` PARKED thread 1).** The Jawa start at a low salvage-tech baseline; the jump to ship/factory capability is closed *primarily by acquiring capability from the world* — quest-earned techprints/data cores, traded blueprints/components, salvaged working parts — **not by grinding the bench.** So read every "research" gate in the table below as **quest/trade-unlocked**: keep the VFE tiers as gates, but gate their *start* behind an earned techprint/data core (Configurable Techprints or the custom XML mod). Recommend a thin research path (repair/smelting only) + quest/trade for everything advanced.
+
 | Phase | Repair unlocked | What lights up | Gate (diegetic) | Pillar effect |
 |---|---|---|---|---|
 | **0. Crash** | Keel + 1 small wing (green substructure), grav engine | Power, 1 starting BASIC line (**[DECIDE D]**: oven *or* smelter, per required_mods "one line" rule) | — (start state) | Dependence without economy |
+
+> **💡 The grav-controller = a persona core = LifeDawn's awakening (design idea, context.md §D).** The inciting "leader restored the central Grav controller into the old GravEngine" beat can *be* the reactivation of a vanilla **persona core** (the dormant superhuman AI already required to leave the planet). Restoring it wakes the ship's personality; voice it with a **CQF DialogTree** on a talkable ship-core building (offline, authored). Keep it a single earned/quested core (pillar-clean); craftable-core mods (Nanogel Persona Core WS 3550797935 etc.) are a later pick pending 1.6 verify. Full reasoning + mod list in context.md §D.
 | **1. Survive** | Seal habitat ring; connect enough deck to consider flight | Living quarters, freezer, defense against hole-ingress | Steel + gravlite panels (substructure = 1 gravlite + 4 steel/tile) | First scarcity wall |
 | **2. Salvage loop** | Wing B (smelter first) | Salvage → metal; the engine of everything | VFE_BasicFactories research + rebuild scrap | Bounded: feedstock = what you scavenge |
 | **3. Provision** | Wing A + rest of C | Food security (farm/fish → oven/cannery) | Refrigerated routing built; Odyssey fishfarm | Food stays pressured (desert) |
