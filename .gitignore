@@ -14,6 +14,10 @@ mod_sources/
 *~
 Thumbs.db
 
+# Python bytecode
+__pycache__/
+*.pyc
+
 # Generated report artifacts (reproducible via the Utils/ tools)
 *_preview.png
 *_legend.json

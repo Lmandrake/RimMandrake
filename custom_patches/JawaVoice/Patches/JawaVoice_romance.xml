@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Patch>
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/InteractionDef[defName="RomanceSuccess"]/logRulesInitiator/rulesStrings</xpath>
+    <match Class="PatchOperationAdd">
+      <xpath>/Defs/InteractionDef[defName="RomanceSuccess"]/logRulesInitiator/rulesStrings</xpath>
+      <value>
+          <li>r_logentry(INITIATOR_faction==PlayerColony,priority=9)->Neboh neboh so so nyeeb noo weetoo. (Oh! I'm so in love with you, friend — let's be together!)</li>
+          <li>r_logentry(INITIATOR_faction==PlayerTribe,priority=9)->Neboh neboh so so nyeeb noo weetoo. (Oh! I'm so in love with you, friend — let's be together!)</li>
+          <li>r_logentry(INITIATOR_kind==OuterRim_Jawa,priority=9)->Neboh neboh so so nyeeb noo weetoo. (Oh! I'm so in love with you, friend — let's be together!)</li>
+          <li>r_logentry(INITIATOR_kind==OuterRim_JawaTribal,priority=9)->Neboh neboh so so nyeeb noo weetoo. (Oh! I'm so in love with you, friend — let's be together!)</li>
+      </value>
+    </match>
+  </Operation>
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/InteractionDef[defName="RomanceFail"]/logRulesInitiator/rulesStrings</xpath>
+    <match Class="PatchOperationAdd">
+      <xpath>/Defs/InteractionDef[defName="RomanceFail"]/logRulesInitiator/rulesStrings</xpath>
+      <value>
+          <li>r_logentry(INITIATOR_faction==PlayerColony,priority=9)->B'aanyeh hat! (Er, thank you, friend...)</li>
+          <li>r_logentry(INITIATOR_faction==PlayerTribe,priority=9)->B'aanyeh hat! (Er, thank you, friend...)</li>
+          <li>r_logentry(INITIATOR_kind==OuterRim_Jawa,priority=9)->B'aanyeh hat! (Er, thank you, friend...)</li>
+          <li>r_logentry(INITIATOR_kind==OuterRim_JawaTribal,priority=9)->B'aanyeh hat! (Er, thank you, friend...)</li>
+          <li>r_logentry(INITIATOR_faction==PlayerColony,priority=9)->Ni kob bo! (Uh, friend... thanks...)</li>
+          <li>r_logentry(INITIATOR_faction==PlayerTribe,priority=9)->Ni kob bo! (Uh, friend... thanks...)</li>
+          <li>r_logentry(INITIATOR_kind==OuterRim_Jawa,priority=9)->Ni kob bo! (Uh, friend... thanks...)</li>
+          <li>r_logentry(INITIATOR_kind==OuterRim_JawaTribal,priority=9)->Ni kob bo! (Uh, friend... thanks...)</li>
+          <li>r_logentry(INITIATOR_faction==PlayerColony,priority=9)->Leehmoob katsoon ge bahzo. (Oh, friend... I don't know what to say...)</li>
+          <li>r_logentry(INITIATOR_faction==PlayerTribe,priority=9)->Leehmoob katsoon ge bahzo. (Oh, friend... I don't know what to say...)</li>
+          <li>r_logentry(INITIATOR_kind==OuterRim_Jawa,priority=9)->Leehmoob katsoon ge bahzo. (Oh, friend... I don't know what to say...)</li>
+          <li>r_logentry(INITIATOR_kind==OuterRim_JawaTribal,priority=9)->Leehmoob katsoon ge bahzo. (Oh, friend... I don't know what to say...)</li>
+      </value>
+    </match>
+  </Operation>
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/InteractionDef[defName="ProposalSuccess"]/logRulesInitiator/rulesStrings</xpath>
+    <match Class="PatchOperationAdd">
+      <xpath>/Defs/InteractionDef[defName="ProposalSuccess"]/logRulesInitiator/rulesStrings</xpath>
+      <value>
+          <li>r_logentry(INITIATOR_faction==PlayerColony,priority=9)->Zo tub... (Oh! I thought you'd never ask, friend — yes, I will!)</li>
+          <li>r_logentry(INITIATOR_faction==PlayerTribe,priority=9)->Zo tub... (Oh! I thought you'd never ask, friend — yes, I will!)</li>
+          <li>r_logentry(INITIATOR_kind==OuterRim_Jawa,priority=9)->Zo tub... (Oh! I thought you'd never ask, friend — yes, I will!)</li>
+          <li>r_logentry(INITIATOR_kind==OuterRim_JawaTribal,priority=9)->Zo tub... (Oh! I thought you'd never ask, friend — yes, I will!)</li>
+          <li>r_logentry(INITIATOR_faction==PlayerColony,priority=9)->Beennun z'it wobmih... (Yes, friend — I will!)</li>
+          <li>r_logentry(INITIATOR_faction==PlayerTribe,priority=9)->Beennun z'it wobmih... (Yes, friend — I will!)</li>
+          <li>r_logentry(INITIATOR_kind==OuterRim_Jawa,priority=9)->Beennun z'it wobmih... (Yes, friend — I will!)</li>
+          <li>r_logentry(INITIATOR_kind==OuterRim_JawaTribal,priority=9)->Beennun z'it wobmih... (Yes, friend — I will!)</li>
+      </value>
+    </match>
+  </Operation>
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/InteractionDef[defName="ProposalFail"]/logRulesInitiator/rulesStrings</xpath>
+    <match Class="PatchOperationAdd">
+      <xpath>/Defs/InteractionDef[defName="ProposalFail"]/logRulesInitiator/rulesStrings</xpath>
+      <value>
+          <li>r_logentry(INITIATOR_faction==PlayerColony,priority=9)->Nootwu zi huwah huwau? (Oh, friend... I'm sorry... I'm not ready for this... I need more time to think about it...)</li>
+          <li>r_logentry(INITIATOR_faction==PlayerTribe,priority=9)->Nootwu zi huwah huwau? (Oh, friend... I'm sorry... I'm not ready for this... I need more time to think about it...)</li>
+          <li>r_logentry(INITIATOR_kind==OuterRim_Jawa,priority=9)->Nootwu zi huwah huwau? (Oh, friend... I'm sorry... I'm not ready for this... I need more time to think about it...)</li>
+          <li>r_logentry(INITIATOR_kind==OuterRim_JawaTribal,priority=9)->Nootwu zi huwah huwau? (Oh, friend... I'm sorry... I'm not ready for this... I need more time to think about it...)</li>
+      </value>
+    </match>
+  </Operation>
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/InteractionDef[defName="ProposalBreakup"]/logRulesInitiator/rulesStrings</xpath>
+    <match Class="PatchOperationAdd">
+      <xpath>/Defs/InteractionDef[defName="ProposalBreakup"]/logRulesInitiator/rulesStrings</xpath>
+      <value>
+          <li>r_logentry(INITIATOR_faction==PlayerColony,priority=9)->Z'oobwo t'osuh! (Wow, friend... I wasn't expecting this — too much pressure......)</li>
+          <li>r_logentry(INITIATOR_faction==PlayerTribe,priority=9)->Z'oobwo t'osuh! (Wow, friend... I wasn't expecting this — too much pressure......)</li>
+          <li>r_logentry(INITIATOR_kind==OuterRim_Jawa,priority=9)->Z'oobwo t'osuh! (Wow, friend... I wasn't expecting this — too much pressure......)</li>
+          <li>r_logentry(INITIATOR_kind==OuterRim_JawaTribal,priority=9)->Z'oobwo t'osuh! (Wow, friend... I wasn't expecting this — too much pressure......)</li>
+      </value>
+    </match>
+  </Operation>
+</Patch>

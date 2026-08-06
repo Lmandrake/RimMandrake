@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Patch>
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/InteractionDef[defName="Animal_Reaction"]/logRulesInitiator/rulesStrings</xpath>
+    <match Class="PatchOperationAdd">
+      <xpath>/Defs/InteractionDef[defName="Animal_Reaction"]/logRulesInitiator/rulesStrings</xpath>
+      <value>
+          <li>r_logentry(INITIATOR_faction==PlayerColony,priority=9)->Moh tamah tot! (*stares at friend*)</li>
+          <li>r_logentry(INITIATOR_faction==PlayerTribe,priority=9)->Moh tamah tot! (*stares at friend*)</li>
+          <li>r_logentry(INITIATOR_kind==OuterRim_Jawa,priority=9)->Moh tamah tot! (*stares at friend*)</li>
+          <li>r_logentry(INITIATOR_kind==OuterRim_JawaTribal,priority=9)->Moh tamah tot! (*stares at friend*)</li>
+      </value>
+    </match>
+  </Operation>
+</Patch>
