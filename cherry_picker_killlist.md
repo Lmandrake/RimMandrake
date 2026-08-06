@@ -48,6 +48,7 @@ Two tools overlap; use the right one so you don't fight yourself:
 - 🔎 **Impid → desert alien** (fast, heat-loving, fire-spitting — Tatooine-style desert world fit).
 
 **DECIDED — Cherry-Pick OUT (delete these vanilla/mod xenotypes):**
+- ✅ **Force Gremlin** — FORBID (user, 2026-08-06). Delete both confirmed Galactic-Diversity xenotypes: **`OuterRim_ForceGremlin`** + **`OuterRim_ForceGremlinTribal`** ([SRC-AUDITED] in `Xenotype_ForceGremlin.xml`). Reason: a Force-touched gremlin race muddies the finalized NPC-only Force gate (dark→Empire Sith-races, light→rare Moisture-Farmer Jedi, none for anyone else). Removing it keeps the Force strictly a faction-restricted signature, not an ambient xenotype anyone can roll. **Caution:** delete at the xenotype level; the mod patches it into pawnkinds via `PawnKindPatches.xml`, so also confirm no kept pawnkind hard-refs it (read `Player.log` on a throwaway world).
 - 🔎 **Dirtmole** — cut (miner flavor not wanted in the kept set).
 - 🔎 **Highmate** — cut (consort caste; user did not keep it).
 - 🔎 **Waster** — cut (toxic/pollution flavor reads Fallout, weakest SW fit).
