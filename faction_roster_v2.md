@@ -1320,6 +1320,8 @@ Captives are held for the arena rather than imprisoned, which reinforces aristoc
 
 A small, wealthy, technically advanced faction built on genetics, medicine, implants, growth vats, and engineered security organisms — sustained by an underclass it created itself. Neutral rather than friendly: profitable to trade with, dangerous to antagonise, difficult to raid.
 
+**The Consortium owns the planet's monsters.** The freakish spliced creatures from Vanilla Genetics Expanded (the ~120 `GR_` hybrids kept as bestiary content — Thrumbo-crosses, the `GR_Paragon` apex line, `GR_FleshMonstrosity`, boom/canine/feline/muffalo chimeras, etc.) are **its escaped and abandoned experiments**, and the ruined `GR_AbandonedLab` / `GR_BiomechanicalLab` sites scattered around the world are **its derelict facilities** — earlier splicing stations that were overrun by their own stock or written off. This is the diegetic origin for content that otherwise arrives ownerless: the hybrids are not random wildlife, they are the Consortium's mistakes still roaming, and the lab ruins are where you go to loot what it left behind. It reinforces the faction's core irony — a power that despises and cannot fully control its own creations. See `required_mods.md` (VGE Cherry-Pick, ~line 339) and `forbidden_mods.md` (the `GR_HybridRaid` / lab-site spawn paths) for the mechanical hooks.
+
 ## Water doctrine — **Allow (high consumption)**
 
 Closed-loop recyclers make the Consortium siting-indifferent, but growth vats and biosculpters are industrially water-hungry. It therefore **buys bulk water from the Aquifer League** — a supply relationship the player can broker, tax, or sever.
