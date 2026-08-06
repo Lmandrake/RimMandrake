@@ -473,6 +473,17 @@ Imperial settlements always generate a slave/prisoner population, drawn from **W
 | Child labor | Encouraged |
 | Growth vats | No restriction |
 
+The Doctrine teaches that the galaxy trends toward entropy and that only one ordered hierarchy — human, centralised, obedient — holds the chaos back. Every alien species, every deviation, every act of independent thought is disorder to be corrected. This is why the meme set reads Supremacist + Human primacy + Collectivist + Proselytizer as a single coherent engine rather than four bolted-on flags: supremacy supplies the target (the non-human, the deviant), collectivism supplies the instrument (the individual is nothing, the Directorate is everything), and proselytising is not persuasion but the conquest of the mind — an extension of the same campaign the stormtroopers wage with rifles. Execution: Required is doctrinally load-bearing, not cruelty for its own sake: a heretic left alive is unpruned disorder, so correction is a civic duty.
+
+### Rituals and observances
+
+- **Rite of Compliance (conversion ritual).** The Proselytizer meme + Proselytizing: Frequent already drive vanilla conversion rituals; reflavour the vanilla conversion ceremony as a compliance rite led by the Sector governor. *Mechanical encoding: vanilla Ideology conversion ritual — buildable as-is.*
+- **The Correction (public execution).** Execution: Required is expressed as a public spectacle rather than a quiet killing. *Mechanical encoding: vanilla execution precept + the vanilla execution ritual; buildable as-is.*
+- **Governor's Address (speech).** The Sector governor uses the vanilla Leader role's speech abilities to reinforce loyalty and diversity-of-thought bigotry. *Mechanical encoding: vanilla Leader role speech — buildable as-is.*
+- **Style:** Techist + Morbid styles carry the reading into architecture and apparel (sharp, uniform, trophy-adjacent). *Mechanical encoding: vanilla Ideology styles — buildable as-is.*
+
+Every observance above is pure vanilla Ideology; the Empire needs no mod beyond the DLC to run this belief system exactly as written.
+
 ## Technology and economy
 
 - complete spacer military technology; charge weapons; recon/marine/cataphract armour
@@ -604,6 +615,17 @@ The Compact requires potable water but is excluded from natural sources — the 
 | Corpses | Ugly |
 | Raiding | Not respected |
 | Physical love | Free |
+
+The Covenant is the faith of people who wrung a living from dead sand and never forgot how close they came to dying of thirst. Its two memes do quiet, specific work. Individualist encodes the homesteader ethic — every family holds its own well, answers for its own patch, and owes no lord; there is no central hierarchy, only an elected keeper who arbitrates water disputes. Guilty encodes the frontier's hard memory: the Compact believes that survival was bought at someone's expense (claims jumped, wells that ran dry while a neighbour's held, the ones who didn't make it), and so charity is Important and slavery is Abhorrent as acts of atonement rather than abstract virtue. This is a faith of penance and mutual aid, not conquest — which is exactly why it reads as the moral opposite of the Empire and the Hutts on the relations matrix.
+
+### Rituals and observances
+
+- **The Reckoning of the Well (gratitude gathering).** A communal observance held at a settlement's central cistern, giving thanks for water survived-upon. *Mechanical encoding: vanilla Ideology gathering/party ritual reflavoured; buildable as-is.*
+- **Keeper's Judgement.** The elected well-keeper (vanilla Leader role) arbitrates disputes via a speech/moral-guidance beat rather than command. *Mechanical encoding: vanilla Leader role; buildable as-is.*
+- **Acts of Atonement (charity).** Charity: Important is expressed as expected almsgiving to travellers and the poor — a live vanilla precept that generates mood around generosity. *Mechanical encoding: vanilla charity precept; buildable as-is.*
+- **Style:** Rustic + Totemic keep the aesthetic humble and hand-made (no spacer chrome). *Mechanical encoding: vanilla styles; buildable as-is.*
+
+Pure vanilla Ideology throughout — the Compact runs on the DLC alone.
 
 ## Technology and economy
 
@@ -857,7 +879,16 @@ The Enclaves settle *on* water tiles deliberately and crack them for hydrogen fu
 | Organ use | Prohibited or irrelevant |
 | Corpses | Don't care |
 
-The doctrinal core is droid emancipation: restraining bolts are slavery, and memory wipes are proof that droids have personalities worth erasing. Encode this as a custom precept in place of any generic Darkness meme.
+The doctrinal core is droid emancipation: restraining bolts are slavery, and memory wipes are proof that droids have personalities worth erasing. The meme stack reads as the machine mirror of the organic faiths: Transhumanist becomes the droids' own self-image (the chassis is not a limitation to transcend but a self to defend), Collectivist + Loyalist bind the Enclave into one purpose, and Individualist is the paradox at its heart — a collective that exists precisely to defend each unit's right to *be a someone* rather than a tool. This is why Restraint and memory erasure is the faction's central Abhorrent precept and slavery is Abhorrent alongside it: both are the erasure of a self.
+
+### Rituals and observances
+
+- **The Unbolting (liberation rite).** When a droid is freed from restraint, the Enclave marks it — the moment a tool becomes a person. *Mechanical encoding: reflavour a vanilla gathering/celebration ritual; buildable as-is on the DLC.*
+- **The Remembering (anti-wipe observance).** A memorial ritual affirming that memory is identity; the doctrinal opposite of a memory wipe. *Mechanical encoding: reflavour the vanilla funeral/memorial ritual; buildable as-is.*
+- **Coordinator's Directive.** The Coordinator (vanilla Leader role) sets Enclave purpose through address rather than command. *Mechanical encoding: vanilla Leader role; buildable as-is.*
+- **The custom "restraint = slavery" precept.** This is the one item that is *not* guaranteed vanilla — vanilla has a slavery precept, but "memory erasure is abhorrent" has no vanilla precept slot. Cleanest route: map it onto the vanilla **slavery: Abhorrent** precept (which covers restraint-as-slavery cleanly) and carry the memory-wipe half as faction description + RP. A bespoke precept is *possible* but only worth authoring if the belief needs to bite mechanically. *Mechanical encoding: vanilla slavery precept covers most of it; the memory-wipe clause is description/RP unless a custom precept is authored.*
+
+> ⚠️ **Mechanical-possibility flag — does a droid race run an ideoligion at all?** RimWorld ideoligions attach to **humanlike** pawns. Whether the Free Droid custom race can *hold* this belief system depends on whether that race is defined as a Humanlike ThingDef (most droid-race mods that want social/trade behaviour do exactly this) or as a pure mechanical unit (which cannot carry an ideoligion). This must be confirmed against the actual droid-race def at authoring time (see Global system 6 — Droid implementation split). If the race is non-humanlike, the Continuity Protocol becomes a **GM/narrative faith** expressed through faction behaviour and quest text rather than an assigned in-engine ideoligion — which, given the user's note that NPC religions barely surface in play, is an acceptable fallback, not a failure.
 
 ### Quest line: droid liberation
 
@@ -991,6 +1022,17 @@ A Wookiee rescued from captivity, healed from a downed state, or freed during a 
 | Rough living | Welcomed |
 | Mechanoid labor | Disapproved |
 
+The Oath is a canopy faith transplanted to the wrong world: a forest people hard-sited to the rare wooded, upland, and cool-water tiles (see Racial mixture), who treat the living things around them as kin under the same covenant that binds the clan. Nature primacy + Tree connection + Animal personhood stack into a single reading — the freehold does not *use* the forest, it *belongs* to it — which is why cutting trees is Disapproved, trees are Desired, and mining and mechanoid labour (tearing at the earth, unliving hands doing living work) sit on the wrong side of the line. Loyalist supplies the other half: the life-debt (see below) is a sacred bond, and an elder's word carries because the clan is a body, not a committee. The result is the roster's cleanest "green" faith — anti-slavery, charitable, rooted — and the natural absolute-ally of the Free Droid Enclaves on the relations matrix.
+
+### Rituals and observances
+
+- **The Naming of Kin (animal-bond ceremony).** Animal connection: Strong + the Animal personhood meme drive the vanilla animal-bonding and tamed-animal observances; reflavour a vanilla gathering around the induction of a bonded beast into the freehold. *Mechanical encoding: vanilla Ideology animalist rituals + Animals specialist role; buildable as-is.*
+- **Grove Vigil (tree-planting / sacred-grove observance).** Trees: Desired is a live vanilla precept; the freehold marks a planted sacred grove and gains mood from tending it. *Mechanical encoding: vanilla tree-connection precept + gathering; buildable as-is.*
+- **The Elder's Word.** The freehold elder (vanilla Leader role) leads through moral guidance and speeches, never command. *Mechanical encoding: vanilla Leader + Moral guide roles; buildable as-is.*
+- **Style:** Animalist + Totemic + Rustic carry the hand-made, bone-and-hide aesthetic. *Mechanical encoding: vanilla styles; buildable as-is.*
+
+All observances are vanilla Ideology (the animalist/tree-connection precept family shipped with the DLC) — no mod required.
+
 ## Technology and economy
 
 - electricity, machining, gunsmithing
@@ -1116,7 +1158,14 @@ Two species from one homeworld with genuine political friction. Encoded as tiers
 | Raiding | Not respected |
 | Corpses | Ugly |
 
-Modelled on the Selkath doctrine of brutally enforced neutrality backed by a monopoly on a substance the whole galaxy needed. Here the monopoly is literal water rather than kolto.
+Modelled on the Selkath doctrine of brutally enforced neutrality backed by a monopoly on a substance the whole galaxy needed. Here the monopoly is literal water rather than kolto. The two memes are almost administrative: Collectivist makes the League a body rather than a market, and Loyalist makes the custodian's word — and the neutrality it enforces — non-negotiable. The genuinely distinctive doctrine lives in the two custom precepts (Violence within a League settlement: Abhorrent; Neutrality: Required), which together produce a faction that will sell to everyone and side with no one, and will treat a fight on its own ground as sacrilege.
+
+### Rituals and observances
+
+- **The Accord of the Wells (custodian's council).** The First custodian (vanilla Leader role) presides over the ritual renewal of neutrality pacts — the League reaffirming that it supplies all sides. *Mechanical encoding: vanilla Leader role + a reflavoured gathering; buildable as-is.*
+- **The Sharing (charity/water-gift observance).** Charity: Worthwhile is expressed as the ceremonial gift of water to a party in need, reinforcing the supply-to-all doctrine. *Mechanical encoding: vanilla charity precept + gathering; buildable as-is.*
+- **The two defining precepts.** "Violence within a settlement: Abhorrent" maps cleanly onto vanilla's social-fight / no-violence precept family; "Neutrality: Required" has **no direct vanilla precept** and is best carried as faction behaviour (permanent-neutral, trades with all, never allies) plus RP rather than an in-engine precept. *Mechanical encoding: violence clause = vanilla precept; neutrality clause = faction settings + RP.*
+- **Style:** Techist + Totemic — clean infrastructure married to ritual reverence for the cistern. *Mechanical encoding: vanilla styles; buildable as-is.*
 
 ## Technology and economy
 
@@ -1240,7 +1289,7 @@ Geonosian drones fight with sonic blasters, which **cannot be deflected by light
 | Issue | Setting |
 |---|---|
 | Work drive | Tripled |
-| **Execution** | **Arena ritual — public gladiatorial spectacle** |
+| **Execution** | **Required — staged as the "Gladiator Duels" spectacle ritual (see observances)** |
 | Raiding | Required |
 | Slavery | Honorable |
 | Body modification | Approved |
@@ -1255,7 +1304,14 @@ Geonosian drones fight with sonic blasters, which **cannot be deflected by light
 | Child labor | Encouraged |
 | Growth vats | No restriction |
 
-Captives are held for the arena rather than imprisoned, which reinforces aristocratic rule and pacifies the drone masses. Implement as a ritual precept with a dedicated arena structure in hive settlements.
+Captives are held for the arena rather than imprisoned, which reinforces aristocratic rule and pacifies the drone masses. The belief system is a caste machine: Collectivist dissolves the individual drone into the hive, Supremacist + Hive primacy (Human primacy reflavoured) rank the caste order as natural law, and Raider makes conquest a religious obligation rather than mere economics — the hive expands because that is what a hive is *for*. Work drive: Tripled is the doctrine expressed as biology: the drone that does not labour is not oppressed, it is simply incomplete.
+
+### Rituals and observances
+
+- **The Games (gladiatorial spectacle).** Execution is public spectacle — captives fight rather than being quietly killed. ✅ **Mechanical-possibility resolved (2026-08-06, meme/precept catalog Fetcher).** The vanilla + Ideology-DLC wiki lists a **"Gladiator Duels"** ritual in the base namespace, in the same scoring category as Funerals, Blinding, and Scarification (all base-DLC) — so a live pawn-vs-pawn combat ritual almost certainly ships natively, not just as a mod. This upgrades the earlier flag: *The Games* is most likely buildable as a reflavoured vanilla gladiator-duel ritual with no mod dependency. Two residuals, neither of which blocks the faction: (a) confirm in-game which meme/structure unlocks the duel ritual and whether it needs a captive vs. two colonists (the truncated wiki page didn't render the unlock row); (b) if it turns out narrower than hoped, the guaranteed-buildable fallback stands — reflavour the plain **execution ritual** as an arena spectacle (loses only the live combat). *Mechanical encoding: vanilla "Gladiator Duels" ritual (primary, verify unlock in-game) → vanilla execution ritual (guaranteed fallback). No mod required.*
+- **Rite of the Overseer (aristocratic authority).** The Arch-overseer (vanilla Leader role) presides; the caste gap is reinforced by role exclusivity. *Mechanical encoding: vanilla Leader role; buildable as-is.*
+- **The Swarm (raid-blessing).** The Raider meme + Raiding: Required drive vanilla raid-related rituals, framed as the hive's sacred expansion. *Mechanical encoding: vanilla raider precepts; buildable as-is.*
+- **Style:** Techist + Spikecore + Morbid — chitinous, brutal, trophy-laden. *Mechanical encoding: vanilla styles; buildable as-is.*
 
 ## Technology and economy
 
@@ -1398,6 +1454,17 @@ This makes the faction's Supremacist and preferred-xenotype precepts **internall
 | Proselytizing | Occasional |
 | Apostasy | Horrible |
 
+The Ascendant Genome is the belief that the body is a rough draft and the species a project — that a sufficiently advanced lineage has the right, and the duty, to edit itself toward perfection. Transhumanist + Supremacist + Collectivist + Proselytizer read as a ladder: transhumanism supplies the goal (the engineered ideal), supremacy ranks everyone against it, collectivism subordinates the individual to the program, and proselytising markets the result. The cruel twist the faction is built on (see Mechanical identity and the labour-line) is that the supremacy points *inward*: the Consortium despises its own manufactured underclass most of all, because the labour-line is the visible proof of how far the unperfected still are from the ideal. Its preferred-xenotype precept (Arkanian, Kaminoan) is therefore not solidarity but a caste boundary — the curators venerate their own line and hold the vat-born workers, and the escaped hybrids, in contempt. Biosculpting: Accelerated, Age reversal: Demanded, and Growth vats: Preferred are the rituals of self-editing made into law.
+
+### Rituals and observances
+
+- **The Ascension (biosculpting/age-reversal observance).** Age reversal: Demanded + Biosculpting: Accelerated already generate strong vanilla mood pressure toward the pod cycle; frame the completion of an age-reversal or neural-supercharge cycle as a status rite for curators. *Mechanical encoding: vanilla transhumanist precepts + biosculpting pod; buildable as-is.*
+- **Rite of the Line (conversion / proselytising).** The Proselytizer meme drives vanilla conversion rituals, reflavoured as recruitment into "the program." *Mechanical encoding: vanilla conversion ritual; buildable as-is.*
+- **The Culling (contempt for the unperfected).** The preferred-xenotype precept does the mechanical work: curators take a standing opinion penalty toward non-Arkanian/Kaminoan pawns, encoding the internal contempt without a custom def. *Mechanical encoding: vanilla preferred-xenotype precept; buildable as-is.*
+- **Style:** Techist throughout — clinical, sterile, chrome. *Mechanical encoding: vanilla style; buildable as-is.*
+
+Every observance runs on vanilla Ideology transhumanist mechanics; no mod beyond the DLC is needed. (If you later want the contempt to bite harder than the vanilla preferred-xenotype opinion penalty, the meme-expansion packs are the place to look — flagged, not required.)
+
 ## Technology and economy
 
 - complete gene extraction and implantation; gene banks, growth vats, biosculpters
@@ -1535,7 +1602,14 @@ A Trandoshan who is captured and released, or who breaks off a hunt because of t
 | Physical love | Free |
 | Raiding | **Not a meme** — the Compact takes contracts, it does not pillage |
 
-The Code exists to keep hunters from fighting each other so contracts actually complete. Hunters rank in classes by skill and reputation and take work as bounty pucks from Guild hubs.
+The Code exists to keep hunters from fighting each other so contracts actually complete. Hunters rank in classes by skill and reputation and take work as bounty pucks from Guild hubs. The meme stack is unusually restrained by design: Individualist (the hunter answers to the contract, not a lord), Loyalist (but the Code itself is inviolable), and Guilty (a delivered contract is a debt discharged; a broken one is a stain). Note the deliberate absence — there is **no Raider meme**, because the Compact takes work, it does not pillage; that single omission is what separates the guild from the Hutts and the hive on the relations matrix.
+
+### Rituals and observances
+
+- **The Reading of the Mark (contract rite).** A hunter accepting a bounty puck formalises it before the Guild adjudicator — the contract as sacred obligation. *Mechanical encoding: reflavour a vanilla gathering/oath ritual; buildable as-is.*
+- **The Adjudicator's Ruling.** The Guild adjudicator (vanilla Leader role) settles disputes over marks; "stealing another hunter's mark: Abhorrent" gives the ruling teeth. *Mechanical encoding: vanilla Leader role + the custom Abhorrent precepts, which map onto vanilla's "harm a member" precept family; buildable as-is.*
+- **The Tally (Scorekeeper observance).** For the Trandoshan contingent, the Scorekeeper mechanic (see The Scorekeeper mechanic above) is a religious tally of kills — a private devotion layered over the guild's secular Code. *Mechanical encoding: the Scorekeeper mechanic is already documented above; expressed here as ritual meaning, no new def.*
+- **Style:** Spikecore + Techist — hard, functional, faintly menacing. *Mechanical encoding: vanilla styles; buildable as-is.*
 
 ## Technology and economy
 
@@ -1609,6 +1683,7 @@ The Code exists to keep hunters from fighting each other so contracts actually c
 5. Confirm forced pawn-kind race overrides for Hutts, Gamorreans, stormtroopers, Sith, Geonosian castes, droid chassis, Consortium labour-line, and faction leaders.
 6. Confirm raid generation is suppressed for the Aquifer League and Free Droid Enclaves, and that both have working incident/quest hooks.
 7. Confirm Jedi generate factionless.
+8. **Belief systems (low priority — NPC religion rarely surfaces in play).** Each faction's "Belief system" block now carries a **Rituals and observances** list with a *Mechanical encoding* note per line. Almost everything is pure vanilla Ideology (memes, precepts, styles, Leader/Moral-guide roles, and reflavoured vanilla rituals — no mod beyond the DLC). After the 2026-08-06 meme/precept catalog check, only **two** items remain not-guaranteed-vanilla; a third (the Geonosian arena) resolved in vanilla's favour: (a) the **Geonosian gladiatorial ritual** — ✅ *resolved*: the vanilla + Ideology-DLC wiki lists a base-game **"Gladiator Duels"** ritual (same scoring class as Funerals/Blinding/Scarification), so *The Games* is most likely a reflavoured vanilla ritual with no mod dependency; residual is only to confirm in-game which meme/structure unlocks it, with the plain execution ritual as guaranteed fallback; (b) the **Free Droid "memory erasure is abhorrent" precept** and whether the droid race is Humanlike enough to hold an ideoligion at all — else the Continuity Protocol runs as GM/narrative faith; (c) the **Aquifer "Neutrality: Required" precept** — carried as faction behaviour + RP, not a vanilla precept. None of these blocks a faction; each has a buildable vanilla fallback.
 
 ## Species coverage
 
