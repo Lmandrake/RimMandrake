@@ -40,6 +40,27 @@ A full ship — factory ~650 + living ~650 + systems ~250 + carbonite ~60, +15% 
 > light up costs tiles you can't get back. Choices to leave a wing derelict become permanent trade-offs,
 > which is exactly the "decide what to leave behind" pillar.
 
+**Two constraints, not one — the tile budget is necessary but NOT sufficient.** Substructure connects
+only if it lies within a connection *radius*: the grav engine reaches **19 tiles**, each of up to 6
+field extenders reaches **16 tiles**, and every extender must itself sit inside the already-connected
+field (a chain rule). So a design can pass the 2,000-tile capacity check and still fail to fly because
+distant tiles are out of radius. **Verified geometrically (2026-08-06, `player_maps/verify_coverage.py`
++ `geom_check.py`):** with the engine mounted mid-keel and all 6 extenders chained along the spine, the
+1,732-tile layout is **100% covered (0 tiles out of radius)**, chain rule satisfied, and the farthest
+tile is **15.81 tiles** from its nearest node — just inside the 16-tile extender limit. Consequences
+baked back into the design:
+
+- **The keel MUST carry the engine + all extenders**, and they must be spaced ≤ ~32 tiles apart along
+  the spine (two radius-16 disks) so their fields overlap and chain. This is *why* the keel is repaired
+  first — it's not just utility routing, it's the literal connection backbone.
+- **No wing may extend more than ~15 tiles laterally from the keel centerline.** Beyond that, its outer
+  tiles fall outside any spine-mounted extender's radius and would show red / won't lift. The current
+  wings top out at 15 tiles — they are at the geometric limit, so widening a wing means *moving an
+  extender off the keel into that wing*, which then can't reach the opposite side. Wings grow by adding
+  *length* along the hull, never width past the radius.
+- **The scale drawing** (`ship_deck_plan_scale_map.png`) renders this: engine (yellow G) + 6 extenders
+  (blue) on the keel with their radius-19/16 coverage disks shown as the pale halo enclosing every tile.
+
 ---
 
 ## 1. The hull at t=0 (starting state)
