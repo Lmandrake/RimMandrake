@@ -1,0 +1,507 @@
+{
+ "1_spinal_freighter": {
+  "tiles": 4499,
+  "cap": 4800,
+  "headroom": 301,
+  "covered": 4499,
+  "uncovered": 0,
+  "cover_pct": 100.0,
+  "placements": [
+   [
+    "ENGINE",
+    16,
+    125,
+    34
+   ],
+   [
+    "EXT",
+    16,
+    91,
+    30
+   ],
+   [
+    "EXT",
+    16,
+    61,
+    30
+   ],
+   [
+    "EXT",
+    16,
+    31,
+    30
+   ],
+   [
+    "EXT",
+    16,
+    134,
+    30
+   ],
+   [
+    "EXT",
+    16,
+    11,
+    30
+   ]
+  ],
+  "n_ext_used": 5,
+  "n_ext_max": 12,
+  "r_eng": 34,
+  "r_ext": 30,
+  "chain_ok": true,
+  "max_dist": 29.61,
+  "liftable": true,
+  "zones": {
+   "A": 234,
+   "B": 234,
+   "C": 234,
+   "D": 234,
+   "E": 234,
+   "F": 234,
+   "G": 702,
+   "H": 234,
+   "K": 695,
+   "M": 250,
+   "R": 468,
+   "S": 200,
+   "T": 78,
+   "U": 234,
+   "W": 234
+  },
+  "missing_required": []
+ },
+ "2_nebulon_b": {
+  "tiles": 3741,
+  "cap": 4800,
+  "headroom": 1059,
+  "covered": 3741,
+  "uncovered": 0,
+  "cover_pct": 100.0,
+  "placements": [
+   [
+    "ENGINE",
+    19,
+    110,
+    34
+   ],
+   [
+    "EXT",
+    19,
+    76,
+    30
+   ],
+   [
+    "EXT",
+    19,
+    46,
+    30
+   ],
+   [
+    "EXT",
+    19,
+    16,
+    30
+   ],
+   [
+    "EXT",
+    19,
+    116,
+    30
+   ]
+  ],
+  "n_ext_used": 4,
+  "n_ext_max": 12,
+  "r_eng": 34,
+  "r_ext": 30,
+  "chain_ok": true,
+  "max_dist": 29.97,
+  "liftable": true,
+  "zones": {
+   "A": 162,
+   "B": 204,
+   "C": 162,
+   "D": 162,
+   "E": 648,
+   "F": 416,
+   "G": 562,
+   "H": 126,
+   "K": 141,
+   "M": 140,
+   "R": 280,
+   "S": 216,
+   "T": 156,
+   "U": 204,
+   "W": 162
+  },
+  "missing_required": []
+ },
+ "3_corellian_corvette": {
+  "tiles": 3827,
+  "cap": 4800,
+  "headroom": 973,
+  "covered": 3827,
+  "uncovered": 0,
+  "cover_pct": 100.0,
+  "placements": [
+   [
+    "ENGINE",
+    21,
+    38,
+    34
+   ],
+   [
+    "EXT",
+    21,
+    72,
+    30
+   ],
+   [
+    "EXT",
+    21,
+    102,
+    30
+   ],
+   [
+    "EXT",
+    21,
+    9,
+    30
+   ],
+   [
+    "EXT",
+    21,
+    104,
+    30
+   ]
+  ],
+  "n_ext_used": 4,
+  "n_ext_max": 12,
+  "r_eng": 34,
+  "r_ext": 30,
+  "chain_ok": true,
+  "max_dist": 29.15,
+  "liftable": true,
+  "zones": {
+   "A": 180,
+   "B": 180,
+   "C": 165,
+   "D": 165,
+   "E": 195,
+   "F": 195,
+   "G": 660,
+   "H": 189,
+   "K": 103,
+   "M": 582,
+   "R": 640,
+   "S": 165,
+   "T": 28,
+   "U": 190,
+   "W": 190
+  },
+  "missing_required": []
+ },
+ "4_catamaran_courtyard": {
+  "tiles": 4068,
+  "cap": 4800,
+  "headroom": 732,
+  "covered": 4068,
+  "uncovered": 0,
+  "cover_pct": 100.0,
+  "placements": [
+   [
+    "ENGINE",
+    23,
+    87,
+    34
+   ],
+   [
+    "EXT",
+    23,
+    53,
+    30
+   ],
+   [
+    "EXT",
+    23,
+    23,
+    30
+   ],
+   [
+    "EXT",
+    23,
+    101,
+    30
+   ],
+   [
+    "EXT",
+    16,
+    4,
+    30
+   ]
+  ],
+  "n_ext_used": 4,
+  "n_ext_max": 12,
+  "r_eng": 34,
+  "r_ext": 30,
+  "chain_ok": true,
+  "max_dist": 29.73,
+  "liftable": true,
+  "zones": {
+   ".": 201,
+   "A": 195,
+   "B": 195,
+   "C": 195,
+   "D": 195,
+   "E": 197,
+   "F": 197,
+   "G": 970,
+   "H": 122,
+   "K": 69,
+   "M": 360,
+   "R": 390,
+   "S": 405,
+   "T": 107,
+   "U": 135,
+   "W": 135
+  },
+  "missing_required": []
+ },
+ "5_ring_station": {
+  "tiles": 4702,
+  "cap": 4800,
+  "headroom": 98,
+  "covered": 4702,
+  "uncovered": 0,
+  "cover_pct": 100.0,
+  "placements": [
+   [
+    "ENGINE",
+    68,
+    19,
+    34
+   ],
+   [
+    "EXT",
+    35,
+    14,
+    30
+   ],
+   [
+    "EXT",
+    14,
+    35,
+    30
+   ],
+   [
+    "EXT",
+    82,
+    49,
+    30
+   ],
+   [
+    "EXT",
+    68,
+    75,
+    30
+   ],
+   [
+    "EXT",
+    39,
+    82,
+    30
+   ],
+   [
+    "EXT",
+    11,
+    45,
+    30
+   ]
+  ],
+  "n_ext_used": 6,
+  "n_ext_max": 12,
+  "r_eng": 34,
+  "r_ext": 30,
+  "chain_ok": true,
+  "max_dist": 29.02,
+  "liftable": true,
+  "zones": {
+   ".": 44,
+   "A": 446,
+   "B": 362,
+   "C": 421,
+   "D": 433,
+   "E": 454,
+   "F": 421,
+   "G": 421,
+   "H": 185,
+   "K": 376,
+   "M": 189,
+   "R": 433,
+   "S": 90,
+   "T": 49,
+   "U": 189,
+   "W": 189
+  },
+  "missing_required": []
+ },
+ "6_salvage_hulk": {
+  "tiles": 4604,
+  "cap": 4800,
+  "headroom": 196,
+  "covered": 4604,
+  "uncovered": 0,
+  "cover_pct": 100.0,
+  "placements": [
+   [
+    "ENGINE",
+    33,
+    38,
+    34
+   ],
+   [
+    "EXT",
+    33,
+    72,
+    30
+   ],
+   [
+    "EXT",
+    33,
+    102,
+    30
+   ],
+   [
+    "EXT",
+    14,
+    14,
+    30
+   ],
+   [
+    "EXT",
+    33,
+    7,
+    30
+   ]
+  ],
+  "n_ext_used": 4,
+  "n_ext_max": 12,
+  "r_eng": 34,
+  "r_ext": 30,
+  "chain_ok": true,
+  "max_dist": 30.23,
+  "liftable": true,
+  "zones": {
+   "A": 135,
+   "B": 126,
+   "C": 368,
+   "D": 368,
+   "E": 324,
+   "F": 379,
+   "G": 622,
+   "H": 288,
+   "K": 570,
+   "M": 114,
+   "R": 368,
+   "S": 208,
+   "T": 156,
+   "U": 256,
+   "W": 322
+  },
+  "missing_required": []
+ },
+ "7_nodal_station": {
+  "tiles": 4607,
+  "cap": 4800,
+  "headroom": 193,
+  "covered": 4607,
+  "uncovered": 0,
+  "cover_pct": 100.0,
+  "placements": [
+   [
+    "ENGINE",
+    61,
+    63,
+    34
+   ],
+   [
+    "EXT",
+    32,
+    46,
+    30
+   ],
+   [
+    "EXT",
+    90,
+    46,
+    30
+   ],
+   [
+    "EXT",
+    46,
+    20,
+    30
+   ],
+   [
+    "EXT",
+    25,
+    74,
+    30
+   ],
+   [
+    "EXT",
+    92,
+    30,
+    30
+   ],
+   [
+    "EXT",
+    113,
+    42,
+    30
+   ],
+   [
+    "EXT",
+    61,
+    77,
+    30
+   ],
+   [
+    "EXT",
+    26,
+    14,
+    30
+   ],
+   [
+    "EXT",
+    50,
+    8,
+    30
+   ]
+  ],
+  "n_ext_used": 9,
+  "n_ext_max": 12,
+  "r_eng": 34,
+  "r_ext": 30,
+  "chain_ok": true,
+  "max_dist": 29.83,
+  "liftable": true,
+  "zones": {
+   ".": 1504,
+   "A": 182,
+   "B": 185,
+   "C": 185,
+   "D": 185,
+   "E": 185,
+   "F": 185,
+   "G": 357,
+   "H": 357,
+   "M": 185,
+   "R": 185,
+   "S": 185,
+   "T": 357,
+   "U": 185,
+   "W": 185
+  },
+  "missing_required": []
+ }
+}
