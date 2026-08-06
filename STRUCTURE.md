@@ -37,6 +37,7 @@ These are the load-bearing, authoritative files. If two docs disagree, the owner
 | `sw_ingredients_inventory.md` | Inspiration-only ingredient inventory of the six non-1.6 SW faction mods (⚠️ DO NOT LOAD) + the triage that feeds `outer_rim_cherrypick_list.md`. |
 | `carbonite_trophy_mod.md` | Parked design for a custom (cooler-than-donor) carbonite trophy mod. |
 | `save_authoring_pipeline.md` | How we hand-craft the world by editing `.rws`/def files directly, grounded in the Gravtasm save teardown. |
+| `first_live_access.md` | **Day-one runbook** for the first time we have running RimWorld + real mods + a harmonized save: ordered tooling/agent-integration steps (shortHash resolver → Def index → validate JawaVoice/factions/scenario → RimBridge swap) + the offline pre-reqs to build first. Distinct from `setup_checklist.md` (in-game scenario decisions). |
 | `rimworld_file_lore.md` | Self-teaching technical manual for editing RimWorld save/scenario/def XML — file structures, safe-vs-fragile regions, gotchas. |
 | `rimbridge.md` | Living context on RimBridgeServer (live in-game modification pipe — not a content editor). |
 | `RimMaster.md` | Spec for the external RimMaster enrichment agent (save-editing +/or RimBridge). |
