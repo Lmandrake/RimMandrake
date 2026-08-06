@@ -1,0 +1,124 @@
+{
+  "base": "coastal_mesa.map.json",
+  "stem": "coastal_mesa_v2",
+  "iteration": 2,
+  "regions": [
+    {
+      "name": "Ocean (W strip)",
+      "judgment": {"realism": 3, "interest": 2, "tactical": 5, "artificiality": 9},
+      "problem": "v1 fixed the straightness but introduced a continuous straight MUD WALL - traded one artifact for another; gradient ran after fractalize and re-straightened it",
+      "intent": "depth ramp ONLY (deep->shallow->sand), then fractalize the coast LAST, then scatter mud as wet-beach patches not a band"
+    },
+    {
+      "name": "Central sand flat",
+      "judgment": {"realism": 5, "interest": 2, "tactical": 2, "artificiality": 4},
+      "problem": "v1 wash + hill good; vegetation too faint to read",
+      "intent": "keep wash+hill, raise vegetation density and give it a couple of soil clumps"
+    },
+    {
+      "name": "Rock massif",
+      "judgment": {"realism": 6, "interest": 4, "tactical": 7, "artificiality": 3},
+      "problem": "v1 cave + talus foot worked well",
+      "intent": "keep as-is"
+    },
+    {
+      "name": "Gravel outcrops",
+      "judgment": {"realism": 6, "interest": 3, "tactical": 4, "artificiality": 4},
+      "problem": "v1 ruin + smooth worked",
+      "intent": "keep; smooth again at the end to absorb new confetti from the coast edits"
+    }
+  ],
+  "edits": [
+    {
+      "region": "Ocean",
+      "op": "terrain_gradient",
+      "what": "Depth ramp only (no mud band)",
+      "rationale": "Repaint just the water column x0-16 W->E as deep->shallow->shallow->sand. No mud in the order, so no brown wall. This sets a clean depth ramp that we will then roughen.",
+      "args": {"region_bbox": [0, 0, 16, 119],
+               "order": ["WaterOceanDeep", "WaterOceanDeep", "WaterOceanShallow", "WaterOceanShallow", "Sand"],
+               "axis": "h", "noise": 0.22, "seed": 5}
+    },
+    {
+      "region": "Ocean",
+      "op": "scatter",
+      "what": "Wet-beach mud patches (not a band)",
+      "rationale": "A brackish beach is patchy, not a stripe. Scatter Mud only onto sand cells in the narrow shore band x10-20, low density and clumped, so wet spots cluster near the waterline.",
+      "args": {"region_bbox": [10, 0, 20, 119], "terrain": "Mud",
+               "density": 0.18, "clump": 0.9, "only_families": ["sand"], "seed": 12}
+    },
+    {
+      "region": "Central sand flat",
+      "op": "path",
+      "what": "Old dry wash across the flat",
+      "rationale": "Same gravel wash SW->NE; a line of movement and a soft chokepoint through the dead center.",
+      "args": {"waypoints": [[24, 20], [34, 40], [44, 62], [55, 78]],
+               "terrain": "Gravel", "width": 1}
+    },
+    {
+      "region": "Central sand flat",
+      "op": "scatter",
+      "what": "Desert scrub (denser)",
+      "rationale": "Raise mossy scatter density and cluster it so vegetation actually reads on the flat.",
+      "args": {"region_bbox": [22, 5, 55, 115], "terrain": "MossyTerrain",
+               "density": 0.10, "clump": 0.9, "only_families": ["sand"], "seed": 8}
+    },
+    {
+      "region": "Central sand flat",
+      "op": "blob",
+      "what": "Small fertile hollow by the wash",
+      "rationale": "One soil clump near the wash bend (~44,62) - a plausible catchment where runoff pools, and the map's only decent farm spot (scarcity anchor).",
+      "args": {"cx": 45, "cz": 60, "radius": 4, "terrain": "Soil",
+               "only_families": ["sand"], "jitter": 0.4, "seed": 21}
+    },
+    {
+      "region": "Central sand flat",
+      "op": "hill",
+      "what": "Small outcrop hill mid-flat",
+      "rationale": "Low hill at ~(38,52) for high-ground cover in the dead zone.",
+      "args": {"cx": 38, "cz": 52, "radius": 5, "seed": 2}
+    },
+    {
+      "region": "Rock massif",
+      "op": "carve_chamber",
+      "what": "Cave chamber in SE massif",
+      "rationale": "Carve into the solid RockFace core (~95,92); carve_chamber only eats solid rock so it stays enclosed.",
+      "args": {"cx": 95, "cz": 92, "radius": 9, "require_family": ["mountain"], "seed": 4}
+    },
+    {
+      "region": "Rock massif",
+      "op": "hill",
+      "what": "Talus foot at NE lobe",
+      "rationale": "Rubble apron at ~(66,44) to soften the abrupt rock/sand foot and add light cover.",
+      "args": {"cx": 66, "cz": 44, "radius": 4, "ring_terrain": "RockRubble",
+               "core_terrain": "RockRubble", "seed": 6}
+    },
+    {
+      "region": "Gravel outcrops",
+      "op": "rect",
+      "what": "Ruined structure on mid-west outcrop",
+      "rationale": "Ancient-concrete footprint at ~(28,61): a landmark ruin + defensible strongpoint.",
+      "args": {"x0": 25, "z0": 58, "x1": 31, "z1": 64, "terrain": "AncientConcrete"}
+    },
+    {
+      "region": "Ocean",
+      "op": "fractalize_edge",
+      "what": "Roughen the coastline (LAST)",
+      "rationale": "Run fractalize AFTER the gradient this time so nothing re-straightens it. Push shallow water in/out irregularly against sand for a meandering shore.",
+      "args": {"from_family": "water", "to_terrain": "Sand",
+               "coast_terrain": "WaterOceanShallow", "amount": 0.5, "seed": 3}
+    },
+    {
+      "region": "Gravel outcrops",
+      "op": "smooth",
+      "what": "Final confetti cleanup",
+      "rationale": "Majority-smooth non-water families to absorb single-cell specks created by the coast + scatter edits.",
+      "args": {"passes": 1}
+    }
+  ],
+  "notes": [
+    "Cave chamber: seed ancient danger / infestation deep inside - not free real estate.",
+    "Ruined structure: slain ancients + salvage; crashed-Factory-ship scavenger theme.",
+    "Fertile hollow by the wash: the natural farm start - raids will approach along the open wash.",
+    "Wet-beach mud: brackish/non-potable - reinforces water-scarcity pillar (desalinate to drink)."
+  ]
+}

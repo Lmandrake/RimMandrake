@@ -1,0 +1,124 @@
+{
+  "base": "coastal_mesa.map.json",
+  "stem": "coastal_mesa_v3",
+  "iteration": 3,
+  "regions": [
+    {
+      "name": "Ocean (W strip)",
+      "judgment": {"realism": 3, "interest": 2, "tactical": 5, "artificiality": 9},
+      "problem": "v2 shredded the waterline into salt-and-pepper because fractalize_edge had no spatial coherence; tool now rewritten to move the frontier by a smooth along-coast noise profile (headlands/inlets, not speckle)",
+      "intent": "clean depth ramp, then coherent meander via the fixed fractalize, then a few patchy wet-beach spots"
+    },
+    {
+      "name": "Central sand flat",
+      "judgment": {"realism": 5, "interest": 2, "tactical": 2, "artificiality": 4},
+      "problem": "v2 vegetation still speckly (per-cell); scatter now grows coherent patches",
+      "intent": "wash + hill + soil hollow retained; vegetation as a few scrub STANDS"
+    },
+    {
+      "name": "Rock massif",
+      "judgment": {"realism": 6, "interest": 4, "tactical": 7, "artificiality": 3},
+      "problem": "cave + talus foot already good in v1/v2",
+      "intent": "keep"
+    },
+    {
+      "name": "Gravel outcrops",
+      "judgment": {"realism": 6, "interest": 3, "tactical": 4, "artificiality": 4},
+      "problem": "ruin good; needs a final smooth to hit the fragmentation guardrail",
+      "intent": "keep ruin; smooth twice at the end"
+    }
+  ],
+  "edits": [
+    {
+      "region": "Ocean",
+      "op": "terrain_gradient",
+      "what": "Depth ramp",
+      "rationale": "Water column x0-15 W->E: deep, deep, shallow, sand. No mud in the order.",
+      "args": {"region_bbox": [0, 0, 15, 119],
+               "order": ["WaterOceanDeep", "WaterOceanDeep", "WaterOceanShallow", "Sand"],
+               "axis": "h", "noise": 0.15, "seed": 5}
+    },
+    {
+      "region": "Ocean",
+      "op": "fractalize_edge",
+      "what": "Coherent coastline meander",
+      "rationale": "Rewritten fractalize moves the land/water frontier along the coast by a smooth noise profile, reach 4 - carves headlands and inlets instead of noise.",
+      "args": {"from_family": "water", "to_terrain": "Sand",
+               "coast_terrain": "WaterOceanShallow", "amount": 0.9, "reach": 4, "seed": 33}
+    },
+    {
+      "region": "Ocean",
+      "op": "scatter",
+      "what": "Patchy wet beach",
+      "rationale": "A few coherent Mud patches on sand right at the waterline x12-19 - wet spots, not a band.",
+      "args": {"region_bbox": [12, 0, 19, 119], "terrain": "Mud",
+               "density": 0.10, "clump": 0.9, "only_families": ["sand"], "seed": 12}
+    },
+    {
+      "region": "Central sand flat",
+      "op": "path",
+      "what": "Old dry wash",
+      "rationale": "Gravel wash SW->NE through the dead center.",
+      "args": {"waypoints": [[24, 20], [34, 40], [44, 62], [55, 78]],
+               "terrain": "Gravel", "width": 1}
+    },
+    {
+      "region": "Central sand flat",
+      "op": "scatter",
+      "what": "Scrub stands",
+      "rationale": "Coherent mossy patches (a handful of stands) over sand only - reads as clumped desert scrub.",
+      "args": {"region_bbox": [22, 5, 58, 115], "terrain": "MossyTerrain",
+               "density": 0.06, "clump": 0.8, "only_families": ["sand"], "seed": 8}
+    },
+    {
+      "region": "Central sand flat",
+      "op": "blob",
+      "what": "Fertile hollow by the wash",
+      "rationale": "Soil catchment at the wash bend (~45,60) - the map's farm start.",
+      "args": {"cx": 45, "cz": 60, "radius": 4, "terrain": "Soil",
+               "only_families": ["sand"], "jitter": 0.4, "seed": 21}
+    },
+    {
+      "region": "Central sand flat",
+      "op": "hill",
+      "what": "Mid-flat outcrop hill",
+      "rationale": "High-ground cover at ~(38,52).",
+      "args": {"cx": 38, "cz": 52, "radius": 5, "seed": 2}
+    },
+    {
+      "region": "Rock massif",
+      "op": "carve_chamber",
+      "what": "Cave chamber (SE massif)",
+      "rationale": "Carve solid RockFace core ~(95,92); stays enclosed.",
+      "args": {"cx": 95, "cz": 92, "radius": 9, "require_family": ["mountain"], "seed": 4}
+    },
+    {
+      "region": "Rock massif",
+      "op": "hill",
+      "what": "Talus foot (NE lobe)",
+      "rationale": "Rubble apron ~(66,44).",
+      "args": {"cx": 66, "cz": 44, "radius": 4, "ring_terrain": "RockRubble",
+               "core_terrain": "RockRubble", "seed": 6}
+    },
+    {
+      "region": "Gravel outcrops",
+      "op": "rect",
+      "what": "Ruined structure",
+      "rationale": "Ancient-concrete footprint ~(28,61).",
+      "args": {"x0": 25, "z0": 58, "x1": 31, "z1": 64, "terrain": "AncientConcrete"}
+    },
+    {
+      "region": "Gravel outcrops",
+      "op": "smooth",
+      "what": "Confetti cleanup pass 1+2",
+      "rationale": "Two majority-smooth passes over non-water families to absorb specks and hit the fragmentation guardrail.",
+      "args": {"passes": 2}
+    }
+  ],
+  "notes": [
+    "Cave chamber: ancient danger / infestation deep inside.",
+    "Ruined structure: slain ancients + salvage (Factory-ship scavenger theme).",
+    "Fertile hollow: the farm start; raids approach along the wash.",
+    "Wet beach: brackish/non-potable - water-scarcity pillar."
+  ]
+}

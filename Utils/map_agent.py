@@ -362,53 +362,140 @@ def op_terrain_gradient(gm, region_bbox, order, seed=0, noise=0.12, axis=None,
 
 
 def op_fractalize_edge(gm, from_family, to_terrain, coast_terrain,
-                       amount=0.6, seed=0):
-    """Roughen the boundary of `from_family` cells against everything else by
-    randomly pushing `coast_terrain` in/out along the border — turns a smooth
-    stamped coastline/cliff into an irregular natural one. `to_terrain` fills
-    where we retreat. Returns cells changed."""
+                       amount=0.6, seed=0, reach=3):
+    """Roughen the boundary of `from_family` against everything else so a smooth
+    stamped coastline/cliff becomes an irregular natural one — WITHOUT turning it
+    into salt-and-pepper noise.
+
+    Coherence: instead of an independent coin-flip per border cell (which just
+    makes speckle), we drive the displacement with a smooth 1-D noise indexed by
+    position ALONG the coast. Where the noise is high we advance the shore into
+    the land by up to `reach` cells; where low we cut it back into the water by
+    up to `reach`. `amount` scales how far. This yields headlands and inlets, not
+    static. Returns cells changed."""
     w, h = gm.w, gm.h
-    rnd = _rng(seed + 7)
     fam = _field(gm, "family", "?")
+
+    # decide the coast's principal axis: vertical coast (varies in z) vs
+    # horizontal (varies in x), by the spread of border cells.
     border = []
     for z in range(h):
         for x in range(w):
             if fam[z][x] == from_family:
                 for nx, nz in _neighbors4(x, z):
                     if 0 <= nx < w and 0 <= nz < h and fam[nz][nx] != from_family:
-                        border.append((x, z, nx, nz))
+                        border.append((x, z))
                         break
+    if not border:
+        return 0
+    xs = [b[0] for b in border]
+    zs = [b[1] for b in border]
+    vertical = (max(zs) - min(zs)) >= (max(xs) - min(xs))
+
+    # smooth 1-D displacement profile along the coast axis
+    axis_len = h if vertical else w
+    nprofile = _val_noise(axis_len, 1, 0.10, seed + 71)[0]
+    disp = [int(round((nprofile[i] - 0.5) * 2 * reach * amount))
+            for i in range(axis_len)]
+
     changed = 0
-    for (x, z, nx, nz) in border:
-        if rnd.random() < amount:
-            # push coast outward into the neighbor
-            gm.set(nx, nz, coast_terrain)
-            changed += 1
-        elif rnd.random() < amount * 0.5:
-            # retreat: this border cell becomes the neighbor's kind
-            gm.set(x, z, to_terrain)
-            changed += 1
+    # For each row (vertical coast) / col (horizontal), find the current
+    # land/water frontier and move it by disp.
+    if vertical:
+        for z in range(h):
+            # frontier = leftmost land x that touches water on this row, or the
+            # rightmost water x. Use the mean border x on this row.
+            rowb = [x for (x, bz) in border if bz == z]
+            if not rowb:
+                continue
+            fx = sum(rowb) // len(rowb)
+            d = disp[z]
+            if d > 0:                     # advance land: convert d water cells
+                for k in range(1, d + 1):
+                    cx = fx - k           # water side is smaller x (ocean W)
+                    if gm.in_bounds(cx, z) and \
+                            tprop(gm.grid[z][cx], "family") == from_family:
+                        gm.set(cx, z, to_terrain)
+                        changed += 1
+            elif d < 0:                   # cut back: convert -d land cells
+                for k in range(0, -d):
+                    cx = fx + k
+                    if gm.in_bounds(cx, z) and \
+                            tprop(gm.grid[z][cx], "family") != from_family:
+                        gm.set(cx, z, coast_terrain)
+                        changed += 1
+    else:
+        for x in range(w):
+            colb = [z for (bx, z) in border if bx == x]
+            if not colb:
+                continue
+            fz = sum(colb) // len(colb)
+            d = disp[x]
+            if d > 0:
+                for k in range(1, d + 1):
+                    cz = fz - k
+                    if gm.in_bounds(x, cz) and \
+                            tprop(gm.grid[cz][x], "family") == from_family:
+                        gm.set(x, cz, to_terrain)
+                        changed += 1
+            elif d < 0:
+                for k in range(0, -d):
+                    cz = fz + k
+                    if gm.in_bounds(x, cz) and \
+                            tprop(gm.grid[cz][x], "family") != from_family:
+                        gm.set(x, cz, coast_terrain)
+                        changed += 1
     return changed
 
 
 def op_scatter(gm, region_bbox, terrain, density=0.15, clump=0.5,
-               only_families=None, seed=0):
-    """Sprinkle `terrain` into a region with optional clumping — e.g. scatter
-    'MossyTerrain' or 'RockRubble' or vegetation-soil for texture. only_families
-    restricts what it may overwrite. Returns cells changed."""
+               only_families=None, seed=0, patch=True):
+    """Sprinkle `terrain` into a region as small COHERENT patches (default) or
+    as independent specks (patch=False). Coherent patches read as vegetation
+    stands / rubble fields rather than confetti.
+
+    density ~ fraction of region covered. clump biases patches toward the
+    high-noise areas. only_families restricts what may be overwritten."""
     x0, z0, x1, z1 = region_bbox
+    x0, x1 = max(0, x0), min(gm.w - 1, x1)
+    z0, z1 = max(0, z0), min(gm.h - 1, z1)
     rnd = _rng(seed + 13)
-    nz = _val_noise(gm.w, gm.h, 0.12, seed + 99)
+    nz = _val_noise(gm.w, gm.h, 0.14, seed + 99)
     changed = 0
-    for z in range(max(0, z0), min(gm.h, z1 + 1)):
-        for x in range(max(0, x0), min(gm.w, x1 + 1)):
-            if only_families and tprop(gm.grid[z][x], "family") \
-                    not in only_families:
-                continue
-            p = density * (1.0 + clump * (nz[z][x] - 0.5) * 2)
-            if rnd.random() < p:
-                gm.set(x, z, terrain)
-                changed += 1
+
+    def eligible(x, z):
+        if not gm.in_bounds(x, z):
+            return False
+        if only_families and tprop(gm.grid[z][x], "family") not in only_families:
+            return False
+        return True
+
+    if not patch:
+        for z in range(z0, z1 + 1):
+            for x in range(x0, x1 + 1):
+                if eligible(x, z) and rnd.random() < density * (
+                        1 + clump * (nz[z][x] - 0.5) * 2):
+                    gm.set(x, z, terrain)
+                    changed += 1
+        return changed
+
+    # coherent patches: pick seed points, grow each into a little blob
+    area = (x1 - x0 + 1) * (z1 - z0 + 1)
+    n_seeds = max(1, int(area * density / 9))   # ~3x3 avg patch
+    for _ in range(n_seeds):
+        sx = rnd.randint(x0, x1)
+        sz = rnd.randint(z0, z1)
+        # bias by noise: skip low-noise seeds when clumped
+        if clump > 0 and nz[sz][sx] < 0.5 - 0.3 * clump and rnd.random() < 0.6:
+            continue
+        r = rnd.choice([1, 1, 2])
+        for dz in range(-r, r + 1):
+            for dx in range(-r, r + 1):
+                if dx * dx + dz * dz <= r * r and rnd.random() < 0.8:
+                    xx, zz = sx + dx, sz + dz
+                    if eligible(xx, zz) and gm.grid[zz][xx] != terrain:
+                        gm.set(xx, zz, terrain)
+                        changed += 1
     return changed
 
 
@@ -516,6 +603,89 @@ def op_carve_chamber(gm, cx, cz, radius, floor="CaveFloor",
     return changed
 
 
+def op_depth_grade(gm, bands, from_family="water", seed=0, noise=1):
+    """Repaint every cell of `from_family` by its distance to the nearest cell of
+    a DIFFERENT family (the shore), so an undifferentiated water body becomes a
+    believable depth ramp: far-from-shore -> bands[0] (deepest), nearest-shore ->
+    bands[-1] (shallowest). Works on any coast shape (it measures real distance,
+    not a rectangle), so it respects meanders/coves. `noise` jitters the band
+    thresholds by +/- that many cells so the depth contours aren't clean rings.
+    Returns cells changed."""
+    w, h = gm.w, gm.h
+    fam = _field(gm, "family", "?")
+    INF = 10 ** 9
+    dist = [[INF] * w for _ in range(h)]
+    dq = deque()
+    for z in range(h):
+        for x in range(w):
+            if fam[z][x] != from_family:          # shore / land seed
+                dist[z][x] = 0
+                dq.append((x, z))
+    # multi-source BFS (4-conn) distance-to-shore, only through water
+    while dq:
+        x, z = dq.popleft()
+        for nx, nz in _neighbors4(x, z):
+            if 0 <= nx < w and 0 <= nz < h and fam[nz][nx] == from_family \
+                    and dist[nz][nx] == INF:
+                dist[nz][nx] = dist[z][x] + 1
+                dq.append((nx, nz))
+    maxd = max((dist[z][x] for z in range(h) for x in range(w)
+                if fam[z][x] == from_family and dist[z][x] < INF), default=0)
+    if maxd == 0:
+        return 0
+    rnd = _rng(seed + 23)
+    nb = len(bands)
+    # band i covers deepest..shallowest as distance decreases
+    changed = 0
+    for z in range(h):
+        for x in range(w):
+            if fam[z][x] != from_family or dist[z][x] == INF:
+                continue
+            d = dist[z][x] + (rnd.randint(-noise, noise) if noise else 0)
+            frac = 1.0 - min(1.0, max(0.0, d / maxd))   # 0 near shore..1 deep
+            bi = min(nb - 1, int(frac * nb))
+            # bands listed shallow->deep for readability; index from deep end
+            name = bands[nb - 1 - bi]
+            if gm.grid[z][x] != name:
+                gm.set(x, z, name)
+                changed += 1
+    return changed
+
+
+def op_shore_ribbon(gm, ribbon_terrain, water_family="water", width=1,
+                    only_families=None):
+    """Lay a `width`-cell ribbon of `ribbon_terrain` on the LAND side of the
+    water boundary (a beach / wet-sand strip). Only overwrites `only_families`
+    if given. Returns cells changed."""
+    w, h = gm.w, gm.h
+    fam = _field(gm, "family", "?")
+    # cells within `width` (chebyshev) of water, that are themselves not water
+    changed = 0
+    targets = set()
+    for z in range(h):
+        for x in range(w):
+            if fam[z][x] == water_family:
+                continue
+            near = False
+            for dz in range(-width, width + 1):
+                for dx in range(-width, width + 1):
+                    nx, nz = x + dx, z + dz
+                    if 0 <= nx < w and 0 <= nz < h and fam[nz][nx] == water_family:
+                        near = True
+                        break
+                if near:
+                    break
+            if near:
+                targets.add((x, z))
+    for x, z in targets:
+        if only_families and tprop(gm.grid[z][x], "family") not in only_families:
+            continue
+        if gm.grid[z][x] != ribbon_terrain:
+            gm.set(x, z, ribbon_terrain)
+            changed += 1
+    return changed
+
+
 def op_paint_cells(gm, cells, terrain):
     """Freehand escape hatch: set an explicit list of [x,z] cells to `terrain`.
     For anything the templated ops can't express. Returns cells changed."""
@@ -567,6 +737,8 @@ PRIMITIVES = {
     "rect": op_rect,
     "hill": op_hill,
     "carve_chamber": op_carve_chamber,
+    "depth_grade": op_depth_grade,
+    "shore_ribbon": op_shore_ribbon,
     "paint_cells": op_paint_cells,
     "smooth": op_smooth,
 }

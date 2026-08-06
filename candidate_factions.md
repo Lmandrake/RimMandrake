@@ -12,8 +12,9 @@ _Companion to `faction_dossiers.md` (the 4 decided factions). This doc proposes 
 
 Your two rulings (2026-08-05) consolidated several races *into* the existing four factions rather than spawning new ones — this is good, it prevents faction-sprawl:
 
-- **Sith / Massassi / Dathomirian-Nightsister / Miraluka** → **elite ranks of the Empire** (its Force-user tier), NOT a faction. [folded into `faction_dossiers.md` §1]
+- **Sith / Massassi / Dathomirian-Nightsister / Miraluka** → **elite ranks of the Empire** (its DARK-side Force-user tier — VPE dark tree: lightning + telekinetic throw + fear; Miraluka lean light/neutral), NOT a faction. [folded into `faction_dossiers.md` §1]
 - **Nikto / Weequay / Rodian / Trandoshan / Pyke** → **rank-and-file muscle of the Hutt-lord factions**, NOT standalone factions. [folded into §2]
+- **Rare Jedi hero → Moisture Farmer factions** [user directive 2026-08-06]: the light side lives NOT in a Jedi faction but as an *uncommon* (low pawnGroupMaker weight) Force-user seeded into the existing Moisture-Farmer/settler factions of the world — curated VPE **light/telekinesis** set (heal, push/pull, non-lethal disable, deflection). Neither the player nor the Jawa ever gets the Force. [folded into `faction_dossiers.md` §1 + `required_mods.md` "THE FORCE SYSTEM — FINALIZED"]
 
 So the question this doc answers is narrower and cleaner: *which remaining races are canonically their **own** autonomous societies* — not Imperial, not Hutt underlings — and therefore earn a faction slot of their own? Four candidates clear that bar. A fifth (Pyke) is a judgment call I flag explicitly.
 

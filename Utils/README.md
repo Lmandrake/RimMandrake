@@ -8,6 +8,80 @@ focused research probe; keep them assembly-free and dependency-light.
 | `Savegame_mapview.py` | in-play map grids (terrain/roof/things) | PNG preview + legend JSON |
 | `Savegame_detailed_items.py` | every item + its flavor/narrative text | items MD report + items JSON |
 | `Savegame_ideoligions.py` | every ideoligion (religion) + full flavor | ideoligions MD report + JSON |
+| `mapkit.py` | — (shared library) | terrain palette + `GameMap` model + renderer |
+| `map_agent.py` | a `GameMap` | LLM briefing (coarse grid + regions), edit primitives, guardrail metrics |
+| `loop_run.py` | an LLM-authored plan JSON | executes plan → before/after render + report + metric deltas |
+| `map_loop_agent.py` | a base `GameMap` | **automated** perceive→propose→execute→re-judge loop (needs an LLM endpoint) |
+| `Map_synth.py` | — | synthesizes plausible player-style base maps into `../player_maps/` |
+| `Map_improver.py` | a `GameMap` | ⚠️ superseded heuristic improver — see note below |
+
+---
+
+## Map improver — LLM-in-the-loop architecture (the current design)
+
+**The point:** creatively "improve" a player map's terrain — more realistic
+geography, more tactical interest, and exotic set-pieces (abandoned mine,
+half-working refinery, dead droid in a crater, cavern, crashed-Factory-ship
+scar) — with justifications for what changed, where, and why.
+
+**Design principle (per user direction 2026-08-05):** the LLM is the reasoning
+engine *in the loop each iteration*; Python is only the **hands**. The LLM looks
+at a specific map, decomposes it into regions, judges each region
+(realism / interest / tactical / artificiality), proposes specific edits with
+real coordinates, executes them through a templated toolbox, then re-judges and
+retries what didn't improve. Python never decides *what* or *where* — it only
+perceives, executes parameterized primitives, and computes cheap objective
+guardrail metrics (transition coherence, fragmentation, diversity). Those
+metrics are guardrails/tie-breakers, **not** the subjective judge.
+
+Why this replaced the first attempt: `Map_improver.py` (kept for reference)
+baked all judgment into fixed Python heuristics with blind coordinates
+(`rng.uniform(...)`), so placements couldn't respond to the actual map — the
+output looked "ridiculous and unjustified." Moving the judgment to the LLM fixes
+that.
+
+### The three modules
+
+- **`mapkit.py`** — shared foundation: `TERRAIN` palette (name→rgb+props from
+  the verified `../biome_terrain_palette.md`), the `GameMap` semantic grid
+  (cells hold terrain *names*, not live-save shortHashes — the hash problem is
+  deliberately out of scope for this practice), `render`/`render_pair`.
+- **`map_agent.py`** — the toolbox (no judgment):
+  1. **Perception** — `perceive(gm)` → coordinate-labeled coarse ASCII grid +
+     connected-region segmentation (family, area, bbox, centroid, terrain mix,
+     edges) + histogram; `briefing_text()` formats it for a prompt. The LLM also
+     views the PNG with vision.
+  2. **Primitives** — `terrain_gradient`, `fractalize_edge` (coherent coastline
+     meander, not per-cell noise), `scatter` (coherent patches), `path`, `blob`,
+     `ring`, `rect`, `hill`, `carve_chamber` (carves only through solid rock so
+     caves stay enclosed), `paint_cells` (freehand), `smooth`. Dispatched by name
+     via `apply_edit(gm, op, **kwargs)`.
+  3. **Metrics** — `metric_transition_coherence`, `metric_fragmentation`,
+     `metric_family_diversity`. Objective guardrails only.
+- **`loop_run.py`** — runs ONE hand-authored plan (the manual/live mode we use
+  in-session, since no LLM endpoint is reachable here). Applies edits, renders
+  before/after, writes a report pairing every edit with the LLM's region
+  judgment + rationale and showing metric deltas so the next iteration is
+  informed.
+- **`map_loop_agent.py`** — the **automated** harness: perceive → LLM proposes a
+  plan → execute → re-perceive → LLM re-judges → convergence check → repeat.
+  The LLM call is a pluggable seam (`caller`/`LLM_CALLER`) with a stub that
+  raises `LLMNotConfigured`. **Scaffolded, not self-driving in this sandbox** —
+  no LLM API host is allowlisted here. Every seam *around* the API call is real
+  and was exercised with a fake caller; wire `call_llm(messages)->str` to run it
+  live. A `converged()` guard can override the LLM's own "stop" verdict if a
+  guardrail regressed.
+
+### Worked example (coastal_mesa, driven live in-session)
+Three iterations, each catching a real regression:
+`v1` introduced a straight mud wall (diversity metric flagged 0.92→0.68) →
+`v2` fixed the wall but shredded the coast into salt-and-pepper (fragmentation
+7→84) → root-caused to per-cell primitives with no spatial coherence →
+rewrote `fractalize_edge` (frontier moved by smooth along-coast noise) and
+`scatter` (grows coherent patches) → `v3` converged (fragmentation back to 18;
+clean depth-ramp coast, cave chamber in the massif, wash + hill + fertile
+hollow + ruin). Plans live at `../player_maps/coastal_mesa_plan_v{1,2,3}.json`;
+outputs at `../player_maps/coastal_mesa*_loop_*`.
 
 ---
 
