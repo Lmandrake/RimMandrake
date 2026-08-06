@@ -6,6 +6,8 @@
 **Scope:** Vanilla Furniture Expanded — Factory for RimWorld 1.6  
 **Compiled:** 2026-08-06
 
+> **Applied downstream in `ship_deck_plan.md`:** the 8-cell campus (§2) and the per-machine footprints (§3) are mapped onto repairable ship *wings* against the verified 2,000-tile substructure cap. This file owns the *layout/operation craft*; the deck plan owns the *wing map + repair gate*.
+
 ---
 
 ## Executive finding
