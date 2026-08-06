@@ -247,6 +247,8 @@ Separate equipment tags or pawn-kind restrictions per faction:
 
 A wealthy, decentralised criminal faction built around **oasis control**. Cheap servile infantry and paid mercenaries surround expensive Hutt bosses, Gamorrean guards, and specialist lieutenants. Hostile enough to raid, pragmatic enough to trade, accept tribute, or become an ally.
 
+> **⭐ ENDGAME PURPOSE — the Hutts are the primary way off-world (user, 2026-08-06).** The Hutt "pirate"-type base is the *only* non-Imperial orbital node (Empire owns orbit; see `desert_world_design.md` §4-Orbital), so winning the Cartel over from neutral-treacherous to genuine ally is the **primary path through the orbital blockade** in the greater arc (`context.md` win-condition section). This is deliberately a *long* grind, not a purchase: two thresholds — (a) claw goodwill up from the roster's default hostile/−standing to alliance, and (b) complete a specific high-stakes favor of the required magnitude — delivered as a CQF quest-line riding on the accepted tribute/goodwill mods (Tribute Demand, Raid Protection Fee, More Slavery Stuff). The relationship stays *bought and conditional*, never warm — a Hutt alliance is a business arrangement that can sour. This gives the Cartel dossier its narrative teeth: they are simultaneously the extortionate oasis-tollers you fight all game *and* the one door out.
+
 ## Water doctrine — **Require (oasis-anchored)**
 
 Every Cartel settlement sits on or immediately beside an oasis tile, and that tile is faction territory rather than a shared resource. The water *is* the asset; the compound exists to control it.
