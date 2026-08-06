@@ -1,32 +1,44 @@
 # RimWorld 1.6 Desert-World Faction Roster — v2
 
-> ## Reconciliation decisions (user, 2026-08-06)
-> Adopted as canonical from a second design stream, "as true as possible." The doc is
-> adopted wholesale **except** the four rulings below, which override the text where it conflicts:
+> ## Reconciliation decisions (user, 2026-08-06 — updated with second design stream)
+> This roster was re-adopted from an improved, more canon/disk-correct second design
+> stream (the "-beed27a9" revision). That stream is adopted **wholesale** because it
+> independently converged on our verified on-disk race inventory and improved several
+> mechanics. The rulings below override the body text only where noted:
 >
-> 1. **Jedi placement — BOTH are true.** The v2 "factionless, Empire-hunted lone wanderer"
->    is the *primary* Jedi presence (psylink 3–6, ≤1 per encounter, no faction membership).
->    In addition, a **rare Jedi may shelter within a sympathetic Homestead / Moisture-Farmer
->    group** (our earlier locked call). Both channels coexist; VPE remains the sole Force
->    substrate and the NPC-only gate still holds (no player Force ceiling).
-> 2. **Race renames REJECTED — no Skakoan / Houk / Ghorfa races.** Verified on disk
->    (Outer Rim – Galactic Diversity 1.6, all 54 shipped xenotypes enumerated 2026-08-06):
->    **there is no Skakoan and no Houk xenotype**, and **Ghorfa** exists only as a lore line
->    inside the Tusken description (Tusken ancestry flavor), not a separate race with art.
->    We keep our reflavored-vanilla roster whose base art actually ships: **Savant caste ← Genie,
->    Brute stock ← Neanderthal, Desert alien ← Impid.** The Skakoan **sealed-suit / pressure-suit
->    mechanic and its filter dependency are DROPPED entirely.** (Canon names as pure cosmetic
->    text labels over the vanilla art remain a trivial future option if ever wanted — but no new
->    race, no new dependency.) Klatooinian / Vodran / Arkanian-Offshoot likewise only adoptable
->    as labels over existing art, not as new xenotypes.
-> 3. **Miraluka — prisoners only (ADOPTED).** `OuterRim_Miraluka` confirmed on disk; they appear
->    **exclusively as Imperial prisoners / rescue-quest targets**, superseding the earlier
->    "lean light/neutral" note.
-> 4. Everything else in this doc — water/thirst doctrine, NPC-vs-NPC relations matrix, the ten
->    faction designs (Aquifer League, Free Droid Enclaves, Geonosian Foundry Hive, Arkanian–
->    Kaminoan Gene Consortium, etc.), settlement-count tiers, equipment discipline — is adopted
->    as canonical. The Free Droid Enclaves are the on-disk anchor for the parked
->    "steal the droid-building secret" arc (restraining-bolt moral tension retained).
+> 1. **Jedi placement — BOTH are true (OVERRIDES this doc's factionless-only line).**
+>    The body's "Jedi are factionless, Empire-hunted wanderers" is the *primary* Jedi
+>    presence (psylink 3–6, ≤1 per group, no faction membership). In **addition**, a
+>    **rare Jedi may shelter within a sympathetic Homestead / Moisture-Farmer group**
+>    (our earlier locked call, reaffirmed 2026-08-06). Both channels coexist; VPE remains
+>    the sole Force substrate and the NPC-only gate still holds (no player Force ceiling).
+>    The body's "Global system 5 — Jedi and Sith" section is edited in place to reflect this.
+>
+> 2. **Miraluka — BROADER placement ADOPTED (SUPERSEDES the 2026-08-05/-06 "prisoners only" ruling).**
+>    The prior "Miraluka = prisoners only" call is **retired.** Miraluka now appear in the
+>    four roles this doc specifies: (a) **Imperial prisoners / rescue-quest targets**,
+>    (b) **rare Homestead "seers" (~1%)**, (c) **Gene Consortium research subjects (~2%)**,
+>    and (d) a **Jedi-eligible race** for the factionless wanderers. Rationale: Force
+>    sensitivity leaks quietly into the fringe factions, but *trained* Jedi remain factionless.
+>    `OuterRim_Miraluka` is confirmed on disk.
+>
+> 3. **Race inventory — CONFIRMED, no new races/dependencies.** This doc's "Global system 3 —
+>    Available races" matches our verified on-disk inventory exactly (42 Outer Rim – Galactic
+>    Diversity species + 6 reflavored vanilla-Biotech bases incl. baseliner Humanity + Custom
+>    Hutt + Custom droid chassis). It correctly omits Skakoan, Houk, Kel Dor, Nautolan,
+>    Klatooinian, and Vodran (none ship on disk), and treats Arkanian-Offshoot as **Brute stock
+>    (Neanderthal)** reflavored faction-side — not a new xenotype. Ghorfa remains a Tusken lore
+>    line only. The old "sealed / pressure-suit species" immunity mechanic is **replaced** by the
+>    body's **reduced-thirst-rate gene/trait tier** (a consumption modifier, NOT immunity) — more
+>    implementable and more anti-exponential. `cherry_picker_killlist.md` §2 remains the single
+>    source of truth for the race roster and agrees with this doc.
+>
+> 4. Everything else — water/thirst doctrine, the low-water species tier, NPC-vs-NPC relations
+>    matrix, the ten faction designs (Aquifer/Homestead Compact, Hutt Cartel with Nikto
+>    consolidation, Free Droid Enclaves, Geonosian Foundry Hive, Arkanian–Kaminoan Gene
+>    Consortium, Tusken clans, Wookiee freeholds, Imperial Directorate, Bounty Hunters), the
+>    Race→Appears-in coverage matrix, settlement-count tiers, and equipment discipline — is
+>    adopted as canonical.
 
 ## Purpose
 
@@ -110,26 +122,51 @@ Four states. Each governs settlement siting **and** the operational range of tha
 
 Water tiles belong to the friendly-to-neutral band (League, Wookiee uplands, Hutt oases). Dry tiles belong to the hostile band (Tusken, Geonosian, supplied Imperial, denial-holding droids). The player's expansion is a fork: **settle wet and be crowded by factions you can negotiate with, or settle dry and be open but permanently hunted.**
 
-### Sealed species
+### Low-water species tier
 
-Two species carry no field thirst need at all and instead run on a consumable filter dependency. Both are long-range dry-tile operators; filters are loot.
+Beyond the faction-level states, individual desert-evolved species carry a **reduced thirst rate** — implemented as a gene or trait modifying water consumption, not as immunity. These pawns are the long-range dry-tile operators in any group they join, and their presence in a raid tells the player how long that raid can stay in the field.
 
-- **Kel Dor** — Dorin's atmosphere is helium plus a unique gas with almost no oxygen. Off-world they wear antiox masks to filter oxygen out; without the mask they suffocate, without goggles they are effectively blind, and the mask is poisonous to other species.
-- **Skakoan** — Techno Union engineers, sealed in methane pressure suits away from Skako.
+| Species | Thirst rate | Basis |
+|---|---|---|
+| **Tusken** | Very low | Full moisture-retention wrappings and filtered masks; desert-native |
+| **Desert alien (Impid)** | Very low | Heat-adapted xenotype; fire-affiliated |
+| **Geonosian** | Very low | Arid-rock native; subterranean hive metabolism |
+| **Nikto** | Low | Kintan is harsh and irradiated post-supernova |
+| **Kaleesh** | Low | Arid Kalee; warrior culture built on long overland hunts |
+| **Iktotchi** | Low | Iktotch is a barren, storm-scoured moon |
+| **All droid chassis** | **None** | No thirst need whatsoever |
+
+Conversely, **Wookiee, Wookiee-kin, Herglic, Mon Calamari, Quarren, Selkath, Gungan, Chagrian, Aqualish, Trandoshan, Rodian, Ithorian, and Ewok** carry an **elevated** thirst rate. They are the pawns that make a faction slow.
 
 ---
 
-## Global system 3 — Naming
+## Global system 3 — Available races
 
-Generic xenotype-mod labels are replaced with in-universe species so raid logs never break the fiction.
+Everything in this document draws from what is on disk. Nothing else is used.
 
-| Old label | Now | Role |
+### Outer Rim – Galactic Diversity (plus bundled Chiss submod)
+
+Abednedo · Aqualish · Arkanian · Bith · Bothan · Cathar · Cerean · Chagrian · Chiss · Dathomirian · Devaronian · Duros · Ewok · Geonosian · Gungan · Herglic · Iktotchi · Iridonian (Zabrak) · Ithorian · Kaleesh · Kaminoan · Massassi · Miraluka · Mirialan · Mon Calamari · Neimoidian · Nikto · Pantoran · Pyke · Quarren · Rakata · Rodian · Selkath · Sith · Sullustan · Togruta · Trandoshan · Tusken · Twi'lek · Umbaran · Wookiee · Zeltron
+
+### Reflavoured vanilla Biotech xenotypes, plus baseline Humanity
+
+| Label | Base | Role in this roster |
 |---|---|---|
-| Savant caste | **Skakoan** | Sealed Techno Union engineer/fabricator caste |
-| Brute stock | **Houk** | Large aggressive heavies; share Sriluur with the Weequay |
-| Desert Alien | **Ghorfa** | Feral unmasked Tusken offshoot; fire-callers and stalkers |
+| **Gamorrean** | Pigskin (custom-authored) | Hutt heavy guards and melee enforcers |
+| **Wookiee-kin** | Yttakin | Freehold hunters, labourers, heavy warriors |
+| **Savant caste** | Genie | Engineer, fabricator, and researcher caste |
+| **Brute stock** | Neanderthal | Heavy labour, melee auxiliaries, engineered labour-lines |
+| **Desert alien** | Impid | Fire-callers, fast desert stalkers |
+| **Baseliner human** | Humanity | Imperial rank and file, homesteaders |
 
-New species added to the roster: **Klatooinian**, **Vodran**, **Arkanian Offshoot**.
+Optional relabels for immersion, using the same bases and requiring no new race: Savant caste → *Techno Union savant*; Brute stock → *labour-line*; Desert alien → *ember-kin*.
+
+### Bespoke authored races
+
+Two races are authored for this roster rather than installed from a species mod, under the roster's tweak licence:
+
+- **Custom Hutt** — bosses and settlement leaders in the Hutt Cartel only.
+- **Custom droid chassis** — the Free Droid Enclaves, plus Imperial and Geonosian military droid pawn kinds.
 
 ---
 
@@ -145,13 +182,19 @@ Faction-wide percentages govern ordinary generation. Race is overridden at the p
 - Geonosian aristocrats, queens, and drones
 - all droid chassis
 - faction leaders
-- Consortium prototypes and Arkanian Offshoot labour
+- Consortium prototypes and labour-line workers
 
 ## Global system 5 — Jedi and Sith
 
 Royalty psycast mechanics, not a bespoke Force system, unless a Force mod is already installed.
 
-**Jedi are factionless.** They generate as hidden wanderer pawns hunted by the Imperial Directorate, not as members of the Homestead Compact or any other faction. Psylink 3–6; monosword, persona monosword, or custom lightsaber; shield belt; no heavy armour; defensive, mobility, perception, and control psycasts; extreme pawn combat value; maximum one per group.
+**Jedi placement — BOTH channels are true** (reconciliation ruling, 2026-08-06, overriding the original factionless-only phrasing).
+
+*Primary channel — factionless wanderers.* Jedi generate as hidden wanderer pawns hunted by the Imperial Directorate, not as members of the Homestead Compact or any other faction. Eligible races: Miraluka, Mirialan, Togruta, Iktotchi, Cerean, or Baseliner human. Psylink 3–6; monosword, persona monosword, or custom lightsaber; shield belt; no heavy armour; defensive, mobility, perception, and control psycasts; extreme pawn combat value; maximum one per group.
+
+*Secondary channel — the rare sheltered Jedi.* In addition, a **rare Jedi may shelter within a sympathetic Homestead / Moisture-Farmer group** at a very low spawn weight (the "hidden protector" the player may discover as an ally rather than a hunted stranger). Same curated VPE light/control loadout, same one-per-group cap. This does not make Jedi faction *members* in the roster sense — it is an occasional embedded guardian, not a standing pawn-kind slot in the faction's ordinary generation.
+
+Both channels draw on the same curated NPC-only VPE ability set; the player and the Jawa faction have no Force-acquisition path under either channel.
 
 **Sith** appear only in Imperial Sith-escort pawn kinds. Psylink 4–6; persona melee weapon; shield belt or prestige armour; offensive and control psycasts; high Melee, Social, Intellectual; always accompanied by elite troops; extreme spawn cost.
 
@@ -248,34 +291,40 @@ Every Cartel settlement sits on or immediately beside an oasis tile, and that ti
 
 ## Racial mixture
 
-Two tiers, drawn from the Treaty of Vontor. The Klatooinians, Nikto, and Vodrans were bound into permanent servitude to the Hutts; the Weequay never signed and remained free mercenaries.
+Two tiers. The Nikto were bound into permanent servitude to the Hutts by the Treaty of Vontor and have served as their foot soldiers and bodyguards ever since; everyone else in the Cartel is paid.
 
 | Race/xenotype | Weight | Tier | Typical use |
 |---|---:|---|---|
 | **Custom Hutt** | 3% | Master | Bosses, settlement leaders, caravan principals |
-| **Gamorrean** | 15% | Paid | Heavy guards, melee enforcers, wardens |
-| **Klatooinian** | 12% | Vontor servile | Line infantry, desert-capable escorts |
-| **Nikto** | 12% | Vontor servile | General soldiers, labour overseers |
-| **Weequay** | 11% | Paid mercenary | Caravan guards, riflemen, breachers |
-| **Rodian** | 8% | Paid | Shooters, hunters, scouts |
-| **Twi'lek** | 7% | Paid | Traders, social specialists, medics |
-| **Trandoshan** | 7% | Paid | Heavy hunters, melee specialists |
-| **Pyke** | 6% | Paid | Spice handlers, negotiators, officers |
-| **Aqualish** | 5% | Paid | Shotgunners, bruisers, miners |
-| **Vodran** | 4% | Vontor servile | Berserker shock infantry |
-| **Devaronian** | 4% | Paid | Raiders, incendiary specialists |
-| **Herglic** | 3% | Paid | Heavy labour and bodyguards |
+| **Nikto** | 22% | Vontor servile | Line infantry, bodyguards, labour overseers |
+| **Gamorrean** | 18% | Paid | Heavy guards, melee enforcers, wardens |
+| **Rodian** | 11% | Paid | Shooters, hunters, scouts |
+| **Trandoshan** | 10% | Paid | Heavy hunters, melee specialists |
+| **Aqualish** | 9% | Paid | Shotgunners, bruisers, miners |
+| **Twi'lek** | 8% | Paid | Traders, social specialists, medics |
+| **Pyke** | 7% | Paid | Spice handlers, negotiators, officers |
+| **Devaronian** | 5% | Paid | Raiders, incendiary specialists |
+| **Herglic** | 4% | Paid | Heavy labour and bodyguards |
 | **Zeltron** | 2% | Paid | Traders, recruiters, social roles |
 | **Baseliner human** | 1% | Hired | Technical and administrative staff |
 | **Total** | **100%** | | |
+
+### Nikto subspecies as pawn tiers
+
+Kintan's Nikto split into distinct subspecies after a nearby supernova. Use them as internal tiers so the servile caste has visible structure rather than being one undifferentiated block:
+
+- **Red (Kajain'sa'Nikto)** — desert-native line infantry; low thirst rate; the Cartel's deep-country escorts.
+- **Green (Kadas'sa'Nikto)** — forest stock; scouts and trackers.
+- **Mountain (Esral'sa'Nikto)** — heavy infantry and siege labour.
+- **Pale (Gluss'sa'Nikto)** — technical and overseer roles.
 
 ### Forced pawn-kind assignments
 
 - **Hutt Kajidic Boss:** Custom Hutt only; high Social; poor movement; excellent apparel; shield belt or implanted defence; 2–4 dedicated guards in the same group.
 - **Gamorrean Guard:** Gamorrean only; melee bias; high armour; near-zero ranged generation.
-- **Vontor Levy:** Klatooinian, Nikto, or Vodran; cheap, low point cost, poor gear, high loyalty.
-- **Vodran Berserker:** Vodran only; melee, no ranged, fearless.
-- **Weequay Mercenary:** Weequay only; noticeably better equipment and higher point cost than the Vontor levy.
+- **Vontor Levy:** Nikto only; cheap, low point cost, poor gear, high loyalty, fearless.
+- **Red Nikto Outrider:** Kajain'sa'Nikto only; low thirst; long-range desert escort and raid screen.
+- **Paid Enforcer:** Rodian, Aqualish, Devaronian, or Trandoshan; noticeably better equipment and higher point cost than the Vontor levy.
 - **Cartel Lieutenant:** Pyke, Twi'lek, or Nikto; high Social and Intellectual.
 - **Cartel Hunter:** Rodian, Trandoshan, or Devaronian; high Shooting and Animals.
 - **Cartel Heavy:** Herglic, Aqualish, or Gamorrean; high raid-point cost.
@@ -307,7 +356,7 @@ Two tiers, drawn from the Treaty of Vontor. The Klatooinians, Nikto, and Vodrans
 | Physical love | Free |
 | Apostasy | Horrible |
 
-The theist structure is load-bearing: the Klatooinians and Vodrans regarded the Hutts as literal near-gods, which makes Apostasy: Horrible and the Vontor levies' suicidal loyalty coherent rather than arbitrary.
+The theist structure is load-bearing. The Hutts did not merely conquer the Nikto — they bombarded the Cult of M'dweshuu's stronghold from orbit, destroying the fanatical religious order that had ruled Kintan for centuries, and the grateful Nikto signed themselves into indefinite servitude. The Kajidic replaced a god rather than defeating an army. That is what makes Apostasy: Horrible and the Vontor levies' fearless loyalty coherent rather than arbitrary, and it gives the Cartel's ideoligion a genuine conversion story to proselytise.
 
 ## Technology and economy
 
@@ -324,7 +373,7 @@ The theist structure is load-bearing: the Klatooinians and Vodrans regarded the 
 
 **Vontor levy** — autopistol, machine pistol, revolver, bolt-action rifle, pump shotgun; duster, flak vest, simple helmet; awful to normal quality.
 
-**Weequay mercenary** — heavy SMG, chain shotgun, assault rifle, frag grenades; flak pants, flak jacket, simple helmet; normal to good.
+**Paid enforcer** — heavy SMG, chain shotgun, assault rifle, frag grenades; flak pants, flak jacket, simple helmet; normal to good.
 
 **Gamorrean guard** — mace, warhammer, longsword, breach axe; plate or marine-style heavy armour on elites; shield belt.
 
@@ -334,18 +383,18 @@ The theist structure is load-bearing: the Klatooinians and Vodrans regarded the 
 
 ## Pawn-group patterns
 
-- **Collection crew:** lieutenant, 4–8 levies, 2 Gamorreans
-- **Punitive raid:** 12–25 mixed levies, mercenaries, heavies, occasional combat droid
+- **Collection crew:** lieutenant, 4–8 Nikto levies, 2 Gamorreans
+- **Punitive raid:** 12–25 mixed levies, enforcers, heavies, occasional combat droid
+- **Deep-country escort:** all-Nikto red-subspecies group; the only Cartel formation that operates far from an oasis
 - **Slave caravan:** Hutt or Pyke principal, traders, prisoners, 8–15 guards
 - **Water toll party:** small fast group dispatched at trespass on a Cartel oasis
 - **Elite retaliation:** Hutt proxy, recon-armoured lieutenants, Trandoshan hunters, shielded Gamorreans
 
 ## Lore basis
 
-- Treaty of Vontor bound Klatooinians, Nikto, and Vodrans into permanent servitude — https://starwars.fandom.com/wiki/Treaty_of_Vontor
-- Weequay fought for the Hutts as mercenaries but never signed and stayed independent — https://swg.fandom.com/wiki/Weequay
-- Klatooinians and Vodrans revered the Hutts as near-gods — https://starwars.fandom.com/wiki/Klatooinian/Legends
-- Klatooine's desert tribes travel constantly seeking food and water, herding voraxx (a bantha cousin) — https://starwars-88.obsidianportal.com/wikis/klatooine
+- The Treaty of Vontor placed the Nikto in permanent servitude to the Hutts; they were used as foot soldiers and bodyguards, and millions were transplanted off Kintan across Hutt Space — https://starwars.fandom.com/wiki/Nikto/Legends
+- The Hutts destroyed the Cult of M'dweshuu from orbit, and the grateful Nikto signed themselves into indefinite servitude — https://en.wikipedia.org/wiki/Klatooinian
+- Kintan's Nikto divided into five subspecies after a nearby supernova — https://mortallyclearwonderland.tumblr.com/post/662051711091933184/star-wars-alien-species-nikto
 - Hutt slavery on Outer Rim worlds continued beyond Republic reach — https://starwars.fandom.com/wiki/Slavery
 
 ---
@@ -393,7 +442,7 @@ Human primacy is enforced demographically, not just ideologically. Non-humans ar
 | **Umbaran** | 6% | Intelligence, night operations, interrogation |
 | **Arkanian** | 4% | Medical and technical officers |
 | **Zabrak/Iridonian** | 3% | Assault troops, hardened NCOs |
-| **Skakoan** | 2% | Sealed fabrication and ordnance specialists |
+| **Savant caste** | 2% | Fabrication and ordnance specialists |
 | **Total** | **100%** | |
 
 **Not in the generation table.** Massassi, Dathomirian, and Sith appear only inside Sith-escort pawn kinds. Rakata appear only as relic-recovery specialists in quest groups.
@@ -407,7 +456,7 @@ Imperial settlements always generate a slave/prisoner population, drawn from **W
 - **Stormtrooper:** Baseliner, or rare Chiss/Zabrak.
 - **Stormtrooper Sergeant:** Baseliner, Chiss, or Umbaran.
 - **Black-uniform Commander:** Baseliner, Chiss, Umbaran, or Arkanian; high Social and Shooting.
-- **Imperial Technician:** Skakoan or Arkanian; sealed suit, no field thirst.
+- **Imperial Technician:** Savant caste or Arkanian; high Intellectual and Crafting.
 - **Massassi Shock Trooper:** Massassi only; strong melee bias; escort-only.
 - **Dark Adept:** Dathomirian or Sith; psylink 2–4.
 - **Sith Commander:** Sith only; psylink 4–6; persona melee weapon.
@@ -464,6 +513,8 @@ Imperial settlements always generate a slave/prisoner population, drawn from **W
 
 **Black-uniform commander** — charge rifle or lance, or excellent autopistol; prestige recon armour; jump pack or low-shield pack; bionic eye, arm, spine, coagulator.
 
+**Imperial savant** — charge rifle or none; officer uniform over flak vest; high Intellectual and Crafting; runs condensers, fabrication bays, and droid maintenance.
+
 **Sith commander** — monosword, persona monosword, zeushammer, or lightsaber; prestige marine armour or dark apparel; shield belt; psylink 4–6; extreme spawn cost.
 
 **Security droids** — light (SMG-equivalent), standard (assault-rifle equivalent, integrated armour), heavy (charge weapon/minigun, marine-level), support (smoke, EMP, medical, repair).
@@ -484,7 +535,6 @@ Imperial settlements always generate a slave/prisoner population, drawn from **W
 - Wookiees, Mon Calamari, Talz and others enslaved under Human High Culture — https://starwars.fandom.com/wiki/Galactic_Empire/Legends
 - Imperial prejudice extended to droids as well as Wookiees — https://starwars.fandom.com/wiki/High_Human
 - Geonosians enslaved by the Empire to build the Death Star — https://aliens.fandom.com/wiki/Geonosian
-- Kel Dor antiox mask dependency (applied to the sealed-species rule) — https://starwars.fandom.com/wiki/Antiox_breath_mask
 
 ---
 
@@ -500,7 +550,7 @@ The Compact requires potable water but is excluded from natural sources — the 
 
 - Settlements **store** water but have no source. Vaporator arrays are the thing worth destroying, not the thing worth capturing.
 - This is the Tusken casus belli and the reason Homestead–Tusken hostility is hardcoded.
-- **Kel Dor militia are sealed** — no field thirst, but a filter dependency. They serve as the Compact's long-range scouts and wardens, and their filters are lootable.
+- **Iktotchi wardens are the Compact's only long-range asset.** Low thirst rate plus precognition makes them the outriders who patrol between vaporator arrays and give early warning of Tusken water raids.
 
 ## Faction settings
 
@@ -517,7 +567,7 @@ The Compact requires potable water but is excluded from natural sources — the 
 | Base wealth | Low |
 | Typical settlement defenders | 6–16 |
 | Combat-droid share | 0–5%; utility droids only |
-| Jedi | **None** — Jedi are factionless (see Global system 5) |
+| Jedi | Normally **none** — Jedi are primarily factionless (see Global system 5). A **rare** sheltered Jedi may embed here at very low weight (BOTH-channel ruling). |
 
 ## Racial mixture
 
@@ -527,14 +577,13 @@ The Compact requires potable water but is excluded from natural sources — the 
 | **Ithorian** | 12% | Growers, doctors, negotiators |
 | **Duros** | 10% | Mechanics, pilots, rifle militia |
 | **Sullustan** | 10% | Miners, builders, tunnel workers |
-| **Abednedo** | 8% | General settlers and traders |
-| **Pantoran** | 7% | Administrators and marksmen |
+| **Abednedo** | 9% | General settlers and traders |
+| **Pantoran** | 8% | Administrators and marksmen |
 | **Mirialan** | 7% | Growers and healers |
 | **Twi'lek** | 7% | Traders, farmers, medics |
+| **Iktotchi** | 5% | Outriders, animal handlers, well-wardens |
 | **Togruta** | 5% | Hunters and scouts |
 | **Cerean** | 4% | Researchers and teachers |
-| **Kel Dor** | 4% | Sealed scouts and wardens |
-| **Iktotchi** | 3% | Animal handlers |
 | **Bith** | 2% | Craftspeople and researchers |
 | **Miraluka** | 1% | Rare seers |
 | **Total** | **100%** | |
@@ -544,7 +593,7 @@ The Compact requires potable water but is excluded from natural sources — the 
 - **Moisture Farmer:** any race; Plants/Construction bias; poor combat gear.
 - **Homestead Mechanic:** Duros, Sullustan, Bith, Cerean, or Baseliner.
 - **Village Militia:** any race; industrial firearm; low armour.
-- **Well-Keeper's Warden:** Kel Dor only; sealed; long patrol range; carries filters.
+- **Well-Keeper's Warden:** Iktotchi only; low thirst rate; long patrol range; precognitive early warning of approaching raids.
 - **Utility Droid:** noncombat custom droid — cleaning, hauling, medical, farming.
 
 ## Belief system: **The Covenant of Free Wells**
@@ -593,7 +642,7 @@ The Compact requires potable water but is excluded from natural sources — the 
 
 **Veteran defender** — assault rifle, heavy SMG, sniper rifle; flak vest and simple helmet; smokepop pack; no more than 10–15% of defenders.
 
-**Well-keeper's warden (Kel Dor)** — bolt-action or assault rifle; duster, sealed mask and goggles; high Shooting and Perception; operates far beyond normal militia range.
+**Well-keeper's warden (Iktotchi)** — bolt-action or assault rifle; duster and dust wrappings; high Shooting and Perception; low thirst rate; operates far beyond normal militia range.
 
 ## Pawn-group patterns
 
@@ -605,8 +654,7 @@ The Compact requires potable water but is excluded from natural sources — the 
 ## Lore basis
 
 - Tuskens hold water sacred and moisture farming as sacrilege, producing permanent conflict with farmers — https://disney.fandom.com/wiki/Tusken_Raiders
-- Kel Dor cannot breathe oxygen atmospheres and depend on antiox masks and goggles — https://swse.fandom.com/wiki/Kel_Dor
-- Dorin's atmosphere is helium and a unique gas with very little oxygen — https://starwars.fandom.com/wiki/Dorin/Legends
+- Iktotchi are native to Iktotch, a barren storm-scoured moon, and are noted for precognition — https://starwars.fandom.com/wiki/Ultimate_Alien_Anthology
 
 ---
 
@@ -644,24 +692,24 @@ Tuskens never site on a water tile. Camps are canyons, caves, and deep dune sea.
 
 ## Racial mixture
 
-Tuskens are near-monocultural; internal variety is expressed through two tiers rather than mixed species.
+Tuskens are near-monocultural; internal variety is expressed through two tiers rather than mixed species. Tuskens and Desert aliens both carry very low thirst rates, which is what lets a water-forbidding faction field this many bodies.
 
 | Race/xenotype | Weight | Typical use |
 |---|---:|---|
 | **Tusken — Dune Sea tier** | 50% | Rifles, bantha handlers, warband core |
 | **Tusken — Canyon tier** | 35% | Stalkers, ambushers, champions |
-| **Ghorfa** | 8% | Feral unmasked offshoot; fire-callers and fast scouts |
-| **Houk** | 4% | Heavy melee and hauling |
+| **Desert alien** | 8% | Fire-callers and fast heat-adapted scouts |
+| **Brute stock** | 4% | Heavy melee and hauling |
 | **Nikto** | 3% | Adopted warriors and smiths |
 | **Total** | **100%** | |
 
 ### Forced pawn-kind assignments
 
 - **Clan Rifle:** Tusken only; bolt-action cycler rifle.
-- **Sand Stalker:** Tusken (Canyon) or Ghorfa; fast movement; short-range weapon.
-- **Bantha Handler:** Tusken or Houk; high Animals; **bonded** mount.
-- **Clan Champion:** Houk or Tusken; shield belt and venom-treated melee weapon.
-- **Fire Caller:** Ghorfa only; incendiary weapon or fire ability.
+- **Sand Stalker:** Tusken (Canyon) or Desert alien; fast movement; short-range weapon.
+- **Bantha Handler:** Tusken or Brute stock; high Animals; **bonded** mount.
+- **Clan Champion:** Brute stock or Tusken; shield belt and venom-treated melee weapon.
+- **Fire Caller:** Desert alien only; incendiary weapon or innate fire ability.
 - **Water Raider:** Tusken; light kit, high movement, objective is container theft.
 
 ## Belief system: **The Covenant of Sand and Blood**
@@ -669,7 +717,7 @@ Tuskens are near-monocultural; internal variety is expressed through two tiers r
 - **Structure:** Animist
 - **Memes:** Raider, Rancher, Pain is virtue, Collectivist
 - **Styles:** Totemic, Morbid, Rustic
-- **Preferred xenotypes:** Tusken, Ghorfa
+- **Preferred xenotypes:** Tusken, Desert alien
 - **Primary role:** Clan speaker
 - **Specialists:** Animals specialist, melee or shooting specialist
 
@@ -717,7 +765,7 @@ Tuskens are near-monocultural; internal variety is expressed through two tiers r
 
 **Clan champion** — venom spear, longsword, mace, warhammer; plate armour or flak vest; shield belt; one per medium raid.
 
-**Fire caller** — incendiary launcher or molotovs; duster and simple helmet; Ghorfa only.
+**Fire caller** — incendiary launcher, molotovs, or innate fire ability; duster and simple helmet; Desert alien only.
 
 ## Pawn-group patterns
 
@@ -882,7 +930,7 @@ Small forest and upland refuges of powerful melee-capable species. Friendly by d
 
 ## Water doctrine — **Require (severe)**
 
-Large, high-mass, fur-bearing, rainforest-evolved fighters on a desert world. The thirstiest combat pawns in the game, running a melee-heavy doctrine that demands long approaches.
+Large, high-mass, fur-bearing, rainforest-evolved fighters on a desert world. Wookiee and Wookiee-kin both carry elevated thirst rates, and the faction runs a melee-heavy doctrine that demands long approaches. These are the thirstiest combat pawns in the game.
 
 - **Devastating on home defence, near-useless expeditionary.** This is the mechanical content of "small but formidable ally."
 - Bringing Wookiee allies to a distant fight requires the player to supply the water — a standing logistics quest.
@@ -915,19 +963,18 @@ Large, high-mass, fur-bearing, rainforest-evolved fighters on a desert world. Th
 | **Wookiee-kin** | 25% | Hunters, labourers, heavy warriors |
 | **Cathar** | 10% | Scouts and agile melee fighters |
 | **Ewok** | 8% | Trappers, handlers, short-range fighters |
-| **Togruta** | 4% | Hunters and negotiators |
+| **Togruta** | 6% | Hunters, scouts, negotiators |
 | **Ithorian** | 3% | Growers, doctors, spiritual roles |
-| **Kel Dor** | 2% | Sealed scouts and rare Force-sensitive defenders |
 | **Total** | **100%** | |
 
 ### Forced pawn-kind assignments
 
 - **Freehold Warrior:** Wookiee, Wookiee-kin, or Cathar.
 - **Bowcaster Hunter:** Wookiee or Wookiee-kin; heavy crossbow/greatbow analog only — **never assault rifles.**
-- **Tree Scout:** Ewok, Cathar, Togruta, or Kel Dor.
+- **Tree Scout:** Ewok, Cathar, or Togruta.
 - **Freehold Elder:** Wookiee or Ithorian.
 - **Liberator:** Wookiee or Cathar; high melee; shield belt.
-- **Forest Jedi:** extremely rare Kel Dor, Togruta, or Wookiee; psylink 2–5.
+- **Forest Jedi:** extremely rare Togruta or Wookiee; psylink 2–5.
 
 ### Life debt
 
@@ -1035,10 +1082,9 @@ Every combat pawn kind is amphibian or aquatic-evolved. This is physiology, not 
 | Race/xenotype | Weight | Typical use |
 |---|---:|---|
 | **Mon Calamari** | 22% | Engineers, officers, doctors |
-| **Quarren** | 20% | Miners, riflemen, industrial workers |
-| **Selkath** | 15% | Doctors, wardens, melee defenders |
-| **Nautolan** | 12% | Scouts and melee defenders |
-| **Gungan** | 10% | Shielded skirmishers, handlers, growers |
+| **Quarren** | 23% | Miners, riflemen, industrial workers |
+| **Selkath** | 20% | Doctors, wardens, melee defenders |
+| **Gungan** | 14% | Shielded skirmishers, handlers, growers |
 | **Chagrian** | 8% | Administrators and heavy infantry |
 | **Herglic** | 5% | Heavy labour and shielded defenders |
 | **Aqualish** | 4% | Miners and shotgunners |
@@ -1049,7 +1095,7 @@ Every combat pawn kind is amphibian or aquatic-evolved. This is physiology, not 
 ### Forced pawn-kind assignments
 
 - **Aquifer Engineer:** Mon Calamari, Duros, or Quarren.
-- **Water Warden:** Selkath, Nautolan, or Chagrian. Selkath variants carry a **natural toxic melee attack** from retractile claws — culturally forbidden to use, and therefore a sign the League considers the situation extreme.
+- **Water Warden:** Selkath or Chagrian. Selkath variants carry a **natural toxic melee attack** from retractile claws — culturally forbidden to use, and therefore a sign the League considers the situation extreme.
 - **Gungan Skirmisher:** Gungan only; **personal energy shield → shield belt as standard issue**, not an upgrade.
 - **League Heavy:** Herglic, Aqualish, or Chagrian.
 - **EMP Specialist:** Mon Calamari, Quarren, or Duros.
@@ -1125,8 +1171,8 @@ Modelled on the Selkath doctrine of brutally enforced neutrality backed by a mon
 - Manaan was the only natural source of kolto, and the Selkath used that monopoly to enforce neutrality — https://starwars.fandom.com/wiki/Manaan/Legends
 - Kolto smuggling carried the death penalty; disturbing the peace brought fines, imprisonment, or deportation — https://starwars.fandom.com/wiki/Ahto_City_Civil_Authority
 - Selkath have poisoned retractile claws that are socially unacceptable and illegal to use in a fight — https://www.worldanvil.com/w/star-wars-se-rangifer24/a/selkath-species
-- Glee Anselm is an ocean world with no major landmasses; Nautolans are amphibious — https://starwars.fandom.com/wiki/Glee_Anselm
 - Giju, the Herglic homeworld, is an aquatic world of oceans, islands, and marshes — https://mortallyclearwonderland.tumblr.com/post/664480830890147840/star-wars-alien-species-herglic
+- Ando, the Aqualish homeworld, is an ocean world; Aqualish are amphibious — https://anyflip.com/snvba/vghr/basic
 
 ---
 
@@ -1140,7 +1186,7 @@ An industrial hive faction: cheap biological drones and mass-produced battle dro
 
 Geonosis is arid rock and hives are subterranean. Drones take moisture from food and deep-rock condensate; battle droids need none at all.
 
-- Near-zero drone water need combined with a 35–55% droid share makes the Foundry **the only faction that can sustain a siege in deep desert.** This is its strategic identity.
+- Geonosians carry a very low thirst rate, and battle droids carry none. Combined with a 35–55% droid share, this makes the Foundry **the only faction that can sustain a siege in deep desert.** This is its strategic identity.
 - Hives are sited in mountains, caves, ore fields, and ancient factories — never on surface water.
 - Kaminoan bio-production specialists are gated to wet-adjacent hives only and never appear in deep-desert groups.
 
@@ -1168,9 +1214,9 @@ Geonosis is arid rock and hives are subterranean. Drones take moisture from food
 | Race/xenotype | Weight | Typical use |
 |---|---:|---|
 | **Geonosian** | 76% | Queen, aristocrats, warrior drones, worker drones |
-| **Skakoan** | 8% | Sealed Techno Union foundry engineers |
+| **Savant caste** | 8% | Foundry engineers and fabricators |
 | **Bith** | 6% | Engineers and researchers |
-| **Houk** | 5% | Heavy labour and melee auxiliaries |
+| **Brute stock** | 5% | Heavy labour and melee auxiliaries |
 | **Pyke** | 3% | Procurement and security officers |
 | **Rakata** | 2% | Relic engineers |
 | **Total** | **100%** | |
@@ -1189,8 +1235,8 @@ The hive is ruled by Geonosians, not by outside overseers. Three castes, matchin
 - **Geonosian Aristocrat:** Geonosian only; winged; **jump pack**; command role; expensive.
 - **Warrior Drone:** Geonosian only; winged; jump pack; **sonic blaster**; low point cost.
 - **Worker Drone:** Geonosian only; wingless; minimal combat stats; very low point cost.
-- **Foundry Engineer:** Skakoan, Bith, or Rakata; sealed suits on Skakoans.
-- **Hive Heavy:** Houk only.
+- **Foundry Engineer:** Savant caste, Bith, or Rakata; high Intellectual and Crafting.
+- **Hive Heavy:** Brute stock only.
 - **Battle Droid:** custom droid/mechanoid pawn kinds in multiple tiers.
 - **Bio-Production Specialist:** Kaminoan; wet-adjacent hives only; rare.
 
@@ -1246,9 +1292,9 @@ Captives are held for the arena rather than imprisoned, which reinforces aristoc
 
 **Geonosian aristocrat** — heavy sonic weapon or charge rifle; recon armour over chitin; jump pack; good to excellent; command bonuses.
 
-**Hive heavy (Houk)** — chain shotgun, minigun, warhammer; marine armour; shield belt or low-shield pack.
+**Hive heavy (Brute stock)** — chain shotgun, minigun, warhammer; marine armour; shield belt or low-shield pack.
 
-**Foundry engineer (Skakoan)** — charge rifle or none; sealed pressure suit; no field thirst; high Crafting and Intellectual.
+**Foundry engineer (Savant caste)** — charge rifle or none; lab and workshop apparel over flak vest; high Crafting and Intellectual.
 
 **Battle droids** — line (assault-rifle equivalent, light armour), melee (integrated blade, shield), heavy (minigun/charge, marine-level), command (accuracy and coordination bonuses, expensive).
 
@@ -1258,7 +1304,7 @@ Captives are held for the arena rather than imprisoned, which reinforces aristoc
 - **Foundry assault:** aristocrat, engineers, heavies, battle droids
 - **Deep-desert siege train:** mortar crews, worker drones, droid guards — sustainable where no other faction can operate
 - **Jedi-hunt detachment:** sonic-blaster warrior drones fielded specifically against psycaster pawns
-- **Elite recovery unit:** Rakata or Skakoan engineer with heavy droid escort
+- **Elite recovery unit:** Rakata or Savant-caste engineer with heavy droid escort
 
 ## Lore basis
 
@@ -1281,7 +1327,7 @@ A small, wealthy, technically advanced faction built on genetics, medicine, impl
 Closed-loop recyclers make the Consortium siting-indifferent, but growth vats and biosculpters are industrially water-hungry. It therefore **buys bulk water from the Aquifer League** — a supply relationship the player can broker, tax, or sever.
 
 - Sites on isolated highlands and secure research locations regardless of hydrology.
-- Arkanian Offshoot labour is water-rationed. Escaped Offshoots arriving at the player's colony arrive dehydrated.
+- Labour-line pawns are water-rationed. Escaped ones arriving at the player's colony arrive dehydrated.
 
 ## Faction settings
 
@@ -1308,10 +1354,10 @@ Closed-loop recyclers make the Consortium siting-indifferent, but growth vats an
 |---|---:|---|
 | **Arkanian** | 26% | Geneticists, doctors, administrators — the pureblood caste |
 | **Kaminoan** | 20% | Growth-vat and medical specialists |
-| **Arkanian Offshoot** | 12% | **Engineered labour underclass** |
+| **Brute stock** | 12% | **The labour-line: an engineered underclass** |
 | **Cerean** | 8% | Senior researchers and educators |
 | **Bith** | 8% | Engineers and fabricators |
-| **Skakoan** | 8% | Sealed technical staff |
+| **Savant caste** | 8% | Senior technical staff and vat supervisors |
 | **Chiss** | 6% | Security officers and administrators |
 | **Rakata** | 4% | Relic and archotechnology researchers |
 | **Umbaran** | 4% | Intelligence and containment staff |
@@ -1319,22 +1365,22 @@ Closed-loop recyclers make the Consortium siting-indifferent, but growth vats an
 | **Neimoidian** | 2% | Commercial staff |
 | **Total** | **100%** | |
 
-### The Offshoot underclass
+### The labour-line
 
-Arkanian geneticists engineered the Offshoots to serve their pureblood masters — bred as living experiments and labourers, never recognised as true Arkanians, with short lives and no prospect beyond servitude. Purebloods have historically purged them.
+Arkanian geneticists engineered a lesser lineage to serve their pureblood masters — bred as living experiments and labourers, never recognised as true Arkanians, shunned, short-lived, and periodically purged. In this roster that lineage is represented by **Brute stock (Neanderthal)**, reflavoured faction-side as the Consortium's labour-line. It is deliberately the same base used for heavy labour in the Hutt and Geonosian factions, because it is the same idea: a body bred to work.
 
 This makes the faction's Supremacist and preferred-xenotype precepts **internally aimed**: the Consortium despises its own workforce. Two mechanics follow:
 
-- **Escaped Offshoots** generate as recruitable refugee incidents at the player's colony, arriving dehydrated and in poor health.
+- **Escaped labour-line pawns** generate as recruitable refugee incidents at the player's colony, arriving dehydrated and in poor health.
 - **Retrieval raids** are the Consortium's only offensive pawn group — sent to reclaim escaped property. This gives a neutral, hard-to-raid faction a personal reason to attack the player.
 
 ### Forced pawn-kind assignments
 
-- **Geneticist:** Arkanian, Kaminoan, or Skakoan.
+- **Geneticist:** Arkanian, Kaminoan, or Savant caste.
 - **Senior Researcher:** Arkanian, Cerean, or Rakata.
 - **Containment Officer:** Chiss or Umbaran.
 - **Medical Specialist:** Kaminoan or Arkanian.
-- **Offshoot Labourer:** Arkanian Offshoot only; weak constitution; minimal gear; very low point cost.
+- **Labour-line Worker:** Brute stock only; minimal gear; water-rationed; very low point cost.
 - **Prototype Guardian:** gene-tailored pawn from any approved base race; extreme point cost.
 - **Psychic Researcher:** Miraluka or Cerean with low psylink.
 
@@ -1382,7 +1428,7 @@ This makes the faction's Supremacist and preferred-xenotype precepts **internall
 
 **Research staff** — autopistol or none; lab apparel, flak vest at dangerous sites; neural calculator, bionic eyes, learning implants.
 
-**Offshoot labourer** — none or knife; work clothing; poor health; appears in defence only under duress.
+**Labour-line worker** — none or knife; work clothing; poor health; appears in defence only under duress.
 
 **Containment officer** — chain shotgun, assault rifle, EMP grenades; recon armour; smokepop or low-shield pack.
 
@@ -1393,16 +1439,16 @@ This makes the faction's Supremacist and preferred-xenotype precepts **internall
 ## Pawn-group patterns
 
 - **Research caravan:** Neimoidian trader, scientists, containment officers, utility mech
-- **Retrieval raid:** containment officers and a prototype guardian sent after escaped Offshoots
+- **Retrieval raid:** containment officers and a prototype guardian sent after escaped labour-line pawns
 - **Acquisition team:** geneticist, security squad, medical mech
 - **Containment response:** EMP specialists and prototype guardian
 - **Settlement defence:** elite security behind turrets with utility and combat mechs
 
 ## Lore basis
 
-- Arkanian geneticists engineered Offshoots as living experiments and slaves, bred for labour including the diamond mines, shunned and never regarded as true Arkanians, typically short-lived — https://starwars.fandom.com/wiki/Arkanian_Offshoot
-- Offshoots were treated as second-class or non-citizens; purebloods conducted purges — https://starwars.fandom.com/wiki/Arkanian/Legends
-- Arkanian society ran a rigid caste system based on blood purity, with Offshoots fixed at the bottom and no upward mobility — https://www.worldanvil.com/w/frontiers-datchinchilla/a/arkanian-article
+- Arkanian geneticists engineered a subspecies as living experiments and slaves, bred for labour including the diamond mines, shunned and never regarded as true Arkanians, typically short-lived — https://starwars.fandom.com/wiki/Arkanian_Offshoot
+- That subspecies was treated as second-class or non-citizens, and purebloods conducted purges of them — https://starwars.fandom.com/wiki/Arkanian/Legends
+- Arkanian society ran a rigid caste system based on blood purity, with the engineered lineage fixed at the bottom and no upward mobility — https://www.worldanvil.com/w/frontiers-datchinchilla/a/arkanian-article
 
 ---
 
@@ -1574,13 +1620,64 @@ The Code exists to keep hunters from fighting each other so contracts actually c
 2. Correct settlement counts and **water-tile placement** with a faction/world editor. The Aquifer League must hold the natural water; the Cartel must hold the oases; the Enclaves must sit on contaminated sources; Tuskens and Geonosians must be dry-sited.
 3. Apply the NPC-vs-NPC relations matrix.
 4. Verify equipment tags per faction so no two factions draw from one unrestricted pool.
-5. Confirm forced pawn-kind race overrides for Hutts, Gamorreans, stormtroopers, Sith, Geonosian castes, droid chassis, Offshoot labour, and faction leaders.
+5. Confirm forced pawn-kind race overrides for Hutts, Gamorreans, stormtroopers, Sith, Geonosian castes, droid chassis, Consortium labour-line, and faction leaders.
 6. Confirm raid generation is suppressed for the Aquifer League and Free Droid Enclaves, and that both have working incident/quest hooks.
 7. Confirm Jedi generate factionless.
 
 ## Species coverage
 
-All active roster races are used at least once across the ten NPC factions except **Jawa**, reserved for the player. Custom Hutt, custom droid, Ghorfa, and Arkanian Offshoot races are added under the roster's licence to fork or author bespoke races.
+Every installed race is used at least once across the ten NPC factions, except **Jawa**, which is reserved for the player. The only non-installed races are **Custom Hutt** and the **custom droid chassis**, both authored under the roster's licence.
+
+| Race | Appears in |
+|---|---|
+| Abednedo | Homestead |
+| Aqualish | Hutt, Aquifer |
+| Arkanian | Imperial, Consortium |
+| Bith | Homestead, Geonosian, Consortium |
+| Bothan | Bounty |
+| Cathar | Wookiee, Bounty |
+| Cerean | Homestead, Consortium |
+| Chagrian | Aquifer |
+| Chiss | Imperial, Consortium, Bounty |
+| Dathomirian | Imperial (Sith escort only) |
+| Devaronian | Hutt, Bounty |
+| Duros | Homestead, Aquifer, Bounty |
+| Ewok | Wookiee |
+| Geonosian | Geonosian; Imperial prisoner pool |
+| Gungan | Aquifer |
+| Herglic | Hutt, Aquifer |
+| Iktotchi | Homestead, Bounty |
+| Iridonian (Zabrak) | Imperial, Bounty |
+| Ithorian | Homestead, Wookiee, Aquifer |
+| Kaleesh | Bounty |
+| Kaminoan | Geonosian (gated), Consortium |
+| Massassi | Imperial (Sith escort only) |
+| Miraluka | Homestead, Consortium; Imperial prisoner pool; factionless Jedi |
+| Mirialan | Homestead; factionless Jedi |
+| Mon Calamari | Aquifer; Imperial prisoner pool |
+| Neimoidian | Consortium |
+| Nikto | Hutt (Vontor caste), Tusken |
+| Pantoran | Homestead |
+| Pyke | Hutt, Geonosian |
+| Quarren | Aquifer |
+| Rakata | Imperial (quest only), Geonosian, Consortium |
+| Rodian | Hutt, Bounty |
+| Selkath | Aquifer |
+| Sith | Imperial (pawn kind only) |
+| Sullustan | Homestead |
+| Togruta | Homestead, Wookiee, Bounty; factionless Jedi |
+| Trandoshan | Hutt, Bounty |
+| Tusken | Tusken Clans; **player-adjacent only** |
+| Twi'lek | Hutt, Homestead |
+| Umbaran | Imperial, Consortium, Bounty |
+| Wookiee | Wookiee Freeholds; Imperial prisoner pool |
+| Zeltron | Hutt, Bounty |
+| Gamorrean (Pigskin) | Hutt |
+| Wookiee-kin (Yttakin) | Wookiee |
+| Savant caste (Genie) | Imperial, Geonosian, Consortium |
+| Brute stock (Neanderthal) | Tusken, Geonosian, Consortium labour-line |
+| Desert alien (Impid) | Tusken |
+| Baseliner human (Humanity) | Imperial, Homestead, Hutt |
 
 Forbidden and disabled races remain unused: Force Gremlin, Chadra-Fan, Echani, Feeorin, Ishi Tib, Thyrsian.
 
