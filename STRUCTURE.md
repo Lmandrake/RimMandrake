@@ -29,13 +29,14 @@ These are the load-bearing, authoritative files. If two docs disagree, the owner
 |---|---|
 | `concept_defnames.md` | Companion to `concept.md`: verified defNames/packageIds/Workshop IDs — "known-good starting guesses," re-confirm before any patch/save-edit. |
 | `world_interest_and_mech_danger.md` | Sole home of ~15 mech-danger / world-interest mod adoption verdicts (Reinforced Mechanoids 2, Total Warfare, etc.). Cites the §19 thesis (which lives in the Planning Discussion doc). |
-| `jawa_xenotype_and_religion.md` | The Jawa xenotype + buildable ideoligion spec (player faction deep-dive). |
+| `jawa_xenotype_and_religion.md` | The Jawa xenotype + buildable ideoligion spec (player faction deep-dive). **Part 4 owns the society lore**: slavery/reproduction/aging churn, the §4.2 love-gate + acquisition/no-rot rules, §4.2b mood economy. |
+| `jawa_crew_personas.md` | The five founding Jawa colonists (Nekko/Tobb/Griz/Yeku/Wim): role coverage + each embodies one lore strand + one story-arc seed. Owns the Character-Editor scope note + the 7-Q verdicts on the persona-authoring mods. |
 | `jawa_dialogue_source_audit.md` | Source-audited Jawa dialogue/translation corpus for SpeakUp voice authoring (§3 Grade-A canonical palette). |
 | `faction_authoring_mechanism.md` | The *method* (how) for building differentiated factions to "Samuel Streamer level." The *filled roster* is `faction_roster_v2.md`. |
 | `Custom_World.md` | Living playbook for authoring storytelling-centric worlds, reverse-engineered from Samuel Streamer's configs. |
 | `outer_rim_cherrypick_list.md` | Concrete def shopping-list for the custom 1.6 Outer Rim sub-mod (Task A). |
 | `sw_ingredients_inventory.md` | Inspiration-only ingredient inventory of the six non-1.6 SW faction mods (⚠️ DO NOT LOAD) + the triage that feeds `outer_rim_cherrypick_list.md`. |
-| `carbonite_trophy_mod.md` | Parked design for a custom (cooler-than-donor) carbonite trophy mod. |
+| `carbonite_trophy_mod.md` | Design for a custom (cooler-than-donor) carbonite mod. **CANONICAL SPEC v3 (2026-08-06)** now owns the concrete design: "Class 3 Carbon Freezing Chamber" station, freeze inputs (lots of Chemfuel + 2 Components + 2 Steel + 1 Plasteel + 1 Uranium + a pawn *or* material stack), black-monolith Slab (value ≈ contents + 1 cryptosleep casket, shows contents, near-indestructible, drops only burning debris, no power once frozen), half-day blind/disorient thaw debuff, wall-rotatable Furniture placement + 5-high minified storage rack. v3 supersedes the earlier Task B numbers where they conflict. |
 | `save_authoring_pipeline.md` | How we hand-craft the world by editing `.rws`/def files directly, grounded in the Gravtasm save teardown. |
 | `first_live_access.md` | **Day-one runbook** for the first time we have running RimWorld + real mods + a harmonized save: ordered tooling/agent-integration steps (shortHash resolver → Def index → validate JawaVoice/factions/scenario → RimBridge swap) + the offline pre-reqs to build first. Distinct from `setup_checklist.md` (in-game scenario decisions). |
 | `rimworld_file_lore.md` | Self-teaching technical manual for editing RimWorld save/scenario/def XML — file structures, safe-vs-fragile regions, gotchas. |
