@@ -144,9 +144,7 @@ Conversely, **Wookiee, Wookiee-kin, Herglic, Mon Calamari, Quarren, Selkath, Gun
 
 Everything in this document draws from what is on disk. Nothing else is used.
 
-### Outer Rim – Galactic Diversity (plus bundled Chiss submod)
-
-Abednedo · Aqualish · Arkanian · Bith · Bothan · Cathar · Cerean · Chagrian · Chiss · Dathomirian · Devaronian · Duros · Ewok · Geonosian · Gungan · Herglic · Iktotchi · Iridonian (Zabrak) · Ithorian · Kaleesh · Kaminoan · Massassi · Miraluka · Mirialan · Mon Calamari · Neimoidian · Nikto · Pantoran · Pyke · Quarren · Rakata · Rodian · Selkath · Sith · Sullustan · Togruta · Trandoshan · Tusken · Twi'lek · Umbaran · Wookiee · Zeltron
+**→ The canonical, verified race inventory is `cherry_picker_killlist.md` §2** (the "✅ VERIFIED IN-HAND RACE INVENTORY" block, which supersedes the former standalone `races.md` as the single source of truth). The full Outer Rim / Galactic Diversity species list (Abednedo … Zeltron, 42 species + bundled Chiss) is enumerated there and is **not repeated here** to avoid drift. This section keeps only the roster-specific interpretation: how the reflavoured vanilla xenotypes and bespoke races are cast.
 
 ### Reflavoured vanilla Biotech xenotypes, plus baseline Humanity
 
@@ -1626,6 +1624,8 @@ The Code exists to keep hunters from fighting each other so contracts actually c
 
 ## Species coverage
 
+*This is a usage/casting map — which faction(s) each race is placed into — not the race inventory. The canonical inventory of what's installed is `cherry_picker_killlist.md` §2; this table's job is to prove no installed race is left orphaned.*
+
 Every installed race is used at least once across the ten NPC factions, except **Jawa**, which is reserved for the player. The only non-installed races are **Custom Hutt** and the **custom droid chassis**, both authored under the roster's licence.
 
 | Race | Appears in |
@@ -1680,6 +1680,42 @@ Every installed race is used at least once across the ten NPC factions, except *
 | Baseliner human (Humanity) | Imperial, Homestead, Hutt |
 
 Forbidden and disabled races remain unused: Force Gremlin, Chadra-Fan, Echani, Feeorin, Ishi Tib, Thyrsian.
+
+---
+
+## Appendix — Narrative & GM layer (salvaged from faction_dossiers.md, 2026-08-06)
+
+The roster above is the *mechanical* spec (relations, water doctrine, pawn kinds, equipment). This appendix preserves the **authored narrative / GM-flavor layer** for the four *core* pursuit-arc factions — the pieces that lived only in the now-retired `faction_dossiers.md`. The Imperial Heat gauge and the 3-act pursuit arc themselves are canonical in `context.md` (§§889/893/895/910) and operationalized in `required_mods.md` (CQF §§222-223, pacing §§539-548, Act-II Bounty §566, Act-III blockade §572) — those are NOT repeated here; only the per-faction application flavor is.
+
+### Emotional register (voice/tone — feeds each FactionDef `description` + namer + colorSpectrum)
+- **Empire** — cold, inexorable, overwhelming-from-above. Not hateful, *procedural*: you are a logistics problem they are closing out. Hard Imperial grey/white; formal military namer.
+- **Hutts** — oily, transactional, amused by your desperation. Comedy-adjacent (fits the Jawa levity layer) but with teeth. Warm sickly-gold; namer full of honorifics + shell-company suffixes.
+- **Bounty Hunters** — individual, competent, personal. Where the Empire is faceless ranks, a bounty hunter is *one dangerous person with a name who is coming for you*. The faction that makes the pursuit feel intimate.
+- **Jawa (player)** — comedic, greedy, communal, resourceful-underdog. The heart of the campaign's levity layer (SpeakUp trade-babble). You root for them *because* they're outmatched.
+
+### Named-leader persona sketches (draft targets for the Backstory Constructor plan, context.md §521)
+- **Empire — the Moff-analog:** an orbital governor who never lands. High Shooting/Social/Intellectual; lore = the officer personally assigned your file. A *name on the Heat gauge*, rarely a body on the map until Act III. (Sits naturally on the Royalty-noble side of the fused Empire.)
+- **Hutts — 1-3 named kingpins:** low Movement (they don't fight, they sit), extreme Social/Trade, disabled Violence; lore = runs the base, owns your bounty. Draft 2-3 so they can be *rivals*.
+- **Bounty Hunters — the guild-master:** the most-feared hunter, held for Act III at the blockade. Extreme Shooting or Melee, a signature gimmick, lore = has never lost a mark. Beating him is a personal climax nested in the corridor run. (Plus a *small stable of recurring named hunters* — each defeated-but-survived hunter can return with a grudge; highest flavor-per-effort move in the cast.)
+- **Jawa — the clan chief:** high Social/Crafting, disabled Intellectual (they *tinker*, don't *research* — reinforces the no-research-ladder pillar); lore = keeper of the crashed Factory ship. The player's anchor character.
+
+### Rejected alternative on record — "rival Hutt lords" (why the roster chose a single Confederacy)
+The dossiers proposed **1-3 mutually-rival individual Hutt lords** you could "play against each other" (e.g. an old established broker vs. an upstart undercutting him — bribe one to move against the other). Rationale: *plural-but-rival lets you play the seams, which a single cartel can't.* **The roster did not adopt this** — §1 is a single "Hutt Cartel Confederacy" (one decentralised faction, one boss-per-settlement) for relations-matrix and settlement-count simplicity. Recorded here so the trade-off is not silently lost: if a future revision wants inter-Hutt intrigue as a mechanic, this is the alternative and its reasoning.
+
+### Per-faction unique hooks tied to the Heat/arc layer (lower priority, GM flavor)
+- **Empire loot** = charge-tier gear + a rare **Force-artifact you can sell to the Hutts but cannot use** (player psycast ban intact). The one faction you can never buy off — unbuyability as a design statement.
+- **Hutt trade raises Imperial Heat** — the market is a devil's bargain: the gear you need accelerates the pursuit hunting you. Makes every Hutt visit a real decision, not a free shop.
+- **Bounty economy loop** — hunters spawn *in response to your Heat/loudness* (extract loudly, trade with Hutts, fight patrols → a hunter is dispatched), closing the loop between the Heat gauge, the Hutt bounty board, and a body on your map.
+- **Trophy loot** — defeating a named hunter drops their signature weapon as a *unique, non-craftable* trophy (flavor, not an arsenal ladder). You end the run carrying the guns of the hunters who failed to catch you.
+
+### Cast-diff vectors + loot signatures (the "no two factions swap unnoticed" forcing function)
+| Axis | Empire | Hutts | Bounty Hunters | Jawa |
+|---|---|---|---|---|
+| **Vector** | vertical (orbit/sky) | horizontal (markets) | personal (tracks *you*) | subterranean (salvage/caverns) |
+| **Relation to Heat** | *is* the timer | *raises* it (trade) | *spawned by* it | *manages* it (go dark, salvage) |
+| **Loot signature** | charge gear + unusable Force artifact | silver, slaves, exotic stock | unique trophy weapons | droid brains, scrap |
+
+**Keeping Hutt underlings distinct from the Bounty Hunters faction:** Hutt factions field Trandoshan/Rodian *trackers* as rank-and-file, which risks blurring into the Bounty Hunters. Clean division — Hutt underlings are *disposable crew tied to a place* (defend the base, spawn in his raids, die anonymous); Bounty Hunters are *named free agents tied to you* (arrive alone via the board, persistent identities, trophy weapons). Same species, different faction + narrative weight — deliberate contrast, not a collision.
 
 ## RimWorld reference
 

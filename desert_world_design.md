@@ -325,6 +325,20 @@ Your rule of thumb is working: *any located, finite, non-replicable windfall* ca
 
 ---
 
+## 3F. PRE-PLACED HAZARDS & TERRITORY MARKERS — the ④ Threat axis made physical (the inverse of §3B treasures)
+
+Where §3B/§3D are *found windfalls*, this is the **found peril** side of the same coin: hazards and faction-territory markers seeded onto a tile at authoring/RimBridge so the place *is* dangerous before any raid spawns. Consolidated here 2026-08-06 from the retired `resource_catalogue.md` "Family 11" inventory (the axis assignments live in `resource_terrain_matrix.html` §Family-11; the concrete defNames + the one real design hook are below so they aren't lost). All enemy-side / terrain-shaping only — raises no player ceiling, pillar-clean by construction.
+
+**(a) Booby-trap / IED palette — already in the stack (VFE-Deserters).** Full confirmed def list to reflavor as pre-placed wreck/minefield hazards: `TrapIED_ToxGas`, `TrapIED_Tar`, `TrapIED_Cluster`, `TrapIED_AntigrainWarhead`, `TrapIED_Shrapnel`, `TrapIED_EMP`, `TrapIED_HighExplosive`, `TrapIED_Incendiary`, `TrapIED_Firefoam`, `TrapIED_Smoke`. Use these as the physical hazard layer on abandoned-Imperial and android tiles — no new dependency.
+
+**(b) Unstable fuel-node (deep-desert / dead-industrial tile).** Cleanest builds: reflavor a `TrapIED_HighExplosive`/`TrapIED_Cluster` (VFE-Deserters, in stack) placed *inside* the wreck as the "fuel node," or an ◇author comp that explodes a fuel `ThingDef` on deconstruct-begin. Turns salvaging a derelict into a real risk.
+
+**(c) ⭐ Hutt corpse-markers — the faction-goodwill tripwire (the one genuine design hook, ◇author, not yet built).** The idea: pre-placed Hutt "warning" markers (gibbeted corpses / skull spikes on a tile the Hutts consider theirs) that inflict a **Hutt goodwill penalty if the player deconstructs/destroys them** — a diegetic "don't touch the slugs' turf" tripwire. **DefNames to place:** vanilla Ideology `GibbetCage` + `Skullspike` (place with corpses/skulls inside) + themed skulls already in the stack (`KraytDragonSkull`, `RancorSkull`, `WampaSkull`, `AB_AncientGallatrossSkull`). **Implementation routes, in order of preference:** (a) a C#-free `GravshipCompat` patch is likely *insufficient* (no vanilla hook fires faction goodwill on deconstruct); more realistically (b) a small `MapComponent`/`ThingComp` that fires `Faction.TryAffectGoodwillWith(hutt, -X)` when the marker is deconstructed/destroyed, or (c) RimBridge live-watch: detect the gibbet's destruction event and apply the goodwill hit externally. **The *placement* needs no mod at all and can ship first** (just scatter the vanilla/stack defs on Hutt-turf tiles); the goodwill-penalty is a follow-on enhancement. Ties to the roster's Hutt "Skullspikes acceptable/desired" ideology precept.
+
+**(d) Faction territory markers** — the general case of (c): a tile visibly belongs to a faction (Imperial beacons, android pollution per §4, Hutt markers) so the player reads its allegiance before engaging. Pairs with Faction Territories & Vassalage (§13 in-game audit) where adopted.
+
+---
+
 ## 3E. THE 15-TILE SET-PIECE TABLE — one signature discovery per terrain (◇ authored spec, review-only; promoted from autonomy sweep 2026-08-05)
 
 This is the Tier-1/Tier-2 set-piece model (`context.md` 2026-08-05, GREENLIT) rendered as a concrete per-terrain draft. **Nothing here is placed yet** — it's the authoring blueprint. One signature discovery per terrain, each tied to that tile's four-axis identity and each dropping **one breadcrumb** toward the 3-act Empire arc (marked → *arc beat*). Codes match `resource_terrain_matrix.html`.

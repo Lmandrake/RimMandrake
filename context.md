@@ -1,14 +1,15 @@
 # RimWorld Gravship Campaign — Running Context
 
-_Last updated: 2026-08-02. This file is kept current as the design conversation evolves so nothing is lost to context compaction._
+_Last updated: 2026-08-06. This file is kept current as the design conversation evolves so nothing is lost to context compaction._
 
 ## Directory
-- Lives at `~/GDrive/Personal/Rimworld/`
-- `Gravship_Campaign_Design_Notes.md` — original design notes ingested from prior chat stream.
-- `Gravship_Campaign_Planning_Discussion_2026-08-02.md` — major scope-expansion doc (industrial concept, custom progression mod full spec + Cowork task brief + validation matrix, anti-exponential philosophy, subsystem rulings, tech-expansion & enemy-danger planning frameworks). The build spec for the custom mod lives here.
-- `required_mods.md` — **authoritative, ever-growing** selected-mod list with per-mod restrictions/config. Add mods here as decided.
-- `forbidden_mods.md` — **authoritative** anathema list; mods/categories that break the design pillars, each tagged with the pillar it violates.
-- `context.md` (this file) — narrative running log of decisions and discussion. Mod specifics live in the two files above; this file just references them.
+- Lives at `~/GDrive/Personal/Rimworld/`.
+- **`STRUCTURE.md` is the canonical index of every doc and what owns what** — read it first to navigate. The most load-bearing files:
+  - `required_mods.md` — **authoritative, ever-growing** selected-mod list with per-mod restrictions/config. Add mods here as decided.
+  - `forbidden_mods.md` — **authoritative** anathema list; mods/categories that break the design pillars, each tagged with the pillar it violates (incl. the player-psycasting ban + its NPC-only VPE/Force exception).
+  - `Gravship_Campaign_Planning_Discussion_2026-08-02.md` — major scope-expansion doc + the §19 enemy-danger thesis (§19.1–§19.9) and the custom-progression-mod build spec.
+  - `context.md` (this file) — narrative running log of decisions and discussion. Mod specifics live in the files above; this file just references them.
+- _(Note: `Gravship_Campaign_Design_Notes.md` was folded in and removed 2026-08-06 — recover from git if needed. See STRUCTURE.md for the full current file set.)_
 
 ## The Core Concept
 - RimWorld **Odyssey gravship** campaign that feels like a true mobile expedition, not a colony that owns a spaceship.

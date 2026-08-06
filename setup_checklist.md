@@ -138,8 +138,8 @@ decided-but-verify-in-game. A **DECIDED** line records the choice + where it's a
     FoV shrinks with the Sight stat + **darkness** + weather (stacks with dark biomes + our SW sandstorm/
     red-fog weather → near-blind for everyone in a dark storm). Pick one; shake down in-game.
   - [ ] **(2) Confirm a 1.6 dark-biome mod.** Candidates: **CaveBiome** (emipa606, appears 1.6-live,
-    permanent darkness, needs Caveworld Flora) / Biomes! Caverns (WS 2969748433) / vanilla **Glowforge**
-    perma-night biome. Verify supportedVersions shows 1.6 in RimSort before adopting.
+    permanent darkness, needs Caveworld Flora) / Biomes! Caverns (WS 2969748433) / the Odyssey
+    **Glowforest** perma-dark surface biome. Verify supportedVersions shows 1.6 in RimSort before adopting.
   - [ ] **(3) Ocular Forest low-light check.** `AB_OcularForest` is already in the stack and confirmed
     weird/transdimensional, but NOT confirmed to impose low light — verify in-game whether it actually
     darkens the map (if yes, it doubles as a dark biome; if no, it's just flavor).
@@ -210,6 +210,37 @@ decided-but-verify-in-game. A **DECIDED** line records the choice + where it's a
   parse-validate → reload-test).
 - [ ] Then: Tier-3 in-game steps (subscribe → load → worldgen → embark → save) → produce the seed
   save we polish.
+
+---
+
+## 13. In-Game Verification (throwaway dev-world, before the real save)
+
+*Merged from the retired `in_game_verification_checklist.md` (2026-08-06). How to use: subscribe the candidate mods → boot a throwaway dev world → enable Development mode → run these checks → NEVER run an unverified mod on the real seed save first. The DUPLICATE items already tracked in the §-sections above and the 🔎 snapshot are not repeated here; these are the unique at-the-machine tests.*
+
+- [ ] **CAI-5000 LoadFolders sanity check.** CAI-5000's `LoadFolders.xml` maps only a `v1.4` block even though About.xml declares 1.6 (a fallback-load pattern) — almost certainly fine, but worth a glance. Load with CAI-5000 active, confirm no "content not loading for 1.6" warnings in the log, and confirm CAI behavior actually engages in a spawned fight (mechs/raiders use cover + flank). If behavior engages, the fallback-load is working.
+
+- [ ] **Odyssey surface-biome enumeration** (feeds `biome_terrain_palette.md` A1/A6). In Development mode open the biome list (or check `BiomeDef`s) and capture defNames for the 5 Odyssey surface biomes: glowforest, lava fields, toxic scarlands + the 2 unnamed ones → fill the defName columns in the palette.
+
+- [ ] **Toxic terrain-souring source** (the §4 rogue-android water-poisoning / terrain-souring tool, design §3(c)). STE's About.xml couldn't be read (Steam 429'd every fetch); 1.6 is inferred from a translation mirror only.
+  - If subscribing **Sustainable Toxic Environment (WS 3254886145)**, confirm its own supportedVersions shows **1.6** in RimSort and it loads clean — the direct evidence the mirror-inference stands in for.
+  - **Test the zero-mod path first:** generate an Odyssey **toxic scarlands** tile and check whether its native polluted terrain + toxic buildup can carry the "fouled ground / poisoned water on an android holding" role with no mod at all. Also check Advanced Biomes' `PoisonSoil`/`PoisonMud`/`NuclearWaste` floors. If either works, STE is optional.
+  - Guardrail: whatever's adopted, confirm there is **no player-facing recipe/ability** that turns it into a usable poisoning tool — enemy-side terrain-shaping only.
+
+- [ ] **Standing pattern for any Workshop-only mod** (no auditable source → judge in-game). For **Mechanoids: Total Warfare (3555799437)**, **Tribbles! Continued (2672501251)**, **Mini Gravships Lite (3538850569)**, on the throwaway world: confirm the **1.6** version tag + clean load (no red errors); **Tribbles** — confirm they function as a threat/infestation and are **NOT ranchable** (no breeding-for-resources loop; if they can be penned + bred, Cherry-Pick or leave wild-only); **Mini Gravships Lite** — confirm it **coexists with VGE** (does not redefine gravship structures/engine) before anywhere near the real save. *(GravTech 3545374124 is already in `forbidden_mods.md` — no test needed, it's out.)*
+
+- [ ] **Native Odyssey sandstorms** (the sea-of-desert ④-threat weather; native content would make a weather mod / the extracted SW-Biomes weather unnecessary). On a desert / ExtremeDesert dev tile, use Development mode ("make weather"/incident tools) to trigger every weather def; enumerate sand/dust/haze types + read effects (visibility, accuracy, movement, temperature). **Decision rule:** if native sandstorms carry the role, mark the extracted SW-Biomes weather + any weather-mod candidate OPTIONAL/redundant in `required_mods.md` + `biome_terrain_palette.md`; if not, keep the extracted weather path.
+
+- [ ] **Odyssey Landmarks — enumerate which types generate** (the two-tier set-piece model, context.md 2026-08-05: native Landmarks generate the tile *type*, then Ancient Urban Ruins/CQF/RimMaster author the content). Open the `LandmarkDef` list (Development mode def inspector, or generate several worlds and inspect) and enumerate every Landmark type that actually generates, with defName + which biomes/terrains weight it + commonality (so Tier-2 pacing ~every 2-3 tiles can be tuned against real spawn rates — feeds the deferred arc-closing-rate playtest). Cross-check against `sw_Sarlacc` and any other mod-added `LandmarkDef`s so authored beats don't collide.
+
+- [ ] **⭐ Faction Territories & Vassalage — the conditional accept audit** (HIGH PRIORITY; F&T WS 3626725895 is FULL ACCEPT but *conditional on this in-game check* — it's additive flavor, not the pursuit spine, so **cut-on-sight if TPS suffers**). Details in the `required_mods.md` Faction Territories entry.
+  - **Dependency:** subscribe **Map Mode Framework** (F&T's listed "Required item") + Harmony. Confirm F&T shows the **1.6** tag and loads with no red errors on splash / in Player.log. Without Map Mode Framework it won't run.
+  - **Vassals OFF posture:** in F&T settings, **disable the vassal system** before testing (recent comments call it buggy + "too OP"; author appears inactive). Confirm the setting exists and sticks.
+  - **Coverage guardrail:** a user report says >~30% world coverage breaks the mod. Confirm our small-world scenario keeps planet coverage well under that; note the actual coverage % we generate at.
+  - **TPS/lag test (decisive):** run a throwaway world with our roster at 3× for several in-game days; watch for the reported "severe lag spikes every couple of seconds" + repeating F&T exceptions in the log. **Decision rule: if TPS degrades or the log spams F&T errors, cut it** — not load-bearing.
+  - **Territory behavior sanity:** confirm territory regions draw around faction settlements and in-turf ambush/patrol density rises inside a faction's ground. Watch for reported bugs (friendly troops loitering on the player map eating food / fighting each other; wrong-tech-tier bases spawning during map-gen).
+  - **§19.5 in-turf ambush audit** (no public source to read): confirm in-turf ambush raises **qualitative** threat (better-positioned/more-coordinated attackers on held ground), NOT inflated raid points. Tune per-faction ambush/caravan density so Imperial turf bites hardest on Empire-held tiles; keep the *primary* pursuit timer on the orbital model, not on territory.
+
+- [ ] **Source-audit provenance notes** (reference facts, relocated here so they aren't lost): NWN Real Fog-of-War is 1.6-capable despite a stale About.xml; CaveBiome + Biomes! source-pull status; STE 1.6 inferred from a translation mirror only; Cherry Picker cull lists still to be finalized in-game. Cross-reference the fuller notes in `required_mods.md` where they exist.
 
 ---
 

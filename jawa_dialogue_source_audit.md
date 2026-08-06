@@ -293,8 +293,17 @@ For research, fiction, modding, or role-playing documentation:
 - State **“Legends-era licensed Jawa Trade Talk”** unless the term has a separate current-canon source.
 - Label film phonetics from Complete Wermo as **“fan ear-transcription.”**
 - Label isiZulu/isiXhosa interpretations as **“listener-reported source-language hearing, not canonical translation.”**
-- Leave an utterance untranslated when no source supplies a meaning; do not infer meaning solely from scene action.
-- Do not reverse-engineer a grammar from the phrase list or use online generators as though they were official translators.
+- Leave an utterance untranslated **in the corpus** when no source supplies a meaning; do not infer meaning solely from scene action *and then record it here as attested*.
+- Do not reverse-engineer a grammar from the phrase list or use online generators **and present the result as canonical/official**.
+
+### Synthesis is permitted for creative use (the movie-writer rule)
+
+The prohibitions above govern **this file as a source of record** — they stop invented vocabulary from being laundered into the attested corpus. They do **not** forbid inventing new Jawaese-sounding speech for fiction, modding, or roleplay. That is exactly what Ben Burtt did: there was never a real lexicon to be faithful to, so new utterances are as legitimate as the originals *as sound design*. For creative use (e.g. the SpeakUp voice layer):
+
+- **Synthesize freely**, but **prefer an attested phrase when one genuinely fits** the situation (fall back to §3 Grade-A first, then §4 chitter, then invent).
+- **Match the phonology** so invented lines are indistinguishable in feel from the real ones (see phonology notes in the SpeakUp voice-pack spec).
+- **Keep synthesized lines out of §3/§4** of this file. Invented material lives in the mod/creative docs, never re-enters the attested tables as though sourced.
+- A situational English gloss in parentheses (e.g. `Jit jot zoot goot. (Well, there goes everything…)`) is a translation *of the moment*, not a lexical claim, so it does not violate the corpus rules.
 
 ---
 
