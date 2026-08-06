@@ -42,7 +42,9 @@ Two tools overlap; use the right one so you don't fight yourself:
 
 **DECIDED (user, 2026-08-02) — vanilla xenohumans to KEEP + reflavor as SW species:**
 - 🔎 **Yttakin → Wookiee-kin** (large, hairy, cold-hardy brute — the big-species stand-in; Wookiee/Talz/Whiphid flavor).
-- 🔎 **Pigskin → Gamorrean** (pig-like, tough, ugly — near 1:1 on Gamorrean guards).
+- 🔎 **Pigskin → Gamorrean** (pig-like, tough, ugly — near 1:1 on Gamorrean guards). **DECIDED (user, 2026-08-06): author a CUSTOM Gamorrean race derived from Pigskin** — not just a label swap; we build our own xenotype (Pigskin as the mechanical base, tuned to taste) as the Hutts' pig-soldier stock.
+
+**GENERAL LICENSE (user, 2026-08-06): we may freely TWEAK/REFLAVOR any Star Wars race into our own custom version.** We are NOT bound to ship the Galactic Diversity / vanilla xenotypes as-is — any of them can be adjusted (stats, genes, labels, lore) or forked into a bespoke race when it serves the campaign. The roster below is a starting palette, not a fixed contract.
 - 🔎 **Genie → savant caste** (brilliant, frail — Imperial-court protocol advisors/savants).
 - 🔎 **Neanderthal → brute species** (strong, primitive — Nikto/Weequay merc/laborer stock).
 - 🔎 **Impid → desert alien** (fast, heat-loving, fire-spitting — Tatooine-style desert world fit).
@@ -56,6 +58,14 @@ Two tools overlap; use the right one so you don't fight yourself:
 - 🔎 Any fantasy/wrong-universe xenotypes dragged in by the large library (dragons, elves, etc.) — cut on sight.
 
 - **Keep always:** Jawa + all Star Wars Xenotypes + the 5 reflavored vanilla races above. **Baseliner** stays (default humans).
+
+**✅ VERIFIED IN-HAND RACE INVENTORY (on disk 2026-08-06 — this is the authoritative "what we actually have" list).** Enumerated against Outer Rim – Galactic Diversity 1.6 (all 54 shipped xenotype defs) + the bundled Chiss submod; the 5 reflavor bases are vanilla Biotech DLC xenotypes (base-game art). Every entry below has BOTH a def AND shipped art:
+  - **Baseline:** Human (baseliner) — always present, the default galaxy stock.
+  - **Player/core:** Jawa (no Force, ever).
+  - **Star Wars species (42, Outer Rim – Galactic Diversity on disk):** Sith, Massassi, Dathomirian, Miraluka, Twi'lek, Togruta, Iridonian (Zabrak), Chiss, Duros, Bith, Bothan, Cathar, Cerean, Chagrian, Devaronian, Gungan, Herglic, Iktotchi, Ithorian, Kaleesh, Kaminoan, Mirialan, Mon Calamari, Neimoidian, Nikto, Pantoran, Pyke, Quarren, Rakata, Rodian, Selkath, Sullustan, Trandoshan, Umbaran, Zeltron, Abednedo, Arkanian, Aqualish, Ewok, Geonosian, Tusken, Wookiee.
+  - **Reflavored vanilla Biotech xenotypes (base-game art, relabeled/tuned):** Gamorrean ← Pigskin (custom-authored on the Pigskin base), Wookiee-kin ← Yttakin, Savant caste ← Genie, Brute stock ← Neanderthal, Desert alien ← Impid.
+  - **❌ NOT available — do NOT plan around these:** **Skakoan** (no xenotype, no art — the faction-roster-v2 doc assumed it; it doesn't ship, and its sealed-suit/pressure-suit mechanic is DROPPED), **Houk** (no xenotype, no art), **Ghorfa** (not a race — only a lore line inside the Tusken description), **Force Gremlin** (on disk but Cherry-Picked out per above), and the disabled WIP files (`.xml.dis`, not active): **Chadra-Fan, Echani, Feeorin, Ishi Tib, Thyrsian**. Canon names (Skakoan/Houk/Ghorfa/Klatooinian/Vodran/Arkanian-Offshoot) are only adoptable as cosmetic text labels over existing art — never as new races, never adding a dependency.
+  - _This inventory supersedes the former standalone `races.md` (Desktop), which was folded in here 2026-08-06 as the single source of truth._
 - **Confidence:** DECIDED. **Caution:** deleting a xenotype is safe; deleting the *genes* under it is where dependency errors appear — delete at the xenotype level. The kept reflavor is a NAMING/lore exercise (no def change needed to keep them; reflavor via labels/RP, optionally a light HAR/xenotype-description patch).
 - **Full size spectrum (DECIDED):** user wants dedicated very-large + very-small race mods added so body-size genes (incl. the Jawa's small stature) are richly in the gene pool. Candidates being researched via Fetcher (`2026-08-02_jawa_flavor_tech_and_races`). This is additive (required_mods.md), not a Cherry Picker kill item.
 
