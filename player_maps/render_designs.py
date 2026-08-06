@@ -6,14 +6,16 @@ from PIL import Image, ImageDraw, ImageFont
 from ship_designs import COL, LABEL, R_ENG, R_EXT, CAP, N_EXT
 
 NAMES=['1_spinal_freighter','2_nebulon_b','3_corellian_corvette',
-       '4_catamaran_courtyard','5_ring_station','6_salvage_hulk','7_nodal_station']
+       '4_catamaran_courtyard','5_ring_station','6_salvage_hulk','7_nodal_station',
+       '8_ring_spur']
 TITLES={'1_spinal_freighter':'1 · Spinal Freighter',
         '2_nebulon_b':'2 · Nebulon-B (fore hull · neck · aft hull)',
         '3_corellian_corvette':'3 · Corellian Corvette (hammerhead)',
         '4_catamaran_courtyard':'4 · Catamaran (twin hull + courts)',
         '5_ring_station':'5 · Ring Station (central hangar)',
         '6_salvage_hulk':'6 · Salvage Hulk (asymmetric wreck)',
-        '7_nodal_station':'7 · Nodal Station (twin-nucleus spokes)'}
+        '7_nodal_station':'7 · Nodal Station (twin-nucleus spokes)',
+        '8_ring_spur':'8 · Ring-and-Spur (ring + circular pods)'}
 report=json.load(open('designs_report.json'))
 
 def font(sz,bold=True):

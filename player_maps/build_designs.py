@@ -216,6 +216,46 @@ def d_nodal():
 designs['7_nodal_station']=d_nodal()
 
 # =====================================================================
+# 8 · RING-AND-SPUR  (ring core + semi-random circular pods on spokes)
+#   Hybrid of #5 Ring and #7 Nodal: a THINNER main ring carries the core
+#   systems (cargo body + command/thrusters/water/fuel/carbonite on the band),
+#   and eight CIRCULAR PODS burst outward on 5-wide spokes at jittered angles,
+#   deliberately breaking the ring's symmetry. Each pod = one function (the six
+#   factory wings + habitat + shuttle). One pod (shuttle H) is LARGER and thrown
+#   further out. Angles/offsets are fixed-but-irregular ("semi-random" look,
+#   deterministic so the build reproduces).
+# =====================================================================
+def d_ring_spur():
+    c=Canvas(160,160); cx=cy=80
+    Rout=34; Rin=22; Rmid=(Rout+Rin)//2          # ring band 22..34, midline 28
+    c.ring(cx,cy,Rout,Rin,'G')                   # ring body = cargo
+    # keel on the ring midline (full circle backbone)
+    yy,xx=np.mgrid[0:c.h,0:c.w]; d2=(xx-cx)**2+(yy-cy)**2
+    band=(d2<=(Rmid+1)**2)&(d2>=(Rmid-1)**2)&(c.g!='')
+    c.bb[band]=True; c.g[band]='K'
+    # core system blocks over the ring band (they keep the keel mask beneath)
+    c.rect(cx-4,cy-Rout,cx+4,cy-Rin,'S')         # top thrusters + power
+    c.rect(cx-4,cy+Rin,cx+4,cy+Rout,'W')         # bottom water tanks
+    c.rect(cx-Rout,cy-4,cx-Rin,cy+4,'U')         # left fuel bunkerage
+    c.rect(cx+Rin,cy-4,cx+Rout,cy+4,'M')         # right command / control
+    ta=math.radians(45)                          # carbonite vault tucked on the band
+    tx=int(cx+Rmid*math.cos(ta)); ty=int(cy+Rmid*math.sin(ta))
+    c.rect(tx-3,ty-3,tx+3,ty+3,'T')
+    # eight circular pods at jittered angles (deg, radial offset past midline,
+    # pod radius, code). Shuttle H is bigger and flung further out.
+    pods=[( 15,18, 7,'F'),( 68,22, 7,'E'),(110,16, 7,'A'),(150,24, 7,'B'),
+          (196,19, 7,'C'),(238,15, 7,'D'),(300,20, 7,'R'),(340,26,10,'H')]
+    for (deg,out,pr,code) in pods:
+        a=math.radians(deg)
+        ox=cx+Rout*math.cos(a);        oy=cy+Rout*math.sin(a)          # ring attach
+        px=cx+(Rmid+out)*math.cos(a);  py=cy+(Rmid+out)*math.sin(a)    # pod centre
+        c.spoke(ox,oy,px,py,2,'.')                                     # 5-wide spoke
+        c.disk(int(round(px)),int(round(py)),pr,code)                  # the ball
+        c.backbone_rect(int(round(px)),int(round(py)),int(round(px)),int(round(py)))
+    c.crop(); return c
+designs['8_ring_spur']=d_ring_spur()
+
+# =====================================================================
 report={}
 for name,c in designs.items():
     rep=place_and_verify(c)

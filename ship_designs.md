@@ -8,8 +8,8 @@ feedstock progression in `ship_deck_plan.md`, never by the tile cap. This doc ow
 MENU; `ship_deck_plan.md` still owns the repair-progression / heat doctrine that any chosen hull
 inherits._
 
-> **Deliverable image:** `player_maps/ship_designs_comparison.png` (seven panels, coverage halos, stats).
-> **Verifier:** `player_maps/ship_designs.py` + `build_designs.py` (regenerates + re-checks all seven).
+> **Deliverable image:** `player_maps/ship_designs_comparison.png` (eight panels, coverage halos, stats).
+> **Verifier:** `player_maps/ship_designs.py` + `build_designs.py` (regenerates + re-checks all eight).
 > **Renderer:** `player_maps/render_designs.py`.
 
 ---
@@ -28,6 +28,10 @@ inherits._
   3. Added **#7 Nodal Station** — twin central nuclei (cargo + carbonite) radiating asymmetric
      spoke-corridors to exterior octagon "cells", shuttle dock on the longest spoke.
   - Net: **seven designs**, all carrying **14 mandatory regions**, all verified liftable.
+- **2026-08-06 (ring/nodal hybrid pass):** Added **#8 Ring-and-Spur** — a Ring × Nodal hybrid: a
+  thinner main ring holding the core systems, with eight **circular pods** bursting outward on
+  5-wide spokes at deliberately irregular ("semi-random") angles, one enlarged pod = the shuttle
+  bay, thrown furthest out. Net: **eight designs**, all 14 regions, all verified liftable.
 
 ---
 
@@ -41,7 +45,7 @@ inherits._
 **Caveat — provenance of the expanded numbers.** These are *generous assumed* values, chosen to
 open up the authoring space, **not** yet read from the mod. The mod's real slider ranges were
 requested via Fetcher (`2026-08-06_bigger_gravships_ranges`); when that lands I'll re-validate all
-seven against the true min/max. The verifier is parameterized (`ship_designs.py` top block), so
+eight against the true min/max. The verifier is parameterized (`ship_designs.py` top block), so
 re-checking against real numbers is a one-line change and a re-run. This is an **assumption**, not
 established evidence — flagged so you can weight it accordingly.
 
@@ -60,7 +64,7 @@ Two independent constraints, both verified per design (not assumed):
    extender count is how many are actually *needed*), then reports uncovered tiles and the
    farthest-tile distance.
 
-**All seven below report: 0 uncovered tiles, chain rule satisfied, tiles ≤ 4,800, and every
+**All eight below report: 0 uncovered tiles, chain rule satisfied, tiles ≤ 4,800, and every
 required area present.** They are all genuinely liftable.
 
 Every design carries the **full 14-region set**, checked programmatically — the build fails and
@@ -108,7 +112,7 @@ is why it burns the most extenders (9).
 
 ---
 
-## The seven
+## The eight
 
 Numbers below are from `designs_report.json` (regenerable via `build_designs.py`). "Factory" = all
 six Factory_lore wings combined (A+B+C+D+E+F). Every design now carries all 14 regions (verified).
@@ -216,6 +220,29 @@ nuclei sit close, so which spokes belong to which hub isn't obvious at a glance 
 the hubs apart). Best if: the hub-and-spoke station aesthetic is what excites you and you like the
 strict one-cell-per-function modularity.
 
+### 8 · Ring-and-Spur — *ring core with semi-random circular pods*
+**3,837 tiles · 963 headroom · 10 extenders · cargo 1,279 · factory 894 · shuttle 317 · farthest 29.97**
+
+A **hybrid of #5 Ring and #7 Nodal.** A *thinner* main ring carries the core systems (the ring body
+is one big cargo hold, with command / thrusters+power / water / fuel blocks and a carbonite vault
+set into the band), and **eight circular pods burst outward** on 5-wide spokes at deliberately
+**irregular angles** — the six factory wings + habitat + the shuttle — so the ring's symmetry is
+broken into something that reads as an organically-grown station rather than a machined torus. One
+pod (the **white shuttle bay**) is **larger and flung furthest out**. The angles and radial offsets
+are fixed-but-jittered (deterministic, so the build reproduces), giving the "semi-random" look you
+asked for. **Largest cargo of the whole set (1,279)** — the entire ring body is hold.
+
+For: keeps the monumental ring silhouette *and* the modular-pod isolability of the Nodal station,
+while the asymmetry makes it distinctive; each pod is a clean isolatable unit (maps onto the
+wing-by-wing repair gate); the ring's inner *and* outer walls are exterior (double vent/defense
+edge) and the pods add even more perimeter; enormous cargo; lots of coverage headroom (963). Against:
+burns many extenders (10 — each pod tip needs a node in reach); the smallest factory allocation of
+any design (894 — most floor went to the cargo ring and to corridors), so this is a *hauler/trader*
+hull more than an industrial one; circumferential hauls around the ring unless you bridge the core;
+the pods are single-purpose and a bit cramped (radius-7 balls ≈ a modest room each). Best if: you
+love the ring look but found #5 too symmetric, and you want maximum storage with modular outlying
+pods — accepting a lighter factory.
+
 ---
 
 ## Decision translation
@@ -235,37 +262,44 @@ doctrine, and campaign hooks apply to *whichever* you pick.
 | 5 | Ring station | 4702 (98) | 6 | 421 | **2537** | 185 | no | **hangar** | hardest (ring) |
 | 6 | Salvage hulk | 4604 (196) | 4 | 622 | 1700 | 288 | **yes (L/R)** | derelict gap | medium |
 | 7 | Nodal station | 4607 (193) | 9 | 357 | 1107 | **357** | **yes (spokes)** | **inter-spoke** | hard (spokes) |
+| 8 | Ring-and-spur | 3837 (963) | 10 | **1279** | 894 | 317 | **yes (pods)** | **ring core + gaps** | hard (ring+pods) |
 
-**Tradeoffs, distilled:** *most cargo* → **4** (Catamaran), then **1**; *most factory* → **5**
-(Ring), then **2** (Nebulon-B); *most shuttle capacity* → **7** and **6**; *asymmetry* → **6**
-(side-to-side wreck), **7** (radial spokes), **2** (fore/aft); *courtyard / open space* → **4**
-(twin courts), **5** (hangar), **7** (inter-spoke voids); *most on-theme wreck* → **6**; *most
-iconic Star Wars reading* → **3** (corvette); *easiest to hand-author* → **1**. Coverage slack (room
-to tweak later) is best on **2** (1,059) and **3** (973), tightest on **5** (98).
+**Tradeoffs, distilled:** *most cargo* → **8** (Ring-and-Spur, 1,279), then **4** (Catamaran, 970);
+*most factory* → **5** (Ring), then **2** (Nebulon-B); *most shuttle capacity* → **7** and **6**;
+*asymmetry* → **6** (side-to-side wreck), **7** (radial spokes), **8** (irregular ring pods), **2**
+(fore/aft); *courtyard / open space* → **4** (twin courts), **5** (hangar), **7** (inter-spoke
+voids); *most on-theme wreck* → **6**; *most iconic Star Wars reading* → **3** (corvette); *ring
+silhouette* → **5** (symmetric) or **8** (broken-symmetry); *easiest to hand-author* → **1**.
+Coverage slack (room to tweak later) is best on **2** (1,059), **8** (963) and **3** (973), tightest
+on **5** (98).
 
-**Dependencies:** all seven inherit the substructure math, the `ship_deck_plan.md` repair gate +
-heat doctrine, and the desert / VGE / faction layers. All seven require **Bigger Gravships**
+**Dependencies:** all eight inherit the substructure math, the `ship_deck_plan.md` repair gate +
+heat doctrine, and the desert / VGE / faction layers. All eight require **Bigger Gravships**
 (approved) configured to at least the assumed sliders; **the real slider ceilings are not yet
 confirmed** (Fetcher pending) — if the mod can't reach r34/r30/12/4800, the near-cap designs
-(5, 6, 7) shrink first.
+(5, 6, 7) shrink first. (#8 has lots of slack, so it survives a tighter cap; but its 10 extenders
+would be the first thing to bite if the mod caps `N_EXT` below 12.)
 
 **Principal risks:** (a) the expanded limits are *assumed*, not verified — the Fetcher result could
-force a re-tune (most likely affecting the near-cap designs 5, 6, 7); (b) start-save authoring of a
-large pre-broken hull is still the one true blocker regardless of shape — the ring (5) and the
-spoked station (7) are hardest to hand-place; (c) designs 5–7 have little coverage slack, so any
-later deck-widening needs a re-verify.
+force a re-tune (most likely affecting the near-cap designs 5, 6, 7, and the high-extender designs
+7/8 if `N_EXT` is capped low); (b) start-save authoring of a large pre-broken hull is still the one
+true blocker regardless of shape — the ring (5), the spoked station (7), and the ring-and-spur (8)
+are hardest to hand-place; (c) designs 5–7 have little coverage slack, so any later deck-widening
+needs a re-verify.
 
 **Missing info that would help:** the real Bigger Gravships slider ranges (pending Fetcher); and
-your priority weighting — *maximum cargo* (→4), *maximum factory* (→5/2), *the asymmetry you
-called out* (→6 for side-to-side, 7 for radial), *a playable open courtyard* (→4/5), *the modular
-station look* (→7), or *the most iconic silhouette* (→3).
+your priority weighting — *maximum cargo* (→8, then 4), *maximum factory* (→5/2), *the asymmetry you
+called out* (→6 for side-to-side, 7 for radial, 8 for broken-ring), *a playable open courtyard*
+(→4/5), *the modular station look* (→7/8), or *the most iconic silhouette* (→3).
 
 **Recommendation:** for the crashed-Factory-ship / Jawa-salvage theme, **6 (Salvage Hulk)** remains
 the strongest single pick — its missing/rebuilt section literally *is* the repair story. **7 (Nodal
-Station)** is the boldest new option and maps most cleanly onto the wing-by-wing repair gate (each
-cell is an isolatable unit). If you want the most balanced conventional ship, **3 (Corvette)** or
-**4 (Catamaran)**. All seven are proven to fly; none is wrong — and I can **hybridize** (e.g. a
-salvage-hulk asymmetry with nodal cells on the rebuilt side).
+Station)** and **8 (Ring-and-Spur)** are the boldest station-style options and map cleanly onto the
+wing-by-wing repair gate (each pod/cell is an isolatable unit); pick 8 over 7 if you want a ring
+silhouette and maximum cargo, 7 if you want the twin-nucleus industrial heart. If you want the most
+balanced conventional ship, **3 (Corvette)** or **4 (Catamaran)**. All eight are proven to fly; none
+is wrong — and I can **hybridize** further (e.g. a salvage-hulk asymmetry with nodal cells on the
+rebuilt side).
 
 **Recommended next step:** pick one (or ask for a hybrid), and I'll draw the tile-level interior
 blueprint for it against the cap, then fold the choice back into `ship_deck_plan.md` [DECIDE B].
@@ -278,7 +312,7 @@ authoring.
 
 - `player_maps/ship_designs.py` — Canvas + coverage verifier + shared palette (`COL`/`LABEL`) +
   limit constants (VANILLA vs EXPANDED). New helpers this pass: `octagon()`, `spoke()`.
-- `player_maps/build_designs.py` — the 7 design functions, the 14-region `REQUIRED` check, runs
+- `player_maps/build_designs.py` — the 8 design functions, the 14-region `REQUIRED` check, runs
   verify + tally, writes grids (`design_*.npy`), placements (`design_*_place.json`), and
   `designs_report.json`.
 - `player_maps/render_designs.py` — composites the black comparison sheet with legend + per-panel
