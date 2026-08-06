@@ -339,6 +339,182 @@ def d_halo():
 designs['9_derelict_halo']=d_halo()
 
 # =====================================================================
+# RECTILINEAR SPINE x HALO HYBRIDS (#10-13, user-requested 2026-08-06)
+#   Goal: take the Spinal Freighter (#1) — one straight keel, rectilinear,
+#   dense — and re-express the Derelict Halo's (#9) signatures in RIGHT ANGLES
+#   instead of curves. The four Halo "genes" being ported:
+#     (a) modules HUNG off the structure across a visible gap on a thin catwalk
+#         (Halo's tethered pods -> here, squared-off boxes on 1-tile catwalks);
+#     (b) a HOLLOW-VOID interior rather than a packed hull;
+#     (c) a SHRINE at the dead heart: grav-engine core + worshipful scrap
+#         totems (T) on a consecrated floor;
+#     (d) "strange" catwalks that OVERSHOOT past the hull into empty space
+#         "for mysterious reasons" (here L-shaped dog-legs, never a straight
+#         radial). Every overshoot is anchored to real structure = ship, not
+#         debris.
+#   Four different blends so the tradeoffs are visible side by side.
+# ---------------------------------------------------------------------
+def _hang(c, cx, hw, ymid, side, gap, w, ph, code):
+    """Rectilinear pod hung off a VERTICAL spine across a visible gap, joined
+    only by a thin 1-tile catwalk (Halo 'hung pod', squared off). side -1=port,
+    +1=starboard. Returns pod bbox (x0,y0,x1,y1)."""
+    if side>0:
+        near=cx+hw+gap; far=near+w
+        c.rect(cx+hw,ymid,near,ymid,'.')             # catwalk crosses the gap
+        c.rect(near,ymid-ph,far,ymid+ph,code)        # the pod (box)
+    else:
+        near=cx-hw-gap; far=near-w
+        c.rect(far,ymid,cx-hw,ymid,'.')
+        c.rect(far,ymid-ph,near,ymid+ph,code)
+    cxp=(near+far)//2; c.backbone_rect(cxp,ymid,cxp,ymid)
+    return (min(near,far),ymid-ph,max(near,far),ymid+ph)
+
+def _hang_v(c, cy, hh, xmid, side, gap, hgt, pw, code):
+    """Pod hung ABOVE/BELOW a HORIZONTAL arm across a gap. side -1=above,
+    +1=below. Returns pod bbox."""
+    if side>0:
+        near=cy+hh+gap; far=near+hgt
+        c.rect(xmid,cy+hh,xmid,near,'.')
+        c.rect(xmid-pw,near,xmid+pw,far,code)
+    else:
+        near=cy-hh-gap; far=near-hgt
+        c.rect(xmid,far,xmid,cy-hh,'.')
+        c.rect(xmid-pw,far,xmid+pw,near,code)
+    cyp=(near+far)//2; c.backbone_rect(xmid,cyp,xmid,cyp)
+    return (xmid-pw,min(near,far),xmid+pw,max(near,far))
+
+def _overshoot(c, x0, y0, dx, dy, code='.'):
+    """An L-shaped catwalk that STARTS on structure (x0,y0) and dangles out into
+    empty space (horizontal leg then vertical leg). The Halo 'walkway to nowhere'
+    idiom, squared off."""
+    x1=x0+dx; y1=y0+dy
+    c.rect(min(x0,x1),y0,max(x0,x1),y0,code)
+    c.rect(x1,min(y0,y1),x1,max(y0,y1),code)
+
+def _bridge(c, x0, y0, x1, y1, kink, code='.'):
+    """A dog-leg (Z) catwalk joining two structure points across a gap: out to a
+    kinked column, along, then back to the target — so it reads as a 'strange'
+    offset link, never a clean straight rung."""
+    xk=x0+kink
+    c.rect(min(x0,xk),y0,max(x0,xk),y0,code)         # leg 1: out
+    c.rect(xk,min(y0,y1),xk,max(y0,y1),code)         # leg 2: along
+    c.rect(min(xk,x1),y1,max(xk,x1),y1,code)         # leg 3: back to target
+
+# =====================================================================
+# 10 · SPINAL RELIQUARY  (blend A: keep #1's single straight keel; port the
+#      Halo shrine to MID-SPINE and hang every wing off it as squared pods.)
+#   The most literal merge: a Spinal Freighter whose packed wings have been
+#   replaced by pods hung across gaps, and whose belly has been hollowed to
+#   enshrine the grav-engine + scrap totems amidships.
+# =====================================================================
+def d_reliquary():
+    c=Canvas(96,176); cx=48; hw=4
+    c.rect(cx-hw,10,cx+hw,152,'G')                   # spine cargo body
+    c.rect(cx-1,10,cx+1,152,'K'); c.backbone_rect(cx,10,cx,152)
+    c.rect(cx-11,3,cx+11,9,'M')                      # command bow cap
+    c.rect(cx-11,153,cx+11,162,'S')                  # stern thrusters + power
+    # central reliquary: hollow consecrated chamber on the spine, relic at heart
+    c.rect(cx-9,72,cx+9,92,'.')                      # consecrated floor (hollow)
+    c.rect(cx-3,78,cx+3,86,'T')                      # worshipful scrap totems / relic core
+    c.backbone_rect(cx-9,72,cx+9,92)                 # grav engine seats in the reliquary
+    pods=[(19,-1,'F'),(19,1,'E'),(39,-1,'A'),(39,1,'B'),
+          (57,-1,'C'),(57,1,'D'),(103,-1,'W'),(103,1,'U'),
+          (124,-1,'R'),(126,1,'H')]
+    ctr={}
+    for ymid,side,code in pods:
+        w=15 if code=='H' else 12; ph=8 if code=='H' else 7
+        ctr[code]=_hang(c,cx,hw,ymid,side,5,w,ph,code)
+    x0,y0,x1,y1=ctr['H']; _overshoot(c,x1,(y0+y1)//2,10,12)      # off the shuttle pod
+    x0,y0,x1,y1=ctr['F']; _overshoot(c,x0,y0,-8,-10)             # off the precision pod
+    _overshoot(c,cx+8,160,10,10)                                 # off the stern
+    c.crop(); return c
+designs['10_spinal_reliquary']=d_reliquary()
+
+# =====================================================================
+# 11 · LADDER HALO  (blend B: split the single keel into TWO parallel rails
+#      with a hollow void between them; pods hang OUTBOARD, shrine floats in
+#      the central void, most inter-rail bays left empty and eerie.)
+#   Reads like a derelict monkey-bars / ladder frame — the void is the point.
+# =====================================================================
+def d_ladder():
+    c=Canvas(128,168); cx=64; xL=cx-13; xR=cx+13
+    c.rect(xL-1,10,xL+1,150,'K'); c.backbone_rect(xL,10,xL,150) # left rail
+    c.rect(xR-1,10,xR+1,150,'K'); c.backbone_rect(xR,10,xR,150) # right rail
+    c.rect(xL-1,3,xR+1,9,'M');   c.backbone_rect(xL,6,xR,6)     # bow spans rails
+    c.rect(xL-1,151,xR+1,160,'S');c.backbone_rect(xL,155,xR,155)# stern spans rails
+    for r in (24,44,110,130):                                   # a few cargo rungs
+        c.rect(xL+1,r,xR-1,r+3,'G'); c.backbone_rect(xL+1,r+1,xR-1,r+1)
+    c.rect(xL+1,72,xR-1,92,'.'); c.backbone_rect(xL+1,72,xR-1,92) # shrine chamber
+    c.rect(cx-3,78,cx+3,86,'T')                                 # relic totems in the void
+    L=[(17,'F'),(35,'A'),(55,'C'),(101,'W'),(122,'R')]
+    R=[(17,'E'),(35,'B'),(55,'D'),(101,'U'),(123,'H')]
+    ctr={}
+    for ymid,code in L: ctr[code]=_hang(c,xL,1,ymid,-1,5,12,7,code)
+    for ymid,code in R:
+        w=15 if code=='H' else 12; ph=8 if code=='H' else 7
+        ctr[code]=_hang(c,xR,1,ymid,1,5,w,ph,code)
+    x0,y0,x1,y1=ctr['H']; _overshoot(c,x1,(y0+y1)//2,10,12)
+    _overshoot(c,xR+1,6,12,-4)                                  # off the bow
+    x0,y0,x1,y1=ctr['R']; _overshoot(c,x0,y1,-8,10)
+    c.crop(); return c
+designs['11_ladder_halo']=d_ladder()
+
+# =====================================================================
+# 12 · CROSS-NAVE CATHEDRAL  (blend C: a cruciform hull — long nave + one
+#      transept — with the shrine at the CROSSING and pods hung off all four
+#      arms; end-chapels (habitat, shuttle) cap the transept tips.)
+#   Most architectural / sacred reading of the Jawa relic-ship.
+# =====================================================================
+def d_cross_nave():
+    c=Canvas(168,180); cx=84; cy=92
+    c.rect(cx-3,12,cx+3,150,'G'); c.rect(cx-1,12,cx+1,150,'K'); c.backbone_rect(cx,12,cx,150)
+    c.rect(22,cy-3,146,cy+3,'G'); c.rect(22,cy-1,146,cy+1,'K'); c.backbone_rect(22,cy,146,cy)
+    c.rect(cx-11,5,cx+11,11,'M')                     # apse (command) at the head
+    c.rect(cx-11,151,cx+11,160,'S')                  # foot thrusters
+    c.rect(cx-9,cy-9,cx+9,cy+9,'.'); c.backbone_rect(cx-9,cy-9,cx+9,cy+9)  # crossing shrine
+    c.rect(cx-3,cy-3,cx+3,cy+3,'T')                  # relic core at the very crossing
+    ctr={}
+    ctr['F']=_hang(c,cx,3,36,-1,5,12,7,'F'); ctr['E']=_hang(c,cx,3,36,1,5,12,7,'E')
+    ctr['C']=_hang(c,cx,3,126,-1,5,12,7,'C'); ctr['D']=_hang(c,cx,3,126,1,5,12,7,'D')
+    ctr['A']=_hang_v(c,cy,3,44,-1,5,12,7,'A'); ctr['B']=_hang_v(c,cy,3,44,1,5,12,7,'B')
+    ctr['W']=_hang_v(c,cy,3,124,-1,5,12,7,'W'); ctr['U']=_hang_v(c,cy,3,124,1,5,12,7,'U')
+    c.rect(24,cy-9,40,cy+9,'R'); c.backbone_rect(30,cy,30,cy)       # left tip = habitat chapel
+    c.rect(128,cy-11,148,cy+11,'H'); c.backbone_rect(138,cy,138,cy) # right tip = shuttle chapel
+    _overshoot(c,cx,10,10,-6); _overshoot(c,cx,160,-10,8)          # off head & foot
+    _overshoot(c,24,cy,-8,-10); _overshoot(c,148,cy,8,10)          # off the transept tips
+    c.crop(); return c
+designs['12_cross_nave']=d_cross_nave()
+
+# =====================================================================
+# 13 · BROKEN KEEL HALO  (blend D: the single keel is SNAPPED into three
+#      segments separated by real gaps, each gap re-joined only by a strange
+#      dog-leg catwalk; shrine in the middle segment; overshoots dangle off the
+#      ends.) The most derelict / "why is it in pieces" reading.
+# =====================================================================
+def d_broken_keel():
+    c=Canvas(104,200); cx=52; hw=4
+    for (ys,ye) in [(10,54),(70,116),(132,178)]:
+        c.rect(cx-hw,ys,cx+hw,ye,'G'); c.rect(cx-1,ys,cx+1,ye,'K'); c.backbone_rect(cx,ys,cx,ye)
+    _bridge(c,cx,54,cx,70,9)                          # seg1->seg2 dog-leg (kink right)
+    _bridge(c,cx,116,cx,132,-9)                       # seg2->seg3 dog-leg (kink left)
+    c.rect(cx-11,3,cx+11,9,'M')                       # command bow on seg1
+    c.rect(cx-11,179,cx+11,188,'S')                   # stern thrusters on seg3
+    c.rect(cx-9,84,cx+9,102,'.'); c.backbone_rect(cx-9,84,cx+9,102)  # shrine in middle seg
+    c.rect(cx-3,90,cx+3,96,'T')
+    ctr={}
+    ctr['F']=_hang(c,cx,hw,20,-1,5,12,7,'F'); ctr['E']=_hang(c,cx,hw,20,1,5,12,7,'E')
+    ctr['A']=_hang(c,cx,hw,44,-1,5,12,7,'A')
+    ctr['B']=_hang(c,cx,hw,76,1,5,12,7,'B')
+    ctr['D']=_hang(c,cx,hw,110,-1,5,12,7,'D'); ctr['C']=_hang(c,cx,hw,110,1,5,12,7,'C')
+    ctr['W']=_hang(c,cx,hw,142,-1,5,12,7,'W'); ctr['U']=_hang(c,cx,hw,142,1,5,12,7,'U')
+    ctr['R']=_hang(c,cx,hw,166,-1,5,12,7,'R'); ctr['H']=_hang(c,cx,hw,168,1,5,15,8,'H')
+    x0,y0,x1,y1=ctr['H']; _overshoot(c,x1,(y0+y1)//2,9,12)
+    x0,y0,x1,y1=ctr['F']; _overshoot(c,x0,y0,-8,-10)
+    _overshoot(c,cx+8,188,9,9)                        # off the stern
+    c.crop(); return c
+designs['13_broken_keel_halo']=d_broken_keel()
+
+# =====================================================================
 report={}
 for name,c in designs.items():
     rep=place_and_verify(c)

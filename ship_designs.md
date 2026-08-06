@@ -49,6 +49,15 @@ inherits._
   tethers** that overlap the ring; corvette fins tied in by a stern deck; catamaran bow extended to the
   hull). Re-verified: all nine report `parts=1`. Net: **nine designs**, all 14 regions, all genuinely
   contiguous and liftable. New stats: #3 3849(951)/cargo616, #4 4113(687), #9 4228(572)/cargo1092.
+- **2026-08-06 (rectilinear Spine × Halo hybrids):** Added **#10–13** — four ways to blend the
+  **Spinal Freighter** (#1, straight keel) with the **Derelict Halo** (#9, hung pods + hollow void +
+  heart-shrine + overshoot walks), all in **right-angles** instead of curves. New squared-off idioms
+  in `build_designs.py`: `_hang` / `_hang_v` (pod hung across a gap on a 1-tile catwalk), `_overshoot`
+  (L-shaped walk-to-nowhere anchored to structure), `_bridge` (dog-leg segment link). **#10 Spinal
+  Reliquary** (keel + hung wings + shrine amidships), **#11 Ladder Halo** (twin rails + hollow void +
+  outboard pods), **#12 Cross-Nave Cathedral** (cruciform + shrine at the crossing), **#13 Broken Keel
+  Halo** (keel snapped in three, dog-leg bridges). All verified `parts=1`, 100 % coverage, 14 regions.
+  Net: **thirteen designs**. Each new one rendered on its own large panel via `render_single.py`.
 
 ---
 
@@ -297,6 +306,73 @@ wheel — and you accept a corridor-heavy, hauling-slow layout for the strongest
 
 ---
 
+## The four rectilinear Spine × Halo hybrids (#10–13)
+
+*Added 2026-08-06 at user request: "make a new ship version that's LIKE the central spine one, but
+that is more like a rectilinear version of this Derelict Halo … merge those two in a few different
+ways."* Each of these takes the **Spinal Freighter's** DNA (one straight keel, right-angles, dense)
+and re-expresses the **Derelict Halo's** four signatures **in squared-off geometry**: (a) modules
+**hung across a visible gap on a thin catwalk** instead of fused into a hull; (b) a **hollow-void**
+interior; (c) a **shrine at the heart** — grav-engine core + worshipful scrap totems (the black
+carbonite block) on a consecrated floor; (d) "**strange" catwalks that overshoot into empty space**
+(here L-shaped dog-legs, each anchored to real structure so it's ship, not debris). All four are
+verified `parts=1`, 100 % coverage, all 14 regions, comfortably under cap. They're rendered on their
+own large panels via `render_single.py`. The blends differ in *how* the spine is treated:
+
+### 10 · Spinal Reliquary — *one straight keel, wings hung on catwalks, grav-shrine amidships*
+**4,012 tiles · 788 headroom · 7 extenders · cargo 722 · farthest 30.0**
+
+The **most literal merge.** It *is* the Spinal Freighter — one straight cargo keel, command bow,
+thruster tail — but every production wing has been detached and **hung off the spine across a gap on a
+1-tile catwalk** (the squared-off cousin of the Halo's tethers), and the belly amidships has been
+**hollowed into a reliquary chamber** enshrining the grav-engine + scrap totems. Overshoot catwalks
+dangle off the bow, the shuttle pod, and the stern. For: keeps the freighter's legibility and easy
+hauling (short straight spine) while gaining the Halo's hung-pod modularity and central shrine; each
+pod is a clean isolatable repair unit; lots of slack (788). Against: the least *eerie* of the four —
+it still reads as a tidy freighter with detached wings rather than a haunted wreck.
+
+### 11 · Ladder Halo — *twin rails, hollow void between, pods hung outboard, shrine in the void*
+**4,313 tiles · 487 headroom · 9 extenders · cargo 400 · farthest 30.0**
+
+Splits the single keel into **two parallel rails** with a **hollow dark void** running the length
+between them, crossed by a few cargo **rungs** (the only things spanning the gap besides bow, stern,
+and shrine). All ten pods hang **outboard**; the **shrine floats in the central void** with its totem
+core; most inter-rail bays are deliberately left empty and eerie. For: the strongest *hollow-frame /
+derelict monkey-bars* reading; the void is a natural heat-vent and firebreak; very symmetrical and
+easy to reason about. Against: lowest cargo of the four (400 — the rails carry little bulk); the long
+void means more walking; 9 extenders.
+
+### 12 · Cross-Nave Cathedral — *cruciform hull, shrine at the crossing, pods off all four arms*
+**4,475 tiles · 325 headroom · 8 extenders · cargo 752 · farthest 29.73**
+
+A true **cruciform**: a long nave crossed by one transept, with the **shrine at the crossing** (the
+sacred heart, dead-centre) and pods hung off **all four arms**. The transept tips are **end-chapels**
+— habitat on one side, the enlarged white shuttle bay on the other. Overshoot catwalks dangle off all
+four arm tips. For: the **boldest, most architectural silhouette** of the four and the most on-theme
+for a Jawa relic-ship (an actual cathedral in the void); good cargo (752); the four arms give four
+natural fire-compartments around the shrine. Against: the widest footprint (two axes), so it's the
+least compact; tightest slack of the four (325); the transept makes it read less like "a spine ship"
+and more like its own thing (which may be exactly what you want).
+
+### 13 · Broken Keel Halo — *keel snapped in three, dog-leg catwalk bridges, shrine in the middle*
+**3,999 tiles · 801 headroom · 7 extenders · cargo 698 · farthest 29.83**
+
+The **most derelict reading.** The keel is **snapped into three segments** separated by real gaps,
+each gap re-joined *only* by a **strange offset dog-leg catwalk** (kink right, then kink left — never
+a clean straight rung), so the ship looks like it broke apart and was lashed back together. The
+**shrine sits in the middle segment**; pods hang off all three; overshoots dangle off the bow, the
+shuttle, and the stern. For: the closest in *spirit* to the Derelict Halo — the "why is it in pieces"
+mystery, now rectilinear; each segment is a self-contained module (superb repair-gate mapping — a
+segment can be isolated wholesale); the most coverage slack of the four (801). Against: the segment
+gaps mean the longest internal travel (cross the dog-legs to move fore-aft); the bridges are thin
+single-tile chokepoints (a risk if raiders breach one).
+
+*Rendered on their own large panels:* `player_maps/design_10_spinal_reliquary_large.png`,
+`design_11_ladder_halo_large.png`, `design_12_cross_nave_large.png`,
+`design_13_broken_keel_halo_large.png`.
+
+---
+
 ## Decision translation
 
 **The decision this serves:** which hull silhouette to commit to before the tile-level blueprint
@@ -316,6 +392,10 @@ doctrine, and campaign hooks apply to *whichever* you pick.
 | 7 | Nodal station | 4607 (193) | 9 | 357 | 1107 | **357** | **yes (spokes)** | **inter-spoke** | hard (spokes) |
 | 8 | Ring-and-spur | 3837 (963) | 10 | **1279** | 894 | 317 | **yes (pods)** | **ring core + gaps** | hard (ring+pods) |
 | 9 | Derelict halo | 4228 (572) | 10 | 1092 | ~330 | 317 | **yes (tethered pods)** | **hollow core + void** | **hardest (curved-tether pods)** |
+| 10 | Spinal reliquary | 4012 (788) | 7 | 722 | ~1100 | 317 | no | shrine + gaps | medium (straight keel) |
+| 11 | Ladder halo | 4313 (487) | 9 | 400 | ~1100 | 317 | no | **central void** | medium (twin rails) |
+| 12 | Cross-nave | 4475 (325) | 8 | 752 | ~1100 | 317 | no (cruciform) | **crossing + arms** | hard (two axes) |
+| 13 | Broken keel | 3999 (801) | 7 | 698 | ~1100 | 317 | **yes (segments)** | **segment gaps** | medium (dog-legs) |
 
 **Tradeoffs, distilled:** *most cargo* → **8** (Ring-and-Spur, 1,279), then **4** (Catamaran, 970);
 *most factory* → **5** (Ring), then **2** (Nebulon-B); *most shuttle capacity* → **7** and **6**;

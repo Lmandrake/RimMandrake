@@ -734,5 +734,371 @@
    "W": 58
   },
   "missing_required": []
+ },
+ "10_spinal_reliquary": {
+  "tiles": 4012,
+  "cap": 4800,
+  "headroom": 788,
+  "covered": 4012,
+  "uncovered": 0,
+  "cover_pct": 100.0,
+  "placements": [
+   [
+    "ENGINE",
+    30,
+    35,
+    34
+   ],
+   [
+    "EXT",
+    30,
+    69,
+    30
+   ],
+   [
+    "EXT",
+    30,
+    99,
+    30
+   ],
+   [
+    "EXT",
+    30,
+    129,
+    30
+   ],
+   [
+    "EXT",
+    30,
+    145,
+    30
+   ],
+   [
+    "EXT",
+    30,
+    9,
+    30
+   ],
+   [
+    "EXT",
+    46,
+    125,
+    30
+   ],
+   [
+    "EXT",
+    15,
+    18,
+    30
+   ]
+  ],
+  "n_ext_used": 7,
+  "n_ext_max": 12,
+  "r_eng": 34,
+  "r_ext": 30,
+  "chain_ok": true,
+  "n_components": 1,
+  "biggest_comp": 4012,
+  "contiguous": true,
+  "max_dist": 30.0,
+  "liftable": true,
+  "zones": {
+   ".": 449,
+   "A": 195,
+   "B": 195,
+   "C": 195,
+   "D": 195,
+   "E": 195,
+   "F": 194,
+   "G": 722,
+   "H": 271,
+   "K": 366,
+   "M": 161,
+   "R": 195,
+   "S": 226,
+   "T": 63,
+   "U": 195,
+   "W": 195
+  },
+  "missing_required": []
+ },
+ "11_ladder_halo": {
+  "tiles": 4313,
+  "cap": 4800,
+  "headroom": 487,
+  "covered": 4313,
+  "uncovered": 0,
+  "cover_pct": 100.0,
+  "placements": [
+   [
+    "ENGINE",
+    41,
+    110,
+    34
+   ],
+   [
+    "EXT",
+    49,
+    77,
+    30
+   ],
+   [
+    "EXT",
+    53,
+    48,
+    30
+   ],
+   [
+    "EXT",
+    36,
+    24,
+    30
+   ],
+   [
+    "EXT",
+    53,
+    141,
+    30
+   ],
+   [
+    "EXT",
+    15,
+    34,
+    30
+   ],
+   [
+    "EXT",
+    47,
+    5,
+    30
+   ],
+   [
+    "EXT",
+    15,
+    121,
+    30
+   ],
+   [
+    "EXT",
+    66,
+    122,
+    30
+   ],
+   [
+    "EXT",
+    27,
+    130,
+    30
+   ]
+  ],
+  "n_ext_used": 9,
+  "n_ext_max": 12,
+  "r_eng": 34,
+  "r_ext": 30,
+  "chain_ok": true,
+  "n_components": 1,
+  "biggest_comp": 4313,
+  "contiguous": true,
+  "max_dist": 30.0,
+  "liftable": true,
+  "zones": {
+   ".": 571,
+   "A": 195,
+   "B": 195,
+   "C": 195,
+   "D": 195,
+   "E": 195,
+   "F": 195,
+   "G": 400,
+   "H": 271,
+   "K": 762,
+   "M": 202,
+   "R": 194,
+   "S": 290,
+   "T": 63,
+   "U": 195,
+   "W": 195
+  },
+  "missing_required": []
+ },
+ "12_cross_nave": {
+  "tiles": 4475,
+  "cap": 4800,
+  "headroom": 325,
+  "covered": 4475,
+  "uncovered": 0,
+  "cover_pct": 100.0,
+  "placements": [
+   [
+    "ENGINE",
+    91,
+    89,
+    34
+   ],
+   [
+    "EXT",
+    69,
+    110,
+    30
+   ],
+   [
+    "EXT",
+    48,
+    89,
+    30
+   ],
+   [
+    "EXT",
+    69,
+    137,
+    30
+   ],
+   [
+    "EXT",
+    69,
+    64,
+    30
+   ],
+   [
+    "EXT",
+    69,
+    34,
+    30
+   ],
+   [
+    "EXT",
+    18,
+    89,
+    30
+   ],
+   [
+    "EXT",
+    113,
+    89,
+    30
+   ],
+   [
+    "EXT",
+    69,
+    9,
+    30
+   ]
+  ],
+  "n_ext_used": 8,
+  "n_ext_max": 12,
+  "r_eng": 34,
+  "r_ext": 30,
+  "chain_ok": true,
+  "n_components": 1,
+  "biggest_comp": 4475,
+  "contiguous": true,
+  "max_dist": 29.73,
+  "liftable": true,
+  "zones": {
+   ".": 426,
+   "A": 187,
+   "B": 187,
+   "C": 195,
+   "D": 195,
+   "E": 195,
+   "F": 195,
+   "G": 752,
+   "H": 482,
+   "K": 568,
+   "M": 145,
+   "R": 322,
+   "S": 219,
+   "T": 49,
+   "U": 179,
+   "W": 179
+  },
+  "missing_required": []
+ },
+ "13_broken_keel_halo": {
+  "tiles": 3999,
+  "cap": 4800,
+  "headroom": 801,
+  "covered": 3999,
+  "uncovered": 0,
+  "cover_pct": 100.0,
+  "placements": [
+   [
+    "ENGINE",
+    30,
+    159,
+    34
+   ],
+   [
+    "EXT",
+    30,
+    130,
+    30
+   ],
+   [
+    "EXT",
+    30,
+    100,
+    30
+   ],
+   [
+    "EXT",
+    30,
+    70,
+    30
+   ],
+   [
+    "EXT",
+    30,
+    40,
+    30
+   ],
+   [
+    "EXT",
+    30,
+    10,
+    30
+   ],
+   [
+    "EXT",
+    46,
+    166,
+    30
+   ],
+   [
+    "EXT",
+    30,
+    8,
+    30
+   ]
+  ],
+  "n_ext_used": 7,
+  "n_ext_max": 12,
+  "r_eng": 34,
+  "r_ext": 30,
+  "chain_ok": true,
+  "n_components": 1,
+  "biggest_comp": 3999,
+  "contiguous": true,
+  "max_dist": 29.83,
+  "liftable": true,
+  "zones": {
+   ".": 488,
+   "A": 195,
+   "B": 195,
+   "C": 195,
+   "D": 195,
+   "E": 195,
+   "F": 194,
+   "G": 698,
+   "H": 271,
+   "K": 352,
+   "M": 161,
+   "R": 195,
+   "S": 226,
+   "T": 49,
+   "U": 195,
+   "W": 195
+  },
+  "missing_required": []
  }
 }

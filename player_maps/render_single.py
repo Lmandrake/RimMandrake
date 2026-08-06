@@ -6,7 +6,11 @@ from PIL import Image, ImageDraw, ImageFont
 from ship_designs import COL, R_ENG, R_EXT, CAP, N_EXT
 
 name = sys.argv[1] if len(sys.argv)>1 else '9_derelict_halo'
-TITLES={'9_derelict_halo':'9 · Derelict Halo — pods on curved tethers, dangling perimeter walks, a shrine at the dead centre'}
+TITLES={'9_derelict_halo':'9 · Derelict Halo — pods on curved tethers, dangling perimeter walks, a shrine at the dead centre',
+ '10_spinal_reliquary':'10 · Spinal Reliquary — one straight keel, wings hung on catwalks, grav-shrine amidships',
+ '11_ladder_halo':'11 · Ladder Halo — twin rails, hollow void between, pods hung outboard, shrine in the void',
+ '12_cross_nave':'12 · Cross-Nave Cathedral — cruciform hull, shrine at the crossing, pods off all four arms',
+ '13_broken_keel_halo':'13 · Broken Keel Halo — keel snapped in three, dog-leg catwalk bridges, shrine in the middle'}
 title = TITLES.get(name, name)
 
 def font(sz,bold=True):
