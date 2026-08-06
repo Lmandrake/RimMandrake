@@ -256,6 +256,64 @@ def d_ring_spur():
 designs['8_ring_spur']=d_ring_spur()
 
 # =====================================================================
+# 9 · DERELICT HALO  (ring + free-floating bulbs + curved perimeter walks)
+#   The eerie variant. A main ring carries the core systems. Circular PODS
+#   float outboard at jittered angles/distances but are NOT joined to the ring
+#   by any radial spoke — they simply hang there. Instead, "strange" CURVED
+#   perimeter walkways arc around the OUTSIDE of the hull, some overshooting a
+#   little past everything into empty space for reasons long forgotten. Nothing
+#   is straight. The interior is a hollow void EXCEPT a single arcing causeway
+#   that curves inward to the ship's heart: the GRAV ENGINE core, ringed by a
+#   small consecrated floor bearing the Jawa's worshipful scrap totems (T).
+#   (Field coverage, not corridors, keeps the floating pods liftable.)
+# =====================================================================
+def d_halo():
+    c=Canvas(210,210); cx=cy=105
+    Rin=24; Rout=34; Rmid=(Rin+Rout)//2          # main ring band 24..34
+    c.ring(cx,cy,Rout,Rin,'G')                   # ring body = cargo
+    yy,xx=np.mgrid[0:c.h,0:c.w]; d2=(xx-cx)**2+(yy-cy)**2
+    band=(d2<=(Rmid+1)**2)&(d2>=(Rmid-1)**2)&(c.g!='')
+    c.bb[band]=True; c.g[band]='K'               # keel on ring midline
+    # core systems set into the ring band (four cardinals)
+    c.rect(cx-4,cy-Rout,cx+4,cy-Rin,'S')         # top   thrusters + power
+    c.rect(cx-4,cy+Rin,cx+4,cy+Rout,'W')         # bottom water tanks
+    c.rect(cx-Rout,cy-4,cx-Rin,cy+4,'U')         # left  fuel bunkerage
+    c.rect(cx+Rin,cy-4,cx+Rout,cy+4,'M')         # right command / control
+    # ---- the hollow heart: grav-engine core + consecrated totem floor -------
+    c.disk(cx,cy,6,'.')                          # consecrated floor (scrap shrine)
+    c.rect(cx-2,cy-2,cx+2,cy+2,'T')              # the worshipful scrap totems / relic core
+    c.backbone_rect(cx-6,cy-6,cx+6,cy+6)         # engine may seat here (ship's heart)
+    # ---- single arcing causeway: ring inner edge -> the core ----------------
+    # a curved path (constant-ish sweep, radius easing inward), never straight
+    a_start=math.radians(300)                    # springs from the ring low-right
+    segs=48
+    for t in np.linspace(0,1,segs):
+        r=Rin-(Rin-6)*t                          # ease from ring (24) to core (6)
+        a=a_start+math.radians(150)*t            # sweep 150 deg as it descends
+        xi=int(round(cx+r*math.cos(a))); yi=int(round(cy+r*math.sin(a)))
+        c.rect(xi-1,yi-1,xi+1,yi+1,'.')          # 3-wide causeway
+        c.bb[yi,xi]=True                         # backbone along the causeway
+    # ---- free-floating pods (no spokes): jittered angle + radial distance ---
+    # (deg, pod-centre radius from ship centre, pod radius, code). Shuttle H is
+    # bigger and flung furthest out. Deterministic but deliberately irregular.
+    pods=[( 22,46, 7,'F'),( 63,50, 7,'E'),(107,44, 7,'A'),(148,52, 7,'B'),
+          (196,47, 7,'C'),(243,45, 7,'D'),(292,49, 7,'R'),(334,60,10,'H')]
+    for (deg,pod_r,pr,code) in pods:
+        a=math.radians(deg)
+        px=cx+pod_r*math.cos(a); py=cy+pod_r*math.sin(a)
+        c.disk(int(round(px)),int(round(py)),pr,code)
+        c.backbone_rect(int(round(px)),int(round(py)),int(round(px)),int(round(py)))
+    # ---- strange curved perimeter walkways (arc-like, some overshooting) ----
+    # (radius, deg0, deg1, half). Radii sit just outside the pod belt; a couple
+    # dangle a little past everything into empty space "for mysterious reasons".
+    walks=[(41, 8, 78,1),(45,-30, 12,1),(55,150,205,1),(43,214,262,1),
+           (58,300,348,1),(66,320,344,1)]        # last two overshoot outward
+    for (r,d0,d1,half) in walks:
+        c.arc(cx,cy,r,d0,d1,half,'.')
+    c.crop(); return c
+designs['9_derelict_halo']=d_halo()
+
+# =====================================================================
 report={}
 for name,c in designs.items():
     rep=place_and_verify(c)

@@ -22,7 +22,7 @@ Each design supplies:
 Nodes (engine + 6 extenders) are auto-placed greedily on the backbone to
 MAXIMISE covered ship tiles, then the result is verified.
 """
-import numpy as np, json
+import numpy as np, json, math
 
 # ---- VANILLA limits (kept for reference) --------------------------------
 VAN_R_ENG, VAN_R_EXT, VAN_CAP, VAN_N_EXT = 19, 16, 2000, 6
@@ -144,6 +144,32 @@ class Canvas:
             for xf,yf in zip(xs,ys):
                 xi,yi=int(round(xf)),int(round(yf))
                 if 0<=yi<self.h and 0<=xi<self.w: self.bb[yi,xi]=True
+    def arc(self, cx, cy, r, deg0, deg1, half, code, backbone=True,
+            only_empty=False):
+        """A CURVED corridor: walk the angular span deg0->deg1 at radius r,
+        stamping a (2*half+1) square brush at each step so the path is a smooth
+        arc, never straight. Lays backbone on the centerline by default so the
+        verifier can chain engine/extenders along the curve. deg1 may exceed 360
+        or be < deg0 (it sweeps the short way round in the given direction)."""
+        a0=math.radians(deg0); a1=math.radians(deg1)
+        steps=max(2,int(abs(a1-a0)*r)+1)
+        for t in np.linspace(0,1,steps):
+            a=a0+(a1-a0)*t
+            xi=int(round(cx+r*math.cos(a))); yi=int(round(cy+r*math.sin(a)))
+            for dy in range(-half,half+1):
+                for dx in range(-half,half+1):
+                    x,y=xi+dx,yi+dy
+                    if 0<=y<self.h and 0<=x<self.w:
+                        if only_empty and self.g[y,x]!='': continue
+                        self.g[y,x]=code
+            if backbone and 0<=yi<self.h and 0<=xi<self.w:
+                self.bb[yi,xi]=True
+    def line_backbone(self, x0,y0,x1,y1):
+        """Lay backbone (only) along a straight segment — no tiles painted."""
+        n=int(max(abs(x1-x0),abs(y1-y0)))+1
+        for xf,yf in zip(np.linspace(x0,x1,n),np.linspace(y0,y1,n)):
+            xi,yi=int(round(xf)),int(round(yf))
+            if 0<=yi<self.h and 0<=xi<self.w: self.bb[yi,xi]=True
     def ship_mask(self):
         return self.g!=''
     def crop(self):

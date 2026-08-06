@@ -8,9 +8,10 @@ feedstock progression in `ship_deck_plan.md`, never by the tile cap. This doc ow
 MENU; `ship_deck_plan.md` still owns the repair-progression / heat doctrine that any chosen hull
 inherits._
 
-> **Deliverable image:** `player_maps/ship_designs_comparison.png` (eight panels, coverage halos, stats).
-> **Verifier:** `player_maps/ship_designs.py` + `build_designs.py` (regenerates + re-checks all eight).
-> **Renderer:** `player_maps/render_designs.py`.
+> **Deliverable images:** `player_maps/ship_designs_comparison.png` (the 8-panel comparison grid) +
+> `player_maps/design_9_derelict_halo_large.png` (#9 rendered large & readable on its own panel).
+> **Verifier:** `player_maps/ship_designs.py` + `build_designs.py` (regenerates + re-checks all nine).
+> **Renderers:** `player_maps/render_designs.py` (grid) + `render_single.py <name>` (one large panel).
 
 ---
 
@@ -32,6 +33,16 @@ inherits._
   thinner main ring holding the core systems, with eight **circular pods** bursting outward on
   5-wide spokes at deliberately irregular ("semi-random") angles, one enlarged pod = the shuttle
   bay, thrown furthest out. Net: **eight designs**, all 14 regions, all verified liftable.
+- **2026-08-06 (derelict-halo pass):** Added **#9 Derelict Halo** — the eerie variant. Same ring +
+  irregular circular pods, but the pods are **free-floating** (NO radial spokes joining them to the
+  ring); instead "strange" **curved perimeter walkways** arc around the *outside* of the hull, two of
+  them **overshooting a little past everything into empty space** for reasons long forgotten. Nothing
+  is straight. The interior is a **hollow void** except a **single spiral causeway** curving inward to
+  the ship's heart: the **grav-engine core**, ringed by a small consecrated floor bearing the Jawa's
+  **worshipful scrap totems** (the carbonite/sacred-scrap block). Needed a new curved-corridor
+  primitive (`arc()` in `ship_designs.py`). Rendered as its own **large standalone panel**
+  (`render_single.py`, ~3× fonts) after feedback that the grid text was too small. Net: **nine
+  designs**, all 14 regions, all verified liftable.
 
 ---
 
@@ -112,7 +123,7 @@ is why it burns the most extenders (9).
 
 ---
 
-## The eight
+## The nine
 
 Numbers below are from `designs_report.json` (regenerable via `build_designs.py`). "Factory" = all
 six Factory_lore wings combined (A+B+C+D+E+F). Every design now carries all 14 regions (verified).
@@ -245,6 +256,40 @@ pods — accepting a lighter factory.
 
 ---
 
+### 9 · Derelict Halo — *floating pods, curved perimeter walks, a shrine at the dead centre*
+**4,186 tiles · 614 headroom · 10 extenders · cargo 1,165 · shuttle ~317 · farthest 29.83**
+
+The **eerie sibling of #8.** Same monumental cargo ring with the core systems set into its band
+(command / thrusters+power / water / fuel), and the same **eight irregular circular pods** for the
+six factory wings + habitat + the enlarged white shuttle bay. But here the pods are **free-floating**
+— **no radial spokes connect them to the ring at all.** They simply hang in the black, held to the
+ship only by the grav field (the pale connection halos), never by a walkway. Instead, **"strange"
+curved perimeter catwalks** arc around the *outside* of the hull — never straight, always arc-like —
+and **two of them overshoot a little past everything, dangling off into empty space** for reasons
+long forgotten. The whole interior is a **hollow void** save one thing: a **single spiral causeway**
+that curves inward from the ring to the ship's heart at the dead centre — the **grav-engine core**,
+ringed by a small consecrated floor bearing the Jawa's **worshipful scrap totems** (the black
+carbonite / sacred-scrap block). That lone sacred path is the only thing that reaches the middle.
+
+For: it is by far the most *atmospheric* and unsettling silhouette — a hollow derelict wheel with
+organs floating around it and a shrine at its core, which is exactly the crashed-Factory-ship /
+Jawa-salvage mood; huge cargo (1,165, second only to #8); the floating pods are the ultimate
+isolatable units (each is a self-contained sealed room, maps perfectly onto the wing-by-wing repair
+gate); the perimeter walks give a *lot* of exterior/defensible edge; comfortable coverage slack
+(614). Against: it is **not physically sensible as a working ship** — pods you can only reach by the
+grav field, not on foot, plus walkways that lead nowhere — so it is the **hardest to actually play**
+(hauling, pathing, defence between disconnected pods) and the **hardest to hand-author**; light on
+walkable connective floor; the "mysterious dangling" catwalks are pure flavour tiles. Best if: you
+want a *set-piece / GM-mood* hull — a haunted salvaged wheel — and you're willing to trade practical
+playability for the strongest possible atmosphere. (This one is more art object than optimised base;
+if you love the look but want it playable, we can re-connect the pods with short curved skyways and
+keep the shrine-at-centre motif.)
+
+*Rendered on its own large panel:* `player_maps/design_9_derelict_halo_large.png` (built by
+`render_single.py`, ~3× the comparison-grid font size for legibility).
+
+---
+
 ## Decision translation
 
 **The decision this serves:** which hull silhouette to commit to before the tile-level blueprint
@@ -263,43 +308,50 @@ doctrine, and campaign hooks apply to *whichever* you pick.
 | 6 | Salvage hulk | 4604 (196) | 4 | 622 | 1700 | 288 | **yes (L/R)** | derelict gap | medium |
 | 7 | Nodal station | 4607 (193) | 9 | 357 | 1107 | **357** | **yes (spokes)** | **inter-spoke** | hard (spokes) |
 | 8 | Ring-and-spur | 3837 (963) | 10 | **1279** | 894 | 317 | **yes (pods)** | **ring core + gaps** | hard (ring+pods) |
+| 9 | Derelict halo | 4186 (614) | 10 | 1165 | ~360 | 317 | **yes (floating)** | **hollow core + void** | **hardest (floating pods)** |
 
 **Tradeoffs, distilled:** *most cargo* → **8** (Ring-and-Spur, 1,279), then **4** (Catamaran, 970);
 *most factory* → **5** (Ring), then **2** (Nebulon-B); *most shuttle capacity* → **7** and **6**;
 *asymmetry* → **6** (side-to-side wreck), **7** (radial spokes), **8** (irregular ring pods), **2**
 (fore/aft); *courtyard / open space* → **4** (twin courts), **5** (hangar), **7** (inter-spoke
 voids); *most on-theme wreck* → **6**; *most iconic Star Wars reading* → **3** (corvette); *ring
-silhouette* → **5** (symmetric) or **8** (broken-symmetry); *easiest to hand-author* → **1**.
-Coverage slack (room to tweak later) is best on **2** (1,059), **8** (963) and **3** (973), tightest
-on **5** (98).
+silhouette* → **5** (symmetric), **8** (broken-symmetry), or **9** (hollow derelict wheel);
+*most atmospheric / set-piece* → **9** (floating pods + shrine core); *easiest to hand-author* →
+**1**; *hardest* → **9** (disconnected floating pods). Coverage slack (room to tweak later) is best
+on **2** (1,059), **8** (963), **3** (973) and **9** (614), tightest on **5** (98).
 
-**Dependencies:** all eight inherit the substructure math, the `ship_deck_plan.md` repair gate +
-heat doctrine, and the desert / VGE / faction layers. All eight require **Bigger Gravships**
+**Dependencies:** all nine inherit the substructure math, the `ship_deck_plan.md` repair gate +
+heat doctrine, and the desert / VGE / faction layers. All nine require **Bigger Gravships**
 (approved) configured to at least the assumed sliders; **the real slider ceilings are not yet
 confirmed** (Fetcher pending) — if the mod can't reach r34/r30/12/4800, the near-cap designs
-(5, 6, 7) shrink first. (#8 has lots of slack, so it survives a tighter cap; but its 10 extenders
-would be the first thing to bite if the mod caps `N_EXT` below 12.)
+(5, 6, 7) shrink first. (#8 and #9 have more slack, so they survive a tighter cap; but their 10
+extenders would be the first thing to bite if the mod caps `N_EXT` below 12.)
 
 **Principal risks:** (a) the expanded limits are *assumed*, not verified — the Fetcher result could
 force a re-tune (most likely affecting the near-cap designs 5, 6, 7, and the high-extender designs
-7/8 if `N_EXT` is capped low); (b) start-save authoring of a large pre-broken hull is still the one
-true blocker regardless of shape — the ring (5), the spoked station (7), and the ring-and-spur (8)
-are hardest to hand-place; (c) designs 5–7 have little coverage slack, so any later deck-widening
-needs a re-verify.
+7/8/9 if `N_EXT` is capped low); (b) start-save authoring of a large pre-broken hull is still the one
+true blocker regardless of shape — the ring (5), the spoked station (7), the ring-and-spur (8), and
+especially the **floating-pod halo (9)** are hardest to hand-place; (c) designs 5–7 have little
+coverage slack, so any later deck-widening needs a re-verify; (d) **#9 is not physically playable as
+drawn** — its pods are field-connected but foot-disconnected — so it's a mood/set-piece candidate
+unless the pods are re-linked with skyways.
 
 **Missing info that would help:** the real Bigger Gravships slider ranges (pending Fetcher); and
-your priority weighting — *maximum cargo* (→8, then 4), *maximum factory* (→5/2), *the asymmetry you
-called out* (→6 for side-to-side, 7 for radial, 8 for broken-ring), *a playable open courtyard*
-(→4/5), *the modular station look* (→7/8), or *the most iconic silhouette* (→3).
+your priority weighting — *maximum cargo* (→8, then 4/9), *maximum factory* (→5/2), *the asymmetry you
+called out* (→6 for side-to-side, 7 for radial, 8 for broken-ring, 9 for floating), *maximum
+atmosphere* (→9), *a playable open courtyard* (→4/5), *the modular station look* (→7/8), or *the most
+iconic silhouette* (→3).
 
 **Recommendation:** for the crashed-Factory-ship / Jawa-salvage theme, **6 (Salvage Hulk)** remains
 the strongest single pick — its missing/rebuilt section literally *is* the repair story. **7 (Nodal
 Station)** and **8 (Ring-and-Spur)** are the boldest station-style options and map cleanly onto the
 wing-by-wing repair gate (each pod/cell is an isolatable unit); pick 8 over 7 if you want a ring
 silhouette and maximum cargo, 7 if you want the twin-nucleus industrial heart. If you want the most
-balanced conventional ship, **3 (Corvette)** or **4 (Catamaran)**. All eight are proven to fly; none
-is wrong — and I can **hybridize** further (e.g. a salvage-hulk asymmetry with nodal cells on the
-rebuilt side).
+balanced conventional ship, **3 (Corvette)** or **4 (Catamaran)**. If you want a pure *set-piece /
+GM-mood* hull, **9 (Derelict Halo)** is the most evocative — a hollow salvaged wheel with organs
+floating around it and a scrap-shrine at its core — but treat it as art unless the pods get re-linked
+for playability. All nine are proven to fly; none is wrong — and I can **hybridize** further (e.g. a
+salvage-hulk asymmetry with nodal cells on the rebuilt side, or a playable #9 with curved skyways).
 
 **Recommended next step:** pick one (or ask for a hybrid), and I'll draw the tile-level interior
 blueprint for it against the cap, then fold the choice back into `ship_deck_plan.md` [DECIDE B].
@@ -311,13 +363,19 @@ authoring.
 ## File map (for a clean restart)
 
 - `player_maps/ship_designs.py` — Canvas + coverage verifier + shared palette (`COL`/`LABEL`) +
-  limit constants (VANILLA vs EXPANDED). New helpers this pass: `octagon()`, `spoke()`.
-- `player_maps/build_designs.py` — the 8 design functions, the 14-region `REQUIRED` check, runs
+  limit constants (VANILLA vs EXPANDED). Helpers: `octagon()`, `spoke()` (straight), and — new for
+  #9 — `arc()` (curved corridor: walks an angular span at a radius, lays backbone on the centerline)
+  and `line_backbone()`.
+- `player_maps/build_designs.py` — the 9 design functions, the 14-region `REQUIRED` check, runs
   verify + tally, writes grids (`design_*.npy`), placements (`design_*_place.json`), and
   `designs_report.json`.
-- `player_maps/render_designs.py` — composites the black comparison sheet with legend + per-panel
-  coverage halos and stats. Outputs `ship_designs_comparison.png`.
+- `player_maps/render_designs.py` — composites the black 8-panel comparison sheet with legend +
+  per-panel coverage halos and stats. Outputs `ship_designs_comparison.png`.
+- `player_maps/render_single.py <name>` — renders ONE design as a large standalone sheet with ~3×
+  fonts + bigger tiles (built after "text too small" feedback). Outputs `design_<name>_large.png`.
 - `player_maps/designs_report.json` — verified numbers per design (source of every stat above).
-- `ship_designs_comparison.png` — the deliverable image.
+- `player_maps/ship_designs_comparison.png` — the 8-panel deliverable image.
+- `player_maps/design_9_derelict_halo_large.png` — #9 rendered large & readable.
 
-To regenerate everything: `cd player_maps && python3 build_designs.py && python3 render_designs.py`.
+To regenerate everything: `cd player_maps && python3 build_designs.py && python3 render_designs.py &&
+python3 render_single.py 9_derelict_halo`.
