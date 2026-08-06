@@ -119,8 +119,122 @@ Grounding sources, in priority order: **(a) canon Jawa material** — small hood
 
 **Dependencies:** Backstory Constructor (WS 2907131508 ✅), Character Editor (✅), the Jawa xenotype + Outland Genetics/HAR/Outer Rim (per `jawa_xenotype_and_religion.md` §1.5), the VSIE social stack (✅ adopted). The **love-gate / egg-laying / mood-economy** elements ride the open Fetcher pull `2026-08-06_jawa_reproduction_debt_mood_mods` — personas are authored so the *characters* exist regardless, with those mechanics layering in when confirmed.
 
-**Principal risks:** (1) VTE multiplier creep — VTE is now ADOPTED (§0.2), but its "straight up stat upgrade" traits must be commonality-zeroed in mod options at setup, or they reintroduce Q3/Q5 multipliers; keep the audit discipline, not a blanket-off. Resist *stacking* additional trait packs (Bundle/RimTraits declined) — they swamp VTE's rarity tuning. (2) Character Editor scope-drift — the §0.1 discipline is the guardrail. (3) `skillGains` inflation — author weaknesses, not optimal lines. (4) The love-gate/egg-laying mechanics may need authored fallbacks (flagged in §4.6 of the religion doc) — Yeku's and Wim's arcs are written to survive as RP/RimBridge beats if no clean mod lands. Egg-laying specifically is a **confirmed gap** (§4.6): no verified 1.6 humanlike-oviparous mod exists.
+**Principal risks:** (1) VTE multiplier creep — VTE is now ADOPTED (§0.2), but its "straight up stat upgrade" traits must be commonality-zeroed in mod options at setup, or they reintroduce Q3/Q5 multipliers; keep the audit discipline, not a blanket-off. Resist *stacking* additional trait packs (Bundle/RimTraits declined) — they swamp VTE's rarity tuning. (2) Character Editor scope-drift — the §0.1 discipline is the guardrail. (3) `skillGains` inflation — author weaknesses, not optimal lines. (4) The love-gate/egg-laying mechanics may need authored fallbacks (flagged in §4.6 of the religion doc) — Yeku's and Wim's arcs are written to survive as RP/RimBridge beats if no clean mod lands. Egg-laying is **SOLVED** (§4.3/§4.6, corrected 2026-08-06): the `Outland_EggLayer` gene ships in already-adopted Outland Genetics, with three verified 1.6 backups (Alpha Genes / Avian Genes / VRE-Saurid) — earlier "confirmed gap" call was wrong.
 
-**Missing info — now largely resolved (Fetcher `2026-08-06_jawa_reproduction_debt_mood_mods` delivered 2026-08-06, integrated into religion doc §4.2/§4.3/§4.6):** same-sex/male-pregnancy is ✅ solved (Simple Trans Expanded WS 3516912373 primary / Samesex IVF 2878580643 fallback); the love-gate slave-romance is ✅ mod-supported (More Slavery Stuff Continued WS 3530586159 precepts); the Hutt "pay-or-raid" beat is ✅ available (Tribute Demand 3711373966 / Raid Protection Fee 3650927927). **Two things stay bespoke:** literal **egg-laying** (⛔ no 1.6 mod — ship "narrate normal birth as eggs") and the **xenotype-death mourning** thought (no off-shelf mod — hand-author a ThoughtDef). So Wim's *settled* love-gate backstory and Yeku's *future* love-gate arc are both now mod-supported, not RP-only.
+**Missing info — now largely resolved (Fetcher `2026-08-06_jawa_reproduction_debt_mood_mods` delivered 2026-08-06, integrated into religion doc §4.2/§4.3/§4.6):** same-sex/male-pregnancy is ✅ solved (Simple Trans Expanded WS 3516912373 primary / Samesex IVF 2878580643 fallback); the love-gate slave-romance is ✅ mod-supported (More Slavery Stuff Continued WS 3530586159 precepts); the Hutt "pay-or-raid" beat is ✅ available (Tribute Demand 3711373966 / Raid Protection Fee 3650927927). egg-laying is ✅ solved via the `Outland_EggLayer` gene (already-adopted Outland Genetics, 3 verified 1.6 backups). **One thing stays bespoke:** the **xenotype-death mourning** thought (no off-shelf mod — hand-author a ThoughtDef). So Wim's *settled* love-gate backstory and Yeku's *future* love-gate arc are both now mod-supported, not RP-only.
 
-**Recommended next steps:** (1) you sanity-check the five personalities/roles below and flag any you want swapped or re-flavored; (2) on your word, I draft the concrete **Backstory Constructor entries** (title + lore prose + `skillGains` + `workDisables`) for each founder, ready to type into the mod; (3) when the Fetcher lands, I reconcile the love-gate/egg-laying/mood pieces and finalize Yeku's + Wim's arc mechanics.
+**Recommended next steps:** (1) you sanity-check the five personalities/roles below and flag any you want swapped or re-flavored; (2) on your word, I draft the concrete **Backstory Constructor entries** (title + lore prose + `skillGains` + `workDisables`) for each founder, ready to type into the mod — **✅ DONE, see §5**; (3) when the Fetcher lands, I reconcile the love-gate/egg-laying/mood pieces and finalize Yeku's + Wim's arc mechanics.
+
+---
+
+## 5. Backstory Constructor entries (concrete, ready to type in) ◇
+
+_Authored 2026-08-06 on your greenlight. Each founder gets a **childhood** slot and an **adulthood** slot (RimWorld pawns carry both; skillGains and workDisables stack across the two). Values are **characterful, deliberately non-optimal** per the §0.2 guardrail — modest totals, at least one real weakness each. Skills are the 12 vanilla skills; `workDisables` use vanilla **WorkTags** (`Violent`, `Intellectual`, `Social`, `Caring`, `Mining`, `PlantWork`, `Crafting`, `Cooking`, `ManualDumb`, `ManualSkilled`, `Artistic`, `Firefighting`, `Hauling`, `Cleaning`, `Animals`). Enter the two backstories per founder in the mod; set **title** as shown; paste the **lore** into the description field; enter **skillGains** as skill→integer; tick the **workDisables**._
+
+**Tuning notes (read once):** (a) totals per founder land roughly in the 18–30 skill-point range across both slots — a *thin* start, not a stacked one, so early game keeps its friction (Q5-positive). (b) A `workDisables` on a founder is a feature, not a bug — it forces reliance on the others (Q4-positive). (c) 🔎 the exact WorkTag names and the skillGains UI (whether it caps per-slot) should be confirmed against the installed mod at build; the WorkTags below are vanilla-standard, but Backstory Constructor's field labels may differ cosmetically. (d) No `Passion` is authorable via backstory alone — passions are rolled/edited on the pawn; set the founders' passions in Character Editor (§0.1 fix-scope) to match the "passion" lines noted per founder.
+
+---
+
+### 5.1 Nekko Vok — "Captain of the Opened Hull" (Leader/Chief)
+
+**Childhood** — *title:* **"Crawler-Born Haggler"**
+> Nekko was hatched in the belly of a wandering clan-crawler and cut his teeth on the trade-floor, not the sand. Before he could carry a fusioncutter he could talk a Toydarian down to half-price. He learned that a clan lives or dies by who speaks for it — and that the one who speaks must never be caught digging.
+
+- `skillGains`: **Social +4**, Intellectual +2, Crafting +1
+- `workDisables`: *(none — childhood)*
+
+**Adulthood** — *title:* **"Captain of the Opened Hull"**
+> When the crashed Factory ship was found half-swallowed by dune, it was Nekko who set the first cut into its hull and named the clan's new covenant inside it. He leads now by voice and by memory of every debt owed and owned. His hands are too old for the grunt-work; his authority is the tool he still swings.
+
+- `skillGains`: **Social +5**, Intellectual +3, Shooting +1
+- `workDisables`: **Mining**, **ManualDumb** _(a Chief who cannot dig or haul — forces the crew to matter; keeps him on negotiation/leadership)_ 🔎
+- **Passion (set in CE):** Social (burning); Intellectual (minor)
+- **Net spread:** Social 9 · Intellectual 5 · Crafting 1 · Shooting 1 — a talker, near-useless at labor. ⚠️ Oldest founder — the §4.4 exile clock.
+
+---
+
+### 5.2 Tobb Nkik — "Keeper of the Articles" (Moral Guide)
+
+**Childhood** — *title:* **"Litany-Keeper's Apprentice"**
+> Tobb memorized the Articles of Passage before he could read a wiring diagram. Where other hatchlings hoarded scrap, he hoarded rules — which parts are sacred, which rites a broken droid is owed, when the ration is holy and when it is merely food.
+
+- `skillGains`: **Intellectual +4**, Social +2
+- `workDisables`: *(none)*
+
+**Adulthood** — *title:* **"Keeper of the Articles"**
+> The clan's rememberer and conscience. Tobb preaches the automation-reverence, presides over the "retirement of the second hand" when a droid is destroyed, and leads the mourning when any Jawa dies — even an enemy. He is deep in the books and hopeless with a rifle.
+
+- `skillGains`: **Intellectual +5**, Social +4, Medical +1
+- `workDisables`: **Violent**, **Mining** _(a pacifist theologian — will not fight, will not dig)_ 🔎
+- **Passion (set in CE):** Intellectual (burning); Social (minor)
+- **Net spread:** Intellectual 9 · Social 6 · Medical 1 — the researcher/preacher; zero combat. Anchors the §4.2b mood economy.
+
+---
+
+### 5.3 Griz Utinn — "The Hands" (crafter/constructor/miner)
+
+**Childhood** — *title:* **"Scrap-Warren Whelp"**
+> Griz grew up in the tunnel-warrens under a wrecked crawler, learning to strip a servo blind and re-seat a power cell by feel in the dark. He never learned to talk to outsiders — the machines were company enough.
+
+- `skillGains`: **Crafting +3**, Mining +3, Construction +2
+- `workDisables`: *(none)*
+
+**Adulthood** — *title:* **"The Hands"**
+> The industrial spine of the clan — Griz runs the salvage loop, the smithy, and (one day) the stolen droid-line. He talks to half-dead droids more easily than to people and is physically pained by scrapping something "still good."
+
+- `skillGains`: **Crafting +5**, **Construction +4**, Mining +3
+- `workDisables`: **Social** _(cannot do warden/trade/lead work — he makes, he doesn't parley)_ 🔎
+- **Passion (set in CE):** Crafting (burning); Construction (burning); Mining (minor)
+- **Net spread:** Crafting 8 · Construction 6 · Mining 6 — the maker, socially disabled. Lead of the §4.8 droid-theft arc.
+
+---
+
+### 5.4 Yeku — "First-Hatched" (young shooter/hunter)
+
+**Childhood** — *title:* **"Newly-Grown"**
+> Yeku is the proof of the clan's fast-growth: hatched and hurried to adulthood in what felt like a single season. He skipped the long apprenticeship the elders had — quick to the trigger, quick to anger, thin on patience and everything else.
+
+- `skillGains`: **Shooting +3**, Animals +2
+- `workDisables`: *(none)*
+
+**Adulthood** — *title:* **"First-Hatched"**
+> The clan's skirmisher — Jawa fight by running and shooting, and Yeku runs fastest. Overconfident, impulsive, forever talking back to the Captain. His pack-beast likes him better than most of the crew does.
+
+- `skillGains`: **Shooting +5**, Animals +3, Melee +1
+- `workDisables`: **Intellectual**, **Artistic** _(no patience for research or fine work — a specialist by youth)_ 🔎
+- **Passion (set in CE):** Shooting (burning); Animals (minor)
+- **Net spread:** Shooting 8 · Animals 5 · Melee 1 — a pure young specialist, thin everywhere else. The §4.2 love-gate candidate.
+
+---
+
+### 5.5 Wim Ateeka — "The Twice-Kin" (medic)
+
+**Childhood** — *title:* **"Born to Another Crawler"**
+> Wim was hatched to a *different* clan and raised on its dialect and its medicine — a tinkerer taught to work on bodies as well as bots. He never quite lost the accent, or the sense of being slightly apart.
+
+- `skillGains`: **Medical +4**, Intellectual +2, Social +1
+- `workDisables`: *(none)*
+
+**Adulthood** — *title:* **"The Twice-Kin"**
+> Taken as a slave in a raid, Wim earned full clan membership the rare way — through love, the §4.2 covenant made flesh. He is the living precedent that a Jawa is never sold. He heals the clan and is its quiet conscience about the kin it keeps.
+
+- `skillGains`: **Medical +5**, Intellectual +3, Social +2
+- `workDisables`: **Mining**, **Violent** _(a healer, not a fighter or a digger)_ 🔎
+- **Passion (set in CE):** Medical (burning); Intellectual (minor)
+- **Net spread:** Medical 9 · Intellectual 5 · Social 3 — the doctor; the settled-past proof of the love-gate.
+
+---
+
+### 5.6 Roster-level check
+
+**Skill matrix (sum of both slots):**
+
+| Founder | Shoot | Melee | Const | Mine | Craft | Med | Soc | Int | Anim |
+|---|---|---|---|---|---|---|---|---|---|
+| Nekko | 1 | – | – | – | 1 | – | **9** | 5 | – |
+| Tobb | – | – | – | – | – | 1 | 6 | **9** | – |
+| Griz | – | – | **6** | 6 | **8** | – | – | – | – |
+| Yeku | **8** | 1 | – | – | – | – | – | – | 5 |
+| Wim | – | – | – | – | – | **9** | 3 | 5 | – |
+
+**Coverage read:** every core role has one clear owner (Social→Nekko, Research→Tobb/Wim, Craft+Build+Mine→Griz, Combat→Yeku, Medical→Wim). **Deliberate gaps the player will feel:** Cooking, Plants, and Artistic have **no owner** at all — the founding clan can salvage and fight but can barely *feed* itself, which is exactly the early-game scarcity pressure the pillars want (and a diegetic reason the Jawa live off traded/scavenged rations, not farming — §2.7 ration-as-sacred). Construction rests entirely on Griz; if he goes down, building stalls — real fragility, not a safety net. **This is a thin, lopsided, characterful start by design; do not "round it out."** If it proves too punishing in Phase-A playtest, the gentlest fix is a Character Editor passion nudge or a +2 Cooking on Wim's childhood — not a sixth generalist.
