@@ -82,3 +82,68 @@ To keep it anti-exponential and *interesting*, layer in downside risk:
 - Slab as **building-only** vs **minifiable item** (recommend minifiable so it's haulable/sellable/shippable — more useful).
 - Whether frozen slabs require **standing power** to stay frozen (adds the brownout-thaw crisis) or are **passive-permanent** (simpler). Recommend a mod setting.
 - Whether to add an **"extraction raid"** incident when you hold a named enemy's frozen officer (great story hook; medium C#).
+
+---
+
+# BUILDABLE SPEC (Task B — 2026-08-06)
+
+Grounded in real RimWorld 1.6 classes (verified against vanilla + the Droid Depot 1.6 source we already have as a template). This is the from-XML-and-a-little-C# build plan. Def prefix: **`SWC_`** (Star Wars Carbonite) to avoid any `OuterRim_*` collision.
+
+## Design pivot after reading vanilla hooks: the slab IS a container Thing
+The cleanest real implementation is a **minifiable Building that contains a Pawn**, exactly like vanilla `Building_CryptosleepCasket` (which already stores a live pawn, suspends needs, and survives save/load via `ThingOwner`). We subclass that pattern so the engine does the hard part (pawn suspension, serialization) for free.
+
+## Defs to author
+
+### 1. `SWC_CarboniteChamber` — ThingDef (Building, the freezing station)
+- `thingClass` = `SWC.Building_CarboniteChamber` (subclass of `Building_Casket`/`Building_WorkTable` hybrid — see C# below).
+- Powered (`CompPowerTrader`, high `basePowerConsumption` ~600–1000W during a freeze cycle), needs research `SWC_CarboniteFreezing`.
+- Has a **bill stack** (like a worktable): the "Freeze prisoner into carbonite" recipe and the "Thaw carbonite slab" recipe are bills here.
+- `designationCategory` = Misc/Production; `costList` steel+components+advanced components to build.
+
+### 2. `SWC_CarboniteSlab` — ThingDef (minifiable Building OR item) that CONTAINS the pawn
+- `thingClass` = `SWC.Building_CarboniteSlab : Building_Casket` — inherits `ThingOwner` pawn storage, needs-suspend, save/load.
+- `comps`: `CompQuality` (freeze skill sets quality → beauty), a custom `CompProperties_CarboniteSlab` (holds occupant metadata for label/value/trade), optional `CompPowerTrader` (only if "standing power to stay frozen" setting is on).
+- `statBases`: `Beauty` + `MarketValue` computed dynamically in the comp (see value logic); `Mass` heavy (it's a slab); `Flammable` false.
+- `minifiedDef` so it's haulable/storable/shippable/**sellable**; `tradeability` Sellable.
+- `tickerType` Rare (cheap; only matters if power-decay setting is on).
+- Wall-mountable variant flag for the trophy/decor use (or just let it be placed like a statue — beauty applies either way).
+
+### 3. `SWC_FreezeInCarbonite` — RecipeDef (bill at the chamber)
+- Targets a **downed pawn or prisoner** brought to the chamber (WorkGiver hauls the pawn in, like `JobDriver_RestrainDroid` hauls its target — that exact toil chain is our template: GotoPawn → carry → wait-with-progressbar → apply).
+- `ingredients`: Steel 50 + Plasteel 20 (casing) + Components 2 (advanced 1 for high-value/Force targets) + a **coolant reagent** (Chemfuel 75, OR custom `SWC_CarboniteCompound` if we do the supply-chain option).
+- `workAmount` high (long job, occupies a skilled colonist); `skillRequirements` Crafting/Intellectual.
+- **Effect (custom `RecipeWorker` / job end):** despawn the pawn, spawn a `SWC_CarboniteSlab` whose `ThingOwner` now holds that pawn; stamp quality from worker skill; compute value.
+- **Malfunction roll:** on low skill / power interruption, chance to injure/kill the occupant → lose captive + materials (anti-cheese).
+
+### 4. `SWC_ThawFromCarbonite` — RecipeDef (reverse bill)
+- Bill on a slab placed at/near the chamber: consumes work + a little power, releases the pawn **alive** from the slab's `ThingOwner`, destroys the slab, applies `SWC_HibernationSickness` hediff (temp).
+
+### 5. `SWC_HibernationSickness` — HediffDef (pure XML)
+- Temporary, self-healing over ~1 day: `WorkSpeedGlobal`/`MoveSpeed` penalty + short **blindness** stage (canon Han-Solo nod). Blocks thaw-for-instant-combat cheese. Pure XML, no class.
+
+### 6. `SWC_CarboniteFreezing` — ResearchProjectDef (pure XML)
+- Gates the chamber. Prereq ~ Microelectronics + a mid-tier tech; modest cost.
+
+## The only real C# (small)
+- **`Building_CarboniteSlab : Building_Casket`** — override label ("So-and-so, frozen in carbonite"), `GetInspectString` (shows occupant), and `MarketValue`/`Beauty` getters computed from occupant. Casket base already handles the `ThingOwner<Pawn>`, needs-suspension, and save/load. ~60–100 lines.
+- **`CompCarboniteSlab`** (or fold into the building) — computes value = `f(materialsConsumed + occupant.MarketValue + qualityMultiplier)`; exposes occupant for trade/label; optional power-decay tick (thaw if unpowered).
+- **Freeze recipe worker + WorkGiver/JobDriver** — reuse the Droid Depot `JobDriver_RestrainDroid` toil chain (Goto→Carry→Wait-with-progressbar→apply) as the literal template; on completion, do the pawn→slab swap. ~80–120 lines.
+- **(Optional) `IncidentWorker_ExtractionRaid`** — if we hold a named enemy's frozen officer, their faction raids to reclaim the slab. ~100 lines, deferrable.
+Total bespoke C#: roughly **200–320 lines** across 2–3 classes + one optional incident. Genuinely small.
+
+## Value logic (anti-exponential, restated concretely)
+`slabMarketValue = (steelCost + plasteelCost + componentValue + coolantValue) + occupant.MarketValue * gradeMult`
+where `gradeMult` ≈ 1.0 common / 1.5 named / 2.0+ Force-user. Selling nets roughly inputs+captive value (a **conversion**, not minted wealth); the profit margin is deliberately thin so it's a disposal-with-dignity sink, not a money printer. Higher grades pay more but cost advanced components + are rare → special-occasion, not a grind. ✅ 7-question PASS retained.
+
+## Dependencies & load
+- **No hard mod dep required** — builds on vanilla `Building_Casket`/`CompQuality`/`RecipeDef`. Optionally reference VEF for convenience, but standalone is cleaner.
+- Author under our own `packageId` (e.g. `mandrake.sw.carbonite`), `supportedVersions` 1.6, load after Core/Galactic Diversity (so it can freeze modded xenotypes incl. Jawa — the Casket pattern is race-agnostic, so unlike RHS this DOES work on Jawa).
+- Textures: one slab graphic (grey carbonite with pawn-silhouette overlay — reference Core's `CarboniteFreezing` overlay look) + a chamber building graphic.
+
+## Build order (Task B → implementation)
+1. Research + chamber ThingDef + slab ThingDef (XML) with a stub `Building_CarboniteSlab`.
+2. Freeze recipe + JobDriver (port the RestrainDroid toil chain) → prove pawn→slab swap works in dev mode.
+3. Thaw recipe + `SWC_HibernationSickness`.
+4. Value/beauty comp + quality-from-skill + trade wiring.
+5. Danger hooks: malfunction roll → then (optional) power-decay setting → then (optional) extraction-raid incident.
+6. §-balance pass + Hutt-market tie-in verify.
