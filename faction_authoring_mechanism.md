@@ -1,6 +1,6 @@
 # faction_authoring_mechanism.md — How we make rich, differentiated factions
 
-_The coherent method for the "Per-Faction Definition to the Samuel Streamer level" deliverable parked in `Custom_World.md`. This is the **mechanism** (how); the **filled roster** (which factions, what content) is a separate pass gated on the Sensible Factions casting decision. Status: DESIGNED 2026-08-05 — not yet executed._
+_The coherent method for the "Per-Faction Definition to the Samuel Streamer level" deliverable. This file owns the **mechanism** (source-grounded evidence, the FactionDef field map, the build layers, the dossier template). The **filled roster** lives in `faction_roster_v2.md`; the **status / dependencies / next-steps** live in `Custom_World.md` under the "🅿️⭐ PARKED — Per-Faction Definition" heading (the parked-work board) — not duplicated here._
 
 ---
 
@@ -116,22 +116,11 @@ The save carries 300+ such faction entries (many are per-trader-company sub-fact
 
 ---
 
-## 6. Dependencies, risks, next steps (decision translation)
+## 6. Dependencies, risks, next steps
 
-**Gated on:** locking the roster via the **Sensible Factions casting decision** (still TODO on the Custom_World status board). We cannot fill dossiers for factions we haven't cast. *Workaround to not block:* we can build dossiers **now** for the factions already decided (Empire as pursuer, Hutt trade layer, Bounty Hunters as Act-II pursuer, the Jawa scavenger clans) — that's ~4 of the roster — and add the rest when casting finalizes.
+→ **See `Custom_World.md`, the "🅿️⭐ PARKED — Per-Faction Definition" heading** (the parked-work status board). It owns the live status: what gates execution (the Sensible Factions casting decision), the "fill the ~4 already-decided factions now" workaround, dependencies, principal risk (shallow pass → "lots of SW mods installed"), and the ordered next steps. Kept there, not here, so there is one place to update.
 
-**Feeds this:** the §19.5 arsenal audits (Outer Rim done; Bounty Hunters + Faction T&V in-turf ambush still open) supply the *Signature arsenal* + *Doctrine* fields; the in-game Cherry Picker defName confirmation supplies the *What we delete* field.
-
-**Principal risk:** doing the pass shallow → the world reverts to "lots of SW mods installed." The diff step (§4) is the guard.
-
-**Missing info that would help:** (1) Streamer's starting saves (§5); (2) the final cast list (Sensible Factions decision); (3) in-game defNames for Cherry Picker targets.
-
-**Recommended next steps, in order:**
-1. Make the Sensible Factions casting call → lock the roster.
-2. Fill dossiers for the already-decided factions now (don't wait on #1 for those four).
-3. Pull Streamer's two starting saves; study the instance layer.
-4. Compile: write the Cherry Picker lines (A), the per-faction override patches (B), the Backstory Constructor personas + save name/leader edits (C).
-5. Diff all dossiers; re-differentiate any collisions; cross-check against the 3-act arc and pillars.
+Two linkages specific to *this* mechanism, so they're recorded at their source: the §19.5 arsenal audits feed each dossier's *Signature arsenal* + *Doctrine* fields, and the in-game Cherry Picker defName confirmation feeds the *What Cherry Picker deletes* field. The diff step (§4) is the guard against a shallow pass.
 
 ---
 
