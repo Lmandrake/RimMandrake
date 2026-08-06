@@ -152,12 +152,20 @@ DebugActions; a bespoke-window/gizmo editor does not.
   **gizmos** on `Tile.GetGizmos()` — GUI-only, **NOT** bridge-callable. (Not adopted anyway.)
 - **WorldEdit 2.0** (WS 3590928058): bespoke hotkey/window editor → **inference: no callable
   paths**, human-only setup/repair tool. Fine — that's its role.
-- **Modify Tiles at Game Start** (WS 3667490447): advertises **dev-mode commands** ("Set Biome",
-  "Set Landmark") → **PLAUSIBLY `ToolWorld` DebugActions → possibly bridge-callable.** This is the
-  one world-edit candidate that might extend the bridge. ⏳ Source pull filed
-  (`2026-08-06_mapdesigner_modifytiles_source`) to confirm.
-- **Map Designer** (WS 2111424996): ⏳ same pull will check for any DebugAction/ToolWorld leaves;
-  provisional inference = map-gen-time settings/GUI, likely no new callable paths.
+- **Modify Tiles at Game Start** (WS 3667490447, author Halicade): ✅ CONFIRMED (source pull
+  `2026-08-06_mapdesigner_modifytiles_source`, Workshop description = authoritative, no public
+  repo) it adds real **dev-mode commands** — "Set Biome (mod)", "Set Landmark (mod)", and a
+  landmark-remove — that act on a **selected world tile** (WorldMap, per-tile). That IS the
+  `ToolWorld` pattern, so it is **the one world-edit mod that plausibly registers
+  bridge-enumerable debug-action leaves** (`search_debug_actions` would list them). 🔎 The exact
+  registration mechanism (`[DebugAction]`/`ToolWorld` attribute vs a custom dev button) is
+  *inference* — raw C# not obtained (Workshop-only, no repo). 1.6-tagged, no hard deps.
+- **Map Designer** (WS 2111424996, Zylleon): ✅ RESOLVED = **map-generation settings GUI**, NOT a
+  debug-action tool. Its own Workshop text describes Terrain-tab biome/stone/river shaping that
+  overrides other stone mods *at gen time*; four targeted searches (incl. "MapDesigner DebugAction
+  ToolWorld") returned **zero** debug-action hits. GitHub repo is real (active `1.6` folder, 100%
+  C#) but adds **no new callable debug-action paths** → not a bridge reach-extender. Value is
+  human setup-time map shaping/repair (its assigned role), not agent reach.
 - **Reframe (matches §2b + the mods' own docs):** world-tile edits mostly apply **pre-map-gen** and
   persist in the world save. The bridge operates on the **already-loaded** map. So even a
   bridge-callable "set biome" wouldn't rewrite the current map — it'd affect only future-generated
