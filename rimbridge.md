@@ -141,6 +141,29 @@ paths — it helps a human clicking, not the agent. Judge every "dev tools" mod 
   extenders are the **blueprint mods** (§2a: New Blueprint 3534166729) that give the bridge
   pre-designed structures to stamp, not the dev-menu mods.
 
+### 2c. World-map editing mods — a WORLD-tile analog of the same test (2026-08-06)
+World-authoring mods (adopted in `required_mods.md` §"World-Map Authoring & Setup Tools") raise
+the same "adds-new-leaves?" question, but at the **world-tile** layer. RimWorld has a vanilla
+`DebugActionType.ToolWorld` (per RimWorld Wiki: "mouse targeter that calls the method on each
+world-tile click, WorldMap only") — the world analog of the `ToolMap` actions the bridge already
+calls. So a world-edit mod extends the bridge's reach ONLY if it registers `ToolWorld`
+DebugActions; a bespoke-window/gizmo editor does not.
+- **Tile Biome Editor** (`boringbiome`, source read 2026-08-06): edits via `Command_Action`
+  **gizmos** on `Tile.GetGizmos()` — GUI-only, **NOT** bridge-callable. (Not adopted anyway.)
+- **WorldEdit 2.0** (WS 3590928058): bespoke hotkey/window editor → **inference: no callable
+  paths**, human-only setup/repair tool. Fine — that's its role.
+- **Modify Tiles at Game Start** (WS 3667490447): advertises **dev-mode commands** ("Set Biome",
+  "Set Landmark") → **PLAUSIBLY `ToolWorld` DebugActions → possibly bridge-callable.** This is the
+  one world-edit candidate that might extend the bridge. ⏳ Source pull filed
+  (`2026-08-06_mapdesigner_modifytiles_source`) to confirm.
+- **Map Designer** (WS 2111424996): ⏳ same pull will check for any DebugAction/ToolWorld leaves;
+  provisional inference = map-gen-time settings/GUI, likely no new callable paths.
+- **Reframe (matches §2b + the mods' own docs):** world-tile edits mostly apply **pre-map-gen** and
+  persist in the world save. The bridge operates on the **already-loaded** map. So even a
+  bridge-callable "set biome" wouldn't rewrite the current map — it'd affect only future-generated
+  tiles. World authoring is therefore a **human, setup-time** activity; the bridge's live role stays
+  the loaded-map enrichment (blueprint stamping), not planet editing.
+
 ## 2. Dependencies ❓ (pending)
 - ❓ Harmony (`brrainz.harmony`) — near-universal for C# mods; confirm, don't assume.
 - ❓ Companion client / external library the server talks to — unknown whether one exists.

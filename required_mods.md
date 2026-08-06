@@ -191,6 +191,35 @@ _Note (2026-08-05): **Interaction Bubbles** (WS `1516158345`) is also the anchor
 
 ---
 
+## World-Map Authoring & Setup Tools (2026-08-06)
+
+**Purpose & scope decision (user, 2026-08-06):** These tools let us hand-author the *planet* — a **once-improved world map, written and frozen** at setup — rather than accept raw worldgen. Extending edits beyond setup (live re-shaping) is *optional and TBD*; not planned for this playthrough. **Key mechanic (verified from Tile Biome Editor source, `boringbiome`):** world-tile edits (biome + tile mutators) are stored on the `Tile` and **saved with the world** via `Scribe_Collections` — so a curated planet genuinely persists. **Timing caveat (stated on multiple mod pages):** biome drives *map generation*, so a tile must be edited **before** its local map is generated; editing a tile whose map already exists only affects maps generated afterward. This is fine for our frozen-worldmap model (author the planet at setup, then land).
+
+### Modify Tiles at Game Start — ✅ ADOPTED as PRIMARY world-authoring tool (Workshop 3667490447) ⏳ 1.6 + debug-action shape pending source
+- **Why (the deciding pick):** Unlike the GUI-editor mods, it exposes its edits as **dev-mode commands** — select a tile, dev mode → *"Set Biome (mod)"* or *"Set Landmark (mod)"*. It is the only candidate that also handles **Odyssey Landmarks**, not just biomes. The dev-command framing is why it's primary: it fits our setup workflow and *may* be RimBridge-reachable (see caveat).
+- **Restriction/config:** Use at setup to author the frozen world map (biomes + landmarks on the tiles that matter). Not an in-fiction player power — pure authoring tool, used before/at colony start.
+- **⚠️ PENDING SOURCE VERIFICATION (Fetcher `2026-08-06_mapdesigner_modifytiles_source` filed):** confirm (a) live 1.6/Odyssey status, and (b) whether "Set Biome/Set Landmark" register as `DebugActionType.ToolWorld` leaves (→ callable by RimBridge's `execute_debug_action` / discoverable via `search_debug_actions`) or are bespoke UI. If ToolWorld → this is also the programmatic world-edit path for the optional "extend beyond setup" idea. If not → still fully usable by hand.
+
+### WorldEdit 2.0 — ✅ ADOPTED as the human setup-repair / heavy-authoring tool (Workshop 3590928058) ⚠️ USE THE WORKSHOP BUILD, NOT the GitHub fork
+- **Why:** The most comprehensive world editor — edits any tile parameter (biome, temperature, rainfall, swampiness), mountains/rocks/caves, **create/delete rivers and roads**, world features with custom text, and a **Faction Editor** (place/rename/re-own faction bases). The human will need this at setup to **repair blunders** and do heavier authoring the lighter tools can't.
+- **⚠️ Source caveat (VERIFIED from the GitHub fork repo):** the `AlphaLeChat/rimworld-worldedit-2.0` GitHub fork is a **manual-compile, 1-star, low-activity** port with **known bugs** it documents itself (road creation can throw a caravan error; "redraw all layer" throws a NPE — though "draw terrain"/"draw mountain" work; WorldEditGeologicalLandforms + WorldEditRimCity sub-projects NOT ported to 1.6; "modifying space" may not work under Odyssey). **Therefore rely on the Steam Workshop build `3590928058`, not the fork.** Confirm the Workshop build's 1.6 status in RimSort before setup.
+- **Restriction/config:** Human authoring/repair tool only — GUI/hotkey driven (F1 tile editor). It adds **no callable debug-action paths** for RimBridge (inference: it's a bespoke-window mod, not DebugActions), so it's *not* a RimBridge automation route — that's fine, it's for the human at the wheel during setup.
+
+### Map Designer — ✅ ADOPTED (Workshop 2111424996; github.com/Zylleon/MapDesigner) ⏳ examine source for debug-action leaves
+- **Why:** Terrain/biome/stone shaping of the *generated local map* (rivers, lakes, beaches, mountains, stone-type control). Second human setup-repair tool alongside WorldEdit — reshape a landed map that generated poorly. Already on the RimBridge radar (`rimbridge.md` §2a).
+- **⚠️ THOROUGH-EXAMINATION PENDING (user's explicit ask; Fetcher `2026-08-06_mapdesigner_modifytiles_source` filed):** determine whether Map Designer registers any `DebugAction`/`ToolWorld`/`ToolMap` leaves (→ would widen RimBridge's programmatic reach per the `rimbridge.md` §2b "adds-new-leaves" test) or is purely map-gen-time settings + GUI. Report back before final RimBridge-integration claims. Provisional inference: mostly map-gen-time configuration, likely GUI/settings, so probably **no** new callable paths — but the source check is what settles it.
+
+### Prepare Landing (Continued) — ✅ ACCEPTED (Workshop 3221125358; unofficial 1.5/1.6 update of neitsa's mod, HugsLib dependency removed)
+- **Why:** Filter/scan world tiles by biome, temperature, rainfall, features, etc. to *find* the tile you want — complements the authoring tools (find first, then author/repair). Ctrl+P on the world map. Pure information/selection tool; zero balance impact.
+- **Restriction/config:** None needed. Note it's the "(Continued)" fork (`3221125358`) — the original `1095331978` is older; use the continued build for 1.6.
+
+### Roads of the Rim — ❌ DECLINED for this playthrough (user, 2026-08-06)
+- **Decision:** Not this Jawa gravship playthrough. Rationale: the campaign is gravship/exploration-centric (jump between tiles), not a road-building caravan game, and roads don't fit the Jawa nomad theme. Building roads on the world map is a gameplay activity we're deliberately skipping. Reconsider only if a future playthrough centers overland caravan travel. (WS: Roads of the Rim / RimRoads family — not adopted.)
+
+> **Note:** *Geological Landforms* (WS 2773943594) and *Biome Transitions* (WS 2814391846) were the other two mods approved in this discussion — they were **already adopted** above under "Exploration Content" (they enrich the *generated map*, not the planet-tile authoring layer). *Map Reroll* was reviewed and is **map-level reroll, not world-tile editing** — tangential to world authoring; not adopted here (Map Preview already covers the "see before you land" need).
+
+---
+
 ## Explorable Structures / Questlines — Type framework (2026-07-31)
 
 Content splits into three types (kept separate because they solve different problems):
