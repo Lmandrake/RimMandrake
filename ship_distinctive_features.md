@@ -401,7 +401,15 @@ the evaluation, your call remains open.**_
      cost. **Do not run both** — they fight over the same interaction bubbles.
    - _Missing info that would sharpen this:_ (i) a play-test confirming RimAI's tools are safely
      ignorable; (ii) confirm RimAI window vs. RimDialogue bubbles truly don't collide if co-run;
-     (iii) local-model quality check on actual Jawaese gloss output. **Still no adoption logged.**
+     (iii) local-model quality check on actual Jawaese gloss output.
+
+> **✅ DECISION (user, 2026-08-07): ADOPT BOTH — "we will compare in situ when we have an
+> installation."** Both logged into `required_mods.md`: RimAI (Framework `3529263357` + Core
+> `3560404184`) as **§(8) the talking ship** (feature §2), used voice-only with SpeakUp+CQF as
+> fallback; RimDialogue verdict in §(1) flipped to ✅ ADOPTED. **One thing still to resolve AT
+> INSTALL, not now:** the Jawa-speech FORK — RimDialogue's Jawa Special-Instructions and the static
+> JawaVoice SpeakUp reskin both write interaction bubbles, so pick ONE lane in situ (don't stack).
+> RimAI (ship) and pawn-speech (whichever) are complementary surfaces and both stay.
 
 ### Q2 — graffiti / signs on walls: YES → ✅ BOTH ADOPTED (user, 2026-08-07)
 
