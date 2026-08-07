@@ -198,11 +198,23 @@ The baseline stands, and it decomposes into three pieces we already own or can a
   want it buildable behind the vanilla AI-persuasion research (anti-exp: prefer the single
   *quested* core, keep Craftable Cores as a fallback only).
 
-_Net:_ keep the SpeakUp(state-keyed voice) + CQF(dialog tree) + persona-core recipe. That is
-the closest thing to "personality + moods + talkable" achievable without an LLM. **Decision
-unchanged; now evidence-backed that nothing better exists.**
+_Net (non-LLM baseline):_ keep the SpeakUp(state-keyed voice) + CQF(dialog tree) + persona-core
+recipe. That is the closest thing to "personality + moods + talkable" achievable without an LLM.
 
-### Q2 — graffiti / signs on walls: YES, two clean options → PROMOTE to [ACCEPTED]
+> **⤴ UPDATE 2026-08-07 — user reopened the LLM route.** The user decided we SHOULD seriously
+> evaluate the LLM-powered speaking mods after all. Deep-research request filed:
+> `2026-08-07_llm_speaking_mods_deep.txt` — evaluates RimTalk, RimMind, RimAI Core, EchoColony,
+> RimAgentOrca on: LLM backend (cloud API vs. local/Ollama offline), cost/privacy, offline
+> fallback, 1.6 compat/deps, and **whether a building / the ship-core can be made to speak**
+> (RimAI Core's "talk to a Server/Terminal" is the most promising for the engine-is-god voice).
+> The SpeakUp+CQF baseline remains the safe fallback if the LLM route proves too heavy/costly.
+> ⚠️ Note this would be a real departure from the earlier anti-LLM decision — capture the
+> tradeoff (immersion vs. external dependency/cost/determinism) when results land.
+
+### Q2 — graffiti / signs on walls: YES → ✅ BOTH ADOPTED (user, 2026-08-07)
+
+_Adopted into `required_mods.md` §(7) "Wall signs + graffiti". About.xml 1.6/deps still to
+confirm at install._
 
 - **Signs and Comments Continued (3281950776)** / **…Fixed (3656641385)** — placeable signs
   with *arbitrary custom text*, adjustable font size + label color, and adds sign functionality
@@ -218,7 +230,10 @@ unchanged; now evidence-backed that nothing better exists.**
 Signs&Comments for legible text, Graffiti Mod for the painted grime. Feeds §3 (asymmetry),
 §6 (per-pod dedications can be signs), and airlock territory-marking.
 
-### Q3 — holograms & haunted crew: YES → PROMOTE to [ACCEPTED]
+### Q3 — holograms & haunted crew: YES → [ACCEPTED]; Afterlife under active exploration
+
+_Follow-up filed 2026-08-07: `2026-08-07_afterlife_ghosts_explore.txt` downloads the Afterlife
+source + Steam page so we can read its real mechanics/defs/deps before wiring it in._
 
 - **EGI: Holograms and Projectors (2979598490)** — snippet-tagged **v1.4–1.6**, CC-BY-4.0,
   save-safe. 571 holographic projections / 14 categories / 2 projector "thrones", gated behind a
@@ -243,3 +258,12 @@ by our own dead*. Both are optional flavor layers, not load-bearing on any syste
 > Interaction/compat note: none of these five touch the ship/grav layer, so none collide with
 > VGE-as-sole-ship-layer. EGI and Afterlife add their own defs/research; low interaction risk.
 > Confirm each About.xml is genuinely 1.6 before install.
+
+### Follow-up research filed 2026-08-07 (awaiting delivery)
+
+- `2026-08-07_afterlife_ghosts_explore.txt` — download Afterlife: Ghosts of the Rim source
+  (zipball) + Steam page → read real mechanics, defs, deps, 1.6 compat before wiring it in.
+- `2026-08-07_llm_speaking_mods_deep.txt` — deep dive on the LLM speaking mods (see Q1 UPDATE).
+
+_Adopted so far from this line of work:_ **Signs and Comments Continued** + **Graffiti Mod
+Continued** (required_mods.md §(7), user 2026-08-07).
