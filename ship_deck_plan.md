@@ -125,10 +125,22 @@ Design rules baked into the placement (all from Factory_lore §1.4 zoning + ther
 - **Raw extraction (A)** at the "ground" end (stern-adjacent) — drill/autofarmer/fishfarm want exterior
   access (fields, water, deep resources) and their output feeds *up* the ship into B and C.
 
-**[DECIDE B]** overall silhouette. Options: **(1)** long spinal "keel + ribs" freighter (drawn above —
-best for the wing/heat logic); **(2)** compact saucer (denser, but hot wings can't all be outboard);
-**(3)** asymmetric wreck (some wings simply *gone*, never rebuilt — leans hardest into "decide what to
-leave behind"). Recommend **(1)**; it makes heat, belt-length, and "sever a wing" all legible.
+**[DECIDE B] — RESOLVED 2026-08-06 → #15 "Falcon Halo (hollow)".** The silhouette is now locked to the
+hull chosen from the topology menu in `ship_designs.md` (which owns the full comparison and the verified
+numbers). It is a clean working cargo **wheel** — a thin rim band holding one big cargo hold plus the
+core systems set into the band (thrusters aft, fuel port, water starboard), with **seven circular
+function-pods sunk half-into the outer rim** (the six factory wings + habitat, each an isolatable repair
+unit), a **hollow shrine-heart** at dead centre (grav-engine core + scrap-totem shrine reached by a
+single rear causeway), and a **Millennium-Falcon mandible arm** forking forward off the rim with the
+two **shuttle pads capping the prong tips** and an offset starboard **command cockpit**. Verified
+liftable: 4,057 / 4,800 tiles (743 headroom), 7 extenders, all 14 regions, single contiguous piece;
+largest cargo of the whole set (1,443).
+
+The wing/heat logic below was drafted for the earlier spinal-freighter sketch; it still governs, but
+map it onto the wheel: the rim-embedded pods are the "wings" (hot wings B/E sit on the outboard rim
+where their gaps vent straight to the biome; food C near habitat R; precision E/F share the rim band
+that carries the metal/chemical buffers), and the **rim band is the utility spine** repaired first. The
+next deliverable is the tile-level interior blueprint drawn on #15.
 
 ---
 
@@ -214,7 +226,8 @@ Two anti-exponential guarantees fall out of this for free:
 ## 6. Open decisions (collected)
 
 - **[DECIDE A]** broken machines = decorative rubble (v1, simple) vs. real damaged/deconstructable state.
-- **[DECIDE B]** silhouette: spinal freighter (rec.) / saucer / asymmetric-wreck.
+- **[DECIDE B]** silhouette — ✅ **RESOLVED 2026-08-06 → #15 "Falcon Halo (hollow)"** (see §2 and
+  `ship_designs.md`). No longer open.
 - **[DECIDE C]** late-game cooling: radiator-bay / overclock-cap / both (rec. both).
 - **[DECIDE D]** the single starting BASIC line: oven (survival dependence) vs. smelter (salvage
   dependence). Ties to required_mods "recommended starting state."

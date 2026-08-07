@@ -1,17 +1,25 @@
-# ship_designs.md — Candidate gravship topologies (expanded limits)
+# ship_designs.md — Gravship topology: chosen hull + candidate menu (expanded limits)
 
 _Design pass, 2026-08-06. Regenerated after **Bigger Gravships** was approved (WS 3522759531,
 see `required_mods.md`). The mod is used here as a **design-time allowance** to loosen the
 substructure limits so the ship can be a genuinely large, cool Star Wars silhouette — **not** to
 enable in-game expansion. The anti-exponential pillar is still enforced by the repair-gate /
 feedstock progression in `ship_deck_plan.md`, never by the tile cap. This doc owns the TOPOLOGY
-MENU; `ship_deck_plan.md` still owns the repair-progression / heat doctrine that any chosen hull
-inherits._
+choice; `ship_deck_plan.md` owns the repair-progression / heat doctrine the chosen hull inherits._
 
-> **Deliverable images:** `player_maps/ship_designs_comparison.png` (the 8-panel comparison grid) +
-> `player_maps/design_9_derelict_halo_large.png` (#9 rendered large & readable on its own panel).
-> **Verifier:** `player_maps/ship_designs.py` + `build_designs.py` (regenerates + re-checks all nine).
-> **Renderers:** `player_maps/render_designs.py` (grid) + `render_single.py <name>` (one large panel).
+> ## ✅ CHOSEN HULL (LOCKED 2026-08-06): **#15 Falcon Halo (hollow)**
+> A clean cargo **wheel** — thin cargo rim, a **hollow shrine-heart** at dead centre (grav-engine
+> core + scrap-totem shrine, single rear causeway), **seven function-pods sunk into the outer rim**,
+> and one long forward **Millennium-Falcon mandible arm** that forks into two prongs with the
+> **shuttle bays capping the prong tips** and the **command cockpit** offset to starboard.
+> Verified liftable: **4,057 / 4,800 tiles** (743 headroom), 7 extenders, single connected piece,
+> all 14 mandatory regions; **largest cargo of the whole set (1,443)**.
+> **Large panel:** `player_maps/design_15_falcon_halo_hollow_large.png`.
+> The other fourteen silhouettes are retained below as the record of the exploration that led here.
+
+> **Verifier:** `player_maps/ship_designs.py` + `build_designs.py` (regenerates + re-checks all
+> fifteen). **Renderers:** `player_maps/render_designs.py` (8-panel grid of the early set) +
+> `render_single.py <name>` (any one design on its own large panel).
 
 ---
 
@@ -445,11 +453,13 @@ at the exposed forward arms — a lot of critical function far from the hull's m
 
 ---
 
-## Decision translation
+## Decision — RESOLVED
 
-**The decision this serves:** which hull silhouette to commit to before the tile-level blueprint
-and the (still-blocking) start-save authoring work. `ship_deck_plan.md`'s repair gate, heat
-doctrine, and campaign hooks apply to *whichever* you pick.
+**The decision this served:** which hull silhouette to commit to before the tile-level blueprint and
+the (still-blocking) start-save authoring work. **Resolved 2026-08-06 → #15 Falcon Halo (hollow).**
+`ship_deck_plan.md`'s repair gate, heat doctrine, and campaign hooks now apply to that hull; the
+remaining designs are kept below only as the exploration record. Everything after this table is the
+comparison as it stood at decision time.
 
 **Comparison at a glance** (verified from `designs_report.json`):
 
@@ -483,45 +493,36 @@ set-piece* → **9** (floating pods + shrine core); *easiest to hand-author* →
 (disconnected floating pods). Coverage slack (room to tweak later) is best
 on **2** (1,059), **8** (963), **3** (973) and **9** (614), tightest on **5** (98).
 
-**Dependencies:** all nine inherit the substructure math, the `ship_deck_plan.md` repair gate +
-heat doctrine, and the desert / VGE / faction layers. All nine require **Bigger Gravships**
-(approved) configured to at least the assumed sliders; **the real slider ceilings are not yet
-confirmed** (Fetcher pending) — if the mod can't reach r34/r30/12/4800, the near-cap designs
-(5, 6, 7) shrink first. (#8 and #9 have more slack, so they survive a tighter cap; but their 10
-extenders would be the first thing to bite if the mod caps `N_EXT` below 12.)
+**Dependencies:** the chosen hull inherits the substructure math, the `ship_deck_plan.md` repair gate
++ heat doctrine, and the desert / VGE / faction layers. It requires **Bigger Gravships** (approved)
+configured to at least the assumed sliders; **the real slider ceilings are not yet confirmed**
+(Fetcher pending). #15 is comfortable here — 4,057 tiles (743 headroom) and only **7 extenders** — so
+it survives a moderately tighter cap; the first thing that would bite is `N_EXT` if the mod caps it
+below 7, or `R_EXT` if the pods/arm tips fall out of reach. **Re-validate #15 against the real numbers
+when the Fetcher result lands, before any authoring.**
 
-**Principal risks:** (a) the expanded limits are *assumed*, not verified — the Fetcher result could
-force a re-tune (most likely affecting the near-cap designs 5, 6, 7, and the high-extender designs
-7/8/9 if `N_EXT` is capped low); (b) start-save authoring of a large pre-broken hull is still the one
-true blocker regardless of shape — the ring (5), the spoked station (7), the ring-and-spur (8), and
-especially the **curved-tether halo (9)** are hardest to hand-place; (c) designs 5–7 have little
-coverage slack, so any later deck-widening needs a re-verify; (d) **#9 is corridor-heavy and
-hauling-slow** — its pods hang on long thin curved tethers — so it's best as a mood/set-piece hull
-rather than an efficiency pick (it *is* now fully contiguous and playable, just not fast to move
-around in).
+**Principal risks (for the chosen #15):** (a) the expanded limits are *assumed*, not verified — the
+Fetcher result could force a re-tune, though #15's 743-tile slack and 7 extenders give it a good
+buffer; (b) start-save authoring of a large pre-broken hull is still the one true blocker regardless
+of shape, and the wheel + rim-embedded pods + forked arm make #15 a genuinely fiddly hand-place (the
+Falcon arm tips and the seven rim discs each need care); (c) #15 clusters critical forward function
+(both shuttle pads + the offset cockpit) out on exposed arms, and the shrine sits behind a single-
+causeway chokepoint — deliberate, thematic, but worth remembering when the deck plan places defenses.
 
-**Missing info that would help:** the real Bigger Gravships slider ranges (pending Fetcher); and
-your priority weighting — *maximum cargo* (→8, then 4/9), *maximum factory* (→5/2), *the asymmetry you
-called out* (→6 for side-to-side, 7 for radial, 8 for broken-ring, 9 for floating), *maximum
-atmosphere* (→9), *a playable open courtyard* (→4/5), *the modular station look* (→7/8), or *the most
-iconic silhouette* (→3).
+**Missing info that would help:** the real Bigger Gravships slider ranges (pending Fetcher) — the last
+open input before #15 can be authored with confidence.
 
-**Recommendation:** for the crashed-Factory-ship / Jawa-salvage theme, **6 (Salvage Hulk)** remains
-the strongest single pick — its missing/rebuilt section literally *is* the repair story. (Note: the
-"factory" figures for #3/#4/#9 shifted slightly after the contiguity fixes — see the table.) **7 (Nodal
-Station)** and **8 (Ring-and-Spur)** are the boldest station-style options and map cleanly onto the
-wing-by-wing repair gate (each pod/cell is an isolatable unit); pick 8 over 7 if you want a ring
-silhouette and maximum cargo, 7 if you want the twin-nucleus industrial heart. If you want the most
-balanced conventional ship, **3 (Corvette)** or **4 (Catamaran)**. If you want a pure *set-piece /
-GM-mood* hull, **9 (Derelict Halo)** is the most evocative — a hollow salvaged wheel with organs
-floating around it and a scrap-shrine at its core — but treat it as art unless the pods get re-linked
-for playability. All nine are proven to fly; none is wrong — and I can **hybridize** further (e.g. a
-salvage-hulk asymmetry with nodal cells on the rebuilt side, or a playable #9 with curved skyways).
+**Why #15 (decision rationale):** it lands the crashed-Factory-ship / Jawa-salvage theme *and* the
+most iconic Star Wars silhouette in one hull — a clean working wheel with a Millennium-Falcon mandible
+arm — while restoring the eerie hollow shrine-heart the user liked in #9. It also carries the **most
+cargo of the entire set (1,443)** with strong factory (1,182), and its rim-embedded pods are clean,
+isolatable repair units that map neatly onto the wing-by-wing repair gate. The earlier front-runners
+(#6 Salvage Hulk for pure theme, #8 Ring-and-Spur for cargo, #9 Derelict Halo for mood) are all folded
+into #15's strengths.
 
-**Recommended next step:** pick one (or ask for a hybrid), and I'll draw the tile-level interior
-blueprint for it against the cap, then fold the choice back into `ship_deck_plan.md` [DECIDE B].
-When the Fetcher ranges land I'll re-validate the chosen hull against the real numbers before any
-authoring.
+**Next step:** draw the tile-level interior blueprint for **#15** against the cap (the coastal_mesa
+treatment), and it is now folded into `ship_deck_plan.md` [DECIDE B]. When the Fetcher slider ranges
+land, re-validate #15 against the real numbers before any authoring.
 
 ---
 
@@ -531,16 +532,19 @@ authoring.
   limit constants (VANILLA vs EXPANDED). Helpers: `octagon()`, `spoke()` (straight), and — new for
   #9 — `arc()` (curved corridor: walks an angular span at a radius, lays backbone on the centerline)
   and `line_backbone()`.
-- `player_maps/build_designs.py` — the 9 design functions, the 14-region `REQUIRED` check, runs
-  verify + tally, writes grids (`design_*.npy`), placements (`design_*_place.json`), and
+- `player_maps/build_designs.py` — the 15 design functions (incl. `d_falcon_halo` #14 and the CHOSEN
+  `d_falcon_halo_hollow` #15, plus the `_embed_pod` rim-sinking helper), the 14-region `REQUIRED`
+  check, runs verify + tally, writes grids (`design_*.npy`), placements (`design_*_place.json`), and
   `designs_report.json`.
 - `player_maps/render_designs.py` — composites the black 8-panel comparison sheet with legend +
   per-panel coverage halos and stats. Outputs `ship_designs_comparison.png`.
 - `player_maps/render_single.py <name>` — renders ONE design as a large standalone sheet with ~3×
   fonts + bigger tiles (built after "text too small" feedback). Outputs `design_<name>_large.png`.
+  The chosen hull renders via `render_single.py 15_falcon_halo_hollow`.
 - `player_maps/designs_report.json` — verified numbers per design (source of every stat above).
-- `player_maps/ship_designs_comparison.png` — the 8-panel deliverable image.
-- `player_maps/design_9_derelict_halo_large.png` — #9 rendered large & readable.
+- `player_maps/ship_designs_comparison.png` — the 8-panel deliverable image (designs #1–8).
+- `player_maps/design_15_falcon_halo_hollow_large.png` — the **CHOSEN** hull rendered large & readable.
+  (`design_9_derelict_halo_large.png` and `design_14_falcon_halo_large.png` are kept for reference.)
 
 To regenerate everything: `cd player_maps && python3 build_designs.py && python3 render_designs.py &&
-python3 render_single.py 9_derelict_halo`.
+python3 render_single.py 15_falcon_halo_hollow`.
