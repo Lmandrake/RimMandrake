@@ -924,6 +924,21 @@ Emergent social (VSIE `2439736083` + RandomGrowthChoices `3413983862` [or Better
 
   **Recommendation:** adopt **Tribute Demand** (`3711373966`, +XML Extensions) as the Hutt pay-or-raid beat and **Raid Protection Fee** (`3650927927`, +Harmony) as the systemic pay-in-slaves layer that ties into the slave economy; hold **Debt Collector** as an optional future "indebted-to-a-cartel" storyline (reskin "The Ledger" → Hutts). All three are pillar-safe (wealth sinks / threat incidents, not production ladders).
 
+### Outposts layer — surplus slave-Jawa → tribute-paying satellite colonies (user, 2026-08-07) — 🔎 RESEARCH PENDING
+
+**Design intent (user 2026-08-07):** the standing slave economy accumulates enslaved Jawa faster than the ship needs. Rather than sell them all, when we build up **~3–5 surplus enslaved Jawa** we **ship them off-map to found a satellite "colony"/outpost** that then **pays recurring dues/tribute back to the mothership** — an explicitly **pyramid-scheme / vassalage** fiction: we give them an outpost to run, they owe us forever. This turns the slave *surplus* into an off-map **income faucet with a story**, and dovetails with the existing vassalage framing (Faction Territories & Vassalage, already adopted) and the Hutt-ledger tribute mechanics above (just pointed *outward* — we're the collector now, not the debtor).
+
+**Candidate = the Outposts mod family (Vanilla Expanded).** The base **Outposts** mod (Oskar Potocki + Smash Phil) lets you **assign colonists/pawns to a world-map outpost** that then **produces goods and delivers them back on a cadence** — mechanically very close to "send pawns away → they generate recurring returns." There is reportedly an **"Outposts Expanded"** add-on with more outpost types. **Fetcher `2026-08-07_outposts_mods.txt` filed** to confirm mechanics + 1.6 + deps and, critically, answer the design-fit questions below.
+
+**Open questions the research must answer (each a real fork in the design):**
+- **Does founding an outpost consume the pawns** (min/max count, are they removed from the map)? — this is the whole premise; if it doesn't take pawns off-map, it's the wrong tool. _[assumption: it does; VE Outposts is built around assigning pawns.]_
+- **What/how does it deliver back** — recurring caravan of goods? Can that be read/reskinned as "tribute/dues"? Is the cadence + amount configurable?
+- **Can *enslaved* pawns staff an outpost**, or only free colonists? If slaves can't be sent, the "surplus slave-Jawa" framing needs a workaround (e.g. free them into a subordinate vassal faction first, or reskin the fiction to "trusted freedmen").
+- **Escape/rebellion risk** for a slave-run outpost — is there a raid/betrayal layer we can lean into (a vassal outpost that stops paying → becomes a quest)?
+- **1.6 compat + packageId + dependency chain (VEF?)** and whether the base or an "expanded/reborn" fork is the live 1.6 version.
+
+**Pillar pre-check [inference, pending confirmation]:** an outpost that *removes* pawns from the map and returns a *bounded, configurable* trickle of goods is a **wealth-transfer / relocation** mechanic, not a self-replicating production ladder — so it looks **pillar-compatible** *provided* the returns are finite and don't compound (e.g. outposts that spawn more outposts, or scale their yield with count, would fail the 7-Q test). **Flag to verify:** whether stacking many outposts creates runaway passive income (the exponential risk) — if so, cap outpost count by precept/house-rule. **No adoption yet — awaiting the Fetcher results + the design-fit answers above.**
+
 ---
 
 ## ⭐ MOD BATCH — user decisions 2026-08-07 (Fetcher `2026-08-07_mod_batch_stealing_prisoners_sound` + `_glowstone_breeding_ritual` + `_dynamic_effects_forge`)
