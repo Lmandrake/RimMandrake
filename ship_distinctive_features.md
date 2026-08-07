@@ -211,6 +211,95 @@ recipe. That is the closest thing to "personality + moods + talkable" achievable
 > ⚠️ Note this would be a real departure from the earlier anti-LLM decision — capture the
 > tradeoff (immersion vs. external dependency/cost/determinism) when results land.
 
+#### Q1-bis — LLM speaking mods, DEEP DIVE (Fetcher `2026-08-07_llm_speaking_mods_deep`, delivered 2026-08-07)
+
+_All five mods share one architecture:_ a C# mod scrapes live colony/pawn state, packages it as a
+prompt, sends it to an **LLM backend**, and renders the reply as in-game speech/thoughts. They
+differ mainly in **what** they voice (pawn chatter vs. a talkable machine vs. the storyteller) and
+in **which backends** they support. The backend axis is the one that matters for us:
+
+- **Cloud API** (Google Gemini free tier, OpenAI, OpenRouter, DeepSeek) — easiest, but every line
+  leaves your machine, and the free tiers rate-limit (Gemini ≈ 60 requests/day) then either stop
+  or bill you.
+- **Local / offline** (Ollama, LM Studio, KoboldAI/KoboldCpp) — private, free to run, no request
+  cap, but needs a capable CPU/GPU and more setup.
+- **Player2** — a free desktop app several of these mods bundle as the "zero-setup" default; it
+  brokers the model (and adds TTS voice) without an API key. Still an external process.
+
+_Per-mod findings:_
+
+- **RimTalk (Steam 3551203752; GitHub `jlibrary/RimTalk`, v1.0.16, CC-BY-NC-SA).** The most
+  mature / most-recommended. **Hybrid backend by design:** paste a free Gemini key to start; when
+  you hit the 60/day cap it **auto-switches to a local Ollama server** ("free to run, works
+  offline, completely private; needs a good CPU/GPU"). Advanced Settings → "Local Provider" radio
+  → point at your Ollama/LM-Studio LAN endpoint (e.g. `https://SERVER-IP:8443`). Also supports
+  Player2. Rich add-on family (Prompt Enhance, Event Plus, Expand Memory/Actions/Literature, TTS).
+  Voices **pawn-to-pawn chatter** in speech bubbles. _Best-supported, most flexible backend._
+- **RimMind (suite; Core 3707741395 + Storyteller 3707742035, author mcochaa, tagged 1.6).** The
+  most ambitious: a 7-module suite (Core/Actions/Advisor/Dialogue/Memory/Personality/Storyteller,
+  GitHub org `RimWorld-RimMind-Mod`) that gives colonists **daily LLM personality assessments,
+  persistent editable personality profiles, mood-offset thoughts, memories, autonomous
+  decisions**, and even an AI storyteller. Notably it ships a **Bridge (RimTalk)** module
+  (3710599042) so it can piggyback RimTalk's backend, and community **local relays exist** for LM
+  Studio (`raz334/Local_LMStudio_RiMind_Relay`, `archdukejim/rimmind-lmstudio-bridge`). _Heaviest
+  footprint, most LLM calls (daily per-pawn) → highest cost/latency; deepest simulation._
+- **RimAI (Framework 3529263357 + Core 3560404184 BETA; GitHub `oidahdsah0/Rimworld_AI_*`, v4).**
+  **The standout for our "engine is god" idea.** Framework is the LLM-comms dependency/API; Core
+  adds a **talkable "Server/Terminal" BUILDING** — "you'll talk to an AI Server/Terminal that
+  watches your base, jokes with other servers, and gets things done." This is the only mod where
+  the voice is natively a *machine you build and address*, not a pawn — a near-perfect vehicle for
+  the grav-controller-as-machine-spirit. Setup: subscribe to Framework, choose a provider, set
+  base URL + API key, run a Test + Save (so **cloud or local** both work via the base-URL field).
+  _Beta; enterprise-y architecture; the machine-voice fit is uniquely on-theme._
+- **EchoColony (Steam 3463505750; Nexus 604; GitHub `CarlosNahuelcoy/EchoColony`, MIT-modified,
+  1.5–1.6, active `1.6/` branch).** Talk **directly to individual colonists** ("their feelings,
+  memories, relationships, traumas, goals"); per-colonist memory persists across sessions.
+  Backends: **Player2 (default, free, +voice), Gemini, Local (Ollama/LM Studio/KoboldAI),
+  OpenRouter.** Caveats: author's self-described first mod, mixed EN/ES code, and the license
+  **hard-mandates keeping Player2 wired in** (can't ship a Player2-free fork). _Good local
+  support; roleplay-forward; messier codebase + Player2 lock-in clause._
+- **RimAgent: Orca Deepseek (Steam 3736679812; GitHub `RedstonePanda00/RimAgentOrca`, 1.6, BETA).**
+  An **LLM storyteller/companion**, not a chat layer: "Orca" observes the colony, talks with you,
+  and picks story incidents when a provider is configured. **Best offline story of the five:** it
+  ships **XML storyteller comps for offline play**, and with *no* LLM configured "the AI decision
+  layer stays silent and RimWorld falls back to the XML-defined storyteller" — i.e. it degrades
+  gracefully to vanilla. _Different job (narrative pacing) than a talkable ship-core._
+- **RimDialogue (johndroper; `RimDialogueClient` + `RimDialogueServer`, already downloaded in
+  Fetcher `2026-08-05_rimdialogue_llm_reframe`).** A fork of Jaxe's Interaction Bubbles: takes the
+  *vanilla* interaction ("X and Y chatted about crazy eels") and has an LLM **rewrite it into real
+  dialogue** in the existing speech bubbles — a lighter, more contained approach than full agentic
+  pawns. Killer feature for us: **"Additional Instructions"** free-text in settings sets the whole
+  colony's culture/voice (e.g. "everyone speaks in salvage-cult reverence"; "only Jawa-named pawns
+  chitter"). Backend via its own server: **local Ollama or cloud API key** (needs .NET 9 + an
+  internet connection for cloud). _Lowest-risk LLM option: reskins existing chatter rather than
+  driving behavior; the culture-prompt is a clean lever for the Jawa/salvage tone._
+
+_Decision translation (this is a design choice, not yet made):_
+
+- **If the goal is the "engine is god" talkable machine-spirit → RimAI Core's Server/Terminal is
+  the on-theme pick** (only native *building* voice), pointed at a **local Ollama** backend for
+  privacy/no-cost. Tradeoff: BETA maturity + a Framework dependency + LLM nondeterminism.
+- **If the goal is atmospheric Jawa/salvage-cult flavor with least risk → RimDialogue** (reskins
+  vanilla chatter; the "Additional Instructions" culture prompt does the Jawa voice) **or RimTalk**
+  (most mature, hybrid Gemini→Ollama). Either layers cleanly over JawaVoice's *text* reskin —
+  JawaVoice changes the words shown; an LLM mod changes what's *said*.
+- **Avoid stacking with SpeakUp-driven lines for the same pawns** — SpeakUp/JawaVoice and an LLM
+  chatter mod both write to interaction/speech text, so pick one owner per surface (LLM for
+  free-form dialogue; SpeakUp for the deterministic Jawaese gloss) or scope them to different
+  triggers to prevent double-talk.
+
+_Principal risks / dependencies to weigh:_ (i) **external dependency** — every option needs either
+a cloud key (privacy + rate-limit + possible cost) or a local model (hardware + setup);
+(ii) **nondeterminism** cuts against the anti-exponential/authored-tone pillar — LLM output can
+drift off-lore or off-tone; (iii) **1.6 compat + deps** still need in-hand About.xml verification
+at install for all of them; (iv) **performance** — RimMind's daily per-pawn calls are the heaviest;
+RimDialogue/RimTalk are lighter. _Missing info that would help:_ your hardware (can it host a
+7–12B local model at playable latency?) and whether you want the AI to *drive behavior*
+(RimMind/RimAgentOrca) or only *speak* (RimDialogue/RimTalk/RimAI-Core). _Recommended next step:_
+if we pursue this, prototype **RimAI Core (engine voice) + a local Ollama** first, keeping the
+**SpeakUp+CQF baseline** as the no-LLM fallback; treat RimDialogue as the low-risk alternative if
+RimAI's beta proves fragile. **No adoption logged yet — awaiting your call on backend + which mod.**
+
 ### Q2 — graffiti / signs on walls: YES → ✅ BOTH ADOPTED (user, 2026-08-07)
 
 _Adopted into `required_mods.md` §(7) "Wall signs + graffiti". About.xml 1.6/deps still to
@@ -259,11 +348,82 @@ by our own dead*. Both are optional flavor layers, not load-bearing on any syste
 > VGE-as-sole-ship-layer. EGI and Afterlife add their own defs/research; low interaction risk.
 > Confirm each About.xml is genuinely 1.6 before install.
 
-### Follow-up research filed 2026-08-07 (awaiting delivery)
+---
 
-- `2026-08-07_afterlife_ghosts_explore.txt` — download Afterlife: Ghosts of the Rim source
-  (zipball) + Steam page → read real mechanics, defs, deps, 1.6 compat before wiring it in.
+## Afterlife: Ghosts of the Rim — explored 2026-08-07 (Steam page fully read)
+
+_Source: Fetcher `2026-08-07_afterlife_ghosts_explore` — Steam page fetched (200, rendered).
+GitHub source zipball NOT found under emipa606; **actual author = "Antediluvian"** — retry
+`2026-08-07_afterlife_src_retry` filed (may simply have no public repo, which is fine — the
+Steam description is complete)._
+
+**Identity / version (evidence, from the live Steam page):**
+- WS **3737587610**, author **Antediluvian**, tagged **"Mod, 1.5, 1.6"**, 216 KB, updated
+  Jun 2026. ~2,655 subscribers. RUS translation exists (3742695079).
+- **Deps:** requires **Harmony**. **Anomaly DLC** — the Steam sidebar lists it under "REQUIRED
+  DLC," but the description text says *"No DLC required, though Anomaly is recommended"* and
+  *"Compatible with Royalty, Ideology, Biotech, and Odyssey, and none of those are needed."*
+  ⚠️ **Contradiction to resolve at install** — the store's hard-required-DLC flag vs. the
+  author's prose. [Inference:] Anomaly is likely a *soft* requirement — without it ghosts stay
+  translucent but lose the "hard-to-target shimmer" (which reuses Anomaly's invisibility hediff;
+  a comment shows `PsychicInvisibility` from Anomaly in use). **We do plan to consider Anomaly
+  anyway; if we run it, this is a non-issue.** If we skip Anomaly, verify the mod still loads.
+
+**What it actually does (this is a rich, story-driven mod — more than ambient chill):**
+- **The ghost is THEM** — a translucent copy with the same name, backstory, skills, appearance,
+  relationships. Can't be harmed or killed normally. *Perfect* for "haunted former Kolyska crew."
+- **Who returns:** colonists have a high (tunable) chance; outsiders only if their death "carried
+  weight." Hard per-map cap. All in mod settings.
+- **Five spirit types keyed to how they died:** Friendly (comforts family), Protective (shields a
+  living blood relative/ward), Mournful (died alone — easiest to lay to rest), Vengeful
+  (murdered/executed/wronged — haunts the living), Companion (a bonded pet).
+- **Unfinished business** each ghost resolves to move on: avenge death, watch over a loved one,
+  get a proper burial, finish their work (haunts their workbench!), guard their grave, reunite
+  with a fallen lover, or a pet staying with its owner.
+- **Laying to rest:** gentle spirits move on with a proper burial; **Vengeful ones need a built
+  "Spirit Shrine" (Building>Misc) + a SEANCE ritual** — a colonist medium channels; success =
+  peace, failure = the medium is shaken and the ghost's fury deepens. Odds scale with the
+  medium's Psychic Sensitivity + Social.
+- **Escalation:** an ignored Vengeful ghost becomes a **poltergeist** — hurls chunks, flings
+  colonists, drives them mad. Disturbing a grave resurrects that colonist as furious.
+- **Resurrection** pulls a spirit back into its revived body (ghost vanishes).
+- **"Play as a ghost"** endgame: if your last colonist falls but a ghost lingers, you can
+  continue AS the spectral guardian — terrify intruders, draw a new wanderer to resettle.
+- **Atmosphere:** shimmer + cold spots + chill when walked through. Optional wall-phasing (blink
+  toward the focus of their business).
+
+**Fit assessment for the Kolyska:**
+- **Strong thematic fit + surprisingly deep.** This is *emergent story*, not just decor — it
+  pairs beautifully with §1 (carbonite reliquary dead) and the "engine is god / ship remembers"
+  theme. The "finish their work → haunts their workbench" business is *chef's-kiss* for a
+  factory ship; a dead crafter lingering at their bench is pure Kolyska.
+- **Anti-exponential check:** it's a *narrative/mood* system, not a power faucet. Protective
+  ghosts give a mood/defense comfort and Vengeful ones inflict dread — both tunable/disableable
+  in settings. No production, research, or economy lever. **Passes the pillar** as long as we
+  don't lean on protective-ghost mood as a crutch; dial colonist-ghost chance to taste.
+- **Tone caution:** the escalation (poltergeist flinging pawns) is more *active horror* than the
+  "melancholy hologram" the user first pictured. That's tunable ("Vengeful ghosts haunt" → off
+  makes them passive), but note one comment reports the passive toggle didn't take for a
+  poltergeist-stage child ghost — **verify the passive setting actually holds at install.**
+- **Known rough edges (from comments, [evidence] but anecdotal):** passive-toggle not always
+  respected once poltergeist stage hits; raider ghosts getting "finish the work" business with
+  no workbench to finish; interaction with other death-adding mods (Zombieland) spawning
+  unwanted ghosts. All minor; none blocking.
+
+**Verdict:** **ADOPT-leaning, pending (a) the Anomaly dependency resolution and (b) a settings
+pass to keep the tone melancholy rather than horror.** Wire the Spirit Shrine into the shrine-core
+(§2) region; let dead crew haunt their old pods (§6). Awaiting user confirm before flipping to
+formal ADOPTED in `required_mods.md`.
+
+---
+
+## Follow-up research still in flight (filed 2026-08-07)
+
+- `2026-08-07_afterlife_src_retry.txt` — corrected attempt to find Afterlife's source under
+  author "Antediluvian" (may have no public repo).
 - `2026-08-07_llm_speaking_mods_deep.txt` — deep dive on the LLM speaking mods (see Q1 UPDATE).
+  _Note: a prior related delivery exists — `2026-08-05_rimdialogue_llm_reframe` (RimDialogue,
+  johndroper) — worth cross-reading when synthesizing._
 
 _Adopted so far from this line of work:_ **Signs and Comments Continued** + **Graffiti Mod
 Continued** (required_mods.md §(7), user 2026-08-07).
