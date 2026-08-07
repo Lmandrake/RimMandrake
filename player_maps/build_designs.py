@@ -584,6 +584,60 @@ def d_falcon_halo():
 designs['14_falcon_halo']=d_falcon_halo()
 
 # =====================================================================
+# 15 · FALCON HALO (HOLLOW)  (user revision of #14, 2026-08-06: "keep it, but
+#      move the Shuttle bay out to the end of those strange arms and leave the
+#      centre empty as before.")
+#   Same clean cargo wheel + rim-embedded pods + Falcon mandible arm as #14, but
+#   the central hangar hub + its four spokes are REMOVED: the interior is now a
+#   HOLLOW VOID (the #9 treatment) holding only the GRAV-ENGINE core + the
+#   worshipful scrap-totem shrine (T) at dead centre, reached by a SINGLE
+#   causeway. The SHUTTLE BAY (H) relocates FORWARD to cap the tips of the two
+#   mandible prongs (a hangar pad flaring off each arm's end, notch kept open).
+#   Command stays at the offset starboard cockpit. Carbonite/shrine moves from a
+#   rim pod to the centre, so the rim now carries SEVEN embedded pods.
+# =====================================================================
+def d_falcon_halo_hollow():
+    c=Canvas(210,240); cx=105; cy=132
+    Rout=40; Rin=31; Rmid=(Rin+Rout)//2             # thin band 31..40, midline 35
+    c.ring(cx,cy,Rout,Rin,'G')                      # ring body = cargo (the disc)
+    yy,xx=np.mgrid[0:c.h,0:c.w]; d2=(xx-cx)**2+(yy-cy)**2
+    band=(d2<=(Rmid+1)**2)&(d2>=(Rmid-1)**2)&(c.g!='')
+    c.bb[band]=True; c.g[band]='K'                  # keel on the ring midline
+    # ---- hollow heart: single causeway from the ring inner edge -> the core,
+    #      the void otherwise left empty (as in #9) --------------------------
+    c.spoke(cx,cy,cx,cy+Rin,2,'.')                  # one 5-wide causeway (rear)
+    c.disk(cx,cy,6,'.')                             # consecrated floor at dead centre
+    c.rect(cx-2,cy-2,cx+2,cy+2,'T')                 # worshipful scrap-totem shrine / core
+    c.backbone_rect(cx-6,cy-6,cx+6,cy+6)            # grav engine seats at the heart
+    # three cardinal system blocks set into the band (top arc reserved for arm)
+    c.rect(cx-4,cy+Rin,cx+4,cy+Rout,'S')            # bottom = thrusters + power (rear)
+    c.rect(cx-Rout,cy-4,cx-Rin,cy+4,'U')            # left   = fuel bunkerage
+    c.rect(cx+Rin,cy-4,cx+Rout,cy+4,'W')            # right  = water tanks
+    # seven modules sunk into the OUTER rim (T moved to the centre this time)
+    for deg,pr,code in [(30,8,'A'),(60,8,'E'),(120,8,'B'),(150,8,'C'),
+                        (200,8,'D'),(235,8,'F'),(305,8,'R')]:
+        _embed_pod(c,cx,cy,Rout,deg,pr,code)
+    # ---- the FALCON ARM: neck off the rim -> two mandible prongs, cockpit off
+    #      starboard, and the SHUTTLE BAY capping the two prong tips ----------
+    top=cy-Rout                                     # rim top
+    c.rect(cx-14,top-5,cx+14,top+3,'G')             # shoulder plate (overlaps rim)
+    c.backbone_rect(cx-14,top-2,cx+14,top-2)
+    Lm=38                                           # mandible length forward
+    c.rect(cx-13,top-Lm,cx-6,top-4,'G')             # PORT mandible prong
+    c.rect(cx+6,top-Lm,cx+13,top-4,'G')             # STARBOARD mandible prong
+    c.backbone_rect(cx-10,top-Lm,cx-10,top-4)
+    c.backbone_rect(cx+10,top-Lm,cx+10,top-4)
+    # shuttle-bay hangar pads flaring off the END of each prong (notch kept open)
+    c.rect(cx-18,top-Lm-13,cx-4,top-Lm,'H'); c.backbone_rect(cx-11,top-Lm-6,cx-11,top-Lm-6)
+    c.rect(cx+4,top-Lm-13,cx+18,top-Lm,'H'); c.backbone_rect(cx+11,top-Lm-6,cx+11,top-Lm-6)
+    # cockpit tube off the starboard prong, ending in a command disc
+    cyk=top-22
+    c.rect(cx+13,cyk,cx+23,cyk,'.'); c.backbone_rect(cx+13,cyk,cx+23,cyk)
+    c.disk(cx+29,cyk,6,'M'); c.backbone_rect(cx+29,cyk,cx+29,cyk)   # command cockpit
+    c.crop(); return c
+designs['15_falcon_halo_hollow']=d_falcon_halo_hollow()
+
+# =====================================================================
 report={}
 for name,c in designs.items():
     rep=place_and_verify(c)

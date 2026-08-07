@@ -67,6 +67,17 @@ inherits._
   short tube. New idiom in `build_designs.py`: `_embed_pod` (a circle centred just inside the rim so its
   inner half merges with the band). Verified `parts=1`, 100 % coverage, 14 regions, 4410/4800 tiles
   (headroom 390), 7 extenders, cargo 1319. Rendered on its own large panel. Net: **fourteen designs**.
+- **2026-08-06 (Falcon Halo hollow):** Added **#15 Falcon Halo (hollow)** — user revision of #14:
+  "keep it, but move the shuttle bay out to the end of those strange arms and leave the centre empty
+  as before." Same clean cargo wheel + rim-embedded pods + Falcon mandible arm, but the **central
+  hangar hub and its four spokes are removed** → the interior is a **hollow void** (the #9 treatment)
+  holding only the grav-engine core + scrap-totem shrine (T) at dead centre, reached by a single rear
+  causeway. The **shuttle bay (H) moves forward to cap the two mandible-prong tips** (a hangar pad off
+  each arm end; the front notch stays open). Command stays at the offset starboard cockpit; the
+  carbonite shrine moved from a rim pod to the centre, so the rim now carries **seven** embedded pods.
+  Verified `parts=1`, 100 % coverage, 14 regions, 4057/4800 tiles (headroom 743), 7 extenders — and
+  hollowing actually **raised cargo to 1,443** (the freed rim). Rendered on its own large panel. Net:
+  **fifteen designs**.
 
 ---
 
@@ -412,6 +423,26 @@ the forward notch is cosmetic (empty space) rather than functional.
 
 *Rendered on its own large panel:* `player_maps/design_14_falcon_halo_large.png`.
 
+### 15 · Falcon Halo (hollow) — *hollow shrine-heart, shuttle bays out on the mandible tips*
+**4,057 tiles · 743 headroom · 7 extenders · cargo 1,443 · factory 1,182 · shuttle 420 · farthest 29.83**
+
+*User revision of #14, 2026-08-06: "keep it, but move the shuttle bay out to the end of those strange
+arms and leave the centre empty as before."* Identical clean cargo wheel, rim-embedded pods, and
+Falcon mandible arm — but the **central hangar hub and its four spokes are gone**, so the interior is
+a **hollow void** (the Derelict Halo treatment) holding only the **grav-engine core + the worshipful
+scrap-totem shrine** at dead centre, reached by a **single rear causeway**. The **shuttle bay flares
+off the tips of the two mandible prongs** (a hangar pad capping each arm; the front notch between them
+stays open), putting the ship's dock at the very prow. Command stays on the offset starboard cockpit.
+The carbonite shrine moved from a rim pod to the centre, so the **rim now carries seven** embedded
+pods instead of eight. For: keeps the iconic Falcon profile while restoring the eerie hollow heart you
+liked in #9; **the most cargo of the entire set (1,443)** — hollowing the hub and dropping to seven
+pods actually *freed* rim volume; the most coverage slack of any near-complete design (743); the
+forward shuttle pads are a dramatic, thematic prow. Against: the void means longer internal travel and
+a single causeway to the shrine (a chokepoint by design); the shuttle bays and cockpit are all clustered
+at the exposed forward arms — a lot of critical function far from the hull's mass.
+
+*Rendered on its own large panel:* `player_maps/design_15_falcon_halo_hollow_large.png`.
+
 ---
 
 ## Decision translation
@@ -437,10 +468,11 @@ doctrine, and campaign hooks apply to *whichever* you pick.
 | 11 | Ladder halo | 4313 (487) | 9 | 400 | ~1100 | 317 | no | **central void** | medium (twin rails) |
 | 12 | Cross-nave | 4475 (325) | 8 | 752 | ~1100 | 317 | no (cruciform) | **crossing + arms** | hard (two axes) |
 | 13 | Broken keel | 3999 (801) | 7 | 698 | ~1100 | 317 | **yes (segments)** | **segment gaps** | medium (dog-legs) |
-| 14 | Falcon halo | 4410 (390) | 7 | **1319** | 1182 | 441 | **yes (Falcon arm)** | **hangar hub** | hard (wheel + arm) |
+| 14 | Falcon halo | 4410 (390) | 7 | 1319 | 1182 | 441 | **yes (Falcon arm)** | **hangar hub** | hard (wheel + arm) |
+| 15 | Falcon halo (hollow) | 4057 (743) | 7 | **1443** | 1182 | 420 | **yes (Falcon arm)** | **hollow shrine-heart** | hard (wheel + arm) |
 
-**Tradeoffs, distilled:** *most cargo* → **14** (Falcon Halo, 1,319), then **8** (Ring-and-Spur,
-1,279) and **4** (Catamaran, 970); *most factory* → **5** (Ring), then **2** (Nebulon-B); *most
+**Tradeoffs, distilled:** *most cargo* → **15** (Falcon Halo hollow, 1,443), then **14** (Falcon
+Halo, 1,319) and **8** (Ring-and-Spur, 1,279); *most factory* → **5** (Ring), then **2** (Nebulon-B); *most
 shuttle capacity* → **14** (441, central hangar), then **7** and **6**; *asymmetry* → **6**
 (side-to-side wreck), **7** (radial spokes), **8** (irregular ring pods), **14** (the Falcon arm),
 **2** (fore/aft); *courtyard / open space* → **4** (twin courts), **5** / **14** (central hangar),
