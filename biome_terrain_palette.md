@@ -30,8 +30,9 @@ independently** (user 2026-08-04) — Geological Landforms + vanilla worldgen pl
 enumerate or micro-author them here.
 
 **Verification legend:** ✅ verified from the actual 1.6 `Def` XML in-hand · 🔎 defName from stable
-base-game knowledge, spot-check in a dev world before authoring. **(All four biome mods —
-Alpha Biomes, Advanced Biomes, Biomes! Oasis, More Vanilla Biomes — are now ✅ defName-verified from
+base-game knowledge, spot-check in a dev world before authoring. **(All biome mods —
+Alpha Biomes, Advanced Biomes, Biomes! Oasis, More Vanilla Biomes, and the newly-adopted Biomes!
+family (Core/Framework/Caverns/Polluted Lands/Fossils, see §A7) — are now ✅ defName-verified from
 their 1.6 sources; only the vanilla/Odyssey rows remain 🔎.)**
 
 ---
@@ -156,7 +157,7 @@ All pillar-clean (environment/info-side, no buildable economy). **Route = MOD, �
 |---|---|---|---|
 | **Glowforest** | ⭐ **Odyssey (vanilla DLC)** | evidence-backed, defName ⏳ | Perpetual night + fungal bioluminescence; **already owned, zero mod**. First choice — enumerate defName at machine. |
 | **CaveBiome** | emipa606 (WS) | 🔎 1.6 appears live | Permanent darkness; **requires Caveworld Flora**. Verify supportedVersions in RimSort. |
-| **Biomes! Caverns** | WS 2969748433 | 🔎 unverified | Cavern biome pack; needs Biomes! Core. Check 1.6. |
+| **⭐ Biomes! Caverns** | `BiomesTeam.BiomesCaverns` | ✅ **1.6 CONFIRMED FROM SOURCE (2026-08-07)** | **FULLY ADOPTED** (see `required_mods.md` "Biomes! FAMILY"). Cavern biomes `BMT_CrystalCaverns` / `BMT_EarthenDepths` / `BMT_FungalForest` + ~71 cavern animals. Deps: Biomes! Core + Geological Landforms (both in stack). Now the confirmed dark-tile source; keep commonality LOW. |
 | **Ocular Forest** | `AB_OcularForest` (Alpha Biomes, already in stack) | 🔎 low-light NOT confirmed | Confirmed weird/transdimensional but NOT confirmed to darken the map — **in-game check**; if it darkens, it doubles as a dark biome for free. |
 
 **Fog of war (the LOS-reveal companion, not a biome):** two candidate sources, **run only ONE** —
@@ -168,6 +169,19 @@ multiplicatively with these dark biomes AND the extracted SW sandstorm/red-fog w
 in a sandstorm ≈ near-blind for everyone). Decision + the three in-game checks live in
 `setup_checklist.md` §6. **Combining a dark biome + LOS fog + an unseen spore hazard (§B5 below) =
 the purest qualitative-danger stack in the design.**
+
+### A7. Biomes! family — FULLY ADOPTED 2026-08-07 (all ✅ 1.6 confirmed from source in `mod_sources/`)
+
+The BiomesTeam stack, adopted whole (adoption decision + deps + pillar audit live in `required_mods.md`
+"Biomes! FAMILY"; this is the defName-level palette side). **Load order: Framework → Core → packs.**
+
+| Biome / content | defName(s) | Source (pkgId) | Notes |
+|---|---|---|---|
+| Biomes! **Framework** | *(no biomes — code module)* | `BiomesTeam.CoreFramework` (1.6-only) | Shared backbone Core v1.6 hard-depends on; also bundles WaterWalker (`Draegon.WaterWalker`). No palette content. |
+| Biomes! **Core** | *(scaffolding + ~10 base animals)* | `BiomesTeam.BiomesCore` (→1.6) | Base dep for the packs; shared terrains/fauna. |
+| Biomes! **Caverns** | `BMT_CrystalCaverns` (crystalline caverns), `BMT_EarthenDepths` (earthen depths), `BMT_FungalForest` (fungal forest) | `BiomesTeam.BiomesCaverns` (1.4–1.6) | ⭐ underground biomes — the confirmed **dark-tile** source (see §A6). ~71 cavern animals. Needs Core + Geological Landforms. Keep commonality LOW. |
+| Biomes! **Polluted Lands** | ⚠️ **no BiomeDef** — patches `pollutionWildAnimals`/`wildPlants` into existing biomes (AridShrubland, BorealForest, ColdBog, the Caverns biomes, Ashlands, ReGrowth wastelands) | `BiomesTeam.BiomesPollutedLands` (1.5–1.6) | ~31 polluted creatures (barbed pangolin, bilious varog, lyncus seal, tox-wool sheep, pustule hornet+queen, tainted turtle, sludge crawler, glowtail, mutating tumorfish, varmot, waste hound, …) + mutated plants. Rides the pollution mechanic = the §4 android-souring layer. ⚠️ tox-wool sheep is a fast breeder — keep wild. Terrain `BMT_ToxWoodPlankFloor`. Needs Core + Biotech. |
+| Biomes! **Fossils** | `BMT_MineableFossils`, `BMT_MineableAmber` (global mineables) | `BiomesTeam.BiomesFossils` (1.4–1.6) | Terrain-treasure Exotic ③ (full entry in `required_mods.md`). No biome of its own. |
 
 ---
 
@@ -268,10 +282,7 @@ oasis/mycotic tiles their §④ threat. Resolved after a full 1.6 search + sourc
 - **Wider hostile-flora roster** (carnivorous trees / brambles / man-eating vines) — **no clean
   standalone 1.6 mod exists** (searched; useful negative). Vanilla Brambles are passive. Wider roster
   = AUTHOR/RimBridge (reskin/extend the Prime spore mechanic to more plant defs), not a mod hunt.
-- **Toxifier plants** (Sustainable Toxic Environment / Biomes! Polluted Lands / More Toxplants) —
-  these are **terrain-souring** tools for the §4 android water-poisoning doctrine, NOT pawn-gassing
-  hazards; tracked in `desert_world_design.md` §3(c). Note the Advanced Biomes Poison* floors and
-  Odyssey's toxic scarlands can carry the same souring role natively.
+- **Toxifier / polluted-fauna layer** — ⭐ **now carried by Biomes! Polluted Lands (`BiomesTeam.BiomesPollutedLands`, FULLY ADOPTED 2026-08-07, 1.6 confirmed from source; see `required_mods.md` "Biomes! FAMILY").** It adds **no BiomeDef of its own** — it patches `pollutionWildAnimals` + `wildPlants` into existing biomes (incl. **AridShrubland** = desert-adjacent, plus the Biomes! Caverns biomes, BorealForest, ColdBog, Ashlands, ReGrowth wastelands), so its ~31 polluted creatures + mutated plants appear on toxic/polluted tiles the rogue-android faction sours — the §4 water-poisoning doctrine (design in `desert_world_design.md` §3(c)). Its one floor is cosmetic `BMT_ToxWoodPlankFloor`. **Sustainable Toxic Environment + More Toxplants drop to optional extras.** ⚠️ **Pillar watch: the tox-wool sheep (`BMT_ToxSheep`, gestation 5.661 d, shearable/9 d) is a fast breeder — keep it wild, don't ranch a tamed flock into a wool printer** (Alpha Animals/Megafauna grazer rule). Advanced Biomes Poison* floors + Odyssey's toxic scarlands can still carry the souring role natively where no fauna is wanted.
 
 ---
 
@@ -308,12 +319,16 @@ oasis/mycotic tiles their §④ threat. Resolved after a full 1.6 search + sourc
    NWN Real FoW — pick one, never both; (b) confirm a 1.6 dark-biome mod (CaveBiome looks live) or
    just use Odyssey glowforest; (c) does `AB_OcularForest` actually impose low light? Keep dark
    biomes RARE. All tracked in setup_checklist §6.
-5. 🔎 **Toxic-souring source** (§B5 / design §3(c)): confirm Sustainable Toxic Environment's own 1.6
-   supportedVersions in RimSort (translation-mirror inference says 1.6-live), OR test whether Odyssey
-   toxic scarlands / Advanced Biomes Poison* floors carry the §4 android-souring role with zero mods.
+5. ✅ **RESOLVED 2026-08-07 — Toxic-souring source** (§B5 / design §3(c)): now carried by **Biomes!
+   Polluted Lands** (FULLY ADOPTED, 1.6 confirmed from source; see §A7 + `required_mods.md`). STE +
+   More Toxplants drop to optional extras; Odyssey toxic scarlands / Advanced Biomes Poison* floors
+   remain a zero-mod fallback where fauna isn't wanted.
 6. Decide final **commonality weights** per biome (setup_checklist §6) — this palette lists roles,
-   not the numeric profile yet.
-7. Confirm Biomes! **Core/Framework** dependency is in the stack if Chromatic Oasis is adopted.
+   not the numeric profile yet. **Include the Biomes! Caverns dark tiles + Polluted-tile pollution
+   weight in this pass; keep both LOW.**
+7. ✅ **Biomes! Core/Framework dependency confirmed required** and now in the stack (the whole Biomes!
+   family is adopted, §A7) — needed for Chromatic Oasis, Caverns, and Polluted Lands alike. Load
+   order Framework → Core → packs.
 
 ---
 
