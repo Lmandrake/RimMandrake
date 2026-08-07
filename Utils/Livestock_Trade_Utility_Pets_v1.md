@@ -9,7 +9,7 @@ _Companion to `Alien_Bestiary.md` (the VGE + creature-mod SW naming layer). Scan
 The v1 draft is strong: the "who would keep this, and what does it say about them?" lens is the right organizing question, and §6 (the black-market tier) and the d20 stall are genuinely usable. Three issues need fixing before any of it goes to a `Patches/` file, and one whole class of animal was missing a guardrail.
 
 1. **⛔ NAMING COLLISION — `mynock` and `dianoga` are already taken.** *Established from `required_mods.md` §389 (Star Wars Animal Collection roster, source-verified):* **Mynock and Dianoga are real, separate ThingDefs that ship in Star Wars Animal Collection.** The v1 draft reuses both names for *different* Alpha Animals creatures — Metallovore→**"mynock"** and Slurrypede→**"slurrik, *juvenile dianoga*."** If built as written, the spawn log would show two unrelated animals both called mynock and two associated with dianoga — the exact "stray bearchicken" failure the bestiary's naming rules exist to prevent. **Fix (applied below):** Metallovore keeps the *concept* but takes a new name (**`korrik`** — hull-eater); Slurrypede's dianoga tie is demoted to a *nickname only* (people say it looks like a baby dianoga; it is not one), keeping `slurrik`. Cross-check every future rename against the SW Animal Collection roster in §1-bis before coining it.
-2. **⚠️ The resource-excreting animals need the standing anti-exponential guardrail stated on them.** `urrak`/radyak (excretes refinable uranium), `vokka`/tetraslug (recharges batteries), `hessa`/aerofleet (→ blue gel → power reactor), `hellik`/helixien (gas) are, mechanically, **passive resource generators that eat and breed** — the same category as the *rejected* BioRanch and the tox-wool-sheep watch item. A tamed, breeding herd of radyak is a uranium printer; a herd of tetraslugs is a free-power printer. This doesn't mean cut them — they're too good — but the doc must carry the same ruling the rest of the stack does: **keep them as rare, hard-to-breed, or trade-only animals; do NOT let a tamed breeding herd become a per-tick resource engine.** Added as a guardrail box under §1. This is the single most important correction, because it's a *pillar* issue, not a cosmetic one.
+2. **⚠️ The resource-excreting animals carry an anti-exponential guardrail — now DOWNGRADED to "the ship enforces it."** `urrak`/radyak (excretes refinable uranium), `vokka`/tetraslug (recharges batteries), `hessa`/aerofleet (→ blue gel → power reactor), `hellik`/helixien (gas) are, mechanically, **passive resource generators that eat and breed** — the same *class* as the *rejected* BioRanch. In a fixed base a breeding herd of any of them is a printer. **But on the Kolyska it isn't**, because you can't take anything that won't fit on the ship, and the loop keeps sending you to tiles where a herd can't graze or can't survive the heat — so the hold-cap and the itinerary cull production herds *automatically*. The guardrail box under §1 now states this in full: keep and fly a working few, let the loop cap them; the only permanent ban is a **sessile printer building** (which bypasses ship-cap and grazing), and the old sterilize/don't-breed discipline only re-arms during a long dig-in on one hospitable tile. Still a *pillar* item — just one the core loop mostly self-solves, which is a strength of the nomadic premise, not a hole in it.
 3. **Stale companion filename.** v1's header pointed at `Alien_Bestiary_SW_Naming_v1.md`; the file on disk is `Alien_Bestiary.md`. Fixed in the header above. (Low stakes, but the two docs share a generator script and a naming system, so the pointer needs to resolve.)
 
 Everything below §1 is the v1 content (lightly corrected for #1 and #3) followed by the **rest-of-menagerie expansion (§10–§14)** the campaign actually needs — because v1 by design only covered creatures *worth renaming*, and most of the adopted roster (Bantha, Dewback, Rancor, the dinosaurs, the Megafauna heavies) already has canonical SW names and needs *placement/trade framing*, not a new label.
@@ -47,7 +47,14 @@ The single most Star Wars category in the game. In a setting where the player fa
 
 **Narrative frame:** these are the animals that make the Hutt Cartel's livestock trade *strategic* rather than culinary. A Cartel boss who controls the region's radyak breeding stock controls its uranium. Give this to Section 4 of your faction roster and the Cartel gains a reason to exist beyond vice.
 
-> **⚠️ ANTI-EXPONENTIAL GUARDRAIL — the living-machinery category, restated (2026-08-07).** Every animal in §1 is, mechanically, a *passive resource generator that eats and breeds*. `urrak` excretes refinable uranium; `vokka` recharges batteries; `hessa` produces power-gel; `hellik` fills gas tanks; `zharn` and `sikka` touch the power economy. **A tamed breeding herd of any of them is a per-tick resource printer — the same pattern as the REJECTED BioRanch and the tox-wool-sheep watch item in `required_mods.md`.** They are too good to cut, so the ruling is the standing one applied to grazers everywhere in this campaign: **keep them RARE and acquisition-gated (trade-only, hard-to-tame, or single-animal), and do NOT ranch a tamed breeding population into an economy.** In practice: buy the one radyak from a Cartel trader (its scarcity is the story); don't build a radyak barn. If a tamed pair starts printing, apply the Cherry-Pick-reproduction rule (sterilize / don't breed) exactly as for Alpha Animals and Megafauna grazers. The Hutt Cartel is *allowed* to run herds — that's their exponential to own, off-screen, and the reason you trade with them instead of becoming them.
+> **⚠️ ANTI-EXPONENTIAL GUARDRAIL — the living-machinery category, restated & DOWNGRADED (2026-08-07, upgraded same day).** Every animal in §1 is, mechanically, a *passive resource generator that eats and breeds* — `urrak` excretes refinable uranium, `vokka` recharges batteries, `hessa` produces power-gel, `hellik` fills gas tanks, `zharn`/`sikka` touch the power economy. In a *sessile* colony this is the banned BioRanch pattern: a tamed breeding herd becomes a per-tick resource printer. **But this campaign is not a sessile colony, and that changes the ruling from a rule-you-must-obey to a tripwire the core loop already trips for you.**
+>
+> **Why the gravship self-limits production herds (user insight, 2026-08-07):** *you cannot take with you anything that will not fit on the ship.* Three structural brakes fall out of that, and they are load-bearing enough that this whole category is **less of an exponential threat than a static "it breeds → it prints" analysis suggests:**
+> 1. **Berth/cargo cap.** The Kolyska has a finite hold (interior PASS 1: cargo is *the* constrained resource — see `ship15_interior.md`). Every animal you keep displaces cargo and costs a berth. A radyak *barn* can't board; at most a *few* head fly with you. The ship is the herd-cap, enforced automatically at every jump.
+> 2. **Forage-hostile destinations.** The loop deliberately sends you to tiles where a grazer *cannot eat* — salt flats, deep desert, ash, polluted rock with no edible flora. A meat/wool/resource herd that can't graze on arrival either starves or forces you to haul feed (more cargo cost). The tiles cull the herd for you.
+> 3. **Heat-intolerant destinations.** Same logic on temperature: many target tiles are lethally hot (or, for the cold-clade mounts, lethally cold). An animal that can't stand the destination climate doesn't survive the campaign's itinerary. The route is the predator.
+>
+> **So the practical ruling relaxes:** you do NOT need to police these animals with an iron rule, because *the ship and the itinerary already do it.* Keep them, buy them, fly a working few — the loop will not let a tamed breeding herd quietly out-scale you the way it would in a fixed base. **The one hard line that remains is the sessile printer BUILDING** — BioRanch, insect-vats, anything that generates resources *without* needing to board, graze, or survive the next tile. Those bypass all three brakes and stay **banned** (BioRanch already rejected in `required_mods.md`). And if you ever *do* dig in on one hospitable, well-watered tile for many seasons (the §13 oasis is exactly such a place), the old discipline snaps back on: at that point a radyak pair *can* print, so sterilize/don't-breed (the Cherry-Pick reproduction lever) until you lift again. The Hutt Cartel — sessile, planet-bound, unconstrained by a hold — is *allowed* to run the real herds off-screen; that asymmetry is precisely **why you trade with them instead of becoming them.**
 
 ---
 
@@ -148,7 +155,28 @@ The `thrass` line is the good one. An animal that EMPs machines is simultaneousl
 
 ---
 
-## 8. The creature stall — a d20 trader table
+## 8. The creature stall — the arrival, the haggle, the d20
+
+This section used to be one table. It should be a small ritual, because the *arrival of a beast-monger* is one of the campaign's best recurring set-pieces and the mechanic to make them frequent is designed in §16. Use this when a livestock trader reaches you (a caravan on the ground, a visitor group at the ship, or — rarely — an orbital hold).
+
+**Step 1 — who showed up (sets the stock).** Before rolling the cage, note *which faction's* trader it is, because that determines what's even possible to be inside (per the §16 per-faction stock table). A Tusken outrider will never have a `vissa` in a jar; a Cartel barge will never sell you honest nerf breeding stock. The faction is the first and most important filter — it's what makes "a livestock merchant arrived" a different sentence depending on whose banner is on the crate.
+
+**Step 2 — the cage (d20 below).** Roll once for the headline animal. On a caravan carrying several head, roll 1–2 more times for the rest of the string and treat duplicates as "a matched pair" (which matters — a bonded pair is the only way most of these breed, and the guardrail in §1 says whether you *should*).
+
+**Step 3 — what's wrong with it (d6, optional).** Every animal in a stall has a catch the seller isn't volunteering. This is where the horror and the comedy live.
+
+| d6 | The catch |
+|---|---|
+| 1 | Nothing — it's exactly what it looks like. (The rarest and most unsettling result.) |
+| 2 | Underfed / sick — cheap now, a vet bill later. |
+| 3 | Wrong temperament — the "tame" tag is optimistic; expect a manhunter roll on transfer. |
+| 4 | Bonded to something it lost — will pine, mood-debuff its handler for a season. |
+| 5 | Not what the seller thinks it is (a `korrik` sold as a "metal-polisher"; a juvenile of something much larger). |
+| 6 | Not an animal at all (see d20 roll 19 — the `nessik`). |
+
+**Step 4 — the haggle.** Livestock is the one trade good where condition, temperament and *what happens on the ship* are all negotiable fictions. Prices below are relative; the hard silver numbers are in §17.
+
+### The d20 cage table
 
 Roll when a trade caravan arrives with livestock. Written for the journaling layer.
 
@@ -189,7 +217,7 @@ Rolls 17, 19 and 20 are the ones that change a campaign. Rolls 1–12 are textur
 
 **Six ⚠ entries to verify in-game:** Helixien output, Chemfuel Myrmidon production, the mite family's diets, Skiphound mechanics, Crescendo Anole's current hediff behavior, and whether Fission Mouse actually carries a radiation effect or merely a suggestive name.
 
-**One thing I'd add if you want a further step:** none of these creatures currently have *prices* in your world's terms. A one-page price sheet in water-liters rather than silver would do more for the setting's texture than another dozen animals — because on a desert world, "that slug costs four days of drinking water" is a sentence that explains the entire economy.
+**Pricing — see §17 (now built, in silver).** v1 flagged that these creatures had no *prices*. That's resolved: §17 is a source-verified silver price list (denominated in the game's normalized economy per user direction, not water-liters). The water-liter phrasing survives only as *narration* — the journal can still say "that slug cost four days of drinking water," but the number the player pays is silver.
 
 ---
 
@@ -338,6 +366,180 @@ On this world, **water changes the rules of both flora and fauna:**
 
 - **Renames vs. placement — two different jobs.** §1–§6 creatures get `PatchOperationReplace` on `<label>`/`<description>` (same `Patches/` file + generator script as `Alien_Bestiary.md`). §10–§12 creatures **mostly do NOT get renamed** — they already have canonical names. Their "implementation" is (a) spawn-commonality tuning per the roster-dilution pass, (b) trader-stock/faction assignment, and (c) the d20-stall additions below. Only rename a canonical creature if its shipped label is *wrong* for the setting (rare).
 - **⚠ Confirm-before-build list (defNames not re-read this session):** Kaadu, Varactyl, Ronto, Nerf, Porg, Vulptex spellings/presence in SW Animal Collection; the full Cephaloids roster; the Biomes! Caverns + Core rosters. Pull the About/Defs from `mod_sources/` (SW Animal Collection is confirmed there) before coining lore on any exact name. The Megafauna list and the Polluted Lands `BMT_` list ARE source-verified (via `required_mods.md`).
-- **The grazer/printer guardrail now spans this whole document.** Renamed resource-excreters (§1: radyak/tetraslug/aerofleet/helixien), the tox-wool sheep (§12.3), Gizka (§10.3), Nerf and the large Megafauna/dino grazers (§10.1/§11/§12.1), and the insect broods (§12.3) are ALL the same anti-exponential class: *don't ranch a tamed breeding population into a resource/meat engine.* The NPC factions (Cartel, Compact) are allowed to run these herds off-screen — that asymmetry is *why you trade with them.*
+- **The grazer/printer guardrail spans this whole document — but the gravship does most of the enforcing (see the upgraded §1 box).** Renamed resource-excreters (§1: radyak/tetraslug/aerofleet/helixien), the tox-wool sheep (§12.3), Gizka (§10.3), Nerf and the large Megafauna/dino grazers (§10.1/§11/§12.1), and the insect broods (§12.3) are all the same *class* of animal — a thing that eats and breeds — but on a nomadic ship they are **structurally self-limiting**: the hold caps how many can board, and the forage-hostile / heat-hostile destination tiles cull whatever you do bring. So the working posture is "keep and fly a working few; let the loop cap them," NOT an iron no-ranch rule. The rule only re-arms in two cases: (a) a **sessile resource-printer building** (BioRanch etc.) — permanently banned, it bypasses ship-cap and grazing entirely; and (b) a **long dig-in on one hospitable tile** (the §13 oasis), where breeding *can* run away — then apply sterilize/don't-breed until you lift. The NPC factions (Cartel, Compact) are planet-bound and *allowed* to run the real herds off-screen — that asymmetry is *why you trade with them.*
 - **d20-stall additions (optional roll-expansion):** slot the new tier onto a d20+ or a second table — e.g. a **Rancor cub "guaranteed docile" (it is not)**, a **raptor "pair, bonded"**, a **Ronto "sound, papers real for once"**, a **tamed Bantha "in milk"**, a **Vulptex "crystal fox, sold as jewelry"**, and the horror-tier **"nerf that isn't a nerf"** (a Mime/`nessik` reskin). Keep the same ratio: mostly texture, rarely a campaign-changer.
-- **The water-liter price sheet (still the best next artifact).** Restating the v1 recommendation, now with more stock to price: a one-page sheet pricing the whole menagerie in *days of drinking water* rather than silver would do more for texture than any further creature. A Bantha = a season of water; a radyak = "don't ask"; a womp rat = a cup. That single reframing carries the desert-economy fiction better than a dozen more entries.
+- **Pricing lives in §17 now (silver, not water).** The v1 doc twice recommended a price sheet denominated in *days of drinking water*. Per user direction 2026-08-07 that's **superseded**: the price list is denominated in the game's **normalized silver economy** (§17), because silver is what the trade UI actually uses and what every price above ("cheap / expensive / absurd") should resolve to. The water-liter framing is still a nice *narration* device — a journal entry can say "that slug cost us a season of water" — but the number the player pays is silver.
+
+---
+
+## 16. Frequent livestock merchants — the beast-monger subsystem
+
+**The pitch (why this is deeply Star Wars).** The franchise's economy is *transactional and alive*. Mos Eisley has a creature stall. Jabba's palace runs on somebody deciding a monkey-lizard was worth feeding. A dewback is tied outside every cantina. Unlike most RimWorld settings — where a "trader" is an abstract stock list — Star Wars trade is defined by the *animal in the cage* and *the person selling it*. So making **livestock merchants frequent and faction-flavored** isn't a QoL tweak; it's one of the highest-leverage worldbuilding moves available, and it's also the *acquisition-gate that makes the §1 guardrail work* — if you can reliably **buy** the strange beasts, you never need to breed them, which is exactly the anti-exponential posture this campaign wants.
+
+**Established vs. designed:** everything in §16.1 (the field names, tags, and def classes) is **source-verified** from the mod stack this session (`StarWarsAnimalCollection_src`, `BiomesCore_src`, `Outer-Rim-Core-main`, `BiomesFossils_src`). The per-faction *assignments* in §16.3 are **design** — my mapping of verified animals+tags onto the `faction_roster_v2.md` factions.
+
+### 16.1 How to add them natively — the verified mechanism (no exotic mod needed)
+
+RimWorld already has every hook this needs. The whole subsystem is **XML-only** (new `TraderKindDef`s + edits/patches to faction defs); no assembly, so it's 1.6-safe and Cherry-Pick-clean.
+
+**(a) A trader's animal stock is a `StockGenerator_Animals` line, filtered by trade tag.** Verified from `BiomesCore_src/1.6/Defs/BMT_TraderKinds.xml`:
+
+```xml
+<li Class="StockGenerator_Animals">
+  <tradeTagsSell>          <!-- what the trader SELLS to you -->
+    <li>AnimalFighter</li>
+  </tradeTagsSell>
+  <tradeTagsBuy>           <!-- what it will BUY from you -->
+    <li>AnimalUncommon</li>
+    <li>AnimalExotic</li>
+  </tradeTagsBuy>
+</li>
+```
+
+The key realization: **`tradeTagsSell` is the entire per-faction lever.** Give the Cartel trader `AnimalExotic` + `BadassAnimal` + `Sithspawn` and it sells arena monsters; give the Homestead Compact trader `AnimalFarm` + `AnimalCommon` and it sells honest herd stock. You never have to name individual animals — the tags already ship on the defs (§16.2).
+
+**(b) The tags already exist on the animals — verified from the SWAC source.** `StarWarsAnimalCollection_src/1.6/Defs/ThingDefs_Races/Races_Animal_SW.xml` tags all ~160 canonical beasts with vanilla trade tags **plus a custom `Sithspawn` tag** (found on `Gundark`, `Tukata`, and 8 others). Confirmed examples:
+
+| Animal | Actual `tradeTags` (verified) |
+|---|---|
+| Bantha | `StandardAnimal, AnimalCommon, BadassAnimal, AnimalFarm` |
+| Nerf / Shaak / Kybuck / Nuna / Eopie | `AnimalCommon, AnimalFarm` (the honest-herd cluster) |
+| Dewback | `StandardAnimal, AnimalCommon, BadassAnimal, AnimalFighter` |
+| Massiff | `AnimalPet, AnimalFighter` |
+| Kaadu | `AnimalCommon, AnimalFighter` |
+| Varactyl / Bordok / Blurrg / Orray | `AnimalUncommon` (+`AnimalFighter`/`AnimalFarm`) |
+| Rancor / Nexu / Reek / KraytDragon / Wampa / Roggwart | `AnimalExotic, BadassAnimal, AnimalFighter` |
+| Acklay / Fambaa / Dianoga / Hssiss / Lylek / Ronto / Vornskyr | `AnimalExotic, AnimalFighter` |
+| **Gundark / Tukata** | `AnimalExotic, **Sithspawn**, AnimalFighter` |
+| KowakianMonkeyLizard | `AnimalExotic, AnimalPet` — **the real Salacious-Crumb animal ships in SWAC** |
+| Porg | `AnimalExotic, AnimalFarm` · Vulptex | `AnimalPet, AnimalExotic` |
+| WompRat / Mynock / Bogwing | `AnimalCommon` (ambient/vermin tier) |
+
+*This is a gift:* the mod authors already sorted the whole SW bestiary into exactly the buckets a per-faction trader needs. The Cartel's "arena tier" is literally the set tagged `AnimalExotic + BadassAnimal`; the Compact's "honest herd" is the `AnimalFarm` set; the sinister factions get `Sithspawn`.
+
+**(c) Wire the trader to a faction — three verified list fields.** From `Outer-Rim-Rebel-Alliance-main/.../FactionDefs.xml`, a `FactionDef` carries:
+
+```xml
+<visitorTraderKinds>  <li>YourFaction_BeastMonger_Visitor</li>  </visitorTraderKinds>
+<caravanTraderKinds>  <li>YourFaction_BeastMonger_Caravan</li>  </caravanTraderKinds>
+<baseTraderKinds>     <li>YourFaction_BeastMonger_Base</li>     </baseTraderKinds>
+```
+
+`caravanTraderKinds` = the trade caravans that *walk to you* (the primary "a beast-monger arrived" event). `visitorTraderKinds` = trader groups that visit. `baseTraderKinds` = what you can buy when *you* caravan to their settlement. For existing modded factions we don't own, add these via a `PatchOperationAdd` into the faction def (same patch discipline as the bestiary renames) rather than editing the mod.
+
+**(d) Frequency — the "frequent" in "frequent merchants" — is `commonality` on the `TraderKindDef`.** Verified: `BMT_Caravan_Paleontologist` sets `<commonality>0.25</commonality>`. To make beast-mongers *frequent*, give the livestock `TraderKindDef`s a **high commonality** relative to other trader kinds, and/or lower the world's overall trade-caravan interval. This is the single knob that turns "you see a livestock trader every few seasons" into "the creature stall is a fixture of the campaign." Recommend tuning it up in the Phase-A playtest until arrivals *feel* Mos-Eisley-frequent without swamping the other trade types.
+
+**(e) This route also fixes the §9 orbital-noise caution.** The Alpha Animals author warns that any mod dumping animals into orbital traders indiscriminately breaks trade-tag curation. By building **our own curated `TraderKindDef`s with explicit `tradeTagsSell` lists**, we get frequency *without* that breakage — the stock stays hand-shaped per faction instead of becoming a random zoo. So the mechanism and the earlier warning resolve together: don't install a generic "more animal traders" mod; ship a small `Patches/` + `Defs/` pair of our own.
+
+**Optional mods (only if we want the plumbing pre-built) — VERIFY 1.6 before adopting:**
+- A "trader diversity / more frequent caravans" mod would raise arrival frequency globally, but risks the orbital-noise problem in (e). ⚠ Prefer our own `commonality` tuning first.
+- **Vanilla Trading Expanded**-family (if present for 1.6) adds trader ships/settlement stock depth. ⚠ Not currently in the adopted stack — treat as a *later* consideration, not a dependency. The subsystem above needs **nothing beyond base RimWorld + the animals we already have.**
+
+### 16.2 The five beast-monger archetypes (the merchant, not just the stock)
+
+A merchant is a *character*, and the delivery mode is part of the fiction. Five archetypes, each mapped to a faction and a `TraderKindDef` shape:
+
+1. **The Sand-Caravaneer** (Tusken / *caravan*). Arrives on foot/dewback across the dunes with mounts and medicine. Sells working reptiles, never breeding stock. High commonality — the everyday beast-monger. `tradeTagsSell: AnimalCommon (reptile-clade), AnimalPet(Massiff)`.
+2. **The Homestead Drover** (Homestead Compact / *caravan + base*). The honest herd-trader: bantha, nerf, shaak, poultry, comfort pets. This is the one you buy your *working* animals from. `tradeTagsSell: AnimalFarm, AnimalCommon`.
+3. **The Cartel Beast-Barge** (Hutt Cartel / *visitor + base*, rare + expensive). Rolls in heavy: arena monsters, grotesque status pets, the "resource" beasts, and the one-shot horrors. Lower commonality, absurd prices. `tradeTagsSell: AnimalExotic, BadassAnimal, AnimalFighter` + hand-added grotesques.
+4. **The Compact Hunter's Kennel** (Bounty Hunters' Compact / *visitor*). Sells weaponized companions and trained predator *packs* — the `thrass`/`grissk`/raptor tier — and carries sentience catalysts. `tradeTagsSell: AnimalFighter, AnimalPet(Anooba/Strill)`.
+5. **The Consortium Specimen Courier** (Gene Consortium / *rare visitor*, sinister). Doesn't sell "animals" — sells *specimens*: `Sithspawn`-tagged beasts, VGE aberrations, the "we made this" set-pieces, and the black-market `nessik`/`sarlik` tier. Rarest arrival; every visit is a set-piece. `tradeTagsSell: Sithspawn, AnimalExotic` + hand-added aberrations.
+
+### 16.3 Per-faction stock specialization — WHO sells WHAT (and who sells nothing)
+
+Design layer, built on the verified tags in §16.1. The important discipline the user asked for: **be specific about which animals each faction sells, *if any* — some factions sell no livestock at all**, and that absence is characterization.
+
+| Faction | Sells livestock? | `tradeTagsSell` (the lever) | Signature stock | Never sells |
+|---|---|---|---|---|
+| **Jawa clans (player)** | Buys more than sells | (player — buys via any of the above) | Trades *droids*, not beasts; keeps `slurrik`/`korrik`/`skreev`, a **Ronto** (canon Jawa beast), a comfort **Porg** | Doesn't run a herd trade — Jawa acquire, they don't ranch |
+| **Homestead Compact** | ✅ **Yes — the herd trade** | `AnimalFarm, AnimalCommon` | **Bantha, Nerf, Shaak, Kybuck, Nuna, Eopie**, comfort cats/pandas, **Kaadu** (river) | Arena monsters, `Sithspawn`, grotesques |
+| **Tusken / Sand Clans** | ✅ Yes — **mounts & medicine only** | `AnimalCommon` (reptile), `AnimalPet` | **Dewback, Massiff**, `hubbak` (cactipine medicine), **Varactyl** (prestige) | **Breeding stock** (cultural — they sell the animal, never the *bloodline*) |
+| **Hutt Cartel** | ✅ Yes — **the spectacle & vice trade** | `AnimalExotic, BadassAnimal, AnimalFighter` | **Rancor, Acklay, Reek, Nexu, KowakianMonkeyLizard**, `vissa`, `sarlik`, resource beasts (`urrak`/`vokka`), tamed Megafauna titans | Nothing is off-limits — that's the point |
+| **Bounty Hunters' Compact** | ✅ Yes — **weaponized companions** | `AnimalFighter, AnimalPet` | `thrass`, `grissk`, **Anooba, Strill, CorellianHound**, trained **raptor packs**, **sentience catalysts** | Farm/food animals (beneath them) |
+| **Gene Consortium** | ✅ Rarely — **specimens, not livestock** | `Sithspawn, AnimalExotic` | `Gundark`, `Tukata`, VGE aberrations, `vissarath`, the `nessik`/black-market tier, "we made it" JP-apexes | Anything honest or useful |
+| **Geonosian Foundry Hive** | ❌ **No — sells no animals** | — | Deals in *castes*, not property; regards a kept `karramat` (hive queen) as atrocity | **Everything** — the refusal *is* the characterization |
+| **Imperial Directorate** | ❌ **Officially no** | — (unofficial `thrass` suppression only) | Officers privately buy prestige arena beasts; the state sells none | Publicly, all livestock (beneath imperial dignity) |
+| **Free Droid Enclaves** | ❌ **No — they buy, don't sell** | — (buyer of `vokka` for power) | Fear `thrass` existentially; have no herds to sell | They're droids — livestock is alien to them |
+| **Rogue-android wasteland** | ~ Implicitly — **poisoned-ground fauna** | `AnimalCommon` (polluted-tile) | Tox-wool sheep (wild), waste hounds, wasteland scavengers follow their soured tiles | Anything clean or healthy |
+
+**The design payoffs:** (1) *Frequency + faction filter = flavor.* "A livestock merchant arrived" now resolves to five very different sentences. (2) *Three factions selling nothing* (Foundry, Directorate, Enclaves) is as characterful as the seven that do — the Foundry's refusal to treat life as property is a whole worldview in one empty stock list. (3) *The buy-not-breed loop:* because the Compact reliably sells working stock and the Cartel reliably sells the strange beasts, the player's correct move is almost always **buy the one you need and fly on** — which is precisely the §1 anti-exponential posture, now delivered by the *economy* rather than by a rule.
+
+### 16.4 Encounter tables per merchant (keeping the horror ratio)
+
+Each archetype gets its own d20-style stock lean, but **all of them preserve the §8 ratio: mostly texture, rarely a campaign-changer.** The Sand-Caravaneer and Homestead Drover are ~95% honest stock; the Cartel Beast-Barge is where roll-17-tier horrors cluster; the Consortium Courier is *entirely* the dangerous tail (which is why it's the rarest arrival). Build these as `commonality`-weighted sub-tables when the subsystem goes to `Defs/` — the frequent merchants stay *safe and useful* so the rare one stays *frightening*.
+
+---
+
+## 17. The price list — normalized silver (per user, 2026-08-07)
+
+**Denomination:** the game's own **silver market economy**, not water-liters (that recommendation is retired; see §15). These are the numbers the trade UI actually resolves, so they're the ones worth pinning down.
+
+**What's established vs. designed:** the SWAC and Megafauna columns below are **source-verified `<MarketValue>` reads** from the installed mod sources this session (`StarWarsAnimalCollection_src/.../Races_Animal_SW.xml`, `Megafauna_src`). The Alpha Animals / Alpha Memes / Biomes rows are **design targets** (⚠ — I did not re-read those defNames' market values this session; confirm in-game before treating them as exact). *Trade price ≠ market value:* a trader typically **sells to you above** market value (price multiplier + a livestock premium) and **buys from you below** it, so treat every number as the base the UI multiplies, and read the "player pays roughly" band as the practical out-the-door cost.
+
+**The pricing doubles as a second economic brake.** Deliberately, the resource/spectacle beasts sit high enough that *price itself* is an anti-exponential lever: you can afford **one** radyak or **one** arena monster, not a herd. This is the §1 guardrail expressed in silver — the ship caps how many can travel, the destination tiles cull what can't graze, and the price caps how many you can acquire in the first place. Three independent brakes on the same exponential.
+
+### 17.1 Canonical SW beasts — VERIFIED market values (silver)
+
+Straight from SWAC source. Sorted low→high; "player pays roughly" applies a typical ~1.4× sell multiplier as a planning band (confirm against your actual trade-price settings).
+
+| Animal | `MarketValue` (verified) | Player pays roughly | Tier / why |
+|---|---|---|---|
+| **Porg** | 75 | ~105 | Comfort/novelty — the cheap humanizing pet |
+| **Gizka** | 100 | ~140 | Cheap pest-pet (⚠ breeding-plague — buy one, don't farm) |
+| **Vulptex** ("crystal fox") | 100 | ~140 | Exotic *looks*, trivial cost — value is cosmetic |
+| **Kowakian Monkey-Lizard** | 100 | ~140 | The real Salacious-Crumb animal — cheap, useless, perfect court pet |
+| **Womp Rat** | 150 | ~210 | Ambient vermin / cheapest "livestock" |
+| **Eopie / Shaak** | 200 | ~280 | Bottom of the honest-herd tier |
+| **Kaadu** | 300 | ~420 | River-runner mount (water-ecology, §13) |
+| **Nerf / Massiff / Anooba** | 400 | ~560 | Herd meat-animal / guard-reptile / war-hound |
+| **Strill** | 450 | ~630 | Bounty-hunter companion |
+| **Varactyl** | 500 | ~700 | Prestige mount — a string of these signals a rich clan |
+| **Bantha** | 650 | ~910 | The freight & wool spine — the campaign's key domestic |
+| **Dewback / Tauntaun / Blurrg** | 700 | ~980 | Working mounts (hot / cold / all-terrain) |
+| **Dianoga** | 750 | ~1,050 | Trash-tank scavenger (the *real* one, §10.3) |
+| **Nexu / Ronto** | 1,000 | ~1,400 | Arena cat / heavy Jawa pack-beast |
+| **Reek** | 1,500 | ~2,100 | Arena charger |
+| **Acklay** | 1,800 | ~2,500 | Geonosian arena killer |
+| **Wampa / Gundark / Tukata** | 2,500 | ~3,500 | Ambush predator / **`Sithspawn`-tagged** monsters |
+| **Rancor** | 3,000 | ~4,200 | The pit monster — a tamed one is a named-NPC event |
+| **Krayt Dragon** | 3,600 | ~5,000 | Desert apex — usually *hunted* for the pearl, not bought |
+| **Greater Krayt Dragon** | 7,000 | ~9,800 | The single most expensive kept beast in the SW set |
+
+### 17.2 Megafauna — VERIFIED market values (silver)
+
+From `Megafauna_src`. These are the "walking mountain" trade — mostly hunted/feared, rarely a single tamed prestige beast (§11). Note the *products* are the real trade for the apexes.
+
+| Creature | `MarketValue` (verified) | Note |
+|---|---|---|
+| **Titanis** (terror bird) | 1,000 | Trained-pack threat tier |
+| **Diprotodon / Elasmotherium** | 1,300 | Herbivore freight-prestige (one, not a herd) |
+| **Daeodon** | 1,600 | Manhunter-prone predator |
+| **Deinotherium** | 1,750 | Freight heavy; tusk alone = 600 |
+| **Andrewsarchus** | 2,200 | Apex predator |
+| **Gigantophis / Titanoboa** | 2,500 / 2,700 | Serpent apexes — territory, not livestock |
+| **Purussaurus** | 3,200 | cp-750 apex; the "time your exit off it" tile-owner |
+| **Paraceratherium** | 3,700 | Largest verified freight-prestige beast in Megafauna |
+| *Fertilized eggs* (Titanis 80 / Gigantophis 180 / Titanoboa & Purussaurus 200) | 80–200 | The **cheap** way in — buy an egg, not the adult (and a great trader-stock item) |
+
+### 17.3 The renamed utility beasts — DESIGN TARGETS (⚠ confirm in-game)
+
+Alpha Animals / Alpha Biomes / Alpha Memes market values not re-read this session. Prices below are *design intent* calibrated to the verified anchors above — set high on the resource/horror beasts on purpose (the price brake).
+
+| Creature | Target silver | Player pays roughly | Rationale |
+|---|---|---|---|
+| `slurrik` (slurrypede) | ~250 | ~350 | Cheap — it eats garbage, which is the appeal |
+| `korrik` (hull-eater) | ~200 | ~280 | Cheap and slightly cursed; muzzle included |
+| `skreev` (murkling) | ~300 | ~420 | The Jawa-perfect scavenger |
+| `hubbak` (cactipine, medicine) | ~500 | ~700 | Strategic — a pen replaces buying medicine |
+| `zharn` (shock goat) / `sikka` (drainer) | ~350 / ~250 | ~490 / ~350 | Utility with a catch |
+| `vokka` (tetraslug, power) | ~1,800 | ~2,500 | **Priced as a power plant** — you buy one, not a herd |
+| `urrak` (radyak, uranium) | ~3,500 | ~4,900 | **Priced like a Rancor** — the scarcity *is* the story; a barn is unaffordable by design |
+| `hessa` (aerofleet, power-gel) | ~1,200 | ~1,700 | Priced above comfort, below the uranium beast |
+| `vissa` (eyeling) / `vissarath` (elder) | ~1,500 / ~4,000 | ~2,100 / ~5,600 | Status-pet absurdity; the elder is a named-NPC object |
+| `sarlik` (juvenile sarlacc) | ~3,000 | ~4,200 | Cartel-boss trapdoor tier |
+| **`nessik` (the Mime "worker")** | **~600, "suspiciously reasonable"** | ~840 | The horror is that it's *cheap* — the low price is the bait, not a discount |
+| **sentience catalyst** (item) | ~1,000–1,700 | market | Per the vanilla exotic-goods/slaver price band; "name your price" in-fiction |
+
+### 17.4 How to say it in the fiction (the water framing survives as narration)
+
+The silver number is what the player pays; the *water* line is how the journal remembers it. Both can coexist: the trade log shows "Bantha — 910 silver," and the campaign narration says "we gave up a season's water ration for the bantha." Silver is the mechanic; water is the memory. That keeps the desert-economy texture the water framing was reaching for **without** overriding the game's normalized economy the user asked to price in.
