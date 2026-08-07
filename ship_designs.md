@@ -96,12 +96,28 @@ choice; `ship_deck_plan.md` owns the repair-progression / heat doctrine the chos
 | **Vanilla (verified)** | 19 | 16 | 6 | 2,000 |
 | **Expanded (used here)** | **34** | **30** | **12** | **4,800** |
 
-**Caveat — provenance of the expanded numbers.** These are *generous assumed* values, chosen to
-open up the authoring space, **not** yet read from the mod. The mod's real slider ranges were
-requested via Fetcher (`2026-08-06_bigger_gravships_ranges`); when that lands I'll re-validate all
-eight against the true min/max. The verifier is parameterized (`ship_designs.py` top block), so
-re-checking against real numbers is a one-line change and a re-run. This is an **assumption**, not
-established evidence — flagged so you can weight it accordingly.
+**Provenance of the expanded numbers — now CORROBORATED (Fetcher `2026-08-06_bigger_gravships_ranges`,
+delivered 2026-08-06).** These were originally *generous assumed* values; the Fetcher pull confirms
+they are all **reachable** via the mod's sliders:
+
+- **Bigger Gravships is a pure config mod** — RedMattis states it *"edits properties… doesn't modify
+  the game's logic,"* exposing sliders for support (tile cap), support range, support count, thruster
+  range/counts, chemfuel tank size, etc. There is **no hard published ceiling**; players report 2,600+
+  tile ships and a 160×170 hull built without issue.
+- A **sibling "Bigger Gravships" clone (WS 3527183506)** documents one concrete doubled preset: engine
+  range 18.9→**37.9**, tile cap 500→**1000/engine**, extender range 16.9→**32.9**, extender cap
+  250→**500 each**, extender limit 6→**10**. Our values (R_ENG 34, R_EXT 30, N_EXT 12, CAP 4,800) all
+  sit within or just beyond that preset and are user-settable — **evidence-supported, no longer a bare
+  assumption.**
+- **One soft caveat (build-quality, not a hard limit):** RedMattis *and* Ludeon advise against long
+  "train-shaped" hulls — the takeoff texture scales with the longest dimension, and very long ships
+  have caused landing / quest-fit trouble. **#15 is a compact wheel (~square footprint + a short
+  forward arm), i.e. exactly the "square-ish" shape the author calls safest — so this caveat validates
+  #15's silhouette rather than threatening it.**
+
+⏳ Still pending: a follow-up Fetcher request (`2026-08-06_bigger_gravships_SOURCE`) for the mod's
+actual settings XML/C# to read the *exact* default and max slider values. The verifier is
+parameterized (`ship_designs.py` top block), so if those differ it's a one-line change + re-run.
 
 ---
 
