@@ -197,6 +197,13 @@ _Note (2026-08-05): **Interaction Bubbles** (WS `1516158345`) is also the anchor
 - **Why:** Pure ergonomics and flavor. No balance impact.
 - **Note:** Verify each shows 1.6 in RimSort when assembling; these weren't in the 2026-08-01 Fetcher batch.
 
+### Security Doors Expanded — ✅ ACCEPTED (user, 2026-08-07) — WS `3777106218`, cosmetic/QoL, ⚠️ 1.6 + deps to confirm on About.xml
+- **Identity (◆ established from its own Workshop page, Fetcher `2026-08-07_security_doors_expanded`):** "adds 1×1 and 1×3 **security doors** including new **armored** security-door variants, all buildable in a **dizzying array of materials** (e.g. 'that solid gold security door')." It is a *cosmetic + size + stuff-variety* extension of the **vanilla Anomaly security door** (the wall-flanked, 50W, high-HP, high-containment door) — **NOT** a blast-door / lock-logic / raid-pathing overhaul. Standalone; **no VEF dependency** evident.
+- **Why accepted / value for us:** the **1×1 security-door footprint** is genuinely useful in tight Jawa corridors and the pod-airlock/chokepoint scheme where the vanilla 2×1 doesn't fit; material variety lets the security doors read as scavenged scrap-metal rather than pristine plasteel. Low-value but harmless.
+- **Pillar check:** neutral — adds no new mechanic, no danger-from-composition, no wealth/resource engine. Passes 7-Q trivially (it's cosmetics + a size option).
+- **Scope note — does NOT replace Vac Door:** the gravship's vacuum-seal boarding behavior stays on **Vac Door (Complementary Odyssey)**; Security Doors Expanded is additive cosmetics/sizes, not the airlock system.
+- **⚠️ Open verify (▲ inference, not confirmed):** search text did not surface an explicit "1.6" tag or dependency list; Workshop ID `3777106218` is in the same recent-2026 range as other confirmed-1.6 mods so 1.6-native is *plausible* — **confirm 1.6 + any deps (Harmony?) from the About.xml in-hand** before final load-order placement.
+
 ---
 
 ## Hauling & Teardown (thematically perfect)
