@@ -147,6 +147,37 @@ Enrichment intents we'll want, roughly in build order. Each becomes a task once 
 - QA mode: validate our own scenario/xenotype/patch defs against the running game.
 - Inspect/screenshot game state for planning + this project's verification steps.
 
+### 4a. PARKED CONCEPT — real-time NPC (caravan/raid) lore-reshaping 🅿️ (user, 2026-08-07)
+**Intent:** when a visiting caravan — or even a raid — is inbound/present, have RimMaster
+*intercept and significantly edit that group* to make it more lore-appropriate and interesting
+before (or as) the player engages it. Rather than accepting vanilla-rolled pawns, RimMaster
+rewrites the group into something that fits the campaign fiction: faction-correct gear and
+xenotypes, themed names/backstories, a coherent "why are these people here" hook, set-piece
+composition (a Czerka survey team, a Hutt debt-collector escort, a scav gang wearing our
+established junk aesthetic), maybe a planted item or objective.
+
+**Why this is attractive:** it turns the single most repetitive content stream in RimWorld
+(the endless procedural encounter) into authored, on-theme beats — high enrichment leverage per
+unit of effort, and squarely in RimMaster's GM-tool lane.
+
+**Why it's PARKED (open questions, not yet a task):**
+- **Timing/interception seam (❓):** where in the incident lifecycle can we edit safely? A
+  spawned caravan/raid group lives on the live thing-graph, so this leans on mechanism **2b**
+  (bridge / engine route), not raw `.rws` editing. Need to find whether we edit at spawn, on
+  approach, or only once on-map — and whether pawn mutation (apparel swap, xenotype, story)
+  survives without desyncing the incident's own state (raid AI, trade inventory).
+- **Pillar check (§5):** must NOT become a difficulty cheat in either direction — reshaping a
+  raid can't be a covert way to nerf threats or hand the player loot. It's *flavor + interest*,
+  balance-neutral; a reshaped raid stays as dangerous as the one it replaced.
+- **Determinism boundary (§3):** "make it interesting" is agent-md judgment; the actual pawn
+  edits must go through vetted Python primitives (`edit_pawn_skills`-style ops extended to
+  apparel/xenotype/story) with backup + post-edit verification.
+- **Scope creep risk (⚠️):** editing *raids* is more fragile than editing *caravans* (combat AI,
+  hostility state). Likely sequence when we pick this up: prove it on a friendly **caravan/visit**
+  first, then consider raids only if caravan reshaping is clean across save/reload.
+- **Dependency:** wants the same pawn-authoring primitive set as offline pawn editing, so it
+  benefits from that library existing first (§3 primitive library).
+
 ---
 
 ## 5. Pillar compliance (non-negotiable)
