@@ -223,6 +223,38 @@ Separate equipment tags or pawn-kind restrictions per faction:
 
 ---
 
+## Global system 9 — Contact-frequency parameters (INITIAL ESTIMATES, 2026-08-07)
+
+> **Purpose & status.** These are **first-pass estimates so play can start**, not tuned values — the intent (per the casting decision) is to differentiate the ten by **frequency + contact-mode, not by deletion**. Every number here is an explicit knob meant to be re-examined after the first play sessions; adjust freely. Frequency is deliberately kept **separate from severity**: a faction's *danger* comes from pawn-group composition (§19.5 / `faction_authoring_mechanism.md`), NOT from these frequencies. A high raid weight can still be a weak-but-annoying harasser (Tuskens) and a low one can be lethal (Empire sieges).
+
+**The four knobs (each defined so it maps to a real 1.6 lever):**
+
+- **Settlements (N)** — world faction count. *[Evidence]* — carried from the strategic-balance table. Real lever: worldgen faction count / Faction Control. Drives baseline caravan + raid traffic.
+- **Raid weight (Rw, 0–10)** — this faction's *relative share* of the hostile-incident draw pool (how often it is the aggressor when a threat fires). *[Inference]* from N × hostility × operational reach (water doctrine). Real lever: storyteller draws roughly proportional to nearby-settlement pressure; tune via **Faction Raid Cooldown** + incident commonality; the quiet non-raiders have raid generation suppressed.
+- **Trade weight (Tw, 0–10)** — relative frequency of trade caravans/visitors arriving AND usefulness as a caravan destination. *[Inference]* from N × goodwill × whether they hold something you need (water, medicine). Real lever: visitor/trade-caravan incident weight, proportional to settlements + goodwill.
+- **Quest weight (Qw, 0–10)** — relative share of this faction's contact routed through **CQF / quest / incident generators** rather than settlement assaults. *[Inference]* highest for the reclusive/allied factions that route contact through quests. Real lever: CQF quest hooks + vanilla quest generation.
+
+| Faction | Goodwill | N | Rw | Tw | Qw | Dominant contact mode |
+|---|---:|---:|---:|---:|---:|---|
+| **Imperial Directorate** *(spine)* | −100 perm | 10 | **9** | 0 | 4 | Siege + staged assault; **escalates across the 3 acts** |
+| **Tusken Sand Clans** | −80 | 9 | **7** | 0 | 1 | Frequent raid *harassment* — short, weak, no siege |
+| **Geonosian Foundry Hive** *(spine)* | −100 | 5 | **7** | 0 | 2 | Deep-desert siege (only faction that can sustain one) |
+| **Hutt Cartel** *(spine)* | −35 | 8 | 6 | **9** | 7 | Trade + extortion + the endgame door-off-world questline |
+| **Bounty Compact** *(spine)* | −10 | 4 | 6\* | 3 | 5 | Targeted elite hunts + bounty quests; **\*Rw scales with player Heat** |
+| **Homestead Compact** | +25 | 13 | 0 | **8** | 6 | Numerous friendly caravans + ally quests |
+| **Aquifer League** | +10 | 5 | 0 | **7** | 4 | Water trade (survival-critical); cannot raid |
+| **Gene Consortium** | 0 | 3 | 1 | 4 | **7** | Specialist medicine/genetics quests + trade; raids suppressed |
+| **Wookiee Freeholds** | +35 | 4 | 0 | 3 | 5 | Small formidable ally; quest-routed |
+| **Free Droid Enclaves** | 0 | 3 | 1 | 2 | **8** | Quest-routed almost entirely; raids suppressed |
+
+**Reading the raid pool.** Non-zero Rw values sum to **≈37**, so the intended hostile-contact split is roughly: Empire **~24%**, Tusken **~19%**, Geonosian **~19%**, Hutt **~16%**, Bounty **~16%**, Enclaves/Consortium **~3% each**. Homestead / Aquifer / Wookiee never raid (Rw 0). *[Assumption]* the 0–10 scale maps ~linearly onto storyteller draw; if the storyteller ignores weights and just uses proximity, fall back to tuning via settlement count + Faction Raid Cooldown.
+
+**Two dynamic hooks (not static frequencies):** (i) the **Empire escalates** — same Rw, heavier pawn-group composition act-over-act, plus the Imperial Heat gauge; (ii) **Bounty Compact Rw is Heat-scaled** — quiet until the player gets "hot," then their hunts spike. Both are the pursuit spine's teeth and are authored as curves/hooks, not as a fixed per-year number.
+
+**What I deliberately did NOT estimate:** absolute *events-per-year* — that is speculation without playtest data and depends on the chosen storyteller. These relative weights are the re-examinable layer; convert to absolutes only after observing one in-game year.
+
+---
+
 ## Strategic balance
 
 | Faction | Initial stance | Permanent hostile? | Settlements | Tech level | Water state | Strategic weight |
