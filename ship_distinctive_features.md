@@ -300,6 +300,16 @@ if we pursue this, prototype **RimAI Core (engine voice) + a local Ollama** firs
 **SpeakUp+CQF baseline** as the no-LLM fallback; treat RimDialogue as the low-risk alternative if
 RimAI's beta proves fragile. **No adoption logged yet — awaiting your call on backend + which mod.**
 
+> **⤴ NEXT — deeper dive on RimAI Core + RimDialogue (user, 2026-08-07).** User picked these two
+> as the finalists to evaluate in depth. Source-fetch filed: `2026-08-07_rimai_rimdialogue_source.txt`
+> (RimAI Framework + Core repos & Steam pages; RimDialogueServer repo/README; RimDialogueClient
+> zip already in hand from `2026-08-05_rimdialogue_llm_reframe`). **TODO once source lands:** read
+> each About.xml for 1.6 + dependency chain; map the backend config surface (cloud key vs. local
+> Ollama base-URL) for both; for RimAI, confirm the Server/Terminal is a buildable in-world object
+> we can theme as the grav-controller voice, and check how "gets things done" affects gameplay
+> (anti-exp risk); for RimDialogue, pin down the "Additional Instructions" culture-prompt + server
+> setup (.NET 9, local vs cloud). Then write a head-to-head fit verdict and make the adoption call.
+
 ### Q2 — graffiti / signs on walls: YES → ✅ BOTH ADOPTED (user, 2026-08-07)
 
 _Adopted into `required_mods.md` §(7) "Wall signs + graffiti". About.xml 1.6/deps still to
