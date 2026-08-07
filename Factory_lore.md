@@ -846,7 +846,7 @@ https://steamcommunity.com/sharedfiles/filedetails/?id=3697323721
 
 ---
 
-# 11. The #15 hull interior — fit-check + systems/flow skeleton (2026-08-07)
+# 11. The #15 hull interior — fit-check + skeleton + build sheet (2026-08-07)
 
 The campus craft above is applied to the **locked #15 "Falcon Halo (hollow)"** hull
 (topology owned by `ship_designs.md`; wing→region map owned by `ship_deck_plan.md` §2).
@@ -906,9 +906,40 @@ Laid onto the hull *before* machine interiors, so circulation and heat are locke
   goods** deposits **radially into the adjacent G cargo band** at each wing — the band *is* the
   warehouse, so no long shared finished-goods trunk (avoids the §4.2 clog/priority failure modes).
 
-**Next pass (deferred):** populate each pod's labelled zone with the actual machine placements
-from `interior_fit.py` (the packer already computes legal positions), plus factory-floor apron,
-hopper faces, and belt-to-machine stubs — turning the skeleton into a build sheet.
+## 11.3 The build sheet — machines placed, buildable (`build_sheet_15.py`, DONE 2026-08-07)
+
+PASS 2 turns the skeleton into a buildable build sheet: every machine dropped at a real tile
+position, with the floor, hoppers, and belt spurs it needs. Rendered to `build_sheet_15.png`.
+
+**A finding worth stating plainly.** PASS 1's fit-check packed machines *shoulder-to-shoulder* —
+correct for the question it asked ("does the area fit?"), but not buildable: abutting machines
+leave no free perimeter for hoppers and no walkable lane from the airlock. Re-using that tight
+pack, wing B could seat only **8 of 13** hoppers and wings B/E had no room for a belt spur. So
+PASS 2 **re-packs each pod with a mandatory 1-tile working aisle** around every machine (§1.1
+access rule). This is exactly what the fit-check's headroom is *for* — and the pods can afford it
+(B had 114 spare tiles, E 101). It is a spacing decision, **not** a hull-size problem.
+
+The build sheet adds four layers on the aisle-spaced machines:
+
+- **Machines** — placed at global tile coords by a spacing-aware packer (footprint reserved, the
+  1-tile halo shared as aisle). Largest machines seated first for a tight core.
+- **Factory-floor apron** — every machine tile plus its 1-tile aisle, clipped to the pod disk
+  (machines require Factory Floor beneath them, §1.1).
+- **Hopper faces** — one hopper per I/O port (§3 counts), placed on each machine's free perimeter,
+  **biased toward the pod airlock** so they meet the incoming belt trunk. **All wings now seat
+  100% of required hoppers** (A 3/3, B 13/13, C 9/9, D 6/6, E 12/12, F 8/8).
+- **Belt-to-machine stubs** — a BFS spur from the airlock to the nearest machine hopper through
+  walkable pod tiles, so each cell's trunk actually reaches its first machine.
+
+**Thermal re-verified.** Because the re-pack moved the machines, the 9.9-tile link (§5) is
+re-checked against the *new* centers, with the booster+4-heatsink bank kept **outboard** per the
+skeleton (a bank of 5 will not also fit *inside* an aisle-spaced pod — expected, and §5 sanctions
+outboard placement). Worst case now: **wing B Biofuel Refinery @ 7.51 tiles**, wing E Assembler @
+6.18 — both well within 9.9. Build aborts if either the hopper count or the link check fails.
+
+Tooling: `player_maps/build_sheet_15.py` → `build_sheet_15.json` + `render_build_sheet.py` →
+`build_sheet_15.png`. This completes the #15 interior; remaining work is in-game execution, not
+more planning.
 
 ---
 
