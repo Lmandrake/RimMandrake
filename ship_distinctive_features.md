@@ -300,15 +300,108 @@ if we pursue this, prototype **RimAI Core (engine voice) + a local Ollama** firs
 **SpeakUp+CQF baseline** as the no-LLM fallback; treat RimDialogue as the low-risk alternative if
 RimAI's beta proves fragile. **No adoption logged yet — awaiting your call on backend + which mod.**
 
-> **⤴ NEXT — deeper dive on RimAI Core + RimDialogue (user, 2026-08-07).** User picked these two
-> as the finalists to evaluate in depth. Source-fetch filed: `2026-08-07_rimai_rimdialogue_source.txt`
-> (RimAI Framework + Core repos & Steam pages; RimDialogueServer repo/README; RimDialogueClient
-> zip already in hand from `2026-08-05_rimdialogue_llm_reframe`). **TODO once source lands:** read
-> each About.xml for 1.6 + dependency chain; map the backend config surface (cloud key vs. local
-> Ollama base-URL) for both; for RimAI, confirm the Server/Terminal is a buildable in-world object
-> we can theme as the grav-controller voice, and check how "gets things done" affects gameplay
-> (anti-exp risk); for RimDialogue, pin down the "Additional Instructions" culture-prompt + server
-> setup (.NET 9, local vs cloud). Then write a head-to-head fit verdict and make the adoption call.
+#### Q1-bis DEEP DIVE — RimAI Core vs. RimDialogue, source unpacked (user "Go for it," 2026-08-07)
+
+_Both source trees fully unpacked + read from disk (Fetcher `2026-08-07_rimai_rimdialogue_source`;
+RimDialogueClient from `2026-08-05` delivery). Verbatim About.xml / README findings below. This is
+the head-to-head the "NEXT" block promised — verdict at the end. **Still no adoption logged; this is
+the evaluation, your call remains open.**_
+
+**Hard facts pulled from the actual files:**
+
+| | **RimAI (Framework + Core)** | **RimDialogue (Client + optional Local Server)** |
+|---|---|---|
+| Author / pkgId | Kilokio — `kilokio.rimai.framework` (v4.2.1) + `kilokio.rimai.core` (v5.1.1-**beta**) | John Roper — `ProceduralProducts.RimDialogue` (BETA) |
+| Supported ver | Framework **1.5+1.6**; Core **1.6 only** | Client **1.6** |
+| Deps | Framework: none but base + Newtonsoft (**no Harmony**). Core: **Harmony + Framework**. Load: Harmony→Framework→Core | **Harmony + Jaxe's Interaction Bubbles** (`Jaxe.Bubbles` 1516158345) |
+| Backend | Provider-agnostic via JSON `provider_template_*` — OpenAI / Ollama / Groq / DeepSeek; base-URL + optional key in Mod Options (blank key = local) | Hosted (Roper's server, free tier + Patreon) **OR** self-run **RimDialogue Local Server** (.NET 9): Ollama (`OllamaUrl` :11434) or cloud key (Groq/OpenAI/AWS) |
+| What it voices | A buildable **"Server/Terminal"** object with personas/worldview/backstories; env-aware chat; can *call tools* (intel scans, logistics tallies, production nudges w/ cooldowns) | Transforms **vanilla pawn interactions** into real speech bubbles (fork of Interaction Bubbles); ~100 data points/interaction |
+| Steer-the-tone lever | Persona module (per-server personality) + multilingual LLM support | **"Additional Instructions"** free-text — scoped ALL_PAWNS / COLONISTS / **per-pawn by ThingID** |
+| Offline | Yes (point base-URL at Ollama) | Yes (Local Server + Ollama) |
+
+**⇒ HOW WE'D BENEFIT (benefits first, as asked):**
+
+1. **RimAI = the literal "engine is god" payoff (feature §2).** It's the only mod in the whole
+   search space that gives a *buildable, talkable in-world object* with its own persona. We build
+   ONE and theme it as the grav-controller / machine-spirit: crew "consult the engine," it answers
+   in-character from live ship state. That's the distinctive-feature §2 promise delivered natively,
+   no reskin gymnastics. The **Persona module** means we author its worldview once (the Kolyska's
+   dead-ship melancholy, the Jawa reverence) and it stays in voice.
+2. **RimDialogue = ambient life with almost zero authoring.** It quietly upgrades the pawn chatter
+   we already get from Interaction Bubbles into real dialogue. Lowest-risk, lowest-touch: it never
+   invents *new* systems, it just re-skins text that vanilla already generates. Great "colony feels
+   alive" texture without any anti-exp exposure (see below).
+3. **Both run fully offline** (Ollama base-URL), which kills the recurring cost + privacy objection
+   for a personal single-player game. RimAI needs no server process at all (base-URL straight to
+   Ollama); RimDialogue needs the small .NET 9 Local Server but it's free/open-source.
+4. **They're not mutually exclusive.** RimAI voices *the ship* (one oracle building); RimDialogue
+   voices *the pawns* (ambient bubbles). Different surfaces → they could co-exist: engine-as-god for
+   set-piece consultation, RimDialogue for background Jawa banter. (Would want to confirm they don't
+   both try to drive the same bubble; RimAI's chat is its own window, RimDialogue owns the bubbles,
+   so likely clean.)
+
+**⇒ THE JAWAESE-TRANSLATION IDEA — verdict: FEASIBLE, and RimDialogue is the better vehicle.**
+   You asked whether one of them could translate ordinary game speech into Jawaese without "running
+   away" from the narrative. Confirmed from the source:
+   - RimDialogue's About.xml ships the exact precedent — *"All the men in the colony speak French"* →
+     only male pawns speak French. And the client code stores instructions **per pawn ThingID** and
+     per group (`InstructionsSet.COLONISTS` / `ALL_PAWNS`), and the server prompt templates inject
+     `Initiator.Instructions` / `Target.Instructions` verbatim. So an instruction like *"Jawa pawns
+     speak in their own Jawaese chitter, with a short English gloss in parentheses"* is directly
+     supported and can be **scoped to Jawa only** — non-Jawa crew keep normal speech.
+   - **Why this is narrative-SAFE rather than narrative-run-away:** the LLM here is only rewording an
+     interaction the *game already decided happened* ("X and Y chatted about crazy eels"). It doesn't
+     invent events, spawn items, or change world state — it's a pure **presentation post-processor**.
+     That's exactly the "doesn't run away" property you want.
+   - **This is the LLM-powered evolution of what JawaVoice already does by hand.** JawaVoice
+     (built 2026-08-06) is a *static* SpeakUp reskin: fixed `Jawaese. (English gloss)` line pool.
+     RimDialogue-with-instructions would make that gloss **dynamic and context-aware** (the Jawaese
+     "wraps" whatever the pawns are actually talking about). ⚠️ **They'd collide** if both are live —
+     JawaVoice/SpeakUp and RimDialogue both want to own interaction text. Pick one lane: either keep
+     JawaVoice static (deterministic, free, offline, already built) OR let RimDialogue own Jawa speech
+     dynamically (richer, but LLM-dependent). Don't run both driving the same bubbles.
+   - RimAI *could* also be prompted into Jawaese via its Persona, but that only voices the *one ship
+     object*, not pawn-to-pawn chatter — wrong surface for a colony-wide speech style. For the
+     translation idea specifically, **RimDialogue wins**; for the talking-ship idea, **RimAI wins**.
+
+**⇒ TRADE-OFFS / COSTS (only after the upside):**
+
+- **Both are BETA.** RimAI Core is explicitly `5.1.1-beta` / "playable content (BETA)"; RimDialogue
+  is BETA in its own About. Expect churn, occasional breakage on RimWorld point-updates.
+- **RimAI = the bigger anti-exp watch-item.** Its selling point is that the AI can *call tools*
+  ("logistics tallies, production nudges, security tips, intel scans"). Anything that *acts on* the
+  colony (not just talks) is exactly the kind of power-creep the anti-exponential pillar guards
+  against. Mitigation: it's cooldown/requirement-gated by design, and we can treat it as
+  **voice-only** (consult/flavor) and ignore the actuator tools. Needs a play-test to confirm the
+  tools are ignorable and don't trivialize decisions.
+- **RimAI dependency weight:** two mods (Framework + Core) + Harmony, Core is 1.6-only (fine, we're
+  1.6). RimDialogue also needs Harmony + a *third-party* mod (Jaxe's Interaction Bubbles) and — for
+  offline — a separate **.NET 9 server process** you launch alongside the game. That server is real
+  setup friction (install .NET 9, run Ollama, edit `appsettings` for `OllamaUrl`/model). RimAI has
+  **no separate process** — arguably simpler offline.
+- **LLM nondeterminism vs. authored-tone pillar (both).** Output varies run-to-run; can drift
+  off-lore or produce anachronisms. RimDialogue's per-pawn instructions + RimAI's Persona both damp
+  this but neither eliminates it. This is the core reason the *static* JawaVoice still has a place.
+- **Hardware / model quality (offline).** A small local model may produce flat or garbled Jawaese;
+  good output wants a capable Ollama model = RAM/VRAM cost on the play machine.
+- **Hosted RimDialogue** (if you skip the local server) = internet dependency + free-tier throttle
+  that the author explicitly says may shrink "based on server load and my bank account." Not
+  something to build a campaign identity on → if we adopt RimDialogue, use the **Local Server**.
+
+**⇒ RECOMMENDATION (inference / recommendation, not established fact):**
+   Two independent decisions, not one:
+   - **Talking ship (feature §2):** prototype **RimAI (Framework + Core)** pointed at local Ollama,
+     used *voice-only* (persona consultation, ignore the actuator tools) — it's the only native fit
+     for a buildable machine-spirit. Keep SpeakUp+CQF as the deterministic fallback if the beta is
+     flaky.
+   - **Jawa speech style:** this is a **fork in the road, decide don't stack** — (A) keep the already-
+     built, free, offline, deterministic **JawaVoice** (recommended default; zero new deps, no LLM),
+     or (B) adopt **RimDialogue Local Server** with a Jawa-scoped "Additional Instructions" prompt for
+     *dynamic* context-aware Jawaese, accepting the .NET 9 + Ollama setup and beta/nondeterminism
+     cost. **Do not run both** — they fight over the same interaction bubbles.
+   - _Missing info that would sharpen this:_ (i) a play-test confirming RimAI's tools are safely
+     ignorable; (ii) confirm RimAI window vs. RimDialogue bubbles truly don't collide if co-run;
+     (iii) local-model quality check on actual Jawaese gloss output. **Still no adoption logged.**
 
 ### Q2 — graffiti / signs on walls: YES → ✅ BOTH ADOPTED (user, 2026-08-07)
 
