@@ -1,0 +1,84 @@
+{
+ "A": {
+  "pod": 197,
+  "machine_tiles": 39,
+  "with_hoppers": 42,
+  "with_thermal": 42,
+  "headroom": 155,
+  "pack_ok": true,
+  "hoppers_fit": true,
+  "origin": [
+   70,
+   103
+  ]
+ },
+ "B": {
+  "pod": 197,
+  "machine_tiles": 51,
+  "with_hoppers": 64,
+  "with_thermal": 83,
+  "headroom": 114,
+  "pack_ok": true,
+  "hoppers_fit": true,
+  "origin": [
+   18,
+   117
+  ]
+ },
+ "C": {
+  "pod": 197,
+  "machine_tiles": 39,
+  "with_hoppers": 48,
+  "with_thermal": 48,
+  "headroom": 149,
+  "pack_ok": true,
+  "hoppers_fit": true,
+  "origin": [
+   4,
+   103
+  ]
+ },
+ "D": {
+  "pod": 197,
+  "machine_tiles": 27,
+  "with_hoppers": 33,
+  "with_thermal": 33,
+  "headroom": 164,
+  "pack_ok": true,
+  "hoppers_fit": true,
+  "origin": [
+   1,
+   71
+  ]
+ },
+ "E": {
+  "pod": 197,
+  "machine_tiles": 65,
+  "with_hoppers": 77,
+  "with_thermal": 96,
+  "headroom": 101,
+  "pack_ok": true,
+  "hoppers_fit": true,
+  "origin": [
+   56,
+   117
+  ]
+ },
+ "F": {
+  "pod": 197,
+  "machine_tiles": 40,
+  "with_hoppers": 48,
+  "with_thermal": 48,
+  "headroom": 149,
+  "pack_ok": true,
+  "hoppers_fit": true,
+  "origin": [
+   15,
+   53
+  ]
+ },
+ "R": {
+  "pod": 197,
+  "note": "habitat (furniture density, not machine-packed)"
+ }
+}

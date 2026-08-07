@@ -846,6 +846,72 @@ https://steamcommunity.com/sharedfiles/filedetails/?id=3697323721
 
 ---
 
+# 11. The #15 hull interior — fit-check + systems/flow skeleton (2026-08-07)
+
+The campus craft above is applied to the **locked #15 "Falcon Halo (hollow)"** hull
+(topology owned by `ship_designs.md`; wing→region map owned by `ship_deck_plan.md` §2).
+This section owns the **intra-pod layout craft** for that hull. Built as the first of two
+authoring passes, per the user's 2026-08-07 direction: **skeleton first, machines later**,
+at **full mechanical fidelity**. Tooling lives in `player_maps/` (`interior_fit.py`,
+`skeleton_15.py`, `render_skeleton.py`); the skeleton spec is `player_maps/skeleton_15.json`
+and the render is `player_maps/skeleton_15.png`.
+
+## 11.1 Fit-check — does each wing hold its real machine set? (**evidence**, `interior_fit.py`)
+
+Each of the seven rim-embedded function pods is a **radius-8 disk = 197 tiles** (~11×11
+inscribed clear square). The fit-checker rectangle-packs each wing's true VFE-Factory
+machine footprints (§3) plus 1-tile hoppers per I/O port (§4.1) and, for the hot wings,
+a Factory Booster (3×1) + four Factory Heatsinks (2×2) (§5), into the pod's actual disk
+geometry. **Result: every wing packs `YES` with large headroom.**
+
+| Wing | Machines (footprints) | machine+hopper+thermal tiles | pod | headroom |
+|---|---|---:|---:|---:|
+| A raw extraction | Autofarmer 3×7, Drill 3×3, Fishfarm 3×3 | 42 | 197 | 155 |
+| B bulk/dirty (HOT) | Smelter 3×4, Masonry 3×3, Mincer 3×3, Cremator 3×3, Biofuel 3×4 + booster + 4 sinks | 83 | 197 | 114 |
+| C food | Oven 3×5, Cannery 3×5, Distillery 3×3 | 48 | 197 | 149 |
+| D textile/ammo | Autoloom 3×5, Ammo Press 3×4 | 33 | 197 | 164 |
+| E adv-materials (HOT) | Assembler 5×5, Alloy Forge 5×5, Neutro 5×3 + booster + 4 sinks | 96 | 197 | 101 |
+| F precision | Medicine Granulator 5×3, Machining Bay 5×5 | 48 | 197 | 149 |
+| R habitat | (furniture density, not machine-packed) | — | 197 | — |
+
+**Decision translation:** the tightest wing (E, two 5×5 machines + full thermal bank = 96
+tiles) still leaves **101 spare tiles**. So the #15 hull is not merely *liftable* — its pods
+are **correctly sized for full-fidelity factory operation**. This forecloses the risk that a
+pod would be too small (which would have been a *hull* problem to escalate, not a layout
+problem). The generous headroom is the deliberate space for belts, factory-floor apron, pawn
+access, and future parallel machines (§1.1).
+
+## 11.2 The skeleton — circulation, thermal, logistics (`skeleton_15.py`)
+
+Laid onto the hull *before* machine interiors, so circulation and heat are locked first:
+
+- **Ring maintenance corridor** — a walkable lane on the **keel midline (r≈35)** running the
+  full circle. This *is* the "keel repaired first" utility spine (`ship_deck_plan.md` §2):
+  power, the belt trunks, and every pod entrance hang off it.
+- **Rear causeway** — the single 5-wide spoke from the ring down to the **hollow shrine-heart**
+  (grav-engine core + T scrap-totem at the true centre, tile (45,92)). The void is otherwise
+  left empty (the #9 treatment).
+- **Pod airlock + cell power switch** — one isolation door where each pod's inner edge meets the
+  ring corridor, with the local switch just inboard (§5 "one local switch per cell"; the diegesis
+  of powering up a dead wing of a wreck).
+- **Thermal spine (hot wings B, E)** — Factory Booster + heatsink bank placed **outboard** (toward
+  the rim), so heat dumps to the hull edge — through the *open gaps* early game, through louvres
+  once sealed (`ship_deck_plan.md` §3 heat doctrine). **Hard-verified** against the real **9.9-tile
+  link radius** (§5): worst case is wing B's Masonry Saw at **9.29 tiles < 9.9 → PASS** (the build
+  aborts if any hot machine falls outside link range).
+- **Heat vents** — two rim tiles per hot wing (early gap-vent → late louvre).
+- **Seven filtered belt trunks** (§1.1), each an arc along the cargo/keel band between its source
+  and sink wings: (1) raw minerals+chunks A→B, (2) organic+corpses A→B, (3) food ingredients A→C,
+  (4) textile crops A→D, (5) components+adv-mat B→F (past E), (7) chemfuel B→U. **(6) finished
+  goods** deposits **radially into the adjacent G cargo band** at each wing — the band *is* the
+  warehouse, so no long shared finished-goods trunk (avoids the §4.2 clog/priority failure modes).
+
+**Next pass (deferred):** populate each pod's labelled zone with the actual machine placements
+from `interior_fit.py` (the packer already computes legal positions), plus factory-floor apron,
+hopper faces, and belt-to-machine stubs — turning the skeleton into a build sheet.
+
+---
+
 ## Bottom line
 
 The most robust “uses everything” factory is not one monolithic room. It is an **eight-cell industrial campus** connected by filtered warehouse trunks and a separate utility spine. The decisive optimizations are:
