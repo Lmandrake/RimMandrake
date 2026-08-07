@@ -25,3 +25,16 @@ __pycache__/
 *_items.json
 *_ideoligions.md
 *_ideoligions.json
+
+# hand_authored_maps/: study library of downloaded RimWorld .rws maps (~470MB).
+# Keep the README manifest in git; the map payloads live on disk only (GDrive).
+hand_authored_maps/**/*.rws
+hand_authored_maps/**/*.zip
+hand_authored_maps/**/*.map
+hand_authored_maps/**/*.dll
+hand_authored_maps/**/*.exe
+hand_authored_maps/**/*.pdb
+hand_authored_maps/**/*.cs
+hand_authored_maps/**/*.csproj
+hand_authored_maps/**/*.config
+hand_authored_maps/SickBoyWi_RimWorldMaps/

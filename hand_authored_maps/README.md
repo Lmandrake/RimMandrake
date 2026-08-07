@@ -7,23 +7,48 @@ Kolyska campaign's destination tiles to "Tier C — authored expedition level."
 
 Source census: [`../Utils/rimworld_handcrafted_map_atlas.md`](../Utils/rimworld_handcrafted_map_atlas.md).
 
-## Acquisition status (2026-08-07)
+## Acquisition status — ✅ COMPLETE (2026-08-07)
 
-Direct download from this environment is **blocked** — `git`/HTTPS egress to GitHub
-returns `403` from the proxy, and the web tools cannot reach the raw archives. So the
-actual map files are being acquired through the user's **Fetcher** manual-retrieval
-system.
+Direct download from this environment was **blocked** (`git`/HTTPS egress to GitHub
+returned `403` from the proxy), so acquisition was routed through the user's
+**Fetcher** manual-retrieval system. Fetcher ran the request and delivered **all 42
+directives: 42 worked, 0 failed.**
 
-- **Request filed:** `~/GDrive/<work>/dev/Fetcher/Requests/2026-08-07_handcrafted_maps.txt`
-- **Results will land in:** `~/GDrive/<work>/dev/Fetcher/Delivery/2026-08-07_handcrafted_maps/`
-- Each repo is requested as a zip via GitHub's branch-agnostic zipball endpoint
-  (`https://api.github.com/repos/OWNER/REPO/zipball`), which redirects to the repo's
-  default branch whether it is `main` or `master`.
-- Once delivered, unpack each zip into a named subfolder here (e.g.
-  `World_45_In_Memory_of_Rain/`).
+- **Request:** `~/GDrive/<work>/dev/Fetcher/Requests/2026-08-07_handcrafted_maps.txt`
+  (now in `Fetcher/Complete/`)
+- **Delivered to:** `~/GDrive/<work>/dev/Fetcher/Delivery/2026-08-07_handcrafted_maps/`
+- Each repo was pulled as a zip via GitHub's branch-agnostic zipball endpoint
+  (`https://api.github.com/repos/OWNER/REPO/zipball`).
+- Each archive was flattened (dropping the `OWNER-REPO-hash/` wrapper) and any nested
+  map zip was unpacked so the `.rws` save sits directly in the map's subfolder here.
 
-**Nothing has been fabricated.** This folder holds only this manifest until the
-Fetcher delivery arrives; the map files themselves come from the sources below.
+**Result: 39 of 40 repos yielded genuine RimWorld savegames** (validated as real
+`<savegame>` XML with map/terrain data — not screenshots or placeholders). Several
+repos bundle multiple saves (World 51 = 3 Darkrest variants; Worlds 29, 52, 60 = 2
+each). **SickBoyWi_RimWorldMaps** is the historical blueprint-exporter C# project
+(no `.rws`, as expected). The two `FETCH`ed repo-list pages are kept as `*.txt`
+backstops in the Delivery folder.
+
+### Game-version caveat (matters for loading vs. studying)
+
+The saves span **RimWorld 1.4 → 1.6**. Only the newest load natively in your 1.6
+campaign; older ones are still fully readable for **study and hand-editing** (the map
+grid XML is stable across versions), but would need conversion/cleanup to load as a
+live save.
+
+- **1.6 (load-native):** World 56 (Kains Swamp), 57 (Ides Veil), 58 (the Dead City),
+  59 (Secluded Cove), 60 (Satsuki), 61 (Dragons Fall).
+- **1.5:** Worlds 43–55 (incl. the desert **World 45 In Memory of Rain**, 50 Lush
+  River, 46 Cervantes Cliffs, 49 The Estuary).
+- **1.4:** Worlds 25–42 + both Grapesforlifes maps (incl. desert **World 31 Deserted
+  Trader**, arid **World 29 Blood Gulch**, **World 38 Point Sea**).
+
+> Note: several maps carry **mod dependencies** in their `<meta><modIds>` (e.g. World
+> 31 lists Map Designer, VFE-Core, Custom Map Sizes). For pure map-geometry study this
+> is irrelevant; only matters if you try to load one live.
+
+**Nothing was fabricated** — every file traces to the GitHub sources below via the
+logged Fetcher run (`MANIFEST.txt` in the Delivery folder).
 
 ## What was requested (priority order)
 
