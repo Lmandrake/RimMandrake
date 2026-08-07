@@ -515,6 +515,75 @@ def d_broken_keel():
 designs['13_broken_keel_halo']=d_broken_keel()
 
 # =====================================================================
+# 14 · FALCON HALO  (user-requested 2026-08-06: start from the LARGE HALO,
+#      non-derelict — a clean working wheel — and set circular modules
+#      SEMI-EMBEDDED into the OUTSIDE of the ring band, plus ONE primary long
+#      forward arm in the Millennium Falcon idiom.)
+#   Unlike #9 Derelict Halo (hollow void, pods floating on curved tethers), this
+#   is the ring at FULL HEALTH: a solid cargo wheel with a central hangar hub
+#   joined to the rim by four clean spokes. Eight circular function-pods are sunk
+#   HALF-INTO the outer rim (bulging outward, not dangling on spokes) — each pod
+#   overlaps the band by ~half its diameter so it is structurally part of the
+#   hull, not a tethered satellite. The forward (top) arc of the rim is left
+#   clear for the FALCON ARM: a solid neck off the rim that forks into two
+#   mandible prongs around an empty front notch, with the command cockpit jutting
+#   off to STARBOARD (the Falcon's offset cockpit tube). Command lives at the
+#   cockpit tip; the hangar (H) is the central hub; the six factory wings +
+#   habitat + carbonite-shrine are the eight embedded pods; thrusters/fuel/water
+#   are cardinal blocks set into the band (the forward cardinal is the arm).
+# =====================================================================
+def _embed_pod(c, cx, cy, Rout, deg, pr, code):
+    """A circular module sunk HALF-INTO the outer edge of the ring band: its
+    centre sits just inside Rout so the inner ~half of the disk overlaps the band
+    (making it structurally continuous — no spoke needed) while the outer ~half
+    bulges past the rim. Returns the pod centre (px,py)."""
+    a=math.radians(deg); r_c=Rout-2                 # centre just inside the rim
+    px=int(round(cx+r_c*math.cos(a))); py=int(round(cy+r_c*math.sin(a)))
+    c.disk(px,py,pr,code)                            # overwrites the band wedge it sits on
+    c.backbone_rect(px,py,px,py)
+    return (px,py)
+
+def d_falcon_halo():
+    c=Canvas(210,234); cx=105; cy=128
+    Rout=40; Rin=31; Rmid=(Rin+Rout)//2             # thin band 31..40, keel midline 35
+    c.ring(cx,cy,Rout,Rin,'G')                      # ring body = cargo (the disc)
+    yy,xx=np.mgrid[0:c.h,0:c.w]; d2=(xx-cx)**2+(yy-cy)**2
+    band=(d2<=(Rmid+1)**2)&(d2>=(Rmid-1)**2)&(c.g!='')
+    c.bb[band]=True; c.g[band]='K'                  # keel on the ring midline
+    # central hangar hub + four clean spokes (the working wheel — NOT hollow)
+    for a in (45,135,225,315):
+        ex=cx+Rin*math.cos(math.radians(a)); ey=cy+Rin*math.sin(math.radians(a))
+        c.spoke(cx,cy,ex,ey,2,'.')                  # 5-wide spoke, backbone on centre
+    c.disk(cx,cy,12,'H'); c.backbone_rect(cx,cy,cx,cy)   # central shuttle/hangar hub
+    # three cardinal system blocks set into the band (top arc reserved for the arm)
+    c.rect(cx-4,cy+Rin,cx+4,cy+Rout,'S')            # bottom  = thrusters + power (rear)
+    c.rect(cx-Rout,cy-4,cx-Rin,cy+4,'U')            # left    = fuel bunkerage
+    c.rect(cx+Rin,cy-4,cx+Rout,cy+4,'W')            # right   = water tanks
+    # eight modules sunk into the OUTER rim (deg, pod-r, code); forward arc (~270)
+    # left clear for the Falcon arm. Rear/bottom hemisphere carries the hot/dirty
+    # wings near the thrusters; front-side carries habitat + the carbonite shrine.
+    for deg,pr,code in [(30,8,'A'),(60,8,'E'),(120,8,'B'),(150,8,'C'),
+                        (200,8,'D'),(235,8,'F'),(305,8,'R'),(340,8,'T')]:
+        _embed_pod(c,cx,cy,Rout,deg,pr,code)
+    # ---- the FALCON ARM: solid neck off the rim -> two mandible prongs around an
+    #      empty front notch, with the command cockpit jutting off to starboard ----
+    top=cy-Rout                                     # rim top (y=92)
+    c.rect(cx-14,top-5,cx+14,top+3,'G')             # shoulder plate (overlaps rim)
+    c.backbone_rect(cx-14,top-2,cx+14,top-2)        # shoulder backbone
+    Lm=38                                           # mandible length forward
+    c.rect(cx-13,top-Lm,cx-6,top-4,'G')             # PORT mandible prong
+    c.rect(cx+6,top-Lm,cx+13,top-4,'G')             # STARBOARD mandible prong
+    c.backbone_rect(cx-10,top-Lm,cx-10,top-4)       # keel down each prong
+    c.backbone_rect(cx+10,top-Lm,cx+10,top-4)
+    #   (the notch cx-5..cx+5 above the shoulder stays empty = the Falcon fork)
+    # cockpit tube: a short arm off the starboard prong, ending in a command disc
+    cyk=top-22
+    c.rect(cx+13,cyk,cx+23,cyk,'.'); c.backbone_rect(cx+13,cyk,cx+23,cyk)
+    c.disk(cx+29,cyk,6,'M'); c.backbone_rect(cx+29,cyk,cx+29,cyk)   # command cockpit
+    c.crop(); return c
+designs['14_falcon_halo']=d_falcon_halo()
+
+# =====================================================================
 report={}
 for name,c in designs.items():
     rep=place_and_verify(c)

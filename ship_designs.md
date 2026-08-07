@@ -58,6 +58,15 @@ inherits._
   outboard pods), **#12 Cross-Nave Cathedral** (cruciform + shrine at the crossing), **#13 Broken Keel
   Halo** (keel snapped in three, dog-leg bridges). All verified `parts=1`, 100 % coverage, 14 regions.
   Net: **thirteen designs**. Each new one rendered on its own large panel via `render_single.py`.
+- **2026-08-06 (Falcon Halo):** Added **#14 Falcon Halo** — the Large Halo (#9's ring) rebuilt **at
+  full health**: a solid cargo **wheel** (thin rim band + central shuttle-hangar **hub** joined to the
+  rim by four clean 5-wide spokes — NOT hollow), with **eight circular function-pods sunk half-into the
+  OUTER rim** (each disk overlaps the band so it's structurally continuous, no tether), and **one long
+  forward arm in the Millennium Falcon idiom**: a solid neck off the rim forking into **two mandible
+  prongs** around an empty front notch, with the **command cockpit** jutting off to **starboard** on a
+  short tube. New idiom in `build_designs.py`: `_embed_pod` (a circle centred just inside the rim so its
+  inner half merges with the band). Verified `parts=1`, 100 % coverage, 14 regions, 4410/4800 tiles
+  (headroom 390), 7 extenders, cargo 1319. Rendered on its own large panel. Net: **fourteen designs**.
 
 ---
 
@@ -373,6 +382,38 @@ single-tile chokepoints (a risk if raiders breach one).
 
 ---
 
+## The Falcon Halo (#14)
+
+*Added 2026-08-06 at user request: "start again with the **Large Halo (non-derelict)** and
+intelligently add some circles **semi-embedded in the outside of the ring** … with **one primary long
+arm coming out and forward similar to the Millennium Falcon's design.**"* This is the Halo ring at
+**full health** — the working sibling of #9, not the haunted wreck.
+
+### 14 · Falcon Halo — *a clean cargo wheel, pods sunk into the rim, one long forward mandible arm*
+**4,410 tiles · 390 headroom · 7 extenders · cargo 1,319 · factory 1,182 · shuttle 441 · farthest 30.89**
+
+A solid cargo **wheel**: a thin rim band of cargo, a **central shuttle-hangar hub**, and four clean
+5-wide **spokes** joining hub to rim (so the interior is a working cross, *not* the Derelict Halo's
+hollow void). Eight circular **function-pods are sunk half-into the OUTER edge of the rim** — each
+disk is centred just inside the rim so its inner half merges with the band (structurally continuous,
+no tethers or spokes) while its outer half bulges past the hull. The eight pods are placed **with
+purpose**: the hot/dirty wings (adv-materials, bulk) and the raw-extraction/food/textile wings ring
+the rear and sides near the thrusters, while **habitat** and the **carbonite scrap-shrine** sit on the
+forward flanks. The three remaining cardinal system blocks (thrusters aft, fuel port, water starboard)
+are set into the band. The forward arc of the rim is left clear for the **Falcon arm**: a solid neck
+off the rim **forks into two mandible prongs** around an empty front notch, and the **command cockpit**
+juts off to **starboard** on a short tube — the Falcon's signature offset cockpit. For: **by far the
+largest cargo of the whole set (1,319)** with strong factory too (1,182) — a genuine
+hauler-industrial; the most immediately recognizable *Star Wars* profile; the embedded pods are clean
+isolatable repair units without the fragility of long tethers; the central hangar is a natural muster
+point. Against: tightest-but-one slack (390 headroom) — the solid wheel is tile-hungry, so it shrank
+from the first cut; the offset cockpit is a slightly exposed command node at the end of a thin tube;
+the forward notch is cosmetic (empty space) rather than functional.
+
+*Rendered on its own large panel:* `player_maps/design_14_falcon_halo_large.png`.
+
+---
+
 ## Decision translation
 
 **The decision this serves:** which hull silhouette to commit to before the tile-level blueprint
@@ -396,15 +437,18 @@ doctrine, and campaign hooks apply to *whichever* you pick.
 | 11 | Ladder halo | 4313 (487) | 9 | 400 | ~1100 | 317 | no | **central void** | medium (twin rails) |
 | 12 | Cross-nave | 4475 (325) | 8 | 752 | ~1100 | 317 | no (cruciform) | **crossing + arms** | hard (two axes) |
 | 13 | Broken keel | 3999 (801) | 7 | 698 | ~1100 | 317 | **yes (segments)** | **segment gaps** | medium (dog-legs) |
+| 14 | Falcon halo | 4410 (390) | 7 | **1319** | 1182 | 441 | **yes (Falcon arm)** | **hangar hub** | hard (wheel + arm) |
 
-**Tradeoffs, distilled:** *most cargo* → **8** (Ring-and-Spur, 1,279), then **4** (Catamaran, 970);
-*most factory* → **5** (Ring), then **2** (Nebulon-B); *most shuttle capacity* → **7** and **6**;
-*asymmetry* → **6** (side-to-side wreck), **7** (radial spokes), **8** (irregular ring pods), **2**
-(fore/aft); *courtyard / open space* → **4** (twin courts), **5** (hangar), **7** (inter-spoke
-voids); *most on-theme wreck* → **6**; *most iconic Star Wars reading* → **3** (corvette); *ring
-silhouette* → **5** (symmetric), **8** (broken-symmetry), or **9** (hollow derelict wheel);
-*most atmospheric / set-piece* → **9** (floating pods + shrine core); *easiest to hand-author* →
-**1**; *hardest* → **9** (disconnected floating pods). Coverage slack (room to tweak later) is best
+**Tradeoffs, distilled:** *most cargo* → **14** (Falcon Halo, 1,319), then **8** (Ring-and-Spur,
+1,279) and **4** (Catamaran, 970); *most factory* → **5** (Ring), then **2** (Nebulon-B); *most
+shuttle capacity* → **14** (441, central hangar), then **7** and **6**; *asymmetry* → **6**
+(side-to-side wreck), **7** (radial spokes), **8** (irregular ring pods), **14** (the Falcon arm),
+**2** (fore/aft); *courtyard / open space* → **4** (twin courts), **5** / **14** (central hangar),
+**7** (inter-spoke voids); *most on-theme wreck* → **6**; *most iconic Star Wars reading* → **14**
+(Falcon profile) and **3** (corvette); *ring silhouette* → **5** (symmetric), **8** (broken-symmetry),
+**9** (hollow derelict wheel), or **14** (clean working wheel + forward arm); *most atmospheric /
+set-piece* → **9** (floating pods + shrine core); *easiest to hand-author* → **1**; *hardest* → **9**
+(disconnected floating pods). Coverage slack (room to tweak later) is best
 on **2** (1,059), **8** (963), **3** (973) and **9** (614), tightest on **5** (98).
 
 **Dependencies:** all nine inherit the substructure math, the `ship_deck_plan.md` repair gate +

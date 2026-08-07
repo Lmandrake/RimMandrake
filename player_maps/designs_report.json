@@ -1100,5 +1100,92 @@
    "W": 195
   },
   "missing_required": []
+ },
+ "14_falcon_halo": {
+  "tiles": 4410,
+  "cap": 4800,
+  "headroom": 390,
+  "covered": 4410,
+  "uncovered": 0,
+  "cover_pct": 100.0,
+  "placements": [
+   [
+    "ENGINE",
+    35,
+    69,
+    34
+   ],
+   [
+    "EXT",
+    58,
+    92,
+    30
+   ],
+   [
+    "EXT",
+    46,
+    37,
+    30
+   ],
+   [
+    "EXT",
+    32,
+    92,
+    30
+   ],
+   [
+    "EXT",
+    67,
+    48,
+    30
+   ],
+   [
+    "EXT",
+    55,
+    9,
+    30
+   ],
+   [
+    "EXT",
+    69,
+    53,
+    30
+   ],
+   [
+    "EXT",
+    23,
+    48,
+    30
+   ]
+  ],
+  "n_ext_used": 7,
+  "n_ext_max": 12,
+  "r_eng": 34,
+  "r_ext": 30,
+  "chain_ok": true,
+  "n_components": 1,
+  "biggest_comp": 4410,
+  "contiguous": true,
+  "max_dist": 30.89,
+  "liftable": true,
+  "zones": {
+   ".": 534,
+   "A": 197,
+   "B": 197,
+   "C": 197,
+   "D": 197,
+   "E": 197,
+   "F": 197,
+   "G": 1319,
+   "H": 441,
+   "K": 157,
+   "M": 113,
+   "R": 197,
+   "S": 90,
+   "T": 197,
+   "U": 90,
+   "W": 90
+  },
+  "missing_required": []
  }
 }

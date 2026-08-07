@@ -10,7 +10,8 @@ TITLES={'9_derelict_halo':'9 · Derelict Halo — pods on curved tethers, dangli
  '10_spinal_reliquary':'10 · Spinal Reliquary — one straight keel, wings hung on catwalks, grav-shrine amidships',
  '11_ladder_halo':'11 · Ladder Halo — twin rails, hollow void between, pods hung outboard, shrine in the void',
  '12_cross_nave':'12 · Cross-Nave Cathedral — cruciform hull, shrine at the crossing, pods off all four arms',
- '13_broken_keel_halo':'13 · Broken Keel Halo — keel snapped in three, dog-leg catwalk bridges, shrine in the middle'}
+ '13_broken_keel_halo':'13 · Broken Keel Halo — keel snapped in three, dog-leg catwalk bridges, shrine in the middle',
+ '14_falcon_halo':'14 · Falcon Halo — a clean cargo wheel, pods sunk into the rim, one long forward mandible arm + offset cockpit'}
 title = TITLES.get(name, name)
 
 def font(sz,bold=True):
