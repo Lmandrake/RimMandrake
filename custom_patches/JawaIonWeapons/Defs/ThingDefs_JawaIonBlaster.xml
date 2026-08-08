@@ -11,11 +11,11 @@
     <defName>Kolyska_Bullet_JawaIon</defName>
     <label>ion bolt</label>
     <graphicData>
-      <!-- Reuse a vanilla EMP-ish bolt texture until custom art is chosen. -->
-      <texPath>Things/Projectile/Bullet_Big</texPath>
+      <!-- Outer Rim - Core's cyan ion bolt sprite (Core is a hard dependency).
+           Same self-illuminated blue streak Core's own ion weapons fire. -->
+      <texPath>OuterRim/Projectile/BlasterBolt_Blue</texPath>
       <graphicClass>Graphic_Single</graphicClass>
       <shaderType>TransparentPostLight</shaderType>
-      <color>(0.55, 0.75, 1.0)</color>
     </graphicData>
     <projectile>
       <damageDef>Kolyska_JawaIon</damageDef>
@@ -42,7 +42,8 @@
     <description>A cobbled-together ion emitter of Jawa make — bound wire, salvaged capacitors, and a scavenged focusing coil. It fires a weak ionic bolt that overloads machines almost at once and, with sustained fire, scrambles a living target's nerves until they simply drop. It cannot kill; it is a tool for taking things (and people) intact. In Jawa hands it is not a weapon of force but of patience, numbers, and good ground.</description>
     <techLevel>Industrial</techLevel>
     <graphicData>
-      <!-- PLACEHOLDER art path; supply Textures/JawaIon/Weapon_JawaIonBlaster.png -->
+      <!-- Bundled art: the canon Jawa ion blaster sprite (ripped from the EOL
+           Tatooine mod) lives in this mod at Textures/JawaIon/. -->
       <texPath>JawaIon/Weapon_JawaIonBlaster</texPath>
       <graphicClass>Graphic_Single</graphicClass>
     </graphicData>
@@ -84,7 +85,8 @@
         <defaultProjectile>Kolyska_Bullet_JawaIon</defaultProjectile>
         <warmupTime>1.9</warmupTime>
         <range>22</range>
-        <soundCast>Shot_ChargeRifle</soundCast>
+        <!-- Outer Rim - Core's blaster-bolt fire sound (Core is a hard dependency). -->
+        <soundCast>OuterRim_Shot_DLT19DBlasterBolt</soundCast>
         <soundCastTail>GunTail_Medium</soundCastTail>
         <muzzleFlashScale>7</muzzleFlashScale>
       </li>

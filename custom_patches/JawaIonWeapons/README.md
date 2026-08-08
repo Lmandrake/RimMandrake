@@ -1,6 +1,6 @@
 # Jawa Ion Weapons (Kolyska) — mini-mod
 
-Self-contained, industrial-tier Jawa ion armament for the Kolyska run. **No dependency** on Outer Rim Core, TabulaRasa, or the (EOL) Tatooine mod — pure XML, no C# assembly.
+Industrial-tier Jawa ion armament for the Kolyska run. All *behavior* is our own pure-XML defs (vanilla-EMP based, no C# assembly of our own). **Depends on Outer Rim - Core** (`Neronix17.OuterRim.Core`) for the fired bolt sprite (`BlasterBolt_Blue`) and blaster fire sound (`OuterRim_Shot_DLT19DBlasterBolt`) — Core is already in the Kolyska stack, and it transitively pulls Vanilla Expanded Framework + Tabula Rasa. The gun's own sprite is bundled here (ripped from the EOL Tatooine mod).
 
 Design locked 2026-08-08 (see `mods/required_mods.md` §"JAWA ION WEAPONRY" and memory `jawa_ion_weapon.md`).
 

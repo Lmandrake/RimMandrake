@@ -12,18 +12,24 @@ A single signature weapon — the Jawa Ion Blaster — plus its own ion damage t
 - CAPTURE-NOT-KILL: the weapon disables, it does not draw blood. No lethal damage.
 - TIERED BY TARGET: relies on the vanilla stun-resistance gradient — mechanoids/droids are overloaded almost instantly; flesh pawns resist and must be worn down by accumulated ion buildup before they collapse (alive) and can be arrested.
 - NOT VERY DANGEROUS, REWARDS CUNNING + TERRAIN: low damage, slow warmup, long cooldown, modest range, accuracy falloff — you win by ganging up, using cover and chokes, and stacking stuns, not by out-shooting anyone.
-- SELF-CONTAINED: no dependency on Outer Rim Core, TabulaRasa, or the (end-of-life) Tatooine mod. Pure-XML; no C# assembly required.
+- PURE-XML behavior: the ion mechanics are our own vanilla-EMP-based defs; no custom C# assembly of our own.
 
-The Jawa_IonStun hediff doubles as the "stun -> down" mechanic the capture pipeline (CPERS: Arrest Here) needs.
+The weapon's own gun art is bundled here (Textures/JawaIon/Weapon_JawaIonBlaster.png). For the fired look and sound it reuses Outer Rim - Core's ion bolt sprite and blaster audio, so Core is a required dependency (Core in turn pulls Vanilla Expanded Framework and Tabula Rasa).
 
-NOTE: art placeholder — supply a Textures/JawaIon/Weapon_JawaIonBlaster.png (see the graphics review pass). Until then RimWorld draws a fallback box.</description>
+The Kolyska_JawaIonStun hediff doubles as the "stun -> down" mechanic the capture pipeline (CPERS: Arrest Here) needs.</description>
   <modDependencies>
     <li>
       <packageId>Ludeon.RimWorld</packageId>
       <displayName>RimWorld</displayName>
     </li>
+    <li>
+      <packageId>Neronix17.OuterRim.Core</packageId>
+      <displayName>Outer Rim - Core</displayName>
+      <steamWorkshopUrl>https://steamcommunity.com/sharedfiles/filedetails/?id=2919227155</steamWorkshopUrl>
+    </li>
   </modDependencies>
   <loadAfter>
     <li>Ludeon.RimWorld</li>
+    <li>Neronix17.OuterRim.Core</li>
   </loadAfter>
 </ModMetaData>
