@@ -46,11 +46,19 @@ temper wanders) are distinct and canon-flavored.
 | **⑥ Ta'Baa** (leaving) | Negative-drifting on its OWN clock the longer we sit (see §3) | Restless, rising; the longer rooted the worse the Mood, regardless of satiation. |
 | **⑦ Zizzik** (malfunction/betrayal) | Feeds on OUR misfortune — rises when things break/betray | Gleeful, chaotic, high-amplitude; the trickster. Never trust his calm. |
 | **⑧ Sh'kaar** (evil light/exposure) | Perverse: fed by destruction & exposure (incl. *our* losses); angered by comfort/abundance | Cruel, arbitrary; a malevolent power, not a fair one. Bad Mood is the default weather. |
+| **⑨ Ozzik** (ambition/pride/grief — THE TRAP) | Rises with ambition-acts (art, research, high tech/construction, statecraft, enslavement, outposts, alliances, betrayal, marriage); his HIGH satiation is itself a danger (see §3⑨) | Grieving and proud at once — swings between hollow grandeur and bitter shame; volatile when courted, sullen when ignored. |
 
 > **Ta'Baa's independent clock (user, highlighted):** Ta'Baa's satiation erodes purely with *time
 > rooted*, decoupled from the Empire-pursuit and Hutt-debt clocks. That's **three independent
 > move-or-suffer pressures** stacked — narrative (Empire), economic (Hutt ledger), theological
 > (Ta'Baa). Each launch/relocation resets his erosion and spikes satiation.
+
+> **★ Ozzik is the sign-COMPLEX god (unique):** he is neither straightforwardly good-to-please (like
+> Rekko) nor good-to-starve (like Zizzik/Sh'kaar). Pleasing him is *necessary* (his domains are the
+> win-path acts) AND *dangerous* (high Ozzik satiation biases Sh'kaar + Zizzik upward — §3⑨/§8). He is
+> the anti-exponential pillar as a live cost curve: you must court him to advance, and courting him is
+> what exposes you. Three sign-relationships now exist: **good-to-please** (①②③④⑤⑥), **good-to-starve**
+> (⑦⑧), **necessary-but-perilous** (⑨).
 
 ---
 
@@ -82,9 +90,14 @@ narrative build-up, never a flat modifier.
   markedly warmer/more helpful in voice, research serendipity (hooks, not free tech). **Wrathful:** Ohm
   withdraws — the ship goes cold/curt, and Zizzik's hand grows (see §7 mirror).
 
-### ③ Oomo the Unspilled — water, thirst, rationing
+### ③ Oomo the Unspilled — water, thirst, rationing (+ all the body's waters)
 - **(a) Ambient:** rises through droughts endured with discipline; falls on any water waste / spillage
-  event.
+  event. **Expanded (user, 2026-08-08):** **sex/lovin' pleases him** ("the passing of waters between
+  each other" — every coupling is devotional; sits atop the breeding-colony layer §4.3b). **Running out
+  of food angers him** (famine = the body drying out). **A rejected romantic advance slights him**
+  (waters offered and refused). **Terrain coupling:** sitting on a heavily-watered tile is a standing
+  small PLUS; a solid dry desert tile a standing small MINUS — his satiation tracks *where the ship
+  sits*, not just how it lives.
 - **(b) Lever:** *rationing vs. comfort* — running the colony thirsty/austere pleases him but costs mood
   & efficiency; lavish water use is comfortable but profane. **Note the Sh'kaar cross-tension:** topping
   water tanks to full comforts the colony but *angers Sh'kaar* (§8) — the same act reads opposite to two
@@ -95,7 +108,10 @@ narrative build-up, never a flat modifier.
 ### ④ Mob'Unloo the Ever-Owed — debt, trade, the sacred exchange
 - **(a) Ambient:** rises on completed trades and **settled debts — including ghosts laid to rest**
   (hook into agent C: a balanced ghost-ledger feeds Mob'Unloo); falls on defaults, thefts-from-us
-  unavenged, unpaid obligations.
+  unavenged, unpaid obligations. **Expanded (user, 2026-08-08) — bonds are exchanges too:** rises on
+  **accepted romantic advances, marriages, and conversions** (each a contract struck / a soul brought
+  into the ledger). _Deliberate overlap with Oomo: an accepted advance pleases BOTH (Oomo for the
+  waters, Mob'Unloo for the bargain); a rejected advance slights Oomo only._
 - **(b) Lever:** *haggling hard vs. generous dealing* — squeezing every trade pleases him but sours
   faction relations; open-handedness builds goodwill but is impious.
 - **(c) Exalted:** creditor's luck — better trade opportunities, favorable caravan timing. **Wrathful:**
@@ -119,7 +135,9 @@ narrative build-up, never a flat modifier.
 
 ### ⑦ Zizzik the Spark-Maker — malfunction, betrayal, bad luck (Ohm's mirror)
 - **(a) Ambient:** **feeds on OUR misfortune** — rises with every breakdown, jam, fire, betrayal, failed
-  ritual. A well-run colony *starves* Zizzik; a decaying one fattens him.
+  ritual, **and every mental break** (user, 2026-08-08: a mind coming apart = the wrong spark thrown
+  into a person — berserk/daze/breakdown all fatten him). A well-run, sane colony *starves* Zizzik; a
+  decaying or cracking one fattens him.
 - **(b) Lever:** there's no pious way to *serve* Zizzik (you ward against him) — the "lever" is inverse:
   competent, careful play denies him; every shortcut that risks a malfunction feeds him. His name is
   never spoken near the engine.
@@ -138,6 +156,58 @@ narrative build-up, never a flat modifier.
 - **(c) Exalted (bad for us, like Zizzik):** the suns "notice" us — heat/exposure complications, a
   cruel event. **Denied/dark (good):** he looks elsewhere. _Second sign-inverted god: keeping Sh'kaar
   LOW is the goal._
+
+### ⑨ Ozzik the Shamed — ambition, pride, grief (THE TRAP; canon §2.0b ⑨)
+_The sign-complex god: you MUST court him to advance, and courting him is what exposes you. His high
+satiation is not a reward you bank — it's a **pride-meter that draws fire.**_
+- **(a) Ambient:** rises on **ambition-acts** as they happen — art completed, research finished,
+  high-tech buildings raised, a marriage, an outpost founded, a diplomatic alliance struck, an
+  enslavement, a betrayal that pays off, mathematics/intellectual work. Falls when the clan is forced to
+  act like "techno-rats" — abandoning tech, fleeing, scrapping the grand thing (small overlap with
+  Rekko, opposite valence). **He is fed by exactly the win-path activity.**
+- **(b) Lever (the trap made playable):** *reach vs. safety.* Building bolder tech, larger settlements,
+  wider alliances, more slaves — all genuinely advance the win-paths AND raise Ozzik. But **his rising
+  satiation is itself the cost:** see (c). The impious-but-safe move is to stay humble, hidden, lean
+  (which pleases the rest of the pantheon and starves the two evil gods). **Weapon doctrine:** using
+  **explosives** sharply *offends* Ozzik (the loud folly that destroys what could be taken) — a rare
+  case where a god dislikes an ambition-act; **ion weaponry pleases** him (disable-and-take). Gives the
+  clan a concrete armory bias: ion over grenades.
+- **(c) Extreme-band — INVERTED danger (the whole point):** Ozzik's **Exalted band does NOT parachute
+  reward — it triggers exposure.** High Ozzik satiation is a **standing upward bias on Sh'kaar's and
+  Zizzik's event rolls** (§8) — *"the bolder your reach, the more the Searer and the wrong-spark notice
+  you."* Cross into Exalted and the danger becomes acute: a discrete Sh'kaar/Zizzik crisis becomes
+  likely, foreshadowed by the Oracle (Ohm) as dread. **Wrathful/ignored Ozzik** (the clan stays
+  techno-rats, never rises): a *grief* affliction — morale rot, the "we were once great and threw it
+  away" mood-pall, whispered shame — but SAFE. The clan's core choice, every campaign, lives in this
+  band: rise and risk being blown from the sky, or stay hidden and bear the shame.
+> **Grief facet (user):** Ozzik-low is not neutral — it's mournful. Model a slow "unreleasable grief"
+> pressure whenever the clan lives small for too long (a mirror of Ta'Baa's rooted-clock, but for
+> *ambition* rather than *motion*). The Kolyska itself keeps this pressure alive: crewing the most
+> advanced thing they've ever held constantly reminds them of what they were. The redemptive read
+> (user): pleasing Ozzik *competently* — rising without triggering the crisis — is the road to "leaving
+> the hiding at last as something more than techno-rats." Ambition is both the folly that broke them and
+> the only way out. **This is the pillar's shadow, and its one permitted hope.**
+> **§19.5 note:** even Ozzik never grants material — his "reward" is eligibility to pursue the win-paths
+> (which cost their own resources through the normal gate) plus the *removal* of the grief-pall; his
+> "curse" is exposure, not stat loss.
+>
+> **★ Ozzik's TWO faces map onto the win-paths (user, 2026-08-08):** ambition is not only *technological*.
+> - **Path 2 (droid-army-by-force):** ambition of the *machine* — bold tech, rebuilt droids. Feeds Ozzik
+>   AND Ohm together (the tech face).
+> - **Path 3 (grand-coalition revolt):** ambition of *statecraft* — strategy, alliance, "playing the game
+>   of Empire itself." **This is a DIFFERENT face of Ozzik, feared by the Jawa as greatly as unrestrained
+>   tech.** To scheme at empire, to build a coalition and reach for real power on the galactic board, is
+>   the same pride that broke them — just wearing a diplomat's mask instead of an engineer's. So Path 3
+>   raises Ozzik through his Social/statecraft/betrayal/alliance domains, and carries the *same*
+>   Sh'kaar/Zizzik exposure cost.
+> - **Path 1 (Hutt ledger):** the *dominion* road — which Ozzik covets but which is explicitly **not the
+>   Jawa gods' way** (§2.0b "Not the Hutt"). Playing the Hutt game to safety courts Ozzik's worst,
+>   most-doomed impulse (he "always seeks to enslave, always fails").
+>
+> **Net:** two of the three victories run straight through the Shamed by different domains (tech vs.
+> statecraft), and the third apes the Hutt he most wants to be. There is **no ambitious victory that
+> doesn't wake Ozzik** — the endgame IS the pride-crisis, by design. Only *how* you carry it (competently,
+> without triggering the Searer/Spark) decides whether the reach becomes redemption or the fall repeated.
 
 ---
 
@@ -350,6 +420,13 @@ The canon's three tensions become live see-saws in the vector:
 - **Light ⇄ dark (Sh'kaar ⇄ Ishko)** — lighting the dark feeds evil Sh'kaar AND offends hiding-Ishko; the
   same "top the water tanks" act comforts the colony, pleases nobody pious, and *angers* Sh'kaar.
 - **Rekko ⇄ resource pressure** — scrap (useful) vs. repair (pious) is the everyday grind-level tension.
+- **★ Ozzik → Sh'kaar + Zizzik (the trap coupling, user 2026-08-08)** — NOT a see-saw but a one-way
+  amplifier: **high Ozzik satiation biases both evil gods' event rolls upward.** Ambition (tech OR
+  statecraft — the win-path acts) raises Ozzik, and a fat Ozzik is *literally* the exposure that lets
+  the Searer and the wrong-spark find the clan. This is the mechanical heart of anti-exponential: the
+  more you reach, the more the two things that can kill you are fed. The counter-move is the humble
+  pantheon (Ishko/Oomo/Rekko/Ta'Baa) — living small keeps Ozzik lean and the evil gods starved, at the
+  cost of Ozzik's grief-pall. **There is no free ambition.**
 
 These give the crew live theology to invoke and the agent live signal to narrate.
 
