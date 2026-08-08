@@ -65,7 +65,8 @@ These are the load-bearing, authoritative files. If two docs disagree, the owner
 | `first_live_access.md` | **Day-one runbook** for the first time we have running RimWorld + real mods + a harmonized save: ordered tooling/agent-integration steps (shortHash resolver → Def index → validate JawaVoice/factions/scenario → RimBridge swap) + the offline pre-reqs to build first. Distinct from `setup_checklist.md` (in-game scenario decisions). |
 | `rimworld_file_lore.md` | Self-teaching technical manual for editing RimWorld save/scenario/def XML — file structures, safe-vs-fragile regions, gotchas. |
 | `rimbridge.md` | Living context on RimBridgeServer (live in-game modification pipe — not a content editor). |
-| `RimMaster.md` | Spec for the external RimMaster enrichment agent (save-editing +/or RimBridge). |
+| `RimMaster.md` | Spec for the external RimMaster enrichment agent (save-editing +/or RimBridge). §4b = the phased agent-possibilities catalogue (incl. the 8 religious-observance + HeDiff agents A–H, added 2026-08-08). |
+| `divine_satiation_engine.md` | **Mechanical design for agent G** (created 2026-08-08): per-god satiation + fickle-Mood vector, no drift-to-baseline (event-driven), 3 input channels per god (ambient / costly-lever / extreme-band), whole-pantheon ritual scoring, contextual PC-death, ghost-as-divine-actor hypothesis. Consumes `jawa_xenotype_and_religion.md` §2.0b (pantheon canon); feeds agents A/H/C/F/D. |
 | `resource_terrain_matrix.html` / `biome_roster_for_review.html` | Rendered review views (resource×terrain matrix; biome roster). |
 
 ## Subfolders

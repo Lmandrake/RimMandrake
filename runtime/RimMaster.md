@@ -353,19 +353,43 @@ Verdict legend as above (⛔/🧰/🟡/🔨). User verdict 2026-08-08: **"I love
   component "remembers" the wreck it came from, becomes a named minor relic the voice references). Pure
   narrative metadata layer — safe, low-cost, deeply on-theme. Object-scoped sibling to the ship-repair
   narrator.
-- **G. Theological-Tension Arbiter / Divine-Satiation Engine (Phase D, read + narrate + soft event) 🔨.**
-  Watch colony behavior for which pole of the three tensions is "winning" (burrow vs launch, light vs
-  hide) and let the voice comment on the clan's drift. **★ USER EXPANSION 2026-08-08 — this is the
-  spine, not a flavor read:** (i) **the gods always demand baseline satiation** — the colony must keep
-  every god sated to a floor level or suffer; (ii) **satiation is a two-sided scalar** — higher levels
-  are *rewarded* as much as low levels are *punished* (not a binary please/displease); (iii) **rituals
-  are NOT one-god-specific** — every rite is evaluated *across the whole pantheon relative to current
-  colony needs*, so the current anger/joy of ALL gods modulates EVERY ritual's outcome (kills the boring
-  "this rite pleases so-and-so" model). Design consequence: A (Ritual-Outcome Dramaturge) reads G's
-  live satiation vector as its input — a launch-rite lands differently when Oomo is starving vs when
-  Ohm is exalted. This makes the pantheon a **live, colony-need-relative barometer** that all ritual
-  outcomes hang off of. *Pillar bar: satiation rewards stay mood/social/narrative — an "all gods happy"
-  state must NOT emit free material.*
+- **G. Divine-Satiation Engine (Phase D, event-driven vector + fickle divine mood + extreme-band
+  events) 🔨 — THE SPINE of the religious cluster.** A per-god signed satiation vector (8 scalars) on
+  the colony blackboard; A/H/C/F/D all read/write it. **★ USER DESIGN 2026-08-08 (supersedes the earlier
+  "drift-to-baseline" sketch):**
+  - **(1) NO drift-to-baseline. Satiation moves by colony events, free-floating,** with a per-god
+    resting **bias/temperament** (positive / negative / calm). Gods "feed" on events — sometimes
+    *your* misfortune feeds a god (an explosion burning your own stuff *pleases* Sh'kaar; he's lenient
+    a while after, "fed"); prolonged peace/abundance can *anger* a god (topping water tanks to full
+    angers Sh'kaar over time).
+  - **(2) Two-sided scalar** — Exalted is rewarded as strongly as Wrathful is punished; symmetric
+    around neutral. Bands: Exalted / Content / Neutral / Slighted / Wrathful.
+  - **(3) Rituals are NOT one-god** — every rite scores as a weighted sum over the WHOLE vector:
+    `Σ ritual_affinity(god) × colony_need(god) × satiation(god)`. The current anger/joy of ALL gods +
+    what the colony currently *needs* modulates EVERY ritual's outcome (kills "this rite pleases
+    so-and-so"). A (Dramaturge) reads this to pick the outcome branch; a launch-rite triumphs when
+    Ta'Baa starves + colony needs to move, backfires when Ta'Baa's sated but Oomo's wrathful.
+  - **(4) Each god gets THREE input channels (design requirement, not "+X% success"):** (a) **ambient/
+    random stimulants** (world events feed/starve them regardless of player intent); (b) **costly player
+    levers** — actions with real non-religious cost/benefit that ALSO move the god (scrapping a
+    repairable machine gives resources but enrages Rekko — highly relevant since we scrap constantly);
+    (c) **strongly unusual extreme-band outcomes** — creative blessings when Exalted / creative harms
+    when Wrathful, delivered with **plentiful narrative build-up for drama/tension** (user's consequence-
+    weight choice). NEVER a flat percentage buff.
+  - **(5) Fickle divine Mood** — a SEPARATE self-driven scalar per god, personality-flavored, radiating
+    the god's *own* temper independent of its view of the colony (some days lenient even to sinners,
+    some days a jerk even to the devout). Modulates responses.
+  - **(6) PC death is contextual & agent-adjudicated** — can *settle debts/appease anger* OR *greatly
+    anger* a god depending on surrounding context. Explicitly the agent's judgment domain.
+  - **(7) Ghosts-as-divine-actors (HYPOTHESIS, parked):** ship-ghosts (agent C / Afterlife mod) may be
+    the mechanical delivery vehicle for earned divine kindness/wrath — revisit when the mod's defs are
+    extracted at install.
+  - **Exalted ≠ resource parachute (cheese-ban):** instead of free material, Exalted yields a *stream of
+    biased-positive opportunities* that reward competent play. Any material reward still routes through
+    the §19.5 balance-bar gate.
+  - Per-god design sheets (bias, 3 channels, mood personality, extreme outcomes) drafted 2026-08-08 —
+    see the dedicated design section / doc. Ohm flagged for deepest enrichment (droids online/offline,
+    research completion, ship-consciousness state).
 - **H. Confession / Atonement Broker (Phase D) 🔨.** Detect "sins" in state (wasted water → Oomo; a lamp
   lit in the field → Sh'kaar; a pawn who fled an ambush → Ishko) and offer an authored atonement path
   with a mood/social payoff. Defined-effect, medium fragility. Feeds G's satiation vector (atonement
