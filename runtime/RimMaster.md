@@ -180,6 +180,131 @@ unit of effort, and squarely in RimMaster's GM-tool lane.
 
 ---
 
+## 4b. Agent possibilities catalogue 🔎 (brainstorm — expanded from user seed, 2026-08-08)
+
+A running idea-pool of enrichment agents, sorted by the **lifecycle phase** they act in. This is a
+*possibilities* list — nothing here is committed; each promising entry graduates to §4 (backlog) →
+task once specced and pillar-checked. Legend: **◇ user-seeded** (explicitly proposed by the user);
+all others are extrapolations to grow the space. Every agent honors the §5 pillars and the §3
+determinism boundary: **agent-md supplies judgment/authoring; a vetted Python primitive does the
+actual file/graph write, with backup + V&V of the product.** Most of these are *interactive* (a
+human-in-the-loop review before commit), not fire-and-forget scripts.
+
+> **Cross-cutting architecture note.** Phases A–C are almost all **offline** (`.rws`/def/texture
+> editing, mechanism 2a) — safe, backup-able, re-runnable. Phase D is the **live/fragile** frontier
+> (mechanism 2b) and carries the §6 save/reload-survival unknown. When an idea can be done at
+> setup-time instead of live, prefer setup-time. A shared **"read → propose → human-approve →
+> Python-writes-with-V&V → re-verify"** loop is the reusable skeleton for nearly all of them.
+
+### Phase A — Pre-start asset agents (before a game even exists: textures, defs-as-art)
+- ◇ **Gravship "aged & broken" texture agent.** Re-skin gravship/Factory-ship structural elements to
+  look brown, worn, ancient, sand-scoured — and generate *pre-repair broken* variants of the same
+  pieces (scorch, hull breaches, dead running-lights) to inspire the repair-progression art and give
+  us before/after reference. Feeds `ship_distinctive_features.md` (running-lights-as-repair-bar) and
+  the repair-gate table in `ship_deck_plan.md`.
+- **Faction visual-identity kit agent.** Generate a coherent palette + insignia + apparel-tint set per
+  NPC faction so Czerka, Hutt, scav, Empire-remnant, droid enclaves *read* distinct at a glance;
+  emit the texture/def tints for the ones that are XML-tintable.
+- **Icon/label legibility agent.** Batch-audit modded item/def icons for at-a-glance readability at
+  RimWorld's tiny UI scale; flag or re-render the muddy ones (many third-party weapon packs share
+  near-identical silhouettes).
+- **Sound-pack curation agent.** Assemble a Star-Wars-appropriate blaster/door/ambient sound set from
+  license-clear sources and map them onto the def soundDefs — a pre-start asset pass, not a live one.
+- **Loading-screen / main-menu skin agent.** Produce the Kolyska splash + campaign-title art from the
+  concept renders in `promo/` (ties the promo bucket to an actual in-game artifact).
+
+### Phase B — Scenario-start normalization agents (one-time, def-level, before first launch)
+_These read the fully-assembled modlist's defs and reconcile the work of many separate authors into
+one coherent, pillar-compliant ruleset. All offline def-patch generation._
+- ◇ **Weapon/armor normalization agent.** Read ALL weapons + armor across every loaded author and do a
+  global sanity/balance pass (damage, cooldown, range, AP, cost, tech-level, market value) so cross-mod
+  gear coheres and obeys the **§19.5 no-arms-race** bar. Emit a review table + a patch. (This finally
+  operationalizes the long-standing §19.5 audit — see `mods/world_interest_and_mech_danger.md`.)
+- ◇ **Animal normalization agent.** For every animal: reconcile damage, wildness, manhunter tendency,
+  beauty, **biome-specific frequency + abundance**, **which factions sell it and at what price**, and
+  assign **Star-Wars-appropriate names**. Emit per-animal cards + patch. (Directly extends the
+  beast-monger subsystem + the silver price list already designed in the Livestock doc; consumes the
+  four-axis biome palette.)
+- ◇ **Faction repair/enrichment agent.** Read every Faction and fix/complete what the configurable
+  world-start mods left thin or unspecified: **racial mixes, tech availability, willingness to enslave,
+  behavioral tendencies, and which cross-faction relations are FIXED vs DYNAMIC.** Reconcile against
+  `worldbuilding/faction_roster_v2.md` (the canonical roster is the spec; the agent makes the running
+  game match it). 
+- **Trader-inventory coherence agent.** Ensure each faction's stock/buy tags match its established
+  identity (Jawa buy junk + slaves; Hutts deal contraband; Czerka sells industrial) so trade *feels*
+  faction-specific — pairs with the animal agent's "who sells what" output.
+- **Research-tree / techprint placement agent.** Verify the three-gate progression chain
+  (techprint→prototype→research) is intact across all modded research, and that no mod silently hands
+  the player a shortcut around the two sanctioned trees (anti-exponential guard).
+- **Apparel/xenotype-legality agent.** Cross-check that faction pawnkinds spawn wearing lore-appropriate
+  gear and legal xenotypes (no stormtrooper armor on a Jawa scav), reconciling the equip-fielding tool
+  against the roster.
+- **Name-pool localization agent.** Replace generic RimWorld name pools with SW-appropriate name banks
+  per faction/race so procedurally-named pawns already read on-theme before any per-pawn hand-crafting.
+- **Precept/meme consistency agent.** Validate that our buildable Jawa ideoligion + the leveled-up NPC
+  belief systems have no contradictory precepts and that custom ThoughtDefs (mourn-death, "a clan is not
+  a crowd") are wired correctly — a pre-launch lint of `jawa_xenotype_and_religion.md` against the save.
+
+### Phase C — Tile-map-start agents (each time a new map is generated)
+- ◇ **Map hand-crafting agent (the complex one).** Improve a freshly-generated tile from whatever the
+  game produced toward a hand-crafted feel: sensible terrain/coastline/elevation, **appropriate weather
+  events**, and **unique scenario-specific opportunity structures** the player can leverage while on the
+  tile. This is the existing `player_maps/` LLM-in-the-loop map-improver line of work, generalized.
+  ⚠️ Flagged complex — biggest V&V surface.
+- ◇ **NPC hand-crafting agent (per map).** Sweep the NPCs present on a tile map and significantly
+  improve/streamline them: lore-appropriate identities, description rewrites, believability, and
+  narrative excitement **tuned to the context/state the agent inherits** (who's here, why, what's
+  happening). The offline, per-map cousin of the §4a parked live caravan/raid reshaper.
+- **Opportunity-structure seeding agent.** Explicitly place the "leverageable" set-pieces: a half-buried
+  cache, a defensible chokepoint, a derelict worth salvaging, a tripwire hazard — the tile-specific beats
+  catalogued in the 14 RimMaster set-pieces (see memory + `context.md`).
+- **Threat-appropriateness agent.** Given the tile's biome + current campaign tension, verify the
+  spawned/eligible threats fit (no jungle predators on a salt flat) and read as qualitative danger, not
+  point inflation.
+- **Landmark-narrative agent.** Attach a short authored "what happened here" hook to native Odyssey
+  Landmarks / Ancient Urban Ruins on the map so exploration surfaces story, not just loot.
+
+### Phase D — Mid-game continuous / live agents (during play; mechanism 2b, fragile)
+- ◇ **Emergent ship-sentience voice agent.** Let the Kolyska's waking machine-spirit speak to us, guide
+  us, and even *make demands* — an in-character AI presence that reacts to game state. Builds on the
+  already-adopted LLM-voice stack (RimAI "Cradle-Mind" persona in `runtime/llm_voice_preauthoring.md`);
+  the *demands* angle is the new escalation (it wants power routed, scrap tithed, a pod re-lit).
+- ◇ **Jawaese speech-shaping agent.** Shape Jawa dialogue into properly-styled Jawaese (canon/chitter/
+  synth tiers) — the runtime companion to the built JawaVoice mod + the RimDialogue Jawaese prompt
+  (`custom_patches/JawaVoice`, `runtime/llm_voice_preauthoring.md`).
+- ◇ **"State of affairs" summarizer agent.** Read the game log — **especially the social log** — and
+  maintain a rolling world-state summary that ALL downstream elements (dialogue, ship advice, NPC
+  speech, event flavor) draw on, so behavior + speech stay context-appropriate. This is effectively the
+  shared **context/blackboard** the two voice agents and the live NPC reshaper all read from — arguably
+  build this *first* among Phase D, since it's the substrate.
+- ◇ **Live caravan/raid reshaper** — already specced as the §4a parked concept; belongs here in the
+  lifecycle map. Prove on friendly caravans before raids.
+- **Social-drama chronicler agent.** Turn notable social-log beats (rivalries, breakups, the turbulent
+  poly-colony fallout) into short in-fiction "clan chronicle" entries — a narrative read-out of the
+  breeding-colony chaos, no state mutation (pure read → text), so it's the *safest* Phase D agent.
+- **Ship-repair-progress narrator agent.** Watch restoration milestones (running-lights bar) and have
+  the Cradle-Mind + crew react to each phase — couples the repair gate to voice.
+- **Quest-hook proposer agent.** Watch state for dangling threads (a spared enemy, an unpaid Hutt debt,
+  a stolen droid schematic) and propose CQF quest instantiations that pay them off — human-approved
+  before injection.
+- **Difficulty-drift monitor agent (read-only guardian).** Continuously watch colony wealth/power vs.
+  threat scaling and *flag* (never silently fix) when the run drifts toward the exponential failure the
+  pillar forbids — a diagnostic conscience, not an actuator.
+- **Screenshot/state journaler agent.** Periodically capture annotated state for our own planning +
+  this project's verification steps (already in the §4 backlog; lives here as the continuous form).
+
+### Highest-leverage picks (recommendation, for when we start building)
+Not a decision — a suggested read of the space: **(1)** the Phase-D "state of affairs" summarizer is
+the substrate everything conversational depends on, so it likely comes first among live agents; **(2)**
+the Phase-B weapon/armor + animal + faction normalizers are the highest enrichment-per-effort and are
+*offline/safe*, so they're the natural first builds overall; **(3)** the Phase-C map + NPC crafters are
+high-value but high-V&V, best attempted after the offline primitive library + a throwaway-save test rig
+exist. Tradeoff throughout: **offline (safe, re-runnable) vs live (fragile, save/reload-risky)** — bias
+to offline wherever an effect can be baked at setup-time. Principal shared dependency: the §3 Python
+primitive library (backup + write + verify) that every one of these leans on.
+
+---
+
 ## 5. Pillar compliance (non-negotiable)
 RimMaster must honor the campaign's governing pillars (`concept.md`):
 - **Anti-exponential:** RimMaster is an authoring tool; it enriches the *world*, never hands the
