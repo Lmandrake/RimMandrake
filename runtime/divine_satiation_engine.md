@@ -345,56 +345,16 @@ pantheon is a brotherhood of male voices. (Consistent with the he/his register a
 **★ Each alter covets the ship as a BODY it could live through — and each has a CLEAR, DESIRABLE thing the
 ship should BECOME, which it argues for richly.** Every one of the nine sees the Kolyska as a potential
 *body* — a way to become incarnate and enact its terraforming inheritance. This is the deep engine of the
-whole faith, it gives each alter a positive platform (not just a mood), and it maps straight onto the
-win-paths:
-- **Ishko** — the ship as **the eternal hidden lurker that slowly terraforms the dark into a home.** Dwell
-  in the dark-obscured terrains *forever*; raid only those foolish enough to come near, and only when
-  cunningly safe; grow in power, defend, and **survive without end.** Over time, *convert the darkness
-  itself into a new kind of home* — even, eventually, **a new kind of Jawa, a subspecies split from the
-  rest**, remade to belong to the dark. (Move rarely, invisibly, always return to the dark. Resolves the
-  old Ta'Baa⇄Ishko friction: he permits the raid-flight, insists the dark is home.) _**Flavor only** (user
-  2026-08-08): the "new kind of Jawa" is a NOD toward a possible follow-on campaign of genetic
-  enhancement/modification — NOT a mechanical branch of THIS campaign. Do not build it out unless revived._
-- **Ohm** — the ship as a **restored droid crew returned to its glorious salvaging purpose.** Rebuild the
-  hands the machine-god lost, **ally with the neutral droid faction, and build a new powerful faction
-  *together*** — droid and Jawa. (Collides with "we breed no new hands" AND with Oomo's chambers — his
-  central conflicts.)
-- **Oomo** — the ship taken to a **water-bearing tile near the desert** to become a **festival of life:**
-  *call ALL Jawa to come and celebrate*, and **seed this world with Jawa children everywhere** — exactly
-  the colonization-age purpose, its held waters become held *life*. **He also loves beasts that reproduce**
-  (fertile herds = life multiplying; ties the livestock layer to piety). **★ DISPLEASED by building new
-  droids** — metal hands where there should be broods (direct clash with Ohm over the same chambers). Note
-  his vision is the *anti-Ishko*: a **big fixed gathering at a fertile site**, not a small hidden mobile
-  clan.
-- **Mob'Unloo** — the ship as **the greatest trading fortress ever known: a Sand Crawler in the sky**,
-  hub of an ever-growing trade network. **Enemies are just another commodity — sold, not fought; barter
-  them into dust; purchase your way to victory.** The ship's **constantly-moving presence along the trade
-  routes IS the animated spirit of this dream**, its hold heavy with ever-richer loot. (Spiritually the
-  Hutt-ledger path with a Jawa face — buy the win.)
-- **Rekko** — **RESTORE the original.** Rewoken factories, salvage, *and eventually the terraforming
-  capability itself.* **Unlock the history of the ship's making and the secrets of its builders and
-  commune with them** to learn the true Jawa place in the universe. His conviction: *the whole Jawa future
-  may already be aboard — awaiting repair somewhere on the vessel, or buried in the AI's fragmented
-  memories.* **Full restoration is the only true path.** (His flat opposite is Ozzik — see below.)
-- **Ta'Baa** — the ship as **the ultimate thief in the night: the fastest engines**, grab what's valuable
-  and flee so quickly no one even knows what happened. **Aspire to the asteroids** as an even more hidden
-  terrain to strike from; **inspire the Empire to fight the other factions into mutual ruin, then strike
-  unsuspected.** The ultimate dream: **flee to another planet entirely — the ultimate horizon.**
-- **Zizzik** — the ship as **the disaster that plagues the planet.** Since *disaster and disappointment are
-  the only constants*, the more the ship *becomes* the misfortune, the more it survives. **Move at random,
-  strike without strategy, seize every chance to sow chaos**, reap whatever rewards fall from the
-  pandemonium, and *never ask why.* Dream only of **the whirlwind, the sandstorm, the earthquake — which
-  the terraformer ship can literally make** if used "correctly," free of foolish dreams beyond this deep
-  truth. (His is now a real, arguable program — not mere entropy.)
-- **Sh'kaar** — the ship as **a war-sun: weapons, and more weapons.** Blaze out the ancient enemies and all
-  who wronged the Jawa; **drink their loot, grow stronger, roar like a fire consuming its fuel.** You may
-  not live forever — but who does? **Be the blazing terror everyone fears, at least for a while, and never
-  surrender until you detonate or they do.** (Wants the big destructive weapons Ozzik *despises* — §8.)
-- **Ozzik** — **do NOT restore the ship: build it ANEW, grander than before.** Learn its secrets, remember
-  the latent greatness in the Jawa heart, let the cunning ambusher become **the secret lords of all around
-  them.** Release the ancient agony of being crushed; **think deeply, artfully, strategically; fear nothing
-  ever again.** (The most seductive vision — the one that wakes Sh'kaar and Zizzik, §8. His flat opposite
-  is Rekko: *transcend* vs *restore*.)
+whole faith and gives each alter a positive platform (not just a mood).
+
+> **The nine Body-visions themselves now live in `worldbuilding/jawa_xenotype_and_religion.md` §2.0b —
+> one per god, in each god's "What he wants the ship to become" field (the lore-of-record).** They are not
+> duplicated here: this doc owns the *mechanics* of the alters, that doc owns *what each alter wants.* When
+> a vision changes, edit it there only. (Quick index for the engine's own use: Ishko = eternal hidden
+> lurker terraforming the dark; Ohm = restored droid crew; Oomo = fixed fertile breeding-sanctuary; Mob'Unloo
+> = a Sand Crawler in the sky / trade-fortress; Rekko = full restoration of the original; Ta'Baa = fastest
+> thief-in-the-night, flee to another planet; Zizzik = become the planet's disaster; Sh'kaar = a war-sun;
+> Ozzik = build it anew, grander, secret lords of all around.)
 
 The alters therefore **compete for the ship's future** — the endgame is, theologically, *which self wins
 the Body* (which terraforming program the machine finally runs). Rough win-path map: **Ohm+Sh'kaar** =
