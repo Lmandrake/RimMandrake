@@ -303,6 +303,50 @@ exist. Tradeoff throughout: **offline (safe, re-runnable) vs live (fragile, save
 to offline wherever an effect can be baked at setup-time. Principal shared dependency: the §3 Python
 primitive library (backup + write + verify) that every one of these leans on.
 
+### Off-the-shelf mod findings — "does a mod already do this?" (Fetcher 2026-08-08)
+
+Motivation (user): *"the less I have to write, the faster I get to play."* A 20-search Fetcher batch
+(`Delivery/2026-08-08_agent_normalization_mods/`) checked each agent against the existing 1.6 mod
+ecosystem. **Verdict legend:** ⛔ **SUPERSEDED** (an existing mod plausibly does the whole job — build
+nothing, just configure) · 🟡 **MECHANISM-ONLY** (a mod supplies the *write surface* — settings/XML —
+so the agent shrinks to "decide the values + drive the mod," no bespoke file-writer needed) · 🔨
+**BUILD** (no off-the-shelf coverage found — the agent stays a real build). **⚠️ Every Workshop ID
+below is a search hit, NOT yet source-verified for 1.6 — confirm each About.xml `<supportedVersions>`
+from the extracted tree before adopting** (standing rule). Two are already source-tagged 1.6 and noted.
+
+| Agent (phase) | Verdict | Off-the-shelf mod(s) — the leverage | Residual we still author |
+|---|---|---|---|
+| Weapon/armor normalization (B) | 🟡 | **Combat System Rebalanced** (settings-driven damage/armor curve), **RWWB / RimWeapon Balance** (932311074, cross-mod CR balance *patches*), **Vanilla Expanded Rebalance – Weapons** (3619272479, VWE-only); RIMMSQOL for live stat edits | No mod does a *holistic cross-author* pass; the §19.5 judgment + the coherent target values are still ours. Mechanism exists, the balancing brain doesn't. |
+| Animal normalization (B) | 🟡→⛔ | **Customize Animals** (2587157544; **GitHub ChrisF-127/CustomizeAnimals has a source-confirmed `1.6/` folder** ✅) for stats/wildness/manhunter; **Choose Wild Animal Spawns** (2564042934) per-biome-per-animal frequency; **Animal Commonality Tweaker** (2591446825) commonality+density; **Livestock Traders** (2960610215) who-sells-animals | Only the **SW names** + the *chosen* values. The whole mechanical layer collapses into 3 config mods. |
+| Faction repair/enrichment (B) | 🟡→⛔ | **Xenotype Spawn Control** (bbradson, GitHub) = racial mixes per faction/pawnkind/meme; **TotalControl** (feldoh, *already in stack*) + **yc's Faction Editor** (3670833973) = tech/gear/enslave flags/behavior per pawnkind; **Dynamic Diplomacy (Continued)** = the DYNAMIC NPC-NPC relations layer; vanilla + a "no daily goodwill drift" XML patch = the FIXED layer; **Faction Customizer** (3336572602) = names/add | The reconciliation *to* `faction_roster_v2.md` (deciding the config), not the writing. |
+| Trader-inventory coherence (B) | 🟡 | **TraderGen** (3525848981) per-trader specializations; **Trading Options** (2876541977) freq/stock/silver; **Livestock Traders** | The faction-identity → stock *mapping* itself. |
+| Research-tree / techprint gate guard (B) | 🔨 | **NONE** — Research Tree (Continued)/ResearchPal/Organized Research Tab are *visualizers/queues*, not gate-requirement editors. Notable negative result. | The entire three-gate integrity check stays an agent/patch job. |
+| Name-pool localization (B) | 🟡 | **Cool Names** (3726665156, custom pools per thematic group), **Pawn Name Variety (Continued)** (3548290568), **[RF] Tribal Pawn Names**, TotalControl (names per faction) | **No SW name-pack exists** (SW hits were faction/Force collections, not name banks) — we author the banks, load via Cool Names/TotalControl. |
+| Map hand-crafting (C) | 🟡 (set-pieces) / 🔨 (holistic) | **New Blueprint** (3534166729, built on the *native 1.6 prefab system* — candidate write-primitive for stamping authored set-pieces), **Alpha Prefabs** (3070780021, 200+ prefabs + random delivery spots), **Real Ruins** (1552146295), **Vanilla Landmarks Expanded** (3656316229, 59 landmarks w/ world-map mutators); Map Designer (owned) | The *holistic "make a generated tile feel hand-crafted"* judgment — the hard, high-V&V core — stays a build. |
+| NPC hand-crafting per map (C) | 🟡 | **Pawn Editor** (ISOR3X, "change backstories that don't fit the narrative"), **Character Editor** (owned), **Backstory Constructor** (2907131508, *already PRIMARY* in personas doc), **RimTalk Persona Director** (3619548407) | The authored per-NPC content + context-tuning; mods are the write surface. |
+| Emergent ship-sentience voice + **demands** (D) | ⛔ candidate | **RimTalk Expand: AI Storyteller** (3715752189) = storyteller *becomes a character* w/ personality dims (benevolence/malice/calm/morality), "gets angry, cares, stirs things up when bored" — the *makes-demands* angle almost verbatim; **RimAgentOrca / Orca Deepseek** (GitHub, **self-described 1.6** ✅, offline XML fallback); **Powerful AI Integration** (3744421283); RimAI (already adopted) | Decide **adopt RimTalk-Expand vs keep the RimAI "Cradle-Mind" persona** — may retire a planned build. |
+| "State of affairs" / social-log summarizer (D) | ⛔ substrate | **RimLog** (3263020460) logs events/tales/quests/chat/battle to CSV — author explicitly pitches it "for crafting local-LLM story prompts from actual player data" = exactly our blackboard feed; **RimTalk Lucid Chronicle** (3749797638) layered memory summaries; **RImtalk Expand: Colony Chronicle** (3714540653) daily journal + 15-day summary | Agent reads RimLog's export instead of scraping the live log — the fragile part disappears. |
+| Social-drama chronicler (D) | ⛔ | **RimLegend** (3697076313), **EchoTales** (3473331410, novel/doc/tragedy styles), **RimSaga** (3258739992), **RimStory**, Rimworld-Diary (manual) | Style/voice choice only — the chronicler agent likely collapses entirely into one of these. |
+| Difficulty-drift monitor (D, read-only) | 🟡 | **Visible Wealth** (3461137081, breakdown + pie), **Wealth Display (Continued)** (3298960397), **Wealth Tweaks** (Nexus 694, cap scaling = manual actuator). NB from results: raid points hard-cap ~10,000. | The *automatic pillar-drift flag* (vs a static readout) isn't off-the-shelf; monitoring + manual cap are. |
+
+**Decision translation.** This meaningfully shrinks the build list. *Delete-a-build candidates:* the
+social-log summarizer (→ **RimLog** feed), the social-drama chronicler (→ RimLegend/EchoTales), and
+possibly the whole ship-sentience-with-demands build (→ **RimTalk Expand: AI Storyteller**, pending an
+adopt-vs-RimAI bake-off). *Shrink-to-config candidates:* animal + faction normalizers become
+"decide values, type them into Customize Animals / Choose Wild Animal Spawns / Xenotype Spawn Control /
+TotalControl / Dynamic Diplomacy" rather than bespoke writers. *Still-real builds:* the **research-gate
+integrity guard** (no mod exists), the **holistic map hand-crafter** (only set-piece *stamping* is
+covered — New Blueprint's 1.6 prefab API is the write-primitive), and the cross-author **weapon/armor
+balancing brain** (mechanism exists, judgment doesn't). *Principal risk:* the AI-chronicler/voice mods
+(RimTalk family, RimLegend, Orca) all require an external/local LLM endpoint and mutate live — they
+inherit the §6 save/reload-survival unknown and a model-quality dependency; treat as Phase-D fragile.
+*Missing info:* every ID needs the About.xml 1.6 confirm; and for the "collapse" verdicts we haven't
+checked whether the mod's settings are *rich enough* to hit our exact pillar targets (e.g. can Customize
+Animals set per-biome abundance, or only global stats?). *Next step:* file About.xml-verify FILE
+requests for the ⛔/🟡 front-runners (Customize Animals, Xenotype Spawn Control, RimLog, RimTalk Expand:
+AI Storyteller, New Blueprint) before promoting any to §4 backlog; then run the RimTalk-Expand vs RimAI
+voice bake-off. These IDs should also be cross-filed into `mods/required_mods.md` once verified.
+
 ---
 
 ## 5. Pillar compliance (non-negotiable)
