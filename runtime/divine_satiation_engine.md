@@ -352,7 +352,9 @@ win-paths:
   cunningly safe; grow in power, defend, and **survive without end.** Over time, *convert the darkness
   itself into a new kind of home* — even, eventually, **a new kind of Jawa, a subspecies split from the
   rest**, remade to belong to the dark. (Move rarely, invisibly, always return to the dark. Resolves the
-  old Ta'Baa⇄Ishko friction: he permits the raid-flight, insists the dark is home.)
+  old Ta'Baa⇄Ishko friction: he permits the raid-flight, insists the dark is home.) _**Flavor only** (user
+  2026-08-08): the "new kind of Jawa" is a NOD toward a possible follow-on campaign of genetic
+  enhancement/modification — NOT a mechanical branch of THIS campaign. Do not build it out unless revived._
 - **Ohm** — the ship as a **restored droid crew returned to its glorious salvaging purpose.** Rebuild the
   hands the machine-god lost, **ally with the neutral droid faction, and build a new powerful faction
   *together*** — droid and Jawa. (Collides with "we breed no new hands" AND with Oomo's chambers — his
