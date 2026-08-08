@@ -293,6 +293,90 @@ one coherent, pillar-compliant ruleset. All offline def-patch generation._
 - **Screenshot/state journaler agent.** Periodically capture annotated state for our own planning +
   this project's verification steps (already in the §4 backlog; lives here as the continuous form).
 
+### Phase B/D — Religious-observance & HeDiff-visibility agents (added 2026-08-08, user seeds 1 & 2)
+_Two user seeds ("more interesting outcomes from religious observances" + "monitor HeDiffs and make
+them visible in behavior AND a colony overview the ship-voice speaks to") fanned into 8 agents. All
+lean on "The Salvation" pantheon (`worldbuilding/jawa_xenotype_and_religion.md` §2.0b — Ohm=ship-AI/
+Cradle-Mind, Zizzik=malfunction, Mob'Unloo=ship-ghosts, Oomo=water/atonement, Ta'Baa=leave, Rekko=
+salvage, Sh'kaar=evil light). **Pillar bar (§19.5): every ritual/atonement payoff stays in the
+narrative/mood/quest register — never material power; any loot routes through the balance-bar gate.**
+Verdict legend as above (⛔/🧰/🟡/🔨). User verdict 2026-08-08: **"I love all of these" — all 8 logged.**_
+
+- **A. Ritual-Outcome Dramaturge (Phase D, live) 🔨.** Intercept a *completed* ritual's outcome tier
+  (vanilla resolves flat outcome→mood) and **author the consequence** as narrative, not dice: a bad
+  Reckoning launch-rite spawns a Ta'Baa complication (a pawn "refuses to leave," cargo "claimed by the
+  dune"); a good Ohm machine-funeral seeds a CQF quest hook ("the Cradle-Mind remembers this servant").
+  This is where **Ohm⇄Zizzik** lives mechanically (blessed-by-Ohm vs spoiled-by-Zizzik = two authored
+  branches per rite). *Established:* vanilla exposes outcome tiers. *Inference:* RimBridge/save-edit can
+  read the outcome + inject a letter/quest/hediff/memory. *Speculation:* timing the injection to feel
+  causal. **Flagship of seed 1; highest §19.5 watch (must never become a resource faucet).**
+- **B. Observance Scheduler / Calendar-Keeper (Phase B author + Phase D nudge) 🔨.** Author a liturgical
+  calendar at scenario-start (Oomo water-rationing day, the Reckoning before every launch, a Mob'Unloo
+  ledger-balancing day); at runtime nudge toward observance + note lapses ("the clan has not honored
+  Oomo in 15 days") for the voice to scold. Phase-B half = pure def-authoring (safe); Phase-D nudge is
+  soft (can't force pawns — GM-not-player line). **Low-risk fallback: ship Phase-B-only, let vanilla
+  scheduling carry it, agent only narrates observance.**
+- **C. Ghost-Ledger Officiant (Phase D) 🔨 — DESIGNABLE NOW; wiring needs an install-time def extract.**
+  Give each ship-ghost (Afterlife: Ghosts of the Rim, WS 3737587610, author "Antediluvian") an authored
+  "unsettled account" of Mob'Unloo + a *specific* balancing condition (a trade completed, a debt paid,
+  an item returned to a wreck), then lay it to rest with a scripted payoff. Turns a generic haunting
+  into per-ghost micro-quests. **★ Source status resolved 2026-08-08:** the mod has **NO public GitHub
+  repo** (2 search passes + 3 repo-path guesses all 404; Steam-only). But its full behavioral spec is
+  already source-read from the Steam page (2026-08-07, `ship_distinctive_features.md` §Afterlife) — five
+  spirit types keyed to cause of death; each resolves an "unfinished business" thread (avenge, watch
+  over kin, proper burial, finish their work→haunts workbench, guard grave, reunite with lost lover,
+  pet-stays-with-owner); gentle spirits pass on with burial, **Vengeful need a built Spirit Shrine +
+  seance ritual** (medium channels; success=peace, fail=shaken medium + deepened fury; odds scale with
+  Psychic Sensitivity + Social); ignored Vengeful → poltergeist. **C maps ~1:1 onto this system** —
+  reframe each ghost's "unfinished business" as a Mob'Unloo *debt* and the seance as *ledger-balancing*.
+  **Only the internal defNames (ghost hediffDef, ritualDef, Spirit-Shrine buildingDef, business-job
+  hooks) are missing — extract from the subscribed mod folder at install (same pattern as Dynamic
+  Diplomacy Continued), NOT a web pull.** Deps to resolve at install: Harmony (hard) + Anomaly
+  (store-flag hard vs author-prose soft — likely soft; if we run Anomaly it's moot).
+- **D. Colony Health-State Summarizer → Cradle-Mind voice (Phase D, READ-ONLY) 🔨 — SAFEST, build-first
+  candidate.** Walk every pawn's hediff set (injuries, diseases, chronic conditions, addictions,
+  implants, mood-linked conditions), roll into a colony health digest, hand to the RimAI voice to
+  narrate ("two of the clan burn with the same fever; the Cradle-Mind counts three failing hearts").
+  The **health-specific instance of the "state of affairs" blackboard substrate** (§Phase-D above).
+  *Pure read→text, no write, zero pillar risk.* Directly answers seed-2's "overview the voice speaks
+  to." **Free marriage of both seeds:** let the voice editorialize theologically — untended rot =
+  "Zizzik's rot," clean recovery = "Ohm held the current steady."
+- **E. Hidden-Condition Surfacer / Behavior Amplifier (Phase D, live-write) 🔨 — build the read-only
+  version first.** The "make conditions visible in behavior" half of seed 2. *Fragile version:* inject
+  behavior (addict drifts to drug stock, chronic-pain pawn takes more breaks, disease-incubator gets a
+  "restless" micro-event pre-diagnosis) — live job/mental-state injection = brittle mechanism-2b, risks
+  feeling like puppeteering. *Recommended safe version first:* a **read-only "tell" layer** — detect the
+  hidden condition, let the *voice* drop a hint ("the Cradle-Mind notices Griz favors his left side") +
+  optional unobtrusive UI marker; escalate to real behavior injection only if the tell feels too weak.
+- **F. Relic & Sacred-Object Historian (Phase B + D) 🔨.** Rekko's doctrine: every repaired wreck is a
+  woken relic. Track which salvaged machines the clan has repaired, author *provenance* (a fabricated
+  component "remembers" the wreck it came from, becomes a named minor relic the voice references). Pure
+  narrative metadata layer — safe, low-cost, deeply on-theme. Object-scoped sibling to the ship-repair
+  narrator.
+- **G. Theological-Tension Arbiter / Divine-Satiation Engine (Phase D, read + narrate + soft event) 🔨.**
+  Watch colony behavior for which pole of the three tensions is "winning" (burrow vs launch, light vs
+  hide) and let the voice comment on the clan's drift. **★ USER EXPANSION 2026-08-08 — this is the
+  spine, not a flavor read:** (i) **the gods always demand baseline satiation** — the colony must keep
+  every god sated to a floor level or suffer; (ii) **satiation is a two-sided scalar** — higher levels
+  are *rewarded* as much as low levels are *punished* (not a binary please/displease); (iii) **rituals
+  are NOT one-god-specific** — every rite is evaluated *across the whole pantheon relative to current
+  colony needs*, so the current anger/joy of ALL gods modulates EVERY ritual's outcome (kills the boring
+  "this rite pleases so-and-so" model). Design consequence: A (Ritual-Outcome Dramaturge) reads G's
+  live satiation vector as its input — a launch-rite lands differently when Oomo is starving vs when
+  Ohm is exalted. This makes the pantheon a **live, colony-need-relative barometer** that all ritual
+  outcomes hang off of. *Pillar bar: satiation rewards stay mood/social/narrative — an "all gods happy"
+  state must NOT emit free material.*
+- **H. Confession / Atonement Broker (Phase D) 🔨.** Detect "sins" in state (wasted water → Oomo; a lamp
+  lit in the field → Sh'kaar; a pawn who fled an ambush → Ishko) and offer an authored atonement path
+  with a mood/social payoff. Defined-effect, medium fragility. Feeds G's satiation vector (atonement
+  raises a god's level). **§19.5 watch: atonement rewards stay mood/social only.**
+
+**Cross-agent architecture note:** G (satiation vector) is the shared religious blackboard the way the
+"state of affairs" summarizer is the shared world blackboard. A and H both read/write G's vector; D
+narrates it theologically. Build order within this cluster likely: **D (safe, standalone) → G (the
+barometer substrate) → A + H (hang off G) → B (author-time, ship Phase-B half anytime) → F (cheap,
+independent) → C, E-fragile (gated on source reads).**
+
 ### Highest-leverage picks (recommendation, for when we start building)
 Not a decision — a suggested read of the space: **(1)** the Phase-D "state of affairs" summarizer is
 the substrate everything conversational depends on, so it likely comes first among live agents; **(2)**
