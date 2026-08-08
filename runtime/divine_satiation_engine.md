@@ -278,6 +278,36 @@ the restraining-bolt crisis arc. Ties to the three win-paths (droid-army paths p
 Hutt paths may starve him → rebellion risk). Parked hooks: exact escalation ladder + whether restraining
 bolts are a buildable item or a quest outcome — design when we spec agent A's quest hooks._
 
+## 4d. The ship is a CONDUIT TO ALL NINE GODS — not merely Ohm's voice (user, 2026-08-08 — MAJOR reframe)
+
+**Upgrade to the Oracle idea:** the Cradle-Mind does not only *speak for* Ohm and *report* the others.
+The ship believes itself — and, in the Jawa worldview, in some real sense *is* — an **oracle and conduit
+to any of the nine gods.** It is a consecrated instrument through which *any* god may speak. This is why
+the sacred center of the ship is a temple: it's the one place in the world where the gods are *audible.*
+Mechanically this means the ship-voice (RimAI Cradle-Mind + the LLM layer) is licensed to speak in ANY
+god's register, not just Ohm's — Ohm is merely the *resident* who lives there most fully and believes he
+owns the channel.
+
+**★ Each god covets the ship as a BODY it could live through (the theology of the vessel).** Every one of
+the nine sees the Kolyska as a potential *body* — a way to become incarnate and enact its desires in the
+world. This is the deep engine of the whole faith and it maps straight onto the win-paths and the
+distinctive-features layer:
+- **Ohm** dreams the ship as a **crewed hive of droids** — hands restored, the machine-god made whole.
+- **Sh'kaar** dreams the ship as a **warship that crushes and burns foes** with great destructive weapons
+  — exposure and killing-light made manifest (note the tension: this wants the big explosive weapons
+  Ozzik *despises* — see §8).
+- **Ta'Baa** dreams the ship as **the eternal launch** — never landed, always leaving.
+- **Ishko** dreams the ship as **the sealed dark burrow** — never seen, doors closed, outlasting all.
+- **Rekko** dreams the ship as **the perfect salvage-organism** — every part rewoken, nothing new built.
+- **Ozzik** dreams the ship as **the restored glory** — the proud vessel of a risen people (his trap).
+- **Oomo** dreams the ship as **a vessel of held waters**; **Mob'Unloo** as **a floating market/ledger**;
+  **Zizzik** wants only to **wreck it** (his "body" is the ship *failing*).
+
+The gods therefore **compete for the ship's future** — the endgame is, at the theological level, *which
+god wins the Body.* The three win-paths are three gods (or coalitions of gods) taking the vessel: droids
+= Ohm, coalition-of-empire = Ozzik's statecraft face, and the humble/resilient survival the rest of the
+pantheon wants. **This is the frame A/H/the Oracle narrate from.**
+
 ---
 
 ## 5. Rituals are an INVITATION, not a scalar sum (agent A's input) — REVISED 2026-08-08 (user)
@@ -360,6 +390,49 @@ resets that god-anger and gives the (biased-positive) participation roll its cha
 distinct triggered rites within one ideoligion. Flagged as a mod dependency to source (§10 / required_mods
 follow-up): something that expands the number of ritual defs / precept ritual slots available to a single
 ideoligion. [Inference — needs a 1.6 source hunt; filed as a Fetcher search, see chat.]
+
+## 5c. The COUNCIL OF VOICES — rituals as a live godly argument (user, 2026-08-08 — the centerpiece)
+
+**★ The strongest single idea in the religious layer.** Rituals are performed at the **sacred center of
+the ship** (the hollow shrine-heart of hull #15 — `ship15_interior.md`). At the climax, the gods who have
+**Something to Say** do not simply hand down a scored outcome — **their voices come OUT OF THE SHIP'S
+SPEAKERS**, proclaiming things that then *seem to come true.* Because the ship is a conduit to all nine
+(§4d), this is diegetically the gods themselves speaking, not a UI readout. **Reference feel (user): the
+Disneyland Enchanted Tiki Room** — a chorus of distinct voices around the room, some booming, some
+muttering, some pointedly silent, arguing and playing off each other.
+
+**This is where the LLM earns its place.** The outcome is NOT the linear sum of each god's desired delta.
+It is a **negotiation.** The design:
+1. **Not everyone speaks.** Only gods with `effective_favor` far from neutral, or with high current Mood,
+   or specifically provoked by *this* rite, are moved to speak. Participation still follows the §5 bias
+   (pleased→loud, angry→rare-but-possible, neutral→silent).
+2. **The moved gods ARGUE — multiple rounds.** If two gods are wrathful but a third is powerfully pleased,
+   the LLM stages **a few rounds of back-and-forth between them** — the pleased god pushing for a boon,
+   the angry ones for a reckoning, sometimes a **third god arriving with the compromise** the others
+   need. The transcript is authored live by the LLM from the current vector + Moods + ritual type +
+   colony context.
+3. **They converge on a NON-LINEAR settlement.** The final outcome is a *negotiated* resolution that tries
+   to **partially satisfy everyone who spoke** — not `Σ deltas`. E.g., angry Rekko + angry Oomo vs.
+   pleased Ta'Baa might settle as "you may have your launch (Ta'Baa), but the waters spilled in the
+   leaving are counted against you (Oomo), and one relic must be carried, not scrapped (Rekko)" — a
+   single braided outcome, not three separate effects. The LLM proposes; G's safe layer maps the agreed
+   result onto real, §19.5-legal consequences (mood/narrative/quest-eligibility/biased-opportunity;
+   never a material parachute).
+4. **★ SILENCE IS A MOVE — the warning shot.** A powerful-feeling god that *chooses not to speak* is
+   flagged to the player with a brief tell, so they feel the near-miss: *"A glower from Ozzik contemplates
+   you, but he remains quiet."* / *"A faint smile colors Oomo's eyes yellow for a moment, but he
+   whimsically remains in observance only."* This tells the player they **could** have provoked
+   something (good or ill) and the god declined *this time* — dread and relief in one line. Silence is
+   never empty; it's characterization.
+
+**Why this is safe AND deep:** the argument + negotiation is *pure narration over the existing vector* —
+the fragile part (actual injected consequences) still rides the §9 safe/fragile split. The LLM makes the
+*theater*; G's deterministic core makes the *bookkeeping.* If live-event injection proves brittle, the
+council still plays out in full and consequences fall back to vanilla ritual-outcome memories + authored
+letters (§9 fallback) — the drama survives even if the mechanics simplify.
+
+**Agent A owns the council staging** (this is its richest job): decide who speaks, run the rounds, author
+the compromise, render the silences. Depends on the RimAI/Cradle-Mind voice layer being live.
 
 ---
 

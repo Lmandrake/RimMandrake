@@ -131,6 +131,59 @@ plumbing; it's part of the ship's face.
   overclock policy is in burst mode. Pairs with §5 (running lights) as the two at-a-glance
   "ship status" tells: lights = repair progress, vents = current workload.
 
+## 9. The ship RESONATES with the gods' moods — ambient divine status display [ACCEPTED 2026-08-08]
+
+**The idea (user):** the ship is a conduit to all nine gods (`divine_satiation_engine.md` §4d), so it
+should **physically resonate with their current moods toward the colony** — beyond the after-a-ritual
+feedback, an **always-on ambient status display** woven into the ship itself. Shipboard **lighting
+changes color and intensity as a function of the pantheon's standing.** This makes the whole divine layer
+*readable at a glance* and, crucially, **tactically usable.**
+
+- **The signature example (user):** land on a **water-bearing tile** and the ship resonates two ways at
+  once — it **dims** (Ishko's "hide," because the watered tile draws hostile plants/animals — stay
+  unseen) **and turns blue** (Oomo's cooling desire to *drink deeply* — the god of waters is near and
+  content). One tile, two gods, two simultaneous light-signals: the player *feels* the theology of the
+  spot they've landed on.
+- **Tactical use (the good part):** because a present/pleased god biases outcomes in its domain, the
+  player learns to **read the lights before acting.** *Want Sh'kaar near before a battle* (his exposure/
+  killing-light domain favors open aggression)? If the lights already show him "present," **fight more
+  aggressively with confidence of pleasing him.** The status display turns divine standing into a
+  pre-battle instrument, not just post-hoc flavor. (Careful: courting Sh'kaar is still perilous per his
+  evil-god status — this is a *knowing gamble*, exactly the tension we want.)
+- **Per-god color/behavior language (draft, to refine):** Oomo = blue, deepening with content; Sh'kaar =
+  harsh white/red glare when "fed"/present; Ishko = dimming toward dark (his pleasure IS the absence of
+  light); Ohm = electric cyan pulse tied to ship-consciousness; Rekko = warm amber; Ta'Baa = a rising/
+  climbing glow; Zizzik = erratic flicker (his presence = something about to break); Ozzik = a proud gold
+  that the player learns to *fear* seeing too bright (exposure warning). Each god's "resonance" can layer,
+  so mixed moods produce mixed light — the ship's ambience is the vector made visible.
+
+**Pairs with:** §5 (repair-lights) + §8 (heat-vents) → now **three at-a-glance tells**: lights = repair
+progress, vents = workload, **resonance = divine standing.** Also the natural output surface for the
+Divine-Satiation Engine's read-only layer (agent D/G) between rituals.
+
+### ⭐ Standalone mod concept: "Responsive Status Lighting" [NEW MOD IDEA — record independent of religion]
+_User ask: record this as a **potential new custom mod, independent of the religion use** — it's broadly
+useful and would merely be *enhanced* by the divine-status application._
+- **What it is:** a light (and/or hologram-décor, and/or sign) whose **color and intensity change as a
+  function of an input** — at simplest, **time** (blinking running-lights, strobing landing-strip
+  guidance — the classic animated-light effect RimWorld lacks natively), and at richest, **an arbitrary
+  game-state variable** (here: per-god satiation/Mood). A programmable status LED for the colony.
+- **Two delivery surfaces already in the stack:** (a) **EGI: Holograms and Projectors** (2979598490,
+  1.4–1.6, ACCEPTED §Q3) — a hologram art piece whose **color** is driven by divine standing; (b) **Signs
+  and Comments Continued** (3281950776, ACCEPTED §Q2) — a **sign** whose tint/text reflects the current
+  dominant god. Both are already adopted for other reasons, so the *reskin* path is cheap; the *dynamic
+  color-driver* is the new code.
+- **Feasibility (inference, needs a source hunt):** time-based color cycling is a known modding pattern;
+  binding color to a live custom variable (satiation) is more custom but well within the RimBridge/
+  save-edit or a small C# CompProperties tick. **Fetcher search warranted** for existing 1.6 "animated /
+  color-cycling / status light" mods before we assume a build (someone may have shipped the generic
+  version already). **Filed 2026-08-08** as `Fetcher/Requests/2026-08-08_status_lighting_mods.txt`
+  (8 searches: animated/color-cycling/blinking lights, adjustable RGB, state-driven status indicators,
+  dynamic-color-by-variable, + whether EGI Holograms / Signs & Comments expose a scriptable color hook).
+- **Verdict:** [MOD IDEA — ACCEPTED as a want]; buildability TBD pending the Fetcher search + a decision
+  on custom-code vs. reskin-existing. Independent value (animated lights) justifies it even if the divine
+  binding proves hard.
+
 ---
 
 ## Parked / not-yet-ruled-on ideas [IDEA]
