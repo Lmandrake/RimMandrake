@@ -161,11 +161,12 @@ The hulk premise resolves this on a **timeline** rather than fighting it:
   you **lose your free heat dump**. Sealing a hot wing forces you to *simultaneously* solve its cooling —
   vents to a dedicated radiator bay, exterior heatsink louvres, or simply **capping overclock**. This is
   a genuine, emergent engineering decision the player earns, not a scripted gate.
-- **Late game (sealed + flying):** heat is a permanent managed budget. **[DECIDE C]** the cooling
-  end-state: (i) a dedicated **radiator/vac-barrier bay** (Odyssey has oxygen pumps / vac barriers —
-  a wing deliberately kept vacuum-exposed as a heatsink), (ii) accept a **hard overclock cap** (e.g.
-  never above 200% except the drill in burst), or (iii) both. Recommend **(iii)**: radiator bay + a
-  standing "200% routine, 500% supervised burst only" policy (matches Factory_lore §5 operating policy).
+- **Late game (sealed + flying):** heat is a permanent managed budget. **[DECIDE C — RESOLVED by
+  user 2026-08-08: BOTH (iii)].** Cooling end-state = a dedicated **radiator/vac-barrier bay** (a wing
+  deliberately kept vacuum-exposed as a heatsink via Odyssey oxygen pumps / vac barriers) **AND** a
+  **hard overclock cap** — standing "200% routine, 500% supervised burst only" policy (matches
+  Factory_lore §5 operating policy). Neither alone; the bay handles the standing load, the cap keeps
+  bursts from overwhelming it.
 
 > This is the payoff of the whole premise: **"seal the ship" and "run the factory" are in direct
 > tension**, and resolving it *is* the mid-game. A conventional colony never feels this.
@@ -214,7 +215,7 @@ Payoff: the ownership map *is* the win-path structure — Empire owns the hardes
 
 | Phase | Repair unlocked | What lights up | Gate (diegetic) | Pillar effect |
 |---|---|---|---|---|
-| **0. Crash** | Keel + 1 small wing (green substructure), grav engine | Power, 1 starting BASIC line (**[DECIDE D]**: oven *or* smelter, per required_mods "one line" rule) | — (start state) | Dependence without economy |
+| **0. Crash** | Keel + 1 small wing (green substructure), grav engine | Power, 1 starting BASIC line (**[DECIDE D] RESOLVED → SMELTER**, per required_mods "one line" rule) | — (start state) | Dependence without economy |
 
 > **💡 The grav-controller = a persona core = LifeDawn's awakening (design idea, context.md §D).** The inciting "leader restored the central Grav controller into the old GravEngine" beat can *be* the reactivation of a vanilla **persona core** (the dormant superhuman AI already required to leave the planet). Restoring it wakes the ship's personality; voice it with a **CQF DialogTree** on a talkable ship-core building (offline, authored). Keep it a single earned/quested core (pillar-clean); craftable-core mods (Nanogel Persona Core WS 3550797935 etc.) are a later pick pending 1.6 verify. Full reasoning + mod list in context.md §D.
 | **1. Survive** | Seal habitat ring; connect enough deck to consider flight | Living quarters, freezer, defense against hole-ingress | Steel + gravlite panels (substructure = 1 gravlite + 4 steel/tile) | First scarcity wall |
@@ -260,10 +261,16 @@ Two anti-exponential guarantees fall out of this for free:
 - **[DECIDE A]** broken machines = decorative rubble (v1, simple) vs. real damaged/deconstructable state.
 - **[DECIDE B]** silhouette — ✅ **RESOLVED 2026-08-06 → #15 "Falcon Halo (hollow)"** (see §2 and
   `ship_designs.md`). No longer open.
-- **[DECIDE C]** late-game cooling: radiator-bay / overclock-cap / both (rec. both).
-- **[DECIDE D]** the single starting BASIC line: oven (survival dependence) vs. smelter (salvage
-  dependence). Ties to required_mods "recommended starting state."
-- **[DECIDE E]** allow full saturation, or guarantee 1–2 wings stay permanently derelict (rec.).
+- **[DECIDE C]** — ✅ **RESOLVED 2026-08-08 → BOTH** (radiator/vac-barrier bay + hard overclock cap;
+  see §heat doctrine). No longer open.
+- **[DECIDE D]** — ✅ **RESOLVED 2026-08-08 → SMELTER first** (salvage dependence, not the oven). The
+  single starting BASIC line is the smelter: it makes the crew dependent on *feeding scrap in*, which
+  is on-theme for scrappers and couples cleanly to the sacred-scrap repair economy. (Oven/survival-food
+  dependence declined.) Propagate to required_mods "recommended starting state" + phase-0 table.
+- **[DECIDE E]** — 🔵 **DEFERRED by user 2026-08-08: "decide how to handle derelict portions as we
+  go."** Do NOT hard-commit full-saturation-vs-permanent-derelict now; treat as a play-time call.
+  Design leaning (non-binding) still favors keeping 1–2 wings derelict for the anti-exp/aesthetic
+  payoff, but it's explicitly a runtime decision, not a locked gate.
 - **Authoring unknown (still the load-bearer):** how to place a large pre-broken ship as the start
   save — scenario building-lists can't do a whole ruined ship; likely hand-edited scenario/save.
   Routes to `save_authoring_pipeline.md` + `first_live_access.md`. This is the one true blocker between

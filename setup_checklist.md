@@ -34,8 +34,13 @@ decided-but-verify-in-game. A **DECIDED** line records the choice + where it's a
   RimMaster). Not required for the initial start. (See `rimbridge.md`.)
 
 ## 1. Storyteller & difficulty
-- [ ] **Storyteller:** OPEN. Leaning Randy vs Cassandra — Randy suits an unpredictable nomad run;
-  Cassandra gives a legible escalation curve. Decide together.
+- [x] **Storyteller: RANDY RANDOM** (Claude's pick, delegated by user 2026-08-08). Rationale: the
+  campaign is an *unpredictable nomad/escape arc*, not a legible base-builder — Randy's un-curated
+  event mix matches "keep moving, react to what the galaxy throws at you," and it pairs correctly with
+  the Custom "fewer, heavier, smarter" raid distribution (§1 difficulty) so severity stays controlled
+  even while *timing* is chaotic. Cassandra's rising-tension curve assumes a settled base to escalate
+  against, which fights the premise. (Phoebe rejected — too gentle for the pursued-by-Empire stakes.)
+  Reversible in-game if Randy's variance feels too swingy in playtest.
 - [~] **Difficulty = Custom** (DECIDED in principle, `world_interest_and_mech_danger.md`/context §19.9):
   the "fewer, heavier, smarter" enemy distribution starts here BEFORE any mod — lower raid
   *frequency*, raise raid *points*, disable enemy flee%, disable adaptation-difficulty decay. Set
@@ -68,9 +73,23 @@ decided-but-verify-in-game. A **DECIDED** line records the choice + where it's a
   (anti-exponential). DECIDED.
 - [~] **Reflavored vanilla xenotypes KEPT as SW species:** Yttakin→Wookiee-kin, Pigskin→Gamorrean,
   Genie→savant, Neanderthal→brute merc, Impid→desert alien (labels/RP only). DECIDED.
-- [~] **Body-size spectrum:** small end covered by the Jawa's `Outland_BodyScale_Small`. [ ] Decide
-  whether to add a dedicated large/small race + body-size-gene mod (Big and Small / RedMattis) for
-  the full spectrum, or leave as-is.
+- [~] **Body-size spectrum:** small end covered by the Jawa's `Outland_BodyScale_Small`. **Size
+  authority = LARGE PAWNS `3777700657` (already adopted); do NOT also run Big-and-Small (Claude's
+  recommendation, user 2026-08-08 — see reasoning below). [ ] Confirm at machine.**
+  - **Advice (recommendation, not established fact): keep Large Pawns, skip Big-and-Small.**
+    - **Big-and-Small (RedMattis)** is a *deep framework*: a full gene/size system (arbitrary body
+      scales, size-linked stats, riding, food/space scaling, tons of dependent content). Powerful, but
+      it's a heavy framework other mods hook into — and it directly overlaps our Jawa `Outland_BodyScale_Small`
+      gene and the "genetics stays FIXED / no gene-tinkering" anti-exp rule (§3). Adopting it invites a
+      second size *system* competing with the Outland genes for authority = exactly the "pick ONE size
+      authority" conflict already flagged in required_mods batch-2.
+    - **Large Pawns** is *narrow*: it makes certain pawns visually/mechanically bigger. It gives us the
+      one thing we actually want — a size *contrast* on the roster (a big Gamorrean/Wookiee-kin towering
+      over the little Jawa) — without importing a whole gene framework or fighting the fixed-genetics rule.
+    - **Net:** the campaign needs *visual/stat size contrast*, not a size-genetics sandbox. Large Pawns
+      delivers the contrast at a fraction of the complexity and dependency surface. Only revisit
+      Big-and-Small if a later must-have mod hard-depends on it. **⚠️ Watch:** don't co-run them — two
+      size authorities double-scale pawns.
 - [ ] **Cherry Picker xenotype cull:** confirm the kill-list (Sanguophage + fantasy/wrong-universe
   races) against installed defs before deleting (`cherry_picker_killlist.md` §2, all 🔎 in-game).
 - [~] **SW beasts / creature layer:** Alpha Animals is the adopted baseline (qualitative wildlife
