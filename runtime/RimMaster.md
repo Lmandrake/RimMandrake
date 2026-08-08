@@ -391,6 +391,36 @@ best-granularity write surface, RimLog as the clean no-LLM feed, RimLegend, RimA
 promoting any to the §4 backlog or cross-filing into `mods/required_mods.md`; then run the RimTalk-Expand
 vs RimAI ship-voice bake-off.
 
+### About.xml `<supportedVersions>` pins (Fetcher `2026-08-08_aboutxml_16_verify`, raw GitHub trees)
+
+Read directly from each mod's `About/About.xml` in its source repo (bypasses the Steam 429 wall). Two
+surprises flagged below — the source contradicted a prior assumption.
+
+| Mod | packageId | `<supportedVersions>` | Deps | Status |
+|---|---|---|---|---|
+| **RimAgent:Orca Deepseek** | `RedstonePanda.Orca` | **1.6** ✅ | (LLM provider, optional) | **1.6-CONFIRMED.** Sole listed version is 1.6 — a native-1.6 mod, matches its self-description. |
+| **TotalControl (Rimsential – Total Control: Continued)** | `co.uk.epicguru.factionloadout` | **1.4, 1.5, 1.6** ✅ | Harmony (req); soft-compat VPsycasts/VFEAncients/GiddyUp/Exosuit/CE | **1.6-CONFIRMED.** Already-in-stack; deep per-pawnkind faction editor. |
+| **Choose Wild Animal Spawns** | `Mlie.ChooseWildAnimalSpawns` | **1.3, 1.4, 1.5, 1.6** ✅ (repo tag `1.6.0`) | Harmony (req) | **1.6-CONFIRMED.** Per-biome-per-animal spawn rate + density slider + copy/reverse; vanilla+modded animals. Best-granularity animal write surface. |
+| **RimLog** | `ubergarm.rimlog` | ⛔ **1.5 ONLY — NOT 1.6** (confirmed) | Harmony (req) | ⛔ **1.6 RULED OUT at source** (`verify2`): repo has **no releases, no tags, only the `main` branch** (default), and `main/About.xml` lists only `<li>1.5</li>`. The author has not shipped 1.6. Earlier "1.6 substrate delete" was **wrong** — the clean no-LLM CSV feed is **not available on 1.6** unless someone forks it or we hand-patch the version tag ourselves (trivial edit, but it's then *our* fork to maintain). **Do not adopt as-is.** Fallback for the no-LLM story-feed role: RimLegend/EchoTales chronicler, or write the exporter ourselves. |
+| **yc's Faction Editor** | `yancy.factiongearcustomizer` | **1.6** ✅ (only version listed) | Harmony (req); **Combat Extended** (`ceteam.combatextended`) referenced | **1.6-CONFIRMED** (`verify2`, About.xml status 200 on `master`, repo `yancy22737-sudo/yc-s-Faction-Editor`). modVersion 1.7.3. Real-time customizer of any faction pawnkind's **gear / weapons / health state**, modern UI + one-click export-share. Chinese-authored (yc的派系编辑器). **Note the packageId is `yancy.factiongearcustomizer`, not the WS-3670833973 guess in older notes.** Deepest per-pawnkind gear write surface. ⚠️ verify whether the CE reference is a hard dep or soft-compat before adopting into a non-CE stack. |
+| **Dynamic Diplomacy** | — | ⚠️ repo unverified | Harmony (req) | ⚠️ **Two Workshop IDs:** original **NilchEi/DynamicDiplomacy** (WS 1875168898) vs the **1.6 Continued fork** (WS **3220299022**, author Ionfrigate12345) — the *Continued* fork is the 1.6 one; **adopt that ID, not the original.** Source About.xml still **unconfirmed**: all four repo-path guesses 404'd (`Ionfrigate12345/Rimworld_DynamicDiplomacyContinued` {main,master}, `NilchEi/DynamicDiplomacy/master`). The repo name/owner slug differs from the guess — verify from the subscribed mod folder's `About.xml` at install time, or find the true repo path. Defined-effect verdict (hostility flips ~20d, conquest ~15d, settlements ~40d) stands from the store-page deep-dive; only the 1.6 *source* pin is outstanding. |
+| **RimLegend** | — | Steam page says "Mod, 1.6" | Harmony (req) | 1.6 per store page (fetch succeeded earlier); no public source repo surfaced — it's a Steam-only binary mod, so About.xml verify must come from the subscribed mod folder at install time. |
+
+**Corrections captured** (this is what the About.xml pass bought):
+1. **RimLog is 1.5-only and has no 1.6 branch/tag/release** — the clean no-LLM CSV feed I'd banked as a
+   Phase-D substrate delete **does not exist on 1.6**. Role reassigned to RimLegend/EchoTales or a
+   self-written exporter.
+2. **Dynamic Diplomacy** — adopt the *Continued* fork **WS 3220299022** (Ionfrigate12345), not NilchEi's
+   original WS 1875168898; source About.xml still unpinned (repo path unknown, verify at install).
+3. **yc's Faction Editor** packageId is **`yancy.factiongearcustomizer`** (1.6✓, references CE) — the
+   older WS-3670833973 note was a mis-ID.
+
+**Net 1.6-confirmed at source (ready to cross-file into `mods/required_mods.md`):** RimAgent:Orca
+(`RedstonePanda.Orca`), TotalControl (`co.uk.epicguru.factionloadout`), Choose Wild Animal Spawns
+(`Mlie.ChooseWildAnimalSpawns`), yc's Faction Editor (`yancy.factiongearcustomizer`, pending CE-dep
+clarification). **Not confirmed / do not adopt as-is:** RimLog (1.5-only), Dynamic Diplomacy (need the
+Continued-fork About.xml).
+
 ---
 
 ## 5. Pillar compliance (non-negotiable)
