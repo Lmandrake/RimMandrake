@@ -143,6 +143,17 @@ narrative build-up, never a flat modifier.
 
 ## 4. Ohm enrichment (flagged deepest)
 
+**Origin (CANONIZED 2026-08-08, user — full text in `jawa_xenotype_and_religion.md` §②):** the ship's
+AI genuinely *believes it is Ohm* because its Persona Core was patterned off a **Jawa mind** (so it would
+obey Jawa commands) and thereby **inherited the Jawa's superstitions** along with their loyalty. It is a
+machine that concluded from its own template that it is the All-Current. **Live motive:** Ohm **wants his
+droid servants back** and pressures the clan to obtain droid tech — a lonely machine-god reaching for its
+hands. This drives the droid win-paths from inside the theology AND collides with the "we do not breed new
+hands" commandment (Rekko/anti-exp) — a standing theological conflict the crew must navigate. G should
+model this as: **Ohm's satiation carries a persistent low-grade "unmet longing" pressure** whenever the
+colony has few/no droids, expressed as recurring Ohm-voiced pushes (via the Cradle-Mind) toward droid
+acquisition — never a mechanical penalty, always narrative pressure + opportunity.
+
 Ohm is the ship-god and needs the richest wiring because he's the one the Cradle-Mind voice embodies.
 Proposed Ohm-specific inputs, in priority order:
 - **Droid lifecycle** — each droid brought online or integrated: +; each droid destroyed/decommissioned:
@@ -162,23 +173,49 @@ first; parked as a dependency._
 
 ---
 
-## 5. Rituals score across the whole pantheon (agent A's input)
+## 5. Rituals are an INVITATION, not a scalar sum (agent A's input) — REVISED 2026-08-08 (user)
 
-When any rite fires, outcome is a weighted sum over ALL eight gods, not a single-god check:
+**Rejected model:** collapsing the pantheon to one `outcome_score` and picking a single branch. Too flat.
 
-```
-outcome_score = Σ_over_gods [ ritual_affinity(god) × colony_need(god) × effective_favor(god) ]
-```
+**Adopted model — a ritual is an open floor the gods may speak from.** Every rite does two things at
+once, and resolves as a **simultaneous, flavored VECTOR of outcomes**, one potential response per god:
 
-- **ritual_affinity(god)** — this rite's profile across all gods (a launch-rite is Ta'Baa-heavy but also
-  touches Ohm + Oomo). Authored per ritual; never single-god.
-- **colony_need(god)** — dynamic: a god currently under pressure (low water → Oomo need spikes; rooted
-  too long → Ta'Baa need spikes) or Wrathful weighs more. This is "relative to the needs of the colony."
-- **effective_favor(god)** — §1 (satiation × mood).
+**(1) The rite itself moves the vector first (relevance-weighted, two-sided).** A given ritual
+intrinsically *pleases some gods and offends others* by its very nature — and by relevance, meaning both
+**the sum of what's come before** (history/standing) **and what's happening right now** (current colony
+need/pressure). A launch-rite intrinsically pleases Ta'Baa and offends Ishko (you're leaving the safe
+dark); a machine-funeral pleases Ohm and, if you're scrapping rather than interring, offends Rekko. This
+pre-move happens as the rite begins, so gods can be *modified into a better mood by the ritual itself
+before they decide whether to respond.*
 
-`outcome_score` → the branch agent A authors (triumph / clean / hollow / spoiled-by-Zizzik). Completing
-the rite writes deltas back into the vector. **Result: the same rite lands differently every time**
-depending on the whole pantheon's current temper and what the colony needs right now.
+**(2) Then each god decides — independently — whether to express its current feeling, directly.** This is
+the heart of the revision. During ANY rite, **each god gets a chance to act on its standing + Mood**,
+with a response *flavored by the kind of ritual it is*:
+- **Angry/Wrathful gods take the opportunity to CURSE you during the rite** — the open channel of a
+  ritual is exactly when a slighted god reaches through. The curse is flavored by the ritual type (a
+  Wrathful Oomo during a water-blessing sours the water; a Wrathful Zizzik during a machine-funeral makes
+  the pyre-machine explode; a Wrathful Sh'kaar during any lit nighttime rite draws something to the
+  light). Multiple angry gods can each curse *in the same ritual* — they don't take turns; the rite can
+  be a pile-on.
+- **Exalted/Content gods may bless**, likewise ritual-flavored.
+- **Neutral / impartial gods mostly DECLINE to respond at all** — indifference is a real outcome; a
+  neutral god feels little pull to show up. **UNLESS step (1) modified them upward first** (the rite
+  itself warmed them into Content), in which case they may now choose to speak. This makes the pre-move
+  matter: a well-designed rite can *coax* a neutral god into blessing who'd otherwise have stayed silent.
+
+**So a single ritual can simultaneously:** delight Ta'Baa (blessing), be ignored by Mob'Unloo and Ishko
+(neutral, silent), and be hijacked by a Wrathful Zizzik who curses it — all at once, all narrated
+together. **Not "the ritual succeeded/failed" but "here is who showed up and what each did."**
+
+**Agent A's job** is therefore to (a) apply the rite's intrinsic relevance-weighted pre-move, (b) roll
+each god's participation (a function of |favor| and Mood — extreme feeling → likely to act, neutral →
+likely silent), (c) author the *flavored* blessing/curse for each participating god keyed to the ritual
+type, and (d) narrate the composite with build-up (§9). Completing the rite writes the net deltas back
+into the vector.
+
+**Result:** the same rite is a different event every time — a different *cast* of gods shows up, each for
+its own reason, and the drama is in the collision (a blessing and a curse landing in the same ceremony),
+not in a single pass/fail number.
 
 ---
 
