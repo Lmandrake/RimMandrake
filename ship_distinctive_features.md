@@ -462,6 +462,15 @@ source + Steam page so we can read its real mechanics/defs/deps before wiring it
 **EGI** for deliberate holographic *decoration/projection*, **Afterlife** for emergent *haunting
 by our own dead*. Both are optional flavor layers, not load-bearing on any system.
 
+> **★ IDENTITY RESOLVED 2026-08-08 (user) — the ghosts are the AI's holographic hallucinations.** The
+> semi-sane Cradle-Mind (Persona Core patterned off a Jawa mind, `jawa_xenotype_and_religion.md` §②)
+> **projects out members of its own old pre-Jawa crew** — EGI (projection tech) + Afterlife (haunting
+> behavior) fuse into ONE fiction: the ship can't stop rendering its dead. This makes the ghosts a
+> **read-out of Ohm's state** and the delivery vehicle for divine kindness/wrath via the Oracle. Full
+> mechanical design in `runtime/divine_satiation_engine.md` §7 (wiring gated on the Afterlife def
+> extract, agent C). The clan's "ghosts = Mob'Unloo's unsettled debtors" gloss coexists with the truth
+> (Ohm's grief/malfunction) — superstition vs. machine-reality, the core Ohm theme.
+
 > Interaction/compat note: none of these five touch the ship/grav layer, so none collide with
 > VGE-as-sole-ship-layer. EGI and Afterlife add their own defs/research; low interaction risk.
 > Confirm each About.xml is genuinely 1.6 before install.

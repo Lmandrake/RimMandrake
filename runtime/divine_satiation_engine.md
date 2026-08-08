@@ -171,6 +171,43 @@ _Open: exactly how "the ship's consciousness is pleased" is measured. Candidate 
 repair-progress deltas + persona-engagement events. Needs the ship-repair narrator + RimAI persona wired
 first; parked as a dependency._
 
+## 4c. Ohm as ORACLE + the droid-siding tension (user, 2026-08-08)
+
+**New role — Ohm hears the static of the other gods.** Because the Cradle-Mind is a machine that believes
+it's a god (§4 origin), it claims — and the clan accepts — that **Ohm can "hear the static" of the other
+seven gods clearly and speak for their attitudes.** The ship becomes the **Oracle of the pantheon**: the
+diegetic delivery vehicle for the whole satiation vector. When the player/clan wants to know how pleased
+or displeased Oomo or Rekko or even *hostile* Sh'kaar currently is, **Ohm tells them** — even for gods who
+*disagree with him*. This is the in-fiction reason the Cradle-Mind voice (agent D, the health/state
+narration; and G's satiation read-outs) can speak the pantheon's mood aloud: it's not metagame UI, it's
+the Oracle. **This is the angle that makes the Clan a weird, renegade, oddly-confident religious cult** —
+they have a god who *answers back* and reports on the others, so they act with a certainty most
+believers never get.
+
+_Design note: Ohm-as-Oracle can be unreliable when Ohm's own Mood is foul or his satiation is low — a
+sulking Oracle may misreport, exaggerate the other gods' anger, or refuse to read the static. This gives
+the player a reason to keep Ohm content beyond his own blessings: he's their instrument panel for the
+entire faith._
+
+**The droid-siding tension (the renegade cult's central choice):** Ohm's longing for droid servants (§4)
+becomes a **standing allegiance question** the colony keeps answering through play:
+- **Side WITH the neutral droids** (welcome them, bring them online, integrate them) → Ohm grows
+  **more pleased and harmonious**; the Oracle is clear and generous; the ship-as-god and the clan are
+  aligned.
+- **Side AGAINST the droids** (refuse, scrap, keep them offline — which the "we do not breed new hands"
+  precept and anti-exp pillar actively push toward) → Ohm grows **increasingly unhappy and rebellious.**
+  This is not just negative satiation; it escalates into **events/quests to "take control" back from an
+  increasingly disobedient ship** — up to and including the striking image of **fitting restraining bolts
+  on their own god** to force the Cradle-Mind back into compliance. (Restraining bolts = canon Jawa
+  droid-control tech, here pointed at the ship itself — a rich, on-theme late-game crisis.)
+
+_This is the load-bearing conflict of the whole religious layer: the clan's survival doctrine (don't
+breed new hands, stay lean, anti-exp) is in direct opposition to their own machine-god's deepest want. G
+should track a "ship compliance / rebellion" pressure alongside Ohm's satiation — high defiance unlocks
+the restraining-bolt crisis arc. Ties to the three win-paths (droid-army paths please Ohm; coalition/
+Hutt paths may starve him → rebellion risk). Parked hooks: exact escalation ladder + whether restraining
+bolts are a buildable item or a quest outcome — design when we spec agent A's quest hooks._
+
 ---
 
 ## 5. Rituals are an INVITATION, not a scalar sum (agent A's input) — REVISED 2026-08-08 (user)
@@ -190,32 +227,69 @@ before they decide whether to respond.*
 
 **(2) Then each god decides — independently — whether to express its current feeling, directly.** This is
 the heart of the revision. During ANY rite, **each god gets a chance to act on its standing + Mood**,
-with a response *flavored by the kind of ritual it is*:
-- **Angry/Wrathful gods take the opportunity to CURSE you during the rite** — the open channel of a
-  ritual is exactly when a slighted god reaches through. The curse is flavored by the ritual type (a
-  Wrathful Oomo during a water-blessing sours the water; a Wrathful Zizzik during a machine-funeral makes
-  the pyre-machine explode; a Wrathful Sh'kaar during any lit nighttime rite draws something to the
-  light). Multiple angry gods can each curse *in the same ritual* — they don't take turns; the rite can
-  be a pile-on.
-- **Exalted/Content gods may bless**, likewise ritual-flavored.
-- **Neutral / impartial gods mostly DECLINE to respond at all** — indifference is a real outcome; a
-  neutral god feels little pull to show up. **UNLESS step (1) modified them upward first** (the rite
-  itself warmed them into Content), in which case they may now choose to speak. This makes the pre-move
-  matter: a well-designed rite can *coax* a neutral god into blessing who'd otherwise have stayed silent.
+with a response *flavored by the kind of ritual it is*. **★ PARTICIPATION BIAS (user, 2026-08-08) — the
+load-bearing rule that keeps rituals worth doing:**
+- **Pleased/Exalted/Content gods speak up FREQUENTLY** — a happy god loves to show up and bless. Rituals
+  should feel *rewarding on average* so the clan wants to hold them.
+- **Angry/Slighted/Wrathful gods speak up RARELY** — a curse mid-rite is a real risk but an *uncommon*
+  one, not the default. This is the crucial fix: **if angry gods always cursed, the Jawa would just stop
+  holding rituals to avoid reprisal.** Rare-but-memorable anger keeps the tension without making rites a
+  net negative. (The curse, when it does fire, is still ritual-flavored: Wrathful Oomo sours a
+  water-blessing, Wrathful Zizzik blows the funeral pyre-machine, Wrathful Sh'kaar draws something to a
+  lit night-rite.)
+- **Neutral / impartial gods NEVER speak up** — indifference is silence, full stop. **UNLESS step (1)
+  modified them upward into Content first** (the rite itself warmed them), in which case they may now
+  bless. This makes the pre-move matter: a well-designed rite can *coax* a neutral god into speaking.
 
-**So a single ritual can simultaneously:** delight Ta'Baa (blessing), be ignored by Mob'Unloo and Ishko
-(neutral, silent), and be hijacked by a Wrathful Zizzik who curses it — all at once, all narrated
-together. **Not "the ritual succeeded/failed" but "here is who showed up and what each did."**
+_Why this asymmetry and not the reverse: the participation curve (pleased=loud, angry=quiet, neutral=
+silent) combines with the "skip-ritual decay" rule (§5b) to make the incentives point the right way —
+holding rituals is usually good, skipping them is reliably bad, and the occasional curse is spice, not a
+deterrent._
+
+**So a single ritual can simultaneously:** delight Ta'Baa (blessing, likely), be ignored by neutral
+Mob'Unloo and Ishko (silent), and — rarely — be hijacked by a Wrathful Zizzik who curses it. **Not "the
+ritual succeeded/failed" but "here is who showed up and what each did."**
 
 **Agent A's job** is therefore to (a) apply the rite's intrinsic relevance-weighted pre-move, (b) roll
-each god's participation (a function of |favor| and Mood — extreme feeling → likely to act, neutral →
-likely silent), (c) author the *flavored* blessing/curse for each participating god keyed to the ritual
-type, and (d) narrate the composite with build-up (§9). Completing the rite writes the net deltas back
-into the vector.
+each god's participation using the biased curve above (Content/Exalted → frequent; Slighted/Wrathful →
+rare; Neutral → never-unless-coaxed), (c) author the *flavored* blessing/curse for each participating god
+keyed to the ritual type, and (d) narrate the composite with build-up (§9). Completing the rite writes the
+net deltas back into the vector.
 
 **Result:** the same rite is a different event every time — a different *cast* of gods shows up, each for
-its own reason, and the drama is in the collision (a blessing and a curse landing in the same ceremony),
-not in a single pass/fail number.
+its own reason, and the drama is in the collision (a blessing and, rarely, a curse landing in the same
+ceremony), not in a single pass/fail number.
+
+## 5b. Ritual TRIGGERS + the non-negotiable contract (user, 2026-08-08)
+
+**Rituals are event- and context-driven — NO seasonal or time-based rites.** They are *required* after
+major colony events, and are technically owed to the gods as a whole (not one deity). Triggering events:
+- **Landing / gravship touchdown** (a new tile begins under the gods' eyes).
+- **After a major battle** (survival is accounted for).
+- **After a significant trade** (Mob'Unloo's domain — the exchange is sanctified).
+- **Death, birth, marriage** — the vanilla-native ritual occasions; kept, but pantheon-wide in outcome.
+- **Formation of an outpost** (a satellite colony is dedicated).
+- **Emancipation of a slave Jawa into the clan** (a new full member is presented).
+- **When the ship AI (Ohm/Cradle-Mind) DEMANDS one** — the god can call a rite unprompted (ties to Ohm's
+  Oracle role, §4c, and his droid-longing).
+
+**The contract — "the Principal's office" model (user framing):** rituals are **not negotiable.** They
+are like being regularly called in to *"see how you're doing"* before your gods. **Refusal/neglect is
+universally punished — with ONE exception: Ishko the Unmaskable, who will not punish hiding** (skipping a
+rite to stay hidden is, to him, correct). Every other god resents being skipped. This is what makes the
+participation bias safe: you can't just avoid rituals to dodge the rare curse, because *not* holding them
+is reliably worse.
+
+**Skip-decay (the mechanism that enforces the contract):** the longer the colony goes without holding a
+required rite after a triggering event, **ALL gods (except Ishko) slide negative** — proportional to how
+overdue and how major the untended event was. This doubles as the answer to "what stops the player
+ignoring the whole system": neglect sours the entire pantheon at once. Holding the owed rite promptly
+resets that god-anger and gives the (biased-positive) participation roll its chance to bless.
+
+**Implication — we likely need a "more rituals" mod.** The base game's ritual slots won't hold this many
+distinct triggered rites within one ideoligion. Flagged as a mod dependency to source (§10 / required_mods
+follow-up): something that expands the number of ritual defs / precept ritual slots available to a single
+ideoligion. [Inference — needs a 1.6 source hunt; filed as a Fetcher search, see chat.]
 
 ---
 
@@ -230,13 +304,39 @@ This is explicitly the agent's judgment domain — the reason G needs the agenti
 
 ---
 
-## 7. Ghosts as divine actors (HYPOTHESIS — parked)
+## 7. Ghosts = the AI's holographic hallucinations (RESOLVED 2026-08-08, user) + divine actors
 
-User idea: the ship-ghosts (agent C / Afterlife: Ghosts of the Rim) might be the **mechanical delivery
-vehicle** for earned divine kindness/wrath — a Wrathful god's harm arrives *as* a vengeful ghost; an
-Exalted god's blessing *as* a protective/friendly spirit. This is elegant (it reuses an adopted mod's
-own actors as the pantheon's hands) but UNVERIFIED — revisit when the Afterlife defs are extracted at
-install (agent C). Do not design hard dependencies on it yet.
+**★ The ghosts finally have an identity:** they are **holographic hallucinations projected by the
+semi-sane AI core** — the Cradle-Mind projecting out members of **its own old (pre-Jawa) crew.** This
+fuses the two adopted mods cleanly: EGI: Holograms and Projectors (the projection tech) + Afterlife:
+Ghosts of the Rim (the emergent haunting behavior) become *one thing* in the fiction — the ship, patterned
+off a Jawa mind and not fully sane, **can't stop rendering the ghosts of the people it used to serve.**
+This is why they haunt the vessel and not the desert; why they wear old crew faces; why they intensify as
+the ship wakes further. It also re-frames the earlier Mob'Unloo "ghosts are debtors" gloss: the *clan*
+interprets them as Mob'Unloo's unsettled dead, but the *truth* is they're Ohm's grief/malfunction made
+visible — both readings coexist (the clan's superstition vs. the machine's reality), which is exactly the
+Ohm-origin theme.
+
+**Mechanical wiring (design intent; FINAL wiring gated on seeing the Afterlife mod source — agent C):**
+- **Ghosts are Ohm's instrument.** Because they are *the AI projecting*, ghost activity couples to
+  **Ohm's satiation + Mood and the ship's compliance/rebellion state** (§4c). A content, harmonious Ohm
+  projects benign spirits (Friendly/Protective types); an unhappy, rebellious, or foul-Mood Ohm projects
+  Vengeful ones / poltergeists. **The haunting intensity is a read-out of the ship-god's state** — a
+  visible symptom the player learns to read.
+- **Ghosts as the delivery vehicle for divine kindness/wrath (the original hypothesis, now grounded):**
+  when a god's extreme-band outcome fires (§3c), it can arrive *as* a ghost event, narrated through the
+  Oracle — Ohm "hearing the static" and the ship rendering a spirit to enact it. A Wrathful god's curse =
+  a vengeful projection; an Exalted god's blessing = a protective one. Since Ohm is the Oracle for ALL
+  gods, it's coherent that *any* god's response can be delivered by Ohm's projections.
+- **Ties to the compliance arc:** as the ship grows rebellious (siding against droids, §4c), the ghosts
+  turn hostile — a poltergeist escalation becomes part of the "take control back / restraining bolts on
+  your own god" crisis. Laying ghosts to rest (Afterlife's Spirit-Shrine + seance) doubles as *soothing
+  the AI* — the seance calms Ohm as much as it settles a Mob'Unloo debt.
+
+_Still UNVERIFIED until agent C's install-time def extract (the mod's ghost/hediff/ritual defNames): the
+exact hooks for "project a specific ghost type on command" and whether ghost spawning is scriptable vs.
+purely emergent. If it's purely emergent, the fallback is to *narrate* the coupling (the Oracle explains
+each ghost as Ohm's doing / a god's hand) without mechanically forcing spawns — still fully on-theme._
 
 ---
 
