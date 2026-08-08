@@ -159,7 +159,7 @@ A standalone local compatibility mod (NOT edits to Core/DLC/Workshop files) that
 
 ## Storage (restrictably fun)
 
-### ⏳ STORAGE FOOTPRINT CAP — ratio-based (concept accepted, exact value TBD)
+### ⏳ STORAGE FOOTPRINT CAP — ratio-based (concept accepted; RETIRED as an open design question 2026-08-08 — now a Phase-A playtest tuning dial, not a desk decision)
 - **Concept (2026-08-02):** Storage is capped as a **RATIO of usable ship deck area**, not a fixed tile count — so it scales with hull growth and the squeeze stays constant as the ship expands. Denser shelving then only makes the *limited* hold tidy/searchable, never bigger. This is the single knob that keeps LWM/RimFridge/Adaptive Storage honest.
 - **Now competes with the factory:** every storage tile is a tile the conveyor lines, hoppers, machine rooms, and cooling can't use. That competition is intentional — it's what forces the "what do we leave behind before launch?" moment.
 - **Exact value still TBD, but the Fetcher results sharpen it (2026-08-02):** the factory is hopper-fed, so storage now has TWO competing jobs — (a) **input feedstock buffers** the conveyors pull from (wood for the refinery, slag/scrap for the smelter, steel/plasteel for the assembler, herbal/neutroamine for medicine), and (b) small **output stockpiles**. Both compete with the machines themselves (large footprints per the verified building list) AND cabins/fuel/defense. So the cap should be read as "storage + hopper buffers ≤ X% of deck," not just finished goods. Leading candidate still ≈ ¼ of interior floor; alternatives = hard tile count or a quest-gated storage module. Tune in the Phase-A playtest now that we know the real machine footprints.
