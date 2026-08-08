@@ -1,6 +1,27 @@
 # STRUCTURE.md — canonical index of the Gravship Campaign docs
 
-_Last updated: 2026-08-06. This is the map: what each file is, and — importantly — **who owns what**, so a fact lives in exactly one authoritative place and everyone else points to it. Read this first to navigate the folder. Lives at `~/GDrive/Personal/Rimworld/`._
+_Last updated: 2026-08-08. This is the map: what each file is, and — importantly — **who owns what**, so a fact lives in exactly one authoritative place and everyone else points to it. Read this first to navigate the folder. Lives at `~/GDrive/Personal/Rimworld/`._
+
+---
+
+## Directory layout (2026-08-08 reorg)
+
+The project is now sorted into four topic buckets, with a thin navigation spine kept at the root. **File names below are unchanged — only their folders moved** — so any doc that references another by bare filename still resolves; just prepend the bucket.
+
+| Folder | What lives here |
+|---|---|
+| **`/` (root spine)** | Navigation + orientation only: `STRUCTURE.md`, `concept.md`, `context.md`. |
+| **`worldbuilding/`** | The fiction + design: `Alien_Bestiary`, `desert_world_design`, `biome_terrain_palette`, `faction_roster_v2`, `faction_authoring_mechanism`, `jawa_xenotype_and_religion`, `jawa_crew_personas`, `jawa_dialogue_source_audit`, `Gravship_Campaign_Planning_Discussion_2026-08-02`, `setup_checklist`, `Custom_World`, `biome_roster_for_review.html`, `resource_terrain_matrix.html`. |
+| **`mods/`** | Which mods we use + why: `required_mods`, `forbidden_mods`, `cherry_picker_killlist`, `sw_ingredients_inventory`, `outer_rim_cherrypick_list`, `world_interest_and_mech_danger`, `cqf_quest_types_explainer`, `concept_defnames`, and the `mod_sources/` audit tree (gitignored). |
+| **`runtime/`** | Run-time apps/agents we're building or planning + the custom mods we author: `RimMaster`, `rimbridge`, `ollama`, `llm_voice_preauthoring`, `first_live_access`, `carbonite_trophy_mod`. |
+| **`promo/`** | Reserved for promotional/pitch material (summaries that *sell* the campaign). **Currently empty** — `Kolyska_pitch.html` + the two ChatGPT concept PNGs are pending a coordinated move (see "Left at root" below). |
+| **`Utils/`, `player_maps/`, `custom_patches/`, `hand_authored_maps/`, `samuel_streamer_study/`, `savegame/`** | Tooling + build artifacts, unchanged (see Subfolders table). |
+
+### Left at root deliberately (NOT yet bucketed)
+- **`ship_designs.md`, `ship_deck_plan.md`, `ship_distinctive_features.md`, `Factory_lore.md`** + the ship reference images (`ship_image.png`, `ship_damaged_image.png`, `ship_deck_plan_scale_map.png`) — these are **actively owned by the concurrent Cowork instance**; moving them risks colliding with in-flight edits. They belong in `worldbuilding/` in the next pass, once that instance is idle.
+- **`save_authoring_pipeline.md`, `rimworld_file_lore.md`** — the `Utils/Savegame_*.py` scripts cite these via hard-coded `../<file>.md` doc-string paths; since `Utils/` is contested I can't fix those refs, so the manuals stay adjacent for now.
+- **`Kolyska_pitch.html` + the two `ChatGPT Image ….png`** — untracked and owned by the other instance; deferred to the coordinated pass rather than moving another instance's work-in-progress.
+- **`custom_patches/`** (JawaVoice + GravshipCompat) — `Utils/build_jawavoice.py` hard-codes its output to `../custom_patches/JawaVoice`; moving it would silently break the build. Stays put until the builder can be updated together with it.
 
 ---
 
@@ -52,11 +73,17 @@ These are the load-bearing, authoritative files. If two docs disagree, the owner
 
 | Path | Contents |
 |---|---|
+| `worldbuilding/` | Fiction + design docs (see Directory layout above). |
+| `mods/` | Mod decisions + `mods/mod_sources/` audit tree (see Directory layout above). |
+| `runtime/` | Run-time apps/agents + authored custom mods (see Directory layout above). |
+| `promo/` | Promotional/pitch material — reserved, currently empty. |
 | `samuel_streamer_study/` | Downloaded Samuel Streamer mod-lists/configs + the technique/theme analysis they feed. |
-| `Utils/` | Tooling: Jawa-voice builder, save-inspection scripts, the LLM-in-the-loop map-improver. |
+| `Utils/` | Tooling: Jawa-voice builder, save-inspection scripts, the LLM-in-the-loop map-improver. Writes JawaVoice output to `../custom_patches/JawaVoice`. |
 | `player_maps/` | Authored player-map plans + loop reports (coastal_mesa v1–v3). |
+| `custom_patches/` | Our authored 1.6 mods: JawaVoice (built) + GravshipCompat. Built by `Utils/build_jawavoice.py`. |
+| `hand_authored_maps/` | Study library of downloaded `.rws` maps (payloads gitignored; README manifest tracked). |
 | `savegame/` | The Gravtasm reference `.rws` and related saves. |
-| `mod_sources/` | Extracted mod source trees, audited during design (not all committed). |
+| `mod_sources/` | → moved to `mods/mod_sources/` (gitignored extracted mod trees, audited during design). |
 
 ---
 

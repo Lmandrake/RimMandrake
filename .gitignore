@@ -2,8 +2,11 @@
 #
 # Exclude the entire mod_sources tree. These are ~50 third-party RimWorld mods
 # pulled locally for auditing only — licensing + size make them a poor fit for
-# the repo. They stay on disk, just untracked.
+# the repo. They stay on disk, just untracked. (Moved under mods/ in the
+# 2026-08-08 reorg; the bare-name rule matches at any depth, the explicit
+# path is belt-and-suspenders.)
 mod_sources/
+mods/mod_sources/
 
 # macOS cruft
 .DS_Store
