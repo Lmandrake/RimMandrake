@@ -342,7 +342,7 @@ tree before adopting** (standing rule); items the deep-dive source-tagged 1.6 ar
 | Name-pool localization (B) | 🧰 ADJUSTER-ONLY (**confirmed**) | **Cool Names** (3726665156) — **verified**: *"overhauls name generation… custom name pools for different technological and thematic groups (Tribal/Medieval, Industrial…), no auto-nicknames, prioritizes first names"* = a **loader for authored pools**, exactly as expected; **Pawn Name Variety** (emipa606, GitHub — splits vanilla names into first/last/nick pools), **NamesGalore** (AaronCRobinson, GitHub — nickname/solid-name probability knobs), TotalControl (names per faction) | **No SW name-pack exists** — we author every bank; the mod is the loader. Correct by nature: a name pool is *content*, not a normalizable effect. Cool Names is the cleanest thematic-group loader. |
 | Map hand-crafting (C) | 🟡 (set-pieces) / 🔨 (holistic) | **New Blueprint** (3534166729 — **verified**: *"using the new Prefab system introduced in RimWorld 1.6 to create shareable blueprints that capture both terrain and buildings in their selected areas"* = confirmed native-1.6-prefab write-primitive for stamping authored set-pieces), **Alpha Prefabs** (3070780021 `[1.6 src✓]`, 200+ prefabs + Blueprints-mod integration to place-as-buildable), **Real Ruins** (1552146295), **Vanilla Landmarks Expanded** (3656316229); Map Designer (owned) | The *holistic "make a generated tile feel hand-crafted"* judgment — the hard, high-V&V core — stays a build. Prefabs are set-piece *content* (author once, stamp) not a normalizer. |
 | NPC hand-crafting per map (C) | 🟡 | **Pawn Editor** (ISOR3X, "change backstories that don't fit the narrative"), **Character Editor** (owned), **Backstory Constructor** (2907131508, *already PRIMARY* in personas doc), **RimTalk Persona Director** (3619548407) | The authored per-NPC content + context-tuning; mods are the write surface. |
-| Emergent ship-sentience voice + **demands** (D) | ⛔ candidate (**confirmed**) | **RimTalk Expand: AI Storyteller** (3715752189) — **verified**: *"turns the storyteller into an actual character — one that gets angry, cares about your colony, and stirs things up when bored. Each storyteller gets an AI-generated personality on game start (four dims: benevolence, malice, calmness, morality)… A tyrant drops raids when annoyed. A guardian sneaks you gifts. You can chat with the storyteller directly."* The makes-demands angle is real, and it's a **defined-effect** design (four fixed personality axes drive behavior), though value-generation is LLM. Built on **RimTalk** (jlibrary, GitHub, DeepWiki-documented personality system); **RimAgentOrca / Orca Deepseek** (`[1.6 src✓]`, offline XML fallback) | Decide **adopt RimTalk-Expand vs keep the RimAI "Cradle-Mind" persona** — likely retires the bespoke ship-voice build. LLM-endpoint dependency (§6 fragile). |
+| Emergent ship-sentience voice + **demands** (D) | ⛔ candidate → **BAKE-OFF RESOLVED 2026-08-08** | **RimTalk Expand: AI Storyteller** (3715752189) — *"storyteller becomes a character… four dims: benevolence, malice, calmness, morality… tyrant drops raids when annoyed, guardian sneaks gifts, chat directly."* Defined-effect design, value-gen LLM. Built on **RimTalk** (jlibrary). **RimAgent:Orca** (`RedstonePanda.Orca`, `[1.6 src✓]`, graceful offline-XML fallback). vs the already-adopted **RimAI Core** (buildable talkable Server/Terminal = the Cradle-Mind). | **✅ RESOLVED — RimAI WINS the ship-voice; the §4b "RimTalk-Expand retires the bespoke build" hypothesis was WRONG (false substitute).** The three voice *different surfaces*: RimAI voices a **buildable in-world object** (uniquely on-theme for engine-is-god), RimTalk-Expand voices the **storyteller** (a different role), Orca is a storyteller-companion. See the "Ship-voice bake-off" verdict block below §4b. |
 | "State of affairs" / social-log summarizer (D) | ⛔ substrate (**confirmed**) | **RimLog** (ubergarm, GitHub `RimWorld-RimLog`) — **verified**: *"logs periodic time-series data for events, tales, quests, chat and battle logs in CSV format… handy for crafting Local-LLM AI-generated story prompts using your actual player data."* Timestamped-tick CSV schema (`type,defName,text`) documented in the repo gist = exactly our blackboard feed; alt **RimTales** (thecosmicslug), **TalesFromTheRimWorld** (adhikasp) | Agent reads RimLog's CSV export instead of scraping the live log — the fragile scraper build **disappears**. Note: **not** an LLM mod itself (pure exporter), so no endpoint dependency for the *feed* — clean win. |
 | Social-drama chronicler (D) | ⛔ (**confirmed**) | **RimLegend** (3697076313, Rifex, **Mod 1.6 + Harmony**, 200-fetch verified) — *"captures every event… sends them to an AI of your choice (Ollama/OpenAI/Groq/**Anthropic**/any OpenAI-compatible). Two-layer: Main Colony Chronicle (Event.md) + per-colonist bios. 5 styles (Neutral/Dark Fantasy/Humorous/Epic/Chronicle) or define your own. Author directives to steer (e.g. 'Build tension with the northern tribe'). Hierarchical summarization keeps tokens predictable after 100+ hrs. In-game Chronicle button, markdown."*; alts **EchoTales**, **RimSaga**, Rimworld-Diary (manual) | Chronicler agent **collapses entirely** into RimLegend — style + author-directives cover our steering need. LLM-endpoint dependency; comments note connection flakiness (test before relying). |
 | Difficulty-drift monitor (D, read-only) | 🟡 | **Visible Wealth** (3461137081, breakdown + pie), **Wealth Display (Continued)** (3298960397), **Wealth Tweaks** (Nexus 694, cap scaling = manual actuator). NB from results: raid points hard-cap ~10,000. | The *automatic pillar-drift flag* (vs a static readout) isn't off-the-shelf; monitoring + manual cap are. |
@@ -420,6 +420,42 @@ surprises flagged below — the source contradicted a prior assumption.
 (`Mlie.ChooseWildAnimalSpawns`), yc's Faction Editor (`yancy.factiongearcustomizer`, pending CE-dep
 clarification). **Not confirmed / do not adopt as-is:** RimLog (1.5-only), Dynamic Diplomacy (need the
 Continued-fork About.xml).
+
+### Ship-voice bake-off — RESOLVED 2026-08-08 (RimTalk-Expand vs RimAI vs RimAgent:Orca)
+
+_Decided from source-read evidence already in hand (`ship_distinctive_features.md` Q1-bis Fetcher
+`2026-08-07_llm_speaking_mods_deep` + `2026-08-07_rimai_rimdialogue_source`); no new pull needed._
+
+**The §4b framing was wrong on one point, and correcting it IS the verdict:** §4b listed RimTalk-Expand
+as a candidate that "likely retires the bespoke ship-voice build." That treated the three mods as
+substitutes for one voice. They are **not** — they voice **three different surfaces**, so it's not a
+winner-take-all:
+
+- **RimAI Core** (`kilokio.rimai.core`, 1.6-only; + Framework `kilokio.rimai.framework`, 1.5/1.6) — voices
+  a **buildable, in-world talkable Server/Terminal object** with an authored Persona module. This is the
+  **only** mod in the whole search space where the voice is natively *a machine you build and address* —
+  a near-perfect vehicle for the **engine-is-god / Cradle-Mind** (Ohm the All-Current speaking through the
+  grav-controller). **Already ADOPTED** (user, 2026-08-07). **→ WINS the ship-voice role.**
+- **RimTalk-Expand: AI Storyteller** (3715752189) — voices the **storyteller-as-character** (four fixed
+  personality axes; drops raids when annoyed, sends gifts, chattable). That's a **different role** — the
+  storyteller/GM layer, not the ship. It does **not** compete with RimAI for the ship voice; it would
+  *layer on top*. **→ NOT the ship voice.** Verdict: **PARK** — it's redundant with the RimMaster GM layer
+  we're building (RimMaster already owns storyteller-grade orchestration + runs LLM against the user's
+  endpoint), so adopting a second LLM director is duplicate machinery. Reconsider only if RimMaster's GM
+  layer slips and we want an off-the-shelf stopgap.
+- **RimAgent:Orca** (`RedstonePanda.Orca`, 1.6✓) — an **LLM storyteller/companion** with the best offline
+  story of the field (ships XML storyteller comps; with no LLM configured it degrades gracefully to the
+  vanilla XML storyteller). Same *role* as RimTalk-Expand (narrative pacing), not a talkable object.
+  **→ NOT the ship voice.** Verdict: **PARK as the graceful-degradation reference** — its offline-XML
+  fallback pattern is the model RimMaster should imitate if we ever want the GM layer to survive an LLM
+  outage. Not adopted as a mod.
+
+**Bottom line:** the ship voice was already solved (RimAI Core, adopted) and this bake-off *confirms* it
+rather than replacing it. RimTalk-Expand and Orca lose **not on quality but on role** — they're
+storyteller/GM mods, and that lane is owned by the RimMaster build. **No new adoption results from the
+bake-off; RimAI stays the Cradle-Mind.** Remaining RimAI watch-items are unchanged (use VOICE-ONLY, keep
+its actuator tools disabled per the anti-exponential pillar; non-LLM fallback = SpeakUp + CQF DialogTree +
+a single quested vanilla persona core — see `required_mods.md` §(8)).
 
 ---
 
