@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+
+  <!-- ========================================================================
+       Industrial-tier unlock. Cheap and early: the Jawa know ion tech natively.
+       For a truly "buildable from turn 1" start, either (a) pre-complete this
+       research in the scenario, or (b) drop the researchPrerequisite from the
+       weapon recipe entirely. Kept as a low-cost industrial project so it also
+       fits players who don't pre-unlock it. techLevel Industrial => honors the
+       "Jawa start industrial" pillar (NOT the spacer HypertechFabrication gate
+       Outer Rim Core uses).
+  ======================================================================== -->
+  <ResearchProjectDef>
+    <defName>Kolyska_JawaIonWeaponry</defName>
+    <label>Jawa ion weaponry</label>
+    <description>The bound-wire craft of the ion emitter: how to shape a weak ionic bolt that overloads machines and scrambles nerves without drawing blood. Native knowledge among the clan.</description>
+    <baseCost>400</baseCost>
+    <techLevel>Industrial</techLevel>
+    <researchViewX>1.0</researchViewX>
+    <researchViewY>1.0</researchViewY>
+    <prerequisites>
+      <li>Smithing</li>
+    </prerequisites>
+  </ResearchProjectDef>
+
+</Defs>

@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+
+  <!-- ========================================================================
+       PROJECTILE — a low-damage ion bolt. Uses our Kolyska_JawaIon damage
+       (EMP-family, harmsHealth=false). The bolt's job is to (a) EMP-stun
+       mechs/droids instantly and (b) deposit Jawa_IonStun buildup on whatever
+       it hits so flesh targets are worn down toward a live collapse.
+  ======================================================================== -->
+  <ThingDef ParentName="BaseBullet">
+    <defName>Kolyska_Bullet_JawaIon</defName>
+    <label>ion bolt</label>
+    <graphicData>
+      <!-- Reuse a vanilla EMP-ish bolt texture until custom art is chosen. -->
+      <texPath>Things/Projectile/Bullet_Big</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+      <shaderType>TransparentPostLight</shaderType>
+      <color>(0.55, 0.75, 1.0)</color>
+    </graphicData>
+    <projectile>
+      <damageDef>Kolyska_JawaIon</damageDef>
+      <!-- Low base "damage" — with harmsHealth=false this is the EMP/stun
+           magnitude, not a wound. Kept small so the gun is not very dangerous. -->
+      <damageAmountBase>8</damageAmountBase>
+      <stoppingPower>0.5</stoppingPower>
+      <speed>55</speed>
+      <armorPenetrationBase>0.10</armorPenetrationBase>
+    </projectile>
+  </ThingDef>
+
+  <!-- ========================================================================
+       WEAPON — the Jawa Ion Blaster. Industrial tech level, buildable from the
+       start at a vanilla machining/fabrication bench, cheap scrap-tech cost.
+       Tuned "weak but cunning": low damage, slow warmup, long cooldown, modest
+       range, accuracy that falls off at distance (rewards ambush + closing).
+       Stat reference cross-checked against Outer Rim Core's ion suite
+       (warmup 1.2, range 24/31/42) — we deliberately run SLOWER and SHORTER.
+  ======================================================================== -->
+  <ThingDef ParentName="BaseHumanMakeableGun">
+    <defName>Kolyska_JawaIonBlaster</defName>
+    <label>Jawa ion blaster</label>
+    <description>A cobbled-together ion emitter of Jawa make — bound wire, salvaged capacitors, and a scavenged focusing coil. It fires a weak ionic bolt that overloads machines almost at once and, with sustained fire, scrambles a living target's nerves until they simply drop. It cannot kill; it is a tool for taking things (and people) intact. In Jawa hands it is not a weapon of force but of patience, numbers, and good ground.</description>
+    <techLevel>Industrial</techLevel>
+    <graphicData>
+      <!-- PLACEHOLDER art path; supply Textures/JawaIon/Weapon_JawaIonBlaster.png -->
+      <texPath>JawaIon/Weapon_JawaIonBlaster</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+    </graphicData>
+    <soundInteract>Interact_Rifle</soundInteract>
+    <statBases>
+      <WorkToMake>16000</WorkToMake>
+      <Mass>2.6</Mass>
+      <MarketValue>420</MarketValue>
+      <AccuracyTouch>0.80</AccuracyTouch>
+      <AccuracyShort>0.68</AccuracyShort>
+      <AccuracyMedium>0.45</AccuracyMedium>
+      <AccuracyLong>0.22</AccuracyLong>
+      <RangedWeapon_Cooldown>2.6</RangedWeapon_Cooldown>
+    </statBases>
+    <costList>
+      <Steel>45</Steel>
+      <ComponentIndustrial>3</ComponentIndustrial>
+    </costList>
+    <recipeMaker>
+      <researchPrerequisite>Kolyska_JawaIonWeaponry</researchPrerequisite>
+      <skillRequirements>
+        <Crafting>3</Crafting>
+      </skillRequirements>
+      <recipeUsers>
+        <li>TableMachining</li>
+        <li>FabricationBench</li>
+      </recipeUsers>
+    </recipeMaker>
+    <weaponTags>
+      <li>Kolyska_JawaIon</li>
+    </weaponTags>
+    <tradeTags>
+      <li>Kolyska_JawaIon</li>
+    </tradeTags>
+    <verbs>
+      <li>
+        <verbClass>Verb_Shoot</verbClass>
+        <hasStandardCommand>true</hasStandardCommand>
+        <defaultProjectile>Kolyska_Bullet_JawaIon</defaultProjectile>
+        <warmupTime>1.9</warmupTime>
+        <range>22</range>
+        <soundCast>Shot_ChargeRifle</soundCast>
+        <soundCastTail>GunTail_Medium</soundCastTail>
+        <muzzleFlashScale>7</muzzleFlashScale>
+      </li>
+    </verbs>
+    <tools>
+      <li>
+        <label>grip</label>
+        <capacities><li>Blunt</li></capacities>
+        <power>8</power>
+        <cooldownTime>2.0</cooldownTime>
+      </li>
+      <li>
+        <label>barrel</label>
+        <capacities><li>Blunt</li><li>Poke</li></capacities>
+        <power>9</power>
+        <cooldownTime>2.0</cooldownTime>
+      </li>
+    </tools>
+  </ThingDef>
+
+</Defs>

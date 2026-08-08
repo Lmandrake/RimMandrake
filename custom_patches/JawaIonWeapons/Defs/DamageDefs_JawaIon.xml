@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+
+  <!-- ========================================================================
+       Jawa ion damage. Modeled on vanilla EMP (ParentName="EMP") so we inherit
+       vanilla's stun behavior and the built-in target gradient:
+         * mechanoids / droids  -> EMP stuns them hard and fast (very effective)
+         * flesh pawns          -> only briefly dazed per hit (resistant)
+       harmsHealth=false / makesBlood=false guarantees CAPTURE-NOT-KILL: this
+       damage never injures or kills a fleshy target. The "wear-down" that
+       eventually drops a person alive comes from the Jawa_IonStun hediff below
+       (applied via the projectile's comp), NOT from this damage dealing wounds.
+       No custom workerClass -> no C# dependency.
+  ======================================================================== -->
+  <!-- We inherit ParentName="EMP", so ALL vanilla EMP stun behavior (causeStun,
+       stun duration, the flesh-vs-mech resistance gradient) comes for free.
+       We only override what makes this "ion": labels, no-harm guarantee, tint,
+       and the buildup hediff. We intentionally do NOT re-declare stun fields we
+       cannot verify against 1.6 — inheritance handles them. -->
+  <DamageDef ParentName="EMP">
+    <defName>Kolyska_JawaIon</defName>
+    <label>ion</label>
+    <deathMessage>{0} was overloaded by ion fire.</deathMessage>
+    <harmsHealth>false</harmsHealth>
+    <makesBlood>false</makesBlood>
+    <explosionColorEdge>(0.55, 0.75, 1.0, 0.85)</explosionColorEdge>
+    <!-- Each hit deposits ion buildup. severityPerDamageDealt is multiplied by
+         the damage amount (8) -> ~0.24 severity per bolt, so ~4 solid hits push
+         a flesh target from 0 toward the ~0.9 "overloaded" collapse stage, and
+         decay (-1.2/day) bleeds it off if fire stops. This is the vanilla,
+         no-C# way to apply an accumulating hediff on damage. VERIFY IN-GAME:
+         confirm severity actually accrues on FLESH pawns (EMP on flesh is a
+         short stun; additionalHediffs should still apply regardless). -->
+    <additionalHediffs>
+      <li>
+        <hediff>Kolyska_JawaIonStun</hediff>
+        <severityPerDamageDealt>0.03</severityPerDamageDealt>
+      </li>
+    </additionalHediffs>
+  </DamageDef>
+
+</Defs>
