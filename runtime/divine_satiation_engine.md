@@ -44,8 +44,8 @@ temper wanders) are distinct and canon-flavored.
 | **④ Mob'Unloo** (debt/trade) | Neutral, strictly transactional — moves only on balanced/unbalanced exchange | Cool, ledger-like; Mood shifts are rare but decisive. |
 | **⑤ Rekko** (salvage/repair) | Positive when we mend, sharply negative when we scrap-the-mendable | Warm but proud; wounded easily by waste, generous when honored. |
 | **⑥ Ta'Baa** (leaving) | Negative-drifting on its OWN clock the longer we sit (see §3) | Restless, rising; the longer rooted the worse the Mood, regardless of satiation. |
-| **⑦ Zizzik** (malfunction/betrayal) | Feeds on OUR misfortune — rises when things break/betray | Gleeful, chaotic, high-amplitude; the trickster. Never trust his calm. |
-| **⑧ Sh'kaar** (evil light/exposure) | Perverse: fed by destruction & exposure (incl. *our* losses); angered by comfort/abundance | Cruel, arbitrary; a malevolent power, not a fair one. Bad Mood is the default weather. |
+| **⑦ Zizzik** (malfunction/betrayal) | Feeds on OUR misfortune — rises when things break/betray. **NOT a simple keep-LOW god: STARVED → he SLUMBERS (dormant, no boon/bane); FED → offers positives alongside the misfortune (see §3⑦-reframe)** | Gleeful, chaotic, high-amplitude; the trickster. Never trust his calm. |
+| **⑧ Sh'kaar** (evil light/exposure) | Perverse: fed by destruction & exposure (incl. *our* losses); angered by comfort/abundance. **RISES with every violent battle (the escalation meter, §3⑧-reframe) — hardens the clan but breeds exposure/doom** | Cruel, arbitrary; a malevolent power, not a fair one. Bad Mood is the default weather. |
 | **⑨ Ozzik** (ambition/pride/grief — THE TRAP) | Rises with ambition-acts (art, research, high tech/construction, statecraft, enslavement, outposts, alliances, betrayal, marriage); his HIGH satiation is itself a danger (see §3⑨) | Grieving and proud at once — swings between hollow grandeur and bitter shame; volatile when courted, sullen when ignored. |
 
 > **Ta'Baa's independent clock (user, highlighted):** Ta'Baa's satiation erodes purely with *time
@@ -141,10 +141,19 @@ narrative build-up, never a flat modifier.
 - **(b) Lever:** there's no pious way to *serve* Zizzik (you ward against him) — the "lever" is inverse:
   competent, careful play denies him; every shortcut that risks a malfunction feeds him. His name is
   never spoken near the engine.
-- **(c) Exalted (i.e., Zizzik fat = BAD for us):** a cascade — the wrong spark at the worst time,
-  compounding failures, a betrayal. **Starved (good):** an eerie run of *nothing going wrong.*
-  _Zizzik inverts the sign: his "Exalted" is our disaster. Treat his high satiation as a Wrathful-tier
-  threat._
+- **(c) Exalted (i.e., Zizzik fat):** a cascade — the wrong spark at the worst time, compounding
+  failures, a betrayal — **BUT (reframe, user 2026-08-08) a FED Zizzik also begins to offer positives in
+  return, not only bane.** He is a worship of catastrophe *and* the reasonable leveller who, once
+  gorged, occasionally lets a lucky break fall your way; his high band is dangerous-but-not-purely-hostile.
+- **★ (c-reframe) The SLUMBER mechanic — supersedes the flat "keep LOW / sign-inverted" read (user
+  2026-08-08).** A **STARVED** Zizzik does not stay a solved problem — he **SLUMBERS**, granting *neither
+  boon nor bane*, and **all fear to wake him.** Yet waking him is **inevitable** (a dormant volcano, not a
+  defused bomb). Model this as: prolonged low satiation → a *dormant* state (event rolls quiet) that
+  carries a rising background "pressure to wake" (a slow clock, kin to Ta'Baa's rooted-clock and Ozzik's
+  grief); when it trips, Zizzik surges back hungry regardless of how carefully the clan has played. **So
+  the goal is NOT "hold Zizzik at zero forever" — that only defers him. The design tension is managing
+  *when* he wakes, not whether.** His two faces (the reasonable catastrophist who *ensures* complex plans
+  fail, and the capricious child who presses every red button) both argue this in Council.
 
 ### ⑧ Sh'kaar the All-Searing — evil sun, exposure, killing light (EVIL god)
 - **(a) Ambient:** **perverse** — fed by destruction and exposure, *including our own losses* (an
@@ -156,6 +165,22 @@ narrative build-up, never a flat modifier.
 - **(c) Exalted (bad for us, like Zizzik):** the suns "notice" us — heat/exposure complications, a
   cruel event. **Denied/dark (good):** he looks elsewhere. _Second sign-inverted god: keeping Sh'kaar
   LOW is the goal._
+- **★ (a-reframe) The BATTLE-ESCALATION METER — Sh'kaar as the Unbeatable One / god of Time & Inevitability
+  (user 2026-08-08).** Every **violent battle the clan fights** wakes him **more awake, more passionate,
+  hungrier** — a rising meter with a **double edge**: it **HARDENS the Jawa** (a grim battle-fervour —
+  tougher, better able to resist pain and shock), **BUT** as it climbs it **breeds dominance-seeking
+  arguments in the clan, draws more frequent animal/brute attacks, and grows a sense of unease and
+  approaching doom — enemies seem to know where the clan is and close faster; hiding places stop feeling
+  safe.** War begets exposure begets more war. He **HATES Ishko** for being the one thing that *evades*
+  the inevitable, so the natural counter to a rising Sh'kaar is Ishko's stillness: **don't fight → don't
+  feed the meter → it cools.**
+- **★ (b-reframe) The costly lever — feed him a death that isn't yours (user 2026-08-08).** To *calm* a
+  woken Sh'kaar, **give him a killing to gorge on that costs the clan nothing of its own** — e.g.
+  **prisoner death-matches (gladiatorial):** let him feast on the prisoners' deaths and **redirect his
+  burning gaze away from the clan.** A dark, **§19.5-clean** lever: the payoff is *mood/threat-pressure
+  relief* (the escalation meter drops, doom-unease eases), **never loot.** It buys reprieve through
+  atrocity. _(Cross-note: the death-match also feeds `▲Zizzik` — catastrophe — so calming one evil god
+  slightly feeds the other; see §8b.)_
 
 ### ⑨ Ozzik the Shamed — ambition, pride, grief (THE TRAP; canon §2.0b ⑨)
 _The sign-complex god: you MUST court him to advance, and courting him is what exposes you. His high
@@ -602,6 +627,8 @@ leave/never-root · ⑦Zizzik malfunction/betrayal/breaks (inverted) · ⑧Sh'ka
 **Combat & defense doctrine**
 - **Win by attrition — close doors, let the enemy break on the walls and leave** → `↑Ishko` (large — his ideal defense, §①), `↓Sh'kaar` (denied his exposure).
 - **Win by open, aggressive sally in daylight** → `▲Sh'kaar` (his kind of war), `↓Ishko`, `↑Ozzik` faint (martial pride).
+- **Fight ANY violent battle at all** → `▲Sh'kaar` climbs the **battle-escalation meter** (§3⑧) — a rising Sh'kaar *hardens* the clan but breeds dominance-quarrels, more beast/brute attacks, doom-unease, and faster-arriving enemies. The way to keep him low is **Ishko's stillness — don't fight.**
+- **Stage a prisoner death-match (gladiatorial)** → **calms a woken Sh'kaar** (feed him a death that isn't yours; escalation meter drops, doom-unease eases — the §3⑧ costly lever), but `▲Zizzik` (catastrophe fed) and `↓Oomo` faint (life spilled). A dark reprieve bought with atrocity — §19.5-clean (mood/threat relief only, never loot).
 - **Use EXPLOSIVES** → `↓Ozzik` (large — "the ultimate folly," destroys what could be taken), `▲Sh'kaar` (flame/light).
 - **Use ION / disabling weapons** → `↑Ozzik` (his favored arms — disable and acquire, §weapons doctrine).
 - **Fight/move under cover of darkness** → `↑Ishko`; **light a flare/lamp in the field** → `▲Sh'kaar` + `↓Ishko` (the taboo).
@@ -611,7 +638,7 @@ leave/never-root · ⑦Zizzik malfunction/betrayal/breaks (inverted) · ⑧Sh'ka
 ### B. Things that BEFALL the player (events, not initiated)
 
 - **Gravship landing on a new tile** → triggers a rite (§5b); ambient tile read applies (`↑Ishko` if dark, `↑/↓Oomo` by water, `↓Ta'Baa` begins its root-clock again).
-- **A raid/siege arrives** → the *test*; **surviving by hiding/attrition** `↑Ishko`, **by open slaughter** `▲Sh'kaar`; heavy losses `↓` morale → `▲Zizzik`. A raid that arrives *because* you grew loud is Ozzik's bill (§8).
+- **A raid/siege arrives** → the *test*; **surviving by hiding/attrition** `↑Ishko`, **by open slaughter** `▲Sh'kaar`; heavy losses `↓` morale → `▲Zizzik`. A raid that arrives *because* you grew loud is Ozzik's bill (§8). **Any violent fight also climbs Sh'kaar's escalation meter (§3⑧)** — the more war, the more he wakes and the faster the next threat finds you (a self-feeding spiral only stillness breaks).
 - **Manhunter pack / predator attack** → Ishko-coded (the dark's teeth); surviving hidden `↑Ishko`. In the dark-fleshbeast terrain this is the ambient dread that keeps the clan home.
 - **A colonist has a MENTAL BREAK** (berserk/daze/binge) → `▲Zizzik` (large — the wrong spark in a mind, §⑦), `↓Oomo` if a food/water binge wastes stores.
 - **A violent internal social fight / jealousy brawl** → `▲Zizzik` (discord/betrayal-in-miniature), `↓Mob'Unloo` (a bond damaged); if it draws blood in the open, faint `▲Sh'kaar`. (Jealousy is deliberately left ON, §4.3b — this is where it feeds the pantheon.)
