@@ -566,7 +566,7 @@ These give the crew live theology to invoke and the agent live signal to narrate
 
 ---
 
-## 8b. The ACTION / EVENT → god audit — the ambient channel, populated (user, 2026-08-08)
+## 8b. The ACTION / EVENT → god audit — the ambient channel (rebuilt with user from the game up, 2026-08-09)
 
 _This is the concrete answer to §10's "exact ambient-event → delta mappings." It maps **what the player
 DOES** (deliberate acts, including ones that aren't a single skill — repair, raiding a map's plants,
@@ -574,7 +574,10 @@ sparing vs. killing) and **what BEFALLS the player** (events they don't initiate
 in which sign. **Notation:** `↑God` = pleased/fed-positively; `↓God` = angered/slighted; for the two
 sign-inverted gods (**Zizzik ⑦, Sh'kaar ⑧**) "fed" is BAD for the clan, written `▲Zizzik`/`▲Sh'kaar` to
 flag it as a red mark even when the god is "happy." Magnitudes are relative (small/med/large) — for agent
-G to tune. **Everything here is §19.5-legal: these move MOOD/satiation only; never a material payout.**_
+G to tune. **Magnitude principle (user, 2026-08-09): common everyday acts/events are a WEAK influence
+that accumulates (a slow drip that adds up), while rare/high-impact acts/events are a LARGE, sudden
+modification — the size of the swing tracks the rarity and weight of the act, not just its category.**
+**Everything here is §19.5-legal: these move MOOD/satiation only; never a material payout.**_
 
 **Nine-god quick-key (for reading the arrows):** ①Ishko hide/still/dark · ②Ohm bold-machines/droids ·
 ③Oomo waters/sex/food/eggs · ④Mob'Unloo trade/debt/bonds · ⑤Rekko salvage/repair · ⑥Ta'Baa
@@ -584,9 +587,9 @@ leave/never-root · ⑦Zizzik malfunction/betrayal/breaks (inverted) · ⑧Sh'ka
 ### A. Things the player DOES (deliberate acts)
 
 **Salvage, repair & building**
-- **Repair a damaged building/ship part** (not a skill — a designation) → `↑Rekko` (large — his core sacrament), `↑Ohm` (small, the machine rewoken), `↓Ozzik` slightly (mending humble kit ≠ ambition).
+- **Repair a damaged building/ship part** (not a skill — a designation) → `↑Rekko` (large — his core sacrament), `↑Ohm` (small, the machine rewoken). **Ozzik is neutral to repair and maintenance** (mending is neither ambition nor its abandonment — it simply doesn't move him).
 - **Deconstruct/scrap something still repairable** → `↓Rekko` (large — "murder"), `▲Zizzik` small (waste/entropy pleases him). The classic costly-lever: resources now, Rekko's wrath later.
-- **Restore a derelict ship wing to function** → `↑Rekko`, `↑Ohm` (the Body wakes further), and — because it enlarges capability — `↑Ozzik` (med) → watch the ⑦⑧ amplifier.
+- **Restore a derelict ship wing / rewake an ORIGINAL system to function** → `↑Rekko` (large — restoring the sacred original is his holy path), `↑Ohm` (the Body wakes further). **Ozzik-neutral, and this is the key distinction: restoring what was always there is Rekko's humble work and does NOT feed the pride-meter** — only building genuinely NEW high-tech beyond the original spec does (next row). This resolves the Rekko⇄Ozzik axis cleanly: restore ≠ transcend.
 - **Construct a NEW high-tech building** (research bench, fabricator, droid bay) → `↑Ozzik` (large, ambition), `↑Ohm` if machine, **but `▲Sh'kaar`+`▲Zizzik` via the trap coupling**; `↓Rekko` if it's manufacture-not-salvage.
 - **Build with humble/salvaged materials** → `↑Rekko`, neutral-to-Ozzik. The pious way to grow.
 
@@ -597,11 +600,13 @@ leave/never-root · ⑦Zizzik malfunction/betrayal/breaks (inverted) · ⑧Sh'ka
 - **Timid/idle machine handling; letting powered kit sit unused** → `↓Ohm` (small, contempt for timidity).
 
 **Water, food & the body (Oomo)**
-- **Sex / lovin'** (any pairing, incl. slaves/visitors per §4.3b) → `↑Oomo` (the passing of waters), `↑Mob'Unloo` if it's a newly *accepted* advance (a bond struck).
+- **Sex / lovin'** (any pairing, incl. slaves/visitors per §4.3b) → `↑Oomo` (the passing of waters), `↑Mob'Unloo` if it's a newly *accepted* advance (a bond struck). **A socially INAPPROPRIATE hookup** (cheating, a jealousy-provoking pairing) → additionally `▲Zizzik` (the wrong spark in the heart, lovers set against each other — he feasts on it).
+- **A romantic advance is REJECTED** → `↓Oomo` (waters offered and refused, §③) **+ `↓Mob'Unloo`** (a bond offered and declined — a deal that fell through, a contract unmade).
 - **A Jawa gives birth / lays an egg** → `↑Oomo` (large — the sanctuary vision realized), `↑Mob'Unloo` small (a new soul on the ledger).
 - **Colony runs OUT of food** → `↓Oomo` (large — the body drying out), `↓` general morale feeds `▲Zizzik` via breakdowns.
 - **Waste/spill water; over-topping tanks wastefully** → `↓Oomo` (large), and topping tanks specifically `▲Sh'kaar` (his old grudge, §8).
 - **Ration/drink sparingly, bless the cup** → `↑Oomo` (small, steady).
+- **Cook a meal, especially fine/lavish/gourmet food** → `↑Oomo` (the body nourished, the family fed well), `↑Mob'Unloo` (small — fine foodstuffs are savored trade goods, value made delicious).
 - **Sit the ship on a well-watered tile** → `↑Oomo` ambient; **dry desert tile** → `↓Oomo` weak-but-constant. **Dark-obscured tile** → `↑Ishko` ambient (see events too).
 
 **Plants & taming (the two "double" cases)**
@@ -609,22 +614,26 @@ leave/never-root · ⑦Zizzik malfunction/betrayal/breaks (inverted) · ⑧Sh'ka
 - **Harvest wild plants on a raided map WITHOUT farming** (strip the tile and go) → **`↑Ta'Baa`** (take and leave, don't root!) — same skill, *opposite* verdict from farming. `↑Mob'Unloo` faintly (resources gathered = value). A key nuance: it's *rooting*, not *plants*, that offends.
 - **Tame an animal (patience)** → `↑Ishko` (the still hand the beast trusts, §①), small `↑Oomo` (a life kept).
 - **Slaughter/butcher a tamed animal** → `↓Ishko` slightly (impatience/violence over the patient bond); neutral otherwise (pragmatic).
-- **Hunt wild game by dark** → neutral-to-`↑Ishko` (unseen killing); **hunting in bright open daylight** → `▲Sh'kaar` (exposure).
+- **Hunt a wild animal** → `↑Ishko` (significant — the patient unseen stalk and the shot from cover are his), `↑Oomo` (weak — game provides for the family). **Hunting in bright open daylight** additionally `▲Sh'kaar` (exposure). The blessed way to feed the clan without farming.
 
 **Trade, debt & bonds (Mob'Unloo)**
 - **A trade caravan ARRIVES** (see also events) — the *opportunity*; completing business is what scores.
 - **Complete a high-volume trade** → `↑Mob'Unloo` (large — the sacred exchange honored), `↑Ozzik` small (commerce as statecraft).
 - **Accept a gift with no counter-gift / stiff a debt** → `↓Mob'Unloo` (large — the cardinal sin).
 - **Settle/repay a debt; balance a dead one's ledger (ghost laid to rest)** → `↑Mob'Unloo`.
+- **Steal successfully and get away clean** → `↑Mob'Unloo` (large — the ultimate trade, something for nothing, the perfect deal) **+ `↑Rekko`** (giving a neglected thing a better home, §⑤), **then needs `↑Ishko` after** (the stolen thing drags its old owners' reasons behind it — hide and be ready to flee, §⑤/§⑥). The convergence act: two gods love it for opposite reasons.
+- **Steal and get CAUGHT** → `↓Mob'Unloo` (large — being caught is unskillful barter, trade so clumsy it became naked betrayal, a craftsman's shame) **+ `▲Zizzik`** (the plan came apart — his signature). He condemns being *bad* at it, not the theft.
+- **Convert a pawn to The Salvation** → `↑Mob'Unloo` (a soul struck onto the ledger, a contract of belief), `↑Oomo` (a new member the household gains) **+ `↓Ishko` (weak — nervous)** (a convert is a new mouth that knows the clan's secrets = a small exposure risk).
 - **Marriage** → `↑Mob'Unloo` (the great contract) **+ `↑Ozzik`** (marriage is one of his instruments — alliance by blood) + `↑Oomo` (promised waters).
 - **A dalliance with an OUTSIDER (visitor/trader/other faction)** → `↑Oomo` (waters passed), `↑Mob'Unloo` (a bond across the ledger) — **but if it seeds a diplomatic tie, `↑Ozzik`** (statecraft); a *jealousy blow-up* afterward → see internal-fight below.
 
 **Slavery, outposts, alliances, betrayal (the Ozzik cluster)**
 - **Capture a prisoner** → `↑Ozzik` (the will to dominate — his appetite), `↑Mob'Unloo` (a body now owed/owned); `↓Ishko` faint (a captive is a mouth that can talk = exposure risk).
 - **Enslave a prisoner / buy a slave off the block** → `↑Ozzik` (large — enslavement is his), `↑Mob'Unloo` (chattel on the ledger). **But Ozzik "always fails to enslave in the end"** — high slave-holding raises his pride-meter → `▲Sh'kaar/Zizzik` (a rebellion waiting).
-- **Emancipate a slave-Jawa into the clan** → `↑Oomo`/`↑Mob'Unloo` (a soul brought in, a bond honored), `↓Ozzik` (mercy is not dominion) — the pious counter to enslavement.
+- **Emancipate a slave into the clan** → `↑Oomo`/`↑Mob'Unloo` (a soul brought in, a bond honored), `↓Ozzik` (mercy is not dominion) — the pious counter to enslavement.
+- **Rescue/buy out a masterless JAWA slave specifically** → `↑Oomo` (large — the standing imperative, §4.3b: a Jawa under a non-Jawa master is kin torn from the family; leaving him is blasphemy), `↑Mob'Unloo` (the bond bought back). Sharper and holier than freeing a generic slave — this one Oomo *demands*.
 - **Found an outpost** → `↑Ozzik` (large — expansion), `↓Ta'Baa` (rooting, even remotely!) — an Ozzik-vs-Ta'Baa flashpoint the win-paths lean on.
-- **Forge a diplomatic alliance** → `↑Ozzik` (large — "the game of Empire," his statecraft face, feared as much as tech), `↑Mob'Unloo` (a standing account). Coupling applies: a proud web of allies is exposure.
+- **Forge a diplomatic alliance** → `↑Ozzik` (large — "the game of Empire," his statecraft face, feared as much as tech), `↑Mob'Unloo` (weak — a standing account, a bond on the books); **but `↓Ishko` (med — an alliance is entanglement, visibility, obligations that pull you into the open)** and **`↓Ta'Baa` (weak — bonds are a kind of rooting, a tie that resists flight)**. Coupling applies: a proud web of allies is exposure. The humble bloc distrusts alliances even as the ambitious one courts them.
 - **Betray an ally / break a pact** → `↑Ozzik` (betrayal is explicitly his), `▲Zizzik` (treachery is his too — the ⑦⇄⑨ near-rhyme made mechanical), `↓Mob'Unloo` (a debt dishonored).
 
 **Combat & defense doctrine**
@@ -632,9 +641,16 @@ leave/never-root · ⑦Zizzik malfunction/betrayal/breaks (inverted) · ⑧Sh'ka
 - **Win by open, aggressive sally in daylight** → `▲Sh'kaar` (his kind of war), `↓Ishko`, `↑Ozzik` faint (martial pride).
 - **Fight ANY violent battle at all** → `▲Sh'kaar` climbs the **battle-escalation meter** (§3⑧) — a rising Sh'kaar *hardens* the clan but breeds dominance-quarrels, more beast/brute attacks, doom-unease, and faster-arriving enemies. The way to keep him low is **Ishko's stillness — don't fight.**
 - **Stage a prisoner death-match (gladiatorial)** → **calms a woken Sh'kaar** (feed him a death that isn't yours; escalation meter drops, doom-unease eases — the §3⑧ costly lever), but `▲Zizzik` (catastrophe fed) and `↓Oomo` faint (life spilled). A dark reprieve bought with atrocity — §19.5-clean (mood/threat relief only, never loot).
-- **Use EXPLOSIVES** → `↓Ozzik` (large — "the ultimate folly," destroys what could be taken), `▲Sh'kaar` (flame/light).
+- **Fire a RANGED weapon (any distance weapon)** → `↑Ishko` (small — killing at a remove, the shot from cover, is his kind of violence), `▲Sh'kaar` (small — still fighting, still exposure). The Jawa's blessed way to fight: hurt them before they reach you.
+- **Fight in MELEE (any close weapon)** → `↓Ishko` (med — dragged out of cover into the open, hands-on and seen), `▲Sh'kaar` (large — close, exposed, brutal is his purest war; feeds the escalation meter hard). Melee is the impious way to fight.
+- **Use EXPLOSIVES** → `↓Ozzik` (large — "the ultimate folly," destroys what could be taken), `▲Sh'kaar` (flame/light), `↓Oomo` (small — the fire, the body scorched); and `↑Ta'Baa` when used as an escape-door (traps/luring, the §⑥ way). The three-to-four-way that best shows one act splitting the pantheon.
 - **Use ION / disabling weapons** → `↑Ozzik` (his favored arms — disable and acquire, §weapons doctrine).
 - **Fight/move under cover of darkness** → `↑Ishko`; **light a flare/lamp in the field** → `▲Sh'kaar` + `↓Ishko` (the taboo).
+
+**Movement & rooting (Ta'Baa)**
+- **LAUNCH the gravship** → `↑Ta'Baa` (large — the holiest act, §⑥; the launch-with-full-cargo is his single most sacred moment, ecstatic-and-sacrilegious), `↑Ishko` if it's a flee-back-into-the-dark rather than a bold sortie. **A launch snatched free as enemies are about to board** = the maximum, the joyous impossibility.
+- **Send/return a raiding caravan (strike, then flee home to the dark)** → `↑Ta'Baa` + `↑Ishko` together — the raid-and-return posture that reconciles the pantheon's central feud (§2.0d centre-of-gravity). The one movement both gods bless.
+- **Sit rooted on one tile too long / entrench, grow comfortable and wealthy** → `↓Ta'Baa` (the rooted-erosion clock climbs, §2/§3⑥), `↑Ishko` faint (stillness). His slow, compounding displeasure — the drip that forces the next launch.
 
 **Ritual & faith acts** (mechanics in §5–5c) — hold an owed rite → resets skip-decay + gives the biased-positive participation roll; **skip/neglect it** → `↓ALL except Ishko` (§5b).
 
@@ -642,12 +658,13 @@ leave/never-root · ⑦Zizzik malfunction/betrayal/breaks (inverted) · ⑧Sh'ka
 
 - **Gravship landing on a new tile** → triggers a rite (§5b); ambient tile read applies (`↑Ishko` if dark, `↑/↓Oomo` by water, `↓Ta'Baa` begins its root-clock again).
 - **A raid/siege arrives** → the *test*; **surviving by hiding/attrition** `↑Ishko`, **by open slaughter** `▲Sh'kaar`; heavy losses `↓` morale → `▲Zizzik`. A raid that arrives *because* you grew loud is Ozzik's bill (§8). **Any violent fight also climbs Sh'kaar's escalation meter (§3⑧)** — the more war, the more he wakes and the faster the next threat finds you (a self-feeding spiral only stillness breaks).
-- **Manhunter pack / predator attack** → Ishko-coded (the dark's teeth); surviving hidden `↑Ishko`. In the dark-fleshbeast terrain this is the ambient dread that keeps the clan home.
+- **Manhunter pack / predator attack** → the *arrival* feeds `▲Zizzik` (the wrong spark, nature turned on you) and `▲Sh'kaar` (teeth in the dark, the inevitable finding you); but **surviving it by hiding/outlasting** `↑Ishko` (the dark's teeth are his — the turtle that never cracked). In the dark-fleshbeast terrain this is the ambient dread that keeps the clan home — and Ishko's reward for staying still.
 - **A colonist has a MENTAL BREAK** (berserk/daze/binge) → `▲Zizzik` (large — the wrong spark in a mind, §⑦), `↓Oomo` if a food/water binge wastes stores.
 - **A violent internal social fight / jealousy brawl** → `▲Zizzik` (discord/betrayal-in-miniature), `↓Mob'Unloo` (a bond damaged); if it draws blood in the open, faint `▲Sh'kaar`. (Jealousy is deliberately left ON, §4.3b — this is where it feeds the pantheon.)
 - **A machine/turret/ship system MALFUNCTIONS or breaks down** → `▲Zizzik` (his signature), `↓Ohm` (his body failing) — the Ohm⇄Zizzik see-saw firing live.
 - **Solar flare / eclipse / weather** → **eclipse `↑Ishko`** (blessed dark) **+ `↓Sh'kaar`** (the suns hidden = his humiliation); **solar flare `▲Zizzik`** (machines die — he crows) **+ `▲Sh'kaar`** (killing light); **sandstorm/red-fog** `↑Ishko` (concealment).
-- **Disease / plague sweeps the colony** → `↓Oomo` (the body's waters fouled), `▲Zizzik` (the body malfunctioning), general `↓`.
+- **Disease / plague sweeps the colony** → `▲Zizzik` (the body malfunctioning, his signature). **A disease outbreak can itself be a low-Oomo consequence** — a slighted Oomo lets sickness in, and his own wet tiles breed it (§③): the god of the body's waters governs both health and rot. **But TENDING the sick is sacred to Oomo** → `↑Oomo` (caring for the body's waters earns his favor; the nurse's work is devotional). So a plague both *punishes* neglect of Oomo and *offers* a way to court him.
+- **Insect infestation erupts** → `▲Zizzik` (his trademark — one of the calamities a woken Zizzik throws, §⑦). Then the *response* forks: **harvesting the insect meat/jelly and gathering that food** → `↑Oomo` (the family provided for — Jawa don't mind eating insect meat), while **blasting through the hive violently (explosives/open battle)** → `▲Sh'kaar` (awakening the Searer, §⑧). Endure-and-harvest is pious; burn-it-out feeds the evil clock.
 - **A wanderer/refugee joins; a slave-block caravan offers Jawa** → `↑Mob'Unloo` (a soul to the ledger), `↑Oomo` (more life); buying kin back is a standing imperative (§4.3b).
 - **A trade caravan / orbital trader arrives** → `↑Mob'Unloo` opportunity (scores on completion, above); if it's the beast-monger, ties to §Livestock.
 - **A quest is offered (CQF/vanilla)** → often Ozzik-flavored if it dangles tech/allies/dominion; the *offer* tempts, the *taking* scores per the action rows above.
