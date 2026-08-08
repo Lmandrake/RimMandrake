@@ -741,7 +741,7 @@ Resolved the campaign's biggest structural gap. The autonomy-session review put 
    - **Tier 2 — major plot beat (~every 2–3 tiles):** a "crashed ship"-class discovery that advances the arc and reframes the player's own existence/origin (the crashed Factory-ship / Jawa-origin fiction). Delivered via native Odyssey Landmarks (tile *type*) → Ancient Urban Ruins / RimMaster (authored *content*).
    - **Arc-closing rate = DEFERRED TO PLAYTESTING (user):** how fast the Imperial Heat gauge should climb and how many Tier-2 beats separate the acts is a tuning question to settle on a live save, not a design commitment. Recorded as the first playtest objective for the arc.
 
-**Cross-refs:** delivery backbone for both tiers = native Odyssey Landmarks + Ancient Urban Ruins + Custom Quest Framework (see `required_mods.md`); pacing driver = Storyteller Enhanced Continued + Faction Raid Cooldown (bounds Act-II/III raid density so escalation reads as qualitative, not point-inflation — §19.5). **Open (deferred to user):** crew-churn model (mechanical vs roleplay).
+**Cross-refs:** delivery backbone for both tiers = native Odyssey Landmarks + Ancient Urban Ruins + Custom Quest Framework (see `required_mods.md`); pacing driver = Storyteller Enhanced Continued + Faction Raid Cooldown (bounds Act-II/III raid density so escalation reads as qualitative, not point-inflation — §19.5). **Crew-churn model — RESOLVED (user, 2026-08-08): purely demographic** (birth⇄exile/death per jawa §4.3–4.7); the salvage-debt passenger alternate was dropped.
 
 ## ✅ WIN CONDITION SHARPENED — "REPAIR THE SHIP, THEN BREAK THE ORBITAL BLOCKADE" + THE HUTT-ALLIANCE QUEST-LINE (2026-08-06, user)
 
