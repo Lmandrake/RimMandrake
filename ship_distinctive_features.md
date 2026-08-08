@@ -410,6 +410,13 @@ the evaluation, your call remains open.**_
 > INSTALL, not now:** the Jawa-speech FORK — RimDialogue's Jawa Special-Instructions and the static
 > JawaVoice SpeakUp reskin both write interaction bubbles, so pick ONE lane in situ (don't stack).
 > RimAI (ship) and pawn-speech (whichever) are complementary surfaces and both stay.
+>
+> **📝 PASTE-READY PROMPTS PRE-AUTHORED 2026-08-08 → `llm_voice_preauthoring.md`.** The actual
+> text is now written and ready for install: PART A = the RimAI Persona for the Kolyska
+> machine-spirit ("Cradle-Mind" — identity/worldview/backstory fields, anti-exp refusal baked into
+> voice, voice-only); PART B = the RimDialogue "Additional Instructions" Jawa-scoped dynamic-Jawaese
+> prompt + the A/B-vs-JawaVoice table + scope/model-quality install checks. The two in-situ
+> decisions (RimAI tools ignorable? Jawa lane JawaVoice-vs-RimDialogue?) remain open by design.
 
 ### Q2 — graffiti / signs on walls: YES → ✅ BOTH ADOPTED (user, 2026-08-07)
 
