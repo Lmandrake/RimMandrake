@@ -1,0 +1,524 @@
+# Mod Inventory — Gravtasm & Bounty Hunter saves vs. our decision docs
+
+_Generated 2026-08-08. Source: the mod load orders embedded in `savegame/03_Gravtasm__starting_save.rws` (RimWorld 1.6, 587 mods) and `savegame/24_Bounty_Hunter__starting_save.rws` (RimWorld 1.5, 292 mods). This lists every mod that appears in one or both saves and is **not already named in our decision docs** (`mods/*.md`, `context.md`, `concept.md`, and the main worldbuilding docs). It is a raw scavenging list — inclusion here is NOT a recommendation, only 'we haven't ruled on this yet.'_
+
+**478 unique un-decided mods.** Origin tag: _(Gravtasm)_, _(Bounty)_, or _(both)_.
+
+> ⚠️ Two caveats before adopting anything here: (1) Bounty Hunter is a **1.5** save — some of its mods have no 1.6 build; always confirm `supportedVersions` at the machine. (2) A mod being in a Samuel Streamer save means it survived *his* curation for *his* run, not that it fits our anti-exponential + Jawa-scavenger constraints.
+
+## Retexture / visual art  (70)
+
+- [CAT] Show Hair With Hats or Hide All Hats — _Bounty_
+- [CF] Odyssey Upscaled 2x — _Gravtasm_
+- [MUS]逆重飞船舱壁贴图替换 Gravship Hull Texture — _Gravtasm_
+- [NL] Facial Animation - WIP — _Gravtasm_
+- [TW1.5]堂丸贴图重置~服饰 Tang's~Retexture~Apparel — _Bounty_
+- [TW1.5]堂丸贴图重置~脸型~伤疤 Tang's~Retexture~Face~Scar — _Bounty_
+- [TW1.6]幻彩林地 Rainbow forest — _Gravtasm_
+- Adjustments for Reel's Facial Animation Textures — _Gravtasm_
+- Armored Leotards — _Gravtasm_
+- Audrey's Styles: Omnibus Edition — _Gravtasm_
+- Basic RimThemes Recolours — _both_
+- Better Trees: More Djeeshka Like Textures — _Gravtasm_
+- Blood Animations — _both_
+- Circuit Breaker Retexture — _Gravtasm_
+- Clean Textures — _both_
+- Clean Textures - less glare — _Bounty_
+- Consistent Textures — _Gravtasm_
+- Croiyaki's Deadlock Hairs — _Gravtasm_
+- Drawn Spots — _Gravtasm_
+- Dynamic Aesthetic Backgrounds VBE Edition — _Gravtasm_
+- Et Cetera — _Gravtasm_
+- Extra Explosion Effects — _both_
+- FEB's Colored Gravship Lights — _Gravtasm_
+- FemaleBodyVariants — _Gravtasm_
+- Fluff's Curvaceous Underarmored Mechanoids — _Gravtasm_
+- Food Texture Variety Core — _Gravtasm_
+- Genetic Heads Framework for [NL] Facial Animation — _Gravtasm_
+- Gerrymon's Greekcore Style — _Gravtasm_
+- Gerrymon's Upscaled Vanilla Textures — _Gravtasm_
+- Gloryious Grass Swap — _Gravtasm_
+- Gradient Hair — _Gravtasm_
+- Gradient Hair Fixes — _Gravtasm_
+- Graphics Settings+ — _both_
+- Grav-Shuttle Retextured — _Gravtasm_
+- GravTech Retextured — _Gravtasm_
+- Hex-Retexture — _Bounty_
+- Holo Dancers — _Gravtasm_
+- Inject Genes Retextured — _Gravtasm_
+- Injury Texture Variety — _Gravtasm_
+- Lagless Lamps - C# — _Gravtasm_
+- Muzzle Flash — _Gravtasm_
+- Nice Hands Retexture — _Gravtasm_
+- Oracle + Erin's HD Tattoos — _both_
+- Oracle's Miscellania — _Gravtasm_
+- Oracle's Skill Icon Retextures — _Bounty_
+- Perspective: Buildings (Continued) — _Gravtasm_
+- Projectile Bullet Retexture — _both_
+- Recycle This - Retextured! — _Bounty_
+- Reel's Facial Animation Textures — _Gravtasm_
+- Reel's Galactic Hairs — _Gravtasm_
+- ReGrowth: ReTextures — _Bounty_
+- Retextured! - Recycle This — _Gravtasm_
+- RetroNova — _Gravtasm_
+- Roo's Birthmarks and Blemishes — _Bounty_
+- Scattered Flames — _Bounty_
+- Scrubdaddy's Bodies — _Gravtasm_
+- Scrubdaddy's Bodies Compatibility Patches — _Gravtasm_
+- ScrubDaddy's Hairstyles — _Gravtasm_
+- Simple Cape and Hood Retexture — _Gravtasm_
+- Style Merging — _Gravtasm_
+- Tech Tattoos — _both_
+- TMaterials - Glass — _Gravtasm_
+- UI Retexture — _Gravtasm_
+- Van's Retexture : Steel — _both_
+- Vanilla Beards Retextured — _Bounty_
+- Vanilla Hair Retextured — _both_
+- Vanilla Pawns Retextured — _Bounty_
+- Vanilla Textures Expanded — _both_
+- Vanilla Textures Expanded - [NL] Facial Animation — _Gravtasm_
+- Yayo's Animation (Continued) — _both_
+
+## UI / quality-of-life  (71)
+
+- AllowToolGhoulFix — _Bounty_
+- Architect Icons — _both_
+- Architect Icons: Improved — _Gravtasm_
+- Auto links — _both_
+- Better Scroll Bars — _Gravtasm_
+- Better Workbench Management — _both_
+- Block Unwanted Minutiae (Continued) — _Gravtasm_
+- Blueprints - Forked — _Bounty_
+- Blueprints Forked - 1.6 — _Gravtasm_
+- Build From Inventory — _Bounty_
+- Build From Inventory - Continued — _Gravtasm_
+- Clean Command Bar — _Gravtasm_
+- Compact Work Tab (Continued) — _both_
+- Craft with Color — _Gravtasm_
+- Ctrl F — _Bounty_
+- CustomUIScales — _Gravtasm_
+- Defensive Positions — _Bounty_
+- Defensive Positions - Forked — _Gravtasm_
+- Designator Shapes — _both_
+- Destroy Item — _both_
+- DragSelect — _both_
+- Dynamic Trade Interface — _Bounty_
+- Faction Customizer — _both_
+- Faction Display Fix — _Gravtasm_
+- Fahrenheit and Celsius — _both_
+- Fix Styled Blueprints — _both_
+- Float Sub-Menus — _both_
+- Go Scout — _Gravtasm_
+- Grouped Pawns Lists — _both_
+- Hide Your Wealth — _Bounty_
+- I Aint Building That — _both_
+- Immersive Opening — _Gravtasm_
+- Keyz Reference Tools — _Gravtasm_
+- Keyz' Allow Utilities — _Gravtasm_
+- Last Visited (Continued) — _Gravtasm_
+- Letter Permanent Injury — _both_
+- Letter stack cleaner — _Gravtasm_
+- Limit Quest Pawns — _Gravtasm_
+- More Pause Events — _both_
+- MutatorWorldIcons — _Gravtasm_
+- Nice Bill Tab — _Gravtasm_
+- Nice Inventory Tab — _Gravtasm_
+- Nice Plants Menu — _Gravtasm_
+- No Forced Slowdown — _both_
+- No Job Authors — _both_
+- No Modlist on Loading — _Gravtasm_
+- Optional Icons for Architect Icons — _both_
+- Pawn Badge Fan Fork [Adopted] — _Bounty_
+- Premade Xenotype Floatmenu to Dialog — _Gravtasm_
+- QualityBuilder — _both_
+- Recubes Your Cube — _both_
+- Relevant Stats In Description — _both_
+- Restock Notification[1.5] — _Bounty_
+- Rimano: Architect Icons — _both_
+- Scenario Searchbars — _Bounty_
+- Search Option — _Gravtasm_
+- Searchable Menus — _both_
+- Show Buildable Material Count — _Gravtasm_
+- Show Me Your Hands — _Gravtasm_
+- SimpleCameraSetting — _both_
+- Smart Speed — _both_
+- Tab-sorting — _both_
+- Toggleable Overlays — _both_
+- Toggleable Readouts — _both_
+- Toggleable Shields — _both_
+- Tweaks Galore — _Gravtasm_
+- Undraft After Tucking Forked — _Gravtasm_
+- VFE Props and Decor Search Bar Addon — _Gravtasm_
+- WealthCorrector — _Bounty_
+- Work Box Highlight — _Gravtasm_
+- Xenotype Summary — _Gravtasm_
+
+## Performance / technical / library  (50)
+
+- [FSF] Complex Jobs — _both_
+- [FSF] FrozenSnowFox Tweaks — _Gravtasm_
+- Air Generator — _Bounty_
+- AlcoholIntoxication — _Gravtasm_
+- Animal Apparel: Framework — _Gravtasm_
+- Better ModMismatch Window — _both_
+- Bunny Framework — _Gravtasm_
+- ChezhouLib — _Gravtasm_
+- Circuit Breaker — _Gravtasm_
+- Clean Pathfinding 2 — _Bounty_
+- Compact Hediffs — _both_
+- Config Applied Check — _both_
+- Despicable 2 - Core — _Gravtasm_
+- Dubs Performance Analyzer — _both_
+- Landmark Density Scaler — _Gravtasm_
+- Linkable Groups — _Gravtasm_
+- Loading Progress — _Gravtasm_
+- Log Publisher from HugsLib — _Gravtasm_
+- Miniaturization (Minify) — _Gravtasm_
+- Minify More — _Bounty_
+- Missile Girl - Performance Mod — _Gravtasm_
+- Mod Medicine Patch — _Bounty_
+- Not My Fault — _Bounty_
+- OgreStack — _Bounty_
+- Optimization: Leathers - C# Edition — _both_
+- Optimization: Meats - C# Edition — _both_
+- PawnTargetFix — _Bounty_
+- Performance - Slower Pawn Tick Rate — _Gravtasm_
+- Performance Esmolas — _Gravtasm_
+- Performance Optimizer — _both_
+- Perishable — _Gravtasm_
+- Placebo — _Gravtasm_
+- PnzrMods Engine Cooldown Tweak — _Gravtasm_
+- Reasonable Components 1.5 — _Bounty_
+- Remove Gradual Relations Decay - Patchy — _Bounty_
+- Resource Dictionary — _both_
+- RIMMSqol — _both_
+- RimSaves — _both_
+- RimTek Core — _Gravtasm_
+- RimTek DocMate — _Gravtasm_
+- RocketMan - Performance Mod — _Bounty_
+- RWLayout — _both_
+- Stack gap — _both_
+- TD Find Lib — _Bounty_
+- TDS Bug Fixes — _Bounty_
+- Turret Performance Tweaks — _Gravtasm_
+- Universum — _Bounty_
+- Verbose-Forked — _Gravtasm_
+- Visual Exceptions — _Bounty_
+- World Pawn Cleaner — _both_
+
+## Storage / logistics  (15)
+
+- [FSF] No Default Shelf Storage — _both_
+- [sbz] Fridge — _Gravtasm_
+- [sbz] Gravship Storage — _Gravtasm_
+- [sbz] Neat Storage — _Gravtasm_
+- [WYD] Worthless Junk (Adjusted) — _Gravtasm_
+- Ancient Junk Loot — _Gravtasm_
+- Matter Manipulator — _Gravtasm_
+- Recycle This (Continued) — _both_
+- Replimat — _Gravtasm_
+- RimIOT - Logistic Matrix — _Gravtasm_
+- Salvagers Refuel Asteroid — _Gravtasm_
+- Shelf Stack Logistics Reworked — _Gravtasm_
+- Simple Recycling — _Bounty_
+- Simple Utilities: Fridge — _both_
+- VVE - Deconstructable Vehicles Junk — _both_
+
+## Gravship / ship / orbit / vehicles  (52)
+
+- [kyzy] Ship Wall Enhanced — _Gravtasm_
+- [lmgginspace] Repair bed — _Gravtasm_
+- [MUS]太空基地家具Space Base Furniture — _Gravtasm_
+- Air Territories — _Gravtasm_
+- Almost There! Fork — _Gravtasm_
+- Almostthere1.5 — _Bounty_
+- Animal Apparel: Vac Belt — _Gravtasm_
+- Arsenal - Orbital Security — _Gravtasm_
+- Astrofuel gear — _Gravtasm_
+- Bigger Vac Barriers — _Gravtasm_
+- Bug Infested Asteroid — _Gravtasm_
+- Buildable Orbital Cannon — _Gravtasm_
+- Camping Tent — _Bounty_
+- Caravan Skill Sort — _Gravtasm_
+- Comfortable Vehicles — _Gravtasm_
+- Debt-Bound Gravship — _Gravtasm_
+- Deep Orbit — _Gravtasm_
+- Desolate Moon — _Gravtasm_
+- Edge of Descension - Hovercrafts — _Bounty_
+- Faction - Orbiters — _Gravtasm_
+- Grav-Shuttle — _Gravtasm_
+- Grav-Shuttle TakeOffAnimFix — _Gravtasm_
+- GravEngine Transmits Power — _Gravtasm_
+- Gravship Captain Set — _Gravtasm_
+- Gravship Crashes — _Gravtasm_
+- Gravship Crew Manifest Saver — _Gravtasm_
+- Gravship Exporter — _Gravtasm_
+- HostileEmpireSpaceFaction — _Gravtasm_
+- Instant Caravan — _Gravtasm_
+- Launch into empty space — _Gravtasm_
+- LEVIATHANS:SANDWORM — _Gravtasm_
+- Modifiable Shuttle - Trailblazer — _Gravtasm_
+- More Gravship Workbenches — _Gravtasm_
+- NoCaravanAbandon — _Bounty_
+- Nomad Friendly Quests — _Gravtasm_
+- Orbital Base Gifting — _Gravtasm_
+- Orca Shuttle — _Gravtasm_
+- Ornithopter — _Bounty_
+- Shuttle Dock — _Gravtasm_
+- Smaller Landing Pads — _Bounty_
+- Sos2 Eva Patcher — _Bounty_
+- Space Cowboy Vehicles — _both_
+- Space Worms (Continued) — _Gravtasm_
+- Spacer Arsenal — _Gravtasm_
+- Spacer Pack - Repackaged — _Gravtasm_
+- StK VacDoors — _Gravtasm_
+- Trystan Traveller's Shuttle Schematics — _Gravtasm_
+- Universal Lift Structure — _Gravtasm_
+- Vac-U-Shields — _Gravtasm_
+- Various Space Ship Chunk (Continued) — _Gravtasm_
+- Wandering Caravans — _Bounty_
+- You Drive, I Sleep — _Gravtasm_
+
+## Factions / diplomacy / world / trade  (23)
+
+- [FSF] Better Pawn Lending Quest — _Bounty_
+- [RH2] CPERS: Arrest Here! — _both_
+- [SR]Raid Extension Continued — _Bounty_
+- Alliance Assault(Release) — _Bounty_
+- AutoAddPawnToOutpost — _Gravtasm_
+- Better Traders — _Bounty_
+- Better Traders Guild — _Gravtasm_
+- Call For Intel — _Bounty_
+- Close Settlements — _both_
+- Faster Settlement Restock — _Gravtasm_
+- My Little Planet — _both_
+- Questing Gives Goodwill — _Bounty_
+- RimCities — _Bounty_
+- RimQuest (Continued) — _Bounty_
+- Settlement quests — _Bounty_
+- Settlements buy more — _Gravtasm_
+- Simple Warrants — _both_
+- The Price Is Right (Continued) — _Gravtasm_
+- TraderGen — _Bounty_
+- Trading House — _Bounty_
+- Weight price — _Bounty_
+- World Domination Experimental — _Gravtasm_
+- Worldbuilder — _Gravtasm_
+
+## Pawns / social / relationships / ideology  (70)
+
+- [AP] Lovin' Reworked — _Gravtasm_
+- [ETF] Customizable Ritual Chairs — _Gravtasm_
+- [FSF] Meditation Freedom — _Bounty_
+- [LTS]Tenants — _Bounty_
+- [Og] Recruit Guest — _Gravtasm_
+- [RH2] Rimdeed® - Pawn Recruitment — _Gravtasm_
+- All Ideoligions Are Fluid — _Bounty_
+- Anima Obelisk — _Bounty_
+- Blindsight - Unified — _Bounty_
+- Choose the Lesson — _Gravtasm_
+- Cybranian - Ideology Virtues — _Gravtasm_
+- Do Lovin' When Idle — _Gravtasm_
+- Do Something for Idle — _Bounty_
+- Ducks' No Limits - Ideology (Continued) — _Bounty_
+- Eternal Pawns — _Gravtasm_
+- Family Relations: Adoption — _Gravtasm_
+- Gifts and Birthdays — _Gravtasm_
+- GratefulRefugees — _Gravtasm_
+- Helicopter Parenting — _Gravtasm_
+- Hot People Arent Freinds — _Gravtasm_
+- Intimacy - Socio Butterfly — _Gravtasm_
+- Keep Bed Ownership — _Bounty_
+- Keep Converting — _Gravtasm_
+- Kidnapped Pawns Die Less — _Gravtasm_
+- Living Bonds — _Gravtasm_
+- Manual Lovin Unofficial — _Gravtasm_
+- Mass Lovin' — _Gravtasm_
+- Millitarism Meme — _Gravtasm_
+- More Ritual Rewards — _Gravtasm_
+- More Ritual Seats — _Gravtasm_
+- Mrd Bedless Lovin — _Gravtasm_
+- Never Generate Relations — _both_
+- New Ritual Reward — _Gravtasm_
+- No Random Ideologies — _Gravtasm_
+- Obsidia Expansion - Ideology Icons — _Gravtasm_
+- Opinion-based Room Sharing — _Gravtasm_
+- Party Hard - Psycast Rituals — _Bounty_
+- Passive Ideology Shift — _Gravtasm_
+- Pawn Chronicles: Personal Epics — _Gravtasm_
+- Pawn Education (Continued) — _Gravtasm_
+- Pawn Name Variety — _Bounty_
+- Pawn Name Variety (Continued) — _Gravtasm_
+- Pawn Surrender — _Gravtasm_
+- Peer Pressure — _Bounty_
+- Peer Pressure (Continued) — _Gravtasm_
+- Persistent Precepts — _both_
+- Precepts and Memes (Continued) — _Gravtasm_
+- Precepts and Memes - Rituals module (Continued) — _Gravtasm_
+- PrisonerRansom — _Bounty_
+- Prisoners Can Betray — _Gravtasm_
+- Prisoners with jobs (definitely not slaves) — _Bounty_
+- Puritan Names — _Gravtasm_
+- Questing Meme — _both_
+- Recruit Slaves — _Gravtasm_
+- ReSplice: Charmweavers — _Gravtasm_
+- Reunion — _Gravtasm_
+- Rimsential - Homebound: Continued — _both_
+- Ritual Size Attenuation — _Gravtasm_
+- Same Room Lovin' (1.5, 1.6) — _Gravtasm_
+- Sensible Bed Ownership — _Gravtasm_
+- Sensmageddon — _Gravtasm_
+- Shared Joys — _Gravtasm_
+- Simple Leadership — _Gravtasm_
+- Sleep Meditation — _Bounty_
+- Stellaris Ideology Icons — _Gravtasm_
+- Therapy (Continued) — _Gravtasm_
+- Tribal Ideology Icons — _Gravtasm_
+- Ugly Together — _Gravtasm_
+- Uncapped Besties! — _Gravtasm_
+- Wololoo - Better Conversion and Recruitment — _both_
+
+## Combat / weapons / armor / medical  (31)
+
+- [CZK] Eye Prosthetics (Continued) — _Bounty_
+- Alpha Armoury — _Gravtasm_
+- Ancient Fallout Armory (1.4+) — _Gravtasm_
+- Better Explosions — _both_
+- Bill Doors' MedEvac - 1.6 Temporary — _Gravtasm_
+- Bionic icons — _both_
+- Brain In a Jar — _Gravtasm_
+- Composite Armor Vanilla — _Gravtasm_
+- Death Rattle - Biosculpter Patch — _Gravtasm_
+- DermalRegenerator — _Gravtasm_
+- Dual Wield — _Bounty_
+- Flak Dusters — _Gravtasm_
+- Full Gun Sell Price — _both_
+- Hussar Cloning Platform — _Gravtasm_
+- Inject Genes — _Gravtasm_
+- Integrated Genes — _Bounty_
+- Integrated Implants — _both_
+- Joywire — _Gravtasm_
+- Less Mechanoids — _Bounty_
+- Mad Skills+ — _Bounty_
+- Net Gun (Continued) — _Bounty_
+- Non-Lethal: Re-Factored — _Gravtasm_
+- Priority Treatment Ressurected — _both_
+- Rimsenal: Murder diversified — _Gravtasm_
+- RIMSide NSO Combat Armors — _Gravtasm_
+- Rocket's Medals — _Gravtasm_
+- Simple sidearms — _Bounty_
+- SS13 Armor — _Gravtasm_
+- Unique Weapons Unbound — _Gravtasm_
+- Who shot my leg off? — _Gravtasm_
+- Xenobionic Patcher — _Bounty_
+
+## Biomes / terrain / animals / plants  (24)
+
+- Ancient hydroponic farm facilities — _Bounty_
+- Aqued Subnautica Fishes — _Gravtasm_
+- Auto-Cut Blight — _Bounty_
+- Auto-Cut Blight - 1.6 — _Gravtasm_
+- Automatic Foraging — _Gravtasm_
+- Better Trees — _Gravtasm_
+- Colored deep resources — _both_
+- Cut plants before building (Continued) — _Gravtasm_
+- FEB's Biopunk Livestock — _Gravtasm_
+- Giant crop — _Gravtasm_
+- GRiNDTerra Biomes — _Gravtasm_
+- Gulden Biome (Continued) — _Gravtasm_
+- Horsey Game Animal Names — _Gravtasm_
+- Meatleaf — _Gravtasm_
+- Mewgenics Animal Names — _Gravtasm_
+- Perfect Ore Deposits — _Bounty_
+- Rim-Ark Prologue: Fishes — _Gravtasm_
+- TP Sea Plants — _Gravtasm_
+- Tribble Trouble — _Gravtasm_
+- Vanilla Fishing Expanded — _Gravtasm_
+- Wayward Biomes: Core — _Gravtasm_
+- Wayward Biomes: Tidewrack Reef — _Gravtasm_
+- Winter Taiga Biome 2 — _Gravtasm_
+- 新スランボ! (New Thrumbos!) — _Gravtasm_
+
+## Xenotypes / races / genes  (5)
+
+- Alien | Rimworld — _Gravtasm_
+- Morphs Assorted Biotech Retex — _both_
+- Rimsenal Xenotype Pack - Askbarn — _Gravtasm_
+- Rimsenal Xenotype Pack - Harana — _Gravtasm_
+- Rimsenal Xenotype Pack - Zohar — _Gravtasm_
+
+## Food / furniture / decor / apparel / doors  (31)
+
+- 13✖13 Cell Prefabs 预制房间 — _Gravtasm_
+- [HMC]Wall Furniture — _Gravtasm_
+- [HMC]Wall Furniture Odyssey — _Gravtasm_
+- [RH2] Randy Burger - Fast Food set — _Gravtasm_
+- Alpha Books — _Gravtasm_
+- Alpha Prefabs — _both_
+- Alpha Props - Parks and Gardens — _Gravtasm_
+- Basic Double Doors — _Bounty_
+- Cremation smelts apparels — _both_
+- Crypto Coffins — _Gravtasm_
+- Delmain Tweaks - Role Apparel — _both_
+- Door Clearance — _Bounty_
+- Dub's Paint Shop — _both_
+- Dubs Apparel Tweaks — _Gravtasm_
+- Erin's Decorations — _Gravtasm_
+- Faster Relic Subquests — _Bounty_
+- Mr Coffee and Mr Radar — _Gravtasm_
+- Outfit Builder Redux^2 — _Gravtasm_
+- Outfit Stands Plus — _Gravtasm_
+- Ponpeco Furnitures : Sci-Fi — _Gravtasm_
+- Post-apocalyptic Shelters — _Bounty_
+- ReBuild: Doors and Corners — _Gravtasm_
+- Restrict Undrawn Apparel — _Gravtasm_
+- Seamless Doors — _Gravtasm_
+- Self Dyeing — _both_
+- StarWars WallsN'Floors — _Bounty_
+- Tech Furniture — _Gravtasm_
+- Useful Relics — _Gravtasm_
+- Vanilla Brewing Expanded — _Gravtasm_
+- Vanilla Brewing Expanded - Coffees and Teas — _Gravtasm_
+- Wall light Relic — _both_
+
+## Traits / skills / backstory / research / progression  (29)
+
+- [DN] Bundle Of Traits — _Gravtasm_
+- [NL] Custom Portraits — _both_
+- Against all odds — _Gravtasm_
+- Alpha Skills — _Gravtasm_
+- Auto-Cast Specialist Commands — _Gravtasm_
+- Dialog Expanded — _Bounty_
+- Fallout Traits Continued — _Gravtasm_
+- Kurzaen's Serious and Silly Backstories — _Gravtasm_
+- Leo - Events — _Gravtasm_
+- Level Up! — _both_
+- Passive Research — _Gravtasm_
+- Professor Rosen's Backstories — _Gravtasm_
+- RandomGrowthChoices (Continued) — _Gravtasm_
+- Recipe icons (Continued) — _both_
+- Research Appropriation — _Gravtasm_
+- ResearchPowl — _Bounty_
+- RespectTheSkillz — _Gravtasm_
+- RPG Dialog — _Gravtasm_
+- Stored Research — _Gravtasm_
+- The Sims Traits — _Gravtasm_
+- Trait and Backstory Icons — _both_
+- Traits Give Aptitude — _Gravtasm_
+- Triumphant Research — _Gravtasm_
+- Vanilla Backgrounds Expanded — _both_
+- Vanilla Backstories Expanded — _Gravtasm_
+- Vanilla Skills Expanded — _both_
+- Vanilla Skills Rexamined — _Gravtasm_
+- Vanilla Traits Expanded — _both_
+- Worksites Expanded — _Gravtasm_
+
+## Other / hard to classify  (7)
+
+- [FSF] Better Anomaly Loot — _Bounty_
+- [FSF] Better Camp Loot — _Bounty_
+- [LTS]Systems — _Bounty_
+- Achtung! — _both_
+- Alpha Random — _Gravtasm_
+- Rimsential - Total Control: Continued — _both_
+- True Archotechnology - Archotech Artifact Overhaul — _Gravtasm_
