@@ -160,6 +160,20 @@ All pillar-clean (environment/info-side, no buildable economy). **Route = MOD, �
 | **⭐ Biomes! Caverns** | `BiomesTeam.BiomesCaverns` | ✅ **1.6 CONFIRMED FROM SOURCE (2026-08-07)** | **FULLY ADOPTED** (see `required_mods.md` "Biomes! FAMILY"). Cavern biomes `BMT_CrystalCaverns` / `BMT_EarthenDepths` / `BMT_FungalForest` + ~71 cavern animals. Deps: Biomes! Core + Geological Landforms (both in stack). Now the confirmed dark-tile source; keep commonality LOW. |
 | **Ocular Forest** | `AB_OcularForest` (Alpha Biomes, already in stack) | 🔎 low-light NOT confirmed | Confirmed weird/transdimensional but NOT confirmed to darken the map — **in-game check**; if it darkens, it doubles as a dark biome for free. |
 
+**⭐ Populate the dark tiles with fleshbeast-type horrors (theological directive, user 2026-08-08).**
+The permanently-dark/obscured terrain is not just low-visibility — it must be **actively frightening to
+be caught in**, seeded with **truly awful creatures of the fleshbeast type** so that *leaving the ship is
+scary and staying hidden is safe.* This is the world-design that makes **Ishko's "stay in the dark
+forever" vision** (`jawa_xenotype_and_religion.md` ① Ishko) viscerally correct rather than a mere
+preference: the things that seek never to be seen are down there *for a reason*, and the clan learns to
+sortie only for a resource raid and flee back before the dark answers. **Candidate rosters (all pillar-
+clean — pure threat, no buildable economy; commonality LOW):** vanilla **Fleshbeasts** (Anomaly DLC — if
+in scope) as the archetype; the Biomes! Caverns ~71 cavern-animal set (already adopted, §A7) mined for
+its nastiest predators; and the hostile-flora/spore layer (§B5) stacked on top. **Design bar:** the dark
+tile's danger should read as *ambient dread that discourages travel*, not a scripted boss — pairs with
+the fog-of-war layer so you meet them at knife-range. [Roster selection = in-game/at-machine pass; verify
+Anomaly-scope + which Caverns predators are 1.6-live before locking. Logged as a dark-biome to-do.]
+
 **Fog of war (the LOS-reveal companion, not a biome):** two candidate sources, **run only ONE** —
 (1) **CAI-5000** (already in the stack for smart raid AI) **bundles its own fog of war** → likely
 free with AI built to path through it; or (2) **(NWN) Real Fog of War Continued** (WS 3391128917),

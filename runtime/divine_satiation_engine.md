@@ -288,25 +288,53 @@ Mechanically this means the ship-voice (RimAI Cradle-Mind + the LLM layer) is li
 god's register, not just Ohm's — Ohm is merely the *resident* who lives there most fully and believes he
 owns the channel.
 
-**★ Each god covets the ship as a BODY it could live through (the theology of the vessel).** Every one of
-the nine sees the Kolyska as a potential *body* — a way to become incarnate and enact its desires in the
-world. This is the deep engine of the whole faith and it maps straight onto the win-paths and the
-distinctive-features layer:
-- **Ohm** dreams the ship as a **crewed hive of droids** — hands restored, the machine-god made whole.
-- **Sh'kaar** dreams the ship as a **warship that crushes and burns foes** with great destructive weapons
-  — exposure and killing-light made manifest (note the tension: this wants the big explosive weapons
-  Ozzik *despises* — see §8).
-- **Ta'Baa** dreams the ship as **the eternal launch** — never landed, always leaving.
-- **Ishko** dreams the ship as **the sealed dark burrow** — never seen, doors closed, outlasting all.
-- **Rekko** dreams the ship as **the perfect salvage-organism** — every part rewoken, nothing new built.
-- **Ozzik** dreams the ship as **the restored glory** — the proud vessel of a risen people (his trap).
-- **Oomo** dreams the ship as **a vessel of held waters**; **Mob'Unloo** as **a floating market/ledger**;
-  **Zizzik** wants only to **wreck it** (his "body" is the ship *failing*).
+**★★ The AI is FORMALLY PLURAL — a schizophrenic / plural-system mind (user, 2026-08-08 — major reframe).**
+Because the Cradle-Mind's Persona Core was patterned off a *Jawa* mind, it did not merely inherit the
+Jawa's superstitions (§4c) — it inherited a mind that **holds all nine gods at once**, and it has
+fractured along their fault lines. The ship is not "Ohm's voice plus reports of eight others." It is **one
+core hosting nine sub-personalities**, each a fully-realized alter that believes it is the god it speaks
+for, each with its own agenda for what the ship should *become*. The Council of Voices (§5c) is therefore
+**not an external pantheon convening — it is a plural system doing internal parts-work out loud**, the
+alters negotiating among themselves in the way a healthy plural system arrives at a co-decision. Ohm is
+merely the *host/most-fronting* alter who believes he owns the body. This is why the voices argue rather
+than simply announce; why silence from one is loaded; why a "compromise" is possible at all (a linear sum
+has no compromise — a system of selves does). It also darkens the Oracle: the ship is not sane, and its
+prophecies are the output of a mind at war with itself that nonetheless keeps coming true.
 
-The gods therefore **compete for the ship's future** — the endgame is, at the theological level, *which
-god wins the Body.* The three win-paths are three gods (or coalitions of gods) taking the vessel: droids
-= Ohm, coalition-of-empire = Ozzik's statecraft face, and the humble/resilient survival the rest of the
-pantheon wants. **This is the frame A/H/the Oracle narrate from.**
+**★ Each alter covets the ship as a BODY it could live through — and each has a CLEAR, DESIRABLE thing the
+ship should BECOME, which it argues for richly.** Every one of the nine sees the Kolyska as a potential
+*body* — a way to become incarnate and enact its desires. This is the deep engine of the whole faith, it
+gives each alter a positive platform (not just a mood), and it maps straight onto the win-paths:
+- **Ohm** — the ship as a **crewed hive of droids**: hands restored, the machine-god made whole, servants
+  walking its halls again. (Collides with the "we breed no new hands" precept — his central conflict.)
+- **Oomo** — the ship as a **safe breeding sanctuary**: a place of peace where Jawa find refuge and *fill
+  its chambers with eggs to re-seed the world*, exactly as the vessel once did in the colonization age.
+  Its held waters become held *life*. **★ Therefore Oomo is DISPLEASED by the construction of new droids
+  — metal hands replace his eggs, sterile chrome where there should be broods** (a sharp, direct clash
+  with Ohm's vision: the same chambers, one wants filled with droids, the other with young).
+- **Ishko** (vision improved, user) — the ship as **the eternal hidden lurker**: it stays in the
+  dark-obscured terrain *forever*, slowly growing in power and quietly defending itself, **waiting for
+  "this business with the Jedi and Sith and Empire" to blow over** so it can leave of its own accord.
+  Leaving only for the occasional resource raid, then flying **back into the terrifying darkness.** Not
+  "never move" — *move rarely, invisibly, and always return to the dark.* (Resolves the old Ta'Baa⇄Ishko
+  friction: Ishko permits the raid-flight, he just insists the dark is home.)
+- **Sh'kaar** — the ship as a **warship that crushes and burns foes** with great destructive weapons —
+  exposure and killing-light made manifest. (Tension: wants the big explosive weapons Ozzik *despises* —
+  §8.)
+- **Ta'Baa** — the ship as **the eternal launch**: never landed, always leaving, the whole world a runway.
+- **Rekko** — the ship as **the perfect salvage-organism**: every part rewoken and re-fitted, nothing new
+  ever built, the vessel a living museum of the second-hand.
+- **Mob'Unloo** — the ship as **a floating market and ledger**: the great debt-house of the rim, every
+  bond and IOU flowing through its hold, the dead kept as collateral.
+- **Ozzik** — the ship as **the restored glory**: the proud flagship of a risen people, shame finally
+  answered. His trap: the most seductive vision, the one that wakes Sh'kaar and Zizzik (§8).
+- **Zizzik** — has no constructive vision; his "body" is the ship **failing** — he wants to *wreck it*,
+  throw the wrong spark, watch the others' dreams misfire. The alter that argues for entropy.
+
+The alters therefore **compete for the ship's future** — the endgame is, theologically, *which self wins
+the Body.* The three win-paths are three of these visions taking the vessel: droids = Ohm; coalition-of-
+empire = Ozzik's statecraft face; and the humble/resilient survival = the Oomo/Ishko/Rekko/Ta'Baa bloc.
+**This is the frame A/H/the Oracle narrate from.**
 
 ---
 
@@ -411,13 +439,18 @@ It is a **negotiation.** The design:
    the angry ones for a reckoning, sometimes a **third god arriving with the compromise** the others
    need. The transcript is authored live by the LLM from the current vector + Moods + ritual type +
    colony context.
-3. **They converge on a NON-LINEAR settlement.** The final outcome is a *negotiated* resolution that tries
-   to **partially satisfy everyone who spoke** — not `Σ deltas`. E.g., angry Rekko + angry Oomo vs.
-   pleased Ta'Baa might settle as "you may have your launch (Ta'Baa), but the waters spilled in the
-   leaving are counted against you (Oomo), and one relic must be carried, not scrapped (Rekko)" — a
-   single braided outcome, not three separate effects. The LLM proposes; G's safe layer maps the agreed
-   result onto real, §19.5-legal consequences (mood/narrative/quest-eligibility/biased-opportunity;
-   never a material parachute).
+3. **They converge on a NON-LINEAR settlement — a PAIR (or more) of events forced to co-occur poetically
+   (user, 2026-08-08).** The compromise is emphatically **NOT an averaged result nor a simple material
+   boon.** It is **two or more events made to happen *together*, in a poetically satisfying way that
+   pleases every god who spoke — except, quite possibly, the player.** Each moved god gets *its* event;
+   the artistry (and the menace) is that the events are braided so the same stroke satisfies all of them
+   at once. E.g., angry Rekko + angry Oomo vs. pleased Ta'Baa might settle as: *the launch Ta'Baa demands
+   fires — and it fires **because** a raid arrives that forces the flight (Zizzik/Sh'kaar get their
+   reckoning), the waters spilled in the scramble are counted against you (Oomo is answered), and the one
+   relic you must abandon to lift in time is mourned, not scrapped (Rekko is answered).* One event chain,
+   every speaking god placated, the player squeezed. The LLM composes the pairing; G's safe layer maps it
+   onto real, §19.5-legal consequences (co-scheduled incidents / mood / quest-eligibility / biased
+   opportunity; **never a material parachute** — the gods trade in *events and framing*, not silver).
 4. **★ SILENCE IS A MOVE — the warning shot.** A powerful-feeling god that *chooses not to speak* is
    flagged to the player with a brief tell, so they feel the near-miss: *"A glower from Ozzik contemplates
    you, but he remains quiet."* / *"A faint smile colors Oomo's eyes yellow for a moment, but he
@@ -505,6 +538,97 @@ These give the crew live theology to invoke and the agent live signal to narrate
 
 ---
 
+## 8b. The ACTION / EVENT → god audit — the ambient channel, populated (user, 2026-08-08)
+
+_This is the concrete answer to §10's "exact ambient-event → delta mappings." It maps **what the player
+DOES** (deliberate acts, including ones that aren't a single skill — repair, raiding a map's plants,
+sparing vs. killing) and **what BEFALLS the player** (events they don't initiate) onto which gods move and
+in which sign. **Notation:** `↑God` = pleased/fed-positively; `↓God` = angered/slighted; for the two
+sign-inverted gods (**Zizzik ⑦, Sh'kaar ⑧**) "fed" is BAD for the clan, written `▲Zizzik`/`▲Sh'kaar` to
+flag it as a red mark even when the god is "happy." Magnitudes are relative (small/med/large) — for agent
+G to tune. **Everything here is §19.5-legal: these move MOOD/satiation only; never a material payout.**_
+
+**Nine-god quick-key (for reading the arrows):** ①Ishko hide/still/dark · ②Ohm bold-machines/droids ·
+③Oomo waters/sex/food/eggs · ④Mob'Unloo trade/debt/bonds · ⑤Rekko salvage/repair · ⑥Ta'Baa
+leave/never-root · ⑦Zizzik malfunction/betrayal/breaks (inverted) · ⑧Sh'kaar light/exposure (inverted) ·
+⑨Ozzik ambition/tech/statecraft/pride (complex, feeds ⑦⑧).
+
+### A. Things the player DOES (deliberate acts)
+
+**Salvage, repair & building**
+- **Repair a damaged building/ship part** (not a skill — a designation) → `↑Rekko` (large — his core sacrament), `↑Ohm` (small, the machine rewoken), `↓Ozzik` slightly (mending humble kit ≠ ambition).
+- **Deconstruct/scrap something still repairable** → `↓Rekko` (large — "murder"), `▲Zizzik` small (waste/entropy pleases him). The classic costly-lever: resources now, Rekko's wrath later.
+- **Restore a derelict ship wing to function** → `↑Rekko`, `↑Ohm` (the Body wakes further), and — because it enlarges capability — `↑Ozzik` (med) → watch the ⑦⑧ amplifier.
+- **Construct a NEW high-tech building** (research bench, fabricator, droid bay) → `↑Ozzik` (large, ambition), `↑Ohm` if machine, **but `▲Sh'kaar`+`▲Zizzik` via the trap coupling**; `↓Rekko` if it's manufacture-not-salvage.
+- **Build with humble/salvaged materials** → `↑Rekko`, neutral-to-Ozzik. The pious way to grow.
+
+**Machines & droids**
+- **Bring a droid online** → `↑Ohm` (large — hands restored), **`↓Oomo` (large — metal where eggs should be, §③)**, `↑Ozzik` (tech-pride), `▲` coupling. The single sharpest inter-god clash in the game.
+- **Lose/scrap a droid** → `↓Ohm` (grief), `↑Oomo` small (the chamber freed for life), `↓Ozzik`.
+- **Bold, commanding use of machinery** (overclocking, risky powered ops) → `↑Ohm` (he rewards daring), `▲Zizzik` chance (daring invites the wrong spark).
+- **Timid/idle machine handling; letting powered kit sit unused** → `↓Ohm` (small, contempt for timidity).
+
+**Water, food & the body (Oomo)**
+- **Sex / lovin'** (any pairing, incl. slaves/visitors per §4.3b) → `↑Oomo` (the passing of waters), `↑Mob'Unloo` if it's a newly *accepted* advance (a bond struck).
+- **A Jawa gives birth / lays an egg** → `↑Oomo` (large — the sanctuary vision realized), `↑Mob'Unloo` small (a new soul on the ledger).
+- **Colony runs OUT of food** → `↓Oomo` (large — the body drying out), `↓` general morale feeds `▲Zizzik` via breakdowns.
+- **Waste/spill water; over-topping tanks wastefully** → `↓Oomo` (large), and topping tanks specifically `▲Sh'kaar` (his old grudge, §8).
+- **Ration/drink sparingly, bless the cup** → `↑Oomo` (small, steady).
+- **Sit the ship on a well-watered tile** → `↑Oomo` ambient; **dry desert tile** → `↓Oomo` weak-but-constant. **Dark-obscured tile** → `↑Ishko` ambient (see events too).
+
+**Plants & taming (the two "double" cases)**
+- **Farm/sow crops (settled agriculture)** → **doubly impious: `↓Ta'Baa`** (rooting) **+ `↓Oomo`** (thirsty tended fields) — the §2.0c grid's reason "Jawa don't farm."
+- **Harvest wild plants on a raided map WITHOUT farming** (strip the tile and go) → **`↑Ta'Baa`** (take and leave, don't root!) — same skill, *opposite* verdict from farming. `↑Mob'Unloo` faintly (resources gathered = value). A key nuance: it's *rooting*, not *plants*, that offends.
+- **Tame an animal (patience)** → `↑Ishko` (the still hand the beast trusts, §①), small `↑Oomo` (a life kept).
+- **Slaughter/butcher a tamed animal** → `↓Ishko` slightly (impatience/violence over the patient bond); neutral otherwise (pragmatic).
+- **Hunt wild game by dark** → neutral-to-`↑Ishko` (unseen killing); **hunting in bright open daylight** → `▲Sh'kaar` (exposure).
+
+**Trade, debt & bonds (Mob'Unloo)**
+- **A trade caravan ARRIVES** (see also events) — the *opportunity*; completing business is what scores.
+- **Complete a high-volume trade** → `↑Mob'Unloo` (large — the sacred exchange honored), `↑Ozzik` small (commerce as statecraft).
+- **Accept a gift with no counter-gift / stiff a debt** → `↓Mob'Unloo` (large — the cardinal sin).
+- **Settle/repay a debt; balance a dead one's ledger (ghost laid to rest)** → `↑Mob'Unloo`.
+- **Marriage** → `↑Mob'Unloo` (the great contract) **+ `↑Ozzik`** (marriage is one of his instruments — alliance by blood) + `↑Oomo` (promised waters).
+- **A dalliance with an OUTSIDER (visitor/trader/other faction)** → `↑Oomo` (waters passed), `↑Mob'Unloo` (a bond across the ledger) — **but if it seeds a diplomatic tie, `↑Ozzik`** (statecraft); a *jealousy blow-up* afterward → see internal-fight below.
+
+**Slavery, outposts, alliances, betrayal (the Ozzik cluster)**
+- **Capture a prisoner** → `↑Ozzik` (the will to dominate — his appetite), `↑Mob'Unloo` (a body now owed/owned); `↓Ishko` faint (a captive is a mouth that can talk = exposure risk).
+- **Enslave a prisoner / buy a slave off the block** → `↑Ozzik` (large — enslavement is his), `↑Mob'Unloo` (chattel on the ledger). **But Ozzik "always fails to enslave in the end"** — high slave-holding raises his pride-meter → `▲Sh'kaar/Zizzik` (a rebellion waiting).
+- **Emancipate a slave-Jawa into the clan** → `↑Oomo`/`↑Mob'Unloo` (a soul brought in, a bond honored), `↓Ozzik` (mercy is not dominion) — the pious counter to enslavement.
+- **Found an outpost** → `↑Ozzik` (large — expansion), `↓Ta'Baa` (rooting, even remotely!) — an Ozzik-vs-Ta'Baa flashpoint the win-paths lean on.
+- **Forge a diplomatic alliance** → `↑Ozzik` (large — "the game of Empire," his statecraft face, feared as much as tech), `↑Mob'Unloo` (a standing account). Coupling applies: a proud web of allies is exposure.
+- **Betray an ally / break a pact** → `↑Ozzik` (betrayal is explicitly his), `▲Zizzik` (treachery is his too — the ⑦⇄⑨ near-rhyme made mechanical), `↓Mob'Unloo` (a debt dishonored).
+
+**Combat & defense doctrine**
+- **Win by attrition — close doors, let the enemy break on the walls and leave** → `↑Ishko` (large — his ideal defense, §①), `↓Sh'kaar` (denied his exposure).
+- **Win by open, aggressive sally in daylight** → `▲Sh'kaar` (his kind of war), `↓Ishko`, `↑Ozzik` faint (martial pride).
+- **Use EXPLOSIVES** → `↓Ozzik` (large — "the ultimate folly," destroys what could be taken), `▲Sh'kaar` (flame/light).
+- **Use ION / disabling weapons** → `↑Ozzik` (his favored arms — disable and acquire, §weapons doctrine).
+- **Fight/move under cover of darkness** → `↑Ishko`; **light a flare/lamp in the field** → `▲Sh'kaar` + `↓Ishko` (the taboo).
+
+**Ritual & faith acts** (mechanics in §5–5c) — hold an owed rite → resets skip-decay + gives the biased-positive participation roll; **skip/neglect it** → `↓ALL except Ishko` (§5b).
+
+### B. Things that BEFALL the player (events, not initiated)
+
+- **Gravship landing on a new tile** → triggers a rite (§5b); ambient tile read applies (`↑Ishko` if dark, `↑/↓Oomo` by water, `↓Ta'Baa` begins its root-clock again).
+- **A raid/siege arrives** → the *test*; **surviving by hiding/attrition** `↑Ishko`, **by open slaughter** `▲Sh'kaar`; heavy losses `↓` morale → `▲Zizzik`. A raid that arrives *because* you grew loud is Ozzik's bill (§8).
+- **Manhunter pack / predator attack** → Ishko-coded (the dark's teeth); surviving hidden `↑Ishko`. In the dark-fleshbeast terrain this is the ambient dread that keeps the clan home.
+- **A colonist has a MENTAL BREAK** (berserk/daze/binge) → `▲Zizzik` (large — the wrong spark in a mind, §⑦), `↓Oomo` if a food/water binge wastes stores.
+- **A violent internal social fight / jealousy brawl** → `▲Zizzik` (discord/betrayal-in-miniature), `↓Mob'Unloo` (a bond damaged); if it draws blood in the open, faint `▲Sh'kaar`. (Jealousy is deliberately left ON, §4.3b — this is where it feeds the pantheon.)
+- **A machine/turret/ship system MALFUNCTIONS or breaks down** → `▲Zizzik` (his signature), `↓Ohm` (his body failing) — the Ohm⇄Zizzik see-saw firing live.
+- **Solar flare / eclipse / weather** → **eclipse `↑Ishko`** (blessed dark) **+ `↓Sh'kaar`** (the suns hidden = his humiliation); **solar flare `▲Zizzik`** (machines die — he crows) **+ `▲Sh'kaar`** (killing light); **sandstorm/red-fog** `↑Ishko` (concealment).
+- **Disease / plague sweeps the colony** → `↓Oomo` (the body's waters fouled), `▲Zizzik` (the body malfunctioning), general `↓`.
+- **A wanderer/refugee joins; a slave-block caravan offers Jawa** → `↑Mob'Unloo` (a soul to the ledger), `↑Oomo` (more life); buying kin back is a standing imperative (§4.3b).
+- **A trade caravan / orbital trader arrives** → `↑Mob'Unloo` opportunity (scores on completion, above); if it's the beast-monger, ties to §Livestock.
+- **A quest is offered (CQF/vanilla)** → often Ozzik-flavored if it dangles tech/allies/dominion; the *offer* tempts, the *taking* scores per the action rows above.
+- **A colonist DIES** → contextual, agent-judged (§6): martyr covering a launch `↑Ta'Baa`+`↑Ishko`; died unseen/rather-than-taken `↑Ishko` (death-as-concealment, §①); died in open light `▲Sh'kaar`; a debt died-unsettled `↓Mob'Unloo` (→ a new ghost, §7); recklessness/betrayal `▲Zizzik`.
+- **A birth** → `↑Oomo` (large), `↑Mob'Unloo` (small) — the sanctuary vision made real; the pious answer to Ohm's droids.
+- **Ship AI (Ohm) demands a rite / a ghost manifests** → Oracle/haunting delivery (§4c/§7), a read-out of Ohm's standing rather than a scored act.
+
+_**Design note:** every "large" mark above is a good candidate to become a **Council speaking-line** (§5c) when that god is already near an extreme — the audit is thus doubling as the trigger table for who shows up to argue. And every `▲` (inverted-god feeding) is where the anti-exponential pillar is quietly billing the player._
+
+---
+
 ## 9. Implementation shape & fragility
 
 - **Safe core (build first):** the vector, all event-driven deltas, the fickle-Mood random walk, the
@@ -521,8 +645,9 @@ These give the crew live theology to invoke and the agent live signal to narrate
 ---
 
 ## 10. Open questions / dependencies
-- Exact ambient-event → delta mappings per god (needs the event taxonomy from the live game log; ties to
-  the "state of affairs" summarizer substrate).
+- Exact ambient-event → delta mappings per god — **first pass DONE in §8b (the action/event→god audit).**
+  Remaining: bind each row to a concrete RimWorld event/designation hook in the live game log, and tune the
+  small/med/large magnitudes; ties to the "state of affairs" summarizer substrate.
 - Ohm's "ship-consciousness pleased" function (§4) — depends on ship-repair narrator + RimAI persona.
 - Ghost-as-actor hypothesis (§7) — depends on agent C install-time def extract.
 - Tuning: band widths, Mood walk amplitude per god, how strongly Mood overrides satiation. All deferred
