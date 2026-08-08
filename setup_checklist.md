@@ -240,6 +240,13 @@ decided-but-verify-in-game. A **DECIDED** line records the choice + where it's a
   - **Territory behavior sanity:** confirm territory regions draw around faction settlements and in-turf ambush/patrol density rises inside a faction's ground. Watch for reported bugs (friendly troops loitering on the player map eating food / fighting each other; wrong-tech-tier bases spawning during map-gen).
   - **§19.5 in-turf ambush audit** (no public source to read): confirm in-turf ambush raises **qualitative** threat (better-positioned/more-coordinated attackers on held ground), NOT inflated raid points. Tune per-faction ambush/caravan density so Imperial turf bites hardest on Empire-held tiles; keep the *primary* pursuit timer on the orbital model, not on territory.
 
+- [ ] **⭐ Relationship-complexity stack — install-time load + version audit** (ADOPTED; `required_mods.md` "Relationship-complexity stack" §, `jawa_xenotype_and_religion.md` §4.3b). The stack = **Way Better Romance** (backbone) + **Romance On The Rim** + **Intimacy - Friends n' Lovers** (+Gender Works) bridged by **Romance & Intimacy On The Rim (R_IOTR)** + More Slavery Stuff (already in stack).
+  - **1.6 tags:** WayBetterRomance (`divineDerivative.Romance`) + R_IOTR (`mianreplicate.romanceandintimacyontherim`) are **About.xml-confirmed 1.6** (no re-check needed). **Confirm in RimSort that these still show 1.6:** Romance On The Rim (WS `2654432921`), Intimacy - Friends n' Lovers (WS `3498422643`), Intimacy - Gender Works (WS `3534254491`, needs Biotech), Polyamory Beds (WS `3276496684`) — all four had their Steam pages 429'd during verification, so their 1.6 tag is store-text-only until seen in RimSort.
+  - **No double romance-overhaul:** WayBetterRomance's About.xml lists Rational Romance / Psychology / Everyone Is Queer / Open Polyamory etc. as incompatible — confirm none of those are also active. (Open Polyamory is already rejected: it deletes jealousy AND is 1.2-only.)
+  - **Load order:** R_IOTR after both Romance On The Rim and Intimacy (it bridges them); WayBetterRomance per its own guidance. Confirm no red errors on splash / in Player.log.
+  - **Jealousy-slider tuning (the design intent):** in WayBetterRomance settings, set the cheating/jealousy opinion slider to "turbulent but playable" — jealousy stays ON (the chosen chaos), not deleted. Note the value used.
+- [ ] **Plant Speed Modifier — growth-speed audit** (ADOPTED candidate for the §3(f) global-overgrowth mechanic; WS `3660866466`). Confirm in RimSort it shows **1.6** (Steam 429'd — store-text only so far) AND test in the dev world that its slider affects **wild** plants, not crops-only. If it fails either, fall back to `Mersid/Rimworld_FastPlantGrowth` (GitHub) or the own-Harmony `Plant.GrowthRate` route (desert_world_design §3(f) route 2).
+
 - [ ] **Source-audit provenance notes** (reference facts, relocated here so they aren't lost): NWN Real Fog-of-War is 1.6-capable despite a stale About.xml; CaveBiome + Biomes! source-pull status; STE 1.6 inferred from a translation mirror only; Cherry Picker cull lists still to be finalized in-game. Cross-reference the fuller notes in `required_mods.md` where they exist.
 
 ---
@@ -255,4 +262,6 @@ decided-but-verify-in-game. A **DECIDED** line records the choice + where it's a
 - **Newly decided (2026-08-04):** permadeath OFF (reload allowed); ideoligion memes = Nomad primary
   + Tunneler secondary.
 - **Verify-in-game (🔎):** Outland gene magnitudes; techprint-defName-digit check; Scavenger role
-  hidden-bypass check; Cherry Picker cull lists; CAI × Total Warfare compat.
+  hidden-bypass check; Cherry Picker cull lists; CAI × Total Warfare compat; romance stack RimSort 1.6 tags (RotR/Intimacy/Polyamory Beds) + WBR jealousy-slider tuning; Plant Speed Modifier 1.6 + wild-plant scope.
+- **Newly decided (2026-08-07):** relationship-complexity stack ADOPTED (WayBetterRomance backbone +
+  R_IOTR bridge, both 1.6-confirmed; RotR + Intimacy depth; jealousy ON; Open Polyamory rejected).
