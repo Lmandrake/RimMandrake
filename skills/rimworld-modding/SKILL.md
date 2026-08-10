@@ -307,10 +307,25 @@ position in the file:
    throws in its static constructor did not load at all, and it will not say so
    again later. In a large stack, failures concentrate here: mods that reflect
    over *other mods'* types at startup are the fragile class.
-2. **Exceptions inside `LongEventHandler.ExecuteToExecuteWhenFinished`** — these
-   abort the remainder of the post-load queue. Everything queued behind the
-   thrower silently never runs, from any mod. One mod's packaging bug becomes
-   several mods' mystery.
+2. **`Could not execute post-long-event action`** — one queued post-load action
+   failed. **It cost exactly that action; the queue continues.** Verified against
+   the IL of `Verse.LongEventHandler.ExecuteToExecuteWhenFinished` (1.6.4871):
+   the `try` spans 18 bytes around a single `Action::Invoke`, the catch logs via
+   `Log.Error`, and its `leave` targets the loop *increment*, not the exit. The
+   loop even re-reads `.Count` each pass, so actions queued during execution
+   still run.
+
+   Severity is therefore per-action — usually one def's `ResolveIcon` — not
+   "everything after this silently didn't happen." Weigh it accordingly before
+   blaming unrelated breakage on it, or disabling a mod over it.
+
+   ⚠️ The one real abort path in that method is *outside* the try: the
+   per-iteration DeepProfiler block dereferences
+   `action.Method.DeclaringType`. An NRE there escapes the loop, skips the final
+   `Clear()`, and leaves the re-entry flag set — which bricks the queue
+   permanently behind "Already executing." Distinguish the two by the stack: a
+   frame for the queued action itself (e.g. `BuildableDef.<PostLoad>b__78_0`)
+   means the survivable path.
 3. **`Could not resolve cross-reference`** — a def referenced something absent.
    Usually a `MayRequire` guarding the wrong thing (see §4). **Do not file these
    as harmless without reading the `wanter`.** The consequence depends entirely

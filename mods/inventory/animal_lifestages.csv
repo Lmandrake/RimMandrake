@@ -2,6 +2,12 @@
 ,Core,0,AnimalBaby,0,
 ,Core,1,AnimalJuvenile,0.2,
 ,Core,2,AnimalAdult,0.5,Pawn_Bear_Injured
+Bear_Grizzly,Core,0,AnimalBaby,0,
+Bear_Grizzly,Core,1,AnimalJuvenile,0.2,
+Bear_Grizzly,Core,2,AnimalAdult,0.5,Pawn_Bear_Injured
+Bear_Polar,Core,0,AnimalBaby,0,
+Bear_Polar,Core,1,AnimalJuvenile,0.2,
+Bear_Polar,Core,2,AnimalAdult,0.5,Pawn_Bear_Injured
 Ostrich,Core,0,AnimalBabyTiny,0,Pawn_Chick_Call
 Ostrich,Core,1,AnimalJuvenile,0.1,
 Ostrich,Core,2,AnimalAdult,0.2222,
@@ -14,6 +20,9 @@ Cassowary,Core,2,AnimalAdult,0.2222,
 ,Core,0,AnimalBaby,0,
 ,Core,1,AnimalJuvenile,0.25,
 ,Core,2,AnimalAdult,0.5,Pawn_Cougar_Injured
+Cougar,Core,0,AnimalBaby,0,
+Cougar,Core,1,AnimalJuvenile,0.25,
+Cougar,Core,2,AnimalAdult,0.5,Pawn_Cougar_Injured
 Lynx,Core,0,AnimalBaby,0,
 Lynx,Core,1,AnimalJuvenile,0.2,
 Lynx,Core,2,AnimalAdult,0.5,Pawn_Cougar_Injured
@@ -89,6 +98,12 @@ Rhinoceros,Core,2,AnimalAdult,0.55,Pawn_Rhinoceros_Wounded
 ,Core,0,AnimalBaby,0,
 ,Core,1,AnimalJuvenile,0.1,
 ,Core,2,AnimalAdult,0.2222,Pawn_Hare_Wounded
+Hare,Core,0,AnimalBaby,0,
+Hare,Core,1,AnimalJuvenile,0.1,
+Hare,Core,2,AnimalAdult,0.2222,Pawn_Hare_Wounded
+Snowhare,Core,0,AnimalBaby,0,
+Snowhare,Core,1,AnimalJuvenile,0.1,
+Snowhare,Core,2,AnimalAdult,0.2222,Pawn_Hare_Wounded
 Megascarab,Core,0,EusocialInsectLarva,0,
 Megascarab,Core,1,EusocialInsectJuvenile,0.03,
 Megascarab,Core,2,EusocialInsectAdult,0.4,Pawn_Megascarab_Wounded
@@ -161,9 +176,24 @@ Warg,Core,2,AnimalAdult,0.5,Pawn_Warg_Wounded
 ,Core,0,AnimalBaby,0,
 ,Core,1,AnimalJuvenile,0.2,
 ,Core,2,AnimalAdult,0.5,Pawn_Dog_Injured
+Wolf_Timber,Core,0,AnimalBaby,0,
+Wolf_Timber,Core,1,AnimalJuvenile,0.2,
+Wolf_Timber,Core,2,AnimalAdult,0.5,Pawn_Dog_Injured
+Wolf_Arctic,Core,0,AnimalBaby,0,
+Wolf_Arctic,Core,1,AnimalJuvenile,0.2,
+Wolf_Arctic,Core,2,AnimalAdult,0.5,Pawn_Dog_Injured
 ,Core,0,AnimalBaby,0,
 ,Core,1,AnimalJuvenile,0.1,
 ,Core,2,AnimalAdult,0.3333,
+Fox_Fennec,Core,0,AnimalBaby,0,
+Fox_Fennec,Core,1,AnimalJuvenile,0.1,
+Fox_Fennec,Core,2,AnimalAdult,0.3333,
+Fox_Red,Core,0,AnimalBaby,0,
+Fox_Red,Core,1,AnimalJuvenile,0.1,
+Fox_Red,Core,2,AnimalAdult,0.3333,
+Fox_Arctic,Core,0,AnimalBaby,0,
+Fox_Arctic,Core,1,AnimalJuvenile,0.1,
+Fox_Arctic,Core,2,AnimalAdult,0.3333,
 Human,Core,0,HumanlikeBaby,0,
 Human,Core,1,HumanlikeChild,3,
 Human,Core,2,HumanlikePreTeenager,9,
@@ -173,6 +203,10 @@ Human,Core,4,HumanlikeAdult,18,
 ,Core,1,MechanoidFullyFormed,100,Pawn_Mech_Centipede_Wounded
 ,Core,0,MechanoidFullyFormed,0,Pawn_Mech_Scyther_Wounded
 ,Core,1,MechanoidFullyFormed,100,Pawn_Mech_Scyther_Wounded
+Mech_Lancer,Core,0,MechanoidFullyFormed,0,Pawn_Mech_Scyther_Wounded
+Mech_Lancer,Core,1,MechanoidFullyFormed,100,Pawn_Mech_Scyther_Wounded
+Mech_Scyther,Core,0,MechanoidFullyFormed,0,Pawn_Mech_Scyther_Wounded
+Mech_Scyther,Core,1,MechanoidFullyFormed,100,Pawn_Mech_Scyther_Wounded
 Mech_Pikeman,Core,0,MechanoidFullyFormed,0,Pawn_Mech_Pikeman_Wounded
 Mech_Pikeman,Core,1,MechanoidFullyFormed,100,Pawn_Mech_Pikeman_Wounded
 Mech_Termite,Core,0,MechanoidFullyFormed,0,Pawn_Mech_Termite_Wounded
@@ -184,6 +218,12 @@ Dryad_Gaumaker,Ideology,0,AnimalAdult,,Pawn_Dryad_Gaumaker_Wounded
 Dryad_Carrier,Ideology,0,AnimalAdult,,Pawn_Dryad_Carrier_Wounded
 Dryad_Clawer,Ideology,0,AnimalAdult,,Pawn_Dryad_Clawer_Wounded
 Dryad_Barkskin,Ideology,0,AnimalAdult,,Pawn_Dryad_Barkskin_Wounded
+WasteRat,Biotech,0,AnimalBaby,0,
+WasteRat,Biotech,1,AnimalJuvenile,0.1,
+WasteRat,Biotech,2,AnimalAdult,0.2222,Pawn_Spelopede_Pain
+Toxalope,Biotech,0,AnimalBaby,0,
+Toxalope,Biotech,1,AnimalJuvenile,0.2,
+Toxalope,Biotech,2,AnimalAdult,0.3333,Pawn_Muffalo_Wounded
 Mech_Tunneler,Biotech,0,MechanoidFullyFormed,0,Pawn_Mech_Tunneler_Wounded
 Mech_Tunneler,Biotech,1,MechanoidFullyFormed,100,Pawn_Mech_Tunneler_Wounded
 Mech_Militor,Biotech,0,MechanoidFullyFormed,0,Pawn_Mech_Militor_Wounded
@@ -223,7 +263,13 @@ Metalhorror,Anomaly,1,MetalhorrorJuvenile,0.016667,
 Metalhorror,Anomaly,2,MetalhorrorMature,0.05,
 Revenant,Anomaly,0,EntityFullyFormed,,Pawn_Revenant_Wounded
 Sightstealer,Anomaly,0,EntityFullyFormed,,Pawn_Sightstealer_Wounded
+CreepJoiner,Anomaly,0,HumanlikeBaby,0,
+CreepJoiner,Anomaly,1,HumanlikeChild,3,
+CreepJoiner,Anomaly,2,HumanlikePreTeenager,9,
+CreepJoiner,Anomaly,3,HumanlikeTeenager,13,
+CreepJoiner,Anomaly,4,HumanlikeAdult,18,
 Noctol,Anomaly,0,EntityFullyFormed,,Pawn_Noctol_Wounded
+FleshmassNucleus,Anomaly,0,EntityFullyFormed,,
 Gorehulk,Anomaly,0,EntityFullyFormed,,Pawn_Gorehulk_Wounded
 Devourer,Anomaly,0,EntityFullyFormed,,Pawn_Devourer_Wounded
 Chimera,Anomaly,0,EntityFullyFormed,,Pawn_Chimera_Wounded
@@ -247,9 +293,15 @@ Porcupine,Odyssey,2,AnimalAdult,0.2222,Pawn_Rodent_Wounded
 Mastodon,Odyssey,0,AnimalBaby,0,
 Mastodon,Odyssey,1,AnimalJuvenile,0.3,
 Mastodon,Odyssey,2,AnimalAdult,0.666,Pawn_Elephant_Injured
+Cat_Scimitar,Odyssey,0,AnimalBaby,0,
+Cat_Scimitar,Odyssey,1,AnimalJuvenile,0.25,
+Cat_Scimitar,Odyssey,2,AnimalAdult,0.5,Pawn_Cougar_Injured
 Wolverine,Odyssey,0,AnimalBaby,0,
 Wolverine,Odyssey,1,AnimalJuvenile,0.1,
 Wolverine,Odyssey,2,AnimalAdult,0.2222,Pawn_Wolverine_Wounded
+Wolf_Great,Odyssey,0,AnimalBaby,0,
+Wolf_Great,Odyssey,1,AnimalJuvenile,0.2,
+Wolf_Great,Odyssey,2,AnimalAdult,0.5,Pawn_Dog_Injured
 Moose,Odyssey,0,AnimalBaby,0,
 Moose,Odyssey,1,AnimalJuvenile,0.20,
 Moose,Odyssey,2,AnimalAdult,0.3333,Pawn_Elk_Wounded
@@ -259,6 +311,9 @@ AlphaThrumbo,Odyssey,2,AnimalAdult,1.332,Pawn_Thrumbo_Pain
 Muskox,Odyssey,0,AnimalBaby,0,
 Muskox,Odyssey,1,AnimalJuvenile,0.20,
 Muskox,Odyssey,2,AnimalAdult,0.3333,Pawn_Bison_Wounded
+Tiger,Odyssey,0,AnimalBaby,0,
+Tiger,Odyssey,1,AnimalJuvenile,0.25,
+Tiger,Odyssey,2,AnimalAdult,0.5,Pawn_Cougar_Injured
 Mink,Odyssey,0,AnimalBaby,0,
 Mink,Odyssey,1,AnimalJuvenile,0.11,
 Mink,Odyssey,2,AnimalAdult,0.2222,Pawn_Rodent_Wounded
@@ -354,11 +409,61 @@ Drone_Wasp,Odyssey,0,MechanoidFullyFormed,0,Pawn_Wasp_Wounded
 Drone_Sentry,Odyssey,0,MechanoidFullyFormed,0,Pawn_Sentry_Wounded
 Mech_Cyclops,Odyssey,0,MechanoidFullyFormed,,Pawn_Cyclops_Wounded
 Mech_Cyclops,Odyssey,1,MechanoidFullyFormed,100,Pawn_Cyclops_Wounded
+BS_Centaur,Big and Small - Framework,0,HumanlikeBaby,0,
+BS_Centaur,Big and Small - Framework,1,HumanlikeChild,3,
+BS_Centaur,Big and Small - Framework,2,HumanlikePreTeenager,9,
+BS_Centaur,Big and Small - Framework,3,HumanlikeTeenager,13,
+BS_Centaur,Big and Small - Framework,4,HumanlikeAdult,18,
+,Big and Small - Framework,0,HumanlikeBaby,0,
+,Big and Small - Framework,1,HumanlikeChild,3,
+,Big and Small - Framework,2,HumanlikePreTeenager,9,
+,Big and Small - Framework,3,HumanlikeTeenager,13,
+,Big and Small - Framework,4,HumanlikeAdult,18,
+BS_HumanFouramed,Big and Small - Framework,0,HumanlikeBaby,0,
+BS_HumanFouramed,Big and Small - Framework,1,HumanlikeChild,3,
+BS_HumanFouramed,Big and Small - Framework,2,HumanlikePreTeenager,9,
+BS_HumanFouramed,Big and Small - Framework,3,HumanlikeTeenager,13,
+BS_HumanFouramed,Big and Small - Framework,4,HumanlikeAdult,18,
+BS_Naga,Big and Small - Framework,0,HumanlikeBaby,0,
+BS_Naga,Big and Small - Framework,1,HumanlikeChild,3,
+BS_Naga,Big and Small - Framework,2,HumanlikePreTeenager,9,
+BS_Naga,Big and Small - Framework,3,HumanlikeTeenager,13,
+BS_Naga,Big and Small - Framework,4,HumanlikeAdult,18,
+BS_Marlith,Big and Small - Framework,0,HumanlikeBaby,0,
+BS_Marlith,Big and Small - Framework,1,HumanlikeChild,3,
+BS_Marlith,Big and Small - Framework,2,HumanlikePreTeenager,9,
+BS_Marlith,Big and Small - Framework,3,HumanlikeTeenager,13,
+BS_Marlith,Big and Small - Framework,4,HumanlikeAdult,18,
 ,Big and Small - Framework,0,HumanlikeBaby,0,Pawn_Mech_Scyther_Wounded
 ,Big and Small - Framework,1,HumanlikeChild,3,Pawn_Mech_Scyther_Wounded
 ,Big and Small - Framework,2,HumanlikePreTeenager,9,Pawn_Mech_Scyther_Wounded
 ,Big and Small - Framework,3,HumanlikeTeenager,13,Pawn_Mech_Scyther_Wounded
 ,Big and Small - Framework,4,HumanlikeAdult,18,Pawn_Mech_Scyther_Wounded
+BS_SixArmedHuman,Big and Small - Framework,0,HumanlikeBaby,0,
+BS_SixArmedHuman,Big and Small - Framework,1,HumanlikeChild,3,
+BS_SixArmedHuman,Big and Small - Framework,2,HumanlikePreTeenager,9,
+BS_SixArmedHuman,Big and Small - Framework,3,HumanlikeTeenager,13,
+BS_SixArmedHuman,Big and Small - Framework,4,HumanlikeAdult,18,
+BS_SpiderPersonRace,Big and Small - Framework,0,HumanlikeBaby,0,
+BS_SpiderPersonRace,Big and Small - Framework,1,HumanlikeChild,3,
+BS_SpiderPersonRace,Big and Small - Framework,2,HumanlikePreTeenager,9,
+BS_SpiderPersonRace,Big and Small - Framework,3,HumanlikeTeenager,13,
+BS_SpiderPersonRace,Big and Small - Framework,4,HumanlikeAdult,18,
+BS_HumanoidWithTail,Big and Small - Framework,0,HumanlikeBaby,0,
+BS_HumanoidWithTail,Big and Small - Framework,1,HumanlikeChild,3,
+BS_HumanoidWithTail,Big and Small - Framework,2,HumanlikePreTeenager,9,
+BS_HumanoidWithTail,Big and Small - Framework,3,HumanlikeTeenager,13,
+BS_HumanoidWithTail,Big and Small - Framework,4,HumanlikeAdult,18,
+BS_HumanoidWithWings,Big and Small - Framework,0,HumanlikeBaby,0,
+BS_HumanoidWithWings,Big and Small - Framework,1,HumanlikeChild,3,
+BS_HumanoidWithWings,Big and Small - Framework,2,HumanlikePreTeenager,9,
+BS_HumanoidWithWings,Big and Small - Framework,3,HumanlikeTeenager,13,
+BS_HumanoidWithWings,Big and Small - Framework,4,HumanlikeAdult,18,
+BS_JustAHead,Big and Small - Framework,0,HumanlikeBaby,0,
+BS_JustAHead,Big and Small - Framework,1,HumanlikeChild,3,
+BS_JustAHead,Big and Small - Framework,2,HumanlikePreTeenager,9,
+BS_JustAHead,Big and Small - Framework,3,HumanlikeTeenager,13,
+BS_JustAHead,Big and Small - Framework,4,HumanlikeAdult,18,
 FancyRat,AA FancyRats,0,AnimalBaby,0,
 FancyRat,AA FancyRats,1,AnimalJuvenile,0.07,
 FancyRat,AA FancyRats,2,AnimalAdult,0.3,Pawn_Boomrat_Wounded
@@ -374,6 +479,10 @@ MutantCow,Advanced Biomes (Continued),2,AnimalAdult,0.45,Pawn_Muffalo_Wounded
 PoisonButterfly,Advanced Biomes (Continued),0,AnimalBaby,0,
 PoisonButterfly,Advanced Biomes (Continued),1,AnimalJuvenile,0.2,
 PoisonButterfly,Advanced Biomes (Continued),2,AnimalAdult,0.5,Pawn_Megascarab_Wounded
+AM_Aura,Alpha Mechs,0,MechanoidFullyFormed,0,Pawn_Mech_Scyther_Wounded
+AM_Aura,Alpha Mechs,1,MechanoidFullyFormed,100,Pawn_Mech_Scyther_Wounded
+AM_Daggersnout,Alpha Mechs,0,MechanoidFullyFormed,0,Pawn_Mech_Scyther_Wounded
+AM_Daggersnout,Alpha Mechs,1,MechanoidFullyFormed,100,Pawn_Mech_Scyther_Wounded
 AM_Demolisher,Alpha Mechs,0,MechanoidFullyFormed,0,AM_Siegebreaker_Wounded
 AM_Demolisher,Alpha Mechs,1,MechanoidFullyFormed,100,AM_Siegebreaker_Wounded
 AM_Fireworm,Alpha Mechs,0,MechanoidFullyFormed,0,Pawn_Mech_Centipede_Wounded
@@ -398,8 +507,12 @@ AM_Infernus,Alpha Mechs,0,MechanoidFullyFormed,0,Pawn_Mech_Diabolus_Wounded
 AM_Infernus,Alpha Mechs,1,MechanoidFullyFormed,100,Pawn_Mech_Diabolus_Wounded
 AM_Mech_Legate,Alpha Mechs,0,MechanoidFullyFormed,0,Pawn_Mech_Centurion_Wounded
 AM_Mech_Legate,Alpha Mechs,1,MechanoidFullyFormed,100,Pawn_Mech_Centurion_Wounded
+AM_Mech_Lux,Alpha Mechs,0,MechanoidFullyFormed,0,Pawn_Mech_Scyther_Wounded
+AM_Mech_Lux,Alpha Mechs,1,MechanoidFullyFormed,100,Pawn_Mech_Scyther_Wounded
 AM_Mech_MasterChef,Alpha Mechs,0,MechanoidFullyFormed,0,Pawn_Mech_Fabricor_Wounded
 AM_Mech_MasterChef,Alpha Mechs,1,MechanoidFullyFormed,100,Pawn_Mech_Fabricor_Wounded
+AM_Mech_Munifex,Alpha Mechs,0,MechanoidFullyFormed,0,Pawn_Mech_Scyther_Wounded
+AM_Mech_Munifex,Alpha Mechs,1,MechanoidFullyFormed,100,Pawn_Mech_Scyther_Wounded
 AM_Mech_Optio,Alpha Mechs,0,MechanoidFullyFormed,0,Pawn_Mech_Legionary_Wounded
 AM_Mech_Optio,Alpha Mechs,1,MechanoidFullyFormed,100,Pawn_Mech_Legionary_Wounded
 AM_Mech_Polychoron,Alpha Mechs,0,MechanoidFullyFormed,0,Pawn_Mech_Tesseron_Wounded
@@ -410,6 +523,8 @@ AM_Mech_PristineSlurrypede,Alpha Mechs,0,AM_MilkableMechanoidFullyFormed,0,Pawn_
 AM_Mech_PristineSlurrypede,Alpha Mechs,1,AM_MilkableMechanoidFullyFormed,100,Pawn_Mech_Centipede_Wounded
 AM_PristineStrider,Alpha Mechs,0,AM_RideableMechanoidFullyFormed,0,Pawn_Mech_Termite_Wounded
 AM_PristineStrider,Alpha Mechs,1,AM_RideableMechanoidFullyFormed,100,Pawn_Mech_Termite_Wounded
+AM_Mech_Sagittarius,Alpha Mechs,0,MechanoidFullyFormed,0,Pawn_Mech_Scyther_Wounded
+AM_Mech_Sagittarius,Alpha Mechs,1,MechanoidFullyFormed,100,Pawn_Mech_Scyther_Wounded
 AM_Siegemelter,Alpha Mechs,0,MechanoidFullyFormed,0,AM_Siegebreaker_Wounded
 AM_Siegemelter,Alpha Mechs,1,MechanoidFullyFormed,100,AM_Siegebreaker_Wounded
 AM_Starfire,Alpha Mechs,0,MechanoidFullyFormed,0,AM_Siegebreaker_Wounded
@@ -487,8 +602,12 @@ Zebra,Beasts of the Rim (Continued),2,AnimalAdult,0.8,Pawn_Deer_Wounded
 BI_Queen,Better Infestations (Continued),0,EusocialInsectLarva,0,
 BI_Queen,Better Infestations (Continued),1,EusocialInsectJuvenile,0.03,
 BI_Queen,Better Infestations (Continued),2,EusocialInsectAdult,0.2,Pawn_BigInsect_Pain
+CAMech_Scyther,Caravan Adventures,0,MechanoidFullyFormed,0,Pawn_Mech_Scyther_Wounded
 ,Caravan Adventures,0,MechanoidFullyFormed,0,Pawn_Mech_Scyther_Wounded
 CADevourer,Caravan Adventures,0,MechanoidFullyFormed,0,Pawn_Mech_Centipede_Wounded
+CACrystalScythe,Caravan Adventures,0,MechanoidFullyFormed,0,Pawn_Mech_Scyther_Wounded
+CAHarbinger,Caravan Adventures,0,MechanoidFullyFormed,0,Pawn_Mech_Scyther_Wounded
+CAHavoc,Caravan Adventures,0,MechanoidFullyFormed,0,Pawn_Mech_Scyther_Wounded
 CAEndBossMech,Caravan Adventures,0,MechanoidFullyFormed,0,Pawn_Mech_Centipede_Wounded
 JOE_Landopus,Cephaloids,0,AnimalAdult,0.5,Pawn_Cobra_Wounded
 JOE_Cephalope,Cephaloids,0,AnimalBaby,0,
@@ -532,6 +651,12 @@ DA_NorthernDrog,Dark Ages : Beasts and Monsters,2,AnimalAdult,1.332,Pawn_Wildboa
 ,Dark Ages : Beasts and Monsters,0,AnimalBaby,0,
 ,Dark Ages : Beasts and Monsters,1,AnimalJuvenile,0.15,
 ,Dark Ages : Beasts and Monsters,2,AnimalAdult,0.4,Pawn_Cat_Injured
+DA_ForestOwlcat,Dark Ages : Beasts and Monsters,0,AnimalBaby,0,
+DA_ForestOwlcat,Dark Ages : Beasts and Monsters,1,AnimalJuvenile,0.15,
+DA_ForestOwlcat,Dark Ages : Beasts and Monsters,2,AnimalAdult,0.4,Pawn_Cat_Injured
+DA_ArcticOwlcat,Dark Ages : Beasts and Monsters,0,AnimalBaby,0,
+DA_ArcticOwlcat,Dark Ages : Beasts and Monsters,1,AnimalJuvenile,0.15,
+DA_ArcticOwlcat,Dark Ages : Beasts and Monsters,2,AnimalAdult,0.4,Pawn_Cat_Injured
 DA_Phrak,Dark Ages : Beasts and Monsters,0,AnimalBaby,0,
 DA_Phrak,Dark Ages : Beasts and Monsters,1,AnimalJuvenile,0.05,
 DA_Phrak,Dark Ages : Beasts and Monsters,2,AnimalAdult,0.3,Pawn_Megascarab_Wounded
@@ -553,6 +678,12 @@ DA_SilverMole,Dark Ages : Beasts and Monsters,2,AnimalAdult,0.2,Pawn_GuineaPig_W
 ,Dark Ages : Beasts and Monsters,0,AnimalBaby,0,
 ,Dark Ages : Beasts and Monsters,1,AnimalJuvenile,0.3,
 ,Dark Ages : Beasts and Monsters,2,AnimalAdult,0.6,Pawn_Bear_Injured
+DA_Taraal,Dark Ages : Beasts and Monsters,0,AnimalBaby,0,
+DA_Taraal,Dark Ages : Beasts and Monsters,1,AnimalJuvenile,0.3,
+DA_Taraal,Dark Ages : Beasts and Monsters,2,AnimalAdult,0.6,Pawn_Bear_Injured
+DA_SnowTaraal,Dark Ages : Beasts and Monsters,0,AnimalBaby,0,
+DA_SnowTaraal,Dark Ages : Beasts and Monsters,1,AnimalJuvenile,0.3,
+DA_SnowTaraal,Dark Ages : Beasts and Monsters,2,AnimalAdult,0.6,Pawn_Bear_Injured
 ERN_Amaro,Erin's Final Fantasy Animals,0,AnimalBabyTiny,0,
 ERN_Amaro,Erin's Final Fantasy Animals,1,AnimalJuvenile,0.3,
 ERN_Amaro,Erin's Final Fantasy Animals,2,AnimalAdult,0.8,Pawn_Thrumbo_Pain
@@ -583,6 +714,9 @@ Grimstone_Griffar,Grimstone : Beasts,2,AnimalAdult,1,Pawn_Bear_Injured
 Grimstone_Grimshadow,Grimstone : Beasts,0,AnimalBaby,0,
 Grimstone_Grimshadow,Grimstone : Beasts,1,AnimalJuvenile,0.75,
 Grimstone_Grimshadow,Grimstone : Beasts,2,AnimalAdult,1.332,Pawn_Thrumbo_Pain
+Grimstone_NorthernLynx,Grimstone : Beasts,0,AnimalBaby,0,
+Grimstone_NorthernLynx,Grimstone : Beasts,1,AnimalJuvenile,0.25,
+Grimstone_NorthernLynx,Grimstone : Beasts,2,AnimalAdult,0.5,Pawn_Cougar_Injured
 Grimstone_Sheepdog,Grimstone : Beasts,0,AnimalBaby,0,
 Grimstone_Sheepdog,Grimstone : Beasts,1,AnimalJuvenile,0.25,
 Grimstone_Sheepdog,Grimstone : Beasts,2,AnimalAdult,0.5,Pawn_Dog_Injured
@@ -1749,6 +1883,9 @@ AEXP_Wildebeest,Vanilla Animals Expanded,2,AnimalAdult,0.3333,AEXP_Pawn_Wildebee
 AEXP_Crocodile,Vanilla Animals Expanded,0,AnimalBaby,0,
 AEXP_Crocodile,Vanilla Animals Expanded,1,AnimalJuvenile,0.09,
 AEXP_Crocodile,Vanilla Animals Expanded,2,AnimalAdult,0.2,AEXP_Pawn_Crocodile_Wounded
+AEXP_Cheetah,Vanilla Animals Expanded,0,AnimalBaby,0,
+AEXP_Cheetah,Vanilla Animals Expanded,1,AnimalJuvenile,0.25,
+AEXP_Cheetah,Vanilla Animals Expanded,2,AnimalAdult,0.5,Pawn_Cougar_Injured
 AEXP_Boombat,Vanilla Animals Expanded,0,AnimalBaby,0,
 AEXP_Boombat,Vanilla Animals Expanded,1,AnimalJuvenile,0.1,
 AEXP_Boombat,Vanilla Animals Expanded,2,AnimalAdult,0.2222,Pawn_Boomrat_Wounded
@@ -1764,6 +1901,9 @@ AEXP_Platypus,Vanilla Animals Expanded,2,AnimalAdult,0.3333,Pawn_Alphabeaver_Wou
 AEXP_ArcticCoyote,Vanilla Animals Expanded,0,AnimalBaby,0,
 AEXP_ArcticCoyote,Vanilla Animals Expanded,1,AnimalJuvenile,0.2,
 AEXP_ArcticCoyote,Vanilla Animals Expanded,2,AnimalAdult,0.45,AEXP_Pawn_ArcticCoyote_Wounded
+AEXP_BlackBear,Vanilla Animals Expanded,0,AnimalBaby,0,
+AEXP_BlackBear,Vanilla Animals Expanded,1,AnimalJuvenile,0.2,
+AEXP_BlackBear,Vanilla Animals Expanded,2,AnimalAdult,0.5,Pawn_Bear_Injured
 AEXP_CatAbyssinian,Vanilla Animals Expanded,0,AnimalBaby,0,
 AEXP_CatAbyssinian,Vanilla Animals Expanded,1,AnimalJuvenile,0.15,
 AEXP_CatAbyssinian,Vanilla Animals Expanded,2,AnimalAdult,0.4,Pawn_Cat_Injured
@@ -1860,6 +2000,9 @@ AEXP_Beaver,Vanilla Animals Expanded,2,AnimalAdult,0.35,Pawn_Alphabeaver_Wounded
 AEXP_Hedgehog,Vanilla Animals Expanded,0,AnimalBaby,0,
 AEXP_Hedgehog,Vanilla Animals Expanded,1,AnimalJuvenile,0.11,
 AEXP_Hedgehog,Vanilla Animals Expanded,2,AnimalAdult,0.2222,Pawn_Rodent_Wounded
+AEXP_Jaguar,Vanilla Animals Expanded,0,AnimalBaby,0,
+AEXP_Jaguar,Vanilla Animals Expanded,1,AnimalJuvenile,0.25,
+AEXP_Jaguar,Vanilla Animals Expanded,2,AnimalAdult,0.5,Pawn_Cougar_Injured
 AEXP_Lemur,Vanilla Animals Expanded,0,AnimalBaby,0,
 AEXP_Lemur,Vanilla Animals Expanded,1,AnimalJuvenile,0.1,
 AEXP_Lemur,Vanilla Animals Expanded,2,AnimalAdult,0.2222,AEXP_Pawn_Lemur_Wounded
@@ -1983,6 +2126,8 @@ VFEI2_Titantick,Vanilla Factions Expanded - Insectoids 2,2,EusocialInsectAdult,1
 VFEI2_Venomite,Vanilla Factions Expanded - Insectoids 2,0,EusocialInsectLarva,0,
 VFEI2_Venomite,Vanilla Factions Expanded - Insectoids 2,1,EusocialInsectJuvenile,0.015,
 VFEI2_Venomite,Vanilla Factions Expanded - Insectoids 2,2,EusocialInsectAdult,0.1,Pawn_BigInsect_Pain
+VGE_Astropede,Vanilla Gravship Expanded - Chapter 1,0,MechanoidFullyFormed,0,Pawn_Mech_Centipede_Wounded
+VGE_Astropede,Vanilla Gravship Expanded - Chapter 1,1,MechanoidFullyFormed,100,Pawn_Mech_Centipede_Wounded
 VGE_Hunter,Vanilla Gravship Expanded - Chapter 1,0,MechanoidFullyFormed,0,Pawn_Hunter_Wounded
 VGE_Hunter,Vanilla Gravship Expanded - Chapter 1,1,MechanoidFullyFormed,100,Pawn_Hunter_Wounded
 VGE_Astronaut,Vanilla Gravship Expanded - Chapter 1,0,MechanoidFullyFormed,0,Pawn_Wasp_Wounded
@@ -2435,6 +2580,9 @@ SW_Juggernautbeetles,Insectoids 2 - Isopoda geneline,2,EusocialInsectAdult,0.2,P
 DZY_RNGChicken,R-Hen-G: Chaos Chickens,0,AnimalBabyTiny,0,Pawn_Chick_Call
 DZY_RNGChicken,R-Hen-G: Chaos Chickens,1,AnimalJuvenile,0.12,
 DZY_RNGChicken,R-Hen-G: Chaos Chickens,2,AnimalAdult,0.2,Pawn_Chicken_Wounded
+RG_Rabbit,ReGrowth 2,0,AnimalBaby,0,
+RG_Rabbit,ReGrowth 2,1,AnimalJuvenile,0.1,
+RG_Rabbit,ReGrowth 2,2,AnimalAdult,0.2222,Pawn_Hare_Wounded
 RG_WoollyStegosaurus,ReGrowth 2,0,AnimalBaby,0,
 RG_WoollyStegosaurus,ReGrowth 2,1,AnimalJuvenile,0.6,
 RG_WoollyStegosaurus,ReGrowth 2,2,AnimalAdult,1.5,RG_StegoSauropod_Wounded
@@ -2484,9 +2632,15 @@ BMT_BovineBeetle,Biomes! Caverns,2,AnimalAdult,0.3,Biomes_BovineBeetle_Wounded
 BMT_BrownBat,Biomes! Caverns,0,AnimalBaby,0,
 BMT_BrownBat,Biomes! Caverns,1,AnimalJuvenile,0.11,
 BMT_BrownBat,Biomes! Caverns,2,AnimalAdult,0.222,Biomes_Bat_Wounded
+BMT_CactusCrab,Biomes! Caverns,0,AnimalBabyTiny,0,
+BMT_CactusCrab,Biomes! Caverns,1,AnimalJuvenile,0.14,
+BMT_CactusCrab,Biomes! Caverns,2,AnimalAdult,0.27,
 BMT_CaveCricket,Biomes! Caverns,0,BMT_EusocialInsectNymphFirst,0,
 BMT_CaveCricket,Biomes! Caverns,1,BMT_EusocialInsectNymphSecond,0.08,
 BMT_CaveCricket,Biomes! Caverns,2,AnimalAdult,0.25,Biomes_Cricket_Wounded
+BMT_CaveLemming,Biomes! Caverns,0,AnimalBaby,0,
+BMT_CaveLemming,Biomes! Caverns,1,AnimalJuvenile,0.1,
+BMT_CaveLemming,Biomes! Caverns,2,AnimalAdult,0.2222,Pawn_Hare_Wounded
 BMT_CaveSpider,Biomes! Caverns,0,BMT_EusocialInsectNymphFirst,0,
 BMT_CaveSpider,Biomes! Caverns,1,BMT_EusocialInsectNymphSecond,0.15,
 BMT_CaveSpider,Biomes! Caverns,2,AnimalAdult,0.4,Pawn_Megascarab_Wounded
@@ -2503,6 +2657,9 @@ BMT_CrystalBeetlePupa,Biomes! Caverns,0,BMT_Pupa,0,
 BMT_CrystalBeetle,Biomes! Caverns,0,AnimalAdult,0,
 BMT_CrystalBeetle,Biomes! Caverns,1,AnimalAdult,0.1,
 BMT_CrystalBeetle,Biomes! Caverns,2,AnimalAdult,0.3,Biomes_BovineBeetle_Wounded
+BMT_CrystalCrab,Biomes! Caverns,0,AnimalBabyTiny,0,
+BMT_CrystalCrab,Biomes! Caverns,1,AnimalJuvenile,0.14,
+BMT_CrystalCrab,Biomes! Caverns,2,AnimalAdult,0.27,
 BMT_CrystalFairyMole,Biomes! Caverns,0,AnimalBaby,0,
 BMT_CrystalFairyMole,Biomes! Caverns,1,AnimalJuvenile,0.25,
 BMT_CrystalFairyMole,Biomes! Caverns,2,AnimalAdult,0.5,Pawn_Dog_Injured
@@ -2536,6 +2693,9 @@ BMT_FoundryBeetlePupa,Biomes! Caverns,0,BMT_Pupa,0,
 BMT_FoundryBeetle,Biomes! Caverns,0,AnimalAdult,0,
 BMT_FoundryBeetle,Biomes! Caverns,1,AnimalAdult,0.25,
 BMT_FoundryBeetle,Biomes! Caverns,2,AnimalAdult,0.3333,Biomes_ChemSnail_Wounded
+BMT_FreezerFrog,Biomes! Caverns,0,AnimalBaby,0,
+BMT_FreezerFrog,Biomes! Caverns,1,AnimalJuvenile,0.1,
+BMT_FreezerFrog,Biomes! Caverns,2,AnimalAdult,0.2222,Pawn_Hare_Wounded
 BMT_FrostweaverSpider,Biomes! Caverns,0,BMT_EusocialInsectNymphFirst,0,
 BMT_FrostweaverSpider,Biomes! Caverns,1,BMT_EusocialInsectNymphSecond,0.15,
 BMT_FrostweaverSpider,Biomes! Caverns,2,AnimalAdult,0.4,Pawn_Megascarab_Wounded
@@ -2609,6 +2769,9 @@ BMT_MetalloSnail,Biomes! Caverns,2,AnimalAdult,0.5,Biomes_GiantSnail_Wounded
 BMT_Mole,Biomes! Caverns,0,BMT_DiggerBaby,0,
 BMT_Mole,Biomes! Caverns,1,BMT_DiggerJuvenile,0.1,
 BMT_Mole,Biomes! Caverns,2,BMT_DiggerAdult,0.2222,Biomes_TruffleMole_Wounded
+BMT_Molebear,Biomes! Caverns,0,AnimalBaby,0,
+BMT_Molebear,Biomes! Caverns,1,AnimalJuvenile,0.2,
+BMT_Molebear,Biomes! Caverns,2,AnimalAdult,0.5,Pawn_Bear_Injured
 BMT_MossBeetleLarvae,Biomes! Caverns,0,BMT_InsectLarvalFirst,0,
 BMT_MossBeetleLarvae,Biomes! Caverns,1,BMT_InsectLarvalSecound,0.05,
 BMT_MossBeetleLarvae,Biomes! Caverns,2,BMT_InsectLarvalThird,0.1,Pawn_Megascarab_Wounded
@@ -2656,6 +2819,9 @@ BMT_SilverSheep,Biomes! Caverns,2,AnimalAdult,0.3333,Pawn_Sheep_Wounded
 BMT_SmolderstingScorpion,Biomes! Caverns,0,AnimalBaby,0,
 BMT_SmolderstingScorpion,Biomes! Caverns,1,AnimalJuvenile,0.08,
 BMT_SmolderstingScorpion,Biomes! Caverns,2,AnimalAdult,0.25,Pawn_Megascarab_Wounded
+BMT_Snowstalker,Biomes! Caverns,0,AnimalBaby,0,
+BMT_Snowstalker,Biomes! Caverns,1,AnimalJuvenile,0.25,
+BMT_Snowstalker,Biomes! Caverns,2,AnimalAdult,0.5,Pawn_Cougar_Injured
 BMT_SonarRabbit,Biomes! Caverns,0,AnimalBaby,0,
 BMT_SonarRabbit,Biomes! Caverns,1,AnimalJuvenile,0.1,
 BMT_SonarRabbit,Biomes! Caverns,2,AnimalAdult,0.2222,Biomes_SonarRabbit_Wounded
@@ -3157,6 +3323,16 @@ GR_Thrumdraeodon,Vanilla Genetics Expanded,2,AnimalAdult,0.99,Pawn_Thrumbo_Pain
 GR_WoolyWolf,Vanilla Genetics Expanded,0,AnimalBaby,0,
 GR_WoolyWolf,Vanilla Genetics Expanded,1,AnimalJuvenile,0.4,
 GR_WoolyWolf,Vanilla Genetics Expanded,2,AnimalAdult,0.8,Pawn_Elephant_Injured
+BS_GluttonRace,Big and Small - Genes & More,0,HumanlikeBaby,0,
+BS_GluttonRace,Big and Small - Genes & More,1,HumanlikeChild,3,
+BS_GluttonRace,Big and Small - Genes & More,2,HumanlikePreTeenager,9,
+BS_GluttonRace,Big and Small - Genes & More,3,HumanlikeTeenager,13,
+BS_GluttonRace,Big and Small - Genes & More,4,HumanlikeAdult,18,
+BS_InsectoidHumanoid_FourArmed,Big and Small - Genes & More,0,HumanlikeBaby,0,
+BS_InsectoidHumanoid_FourArmed,Big and Small - Genes & More,1,HumanlikeChild,3,
+BS_InsectoidHumanoid_FourArmed,Big and Small - Genes & More,2,HumanlikePreTeenager,9,
+BS_InsectoidHumanoid_FourArmed,Big and Small - Genes & More,3,HumanlikeTeenager,13,
+BS_InsectoidHumanoid_FourArmed,Big and Small - Genes & More,4,HumanlikeAdult,18,
 OuterRim_MuckrakerDroid,Outer Rim - Droid Depot,0,MechanoidFullyFormed,0,OuterRim_Droid_Silent
 OuterRim_DestroyerDroid,Outer Rim - Droid Depot,0,MechanoidFullyFormed,0,OuterRim_Droid_Silent
 OuterRim_DUMDroid,Outer Rim - Droid Depot,0,MechanoidFullyFormed,0,OuterRim_Droid_Silent

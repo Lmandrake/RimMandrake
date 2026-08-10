@@ -1,3 +1,8 @@
+**STATUS: FILED as issue #7, open.** https://github.com/guy1762/guy762-MM-KotORCore/issues/7
+⚠️ **The filed text contains a wrong claim.** See the correction comment drafted at the bottom of this file.
+
+---
+
 **Repo:** https://github.com/guy1762/guy762-MM-KotORCore → *Issues → New issue*
 
 ---
@@ -66,3 +71,62 @@ Either:
 The second is worth doing regardless of the first, since it makes the mod resilient to any future packaging slip.
 
 I'm happy to test a fix or provide the full `Player.log` if useful.
+
+
+---
+
+# ⚠️ CORRECTION NEEDED — draft comment for issue #7
+
+**Not posted.** Posting to a third party's public repo is the user's call.
+
+## Why
+
+Both the title and the "Why this is worth fixing beyond the missing shader"
+section assert that the `NullReferenceException` **aborts the remainder of
+RimWorld's post-load queue**. We verified on 2026-08-10 that this is **false** —
+`LongEventHandler.ExecuteToExecuteWhenFinished` wraps each queued action in its
+own try/catch and continues. Full evidence in `mods/benign_log_errors.md` §6.
+
+The packaging bug itself is entirely real and the report still stands. Only the
+severity argument is wrong, and it is wrong in the direction that overstates the
+problem — which is the kind of error worth correcting promptly and unprompted.
+
+## Draft comment
+
+> Correction to my own report, and apologies for the noise.
+>
+> I claimed the `NullReferenceException` "aborts the remainder of the post-load
+> queue". That is wrong, and I should have checked before asserting it.
+>
+> I disassembled `Verse.LongEventHandler.ExecuteToExecuteWhenFinished` in
+> `Assembly-CSharp.dll` (1.6.4871). The method's EH table has a typed
+> `catch (System.Exception)` over an 18-byte try region containing a single
+> `Action::Invoke`, and the handler's `leave` targets the loop **increment**, not
+> the loop exit. The shape is:
+>
+> ```csharp
+> for (int i = 0; i < toExecuteWhenFinished.Count; i++)
+>     try { toExecuteWhenFinished[i](); }
+>     catch (Exception ex) { Log.Error("Could not execute post-long-event action. Exception: " + ex); }
+> ```
+>
+> So a throwing action costs exactly that action. Other mods' post-load work is
+> unaffected. The real impact of the missing bundle is narrower than I described:
+> one `BuildableDef.ResolveIcon` failing, plus the shader never loading.
+>
+> **The packaging issue itself is unchanged** — `SWCP-UnityAssets/Materials/StandaloneWindows64/SWCPshaders`
+> is absent from both the Workshop upload and this repo, so `MainBundle` never
+> initialises and `Assets\Shaders\ZoomShader.shader` cannot load. The "fail soft"
+> suggestion also still stands on its own merits: a null-check in `InitMaterials`
+> would turn this into one warning instead of an exception.
+>
+> Sorry for overstating the blast radius.
+
+## Before posting, also worth deciding
+
+- Whether to add what we learned about scope: the strings in `SWCP_Core.dll`
+  suggest the bundle only supplies the **VATS zoom** shader/material
+  (`ZoomShader.shader`, `Unlit_ZoomShader.mat`), which would mean the missing
+  bundle affects one optional feature rather than all KotOR materials. That is
+  **inference from string extraction, not verified**, so it should not go into a
+  public issue until confirmed.

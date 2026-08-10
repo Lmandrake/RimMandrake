@@ -2,11 +2,34 @@
 """
 animal_inventory.py — dump every animal in the modded game to CSV.
 
-VERSION 1.2  (2026-08-10)   Project: G:/My Drive/Personal/Rimworld/Utils/
+VERSION 1.4  (2026-08-10)   Project: G:/My Drive/Personal/Rimworld/Utils/
 Docs/manifest: Utils/README.md  ("animal_inventory.py" section)
 Dependency-free: Python 3.8+ stdlib only. Keep it that way.
 
 CHANGELOG
+  1.4  dead xpaths. Four columns read fields RimWorld 1.6 no longer uses, so
+       they reported near-0% coverage and were misread as "poor inheritance".
+       Measured over 1,248 race-bearing ThingDefs in the resolved load set:
+       wildness moved to a StatDef (race/wildness 1 def -> statBases/Wildness
+       1054); deathActionWorker became a Class ATTRIBUTE on <race><deathAction>
+       (race/deathActionWorkerClass 0 defs); nameOnNuzzleChance no longer
+       exists anywhere (column removed); Insulation_Cold/Heat are apparel-only
+       stats that no animal carries, so effectiveTemp* == comfyTemp* always.
+       See the DEAD XPATHS note above STAT_MAP. This is independent of 1.3:
+       inheritance was never the reason these were empty.
+  1.3  <ParentName> inheritance is now actually RESOLVED. v1.2 recorded
+       parentName/abstractName as columns and then read every field off the
+       def's OWN element, so the majority of animals reported blank for fields
+       their abstract base supplies -- wildness 48%, comfyTempMax 44%,
+       nuzzleMtbHours 33%. The scan is now two-pass: pass A indexes every
+       ThingDef that carries a Name attribute (including abstract bases with no
+       <race>, e.g. BasePawn) plus every ThingDef with a <race>; pass B walks
+       each animal's ParentName chain and merges with RimWorld's own
+       XmlInheritance semantics. Derived columns (FAST_BREEDER,
+       RENEWABLE_YIELD, effectiveTemp*, tempRangeC/Span, HEAT/COLD_HARDY,
+       maxLittersPerYear, annualOffspringMax) are computed AFTER the merge --
+       computing them before it was the other half of the v1.2 bug. New
+       columns: inheritDepth, inheritChain, inheritedFields, unresolvedParent.
   1.2  load-set correctness. Mod/folder resolution moved to rimworld_loadset:
        honours LoadFolders.xml (incl. IfModActive / IfModNotActive) and scans
        ONLY the folders the game loads. v1.1 also scanned each mod's 1.5 and
@@ -26,9 +49,15 @@ MAINTENANCE — adding a column
   1. simple <race> field -> append to RACE_SIMPLE as (csvColumn, "race/xpath")
   2. statBases entry     -> add to STAT_MAP as "StatDefName": "csvColumn"
   3. comp-derived        -> extend parse_comps()
-  4. derived/computed    -> compute in scan_defs() after the comp block
+  4. derived/computed    -> compute in extract_thing() after the comp block, so
+     the value is derived from the INHERITANCE-RESOLVED element, not the raw def
   5. ALWAYS add the name to COLUMNS. DictWriter uses extrasaction="ignore", so a
      column missing from COLUMNS is silently dropped. This is the one easy mistake.
+
+  Anything extract_thing() returns is automatically eligible for the
+  inheritedFields diff — it is computed by running extract_thing() twice, once
+  on the def's own element and once on the resolved one. Do not read fields
+  outside extract_thing() or they will silently escape inheritance.
 
 PERFORMANCE: run natively on Windows. Through the Cowork device bridge the mount
 does ~210 files/sec and this touches tens of thousands of XML files (>10 min).
@@ -48,12 +77,37 @@ What this CANNOT see (documented honestly, do not forget it):
   * PatchOperation results. Patches apply at load; this reads base XML.
     Mitigation: pass 3 scans Patches/ and reports every operation whose xpath
     touches an animal/biome, so you at least know where to look.
-  * Full <ParentName> inheritance. Resolved one graph, best-effort; abstract
-    parents in another mod may resolve differently in game.
   * Mod-vs-mod override winners for identical defNames (flagged, not resolved).
   * True shortHashes. Computed with RimWorld's StableStringHash, but the game
     resolves collisions across the whole loaded set per defType, so treat the
     value as a CANDIDATE until cross-checked against a live dump.
+
+<ParentName> INHERITANCE — what v1.3 resolves, and what is still approximate
+---------------------------------------------------------------------------
+RESOLVED (new in 1.3). Every ThingDef with a Name attribute in the whole load
+set is indexed, cross-mod, including abstract bases that carry no <race> at all
+(BasePawn). Each animal's ParentName chain is walked to the root and merged with
+RimWorld's XmlInheritance rules: the child's own value always wins, named-child
+nodes (race, statBases, wildBiomes) merge per name, and <li> list nodes (tools,
+comps, lifeStageAges, tradeTags, litterSizeCurve/points) are REPLACED wholesale
+by any child that declares them. Inherit="False" forces replacement. Cycles and
+runaway chains are capped at INHERIT_MAX_DEPTH; a ParentName with no matching
+Name lands in the unresolvedParent column instead of vanishing.
+
+STILL APPROXIMATE:
+  * Duplicate abstract Names across mods. Last in load order wins here. The
+    game logs an error and its winner is not guaranteed to be the same one.
+  * MayRequire / MayRequireAnyOf on inherited <li> nodes is NOT evaluated, so
+    an inherited comps/recipes list can include entries a real load would drop.
+    This matters more in 1.3 than it did in 1.2: animals now inherit the
+    Anomaly-gated comps on AnimalThingBase whether or not Anomaly is active.
+  * PawnKindDef inheritance is not resolved, so the pawnkind-sourced columns
+    (combatPower, ecoSystemWeight, wildGroupSizeMin/Max, canArriveManhunter)
+    still read the def's own XML only.
+  * Which ThingDefs count as animals is still decided on the def's OWN <race>
+    element, before merging. A def that inherits <race> and declares none is
+    not listed. Deliberate: it keeps the row set identical to v1.2's.
+  * Patches still run after inheritance in the real game; see above.
 
 OUTPUTS
   animals.csv          one row per animal, ~90 columns (see COLUMN GROUPS)
@@ -66,8 +120,9 @@ OUTPUTS
 COLUMN GROUPS in animals.csv
   identity      defName label modName packageId workshopId loadOrder sourceFile
                 shortHashCandidate abstractName parentName duplicateDefName
+  inheritance   inheritDepth inheritChain inheritedFields unresolvedParent
   temperament   wildness trainability petness intelligence nameOnTameChance
-                nameOnNuzzleChance nuzzleMtbHours roamMtbDays playerCanChangeMaster
+                nuzzleMtbHours roamMtbDays playerCanChangeMaster
                 trainableTags untrainableTags
   combat        predator maxPreyBodySize manhunterOnDamageChance
                 manhunterOnTameFailChance canArriveManhunter combatPower
@@ -95,6 +150,7 @@ USAGE
 """
 
 import argparse
+import copy
 import csv
 import os
 import re
@@ -198,16 +254,19 @@ def load_active_mods(config, workshop, local, data):
 # ---------------------------------------------------------------- extraction
 RACE_SIMPLE = [
     # (csv column, xpath under the ThingDef)
-    ("wildness", "race/wildness"), ("trainability", "race/trainability"),
+    # NOTE: wildness is NOT here. In 1.6 it is a StatDef, not a race field —
+    # see the DEAD XPATHS note under STAT_MAP.
+    ("trainability", "race/trainability"),
     ("petness", "race/petness"), ("intelligence", "race/intelligence"),
     ("nameOnTameChance", "race/nameOnTameChance"),
-    ("nameOnNuzzleChance", "race/nameOnNuzzleChance"),
     ("nuzzleMtbHours", "race/nuzzleMtbHours"), ("roamMtbDays", "race/roamMtbDays"),
     ("playerCanChangeMaster", "race/playerCanChangeMaster"),
     ("predator", "race/predator"), ("maxPreyBodySize", "race/maxPreyBodySize"),
     ("manhunterOnDamageChance", "race/manhunterOnDamageChance"),
     ("manhunterOnTameFailChance", "race/manhunterOnTameFailChance"),
-    ("deathActionWorker", "race/deathActionWorkerClass"),
+    # deathActionWorker is not here either: 1.6 stores it as a Class ATTRIBUTE
+    # on <race><deathAction>, and txt() reads element text. Handled explicitly
+    # in extract_thing().
     ("baseBodySize", "race/baseBodySize"), ("baseHealthScale", "race/baseHealthScale"),
     ("baseHungerRate", "race/baseHungerRate"), ("foodType", "race/foodType"),
     ("lifeExpectancy", "race/lifeExpectancy"), ("fleshType", "race/fleshType"),
@@ -222,7 +281,25 @@ RACE_SIMPLE = [
     ("thinkTreeMain", "race/thinkTreeMain"),
 ]
 
+# DEAD XPATHS — measured against the resolved load set, 1,248 ThingDefs with
+# <race>, 2026-08-10. These are the traps that made columns look "poorly
+# covered" when in fact the tool was reading a field the game no longer uses:
+#
+#   race/wildness               1 def   (0.1%)   -> statBases/Wildness  1054 (84.5%)
+#   race/deathActionWorkerClass 0 defs  (0.0%)   -> race/deathAction Class= 77 (6.2%)
+#   race/nameOnNuzzleChance     0 defs  (0.0%)   -> gone in 1.6; column removed
+#   statBases/Insulation_Cold   0 defs  (0.0%)   -> apparel-only stat
+#   statBases/Insulation_Heat   0 defs  (0.0%)   -> apparel-only stat
+#
+# Consequence of the last two: no animal carries an insulation stat, so
+# effectiveTempMin/Max are always exactly comfyTempMin/Max. The derivation is
+# kept because it is correct and would pick up a modded insulation stat if one
+# ever appeared, but do not read it as "insulation has been accounted for".
+#
+# The lesson generalises: a 0% column is far more likely to be a dead xpath
+# than a genuinely empty field. Check before believing a coverage number.
 STAT_MAP = {
+    "Wildness": "wildness",
     "MoveSpeed": "moveSpeed", "MarketValue": "marketValue", "Mass": "mass",
     "ArmorRating_Sharp": "armorSharp", "ArmorRating_Blunt": "armorBlunt",
     "ArmorRating_Heat": "armorHeat", "ComfyTemperatureMin": "comfyTempMin",
@@ -322,12 +399,255 @@ def parse_lifestages(node):
     return rows, len(rows), adult
 
 
+# ---------------------------------------------------------------- inheritance
+# <ThingDef ParentName="AnimalThingBase"> is not decoration: most animals get
+# the bulk of their <race> block from an abstract base, frequently one owned by
+# a DIFFERENT mod. RimWorld resolves this AFTER every mod's XML is loaded, so a
+# parent may sit anywhere in load order relative to its children — which is why
+# the scan is two-pass (index every Name, then resolve).
+#
+# Merge rule, mirroring XmlInheritance.RecursiveNodeCopyOverwriteElements:
+#   * the CHILD's own value always wins; a parent value only fills a gap;
+#   * a node whose children are <li> items — tools, comps, lifeStageAges,
+#     tradeTags, litterSizeCurve/points — is REPLACED WHOLESALE by a child that
+#     declares it. It is NOT merged element-wise. Getting this wrong invents
+#     attacks and comps that the animal does not have;
+#   * a node whose children are named elements — race, statBases, wildBiomes —
+#     merges per child name, recursively;
+#   * a leaf value node replaces its parent's outright;
+#   * Inherit="False" forces wholesale replacement regardless.
+INHERIT_MAX_DEPTH = 20
+
+# Name/ParentName/Abstract describe a node's own place in the graph and must
+# never be copied down from a parent (RimWorld strips them from the clone too).
+_INHERIT_ATTRS = ("Name", "ParentName", "Abstract")
+
+
+def _is_list_node(el):
+    """True when this node's children are <li> items, i.e. a RimWorld List<>."""
+    return any(ch.tag == "li" for ch in el)
+
+
+def _overwrite(child, cur):
+    """cur takes the child's content wholesale: text, children, attributes."""
+    cur.text = child.text
+    cur[:] = [copy.deepcopy(ch) for ch in child]
+    cur.attrib.update(child.attrib)
+
+
+def _merge_into(child, cur):
+    """Lay one child node over the already-resolved parent node cur, in place."""
+    if (child.get("Inherit") or "").strip().lower() == "false":
+        _overwrite(child, cur)
+        return
+    # Either side being a text leaf, or either side being a <li> list, means the
+    # child replaces the node outright. Everything else is an element container
+    # and merges per child name — including a child that is EMPTY, which is a
+    # no-op, not a wipe. (Clearing an inherited list needs Inherit="False";
+    # that is the whole reason the attribute exists.)
+    if ((child.text or "").strip() or (cur.text or "").strip()
+            or _is_list_node(child) or _is_list_node(cur)):
+        _overwrite(child, cur)
+        return
+    cur.attrib.update(child.attrib)
+    for ce in child:
+        match = cur.find(ce.tag)
+        if match is None:
+            cur.append(copy.deepcopy(ce))
+        else:
+            _merge_into(ce, match)
+
+
+def resolve_inherit(node, by_name, cache):
+    """
+    Merge a def with its whole ParentName ancestry.
+
+    Returns (resolved element, chain, unresolvedParent). The chain is listed
+    nearest parent first. The resolved element is always a fresh copy unless the
+    def has no parent at all, so the indexed nodes are never mutated.
+
+    Two failure modes are reported rather than swallowed: a ParentName with no
+    matching Name anywhere in the load set, and a cycle (or a chain longer than
+    INHERIT_MAX_DEPTH) — both land in unresolvedParent.
+    """
+    chain, ancestors, visited, unresolved, base = [], [], set(), "", None
+    n = node
+    while len(chain) < INHERIT_MAX_DEPTH:
+        pn = (n.get("ParentName") or "").strip()
+        if not pn:
+            break
+        if pn in visited:                       # cycle
+            unresolved = pn
+            break
+        visited.add(pn)
+        p = by_name.get(pn)
+        if p is None:                           # parent defined by no active mod
+            unresolved = pn
+            break
+        chain.append(pn)
+        if pn in cache:                         # rest of the chain already done
+            base, cchain, cunres = cache[pn]
+            chain.extend(cchain)
+            unresolved = unresolved or cunres
+            break
+        ancestors.append(p)
+        n = p
+    else:
+        unresolved = (n.get("ParentName") or "").strip()   # depth cap hit
+
+    if base is None:
+        if not ancestors:
+            return node, chain, unresolved
+        base = ancestors.pop()                  # topmost we managed to reach
+
+    resolved = copy.deepcopy(base)
+    for anc in reversed(ancestors):             # farthest first, nearest last
+        for k in _INHERIT_ATTRS:
+            resolved.attrib.pop(k, None)
+        _merge_into(anc, resolved)
+    for k in _INHERIT_ATTRS:
+        resolved.attrib.pop(k, None)
+    _merge_into(node, resolved)
+    resolved.attrib.clear()
+    resolved.attrib.update(node.attrib)
+
+    name = (node.get("Name") or "").strip()
+    # Cache the load-order winner only, and never a broken chain: a cycle
+    # resolves differently depending on where you entered it.
+    if name and not unresolved and by_name.get(name) is node:
+        cache[name] = (resolved, chain, unresolved)
+    return resolved, chain, unresolved
+
+
+# ---------------------------------------------------------------- extraction
+def extract_thing(node, meta):
+    """
+    Every field this tool reads out of ONE ThingDef element, plus the derived
+    columns. Returns (row, tools, lifeStages).
+
+    Called twice per animal: once on the def's own XML — used only to work out
+    which columns it declares itself, for inheritedFields — and once on the
+    inheritance-resolved XML, which is what is written. Keeping derivation in
+    here is the point: v1.2 derived FAST_BREEDER, RENEWABLE_YIELD and the
+    temperature group from unresolved values, so they were blank for any animal
+    whose gestation or comfy temps came from its base.
+    """
+    r = dict(meta)
+    r["label"] = txt(node, "label")
+    r["description"] = re.sub(r"\s+", " ", txt(node, "description"))[:400]
+    r["tickerType"] = txt(node, "tickerType")
+    r["tradeability"] = txt(node, "tradeability")
+    r["tradeTags"] = ";".join(
+        x.text.strip() for x in node.findall("tradeTags/li") if x.text)
+    r["modExtensions"] = ";".join(
+        (x.get("Class", "") or "").split(".")[-1]
+        for x in node.findall("modExtensions/li"))[:150]
+
+    for col, xp in RACE_SIMPLE:
+        r[col] = txt(node, xp)
+
+    # deathAction has TWO shapes in the wild, and the common one is not the
+    # obvious one. Measured over the resolved load set: 63 defs use a
+    # <workerClass> CHILD (<deathAction><workerClass>DeathActionWorker_
+    # BigExplosion</workerClass></deathAction>, e.g. Boomalope) and 14 use a
+    # Class ATTRIBUTE (<deathAction Class="DeathActionProperties_Divide">).
+    # Reading only the attribute silently loses the Boomalope class of animal —
+    # exactly the explosive ones we most want flagged.
+    da = node.find("race/deathAction")
+    death = ""
+    if da is not None:
+        death = da.get("Class", "") or txt(da, "workerClass")
+    r["deathActionWorker"] = death.split(".")[-1] if death else ""
+
+    for col in STAT_MAP.values():               # so the own/resolved diff is fair
+        r.setdefault(col, "")
+    for sb in node.findall("statBases/*"):
+        col = STAT_MAP.get(sb.tag)
+        if col:
+            r[col] = (sb.text or "").strip()
+
+    wb = node.find("race/wildBiomes")
+    r["wildBiomes"] = ";".join(
+        f"{c.tag}={(c.text or '').strip()}" for c in wb) if wb is not None else ""
+
+    r["trainableTags"] = ";".join(
+        x.text.strip() for x in node.findall("race/trainableTags/li") if x.text)
+    r["untrainableTags"] = ";".join(
+        x.text.strip() for x in node.findall("race/untrainableTags/li") if x.text)
+
+    tools, agg = parse_tools(node)
+    r.update(agg)
+
+    r.update(parse_comps(node))
+    r["litterSizeMin"], r["litterSizeMax"] = parse_litter(node)
+    ls, n_ls, adult = parse_lifestages(node)
+    r["lifeStageCount"], r["ageAdultYears"] = n_ls, adult
+
+    # ---- derived: reproduction pressure -----------------
+    gest = fnum(r.get("gestationPeriodDays"))
+    lmax = fnum(r.get("litterSizeMax")) or 1.0
+    if gest and gest > 0:
+        lpy = 365.0 / gest
+        r["maxLittersPerYear"] = round(lpy, 2)
+        r["annualOffspringMax"] = round(lpy * lmax, 1)
+        r["FAST_BREEDER"] = ("YES" if lpy * lmax >= FAST_BREEDER_ANNUAL else "")
+    else:
+        r["maxLittersPerYear"] = r["annualOffspringMax"] = r["FAST_BREEDER"] = ""
+
+    # ---- derived: renewable yield (ranch guardrail) -----
+    yields = []
+    if r["milkDef"]:
+        yields.append(f"milk/{r['milkIntervalDays']}d")
+    if r["woolDef"]:
+        yields.append(f"wool/{r['shearIntervalDays']}d")
+    if r["eggUnfertilizedDef"] or r["eggFertilizedDef"]:
+        yields.append(f"egg/{r['eggLayIntervalDays']}d")
+    r["RENEWABLE_YIELD"] = ";".join(yields)
+
+    # ---- derived: temperature tolerance ------------------
+    # Effective survivable range = comfy range widened by any insulation stat
+    # the def declares OR INHERITS. Load-bearing for the desert world: who
+    # actually survives extreme heat.
+    tmin, tmax = fnum(r.get("comfyTempMin")), fnum(r.get("comfyTempMax"))
+    icold, iheat = fnum(r.get("insulationCold")), fnum(r.get("insulationHeat"))
+    emin = (tmin - icold) if (tmin is not None and icold is not None) else tmin
+    emax = (tmax + iheat) if (tmax is not None and iheat is not None) else tmax
+    r["effectiveTempMin"] = round(emin, 1) if emin is not None else ""
+    r["effectiveTempMax"] = round(emax, 1) if emax is not None else ""
+    r["tempRangeC"] = (f"{emin:g}..{emax:g}"
+                       if emin is not None and emax is not None else "")
+    r["tempSpan"] = (round(emax - emin, 1)
+                     if emin is not None and emax is not None else "")
+    r["HEAT_HARDY"] = ("YES" if emax is not None and emax >= 50 else "")
+    r["COLD_HARDY"] = ("YES" if emin is not None and emin <= -40 else "")
+    return r, tools, ls
+
+
 # ---------------------------------------------------------------- scan
 def scan_defs(mods):
-    animals, pawnkinds, biomes = {}, defaultdict(list), {}
-    attacks, lifestages = [], []
-    dupnames = defaultdict(list)
+    """
+    Two passes over the load set.
 
+    PASS A indexes, in load order, every ThingDef that either carries a Name
+    (a potential parent — abstract bases such as BasePawn have no <race> and
+    would be lost by a race-only filter, yet they hold statBases every animal
+    inherits) or carries a <race> (a potential animal). PawnKindDefs and
+    BiomeDefs are harvested here too; they need no second look.
+
+    PASS B resolves each animal's ParentName chain against that index and
+    extracts its columns from the MERGED element.
+
+    Two passes are not optional: a parent may be declared by a mod that loads
+    after its children, and RimWorld resolves inheritance only once all XML is
+    in. Duplicate Names follow the same rule this tool documents for defNames —
+    last in load order wins.
+    """
+    pawnkinds, biomes = defaultdict(list), {}
+    dupnames = defaultdict(list)
+    by_name = {}          # Name attribute -> raw element (last mod in load order wins)
+    candidates = []       # (element, mod, relpath) for every ThingDef with a <race>
+
+    # ---- pass A: index -------------------------------------------------
     for m in mods:
         for d in def_dirs(m, "Defs"):
             for path in walk_xml(d):
@@ -338,94 +658,12 @@ def scan_defs(mods):
                 for node in root:
                     dn = txt(node, "defName")
 
-                    if node.tag == "ThingDef" and node.find("race") is not None:
-                        key = dn or f"<abstract:{node.get('Name','')}>"
-                        r = {
-                            "defName": dn, "abstractName": node.get("Name", ""),
-                            "parentName": node.get("ParentName", ""),
-                            "label": txt(node, "label"),
-                            "description": re.sub(r"\s+", " ", txt(node, "description"))[:400],
-                            "modName": m["name"], "packageId": m["packageId"],
-                            "workshopId": m["workshopId"], "loadOrder": m["order"],
-                            "sourceFile": rel, "shortHashCandidate": short_hash(dn),
-                            "tickerType": txt(node, "tickerType"),
-                            "tradeability": txt(node, "tradeability"),
-                            "tradeTags": ";".join(
-                                x.text.strip() for x in node.findall("tradeTags/li") if x.text),
-                            "modExtensions": ";".join(
-                                (x.get("Class", "") or "").split(".")[-1]
-                                for x in node.findall("modExtensions/li"))[:150],
-                        }
-                        for col, xp in RACE_SIMPLE:
-                            r[col] = txt(node, xp)
-
-                        for sb in node.findall("statBases/*"):
-                            col = STAT_MAP.get(sb.tag)
-                            if col:
-                                r[col] = (sb.text or "").strip()
-
-                        wb = node.find("race/wildBiomes")
-                        r["wildBiomes"] = ";".join(
-                            f"{c.tag}={(c.text or '').strip()}" for c in wb) if wb is not None else ""
-
-                        r["trainableTags"] = ";".join(
-                            x.text.strip() for x in node.findall("race/trainableTags/li") if x.text)
-                        r["untrainableTags"] = ";".join(
-                            x.text.strip() for x in node.findall("race/untrainableTags/li") if x.text)
-
-                        tools, agg = parse_tools(node)
-                        r.update(agg)
-                        for t in tools:
-                            attacks.append(dict(t, defName=dn, modName=m["name"]))
-
-                        r.update(parse_comps(node))
-                        r["litterSizeMin"], r["litterSizeMax"] = parse_litter(node)
-                        ls, n_ls, adult = parse_lifestages(node)
-                        r["lifeStageCount"], r["ageAdultYears"] = n_ls, adult
-                        for x in ls:
-                            lifestages.append(dict(x, defName=dn, modName=m["name"]))
-
-                        # ---- derived: reproduction pressure -----------------
-                        gest = fnum(r.get("gestationPeriodDays"))
-                        lmax = fnum(r.get("litterSizeMax")) or 1.0
-                        if gest and gest > 0:
-                            lpy = 365.0 / gest
-                            r["maxLittersPerYear"] = round(lpy, 2)
-                            r["annualOffspringMax"] = round(lpy * lmax, 1)
-                            r["FAST_BREEDER"] = ("YES" if lpy * lmax >= FAST_BREEDER_ANNUAL else "")
-                        else:
-                            r["maxLittersPerYear"] = r["annualOffspringMax"] = r["FAST_BREEDER"] = ""
-
-                        # ---- derived: renewable yield (ranch guardrail) -----
-                        yields = []
-                        if r["milkDef"]:
-                            yields.append(f"milk/{r['milkIntervalDays']}d")
-                        if r["woolDef"]:
-                            yields.append(f"wool/{r['shearIntervalDays']}d")
-                        if r["eggUnfertilizedDef"] or r["eggFertilizedDef"]:
-                            yields.append(f"egg/{r['eggLayIntervalDays']}d")
-                        r["RENEWABLE_YIELD"] = ";".join(yields)
-
-                        # ---- derived: temperature tolerance ------------------
-                        # Effective survivable range = comfy range widened by any
-                        # insulation stat the def declares. Load-bearing for the
-                        # desert world: who actually survives extreme heat.
-                        tmin, tmax = fnum(r.get("comfyTempMin")), fnum(r.get("comfyTempMax"))
-                        icold, iheat = fnum(r.get("insulationCold")), fnum(r.get("insulationHeat"))
-                        emin = (tmin - icold) if (tmin is not None and icold is not None) else tmin
-                        emax = (tmax + iheat) if (tmax is not None and iheat is not None) else tmax
-                        r["effectiveTempMin"] = round(emin, 1) if emin is not None else ""
-                        r["effectiveTempMax"] = round(emax, 1) if emax is not None else ""
-                        r["tempRangeC"] = (f"{emin:g}..{emax:g}"
-                                           if emin is not None and emax is not None else "")
-                        r["tempSpan"] = (round(emax - emin, 1)
-                                         if emin is not None and emax is not None else "")
-                        r["HEAT_HARDY"] = ("YES" if emax is not None and emax >= 50 else "")
-                        r["COLD_HARDY"] = ("YES" if emin is not None and emin <= -40 else "")
-
-                        if dn:
-                            dupnames[("ThingDef", dn)].append(m["name"])
-                        animals[key] = r
+                    if node.tag == "ThingDef":
+                        name = (node.get("Name") or "").strip()
+                        if name:
+                            by_name[name] = node
+                        if node.find("race") is not None:
+                            candidates.append((node, m, rel))
 
                     elif node.tag == "PawnKindDef":
                         pawnkinds[txt(node, "race")].append({
@@ -447,6 +685,43 @@ def scan_defs(mods):
                                             for rec in node.findall("wildAnimals/*")],
                         }
                         dupnames[("BiomeDef", dn)].append(m["name"])
+
+    # ---- pass B: resolve inheritance, then extract ----------------------
+    animals, attacks, lifestages = {}, [], []
+    cache = {}
+    for node, m, rel in candidates:
+        dn = txt(node, "defName")
+        # defName, Name and ParentName are read off the def's OWN element on
+        # purpose. Taking them post-merge would hand an abstract-only def its
+        # parent's defName and make abstract rows indistinguishable.
+        meta = {
+            "defName": dn, "abstractName": node.get("Name", ""),
+            "parentName": node.get("ParentName", ""),
+            "modName": m["name"], "packageId": m["packageId"],
+            "workshopId": m["workshopId"], "loadOrder": m["order"],
+            "sourceFile": rel, "shortHashCandidate": short_hash(dn),
+        }
+        resolved, chain, unresolved = resolve_inherit(node, by_name, cache)
+        r, tools, ls = extract_thing(resolved, meta)
+
+        if resolved is node:
+            inherited = []
+        else:
+            own, _, _ = extract_thing(node, meta)
+            inherited = [k for k in sorted(r) if str(r[k]) != str(own.get(k, ""))]
+        r["inheritDepth"] = len(chain)
+        r["inheritChain"] = " > ".join(chain)
+        r["inheritedFields"] = ";".join(inherited)[:600]
+        r["unresolvedParent"] = unresolved
+
+        for t in tools:
+            attacks.append(dict(t, defName=dn, modName=m["name"]))
+        for x in ls:
+            lifestages.append(dict(x, defName=dn, modName=m["name"]))
+        if dn:
+            dupnames[("ThingDef", dn)].append(m["name"])
+        animals[dn or f"<abstract:{node.get('Name','')}>"] = r
+
     return animals, pawnkinds, biomes, attacks, lifestages, dupnames
 
 
@@ -476,8 +751,9 @@ def scan_patches(mods):
 COLUMNS = (
     ["defName", "label", "modName", "packageId", "workshopId", "loadOrder", "sourceFile",
      "shortHashCandidate", "abstractName", "parentName", "duplicateDefName"]
+    + ["inheritDepth", "inheritChain", "inheritedFields", "unresolvedParent"]
     + ["wildness", "trainability", "petness", "intelligence", "nameOnTameChance",
-       "nameOnNuzzleChance", "nuzzleMtbHours", "roamMtbDays", "playerCanChangeMaster",
+       "nuzzleMtbHours", "roamMtbDays", "playerCanChangeMaster",
        "trainableTags", "untrainableTags"]
     + ["predator", "maxPreyBodySize", "manhunterOnDamageChance", "manhunterOnTameFailChance",
        "canArriveManhunter", "combatPower", "attackCount", "attackBestPower",

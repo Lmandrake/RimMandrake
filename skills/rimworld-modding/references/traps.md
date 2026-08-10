@@ -9,11 +9,85 @@ it gets promoted into the skill body and deleted from here.
 **Already promoted into SKILL.md — do not re-log these:** `--` forbidden in XML
 comments · `PatchOperationRemove` deletes every match · `MayRequire` checks the
 mod not the def · `GameComponent` needs `(Game game)` · `modDependency` does not
-imply load order · exceptions in `ExecuteToExecuteWhenFinished` abort the
-post-load queue · compatibility patches must load last · read the `wanter` before
+imply load order · a failed post-long-event action costs only itself, the queue
+continues · compatibility patches must load last · read the `wanter` before
 calling an unresolved cross-reference benign · `LoadFolders.xml` makes a mod's def
 set depend on the whole mod list · the validator cannot see patch-created nodes
 and does not check `Defs/`.
+
+---
+
+### A strictly read-only live-bridge call hung the game and cost a 23-minute load
+_2026-08-10 · first live use of RimBridgeServer on a 562-mod stack_
+
+**Symptom:** `rimworld/list_debug_action_roots` returned but slowly;
+`rimworld/search_debug_actions` never returned. `Player.log` stopped mid-line, the
+socket timed out at 60 s, and Windows raised `AppHangB1` and closed RimWorld.
+Nothing had been mutated — the calls were pure discovery.
+
+**Cause:** bridge tools execute **on the game's main thread**. Those two build
+RimWorld's debug-action node graph, and across 562 mods that build never
+completed. A livelock, not a deadlock and not a bad write: CPU stayed pinned and
+the log kept growing until the process was killed.
+
+**Fix:** none after the fact. Prevention is to never run enumerating discovery
+tools against a game you care about — learn the paths on a throwaway quick-test
+colony, then use the known path on the real one. The vanilla surface can also be
+obtained fully offline: parsing `[DebugAction]` attributes out of
+`Assembly-CSharp.dll` yields all 411 of them with categories and target kinds.
+
+**Generalises to:** **"read-only" is the wrong safety axis for an in-process
+bridge.** The question is not *does this mutate state* but *how much work does
+this do on the thread that must keep responding.* An enumerating query over a
+large plugin set is far more dangerous than a targeted write. Classify tools by
+cost, not by side-effect, and treat "list/search/discover everything" as the
+expensive category by default.
+
+It also punctures a comforting assumption worth naming: I had constrained the
+work to read-only calls and described that as safe. It was safe from corruption
+and not safe for the session — two different guarantees that are easy to conflate
+when handing someone a risk assessment.
+
+---
+
+### A folklore claim about the engine became our triage rule, and it was wrong
+_2026-08-10 · found while deciding whether to disable a mod over it_
+
+**Symptom:** none, which is the problem. For a full day we rated
+`Could not execute post-long-event action` as near-top severity, on the belief
+that one throw abandons the rest of RimWorld's post-load queue for every mod.
+
+**Cause:** the claim is common RimWorld folklore and the log line *sounds* fatal.
+It was written down once, promoted into `SKILL.md` as a default triage rule,
+restated in four files, and then cited back as evidence when reasoning about an
+unrelated mod. Nobody opened the method.
+
+Parsing the IL settled it in minutes: FAT header with an EH section, a typed
+`catch(System.Exception)` over an **18-byte** try containing a single
+`Action::Invoke`, and a handler whose `leave` targets the **loop increment**. It
+is `for (…) { try { list[i](); } catch { Log.Error(…); } }`. One failed action
+costs one action.
+
+**Fix:** retracted across all five files; the real severity is per-action.
+
+**Generalises to:** separate two kinds of claim and hold them to different
+standards. An **observation** ("this string appeared in the log") needs only the
+log. A claim about **engine behaviour** ("and therefore the engine stops doing X")
+needs the IL, the decompiled source, or an authoritative citation — because it
+will be used to predict things you have not observed. Ours was load-bearing for a
+mod-removal decision and for a public bug report.
+
+Three amplifiers made it worse, and all three recur:
+1. **Promotion laundered it.** Moving a note into a "verified lessons" file
+   changed nothing about its evidence but changed how much everyone trusted it.
+2. **Restatement looked like corroboration.** Four files agreeing was one source
+   copied four times.
+3. **It was self-confirming.** Every unexplained downstream breakage got
+   attributed to the "aborted queue", so the rule kept appearing to earn its keep.
+
+Cheap defence: when a written lesson is about to justify an irreversible or
+outward-facing action, re-derive it from primary evidence first. Decompiling one
+method is minutes; a wrong bug report is public.
 
 ---
 
@@ -133,7 +207,9 @@ been added. Key: Armadillo`, thrown from `BiomeDef.CommonalityOfAnimal`. Three
 unrelated mods broke at once and none of them was the cause: Choose Wild Animal
 Spawns died in its static constructor, Giddy-Up logged "error calling
 AllWildAnimals … Skipping", and Biome Compatibility Project threw inside the
-post-load queue and took the rest of the queue with it.
+post-load queue. (That last clause originally read "and took the rest of the
+queue with it" — **false**, corrected 2026-08-10; the queue is per-action
+try/catch.)
 
 **Cause:** an animal can reach a biome two ways — the biome's `<wildAnimals>`
 list, or the animal's `<race><wildBiomes>` list. Both paths `Add()` into one
@@ -247,9 +323,11 @@ upload *and* the GitHub repo. Confirmed by clean redownload, by reading the repo
 tree (no `.gitignore` excluding it), and by searching all 1,211 installed mods
 for any `*UnityAssets*` directory (zero matches, so no companion mod supplies it).
 
-**Fix:** none locally; reported upstream, requesting both the bundle and a
-null-check that degrades to "no custom shaders" instead of throwing into the
-post-load queue.
+**Fix:** none locally; reported upstream (issue #7, open), requesting both the
+bundle and a null-check that degrades to "no custom shaders" instead of throwing
+into the post-load queue. ⚠️ That issue also claims the throw "aborts the
+remainder of the post-load queue" — **that claim is wrong** and needs a
+correction comment; see the entry below.
 
 **Generalises to:** before concluding "my install is broken", check the
 distribution. Three cheap checks in order — clean redownload, the upstream repo

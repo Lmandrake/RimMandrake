@@ -16,6 +16,21 @@ bridge decides what a tool does, not us - so the discipline is yours:
 
 Searching for and DESCRIBING a debug action is free. EXECUTING one is not.
 
+READ-ONLY IS NOT THE SAME AS HARMLESS
+=====================================
+2026-08-10: `rimworld/list_debug_action_roots` and `rimworld/search_debug_actions`
+killed a live 562-mod colony. Neither tool changes game state - both build
+RimWorld's debug node graph on the main thread, and on a load order this size
+that build never returned. Unity stopped pumping, Windows raised AppHangB1, and
+the process was terminated ~4 minutes later; 23 minutes of load time went with
+it. There was no exception in Player.log, just silence.
+
+So: on a heavily modded install, treat the four `*_debug_action*` discovery
+tools as dangerous, not as reads. If you must call them, save the game first,
+give them a multi-minute timeout, and expect that a timeout means the game is
+already gone rather than merely slow. Everything else in the safe list above
+returned in 7-15ms on that same install.
+
 WHY THIS EXISTS
 ===============
 The bridge is only reachable while the game is up, and the token changes on

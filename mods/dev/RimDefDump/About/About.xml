@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ModMetaData>
+  <packageId>mandrake.rimdefdump</packageId>
+  <name>RimDefDump (local tooling)</name>
+  <author>Mandrake</author>
+  <supportedVersions>
+    <li>1.6</li>
+  </supportedVersions>
+  <description>Local research tooling, not gameplay content.
+
+Dumps the RimWorld def database to JSON at game load, AFTER all mods have loaded
+and all PatchOperations have applied. This is the post-resolution ground truth
+that an offline Defs/ scan cannot see: patch results, mod-vs-mod override
+winners, true shortHashes, and resolved stat values.
+
+Adds no defs, no Harmony patches, and no gameplay behaviour. It only reads the
+def database and writes files.
+
+INERT BY DEFAULT. It does nothing at all unless a request marker file exists at:
+  %USERPROFILE%\AppData\LocalLow\Ludeon Studios\RimWorld by Ludeon Studios\DefDump\dump_request.txt
+
+Marker contents select the scope:
+  (empty) or "animals"  - animals.json + manifest.json  (fast, seconds)
+  "all"                 - the above plus defs/&lt;DefType&gt;.json for every def
+                          type with a database (slow, large)
+
+Companion to Utils/animal_inventory.py, which is the offline authoring view.
+This is the live verification view.</description>
+</ModMetaData>

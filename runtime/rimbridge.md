@@ -172,30 +172,94 @@ DebugActions; a bespoke-window/gizmo editor does not.
   tiles. World authoring is therefore a **human, setup-time** activity; the bridge's live role stays
   the loaded-map enrichment (blueprint stamping), not planet editing.
 
-## 2. Dependencies ❓ (pending)
-- ❓ Harmony (`brrainz.harmony`) — near-universal for C# mods; confirm, don't assume.
-- ❓ Companion client / external library the server talks to — unknown whether one exists.
-- (Fill in each real dependency with name + Workshop ID + source once known.)
+## 2. Dependencies ✅ (verified 2026-08-10 from About.xml + shipped assemblies)
+- **Declares NO `modDependencies` and NO `loadAfter`.** It does not require Harmony
+  as a declared dependency, though it applies Harmony patches at runtime (56 optional
+  patch classes, all succeeding on our stack) and Harmony is present anyway at load
+  position 2.
+- **No external companion is required.** Everything it needs is vendored in
+  `1.6/Assemblies/`: `Lib.GAB.dll`, `Gabp.Runtime.dll`, `RimBridgeServer{,.Core,.Sdk,.Contracts,.Extensions.Abstractions}.dll`,
+  `Newtonsoft.Json.dll`, and `MoonSharp.Interpreter.dll` (the Lua front-end behind
+  `rimbridge/run_lua`).
+- GABS is **optional**, not a dependency — Direct mode is proven (§4).
 
-## 3. Architecture — how it actually works ❓ (pending source read)
-_To fill in after extracting the source. Questions to answer:_
-- What transport? (socket / HTTP / named pipe / file-watch?)
-- What's the command/message schema? What actions are exposed?
-- Does it spawn via engine calls (`GenSpawn`, thing/pawn generators) or raw state writes? ← key safety question
-- Threading: does it act on the main game tick or off-thread? (off-thread map mutation is a classic corruption source)
-- Auth/binding: does the server bind localhost-only, or open a network port? (security)
-- Persistence: do live-injected things survive save/reload cleanly?
+## 3. Architecture — how it actually works ✅ (VERIFIED LIVE 2026-08-10)
 
-## 4. Setup & operation — how to use it well ❓ (pending Reddit sweep + testing)
-_Practitioner wisdom goes here as it accumulates. Structure:_
-- **Install/config:** …
-- **Starting the bridge / connecting a client:** …
-- **Known-good live-modification patterns:** …
-- **Performance notes:** …
+**First successful live connection to a running game, 2026-08-10 15:36.** Everything
+below was read out of the shipped assemblies at
+`…/294100/3727949765/1.6/Assemblies/` and then confirmed against the live bridge.
+Answers to the questions this section used to ask:
+
+- **Transport** ✅ raw TCP on `127.0.0.1`, **LSP-style framing**: `Content-Length: N`
+  and `Content-Type: application/json` headers, `
+
+`, then exactly N bytes of
+  UTF-8 JSON. Not WebSocket, not HTTP. (Literals in `Lib.GAB.dll` `#US` heap.)
+- **Envelope** ✅ `Gabp.Runtime.dll` `JsonProperty` order:
+  `v, id, type, method, params, result, error`. Events use
+  `v, id, type, channel, seq, payload`. Protocol string `gabp/1`.
+- **Methods** ✅ `session/hello`, `tools/list`, `tools/call`, `events/subscribe`,
+  `events/unsubscribe`, `attention/current`, `attention/ack`.
+- **Auth** ✅ `session/hello` first, params
+  `{token, bridgeVersion, platform, launchId, clientInfo{name,version,author}}`.
+  Anything before it is refused with *"Session not established. Send session/hello
+  first."*; a bad token gives *"Invalid authentication token"*.
+- **Binding** ✅ **localhost only** (`127.0.0.1:5174`, owner = the RimWorld process).
+  Not exposed to the network. The port and a fresh token are printed to `Player.log`
+  every launch and the token **rotates each launch**.
+- **Tool naming** ✅ canonical `^[a-z][a-z0-9_-]*(/[a-z][a-z0-9_-]*)+$`. The dotted
+  MCP spelling is rejected by `Lib.GAB` outright.
+- **Threading** ⚠️ tools execute **on the game's main thread**. This is the safety
+  answer *and* the danger — see §5.
+- **Tool surface** ✅ **125 tools**: `rimworld/` 107, `rimbridge/` 18. Diffed against
+  the generated list in the checked-in `RimBridgeServer-main/README.md`: **exact
+  match, no drift**, so those docs are a trustworthy reference for this build.
+
+**Our client:** `Utils/rimbridge_client.py` — stdlib only, scrapes port+token from
+`Player.log` so a relaunch needs no hand-editing, `--list-tools` / `--call`, and a
+guard that refuses destructive tool names without an explicit override flag.
+
+## 4. Setup & operation ✅ (direct mode proven)
+
+- **Install/config:** mod active at load position 276; **no GABS needed.** GABS is the
+  upstream recommendation, but Direct mode works and is what we use.
+- **Starting / connecting:** start RimWorld normally, then read
+  `[RimBridge] GABP server running standalone on port <N>` and
+  `[RimBridge] Bridge token: <hex>` from `Player.log`. Our client does this for you.
+- **Readiness:** the bridge only initialises *after* play-data load — on this stack
+  that was **~17 minutes** (`elapsedMs=1028795`) into a 23-minute cold start. Do not
+  expect to connect early; poll for the port line.
+- **Verified healthy call shape:** `rimbridge/ping`, `rimbridge/get_bridge_status`,
+  `rimworld/get_game_info` all returned in **7–15 ms**. Status reported all 56
+  optional Harmony patches applied, 0 failures.
+
+
 
 ## 5. Gotchas / failure modes ⚠️ (grow this aggressively)
-_Every "this breaks saves / TPS / references" lesson lands here. Empty for now — the
-whole point of Tier 2b caution is that live map mutation is the fragile frontier._
+
+### 5.1 ⛔ A READ-ONLY tool can still kill the game — `search_debug_actions` hung it
+**2026-08-10, cost: a 23-minute load.** `rimworld/list_debug_action_roots` returned but
+slowly; `rimworld/search_debug_actions` never returned. `Player.log` stopped mid-line,
+the socket timed out at 60 s, and Windows raised `AppHangB1` and closed RimWorld.
+
+**Cause:** those tools build RimWorld's debug-action node graph **on the main thread**.
+Across 562 mods that build did not complete. Nothing was mutated — the failure mode is
+a main-thread hang, not a bad write.
+
+**The lesson that generalises:** *read-only is not the same as safe.* The useful axis
+for a live bridge is not "does it mutate state" but **"how much main-thread work does
+it do."** A discovery call that enumerates every registered node in a huge mod list is
+far more dangerous than a targeted mutation. Classify bridge tools by cost, not just
+by side-effect.
+
+**Rule adopted:** never run debug-action discovery against a colony we care about. Use
+a throwaway quick-test colony to learn the paths, then use the known path against the
+real game.
+
+### 5.2 The token rotates every launch
+Any script holding a hard-coded token breaks silently on the next start. Scrape it from
+`Player.log` (last match wins).
+
 
 ## 6. Fit with our campaign & pillars
 - Anti-exponential: a live-editor is an **authoring tool**, not an in-fiction power — using
@@ -206,7 +270,21 @@ whole point of Tier 2b caution is that live map mutation is the fragile frontier
 - Containment items (e.g. lightsabers) stay quest-earned — do NOT inject as generic loot.
 
 ## 7. Open questions / next steps
-- ❓ Await Fetcher delivery of 1.6 source + dep list + Reddit findings.
-- ❓ Then: extract to `mod_sources/`, read About.xml + C#, fill §1–3 with ✅ facts.
-- ❓ Decide raw-injection vs engine-route (§3 threading/spawn answer decides this).
-- ❓ Trial a tiny live injection on a backup save; record result in §4/§5.
+
+**Closed 2026-08-10:** source extracted, §1–§4 filled with ✅ facts, first live
+connection made, 125-tool surface inventoried, client written.
+
+Still open:
+- ❓ **Does it spawn via engine calls or raw state writes?** §0's key safety question is
+  still unanswered. The tool surface strongly implies engine-route (it mirrors debug
+  actions rather than reimplementing them), but that is inference, not verification.
+- ❓ **Do live-injected things survive save/reload cleanly?** Untested. This is the
+  Tier-2b gate and needs a deliberate trial on a *backup* save, not the campaign save.
+- ❓ **Which tools are main-thread-expensive?** §5.1 found one the hard way. Before
+  trusting any bulk/enumerating tool, assume it is expensive until proven otherwise.
+- ❓ **The modded debug-action surface.** We have the 411 vanilla `[DebugAction]`
+  methods (parsed offline from `Assembly-CSharp.dll`), but Outer Rim / HAR / ABF almost
+  certainly register their own. Only a live query finds those, and the live query is
+  the thing that hung the game — so it must be done on a throwaway colony.
+- ❓ `rimbridge/run_lua` and `run_script` are a **lowered subset**, not general Lua.
+  Start from `get_lua_reference` / `get_script_reference` before writing any.

@@ -219,7 +219,7 @@ of reading the real def, and it is equally non-optional.
 | `Error in static constructor of X` | The mod is **dead** — nothing in it ran. Highest-priority finding in any log. |
 | `ReflectionTypeLoadException` naming another mod's types | Load order (§2), not corruption. |
 | `MissingMethodException: Constructor on type ... not found` | Entry-point signature (§4). Feature silently absent. |
-| `NullReferenceException` inside `LongEventHandler.ExecuteToExecuteWhenFinished` | Aborts the **rest of the post-load queue** — other mods' post-load work silently never runs. |
+| `Could not execute post-long-event action` + exception inside `LongEventHandler.ExecuteToExecuteWhenFinished` | **One queued action failed; the queue continues.** Verified from IL 2026-08-10 — per-action try/catch, the handler's `leave` targets the loop increment. Cost is that one action (usually one def's `ResolveIcon`). The *only* abort path is an NRE in the DeepProfiler block outside the try, which also bricks the queue behind "Already executing." |
 | `AmbiguousMatchException` in a Harmony patch | The target method gained an overload in a game/mod update. The patcher is version-drifted. |
 | Harmony patch applies but has no effect | Another mod's Prefix is returning `false` on the same method. |
 | `Could not find type named X` in a def | The assembly didn't load, or the def references a class from a mod that isn't present. |

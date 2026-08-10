@@ -32,8 +32,11 @@ any mod caching a `List<ThingDef>` keeps that list forever. See §2.4.
 
 1. `grep -n "static constructor\|TypeInitializationException"` — these mods are
    *dead*, not noisy, and will not say so again later.
-2. Exceptions inside `LongEventHandler.ExecuteToExecuteWhenFinished` — these
-   abort the rest of the post-load queue, so unrelated mods silently lose work.
+2. ~~Exceptions inside `LongEventHandler.ExecuteToExecuteWhenFinished`~~ —
+   **RETRACTED 2026-08-10.** We believed these aborted the rest of the post-load
+   queue. They do not. Verified from the game's IL: per-action try/catch, and the
+   handler's `leave` targets the loop increment. `Could not execute post-long-event
+   action` costs exactly one action. Demoted to roughly bucket 4 severity.
 3. `Exception loading def from file X` — a def was **discarded**. Everything that
    referenced it is about to fail in ways that don't name it.
 4. `Could not resolve cross-reference` — usually a `MayRequire` guarding the mod
@@ -270,7 +273,7 @@ Listed here only so nobody mistakes them for benign.
 
 | Error | Status |
 |---|---|
-| `[SWCP Core/Tools] Failed to load bundle ... SWCPshaders` → `BuildableDef.ResolveIcon()` NRE | **Upstream packaging bug**, reported 2026-08-10. The mod ships `SWCP_Core.dll` referencing an AssetBundle it never includes — absent from the Workshop upload *and* the GitHub repo. Serious because the NRE fires inside `LongEventHandler.ExecuteToExecuteWhenFinished` and **aborts the rest of the post-load queue**. |
+| `[SWCP Core/Tools] Failed to load bundle ... SWCPshaders` → `BuildableDef.ResolveIcon()` NRE | **Upstream packaging bug**, filed as issue #7 (open). The mod ships `SWCP_Core.dll` referencing an AssetBundle it never includes — absent from the Workshop upload *and* the GitHub repo. ⚠️ **Severity downgraded 2026-08-10** — see §6. The queue does not abort; the NRE costs one def's `ResolveIcon`. Cannot be removed: SWCP defines 1,959 defs and ships 36 assemblies, and the whole KotOR family sits on it. |
 | `HeadSetForFA.HSMCache` → NRE in `CheckSettingData(ThingDef raceDef)` | Head Set For [NL] Facial Animation is not applying. **Parked** pending the facial-animation visual test — if faces look right without it, drop the mod. |
 | `ChooseWildAnimalSpawns` → `ArgumentNullException: key` | **Still dead — but the cause is now known and is NOT ours.** See §3.4. BCP recovered; CWAS did not, and that turned out to be the genuine separate bug this row predicted. |
 
@@ -462,14 +465,13 @@ Worth doing on a world we are throwing away anyway.
 Same mod as §3's AssetBundle bug (KotOR Resources & Materials, WS 3254370945).
 Its role registry is **empty at worldgen**, so it contributes no characters.
 
-🔎 **Hypothesis worth testing, not yet confirmed:** this may be self-inflicted by
-the *same* bundle bug. SWCP's NRE fires inside
-`LongEventHandler.ExecuteToExecuteWhenFinished`, which aborts the remainder of
-the post-load queue — and if SWCP populates its own role registry from an action
-queued behind the thrower, the mod kills its own initialisation. If so, one
-missing file explains both symptoms, and the mod is currently contributing
-nothing but errors. That would upgrade it from "watch upstream" to "disable
-until fixed."
+❌ **Hypothesis REFUTED 2026-08-10.** I guessed this was self-inflicted — that
+SWCP's own NRE aborted the post-load queue and so killed its own role registry.
+The premise was wrong: that queue is a per-action try/catch and does not abort
+(verified from IL, see §6). So the empty role registry is a *separate* problem
+from the bundle failure, and its cause is still unknown. Recorded because the
+guess was reasonable and still wrong — the abort premise was inherited from our
+own notes rather than checked.
 
 ### 4b.3 `FileNotFoundException: UnityEngine.InputLegacyModule … ReflectionOnly APIs`
 
@@ -522,3 +524,57 @@ looked like "still broken" and was in fact a brand-new problem of our own making
 
 **Validate the whole mod folder, not the file you changed.** The blast radius of
 a deploy is the mod, not the diff.
+
+**A "lesson" we wrote down can be the thing that misleads us.** See §6.
+
+---
+
+## 6. ⚠️ RETRACTION — the post-load queue does NOT abort (2026-08-10)
+
+For most of this file's life we treated
+`Could not execute post-long-event action` as a **severity-2** finding, on the
+belief that one throw abandons every remaining queued post-load action across all
+mods. That belief drove the SWCP severity rating, the wording of upstream issue
+#7, and a hypothesis about SWCP sabotaging itself.
+
+**It is false.** Verified by parsing the IL of
+`Verse.LongEventHandler.ExecuteToExecuteWhenFinished` in
+`Assembly-CSharp.dll` (1.6.4871, md5 `bf39a6f68f2deda9b09d66f6ceffecf3`):
+
+| Evidence | Finding |
+|---|---|
+| Method header | FAT, `CorILMethod_MoreSects` set |
+| EH section | 2 clauses: typed `catch(System.Exception)` + a `finally` |
+| Try region | `IL_0071`–`IL_0083`, **18 bytes** — one `get_Item` plus one `Action::Invoke` |
+| Catch handler | logs via `Verse.Log::Error`, then `leave.s IL_00a8` |
+| `IL_00a8` | the **loop increment**, not the loop exit |
+| Back-edge | `blt IL_0033` at `IL_00b7`, outside every clause |
+
+So the shape is `for (…) { try { list[i](); } catch (Exception ex) { Log.Error(…); } }`.
+A throwing action costs that action and nothing else. The loop even re-reads
+`.Count` each pass, so actions queued *during* execution still run.
+
+**The one genuine abort path** is different and worth knowing: the per-iteration
+DeepProfiler block at `IL_0033`–`IL_006c` sits *outside* the try and dereferences
+`action.Method.DeclaringType`. An NRE there escapes the loop, skips the final
+`Clear()`, and leaves `executingToExecuteWhenFinished == true` — after which every
+later call returns early on "Already executing." and the queue is bricked for the
+rest of the session. **Tell them apart by the stack:** a frame for the queued
+action itself (e.g. `BuildableDef.<PostLoad>b__78_0`) is the survivable path.
+
+**Not yet ruled out:** a Harmony transpiler in some mod could replace this method
+at runtime. Nobody has scanned the loaded mod set for that.
+
+### How this got into the notes, which is the more useful lesson
+
+Nobody made it up — it is a widely-repeated claim in RimWorld modding folklore,
+and the log line *sounds* like it ("`Could not execute…`" reads as fatal). It was
+written down once, promoted into `SKILL.md` as a default triage rule, restated in
+three more files, and then **cited back as evidence** when reasoning about SWCP.
+At no point did anyone open the method.
+
+**Standing rule:** a claim about *engine behaviour* — as opposed to an observation
+about a log — must be traceable to the IL, the decompiled source, or an
+authoritative citation before it earns a place in the triage order. Log text is
+evidence of what happened; it is not evidence of what the engine does next.
+Reproduction: `scratchpad/il_probe.py` (stdlib only, re-runnable).

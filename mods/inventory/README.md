@@ -1,6 +1,6 @@
 # mods/inventory/ — generated animal reference for the live 562-mod stack
 
-_Generated 2026-08-10 by `Utils/animal_inventory.py` **v1.2** against
+_Generated 2026-08-10 by `Utils/animal_inventory.py` **v1.4** against
 `Config/ModsConfig.xml` (RimWorld 1.6.4871 rev590). Regenerate with:_
 
 ```
@@ -24,9 +24,9 @@ before the game ever threw it.
 
 | File | Rows | One row is |
 |---|---|---|
-| `animals.csv` | 1,243 | an animal ThingDef, ~112 columns (identity, temperament, combat, physiology, temperature, reproduction, production, ecology, trade) |
-| `animal_attacks.csv` | 3,353 | one attack tool |
-| `animal_lifestages.csv` | 3,169 | one life stage |
+| `animals.csv` | 1,243 | an animal ThingDef, 115 columns (identity, inheritance, temperament, combat, physiology, temperature, reproduction, production, ecology, trade) |
+| `animal_attacks.csv` | 3,614 | one attack tool |
+| `animal_lifestages.csv` | 3,345 | one life stage |
 | `biome_animals.csv` | 4,618 | one (biome, animal) pair, **from both directions** |
 | `conflicts.csv` | 3 | a duplicate (biome, animal) pair — the crash class |
 | `patch_watch.csv` | 1,873 | a PatchOperation whose xpath touches an animal or biome |
@@ -45,9 +45,60 @@ only *after* Primordial Geysers' patch applies, so they appear in **no** CSV
 here. `patch_watch.csv` is the mitigation — it tells you where to look, not what
 the result was. For post-resolution truth you need a live dump via RimBridge.
 
-Also approximate: `<ParentName>` inheritance (best-effort, one graph) and
+`<ParentName>` inheritance **is** now resolved cross-mod (v1.3), with RimWorld's
+own merge semantics. What remains approximate: duplicate abstract `Name`s across
+mods (last-in-load-order wins here; the game's winner is not guaranteed to
+match), `MayRequire` gating on inherited list nodes (not evaluated, so an
+inherited `comps` list can include Anomaly-gated entries a real load would
+drop), PawnKindDef inheritance (not resolved, so `combatPower` /
+`ecoSystemWeight` / `wildGroupSize*` still read own-XML only), and
 `shortHashCandidate` (correct algorithm, but the game resolves collisions across
 the whole loaded set — treat as a candidate until cross-checked live).
+
+## v1.3 / v1.4 — two independent fixes, 2026-08-10
+
+**v1.3 resolved `<ParentName>` inheritance.** v1.2 recorded `parentName` as a
+column and then read every field off the def's *own* element, so most animals
+reported blank for fields their abstract base supplies. Coverage moved a long
+way: `mass` 0.6 % → 100 %, `tickerType` 1 % → 100 %, `thinkTreeMain` 7 % → 99.7 %,
+`bloodDef` 11 % → 99.4 %, `hasGenders` 10 % → 98.7 %, `toxicResistance` 9 % →
+98.5 %, `lifeExpectancy` 86 % → 98.4 %, `moveSpeed` 93 % → 98.3 %, `comfyTempMin`
+87 % → 98.1 %, `trainability` 80 % → 91.7 %. Attacks and life stages grew with it
+(3,353 → 3,614 and 3,169 → 3,345) because inherited `tools` / `lifeStageAges`
+now resolve. Row count is unchanged at 1,243, and `unresolvedParent` is empty
+for every row.
+
+**v1.4 fixed four dead xpaths** — unrelated to inheritance, and the more
+instructive bug. These columns read fields RimWorld 1.6 no longer uses, so they
+showed near-0 % coverage and were misread as an inheritance problem:
+
+| Column | Was reading | 1.6 reality |
+|---|---|---|
+| `wildness` | `race/wildness` (1 def) | a **StatDef**: `statBases/Wildness` (1,054 defs) → now **89.1 %** |
+| `deathActionWorker` | `race/deathActionWorkerClass` (0 defs) | `race/deathAction`, as a `workerClass` **child** (63) or `Class` **attribute** (14) → now **6.2 %** |
+| `nameOnNuzzleChance` | `race/nameOnNuzzleChance` (0 defs) | gone entirely; **column removed** |
+| `insulationCold/Heat` | `statBases/Insulation_*` (0 defs) | apparel-only stats; no animal has one |
+
+Consequence of the last row: `effectiveTempMin/Max` are always exactly
+`comfyTempMin/Max`. The derivation is kept (it is correct, and would pick up a
+modded insulation stat) but it is **not** evidence that insulation was
+accounted for.
+
+The `deathAction` fix is worth remembering as a shape lesson: the first
+correction read only the `Class` attribute and silently lost 63 of 77 defs —
+including Boomalope and every other explode-on-death animal, the exact class
+most worth flagging. **A 0 % column is far more likely to be a dead xpath than a
+genuinely empty field.**
+
+### One behaviour change worth knowing
+
+Three defs in *Mythic Ages: Megafauna Bestiary* (`MA_Plastemmoth`,
+`MA_PlastemmothAlpha`, `MA_Harpeagle`) declare `<comps>` **twice** in one
+ThingDef. RimWorld assigns the field per node, so the last block wins and the
+first is dead XML. v1.2 concatenated both and reported yields that do not exist
+in game (Plastemmoth is not shearable; Harpeagle does not lay eggs). v1.3+
+reproduces last-wins. Note this only applies to defs that *have* a parent, so it
+is not a general duplicate-node fix.
 
 ## What v1.2 fixed, and why the count went UP
 

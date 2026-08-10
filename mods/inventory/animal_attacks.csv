@@ -3,6 +3,14 @@
 ,Core,right claw,Scratch,17,2,8.5,,FrontRightPaw,
 ,Core,,Bite,23.6,2.6,9.08,,Teeth,0.5
 ,Core,head,Blunt,11,2,5.5,,HeadAttackTool,0.2
+Bear_Grizzly,Core,left claw,Scratch,17,2,8.5,,FrontLeftPaw,
+Bear_Grizzly,Core,right claw,Scratch,17,2,8.5,,FrontRightPaw,
+Bear_Grizzly,Core,,Bite,23.6,2.6,9.08,,Teeth,0.5
+Bear_Grizzly,Core,head,Blunt,11,2,5.5,,HeadAttackTool,0.2
+Bear_Polar,Core,left claw,Scratch,17,2,8.5,,FrontLeftPaw,
+Bear_Polar,Core,right claw,Scratch,17,2,8.5,,FrontRightPaw,
+Bear_Polar,Core,,Bite,23.6,2.6,9.08,,Teeth,0.5
+Bear_Polar,Core,head,Blunt,11,2,5.5,,HeadAttackTool,0.2
 Ostrich,Core,claws,Scratch,11,1.5,7.33,,Feet,
 Ostrich,Core,beak,Bite,11,2,5.5,,Beak,
 Ostrich,Core,head,Blunt,6,2,3.0,,HeadAttackTool,0.2
@@ -16,6 +24,10 @@ Cassowary,Core,head,Blunt,6,2,3.0,,HeadAttackTool,0.2
 ,Core,right claw,Scratch,11,1.5,7.33,,FrontRightPaw,
 ,Core,,Bite,16,2,8.0,,Teeth,0.7
 ,Core,head,Blunt,9,2,4.5,,HeadAttackTool,0.2
+Cougar,Core,left claw,Scratch,11,1.5,7.33,,FrontLeftPaw,
+Cougar,Core,right claw,Scratch,11,1.5,7.33,,FrontRightPaw,
+Cougar,Core,,Bite,16,2,8.0,,Teeth,0.7
+Cougar,Core,head,Blunt,9,2,4.5,,HeadAttackTool,0.2
 Lynx,Core,left claw,Scratch,9,1.5,6.0,,FrontLeftPaw,
 Lynx,Core,right claw,Scratch,9,1.5,6.0,,FrontRightPaw,
 Lynx,Core,,Bite,12,2,6.0,,Teeth,0.7
@@ -108,6 +120,10 @@ Rhinoceros,Core,,Bite,19,2.6,7.31,,Teeth,0.7
 Rhinoceros,Core,head,Blunt,15,2,7.5,,HeadAttackTool,0.2
 ,Core,,Bite,3.4,2,1.7,,Teeth,
 ,Core,head,Blunt,1.5,2,0.75,,HeadAttackTool,0.2
+Hare,Core,,Bite,3.4,2,1.7,,Teeth,
+Hare,Core,head,Blunt,1.5,2,0.75,,HeadAttackTool,0.2
+Snowhare,Core,,Bite,3.4,2,1.7,,Teeth,
+Snowhare,Core,head,Blunt,1.5,2,0.75,,HeadAttackTool,0.2
 Megascarab,Core,mandibles,Bite,5,2,2.5,,Mouth,
 Megascarab,Core,head,Blunt,4,2,2.0,,HeadAttackTool,0.1
 Spelopede,Core,head claw,Cut,7,2,3.5,,HeadClaw,
@@ -192,10 +208,30 @@ Warg,Core,head,Blunt,5,2,2.5,,HeadAttackTool,0.2
 ,Core,right claw,Scratch,10.9,2,5.45,,FrontRightPaw,0.5
 ,Core,,Bite,12,2,6.0,,Teeth,0.9
 ,Core,head,Blunt,6,2,3.0,,HeadAttackTool,0.2
+Wolf_Timber,Core,left claw,Scratch,10.9,2,5.45,,FrontLeftPaw,0.5
+Wolf_Timber,Core,right claw,Scratch,10.9,2,5.45,,FrontRightPaw,0.5
+Wolf_Timber,Core,,Bite,12,2,6.0,,Teeth,0.9
+Wolf_Timber,Core,head,Blunt,6,2,3.0,,HeadAttackTool,0.2
+Wolf_Arctic,Core,left claw,Scratch,10.9,2,5.45,,FrontLeftPaw,0.5
+Wolf_Arctic,Core,right claw,Scratch,10.9,2,5.45,,FrontRightPaw,0.5
+Wolf_Arctic,Core,,Bite,12,2,6.0,,Teeth,0.9
+Wolf_Arctic,Core,head,Blunt,6,2,3.0,,HeadAttackTool,0.2
 ,Core,left claw,Scratch,8,2,4.0,,FrontLeftPaw,
 ,Core,right claw,Scratch,8,2,4.0,,FrontRightPaw,
 ,Core,,Bite,9,2,4.5,,Teeth,0.9
 ,Core,head,Blunt,4,2,2.0,,HeadAttackTool,0.2
+Fox_Fennec,Core,left claw,Scratch,8,2,4.0,,FrontLeftPaw,
+Fox_Fennec,Core,right claw,Scratch,8,2,4.0,,FrontRightPaw,
+Fox_Fennec,Core,,Bite,9,2,4.5,,Teeth,0.9
+Fox_Fennec,Core,head,Blunt,4,2,2.0,,HeadAttackTool,0.2
+Fox_Red,Core,left claw,Scratch,8,2,4.0,,FrontLeftPaw,
+Fox_Red,Core,right claw,Scratch,8,2,4.0,,FrontRightPaw,
+Fox_Red,Core,,Bite,9,2,4.5,,Teeth,0.9
+Fox_Red,Core,head,Blunt,4,2,2.0,,HeadAttackTool,0.2
+Fox_Arctic,Core,left claw,Scratch,8,2,4.0,,FrontLeftPaw,
+Fox_Arctic,Core,right claw,Scratch,8,2,4.0,,FrontRightPaw,
+Fox_Arctic,Core,,Bite,9,2,4.5,,Teeth,0.9
+Fox_Arctic,Core,head,Blunt,4,2,2.0,,HeadAttackTool,0.2
 Human,Core,left fist,Blunt,8.2,2,4.1,,LeftHand,
 Human,Core,right fist,Blunt,8.2,2,4.1,,RightHand,
 Human,Core,teeth,Bite,8.2,2,4.1,,Teeth,0.07
@@ -215,19 +251,63 @@ Mech_Termite,Core,head,Blunt,17,2.6,6.54,,HeadAttackTool,
 ,Ideology,right claw,Scratch,8,2,4.0,,FrontRightPaw,
 ,Ideology,,Bite,9,2,4.5,,Teeth,0.9
 ,Ideology,head,Blunt,4,2,2.0,,HeadAttackTool,0.2
+Dryad_Basic,Ideology,left claw,Scratch,8,2,4.0,,FrontLeftPaw,
+Dryad_Basic,Ideology,right claw,Scratch,8,2,4.0,,FrontRightPaw,
+Dryad_Basic,Ideology,,Bite,9,2,4.5,,Teeth,0.9
+Dryad_Basic,Ideology,head,Blunt,4,2,2.0,,HeadAttackTool,0.2
+Dryad_Woodmaker,Ideology,left claw,Scratch,8,2,4.0,,FrontLeftPaw,
+Dryad_Woodmaker,Ideology,right claw,Scratch,8,2,4.0,,FrontRightPaw,
+Dryad_Woodmaker,Ideology,,Bite,9,2,4.5,,Teeth,0.9
+Dryad_Woodmaker,Ideology,head,Blunt,4,2,2.0,,HeadAttackTool,0.2
+Dryad_Berrymaker,Ideology,left claw,Scratch,8,2,4.0,,FrontLeftPaw,
+Dryad_Berrymaker,Ideology,right claw,Scratch,8,2,4.0,,FrontRightPaw,
+Dryad_Berrymaker,Ideology,,Bite,9,2,4.5,,Teeth,0.9
+Dryad_Berrymaker,Ideology,head,Blunt,4,2,2.0,,HeadAttackTool,0.2
+Dryad_Medicinemaker,Ideology,left claw,Scratch,8,2,4.0,,FrontLeftPaw,
+Dryad_Medicinemaker,Ideology,right claw,Scratch,8,2,4.0,,FrontRightPaw,
+Dryad_Medicinemaker,Ideology,,Bite,9,2,4.5,,Teeth,0.9
+Dryad_Medicinemaker,Ideology,head,Blunt,4,2,2.0,,HeadAttackTool,0.2
+Dryad_Gaumaker,Ideology,left claw,Scratch,8,2,4.0,,FrontLeftPaw,
+Dryad_Gaumaker,Ideology,right claw,Scratch,8,2,4.0,,FrontRightPaw,
+Dryad_Gaumaker,Ideology,,Bite,9,2,4.5,,Teeth,0.9
+Dryad_Gaumaker,Ideology,head,Blunt,4,2,2.0,,HeadAttackTool,0.2
+Dryad_Carrier,Ideology,left claw,Scratch,8,2,4.0,,FrontLeftPaw,
+Dryad_Carrier,Ideology,right claw,Scratch,8,2,4.0,,FrontRightPaw,
+Dryad_Carrier,Ideology,,Bite,9,2,4.5,,Teeth,0.9
+Dryad_Carrier,Ideology,head,Blunt,4,2,2.0,,HeadAttackTool,0.2
 Dryad_Clawer,Ideology,left claw,Scratch,18,1.5,12.0,0.8,FrontLeftPaw,
 Dryad_Clawer,Ideology,right claw,Scratch,18,1.5,12.0,0.8,FrontRightPaw,
 Dryad_Clawer,Ideology,,Bite,9,2,4.5,,Teeth,0.3
 Dryad_Clawer,Ideology,head,Blunt,4,2,2.0,,HeadAttackTool,0.1
+Dryad_Barkskin,Ideology,left claw,Scratch,8,2,4.0,,FrontLeftPaw,
+Dryad_Barkskin,Ideology,right claw,Scratch,8,2,4.0,,FrontRightPaw,
+Dryad_Barkskin,Ideology,,Bite,9,2,4.5,,Teeth,0.9
+Dryad_Barkskin,Ideology,head,Blunt,4,2,2.0,,HeadAttackTool,0.2
 WasteRat,Biotech,left claw,Scratch,3.6,1.5,2.4,,FrontLeftPaw,0.8
 WasteRat,Biotech,right claw,Scratch,3.6,1.5,2.4,,FrontRightPaw,0.8
 WasteRat,Biotech,,ToxicBite,6,2,3.0,,Teeth,
 WasteRat,Biotech,head,Blunt,2,2,1.0,,HeadAttackTool,0.2
+Toxalope,Biotech,head,Blunt,7,2,3.5,,HeadAttackTool,0.2
+Toxalope,Biotech,left hoof,Blunt;Poke,9,2,4.5,,FrontLeftLeg,
+Toxalope,Biotech,right hoof,Blunt;Poke,9,2,4.5,,FrontRightLeg,
+Toxalope,Biotech,,Bite,10,2,5.0,,Teeth,0.5
 Mech_Tunneler,Biotech,left power claw,Scratch,22,2.9,7.59,,LeftPowerClaw,
 Mech_Tunneler,Biotech,right power claw,Scratch,22,2.9,7.59,,RightPowerClaw,
 ,Biotech,head,Blunt,6,2.6,2.31,,HeadAttackTool,
+Mech_Militor,Biotech,head,Blunt,6,2.6,2.31,,HeadAttackTool,
+Mech_Lifter,Biotech,head,Blunt,6,2.6,2.31,,HeadAttackTool,
 Mech_Constructoid,Biotech,torso,Blunt,10,2.9,3.45,,Torso,
+Mech_Fabricor,Biotech,head,Blunt,6,2.6,2.31,,HeadAttackTool,
 Mech_Agrihand,Biotech,right blade,Cut;Stab,8,2,4.0,,RightBlade,
+Mech_Cleansweeper,Biotech,head,Blunt,6,2.6,2.31,,HeadAttackTool,
+Mech_WarUrchin,Biotech,head,Blunt,6,2.6,2.31,,HeadAttackTool,
+Mech_Paramedic,Biotech,head,Blunt,6,2.6,2.31,,HeadAttackTool,
+Mech_Legionary,Biotech,left fist,Blunt,12.0,2,6.0,,LeftHand,
+Mech_Legionary,Biotech,right fist,Blunt,12.0,2,6.0,,RightHand,
+Mech_Legionary,Biotech,head,Blunt,8.5,2,4.25,,HeadAttackTool,0.2
+Mech_Tesseron,Biotech,left fist,Blunt,12.0,2,6.0,,LeftHand,
+Mech_Tesseron,Biotech,right fist,Blunt,12.0,2,6.0,,RightHand,
+Mech_Tesseron,Biotech,head,Blunt,8.5,2,4.25,,HeadAttackTool,0.2
 Mech_Scorcher,Biotech,front left leg,Blunt,12.0,2,6.0,,FrontLeftLeg,
 Mech_Scorcher,Biotech,front right leg,Blunt,12.0,2,6.0,,FrontRightLeg,
 Mech_Scorcher,Biotech,head,Blunt,8.5,2,4.25,,HeadAttackTool,0.2
@@ -242,6 +322,10 @@ Revenant,Anomaly,head,Blunt,3,2,1.5,,HeadAttackTool,0.2
 Sightstealer,Anomaly,left claw,Scratch,7.0,2,3.5,,LeftHand,
 Sightstealer,Anomaly,right claw,Scratch,7.0,2,3.5,,RightHand,
 Sightstealer,Anomaly,head,Blunt,3,2,1.5,,HeadAttackTool,0.1
+CreepJoiner,Anomaly,left fist,Blunt,8.2,2,4.1,,LeftHand,
+CreepJoiner,Anomaly,right fist,Blunt,8.2,2,4.1,,RightHand,
+CreepJoiner,Anomaly,teeth,Bite,8.2,2,4.1,,Teeth,0.07
+CreepJoiner,Anomaly,head,Blunt,5,2,2.5,,HeadAttackTool,0.2
 Noctol,Anomaly,left claw,Scratch,12.3,1.25,9.84,,FrontLeftClaw,
 Noctol,Anomaly,right claw,Scratch,12.3,1.25,9.84,,FrontRightClaw,
 Noctol,Anomaly,,Bite,15,2,7.5,,Teeth,0.7
@@ -294,10 +378,18 @@ Mastodon,Odyssey,tusk,Scratch;Stab,27.5,2.6,10.58,,TuskAttackTool,
 Mastodon,Odyssey,left foot,Blunt,18.6,2,9.3,,FrontLeftLeg,
 Mastodon,Odyssey,right foot,Blunt,18.6,2,9.3,,FrontRightLeg,
 Mastodon,Odyssey,head,Blunt,15.5,2,7.75,,HeadAttackTool,0.2
+Cat_Scimitar,Odyssey,left claw,Scratch,11,1.5,7.33,,FrontLeftPaw,
+Cat_Scimitar,Odyssey,right claw,Scratch,11,1.5,7.33,,FrontRightPaw,
+Cat_Scimitar,Odyssey,,Bite,16,2,8.0,,Teeth,0.7
+Cat_Scimitar,Odyssey,head,Blunt,9,2,4.5,,HeadAttackTool,0.2
 Wolverine,Odyssey,left claw,Scratch,9,2,4.5,,FrontLeftPaw,
 Wolverine,Odyssey,right claw,Scratch,9,2,4.5,,FrontRightPaw,
 Wolverine,Odyssey,,Bite,10,2,5.0,,Teeth,0.7
 Wolverine,Odyssey,head,Blunt,4,2,2.0,,HeadAttackTool,0.2
+Wolf_Great,Odyssey,left claw,Scratch,10.9,2,5.45,,FrontLeftPaw,0.5
+Wolf_Great,Odyssey,right claw,Scratch,10.9,2,5.45,,FrontRightPaw,0.5
+Wolf_Great,Odyssey,,Bite,12,2,6.0,,Teeth,0.9
+Wolf_Great,Odyssey,head,Blunt,6,2,3.0,,HeadAttackTool,0.2
 Moose,Odyssey,left hoof,Blunt;Poke,12,2,6.0,,FrontLeftLeg,
 Moose,Odyssey,right hoof,Blunt;Poke,12,2,6.0,,FrontRightLeg,
 Moose,Odyssey,,Bite,12,2,6.0,,Teeth,0.5
@@ -311,6 +403,10 @@ Muskox,Odyssey,left hoof,Blunt;Poke,10,2,5.0,,FrontLeftLeg,
 Muskox,Odyssey,right hoof,Blunt;Poke,10,2,5.0,,FrontRightLeg,
 Muskox,Odyssey,,Bite,10,2,5.0,,Teeth,0.5
 Muskox,Odyssey,head,Blunt,14,2.6,5.38,,HeadAttackTool,
+Tiger,Odyssey,left claw,Scratch,11,1.5,7.33,,FrontLeftPaw,
+Tiger,Odyssey,right claw,Scratch,11,1.5,7.33,,FrontRightPaw,
+Tiger,Odyssey,,Bite,16,2,8.0,,Teeth,0.7
+Tiger,Odyssey,head,Blunt,9,2,4.5,,HeadAttackTool,0.2
 Mink,Odyssey,left claw,Scratch,3,2,1.5,,FrontLeftPaw,
 Mink,Odyssey,right claw,Scratch,3,2,1.5,,FrontRightPaw,
 Mink,Odyssey,,Bite,6,2,3.0,,Teeth,0.7
@@ -350,12 +446,42 @@ LavaSnail,Odyssey,head,Blunt,6,4,1.5,,HeadAttackTool,0.2
 ,Odyssey,claws,Scratch,1.5,1.5,1.0,,Feet,
 ,Odyssey,beak,Bite,2.8,2,1.4,,Beak,
 ,Odyssey,head,Blunt,1,1.5,0.67,,HeadAttackTool,0.2
+Sparrow,Odyssey,claws,Scratch,1.5,1.5,1.0,,Feet,
+Sparrow,Odyssey,beak,Bite,2.8,2,1.4,,Beak,
+Sparrow,Odyssey,head,Blunt,1,1.5,0.67,,HeadAttackTool,0.2
+Crow,Odyssey,claws,Scratch,1.5,1.5,1.0,,Feet,
+Crow,Odyssey,beak,Bite,2.8,2,1.4,,Beak,
+Crow,Odyssey,head,Blunt,1,1.5,0.67,,HeadAttackTool,0.2
+Bluebird,Odyssey,claws,Scratch,1.5,1.5,1.0,,Feet,
+Bluebird,Odyssey,beak,Bite,2.8,2,1.4,,Beak,
+Bluebird,Odyssey,head,Blunt,1,1.5,0.67,,HeadAttackTool,0.2
+Quail,Odyssey,claws,Scratch,1.5,1.5,1.0,,Feet,
+Quail,Odyssey,beak,Bite,2.8,2,1.4,,Beak,
+Quail,Odyssey,head,Blunt,1,1.5,0.67,,HeadAttackTool,0.2
+Macaw,Odyssey,claws,Scratch,1.5,1.5,1.0,,Feet,
+Macaw,Odyssey,beak,Bite,2.8,2,1.4,,Beak,
+Macaw,Odyssey,head,Blunt,1,1.5,0.67,,HeadAttackTool,0.2
 ,Odyssey,claws,Scratch,5,1.5,3.33,,Feet,
 ,Odyssey,beak,Bite,6,2,3.0,,Beak,
 ,Odyssey,head,Blunt,4,2,2.0,,HeadAttackTool,0.2
+Flamingo,Odyssey,claws,Scratch,5,1.5,3.33,,Feet,
+Flamingo,Odyssey,beak,Bite,6,2,3.0,,Beak,
+Flamingo,Odyssey,head,Blunt,4,2,2.0,,HeadAttackTool,0.2
+Heron,Odyssey,claws,Scratch,5,1.5,3.33,,Feet,
+Heron,Odyssey,beak,Bite,6,2,3.0,,Beak,
+Heron,Odyssey,head,Blunt,4,2,2.0,,HeadAttackTool,0.2
+Swan,Odyssey,claws,Scratch,5,1.5,3.33,,Feet,
+Swan,Odyssey,beak,Bite,6,2,3.0,,Beak,
+Swan,Odyssey,head,Blunt,4,2,2.0,,HeadAttackTool,0.2
 ,Odyssey,claws,Scratch,5,1.5,3.33,,Feet,
 ,Odyssey,beak,Bite,6,2,3.0,,Beak,
 ,Odyssey,head,Blunt,4,2,2.0,,HeadAttackTool,0.2
+Peacock,Odyssey,claws,Scratch,5,1.5,3.33,,Feet,
+Peacock,Odyssey,beak,Bite,6,2,3.0,,Beak,
+Peacock,Odyssey,head,Blunt,4,2,2.0,,HeadAttackTool,0.2
+Vulture,Odyssey,claws,Scratch,5,1.5,3.33,,Feet,
+Vulture,Odyssey,beak,Bite,6,2,3.0,,Beak,
+Vulture,Odyssey,head,Blunt,4,2,2.0,,HeadAttackTool,0.2
 Penguin,Odyssey,claws,Scratch,4,1.5,2.67,,Feet,
 Penguin,Odyssey,beak,Bite,5,2,2.5,,Beak,
 Penguin,Odyssey,head,Blunt,4,2,2.0,,HeadAttackTool,0.2
@@ -385,10 +511,52 @@ HiveQueen,Odyssey,head,Blunt,14,2,7.0,,HeadAttackTool,0.2
 Locust,Odyssey,mandibles,Bite,6,2,3.0,,Mouth,
 Locust,Odyssey,head,Blunt,4,2,2.0,,HeadAttackTool,0.1
 ,Odyssey,shell spike,Stab,6,2.6,2.31,,SpikedShellAttackTool,
+Drone_Hunter,Odyssey,shell spike,Stab,6,2.6,2.31,,SpikedShellAttackTool,
 Drone_Wasp,Odyssey,stinger,Stab,6,2.4,2.5,,SpikedShellAttackTool,
+Drone_Sentry,Odyssey,shell spike,Stab,6,2.6,2.31,,SpikedShellAttackTool,
 Mech_Cyclops,Odyssey,front left leg,Blunt,12.0,2,6.0,,FrontLeftLeg,
 Mech_Cyclops,Odyssey,front right leg,Blunt,12.0,2,6.0,,FrontRightLeg,
 Mech_Cyclops,Odyssey,head,Blunt,8.5,2,4.25,,HeadAttackTool,0.2
+BS_Centaur,Big and Small - Framework,left fist,Blunt,8.2,2,4.1,,LeftHand,
+BS_Centaur,Big and Small - Framework,right fist,Blunt,8.2,2,4.1,,RightHand,
+BS_Centaur,Big and Small - Framework,teeth,Bite,8.2,2,4.1,,Teeth,0.07
+BS_Centaur,Big and Small - Framework,head,Blunt,5,2,2.5,,HeadAttackTool,0.2
+,Big and Small - Framework,left fist,Blunt,8.2,2,4.1,,LeftHand,
+,Big and Small - Framework,right fist,Blunt,8.2,2,4.1,,RightHand,
+,Big and Small - Framework,teeth,Bite,8.2,2,4.1,,Teeth,0.07
+,Big and Small - Framework,head,Blunt,5,2,2.5,,HeadAttackTool,0.2
+BS_HumanFouramed,Big and Small - Framework,left fist,Blunt,8.2,2,4.1,,LeftHand,
+BS_HumanFouramed,Big and Small - Framework,right fist,Blunt,8.2,2,4.1,,RightHand,
+BS_HumanFouramed,Big and Small - Framework,teeth,Bite,8.2,2,4.1,,Teeth,0.07
+BS_HumanFouramed,Big and Small - Framework,head,Blunt,5,2,2.5,,HeadAttackTool,0.2
+BS_Naga,Big and Small - Framework,left fist,Blunt,8.2,2,4.1,,LeftHand,
+BS_Naga,Big and Small - Framework,right fist,Blunt,8.2,2,4.1,,RightHand,
+BS_Naga,Big and Small - Framework,teeth,Bite,8.2,2,4.1,,Teeth,0.07
+BS_Naga,Big and Small - Framework,head,Blunt,5,2,2.5,,HeadAttackTool,0.2
+BS_Marlith,Big and Small - Framework,left fist,Blunt,8.2,2,4.1,,LeftHand,
+BS_Marlith,Big and Small - Framework,right fist,Blunt,8.2,2,4.1,,RightHand,
+BS_Marlith,Big and Small - Framework,teeth,Bite,8.2,2,4.1,,Teeth,0.07
+BS_Marlith,Big and Small - Framework,head,Blunt,5,2,2.5,,HeadAttackTool,0.2
+,Big and Small - Framework,left fist,Blunt,8.2,2,4.1,,LeftHand,
+,Big and Small - Framework,right fist,Blunt,8.2,2,4.1,,RightHand,
+,Big and Small - Framework,teeth,Bite,8.2,2,4.1,,Teeth,0.07
+,Big and Small - Framework,head,Blunt,5,2,2.5,,HeadAttackTool,0.2
+BS_SixArmedHuman,Big and Small - Framework,left fist,Blunt,8.2,2,4.1,,LeftHand,
+BS_SixArmedHuman,Big and Small - Framework,right fist,Blunt,8.2,2,4.1,,RightHand,
+BS_SixArmedHuman,Big and Small - Framework,teeth,Bite,8.2,2,4.1,,Teeth,0.07
+BS_SixArmedHuman,Big and Small - Framework,head,Blunt,5,2,2.5,,HeadAttackTool,0.2
+BS_SpiderPersonRace,Big and Small - Framework,left fist,Blunt,8.2,2,4.1,,LeftHand,
+BS_SpiderPersonRace,Big and Small - Framework,right fist,Blunt,8.2,2,4.1,,RightHand,
+BS_SpiderPersonRace,Big and Small - Framework,teeth,Bite,8.2,2,4.1,,Teeth,0.07
+BS_SpiderPersonRace,Big and Small - Framework,head,Blunt,5,2,2.5,,HeadAttackTool,0.2
+BS_HumanoidWithTail,Big and Small - Framework,left fist,Blunt,8.2,2,4.1,,LeftHand,
+BS_HumanoidWithTail,Big and Small - Framework,right fist,Blunt,8.2,2,4.1,,RightHand,
+BS_HumanoidWithTail,Big and Small - Framework,teeth,Bite,8.2,2,4.1,,Teeth,0.07
+BS_HumanoidWithTail,Big and Small - Framework,head,Blunt,5,2,2.5,,HeadAttackTool,0.2
+BS_HumanoidWithWings,Big and Small - Framework,left fist,Blunt,8.2,2,4.1,,LeftHand,
+BS_HumanoidWithWings,Big and Small - Framework,right fist,Blunt,8.2,2,4.1,,RightHand,
+BS_HumanoidWithWings,Big and Small - Framework,teeth,Bite,8.2,2,4.1,,Teeth,0.07
+BS_HumanoidWithWings,Big and Small - Framework,head,Blunt,5,2,2.5,,HeadAttackTool,0.2
 BS_JustAHead,Big and Small - Framework,teeth,Bite,8.2,2,4.1,,Teeth,0.07
 BS_JustAHead,Big and Small - Framework,head,Blunt,5,2,2.5,,HeadAttackTool,0.2
 FancyRat,AA FancyRats,left claw,Scratch,3.6,1.5,2.4,,FrontLeftPaw,
@@ -429,9 +597,16 @@ AM_Mech_Legate,Alpha Mechs,head,Demolish,12,2,6.0,,HeadAttackTool,0.2
 AM_Mech_Lux,Alpha Mechs,left fist,Blunt,12.0,2,6.0,,LeftHand,
 AM_Mech_Lux,Alpha Mechs,right fist,Blunt,12.0,2,6.0,,RightHand,
 AM_Mech_Lux,Alpha Mechs,head,Blunt,8.5,2,4.25,,HeadAttackTool,0.2
+AM_Mech_MasterChef,Alpha Mechs,head,Blunt,6,2.6,2.31,,HeadAttackTool,
 AM_Mech_Munifex,Alpha Mechs,left fist,Blunt,12.0,2,6.0,,LeftHand,
 AM_Mech_Munifex,Alpha Mechs,right fist,Blunt,12.0,2,6.0,,RightHand,
 AM_Mech_Munifex,Alpha Mechs,head,Blunt,8.5,2,4.25,,HeadAttackTool,0.2
+AM_Mech_Optio,Alpha Mechs,left fist,Blunt,12.0,2,6.0,,LeftHand,
+AM_Mech_Optio,Alpha Mechs,right fist,Blunt,12.0,2,6.0,,RightHand,
+AM_Mech_Optio,Alpha Mechs,head,Blunt,8.5,2,4.25,,HeadAttackTool,0.2
+AM_Mech_Polychoron,Alpha Mechs,left fist,Blunt,12.0,2,6.0,,LeftHand,
+AM_Mech_Polychoron,Alpha Mechs,right fist,Blunt,12.0,2,6.0,,RightHand,
+AM_Mech_Polychoron,Alpha Mechs,head,Blunt,8.5,2,4.25,,HeadAttackTool,0.2
 AM_Mech_PristineAssembler,Alpha Mechs,head,Blunt,8,2.6,3.08,,HeadAttackTool,
 AM_Mech_PristineSlurrypede,Alpha Mechs,head,Blunt,8,2.6,3.08,,HeadAttackTool,
 AM_PristineStrider,Alpha Mechs,head,Blunt,1,50,0.02,,HeadAttackTool,
@@ -444,6 +619,26 @@ AM_Mech_TurboCleaner,Alpha Mechs,head,Blunt,2,2.6,0.77,,HeadAttackTool,
 AM_WarEmpress,Alpha Mechs,left rending claws,Scratch,28,1.5,18.67,,LeftPowerClaw,
 AM_WarEmpress,Alpha Mechs,right rending claws,Scratch,28,1.5,18.67,,RightPowerClaw,
 AM_WarEmpress,Alpha Mechs,head,Blunt,15,2,7.5,,HeadAttackTool,0.2
+AM_Dryad_Ocular,Alpha Memes,left claw,Scratch,8,2,4.0,,FrontLeftPaw,
+AM_Dryad_Ocular,Alpha Memes,right claw,Scratch,8,2,4.0,,FrontRightPaw,
+AM_Dryad_Ocular,Alpha Memes,,Bite,9,2,4.5,,Teeth,0.9
+AM_Dryad_Ocular,Alpha Memes,head,Blunt,4,2,2.0,,HeadAttackTool,0.2
+AM_Dryad_Spitter,Alpha Memes,left claw,Scratch,8,2,4.0,,FrontLeftPaw,
+AM_Dryad_Spitter,Alpha Memes,right claw,Scratch,8,2,4.0,,FrontRightPaw,
+AM_Dryad_Spitter,Alpha Memes,,Bite,9,2,4.5,,Teeth,0.9
+AM_Dryad_Spitter,Alpha Memes,head,Blunt,4,2,2.0,,HeadAttackTool,0.2
+AM_Dryad_Corruptor,Alpha Memes,left claw,Scratch,8,2,4.0,,FrontLeftPaw,
+AM_Dryad_Corruptor,Alpha Memes,right claw,Scratch,8,2,4.0,,FrontRightPaw,
+AM_Dryad_Corruptor,Alpha Memes,,Bite,9,2,4.5,,Teeth,0.9
+AM_Dryad_Corruptor,Alpha Memes,head,Blunt,4,2,2.0,,HeadAttackTool,0.2
+AM_Dryad_Unstable,Alpha Memes,left claw,Scratch,8,2,4.0,,FrontLeftPaw,
+AM_Dryad_Unstable,Alpha Memes,right claw,Scratch,8,2,4.0,,FrontRightPaw,
+AM_Dryad_Unstable,Alpha Memes,,Bite,9,2,4.5,,Teeth,0.9
+AM_Dryad_Unstable,Alpha Memes,head,Blunt,4,2,2.0,,HeadAttackTool,0.2
+AM_Dryad_Tumorous,Alpha Memes,left claw,Scratch,8,2,4.0,,FrontLeftPaw,
+AM_Dryad_Tumorous,Alpha Memes,right claw,Scratch,8,2,4.0,,FrontRightPaw,
+AM_Dryad_Tumorous,Alpha Memes,,Bite,9,2,4.5,,Teeth,0.9
+AM_Dryad_Tumorous,Alpha Memes,head,Blunt,4,2,2.0,,HeadAttackTool,0.2
 AA_Eyeling,Alpha Memes,eye,AM_ToxicSting,8,2,4.0,,HeadAttackTool,0.2
 AM_UnshackledDryad,Alpha Memes,left claw,Scratch,8,2,4.0,,FrontLeftPaw,
 AM_UnshackledDryad,Alpha Memes,right claw,Scratch,8,2,4.0,,FrontRightPaw,
@@ -571,6 +766,14 @@ DA_NorthernDrog,Dark Ages : Beasts and Monsters,head,Blunt,20,2,10.0,,HeadAttack
 ,Dark Ages : Beasts and Monsters,right claw,Scratch,7,1.5,4.67,,FrontRightPaw,
 ,Dark Ages : Beasts and Monsters,beak,Bite,8,1.5,5.33,,Teeth,0.5
 ,Dark Ages : Beasts and Monsters,head,Blunt,3,2.2,1.36,,HeadAttackTool,0.2
+DA_ForestOwlcat,Dark Ages : Beasts and Monsters,left claw,Scratch,7,1.5,4.67,,FrontLeftPaw,
+DA_ForestOwlcat,Dark Ages : Beasts and Monsters,right claw,Scratch,7,1.5,4.67,,FrontRightPaw,
+DA_ForestOwlcat,Dark Ages : Beasts and Monsters,beak,Bite,8,1.5,5.33,,Teeth,0.5
+DA_ForestOwlcat,Dark Ages : Beasts and Monsters,head,Blunt,3,2.2,1.36,,HeadAttackTool,0.2
+DA_ArcticOwlcat,Dark Ages : Beasts and Monsters,left claw,Scratch,7,1.5,4.67,,FrontLeftPaw,
+DA_ArcticOwlcat,Dark Ages : Beasts and Monsters,right claw,Scratch,7,1.5,4.67,,FrontRightPaw,
+DA_ArcticOwlcat,Dark Ages : Beasts and Monsters,beak,Bite,8,1.5,5.33,,Teeth,0.5
+DA_ArcticOwlcat,Dark Ages : Beasts and Monsters,head,Blunt,3,2.2,1.36,,HeadAttackTool,0.2
 DA_Phrak,Dark Ages : Beasts and Monsters,mandibles,Bite,5,2,2.5,,Mouth,
 DA_Phrak,Dark Ages : Beasts and Monsters,rostrum,Scratch,10,2,5.0,,Mouth,
 DA_Phrak,Dark Ages : Beasts and Monsters,head,Blunt,4,2,2.0,,HeadAttackTool,0.1
@@ -595,6 +798,14 @@ DA_SilverMole,Dark Ages : Beasts and Monsters,head,Blunt,2,2,1.0,,HeadAttackTool
 ,Dark Ages : Beasts and Monsters,right claw,Scratch,20,2,10.0,,FrontRightPaw,
 ,Dark Ages : Beasts and Monsters,beak,Bite,23.6,2.6,9.08,,Teeth,0.5
 ,Dark Ages : Beasts and Monsters,head,Blunt,17,2.2,7.73,,HeadAttackTool,0.2
+DA_Taraal,Dark Ages : Beasts and Monsters,left claw,Scratch,20,2,10.0,,FrontLeftPaw,
+DA_Taraal,Dark Ages : Beasts and Monsters,right claw,Scratch,20,2,10.0,,FrontRightPaw,
+DA_Taraal,Dark Ages : Beasts and Monsters,beak,Bite,23.6,2.6,9.08,,Teeth,0.5
+DA_Taraal,Dark Ages : Beasts and Monsters,head,Blunt,17,2.2,7.73,,HeadAttackTool,0.2
+DA_SnowTaraal,Dark Ages : Beasts and Monsters,left claw,Scratch,20,2,10.0,,FrontLeftPaw,
+DA_SnowTaraal,Dark Ages : Beasts and Monsters,right claw,Scratch,20,2,10.0,,FrontRightPaw,
+DA_SnowTaraal,Dark Ages : Beasts and Monsters,beak,Bite,23.6,2.6,9.08,,Teeth,0.5
+DA_SnowTaraal,Dark Ages : Beasts and Monsters,head,Blunt,17,2.2,7.73,,HeadAttackTool,0.2
 ERN_Amaro,Erin's Final Fantasy Animals,claws,Scratch,12,1.5,8.0,,Feet,
 ERN_Amaro,Erin's Final Fantasy Animals,head,Blunt,8,2,4.0,,HeadAttackTool,0.2
 ERN_BigCarbuncle,Erin's Final Fantasy Animals,left claw,Scratch,12,2,6.0,,FrontLeftPaw,
@@ -628,6 +839,10 @@ Grimstone_Grimshadow,Grimstone : Beasts,head,Blunt,22,2,11.0,,HeadAttackTool,0.2
 Grimstone_Grimshadow,Grimstone : Beasts,left claw,Scratch,26,2,13.0,,FrontLeftClaws,
 Grimstone_Grimshadow,Grimstone : Beasts,right claw,Scratch,26,2,13.0,,FrontRightClaws,
 Grimstone_Grimshadow,Grimstone : Beasts,tail,Blunt,23,2,11.5,,Tail,
+Grimstone_NorthernLynx,Grimstone : Beasts,left claw,Scratch,11,1.5,7.33,,FrontLeftPaw,
+Grimstone_NorthernLynx,Grimstone : Beasts,right claw,Scratch,11,1.5,7.33,,FrontRightPaw,
+Grimstone_NorthernLynx,Grimstone : Beasts,,Bite,16,2,8.0,,Teeth,0.7
+Grimstone_NorthernLynx,Grimstone : Beasts,head,Blunt,9,2,4.5,,HeadAttackTool,0.2
 Grimstone_Sheepdog,Grimstone : Beasts,left claw,Scratch,8.5,2,4.25,,FrontLeftPaw,
 Grimstone_Sheepdog,Grimstone : Beasts,right claw,Scratch,8.5,2,4.25,,FrontRightPaw,
 Grimstone_Sheepdog,Grimstone : Beasts,,Bite,14.2,2.6,5.46,,Teeth,0.7
@@ -1864,6 +2079,10 @@ AEXP_Wildebeest,Vanilla Animals Expanded,head,Blunt,12,2,6.0,,HeadAttackTool,0.6
 AEXP_Wildebeest,Vanilla Animals Expanded,left hoof,Blunt;Poke,8,2,4.0,,FrontLeftLeg,
 AEXP_Wildebeest,Vanilla Animals Expanded,right hoof,Blunt;Poke,8,2,4.0,,FrontRightLeg,
 AEXP_Crocodile,Vanilla Animals Expanded,,Bite,22,2.6,8.46,,Teeth,0.7
+AEXP_Cheetah,Vanilla Animals Expanded,left claw,Scratch,11,1.5,7.33,,FrontLeftPaw,
+AEXP_Cheetah,Vanilla Animals Expanded,right claw,Scratch,11,1.5,7.33,,FrontRightPaw,
+AEXP_Cheetah,Vanilla Animals Expanded,,Bite,16,2,8.0,,Teeth,0.7
+AEXP_Cheetah,Vanilla Animals Expanded,head,Blunt,9,2,4.5,,HeadAttackTool,0.2
 AEXP_Boombat,Vanilla Animals Expanded,left claw,Scratch,3,1.5,2.0,,FrontLeftPaw,
 AEXP_Boombat,Vanilla Animals Expanded,right claw,Scratch,3,1.5,2.0,,FrontRightPaw,
 AEXP_Boombat,Vanilla Animals Expanded,,Bite,5.5,2,2.75,,Teeth,0.7
@@ -1885,6 +2104,10 @@ AEXP_ArcticCoyote,Vanilla Animals Expanded,left claw,Scratch,7.7,2,3.85,,FrontLe
 AEXP_ArcticCoyote,Vanilla Animals Expanded,right claw,Scratch,7.7,2,3.85,,FrontRightPaw,
 AEXP_ArcticCoyote,Vanilla Animals Expanded,,Bite,14.2,2.1,6.76,,Teeth,0.7
 AEXP_ArcticCoyote,Vanilla Animals Expanded,head,Blunt,6,2,3.0,,HeadAttackTool,0.2
+AEXP_BlackBear,Vanilla Animals Expanded,left claw,Scratch,17,2,8.5,,FrontLeftPaw,
+AEXP_BlackBear,Vanilla Animals Expanded,right claw,Scratch,17,2,8.5,,FrontRightPaw,
+AEXP_BlackBear,Vanilla Animals Expanded,,Bite,23.6,2.6,9.08,,Teeth,0.5
+AEXP_BlackBear,Vanilla Animals Expanded,head,Blunt,11,2,5.5,,HeadAttackTool,0.2
 AEXP_CatAbyssinian,Vanilla Animals Expanded,left claw,Scratch,6,1.5,4.0,,FrontLeftPaw,
 AEXP_CatAbyssinian,Vanilla Animals Expanded,right claw,Scratch,6,1.5,4.0,,FrontRightPaw,
 AEXP_CatAbyssinian,Vanilla Animals Expanded,,Bite,7,2,3.5,,Teeth,0.7
@@ -2007,6 +2230,10 @@ AEXP_Hedgehog,Vanilla Animals Expanded,left claw,Scratch,2,2,1.0,,FrontLeftPaw,
 AEXP_Hedgehog,Vanilla Animals Expanded,right claw,Scratch,2,2,1.0,,FrontRightPaw,
 AEXP_Hedgehog,Vanilla Animals Expanded,,Bite,3,2,1.5,,Teeth,0.7
 AEXP_Hedgehog,Vanilla Animals Expanded,head,Blunt,3,2,1.5,,HeadAttackTool,0.2
+AEXP_Jaguar,Vanilla Animals Expanded,left claw,Scratch,11,1.5,7.33,,FrontLeftPaw,
+AEXP_Jaguar,Vanilla Animals Expanded,right claw,Scratch,11,1.5,7.33,,FrontRightPaw,
+AEXP_Jaguar,Vanilla Animals Expanded,,Bite,16,2,8.0,,Teeth,0.7
+AEXP_Jaguar,Vanilla Animals Expanded,head,Blunt,9,2,4.5,,HeadAttackTool,0.2
 AEXP_Lemur,Vanilla Animals Expanded,left fist,Blunt,3.6,1.5,2.4,,LeftHand,
 AEXP_Lemur,Vanilla Animals Expanded,right fist,Blunt,3.6,1.5,2.4,,RightHand,
 AEXP_Lemur,Vanilla Animals Expanded,,Bite,4,2,2.0,,Teeth,0.7
@@ -2118,6 +2345,7 @@ VFEI2_Titantick,Vanilla Factions Expanded - Insectoids 2,head horn,Cut,18,3.2,5.
 VFEI2_Titantick,Vanilla Factions Expanded - Insectoids 2,head,Blunt,8,2,4.0,0.02,HeadAttackTool,0.2
 VFEI2_Venomite,Vanilla Factions Expanded - Insectoids 2,head claw,Cut,8,2.6,3.08,0.14,HeadClaw,
 VFEI2_Venomite,Vanilla Factions Expanded - Insectoids 2,head,Blunt,6,2,3.0,0.1,HeadAttackTool,0.2
+VGE_Astropede,Vanilla Gravship Expanded - Chapter 1,head,Blunt,17,2.6,6.54,,HeadAttackTool,
 VGE_Hunter,Vanilla Gravship Expanded - Chapter 1,head,Blunt,17,2.6,6.54,,SpikedShellAttackTool,
 VGE_Astronaut,Vanilla Gravship Expanded - Chapter 1,torso,Blunt,10,2.9,3.45,,SpikedShellAttackTool,
 VQEA_Spliceling,Vanilla Quests Expanded - Ancients,left mutated fist,Blunt,5,1.5,3.33,,LeftHand,
@@ -2134,6 +2362,21 @@ VQE_IceCrawler,Vanilla Quests Expanded - Cryptoforge,head,Blunt,6,2,3.0,,HeadAtt
 VQE_Megamidge,Vanilla Quests Expanded - Cryptoforge,head,Blunt,7,2,3.5,,HeadAttackTool,0.2
 ,[JDS] StarWars - The Separatist Droid Army,head,Blunt,6,2.6,2.31,,HeadAttackTool,
 JDSCIS_Pistoeka_Sotage_Droid,[JDS] StarWars - The Separatist Droid Army,right blade,Cut;Stab,8,2,4.0,,HeadAttackTool,
+JDSCIS_B1_Battle_Droid,[JDS] StarWars - The Separatist Droid Army,head,Blunt,6,2.6,2.31,,HeadAttackTool,
+JDSCIS_B1_Security_Droid,[JDS] StarWars - The Separatist Droid Army,head,Blunt,6,2.6,2.31,,HeadAttackTool,
+JDSCIS_B1_Commander_Droid,[JDS] StarWars - The Separatist Droid Army,head,Blunt,6,2.6,2.31,,HeadAttackTool,
+JDSCIS_BX_Commando_Droid,[JDS] StarWars - The Separatist Droid Army,head,Blunt,6,2.6,2.31,,HeadAttackTool,
+JDSCIS_IG-100_MagnaGuards,[JDS] StarWars - The Separatist Droid Army,head,Blunt,6,2.6,2.31,,HeadAttackTool,
+JDSCIS_T1_Tactical_Droid,[JDS] StarWars - The Separatist Droid Army,head,Blunt,6,2.6,2.31,,HeadAttackTool,
+JDSCIS_ST_Super_Tactical_Droid,[JDS] StarWars - The Separatist Droid Army,head,Blunt,6,2.6,2.31,,HeadAttackTool,
+JDSCIS_B2_Super_Battle_Droid,[JDS] StarWars - The Separatist Droid Army,head,Blunt,6,2.6,2.31,,HeadAttackTool,
+JDSCIS_B2_HA_Super_Battle_Droid,[JDS] StarWars - The Separatist Droid Army,head,Blunt,6,2.6,2.31,,HeadAttackTool,
+JDSCIS_AQ_Battle_Droid,[JDS] StarWars - The Separatist Droid Army,head,Blunt,6,2.6,2.31,,HeadAttackTool,
+JDSCIS_Droideka_Droid,[JDS] StarWars - The Separatist Droid Army,head,Blunt,6,2.6,2.31,,HeadAttackTool,
+JDSCIS_Droideka_Sharpshooter_Droid,[JDS] StarWars - The Separatist Droid Army,head,Blunt,6,2.6,2.31,,HeadAttackTool,
+JDSCIS_Demolition_Droid,[JDS] StarWars - The Separatist Droid Army,head,Blunt,6,2.6,2.31,,HeadAttackTool,
+JDSCIS_DSD1_Dwarf_Spider_Droid,[JDS] StarWars - The Separatist Droid Army,head,Blunt,6,2.6,2.31,,HeadAttackTool,
+JDSCIS_LR-57_Combat_Droid,[JDS] StarWars - The Separatist Droid Army,head,Blunt,6,2.6,2.31,,HeadAttackTool,
 AA_AcanthamoebaGiganteaSmall,Alpha Animals,pseudopods,Blunt,4,1.2,3.33,,Arms,
 AA_AcanthamoebaGiganteaLarge,Alpha Animals,pseudopods,Blunt,8,1.2,6.67,,Arms,
 AA_AcanthamoebaGiganteaHuge,Alpha Animals,pseudopods,Blunt,12,1.2,10.0,,Arms,
@@ -2572,6 +2815,8 @@ SW_Juggernautbeetles,Insectoids 2 - Isopoda geneline,head claw,SW_FlameCut,20,1.
 DZY_RNGChicken,R-Hen-G: Chaos Chickens,claws,Scratch,2,1.5,1.33,,Feet,
 DZY_RNGChicken,R-Hen-G: Chaos Chickens,beak,Bite,3,2,1.5,,Beak,
 DZY_RNGChicken,R-Hen-G: Chaos Chickens,head,Blunt,1,1.5,0.67,,HeadAttackTool,0.2
+RG_Rabbit,ReGrowth 2,,Bite,3.4,2,1.7,,Teeth,
+RG_Rabbit,ReGrowth 2,head,Blunt,1.5,2,0.75,,HeadAttackTool,0.2
 RG_WoollyStegosaurus,ReGrowth 2,head,Blunt,14,2.5,5.6,,HeadAttackTool,0.7
 RG_WoollyStegosaurus,ReGrowth 2,,Bite,12,2,6.0,,Teeth,0.5
 RG_WoollyStegosaurus,ReGrowth 2,left foot,Blunt,8,5,1.6,,FrontLeftLeg,0.2
@@ -2629,6 +2874,8 @@ BMT_CactusCrab,Biomes! Caverns,claw,Cut,30,2,15.0,,HeadClaw,
 BMT_CactusCrab,Biomes! Caverns,head,Blunt,25,4,6.25,,HeadAttackTool,
 BMT_CaveCricket,Biomes! Caverns,mandibles,Bite,9,2,4.5,,Mouth,0.4
 BMT_CaveCricket,Biomes! Caverns,head,Blunt,6,2,3.0,,HeadAttackTool,0.2
+BMT_CaveLemming,Biomes! Caverns,,Bite,3.4,2,1.7,,Teeth,
+BMT_CaveLemming,Biomes! Caverns,head,Blunt,1.5,2,0.75,,HeadAttackTool,0.2
 BMT_CaveSpider,Biomes! Caverns,venom-fangs,ToxicBite,35,2.0,17.5,,Mouth,0.8
 BMT_CaveSpider,Biomes! Caverns,head,Blunt,27,2,13.5,,HeadAttackTool,0.02
 BMT_CaveSpider,Biomes! Caverns,legs,Blunt,23,2,11.5,,FrontRightLeg,0.2
@@ -2679,6 +2926,8 @@ BMT_FoundryBeetleLarvae,Biomes! Caverns,head,Blunt,3.5,2,1.75,,HeadAttackTool,0.
 BMT_FoundryBeetlePupa,Biomes! Caverns,Twitching,Blunt,0,10000,,,HeadAttackTool,
 BMT_FoundryBeetle,Biomes! Caverns,head claw,Cut,26,1.6,16.25,0.9,HeadClaw,
 BMT_FoundryBeetle,Biomes! Caverns,head,Blunt,12,2,6.0,,HeadAttackTool,0.2
+BMT_FreezerFrog,Biomes! Caverns,,Bite,3.4,2,1.7,,Teeth,
+BMT_FreezerFrog,Biomes! Caverns,head,Blunt,1.5,2,0.75,,HeadAttackTool,0.2
 BMT_FrostweaverSpider,Biomes! Caverns,venom-fangs,ToxicBite,13,2.0,6.5,,Mouth,0.8
 BMT_FrostweaverSpider,Biomes! Caverns,head,Blunt,10,2,5.0,,HeadAttackTool,0.02
 BMT_FrostweaverSpider,Biomes! Caverns,legs,Blunt,12,2,6.0,,FrontRightLeg,0.2
@@ -2794,6 +3043,10 @@ BMT_SmolderstingScorpion,Biomes! Caverns,left claw,Cut;Poke,6,2.6,2.31,,FrontLef
 BMT_SmolderstingScorpion,Biomes! Caverns,right claw,Cut;Poke,6,2.6,2.31,,FrontRightClaws,0.2
 BMT_SmolderstingScorpion,Biomes! Caverns,stinger,BMT_BurningSting,9,1,9.0,,BMT_StingerGroup,0.5
 BMT_SmolderstingScorpion,Biomes! Caverns,head,Blunt,6,2,3.0,,HeadAttackTool,0.1
+BMT_Snowstalker,Biomes! Caverns,left claw,Scratch,11,1.5,7.33,,FrontLeftPaw,
+BMT_Snowstalker,Biomes! Caverns,right claw,Scratch,11,1.5,7.33,,FrontRightPaw,
+BMT_Snowstalker,Biomes! Caverns,,Bite,16,2,8.0,,Teeth,0.7
+BMT_Snowstalker,Biomes! Caverns,head,Blunt,9,2,4.5,,HeadAttackTool,0.2
 BMT_SonarRabbit,Biomes! Caverns,,Bite,3.4,2,1.7,,Teeth,
 BMT_SonarRabbit,Biomes! Caverns,head,Blunt,1.5,2,0.75,,HeadAttackTool,0.2
 BMT_Stoneback,Biomes! Caverns,left claw,Scratch,8,2,4.0,,FrontLeftClaws,
@@ -3339,6 +3592,14 @@ GR_WoolyWolf,Vanilla Genetics Expanded,left claw,Scratch,9,1.65,5.45,,FrontLeftP
 GR_WoolyWolf,Vanilla Genetics Expanded,right claw,Scratch,9,1.65,5.45,,FrontRightPaw,
 GR_WoolyWolf,Vanilla Genetics Expanded,,Bite,11,2.1,5.24,,Teeth,
 GR_WoolyWolf,Vanilla Genetics Expanded,tusk,Scratch;Stab,16,2.2,7.27,,TuskAttackTool,
+BS_GluttonRace,Big and Small - Genes & More,left fist,Blunt,8.2,2,4.1,,LeftHand,
+BS_GluttonRace,Big and Small - Genes & More,right fist,Blunt,8.2,2,4.1,,RightHand,
+BS_GluttonRace,Big and Small - Genes & More,teeth,Bite,8.2,2,4.1,,Teeth,0.07
+BS_GluttonRace,Big and Small - Genes & More,head,Blunt,5,2,2.5,,HeadAttackTool,0.2
+BS_InsectoidHumanoid_FourArmed,Big and Small - Genes & More,left fist,Blunt,8.2,2,4.1,,LeftHand,
+BS_InsectoidHumanoid_FourArmed,Big and Small - Genes & More,right fist,Blunt,8.2,2,4.1,,RightHand,
+BS_InsectoidHumanoid_FourArmed,Big and Small - Genes & More,teeth,Bite,8.2,2,4.1,,Teeth,0.07
+BS_InsectoidHumanoid_FourArmed,Big and Small - Genes & More,head,Blunt,5,2,2.5,,HeadAttackTool,0.2
 OuterRim_MuckrakerDroid,Outer Rim - Droid Depot,head,Blunt,6,2.6,2.31,,HeadAttackTool,
 OuterRim_DestroyerDroid,Outer Rim - Droid Depot,head,Blunt,6,2.6,2.31,,HeadAttackTool,
 OuterRim_DUMDroid,Outer Rim - Droid Depot,head,Blunt,6,2.6,2.31,,HeadAttackTool,

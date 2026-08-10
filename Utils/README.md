@@ -15,6 +15,14 @@ focused research probe; keep them assembly-free and dependency-light.
 | `Map_synth.py` | — | synthesizes plausible player-style base maps into `../player_maps/` |
 | `Map_improver.py` | a `GameMap` | ⚠️ superseded heuristic improver — see note below |
 | **`animal_inventory.py`** | **every active mod's `Defs/` + `Patches/`** | **6 CSVs: full animal roster, attacks, life stages, biome map, conflicts, patch watch** |
+| `rimworld_loadset.py` | `ModsConfig.xml` + each mod's `LoadFolders.xml` | — (shared library) the folders the game *actually* loads |
+| **`animal_live_diff.py`** | **`animals.csv` + a live DefDump** | **`divergence.csv` — what the patches actually did** |
+
+**Offline vs live.** Everything above reads files. Its counterpart is
+`../mods/dev/RimDefDump`, a small C# mod that dumps the def database from inside
+the running game, after patches have applied. Offline answers *"what did the
+author write, and where do I patch it"*; live answers *"what actually exists at
+runtime"*. Neither replaces the other — the value is in diffing them.
 
 ---
 
@@ -256,7 +264,45 @@ map children. `elevationGrid`/`fertilityGrid` were **not** present in this save.
 
 ---
 
-## animal_inventory.py — full animal roster → CSV  (v1.2, 2026-08-10)
+## animal_live_diff.py — offline vs live  (v1.0, 2026-08-10)
+
+**The point:** `animal_inventory.py` knows *where to patch*; `RimDefDump` knows
+*what resulted*. This is the join, and the join is the deliverable — it turns
+"I think this xpath hits the right thing" into a verified statement.
+
+```bash
+python Utils/animal_live_diff.py --live "%USERPROFILE%\AppData\LocalLow\Ludeon Studios\RimWorld by Ludeon Studios\DefDump" --out .\out
+python Utils/animal_live_diff.py --selftest      # no game load needed
+```
+
+It retires three documented limitations of the offline scan at once:
+
+| Offline limitation | How the diff settles it |
+|---|---|
+| PatchOperation results invisible | field deltas on matched defs — literally the list of what patches changed |
+| override winners flagged, not resolved | `modMatch=NO` rows name both claimants |
+| `shortHashCandidate` is a guess | `hashMatch=NO` counts exactly how often the guess was wrong |
+
+**Reading `status`:** `both` (check the deltas) · `live_only` (patch-created, or
+a def whose `<race>` is purely inherited — the offline tool selects animals on
+the def's *own* `<race>`) · `offline_only` (patch-removed, lost to an override,
+or `MayRequire`-gated, which the offline scan does not evaluate). None of these
+is automatically a bug; they are the list of things worth explaining.
+
+Comparison is deliberately lenient in three ways, or the noise would bury the
+signal: floats compared to a relative tolerance, booleans normalised across
+`True`/`true`/`1`, and an **empty offline value counts as "no opinion"** rather
+than a disagreement.
+
+**Verified by self-test, not by a real dump yet.** `--selftest` builds a
+synthetic dump in the exact shape `RimDefDump` emits and asserts all 19
+classifications (both/live_only/offline_only, delta detection, hash and mod
+mismatches, the leniency rules, biome-pair diffs). The first real run is still
+pending a game load.
+
+---
+
+## animal_inventory.py — full animal roster → CSV  (v1.4, 2026-08-10)
 
 **The point:** dump every animal in the modded game to a spreadsheet you can
 sort, filter and diff. Built to answer seven jobs at once: (1) find duplicate
@@ -306,7 +352,9 @@ files — >10 minutes. Natively it is seconds.
 
 ### Column groups in `animals.csv`
 
-`identity` · `temperament` (wildness, trainability, petness, nuzzleMtbHours,
+`identity` · `inheritance` (inheritDepth, inheritChain, inheritedFields,
+unresolvedParent — added v1.3; `inheritedFields` names exactly which columns
+came from a parent rather than the def itself) · `temperament` (wildness, trainability, petness, nuzzleMtbHours,
 roamMtbDays, nameOnNuzzleChance) · `combat` (predator, manhunter chances,
 attackCount/BestPower/BestDPS/Summary, armour, moveSpeed, deathActionWorker) ·
 `physiology` · `temperature` (comfy + insulation → effectiveTempMin/Max,
@@ -319,25 +367,45 @@ Two derived groups encode standing project rules rather than raw fields:
 **FAST_BREEDER** (annual offspring ≥ 12) and **RENEWABLE_YIELD** together
 implement the "never ranch a herd into a meat/leather/wool printer" guardrail.
 
-### KNOWN LIMITATIONS — measured on the 562-mod stack, 2026-08-10
+### KNOWN LIMITATIONS — measured on the 562-mod stack, 2026-08-10 (v1.4)
 
-Structural fields read well; inherited ones do not, because `<ParentName>`
-chains are not resolved across mods:
+`<ParentName>` inheritance **is resolved** as of v1.3, cross-mod, using
+RimWorld's own merge semantics. Coverage after v1.3 + v1.4:
 
-| Field | Coverage |
-|---|---|
-| moveSpeed / baseBodySize / attacks / marketValue | 90–95 % |
-| trainability | 83 % |
-| gestationPeriodDays | 57 % |
-| wildness | 48 % |
-| comfyTempMax | 44 % |
-| nuzzleMtbHours | 33 % |
+| Field | Coverage | Note |
+|---|---|---|
+| mass / tickerType | 100 % | 0.6 % / 1 % before inheritance |
+| bloodDef / thinkTreeMain / hasGenders / toxicResistance | 98–99.7 % | all under 11 % before |
+| moveSpeed / lifeExpectancy / comfyTempMin / baseBodySize | 97–98 % | |
+| trainability | 91.7 % | |
+| wildness | 89.1 % | was **0 %** — dead xpath, not inheritance (v1.4) |
+| gestationPeriodDays | 58.2 % | genuinely absent on many defs |
+| comfyTempMax | 56.6 % | |
+| deathActionWorker | 6.2 % | was 0 % — dead xpath (v1.4); matches the 77 defs that declare one |
 
-Also invisible: **PatchOperation results** (mitigated by `patch_watch.csv`),
+Still approximate: duplicate abstract `Name`s across mods (last-in-load-order
+wins here, the game's winner may differ), **`MayRequire` gating is not
+evaluated** on inherited list nodes (so an inherited `comps` list can contain
+Anomaly-gated entries a real load would drop — this matters more now that
+inheritance works), and **PawnKindDef inheritance is not resolved**, so
+`combatPower` / `ecoSystemWeight` / `wildGroupSize*` / `canArriveManhunter`
+still read own-XML only.
+
+Still invisible: **PatchOperation results** (mitigated by `patch_watch.csv`),
 **mod-vs-mod override winners** (flagged in `duplicateDefName`, not resolved),
 and **true shortHashes** — `shortHashCandidate` uses RimWorld's
 `StableStringHash` but the game resolves collisions across the whole loaded set
-per defType, so treat it as a candidate until a live dump confirms it.
+per defType, so treat it as a candidate until a live dump confirms it. All three
+are what `mods/dev/RimDefDump` exists to settle.
+
+⚠️ **Dead-xpath trap (the v1.4 lesson).** Four columns were reading fields
+RimWorld 1.6 no longer uses, which made them look like inheritance failures:
+`wildness` became a StatDef; `deathActionWorker` moved to `race/deathAction`
+(as a `workerClass` child on 63 defs, a `Class` attribute on 14 — reading only
+the attribute silently loses Boomalope and every explode-on-death animal);
+`nameOnNuzzleChance` no longer exists; `Insulation_Cold/Heat` are apparel-only,
+so `effectiveTemp*` always equals `comfyTemp*`. **Treat a 0 % column as a
+suspected dead xpath, not an empty field.**
 
 ⚠️ **Sentinel values.** Some mods use placeholder temperatures (50000 °C, 999,
 3500) and some ship Fahrenheit→Celsius artifacts (`37.7778..352.222`). Filter
@@ -366,12 +434,17 @@ Test with the synthetic-tree smoke test rather than the full stack: build two
 tiny mods (one animal, one biome) in a temp dir and run against them; the
 Armadillo double-registration reproduces in about a second.
 
-### Headline results (562 mods, 2026-08-10, **v1.2**)
+### Headline results (562 mods, 2026-08-10, **v1.4**)
 
 **1,243 rows / 1,197 distinct defNames** (the 46-row gap is mods redefining each
-other; see the `duplicateDefName` column). 67 biomes, 3,353 attacks, 4,618
-(biome, animal) pairs, 1,873 animal/biome PatchOperations. Runs in ~3 s.
-Committed output lives in `mods/inventory/`.
+other; see the `duplicateDefName` column) across 115 columns. 67 biomes,
+**3,614** attacks, **3,345** life stages, 4,618 (biome, animal) pairs, 1,873
+animal/biome PatchOperations, 3 conflicts. Runs in seconds. Committed output
+lives in `mods/inventory/`, whose README carries the full v1.3/v1.4 breakdown.
+
+Attacks and life stages grew (from 3,353 and 3,169) because inherited `tools`
+and `lifeStageAges` now resolve. `unresolvedParent` is empty for all 1,243 rows,
+and `inheritDepth` runs 0–5 with the bulk at 2.
 
 _v1.1 reported 1,168 real animals (+44 abstract bases)._ **Only 3 conflicts**: `Desert ×
 Armadillo` and `AridShrubland × Armadillo` (Beasts of the Rim redefines the
