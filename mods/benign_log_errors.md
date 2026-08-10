@@ -14,6 +14,31 @@ Source of truth for the errors themselves: `Player.log` after a clean load.
 
 ---
 
+## STATE OF THE LOAD — 2026-08-10 16:12 (load #4, the clean one)
+
+**17,038 lines. Nothing unexplained remains.** Every surviving line is either a
+documented benign entry below or has a patch already deployed for the next load.
+
+| Bucket | Session start | Now | Notes |
+|---|---|---|---|
+| Log size | 528,687 lines / 43 MB | **17,038** | −97% |
+| Unresolved cross-references | 1,555 | **25** | all documented: 16 §1.6 + 8 §1.11 + 1 §1.1 |
+| Stale scribe references | 394 | **0** | Deep Storage prune + the two broken xenotypes |
+| Biomes destroyed | 7 | **0** | the `<li>` shape fix |
+| Dead mods (static ctor) | 3 | **1** | only `HeadSetForFA` — §3 |
+| Def discarded | 2 | 2 | §1.8, benign |
+| Patch no-ops | 5 | 5 | §1.2, benign |
+
+**The one red error left** is the SWCP `ResolveIcon` NRE, and
+`Jawa_Patches/Patches/SWCPZoomerIcon_Fix.xml` is deployed to remove it next load.
+Prediction to check: the `Could not execute post-long-event action` block **gone**;
+the two `Failed to load bundle` blocks **still present** (different cause — both
+`[StaticConstructorOnStartup]` cctors still run, just later). Do not read their
+presence as the patch failing.
+
+**Still genuinely open:** `HeadSetForFA` (§3) and the eye/lid rendering question,
+which is separate from all of the above and unresolved — see §4c.
+
 ## 0. READ THIS FIRST — the two error phrasings are different systems
 
 RimWorld emits two similar-looking messages from completely different code, and
