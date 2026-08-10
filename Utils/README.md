@@ -256,7 +256,7 @@ map children. `elevationGrid`/`fertilityGrid` were **not** present in this save.
 
 ---
 
-## animal_inventory.py — full animal roster → CSV  (v1.1, 2026-08-10)
+## animal_inventory.py — full animal roster → CSV  (v1.2, 2026-08-10)
 
 **The point:** dump every animal in the modded game to a spreadsheet you can
 sort, filter and diff. Built to answer seven jobs at once: (1) find duplicate
@@ -343,9 +343,14 @@ per defType, so treat it as a candidate until a live dump confirms it.
 3500) and some ship Fahrenheit→Celsius artifacts (`37.7778..352.222`). Filter
 `effectiveTempMax` above ~200 before drawing conclusions.
 
-Cosmetic bug (v1.1): Core/DLC show `modName = "?"` because Ludeon's About.xml is
-not parsed for `<name>`; `packageId` is still correct. Fix by falling back to
-packageId in `about_of()`.
+✅ **Fixed in v1.2:** Core/DLC used to show `modName = "?"`; the About name now
+falls back to the folder name.
+
+⚠️ **v1.1 output was wrong by ~7% and should not be reused.** It resolved mod
+folders with a hardcoded `("1.6","1.5","Common","")` list and never read
+`LoadFolders.xml`, so it invented 24 animals the game never loads and missed 61
+it does. v1.2 delegates folder resolution to `rimworld_loadset.py`. Full
+breakdown in `mods/inventory/README.md`.
 
 ### Maintenance — adding a column
 
@@ -361,9 +366,14 @@ Test with the synthetic-tree smoke test rather than the full stack: build two
 tiny mods (one animal, one biome) in a temp dir and run against them; the
 Armadillo double-registration reproduces in about a second.
 
-### First run — headline results (562 mods, 2026-08-10)
+### Headline results (562 mods, 2026-08-10, **v1.2**)
 
-1,168 real animals (+44 abstract bases). **Only 3 conflicts**: `Desert ×
+**1,243 rows / 1,197 distinct defNames** (the 46-row gap is mods redefining each
+other; see the `duplicateDefName` column). 67 biomes, 3,353 attacks, 4,618
+(biome, animal) pairs, 1,873 animal/biome PatchOperations. Runs in ~3 s.
+Committed output lives in `mods/inventory/`.
+
+_v1.1 reported 1,168 real animals (+44 abstract bases)._ **Only 3 conflicts**: `Desert ×
 Armadillo` and `AridShrubland × Armadillo` (Beasts of the Rim redefines the
 vanilla `Armadillo` *and* `Penguin`, then re-registers Armadillo via
 `wildBiomes` into biomes Core already lists it in — this is what kills Choose

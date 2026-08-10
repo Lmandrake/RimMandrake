@@ -2,19 +2,25 @@
 """
 animal_inventory.py — dump every animal in the modded game to CSV.
 
-VERSION 1.1  (2026-08-10)   Project: G:/My Drive/Personal/Rimworld/Utils/
+VERSION 1.2  (2026-08-10)   Project: G:/My Drive/Personal/Rimworld/Utils/
 Docs/manifest: Utils/README.md  ("animal_inventory.py" section)
 Dependency-free: Python 3.8+ stdlib only. Keep it that way.
 
 CHANGELOG
+  1.2  load-set correctness. Mod/folder resolution moved to rimworld_loadset:
+       honours LoadFolders.xml (incl. IfModActive / IfModNotActive) and scans
+       ONLY the folders the game loads. v1.1 also scanned each mod's 1.5 and
+       Common folders, so its CSVs contained animals that cannot spawn and
+       missed conditional ones. Fixes the Core/DLC modName "?" bug at the same
+       time (About name now falls back to the folder name).
   1.1  temperature group (comfy + insulation -> effective range, HEAT/COLD_HARDY);
        attacks + life stages split to their own CSVs; derived FAST_BREEDER and
        RENEWABLE_YIELD; pawnkind aggregation; ~112 columns.
   1.0  first cut: identity, core race fields, biome map, conflicts, patch watch.
 
-KNOWN COSMETIC BUG (1.1): Core/DLC rows show modName "?" because Ludeon About.xml
-is not parsed for <name>. packageId is correct. Fix: fall back to packageId in
-about_of(). Measured field coverage on the 562-mod stack is in Utils/README.md.
+FIXED IN 1.2: Core/DLC rows previously showed modName "?" (Ludeon About.xml has
+no <name>). read_about() now falls back to the folder name. Measured field
+coverage on the 562-mod stack is in Utils/README.md.
 
 MAINTENANCE — adding a column
   1. simple <race> field -> append to RACE_SIMPLE as (csvColumn, "race/xpath")
@@ -96,13 +102,21 @@ import sys
 import xml.etree.ElementTree as ET
 from collections import defaultdict
 
+# Shared load-set resolver. Lives beside this file so every offline tool in the
+# project agrees on which folders the game actually reads.
+sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+from rimworld_loadset import build_load_set, def_dirs as loadset_def_dirs  # noqa: E402
+
 # ---------------------------------------------------------------- defaults
 D_CONFIG = r"C:\Users\Mandrake\AppData\LocalLow\Ludeon Studios\RimWorld by Ludeon Studios\Config\ModsConfig.xml"
 D_WORKSHOP = r"C:\Program Files (x86)\Steam\steamapps\workshop\content\294100"
 D_LOCAL = r"C:\Program Files (x86)\Steam\steamapps\common\RimWorld\Mods"
 D_DATA = r"C:\Program Files (x86)\Steam\steamapps\common\RimWorld\Data"
 
-VERSION_DIRS = ("1.6", "1.5", "Common", "")
+# NOTE: there is deliberately no VERSION_DIRS here any more. v1.1 used
+# ("1.6", "1.5", "Common", "") which scanned 1.5 folders the game never loads
+# and ignored LoadFolders.xml entirely, so conditional folders were mishandled
+# in both directions. rimworld_loadset resolves this properly.
 
 # Fast-breeder threshold: annual offspring above this trips the ranch guardrail.
 # (Standing rule: never ranch a tamed breeding herd into a meat/leather/wool printer.)
@@ -152,27 +166,9 @@ def parse_xml(path):
             return None
 
 
-def about_of(folder):
-    p = os.path.join(folder, "About", "About.xml")
-    if not os.path.exists(p):
-        return None
-    r = parse_xml(p)
-    if r is None:
-        return None
-    pid = txt(r, "packageId").lower()
-    if not pid:
-        return None
-    return {"packageId": pid, "name": txt(r, "name", "?"), "folder": folder,
-            "workshopId": os.path.basename(folder)}
-
-
-def def_dirs(mod_folder, subdir):
-    out = []
-    for v in VERSION_DIRS:
-        p = os.path.join(mod_folder, v, subdir) if v else os.path.join(mod_folder, subdir)
-        if os.path.isdir(p):
-            out.append(p)
-    return out
+def def_dirs(mod, subdir):
+    """Delegates to the shared resolver; see rimworld_loadset.def_dirs."""
+    return loadset_def_dirs(mod, subdir)
 
 
 def walk_xml(root_dir):
@@ -184,29 +180,19 @@ def walk_xml(root_dir):
 
 # ---------------------------------------------------------------- mod list
 def load_active_mods(config, workshop, local, data):
-    root = parse_xml(config)
-    if root is None:
-        sys.exit(f"Cannot read ModsConfig at {config}")
-    active = [li.text.strip() for li in root.find("activeMods").findall("li")
-              if li is not None and li.text]
-    index = {}
-    for base in (workshop, local, data):
-        if not os.path.isdir(base):
-            continue
-        for entry in os.listdir(base):
-            a = about_of(os.path.join(base, entry))
-            if a and a["packageId"] not in index:
-                if base == data:
-                    a["workshopId"] = "core/dlc"
-                index[a["packageId"]] = a
-    ordered, missing = [], []
-    for i, pid in enumerate(active, 1):
-        a = index.get(pid.lower())
-        if a:
-            ordered.append(dict(a, order=i))
-        else:
-            missing.append(pid)
-    return ordered, missing
+    """
+    The real load set, in load order. See rimworld_loadset for why this is not
+    just "walk the Workshop tree": version folders and LoadFolders.xml both make
+    the on-disk file set a superset of what the game reads.
+    """
+    try:
+        mods, missing, version = build_load_set(config, [workshop, local, data])
+    except OSError as exc:
+        sys.exit(str(exc))
+    ndirs = sum(len(m["contentDirs"]) for m in mods)
+    print(f"load set: version {version}, {len(mods)} active mods "
+          f"-> {ndirs} content folders")
+    return mods, missing
 
 
 # ---------------------------------------------------------------- extraction
@@ -343,7 +329,7 @@ def scan_defs(mods):
     dupnames = defaultdict(list)
 
     for m in mods:
-        for d in def_dirs(m["folder"], "Defs"):
+        for d in def_dirs(m, "Defs"):
             for path in walk_xml(d):
                 root = parse_xml(path)
                 if root is None or root.tag != "Defs":
@@ -471,7 +457,7 @@ PATCH_KEYS = ("wildAnimals", "wildBiomes", "PawnKindDef", "race/", "BiomeDef",
 def scan_patches(mods):
     rows = []
     for m in mods:
-        for d in def_dirs(m["folder"], "Patches"):
+        for d in def_dirs(m, "Patches"):
             for path in walk_xml(d):
                 try:
                     raw = open(path, encoding="utf-8", errors="replace").read()

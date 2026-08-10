@@ -378,11 +378,40 @@ be benign (§3.4), and 1 × `VWE_Tool_Whip` (§1.1).
 **23 minutes** (the ~30 min figure in the handoff is the right order; 23 is the
 measured number for 562 mods with a warm disk cache).
 
-**The 16 remaining stale scribe refs are a different file from Deep Storage.**
-All are gene/xenotype names — `VRE_*` (Vampires Expanded), `VU_Dracul*`,
-`BX_*` — so some other `Config/Mod_*.xml` is caching a gene list. Same class as
-§2.4, same fix, not yet chased. Low priority: it is one deserialize warning per
-name at startup and touches nothing at runtime.
+**The 16 remaining stale scribe refs — SOLVED and FIXED 2026-08-10.** Not a
+`Config/Mod_*.xml` at all, which is where §2.4 taught us to look and where the
+first guess went. They came from **custom xenotype presets** in a folder nobody
+had thought to audit:
+
+```
+…/RimWorld by Ludeon Studios/Xenotypes/*.xtp
+```
+
+RimWorld loads every `.xtp` at startup and resolves its gene list, so a preset
+saved under an old mod set logs one `Could not load reference to` per dead gene,
+forever. Two of the five presets were broken, and they account for all 16 exactly:
+
+| Preset | Saved | Dead references |
+|---|---|---|
+| `Dark Beliar.xtp` | 2025-12-11 | 9 genes (`BX_*`, `VRE_HeartCrush`) |
+| `Dracul Lord.xtp` | 2025-12-10 | 6 genes (`VU_*`, `VRE_*`) + `iconDef VU_DraculIcon` |
+
+`Dark Glutton`, `Dark Troll` and `mimic` are clean and were left alone. (Note
+`Dark Troll` carries `VU_ZombieSkin` and it resolves fine — the `VU_` prefix is
+not itself evidence of a dead mod.)
+
+**Fix applied:** both broken presets removed from `Xenotypes/`. Originals **and**
+gene-stripped `.CLEANED` versions preserved in
+`runtime/backups/xenotypes/`, so either can be restored with a copy.
+
+**Standing rule, widened from §2.4:** stale `Could not load reference to` lines
+come from *any* file RimWorld deserializes at startup, not just mod settings. The
+audit surface is `Config/Mod_*.xml` **plus** `Xenotypes/`, `Ideos/`, `Scenarios/`
+and `PrepareLanding/` — every folder holding user-authored presets that name defs.
+Saves are exempt: they are only read on load, not at startup.
+
+⚠️ Deleted while the game was running. Confirm after the next restart that both
+files are still absent and the 16 lines are gone.
 
 **A second self-inflicted bug shipped and was fixed in the same 14:05 batch, and
 was never written down until now.** The pre-fix log carries:
