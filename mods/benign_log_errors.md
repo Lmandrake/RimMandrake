@@ -577,6 +577,51 @@ ruling. Do not remove it to satisfy a check that files already answer.
 
 ---
 
+## 4c. ⛔ OPEN — facial rendering, and a reproducible freeze
+
+**2026-08-10, load #3.** Not benign, not solved, recorded so it is not lost.
+
+**What was observed in Character Editor:**
+- Eyes render as two semi-superimposed parts, `Eye` and `Lid`. Setting `Not_Lid`
+  reveals the eye behind. ⚠️ **This is probably NOT a bug** — [NL] Facial
+  Animation renders eyes as layers (eyeball + lid overlay) precisely so it can
+  blink. Do not chase it as a defect without better evidence.
+- **Some eyes have whites and some do not.** This *is* inconsistent and is the
+  real symptom worth pursuing.
+- Hair and beard positioning looked correct.
+- **Cycling `Lid` values froze the game.**
+
+**The freeze:** `InvalidCastException: Specified cast is not valid`, **2,886
+occurrences**, one per frame. The process stayed at `Responding: False` with CPU
+climbing — a livelock, not a deadlock — until Windows raised `AppHangB1`.
+
+⚠️ **Attribution is genuinely unclear and two causes are entangled.** A
+background agent was driving `rimworld/search_debug_actions` over the bridge at
+almost exactly the moment the log stopped (15:37:00 issued, 15:37:06 last write),
+and that call independently hangs the main thread (see `rimbridge.md` §5.1). The
+exception flood predates the hang — 2,886 occurrences take time — so the
+`InvalidCastException` is real and user-triggered, but **which of the two actually
+wedged the process cannot be separated from the evidence available.**
+
+**No stack trace was captured.** Every occurrence reads
+`[Ref 436D323B] Duplicate stacktrace, see ref for original`, and the original was
+never printed with frames — checked all 2,886. Other exceptions in the same log
+(e.g. `[Ref CFCB091B]`) *did* print frames, so this is a gap in the ref-dedupe.
+
+Log preserved at `scratchpad/Player.FREEZE-2026-08-10.log` (48,194 lines).
+
+**The facial stack is crowded:** [NL] Facial Animation + FA Genetic Heads +
+Facial Animation Compatibility Project + Head Set For FA (**dead**, §3) + Big and
+Small + 1,105 alien races. The `[FA Genetic Heads]` and
+`[Big and Small] … This is somewhat untested` lines immediately precede the flood.
+
+**Next step, and it is cheap because the bug is reproducible:** before
+reproducing, disable stack-trace deduplication so the first occurrence prints
+frames. Then open Character Editor and cycle `Lid`. The frames name the mod. Do
+this on a throwaway colony, with no bridge agent running.
+
+---
+
 ## 5. The patterns worth remembering
 
 **Hard breaks concentrate in mods that reflect over other mods' types at
