@@ -1,3 +1,5 @@
+> **LIVE-DATA OVERRIDE:** `mods/live_mod_inventory.md` (generated 2026-08-09 from the machine) is authoritative for mod identity — existence, Workshop IDs, packageIds, versions. This file keeps the reasoning only. "Faction Filter" never existed; the live equivalents are **Sensible Factions** (3531306011) and **Faction Control** (2882785581).
+
 # concept_defnames.md — verified defName / ID vocabulary (companion to concept.md)
 
 _A portable reference of defNames, packageIds, and Workshop IDs we've **confirmed from actual files** during design. Companion to `concept.md`. **Discipline: every entry below must still be re-confirmed against the user's actually-installed 1.6 mods before it is used in a patch or save-edit** — mods rename defs between versions, and a wrong defName in a save's thing-ID graph is unforgiving. Treat this as "known-good starting guesses," not ground truth._

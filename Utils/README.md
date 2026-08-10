@@ -14,6 +14,7 @@ focused research probe; keep them assembly-free and dependency-light.
 | `map_loop_agent.py` | a base `GameMap` | **automated** perceive→propose→execute→re-judge loop (needs an LLM endpoint) |
 | `Map_synth.py` | — | synthesizes plausible player-style base maps into `../player_maps/` |
 | `Map_improver.py` | a `GameMap` | ⚠️ superseded heuristic improver — see note below |
+| **`animal_inventory.py`** | **every active mod's `Defs/` + `Patches/`** | **6 CSVs: full animal roster, attacks, life stages, biome map, conflicts, patch watch** |
 
 ---
 
@@ -251,3 +252,120 @@ exact mod set once and dumping every `TerrainDef.shortHash → defName`.
 `underGridDeflate`, `foundationGridDeflate`, `tempGridDeflate`,
 `colorGridDeflate` (inside `<terrainGrid>`); `pollutionGrid`, `gasGrid` exist as
 map children. `elevationGrid`/`fertilityGrid` were **not** present in this save.
+
+
+---
+
+## animal_inventory.py — full animal roster → CSV  (v1.1, 2026-08-10)
+
+**The point:** dump every animal in the modded game to a spreadsheet you can
+sort, filter and diff. Built to answer seven jobs at once: (1) find duplicate
+biome/animal registrations that crash mods, (2) attribute every animal to its
+originating mod, (3) compare stats for renormalization, (4) support bulk
+renaming for Star Wars theming, (5) plan biome-association patches, (6) flag
+Cherry-Pick candidates, (7) supply shortHash candidates for savegame decoding.
+
+### Why offline, and when to use the live bridge instead
+
+It reads **Defs on disk**. The game does not need to be running and no savegame
+is touched. That is deliberate: for *patching* work the file matters more than
+the resolved value — you cannot write a `PatchOperation` without knowing which
+mod and which xpath to target, and a live dump hides provenance.
+
+> **This is the authoring tool. A live RimBridge dump is the verification tool.**
+
+### Run
+
+```bash
+# defaults are already the Windows install paths — no args needed
+python animal_inventory.py --out D:\Luke\dev\rimtools\out
+
+# explicit
+python animal_inventory.py \
+  --config  "...\RimWorld by Ludeon Studios\Config\ModsConfig.xml" \
+  --workshop "...\steamapps\workshop\content\294100" \
+  --local    "...\steamapps\common\RimWorld\Mods" \
+  --data     "...\steamapps\common\RimWorld\Data" \
+  --out      .\out
+```
+
+⚠️ **Run it natively on Windows.** Measured through the Cowork device bridge the
+filesystem does ~210 files/sec, and the scan touches tens of thousands of XML
+files — >10 minutes. Natively it is seconds.
+
+### Outputs
+
+| File | One row per | Use |
+|---|---|---|
+| `animals.csv` | animal (ThingDef with `<race>`) — ~112 cols | the master sheet |
+| `animal_attacks.csv` | attack tool | combat detail; animals carry 2–5 attacks |
+| `animal_lifestages.csv` | life stage | age thresholds |
+| `biome_animals.csv` | (biome, animal) pair, **both directions** | biome planning |
+| `conflicts.csv` | pair registered >1× | **the crash class** |
+| `patch_watch.csv` | PatchOperation touching animals/biomes | what the scan can't see |
+
+### Column groups in `animals.csv`
+
+`identity` · `temperament` (wildness, trainability, petness, nuzzleMtbHours,
+roamMtbDays, nameOnNuzzleChance) · `combat` (predator, manhunter chances,
+attackCount/BestPower/BestDPS/Summary, armour, moveSpeed, deathActionWorker) ·
+`physiology` · `temperature` (comfy + insulation → effectiveTempMin/Max,
+tempRangeC, HEAT_HARDY, COLD_HARDY) · `reproduction` (+ derived
+maxLittersPerYear, annualOffspringMax, FAST_BREEDER) · `production` (milk/wool/
+egg → RENEWABLE_YIELD) · `ecology` · `performance` (tickerType, compCount) ·
+`trade` · `meta`.
+
+Two derived groups encode standing project rules rather than raw fields:
+**FAST_BREEDER** (annual offspring ≥ 12) and **RENEWABLE_YIELD** together
+implement the "never ranch a herd into a meat/leather/wool printer" guardrail.
+
+### KNOWN LIMITATIONS — measured on the 562-mod stack, 2026-08-10
+
+Structural fields read well; inherited ones do not, because `<ParentName>`
+chains are not resolved across mods:
+
+| Field | Coverage |
+|---|---|
+| moveSpeed / baseBodySize / attacks / marketValue | 90–95 % |
+| trainability | 83 % |
+| gestationPeriodDays | 57 % |
+| wildness | 48 % |
+| comfyTempMax | 44 % |
+| nuzzleMtbHours | 33 % |
+
+Also invisible: **PatchOperation results** (mitigated by `patch_watch.csv`),
+**mod-vs-mod override winners** (flagged in `duplicateDefName`, not resolved),
+and **true shortHashes** — `shortHashCandidate` uses RimWorld's
+`StableStringHash` but the game resolves collisions across the whole loaded set
+per defType, so treat it as a candidate until a live dump confirms it.
+
+⚠️ **Sentinel values.** Some mods use placeholder temperatures (50000 °C, 999,
+3500) and some ship Fahrenheit→Celsius artifacts (`37.7778..352.222`). Filter
+`effectiveTempMax` above ~200 before drawing conclusions.
+
+Cosmetic bug (v1.1): Core/DLC show `modName = "?"` because Ludeon's About.xml is
+not parsed for `<name>`; `packageId` is still correct. Fix by falling back to
+packageId in `about_of()`.
+
+### Maintenance — adding a column
+
+1. Simple `<race>` field → append to `RACE_SIMPLE` as `(csvColumn, "race/xpath")`.
+2. `statBases` entry → add to `STAT_MAP` as `"StatDefName": "csvColumn"`.
+3. Comp-derived → extend `parse_comps()`.
+4. Derived/computed → compute in `scan_defs()` after the comp block.
+5. **Then add the name to `COLUMNS`** — `DictWriter` uses
+   `extrasaction="ignore"`, so a column missing from `COLUMNS` is silently
+   dropped. This is the one easy mistake.
+
+Test with the synthetic-tree smoke test rather than the full stack: build two
+tiny mods (one animal, one biome) in a temp dir and run against them; the
+Armadillo double-registration reproduces in about a second.
+
+### First run — headline results (562 mods, 2026-08-10)
+
+1,168 real animals (+44 abstract bases). **Only 3 conflicts**: `Desert ×
+Armadillo` and `AridShrubland × Armadillo` (Beasts of the Rim redefines the
+vanilla `Armadillo` *and* `Penguin`, then re-registers Armadillo via
+`wildBiomes` into biomes Core already lists it in — this is what kills Choose
+Wild Animal Spawns at startup), plus `TropicalSwamp × Titan`, where the Titans
+mod registers the same biome twice inside its own file.

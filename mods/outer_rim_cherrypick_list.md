@@ -1,3 +1,5 @@
+> **LIVE-DATA OVERRIDE:** `mods/live_mod_inventory.md` (generated 2026-08-09 from the machine) is authoritative for mod identity — existence, Workshop IDs, packageIds, versions. This file keeps the reasoning only. "Faction Filter" never existed; the live equivalents are **Sensible Factions** (3531306011) and **Faction Control** (2882785581).
+
 # Outer Rim → Custom 1.6 Sub-Mod — CHERRY-PICK DEF LIST (Task A)
 
 **Purpose:** the concrete shopping list of which donor defs to lift from the 1.4/1.5 Outer Rim faction modules into a single custom 1.6 sub-mod, plus what each depends on. Follows the triage (`sw_ingredients_inventory.md` ⭐ TRIAGE section): content is ~99% pure XML and the class/base defs it needs already ship in **Outer Rim Core 1.6** and **Droid Depot 1.6** (both installed).
@@ -49,7 +51,7 @@ We're not fielding the Old Republic as a faction, but its **Sith** pawnkinds/app
 **PawnKinds:** `OuterRim_SithTrooper`, `OuterRim_SithCaptain`, `OuterRim_SithCommander`, `OuterRim_SithIncinerator`, `OuterRim_SithEmpireOfficer`. (Republic-side `OuterRim_OldRepublic*` = ignore unless we want a Republic faction.)
 **Weapons:** `OuterRim_SithBlaster/Rifle/HeavyRifle/Sniper/FlameProjector`.
 **Apparel:** `OuterRim_SithTrooperCuirass/Helmet/Pauldrons`, `OuterRim_SithOfficerUniform/Cap`.
-*Use:* reskin/relabel to taste (general tweak license) and attach as fixed loadouts to Empire Sith-elite pawnkinds via Faction Filter.
+*Use:* reskin/relabel to taste (general tweak license) and attach as fixed loadouts to Empire Sith-elite pawnkinds via Sensible Factions (3531306011) / Faction Control (2882785581).
 
 ---
 
@@ -81,7 +83,7 @@ Droid-control mechanic (synergizes with the Jawa "recycle Empire droids → Droi
 1. **defName collisions:** since we're reusing the `OuterRim_*` prefix from live Core/Droid Depot, our sub-mod must NOT redefine any defName that already exists in Core 1.6 (e.g. don't re-declare `OuterRimBlasterBase_*`). Lift only the faction-specific pawnkinds/weapons/apparel/hediffs; reference (don't copy) Core bases.
 2. **`ParentName` resolution:** confirm each lifted weapon's `ParentName` (e.g. `OuterRimBlasterBase_Projectile`) resolves against Core 1.6 at load (it should — same author, same names).
 3. **Texture paths:** the donor mods carry their own `Textures/` — copy the referenced texture folders alongside the defs, or the items load pink.
-4. **Faction attachment:** attach these pawnkinds to our authored factions via `pawnGroupMakers` + Faction Filter (per faction_authoring_mechanism.md), NOT by shipping the donor FactionDefs (which we're re-authoring anyway).
+4. **Faction attachment:** attach these pawnkinds to our authored factions via `pawnGroupMakers` + Sensible Factions (3531306011) / Faction Control (2882785581) (per faction_authoring_mechanism.md), NOT by shipping the donor FactionDefs (which we're re-authoring anyway).
 5. **Apply the §19.5 balance pass + anti-exponential review in the same lift** (damage/armor vs vanilla) — cleaner than patching later.
 6. **Load-order:** sub-mod loads AFTER Core, Droid Depot, Galactic Diversity, VGE.
 

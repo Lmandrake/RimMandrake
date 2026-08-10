@@ -1,6 +1,8 @@
+> **LIVE-DATA OVERRIDE:** `mods/live_mod_inventory.md` (generated 2026-08-09 from the machine) is authoritative for mod identity. "Faction Filter" never existed; the live equivalents are **Sensible Factions** (3531306011) and **Faction Control** (2882785581), both active.
+
 # Cherry Picker Kill-List — Gravship Expedition (DRAFT / candidate)
 
-_What we likely want **Cherry Picker** (WS 3521312241) to delete from generation + menus, so a large library still presents a small, coherent "crashed Factory ship / Jawa stowaways" surface. This is the mechanical form of the 7-question test and the anti-exponential principle: the library can be big, but the **gameplay surface** stays curated. Companion tool: **Faction Filter / Sensible Factions** (WS 3531306011) for controlling *spawns* (see the division-of-labor note below)._
+_What we likely want **Cherry Picker** (WS 3521312241) to delete from generation + menus, so a large library still presents a small, coherent "crashed Factory ship / Jawa stowaways" surface. This is the mechanical form of the 7-question test and the anti-exponential principle: the library can be big, but the **gameplay surface** stays curated. Companion tool: **Sensible Factions (3531306011) / Faction Control (2882785581) / Sensible Factions** (WS 3531306011) for controlling *spawns* (see the division-of-labor note below)._
 
 **Status:** DRAFT. Every specific defName below is a **candidate to confirm against installed files** — do NOT feed guessed defNames to Cherry Picker. Per the campaign's engineering rules ("confirm every defName from installed files; never guess"), treat entries tagged 🔎 as "find the real defName in the Cherry Picker UI first." Cherry Picker reads live defs and lists them for you, so this is a menu-checklist, not a hand-authored XML file.
 
@@ -12,7 +14,7 @@ _What we likely want **Cherry Picker** (WS 3521312241) to delete from generation
 
 Two tools overlap; use the right one so you don't fight yourself:
 
-- **Faction Filter (Sensible Factions)** → controls which factions *spawn* in a world. Reversible, allow-list style. Use this as the **first pass** for factions — allow-list the SW cast, suppress the rest. Nothing is destroyed.
+- **Sensible Factions (3531306011) / Faction Control (2882785581) (Sensible Factions)** → controls which factions *spawn* in a world. Reversible, allow-list style. Use this as the **first pass** for factions — allow-list the SW cast, suppress the rest. Nothing is destroyed.
 - **Cherry Picker** → *deletes the def* from generation AND from all menus/pickers entirely. Use this for things you never want to see *anywhere* (off-theme xenotypes cluttering the pawn editor, competing scenarios in the picker, off-theme genes in the gene assembler, off-theme content in the architect menu).
 - **Rule of thumb:** if you might want it *sometimes* (a faction that could be an occasional trader), filter it. If it's pure off-theme clutter that breaks the fiction (a fantasy dragon race, a vanilla scenario you'll never pick), Cherry Pick it.
 
@@ -71,14 +73,14 @@ Two tools overlap; use the right one so you don't fight yourself:
 
 ---
 
-## 3. Factions — mostly Faction Filter's job; Cherry Pick only the clashers (MEDIUM)
+## 3. Factions — mostly Sensible Factions (3531306011) / Faction Control (2882785581)'s job; Cherry Pick only the clashers (MEDIUM)
 
-**Intent:** Faction Filter does the allow-listing (SW factions in, rest suppressed). Cherry Picker only for factions you want *gone from menus entirely* or that create naming/lore collisions.
+**Intent:** Sensible Factions (3531306011) / Faction Control (2882785581) does the allow-listing (SW factions in, rest suppressed). Cherry Picker only for factions you want *gone from menus entirely* or that create naming/lore collisions.
 
 - ✅ **Two-Empires — FUSION, NOT deletion (user).** Both Empires stay. Narrative: **the vanilla Royalty Empire = the Galactic Empire's aristocratic/noble core** (Moffs, sector governors, noble houses — SW is full of local aristocrats); **the Outer Rim Galactic Empire = its military/troops.** ONE unified Empire-and-pursuer drawn from two mod sources. Do NOT Cherry Pick or Faction-Filter-out either Empire. Keeps all Royalty quest/trader/techprint hooks intact (the Configurable Techprints path needs Royalty).
   - **Reflavor mechanism (feasibility check owed):** giving Imperial nobles varied alien races may need a pawnkind/xenotype patch — Royalty pawnkinds have their own generation rules, so it may not be a simple toggle. **Fallback if a per-noble guarantee is hard:** varied races exist in the world and appear among Imperials naturally (not every noble guaranteed exotic). Verify before committing.
   - Titles/permits/honor reskinned to Imperial ranks (Moff/Governor/Grand Moff) — pure labels, zero mechanical cost. (Royalty stays NON-progression for the player per forbidden_mods.md — reflavor is about the *faction*, not opening a player title ladder.)
-- 🔎 Delete pure off-theme faction defs dragged in by biome/content mods that Faction Filter can't cleanly suppress (fantasy/insectoid/wrong-universe factions from any large-library additions).
+- 🔎 Delete pure off-theme faction defs dragged in by biome/content mods that Sensible Factions (3531306011) / Faction Control (2882785581) can't cleanly suppress (fantasy/insectoid/wrong-universe factions from any large-library additions).
 - **Keep:** Outer Rim Empire, Separatists, and the SW faction roster (we WANT full diversity as live enemies — required_mods.md).
 - **Confidence:** MEDIUM.
 
@@ -113,7 +115,7 @@ With no Ancients mod installed there is **no archite-power system to Cherry-Pick
 ## Priority order (do them in this sequence)
 
 1. **Scenarios** (§1) — highest value, lowest risk, most Samuel-like.
-2. **Faction Filter pass** (allow-list SW cast) — before any faction Cherry Picking.
+2. **Sensible Factions (3531306011) / Faction Control (2882785581) pass** (allow-list SW cast) — before any faction Cherry Picking.
 3. **Xenotypes** (§2) — delete the fiction-breakers, decide the judgment-call set.
 4. **Two-Empires decision** (§3) — resolve with option (c) unless a reason to delete.
 5. **Lightsaber recipe** (§4) — enforce the already-made decision.

@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ============================================================================
+  AnimalBiomeDuplicates_Fix.xml            GravshipCompat · authored 2026-08-10
+  ============================================================================
+
+  THE BUG
+  =======
+  RimWorld builds each biome's animal table in BiomeDef.CommonalityOfAnimal()
+  by adding entries to a Dictionary keyed on PawnKindDef. An animal can reach a
+  biome from TWO directions:
+
+      (a) the BiomeDef lists it      :  <wildAnimals><Foo>0.2</Foo></wildAnimals>
+      (b) the animal lists the biome :  <race><wildBiomes><Bar>0.3</Bar></...>
+
+  If the SAME animal arrives from BOTH directions for the SAME biome, the
+  dictionary Add() throws:
+
+      System.ArgumentException: An item with the same key has already been added.
+
+  That exception is NOT contained. Every consumer that enumerates AllWildAnimals
+  dies with it. Observed live on this stack, 2026-08-10:
+
+      * Choose Wild Animal Spawns   : static ctor throws, MOD IS DEAD at startup
+      * Giddy-Up                    : "error calling AllWildAnimals ... Skipping",
+                                      BuildAnimalBiomeCache() never completes
+      * Biome Compatibility Project : PatchCreaturesToBiomes() throws inside
+                                      LongEventHandler.ExecuteToExecuteWhenFinished,
+                                      ABORTING THE REST OF THE POST-LOAD QUEUE
+
+  Two bad entries were silently degrading three unrelated systems.
+
+  DETECTION
+  =========
+  Found by Utils/animal_inventory.py, which reads every active mod's Defs and
+  cross-references (a) against (b) in BOTH directions. Output: conflicts.csv.
+  Exactly 3 duplicate (biome, animal) pairs existed across 1,168 animals.
+  Re-run that script after any mod update to re-check.
+
+  DESIGN
+  ======
+  Always remove the (b) side, the animal's <wildBiomes> entry, and never the
+  biome's <wildAnimals> list. Rationale:
+    * the biome side is usually vanilla/DLC and should not be touched;
+    * removing the animal-side entry leaves the animal still spawning in that
+      biome via the biome's own list, at the biome's commonality.
+  Net effect on gameplay: NOTHING is lost. Only the duplicate registration goes.
+
+  SAFETY
+  ======
+  Every op is wrapped in PatchOperationConditional testing that the exact node
+  exists. If a mod is not loaded, or the author fixes their def in an update,
+  the op becomes a silent no-op instead of a red error. Load this mod LAST.
+
+  TARGETS AND SOURCES
+  ===================
+  Armadillo  [VERIFIED 2026-08-10]
+      Odyssey  Biomes_WarmArid.xml lists <Armadillo MayRequire="...Odyssey">0.2
+               in BOTH AridShrubland and Desert  (biome side, keep)
+      Odyssey  Races_Animal.xml Armadillo ThingDef declares NO wildBiomes,
+               so the xpaths below cannot touch vanilla
+      Beasts of the Rim (Continued), WS 2194018641, redefines the Armadillo
+               defName and adds wildBiomes: AridShrubland 0.3, Desert 0.3,
+               ExtremeDesert 0.3.  The first two collide. ExtremeDesert does
+               NOT (vanilla omits Armadillo there), so it is LEFT IN PLACE.
+
+  Titan      [VERIFIED 2026-08-10]
+      Titans, WS 3572242808, Defs/ThingDefs_Races/Races_Animal_Titan.xml lists
+      <TropicalSwamp>1.0</TropicalSwamp> TWICE inside its own <wildBiomes>.
+      Self-inflicted, nothing else involved. We drop the second occurrence.
+      Report upstream; this patch is the local stopgap.
+  ============================================================================
+-->
+<Patch>
+
+  <!-- ==================================================================
+       1. Armadillo x AridShrubland
+       Beasts of the Rim's animal-side entry duplicates Odyssey's biome-side
+       entry. Remove the animal-side one; Odyssey's 0.2 commonality still
+       spawns armadillos in arid shrubland.
+       ================================================================== -->
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/ThingDef[defName="Armadillo"]/race/wildBiomes/AridShrubland</xpath>
+    <match Class="PatchOperationRemove">
+      <xpath>/Defs/ThingDef[defName="Armadillo"]/race/wildBiomes/AridShrubland</xpath>
+    </match>
+  </Operation>
+
+  <!-- ==================================================================
+       2. Armadillo x Desert
+       Same shape as above. Odyssey's biome-side 0.2 remains authoritative.
+       ================================================================== -->
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/ThingDef[defName="Armadillo"]/race/wildBiomes/Desert</xpath>
+    <match Class="PatchOperationRemove">
+      <xpath>/Defs/ThingDef[defName="Armadillo"]/race/wildBiomes/Desert</xpath>
+    </match>
+  </Operation>
+
+  <!-- ==================================================================
+       3. Titan x TropicalSwamp  (duplicate WITHIN one mod's own def)
+       The Titans mod lists TropicalSwamp twice in the same <wildBiomes>.
+       The [2] predicate selects the SECOND occurrence only. A bare
+       .../TropicalSwamp xpath would match BOTH, and PatchOperationRemove
+       deletes every match, which would strip titans from the biome
+       entirely. Keep the first, drop the second.
+       The conditional also tests [2], so if Titans fixes their file this
+       becomes a no-op automatically.
+       ================================================================== -->
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/ThingDef[defName="Titan"]/race/wildBiomes/TropicalSwamp[2]</xpath>
+    <match Class="PatchOperationRemove">
+      <xpath>/Defs/ThingDef[defName="Titan"]/race/wildBiomes/TropicalSwamp[2]</xpath>
+    </match>
+  </Operation>
+
+</Patch>

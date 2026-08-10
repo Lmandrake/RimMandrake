@@ -171,3 +171,106 @@ Retrieved via Fetcher request `2026-08-08_ollama_windows_install.txt` (4 of 6 di
 
 _Remaining 🔶 items are from general model knowledge (cutoff May 2025); everything tagged ✅ is
 verified against a page retrieved 2026-08-08._
+
+
+---
+
+# PART 2 — HARDWARE-GROUNDED SETUP PLAN (2026-08-10)
+
+_Added after reading the machine's actual GPU. Supersedes any earlier model guesswork._
+
+## 2.1 Confirmed hardware ✅
+
+Read from `Player.log` on the machine (not inferred):
+
+```
+Direct3D:  Version: Direct3D 11.0 [level 11.1]
+           Renderer: NVIDIA GeForce RTX 5080 (ID=0x2c02)
+           Vendor:   NVIDIA
+           VRAM:     15977 MB      (~16 GB)
+           Driver:   32.0.15.9186
+```
+Also: 14 PhysX worker threads → a healthy CPU for any CPU-offloaded layers.
+
+## 2.2 ⚠️ The constraint that decides everything: RimWorld wants that VRAM too
+
+**548 active mods**, several large texture packs, Facial Animation, and a 4,000-tile ship map.
+RimWorld will hold a substantial slice of those 16 GB while you play. A model that fits "in 16 GB"
+on paper does **not** fit while the game is running.
+
+> **A model that fits entirely in VRAM runs several times faster than one spilling to system RAM.**
+
+So there are two different right answers, and we should pull both:
+
+| Use | Budget | Pick | Why |
+|---|---|---|---|
+| **Live play** — RimTalk chatter, RimAI ship voice, running *while RimWorld is open* | ≤ ~9 GB | **`qwen2.5-coder:14b`** (~9 GB) or a 12–14B general instruct at Q4 | Leaves ~7 GB for the game. This is the one that actually gets used in anger. |
+| **Offline / batch** — Chronicle digestion, MemoryDigest summarisation, StyleExpand corpus analysis, agent-G scoring, run with the game **closed** | up to ~14 GB | **`gpt-oss:20b`** — 20B MoE, MXFP4, ~14 GB, **128K context**, Apache 2.0 | The practical ceiling for 16 GB. The big context is what matters for summarising a colony history. |
+| **Embeddings** — required by **RimTalk StyleExpand** | ~0.3 GB | **`nomic-embed-text`** | StyleExpand needs an embedding API for its vector retrieval over the Jawaese corpus. Easy to forget; it's a hard requirement for that path. |
+
+**Do NOT pull a 70B.** At Q4 that is ~40 GB — it would spill to system RAM and run at a small
+fraction of the speed. "Largest" and "most competent in practice" diverge sharply at 16 GB.
+
+## 2.3 Storage layout — `D:\dev\` (fast local SSD), never `G:\`
+
+**Ruling (user, 2026-08-10): `D:\dev\` is the install/data root for anything that must not be
+Google-Drive-propagated.** It is a fast local SSD. `G:\` is Drive File Stream — pointing Ollama's
+blob store there would try to sync tens of GB of weights to Google Drive, thrashing sync and forcing
+inference to read over a network filesystem. Never put weights on `G:\`.
+
+| Path | Holds |
+|---|---|
+| `D:\dev\ollama\models\` | **The blob store.** Set via `OLLAMA_MODELS`. Tens of GB. |
+| `D:\dev\ollama\` | Ollama app data / any local scratch. |
+| `D:\dev\ollama\styles\` | StyleExpand `.txt` corpora staged before copying into the mod folder. |
+| `G:\My Drive\Personal\Rimworld\runtime\ollama.md` | **This runbook** — versioned, synced, tiny. |
+| `G:\My Drive\Personal\Ollama\` *(optional)* | Modelfiles, prompt files, eval notes — text only, Drive-synced on purpose. |
+
+The split is the same one `RimMaster` uses: **text and decisions on Drive, bulk artefacts local.**
+
+```powershell
+# point the blob store at the fast SSD (one-time, per-user), then restart the Ollama tray app
+setx OLLAMA_MODELS "D:\dev\ollama\models"
+```
+
+## 2.4 Install + pull sequence
+
+```powershell
+# 1. install (official one-liner, per §2 above)
+irm https://ollama.com/install.ps1 | iex
+
+# 2. confirm the API is up
+curl http://localhost:11434            # expect: "Ollama is running"
+
+# 3. set the blob store OFF the Drive letter, then restart the Ollama tray app
+setx OLLAMA_MODELS "D:\dev\ollama\models"
+
+# 4. pull, smallest-first so there is something usable early
+ollama pull nomic-embed-text           # ~0.3 GB — StyleExpand embeddings
+ollama pull qwen2.5-coder:14b          # ~9 GB  — the live-play model
+ollama pull gpt-oss:20b                # ~14 GB — the offline/batch model
+
+# 5. smoke test
+ollama run qwen2.5-coder:14b "In one sentence, who are the Jawa?"
+```
+
+## 2.5 Wiring it to the mods
+
+- **RimTalk** accepts any OpenAI-compatible endpoint. Ollama exposes one at
+  **`http://localhost:11434/v1`**. Point RimTalk there, model `qwen2.5-coder:14b`.
+- **RimAI Framework** — same base URL; keep the ship voice on the same model at first so there is
+  one variable, not two.
+- **RimTalk StyleExpand** — set its Embedding API to Ollama, model `nomic-embed-text`, then drop the
+  `jawa_dialogue_source_audit.md` §3 Grade-A corpus into its `Styles/` folder as `.txt`.
+- **MemoryDigest / Chronicle summarisation** — point at `gpt-oss:20b` **only for sessions where the
+  game is closed**, or accept the slowdown.
+
+## 2.6 What is NOT possible from this session
+
+Recorded so future-us doesn't retry it: **Cowork cannot install Ollama.** `device_bash` runs in an
+isolated **Linux** VM on the device with **no network access** and only the mounted folders visible —
+it cannot execute a Windows installer. `device_commit_files` caps at **20 MB per file / 100 MB per
+call**, and `OllamaSetup.exe` is several hundred MB, so the installer cannot be relayed through the
+bridge either. Model pulls (9–14 GB) are far beyond that. **The install and the pulls are a
+human-at-the-keyboard step.** Everything after that — configuration, prompts, evals, wiring — is
+scriptable from here.

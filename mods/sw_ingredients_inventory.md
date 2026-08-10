@@ -1,3 +1,5 @@
+> **LIVE-DATA OVERRIDE:** `mods/live_mod_inventory.md` (generated 2026-08-09 from the machine) is authoritative for mod identity — existence, Workshop IDs, packageIds, versions. This file keeps the reasoning only. "Faction Filter" never existed; the live equivalents are **Sensible Factions** (3531306011) and **Faction Control** (2882785581).
+
 # Star Wars Faction-Mod Ingredient Inventory — INSPIRATION ONLY
 
 > ## ⚠️⚠️ NOT 1.6 — DO NOT LOAD THESE SIX MODS ⚠️⚠️

@@ -190,7 +190,7 @@
     <windSpeedFactor>1.5</windSpeedFactor>
     <favorability>Neutral</favorability>
     <perceivePriority>1</perceivePriority>
-    <exposedThought>SoakingWet</exposedThought>
+    <weatherThought>SoakingWet</weatherThought>
     <accuracyMultiplier>0.5</accuracyMultiplier>
     <rainRate>1</rainRate>
     <moveSpeedMultiplier>0.9</moveSpeedMultiplier>
