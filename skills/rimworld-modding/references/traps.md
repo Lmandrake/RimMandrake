@@ -17,6 +17,33 @@ and does not check `Defs/`.
 
 ---
 
+### An error count is a count of victims, not of causes — abstract bases multiply
+_2026-08-10 · confirming the source of 16 identical unresolved-reference lines_
+
+**Symptom:** 16 × `Could not resolve cross-reference: No Verse.SoundDef named
+Pawn_Melee_Punch_HitBuilding found to give to Verse.RaceProperties`. Sixteen
+looks like a widespread problem across many mods.
+
+**Cause:** **two** lines of XML, in two `Abstract="True"` base ThingDefs
+(`AsimovNonEnergyAutomatonBase`, `JDSSWCIS_Droids`). Every concrete race
+inheriting a base inherits the dangling reference and fails to resolve it
+independently, so one authoring mistake bills once per descendant.
+
+**Fix:** none needed — the engine falls back with *"using undefined sound"*. The
+point is the attribution, not the fix.
+
+**Generalises to:** when triaging by volume, remember RimWorld's def inheritance
+is a multiplier. **Divide before you panic:** N identical messages naming the same
+missing def usually means one mistake in an abstract base with N-ish descendants,
+not N mods getting it wrong. Search for the reference in `Abstract="True"` defs
+first — it is both the smallest fix and the correct attribution.
+
+The corollary bites the other way too: a *large* count is not automatically
+severe, and a *small* count is not automatically safe. Severity comes from the
+`wanter` (see SKILL.md §7), not the tally.
+
+---
+
 ### A strictly read-only live-bridge call hung the game and cost a 23-minute load
 _2026-08-10 · first live use of RimBridgeServer on a 562-mod stack_
 

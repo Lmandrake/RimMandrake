@@ -108,9 +108,32 @@ Could not resolve cross-reference: No Verse.SoundDef named
 Pawn_Melee_Punch_HitBuilding found to give to Verse.RaceProperties
 (using undefined sound)
 ```
+**Owner — CONFIRMED 2026-08-10, and it is not what we guessed.** The note used to
+read *"🔎 Suspected source: Fists Aren't Made of Steel. Not confirmed."* That was
+wrong. An anchored search of the whole load set found:
+
+- **Nobody defines** the bare `Pawn_Melee_Punch_HitBuilding`. Core defines only the
+  four *suffixed* variants — `_Metal`, `_Stone`, `_Wood`, `_Generic`.
+- Exactly **two files reference the bare name**, and both are `Abstract="True"`
+  base ThingDefs:
+  - Asimov (WS 3096481956) `Defs/ThingDefs_Automatons/Race_Bases.xml`,
+    `Name="AsimovNonEnergyAutomatonBase"`
+  - [JDS] StarWars – The Separatist Droid Army (WS 3276499495)
+    `Defs/ThingDefs_Race.xml`, `Name="JDSSWCIS_Droids"`
+
+**Why 2 references produce 16 errors:** inheritance. Every concrete race that
+inherits one of those two bases inherits the dangling sound reference, and each
+resolves (and fails) independently.
+
 **Why harmless:** the engine says it outright — *"using undefined sound"*. Falls
-back gracefully; the punch is silent against buildings for those races.
-🔎 Suspected source: **Fists Aren't Made of Steel**. Not confirmed. Cosmetic.
+back gracefully; the punch is silent against buildings for those races. Cosmetic.
+
+⚠️ **Method note, because it nearly produced a wrong answer.** A substring search
+matched `Pawn_Melee_Punch_HitBuilding_Metal` and friends, which made it look like
+Core, Anomaly and Odyssey were referencing a def they define — implicating vanilla.
+Anchoring the match (`…(?!_)`) cut 41 hits down to the real 2. This is the
+same "anchor the match" trap already recorded in `traps.md` for `success":1` vs
+`success":15`; a known trap is not a solved trap.
 
 ### 1.7 `drawStyleCategory` on BuildingProperties — 1.6 field drift
 ```
@@ -277,7 +300,31 @@ Listed here only so nobody mistakes them for benign.
 | `HeadSetForFA.HSMCache` → NRE in `CheckSettingData(ThingDef raceDef)` | Head Set For [NL] Facial Animation is not applying. **Parked** pending the facial-animation visual test — if faces look right without it, drop the mod. |
 | `ChooseWildAnimalSpawns` → `ArgumentNullException: key` | **Still dead — but the cause is now known and is NOT ours.** See §3.4. BCP recovered; CWAS did not, and that turned out to be the genuine separate bug this row predicted. |
 
-### 3.4 `ChooseWildAnimalSpawns` dead on a **null PawnKindDef key** — fix authored, not yet loaded
+### 3.4 ✅ RESOLVED — `ChooseWildAnimalSpawns` null PawnKindDef key
+
+**CONFIRMED FIXED, load of 2026-08-10 15:54.** `BiomeAnimalDanglingRefs_Fix.xml`
+did it. Every prediction in this entry held:
+
+| Predicted | Result |
+|---|---|
+| the 5 `AEXP_*` / `AA_*` → `BiomeAnimalRecord` lines gone | **0** ✅ |
+| `Error in static constructor of ChooseWildAnimalSpawns.Main` gone | **gone** ✅ |
+| cross-references 30 → ~25 | **25** ✅ |
+
+The mod initialises for the first time in four loads. The only remaining
+static-constructor death in the whole log is `HeadSetForFA.HSMCache`, which is a
+separate, already-tracked item.
+
+All 25 surviving cross-references are now accounted for by documented benign
+entries: 16 × `Pawn_Melee_Punch_HitBuilding` (§1.6) + 8 × `BMT_*` (§1.11) +
+1 × `VWE_Tool_Whip` (§1.1). **There is no unexplained cross-reference left in the
+load.**
+
+The original diagnosis is kept below for the record.
+
+---
+
+#### (original entry) dead on a null PawnKindDef key
 
 ```
 Error in static constructor of ChooseWildAnimalSpawns.Main:
