@@ -76,10 +76,10 @@ _Goal: confirm the whole mod list loads, make a real save, and export one giant 
 everything live in the game. No design adaptation yet — just "does it run, and what have we got?"_
 
 **B1. Assemble the full load order.** Our campaign mods (`required_mods.md`) **plus the usual
-favorites the user enjoys**, RimSort-ordered. JawaVoice + GravshipCompat load last.
+favorites the user enjoys**, RimSort-ordered. JawaVoice + Jawa_Patches load last.
 
 **B2. Boot & red-error pass.** Launch to menu with the full list. Resolve red errors (watch Outland
-Genetics — the Jawa def hard-refs its genes; confirm JawaVoice + GravshipCompat load last). = mirrors
+Genetics — the Jawa def hard-refs its genes; confirm JawaVoice + Jawa_Patches load last). = mirrors
 `setup_checklist.md` §0.
 
 **B3. Make a real save.** Embark and save one game as the working fixture — everything loaded, live.

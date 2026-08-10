@@ -21,7 +21,7 @@ _Purpose: a **self-teaching reference** so that any future session can successfu
 - **`.rws` savegame** — plain, human-readable XML. This is the OUTPUT we polish for the save-based world-delivery model. Root is `<savegame>` containing `<meta>` (game version, mod list + mod IDs, modSteamIds) and `<game>`.
 - **Scenario** — baked inside a save at `<game><scenario>`; also exportable as a standalone scenario def. For our campaign we author it inside a save (save-based model), not as a portable def.
 - **Mod def XML** — `<ModDir>/<version>/Defs/**/*.xml`, wrapped in `<Defs>...</Defs>`. Each def is a typed node (`<ThingDef>`, `<ResearchProjectDef>`, `<AbilityDef>`, mod-namespaced types like `<ModularWeapons2.ModularPartsDef>`, etc.).
-- **Patches** — `<ModDir>/<version>/Patches/*.xml`, wrapped in `<Patch>`, using `PatchOperation*` ops. Our own patches live in the compat mod `mandrake.gravship.compat` (folder `custom_patches/GravshipCompat/`), which loads LAST.
+- **Patches** — `<ModDir>/<version>/Patches/*.xml`, wrapped in `<Patch>`, using `PatchOperation*` ops. Our own patches live in the compat mod `mandrake.jawa.patches` (folder `custom_patches/Jawa_Patches/`), which loads LAST.
 - **About** — `<ModDir>/About/About.xml` = packageId, supportedVersions, modDependencies, loadAfter/loadBefore. THE authoritative version + dependency source.
 - **LoadFolders.xml** — `<ModDir>/LoadFolders.xml` maps which subfolders load per game version (e.g. `<v1.6><li>1.6</li></v1.6>`). ✅ Lesson: a mod can declare About supportedVersions=1.6 but have a LoadFolders that only maps a v1.4/1.5 block — meaning it falls back to older content. Read LoadFolders to know which folder ACTUALLY loads, don't assume it's the folder named after the version.
 

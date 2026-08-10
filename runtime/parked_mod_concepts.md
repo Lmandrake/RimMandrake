@@ -5,7 +5,7 @@ usually because the donor mod is broken, abandoned, or off-theme, but the *idea*
 is good enough to reimplement or extend later._
 
 Sits alongside the committed authoring work in `required_mods.md` §6
-(JawaIonWeapons, GravshipCompat) and `runtime/carbonite_trophy_mod.md`. Nothing
+(JawaIonWeapons, Jawa_Patches) and `runtime/carbonite_trophy_mod.md`. Nothing
 here is a commitment — it's a shelf, not a queue.
 
 **Entry format:** what it did · why it fits · what went wrong · what we'd build.

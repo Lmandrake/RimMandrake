@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ModMetaData>
-  <packageId>mandrake.gravship.compat</packageId>
-  <name>Gravship Compat (local patches)</name>
+  <packageId>mandrake.jawa.patches</packageId>
+  <name>Jawa Patches (local)</name>
   <author>mandrake</author>
   <description>Local content + compatibility patches for the "crashed Factory ship / Jawa stowaways" gravship campaign. Self-authored, kept minimal and defensive. Each PATCH is wrapped in PatchOperationConditional so a missing target (mod not loaded, def renamed in an update) is a silent no-op instead of a red error. LOAD THIS LAST in the mod order (RimSort), after every mod it touches.
 

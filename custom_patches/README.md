@@ -23,8 +23,8 @@ versions. So the rule for this folder is:
 
 ## Contents
 
-### GravshipCompat/ — the local mod
-`packageId: mandrake.gravship.compat`. Currently holds **no patches** (the
+### Jawa_Patches/ — the local mod
+`packageId: mandrake.jawa.patches`. Currently holds **no patches** (the
 `Patches/` dir is empty). Kept as ready infrastructure for future patches.
 
 **Retired patch (deleted 2026-08-03):** `Patches/Slingshot_Buildable.xml` made
@@ -40,7 +40,7 @@ wrapped in `PatchOperationConditional`, defNames confirmed from installed source
 
 ## Install / test
 
-Symlink or copy `GravshipCompat/` into RimWorld's `Mods/` folder (or point
+Symlink or copy `Jawa_Patches/` into RimWorld's `Mods/` folder (or point
 RimSort at it as a local mod), enable it, place it **last**. When a patch is
 present, test it in a dev-mode throwaway world and read `Player.log` for patch
 errors before trusting it in the campaign save.

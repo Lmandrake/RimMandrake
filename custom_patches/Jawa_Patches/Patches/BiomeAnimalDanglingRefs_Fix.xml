@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ============================================================================
-  BiomeAnimalDanglingRefs_Fix.xml          GravshipCompat · authored 2026-08-10
+  BiomeAnimalDanglingRefs_Fix.xml          Jawa_Patches · authored 2026-08-10
   ============================================================================
 
   THE BUG
@@ -81,10 +81,10 @@
   load order:
 
       Primordial Geysers   entry 252
-      GravshipCompat       entry 553   (of 562 active)
+      Jawa_Patches         entry 562   (LAST of 562 active)
 
-  We are safely after it. Keep GravshipCompat last in the load order and this
-  stays true.
+  Moved to last on 2026-08-10, so this holds by construction rather than by
+  luck. Keep it last.
 
   Because the targets are patch-created, validate_patch.py reports 0 on-disk
   matches for every xpath below. That is EXPECTED here and is not a silent

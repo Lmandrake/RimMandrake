@@ -45,7 +45,7 @@ tension: **does this thing need to vary over the campaign?**
 
 | Tier | Share of the design | What belongs here | The real constraint |
 |---|---|---|---|
-| **① Config + def patches (pre-worldgen)** | **~60%** | The rules of the universe: four-axis terrain schema, Cherry Picker culls, Configurable Techprints gating, biome commonality, Custom difficulty, faction roster, the ideoligion, sacred-scrap wreck ThingDefs, GravshipCompat (trader buy-filter, SpeakUp lines), JawaIonWeapons | Free at runtime, version-controlled — but the **most irreversible** tier. `required_mods.md` §5 Tier 6 is explicit: AUR Hit Point, Rimesis, and anything Cherry-Picked cannot be changed mid-save. **Get it right once, then freeze it. Never treat as a tuning surface mid-campaign.** |
+| **① Config + def patches (pre-worldgen)** | **~60%** | The rules of the universe: four-axis terrain schema, Cherry Picker culls, Configurable Techprints gating, biome commonality, Custom difficulty, faction roster, the ideoligion, sacred-scrap wreck ThingDefs, Jawa_Patches (trader buy-filter, SpeakUp lines), JawaIonWeapons | Free at runtime, version-controlled — but the **most irreversible** tier. `required_mods.md` §5 Tier 6 is explicit: AUR Hit Point, Rimesis, and anything Cherry-Picked cannot be changed mid-save. **Get it right once, then freeze it. Never treat as a tuning surface mid-campaign.** |
 | **② Save-game editing** | **~5%, ONCE** | The `<game><scenario>` node (name, splash, `PlayerPawnsArriveMethod`, starting research/things, pawnCount) and `GravshipCrew` (the five founders: names, backstory defNames, traits, 12 skills + passions, appearance). Faction flavor renames | **Not periodic.** Periodic save-editing means quitting the game — the flow-killer that stalls ambitious projects — and every extra edit is another roll against the thing-ID graph. Now that the bridge writes live, the reason for periodic editing has evaporated. **One pass at t=0, plus emergency repair.** |
 | **③ Per-new-tile-map RimBridge authoring** | **~25% — highest leverage** | The ship stamp; two-tier set-pieces; terrain treasures; §3F hazards; curated ruin stamping; per-biome mineral seeding; arrival threats | Under-rated by the docs as "fragile." It runs **while paused, in a bounded batch, on a fresh map with no history** — the safest moment in the game to write. This is where the campaign gets its texture. |
 | **④ Live dynamic during play** | **~10% of writes, 100% of the GM feel** | Imperial Heat, the orbital-detection timer, the dark-tile pause, the nine-god satiation vector, consequence injection, the LLM voice | See §2 — most of it isn't a game write at all. |
@@ -76,7 +76,7 @@ resolves it: *"never author a whole save from scratch; only modify an engine-gen
 **Therefore the pipeline is:**
 
 1. **T1 (offline, agent).** Defs/patches finished and in the load order — wreck ThingDefs, xenotype,
-   ideoligion, faction reskins, GravshipCompat. The world is generated already embodying the rules.
+   ideoligion, faction reskins, Jawa_Patches. The world is generated already embodying the rules.
 2. **T3a (user).** Subscribe → generate world → embark on the chosen tile → save. Minutes.
 3. **③ STAMP (agent, via bridge).** Drive `build_sheet_15.py`'s placements into the live map:
    substructure, hull walls (with the deliberate ~40–55% disconnected/RED sections), machine wrecks,

@@ -378,7 +378,7 @@ Nov 2020 — confirmed **not 1.6**). Goal was **new mechanics, not planet names*
   empty (delegates fauna to animal mods — why it advertises Megafauna/Alpha Animals compat).
 
 **ACTION TAKEN (user "extract"):** the four weathers were **extracted into `custom_patches/
-GravshipCompat`** as pure XML (task #63) — `Defs/WeatherDefs/SWDesertWeather.xml` (defNames
+Jawa_Patches`** as pure XML (task #63) — `Defs/WeatherDefs/SWDesertWeather.xml` (defNames
 `SW_Sandstorm`/`SW_DrySandstorm`/`SW_RedFog`/`SW_RedFoggyRain`; custom C# overlays swapped for vanilla
 `WeatherOverlay_Fog`, all gameplay fields preserved) + `Patches/SWDesertWeather_Attach.xml`
 (conditional-wrapped injection into `baseWeatherCommonalities` of Desert/ExtremeDesert/AridShrubland/

@@ -159,7 +159,7 @@ assemblies before resolving type names, so `GenTypes` sees all of them.)
 a worker. Pawns don't receive a mood thought from standing near those specific
 crypt torches. Nothing else references them.
 **If the noise ever matters:** `PatchOperationRemove` the two ThoughtDefs in
-GravshipCompat. Not worth it today.
+Jawa_Patches. Not worth it today.
 
 ### 1.9 ~~Missing PawnKindDefs in biome animal tables~~ — ❌ **RETRACTED 2026-08-10**
 
@@ -226,7 +226,7 @@ truncates to 1 and continues. Cosmetic.
 | RimAI Core `TypeLoadException` on `RimAI.Framework.Contracts.Result\`1` | **Fixed** by a RimSort **User Rule** forcing Framework before Core. (Community Rules silently discards saves when its DB source is `None`.) Zero `ReflectionTypeLoadException` in the 2026-08-10 load — holding. |
 | `Created WorkshopItem for 3542508261 but there is no folder for it` (×3) | **Nephilim Xenotype Reborn** — removed from the Workshop for guideline violations, so Steam cannot download it. **Unsubscribe to clear.** (It is NOT the Facial Animation eye-colour patch.) |
 | `<wildness> doesn't correspond to any field in RaceProperties` ×8 | **Resolved 2026-08-10** — *Martens – Nature's Most Adorable Assassins* (1.6 moved the field). Mod removed and unsubscribed. |
-| `ChooseWildAnimalSpawns` → `ArgumentException: Key: Armadillo` | **Fixed 2026-08-10** by `GravshipCompat/Patches/AnimalBiomeDuplicates_Fix.xml`. Giddy-Up and Biome Compatibility Project both stopped throwing at the same time. |
+| `ChooseWildAnimalSpawns` → `ArgumentException: Key: Armadillo` | **Fixed 2026-08-10** by `Jawa_Patches/Patches/AnimalBiomeDuplicates_Fix.xml`. Giddy-Up and Biome Compatibility Project both stopped throwing at the same time. |
 | `RimtalkContext...PostLoadPatcher` → `AmbiguousMatchException` | RimTalk Context Upgrade vs RimTalk version drift. **Removed 2026-08-10.** |
 | `Could not find a type named RimTalkExpandActions.SocialDining.*` (×3) | **Mod removed 2026-08-10.** The types *did* exist in `RimTalk-ExpandActions.dll` and the defs spelled them correctly — the assembly simply never loaded. Diagnosis abandoned as not worth the effort: Social Dining was the only feature those defs powered and it wasn't wanted. |
 
@@ -311,7 +311,7 @@ PawnKindDefs do not exist in the versions we load, and an unresolved
 - `AA_WaywardMobileAssembler` — removed from Alpha Animals (Alpha Genes
   blacklists the name; the corpse entry is commented out upstream).
 
-**Fix authored:** `GravshipCompat/Patches/BiomeAnimalDanglingRefs_Fix.xml`
+**Fix authored:** `Jawa_Patches/Patches/BiomeAnimalDanglingRefs_Fix.xml`
 removes the five dangling entries. Nothing is lost — they resolve to null and
 spawn nothing, and the biome already lists vanilla `<Porcupine>` and `<Moose>`.
 Not yet confirmed in a load.
@@ -319,13 +319,15 @@ Not yet confirmed in a load.
 ⚠️ **These nodes do not exist on disk** — Primordial Geysers' patch creates them
 at runtime, so `validate_patch.py` reports 0 matches for all five xpaths. That is
 expected, not a silent no-op. It also means the fix **depends on load order**:
-Primordial Geysers is entry 252, GravshipCompat is 553, so we apply after it.
+Primordial Geysers is entry 252 and Jawa_Patches is now **562 of 562, last in
+load order** (moved 2026-08-10, at the same time the mod was renamed from
+GravshipCompat), so we apply after it by construction.
 
 ---
 
 ## 4. The self-inflicted one — `<li>` into a dictionary-keyed field
 
-**2026-08-10.** Our own `GravshipCompat/Patches/SWDesertWeather_Attach.xml` added
+**2026-08-10.** Our own `Jawa_Patches/Patches/SWDesertWeather_Attach.xml` added
 weather in list form:
 
 ```xml
@@ -426,6 +428,78 @@ on-disk file is already correct, so it cannot recur — but it is the same versi
 drift class as §1.7, in a file we wrote, and it slipped through because only the
 *patch* files were being validated. `SWDesertWeather.xml` is a **Defs** file, and
 `validate_patch.py` does not check Defs at all. That gap is still open.
+
+---
+
+## 4b. WORLDGEN / RUNTIME errors — first data, 2026-08-10 15:17
+
+Everything above §4 is **load-time**. This section is the first look past it: a
+new colony was started and the world map opened. Note the previous session never
+reached worldgen (`Initializing new game with mods` appears 0 times in
+`Player-prev.log`), so **none of this is a regression** — it is simply the first
+time we have seen it. 17,728 new log lines, and the load-time triage buckets are
+all **zero** across them.
+
+### 4b.1 `Could not find player faction.` ×140 — ⚠️ open, unattributed
+
+Bare line, no stack. It is vanilla `FactionManager.OfPlayer`, which does
+`if (ofPlayer == null) Log.Error("Could not find player faction.")`. So some mod
+queries `Faction.OfPlayer` during world generation, before the player faction
+exists.
+
+**This is almost certainly why the debug window popped up** — RimWorld
+auto-opens it on `Log.Error`, and these are 140 of them.
+
+Fires in two bursts during worldgen. Probably harmless in itself (the getter
+returns null and callers generally cope) but the volume is bad and it drowns the
+window. **Not attributable from the log as it stands** — the message carries no
+stack trace. To pin it: dev mode, then in the debug log window enable stack
+traces / "log all messages", regenerate a world, and read the first occurrence.
+Worth doing on a world we are throwing away anyway.
+
+### 4b.2 SWCP `Failed to retrieve a CharacterDefWithRole<TRole> list` ×44
+
+Same mod as §3's AssetBundle bug (KotOR Resources & Materials, WS 3254370945).
+Its role registry is **empty at worldgen**, so it contributes no characters.
+
+🔎 **Hypothesis worth testing, not yet confirmed:** this may be self-inflicted by
+the *same* bundle bug. SWCP's NRE fires inside
+`LongEventHandler.ExecuteToExecuteWhenFinished`, which aborts the remainder of
+the post-load queue — and if SWCP populates its own role registry from an action
+queued behind the thrower, the mod kills its own initialisation. If so, one
+missing file explains both symptoms, and the mod is currently contributing
+nothing but errors. That would upgrade it from "watch upstream" to "disable
+until fixed."
+
+### 4b.3 `FileNotFoundException: UnityEngine.InputLegacyModule … ReflectionOnly APIs`
+
+One occurrence, during worldgen. Some mod inspects assemblies with the
+reflection-only load path without pre-loading dependencies. No stack, no owner,
+no observed consequence. Logged here so it is not re-investigated; promote it if
+it ever recurs with a symptom attached.
+
+### 4b.4 Cosmetic runtime noise (ignore)
+
+`Isekai Forge` "failed equipChance roll" (~15×, that is the mod reporting normal
+random rolls) and `Marjot failed to get a job from any IntimacyGivers` (×2).
+
+### 4b.5 ✅ The biome question is closed — no in-game check needed
+
+The world map is fogged by **Rimworld Exploration Mode**
+(`thelastbulletbender.rwexploration`, WS 2941608795), which hides the planet
+until you explore it. That made the planned visual biome confirmation
+impossible — and unnecessary. Three independent lines of evidence already agree
+that all seven biomes destroyed by the `<li>` bug are back:
+
+1. `Player.log`: zero `Failed to find BiomeDef`, zero `WeatherDef named li`.
+2. Cross-references down to 30, every one attributed to a known cause.
+3. The offline load-set inventory lists all seven: `Desert`, `AridShrubland`,
+   `ExtremeDesert`, `Volcano`, `ZBiome_Badlands`, `ZBiome_DesertOasis`,
+   `AB_PyroclasticConflagration` (`mods/inventory/`).
+
+Note the fog mod is likely **wanted** — it matches the campaign premise (crashed
+stowaways who do not know the planet) and the `desert_world_design.md` dark-biome
+ruling. Do not remove it to satisfy a check that files already answer.
 
 ---
 

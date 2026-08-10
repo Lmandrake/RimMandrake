@@ -21,7 +21,7 @@ _A portable reference of defNames, packageIds, and Workshop IDs we've **confirme
 - `Mlie.ReinforcedMechanoid2` — Reinforced Mechanoids 2 ✅
 - `Krkr.rule56` — CAI-5000 (Advanced AI + Fog Of War) ✅
 - `lwm.deepstorage` — LWM's Deep Storage ✅
-- `mandrake.gravship.compat` — our custom local compat mod (loads LAST) ✅ _(our own id)_
+- `mandrake.jawa.patches` — our custom local compat mod (loads LAST) ✅ _(our own id)_
 
 ## Research project defNames (gates)
 - `VFE_BasicFactories` — VFE-Factory basic tier (prereq Machining) ✅

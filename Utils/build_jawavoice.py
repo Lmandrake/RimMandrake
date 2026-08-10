@@ -26,7 +26,7 @@ representative leaf line(s), so meaning stays apt. Canon anchors (CANON in
 jawaese.py) override the synthesis where a real phrase fits the situation.
 
 Everything is wrapped in PatchOperationConditional so a missing/renamed target
-is a silent no-op, matching the GravshipCompat house style.
+is a silent no-op, matching the Jawa_Patches house style.
 """
 
 import os

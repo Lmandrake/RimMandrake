@@ -26,8 +26,8 @@ decided-but-verify-in-game. A **DECIDED** line records the choice + where it's a
 - [ ] **Frameworks present & 1.6-current:** Harmony, VEF Core, HAR, JecsTools Unofficial 1.6,
   neronix17.toolbox (Outer Rim), EBSG (if KotOR armor), Prepatcher (CAI-5000 dep). Verify each
   shows 1.6 in RimSort before first launch.
-- [ ] **Compat mod present & loads LAST:** `mandrake.gravship.compat` (folder
-  `custom_patches/GravshipCompat/`) — home for our TraderKind buy-filter widen + any authored patches.
+- [ ] **Compat mod present & loads LAST:** `mandrake.jawa.patches` (folder
+  `custom_patches/Jawa_Patches/`) — home for our TraderKind buy-filter widen + any authored patches.
 - [ ] **Red-error check:** boot once to a menu with full list; resolve any red errors (esp. Outland
   Genetics presence — the Jawa def hard-references its genes) BEFORE worldgen.
 - [~] **RimBridgeServer** installed only when we're ready to drive live-map enrichment (Tier 2b via

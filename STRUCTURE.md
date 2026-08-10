@@ -20,7 +20,7 @@ The project is now sorted into four topic buckets, with a thin navigation spine 
 ### Left at root deliberately (NOT yet bucketed)
 - **`ship_designs.md`, `ship_deck_plan.md`, `ship_distinctive_features.md`, `Factory_lore.md`** + the ship reference images (`ship_image.png`, `ship_damaged_image.png`, `ship_deck_plan_scale_map.png`) — these are **actively owned by the concurrent Cowork instance**; moving them risks colliding with in-flight edits. They belong in `worldbuilding/` in the next pass, once that instance is idle.
 - **`save_authoring_pipeline.md`, `rimworld_file_lore.md`** — the `Utils/Savegame_*.py` scripts cite these via hard-coded `../<file>.md` doc-string paths; since `Utils/` is contested I can't fix those refs, so the manuals stay adjacent for now.
-- **`custom_patches/`** (JawaVoice + GravshipCompat) — `Utils/build_jawavoice.py` hard-codes its output to `../custom_patches/JawaVoice`; moving it would silently break the build. Stays put until the builder can be updated together with it.
+- **`custom_patches/`** (JawaVoice + Jawa_Patches) — `Utils/build_jawavoice.py` hard-codes its output to `../custom_patches/JawaVoice`; moving it would silently break the build. Stays put until the builder can be updated together with it.
 
 ---
 
@@ -80,7 +80,7 @@ These are the load-bearing, authoritative files. If two docs disagree, the owner
 | `samuel_streamer_study/` | Downloaded Samuel Streamer mod-lists/configs + the technique/theme analysis they feed. |
 | `Utils/` | Tooling: Jawa-voice builder, save-inspection scripts, the LLM-in-the-loop map-improver. Writes JawaVoice output to `../custom_patches/JawaVoice`. |
 | `player_maps/` | Authored player-map plans + loop reports (coastal_mesa v1–v3). |
-| `custom_patches/` | Our authored 1.6 mods: JawaVoice (built) + GravshipCompat. Built by `Utils/build_jawavoice.py`. |
+| `custom_patches/` | Our authored 1.6 mods: JawaVoice (built) + Jawa_Patches. Built by `Utils/build_jawavoice.py`. |
 | `hand_authored_maps/` | Study library of downloaded `.rws` maps (payloads gitignored; README manifest tracked). |
 | `savegame/` | The Gravtasm reference `.rws` and related saves. |
 | `mod_sources/` | → moved to `mods/mod_sources/` (gitignored extracted mod trees, audited during design). |
