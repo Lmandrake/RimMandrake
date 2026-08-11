@@ -49,6 +49,15 @@
          inherited the "harms nothing" half of EMP and none of the "does
          something" half, so every bolt landed as a no-op: no injury, no blood,
          no stun, no message. Indistinguishable from a miss. -->
+    <!-- WIRED 2026-08-11. Custom worker, see Source/DamageWorker_IonBuildup.cs.
+         The additionalHediffs block below is no longer inert: this worker reads
+         it directly and applies the severity by hand, without ever dealing an
+         injury. It calls base.Apply first, so the impact sound and vanilla
+         bookkeeping are unchanged, and causeStun above is resolved outside the
+         worker (Thing.TakeDamage never reads it), so the mechanoid half is
+         untouched. Verified from IL: vanilla EMP declares no workerClass at all
+         and still stuns, which is the proof that stun does not live here. -->
+    <workerClass>JawaIonWeapons.DamageWorker_IonBuildup</workerClass>
     <causeStun>true</causeStun>
     <externalViolenceForMechanoids>true</externalViolenceForMechanoids>
     <stunAdaptationTicks>2200</stunAdaptationTicks>
