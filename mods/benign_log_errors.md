@@ -671,6 +671,104 @@ this on a throwaway colony, with no bridge agent running.
 
 ---
 
+## 4d. DEEP SWEEP of the clean load — what a quiet log still hides (2026-08-10 19:04)
+
+Once the errors were gone we clustered **every** remaining line pattern and looked
+at what had never been examined. Four findings, none of them errors.
+
+### 4d.1 ⏱️ The 23-minute load is textures, not defs
+
+**6,020 texture reloads**, engine text: *"being reloaded with reduced mipmap count
+… due to non-power-of-two dimensions … This will be slower to load, and will look
+worse when zoomed out."* 5,444 distinct files across **193 mods**.
+
+Meanwhile every mod's *def* loading is trivial — the slowest is Tribal Furniture
+at 1.4 s, and most are under 200 ms. Bridge init reports `elapsedMs=912198`
+(15.2 min). So def parsing is not the bottleneck; texture processing is.
+
+Commonest offending sizes: 384×384 (497), 60×60 (351), 100×100 (341), 640×640
+(299), 320×320 (288), 636×636 (234). All just off a power of two.
+
+| Rank | Slow textures | Mod |
+|---|---|---|
+| 1 | 590 | Minerals Rock |
+| 2 | 317 | Fortifications – Industrial |
+| 3 | 307 | VFE – Props and Decor |
+| 4 | 286 | [MUS] Space Base Furniture |
+| 5 | 255 | Mythic Ages: Megafauna Bestiary |
+| 6 | 236 | Alpha Memes |
+| 7 | 165 | Minerals Sparkle |
+| 8 | 157 | Vanilla Gravship Expanded Ch.1 |
+| 9 | 155 | Vanilla Vehicles Expanded |
+| 10 | 152 | Ancient urban ruins |
+
+**Top 10 mods = 44% of all slow textures.** Minerals Rock alone is ~10%.
+
+⚠️ **Not proven to be the dominant cost.** We counted occurrences and read the
+engine's own warning; we did not measure per-texture time. Treat this as the best
+available lead on load time and as a **cull-priority list** if the stack is ever
+trimmed — not as a measured breakdown. The art itself is upstream and not ours
+to resize.
+
+### 4d.2 🔧 The pawn render pipeline carries 54 competing Harmony patches
+
+Melee Animation self-reports this — `[MeleeAnim] Potential patch conflicts (54)`.
+It is informational, not an error, and it is the **best map we have of render
+contention** in this stack. Worst offenders:
+
+- `PawnRenderer::ParallelGetPreRenderResults` — 7 prefixes, 3 transpilers, 1
+  postfix. Includes `rimworld.Nals.FacialAnimation`, Big and Small
+  (`RedMattis.BetterPrerequisites`), VEF, yayoAni, Rimesis, Vehicle Framework,
+  GiddyUp, and HAR's `PostureTranspiler`.
+- `PawnRenderUtility::DrawEquipmentAiming` — **14 prefixes**, with VEF appearing
+  four times and ChezhouLib twice.
+- `PawnRenderer::RenderPawnAt` — 4 prefixes, 3 postfixes.
+
+**Why this matters beyond curiosity:** it is the structural reason the facial
+appearance investigation was so slow. Nothing in that pipeline can be reasoned
+about from one mod's code alone. Keep this list; when a rendering oddity appears,
+start here rather than from scratch.
+
+### 4d.3 🐛 Intimacy – Gender Works is version-drifted against 1.6
+
+```
+Tried to calculate chance for father with gender "Female".   ×55
+Tried to calculate chance for mother with gender "Male".     ×17
+```
+
+72 lines, fired during **pawn generation**, interleaved with faction-leader
+creation. Owner: **Intimacy – Gender Works** (`LovelyDovey.Sex.WithRosaline`,
+WS 3534254491), via `1.6/Patches/Fertility_ops_changes.xml`.
+
+It is the same mod already responsible for the three failed
+`genderPrerequisite` removals in §1.2 — Ludeon restructured those recipes in 1.6
+and the mod has not caught up. **Two independent symptoms, one cause: this mod
+predates the current game version.**
+
+⚠️ **Design-relevant, not just noise.** `jawa_xenotype_and_religion.md` Part 4
+owns the slavery/reproduction/aging-churn economy. If parent-chance calculation
+is being handed swapped genders, that pillar is resting on arithmetic nobody has
+checked. Worth a decision before relying on reproduction mechanics.
+
+Note also `modsconfig_audit.md` §5: the romance stack is half-assembled — the two
+Intimacy mods are ON while **Way Better Romance**, which the docs call the
+backbone, is OFF. This finding strengthens that open item.
+
+### 4d.4 Smaller notes
+
+- `Command line arguments: -disable-compute-shaders` — RimWorld is being launched
+  with compute shaders **disabled**. Probably a deliberate workaround, but nobody
+  in this project set it knowingly. Worth confirming it is intended.
+- `Loaded file (Xenotype) is from version 1.6.4633 rev1261, we are running
+  1.6.4871 rev591` ×3 — the three surviving `.xtp` presets predate the current
+  build. Harmless; same family as the two we removed in §2.4.
+- `Mod X dependency (Y) needs to have <downloadUrl> and/or <steamWorkshopUrl>
+  specified` — About.xml packaging nits in the RimTalk add-ons. Cosmetic.
+- `Not generating ores for asteroid step` ×25, `finished biome cycle` ×114 —
+  normal worldgen chatter.
+
+---
+
 ## 5. The patterns worth remembering
 
 **Hard breaks concentrate in mods that reflect over other mods' types at
