@@ -849,15 +849,68 @@ game's), `Assembly-CSharp-firstpass`, twelve `UnityEngine.*` modules,
 
 RimWorld loads **every** DLL in a mod's `Assemblies` folder.
 
-**Why it can break things invisibly.** Two `Assembly-CSharp` images means the CLR
-holds two of every game type, and — the part that bites — **two independent sets
-of statics.** `Verse.Find` is nothing but statics, so code bound to the duplicate
-sees `Find.CurrentMap` as null. That is not an error and throws nothing; it is
-simply never equal to anything. Bubbles gates on `init.Map != Find.CurrentMap` at
-capture, `p.Map != Find.CurrentMap` at draw, and `Find.WindowStack.Add(...)` for
-its settings dialog — while the two things that *did* work, drawing the icon and
-flipping the toggle, touch only `Settings` and `WidgetRow` and never touch `Find`.
-One cause, both symptoms, zero diagnostics.
+**What it actually does — and the mechanism I first proposed was WRONG.**
+
+My initial theory was that two `Assembly-CSharp` images means two of every type
+and two independent sets of statics, so code bound to the duplicate would see
+`Find.CurrentMap` as null. That is wrong, and the disproof is neat enough to be
+worth keeping.
+
+`Verse.ModAssemblyHandler::ReloadAll` loads mod DLLs with
+`System.Reflection.Assembly::LoadFrom` — verified in the game's IL, not assumed:
+
+```
+IL_0049:  ldstr      "Assemblies/"
+IL_00AC:  call       System.Reflection.Assembly::LoadFrom
+IL_00D1:  call       Verse.ModAssemblyHandler::AssemblyIsUsable
+```
+
+`LoadFrom` is documented to return the **already-loaded** assembly when one of
+the same identity exists, whatever path you hand it. Mono goes further still:
+it does not implement .NET Framework's separate load contexts at all and
+deduplicates purely by assembly identity (mono/mono#8149).
+
+And the detector proves the dedup empirically. Dubs Performance Analyzer keys
+its map by `Assembly` **object**, which is reference equality:
+
+```csharp
+mods = new Dictionary<Assembly, string>();      // keyed by object identity
+foreach (var mod in LoadedModManager.RunningMods)
+    foreach (var asm in mod.assemblies.loadedAssemblies)
+        if (!mods.ContainsKey(asm)) mods.Add(asm, mod.Name);
+
+if (mods.ContainsKey(typeof(Pawn).Assembly))
+    Error($"Mod {mods[typeof(Pawn).Assembly]} has packaged the base-game Rimworld assemblies");
+```
+
+The warning can only fire if the object `LoadFrom` returned for the mod's copy
+**is the very same reference** as the running game's `typeof(Pawn).Assembly`. A
+genuine second copy would be a distinct reference and the message would never
+print. **So the warning firing is itself proof that no second copy was loaded.**
+
+What the packaging really costs, all of it real:
+
+1. **Mod misattribution — the one that bites a debugger.** RimWorld appends the
+   returned (real, game) `Assembly-CSharp` to *that mod's* `loadedAssemblies`.
+   Every tool that maps type back to owning mod — the analyzer, exception
+   attribution, Harmony patch-owner reporting — now attributes **all of vanilla
+   RimWorld** to a furniture mod. You are debugging a stack whose blame data is
+   silently poisoned.
+2. **Load-time cost.** `AssemblyIsUsable` calls `GetTypes()` on every DLL and
+   `GenTypes.ClearCache()` fires per accepted assembly, so a 15.7 MB
+   `Assembly-CSharp` is fully type-enumerated during mod load.
+3. **Bloat.** 22.7 MB of Workshop download for a ~25 KB payload.
+4. **The genuine correctness risk is a different case than I guessed:** a
+   packaged DLL whose identity is *not yet loaded* when the mod loads. Under
+   Mono's dedup-by-identity the **mod's copy wins process-wide**. Byte-identical
+   copies are inert; a **non-identical** one genuinely substitutes for the
+   game's. That is why `tickleyourpawn.core` shipping an `mscorlib.dll` that is
+   *not* byte-identical is the one to look at hardest.
+
+**Lesson about the lesson:** a mechanism that explains the symptom beautifully is
+not evidence. The `Find`-statics story fit every observation, and it was wrong.
+What settled it was reading how the loader is actually called and how the
+detector actually decides — two ten-minute checks that should have come first.
 
 **Sweep for it — this was not a one-off.** Checking every active mod's *resolved
 content dirs* against the game's `Managed` folder found **three** offenders:
