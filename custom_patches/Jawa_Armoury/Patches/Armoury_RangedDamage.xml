@@ -6,6 +6,37 @@
 <Patch>
 
   <Operation Class="PatchOperationFindMod">
+    <mods><li>Core</li></mods>
+    <match Class="PatchOperationSequence">
+      <operations>
+        <!-- Bullet_AutocannonTurret : 27 -> 57 -->
+        <li Class="PatchOperationReplace">
+          <xpath>/Defs/ThingDef[defName="Bullet_AutocannonTurret"]/projectile/damageAmountBase</xpath>
+          <value><damageAmountBase>57</damageAmountBase></value>
+        </li>
+      </operations>
+    </match>
+  </Operation>
+
+  <Operation Class="PatchOperationFindMod">
+    <mods><li>Giant imperial turret</li></mods>
+    <match Class="PatchOperationSequence">
+      <operations>
+        <!-- Bullet_Balistarium : 27 -> 64 -->
+        <li Class="PatchOperationReplace">
+          <xpath>/Defs/ThingDef[defName="Bullet_Balistarium"]/projectile/damageAmountBase</xpath>
+          <value><damageAmountBase>64</damageAmountBase></value>
+        </li>
+        <!-- Bullet_Pilum : 110 -> 200 -->
+        <li Class="PatchOperationReplace">
+          <xpath>/Defs/ThingDef[defName="Bullet_Pilum"]/projectile/damageAmountBase</xpath>
+          <value><damageAmountBase>200</damageAmountBase></value>
+        </li>
+      </operations>
+    </match>
+  </Operation>
+
+  <Operation Class="PatchOperationFindMod">
     <mods><li>Outer Rim - Core</li></mods>
     <match Class="PatchOperationSequence">
       <operations>
@@ -74,15 +105,15 @@
           <xpath>/Defs/ThingDef[defName="OuterRim_Proj_Turbolaser"]/projectile/damageAmountBase</xpath>
           <value><damageAmountBase>800</damageAmountBase></value>
         </li>
-        <!-- OuterRim_TurretProj_AnaxesTurret : 80 -> 34 -->
+        <!-- OuterRim_TurretProj_AnaxesTurret : 80 -> 151 -->
         <li Class="PatchOperationReplace">
           <xpath>/Defs/ThingDef[defName="OuterRim_TurretProj_AnaxesTurret"]/projectile/damageAmountBase</xpath>
-          <value><damageAmountBase>34</damageAmountBase></value>
+          <value><damageAmountBase>151</damageAmountBase></value>
         </li>
-        <!-- OuterRim_TurretProj_PTowerTurret : 30 -> 32 -->
+        <!-- OuterRim_TurretProj_PTowerTurret : 30 -> 69 -->
         <li Class="PatchOperationReplace">
           <xpath>/Defs/ThingDef[defName="OuterRim_TurretProj_PTowerTurret"]/projectile/damageAmountBase</xpath>
-          <value><damageAmountBase>32</damageAmountBase></value>
+          <value><damageAmountBase>69</damageAmountBase></value>
         </li>
       </operations>
     </match>
@@ -106,6 +137,34 @@
         <li Class="PatchOperationReplace">
           <xpath>/Defs/ThingDef[defName="OuterRim_Bullet_WristBlaster"]/projectile/damageAmountBase</xpath>
           <value><damageAmountBase>28</damageAmountBase></value>
+        </li>
+      </operations>
+    </match>
+  </Operation>
+
+  <Operation Class="PatchOperationFindMod">
+    <mods><li>Rah's Vanilla Turrets Expansion</li></mods>
+    <match Class="PatchOperationSequence">
+      <operations>
+        <!-- Bullet_GunComplex : 13 -> 42 -->
+        <li Class="PatchOperationReplace">
+          <xpath>/Defs/ThingDef[defName="Bullet_GunComplex"]/projectile/damageAmountBase</xpath>
+          <value><damageAmountBase>42</damageAmountBase></value>
+        </li>
+        <!-- Bullet_TurretMilitary : 12 -> 40 -->
+        <li Class="PatchOperationReplace">
+          <xpath>/Defs/ThingDef[defName="Bullet_TurretMilitary"]/projectile/damageAmountBase</xpath>
+          <value><damageAmountBase>40</damageAmountBase></value>
+        </li>
+        <!-- Bullet_TurretShredder : 21 -> 55 -->
+        <li Class="PatchOperationReplace">
+          <xpath>/Defs/ThingDef[defName="Bullet_TurretShredder"]/projectile/damageAmountBase</xpath>
+          <value><damageAmountBase>55</damageAmountBase></value>
+        </li>
+        <!-- Bullet_VulcanCannon : 12 -> 40 -->
+        <li Class="PatchOperationReplace">
+          <xpath>/Defs/ThingDef[defName="Bullet_VulcanCannon"]/projectile/damageAmountBase</xpath>
+          <value><damageAmountBase>40</damageAmountBase></value>
         </li>
       </operations>
     </match>
@@ -139,6 +198,67 @@
         <li Class="PatchOperationReplace">
           <xpath>/Defs/ThingDef[defName="KotORSlugBolt"]/projectile/damageAmountBase</xpath>
           <value><damageAmountBase>18</damageAmountBase></value>
+        </li>
+      </operations>
+    </match>
+  </Operation>
+
+  <Operation Class="PatchOperationFindMod">
+    <mods><li>Vanilla Furniture Expanded - Security</li></mods>
+    <match Class="PatchOperationSequence">
+      <operations>
+        <!-- VFES_Bullet_Ballista : 25 -> 61 -->
+        <li Class="PatchOperationReplace">
+          <xpath>/Defs/ThingDef[defName="VFES_Bullet_Ballista"]/projectile/damageAmountBase</xpath>
+          <value><damageAmountBase>61</damageAmountBase></value>
+        </li>
+        <!-- VFES_Bullet_Catapult : 25 -> 61 -->
+        <li Class="PatchOperationReplace">
+          <xpath>/Defs/ThingDef[defName="VFES_Bullet_Catapult"]/projectile/damageAmountBase</xpath>
+          <value><damageAmountBase>61</damageAmountBase></value>
+        </li>
+        <!-- VFES_Bullet_ConcealedTurret : 12 -> 40 -->
+        <li Class="PatchOperationReplace">
+          <xpath>/Defs/ThingDef[defName="VFES_Bullet_ConcealedTurret"]/projectile/damageAmountBase</xpath>
+          <value><damageAmountBase>40</damageAmountBase></value>
+        </li>
+        <!-- VFES_Bullet_HMG : 14 -> 43 -->
+        <li Class="PatchOperationReplace">
+          <xpath>/Defs/ThingDef[defName="VFES_Bullet_HMG"]/projectile/damageAmountBase</xpath>
+          <value><damageAmountBase>43</damageAmountBase></value>
+        </li>
+      </operations>
+    </match>
+  </Operation>
+
+  <Operation Class="PatchOperationFindMod">
+    <mods><li>Wall Mounted Turrets Version 2</li></mods>
+    <match Class="PatchOperationSequence">
+      <operations>
+        <!-- Bullet_WallIncendiaryTurret : 20 -> 53 -->
+        <li Class="PatchOperationReplace">
+          <xpath>/Defs/ThingDef[defName="Bullet_WallIncendiaryTurret"]/projectile/damageAmountBase</xpath>
+          <value><damageAmountBase>53</damageAmountBase></value>
+        </li>
+        <!-- Bullet_WallMiniTurret : 14 -> 43 -->
+        <li Class="PatchOperationReplace">
+          <xpath>/Defs/ThingDef[defName="Bullet_WallMiniTurret"]/projectile/damageAmountBase</xpath>
+          <value><damageAmountBase>43</damageAmountBase></value>
+        </li>
+        <!-- Bullet_WallMinigunTurret : 15 -> 45 -->
+        <li Class="PatchOperationReplace">
+          <xpath>/Defs/ThingDef[defName="Bullet_WallMinigunTurret"]/projectile/damageAmountBase</xpath>
+          <value><damageAmountBase>45</damageAmountBase></value>
+        </li>
+        <!-- Bullet_WallShotgunTurret : 25 -> 61 -->
+        <li Class="PatchOperationReplace">
+          <xpath>/Defs/ThingDef[defName="Bullet_WallShotgunTurret"]/projectile/damageAmountBase</xpath>
+          <value><damageAmountBase>61</damageAmountBase></value>
+        </li>
+        <!-- Bullet_WallSniperTurret : 40 -> 86 -->
+        <li Class="PatchOperationReplace">
+          <xpath>/Defs/ThingDef[defName="Bullet_WallSniperTurret"]/projectile/damageAmountBase</xpath>
+          <value><damageAmountBase>86</damageAmountBase></value>
         </li>
       </operations>
     </match>

@@ -45,14 +45,24 @@ OUTDIR = r"G:\My Drive\Personal\Rimworld\custom_patches\Jawa_Armoury\Patches"
 SW_MODS = ("Star Wars KotOR Weapons and Armor", "Outer Rim - Core",
            "Outer Rim - Droid Depot", "[JDS] StarWars - Armory",
            "Star Wars : The Force - Lightsaber",
-           "[AB] Xenotype: Yautja")
+           "[AB] Xenotype: Yautja",
+           # Emplacements. Fixed guns are their own tier: heavier than anything
+           # a person carries, an order below ship-scale.
+           "Giant imperial turret", "Rah's Vanilla Turrets Expansion",
+           "Wall Mounted Turrets Version 2",
+           "Vanilla Furniture Expanded - Security")
 VERB_MARKERS = ("ion", "stun", "emp", "sonic", "disrupt", "electr", "shock",
                 "extinguish", "smoke", "gas", "tear", "foam", "net", "web")
 BANDS = {"blaster": (24, 34), "blaster_heavy": (52, 72), "slugthrower": (18, 36),
          "turbolaser": (800, 2000), "lightsaber": (80, 120), "vibro": (35, 52),
          # Yautja blades: an apex hunter's kit should beat a club decisively and
          # still lose to a vibro-blade, which is purpose-built to shear armour.
-         "alienblade": (30, 45)}
+         "alienblade": (30, 45),
+         # Emplacements. A basic wall turret hits like a heavy blaster; the
+         # giant imperial gun hits like nothing a person can carry. Still an
+         # order of magnitude below the ship-scale rung (L9), which is the
+         # separation that keeps "turbolaser" meaning something.
+         "emplacement": (40, 200)}
 
 
 def dn_mod_is_yautja(w):
@@ -81,6 +91,20 @@ for d in iter_live_defs(DUMP):
                 w["tools"].append((t.get("label"), t["power"]))
         weapons.append(w)
 
+all_users = collections.defaultdict(list)
+for w in weapons:
+    if w["proj"]:
+        all_users[w["proj"]].append(w)
+
+TURRET_MODS = ("Giant imperial turret", "Rah's Vanilla Turrets Expansion",
+               "Wall Mounted Turrets Version 2",
+               "Vanilla Furniture Expanded - Security")
+
+
+def is_turret(w):
+    return w["mod"] in TURRET_MODS or "turret" in (w["defName"] or "").lower()
+
+
 sw_weapons = [w for w in weapons if w["mod"] in SW_MODS]
 sw_proj = collections.defaultdict(list)
 for w in sw_weapons:
@@ -96,6 +120,19 @@ def is_verb(b):
 def classify(pname, p, users):
     b = (pname + " " + p["type"]).lower()
     if is_verb(b):
+        return None
+
+    # Emplacement rung, but ONLY if every weapon firing this projectile is a
+    # turret. 11 turret projectiles are shared with hand weapons -- Bullet_Shotgun
+    # serves VFES_Gun_ShotgunTurret AND Gun_PumpShotgun -- so promoting them
+    # would silently buff the personal gun too. Third time this project has met
+    # the shared-projectile trap; exclusivity is now checked, not assumed.
+    everyone = all_users.get(pname) or []
+    if everyone and all(is_turret(u) for u in everyone):
+        if p["dmg"] > 0 and not any(k in b for k in ("grenade", "missile", "rocket",
+                                                     "bomb", "charge", "shell",
+                                                     "mortar", "artillery")):
+            return "emplacement"
         return None
     if users and all(is_verb((u["defName"] + " " + u["label"]).lower()) for u in users):
         return None
@@ -127,6 +164,7 @@ SOURCE_RANGE = {
     "blaster": (8, 36), "blaster_heavy": (9, 80), "slugthrower": (10, 28),
     "turbolaser": (40, 80), "lightsaber": (24, 34), "vibro": (16, 50),
     "alienblade": (20, 28),
+    "emplacement": (12, 110),
 }
 
 
