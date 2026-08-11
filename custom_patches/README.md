@@ -105,3 +105,8 @@ whatever is in the repo right now, including another thread's half-finished work
 Run the plan first and read it. If you see `-` lines (present in the game, absent
 from the repo), someone hand-edited the deployed copy — `--pull` it back before
 overwriting.
+
+The same shared-state rule applies to git: **commit explicit paths only.** A
+`git add -A` here will sweep whatever another thread has half-written under
+`custom_patches/` — including generated output mid-rebuild — into your commit.
+See `CLAUDE.md`.

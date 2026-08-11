@@ -19,6 +19,7 @@ focused research probe; keep them assembly-free and dependency-light.
 | **`def_inventory.py`** | **every active mod's `Defs/`, all 495 def types** | — (shared library) + per-type JSON: the resolved def set |
 | **`animal_live_diff.py`** | **`animals.csv` + a live DefDump** | **`divergence.csv` — what the patches actually did** |
 | **`animal_contact_sheet.py`** | **`animals.csv` + every mod's `Textures/`** | **paginated sprite sheets + index CSV + missing CSV** |
+| **`deploy_custom_mods.py`** | **`../custom_patches/` + RimWorld's `Mods/`** | **pushes our authored mods into the game — the repo copy is NOT what the game loads; see `../custom_patches/README.md`** |
 
 **Offline vs live.** Everything above reads files. Its counterpart is
 `../mods/dev/RimDefDump`, a small C# mod that dumps the def database from inside

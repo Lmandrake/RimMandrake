@@ -2,7 +2,7 @@
 
 _Rewritten 2026-08-11 from a full audit of all 88 docs. Half the corpus was missing from the previous version, including `CLAUDE.md`, `NEXT_RELOAD.md`, `REFRESH.md`, `live_mod_inventory.md` and the modding skill — every one of them load-bearing. This file is the map: what each doc is, **who owns what** so a fact lives in exactly one authoritative place, and — new — **what kind of doc it is**, so you know whether to trust it, regenerate it, or ignore it._
 
-**Four threads work in this repo simultaneously.** Before editing a doc, `git status` it. If it is already modified, someone is in it.
+**Four threads work in this repo simultaneously, sharing one working tree.** Before editing a doc, `git status` it — if it is already modified, someone is in it. When committing, **name every path explicitly**; never `git add -A` / `git add .` / `git commit -a`, or you will sweep another thread's unfinished work into your commit. Full rule in `CLAUDE.md`.
 
 ---
 
