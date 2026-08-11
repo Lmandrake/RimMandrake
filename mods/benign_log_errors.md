@@ -877,3 +877,55 @@ about a log — must be traceable to the IL, the decompiled source, or an
 authoritative citation before it earns a place in the triage order. Log text is
 evidence of what happened; it is not evidence of what the engine does next.
 Reproduction: `scratchpad/il_probe.py` (stdlib only, re-runnable).
+
+---
+
+## §7. `MissingMethodException: Default constructor not found for type System.String`
+
+**Appears:** exactly once, very early — after the `<downloadUrl>` dependency
+warnings and *before* `Rebuilding mods list`. Which is the tell: that window is
+when About.xml files are deserialised, so this is a mod *metadata* error, not a
+Def error.
+
+```
+Exception loading from System.Xml.XmlElement:
+  System.MissingMethodException: Default constructor not found for type System.String
+  at Verse.DirectXmlToObject.ObjectFromXml[T]           [0x0045c]   <- string, dies
+  at Verse.DirectXmlToObject.ObjectFromXmlReflection[T]             <- into a field
+  at Verse.DirectXmlToObject.ObjectFromXml[T]           [0x0060e]   <- ModMetaData
+```
+
+**Cause — `Invisible Conduit Continued` (`GlitchGoblin.InvisibleConduitCont`,
+Workshop 3506645273).** Its About.xml uses list syntax on a scalar field:
+
+```xml
+<author>
+    <li>zzz</li>
+</author>
+```
+
+`ModMetaData.author` is a `string`; `ModMetaData.authors` is the `List<string>`.
+`DirectXmlToObject` is handed an element with child nodes where it expects a text
+node, falls through to `Activator.CreateInstance(typeof(string))`, and String has
+no parameterless constructor.
+
+**How it was isolated:** every one of the 563 active mods' About.xml files was
+parsed and each top-level `ModMetaData` child type-checked against its real field
+type — a full tag census, so no field class went unclassified. Two malformed
+files, one possible cause. The three-frame stack shape decides it: a bad
+`descriptionsByVersion` would route through `DictionaryFromXml` and show a fourth
+frame, and no such frame is present.
+
+**Impact: cosmetic.** It aborts parsing of that one field. The mod's content
+loads normally.
+
+**Not fixing it.** Editing a Workshop mod's About.xml is reverted on the next
+Steam validation, and a patch cannot reach About.xml — it is read before the
+patch system exists. Living with it.
+
+### §7.1 Related, not the cause
+
+`jellycreative.isekaileveling` (3657580708) writes `<descriptionsByVersion>` with
+`<version>`/`<description>` children instead of RimWorld's `<key>`/`<value>`
+dictionary syntax. Malformed, silent, throws nothing; its per-version description
+is simply never read.
