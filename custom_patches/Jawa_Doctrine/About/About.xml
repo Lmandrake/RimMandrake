@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ModMetaData>
+  <packageId>mandrake.jawa.doctrine</packageId>
+  <name>Jawa Doctrine Patches</name>
+  <author>Mandrake</author>
+  <supportedVersions><li>1.6</li></supportedVersions>
+  <description>Campaign-doctrine patches: small, surgical changes that enforce the
+Jawa design rules rather than rebalancing numbers.
+
+Currently: removes the Droid Factory from the build menu. Droid parts, repair
+and upgrading are deliberately untouched. The Jawa restore droids; they do not
+manufacture them.
+
+Rationale lives in worldbuilding/balance_paradigm.md (Axis 18a/18b).
+Load last.</description>
+</ModMetaData>

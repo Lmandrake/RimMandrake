@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- "We give the second hand to what others discarded; we do not breed new hands."
+
+     Removes the Droid Factory from the build menu. Parts, repair and upgrading
+     are untouched and remain the whole point.
+
+     WHY THE BUILDING AND NOT THE RECIPES: OuterRim_DroidFactory is
+     Asimov.Building_AutoCrafter with CompProperties_AutoCrafter and ZERO
+     attached RecipeDefs. Droid creation is driven by the comp in C#, so there
+     are no recipes to suppress. The building is the only lever.
+
+     WHY UNBUILDABLE AND NOT DELETED: PatchOperationRemove on the ThingDef would
+     leave the mod's own C#, its research def and its architect category
+     pointing at a def that no longer exists. Clearing designationCategory takes
+     it out of the player's hands while keeping every reference intact.
+
+     Rationale: worldbuilding/balance_paradigm.md Axis 18b. -->
+<Patch>
+
+  <Operation Class="PatchOperationFindMod">
+    <mods><li>Outer Rim - Droid Depot</li></mods>
+    <match Class="PatchOperationSequence">
+      <operations>
+
+        <!-- Out of the architect menu. -->
+        <li Class="PatchOperationRemove">
+          <xpath>/Defs/ThingDef[defName="OuterRim_DroidFactory"]/designationCategory</xpath>
+        </li>
+
+        <!-- Belt and braces: even if reached another way, it cannot be built. -->
+        <li Class="PatchOperationAdd">
+          <xpath>/Defs/ThingDef[defName="OuterRim_DroidFactory"]</xpath>
+          <value>
+            <menuHidden>true</menuHidden>
+          </value>
+        </li>
+
+        <!-- Say why, in game, where a player will actually read it. -->
+        <li Class="PatchOperationReplace">
+          <xpath>/Defs/ThingDef[defName="OuterRim_DroidFactory"]/description</xpath>
+          <value>
+            <description>A droid assembly line. The Jawa do not build these. They give the second hand to what others discarded, and do not breed new hands. Droids are found, repaired, restored and reawakened; their parts can be made, but never their whole.</description>
+          </value>
+        </li>
+
+      </operations>
+    </match>
+  </Operation>
+
+</Patch>
