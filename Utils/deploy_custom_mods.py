@@ -72,7 +72,7 @@ def first_existing(paths, what):
     sys.exit("could not find %s; tried:\n  %s" % (what, "\n  ".join(paths)))
 
 
-EXCLUDE_DIRS = {"Source", "__pycache__", ".git"}
+EXCLUDE_DIRS = {"Source", "__pycache__", ".git", "art_candidates"}
 EXCLUDE_FILES = {"README.md", ".gitignore", ".DS_Store", "Thumbs.db"}
 EXCLUDE_EXTS = {".py", ".pyc"}
 

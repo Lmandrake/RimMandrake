@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ============================================================================
+  JawaCombatViability_Tuning.xml             Jawa_Patches · authored 2026-08-11
+  ============================================================================
+
+  THE OBSERVATION
+  ===============
+  Observed in-game 2026-08-11, during the ion blaster acceptance test: a Jawa
+  fainted in the middle of a firefight.
+
+  THE CAUSE
+  =========
+  BTD_Jawa carries Turn_Gene_Terrified, from Integrated Genes
+  (turnovus.biotech.integratedgenes, load 180). Its own description:
+
+      "Carriers of this gene have an overactive fight-or-flight response...
+       They can't even handle basic combat without becoming overwhelmed
+       and fainting."
+      customEffectDescriptions:
+        "May have a fainting spell while in combat."
+        "Fainting frequency depends on surrounding terror level."
+
+      geneClass      IntegratedGenes.Gene_Terrified
+      mentalBreakDef Turn_MentalBreak_TerrifiedFaintingSpell
+      statFactors    Terror x1.5
+      biostatMet     +2
+      displayCategory Turn_GeneCategory_Slavery
+
+  This is not a bug. It is the gene working exactly as designed, and as
+  flavour it is close to perfect — canon Jawa are famously cowardly and flee
+  rather than fight. The problem is purely that OUR COLONISTS ARE ALL JAWA.
+  A colony that faints when attacked cannot defend the gravship.
+
+  ⚠️ IT GETS WORSE OVER TIME, NOT BETTER. Fainting frequency scales with the
+  surrounding Terror level, and the gene multiplies Terror by 1.5. Terror comes
+  from corpses, prisoners and slaves — and this is a slaver campaign
+  (jawa_xenotype_and_religion.md §4). So the exact conditions the campaign is
+  built around are the conditions that make this gene fire most often. It would
+  have degraded steadily and looked like a difficulty curve rather than a gene.
+
+  WHY A SWAP, NOT A REMOVAL
+  =========================
+  First pass here simply deleted the gene. That was the wrong shape. A sweep of
+  every gene in the active load set that mentions Terror or fainting found no
+  milder sibling to swap in…
+
+      Turn_Gene_Terrified   Terror x1.5   met +2   break = TerrifiedFaintingSpell
+      Turn_Gene_FreeSpirit  Terror x0.2   met +1   break = FreeSpiritRampage
+      FireTerror            (pyrophobia, unrelated)
+
+  — but "no existing gene fits" is not the same as "the choice is binary". We
+  can author one, and that is the better answer: keep the flavour, drop the
+  incapacitation. See Defs/GeneDefs/JawaSkittish.xml.
+
+  WHY NOT PATCH Turn_Gene_Terrified ITSELF
+  ========================================
+  It is used by exactly four xenotypes in this load set:
+
+      guy762_xenotype_jawa        guy762_xenotype_nemoidian
+      BTD_Jawa                    BTD_Neimoidian
+
+  Jawa and Neimoidians. Softening the shared gene would also flatten the Trade
+  Federation, who are NPC-only and whose fainting costs the player nothing and
+  is quietly delightful. So the original gene is left completely untouched and
+  only BTD_Jawa is re-pointed.
+
+  ⚠️ COST: the donor is worth +2 biostatMet, the replacement +1, so BTD_Jawa
+  ends up one metabolism poorer. In Biotech's economy a drawback pays the
+  xenotype, and most of the drawback is now gone — claiming the full +2 would
+  be quietly buying a free point. Deliberately NOT compensating elsewhere;
+  rebalancing BTD_Jawa's totals is a decision for
+  jawa_xenotype_and_religion.md, not for a mechanism patch.
+
+  SAFETY AND LOAD ORDER
+  =====================
+  PatchOperationConditional on the exact <li>, so it is a silent no-op if
+  Xenotype REMIX ever drops the gene itself. BTD_Jawa is defined by Xenotype
+  REMIX at load 555 and Jawa_Patches is 564, so the def exists when we patch it.
+
+  The xpath uses a text() predicate, which RimWorld's XPath supports but
+  validate_patch.py cannot evaluate — it will report UNSUPPORTED rather than a
+  hit count. Verified by hand against the resolved load set 2026-08-11: the
+  gene is present in BTD_Jawa's <genes> list.
+
+  VERIFY AFTER THE NEXT LOAD
+  ==========================
+    * A fresh Jawa's gene list shows "skittish", not "terrified".
+    * Start a firefight; no fainting spells.
+    * Expect the xenotype's metabolism total to read 1 lower than before.
+    * Spawn a Neimoidian: it should STILL have "terrified".
+  ============================================================================
+-->
+<Patch>
+
+  <!-- ==================================================================
+       1. Drop the fainting gene from Jawa (left intact for Neimoidians)
+       ================================================================== -->
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/XenotypeDef[defName="BTD_Jawa"]/genes/li[text()="Turn_Gene_Terrified"]</xpath>
+    <match Class="PatchOperationRemove">
+      <xpath>/Defs/XenotypeDef[defName="BTD_Jawa"]/genes/li[text()="Turn_Gene_Terrified"]</xpath>
+    </match>
+  </Operation>
+
+  <!-- ==================================================================
+       2. Put our own skittish gene in its place
+       ================================================================== -->
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/XenotypeDef[defName="BTD_Jawa"]/genes[not(li[text()="Jawa_Gene_Skittish"])]</xpath>
+    <match Class="PatchOperationAdd">
+      <xpath>/Defs/XenotypeDef[defName="BTD_Jawa"]/genes[not(li[text()="Jawa_Gene_Skittish"])]</xpath>
+      <value>
+        <li>Jawa_Gene_Skittish</li>
+      </value>
+    </match>
+  </Operation>
+
+</Patch>
