@@ -2,11 +2,34 @@
 """
 animal_inventory.py — dump every animal in the modded game to CSV.
 
-VERSION 1.4  (2026-08-10)   Project: G:/My Drive/Personal/Rimworld/Utils/
+VERSION 1.5  (2026-08-10)   Project: G:/My Drive/Personal/Rimworld/Utils/
 Docs/manifest: Utils/README.md  ("animal_inventory.py" section)
 Dependency-free: Python 3.8+ stdlib only. Keep it that way.
 
 CHANGELOG
+  1.5  LAYERED. This tool is now a PROJECTION over def_inventory.py (layer 1)
+       and owns no scanning or inheritance machinery of its own. Deleted:
+       load_active_mods(), the two-pass scan_defs() index, resolve_inherit(),
+       _merge_into(), _overwrite(), _is_list_node(), INHERIT_MAX_DEPTH,
+       _INHERIT_ATTRS, parse_xml(), walk_xml(), def_dirs() and the D_* path
+       defaults — every one of those was a duplicate of layer 1, which was
+       itself generalised out of this file's v1.4. What remains is the part
+       that is actually about ANIMALS: which ThingDefs count as one, which
+       fields become which columns, the derived columns, the PawnKind/Biome
+       aggregation, and the CSVs.
+       BEHAVIOUR-NEUTRAL by construction and by test: all six CSVs are
+       byte-identical to v1.4's on the 562-mod stack (1,243 / 3,614 / 3,345 /
+       4,618 / 3 / 1,897 rows). Nothing about the row set, the column set or
+       any value changed. If you are looking for a semantic change, there
+       isn't one — see 1.4 and 1.3 for the last two.
+       One thing worth knowing: layer 1's Name index is GLOBAL across def
+       types (RimWorld's XmlInheritance runs on the raw node graph before
+       anything knows what a "ThingDef" is), whereas v1.4 indexed ThingDefs
+       only. Measured on this stack: 2,575 global Names vs 1,269 ThingDef
+       Names, ZERO cross-type Name collisions, and zero animals whose chain,
+       depth or unresolvedParent changes. Layer 1 is the more correct rule and
+       here it happens to be indistinguishable — but on a different mod set it
+       could legitimately resolve a parent this tool used to give up on.
   1.4  dead xpaths. Four columns read fields RimWorld 1.6 no longer uses, so
        they reported near-0% coverage and were misread as "poor inheritance".
        Measured over 1,248 race-bearing ThingDefs in the resolved load set:
@@ -30,6 +53,7 @@ CHANGELOG
        maxLittersPerYear, annualOffspringMax) are computed AFTER the merge --
        computing them before it was the other half of the v1.2 bug. New
        columns: inheritDepth, inheritChain, inheritedFields, unresolvedParent.
+       (The scan and the resolver described here are now layer 1's; see 1.5.)
   1.2  load-set correctness. Mod/folder resolution moved to rimworld_loadset:
        honours LoadFolders.xml (incl. IfModActive / IfModNotActive) and scans
        ONLY the folders the game loads. v1.1 also scanned each mod's 1.5 and
@@ -41,9 +65,23 @@ CHANGELOG
        RENEWABLE_YIELD; pawnkind aggregation; ~112 columns.
   1.0  first cut: identity, core race fields, biome map, conflicts, patch watch.
 
-FIXED IN 1.2: Core/DLC rows previously showed modName "?" (Ludeon About.xml has
-no <name>). read_about() now falls back to the folder name. Measured field
-coverage on the 562-mod stack is in Utils/README.md.
+WHERE THE WORK HAPPENS (the three layers)
+=========================================
+  layer 1  def_inventory.py    load set -> every def node, <ParentName> resolved
+  layer 2  THIS FILE           "what is an animal, and what do I want to know"
+  layer 3  (offline vs live diff — separate tool)
+
+Layer 1 owns everything category-agnostic: resolving which folders the game
+actually loads, parsing all 8,294 def files exactly once, and merging each def
+with its whole ParentName ancestry. It hands back DefRecords; the only two
+things this file asks of one are `.own` (the raw declared element) and
+`.element` (the inheritance-RESOLVED element).
+
+That split is not cosmetic. `.element` is the only convenient way to read a
+field, so a new column CANNOT accidentally be read pre-inheritance — which is
+exactly the bug v1.3 had to fix here. `.own` still exists, and this file uses
+it in precisely two places, both deliberate and both commented below: deciding
+what counts as an animal, and computing inheritedFields.
 
 MAINTENANCE — adding a column
   1. simple <race> field -> append to RACE_SIMPLE as (csvColumn, "race/xpath")
@@ -54,14 +92,29 @@ MAINTENANCE — adding a column
   5. ALWAYS add the name to COLUMNS. DictWriter uses extrasaction="ignore", so a
      column missing from COLUMNS is silently dropped. This is the one easy mistake.
 
-  Anything extract_thing() returns is automatically eligible for the
-  inheritedFields diff — it is computed by running extract_thing() twice, once
-  on the def's own element and once on the resolved one. Do not read fields
-  outside extract_thing() or they will silently escape inheritance.
+  You do NOT have to think about inheritance. extract_thing() is handed
+  DefRecord.element, which is already merged — layer 1's job, done before this
+  file sees anything. Anything extract_thing() returns is then automatically
+  eligible for the inheritedFields diff, which is computed by running it twice,
+  once on `.own` and once on `.element`. Two rules follow from that:
+    * do not read fields outside extract_thing(), or they escape both the
+      inheritance guarantee and the inheritedFields diff;
+    * do not reach for `.own` for a column value. It is the pre-merge node and
+      is blank for the majority of animals on most fields.
+
+  Columns sourced from a DIFFERENT def type (combatPower, ecoSystemWeight,
+  wildGroupSize*, canArriveManhunter from PawnKindDef; biomeCount from the
+  biome map) are joined in main(), not extract_thing(), and are therefore
+  outside the inheritedFields diff. That is correct — they are not this def's
+  fields — but it does mean PawnKindDef inheritance is still unresolved here
+  (see STILL APPROXIMATE below).
 
 PERFORMANCE: run natively on Windows. Through the Cowork device bridge the mount
 does ~210 files/sec and this touches tens of thousands of XML files (>10 min).
-Natively it is seconds.
+Natively it is ~3-4s. Layer 1's inheritance merge is LAZY, so asking it for all
+def types and then touching only the ~1,250 animals costs the scan plus 1,250
+merges, not 51,000. Do not "optimise" that by narrowing layer 1's Name index —
+it must stay global or parents stop resolving.
 
 Offline. Reads the Defs on disk; the game does NOT need to be running, and this
 touches no savegame. Run it on the Windows box for full filesystem speed.
@@ -75,35 +128,38 @@ So: this is the authoring tool; a live dump is the verification tool.
 
 What this CANNOT see (documented honestly, do not forget it):
   * PatchOperation results. Patches apply at load; this reads base XML.
-    Mitigation: pass 3 scans Patches/ and reports every operation whose xpath
-    touches an animal/biome, so you at least know where to look.
+    Mitigation: scan_patches() scans Patches/ and reports every operation whose
+    xpath touches an animal/biome, so you at least know where to look.
   * Mod-vs-mod override winners for identical defNames (flagged, not resolved).
   * True shortHashes. Computed with RimWorld's StableStringHash, but the game
     resolves collisions across the whole loaded set per defType, so treat the
     value as a CANDIDATE until cross-checked against a live dump.
 
-<ParentName> INHERITANCE — what v1.3 resolves, and what is still approximate
----------------------------------------------------------------------------
-RESOLVED (new in 1.3). Every ThingDef with a Name attribute in the whole load
-set is indexed, cross-mod, including abstract bases that carry no <race> at all
-(BasePawn). Each animal's ParentName chain is walked to the root and merged with
-RimWorld's XmlInheritance rules: the child's own value always wins, named-child
-nodes (race, statBases, wildBiomes) merge per name, and <li> list nodes (tools,
-comps, lifeStageAges, tradeTags, litterSizeCurve/points) are REPLACED wholesale
-by any child that declares them. Inherit="False" forces replacement. Cycles and
-runaway chains are capped at INHERIT_MAX_DEPTH; a ParentName with no matching
-Name lands in the unresolvedParent column instead of vanishing.
+<ParentName> INHERITANCE — resolved by layer 1, and what is still approximate
+----------------------------------------------------------------------------
+RESOLVED (since 1.3; owned by def_inventory.py since 1.5). Every def that
+carries a Name attribute in the whole load set is indexed, cross-mod, including
+abstract bases that carry no <race> at all (BasePawn). Each animal's ParentName
+chain is walked to the root and merged with RimWorld's XmlInheritance rules: the
+child's own value always wins, named-child nodes (race, statBases, wildBiomes)
+merge per name, and <li> list nodes (tools, comps, lifeStageAges, tradeTags,
+litterSizeCurve/points) are REPLACED wholesale by any child that declares them.
+Inherit="False" forces replacement. Cycles and runaway chains are capped; a
+ParentName with no matching Name lands in the unresolvedParent column instead of
+vanishing. The merge semantics live in def_inventory.py — read them there.
 
 STILL APPROXIMATE:
   * Duplicate abstract Names across mods. Last in load order wins here. The
     game logs an error and its winner is not guaranteed to be the same one.
   * MayRequire / MayRequireAnyOf on inherited <li> nodes is NOT evaluated, so
     an inherited comps/recipes list can include entries a real load would drop.
-    This matters more in 1.3 than it did in 1.2: animals now inherit the
-    Anomaly-gated comps on AnimalThingBase whether or not Anomaly is active.
+    Animals inherit the Anomaly-gated comps on AnimalThingBase whether or not
+    Anomaly is active.
   * PawnKindDef inheritance is not resolved, so the pawnkind-sourced columns
     (combatPower, ecoSystemWeight, wildGroupSizeMin/Max, canArriveManhunter)
-    still read the def's own XML only.
+    still read the def's own XML only. Layer 1 could resolve them — this is a
+    deliberate hold, because changing it changes column values and 1.5 is a
+    behaviour-neutral refactor. Do it as its own versioned change.
   * Which ThingDefs count as animals is still decided on the def's OWN <race>
     element, before merging. A def that inherits <race> and declares none is
     not listed. Deliberate: it keeps the row set identical to v1.2's.
@@ -150,29 +206,31 @@ USAGE
 """
 
 import argparse
-import copy
 import csv
 import os
 import re
 import sys
-import xml.etree.ElementTree as ET
 from collections import defaultdict
 
-# Shared load-set resolver. Lives beside this file so every offline tool in the
-# project agrees on which folders the game actually reads.
+# Layer 1. Everything to do with WHICH files the game loads, parsing them, and
+# resolving <ParentName> lives there and nowhere else — this file used to carry
+# its own copy of all three and that copy is gone. The D_* path defaults come
+# from there too so the two tools cannot drift apart on which machine they mean.
+#
+# rimworld_loadset is imported directly for def_dirs() only, which scan_patches()
+# needs to find each mod's Patches/ folders; layer 1 has no opinion about
+# patches (it deliberately reads base XML only).
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
-from rimworld_loadset import build_load_set, def_dirs as loadset_def_dirs  # noqa: E402
+from def_inventory import (build, walk_xml,                      # noqa: E402
+                           D_CONFIG, D_WORKSHOP, D_LOCAL, D_DATA)
+from rimworld_loadset import def_dirs                            # noqa: E402
 
-# ---------------------------------------------------------------- defaults
-D_CONFIG = r"C:\Users\Mandrake\AppData\LocalLow\Ludeon Studios\RimWorld by Ludeon Studios\Config\ModsConfig.xml"
-D_WORKSHOP = r"C:\Program Files (x86)\Steam\steamapps\workshop\content\294100"
-D_LOCAL = r"C:\Program Files (x86)\Steam\steamapps\common\RimWorld\Mods"
-D_DATA = r"C:\Program Files (x86)\Steam\steamapps\common\RimWorld\Data"
-
-# NOTE: there is deliberately no VERSION_DIRS here any more. v1.1 used
-# ("1.6", "1.5", "Common", "") which scanned 1.5 folders the game never loads
-# and ignored LoadFolders.xml entirely, so conditional folders were mishandled
-# in both directions. rimworld_loadset resolves this properly.
+# The def types this projection needs a record for. Passed to layer 1 purely to
+# avoid allocating ~50k DefRecords we would never look at: it does NOT narrow
+# the parse (every file is still read, because a parent can live in any file)
+# and it does NOT narrow the global Name index that inheritance resolves
+# against. Narrowing either of those would silently break resolution.
+WANT_TYPES = ("ThingDef", "PawnKindDef", "BiomeDef")
 
 # Fast-breeder threshold: annual offspring above this trips the ranch guardrail.
 # (Standing rule: never ranch a tamed breeding herd into a meat/leather/wool printer.)
@@ -208,47 +266,6 @@ def fnum(s):
         return float(str(s).strip())
     except Exception:
         return None
-
-
-def parse_xml(path):
-    try:
-        return ET.parse(path).getroot()
-    except Exception:
-        try:
-            raw = open(path, encoding="utf-8", errors="replace").read()
-            raw = re.sub(r"^\s*<\?xml[^>]*\?>", "", raw).strip()
-            return ET.fromstring(raw)
-        except Exception:
-            return None
-
-
-def def_dirs(mod, subdir):
-    """Delegates to the shared resolver; see rimworld_loadset.def_dirs."""
-    return loadset_def_dirs(mod, subdir)
-
-
-def walk_xml(root_dir):
-    for dp, _, files in os.walk(root_dir):
-        for f in files:
-            if f.lower().endswith(".xml"):
-                yield os.path.join(dp, f)
-
-
-# ---------------------------------------------------------------- mod list
-def load_active_mods(config, workshop, local, data):
-    """
-    The real load set, in load order. See rimworld_loadset for why this is not
-    just "walk the Workshop tree": version folders and LoadFolders.xml both make
-    the on-disk file set a superset of what the game reads.
-    """
-    try:
-        mods, missing, version = build_load_set(config, [workshop, local, data])
-    except OSError as exc:
-        sys.exit(str(exc))
-    ndirs = sum(len(m["contentDirs"]) for m in mods)
-    print(f"load set: version {version}, {len(mods)} active mods "
-          f"-> {ndirs} content folders")
-    return mods, missing
 
 
 # ---------------------------------------------------------------- extraction
@@ -399,127 +416,6 @@ def parse_lifestages(node):
     return rows, len(rows), adult
 
 
-# ---------------------------------------------------------------- inheritance
-# <ThingDef ParentName="AnimalThingBase"> is not decoration: most animals get
-# the bulk of their <race> block from an abstract base, frequently one owned by
-# a DIFFERENT mod. RimWorld resolves this AFTER every mod's XML is loaded, so a
-# parent may sit anywhere in load order relative to its children — which is why
-# the scan is two-pass (index every Name, then resolve).
-#
-# Merge rule, mirroring XmlInheritance.RecursiveNodeCopyOverwriteElements:
-#   * the CHILD's own value always wins; a parent value only fills a gap;
-#   * a node whose children are <li> items — tools, comps, lifeStageAges,
-#     tradeTags, litterSizeCurve/points — is REPLACED WHOLESALE by a child that
-#     declares it. It is NOT merged element-wise. Getting this wrong invents
-#     attacks and comps that the animal does not have;
-#   * a node whose children are named elements — race, statBases, wildBiomes —
-#     merges per child name, recursively;
-#   * a leaf value node replaces its parent's outright;
-#   * Inherit="False" forces wholesale replacement regardless.
-INHERIT_MAX_DEPTH = 20
-
-# Name/ParentName/Abstract describe a node's own place in the graph and must
-# never be copied down from a parent (RimWorld strips them from the clone too).
-_INHERIT_ATTRS = ("Name", "ParentName", "Abstract")
-
-
-def _is_list_node(el):
-    """True when this node's children are <li> items, i.e. a RimWorld List<>."""
-    return any(ch.tag == "li" for ch in el)
-
-
-def _overwrite(child, cur):
-    """cur takes the child's content wholesale: text, children, attributes."""
-    cur.text = child.text
-    cur[:] = [copy.deepcopy(ch) for ch in child]
-    cur.attrib.update(child.attrib)
-
-
-def _merge_into(child, cur):
-    """Lay one child node over the already-resolved parent node cur, in place."""
-    if (child.get("Inherit") or "").strip().lower() == "false":
-        _overwrite(child, cur)
-        return
-    # Either side being a text leaf, or either side being a <li> list, means the
-    # child replaces the node outright. Everything else is an element container
-    # and merges per child name — including a child that is EMPTY, which is a
-    # no-op, not a wipe. (Clearing an inherited list needs Inherit="False";
-    # that is the whole reason the attribute exists.)
-    if ((child.text or "").strip() or (cur.text or "").strip()
-            or _is_list_node(child) or _is_list_node(cur)):
-        _overwrite(child, cur)
-        return
-    cur.attrib.update(child.attrib)
-    for ce in child:
-        match = cur.find(ce.tag)
-        if match is None:
-            cur.append(copy.deepcopy(ce))
-        else:
-            _merge_into(ce, match)
-
-
-def resolve_inherit(node, by_name, cache):
-    """
-    Merge a def with its whole ParentName ancestry.
-
-    Returns (resolved element, chain, unresolvedParent). The chain is listed
-    nearest parent first. The resolved element is always a fresh copy unless the
-    def has no parent at all, so the indexed nodes are never mutated.
-
-    Two failure modes are reported rather than swallowed: a ParentName with no
-    matching Name anywhere in the load set, and a cycle (or a chain longer than
-    INHERIT_MAX_DEPTH) — both land in unresolvedParent.
-    """
-    chain, ancestors, visited, unresolved, base = [], [], set(), "", None
-    n = node
-    while len(chain) < INHERIT_MAX_DEPTH:
-        pn = (n.get("ParentName") or "").strip()
-        if not pn:
-            break
-        if pn in visited:                       # cycle
-            unresolved = pn
-            break
-        visited.add(pn)
-        p = by_name.get(pn)
-        if p is None:                           # parent defined by no active mod
-            unresolved = pn
-            break
-        chain.append(pn)
-        if pn in cache:                         # rest of the chain already done
-            base, cchain, cunres = cache[pn]
-            chain.extend(cchain)
-            unresolved = unresolved or cunres
-            break
-        ancestors.append(p)
-        n = p
-    else:
-        unresolved = (n.get("ParentName") or "").strip()   # depth cap hit
-
-    if base is None:
-        if not ancestors:
-            return node, chain, unresolved
-        base = ancestors.pop()                  # topmost we managed to reach
-
-    resolved = copy.deepcopy(base)
-    for anc in reversed(ancestors):             # farthest first, nearest last
-        for k in _INHERIT_ATTRS:
-            resolved.attrib.pop(k, None)
-        _merge_into(anc, resolved)
-    for k in _INHERIT_ATTRS:
-        resolved.attrib.pop(k, None)
-    _merge_into(node, resolved)
-    resolved.attrib.clear()
-    resolved.attrib.update(node.attrib)
-
-    name = (node.get("Name") or "").strip()
-    # Cache the load-order winner only, and never a broken chain: a cycle
-    # resolves differently depending on where you entered it.
-    if name and not unresolved and by_name.get(name) is node:
-        cache[name] = (resolved, chain, unresolved)
-    return resolved, chain, unresolved
-
-
-# ---------------------------------------------------------------- extraction
 def extract_thing(node, meta):
     """
     Every field this tool reads out of ONE ThingDef element, plus the derived
@@ -531,6 +427,9 @@ def extract_thing(node, meta):
     here is the point: v1.2 derived FAST_BREEDER, RENEWABLE_YIELD and the
     temperature group from unresolved values, so they were blank for any animal
     whose gestation or comfy temps came from its base.
+
+    This function is xpath-against-an-element and nothing else. It does not know
+    where the element came from and must not: layer 1 has already merged it.
     """
     r = dict(meta)
     r["label"] = txt(node, "label")
@@ -623,106 +522,106 @@ def extract_thing(node, meta):
     return r, tools, ls
 
 
-# ---------------------------------------------------------------- scan
-def scan_defs(mods):
+# ---------------------------------------------------------------- projection
+def project(ds):
     """
-    Two passes over the load set.
+    Turn layer 1's DefSet into the animal-shaped data this tool writes.
 
-    PASS A indexes, in load order, every ThingDef that either carries a Name
-    (a potential parent — abstract bases such as BasePawn have no <race> and
-    would be lost by a race-only filter, yet they hold statBases every animal
-    inherits) or carries a <race> (a potential animal). PawnKindDefs and
-    BiomeDefs are harvested here too; they need no second look.
+    There is no scanning and no inheritance work in here any more — by the time
+    this runs, every file has been parsed and every ParentName chain walked.
+    What is left is three harvests over the DefSet, in scan (= load) order:
 
-    PASS B resolves each animal's ParentName chain against that index and
-    extracts its columns from the MERGED element.
+      PawnKindDef  -> per-race aggregation (combatPower, group sizes, ...)
+      BiomeDef     -> wildAnimals lists, one entry per biome, last mod wins
+      ThingDef     -> the animals themselves
 
-    Two passes are not optional: a parent may be declared by a mod that loads
-    after its children, and RimWorld resolves inheritance only once all XML is
-    in. Duplicate Names follow the same rule this tool documents for defNames —
-    last in load order wins.
+    `.own` vs `.element` — the two places `.own` is used are both load-bearing:
+
+      * SELECTION. An animal is a ThingDef whose OWN element declares <race>.
+        Not the resolved one: every child of AnimalThingBase inherits a <race>,
+        so selecting on the merged element would drag in vehicles, mechs and
+        anything else hanging off a pawn base. This is also what keeps the row
+        set identical to v1.2's.
+      * inheritedFields. Computed by extracting twice, from `.own` and from
+        `.element`, and diffing. That is the honest definition of "this column's
+        value did not come from this def", and it is only possible because
+        layer 1 keeps both elements addressable.
+
+    PawnKindDef and BiomeDef are read from `.own` for a duller reason: v1.4 read
+    them unmerged and 1.5 is behaviour-neutral. See STILL APPROXIMATE up top —
+    switching them to `.element` is a real (and probably good) change, not a
+    refactor, so it does not belong in this version.
     """
     pawnkinds, biomes = defaultdict(list), {}
-    dupnames = defaultdict(list)
-    by_name = {}          # Name attribute -> raw element (last mod in load order wins)
-    candidates = []       # (element, mod, relpath) for every ThingDef with a <race>
 
-    # ---- pass A: index -------------------------------------------------
-    for m in mods:
-        for d in def_dirs(m, "Defs"):
-            for path in walk_xml(d):
-                root = parse_xml(path)
-                if root is None or root.tag != "Defs":
-                    continue
-                rel = os.path.relpath(path, m["folder"])
-                for node in root:
-                    dn = txt(node, "defName")
+    for rec in ds.of_type("PawnKindDef"):
+        node = rec.own
+        pawnkinds[txt(node, "race")].append({
+            "defName": rec.defName, "combatPower": txt(node, "combatPower"),
+            "ecoSystemWeight": txt(node, "ecoSystemWeight"),
+            "wildGroupSizeMin": txt(node, "wildGroupSize/min"),
+            "wildGroupSizeMax": txt(node, "wildGroupSize/max"),
+            "canArriveManhunter": txt(node, "canArriveManhunter"),
+            "shortHashCandidate": short_hash(rec.defName), "mod": rec.modName,
+        })
 
-                    if node.tag == "ThingDef":
-                        name = (node.get("Name") or "").strip()
-                        if name:
-                            by_name[name] = node
-                        if node.find("race") is not None:
-                            candidates.append((node, m, rel))
+    for rec in ds.of_type("BiomeDef"):
+        if not rec.defName:
+            continue
+        biomes[rec.defName] = {                  # last mod in load order wins
+            "mod": rec.modName, "packageId": rec.packageId, "file": rec.sourceFile,
+            "label": txt(rec.own, "label"),
+            "wildAnimals": [(w.tag, (w.text or "").strip())
+                            for w in rec.own.findall("wildAnimals/*")],
+        }
 
-                    elif node.tag == "PawnKindDef":
-                        pawnkinds[txt(node, "race")].append({
-                            "defName": dn, "combatPower": txt(node, "combatPower"),
-                            "ecoSystemWeight": txt(node, "ecoSystemWeight"),
-                            "wildGroupSizeMin": txt(node, "wildGroupSize/min"),
-                            "wildGroupSizeMax": txt(node, "wildGroupSize/max"),
-                            "canArriveManhunter": txt(node, "canArriveManhunter"),
-                            "shortHashCandidate": short_hash(dn), "mod": m["name"],
-                        })
-                        if dn:
-                            dupnames[("PawnKindDef", dn)].append(m["name"])
-
-                    elif node.tag == "BiomeDef" and dn:
-                        biomes[dn] = {
-                            "mod": m["name"], "packageId": m["packageId"], "file": rel,
-                            "label": txt(node, "label"),
-                            "wildAnimals": [(rec.tag, (rec.text or "").strip())
-                                            for rec in node.findall("wildAnimals/*")],
-                        }
-                        dupnames[("BiomeDef", dn)].append(m["name"])
-
-    # ---- pass B: resolve inheritance, then extract ----------------------
     animals, attacks, lifestages = {}, [], []
-    cache = {}
-    for node, m, rel in candidates:
-        dn = txt(node, "defName")
+    # Which mods declared each animal defName. Only race-bearing ThingDefs are
+    # counted, so this is narrower than layer 1's ds.duplicates() (which sees
+    # every ThingDef) — and it has to be, or a non-animal ThingDef sharing a
+    # defName would light up duplicateDefName for an animal it has nothing to
+    # do with. Recorded, not adjudicated: last in load order wins the row.
+    owners = defaultdict(list)
+
+    for rec in ds.of_type("ThingDef"):
+        if rec.own.find("race") is None:         # SELECTION — see docstring
+            continue
+        dn = rec.defName
         # defName, Name and ParentName are read off the def's OWN element on
         # purpose. Taking them post-merge would hand an abstract-only def its
         # parent's defName and make abstract rows indistinguishable.
         meta = {
-            "defName": dn, "abstractName": node.get("Name", ""),
-            "parentName": node.get("ParentName", ""),
-            "modName": m["name"], "packageId": m["packageId"],
-            "workshopId": m["workshopId"], "loadOrder": m["order"],
-            "sourceFile": rel, "shortHashCandidate": short_hash(dn),
+            "defName": dn, "abstractName": rec.own.get("Name", ""),
+            "parentName": rec.own.get("ParentName", ""),
+            "modName": rec.modName, "packageId": rec.packageId,
+            "workshopId": rec.workshopId, "loadOrder": rec.loadOrder,
+            "sourceFile": rec.sourceFile, "shortHashCandidate": short_hash(dn),
         }
-        resolved, chain, unresolved = resolve_inherit(node, by_name, cache)
+        resolved = rec.element                   # layer 1 merges here, lazily
         r, tools, ls = extract_thing(resolved, meta)
 
-        if resolved is node:
+        # A def with no parent gets its own element back unchanged, so there is
+        # nothing to diff and no second extraction to pay for.
+        if resolved is rec.own:
             inherited = []
         else:
-            own, _, _ = extract_thing(node, meta)
+            own, _, _ = extract_thing(rec.own, meta)
             inherited = [k for k in sorted(r) if str(r[k]) != str(own.get(k, ""))]
-        r["inheritDepth"] = len(chain)
-        r["inheritChain"] = " > ".join(chain)
+        r["inheritDepth"] = rec.inheritDepth
+        r["inheritChain"] = " > ".join(rec.inheritChain)
         r["inheritedFields"] = ";".join(inherited)[:600]
-        r["unresolvedParent"] = unresolved
+        r["unresolvedParent"] = rec.unresolvedParent
+        rec.release()                            # do not hold 1,250 merged trees
 
         for t in tools:
-            attacks.append(dict(t, defName=dn, modName=m["name"]))
+            attacks.append(dict(t, defName=dn, modName=rec.modName))
         for x in ls:
-            lifestages.append(dict(x, defName=dn, modName=m["name"]))
+            lifestages.append(dict(x, defName=dn, modName=rec.modName))
         if dn:
-            dupnames[("ThingDef", dn)].append(m["name"])
-        animals[dn or f"<abstract:{node.get('Name','')}>"] = r
+            owners[dn].append(rec.modName)
+        animals[dn or f"<abstract:{rec.own.get('Name','')}>"] = r
 
-    return animals, pawnkinds, biomes, attacks, lifestages, dupnames
+    return animals, pawnkinds, biomes, attacks, lifestages, owners
 
 
 PATCH_KEYS = ("wildAnimals", "wildBiomes", "PawnKindDef", "race/", "BiomeDef",
@@ -730,6 +629,14 @@ PATCH_KEYS = ("wildAnimals", "wildBiomes", "PawnKindDef", "race/", "BiomeDef",
 
 
 def scan_patches(mods):
+    """
+    Every PatchOperation xpath that touches an animal or a biome.
+
+    Deliberately a raw TEXT scan, not an XML one, and deliberately outside layer
+    1: layer 1 reads Defs/ and states plainly that patches have not run. This is
+    the mitigation for that blind spot — it does not tell you what a patch does,
+    only that one is aimed at something you care about.
+    """
     rows = []
     for m in mods:
         for d in def_dirs(m, "Patches"):
@@ -789,12 +696,19 @@ def main():
     a = ap.parse_args()
     os.makedirs(a.out, exist_ok=True)
 
-    mods, missing = load_active_mods(a.config, a.workshop, a.local, a.data)
+    # One call does the load-set resolution AND the whole scan. quiet=True
+    # because layer 1's own banner says the same things in a different shape and
+    # these two lines are what the README documents.
+    ds = build(a.config, a.workshop, a.local, a.data, types=WANT_TYPES, quiet=True)
+    mods, missing = ds.mods, ds.missing
+    ndirs = sum(len(m["contentDirs"]) for m in mods)
+    print(f"load set: version {ds.gameVersion}, {len(mods)} active mods "
+          f"-> {ndirs} content folders")
     print(f"active mods resolved: {len(mods)}   unresolved packageIds: {len(missing)}")
     for x in missing[:10]:
         print("   ! no folder for:", x)
 
-    animals, pawnkinds, biomes, attacks, lifestages, dupnames = scan_defs(mods)
+    animals, pawnkinds, biomes, attacks, lifestages, owners = project(ds)
     patches = scan_patches(mods)
     print(f"animals: {len(animals)}   biomes: {len(biomes)}   "
           f"attacks: {len(attacks)}   animal/biome patches: {len(patches)}")
@@ -836,8 +750,8 @@ def main():
         r["wildGroupSizeMax"] = ";".join(p["wildGroupSizeMax"] for p in pks if p["wildGroupSizeMax"])
         r["canArriveManhunter"] = ";".join(p["canArriveManhunter"] for p in pks if p["canArriveManhunter"])
         r["biomeCount"] = biome_count.get(r["defName"], 0)
-        owners = set(dupnames.get(("ThingDef", r["defName"]), []))
-        r["duplicateDefName"] = " | ".join(sorted(owners)) if len(owners) > 1 else ""
+        mods_owning = set(owners.get(r["defName"], []))
+        r["duplicateDefName"] = " | ".join(sorted(mods_owning)) if len(mods_owning) > 1 else ""
         out_rows.append(r)
 
     w_csv("animals.csv", COLUMNS, out_rows)

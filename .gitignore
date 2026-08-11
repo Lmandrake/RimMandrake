@@ -41,3 +41,10 @@ hand_authored_maps/**/*.cs
 hand_authored_maps/**/*.csproj
 hand_authored_maps/**/*.config
 hand_authored_maps/SickBoyWi_RimWorldMaps/
+
+# C# / .NET build intermediates (mods/dev/*). The mod DLL itself IS tracked —
+# it is the deliverable and the game needs it — but MSBuild's obj/ tree is
+# regenerable noise and churns on every build.
+obj/
+**/obj/
+*.user

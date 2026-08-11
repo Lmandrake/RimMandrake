@@ -16,7 +16,9 @@ focused research probe; keep them assembly-free and dependency-light.
 | `Map_improver.py` | a `GameMap` | ⚠️ superseded heuristic improver — see note below |
 | **`animal_inventory.py`** | **every active mod's `Defs/` + `Patches/`** | **6 CSVs: full animal roster, attacks, life stages, biome map, conflicts, patch watch** |
 | `rimworld_loadset.py` | `ModsConfig.xml` + each mod's `LoadFolders.xml` | — (shared library) the folders the game *actually* loads |
+| **`def_inventory.py`** | **every active mod's `Defs/`, all 495 def types** | — (shared library) + per-type JSON: the resolved def set |
 | **`animal_live_diff.py`** | **`animals.csv` + a live DefDump** | **`divergence.csv` — what the patches actually did** |
+| **`animal_contact_sheet.py`** | **`animals.csv` + every mod's `Textures/`** | **paginated sprite sheets + index CSV + missing CSV** |
 
 **Offline vs live.** Everything above reads files. Its counterpart is
 `../mods/dev/RimDefDump`, a small C# mod that dumps the def database from inside
@@ -261,6 +263,162 @@ exact mod set once and dumping every `TerrainDef.shortHash → defName`.
 `colorGridDeflate` (inside `<terrainGrid>`); `pollutionGrid`, `gasGrid` exist as
 map children. `elevationGrid`/`fertilityGrid` were **not** present in this save.
 
+
+---
+
+## animal_contact_sheet.py — see the whole roster at once  (v1.0, 2026-08-10)
+
+**The point:** 1,243 animals is far too many to judge from a spreadsheet. This
+renders every animal's sprite into paginated contact sheets **in `animals.csv`
+order** (which is grouped by mod), so style clashes, joke assets and off-theme
+mods are obvious at a glance — the keep / cut / re-skin decision.
+
+```bash
+python Utils/animal_contact_sheet.py --out mods/inventory/contact_sheets
+```
+
+Requires **Pillow** (already used by `Savegame_mapview.py`). Runs in ~5s.
+
+Committed output lives in `mods/inventory/contact_sheets/` — 6 pages, 9.9 MB.
+It is regenerable in seconds, so delete rather than curate it if the repo size
+ever matters.
+
+### Where animal art actually lives (this is not obvious)
+
+Sprites come from **`PawnKindDef.lifeStages[].bodyGraphicData.texPath`**, NOT
+`ThingDef.graphicData` — which is `null` for every animal. So the tool joins
+ThingDef → PawnKindDef (via the pawnkind's `<race>`) → the **last** life stage,
+because the first is the juvenile form and nobody wants a contact sheet of
+calves.
+
+It reads pawnkinds from the inheritance-**resolved** element, unlike
+`animal_inventory.py`: many modded pawnkinds declare only `defName`/`race` and
+inherit the entire `lifeStages` block, so pre-inheritance they have no texture
+at all.
+
+Textures are indexed across each mod's loaded content dirs **and** root, in load
+order, last-writer-wins. That override rule demonstrably fires: `AA_Gallatross`
+resolves to *Alpha Animals Retextured*, not Alpha Animals.
+
+### KNOWN LIMITATION — ~40% of the roster has no previewable art
+
+**737 of 1,243 animals render.** This is expected and not a bug:
+
+| Reason | Count |
+|---|---|
+| `no_loose_png` — art packed in a Unity asset bundle | 446 |
+| `no_defName` — abstract base rows, nothing to draw | 47 |
+| `no_pawnkind` / `no_texPath` / `blank_png` | 14 |
+
+**Vanilla and DLC art is not on disk as PNGs** — `Data/Core` has no `Textures/`
+folder at all. Several large mods bundle theirs too: Star Wars Animal Collection
+ships exactly **one** loose PNG despite 160 animals, and Jurassic Rimworld has no
+`Textures/` directory whatsoever. Extracting Unity bundles would need another
+dependency and is deliberately out of scope.
+
+`animal_textures_missing.csv` is therefore a deliverable in its own right:
+grouped by mod, it is the list of **which mods bundle their art**.
+
+### Layout choices worth knowing
+
+- **Packed-earth background** (`--bg earth`, the default) with a soft ground
+  shadow under each sprite. The brown sits in the same mid-luminance band a
+  checkerboard did, which is the point: Alpha Animals ships near-black
+  silhouettes and arctic mods ship near-white ones, and both have to stay
+  readable against the same backdrop. The texture is **generated**, not sampled
+  — vanilla terrain art is packed in Unity bundles and is not on disk (same
+  reason 40% of the animals cannot be previewed), so there was nothing to copy.
+  Three octaves of value noise plus scattered pebbles, built once per run and
+  reused for every cell.
+  The shadow earns its place: a mottled ground is busier than a flat
+  checkerboard, so sprite edges lose separation without one. It is derived from
+  each sprite's own alpha, so it follows the real silhouette.
+  `--bg checker` restores the old look, `--flat-bg RRGGBB` forces a flat colour,
+  `--no-shadow` drops the shadow.
+- **Sprites are trimmed to their alpha bbox by default**, which is a big
+  legibility win but destroys relative scale — a chinchilla and a thrumbo fill
+  the same cell. Use `--no-trim` when comparing sizes.
+- Upscale is capped at 2× with NEAREST, so a small cell honestly means a small
+  art asset rather than a blurry enlargement.
+- Duplicate defNames are **not** deduped: a doubled cell means two mods claim
+  that animal, which is a finding rather than noise. `duplicateDefName` is
+  carried into the index CSV.
+
+---
+
+## def_inventory.py — the generic offline extractor  (v1.0, 2026-08-10)
+
+**Layer 1 of three.** Resolves the load set, scans every def XML once, and
+resolves `<ParentName>` inheritance for **all 495 def types** — not just
+animals. Everything else offline is built on this.
+
+The three layers, and why they are separate:
+
+| Layer | Module | Job |
+|---|---|---|
+| 1 extraction | `def_inventory.py` | load set + inheritance, category-agnostic |
+| 2 projection | `animal_inventory.py` (+ future weapons/apparel) | curation: which columns, which derived flags |
+| 3 diff | `animal_live_diff.py` | offline vs live |
+
+The split exists because the *machinery* is generic but the *curation* is not.
+`FAST_BREEDER`, `RENEWABLE_YIELD` and `HEAT_HARDY` encode standing project rules,
+not facts about RimWorld; dissolving them into a generic field dump would lose
+the judgment. Equally, a projection must never redo inheritance — layer 1 hands
+it a resolved element and that is the whole interface.
+
+```python
+from def_inventory import build
+ds = build(config, workshop, local, data)   # ~4 s, 51,408 defs, 495 types
+for rec in ds.of_type("ThingDef"):
+    rec.element      # inheritance-RESOLVED element  <- what projections read
+    rec.own          # raw declaration as written    <- for own-vs-inherited diffs
+```
+
+`DefRecord` also carries `defType`, `defName`, `abstractName`, `parentName`,
+`modName`, `packageId`, `loadOrder`, `sourceFile`, `inheritDepth`,
+`inheritChain`, `unresolvedParent`, `duplicateOwners`, `shortHashCandidate`.
+
+```bash
+python Utils/def_inventory.py --summary                    # per-type census
+python Utils/def_inventory.py --out DIR                    # defs/<Type>.json + manifest
+python Utils/def_inventory.py --out DIR --types ThingDef   # fast iteration
+```
+
+**Merging is lazy.** Chain *walking* is eager (so `inheritDepth` / `inheritChain`
+/ `unresolvedParent` are always populated and `--summary` is cheap); the
+deepcopy-merge happens on first `.element` access and is cached. A projection
+only pays for the defs it touches — so if a caller suddenly gets much slower, it
+is probably forcing merges it does not need.
+
+**Scale:** 51,408 defs / 495 types / 8,293 files in ~4 s in-memory; a full
+`--out` dump is **90.6 MB in ~11 s**. Do not commit the raw dump — commit the
+projections. (8,294 files exist on disk; one, ReGrowth's `GreaterSwamps.xml`, is
+malformed XML that RimWorld also rejects.)
+
+**`loadOrder` is 1-based**, matching `rimworld_loadset` and `animals.csv`.
+`RimDefDump` was changed to match, so live and offline join without an
+off-by-one.
+
+### Known: 128 defs with an unresolvable parent
+
+Not a bug, and worth understanding before it alarms you again — it split into
+two causes, neither of which is a broken game:
+
+- **68** are Stonecutting Extended recipes carrying
+  `MayRequire="Kura.ExtraStone"` for a mod that is **not active**. The game skips
+  them entirely. We do not evaluate `MayRequire` — a documented limitation
+  behaving exactly as documented.
+- **28** were Adaptive Storage dependants, and those were a **real bug in
+  `rimworld_loadset.py`**, now fixed: without a `LoadFolders.xml` the resolver
+  returned `<mod>/<version>` *or* the mod root, never both. RimWorld loads both.
+  35 active mods ship a root `Defs/` alongside a version folder — 667 def nodes
+  and 24 PatchOperations were invisible. Full write-up in the skill's
+  `traps.md`.
+- The remainder are small clusters, several of them parents that a
+  `PatchOperation` creates at load time — genuinely invisible offline.
+
+Contested `(defType, defName)` keys stack-wide: **375**. See
+`mods/def_override_clusters.md`.
 
 ---
 
