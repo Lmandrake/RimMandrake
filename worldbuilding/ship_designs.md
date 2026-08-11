@@ -15,7 +15,7 @@ choice; `ship_deck_plan.md` owns the repair-progression / heat doctrine the chos
 > Verified liftable: **4,057 / 4,800 tiles** (743 headroom), 7 extenders, single connected piece,
 > all 14 mandatory regions; **largest cargo of the whole set (1,443)**.
 > **Large panel:** `player_maps/design_15_falcon_halo_hollow_large.png`.
-> **Concept renders (start/end pair, repo root):** `ship_damaged_image.png` = the stripped
+> **Concept renders (start/end pair, alongside this file in `worldbuilding/`):** `ship_damaged_image.png` = the stripped
 > structural wreck the campaign begins from (the crashed Factory ship); `ship_image.png` = the
 > fully-repaired ship the 7-phase repair progression climbs toward. Same silhouette (ring, seven
 > rim pods, mandible arm with the two prong-tip shuttle bays, offset cockpit) confirms both are #15.

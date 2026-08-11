@@ -1,7 +1,18 @@
 # Jawa Ion Weapons — C# build spec
 
-**Status:** TO DO. Authored 2026-08-11 as a handoff for a separate thread.
-Nothing in this document has been built yet.
+**Status:** ✅ **BUILT 2026-08-11** — commit `a5856a9`, "the capture mechanic runs
+for the first time". `Assemblies/JawaIonWeapons.dll` and
+`Source/DamageWorker_IonBuildup.cs` are both on disk and deployed.
+
+_(Stale-status correction, docs audit 2026-08-11: this header still read "TO DO.
+Nothing in this document has been built yet" after the work landed. It was
+authored as a handoff for a separate thread, and nobody closed the loop on it —
+the classic failure mode for a spec that outlives its own implementation.)_
+
+**What it is now:** the build spec becomes the **design record** for the mechanic —
+what it must do and why, useful when tuning or debugging it. It is no longer a
+work order. Retire it if the DLL stays stable and the rationale migrates into the
+mod's own README.
 
 **Why this exists:** the mod's defining mechanic has never once run in game, and
 it cannot be made to run from XML. This spells out exactly what is broken, what

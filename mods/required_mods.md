@@ -12,6 +12,36 @@
 
 # Required Mods — Gravship Expedition Campaign
 
+> ## 🧭 How to read this file (added 2026-08-11 by the docs audit)
+>
+> **This file is organised by decision date, not by topic.** It grew as a running
+> record — "MOD BATCH 2026-08-07", "second wave", "CORRECTION 2026-08-09",
+> "ADOPTIONS 2026-08-10" — so a single mod's story can span several sections
+> written weeks apart, and **a later section silently overrides an earlier one.**
+> That is the one thing to know before trusting anything you read here.
+>
+> **So: `grep` the mod name and read EVERY hit, latest section wins.** Do not stop
+> at the first match. The `## CORRECTION` and `## ADOPTIONS` sections at the end
+> are the most recent word on everything they touch.
+>
+> The audit deliberately did **not** flatten this into topic order. The length is
+> not padding: 246 of ~1,350 lines carry an explicit restriction, strip-list or
+> "do not" — this is the verification record that backs the project's own rule of
+> never guessing a packageId, and rewriting it by hand would risk dropping a
+> restriction to buy tidiness. Reorganise it only with the live inventory open and
+> a way to diff mod-by-mod.
+>
+> | Looking for… | Go to |
+> |---|---|
+> | Does a mod exist, its packageId / Workshop ID / versions | **`live_mod_inventory.md`** — it overrides this file, always |
+> | Why a mod was rejected | `forbidden_mods.md` (owns the 7-question test + anathema list) |
+> | The industrial spine (VFE-Factory et al.) | § INDUSTRIAL CORE |
+> | Star Wars content + THE FORCE (NPC-only VPE) | § STAR WARS THEME LAYER |
+> | Terrain / world-authoring verdicts | § World-Map Authoring & Setup Tools |
+> | Comedy / levity, ritual + religion aesthetics | § COMEDY / LEVITY, § RITUAL / RELIGION |
+> | What changed most recently | the three § CORRECTION / § ADOPTIONS sections at the end |
+> | A dropped mod, and whether to reconsider it | the 🪦 tombstones — they exist to stop re-litigation, so read before proposing a re-adopt |
+
 _Ever-growing selection list. Each entry: **what it is**, **why it's in**, and **restriction/config** (how to keep it fun and on-theme). Status tags: ✅ selected · ✔️1.6 = Odyssey/1.6 compatibility VERIFIED via Fetcher 2026-08-01 · ⚠️ handling caution · ⏳ pending a design decision._
 
 **Compatibility verified 2026-08-01** (Fetcher results in `~/GDrive/<work>/dev/Fetcher/Delivery/2026-07-31_rimworld_odyssey_mod_compat/`). RimWorld Odyssey released 2025-07-11 with free 1.6 update. Workshop IDs recorded where known.

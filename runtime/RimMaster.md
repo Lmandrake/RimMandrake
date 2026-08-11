@@ -75,6 +75,13 @@ RimMaster picks a mechanism per task based on **safety + whether the game is run
   from the RimWorld log, connect to `127.0.0.1:port`).
 - **Caveat:** requires RimMaster to speak GABP/MCP as a client — a real programming task, but
   the surface is documented + MIT.
+- ⚠️ **The relay must be restarted after every game restart.** It holds a connection to the
+  RimWorld process, so after a game restart it is pointed at a dead one and every call fails
+  with `ConnectionAbortedError` — which reads like a bridge bug rather than a stale socket.
+  Observed 2026-08-10, when the `spool/inbox/10-animal-probe.json` animal-def probe failed for
+  exactly this reason. Restart the relay first, then re-run, before diagnosing anything else.
+  _(Migrated from `HANDOFF_2026-08-10.md` before deleting it, 2026-08-11 — it was recorded
+  nowhere else.)_
 
 ### 2c. Choosing between them (decision rule — draft) 🔎
 1. Is the change on the **live map / thing-graph**? → prefer **2b** (engine route).

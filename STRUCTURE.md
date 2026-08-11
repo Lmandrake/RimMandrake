@@ -71,10 +71,10 @@ The single most useful thing to know about a file here is which of these it is. 
 
 | File | Owns |
 |---|---|
-| `ship_designs.md` | Hull silhouette + topology. |
-| `ship_deck_plan.md` | Deck plan + repair progression: the campus→wings map, the **heat doctrine**, the **repair-as-progression gate**, bounded by the 2,000-tile substructure cap. |
-| `ship_distinctive_features.md` | The Kolyska's identity layer — 8 accepted features + a parked idea pool + the distinctive-ship mod research. |
-| `Factory_lore.md` | 📚 **How to actually run VFE-Factory** — machine footprints, conveyor rules, the thermal spine, failure modes. §11 owns the #15-hull interior across three passes. Distinct from `required_mods.md`, which owns the *adoption decision*. |
+| `worldbuilding/ship_designs.md` | Hull silhouette + topology. |
+| `worldbuilding/ship_deck_plan.md` | Deck plan + repair progression: the campus→wings map, the **heat doctrine**, the **repair-as-progression gate**, bounded by the 2,000-tile substructure cap. |
+| `worldbuilding/ship_distinctive_features.md` | The Kolyska's identity layer — 8 accepted features + a parked idea pool + the distinctive-ship mod research. |
+| `worldbuilding/Factory_lore.md` | 📚 **How to actually run VFE-Factory** — machine footprints, conveyor rules, the thermal spine, failure modes. §11 owns the #15-hull interior across three passes. Distinct from `required_mods.md`, which owns the *adoption decision*. |
 
 ### Runtime, agents and authored mods
 
@@ -143,7 +143,7 @@ Consult when the topic comes up. **Nothing in the project depends on these being
 |---|---|
 | `NEXT_RELOAD.md` | 🔄 Live queue. Clear it after harvesting a load. |
 | `REFRESH.md` | 🔄 Live protocol. |
-| `HANDOFF_2026-08-10.md` | 🗄️ A single cloud→local session handoff. Superseded by `CLAUDE.md` + this file. **Delete once its open items are confirmed migrated.** |
+| `custom_patches/JawaIonWeapons/CSHARP_BUILD_SPEC.md` | Now the **design record** for the ion capture mechanic, not a work order — it was built in `a5856a9` while the header still said "TO DO". Retire when the rationale migrates into the mod README. |
 | `context.md` | 🗄️ **ARCHIVE — demoted from the spine 2026-08-11.** A chronological log of design conversations (67 headings from 2026-08-02 alone), unmaintained after 2026-08-06. Every load-bearing decision in it has been promoted to an owner doc. Read it for **why**, never for **what is true now**. Do not append. |
 | `mods/concept_defnames.md` | Verified defName vocabulary — but `live_mod_inventory.md` overrides it for mod identity. Keeps the reasoning only. |
 | `mods/github_issue_swcp_bundle.md` | An upstream bug report (issue #7, open) + a correction to it. Close out and delete when resolved. |
@@ -166,7 +166,7 @@ Consult when the topic comes up. **Nothing in the project depends on these being
 
 | Folder | Contents |
 |---|---|
-| `/` | Spine + the three docs pinned here by hard-coded script paths (`save_authoring_pipeline.md`, `rimworld_file_lore.md`) or pending bucketing (the four ship/factory docs + their images). |
+| `/` | **Spine only** (`CLAUDE.md`, `STRUCTURE.md`, `concept.md`, `NEXT_RELOAD.md`, `REFRESH.md`), plus `context.md` (🗄️) and the two docs pinned here by hard-coded script paths: `save_authoring_pipeline.md` and `rimworld_file_lore.md` (`Utils/Savegame_*.py` cite them as `../<file>.md`). Eight files. Nothing else belongs at root. |
 | `worldbuilding/` | The fiction + design. |
 | `mods/` | Mod decisions, generated inventories, `inspiration/`, and the gitignored `mod_sources/` audit tree. |
 | `runtime/` | Agents, LLM stack, and authored-mod designs. |
@@ -177,13 +177,23 @@ Consult when the topic comes up. **Nothing in the project depends on these being
 | `image_request/` | Art commissions; `seed/` is gitignored third-party reference art. |
 | `player_maps/`, `hand_authored_maps/`, `savegame/`, `samuel_streamer_study/`, `promo/` | Map artefacts, study library, save teardowns, external study, pitch material. |
 
-## 8. Known debt (audit 2026-08-11)
+## 8. Audit outcomes (2026-08-11, completed pass)
 
-1. **`context.md` (899 lines) and `required_mods.md` (1,357 lines) carry heavy dated-batch narration.** `required_mods.md` has 287 dated lines and three tombstoned sections. Both are hot files; trimming needs a quiet moment and a decision on what counts as load-bearing.
-2. **Four docs still sit at root pending bucketing** — `ship_designs`, `ship_deck_plan`, `ship_distinctive_features`, `Factory_lore` — because a concurrent thread was flagged as owning them. They belong in `worldbuilding/`.
-3. **`HANDOFF_2026-08-10.md` is finished.** Confirm its open items landed, then delete.
-4. **9 `player_maps/` reports are orphaned run artefacts** — nothing references them and they are regenerable.
+The first pass deferred four items because other threads held the files. All four are now closed:
+
+1. ✅ **Root bucketed.** `ship_designs`, `ship_deck_plan`, `ship_distinctive_features`, `Factory_lore` and the three ship PNGs moved to `worldbuilding/`. Root is the eight files listed in §7 and nothing else.
+2. ✅ **`HANDOFF_2026-08-10.md` deleted.** Two facts lived nowhere else and were migrated first: the **RimMaster relay must be restarted after every game restart** (stale socket → `ConnectionAbortedError`, looks like a bridge bug) → `runtime/RimMaster.md` §2b; and the **`validate_patch.py --defnames`** idea → `NEXT_RELOAD.md` Parked. Everything else in it had already landed in `CLAUDE.md`, `benign_log_errors.md` or `live_mod_inventory.md`.
+3. ✅ **`required_mods.md` — verdict reversed after reading it.** The first pass flagged 287 dated lines as trimmable narration. That was a line-count heuristic and it was wrong: **246 lines carry an explicit restriction, strip-list or "do not"**, and the dates are the verification record backing the project's own "never guess a packageId" rule. Hand-trimming it would risk dropping a restriction to buy tidiness. Its real defect is that it is ordered **by decision date, not topic**, so a later section silently overrides an earlier one. Fixed with a navigation header + topic index rather than a rewrite. Reorganise only with the live inventory open and a way to diff mod-by-mod.
+4. ✅ **`context.md` kept as 🗄️ archive, not deleted.** It is pure superseded narrative, but git holds it either way and 16 docs cite it; deleting would orphan those references for no operational gain. The banner does the real work — it stops anyone reading it as current.
+5. ✅ **Stale status corrected:** `custom_patches/JawaIonWeapons/CSHARP_BUILD_SPEC.md` still said "TO DO. Nothing has been built yet" after the DLL shipped in `a5856a9`. It is now marked BUILT and reframed as the design record.
+
+**Still open, deliberately:**
+
+- **9 `player_maps/` reports are orphaned run artefacts** — nothing references them, and they regenerate from `Utils/loop_run.py`. Harmless; delete if the folder ever gets noisy.
+- **`git config core.fileMode false` was set locally** (2026-08-11) because Drive's DrvFs mount flips permission bits, so **136 files showed as modified when only 7 had changed** — which is very likely why a thread reached for `git commit -a`. That config lives in `.git/config` and is **not committed**, so every clone and every other thread must set it themselves. Do it before trusting `git status`.
 
 ## 9. Removed (recover from git)
 
 `Gravship_Campaign_Design_Notes.md`, `resource_catalogue.md`, `candidate_factions.md`, `faction_dossiers.md`, `in_game_verification_checklist.md`, `races.md` — folded into the owners above 2026-08-05/06.
+
+`HANDOFF_2026-08-10.md` — deleted 2026-08-11 after its two unmigrated facts were moved out (see §8.2). It was a one-session cloud→local handoff; `CLAUDE.md` + this file replaced it.
