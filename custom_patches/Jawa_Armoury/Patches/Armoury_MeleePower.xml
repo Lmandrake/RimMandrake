@@ -265,6 +265,174 @@
   </Operation>
 
   <Operation Class="PatchOperationFindMod">
+    <mods><li>[AB] Xenotype: Yautja</li></mods>
+    <match Class="PatchOperationSequence">
+      <operations>
+        <!-- ABYautja_Melee_BladedMaul / point : 28 -> 45 -->
+        <li Class="PatchOperationReplace">
+          <xpath>/Defs/ThingDef[defName="ABYautja_Melee_BladedMaul"]/tools/li[label="point"]/power</xpath>
+          <value><power>45</power></value>
+        </li>
+        <!-- ABYautja_Melee_BladedMaul / blade : 22 -> 35 -->
+        <li Class="PatchOperationReplace">
+          <xpath>/Defs/ThingDef[defName="ABYautja_Melee_BladedMaul"]/tools/li[label="blade"]/power</xpath>
+          <value><power>35</power></value>
+        </li>
+        <!-- ABYautja_Melee_BladedMaul / handle : 9 -> 14 -->
+        <li Class="PatchOperationReplace">
+          <xpath>/Defs/ThingDef[defName="ABYautja_Melee_BladedMaul"]/tools/li[label="handle"]/power</xpath>
+          <value><power>14</power></value>
+        </li>
+        <!-- ABYautja_Melee_CeremonialDagger / handle : 10 -> 18 -->
+        <li Class="PatchOperationReplace">
+          <xpath>/Defs/ThingDef[defName="ABYautja_Melee_CeremonialDagger"]/tools/li[label="handle"]/power</xpath>
+          <value><power>18</power></value>
+        </li>
+        <!-- ABYautja_Melee_CeremonialDagger / blade : 14 -> 25 -->
+        <li Class="PatchOperationReplace">
+          <xpath>/Defs/ThingDef[defName="ABYautja_Melee_CeremonialDagger"]/tools/li[label="blade"]/power</xpath>
+          <value><power>25</power></value>
+        </li>
+        <!-- ABYautja_Melee_CeremonialDagger / point : 17 -> 30 -->
+        <li Class="PatchOperationReplace">
+          <xpath>/Defs/ThingDef[defName="ABYautja_Melee_CeremonialDagger"]/tools/li[label="point"]/power</xpath>
+          <value><power>30</power></value>
+        </li>
+        <!-- ABYautja_Melee_ElderSword / handle : 6 -> 10 -->
+        <li Class="PatchOperationReplace">
+          <xpath>/Defs/ThingDef[defName="ABYautja_Melee_ElderSword"]/tools/li[label="handle"]/power</xpath>
+          <value><power>10</power></value>
+        </li>
+        <!-- ABYautja_Melee_ElderSword / blade : 24 -> 38 -->
+        <li Class="PatchOperationReplace">
+          <xpath>/Defs/ThingDef[defName="ABYautja_Melee_ElderSword"]/tools/li[label="blade"]/power</xpath>
+          <value><power>38</power></value>
+        </li>
+        <!-- ABYautja_Melee_ElderSword / point : 20 -> 32 -->
+        <li Class="PatchOperationReplace">
+          <xpath>/Defs/ThingDef[defName="ABYautja_Melee_ElderSword"]/tools/li[label="point"]/power</xpath>
+          <value><power>32</power></value>
+        </li>
+        <!-- ABYautja_Melee_Flail / point : 28 -> 45 -->
+        <li Class="PatchOperationReplace">
+          <xpath>/Defs/ThingDef[defName="ABYautja_Melee_Flail"]/tools/li[label="point"]/power</xpath>
+          <value><power>45</power></value>
+        </li>
+        <!-- ABYautja_Melee_Flail / flail : 28 -> 45 -->
+        <li Class="PatchOperationReplace">
+          <xpath>/Defs/ThingDef[defName="ABYautja_Melee_Flail"]/tools/li[label="flail"]/power</xpath>
+          <value><power>45</power></value>
+        </li>
+        <!-- ABYautja_Melee_Flail / handle : 9 -> 14 -->
+        <li Class="PatchOperationReplace">
+          <xpath>/Defs/ThingDef[defName="ABYautja_Melee_Flail"]/tools/li[label="handle"]/power</xpath>
+          <value><power>14</power></value>
+        </li>
+        <!-- ABYautja_Melee_Glaive / point : 26 -> 41 -->
+        <li Class="PatchOperationReplace">
+          <xpath>/Defs/ThingDef[defName="ABYautja_Melee_Glaive"]/tools/li[label="point"]/power</xpath>
+          <value><power>41</power></value>
+        </li>
+        <!-- ABYautja_Melee_Glaive / blade : 20 -> 32 -->
+        <li Class="PatchOperationReplace">
+          <xpath>/Defs/ThingDef[defName="ABYautja_Melee_Glaive"]/tools/li[label="blade"]/power</xpath>
+          <value><power>32</power></value>
+        </li>
+        <!-- ABYautja_Melee_HandScythe / blade : 19 -> 29 -->
+        <li Class="PatchOperationReplace">
+          <xpath>/Defs/ThingDef[defName="ABYautja_Melee_HandScythe"]/tools/li[label="blade"]/power</xpath>
+          <value><power>29</power></value>
+        </li>
+        <!-- ABYautja_Melee_HandScythe / point : 21 -> 32 -->
+        <li Class="PatchOperationReplace">
+          <xpath>/Defs/ThingDef[defName="ABYautja_Melee_HandScythe"]/tools/li[label="point"]/power</xpath>
+          <value><power>32</power></value>
+        </li>
+        <!-- ABYautja_Melee_PredatorAxe / handle : 4 -> 7 -->
+        <li Class="PatchOperationReplace">
+          <xpath>/Defs/ThingDef[defName="ABYautja_Melee_PredatorAxe"]/tools/li[label="handle"]/power</xpath>
+          <value><power>7</power></value>
+        </li>
+        <!-- ABYautja_Melee_PredatorAxe / blade : 17 -> 30 -->
+        <li Class="PatchOperationReplace">
+          <xpath>/Defs/ThingDef[defName="ABYautja_Melee_PredatorAxe"]/tools/li[label="blade"]/power</xpath>
+          <value><power>30</power></value>
+        </li>
+        <!-- ABYautja_Melee_PredatorKatana / handle : 5 -> 8 -->
+        <li Class="PatchOperationReplace">
+          <xpath>/Defs/ThingDef[defName="ABYautja_Melee_PredatorKatana"]/tools/li[label="handle"]/power</xpath>
+          <value><power>8</power></value>
+        </li>
+        <!-- ABYautja_Melee_PredatorKatana / blade : 22 -> 34 -->
+        <li Class="PatchOperationReplace">
+          <xpath>/Defs/ThingDef[defName="ABYautja_Melee_PredatorKatana"]/tools/li[label="blade"]/power</xpath>
+          <value><power>34</power></value>
+        </li>
+        <!-- ABYautja_Melee_PredatorKatana / point : 18 -> 28 -->
+        <li Class="PatchOperationReplace">
+          <xpath>/Defs/ThingDef[defName="ABYautja_Melee_PredatorKatana"]/tools/li[label="point"]/power</xpath>
+          <value><power>28</power></value>
+        </li>
+        <!-- ABYautja_Melee_PredatorScythe / point : 24 -> 38 -->
+        <li Class="PatchOperationReplace">
+          <xpath>/Defs/ThingDef[defName="ABYautja_Melee_PredatorScythe"]/tools/li[label="point"]/power</xpath>
+          <value><power>38</power></value>
+        </li>
+        <!-- ABYautja_Melee_PredatorScythe / blade : 20 -> 32 -->
+        <li Class="PatchOperationReplace">
+          <xpath>/Defs/ThingDef[defName="ABYautja_Melee_PredatorScythe"]/tools/li[label="blade"]/power</xpath>
+          <value><power>32</power></value>
+        </li>
+        <!-- ABYautja_Melee_PredatorScythe / handle blade : 19 -> 30 -->
+        <li Class="PatchOperationReplace">
+          <xpath>/Defs/ThingDef[defName="ABYautja_Melee_PredatorScythe"]/tools/li[label="handle blade"]/power</xpath>
+          <value><power>30</power></value>
+        </li>
+        <!-- ABYautja_Melee_PredatorSword / handle : 4 -> 6 -->
+        <li Class="PatchOperationReplace">
+          <xpath>/Defs/ThingDef[defName="ABYautja_Melee_PredatorSword"]/tools/li[label="handle"]/power</xpath>
+          <value><power>6</power></value>
+        </li>
+        <!-- ABYautja_Melee_PredatorSword / blade : 20 -> 30 -->
+        <li Class="PatchOperationReplace">
+          <xpath>/Defs/ThingDef[defName="ABYautja_Melee_PredatorSword"]/tools/li[label="blade"]/power</xpath>
+          <value><power>30</power></value>
+        </li>
+        <!-- ABYautja_Melee_PredatorSword / point : 17 -> 26 -->
+        <li Class="PatchOperationReplace">
+          <xpath>/Defs/ThingDef[defName="ABYautja_Melee_PredatorSword"]/tools/li[label="point"]/power</xpath>
+          <value><power>26</power></value>
+        </li>
+        <!-- ABYautja_Melee_PredatorWarAxe / edge : 22 -> 35 -->
+        <li Class="PatchOperationReplace">
+          <xpath>/Defs/ThingDef[defName="ABYautja_Melee_PredatorWarAxe"]/tools/li[label="edge"]/power</xpath>
+          <value><power>35</power></value>
+        </li>
+        <!-- ABYautja_Melee_PredatorWarAxe / blade : 24 -> 38 -->
+        <li Class="PatchOperationReplace">
+          <xpath>/Defs/ThingDef[defName="ABYautja_Melee_PredatorWarAxe"]/tools/li[label="blade"]/power</xpath>
+          <value><power>38</power></value>
+        </li>
+        <!-- ABYautja_Melee_WarClub / handle : 10 -> 19 -->
+        <li Class="PatchOperationReplace">
+          <xpath>/Defs/ThingDef[defName="ABYautja_Melee_WarClub"]/tools/li[label="handle"]/power</xpath>
+          <value><power>19</power></value>
+        </li>
+        <!-- ABYautja_Melee_WarClub / club : 16 -> 30 -->
+        <li Class="PatchOperationReplace">
+          <xpath>/Defs/ThingDef[defName="ABYautja_Melee_WarClub"]/tools/li[label="club"]/power</xpath>
+          <value><power>30</power></value>
+        </li>
+        <!-- ABYautja_Melee_WarClub / club blade : 13 -> 24 -->
+        <li Class="PatchOperationReplace">
+          <xpath>/Defs/ThingDef[defName="ABYautja_Melee_WarClub"]/tools/li[label="club blade"]/power</xpath>
+          <value><power>24</power></value>
+        </li>
+      </operations>
+    </match>
+  </Operation>
+
+  <Operation Class="PatchOperationFindMod">
     <mods><li>[JDS] StarWars - Armory</li></mods>
     <match Class="PatchOperationSequence">
       <operations>

@@ -70,6 +70,7 @@ ARMOUR_TIERS = [
 LIGHTSABER_AP = 0.0     # see the header: any higher and cortosis stops working
 VIBRO_AP = (0.90, 1.60)  # scaled by weapon mass; an axe opens a warcasket
 SLUG_AP = 0.85
+ALIEN_BLADE_AP = 0.60      # Yautja blades; see the penetration block
 
 # Comfy-max above which a hide counts as genuinely ABLATIVE (L11).
 #
@@ -177,7 +178,7 @@ for rec in ds.of_type("ThingDef"):
 # ========================================================== 3. penetration
 # Lightsabers share one abstract base, so one operation serves all of them.
 saber_done = set()
-vibro_n = slug_n = 0
+vibro_n = slug_n = alien_n = 0
 for rec in ds.of_type("ThingDef"):
     el = rec.element
     dn = rec.defName or ""
@@ -186,7 +187,11 @@ for rec in ds.of_type("ThingDef"):
     is_saber = ("saber" in b or "foil" in b) and el.find("tools") is not None
     is_vibro = ("vibro" in b or "vibra" in b or dn.startswith("guy762_v")) \
         and el.find("tools") is not None
-    if is_saber or is_vibro:
+    # Yautja blades are alien-forged: better than steel, but not the
+    # purpose-built armour-shear a vibro-blade is.
+    is_alien = (rec.modName == "[AB] Xenotype: Yautja"
+                and el.find("tools") is not None and not is_saber and not is_vibro)
+    if is_saber or is_vibro or is_alien:
         owner, attr, decl = declarer(dn, "tools")
         if owner is None:
             continue
@@ -195,6 +200,9 @@ for rec in ds.of_type("ThingDef"):
                 continue
             saber_done.add(owner)
             ap = LIGHTSABER_AP
+        elif is_alien:
+            ap = ALIEN_BLADE_AP
+            alien_n += 1
         else:
             try:
                 mass = float(el.findtext("statBases/Mass"))
@@ -389,6 +397,6 @@ for fn, by_mod in sorted(ops.items()):
     print("  %-34s %4d operations in %d mod groups" % (fn, n, len(by_mod)))
 
 print("\narmour tiers matched: %s" % dict(tier_counts))
-print("vibro weapons: %d | slugthrowers: %d | lightsaber bases: %d"
-      % (vibro_n, slug_n, len(saber_done)))
+print("vibro %d | alien blades %d | slugthrowers %d | lightsaber bases %d"
+      % (vibro_n, alien_n, slug_n, len(saber_done)))
 print("leather profiles: %s" % dict(leather_n))

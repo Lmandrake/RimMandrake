@@ -2142,6 +2142,7 @@ VQE_IceCrawler,Vanilla Quests Expanded - Cryptoforge,2,EusocialInsectAdult,0.2,P
 VQE_Megamidge,Vanilla Quests Expanded - Cryptoforge,0,EusocialInsectLarva,0,
 VQE_Megamidge,Vanilla Quests Expanded - Cryptoforge,1,EusocialInsectJuvenile,0.03,
 VQE_Megamidge,Vanilla Quests Expanded - Cryptoforge,2,EusocialInsectAdult,0.2,Pawn_BigInsect_Pain
+VRE_CompanionDryad,Vanilla Races Expanded - Phytokin,0,AnimalAdult,0,Pawn_Dryad_Wounded
 JDSCIS_Pistoeka_Sotage_Droid,[JDS] StarWars - The Separatist Droid Army,0,MechanoidFullyFormed,0,Droid_Damage1_Sound
 JDSCIS_Pistoeka_Sotage_Droid,[JDS] StarWars - The Separatist Droid Army,1,MechanoidFullyFormed,100,Droid_Damage3_Sound
 JDSCIS_B1_Battle_Droid,[JDS] StarWars - The Separatist Droid Army,0,MechanoidFullyFormed,0,Droid_Damage3_Sound
@@ -2598,6 +2599,7 @@ RG_KiwiBird,ReGrowth 2,2,AnimalAdult,0.2,
 RG_Hemolope,ReGrowth 2,0,AnimalBaby,0,
 RG_Hemolope,ReGrowth 2,1,AnimalJuvenile,0.2,
 RG_Hemolope,ReGrowth 2,2,AnimalAdult,0.3333,Pawn_Muffalo_Wounded
+AG_OcularSlinger,Alpha Genes,0,AnimalAdult,0,Pawn_Spelopede_Pain
 BMT_AaroxisDendoriaLarvae,Biomes! Caverns,0,BMT_InsectLarvalFirst,0,
 BMT_AaroxisDendoriaLarvae,Biomes! Caverns,1,BMT_InsectLarvalSecound,0.05,
 BMT_AaroxisDendoriaLarvae,Biomes! Caverns,2,BMT_InsectLarvalThird,0.2,Pawn_Megascarab_Wounded

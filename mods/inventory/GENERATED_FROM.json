@@ -1,6 +1,6 @@
 {
-  "hash": "80ab52144a68c616",
-  "modCount": 563,
+  "hash": "cbc8161b9628238d",
+  "modCount": 576,
   "version": "1.6.4871 rev590",
-  "note": "VSIE + rational-trait mod pulled TEMPORARILY for debugging; not the intended stack. Do not spend a game load on this configuration."
+  "note": "576-mod stack incl. Yautja xenotype pack; dump 2026-08-11"
 }

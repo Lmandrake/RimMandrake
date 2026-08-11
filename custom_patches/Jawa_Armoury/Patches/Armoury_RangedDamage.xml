@@ -145,6 +145,99 @@
   </Operation>
 
   <Operation Class="PatchOperationFindMod">
+    <mods><li>[AB] Xenotype: Yautja</li></mods>
+    <match Class="PatchOperationSequence">
+      <operations>
+        <!-- ABBullet_Boltgun : 12 -> 20 -->
+        <li Class="PatchOperationReplace">
+          <xpath>/Defs/ThingDef[defName="ABBullet_Boltgun"]/projectile/damageAmountBase</xpath>
+          <value><damageAmountBase>20</damageAmountBase></value>
+        </li>
+        <!-- ABBullet_Needlegun : 15 -> 23 -->
+        <li Class="PatchOperationReplace">
+          <xpath>/Defs/ThingDef[defName="ABBullet_Needlegun"]/projectile/damageAmountBase</xpath>
+          <value><damageAmountBase>23</damageAmountBase></value>
+        </li>
+        <!-- ABBullet_Plasma : 18 -> 28 -->
+        <li Class="PatchOperationReplace">
+          <xpath>/Defs/ThingDef[defName="ABBullet_Plasma"]/projectile/damageAmountBase</xpath>
+          <value><damageAmountBase>28</damageAmountBase></value>
+        </li>
+        <!-- ABBullet_SpearRifle : 27 -> 35 -->
+        <li Class="PatchOperationReplace">
+          <xpath>/Defs/ThingDef[defName="ABBullet_SpearRifle"]/projectile/damageAmountBase</xpath>
+          <value><damageAmountBase>35</damageAmountBase></value>
+        </li>
+        <!-- ABBullet_YautjaBlazer : 12 -> 25 -->
+        <li Class="PatchOperationReplace">
+          <xpath>/Defs/ThingDef[defName="ABBullet_YautjaBlazer"]/projectile/damageAmountBase</xpath>
+          <value><damageAmountBase>25</damageAmountBase></value>
+        </li>
+        <!-- ABBullet_YautjaFirelinerTurret : 12 -> 25 -->
+        <li Class="PatchOperationReplace">
+          <xpath>/Defs/ThingDef[defName="ABBullet_YautjaFirelinerTurret"]/projectile/damageAmountBase</xpath>
+          <value><damageAmountBase>25</damageAmountBase></value>
+        </li>
+        <!-- ABBullet_YautjaTurret : 18 -> 28 -->
+        <li Class="PatchOperationReplace">
+          <xpath>/Defs/ThingDef[defName="ABBullet_YautjaTurret"]/projectile/damageAmountBase</xpath>
+          <value><damageAmountBase>28</damageAmountBase></value>
+        </li>
+        <!-- ABBullet_speargun : 20 -> 28 -->
+        <li Class="PatchOperationReplace">
+          <xpath>/Defs/ThingDef[defName="ABBullet_speargun"]/projectile/damageAmountBase</xpath>
+          <value><damageAmountBase>28</damageAmountBase></value>
+        </li>
+        <!-- ABCutClamp_Thrown : 16 -> 24 -->
+        <li Class="PatchOperationReplace">
+          <xpath>/Defs/ThingDef[defName="ABCutClamp_Thrown"]/projectile/damageAmountBase</xpath>
+          <value><damageAmountBase>24</damageAmountBase></value>
+        </li>
+        <!-- ABPlasmaSpinningBlade_Thrown : 22 -> 29 -->
+        <li Class="PatchOperationReplace">
+          <xpath>/Defs/ThingDef[defName="ABPlasmaSpinningBlade_Thrown"]/projectile/damageAmountBase</xpath>
+          <value><damageAmountBase>29</damageAmountBase></value>
+        </li>
+        <!-- ABPoliNanoDisc_Thrown : 30 -> 36 -->
+        <li Class="PatchOperationReplace">
+          <xpath>/Defs/ThingDef[defName="ABPoliNanoDisc_Thrown"]/projectile/damageAmountBase</xpath>
+          <value><damageAmountBase>36</damageAmountBase></value>
+        </li>
+        <!-- ABShuriken_Thrown : 16 -> 24 -->
+        <li Class="PatchOperationReplace">
+          <xpath>/Defs/ThingDef[defName="ABShuriken_Thrown"]/projectile/damageAmountBase</xpath>
+          <value><damageAmountBase>24</damageAmountBase></value>
+        </li>
+        <!-- ABSmartDisc_Thrown : 20 -> 28 -->
+        <li Class="PatchOperationReplace">
+          <xpath>/Defs/ThingDef[defName="ABSmartDisc_Thrown"]/projectile/damageAmountBase</xpath>
+          <value><damageAmountBase>28</damageAmountBase></value>
+        </li>
+        <!-- ABSpinningBlade_Thrown : 11 -> 19 -->
+        <li Class="PatchOperationReplace">
+          <xpath>/Defs/ThingDef[defName="ABSpinningBlade_Thrown"]/projectile/damageAmountBase</xpath>
+          <value><damageAmountBase>19</damageAmountBase></value>
+        </li>
+        <!-- Bullet_YautjaPlasmaCannonBullet : 32 -> 58 -->
+        <li Class="PatchOperationReplace">
+          <xpath>/Defs/ThingDef[defName="Bullet_YautjaPlasmaCannonBullet"]/projectile/damageAmountBase</xpath>
+          <value><damageAmountBase>58</damageAmountBase></value>
+        </li>
+        <!-- CinchingBola_Thrown : 23 -> 31 -->
+        <li Class="PatchOperationReplace">
+          <xpath>/Defs/ThingDef[defName="CinchingBola_Thrown"]/projectile/damageAmountBase</xpath>
+          <value><damageAmountBase>31</damageAmountBase></value>
+        </li>
+        <!-- Combistaff_Thrown : 30 -> 36 -->
+        <li Class="PatchOperationReplace">
+          <xpath>/Defs/ThingDef[defName="Combistaff_Thrown"]/projectile/damageAmountBase</xpath>
+          <value><damageAmountBase>36</damageAmountBase></value>
+        </li>
+      </operations>
+    </match>
+  </Operation>
+
+  <Operation Class="PatchOperationFindMod">
     <mods><li>[JDS] StarWars - Armory</li></mods>
     <match Class="PatchOperationSequence">
       <operations>

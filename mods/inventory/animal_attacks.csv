@@ -2360,6 +2360,10 @@ VQEA_Splicetoot,Vanilla Quests Expanded - Ancients,bite,VQEA_SuicideAttack,1,1.5
 VQE_IceCrawler,Vanilla Quests Expanded - Cryptoforge,head claw,Cut,7,2,3.5,,HeadClaw,
 VQE_IceCrawler,Vanilla Quests Expanded - Cryptoforge,head,Blunt,6,2,3.0,,HeadAttackTool,0.2
 VQE_Megamidge,Vanilla Quests Expanded - Cryptoforge,head,Blunt,7,2,3.5,,HeadAttackTool,0.2
+VRE_CompanionDryad,Vanilla Races Expanded - Phytokin,left claw,Scratch,8,2,4.0,,FrontLeftPaw,
+VRE_CompanionDryad,Vanilla Races Expanded - Phytokin,right claw,Scratch,8,2,4.0,,FrontRightPaw,
+VRE_CompanionDryad,Vanilla Races Expanded - Phytokin,,Bite,9,2,4.5,,Teeth,0.9
+VRE_CompanionDryad,Vanilla Races Expanded - Phytokin,head,Blunt,4,2,2.0,,HeadAttackTool,0.2
 ,[JDS] StarWars - The Separatist Droid Army,head,Blunt,6,2.6,2.31,,HeadAttackTool,
 JDSCIS_Pistoeka_Sotage_Droid,[JDS] StarWars - The Separatist Droid Army,right blade,Cut;Stab,8,2,4.0,,HeadAttackTool,
 JDSCIS_B1_Battle_Droid,[JDS] StarWars - The Separatist Droid Army,head,Blunt,6,2.6,2.31,,HeadAttackTool,
@@ -2838,6 +2842,10 @@ RG_Hemolope,ReGrowth 2,head,Blunt,5,2,2.5,,HeadAttackTool,0.2
 RG_Hemolope,ReGrowth 2,left hoof,Blunt;Poke,7,2,3.5,,FrontLeftLeg,
 RG_Hemolope,ReGrowth 2,right hoof,Blunt;Poke,7,2,3.5,,FrontRightLeg,
 RG_Hemolope,ReGrowth 2,,Bite,8,2,4.0,,Teeth,0.5
+AG_OcularSlinger,Alpha Genes,left pincer,Scratch,20,1.5,13.33,,AG_PincerAttackTool,
+AG_OcularSlinger,Alpha Genes,right pincer,Scratch,20,1.5,13.33,,AG_PincerAttackTool,
+AG_OcularSlinger,Alpha Genes,,AG_ToxicSting,15,2,7.5,,AG_Sting,
+AG_OcularSlinger,Alpha Genes,head,Blunt,4,2,2.0,,HeadAttackTool,0.1
 BMT_AaroxisDendoriaLarvae,Biomes! Caverns,mandibles,Bite,10,2,5.0,,Mouth,
 BMT_AaroxisDendoriaLarvae,Biomes! Caverns,head,Blunt,8,2,4.0,,HeadAttackTool,0.1
 BMT_AaroxisDendoriaPupa,Biomes! Caverns,Twitching,Blunt,0,10000,,,HeadAttackTool,

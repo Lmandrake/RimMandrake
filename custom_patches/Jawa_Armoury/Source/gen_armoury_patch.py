@@ -39,13 +39,24 @@ DUMP = (r"C:\Users\Mandrake\AppData\LocalLow\Ludeon Studios"
         r"\RimWorld by Ludeon Studios\DefDump\defs\ThingDef.json")
 OUTDIR = r"G:\My Drive\Personal\Rimworld\custom_patches\Jawa_Armoury\Patches"
 
+# Mods whose weapons sit on our ladder. Additive by design: dropping a mod name
+# in here is the whole cost of covering it, because everything downstream keys
+# off the projectile's own damage type rather than the mod it came from.
 SW_MODS = ("Star Wars KotOR Weapons and Armor", "Outer Rim - Core",
            "Outer Rim - Droid Depot", "[JDS] StarWars - Armory",
-           "Star Wars : The Force - Lightsaber")
+           "Star Wars : The Force - Lightsaber",
+           "[AB] Xenotype: Yautja")
 VERB_MARKERS = ("ion", "stun", "emp", "sonic", "disrupt", "electr", "shock",
                 "extinguish", "smoke", "gas", "tear", "foam", "net", "web")
 BANDS = {"blaster": (24, 34), "blaster_heavy": (52, 72), "slugthrower": (18, 36),
-         "turbolaser": (800, 2000), "lightsaber": (80, 120), "vibro": (35, 52)}
+         "turbolaser": (800, 2000), "lightsaber": (80, 120), "vibro": (35, 52),
+         # Yautja blades: an apex hunter's kit should beat a club decisively and
+         # still lose to a vibro-blade, which is purpose-built to shear armour.
+         "alienblade": (30, 45)}
+
+
+def dn_mod_is_yautja(w):
+    return w["mod"] == "[AB] Xenotype: Yautja"
 
 # ---------------------------------------------------------------- collect
 projectiles, weapons = {}, []
@@ -94,6 +105,13 @@ def classify(pname, p, users):
         return None
     if "turbolaser" in b:
         return "turbolaser"
+    # Yautja plasma is Heat-category energy, exactly like a blaster bolt; their
+    # spearguns, discs and shuriken are Sharp-category kinetics, exactly like a
+    # slugthrower. Classify by what the damage type IS, not by whose mod it is.
+    if "abplasma" in b:
+        return "blaster_heavy" if any(k in b for k in ("cannon", "caster")) else "blaster"
+    if any(k in b for k in ("abrangedstab", "abrangedcut", "abimpaling")):
+        return "slugthrower"
     if any(s in b for s in ("slug", "cycler", "shatter", "massdriver", "bowcaster")):
         return "slugthrower"
     if any(s in b for s in ("heavy", "cannon", "repeater")):
@@ -108,6 +126,7 @@ def classify(pname, p, users):
 SOURCE_RANGE = {
     "blaster": (8, 36), "blaster_heavy": (9, 80), "slugthrower": (10, 28),
     "turbolaser": (40, 80), "lightsaber": (24, 34), "vibro": (16, 50),
+    "alienblade": (20, 28),
 }
 
 
@@ -161,7 +180,8 @@ for w in sw_weapons:
     if is_verb(b):
         continue
     r = ("lightsaber" if ("saber" in b or "foil" in b)
-         else "vibro" if ("vibro" in b or "vibra" in b) else None)
+         else "vibro" if ("vibro" in b or "vibra" in b)
+         else "alienblade" if dn_mod_is_yautja(w) else None)
     if r:
         melee_groups[r].append((w["defName"], max(p for _, p in w["tools"])))
 tool_changes = {}

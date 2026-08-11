@@ -79,7 +79,13 @@ def loadset_fingerprint(config=D_CONFIG):
     mods = [(li.text or "").strip().lower()
             for li in root.find("activeMods").findall("li")]
     version = (root.findtext("version") or "").strip()
-    blob = version + "\n" + "\n".join(mods)
+    # The MOD LIST alone, deliberately. ModsConfig's <version> records the build
+    # that last WROTE the file; the live dump reports the build that is RUNNING.
+    # After any game update those differ forever (rev590 vs rev591 here), and
+    # hashing the version made a byte-identical mod set read as STALE -- which
+    # would send someone on a 23-minute load for nothing. A staleness check that
+    # cries wolf gets ignored, and then it protects nothing.
+    blob = "\n".join(mods)
     return {
         "hash": hashlib.sha256(blob.encode("utf-8")).hexdigest()[:16],
         "modCount": len(mods),
@@ -130,7 +136,7 @@ def dump_fingerprint(dump=D_DUMP):
         return None
     mods = [(x.get("packageId") or "").strip().lower()
             for x in (m.get("mods") or [])]
-    blob = (m.get("gameVersion") or "") + "\n" + "\n".join(mods)
+    blob = "\n".join(mods)          # mod list only; see loadset_fingerprint
     return {"hash": hashlib.sha256(blob.encode("utf-8")).hexdigest()[:16],
             "modCount": m.get("modCount"), "capturedUtc": m.get("capturedUtc"),
             "mods": mods}
