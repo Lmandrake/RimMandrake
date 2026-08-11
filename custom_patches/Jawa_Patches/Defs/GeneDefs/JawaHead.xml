@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ============================================================================
+  JawaHead.xml                               Jawa_Patches · authored 2026-08-10
+  ============================================================================
+
+  THE PROBLEM (observed live 2026-08-10)
+  ======================================
+  Jawa spawned with random horns, slug-like eye-stalks and assorted alien
+  skulls. Correct male-only, correct eye colours, wrong heads.
+
+  ROOT CAUSE, AND IT IS NOT WHAT IT LOOKS LIKE
+  ============================================
+  This is NOT caused by removing Outland_GreaterGoblinoidHead. Removing that
+  gene removed a CONSTRAINT that was hiding a pre-existing problem.
+
+  The load set contains 318 HeadTypeDefs, and 206 of them declare NO
+  requiredGenes at all, which means they are eligible for ANY pawn that has no
+  forced head. Worst contributors: Alpha Genes 56, Star Wars Xenotypes 41,
+  Outer Rim Galactic Diversity 40, Outland Genetics 16. So a pawn with no head
+  gene rolls from a pool two thirds of which is modded alien skulls.
+
+  Every FA-drawn pawn in the colony has been rolling those heads all along.
+  Facial Animation simply paints over the head node, so nobody ever saw it.
+  Excluding the Jawa from FA is what made the underlying pollution visible.
+
+  THE FIX
+  =======
+  Give the Jawa an explicit head gene that forces vanilla human heads. A plain
+  head under the hood with two glowing eyes on it is the canonical Jawa read
+  anyway: the face is never seen.
+
+  Both genders are listed even though Jawa are currently male-only via
+  Outland_AllMale, so this still behaves if that decision is ever reversed.
+
+  Deliberately NOT fixing the 206 ungated head types globally. That would be a
+  large behavioural change to every pawn in a 562-mod stack, and for everyone
+  except the FA-excluded xenotypes it is invisible. Scoped to the Jawa on
+  purpose; the global issue is recorded in benign_log_errors.md instead.
+
+  ALTERNATIVES if a plain head reads as too plain: swap this gene on the
+  xenotype for Outland_RattyHead or Outland_LesserGoblinoidHead, both of which
+  suit a small hooded scavenger. Those carry their own baked-in facial art
+  though, which is exactly what produced the fangs-and-spider-eyes problem the
+  goblinoid head gave us.
+  ============================================================================
+-->
+<Defs>
+
+  <GeneDef>
+    <defName>Jawa_Head_Plain</defName>
+    <label>hooded face</label>
+    <labelShortAdj>hooded</labelShortAdj>
+    <description>Carriers of this gene have an unremarkable head, which is just as well: nobody has ever seen one. Beneath the hood there is only the glow of two enormous eyes.</description>
+    <iconPath>UI/Icons/Genes/Gene_Hair</iconPath>
+    <displayOrderInCategory>1780</displayOrderInCategory>
+    <biostatCpx>0</biostatCpx>
+    <forcedHeadTypes>
+      <li>Male_AverageNormal</li>
+      <li>Male_AverageWide</li>
+      <li>Male_NarrowNormal</li>
+      <li>Male_NarrowPointy</li>
+      <li>Female_AverageNormal</li>
+      <li>Female_NarrowNormal</li>
+    </forcedHeadTypes>
+  </GeneDef>
+
+</Defs>

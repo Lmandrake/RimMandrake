@@ -120,6 +120,22 @@
   </Operation>
 
   <!-- ==================================================================
+       5. Force a plain head. 206 of the 318 HeadTypeDefs in this load set
+       declare no requiredGenes, so a pawn with no head gene rolls horns and
+       eye-stalks from the global pool. FA was hiding that for everyone;
+       excluding Jawa from FA exposed it. See Defs/GeneDefs/JawaHead.xml.
+       ================================================================== -->
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/XenotypeDef[defName="BTD_Jawa"]/genes[not(li[text()="Jawa_Head_Plain"])]</xpath>
+    <match Class="PatchOperationAdd">
+      <xpath>/Defs/XenotypeDef[defName="BTD_Jawa"]/genes[not(li[text()="Jawa_Head_Plain"])]</xpath>
+      <value>
+        <li>Jawa_Head_Plain</li>
+      </value>
+    </match>
+  </Operation>
+
+  <!-- ==================================================================
        3. Jawa are male-only this playthrough
        ================================================================== -->
   <Operation Class="PatchOperationConditional">
