@@ -654,3 +654,242 @@ sends you to disable a mod that was fine.
 **Generalises to:** any framework that reflects over the entire active assembly
 set — Prepatcher, and Harmony `PatchAll` scanners. One broken assembly is not
 contained to its own mod; it takes out the pass that touched it.
+
+---
+
+### A mod's art can be invisible to a file audit — AssetBundles are readable, and loose files still beat them
+_2026-08-11 · found while auditing race art quality_
+
+**Symptom:** a texture-quality audit of every Star Wars race mod had to record
+four mods as *"UNVERIFIED — art locked in AssetBundles"*. `find -name '*.png'`
+returned nothing for them. The working assumption forming was that bundled art
+could be neither inspected nor overridden, which would have meant commissioning
+replacement art blind.
+
+**Cause:** RimWorld 1.6 gave AssetBundles first-class support, and authors have
+begun shipping art compiled rather than loose to halve download size.
+
+**Fix:** both halves of the fear were wrong.
+*Reading:* `pip install UnityPy` opens them. One bundle yielded 554 `Texture2D`
+objects with dimensions and internal paths. Assets are stored at
+`assets/data/<packageid>/textures/<the ordinary RimWorld path>`, so the path is
+recoverable by stripping the prefix. Tooling: `Utils/extract_bundle.py`.
+*Overriding:* RimWorld resolves a texture as **loose file in any active mod →
+base game resources → bundles**. Bundles are checked LAST, so a loose PNG at the
+same path wins *regardless of load order* — overriding a bundle mod is easier
+than overriding a loose-file one. (The reverse is the bundle author's problem: a
+bundle can never override a base-game texture.)
+
+**Generalises to:** "I can't see it" is a statement about your tools, not about
+the file. Before concluding that content is inaccessible, spend ten minutes
+looking for the format's standard reader — packed formats almost always have
+one. And check the engine's *resolution order* before assuming you cannot
+override something; the order is often more favourable than intuition suggests.
+
+---
+
+### Twice now, "the art is bad" has meant "the wrong art is being selected"
+_2026-08-11 · Gamorrean, then Wookiee_
+
+**Symptom:** two races looked wrong and both looked like art problems.
+Gamorrean read as "a grumpy human with horns". Wookiee rendered at 128×128 where
+every other species in the same mod is 512×512.
+
+**Cause:** neither was a missing-art problem.
+*Gamorrean:* `PigEars` already existed in Biotech and simply wasn't on the
+xenotype; separately, 206 of 318 loaded `HeadTypeDef`s declare no
+`requiredGenes`, so a pawn without a head gene rolls from a pool that is
+two-thirds modded alien skulls.
+*Wookiee:* **two complete, correctly-gated head chains exist** — Outer Rim's at
+512×512 and Star Wars Xenotypes' at 128×128. Neither is buggy. The xenotype that
+spawns simply carries the gene pointing at the worse one.
+
+**Fix:** a def patch, not a commission. `WookieeHead_Upgrade.xml` swaps one gene
+in `BTD_Wookiee`.
+
+**Generalises to:** in a large stack, *presence* of an asset says nothing about
+*selection* of it. Before treating an appearance problem as an art problem, dump
+which def is actually chosen and what it points at. The def layer is free to
+inspect and free to change; art is the most expensive and least reversible input
+in the pipeline. Exhaust selection before you commission pixels.
+
+---
+
+### The mod whose entire job is deduplication resolved to the worse asset
+_2026-08-11 · Xenotype REMIX: Star Wars_
+
+**Symptom:** Wookiees used 128×128 art despite a 512×512 version being installed
+and correctly gated.
+
+**Cause:** `BTD_Wookiee` — from **[BTD] Xenotype REMIX: Star Wars**, adopted
+*specifically* to dedupe the Star Wars Xenotypes / Outer Rim overlap — carries
+`guy762_Head_wookiee`. Its own `BTD_Data/XenotypeEquivalencies.xml` lists all
+three Wookiee xenotypes in one `EquivalentGroup`, so it knew both existed and
+picked the lower-resolution one.
+
+**Fix:** local patch. Not a bug report — the author made a judgement call, and
+theirs is as legitimate as ours.
+
+**Generalises to:** adopting a "compatibility" or "dedupe" mod resolves a
+conflict but **transfers the choice to its author**, silently and across every
+def it touches. When you install one, audit *which* side it picked for the
+things you care about. Its equivalency data is usually plain XML and tells you
+directly. Same shape as a load-order rule: the conflict is gone, but somebody
+else decided the outcome.
+
+---
+
+### Absence of a texture folder is not absence of art
+_2026-08-11 · Wookiee body_
+
+**Symptom:** a texture audit reported the Wookiee as having "no body art at all"
+because no `Textures/Pawn/BodyType/wookiee` folder exists.
+
+**Cause:** the fur *is* the body treatment. `Furskin` is a Biotech `GeneDef`
+whose `renderNodeProperties` attach a `PawnRenderNode_Fur` (worker
+`PawnRenderNodeWorker_Fur`) to the `Body` tag. Nothing is missing; the art
+arrives through the render tree rather than through a per-race folder.
+
+**Fix:** withdraw the finding.
+
+**Generalises to:** since 1.6, graphics reach a pawn by at least three routes —
+a race's `graphicPaths`, a `HeadTypeDef`'s `graphicPath`, and a gene's
+`renderNodeProperties`. A folder-shaped search only sees the first two. When an
+audit reports "no art", confirm against the render tree before believing it,
+and state the search method in the finding so the blind spot is visible.
+
+---
+
+### The patch validator cannot evaluate `text()` — but lxml can
+_2026-08-11 · authoring the Wookiee swap_
+
+**Symptom:** `validate_patch.py` reported *"xpath uses an XPath feature this
+checker cannot evaluate"* for
+`/Defs/XenotypeDef[defName="BTD_Wookiee"]/genes/li[text()="guy762_Head_wookiee"]`
+and skipped the live hit count — on the two operations that mattered most.
+
+**Cause:** the validator uses `xml.etree.ElementTree`, which supports only a
+subset of XPath 1.0. `text()`, `starts-with()`, `contains()` and boolean
+predicates are all outside it. The tool deliberately says UNSUPPORTED rather
+than guessing, which is correct but leaves real gaps unchecked.
+
+**Fix (this time):** hand-verified with `lxml`, which implements full XPath 1.0 —
+the same class of engine as the game's `System.Xml`. It matched 1 node and the
+simulated result was exactly the intended gene list.
+
+**Generalises to:** a checker that honestly reports "I cannot check this" is
+still a gap, and gaps cluster on the *interesting* cases — nobody needs
+`text()` for a simple def edit. **Improvement worth making: have
+`validate_patch.py` use `lxml` when it is importable and fall back to
+ElementTree otherwise.** That converts most UNSUPPORTED lines into real checks
+for a one-line dependency.
+
+---
+
+### Mod-list state on disk is not authoritative while the game is running
+_2026-08-11 · told to me more than once before it stuck_
+
+**Symptom:** I repeatedly reported "the removal didn't land — these mods are still
+active" after the user had removed and unsubscribed them. Evidence cited each
+time: the packageIds still present in `ModsConfig.xml`, and the mod folders still
+present under `294100/`. Both readings were accurate. Both conclusions were wrong.
+
+**Cause:** RimWorld holds its active mod list **in memory** while running and
+rewrites `ModsConfig.xml` on exit; Steam will not remove an unsubscribed mod's
+folder while the game has files open in it. So for the entire duration of a live
+session, the on-disk state reflects *the load that is running*, not the user's
+subsequent decisions. A manager's edits made mid-session can also be overwritten
+when the game closes.
+
+**Fix:** before making any claim about the mod list, establish whether the game is
+running. `Player.log`'s mtime versus `ModsConfig.xml`'s mtime is the cheap tell —
+if the log is older than the config, a re-sort happened after the load and the
+running game does not match the file. Report what the timestamps imply; do not
+assert a state.
+
+**Generalises to — and this is the real lesson:** *"verify offline from files"* is
+a good rule that quietly assumes **the files are at rest**. Any file a running
+process owns is a snapshot of that process's startup, not of the world. Before
+treating a file as ground truth, ask **who writes it and when they flush** —
+config written on exit, caches written on shutdown, logs written continuously.
+The same trap wearing a different hat: a mod-settings file that only rewrites when
+its settings window is closed, and a live def dump that describes the mod set at
+capture time rather than now.
+
+There is a second, sharper lesson about being told twice. Getting a fact wrong is
+ordinary; getting it wrong *again* after correction means it was never written
+down. The fix for a repeated error is never more care — it is a durable note in
+the place that governs default behaviour, which is why this one is also in
+`CLAUDE.md` rather than only here.
+
+---
+
+### Three mods shipped the base game's own assemblies, and one shipped all of it
+
+**Symptom:** Interaction Bubbles never drew a single bubble and its shift-click
+settings never opened, while its toggle icon rendered and toggled perfectly. No
+exception, no log line, nothing to bisect against. Two dead-end hypotheses and
+one wasted 23-minute load went by before the cause turned up somewhere else
+entirely.
+
+**What was actually there,** flagged by Dubs Performance Analyzer in a single
+line nobody had read:
+
+```
+[Analyzer] Mod Tribal Furniture has packaged the base-game Rimworld assemblies
+```
+
+`Tribal Furniture` (`Xercaine.Tribal.Furniture`, Workshop 3671245310) shipped
+**26 DLLs in `Assemblies/`, of which exactly one — `TribalFurniture.dll`, 25 KB —
+was the mod.** The other 25 were the game and the Unity runtime: a
+**byte-identical** `Assembly-CSharp.dll` (15,777,280 bytes, same md5 as the
+game's), `Assembly-CSharp-firstpass`, twelve `UnityEngine.*` modules,
+`Unity.Burst`, `Unity.Collections`, `Unity.Mathematics`, `Unity.TextMeshPro`,
+`NAudio`, `NVorbis`, `steamworks.net`. Someone published their whole `bin` output.
+
+RimWorld loads **every** DLL in a mod's `Assemblies` folder.
+
+**Why it can break things invisibly.** Two `Assembly-CSharp` images means the CLR
+holds two of every game type, and — the part that bites — **two independent sets
+of statics.** `Verse.Find` is nothing but statics, so code bound to the duplicate
+sees `Find.CurrentMap` as null. That is not an error and throws nothing; it is
+simply never equal to anything. Bubbles gates on `init.Map != Find.CurrentMap` at
+capture, `p.Map != Find.CurrentMap` at draw, and `Find.WindowStack.Add(...)` for
+its settings dialog — while the two things that *did* work, drawing the icon and
+flipping the toggle, touch only `Settings` and `WidgetRow` and never touch `Find`.
+One cause, both symptoms, zero diagnostics.
+
+**Sweep for it — this was not a one-off.** Checking every active mod's *resolved
+content dirs* against the game's `Managed` folder found **three** offenders:
+
+| mod | stray files |
+|---|---|
+| `Xercaine.Tribal.Furniture` | 24, incl. a byte-identical `Assembly-CSharp.dll` |
+| `petetimessix.researchreinvented.steppingstones` | 2 `UnityEngine.*`, byte-identical |
+| `tickleyourpawn.core` | `mscorlib.dll` — **and NOT identical to the game's** |
+
+```python
+game = r"...\RimWorld\RimWorldWin64_Data\Managed"
+gn = {f.lower() for f in os.listdir(game) if f.endswith(".dll")}
+for m in mods:
+    for cd in m['contentDirs']:                 # resolved paths only
+        ad = os.path.join(cd, "Assemblies")
+        hits = [f for f in os.listdir(ad) if f.lower() in gn]   # -> offender
+```
+
+**Fix:** move every stray out, keep only the DLLs the mod actually authored.
+All three mods had exactly one real assembly each. Relocate rather than delete,
+with a manifest recording each file's size and whether it was byte-identical to
+the game's copy — Steam may restore them on a validation pass, and you want to
+be able to prove nothing unique was taken.
+
+**Generalises to:**
+
+- **Read the analyzer lines.** Dubs Performance Analyzer had diagnosed this in
+  plain English and it sat unread in a 38,000-line log while three wrong theories
+  were pursued.
+- A mod's `Assemblies` folder is a **whitelist you should audit**, not a black
+  box. One 25 KB mod dragged 25 MB of duplicate runtime into the process.
+- When a mod's code demonstrably *runs* but its *observations of the world* are
+  wrong — null maps, empty collections, missing windows, with no exception
+  anywhere — suspect split type identity before suspecting the mod's logic.
