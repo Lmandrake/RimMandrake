@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ============================================================================
+  JawaAppearance_Tuning.xml                  Jawa_Patches · authored 2026-08-10
+  ============================================================================
+
+  Three player-facing appearance decisions, all observed in-game 2026-08-10
+  after FA per-xenotype exclusion finally let gene appearance render at all.
+
+  ==========================================================================
+  1. "ink black" skin is actually dark grey
+  ==========================================================================
+  Biotech's Skin_InkBlack declares <skinColorOverride>(55, 55, 55)</>, which
+  reads as charcoal, not ink. Set to true black.
+
+  ⚠️ SCOPE: this is a Core Biotech gene shared by 13 active xenotypes, not just
+  Jawa: AG_Forsaken, AG_Lapis, AG_Wretch, BS_FireJotun, BS_Svartalf,
+  BTD_Aqualish, BTD_Herglic, BTD_Jawa, OuterRim_Aqualish, OuterRim_Herglic and
+  three more. All of them are "should look black" xenotypes, so the change is
+  an improvement across the board rather than a Jawa-only hack. Say so out loud
+  because it is a wider blast radius than the rest of this file.
+
+  ⚠️ (0,0,0) is a deliberate extreme. RimWorld still applies its own shading,
+  but pure black loses almost all surface detail and can read as a silhouette.
+  If it looks like a hole rather than a creature, raise it to about (15,15,15)
+  and the detail comes back while still reading as black.
+
+  ==========================================================================
+  2. Jawa had spider eyes and a fanged mouth on top of the yellow eyes
+  ==========================================================================
+  Observed: correct glowing yellow eyes AND a second set of arachnid eyes AND a
+  mouth full of fangs. Cause is not a stray gene, it is the HEAD TEXTURE.
+  BTD_Jawa carries Outland_GreaterGoblinoidHead, which forces the head types
+  Outland_Male_Goblinoid / Outland_Female_Goblinoid, and that art has its own
+  eyes and teeth baked in. The eye gene then draws on top, so you get both.
+
+  Removing the head gene leaves a plain head under the hood with only the
+  glowing eyes on it, which is the canonical Jawa read: the face is never seen,
+  just two lights in the dark.
+
+  Alternatives if a plain head is too plain. Outland ships these, all usable by
+  swapping the removed gene for one of them:
+      Outland_RattyHead        Outland_LesserGoblinoidHead
+      Outland_SvelteHead       Outland_MonocularHead
+      Outland_TrencherHead     Outland_MothHead
+  RattyHead and LesserGoblinoidHead are the closest fits for a small hooded
+  scavenger and are the two worth trying first.
+
+  ==========================================================================
+  3. Jawa spawn male-only for this playthrough
+  ==========================================================================
+  Player decision, not a bug fix. Outland Genetics already ships Outland_AllMale
+  ("all male"), so no new def is needed. Alternatives, if Outland is ever
+  dropped: Body_MaleOnly (Big and Small Framework) or AG_Male (Alpha Genes).
+
+  ==========================================================================
+  SAFETY AND LOAD ORDER
+  ==========================================================================
+  Every op is conditional on the exact node, so each becomes a silent no-op if
+  a mod update changes the gene list. BTD_Jawa is defined by Xenotype REMIX at
+  load 557 and we are 561, so we patch after it exists.
+
+  Ops 2 and 3 use text() predicates on <li> entries, which RimWorld's XPath
+  supports but validate_patch.py cannot evaluate. Both were hand-verified
+  against the resolved load set on 2026-08-10.
+
+  VERIFY AFTER THE NEXT LOAD
+  ==========================
+    * Fresh Jawa: black skin, glowing yellow eyes, NO second eye set, NO fangs.
+    * All newly generated Jawa are male.
+    * The other 12 ink-black xenotypes are darker; check one is not now a
+      featureless silhouette.
+  ============================================================================
+-->
+<Patch>
+
+  <!-- ==================================================================
+       1. True black ink skin (Core Biotech gene, 13 xenotypes affected)
+       ================================================================== -->
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/GeneDef[defName="Skin_InkBlack"]/skinColorOverride</xpath>
+    <match Class="PatchOperationReplace">
+      <xpath>/Defs/GeneDef[defName="Skin_InkBlack"]/skinColorOverride</xpath>
+      <value>
+        <skinColorOverride>(0, 0, 0)</skinColorOverride>
+      </value>
+    </match>
+  </Operation>
+
+  <!-- ==================================================================
+       2. Drop the goblinoid head from Jawa (removes spider eyes + fangs)
+       ================================================================== -->
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/XenotypeDef[defName="BTD_Jawa"]/genes/li[text()="Outland_GreaterGoblinoidHead"]</xpath>
+    <match Class="PatchOperationRemove">
+      <xpath>/Defs/XenotypeDef[defName="BTD_Jawa"]/genes/li[text()="Outland_GreaterGoblinoidHead"]</xpath>
+    </match>
+  </Operation>
+
+  <!-- ==================================================================
+       3. Jawa are male-only this playthrough
+       ================================================================== -->
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/XenotypeDef[defName="BTD_Jawa"]/genes[not(li[text()="Outland_AllMale"])]</xpath>
+    <match Class="PatchOperationAdd">
+      <xpath>/Defs/XenotypeDef[defName="BTD_Jawa"]/genes[not(li[text()="Outland_AllMale"])]</xpath>
+      <value>
+        <li>Outland_AllMale</li>
+      </value>
+    </match>
+  </Operation>
+
+</Patch>

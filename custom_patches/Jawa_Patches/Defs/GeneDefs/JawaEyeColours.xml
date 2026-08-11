@@ -1,0 +1,135 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ============================================================================
+  JawaEyeColours.xml                         Jawa_Patches · authored 2026-08-10
+  ============================================================================
+
+  WHY
+  ===
+  Star Wars Xenotypes ships exactly two "huge" (Jawa-style) eye genes:
+      guy762_Eyes_HugeYellow   tex Pawn/HeadAttachments/bigeyes/jawaeyes_yellow
+      guy762_Eyes_HugeRed      tex Pawn/HeadAttachments/bigeyes/jawaeyes_red
+  Two colours is thin for a whole colony of Jawa. These add orange and amber so
+  the founding crew can be told apart at a glance.
+
+  HOW
+  ===
+  Cloned from guy762_Eyes_HugeYellow verbatim (Star Wars Xenotypes,
+  1.6/Defs/GeneDefs/GeneDefs_Eyes.xml) and re-tinted with <color> rather than
+  new art, so they keep the exact huge-glowing-eye silhouette that reads as a
+  Jawa. Everything else is byte-identical to the donor: anchorTag, side,
+  drawSize 0.2, layer 55, offset (0,0,-0.25), the West flip handling, and
+  ParentName GeneEyeColor.
+
+  ⚠️ TINT, NOT REPAINT. <color> multiplies against the existing texture. The
+  donor art is already saturated yellow, so these will read as warm shifts, not
+  as pure orange/amber. If they come out muddy the fallback is to point texPath
+  at the art the mod already ships instead:
+      Pawn/HeadAttachments/bigeyes/bigeyes_orange   (a different, "big" style)
+      Pawn/HeadAttachments/bigeyes/jawaeyes_red     (correct "huge" style)
+
+  USAGE
+  =====
+  These are NOT added to any xenotype. RimWorld XenotypeDefs carry a fixed gene
+  list, so a xenotype cannot roll a random eye colour. Apply them per pawn in
+  Character Editor, which is the workflow the five authored founding Jawa in
+  jawa_crew_personas.md want anyway.
+
+  ⚠️ Do NOT edit a non-human pawn's HEAD in Character Editor. Confirmed
+  2026-08-10: doing so destroys the head on Mon Calamari and Bith. Eye and gene
+  edits are fine; the head selector is not.
+  ============================================================================
+-->
+<Defs>
+
+  <GeneDef ParentName="GeneEyeColor">
+    <defName>Jawa_Eyes_HugeOrange</defName>
+    <label>orange huge eyes</label>
+    <labelShortAdj>big-eyed</labelShortAdj>
+    <description>Carriers of this gene have huge orange eyes that catch the light in the dark.</description>
+    <iconPath>UI/Icons/Genes/Gene_BigYellowEyes</iconPath>
+    <displayOrderInCategory>1775</displayOrderInCategory>
+    <renderNodeProperties>
+      <li Class="PawnRenderNodeProperties_Eye">
+        <texPath>Pawn/HeadAttachments/bigeyes/jawaeyes_yellow</texPath>
+        <color>(255, 130, 20)</color>
+        <anchorTag>RightEye</anchorTag>
+        <rotDrawMode>Fresh, Rotting</rotDrawMode>
+        <parentTagDef>Head</parentTagDef>
+        <drawSize>0.2</drawSize>
+        <side>Right</side>
+        <drawData>
+          <defaultData>
+            <layer>55</layer>
+            <offset>(0, 0, -0.25)</offset>
+          </defaultData>
+        </drawData>
+      </li>
+      <li Class="PawnRenderNodeProperties_Eye">
+        <texPath>Pawn/HeadAttachments/bigeyes/jawaeyes_yellow</texPath>
+        <color>(255, 130, 20)</color>
+        <anchorTag>LeftEye</anchorTag>
+        <rotDrawMode>Fresh, Rotting</rotDrawMode>
+        <parentTagDef>Head</parentTagDef>
+        <drawSize>0.2</drawSize>
+        <side>Left</side>
+        <drawData>
+          <defaultData>
+            <layer>55</layer>
+            <offset>(0, 0, -0.25)</offset>
+            <flip>true</flip>
+          </defaultData>
+          <dataWest>
+            <flip>false</flip>
+          </dataWest>
+        </drawData>
+      </li>
+    </renderNodeProperties>
+  </GeneDef>
+
+  <GeneDef ParentName="GeneEyeColor">
+    <defName>Jawa_Eyes_HugeAmber</defName>
+    <label>amber huge eyes</label>
+    <labelShortAdj>big-eyed</labelShortAdj>
+    <description>Carriers of this gene have huge amber eyes, deep and slow to blink.</description>
+    <iconPath>UI/Icons/Genes/Gene_BigYellowEyes</iconPath>
+    <displayOrderInCategory>1776</displayOrderInCategory>
+    <renderNodeProperties>
+      <li Class="PawnRenderNodeProperties_Eye">
+        <texPath>Pawn/HeadAttachments/bigeyes/jawaeyes_yellow</texPath>
+        <color>(255, 191, 0)</color>
+        <anchorTag>RightEye</anchorTag>
+        <rotDrawMode>Fresh, Rotting</rotDrawMode>
+        <parentTagDef>Head</parentTagDef>
+        <drawSize>0.2</drawSize>
+        <side>Right</side>
+        <drawData>
+          <defaultData>
+            <layer>55</layer>
+            <offset>(0, 0, -0.25)</offset>
+          </defaultData>
+        </drawData>
+      </li>
+      <li Class="PawnRenderNodeProperties_Eye">
+        <texPath>Pawn/HeadAttachments/bigeyes/jawaeyes_yellow</texPath>
+        <color>(255, 191, 0)</color>
+        <anchorTag>LeftEye</anchorTag>
+        <rotDrawMode>Fresh, Rotting</rotDrawMode>
+        <parentTagDef>Head</parentTagDef>
+        <drawSize>0.2</drawSize>
+        <side>Left</side>
+        <drawData>
+          <defaultData>
+            <layer>55</layer>
+            <offset>(0, 0, -0.25)</offset>
+            <flip>true</flip>
+          </defaultData>
+          <dataWest>
+            <flip>false</flip>
+          </dataWest>
+        </drawData>
+      </li>
+    </renderNodeProperties>
+  </GeneDef>
+
+</Defs>
