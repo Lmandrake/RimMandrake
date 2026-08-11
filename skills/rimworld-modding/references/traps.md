@@ -166,8 +166,10 @@ only an offline tool can see. Inactive mods were being counted too.
 **Fix:** scope the scan to the real load set — parse `ModsConfig.xml` for the
 active packageIds, map each to its folder via `About/About.xml`, and resolve
 which subfolder supplies defs through `LoadFolders.xml` (honouring both
-`IfModActive` and `IfModNotActive`), falling back to `<moddir>/<version>`. Report
-matches grouped by mod so a genuine two-mods-define-this case stays visible.
+`IfModActive` and `IfModNotActive`). With no `LoadFolders.xml`, fall back to the
+mod root **and** `<moddir>/<version>` — **both**, not one (see the next entry;
+getting this wrong cost us 667 defs). Report matches grouped by mod so a genuine
+two-mods-define-this case stays visible.
 
 **Generalises to:** any offline analysis of a game's content directory. The
 filesystem is a superset of the load set, usually by a large factor, and the gap
@@ -177,6 +179,51 @@ most likely to be patching. **A tool that over-counts is worse than one that doe
 not count**, because a confident wrong number gets acted on: here it recommended
 a change that would have made a correct destructive patch wrong. Before trusting
 any "how many things match" figure, ask which population it was computed over.
+
+---
+
+### The version-folder fix over-corrected and hid the mod root, costing 667 defs
+_2026-08-10 · found by generalising the animal scan to all def types_
+
+**Symptom:** 28 defs across four mods had `ParentName="AdaptiveStorageBase"`
+with no such parent anywhere in the resolved load set. It looked like ~96 defs
+were about to fail inheritance in the live game — a serious-sounding finding
+that would have sent someone hunting a mod conflict.
+
+**Cause:** the load-set resolver, written to fix the *previous* entry's
+over-counting, treated the version folder as **exclusive**: with no
+`LoadFolders.xml` it returned `<mod>/<version>` **or** the mod root, never both.
+RimWorld loads both. Adaptive Storage Framework declares `AdaptiveStorageBase`
+in its **root** `Defs/ThingDefBase.xml` while also shipping a `1.6/` folder, so
+the base def was invisible and every dependant dangled. Measured on a 562-mod
+stack: **35 active mods, 667 def nodes and 24 PatchOperations** were being
+skipped — RIMMSqol (178 defs), Way Better Romance (64), Numbers (40), LWM's Deep
+Storage (18).
+
+**Confirmation before believing it:** the live `Player.log` contained **zero**
+inheritance/parent-node errors, and all 35 mods demonstrably work. If the root
+were genuinely unloaded, these popular mods would be broken for everyone. That
+mismatch between "our tool says broken" and "the game says fine" is what
+identified the tool as the wrong party.
+
+**Fix:** emit the root **and** the versioned folder, root first so a
+version-specific override wins under last-in-wins.
+
+**Generalises to:** two lessons that bite together.
+
+First, **an over-correction is still a correctness bug, and it hides rather than
+shouts.** Over-counting produced a loud wrong number; under-counting produced
+silence, which is harder to notice — nobody misses defs they never saw. When you
+tighten a filter to fix false positives, measure what the tighter filter now
+excludes.
+
+Second, **when a static analysis says the game is broken and the game says
+otherwise, the analysis is the suspect.** Check the log before reporting. Of the
+128 unresolved parents here, only 28 were real; the other 68 carried
+`MayRequire="Kura.ExtraStone"` for an inactive mod, so the game correctly skips
+them — a documented limitation behaving exactly as documented. Splitting a
+finding by cause before reporting it is the difference between a fix and a
+wild-goose chase.
 
 ---
 
@@ -257,6 +304,39 @@ of them own, suspect shared engine state rather than any of the three. Detect
 these ahead of time by cross-referencing both directions offline; a
 duplicate-scan across all animal and biome defs takes seconds and found exactly
 three bad pairs in a stack of 1,168 animals.
+
+---
+
+### Blanket find-and-replace keeps eating the syntax it lives inside (3 instances)
+_2026-08-10 · three separate times in one session_
+
+This trap has now fired three times in a single day, in three different files, on
+three different search strings. It is the most reliably recurring mistake in this
+log, so it is consolidated here rather than logged three times.
+
+| # | Replace | What it also hit | Result |
+|---|---|---|---|
+| 1 | `->` to `=>` in a patch header | the `-->` comment terminator | every comment broken |
+| 2 | pasted a stack trace containing `--->` | `-->` inside it closed the comment early | file would not parse |
+| 3 | `<li>` to `&lt;li&gt;` in About.xml prose | the **real** `<li>1.6</li>` in `<supportedVersions>` | mod metadata unparseable |
+
+**Generalises to:** before any blanket replace in markup, ask *what else in this
+file legitimately contains my search string.* Markup is self-similar — the thing
+you are escaping is almost always also part of the structure. Two defences that
+actually work:
+
+1. **Scope the replace to a region**, not the file. Extract the description /
+   comment body, transform it, put it back.
+2. **Parse after every write, always.** Instance 3 was written, deployed AND
+   committed before anyone noticed, because the parse check ran in a separate
+   command that failed independently while the deploy chain carried on.
+
+**Also earned from instance 3:** `validate_patch.py` checks `Patches/` and
+nothing else, so a broken `About.xml` sails past it. A malformed About.xml is
+worse than a broken patch — RimWorld cannot read the mod's metadata at all.
+**Parse every XML in the mod folder as the last step of deploying**, About.xml
+included, and make it part of the same command chain so a failure stops the
+deploy.
 
 ---
 

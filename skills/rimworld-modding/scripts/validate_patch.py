@@ -588,11 +588,25 @@ def resolve_load_folders(mod_dir: str, version: str, active: set[str]) -> list[s
                         folders.append(p)
                 return folders
 
+    # No LoadFolders.xml: the game loads the mod ROOT *and* the versioned
+    # folder, not one or the other. Getting this wrong silently hides content,
+    # which for a validator means false "target not found" verdicts.
+    #
+    # Measured on a 562-mod stack (2026-08-10): 35 active mods ship a root
+    # Defs/ alongside a version folder — RIMMSqol (178 defs), Way Better
+    # Romance (64), Numbers (40), LWM's Deep Storage (18), Adaptive Storage
+    # Framework (11) — for 667 def nodes and 24 PatchOperations total. The
+    # giveaway was 28 defs across 4 mods failing to resolve
+    # ParentName="AdaptiveStorageBase": the framework declares that base in its
+    # ROOT Defs/ThingDefBase.xml. Those mods work in game and the log carries
+    # no inheritance errors, so the root is definitely loaded.
+    #
+    # Order: root first, then versioned, so a version-specific override wins
+    # over the root's copy of the same def under last-in-wins.
     versioned = os.path.join(mod_dir, version) if version else ""
-    if versioned and os.path.isdir(versioned):
+    folders.append(mod_dir)
+    if versioned and os.path.isdir(versioned) and versioned != mod_dir:
         folders.append(versioned)
-    else:
-        folders.append(mod_dir)
     return folders
 
 
