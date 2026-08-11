@@ -11,9 +11,15 @@
     <defName>Kolyska_Bullet_JawaIon</defName>
     <label>ion bolt</label>
     <graphicData>
-      <!-- Outer Rim - Core's cyan ion bolt sprite (Core is a hard dependency).
-           Same self-illuminated blue streak Core's own ion weapons fire. -->
-      <texPath>OuterRim/Projectile/BlasterBolt_Blue</texPath>
+      <!-- FIXED 2026-08-10. This used to point at
+           OuterRim/Projectile/BlasterBolt_Blue on the assumption that Outer Rim
+           Core supplies it. It does not: a sweep of every active mod's Textures
+           folder found NO BlasterBolt sprite anywhere in the load set, so the
+           bolt rendered as a magenta placeholder. The art was in this mod's own
+           art_candidates folder the whole time and simply never got moved into
+           Textures. Now shipped locally, so it cannot break again if Outer Rim
+           reorganises. The soundCast below WAS verified to exist. -->
+      <texPath>JawaIon/Bullet_JawaIon</texPath>
       <graphicClass>Graphic_Single</graphicClass>
       <shaderType>TransparentPostLight</shaderType>
     </graphicData>
