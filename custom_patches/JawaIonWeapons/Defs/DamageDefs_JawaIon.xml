@@ -39,6 +39,31 @@
          no-C# way to apply an accumulating hediff on damage. VERIFY IN-GAME:
          confirm severity actually accrues on FLESH pawns (EMP on flesh is a
          short stun; additionalHediffs should still apply regardless). -->
+    <!-- ADDED 2026-08-11 - THE GUN DID NOTHING AT ALL.
+         Reported in-game as "it never seems to hit, even with 20 shooting".
+         It was hitting every time; the hit simply had no effect of any kind.
+         Core's StunBase (Damages_Stun.xml) declares ONLY harmsHealth=false and
+         makesBlood=false. It carries no workerClass and, crucially, no
+         causeStun. Vanilla EMP is not stunning because it descends from
+         StunBase - it stuns because EMP itself sets causeStun=true. We
+         inherited the "harms nothing" half of EMP and none of the "does
+         something" half, so every bolt landed as a no-op: no injury, no blood,
+         no stun, no message. Indistinguishable from a miss. -->
+    <causeStun>true</causeStun>
+    <externalViolenceForMechanoids>true</externalViolenceForMechanoids>
+    <stunAdaptationTicks>2200</stunAdaptationTicks>
+    <impactSoundType>Electric</impactSoundType>
+    <combatLogRules>Damage_EMP</combatLogRules>
+
+    <!-- KNOWN INERT: the additionalHediffs block below does not fire.
+         additionalHediffs is read by DamageWorker_AddInjury.ApplyDamageToPart,
+         and a StunBase-derived def never reaches that worker - in Core the only
+         defs using additionalHediffs are injury damages (Damages_MeleeWeapon).
+         So the flesh "wear-down toward a live collapse" mechanic has never run
+         and cannot run from XML alone. Left in place, harmless, because the fix
+         is a decision not a typo: either a small custom DamageWorker in C#, or
+         an injury-based damage def, which trades away the capture-not-kill
+         guarantee. Do not delete this until that is settled. -->
     <additionalHediffs>
       <li>
         <hediff>JawaIon_Stun</hediff>
