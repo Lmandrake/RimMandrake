@@ -389,7 +389,50 @@ not richness, it is noise that dilutes every good creature in the set.
 This makes **selection the primary design act** and justifies aggressive cutting
 on its own — before any tuning question is asked (see tension 3.5).
 
-### Axis 18 — Failure should be interesting
+### Axis 18 — The Jawa Doctrine: the world is not a ladder
+
+**Rule: progression is lateral, lumpy and lossy. You do not climb this world;
+you survive it and occasionally get lucky.**
+
+Standard RimWorld is a treadmill: build wealth → wealth raises raid points →
+build better defences → repeat. It is smooth, legible, and it is *precisely the
+thing we are trying not to make*. We want a world that is wild, alarming and
+barely survivable — one where the story is scavenging, not scaling.
+
+Four mechanisms, and the fourth is the one the physics already gives us:
+
+**(a) Break the wealth→threat coupling.** That single feedback loop is the
+engine of linear progression. Threat should track **where you are, what you
+provoked, and what season it is** — not how much silver is on the floor. A VAST
+creature does not care how rich you are, and neither should a sandstorm.
+
+**(b) Power arrives as shards, not tiers.** The good things are **found**, not
+unlocked: one lightsaber, one intact droid brain, one shield generator with
+half its charge. Unique, irreplaceable, un-mass-producible. You cannot build the
+next rung of a ladder that has no rungs.
+
+**(c) Acquisition out of order is a feature.** You may hold a Jedi's blade
+before you own a stone wall. That is not a balance failure — it is the best
+story the game can tell, and it is exactly the Jawa fantasy: possessing
+something magnificent you did not earn and barely understand.
+
+**(d) Power decays, so it cannot be accumulated.** The physics already does this
+work: powered weapons wear out and then **detonate** (`setting_physics.md` L17,
+L18); armour ablates away under fire; machinery is one bad day from going up.
+Nothing you find is permanent. **You are always scrounging**, because everything
+you own is quietly running down — which is the Jawa condition stated as a
+mechanic rather than a mood.
+
+**Derives:** the campaign shape stops being a curve and becomes a **series of
+lurches** — desperate stretch, sudden windfall, slow decay, desperate stretch.
+That is the rhythm of the fiction we are writing, and it is unlike anything a
+default RimWorld run produces.
+
+**Guardrail:** lurching is not the same as arbitrary. Every windfall and every
+disaster must be *legible in hindsight* — the player should be able to say why
+it happened. Randomness we cannot explain is just noise, and noise is not story.
+
+### Axis 19 — Failure should be interesting
 
 **Rule: losing produces a story, not a reload.**
 
