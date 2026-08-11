@@ -1,99 +1,189 @@
-# STRUCTURE.md — canonical index of the Gravship Campaign docs
+# STRUCTURE.md — the manifest
 
-_Last updated: 2026-08-08. This is the map: what each file is, and — importantly — **who owns what**, so a fact lives in exactly one authoritative place and everyone else points to it. Read this first to navigate the folder. Lives at `~/GDrive/Personal/Rimworld/`._
+_Rewritten 2026-08-11 from a full audit of all 88 docs. Half the corpus was missing from the previous version, including `CLAUDE.md`, `NEXT_RELOAD.md`, `REFRESH.md`, `live_mod_inventory.md` and the modding skill — every one of them load-bearing. This file is the map: what each doc is, **who owns what** so a fact lives in exactly one authoritative place, and — new — **what kind of doc it is**, so you know whether to trust it, regenerate it, or ignore it._
 
----
-
-## Directory layout (2026-08-08 reorg)
-
-The project is now sorted into four topic buckets, with a thin navigation spine kept at the root. **File names below are unchanged — only their folders moved** — so any doc that references another by bare filename still resolves; just prepend the bucket.
-
-| Folder | What lives here |
-|---|---|
-| **`/` (root spine)** | Navigation + orientation only: `STRUCTURE.md`, `concept.md`, `context.md`. |
-| **`worldbuilding/`** | The fiction + design: `Alien_Bestiary`, `desert_world_design`, `biome_terrain_palette`, `faction_roster_v2`, `faction_authoring_mechanism`, `jawa_xenotype_and_religion`, `jawa_crew_personas`, `jawa_dialogue_source_audit`, `Gravship_Campaign_Planning_Discussion_2026-08-02`, `setup_checklist`, `Custom_World`, `biome_roster_for_review.html`, `resource_terrain_matrix.html`, `star_wars_species_scale_reference_atlas.pdf`. |
-| **`mods/`** | Which mods we use + why: `required_mods`, `forbidden_mods`, `cherry_picker_killlist`, `sw_ingredients_inventory`, `outer_rim_cherrypick_list`, `world_interest_and_mech_danger`, `cqf_quest_types_explainer`, `concept_defnames`, and the `mod_sources/` audit tree (gitignored). |
-| **`runtime/`** | Run-time apps/agents we're building or planning + the custom mods we author: `RimMaster`, `rimbridge`, `ollama`, `llm_voice_preauthoring`, `first_live_access`, `carbonite_trophy_mod`. |
-| **`promo/`** | Promotional/pitch material (summaries that *sell* the campaign): `Kolyska_pitch.html` (self-contained, inline base64 art) + `concept_art_01.png`, `concept_art_02.png` (ship concept renders). |
-| **`Utils/`, `player_maps/`, `custom_patches/`, `hand_authored_maps/`, `samuel_streamer_study/`, `savegame/`** | Tooling + build artifacts, unchanged (see Subfolders table). |
-
-### Left at root deliberately (NOT yet bucketed)
-- **`ship_designs.md`, `ship_deck_plan.md`, `ship_distinctive_features.md`, `Factory_lore.md`** + the ship reference images (`ship_image.png`, `ship_damaged_image.png`, `ship_deck_plan_scale_map.png`) — these are **actively owned by the concurrent Cowork instance**; moving them risks colliding with in-flight edits. They belong in `worldbuilding/` in the next pass, once that instance is idle.
-- **`save_authoring_pipeline.md`, `rimworld_file_lore.md`** — the `Utils/Savegame_*.py` scripts cite these via hard-coded `../<file>.md` doc-string paths; since `Utils/` is contested I can't fix those refs, so the manuals stay adjacent for now.
-- **`custom_patches/`** (JawaVoice + Jawa_Patches) — `Utils/build_jawavoice.py` hard-codes its output to `../custom_patches/JawaVoice`; moving it would silently break the build. Stays put until the builder can be updated together with it.
+**Four threads work in this repo simultaneously.** Before editing a doc, `git status` it. If it is already modified, someone is in it.
 
 ---
 
-## The canonical spine (start here)
+## 0. The six kinds of document
 
-These are the load-bearing, authoritative files. If two docs disagree, the owner named here wins.
+The single most useful thing to know about a file here is which of these it is. Most navigation mistakes are category mistakes — treating a log as a spec, or hand-editing generated data.
 
-| File | Role — the single source of truth for… |
-|---|---|
-| **`concept.md`** | The one-page orientation: premise, pillars, sanctioned mechanics. The elevator pitch. |
-| **`context.md`** | Narrative running log of decisions and discussion. References the mod files rather than restating them. |
-| **`required_mods.md`** | **Authoritative** selected-mod list — every adopted mod + its per-mod restrictions/config. Also owns: the **THE FORCE system** (NPC-only VPE, lines ~428–436), the four-axis terrain adopt/reject verdicts, and the Faction Territories conditional-accept spec. |
-| **`forbidden_mods.md`** | **Authoritative** anathema list — banned mods/categories, each tagged with the pillar it violates. Owns: the **7-question test**, the **player-psycasting ban + its NPC-only VPE/Force exception**, and the full **VFE-Insectoids 2** and **VGE** cherry-pick strip/keep lists. |
-| **`Gravship_Campaign_Planning_Discussion_2026-08-02.md`** | The major scope-expansion doc. Owns the **§19 enemy-danger thesis (§19.1–§19.9)** and the custom-progression-mod build spec. |
-| **`desert_world_design.md`** | The desert world's design. Owns the **four-axis terrain schema** (① Abundant / ② Scarce / ③ Exotic / ④ Threat), the **dark-biome / fog-of-war ruling + the LOCKED "dark tiles pause the orbital timer" mechanic** (§3(e) + §4-Orbital), and the pre-placed-hazard §3F (Hutt corpse-marker tripwire). |
-| **`biome_terrain_palette.md`** | **Verified** biome/terrain inventory — the defName-level palette (vanilla + Odyssey + Alpha/Advanced Biomes). Owns the dark-biome candidate table (§A6). |
-| **`setup_checklist.md`** | The live, ordered scenario-setup checklist (§0–§13). Owns the **§13 in-game verification battery** (throwaway dev-world tests before the real save). |
-| **`faction_roster_v2.md`** | **Canonical** 10-NPC desert-world faction roster: per-faction dossiers, relations matrix, racial-mixture spawn tables, GM/narrative appendix. Owns faction *casting* (which race → which faction). |
-| **`cherry_picker_killlist.md`** | **§2 is the single source of truth for the race inventory** (verified in-hand; supersedes the deleted `races.md`). Also the master Cherry-Picker cull list. |
+| Kind | Trust it for | Rule |
+|---|---|---|
+| 🧭 **SPINE** | Orientation. Read before anything else. | Keep short. Detail belongs in the doc it points to. |
+| 📜 **OWNER** | Current truth about its one domain. | The single source of truth. If two docs disagree, the owner wins. |
+| ⚙️ **GENERATED** | Measured facts about the live install. | **Never hand-edit.** Regenerate — see `REFRESH.md`. |
+| 📚 **REFERENCE** | Imported craft/research from outside this project. | Consult when relevant. Not maintained, not project state. |
+| 🔄 **EPHEMERAL** | Live working state right now. | Short shelf life. Harvest, then clear. |
+| 🗄️ **ARCHIVE** | Why a past decision was made. | **Never** for what is true now. |
 
 ---
 
-## Supporting / specialist docs
+## 1. Read these first (🧭 SPINE)
 
 | File | Role |
 |---|---|
-| `concept_defnames.md` | Companion to `concept.md`: verified defNames/packageIds/Workshop IDs — "known-good starting guesses," re-confirm before any patch/save-edit. |
-| `world_interest_and_mech_danger.md` | Sole home of ~15 mech-danger / world-interest mod adoption verdicts (Reinforced Mechanoids 2, Total Warfare, etc.). Cites the §19 thesis (which lives in the Planning Discussion doc). |
-| `star_wars_species_scale_reference_atlas.pdf` | **Visual + scale reference for the race roster** (added 2026-08-11). 49 pages, one per species: 46 campaign species each with sourced reference art, a canonical height range, and a scale strip normalising it against a **1.80 m human**. Grades its own evidence — TURNAROUND (Twi'lek, Rodian: Lucasfilm production sheets) > FULL BODY > PORTRAIT/PARTIAL — and keeps one entry (Sith Pureblood) with no captured image specifically to expose the gap. Source URLs on every page (mostly swrpggm.com; StarWars.com for the turnarounds; dimensions.com for Jabba). **Use it to check any race-authoring or art work against canon scale** — e.g. Gamorrean is **1.3–1.6 m, shorter than a human**, Jawa 0.8–1.2 m, Wookiee 2.0–2.3 m, Hutt ~1.75 m tall × 3.9 m long. Companion to the §2 race inventory in `cherry_picker_killlist.md`, which owns *which* races we have; this owns *how big they are and what they look like*. |
-| `jawa_xenotype_and_religion.md` | The Jawa xenotype + buildable ideoligion spec (player faction deep-dive). **Part 4 owns the society lore**: slavery/reproduction/aging churn, the §4.2 love-gate + acquisition/no-rot rules, §4.2b mood economy. |
-| `jawa_crew_personas.md` | The five founding Jawa colonists (Nekko/Tobb/Griz/Yeku/Wim): role coverage + each embodies one lore strand + one story-arc seed. Owns the Character-Editor scope note + the 7-Q verdicts on the persona-authoring mods. |
-| `jawa_dialogue_source_audit.md` | Source-audited Jawa dialogue/translation corpus for SpeakUp voice authoring (§3 Grade-A canonical palette). |
-| `faction_authoring_mechanism.md` | The *method* (how) for building differentiated factions to "Samuel Streamer level." The *filled roster* is `faction_roster_v2.md`. |
-| `Custom_World.md` | Living playbook for authoring storytelling-centric worlds, reverse-engineered from Samuel Streamer's configs. |
-| `outer_rim_cherrypick_list.md` | Concrete def shopping-list for the custom 1.6 Outer Rim sub-mod (Task A). |
-| `sw_ingredients_inventory.md` | Inspiration-only ingredient inventory of the six non-1.6 SW faction mods (⚠️ DO NOT LOAD) + the triage that feeds `outer_rim_cherrypick_list.md`. |
-| `carbonite_trophy_mod.md` | Design for a custom (cooler-than-donor) carbonite mod. Its **CANONICAL SPEC** section owns the concrete numbers ("Class 3 Carbon Freezing Chamber" station, freeze inputs, black-monolith Slab, thaw debuff, furniture placement + storage rack); the **implementation-architecture** section owns the class/def/JobDriver structure. |
-| `Factory_lore.md` | **Player-wisdom operating guide for VFE-Factory** (compiled 2026-08-06, fully sourced [S1]–[S10]). The definitive "how to actually run this mod" reference: the modular 8-cell campus architecture, per-machine footprints + input/output counts + optimization notes, conveyor/filter/hopper rules and their known limitations (no priority splitter, steel clogs, chemfuel-network unevenness), the booster/heatsink thermal spine (9.9-tile radius, 3 boosters→500%, 4 heatsinks→−25% each), build order, failure-mode table, and capability checklist. Distinct from `required_mods.md` (which owns the *adoption decision* + anti-exponential restrictions) — this owns *layout/operation craft*. Directly feeds the deck-plan (`ship_deck_plan.md`). **§11 (2026-08-07) owns the #15-hull interior craft across three passes: §11.1 fit-check evidence (every rim pod holds its real machine set at true footprints, 101+ tiles headroom); §11.2 systems/flow skeleton (ring corridor, causeway, pod airlocks, 9.9-tile-verified thermal spine, 7 filtered belt trunks); §11.3 the buildable build sheet (machines re-packed with 1-tile aisles, factory-floor apron, 100% of hoppers seated, belt-to-machine stubs, thermal re-verified at worst 7.51 tiles). Tooling: `player_maps/{interior_fit,skeleton_15,render_skeleton,build_sheet_15,render_build_sheet}.py`.** |
-| `ship_deck_plan.md` | **The hulk-ship deck plan + repair-progression design** (deep-think 2026-08-06). Owns the **campus-cells→ship-wings map**, the **heat doctrine** (open holes vent early → sealing forces active cooling), and the **repair-as-progression gate** (7-phase restoration table enforcing the anti-exponential pillar), all bounded by the verified **2,000-tile substructure cap** (~1,850 used, ~150 headroom). The hull silhouette **[DECIDE B] is RESOLVED → #15 "Falcon Halo (hollow)"** (topology owned by `ship_designs.md`); consumes `Factory_lore.md` (layout craft) + the substructure math; still carries open decisions **[DECIDE A, C, D, E]**. The one true blocker (authoring a large pre-broken start save) routes to `save_authoring_pipeline.md` + `first_live_access.md`. |
-| `ship_distinctive_features.md` | **The Kolyska's identity layer** (2026-08-07) — the aesthetic/narrative/light-mechanical touches that make the ship feel specific. Owns 8 [ACCEPTED] features (carbonite reliquary dead, engine-is-god, asymmetry-as-identity, the dead prong, running-lights-as-repair-progress-bar, per-pod trade shrines, hammocks-among-the-machines→religion, external glowing heat vents) + a parked [IDEA] pool + the **distinctive-ship mod research** (Fetcher 2026-08-07): Q1 no non-LLM talkable-AI mod exists→keep SpeakUp+CQF+persona-core; Q2 graffiti/signs = Signs&Comments Continued + Graffiti Mod Continued; Q3 holograms = EGI Holograms&Projectors + Afterlife: Ghosts of the Rim. Distinct from `ship_deck_plan.md` (topology/heat/repair-gates) and `Factory_lore.md` §11 (buildable interior). |
-| `llm_voice_preauthoring.md` | **Paste-ready LLM voice prompts** (created 2026-08-08). Owns the actual install-time text for the two adopted LLM voice mods: PART A = RimAI Persona for the Kolyska machine-spirit ("Cradle-Mind" identity/worldview/backstory, anti-exp refusal in-voice, voice-only); PART B = RimDialogue "Additional Instructions" Jawa-scoped dynamic-Jawaese prompt + the A/B-vs-JawaVoice comparison table + scope/model-quality install checks. Consumes `ship_distinctive_features.md` (§Q1-bis adopt-both decision), `jawa_dialogue_source_audit.md` (Grade-A Jawaese), `jawa_xenotype_and_religion.md` (ideoligion voice). The two in-situ forks stay open by design. |
-| `save_authoring_pipeline.md` | How we hand-craft the world by editing `.rws`/def files directly, grounded in the Gravtasm save teardown. |
-| `first_live_access.md` | **Day-one runbook**, reframed 2026-08-09 to the user's **three-phase build plan**: **Phase A** = prove the live-LLM bridge (Ollama and/or Claude) on a *stock vanilla world* with RimBridge — a research spike whose deliverable is reusable agents/skills/patterns, not a save; **Phase B** = load the full mod stack (ours + favorites) just to confirm it runs, make a real save, and export **one giant live inventory** of every def/item/creature/faction to study together (live-via-bridge preferred, offline shortHash→defName Def-index scan as backstop); **Phase C** = only then decide how to adapt the design into a playable game. Carries the **shadow-mode default** (satiation engine reports what it WOULD do before live injection is flipped on). Distinct from `setup_checklist.md` (in-game scenario decisions). |
-| `rimworld_file_lore.md` | Self-teaching technical manual for editing RimWorld save/scenario/def XML — file structures, safe-vs-fragile regions, gotchas. |
-| `rimbridge.md` | Living context on RimBridgeServer (live in-game modification pipe — not a content editor). |
-| `RimMaster.md` | Spec for the external RimMaster enrichment agent (save-editing +/or RimBridge). §4b = the phased agent-possibilities catalogue (incl. the 8 religious-observance + HeDiff agents A–H, added 2026-08-08). |
-| `divine_satiation_engine.md` | **Mechanical design for agent G** (created 2026-08-08): per-god satiation + fickle-Mood vector, no drift-to-baseline (event-driven), 3 input channels per god (ambient / costly-lever / extreme-band), whole-pantheon ritual scoring, contextual PC-death, ghost-as-divine-actor hypothesis. Consumes `jawa_xenotype_and_religion.md` §2.0b (pantheon canon); feeds agents A/H/C/F/D. |
-| `resource_terrain_matrix.html` / `biome_roster_for_review.html` | Rendered review views (resource×terrain matrix; biome roster). |
-
-## Subfolders
-
-| Path | Contents |
-|---|---|
-| `worldbuilding/` | Fiction + design docs (see Directory layout above). |
-| `mods/` | Mod decisions + `mods/mod_sources/` audit tree (see Directory layout above). |
-| `runtime/` | Run-time apps/agents + authored custom mods (see Directory layout above). |
-| `promo/` | Promotional/pitch material — reserved, currently empty. |
-| `samuel_streamer_study/` | Downloaded Samuel Streamer mod-lists/configs + the technique/theme analysis they feed. |
-| `Utils/` | Tooling: Jawa-voice builder, save-inspection scripts, the LLM-in-the-loop map-improver. Writes JawaVoice output to `../custom_patches/JawaVoice`. |
-| `player_maps/` | Authored player-map plans + loop reports (coastal_mesa v1–v3). |
-| `custom_patches/` | Our authored 1.6 mods: JawaVoice (built) + Jawa_Patches. Built by `Utils/build_jawavoice.py`. |
-| `hand_authored_maps/` | Study library of downloaded `.rws` maps (payloads gitignored; README manifest tracked). |
-| `savegame/` | The Gravtasm reference `.rws` and related saves. |
-| `mod_sources/` | → moved to `mods/mod_sources/` (gitignored extracted mod trees, audited during design). |
+| **`CLAUDE.md`** | **Standing operating rules, auto-loaded every session.** The actual entry point. Kept short by design. |
+| **`STRUCTURE.md`** | This file. What exists, who owns what, what kind it is. |
+| **`concept.md`** | The one-page orientation: premise, pillars, sanctioned mechanics. The elevator pitch. |
+| **`NEXT_RELOAD.md`** | 🔄 **The shared queue for the next game load.** A cold load costs ~23–30 min and is the project's scarcest resource. Any thread may append. Work the pre-flight list before launching; harvest and clear after. |
+| **`REFRESH.md`** | 🔄 What to re-run after changing the mod list. Every generated artefact is a snapshot of one mod set; stale data still answers questions, which is worse than missing data. |
+| **`skills/rimworld-modding/`** | The modding skill — XML PatchOperations, custom Defs, C#/Harmony, load order, `Player.log` triage. `SKILL.md` + `references/{traps,patch-operations,csharp-and-loading}.md`. **Load it before writing into any mod folder**; RimWorld XML has silent-failure modes. |
 
 ---
 
-## Ownership rules (to prevent drift)
-- **Race inventory** → `cherry_picker_killlist.md` §2. Everyone else points to it.
-- **Cherry-pick strip lists** (VFE-Insectoids 2, VGE) → `forbidden_mods.md`. `required_mods.md` carries only a pointer + summary.
-- **Dark-biome / fog / timer-pause mechanic** → `desert_world_design.md`. Palette table stays in `biome_terrain_palette.md`; Workshop IDs in `required_mods.md`; in-game checks in `setup_checklist.md`.
-- **THE FORCE / VPE NPC-only decision** → `required_mods.md` (~428–436), with `forbidden_mods.md` stating the player-side ban + exception and `faction_roster_v2.md` §"Global system 5" giving the one-liner.
-- **§19 enemy-danger thesis** → `Gravship_Campaign_Planning_Discussion_2026-08-02.md`.
+## 2. Owner docs (📜) — the single source of truth, by domain
 
-## Recently removed (recover from git if needed)
-`Gravship_Campaign_Design_Notes.md`, `resource_catalogue.md`, `candidate_factions.md`, `faction_dossiers.md`, `in_game_verification_checklist.md`, `races.md` — all folded into the owners above on 2026-08-05/06.
+### Mods and the load set
+
+| File | Owns |
+|---|---|
+| `mods/required_mods.md` | **The adopted-mod list** + every per-mod restriction/config. Also owns the **THE FORCE system** (NPC-only VPE), the four-axis terrain verdicts, and the Faction Territories spec. |
+| `mods/forbidden_mods.md` | **The anathema list** — banned mods/categories, each tagged with the pillar it violates. Owns the **7-question test**, the **player-psycasting ban** + its NPC-only exception, and the VFE-Insectoids 2 / VGE strip-and-keep lists. |
+| `mods/cherry_picker_killlist.md` | **§2 owns the race inventory** — which Star Wars races we actually have. Also the master Cherry Picker cull list. Scale and appearance are owned separately: see the atlas below. |
+| `mods/benign_log_errors.md` | **Log errors that are safe to ignore**, each traced to root cause. §0 owns the triage method. Read it before investigating any red text. |
+| `mods/armoury_keeplist.md` | The proposed weapon roster, drafted from the live 674-weapon dump. Follows `setting_physics.md`. |
+| `mods/world_interest_and_mech_danger.md` | ~15 mech-danger / world-interest mod verdicts. |
+| `mods/outer_rim_cherrypick_list.md` | Def shopping-list for the custom 1.6 Outer Rim sub-mod. |
+| `mods/def_override_clusters.md` | Contested defNames across the stack. Backlog note, not an investigation. |
+
+### The world and the fiction
+
+| File | Owns |
+|---|---|
+| `worldbuilding/desert_world_design.md` | The desert world. The **four-axis terrain schema**, the **dark-biome / fog ruling + the LOCKED "dark tiles pause the orbital timer" mechanic**, and §3F pre-placed hazards. |
+| `worldbuilding/setting_physics.md` | **The physical laws of this universe** — the constitution every balance decision derives from. |
+| `worldbuilding/balance_paradigm.md` | **Why we would change any number.** The decision framework for normalising/cutting/re-skinning the stack. Paradigm, not a work order. |
+| `worldbuilding/faction_roster_v2.md` | The **10-NPC faction roster**: dossiers, relations matrix, racial spawn tables. Owns faction *casting*. |
+| `worldbuilding/faction_authoring_mechanism.md` | The *method* for building differentiated factions. The filled roster is `faction_roster_v2.md`. |
+| `worldbuilding/jawa_xenotype_and_religion.md` | The Jawa xenotype + ideoligion. **Part 4 owns the society lore** — slavery/reproduction/aging churn, §4.2 love-gate, §4.2b mood economy. |
+| `worldbuilding/jawa_crew_personas.md` | The five founding colonists (Nekko/Tobb/Griz/Yeku/Wim). |
+| `worldbuilding/jawa_dialogue_source_audit.md` | The source-audited Jawaese corpus. §3 owns the Grade-A canonical palette. |
+| `worldbuilding/biome_terrain_palette.md` | ⚙️-adjacent: the **verified** defName-level biome/terrain inventory. §A6 owns the dark-biome candidates. |
+| `worldbuilding/Alien_Bestiary.md` | The Star Wars naming layer over the VGE creature roster. |
+| `worldbuilding/Livestock_Trade_Utility_Pets_v1.md` | The livestock/pet/companion layer across the whole adopted creature stack. §16 owns the beast trade; §16.5 owns the **slave-block imperative** that `jawa_xenotype_and_religion.md` §4 depends on. _(Moved out of `Utils/` 2026-08-11 — it is design, not tooling.)_ |
+| `worldbuilding/setup_checklist.md` | The ordered scenario-setup checklist. §13 owns the in-game verification battery. |
+| **`worldbuilding/star_wars_species_scale_reference_atlas.pdf`** | 📚 **How big each race is and what it looks like** — 46 species, sourced art, heights normalised to a 1.80 m human. Companion to the §2 race inventory: that owns *which*, this owns *how big*. |
+
+### The ship
+
+| File | Owns |
+|---|---|
+| `ship_designs.md` | Hull silhouette + topology. |
+| `ship_deck_plan.md` | Deck plan + repair progression: the campus→wings map, the **heat doctrine**, the **repair-as-progression gate**, bounded by the 2,000-tile substructure cap. |
+| `ship_distinctive_features.md` | The Kolyska's identity layer — 8 accepted features + a parked idea pool + the distinctive-ship mod research. |
+| `Factory_lore.md` | 📚 **How to actually run VFE-Factory** — machine footprints, conveyor rules, the thermal spine, failure modes. §11 owns the #15-hull interior across three passes. Distinct from `required_mods.md`, which owns the *adoption decision*. |
+
+### Runtime, agents and authored mods
+
+| File | Owns |
+|---|---|
+| `runtime/build_plan.md` | **The execution strategy** — the four-tier allocation rule, the stamp→save→polish resolution, the M0–M5 milestone ladder. |
+| `runtime/first_live_access.md` | The day-one runbook: Phase A prove the bridge, Phase B load the stack and inventory it, Phase C adapt the design. Owns the shadow-mode default. |
+| `runtime/RimMaster.md` | The external enrichment agent. §4b owns the phased agent catalogue. |
+| `runtime/rimbridge.md` | RimBridgeServer — the live in-game modification pipe. |
+| `runtime/divine_satiation_engine.md` | Agent G's mechanics: per-god satiation, event-driven, whole-pantheon ritual scoring. Consumes the §2.0b pantheon canon. |
+| `runtime/llm_voice_preauthoring.md` | Paste-ready install-time prompts for the two adopted LLM voice mods. |
+| `runtime/llm_stack_assessment.md` | How far the installed LLM stack gets us without writing code. |
+| `runtime/rimtalk_analysis.md` | RimTalk adoption analysis (written when RimDialogue was delisted). |
+| `runtime/music_protocol.md` | Adding our own music. RimTunes already replaces the vanilla music system — read before authoring SongDefs. |
+| `runtime/carbonite_trophy_mod.md` | The carbonite mod design + its canonical numbers. |
+| `runtime/parked_mod_concepts.md` | Mechanics we liked but are not building yet. A parking lot, deliberately. |
+| `runtime/ollama.md` | Standing up local Ollama on Windows. |
+| `custom_patches/README.md` | **Deployment.** The repo copy is NOT what the game loads — read before testing anything. Owns the `Utils/deploy_custom_mods.py` process. |
+| `image_request/graphic.md` | The Gamorrean head-art commission brief. |
+| `image_request/graphics_overhaul_protocol.md` | The generalised method for overhauling race art ourselves. |
+
+### Technique manuals
+
+| File | Owns |
+|---|---|
+| `save_authoring_pipeline.md` | How we hand-craft the world by editing `.rws`/def files. ⚠️ Must stay at root — `Utils/Savegame_*.py` hard-code `../<file>.md`. |
+| `rimworld_file_lore.md` | Self-teaching manual for RimWorld save/scenario/def XML. ⚠️ Same hard-coded-path constraint. |
+| `worldbuilding/Custom_World.md` | Playbook for authoring storytelling-centric worlds, reverse-engineered from Samuel Streamer's configs. |
+| `mods/cqf_quest_types_explainer.md` | What kinds of quests Custom Quest Framework can build. |
+
+---
+
+## 3. Generated (⚙️) — regenerate, never hand-edit
+
+| File / dir | Produced by |
+|---|---|
+| `mods/live_mod_inventory.md` | **Single source of truth for mod identity** — overrides every such claim elsewhere in the corpus. From `ModsConfig.xml` + every `About.xml`. |
+| `mods/inventory/` | `Utils/animal_inventory.py` — animals CSVs, attacks, life stages, biome map, conflicts, patch watch, contact sheets, `races_crossmod.md`. |
+| `savegame/03_Gravtasm__*.md` | `Utils/Savegame_*.py`. Gitignored. |
+| `player_maps/*_improvement.md`, `*_loop_report.md` | `Utils/loop_run.py` / `map_loop_agent.py`. Run artefacts, not reference docs — regenerate rather than read as history. **Exception:** `player_maps/authored/coastal_mesa_rationale.md` is 📜 hand-written, not generated — it is the worked example of LLM-authored (not algorithmic) map design, and its renderer is only a pen. |
+| `custom_patches/JawaVoice/` | `Utils/build_jawavoice.py`. |
+| `custom_patches/Jawa_Armoury/Patches/` | Its own `Source/*.py` generators. |
+
+`REFRESH.md` says what to re-run and when.
+
+---
+
+## 4. Reference (📚) — imported wisdom, sorted not maintained
+
+Consult when the topic comes up. **Nothing in the project depends on these being current**, and they are not project state. Do not spend effort keeping them fresh.
+
+| File | What it is |
+|---|---|
+| `reference/rimworld_handcrafted_map_atlas.md` | A 2026-08-07 census of the publicly discoverable handcrafted-map scene. _(Moved out of `Utils/` 2026-08-11 — research, not tooling.)_ |
+| `reference/rimworld_map_image_sources.md` | A 2026-08-05 catalogue of sources for RimWorld map imagery. _(Same move.)_ |
+| `samuel_streamer_study/` | Downloaded mod-lists and per-mod configs from Mr Samuel Streamer, plus `02_TECHNIQUE_ANALYSIS.md`. The technique that mattered was already extracted into `Custom_World.md`. |
+| `mods/inspiration/` | Two research dossiers on weapon effects and gadget/utility mods — candidates, not decisions. |
+| `mods/sw_ingredients_inventory.md` | Inspiration-only inventory of six non-1.6 SW faction mods. ⚠️ **DO NOT LOAD** them. |
+| `hand_authored_maps/` | Study library of downloaded `.rws` maps. README manifest tracked; payloads gitignored. |
+
+---
+
+## 5. Ephemeral (🔄) and archive (🗄️)
+
+| File | State |
+|---|---|
+| `NEXT_RELOAD.md` | 🔄 Live queue. Clear it after harvesting a load. |
+| `REFRESH.md` | 🔄 Live protocol. |
+| `HANDOFF_2026-08-10.md` | 🗄️ A single cloud→local session handoff. Superseded by `CLAUDE.md` + this file. **Delete once its open items are confirmed migrated.** |
+| `context.md` | 🗄️ **ARCHIVE — demoted from the spine 2026-08-11.** A chronological log of design conversations (67 headings from 2026-08-02 alone), unmaintained after 2026-08-06. Every load-bearing decision in it has been promoted to an owner doc. Read it for **why**, never for **what is true now**. Do not append. |
+| `mods/concept_defnames.md` | Verified defName vocabulary — but `live_mod_inventory.md` overrides it for mod identity. Keeps the reasoning only. |
+| `mods/github_issue_swcp_bundle.md` | An upstream bug report (issue #7, open) + a correction to it. Close out and delete when resolved. |
+| `custom_patches/JawaIonWeapons/CSHARP_BUILD_SPEC.md` | Build spec for a shipped mod. Retire if the DLL is stable. |
+
+---
+
+## 6. Ownership rules (to prevent drift)
+
+- **Mod identity** (exists? packageId? Workshop ID?) → `mods/live_mod_inventory.md`. It overrides every other doc, including this one.
+- **Race inventory** (which races) → `cherry_picker_killlist.md` §2. **Race scale/appearance** (how big, what they look like) → `star_wars_species_scale_reference_atlas.pdf`.
+- **Cherry-pick strip lists** → `forbidden_mods.md`. `required_mods.md` carries a pointer only.
+- **Dark-biome / fog / timer-pause** → `desert_world_design.md`. Palette → `biome_terrain_palette.md`. Workshop IDs → `live_mod_inventory.md`. In-game checks → `setup_checklist.md`.
+- **THE FORCE / VPE NPC-only** → `required_mods.md`, with `forbidden_mods.md` stating the player-side ban.
+- **§19 enemy-danger thesis** → `Gravship_Campaign_Planning_Discussion_2026-08-02.md` (🗄️ otherwise; that thesis is the live part).
+- **Deploying an authored mod** → `custom_patches/README.md`. The repo copy is not what the game loads.
+- **Log noise** → `mods/benign_log_errors.md` before investigating anything.
+
+## 7. Directory map
+
+| Folder | Contents |
+|---|---|
+| `/` | Spine + the three docs pinned here by hard-coded script paths (`save_authoring_pipeline.md`, `rimworld_file_lore.md`) or pending bucketing (the four ship/factory docs + their images). |
+| `worldbuilding/` | The fiction + design. |
+| `mods/` | Mod decisions, generated inventories, `inspiration/`, and the gitignored `mod_sources/` audit tree. |
+| `runtime/` | Agents, LLM stack, and authored-mod designs. |
+| `custom_patches/` | **Source** for our four authored mods. Deploy with `Utils/deploy_custom_mods.py`. |
+| `Utils/` | Tooling only. Python probes + the deploy script. |
+| `reference/` | 📚 Imported research. Added 2026-08-11. |
+| `skills/` | The `rimworld-modding` skill. |
+| `image_request/` | Art commissions; `seed/` is gitignored third-party reference art. |
+| `player_maps/`, `hand_authored_maps/`, `savegame/`, `samuel_streamer_study/`, `promo/` | Map artefacts, study library, save teardowns, external study, pitch material. |
+
+## 8. Known debt (audit 2026-08-11)
+
+1. **`context.md` (899 lines) and `required_mods.md` (1,357 lines) carry heavy dated-batch narration.** `required_mods.md` has 287 dated lines and three tombstoned sections. Both are hot files; trimming needs a quiet moment and a decision on what counts as load-bearing.
+2. **Four docs still sit at root pending bucketing** — `ship_designs`, `ship_deck_plan`, `ship_distinctive_features`, `Factory_lore` — because a concurrent thread was flagged as owning them. They belong in `worldbuilding/`.
+3. **`HANDOFF_2026-08-10.md` is finished.** Confirm its open items landed, then delete.
+4. **9 `player_maps/` reports are orphaned run artefacts** — nothing references them and they are regenerable.
+
+## 9. Removed (recover from git)
+
+`Gravship_Campaign_Design_Notes.md`, `resource_catalogue.md`, `candidate_factions.md`, `faction_dossiers.md`, `in_game_verification_checklist.md`, `races.md` — folded into the owners above 2026-08-05/06.

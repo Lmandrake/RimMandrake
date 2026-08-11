@@ -5,7 +5,7 @@ Study library of **publicly-distributed, hand-authored RimWorld local maps** —
 blockout → Dev Mode hand-editing → distribute). Reference material for authoring the
 Kolyska campaign's destination tiles to "Tier C — authored expedition level."
 
-Source census: [`../Utils/rimworld_handcrafted_map_atlas.md`](../Utils/rimworld_handcrafted_map_atlas.md).
+Source census: [`../reference/rimworld_handcrafted_map_atlas.md`](../reference/rimworld_handcrafted_map_atlas.md).
 
 ## Acquisition status — ✅ COMPLETE (2026-08-07)
 

@@ -1,6 +1,25 @@
 # RimWorld Gravship Campaign — Running Context
 
-_Last updated: 2026-08-06. This file is kept current as the design conversation evolves so nothing is lost to context compaction._
+> ## 🗄️ ARCHIVE — do not consult this file for current state
+>
+> **Demoted from the canonical spine on 2026-08-11.** This is a chronological log
+> of design conversations, not a specification. Its headings are dated batches
+> (67 of them from 2026-08-02 alone), and it stopped being maintained after
+> 2026-08-06 — only three entries were added in the five days after.
+>
+> **Every load-bearing decision it records has been promoted into an owner doc**
+> (`required_mods.md`, `forbidden_mods.md`, `desert_world_design.md`,
+> `faction_roster_v2.md`, `jawa_xenotype_and_religion.md`, …). Those own the
+> current state; this owns only the story of how we got there.
+>
+> Read it when you need to know **why** a decision was made and the owner doc
+> does not say. Never read it to find out **what is true now** — where the two
+> disagree, the owner doc wins and this file is simply out of date.
+>
+> Do not append to it. New decisions belong in the owner doc, and the reasoning
+> that matters belongs there too.
+
+_Historical header, kept as written: "Last updated: 2026-08-06. This file is kept current as the design conversation evolves so nothing is lost to context compaction."_
 
 ## Directory
 - Lives at `~/GDrive/Personal/Rimworld/`.
