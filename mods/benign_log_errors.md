@@ -750,9 +750,16 @@ owns the slavery/reproduction/aging-churn economy. If parent-chance calculation
 is being handed swapped genders, that pillar is resting on arithmetic nobody has
 checked. Worth a decision before relying on reproduction mechanics.
 
-Note also `modsconfig_audit.md` §5: the romance stack is half-assembled — the two
-Intimacy mods are ON while **Way Better Romance**, which the docs call the
-backbone, is OFF. This finding strengthens that open item.
+**Update 2026-08-11 — the half-assembled-romance-stack concern is resolved.** An
+older audit recorded the Intimacy mods running without **Way Better Romance**,
+the backbone. Re-checked against `ModsConfig.xml`: Way Better Romance is now
+**ACTIVE**, alongside Intimacy — Socio Butterfly, Friends n' Lovers and Gender
+Works, plus Romance & Intimacy On The Rim and Romance On The Rim. The stack is
+assembled.
+
+That makes the gender-swap finding above **more** urgent rather than less: six
+interacting romance/reproduction mods are live, so whatever is mishandling
+`genderPrerequisite` now sits underneath a much larger system.
 
 ### 4d.4 Smaller notes
 

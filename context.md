@@ -909,9 +909,11 @@ Gas is high-value carried-off fuel and trade goods, never a survival staple — 
 profile as the fossil/amber deposits (§3D(4)) and the oasis well. It earns its place by
 giving those tiles a reason to be visited that is not "more ore."
 
-**⚠️ NOT INSTALLED.** Absent from the Workshop tree entirely, not merely disabled, so it
-cannot be enabled in ModsConfig until Steam has downloaded it. Subscribe first.
+**✅ INSTALLED AND ACTIVE** (verified 2026-08-11). It was absent from the Workshop
+tree on 2026-08-10; it has since been subscribed and enabled. The install gate is
+closed — what remains is the *design* work in `required_mods.md`, chiefly
+stripping buildability from the pump/extractor so the gas can only ever be found,
+never manufactured.
 
 **Recorded in:** `required_mods.md` (authoritative entry + install gates),
-`desert_world_design.md` §3B(5) (design home), `concept_defnames.md` (identity),
-`modsconfig_audit.md` §4 (subscribe list).
+`desert_world_design.md` §3B(5) (design home), `concept_defnames.md` (identity).
