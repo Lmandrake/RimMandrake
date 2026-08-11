@@ -432,6 +432,67 @@ default RimWorld run produces.
 disaster must be *legible in hindsight* — the player should be able to say why
 it happened. Randomness we cannot explain is just noise, and noise is not story.
 
+### Axis 18a — The opening tier: what the Jawa can make on day one
+
+**Rule: the crew begins able to make junk, and the SHIP is what unlocks
+everything else.**
+
+This is the campaign's central novelty and it should be felt in the first hour.
+Jawas are not manufacturers — they are **resellers**. Inheriting a Factory
+gravship is an *unprecedented* situation for them, and the opening tier has to
+make that legible by being genuinely meagre.
+
+**Craftable from the start, at their own workstations:**
+- **Makeshift weapons** — pipe guns, improvised kinetics (the VWE Makeshift tier).
+- **Some melee** — blades and tools pressed into service.
+- **Basic ion weaponry.** This is the Jawa *signature*, and it is doing three
+  jobs at once: it is the one thing they can build themselves, it is the weapon
+  that takes machines **intact** rather than destroying them (L17), and taking
+  things intact is the entire scavenger economy. Faction identity, starting
+  tech and economic doctrine landing on one weapon is as coherent as this design
+  gets.
+
+**Everything else is earned:** bought, looted, or unlocked by restoring a
+Kolyska subsystem. The ship is the tech tree; the crew is not.
+
+**Rare tools are KEYS, not upkeep.** A small number of specific tools gate
+specific actions — a fusioncutter to open a sealed pod, a hydrospanner to
+restore a subsystem. They are quest gates, not a maintenance tax. Requiring
+tools for ordinary work adds micromanagement rather than story, and the campaign
+already carries scarcity pressure from Axis 18d (everything decays). Tools
+should be **legibility plus keys**: you can see which Jawa is the engineer, and
+occasionally only she can open the door.
+
+### Axis 18b — Droids: repair the body, scavenge the mind
+
+**Rule: parts are manufacturable; minds are not.**
+
+The creed is *"we give the second hand to what others discarded; we do not breed
+new hands."* Rendered mechanically:
+
+| layer | rule |
+|---|---|
+| **Droid parts** — arms, legs, reactors, sensors, shielding, fluid reprocessors | **craftable**, in the existing Makeshift → standard → Advanced tiers |
+| **Droid chassis / whole droids** | **not** manufacturable |
+| **Droid brain** | **rare loot only** — battlefield salvage, quest reward, trade |
+
+The parts economy already exists and is already tiered exactly right: Outer Rim
+Droid Depot ships `OuterRim_DroidArm_Makeshift` / `_Advanced`,
+`OuterRim_DroidReactor_Makeshift` / `_Advanced`, plus legs, sensors, damage
+shielding and fluid reprocessors. That maps onto Axis 18a without any authoring
+— **makeshift parts on day one, advanced parts once the ship wakes up.**
+
+**The brain is the gate, and L17 makes it scarce for free.** Machines detonate
+when destroyed, so a brain recovered intact is a genuine prize rather than
+loot-table filler. Killing a battle droid usually destroys what you wanted;
+**disabling it with ion does not.** The scarcity is not a spawn-rate tuned in a
+config — it is a consequence of how this galaxy's engineering works, and the
+player can *act* on it by changing weapon.
+
+This also gives the Free Droid Enclaves their treasure: for them, wealth is
+**parts and memories**, not silver — and "the neutral droids taught us to tend
+our own" is a quest reward that hands over technique, not a factory.
+
 ### Axis 19 — Failure should be interesting
 
 **Rule: losing produces a story, not a reload.**
