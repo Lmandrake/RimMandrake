@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ============================================================================
+  JawaEyeGlow_Stock.xml                      Jawa_Patches · authored 2026-08-11
+  ============================================================================
+
+  Companion to Defs/GeneDefs/JawaEyeColours.xml. That file gives our two
+  authored eye genes a glow texture and a glow shader; this gives the SAME
+  treatment to the stock gene BTD_Jawa also carries, so all three roll results
+  match instead of one of them staying flat.
+
+      Jawa_Eyes_HugeOrange     MoteGlow              (ours, in the GeneDef)
+      Jawa_Eyes_HugeAmber      MoteGlowPulse         (ours, in the GeneDef)
+      guy762_Eyes_HugeYellow   TransparentPostLight  (here)
+
+  Three shaders on purpose. One game load compares all three side by side, since
+  the engine picks one gene per pawn and BTD_Jawa lists all three. Spawn twenty
+  Jawa and roughly a third will wear each treatment.
+
+  TransparentPostLight draws after the lighting pass, so the eyes hold full
+  brightness in pitch dark without being additive. It is the conservative
+  option and the expected fallback if the two Mote shaders misbehave on a pawn
+  render node, which is not what they were written for.
+
+  ⚠️ THIS EDITS ANOTHER MOD'S GENE. guy762_Eyes_HugeYellow belongs to Star Wars
+  Xenotypes and is not Jawa-only, so any other xenotype carrying it also gets
+  the glow. Checked against the resolved load set: it appears on BTD_Jawa and
+  guy762_xenotype_jawa and nothing else, so the blast radius is Jawa either way.
+  If a future update spreads it wider, this becomes a wider change.
+
+  The texture swap is the load-bearing half. The donor art is flat (255,255,0)
+  across the whole ellipse, so a <color> tint can only ever produce flat paint.
+  jawaeyes_glow.png regrades the interior to a white-hot core with a rim at 62%,
+  and because gene tinting MULTIPLIES, the core resolves to the full saturated
+  colour and the rim resolves dark. That gradient is what reads as emission.
+
+  SAFETY AND LOAD ORDER
+  =====================
+  Both ops are conditional on the exact node, so they self-disable if Star Wars
+  Xenotypes restructures the gene. Star Wars Xenotypes is load 545 and
+  Jawa_Patches is 564.
+
+  Two ops rather than one because the gene has a separate render node per eye
+  and each needs its own texPath and shader.
+
+  VERIFY AFTER THE NEXT LOAD
+  ==========================
+    * Spawn ~20 Jawa and compare the three treatments. Pick one; make the other
+      two match it.
+    * Look at them at night and in an unlit room. That is the whole point.
+    * If any reads as a flat white blob, the additive Mote shader is wrong for
+      a pawn node; move that gene to TransparentPostLight.
+  ============================================================================
+-->
+<Patch>
+
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/GeneDef[defName="guy762_Eyes_HugeYellow"]/renderNodeProperties/li[1]/texPath</xpath>
+    <match Class="PatchOperationSequence">
+      <operations>
+        <li Class="PatchOperationReplace">
+          <xpath>/Defs/GeneDef[defName="guy762_Eyes_HugeYellow"]/renderNodeProperties/li[1]/texPath</xpath>
+          <value>
+            <texPath>JawaEyes/jawaeyes_glow</texPath>
+          </value>
+        </li>
+        <li Class="PatchOperationAdd">
+          <xpath>/Defs/GeneDef[defName="guy762_Eyes_HugeYellow"]/renderNodeProperties/li[1]</xpath>
+          <value>
+            <shaderTypeDef>TransparentPostLight</shaderTypeDef>
+          </value>
+        </li>
+      </operations>
+    </match>
+  </Operation>
+
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/GeneDef[defName="guy762_Eyes_HugeYellow"]/renderNodeProperties/li[2]/texPath</xpath>
+    <match Class="PatchOperationSequence">
+      <operations>
+        <li Class="PatchOperationReplace">
+          <xpath>/Defs/GeneDef[defName="guy762_Eyes_HugeYellow"]/renderNodeProperties/li[2]/texPath</xpath>
+          <value>
+            <texPath>JawaEyes/jawaeyes_glow</texPath>
+          </value>
+        </li>
+        <li Class="PatchOperationAdd">
+          <xpath>/Defs/GeneDef[defName="guy762_Eyes_HugeYellow"]/renderNodeProperties/li[2]</xpath>
+          <value>
+            <shaderTypeDef>TransparentPostLight</shaderTypeDef>
+          </value>
+        </li>
+      </operations>
+    </match>
+  </Operation>
+
+</Patch>
