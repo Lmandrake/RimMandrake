@@ -19,6 +19,55 @@ thing an offline `Defs/` scan structurally cannot do.
 | `shortHashCandidate` is a guess | the true `shortHash`, collisions already bumped by the game |
 | `statBases` holds only explicitly-declared values | `GetStatValueAbstract` — the value the game actually uses |
 | biome×animal reconstructed from two directions, conflicts inferred | `biomeAnimals`, already merged by the engine |
+| "is this a weapon?" must be guessed from XML shape | the `is` block — the engine's own computed answer |
+
+### The `is` block — authoritative classification
+
+Every `ThingDef` in the generic dump carries an `is` object holding the engine's
+*computed* category properties: `weapon`, `meleeWeapon`, `rangedWeapon`,
+`apparel`, `medicine`, `drug`, `stuff`, `ingestible`, `corpse`,
+`buildingArtificial`, `plant`, `frame`, `blueprint`, `minifiable`,
+`everHaulable`, the coarse engine `category`, and — when the def is a pawn —
+`pawn`, `animal`, `humanlike`, `toolUser`, `mechanoid`, `flesh`.
+
+This matters because **none of these is an XML field**. `ThingDef.IsWeapon` is
+C# logic. An offline scan can only approximate category membership from shape,
+and those approximations disagree with the game at the margins. Without this
+block those disagreements surface as phantom `live_only` / `offline_only` rows
+that are the classifier's fault rather than the game's — the fastest way to
+train someone to ignore a report.
+
+With it, the offline classifier can be **calibrated** against ground truth, and
+any residual mismatch is reported as its own status instead of being mistaken
+for a content change. Each flag is read defensively: a mod can make a computed
+property throw, and a classifier that dies on one bad def is worse than useless,
+so a failure is recorded as `<failed:Exception>` rather than propagated.
+
+## It is live-only, and it cannot be otherwise
+
+This mod reads **only** the in-memory `DefDatabase` and `LoadedModManager`. It
+never scans `Defs/` or any mod folder. The only filesystem calls are reading the
+marker file and writing the output.
+
+That is not just a scoping choice — the engine forecloses the alternative.
+**RimWorld 1.6's `Def` has no `fileName` field** (verified against
+`Assembly-CSharp.dll`, 2026-08-10): once a def is loaded, the runtime object has
+no memory of which XML file it came from. `modContentPack` survives, so the
+finest provenance available live is **which mod won**, never which file or
+xpath.
+
+So the two-tool split is forced, not arbitrary:
+
+| Question | Answer from |
+|---|---|
+| Which mod won this def? | live dump |
+| Which *file* and *xpath* do I patch? | offline scan only |
+| What did the patch actually do? | the diff of the two |
+
+`manifest.json` records each mod's `RootDir` and load order, so you can go
+live → mod → disk. Getting from there to the specific file still needs the
+offline scan. This is why `animal_inventory.py` is not superseded by this tool
+and should not be retired.
 
 ## Safety posture
 
@@ -113,9 +162,11 @@ risky components are tested standalone against the real source files:
   containers, hostile strings incl. lone surrogates and control chars,
   non-finite doubles, deep nesting, value round-trip). Every document is
   validated with `System.Text.Json`.
-- **`DefReflector`** — 22 checks against stub types reproducing each hostile
+- **`DefReflector`** — 31 checks against stub types reproducing each hostile
   shape above: reference cycles, Def-keyed dictionaries, Unity types, throwing
-  enumerables, oversized sequences, depth caps.
+  enumerables, oversized sequences, depth caps, plus the `is` block (flags
+  accurate, absent for non-ThingDefs, pawn flags only when `race` is present,
+  and a throwing computed property contained rather than fatal).
 
 Both suites live in the session scratchpad and compile the mod's real source
 files directly, so they cannot drift from what ships.

@@ -112,8 +112,20 @@ namespace RimDefDump
         private static StreamWriter Open(string path)
         {
             // No BOM: the Python side reads these with plain utf-8.
-            return new StreamWriter(path, false, new UTF8Encoding(false));
+            // Buffered generously — these files are hundreds of MB and the
+            // write is a measurable slice of a load nobody wants lengthened.
+            return new StreamWriter(path, false, new UTF8Encoding(false), 1 << 20);
         }
+
+        /// <summary>
+        /// Indentation costs roughly a third of the file on data this deeply
+        /// nested, and nothing reads these by eye — they are consumed by
+        /// Utils/animal_live_diff.py. manifest.json is the exception: it is
+        /// small and IS read by humans, so it stays pretty-printed.
+        /// Pretty-print any of the others on demand with:
+        ///     python -m json.tool &lt; defs/ThingDef.json
+        /// </summary>
+        private const bool IndentBulkFiles = false;
 
         // ------------------------------------------------------------------
         // manifest.json — what this dump is a photograph OF.
@@ -152,7 +164,11 @@ namespace RimDefDump
                 {
                     ModContentPack m = mods[i];
                     w.StartObject();
-                    w.Prop("loadOrder", i);
+                    // 1-BASED, deliberately. rimworld_loadset.py, animals.csv
+                    // and def_inventory.py all number the load order from 1;
+                    // emitting the raw 0-based list index here would plant an
+                    // off-by-one in every offline/live join.
+                    w.Prop("loadOrder", i + 1);
                     w.Prop("name", DefReflector.SafeString(m.Name));
                     w.Prop("packageId", m.PackageId);
                     try { w.Prop("rootDir", m.RootDir); } catch { }
@@ -190,12 +206,13 @@ namespace RimDefDump
 
             using (StreamWriter sw = Open(Path.Combine(root, "animals.json")))
             {
-                var w = new JsonWriter(sw);
+                var w = new JsonWriter(sw, IndentBulkFiles);
                 w.StartObject();
                 w.Prop("capturedUtc", DateTime.UtcNow.ToString("yyyy-MM-ddTHH:mm:ssZ"));
 
                 // --- animals -------------------------------------------------
                 int nAnimals = 0;
+                int nCorpsesSkipped = 0;
                 w.Name("animals");
                 w.StartArray();
                 List<ThingDef> things = DefDatabase<ThingDef>.AllDefsListForReading;
@@ -205,6 +222,16 @@ namespace RimDefDump
                     RaceProperties race = null;
                     try { race = td.race; } catch { }
                     if (race == null) continue; // same filter as the offline tool
+
+                    // RimWorld GENERATES a Corpse_<X> ThingDef for every race at
+                    // load, and each one carries the same RaceProperties. On the
+                    // first full run they were 2,345 of 4,810 records — 49% of
+                    // the file, every race dumped twice. They also exist in no
+                    // XML anywhere, so they would show up in the offline/live
+                    // diff as thousands of phantom "live_only" rows.
+                    bool isCorpse = false;
+                    try { isCorpse = td.IsCorpse; } catch { }
+                    if (isCorpse) { nCorpsesSkipped++; continue; }
 
                     nAnimals++;
                     w.StartObject();
@@ -296,11 +323,17 @@ namespace RimDefDump
                 w.EndArray();
 
                 w.Prop("animalCount", nAnimals);
+                w.Prop("corpseDefsSkipped", nCorpsesSkipped);
                 w.Prop("biomeCount", biomes.Count);
                 w.Prop("biomeAnimalPairCount", nPairs);
                 w.EndObject();
 
-                Log.Message("[RimDefDump] animals=" + nAnimals + " biomes=" + biomes.Count
+                // Report the skip rather than letting it be a silent filter —
+                // a reader comparing this count against the offline tool needs
+                // to know what was excluded and why.
+                Log.Message("[RimDefDump] animals=" + nAnimals
+                            + " (skipped " + nCorpsesSkipped + " generated corpse defs)"
+                            + " biomes=" + biomes.Count
                             + " biomeAnimalPairs=" + nPairs);
             }
         }
@@ -330,7 +363,7 @@ namespace RimDefDump
                 {
                     using (StreamWriter sw = Open(path))
                     {
-                        var w = new JsonWriter(sw);
+                        var w = new JsonWriter(sw, IndentBulkFiles);
                         w.StartObject();
                         w.Prop("defType", defType.Name);
                         w.Name("defs");

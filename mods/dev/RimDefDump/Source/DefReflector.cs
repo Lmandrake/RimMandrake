@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Reflection;
+using RimWorld;
 using Verse;
 
 namespace RimDefDump
@@ -32,6 +33,27 @@ namespace RimDefDump
         /// <summary>Guard against a runaway lazy sequence hanging the game load.</summary>
         private const int MaxSequenceItems = 4096;
 
+        /// <summary>
+        /// Fields the engine GENERATES at load rather than reading from XML.
+        /// They are derived data, so they tell us nothing about what a mod
+        /// author wrote — and they are enormous.
+        ///
+        /// Measured on the first full run (562 mods, 2026-08-10):
+        /// race.lifeStageWorkSettings is a (workType x lifeStage) cross-product
+        /// that reached 2,212 entries and 185 KB on a single def — about 94% of
+        /// that record. Across the dump it was most of 729 MB of animals.json.
+        /// It never tripped the MaxSequenceItems guard because 2,212 is a
+        /// perfectly ordinary list length; the problem is the number of records
+        /// carrying one, not any single list.
+        ///
+        /// Matched by field NAME, so keep entries specific enough not to
+        /// collide with an unrelated field on another type.
+        /// </summary>
+        private static readonly HashSet<string> SkippedFieldNames = new HashSet<string>
+        {
+            "lifeStageWorkSettings",
+        };
+
         // Reflection is the dominant cost when dumping tens of thousands of
         // defs, so field lists are resolved once per type and cached.
         private static readonly Dictionary<Type, FieldInfo[]> fieldCache = new Dictionary<Type, FieldInfo[]>();
@@ -56,6 +78,7 @@ namespace RimDefDump
                     // Compiler-generated backing fields and closures add noise
                     // without adding information.
                     if (f.Name.IndexOf('<') >= 0) continue;
+                    if (SkippedFieldNames.Contains(f.Name)) continue;
                     if (IsSkippedType(f.FieldType)) continue;
                     keep.Add(f);
                 }
@@ -112,10 +135,84 @@ namespace RimDefDump
                 w.Name("packageId"); w.Null();
             }
 
+            WriteClassification(w, def);
+
             w.Name("fields");
             WriteObjectBody(w, def, 0, maxDepth, new List<object>());
 
             w.EndObject();
+        }
+
+        /// <summary>
+        /// THE reason this tool exists, part 3: authoritative category flags.
+        ///
+        /// "Is this a weapon?" is a COMPUTED property in C# (ThingDef.IsWeapon),
+        /// not an XML field. An offline scan can only approximate it from shape
+        /// — does the def have weaponTags, does it have an apparel node — and
+        /// those approximations will disagree with the game at the margins.
+        ///
+        /// Emitting the real answers turns that disagreement from an invisible
+        /// source of false diffs into something measurable: the offline
+        /// classifier can be calibrated against this, and any residual
+        /// mismatch is reported as its own category rather than being mistaken
+        /// for a content change.
+        /// </summary>
+        private static void WriteClassification(JsonWriter w, Def def)
+        {
+            var td = def as ThingDef;
+            if (td == null) return;
+
+            w.Name("is");
+            w.StartObject();
+            Flag(w, "weapon", delegate { return td.IsWeapon; });
+            Flag(w, "meleeWeapon", delegate { return td.IsMeleeWeapon; });
+            Flag(w, "rangedWeapon", delegate { return td.IsRangedWeapon; });
+            Flag(w, "apparel", delegate { return td.IsApparel; });
+            Flag(w, "medicine", delegate { return td.IsMedicine; });
+            Flag(w, "drug", delegate { return td.IsDrug; });
+            Flag(w, "stuff", delegate { return td.IsStuff; });
+            Flag(w, "ingestible", delegate { return td.IsIngestible; });
+            Flag(w, "corpse", delegate { return td.IsCorpse; });
+            Flag(w, "buildingArtificial", delegate { return td.IsBuildingArtificial; });
+            Flag(w, "plant", delegate { return td.IsPlant; });
+            Flag(w, "frame", delegate { return td.IsFrame; });
+            Flag(w, "blueprint", delegate { return td.IsBlueprint; });
+            Flag(w, "minifiable", delegate { return td.Minifiable; });
+            Flag(w, "everHaulable", delegate { return td.EverHaulable; });
+
+            // Pawn-side flags. race is null for everything that is not a pawn,
+            // so these also encode "is this a pawn at all".
+            RaceProperties race = null;
+            try { race = td.race; }
+            catch { }
+            if (race != null)
+            {
+                Flag(w, "pawn", delegate { return true; });
+                Flag(w, "animal", delegate { return race.Animal; });
+                Flag(w, "humanlike", delegate { return race.Humanlike; });
+                Flag(w, "toolUser", delegate { return race.ToolUser; });
+                Flag(w, "mechanoid", delegate { return race.IsMechanoid; });
+                Flag(w, "flesh", delegate { return race.IsFlesh; });
+            }
+
+            // The coarse engine category (Item / Building / Pawn / Plant / ...).
+            try { w.Prop("category", td.category.ToString()); }
+            catch { }
+
+            w.EndObject();
+        }
+
+        private delegate bool BoolGetter();
+
+        /// <summary>
+        /// These are computed properties, and a mod can make any of them throw.
+        /// A classifier that dies on one bad def is worse than useless, so a
+        /// failure is recorded rather than propagated.
+        /// </summary>
+        private static void Flag(JsonWriter w, string name, BoolGetter get)
+        {
+            try { w.Prop(name, get()); }
+            catch (Exception ex) { w.Prop(name, "<failed:" + ex.GetType().Name + ">"); }
         }
 
         /// <summary>

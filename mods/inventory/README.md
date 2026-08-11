@@ -31,10 +31,20 @@ before the game ever threw it.
 | `conflicts.csv` | 3 | a duplicate (biome, animal) pair — the crash class |
 | `patch_watch.csv` | 1,873 | a PatchOperation whose xpath touches an animal or biome |
 
-**1,243 rows but 1,197 distinct defNames.** The 46-row gap is mods redefining
-each other's animals; the `duplicateDefName` column names every mod involved.
-Last mod in load order wins, so that column is where override surprises live —
-e.g. `Armadillo` is listed as `Beasts of the Rim (Continued) | Odyssey`.
+**1,243 rows = 1,196 distinct defNames + 47 rows with a blank defName.** The 47
+are **abstract base defs** (`<ThingDef Name="AnimalThingBase" Abstract="True">`),
+which carry a `Name` but no `defName`; they are kept because they are what
+inheritance resolves against.
+
+Mod-vs-mod overrides are a *separate* and much smaller thing: exactly **3
+contested defNames** — `Armadillo` and `Penguin` (Beasts of the Rim (Continued)
+vs Odyssey) and `AA_Eyeling` (Alpha Animals vs Alpha Memes). The
+`duplicateDefName` column names every mod involved; last in load order wins.
+
+_(Corrected 2026-08-10. This section previously read "1,197 distinct defNames,
+the 46-row gap is mods redefining each other's animals", conflating abstract
+bases with overrides and overstating the override count by 15×. The
+`duplicateDefName` column was always right; the prose misread it.)_
 
 ## Trust boundary — read before relying on a number
 
