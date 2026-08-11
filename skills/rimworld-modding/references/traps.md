@@ -587,3 +587,70 @@ categories in the same panel. Before treating a heading as a defect, ask whether
 it describes where the mod came from rather than what is wrong with it. The
 useful signal in that screen was the opposite of the alarming one: the mod being
 listed at all proved the local-folder scan path was finally configured right.
+
+---
+
+### Disabling a mod orphaned its add-on's assembly and killed Prepatcher outright
+
+**Symptom:** a dialog before the main menu, and in the log:
+
+```
+Prepatcher Error: Fatal error while reloading:
+  System.Reflection.ReflectionTypeLoadException
+  Could not load type of field
+    VSIERationalTraitDevelopment.SocialInteractionsManager_TryAssignThoughtsAfterRaid
+    +<>c__DisplayClass1_0:__instance' (1) due to: Could not resolve type with token 0100002a
+  at Prepatcher.Process.FreePatcher.FindAllFreePatches (System.Reflection.Assembly)
+  at Prepatcher.Process.FreePatcher.RunPatches
+  at Prepatcher.Loader.Reload
+```
+
+**Cause:** we disabled Vanilla Social Interactions Expanded as a bisect step and
+did not check who depended on it. `Stagz.VSIERationalTraitDevelopment` is a
+*separate* Workshop mod that hard-depends on VSIE, and it stayed active. Its
+assembly still loads, but every type in it references VSIE types that are now
+absent, so `Assembly.GetTypes()` throws `ReflectionTypeLoadException`.
+
+Prepatcher enumerates **every** active mod assembly looking for `[FreePatch]`
+methods. It calls `GetTypes()` on each one and does not guard the call, so a
+single orphaned assembly anywhere in the load set aborts the whole free-patch
+pass. The game then continues loading with **unpatched** assemblies, silently,
+and any mod that expects a Prepatcher-injected field breaks at runtime instead
+of at load. Verified new: the immediately preceding load had `Prepatcher:
+Starting...` and zero Prepatcher errors.
+
+**Fix:** disable the orphaned add-on too. It is inert without its parent anyway.
+
+**Rule — dependency checks run in BOTH directions.** Before disabling mod X, ask
+not only "what does X need" but "**who needs X**". Only the second question
+catches this, and it is the one that gets skipped. The same session had already
+produced the mirror-image near-miss: nearly disabling Interaction Bubbles, which
+would have taken down SpeakUp, which hard-depends on `Jaxe.Bubbles`.
+
+**How to check, before spending a load** — scan `About.xml` of every *active*
+mod (resolve the set with `rimworld_loadset.build_load_set`, never by listing
+folders) for the packageId being disabled, and separately scan the DLL bytes on
+each mod's *resolved content dirs* for the target assembly's name:
+
+```python
+needle = b"VanillaSocialInteractionsExpanded"          # the ASSEMBLY name
+for m in mods:
+    for cd in m['contentDirs']:                        # version-resolved only
+        ad = os.path.join(cd, "Assemblies")
+        ...  if needle in open(dll,'rb').read(): FLAG
+```
+
+Both halves are needed. The About.xml scan found the culprit here; the byte scan
+is what proves nothing *else* is orphaned, and it is the only one that catches an
+undeclared dependency.
+
+**Restrict the byte scan to `contentDirs`.** A mod may ship compatibility
+assemblies it never loads. `Intimacy - Friends n' Lovers` carries
+`Compatibility assemblies/VSIE/Assemblies/VSIECompatibility.dll`, which
+references VSIE and is completely harmless because that path is not a loaded
+content dir. Scanning the whole mod folder reports it as a second orphan and
+sends you to disable a mod that was fine.
+
+**Generalises to:** any framework that reflects over the entire active assembly
+set — Prepatcher, and Harmony `PatchAll` scanners. One broken assembly is not
+contained to its own mod; it takes out the pass that touched it.
