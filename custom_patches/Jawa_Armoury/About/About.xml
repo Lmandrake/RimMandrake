@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ModMetaData>
+  <packageId>mandrake.jawa.armoury</packageId>
+  <name>Jawa Armoury Rebalance</name>
+  <author>Mandrake</author>
+  <supportedVersions>
+    <li>1.6</li>
+  </supportedVersions>
+  <description>Restretches the weapon ladder so the armoury matches the setting's
+physical laws instead of RimWorld's defaults.
+
+The problem it fixes, measured on this exact mod set: the median ranged weapon
+did 12 damage and the median BLASTER did 10 — against a human fist at 8.2. Four
+in five weapons needed three or more hits to drop an unarmoured person, a wooden
+club outperformed a blaster rifle, and a turbolaser did 80, only 1.45x a vanilla
+sniper turret. Everything from fist to capital battery lived inside a 10x range.
+
+What changes:
+  standard blaster    -> 24-34    1-2 shots unarmoured, ~5 vs advanced armour
+  heavy blaster       -> 52-72    deliberately breaks the 5-shot contract
+  slugthrower         -> 18-36    spread wide; the answer to desert megafauna
+  vibro               -> 35-52    the anti-ablative counter
+  lightsaber          -> 80-120   supreme vs flesh (and useless vs vehicle plate)
+  turbolaser          -> 800-2000 two orders above personal weapons
+
+What deliberately does NOT change: ion, stun, EMP, sonic and disruptor weapons
+keep their near-zero damage. The verb IS the weapon — an ion gun that kills is
+just a worse blaster. Explosives are untouched too: blast has no hard counter,
+so it is balanced by scarcity alone.
+
+Relative ordering inside every weapon family is preserved — this restretches the
+ladder, it does not flatten it.
+
+Rationale: worldbuilding/setting_physics.md (the 18 laws) and
+worldbuilding/balance_paradigm.md (why we change any value at all).
+Generated from a live post-patch def dump; load last.</description>
+  <modDependencies />
+  <loadAfter>
+    <li>guy762.starwarskotorweapons</li>
+    <li>Aoba.OuterRim.Core</li>
+  </loadAfter>
+</ModMetaData>

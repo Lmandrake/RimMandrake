@@ -316,6 +316,57 @@ rockets.
 It also protects the armour economy: if missiles were viable, L13's
 no-hard-counter problem would arrive at range and in volume.
 
+#### L13c — …except the SLOW ones. The torpedo exception
+
+The rule above kills the *hypersonic* missile — the guided anti-tank round that
+arrives too fast to be stopped and too fast to get through a screen. It does not
+kill the **torpedo**, and the difference is the whole design.
+
+Run L6 backwards. Shields stop things arriving **fast**; slow things walk
+through. So the surviving warhead in this galaxy is one that **drifts**:
+
+- **It is slow enough to pass a deflector screen** — the same property that lets
+  a rolled grenade under a droid shield (L13a) lets a torpedo through a
+  fortified line. Missiles become the **ranged** anti-shield weapon, where mines
+  are the **emplaced** one.
+- **It is slow enough to be seen, dodged, shot down or walked away from.** That
+  is the counterplay that makes a no-hard-counter weapon (L13) tolerable, and it
+  is why this is not a loophole in L13's scarcity guardrail.
+- **So it is only worth firing at something that cannot move**: an emplacement, a
+  vehicle, a shield generator, a bunkered position, a VAST creature. Against
+  infantry it is a waste — they simply step aside.
+
+That is a torpedo, and it is thoroughly of this fiction: a proton torpedo
+drifting down a trench, a Mandalorian's wrist rocket, an ion torpedo lobbed at a
+walker. **Slow, rare, specialist, aimed at things that cannot dodge.**
+
+#### L13d — And the best ones do not carry damage at all
+
+A slow warhead is a **delivery system**, and what it delivers need not be blast.
+Carrying a *verb* across a battlefield is the thing nothing else in the armoury
+can do (L4, L15, L16):
+
+| warhead | delivers | used on |
+|---|---|---|
+| **ion torpedo** | disable | vehicles, turrets, shield generators — and leaves them salvageable (L17) |
+| **buzz droid** | sabotage that persists | anything mechanical |
+| **net / adhesive** | pin | something too big to stop, briefly |
+| **gas / tox** | area denial | dug-in positions |
+| **EMP burst** | blackout | a shielded strongpoint |
+| conventional blast | damage | the boring one |
+
+**Derives:** the missile stops being a bigger gun and becomes the **only way to
+put an effect somewhere you cannot reach**. That is a distinct tactical role
+nothing else fills, it keeps the weapon rare and specialist rather than a damage
+escalation, and it obeys the anti-exponential pillar: a new option, not a bigger
+number.
+
+**Design consequence for the roster:** cut the hypersonic launchers wholesale —
+they are Earth weapons wearing a new name. Keep a *small* number of slow,
+effect-carrying torpedoes, and give them a faction identity (Mandalorian wrist
+rockets, a Rebel-pattern launcher) so they read as specialist kit rather than
+standard issue.
+
 ### L14 — Vibro-weapons shear; they are the anti-ablative
 
 A vibro-blade oscillates a hardened edge at enormous frequency. It defeats armour
