@@ -769,6 +769,41 @@ backbone, is OFF. This finding strengthens that open item.
 
 ---
 
+## 4e. Race art-variant sweep — CLEAN except the droids (2026-08-10)
+
+After the female-droid magenta-body bug, swept every active mod for the same
+class of gap: a race that ships art for one gender, body shape or life stage but
+not another. **Droid Depot was the only offender, and it is fixed.**
+
+| Check | Result |
+|---|---|
+| Body sprite folders (`<Variant>_<dir>.png`) | 17 total, **11 missing Female** — all Outer Rim Droid Depot, patched |
+| Missing Male (has Female) | **0** |
+| Adult body art with no Child/Baby art | 11 — the same droid folders; droids do not reproduce, so moot |
+| Gendered head sprite-sets | 4 total, **0 gaps** |
+| `ThingDef_AlienRace` defs declaring their own body texture path | **0 of 74** |
+| `Failed to find any textures` across all retained logs | **0** |
+
+**Why 17 folders is not a scan failure.** All 74 HAR alien races reuse vanilla
+human body art, recoloured and rescaled through genes and HAR settings, so they
+cannot have a gender gap. Droid Depot is the outlier because it is not HAR at all
+— its races are `Asimov.PawnDef`, a separate framework, with bespoke body sprites.
+
+⚠️ **Two honest limits on this sweep.**
+
+1. It matches the `<Variant>_<direction>.png` convention. A mod using an entirely
+   different layout would be invisible to it. The corroborating checks above
+   (zero HAR races with custom body paths) are what make the result trustworthy,
+   not the file scan alone.
+2. **Missing-texture errors are lazy.** RimWorld only complains when it actually
+   tries to draw that variant, which is why the droid bug sat undetected until a
+   female droid happened to spawn. So "0 errors in the logs" means *nothing has
+   tried yet*, not *nothing is missing*. The static scan is the stronger evidence
+   here, and that is the general lesson: for missing-asset classes, scan the
+   files; do not wait for the log.
+
+---
+
 ## 5. The patterns worth remembering
 
 **Hard breaks concentrate in mods that reflect over other mods' types at
