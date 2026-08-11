@@ -100,6 +100,31 @@ so the armoury patches are unaffected. What *does* move:
   against a new xenotype's defs cannot be validated until the dump includes it.
 - `mods/def_override_clusters.md` — new mods mean new contested defNames.
 
+## Debug configurations — do not burn a game load on one
+
+Mods get pulled temporarily to isolate a bug. An artefact rebuilt during that
+window is **accurate but unrepresentative**: it describes a configuration nobody
+intends to play.
+
+Offline artefacts are cheap and self-correcting — `refresh.py` flags them stale
+the moment the mods return — so rebuilding during a debug window costs nothing.
+**The live dump is different.** Do not spend 23 minutes capturing a debug stack:
+
+- it is stale the instant the pulled mods come back,
+- `validate_patch.py --live` will report the missing mods' defs as *"does not
+  exist in the live game"* — a wall of confident false errors,
+- and `refresh.py` will (correctly) refuse to regenerate patches from it.
+
+Record the reason when you rebuild during one:
+
+```bash
+python Utils/refresh.py --offline --note "VSIE pulled temporarily for debugging"
+```
+
+The note is stored in `GENERATED_FROM.json` and printed on every status run. Six
+months later the hash only tells you the mod set differed; the note tells you it
+was deliberate and temporary.
+
 ## What is currently stale
 
 As of writing, the live dump was already out of date within a day: the mod list

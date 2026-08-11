@@ -98,11 +98,23 @@ def read_stamp():
         return None
 
 
-def write_stamp(fp):
+def write_stamp(fp, note=""):
+    """
+    Record WHICH mod set an artefact came from, and optionally WHY.
+
+    The note matters more than it looks. Mods get pulled temporarily to isolate
+    a bug, and an artefact regenerated during that window is accurate but
+    unrepresentative — it describes a configuration nobody intends to play. Six
+    months later the hash tells you the set differed; only the note tells you it
+    was deliberate and temporary.
+    """
     os.makedirs(INVENTORY, exist_ok=True)
+    payload = {"hash": fp["hash"], "modCount": fp["modCount"],
+               "version": fp["version"]}
+    if note:
+        payload["note"] = note
     with io.open(STAMP, "w", encoding="utf-8") as fh:
-        json.dump({"hash": fp["hash"], "modCount": fp["modCount"],
-                   "version": fp["version"]}, fh, indent=2)
+        json.dump(payload, fh, indent=2)
         fh.write("\n")
 
 
@@ -141,6 +153,8 @@ def status(fp):
     rows = []
 
     st = read_stamp()
+    if st and st.get("note"):
+        print("  stamp note: %s" % st["note"])
     if st is None:
         rows.append(("mods/inventory/*.csv", "never stamped", "REBUILD", "--offline"))
     elif st.get("hash") != fp["hash"]:
@@ -214,13 +228,13 @@ def run(cmd, label):
     return rc == 0
 
 
-def do_offline(fp):
+def do_offline(fp, note=""):
     ok = run([sys.executable, os.path.join("Utils", "animal_inventory.py"),
               "--out", os.path.join("mods", "inventory")], "animal inventory")
     if ok:
         run([sys.executable, os.path.join("Utils", "animal_contact_sheet.py"),
              "--out", SHEETS], "contact sheets")
-        write_stamp(fp)
+        write_stamp(fp, note)
         print("    stamped %s" % STAMP)
     return ok
 
@@ -250,6 +264,11 @@ def main():
     ap.add_argument("--patches", action="store_true",
                     help="regenerate and validate the armoury patches")
     ap.add_argument("--all", action="store_true", help="--offline then --patches")
+    ap.add_argument("--note", default="",
+                    help="record WHY this rebuild happened, e.g. 'VSIE pulled "
+                         "for debugging'. Stored in GENERATED_FROM.json and "
+                         "shown in status. Use it whenever the mod list is "
+                         "deliberately not in its intended shape.")
     a = ap.parse_args()
 
     try:
@@ -260,7 +279,7 @@ def main():
     status(fp)
 
     if a.all or a.offline:
-        do_offline(fp)
+        do_offline(fp, a.note)
     if a.all or a.patches:
         dfp = dump_fingerprint()
         if dfp is None or dfp["hash"] != fp["hash"]:
