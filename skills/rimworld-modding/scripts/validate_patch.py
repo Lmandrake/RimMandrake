@@ -880,9 +880,117 @@ def check_value_shape(op: ET.Element, cls: str, path: str,
             f"<DefName>value</DefName> instead of <li>.")
 
 
+# --------------------------------------------------------------------------
+# the live def index  (optional)
+# --------------------------------------------------------------------------
+# The on-disk Defs are what an author WROTE. They are not what the game HAS:
+# PatchOperations run at load and can create, rewrite or delete defs, and this
+# validator cannot see any of it. That blind spot is why a "0 nodes matched"
+# result has always been ambiguous -- it might be a typo, or it might be a node
+# some other mod creates at runtime, and the checker could only guess by looking
+# for the leaf name in other mods' patch files.
+#
+# A live dump (mods/dev/RimDefDump) removes the guess. With one, "does this def
+# actually exist in the running game" becomes a lookup.
+#
+# STRICTLY OPTIONAL. This script ships as a portable skill and must keep working
+# on a machine that has never produced a dump; without --live every check below
+# is skipped and behaviour is unchanged.
+
+_LIVE_DEFNAME_RE = re.compile(r'"defName"\s*:\s*"([^"]+)"')
+# /Defs/ThingDef[defName="X"]/...  or  /Defs/ThingDef[@Name="X"]/...
+_XPATH_IDENT_RE = re.compile(r'\[\s*@?(defName|Name)\s*=\s*"([^"]+)"\s*\]')
+
+
+class LiveIndex:
+    """defNames present in a live DefDump, or an empty index if none was given."""
+
+    def __init__(self) -> None:
+        self.names: set[str] = set()
+        self.by_type: dict[str, set[str]] = {}
+        self.game_version = ""
+        self.mod_count = 0
+        self.loaded = False
+
+    def has(self, name: str) -> bool:
+        return name in self.names
+
+    @classmethod
+    def load(cls, dumpdir: str) -> "LiveIndex":
+        idx = cls()
+        defs_dir = os.path.join(dumpdir, "defs")
+        if not os.path.isdir(defs_dir):
+            # Tolerate being pointed at the defs/ folder itself.
+            if os.path.basename(dumpdir.rstrip("\\/")).lower() == "defs":
+                defs_dir = dumpdir
+            else:
+                print(f"  (--live: no defs/ under {dumpdir}; live checks skipped)")
+                return idx
+
+        man = os.path.join(os.path.dirname(defs_dir), "manifest.json")
+        if os.path.isfile(man):
+            try:
+                with open(man, encoding="utf-8") as fh:
+                    raw = fh.read()
+                m = re.search(r'"gameVersion"\s*:\s*"([^"]+)"', raw)
+                idx.game_version = m.group(1) if m else ""
+                m = re.search(r'"modCount"\s*:\s*(\d+)', raw)
+                idx.mod_count = int(m.group(1)) if m else 0
+            except OSError:
+                pass
+
+        # Streamed with a carry-over tail: ThingDef.json alone can be several
+        # hundred MB, and a validator that needs a gigabyte of RAM is a
+        # validator nobody runs.
+        for fn in sorted(os.listdir(defs_dir)):
+            if not fn.lower().endswith(".json"):
+                continue
+            deftype = fn[:-5]
+            found: set[str] = set()
+            try:
+                with open(os.path.join(defs_dir, fn), encoding="utf-8",
+                          errors="replace") as fh:
+                    tail = ""
+                    while True:
+                        chunk = fh.read(4 << 20)
+                        if not chunk:
+                            break
+                        blob = tail + chunk
+                        for m in _LIVE_DEFNAME_RE.finditer(blob):
+                            found.add(m.group(1))
+                        # A defName could straddle a chunk boundary.
+                        tail = blob[-256:]
+            except OSError:
+                continue
+            if found:
+                idx.by_type[deftype] = found
+                idx.names |= found
+
+        idx.loaded = bool(idx.names)
+        return idx
+
+
+def xpath_identity(xp: str) -> str | None:
+    """
+    The concrete defName an xpath aims at, if it names one.
+
+    Deliberately returns None for [@Name="X"]. A Name is an ABSTRACT def: an
+    inheritance template that is never registered in the DefDatabase, so a live
+    dump contains none of them by construction. Checking abstracts against a
+    live index reports every correct patch-the-parent operation as a missing
+    def -- which is exactly what this check did on its first run, flagging all
+    three Force_LightsaberBase operations as errors when they were right.
+    """
+    m = _XPATH_IDENT_RE.search(xp)
+    if not m or m.group(1) != "defName":
+        return None
+    return m.group(2)
+
+
 def check_live(to_evaluate, docs, f: Findings,
                scanner: PatchScanner | None = None,
-               own_basename: str = "") -> None:
+               own_basename: str = "",
+               live: "LiveIndex | None" = None) -> None:
     for op, path, xp in to_evaluate:
         cls = short(op.get("Class", ""))
         et_xp = to_elementtree_xpath(xp)
@@ -897,18 +1005,43 @@ def check_live(to_evaluate, docs, f: Findings,
         if cls in ("PatchOperationAdd", "PatchOperationInsert"):
             check_value_shape(op, cls, path, elems, f)
 
+        # A def named in the xpath that does not exist at runtime is broken no
+        # matter how many on-disk nodes matched -- it may have been overridden
+        # away, renamed, or simply mistyped.
+        ident = xpath_identity(xp)
+        if live is not None and live.loaded and ident and not live.has(ident):
+            f.error(f"{path} ({cls}): '{ident}' does not exist in the LIVE game "
+                    f"(checked against a def dump of {live.mod_count} mods). "
+                    f"Typo, renamed def, or lost to an override.\n"
+                    f"              {xp}")
+
         if n == 0:
             if cls in MODIFYING_OPS:
                 leaf = leaf_name(xp)
                 creators = scanner.mods_mentioning(leaf, own_basename) if scanner else []
-                if creators:
+                # With a live dump the old ambiguity is decidable: either the
+                # target really is there at runtime (patch-created, fine) or it
+                # is not (genuinely broken). Without one, fall back to guessing
+                # from other mods' patch files.
+                if live is not None and live.loaded and ident:
+                    if live.has(ident):
+                        f.info(f"{path} ({cls}): 0 nodes on disk, but '{ident}' "
+                               f"EXISTS in the live game - created or completed by "
+                               f"another mod's patch. Load after it.")
+                    else:
+                        f.error(f"{path} ({cls}): 0 nodes on disk AND '{ident}' is "
+                                f"absent from the live game. This operation does "
+                                f"nothing.\n              {xp}")
+                elif creators:
                     named = ", ".join(f"'{c}'" for c in creators[:3])
                     more = f" (+{len(creators) - 3} more)" if len(creators) > 3 else ""
                     f.warn(f"{path} ({cls}): 0 nodes in the on-disk Defs, but "
                            f"'{leaf}' appears in a PatchOperation in {named}{more}. "
                            f"This node is probably CREATED by that mod's patch at "
                            f"runtime, which this validator cannot see. Make sure "
-                           f"your mod loads AFTER it.\n              {xp}")
+                           f"your mod loads AFTER it."
+                           f"{'' if live is None else ' Pass --live to decide this.'}"
+                           f"\n              {xp}")
                 else:
                     f.error(f"{path} ({cls}): xpath matches 0 nodes in the loaded "
                             f"Defs. This operation would silently do nothing.\n"
@@ -963,7 +1096,8 @@ def collect_patch_files(targets: list[str]) -> tuple[list[str], list[str]]:
 
 
 def validate_file(path: str, docs, scanner: PatchScanner | None,
-                  have_defs: bool, quiet: bool) -> tuple[int, int, int]:
+                  have_defs: bool, quiet: bool,
+                  live: "LiveIndex | None" = None) -> tuple[int, int, int]:
     """Returns (exit_code, n_errors, n_warnings) for one patch file."""
     f = Findings()
     try:
@@ -986,7 +1120,7 @@ def validate_file(path: str, docs, scanner: PatchScanner | None,
 
     if have_defs:
         if docs:
-            check_live(to_evaluate, docs, f, scanner, os.path.basename(path))
+            check_live(to_evaluate, docs, f, scanner, os.path.basename(path), live)
         else:
             f.warn("no def files found under the given --defs paths; "
                    "live xpath checks skipped")
@@ -1017,6 +1151,14 @@ def main() -> int:
                     help="scan every version folder of every installed mod, "
                          "active or not (the old unscoped behaviour). Inflates "
                          "match counts; use only for deliberate audits.")
+    ap.add_argument("--live", default=None, metavar="DUMPDIR",
+                    help="a live def dump (the DefDump folder written by "
+                         "RimDefDump, containing defs/ and manifest.json). "
+                         "Turns 'does this def exist in the running game' from "
+                         "a guess into a lookup: catches typos, renamed defs "
+                         "and defs lost to an override, and decides whether a "
+                         "0-match xpath is patch-created or simply broken. "
+                         "Optional - everything works without it.")
     ap.add_argument("--quiet", action="store_true",
                     help="suppress info lines")
     args = ap.parse_args()
@@ -1043,10 +1185,22 @@ def main() -> int:
         docs, mods = build_load_set(args.defs, mods_config, args.all_versions)
         scanner = PatchScanner(mods)
 
+    live: LiveIndex | None = None
+    if args.live:
+        live = LiveIndex.load(args.live)
+        if live.loaded:
+            print(f"live dump: {len(live.names)} defNames across "
+                  f"{len(live.by_type)} def types"
+                  + (f", RimWorld {live.game_version}" if live.game_version else "")
+                  + (f", {live.mod_count} mods" if live.mod_count else ""))
+        else:
+            print("live dump: nothing usable found; live checks skipped")
+
     total_err = total_warn = 0
     for p in files:
         print(f"\n=== {p} ===")
-        _rc, ne, nw = validate_file(p, docs, scanner, bool(args.defs), args.quiet)
+        _rc, ne, nw = validate_file(p, docs, scanner, bool(args.defs), args.quiet,
+                                    live)
         total_err += ne
         total_warn += nw
 

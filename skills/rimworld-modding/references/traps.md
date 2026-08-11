@@ -51,6 +51,37 @@ as SKILL.md §1, applied to the files you write rather than the ones you patch.
 
 ---
 
+### A live def dump answers "does this def exist" — but it contains no abstracts
+_2026-08-11 · adding `--live` to validate_patch.py, and immediately mis-firing_
+
+**Symptom:** the new live-index check reported three errors on a patch that was
+correct: `'Force_LightsaberBase' does not exist in the LIVE game`. All three
+operations were right, and the mod they target works.
+
+**Cause:** `Force_LightsaberBase` is **abstract** — a `Name=` template with no
+`defName`. Abstract defs exist only to be inherited from; RimWorld never
+registers them in the `DefDatabase`. So a live dump, which enumerates the
+DefDatabase, contains **none of them, by construction**. Checking an abstract
+against a live index flags every correct patch-the-parent operation as a missing
+def — and patching the parent is the *right* technique whenever a value is
+inherited (see the entry on inheritance and raw-XML patch ordering).
+
+**Fix:** only check `[defName="X"]` identities against the live index. Skip
+`[@Name="X"]` entirely.
+
+**Generalises to:** **a new data source has a shape, and its absences mean
+something.** The dump does not contain "everything in the game" — it contains
+everything the game *registered*, which excludes abstracts, and (for a partial
+dump) everything not requested. Before validating against any index, ask what
+that index legitimately omits, or the check will confidently report correct work
+as broken. A checker that cries wolf gets switched off, and then it protects
+nothing.
+
+Related: the same asymmetry is why `def_diff.py` buckets `offline_abstract`
+separately instead of reporting abstracts as "missing at runtime".
+
+---
+
 ### An error count is a count of victims, not of causes — abstract bases multiply
 _2026-08-10 · confirming the source of 16 identical unresolved-reference lines_
 
