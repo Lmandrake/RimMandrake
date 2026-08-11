@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ModMetaData>
-  <name>Jawa Ion Weapons (Kolyska)</name>
-  <packageId>kolyska.jawaionweapons</packageId>
-  <author>Kolyska campaign (mandrake)</author>
+  <name>Jawa Ion Weapons (local)</name>
+  <packageId>mandrake.jawaionweapons</packageId>
+  <author>mandrake</author>
   <supportedVersions>
     <li>1.6</li>
   </supportedVersions>
-  <description>Self-contained, industrial-tier Jawa ion armament for the Kolyska run.
+  <description>Self-contained, industrial-tier Jawa ion armament for this run.
 
 A single signature weapon — the Jawa Ion Blaster — plus its own ion damage type and a custom "ion buildup" stun hediff. Design goals:
 - CAPTURE-NOT-KILL: the weapon disables, it does not draw blood. No lethal damage.
@@ -16,7 +16,7 @@ A single signature weapon — the Jawa Ion Blaster — plus its own ion damage t
 
 The weapon's own gun art is bundled here (Textures/JawaIon/Weapon_JawaIonBlaster.png). For the fired look and sound it reuses Outer Rim - Core's ion bolt sprite and blaster audio, so Core is a required dependency (Core in turn pulls Vanilla Expanded Framework and Tabula Rasa).
 
-The Kolyska_JawaIonStun hediff doubles as the "stun -> down" mechanic the capture pipeline (CPERS: Arrest Here) needs.</description>
+The JawaIon_Stun hediff doubles as the "stun -> down" mechanic the capture pipeline (CPERS: Arrest Here) needs.</description>
   <modDependencies>
     <li>
       <packageId>Ludeon.RimWorld</packageId>

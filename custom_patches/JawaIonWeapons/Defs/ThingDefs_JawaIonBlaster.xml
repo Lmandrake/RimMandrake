@@ -2,13 +2,13 @@
 <Defs>
 
   <!-- ========================================================================
-       PROJECTILE — a low-damage ion bolt. Uses our Kolyska_JawaIon damage
+       PROJECTILE — a low-damage ion bolt. Uses our JawaIon_Damage damage
        (EMP-family, harmsHealth=false). The bolt's job is to (a) EMP-stun
        mechs/droids instantly and (b) deposit Jawa_IonStun buildup on whatever
        it hits so flesh targets are worn down toward a live collapse.
   ======================================================================== -->
   <ThingDef ParentName="BaseBullet">
-    <defName>Kolyska_Bullet_JawaIon</defName>
+    <defName>JawaIon_Bullet</defName>
     <label>ion bolt</label>
     <graphicData>
       <!-- FIXED 2026-08-10. This used to point at
@@ -24,7 +24,7 @@
       <shaderType>TransparentPostLight</shaderType>
     </graphicData>
     <projectile>
-      <damageDef>Kolyska_JawaIon</damageDef>
+      <damageDef>JawaIon_Damage</damageDef>
       <!-- Low base "damage" — with harmsHealth=false this is the EMP/stun
            magnitude, not a wound. Kept small so the gun is not very dangerous. -->
       <damageAmountBase>8</damageAmountBase>
@@ -43,7 +43,7 @@
        (warmup 1.2, range 24/31/42) — we deliberately run SLOWER and SHORTER.
   ======================================================================== -->
   <ThingDef ParentName="BaseHumanMakeableGun">
-    <defName>Kolyska_JawaIonBlaster</defName>
+    <defName>JawaIon_Blaster</defName>
     <label>Jawa ion blaster</label>
     <description>A cobbled-together ion emitter of Jawa make — bound wire, salvaged capacitors, and a scavenged focusing coil. It fires a weak ionic bolt that overloads machines almost at once and, with sustained fire, scrambles a living target's nerves until they simply drop. It cannot kill; it is a tool for taking things (and people) intact. In Jawa hands it is not a weapon of force but of patience, numbers, and good ground.</description>
     <techLevel>Industrial</techLevel>
@@ -69,7 +69,7 @@
       <ComponentIndustrial>3</ComponentIndustrial>
     </costList>
     <recipeMaker>
-      <researchPrerequisite>Kolyska_JawaIonWeaponry</researchPrerequisite>
+      <researchPrerequisite>JawaIon_Weaponry</researchPrerequisite>
       <skillRequirements>
         <Crafting>3</Crafting>
       </skillRequirements>
@@ -79,16 +79,16 @@
       </recipeUsers>
     </recipeMaker>
     <weaponTags>
-      <li>Kolyska_JawaIon</li>
+      <li>JawaIon_Damage</li>
     </weaponTags>
     <tradeTags>
-      <li>Kolyska_JawaIon</li>
+      <li>JawaIon_Damage</li>
     </tradeTags>
     <verbs>
       <li>
         <verbClass>Verb_Shoot</verbClass>
         <hasStandardCommand>true</hasStandardCommand>
-        <defaultProjectile>Kolyska_Bullet_JawaIon</defaultProjectile>
+        <defaultProjectile>JawaIon_Bullet</defaultProjectile>
         <warmupTime>1.9</warmupTime>
         <range>22</range>
         <!-- Outer Rim - Core's blaster-bolt fire sound (Core is a hard dependency). -->

@@ -18,7 +18,7 @@
        and the buildup hediff. We intentionally do NOT re-declare stun fields we
        cannot verify against 1.6 — inheritance handles them. -->
   <DamageDef ParentName="EMP">
-    <defName>Kolyska_JawaIon</defName>
+    <defName>JawaIon_Damage</defName>
     <label>ion</label>
     <deathMessage>{0} was overloaded by ion fire.</deathMessage>
     <harmsHealth>false</harmsHealth>
@@ -33,7 +33,7 @@
          short stun; additionalHediffs should still apply regardless). -->
     <additionalHediffs>
       <li>
-        <hediff>Kolyska_JawaIonStun</hediff>
+        <hediff>JawaIon_Stun</hediff>
         <severityPerDamageDealt>0.03</severityPerDamageDealt>
       </li>
     </additionalHediffs>

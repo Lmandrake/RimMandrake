@@ -22,7 +22,7 @@
        simply disappears as severity decays back to 0.
   ======================================================================== -->
   <HediffDef>
-    <defName>Kolyska_JawaIonStun</defName>
+    <defName>JawaIon_Stun</defName>
     <label>ion buildup</label>
     <description>An accumulating ionic charge disrupting the nervous system (or, in machines, the power bus). As it builds, coordination and awareness fail; enough of it drops the target where they stand. It bleeds off over time if the fire stops.</description>
     <hediffClass>HediffWithComps</hediffClass>
