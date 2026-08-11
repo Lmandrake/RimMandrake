@@ -10,6 +10,7 @@ _A portable reference of defNames, packageIds, and Workshop IDs we've **confirme
 
 ## packageIds (mod identity — for `PatchOperationFindMod` / load checks)
 - `brrainz.harmony` — Harmony ✅
+- `VanillaExpanded.HelixienGas` — Vanilla Helixien Gas Expanded, Workshop `2877699803` 🔎 ADOPTED 2026-08-10, **not yet installed**; re-confirm packageId from About.xml once subscribed
 - `OskarPotocki.VanillaFactionsExpanded.Core` — Vanilla Expanded Framework (VEF Core) ✅
 - `VanillaExpanded.VFEFactory` — Vanilla Furniture Expanded – Factory ✅
 - `vanillaexpanded.gravship` — Vanilla Gravship Expanded (VGE) ✅ _(used as `MayRequire` target by VFE-Factory)_

@@ -358,6 +358,22 @@ Your rule of thumb is working: *any located, finite, non-replicable windfall* ca
 
 ---
 
+### 3B(5). Helixien gas pockets — ✅ ADOPTED 2026-08-10 (Exotic ③, volcanic + deep desert)
+
+**Mod:** Vanilla Helixien Gas Expanded, Workshop `2877699803` (`VanillaExpanded.HelixienGas`). Adoption + full gate list in `required_mods.md`.
+
+A **found** gas pocket is a near-perfect §3B treasure: located, workable, high-value, carried off as fuel, and gone when it's gone. It gives volcanic and deep-desert tiles an Exotic axis that isn't another ore, and it feeds the Jawa trade fiction — bottled fuel is exactly the sort of thing a scavenger caravan sells.
+
+**⛔ It does not ship pillar-clean. One thing must be stripped.** The mod grants *"a single, small but infinite pocket of Helixien gas from game start."* That is a permanent, tile-independent, infinite source — the literal case §2A's guardrail names, and it directly contradicts the reason we adopted it ("we must always keep moving"). An infinite pocket removes the *timer*: you would never need to leave for fuel again.
+
+**Required at install:**
+1. **Remove the infinite starting pocket.** Keep only the finite scanner-found pockets, which the mod itself states "won't be infinite."
+2. **Make the extraction plant non-buildable** if it is constructible — the §3B `<designationCategory>` technique above — so gas is *found*, never *manufactured*.
+
+With both done it collapses into the same profile as the oasis well (§2A ①) and the fossil/amber deposits (§3D(4)): a windfall you travel to, drain, and abandon. Without them it is a ladder, and would fail the 7-question test on question 2.
+
+---
+
 ## 3F. PRE-PLACED HAZARDS & TERRITORY MARKERS — the ④ Threat axis made physical (the inverse of §3B treasures)
 
 Where §3B/§3D are *found windfalls*, this is the **found peril** side of the same coin: hazards and faction-territory markers seeded onto a tile at authoring/RimBridge so the place *is* dangerous before any raid spawns. Consolidated here 2026-08-06 from the retired `resource_catalogue.md` "Family 11" inventory (the axis assignments live in `resource_terrain_matrix.html` §Family-11; the concrete defNames + the one real design hook are below so they aren't lost). All enemy-side / terrain-shaping only — raises no player ceiling, pillar-clean by construction.

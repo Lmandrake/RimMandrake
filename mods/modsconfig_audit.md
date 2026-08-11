@@ -116,6 +116,7 @@ Source of truth: `Config/ModsConfig.xml` (RimWorld **1.6.4871 rev590**) vs. `req
 ## 4. Required but NOT DOWNLOADED
 
 **Genuinely missing — needs subscribing:**
+- **Vanilla Helixien Gas Expanded** (`2877699803`) — ADOPTED 2026-08-10 as a §3B terrain treasure. Absent from the Workshop tree entirely, not merely disabled. **Adoption is conditional on stripping the infinite starting gas pocket** — see `required_mods.md`.
 - **Outer Rim – Droid Depot** ⚠️ a core theme mod (the droid layer + the DroidBrain anti-exponential gate). I could not resolve its Workshop ID in the subscribe pass — it may only ship inside another Outer Rim module.
 - **ReGrowth: Desert Expansion** — only a Japanese translation surfaces in Workshop search; the original may be delisted.
 - **RimDialogue** — doc ID 3365889763 is gone from the Workshop.

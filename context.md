@@ -867,3 +867,32 @@ User parked, flagging *great importance*: **define each faction to the depth Sam
 **7. ✅ RESOLVED — anchor-line tone (user, 2026-08-05): READABLE COMEDY BLEND.** Jawa-esque sound followed by a brief English meaning in (parenthesis) as though translated — e.g. `Utinni! (Score!)`, `Mombay m'bwa! (That's mine!)`, `Ny shootogawa! (Don't shoot!)`, `Mob un loo? (How much?)`. The parenthetical gloss reads as translation-of-*situation*, not a lexical claim, so it does not violate §10 (which governs only the pure corpus). Anchor line-set draft is now fully unblocked (schema known, tone decided, §3 palette in hand). Recorded in memory + `required_mods.md` comedy §(1) + `Custom_World.md`.
 
 **8. 🅿️ RimMaster save-scouting probe (user asked; PARKED, full writeup in `save_authoring_pipeline.md`).** Examined the Gravtasm `.rws` for tile-map legibility. Verdict: **the world/strategic layer is trivially readable** — a regex scan of `<worldObjects>` returned all 135 objects (colony = id=134, **tile=9581**, surface layer 0, Faction_16, "Colony"; neighbors, 34 space settlements, asteroids all plain-text). The map is bound to the tile via `mapInfo`. **The one blocker:** the per-tile biome grid (`<tileBiomeDeflate>`, base64 raw-DEFLATE, decode `zlib.decompress(b64, -15)`) stores biome as RimWorld `shortHash` uint16s, NOT a simple legend — confirmed vanilla defName string-hashes don't match the observed codes, so a biome code can't be reversed to a name from the save text alone (needs the exact load-order hash table). Workarounds: live RimBridge read (best fit for RimMaster) · offline load-order legend build · or just use the fully-legible world-object layer for most scouting.
+
+## ✅ VANILLA HELIXIEN GAS EXPANDED — ADOPTED AS A §3B TERRAIN TREASURE, WITH A MANDATORY STRIP (2026-08-10, user's call)
+
+**Workshop `2877699803`** · `VanillaExpanded.HelixienGas` · tagged 1.4/1.5/**1.6**.
+
+**User's framing, verbatim:** *"a cool thing to find added to the tile map, not as an
+infinite source, because we must always keep moving."* That is the §3B shape exactly — a
+found, located, finite windfall that rewards the detour and then runs dry.
+
+**The catch, found before adopting rather than after.** The mod's own Workshop description
+says it grants *"a single, small but **infinite** pocket of Helixien gas from game start."*
+That is the precise case `desert_world_design.md` §2A already forbids in its one named
+guardrail, and it contradicts the adoption rationale directly: an infinite pocket removes
+the timer, so you would never need to leave for fuel again. **Adoption is therefore
+conditional on removing the infinite starting pocket**, keeping only the finite
+scanner-found ones the mod itself says "won't be infinite", and on making the extraction
+plant non-buildable via the §3B `<designationCategory>` technique.
+
+**Where it lives in the four-axis schema:** ③ Exotic on volcanic and deep-desert tiles.
+Gas is high-value carried-off fuel and trade goods, never a survival staple — the same
+profile as the fossil/amber deposits (§3D(4)) and the oasis well. It earns its place by
+giving those tiles a reason to be visited that is not "more ore."
+
+**⚠️ NOT INSTALLED.** Absent from the Workshop tree entirely, not merely disabled, so it
+cannot be enabled in ModsConfig until Steam has downloaded it. Subscribe first.
+
+**Recorded in:** `required_mods.md` (authoritative entry + install gates),
+`desert_world_design.md` §3B(5) (design home), `concept_defnames.md` (identity),
+`modsconfig_audit.md` §4 (subscribe list).
