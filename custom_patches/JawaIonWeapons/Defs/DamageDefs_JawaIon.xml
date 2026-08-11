@@ -17,7 +17,15 @@
        We only override what makes this "ion": labels, no-harm guarantee, tint,
        and the buildup hediff. We intentionally do NOT re-declare stun fields we
        cannot verify against 1.6 — inheritance handles them. -->
-  <DamageDef ParentName="EMP">
+  <!-- FIXED 2026-08-10. This said ParentName="EMP" and the def was being
+       DISCARDED every load: "Could not find parent node named EMP for node
+       DamageDef". EMP is a CONCRETE def (defName EMP), and ParentName can only
+       reference an ABSTRACT def declared with a Name= attribute. Core's own EMP
+       does exactly what we now do: ParentName="StunBase", where StunBase is
+       DamageDef Name="StunBase" Abstract="True" in Core Damages_Stun.xml.
+       Consequence while broken: no ion damage type existed, so the weapon's
+       damageDef and the JawaIon_Stun hediff never resolved. -->
+  <DamageDef ParentName="StunBase">
     <defName>JawaIon_Damage</defName>
     <label>ion</label>
     <deathMessage>{0} was overloaded by ion fire.</deathMessage>

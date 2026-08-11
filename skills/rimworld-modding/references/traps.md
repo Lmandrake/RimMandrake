@@ -17,6 +17,40 @@ and does not check `Defs/`.
 
 ---
 
+### ParentName must name an ABSTRACT def, not a concrete one — and validate_patch.py cannot see this
+_2026-08-10 · found in our own mod, one load after auditing it "clean"_
+
+**Symptom:** `XML error: Could not find parent node named "EMP" for node
+"DamageDef"`, once per load. The whole DamageDef was **discarded**, so the ion
+damage type did not exist, and the weapon's `damageDef` plus its stun hediff both
+referenced nothing.
+
+**Cause:** the def said `ParentName="EMP"`. `EMP` is a **concrete** def
+(`<defName>EMP</defName>`). `ParentName` resolves only against defs declared with
+a `Name=` attribute, i.e. abstract templates. Core's own EMP does the right
+thing: `ParentName="StunBase"`, where `StunBase` is
+`<DamageDef Name="StunBase" Abstract="True">`.
+
+**Fix:** `ParentName="StunBase"`. When inheriting, copy the parent the *vanilla
+equivalent* uses rather than the vanilla def's own name — the def you want to
+resemble and the def you can inherit from are usually not the same thing.
+
+**Generalises to — and this is the part that matters:** the audit that passed
+this mod checked XML validity and every *internal* defName cross-reference, and
+found nothing. Both checks were real and both missed it, because
+**`ParentName` is a reference into the GAME's abstract-def namespace, not into
+the mod's own.** `validate_patch.py` cannot catch it either: it only inspects
+`Patches/`, and this was a `Defs/` file.
+
+So there is a whole class of Defs-file defect no current tool covers:
+`ParentName`, `Class=`, `workerClass`, `thingClass` and `graphicClass` all point
+outward at names the mod does not own. **Before shipping any Defs file, resolve
+every outward-pointing name against the live load set** — `ParentName` against
+abstract defs, class names against loaded assemblies. That is the same discipline
+as SKILL.md §1, applied to the files you write rather than the ones you patch.
+
+---
+
 ### An error count is a count of victims, not of causes — abstract bases multiply
 _2026-08-10 · confirming the source of 16 identical unresolved-reference lines_
 
