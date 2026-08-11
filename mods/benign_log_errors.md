@@ -36,8 +36,10 @@ the two `Failed to load bundle` blocks **still present** (different cause — bo
 `[StaticConstructorOnStartup]` cctors still run, just later). Do not read their
 presence as the patch failing.
 
-**Still genuinely open:** `HeadSetForFA` (§3) and the eye/lid rendering question,
-which is separate from all of the above and unresolved — see §4c.
+**Still genuinely open:** `HeadSetForFA` (§3) and the eye/lid rendering question
+(§4c). Everything else in the log — including the ~140 worldgen
+`Could not find player faction.` lines, attributed 2026-08-10 to Tech Level
+Enforcement (§4b.1) — is explained and benign.
 
 ## 0. READ THIS FIRST — the two error phrasings are different systems
 
@@ -515,22 +517,69 @@ reached worldgen (`Initializing new game with mods` appears 0 times in
 time we have seen it. 17,728 new log lines, and the load-time triage buckets are
 all **zero** across them.
 
-### 4b.1 `Could not find player faction.` ×140 — ⚠️ open, unattributed
+### 4b.1 ✅ `Could not find player faction.` ×~140 — ATTRIBUTED AND BENIGN
 
-Bare line, no stack. It is vanilla `FactionManager.OfPlayer`, which does
-`if (ofPlayer == null) Log.Error("Could not find player faction.")`. So some mod
-queries `Faction.OfPlayer` during world generation, before the player faction
-exists.
+**Owner: Tech Level Enforcement** (`summersausages2ttv.techlevelenforcement`,
+WS 3430230860, load position 318). Verified from IL 2026-08-10 and independently
+corroborated from the log.
 
-**This is almost certainly why the debug window popped up** — RimWorld
-auto-opens it on `Log.Error`, and these are 140 of them.
+**Where the message comes from.** Not `FactionManager`, which was the first guess
+and was wrong — it is `RimWorld.Faction::get_OfPlayer`, whose entire body is:
 
-Fires in two bursts during worldgen. Probably harmless in itself (the getter
-returns null and callers generally cope) but the volume is bad and it drowns the
-window. **Not attributable from the log as it stands** — the message carries no
-stack trace. To pin it: dev mode, then in the debug log window enable stack
-traces / "log all messages", regenerate a world, and read the first occurrence.
-Worth doing on a world we are throwing away anyway.
+```
+call     RimWorld.Faction::get_OfPlayerSilentFail
+dup
+brtrue.s IL_0012
+ldstr    "Could not find player faction."
+call     Verse.Log::Error
+ret
+```
+
+The `dup` means **the null is returned, not thrown**. Callers cope. This is pure
+log noise with no functional consequence — it is only `Log.Error` severity because
+Ludeon assumed nobody would ask for the player faction before one exists.
+
+**Why ~140 of them.** Tech Level Enforcement installs Harmony prefixes on the
+gear-application path — `Pawn_ApparelTracker.Wear` and
+`Pawn_EquipmentTracker.AddEquipment` — and each begins:
+
+```csharp
+if (newEq == null || ___pawn == null || ___pawn.Faction != Faction.OfPlayer) return true;
+```
+
+`Faction.OfPlayer` is evaluated **before** any check, on every gear item given to
+every pawn. During worldgen `FactionGenerator` creates a leader for each faction
+*before the player faction exists*, so every apparel item and every weapon logs
+once. Its DLL contains exactly **2** `get_OfPlayer` references, matching its two
+default-enabled options (`affectEquipment`, `affectApparel` true;
+`affectItems` false) — and there is no `Config/Mod_3430230860_*.xml`, so those
+defaults are live.
+
+**Corroborated in the log independently of the IL:** the burst is not uniform, it
+is interleaved with pawn generation in variable clusters — 2 to 11 errors, each
+group terminated by an `[Isekai Forge]` pawn line, 23 pawns / 142 errors this
+worldgen and 22 / 140 the previous one. That is the signature of a per-gear-item
+loop, not a per-settlement one.
+
+**Faction Control is RULED OUT.** It appears in the log immediately before the
+burst (`Temporarily set 'Surface' settlementsPer100kTiles…`) and was the obvious
+suspect, but `FactionControl.dll` contains **zero** references to `get_OfPlayer`
+in all three of its version folders. It cannot make the call. *Adjacency in a log
+is not attribution* — worth remembering, because this one was convincing.
+
+**Action: none. Keep the mod.** `required_mods.md` adopts Tech Level Enforcement
+as the tech-tier stock filter that keeps trader oddities lateral — it is the
+anti-exponential guard on the trade system. Trading a load-bearing design mod for
+quieter logs would be a bad deal, and the errors are transient (worldgen only).
+
+**Upstream fix is one word:** `Faction.OfPlayer` → `Faction.OfPlayerSilentFail`,
+in all three prefixes. The mod already references `OfPlayerSilentFail` once, so
+the author knows it exists. Worth filing.
+
+**Minor upstream nit, unrelated:** the mod ships its whole
+`Source/.../bin/Debug/` tree — 158 DLLs, 40 MB including a copy of
+`Assembly-CSharp.dll`. None of it is inside `Assemblies/`, so RimWorld never loads
+it; it is only wasted disk.
 
 ### 4b.2 SWCP `Failed to retrieve a CharacterDefWithRole<TRole> list` ×44
 
