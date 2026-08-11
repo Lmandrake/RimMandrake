@@ -31,6 +31,7 @@ FOUR JOBS
 import collections
 import csv
 import io
+import json
 import os
 import sys
 import xml.etree.ElementTree as ET
@@ -39,6 +40,9 @@ HERE = os.path.dirname(os.path.abspath(__file__))
 ROOT = os.path.abspath(os.path.join(HERE, "..", "..", ".."))
 sys.path.insert(0, os.path.join(ROOT, "Utils"))
 from def_inventory import build, D_CONFIG, D_WORKSHOP, D_LOCAL, D_DATA
+from def_diff import iter_live_defs
+from refresh import D_DUMP
+from patch_provenance import guard
 
 OUTDIR = os.path.join(ROOT, "custom_patches", "Jawa_Armoury", "Patches")
 ANIMALS = os.path.join(ROOT, "mods", "inventory", "animals.csv")
@@ -118,6 +122,72 @@ def sel(owner, attr):
     return ('[defName="%s"]' % owner) if attr == "defName" else ('[@Name="%s"]' % owner)
 
 
+# --- live tool truth ------------------------------------------------------
+# Resolving inheritance offline is NOT enough for tools. KotOR Weapons injects
+#
+#     <tools Inherit="False">   (no <armorPenetration> anywhere in it)
+#
+# onto each concrete lightsaber, via a PatchOperationAdd in
+#   .../2938932438/1.6/AdditionalMods/_TheForceLightsabers/Patches/
+#   Patch_KotORLightsaberBalancing.xml            (read 2026-08-11)
+#
+# Inherit="False" discards the abstract base's tool list outright. So a patch
+# aimed at Force_LightsaberBase APPLIES CLEANLY, logs nothing, and is then
+# thrown away -- the failure mode with no error message. Confirmed live: 8 of
+# 15 sabers kept power 26 / AP -1 while the 7 that still inherit went to 99/0.
+#
+# Only the live dump shows the tools a weapon actually ends up with, so tool
+# work is driven from it and degrades to offline-only with a loud warning.
+SABER_COMPS = ("CompProperties_LightsaberBlade", "Comp_LightsaberStance",
+               "CompProperties_LightsaberStance")
+
+
+def load_live_tools():
+    # This generator is SAFE against reading its own output -- every value it
+    # writes is a constant from the block above (LIGHTSABER_AP, VIBRO_AP by
+    # mass, SLUG_AP, the armour tiers), never a function of the current value.
+    # gen_armoury_patch.py is not, which is why it routes anchors through the
+    # ledger. The banner prints either way: the 2026-08-11 near-miss happened
+    # because nobody asked what the dump contained, not because anyone decided
+    # wrongly.
+    guard(D_DUMP, "gen_armour_patch (values are constants; structure only)")
+    path = os.path.join(D_DUMP, "defs", "ThingDef.json")
+    if not os.path.isfile(path):
+        return None
+    out = {}
+    for d in iter_live_defs(path):
+        f = d.get("fields") or {}
+        tools = f.get("tools")
+        if not tools:
+            continue
+        comps = json.dumps(f.get("comps") or [])
+        out[d.get("defName")] = {
+            # armorPenetration is -1 when the field is absent: Verse.Tool
+            # defaults it to -1f, and VerbProperties.AdjustedArmorPenetration
+            # then DERIVES it as damage * 0.015 -- so an unset AP silently
+            # scales with power and quality. Decompiled 2026-08-11.
+            "tools": [(t.get("label"), t.get("armorPenetration")) for t in tools],
+            # Tools are not proof of a weapon. A rifle carries a "stock" bash
+            # tool, and a RACE def carries its natural attacks: ABAlien_Yautja
+            # is a Pawn with tools, so a mod-wide rule aimed at "Yautja blades"
+            # otherwise re-armed the Yautja's own fists.
+            "melee": bool((d.get("is") or {}).get("meleeWeapon")),
+            # Structural, not name-based. "claw saber" (a megafauna weapon) and
+            # "Echani Foil" (a vibro-sword) both matched the old substring test
+            # and had their AP zeroed; neither carries a lightsaber comp. The
+            # comp test also finds Force_ImbuedBlade, which has no saber-ish
+            # name at all and the substring test missed entirely.
+            "saber": any(c in comps for c in SABER_COMPS),
+        }
+    return out
+
+
+LIVE = load_live_tools()
+if LIVE is None:
+    print("  ! no live dump at %s" % D_DUMP)
+    print("  ! falling back to offline names; tool AP may miss injected tools")
+
+
 # filename -> source mod -> [op strings]. Grouping by mod is not cosmetic:
 # every operation ends up inside a PatchOperationFindMod, because an unguarded
 # Replace whose target mod is absent logs a red error on every launch, and this
@@ -131,6 +201,34 @@ def replace(fn, mod, comment, xpath, tag, value):
         '        <li Class="PatchOperationReplace">' + NL +
         "          <xpath>" + xpath + "</xpath>" + NL +
         "          <value><%s>%s</%s></value>" % (tag, value, tag) + NL +
+        "        </li>" + NL)
+
+
+def set_field(fn, mod, comment, parent_xpath, tag, value):
+    """Set a field that may or may not exist in the raw XML.
+
+    Replace fails when the node is absent; Add duplicates it when present. The
+    old code chose Replace and skipped anything lacking the node -- which is why
+    ALL TWELVE Yautja blades silently received no armorPenetration at all: none
+    of them declares one, so every candidate was skipped by the guard.
+
+    Which case applies is not knowable offline, because another mod can inject
+    the parent wholesale at patch time. PatchOperationConditional decides at
+    load, so it is also idempotent when the generator is re-run against a dump
+    that already contains this mod's own output.
+    """
+    ops[fn][mod or "?"].append(
+        "        <!-- %s -->" % comment + NL +
+        '        <li Class="PatchOperationConditional">' + NL +
+        "          <xpath>%s/%s</xpath>" % (parent_xpath, tag) + NL +
+        '          <match Class="PatchOperationReplace">' + NL +
+        "            <xpath>%s/%s</xpath>" % (parent_xpath, tag) + NL +
+        "            <value><%s>%s</%s></value>" % (tag, value, tag) + NL +
+        "          </match>" + NL +
+        '          <nomatch Class="PatchOperationAdd">' + NL +
+        "            <xpath>%s</xpath>" % parent_xpath + NL +
+        "            <value><%s>%s</%s></value>" % (tag, value, tag) + NL +
+        "          </nomatch>" + NL +
         "        </li>" + NL)
 
 
@@ -176,63 +274,100 @@ for rec in ds.of_type("ThingDef"):
         break
 
 # ========================================================== 3. penetration
-# Lightsabers share one abstract base, so one operation serves all of them.
 saber_done = set()
 vibro_n = slug_n = alien_n = 0
+skipped_no_live = []
 for rec in ds.of_type("ThingDef"):
     el = rec.element
     dn = rec.defName or ""
     b = (dn + " " + (el.findtext("label") or "")).lower()
+    live = (LIVE or {}).get(dn)
 
-    is_saber = ("saber" in b or "foil" in b) and el.find("tools") is not None
-    is_vibro = ("vibro" in b or "vibra" in b or dn.startswith("guy762_v")) \
-        and el.find("tools") is not None
+    # The slugthrower rule keys off the PROJECTILE, so it is independent of all
+    # the tool work below and must not sit behind its early-out.
+    if any(k in b for k in ("slug", "cycler", "shatter", "massdriver")) \
+            and el.find("projectile/armorPenetrationBase") is not None:
+        p_owner, p_attr, _ = declarer(dn, "projectile")
+        if p_owner is not None:
+            replace("Armour_Penetration.xml", rec.modName,
+                    "%s slugthrower AP -> %.2f" % (dn, SLUG_AP),
+                    "/Defs/ThingDef%s/projectile/armorPenetrationBase"
+                    % sel(p_owner, p_attr),
+                    "armorPenetrationBase", "%.2f" % SLUG_AP)
+            slug_n += 1
+
+    if live is not None and not live["melee"]:
+        continue
+
+    if live is not None:
+        is_saber = live["saber"]
+    else:
+        # Offline fallback only. "foil" is deliberately NOT a term: the sole
+        # weapon it ever matched was guy762_vsword_echani, the "Echani Foil",
+        # which is a VIBRO-sword -- so the one class built to shear armour had
+        # its AP zeroed to lightsaber levels while its damage was raised.
+        is_saber = "lightsaber" in b and el.find("tools") is not None
+    is_vibro = (not is_saber) and el.find("tools") is not None \
+        and ("vibro" in b or "vibra" in b or dn.startswith("guy762_v"))
     # Yautja blades are alien-forged: better than steel, but not the
     # purpose-built armour-shear a vibro-blade is.
     is_alien = (rec.modName == "[AB] Xenotype: Yautja"
                 and el.find("tools") is not None and not is_saber and not is_vibro)
-    if is_saber or is_vibro or is_alien:
-        owner, attr, decl = declarer(dn, "tools")
-        if owner is None:
-            continue
-        if is_saber:
-            if owner in saber_done:
-                continue
-            saber_done.add(owner)
-            ap = LIGHTSABER_AP
-        elif is_alien:
-            ap = ALIEN_BLADE_AP
-            alien_n += 1
-        else:
-            try:
-                mass = float(el.findtext("statBases/Mass"))
-            except (TypeError, ValueError):
-                mass = 3.0
-            # Mass is the honest size proxy: 0.35 (dagger) .. 8.0 (vibro-axe).
-            frac = clamp((mass - 0.35) / (8.0 - 0.35), 0.0, 1.0)
-            ap = VIBRO_AP[0] + (VIBRO_AP[1] - VIBRO_AP[0]) * frac
-            vibro_n += 1
-        for li in list(decl.find("tools")):
-            lab = li.findtext("label")
-            if not lab or li.find("armorPenetration") is None:
-                continue
-            replace("Armour_Penetration.xml", rec.modName,
-                    "%s / %s AP %s -> %.2f"
-                    % (owner, lab, li.findtext("armorPenetration"), ap),
-                    '/Defs/ThingDef%s/tools/li[label="%s"]/armorPenetration'
-                    % (sel(owner, attr), lab),
-                    "armorPenetration", "%.2f" % ap)
 
-    if any(k in b for k in ("slug", "cycler", "shatter", "massdriver")) \
-            and el.find("projectile/armorPenetrationBase") is not None:
-        owner, attr, decl = declarer(dn, "projectile")
-        if owner is None:
+    if not (is_saber or is_vibro or is_alien):
+        continue
+
+    if is_saber:
+        ap = LIGHTSABER_AP
+    elif is_alien:
+        ap = ALIEN_BLADE_AP
+        alien_n += 1
+    else:
+        try:
+            mass = float(el.findtext("statBases/Mass"))
+        except (TypeError, ValueError):
+            mass = 3.0
+        # Mass is the honest size proxy: 0.35 (dagger) .. 8.0 (vibro-axe).
+        frac = clamp((mass - 0.35) / (8.0 - 0.35), 0.0, 1.0)
+        ap = VIBRO_AP[0] + (VIBRO_AP[1] - VIBRO_AP[0]) * frac
+        vibro_n += 1
+
+    owner, attr, decl = declarer(dn, "tools")
+    if owner is None:
+        continue
+    decl_labels = [li.findtext("label") for li in list(decl.find("tools"))]
+
+    # WHERE to aim. If the live tool labels match the ones the declarer wrote,
+    # the weapon really does inherit and one operation on the declarer serves
+    # every child. If they differ, some mod injected a local <tools> block and
+    # only the concrete defName is reachable -- aiming at the base is the exact
+    # silent no-op that left 8 of 15 sabers untouched.
+    if live is None:
+        labels = decl_labels
+        skipped_no_live.append(dn)
+    elif [l for l, _ in live["tools"]] == decl_labels:
+        labels = decl_labels
+    else:
+        owner, attr = dn, "defName"
+        labels = [l for l, _ in live["tools"]]
+
+    if is_saber:
+        if owner in saber_done:
             continue
-        replace("Armour_Penetration.xml", rec.modName,
-                "%s slugthrower AP -> %.2f" % (dn, SLUG_AP),
-                "/Defs/ThingDef%s/projectile/armorPenetrationBase" % sel(owner, attr),
-                "armorPenetrationBase", "%.2f" % SLUG_AP)
-        slug_n += 1
+        saber_done.add(owner)
+
+    for lab in labels:
+        if not lab:
+            continue
+        # Every tool, including the hilt. The old guard skipped tools with no
+        # <armorPenetration>, which left the hilt deriving AP from its own
+        # power -- and since this mod raises saber hilts to 42, that residue
+        # showed up in-game as a "zero-AP" lightsaber reading 0.14%.
+        set_field("Armour_Penetration.xml", rec.modName,
+                  "%s / %s AP -> %.2f" % (owner, lab, ap),
+                  '/Defs/ThingDef%s/tools/li[label="%s"]'
+                  % (sel(owner, attr), lab),
+                  "armorPenetration", "%.2f" % ap)
 
 # ========================================================== 4. leather
 # Every leather currently reads S=1.00 B=1.00 H=1.00 -- 165 defs with no

@@ -946,3 +946,93 @@ be able to prove nothing unique was taken.
 - When a mod's code demonstrably *runs* but its *observations of the world* are
   wrong — null maps, empty collections, missing windows, with no exception
   anywhere — suspect split type identity before suspecting the mod's logic.
+
+---
+
+## `Inherit="False"` makes a correct patch a silent no-op
+
+**Symptom.** A rebalance patch aimed at an abstract base applied cleanly — zero
+errors in `Player.log`, the operation is genuinely in the file — and *some* of
+the children changed while others kept their original values. Here: 7 of 15
+lightsabers went to power 99 / AP 0, and 8 stayed at 26 / AP −1.
+
+**Cause.** Another mod injected a whole replacement list onto each concrete def:
+
+```xml
+<li Class="PatchOperationAdd">
+  <xpath>Defs/ThingDef[defName="Force_Lightsaber_Curved"]</xpath>
+  <value><tools Inherit="False"> ... </tools></value>
+</li>
+```
+
+`Inherit="False"` discards the parent's list outright. Our operation on the base
+still succeeded — it edited a node that nothing inherits from any more. Note the
+child's tool *labels* also changed (`point` → `tip`), so even a re-aimed xpath
+built from the base's labels would have matched nothing.
+
+**Fix.** Resolving inheritance offline is not enough, because the injection
+happens at *patch* time and no offline walk can see it. Compare the **live**
+tool labels against the ones the declarer wrote; where they differ, aim at the
+concrete `defName` instead of the base.
+
+**Generalises to:**
+
+- **"The patch applied" and "the patch had an effect" are different claims**, and
+  only the second one matters. A clean log is not evidence of either.
+- **Partial success is the signature.** When a change lands on some members of a
+  family and not others, stop looking for a broken xpath and start looking for
+  another mod redefining the ones that missed. A wholly-broken xpath usually
+  errors; a discarded one never does.
+- Read the *other* mod's `Patches/` folder, not just its `Defs/`. Compatibility
+  patches shipped under `AdditionalMods/` or a `LoadFolders.xml`-gated directory
+  are invisible in the mod's main def tree and routinely rewrite other mods'
+  defs wholesale.
+
+---
+
+## A generator that reads the live dump can eat its own output
+
+**Symptom.** Re-running a working generator against a fresh dump would have
+**reverted the weapons it had already retuned** — lightsabers 28 → 99 on the
+first run, then 99 → 34 on the second — with no error, no failed xpath, and a
+diff that looked like a deliberate rebalance.
+
+**Cause.** The live dump is post-patch, which is exactly why it is worth having.
+Once our own mods are in the load list it contains *our* values. A generator that
+maps `old value → new value` then reads its own new value as the old one.
+
+Clamping to a source range does not save you: that makes the mapping idempotent
+under **roster** change (add a mod, existing values hold still), which is a
+different property from being idempotent under **its own output**.
+
+**Fix.** `Utils/patch_provenance.py`. Two rules, enforced in code rather than
+remembered:
+
+1. **Structure may come from the live dump; values may not, wherever we write.**
+   Only the dump knows which defs and tools actually exist after every mod's
+   patches — keep reading it for that.
+2. Anchors resolve through `OurWrites.baseline(xpath, live_value)`, which returns
+   live where we do not patch, the **recorded pre-patch original** where we do,
+   and `unknown` otherwise — and `unknown` means *skip the def*, never guess.
+
+The originals live in `mods/inventory/patch_ledger.json`, recorded the first time
+each xpath is touched and **never overwritten**, since only the first recording
+was made against pristine data. `guard()` prints the dump's provenance at the top
+of every run, because the near-miss came from nobody asking, not from anyone
+deciding wrongly.
+
+**Generalises to:**
+
+- **Any pipeline whose output becomes its next input needs a provenance record,**
+  not a convention. Ask "if I run this twice, does it converge, drift, or
+  revert?" — and prove it by running it three times and diffing.
+- **Detect the hazard, do not document it.** The dump's `manifest.json` lists
+  every loaded mod, so "is this capture contaminated by us?" is a lookup against
+  our own `About.xml` packageIds. Discover the list; a hardcoded one is wrong the
+  day someone adds a mod, and being wrong here is silent.
+- **The safety net must fail loud and refuse.** When the ledger has no original
+  for something we write, skipping with a warning is correct; substituting a
+  plausible number is how 99 became 34.
+- Applies well beyond RimWorld: any linter that rewrites files it also reads, any
+  migration replayed against an already-migrated DB, any "normalise to a band"
+  script run on its own results.

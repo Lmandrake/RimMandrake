@@ -21,10 +21,23 @@ TWO MISTAKES THIS SCRIPT ENCODES, both found by reading its own output:
    property of the projectile, so the PROJECTILE is the unit of work. Ordering
    inside a family then survives by construction.
 
-2. Patches hit RAW XML, BEFORE inheritance. All 15 lightsabers inherit tools
-   from the abstract Force_LightsaberBase and declare none, so an xpath naming
-   a concrete saber matches nothing and throws a red error every launch. Aim at
-   the DECLARER -- which also collapses 15 operations into 1.
+2. Patches hit RAW XML, BEFORE inheritance. Aim at whoever DECLARES the node,
+   not at the def you mean, or the xpath matches nothing.
+
+   ...but only where the children really inherit. This script used to say "all
+   15 lightsabers inherit tools from Force_LightsaberBase", and that was WRONG:
+   KotOR Weapons injects <tools Inherit="False"> onto 8 of them at patch time,
+   discarding the base's list. Aiming at the base for those 8 applied cleanly,
+   logged nothing, and was thrown away -- 8 sabers kept power 26 and AP -1 while
+   the other 7 went to 99 and 0. Offline inheritance cannot see another mod's
+   PatchOperations; only the live dump can. Compare live tool labels against the
+   declarer's and aim at the concrete defName when they differ.
+
+3. The live dump contains OUR OWN output once our mods are loaded, and this
+   script maps old -> new, so it can eat its own tail: 28 -> 99 on the first
+   run, then 99 -> 34 on the second, reverting itself in silence. Every anchor
+   goes through anchor()/tool_anchors(), which substitutes the recorded
+   pre-patch original wherever we write. See Utils/patch_provenance.py.
 """
 import collections
 import io
@@ -34,6 +47,7 @@ import sys
 sys.path.insert(0, r"G:\My Drive\Personal\Rimworld\Utils")
 from def_diff import iter_live_defs
 from def_inventory import build as build_offline, D_CONFIG, D_WORKSHOP, D_LOCAL, D_DATA
+from patch_provenance import guard, OurWrites, Recorder
 
 DUMP = (r"C:\Users\Mandrake\AppData\LocalLow\Ludeon Studios"
         r"\RimWorld by Ludeon Studios\DefDump\defs\ThingDef.json")
@@ -68,15 +82,135 @@ BANDS = {"blaster": (24, 34), "blaster_heavy": (52, 72), "slugthrower": (18, 36)
 def dn_mod_is_yautja(w):
     return w["mod"] == "[AB] Xenotype: Yautja"
 
+# ---------------------------------------------------------------- declarers
+# Resolved BEFORE the live collect, not after. The anchor a value is mapped from
+# has to be checked against what we ourselves write, and that check needs the
+# xpath -- which needs the declarer. Doing this later is how the generator ended
+# up able to read its own output as input.
+print("resolving declarers (offline)...")
+ds = build_offline(D_CONFIG, D_WORKSHOP, D_LOCAL, D_DATA, types=("ThingDef",))
+
+
+def _elem(x):
+    """ds.by_name yields raw Elements; ds.get yields DefRecords. Normalise."""
+    return getattr(x, "own", x)
+
+
+def declarer_of(defname, node):
+    """
+    Who actually DECLARES <node>: this def, or the nearest ancestor.
+
+    Returns (ownerName, 'defName'|'Name', declaringElement). The element comes
+    back too, because the caller needs to read the real values it declares --
+    not the inheritance-resolved ones, which is what a patch would overwrite.
+    """
+    rec = ds.get("ThingDef", defname)
+    if rec is None:
+        return None, None, None
+    if rec.own.find(node) is not None:
+        return defname, "defName", rec.own
+
+    seen = set()
+    parent_name = rec.parentName
+    while parent_name and parent_name not in seen:
+        seen.add(parent_name)
+        pel = _elem(ds.by_name.get(parent_name))
+        if pel is None:
+            return None, None, None
+        if pel.find(node) is not None:
+            return parent_name, "Name", pel
+        parent_name = pel.get("ParentName")
+    return None, None, None
+
+
+def xpath_of(defname, node, leaf):
+    owner, attr, _ = declarer_of(defname, node)
+    if owner is None:
+        return None
+    sel = ('[defName="%s"]' % owner) if attr == "defName" else ('[@Name="%s"]' % owner)
+    return "/Defs/ThingDef%s/%s" % (sel, leaf)
+
+
+# ------------------------------------------------------------- provenance
+# The live dump is post-patch, so once our mods are in the load list it contains
+# OUR values. This generator maps old -> new, so reading its own output back as
+# "old" makes it revert its own work: lightsabers went 28 -> 99 on the first run
+# and would have gone 99 -> (clamped) -> 34 on the second. See
+# Utils/patch_provenance.py for the full account.
+DUMP_STATUS = guard(os.path.dirname(os.path.dirname(DUMP)), "gen_armoury_patch")
+OURS = OurWrites()
+LEDGER_REC = Recorder()
+anchor_src = collections.Counter()
+tainted_skipped = []
+
+
+def tool_anchors(defname, live_tools):
+    """Anchors for a weapon's whole tool list, decided together.
+
+    Per-tool is not good enough. When another mod injects a local <tools> block
+    the declarer's ledger entry is for a DIFFERENT tool list that merely shares
+    some labels -- so looking up "hilt" against the base returned the base's 12
+    where the injected block actually ships 10. The live label list versus the
+    declarer's is the only honest way to tell which tools we are looking at, and
+    that is a property of the list, not of any one entry.
+    """
+    owner, attr, decl = declarer_of(defname, "tools")
+    if decl is None or decl.find("tools") is None:
+        anchor_src["no-declarer"] += len(live_tools)
+        return live_tools
+    decl_labels = [li.findtext("label") for li in list(decl.find("tools"))]
+    if [l for l, _ in live_tools] == decl_labels:
+        sel = ('[defName="%s"]' % owner) if attr == "defName" \
+            else ('[@Name="%s"]' % owner)
+    else:
+        sel = '[defName="%s"]' % defname     # injected; the base is unreachable
+    out = []
+    for lab, pw in live_tools:
+        xp = '/Defs/ThingDef%s/tools/li[label="%s"]/power' % (sel, lab)
+        val, src = OURS.baseline(xp, pw)
+        anchor_src[src] += 1
+        if src == "live":
+            LEDGER_REC.record(xp, pw)
+        elif src == "unknown":
+            tainted_skipped.append(defname)
+            continue
+        out.append((lab, val))
+    return out
+
+
+def anchor(defname, node, leaf, live_value):
+    """The value to map FROM. Never one of our own writes.
+
+    Live is right everywhere we do not patch. Where we do, the ledger holds the
+    value the mod author actually shipped, recorded the first time we touched it
+    -- so a re-run reproduces the first run instead of ratcheting.
+    """
+    xp = xpath_of(defname, node, leaf)
+    if xp is None:
+        anchor_src["no-declarer"] += 1
+        return live_value
+    val, src = OURS.baseline(xp, live_value)
+    anchor_src[src] += 1
+    if src == "live":
+        LEDGER_REC.record(xp, live_value)   # pristine today; recorded for tomorrow
+    elif src == "unknown":
+        tainted_skipped.append(defname)
+        return None
+    return val
+
+
 # ---------------------------------------------------------------- collect
 projectiles, weapons = {}, []
 for d in iter_live_defs(DUMP):
     f = d.get("fields") or {}
     pr = f.get("projectile")
     if isinstance(pr, dict) and isinstance(pr.get("damageAmountBase"), (int, float)):
-        projectiles[d.get("defName")] = {"mod": d.get("modName") or "",
-                                         "dmg": pr["damageAmountBase"],
-                                         "type": pr.get("damageDef") or ""}
+        dmg = anchor(d.get("defName"), "projectile",
+                     "projectile/damageAmountBase", pr["damageAmountBase"])
+        if dmg is not None:
+            projectiles[d.get("defName")] = {"mod": d.get("modName") or "",
+                                             "dmg": dmg,
+                                             "type": pr.get("damageDef") or ""}
     isb = d.get("is") or {}
     if isb.get("weapon") or isb.get("meleeWeapon") or isb.get("rangedWeapon"):
         w = {"defName": d.get("defName") or "", "label": d.get("label") or "",
@@ -86,9 +220,11 @@ for d in iter_live_defs(DUMP):
             if isinstance(v, dict) and isinstance(v.get("defaultProjectile"), str):
                 w["proj"] = v["defaultProjectile"]
                 break
-        for t in (f.get("tools") or []):
-            if isinstance(t, dict) and isinstance(t.get("power"), (int, float)):
-                w["tools"].append((t.get("label"), t["power"]))
+        raw_tools = [(t.get("label"), t["power"]) for t in (f.get("tools") or [])
+                     if isinstance(t, dict)
+                     and isinstance(t.get("power"), (int, float))]
+        if raw_tools:
+            w["tools"] = tool_anchors(w["defName"], raw_tools)
         weapons.append(w)
 
 all_users = collections.defaultdict(list)
@@ -231,43 +367,6 @@ for r in sorted(groups):
 for r in sorted(melee_groups):
     print("  %-14s %3d weapons     -> %s" % (r, len(melee_groups[r]), BANDS[r]))
 
-# ---------------------------------------------------------------- declarers
-print("resolving declarers (offline)...")
-ds = build_offline(D_CONFIG, D_WORKSHOP, D_LOCAL, D_DATA, types=("ThingDef",))
-
-
-def _elem(x):
-    """ds.by_name yields raw Elements; ds.get yields DefRecords. Normalise."""
-    return getattr(x, "own", x)
-
-
-def declarer_of(defname, node):
-    """
-    Who actually DECLARES <node>: this def, or the nearest ancestor.
-
-    Returns (ownerName, 'defName'|'Name', declaringElement). The element comes
-    back too, because the caller needs to read the real values it declares --
-    not the inheritance-resolved ones, which is what a patch would overwrite.
-    """
-    rec = ds.get("ThingDef", defname)
-    if rec is None:
-        return None, None, None
-    if rec.own.find(node) is not None:
-        return defname, "defName", rec.own
-
-    seen = set()
-    parent_name = rec.parentName
-    while parent_name and parent_name not in seen:
-        seen.add(parent_name)
-        pel = _elem(ds.by_name.get(parent_name))
-        if pel is None:
-            return None, None, None
-        if pel.find(node) is not None:
-            return parent_name, "Name", pel
-        parent_name = pel.get("ParentName")
-    return None, None, None
-
-
 NL = "\n"
 HDR = ('<?xml version="1.0" encoding="utf-8"?>' + NL +
        '<!-- %s' + NL +
@@ -320,20 +419,33 @@ with io.open(os.path.join(OUTDIR, "Armoury_RangedDamage.xml"), "w", encoding="ut
 
 wmap = {w["defName"]: w for w in sw_weapons}
 melee_by_mod = collections.defaultdict(list)
-seen_decl, mel_missing = set(), []
+seen_decl, mel_missing, injected = set(), [], []
 for dn, (old, new) in sorted(tool_changes.items()):
     owner, attr, rec = declarer_of(dn, "tools")
     if owner is None:
         mel_missing.append(dn)
         continue
-    if owner in seen_decl:
-        continue                      # one declarer serves every child
-    seen_decl.add(owner)
+    # WHERE to aim. A declarer serves every child only where the children really
+    # inherit. KotOR Weapons injects <tools Inherit="False"> onto 8 of the 15
+    # lightsabers, which discards the base's tools outright -- so a patch on the
+    # base applies cleanly, logs nothing, and is thrown away. Compare the live
+    # tool labels against the ones the declarer wrote: if they differ, someone
+    # injected a local block and only the concrete defName is reachable.
+    decl_pairs = [(li.findtext("label"), li.findtext("power"))
+                  for li in list(rec.find("tools"))]
+    live_pairs = [(l, str(p)) for l, p in wmap[dn]["tools"]]
+    if [l for l, _ in live_pairs] == [l for l, _ in decl_pairs]:
+        if owner in seen_decl:
+            continue                  # one declarer serves every child
+        seen_decl.add(owner)
+        pairs = decl_pairs
+    else:
+        owner, attr, pairs = dn, "defName", live_pairs
+        injected.append(dn)
     sel = '[defName="%s"]' % owner if attr == "defName" else '[@Name="%s"]' % owner
     factor = (new / float(old)) if old else 1.0
     ops = []
-    for li in list(rec.find("tools")):
-        lab, pw = li.findtext("label"), li.findtext("power")
+    for lab, pw in pairs:
         if not lab or pw is None:
             continue
         try:
@@ -357,3 +469,12 @@ if missing:
     print("  ranged skipped (no declarer):", missing[:6])
 if mel_missing:
     print("  melee skipped (no declarer):", mel_missing[:6])
+
+print("anchors: %s" % dict(anchor_src))
+if tainted_skipped:
+    print("  ! %d anchors were OUR OWN values with no recorded original;"
+          % len(tainted_skipped))
+    print("  ! those defs were SKIPPED rather than re-mapped from our output.")
+    print("  ! run: python Utils/patch_provenance.py --bootstrap")
+    print("  !", sorted(set(tainted_skipped))[:8])
+LEDGER_REC.save("gen_armoury_patch, dump %s" % (DUMP_STATUS.captured or "?"))

@@ -107,20 +107,140 @@
     <mods><li>Star Wars : The Force - Lightsaber</li></mods>
     <match Class="PatchOperationSequence">
       <operations>
-        <!-- Force_LightsaberBase / hilt : 12 -> 42 -->
+        <!-- Force_Broadsaber / hilt : 10 -> 35 -->
+        <li Class="PatchOperationReplace">
+          <xpath>/Defs/ThingDef[defName="Force_Broadsaber"]/tools/li[label="hilt"]/power</xpath>
+          <value><power>35</power></value>
+        </li>
+        <!-- Force_Broadsaber / tip : 26 -> 92 -->
+        <li Class="PatchOperationReplace">
+          <xpath>/Defs/ThingDef[defName="Force_Broadsaber"]/tools/li[label="tip"]/power</xpath>
+          <value><power>92</power></value>
+        </li>
+        <!-- Force_Broadsaber / edge : 34 -> 120 -->
+        <li Class="PatchOperationReplace">
+          <xpath>/Defs/ThingDef[defName="Force_Broadsaber"]/tools/li[label="edge"]/power</xpath>
+          <value><power>120</power></value>
+        </li>
+        <!-- Force_Darksaber / hilt : 12 -> 41 -->
+        <li Class="PatchOperationReplace">
+          <xpath>/Defs/ThingDef[defName="Force_Darksaber"]/tools/li[label="hilt"]/power</xpath>
+          <value><power>41</power></value>
+        </li>
+        <!-- Force_Darksaber / tip : 26 -> 88 -->
+        <li Class="PatchOperationReplace">
+          <xpath>/Defs/ThingDef[defName="Force_Darksaber"]/tools/li[label="tip"]/power</xpath>
+          <value><power>88</power></value>
+        </li>
+        <!-- Force_Darksaber / edge : 26 -> 88 -->
+        <li Class="PatchOperationReplace">
+          <xpath>/Defs/ThingDef[defName="Force_Darksaber"]/tools/li[label="edge"]/power</xpath>
+          <value><power>88</power></value>
+        </li>
+        <!-- Force_LightsaberBase / hilt : 12 -> 41 -->
         <li Class="PatchOperationReplace">
           <xpath>/Defs/ThingDef[@Name="Force_LightsaberBase"]/tools/li[label="hilt"]/power</xpath>
-          <value><power>42</power></value>
+          <value><power>41</power></value>
         </li>
-        <!-- Force_LightsaberBase / point : 28 -> 99 -->
+        <!-- Force_LightsaberBase / point : 28 -> 96 -->
         <li Class="PatchOperationReplace">
           <xpath>/Defs/ThingDef[@Name="Force_LightsaberBase"]/tools/li[label="point"]/power</xpath>
-          <value><power>99</power></value>
+          <value><power>96</power></value>
         </li>
-        <!-- Force_LightsaberBase / edge : 28 -> 99 -->
+        <!-- Force_LightsaberBase / edge : 28 -> 96 -->
         <li Class="PatchOperationReplace">
           <xpath>/Defs/ThingDef[@Name="Force_LightsaberBase"]/tools/li[label="edge"]/power</xpath>
-          <value><power>99</power></value>
+          <value><power>96</power></value>
+        </li>
+        <!-- Force_Lightsaber_Crossguard / hilt : 18 -> 64 -->
+        <li Class="PatchOperationReplace">
+          <xpath>/Defs/ThingDef[defName="Force_Lightsaber_Crossguard"]/tools/li[label="hilt"]/power</xpath>
+          <value><power>64</power></value>
+        </li>
+        <!-- Force_Lightsaber_Crossguard / tip : 26 -> 92 -->
+        <li Class="PatchOperationReplace">
+          <xpath>/Defs/ThingDef[defName="Force_Lightsaber_Crossguard"]/tools/li[label="tip"]/power</xpath>
+          <value><power>92</power></value>
+        </li>
+        <!-- Force_Lightsaber_Crossguard / edge : 34 -> 120 -->
+        <li Class="PatchOperationReplace">
+          <xpath>/Defs/ThingDef[defName="Force_Lightsaber_Crossguard"]/tools/li[label="edge"]/power</xpath>
+          <value><power>120</power></value>
+        </li>
+        <!-- Force_Lightsaber_Curved / hilt : 10 -> 34 -->
+        <li Class="PatchOperationReplace">
+          <xpath>/Defs/ThingDef[defName="Force_Lightsaber_Curved"]/tools/li[label="hilt"]/power</xpath>
+          <value><power>34</power></value>
+        </li>
+        <!-- Force_Lightsaber_Curved / tip : 26 -> 88 -->
+        <li Class="PatchOperationReplace">
+          <xpath>/Defs/ThingDef[defName="Force_Lightsaber_Curved"]/tools/li[label="tip"]/power</xpath>
+          <value><power>88</power></value>
+        </li>
+        <!-- Force_Lightsaber_Curved / edge : 26 -> 88 -->
+        <li Class="PatchOperationReplace">
+          <xpath>/Defs/ThingDef[defName="Force_Lightsaber_Curved"]/tools/li[label="edge"]/power</xpath>
+          <value><power>88</power></value>
+        </li>
+        <!-- Force_Lightsaber_Custom / hilt : 12 -> 41 -->
+        <li Class="PatchOperationReplace">
+          <xpath>/Defs/ThingDef[defName="Force_Lightsaber_Custom"]/tools/li[label="hilt"]/power</xpath>
+          <value><power>41</power></value>
+        </li>
+        <!-- Force_Lightsaber_Custom / tip : 26 -> 88 -->
+        <li Class="PatchOperationReplace">
+          <xpath>/Defs/ThingDef[defName="Force_Lightsaber_Custom"]/tools/li[label="tip"]/power</xpath>
+          <value><power>88</power></value>
+        </li>
+        <!-- Force_Lightsaber_Custom / edge : 26 -> 88 -->
+        <li Class="PatchOperationReplace">
+          <xpath>/Defs/ThingDef[defName="Force_Lightsaber_Custom"]/tools/li[label="edge"]/power</xpath>
+          <value><power>88</power></value>
+        </li>
+        <!-- Force_Lightsaber_Dual / hilt : 6 -> 20 -->
+        <li Class="PatchOperationReplace">
+          <xpath>/Defs/ThingDef[defName="Force_Lightsaber_Dual"]/tools/li[label="hilt"]/power</xpath>
+          <value><power>20</power></value>
+        </li>
+        <!-- Force_Lightsaber_Dual / tip : 26 -> 88 -->
+        <li Class="PatchOperationReplace">
+          <xpath>/Defs/ThingDef[defName="Force_Lightsaber_Dual"]/tools/li[label="tip"]/power</xpath>
+          <value><power>88</power></value>
+        </li>
+        <!-- Force_Lightsaber_Dual / edge : 26 -> 88 -->
+        <li Class="PatchOperationReplace">
+          <xpath>/Defs/ThingDef[defName="Force_Lightsaber_Dual"]/tools/li[label="edge"]/power</xpath>
+          <value><power>88</power></value>
+        </li>
+        <!-- Force_Lightsaber_Inquisitor / hilt : 6 -> 20 -->
+        <li Class="PatchOperationReplace">
+          <xpath>/Defs/ThingDef[defName="Force_Lightsaber_Inquisitor"]/tools/li[label="hilt"]/power</xpath>
+          <value><power>20</power></value>
+        </li>
+        <!-- Force_Lightsaber_Inquisitor / tip : 26 -> 88 -->
+        <li Class="PatchOperationReplace">
+          <xpath>/Defs/ThingDef[defName="Force_Lightsaber_Inquisitor"]/tools/li[label="tip"]/power</xpath>
+          <value><power>88</power></value>
+        </li>
+        <!-- Force_Lightsaber_Inquisitor / edge : 26 -> 88 -->
+        <li Class="PatchOperationReplace">
+          <xpath>/Defs/ThingDef[defName="Force_Lightsaber_Inquisitor"]/tools/li[label="edge"]/power</xpath>
+          <value><power>88</power></value>
+        </li>
+        <!-- Force_Lightsaber_Shoto / hilt : 10 -> 33 -->
+        <li Class="PatchOperationReplace">
+          <xpath>/Defs/ThingDef[defName="Force_Lightsaber_Shoto"]/tools/li[label="hilt"]/power</xpath>
+          <value><power>33</power></value>
+        </li>
+        <!-- Force_Lightsaber_Shoto / tip : 24 -> 80 -->
+        <li Class="PatchOperationReplace">
+          <xpath>/Defs/ThingDef[defName="Force_Lightsaber_Shoto"]/tools/li[label="tip"]/power</xpath>
+          <value><power>80</power></value>
+        </li>
+        <!-- Force_Lightsaber_Shoto / edge : 24 -> 80 -->
+        <li Class="PatchOperationReplace">
+          <xpath>/Defs/ThingDef[defName="Force_Lightsaber_Shoto"]/tools/li[label="edge"]/power</xpath>
+          <value><power>80</power></value>
         </li>
       </operations>
     </match>

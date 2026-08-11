@@ -45,8 +45,10 @@ the defs it patches. The biome-duplicate fix, the weather attach and the new
 Wookiee swap all assume last position. Move it to the bottom, or we risk
 re-debugging solved problems.
 
-**3. Deploy pending patches.** `WookieeHead_Upgrade.xml` is written to both the
-repo and the game folder, but nothing else has been checked:
+**3. Deploy pending patches.** ✅ Done 2026-08-11 19:0x — armoury + doctrine
+patches regenerated, validated (0 errors) and deployed after the session that
+found the `Inherit="False"` bug. Re-check anyway if anyone has edited since;
+`WookieeHead_Upgrade.xml` was already in place:
 ```bash
 python Utils/deploy_custom_mods.py            # plan — read the output
 python Utils/deploy_custom_mods.py --apply
@@ -72,6 +74,41 @@ lists 573. Thirteen mods added (`deon.rimtek.*`, `jecrell.doorsexpanded`,
 (`automatic.gunplay`). Also: **RimTalk is still fully disabled (0 active)** — if
 that is still the bisect state, this dump would be a *debug* capture. Per
 `REFRESH.md`, don't regenerate the armoury patches from it.
+
+---
+
+## ⚔️ Armoury round 2 — verify the melee fixes (added 2026-08-11, post-test)
+
+Round 1 ran live at 13:57 and **found real bugs**. All are fixed, validated and
+deployed; every number below is a decisive pass/fail. Full account in
+`skills/rimworld-modding/references/traps.md`.
+
+**What round 1 proved.** A patch aimed at `Force_LightsaberBase` applied cleanly
+and was then *discarded*: KotOR Weapons injects `<tools Inherit="False">` onto 8
+of the 15 sabers. So the 7 sabers nobody uses got retuned and the 8 with crystal
+slots — the ones a player actually carries — kept their stock values. Confirmed
+in-game: Protosaber read 0.14% AP, Dual-bladed read 31%.
+
+| check | expect | why it matters |
+|---|---|---|
+| **Curved lightsaber** AP | **0%** exactly, at any quality | the 8 injected sabers are now targeted by defName |
+| **Protosaber** AP | **0%** — not 0.14% | the hilt tool is patched now too; it was deriving AP from its own power |
+| **Curved** melee damage | edge/tip **88**, hilt **34** | was stuck at 26/10 |
+| **Broadsaber** edge | **120** (top of band) | the band's ceiling should be reachable |
+| **Any Yautja blade** AP | **60%** | these had **zero** operations before — the 0.60 tier has never existed in-game |
+| **"Echani Foil"** AP | **133%**, not 0% | it is a *vibro-sword*; the old name-matcher gave it lightsaber AP while tripling its damage |
+| **Megafauna "claw saber"** AP | back to its own **~24–28%** | it is a beast's claw and had been zeroed |
+| **Droid factory** | absent from build menu | ✅ already confirmed; the dead `menuHidden` op is removed, so its XML error should be gone from the log too |
+
+**The decisive one is a lightsaber against powered armour.** AP 0 vs Sharp 1.40
+should deflect almost everything. That is Law 3 (mass defeats lightsabers) and it
+is the single design claim most likely to be wrong.
+
+**Do NOT regenerate the armoury patches from a dump taken with our mods loaded**
+unless you have read `Utils/patch_provenance.py`. The generators now route every
+anchor through `mods/inventory/patch_ledger.json` and print a provenance banner;
+if that banner says values came from `unknown`, stop and bootstrap the ledger
+rather than shipping the result.
 
 ---
 
