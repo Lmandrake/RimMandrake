@@ -1,5 +1,5 @@
 ﻿csvRow,defName,label,modName,packageId,loadOrder,reason,texPath,pawnKindDefName,pawnKindCount,lifeStageIndex,lifeStageCount,textureFile,detail
-2,,,ABF: Synstructs Core,killathon.artificialbeings.syncore,523,no_defName,,,,,,,ABF_Thing_Synstruct_AnimalBase
+2,,,ABF: Synstructs Core,killathon.artificialbeings.syncore,521,no_defName,,,,,,,ABF_Thing_Synstruct_AnimalBase
 3,MutantCow,cow,Advanced Biomes (Continued),mlie.advancedbiomes,45,no_loose_png,Animal/Cow/Bull,MutantCow,1,2,3,,
 4,PoisonButterfly,butterfly,Advanced Biomes (Continued),mlie.advancedbiomes,45,no_loose_png,Animal/Butterfly/butterfly,PoisonButterfly,1,2,3,,
 5,PoisonDeer,deer,Advanced Biomes (Continued),mlie.advancedbiomes,45,no_loose_png,Things/Pawn/Animal/Deer/DeerMale,PoisonDeer,1,2,3,,
@@ -56,8 +56,8 @@
 231,BS_Naga,snake-person,Big and Small - Framework,redmattis.betterprerequisites,16,no_pawnkind,,,,,,,
 232,BS_SixArmedHuman,Six Armed Human,Big and Small - Framework,redmattis.betterprerequisites,16,no_pawnkind,,,,,,,
 233,BS_SpiderPersonRace,spider-person,Big and Small - Framework,redmattis.betterprerequisites,16,no_pawnkind,,,,,,,
-234,BS_GluttonRace,glutton,Big and Small - Genes & More,redmattis.bigsmall.core,528,no_pawnkind,,,,,,,
-235,BS_InsectoidHumanoid_FourArmed,insect-like humanoid,Big and Small - Genes & More,redmattis.bigsmall.core,528,no_pawnkind,,,,,,,
+234,BS_GluttonRace,glutton,Big and Small - Genes & More,redmattis.bigsmall.core,526,no_pawnkind,,,,,,,
+235,BS_InsectoidHumanoid_FourArmed,insect-like humanoid,Big and Small - Genes & More,redmattis.bigsmall.core,526,no_pawnkind,,,,,,,
 326,,crab,Biomes! Core,biomesteam.biomescore,409,no_defName,,,,,,,BiomesCore_CrabThingBase
 327,,,Biomes! Core,biomesteam.biomescore,409,no_defName,,,,,,,BiomesCore_FreshWaterAnimal
 328,,,Biomes! Core,biomesteam.biomescore,409,no_defName,,,,,,,BiomesCore_SaltWaterAnimal
@@ -109,7 +109,7 @@
 445,GuineaPig,guinea pig,Core,ludeon.rimworld,4,no_loose_png,Things/Pawn/Animal/GuineaPig/GuineaPig,GuineaPig,1,2,3,,
 446,Hare,hare,Core,ludeon.rimworld,4,no_loose_png,Things/Pawn/Animal/Hare/Hare,Hare,1,2,3,,
 447,Horse,horse,Core,ludeon.rimworld,4,no_loose_png,Things/Pawn/Animal/Horse/Horse,Horse,1,2,3,,
-448,Human,human,Core,ludeon.rimworld,4,no_texPath,,,451,-1,0,,
+448,Human,human,Core,ludeon.rimworld,4,no_texPath,,,463,-1,0,,
 449,Husky,husky,Core,ludeon.rimworld,4,no_loose_png,Things/Pawn/Animal/Husky/Husky,Husky,1,2,3,,
 450,Ibex,ibex,Core,ludeon.rimworld,4,no_loose_png,Things/Pawn/Animal/Ibex/IbexMale,Ibex,1,2,3,,
 451,Iguana,iguana,Core,ludeon.rimworld,4,no_loose_png,Things/Pawn/Animal/Iguana/Iguana,Iguana,1,2,3,,
@@ -325,15 +325,15 @@
 795,Vulture,vulture,Odyssey,ludeon.rimworld.odyssey,9,no_loose_png,Things/Pawn/Animal/Vulture/Vulture,Vulture,1,2,3,,
 797,Wolf_Great,greatwolf,Odyssey,ludeon.rimworld.odyssey,9,no_loose_png,Things/Pawn/Animal/GreatWolf/GreatWolf,Wolf_Great,1,2,3,,
 798,Wolverine,wolverine,Odyssey,ludeon.rimworld.odyssey,9,no_loose_png,Things/Pawn/Animal/Wolverine/Wolverine,Wolverine,1,2,3,,
-799,,,Outer Rim - Droid Depot,neronix17.outerrim.droiddepot,543,no_defName,,,,,,,BaseAnimalDroid
-800,OuterRim_AstromechDroid,Astromech Droid,Outer Rim - Droid Depot,neronix17.outerrim.droiddepot,543,no_loose_png,OuterRim/Droid/Astromech/R2,OuterRim_RSeriesDroid,1,0,1,,
-801,OuterRim_DUMDroid,DUM Repair Droid,Outer Rim - Droid Depot,neronix17.outerrim.droiddepot,543,no_loose_png,OuterRim/Droid/DUM,OuterRim_DUMDroid,1,0,1,,
-802,OuterRim_DestroyerDroid,Destroyer Droid,Outer Rim - Droid Depot,neronix17.outerrim.droiddepot,543,no_loose_png,OuterRim/Droid/Droideka/Droideka,OuterRim_DestroyerDroid,1,0,1,,
-803,OuterRim_FX7Droid,fx-7 medical droid,Outer Rim - Droid Depot,neronix17.outerrim.droiddepot,543,no_loose_png,OuterRim/Droid/FX7,OuterRim_FX7Droid,1,0,1,,
-804,OuterRim_GNKDroid,GNK Power Droid,Outer Rim - Droid Depot,neronix17.outerrim.droiddepot,543,no_loose_png,OuterRim/Droid/GNK,OuterRim_GNKDroid,1,0,1,,
-805,OuterRim_MSEDroid,MSE Repair Droid,Outer Rim - Droid Depot,neronix17.outerrim.droiddepot,543,no_loose_png,OuterRim/Droid/MSE,OuterRim_MSEDroid,1,0,1,,
-806,OuterRim_MuckrakerDroid,Muckraker Crab Droid,Outer Rim - Droid Depot,neronix17.outerrim.droiddepot,543,no_loose_png,OuterRim/Droid/Muckraker/CrabDroid,OuterRim_MuckrakerDroid,1,0,1,,
-807,OuterRim_SalvageAssistDroid,salvage assist droid,Outer Rim - Droid Depot,neronix17.outerrim.droiddepot,543,no_loose_png,OuterRim/Droid/SalvageAssist,OuterRim_SalvageAssistDroid,1,0,1,,
+799,,,Outer Rim - Droid Depot,neronix17.outerrim.droiddepot,541,no_defName,,,,,,,BaseAnimalDroid
+800,OuterRim_AstromechDroid,Astromech Droid,Outer Rim - Droid Depot,neronix17.outerrim.droiddepot,541,no_loose_png,OuterRim/Droid/Astromech/R2,OuterRim_RSeriesDroid,1,0,1,,
+801,OuterRim_DUMDroid,DUM Repair Droid,Outer Rim - Droid Depot,neronix17.outerrim.droiddepot,541,no_loose_png,OuterRim/Droid/DUM,OuterRim_DUMDroid,1,0,1,,
+802,OuterRim_DestroyerDroid,Destroyer Droid,Outer Rim - Droid Depot,neronix17.outerrim.droiddepot,541,no_loose_png,OuterRim/Droid/Droideka/Droideka,OuterRim_DestroyerDroid,1,0,1,,
+803,OuterRim_FX7Droid,fx-7 medical droid,Outer Rim - Droid Depot,neronix17.outerrim.droiddepot,541,no_loose_png,OuterRim/Droid/FX7,OuterRim_FX7Droid,1,0,1,,
+804,OuterRim_GNKDroid,GNK Power Droid,Outer Rim - Droid Depot,neronix17.outerrim.droiddepot,541,no_loose_png,OuterRim/Droid/GNK,OuterRim_GNKDroid,1,0,1,,
+805,OuterRim_MSEDroid,MSE Repair Droid,Outer Rim - Droid Depot,neronix17.outerrim.droiddepot,541,no_loose_png,OuterRim/Droid/MSE,OuterRim_MSEDroid,1,0,1,,
+806,OuterRim_MuckrakerDroid,Muckraker Crab Droid,Outer Rim - Droid Depot,neronix17.outerrim.droiddepot,541,no_loose_png,OuterRim/Droid/Muckraker/CrabDroid,OuterRim_MuckrakerDroid,1,0,1,,
+807,OuterRim_SalvageAssistDroid,salvage assist droid,Outer Rim - Droid Depot,neronix17.outerrim.droiddepot,541,no_loose_png,OuterRim/Droid/SalvageAssist,OuterRim_SalvageAssistDroid,1,0,1,,
 813,RG_Hemolope,hemolope,ReGrowth 2,regrowth.botr.core,436,no_loose_png,Things/Pawn/Animal/Hemolope/Hemolope,RG_Hemolope,1,2,3,,
 814,RG_KiwiBird,kiwi,ReGrowth 2,regrowth.botr.core,436,no_loose_png,Things/Pawn/Animal/Kiwi/Kiwi,RG_KiwiBird,1,2,3,,
 815,RG_Neutrolope,neutrolope,ReGrowth 2,regrowth.botr.core,436,no_loose_png,Things/Pawn/Animal/Neutrolope/Neutrolope,RG_Neutrolope,1,2,3,,
@@ -502,7 +502,7 @@
 984,Zeer,zeer,Star Wars Animal Collection (Continued),mlie.starwarsanimalcollection,308,no_loose_png,swanimals/Zeer/Zeer,Zeer,1,2,3,,
 1039,,,Vanilla Animals Expanded — Waste Animals,vanillaexpanded.vaewaste,346,no_defName,,,,,,,VAEWaste_BaseInsect
 1051,,,Vanilla Factions Expanded - Insectoids 2,oskarpotocki.vfe.insectoid2,353,no_defName,,,,,,,VFEI2_BaseInsect
-1076,,,Vanilla Genetics Expanded,vanillaexpanded.vgeneticse,517,no_defName,,,,,,,GR_BaseInsect
-1127,GR_FleshFlies,flesh flies,Vanilla Genetics Expanded,vanillaexpanded.vgeneticse,517,blank_png,Things/Pawn/Animal/Special/GR_Transparent,GR_FleshFlies,1,0,1,C:\Program Files (x86)\Steam\steamapps\workshop\content\294100\2801160906\Textures\Things\Pawn\Animal\Special\GR_Transparent.png,planned but undecodable
-1224,,,Vanilla Quests Expanded - Cryptoforge,vanillaquestsexpanded.cryptoforge,373,no_defName,,,,,,,VQE_BaseCryptoInsect
+1076,,,Vanilla Genetics Expanded,vanillaexpanded.vgeneticse,515,no_defName,,,,,,,GR_BaseInsect
+1127,GR_FleshFlies,flesh flies,Vanilla Genetics Expanded,vanillaexpanded.vgeneticse,515,blank_png,Things/Pawn/Animal/Special/GR_Transparent,GR_FleshFlies,1,0,1,C:\Program Files (x86)\Steam\steamapps\workshop\content\294100\2801160906\Textures\Things\Pawn\Animal\Special\GR_Transparent.png,planned but undecodable
+1224,,,Vanilla Quests Expanded - Cryptoforge,vanillaquestsexpanded.cryptoforge,374,no_defName,,,,,,,VQE_BaseCryptoInsect
 1227,,,[JDS] StarWars - The Separatist Droid Army,m3.continued.jangodsoul.starwars.tsda,402,no_defName,,,,,,,JDSSWCIS_Droids

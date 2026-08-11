@@ -103,14 +103,43 @@ def classify(pname, p, users):
     return None
 
 
-def spread(items, band):
-    """Map values across the band, PRESERVING their existing order."""
+# The INPUT range each rung is assumed to occupy in the unmodified game. These
+# are constants on purpose -- see spread() for why that matters.
+SOURCE_RANGE = {
+    "blaster": (8, 36), "blaster_heavy": (9, 80), "slugthrower": (10, 28),
+    "turbolaser": (40, 80), "lightsaber": (24, 34), "vibro": (16, 50),
+}
+
+
+def spread(items, band, source=None):
+    """
+    Map each old value onto the target band by a FIXED function of the value.
+
+    NOT by rank. Rank-based spreading was the original implementation and it is
+    not idempotent under roster change: it sorts the current members and lays
+    them across the band, so adding one new blaster shifts the assigned damage
+    of every existing blaster. Install a weapon mod, re-run, and the whole
+    armoury churns -- values move for defs nobody touched, and the diff against
+    the previous patch is unreadable.
+
+    With a fixed source->target mapping, a given input always produces the same
+    output no matter what else is installed. New defs slot in; existing defs
+    hold still. That is the property that makes this safe to re-run every time
+    the mod list changes, which is the normal case, not the exception.
+
+    Values outside the assumed source range are clamped rather than
+    extrapolated, so one wild outlier from a new mod cannot drag a rung.
+    """
     lo, hi = band
-    items = sorted(items, key=lambda kv: kv[1])
-    n = len(items)
+    slo, shi = source if source else (min(v for _, v in items),
+                                      max(v for _, v in items))
     out = {}
-    for i, (k, old) in enumerate(items):
-        frac = (i / (n - 1.0)) if n > 1 else 0.5
+    for k, old in items:
+        if shi > slo:
+            frac = (float(old) - slo) / (shi - slo)
+        else:
+            frac = 0.5
+        frac = max(0.0, min(1.0, frac))          # clamp, never extrapolate
         out[k] = (old, int(round(lo + (hi - lo) * frac)))
     return out
 
@@ -122,7 +151,7 @@ for pname, users in sw_proj.items():
         groups[r].append((pname, projectiles[pname]["dmg"]))
 proj_changes = {}
 for r, items in groups.items():
-    proj_changes.update(spread(items, BANDS[r]))
+    proj_changes.update(spread(items, BANDS[r], SOURCE_RANGE.get(r)))
 
 melee_groups = collections.defaultdict(list)
 for w in sw_weapons:
@@ -137,7 +166,7 @@ for w in sw_weapons:
         melee_groups[r].append((w["defName"], max(p for _, p in w["tools"])))
 tool_changes = {}
 for r, items in melee_groups.items():
-    tool_changes.update(spread(items, BANDS[r]))
+    tool_changes.update(spread(items, BANDS[r], SOURCE_RANGE.get(r)))
 
 for r in sorted(groups):
     print("  %-14s %3d projectiles -> %s" % (r, len(groups[r]), BANDS[r]))
