@@ -76,8 +76,17 @@ file or coordinate.
 
 This is not hypothetical. On 2026-08-11 commit `76d7f64` swept three staged
 `git mv` renames out of another thread's in-flight audit and committed them under
-an unrelated message about load order. Nothing was lost that time. The failure
-mode that costs you is a half-written patch committed as though it were finished.
+an unrelated message about load order. The same commit shipped documentation for
+`Utils/deploy_custom_mods.py` without the script, because `git commit -a` stages
+tracked modifications and ignores new untracked files. Nothing was lost either
+time. The failure mode that costs you is a half-written patch committed as though
+it were finished.
+
+**Enforced mechanically** by `.claude/hooks/block_blanket_git_stage.py` (a
+PreToolUse/Bash hook, wired in `.claude/settings.json`). It denies the blanket
+forms above — including inside compound commands and via `git -C` — and allows
+`git commit -m`, `--amend`, and explicit-path adds. If it blocks you, name the
+paths; do not route around it.
 
 **Validate every patch before it goes near the Mods folder:**
 `python skills/rimworld-modding/scripts/validate_patch.py <file> --live`.
