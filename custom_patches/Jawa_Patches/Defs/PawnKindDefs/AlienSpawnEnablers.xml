@@ -47,9 +47,29 @@
   those two defs if so.
 
   NOT INCLUDED, 18 species: Anzati, Echani and Falleen have no head gene at all;
-  ChadraFan, Chiss, Defel, Feeorin, Gamorrean, KelDor, Klatoonian, Nagai,
-  Nautolan, Snivvian and the rest have a head gene whose art is absent. Those
-  need art or a head reassignment first.
+  ChadraFan, Chiss, Defel, Feeorin, KelDor, Klatoonian, Nagai, Nautolan,
+  Snivvian and the rest have a head gene whose art is absent. Those need art or
+  a head reassignment first.
+
+  ✏️ CORRECTION 2026-08-11 — GAMORREAN WAS MISCLASSIFIED ABOVE
+  ============================================================
+  The original list put Gamorrean under "head gene whose art is absent". Wrong on
+  both halves, checked against the live GeneDef dump rather than the mod XML:
+
+    - It has NO species head gene. Neither guy762_xenotype_gamorrean nor
+      BTD_Gamorrean carries a guy762_Head_* gene at all.
+    - Its head therefore comes from vanilla Jaw_Heavy, whose forcedHeadTypes are
+      Male_HeavyJawNormal / Female_HeavyJawNormal — base-game art, always
+      present.
+
+  So the Gamorrean was renderable the whole time; it just renders as a heavy-jaw
+  human with a flat pig-nose decal. It is now handled properly one directory
+  over in GamorreanPawnKinds.xml, which gives it real armed pawnkinds rather
+  than a dev-spawn stub, so no Jawa_Spawn_Gamorrean entry is added here.
+
+  Worth re-testing the same assumption against the other 17: this misfire came
+  from checking for a species head gene's art without first checking whether a
+  species head gene exists.
 
   ⚠️ These inherit defaultFactionType PlayerColony from the parent. Correct for
   dev spawning, WRONG for world generation. Real Hutt Cartel presence needs
