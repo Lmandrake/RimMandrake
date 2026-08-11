@@ -98,6 +98,28 @@
   </Operation>
 
   <!-- ==================================================================
+       4. Eye-colour variety among the Jawa
+       GeneEyeColor is Abstract with exclusionTags EyeColor, so children are
+       mutually exclusive and RimWorld picks ONE when several are listed on a
+       xenotype. Verified 2026-08-10, with plenty of precedent in the same
+       mod family: guy762_xenotype_hutt lists four big-eye colours and
+       guy762_xenotype_sith lists three.
+       BTD_Jawa already carries guy762_Eyes_HugeYellow; these add the two
+       colours defined in Defs/GeneDefs/JawaEyeColours.xml. To also allow the
+       stock red, add a li for guy762_Eyes_HugeRed here.
+       ================================================================== -->
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/XenotypeDef[defName="BTD_Jawa"]/genes[not(li[text()="Jawa_Eyes_HugeOrange"])]</xpath>
+    <match Class="PatchOperationAdd">
+      <xpath>/Defs/XenotypeDef[defName="BTD_Jawa"]/genes[not(li[text()="Jawa_Eyes_HugeOrange"])]</xpath>
+      <value>
+        <li>Jawa_Eyes_HugeOrange</li>
+        <li>Jawa_Eyes_HugeAmber</li>
+      </value>
+    </match>
+  </Operation>
+
+  <!-- ==================================================================
        3. Jawa are male-only this playthrough
        ================================================================== -->
   <Operation Class="PatchOperationConditional">
