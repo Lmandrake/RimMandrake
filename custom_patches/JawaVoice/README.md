@@ -83,3 +83,33 @@ prisoners, romance, and animals.
 - `MAX_GLOSSES` — variety lines per def (default 6).
 - `PRIORITY` — must stay above SpeakUp's own (~5); default 9.
 - `ANCHORS` — defName → canonical-phrase situation mapping.
+
+---
+
+## ❄️ FROZEN 2026-08-11 — verified working in game, do not retune casually
+
+Confirmed on screen in the 25-mod minimal load: a Jawa colonist saying
+**"Taatab no g'oob noomaan. (I don't really care about what's the weather like
+out there, friend...)"** — the exact `chitchat_weather` rule from
+`JawaVoice_chitchat_weather.xml`.
+
+**The one number that matters: `priority=250`.** All 3,200 rules across all 8
+files carry it. JawaVoice does not *replace* SpeakUp's English lines, it adds
+Jawaese ones as competing alternatives, and RimWorld's grammar resolver picks
+weighted-randomly among the rules at the highest matching priority. At the
+original `priority=9` the Jawaese was tying with SpeakUp's own rules and losing
+roughly half the coin-flips — which is exactly what "why is my Jawa speaking
+English" looked like. 250 wins outright.
+
+Coverage is complete: all 8 of SpeakUp's rule files are patched, verified by
+comparing against SpeakUp's `Defs/` directory. There is no gap.
+
+Observed and *desirable*: Baseliner colonists still speak English while Jawa
+speak Jawaese. Note this is not guaranteed by design — the gate is
+`INITIATOR_faction==PlayerColony`, which on paper should catch every player pawn
+regardless of xenotype. If that split ever needs to be certain rather than
+fortunate, gate on kind explicitly.
+
+**Requires SpeakUp (`JPT.speakup`), which itself hard-depends on Interaction
+Bubbles (`Jaxe.Bubbles`).** Remove either and the Jawaese silently stops with no
+error, because this mod ships no assembly.
