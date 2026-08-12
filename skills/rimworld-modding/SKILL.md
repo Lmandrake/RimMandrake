@@ -63,6 +63,38 @@ possible from the one you spend.**
 
 Three habits follow.
 
+**When you are three failed hypotheses deep, stop bisecting downward and build a
+MINIMAL load instead.** Removing one suspect at a time from a 500-mod stack costs
+a full load per guess and only ever tests the guess you already had. Cutting to
+the ~20 mods that can possibly be involved costs one load, loads in a couple of
+minutes instead of half an hour, and answers a better question: *does the feature
+work at all in isolation?* Either answer is progress — it works, and you now have
+a known-good baseline to bisect UPWARD from in halves; or it does not, and the
+fault is in the feature's own mods rather than the stack, which is a far smaller
+search.
+
+Derive the minimal set, do not guess it. From a live def dump, list the defs the
+feature actually depends on and read off their owning `packageId`, then walk the
+transitive `modDependencies` closure from `About.xml`. Then check what your own
+patch mod references from outside that set: anything behind a
+`PatchOperationConditional` or `PatchOperationFindMod` guard will silently no-op
+and can be left out, but an unconditional `Defs/` reference will dangle and must
+be satisfied. Back up the full `ModsConfig.xml` first, under a name that says how
+many mods it had.
+
+A real case: a speech-bubble mod drew nothing across a 567-mod stack. Four
+theories were tested and disproved over a day — a prefix on the bubble mod's own
+Add method, another mod patching the fog grid, a camera mod distorting the
+altitude cull, and a mod shipping a duplicate copy of the base game assembly.
+Cutting to 25 mods took minutes and the bubbles worked immediately. The
+minimisation should have come after the second failure, not the fourth.
+
+Two traps in the reduced set itself. Your mod manager may re-add dependencies you
+excluded, so re-read the resolved list rather than assuming you got what you
+asked for. And it will almost certainly re-sort the order, so put your own
+patch mods back at the tail and **assert** the orderings in code rather than
+eyeballing them.
+
 **Verify everything verifiable offline, first.** Defs, About.xml, ModsConfig.xml
 and the whole Workshop tree are ordinary files sitting on disk right now. Run
 `scripts/validate_patch.py`, parse every XML you touched, confirm the load order
