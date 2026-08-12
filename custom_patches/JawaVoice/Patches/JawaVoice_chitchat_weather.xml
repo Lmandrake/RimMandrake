@@ -5,18 +5,18 @@
     <match Class="PatchOperationAdd">
       <xpath>/Defs/InteractionDef[defName="StuckIndoors"]/logRulesInitiator/rulesStrings</xpath>
       <value>
-          <li>r_logentry(INITIATOR_faction==PlayerColony,priority=9)->Bu kaatnyoo see r'ebmoot? (I totally agree with you, friend!)</li>
-          <li>r_logentry(INITIATOR_faction==PlayerTribe,priority=9)->Bu kaatnyoo see r'ebmoot? (I totally agree with you, friend!)</li>
-          <li>r_logentry(INITIATOR_kind==OuterRim_Jawa,priority=9)->Bu kaatnyoo see r'ebmoot? (I totally agree with you, friend!)</li>
-          <li>r_logentry(INITIATOR_kind==OuterRim_JawaTribal,priority=9)->Bu kaatnyoo see r'ebmoot? (I totally agree with you, friend!)</li>
-          <li>r_logentry(INITIATOR_faction==PlayerColony,priority=9)->Taatab no g'oob noomaan. (I don't really care about what's the weather like out there, friend...)</li>
-          <li>r_logentry(INITIATOR_faction==PlayerTribe,priority=9)->Taatab no g'oob noomaan. (I don't really care about what's the weather like out there, friend...)</li>
-          <li>r_logentry(INITIATOR_kind==OuterRim_Jawa,priority=9)->Taatab no g'oob noomaan. (I don't really care about what's the weather like out there, friend...)</li>
-          <li>r_logentry(INITIATOR_kind==OuterRim_JawaTribal,priority=9)->Taatab no g'oob noomaan. (I don't really care about what's the weather like out there, friend...)</li>
-          <li>r_logentry(INITIATOR_faction==PlayerColony,priority=9)->Wun loh nyamoon. (Me too, friend.)</li>
-          <li>r_logentry(INITIATOR_faction==PlayerTribe,priority=9)->Wun loh nyamoon. (Me too, friend.)</li>
-          <li>r_logentry(INITIATOR_kind==OuterRim_Jawa,priority=9)->Wun loh nyamoon. (Me too, friend.)</li>
-          <li>r_logentry(INITIATOR_kind==OuterRim_JawaTribal,priority=9)->Wun loh nyamoon. (Me too, friend.)</li>
+          <li>r_logentry(INITIATOR_faction==PlayerColony,priority=250)->Bu kaatnyoo see r'ebmoot? (I totally agree with you, friend!)</li>
+          <li>r_logentry(INITIATOR_faction==PlayerTribe,priority=250)->Bu kaatnyoo see r'ebmoot? (I totally agree with you, friend!)</li>
+          <li>r_logentry(INITIATOR_kind==OuterRim_Jawa,priority=250)->Bu kaatnyoo see r'ebmoot? (I totally agree with you, friend!)</li>
+          <li>r_logentry(INITIATOR_kind==OuterRim_JawaTribal,priority=250)->Bu kaatnyoo see r'ebmoot? (I totally agree with you, friend!)</li>
+          <li>r_logentry(INITIATOR_faction==PlayerColony,priority=250)->Taatab no g'oob noomaan. (I don't really care about what's the weather like out there, friend...)</li>
+          <li>r_logentry(INITIATOR_faction==PlayerTribe,priority=250)->Taatab no g'oob noomaan. (I don't really care about what's the weather like out there, friend...)</li>
+          <li>r_logentry(INITIATOR_kind==OuterRim_Jawa,priority=250)->Taatab no g'oob noomaan. (I don't really care about what's the weather like out there, friend...)</li>
+          <li>r_logentry(INITIATOR_kind==OuterRim_JawaTribal,priority=250)->Taatab no g'oob noomaan. (I don't really care about what's the weather like out there, friend...)</li>
+          <li>r_logentry(INITIATOR_faction==PlayerColony,priority=250)->Wun loh nyamoon. (Me too, friend.)</li>
+          <li>r_logentry(INITIATOR_faction==PlayerTribe,priority=250)->Wun loh nyamoon. (Me too, friend.)</li>
+          <li>r_logentry(INITIATOR_kind==OuterRim_Jawa,priority=250)->Wun loh nyamoon. (Me too, friend.)</li>
+          <li>r_logentry(INITIATOR_kind==OuterRim_JawaTribal,priority=250)->Wun loh nyamoon. (Me too, friend.)</li>
       </value>
     </match>
   </Operation>
@@ -25,30 +25,30 @@
     <match Class="PatchOperationAdd">
       <xpath>/Defs/InteractionDef[defName="WeatherClearGoodtempNotEntombed"]/logRulesInitiator/rulesStrings</xpath>
       <value>
-          <li>r_logentry(INITIATOR_faction==PlayerColony,priority=9)->Taatab no g'oob noomaan. (I don't really care about what's the weather like out there, friend...)</li>
-          <li>r_logentry(INITIATOR_faction==PlayerTribe,priority=9)->Taatab no g'oob noomaan. (I don't really care about what's the weather like out there, friend...)</li>
-          <li>r_logentry(INITIATOR_kind==OuterRim_Jawa,priority=9)->Taatab no g'oob noomaan. (I don't really care about what's the weather like out there, friend...)</li>
-          <li>r_logentry(INITIATOR_kind==OuterRim_JawaTribal,priority=9)->Taatab no g'oob noomaan. (I don't really care about what's the weather like out there, friend...)</li>
-          <li>r_logentry(INITIATOR_faction==PlayerColony,priority=9)->Tugeen too sheethu rubmo goobtu. (I wish I had a chance to go outside and see it for myself!)</li>
-          <li>r_logentry(INITIATOR_faction==PlayerTribe,priority=9)->Tugeen too sheethu rubmo goobtu. (I wish I had a chance to go outside and see it for myself!)</li>
-          <li>r_logentry(INITIATOR_kind==OuterRim_Jawa,priority=9)->Tugeen too sheethu rubmo goobtu. (I wish I had a chance to go outside and see it for myself!)</li>
-          <li>r_logentry(INITIATOR_kind==OuterRim_JawaTribal,priority=9)->Tugeen too sheethu rubmo goobtu. (I wish I had a chance to go outside and see it for myself!)</li>
-          <li>r_logentry(INITIATOR_faction==PlayerColony,priority=9)->Sentaab man zut n'yooh... (It's a very hot, but it's still enjoyable.)</li>
-          <li>r_logentry(INITIATOR_faction==PlayerTribe,priority=9)->Sentaab man zut n'yooh... (It's a very hot, but it's still enjoyable.)</li>
-          <li>r_logentry(INITIATOR_kind==OuterRim_Jawa,priority=9)->Sentaab man zut n'yooh... (It's a very hot, but it's still enjoyable.)</li>
-          <li>r_logentry(INITIATOR_kind==OuterRim_JawaTribal,priority=9)->Sentaab man zut n'yooh... (It's a very hot, but it's still enjoyable.)</li>
-          <li>r_logentry(INITIATOR_faction==PlayerColony,priority=9)->Gamee bee? (A warm, clear is a blessing!)</li>
-          <li>r_logentry(INITIATOR_faction==PlayerTribe,priority=9)->Gamee bee? (A warm, clear is a blessing!)</li>
-          <li>r_logentry(INITIATOR_kind==OuterRim_Jawa,priority=9)->Gamee bee? (A warm, clear is a blessing!)</li>
-          <li>r_logentry(INITIATOR_kind==OuterRim_JawaTribal,priority=9)->Gamee bee? (A warm, clear is a blessing!)</li>
-          <li>r_logentry(INITIATOR_faction==PlayerColony,priority=9)->Laanhah laanhah mit? (Not too hot, not too cold — a perfect!)</li>
-          <li>r_logentry(INITIATOR_faction==PlayerTribe,priority=9)->Laanhah laanhah mit? (Not too hot, not too cold — a perfect!)</li>
-          <li>r_logentry(INITIATOR_kind==OuterRim_Jawa,priority=9)->Laanhah laanhah mit? (Not too hot, not too cold — a perfect!)</li>
-          <li>r_logentry(INITIATOR_kind==OuterRim_JawaTribal,priority=9)->Laanhah laanhah mit? (Not too hot, not too cold — a perfect!)</li>
-          <li>r_logentry(INITIATOR_faction==PlayerColony,priority=9)->Neen neeu mob go kootzoot? (A bit chilly, but a still.)</li>
-          <li>r_logentry(INITIATOR_faction==PlayerTribe,priority=9)->Neen neeu mob go kootzoot? (A bit chilly, but a still.)</li>
-          <li>r_logentry(INITIATOR_kind==OuterRim_Jawa,priority=9)->Neen neeu mob go kootzoot? (A bit chilly, but a still.)</li>
-          <li>r_logentry(INITIATOR_kind==OuterRim_JawaTribal,priority=9)->Neen neeu mob go kootzoot? (A bit chilly, but a still.)</li>
+          <li>r_logentry(INITIATOR_faction==PlayerColony,priority=250)->Taatab no g'oob noomaan. (I don't really care about what's the weather like out there, friend...)</li>
+          <li>r_logentry(INITIATOR_faction==PlayerTribe,priority=250)->Taatab no g'oob noomaan. (I don't really care about what's the weather like out there, friend...)</li>
+          <li>r_logentry(INITIATOR_kind==OuterRim_Jawa,priority=250)->Taatab no g'oob noomaan. (I don't really care about what's the weather like out there, friend...)</li>
+          <li>r_logentry(INITIATOR_kind==OuterRim_JawaTribal,priority=250)->Taatab no g'oob noomaan. (I don't really care about what's the weather like out there, friend...)</li>
+          <li>r_logentry(INITIATOR_faction==PlayerColony,priority=250)->Tugeen too sheethu rubmo goobtu. (I wish I had a chance to go outside and see it for myself!)</li>
+          <li>r_logentry(INITIATOR_faction==PlayerTribe,priority=250)->Tugeen too sheethu rubmo goobtu. (I wish I had a chance to go outside and see it for myself!)</li>
+          <li>r_logentry(INITIATOR_kind==OuterRim_Jawa,priority=250)->Tugeen too sheethu rubmo goobtu. (I wish I had a chance to go outside and see it for myself!)</li>
+          <li>r_logentry(INITIATOR_kind==OuterRim_JawaTribal,priority=250)->Tugeen too sheethu rubmo goobtu. (I wish I had a chance to go outside and see it for myself!)</li>
+          <li>r_logentry(INITIATOR_faction==PlayerColony,priority=250)->Sentaab man zut n'yooh... (It's a very hot, but it's still enjoyable.)</li>
+          <li>r_logentry(INITIATOR_faction==PlayerTribe,priority=250)->Sentaab man zut n'yooh... (It's a very hot, but it's still enjoyable.)</li>
+          <li>r_logentry(INITIATOR_kind==OuterRim_Jawa,priority=250)->Sentaab man zut n'yooh... (It's a very hot, but it's still enjoyable.)</li>
+          <li>r_logentry(INITIATOR_kind==OuterRim_JawaTribal,priority=250)->Sentaab man zut n'yooh... (It's a very hot, but it's still enjoyable.)</li>
+          <li>r_logentry(INITIATOR_faction==PlayerColony,priority=250)->Gamee bee? (A warm, clear is a blessing!)</li>
+          <li>r_logentry(INITIATOR_faction==PlayerTribe,priority=250)->Gamee bee? (A warm, clear is a blessing!)</li>
+          <li>r_logentry(INITIATOR_kind==OuterRim_Jawa,priority=250)->Gamee bee? (A warm, clear is a blessing!)</li>
+          <li>r_logentry(INITIATOR_kind==OuterRim_JawaTribal,priority=250)->Gamee bee? (A warm, clear is a blessing!)</li>
+          <li>r_logentry(INITIATOR_faction==PlayerColony,priority=250)->Laanhah laanhah mit? (Not too hot, not too cold — a perfect!)</li>
+          <li>r_logentry(INITIATOR_faction==PlayerTribe,priority=250)->Laanhah laanhah mit? (Not too hot, not too cold — a perfect!)</li>
+          <li>r_logentry(INITIATOR_kind==OuterRim_Jawa,priority=250)->Laanhah laanhah mit? (Not too hot, not too cold — a perfect!)</li>
+          <li>r_logentry(INITIATOR_kind==OuterRim_JawaTribal,priority=250)->Laanhah laanhah mit? (Not too hot, not too cold — a perfect!)</li>
+          <li>r_logentry(INITIATOR_faction==PlayerColony,priority=250)->Neen neeu mob go kootzoot? (A bit chilly, but a still.)</li>
+          <li>r_logentry(INITIATOR_faction==PlayerTribe,priority=250)->Neen neeu mob go kootzoot? (A bit chilly, but a still.)</li>
+          <li>r_logentry(INITIATOR_kind==OuterRim_Jawa,priority=250)->Neen neeu mob go kootzoot? (A bit chilly, but a still.)</li>
+          <li>r_logentry(INITIATOR_kind==OuterRim_JawaTribal,priority=250)->Neen neeu mob go kootzoot? (A bit chilly, but a still.)</li>
       </value>
     </match>
   </Operation>
@@ -57,30 +57,30 @@
     <match Class="PatchOperationAdd">
       <xpath>/Defs/InteractionDef[defName="WeatherFogGoodtempNotEntombed"]/logRulesInitiator/rulesStrings</xpath>
       <value>
-          <li>r_logentry(INITIATOR_faction==PlayerColony,priority=9)->Keetkeeh tub tub tohti te bataa. (At least the sunlight helps a little.)</li>
-          <li>r_logentry(INITIATOR_faction==PlayerTribe,priority=9)->Keetkeeh tub tub tohti te bataa. (At least the sunlight helps a little.)</li>
-          <li>r_logentry(INITIATOR_kind==OuterRim_Jawa,priority=9)->Keetkeeh tub tub tohti te bataa. (At least the sunlight helps a little.)</li>
-          <li>r_logentry(INITIATOR_kind==OuterRim_JawaTribal,priority=9)->Keetkeeh tub tub tohti te bataa. (At least the sunlight helps a little.)</li>
-          <li>r_logentry(INITIATOR_faction==PlayerColony,priority=9)->B'aka mihi reh? (With some luck, daylight should soon get rid of this fog.)</li>
-          <li>r_logentry(INITIATOR_faction==PlayerTribe,priority=9)->B'aka mihi reh? (With some luck, daylight should soon get rid of this fog.)</li>
-          <li>r_logentry(INITIATOR_kind==OuterRim_Jawa,priority=9)->B'aka mihi reh? (With some luck, daylight should soon get rid of this fog.)</li>
-          <li>r_logentry(INITIATOR_kind==OuterRim_JawaTribal,priority=9)->B'aka mihi reh? (With some luck, daylight should soon get rid of this fog.)</li>
-          <li>r_logentry(INITIATOR_faction==PlayerColony,priority=9)->Kantaa neeh ku naat m'uh... (Let's hope this fog ends before evening — it really makes it difficult to see things.)</li>
-          <li>r_logentry(INITIATOR_faction==PlayerTribe,priority=9)->Kantaa neeh ku naat m'uh... (Let's hope this fog ends before evening — it really makes it difficult to see things.)</li>
-          <li>r_logentry(INITIATOR_kind==OuterRim_Jawa,priority=9)->Kantaa neeh ku naat m'uh... (Let's hope this fog ends before evening — it really makes it difficult to see things.)</li>
-          <li>r_logentry(INITIATOR_kind==OuterRim_JawaTribal,priority=9)->Kantaa neeh ku naat m'uh... (Let's hope this fog ends before evening — it really makes it difficult to see things.)</li>
-          <li>r_logentry(INITIATOR_faction==PlayerColony,priority=9)->Hoozoob b'eet kehha kehhu totsoh mehib... (Foggy evenings are perfect for trouble —.)</li>
-          <li>r_logentry(INITIATOR_faction==PlayerTribe,priority=9)->Hoozoob b'eet kehha kehhu totsoh mehib... (Foggy evenings are perfect for trouble —.)</li>
-          <li>r_logentry(INITIATOR_kind==OuterRim_Jawa,priority=9)->Hoozoob b'eet kehha kehhu totsoh mehib... (Foggy evenings are perfect for trouble —.)</li>
-          <li>r_logentry(INITIATOR_kind==OuterRim_JawaTribal,priority=9)->Hoozoob b'eet kehha kehhu totsoh mehib... (Foggy evenings are perfect for trouble —.)</li>
-          <li>r_logentry(INITIATOR_faction==PlayerColony,priority=9)->Shob s'atmaat n'eh n'eu mohnyin? (Foggy nights are perfect for trouble —.)</li>
-          <li>r_logentry(INITIATOR_faction==PlayerTribe,priority=9)->Shob s'atmaat n'eh n'eu mohnyin? (Foggy nights are perfect for trouble —.)</li>
-          <li>r_logentry(INITIATOR_kind==OuterRim_Jawa,priority=9)->Shob s'atmaat n'eh n'eu mohnyin? (Foggy nights are perfect for trouble —.)</li>
-          <li>r_logentry(INITIATOR_kind==OuterRim_JawaTribal,priority=9)->Shob s'atmaat n'eh n'eu mohnyin? (Foggy nights are perfect for trouble —.)</li>
-          <li>r_logentry(INITIATOR_faction==PlayerColony,priority=9)->Rot noob banyat banyat rosa hooh... (I heard that bonfires help to dissipate fog.)</li>
-          <li>r_logentry(INITIATOR_faction==PlayerTribe,priority=9)->Rot noob banyat banyat rosa hooh... (I heard that bonfires help to dissipate fog.)</li>
-          <li>r_logentry(INITIATOR_kind==OuterRim_Jawa,priority=9)->Rot noob banyat banyat rosa hooh... (I heard that bonfires help to dissipate fog.)</li>
-          <li>r_logentry(INITIATOR_kind==OuterRim_JawaTribal,priority=9)->Rot noob banyat banyat rosa hooh... (I heard that bonfires help to dissipate fog.)</li>
+          <li>r_logentry(INITIATOR_faction==PlayerColony,priority=250)->Keetkeeh tub tub tohti te bataa. (At least the sunlight helps a little.)</li>
+          <li>r_logentry(INITIATOR_faction==PlayerTribe,priority=250)->Keetkeeh tub tub tohti te bataa. (At least the sunlight helps a little.)</li>
+          <li>r_logentry(INITIATOR_kind==OuterRim_Jawa,priority=250)->Keetkeeh tub tub tohti te bataa. (At least the sunlight helps a little.)</li>
+          <li>r_logentry(INITIATOR_kind==OuterRim_JawaTribal,priority=250)->Keetkeeh tub tub tohti te bataa. (At least the sunlight helps a little.)</li>
+          <li>r_logentry(INITIATOR_faction==PlayerColony,priority=250)->B'aka mihi reh? (With some luck, daylight should soon get rid of this fog.)</li>
+          <li>r_logentry(INITIATOR_faction==PlayerTribe,priority=250)->B'aka mihi reh? (With some luck, daylight should soon get rid of this fog.)</li>
+          <li>r_logentry(INITIATOR_kind==OuterRim_Jawa,priority=250)->B'aka mihi reh? (With some luck, daylight should soon get rid of this fog.)</li>
+          <li>r_logentry(INITIATOR_kind==OuterRim_JawaTribal,priority=250)->B'aka mihi reh? (With some luck, daylight should soon get rid of this fog.)</li>
+          <li>r_logentry(INITIATOR_faction==PlayerColony,priority=250)->Kantaa neeh ku naat m'uh... (Let's hope this fog ends before evening — it really makes it difficult to see things.)</li>
+          <li>r_logentry(INITIATOR_faction==PlayerTribe,priority=250)->Kantaa neeh ku naat m'uh... (Let's hope this fog ends before evening — it really makes it difficult to see things.)</li>
+          <li>r_logentry(INITIATOR_kind==OuterRim_Jawa,priority=250)->Kantaa neeh ku naat m'uh... (Let's hope this fog ends before evening — it really makes it difficult to see things.)</li>
+          <li>r_logentry(INITIATOR_kind==OuterRim_JawaTribal,priority=250)->Kantaa neeh ku naat m'uh... (Let's hope this fog ends before evening — it really makes it difficult to see things.)</li>
+          <li>r_logentry(INITIATOR_faction==PlayerColony,priority=250)->Hoozoob b'eet kehha kehhu totsoh mehib... (Foggy evenings are perfect for trouble —.)</li>
+          <li>r_logentry(INITIATOR_faction==PlayerTribe,priority=250)->Hoozoob b'eet kehha kehhu totsoh mehib... (Foggy evenings are perfect for trouble —.)</li>
+          <li>r_logentry(INITIATOR_kind==OuterRim_Jawa,priority=250)->Hoozoob b'eet kehha kehhu totsoh mehib... (Foggy evenings are perfect for trouble —.)</li>
+          <li>r_logentry(INITIATOR_kind==OuterRim_JawaTribal,priority=250)->Hoozoob b'eet kehha kehhu totsoh mehib... (Foggy evenings are perfect for trouble —.)</li>
+          <li>r_logentry(INITIATOR_faction==PlayerColony,priority=250)->Shob s'atmaat n'eh n'eu mohnyin? (Foggy nights are perfect for trouble —.)</li>
+          <li>r_logentry(INITIATOR_faction==PlayerTribe,priority=250)->Shob s'atmaat n'eh n'eu mohnyin? (Foggy nights are perfect for trouble —.)</li>
+          <li>r_logentry(INITIATOR_kind==OuterRim_Jawa,priority=250)->Shob s'atmaat n'eh n'eu mohnyin? (Foggy nights are perfect for trouble —.)</li>
+          <li>r_logentry(INITIATOR_kind==OuterRim_JawaTribal,priority=250)->Shob s'atmaat n'eh n'eu mohnyin? (Foggy nights are perfect for trouble —.)</li>
+          <li>r_logentry(INITIATOR_faction==PlayerColony,priority=250)->Rot noob banyat banyat rosa hooh... (I heard that bonfires help to dissipate fog.)</li>
+          <li>r_logentry(INITIATOR_faction==PlayerTribe,priority=250)->Rot noob banyat banyat rosa hooh... (I heard that bonfires help to dissipate fog.)</li>
+          <li>r_logentry(INITIATOR_kind==OuterRim_Jawa,priority=250)->Rot noob banyat banyat rosa hooh... (I heard that bonfires help to dissipate fog.)</li>
+          <li>r_logentry(INITIATOR_kind==OuterRim_JawaTribal,priority=250)->Rot noob banyat banyat rosa hooh... (I heard that bonfires help to dissipate fog.)</li>
       </value>
     </match>
   </Operation>
@@ -89,30 +89,30 @@
     <match Class="PatchOperationAdd">
       <xpath>/Defs/InteractionDef[defName="WeatherFogToosmart"]/logRulesInitiator/rulesStrings</xpath>
       <value>
-          <li>r_logentry(INITIATOR_faction==PlayerColony,priority=9)->Tun naan koo kou wagen ze. (Correct, yet I do believe you wouldn't be able to determine its type. Well, I can: it's a fog.)</li>
-          <li>r_logentry(INITIATOR_faction==PlayerTribe,priority=9)->Tun naan koo kou wagen ze. (Correct, yet I do believe you wouldn't be able to determine its type. Well, I can: it's a fog.)</li>
-          <li>r_logentry(INITIATOR_kind==OuterRim_Jawa,priority=9)->Tun naan koo kou wagen ze. (Correct, yet I do believe you wouldn't be able to determine its type. Well, I can: it's a fog.)</li>
-          <li>r_logentry(INITIATOR_kind==OuterRim_JawaTribal,priority=9)->Tun naan koo kou wagen ze. (Correct, yet I do believe you wouldn't be able to determine its type. Well, I can: it's a fog.)</li>
-          <li>r_logentry(INITIATOR_faction==PlayerColony,priority=9)->Banbat banbat n'utshon ka... (That is indeed a correct definition for fog.)</li>
-          <li>r_logentry(INITIATOR_faction==PlayerTribe,priority=9)->Banbat banbat n'utshon ka... (That is indeed a correct definition for fog.)</li>
-          <li>r_logentry(INITIATOR_kind==OuterRim_Jawa,priority=9)->Banbat banbat n'utshon ka... (That is indeed a correct definition for fog.)</li>
-          <li>r_logentry(INITIATOR_kind==OuterRim_JawaTribal,priority=9)->Banbat banbat n'utshon ka... (That is indeed a correct definition for fog.)</li>
-          <li>r_logentry(INITIATOR_faction==PlayerColony,priority=9)->Moonyah nyashaa moo metna. (Mmm... yes, you are correct.)</li>
-          <li>r_logentry(INITIATOR_faction==PlayerTribe,priority=9)->Moonyah nyashaa moo metna. (Mmm... yes, you are correct.)</li>
-          <li>r_logentry(INITIATOR_kind==OuterRim_Jawa,priority=9)->Moonyah nyashaa moo metna. (Mmm... yes, you are correct.)</li>
-          <li>r_logentry(INITIATOR_kind==OuterRim_JawaTribal,priority=9)->Moonyah nyashaa moo metna. (Mmm... yes, you are correct.)</li>
-          <li>r_logentry(INITIATOR_faction==PlayerColony,priority=9)->Ta ta boomib titrun titrun l'atroo lo. (Err... what was that again?)</li>
-          <li>r_logentry(INITIATOR_faction==PlayerTribe,priority=9)->Ta ta boomib titrun titrun l'atroo lo. (Err... what was that again?)</li>
-          <li>r_logentry(INITIATOR_kind==OuterRim_Jawa,priority=9)->Ta ta boomib titrun titrun l'atroo lo. (Err... what was that again?)</li>
-          <li>r_logentry(INITIATOR_kind==OuterRim_JawaTribal,priority=9)->Ta ta boomib titrun titrun l'atroo lo. (Err... what was that again?)</li>
-          <li>r_logentry(INITIATOR_faction==PlayerColony,priority=9)->Bobma wa rabaah naanye naanyu! (Wait — fog is... what!?)</li>
-          <li>r_logentry(INITIATOR_faction==PlayerTribe,priority=9)->Bobma wa rabaah naanye naanyu! (Wait — fog is... what!?)</li>
-          <li>r_logentry(INITIATOR_kind==OuterRim_Jawa,priority=9)->Bobma wa rabaah naanye naanyu! (Wait — fog is... what!?)</li>
-          <li>r_logentry(INITIATOR_kind==OuterRim_JawaTribal,priority=9)->Bobma wa rabaah naanye naanyu! (Wait — fog is... what!?)</li>
-          <li>r_logentry(INITIATOR_faction==PlayerColony,priority=9)->Zoot noha! (That's quite interesting!)</li>
-          <li>r_logentry(INITIATOR_faction==PlayerTribe,priority=9)->Zoot noha! (That's quite interesting!)</li>
-          <li>r_logentry(INITIATOR_kind==OuterRim_Jawa,priority=9)->Zoot noha! (That's quite interesting!)</li>
-          <li>r_logentry(INITIATOR_kind==OuterRim_JawaTribal,priority=9)->Zoot noha! (That's quite interesting!)</li>
+          <li>r_logentry(INITIATOR_faction==PlayerColony,priority=250)->Tun naan koo kou wagen ze. (Correct, yet I do believe you wouldn't be able to determine its type. Well, I can: it's a fog.)</li>
+          <li>r_logentry(INITIATOR_faction==PlayerTribe,priority=250)->Tun naan koo kou wagen ze. (Correct, yet I do believe you wouldn't be able to determine its type. Well, I can: it's a fog.)</li>
+          <li>r_logentry(INITIATOR_kind==OuterRim_Jawa,priority=250)->Tun naan koo kou wagen ze. (Correct, yet I do believe you wouldn't be able to determine its type. Well, I can: it's a fog.)</li>
+          <li>r_logentry(INITIATOR_kind==OuterRim_JawaTribal,priority=250)->Tun naan koo kou wagen ze. (Correct, yet I do believe you wouldn't be able to determine its type. Well, I can: it's a fog.)</li>
+          <li>r_logentry(INITIATOR_faction==PlayerColony,priority=250)->Banbat banbat n'utshon ka... (That is indeed a correct definition for fog.)</li>
+          <li>r_logentry(INITIATOR_faction==PlayerTribe,priority=250)->Banbat banbat n'utshon ka... (That is indeed a correct definition for fog.)</li>
+          <li>r_logentry(INITIATOR_kind==OuterRim_Jawa,priority=250)->Banbat banbat n'utshon ka... (That is indeed a correct definition for fog.)</li>
+          <li>r_logentry(INITIATOR_kind==OuterRim_JawaTribal,priority=250)->Banbat banbat n'utshon ka... (That is indeed a correct definition for fog.)</li>
+          <li>r_logentry(INITIATOR_faction==PlayerColony,priority=250)->Moonyah nyashaa moo metna. (Mmm... yes, you are correct.)</li>
+          <li>r_logentry(INITIATOR_faction==PlayerTribe,priority=250)->Moonyah nyashaa moo metna. (Mmm... yes, you are correct.)</li>
+          <li>r_logentry(INITIATOR_kind==OuterRim_Jawa,priority=250)->Moonyah nyashaa moo metna. (Mmm... yes, you are correct.)</li>
+          <li>r_logentry(INITIATOR_kind==OuterRim_JawaTribal,priority=250)->Moonyah nyashaa moo metna. (Mmm... yes, you are correct.)</li>
+          <li>r_logentry(INITIATOR_faction==PlayerColony,priority=250)->Ta ta boomib titrun titrun l'atroo lo. (Err... what was that again?)</li>
+          <li>r_logentry(INITIATOR_faction==PlayerTribe,priority=250)->Ta ta boomib titrun titrun l'atroo lo. (Err... what was that again?)</li>
+          <li>r_logentry(INITIATOR_kind==OuterRim_Jawa,priority=250)->Ta ta boomib titrun titrun l'atroo lo. (Err... what was that again?)</li>
+          <li>r_logentry(INITIATOR_kind==OuterRim_JawaTribal,priority=250)->Ta ta boomib titrun titrun l'atroo lo. (Err... what was that again?)</li>
+          <li>r_logentry(INITIATOR_faction==PlayerColony,priority=250)->Bobma wa rabaah naanye naanyu! (Wait — fog is... what!?)</li>
+          <li>r_logentry(INITIATOR_faction==PlayerTribe,priority=250)->Bobma wa rabaah naanye naanyu! (Wait — fog is... what!?)</li>
+          <li>r_logentry(INITIATOR_kind==OuterRim_Jawa,priority=250)->Bobma wa rabaah naanye naanyu! (Wait — fog is... what!?)</li>
+          <li>r_logentry(INITIATOR_kind==OuterRim_JawaTribal,priority=250)->Bobma wa rabaah naanye naanyu! (Wait — fog is... what!?)</li>
+          <li>r_logentry(INITIATOR_faction==PlayerColony,priority=250)->Zoot noha! (That's quite interesting!)</li>
+          <li>r_logentry(INITIATOR_faction==PlayerTribe,priority=250)->Zoot noha! (That's quite interesting!)</li>
+          <li>r_logentry(INITIATOR_kind==OuterRim_Jawa,priority=250)->Zoot noha! (That's quite interesting!)</li>
+          <li>r_logentry(INITIATOR_kind==OuterRim_JawaTribal,priority=250)->Zoot noha! (That's quite interesting!)</li>
       </value>
     </match>
   </Operation>
@@ -121,30 +121,30 @@
     <match Class="PatchOperationAdd">
       <xpath>/Defs/InteractionDef[defName="WeatherFogWimp"]/logRulesInitiator/rulesStrings</xpath>
       <value>
-          <li>r_logentry(INITIATOR_faction==PlayerColony,priority=9)->Z'ib z'ib t'esoob boo lab. (Come on, friend — stop being such a sissy! It's just fog!)</li>
-          <li>r_logentry(INITIATOR_faction==PlayerTribe,priority=9)->Z'ib z'ib t'esoob boo lab. (Come on, friend — stop being such a sissy! It's just fog!)</li>
-          <li>r_logentry(INITIATOR_kind==OuterRim_Jawa,priority=9)->Z'ib z'ib t'esoob boo lab. (Come on, friend — stop being such a sissy! It's just fog!)</li>
-          <li>r_logentry(INITIATOR_kind==OuterRim_JawaTribal,priority=9)->Z'ib z'ib t'esoob boo lab. (Come on, friend — stop being such a sissy! It's just fog!)</li>
-          <li>r_logentry(INITIATOR_faction==PlayerColony,priority=9)->Haa ga mo b'aalob. (Don't worry, friend — if that happens, I'll just smash it out of existence!)</li>
-          <li>r_logentry(INITIATOR_faction==PlayerTribe,priority=9)->Haa ga mo b'aalob. (Don't worry, friend — if that happens, I'll just smash it out of existence!)</li>
-          <li>r_logentry(INITIATOR_kind==OuterRim_Jawa,priority=9)->Haa ga mo b'aalob. (Don't worry, friend — if that happens, I'll just smash it out of existence!)</li>
-          <li>r_logentry(INITIATOR_kind==OuterRim_JawaTribal,priority=9)->Haa ga mo b'aalob. (Don't worry, friend — if that happens, I'll just smash it out of existence!)</li>
-          <li>r_logentry(INITIATOR_faction==PlayerColony,priority=9)->R'oob wotmot wotmot nyonmee nyonmee. (You're right, friend — this fog scares the hell out of me too!)</li>
-          <li>r_logentry(INITIATOR_faction==PlayerTribe,priority=9)->R'oob wotmot wotmot nyonmee nyonmee. (You're right, friend — this fog scares the hell out of me too!)</li>
-          <li>r_logentry(INITIATOR_kind==OuterRim_Jawa,priority=9)->R'oob wotmot wotmot nyonmee nyonmee. (You're right, friend — this fog scares the hell out of me too!)</li>
-          <li>r_logentry(INITIATOR_kind==OuterRim_JawaTribal,priority=9)->R'oob wotmot wotmot nyonmee nyonmee. (You're right, friend — this fog scares the hell out of me too!)</li>
-          <li>r_logentry(INITIATOR_faction==PlayerColony,priority=9)->Tuhkah tuhkah rabnoo botman rinan. (In that case, my dear friend, we'll just make a run for it!)</li>
-          <li>r_logentry(INITIATOR_faction==PlayerTribe,priority=9)->Tuhkah tuhkah rabnoo botman rinan. (In that case, my dear friend, we'll just make a run for it!)</li>
-          <li>r_logentry(INITIATOR_kind==OuterRim_Jawa,priority=9)->Tuhkah tuhkah rabnoo botman rinan. (In that case, my dear friend, we'll just make a run for it!)</li>
-          <li>r_logentry(INITIATOR_kind==OuterRim_JawaTribal,priority=9)->Tuhkah tuhkah rabnoo botman rinan. (In that case, my dear friend, we'll just make a run for it!)</li>
-          <li>r_logentry(INITIATOR_faction==PlayerColony,priority=9)->Non bogat n'yatnaat... (Friend, don't be such a crybaby! It's fog — just fog!)</li>
-          <li>r_logentry(INITIATOR_faction==PlayerTribe,priority=9)->Non bogat n'yatnaat... (Friend, don't be such a crybaby! It's fog — just fog!)</li>
-          <li>r_logentry(INITIATOR_kind==OuterRim_Jawa,priority=9)->Non bogat n'yatnaat... (Friend, don't be such a crybaby! It's fog — just fog!)</li>
-          <li>r_logentry(INITIATOR_kind==OuterRim_JawaTribal,priority=9)->Non bogat n'yatnaat... (Friend, don't be such a crybaby! It's fog — just fog!)</li>
-          <li>r_logentry(INITIATOR_faction==PlayerColony,priority=9)->Wu lut wannen g'oon! (No need to be afraid, friend. It's just normal fog.)</li>
-          <li>r_logentry(INITIATOR_faction==PlayerTribe,priority=9)->Wu lut wannen g'oon! (No need to be afraid, friend. It's just normal fog.)</li>
-          <li>r_logentry(INITIATOR_kind==OuterRim_Jawa,priority=9)->Wu lut wannen g'oon! (No need to be afraid, friend. It's just normal fog.)</li>
-          <li>r_logentry(INITIATOR_kind==OuterRim_JawaTribal,priority=9)->Wu lut wannen g'oon! (No need to be afraid, friend. It's just normal fog.)</li>
+          <li>r_logentry(INITIATOR_faction==PlayerColony,priority=250)->Z'ib z'ib t'esoob boo lab. (Come on, friend — stop being such a sissy! It's just fog!)</li>
+          <li>r_logentry(INITIATOR_faction==PlayerTribe,priority=250)->Z'ib z'ib t'esoob boo lab. (Come on, friend — stop being such a sissy! It's just fog!)</li>
+          <li>r_logentry(INITIATOR_kind==OuterRim_Jawa,priority=250)->Z'ib z'ib t'esoob boo lab. (Come on, friend — stop being such a sissy! It's just fog!)</li>
+          <li>r_logentry(INITIATOR_kind==OuterRim_JawaTribal,priority=250)->Z'ib z'ib t'esoob boo lab. (Come on, friend — stop being such a sissy! It's just fog!)</li>
+          <li>r_logentry(INITIATOR_faction==PlayerColony,priority=250)->Haa ga mo b'aalob. (Don't worry, friend — if that happens, I'll just smash it out of existence!)</li>
+          <li>r_logentry(INITIATOR_faction==PlayerTribe,priority=250)->Haa ga mo b'aalob. (Don't worry, friend — if that happens, I'll just smash it out of existence!)</li>
+          <li>r_logentry(INITIATOR_kind==OuterRim_Jawa,priority=250)->Haa ga mo b'aalob. (Don't worry, friend — if that happens, I'll just smash it out of existence!)</li>
+          <li>r_logentry(INITIATOR_kind==OuterRim_JawaTribal,priority=250)->Haa ga mo b'aalob. (Don't worry, friend — if that happens, I'll just smash it out of existence!)</li>
+          <li>r_logentry(INITIATOR_faction==PlayerColony,priority=250)->R'oob wotmot wotmot nyonmee nyonmee. (You're right, friend — this fog scares the hell out of me too!)</li>
+          <li>r_logentry(INITIATOR_faction==PlayerTribe,priority=250)->R'oob wotmot wotmot nyonmee nyonmee. (You're right, friend — this fog scares the hell out of me too!)</li>
+          <li>r_logentry(INITIATOR_kind==OuterRim_Jawa,priority=250)->R'oob wotmot wotmot nyonmee nyonmee. (You're right, friend — this fog scares the hell out of me too!)</li>
+          <li>r_logentry(INITIATOR_kind==OuterRim_JawaTribal,priority=250)->R'oob wotmot wotmot nyonmee nyonmee. (You're right, friend — this fog scares the hell out of me too!)</li>
+          <li>r_logentry(INITIATOR_faction==PlayerColony,priority=250)->Tuhkah tuhkah rabnoo botman rinan. (In that case, my dear friend, we'll just make a run for it!)</li>
+          <li>r_logentry(INITIATOR_faction==PlayerTribe,priority=250)->Tuhkah tuhkah rabnoo botman rinan. (In that case, my dear friend, we'll just make a run for it!)</li>
+          <li>r_logentry(INITIATOR_kind==OuterRim_Jawa,priority=250)->Tuhkah tuhkah rabnoo botman rinan. (In that case, my dear friend, we'll just make a run for it!)</li>
+          <li>r_logentry(INITIATOR_kind==OuterRim_JawaTribal,priority=250)->Tuhkah tuhkah rabnoo botman rinan. (In that case, my dear friend, we'll just make a run for it!)</li>
+          <li>r_logentry(INITIATOR_faction==PlayerColony,priority=250)->Non bogat n'yatnaat... (Friend, don't be such a crybaby! It's fog — just fog!)</li>
+          <li>r_logentry(INITIATOR_faction==PlayerTribe,priority=250)->Non bogat n'yatnaat... (Friend, don't be such a crybaby! It's fog — just fog!)</li>
+          <li>r_logentry(INITIATOR_kind==OuterRim_Jawa,priority=250)->Non bogat n'yatnaat... (Friend, don't be such a crybaby! It's fog — just fog!)</li>
+          <li>r_logentry(INITIATOR_kind==OuterRim_JawaTribal,priority=250)->Non bogat n'yatnaat... (Friend, don't be such a crybaby! It's fog — just fog!)</li>
+          <li>r_logentry(INITIATOR_faction==PlayerColony,priority=250)->Wu lut wannen g'oon! (No need to be afraid, friend. It's just normal fog.)</li>
+          <li>r_logentry(INITIATOR_faction==PlayerTribe,priority=250)->Wu lut wannen g'oon! (No need to be afraid, friend. It's just normal fog.)</li>
+          <li>r_logentry(INITIATOR_kind==OuterRim_Jawa,priority=250)->Wu lut wannen g'oon! (No need to be afraid, friend. It's just normal fog.)</li>
+          <li>r_logentry(INITIATOR_kind==OuterRim_JawaTribal,priority=250)->Wu lut wannen g'oon! (No need to be afraid, friend. It's just normal fog.)</li>
       </value>
     </match>
   </Operation>
@@ -153,18 +153,18 @@
     <match Class="PatchOperationAdd">
       <xpath>/Defs/InteractionDef[defName="HuntWithFog"]/logRulesInitiator/rulesStrings</xpath>
       <value>
-          <li>r_logentry(INITIATOR_faction==PlayerColony,priority=9)->Loob beebnyih monbeet b'oonaa shonee shonee. (Who knows, friend... If I feel like it, I might give it a try anyway.)</li>
-          <li>r_logentry(INITIATOR_faction==PlayerTribe,priority=9)->Loob beebnyih monbeet b'oonaa shonee shonee. (Who knows, friend... If I feel like it, I might give it a try anyway.)</li>
-          <li>r_logentry(INITIATOR_kind==OuterRim_Jawa,priority=9)->Loob beebnyih monbeet b'oonaa shonee shonee. (Who knows, friend... If I feel like it, I might give it a try anyway.)</li>
-          <li>r_logentry(INITIATOR_kind==OuterRim_JawaTribal,priority=9)->Loob beebnyih monbeet b'oonaa shonee shonee. (Who knows, friend... If I feel like it, I might give it a try anyway.)</li>
-          <li>r_logentry(INITIATOR_faction==PlayerColony,priority=9)->Boob tootnun! (You're right, friend — no hunting for me today. Too bad.)</li>
-          <li>r_logentry(INITIATOR_faction==PlayerTribe,priority=9)->Boob tootnun! (You're right, friend — no hunting for me today. Too bad.)</li>
-          <li>r_logentry(INITIATOR_kind==OuterRim_Jawa,priority=9)->Boob tootnun! (You're right, friend — no hunting for me today. Too bad.)</li>
-          <li>r_logentry(INITIATOR_kind==OuterRim_JawaTribal,priority=9)->Boob tootnun! (You're right, friend — no hunting for me today. Too bad.)</li>
-          <li>r_logentry(INITIATOR_faction==PlayerColony,priority=9)->W'eh nyabzit nyabziu b'ee. (Friend, a skilled hunter like me doesn't need to wait for the perfect weather to hunt.)</li>
-          <li>r_logentry(INITIATOR_faction==PlayerTribe,priority=9)->W'eh nyabzit nyabziu b'ee. (Friend, a skilled hunter like me doesn't need to wait for the perfect weather to hunt.)</li>
-          <li>r_logentry(INITIATOR_kind==OuterRim_Jawa,priority=9)->W'eh nyabzit nyabziu b'ee. (Friend, a skilled hunter like me doesn't need to wait for the perfect weather to hunt.)</li>
-          <li>r_logentry(INITIATOR_kind==OuterRim_JawaTribal,priority=9)->W'eh nyabzit nyabziu b'ee. (Friend, a skilled hunter like me doesn't need to wait for the perfect weather to hunt.)</li>
+          <li>r_logentry(INITIATOR_faction==PlayerColony,priority=250)->Loob beebnyih monbeet b'oonaa shonee shonee. (Who knows, friend... If I feel like it, I might give it a try anyway.)</li>
+          <li>r_logentry(INITIATOR_faction==PlayerTribe,priority=250)->Loob beebnyih monbeet b'oonaa shonee shonee. (Who knows, friend... If I feel like it, I might give it a try anyway.)</li>
+          <li>r_logentry(INITIATOR_kind==OuterRim_Jawa,priority=250)->Loob beebnyih monbeet b'oonaa shonee shonee. (Who knows, friend... If I feel like it, I might give it a try anyway.)</li>
+          <li>r_logentry(INITIATOR_kind==OuterRim_JawaTribal,priority=250)->Loob beebnyih monbeet b'oonaa shonee shonee. (Who knows, friend... If I feel like it, I might give it a try anyway.)</li>
+          <li>r_logentry(INITIATOR_faction==PlayerColony,priority=250)->Boob tootnun! (You're right, friend — no hunting for me today. Too bad.)</li>
+          <li>r_logentry(INITIATOR_faction==PlayerTribe,priority=250)->Boob tootnun! (You're right, friend — no hunting for me today. Too bad.)</li>
+          <li>r_logentry(INITIATOR_kind==OuterRim_Jawa,priority=250)->Boob tootnun! (You're right, friend — no hunting for me today. Too bad.)</li>
+          <li>r_logentry(INITIATOR_kind==OuterRim_JawaTribal,priority=250)->Boob tootnun! (You're right, friend — no hunting for me today. Too bad.)</li>
+          <li>r_logentry(INITIATOR_faction==PlayerColony,priority=250)->W'eh nyabzit nyabziu b'ee. (Friend, a skilled hunter like me doesn't need to wait for the perfect weather to hunt.)</li>
+          <li>r_logentry(INITIATOR_faction==PlayerTribe,priority=250)->W'eh nyabzit nyabziu b'ee. (Friend, a skilled hunter like me doesn't need to wait for the perfect weather to hunt.)</li>
+          <li>r_logentry(INITIATOR_kind==OuterRim_Jawa,priority=250)->W'eh nyabzit nyabziu b'ee. (Friend, a skilled hunter like me doesn't need to wait for the perfect weather to hunt.)</li>
+          <li>r_logentry(INITIATOR_kind==OuterRim_JawaTribal,priority=250)->W'eh nyabzit nyabziu b'ee. (Friend, a skilled hunter like me doesn't need to wait for the perfect weather to hunt.)</li>
       </value>
     </match>
   </Operation>
@@ -173,30 +173,30 @@
     <match Class="PatchOperationAdd">
       <xpath>/Defs/InteractionDef[defName="WeatherRainGoodtempIndoors"]/logRulesInitiator/rulesStrings</xpath>
       <value>
-          <li>r_logentry(INITIATOR_faction==PlayerColony,priority=9)->Teemoo genbin shut s'hon ga? (I hope I won't need to do any task outside.)</li>
-          <li>r_logentry(INITIATOR_faction==PlayerTribe,priority=9)->Teemoo genbin shut s'hon ga? (I hope I won't need to do any task outside.)</li>
-          <li>r_logentry(INITIATOR_kind==OuterRim_Jawa,priority=9)->Teemoo genbin shut s'hon ga? (I hope I won't need to do any task outside.)</li>
-          <li>r_logentry(INITIATOR_kind==OuterRim_JawaTribal,priority=9)->Teemoo genbin shut s'hon ga? (I hope I won't need to do any task outside.)</li>
-          <li>r_logentry(INITIATOR_faction==PlayerColony,priority=9)->Molin mooh. (Rain pouring into my soul, drowning any chance of happiness.)</li>
-          <li>r_logentry(INITIATOR_faction==PlayerTribe,priority=9)->Molin mooh. (Rain pouring into my soul, drowning any chance of happiness.)</li>
-          <li>r_logentry(INITIATOR_kind==OuterRim_Jawa,priority=9)->Molin mooh. (Rain pouring into my soul, drowning any chance of happiness.)</li>
-          <li>r_logentry(INITIATOR_kind==OuterRim_JawaTribal,priority=9)->Molin mooh. (Rain pouring into my soul, drowning any chance of happiness.)</li>
-          <li>r_logentry(INITIATOR_faction==PlayerColony,priority=9)->S'ela so sehwih. (I hope this humidity won't set back the cooking and ruin our next meals.)</li>
-          <li>r_logentry(INITIATOR_faction==PlayerTribe,priority=9)->S'ela so sehwih. (I hope this humidity won't set back the cooking and ruin our next meals.)</li>
-          <li>r_logentry(INITIATOR_kind==OuterRim_Jawa,priority=9)->S'ela so sehwih. (I hope this humidity won't set back the cooking and ruin our next meals.)</li>
-          <li>r_logentry(INITIATOR_kind==OuterRim_JawaTribal,priority=9)->S'ela so sehwih. (I hope this humidity won't set back the cooking and ruin our next meals.)</li>
-          <li>r_logentry(INITIATOR_faction==PlayerColony,priority=9)->Zookoh nun nun. (The sound of rain is so calming, especially at night.)</li>
-          <li>r_logentry(INITIATOR_faction==PlayerTribe,priority=9)->Zookoh nun nun. (The sound of rain is so calming, especially at night.)</li>
-          <li>r_logentry(INITIATOR_kind==OuterRim_Jawa,priority=9)->Zookoh nun nun. (The sound of rain is so calming, especially at night.)</li>
-          <li>r_logentry(INITIATOR_kind==OuterRim_JawaTribal,priority=9)->Zookoh nun nun. (The sound of rain is so calming, especially at night.)</li>
-          <li>r_logentry(INITIATOR_faction==PlayerColony,priority=9)->Toobmi nit goomub? (I wish we could get out there and feel the gentle drops on our naked skin.)</li>
-          <li>r_logentry(INITIATOR_faction==PlayerTribe,priority=9)->Toobmi nit goomub? (I wish we could get out there and feel the gentle drops on our naked skin.)</li>
-          <li>r_logentry(INITIATOR_kind==OuterRim_Jawa,priority=9)->Toobmi nit goomub? (I wish we could get out there and feel the gentle drops on our naked skin.)</li>
-          <li>r_logentry(INITIATOR_kind==OuterRim_JawaTribal,priority=9)->Toobmi nit goomub? (I wish we could get out there and feel the gentle drops on our naked skin.)</li>
-          <li>r_logentry(INITIATOR_faction==PlayerColony,priority=9)->Te h'ah boohoon ruhzot. (I just don't like rain.)</li>
-          <li>r_logentry(INITIATOR_faction==PlayerTribe,priority=9)->Te h'ah boohoon ruhzot. (I just don't like rain.)</li>
-          <li>r_logentry(INITIATOR_kind==OuterRim_Jawa,priority=9)->Te h'ah boohoon ruhzot. (I just don't like rain.)</li>
-          <li>r_logentry(INITIATOR_kind==OuterRim_JawaTribal,priority=9)->Te h'ah boohoon ruhzot. (I just don't like rain.)</li>
+          <li>r_logentry(INITIATOR_faction==PlayerColony,priority=250)->Teemoo genbin shut s'hon ga? (I hope I won't need to do any task outside.)</li>
+          <li>r_logentry(INITIATOR_faction==PlayerTribe,priority=250)->Teemoo genbin shut s'hon ga? (I hope I won't need to do any task outside.)</li>
+          <li>r_logentry(INITIATOR_kind==OuterRim_Jawa,priority=250)->Teemoo genbin shut s'hon ga? (I hope I won't need to do any task outside.)</li>
+          <li>r_logentry(INITIATOR_kind==OuterRim_JawaTribal,priority=250)->Teemoo genbin shut s'hon ga? (I hope I won't need to do any task outside.)</li>
+          <li>r_logentry(INITIATOR_faction==PlayerColony,priority=250)->Molin mooh. (Rain pouring into my soul, drowning any chance of happiness.)</li>
+          <li>r_logentry(INITIATOR_faction==PlayerTribe,priority=250)->Molin mooh. (Rain pouring into my soul, drowning any chance of happiness.)</li>
+          <li>r_logentry(INITIATOR_kind==OuterRim_Jawa,priority=250)->Molin mooh. (Rain pouring into my soul, drowning any chance of happiness.)</li>
+          <li>r_logentry(INITIATOR_kind==OuterRim_JawaTribal,priority=250)->Molin mooh. (Rain pouring into my soul, drowning any chance of happiness.)</li>
+          <li>r_logentry(INITIATOR_faction==PlayerColony,priority=250)->S'ela so sehwih. (I hope this humidity won't set back the cooking and ruin our next meals.)</li>
+          <li>r_logentry(INITIATOR_faction==PlayerTribe,priority=250)->S'ela so sehwih. (I hope this humidity won't set back the cooking and ruin our next meals.)</li>
+          <li>r_logentry(INITIATOR_kind==OuterRim_Jawa,priority=250)->S'ela so sehwih. (I hope this humidity won't set back the cooking and ruin our next meals.)</li>
+          <li>r_logentry(INITIATOR_kind==OuterRim_JawaTribal,priority=250)->S'ela so sehwih. (I hope this humidity won't set back the cooking and ruin our next meals.)</li>
+          <li>r_logentry(INITIATOR_faction==PlayerColony,priority=250)->Zookoh nun nun. (The sound of rain is so calming, especially at night.)</li>
+          <li>r_logentry(INITIATOR_faction==PlayerTribe,priority=250)->Zookoh nun nun. (The sound of rain is so calming, especially at night.)</li>
+          <li>r_logentry(INITIATOR_kind==OuterRim_Jawa,priority=250)->Zookoh nun nun. (The sound of rain is so calming, especially at night.)</li>
+          <li>r_logentry(INITIATOR_kind==OuterRim_JawaTribal,priority=250)->Zookoh nun nun. (The sound of rain is so calming, especially at night.)</li>
+          <li>r_logentry(INITIATOR_faction==PlayerColony,priority=250)->Toobmi nit goomub? (I wish we could get out there and feel the gentle drops on our naked skin.)</li>
+          <li>r_logentry(INITIATOR_faction==PlayerTribe,priority=250)->Toobmi nit goomub? (I wish we could get out there and feel the gentle drops on our naked skin.)</li>
+          <li>r_logentry(INITIATOR_kind==OuterRim_Jawa,priority=250)->Toobmi nit goomub? (I wish we could get out there and feel the gentle drops on our naked skin.)</li>
+          <li>r_logentry(INITIATOR_kind==OuterRim_JawaTribal,priority=250)->Toobmi nit goomub? (I wish we could get out there and feel the gentle drops on our naked skin.)</li>
+          <li>r_logentry(INITIATOR_faction==PlayerColony,priority=250)->Te h'ah boohoon ruhzot. (I just don't like rain.)</li>
+          <li>r_logentry(INITIATOR_faction==PlayerTribe,priority=250)->Te h'ah boohoon ruhzot. (I just don't like rain.)</li>
+          <li>r_logentry(INITIATOR_kind==OuterRim_Jawa,priority=250)->Te h'ah boohoon ruhzot. (I just don't like rain.)</li>
+          <li>r_logentry(INITIATOR_kind==OuterRim_JawaTribal,priority=250)->Te h'ah boohoon ruhzot. (I just don't like rain.)</li>
       </value>
     </match>
   </Operation>
@@ -205,30 +205,30 @@
     <match Class="PatchOperationAdd">
       <xpath>/Defs/InteractionDef[defName="WeatherRainGoodtempOutdoors"]/logRulesInitiator/rulesStrings</xpath>
       <value>
-          <li>r_logentry(INITIATOR_faction==PlayerColony,priority=9)->Min min z'oohmob! (Go on, friend.)</li>
-          <li>r_logentry(INITIATOR_faction==PlayerTribe,priority=9)->Min min z'oohmob! (Go on, friend.)</li>
-          <li>r_logentry(INITIATOR_kind==OuterRim_Jawa,priority=9)->Min min z'oohmob! (Go on, friend.)</li>
-          <li>r_logentry(INITIATOR_kind==OuterRim_JawaTribal,priority=9)->Min min z'oohmob! (Go on, friend.)</li>
-          <li>r_logentry(INITIATOR_faction==PlayerColony,priority=9)->Sa z'eekoh woob woou heenyot! (Indoors... outdoors... what does it matter... it's all the same bleak life...)</li>
-          <li>r_logentry(INITIATOR_faction==PlayerTribe,priority=9)->Sa z'eekoh woob woou heenyot! (Indoors... outdoors... what does it matter... it's all the same bleak life...)</li>
-          <li>r_logentry(INITIATOR_kind==OuterRim_Jawa,priority=9)->Sa z'eekoh woob woou heenyot! (Indoors... outdoors... what does it matter... it's all the same bleak life...)</li>
-          <li>r_logentry(INITIATOR_kind==OuterRim_JawaTribal,priority=9)->Sa z'eekoh woob woou heenyot! (Indoors... outdoors... what does it matter... it's all the same bleak life...)</li>
-          <li>r_logentry(INITIATOR_faction==PlayerColony,priority=9)->Gabwa tazaat m'aahhat m'aahhau. (I don't want to catch a cold or worse.)</li>
-          <li>r_logentry(INITIATOR_faction==PlayerTribe,priority=9)->Gabwa tazaat m'aahhat m'aahhau. (I don't want to catch a cold or worse.)</li>
-          <li>r_logentry(INITIATOR_kind==OuterRim_Jawa,priority=9)->Gabwa tazaat m'aahhat m'aahhau. (I don't want to catch a cold or worse.)</li>
-          <li>r_logentry(INITIATOR_kind==OuterRim_JawaTribal,priority=9)->Gabwa tazaat m'aahhat m'aahhau. (I don't want to catch a cold or worse.)</li>
-          <li>r_logentry(INITIATOR_faction==PlayerColony,priority=9)->Mihee too geet tazen tazeu benshut... (I wouldn't like to catch a cold or something.)</li>
-          <li>r_logentry(INITIATOR_faction==PlayerTribe,priority=9)->Mihee too geet tazen tazeu benshut... (I wouldn't like to catch a cold or something.)</li>
-          <li>r_logentry(INITIATOR_kind==OuterRim_Jawa,priority=9)->Mihee too geet tazen tazeu benshut... (I wouldn't like to catch a cold or something.)</li>
-          <li>r_logentry(INITIATOR_kind==OuterRim_JawaTribal,priority=9)->Mihee too geet tazen tazeu benshut... (I wouldn't like to catch a cold or something.)</li>
-          <li>r_logentry(INITIATOR_faction==PlayerColony,priority=9)->Noobnon nyutbot nyutbou soo sou bukoot zan zan... (I'm sick already and I don't want to get worse.)</li>
-          <li>r_logentry(INITIATOR_faction==PlayerTribe,priority=9)->Noobnon nyutbot nyutbou soo sou bukoot zan zan... (I'm sick already and I don't want to get worse.)</li>
-          <li>r_logentry(INITIATOR_kind==OuterRim_Jawa,priority=9)->Noobnon nyutbot nyutbou soo sou bukoot zan zan... (I'm sick already and I don't want to get worse.)</li>
-          <li>r_logentry(INITIATOR_kind==OuterRim_JawaTribal,priority=9)->Noobnon nyutbot nyutbou soo sou bukoot zan zan... (I'm sick already and I don't want to get worse.)</li>
-          <li>r_logentry(INITIATOR_faction==PlayerColony,priority=9)->Saat k'oo ho la nyumo. (Although I must say this rain is quite refreshing in this hellish heat!)</li>
-          <li>r_logentry(INITIATOR_faction==PlayerTribe,priority=9)->Saat k'oo ho la nyumo. (Although I must say this rain is quite refreshing in this hellish heat!)</li>
-          <li>r_logentry(INITIATOR_kind==OuterRim_Jawa,priority=9)->Saat k'oo ho la nyumo. (Although I must say this rain is quite refreshing in this hellish heat!)</li>
-          <li>r_logentry(INITIATOR_kind==OuterRim_JawaTribal,priority=9)->Saat k'oo ho la nyumo. (Although I must say this rain is quite refreshing in this hellish heat!)</li>
+          <li>r_logentry(INITIATOR_faction==PlayerColony,priority=250)->Min min z'oohmob! (Go on, friend.)</li>
+          <li>r_logentry(INITIATOR_faction==PlayerTribe,priority=250)->Min min z'oohmob! (Go on, friend.)</li>
+          <li>r_logentry(INITIATOR_kind==OuterRim_Jawa,priority=250)->Min min z'oohmob! (Go on, friend.)</li>
+          <li>r_logentry(INITIATOR_kind==OuterRim_JawaTribal,priority=250)->Min min z'oohmob! (Go on, friend.)</li>
+          <li>r_logentry(INITIATOR_faction==PlayerColony,priority=250)->Sa z'eekoh woob woou heenyot! (Indoors... outdoors... what does it matter... it's all the same bleak life...)</li>
+          <li>r_logentry(INITIATOR_faction==PlayerTribe,priority=250)->Sa z'eekoh woob woou heenyot! (Indoors... outdoors... what does it matter... it's all the same bleak life...)</li>
+          <li>r_logentry(INITIATOR_kind==OuterRim_Jawa,priority=250)->Sa z'eekoh woob woou heenyot! (Indoors... outdoors... what does it matter... it's all the same bleak life...)</li>
+          <li>r_logentry(INITIATOR_kind==OuterRim_JawaTribal,priority=250)->Sa z'eekoh woob woou heenyot! (Indoors... outdoors... what does it matter... it's all the same bleak life...)</li>
+          <li>r_logentry(INITIATOR_faction==PlayerColony,priority=250)->Gabwa tazaat m'aahhat m'aahhau. (I don't want to catch a cold or worse.)</li>
+          <li>r_logentry(INITIATOR_faction==PlayerTribe,priority=250)->Gabwa tazaat m'aahhat m'aahhau. (I don't want to catch a cold or worse.)</li>
+          <li>r_logentry(INITIATOR_kind==OuterRim_Jawa,priority=250)->Gabwa tazaat m'aahhat m'aahhau. (I don't want to catch a cold or worse.)</li>
+          <li>r_logentry(INITIATOR_kind==OuterRim_JawaTribal,priority=250)->Gabwa tazaat m'aahhat m'aahhau. (I don't want to catch a cold or worse.)</li>
+          <li>r_logentry(INITIATOR_faction==PlayerColony,priority=250)->Mihee too geet tazen tazeu benshut... (I wouldn't like to catch a cold or something.)</li>
+          <li>r_logentry(INITIATOR_faction==PlayerTribe,priority=250)->Mihee too geet tazen tazeu benshut... (I wouldn't like to catch a cold or something.)</li>
+          <li>r_logentry(INITIATOR_kind==OuterRim_Jawa,priority=250)->Mihee too geet tazen tazeu benshut... (I wouldn't like to catch a cold or something.)</li>
+          <li>r_logentry(INITIATOR_kind==OuterRim_JawaTribal,priority=250)->Mihee too geet tazen tazeu benshut... (I wouldn't like to catch a cold or something.)</li>
+          <li>r_logentry(INITIATOR_faction==PlayerColony,priority=250)->Noobnon nyutbot nyutbou soo sou bukoot zan zan... (I'm sick already and I don't want to get worse.)</li>
+          <li>r_logentry(INITIATOR_faction==PlayerTribe,priority=250)->Noobnon nyutbot nyutbou soo sou bukoot zan zan... (I'm sick already and I don't want to get worse.)</li>
+          <li>r_logentry(INITIATOR_kind==OuterRim_Jawa,priority=250)->Noobnon nyutbot nyutbou soo sou bukoot zan zan... (I'm sick already and I don't want to get worse.)</li>
+          <li>r_logentry(INITIATOR_kind==OuterRim_JawaTribal,priority=250)->Noobnon nyutbot nyutbou soo sou bukoot zan zan... (I'm sick already and I don't want to get worse.)</li>
+          <li>r_logentry(INITIATOR_faction==PlayerColony,priority=250)->Saat k'oo ho la nyumo. (Although I must say this rain is quite refreshing in this hellish heat!)</li>
+          <li>r_logentry(INITIATOR_faction==PlayerTribe,priority=250)->Saat k'oo ho la nyumo. (Although I must say this rain is quite refreshing in this hellish heat!)</li>
+          <li>r_logentry(INITIATOR_kind==OuterRim_Jawa,priority=250)->Saat k'oo ho la nyumo. (Although I must say this rain is quite refreshing in this hellish heat!)</li>
+          <li>r_logentry(INITIATOR_kind==OuterRim_JawaTribal,priority=250)->Saat k'oo ho la nyumo. (Although I must say this rain is quite refreshing in this hellish heat!)</li>
       </value>
     </match>
   </Operation>
@@ -237,30 +237,30 @@
     <match Class="PatchOperationAdd">
       <xpath>/Defs/InteractionDef[defName="WeatherDrystormGoodtempIndoors"]/logRulesInitiator/rulesStrings</xpath>
       <value>
-          <li>r_logentry(INITIATOR_faction==PlayerColony,priority=9)->Ru ra tooso! (I heard it too, friend! But I don't hear any rain — we might be in for a wildfire!)</li>
-          <li>r_logentry(INITIATOR_faction==PlayerTribe,priority=9)->Ru ra tooso! (I heard it too, friend! But I don't hear any rain — we might be in for a wildfire!)</li>
-          <li>r_logentry(INITIATOR_kind==OuterRim_Jawa,priority=9)->Ru ra tooso! (I heard it too, friend! But I don't hear any rain — we might be in for a wildfire!)</li>
-          <li>r_logentry(INITIATOR_kind==OuterRim_JawaTribal,priority=9)->Ru ra tooso! (I heard it too, friend! But I don't hear any rain — we might be in for a wildfire!)</li>
-          <li>r_logentry(INITIATOR_faction==PlayerColony,priority=9)->Mi h'aa leetnyan hat n'un n'un? (Yes, friend - quite a loud one! Let's hope no wildfires are started!)</li>
-          <li>r_logentry(INITIATOR_faction==PlayerTribe,priority=9)->Mi h'aa leetnyan hat n'un n'un? (Yes, friend - quite a loud one! Let's hope no wildfires are started!)</li>
-          <li>r_logentry(INITIATOR_kind==OuterRim_Jawa,priority=9)->Mi h'aa leetnyan hat n'un n'un? (Yes, friend - quite a loud one! Let's hope no wildfires are started!)</li>
-          <li>r_logentry(INITIATOR_kind==OuterRim_JawaTribal,priority=9)->Mi h'aa leetnyan hat n'un n'un? (Yes, friend - quite a loud one! Let's hope no wildfires are started!)</li>
-          <li>r_logentry(INITIATOR_faction==PlayerColony,priority=9)->Shaa reehbu tebut z'inna zoon zoon! (Thunders — the majestic roar of Nature!)</li>
-          <li>r_logentry(INITIATOR_faction==PlayerTribe,priority=9)->Shaa reehbu tebut z'inna zoon zoon! (Thunders — the majestic roar of Nature!)</li>
-          <li>r_logentry(INITIATOR_kind==OuterRim_Jawa,priority=9)->Shaa reehbu tebut z'inna zoon zoon! (Thunders — the majestic roar of Nature!)</li>
-          <li>r_logentry(INITIATOR_kind==OuterRim_JawaTribal,priority=9)->Shaa reehbu tebut z'inna zoon zoon! (Thunders — the majestic roar of Nature!)</li>
-          <li>r_logentry(INITIATOR_faction==PlayerColony,priority=9)->W'innon kan g'oohshut ne. (Nature's perfectly expressing my internal turmoil right now.)</li>
-          <li>r_logentry(INITIATOR_faction==PlayerTribe,priority=9)->W'innon kan g'oohshut ne. (Nature's perfectly expressing my internal turmoil right now.)</li>
-          <li>r_logentry(INITIATOR_kind==OuterRim_Jawa,priority=9)->W'innon kan g'oohshut ne. (Nature's perfectly expressing my internal turmoil right now.)</li>
-          <li>r_logentry(INITIATOR_kind==OuterRim_JawaTribal,priority=9)->W'innon kan g'oohshut ne. (Nature's perfectly expressing my internal turmoil right now.)</li>
-          <li>r_logentry(INITIATOR_faction==PlayerColony,priority=9)->Shih satgaah satgaau. (I'm scared of thunders!)</li>
-          <li>r_logentry(INITIATOR_faction==PlayerTribe,priority=9)->Shih satgaah satgaau. (I'm scared of thunders!)</li>
-          <li>r_logentry(INITIATOR_kind==OuterRim_Jawa,priority=9)->Shih satgaah satgaau. (I'm scared of thunders!)</li>
-          <li>r_logentry(INITIATOR_kind==OuterRim_JawaTribal,priority=9)->Shih satgaah satgaau. (I'm scared of thunders!)</li>
-          <li>r_logentry(INITIATOR_faction==PlayerColony,priority=9)->Nye n'eemon babwaah witan t'ehshe... (The way the thunder rumbles in your chest — I it!)</li>
-          <li>r_logentry(INITIATOR_faction==PlayerTribe,priority=9)->Nye n'eemon babwaah witan t'ehshe... (The way the thunder rumbles in your chest — I it!)</li>
-          <li>r_logentry(INITIATOR_kind==OuterRim_Jawa,priority=9)->Nye n'eemon babwaah witan t'ehshe... (The way the thunder rumbles in your chest — I it!)</li>
-          <li>r_logentry(INITIATOR_kind==OuterRim_JawaTribal,priority=9)->Nye n'eemon babwaah witan t'ehshe... (The way the thunder rumbles in your chest — I it!)</li>
+          <li>r_logentry(INITIATOR_faction==PlayerColony,priority=250)->Ru ra tooso! (I heard it too, friend! But I don't hear any rain — we might be in for a wildfire!)</li>
+          <li>r_logentry(INITIATOR_faction==PlayerTribe,priority=250)->Ru ra tooso! (I heard it too, friend! But I don't hear any rain — we might be in for a wildfire!)</li>
+          <li>r_logentry(INITIATOR_kind==OuterRim_Jawa,priority=250)->Ru ra tooso! (I heard it too, friend! But I don't hear any rain — we might be in for a wildfire!)</li>
+          <li>r_logentry(INITIATOR_kind==OuterRim_JawaTribal,priority=250)->Ru ra tooso! (I heard it too, friend! But I don't hear any rain — we might be in for a wildfire!)</li>
+          <li>r_logentry(INITIATOR_faction==PlayerColony,priority=250)->Mi h'aa leetnyan hat n'un n'un? (Yes, friend - quite a loud one! Let's hope no wildfires are started!)</li>
+          <li>r_logentry(INITIATOR_faction==PlayerTribe,priority=250)->Mi h'aa leetnyan hat n'un n'un? (Yes, friend - quite a loud one! Let's hope no wildfires are started!)</li>
+          <li>r_logentry(INITIATOR_kind==OuterRim_Jawa,priority=250)->Mi h'aa leetnyan hat n'un n'un? (Yes, friend - quite a loud one! Let's hope no wildfires are started!)</li>
+          <li>r_logentry(INITIATOR_kind==OuterRim_JawaTribal,priority=250)->Mi h'aa leetnyan hat n'un n'un? (Yes, friend - quite a loud one! Let's hope no wildfires are started!)</li>
+          <li>r_logentry(INITIATOR_faction==PlayerColony,priority=250)->Shaa reehbu tebut z'inna zoon zoon! (Thunders — the majestic roar of Nature!)</li>
+          <li>r_logentry(INITIATOR_faction==PlayerTribe,priority=250)->Shaa reehbu tebut z'inna zoon zoon! (Thunders — the majestic roar of Nature!)</li>
+          <li>r_logentry(INITIATOR_kind==OuterRim_Jawa,priority=250)->Shaa reehbu tebut z'inna zoon zoon! (Thunders — the majestic roar of Nature!)</li>
+          <li>r_logentry(INITIATOR_kind==OuterRim_JawaTribal,priority=250)->Shaa reehbu tebut z'inna zoon zoon! (Thunders — the majestic roar of Nature!)</li>
+          <li>r_logentry(INITIATOR_faction==PlayerColony,priority=250)->W'innon kan g'oohshut ne. (Nature's perfectly expressing my internal turmoil right now.)</li>
+          <li>r_logentry(INITIATOR_faction==PlayerTribe,priority=250)->W'innon kan g'oohshut ne. (Nature's perfectly expressing my internal turmoil right now.)</li>
+          <li>r_logentry(INITIATOR_kind==OuterRim_Jawa,priority=250)->W'innon kan g'oohshut ne. (Nature's perfectly expressing my internal turmoil right now.)</li>
+          <li>r_logentry(INITIATOR_kind==OuterRim_JawaTribal,priority=250)->W'innon kan g'oohshut ne. (Nature's perfectly expressing my internal turmoil right now.)</li>
+          <li>r_logentry(INITIATOR_faction==PlayerColony,priority=250)->Shih satgaah satgaau. (I'm scared of thunders!)</li>
+          <li>r_logentry(INITIATOR_faction==PlayerTribe,priority=250)->Shih satgaah satgaau. (I'm scared of thunders!)</li>
+          <li>r_logentry(INITIATOR_kind==OuterRim_Jawa,priority=250)->Shih satgaah satgaau. (I'm scared of thunders!)</li>
+          <li>r_logentry(INITIATOR_kind==OuterRim_JawaTribal,priority=250)->Shih satgaah satgaau. (I'm scared of thunders!)</li>
+          <li>r_logentry(INITIATOR_faction==PlayerColony,priority=250)->Nye n'eemon babwaah witan t'ehshe... (The way the thunder rumbles in your chest — I it!)</li>
+          <li>r_logentry(INITIATOR_faction==PlayerTribe,priority=250)->Nye n'eemon babwaah witan t'ehshe... (The way the thunder rumbles in your chest — I it!)</li>
+          <li>r_logentry(INITIATOR_kind==OuterRim_Jawa,priority=250)->Nye n'eemon babwaah witan t'ehshe... (The way the thunder rumbles in your chest — I it!)</li>
+          <li>r_logentry(INITIATOR_kind==OuterRim_JawaTribal,priority=250)->Nye n'eemon babwaah witan t'ehshe... (The way the thunder rumbles in your chest — I it!)</li>
       </value>
     </match>
   </Operation>
@@ -269,22 +269,22 @@
     <match Class="PatchOperationAdd">
       <xpath>/Defs/InteractionDef[defName="WeatherDrystormGoodtempOutdoors"]/logRulesInitiator/rulesStrings</xpath>
       <value>
-          <li>r_logentry(INITIATOR_faction==PlayerColony,priority=9)->Soo n'aan muzan muzau saa mobhit? (Yes, friend — let's hope it rains soon, or we'll have wildfires!)</li>
-          <li>r_logentry(INITIATOR_faction==PlayerTribe,priority=9)->Soo n'aan muzan muzau saa mobhit? (Yes, friend — let's hope it rains soon, or we'll have wildfires!)</li>
-          <li>r_logentry(INITIATOR_kind==OuterRim_Jawa,priority=9)->Soo n'aan muzan muzau saa mobhit? (Yes, friend — let's hope it rains soon, or we'll have wildfires!)</li>
-          <li>r_logentry(INITIATOR_kind==OuterRim_JawaTribal,priority=9)->Soo n'aan muzan muzau saa mobhit? (Yes, friend — let's hope it rains soon, or we'll have wildfires!)</li>
-          <li>r_logentry(INITIATOR_faction==PlayerColony,priority=9)->Toob hoshob kaah. (Mmm... maybe I'd better get inside — I don't want to get struck by lightning!)</li>
-          <li>r_logentry(INITIATOR_faction==PlayerTribe,priority=9)->Toob hoshob kaah. (Mmm... maybe I'd better get inside — I don't want to get struck by lightning!)</li>
-          <li>r_logentry(INITIATOR_kind==OuterRim_Jawa,priority=9)->Toob hoshob kaah. (Mmm... maybe I'd better get inside — I don't want to get struck by lightning!)</li>
-          <li>r_logentry(INITIATOR_kind==OuterRim_JawaTribal,priority=9)->Toob hoshob kaah. (Mmm... maybe I'd better get inside — I don't want to get struck by lightning!)</li>
-          <li>r_logentry(INITIATOR_faction==PlayerColony,priority=9)->Mihsha mihshu kaah zabshuh! (Yes! I love lightnings!)</li>
-          <li>r_logentry(INITIATOR_faction==PlayerTribe,priority=9)->Mihsha mihshu kaah zabshuh! (Yes! I love lightnings!)</li>
-          <li>r_logentry(INITIATOR_kind==OuterRim_Jawa,priority=9)->Mihsha mihshu kaah zabshuh! (Yes! I love lightnings!)</li>
-          <li>r_logentry(INITIATOR_kind==OuterRim_JawaTribal,priority=9)->Mihsha mihshu kaah zabshuh! (Yes! I love lightnings!)</li>
-          <li>r_logentry(INITIATOR_faction==PlayerColony,priority=9)->W'ebtaa tah tun tihsaan! (Aww! I'm going inside — it's too dangerous out here!)</li>
-          <li>r_logentry(INITIATOR_faction==PlayerTribe,priority=9)->W'ebtaa tah tun tihsaan! (Aww! I'm going inside — it's too dangerous out here!)</li>
-          <li>r_logentry(INITIATOR_kind==OuterRim_Jawa,priority=9)->W'ebtaa tah tun tihsaan! (Aww! I'm going inside — it's too dangerous out here!)</li>
-          <li>r_logentry(INITIATOR_kind==OuterRim_JawaTribal,priority=9)->W'ebtaa tah tun tihsaan! (Aww! I'm going inside — it's too dangerous out here!)</li>
+          <li>r_logentry(INITIATOR_faction==PlayerColony,priority=250)->Soo n'aan muzan muzau saa mobhit? (Yes, friend — let's hope it rains soon, or we'll have wildfires!)</li>
+          <li>r_logentry(INITIATOR_faction==PlayerTribe,priority=250)->Soo n'aan muzan muzau saa mobhit? (Yes, friend — let's hope it rains soon, or we'll have wildfires!)</li>
+          <li>r_logentry(INITIATOR_kind==OuterRim_Jawa,priority=250)->Soo n'aan muzan muzau saa mobhit? (Yes, friend — let's hope it rains soon, or we'll have wildfires!)</li>
+          <li>r_logentry(INITIATOR_kind==OuterRim_JawaTribal,priority=250)->Soo n'aan muzan muzau saa mobhit? (Yes, friend — let's hope it rains soon, or we'll have wildfires!)</li>
+          <li>r_logentry(INITIATOR_faction==PlayerColony,priority=250)->Toob hoshob kaah. (Mmm... maybe I'd better get inside — I don't want to get struck by lightning!)</li>
+          <li>r_logentry(INITIATOR_faction==PlayerTribe,priority=250)->Toob hoshob kaah. (Mmm... maybe I'd better get inside — I don't want to get struck by lightning!)</li>
+          <li>r_logentry(INITIATOR_kind==OuterRim_Jawa,priority=250)->Toob hoshob kaah. (Mmm... maybe I'd better get inside — I don't want to get struck by lightning!)</li>
+          <li>r_logentry(INITIATOR_kind==OuterRim_JawaTribal,priority=250)->Toob hoshob kaah. (Mmm... maybe I'd better get inside — I don't want to get struck by lightning!)</li>
+          <li>r_logentry(INITIATOR_faction==PlayerColony,priority=250)->Mihsha mihshu kaah zabshuh! (Yes! I love lightnings!)</li>
+          <li>r_logentry(INITIATOR_faction==PlayerTribe,priority=250)->Mihsha mihshu kaah zabshuh! (Yes! I love lightnings!)</li>
+          <li>r_logentry(INITIATOR_kind==OuterRim_Jawa,priority=250)->Mihsha mihshu kaah zabshuh! (Yes! I love lightnings!)</li>
+          <li>r_logentry(INITIATOR_kind==OuterRim_JawaTribal,priority=250)->Mihsha mihshu kaah zabshuh! (Yes! I love lightnings!)</li>
+          <li>r_logentry(INITIATOR_faction==PlayerColony,priority=250)->W'ebtaa tah tun tihsaan! (Aww! I'm going inside — it's too dangerous out here!)</li>
+          <li>r_logentry(INITIATOR_faction==PlayerTribe,priority=250)->W'ebtaa tah tun tihsaan! (Aww! I'm going inside — it's too dangerous out here!)</li>
+          <li>r_logentry(INITIATOR_kind==OuterRim_Jawa,priority=250)->W'ebtaa tah tun tihsaan! (Aww! I'm going inside — it's too dangerous out here!)</li>
+          <li>r_logentry(INITIATOR_kind==OuterRim_JawaTribal,priority=250)->W'ebtaa tah tun tihsaan! (Aww! I'm going inside — it's too dangerous out here!)</li>
       </value>
     </match>
   </Operation>
@@ -293,30 +293,30 @@
     <match Class="PatchOperationAdd">
       <xpath>/Defs/InteractionDef[defName="WeatherStormGoodtempIndoors"]/logRulesInitiator/rulesStrings</xpath>
       <value>
-          <li>r_logentry(INITIATOR_faction==PlayerColony,priority=9)->Too wo seezot. (Whoa — that thunder was loud!)</li>
-          <li>r_logentry(INITIATOR_faction==PlayerTribe,priority=9)->Too wo seezot. (Whoa — that thunder was loud!)</li>
-          <li>r_logentry(INITIATOR_kind==OuterRim_Jawa,priority=9)->Too wo seezot. (Whoa — that thunder was loud!)</li>
-          <li>r_logentry(INITIATOR_kind==OuterRim_JawaTribal,priority=9)->Too wo seezot. (Whoa — that thunder was loud!)</li>
-          <li>r_logentry(INITIATOR_faction==PlayerColony,priority=9)->Neet nyuhseeh we r'ot sheenmeb? (This rain's so loud on the roof!)</li>
-          <li>r_logentry(INITIATOR_faction==PlayerTribe,priority=9)->Neet nyuhseeh we r'ot sheenmeb? (This rain's so loud on the roof!)</li>
-          <li>r_logentry(INITIATOR_kind==OuterRim_Jawa,priority=9)->Neet nyuhseeh we r'ot sheenmeb? (This rain's so loud on the roof!)</li>
-          <li>r_logentry(INITIATOR_kind==OuterRim_JawaTribal,priority=9)->Neet nyuhseeh we r'ot sheenmeb? (This rain's so loud on the roof!)</li>
-          <li>r_logentry(INITIATOR_faction==PlayerColony,priority=9)->Robshi mun k'ob wonaat! (It seems the heavens have opened out there!)</li>
-          <li>r_logentry(INITIATOR_faction==PlayerTribe,priority=9)->Robshi mun k'ob wonaat! (It seems the heavens have opened out there!)</li>
-          <li>r_logentry(INITIATOR_kind==OuterRim_Jawa,priority=9)->Robshi mun k'ob wonaat! (It seems the heavens have opened out there!)</li>
-          <li>r_logentry(INITIATOR_kind==OuterRim_JawaTribal,priority=9)->Robshi mun k'ob wonaat! (It seems the heavens have opened out there!)</li>
-          <li>r_logentry(INITIATOR_faction==PlayerColony,priority=9)->Non kin! (I hope I won't need to do any task outside — I'd immediately get all drenched in this storm!)</li>
-          <li>r_logentry(INITIATOR_faction==PlayerTribe,priority=9)->Non kin! (I hope I won't need to do any task outside — I'd immediately get all drenched in this storm!)</li>
-          <li>r_logentry(INITIATOR_kind==OuterRim_Jawa,priority=9)->Non kin! (I hope I won't need to do any task outside — I'd immediately get all drenched in this storm!)</li>
-          <li>r_logentry(INITIATOR_kind==OuterRim_JawaTribal,priority=9)->Non kin! (I hope I won't need to do any task outside — I'd immediately get all drenched in this storm!)</li>
-          <li>r_logentry(INITIATOR_faction==PlayerColony,priority=9)->S'ela so sehwih. (I hope this humidity won't set back the cooking and ruin our next meals.)</li>
-          <li>r_logentry(INITIATOR_faction==PlayerTribe,priority=9)->S'ela so sehwih. (I hope this humidity won't set back the cooking and ruin our next meals.)</li>
-          <li>r_logentry(INITIATOR_kind==OuterRim_Jawa,priority=9)->S'ela so sehwih. (I hope this humidity won't set back the cooking and ruin our next meals.)</li>
-          <li>r_logentry(INITIATOR_kind==OuterRim_JawaTribal,priority=9)->S'ela so sehwih. (I hope this humidity won't set back the cooking and ruin our next meals.)</li>
-          <li>r_logentry(INITIATOR_faction==PlayerColony,priority=9)->Shaa reehbu tebut z'inna zoon zoon! (Thunders — the majestic roar of Nature!)</li>
-          <li>r_logentry(INITIATOR_faction==PlayerTribe,priority=9)->Shaa reehbu tebut z'inna zoon zoon! (Thunders — the majestic roar of Nature!)</li>
-          <li>r_logentry(INITIATOR_kind==OuterRim_Jawa,priority=9)->Shaa reehbu tebut z'inna zoon zoon! (Thunders — the majestic roar of Nature!)</li>
-          <li>r_logentry(INITIATOR_kind==OuterRim_JawaTribal,priority=9)->Shaa reehbu tebut z'inna zoon zoon! (Thunders — the majestic roar of Nature!)</li>
+          <li>r_logentry(INITIATOR_faction==PlayerColony,priority=250)->Too wo seezot. (Whoa — that thunder was loud!)</li>
+          <li>r_logentry(INITIATOR_faction==PlayerTribe,priority=250)->Too wo seezot. (Whoa — that thunder was loud!)</li>
+          <li>r_logentry(INITIATOR_kind==OuterRim_Jawa,priority=250)->Too wo seezot. (Whoa — that thunder was loud!)</li>
+          <li>r_logentry(INITIATOR_kind==OuterRim_JawaTribal,priority=250)->Too wo seezot. (Whoa — that thunder was loud!)</li>
+          <li>r_logentry(INITIATOR_faction==PlayerColony,priority=250)->Neet nyuhseeh we r'ot sheenmeb? (This rain's so loud on the roof!)</li>
+          <li>r_logentry(INITIATOR_faction==PlayerTribe,priority=250)->Neet nyuhseeh we r'ot sheenmeb? (This rain's so loud on the roof!)</li>
+          <li>r_logentry(INITIATOR_kind==OuterRim_Jawa,priority=250)->Neet nyuhseeh we r'ot sheenmeb? (This rain's so loud on the roof!)</li>
+          <li>r_logentry(INITIATOR_kind==OuterRim_JawaTribal,priority=250)->Neet nyuhseeh we r'ot sheenmeb? (This rain's so loud on the roof!)</li>
+          <li>r_logentry(INITIATOR_faction==PlayerColony,priority=250)->Robshi mun k'ob wonaat! (It seems the heavens have opened out there!)</li>
+          <li>r_logentry(INITIATOR_faction==PlayerTribe,priority=250)->Robshi mun k'ob wonaat! (It seems the heavens have opened out there!)</li>
+          <li>r_logentry(INITIATOR_kind==OuterRim_Jawa,priority=250)->Robshi mun k'ob wonaat! (It seems the heavens have opened out there!)</li>
+          <li>r_logentry(INITIATOR_kind==OuterRim_JawaTribal,priority=250)->Robshi mun k'ob wonaat! (It seems the heavens have opened out there!)</li>
+          <li>r_logentry(INITIATOR_faction==PlayerColony,priority=250)->Non kin! (I hope I won't need to do any task outside — I'd immediately get all drenched in this storm!)</li>
+          <li>r_logentry(INITIATOR_faction==PlayerTribe,priority=250)->Non kin! (I hope I won't need to do any task outside — I'd immediately get all drenched in this storm!)</li>
+          <li>r_logentry(INITIATOR_kind==OuterRim_Jawa,priority=250)->Non kin! (I hope I won't need to do any task outside — I'd immediately get all drenched in this storm!)</li>
+          <li>r_logentry(INITIATOR_kind==OuterRim_JawaTribal,priority=250)->Non kin! (I hope I won't need to do any task outside — I'd immediately get all drenched in this storm!)</li>
+          <li>r_logentry(INITIATOR_faction==PlayerColony,priority=250)->S'ela so sehwih. (I hope this humidity won't set back the cooking and ruin our next meals.)</li>
+          <li>r_logentry(INITIATOR_faction==PlayerTribe,priority=250)->S'ela so sehwih. (I hope this humidity won't set back the cooking and ruin our next meals.)</li>
+          <li>r_logentry(INITIATOR_kind==OuterRim_Jawa,priority=250)->S'ela so sehwih. (I hope this humidity won't set back the cooking and ruin our next meals.)</li>
+          <li>r_logentry(INITIATOR_kind==OuterRim_JawaTribal,priority=250)->S'ela so sehwih. (I hope this humidity won't set back the cooking and ruin our next meals.)</li>
+          <li>r_logentry(INITIATOR_faction==PlayerColony,priority=250)->Shaa reehbu tebut z'inna zoon zoon! (Thunders — the majestic roar of Nature!)</li>
+          <li>r_logentry(INITIATOR_faction==PlayerTribe,priority=250)->Shaa reehbu tebut z'inna zoon zoon! (Thunders — the majestic roar of Nature!)</li>
+          <li>r_logentry(INITIATOR_kind==OuterRim_Jawa,priority=250)->Shaa reehbu tebut z'inna zoon zoon! (Thunders — the majestic roar of Nature!)</li>
+          <li>r_logentry(INITIATOR_kind==OuterRim_JawaTribal,priority=250)->Shaa reehbu tebut z'inna zoon zoon! (Thunders — the majestic roar of Nature!)</li>
       </value>
     </match>
   </Operation>
@@ -325,30 +325,30 @@
     <match Class="PatchOperationAdd">
       <xpath>/Defs/InteractionDef[defName="WeatherStormGoodtempOutdoors"]/logRulesInitiator/rulesStrings</xpath>
       <value>
-          <li>r_logentry(INITIATOR_faction==PlayerColony,priority=9)->T'abut mi s'anroon mob. (I'd better get inside — I don't want to get struck by lightning!)</li>
-          <li>r_logentry(INITIATOR_faction==PlayerTribe,priority=9)->T'abut mi s'anroon mob. (I'd better get inside — I don't want to get struck by lightning!)</li>
-          <li>r_logentry(INITIATOR_kind==OuterRim_Jawa,priority=9)->T'abut mi s'anroon mob. (I'd better get inside — I don't want to get struck by lightning!)</li>
-          <li>r_logentry(INITIATOR_kind==OuterRim_JawaTribal,priority=9)->T'abut mi s'anroon mob. (I'd better get inside — I don't want to get struck by lightning!)</li>
-          <li>r_logentry(INITIATOR_faction==PlayerColony,priority=9)->Zoomoo teebzu zaah n'yootbu. (Damn, I'm getting all drenched here...)</li>
-          <li>r_logentry(INITIATOR_faction==PlayerTribe,priority=9)->Zoomoo teebzu zaah n'yootbu. (Damn, I'm getting all drenched here...)</li>
-          <li>r_logentry(INITIATOR_kind==OuterRim_Jawa,priority=9)->Zoomoo teebzu zaah n'yootbu. (Damn, I'm getting all drenched here...)</li>
-          <li>r_logentry(INITIATOR_kind==OuterRim_JawaTribal,priority=9)->Zoomoo teebzu zaah n'yootbu. (Damn, I'm getting all drenched here...)</li>
-          <li>r_logentry(INITIATOR_faction==PlayerColony,priority=9)->Shaa reehbu tebut z'inna zoon zoon! (Thunders — the majestic roar of Nature!)</li>
-          <li>r_logentry(INITIATOR_faction==PlayerTribe,priority=9)->Shaa reehbu tebut z'inna zoon zoon! (Thunders — the majestic roar of Nature!)</li>
-          <li>r_logentry(INITIATOR_kind==OuterRim_Jawa,priority=9)->Shaa reehbu tebut z'inna zoon zoon! (Thunders — the majestic roar of Nature!)</li>
-          <li>r_logentry(INITIATOR_kind==OuterRim_JawaTribal,priority=9)->Shaa reehbu tebut z'inna zoon zoon! (Thunders — the majestic roar of Nature!)</li>
-          <li>r_logentry(INITIATOR_faction==PlayerColony,priority=9)->G'oob noo lihhoo. (I just hate rain!)</li>
-          <li>r_logentry(INITIATOR_faction==PlayerTribe,priority=9)->G'oob noo lihhoo. (I just hate rain!)</li>
-          <li>r_logentry(INITIATOR_kind==OuterRim_Jawa,priority=9)->G'oob noo lihhoo. (I just hate rain!)</li>
-          <li>r_logentry(INITIATOR_kind==OuterRim_JawaTribal,priority=9)->G'oob noo lihhoo. (I just hate rain!)</li>
-          <li>r_logentry(INITIATOR_faction==PlayerColony,priority=9)->Shan heh ton ko ku? (I'm scared of storms!)</li>
-          <li>r_logentry(INITIATOR_faction==PlayerTribe,priority=9)->Shan heh ton ko ku? (I'm scared of storms!)</li>
-          <li>r_logentry(INITIATOR_kind==OuterRim_Jawa,priority=9)->Shan heh ton ko ku? (I'm scared of storms!)</li>
-          <li>r_logentry(INITIATOR_kind==OuterRim_JawaTribal,priority=9)->Shan heh ton ko ku? (I'm scared of storms!)</li>
-          <li>r_logentry(INITIATOR_faction==PlayerColony,priority=9)->Nye n'eemon babwaah witan t'ehshe... (The way the thunder rumbles in your chest — I it!)</li>
-          <li>r_logentry(INITIATOR_faction==PlayerTribe,priority=9)->Nye n'eemon babwaah witan t'ehshe... (The way the thunder rumbles in your chest — I it!)</li>
-          <li>r_logentry(INITIATOR_kind==OuterRim_Jawa,priority=9)->Nye n'eemon babwaah witan t'ehshe... (The way the thunder rumbles in your chest — I it!)</li>
-          <li>r_logentry(INITIATOR_kind==OuterRim_JawaTribal,priority=9)->Nye n'eemon babwaah witan t'ehshe... (The way the thunder rumbles in your chest — I it!)</li>
+          <li>r_logentry(INITIATOR_faction==PlayerColony,priority=250)->T'abut mi s'anroon mob. (I'd better get inside — I don't want to get struck by lightning!)</li>
+          <li>r_logentry(INITIATOR_faction==PlayerTribe,priority=250)->T'abut mi s'anroon mob. (I'd better get inside — I don't want to get struck by lightning!)</li>
+          <li>r_logentry(INITIATOR_kind==OuterRim_Jawa,priority=250)->T'abut mi s'anroon mob. (I'd better get inside — I don't want to get struck by lightning!)</li>
+          <li>r_logentry(INITIATOR_kind==OuterRim_JawaTribal,priority=250)->T'abut mi s'anroon mob. (I'd better get inside — I don't want to get struck by lightning!)</li>
+          <li>r_logentry(INITIATOR_faction==PlayerColony,priority=250)->Zoomoo teebzu zaah n'yootbu. (Damn, I'm getting all drenched here...)</li>
+          <li>r_logentry(INITIATOR_faction==PlayerTribe,priority=250)->Zoomoo teebzu zaah n'yootbu. (Damn, I'm getting all drenched here...)</li>
+          <li>r_logentry(INITIATOR_kind==OuterRim_Jawa,priority=250)->Zoomoo teebzu zaah n'yootbu. (Damn, I'm getting all drenched here...)</li>
+          <li>r_logentry(INITIATOR_kind==OuterRim_JawaTribal,priority=250)->Zoomoo teebzu zaah n'yootbu. (Damn, I'm getting all drenched here...)</li>
+          <li>r_logentry(INITIATOR_faction==PlayerColony,priority=250)->Shaa reehbu tebut z'inna zoon zoon! (Thunders — the majestic roar of Nature!)</li>
+          <li>r_logentry(INITIATOR_faction==PlayerTribe,priority=250)->Shaa reehbu tebut z'inna zoon zoon! (Thunders — the majestic roar of Nature!)</li>
+          <li>r_logentry(INITIATOR_kind==OuterRim_Jawa,priority=250)->Shaa reehbu tebut z'inna zoon zoon! (Thunders — the majestic roar of Nature!)</li>
+          <li>r_logentry(INITIATOR_kind==OuterRim_JawaTribal,priority=250)->Shaa reehbu tebut z'inna zoon zoon! (Thunders — the majestic roar of Nature!)</li>
+          <li>r_logentry(INITIATOR_faction==PlayerColony,priority=250)->G'oob noo lihhoo. (I just hate rain!)</li>
+          <li>r_logentry(INITIATOR_faction==PlayerTribe,priority=250)->G'oob noo lihhoo. (I just hate rain!)</li>
+          <li>r_logentry(INITIATOR_kind==OuterRim_Jawa,priority=250)->G'oob noo lihhoo. (I just hate rain!)</li>
+          <li>r_logentry(INITIATOR_kind==OuterRim_JawaTribal,priority=250)->G'oob noo lihhoo. (I just hate rain!)</li>
+          <li>r_logentry(INITIATOR_faction==PlayerColony,priority=250)->Shan heh ton ko ku? (I'm scared of storms!)</li>
+          <li>r_logentry(INITIATOR_faction==PlayerTribe,priority=250)->Shan heh ton ko ku? (I'm scared of storms!)</li>
+          <li>r_logentry(INITIATOR_kind==OuterRim_Jawa,priority=250)->Shan heh ton ko ku? (I'm scared of storms!)</li>
+          <li>r_logentry(INITIATOR_kind==OuterRim_JawaTribal,priority=250)->Shan heh ton ko ku? (I'm scared of storms!)</li>
+          <li>r_logentry(INITIATOR_faction==PlayerColony,priority=250)->Nye n'eemon babwaah witan t'ehshe... (The way the thunder rumbles in your chest — I it!)</li>
+          <li>r_logentry(INITIATOR_faction==PlayerTribe,priority=250)->Nye n'eemon babwaah witan t'ehshe... (The way the thunder rumbles in your chest — I it!)</li>
+          <li>r_logentry(INITIATOR_kind==OuterRim_Jawa,priority=250)->Nye n'eemon babwaah witan t'ehshe... (The way the thunder rumbles in your chest — I it!)</li>
+          <li>r_logentry(INITIATOR_kind==OuterRim_JawaTribal,priority=250)->Nye n'eemon babwaah witan t'ehshe... (The way the thunder rumbles in your chest — I it!)</li>
       </value>
     </match>
   </Operation>
@@ -357,26 +357,26 @@
     <match Class="PatchOperationAdd">
       <xpath>/Defs/InteractionDef[defName="WimpThunder"]/logRulesInitiator/rulesStrings</xpath>
       <value>
-          <li>r_logentry(INITIATOR_faction==PlayerColony,priority=9)->Kaman nib shaahro. (Calm down, friend — it's just a normal thunderstorm!)</li>
-          <li>r_logentry(INITIATOR_faction==PlayerTribe,priority=9)->Kaman nib shaahro. (Calm down, friend — it's just a normal thunderstorm!)</li>
-          <li>r_logentry(INITIATOR_kind==OuterRim_Jawa,priority=9)->Kaman nib shaahro. (Calm down, friend — it's just a normal thunderstorm!)</li>
-          <li>r_logentry(INITIATOR_kind==OuterRim_JawaTribal,priority=9)->Kaman nib shaahro. (Calm down, friend — it's just a normal thunderstorm!)</li>
-          <li>r_logentry(INITIATOR_faction==PlayerColony,priority=9)->Ga ga bohro tee. (Grow up, friend! It's just a normal thunderstorm!)</li>
-          <li>r_logentry(INITIATOR_faction==PlayerTribe,priority=9)->Ga ga bohro tee. (Grow up, friend! It's just a normal thunderstorm!)</li>
-          <li>r_logentry(INITIATOR_kind==OuterRim_Jawa,priority=9)->Ga ga bohro tee. (Grow up, friend! It's just a normal thunderstorm!)</li>
-          <li>r_logentry(INITIATOR_kind==OuterRim_JawaTribal,priority=9)->Ga ga bohro tee. (Grow up, friend! It's just a normal thunderstorm!)</li>
-          <li>r_logentry(INITIATOR_faction==PlayerColony,priority=9)->M'oob bibsa sobtin neehnub. (There, there — I'm here for you, friend!)</li>
-          <li>r_logentry(INITIATOR_faction==PlayerTribe,priority=9)->M'oob bibsa sobtin neehnub. (There, there — I'm here for you, friend!)</li>
-          <li>r_logentry(INITIATOR_kind==OuterRim_Jawa,priority=9)->M'oob bibsa sobtin neehnub. (There, there — I'm here for you, friend!)</li>
-          <li>r_logentry(INITIATOR_kind==OuterRim_JawaTribal,priority=9)->M'oob bibsa sobtin neehnub. (There, there — I'm here for you, friend!)</li>
-          <li>r_logentry(INITIATOR_faction==PlayerColony,priority=9)->Nyetnya nyetnyu r'atnob la nyihboot nyihboou. (Why so scared? Lightnings and thunders are so fascinating!)</li>
-          <li>r_logentry(INITIATOR_faction==PlayerTribe,priority=9)->Nyetnya nyetnyu r'atnob la nyihboot nyihboou. (Why so scared? Lightnings and thunders are so fascinating!)</li>
-          <li>r_logentry(INITIATOR_kind==OuterRim_Jawa,priority=9)->Nyetnya nyetnyu r'atnob la nyihboot nyihboou. (Why so scared? Lightnings and thunders are so fascinating!)</li>
-          <li>r_logentry(INITIATOR_kind==OuterRim_JawaTribal,priority=9)->Nyetnya nyetnyu r'atnob la nyihboot nyihboou. (Why so scared? Lightnings and thunders are so fascinating!)</li>
-          <li>r_logentry(INITIATOR_faction==PlayerColony,priority=9)->Rah rau wa baka reenhoo? (Aww, friend! I'm scared too!)</li>
-          <li>r_logentry(INITIATOR_faction==PlayerTribe,priority=9)->Rah rau wa baka reenhoo? (Aww, friend! I'm scared too!)</li>
-          <li>r_logentry(INITIATOR_kind==OuterRim_Jawa,priority=9)->Rah rau wa baka reenhoo? (Aww, friend! I'm scared too!)</li>
-          <li>r_logentry(INITIATOR_kind==OuterRim_JawaTribal,priority=9)->Rah rau wa baka reenhoo? (Aww, friend! I'm scared too!)</li>
+          <li>r_logentry(INITIATOR_faction==PlayerColony,priority=250)->Kaman nib shaahro. (Calm down, friend — it's just a normal thunderstorm!)</li>
+          <li>r_logentry(INITIATOR_faction==PlayerTribe,priority=250)->Kaman nib shaahro. (Calm down, friend — it's just a normal thunderstorm!)</li>
+          <li>r_logentry(INITIATOR_kind==OuterRim_Jawa,priority=250)->Kaman nib shaahro. (Calm down, friend — it's just a normal thunderstorm!)</li>
+          <li>r_logentry(INITIATOR_kind==OuterRim_JawaTribal,priority=250)->Kaman nib shaahro. (Calm down, friend — it's just a normal thunderstorm!)</li>
+          <li>r_logentry(INITIATOR_faction==PlayerColony,priority=250)->Ga ga bohro tee. (Grow up, friend! It's just a normal thunderstorm!)</li>
+          <li>r_logentry(INITIATOR_faction==PlayerTribe,priority=250)->Ga ga bohro tee. (Grow up, friend! It's just a normal thunderstorm!)</li>
+          <li>r_logentry(INITIATOR_kind==OuterRim_Jawa,priority=250)->Ga ga bohro tee. (Grow up, friend! It's just a normal thunderstorm!)</li>
+          <li>r_logentry(INITIATOR_kind==OuterRim_JawaTribal,priority=250)->Ga ga bohro tee. (Grow up, friend! It's just a normal thunderstorm!)</li>
+          <li>r_logentry(INITIATOR_faction==PlayerColony,priority=250)->M'oob bibsa sobtin neehnub. (There, there — I'm here for you, friend!)</li>
+          <li>r_logentry(INITIATOR_faction==PlayerTribe,priority=250)->M'oob bibsa sobtin neehnub. (There, there — I'm here for you, friend!)</li>
+          <li>r_logentry(INITIATOR_kind==OuterRim_Jawa,priority=250)->M'oob bibsa sobtin neehnub. (There, there — I'm here for you, friend!)</li>
+          <li>r_logentry(INITIATOR_kind==OuterRim_JawaTribal,priority=250)->M'oob bibsa sobtin neehnub. (There, there — I'm here for you, friend!)</li>
+          <li>r_logentry(INITIATOR_faction==PlayerColony,priority=250)->Nyetnya nyetnyu r'atnob la nyihboot nyihboou. (Why so scared? Lightnings and thunders are so fascinating!)</li>
+          <li>r_logentry(INITIATOR_faction==PlayerTribe,priority=250)->Nyetnya nyetnyu r'atnob la nyihboot nyihboou. (Why so scared? Lightnings and thunders are so fascinating!)</li>
+          <li>r_logentry(INITIATOR_kind==OuterRim_Jawa,priority=250)->Nyetnya nyetnyu r'atnob la nyihboot nyihboou. (Why so scared? Lightnings and thunders are so fascinating!)</li>
+          <li>r_logentry(INITIATOR_kind==OuterRim_JawaTribal,priority=250)->Nyetnya nyetnyu r'atnob la nyihboot nyihboou. (Why so scared? Lightnings and thunders are so fascinating!)</li>
+          <li>r_logentry(INITIATOR_faction==PlayerColony,priority=250)->Rah rau wa baka reenhoo? (Aww, friend! I'm scared too!)</li>
+          <li>r_logentry(INITIATOR_faction==PlayerTribe,priority=250)->Rah rau wa baka reenhoo? (Aww, friend! I'm scared too!)</li>
+          <li>r_logentry(INITIATOR_kind==OuterRim_Jawa,priority=250)->Rah rau wa baka reenhoo? (Aww, friend! I'm scared too!)</li>
+          <li>r_logentry(INITIATOR_kind==OuterRim_JawaTribal,priority=250)->Rah rau wa baka reenhoo? (Aww, friend! I'm scared too!)</li>
       </value>
     </match>
   </Operation>
@@ -385,30 +385,30 @@
     <match Class="PatchOperationAdd">
       <xpath>/Defs/InteractionDef[defName="WeatherHardsnowGoodtempNotEntombed"]/logRulesInitiator/rulesStrings</xpath>
       <value>
-          <li>r_logentry(INITIATOR_faction==PlayerColony,priority=9)->Baahsit tihzun shiweh koon koou. (We're in for some heavy snow shoveling, it seems...)</li>
-          <li>r_logentry(INITIATOR_faction==PlayerTribe,priority=9)->Baahsit tihzun shiweh koon koou. (We're in for some heavy snow shoveling, it seems...)</li>
-          <li>r_logentry(INITIATOR_kind==OuterRim_Jawa,priority=9)->Baahsit tihzun shiweh koon koou. (We're in for some heavy snow shoveling, it seems...)</li>
-          <li>r_logentry(INITIATOR_kind==OuterRim_JawaTribal,priority=9)->Baahsit tihzun shiweh koon koou. (We're in for some heavy snow shoveling, it seems...)</li>
-          <li>r_logentry(INITIATOR_faction==PlayerColony,priority=9)->W'ubsho rotnyoo z'on moruh moruh. (Let's keep the doors closed — so that we can keep warm indoors!)</li>
-          <li>r_logentry(INITIATOR_faction==PlayerTribe,priority=9)->W'ubsho rotnyoo z'on moruh moruh. (Let's keep the doors closed — so that we can keep warm indoors!)</li>
-          <li>r_logentry(INITIATOR_kind==OuterRim_Jawa,priority=9)->W'ubsho rotnyoo z'on moruh moruh. (Let's keep the doors closed — so that we can keep warm indoors!)</li>
-          <li>r_logentry(INITIATOR_kind==OuterRim_JawaTribal,priority=9)->W'ubsho rotnyoo z'on moruh moruh. (Let's keep the doors closed — so that we can keep warm indoors!)</li>
-          <li>r_logentry(INITIATOR_faction==PlayerColony,priority=9)->S'oh zeen too! (And this wind — I feel it cutting my face!)</li>
-          <li>r_logentry(INITIATOR_faction==PlayerTribe,priority=9)->S'oh zeen too! (And this wind — I feel it cutting my face!)</li>
-          <li>r_logentry(INITIATOR_kind==OuterRim_Jawa,priority=9)->S'oh zeen too! (And this wind — I feel it cutting my face!)</li>
-          <li>r_logentry(INITIATOR_kind==OuterRim_JawaTribal,priority=9)->S'oh zeen too! (And this wind — I feel it cutting my face!)</li>
-          <li>r_logentry(INITIATOR_faction==PlayerColony,priority=9)->Wa wu gatlaab gatlaau nooh. (I can't keep my eyes open... too much snow in my face...)</li>
-          <li>r_logentry(INITIATOR_faction==PlayerTribe,priority=9)->Wa wu gatlaab gatlaau nooh. (I can't keep my eyes open... too much snow in my face...)</li>
-          <li>r_logentry(INITIATOR_kind==OuterRim_Jawa,priority=9)->Wa wu gatlaab gatlaau nooh. (I can't keep my eyes open... too much snow in my face...)</li>
-          <li>r_logentry(INITIATOR_kind==OuterRim_JawaTribal,priority=9)->Wa wu gatlaab gatlaau nooh. (I can't keep my eyes open... too much snow in my face...)</li>
-          <li>r_logentry(INITIATOR_faction==PlayerColony,priority=9)->Waa m'aata b'utkab b'utkau meb nyen... (Walking is getting difficult out here... I'm getting stuck...)</li>
-          <li>r_logentry(INITIATOR_faction==PlayerTribe,priority=9)->Waa m'aata b'utkab b'utkau meb nyen... (Walking is getting difficult out here... I'm getting stuck...)</li>
-          <li>r_logentry(INITIATOR_kind==OuterRim_Jawa,priority=9)->Waa m'aata b'utkab b'utkau meb nyen... (Walking is getting difficult out here... I'm getting stuck...)</li>
-          <li>r_logentry(INITIATOR_kind==OuterRim_JawaTribal,priority=9)->Waa m'aata b'utkab b'utkau meb nyen... (Walking is getting difficult out here... I'm getting stuck...)</li>
-          <li>r_logentry(INITIATOR_faction==PlayerColony,priority=9)->Beeb n'aahoo! (I must get back inside at once — I don't want to catch a cold or worse.)</li>
-          <li>r_logentry(INITIATOR_faction==PlayerTribe,priority=9)->Beeb n'aahoo! (I must get back inside at once — I don't want to catch a cold or worse.)</li>
-          <li>r_logentry(INITIATOR_kind==OuterRim_Jawa,priority=9)->Beeb n'aahoo! (I must get back inside at once — I don't want to catch a cold or worse.)</li>
-          <li>r_logentry(INITIATOR_kind==OuterRim_JawaTribal,priority=9)->Beeb n'aahoo! (I must get back inside at once — I don't want to catch a cold or worse.)</li>
+          <li>r_logentry(INITIATOR_faction==PlayerColony,priority=250)->Baahsit tihzun shiweh koon koou. (We're in for some heavy snow shoveling, it seems...)</li>
+          <li>r_logentry(INITIATOR_faction==PlayerTribe,priority=250)->Baahsit tihzun shiweh koon koou. (We're in for some heavy snow shoveling, it seems...)</li>
+          <li>r_logentry(INITIATOR_kind==OuterRim_Jawa,priority=250)->Baahsit tihzun shiweh koon koou. (We're in for some heavy snow shoveling, it seems...)</li>
+          <li>r_logentry(INITIATOR_kind==OuterRim_JawaTribal,priority=250)->Baahsit tihzun shiweh koon koou. (We're in for some heavy snow shoveling, it seems...)</li>
+          <li>r_logentry(INITIATOR_faction==PlayerColony,priority=250)->W'ubsho rotnyoo z'on moruh moruh. (Let's keep the doors closed — so that we can keep warm indoors!)</li>
+          <li>r_logentry(INITIATOR_faction==PlayerTribe,priority=250)->W'ubsho rotnyoo z'on moruh moruh. (Let's keep the doors closed — so that we can keep warm indoors!)</li>
+          <li>r_logentry(INITIATOR_kind==OuterRim_Jawa,priority=250)->W'ubsho rotnyoo z'on moruh moruh. (Let's keep the doors closed — so that we can keep warm indoors!)</li>
+          <li>r_logentry(INITIATOR_kind==OuterRim_JawaTribal,priority=250)->W'ubsho rotnyoo z'on moruh moruh. (Let's keep the doors closed — so that we can keep warm indoors!)</li>
+          <li>r_logentry(INITIATOR_faction==PlayerColony,priority=250)->S'oh zeen too! (And this wind — I feel it cutting my face!)</li>
+          <li>r_logentry(INITIATOR_faction==PlayerTribe,priority=250)->S'oh zeen too! (And this wind — I feel it cutting my face!)</li>
+          <li>r_logentry(INITIATOR_kind==OuterRim_Jawa,priority=250)->S'oh zeen too! (And this wind — I feel it cutting my face!)</li>
+          <li>r_logentry(INITIATOR_kind==OuterRim_JawaTribal,priority=250)->S'oh zeen too! (And this wind — I feel it cutting my face!)</li>
+          <li>r_logentry(INITIATOR_faction==PlayerColony,priority=250)->Wa wu gatlaab gatlaau nooh. (I can't keep my eyes open... too much snow in my face...)</li>
+          <li>r_logentry(INITIATOR_faction==PlayerTribe,priority=250)->Wa wu gatlaab gatlaau nooh. (I can't keep my eyes open... too much snow in my face...)</li>
+          <li>r_logentry(INITIATOR_kind==OuterRim_Jawa,priority=250)->Wa wu gatlaab gatlaau nooh. (I can't keep my eyes open... too much snow in my face...)</li>
+          <li>r_logentry(INITIATOR_kind==OuterRim_JawaTribal,priority=250)->Wa wu gatlaab gatlaau nooh. (I can't keep my eyes open... too much snow in my face...)</li>
+          <li>r_logentry(INITIATOR_faction==PlayerColony,priority=250)->Waa m'aata b'utkab b'utkau meb nyen... (Walking is getting difficult out here... I'm getting stuck...)</li>
+          <li>r_logentry(INITIATOR_faction==PlayerTribe,priority=250)->Waa m'aata b'utkab b'utkau meb nyen... (Walking is getting difficult out here... I'm getting stuck...)</li>
+          <li>r_logentry(INITIATOR_kind==OuterRim_Jawa,priority=250)->Waa m'aata b'utkab b'utkau meb nyen... (Walking is getting difficult out here... I'm getting stuck...)</li>
+          <li>r_logentry(INITIATOR_kind==OuterRim_JawaTribal,priority=250)->Waa m'aata b'utkab b'utkau meb nyen... (Walking is getting difficult out here... I'm getting stuck...)</li>
+          <li>r_logentry(INITIATOR_faction==PlayerColony,priority=250)->Beeb n'aahoo! (I must get back inside at once — I don't want to catch a cold or worse.)</li>
+          <li>r_logentry(INITIATOR_faction==PlayerTribe,priority=250)->Beeb n'aahoo! (I must get back inside at once — I don't want to catch a cold or worse.)</li>
+          <li>r_logentry(INITIATOR_kind==OuterRim_Jawa,priority=250)->Beeb n'aahoo! (I must get back inside at once — I don't want to catch a cold or worse.)</li>
+          <li>r_logentry(INITIATOR_kind==OuterRim_JawaTribal,priority=250)->Beeb n'aahoo! (I must get back inside at once — I don't want to catch a cold or worse.)</li>
       </value>
     </match>
   </Operation>
@@ -417,30 +417,30 @@
     <match Class="PatchOperationAdd">
       <xpath>/Defs/InteractionDef[defName="WeatherSnowstormToosmart"]/logRulesInitiator/rulesStrings</xpath>
       <value>
-          <li>r_logentry(INITIATOR_faction==PlayerColony,priority=9)->Bo bobso be n'yeesob b'esaat. (Correct, yet I bet you wouldn't know that a ground blizzard is a weather condition where snow is not falling but loose snow on the ground is lifted and blown by strong winds.)</li>
-          <li>r_logentry(INITIATOR_faction==PlayerTribe,priority=9)->Bo bobso be n'yeesob b'esaat. (Correct, yet I bet you wouldn't know that a ground blizzard is a weather condition where snow is not falling but loose snow on the ground is lifted and blown by strong winds.)</li>
-          <li>r_logentry(INITIATOR_kind==OuterRim_Jawa,priority=9)->Bo bobso be n'yeesob b'esaat. (Correct, yet I bet you wouldn't know that a ground blizzard is a weather condition where snow is not falling but loose snow on the ground is lifted and blown by strong winds.)</li>
-          <li>r_logentry(INITIATOR_kind==OuterRim_JawaTribal,priority=9)->Bo bobso be n'yeesob b'esaat. (Correct, yet I bet you wouldn't know that a ground blizzard is a weather condition where snow is not falling but loose snow on the ground is lifted and blown by strong winds.)</li>
-          <li>r_logentry(INITIATOR_faction==PlayerColony,priority=9)->Taab t'utsho! (That is indeed a correct definition for a winter storm.)</li>
-          <li>r_logentry(INITIATOR_faction==PlayerTribe,priority=9)->Taab t'utsho! (That is indeed a correct definition for a winter storm.)</li>
-          <li>r_logentry(INITIATOR_kind==OuterRim_Jawa,priority=9)->Taab t'utsho! (That is indeed a correct definition for a winter storm.)</li>
-          <li>r_logentry(INITIATOR_kind==OuterRim_JawaTribal,priority=9)->Taab t'utsho! (That is indeed a correct definition for a winter storm.)</li>
-          <li>r_logentry(INITIATOR_faction==PlayerColony,priority=9)->Moonyah nyashaa moo metna. (Mmm... yes, you are correct.)</li>
-          <li>r_logentry(INITIATOR_faction==PlayerTribe,priority=9)->Moonyah nyashaa moo metna. (Mmm... yes, you are correct.)</li>
-          <li>r_logentry(INITIATOR_kind==OuterRim_Jawa,priority=9)->Moonyah nyashaa moo metna. (Mmm... yes, you are correct.)</li>
-          <li>r_logentry(INITIATOR_kind==OuterRim_JawaTribal,priority=9)->Moonyah nyashaa moo metna. (Mmm... yes, you are correct.)</li>
-          <li>r_logentry(INITIATOR_faction==PlayerColony,priority=9)->Ta ta boomib titrun titrun l'atroo lo. (Err... what was that again?)</li>
-          <li>r_logentry(INITIATOR_faction==PlayerTribe,priority=9)->Ta ta boomib titrun titrun l'atroo lo. (Err... what was that again?)</li>
-          <li>r_logentry(INITIATOR_kind==OuterRim_Jawa,priority=9)->Ta ta boomib titrun titrun l'atroo lo. (Err... what was that again?)</li>
-          <li>r_logentry(INITIATOR_kind==OuterRim_JawaTribal,priority=9)->Ta ta boomib titrun titrun l'atroo lo. (Err... what was that again?)</li>
-          <li>r_logentry(INITIATOR_faction==PlayerColony,priority=9)->Kebe kebu g'ehgo? (Wait — winter... storm is... what!?)</li>
-          <li>r_logentry(INITIATOR_faction==PlayerTribe,priority=9)->Kebe kebu g'ehgo? (Wait — winter... storm is... what!?)</li>
-          <li>r_logentry(INITIATOR_kind==OuterRim_Jawa,priority=9)->Kebe kebu g'ehgo? (Wait — winter... storm is... what!?)</li>
-          <li>r_logentry(INITIATOR_kind==OuterRim_JawaTribal,priority=9)->Kebe kebu g'ehgo? (Wait — winter... storm is... what!?)</li>
-          <li>r_logentry(INITIATOR_faction==PlayerColony,priority=9)->Zoot noha! (That's quite interesting!)</li>
-          <li>r_logentry(INITIATOR_faction==PlayerTribe,priority=9)->Zoot noha! (That's quite interesting!)</li>
-          <li>r_logentry(INITIATOR_kind==OuterRim_Jawa,priority=9)->Zoot noha! (That's quite interesting!)</li>
-          <li>r_logentry(INITIATOR_kind==OuterRim_JawaTribal,priority=9)->Zoot noha! (That's quite interesting!)</li>
+          <li>r_logentry(INITIATOR_faction==PlayerColony,priority=250)->Bo bobso be n'yeesob b'esaat. (Correct, yet I bet you wouldn't know that a ground blizzard is a weather condition where snow is not falling but loose snow on the ground is lifted and blown by strong winds.)</li>
+          <li>r_logentry(INITIATOR_faction==PlayerTribe,priority=250)->Bo bobso be n'yeesob b'esaat. (Correct, yet I bet you wouldn't know that a ground blizzard is a weather condition where snow is not falling but loose snow on the ground is lifted and blown by strong winds.)</li>
+          <li>r_logentry(INITIATOR_kind==OuterRim_Jawa,priority=250)->Bo bobso be n'yeesob b'esaat. (Correct, yet I bet you wouldn't know that a ground blizzard is a weather condition where snow is not falling but loose snow on the ground is lifted and blown by strong winds.)</li>
+          <li>r_logentry(INITIATOR_kind==OuterRim_JawaTribal,priority=250)->Bo bobso be n'yeesob b'esaat. (Correct, yet I bet you wouldn't know that a ground blizzard is a weather condition where snow is not falling but loose snow on the ground is lifted and blown by strong winds.)</li>
+          <li>r_logentry(INITIATOR_faction==PlayerColony,priority=250)->Taab t'utsho! (That is indeed a correct definition for a winter storm.)</li>
+          <li>r_logentry(INITIATOR_faction==PlayerTribe,priority=250)->Taab t'utsho! (That is indeed a correct definition for a winter storm.)</li>
+          <li>r_logentry(INITIATOR_kind==OuterRim_Jawa,priority=250)->Taab t'utsho! (That is indeed a correct definition for a winter storm.)</li>
+          <li>r_logentry(INITIATOR_kind==OuterRim_JawaTribal,priority=250)->Taab t'utsho! (That is indeed a correct definition for a winter storm.)</li>
+          <li>r_logentry(INITIATOR_faction==PlayerColony,priority=250)->Moonyah nyashaa moo metna. (Mmm... yes, you are correct.)</li>
+          <li>r_logentry(INITIATOR_faction==PlayerTribe,priority=250)->Moonyah nyashaa moo metna. (Mmm... yes, you are correct.)</li>
+          <li>r_logentry(INITIATOR_kind==OuterRim_Jawa,priority=250)->Moonyah nyashaa moo metna. (Mmm... yes, you are correct.)</li>
+          <li>r_logentry(INITIATOR_kind==OuterRim_JawaTribal,priority=250)->Moonyah nyashaa moo metna. (Mmm... yes, you are correct.)</li>
+          <li>r_logentry(INITIATOR_faction==PlayerColony,priority=250)->Ta ta boomib titrun titrun l'atroo lo. (Err... what was that again?)</li>
+          <li>r_logentry(INITIATOR_faction==PlayerTribe,priority=250)->Ta ta boomib titrun titrun l'atroo lo. (Err... what was that again?)</li>
+          <li>r_logentry(INITIATOR_kind==OuterRim_Jawa,priority=250)->Ta ta boomib titrun titrun l'atroo lo. (Err... what was that again?)</li>
+          <li>r_logentry(INITIATOR_kind==OuterRim_JawaTribal,priority=250)->Ta ta boomib titrun titrun l'atroo lo. (Err... what was that again?)</li>
+          <li>r_logentry(INITIATOR_faction==PlayerColony,priority=250)->Kebe kebu g'ehgo? (Wait — winter... storm is... what!?)</li>
+          <li>r_logentry(INITIATOR_faction==PlayerTribe,priority=250)->Kebe kebu g'ehgo? (Wait — winter... storm is... what!?)</li>
+          <li>r_logentry(INITIATOR_kind==OuterRim_Jawa,priority=250)->Kebe kebu g'ehgo? (Wait — winter... storm is... what!?)</li>
+          <li>r_logentry(INITIATOR_kind==OuterRim_JawaTribal,priority=250)->Kebe kebu g'ehgo? (Wait — winter... storm is... what!?)</li>
+          <li>r_logentry(INITIATOR_faction==PlayerColony,priority=250)->Zoot noha! (That's quite interesting!)</li>
+          <li>r_logentry(INITIATOR_faction==PlayerTribe,priority=250)->Zoot noha! (That's quite interesting!)</li>
+          <li>r_logentry(INITIATOR_kind==OuterRim_Jawa,priority=250)->Zoot noha! (That's quite interesting!)</li>
+          <li>r_logentry(INITIATOR_kind==OuterRim_JawaTribal,priority=250)->Zoot noha! (That's quite interesting!)</li>
       </value>
     </match>
   </Operation>
@@ -449,30 +449,30 @@
     <match Class="PatchOperationAdd">
       <xpath>/Defs/InteractionDef[defName="WeatherSoftsnowGoodtempNotEntombed"]/logRulesInitiator/rulesStrings</xpath>
       <value>
-          <li>r_logentry(INITIATOR_faction==PlayerColony,priority=9)->H'aatwo meetaah t'ooh. (It shouldn't be enough to need shoveling — nice!)</li>
-          <li>r_logentry(INITIATOR_faction==PlayerTribe,priority=9)->H'aatwo meetaah t'ooh. (It shouldn't be enough to need shoveling — nice!)</li>
-          <li>r_logentry(INITIATOR_kind==OuterRim_Jawa,priority=9)->H'aatwo meetaah t'ooh. (It shouldn't be enough to need shoveling — nice!)</li>
-          <li>r_logentry(INITIATOR_kind==OuterRim_JawaTribal,priority=9)->H'aatwo meetaah t'ooh. (It shouldn't be enough to need shoveling — nice!)</li>
-          <li>r_logentry(INITIATOR_faction==PlayerColony,priority=9)->Wib na kinyoot roon t'obnan t'obnau. (I'm glad it's not enough to need shoveling — nice!)</li>
-          <li>r_logentry(INITIATOR_faction==PlayerTribe,priority=9)->Wib na kinyoot roon t'obnan t'obnau. (I'm glad it's not enough to need shoveling — nice!)</li>
-          <li>r_logentry(INITIATOR_kind==OuterRim_Jawa,priority=9)->Wib na kinyoot roon t'obnan t'obnau. (I'm glad it's not enough to need shoveling — nice!)</li>
-          <li>r_logentry(INITIATOR_kind==OuterRim_JawaTribal,priority=9)->Wib na kinyoot roon t'obnan t'obnau. (I'm glad it's not enough to need shoveling — nice!)</li>
-          <li>r_logentry(INITIATOR_faction==PlayerColony,priority=9)->N'uzot n'uzou s'hon h'at. (With every falling flake, a unique spark of interest falls from the skies.)</li>
-          <li>r_logentry(INITIATOR_faction==PlayerTribe,priority=9)->N'uzot n'uzou s'hon h'at. (With every falling flake, a unique spark of interest falls from the skies.)</li>
-          <li>r_logentry(INITIATOR_kind==OuterRim_Jawa,priority=9)->N'uzot n'uzou s'hon h'at. (With every falling flake, a unique spark of interest falls from the skies.)</li>
-          <li>r_logentry(INITIATOR_kind==OuterRim_JawaTribal,priority=9)->N'uzot n'uzou s'hon h'at. (With every falling flake, a unique spark of interest falls from the skies.)</li>
-          <li>r_logentry(INITIATOR_faction==PlayerColony,priority=9)->Zoobzeh rot goonsee. (Nature is full of genius and divinity — not a snowflake escapes its fashioning hand.)</li>
-          <li>r_logentry(INITIATOR_faction==PlayerTribe,priority=9)->Zoobzeh rot goonsee. (Nature is full of genius and divinity — not a snowflake escapes its fashioning hand.)</li>
-          <li>r_logentry(INITIATOR_kind==OuterRim_Jawa,priority=9)->Zoobzeh rot goonsee. (Nature is full of genius and divinity — not a snowflake escapes its fashioning hand.)</li>
-          <li>r_logentry(INITIATOR_kind==OuterRim_JawaTribal,priority=9)->Zoobzeh rot goonsee. (Nature is full of genius and divinity — not a snowflake escapes its fashioning hand.)</li>
-          <li>r_logentry(INITIATOR_faction==PlayerColony,priority=9)->Boohsab shezoob s'ehbe s'ehbu gon. (Kindness is like snow. It beautifies everything it covers.)</li>
-          <li>r_logentry(INITIATOR_faction==PlayerTribe,priority=9)->Boohsab shezoob s'ehbe s'ehbu gon. (Kindness is like snow. It beautifies everything it covers.)</li>
-          <li>r_logentry(INITIATOR_kind==OuterRim_Jawa,priority=9)->Boohsab shezoob s'ehbe s'ehbu gon. (Kindness is like snow. It beautifies everything it covers.)</li>
-          <li>r_logentry(INITIATOR_kind==OuterRim_JawaTribal,priority=9)->Boohsab shezoob s'ehbe s'ehbu gon. (Kindness is like snow. It beautifies everything it covers.)</li>
-          <li>r_logentry(INITIATOR_faction==PlayerColony,priority=9)->Tat meesat meesau zeh zeu lob lob be. (To appreciate the beauty of a snowflake it is necessary to stand out in the cold.)</li>
-          <li>r_logentry(INITIATOR_faction==PlayerTribe,priority=9)->Tat meesat meesau zeh zeu lob lob be. (To appreciate the beauty of a snowflake it is necessary to stand out in the cold.)</li>
-          <li>r_logentry(INITIATOR_kind==OuterRim_Jawa,priority=9)->Tat meesat meesau zeh zeu lob lob be. (To appreciate the beauty of a snowflake it is necessary to stand out in the cold.)</li>
-          <li>r_logentry(INITIATOR_kind==OuterRim_JawaTribal,priority=9)->Tat meesat meesau zeh zeu lob lob be. (To appreciate the beauty of a snowflake it is necessary to stand out in the cold.)</li>
+          <li>r_logentry(INITIATOR_faction==PlayerColony,priority=250)->H'aatwo meetaah t'ooh. (It shouldn't be enough to need shoveling — nice!)</li>
+          <li>r_logentry(INITIATOR_faction==PlayerTribe,priority=250)->H'aatwo meetaah t'ooh. (It shouldn't be enough to need shoveling — nice!)</li>
+          <li>r_logentry(INITIATOR_kind==OuterRim_Jawa,priority=250)->H'aatwo meetaah t'ooh. (It shouldn't be enough to need shoveling — nice!)</li>
+          <li>r_logentry(INITIATOR_kind==OuterRim_JawaTribal,priority=250)->H'aatwo meetaah t'ooh. (It shouldn't be enough to need shoveling — nice!)</li>
+          <li>r_logentry(INITIATOR_faction==PlayerColony,priority=250)->Wib na kinyoot roon t'obnan t'obnau. (I'm glad it's not enough to need shoveling — nice!)</li>
+          <li>r_logentry(INITIATOR_faction==PlayerTribe,priority=250)->Wib na kinyoot roon t'obnan t'obnau. (I'm glad it's not enough to need shoveling — nice!)</li>
+          <li>r_logentry(INITIATOR_kind==OuterRim_Jawa,priority=250)->Wib na kinyoot roon t'obnan t'obnau. (I'm glad it's not enough to need shoveling — nice!)</li>
+          <li>r_logentry(INITIATOR_kind==OuterRim_JawaTribal,priority=250)->Wib na kinyoot roon t'obnan t'obnau. (I'm glad it's not enough to need shoveling — nice!)</li>
+          <li>r_logentry(INITIATOR_faction==PlayerColony,priority=250)->N'uzot n'uzou s'hon h'at. (With every falling flake, a unique spark of interest falls from the skies.)</li>
+          <li>r_logentry(INITIATOR_faction==PlayerTribe,priority=250)->N'uzot n'uzou s'hon h'at. (With every falling flake, a unique spark of interest falls from the skies.)</li>
+          <li>r_logentry(INITIATOR_kind==OuterRim_Jawa,priority=250)->N'uzot n'uzou s'hon h'at. (With every falling flake, a unique spark of interest falls from the skies.)</li>
+          <li>r_logentry(INITIATOR_kind==OuterRim_JawaTribal,priority=250)->N'uzot n'uzou s'hon h'at. (With every falling flake, a unique spark of interest falls from the skies.)</li>
+          <li>r_logentry(INITIATOR_faction==PlayerColony,priority=250)->Zoobzeh rot goonsee. (Nature is full of genius and divinity — not a snowflake escapes its fashioning hand.)</li>
+          <li>r_logentry(INITIATOR_faction==PlayerTribe,priority=250)->Zoobzeh rot goonsee. (Nature is full of genius and divinity — not a snowflake escapes its fashioning hand.)</li>
+          <li>r_logentry(INITIATOR_kind==OuterRim_Jawa,priority=250)->Zoobzeh rot goonsee. (Nature is full of genius and divinity — not a snowflake escapes its fashioning hand.)</li>
+          <li>r_logentry(INITIATOR_kind==OuterRim_JawaTribal,priority=250)->Zoobzeh rot goonsee. (Nature is full of genius and divinity — not a snowflake escapes its fashioning hand.)</li>
+          <li>r_logentry(INITIATOR_faction==PlayerColony,priority=250)->Boohsab shezoob s'ehbe s'ehbu gon. (Kindness is like snow. It beautifies everything it covers.)</li>
+          <li>r_logentry(INITIATOR_faction==PlayerTribe,priority=250)->Boohsab shezoob s'ehbe s'ehbu gon. (Kindness is like snow. It beautifies everything it covers.)</li>
+          <li>r_logentry(INITIATOR_kind==OuterRim_Jawa,priority=250)->Boohsab shezoob s'ehbe s'ehbu gon. (Kindness is like snow. It beautifies everything it covers.)</li>
+          <li>r_logentry(INITIATOR_kind==OuterRim_JawaTribal,priority=250)->Boohsab shezoob s'ehbe s'ehbu gon. (Kindness is like snow. It beautifies everything it covers.)</li>
+          <li>r_logentry(INITIATOR_faction==PlayerColony,priority=250)->Tat meesat meesau zeh zeu lob lob be. (To appreciate the beauty of a snowflake it is necessary to stand out in the cold.)</li>
+          <li>r_logentry(INITIATOR_faction==PlayerTribe,priority=250)->Tat meesat meesau zeh zeu lob lob be. (To appreciate the beauty of a snowflake it is necessary to stand out in the cold.)</li>
+          <li>r_logentry(INITIATOR_kind==OuterRim_Jawa,priority=250)->Tat meesat meesau zeh zeu lob lob be. (To appreciate the beauty of a snowflake it is necessary to stand out in the cold.)</li>
+          <li>r_logentry(INITIATOR_kind==OuterRim_JawaTribal,priority=250)->Tat meesat meesau zeh zeu lob lob be. (To appreciate the beauty of a snowflake it is necessary to stand out in the cold.)</li>
       </value>
     </match>
   </Operation>
@@ -481,30 +481,30 @@
     <match Class="PatchOperationAdd">
       <xpath>/Defs/InteractionDef[defName="WeatherSnowToosmart"]/logRulesInitiator/rulesStrings</xpath>
       <value>
-          <li>r_logentry(INITIATOR_faction==PlayerColony,priority=9)->T'oo ma tigeeb mit n'oob. (Correct — yet I bet you wouldn't know that its main constituent shapes, from which combinations may occur, are needle, column, plate, and rime.)</li>
-          <li>r_logentry(INITIATOR_faction==PlayerTribe,priority=9)->T'oo ma tigeeb mit n'oob. (Correct — yet I bet you wouldn't know that its main constituent shapes, from which combinations may occur, are needle, column, plate, and rime.)</li>
-          <li>r_logentry(INITIATOR_kind==OuterRim_Jawa,priority=9)->T'oo ma tigeeb mit n'oob. (Correct — yet I bet you wouldn't know that its main constituent shapes, from which combinations may occur, are needle, column, plate, and rime.)</li>
-          <li>r_logentry(INITIATOR_kind==OuterRim_JawaTribal,priority=9)->T'oo ma tigeeb mit n'oob. (Correct — yet I bet you wouldn't know that its main constituent shapes, from which combinations may occur, are needle, column, plate, and rime.)</li>
-          <li>r_logentry(INITIATOR_faction==PlayerColony,priority=9)->Mee kaalut kaalut soobbaab soobbaab zitnya. (That is indeed a correct definition for a snowflake.)</li>
-          <li>r_logentry(INITIATOR_faction==PlayerTribe,priority=9)->Mee kaalut kaalut soobbaab soobbaab zitnya. (That is indeed a correct definition for a snowflake.)</li>
-          <li>r_logentry(INITIATOR_kind==OuterRim_Jawa,priority=9)->Mee kaalut kaalut soobbaab soobbaab zitnya. (That is indeed a correct definition for a snowflake.)</li>
-          <li>r_logentry(INITIATOR_kind==OuterRim_JawaTribal,priority=9)->Mee kaalut kaalut soobbaab soobbaab zitnya. (That is indeed a correct definition for a snowflake.)</li>
-          <li>r_logentry(INITIATOR_faction==PlayerColony,priority=9)->Moonyah nyashaa moo metna. (Mmm... yes, you are correct.)</li>
-          <li>r_logentry(INITIATOR_faction==PlayerTribe,priority=9)->Moonyah nyashaa moo metna. (Mmm... yes, you are correct.)</li>
-          <li>r_logentry(INITIATOR_kind==OuterRim_Jawa,priority=9)->Moonyah nyashaa moo metna. (Mmm... yes, you are correct.)</li>
-          <li>r_logentry(INITIATOR_kind==OuterRim_JawaTribal,priority=9)->Moonyah nyashaa moo metna. (Mmm... yes, you are correct.)</li>
-          <li>r_logentry(INITIATOR_faction==PlayerColony,priority=9)->Ta ta boomib titrun titrun l'atroo lo. (Err... what was that again?)</li>
-          <li>r_logentry(INITIATOR_faction==PlayerTribe,priority=9)->Ta ta boomib titrun titrun l'atroo lo. (Err... what was that again?)</li>
-          <li>r_logentry(INITIATOR_kind==OuterRim_Jawa,priority=9)->Ta ta boomib titrun titrun l'atroo lo. (Err... what was that again?)</li>
-          <li>r_logentry(INITIATOR_kind==OuterRim_JawaTribal,priority=9)->Ta ta boomib titrun titrun l'atroo lo. (Err... what was that again?)</li>
-          <li>r_logentry(INITIATOR_faction==PlayerColony,priority=9)->B'ansoon buhgo w'eeh w'eeh shehwat! (Wait — snow... flakes are... what!?)</li>
-          <li>r_logentry(INITIATOR_faction==PlayerTribe,priority=9)->B'ansoon buhgo w'eeh w'eeh shehwat! (Wait — snow... flakes are... what!?)</li>
-          <li>r_logentry(INITIATOR_kind==OuterRim_Jawa,priority=9)->B'ansoon buhgo w'eeh w'eeh shehwat! (Wait — snow... flakes are... what!?)</li>
-          <li>r_logentry(INITIATOR_kind==OuterRim_JawaTribal,priority=9)->B'ansoon buhgo w'eeh w'eeh shehwat! (Wait — snow... flakes are... what!?)</li>
-          <li>r_logentry(INITIATOR_faction==PlayerColony,priority=9)->Zoot noha! (That's quite interesting!)</li>
-          <li>r_logentry(INITIATOR_faction==PlayerTribe,priority=9)->Zoot noha! (That's quite interesting!)</li>
-          <li>r_logentry(INITIATOR_kind==OuterRim_Jawa,priority=9)->Zoot noha! (That's quite interesting!)</li>
-          <li>r_logentry(INITIATOR_kind==OuterRim_JawaTribal,priority=9)->Zoot noha! (That's quite interesting!)</li>
+          <li>r_logentry(INITIATOR_faction==PlayerColony,priority=250)->T'oo ma tigeeb mit n'oob. (Correct — yet I bet you wouldn't know that its main constituent shapes, from which combinations may occur, are needle, column, plate, and rime.)</li>
+          <li>r_logentry(INITIATOR_faction==PlayerTribe,priority=250)->T'oo ma tigeeb mit n'oob. (Correct — yet I bet you wouldn't know that its main constituent shapes, from which combinations may occur, are needle, column, plate, and rime.)</li>
+          <li>r_logentry(INITIATOR_kind==OuterRim_Jawa,priority=250)->T'oo ma tigeeb mit n'oob. (Correct — yet I bet you wouldn't know that its main constituent shapes, from which combinations may occur, are needle, column, plate, and rime.)</li>
+          <li>r_logentry(INITIATOR_kind==OuterRim_JawaTribal,priority=250)->T'oo ma tigeeb mit n'oob. (Correct — yet I bet you wouldn't know that its main constituent shapes, from which combinations may occur, are needle, column, plate, and rime.)</li>
+          <li>r_logentry(INITIATOR_faction==PlayerColony,priority=250)->Mee kaalut kaalut soobbaab soobbaab zitnya. (That is indeed a correct definition for a snowflake.)</li>
+          <li>r_logentry(INITIATOR_faction==PlayerTribe,priority=250)->Mee kaalut kaalut soobbaab soobbaab zitnya. (That is indeed a correct definition for a snowflake.)</li>
+          <li>r_logentry(INITIATOR_kind==OuterRim_Jawa,priority=250)->Mee kaalut kaalut soobbaab soobbaab zitnya. (That is indeed a correct definition for a snowflake.)</li>
+          <li>r_logentry(INITIATOR_kind==OuterRim_JawaTribal,priority=250)->Mee kaalut kaalut soobbaab soobbaab zitnya. (That is indeed a correct definition for a snowflake.)</li>
+          <li>r_logentry(INITIATOR_faction==PlayerColony,priority=250)->Moonyah nyashaa moo metna. (Mmm... yes, you are correct.)</li>
+          <li>r_logentry(INITIATOR_faction==PlayerTribe,priority=250)->Moonyah nyashaa moo metna. (Mmm... yes, you are correct.)</li>
+          <li>r_logentry(INITIATOR_kind==OuterRim_Jawa,priority=250)->Moonyah nyashaa moo metna. (Mmm... yes, you are correct.)</li>
+          <li>r_logentry(INITIATOR_kind==OuterRim_JawaTribal,priority=250)->Moonyah nyashaa moo metna. (Mmm... yes, you are correct.)</li>
+          <li>r_logentry(INITIATOR_faction==PlayerColony,priority=250)->Ta ta boomib titrun titrun l'atroo lo. (Err... what was that again?)</li>
+          <li>r_logentry(INITIATOR_faction==PlayerTribe,priority=250)->Ta ta boomib titrun titrun l'atroo lo. (Err... what was that again?)</li>
+          <li>r_logentry(INITIATOR_kind==OuterRim_Jawa,priority=250)->Ta ta boomib titrun titrun l'atroo lo. (Err... what was that again?)</li>
+          <li>r_logentry(INITIATOR_kind==OuterRim_JawaTribal,priority=250)->Ta ta boomib titrun titrun l'atroo lo. (Err... what was that again?)</li>
+          <li>r_logentry(INITIATOR_faction==PlayerColony,priority=250)->B'ansoon buhgo w'eeh w'eeh shehwat! (Wait — snow... flakes are... what!?)</li>
+          <li>r_logentry(INITIATOR_faction==PlayerTribe,priority=250)->B'ansoon buhgo w'eeh w'eeh shehwat! (Wait — snow... flakes are... what!?)</li>
+          <li>r_logentry(INITIATOR_kind==OuterRim_Jawa,priority=250)->B'ansoon buhgo w'eeh w'eeh shehwat! (Wait — snow... flakes are... what!?)</li>
+          <li>r_logentry(INITIATOR_kind==OuterRim_JawaTribal,priority=250)->B'ansoon buhgo w'eeh w'eeh shehwat! (Wait — snow... flakes are... what!?)</li>
+          <li>r_logentry(INITIATOR_faction==PlayerColony,priority=250)->Zoot noha! (That's quite interesting!)</li>
+          <li>r_logentry(INITIATOR_faction==PlayerTribe,priority=250)->Zoot noha! (That's quite interesting!)</li>
+          <li>r_logentry(INITIATOR_kind==OuterRim_Jawa,priority=250)->Zoot noha! (That's quite interesting!)</li>
+          <li>r_logentry(INITIATOR_kind==OuterRim_JawaTribal,priority=250)->Zoot noha! (That's quite interesting!)</li>
       </value>
     </match>
   </Operation>

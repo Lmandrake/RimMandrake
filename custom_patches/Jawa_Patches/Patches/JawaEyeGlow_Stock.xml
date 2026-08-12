@@ -11,7 +11,7 @@
 
       Jawa_Eyes_HugeOrange     MoteGlow              (ours, in the GeneDef)
       Jawa_Eyes_HugeAmber      MoteGlowPulse         (ours, in the GeneDef)
-      guy762_Eyes_HugeYellow   TransparentPostLight  (here)
+      guy762_Eyes_HugeYellow   MoteGlowPulseLow      (here)
 
   Three shaders on purpose. One game load compares all three side by side, since
   the engine picks one gene per pawn and BTD_Jawa lists all three. Spawn twenty
@@ -67,7 +67,13 @@
         <li Class="PatchOperationAdd">
           <xpath>/Defs/GeneDef[defName="guy762_Eyes_HugeYellow"]/renderNodeProperties/li[1]</xpath>
           <value>
-            <shaderTypeDef>TransparentPostLight</shaderTypeDef>
+            <shaderTypeDef>MoteGlowPulseLow</shaderTypeDef>
+          </value>
+        </li>
+        <li Class="PatchOperationReplace">
+          <xpath>/Defs/GeneDef[defName="guy762_Eyes_HugeYellow"]/renderNodeProperties/li[1]/drawSize</xpath>
+          <value>
+            <drawSize>0.35</drawSize>
           </value>
         </li>
       </operations>
@@ -87,7 +93,13 @@
         <li Class="PatchOperationAdd">
           <xpath>/Defs/GeneDef[defName="guy762_Eyes_HugeYellow"]/renderNodeProperties/li[2]</xpath>
           <value>
-            <shaderTypeDef>TransparentPostLight</shaderTypeDef>
+            <shaderTypeDef>MoteGlowPulseLow</shaderTypeDef>
+          </value>
+        </li>
+        <li Class="PatchOperationReplace">
+          <xpath>/Defs/GeneDef[defName="guy762_Eyes_HugeYellow"]/renderNodeProperties/li[2]/drawSize</xpath>
+          <value>
+            <drawSize>0.35</drawSize>
           </value>
         </li>
       </operations>
