@@ -73,7 +73,7 @@
         <li Class="PatchOperationReplace">
           <xpath>/Defs/GeneDef[defName="guy762_Eyes_HugeYellow"]/renderNodeProperties/li[1]/drawSize</xpath>
           <value>
-            <drawSize>0.35</drawSize>
+            <drawSize>0.24</drawSize>
           </value>
         </li>
       </operations>
@@ -99,7 +99,7 @@
         <li Class="PatchOperationReplace">
           <xpath>/Defs/GeneDef[defName="guy762_Eyes_HugeYellow"]/renderNodeProperties/li[2]/drawSize</xpath>
           <value>
-            <drawSize>0.35</drawSize>
+            <drawSize>0.24</drawSize>
           </value>
         </li>
       </operations>
