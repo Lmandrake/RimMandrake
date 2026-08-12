@@ -98,7 +98,7 @@
         <anchorTag>RightEye</anchorTag>
         <rotDrawMode>Fresh, Rotting</rotDrawMode>
         <parentTagDef>Head</parentTagDef>
-        <drawSize>0.24</drawSize>
+        <drawSize>0.16</drawSize>
         <side>Right</side>
         <drawData>
           <defaultData>
@@ -114,7 +114,7 @@
         <anchorTag>LeftEye</anchorTag>
         <rotDrawMode>Fresh, Rotting</rotDrawMode>
         <parentTagDef>Head</parentTagDef>
-        <drawSize>0.24</drawSize>
+        <drawSize>0.16</drawSize>
         <side>Left</side>
         <drawData>
           <defaultData>
@@ -140,12 +140,12 @@
     <renderNodeProperties>
       <li Class="PawnRenderNodeProperties_Eye">
         <texPath>JawaEyes/jawaeyes_glow</texPath>
-        <shaderTypeDef>MoteGlowPulse</shaderTypeDef>
+        <shaderTypeDef>MoteGlow</shaderTypeDef>
         <color>(255, 191, 0)</color>
         <anchorTag>RightEye</anchorTag>
         <rotDrawMode>Fresh, Rotting</rotDrawMode>
         <parentTagDef>Head</parentTagDef>
-        <drawSize>0.24</drawSize>
+        <drawSize>0.16</drawSize>
         <side>Right</side>
         <drawData>
           <defaultData>
@@ -156,12 +156,12 @@
       </li>
       <li Class="PawnRenderNodeProperties_Eye">
         <texPath>JawaEyes/jawaeyes_glow</texPath>
-        <shaderTypeDef>MoteGlowPulse</shaderTypeDef>
+        <shaderTypeDef>MoteGlow</shaderTypeDef>
         <color>(255, 191, 0)</color>
         <anchorTag>LeftEye</anchorTag>
         <rotDrawMode>Fresh, Rotting</rotDrawMode>
         <parentTagDef>Head</parentTagDef>
-        <drawSize>0.24</drawSize>
+        <drawSize>0.16</drawSize>
         <side>Left</side>
         <drawData>
           <defaultData>
