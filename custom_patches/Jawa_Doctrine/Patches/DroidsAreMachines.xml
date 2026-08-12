@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Droids are machines: they break and are REPAIRED, never tended.
+
+     THE PROBLEM, measured against the live dump 2026-08-11.
+
+     Verse.RaceProperties resolves this way (decompiled, do not re-derive):
+
+         public bool IsMechanoid => FleshType == FleshTypeDefOf.Mechanoid;
+         public bool IsFlesh     => FleshType.isOrganic;
+
+     So EMP and ion stun key off the FLESH TYPE'S isOrganic flag, not off the
+     def being named "Mechanoid". Of the 57 droid races installed:
+
+         fleshType                       isOrganic   defs   ion works?
+         Mechanoid          (JDS)          False      16       yes
+         Asimov_Automaton   (Outer Rim)    TRUE       19       NO
+         ABF_..._Synstruct  (KotOR)        TRUE       22       NO
+
+     41 of 57 droids were ORGANIC to the engine. Ion and EMP did nothing to
+     them, colonists could bandage them, and the Jawa signature weapon was
+     useless against the enemy it exists to fight. This inverts L4 (ion
+     disrupts), L5 (stun mirrors ion) and L16 (lightning is the neural verb)
+     for 72% of the droid roster.
+
+     WHY THIS IS A TWO LINE FIX AND NOT A 41 DEF ONE.
+
+     Both frameworks already declare their droids as machines in every other
+     respect: Damage_HitMechanoid effecter, mechanoid wound textures, and (for
+     Synstructs) CorpsesMechanoid as the corpse category. Only isOrganic
+     disagrees with the rest of each def. Patching the two FleshTypeDefs fixes
+     every race that uses them, now and for any the mods add later, and leaves
+     each mod's own wound art and corpse handling untouched.
+
+     Retargeting 41 race defs to vanilla Mechanoid would have thrown that art
+     away and broken on the next mod update. One flag is the smaller claim.
+
+     WHAT TO WATCH after this lands (all intended, but verify in play):
+       * colonists can no longer TEND droid injuries; repair is the route
+       * EMP, ion and stun now land on Outer Rim and KotOR droids
+       * droids stop registering as organic for anything that checks IsFlesh
+
+     Authorised by the project owner 2026-08-11: "I don't want to be able to
+     medically TEND droids anyway. They should break like machines, and get
+     repaired."
+
+     WRITTEN BY HAND, not by a generator. This is a doctrine ruling rather than
+     a computed value, so it does not belong in Jawa_Armoury. -->
+<Patch>
+
+  <Operation Class="PatchOperationFindMod">
+    <mods><li>Asimov</li></mods>
+    <match Class="PatchOperationReplace">
+      <!-- 19 Outer Rim Droid Depot races: GNK, MSE, DUM, R series, FX-7,
+           Astromech, Protocol, Battle, Commando, MagnaGuard, Destroyer, HK,
+           KX Security, Imperial Labor, Salvage Assist and the rest. -->
+      <xpath>/Defs/FleshTypeDef[defName="Asimov_Automaton"]/isOrganic</xpath>
+      <value><isOrganic>false</isOrganic></value>
+    </match>
+  </Operation>
+
+  <Operation Class="PatchOperationFindMod">
+    <mods><li>ABF: Synstructs Core</li></mods>
+    <match Class="PatchOperationReplace">
+      <!-- 22 KotOR droid races: 3C series, AD Mk I and Mk IV, Dev AD and WD,
+           GE3LD, HK series, war droids and their Sith variants. -->
+      <xpath>/Defs/FleshTypeDef[defName="ABF_FleshType_Synstruct_Base"]/isOrganic</xpath>
+      <value><isOrganic>false</isOrganic></value>
+    </match>
+  </Operation>
+
+</Patch>

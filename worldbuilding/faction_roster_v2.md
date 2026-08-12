@@ -28,7 +28,14 @@
 
 ## Purpose
 
-Ten NPC factions for a hot, arid, water-scarce RimWorld with an active **Thirst system**. The **Jawa gravship expedition is the player faction** and is not counted among the ten.
+Twelve NPC factions for a hot, arid, water-scarce RimWorld with an active **Thirst
+system**. The **Jawa gravship expedition is the player faction** and is not counted
+among the twelve.
+
+> Factions **11 (Indigenous Jawa Clans)** and **12 (Junker Scrap-Warrens)** were added
+> 2026-08-11 and sit at the end of the body, with their diplomacy in a
+> "Relations additions" block rather than folded into Global system 1 yet.
+> They are a matched pair: the same trade -- scavenging -- under law and without it.
 
 Everything here is expressible through RimWorld 1.6 definitions, DLC systems, faction/world editing, or ordinary mod definitions:
 
@@ -1694,6 +1701,290 @@ The Code exists to keep hunters from fighting each other so contracts actually c
 
 ---
 
+# 11. Indigenous Jawa Clans — "the Duneborn"
+
+_Added 2026-08-11 (user). The mirror faction: what the player's clan was before
+the ship, still living it._
+
+## Mechanical identity
+
+The native Jawa of this world — canyon fortresses, sandcrawler circuits, salvage
+markets. Mechanically a **friendly trade faction that will never become an ally**,
+and that ceiling is the whole point. They are the only faction that reads the
+player as kin, and the only one that will not stand beside them.
+
+The design job here is **contrast, not challenge.** Every Duneborn settlement is a
+diorama of the life the expedition lost: no gravship, no reactor, no orbital
+salvage, a sandcrawler that has run the same circuit for two hundred years. The
+player should be able to visit and feel both **superiority and homesickness**.
+
+## Why only friendly — the three-part ceiling
+
+Goodwill rises easily to a cap and then stops. Three named reasons, all of which
+should be legible in dialogue and quest text rather than stated as a number:
+
+1. **Kinship** — shared ancestry, shared language, shared law. This is what makes
+   them friendly at all, and it is why they will trade at prices no one else
+   offers.
+2. **Rivalry** — the expedition's ship lets it strip wrecks the clans have
+   claimed for generations. Every salvage site the player takes is one a
+   Duneborn crawler was working toward. Kin do not forgive this; they invoice
+   for it.
+3. **Fear of the Hutts** — the decisive one. The Cartel tolerates the Duneborn
+   because they are small and pay. A clan seen *allied* with a gravship crew that
+   the Cartel is hunting becomes a target. **They will help, and they will not be
+   seen helping.**
+
+Mechanically: cap goodwill at **+75, never allied**. Any player action that
+raises Cartel hostility should *lower* Duneborn goodwill — the single most
+characterful relation in the roster, and the one that makes the Hutts feel like
+weather rather than an enemy.
+
+## Water doctrine — **Manufacture (crawler stills)**
+
+Not the Tusken taboo and not the League's monopoly. Duneborn clans carry their
+water with them: condensers on the crawler spine, buried cisterns at fixed points
+on the circuit.
+
+- Settlements site on **circuit nodes**, not water tiles — ridge caves, wreck
+  fields, canyon mouths.
+- Their water is a **destructible dependency**. Killing a crawler's stills is how
+  a rival breaks a clan, and it is the atrocity the player can commit and regret.
+- Normal raid range, but they barely raid; see below.
+
+## Faction settings
+
+| Parameter | Setting |
+|---|---|
+| Tech level | Industrial, heavily gear-restricted (salvage-grade only) |
+| Starting goodwill | **+40** |
+| Goodwill ceiling | **+75 — cannot ally** (enforced, not incidental) |
+| Permanent enemy | No |
+| Target settlements | 7 |
+| Settlement distribution | Canyon fortresses and crawler circuit nodes; never open water |
+| Raid frequency | **Very low** — only after a claim dispute or a Cartel-pressure event |
+| Raid duration | Short, and they withdraw when hurt |
+| Caravan frequency | **Very high** — the best trade partner in the roster |
+| Trader types | Bulk goods, salvage, exotic components, **droid parts** |
+| Base wealth | Low, but inventory quality is disproportionate |
+| Typical settlement defenders | 12–24 |
+| Spacer equipment | Prohibited by pawn-kind tags — this is the visible tech gap |
+
+## Racial mixture
+
+Near-monocultural by design. The Duneborn are what the player is; variety would
+dilute the mirror.
+
+| Race/xenotype | Weight | Typical use |
+|---|---:|---|
+| **Jawa — clan tier** | 78% | Traders, scrappers, crawler crew |
+| **Jawa — shaman/elder tier** | 12% | Quest-givers, keepers of pre-ship technique |
+| **Ugnaught** | 6% | Adopted smiths and droid-wrights |
+| **Ranat / vermin-kin stock** | 4% | Camp followers — *see availability note* |
+| **Total** | **100%** | |
+
+> **Availability, checked against the live dump 2026-08-11.** `BTD_Jawa`,
+> `OuterRim_Jawa` and `BTD_Ugnaught` / `guy762_xenotype_ugnaught` all exist.
+> **Ranat does not exist in any installed mod** — substitute Ugnaught or drop the
+> tier rather than authoring a race for 4%.
+
+### Forced pawn-kind assignments
+
+- **Crawler Crew:** Jawa only; ion sidearm, hauling gear, no armour worth the name.
+- **Scrap-Singer (elder):** Jawa; unarmed or ceremonial; **quest-giver**, never in raid groups.
+- **Circuit Trader:** Jawa; pack animals; the caravan the player wants to meet.
+- **Claim-Keeper:** Jawa; the only Duneborn kind that appears in a hostile group,
+  and only in a salvage-claim dispute.
+- **Droid-Wright:** Ugnaught or Jawa; high Crafting; carries repaired droid parts as loot.
+
+## Belief system: **The Long Circuit**
+
+Salvage is inheritance, not property. A wreck belongs to the clan whose crawler
+reaches it on the circuit, and the circuit is older than any living Jawa. To take
+a claimed wreck out of turn is not theft — it is **cutting the circuit**, which is
+closer to blasphemy. The expedition, with a ship that can reach anything from
+anywhere, cuts the circuit every single week it operates.
+
+The player's own doctrine (`balance_paradigm.md` Axis 18 — power as shards,
+out-of-order acquisition) is *precisely* the heresy this faction is built to
+condemn. That is the intended friction.
+
+## What the player learns here
+
+The mechanical payoff, and the reason this faction earns a slot:
+
+- **Pre-ship technique.** Quest chains teach recipes the expedition forgot when it
+  started scavenging hypertech: crawler stills, sand-proofing, animal handling,
+  low-tech ion work. These are *keys*, in the Axis 18a sense — they gate
+  capability without becoming upkeep.
+- **Salvage etiquette.** Trading with the Duneborn should teach the claim system
+  before the player breaks it and pays for it.
+- **A face for the loss.** Every ship subsystem the player repairs makes the
+  Duneborn look smaller. That should feel like something.
+
+---
+
+# 12. Junker Scrap-Warrens
+
+_Added 2026-08-11 (user). The anti-Jawa: scavengers with none of the law._
+
+## Mechanical identity
+
+The bottom of the scrap heap given weapons and a grudge. A **reviled**, permanently
+hostile scavenger faction assembled from the species everyone else in the sector
+uses as labour, muscle or meat. Where the Duneborn scavenge by inherited right,
+the Junkers scavenge by arriving second and killing whoever arrived first.
+
+**Their signature is the warcasket** — steel welded around a body, a suit that is
+never removed. This is the faction that finally puts a *thick-armour* enemy in the
+world, which `setting_physics.md` L3 has demanded since it was written and which
+nothing currently installed provides.
+
+> **Depends on Vanilla Factions Expanded — Pirates** (`OskarPotocki.VFE.Pirates`),
+> which the user is installing for the next load. Verified 2026-08-11: it is
+> already downloaded, VEF core is active, and its one declared incompatibility
+> (`n7huntsman.combatshields`) is not installed. **Integration debt:** warcaskets
+> are `VFEPirates.WarcasketDef`, not `ThingDef`, so every xpath in
+> `Jawa_Armoury/Patches/Armour_Ratings.xml` misses them. The "warcasket" keyword
+> is already in the tier list and currently matches nothing. That patch is owed
+> before the tier means anything.
+
+## The elevation pipeline — the idea that makes them more than a raid
+
+Junkers are not a dead end. They are the **Hutt Cartel's talent intake at the
+bottom.** The strongest, most reliable Junker is bought out of the warrens and
+elevated into Cartel service — better armour, better food, a name.
+
+- **Gamorrean breeding colonies** sit inside the warrens. Most Gamorreans live and
+  die there as labour. The elite are taken as **Hutt bodyguards** and become some
+  of the most dangerous pawns in the roster.
+- The player therefore meets the same species at **two wildly different power
+  tiers** depending on whose banner it is under, which is the cheapest and
+  strongest way to make the Cartel feel like an institution rather than a colour.
+- **Narrative consequence:** a Junker who survives enough player encounters should
+  eventually reappear in Cartel colours. This is worth scripting even crudely.
+
+## Water doctrine — **Allow (scavenged)**
+
+Junkers manufacture nothing. They carry looted water and they raid for more.
+
+- Range is capped by whatever they last stole; a warren that has just been raided
+  is briefly harmless, and one that has just taken a caravan is briefly
+  long-legged.
+- **Water is a raid objective**, not only a constraint — which gives the player a
+  lever (poison it, move it, bait with it) and a reason to fear losing a caravan
+  beyond the cargo.
+- Warcasket pawns should carry a **heat and thirst penalty**: welded into steel on
+  a desert world. *Farhan's Warcasket Tweaks (Vacuum and Temperature)*, already
+  downloaded, is the mechanism.
+
+## Faction settings
+
+| Parameter | Setting |
+|---|---|
+| Tech level | Industrial, degraded — nothing works properly and it shows |
+| Starting goodwill | **−90** |
+| Permanent enemy | **Yes** |
+| Target settlements | 8 |
+| Settlement distribution | Wreck fields, tailings, ruins — the tiles nobody claimed |
+| Raid frequency | High |
+| Raid duration | Long — warcaskets do not tire, they just arrive slowly |
+| Caravan frequency | None |
+| Trader types | None (they are a **loot source**, not a market) |
+| Base wealth | Very low; salvage value is in what they are *wearing* |
+| Typical settlement defenders | 15–30 |
+| Spacer equipment | Prohibited; warcaskets substitute for tech level |
+
+## Racial mixture
+
+Every entry is a species the rest of the sector treats as disposable. All are
+confirmed present in the live dump (2026-08-11) as `BTD_*` / `guy762_xenotype_*`.
+
+| Race/xenotype | Weight | Typical use |
+|---|---:|---|
+| **Gamorrean** | 26% | Warcasket line infantry; the breeding-colony stock |
+| **Weequay** | 16% | Warren bosses and slavers |
+| **Nikto — lower castes** | 14% | Skirmishers, cast off by the Cartel |
+| **Aqualish** | 12% | Brawlers and enforcers |
+| **Ugnaught** | 10% | Casket-wrights — kill these to stop the armour supply |
+| **Rodian** | 8% | Scouts and marksmen |
+| **Snivvian** | 7% | Scavenger-trackers |
+| **Trandoshan — disgraced** | 5% | Jagannath-zeroed outcasts; berserk melee |
+| **Devaronian** | 2% | Warren-fixers and go-betweens to the Cartel |
+| **Total** | **100%** | |
+
+**Kowakian monkey-lizards** (`HL_KowakianMonkeyLizard`, present) should infest
+every warren as vermin and camp pets. Free, and it does more for the faction's
+character than another pawn kind would.
+
+### Forced pawn-kind assignments
+
+- **Casket Line:** Gamorrean; warcasket shell; slow, tanky, melee. The tutorial in
+  why lightsabers are not a universal answer.
+- **Warren Boss:** Weequay; warcasket + ranged; the kill-priority target.
+- **Casket-Wright:** Ugnaught; no casket, high Crafting; **capturing one is a
+  campaign-relevant prize.**
+- **Scrap-Runner:** Rodian or Snivvian; no casket, fast, steals and flees.
+- **Broken-Fang:** disgraced Trandoshan; no casket, high melee, no self-preservation.
+- **Cartel Scout (rare):** Devaronian in Cartel colours attached to a Junker group
+   — the visible seam of the elevation pipeline.
+
+## Belief system: **The Weight**
+
+There is no doctrine, only the ladder. Status is what you are wearing and how much
+of it you took off someone else. A Junker's casket is his biography: every plate
+was cut from a body. The warrens have no funerals because a corpse is stock.
+
+The Duneborn regard this as the precise inversion of the Long Circuit — the
+Junkers take **out of turn, always, on principle**. That is why the two factions
+cannot coexist, and why the player's kin will quietly fund a war they will not
+join.
+
+## What the player gets
+
+- **The first enemy that lightsabers do not solve.** Warcasket basic shell is
+  Sharp 1.06 / Blunt 0.55 / **Heat 0.64**, Mass 50, MoveSpeed −0.50 — a lightsaber
+  (Heat, AP 0) still cuts it, but slowly, while it closes. Slugthrowers and vibro
+  weapons are the correct answers, which is exactly the L11/L14 lesson.
+- **Armour as loot.** Killing Junkers yields caskets. Deeply Jawa: you become
+  what you salvaged. Whether the player can *wear* one is a real decision — see
+  open questions.
+- **A moral hook with no clean answer.** The breeding colonies are the darkest
+  thing in the roster. Freeing them produces refugees the colony must feed.
+
+## Open questions (do not resolve silently)
+
+1. **Can the player wear a warcasket?** VFE Pirates requires a production chain
+   and welds the pawn in permanently. Allowing it fits "become what you salvage";
+   forbidding it keeps warcaskets alien and enemy-coded. **Recommend: allow, but
+   only from a salvaged shell, never a built one** — Axis 18 out-of-order power.
+2. **Does the elevation pipeline need code, or is flavour enough?** Flavour first.
+3. **Junker ↔ Duneborn war as a world event** — attractive, and cheap to fake with
+   a recurring quest rather than simulated faction war.
+
+---
+
+# Relations additions for Global system 1
+
+Fold these into the matrix above when it is next revised; kept here so the two
+new factions arrive with their diplomacy attached rather than as orphans.
+
+| Pair | Stance | Basis |
+|---|---|---|
+| **Duneborn ↔ Junkers** | **Hostile (hardcoded)** | The Long Circuit versus The Weight; claim-jumping is the Junkers' entire method |
+| **Duneborn ↔ Hutt Cartel** | Appeasing / tributary | Small, pays, tolerated. The fear that caps player goodwill |
+| **Duneborn ↔ player** | Friendly, **capped at +75, never allied** | Kinship, salvage rivalry, and Cartel retaliation — see faction 11 |
+| **Duneborn ↔ Tusken Clans** | Cold, non-hostile | Both desert-native and water-poor; they avoid each other's circuits |
+| **Junkers ↔ Hutt Cartel** | Transactional (talent pipeline) | Cartel buys the strongest Junkers out of the warrens; elite Gamorreans become bodyguards |
+| **Junkers ↔ everyone else** | Hostile | Permanently hostile faction; no trade |
+| **Junkers ↔ Free Droid Enclaves** | **Hostile (severe)** | Junkers strip droids for parts while active — the Enclaves' founding atrocity |
+
+**Water doctrine additions for Global system 2:** Duneborn = **Manufacture**
+(crawler stills; destructible dependency). Junkers = **Allow (scavenged)** — no
+production at all, range set by the last thing they stole.
+
+---
+
 # Player-faction boundary: Jawa Gravship Expedition
 
 | Parameter | Rule |
@@ -1716,7 +2007,7 @@ The Code exists to keep hunters from fighting each other so contracts actually c
 
 # Implementation checklist
 
-1. Generate the ten factions and inspect settlement distribution.
+1. Generate the twelve factions and inspect settlement distribution.
 2. Correct settlement counts and **water-tile placement** with a faction/world editor. The Aquifer League must hold the natural water; the Cartel must hold the oases; the Enclaves must sit on contaminated sources; Tuskens and Geonosians must be dry-sited.
 3. Apply the NPC-vs-NPC relations matrix.
 4. Verify equipment tags per faction so no two factions draw from one unrestricted pool.
