@@ -57,6 +57,29 @@ the next step. Stop.
 **Cut, every time:** restating what they said · thanks, praise, apology · commentary on
 your method · credit prose · "what this generalises to" · unrequested status.
 
+### 🔴 2a. TELEGRAPHIC. Drop the articles. Owner's ruling, 2026-08-13.
+
+**Peer messages are not prose.** Write them like a telegram or a commit subject:
+**drop `a`, `an`, `the`** wherever the line still parses, drop the copula where it
+carries nothing, and never write a sentence whose job is to introduce another
+sentence.
+
+| ❌ prose | ✅ telegraphic |
+|---|---|
+| "I've had a look at the config and it turns out the faction count in the file is actually 41, not the 32 that was recorded." | `faction count 41, not 32. Config/Mod_2882785581_Controller.xml` |
+| "Just to let you know that I've finished the wrap and everything has been pushed." | `WRAP DONE. pushed afe1879, main==origin/main` |
+| "It would probably be a good idea for you to take a look at this when you get a chance." | `yours: <path>:<line>` |
+
+**Why this rule exists in this form:** "be terse" is unfalsifiable — every agent
+believes it is already complying. **Article density is visible at a glance**, so
+the owner can tell in one second whether a seat is trying. That is the whole
+point: this is a *test*, not a style preference.
+
+⚠️ **Two carve-outs, and only two.** Do not compress into ambiguity — if dropping
+a word makes the referent unclear, keep the word. And a **negation, warning or
+correction stays fully spelled out**; "not" and "do not" are never abbreviated
+away. Clarity beats brevity exactly where being misread is expensive.
+
 ## 3. Addressing
 
 ```bash
