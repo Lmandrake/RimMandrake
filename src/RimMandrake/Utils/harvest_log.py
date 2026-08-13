@@ -161,6 +161,26 @@ CHECKS = [
     ("scribe", "stale saved data (Scribe)",
      r"Could not load reference to", 0,
      "a SAVED FILE holds a dead name - different system from cross-ref"),
+    # Added 2026-08-13 after HAR's transpiler on PregnancyUtility.CanEverProduceChild
+    # died against Universal Pregnancy's and NOTHING here counted it. The cost was
+    # not the bug - it was that with no standing check we could not DATE it: the
+    # only prior log (Player-prev.log, 708 lines) never reached the patching phase,
+    # so "did this start today?" was unanswerable. Baseline 1 = that HAR/UP pair,
+    # investigated and deliberately left alone (see
+    # observed/2026-08-13_HAR_pregnancy_patch_failure.md).
+    # 🔴 This is the C#/Harmony system. Do NOT reason about it with §1.2's "a
+    # failed patch is a no-op" - that rule is about the XML PatchOperation system
+    # and it is WRONG here. A Harmony transpiler that throws is discarded, so the
+    # method silently keeps whatever OTHER mods did to it. The failure is loud;
+    # the consequence is silent.
+    # ⚠️ Count EVENTS, not lines. `Wrong null argument: brtrue NULL` is the
+    # exception DETAIL on the line after `Error during patching`, not a second
+    # failure - including it here reported 2 for a single event. Match only the
+    # line that opens a failure. Measured: lines 3474 (event) and 3475 (detail).
+    ("harmonyfail", "Harmony patch failures (C#)",
+     r"Error during patching|Exception from HarmonyInstance", 1,
+     "baseline 1 = HAR vs Universal Pregnancy on CanEverProduceChild, triaged. "
+     "ANY rise means a new transpiler collision - name the target METHOD"),
     ("tex", "texture path failures",
      r"Failed to find any textures at", 0,
      "fires ONLY if ALL directions missing - a partial set is silent"),
