@@ -72,3 +72,19 @@ thing a deletion cannot provide.
   must never be handed to a seat as news.
 - **Excluded from search by default.** Scope greps to the live tree and add
   `| grep -v '^./disposing/'`, unless you are deliberately asking what was retired.
+
+## Dropped 2026-08-13 — the restructure's own paperwork, question answered
+
+Seven-day dwell, then delete. The migration is **done and pushed**; these
+described how to do it, and nothing now needs them.
+
+| file | why it is spent |
+|---|---|
+| `RESTRUCTURE_PLAN.md` | executed. The tree IS the plan now — read `<tier>/README.md` |
+| `RESTRUCTURE_OPTIONS.md` | option B was chosen and built; the rejected options teach nothing |
+| `RESTRUCTURE_LOG.md` | a running narration of a finished move |
+| `do_restructure.sh`, `fix_refs.py` | one-shot scripts, already run |
+| `agents_redesign_options.md` | the five-seat structure shipped; this was its options doc |
+
+⚠️ **Kept in `output/` deliberately:** `STALE_FILE_AUDIT.md` (§E is owner decision
+#7, still open) and `REF_AUDIT.md` (18 broken refs still live).
