@@ -3,30 +3,39 @@
 WHAT THIS IS FOR
 ================
 `prove_capture_restore.py` covers the terrain three. This covers the other
-thirteen:
+seventeen:
 
     jawa/get_def       jawa/drain_log     jawa/list_pawns    jawa/refresh_rect
     jawa/set_plants    jawa/spawn_batch   jawa/destroy_batch
-    jawa/set_roof_batch  jawa/get_roof_batch
+    jawa/set_roof_batch  jawa/get_roof_batch  jawa/list_factions
     jawa/spawn_pawn    jawa/damage
+    jawa/set_pawn_rotation  jawa/set_pawn_style  jawa/set_pawn_xenotype
     jawa/fire_incident jawa/send_letter   (GM pair -- see SAFETY)
 
 Each check prints the deciding string from NEXT_RELOAD.md B2, so a pass here is
 the queue item closed, not a vague "it returned success".
 
-STATUS: 14 of 16 PROVEN LIVE 2026-08-12 on the 573-mod stack (20 passed, 0
-failed) against a dev quicktest colony. The roof pair -- set_roof_batch and
-get_roof_batch -- was built and deployed in the SAME shutdown window and has
-never run. This file is both the regression harness and the proof run for those
-two; run it after any companion change, not just after a deploy.
+STATUS: 14 of 20 PROVEN LIVE 2026-08-12 on the 573-mod stack (20 passed, 0
+failed) against a dev quicktest colony. SIX have never been driven in a live
+game: the roof pair (set_roof_batch, get_roof_batch), list_factions -- which was
+deployed at 10:05 on 2026-08-13, one minute AFTER the last session's log stopped
+-- and the three pawn-appearance tools (set_pawn_rotation, set_pawn_style,
+set_pawn_xenotype), written offline on 2026-08-13 with the game down. This file
+is both the regression harness and the proof run for those six; run it after any
+companion change, not just after a deploy.
 
 THE FIRST CHECK IS THE ONLY ONE THAT MATTERS UNTIL IT PASSES
 ============================================================
-Count the registered `jawa/` tools. 16 = the deploy took. 14 = the game is on
-the pre-roof build. 7 = an older companion still. 0 = RimBridgeServer did not
-load the bundle at all. Every other result here is uninformative until that
-reads 16, so the script says so loudly and keeps going only to gather evidence
+Count the registered `jawa/` tools. 20 = the current deploy took. 17 = the
+2026-08-13 10:05 build, before the pawn-appearance three. 16 = pre-list_factions.
+14 = the pre-roof build. 7 = an older companion still. 0 = RimBridgeServer did
+not load the bundle at all. Every other result here is uninformative until that
+reads 20, so the script says so loudly and keeps going only to gather evidence
 about WHICH build is live.
+
+⚠️ 18, not 20, is the correct count for a build made WITHOUT `--gm`:
+fire_incident and send_letter are compiled out. Deploy with `--gm` or the game
+copy loses them.
 
 READ THE SCHEMA, DO NOT GUESS IT
 ================================
@@ -80,8 +89,10 @@ ALL_TOOLS = [
     "jawa/set_terrain", "jawa/set_terrain_batch", "jawa/get_terrain_batch",
     "jawa/spawn_batch", "jawa/destroy_batch", "jawa/list_pawns",
     "jawa/set_plants", "jawa/damage", "jawa/get_def", "jawa/drain_log",
-    "jawa/refresh_rect", "jawa/spawn_pawn", "jawa/fire_incident",
-    "jawa/send_letter", "jawa/set_roof_batch", "jawa/get_roof_batch",
+    "jawa/refresh_rect", "jawa/spawn_pawn",
+    "jawa/set_pawn_style", "jawa/set_pawn_rotation", "jawa/set_pawn_xenotype",
+    "jawa/fire_incident", "jawa/send_letter",
+    "jawa/set_roof_batch", "jawa/get_roof_batch", "jawa/list_factions",
 ]
 # Present in the 7-tool build that shipped earlier the same day. Used to tell
 # "old companion" apart from "bundle did not load", which have different fixes.
@@ -107,7 +118,8 @@ def ok(resp):
 
 def census(s):
     """Which companion tools this game registered. THE gate check."""
-    print("\n0. deploy census -- nothing below means anything until this reads 16")
+    print("\n0. deploy census -- nothing below means anything until this reads %d"
+          % len(ALL_TOOLS))
     try:
         names = {t.get("name") for t in s._rb.list_tools()}
     except Exception as e:
@@ -366,6 +378,165 @@ def prove_gm(s, have, send_letter):
 
 # ------------------------------------------------- 4. spawn + damage (opt-in)
 
+# Xenotypes to try, in order. NONE of these is guaranteed: Hussar and Genie ship
+# with Biotech, the Jawa three come from mods, and a stack without Biotech has no
+# XenotypeDef at all. So the harness ASKS the game which one exists rather than
+# hardcoding one and recording a FAIL against a tool that worked.
+# ⚠️ Baseliner must never be used here: Pawn_GeneTracker.get_Xenotype returns
+# XenotypeDefOf.Baseliner when the field is null, so "converted to Baseliner"
+# reads back true even if SetXenotype did nothing at all.
+XENOTYPE_CANDIDATES = ["BTD_Jawa", "OuterRim_Jawa", "guy762_xenotype_jawa",
+                       "Jawa_Xeno_Gamorrean", "Hussar", "Genie"]
+
+
+def pick_xenotype(s, have):
+    """First XenotypeDef of the candidates that this game actually has."""
+    if "jawa/get_def" not in have:
+        return None
+    for name in XENOTYPE_CANDIDATES:
+        try:
+            r = s.call("jawa/get_def", defName=name, defType="XenotypeDef")
+        except Exception:
+            return None
+        if ok(r):
+            return name
+    return None
+
+
+def prove_pawn_rotation(s, have, pid):
+    """Deciding string: the rotation READS BACK off the pawn, and it holds --
+    a bare write is undone by Pawn_RotationTracker on the next tick, and
+    Thing.set_Rotation returns silently on an already-locked pawn."""
+    if "jawa/set_pawn_rotation" not in have:
+        return skip("jawa/set_pawn_rotation", "not registered")
+
+    r = s.call("jawa/set_pawn_rotation", pawnId=pid, dir="east",
+               lockRotation=True)
+    row = ((r or {}).get("pawns") or [{}])[0]
+    # `applied` is computed in the tool from pawn.Rotation read back AFTER the
+    # write, so it is the assertion; `after` is a Translate()d string and is
+    # detail only -- asserting on it would fail on a non-English game.
+    check("jawa/set_pawn_rotation turns a pawn east",
+          ok(r) and (r or {}).get("turned") == 1 and row.get("applied") is True,
+          "after=%s posture=%s visible=%s" % (row.get("after"),
+                                              row.get("posture"),
+                                              row.get("visible")))
+    check("  ...and LOCKS the facing against the engine",
+          row.get("locked") is True and (r or {}).get("locked") is True,
+          "debugRotLocked=%s" % row.get("locked"))
+
+    # Turning it again while locked is the trap: without the clear->set->lock
+    # order this second call is a silent no-op.
+    r2 = s.call("jawa/set_pawn_rotation", pawnId=pid, dir="north",
+                lockRotation=True)
+    row2 = ((r2 or {}).get("pawns") or [{}])[0]
+    check("  ...and a LOCKED pawn can still be turned again",
+          ok(r2) and row2.get("applied") is True
+          and str(row2.get("after")) != str(row.get("after")),
+          "%s -> %s" % (row.get("after"), row2.get("after")))
+
+    # ALWAYS unlock: debugRotLocked is written by Thing.ExposeData, so a pawn
+    # left locked stays locked across a save and load.
+    u = s.call("jawa/set_pawn_rotation", pawnId=pid, dir="unlock")
+    urow = ((u or {}).get("pawns") or [{}])[0]
+    check("  ...and unlock releases it", ok(u) and urow.get("locked") is False,
+          "locked=%s" % urow.get("locked"))
+
+
+def prove_pawn_style(s, have, pid):
+    """Deciding string: the hair def reads back off pawn.story AFTER the write,
+    and the tool refuses a typo instead of half-applying it."""
+    if "jawa/set_pawn_style" not in have:
+        return skip("jawa/set_pawn_style", "not registered")
+
+    r = s.call("jawa/set_pawn_style", pawnId=pid, hair="Bald",
+               hairColor="#402808")
+    rows = (r or {}).get("pawns") or [{}]
+    changes = {c.get("field"): c for c in (rows[0].get("changes") or [])}
+    hair = changes.get("hair") or {}
+    check("jawa/set_pawn_style sets hair, read back off the pawn",
+          ok(r) and (r or {}).get("pawnsChanged") == 1
+          and hair.get("now") == "Bald" and hair.get("ok") is True,
+          "hair %s -> %s" % (hair.get("was"), hair.get("now")))
+    col = changes.get("hairColor") or {}
+    check("  ...and the hair colour with it",
+          col.get("now") is not None,
+          "hairColor %s -> %s" % (col.get("was"), col.get("now")))
+
+    # A typo must change NOTHING. Half a restyled pawn that returns success is
+    # the failure this tool's up-front def resolution exists to prevent.
+    bad = s.call("jawa/set_pawn_style", pawnId=pid, hair="NoSuchHairDef_zzz")
+    check("  ...and refuses an unknown HairDef outright",
+          not ok(bad) and "hairdef" in str((bad or {}).get("message", "")).lower(),
+          str((bad or {}).get("message", ""))[:70])
+
+
+def prove_pawn_xenotype(s, have, pid, xeno):
+    """Deciding string: pawn.genes.Xenotype reads back as the def asked for, and
+    it is NOT Baseliner -- which is what get_Xenotype returns for a pawn whose
+    xenotype was never set, and therefore what a silent no-op looks like."""
+    if "jawa/set_pawn_xenotype" not in have:
+        return skip("jawa/set_pawn_xenotype", "not registered")
+    if not xeno:
+        return skip("jawa/set_pawn_xenotype",
+                    "no XenotypeDef of %s exists here -- Biotech absent, or a "
+                    "different xenotype mod set" % "/".join(XENOTYPE_CANDIDATES[:3]))
+
+    r = s.call("jawa/set_pawn_xenotype", pawnId=pid, xenotype=xeno)
+    row = ((r or {}).get("pawns") or [{}])[0]
+    check("jawa/set_pawn_xenotype converts a pawn in place",
+          ok(r) and (r or {}).get("pawnsChanged") == 1
+          and row.get("now") == xeno and row.get("now") != "Baseliner",
+          "%s -> %s (%s genes in def)" % (row.get("was"), row.get("now"),
+                                          row.get("genesInDef")))
+    check("  ...and the genes actually landed",
+          (row.get("genesInDef") or 0) == 0
+          or ((row.get("endogenesAfter") or 0) + (row.get("xenogenesAfter") or 0)) > 0,
+          "endo=%s xeno=%s inheritable=%s" % (row.get("endogenesAfter"),
+                                              row.get("xenogenesAfter"),
+                                              row.get("inheritable")))
+    bad = s.call("jawa/set_pawn_xenotype", pawnId=pid, xenotype="NoSuchXeno_zzz")
+    check("  ...and refuses an unknown XenotypeDef",
+          not ok(bad),
+          str((bad or {}).get("message", ""))[:70])
+
+
+def prove_spawn_pawn_xenotype(s, have, xeno, x, z):
+    """Deciding string: the FORCED xenotype is on the pawn as generated, not
+    applied afterwards. Returns the spawned pawn's id so it can be cleaned up."""
+    if not xeno:
+        skip("jawa/spawn_pawn xenotype=", "no XenotypeDef available here")
+        return None
+    r = s.call("jawa/spawn_pawn", kindDef="Scavenger", x=x, z=z,
+               faction="hostile", count=1, xenotype=xeno)
+    row = ((r or {}).get("pawns") or [{}])[0]
+    check("jawa/spawn_pawn forces a xenotype at GENERATION time",
+          ok(r) and row.get("xenotype") == xeno
+          and row.get("xenotypeApplied") is True,
+          "id=%s xenotype=%s requested=%s" % (row.get("id"), row.get("xenotype"),
+                                              row.get("xenotypeRequested")))
+    check("  ...and counts only pawns that really spawned",
+          (r or {}).get("spawnedCount") == 1 and (r or {}).get("failedCount") == 0,
+          "spawnedCount=%s failedCount=%s"
+          % ((r or {}).get("spawnedCount"), (r or {}).get("failedCount")))
+    return row.get("id")
+
+
+def kill_pawn(s, pid):
+    """Hit until dead, bounded. `amount` is a request, not a delivery."""
+    d = s.call("jawa/damage", damageDef="Bullet", amount=400, thingId=pid)
+    first = ((d or {}).get("results") or [{}])[0]
+    res = first
+    for _ in range(24):
+        if res.get("dead") or res.get("destroyed"):
+            break
+        d2 = s.call("jawa/damage", damageDef="Bullet", amount=400, thingId=pid)
+        if not (d2 or {}).get("targetsHit"):
+            break                       # gone from the map entirely
+        res = ((d2 or {}).get("results") or [{}])[0]
+    return d, first
+
+
 def prove_pawns(s, have, x, z):
     """The only genuinely risky check, so it is opt-in and self-cleaning.
 
@@ -399,24 +570,29 @@ def prove_pawns(s, have, x, z):
           "faction=%s — the debug menu always spawns player-side"
           % p0.get("faction"))
 
+    # ---- the three pawn-appearance tools, on the pawn already standing there.
+    # They run BEFORE the damage checks: a downed or dead pawn makes
+    # set_pawn_rotation a documented no-op (the renderer calls LayingFacing()
+    # for any non-standing posture), which would read as a broken tool.
+    xeno = pick_xenotype(s, have)
+    prove_pawn_rotation(s, have, pid)
+    prove_pawn_style(s, have, pid)
+    prove_pawn_xenotype(s, have, pid, xeno)
+
+    # A SECOND hostile, forced to the xenotype at generation time. Cleaned up
+    # in the same pass below -- both ids are killed and both are checked gone.
+    pid2 = (prove_spawn_pawn_xenotype(s, have, xeno, x, z)
+            if "jawa/spawn_pawn" in have else None)
+
     # ONE HIT DOES NOT KILL, whatever `amount` says. RimWorld caps a single
     # damage instance by body part, so amount=400 landed as 32.0 dealt and left
     # a wounded hostile standing -- measured 2026-08-12, twice. `amount` is a
     # request, not a delivery. So hit until dead, bounded, and treat running
     # out of attempts as a loud failure rather than a quiet one.
-    d = s.call("jawa/damage", damageDef="Bullet", amount=400, thingId=pid)
-    res = ((d or {}).get("results") or [{}])[0]
-    first = res
-    for _ in range(24):
-        if res.get("dead") or res.get("destroyed"):
-            break
-        d2 = s.call("jawa/damage", damageDef="Bullet", amount=400, thingId=pid)
-        if not (d2 or {}).get("targetsHit"):
-            break                       # gone from the map entirely
-        res = ((d2 or {}).get("results") or [{}])[0]
+    d, first = kill_pawn(s, pid)
     # Evidence about the tool comes from the FIRST hit -- that it reached a
     # hostile at all and grew the hediff list. The loop is cleanup, not proof.
-    res, kill = first, res
+    res = first
     check("jawa/damage reaches a HOSTILE", ok(d) and (d or {}).get("targetsHit"),
           "targetsHit=%s dealt=%s" % ((d or {}).get("targetsHit"),
                                       res.get("totalDamageDealt")))
@@ -430,15 +606,20 @@ def prove_pawns(s, have, x, z):
           "colonistsSkipped=%s (none were in range)"
           % (d or {}).get("colonistsSkipped"))
 
+    if pid2:
+        kill_pawn(s, pid2)
+
+    wanted = {q for q in (pid, pid2) if q}
     still = [p for p in ((s.call("jawa/list_pawns") or {}).get("pawns") or [])
-             if p.get("id") == pid and not p.get("dead")]
+             if p.get("id") in wanted and not p.get("dead")]
     if still:
         print("\n     *** CLEANUP INCOMPLETE ***")
-        print("     Pawn %s is STILL ALIVE at (%d,%d). The game is paused; deal"
-              % (pid, x, z))
+        print("     Pawn(s) %s are STILL ALIVE at (%d,%d). The game is paused; deal"
+              % (", ".join(str(p.get("id")) for p in still), x, z))
         print("     with it before unpausing -- traps.md has the colony-wipe entry.")
-    check("  ...and the test pawn is gone", not still,
-          "cleaned up" if not still else "STILL ALIVE -- see above")
+    check("  ...and every test pawn is gone", not still,
+          "cleaned up (%d spawned)" % len(wanted) if not still
+          else "STILL ALIVE -- see above")
 
 
 # ------------------------------------------------------------------- selftest
@@ -461,6 +642,12 @@ class _StubSession(object):
         self._rb = _StubBridge(tools)
         self._hostile_survives = hostile_survives
         self._roof = "None:10,10,4,1"
+        self._spawned = 0
+        self._rot = "South"
+        # The stub game "has" exactly one of the candidate xenotypes, which is
+        # what a real stack looks like: pick_xenotype must walk past the ones
+        # that are absent rather than assume the first name resolves.
+        self._xenotype = "Hussar"
 
     def colonists(self):
         return [{"id": "c%d" % i} for i in range(4)]
@@ -471,6 +658,12 @@ class _StubSession(object):
                 "paused": True, "mapCount": 1, "currentMapReady": True,
                 "longEventPending": False, "playable": True}}
         if tool == "jawa/get_def":
+            if p.get("defType") == "XenotypeDef":
+                return ({"success": True, "mod": "Biotech"}
+                        if p.get("defName") == self._xenotype
+                        else {"success": False,
+                              "message": "No XenotypeDef named '%s'."
+                                         % p.get("defName")})
             return {"success": True, "mod": "Core",
                     "statBases": {"MarketValue": 1.9, "Mass": 0.008}}
         if tool == "jawa/drain_log":
@@ -512,8 +705,56 @@ class _StubSession(object):
         if tool == "jawa/send_letter":
             return {"success": True, "letterDef": "NeutralEvent"}
         if tool == "jawa/spawn_pawn":
-            return {"success": True, "pawns": [
-                {"id": "Human1", "faction": "Insect", "hostile": True}]}
+            self._spawned += 1
+            xeno = p.get("xenotype")
+            return {"success": True, "spawnedCount": 1, "failedCount": 0,
+                    "xenotypeRequested": xeno,
+                    "pawns": [{"ok": True, "id": "Human%d" % self._spawned,
+                               "faction": "Insect", "hostile": True,
+                               "spawned": True, "xenotype": xeno or "Baseliner",
+                               "xenotypeRequested": xeno,
+                               "xenotypeApplied": True}]}
+        if tool == "jawa/set_pawn_rotation":
+            d = str(p.get("dir", "")).lower()
+            if d == "unlock":
+                return {"success": True, "turned": 1, "locked": False,
+                        "pawns": [{"id": p.get("pawnId"), "applied": True,
+                                   "after": self._rot, "locked": False,
+                                   "posture": "Standing", "visible": True}]}
+            self._rot = {"north": "North", "east": "East", "south": "South",
+                         "west": "West"}.get(d, "South")
+            return {"success": True, "turned": 1,
+                    "locked": bool(p.get("lockRotation", True)),
+                    "notVisible": 0,
+                    "pawns": [{"id": p.get("pawnId"), "applied": True,
+                               "after": self._rot,
+                               "locked": bool(p.get("lockRotation", True)),
+                               "posture": "Standing", "visible": True}]}
+        if tool == "jawa/set_pawn_style":
+            hair = p.get("hair")
+            if hair and hair.startswith("NoSuch"):
+                return {"success": False,
+                        "message": "No HairDef named '%s'." % hair}
+            changes = [{"field": "hair", "was": "Afro", "now": hair, "ok": True}]
+            if p.get("hairColor"):
+                changes.append({"field": "hairColor", "was": "1,1,1",
+                                "now": "0.251,0.157,0.031", "ok": True})
+            return {"success": True, "pawnsChanged": 1,
+                    "pawns": [{"id": p.get("pawnId"), "ok": True,
+                               "changes": changes}]}
+        if tool == "jawa/set_pawn_xenotype":
+            x = p.get("xenotype")
+            if x != self._xenotype:
+                return {"success": False,
+                        "message": "No XenotypeDef named '%s'." % x}
+            return {"success": True, "pawnsChanged": 1, "xenotype": x,
+                    "pawns": [{"id": p.get("pawnId"), "ok": True,
+                               "was": "Baseliner", "now": x, "requested": x,
+                               "inheritable": False, "genesInDef": 5,
+                               "endogenesBefore": 0, "endogenesAfter": 0,
+                               "xenogenesBefore": 0, "xenogenesAfter": 5,
+                               "endogenesCleared": 0, "hybrid": False,
+                               "staleEndogenes": False}]}
         if tool == "jawa/damage":
             return {"success": True, "targetsHit": 1, "colonistsSkipped": 0,
                     "results": [{"id": "Human1", "totalDamageDealt": 60.0,
@@ -545,7 +786,7 @@ def selftest():
     """
     global RESULTS
     scenarios = [
-        ("all 14 registered", dict(), 0, None),
+        ("all 20 registered", dict(), 0, None),
         ("STALE companion -- only the old 7", dict(tools=ALL_TOOLS[:7]), 1,
          "old seven"),
         ("bundle never loaded -- 0 jawa tools", dict(tools=[]), 1, "0 jawa"),
