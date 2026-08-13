@@ -161,11 +161,13 @@ def disasm(rva, label):
             arg = ','.join('IL_%04x'%(i+x) for x in ts)
         print("  IL_%04x: %-16s %s" % (st, name, arg))
 
-want = sys.argv[1]
-mnames = sys.argv[2:]
-
 # --- xref mode: find the Field token for Type::field, then scan all method bodies
 import struct as _st
+
+if len(sys.argv) < 3:
+    sys.exit("usage: python3 xref.py <TypeName> <fieldName>\n"
+             "  lists every method whose IL references that field.")
+
 target_type = sys.argv[1]; target_field = sys.argv[2]
 ftok = None
 for ti,(nm,ns,fl,ml,ext,fg) in enumerate(typedefs):
@@ -176,10 +178,30 @@ for ti,(nm,ns,fl,ml,ext,fg) in enumerate(typedefs):
             r = readrow(0x04, f)
             if s(r[1]) == target_field:
                 ftok = 0x04000000 | f
+if ftok is None:
+    sys.exit("no field %s::%s in this assembly -- check the spelling, and note "
+             "that a PROPERTY is not a field (try its backing field, e.g. "
+             "'foo' behind get_Foo)." % (target_type, target_field))
 print("field token for %s::%s = 0x%08x" % (target_type, target_field, ftok))
-pat = bytes([0x7B]) + _st.pack('<I', ftok)
-pat2 = bytes([0x7E]) + _st.pack('<I', ftok)
-pat3 = bytes([0x7D]) + _st.pack('<I', ftok)
+
+# 🔴 ALL SIX field opcodes, and the three added ones are not optional.
+# The original scanned ldfld/ldsfld/stfld only, and so reported
+# Thing::debugRotLocked as "REFERENCED BY 3 methods" while MISSING
+# Thing::ExposeData -- which is the method that makes the flag survive a
+# save/load, i.e. exactly the fact anyone would run this tool to learn.
+# A false negative here reads as a complete answer, which is worse than
+# no tool at all. ldflda/ldsflda take the field's ADDRESS, which is how
+# Scribe_Values.Look(ref x, ...) reaches a field, and stsfld writes a
+# static one.
+FIELD_OPS = {
+    0x7B: 'ldfld',    # load instance field
+    0x7C: 'ldflda',   # load instance field ADDRESS  <- Scribe_Values.Look(ref ...)
+    0x7D: 'stfld',    # store instance field
+    0x7E: 'ldsfld',   # load static field
+    0x7F: 'ldsflda',  # load static field ADDRESS
+    0x80: 'stsfld',   # store static field
+}
+PATS = {op: bytes([op]) + _st.pack('<I', ftok) for op in FIELD_OPS}
 
 # build method map
 methods = []
@@ -191,6 +213,7 @@ for ti,(nm,ns,fl,ml,ext,fg) in enumerate(typedefs):
         if r[0]:
             methods.append((r[0], nm, s(r[3])))
 hits = []
+unreadable = 0
 for rva, tn, mn in methods:
     try:
         o = r2o(rva); h = d[o]
@@ -200,9 +223,18 @@ for rva, tn, mn in methods:
             flags = _st.unpack_from('<H', d, o)[0]; hsz = (flags >> 12) * 4
             size = _st.unpack_from('<I', d, o+4)[0]; body = o + hsz
         il = d[body:body+size]
-        if pat in il or pat2 in il or pat3 in il:
-            hits.append("%s::%s" % (tn, mn))
+        how = sorted({FIELD_OPS[op] for op, p in PATS.items() if p in il})
+        if how:
+            hits.append("%s::%s   [%s]" % (tn, mn, ", ".join(how)))
     except Exception:
-        pass
-print("REFERENCED BY %d methods:" % len(hits))
+        # A body we could not parse is NOT a body without the field in it.
+        # Counted and reported, because a silent skip here turns into a
+        # missing caller that the reader will believe does not exist.
+        unreadable += 1
+
+print("REFERENCED BY %d methods (scanned %d, %d unreadable):"
+      % (len(hits), len(methods), unreadable))
 for h_ in hits: print("  " + h_)
+if unreadable:
+    print("  ⚠️ %d method bodies could not be parsed -- this list may be short."
+          % unreadable)
