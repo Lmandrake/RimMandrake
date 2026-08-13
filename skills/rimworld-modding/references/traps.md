@@ -41,7 +41,7 @@ the one asked.**
 
 ### `traps-xml-and-defs.md` — the authoring surface
 
-- ParentName must name an ABSTRACT def, and `validate_patch.py` cannot see it
+- ParentName must name an ABSTRACT def — `validate_patch.py` checks this since 2026-08-13
 - An `<li>` written into a dictionary-keyed field deleted seven biomes
 - An animal registered into a biome from both directions crashes the biome's animal table
 - A field silently moved off its class in 1.6, and eight races carried the stale version
@@ -56,6 +56,8 @@ the one asked.**
 - Building one thing over another is vanilla in 1.6 (`replaceTags`) — and Replace Stuff forbids our case
 
 ### `traps-tooling.md` — our own tooling and offline analysis
+
+- Vanilla textures are NOT on disk — every check for a Core texture path is blind
 
 - A live def dump has no abstracts
 - `--defs` inherits the LIVE `ModsConfig.xml`

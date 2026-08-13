@@ -486,7 +486,7 @@ is theirs to do.
 | `references/patch-operations.md` | An xpath won't match; you need the operation table, inheritance or worked examples. |
 | `references/csharp-and-loading.md` | Before writing any C# — Harmony, entry points, `LoadFolders.xml`. |
 | `references/minimal-load.md` | You have decided to cut the stack down to corner a bug. |
-| `scripts/validate_patch.py` | Every patch, before it goes near the Mods folder. |
+| `scripts/validate_patch.py` | Every patch **and every def**, before it goes near the Mods folder. Point it at the mod ROOT: it dispatches on the root element and its banner states what it did and did not scan. |
 
 External, when the references above don't cover it:
 [RimWorld Modding Resources hub](https://spdskatr.github.io/RWModdingResources/) ·

@@ -51,6 +51,33 @@ HERE = os.path.dirname(os.path.abspath(__file__))
 MOD_ROOT = os.path.dirname(HERE)
 ART_SOURCE = os.path.join(MOD_ROOT, "art_source")
 
+# --------------------------------------------------------------------------
+# The general validator, src/RimMandrake/Utils/check_sprite.py
+# --------------------------------------------------------------------------
+# This file keeps its own CLI and its own MANIFEST.json flow - those are what
+# briefs.py, sheet.py, README.md and the three BRIEF_*.md files call, and none
+# of them should have to change. What it does NOT keep is a private copy of the
+# checks: saturation, value distribution and the fully-transparent-pixel test
+# live in the general tool, and are imported so both callers move together.
+#
+# STRICTLY OPTIONAL. If the import fails this file behaves exactly as it did
+# before, minus the three extra findings, and says so once rather than dying -
+# an art pipeline that refuses to run because a sibling module moved is worse
+# than one that reports slightly less.
+# Loaded by explicit PATH, not by name: this file is also called check_sprite.py
+# and sits on sys.path, so a plain `import check_sprite` is ambiguous and would
+# resolve to whichever entry happens to come first.
+_GENERAL_PATH = os.path.join(os.path.dirname(MOD_ROOT), "Utils", "check_sprite.py")
+try:
+    import importlib.util as _ilu                            # noqa: E402
+    _spec = _ilu.spec_from_file_location("rimmandrake_check_sprite", _GENERAL_PATH)
+    GENERAL = _ilu.module_from_spec(_spec)
+    _spec.loader.exec_module(GENERAL)
+    HAVE_GENERAL = bool(getattr(GENERAL, "HAVE_VS", False))
+except Exception:                                            # pragma: no cover
+    GENERAL = None
+    HAVE_GENERAL = False
+
 TIERS = ("wrecked", "kludged", "repaired")
 
 # How far the drawn mass may drift, as a fraction of canvas, before it will
@@ -139,6 +166,15 @@ def check_file(src_meta, cand_path, src_path):
     # 7. did anything actually change?
     if os.path.isfile(src_path) and sha(cand_path) == sha(src_path):
         r.fail("byte-identical to the restored source — this tier is not damaged")
+
+    # 8-10. saturation, value distribution and the fully-transparent-pixel test,
+    # from the general validator. Check 2 above ("real alpha") uses pnglib's
+    # has_real_alpha, which asks whether ANY pixel is not fully opaque; the
+    # general check asks whether any pixel is fully CLEAR, which is the property
+    # that decides whether a silhouette or a block renders.
+    if HAVE_GENERAL:
+        for level, msg in GENERAL.extra_for_path(cand_path, src_path):
+            (r.fail if level == GENERAL.REJECT else r.warn)(msg)
 
     return r
 

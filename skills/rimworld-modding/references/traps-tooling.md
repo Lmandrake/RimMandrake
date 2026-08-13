@@ -40,10 +40,16 @@ Admission test and entry format: `references/traps.md`.
 **Fix:** exclude other version folders when walking a resolved root.
 **Recurs when:** a recursive walk re-admits candidates the resolver already rejected.
 
+### Vanilla textures are NOT on disk — every check for a Core texture path is blind
+**Symptom:** a texture-existence check reported two Jawa `GeneDef`/`XenotypeDef` `iconPath`s as missing — `UI/Icons/Genes/Gene_Hair`, `UI/Icons/Xenotypes/Pigskin` — against the full 574-mod load set, at ERROR level. Both look like ordinary Biotech paths.
+**Cause:** `Data/Core`, `Data/Biotech`, `Data/Royalty`, `Data/Ideology` ship **`About/`, `Defs/` and `Languages/` only**. There is no `Textures/` folder anywhere under `Data/`; every vanilla texture lives inside a Unity asset bundle. So a *correct* vanilla path and a *typo* are indistinguishable from the filesystem, and the confident answer is the wrong one. A third path in the same mod, `UI/Icons/Genes/Gene_Terrified`, resolved only by accident — a Workshop mod redistributes the Ideology texture tree.
+**Fix:** grade the verdict by namespace. A miss whose first path segment matches a top-level folder in the mod's **own** `Textures/` is an ERROR (nothing else can supply it). Any other miss is a WARNING that says why it cannot be decided. `validate_patch.py` detects the condition rather than assuming it: it looks for `Textures/` under the `ludeon.rimworld` mod folder and only hardens to ERROR if vanilla art really is loose.
+**Generalises to:** any offline check that asks "does this game asset exist" — sounds, UI, bundles. **The absence of a file is only evidence when you have established the file would have been there.** Measured 2026-08-13.
+
 ### Blanket find-and-replace eats the markup syntax it lives inside
 **Symptom:** three instances in one session — replacing `->` also hit the `-->` comment terminator; a pasted `--->` closed a real comment early; escaping `<li>` in prose also hit the real `<li>1.6</li>` in `<supportedVersions>`.
 **Cause:** markup is self-similar; the string you are escaping is also structural syntax elsewhere.
-**Fix:** scope the edit to one region (extract → transform → reinsert). Parse **every** XML in the mod folder afterwards, `About.xml` included — `validate_patch.py` reads `Patches/` only.
+**Fix:** scope the edit to one region (extract → transform → reinsert). Parse **every** XML in the mod folder afterwards, `About.xml` included. Since 2026-08-13 `validate_patch.py <mod root>` does exactly that: `<Patch>`, `<Defs>` and `About.xml` each get the checks that fit them, instead of every def file being reported as "expected `<Patch>`".
 **Recurs when:** any sed or find-and-replace across a markup file.
 
 ### The patch validator cannot evaluate `text()` — lxml can

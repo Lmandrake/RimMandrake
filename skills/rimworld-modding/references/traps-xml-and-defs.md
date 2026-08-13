@@ -8,11 +8,11 @@ Entry format, admission test and the append rule: `references/traps.md`.
 
 ---
 
-### ParentName must name an ABSTRACT def, and `validate_patch.py` cannot see it
+### ParentName must name an ABSTRACT def — `validate_patch.py` checks this since 2026-08-13
 **Symptom:** `XML error: Could not find parent node named "EMP" for node "DamageDef"`, once per load. The whole DamageDef is **discarded**, so the weapon's `damageDef` and its stun hediff both reference nothing.
 **Cause:** the def said `ParentName="EMP"`, and `EMP` is a **concrete** def (`<defName>EMP</defName>`). `ParentName` resolves only against defs declared with a `Name=` attribute, i.e. `Abstract="True"` templates. Core's own EMP uses `ParentName="StunBase"`, where `StunBase` is `<DamageDef Name="StunBase" Abstract="True">`.
 **Fix:** `ParentName="StunBase"` — copy the parent the *vanilla equivalent* uses, not the vanilla def's own name. Before shipping any `Defs/` file, resolve every outward-pointing name (`ParentName`, `Class=`, `workerClass`, `thingClass`, `graphicClass`) against the live load set: `ParentName` against abstract defs, class names against loaded assemblies.
-**Recurs when:** anything under `Defs/` — `validate_patch.py` reads `Patches/` only, and an internal defName cross-reference audit never touches the GAME's abstract-def namespace.
+**Recurs when:** anything under `Defs/`. ✅ **Closed as a blind spot 2026-08-13:** `validate_patch.py` now dispatches on the root element and resolves every `ParentName` against `Name=` attributes across the whole load set, erroring when it resolves to nothing. It also checks `Class=` attributes and `texPath` existence. It still does **not** check field names, types or value ranges, and an internal defName cross-reference audit still never touches the GAME's abstract-def namespace.
 
 ---
 
