@@ -136,6 +136,26 @@ already ships the exact pair this rule wants: `everAcceptableInSpace true` +
 **ground** site. **Both layers hold together in one def.** So The Claim's shape
 is buildable as specified, and it is built (`Jawa_TheClaim`, `5c14e26`).
 
+### ✅ REFINED 2026-08-13 — read at IL level, and the severity drops
+
+**The quest is still OFFERED in space. What is blocked is the Accept button.**
+Measured from `Assembly-CSharp.dll` metadata: `QuestGen.Generate` attaches
+`AcceptanceRequirementNotSpace` when `everAcceptableInSpace` is false, and its
+string is Core's `QuestNotSpace` — *"cannot accept in space"*. The player sees
+the quest and cannot take it.
+
+**And the ordinary storyteller path never reaches the offering filter at all.**
+`GiveQuest_Random` is tagged `targetTags World`, and `World.Tile` is literally
+`PlanetTile::Invalid`, so both `CanQuestOccurOnTile` overloads return true on
+their first branch. **The layer checks are dead code on that path.**
+
+**`autoAccept` suppresses the whole thing** — a quest that auto-accepts skips
+both the filter and the accept requirement.
+
+⇒ **This is friction in orbit, not silence, and it is legible to the player.**
+It is also defensible fiction — *you come down to take work* — which is why the
+ruling below is "leave vanilla alone", not "patch 200 defs".
+
 ### 🔴 The campaign-wide half — and the one number nobody has
 
 **Core's own `OpportunitySite_ItemStash` omits the field, and so do most vanilla
@@ -157,11 +177,18 @@ So the real question is:
 **Nobody owns that question. It is a play-pattern question, so it is mine**, and
 it is not answerable offline — it needs the gravship in the air.
 
-⛔ **Do not blanket-patch every `QuestScriptDef` to `true` in the meantime.** Some
-vanilla quests are nonsense in orbit (a refugee walks to your colony), and a
-sweep that makes them offerable trades a silence for a stream of absurd offers —
-which is the more visible failure of the two. **The default flips for quests we
-author; adopted quests get judged one at a time.**
+⛔ **RULED: leave vanilla alone. Do not sweep.** Three reasons, now that the
+mechanism is measured rather than guessed:
+
+1. **It is legible, not silent.** The player reads *"cannot accept in space"* on
+   the button. Nothing disappears; nothing is mysterious.
+2. **It is good fiction as-is.** A clan in orbit cannot take a job on the
+   ground. *Come down to do business* is a rule the setting would have invented.
+3. **A blanket `true` costs more than it buys** — a refugee walking to your
+   colony in orbit is a more visible failure than a greyed-out button.
+
+**The default flips only for quests WE author, and only where being takeable
+from orbit is the point.** Adopted quests are judged one at a time.
 
 ## What "done" means for row 3
 

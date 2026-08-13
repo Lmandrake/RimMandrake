@@ -125,10 +125,15 @@ From §17. **CREATE's C2 is unblocked** — the design call is made; run the che
    Only `hailuan.spacetower` itself is absent. **We have already paid the
    dependency and are getting nothing for it.**
 
-**Condition 1 — it must reach a gravship colony.** If `everAcceptableInSpace:
-False` means the quest cannot be *offered* while the colony is in space or
-aboard the ship, **reject it as content**: the one player who wants this is the
-one it excludes. That is C2's first question and the ruling turns on it.
+**Condition 1 — it must reach a gravship colony. ✅ PASSED, 2026-08-13.**
+Established from `Assembly-CSharp.dll` metadata and the mod's own def, not from
+the field name. **`autoAccept=True` on `ST_Quest_SpaceTower` suppresses the
+space gate entirely** — it short-circuits `CanQuestOccurOnTile`'s space branch
+*and* stops `QuestGen.Generate` attaching `AcceptanceRequirementNotSpace`. Its
+`everAcceptableInSpace=False` is therefore inert. The quest also carries no
+`QuestNode_Test`, no wealth or colonist requirement, and **nothing requiring a
+ground colony**; `endOnColonyMove` is the archonexus mechanic, not gravship
+movement. **The tower reaches a clan living on a ship.**
 
 **Condition 2 — it must cost Imperial Heat, or it is someone else's content.**
 `desert_world_design.md:651` establishes the sky-ceiling: going up is how the
@@ -136,6 +141,16 @@ Empire finds you. A free orbital dungeon with no consequence **contradicts a
 pillar we already shipped the fiction for**. If we take the mod, we patch
 acceptance to raise Heat. Not a nice-to-have — it is what makes the trip a
 decision instead of an errand.
+
+**Two things CREATE should carry into C2, found in the same read:**
+
+- ⚠️ **The mod ships NO licence file** — not in Space Tower, not in CQF. Default
+  is all-rights-reserved, so **we may subscribe and patch it, and we may not
+  ship its maps.** That is fine for how we would use it; it is not fine if
+  anyone later wants to fork the tower.
+- 🐛 **`rootSelectionWeight` is declared TWICE** in `ST_Quest_SpaceTower.xml` —
+  `0.25` and `0.1`. Last wins, so the effective weight is **0.1**, which is
+  rare. Their bug, but it is also the dial we would tune, so know it is there.
 
 ⭐ **Independent of the ruling: `ST_Quest_SpaceTower.xml` is the worked example
 for `V1_SCOPE.md` row 3.** Row 3 is at 0, is offline-authorable, and is on the
