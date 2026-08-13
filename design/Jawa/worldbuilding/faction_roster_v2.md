@@ -1696,14 +1696,14 @@ those instead. That choice is open — see `faction_stage3_buildable_spec.md`.
 | Race/xenotype | Weight | Water profile | Typical use |
 |---|---:|---|---|
 | **Kaleesh** | 15% | Dry-capable | Elite hunters and melee fighters |
-| **Zabrak/Iridonian** | 12% | Dry-capable | Assault hunters |
+| **Zabrak/Iridonian** | 12% | Neutral | Assault hunters |
 | **Trandoshan** | 12% | Water-hungry | Trackers and heavy hunters |
 | **Rodian** | 10% | Water-hungry | Marksmen |
-| **Bothan** | 8% | Dry-capable | Scouts and intelligence specialists |
-| **Devaronian** | 8% | Dry-capable | Aggressive breachers |
+| **Bothan** | 8% | Neutral | Scouts and intelligence specialists |
+| **Devaronian** | 8% | Neutral | Aggressive breachers |
 | **Cathar** | 8% | Water-hungry | Fast melee and pursuit |
-| **Chiss** | 7% | Dry-capable | Snipers and tactical leaders |
-| **Umbaran** | 6% | Dry-capable | Infiltration and night operations |
+| **Chiss** | 7% | Heat-intolerant | Snipers and tactical leaders |
+| **Umbaran** | 6% | Heat-intolerant | Infiltration and night operations |
 | **Zeltron** | 5% | Neutral | Negotiators and recruiters |
 | **Iktotchi** | 3% | Dry-capable | Trackers and rare psychic hunters |
 | **Togruta** | 3% | Water-hungry | Scouts |
@@ -1989,7 +1989,7 @@ Junkers manufacture nothing. They carry looted water and they raid for more.
 |---|---|
 | Tech level | Industrial, degraded — nothing works properly and it shows |
 | Starting goodwill | **−90** |
-| Permanent enemy | **Yes** |
+| Permanent enemy | **No** — owner's ruling 2026-08-13; hostile-but-bribable |
 | Target settlements | 8 |
 | Settlement distribution | Wreck fields, tailings, ruins — the tiles nobody claimed |
 | Raid frequency | High |
@@ -2306,7 +2306,7 @@ new factions arrive with their diplomacy attached rather than as orphans.
 | **Duneborn ↔ player** | Friendly, **capped at +75, never allied** | Kinship, salvage rivalry, and Cartel retaliation — see faction 11 |
 | **Duneborn ↔ Tusken Clans** | Cold, non-hostile | Both desert-native and water-poor; they avoid each other's circuits |
 | **Junkers ↔ Hutt Cartel** | Transactional (talent pipeline) | Cartel buys the strongest Junkers out of the warrens; elite Gamorreans become bodyguards |
-| **Junkers ↔ everyone else** | Hostile | Permanently hostile faction; no trade |
+| **Junkers ↔ everyone else** | Hostile, not permanent | Hostile on sight and no standing trade — but goodwill CAN be bought back with scrap tribute. Pillar 5 holds: the Directorate is the only permanent enemy |
 | **Junkers ↔ Free Droid Enclaves** | **Hostile (severe)** | Junkers strip droids for parts while active — the Enclaves' founding atrocity |
 
 **Water doctrine additions for Global system 2:** Duneborn = **Manufacture**
@@ -2327,7 +2327,7 @@ production at all, range set by the last thing they stole.
 | Droid use | Central to progression |
 | **Water doctrine** | **Dry-adapted; droid labour has no thirst need** |
 | Relationship to factions | Determined through scenario and diplomacy |
-| Recruitment | Other races may join; no NPC faction generates Jawa members |
+| Recruitment | Other races may join; the only NPC source of Jawa is faction 11, the Indigenous Jawa Clans |
 
 **Why the expedition survives here.** The Jawas' decisive advantage on a thirst world is that their labour force does not drink. Droid acquisition is water security, not merely tech progression, and this should be stated explicitly in the scenario text.
 
@@ -2350,7 +2350,7 @@ production at all, range set by the last thing they stole.
 
 *This is a usage/casting map — which faction(s) each race is placed into — not the race inventory. The canonical inventory of what's installed is `cherry_picker_killlist.md` §2; this table's job is to prove no installed race is left orphaned.*
 
-Every installed race is used at least once across the ten NPC factions, except **Jawa**, which is reserved for the player. The only non-installed races are **Custom Hutt** and the **custom droid chassis**, both authored under the roster's licence.
+Every installed race is used at least once across the twelve NPC factions. **Jawa** is the player race and is also carried by exactly one NPC faction — **11. Indigenous Jawa Clans** (78% + 12% Jawa); no other NPC faction generates Jawa. The only non-installed races are **Custom Hutt** and the **custom droid chassis**, both authored under the roster's licence.
 
 | Race | Appears in |
 |---|---|

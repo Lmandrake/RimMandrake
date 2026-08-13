@@ -1,5 +1,26 @@
 # The gravship pursuer — can it be changed from mechanoids?
 
+## ⭐ OWNER'S RULING, 2026-08-13 — WHO the pursuer is, settled
+
+> **The Galactic Empire pursues the gravship.** Stormtroopers, combat droids and
+> lightsaber-bearing Sith — not mechanoids, and **not an independent Imperial
+> Droid Army, which no longer exists in the design at all.**
+
+**Two Empire factions only:** the planetside aristocratic Empire (vanilla
+Royalty core, reskinned as the Imperial Desert Directorate) and the **Galactic
+Empire**, which is the one that follows the ship. The droid-averse contradiction
+— a Jawa campaign whose antagonist was a machine army the fiction says the Jawas
+scavenge — **is resolved by deletion, not by argument.**
+
+**What this does NOT change:** everything below. The mechanism question ("can the
+hardcoded mechanoid pursuit be pointed at another faction?") is unaffected by
+*which* faction we point it at; route **A** stays the recommendation.
+
+⚠️ **What it DOES change for whoever builds it:** the pursuit's pawns must come
+from the Galactic Empire's `pawnGroupMakers`, so the Sith/stormtrooper roster is
+now on the pursuit's critical path rather than beside it. Spec:
+`D:\Luke\dev\Rimworld\design\Jawa\force_users_build_spec.md`.
+
 **Answered 2026-08-13 by WORLD, from the live def dump (573 mods) and the game
 assembly. Measured, not inferred.** The question blocked the Empire-as-pursuer
 design, so the mechanism is written down here rather than left in a chat log.

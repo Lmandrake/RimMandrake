@@ -20,6 +20,18 @@ it is the owner's (see `OWNER_DECISIONS.md`). Everything else here is `[v2]`.
 
 ---
 
+## ✅ Closed 2026-08-13, VISION's first session
+
+**V4, V5, V13 (CREATE's ship_designs numbers), and V-new 1 and 2 are done.** All
+were stale data or a landed owner ruling — nothing here needed a decision I had
+to make. Detail: `D:\Luke\dev\Rimworld\infrastructure\state\AGENT_VISION_state.md` §1 and §3.
+
+⚠️ **Two items below both carry the number V13** — PROJECT's rebel-gear item and
+CREATE's `ship_designs.md` item. CREATE's is the one closed. Renumber on the next
+pass rather than now, so nobody's citation breaks mid-session.
+
+---
+
 ## Open — the roster's verified defects
 
 These six were found by the Stage 2 gap audit on 2026-08-13 and **each was re-read

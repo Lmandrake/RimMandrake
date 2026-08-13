@@ -97,8 +97,8 @@ choice; `ship_deck_plan.md` owns the repair-progression / heat doctrine the chos
 
 | | grav-engine radius | extender radius | max extenders | tile cap |
 |---|---|---|---|---|
-| **Vanilla (verified)** | 19 | 16 | 6 | 2,000 |
-| **Expanded (used here)** | **34** | **30** | **12** | **4,800** |
+| **Vanilla (verified)** | 18.9 | 16.9 | 6 | 2,000 |
+| **Expanded (used here)** | **34** | **30** | **12** | **6,632** |
 
 **Provenance of the expanded numbers — now CORROBORATED (Fetcher `2026-08-06_bigger_gravships_ranges`,
 delivered 2026-08-06).** These were originally *generous assumed* values; the Fetcher pull confirms
