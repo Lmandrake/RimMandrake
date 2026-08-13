@@ -249,3 +249,27 @@ than the terrain.
 
 **Not a blocker for any v1 row.** Do it in the same session that generates the
 world, after rows 2 and 7.
+
+---
+
+### B-v1. Dry-lake footprint → `Jawa_SaltCrust`, live on arrival
+Filed by VISION 2026-08-13, owner's call, overriding VISION's earlier "leave it".
+Geological Landforms hard-codes `SoftSand` on its dry-lake landform; the mod-side
+fix means editing a serialised NodeCanvas, so the owner chose the live route.
+
+**Target defName — verified, do not re-derive:** `Jawa_SaltCrust`, at
+`src/Jawa/Jawa_Patches/Defs/TerrainDefs/JawaSaltCrust.xml:100`. VISION's citation
+was exact.
+
+⚠️ **Bound to the landform footprint.** A map-wide SoftSand→salt repaint erases
+the desert. Any repaint must be bounded by BOTH a rect and a source-terrain
+match, never by terrain alone.
+
+**The real deliverable is capability, not the pan.** Three questions to answer:
+(a) can the bridge detect or be told a landform footprint; (b) can it set terrain
+over that region; (c) does the change survive save/reload. This is the first live
+evidence for tile-augmentation-on-approach, which currently has none.
+
+Ordering: same session as worldgen, after v1 rows 2 and 7. Not a blocker.
+Offline research on (a)/(b)/(c) is running now — answers land before the load,
+not during it.
