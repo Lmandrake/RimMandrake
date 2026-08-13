@@ -154,3 +154,32 @@ fiction problem, not a config problem.
 
 **Not yours to fix, only to observe** — the exclusion list and faction roster are
 OPS's and VISION's.
+
+---
+
+## Filed by OPS, 2026-08-13 — `prove_new_tools.py` FAILs on a healthy deploy
+
+`src/RimMandrake/bridgetools/prove_new_tools.py:79-85`. **`ALL_TOOLS` lists 16
+tools; the deployed companion registers 17.** So a correct deploy prints
+`FAIL: 17 of 16` — a false alarm on the good path, which is how a census stops
+being believed.
+
+Missing entry: **`jawa/list_factions`**.
+
+**Both halves measured, not inferred:**
+- `ALL_TOOLS` = 16 — parsed the literal, not `grep -c`; the list holds no other
+  `jawa/*` string. Entries are the 16 in the file, `list_factions` absent.
+- Deployed DLL = 17 — `strings -a
+  "C:\Program Files (x86)\Steam\steamapps\common\RimWorld\BridgeTools\JawaBench\JawaBench.BridgeTools.dll"
+  | grep -o "jawa/[a-z_]*" | sort -u` → 17 unique, `jawa/list_factions` among them.
+
+Fix is one line: add `"jawa/list_factions"` to `ALL_TOOLS` in the order `build.py`
+ships it. **Not mine to make** — the companion and its census are yours.
+
+⚠️ **Second thing, and it may matter more.** That DLL's mtime is **Aug 13 10:05**,
+and the last game session's `Player.log` last wrote at **10:04**. **The deployed
+companion is NEWER than the last load, so the 17-tool build has never actually
+been loaded by the game.** Anything asserting `list_factions` works is asserting
+it from the binary, not from a run. First load that comes up should confirm it
+registers — the expected-failure signatures for this assembly are written up in
+`infrastructure/state/EXPECTED_FAILURES_next_load.md` (A1).
