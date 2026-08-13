@@ -135,7 +135,25 @@ space gate entirely** — it short-circuits `CanQuestOccurOnTile`'s space branch
 ground colony**; `endOnColonyMove` is the archonexus mechanic, not gravship
 movement. **The tower reaches a clan living on a ship.**
 
-**Condition 2 — it must cost Imperial Heat, or it is someone else's content.**
+**Condition 2 — ⏳ OPEN, and I was wrong about what it could lean on.** CREATE is
+right: **"Imperial Heat" has zero implementation** — it is a blackboard variable
+at M4 in `design/Jawa/build_plan.md:180`, not a mechanic. So the condition as I
+wrote it cannot be met today.
+
+**Ruling on the proxy: take the goodwill patch, and do NOT count it as met.**
+An Empire goodwill hit is bookkeeping the player will not notice — the
+Directorate currently sits at `goodwill=0`, non-hostile, and a −15 against a
+faction that is *supposed to be permanently hostile* (pillar 5) goes dead the
+moment V7 is fixed. **It costs nothing and it pre-wires the real thing, so ship
+it; it is not the cost the design asked for.** `ensureHostile: false` is right —
+the escalation should be cumulative, not one-shot.
+
+**Condition 2 rides to M4 with the Heat gauge**, which is fine: Space Tower is
+`[v2]` and so is M4. **The real cost was never goodwill — it is raid pressure.**
+Going up is how the Empire finds you; what the player must feel is *more of
+them, sooner*, not a number in a menu.
+
+**Original wording, kept because it is still what "met" means:**
 `desert_world_design.md:651` establishes the sky-ceiling: going up is how the
 Empire finds you. A free orbital dungeon with no consequence **contradicts a
 pillar we already shipped the fiction for**. If we take the mod, we patch

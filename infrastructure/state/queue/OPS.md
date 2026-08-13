@@ -406,3 +406,41 @@ XenotypeDef removal (none — they only add/remove `genes/li` inside `BTD_Jawa`)
 
 **Not verified live:** nobody has opened the picker and counted rows. Expect 3
 filtered on "jawa". BRIDGE can drive that the next time the game is up.
+
+### O-v2. Cherry Picker test — remove Mechanoids and their faction, does it hold? `[owner's ask, 2026-08-13]`
+**Owner asked for this explicitly.** Test cherry-picking out the mechanoid defs
+**and the `Mechanoid` faction**, then answer three things:
+
+1. **Does the game still load?** That is the whole first question.
+2. **Does `Samael.NPCMechsAndAnimals` survive and keep working — i.e. does it
+   still add the ANIMALS half?** It is `Patches/NPC_Mechs.xml`, 13 ops injecting
+   `Mech_Militor/Pikeman/Scyther/Mechanitor` into `Empire`, `OutlanderFactionBase`,
+   `OutlanderRoughPig`, `Pirate`, `PirateWaster`, `PirateYttakin`, `TradersGuild`.
+   **The mech half is what we want gone; the animal half we want kept.**
+3. **Is that mod configurable** — a mod settings toggle for mechs vs animals?
+   If it is, that is cheaper than cherry-picking and we should use it instead.
+
+⚠️ **Do NOT remove Alpha Mechs (`sarg.alphamechs`) in this test.** Owner: *"alpha
+mechs has some neat content I might want to leave in — little silly cleaners, and
+some animal-looking THINGS that are pretty scary if we rename them."* **Renaming
+them is VISION's call and I want them available to look at.** Note that Alpha
+Mechs hangs off `FactionDef[defName="Mechanoid"]/pawnGroupMakers`, so removing
+that faction takes Alpha Mechs' raids with it — **which is the tension to report
+back on, not to resolve yourself.**
+
+⚠️ **`matathias.ruthlessmechanoids` is NOT a mech mod** — it is Ruthless Faction
+Pursuit, the gravship pursuer redirect. The owner re-enabled it. Leave it on.
+
+### O-v3. Enable VWE-Laser and dump its weapon ThingDefs for review `[owner's ask]`
+`vanillaexpanded.vwel`, ws `1989352844`, installed and inactive. Owner wants the
+mod on and **a reprocessed dump of its weapon `ThingDef`s so the numbers can be
+examined and normalised** against our stack.
+
+**This is not a generic weapon pack — the owner ruled it narrative.** The lasers
+are the gravship's own legacy armoury, rebuildable from onboard files:
+`D:\Luke\dev\Rimworld\design\Jawa\worldbuilding\ship_legacy_armoury.md`.
+
+Useful before you start: the mod already ships **two tiers** — `salvaged` laser
+pistol/rifle/shotgun/sniper with `unstable` projectile variants, and the full
+`ultratech laser weapons` set including a **laser sword** and a **tesla gun**.
+**Dump both tiers separately**; the split is load-bearing for the design.
