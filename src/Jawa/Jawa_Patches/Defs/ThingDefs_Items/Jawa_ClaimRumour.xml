@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!-- A readable rumour that hands the player "The Claim" on the spot.
+
+     WHY THIS EXISTS, and it is a load-budget decision before it is a fiction one.
+     Jawa_TheClaim is root-selected (rootSelectionWeight 1.0) and therefore fires
+     on the storyteller's own cadence. V1_SCOPE.md's gate is "seen working
+     in-game ONCE" — and a cold load is ~23-30 minutes, so "wait for the
+     storyteller" is the most expensive possible way to clear it. This item makes
+     the quest fire ON DEMAND from a dev-spawned object, in seconds, without dev
+     mode's quest generator and without touching the quest def.
+
+     THE PATTERN IS BORROWED, NOT INVENTED. Space Tower's ST_TowerMap does
+     exactly this (read during C2 due diligence): a tradeable item whose three
+     comps give a quest and delete itself. Every class here is in the base
+     assembly, verified against a SHIPPING def rather than a name that sounded
+     right:
+
+       ParentName ResourceBase              Core/Defs/ThingDefs_Items/Items_Resource_Base.xml L4
+       CompProperties_Usable                Biotech/Defs/ThingDefs_Items/Items_Various.xml L144
+       CompProperties_UseEffectDestroySelf  same file, L152
+       CompProperties_UseEffectGiveQuest    same file, L153
+       JobDef UseItem                       Core/Defs/JobDefs/Jobs_Misc.xml L461
+       ThingCategoryDef ItemsMisc           Core/Defs/ThingCategoryDefs/ThingCategories.xml L259
+
+     ⚠️ Those comps are USED by Biotech defs but the classes live in
+     Assembly-CSharp, so this needs no DLC. Nothing here references a Biotech def.
+
+     ⚠️ SCOPE — read before deepening this. VISION owns whether the clan BUYS
+     rumours and from whom; C2 found that this same object is the natural hook
+     for Imperial Heat later ("you buy a map from the Hutts; reading it puts you
+     on the sky's radar"). None of that is decided, so this ships as the thin
+     test path: tradeability None, no faction, no cost, no Heat. If VISION rules
+     the economy in, this def is where it lands and the quest does not change.
+
+     Dev route: Debug actions -> Spawn thing -> Jawa_ClaimRumour, then select a
+     colonist and right-click it to read. -->
+<Defs>
+
+  <ThingDef ParentName="ResourceBase">
+    <defName>Jawa_ClaimRumour</defName>
+    <label>claim rumour</label>
+    <description>A scraped hide chart, rolled around a stub of iron cut for driving into wreckage. Somebody walked out far enough to see where the thing came down, and then walked back to sell what they saw.\n\nReading it tells you where to go. It does not tell you who else was told.</description>
+    <thingClass>ThingWithComps</thingClass>
+    <graphicData>
+      <texPath>Things/Item/Special/JawaClaimRumour</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+    </graphicData>
+    <category>Item</category>
+    <thingCategories>
+      <li>ItemsMisc</li>
+    </thingCategories>
+    <tradeability>None</tradeability>
+    <selectable>true</selectable>
+    <stackLimit>1</stackLimit>
+    <statBases>
+      <Mass>0.2</Mass>
+      <Flammability>1.0</Flammability>
+      <MaxHitPoints>40</MaxHitPoints>
+      <MarketValue>120</MarketValue>
+    </statBases>
+    <comps>
+      <li Class="CompProperties_Usable">
+        <useJob>UseItem</useJob>
+        <useLabel>Read the rumour</useLabel>
+      </li>
+      <li Class="CompProperties_UseEffectDestroySelf" />
+      <li Class="CompProperties_UseEffectGiveQuest">
+        <quest>Jawa_TheClaim</quest>
+      </li>
+    </comps>
+  </ThingDef>
+
+</Defs>
