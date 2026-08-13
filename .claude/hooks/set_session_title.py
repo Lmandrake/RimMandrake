@@ -129,6 +129,22 @@ LOCK_TIMEOUT = 3                   # seconds; a warning is not worth a stall
 MAX_LOCK_BYTES = 2_000             # a handful of locks' evidence, no more
 
 
+def agents_path(root, seat):
+    """agents/<SEAT>.md, wherever it currently lives. Never raises.
+
+    The tree moved 2026-08-13 (agents/ -> infrastructure/agents/) and this hook
+    validates AGENT_SEAT by the file's existence, so the move silently disabled
+    zero-typing startup for every seat: the variable was discarded, no error was
+    raised, and two seats booted not knowing who they were. Both locations are
+    tried so the next move cannot repeat it.
+    """
+    for parts in (("infrastructure", "agents"), ("agents",)):
+        cand = os.path.join(root, *parts, seat + ".md")
+        if os.path.isfile(cand):
+            return cand
+    return None
+
+
 def role_dir():
     root = os.environ.get("CLAUDE_PROJECT_DIR") or os.getcwd()
     return os.path.join(root, ".claude", "session_roles")
@@ -157,7 +173,7 @@ def seat_from_env():
         return None
     root = os.environ.get("CLAUDE_PROJECT_DIR") or os.getcwd()
     try:
-        if not os.path.isfile(os.path.join(root, "agents", seat + ".md")):
+        if not agents_path(root, seat):
             return None
     except OSError:
         return None
@@ -262,7 +278,9 @@ def read_identity(title, sid):
         return None
 
     root = os.environ.get("CLAUDE_PROJECT_DIR") or os.getcwd()
-    path = os.path.join(root, "agents", seat + ".md")
+    path = agents_path(root, seat)
+    if not path:
+        return None
     try:
         if os.path.getsize(path) > MAX_IDENTITY_BYTES:
             return None
