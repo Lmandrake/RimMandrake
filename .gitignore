@@ -134,3 +134,7 @@ src/RimMandrake/mapsynth/runs/
 *.rws
 research/**/*.pdf
 vendor/salvage/**/*.dll
+
+# Claude Code per-session scratch: role files are ephemeral, not project state.
+.claude/session_roles/
+.claude/settings.local.json
