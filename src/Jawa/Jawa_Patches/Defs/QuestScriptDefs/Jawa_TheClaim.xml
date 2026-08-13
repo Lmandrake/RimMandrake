@@ -1,0 +1,223 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Defs>
+
+  <!--
+    "The Claim"  -  V1_SCOPE.md row 3.
+    Spec: design/Jawa/worldbuilding/v1_quest_the_claim.md (VISION, 2026-08-13).
+    Player-facing strings are VISION's, verbatim; nodes and amounts are CREATE's.
+
+    No node class, field or defName below is guessed. Provenance, all under
+    C:\Program Files (x86)\Steam\steamapps\common\RimWorld\Data :
+
+      QuestScriptDef fields rootSelectionWeight, rootMinPoints, expireDaysRange,
+      everAcceptableInSpace, defaultChallengeRating
+        Core/Defs/QuestScriptDefs/Script_BanditCamp.xml lines 6-11
+      QuestNode_Sequence, GetMap(canBeSpace), GetSiteTile(preferCloserTiles),
+      ViolentQuestsAllowed, Set, GetSitePartDefsByTagsAndFaction,
+      GetDefaultSitePartsParams, SubScript, SpawnWorldObjects,
+      WorldObjectTimeout(isQuestTimeout, inSignalDisable), Letter, End
+        Core/Defs/QuestScriptDefs/Script_ItemStash.xml
+      QuestNode_SetItemStashContents, QuestNode_SignalActivable
+        Royalty/Defs/QuestScriptDefs/Intro/Script_Intro_Deserter.xml lines 91-96, 160-166
+      QuestNode_Letter at sequence top level with no inSignal  =  fires on accept
+        Royalty/Defs/QuestScriptDefs/Scripts_Permits.xml line 79
+      Util_AdjustPointsForDistantFight, Util_GenerateSite  (both Core)
+        Core/Defs/QuestScriptDefs/Scripts_Utility_ThreatsCore.xml lines 152, 346
+      ComponentSpacer, ComponentIndustrial
+        Core/Defs/ThingDefs_Items/Items_Resource_Manufactured.xml lines 153, 123
+      ChunkSlagSteel
+        Core/Defs/ThingDefs_Misc/Various_Stone.xml line 105
+
+    Core only. Royalty/Ideology/Biotech/Odyssey/Anomaly are referenced for
+    PROVENANCE, never as a dependency: every def and class named in the body
+    ships in Core, so a DLC or mod change cannot orphan this quest.
+
+    Space layer, deliberate and copied from OpportunitySite_BanditCamp:
+      everAcceptableInSpace  gates ACCEPTANCE by the player, not site placement.
+                             Proof, not the field's name:
+                             (a) Core/Languages/English/Keyed/MainTabs.xml line
+                                 198 is QuestNotSpace, "cannot accept in space",
+                                 sitting inside the block of quest ACCEPT
+                                 requirement strings (QuestRequiredPlayerWealth,
+                                 QuestAlliedTo, QuestRequiredLayer);
+                             (b) the six Odyssey quests whose sites really are in
+                                 orbit (Script_SpaceSites.xml) set this field
+                                 ZERO times, while Script_TradeRequest.xml sets
+                                 it true on line 10 and forces its target
+                                 ground-only on line 49. The "site placement"
+                                 reading is exactly inverted by both.
+                             Core's ItemStash omits it, so vanilla's stash quest
+                             is silently unacceptable aboard a ship. This is a
+                             gravship campaign, so it is set true here.
+      GetMap canBeSpace      gates WHICH player map becomes $map.
+      GetSiteTile            gates SITE placement, and is ground layer by
+                             default; Odyssey's orbital sites use
+                             QuestNode_Root_Site canBeSpace instead. So the site
+                             stays on the ground, as the spec requires, while the
+                             offer still reaches a colony that is off the surface.
+
+    The rival clan is a STORY FACT. No FactionDef is authored or referenced by it;
+    it exists only to explain the timer.
+  -->
+
+  <QuestScriptDef>
+    <defName>Jawa_TheClaim</defName>
+    <rootSelectionWeight>1.0</rootSelectionWeight>
+    <rootMinPoints>0</rootMinPoints>
+    <defaultChallengeRating>1</defaultChallengeRating>
+    <expireDaysRange>4~8</expireDaysRange>
+    <everAcceptableInSpace>true</everAcceptableInSpace>
+
+    <questNameRules>
+      <rulesStrings>
+        <li>questName->The Claim</li>
+      </rulesStrings>
+    </questNameRules>
+
+    <questDescriptionRules>
+      <rulesStrings>
+        <li>questDescription->Something came down past the ridge two nights ago — big enough to see, far enough that nobody has walked out to it yet.\n\nNobody who will admit to it.\n\nClan law is old and short: the wreck belongs to whoever plants a marker on it. Not to whoever saw it, and not to whoever needs it. Whoever gets there.</li>
+      </rulesStrings>
+    </questDescriptionRules>
+
+    <root Class="QuestNode_Sequence">
+      <nodes>
+
+        <li Class="QuestNode_SubScript">
+          <def>Util_AdjustPointsForDistantFight</def>
+        </li>
+
+        <li Class="QuestNode_GetMap">
+          <canBeSpace>true</canBeSpace>
+        </li>
+
+        <!-- Accepted beat. No inSignal, so this fires when the quest starts. -->
+        <li Class="QuestNode_Letter">
+          <label>The Claim</label>
+          <text>The marker is cut and stowed. Now it is a walking problem.</text>
+        </li>
+
+        <!--
+          The haul, fixed rather than rolled, so the reward rule is guaranteed
+          instead of hoped for. Low end on purpose:
+            1x ComponentSpacer     the one category the clan cannot make - it
+                                   needs Advanced fabrication and a fabrication
+                                   bench, neither of which v1 has.
+            8x ComponentIndustrial the useful part of the haul.
+            4x ChunkSlagSteel      the texture: stripped hull, smelts to steel.
+        -->
+        <li Class="QuestNode_SetItemStashContents">
+          <items>
+            <li>ComponentSpacer</li>
+            <li>ComponentIndustrial</li>
+            <li>ComponentIndustrial</li>
+            <li>ComponentIndustrial</li>
+            <li>ComponentIndustrial</li>
+            <li>ComponentIndustrial</li>
+            <li>ComponentIndustrial</li>
+            <li>ComponentIndustrial</li>
+            <li>ComponentIndustrial</li>
+            <li>ChunkSlagSteel</li>
+            <li>ChunkSlagSteel</li>
+            <li>ChunkSlagSteel</li>
+            <li>ChunkSlagSteel</li>
+          </items>
+        </li>
+
+        <!-- Ground tile, close enough to caravan to. -->
+        <li Class="QuestNode_GetSiteTile">
+          <storeAs>siteTile</storeAs>
+          <preferCloserTiles>true</preferCloserTiles>
+        </li>
+
+        <!-- Opposition: whatever the engine gives cheapest, and thin. -->
+        <li Class="QuestNode_ViolentQuestsAllowed">
+          <node Class="QuestNode_Set">
+            <name>siteThreatChance</name>
+            <value>0.4</value>
+          </node>
+          <elseNode Class="QuestNode_Set">
+            <name>siteThreatChance</name>
+            <value>0</value>
+          </elseNode>
+        </li>
+
+        <li Class="QuestNode_GetSitePartDefsByTagsAndFaction">
+          <storeAs>sitePartDefs</storeAs>
+          <storeFactionAs>siteFaction</storeFactionAs>
+          <sitePartsTags>
+            <li>
+              <tag>ItemStash</tag>
+            </li>
+            <li>
+              <tag>ItemStashQuestThreat</tag>
+              <chance>$siteThreatChance</chance>
+            </li>
+          </sitePartsTags>
+        </li>
+
+        <li Class="QuestNode_GetDefaultSitePartsParams">
+          <tile>$siteTile</tile>
+          <faction>$siteFaction</faction>
+          <sitePartDefs>$sitePartDefs</sitePartDefs>
+          <storeSitePartsParamsAs>sitePartsParams</storeSitePartsParamsAs>
+        </li>
+
+        <li Class="QuestNode_SubScript">
+          <def>Util_GenerateSite</def>
+        </li>
+
+        <li Class="QuestNode_SpawnWorldObjects">
+          <worldObjects>$site</worldObjects>
+        </li>
+
+        <!--
+          Expiry: a rival clan planted their marker first. No penalty and no
+          goodwill change - the only loss is the opportunity. Disabled the moment
+          the player generates the site map, so it can never race the success
+          path below.
+        -->
+        <li Class="QuestNode_WorldObjectTimeout">
+          <worldObject>$site</worldObject>
+          <isQuestTimeout>true</isQuestTimeout>
+          <delayTicks>$(randInt(10,18)*60000)</delayTicks>
+          <inSignalDisable>site.MapGenerated</inSignalDisable>
+          <node Class="QuestNode_Sequence">
+            <nodes>
+              <li Class="QuestNode_Letter">
+                <label>Quest expired: [resolvedQuestName]</label>
+                <text>Someone else's marker is standing in it. By the time your people crest the ridge there is nothing left worth the walk back — stripped to the frame, and the frame is spoken for.\n\nThey were closer. That is the whole of it.</text>
+              </li>
+              <li Class="QuestNode_End">
+                <outcome>Fail</outcome>
+              </li>
+            </nodes>
+          </node>
+        </li>
+
+        <!--
+          Success: armed only after the player has actually been to the wreck,
+          then fires when they leave and the site map is removed.
+        -->
+        <li Class="QuestNode_SignalActivable">
+          <inSignal>site.MapRemoved</inSignal>
+          <inSignalEnable>site.MapGenerated</inSignalEnable>
+          <node Class="QuestNode_Sequence">
+            <nodes>
+              <li Class="QuestNode_Letter">
+                <label>Quest completed</label>
+                <letterDef>PositiveEvent</letterDef>
+                <text>The marker stands. What was in the hull is on the sled and moving.</text>
+              </li>
+              <li Class="QuestNode_End">
+                <outcome>Success</outcome>
+              </li>
+            </nodes>
+          </node>
+        </li>
+
+      </nodes>
+    </root>
+  </QuestScriptDef>
+
+</Defs>
