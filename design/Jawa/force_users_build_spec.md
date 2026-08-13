@@ -664,7 +664,11 @@ magnitude.
 |---|---|---|
 | curve at 700 pts | **100** | **1800** |
 | curve at 1300 / 2000 pts | 150 | 5000 |
-| ⇒ a `combatPower 220` kind is eligible from | **~2000+ points** — very late | **~200 points** — almost always |
+| ⇒ a `combatPower 220` kind is eligible from | **~2000 points** — very late | **~5 points** — i.e. always |
+
+(Empire: 220 falls between the `(1300,150)` and `(100000,10000)` points, ≈ 2001.
+Homestead: 220 falls between `(0,200)` and `(70,500)`, ≈ 4.7 — the curve never
+gates it at all.)
 
 So the same `combatPower` produces "endgame boss" on the Empire and "shows up
 constantly" on the Homestead. **Do not use the same weight on both.**
