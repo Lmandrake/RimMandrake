@@ -378,6 +378,86 @@ psylink** — and `PawnKindAbilityExtension` is specifically a pawnkind→abilit
 hook. Not used by this spec's option A, but it is where option C should start
 before anyone reaches for VPE or Harmony.
 
+### 1e-ter. The 39 orphaned KotOR lightsabers — where they really are
+
+> ⚠️ **Correction.** An earlier revision of this document said the KotOR
+> lightsaber weapon ThingDefs sit in
+> `…\2938932438\1.6\AdditionalMods\_TheForceLightsabers\Defs\`. **That was wrong.**
+> That folder holds 47 defs and **every one is a crystal or hilt *part*** —
+> `guy762_SWForceLightsabersPartCategory_colorcrystal`,
+> `guy762_SWForceLightsabers_CrystalPart_red` … `_white`, plus focusing and power
+> crystals — with no weapon among them. Verified by
+> `grep -h "<defName>" …\_TheForceLightsabers\Defs\*.xml`.
+
+**The weapons are in the `1.5` tree**, at
+`…\294100\2938932438\1.5\Defs\ThingDefs_Weapons\`, and
+`…\2938932438\LoadFolders.xml` `<v1.6>` loads only `/`, `1.6` and
+`1.6/AdditionalMods/*`. It never loads `1.5`. So there are **two independent
+reasons** no lightsaber reaches the game:
+
+1. the 1.5 weapon defs are in a folder 1.6 does not read, and
+2. the 1.6 branch's saber content is gated on the missing
+   `lee.theforce.lightsaber`.
+
+Fixing only one of them fixes nothing.
+
+**The 39 defNames** (abstract bases in `kotorlightsabers_base.xml`:
+`guy762_kotorlightsaber`, `guy762_kotorshortsaber`, `guy762_kotorcurvesaber`,
+`guy762_kotorcrosssaber`, `guy762_kotordualsaber`) and the concrete variants —
+`SWSaber_KotOR_lightsaber_red|orange|yellow|green|blue|purple|white`,
+`SWSaber_KotOR_darksaber`, the `shortsaber_*`, `curvesaber_*` (incl. `pink`),
+`crosssaber_*` and `dualsaber_*` colour families, plus named blades
+`SWSaber_KotOR_revansaber`, `_malaksaber`, `_nihilussaber`, `_sionsaber`,
+`_exilesaber`, `_exarsaber`, `_naddsaber`.
+
+Shared properties of `guy762_kotorlightsaber` (`ParentName="KotORMeleeNoQualityModMake_OneHand"`):
+`MarketValue 9000`, `Mass 5`, `WorkToMake 6000`; `equippedStatOffsets`
+`PsychicSensitivity 0.1` and `MeditationFocusGain 0.25`; tools hilt Blunt 10,
+tip `guy762_ToolCapacity_SaberStab` 24 / cd 2, edge
+`guy762_ToolCapacity_SaberSlash` 24 / cd 2; comps
+`CompExtraSounds.CompProperties_ExtraSounds`, **`CompDeflector.CompProperties_Deflector`**
+and `ModularWeapons.CompProperties_ModularParts`; `researchPrerequisite`
+`guy762_ResearchKotOR_lightsabers` (still defined, in
+`…\294100\3254370945\1.6\Defs\researchDefs\Czerkatech_Techprint_Research.xml`);
+`costList` = the three `guy762_saberpart_*` items + Steel 15 + one colour crystal.
+
+🔴 **If these are ever revived, read `required_mods.md` first.** That file already
+audited this exact weapon and rules it acquisition-gated: the balance lever is
+not the ~26 edge damage but **`baseDeflectChance` + `deflectRatePerSkillPoint`**
+on `CompDeflector`, which makes a high-Melee wielder close to bulletproof against
+ranged fire. Loot-only, craft-recipe disabled. Handing one to a raid leader is
+also handing it to the player the moment they win the fight.
+
+**Their `weaponTags`** — the pawnkind-selection surface, and the reason the
+reference mod's pawnkinds resolve to nothing here. Base tag `KotORLightsaber`;
+each concrete variant overrides with `Inherit="False"`, giving families
+`KotORLightsaber_anysingle`, `KotORMelee_legendary`; Jedi `OR_jedisaber`,
+`OR_jedisaber_padawan`, `OR_jediguardian`, `OR_jedisentinel`, `OR_jediconsular`;
+Sith `SE_sithsaber`, `SE_sithsaber_apprentice`, `SE_sithsaber_assassin`,
+`SE_sithsaber_sorcerer`, `SE_sithinquisitor`, `SE_sithwarrior`,
+`SE_sithmarauder`; plus `SaV_darkjedisaber`, `MNC_mandalore` and the named-hero
+tags. **Under 1.6 no loaded ThingDef carries any of these**, so a pawnkind
+pointing at `SE_sithsaber` spawns its Sith **barehanded**. That is precisely the
+trap §3.2 avoids by using the vanilla `Bladelink` tag.
+
+**Other energy melee in the active stack**, for completeness: VFE Pirates ships a
+`warcasket plasma sword` (`…\294100\2723801948\1.6\Defs\ThingDefs_Misc\Weapons\MeleeWarcasket.xml`,
+tags `WarcasketMelee` / `WarcasketVeteran`) — **warcasket-only, a normal pawn
+cannot equip it**. The Yautja mod's `ABYautja_Gun_PlasmaSpinningBlade` is a
+*ranged* weapon despite the name.
+
+⭐ **The cheapest possible lightsaber, if the owner will take one subscription:**
+`VWEL_LaserSword` ("laser sword") in *Vanilla Weapons Expanded - Laser*
+(`VanillaExpanded.VWEL`, folder 1989352844) — **NOT ACTIVE**; the active list has
+`vanillaexpanded.vwe` and `.vwems` only. `techLevel Ultra`, weaponTags
+`UltratechMelee` + `LaserGun`, point and blade Cut **31 @ AP 1.0**, cd 2.6,
+`MarketValue 2000`, craftable from Steel 30 / Plasteel 100 / ComponentSpacer 10.
+It already carries `UltratechMelee`, **so §3.2's pawnkind needs no change at all
+if it is enabled** — the Sith would simply start rolling laser swords alongside
+plasmaswords. No `CompDeflector`, so it does not reopen the near-invulnerability
+problem the KotOR sabers have. This is the single highest-value, lowest-risk
+option in the document, and it is a roster decision for the owner, not mine.
+
 ### 1g. What does NOT exist in the active stack — stated plainly
 
 - **No lightsaber weapon ThingDef.** Anywhere. (§ finding 2.)
@@ -415,13 +495,8 @@ before anyone reaches for VPE or Harmony.
   User / Force Adept / Force Knight / Force Master") in
   `…\2919227155\Languages\English\Keyed\OuterRimCore.xml:20-24`. Outer Rim was
   built expecting a Force module we do not have.
-- **The KotOR lightsabers exist as files and cannot load.**
-  `guy762_lightsaber`, `guy762_kotorlightsaber` and ~45
-  `guy762_SWForceLightsabers_CrystalPart_*` sit in
-  `…\294100\2938932438\1.6\AdditionalMods\_TheForceLightsabers\Defs\`, which is
-  gated `IfModActive="lee.theforce.lightsaber"`. Confirms finding 2 from the
-  other direction: **the defNames are on disk and unreachable.** Do not reference
-  them in a patch — restoring the mod is the fix.
+- **The KotOR lightsabers exist as files and cannot load — for two independent
+  reasons.** See §1e-ter, which corrects an earlier version of this line.
 - **`SWPotF_hediff_YsalamirForceDampen`**
   (`…\294100\3254370945\1.6\AdditionalMods\VEF\Defs\Ysalamiri.xml:39`,
   `PsychicSensitivity ×0`) loads, but the
@@ -970,6 +1045,13 @@ been checked here.
 Per `CLAUDE.md` "Never ignore a problem, especially one that is not yours". None
 of these needs the game running, so they belong in `TODO.md`.
 
+0. **`[?]` A one-subscription fix for the missing lightsaber exists:
+   `VanillaExpanded.VWEL`** (Vanilla Weapons Expanded - Laser, WS 1989352844,
+   on disk at `…\294100\1989352844`, **not active**). Its `VWEL_LaserSword`
+   already carries the `UltratechMelee` tag this spec uses, has no
+   `CompDeflector`, and is a first-party VE mod rather than a discontinued one.
+   Worth putting to the owner as an alternative to chasing
+   `lee.theforce.lightsaber`. Roster decision, not mine.
 1. **`[?]` `lee.theforce.lightsaber` is active in `ModsConfig.xml` but not on
    disk.** Workshop 3466124712. Result: no lightsaber weapon exists anywhere in
    the active stack, and `guy762.KotORWeapons` (active) has an unmet `v1.6` hard
@@ -1036,11 +1118,23 @@ Stated explicitly rather than filled in.
 - **Whether `VEF.Abilities.PawnKindAbilityExtension` grants AI-castable abilities
   to a pawnkind.** VEF is active and the extension exists; its behaviour was not
   read. Same reasoning — it may collapse option C.
-- **The full lightsaber sweep was cut short.** A label sweep across all 620 active
-  mod folders found only crystals, hilt parts, research and category labels — no
-  weapon. That is consistent with finding 2 but is a `<label>` sweep, not a
-  `ThingDef` census, and it was the last thing running when this pass was wrapped.
-  Treat "no lightsaber in the active stack" as strongly supported, not proven.
+- ~~The full lightsaber sweep was cut short.~~ **Now settled.** A `<label>` sweep
+  across all 620 active mod folders returned only crystals, hilt parts, research
+  and category labels, and a separate full census of the workshop tree
+  independently reached the same conclusion and cleared each candidate mod by
+  name (JDS Armory, Outer Rim Core and all four submodules, KotOR Resources,
+  KotOR Droids, Jawa_Armoury). **"There are zero loadable lightsaber ThingDefs in
+  the active 1.6 modlist" is now established, not merely supported.**
+- **The `lee.theforce.lightsaber` defNames remain references only.** The names
+  that mod would supply were harvested from the *xpaths of patches that target
+  it* (`…\2938932438\1.6\AdditionalMods\_TheForceLightsabers\Patches\Patch_KotORLightsaberBalancing.xml`)
+  and from the reference mod's pawnkinds — `Force_Lightsaber`,
+  `Force_Lightsaber_Custom`, `_Curved`, `_Dual`, `_Crossguard`, `_Inquisitor`,
+  `_Shoto`, `Force_Broadsaber`, `Force_Darksaber`, and weaponTags
+  `Force_LightsaberSingle` / `_Dual` / `_Crossguard` / `_LightsaberCombat`.
+  **None was read from its own def, because the mod is absent.** They are
+  recorded here as a shopping list for whoever restores it — **not** as defNames
+  fit to write into a patch.
 
 ---
 
