@@ -81,10 +81,16 @@ BAND_CY = 245           # centre of the donor animal band (y 200-291)
 
 # The two animals' vertical centres, as fractions of the pair's own height, so
 # the rigging follows the art if the pair is regenerated at another size.
-ANIMAL_CY_FRACS = (0.2715, 0.7657)
-# Where a trace meets an animal, along the pair's width. The collar sits forward
-# on the body, so this is well to the right of centre.
-ATTACH_X_FRAC = 0.62
+# ⚠️ MEASURED, not hand-set — `Source/recrop_east_v2.py` re-derives these from
+# the cut pair. The v1 hand values were (0.2715, 0.7657) and the regenerated
+# pair measures (0.2709, 0.7657), which is also the evidence that the muzzle
+# regeneration did not drift the animals vertically.
+ANIMAL_CY_FRACS = (0.2709, 0.7657)
+# Where a trace meets an animal, along the pair's width: the rightmost harness
+# leather in each band, i.e. the collar ring itself. The v1 value of 0.62 was
+# eyeballed and sat behind the collar on the barrel; it did not show because the
+# traces are drawn under the animal, but it moved with every regeneration.
+ATTACH_X_FRAC = 0.7189
 
 LEATHER_MID = (99, 65, 24)
 LEATHER_HI = (115, 93, 57)
@@ -152,6 +158,22 @@ def _premultiplied_resize(img, w, h):
 
 
 def main():
+    # Optional overrides so a regenerated pair can be built to a scratch path
+    # and compared at sprite scale BEFORE it replaces the shipped texture.
+    #   build_eopie_sled_east.py [pair.png [out.png [cy0,cy1 [attach_x_frac]]]]
+    # Defaults are the shipped values, so a bare run is unchanged.
+    global PAIR, OUT, OUT_MASK, ANIMAL_CY_FRACS, ATTACH_X_FRAC
+    argv = sys.argv[1:]
+    if len(argv) >= 1:
+        PAIR = os.path.abspath(argv[0])
+    if len(argv) >= 2:
+        OUT = os.path.abspath(argv[1])
+        OUT_MASK = OUT.replace(".png", "m.png")
+    if len(argv) >= 3:
+        ANIMAL_CY_FRACS = tuple(float(v) for v in argv[2].split(","))
+    if len(argv) >= 4:
+        ATTACH_X_FRAC = float(argv[3])
+
     art = Image.open(SRC_ART).convert("RGBA")
     if art.size != (CANVAS, CANVAS):
         sys.exit(f"unexpected source canvas {art.size}")
