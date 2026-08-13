@@ -75,6 +75,7 @@ sys.path.insert(0, HERE)
 # cause, so "it only works under X" deserves one look at WHY before it
 # becomes doctrine.
 import game_paths as _GP  # per-platform game path resolution
+import rimworld_loadset as _RL  # packageId -> folder, so "listed" can be checked
 
 
 def _first_existing(paths):
@@ -103,19 +104,65 @@ STAMP = os.path.join(INVENTORY, "GENERATED_FROM.json")
 SHEETS = os.path.join(INVENTORY, "contact_sheets")
 ARMOURY = os.path.join(ROOT, "src", "Jawa", "Jawa_Armoury")
 
+# The three roots a mod folder can actually live under. A packageId that
+# resolves to none of them is LISTED BUT NOT INSTALLED.
+MOD_ROOTS = [_GP.WORKSHOP, _GP.LOCAL_MODS, _GP.GAME_DATA]
+
+
+def _has_files(dirpath, suffix):
+    """
+    True when dirpath exists AND holds at least one file with that suffix.
+
+    ⚠️ Existence of the ARTEFACT, never of a proxy for it. A stamp file, a
+    manifest and an mtime all survive the thing they describe being deleted,
+    so comparing only the proxy reports 'current' for an artefact that is not
+    on disk — the worst answer this script can give, because it stops the
+    reader looking.
+    """
+    try:
+        return any(f.lower().endswith(suffix) for f in os.listdir(dirpath))
+    except OSError:
+        return False
+
 
 # ---------------------------------------------------------------- fingerprint
-def loadset_fingerprint(config=D_CONFIG):
+def loadset_fingerprint(config=D_CONFIG, roots=None):
     """
     A stable identity for 'which mods are active, in what order'.
 
     Order is included deliberately: RimWorld resolves def overrides by load
     order, so the same mods in a different order really is a different game.
+
+    ⚠️ LISTED IS NOT INSTALLED, and this used to compare listed against
+    listed. `ModsConfig.xml` is a wish list: a packageId stays in it after the
+    folder is unsubscribed, renamed or deleted, and the game simply drops it.
+    Hashing the listed set therefore produced an identity for a load set that
+    cannot exist — and a missing mod, which is a BROKEN INSTALL wanting a
+    re-subscribe, was folded in silently and then surfaced later as "STALE
+    dump, take a 23-minute game load", which is the wrong remedy entirely.
+
+    So the hash is over the mods that RESOLVE TO A FOLDER, which is what the
+    game will build and what the live dump's manifest records. With nothing
+    missing this is byte-identical to the old hash, so no existing stamp is
+    invalidated; it only diverges when there is a real defect to report, and
+    the caller gets the offenders in ["missing"] to print loudly.
     """
     root = ET.parse(config).getroot()
-    mods = [(li.text or "").strip().lower()
-            for li in root.find("activeMods").findall("li")]
+    listed = [(li.text or "").strip().lower()
+              for li in root.find("activeMods").findall("li")]
     version = (root.findtext("version") or "").strip()
+
+    index = _RL.discover_mods(list(MOD_ROOTS if roots is None else roots))
+    if not index:
+        # Never fingerprint against an empty index: every listed mod would
+        # read as missing and the hash would describe an empty game. Same
+        # family as the validator that "passed" having checked nothing.
+        raise RuntimeError(
+            "no installed mods found under any root, so 'is this mod present' "
+            "could not be answered. Roots tried:\n    "
+            + "\n    ".join(MOD_ROOTS if roots is None else roots))
+    missing = [p for p in listed if p not in index]
+    mods = [p for p in listed if p in index]
     # The MOD LIST alone, deliberately. ModsConfig's <version> records the build
     # that last WROTE the file; the live dump reports the build that is RUNNING.
     # After any game update those differ forever (rev590 vs rev591 here), and
@@ -125,7 +172,9 @@ def loadset_fingerprint(config=D_CONFIG):
     blob = "\n".join(mods)
     return {
         "hash": hashlib.sha256(blob.encode("utf-8")).hexdigest()[:16],
-        "modCount": len(mods),
+        "modCount": len(mods),          # present on disk, not merely listed
+        "listedCount": len(listed),
+        "missing": missing,
         "version": version,
         "mods": mods,
     }
@@ -162,9 +211,19 @@ def write_stamp(fp, note=""):
 
 
 def dump_fingerprint(dump=D_DUMP):
-    """The mod set the live dump was taken from, read from its manifest."""
+    """
+    The mod set the live dump was taken from, read from its manifest.
+
+    ⚠️ The manifest is a 1-file PROXY for a multi-gigabyte artefact, and it
+    outlives it: clear or move `defs/` and manifest.json still sits there
+    reporting a matching mod set, which read as "DefDump/ (live) current" and
+    told the reader they had a dump to validate against when they had none.
+    So the BODY is a precondition — no defs/*.json, no fingerprint.
+    """
     man = os.path.join(dump, "manifest.json")
     if not os.path.isfile(man):
+        return None
+    if not _has_files(os.path.join(dump, "defs"), ".json"):
         return None
     try:
         with io.open(man, encoding="utf-8") as fh:
@@ -193,12 +252,32 @@ def status(fp):
     print("  RimWorld %s | %d active mods | fingerprint %s"
           % (fp["version"], fp["modCount"], fp["hash"]))
 
+    # Loud, and above the artefact table: a mod in ModsConfig.xml with no
+    # folder is a broken install, and no amount of regenerating fixes it.
+    if fp.get("missing"):
+        print("\n!! %d of %d LISTED MODS ARE NOT INSTALLED — ModsConfig.xml names"
+              % (len(fp["missing"]), fp["listedCount"]))
+        print("   them, no folder exists under Workshop, Mods/ or Data/, and the")
+        print("   game will silently drop them. The fingerprint above is over the")
+        print("   %d that DO exist; re-subscribe or remove the entries." % fp["modCount"])
+        for p in fp["missing"][:12]:
+            print("     ? %s" % p)
+        if len(fp["missing"]) > 12:
+            print("     ... and %d more" % (len(fp["missing"]) - 12))
+
     rows = []
 
     st = read_stamp()
     if st and st.get("note"):
         print("  stamp note: %s" % st["note"])
-    if st is None:
+    have_csv = _has_files(INVENTORY, ".csv")
+    if not have_csv:
+        # The stamp can match perfectly while the CSVs it describes are gone.
+        rows.append(("observed/2026-08-13_pre-restructure/inventory/*.csv",
+                     "no .csv on disk" if st is None
+                     else "stamped %s, but no .csv" % st.get("hash"),
+                     "MISSING", "--offline"))
+    elif st is None:
         rows.append(("observed/2026-08-13_pre-restructure/inventory/*.csv", "never stamped", "REBUILD", "--offline"))
     elif st.get("hash") != fp["hash"]:
         rows.append(("observed/2026-08-13_pre-restructure/inventory/*.csv",
@@ -207,15 +286,19 @@ def status(fp):
     else:
         rows.append(("observed/2026-08-13_pre-restructure/inventory/*.csv", st.get("hash"), "current", "-"))
 
-    sheets_ok = os.path.isdir(SHEETS) and any(
-        f.endswith(".png") for f in os.listdir(SHEETS)) if os.path.isdir(SHEETS) else False
-    rows.append(("contact_sheets/", "-" if sheets_ok else "missing",
+    sheets_ok = _has_files(SHEETS, ".png")
+    rows.append(("contact_sheets/", "-" if sheets_ok else "no .png on disk",
                  "current" if (sheets_ok and st and st.get("hash") == fp["hash"])
-                 else "STALE", "--offline"))
+                 else "STALE" if sheets_ok else "MISSING", "--offline"))
 
     dfp = dump_fingerprint()
     if dfp is None:
-        rows.append(("DefDump/ (live)", "absent", "MISSING", "GAME LOAD"))
+        # Name WHICH half is gone: a manifest with no defs/ is a half-deleted
+        # dump, not a machine that never took one.
+        rows.append(("DefDump/ (live)",
+                     "manifest, but no defs/*.json"
+                     if os.path.isfile(os.path.join(D_DUMP, "manifest.json"))
+                     else "absent", "MISSING", "GAME LOAD"))
     elif dfp["hash"] != fp["hash"]:
         rows.append(("DefDump/ (live)",
                      "%s (%s mods, %s)" % (dfp["hash"], dfp["modCount"],
@@ -256,10 +339,14 @@ def status(fp):
         print("     echo all > \"%s\"" % os.path.join(D_DUMP, "dump_request.txt"))
         print("  Then load to the main menu; it writes at startup, no world needed.")
         print("  Everything else can be rebuilt now with --offline.")
-    elif any(r[2] == "STALE" for r in rows):
-        print("  Offline artefacts are stale. Run --all; no game load needed.")
+    elif any(r[2] in ("STALE", "MISSING", "REBUILD") for r in rows):
+        print("  Offline artefacts are stale or missing. Run --all; no game load needed.")
     else:
         print("  Everything is current.")
+    if fp.get("missing"):
+        print("  ⚠️ ...but %d listed mod(s) are NOT INSTALLED (above). No rebuild"
+              % len(fp["missing"]))
+        print("     fixes that — the load set is not the one ModsConfig.xml claims.")
     return rows
 
 
@@ -289,7 +376,27 @@ def do_patches():
              "armoury patch")
     ok = run([sys.executable, os.path.join(src, "gen_torpedo_speed.py")],
              "torpedo speed") and ok
-    run([sys.executable,
+
+    # ⚠️ REFUSE TO "VALIDATE" AGAINST NOTHING. Both inputs the live half needs
+    # are checked HERE, before the subprocess, because a missing input makes
+    # validate_patch skip checks rather than fail them, and a skipped check
+    # reads exactly like a passed one in this function's output.
+    absent = [(n, p) for n, p in (("workshop", _GP.WORKSHOP),
+                                  ("local Mods/", _GP.LOCAL_MODS),
+                                  ("game Data/", _GP.GAME_DATA))
+              if not os.path.isdir(p)]
+    if not _has_files(os.path.join(D_DUMP, "defs"), ".json"):
+        absent.append(("live dump defs/", os.path.join(D_DUMP, "defs")))
+    if absent:
+        print("\n!! REFUSING to validate: the inputs the check needs are absent,")
+        print("   so it would skip every live xpath check and still exit 0.")
+        for n, p in absent:
+            print("     MISSING  %-16s %s" % (n, p))
+        print("   (src/RimMandrake/Utils/game_paths.py resolves these per platform;")
+        print("    a C:\\ literal read from WSL is the classic way to get here.)")
+        return False
+
+    ok = run([sys.executable,
          os.path.join("skills", "rimworld-modding", "scripts", "validate_patch.py"),
          os.path.join(ARMOURY, "Patches"),
          # ⚠️ These MUST be the per-platform forms. As C:\ literals they were
@@ -300,7 +407,11 @@ def do_patches():
          "--defs", _GP.WORKSHOP,
          "--defs", _GP.LOCAL_MODS,
          "--defs", _GP.GAME_DATA,
-         "--live", D_DUMP, "--quiet"], "validate (with --live)")
+         "--live", D_DUMP, "--quiet"], "validate (with --live)") and ok
+    # ⚠️ This `and ok` is the whole point of the fix: the validator's exit code
+    # was DISCARDED — its result printed to screen and then thrown away, so
+    # do_patches returned the two GENERATORS' success and a failing validation
+    # left no trace in the exit status. Anything scripting this saw 0.
     return ok
 
 
@@ -324,11 +435,17 @@ def main():
         fp = loadset_fingerprint(a.config)
     except (OSError, ET.ParseError) as exc:
         sys.exit("cannot read ModsConfig: %s" % exc)
+    except RuntimeError as exc:
+        sys.exit("cannot resolve the load set: %s" % exc)
 
     status(fp)
 
+    # An action that could not be carried out must reach the exit status, not
+    # just the screen. A caller scripting `refresh.py --patches` had no way to
+    # tell "regenerated and validated" from "refused, validated nothing".
+    failed = False
     if a.all or a.offline:
-        do_offline(fp, a.note)
+        failed = not do_offline(fp, a.note) or failed
     if a.all or a.patches:
         dfp = dump_fingerprint()
         if dfp is None or dfp["hash"] != fp["hash"]:
@@ -337,12 +454,15 @@ def main():
             print("   it. Retuning against a dump of a different mod set would")
             print("   bake in numbers from a game you no longer have.")
             print("   Take a fresh dump first, or pass --patches again once done.")
+            failed = True
         else:
-            do_patches()
+            failed = not do_patches() or failed
 
     if a.all or a.offline or a.patches:
         print()
         status(fp)
+    if failed:
+        sys.exit(1)
 
 
 if __name__ == "__main__":
