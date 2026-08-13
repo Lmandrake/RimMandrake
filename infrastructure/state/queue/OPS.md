@@ -321,3 +321,9 @@ pawns, plus 18 `DV_Gorewine`/`DV_GoreMust` references for Keshig.
 dropped are all mech mods: `el.biotechmechrt`,
 `futurplanet.disassemblemechanoid`, `veltaris.mechanoidskins`,
 `xelnigma.mechanoidslagtoplasteel`. Any doc still saying 573 is stale as of today.
+
+---
+## O5 — STILL STANDS (owner ruled 2026-08-13)
+Owner does not recall which load was which, so treat O5 as live: write the three
+expected-failure signatures before the worldgen session. A duplicate costs
+nothing; a missed one costs a load.

@@ -46,3 +46,8 @@ file. One line, with the hash — `git show <hash>` has the full story._
 | 2026-08-13 | Gravship rehearsal | 1,045/1,045 things, 4,057/4,057 foundation, 5.6 s. Product: clear TERRAIN before foundation | — |
 | 2026-08-13 | Gravship size settings | owner set them; hull flies AS DRAWN, 100% coverage, 8 of 12 extenders. #15 "Falcon Halo" keeps its prongs | — |
 | 2026-08-13 | Scoreboard's six on-screen items | five PASS, one deferred (V2). Map state was a discarded quicktest throwaway | — |
+| 2026-08-13 | One permanent enemy or two? | **ONE.** Junkers become negotiable; pillar 5 stands. VISION drops their `permanentEnemy` | — |
+| 2026-08-13 | Who owns `validate_patch.py`? | **CREATE** — it is a patch-authoring tool | — |
+| 2026-08-13 | Did the last load consume OPS's O5? | Owner does not recall → **treat as still standing**; three signatures are cheap, a missed one costs a load | — |
+| 2026-08-13 | Space Tower dependency direction | **VISION gates CREATE**, as filed. Still `[v2]` | — |
+| 2026-08-13 | Name the gravship pursuer | **Question dissolved.** No Mechanoids needed, so no Imperial Droid Army exists. The **Galactic Empire** pursues — stormtroopers + combat droids + lightsaber Sith | — |

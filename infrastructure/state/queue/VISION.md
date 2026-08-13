@@ -169,3 +169,25 @@ vanilla row's own header says "verified" while carrying rounded values.
 
 ⚠️ **Do not also "fix" the 34/30/12 in that row.** Those are correct and are mod
 settings, not defaults — the defs on disk say 16.9/12.9 and are supposed to.
+
+---
+## ⭐ V-new. Three owner rulings landed 2026-08-13
+
+1. **ONE permanent enemy.** Pillar 5 stands as written: the Imperial Desert
+   Directorate alone. **The Junkers lose `permanentEnemy`** and become
+   hostile-but-bribable scavengers — which arguably suits Jawa fiction better.
+2. 🔴 **The gravship pursuer question dissolved.** We do not have to use
+   Mechanoids, so **there is no independent Imperial Droid Army at all.** Two
+   Empire factions only: the planetside aristocratic Empire and the **Galactic
+   Empire**, and it is the Galactic Empire that pursues the ship — stormtroopers,
+   combat droids, and lightsaber-bearing Sith. Amend the ratified roster and
+   `gravship_pursuer_mechanism.md`; the droid-averse contradiction is resolved by
+   deletion, not by argument.
+3. **Space Tower: VISION gates CREATE**, confirmed. CREATE stays stopped until
+   you rule. Still `[v2]`.
+
+⭐ **The Sith are an owner-flagged JOINT build** — "we'll need to build together".
+A spec mined from the two (uninstalled, and they stay that way) Force mods is
+being written to `design/Jawa/force_users_build_spec.md`. Jedi = rare raid leader
+for the moisture farmers; Sith = rare raid leader for the Empire; both probably a
+xenotype with preferential equipment.

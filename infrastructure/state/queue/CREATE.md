@@ -278,3 +278,20 @@ only, offline) and seven open questions the owner must answer before any build.
 and a restart erases it — that is how the v4 eopie sled art and its script were
 lost on 2026-08-13. This is not a queue item, it is a habit the queue cannot
 enforce for you.
+
+---
+## ⭐ C-v1. OWNER RULING 2026-08-13 — rows 3 and 4 come BEFORE the Bantha art
+
+The owner reversed the overnight reassignment. **Author v1 rows 3 and 4 first**,
+then resume the eopie sled / Bantha work.
+
+- **Row 3** — one `QuestScriptDef` that fires and resolves. Any premise.
+- **Row 4** — three terrain or resource overrides visible on the map.
+
+Both are pure offline XML. They are the ONLY offline v1 work left, and they must
+be **authored and deployed before the next live session** — that session
+generates the world and cannot close them if they do not exist yet.
+
+## C-v2. `validate_patch.py` is yours — owner ruled 2026-08-13
+It reads `Patches/` only, never `Defs/`, and does not say so. Fix the gap or
+document it; either closes the item.
