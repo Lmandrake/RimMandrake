@@ -146,3 +146,9 @@ Admission test and entry format: `references/traps.md`.
 **Cause:** `foundation` is a dict of 6 fields, so `len()` returned the field count. `terrain` and `spawn` really are lists, so the same expression was right twice and wrong once, with no error.
 **Fix:** check the type before counting.
 **Recurs when:** sibling keys accessed uniformly but not of uniform type.
+
+### A field xref that scans three opcodes reports "no writers" for a field with writers
+**Symptom:** `xref.py Thing debugRotLocked` returned "REFERENCED BY 3 methods" — `set_Rotation` and the two debug-action closures — and omitted `Thing::ExposeData`, the method that makes the flag survive a save and load.
+**Cause:** the scanner matched `ldfld` (0x7B), `stfld` (0x7D) and `ldsfld` (0x7E) only. CIL has six field opcodes; the missing three are `ldflda` (0x7C), `ldsflda` (0x7F) and `stsfld` (0x80). **`ldflda` takes the field's ADDRESS, which is how `Scribe_Values.Look(ref x, …)` reaches a field — so every save/load path in the game was invisible to the tool.**
+**Fix:** match all six, and annotate each hit with which opcodes it used — `[ldfld]` is a reader, `[ldfld, stfld]` is a writer, and "three readers, no writer" is a different claim from "three methods touch it". Count method bodies that fail to parse and say so; a silent skip is a missing caller the reader will believe does not exist. Fixed in `90f1c62`.
+**Recurs when:** any byte-pattern scan over IL. The failure is silent and one-directional — it can only ever under-report, and a short list reads exactly like a complete one. Applies equally to `strings`-based def and tool censuses: matching a subset of the encodings a fact can take yields a confident wrong answer, never an error.
