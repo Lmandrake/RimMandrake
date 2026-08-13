@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ModMetaData>
+  <name>Blast Door Split-Frame East Fix — Doors Expanded Star Wars edition</name>
+  <author>Mandrake</author>
+  <packageId>mandrake.blastdoorframeasyncfix</packageId>
+  <supportedVersions>
+    <li>1.6</li>
+  </supportedVersions>
+  <description>Supplies the three missing east-facing split-frame textures for the blast doors in Doors Expanded Star Wars edition, so a blast door built on a north-south wall stops rendering its own frame BEHIND its door leaves.
+
+WHAT YOU SEE WITHOUT THIS MOD
+
+Face a Blast Door, Thick Blast Door or Blast Door D east or west and the arch around the doorway loses its inner rim. The leaves are drawn over the top of the frame instead of sliding into it, so the jambs and the inner lip of the lintel simply vanish while the door is shut, and the door reads as a panel stuck on the front of the wall rather than a door sitting in a frame. Blast Door D loses the whole inner ring of its iris housing.
+
+That is not a load-order problem and it is not a missing file. Doors Expanded Star Wars edition ships all three east split-frames as 757-byte, 267x267, fully transparent placeholders — the artist created the files and never drew into them. They are unfinished rather than deliberately blank: the mod already has a purpose-built blank, Textures/BlankTex.png at 192x192, and these three are the only other zero-alpha PNGs among the mod's 72.
+
+WHY THE FRAME DISAPPEARS - THE MECHANISM
+
+Doors Expanded draws an expanded door's frame twice. Building_DoorExpanded.DrawFrameParams hands doorFrame and doorFrameSplit the same mesh, the same position and the same scale when the door faces east or west; the only difference is the layer they land on:
+
+    if (rotation == Rot4.East) { graphicVector.z -= offsetMod;
+                                 if (split) graphicVector.y =
+                                     AltitudeLayer.BuildingOnTop.AltitudeFor(); }
+
+The ordinary frame stays down at AltitudeLayer.Blueprint, below everything, while the split frame is the copy that draws ABOVE the sliding leaves. So doorFrameSplit is not a second, different frame — it is the portion of the frame that has to be in front. With it blank, nothing is in front, and the leaves cover the frame's inner edge.
+
+The north facing is unaffected because both halves of the north frame are drawn on the same layer, and both halves ship complete.
+
+The defect cannot appear in the log. "Failed to find any textures at" fires only when EVERY direction of a Graphic_Multi is missing; a present-but-empty texture is not missing at all.
+
+HOW THE ART WAS MADE
+
+Every pixel shipped here is a byte-for-byte copy of the donor's own Frame_east at the identical canvas coordinate. Nothing was redrawn, mirrored, rescaled or repainted. The split frame draws on the same quad as the frame, so the only question worth answering is WHICH of the frame's pixels belong in front, and the answer is taken from the donor's own leaf art: the region where the door leaves overlap the frame, symmetrised (Doors Expanded draws the leaf twice, once flipped) and grown by 3% of the canvas to cover the slide.
+
+Because the art is a registered subset of the frame beneath it, the edge of that region is invisible in game — the same pixels are already being drawn underneath — and the mod cannot introduce geometry the donor did not author.
+
+CONTENTS - six files, three textures and their three masks
+
+  Things/Building/Door/Blast/SWDoorBlastDoor_FrameAsync_east
+      Blast Door, def PH_DoorBlastCDoor. 933x933, 10,771 bytes, subject
+      494x322 at (229,333). The inner rim of the arch: both jambs and the
+      underside of the lintel.
+  Things/Building/Door/Blast/SWDoorBlastDoor_FrameAsync_eastm
+      Its colour mask. 933x933, 7,176 bytes, cut from the donor's own
+      SWDoorBlastDoor_Frame_eastm.png by the same region.
+
+  Things/Building/Door/Blast/SWDoorBlastBDoor_FrameAsync_east
+      Thick Blast Door, def PH_DoorThickBlastBDoor. 933x933, 11,514 bytes,
+      subject 488x362 at (232,292).
+  Things/Building/Door/Blast/SWDoorBlastBDoor_FrameAsync_eastm
+      Its colour mask. 933x933, 6,816 bytes.
+
+  Things/Building/Door/Blast/SWDoorBlastDDoor_FrameAsync_east
+      Blast Door D, def PH_DoorBlastDDoor. 933x933, 35,655 bytes, subject
+      373x264 at (280,395). The dark inner ring of the iris housing, which
+      the two iris leaves otherwise swallow completely.
+  Things/Building/Door/Blast/SWDoorBlastDDoor_FrameAsync_eastm
+      Its colour mask. 933x933, 8,171 bytes.
+
+WHERE THE DEFS ASK FOR THESE PATHS
+
+Doors Expanded Star Wars edition's own ThingDefs, in
+Defs/ThingDef_Building/Heron_Doors.xml:
+
+  line 288  defName  PH_DoorThickBlastBDoor
+  line 345  texPath  Things/Building/Door/Blast/SWDoorBlastBDoor_FrameAsync
+  line 347  shaderType CutoutComplex
+
+  line 372  defName  PH_DoorBlastCDoor
+  line 429  texPath  Things/Building/Door/Blast/SWDoorBlastDoor_FrameAsync
+  line 431  shaderType CutoutComplex
+
+  line 456  defName  PH_DoorBlastDDoor
+  line 513  texPath  Things/Building/Door/Blast/SWDoorBlastDDoor_FrameAsync
+  line 515  shaderType CutoutComplex
+
+PH_DoorBlastDoor is a DIFFERENT def in a DIFFERENT mod - it belongs to base
+Doors Expanded (jecrell.doorsexpanded), its east split-frame is healthy, and
+nothing here touches it. The two mods share the PH_ prefix and are easy to
+conflate.
+
+WHY THE MASKS ARE SHIPPED TOO
+
+All three doorFrameSplit blocks declare shaderType CutoutComplex, so
+Graphic_Multi looks for a mask at texPath + "_eastm". The donor ships none, and
+RimWorld's direction fallback then hands the EAST slot the NORTH mask - a
+different canvas and a different layout - which would tint the restored art
+through the wrong stencil. Base Doors Expanded ships
+DoorBlastDoor_FrameAsync_eastm.png for exactly this slot, confirming both that
+the mask is wanted and that the correct spelling carries no underscore before
+the "m". The donor's east frame masks are a uniform (237,31,36) silhouette, so
+cutting ours from them by the same region is exact rather than approximate.
+
+KNOWN DONOR DEFECT THIS MOD DELIBERATELY DOES NOT TOUCH
+
+SWDoorBlastBDoor_Frame_east_m.png and SWDoorBlastDDoor_Frame_east_m.png carry an
+underscore before the "m", so RimWorld never loads them and those two doors'
+ORDINARY east frames are tinted through the north mask today. That is a separate
+slot from the one this mod fills, and renaming another mod's working files is
+outside what a split-frame fix should quietly do.
+
+LOAD ORDER MATTERS HERE
+
+Doors Expanded Star Wars edition ships all of its art as loose PNGs - the mod
+contains no AssetBundles and no LoadFolders.xml. Between two loose files at the
+same path RimWorld resolves by load order, so this mod must load AFTER the
+donor. That is the opposite of an AssetBundle override, where a loose file wins
+regardless of order.
+
+No defs are patched, no code runs, no XML is added, and neither Doors Expanded
+Star Wars edition nor base Doors Expanded is altered. If the donor ever draws
+these three textures upstream, this mod becomes a redundant override of the same
+slot and can be unsubscribed.
+</description>
+
+  <modDependencies>
+    <li>
+      <packageId>Lumi.doorsexpanded</packageId>
+      <displayName>Doors Expanded Star Wars edition</displayName>
+      <steamWorkshopUrl>steam://url/CommunityFilePage/3550435517</steamWorkshopUrl>
+    </li>
+  </modDependencies>
+
+  <loadAfter>
+    <li>Lumi.doorsexpanded</li>
+  </loadAfter>
+</ModMetaData>
