@@ -261,3 +261,90 @@ owns it** — it is *not* BRIDGE's, since the bridge drives a running game and c
 | b | Does `Functional Vanilla Expanded Props` actually make the VFEPD refinery/tank props *produce*? A5's word "functional" rests on it | CREATE — offline read |
 | c | Does placing running industry violate the anti-exponential pillar? A *found, working* refinery is closer to a faucet than a ruin is | VISION — `enrichment_agents.md:33-39` |
 | d | 60+ `VEE_*` landmarks from Vanilla Landmarks Expanded are live and unaudited against the desert palette | `[?]` |
+
+---
+
+# 7. THE SECOND AUGMENTABLE SURFACE — authored interior maps
+
+_Added 2026-08-13 by VISION, from the owner's observation that the Space Tower
+"dungeon" is itself a tile we could augment on approach. **It is, and it is a
+better one than the world tile.** Measured from the mod on disk, not inferred._
+
+## 7.1 What these are actually called
+
+RimWorld has **no noun for "dungeon"**. Four different things get called "the
+map" in conversation and they are not interchangeable — this is the vocabulary,
+so specs stop drifting:
+
+| what the player sees | the engine's noun | when it exists |
+|---|---|---|
+| a hex on the planet | **world tile** (1.6: on a planet **layer** — Surface, Orbit) | at worldgen, forever |
+| the thing sitting on that hex | a **world object** / `MapParent`; the quest kind is a **Site**, built of `SitePartDef`s | when the quest fires |
+| the playable grid you land on | a **Map**, produced by a `MapGeneratorDef` running `GenStep`s | **on arrival** |
+| an interior level you descend into | 1.5+ **pocket map** | on entering |
+
+**So "map tile" is two things and the difference is the whole point.** A world
+tile is *persistent* — you augment it once and it stays augmented. A site Map is
+*generated on arrival and discarded on leaving*.
+
+## 7.2 Why the discarded one is the better target — the design finding
+
+**Augmenting a world tile costs save weight forever and can only be done once.
+Augmenting a site map costs nothing and can be done differently every visit.**
+
+That inverts the usual assumption. It means authored interior content is
+**cheap, repeatable, and safe to be lavish with** — the exact opposite of the
+world-tile catalogue above, where §0's "downright replete" tiles have to be
+rationed because every one of them is permanent.
+
+⭐ **And it is the one place in RimWorld where authored detail survives the
+player.** A colony map gets bulldozed — anything we hand-place is gone by year
+two. **A site map is experienced as a place and then left behind intact.** Art
+and detail spent here is the only map art the player never demolishes.
+
+## 7.3 The mechanism is already installed and nobody has used it
+
+**`HaiLuan.CustomQuestFramework` is ACTIVE at load 108 of 575.** Space Tower is
+not one dungeon mod; **it is one dungeon built on an authoring format we already
+have and are paying for.** Measured in
+`…\workshop\content\294100\3527936083\1.6\Defs\QuestEditor_Library.CustomMapDataDef\`
+— six files, 922 lines total, the whole tower:
+
+- The def type is **`QuestEditor_Library.CustomMapDataDef`** — a hand-authored map.
+- Fields observed: `size` (`(31,1,31)`), `terrainsRect`, `roofRects`, `thingDatas`,
+  `pawns` (`kindDef` / `faction` / `count` / `spawnType`), `tags`, `commonality`.
+- **Levels link by TAG, not by name.** `CustomThingData_CustomMapEntrance` carries
+  an `exitName` and a `tagWithChance` list — the tower's entrance rolls against
+  tag `ST_TowerLevel`, so **which level you get is drawn from a pool.** Author
+  five levels, get a different tower every run, for free.
+- `CustomThingData_InteractableThing` carries an `operations` list — scripted
+  interactables, i.e. a lever that does something, not just scenery.
+
+**A 31×31 authored map is ~100–240 lines of XML.** That is the actual price of a
+dungeon here.
+
+## 7.4 What this is for in THIS campaign, and what it must not become
+
+**A dungeon in a Jawa campaign is a wreck.** Not a tomb, not a vault, not a
+fantasy dungeon in space — **a machine that stopped, with the crew still in it
+and something in the hold.** The player's verb is *strip*, not *delve*, and the
+reward is parts. Anything authored here that does not end with the clan dragging
+something home is off-brand however good it looks.
+
+⛔ **The discipline, because this format makes overproduction easy:** the
+tag-pool draw means **variation is cheaper than volume**. Five levels in one pool
+beat five separate dungeons, and the player cannot tell the difference from the
+inside. **Author few pools, deep.** A campaign with thirty hand-made dungeons is
+a campaign nobody finished building.
+
+## 7.5 Consequences for other seats — filed, not assigned
+
+- **BRIDGE's augmentation surface is bigger than the world map.** A site Map is
+  an ordinary `Map` once generated, so the live bridge can dress it on arrival.
+  ⚠️ **The hook is different**: world tiles are edited whenever; a site map does
+  not exist until the player lands, so the trigger is map-generation/arrival.
+  **Nobody owns that hook.** Assign it.
+- **CREATE:** this raises the value of the Space Tower read (V11), because the
+  answer covers the *format*, not just the one mod.
+- ⚠️ **Not v1.** `V1_SCOPE.md` ships one quest and three terrain overrides. This
+  is a **v2 content pillar** and is recorded here so it is not re-derived.
