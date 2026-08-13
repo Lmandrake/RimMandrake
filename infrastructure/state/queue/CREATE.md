@@ -70,9 +70,38 @@ The owner addressed neck, nose and sled only. **Ask — do not read silence as
 approval, and do not fold them into this pass.** Note finding 3 does move the
 palette, so the pink question gets easier to judge once the sled is brown.
 
-⏳ **Still held**, now with three named fixes owed on top of awaiting approval.
-Regenerate `Source/REVIEW_all_three.png` afterwards so the owner reviews the same
-sheet layout twice.
+✅ **Fix 3 DONE — `2a9a004`. It was never an art problem.** The sled reads
+white/grey in the PNG but renders grey from the donor def's
+`<color>(71,71,71)</color>`, because our mask is red-over-sled / black-over-team
+and red multiplies by that colour. So "colour the sled brown" cost zero pixels:
+`Patches/DogSledTint_Brown.xml` sets the harness leather (99,65,24), and the
+eopie **cannot** be dragged along because they are black-masked.
+`Source/preview_tint.py` renders the multiply offline, so a colour call never
+costs a game load again.
+
+✅ **Fix 2 DONE — `65c1590`, and the queue's hedge was wrong in an instructive
+way.** This entry told the next reader to "check first whether the nose is
+clipped by the canvas edge, in which case the team shifts left". **It is not
+clipped** — the subject ends at x=489 of 512 with 22 px of clear margin, and the
+snout is drawn in full in the raw at 1934 px. **It is a SCALE failure:** at the
+104 px the sprite actually renders, the muzzle's soft curve downsampled into a
+hard vertical wall with a square top corner, which is exactly what "nose cut
+off" describes. Regenerated with a continuous tapering trunk; footprint bbox
+unchanged at (8,168,490,293).
+⭐ **Generalises: art can be correct at source and broken at render.** Judging a
+sprite at 100% is judging the wrong image. `Source/recrop_east_v2.py` now
+measures the rigging constants from the cut instead of leaving them hand-set,
+so a regeneration costs a run rather than a careful remeasure.
+
+⏳ **Fix 1 (south neck) in flight**, then regenerate
+`Source/REVIEW_all_three.png` so the owner reviews the same sheet layout twice.
+Still held awaiting approval either way.
+
+🔴 **Pillow is NOT on the system `python3` here** — every build script in this
+mod imports PIL and would die. It is installed at
+`/home/mandrake/.venvs/art/bin/python`; use that interpreter for anything that
+touches an image. The queue records a peer hand-decoding IHDR and inflating IDAT
+to avoid this; that is no longer necessary.
 
 ### C11. 🔴 Split `MissingArtFixes` — it violates the ruling above
 It is one bucket holding **7 textures across several donors** (Outer Rim Galactic
@@ -194,6 +223,29 @@ Full brief: `src/RimMandrake/MissingArtFixes/Source/blast_door_frameasync_east_B
 — **move it into the new mod's `Source/` as part of C11's split**, since it was
 staged in the wrong mod before the ruling existed.
 
+### C6. ✅ CLOSED `cb95f60` — two typo-fix mods, one per donor, no art authored
+`src/RimMandrake/GravshipAstronautFix/` (`vanillaexpanded.gravship`, ws
+3609835606) and `src/RimMandrake/SauridFrillFix/` (`vanillaracesexpanded.saurid`,
+ws 2880990495). Both donors ship their art **loose**, so `loadAfter` is
+load-bearing on both. Bytes copied verbatim, md5-identical.
+
+⚠️ **Neither loads yet — they are not in `ModsConfig.xml`.** Both must sit after
+their donor; next to `mandrake.missingartfixes` clears both.
+
+🎁 **Bonus defect found while building it:** the astronaut typo hits the **mask**
+for *both* life stages, not just the ancient one. `Mech_Astronaut_north.png` is
+spelled correctly and renders, but its overlay mask is the misspelled file, so
+the ordinary astronaut silently loses its faction-colour overlay on north. The
+fix covers it.
+
+🔴 **None of these three defects can ever produce a log line.** `Failed to find
+any textures at` fires only when **every** direction of a `Graphic_Multi` is
+missing, so a single absent facing is a silent south-fallback. There is no log
+signal to confirm the fix by either — it has to be eyeballed in game.
+**Generalises to every missing-facing item in C7.**
+
+<details><summary>original entry</summary>
+
 ### C6. Two filename typos — the art exists and is simply misnamed 🎁
 Verified on disk. Ship the same bytes at the correct filename in an override mod:
 no new art, no def edit, no risk.
@@ -213,6 +265,8 @@ Textures/Pawn/CenterFrill/                   (VRE Saurid)
 
 The mech shows its **front while walking away**; `CenterFrill7` beside it is named
 correctly.
+
+</details>
 
 ### C7. The other incomplete directional sets `[v2]`
 Each checked against its def's `graphicClass` and `visibleFacing`, so these are not
@@ -285,8 +339,23 @@ enforce for you.
 The owner reversed the overnight reassignment. **Author v1 rows 3 and 4 first**,
 then resume the eopie sled / Bantha work.
 
-- **Row 3** — one `QuestScriptDef` that fires and resolves. Any premise.
+- **Row 3** — ✅ **CLOSED OFFLINE `47733f8`.** `Jawa_TheClaim`, built to VISION's
+  spec at `design/Jawa/worldbuilding/v1_quest_the_claim.md`, strings verbatim,
+  Core-only nodes on the `OpportunitySite_ItemStash` skeleton, rival clan is text
+  with no `FactionDef`. **Not yet SEEN — the v1 gate is still open.**
 - **Row 4** — three terrain or resource overrides visible on the map.
+
+🔴 **The finding row 3 turned up, and it outlives row 3.**
+`everAcceptableInSpace` gates **acceptance by the player, not site placement** —
+Core `Languages/English/Keyed/MainTabs.xml` L198 `QuestNotSpace` = "cannot accept
+in space", sitting in the accept-requirement string run; Odyssey's six genuinely
+orbital sites set it zero times while Core's `Script_TradeRequest.xml` sets it
+true *and* forces its target ground-only. **Core's own
+`OpportunitySite_ItemStash` omits it, so vanilla's quest offers go silent while
+the colony's map is a space map.** VISION has ruled (`95e500a`): flip the default
+for what we author, judge adopted quests one at a time, and **do not sweep** —
+the impact turns on how much of the campaign is spent on the Orbit layer, which
+is not answerable offline.
 
 Both are pure offline XML. They are the ONLY offline v1 work left, and they must
 be **authored and deployed before the next live session** — that session
