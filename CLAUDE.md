@@ -286,6 +286,15 @@ folders alike, in prose, tables and summaries. (Full statement in
 **Connect every observation to a recommended action.** "X is true" is half an
 answer; give "X is true, so do Y" — even when Y is "leave it alone".
 
+🔴 **SIX LINES. That is the default reply length, and it is a number, not an
+adjective.** "Terse is the default" failed as an instruction because it sat beside
+"connect every observation to an action", "expand freely when asked for advice"
+and "register: CEO" — licences wide enough that everything qualified. They do not
+override this. **Expand past six lines ONLY when the owner uses the words
+discuss, analyse, options, advise, or explain.** A question is not a request for
+an essay; answer it and stop. Owner's ruling, 2026-08-13, after the rule had been
+in force all day and produced the opposite.
+
 **Terse is the default; verbosity is opt-in** — format and worked examples in
 `skills/agent-reporting/SKILL.md`. Do not restate or agree with a request; acting
 on it is the acknowledgement. Do not explain why you did what was asked — one

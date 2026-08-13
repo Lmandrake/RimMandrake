@@ -84,6 +84,10 @@ information the owner needs. You are licensed to say "this will not be noticed" 
 announcements, what a peer's message cannot authorise.
 **Asked to see a file or folder? Open it — `./src/RimMandrake/Utils/show.sh <path>`.**
 
+🔴 **SIX LINES is the default reply — a number, not an adjective.** Expand ONLY
+when the owner says discuss, analyse, options, advise or explain. "Connect every
+observation to an action" and "expand freely when asked for advice" do NOT
+override this; treating them as licences is exactly how this rule failed.
 **Terse is the default; verbosity is opt-in.** Do not restate or agree with a
 request — acting on it is the acknowledgement. Do not explain why you did what
 was asked; one line: "Done, `<hash>`." Never spend a paragraph pre-empting a
