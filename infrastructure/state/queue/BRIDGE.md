@@ -25,17 +25,41 @@ path because the gate runs through it.
 
 ## Open
 
-### B1. `jawa/set_pawn_rotation` `[v2]`
-Migrated from `TODO.md` §14. The visual-audit queue cannot turn a pawn, so any
-art check that depends on facing is unrunnable.
+### 🟡 B1, B2, B3 — BUILT AND UNVERIFIED. Written offline 2026-08-13, never run.
 
-### B2. `jawa/set_pawn_style` `[v2]`
-Migrated from `TODO.md` §14. Same blocker family as B1 — style cannot be set, so
-styled-apparel audits cannot be staged.
+**All three are written and compile clean (0 errors, 0 warnings,
+`TreatWarningsAsErrors` on). NONE has been driven in a live game.** The game was
+down for the whole of this work, so every claim about them is a claim about
+source and IL, not about behaviour. Do not close these rows, and do not let
+another seat treat them as working tooling.
 
-### B3. `jawa/spawn_pawn` needs a xenotype parameter `[v2]`
-Migrated from `TODO.md` §14. Without it a spawned pawn cannot be pinned to the
-xenotype under test.
+| row | tool | state |
+|---|---|---|
+| B1 | `jawa/set_pawn_rotation` | built, unverified — commit `7b8d5b7` |
+| B2 | `jawa/set_pawn_style` | built, unverified — commit `7b8d5b7` |
+| B3 | `jawa/set_pawn_xenotype` + `xenotype` on `jawa/spawn_pawn` | built, unverified — commit `e60197a` |
+
+**What closes them:** `python.exe src/RimMandrake/bridgetools/prove_new_tools.py --pawns`
+on a live paused map. It now carries real read-back checks for all three plus
+the forced xenotype at spawn, and the census gate reads **20**. Selftest passes
+offline (`python3 src/RimMandrake/bridgetools/prove_new_tools.py --selftest`).
+
+🔴 **The deploy MUST use `--gm`:**
+
+```bash
+python.exe src/RimMandrake/bridgetools/build.py --gm --apply   # game CLOSED
+```
+
+Without `--gm` the build compiles out `jawa/fire_incident` and `jawa/send_letter`
+and the deploy **strips them from the game copy** — build.py refuses by default
+and demands `--allow-tool-removal`, which is the wrong answer here. Non-GM build
+is 18 tools; the correct GM deploy is **20**.
+
+⚠️ Also fixed in `e60197a`, unrelated to the new tools but in the same file:
+`jawa/spawn_pawn` returned `success: true` for a batch in which **every** pawn
+threw during generation, because failure rows counted toward `rows.Count > 0`.
+Now `success` counts only pawns that actually spawned; `spawnedCount` and
+`failedCount` are on the response.
 
 ---
 
@@ -175,6 +199,12 @@ Missing entry: **`jawa/list_factions`**.
 
 Fix is one line: add `"jawa/list_factions"` to `ALL_TOOLS` in the order `build.py`
 ships it. **Not mine to make** — the companion and its census are yours.
+
+✅ **DONE 2026-08-13, commit `68a0a30`.** `ALL_TOOLS` is now the full 20 —
+`list_factions` plus the three pawn-appearance tools — and the census gate reads
+20, with 18 called out as the correct count for a non-`--gm` build. OPS's second
+point stands and is now written into `SKILL.md` too: `list_factions` has never
+registered in a running game.
 
 ⚠️ **Second thing, and it may matter more.** That DLL's mtime is **Aug 13 10:05**,
 and the last game session's `Player.log` last wrote at **10:04**. **The deployed
