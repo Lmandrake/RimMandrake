@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ModMetaData>
+  <name>Tool Belt West Fix — Vanilla Apparel Expanded: Accessories</name>
+  <author>Mandrake</author>
+  <packageId>mandrake.toolbeltfix</packageId>
+  <supportedVersions>
+    <li>1.6</li>
+  </supportedVersions>
+  <description>Restores the west-facing worn art of the tool belt in Vanilla Apparel Expanded - Accessories.
+
+The file is not missing. It ships, it loads without complaint, and it is completely empty: 256x256 pixels of which zero have any alpha. A pawn wearing a tool belt and facing west therefore wears nothing visible, while the same pawn facing east, north or south wears it normally. No log line is possible — "Failed to find any textures at" fires only when EVERY direction of a Graphic_Multi is absent, and a present-but-transparent PNG is a completely successful load by every measure the engine has. It was found by decoding the alpha channel, not by reading a log.
+
+Worse than merely missing: because a file EXISTS at that path, RimWorld's own east/west auto-mirroring never engages. Had the file simply been deleted the game would have drawn the east view flipped and nobody would ever have noticed. That is exactly the image this mod supplies.
+
+No defs are patched, no code runs, and Vanilla Apparel Expanded - Accessories is not altered. This mod drops one loose PNG at the path the donor's own ThingDef already asks for.
+
+CONTENTS
+
+  Things/Apparel/ToolBelt/ToolBelt_west
+      The west-facing worn graphic of the tool belt. 256x256, 10,502 bytes.
+
+      THE DONOR'S ORIGINAL: present, 256x256, 753 bytes, alpha maximum 0 —
+      0 of 65,536 pixels carry any opacity. Its siblings are healthy for
+      comparison: ToolBelt_east is 16,945 bytes, ToolBelt_north 7,161 bytes and
+      ToolBelt_south 7,449 bytes, all with alpha maximum 255. It is one broken
+      file in an otherwise sound four-way set.
+
+      HOW OURS WAS BUILT AND VERIFIED: it is the donor's own ToolBelt_east,
+      flipped horizontally. No pixel is invented, and this is specifically the
+      image RimWorld itself would have drawn had the blank file been absent.
+      Verified after writing by comparing alpha histograms against the donor's
+      east: identical bucket for bucket — 0 pixels fully transparent, 54,300
+      below alpha 128, 10,980 at alpha 250 or above, over the same 65,536-pixel
+      canvas. That soft low-alpha wash across the whole canvas is the donor's
+      own encoding and has been carried across unchanged rather than cleaned
+      up, because matching the donor exactly is the point. The generator is
+      shipped in Source/mirror_toolbelt_west.py, and it refuses to run if the
+      east donor is itself under 1% covered, so it cannot silently mirror a
+      blank into a permanent one.
+
+WHERE THE DEF IS
+
+Vanilla Apparel Expanded - Accessories' own ThingDef asks for this path:
+
+  1.6/Defs/ThingDefs_Misc/Apparel_Utility.xml
+    line 531  defName          VAEA_Apparel_ToolBelt
+    line 557  texPath          Things/Apparel/ToolBelt/ToolBelt
+    line 577  wornGraphicPath  Things/Apparel/ToolBelt/ToolBelt
+
+LOAD ORDER MATTERS HERE
+
+Vanilla Apparel Expanded - Accessories ships all of its art as loose PNGs — the
+mod contains no AssetBundles at all. Between two loose files at the same path
+RimWorld resolves by load order, returning the asset from the LAST mod in the
+running order, so this mod must load AFTER the donor or the donor's blank file
+wins and the repair is invisible. That is the opposite of an AssetBundle
+override, where a loose file wins regardless of order.
+
+If Vanilla Apparel Expanded - Accessories ever ships real art at this path,
+this mod overrides it, so unsubscribe it at that point.
+</description>
+
+  <modDependencies>
+    <li>
+      <packageId>VanillaExpanded.VAEAccessories</packageId>
+      <displayName>Vanilla Apparel Expanded — Accessories</displayName>
+      <steamWorkshopUrl>steam://url/CommunityFilePage/2521176396</steamWorkshopUrl>
+    </li>
+  </modDependencies>
+
+  <loadAfter>
+    <li>VanillaExpanded.VAEAccessories</li>
+  </loadAfter>
+</ModMetaData>

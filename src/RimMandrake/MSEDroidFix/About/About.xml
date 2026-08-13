@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ModMetaData>
+  <name>MSE Droid North Fix — Outer Rim: Droid Depot</name>
+  <author>Mandrake</author>
+  <packageId>mandrake.msedroidfix</packageId>
+  <supportedVersions>
+    <li>1.6</li>
+  </supportedVersions>
+  <description>Adds the missing north-facing art of the MSE-6 repair droid in Outer Rim - Droid Depot.
+
+The droid's PawnKindDef declares Graphic_Multi, which means RimWorld expects four directions, but the mod only ever shipped two: south and east. When a direction is absent Graphic_Multi silently falls back to the south texture, so an MSE droid walking AWAY from you turns around and shows you its FRONT. Nothing is logged — "Failed to find any textures at" fires only when every direction of a set is missing, and this set has two.
+
+No defs are patched, no code runs, and Outer Rim - Droid Depot is not altered. This mod drops one loose PNG at the path the donor's own def already asks for.
+
+CONTENTS
+
+  OuterRim/Droid/MSE_north
+      The back of the MSE-6 repair droid. 256x256, 1,051 bytes, 8.86% of the
+      canvas inked.
+
+      THE DONOR'S ORIGINAL: there is none. Droid Depot ships MSE_south
+      (256x256, 2,707 bytes) and MSE_east (256x256, 2,064 bytes) and no north
+      texture at any load folder. The absence was confirmed against the 1.6
+      AssetBundle rather than against the mod's stale loose folder: the bundle
+      manifest lists DroidDepot/Textures/OuterRim/Droid/MSE_east and
+      DroidDepot/Textures/OuterRim/Droid/MSE_south and no MSE_north entry, so
+      there is nothing to override and nothing to conflict with.
+
+      HOW OURS WAS BUILT AND VERIFIED: the silhouette and the black keyline are
+      copied PIXEL-FOR-PIXEL from the donor's own MSE_south, so registration,
+      canvas, bounding box (97, 80, 159, 178) and 3 px keyline weight are exact
+      by construction and cannot drift. Only the interior is re-authored — the
+      front bevel is replaced by a plain rear panel with a horizontal vent seam
+      and two vertical panel joints, using the donor's own measured greys
+      (upper plate 231, lower panel 178, seam shadows 148), which is what the
+      back of a box droid should read as. The generator is shipped in
+      Source/draw_mse_north.py.
+
+WHERE THE DEF IS
+
+Outer Rim - Droid Depot's own PawnKindDef asks for a four-way graphic:
+
+  1.6/Defs/ThingDefs_Automatons/Animal/Droid_MSEDroid.xml
+    line 81  defName        OuterRim_MSEDroid
+    line 89  texPath        OuterRim/Droid/MSE
+    line 90  graphicClass   Graphic_Multi
+    line 113 recipeIcon     OuterRim/Droid/MSE_south
+
+NO LOAD ORDER REQUIREMENT — AND THAT IS DELIBERATE
+
+This mod deliberately declares no loadAfter, because it does not need one.
+
+On 1.6 Outer Rim - Droid Depot serves its art from an AssetBundle, not from
+loose files. Its LoadFolders.xml swaps the v1.4/v1.5 "Common_Old" folder for
+"Common" under v1.6, and Common/ holds nothing but
+AssetBundles/neronix17_outerrim_droiddepot. The loose droid PNGs still sitting
+in Common_Old are not loaded on this game version.
+
+RimWorld resolves a texture as loose file in any active mod FIRST, then base
+game resources, then AssetBundles — so a loose PNG beats a bundled asset
+regardless of which mod loads first. In this particular case the point is
+academic twice over, since the bundle contains no north texture to be beaten.
+
+If Outer Rim - Droid Depot ever ships its own MSE_north, this mod would still
+win by being loose, so unsubscribe it at that point.
+</description>
+
+  <modDependencies>
+    <li>
+      <packageId>Neronix17.OuterRim.DroidDepot</packageId>
+      <displayName>Outer Rim - Droid Depot</displayName>
+      <steamWorkshopUrl>steam://url/CommunityFilePage/3096501398</steamWorkshopUrl>
+    </li>
+  </modDependencies>
+</ModMetaData>

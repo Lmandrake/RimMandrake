@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ModMetaData>
+  <name>Research Kit East Fix — Research Reinvented (Retextured)</name>
+  <author>Mandrake</author>
+  <packageId>mandrake.researchkiteastfix</packageId>
+  <supportedVersions>
+    <li>1.6</li>
+  </supportedVersions>
+  <description>Restores the east-facing worn art of all four Research Reinvented field research kits.
+
+A pawn wearing a research kit and facing east wears nothing visible. All four kits are affected — simple, hi-tech, multi-analyzer and remote — and all four are fine facing north, south and west. No log line is possible: "Failed to find any textures at" fires only when EVERY direction of a Graphic_Multi is absent, and a present-but-transparent PNG is a completely successful load by every measure the engine has. This was found by decoding alpha channels, not by reading a log.
+
+Worse than merely missing: because a 0-alpha file EXISTS at that path, RimWorld's own east/west auto-mirroring never engages. Had the blank files simply been deleted the game would have drawn the west view flipped and nobody would ever have noticed. That is exactly the image this mod supplies.
+
+READ THIS BEFORE JUDGING THE LOAD ORDER — TWO MODS ARE INVOLVED
+
+The defs belong to Research Reinvented. The textures that actually render belong
+to Research Reinvented Retextured, which ships NO XML at all — it is a pure
+loose-texture replacer — and loads later, so it is what you see in game. The
+defect is present in both, in different shapes:
+
+  Research Reinvented ships a blank _east for ALL FOUR kits:
+      SimpleResearchKit_east          256x256    870 B   alpha max 0
+      HiTechResearchKit_east          256x256    870 B   alpha max 0
+      MultiAnalyzerResearchKit_east   256x256    870 B   alpha max 0
+      RemoteResearchKit_east          256x256    870 B   alpha max 0
+
+  Research Reinvented Retextured ships a blank _east for ONE kit and no _east
+  at all for the other three:
+      SimpleResearchKit_east          512x512   1514 B   alpha max 0
+      HiTechResearchKit_east          ABSENT
+      MultiAnalyzerResearchKit_east   ABSENT
+      RemoteResearchKit_east          ABSENT
+
+So the simple kit is blank at both layers, and the other three fall through
+Retextured's gap and land on Research Reinvented's blank 256x256 file. All four
+render nothing either way. Both mods ship LOOSE PNGs, so both must be beaten on
+load order, which is why both are named in loadAfter below.
+
+This mod's art is 512x512 — Retextured's canvas, not Research Reinvented's
+128x128/256x256 — because Retextured is what renders the other three facings and
+the east must match the set it sits in. With Retextured installed the four kits
+are consistent. Without it, this mod's east will be higher-resolution than the
+base mod's north, south and west; RimWorld scales to drawSize either way, so it
+renders correctly, but Retextured is the intended pairing.
+
+No defs are patched, no code runs, and neither donor mod is altered. This mod
+drops four loose PNGs at paths the defs already ask for.
+
+CONTENTS
+
+All four files are the matching Retextured _west flipped horizontally. No pixel
+is invented, and each is specifically the image RimWorld itself would have drawn
+had the blank file been absent. The generator is shipped in
+Source/mirror_research_kit_easts.py, and it refuses to run if a west donor is
+itself under 1% covered, so it cannot silently mirror a blank into a permanent
+one.
+
+  Things/Items/SimpleResearchKit/SimpleResearchKit_east
+      512x512, 22,470 bytes, 24.28% of canvas inked. Mirrored from Retextured's
+      SimpleResearchKit_west (512x512, 24,881 bytes, 24.28%). This is the one
+      kit whose east is blank in BOTH mods.
+
+  Things/Items/HiTechResearchKit/HiTechResearchKit_east
+      512x512, 24,008 bytes, 28.16% inked. Mirrored from Retextured's
+      HiTechResearchKit_west (512x512, 26,346 bytes, 28.16%). Retextured ships
+      no east for this kit; Research Reinvented's blank 256x256 one is what
+      renders without this mod.
+
+  Things/Items/MultiAnalyzerResearchKit/MultiAnalyzerResearchKit_east
+      512x512, 27,549 bytes, 25.42% inked. Mirrored from Retextured's
+      MultiAnalyzerResearchKit_west (512x512, 30,325 bytes, 25.42%). Same case
+      as the hi-tech kit.
+
+  Things/Items/RemoteResearchKit/RemoteResearchKit_east
+      512x512, 33,289 bytes, 30.48% inked. Mirrored from Retextured's
+      RemoteResearchKit_west (512x512, 36,630 bytes, 30.48%). Same case as the
+      hi-tech kit.
+
+Coverage matching its donor to two decimal places is the check that the flip is
+a flip and nothing else: a horizontal mirror preserves the alpha histogram
+exactly, so any drift would mean the file had been re-encoded or resized.
+
+WHERE THE DEFS ARE
+
+Research Reinvented's own ThingDefs ask for these paths as worn graphics:
+
+  v1.6/Defs/Apparel_FieldKits.xml
+    line  15  defName          RR_FieldResearchKitSimple
+    line  62  wornGraphicPath  Things/Items/SimpleResearchKit/SimpleResearchKit
+    line 106  defName          RR_FieldResearchKitHiTech
+    line 152  wornGraphicPath  Things/Items/HiTechResearchKit/HiTechResearchKit
+    line 196  defName          RR_FieldResearchKitMultiAnalyzer
+    line 245  wornGraphicPath  Things/Items/MultiAnalyzerResearchKit/MultiAnalyzerResearchKit
+    line 289  defName          RR_FieldResearchKitRemote
+    line 336  wornGraphicPath  Things/Items/RemoteResearchKit/RemoteResearchKit
+
+The separate texPath on each def (Things/Items/SimpleResearchKit and friends) is
+the Graphic_Single ground icon and is a different, healthy file. Only the worn
+directional set is affected.
+
+LOAD ORDER MATTERS HERE
+
+Both donors ship their art as loose PNGs, not in AssetBundles. Between two loose
+files at the same path RimWorld returns the asset from the LAST mod in the
+running order, so this mod must load AFTER both or a blank file wins and the
+repair is invisible. That is the opposite of an AssetBundle override, where a
+loose file wins regardless of order.
+
+Retextured additionally ships a .dds beside every .png. Within one mod RimWorld
+prefers the .dds, but across mods the later mod's asset still wins, so a loose
+.png here overrides Retextured's .dds as long as the ordering above holds.
+
+If either donor ever ships real art at these paths, this mod overrides it, so
+unsubscribe it at that point.
+</description>
+
+  <modDependencies>
+    <li>
+      <packageId>PeteTimesSix.ResearchReinvented</packageId>
+      <displayName>Research Reinvented</displayName>
+      <steamWorkshopUrl>steam://url/CommunityFilePage/2868392160</steamWorkshopUrl>
+    </li>
+  </modDependencies>
+
+  <loadAfter>
+    <li>PeteTimesSix.ResearchReinvented</li>
+    <li>aw.researchreinvented.retextured</li>
+  </loadAfter>
+</ModMetaData>

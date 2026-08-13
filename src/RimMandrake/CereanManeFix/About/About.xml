@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ModMetaData>
+  <name>Cerean Mane South Fix — Outer Rim: Galactic Diversity</name>
+  <author>Mandrake</author>
+  <packageId>mandrake.cereanmanefix</packageId>
+  <supportedVersions>
+    <li>1.6</li>
+  </supportedVersions>
+  <description>Restores the south-facing art of the "cerean mane" hairstyle in Outer Rim - Galactic Diversity.
+
+The file is not missing. It ships, it loads without complaint, and it is completely empty: 512x512 pixels of which zero have any alpha at all. A Cerean wearing this hairstyle therefore renders BALD from the front — the facing you see most of the time — while the north and east views are fine. No log line is possible: "Failed to find any textures at" fires only when EVERY direction of a Graphic_Multi is absent, and a present-but-transparent PNG is a completely successful load by every measure the engine has. It was found by decoding the alpha channel, not by reading a log.
+
+No defs are patched, no code runs, and Outer Rim - Galactic Diversity is not altered. This mod drops one loose PNG at the path the donor's own HairDef already asks for.
+
+CONTENTS
+
+  OuterRim/Hairs/Cerean/CereanMane_south
+      The front view of the Cerean mane crest. 512x512, 14,660 bytes, 5.68% of
+      the canvas inked.
+
+      THE DONOR'S ORIGINAL: present, 512x512, 1,514 bytes, alpha maximum 0 —
+      0 of 262,144 pixels carry any opacity. Its siblings are healthy for
+      comparison: CereanMane_north is 13,060 bytes at 7.19% coverage and
+      CereanMane_east is 11,809 bytes at 5.43%. Every other Cerean hairstyle in
+      the mod — Long, Pony, Tuft — ships three sound facings, so this is one
+      broken file, not a broken set.
+
+      HOW OURS WAS BUILT AND VERIFIED: drawn to the donor's own measured
+      conventions rather than to taste — 512x512 RGBA, a pure black keyline
+      11 px wide (measured on CereanMane_north at row y=300), and a vertical
+      greyscale fill running 247 at y=120 down to 181 at y=300. Registration
+      was derived from the mod's own healthy pairs: in every sound Cerean set
+      the south view shares the north's x-range and top edge and is shorter, so
+      this one is pinned to CereanMane_north's bounding box, x 195-317 with its
+      top at y=92. The generator is shipped in Source/draw_mane_south.py.
+
+WHERE THE DEF IS
+
+Outer Rim - Galactic Diversity's own HairDef asks for this exact path:
+
+  1.6/Defs/HairDefs/Hairs_Cerean.xml
+    line 37  defName  OuterRim_CereanMane
+    line 39  texPath  OuterRim/Hairs/Cerean/CereanMane
+
+NO LOAD ORDER REQUIREMENT — AND THAT IS DELIBERATE
+
+This mod deliberately declares no loadAfter, because it does not need one.
+
+On 1.6 Outer Rim - Galactic Diversity serves its art from an AssetBundle, not
+from loose files. Its LoadFolders.xml swaps the v1.4/v1.5 "Common_Old" folder
+for "Common" under v1.6, and Common/ holds nothing but
+AssetBundles/neronix17_outerrim_galacticdiversity. The loose Cerean PNGs that
+still sit in Common_Old are simply not loaded on this game version.
+
+RimWorld resolves a texture as loose file in any active mod FIRST, then base
+game resources, then AssetBundles — so a loose PNG beats a bundled asset
+regardless of which mod loads first. Ordering this mod would buy nothing.
+
+The defect does survive the bundling, which is the thing worth checking rather
+than assuming: the bundle manifest lists
+GalacticDiversity/Textures/OuterRim/Hairs/Cerean/CereanMane_south as an entry,
+so the empty texture is inside the bundle too and is what the game draws today.
+
+If Outer Rim - Galactic Diversity ever ships real art at this path, this mod
+would still win by being loose, so unsubscribe it at that point.
+</description>
+
+  <modDependencies>
+    <li>
+      <packageId>Neronix17.OuterRim.GalacticDiversity</packageId>
+      <displayName>Outer Rim - Galactic Diversity</displayName>
+      <steamWorkshopUrl>steam://url/CommunityFilePage/2980427615</steamWorkshopUrl>
+    </li>
+  </modDependencies>
+</ModMetaData>
