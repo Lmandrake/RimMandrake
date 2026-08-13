@@ -1479,8 +1479,11 @@ namespace JawaBench.BridgeTools
                 "debug menu's Spawn Pawn always spawns player-side, which is how a hostile " +
                 "test ends up standing next to the colony. Faction accepts a FactionDef " +
                 "defName, 'player', 'hostile' (any faction hostile to the player), or " +
-                "'none' for a wild/faction-less pawn.",
-            ResultDescription = "Returns the spawned pawn's id, faction, hostility and position.")]
+                "'none' for a wild/faction-less pawn. Pass xenotype to pin the pawn to a " +
+                "XenotypeDef instead of letting the kind and faction roll one.",
+            ResultDescription = "Returns the spawned pawn's id, faction, hostility, position " +
+                "and xenotype, plus a row for every pawn that FAILED to generate. success is " +
+                "false unless every requested pawn actually spawned.")]
         public static async Task<object> SpawnPawn(
             IRimBridgeContext ctx,
             CancellationToken cancellationToken,
@@ -1492,16 +1495,40 @@ namespace JawaBench.BridgeTools
             string faction = "hostile",
             [ToolParameter(Description = "How many to spawn, scattered near the cell.",
                 DefaultValue = 1)]
-            int count = 1)
+            int count = 1,
+            [ToolParameter(Description =
+                "XenotypeDef defName to FORCE, e.g. BTD_Jawa, OuterRim_Jawa, " +
+                "guy762_xenotype_jawa, Jawa_Xeno_Gamorrean. Needs Biotech. This goes through " +
+                "PawnGenerationRequest.ForcedXenotype, which PawnGenerator checks FIRST and " +
+                "returns immediately on, so it beats the kind's and the faction's own xenotype " +
+                "chances. Leave null to keep the pre-existing generation path exactly as it " +
+                "was.", DefaultValue = null)]
+            string xenotype = null)
         {
             if (string.IsNullOrWhiteSpace(kindDef)) return Fail("kindDef is required.");
             if (count < 1) count = 1;
             if (count > 50) return Fail($"count {count} > 50. Spawn fewer, or call again.");
 
+            // ⚠️ Same shape as the Ideology guard on set_pawn_style: without Biotech the
+            // whole xenotype system is inert, and a forced xenotype would be silently
+            // dropped while this tool reported the pawn it asked for.
+            if (!string.IsNullOrWhiteSpace(xenotype) && !ModsConfig.BiotechActive)
+                return Fail("xenotype needs Biotech. Refusing rather than spawning a " +
+                            "baseliner and calling it the xenotype you asked for.");
+
             return await ctx.MainThread.InvokeAsync<object>(() =>
             {
                 var map = Find.CurrentMap;
                 if (map == null) return Fail("No current map. Load a game first.");
+
+                XenotypeDef xeno = null;
+                if (!string.IsNullOrWhiteSpace(xenotype))
+                {
+                    xeno = DefDatabase<XenotypeDef>.GetNamedSilentFail(xenotype.Trim());
+                    if (xeno == null)
+                        return Fail($"No XenotypeDef named '{xenotype}'.",
+                            new { suggestions = DefSuggestions<XenotypeDef>(xenotype) });
+                }
 
                 var kind = DefDatabase<PawnKindDef>.GetNamedSilentFail(kindDef);
                 if (kind == null)
@@ -1552,6 +1579,7 @@ namespace JawaBench.BridgeTools
 
                 var size = map.Size;
                 var rows = new List<object>();
+                var landed = 0;
                 for (var i = 0; i < count; i++)
                 {
                     cancellationToken.ThrowIfCancellationRequested();
@@ -1588,7 +1616,23 @@ namespace JawaBench.BridgeTools
                     Pawn pawn;
                     try
                     {
-                        pawn = PawnGenerator.GeneratePawn(kind, fac);
+                        // No xenotype asked for -> the ORIGINAL call, byte for byte.
+                        // A xenotype needs the request overload, and the request must
+                        // come from the real constructor: PawnGenerationRequest carries
+                        // _calledTheCorrectConstructor and ValidateAndFix logs
+                        // "was not created through the correct constructor" for a
+                        // default(...) or object-initialiser-only struct.
+                        // Context 2 = NonPlayer, which is what GeneratePawn(kind, faction)
+                        // itself passes (ldc.i4.2 at IL_0004).
+                        pawn = xeno == null
+                            ? PawnGenerator.GeneratePawn(kind, fac)
+                            : PawnGenerator.GeneratePawn(
+                                new PawnGenerationRequest(kind, fac,
+                                                          PawnGenerationContext.NonPlayer)
+                                {
+                                    ForcedXenotype = xeno,
+                                    ForceBaselinerChance = 0f
+                                });
                     }
                     catch (Exception ex)
                     {
@@ -1606,23 +1650,47 @@ namespace JawaBench.BridgeTools
                         continue;
                     }
                     GenSpawn.Spawn(pawn, cell, map);
+
+                    // Read the xenotype back off the pawn. Asking for one and not
+                    // getting it is a FAILED row, not a footnote -- a forced xenotype
+                    // that quietly fell back to Baseliner is the exact silent success
+                    // this tool exists to prevent.
+                    var xenoNow = pawn.genes?.Xenotype?.defName;
+                    var xenoOk = xeno == null || xenoNow == xeno.defName;
+                    if (pawn.Spawned && xenoOk) landed++;
+
                     rows.Add(new
                     {
+                        ok = pawn.Spawned && xenoOk,
                         id = pawn.ThingID,
                         name = pawn.Name?.ToStringShort ?? pawn.LabelShortCap,
                         faction = pawn.Faction?.def?.defName,
                         hostile = pawn.Faction != null && pawn.Faction.HostileTo(Faction.OfPlayer),
                         x = pawn.Position.x,
                         z = pawn.Position.z,
-                        spawned = pawn.Spawned
+                        spawned = pawn.Spawned,
+                        xenotype = xenoNow,
+                        xenotypeRequested = xeno?.defName,
+                        xenotypeApplied = xenoOk
                     });
                 }
 
+                // ⚠️ This used to be `rows.Count > 0`. Rows are added for pawns that
+                // THREW during generation too, so a batch in which every single pawn
+                // failed reported success: true. Only rows that actually spawned --
+                // with the xenotype asked for, if one was -- count.
                 return new
                 {
-                    success = rows.Count > 0,
-                    message = $"Spawned {rows.Count} {kind.defName} in faction " +
-                              $"{fac?.def?.defName ?? "(none)"}.",
+                    success = landed > 0 && landed == rows.Count,
+                    message = $"Spawned {landed}/{rows.Count} {kind.defName} in faction " +
+                              $"{fac?.def?.defName ?? "(none)"}" +
+                              (xeno != null ? $" as {xeno.defName}" : "") + "." +
+                              (landed == rows.Count ? "" :
+                               $" ⚠️ {rows.Count - landed} did not spawn as asked -- see the " +
+                               "rows with ok:false."),
+                    spawnedCount = landed,
+                    failedCount = rows.Count - landed,
+                    xenotypeRequested = xeno?.defName,
                     pawns = rows,
                     ticksGame = Find.TickManager?.TicksGame ?? -1
                 };
@@ -2159,6 +2227,162 @@ namespace JawaBench.BridgeTools
                     turned = applied,
                     notVisible = hidden,
                     locked = !unlock && lockRotation,
+                    pawns = rows,
+                    ticksGame = Find.TickManager?.TicksGame ?? -1
+                };
+            }, cancellationToken).ConfigureAwait(false);
+        }
+
+        [Tool(
+            "jawa/set_pawn_xenotype",
+            Description =
+                "Convert already-spawned pawns to a XenotypeDef in place, so a xenotype's art, " +
+                "genes and apparel fit can be audited without regenerating pawns until one " +
+                "rolls right. This is exactly what the vanilla dev 'Set xenotype' action does " +
+                "-- DebugToolsPawns.SetXenotype's per-def closure is pawn.genes?.SetXenotype(def) " +
+                "and nothing else -- so the appearance refresh comes for free: SetXenotype adds " +
+                "the xenotype's genes, AddGene calls Notify_GenesChanged, and that ends in " +
+                "PawnRenderer.SetAllGraphicsDirty. ⚠️ SetXenotype clears XENOgenes only. An " +
+                "inheritable xenotype's genes land as ENDOgenes and survive a later conversion, " +
+                "so converting a pawn twice leaves the first xenotype's genes behind -- pass " +
+                "clearEndogenes to strip them. Xenotypes present on this stack include " +
+                "BTD_Jawa (inheritable, the one our Jawa patches target), OuterRim_Jawa, " +
+                "guy762_xenotype_jawa and Jawa_Xeno_Gamorrean. Needs Biotech: " +
+                "Pawn_GeneTracker.SetXenotype opens with ModLister.CheckBiotech and RETURNS " +
+                "when it is absent.",
+            ResultDescription =
+                "Returns per pawn the before/after xenotype READ BACK OFF THE PAWN, the gene " +
+                "counts either side, and whether stale endogenes remain. success is false " +
+                "unless every pawn reads back the xenotype asked for.")]
+        public static async Task<object> SetPawnXenotype(
+            IRimBridgeContext ctx,
+            CancellationToken cancellationToken,
+            [ToolParameter(Description =
+                "One ThingID, a comma-separated list, 'all' or 'colonists'.")]
+            string pawnId,
+            [ToolParameter(Description =
+                "XenotypeDef defName, e.g. BTD_Jawa, OuterRim_Jawa, Baseliner.")]
+            string xenotype,
+            [ToolParameter(Description =
+                "Remove every existing ENDOgene before converting. RimWorld's own action does " +
+                "not do this, so it is off by default -- but without it a pawn converted away " +
+                "from an inheritable xenotype keeps that xenotype's genes and is a hybrid " +
+                "wearing the new label.", DefaultValue = false)]
+            bool clearEndogenes = false)
+        {
+            if (string.IsNullOrWhiteSpace(xenotype)) return Fail("xenotype is required.");
+
+            // ⚠️ Pawn_GeneTracker.SetXenotype opens with ModLister.CheckBiotech and
+            // returns. Without this guard the tool would report a conversion that
+            // could not have happened -- the same failure the Ideology guard on
+            // set_pawn_style exists to prevent.
+            if (!ModsConfig.BiotechActive)
+                return Fail("Xenotypes need Biotech, and RimWorld's SetXenotype silently " +
+                            "returns when it is absent. Refusing rather than reporting a " +
+                            "change that cannot happen.");
+
+            return await ctx.MainThread.InvokeAsync<object>(() =>
+            {
+                var map = Find.CurrentMap;
+                if (map == null) return Fail("No current map. Load a game first.");
+
+                var xeno = DefDatabase<XenotypeDef>.GetNamedSilentFail(xenotype.Trim());
+                if (xeno == null)
+                    return Fail($"No XenotypeDef named '{xenotype}'.",
+                        new { suggestions = DefSuggestions<XenotypeDef>(xenotype) });
+
+                object err;
+                var pawns = ResolvePawns(map, pawnId, out err);
+                if (pawns == null) return err;
+
+                var rows = new List<object>();
+                var applied = 0;
+                foreach (var pawn in pawns)
+                {
+                    cancellationToken.ThrowIfCancellationRequested();
+
+                    // Animals and mechs have no gene tracker at all; touching it is an NRE.
+                    if (pawn.genes == null)
+                    {
+                        rows.Add(new
+                        {
+                            id = pawn.ThingID,
+                            name = pawn.LabelShortCap,
+                            ok = false,
+                            error = "NoGeneTracker",
+                            message = "This pawn has no Pawn_GeneTracker (not a gene-bearing " +
+                                      "humanlike), so it cannot have a xenotype."
+                        });
+                        continue;
+                    }
+
+                    var was = pawn.genes.Xenotype?.defName;
+                    var wasCustom = pawn.genes.UniqueXenotype;
+                    var endoBefore = pawn.genes.Endogenes?.Count ?? 0;
+                    var xenoBefore = pawn.genes.Xenogenes?.Count ?? 0;
+
+                    var endogenesCleared = 0;
+                    if (clearEndogenes && pawn.genes.Endogenes != null)
+                    {
+                        // Copy first: RemoveGene mutates the list being walked.
+                        foreach (var g in pawn.genes.Endogenes.ToList())
+                        {
+                            pawn.genes.RemoveGene(g);
+                            endogenesCleared++;
+                        }
+                    }
+
+                    pawn.genes.SetXenotype(xeno);
+
+                    // SetXenotype refreshes the graphics only as a side effect of
+                    // AddGene -> Notify_GenesChanged -> SetAllGraphicsDirty. A
+                    // xenotype with NO genes (Baseliner) therefore adds nothing and
+                    // dirties nothing, and the pawn keeps drawing its old look.
+                    if (pawn.Spawned && pawn.Drawer?.renderer != null)
+                        pawn.Drawer.renderer.SetAllGraphicsDirty();
+
+                    var now = pawn.genes.Xenotype?.defName;
+                    var ok = now == xeno.defName;
+                    if (ok) applied++;
+
+                    var endoAfter = pawn.genes.Endogenes?.Count ?? 0;
+                    var xenoAfter = pawn.genes.Xenogenes?.Count ?? 0;
+                    // Genes the new xenotype did not put there. Only meaningful for a
+                    // non-inheritable xenotype, whose own genes are all xenogenes.
+                    var stale = !xeno.inheritable && endoAfter > 0;
+
+                    rows.Add(new
+                    {
+                        id = pawn.ThingID,
+                        name = pawn.LabelShortCap,
+                        ok,
+                        was,
+                        now,
+                        requested = xeno.defName,
+                        wasUniqueXenotype = wasCustom,
+                        inheritable = xeno.inheritable,
+                        genesInDef = xeno.genes?.Count ?? 0,
+                        endogenesBefore = endoBefore,
+                        endogenesAfter = endoAfter,
+                        xenogenesBefore = xenoBefore,
+                        xenogenesAfter = xenoAfter,
+                        endogenesCleared,
+                        hybrid = pawn.genes.hybrid,
+                        staleEndogenes = stale,
+                        rendered = pawn.Spawned,
+                        note = stale
+                            ? "Endogenes survive SetXenotype: these came from an earlier " +
+                              "inheritable xenotype. Pass clearEndogenes to strip them."
+                            : null
+                    });
+                }
+
+                return new
+                {
+                    success = rows.Count > 0 && applied == rows.Count,
+                    message = $"Converted {applied}/{rows.Count} pawn(s) to {xeno.defName}.",
+                    xenotype = xeno.defName,
+                    pawnsChanged = applied,
                     pawns = rows,
                     ticksGame = Find.TickManager?.TicksGame ?? -1
                 };
