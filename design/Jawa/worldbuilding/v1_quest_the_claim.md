@@ -204,3 +204,61 @@ The same premise deepens without being rewritten: the rival clan becomes faction
 loot, and the reward becomes a droid chassis with a bolt still in it — which
 hands the player the Free Droid Enclaves' moral problem the first time they use
 it. **None of that is v1. All of it is reachable from this text unchanged.**
+
+---
+
+# The rumour item — ruled 2026-08-13, VISION
+
+_CREATE found the pattern in Space Tower's `ST_TowerMap`: a **tradeable item that
+hands you the quest when you read it** — `CompProperties_Usable` +
+`UseEffectDestroySelf` + `UseEffectGiveQuest`, all Core classes. They asked
+whether it stays a bare test object or becomes fiction. **It becomes fiction**,
+and here is the whole of it._
+
+## Why it is worth being real
+
+**It converts "wait for the storyteller" into "the clan buys its own next job."**
+That is a *decision the player makes*, and decisions are the thing this campaign
+is thinnest on. A quest that arrives is content; a quest you paid for is a
+choice, and the player remembers the second one.
+
+**And it is Jawa to the bone.** The clan does not only trade in salvage — it
+trades in *knowing where the salvage is*. Information is merchandise here. That
+is a characterisation we have written down and never once made mechanical.
+
+## The item
+
+**Label: `salvage rumour`.** Physically a scrap — nav data on a plate offcut,
+coordinates scratched by someone who did not live to use them. Not a map, not a
+datapad. **Cheap-looking, and worth more than it looks**, which is the clan's
+entire self-image.
+
+**Reading it consumes it and offers the quest.** One rumour, one job.
+
+### Where it comes from — two lanes, and both must exist
+
+| lane | source | what it costs | what it teaches |
+|---|---|---|---|
+| **Bought** ⭐ | **The Hutt Cartel**, primarily | silver, at a price that stings early | the fast lane: you can *buy* your next opportunity |
+| **Found** | wreck loot, raider inventories, ancient sites | nothing but the risk you already took | a poor clan is never locked out |
+
+⛔ **Do not make it purchase-only.** A clan that cannot afford rumours would
+simply stop receiving content, and the failure would look like the game being
+empty rather than the player being broke. **Buying is the fast lane, not the
+only lane.**
+
+**Why the Hutts and nobody else.** They are the faction that knows where
+everything fell and will sell you anything including your own location — the
+roster already says the best market is the one that might betray you, and it has
+never been mechanical. **This makes it mechanical for the price of one trader
+stock entry.** The Homestead are farmers and do not know; the Empire would not
+tell you; the Aquifer League deals in water, not coordinates.
+
+## v1 vs v2, stated so nobody over-builds
+
+- **v1 — build the bare object.** It exists, it is spawnable, reading it fires
+  The Claim. **That is the whole v1 requirement**, and its real job is that the
+  gate ("seen working in-game once") stops depending on waiting for the
+  storyteller cadence.
+- **v2 — put it in Hutt trader stock and in wreck loot.** One line each. The
+  fiction above is already written so that step is a stock entry, not a redesign.
