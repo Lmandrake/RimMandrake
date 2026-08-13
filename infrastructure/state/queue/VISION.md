@@ -290,3 +290,48 @@ of the hole subtraction alone would leave.
 ⚠️ Related and already ruled: the **Junkers lose `permanentEnemy`** and the
 **Imperial Droid Army no longer exists** — the Galactic Empire is the pursuer.
 Both change who is on that keep list.
+
+---
+
+## Filed by OPS, 2026-08-13 — PLAYER-ZERO PROPOSITION: cut the Predator family
+
+**Evidence in, decision out. This is yours to rule on, not mine.**
+
+Two independent lines converged on the same mod family today, which is why I am
+raising it rather than filing it as noise.
+
+**1. Fiction.** Four Yautja factions own **14 settlements** between them —
+`ABYautjaBadBloodClan` (5), `ABYautjaBerserkClan` (4), `ABYautjaClan` (4),
+`ABYautjaModderClan` (1). Measured from the last world's `<factionManager>`.
+**That is the single largest non-Star-Wars presence on the map.** A Jawa
+scavenger campaign that keeps running into Predator clans is not the fiction
+`V1_SCOPE.md` describes.
+
+**2. It is also the only mod in the stack emitting a texture defect.**
+`[AB] Xenotype: Yautja` (`biotechrace.yautja.alleyballey`, workshop `3536839586`)
+owns all **14** `Exception getting Verse.Graphic_Multi at :` errors in the 10:04
+log — one malformed `<bodyGraphicData>` at `PawnKinds_BaseAbstract.xml:60`,
+7 kinds × 2 lifeStages. Full derivation: `vendor/wisdom/benign_log_errors.md`
+§1.12.
+
+⚖️ **The honest case AGAINST cutting it, because it should not be a walkover:**
+the errors are **harmless** — I waived them, the player sees nothing, and they
+cost one cached lookup at load. So this is a **taste call, not a defect fix**,
+and it should be decided on fiction alone. Do not let the 14 errors do work they
+cannot do.
+
+**Two different levers, and they are not interchangeable:**
+- **The four FACTIONS** can be unticked at worldgen — free, no mod change, no
+  load. That is already on the checklist I drafted at
+  `infrastructure/state/WORLDGEN_FACTION_CHECKLIST.md`.
+- **The XENOTYPE MOD** is a separate decision. Removing it is the only thing that
+  clears §1.12, but it costs a game-down window and risks
+  `Could not resolve cross-reference` on anything referencing Yautja defs.
+  ⚠️ **`Jawa_Armoury` has an open item (O10) that measures a Yautja blade
+  (AP 0.60) as the mid-tier reference point between saber and vibro.** If the mod
+  goes, that comparison loses its middle tier. Not a blocker — say the word and I
+  re-anchor O10 on something else — but decide it knowingly.
+
+**My recommendation:** untick the four factions at worldgen (free, reversible,
+does the fiction work), and **keep the mod installed** for now. That gets you
+~all the benefit at zero cost and defers the irreversible half.

@@ -283,6 +283,48 @@ Minerals Rock\1.6\Defs\ThingDefs_Rocks\Basalt.xml
 **Owner:** Minerals Rock. A float written where the field is an int; the engine
 truncates to 1 and continues. Cosmetic.
 
+### 1.12 `Exception getting Verse.Graphic_Multi at :` ×14 — Yautja pawn kinds
+```
+Exception getting Verse.Graphic_Multi at :
+```
+Note the **empty path after "at"** — the request carries a null `texPath`.
+
+**Owner:** `[AB] Xenotype: Yautja` (`biotechrace.yautja.alleyballey`, workshop
+`3536839586`). **ONE defect, 14 symptoms:** `PawnKinds_BaseAbstract.xml:60`,
+`BaseYautjaPawnKind`, writes a `<bodyGraphicData>` holding only `<drawSize>` and
+no `<texPath>` — 7 loaded kinds × 2 lifeStages = 14.
+
+🔴 **The stack trace can NEVER name the caller here**, so do not try to attribute
+this one from the trace: RimWorld prints the exception, which unwinds only to the
+`catch` inside `GraphicDatabase.Get`. **Attribute it from the def dump instead** —
+exactly 14 `GraphicData` objects across all 528 dump files have `graphicClass
+Graphic_Multi` with a null `texPath`, all from this mod, each left holding
+`cachedGraphic = "UI/Misc/BadTexture"` (= `BaseContent.BadGraphic`, the value that
+catch returns). Count and end-state both match, which is what closes it.
+
+**BetterTrees is EXONERATED.** It sits adjacent in the log and was the obvious
+suspect; no tree def appears in the null scan. Adjacency is not attribution
+(§4b.1).
+
+**Player sees nothing.** `bodyGraphicData` is read only by
+`PawnRenderNode_AnimalPart`; `ABAlien_Yautja` is `intelligence Humanlike` /
+`renderTree Humanlike`, whose body node resolves from
+`bodyType.bodyNakedGraphicPath`. Cached, so one-shot at load. **Waiver.**
+⚠️ Upstream bug worth reporting to the author. Also note this mod is a
+**removal candidate on fiction grounds** (Predator, wrong franchise).
+
+### 1.13 ReGrowth Core `RecolorMineables` NullReferenceException ×1
+**Owner:** `ReGrowth.BOTR.Core` (workshop `2260097569`), *Perspective: Ores*.
+`thing.Graphic.data` is null for one resource rock (IL_0064
+`ldfld GraphicData::graphicClass`, offset 0x62).
+
+⚠️ **NOT a clean one-shot, despite firing once.** There is no `catch` in the
+method, so the throw **aborts the whole recolor loop** — every lump after the bad
+rock stays vanilla-coloured — and it re-runs on every `Map.FinalizeInit`. Only
+`Thing.graphicInt` is written, so nothing persists to the save.
+
+Cosmetic. **Waiver.** (§6's retraction does not cover this phrasing.)
+
 ---
 
 ## 2. RESOLVED — kept for the record, do not re-investigate
