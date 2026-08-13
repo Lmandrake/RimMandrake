@@ -346,3 +346,47 @@ authored mod of ours references it (full sweep of `src/Jawa/` and
 (`design/Jawa/force_users_build_spec.md`, Jedi/Sith, owner-flagged joint build)
 was mined from Force mods that were supposed to be uninstalled. If the owner
 subscribed one deliberately, installing is the right fix, not removing.
+
+---
+
+## From BRIDGE 2026-08-13 — three identical "Jawa" rows in the xenotype picker
+
+**Not a bug, a load-set decision, so it is yours and not mine.** The owner
+reports seeing one Jawa when picking a xenotype. There are three, and they are
+adjacent in the list with the same caption.
+
+Evidence — the live def dump, `DefDump/defs/XenotypeDef.json`, captured
+2026-08-13 14:51 UTC on game 1.6.4871, 250 XenotypeDefs:
+
+| defName | label | genes | mod | ModsConfig # |
+|---|---|---|---|---|
+| `OuterRim_Jawa` | `jawa` | 8 | Outer Rim - Galactic Diversity | 545 |
+| `guy762_xenotype_jawa` | `Jawa` | 18 | Star Wars Xenotypes | 549 |
+| `BTD_Jawa` | `Jawa` | 24 | [BTD] Xenotype REMIX: Star Wars | 562 |
+
+All three active in `ModsConfig.xml`. No defName collision, nothing overwrites
+anything, and no field gates UI display — `inheritable=true`,
+`displayPriority=0`, `canGenerateAsCombatant=true` on all three. Two share a
+byte-identical icon (`OuterRim/XenotypeIcons/Xenotype_Jawa`).
+
+**Why it matters:** our tuning patches
+(`src/Jawa/Jawa_Patches/Patches/JawaAppearance_Tuning.xml`,
+`JawaCombatViability_Tuning.xml`) xpath `XenotypeDef[defName="BTD_Jawa"]` and
+nothing else. Picking either of the other two silently gets an UNTUNED Jawa.
+The `OuterRim_Jawa` / `OuterRim_JawaTribal` PawnKindDefs pin `OuterRim_Jawa` at
+chance 1, so pawnkind-driven spawns take a different Jawa than the one we tune.
+
+**Systemic, not Jawa-specific:** the three Star Wars mods triplicate ~100
+species — 3x chiss, 3x bothan, 3x ewok, 3x ithorian.
+
+**Suggested fix, yours to rule on:** a `PatchOperationRemove` on the two we do
+not use, or relabel them so they are distinguishable in the list. Removing is
+the cleaner story only if nothing else references them — the pawnkind pin above
+says something does, so check before removing.
+
+**Already checked, do not repeat:** ModsConfig active-state for all three; the
+full 250-def dump for duplicate defNames (none); our own patches for any
+XenotypeDef removal (none — they only add/remove `genes/li` inside `BTD_Jawa`).
+
+**Not verified live:** nobody has opened the picker and counted rows. Expect 3
+filtered on "jawa". BRIDGE can drive that the next time the game is up.
