@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ModMetaData>
+  <name>Astronaut North Fix — Vanilla Gravship Expanded</name>
+  <author>Mandrake</author>
+  <packageId>mandrake.gravshipastronautfix</packageId>
+  <supportedVersions>
+    <li>1.6</li>
+  </supportedVersions>
+  <description>Restores the north-facing art of the VGE_Astronaut mechanoid in Vanilla Gravship Expanded - Chapter 1.
+
+The art is not missing and it is not broken. Both north textures ship complete inside the donor mod — they are simply saved under a misspelled filename, "Astrronaut" with a double R, so the game never finds them. RimWorld's Graphic_Multi silently falls back to the south texture when a direction is absent, which is why an astronaut walking away from you faces you: you are looking at its front view, mirrored onto its back.
+
+No defs are patched, no code runs, and Vanilla Gravship Expanded is not altered. This mod ships the donor's own bytes, unmodified, at the two filenames its own PawnKindDef already asks for.
+
+CONTENTS
+
+  Things/Pawns/Mechanoid/Astronaut/MechAncient_Astronaut_north
+      The astronaut's second life stage, north facing. 256x256, 18,453 bytes,
+      byte-for-byte the donor's own Textures/Things/Pawns/Mechanoid/Astronaut/
+      MechAncient_Astrronaut_north.png. Nothing was redrawn, re-encoded or
+      resized. Without it, an ancient astronaut renders its front while
+      walking away.
+
+  Things/Pawns/Mechanoid/Astronaut/Allegiance_Mech_Astronaut_north
+      The paired allegiance mask, north facing. 256x256, 2,097 bytes, likewise
+      copied verbatim from the donor's Allegiance_Mech_Astrronaut_north.png.
+      The PawnKindDef declares shaderType CutoutWithOverlay and uses this mask
+      for BOTH life stages, so the same typo also strips the faction-colour
+      overlay from the north view of the ordinary astronaut, whose own
+      Mech_Astronaut_north.png is named correctly and does render.
+
+WHERE THE TYPO IS
+
+Vanilla Gravship Expanded's own PawnKindDef VGE_Astronaut asks for the correct
+spelling in both life stages:
+
+  1.6/Mods/Biotech/Defs/ThingDefs_RacesMechanoids/Races_Astronaut.xml
+    line 70  texPath   Things/Pawns/Mechanoid/Astronaut/Mech_Astronaut
+    line 71  maskPath  Things/Pawns/Mechanoid/Astronaut/Allegiance_Mech_Astronaut
+    line 79  texPath   Things/Pawns/Mechanoid/Astronaut/MechAncient_Astronaut
+    line 80  maskPath  Things/Pawns/Mechanoid/Astronaut/Allegiance_Mech_Astronaut
+
+Only the two files on disk are misspelled. The east and south files of every
+set are named correctly, which is why only the north facing is affected.
+
+The defect cannot appear in the log. "Failed to find any textures at" fires only
+when EVERY direction of a Graphic_Multi is missing; one absent direction is a
+silent fallback.
+
+LOAD ORDER MATTERS HERE
+
+Vanilla Gravship Expanded ships the astronaut art as loose PNGs under its root
+Textures/ folder, not inside its AssetBundle — the bundle manifest contains no
+astronaut entry at all. Between two loose files at the same path RimWorld
+resolves by load order, so this mod must load AFTER the donor. That is the
+opposite of an AssetBundle override, where a loose file wins regardless of
+order.
+
+If Vanilla Gravship Expanded ever corrects the filenames upstream, this mod
+becomes a harmless no-op that supplies the same bytes, and can be unsubscribed.
+</description>
+
+  <modDependencies>
+    <li>
+      <packageId>vanillaexpanded.gravship</packageId>
+      <displayName>Vanilla Gravship Expanded - Chapter 1</displayName>
+      <steamWorkshopUrl>steam://url/CommunityFilePage/3609835606</steamWorkshopUrl>
+    </li>
+  </modDependencies>
+
+  <loadAfter>
+    <li>vanillaexpanded.gravship</li>
+  </loadAfter>
+</ModMetaData>

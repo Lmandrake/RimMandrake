@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ModMetaData>
+  <name>Center Frill North Fix — Vanilla Races Expanded: Saurid</name>
+  <author>Mandrake</author>
+  <packageId>mandrake.sauridfrillfix</packageId>
+  <supportedVersions>
+    <li>1.6</li>
+  </supportedVersions>
+  <description>Restores the north-facing art of the "littlefoot" center frill in Vanilla Races Expanded - Saurid.
+
+The art is not missing and it is not broken. The north texture ships complete inside the donor mod — it is simply saved with a stray trailing hyphen in its filename, "CenterFrill8_north-.png", so the game never finds it. RimWorld's Graphic_Multi silently falls back to the south texture when a direction is absent, so a saurid with this frill shows the FRONT of its head-crest while facing away from you.
+
+No defs are patched, no code runs, and Vanilla Races Expanded - Saurid is not altered. This mod ships the donor's own bytes, unmodified, at the filename its own HairDef already asks for.
+
+CONTENTS
+
+  Pawn/CenterFrill/CenterFrill8_north
+      The north facing of the littlefoot frill. 128x128, 1,051 bytes,
+      byte-for-byte the donor's own Textures/Pawn/CenterFrill/
+      CenterFrill8_north-.png. Nothing was redrawn, re-encoded or resized.
+
+WHERE THE TYPO IS
+
+Vanilla Races Expanded - Saurid's own HairDef asks for the unhyphenated path:
+
+  1.6/Defs/HairDefs/HairDefs_Saurid.xml
+    line 68  defName  VRESaurids_Littlefoot
+    line 70  texPath  Pawn/CenterFrill/CenterFrill8
+
+CenterFrill8 is the only one of the eleven frills affected. Its own _east and
+_south are named correctly, and every sibling set — CenterFrill through
+CenterFrill10, notably CenterFrill7 right beside it — ships a clean
+"CenterFrillN_north.png". CenterFrill7_north.png is the naming pattern this
+file was copied to.
+
+The defect cannot appear in the log. "Failed to find any textures at" fires only
+when EVERY direction of a Graphic_Multi is missing; one absent direction is a
+silent fallback.
+
+LOAD ORDER MATTERS HERE
+
+Vanilla Races Expanded - Saurid ships all of its art as loose PNGs — the mod
+contains no AssetBundles at all. Between two loose files at the same path
+RimWorld resolves by load order, so this mod must load AFTER the donor. That is
+the opposite of an AssetBundle override, where a loose file wins regardless of
+order.
+
+If Vanilla Races Expanded - Saurid ever corrects the filename upstream, this mod
+becomes a harmless no-op that supplies the same bytes, and can be unsubscribed.
+</description>
+
+  <modDependencies>
+    <li>
+      <packageId>vanillaracesexpanded.saurid</packageId>
+      <displayName>Vanilla Races Expanded - Saurid</displayName>
+      <steamWorkshopUrl>steam://url/CommunityFilePage/2880990495</steamWorkshopUrl>
+    </li>
+  </modDependencies>
+
+  <loadAfter>
+    <li>vanillaracesexpanded.saurid</li>
+  </loadAfter>
+</ModMetaData>
