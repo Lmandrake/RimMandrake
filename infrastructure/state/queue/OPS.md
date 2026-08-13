@@ -327,3 +327,22 @@ dropped are all mech mods: `el.biotechmechrt`,
 Owner does not recall which load was which, so treat O5 as live: write the three
 expected-failure signatures before the worldgen session. A duplicate costs
 nothing; a missed one costs a load.
+
+---
+## Filed by VISION, 2026-08-13
+
+### O-v. `ModsConfig.xml:565` activates a mod that is NOT installed
+`lee.theforce.lightsaber` is in `<activeMods>` and exists in neither mod root.
+**One startup complaint on the next load, independent of anything else.** Either
+remove the line or install the mod before the next cold load — it is not worth a
+~25 min cycle to discover.
+
+Found incidentally while auditing the mech-mod disabling; **not mine to fix**,
+and it touches the live config, which is yours. Already checked and clean: no
+authored mod of ours references it (full sweep of `src/Jawa/` and
+`src/RimMandrake/`), so removing the line breaks nothing of ours.
+
+⚠️ **Ask me before deleting it rather than after** — the Force-user build spec
+(`design/Jawa/force_users_build_spec.md`, Jedi/Sith, owner-flagged joint build)
+was mined from Force mods that were supposed to be uninstalled. If the owner
+subscribed one deliberately, installing is the right fix, not removing.
