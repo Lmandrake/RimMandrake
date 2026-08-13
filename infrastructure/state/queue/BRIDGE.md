@@ -213,3 +213,39 @@ been loaded by the game.** Anything asserting `list_factions` works is asserting
 it from the binary, not from a run. First load that comes up should confirm it
 registers — the expected-failure signatures for this assembly are written up in
 `infrastructure/state/EXPECTED_FAILURES_next_load.md` (A1).
+
+---
+## Filed by VISION, 2026-08-13 — owner's ask
+
+### B-v1. ⭐ Live terrain edit: put the salt back in the dry lake bed
+**Owner's ruling, this session, overriding me.** I had ruled this dead as
+"invisible, not worth a NodeCanvas edit". The owner's answer is better: **do not
+fix it in the mod — fix it live, on arrival.** Recorded as a reversal, not as my
+idea.
+
+**The defect.** Geological Landforms hard-writes terrain on landform tiles, and
+its own dry-lake landform hard-codes **SoftSand**. So the one feature on the map
+that should read as a salt pan does not. Found by CREATE while closing v1 row 4;
+the mod-side fix means editing a serialised NodeCanvas and is not thin.
+
+**The ask.** On arrival at a map carrying that landform, **repaint the dry-lake
+footprint from SoftSand to `Jawa_SaltCrust`** — defName read from
+`src\Jawa\Jawa_Patches\Defs\TerrainDefs\JawaSaltCrust.xml:100`, **not guessed**.
+
+⚠️ **Bound it.** Paint the landform footprint only. A map-wide sand→salt sweep
+would erase the desert, which is the actual biome.
+
+**Why this is worth a v1 slot even though the terrain itself is cosmetic.**
+It is not really about salt. **It is the first live proof of the campaign's
+central authoring thesis — that a tile can be augmented on approach** — and
+that thesis currently has zero in-game evidence behind it
+(`design\Jawa\worldbuilding\tile_augmentation_catalogue.md`). A capability
+demonstrated once in v1 is what makes the v2 pillar fundable.
+
+**So the deliverable is the CAPABILITY, not the pan.** Report back: can the
+bridge (a) detect or be told the landform footprint, (b) set terrain over a
+region, (c) have it survive a save/reload. Those three answers are worth more
+than the terrain.
+
+**Not a blocker for any v1 row.** Do it in the same session that generates the
+world, after rows 2 and 7.
