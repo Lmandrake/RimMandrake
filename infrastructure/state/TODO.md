@@ -882,3 +882,41 @@ increasingly live in C# rather than XML.
 ⚠️ **The working version was never saved** — I widened the filter in a throwaway
 copy to check the claim, and the scratchpad is `tmpfs`. Whoever takes this
 re-applies a two-line change; nothing is lost but nothing is banked either.
+
+---
+
+## 21. [?] Two donor mask filenames carry an underscore RimWorld will never look for `[v2]`
+
+**Found by CREATE while building C5's `BlastDoorFrameAsyncFix`, 2026-08-13. Not
+mine to fix — it is a different texture slot from the one I was authoring, and
+fixing it is a second override mod.**
+
+In *Doors Expanded Star Wars edition* (`Lumi.doorsexpanded`, ws `3550435517`),
+under `Textures/Things/Building/Door/Blast/`:
+
+```
+SWDoorBlastBDoor_Frame_east_m.png     <- underscore before the m
+SWDoorBlastDDoor_Frame_east_m.png     <- same
+```
+
+RimWorld builds a `CutoutComplex` mask path as `texPath + "_eastm"`, with **no
+underscore**, so neither file is ever loaded. Both doors' **ordinary** east
+frames therefore tint through the **north** mask today — a different canvas and a
+different layout.
+
+**Verified before filing:** all three affected defs (`PH_DoorThickBlastBDoor`
+L288, `PH_DoorBlastCDoor` L372, `PH_DoorBlastDDoor` L456 in
+`.../3550435517/Defs/ThingDef_Building/Heron_Doors.xml`) declare
+`shaderType CutoutComplex`, so a mask is genuinely wanted; and base Doors
+Expanded ships `DoorBlastDoor_FrameAsync_eastm.png` for the sibling slot,
+confirming the correct spelling has no underscore.
+
+**Checked and CLEAN, so nobody repeats it:** the `_eastm` files we ship in
+`src/RimMandrake/BlastDoorFrameAsyncFix/` are spelled correctly and are a
+different slot (`doorFrameSplit`, not `doorFrame`) — this defect is untouched by
+that mod either way. There is **no log signal** for it: a missing mask is not an
+error, it silently falls back.
+
+**Fix if taken:** ship both files at the correct name in a `Lumi.doorsexpanded`
+override mod — same bytes, no art to draw, exactly the C6 shape. `[v2]`, because
+it is a tint artefact on one facing of two doors, not a missing texture.
