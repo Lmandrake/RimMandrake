@@ -25,20 +25,42 @@
      ⚠️ Those comps are USED by Biotech defs but the classes live in
      Assembly-CSharp, so this needs no DLC. Nothing here references a Biotech def.
 
-     ⚠️ SCOPE — read before deepening this. VISION owns whether the clan BUYS
-     rumours and from whom; C2 found that this same object is the natural hook
-     for Imperial Heat later ("you buy a map from the Hutts; reading it puts you
-     on the sky's radar"). None of that is decided, so this ships as the thin
-     test path: tradeability None, no faction, no cost, no Heat. If VISION rules
-     the economy in, this def is where it lands and the quest does not change.
+     ⚠️ SCOPE — RULED by VISION 2026-08-13, and v1 is still only the object.
+     Spec: design/Jawa/worldbuilding/v1_quest_the_claim.md, "The rumour item".
+
+     The label is "salvage rumour", which is VISION's wording: the clan does not
+     only trade in salvage, it trades in KNOWING WHERE THE SALVAGE IS. Two supply
+     lanes are ruled, and BOTH are required:
+
+       BOUGHT  primarily from the Hutt Cartel — they are the faction that knows
+               where everything fell and will sell you anything, including your
+               own location. The fast lane: you can buy your next opportunity.
+       FOUND   wreck loot, raider inventories, ancient sites. Costs nothing but
+               the risk already taken.
+
+     ⛔ Purchase-only is explicitly forbidden. A clan that cannot afford rumours
+     would simply stop receiving content, and that failure looks like the GAME
+     being empty rather than the player being broke.
+
+     🔴 NEITHER LANE IS IMPLEMENTED HERE, AND THAT IS CORRECT. v1 ships the bare
+     object: it exists, it is dev-spawnable, reading it fires The Claim. Hutt
+     trader stock and wreck loot tables are v2 — one line each, and the fiction
+     is already written so that step is a stock entry rather than a redesign.
+     Hence tradeability None, no faction, no cost, no Heat today. C2's later hook
+     (buying a map from the Hutts puts you on the Empire's radar) also lands on
+     this def when it lands, and the quest does not change either time.
 
      Dev route: Debug actions -> Spawn thing -> Jawa_ClaimRumour, then select a
      colonist and right-click it to read. -->
 <Defs>
 
   <ThingDef ParentName="ResourceBase">
+    <!-- defName stays Jawa_ClaimRumour deliberately: a defName is never shown to
+         the player, and renaming it would churn the quest reference and every
+         save that holds one, for zero player-facing gain. The label/defName
+         mismatch is intentional, not an oversight. -->
     <defName>Jawa_ClaimRumour</defName>
-    <label>claim rumour</label>
+    <label>salvage rumour</label>
     <description>A scraped hide chart, rolled around a stub of iron cut for driving into wreckage. Somebody walked out far enough to see where the thing came down, and then walked back to sell what they saw.\n\nReading it tells you where to go. It does not tell you who else was told.</description>
     <thingClass>ThingWithComps</thingClass>
     <graphicData>
