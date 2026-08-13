@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Droids are machines: they break and are REPAIRED, never tended.
+
+     THE PROBLEM, measured against the live dump 2026-08-11.
+
+     Verse.RaceProperties resolves this way (decompiled, do not re-derive):
+
+         public bool IsMechanoid => FleshType == FleshTypeDefOf.Mechanoid;
+         public bool IsFlesh     => FleshType.isOrganic;
+
+     So VANILLA EMP keys off the FLESH TYPE'S isOrganic flag, not off the def
+     being named "Mechanoid". Of the 57 droid races installed:
+
+         fleshType                       isOrganic   defs   EMP worked?
+         Mechanoid          (JDS)          False      16       yes
+         Asimov_Automaton   (Outer Rim)    TRUE       19       NO
+         ABF_..._Synstruct  (KotOR)        TRUE       22       NO
+
+     ⚠️ THAT TABLE IS THE PRE-PATCH PROBLEM STATE, AND THE "ion works?" HEADING
+     IT USED TO CARRY WAS WRONG AFTER 2026-08-12. Corrected 2026-08-13.
+
+     OUR ion weapon no longer keys off isOrganic at all. Its guard was changed
+     to RaceProps.IsMechanoid (W8, proven live: JDS accumulated ZERO severity
+     over 14 hits while an Outer Rim droid reached severity 1.0 and downed).
+     After this patch all THREE flesh types read isOrganic=false, so !IsFlesh
+     no longer separates anything — IsMechanoid is the only discriminator left,
+     and that is deliberate:
+
+         family        isOrganic   IsMechanoid   our ion    owner's ruling
+         JDS             false        TRUE        BLOCKED    correct - they scuttle
+         Outer Rim       false        false       applies    capturable
+         KotOR           false        false       applies    THE capture line
+
+     🔴 DO NOT "FIX" THE ION GUARD BACK TO !IsFlesh. It would catch all three
+     and make JDS droids ion-stunnable, which the owner ruled against on
+     2026-08-13: battle droids are BUILT to scuttle rather than be reprogrammed.
+     See runtime/droid_ruling.md, the ruling block at the top.
+
+     41 of 57 droids were ORGANIC to the engine. Ion and EMP did nothing to
+     them, colonists could bandage them, and the Jawa signature weapon was
+     useless against the enemy it exists to fight. This inverts L4 (ion
+     disrupts), L5 (stun mirrors ion) and L16 (lightning is the neural verb)
+     for 72% of the droid roster.
+
+     WHY THIS IS A TWO LINE FIX AND NOT A 41 DEF ONE.
+
+     Both frameworks already declare their droids as machines in every other
+     respect: Damage_HitMechanoid effecter, mechanoid wound textures, and (for
+     Synstructs) CorpsesMechanoid as the corpse category. Only isOrganic
+     disagrees with the rest of each def. Patching the two FleshTypeDefs fixes
+     every race that uses them, now and for any the mods add later, and leaves
+     each mod's own wound art and corpse handling untouched.
+
+     Retargeting 41 race defs to vanilla Mechanoid would have thrown that art
+     away and broken on the next mod update. One flag is the smaller claim.
+
+     WHAT TO WATCH after this lands (all intended, but verify in play):
+       * colonists can no longer TEND droid injuries; repair is the route
+       * EMP, ion and stun now land on Outer Rim and KotOR droids
+       * droids stop registering as organic for anything that checks IsFlesh
+
+     Authorised by the project owner 2026-08-11: "I don't want to be able to
+     medically TEND droids anyway. They should break like machines, and get
+     repaired."
+
+     WRITTEN BY HAND, not by a generator. This is a doctrine ruling rather than
+     a computed value, so it does not belong in Jawa_Armoury. -->
+<Patch>
+
+  <!-- WHY CONDITIONAL AND NOT REPLACE. The first version of this file used a
+       plain PatchOperationReplace and FAILED SILENTLY at load on 2026-08-11,
+       logging only:
+
+         [Jawa Doctrine Patches] Patch operation
+           Verse.PatchOperationFindMod(Asimov) failed
+
+       That message is misleading. PatchOperationFindMod.ApplyWorker returns
+       match.Apply(xml), so a "FindMod failed" line means the INNER operation
+       failed, not that the mod was missing. Both mods were present and their
+       names matched exactly.
+
+       The real cause: neither def declares isOrganic in its XML at all. It is
+       a C# field default (public bool isOrganic = true), so there was no node
+       to replace and Replace matched nothing.
+
+       Conditional handles both cases and cannot regress if either mod starts
+       declaring the field. Same shape as set_field() in
+       gen_armour_patch.py, which exists for exactly this failure mode. -->
+
+  <Operation Class="PatchOperationFindMod">
+    <mods><li>Asimov</li></mods>
+    <match Class="PatchOperationConditional">
+      <!-- 19 Outer Rim Droid Depot races: GNK, MSE, DUM, R series, FX-7,
+           Astromech, Protocol, Battle, Commando, MagnaGuard, Destroyer, HK,
+           KX Security, Imperial Labor, Salvage Assist and the rest. -->
+      <xpath>/Defs/FleshTypeDef[defName="Asimov_Automaton"]/isOrganic</xpath>
+      <match Class="PatchOperationReplace">
+        <xpath>/Defs/FleshTypeDef[defName="Asimov_Automaton"]/isOrganic</xpath>
+        <value><isOrganic>false</isOrganic></value>
+      </match>
+      <nomatch Class="PatchOperationAdd">
+        <xpath>/Defs/FleshTypeDef[defName="Asimov_Automaton"]</xpath>
+        <value><isOrganic>false</isOrganic></value>
+      </nomatch>
+    </match>
+  </Operation>
+
+  <Operation Class="PatchOperationFindMod">
+    <mods><li>ABF: Synstructs Core</li></mods>
+    <match Class="PatchOperationConditional">
+      <!-- 22 KotOR droid races: 3C series, AD Mk I and Mk IV, Dev AD and WD,
+           GE3LD, HK series, war droids and their Sith variants. -->
+      <xpath>/Defs/FleshTypeDef[defName="ABF_FleshType_Synstruct_Base"]/isOrganic</xpath>
+      <match Class="PatchOperationReplace">
+        <xpath>/Defs/FleshTypeDef[defName="ABF_FleshType_Synstruct_Base"]/isOrganic</xpath>
+        <value><isOrganic>false</isOrganic></value>
+      </match>
+      <nomatch Class="PatchOperationAdd">
+        <xpath>/Defs/FleshTypeDef[defName="ABF_FleshType_Synstruct_Base"]</xpath>
+        <value><isOrganic>false</isOrganic></value>
+      </nomatch>
+    </match>
+  </Operation>
+
+</Patch>

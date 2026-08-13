@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ModMetaData>
+  <packageId>mandrake.jawavoice</packageId>
+  <name>JawaVoice (SpeakUp reskin)</name>
+  <author>mandrake</author>
+  <description>Makes Jawa pawns speak Jawaese in SpeakUp bubbles, in the shape "Jawaese line. (English meaning...)" — e.g. "Jit jot zoot goot. (Well, there goes everything...)".
+
+MECHANISM (assembly-free, additive): for each SpeakUp InteractionDef, this ADDS high-priority, identity-gated Jawaese lines into the def's rulesStrings. Jawa pawns match the gate and speak Jawaese; everyone else (temporary non-Jawa slaves included, by design; and all non-player factions) fails the gate and falls through to SpeakUp's untouched vanilla English lines. Nothing is replaced, so all of SpeakUp's dynamic conditional logic survives.
+
+IDENTITY GATE (dual): colonists via INITIATOR_faction==PlayerColony/PlayerTribe; encountered NPC Jawas via INITIATOR_kind==OuterRim_Jawa/OuterRim_JawaTribal. (SpeakUp exposes no xenotype condition, so faction+kind is the correct proxy for an all-Jawa colony.)
+
+VOICE POLICY (per jawa_dialogue_source_audit.md): where a real Ben Burtt licensed phrase fits the moment it is used verbatim (Utinni!, M'um m'aloo, Ibana, Nyeta, Taa baa, ...); the long tail is phonology-matched synthesized Jawaese with the original English kept as a parenthetical situational gloss. Synthesized lines are creative pastiche and never re-enter the attested corpus.
+
+LOAD ORDER: after SpeakUp (and after any mod that edits the same interactions). Regenerate with Utils/build_jawavoice.py. Requires SpeakUp; Outer Rim Galactic Diversity for the NPC-kind gate to match.</description>
+  <supportedVersions>
+    <li>1.6</li>
+  </supportedVersions>
+  <modDependencies>
+    <li>
+      <packageId>JPT.speakup</packageId>
+      <displayName>SpeakUp</displayName>
+    </li>
+  </modDependencies>
+  <loadAfter>
+    <li>JPT.speakup</li>
+  </loadAfter>
+</ModMetaData>

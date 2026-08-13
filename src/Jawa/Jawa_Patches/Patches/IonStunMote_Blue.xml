@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Stun arcs pale blue: the Jawa ion signature (L4, L5, L16).
+
+     WHAT THIS IS. The arcing electricity over a stunned pawn is vanilla's
+     Mote_Stun (Core, Defs/Effects/Mote_MetaStatus.xml):
+
+         <ThingDef ParentName="MoteBase">
+           <defName>Mote_Stun</defName>
+           <thingClass>MoteDualAttached</thingClass>
+           <graphicData><texPath>Things/Mote/Stun</texPath></graphicData>
+         </ThingDef>
+
+     graphicData declares NO colour, so it draws untinted white. Adding one
+     tints the mote, which is the whole change. Nothing else is touched: the
+     texture, timing, altitude layer and thingClass are vanilla's.
+
+     THE COLOUR is deliberately the same hue already used by JawaIon_Damage's
+     explosionColorEdge (0.55, 0.75, 1.0) so a bolt's impact flash and the stun
+     arc it leaves behind read as one effect rather than two.
+
+     ⚠️ SCOPE: THIS IS GLOBAL, and that is a choice, not an oversight.
+     Mote_Stun is Core and every stun in the game uses it. RimWorld spawns it
+     from StunHandler against a hardcoded ThingDefOf.Mote_Stun, so there is no
+     XML route to a per-source colour. Consequences worth accepting knowingly:
+
+       * Jawa ion bolts arc pale blue. This is the point. JawaIon_Damage
+         already sets causeStun true, so the effect is ours by default.
+       * KotOR stun bolts, Outer Rim stun grenades and sonic weapons also arc
+         pale blue. All energy weapons; consistent with the setting.
+       * The Gamorrean Arg'garok arcs pale blue too, which is the one odd fit:
+         it is an axe whose edge tool carries ExtraDamage Stun at chance 1.0.
+         Living with it, because "electric shock looks like this here" is a
+         coherent rule and a per-weapon exception is not worth C# for a tint.
+
+     If ion-only colour is ever wanted, JawaIonWeapons already ships an
+     assembly, so a Harmony postfix on the stun mote spawn is the route. It is
+     not worth it for a tint today.
+
+     Verified against the live dump 2026-08-11: Mote_Stun exists, is Core, and
+     declares no colour. Conditional rather than Add so this cannot duplicate
+     the node if Ludeon ever adds one. -->
+<Patch>
+
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/ThingDef[defName="Mote_Stun"]/graphicData/color</xpath>
+    <match Class="PatchOperationReplace">
+      <xpath>/Defs/ThingDef[defName="Mote_Stun"]/graphicData/color</xpath>
+      <value><color>(0.55, 0.78, 1.00, 1.00)</color></value>
+    </match>
+    <nomatch Class="PatchOperationAdd">
+      <xpath>/Defs/ThingDef[defName="Mote_Stun"]/graphicData</xpath>
+      <value><color>(0.55, 0.78, 1.00, 1.00)</color></value>
+    </nomatch>
+  </Operation>
+
+</Patch>

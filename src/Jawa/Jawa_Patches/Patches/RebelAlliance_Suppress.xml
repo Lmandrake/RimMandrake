@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ============================================================================
+  RebelAlliance_Suppress.xml                 Jawa_Patches · authored 2026-08-12
+  ============================================================================
+
+  THE GOAL  (NEXT_RELOAD item W6)
+  ===============================
+  Keep Outer Rim - Rebel Alliance ENABLED for its content — weapons, apparel,
+  pawnkinds, backstories — while keeping the FACTION off the world map. The
+  campaign is a Jawa scavenger clan; a galactic-civil-war belligerent holding
+  settlements is not wanted, but the A280 on a scavenged rack is.
+
+  So this is a suppression, NOT a removal. Success is a NEGATIVE observation:
+  no Rebel Alliance settlement anywhere on the world map, AND
+  OuterRim_A280Blaster still resolvable.
+
+  WHY IT IS NEEDED  [VERIFIED 2026-08-12, from disk, game down]
+  =============================================================
+  Source of truth, read directly:
+
+    .../workshop/content/294100/2919249903/1.6/Defs/FactionDefs/FactionDefs.xml
+
+      <defName>OuterRim_RebelAlliance</defName>
+      <settlementGenerationWeight>0.3</settlementGenerationWeight>
+      <requiredCountAtGameStart>1</requiredCountAtGameStart>
+      <canMakeRandomly>true</canMakeRandomly>
+      <maxConfigurableAtWorldCreation>9999</maxConfigurableAtWorldCreation>
+
+  requiredCountAtGameStart=1 is the one that matters. It does not merely make
+  the faction likely, it makes it MANDATORY: RimWorld forces the count at world
+  generation, and also tops up missing required factions when an existing save
+  is loaded. Enabling this mod without suppression therefore plants the faction
+  whether or not a new world is rolled. Weight 0.3 then keeps placing bases and
+  canMakeRandomly=true lets more appear later.
+
+  The parent, OuterRimDiverseFactionBase (Outer Rim Core, WS 2919227155,
+  1.6/Defs/FactionDefs/Faction__Base.xml line 4), is Abstract and declares only
+  maxConfigurableAtWorldCreation. Every field below is literally present in the
+  child def, so all four ops are plain Replaces with nothing inherited behind
+  them.
+
+  WHY REPLACE THE NUMBERS AND NOT DELETE THE DEF
+  ==============================================
+  The def is referenced by name elsewhere in the same mod:
+
+    2919249903/1.6/Defs/ScenarioDefs/Scenario_Rebel.xml:115
+        <factionDef>OuterRim_RebelAlliance</factionDef>
+
+  Deleting the FactionDef would turn that into a "Could not resolve
+  cross-reference" on every launch — trading a world-map annoyance for a red
+  error. Zeroing the generation fields leaves every reference intact.
+
+  Nothing here touches a ThingDef. OuterRim_A280Blaster lives in
+  1.6/Defs/ThingDefs_Weapons/A280BlasterRifle.xml and is not faction-owned, so
+  the weapon, its bullet and all Rebel gear remain fully resolvable. Pawnkinds
+  are likewise untouched — Rebel troopers can still arrive as any other event
+  spawns them, they simply have no territory.
+
+  SCOPE — WHAT THIS DOES NOT DO
+  =============================
+  This is world-GENERATION suppression. It does not retroactively delete a
+  Rebel Alliance faction from a save where one has already been generated. If
+  the faction is already in the current world, it stays until a new world is
+  rolled (or is removed by other means).
+
+  maxConfigurableAtWorldCreation=0 also removes the faction from the world
+  -creation faction picker, so it cannot be re-added by accident. That is
+  deliberate; to opt back in, revert that one op rather than the whole file.
+
+  SAFETY
+  ======
+  Every op is wrapped in PatchOperationConditional on the exact element, so if
+  Rebel Alliance is not loaded, or an update renames/drops a field, the op is a
+  silent no-op instead of a red error. test and inner xpath are identical here
+  by design — this is a replace-if-present shape, not add-if-missing.
+
+  VERIFY AFTER THE NEXT LOAD
+  ==========================
+    * NEGATIVE: no "Rebel Alliance" settlement on the world map. Check the
+      faction list in the world view, not just the visible tiles.
+    * POSITIVE: OuterRim_A280Blaster still resolves — spawn one via dev mode,
+      and confirm no "Could not resolve cross-reference" naming it.
+    * POSITIVE: no error naming OuterRim_RebelAlliance from Scenario_Rebel.
+  ============================================================================
+-->
+<Patch>
+
+  <!-- The decisive one: stop the faction being forced into existence. -->
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/FactionDef[defName="OuterRim_RebelAlliance"]/requiredCountAtGameStart</xpath>
+    <match Class="PatchOperationReplace">
+      <xpath>/Defs/FactionDef[defName="OuterRim_RebelAlliance"]/requiredCountAtGameStart</xpath>
+      <value>
+        <requiredCountAtGameStart>0</requiredCountAtGameStart>
+      </value>
+    </match>
+  </Operation>
+
+  <!-- No weight, so world gen never places a base for it. -->
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/FactionDef[defName="OuterRim_RebelAlliance"]/settlementGenerationWeight</xpath>
+    <match Class="PatchOperationReplace">
+      <xpath>/Defs/FactionDef[defName="OuterRim_RebelAlliance"]/settlementGenerationWeight</xpath>
+      <value>
+        <settlementGenerationWeight>0</settlementGenerationWeight>
+      </value>
+    </match>
+  </Operation>
+
+  <!-- And it cannot appear spontaneously later in the run. -->
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/FactionDef[defName="OuterRim_RebelAlliance"]/canMakeRandomly</xpath>
+    <match Class="PatchOperationReplace">
+      <xpath>/Defs/FactionDef[defName="OuterRim_RebelAlliance"]/canMakeRandomly</xpath>
+      <value>
+        <canMakeRandomly>false</canMakeRandomly>
+      </value>
+    </match>
+  </Operation>
+
+  <!-- Off the world-creation picker, so it cannot be re-added by accident. -->
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/FactionDef[defName="OuterRim_RebelAlliance"]/maxConfigurableAtWorldCreation</xpath>
+    <match Class="PatchOperationReplace">
+      <xpath>/Defs/FactionDef[defName="OuterRim_RebelAlliance"]/maxConfigurableAtWorldCreation</xpath>
+      <value>
+        <maxConfigurableAtWorldCreation>0</maxConfigurableAtWorldCreation>
+      </value>
+    </match>
+  </Operation>
+
+</Patch>

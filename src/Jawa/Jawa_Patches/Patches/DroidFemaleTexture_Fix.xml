@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ============================================================================
+  DroidFemaleTexture_Fix.xml                 Jawa_Patches · authored 2026-08-10
+  ============================================================================
+
+  THE BUG
+  =======
+  A female protocol droid renders with NO BODY, just a magenta placeholder.
+  Observed live 2026-08-10; the log says exactly why:
+
+      Failed to find any textures at OuterRim/Droid/Protocol/Body/Naked_Female
+      while constructing Multi(initPath=OuterRim/Droid/Protocol/Body/Naked_Female...)
+
+  ROOT CAUSE  [VERIFIED 2026-08-10]
+  =================================
+  Outer Rim Droid Depot (Neronix17.OuterRim.DroidDepot, WS 3096501398) ships
+  ONLY male body textures. Every droid body folder was checked:
+
+      B1  B1A  B2  BX  HK  ImperialLabor  KX  Magnaguard  Protocol
+      SuperTactical  Tactical
+
+  All 11 contain Naked_Male_{north,south,east}.png and no Female variant at all.
+  So this is not a Protocol Droid bug, it is every droid in the mod. Protocol is
+  simply the one that got spawned, and it is also the only race that explicitly
+  declares <hasGenders>true</hasGenders>, which is why it rolls female at all.
+
+  THE FIX
+  =======
+  Force every affected PawnKindDef to Male so generation only ever asks for a
+  texture that exists. Droids having a gender is meaningless flavour anyway.
+
+  Chose fixedGender on the PawnKindDef over hasGenders=false on the race
+  deliberately: with hasGenders false RimWorld generates Gender.None, and the
+  body path would then resolve to Naked_None, which does not exist either. That
+  would turn one broken droid into every droid broken. fixedGender routes to the
+  Male textures that are known to be present.
+
+  SAFETY
+  ======
+  Each op is conditional on the pawnkind existing AND not already declaring
+  fixedGender, so it no-ops if Droid Depot ships female art or sets the field
+  upstream. Add-if-missing shape, so test and inner xpath differ by design.
+
+  VERIFY AFTER THE NEXT LOAD
+  ==========================
+    * GONE: "Failed to find any textures at OuterRim/Droid/*/Body/Naked_Female"
+    * Spawn several droids of each kind; none should have a magenta body.
+  ============================================================================
+-->
+<Patch>
+
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/PawnKindDef[defName="OuterRim_HKDroid"][not(fixedGender)]</xpath>
+    <match Class="PatchOperationAdd">
+      <xpath>/Defs/PawnKindDef[defName="OuterRim_HKDroid"][not(fixedGender)]</xpath>
+      <value>
+        <fixedGender>Male</fixedGender>
+      </value>
+    </match>
+  </Operation>
+
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/PawnKindDef[defName="OuterRim_ImperialLaborDroid"][not(fixedGender)]</xpath>
+    <match Class="PatchOperationAdd">
+      <xpath>/Defs/PawnKindDef[defName="OuterRim_ImperialLaborDroid"][not(fixedGender)]</xpath>
+      <value>
+        <fixedGender>Male</fixedGender>
+      </value>
+    </match>
+  </Operation>
+
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/PawnKindDef[defName="OuterRim_KXSecurityDroid"][not(fixedGender)]</xpath>
+    <match Class="PatchOperationAdd">
+      <xpath>/Defs/PawnKindDef[defName="OuterRim_KXSecurityDroid"][not(fixedGender)]</xpath>
+      <value>
+        <fixedGender>Male</fixedGender>
+      </value>
+    </match>
+  </Operation>
+
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/PawnKindDef[defName="OuterRim_MagnaGuardDroid"][not(fixedGender)]</xpath>
+    <match Class="PatchOperationAdd">
+      <xpath>/Defs/PawnKindDef[defName="OuterRim_MagnaGuardDroid"][not(fixedGender)]</xpath>
+      <value>
+        <fixedGender>Male</fixedGender>
+      </value>
+    </match>
+  </Operation>
+
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/PawnKindDef[defName="OuterRim_ProtocolDroid"][not(fixedGender)]</xpath>
+    <match Class="PatchOperationAdd">
+      <xpath>/Defs/PawnKindDef[defName="OuterRim_ProtocolDroid"][not(fixedGender)]</xpath>
+      <value>
+        <fixedGender>Male</fixedGender>
+      </value>
+    </match>
+  </Operation>
+
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/PawnKindDef[defName="OuterRim_SuperTacticalDroid"][not(fixedGender)]</xpath>
+    <match Class="PatchOperationAdd">
+      <xpath>/Defs/PawnKindDef[defName="OuterRim_SuperTacticalDroid"][not(fixedGender)]</xpath>
+      <value>
+        <fixedGender>Male</fixedGender>
+      </value>
+    </match>
+  </Operation>
+
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/PawnKindDef[defName="OuterRim_TacticalDroid"][not(fixedGender)]</xpath>
+    <match Class="PatchOperationAdd">
+      <xpath>/Defs/PawnKindDef[defName="OuterRim_TacticalDroid"][not(fixedGender)]</xpath>
+      <value>
+        <fixedGender>Male</fixedGender>
+      </value>
+    </match>
+  </Operation>
+
+</Patch>

@@ -1,0 +1,237 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  Desert/hazard weather extracted from "Star Wars - Biomes Addon" (Ferreira312, WS 2298926362, orig 1.1/1.2).
+  Only the mechanically-real weather is kept; the 15 planet biomes (mostly reskins of biomes we already own
+  via Alpha/Advanced/More Vanilla Biomes) and their C# workerClasses were NOT ported. See biome_terrain_palette.md §5.
+
+  ASSEMBLY-FREE PORT NOTE: the original defs referenced custom overlay classes shipped in the mod's DLL
+  (WeatherOverlay.WeatherOverlay_TattoineDust / _TattoineCloud). To keep this a pure-XML patch with no compiled
+  assembly and zero breakage risk on 1.6, those are swapped for the vanilla overlay WeatherOverlay_Fog. The sandy
+  sky-color tint (skyColors*) is XML and is preserved verbatim, so a sandstorm still reads as a brown-out dust event.
+  All GAMEPLAY fields (accuracyMultiplier, windSpeedFactor, moveSpeedMultiplier, durationRange, eventMakers,
+  temperatureRange, favorability) are carried over unchanged from the source.
+
+  Bespin's two weathers were intentionally dropped: "Good" favorability, no combat penalty, purely cosmetic,
+  and off-theme for a desert/volcanic world.
+-->
+<Defs>
+
+  <!-- ===== Sandstorm: signature desert hazard. Accuracy 0.25, high wind, long duration. ===== -->
+  <WeatherDef>
+    <defName>SW_Sandstorm</defName>
+    <label>sandstorm</label>
+    <description>A punishing wall of wind-driven sand. Ranged accuracy is gutted and the air itself seems to claw at anything caught in the open.</description>
+    <temperatureRange>
+      <min>0</min>
+      <max>999</max>
+    </temperatureRange>
+    <windSpeedFactor>2</windSpeedFactor>
+    <accuracyMultiplier>0.25</accuracyMultiplier>
+    <favorability>VeryBad</favorability>
+    <perceivePriority>2</perceivePriority>
+    <ambientSounds>
+      <li>AmbientWind_Storm</li>
+    </ambientSounds>
+    <overlayClasses>
+      <li>WeatherOverlay_Fog</li>
+    </overlayClasses>
+    <commonalityRainfallFactor>
+      <points>
+        <li>(0, 2.0)</li>
+        <li>(1300, 0.25)</li>
+        <li>(4000, 0.01)</li>
+      </points>
+    </commonalityRainfallFactor>
+    <durationRange>
+      <min>15000</min>
+      <max>30000</max>
+    </durationRange>
+    <skyColorsDay>
+      <sky>(0.8,0.8,0.8)</sky>
+      <shadow>(0.92,0.92,0.92)</shadow>
+      <overlay>(0.7,0.62,0.5)</overlay>
+      <saturation>0.9</saturation>
+    </skyColorsDay>
+    <skyColorsDusk>
+      <sky>(1,1,1)</sky>
+      <shadow>(0.92,0.92,0.92)</shadow>
+      <overlay>(0.6,0.52,0.4)</overlay>
+      <saturation>0.9</saturation>
+    </skyColorsDusk>
+    <skyColorsNightEdge>
+      <sky>(0.35,0.40,0.45)</sky>
+      <shadow>(0.92,0.92,0.92)</shadow>
+      <overlay>(0.5,0.42,0.3)</overlay>
+      <saturation>0.9</saturation>
+    </skyColorsNightEdge>
+    <skyColorsNightMid>
+      <sky>(0.35,0.40,0.45)</sky>
+      <shadow>(0.92,0.92,0.92)</shadow>
+      <overlay>(0.4,0.32,0.2)</overlay>
+      <saturation>0.9</saturation>
+    </skyColorsNightMid>
+  </WeatherDef>
+
+  <!-- ===== Dry sandstorm: as above, but throws lightning (fire risk, no rain to douse it). ===== -->
+  <WeatherDef>
+    <defName>SW_DrySandstorm</defName>
+    <label>dry sandstorm</label>
+    <description>A bone-dry sandstorm charged with static. Lightning strikes with no rain to put out the fires it starts.</description>
+    <temperatureRange>
+      <min>0</min>
+      <max>999</max>
+    </temperatureRange>
+    <windSpeedFactor>2</windSpeedFactor>
+    <accuracyMultiplier>0.25</accuracyMultiplier>
+    <favorability>VeryBad</favorability>
+    <perceivePriority>2</perceivePriority>
+    <ambientSounds>
+      <li>AmbientWind_Storm</li>
+    </ambientSounds>
+    <overlayClasses>
+      <li>WeatherOverlay_Fog</li>
+    </overlayClasses>
+    <commonalityRainfallFactor>
+      <points>
+        <li>(0, 2.0)</li>
+        <li>(1300, 0.25)</li>
+        <li>(4000, 0.01)</li>
+      </points>
+    </commonalityRainfallFactor>
+    <durationRange>
+      <min>15000</min>
+      <max>30000</max>
+    </durationRange>
+    <eventMakers>
+      <li>
+        <averageInterval>800</averageInterval>
+        <eventClass>WeatherEvent_LightningFlash</eventClass>
+      </li>
+    </eventMakers>
+    <skyColorsDay>
+      <sky>(0.8,0.8,0.8)</sky>
+      <shadow>(0.92,0.92,0.92)</shadow>
+      <overlay>(0.7,0.62,0.5)</overlay>
+      <saturation>0.9</saturation>
+    </skyColorsDay>
+    <skyColorsDusk>
+      <sky>(1,1,1)</sky>
+      <shadow>(0.92,0.92,0.92)</shadow>
+      <overlay>(0.6,0.52,0.4)</overlay>
+      <saturation>0.9</saturation>
+    </skyColorsDusk>
+    <skyColorsNightEdge>
+      <sky>(0.35,0.40,0.45)</sky>
+      <shadow>(0.92,0.92,0.92)</shadow>
+      <overlay>(0.5,0.42,0.3)</overlay>
+      <saturation>0.9</saturation>
+    </skyColorsNightEdge>
+    <skyColorsNightMid>
+      <sky>(0.35,0.40,0.45)</sky>
+      <shadow>(0.92,0.92,0.92)</shadow>
+      <overlay>(0.4,0.32,0.2)</overlay>
+      <saturation>0.9</saturation>
+    </skyColorsNightMid>
+  </WeatherDef>
+
+  <!-- ===== Red fog: accuracy 0.5. Uses vanilla fog overlay in the original too. Volcanic/exotic tint. ===== -->
+  <WeatherDef>
+    <defName>SW_RedFog</defName>
+    <label>red fog</label>
+    <description>A thick red haze that reduces the accuracy of ranged weapons.</description>
+    <windSpeedFactor>0.5</windSpeedFactor>
+    <accuracyMultiplier>0.5</accuracyMultiplier>
+    <favorability>Neutral</favorability>
+    <perceivePriority>1</perceivePriority>
+    <ambientSounds>
+      <li>Ambient_Wind_Fog</li>
+    </ambientSounds>
+    <overlayClasses>
+      <li>WeatherOverlay_Fog</li>
+    </overlayClasses>
+    <commonalityRainfallFactor>
+      <points>
+        <li>(0, 0)</li>
+        <li>(1300, 1)</li>
+      </points>
+    </commonalityRainfallFactor>
+    <skyColorsDay>
+      <sky>(0.8,0,0)</sky>
+      <shadow>(0.92,0.92,0.92)</shadow>
+      <overlay>(0.7,0.7,0.7)</overlay>
+      <saturation>0.9</saturation>
+    </skyColorsDay>
+    <skyColorsDusk>
+      <sky>(1,0,0)</sky>
+      <shadow>(0.92,0.92,0.92)</shadow>
+      <overlay>(0.6,0.6,0.6)</overlay>
+      <saturation>0.9</saturation>
+    </skyColorsDusk>
+    <skyColorsNightEdge>
+      <sky>(0.35,0,0)</sky>
+      <shadow>(0.92,0.92,0.92)</shadow>
+      <overlay>(0.5,0.5,0.5)</overlay>
+      <saturation>0.9</saturation>
+    </skyColorsNightEdge>
+    <skyColorsNightMid>
+      <sky>(0.35,0,0)</sky>
+      <shadow>(0.92,0.92,0.92)</shadow>
+      <overlay>(0.5,0.5,0.5)</overlay>
+      <saturation>0.9</saturation>
+    </skyColorsNightMid>
+  </WeatherDef>
+
+  <!-- ===== Red foggy rain: accuracy 0.5 AND move speed 0.9. Vanilla fog+rain overlays. ===== -->
+  <WeatherDef>
+    <defName>SW_RedFoggyRain</defName>
+    <label>red foggy rain</label>
+    <description>Red haze mixed with rain. Reduces both ranged accuracy and movement speed.</description>
+    <temperatureRange>0~999</temperatureRange>
+    <windSpeedFactor>1.5</windSpeedFactor>
+    <favorability>Neutral</favorability>
+    <perceivePriority>1</perceivePriority>
+    <weatherThought>SoakingWet</weatherThought>
+    <accuracyMultiplier>0.5</accuracyMultiplier>
+    <rainRate>1</rainRate>
+    <moveSpeedMultiplier>0.9</moveSpeedMultiplier>
+    <ambientSounds>
+      <li>Ambient_Wind_Fog</li>
+      <li>Ambient_Rain</li>
+    </ambientSounds>
+    <overlayClasses>
+      <li>WeatherOverlay_Fog</li>
+      <li>WeatherOverlay_Rain</li>
+    </overlayClasses>
+    <commonalityRainfallFactor>
+      <points>
+        <li>(0, 0)</li>
+        <li>(1300, 1)</li>
+      </points>
+    </commonalityRainfallFactor>
+    <skyColorsDay>
+      <sky>(0.8,0,0)</sky>
+      <shadow>(0.92,0.92,0.92)</shadow>
+      <overlay>(0.7,0.7,0.7)</overlay>
+      <saturation>0.9</saturation>
+    </skyColorsDay>
+    <skyColorsDusk>
+      <sky>(1,0,0)</sky>
+      <shadow>(0.92,0.92,0.92)</shadow>
+      <overlay>(0.6,0.6,0.6)</overlay>
+      <saturation>0.9</saturation>
+    </skyColorsDusk>
+    <skyColorsNightEdge>
+      <sky>(0.35,0,0)</sky>
+      <shadow>(0.92,0.92,0.92)</shadow>
+      <overlay>(0.5,0.5,0.5)</overlay>
+      <saturation>0.9</saturation>
+    </skyColorsNightEdge>
+    <skyColorsNightMid>
+      <sky>(0.35,0,0)</sky>
+      <shadow>(0.92,0.92,0.92)</shadow>
+      <overlay>(0.5,0.5,0.5)</overlay>
+      <saturation>0.9</saturation>
+    </skyColorsNightMid>
+  </WeatherDef>
+
+</Defs>

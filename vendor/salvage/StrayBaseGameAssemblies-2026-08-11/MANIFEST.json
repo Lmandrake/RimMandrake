@@ -1,0 +1,20 @@
+[
+  {
+    "mod": "tickleyourpawn.core",
+    "file": "mscorlib.dll",
+    "bytes": 5445664,
+    "byte_identical_to_game": false
+  },
+  {
+    "mod": "petetimessix.researchreinvented.steppingstones",
+    "file": "UnityEngine.InputLegacyModule.dll",
+    "bytes": 37568,
+    "byte_identical_to_game": true
+  },
+  {
+    "mod": "petetimessix.researchreinvented.steppingstones",
+    "file": "UnityEngine.TextRenderingModule.dll",
+    "bytes": 37568,
+    "byte_identical_to_game": true
+  }
+]

@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ============================================================================
+  SpeciesStartingGear_Tuning.xml             Jawa_Patches · authored 2026-08-11
+  ============================================================================
+
+  THE OBSERVATION
+  ===============
+  Every Star Wars species spawned through Outer Rim's test-colony pawnkind
+  arrives dressed as a modern civilian, and most of them are wearing a surgical
+  face mask. Counted off save New Arrivals4:
+
+      Apparel_ClothMask   54 / 76 Jawa   13 / 16 Hutt   7 / 11 Gungan
+      Apparel_WarVeil     13 / 76 Jawa    1 / 16 Hutt   4 / 11 Gungan
+      plus VAE_Apparel_Jeans, TankTop, Skirt, MilitaryUniform, Apron...
+
+  A Hutt in a surgical mask and jeans is not the look.
+
+  WHY THE PAWNKIND CANNOT STOP IT  [the interesting part]
+  ======================================================
+  All of these inherit OuterRimTestColonyPawnKind, which already asks for
+  exactly the right thing and is being ignored:
+
+      apparelTags                = ['IndustrialBasic']
+      apparelAllowHeadgearChance = 0        << headgear should be IMPOSSIBLE
+      apparelMoney               = 100~600
+
+  Two separate things are wrong with that picture:
+
+    1. Vanilla Apparel_ClothMask (Core, Apparel_Headgear.xml) declares NO
+       <apparel><tags> at all, and no active mod patches tags onto it. Under
+       stock rules it is not reachable through apparelTags in the first place.
+    2. apparelAllowHeadgearChance is 0 and headgear is being fitted anyway.
+
+  So something in the stack is bypassing pawnkind apparel generation wholesale.
+  Twelve active assemblies reference PawnApparelGenerator; the standout suspect
+  is co.uk.epicguru.factionloadout (Faction Loadout), whose entire purpose is
+  overriding pawnkind gear, and which is live in the log. NOT YET CONFIRMED —
+  see VERIFY below.
+
+  THE APPROACH
+  ============
+  Rather than fight for control of the generator, use the one channel that does
+  not go through it: <apparelRequired> is applied directly to the pawn. Then
+  set <apparelMoney>0</apparelMoney> so the generator has no budget left to
+  bolt jeans and a face mask on top.
+
+  Both halves are needed. apparelRequired alone still leaves the random pass
+  free to add the mask; apparelMoney 0 alone leaves a naked Jawa.
+
+  THE ART ALREADY EXISTS  [verified in the active load set, 2026-08-11]
+  =====================================================================
+  KotOR Core (guy762.mm.kotorcore, load 569) ships the canonical outfit:
+
+      guy762_JawaHood    "hood, heavy"    UpperHead + Mouth   tag SaV_apparel_jawa
+      guy762_Robes_jawa  "robes, rustic"  Torso..Feet         tag SaV_apparel_jawa
+
+  Coverage does not overlap, so both can be worn together.
+
+  HUTTS WEAR NOTHING, DELIBERATELY
+  ================================
+  There is no Hutt garment anywhere in the load set. The two "hutt" apparel defs
+  that exist are guy762_HelmetCombat_hutt and guy762_HvySuit_hutt, both tagged
+  SaV_apparel_huttgoon — that is the GUARDS' armour, not the boss's clothing.
+  Canonically a Hutt wears nothing, so apparelMoney 0 with no apparelRequired is
+  both the correct look and the correct lore.
+
+  SCOPE — Jawa and Hutt only
+  ==========================
+  The other eleven species from AlienSpawnEnablers.xml are left alone. For them
+  apparelMoney 0 would mean naked, which is wrong, and there is no researched
+  outfit to require yet. They are dev-spawn scaffolding; dressing them properly
+  is a separate job that needs a costume decision per species.
+
+  ⚠️ BLAST RADIUS. Op 1 edits Outer Rim's OuterRim_Jawa pawnkind itself, not a
+  copy, so it changes every Jawa this pawnkind ever produces, including any the
+  world generates later. That is intended — we want Jawa in robes everywhere —
+  but it is wider than a Jawa_Patches-only change and should be said out loud.
+
+  SAFETY
+  ======
+  Both ops are PatchOperationConditional and self-disable if the field is
+  already present, so an Outer Rim update that ships its own apparelRequired
+  wins instead of being fought.
+
+  Jawa_Patches loads last (562 of 562) and Outer Rim GD is 556, so the target
+  exists by the time we patch it.
+
+  VERIFY AFTER THE NEXT LOAD
+  ==========================
+    * Spawn Jawa: hood + rustic robes, and NOTHING else. No jeans, no mask.
+    * Spawn Hutts: unclothed.
+    * If a face mask STILL appears on either, apparelMoney 0 was overridden too,
+      which confirms an assembly is driving apparel generation. Faction Loadout
+      is then the first place to look, and the fix moves to its config rather
+      than to XML.
+  ============================================================================
+-->
+<Patch>
+
+  <!-- ==================================================================
+       1. Jawa: hood and robes, nothing else
+       ================================================================== -->
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/PawnKindDef[defName="OuterRim_Jawa"]/apparelRequired</xpath>
+    <nomatch Class="PatchOperationAdd">
+      <xpath>/Defs/PawnKindDef[defName="OuterRim_Jawa"]</xpath>
+      <value>
+        <apparelRequired>
+          <li>guy762_Robes_jawa</li>
+          <li>guy762_JawaHood</li>
+        </apparelRequired>
+        <apparelMoney>0</apparelMoney>
+      </value>
+    </nomatch>
+  </Operation>
+
+  <!-- ==================================================================
+       2. Hutts wear nothing
+       ================================================================== -->
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/PawnKindDef[defName="Jawa_Spawn_Hutt"]/apparelMoney</xpath>
+    <nomatch Class="PatchOperationAdd">
+      <xpath>/Defs/PawnKindDef[defName="Jawa_Spawn_Hutt"]</xpath>
+      <value>
+        <apparelMoney>0</apparelMoney>
+      </value>
+    </nomatch>
+  </Operation>
+
+</Patch>

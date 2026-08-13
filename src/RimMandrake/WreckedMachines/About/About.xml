@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ModMetaData>
+  <name>Wrecked Machines</name>
+  <author>Mandrake</author>
+  <packageId>mandrake.wreckedmachines</packageId>
+  <supportedVersions>
+    <li>1.6</li>
+  </supportedVersions>
+  <description>Holy wreckage.
+
+The Kolyska's factory did not fail politely. Its machines are still bolted to the deck where they died — split open, scavenged, corroded, half-buried in their own slag. The Jawa do not clear them away. You cannot strip a wreck for steel, you cannot bulldoze it to build something newer on the clean floor. It stays, taking up the space it always took, until the clan earns the right to bring it back.
+
+Every treated machine exists in three states:
+
+  WRECKED   Dead. Deformed, scavenged, missing chunks, corroded. Occupies its
+            tiles, does nothing, cannot be removed. Scenery and reproach.
+
+  KLUDGED   Partly restored. Exposed wiring, patches, mismatched plating,
+            strange technology grafted onto an elegant original. It runs — but
+            only the simplest recipes the intact machine could manage.
+
+  REPAIRED  Rebuilt by scavengers: holes filled with metal that does not match,
+            cabling routed almost neatly, a few improvised vents still smoking.
+            Full function. It will never look factory-fresh again.
+
+Advancing a tier costs materials, tools and earned knowledge, never a research
+grind alone.
+
+This mod ships its own art for all three states and does not replace or alter
+any other mod's buildings. The donor mod's original machine is left completely
+untouched and stays buildable alongside these — which means, for now, that both
+appear in the build menu. That is deliberate: it makes the two comparable side
+by side in one colony, and it keeps this mod removable. It is a testing
+arrangement, not a finished one.</description>
+
+  <modDependencies>
+    <li>
+      <packageId>VanillaExpanded.VFEFactory</packageId>
+      <displayName>Vanilla Furniture Expanded - Factory</displayName>
+      <steamWorkshopUrl>steam://url/CommunityFilePage/3686924415</steamWorkshopUrl>
+    </li>
+  </modDependencies>
+
+  <loadAfter>
+    <li>OskarPotocki.VanillaFactionsExpanded.Core</li>
+    <li>VanillaExpanded.VFEFactory</li>
+  </loadAfter>
+</ModMetaData>

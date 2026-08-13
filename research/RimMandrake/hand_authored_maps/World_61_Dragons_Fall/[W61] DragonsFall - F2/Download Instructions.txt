@@ -1,0 +1,24 @@
+
+- Mod Requirements - 
+
+* Download *
+- Rimworld Saves - 
+To download the map with normal rimworld saves:
+1. Go in game into your options.
+2. Under General options, click Open besides Save Data Folder
+3. Access the 'Rimworld Saves File' Listed in this folder, drag and drop any of the two saves into your Save Data Folder.
+4. Go back in game, under the main menu, you can access your Load Game and the file will be present as a save. 
+
+Enjoy!
+
+- Map Saver - 
+To download the map with the mod Map Saver:
+1. Select New Colony, go ahead with your normal setup for your save.
+2. When you have loaded in, go to Option
+3. Go to Mod Options and locate the mod Map Saver
+4. Open the maps folder and drop the map file into the folder.
+5. Back in the Mod Options for Map Saver, select Load. From there you can find it.
+
+After a few moments the game will load the new map, overwriting the previous.
+
+Enjoy!

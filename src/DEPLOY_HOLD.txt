@@ -1,0 +1,43 @@
+# DEPLOY_HOLD.txt — files that are undeployed ON PURPOSE.
+#
+# Read by Utils/deploy_custom_mods.py. Anything matching is reported as HELD
+# instead of as drift, and --apply will not write it.
+#
+# Why this exists, why it is PER-FILE rather than per-mod, and why a reason is
+# mandatory: skills/rimworld-deploy/SKILL.md section 5.
+#
+# FORMAT
+#   <glob>    # <reason, including who ruled it and when>
+#
+# Paths are relative to custom_patches/ and always use forward slashes.
+# ⚠️ `*` matches across directory separators, unlike a shell — so
+# `WreckedMachines/*` holds the whole tree, not just its top level.
+
+# --- Jawa_Armoury: LIVE mod, two held files -------------------------------
+# Owner ruled SHIP NEITHER, 2026-08-12. Every other file in this mod continues
+# to deploy normally; that split is the reason this list is per-file.
+Jawa_Armoury/Patches/Warcasket_HazardRetune.xml   # owner: SHIP NEITHER, 2026-08-12
+Jawa_Armoury/Patches/Armour_Ratings.xml           # owner: SHIP NEITHER, 2026-08-12
+
+# --- WreckedMachines: whole mod parked to v2 ------------------------------
+# Owner stood the mod down to v2 on 2026-08-12: v1 uses mangled metal salvage
+# role-played as broken machines, with Research Reinvented and VFE-Factory
+# unchanged. The work is finished and deliberately shelved, NOT abandoned —
+# custom_patches/WreckedMachines/V2.md is the register of what moved and why.
+WreckedMachines/*                                 # owner: parked to v2, 2026-08-12
+
+# ---- DesertVehicleReskin — the eopie sled, awaiting owner review -------------
+# The dog sled's three facings are finished and validated but NOT ruled on, and
+# the mod is 1 of 5 vehicles.
+#
+# ✅ The loadability half is RESOLVED. The owner ruled 2026-08-13 that each mod
+# we fix art in gets its own uploadable fix mod, which settles the host question:
+# About/About.xml now exists, packageId mandrake.desertvehiclereskin, loadAfter
+# sarg.alphavehiclesneolithic (required — the donor ships LOOSE art, so order
+# decides). Doctrine in custom_patches/README.md.
+#
+# ⏳ ONE reason to hold remains: the owner has not reviewed the art.
+# Review sheet: DesertVehicleReskin/Source/REVIEW_all_three.png
+# Held whole rather than per-file because every file is pre-review.
+# CREATE, 2026-08-13. Lift this when the owner approves the art — nothing else.
+DesertVehicleReskin/*                 # CREATE: art pre-review (About.xml now OK)

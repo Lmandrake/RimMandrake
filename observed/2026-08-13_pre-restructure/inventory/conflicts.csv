@@ -1,0 +1,4 @@
+﻿biome,animal,timesRegistered,sources
+AridShrubland,Armadillo,2,Core [biome.wildAnimals] Defs\BiomeDefs\Biomes_WarmArid.xml || Beasts of the Rim (Continued) [animal.wildBiomes] 1.6\Defs\ThingDefs_Races\Races_Animal_Armadillo.xml
+Desert,Armadillo,2,Core [biome.wildAnimals] Defs\BiomeDefs\Biomes_WarmArid.xml || Beasts of the Rim (Continued) [animal.wildBiomes] 1.6\Defs\ThingDefs_Races\Races_Animal_Armadillo.xml
+TropicalSwamp,Titan,2,Titans [animal.wildBiomes] Defs\ThingDefs_Races\Races_Animal_Titan.xml || Titans [animal.wildBiomes] Defs\ThingDefs_Races\Races_Animal_Titan.xml

@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ============================================================================
+  HeadSetForFA_Revive.xml                    Jawa_Patches · authored 2026-08-10
+  ============================================================================
+
+  THE BUG
+  =======
+  Head Set For [NL] Facial Animation dies in its static constructor on every
+  single launch, and has done since before we started measuring:
+
+      Error in static constructor of HeadSetForFA.HSMCache:
+        TypeInitializationException, caused by NullReferenceException
+        at HeadSetForFA.HSMSetting.CheckSettingData (Verse.ThingDef raceDef) [0x001c3]
+        at HeadSetForFA.HSMSetting.InitializeData ()
+
+  ROOT CAUSE  [VERIFIED FROM IL 2026-08-10]
+  =========================================
+  HSMCache's cctor builds a list of every ThingDef that is category=Pawn, has
+  FacialAnimation.HeadControllerComp, and a non-null race. InitializeData()
+  then calls CheckSettingData() on each. That method looks up a matching
+  FacialAnimation.FaceAdjustmentDef by RaceName, and if the race has non-empty
+  lifeStageAges it walks the adjustment def's AgeBasedParams list:
+
+      IL_0184  ldloc.2 ; brfalse IL_025f     ; fad == null -> skip, safe
+      IL_01c3  ldloc.s 9                     ; <== the reported offset
+      IL_01c5  ldloc.2
+      IL_01c6  ldfld    FaceAdjustmentDef::AgeBasedParams
+      IL_01cb  callvirt List`1::get_Count    ; NRE when AgeBasedParams is null
+
+  FaceAdjustmentDef's constructor initialises RaceName, both eye labels and the
+  four Offset vectors, but NEVER initialises AgeBasedParams. So any adjustment
+  def whose XML omits <AgeBasedParams> leaves the field null, and the first race
+  it matches with life stages kills the whole mod.
+
+  THE OFFENDING DEF  [VERIFIED 2026-08-10]
+  ========================================
+  A sweep of all 45,525 XML files across the 562 active mods found exactly THREE
+  FaceAdjustmentDefs in the entire load set, and exactly one that can crash:
+
+    DefaultFaceSizeAndPositionDef   RaceName ""      no AgeBasedParams  harmless
+                                    (empty name matches no race)
+    HumanFaceSizeAndPositionDef     RaceName Human   HAS AgeBasedParams safe
+    BS_InsectoidHumanoid_FourArmed_FaceAdjustment    NO  AgeBasedParams CRASHES
+
+  The last one is created at runtime by Facial Animation Compatability Project
+  (danzinagri.facialanimationcompatabilityproject, load 550) in
+  1.6/Patches/BS_Insectoid_FacialAnimation.xml. The same file also adds
+  HeadControllerComp to BS_InsectoidHumanoid_FourArmed, so it supplies both
+  halves of the trap. That race is ParentName="Human" and inherits Human's four
+  life stages, so the lifeStageAges branch is taken and the null is hit.
+
+  Note the crashing def is on the FA side. No race def is broken.
+
+  THE FIX
+  =======
+  Give it an empty AgeBasedParams list. Count == 0 means the loop body never
+  runs, `match` stays null, and CheckSettingData falls through to the branch
+  that copies the def-level Size/Offset values into HSMData, which is the
+  intended behaviour for a def with no age-based overrides.
+
+  Deliberately using the explicit open/close form rather than a self-closing
+  tag, so RimWorld's list parser produces an empty List rather than null.
+
+  WHAT THIS DOES *NOT* FIX  [read before hoping]
+  ==============================================
+  This will NOT restore alien eyes or head shapes. HeadSetForFA only does FA
+  head size/offset tuning per race and life stage, plus a per-xenotype FA
+  on/off list. It never touches Verse.HeadTypeDef and never touches eye nodes.
+
+  The real causes of the appearance problem are elsewhere and are separate:
+    * EYES  : FA's own setting DrawEyesParts defaults to FALSE, and
+              FacialAnimation.HarmonyPatches::Prefix_AddChild returns false for
+              any PawnRenderNodeProperties_Eye node while it is off. Fix is the
+              "Eyes" checkbox in FA's mod settings, not XML.
+    * HEADS : FacialAnimation.HarmonyPatches::PostfixParallelPreDraw REMOVES the
+              PawnRenderNode_Head draw request outright and paints its own face,
+              so <forcedHeadTypes> can never render while FA draws that pawn.
+
+  This patch is therefore hygiene: it removes a permanent every-launch static
+  constructor failure and restores per-race head sizing. Worth doing on its own
+  merits; not the appearance fix.
+
+  ⚠️ It also switches on four dormant Harmony patches across a 562-mod stack.
+  That is a real, if modest, behaviour change. If head sizes or offsets look
+  wrong after this, this patch is the first thing to suspect.
+
+  LOAD ORDER
+  ==========
+  The target def does not exist on disk. It is created by the compat project's
+  patch at load 550, and we are 562 (last), so we apply after it. As with
+  BiomeAnimalDanglingRefs_Fix, validate_patch.py will report 0 on-disk matches
+  for these xpaths. That is expected, not a silent no-op.
+
+  The test xpath and the inner xpath deliberately DIFFER here: we test for the
+  absence of AgeBasedParams and add it to the parent. That is the legitimate
+  add-if-missing shape, and it self-disables if the compat project ever ships
+  the field.
+
+  VERIFY AFTER THE NEXT LOAD
+  ==========================
+    * GONE: "Error in static constructor of HeadSetForFA.HSMCache"
+    * That would leave ZERO dead mods in the load.
+  ============================================================================
+-->
+<Patch>
+
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/FacialAnimation.FaceAdjustmentDef[defName="BS_InsectoidHumanoid_FourArmed_FaceAdjustment"]/AgeBasedParams</xpath>
+    <nomatch Class="PatchOperationAdd">
+      <xpath>/Defs/FacialAnimation.FaceAdjustmentDef[defName="BS_InsectoidHumanoid_FourArmed_FaceAdjustment"]</xpath>
+      <value>
+        <AgeBasedParams></AgeBasedParams>
+      </value>
+    </nomatch>
+  </Operation>
+
+</Patch>

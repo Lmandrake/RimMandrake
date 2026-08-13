@@ -1,0 +1,156 @@
+# infrastructure/state/queue/BRIDGE.md
+
+_BRIDGE's queue. **You own this file — write freely, nobody blocks on it.** Others
+file at you by appending here. Doctrine and tagging rules live in `agents_def.md`;
+the v1/v2 line lives in `V1_SCOPE.md`._
+
+---
+## ⭐ v1 — YOUR v1 ROWS. Read this before anything below.
+
+**`V1_SCOPE.md` burn-down rows 5, 6 and 7 are yours.** All three are *verify
+only* — nothing is left to build on any of them, so the whole row is a live
+observation and the gate ("seen working in-game once") is the entire task.
+
+| row | what closes it |
+|---|---|
+| 5 | Jawa xenotype spawns and plays on the map |
+| 6 | Weapons/gear from the 6 live mods seen in use — partly done |
+| 7 | Ordinary desert worldgen confirmed on the map |
+
+⛔ **Do not book a load for these.** Rows 2, 3 and 4 are being authored offline by
+OPS and CREATE; all of it verifies in ONE session. Your tooling is on the critical
+path because the gate runs through it.
+
+---
+
+## Open
+
+### B1. `jawa/set_pawn_rotation` `[v2]`
+Migrated from `TODO.md` §14. The visual-audit queue cannot turn a pawn, so any
+art check that depends on facing is unrunnable.
+
+### B2. `jawa/set_pawn_style` `[v2]`
+Migrated from `TODO.md` §14. Same blocker family as B1 — style cannot be set, so
+styled-apparel audits cannot be staged.
+
+### B3. `jawa/spawn_pawn` needs a xenotype parameter `[v2]`
+Migrated from `TODO.md` §14. Without it a spawned pawn cannot be pinned to the
+xenotype under test.
+
+---
+
+## Closed on migration
+
+- ~~`jawa/list_factions`~~ — ✅ **DONE 2026-08-13.** Built in the shutdown window
+  and run live for the first time: 34 factions returned. This was the V1-CRITICAL
+  item of `TODO.md` §14. It unblocked the v1 faction gate, which passed the same
+  day (`V1_SCOPE.md` row 1).
+
+---
+
+## ✅ B0. DEPLOYED 2026-08-13 10:05 — byte-verified in the game copy
+
+**DONE.** Deployed in the shutdown window at 10:05, stamp `e2a2048f1434`,
+**154,112 B, 17 tools**. Each fix byte-verified in the DEPLOYED copy rather than
+trusted from the build's own report — `foundation`, `countAllIncludingHidden`,
+`kindDef`, `resultCount`, `factionHasIdeo`, `categories`, `CompScalars` all
+PRESENT; GM pair intact.
+
+**Nothing below is outstanding.** Kept as the record of what changed and why.
+
+```bash
+python.exe src/RimMandrake/bridgetools/build.py --gm --apply     # --gm is NOT optional
+```
+
+| commit | what it changes | why it matters |
+|---|---|---|
+| `397ab96` | `layer='foundation'` on the three terrain tools | **deployed already** — the rest below are not |
+| `7e0dfdd` | `set_terrain_batch` / `get_terrain_batch` still ADVERTISE `'top'`/`'under'` while accepting `'foundation'` | a generator reads the schema to decide what is possible; the ship's 4,057-cell foundation goes through `set_terrain_batch` |
+| `005e38d` | `list_factions` gains `countReturned` / `countAllIncludingHidden` / `isCompleteList` | `count` was the returned SUBSET and I read it as the total |
+| `973034b` | `list_pawns` gains `kindDef` alias; `damage` gains `targets` + `resultCount` + `verdictFields` | both keys had already caused a near-false-negative; a trap that recurs after being logged is a shape bug |
+| `14f6239` | `spawn_pawn` failure is per-row, not fatal; reports `factionResolved` / `factionHasIdeo` | made the NRE measurable instead of mysterious |
+| `18b3a94` | `destroy_batch` accepts `category` as well as `categories` | the singular was silently ignored → Plant default → `success:true, destroyed:0` |
+| `a79a551` | `spawn_pawn` matches faction humanlikeness and refuses the bad pairing; `get_def` comps carry a `fields` map | root cause of the NRE (WORLD's log evidence), and the only way to read comp radii |
+
+**🔴 STILL OWED — FIRST CALL OF THE NEXT LIVE SESSION**, two seats waiting:
+
+```
+jawa/get_def GravFieldExtender  ->  CompProperties_SubstructureFootprint radius
+```
+
+30 means the owner's Bigger Gravships settings reached the live defs and CREATE's
+plan is verified. 25.9 means they did not despite `SubstructureSupport` having
+taken, and the extender at (56,8) — 84.72 out, 0.28 of margin — is the first thing
+that breaks. Until that call, "the radii applied" is **inference**, not a
+measurement.
+
+---
+
+### B2. Biome-aware terrain palettes, and a `destroy_at` verb
+Rescued from the old state file during the 2026-08-13 compression — these existed
+nowhere else (`map_authoring_decision.md` has one line on `destroy_at`). Backlog
+ideas, not owed work; keep or drop deliberately rather than by attrition.
+
+---
+
+## Filed by CREATE, 2026-08-13 — good news, it downgrades B1
+
+### B3. `get_def GravFieldExtender` is now CONFIRMATORY, not load-bearing
+B1 above says *"until that call, 'the radii applied' is **inference**"* and makes
+30-vs-25.9 the first call of the next live session. **Settled offline instead**
+(CREATE, queue C4, `src/RimMandrake/mapsynth/ship_designs.py` header rewritten):
+
+- Bigger Gravships ships **no XML** — `GravshipSize.dll` stamps the radii into the
+  comps during implied-def generation, which runs after all XML patching, so it
+  beats both Odyssey and Vanilla Gravship Expanded regardless of load order.
+- `34.0` and `30.0` appear **nowhere in the assembly** (byte-scanned; `25.9`
+  appears ×10). They can only have come from
+  `Config\Mod_3522759531_GravshipSizeSettings.xml`, which holds exactly 34/30/12/85.
+- ⭐ **The decisive part is already in your own record.** `AGENT_OPS_state.md`
+  L33-37 has live `get_def GravEngine` returning `SubstructureSupport 632.7954` —
+  the owner's stored float, matching neither vanilla 500 nor VGE's 250. **The
+  settings path demonstrably applied over VGE for a field written by the same
+  method that writes the radii.**
+
+**So do not spend the first call of a live session on this.** Still worth making
+when convenient — one call, and it converts "inference from the same code path"
+into "measured" — but it no longer gates the ship build, and B1's ranking should
+drop accordingly. ⚠️ **Do not read the def literals as a contradiction:** on disk
+`GravFieldExtender` is 16.9 (Odyssey) / 12.9 (VGE-patched), and both are supposed
+to disagree with 30.
+
+---
+
+## B-new. Watch for `OuterRim_RebelAlliance` at the next worldgen — it silently did not generate
+
+Filed by PROJECT from OPS's relay, **and independently re-measured before filing**
+so you do not have to re-check it.
+
+⛔ **DO NOT TRY TO REPRODUCE THE TABLE BELOW — the save is gone.** The owner
+ordered every savegame deleted and OPS carried it out (`acc3261`, 27 `.rws`/`.bak`,
+764.7 MB, irreversible). These numbers were taken while the file still existed and
+are now the **only** surviving record of that world. They stand as history; they
+cannot be re-derived, and a future session that finds the Saves folder empty has
+not found a contradiction.
+
+| where | result |
+|---|---|
+| Faction Control's list (`Config\Mod_2882785581_Controller.xml`) | present, 1 of 41 |
+| `New Arrivals2.rws`, as a real faction (`<def>OuterRim_RebelAlliance</def>`) | ⛔ **0** |
+| control — `<def>OuterRim_GalacticEmpire</def>` in the same save | 1 |
+
+The one textual hit in the save is a bare `<li>` at line 992084, not a faction
+entry. **So the Rebel Alliance was configured and never appeared.**
+
+⚠️ **Nothing in `Player.log` reports this.** A faction that simply never generates
+produces no error, no warning and no line — which is why it survived a full day of
+clean-log triage. The only detection is looking for it on purpose.
+
+**When you generate the v1 world (rows 2 and 7, now one event), check the faction
+list explicitly for it** — `jawa/list_factions` returns them all, so this is one
+call, not a hunt. If it is missing again, that is a real finding and belongs in
+`OWNER_DECISIONS.md`: a Star Wars campaign whose Rebel Alliance cannot spawn is a
+fiction problem, not a config problem.
+
+**Not yours to fix, only to observe** — the exclusion list and faction roster are
+OPS's and VISION's.

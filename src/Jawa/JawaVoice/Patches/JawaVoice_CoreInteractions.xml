@@ -1,0 +1,416 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ============================================================================
+  JawaVoice_CoreInteractions.xml               JawaVoice · authored 2026-08-11
+  ============================================================================
+
+  WHY THIS EXISTS
+  ===============
+  Reported in game: "still a mixture of the icons, the observations, and rarely
+  the jawaese... sure would be nice to have more Jawa."
+
+  A live def-dump audit found the reason. Of the 276 InteractionDefs carrying
+  r_logentry rules, 185 had Jawaese and 91 did not. The uncovered ones are owned
+  by Core (466 rules), Ideology (104), Anomaly, Royalty, Biotech and several
+  social mods.
+
+  The structural cause: JawaVoice patches SpeakUp's OWN rule files
+  (chitchat_weather.xml and friends), but SpeakUp ALSO injects hundreds of
+  English lines directly into Core's InteractionDefs. Core's Chitchat carries
+  1,684 rulesStrings. None of them were ours, so whenever the grammar resolved
+  against Core's pool instead of SpeakUp's, priority=250 had nothing to win with
+  and the pawn spoke Basic.
+
+  WHAT THIS ADDS
+  ==============
+  No new Jawaese was written. These are the existing lines, re-targeted at the
+  Core defs that were producing English, matched by MEANING rather than pooled
+  blindly, because each line carries its own English gloss and a mismatched
+  gloss would contradict the interaction.
+
+      Chitchat  <- chitchat_thoughts + chitchat_weather + chitchat_jokes
+      DeepTalk  <- deeptalk
+
+  DELIBERATELY NOT COVERED YET
+  ============================
+  Insult (32 rules) and Slight (48) are the next largest, and they need HOSTILE
+  Jawaese. Every line in the current corpus is neutral or friendly and most end
+  in "friend", so pooling them onto an insult would produce a pawn cheerfully
+  greeting someone it is trying to offend. Those need lines written, not moved.
+  Same for the Ideology set (Trial_Defend, ReduceWill, SparkSlaveRebellion),
+  which is thematically specific.
+
+  VERIFY AFTER THE NEXT LOAD
+  ==========================
+    * Let the game RUN. SpeakUp needs 60 ticks between conversation lines, so a
+      paused game shows only the opening narration. This cost a whole debugging
+      session once.
+    * Ordinary colonist chatter should be overwhelmingly Jawaese now.
+    * Insults and slights will still be in Basic. That is expected until the
+      hostile corpus exists.
+  ============================================================================
+-->
+<Patch>
+
+  <!-- Core Chitchat: 1,684 English lines, previously zero Jawaese -->
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/InteractionDef[defName="Chitchat"]/logRulesInitiator/rulesStrings</xpath>
+    <match Class="PatchOperationAdd">
+      <xpath>/Defs/InteractionDef[defName="Chitchat"]/logRulesInitiator/rulesStrings</xpath>
+      <value>
+          <li>r_logentry(INITIATOR_faction==PlayerColony,priority=250)-&gt;T'eb let h'unyu loo? (Hope you choke on it, friend!)</li>
+          <li>r_logentry(INITIATOR_faction==PlayerColony,priority=250)-&gt;Mobmub mobmuu non h'aanoh. (Chow down, friend!)</li>
+          <li>r_logentry(INITIATOR_faction==PlayerColony,priority=250)-&gt;Sinyoh lo teeshoo. (Eat hearty, friend!)</li>
+          <li>r_logentry(INITIATOR_faction==PlayerColony,priority=250)-&gt;Boh m'oo mane mane! (Enjoy your meal, friend!)</li>
+          <li>r_logentry(INITIATOR_faction==PlayerColony,priority=250)-&gt;Renwi rinben neen? (Eat up, friend!)</li>
+          <li>r_logentry(INITIATOR_faction==PlayerColony,priority=250)-&gt;Hibon m'oob m'oou ge. (Bon appétit, friend!)</li>
+          <li>r_logentry(INITIATOR_faction==PlayerColony,priority=250)-&gt;Teroo kootkon batmeh roblu mab mab. (I'm sorry to hear that, friend.)</li>
+          <li>r_logentry(INITIATOR_faction==PlayerColony,priority=250)-&gt;S'ehra menyin boo k'oob kentat. (I could try and make some new apparel for you.)</li>
+          <li>r_logentry(INITIATOR_faction==PlayerColony,priority=250)-&gt;Boo gigeb beeblot monnyi... (I'll try to trade in something in exchange for some new apparel for you.)</li>
+          <li>r_logentry(INITIATOR_faction==PlayerColony,priority=250)-&gt;Zih ho gibraah... (Mine is in no good shape either...)</li>
+          <li>r_logentry(INITIATOR_faction==PlayerColony,priority=250)-&gt;T'ut hootte zobwoo zobwoo. (Yes you could have, friend — now, try to be more useful in the future!)</li>
+          <li>r_logentry(INITIATOR_faction==PlayerColony,priority=250)-&gt;Too s'howa ro. (And I hope you, friend.)</li>
+          <li>r_logentry(INITIATOR_faction==PlayerColony,priority=250)-&gt;Bikoon nat. (Hey, friend — you need a table, you build one yourself. I've got more important things to do.)</li>
+          <li>r_logentry(INITIATOR_faction==PlayerColony,priority=250)-&gt;Mu kaat tu z'ab. (Let's hope it won't happen again, friend — it's.)</li>
+          <li>r_logentry(INITIATOR_faction==PlayerColony,priority=250)-&gt;Shaze tu ta ta mit miu. (Don't worry, friend — I'm sure you won't let this happen again.)</li>
+          <li>r_logentry(INITIATOR_faction==PlayerColony,priority=250)-&gt;S'eebkoo toogaan toogaan he hu kootwoo nyoot nyoot... (I had planned to build one, but I got distracted. Sorry, friend — it won't happen again.)</li>
+          <li>r_logentry(INITIATOR_faction==PlayerColony,priority=250)-&gt;Nyun baa baa. (I don't think they're as abundant as you say, but I agree with you!)</li>
+          <li>r_logentry(INITIATOR_faction==PlayerColony,priority=250)-&gt;Shaanboo shaanbou me. (Really? Mine were plain and ordinary.)</li>
+          <li>r_logentry(INITIATOR_faction==PlayerColony,priority=250)-&gt;Nyoo nenyoon moobla... (Really? Mine were plain plain and ordinary.)</li>
+          <li>r_logentry(INITIATOR_faction==PlayerColony,priority=250)-&gt;Nekoo bintib nyoot! (What?! I had to eat some disgusting food earlier!)</li>
+          <li>r_logentry(INITIATOR_faction==PlayerColony,priority=250)-&gt;N'ule luh b'aa. (What?! I had to eat some raw food earlier!)</li>
+          <li>r_logentry(INITIATOR_faction==PlayerColony,priority=250)-&gt;Nahshat nahshau net! (What?! I had to eat some kibble earlier!)</li>
+          <li>r_logentry(INITIATOR_faction==PlayerColony,priority=250)-&gt;Nooh toh he he? (Same here, friend!)</li>
+          <li>r_logentry(INITIATOR_faction==PlayerColony,priority=250)-&gt;Moob geeh tu. (That's nice to hear, friend!)</li>
+          <li>r_logentry(INITIATOR_faction==PlayerColony,priority=250)-&gt;Hub bohwoo zo. (I look forward to enjoying many fancy meals there!)</li>
+          <li>r_logentry(INITIATOR_faction==PlayerColony,priority=250)-&gt;Taan kooma bab bab naab... (A victory that clearly shows that our human bodies need no cybernetics — they're just perfect the way they are!)</li>
+          <li>r_logentry(INITIATOR_faction==PlayerColony,priority=250)-&gt;Ma t'akoo t'akou neshob. (It was indeed!)</li>
+          <li>r_logentry(INITIATOR_faction==PlayerColony,priority=250)-&gt;Subbih na ron... (We squashed those mechs like bugs!)</li>
+          <li>r_logentry(INITIATOR_faction==PlayerColony,priority=250)-&gt;Zaabmob zaabmou n'at? (A great, hollow victory — for when they come back with heavier forces, we will get mercilessly destroyed.)</li>
+          <li>r_logentry(INITIATOR_faction==PlayerColony,priority=250)-&gt;S'hu nob! (But now, we'd better prepare for the next mech attack.)</li>
+          <li>r_logentry(INITIATOR_faction==PlayerColony,priority=250)-&gt;N'ut n'uu raah lanyo n'ontoo? (I'm sure those things won't come back anytime soon — we're safe!)</li>
+          <li>r_logentry(INITIATOR_faction==PlayerColony,priority=250)-&gt;Ru toh m'eh nyah? (We'll all freeze someday, as per universe heat death theory. Our long-derived and processed molecules would survive, but that's hardly what defines our higher functions.)</li>
+          <li>r_logentry(INITIATOR_faction==PlayerColony,priority=250)-&gt;Mo zo k'ob n'uwaah. (Good — for I hope you freeze to death, friend!)</li>
+          <li>r_logentry(INITIATOR_faction==PlayerColony,priority=250)-&gt;Sa tee z'aan? (You're right, friend. I'm uncomfortably cold myself.)</li>
+          <li>r_logentry(INITIATOR_faction==PlayerColony,priority=250)-&gt;Mowat zohsu no. (I'm shivering myself, friend.)</li>
+          <li>r_logentry(INITIATOR_faction==PlayerColony,priority=250)-&gt;Bah n'ahsaa sab... (All I can think of is getting warm, friend.)</li>
+          <li>r_logentry(INITIATOR_faction==PlayerColony,priority=250)-&gt;Loo notlee k'ab been. (I can't feel my toes and fingers. I urgently need to get warm.)</li>
+          <li>r_logentry(INITIATOR_faction==PlayerColony,priority=250)-&gt;M'ooboh gooshu goosha bobrob. (Be careful, friend —.)</li>
+          <li>r_logentry(INITIATOR_faction==PlayerColony,priority=250)-&gt;Shobzo zita motku motku zunat gan. (Really, friend? I'm not bothered by darkness.)</li>
+          <li>r_logentry(INITIATOR_faction==PlayerColony,priority=250)-&gt;Miblah ba be bu neenka neenku. (I feel the same, friend.)</li>
+          <li>r_logentry(INITIATOR_faction==PlayerColony,priority=250)-&gt;Zeb reenno! (Really, friend? I see darkness as a chance to relax.)</li>
+          <li>r_logentry(INITIATOR_faction==PlayerColony,priority=250)-&gt;To to w'ebmoo lonmaa kogee kee! (How are we to get things done in this darkness?)</li>
+          <li>r_logentry(INITIATOR_faction==PlayerColony,priority=250)-&gt;Shaa shaa tongut nibhoo. (You're right, friend. I'm sweating.)</li>
+          <li>r_logentry(INITIATOR_faction==PlayerColony,priority=250)-&gt;Nyih tanbe nezee ba na! (Ah, friend — if only I could have a breath of cool air...)</li>
+          <li>r_logentry(INITIATOR_faction==PlayerColony,priority=250)-&gt;N'oonlee n'oonlee nittaa net... (Yes, friend... It's way too hot.)</li>
+          <li>r_logentry(INITIATOR_faction==PlayerColony,priority=250)-&gt;Zo hat hau. (I'm not sure how long I can handle this extreme heat, friend.)</li>
+          <li>r_logentry(INITIATOR_faction==PlayerColony,priority=250)-&gt;Kon noogat noogat... (This is worse than Hell itself. The air itself is on fire!)</li>
+          <li>r_logentry(INITIATOR_faction==PlayerColony,priority=250)-&gt;Ko s'oob nagin? (You should be thankful indeed, friend. Let's hope rescuing you was worth our while!)</li>
+          <li>r_logentry(INITIATOR_faction==PlayerColony,priority=250)-&gt;Nabtee nyeetlon ma g'eb. (Sometimes I think that we would've been better off leaving you to those slavers...)</li>
+          <li>r_logentry(INITIATOR_faction==PlayerColony,priority=250)-&gt;Shin nonna mi mu. (No problem, friend. It was the right thing to do.)</li>
+          <li>r_logentry(INITIATOR_faction==PlayerColony,priority=250)-&gt;T'oo nooh bo g'ema g'emu. (We're glad you're free, friend.)</li>
+          <li>r_logentry(INITIATOR_faction==PlayerColony,priority=250)-&gt;Bawoob wat ma nonnyeen nonnyeen bonoo? (You really don't need to thank us — we just did our duty as good human beings.)</li>
+          <li>r_logentry(INITIATOR_faction==PlayerColony,priority=250)-&gt;Bonna r'it n'uzih. (I believe it's enjoyable, friend!)</li>
+          <li>r_logentry(INITIATOR_faction==PlayerColony,priority=250)-&gt;Kohha nah lat wa? (I believe it's very enjoyable, friend!)</li>
+          <li>r_logentry(INITIATOR_faction==PlayerColony,priority=250)-&gt;Waahsaan seen g'obhah. (I have loads of fun in it, friend!)</li>
+          <li>r_logentry(INITIATOR_faction==PlayerColony,priority=250)-&gt;Ka ka boonnon loonyan loonyan r'eehgaah. (I truly have loads of fun in it, friend!)</li>
+          <li>r_logentry(INITIATOR_faction==PlayerColony,priority=250)-&gt;Weebun wob wou. (It's the coolest ever, friend!)</li>
+          <li>r_logentry(INITIATOR_faction==PlayerColony,priority=250)-&gt;Sahroo nan titkoo. (It's a complete Paradise, friend — all decked for maxing out anyone's fun!)</li>
+          <li>r_logentry(INITIATOR_faction==PlayerColony,priority=250)-&gt;Rikib rikiu hib... (I agree, friend!)</li>
+          <li>r_logentry(INITIATOR_faction==PlayerColony,priority=250)-&gt;Zo su gob. (I can't disagree with you, friend!)</li>
+          <li>r_logentry(INITIATOR_faction==PlayerColony,priority=250)-&gt;Ha nee m'en wonshaan wonshaan got got? (Slavery is awful, friend! Nobody deserves that fate!)</li>
+          <li>r_logentry(INITIATOR_faction==PlayerColony,priority=250)-&gt;B'ebzoo saa too b'ot! (I fully agree, friend! Mean and debasing!)</li>
+          <li>r_logentry(INITIATOR_faction==PlayerColony,priority=250)-&gt;K'ub shohnaa! (That's just so wrong, friend! I totally disagree!)</li>
+          <li>r_logentry(INITIATOR_faction==PlayerColony,priority=250)-&gt;Mee miku mootlo mootlu maanshan. (Those lucky slavers will get all the fun...)</li>
+          <li>r_logentry(INITIATOR_faction==PlayerColony,priority=250)-&gt;N'eebbah b'on shontib l'otlee... (That's extremely, friend — I certainly agree with you.)</li>
+          <li>r_logentry(INITIATOR_faction==PlayerColony,priority=250)-&gt;K'oohsaan mitnooh neebmot shi m'abmoob... (That's, friend — I agree with you.)</li>
+          <li>r_logentry(INITIATOR_faction==PlayerColony,priority=250)-&gt;Bah goohro... (I don't think it's so bad as you say, but... yes this place could look better, friend!)</li>
+          <li>r_logentry(INITIATOR_faction==PlayerColony,priority=250)-&gt;Haa haa naan naau nyi nyu n'yotaa. (I can't say you're right, friend — but, for sure, this place could look better.)</li>
+          <li>r_logentry(INITIATOR_faction==PlayerColony,priority=250)-&gt;Tekuh taanmoh sheb! (Come on, friend! OK, it could be improved — but I actually find it pretty.)</li>
+          <li>r_logentry(INITIATOR_faction==PlayerColony,priority=250)-&gt;N'yooh s'hoh haantoh... (Are you sure, friend? I don't agree — I actually find it beautiful!)</li>
+          <li>r_logentry(INITIATOR_faction==PlayerColony,priority=250)-&gt;Z'ib z'ib ma z'ubtat lot noo nou. (This place is not — it's worse than that, friend!)</li>
+          <li>r_logentry(INITIATOR_faction==PlayerColony,priority=250)-&gt;Nahwe lo... (That's exactly what I think, friend!)</li>
+          <li>r_logentry(INITIATOR_faction==PlayerColony,priority=250)-&gt;Mohgaat ti l'eehma? (I don't think it's so as you say, but... yes this place could look better, friend!)</li>
+          <li>r_logentry(INITIATOR_faction==PlayerColony,priority=250)-&gt;Nyitsaa moobo? (This place is not — it's a lot worse than that, friend!)</li>
+          <li>r_logentry(INITIATOR_faction==PlayerColony,priority=250)-&gt;Wahte wahtu zewat. (Probably you're right, friend — but I think it's even worse than that.)</li>
+          <li>r_logentry(INITIATOR_faction==PlayerColony,priority=250)-&gt;Kebba libnyoo soh sou. (What!? Are we speaking of the same place, friend?! This place is totally!)</li>
+          <li>r_logentry(INITIATOR_faction==PlayerColony,priority=250)-&gt;Si su r'on meebaa. (I don't know where have you been lately, friend — but rest assured: this place is.)</li>
+          <li>r_logentry(INITIATOR_faction==PlayerColony,priority=250)-&gt;Z'ot leema! (Well, friend... Maybe you're right, but there is a lot of space for improvement, I think.)</li>
+          <li>r_logentry(INITIATOR_faction==PlayerColony,priority=250)-&gt;Se moo tahse? (You might be right, friend — but I don't find it as pretty as you say.)</li>
+          <li>r_logentry(INITIATOR_faction==PlayerColony,priority=250)-&gt;Ba bonnyu to to su reeh! (I believe it's even better than that, friend.)</li>
+          <li>r_logentry(INITIATOR_faction==PlayerColony,priority=250)-&gt;Tiheh neehkooh bu mee. (I don't agree with that — this place is actually far from perfection.)</li>
+          <li>r_logentry(INITIATOR_faction==PlayerColony,priority=250)-&gt;Li li ma nu? (You might be right, friend — but I don't find it as nice as you say.)</li>
+          <li>r_logentry(INITIATOR_faction==PlayerColony,priority=250)-&gt;Kehloot kehloot b'ontat b'ontat... (Yes, friend — but I think it still needs some minor improvement.)</li>
+          <li>r_logentry(INITIATOR_faction==PlayerColony,priority=250)-&gt;Monkoo b'eeh b'inlob b'inlou betoo betou moob. (Well, friend — I think it still needs some improvement.)</li>
+          <li>r_logentry(INITIATOR_faction==PlayerColony,priority=250)-&gt;Ko meetgee za nyonnab. (I totally agree, friend.)</li>
+          <li>r_logentry(INITIATOR_faction==PlayerColony,priority=250)-&gt;Bu tu tu woohbut m'ohmo za. (Really, friend? My aching back doesn't agree with you.)</li>
+          <li>r_logentry(INITIATOR_faction==PlayerColony,priority=250)-&gt;Banyee we taanzaat taanzaat? (I'm glad about it too, friend!)</li>
+          <li>r_logentry(INITIATOR_faction==PlayerColony,priority=250)-&gt;Zoomut zoki zoku toob gihnu tuhmoo. (I'll try and build some better furniture for us.)</li>
+          <li>r_logentry(INITIATOR_faction==PlayerColony,priority=250)-&gt;T'aawoob hi. (I'm really hungry.)</li>
+          <li>r_logentry(INITIATOR_faction==PlayerColony,priority=250)-&gt;N'yotzih tibsot si! (I'm feeling peckish.)</li>
+          <li>r_logentry(INITIATOR_faction==PlayerColony,priority=250)-&gt;Shoohno binu zatshoh! (I could eat!)</li>
+          <li>r_logentry(INITIATOR_faction==PlayerColony,priority=250)-&gt;Nahbat koo meewoo... (I'm dying for something to eat!)</li>
+          <li>r_logentry(INITIATOR_faction==PlayerColony,priority=250)-&gt;Shin g'ohgun b'ooshoo? (Me too, friend!)</li>
+          <li>r_logentry(INITIATOR_faction==PlayerColony,priority=250)-&gt;Sab go. (I'm also hungry, friend. But you are in much greater need!)</li>
+          <li>r_logentry(INITIATOR_faction==PlayerColony,priority=250)-&gt;Rootneh s'hozee ko ku shoo shat... (Well, I'm doing my best here... I hope to get it right...)</li>
+          <li>r_logentry(INITIATOR_faction==PlayerColony,priority=250)-&gt;Mahgon mahgon tuhko to m'aatma. (For all I care, friend, you may starve to death!)</li>
+          <li>r_logentry(INITIATOR_faction==PlayerColony,priority=250)-&gt;Mu soo sou noot noou. (Cook it yourself, friend!)</li>
+          <li>r_logentry(INITIATOR_faction==PlayerColony,priority=250)-&gt;Bagah rabe... (Calm down, friend! As soon as I can get my hands on some ingredients, I'll get you a meal!)</li>
+          <li>r_logentry(INITIATOR_faction==PlayerColony,priority=250)-&gt;Rablon s'hee soo! (I'll cook some tasty food as soon as possible, friend. Just wait a little while...)</li>
+          <li>r_logentry(INITIATOR_faction==PlayerColony,priority=250)-&gt;Zi m'ab? (A fine meal!)</li>
+          <li>r_logentry(INITIATOR_faction==PlayerColony,priority=250)-&gt;S'heegeh mo? (A lavish meal!)</li>
+          <li>r_logentry(INITIATOR_faction==PlayerColony,priority=250)-&gt;Bah k'ohmoo k'ohmoo. (Some nice food!)</li>
+          <li>r_logentry(INITIATOR_faction==PlayerColony,priority=250)-&gt;Koot koot bootshoh bootshoh. (Be patient, friend!)</li>
+          <li>r_logentry(INITIATOR_faction==PlayerColony,priority=250)-&gt;Me raabmon? (Keep your pants on, friend!)</li>
+          <li>r_logentry(INITIATOR_faction==PlayerColony,priority=250)-&gt;Hoh moot. (Hold your horses, friend!)</li>
+          <li>r_logentry(INITIATOR_faction==PlayerColony,priority=250)-&gt;Me ro n'eet baab k'ee. (I really feel like a slave here. All work, no fun.)</li>
+          <li>r_logentry(INITIATOR_faction==PlayerColony,priority=250)-&gt;Wu z'oob! (All work and no play makes Jack a dull boy... that's my life right now!)</li>
+          <li>r_logentry(INITIATOR_faction==PlayerColony,priority=250)-&gt;Goh w'aantab w'aantau kubraab gohshot gohshou. (All work and no play makes a dull boy...)</li>
+          <li>r_logentry(INITIATOR_faction==PlayerColony,priority=250)-&gt;T'ubreen mutgoo t'ub. (I wish I could have more fun around here.)</li>
+          <li>r_logentry(INITIATOR_faction==PlayerColony,priority=250)-&gt;K'oohwo sa. (I believe we can have some fun around here. It's OK.)</li>
+          <li>r_logentry(INITIATOR_faction==PlayerColony,priority=250)-&gt;Shoowah b'en kotlet benhab nyo! (I think we have several nice entertainment options around here.)</li>
+          <li>r_logentry(INITIATOR_faction==PlayerColony,priority=250)-&gt;Name n'et n'et ta ta wa taa. (Tell me about it, friend... I'm a little drowsy myself.)</li>
+          <li>r_logentry(INITIATOR_faction==PlayerColony,priority=250)-&gt;Sen non moob. (Heh, friend... I'm quite tired myself.)</li>
+          <li>r_logentry(INITIATOR_faction==PlayerColony,priority=250)-&gt;Boh bou haanbee looh lubwah. (Aww, friend... my eyelids have lead weights on them. I'm exhausted.)</li>
+          <li>r_logentry(INITIATOR_faction==PlayerColony,priority=250)-&gt;Nyeekah shoob t'oo k'an nukeb... (Go and have some rest, friend — you deserve it.)</li>
+          <li>r_logentry(INITIATOR_faction==PlayerColony,priority=250)-&gt;Shotoob nyib k'ob re! (Have some rest, friend — I'll try to cover for you.)</li>
+          <li>r_logentry(INITIATOR_faction==PlayerColony,priority=250)-&gt;Kanren sheeb s'huntooh s'huntoou zan... (You're right, friend. I'll do my best to fix that.)</li>
+          <li>r_logentry(INITIATOR_faction==PlayerColony,priority=250)-&gt;Weennyoo mobnot w'eewe? (You're right, friend. I feel the same.)</li>
+          <li>r_logentry(INITIATOR_faction==PlayerColony,priority=250)-&gt;B'aanaah b'ewa ba! (Yes, friend. In fact, I will help you with that.)</li>
+          <li>r_logentry(INITIATOR_faction==PlayerColony,priority=250)-&gt;Loot loot s'ooko tootshoob r'ehbee! (Yes, friend. Please go ahead, we need it!)</li>
+          <li>r_logentry(INITIATOR_faction==PlayerColony,priority=250)-&gt;H'aab he mit. (Are you sure, friend? I think our living spaces are quite spacious!)</li>
+          <li>r_logentry(INITIATOR_faction==PlayerColony,priority=250)-&gt;G'oonwe g'oonwe m'oorin n'eh ma munkah. (I don't know, friend. Probably we'll soon die of starvation or get killed in a raid.)</li>
+          <li>r_logentry(INITIATOR_faction==PlayerColony,priority=250)-&gt;Sheenkoo mee be nabgat h'in? (We're doomed, friend. Doomed... that's all we are.)</li>
+          <li>r_logentry(INITIATOR_faction==PlayerColony,priority=250)-&gt;Hen hen nyahma b'ab zaatmoon. (Really, friend? This place looks dangerous... I'm scared.)</li>
+          <li>r_logentry(INITIATOR_faction==PlayerColony,priority=250)-&gt;Mahke noh sob. (I... I hope you're right, friend. But I'm... I'm quite cross about our situation here.)</li>
+          <li>r_logentry(INITIATOR_faction==PlayerColony,priority=250)-&gt;Teehon ro waab waau been mozeen. (No, friend. You got it all wrong. In fact, we should get ready for the worst.)</li>
+          <li>r_logentry(INITIATOR_faction==PlayerColony,priority=250)-&gt;Zoh koob meh teesho... (Wise words, friend. Wise words.)</li>
+          <li>r_logentry(INITIATOR_faction==PlayerColony,priority=250)-&gt;Koo s'haa hot? (I wouldn't bury you, either.)</li>
+          <li>r_logentry(INITIATOR_faction==PlayerColony,priority=250)-&gt;Tooman lu? (Oh my, friend. I hope someone took care of it already.)</li>
+          <li>r_logentry(INITIATOR_faction==PlayerColony,priority=250)-&gt;Zoon gohnyaan gohnyaau neet b'ut! (We should burn it right away!)</li>
+          <li>r_logentry(INITIATOR_faction==PlayerColony,priority=250)-&gt;Totkib leeb go nyoo. (We should store it in a cold room for... further use.)</li>
+          <li>r_logentry(INITIATOR_faction==PlayerColony,priority=250)-&gt;Boza rannyaan s'heshab noob... (We should store it in a cold room for further scientific studies.)</li>
+          <li>r_logentry(INITIATOR_faction==PlayerColony,priority=250)-&gt;Zot to. (We should bury or cremate it right away — to avoid health problems.)</li>
+          <li>r_logentry(INITIATOR_faction==PlayerColony,priority=250)-&gt;Mooma teentoob w'ih hob. (I'd leave you to rot, too...)</li>
+          <li>r_logentry(INITIATOR_faction==PlayerColony,priority=250)-&gt;Re nyamoo matmeb! (That's disgusting, friend! I hope someone took care of it already.)</li>
+          <li>r_logentry(INITIATOR_faction==PlayerColony,priority=250)-&gt;Mi n'ee t'ishoh t'ishoh b'ibkaa! (Even for me, that's disgusting.)</li>
+          <li>r_logentry(INITIATOR_faction==PlayerColony,priority=250)-&gt;Zub tah! (It's just one more of the many we shall see around here. No big deal.)</li>
+          <li>r_logentry(INITIATOR_faction==PlayerColony,priority=250)-&gt;Seh laan so. (We certainly did the right and most humane thing, friend!)</li>
+          <li>r_logentry(INITIATOR_faction==PlayerColony,priority=250)-&gt;Tahtoo b'aan. (In the end, treating others kindly is always the best choice!)</li>
+          <li>r_logentry(INITIATOR_faction==PlayerColony,priority=250)-&gt;Neetsan neetsan n'yee! (Just wait for when that jerk comes back here for more stealing, burning and killing!)</li>
+          <li>r_logentry(INITIATOR_faction==PlayerColony,priority=250)-&gt;Roonto roontu s'eenzob s'eenzou lih lih? (Right! We could've used 'em as a punching bag!)</li>
+          <li>r_logentry(INITIATOR_faction==PlayerColony,priority=250)-&gt;L'unbib nyaan wah shoot. (Sometimes I think that we would've been better off leaving you in the wilderness...)</li>
+          <li>r_logentry(INITIATOR_faction==PlayerColony,priority=250)-&gt;H'aaba nootnin wob. (I could give you some medicine to speed up the healing process.)</li>
+          <li>r_logentry(INITIATOR_faction==PlayerColony,priority=250)-&gt;Bobi wehkeet reela reelu t'oo naat naat? (I could prepare for you a potent healing concoction, if you want.)</li>
+          <li>r_logentry(INITIATOR_faction==PlayerColony,priority=250)-&gt;S'hen zeenrit weenyoon. (I could prepare some healroot for you, if you want.)</li>
+          <li>r_logentry(INITIATOR_faction==PlayerColony,priority=250)-&gt;Kaab satla boothoo. (Eating healthy food might help avoiding that. I could cook something for you.)</li>
+          <li>r_logentry(INITIATOR_faction==PlayerColony,priority=250)-&gt;Rekat be. (I'm not in great shape either...)</li>
+          <li>r_logentry(INITIATOR_faction==PlayerColony,priority=250)-&gt;K'ootmen tib. (You're right, friend. We should be more careful to avoid such things.)</li>
+          <li>r_logentry(INITIATOR_faction==PlayerColony,priority=250)-&gt;Shaat ninku ninku. (Oh, no... Sorry, friend. We'll all try to be more careful.)</li>
+          <li>r_logentry(INITIATOR_faction==PlayerColony,priority=250)-&gt;Ri n'uzet. (We'll do our best to tread softly, friend.)</li>
+          <li>r_logentry(INITIATOR_faction==PlayerColony,priority=250)-&gt;Tab hot hot mih n'een. (Not my fault, friend. Sucks to be you, I guess. Sorry.)</li>
+          <li>r_logentry(INITIATOR_faction==PlayerColony,priority=250)-&gt;Lutroo bet. (Poor friend! Take it easy today, and be sure to get a good rest next time you go to sleep.)</li>
+          <li>r_logentry(INITIATOR_faction==PlayerColony,priority=250)-&gt;Gan maweb maweu bihmoon. (You know it wasn't me, friend. I'm always quiet when I walk.)</li>
+          <li>r_logentry(INITIATOR_faction==PlayerColony,priority=250)-&gt;Te wib boh. (Ah, friend. What a pity... what was this dream about?)</li>
+          <li>r_logentry(INITIATOR_faction==PlayerColony,priority=250)-&gt;Wa roobbab! (Sorry to hear that, friend. What was your dream about?)</li>
+          <li>r_logentry(INITIATOR_faction==PlayerColony,priority=250)-&gt;Naaleh me mu! (I was in a — so nice!)</li>
+          <li>r_logentry(INITIATOR_faction==PlayerColony,priority=250)-&gt;Shab shab re nooh nyon nyou mageeh mageeu. (Everybody was dancing and having fun...)</li>
+          <li>r_logentry(INITIATOR_faction==PlayerColony,priority=250)-&gt;Wonbat w'ot kanooh. (Everybody was laughing and drinking beer...)</li>
+          <li>r_logentry(INITIATOR_faction==PlayerColony,priority=250)-&gt;Ni roku na. (There was this large table filled with...)</li>
+          <li>r_logentry(INITIATOR_faction==PlayerColony,priority=250)-&gt;Saah shoomu shoomu mah nyani? (There was this singer, enthralling everybody with her sweet voice...)</li>
+          <li>r_logentry(INITIATOR_faction==PlayerColony,priority=250)-&gt;Gooblen nyanoo b'oonih? (I was flying over a beautiful,.)</li>
+          <li>r_logentry(INITIATOR_faction==PlayerColony,priority=250)-&gt;S'hobli n'ot nat tihgoo. (How absolutely, friend — We all deserve better.)</li>
+          <li>r_logentry(INITIATOR_faction==PlayerColony,priority=250)-&gt;H'ooneeb h'ooneeu waa s'hitmeeb tan tau s'oowun! (That's very, friend — I do agree with you.)</li>
+          <li>r_logentry(INITIATOR_faction==PlayerColony,priority=250)-&gt;Baneen nab nat m'aabho m'aabho? (That's, friend — I hope you receive better sleeping quarters soon.)</li>
+          <li>r_logentry(INITIATOR_faction==PlayerColony,priority=250)-&gt;Toobshob toobshou minaa. (I wouldn't like that either, friend — You're right.)</li>
+          <li>r_logentry(INITIATOR_faction==PlayerColony,priority=250)-&gt;Heengah soh h'ohnye! (Where I sleep is none of your business, friend.)</li>
+          <li>r_logentry(INITIATOR_faction==PlayerColony,priority=250)-&gt;Son mihnee ranroo banku zuh? (I don't have a bedroom — in fact, I don't even have a bed!)</li>
+          <li>r_logentry(INITIATOR_faction==PlayerColony,priority=250)-&gt;Taa g'eb loh h'irut r'aab... (What bedroom!? Last time I slept, it was out in the open!)</li>
+          <li>r_logentry(INITIATOR_faction==PlayerColony,priority=250)-&gt;H'in h'in nya nyonwah h'atah bonyah? (Mine is just how I want it to be — very humble and simple.)</li>
+          <li>r_logentry(INITIATOR_faction==PlayerColony,priority=250)-&gt;Lot moten shooreeh. (Mine is just how I want it to be — humble and simple.)</li>
+          <li>r_logentry(INITIATOR_faction==PlayerColony,priority=250)-&gt;Shoobnyi t'attooh mewob nyonshee nyonhaa nyonhaa. (Mine is simple. I like it.)</li>
+          <li>r_logentry(INITIATOR_faction==PlayerColony,priority=250)-&gt;Mub t'alon. (Are you sure it's the weather — and not you — that's making your room so cold?)</li>
+          <li>r_logentry(INITIATOR_faction==PlayerColony,priority=250)-&gt;H'ebtah r'aa heehnee nyonweeb r'ahtaah... (If you'd like, I can set your bed on fire to warm you up.)</li>
+          <li>r_logentry(INITIATOR_faction==PlayerColony,priority=250)-&gt;Nyoh tohgeen t'aahben. (Yeah... I wish we settled somewhere warmer.)</li>
+          <li>r_logentry(INITIATOR_faction==PlayerColony,priority=250)-&gt;Z'inot m'eetshi boobwoh r'et r'et mebab mebab! (Well, it gets this time of the year...we just have to get used to it.)</li>
+          <li>r_logentry(INITIATOR_faction==PlayerColony,priority=250)-&gt;M'uwi taa tau nah ra m'ooton? (Well, wouldn't it be nice if I started a big fire to warm us all up?)</li>
+          <li>r_logentry(INITIATOR_faction==PlayerColony,priority=250)-&gt;Noot bunhi h'ahwaa bet. (You need a heat source, friend, you build one yourself — I've got more important things to do.)</li>
+          <li>r_logentry(INITIATOR_faction==PlayerColony,priority=250)-&gt;R'otgi bob n'anooh n'anoou m'asoo nyobmaa. (I had planned to build a heat source, but I got distracted. Sorry, friend — it won't happen again.)</li>
+          <li>r_logentry(INITIATOR_faction==PlayerColony,priority=250)-&gt;Latma shoona bulee suren bokooh! (You're right friend — we could have built a proper heat source. We won't let this happen again.)</li>
+          <li>r_logentry(INITIATOR_faction==PlayerColony,priority=250)-&gt;N'oohti soo ba teben kibshaah! (Is it that hot for you, friend? I thought the temperature was quite comfortable.)</li>
+          <li>r_logentry(INITIATOR_faction==PlayerColony,priority=250)-&gt;Ninwo moonnyaat h'obsoot h'obsoou sotkaah tahut. (I know, it's! Here's hoping that we get some new coolers installed.)</li>
+          <li>r_logentry(INITIATOR_faction==PlayerColony,priority=250)-&gt;Mab r'on. (Well, it gets hot this time of the year — we just have to get used to it.)</li>
+          <li>r_logentry(INITIATOR_faction==PlayerColony,priority=250)-&gt;Bazi bee... (Agreed! It was so hot that I woke up sweating!)</li>
+          <li>r_logentry(INITIATOR_faction==PlayerColony,priority=250)-&gt;Bobshe bobshe ban bau weh rooh k'ubeh! (Yeah — at this rate, we should relocate our beds to a freezer!)</li>
+          <li>r_logentry(INITIATOR_faction==PlayerColony,priority=250)-&gt;Taaweb k'oo k'ou shun beeh. (You need a cooler, friend, you build one yourself — I've got more important things to do.)</li>
+          <li>r_logentry(INITIATOR_faction==PlayerColony,priority=250)-&gt;R'oon bot nyaabzi... (I had planned to build a cooler, but I got distracted. Sorry, friend — it won't happen again.)</li>
+          <li>r_logentry(INITIATOR_faction==PlayerColony,priority=250)-&gt;Bo shaabeeh wun too t'etboot. (You're right friend — we could have built a cooler. We won't let this happen again.)</li>
+          <li>r_logentry(INITIATOR_faction==PlayerColony,priority=250)-&gt;Bee t'inlet kob. (Hey, friend — you need a bed, you build one yourself. I've got more important things to do.)</li>
+          <li>r_logentry(INITIATOR_faction==PlayerColony,priority=250)-&gt;Too t'on notnoon notnoou... (I had planned to build a bed for you, but I got distracted. Sorry, friend — it won't happen again.)</li>
+          <li>r_logentry(INITIATOR_faction==PlayerColony,priority=250)-&gt;Hozab loohroob nat. (Hey, friend — you need a roofed room, you build one yourself. I've got more important things to do.)</li>
+          <li>r_logentry(INITIATOR_faction==PlayerColony,priority=250)-&gt;Boob geeb zoob koohsi! (I had planned to build a roofed room for you, but I got distracted. Sorry, friend — it won't happen again.)</li>
+          <li>r_logentry(INITIATOR_faction==PlayerColony,priority=250)-&gt;Lu b'een naa. (Go back inside then, friend — at least I won't hear your pitiful whining anymore!)</li>
+          <li>r_logentry(INITIATOR_faction==PlayerColony,priority=250)-&gt;G'uhman tee nyonwo... (Then why don't you go crawl into a cave and stay there, friend?)</li>
+          <li>r_logentry(INITIATOR_faction==PlayerColony,priority=250)-&gt;N'oonzib t'imib se mootmaan n'eeb n'eeu? (I know, friend — but some vital tasks must be performed outdoors. We can't change that, unfortunately...)</li>
+          <li>r_logentry(INITIATOR_faction==PlayerColony,priority=250)-&gt;N'yu noobnee wan! (I know, friend — maybe we could try and plan for you to run indoors tasks only.)</li>
+          <li>r_logentry(INITIATOR_faction==PlayerColony,priority=250)-&gt;Rab m'ah. (I'm sorry, friend — I hope you can go work indoors soon.)</li>
+          <li>r_logentry(INITIATOR_faction==PlayerColony,priority=250)-&gt;Bob wenkot naanoob munshab zu? (I am wearing apparel that someone died in — and that's perfectly fine by me.)</li>
+          <li>r_logentry(INITIATOR_faction==PlayerColony,priority=250)-&gt;Boo m'eeh ganon ganon naabneeh naabneeh... (I am wearing apparel that someone died in.)</li>
+          <li>r_logentry(INITIATOR_faction==PlayerColony,priority=250)-&gt;Boora wa maamoh teen b'otreet! (Someone died in the apparel I'm wearing.)</li>
+          <li>r_logentry(INITIATOR_faction==PlayerColony,priority=250)-&gt;B'ootrah nooh? (Some of my apparel was worn by someone as they died.)</li>
+          <li>r_logentry(INITIATOR_faction==PlayerColony,priority=250)-&gt;Taabooh botgoo so. (It creeps me out and feels dirty!)</li>
+          <li>r_logentry(INITIATOR_faction==PlayerColony,priority=250)-&gt;Baantuh nyoot bon? (I feel unclean...)</li>
+          <li>r_logentry(INITIATOR_faction==PlayerColony,priority=250)-&gt;Bu kaatnyoo see r'ebmoot? (I totally agree with you, friend!)</li>
+          <li>r_logentry(INITIATOR_faction==PlayerColony,priority=250)-&gt;Taatab no g'oob noomaan. (I don't really care about what's the weather like out there, friend...)</li>
+          <li>r_logentry(INITIATOR_faction==PlayerColony,priority=250)-&gt;Wun loh nyamoon. (Me too, friend.)</li>
+          <li>r_logentry(INITIATOR_faction==PlayerColony,priority=250)-&gt;Tugeen too sheethu rubmo goobtu. (I wish I had a chance to go outside and see it for myself!)</li>
+          <li>r_logentry(INITIATOR_faction==PlayerColony,priority=250)-&gt;Sentaab man zut n'yooh... (It's a very hot, but it's still enjoyable.)</li>
+          <li>r_logentry(INITIATOR_faction==PlayerColony,priority=250)-&gt;Gamee bee? (A warm, clear is a blessing!)</li>
+          <li>r_logentry(INITIATOR_faction==PlayerColony,priority=250)-&gt;Laanhah laanhah mit? (Not too hot, not too cold — a perfect!)</li>
+          <li>r_logentry(INITIATOR_faction==PlayerColony,priority=250)-&gt;Neen neeu mob go kootzoot? (A bit chilly, but a still.)</li>
+          <li>r_logentry(INITIATOR_faction==PlayerColony,priority=250)-&gt;Keetkeeh tub tub tohti te bataa. (At least the sunlight helps a little.)</li>
+          <li>r_logentry(INITIATOR_faction==PlayerColony,priority=250)-&gt;B'aka mihi reh? (With some luck, daylight should soon get rid of this fog.)</li>
+          <li>r_logentry(INITIATOR_faction==PlayerColony,priority=250)-&gt;Kantaa neeh ku naat m'uh... (Let's hope this fog ends before evening — it really makes it difficult to see things.)</li>
+          <li>r_logentry(INITIATOR_faction==PlayerColony,priority=250)-&gt;Hoozoob b'eet kehha kehhu totsoh mehib... (Foggy evenings are perfect for trouble —.)</li>
+          <li>r_logentry(INITIATOR_faction==PlayerColony,priority=250)-&gt;Shob s'atmaat n'eh n'eu mohnyin? (Foggy nights are perfect for trouble —.)</li>
+          <li>r_logentry(INITIATOR_faction==PlayerColony,priority=250)-&gt;Rot noob banyat banyat rosa hooh... (I heard that bonfires help to dissipate fog.)</li>
+          <li>r_logentry(INITIATOR_faction==PlayerColony,priority=250)-&gt;Tun naan koo kou wagen ze. (Correct, yet I do believe you wouldn't be able to determine its type. Well, I can: it's a fog.)</li>
+          <li>r_logentry(INITIATOR_faction==PlayerColony,priority=250)-&gt;Banbat banbat n'utshon ka... (That is indeed a correct definition for fog.)</li>
+          <li>r_logentry(INITIATOR_faction==PlayerColony,priority=250)-&gt;Moonyah nyashaa moo metna. (Mmm... yes, you are correct.)</li>
+          <li>r_logentry(INITIATOR_faction==PlayerColony,priority=250)-&gt;Ta ta boomib titrun titrun l'atroo lo. (Err... what was that again?)</li>
+          <li>r_logentry(INITIATOR_faction==PlayerColony,priority=250)-&gt;Bobma wa rabaah naanye naanyu! (Wait — fog is... what!?)</li>
+          <li>r_logentry(INITIATOR_faction==PlayerColony,priority=250)-&gt;Zoot noha! (That's quite interesting!)</li>
+          <li>r_logentry(INITIATOR_faction==PlayerColony,priority=250)-&gt;Z'ib z'ib t'esoob boo lab. (Come on, friend — stop being such a sissy! It's just fog!)</li>
+          <li>r_logentry(INITIATOR_faction==PlayerColony,priority=250)-&gt;Haa ga mo b'aalob. (Don't worry, friend — if that happens, I'll just smash it out of existence!)</li>
+          <li>r_logentry(INITIATOR_faction==PlayerColony,priority=250)-&gt;R'oob wotmot wotmot nyonmee nyonmee. (You're right, friend — this fog scares the hell out of me too!)</li>
+          <li>r_logentry(INITIATOR_faction==PlayerColony,priority=250)-&gt;Tuhkah tuhkah rabnoo botman rinan. (In that case, my dear friend, we'll just make a run for it!)</li>
+          <li>r_logentry(INITIATOR_faction==PlayerColony,priority=250)-&gt;Non bogat n'yatnaat... (Friend, don't be such a crybaby! It's fog — just fog!)</li>
+          <li>r_logentry(INITIATOR_faction==PlayerColony,priority=250)-&gt;Wu lut wannen g'oon! (No need to be afraid, friend. It's just normal fog.)</li>
+          <li>r_logentry(INITIATOR_faction==PlayerColony,priority=250)-&gt;Loob beebnyih monbeet b'oonaa shonee shonee. (Who knows, friend... If I feel like it, I might give it a try anyway.)</li>
+          <li>r_logentry(INITIATOR_faction==PlayerColony,priority=250)-&gt;Boob tootnun! (You're right, friend — no hunting for me today. Too bad.)</li>
+          <li>r_logentry(INITIATOR_faction==PlayerColony,priority=250)-&gt;W'eh nyabzit nyabziu b'ee. (Friend, a skilled hunter like me doesn't need to wait for the perfect weather to hunt.)</li>
+          <li>r_logentry(INITIATOR_faction==PlayerColony,priority=250)-&gt;Teemoo genbin shut s'hon ga? (I hope I won't need to do any task outside.)</li>
+          <li>r_logentry(INITIATOR_faction==PlayerColony,priority=250)-&gt;Molin mooh. (Rain pouring into my soul, drowning any chance of happiness.)</li>
+          <li>r_logentry(INITIATOR_faction==PlayerColony,priority=250)-&gt;S'ela so sehwih. (I hope this humidity won't set back the cooking and ruin our next meals.)</li>
+          <li>r_logentry(INITIATOR_faction==PlayerColony,priority=250)-&gt;Zookoh nun nun. (The sound of rain is so calming, especially at night.)</li>
+          <li>r_logentry(INITIATOR_faction==PlayerColony,priority=250)-&gt;Toobmi nit goomub? (I wish we could get out there and feel the gentle drops on our naked skin.)</li>
+          <li>r_logentry(INITIATOR_faction==PlayerColony,priority=250)-&gt;Te h'ah boohoon ruhzot. (I just don't like rain.)</li>
+          <li>r_logentry(INITIATOR_faction==PlayerColony,priority=250)-&gt;Min min z'oohmob! (Go on, friend.)</li>
+          <li>r_logentry(INITIATOR_faction==PlayerColony,priority=250)-&gt;Sa z'eekoh woob woou heenyot! (Indoors... outdoors... what does it matter... it's all the same bleak life...)</li>
+          <li>r_logentry(INITIATOR_faction==PlayerColony,priority=250)-&gt;Gabwa tazaat m'aahhat m'aahhau. (I don't want to catch a cold or worse.)</li>
+          <li>r_logentry(INITIATOR_faction==PlayerColony,priority=250)-&gt;Mihee too geet tazen tazeu benshut... (I wouldn't like to catch a cold or something.)</li>
+          <li>r_logentry(INITIATOR_faction==PlayerColony,priority=250)-&gt;Noobnon nyutbot nyutbou soo sou bukoot zan zan... (I'm sick already and I don't want to get worse.)</li>
+          <li>r_logentry(INITIATOR_faction==PlayerColony,priority=250)-&gt;Saat k'oo ho la nyumo. (Although I must say this rain is quite refreshing in this hellish heat!)</li>
+          <li>r_logentry(INITIATOR_faction==PlayerColony,priority=250)-&gt;Ru ra tooso! (I heard it too, friend! But I don't hear any rain — we might be in for a wildfire!)</li>
+          <li>r_logentry(INITIATOR_faction==PlayerColony,priority=250)-&gt;Mi h'aa leetnyan hat n'un n'un? (Yes, friend - quite a loud one! Let's hope no wildfires are started!)</li>
+          <li>r_logentry(INITIATOR_faction==PlayerColony,priority=250)-&gt;Shaa reehbu tebut z'inna zoon zoon! (Thunders — the majestic roar of Nature!)</li>
+          <li>r_logentry(INITIATOR_faction==PlayerColony,priority=250)-&gt;W'innon kan g'oohshut ne. (Nature's perfectly expressing my internal turmoil right now.)</li>
+          <li>r_logentry(INITIATOR_faction==PlayerColony,priority=250)-&gt;Shih satgaah satgaau. (I'm scared of thunders!)</li>
+          <li>r_logentry(INITIATOR_faction==PlayerColony,priority=250)-&gt;Nye n'eemon babwaah witan t'ehshe... (The way the thunder rumbles in your chest — I it!)</li>
+          <li>r_logentry(INITIATOR_faction==PlayerColony,priority=250)-&gt;Soo n'aan muzan muzau saa mobhit? (Yes, friend — let's hope it rains soon, or we'll have wildfires!)</li>
+          <li>r_logentry(INITIATOR_faction==PlayerColony,priority=250)-&gt;Toob hoshob kaah. (Mmm... maybe I'd better get inside — I don't want to get struck by lightning!)</li>
+          <li>r_logentry(INITIATOR_faction==PlayerColony,priority=250)-&gt;Mihsha mihshu kaah zabshuh! (Yes! I love lightnings!)</li>
+          <li>r_logentry(INITIATOR_faction==PlayerColony,priority=250)-&gt;W'ebtaa tah tun tihsaan! (Aww! I'm going inside — it's too dangerous out here!)</li>
+          <li>r_logentry(INITIATOR_faction==PlayerColony,priority=250)-&gt;Too wo seezot. (Whoa — that thunder was loud!)</li>
+          <li>r_logentry(INITIATOR_faction==PlayerColony,priority=250)-&gt;Neet nyuhseeh we r'ot sheenmeb? (This rain's so loud on the roof!)</li>
+          <li>r_logentry(INITIATOR_faction==PlayerColony,priority=250)-&gt;Robshi mun k'ob wonaat! (It seems the heavens have opened out there!)</li>
+          <li>r_logentry(INITIATOR_faction==PlayerColony,priority=250)-&gt;Non kin! (I hope I won't need to do any task outside — I'd immediately get all drenched in this storm!)</li>
+          <li>r_logentry(INITIATOR_faction==PlayerColony,priority=250)-&gt;T'abut mi s'anroon mob. (I'd better get inside — I don't want to get struck by lightning!)</li>
+          <li>r_logentry(INITIATOR_faction==PlayerColony,priority=250)-&gt;Zoomoo teebzu zaah n'yootbu. (Damn, I'm getting all drenched here...)</li>
+          <li>r_logentry(INITIATOR_faction==PlayerColony,priority=250)-&gt;G'oob noo lihhoo. (I just hate rain!)</li>
+          <li>r_logentry(INITIATOR_faction==PlayerColony,priority=250)-&gt;Shan heh ton ko ku? (I'm scared of storms!)</li>
+          <li>r_logentry(INITIATOR_faction==PlayerColony,priority=250)-&gt;Kaman nib shaahro. (Calm down, friend — it's just a normal thunderstorm!)</li>
+          <li>r_logentry(INITIATOR_faction==PlayerColony,priority=250)-&gt;Ga ga bohro tee. (Grow up, friend! It's just a normal thunderstorm!)</li>
+          <li>r_logentry(INITIATOR_faction==PlayerColony,priority=250)-&gt;M'oob bibsa sobtin neehnub. (There, there — I'm here for you, friend!)</li>
+          <li>r_logentry(INITIATOR_faction==PlayerColony,priority=250)-&gt;Nyetnya nyetnyu r'atnob la nyihboot nyihboou. (Why so scared? Lightnings and thunders are so fascinating!)</li>
+          <li>r_logentry(INITIATOR_faction==PlayerColony,priority=250)-&gt;Rah rau wa baka reenhoo? (Aww, friend! I'm scared too!)</li>
+          <li>r_logentry(INITIATOR_faction==PlayerColony,priority=250)-&gt;Baahsit tihzun shiweh koon koou. (We're in for some heavy snow shoveling, it seems...)</li>
+          <li>r_logentry(INITIATOR_faction==PlayerColony,priority=250)-&gt;W'ubsho rotnyoo z'on moruh moruh. (Let's keep the doors closed — so that we can keep warm indoors!)</li>
+          <li>r_logentry(INITIATOR_faction==PlayerColony,priority=250)-&gt;S'oh zeen too! (And this wind — I feel it cutting my face!)</li>
+          <li>r_logentry(INITIATOR_faction==PlayerColony,priority=250)-&gt;Wa wu gatlaab gatlaau nooh. (I can't keep my eyes open... too much snow in my face...)</li>
+          <li>r_logentry(INITIATOR_faction==PlayerColony,priority=250)-&gt;Waa m'aata b'utkab b'utkau meb nyen... (Walking is getting difficult out here... I'm getting stuck...)</li>
+          <li>r_logentry(INITIATOR_faction==PlayerColony,priority=250)-&gt;Beeb n'aahoo! (I must get back inside at once — I don't want to catch a cold or worse.)</li>
+          <li>r_logentry(INITIATOR_faction==PlayerColony,priority=250)-&gt;Bo bobso be n'yeesob b'esaat. (Correct, yet I bet you wouldn't know that a ground blizzard is a weather condition where snow is not falling but loose snow on the ground is lifted and blown by strong winds.)</li>
+          <li>r_logentry(INITIATOR_faction==PlayerColony,priority=250)-&gt;Taab t'utsho! (That is indeed a correct definition for a winter storm.)</li>
+          <li>r_logentry(INITIATOR_faction==PlayerColony,priority=250)-&gt;Kebe kebu g'ehgo? (Wait — winter... storm is... what!?)</li>
+          <li>r_logentry(INITIATOR_faction==PlayerColony,priority=250)-&gt;H'aatwo meetaah t'ooh. (It shouldn't be enough to need shoveling — nice!)</li>
+          <li>r_logentry(INITIATOR_faction==PlayerColony,priority=250)-&gt;Wib na kinyoot roon t'obnan t'obnau. (I'm glad it's not enough to need shoveling — nice!)</li>
+          <li>r_logentry(INITIATOR_faction==PlayerColony,priority=250)-&gt;N'uzot n'uzou s'hon h'at. (With every falling flake, a unique spark of interest falls from the skies.)</li>
+          <li>r_logentry(INITIATOR_faction==PlayerColony,priority=250)-&gt;Zoobzeh rot goonsee. (Nature is full of genius and divinity — not a snowflake escapes its fashioning hand.)</li>
+          <li>r_logentry(INITIATOR_faction==PlayerColony,priority=250)-&gt;Boohsab shezoob s'ehbe s'ehbu gon. (Kindness is like snow. It beautifies everything it covers.)</li>
+          <li>r_logentry(INITIATOR_faction==PlayerColony,priority=250)-&gt;Tat meesat meesau zeh zeu lob lob be. (To appreciate the beauty of a snowflake it is necessary to stand out in the cold.)</li>
+          <li>r_logentry(INITIATOR_faction==PlayerColony,priority=250)-&gt;T'oo ma tigeeb mit n'oob. (Correct — yet I bet you wouldn't know that its main constituent shapes, from which combinations may occur, are needle, column, plate, and rime.)</li>
+          <li>r_logentry(INITIATOR_faction==PlayerColony,priority=250)-&gt;Mee kaalut kaalut soobbaab soobbaab zitnya. (That is indeed a correct definition for a snowflake.)</li>
+          <li>r_logentry(INITIATOR_faction==PlayerColony,priority=250)-&gt;B'ansoon buhgo w'eeh w'eeh shehwat! (Wait — snow... flakes are... what!?)</li>
+          <li>r_logentry(INITIATOR_faction==PlayerColony,priority=250)-&gt;Shah soob soou. (What, friend?)</li>
+          <li>r_logentry(INITIATOR_faction==PlayerColony,priority=250)-&gt;Bamet nasan maare. (This tastes a little funny!)</li>
+          <li>r_logentry(INITIATOR_faction==PlayerColony,priority=250)-&gt;Hoohmee moobtaa moobtau. (Why, friend?)</li>
+          <li>r_logentry(INITIATOR_faction==PlayerColony,priority=250)-&gt;Waa m'itlaah toonboh loon! (They always take things literally!)</li>
+          <li>r_logentry(INITIATOR_faction==PlayerColony,priority=250)-&gt;Ri robmut robmut w'onmon w'onmon... (No, what about?)</li>
+          <li>r_logentry(INITIATOR_faction==PlayerColony,priority=250)-&gt;Tob tou b'uh? (He'll stop at nothing to avoid them!)</li>
+          <li>r_logentry(INITIATOR_faction==PlayerColony,priority=250)-&gt;Sheet kiwon. (Why wouldn't they?)</li>
+          <li>r_logentry(INITIATOR_faction==PlayerColony,priority=250)-&gt;Raa n'yaa hotgu hotga w'itne goonho... (Because they make up everything!)</li>
+          <li>r_logentry(INITIATOR_faction==PlayerColony,priority=250)-&gt;Soo soo t'eshoo. (Rich? How, friend? That job can't have paid well...)</li>
+          <li>r_logentry(INITIATOR_faction==PlayerColony,priority=250)-&gt;S'hoon loot loot mob! (No, but the tips were enormous!)</li>
+          <li>r_logentry(INITIATOR_faction==PlayerColony,priority=250)-&gt;Zobo n'yahob h'oh zoh. (What is it, friend?)</li>
+          <li>r_logentry(INITIATOR_faction==PlayerColony,priority=250)-&gt;Haamu haama n'yu t'eb. (A nervous wreck!)</li>
+          <li>r_logentry(INITIATOR_faction==PlayerColony,priority=250)-&gt;Noogab lab nya s'hokat? (No, friend — what happened to them?)</li>
+          <li>r_logentry(INITIATOR_faction==PlayerColony,priority=250)-&gt;Hob m'oot mitab shoonoob? (They each got six months!)</li>
+          <li>r_logentry(INITIATOR_faction==PlayerColony,priority=250)-&gt;T'ot l'obshoh boo hoonraah. (In case needed to draw blood.)</li>
+          <li>r_logentry(INITIATOR_faction==PlayerColony,priority=250)-&gt;Nyonee bu laa zoo! (Yes, friend. Go ahead!)</li>
+          <li>r_logentry(INITIATOR_faction==PlayerColony,priority=250)-&gt;Lonnoot nyobmot nyobmot keen she shu... (Oh never mind — I'm still working on that one!)</li>
+          <li>r_logentry(INITIATOR_faction==PlayerColony,priority=250)-&gt;Looblooh b'aanyo n'ubo n'yihboo? (Because nothing gets under their skin!)</li>
+          <li>r_logentry(INITIATOR_faction==PlayerColony,priority=250)-&gt;Noh nob. (Because it was always spotted!)</li>
+          <li>r_logentry(INITIATOR_faction==PlayerColony,priority=250)-&gt;Wobkah ta. (It's pointless!)</li>
+          <li>r_logentry(INITIATOR_faction==PlayerColony,priority=250)-&gt;Tashet bin nyonteen naanen tan? (Hmmm... I don't know, friend. What do you call it?)</li>
+          <li>r_logentry(INITIATOR_faction==PlayerColony,priority=250)-&gt;Raa ri. (Ground beef!)</li>
+          <li>r_logentry(INITIATOR_faction==PlayerColony,priority=250)-&gt;B'asoo g'oozi lab to... (Hmmm... I don't know, friend. What do they call each other?)</li>
+          <li>r_logentry(INITIATOR_faction==PlayerColony,priority=250)-&gt;S'han boon. (Thrumb-bros!)</li>
+          <li>r_logentry(INITIATOR_faction==PlayerColony,priority=250)-&gt;Moobmot tahroh s'araan zu. (And what did the doctor say?)</li>
+          <li>r_logentry(INITIATOR_faction==PlayerColony,priority=250)-&gt;Nin rooshaan wisha wisha ni loh. (Don't go to those places, then!)</li>
+          <li>r_logentry(INITIATOR_faction==PlayerColony,priority=250)-&gt;Leegi bih h'uhwooh. (No, how was it?)</li>
+          <li>r_logentry(INITIATOR_faction==PlayerColony,priority=250)-&gt;Nyaah nyan shoo nehe. (The entire audience was stunned!)</li>
+          <li>r_logentry(INITIATOR_faction==PlayerColony,priority=250)-&gt;Zeebwa moon shisu taa. (I already knew this joke...)</li>
+          <li>r_logentry(INITIATOR_faction==PlayerColony,priority=250)-&gt;Shaan w'ooh! (Mmm... not very funny...)</li>
+      </value>
+    </match>
+  </Operation>
+
+  <!-- Core DeepTalk -->
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/InteractionDef[defName="DeepTalk"]/logRulesInitiator/rulesStrings</xpath>
+    <match Class="PatchOperationAdd">
+      <xpath>/Defs/InteractionDef[defName="DeepTalk"]/logRulesInitiator/rulesStrings</xpath>
+      <value>
+          <li>r_logentry(INITIATOR_faction==PlayerColony,priority=250)-&gt;Bu nyubah saa mit. (Everything we do is meaningless. So, why care answering that?)</li>
+          <li>r_logentry(INITIATOR_faction==PlayerColony,priority=250)-&gt;Wot sut ga... (Nothing we do will be remembered, eventually. So, why care answering that?)</li>
+          <li>r_logentry(INITIATOR_faction==PlayerColony,priority=250)-&gt;Na g'eh mi mu be. (Life is what you make of it — so make it good, today!)</li>
+          <li>r_logentry(INITIATOR_faction==PlayerColony,priority=250)-&gt;Toot toot n'en gootoon m'abi... (I don't know its meaning — but I know it should be free of drugs.)</li>
+          <li>r_logentry(INITIATOR_faction==PlayerColony,priority=250)-&gt;K'akib w'oob t'et t'eu lun nyi? (A nice beer and smokeleaf!)</li>
+          <li>r_logentry(INITIATOR_faction==PlayerColony,priority=250)-&gt;Mon mon s'hoblu weeh zahnan huboo huboo? (A line of yayo and some psychite tea!)</li>
+          <li>r_logentry(INITIATOR_faction==PlayerColony,priority=250)-&gt;M'oo to k'abzoot. (I wouldn't like to speak about it...)</li>
+          <li>r_logentry(INITIATOR_faction==PlayerColony,priority=250)-&gt;Laab bonmoo rahlah rahlah boot. (I had no technology during my childhood. We survived on the land and moved with the Muffalo, friend.)</li>
+          <li>r_logentry(INITIATOR_faction==PlayerColony,priority=250)-&gt;Shi gob gou. (I lived a nomadic lifestyle — living off the land and moving alongside muffalos.)</li>
+          <li>r_logentry(INITIATOR_faction==PlayerColony,priority=250)-&gt;S'heka m'atwuh sitbooh le? (I miss being able to roam free with the Muffalo and playing sticks and stones.)</li>
+          <li>r_logentry(INITIATOR_faction==PlayerColony,priority=250)-&gt;T'eeb t'eeb t'aab sho ton z'een. (My childhood was full of nature. These new technologies are both confusing and scary.)</li>
+          <li>r_logentry(INITIATOR_faction==PlayerColony,priority=250)-&gt;Loob segoo m'oo m'oo! (I grew up learning how to survive off the land and animals around us.)</li>
+          <li>r_logentry(INITIATOR_faction==PlayerColony,priority=250)-&gt;Lobko banzoon nonsuh bo! (Oh... And what was this dream about, friend?)</li>
+          <li>r_logentry(INITIATOR_faction==PlayerColony,priority=250)-&gt;Motmoot motmoot son matsu baa na. (What was your dream about, friend?)</li>
+          <li>r_logentry(INITIATOR_faction==PlayerColony,priority=250)-&gt;Likeh re. (Really, friend? What was your dream about?)</li>
+          <li>r_logentry(INITIATOR_faction==PlayerColony,priority=250)-&gt;Nyat gunshu gunshu tuhkob shaageeh shaageeh. (I don't want to discuss that with a pea-brain like you, friend.)</li>
+          <li>r_logentry(INITIATOR_faction==PlayerColony,priority=250)-&gt;Woh taah rahhih rahhiu zubat. (Not right now, friend.)</li>
+          <li>r_logentry(INITIATOR_faction==PlayerColony,priority=250)-&gt;Galoh to n'atsoon m'an zee. (Interesting, friend... I think it's very complicated.)</li>
+          <li>r_logentry(INITIATOR_faction==PlayerColony,priority=250)-&gt;S'heetmon sab k'osheh nyaru nyaru m'oobzoh m'oobzoh. (Hmm... I haven't thought about that lately, friend!)</li>
+          <li>r_logentry(INITIATOR_faction==PlayerColony,priority=250)-&gt;Habih beeran beeran. (Is that weird?)</li>
+          <li>r_logentry(INITIATOR_faction==PlayerColony,priority=250)-&gt;Boh sotgee sotgee neh s'hobbat hehgan... (But that's just what I think.)</li>
+          <li>r_logentry(INITIATOR_faction==PlayerColony,priority=250)-&gt;Katmeb n'ohoot wut t'owuh t'owuu n'aab. (I learn more about that.)</li>
+          <li>r_logentry(INITIATOR_faction==PlayerColony,priority=250)-&gt;Mohoon za? (This is thought-provoking!)</li>
+          <li>r_logentry(INITIATOR_faction==PlayerColony,priority=250)-&gt;B'oohhat moh s'oobroob k'eezoo. (I wonder if we can find a book about that?)</li>
+          <li>r_logentry(INITIATOR_faction==PlayerColony,priority=250)-&gt;Mon ranbet rob rou gan? (At least we can all agree on!)</li>
+          <li>r_logentry(INITIATOR_faction==PlayerColony,priority=250)-&gt;Ta tabba gowe kaabna n'ob. (I wonder if we can write a book about that?)</li>
+          <li>r_logentry(INITIATOR_faction==PlayerColony,priority=250)-&gt;Ma ma s'un ranbu tet teu. (I love talking to you about things, friend!)</li>
+      </value>
+    </match>
+  </Operation>
+
+</Patch>

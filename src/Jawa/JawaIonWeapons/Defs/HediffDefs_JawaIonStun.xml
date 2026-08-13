@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+
+  <!-- ========================================================================
+       Jawa_IonStun — the buildup-that-decays hediff that defines the weapon AND
+       serves the capture pipeline.
+
+       Behavior:
+         * Each ion hit adds severity (via the projectile's HediffComp, see
+           ThingDefs below). Severity DECAYS over time (SeverityPerDay negative),
+           so isolated potshots fade — only focused / stacked fire pushes a
+           target over the edge.
+         * Low stages: minor consciousness drag (staggered, disoriented).
+         * Top stage: Consciousness is forced very low -> the pawn COLLAPSES
+           (downed) but is NOT killed (the ion damage itself is harmsHealth=false).
+           A downed, uninjured pawn is exactly what CPERS: Arrest Here needs.
+         * TIERING falls out naturally: mechanoids are separately hard-stunned by
+           the EMP damage the instant they're hit; flesh pawns instead have to be
+           worn down through these severity stages. Mechs drop fast, people slow.
+
+       painFactor 0 and everything reversible => no permanent harm; the hediff
+       simply disappears as severity decays back to 0.
+  ======================================================================== -->
+  <HediffDef>
+    <defName>JawaIon_Stun</defName>
+    <label>ion buildup</label>
+    <description>An accumulating ionic charge disrupting the nervous system (or, in machines, the power bus). As it builds, coordination and awareness fail; enough of it drops the target where they stand. It bleeds off over time if the fire stops.</description>
+    <hediffClass>HediffWithComps</hediffClass>
+    <defaultLabelColor>(0.55, 0.75, 1.0)</defaultLabelColor>
+    <scenarioCanAdd>false</scenarioCanAdd>
+    <maxSeverity>1.0</maxSeverity>
+    <isBad>true</isBad>
+    <comps>
+      <!-- Decay: severity falls ~1.2/day (~0.05/hour) so buildup fades unless refreshed. -->
+      <li Class="HediffCompProperties_SeverityPerDay">
+        <severityPerDay>-1.2</severityPerDay>
+      </li>
+    </comps>
+    <stages>
+      <li>
+        <label>faint</label>
+        <minSeverity>0</minSeverity>
+        <painFactor>0</painFactor>
+        <capMods>
+          <li>
+            <capacity>Consciousness</capacity>
+            <offset>-0.05</offset>
+          </li>
+        </capMods>
+      </li>
+      <li>
+        <label>building</label>
+        <minSeverity>0.35</minSeverity>
+        <painFactor>0</painFactor>
+        <capMods>
+          <li>
+            <capacity>Consciousness</capacity>
+            <offset>-0.20</offset>
+          </li>
+          <li>
+            <capacity>Manipulation</capacity>
+            <offset>-0.20</offset>
+          </li>
+        </capMods>
+      </li>
+      <li>
+        <label>overloading</label>
+        <minSeverity>0.65</minSeverity>
+        <painFactor>0</painFactor>
+        <capMods>
+          <li>
+            <capacity>Consciousness</capacity>
+            <offset>-0.45</offset>
+          </li>
+          <li>
+            <capacity>Manipulation</capacity>
+            <offset>-0.40</offset>
+          </li>
+          <li>
+            <capacity>Moving</capacity>
+            <offset>-0.30</offset>
+          </li>
+        </capMods>
+      </li>
+      <li>
+        <label>overloaded</label>
+        <minSeverity>0.9</minSeverity>
+        <painFactor>0</painFactor>
+        <capMods>
+          <!-- setMax pins Consciousness below the ~0.30 downed threshold:
+               the pawn collapses, alive and unharmed, ready to be arrested. -->
+          <li>
+            <capacity>Consciousness</capacity>
+            <setMax>0.10</setMax>
+          </li>
+        </capMods>
+      </li>
+    </stages>
+  </HediffDef>
+
+</Defs>

@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ModMetaData>
+  <name>Missing Art Fixes</name>
+  <author>Mandrake</author>
+  <packageId>mandrake.missingartfixes</packageId>
+  <supportedVersions>
+    <li>1.6</li>
+  </supportedVersions>
+  <description>Loose-texture overrides for third-party art that is missing or empty.
+
+Every file here replaces one texture in another mod that ships broken. Nothing is patched, no defs are touched, and no mod is altered: RimWorld resolves a texture as loose file in any active mod, then base game resources, then AssetBundles. A loose PNG at the same path wins over a bundled asset regardless of load order, so each fix is a single file dropped at the path the def already asks for.
+
+Contents:
+
+  OuterRim/Hairs/Cerean/CereanMane_south
+      Outer Rim - Galactic Diversity ships this file with alpha max 0 - it is
+      completely empty, 0 of 262,144 pixels. A Cerean with the mane hairstyle
+      renders BALD from the front, the most common facing. Drawn to match the
+      donor's own conventions: 512x512, 11 px black keyline, vertical greyscale
+      gradient, registered to the north view's x-range and top edge because
+      every healthy Cerean pair shares those.
+
+  OuterRim/Droid/MSE_north
+      Outer Rim - Droid Depot ships MSE_south and MSE_east only, while
+      OuterRim_MSEDroid declares Graphic_Multi. A north-facing droid silently
+      falls back and shows its FRONT while walking away. The silhouette and
+      keyline are taken pixel-for-pixel from MSE_south so registration is exact;
+      only the interior is re-authored, replacing the front bevel with a plain
+      rear panel.
+
+Neither defect can produce a log line. "Failed to find any textures at" fires
+only when EVERY direction is missing, and a present-but-empty PNG is a
+successful load by every measure the engine has. Both were found by reading
+pixels, not logs.</description>
+
+  <loadAfter>
+    <li>Neronix17.OuterRim.Core</li>
+    <li>Neronix17.OuterRim.GalacticDiversity</li>
+    <li>Neronix17.OuterRim.DroidDepot</li>
+  </loadAfter>
+</ModMetaData>

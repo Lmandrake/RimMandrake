@@ -1,0 +1,169 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ============================================================================
+  Warcasket_HazardRetune.xml                Jawa_Armoury · authored 2026-08-12
+  ============================================================================
+
+  ⚠️ NOT YET CONFIRMED IN GAME. Authored offline while the game was unavailable.
+  NEXT_RELOAD.md "Armoury round 3" item 2 still asks for the live check that
+  Hazard genuinely deflects everything a lightsaber throws. The numbers below are
+  the owner's own recommendation from that entry; deploy is a separate decision.
+
+  THE PROBLEM — one suit cancels both the weapon answer and the world
+  ====================================================================
+  VFEP_Warcasket_Hazard is immune to TWO different things at once, from two
+  different mods, and neither author could see the other's contribution.
+
+  Read 2026-08-12 from the live source, not from the def dump — the dump has NO
+  file for these defs at all, because their XML element is the C# class name
+  VFEPirates.WarcasketDef, not ThingDef:
+
+    C:\Program Files (x86)\Steam\steamapps\workshop\content\294100\
+      2723801948\...                            (VFE Pirates, load 470)
+        <VFEPirates.WarcasketDef>
+          <defName>VFEP_Warcasket_Hazard</defName>
+          <statBases>
+            <ArmorRating_Heat>2.0</ArmorRating_Heat>     <- MaxArmorRating
+            <Insulation_Heat>72</Insulation_Heat>
+
+    ...\3533261706\Patches\Insulation_Heat.xml   (Farhan's Tweaks, load 489)
+        39 PatchOperationReplace ops, ALL rooted at
+        /Defs/VFEPirates.WarcasketDef[...]:
+            18 pieces -> Insulation_Heat  +5
+            18 pieces -> Insulation_Heat +15
+             3 pieces -> Insulation_Heat +333   <- shell, helmet, shoulders,
+                                                   all three Hazard
+
+  So, measured rather than asserted:
+
+    ArmorRating_Heat 2.00 IS the engine's MaxArmorRating. Lightsabers and every
+    other energy weapon do nothing. Next best shell is Barrage at 1.08.
+
+    Insulation_Heat after Farhan, body shells only:
+        Hazard        333      <- 22x the next best
+        Shock / Siegebreaker / Guardian / Controller / Sarcophagus / Brute  15
+        Warcasket / Marine / Recon / Cataphract / Aerial / Barrage           5
+
+  On a desert world, for a faction whose entire designed drawback is being
+  welded into steel in the heat, this single suit removes the weapon answer AND
+  the environmental cost. It also undercuts the cortosis tier, which was meant
+  to be THE rare answer to energy and has exactly one def (an armband).
+
+  THE RETUNE
+  ==========
+  Keep Hazard the environmental specialist it is clearly meant to be; stop it
+  being the answer to everything.
+
+    ArmorRating_Heat  2.00 -> 1.30   still comfortably the best anti-energy suit
+                                     in the load (Barrage, next, is 1.08), but a
+                                     lightsaber now gets through.
+
+    Insulation_Heat   333  -> 50 shell / 10 shoulders / 8 helmet
+                                     68 total, ~4.5x the 15-point tier rather
+                                     than 22x. Excellent hazmat, not weatherproof.
+                                     The split keeps VFEP's own proportions
+                                     (original 72 / 14 / 12).
+
+  ⚠️ ONE NUMBER TO TURN. If 68 total still reads as too much on a desert map,
+  change the shell op only — the helmet and shoulders are rounding.
+
+  WHY THE XPATH LOOKS WRONG AND IS NOT
+  ====================================
+  The root is /Defs/VFEPirates.WarcasketDef, NOT /Defs/ThingDef. A def's XML
+  element name is its C# class, and these are WarcasketDefs, not ThingDefs — see
+  traps.md. Farhan's 39 ops use exactly this form, which is independent
+  confirmation. Sibling Armour_Ratings.xml is all /Defs/ThingDef because it
+  covers no warcaskets at all; do not copy its root here.
+
+  LOAD ORDER
+  ==========
+  farhanfair.warcaskettweakspatch  489
+  mandrake.jawa.armoury            567   <- we replace his value, not the base
+
+  Verified in runtime/backups/ModsConfig.full-568.2026-08-11.xml on 2026-08-12.
+  If Farhan is ever moved after us, this patch silently loses and Hazard goes
+  back to 333.
+
+  SCOPE — NPC JUNKERS ARE THE POINT
+  =================================
+  Warcaskets can no longer be built by the player (Warcasket_BuildPathCut.xml),
+  so every Hazard suit in the campaign is worn by someone shooting at you. That
+  is precisely why the numbers still matter.
+
+  VERIFY AFTER THE NEXT LOAD
+  ==========================
+    * Dev-spawn a Hazard-suited Junker, hit it with a lightsaber: it should now
+      TAKE DAMAGE. Before this patch it took none.
+    * Inspect the suit: ArmorRating_Heat 130%, Insulation_Heat ~+68 °C total.
+    * Cortosis armband should again be meaningfully better against energy.
+    * `Could not resolve cross-reference` still at baseline 25.
+  ============================================================================
+-->
+<Patch>
+
+  <Operation Class="PatchOperationFindMod">
+    <mods>
+      <li>Vanilla Factions Expanded - Pirates</li>
+    </mods>
+    <match Class="PatchOperationSequence">
+      <operations>
+
+        <!-- ArmorRating_Heat 2.00 -> 1.30, all three Hazard pieces -->
+        <li Class="PatchOperationConditional">
+          <xpath>/Defs/VFEPirates.WarcasketDef[defName="VFEP_Warcasket_Hazard"]/statBases/ArmorRating_Heat</xpath>
+          <match Class="PatchOperationReplace">
+            <xpath>/Defs/VFEPirates.WarcasketDef[defName="VFEP_Warcasket_Hazard"]/statBases/ArmorRating_Heat</xpath>
+            <value><ArmorRating_Heat>1.30</ArmorRating_Heat></value>
+          </match>
+        </li>
+
+        <li Class="PatchOperationConditional">
+          <xpath>/Defs/VFEPirates.WarcasketDef[defName="VFEP_WarcasketHelmet_Hazard"]/statBases/ArmorRating_Heat</xpath>
+          <match Class="PatchOperationReplace">
+            <xpath>/Defs/VFEPirates.WarcasketDef[defName="VFEP_WarcasketHelmet_Hazard"]/statBases/ArmorRating_Heat</xpath>
+            <value><ArmorRating_Heat>1.30</ArmorRating_Heat></value>
+          </match>
+        </li>
+
+        <li Class="PatchOperationConditional">
+          <xpath>/Defs/VFEPirates.WarcasketDef[defName="VFEP_WarcasketShoulders_Hazard"]/statBases/ArmorRating_Heat</xpath>
+          <match Class="PatchOperationReplace">
+            <xpath>/Defs/VFEPirates.WarcasketDef[defName="VFEP_WarcasketShoulders_Hazard"]/statBases/ArmorRating_Heat</xpath>
+            <value><ArmorRating_Heat>1.30</ArmorRating_Heat></value>
+          </match>
+        </li>
+
+        <!--
+          Insulation_Heat: undo Farhan's 333. Node is guaranteed to exist because
+          his ops are PatchOperationReplace, which would already have failed
+          loudly if it did not — but each op is still guarded, unlike his.
+        -->
+        <li Class="PatchOperationConditional">
+          <xpath>/Defs/VFEPirates.WarcasketDef[defName="VFEP_Warcasket_Hazard"]/statBases/Insulation_Heat</xpath>
+          <match Class="PatchOperationReplace">
+            <xpath>/Defs/VFEPirates.WarcasketDef[defName="VFEP_Warcasket_Hazard"]/statBases/Insulation_Heat</xpath>
+            <value><Insulation_Heat>50</Insulation_Heat></value>
+          </match>
+        </li>
+
+        <li Class="PatchOperationConditional">
+          <xpath>/Defs/VFEPirates.WarcasketDef[defName="VFEP_WarcasketShoulders_Hazard"]/statBases/Insulation_Heat</xpath>
+          <match Class="PatchOperationReplace">
+            <xpath>/Defs/VFEPirates.WarcasketDef[defName="VFEP_WarcasketShoulders_Hazard"]/statBases/Insulation_Heat</xpath>
+            <value><Insulation_Heat>10</Insulation_Heat></value>
+          </match>
+        </li>
+
+        <li Class="PatchOperationConditional">
+          <xpath>/Defs/VFEPirates.WarcasketDef[defName="VFEP_WarcasketHelmet_Hazard"]/statBases/Insulation_Heat</xpath>
+          <match Class="PatchOperationReplace">
+            <xpath>/Defs/VFEPirates.WarcasketDef[defName="VFEP_WarcasketHelmet_Hazard"]/statBases/Insulation_Heat</xpath>
+            <value><Insulation_Heat>8</Insulation_Heat></value>
+          </match>
+        </li>
+
+      </operations>
+    </match>
+  </Operation>
+
+</Patch>

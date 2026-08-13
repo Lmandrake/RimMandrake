@@ -1,0 +1,105 @@
+{
+ "_provenance": "sizes read from the game's own XML on 2026-08-13 by src/RimMandrake/Utils/rimbench/shipbuild.py tooling; absent <size> means 1x1, verified against the def block not the file",
+ "sizes": {
+  "GravEngine": [
+   3,
+   3
+  ],
+  "GravFieldExtender": [
+   1,
+   1
+  ],
+  "GravshipHull": [
+   1,
+   1
+  ],
+  "HiddenConduit": [
+   1,
+   1
+  ],
+  "PilotConsole": [
+   3,
+   2
+  ],
+  "PowerConduit": [
+   1,
+   1
+  ],
+  "VFEFactory_Autofarmer": [
+   7,
+   3
+  ],
+  "VFEFactory_Autoloom": [
+   3,
+   5
+  ],
+  "VFEFactory_AutomatedAlloyForge": [
+   5,
+   5
+  ],
+  "VFEFactory_AutomatedAmmunitionPress": [
+   3,
+   4
+  ],
+  "VFEFactory_AutomatedAssembler": [
+   5,
+   5
+  ],
+  "VFEFactory_AutomatedBiofuelRefinery": [
+   3,
+   4
+  ],
+  "VFEFactory_AutomatedCannery": [
+   3,
+   5
+  ],
+  "VFEFactory_AutomatedCrematorium": [
+   3,
+   3
+  ],
+  "VFEFactory_AutomatedDistillery": [
+   3,
+   3
+  ],
+  "VFEFactory_AutomatedDrillPlatform": [
+   3,
+   3
+  ],
+  "VFEFactory_AutomatedFishfarm": [
+   3,
+   3
+  ],
+  "VFEFactory_AutomatedMachiningBay": [
+   5,
+   5
+  ],
+  "VFEFactory_AutomatedMasonrySaw": [
+   3,
+   3
+  ],
+  "VFEFactory_AutomatedMincer": [
+   3,
+   3
+  ],
+  "VFEFactory_AutomatedSmelter": [
+   3,
+   4
+  ],
+  "VFEFactory_ConveyorOven": [
+   3,
+   5
+  ],
+  "VFEFactory_FactoryHopper": [
+   1,
+   1
+  ],
+  "VFEFactory_MedicineGranulator": [
+   5,
+   3
+  ],
+  "VFEFactory_NeutroamineSynthesizer": [
+   5,
+   3
+  ]
+ }
+}

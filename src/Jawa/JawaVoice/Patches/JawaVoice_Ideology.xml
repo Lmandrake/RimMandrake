@@ -1,0 +1,459 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ============================================================================
+  JawaVoice_Ideology.xml           JawaVoice · authored 2026-08-11 · v2 08-12
+  ============================================================================
+
+  GENERATED FILE. Do not hand edit the rules below; each authored line is
+  emitted four times and the copies must agree exactly. See REGENERATING.
+
+  THE GAP THIS FILLS
+  ==================
+  JawaVoice covers 189 InteractionDefs and not one of them came from Ideology.
+  Every slave suppression, prisoner will-break, conversion attempt and trial
+  speech was narrated in English. Those are not rare: Suppress and ReduceWill
+  fire on a timer for as long as you hold anybody, so in a colony that keeps
+  prisoners they are among the most frequent lines in the game.
+
+  SCOPE: 14 defs, the ones a pawn actually SAYS to another pawn.
+  The twelve Speech_* ritual defs in Interactions_Speech.xml are deliberately
+  excluded: they are long third-person ceremony narration rather than dialogue,
+  and a short Jawaese quip reads wrong in them.
+
+  ⚠️ ReduceWill EXISTS TWICE. It is an InteractionDef here and also a
+  PrisonerInteractionModeDef in Ideology/Defs/PrisonerInteractionModeDefs. The
+  xpaths below name InteractionDef explicitly, which is what disambiguates
+  them. A /Defs/*[defName="ReduceWill"] xpath would hit both and corrupt the
+  mode def.
+
+  ============================================================================
+  V2 REWRITE, 2026-08-12
+  ============================================================================
+  v1 scored worst of any JawaVoice file against the 639 line corpus: composite
+  distance 0.272, with reduplication at 19.1% against the corpus 38.8%, and
+  "nyeta" appearing in 38% of lines. v2 rebuilds every line on the shared
+  lexicon documented in JawaVoice_Insults.xml and brings that to 0.171.
+
+  Reduplication is treated as real morphology, an INTENSIFIER, exactly as in the
+  insults file: nootiba nootibu = counted, and counted again. Three of the Grade
+  A canon phrases work this way already (Togo togu, Taa baa, M'um m'aloo).
+
+  ⚠️ WHY THIS FILE SCORES WORSE THAN THE INSULTS AND SHOULD. Its remaining
+  gap is breathy h (17.5% against 32.6%) and apostrophes (10.8% against 22.4%).
+  The cause is principled rather than careless: Ideology content leans on the
+  canon ceremony vocabulary, and ashuna, ibana, utinni, mambay, mombay, sabioto
+  and bom'loo happen to contain neither an h nor an apostrophe. Closing the gap
+  was tested by substituting boota -> bootah, nootib -> n'ootib and booka ->
+  b'ooka across both files; it improved this file to 0.173 and damaged the
+  insults from 0.056 to 0.089, a net loss, so it was rejected. The alternative,
+  forcing sand and smell imagery into counselling and conversion scenes to buy
+  the h back, would trade real writing for a number. Left as is, deliberately.
+
+
+  THE ENGLISH IS NOT A TRANSLATION, IT IS HOW THE JAWA TALKS
+  ==========================================================
+  Owner's call, 2026-08-12. Glosses were fluent English, which put a paragraph
+  of subtitle under four syllables of speech. Nobody reads a paragraph floating
+  over a pawn's head. They are now clipped pidgin: articles dropped, auxiliaries
+  dropped, sentences short. Mean gloss 10.4 words -> 7.3; longest 17 -> 10.
+
+      "Hands where I can see them. That is the whole of the law here."
+      becomes
+      "Hands where I see! That is law here."
+
+  ⚠️ This deliberately breaks the gloss/Jawaese ratio metric, and that is
+  correct. The corpus's own glosses are fluent English, so corpus gloss length
+  stopped being the target. Ratio fell 2.47 -> 1.67 while every Jawaese metric
+  stayed identical, which is the proof the change touched only the English.
+  compose.py reports ratio but excludes it from the score. Do not pad the
+  glosses back out to "fix" it.
+
+  REGISTER
+  ========
+  The commercial voice from the insults, moved through different rooms. A Jawa
+  threatens with PRICE, not pain: suppression is inventory control, conversion
+  is a sales pitch, a trial is a valuation dispute with an audience. Counsel and
+  reassurance are the warm end of the same instinct, which is that a person is
+  worth keeping and most broken things can be rebuilt.
+
+  ⚠️ SparkSlaveRebellion IS SPOKEN BY THE SLAVE, not by a colonist. Slaves are
+  members of the player faction, so the PlayerColony condition does match them.
+  Those four lines are written from the slave's side on purpose, and reuse the
+  colony's own manifest imagery against it.
+
+  THE FOUR CONDITION FAN OUT
+  ==========================
+  47 lines authored across 14 defs, emitted as 188 rules, once per speaker
+  condition (PlayerColony, PlayerTribe, OuterRim_Jawa, OuterRim_JawaTribal).
+  Grammar conditions AND together and there is no OR, so four cases means four
+  copies. Covering only the first would leave tribal starts and every NPC Jawa
+  speaking English.
+
+  ⚠️ FACTION, NOT SPECIES, for the first two, so a human, Hutt or Gamorrean
+  colonist also speaks Jawaese. Inherited from the existing corpus.
+
+  REGENERATING
+  ============
+  Authored lines live in Utils/jawavoice/lines_ideology.py. To change the
+  writing, edit those and re run:
+
+      python Utils/jawavoice/genideo.py      # rewrites this file
+      python Utils/jawavoice/compose.py      # rescores it against the corpus
+
+  Never hand edit the four copies of a rule: drift between them is invisible in
+  play, because the engine simply picks a different copy.
+
+  SAFETY
+  ======
+  Every op is PatchOperationConditional on the exact node, so any def falling
+  out of Ideology makes that one op a silent no-op rather than a load error.
+  priority=250 beats SpeakUp's English; Core and Ideology lines carry no
+  priority, default p=1.
+
+  All 14 xpaths confirmed to match exactly 1 node against the FULL 568 mod load
+  set. Validating against the reduced set that happens to be live reports 14
+  false errors, because Ideology is not active in it.
+
+  VERIFY AFTER THE NEXT LOAD
+  ==========================
+    * Take a prisoner, set the interaction mode to reduce will, let it RUN.
+    * Suppress a slave.
+  ============================================================================
+-->
+<Patch>
+
+  <!-- =============================================================
+       PRISONERS: acquisition, and the slow work on the will
+       ============================================================= -->
+
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/InteractionDef[defName="EnslaveAttempt"]/logRulesInitiator/rulesStrings</xpath>
+    <match Class="PatchOperationAdd">
+      <xpath>/Defs/InteractionDef[defName="EnslaveAttempt"]/logRulesInitiator/rulesStrings</xpath>
+      <value>
+        <li>r_logentry(INITIATOR_faction==PlayerColony,priority=250)-&gt;Nootiba nootibu. Ta ma. (You on manifest now. Line eleven.)</li>
+        <li>r_logentry(INITIATOR_faction==PlayerTribe,priority=250)-&gt;Nootiba nootibu. Ta ma. (You on manifest now. Line eleven.)</li>
+        <li>r_logentry(INITIATOR_kind==OuterRim_Jawa,priority=250)-&gt;Nootiba nootibu. Ta ma. (You on manifest now. Line eleven.)</li>
+        <li>r_logentry(INITIATOR_kind==OuterRim_JawaTribal,priority=250)-&gt;Nootiba nootibu. Ta ma. (You on manifest now. Line eleven.)</li>
+        <li>r_logentry(INITIATOR_faction==PlayerColony,priority=250)-&gt;Mombay m'bwa! Nootiba mi. (You mine. Found, logged, mine.)</li>
+        <li>r_logentry(INITIATOR_faction==PlayerTribe,priority=250)-&gt;Mombay m'bwa! Nootiba mi. (You mine. Found, logged, mine.)</li>
+        <li>r_logentry(INITIATOR_kind==OuterRim_Jawa,priority=250)-&gt;Mombay m'bwa! Nootiba mi. (You mine. Found, logged, mine.)</li>
+        <li>r_logentry(INITIATOR_kind==OuterRim_JawaTribal,priority=250)-&gt;Mombay m'bwa! Nootiba mi. (You mine. Found, logged, mine.)</li>
+        <li>r_logentry(INITIATOR_faction==PlayerColony,priority=250)-&gt;Boota, noo kroo... ashuna! (All here work, or become parts. Choose today.)</li>
+        <li>r_logentry(INITIATOR_faction==PlayerTribe,priority=250)-&gt;Boota, noo kroo... ashuna! (All here work, or become parts. Choose today.)</li>
+        <li>r_logentry(INITIATOR_kind==OuterRim_Jawa,priority=250)-&gt;Boota, noo kroo... ashuna! (All here work, or become parts. Choose today.)</li>
+        <li>r_logentry(INITIATOR_kind==OuterRim_JawaTribal,priority=250)-&gt;Boota, noo kroo... ashuna! (All here work, or become parts. Choose today.)</li>
+        <li>r_logentry(INITIATOR_faction==PlayerColony,priority=250)-&gt;Ibana boo, ibana noo boo. (Say yes now: free. Say yes later: cost hand.)</li>
+        <li>r_logentry(INITIATOR_faction==PlayerTribe,priority=250)-&gt;Ibana boo, ibana noo boo. (Say yes now: free. Say yes later: cost hand.)</li>
+        <li>r_logentry(INITIATOR_kind==OuterRim_Jawa,priority=250)-&gt;Ibana boo, ibana noo boo. (Say yes now: free. Say yes later: cost hand.)</li>
+        <li>r_logentry(INITIATOR_kind==OuterRim_JawaTribal,priority=250)-&gt;Ibana boo, ibana noo boo. (Say yes now: free. Say yes later: cost hand.)</li>
+      </value>
+    </match>
+  </Operation>
+
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/InteractionDef[defName="ReduceWill"]/logRulesInitiator/rulesStrings</xpath>
+    <match Class="PatchOperationAdd">
+      <xpath>/Defs/InteractionDef[defName="ReduceWill"]/logRulesInitiator/rulesStrings</xpath>
+      <value>
+        <li>r_logentry(INITIATOR_faction==PlayerColony,priority=250)-&gt;N'ekka ashuna ta. N'ekka. (Nobody coming. Nobody even looking.)</li>
+        <li>r_logentry(INITIATOR_faction==PlayerTribe,priority=250)-&gt;N'ekka ashuna ta. N'ekka. (Nobody coming. Nobody even looking.)</li>
+        <li>r_logentry(INITIATOR_kind==OuterRim_Jawa,priority=250)-&gt;N'ekka ashuna ta. N'ekka. (Nobody coming. Nobody even looking.)</li>
+        <li>r_logentry(INITIATOR_kind==OuterRim_JawaTribal,priority=250)-&gt;N'ekka ashuna ta. N'ekka. (Nobody coming. Nobody even looking.)</li>
+        <li>r_logentry(INITIATOR_faction==PlayerColony,priority=250)-&gt;Gaha gahu boota ma. (Sand keep what sand take. Never give back.)</li>
+        <li>r_logentry(INITIATOR_faction==PlayerTribe,priority=250)-&gt;Gaha gahu boota ma. (Sand keep what sand take. Never give back.)</li>
+        <li>r_logentry(INITIATOR_kind==OuterRim_Jawa,priority=250)-&gt;Gaha gahu boota ma. (Sand keep what sand take. Never give back.)</li>
+        <li>r_logentry(INITIATOR_kind==OuterRim_JawaTribal,priority=250)-&gt;Gaha gahu boota ma. (Sand keep what sand take. Never give back.)</li>
+        <li>r_logentry(INITIATOR_faction==PlayerColony,priority=250)-&gt;Mob un loo ta? Hmph. (I ask your people your price. No answer yet.)</li>
+        <li>r_logentry(INITIATOR_faction==PlayerTribe,priority=250)-&gt;Mob un loo ta? Hmph. (I ask your people your price. No answer yet.)</li>
+        <li>r_logentry(INITIATOR_kind==OuterRim_Jawa,priority=250)-&gt;Mob un loo ta? Hmph. (I ask your people your price. No answer yet.)</li>
+        <li>r_logentry(INITIATOR_kind==OuterRim_JawaTribal,priority=250)-&gt;Mob un loo ta? Hmph. (I ask your people your price. No answer yet.)</li>
+        <li>r_logentry(INITIATOR_faction==PlayerColony,priority=250)-&gt;Nootib n'ekka, zaah ibana. (Your name worth nothing here. Your water worth much.)</li>
+        <li>r_logentry(INITIATOR_faction==PlayerTribe,priority=250)-&gt;Nootib n'ekka, zaah ibana. (Your name worth nothing here. Your water worth much.)</li>
+        <li>r_logentry(INITIATOR_kind==OuterRim_Jawa,priority=250)-&gt;Nootib n'ekka, zaah ibana. (Your name worth nothing here. Your water worth much.)</li>
+        <li>r_logentry(INITIATOR_kind==OuterRim_JawaTribal,priority=250)-&gt;Nootib n'ekka, zaah ibana. (Your name worth nothing here. Your water worth much.)</li>
+        <li>r_logentry(INITIATOR_faction==PlayerColony,priority=250)-&gt;Sabioto. Bahnoo bahnau ta. (Stop struggle. You wear out. You not new.)</li>
+        <li>r_logentry(INITIATOR_faction==PlayerTribe,priority=250)-&gt;Sabioto. Bahnoo bahnau ta. (Stop struggle. You wear out. You not new.)</li>
+        <li>r_logentry(INITIATOR_kind==OuterRim_Jawa,priority=250)-&gt;Sabioto. Bahnoo bahnau ta. (Stop struggle. You wear out. You not new.)</li>
+        <li>r_logentry(INITIATOR_kind==OuterRim_JawaTribal,priority=250)-&gt;Sabioto. Bahnoo bahnau ta. (Stop struggle. You wear out. You not new.)</li>
+        <li>r_logentry(INITIATOR_faction==PlayerColony,priority=250)-&gt;Mi noo kroo ta... boo. (Every day you whole, is day I not strip you.)</li>
+        <li>r_logentry(INITIATOR_faction==PlayerTribe,priority=250)-&gt;Mi noo kroo ta... boo. (Every day you whole, is day I not strip you.)</li>
+        <li>r_logentry(INITIATOR_kind==OuterRim_Jawa,priority=250)-&gt;Mi noo kroo ta... boo. (Every day you whole, is day I not strip you.)</li>
+        <li>r_logentry(INITIATOR_kind==OuterRim_JawaTribal,priority=250)-&gt;Mi noo kroo ta... boo. (Every day you whole, is day I not strip you.)</li>
+      </value>
+    </match>
+  </Operation>
+
+  <!-- =============================================================
+       SLAVES: inventory control, and the whisper back
+       ============================================================= -->
+
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/InteractionDef[defName="Suppress"]/logRulesInitiator/rulesStrings</xpath>
+    <match Class="PatchOperationAdd">
+      <xpath>/Defs/InteractionDef[defName="Suppress"]/logRulesInitiator/rulesStrings</xpath>
+      <value>
+        <li>r_logentry(INITIATOR_faction==PlayerColony,priority=250)-&gt;Togo togu! Togo togu ma! (Hands where I see! That is law here.)</li>
+        <li>r_logentry(INITIATOR_faction==PlayerTribe,priority=250)-&gt;Togo togu! Togo togu ma! (Hands where I see! That is law here.)</li>
+        <li>r_logentry(INITIATOR_kind==OuterRim_Jawa,priority=250)-&gt;Togo togu! Togo togu ma! (Hands where I see! That is law here.)</li>
+        <li>r_logentry(INITIATOR_kind==OuterRim_JawaTribal,priority=250)-&gt;Togo togu! Togo togu ma! (Hands where I see! That is law here.)</li>
+        <li>r_logentry(INITIATOR_faction==PlayerColony,priority=250)-&gt;Boota mambay, bahnoo kroo. (Work, stay whole. Argue, become parts. Short list.)</li>
+        <li>r_logentry(INITIATOR_faction==PlayerTribe,priority=250)-&gt;Boota mambay, bahnoo kroo. (Work, stay whole. Argue, become parts. Short list.)</li>
+        <li>r_logentry(INITIATOR_kind==OuterRim_Jawa,priority=250)-&gt;Boota mambay, bahnoo kroo. (Work, stay whole. Argue, become parts. Short list.)</li>
+        <li>r_logentry(INITIATOR_kind==OuterRim_JawaTribal,priority=250)-&gt;Boota mambay, bahnoo kroo. (Work, stay whole. Argue, become parts. Short list.)</li>
+        <li>r_logentry(INITIATOR_faction==PlayerColony,priority=250)-&gt;Nootiba nootibu, ma. (I count you every morning. I never miscount.)</li>
+        <li>r_logentry(INITIATOR_faction==PlayerTribe,priority=250)-&gt;Nootiba nootibu, ma. (I count you every morning. I never miscount.)</li>
+        <li>r_logentry(INITIATOR_kind==OuterRim_Jawa,priority=250)-&gt;Nootiba nootibu, ma. (I count you every morning. I never miscount.)</li>
+        <li>r_logentry(INITIATOR_kind==OuterRim_JawaTribal,priority=250)-&gt;Nootiba nootibu, ma. (I count you every morning. I never miscount.)</li>
+        <li>r_logentry(INITIATOR_faction==PlayerColony,priority=250)-&gt;Noo t'aah, noo bom'loo. Boota! (No questions. No haggling. Only work.)</li>
+        <li>r_logentry(INITIATOR_faction==PlayerTribe,priority=250)-&gt;Noo t'aah, noo bom'loo. Boota! (No questions. No haggling. Only work.)</li>
+        <li>r_logentry(INITIATOR_kind==OuterRim_Jawa,priority=250)-&gt;Noo t'aah, noo bom'loo. Boota! (No questions. No haggling. Only work.)</li>
+        <li>r_logentry(INITIATOR_kind==OuterRim_JawaTribal,priority=250)-&gt;Noo t'aah, noo bom'loo. Boota! (No questions. No haggling. Only work.)</li>
+      </value>
+    </match>
+  </Operation>
+
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/InteractionDef[defName="SparkSlaveRebellion"]/logRulesInitiator/rulesStrings</xpath>
+    <match Class="PatchOperationAdd">
+      <xpath>/Defs/InteractionDef[defName="SparkSlaveRebellion"]/logRulesInitiator/rulesStrings</xpath>
+      <value>
+        <li>r_logentry(INITIATOR_faction==PlayerColony,priority=250)-&gt;Ashuna... ashunu, ta ne? (We go. Tonight. You and me.)</li>
+        <li>r_logentry(INITIATOR_faction==PlayerTribe,priority=250)-&gt;Ashuna... ashunu, ta ne? (We go. Tonight. You and me.)</li>
+        <li>r_logentry(INITIATOR_kind==OuterRim_Jawa,priority=250)-&gt;Ashuna... ashunu, ta ne? (We go. Tonight. You and me.)</li>
+        <li>r_logentry(INITIATOR_kind==OuterRim_JawaTribal,priority=250)-&gt;Ashuna... ashunu, ta ne? (We go. Tonight. You and me.)</li>
+        <li>r_logentry(INITIATOR_faction==PlayerColony,priority=250)-&gt;Nootib bahnoo... utinni! (They count bad now. Is find. Finds belong to takers.)</li>
+        <li>r_logentry(INITIATOR_faction==PlayerTribe,priority=250)-&gt;Nootib bahnoo... utinni! (They count bad now. Is find. Finds belong to takers.)</li>
+        <li>r_logentry(INITIATOR_kind==OuterRim_Jawa,priority=250)-&gt;Nootib bahnoo... utinni! (They count bad now. Is find. Finds belong to takers.)</li>
+        <li>r_logentry(INITIATOR_kind==OuterRim_JawaTribal,priority=250)-&gt;Nootib bahnoo... utinni! (They count bad now. Is find. Finds belong to takers.)</li>
+        <li>r_logentry(INITIATOR_faction==PlayerColony,priority=250)-&gt;Mombay m'bwa! Zaah mi, gah mi. (I am mine. My water. My sand. My name.)</li>
+        <li>r_logentry(INITIATOR_faction==PlayerTribe,priority=250)-&gt;Mombay m'bwa! Zaah mi, gah mi. (I am mine. My water. My sand. My name.)</li>
+        <li>r_logentry(INITIATOR_kind==OuterRim_Jawa,priority=250)-&gt;Mombay m'bwa! Zaah mi, gah mi. (I am mine. My water. My sand. My name.)</li>
+        <li>r_logentry(INITIATOR_kind==OuterRim_JawaTribal,priority=250)-&gt;Mombay m'bwa! Zaah mi, gah mi. (I am mine. My water. My sand. My name.)</li>
+        <li>r_logentry(INITIATOR_faction==PlayerColony,priority=250)-&gt;Bom'loo n'ekka ta ne. Ashuna! (Never was going to be bargain. So stop waiting.)</li>
+        <li>r_logentry(INITIATOR_faction==PlayerTribe,priority=250)-&gt;Bom'loo n'ekka ta ne. Ashuna! (Never was going to be bargain. So stop waiting.)</li>
+        <li>r_logentry(INITIATOR_kind==OuterRim_Jawa,priority=250)-&gt;Bom'loo n'ekka ta ne. Ashuna! (Never was going to be bargain. So stop waiting.)</li>
+        <li>r_logentry(INITIATOR_kind==OuterRim_JawaTribal,priority=250)-&gt;Bom'loo n'ekka ta ne. Ashuna! (Never was going to be bargain. So stop waiting.)</li>
+      </value>
+    </match>
+  </Operation>
+
+  <!-- =============================================================
+       CONVERSION: a sales pitch, closed or lost
+       ============================================================= -->
+
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/InteractionDef[defName="ConvertIdeoAttempt"]/logRulesInitiator/rulesStrings</xpath>
+    <match Class="PatchOperationAdd">
+      <xpath>/Defs/InteractionDef[defName="ConvertIdeoAttempt"]/logRulesInitiator/rulesStrings</xpath>
+      <value>
+        <li>r_logentry(INITIATOR_faction==PlayerColony,priority=250)-&gt;Bom'loo boo mi, ta tellah? (Hear offer before you refuse. Is all anyone owed.)</li>
+        <li>r_logentry(INITIATOR_faction==PlayerTribe,priority=250)-&gt;Bom'loo boo mi, ta tellah? (Hear offer before you refuse. Is all anyone owed.)</li>
+        <li>r_logentry(INITIATOR_kind==OuterRim_Jawa,priority=250)-&gt;Bom'loo boo mi, ta tellah? (Hear offer before you refuse. Is all anyone owed.)</li>
+        <li>r_logentry(INITIATOR_kind==OuterRim_JawaTribal,priority=250)-&gt;Bom'loo boo mi, ta tellah? (Hear offer before you refuse. Is all anyone owed.)</li>
+        <li>r_logentry(INITIATOR_faction==PlayerColony,priority=250)-&gt;Gaha gahu. Mi ta ibana. (Sand take and take. What we keep, we keep together.)</li>
+        <li>r_logentry(INITIATOR_faction==PlayerTribe,priority=250)-&gt;Gaha gahu. Mi ta ibana. (Sand take and take. What we keep, we keep together.)</li>
+        <li>r_logentry(INITIATOR_kind==OuterRim_Jawa,priority=250)-&gt;Gaha gahu. Mi ta ibana. (Sand take and take. What we keep, we keep together.)</li>
+        <li>r_logentry(INITIATOR_kind==OuterRim_JawaTribal,priority=250)-&gt;Gaha gahu. Mi ta ibana. (Sand take and take. What we keep, we keep together.)</li>
+        <li>r_logentry(INITIATOR_faction==PlayerColony,priority=250)-&gt;Kroo boota, ta boota! (All broken can be worth something again. Person too.)</li>
+        <li>r_logentry(INITIATOR_faction==PlayerTribe,priority=250)-&gt;Kroo boota, ta boota! (All broken can be worth something again. Person too.)</li>
+        <li>r_logentry(INITIATOR_kind==OuterRim_Jawa,priority=250)-&gt;Kroo boota, ta boota! (All broken can be worth something again. Person too.)</li>
+        <li>r_logentry(INITIATOR_kind==OuterRim_JawaTribal,priority=250)-&gt;Kroo boota, ta boota! (All broken can be worth something again. Person too.)</li>
+      </value>
+    </match>
+  </Operation>
+
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/InteractionDef[defName="Convert_Success"]/logRulesInitiator/rulesStrings</xpath>
+    <match Class="PatchOperationAdd">
+      <xpath>/Defs/InteractionDef[defName="Convert_Success"]/logRulesInitiator/rulesStrings</xpath>
+      <value>
+        <li>r_logentry(INITIATOR_faction==PlayerColony,priority=250)-&gt;Utinni! Bom'loo ibana! (A find! Deal struck! Deal good!)</li>
+        <li>r_logentry(INITIATOR_faction==PlayerTribe,priority=250)-&gt;Utinni! Bom'loo ibana! (A find! Deal struck! Deal good!)</li>
+        <li>r_logentry(INITIATOR_kind==OuterRim_Jawa,priority=250)-&gt;Utinni! Bom'loo ibana! (A find! Deal struck! Deal good!)</li>
+        <li>r_logentry(INITIATOR_kind==OuterRim_JawaTribal,priority=250)-&gt;Utinni! Bom'loo ibana! (A find! Deal struck! Deal good!)</li>
+        <li>r_logentry(INITIATOR_faction==PlayerColony,priority=250)-&gt;Mambay. Nootiba ta, taa baa. (Good. You on manifest. Welcome.)</li>
+        <li>r_logentry(INITIATOR_faction==PlayerTribe,priority=250)-&gt;Mambay. Nootiba ta, taa baa. (Good. You on manifest. Welcome.)</li>
+        <li>r_logentry(INITIATOR_kind==OuterRim_Jawa,priority=250)-&gt;Mambay. Nootiba ta, taa baa. (Good. You on manifest. Welcome.)</li>
+        <li>r_logentry(INITIATOR_kind==OuterRim_JawaTribal,priority=250)-&gt;Mambay. Nootiba ta, taa baa. (Good. You on manifest. Welcome.)</li>
+      </value>
+    </match>
+  </Operation>
+
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/InteractionDef[defName="Convert_Failure"]/logRulesInitiator/rulesStrings</xpath>
+    <match Class="PatchOperationAdd">
+      <xpath>/Defs/InteractionDef[defName="Convert_Failure"]/logRulesInitiator/rulesStrings</xpath>
+      <value>
+        <li>r_logentry(INITIATOR_faction==PlayerColony,priority=250)-&gt;Bom'loo noo... mambay. Sh'akka boo. (No deal today. Fine. Price only come down.)</li>
+        <li>r_logentry(INITIATOR_faction==PlayerTribe,priority=250)-&gt;Bom'loo noo... mambay. Sh'akka boo. (No deal today. Fine. Price only come down.)</li>
+        <li>r_logentry(INITIATOR_kind==OuterRim_Jawa,priority=250)-&gt;Bom'loo noo... mambay. Sh'akka boo. (No deal today. Fine. Price only come down.)</li>
+        <li>r_logentry(INITIATOR_kind==OuterRim_JawaTribal,priority=250)-&gt;Bom'loo noo... mambay. Sh'akka boo. (No deal today. Fine. Price only come down.)</li>
+        <li>r_logentry(INITIATOR_faction==PlayerColony,priority=250)-&gt;Mob un loo? Hmph. Ashuna. (I make fair offer. Walk away then.)</li>
+        <li>r_logentry(INITIATOR_faction==PlayerTribe,priority=250)-&gt;Mob un loo? Hmph. Ashuna. (I make fair offer. Walk away then.)</li>
+        <li>r_logentry(INITIATOR_kind==OuterRim_Jawa,priority=250)-&gt;Mob un loo? Hmph. Ashuna. (I make fair offer. Walk away then.)</li>
+        <li>r_logentry(INITIATOR_kind==OuterRim_JawaTribal,priority=250)-&gt;Mob un loo? Hmph. Ashuna. (I make fair offer. Walk away then.)</li>
+      </value>
+    </match>
+  </Operation>
+
+  <!-- =============================================================
+       COUNSEL, REASSURANCE, PREACHING: the warm end of the same instinct
+       ============================================================= -->
+
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/InteractionDef[defName="Counsel_Success"]/logRulesInitiator/rulesStrings</xpath>
+    <match Class="PatchOperationAdd">
+      <xpath>/Defs/InteractionDef[defName="Counsel_Success"]/logRulesInitiator/rulesStrings</xpath>
+      <value>
+        <li>r_logentry(INITIATOR_faction==PlayerColony,priority=250)-&gt;Sabioto. Nootiba nootibu ma. (Sit. One piece at time, together, like salvage.)</li>
+        <li>r_logentry(INITIATOR_faction==PlayerTribe,priority=250)-&gt;Sabioto. Nootiba nootibu ma. (Sit. One piece at time, together, like salvage.)</li>
+        <li>r_logentry(INITIATOR_kind==OuterRim_Jawa,priority=250)-&gt;Sabioto. Nootiba nootibu ma. (Sit. One piece at time, together, like salvage.)</li>
+        <li>r_logentry(INITIATOR_kind==OuterRim_JawaTribal,priority=250)-&gt;Sabioto. Nootiba nootibu ma. (Sit. One piece at time, together, like salvage.)</li>
+        <li>r_logentry(INITIATOR_faction==PlayerColony,priority=250)-&gt;Bahnoo noo kroo, ta boota. (Cracked not worthless. I rebuild worse than you.)</li>
+        <li>r_logentry(INITIATOR_faction==PlayerTribe,priority=250)-&gt;Bahnoo noo kroo, ta boota. (Cracked not worthless. I rebuild worse than you.)</li>
+        <li>r_logentry(INITIATOR_kind==OuterRim_Jawa,priority=250)-&gt;Bahnoo noo kroo, ta boota. (Cracked not worthless. I rebuild worse than you.)</li>
+        <li>r_logentry(INITIATOR_kind==OuterRim_JawaTribal,priority=250)-&gt;Bahnoo noo kroo, ta boota. (Cracked not worthless. I rebuild worse than you.)</li>
+        <li>r_logentry(INITIATOR_faction==PlayerColony,priority=250)-&gt;Zaah mi, zaah ta. Mambay. (Take my water. Take moment. Is all right.)</li>
+        <li>r_logentry(INITIATOR_faction==PlayerTribe,priority=250)-&gt;Zaah mi, zaah ta. Mambay. (Take my water. Take moment. Is all right.)</li>
+        <li>r_logentry(INITIATOR_kind==OuterRim_Jawa,priority=250)-&gt;Zaah mi, zaah ta. Mambay. (Take my water. Take moment. Is all right.)</li>
+        <li>r_logentry(INITIATOR_kind==OuterRim_JawaTribal,priority=250)-&gt;Zaah mi, zaah ta. Mambay. (Take my water. Take moment. Is all right.)</li>
+      </value>
+    </match>
+  </Operation>
+
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/InteractionDef[defName="Counsel_Failure"]/logRulesInitiator/rulesStrings</xpath>
+    <match Class="PatchOperationAdd">
+      <xpath>/Defs/InteractionDef[defName="Counsel_Failure"]/logRulesInitiator/rulesStrings</xpath>
+      <value>
+        <li>r_logentry(INITIATOR_faction==PlayerColony,priority=250)-&gt;Noo... noo, mi t'aah bahnoo. (No. No, that come out wrong. Now worse.)</li>
+        <li>r_logentry(INITIATOR_faction==PlayerTribe,priority=250)-&gt;Noo... noo, mi t'aah bahnoo. (No. No, that come out wrong. Now worse.)</li>
+        <li>r_logentry(INITIATOR_kind==OuterRim_Jawa,priority=250)-&gt;Noo... noo, mi t'aah bahnoo. (No. No, that come out wrong. Now worse.)</li>
+        <li>r_logentry(INITIATOR_kind==OuterRim_JawaTribal,priority=250)-&gt;Noo... noo, mi t'aah bahnoo. (No. No, that come out wrong. Now worse.)</li>
+        <li>r_logentry(INITIATOR_faction==PlayerColony,priority=250)-&gt;Sabioto! Mi kroo ma boota. (Forget I speak. I take working thing. I break it.)</li>
+        <li>r_logentry(INITIATOR_faction==PlayerTribe,priority=250)-&gt;Sabioto! Mi kroo ma boota. (Forget I speak. I take working thing. I break it.)</li>
+        <li>r_logentry(INITIATOR_kind==OuterRim_Jawa,priority=250)-&gt;Sabioto! Mi kroo ma boota. (Forget I speak. I take working thing. I break it.)</li>
+        <li>r_logentry(INITIATOR_kind==OuterRim_JawaTribal,priority=250)-&gt;Sabioto! Mi kroo ma boota. (Forget I speak. I take working thing. I break it.)</li>
+      </value>
+    </match>
+  </Operation>
+
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/InteractionDef[defName="Reassure"]/logRulesInitiator/rulesStrings</xpath>
+    <match Class="PatchOperationAdd">
+      <xpath>/Defs/InteractionDef[defName="Reassure"]/logRulesInitiator/rulesStrings</xpath>
+      <value>
+        <li>r_logentry(INITIATOR_faction==PlayerColony,priority=250)-&gt;Ibana. Ibana, ta. Mambay. (Yes. You right to hold. Is all right.)</li>
+        <li>r_logentry(INITIATOR_faction==PlayerTribe,priority=250)-&gt;Ibana. Ibana, ta. Mambay. (Yes. You right to hold. Is all right.)</li>
+        <li>r_logentry(INITIATOR_kind==OuterRim_Jawa,priority=250)-&gt;Ibana. Ibana, ta. Mambay. (Yes. You right to hold. Is all right.)</li>
+        <li>r_logentry(INITIATOR_kind==OuterRim_JawaTribal,priority=250)-&gt;Ibana. Ibana, ta. Mambay. (Yes. You right to hold. Is all right.)</li>
+        <li>r_logentry(INITIATOR_faction==PlayerColony,priority=250)-&gt;Gaha gahu, ta noo. Boota! (Sand shift. You not shift. That worth something.)</li>
+        <li>r_logentry(INITIATOR_faction==PlayerTribe,priority=250)-&gt;Gaha gahu, ta noo. Boota! (Sand shift. You not shift. That worth something.)</li>
+        <li>r_logentry(INITIATOR_kind==OuterRim_Jawa,priority=250)-&gt;Gaha gahu, ta noo. Boota! (Sand shift. You not shift. That worth something.)</li>
+        <li>r_logentry(INITIATOR_kind==OuterRim_JawaTribal,priority=250)-&gt;Gaha gahu, ta noo. Boota! (Sand shift. You not shift. That worth something.)</li>
+      </value>
+    </match>
+  </Operation>
+
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/InteractionDef[defName="PreachHealth"]/logRulesInitiator/rulesStrings</xpath>
+    <match Class="PatchOperationAdd">
+      <xpath>/Defs/InteractionDef[defName="PreachHealth"]/logRulesInitiator/rulesStrings</xpath>
+      <value>
+        <li>r_logentry(INITIATOR_faction==PlayerColony,priority=250)-&gt;Ta noo kroo! Boota, boota! (You not scrap yet. Get up. Get up.)</li>
+        <li>r_logentry(INITIATOR_faction==PlayerTribe,priority=250)-&gt;Ta noo kroo! Boota, boota! (You not scrap yet. Get up. Get up.)</li>
+        <li>r_logentry(INITIATOR_kind==OuterRim_Jawa,priority=250)-&gt;Ta noo kroo! Boota, boota! (You not scrap yet. Get up. Get up.)</li>
+        <li>r_logentry(INITIATOR_kind==OuterRim_JawaTribal,priority=250)-&gt;Ta noo kroo! Boota, boota! (You not scrap yet. Get up. Get up.)</li>
+        <li>r_logentry(INITIATOR_faction==PlayerColony,priority=250)-&gt;Zaah, mambay, ibana ma. (Water. Rest. One reason. That is whole repair.)</li>
+        <li>r_logentry(INITIATOR_faction==PlayerTribe,priority=250)-&gt;Zaah, mambay, ibana ma. (Water. Rest. One reason. That is whole repair.)</li>
+        <li>r_logentry(INITIATOR_kind==OuterRim_Jawa,priority=250)-&gt;Zaah, mambay, ibana ma. (Water. Rest. One reason. That is whole repair.)</li>
+        <li>r_logentry(INITIATOR_kind==OuterRim_JawaTribal,priority=250)-&gt;Zaah, mambay, ibana ma. (Water. Rest. One reason. That is whole repair.)</li>
+        <li>r_logentry(INITIATOR_faction==PlayerColony,priority=250)-&gt;Booka ta boota ne! (Something here still need you. Get up.)</li>
+        <li>r_logentry(INITIATOR_faction==PlayerTribe,priority=250)-&gt;Booka ta boota ne! (Something here still need you. Get up.)</li>
+        <li>r_logentry(INITIATOR_kind==OuterRim_Jawa,priority=250)-&gt;Booka ta boota ne! (Something here still need you. Get up.)</li>
+        <li>r_logentry(INITIATOR_kind==OuterRim_JawaTribal,priority=250)-&gt;Booka ta boota ne! (Something here still need you. Get up.)</li>
+      </value>
+    </match>
+  </Operation>
+
+  <!-- =============================================================
+       WORK AND TRIAL: the crew driven, and a valuation dispute with an audience
+       ============================================================= -->
+
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/InteractionDef[defName="WorkDrive"]/logRulesInitiator/rulesStrings</xpath>
+    <match Class="PatchOperationAdd">
+      <xpath>/Defs/InteractionDef[defName="WorkDrive"]/logRulesInitiator/rulesStrings</xpath>
+      <value>
+        <li>r_logentry(INITIATOR_faction==PlayerColony,priority=250)-&gt;Utinni! Boota, boota, boota! (Work! Salvage in ground! Daylight going to waste!)</li>
+        <li>r_logentry(INITIATOR_faction==PlayerTribe,priority=250)-&gt;Utinni! Boota, boota, boota! (Work! Salvage in ground! Daylight going to waste!)</li>
+        <li>r_logentry(INITIATOR_kind==OuterRim_Jawa,priority=250)-&gt;Utinni! Boota, boota, boota! (Work! Salvage in ground! Daylight going to waste!)</li>
+        <li>r_logentry(INITIATOR_kind==OuterRim_JawaTribal,priority=250)-&gt;Utinni! Boota, boota, boota! (Work! Salvage in ground! Daylight going to waste!)</li>
+        <li>r_logentry(INITIATOR_faction==PlayerColony,priority=250)-&gt;Ashuna! Gaha gahu noo bom'loo! (Move! Desert not negotiate! Dark not negotiate!)</li>
+        <li>r_logentry(INITIATOR_faction==PlayerTribe,priority=250)-&gt;Ashuna! Gaha gahu noo bom'loo! (Move! Desert not negotiate! Dark not negotiate!)</li>
+        <li>r_logentry(INITIATOR_kind==OuterRim_Jawa,priority=250)-&gt;Ashuna! Gaha gahu noo bom'loo! (Move! Desert not negotiate! Dark not negotiate!)</li>
+        <li>r_logentry(INITIATOR_kind==OuterRim_JawaTribal,priority=250)-&gt;Ashuna! Gaha gahu noo bom'loo! (Move! Desert not negotiate! Dark not negotiate!)</li>
+        <li>r_logentry(INITIATOR_faction==PlayerColony,priority=250)-&gt;Nootiba nootibu, booka ne! (Every hand today. Every crate tonight. All eat.)</li>
+        <li>r_logentry(INITIATOR_faction==PlayerTribe,priority=250)-&gt;Nootiba nootibu, booka ne! (Every hand today. Every crate tonight. All eat.)</li>
+        <li>r_logentry(INITIATOR_kind==OuterRim_Jawa,priority=250)-&gt;Nootiba nootibu, booka ne! (Every hand today. Every crate tonight. All eat.)</li>
+        <li>r_logentry(INITIATOR_kind==OuterRim_JawaTribal,priority=250)-&gt;Nootiba nootibu, booka ne! (Every hand today. Every crate tonight. All eat.)</li>
+      </value>
+    </match>
+  </Operation>
+
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/InteractionDef[defName="Trial_Accuse"]/logRulesInitiator/rulesStrings</xpath>
+    <match Class="PatchOperationAdd">
+      <xpath>/Defs/InteractionDef[defName="Trial_Accuse"]/logRulesInitiator/rulesStrings</xpath>
+      <value>
+        <li>r_logentry(INITIATOR_faction==PlayerColony,priority=250)-&gt;Mombay m'bwa! Ta nubba ma! (That was mine! Was in this one hands!)</li>
+        <li>r_logentry(INITIATOR_faction==PlayerTribe,priority=250)-&gt;Mombay m'bwa! Ta nubba ma! (That was mine! Was in this one hands!)</li>
+        <li>r_logentry(INITIATOR_kind==OuterRim_Jawa,priority=250)-&gt;Mombay m'bwa! Ta nubba ma! (That was mine! Was in this one hands!)</li>
+        <li>r_logentry(INITIATOR_kind==OuterRim_JawaTribal,priority=250)-&gt;Mombay m'bwa! Ta nubba ma! (That was mine! Was in this one hands!)</li>
+        <li>r_logentry(INITIATOR_faction==PlayerColony,priority=250)-&gt;Mi nootib! Booka n'ekka! (I check manifest! Count short! Story short too!)</li>
+        <li>r_logentry(INITIATOR_faction==PlayerTribe,priority=250)-&gt;Mi nootib! Booka n'ekka! (I check manifest! Count short! Story short too!)</li>
+        <li>r_logentry(INITIATOR_kind==OuterRim_Jawa,priority=250)-&gt;Mi nootib! Booka n'ekka! (I check manifest! Count short! Story short too!)</li>
+        <li>r_logentry(INITIATOR_kind==OuterRim_JawaTribal,priority=250)-&gt;Mi nootib! Booka n'ekka! (I check manifest! Count short! Story short too!)</li>
+        <li>r_logentry(INITIATOR_faction==PlayerColony,priority=250)-&gt;Bom'loo bahnoo ta ne! (This one bargain bad faith. Everyone here feel it.)</li>
+        <li>r_logentry(INITIATOR_faction==PlayerTribe,priority=250)-&gt;Bom'loo bahnoo ta ne! (This one bargain bad faith. Everyone here feel it.)</li>
+        <li>r_logentry(INITIATOR_kind==OuterRim_Jawa,priority=250)-&gt;Bom'loo bahnoo ta ne! (This one bargain bad faith. Everyone here feel it.)</li>
+        <li>r_logentry(INITIATOR_kind==OuterRim_JawaTribal,priority=250)-&gt;Bom'loo bahnoo ta ne! (This one bargain bad faith. Everyone here feel it.)</li>
+        <li>r_logentry(INITIATOR_faction==PlayerColony,priority=250)-&gt;Heeka heeku! Gah t'aah ma! (Smell story! Buried and dug up twice!)</li>
+        <li>r_logentry(INITIATOR_faction==PlayerTribe,priority=250)-&gt;Heeka heeku! Gah t'aah ma! (Smell story! Buried and dug up twice!)</li>
+        <li>r_logentry(INITIATOR_kind==OuterRim_Jawa,priority=250)-&gt;Heeka heeku! Gah t'aah ma! (Smell story! Buried and dug up twice!)</li>
+        <li>r_logentry(INITIATOR_kind==OuterRim_JawaTribal,priority=250)-&gt;Heeka heeku! Gah t'aah ma! (Smell story! Buried and dug up twice!)</li>
+      </value>
+    </match>
+  </Operation>
+
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/InteractionDef[defName="Trial_Defend"]/logRulesInitiator/rulesStrings</xpath>
+    <match Class="PatchOperationAdd">
+      <xpath>/Defs/InteractionDef[defName="Trial_Defend"]/logRulesInitiator/rulesStrings</xpath>
+      <value>
+        <li>r_logentry(INITIATOR_faction==PlayerColony,priority=250)-&gt;Noo! Noo! Mi nootib ibana! (No! No! My count honest! I show again!)</li>
+        <li>r_logentry(INITIATOR_faction==PlayerTribe,priority=250)-&gt;Noo! Noo! Mi nootib ibana! (No! No! My count honest! I show again!)</li>
+        <li>r_logentry(INITIATOR_kind==OuterRim_Jawa,priority=250)-&gt;Noo! Noo! Mi nootib ibana! (No! No! My count honest! I show again!)</li>
+        <li>r_logentry(INITIATOR_kind==OuterRim_JawaTribal,priority=250)-&gt;Noo! Noo! Mi nootib ibana! (No! No! My count honest! I show again!)</li>
+        <li>r_logentry(INITIATOR_faction==PlayerColony,priority=250)-&gt;Utinni noo kroo ta! (Finding thing not stealing thing! Ask any of you!)</li>
+        <li>r_logentry(INITIATOR_faction==PlayerTribe,priority=250)-&gt;Utinni noo kroo ta! (Finding thing not stealing thing! Ask any of you!)</li>
+        <li>r_logentry(INITIATOR_kind==OuterRim_Jawa,priority=250)-&gt;Utinni noo kroo ta! (Finding thing not stealing thing! Ask any of you!)</li>
+        <li>r_logentry(INITIATOR_kind==OuterRim_JawaTribal,priority=250)-&gt;Utinni noo kroo ta! (Finding thing not stealing thing! Ask any of you!)</li>
+        <li>r_logentry(INITIATOR_faction==PlayerColony,priority=250)-&gt;Bom'loo mi! Bom'loo, bom'loo! (Let me make offer! Always is offer!)</li>
+        <li>r_logentry(INITIATOR_faction==PlayerTribe,priority=250)-&gt;Bom'loo mi! Bom'loo, bom'loo! (Let me make offer! Always is offer!)</li>
+        <li>r_logentry(INITIATOR_kind==OuterRim_Jawa,priority=250)-&gt;Bom'loo mi! Bom'loo, bom'loo! (Let me make offer! Always is offer!)</li>
+        <li>r_logentry(INITIATOR_kind==OuterRim_JawaTribal,priority=250)-&gt;Bom'loo mi! Bom'loo, bom'loo! (Let me make offer! Always is offer!)</li>
+        <li>r_logentry(INITIATOR_faction==PlayerColony,priority=250)-&gt;Sabioto! Sh'akka mi, noo nootib! (This not trial! This is crowd deciding my price!)</li>
+        <li>r_logentry(INITIATOR_faction==PlayerTribe,priority=250)-&gt;Sabioto! Sh'akka mi, noo nootib! (This not trial! This is crowd deciding my price!)</li>
+        <li>r_logentry(INITIATOR_kind==OuterRim_Jawa,priority=250)-&gt;Sabioto! Sh'akka mi, noo nootib! (This not trial! This is crowd deciding my price!)</li>
+        <li>r_logentry(INITIATOR_kind==OuterRim_JawaTribal,priority=250)-&gt;Sabioto! Sh'akka mi, noo nootib! (This not trial! This is crowd deciding my price!)</li>
+        <li>r_logentry(INITIATOR_faction==PlayerColony,priority=250)-&gt;Taa baa... mambay... mi n'ekka. (Please. Please. I have nothing left to trade.)</li>
+        <li>r_logentry(INITIATOR_faction==PlayerTribe,priority=250)-&gt;Taa baa... mambay... mi n'ekka. (Please. Please. I have nothing left to trade.)</li>
+        <li>r_logentry(INITIATOR_kind==OuterRim_Jawa,priority=250)-&gt;Taa baa... mambay... mi n'ekka. (Please. Please. I have nothing left to trade.)</li>
+        <li>r_logentry(INITIATOR_kind==OuterRim_JawaTribal,priority=250)-&gt;Taa baa... mambay... mi n'ekka. (Please. Please. I have nothing left to trade.)</li>
+      </value>
+    </match>
+  </Operation>
+
+</Patch>

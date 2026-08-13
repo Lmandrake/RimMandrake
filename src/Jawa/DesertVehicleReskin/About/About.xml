@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ModMetaData>
+  <name>Desert Vehicle Reskin — Alpha Vehicles Neolithic</name>
+  <author>Mandrake</author>
+  <packageId>mandrake.desertvehiclereskin</packageId>
+  <supportedVersions>
+    <li>1.6</li>
+  </supportedVersions>
+  <description>Redraws the draught animals in Alpha Vehicles - Neolithic so its carts read as desert, not as medieval Europe.
+
+Texture overrides only. No defs are touched, no patches are applied, and Alpha Vehicles - Neolithic is not altered — every file here sits at the exact path the donor's own ThingDef already asks for, so the vehicles, their stats and their research are entirely the donor's.
+
+WHY THE ANIMAL AND NOT THE CART
+
+The draught animals are drawn INTO the vehicle texture rather than spawned as pawns, so replacing them is a per-file art edit. The carts themselves are fine: an ox cart, a covered carriage and a chariot are as at home on a desert world as anywhere. Only what pulls them is off-theme.
+
+Seven of the donor's vehicles are untouched because they have no animal to replace — the wheelbarrow, hwacha, rickshaw and palanquin are human-powered, the balloon is Air, and the row boat and outrigger canoe are Sea.
+
+CONTENTS
+
+  Things/Vehicles/Land/Tier0/DogSled/AV_DogSled_{north,south,east}
+      A team of two eopies in place of four dogs. The eopie is Tatooine's
+      canonical beast of burden; four dogs at a sled's scale read as a polar
+      expedition. Two animals rather than four because the eopie is the larger
+      beast — the harness traces are re-routed as a two-animal Y.
+      Each facing is drawn, not mirrored: south is a head-on pair abreast,
+      north is a rear view with no snout and the rigging hanging down, east is
+      a side profile with the pair stacked vertically and the rigging to the
+      left.
+
+  Things/Vehicles/Land/Tier0/DogSled/AV_DogSled_{north,south,east}m
+      The paired colour masks, edited in step with the art. Vehicle Framework
+      reads these for its colour and pattern system, so a mask left stale
+      makes the new animal refuse to tint. Note the donor's suffix convention:
+      the "m" is appended to the facing (AV_DogSled_southm), not separated
+      (AV_DogSled_south_m).
+
+LOAD ORDER MATTERS HERE
+
+Alpha Vehicles - Neolithic ships its vehicle art as loose PNGs, not as an AssetBundle. Between two loose files at the same path RimWorld resolves by load order, so this mod must load AFTER the donor or the donor's own art wins and nothing here is visible. That is the opposite of an AssetBundle override, where a loose file wins regardless of order.</description>
+
+  <modDependencies>
+    <li>
+      <packageId>sarg.alphavehiclesneolithic</packageId>
+      <displayName>Alpha Vehicles - Neolithic</displayName>
+      <steamWorkshopUrl>steam://url/CommunityFilePage/3028675048</steamWorkshopUrl>
+    </li>
+  </modDependencies>
+
+  <loadAfter>
+    <li>sarg.alphavehiclesneolithic</li>
+  </loadAfter>
+</ModMetaData>

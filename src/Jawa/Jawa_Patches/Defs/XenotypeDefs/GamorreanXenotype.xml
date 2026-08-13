@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ============================================================================
+  GamorreanXenotype.xml                      Jawa_Patches · authored 2026-08-11
+  ============================================================================
+
+  WHY THIS EXISTS
+  ===============
+  cherry_picker_killlist.md §2 records the standing decision: "author a CUSTOM
+  Gamorrean race... not just a label swap; we build our own xenotype... as the
+  Hutts' pig-soldier stock." This is that xenotype.
+
+  It supersedes the earlier "derived from Pigskin" framing. Pigskin is a vanilla
+  Biotech xenotype with no Star Wars content; the two Gamorreans already in the
+  load set (guy762_xenotype_gamorrean and BTD_Gamorrean) are strictly better
+  starting points, being purpose-built for the setting. This def is forked from
+  guy762_xenotype_gamorrean, which is the more coherent of the two.
+
+  WHAT WAS INHERITED UNCHANGED
+  ============================
+  23 of guy762's 24 genes, verbatim. Every one was confirmed present in the live
+  DefDump before this file was written; none is guessed. That deliberately keeps
+  the upstream authors' balance intact rather than silently rebalancing a
+  species someone else tuned.
+
+  THE TWO DELIBERATE CHANGES
+  ==========================
+  1. ADDED Ears_Pig. This is the single biggest appearance win available with
+     zero new art. Vanilla Biotech ships drooping pig ears as an overlay gene,
+     with art already packed in the base game, and neither existing Gamorrean
+     uses it. Drooping ears widen the silhouette in the south AND north views,
+     which is exactly where the current version reads as a bald human.
+
+  2. REMOVED Headbone_MiniHorns. Gamorreans have tusks, not horns. Composited
+     against the real head art, the mini-horns read as outward-pointing devil
+     horns and fight the porcine silhouette rather than supporting it. This is a
+     taste call, clearly flagged: re-add the single <li>Headbone_MiniHorns</li>
+     line below to restore upstream behaviour exactly.
+
+  ⚠️ OPEN QUESTION — BODY SIZE CONTRADICTS THE SCALE ATLAS (raised 2026-08-11)
+  ============================================================================
+  `research/Jawa/star_wars_species_scale_reference_atlas.pdf` puts the Gamorrean
+  at **1.3–1.6 m — SHORTER than the 1.80 m human standard**, sourced from
+  swrpggm.com. This def inherits `guy762_BodySizeGene_big` from upstream, which
+  says the opposite.
+
+  Both readings have support: Wookieepedia opens with "a species of tall, strong
+  bipeds", while the RPG stat lines the atlas cites are consistently sub-human.
+  Screen Gamorreans read as broad and heavy rather than tall.
+
+  Deliberately NOT changed here — body size is a balance lever (it feeds
+  combatPower, melee reach and carrying capacity), and silently shrinking the
+  Hutts' door-muscle is a campaign decision, not a cleanup. If we want the atlas
+  reading, swap `guy762_BodySizeGene_big` for a small/medium body-size gene and
+  keep `Body_Fat`: short, wide and thick is closer to the films than tall.
+
+  WHAT THIS DOES NOT YET FIX
+  ==========================
+  The head itself. Jaw_Heavy carries forcedHeadTypes = Male_HeavyJawNormal /
+  Female_HeavyJawNormal, so a Gamorrean wears a VANILLA heavy-jaw human skull
+  with a flat pig-nose decal on it. There is no species head gene, for either
+  Gamorrean, in any of the three xenotype mods; verified against the live
+  GeneDef dump, not inferred.
+
+  That is the gap the commissioned art fills (see image_request/graphic.md).
+  When the six head PNGs land, add a Jawa_Head_Gamorrean gene with
+  forcedHeadTypes pointing at new HeadTypeDefs, and drop Jaw_Heavy from the list
+  below so the two do not fight over the head slot.
+
+  DUPLICATES
+  ==========
+  This makes three Gamorrean xenotypes in the picker. Intentional for now: ours
+  is the one the pawnkinds use, and deleting the other two is a Cherry Picker
+  action taken at campaign setup, not a def change. Tracked in
+  cherry_picker_killlist.md §2.
+  ============================================================================
+-->
+<Defs>
+
+  <XenotypeDef>
+    <defName>Jawa_Xeno_Gamorrean</defName>
+    <label>Gamorrean</label>
+    <description>A species of tall, strong bipeds from the Outer Rim world of Gamorr. Gamorreans have porcine traits: an upturned, large-nostriled cartilaginous snout, heavy jowls, drooping ears and upturned tusks. Their hulking bodies are covered in thick, hairless green hide.\n\nSlow of thought and quick to violence, they are prized off-world as muscle. The Hutt kajidics buy them by the crate, arm them with axes their own smiths could not have forged, and post them at every door worth guarding.</description>
+    <descriptionShort>Hulking green pig-humanoids from Gamorr. Slow, ugly, hyper-aggressive and enormously strong — the Hutts' preferred door-muscle.</descriptionShort>
+    <inheritable>true</inheritable>
+    <iconPath>UI/Icons/Xenotypes/Pigskin</iconPath>
+    <combatPowerFactor>1.7</combatPowerFactor>
+    <nameMaker>KoTOR_NamerGamorrean</nameMaker>
+    <chanceToUseNameMaker>1</chanceToUseNameMaker>
+    <genes>
+      <!-- appearance -->
+      <li>guy762_Face_jowls</li>
+      <li>guy762_Face_tusks</li>
+      <li>Ears_Pig</li>                          <!-- ADDED: see header -->
+      <li>Nose_Pig</li>
+      <li>Jaw_Heavy</li>                         <!-- forces the vanilla heavy-jaw head; replace when our head gene exists -->
+      <li>Brow_Heavy</li>
+      <li>Hair_BaldOnly</li>
+      <li>Beard_NoBeardOnly</li>
+      <li>Beauty_VeryUgly</li>
+      <li>Skin_Green</li>
+      <li>guy762_Skin_DarkGreen</li>
+      <li>Body_Fat</li>
+      <li>guy762_BodySizeGene_big</li>
+      <li>VoicePig</li>
+      <!-- <li>Headbone_MiniHorns</li> -->       <!-- REMOVED: see header; uncomment to restore upstream -->
+
+      <!-- temperament -->
+      <li>Aggression_HyperAggressive</li>
+      <li MayRequire="Ludeon.RimWorld.Ideology">Turn_Gene_HerdMentality</li>
+      <li>Turn_Gene_VerySlowNeuralHeat</li>
+      <li>GS_Primitive</li>
+      <li>AptitudeTerrible_Intellectual</li>
+
+      <!-- constitution -->
+      <li>Robust</li>
+      <li>MeleeDamage_Strong</li>
+      <li>Unstoppable</li>
+      <li>StrongStomach</li>
+      <li>RobustDigestion</li>
+    </genes>
+  </XenotypeDef>
+
+</Defs>

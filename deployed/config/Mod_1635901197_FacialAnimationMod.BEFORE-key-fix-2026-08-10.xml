@@ -1,0 +1,10 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<SettingsBlock>
+	<ModSettings Class="FacialAnimation.FacialAnimationModSettings">
+		<DrawEarsParts>False</DrawEarsParts>
+		<DrawEyesParts>True</DrawEyesParts>
+		<IgnoreEnableAnimationForRaceXenoTypeListAA>
+			<li>CreepJoiner-BTD_Jawa</li>
+		</IgnoreEnableAnimationForRaceXenoTypeListAA>
+	</ModSettings>
+</SettingsBlock>

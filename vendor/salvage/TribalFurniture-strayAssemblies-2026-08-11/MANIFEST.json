@@ -1,0 +1,152 @@
+{
+  "source": "C:\\Program Files (x86)\\Steam\\steamapps\\workshop\\content\\294100\\3671245310\\Assemblies",
+  "kept": [
+    "TribalFurniture.dll"
+  ],
+  "moved": [
+    {
+      "file": "Assembly-CSharp-firstpass.dll",
+      "bytes": 80384,
+      "shipped_by_game": true,
+      "byte_identical_to_game": true
+    },
+    {
+      "file": "Assembly-CSharp.dll",
+      "bytes": 15777280,
+      "shipped_by_game": true,
+      "byte_identical_to_game": true
+    },
+    {
+      "file": "ISharpZipLib.dll",
+      "bytes": 54272,
+      "shipped_by_game": true,
+      "byte_identical_to_game": true
+    },
+    {
+      "file": "NAudio.dll",
+      "bytes": 451072,
+      "shipped_by_game": true,
+      "byte_identical_to_game": true
+    },
+    {
+      "file": "NVorbis.dll",
+      "bytes": 68096,
+      "shipped_by_game": true,
+      "byte_identical_to_game": true
+    },
+    {
+      "file": "Unity.Burst.Unsafe.dll",
+      "bytes": 5632,
+      "shipped_by_game": true,
+      "byte_identical_to_game": true
+    },
+    {
+      "file": "Unity.Burst.dll",
+      "bytes": 301056,
+      "shipped_by_game": true,
+      "byte_identical_to_game": true
+    },
+    {
+      "file": "Unity.Collections.LowLevel.ILSupport.dll",
+      "bytes": 5120,
+      "shipped_by_game": true,
+      "byte_identical_to_game": true
+    },
+    {
+      "file": "Unity.Collections.dll",
+      "bytes": 452096,
+      "shipped_by_game": true,
+      "byte_identical_to_game": true
+    },
+    {
+      "file": "Unity.Mathematics.dll",
+      "bytes": 735232,
+      "shipped_by_game": true,
+      "byte_identical_to_game": true
+    },
+    {
+      "file": "Unity.TextMeshPro.dll",
+      "bytes": 379392,
+      "shipped_by_game": true,
+      "byte_identical_to_game": true
+    },
+    {
+      "file": "UnityEngine.AnimationModule.dll",
+      "bytes": 162496,
+      "shipped_by_game": true,
+      "byte_identical_to_game": true
+    },
+    {
+      "file": "UnityEngine.AssetBundleModule.dll",
+      "bytes": 31424,
+      "shipped_by_game": true,
+      "byte_identical_to_game": true
+    },
+    {
+      "file": "UnityEngine.AudioModule.dll",
+      "bytes": 69312,
+      "shipped_by_game": true,
+      "byte_identical_to_game": true
+    },
+    {
+      "file": "UnityEngine.ImageConversionModule.dll",
+      "bytes": 22720,
+      "shipped_by_game": true,
+      "byte_identical_to_game": true
+    },
+    {
+      "file": "UnityEngine.PerformanceReportingModule.dll",
+      "bytes": 19136,
+      "shipped_by_game": true,
+      "byte_identical_to_game": true
+    },
+    {
+      "file": "UnityEngine.Physics2DModule.dll",
+      "bytes": 139968,
+      "shipped_by_game": true,
+      "byte_identical_to_game": true
+    },
+    {
+      "file": "UnityEngine.PhysicsModule.dll",
+      "bytes": 136896,
+      "shipped_by_game": true,
+      "byte_identical_to_game": true
+    },
+    {
+      "file": "UnityEngine.PropertiesModule.dll",
+      "bytes": 153792,
+      "shipped_by_game": true,
+      "byte_identical_to_game": true
+    },
+    {
+      "file": "UnityEngine.ScreenCaptureModule.dll",
+      "bytes": 19648,
+      "shipped_by_game": true,
+      "byte_identical_to_game": true
+    },
+    {
+      "file": "UnityEngine.SpriteShapeModule.dll",
+      "bytes": 24768,
+      "shipped_by_game": true,
+      "byte_identical_to_game": true
+    },
+    {
+      "file": "UnityEngine.UI.dll",
+      "bytes": 251392,
+      "shipped_by_game": true,
+      "byte_identical_to_game": true
+    },
+    {
+      "file": "UnityEngine.UIModule.dll",
+      "bytes": 35008,
+      "shipped_by_game": true,
+      "byte_identical_to_game": true
+    },
+    {
+      "file": "com.rlabrecque.steamworks.net.dll",
+      "bytes": 396800,
+      "shipped_by_game": true,
+      "byte_identical_to_game": true
+    }
+  ]
+}

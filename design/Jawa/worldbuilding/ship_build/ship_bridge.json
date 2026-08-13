@@ -1,0 +1,323 @@
+{
+ "origin": {
+  "x": 81,
+  "z": 57,
+  "how": "centred on a 250x250 map: +81,+57"
+ },
+ "hullExtent": {
+  "w": 86,
+  "h": 133
+ },
+ "mapCells": {
+  "x0": 82,
+  "z0": 58,
+  "x1": 167,
+  "z1": 190
+ },
+ "buildOrder": [
+  "foundation",
+  "terrain",
+  "spawn"
+ ],
+ "footprintConflicts": [
+  {
+   "type": "heatsink",
+   "at": [
+    26,
+    126
+   ],
+   "insideMachine": "Mincer",
+   "rect": [
+    26,
+    126,
+    2,
+    2
+   ]
+  },
+  {
+   "type": "heatsink",
+   "at": [
+    66,
+    126
+   ],
+   "insideMachine": "Neutro Synth",
+   "rect": [
+    66,
+    126,
+    2,
+    2
+   ]
+  }
+ ],
+ "foundation": {
+  "tool": "jawa/set_terrain_batch",
+  "layer": "foundation",
+  "terrainDef": "Substructure",
+  "cells": 4057,
+  "rects": 132,
+  "ops": "Substructure:108,58,15,14;Substructure:130,58,15,14;Substructure:113,72,8,47;Substructure:132,72,8,47;Substructure:155,81,1,13;Substructure:152,82,3,11;Substructure:156,82,3,11;Substructure:151,83,1,9;Substructure:159,83,1,9;Substructure:150,84,1,7;Substructure:160,84,1,7;Substructure:140,87,10,1;Substructure:161,87,1,1;Substructure:112,104,1,18;Substructure:121,104,11,15;Substructure:140,104,1,18;Substructure:104,110,1,18;Substructure:148,110,1,18;Substructure:101,111,3,18;Substructure:105,111,3,15;Substructure:145,111,3,15;Substructure:149,111,3,18;Substructure:99,112,2,21;Substructure:108,112,2,13;Substructure:111,112,1,10;Substructure:141,112,1,10;Substructure:143,112,2,13;Substructure:152,112,2,21;Substructure:98,113,1,24;Substructure:110,113,1,11;Substructure:142,113,1,11;Substructure:154,113,1,23;Substructure:97,115,1,25;Substructure:155,115,1,24;Substructure:96,118,1,1;Substructure:156,118,1,1;Substructure:113,119,6,1;Substructure:134,119,6,1;Substructure:113,120,3,1;Substructure:137,120,3,1;Substructure:96,123,1,19;Substructure:156,123,1,19;Substructure:95,124,1,52;Substructure:157,124,1,52;Substructure:94,125,1,51;Substructure:158,125,1,51;Substructure:105,126,1,1;Substructure:147,126,1,1;Substructure:93,127,1,50;Substructure:159,127,1,50;Substructure:90,128,1,48;Substructure:92,128,1,48;Substructure:160,128,1,48;Substructure:87,129,3,29;Substructure:91,129,1,47;Substructure:101,129,2,1;Substructure:150,129,2,1;Substructure:85,130,2,13;Substructure:101,130,1,1;Substructure:151,130,1,1;Substructure:161,130,1,46;Substructure:84,131,1,11;Substructure:162,132,1,44;Substructure:83,133,1,7;Substructure:99,133,1,1;Substructure:153,133,1,1;Substructure:163,134,1,41;Substructure:82,136,1,1;Substructure:164,137,1,38;Substructure:165,141,1,17;Substructure:126,143,1,47;Substructure:123,144,3,11;Substructure:127,144,3,11;Substructure:86,145,1,9;Substructure:122,145,1,9;Substructure:130,145,1,9;Substructure:166,145,1,9;Substructure:121,146,1,7;Substructure:131,146,1,7;Substructure:120,149,1,1;Substructure:132,149,1,1;Substructure:124,155,2,35;Substructure:127,155,2,35;Substructure:96,157,1,19;Substructure:156,157,1,19;Substructure:88,158,2,17;Substructure:97,160,1,17;Substructure:155,160,1,17;Substructure:98,162,1,16;Substructure:154,162,1,16;Substructure:87,163,1,11;Substructure:99,163,1,16;Substructure:153,163,1,16;Substructure:165,163,1,11;Substructure:86,165,1,7;Substructure:100,165,1,21;Substructure:152,165,1,21;Substructure:166,165,1,7;Substructure:85,168,1,1;Substructure:101,168,1,20;Substructure:151,168,1,20;Substructure:167,168,1,1;Substructure:102,169,1,20;Substructure:150,169,1,20;Substructure:103,170,1,19;Substructure:149,170,1,19;Substructure:104,171,1,19;Substructure:148,171,1,19;Substructure:105,172,1,18;Substructure:147,172,1,18;Substructure:106,173,1,17;Substructure:146,173,1,17;Substructure:107,174,1,17;Substructure:145,174,1,17;Substructure:108,175,3,15;Substructure:142,175,3,15;Substructure:111,176,2,13;Substructure:140,176,2,13;Substructure:113,177,1,11;Substructure:139,177,1,11;Substructure:114,178,2,10;Substructure:137,178,2,10;Substructure:116,179,3,9;Substructure:134,179,3,9;Substructure:119,180,5,9;Substructure:129,180,5,9;Substructure:99,182,1,1;Substructure:153,182,1,1;Substructure:118,188,1,1;Substructure:134,188,1,1;Substructure:122,189,2,1;Substructure:129,189,2,1"
+ },
+ "terrain": {
+  "MetalTile": {
+   "cells": 3328,
+   "rects": 117,
+   "ops": "MetalTile:108,58,15,14;MetalTile:130,58,15,14;MetalTile:113,72,8,47;MetalTile:132,72,8,47;MetalTile:140,87,9,1;MetalTile:112,104,1,14;MetalTile:121,104,11,15;MetalTile:140,104,1,14;MetalTile:111,112,1,3;MetalTile:141,112,1,3;MetalTile:112,119,7,1;MetalTile:134,119,7,1;MetalTile:112,120,4,1;MetalTile:137,120,4,1;MetalTile:112,121,1,1;MetalTile:140,121,1,1;MetalTile:97,122,1,18;MetalTile:155,122,1,17;MetalTile:96,123,1,19;MetalTile:156,123,1,19;MetalTile:95,124,1,37;MetalTile:98,124,1,13;MetalTile:154,124,1,12;MetalTile:157,124,1,52;MetalTile:94,125,1,36;MetalTile:99,125,2,8;MetalTile:152,125,2,8;MetalTile:158,125,1,51;MetalTile:101,126,3,3;MetalTile:105,126,1,1;MetalTile:147,126,1,1;MetalTile:149,126,3,3;MetalTile:93,127,1,33;MetalTile:104,127,1,1;MetalTile:148,127,1,1;MetalTile:159,127,1,50;MetalTile:90,128,1,33;MetalTile:92,128,1,33;MetalTile:160,128,1,48;MetalTile:87,129,3,29;MetalTile:91,129,1,32;MetalTile:101,129,2,1;MetalTile:150,129,2,1;MetalTile:85,130,2,13;MetalTile:101,130,1,1;MetalTile:151,130,1,1;MetalTile:161,130,1,46;MetalTile:84,131,1,11;MetalTile:162,132,1,44;MetalTile:83,133,1,7;MetalTile:99,133,1,1;MetalTile:153,133,1,1;MetalTile:163,134,1,41;MetalTile:82,136,1,1;MetalTile:164,137,1,38;MetalTile:165,141,1,17;MetalTile:126,143,1,4;MetalTile:123,144,3,3;MetalTile:127,144,3,3;MetalTile:86,145,1,9;MetalTile:122,145,1,9;MetalTile:130,145,1,9;MetalTile:166,145,1,9;MetalTile:121,146,1,7;MetalTile:131,146,1,7;MetalTile:123,147,1,8;MetalTile:129,147,1,8;MetalTile:120,149,1,1;MetalTile:132,149,1,1;MetalTile:124,152,5,38;MetalTile:96,157,1,4;MetalTile:156,157,1,19;MetalTile:88,158,2,4;MetalTile:97,160,1,2;MetalTile:155,160,1,17;MetalTile:154,162,1,16;MetalTile:153,163,1,16;MetalTile:165,163,1,11;MetalTile:152,165,1,21;MetalTile:166,165,1,7;MetalTile:151,168,1,20;MetalTile:167,168,1,1;MetalTile:101,169,2,19;MetalTile:150,169,1,20;MetalTile:103,170,1,19;MetalTile:149,170,1,19;MetalTile:104,171,1,19;MetalTile:148,171,1,19;MetalTile:100,172,1,14;MetalTile:105,172,1,18;MetalTile:147,172,1,18;MetalTile:106,173,1,17;MetalTile:146,173,1,17;MetalTile:99,174,1,5;MetalTile:107,174,1,17;MetalTile:145,174,1,17;MetalTile:97,175,2,2;MetalTile:108,175,3,15;MetalTile:142,175,3,15;MetalTile:111,176,2,13;MetalTile:140,176,2,13;MetalTile:98,177,1,1;MetalTile:113,177,1,11;MetalTile:139,177,1,11;MetalTile:114,178,2,10;MetalTile:137,178,2,10;MetalTile:116,179,3,9;MetalTile:134,179,3,9;MetalTile:119,180,5,9;MetalTile:129,180,5,9;MetalTile:99,182,1,1;MetalTile:153,182,1,1;MetalTile:102,188,1,1;MetalTile:118,188,1,1;MetalTile:134,188,1,1;MetalTile:122,189,2,1;MetalTile:129,189,2,1"
+  },
+  "SterileTile": {
+   "cells": 507,
+   "rects": 31,
+   "ops": "SterileTile:155,81,1,13;SterileTile:152,82,3,11;SterileTile:156,82,3,11;SterileTile:151,83,1,9;SterileTile:159,83,1,9;SterileTile:150,84,1,7;SterileTile:160,84,1,7;SterileTile:149,87,1,1;SterileTile:161,87,1,1;SterileTile:104,110,1,17;SterileTile:101,111,3,15;SterileTile:105,111,3,15;SterileTile:99,112,2,13;SterileTile:108,112,2,13;SterileTile:98,113,1,11;SterileTile:110,113,1,11;SterileTile:97,115,1,7;SterileTile:111,115,1,7;SterileTile:96,118,1,1;SterileTile:112,118,1,1;SterileTile:93,160,1,17;SterileTile:90,161,3,15;SterileTile:94,161,3,15;SterileTile:88,162,2,13;SterileTile:97,162,2,13;SterileTile:87,163,1,11;SterileTile:99,163,1,11;SterileTile:86,165,1,7;SterileTile:100,165,1,7;SterileTile:85,168,1,1;SterileTile:101,168,1,1"
+  },
+  "WoodPlankFloor": {
+   "cells": 197,
+   "rects": 11,
+   "ops": "WoodPlankFloor:148,110,1,17;WoodPlankFloor:145,111,3,15;WoodPlankFloor:149,111,3,15;WoodPlankFloor:143,112,2,13;WoodPlankFloor:152,112,2,13;WoodPlankFloor:142,113,1,11;WoodPlankFloor:154,113,1,11;WoodPlankFloor:141,115,1,7;WoodPlankFloor:155,115,1,7;WoodPlankFloor:140,118,1,1;WoodPlankFloor:156,118,1,1"
+  },
+  "CarpetMarine": {
+   "cells": 25,
+   "rects": 1,
+   "ops": "CarpetMarine:124,147,5,5"
+  }
+ },
+ "spawn": [
+  {
+   "tool": "jawa/spawn_batch",
+   "defName": "GravEngine",
+   "stuff": null,
+   "rot": 0,
+   "needsManualRotation": false,
+   "size": "3x3",
+   "coordIs": "centre",
+   "count": 1,
+   "ops": "GravEngine:126,149"
+  },
+  {
+   "tool": "jawa/spawn_batch",
+   "defName": "GravFieldExtender",
+   "stuff": null,
+   "rot": 0,
+   "needsManualRotation": false,
+   "size": "1x1",
+   "coordIs": "cell",
+   "count": 8,
+   "ops": "GravFieldExtender:126,115;GravFieldExtender:136,87;GravFieldExtender:126,171;GravFieldExtender:92,149;GravFieldExtender:160,149;GravFieldExtender:137,65;GravFieldExtender:116,96;GravFieldExtender:136,96"
+  },
+  {
+   "tool": "jawa/spawn_batch",
+   "defName": "GravshipHull",
+   "stuff": "Steel",
+   "rot": 0,
+   "needsManualRotation": false,
+   "count": 782,
+   "ops": "GravshipHull:108,58;GravshipHull:109,58;GravshipHull:110,58;GravshipHull:111,58;GravshipHull:112,58;GravshipHull:113,58;GravshipHull:114,58;GravshipHull:115,58;GravshipHull:116,58;GravshipHull:117,58;GravshipHull:118,58;GravshipHull:119,58;GravshipHull:120,58;GravshipHull:121,58;GravshipHull:122,58;GravshipHull:130,58;GravshipHull:131,58;GravshipHull:132,58;GravshipHull:133,58;GravshipHull:134,58;GravshipHull:135,58;GravshipHull:136,58;GravshipHull:137,58;GravshipHull:138,58;GravshipHull:139,58;GravshipHull:140,58;GravshipHull:141,58;GravshipHull:142,58;GravshipHull:143,58;GravshipHull:144,58;GravshipHull:108,59;GravshipHull:122,59;GravshipHull:130,59;GravshipHull:144,59;GravshipHull:108,60;GravshipHull:122,60;GravshipHull:130,60;GravshipHull:144,60;GravshipHull:108,61;GravshipHull:122,61;GravshipHull:130,61;GravshipHull:144,61;GravshipHull:108,62;GravshipHull:122,62;GravshipHull:130,62;GravshipHull:144,62;GravshipHull:108,63;GravshipHull:122,63;GravshipHull:130,63;GravshipHull:144,63;GravshipHull:108,64;GravshipHull:122,64;GravshipHull:130,64;GravshipHull:144,64;GravshipHull:108,65;GravshipHull:122,65;GravshipHull:130,65;GravshipHull:144,65;GravshipHull:108,66;GravshipHull:122,66;GravshipHull:130,66;GravshipHull:144,66;GravshipHull:108,67;GravshipHull:122,67;GravshipHull:130,67;GravshipHull:144,67;GravshipHull:108,68;GravshipHull:122,68;GravshipHull:130,68;GravshipHull:144,68;GravshipHull:108,69;GravshipHull:122,69;GravshipHull:130,69;GravshipHull:144,69;GravshipHull:108,70;GravshipHull:122,70;GravshipHull:130,70;GravshipHull:144,70;GravshipHull:108,71;GravshipHull:109,71;GravshipHull:110,71;GravshipHull:111,71;GravshipHull:112,71;GravshipHull:121,71;GravshipHull:122,71;GravshipHull:130,71;GravshipHull:131,71;GravshipHull:140,71;GravshipHull:141,71;GravshipHull:142,71;GravshipHull:143,71;GravshipHull:144,71;GravshipHull:113,72;GravshipHull:120,72;GravshipHull:132,72;GravshipHull:139,72;GravshipHull:113,73;GravshipHull:120,73;GravshipHull:132,73;GravshipHull:139,73;GravshipHull:113,74;GravshipHull:120,74;GravshipHull:132,74;GravshipHull:139,74;GravshipHull:113,75;GravshipHull:120,75;GravshipHull:132,75;GravshipHull:139,75;GravshipHull:113,76;GravshipHull:120,76;GravshipHull:132,76;GravshipHull:139,76;GravshipHull:113,77;GravshipHull:120,77;GravshipHull:132,77;GravshipHull:139,77;GravshipHull:113,78;GravshipHull:120,78;GravshipHull:132,78;GravshipHull:139,78;GravshipHull:113,79;GravshipHull:120,79;GravshipHull:132,79;GravshipHull:139,79;GravshipHull:113,80;GravshipHull:120,80;GravshipHull:132,80;GravshipHull:139,80;GravshipHull:113,81;GravshipHull:120,81;GravshipHull:132,81;GravshipHull:139,81;GravshipHull:155,81;GravshipHull:113,82;GravshipHull:120,82;GravshipHull:132,82;GravshipHull:139,82;GravshipHull:152,82;GravshipHull:153,82;GravshipHull:154,82;GravshipHull:156,82;GravshipHull:157,82;GravshipHull:158,82;GravshipHull:113,83;GravshipHull:120,83;GravshipHull:132,83;GravshipHull:139,83;GravshipHull:151,83;GravshipHull:159,83;GravshipHull:113,84;GravshipHull:120,84;GravshipHull:132,84;GravshipHull:139,84;GravshipHull:150,84;GravshipHull:160,84;GravshipHull:113,85;GravshipHull:120,85;GravshipHull:132,85;GravshipHull:139,85;GravshipHull:150,85;GravshipHull:160,85;GravshipHull:113,86;GravshipHull:120,86;GravshipHull:132,86;GravshipHull:139,86;GravshipHull:150,86;GravshipHull:160,86;GravshipHull:113,87;GravshipHull:120,87;GravshipHull:132,87;GravshipHull:140,87;GravshipHull:141,87;GravshipHull:142,87;GravshipHull:143,87;GravshipHull:144,87;GravshipHull:145,87;GravshipHull:146,87;GravshipHull:147,87;GravshipHull:148,87;GravshipHull:149,87;GravshipHull:161,87;GravshipHull:113,88;GravshipHull:120,88;GravshipHull:132,88;GravshipHull:139,88;GravshipHull:150,88;GravshipHull:160,88;GravshipHull:113,89;GravshipHull:120,89;GravshipHull:132,89;GravshipHull:139,89;GravshipHull:150,89;GravshipHull:160,89;GravshipHull:113,90;GravshipHull:120,90;GravshipHull:132,90;GravshipHull:139,90;GravshipHull:150,90;GravshipHull:160,90;GravshipHull:113,91;GravshipHull:120,91;GravshipHull:132,91;GravshipHull:139,91;GravshipHull:151,91;GravshipHull:159,91;GravshipHull:113,92;GravshipHull:120,92;GravshipHull:132,92;GravshipHull:139,92;GravshipHull:152,92;GravshipHull:153,92;GravshipHull:154,92;GravshipHull:156,92;GravshipHull:157,92;GravshipHull:158,92;GravshipHull:113,93;GravshipHull:120,93;GravshipHull:132,93;GravshipHull:139,93;GravshipHull:155,93;GravshipHull:113,94;GravshipHull:120,94;GravshipHull:132,94;GravshipHull:139,94;GravshipHull:113,95;GravshipHull:120,95;GravshipHull:132,95;GravshipHull:139,95;GravshipHull:113,96;GravshipHull:120,96;GravshipHull:132,96;GravshipHull:139,96;GravshipHull:113,97;GravshipHull:120,97;GravshipHull:132,97;GravshipHull:139,97;GravshipHull:113,98;GravshipHull:120,98;GravshipHull:132,98;GravshipHull:139,98;GravshipHull:113,99;GravshipHull:120,99;GravshipHull:132,99;GravshipHull:139,99;GravshipHull:113,100;GravshipHull:120,100;GravshipHull:132,100;GravshipHull:139,100;GravshipHull:113,101;GravshipHull:120,101;GravshipHull:132,101;GravshipHull:139,101;GravshipHull:113,102;GravshipHull:120,102;GravshipHull:132,102;GravshipHull:139,102;GravshipHull:113,103;GravshipHull:120,103;GravshipHull:132,103;GravshipHull:139,103;GravshipHull:112,104;GravshipHull:121,104;GravshipHull:122,104;GravshipHull:123,104;GravshipHull:124,104;GravshipHull:125,104;GravshipHull:126,104;GravshipHull:127,104;GravshipHull:128,104;GravshipHull:129,104;GravshipHull:130,104;GravshipHull:131,104;GravshipHull:140,104;GravshipHull:112,105;GravshipHull:140,105;GravshipHull:112,106;GravshipHull:140,106;GravshipHull:112,107;GravshipHull:140,107;GravshipHull:112,108;GravshipHull:140,108;GravshipHull:112,109;GravshipHull:140,109;GravshipHull:104,110;GravshipHull:112,110;GravshipHull:140,110;GravshipHull:148,110;GravshipHull:101,111;GravshipHull:102,111;GravshipHull:103,111;GravshipHull:105,111;GravshipHull:106,111;GravshipHull:107,111;GravshipHull:112,111;GravshipHull:140,111;GravshipHull:145,111;GravshipHull:146,111;GravshipHull:147,111;GravshipHull:149,111;GravshipHull:150,111;GravshipHull:151,111;GravshipHull:99,112;GravshipHull:100,112;GravshipHull:108,112;GravshipHull:109,112;GravshipHull:111,112;GravshipHull:141,112;GravshipHull:143,112;GravshipHull:144,112;GravshipHull:152,112;GravshipHull:153,112;GravshipHull:98,113;GravshipHull:110,113;GravshipHull:142,113;GravshipHull:154,113;GravshipHull:98,114;GravshipHull:154,114;GravshipHull:97,115;GravshipHull:155,115;GravshipHull:97,116;GravshipHull:155,116;GravshipHull:97,117;GravshipHull:155,117;GravshipHull:96,118;GravshipHull:119,118;GravshipHull:120,118;GravshipHull:121,118;GravshipHull:122,118;GravshipHull:123,118;GravshipHull:124,118;GravshipHull:125,118;GravshipHull:126,118;GravshipHull:127,118;GravshipHull:128,118;GravshipHull:129,118;GravshipHull:130,118;GravshipHull:131,118;GravshipHull:132,118;GravshipHull:133,118;GravshipHull:156,118;GravshipHull:97,119;GravshipHull:116,119;GravshipHull:117,119;GravshipHull:118,119;GravshipHull:134,119;GravshipHull:135,119;GravshipHull:136,119;GravshipHull:155,119;GravshipHull:97,120;GravshipHull:113,120;GravshipHull:114,120;GravshipHull:115,120;GravshipHull:137,120;GravshipHull:138,120;GravshipHull:139,120;GravshipHull:155,120;GravshipHull:97,121;GravshipHull:111,121;GravshipHull:112,121;GravshipHull:140,121;GravshipHull:141,121;GravshipHull:155,121;GravshipHull:97,122;GravshipHull:110,122;GravshipHull:142,122;GravshipHull:155,122;GravshipHull:96,123;GravshipHull:110,123;GravshipHull:142,123;GravshipHull:156,123;GravshipHull:95,124;GravshipHull:108,124;GravshipHull:109,124;GravshipHull:143,124;GravshipHull:144,124;GravshipHull:157,124;GravshipHull:94,125;GravshipHull:106,125;GravshipHull:107,125;GravshipHull:145,125;GravshipHull:146,125;GravshipHull:158,125;GravshipHull:94,126;GravshipHull:105,126;GravshipHull:147,126;GravshipHull:158,126;GravshipHull:93,127;GravshipHull:104,127;GravshipHull:148,127;GravshipHull:159,127;GravshipHull:90,128;GravshipHull:92,128;GravshipHull:103,128;GravshipHull:149,128;GravshipHull:160,128;GravshipHull:87,129;GravshipHull:88,129;GravshipHull:89,129;GravshipHull:91,129;GravshipHull:102,129;GravshipHull:150,129;GravshipHull:160,129;GravshipHull:85,130;GravshipHull:86,130;GravshipHull:101,130;GravshipHull:151,130;GravshipHull:161,130;GravshipHull:84,131;GravshipHull:100,131;GravshipHull:152,131;GravshipHull:161,131;GravshipHull:84,132;GravshipHull:100,132;GravshipHull:152,132;GravshipHull:162,132;GravshipHull:83,133;GravshipHull:99,133;GravshipHull:153,133;GravshipHull:162,133;GravshipHull:83,134;GravshipHull:98,134;GravshipHull:154,134;GravshipHull:163,134;GravshipHull:83,135;GravshipHull:98,135;GravshipHull:154,135;GravshipHull:163,135;GravshipHull:82,136;GravshipHull:98,136;GravshipHull:155,136;GravshipHull:163,136;GravshipHull:83,137;GravshipHull:97,137;GravshipHull:155,137;GravshipHull:164,137;GravshipHull:83,138;GravshipHull:97,138;GravshipHull:155,138;GravshipHull:164,138;GravshipHull:83,139;GravshipHull:97,139;GravshipHull:156,139;GravshipHull:164,139;GravshipHull:84,140;GravshipHull:96,140;GravshipHull:156,140;GravshipHull:164,140;GravshipHull:84,141;GravshipHull:96,141;GravshipHull:156,141;GravshipHull:165,141;GravshipHull:85,142;GravshipHull:86,142;GravshipHull:95,142;GravshipHull:157,142;GravshipHull:165,142;GravshipHull:87,143;GravshipHull:95,143;GravshipHull:126,143;GravshipHull:157,143;GravshipHull:165,143;GravshipHull:87,144;GravshipHull:95,144;GravshipHull:123,144;GravshipHull:124,144;GravshipHull:125,144;GravshipHull:127,144;GravshipHull:128,144;GravshipHull:129,144;GravshipHull:157,144;GravshipHull:165,144;GravshipHull:86,145;GravshipHull:95,145;GravshipHull:122,145;GravshipHull:130,145;GravshipHull:157,145;GravshipHull:166,145;GravshipHull:86,146;GravshipHull:95,146;GravshipHull:121,146;GravshipHull:131,146;GravshipHull:157,146;GravshipHull:166,146;GravshipHull:86,147;GravshipHull:95,147;GravshipHull:121,147;GravshipHull:131,147;GravshipHull:157,147;GravshipHull:166,147;GravshipHull:86,148;GravshipHull:95,148;GravshipHull:121,148;GravshipHull:131,148;GravshipHull:157,148;GravshipHull:166,148;GravshipHull:86,149;GravshipHull:95,149;GravshipHull:120,149;GravshipHull:132,149;GravshipHull:157,149;GravshipHull:166,149;GravshipHull:86,150;GravshipHull:95,150;GravshipHull:121,150;GravshipHull:131,150;GravshipHull:157,150;GravshipHull:166,150;GravshipHull:86,151;GravshipHull:95,151;GravshipHull:121,151;GravshipHull:131,151;GravshipHull:157,151;GravshipHull:166,151;GravshipHull:86,152;GravshipHull:95,152;GravshipHull:121,152;GravshipHull:131,152;GravshipHull:157,152;GravshipHull:166,152;GravshipHull:86,153;GravshipHull:95,153;GravshipHull:122,153;GravshipHull:130,153;GravshipHull:157,153;GravshipHull:166,153;GravshipHull:87,154;GravshipHull:95,154;GravshipHull:123,154;GravshipHull:129,154;GravshipHull:157,154;GravshipHull:165,154;GravshipHull:87,155;GravshipHull:95,155;GravshipHull:124,155;GravshipHull:128,155;GravshipHull:157,155;GravshipHull:165,155;GravshipHull:87,156;GravshipHull:95,156;GravshipHull:124,156;GravshipHull:128,156;GravshipHull:157,156;GravshipHull:165,156;GravshipHull:87,157;GravshipHull:96,157;GravshipHull:124,157;GravshipHull:128,157;GravshipHull:156,157;GravshipHull:165,157;GravshipHull:88,158;GravshipHull:96,158;GravshipHull:124,158;GravshipHull:128,158;GravshipHull:156,158;GravshipHull:164,158;GravshipHull:88,159;GravshipHull:96,159;GravshipHull:124,159;GravshipHull:128,159;GravshipHull:156,159;GravshipHull:164,159;GravshipHull:88,160;GravshipHull:97,160;GravshipHull:124,160;GravshipHull:128,160;GravshipHull:155,160;GravshipHull:164,160;GravshipHull:88,161;GravshipHull:97,161;GravshipHull:124,161;GravshipHull:128,161;GravshipHull:155,161;GravshipHull:164,161;GravshipHull:88,162;GravshipHull:98,162;GravshipHull:124,162;GravshipHull:128,162;GravshipHull:154,162;GravshipHull:164,162;GravshipHull:87,163;GravshipHull:99,163;GravshipHull:124,163;GravshipHull:128,163;GravshipHull:153,163;GravshipHull:165,163;GravshipHull:87,164;GravshipHull:99,164;GravshipHull:124,164;GravshipHull:128,164;GravshipHull:153,164;GravshipHull:165,164;GravshipHull:86,165;GravshipHull:100,165;GravshipHull:124,165;GravshipHull:128,165;GravshipHull:152,165;GravshipHull:166,165;GravshipHull:86,166;GravshipHull:100,166;GravshipHull:124,166;GravshipHull:128,166;GravshipHull:152,166;GravshipHull:166,166;GravshipHull:86,167;GravshipHull:100,167;GravshipHull:124,167;GravshipHull:128,167;GravshipHull:152,167;GravshipHull:166,167;GravshipHull:85,168;GravshipHull:101,168;GravshipHull:124,168;GravshipHull:128,168;GravshipHull:151,168;GravshipHull:167,168;GravshipHull:86,169;GravshipHull:102,169;GravshipHull:124,169;GravshipHull:128,169;GravshipHull:150,169;GravshipHull:166,169;GravshipHull:86,170;GravshipHull:103,170;GravshipHull:124,170;GravshipHull:128,170;GravshipHull:149,170;GravshipHull:166,170;GravshipHull:86,171;GravshipHull:104,171;GravshipHull:124,171;GravshipHull:128,171;GravshipHull:148,171;GravshipHull:166,171;GravshipHull:87,172;GravshipHull:105,172;GravshipHull:124,172;GravshipHull:128,172;GravshipHull:147,172;GravshipHull:165,172;GravshipHull:87,173;GravshipHull:106,173;GravshipHull:124,173;GravshipHull:128,173;GravshipHull:146,173;GravshipHull:165,173;GravshipHull:88,174;GravshipHull:89,174;GravshipHull:107,174;GravshipHull:124,174;GravshipHull:128,174;GravshipHull:145,174;GravshipHull:163,174;GravshipHull:164,174;GravshipHull:90,175;GravshipHull:91,175;GravshipHull:92,175;GravshipHull:94,175;GravshipHull:95,175;GravshipHull:96,175;GravshipHull:108,175;GravshipHull:109,175;GravshipHull:110,175;GravshipHull:124,175;GravshipHull:128,175;GravshipHull:142,175;GravshipHull:143,175;GravshipHull:144,175;GravshipHull:156,175;GravshipHull:157,175;GravshipHull:158,175;GravshipHull:160,175;GravshipHull:161,175;GravshipHull:162,175;GravshipHull:93,176;GravshipHull:97,176;GravshipHull:111,176;GravshipHull:112,176;GravshipHull:124,176;GravshipHull:128,176;GravshipHull:140,176;GravshipHull:141,176;GravshipHull:155,176;GravshipHull:159,176;GravshipHull:98,177;GravshipHull:113,177;GravshipHull:124,177;GravshipHull:128,177;GravshipHull:139,177;GravshipHull:154,177;GravshipHull:99,178;GravshipHull:114,178;GravshipHull:115,178;GravshipHull:124,178;GravshipHull:128,178;GravshipHull:137,178;GravshipHull:138,178;GravshipHull:153,178;GravshipHull:100,179;GravshipHull:116,179;GravshipHull:117,179;GravshipHull:118,179;GravshipHull:124,179;GravshipHull:128,179;GravshipHull:134,179;GravshipHull:135,179;GravshipHull:136,179;GravshipHull:152,179;GravshipHull:100,180;GravshipHull:119,180;GravshipHull:120,180;GravshipHull:121,180;GravshipHull:122,180;GravshipHull:123,180;GravshipHull:129,180;GravshipHull:130,180;GravshipHull:131,180;GravshipHull:132,180;GravshipHull:133,180;GravshipHull:152,180;GravshipHull:100,181;GravshipHull:152,181;GravshipHull:99,182;GravshipHull:153,182;GravshipHull:100,183;GravshipHull:152,183;GravshipHull:100,184;GravshipHull:152,184;GravshipHull:100,185;GravshipHull:152,185;GravshipHull:101,186;GravshipHull:151,186;GravshipHull:101,187;GravshipHull:113,187;GravshipHull:114,187;GravshipHull:115,187;GravshipHull:116,187;GravshipHull:117,187;GravshipHull:135,187;GravshipHull:136,187;GravshipHull:137,187;GravshipHull:138,187;GravshipHull:139,187;GravshipHull:151,187;GravshipHull:102,188;GravshipHull:103,188;GravshipHull:111,188;GravshipHull:112,188;GravshipHull:118,188;GravshipHull:119,188;GravshipHull:120,188;GravshipHull:121,188;GravshipHull:131,188;GravshipHull:132,188;GravshipHull:133,188;GravshipHull:134,188;GravshipHull:140,188;GravshipHull:141,188;GravshipHull:149,188;GravshipHull:150,188;GravshipHull:104,189;GravshipHull:105,189;GravshipHull:106,189;GravshipHull:108,189;GravshipHull:109,189;GravshipHull:110,189;GravshipHull:122,189;GravshipHull:123,189;GravshipHull:124,189;GravshipHull:125,189;GravshipHull:126,189;GravshipHull:127,189;GravshipHull:128,189;GravshipHull:129,189;GravshipHull:130,189;GravshipHull:142,189;GravshipHull:143,189;GravshipHull:144,189;GravshipHull:146,189;GravshipHull:147,189;GravshipHull:148,189;GravshipHull:107,190;GravshipHull:145,190"
+  },
+  {
+   "tool": "jawa/spawn_batch",
+   "defName": "PowerConduit",
+   "stuff": null,
+   "rot": 0,
+   "needsManualRotation": false,
+   "count": 184,
+   "ops": "PowerConduit:126,113;PowerConduit:118,114;PowerConduit:119,114;PowerConduit:120,114;PowerConduit:121,114;PowerConduit:122,114;PowerConduit:123,114;PowerConduit:124,114;PowerConduit:125,114;PowerConduit:126,114;PowerConduit:127,114;PowerConduit:128,114;PowerConduit:129,114;PowerConduit:130,114;PowerConduit:131,114;PowerConduit:132,114;PowerConduit:133,114;PowerConduit:134,114;PowerConduit:115,115;PowerConduit:116,115;PowerConduit:117,115;PowerConduit:118,115;PowerConduit:119,115;PowerConduit:120,115;PowerConduit:121,115;PowerConduit:122,115;PowerConduit:123,115;PowerConduit:124,115;PowerConduit:125,115;PowerConduit:127,115;PowerConduit:128,115;PowerConduit:129,115;PowerConduit:130,115;PowerConduit:131,115;PowerConduit:132,115;PowerConduit:133,115;PowerConduit:134,115;PowerConduit:135,115;PowerConduit:136,115;PowerConduit:137,115;PowerConduit:112,116;PowerConduit:113,116;PowerConduit:114,116;PowerConduit:115,116;PowerConduit:116,116;PowerConduit:117,116;PowerConduit:135,116;PowerConduit:136,116;PowerConduit:137,116;PowerConduit:138,116;PowerConduit:139,116;PowerConduit:140,116;PowerConduit:112,117;PowerConduit:113,117;PowerConduit:114,117;PowerConduit:138,117;PowerConduit:139,117;PowerConduit:140,117;PowerConduit:100,125;PowerConduit:152,125;PowerConduit:99,126;PowerConduit:100,126;PowerConduit:152,126;PowerConduit:153,126;PowerConduit:98,127;PowerConduit:99,127;PowerConduit:100,127;PowerConduit:152,127;PowerConduit:153,127;PowerConduit:154,127;PowerConduit:97,128;PowerConduit:98,128;PowerConduit:99,128;PowerConduit:153,128;PowerConduit:154,128;PowerConduit:155,128;PowerConduit:97,129;PowerConduit:98,129;PowerConduit:154,129;PowerConduit:155,129;PowerConduit:96,130;PowerConduit:97,130;PowerConduit:155,130;PowerConduit:156,130;PowerConduit:97,131;PowerConduit:155,131;PowerConduit:156,131;PowerConduit:157,131;PowerConduit:156,132;PowerConduit:157,132;PowerConduit:156,133;PowerConduit:157,133;PowerConduit:158,133;PowerConduit:157,134;PowerConduit:158,134;PowerConduit:157,135;PowerConduit:158,135;PowerConduit:159,135;PowerConduit:158,136;PowerConduit:159,136;PowerConduit:158,137;PowerConduit:159,137;PowerConduit:159,138;PowerConduit:160,138;PowerConduit:159,139;PowerConduit:160,139;PowerConduit:159,140;PowerConduit:160,140;PowerConduit:160,141;PowerConduit:161,141;PowerConduit:160,142;PowerConduit:161,142;PowerConduit:160,143;PowerConduit:161,143;PowerConduit:91,144;PowerConduit:92,144;PowerConduit:160,144;PowerConduit:161,144;PowerConduit:91,154;PowerConduit:92,154;PowerConduit:160,154;PowerConduit:161,154;PowerConduit:91,155;PowerConduit:92,155;PowerConduit:160,155;PowerConduit:161,155;PowerConduit:91,156;PowerConduit:92,156;PowerConduit:160,156;PowerConduit:161,156;PowerConduit:91,157;PowerConduit:92,157;PowerConduit:160,157;PowerConduit:161,157;PowerConduit:92,158;PowerConduit:93,158;PowerConduit:159,158;PowerConduit:160,158;PowerConduit:92,159;PowerConduit:93,159;PowerConduit:159,159;PowerConduit:160,159;PowerConduit:92,160;PowerConduit:160,160;PowerConduit:100,172;PowerConduit:152,172;PowerConduit:100,173;PowerConduit:101,173;PowerConduit:151,173;PowerConduit:152,173;PowerConduit:101,174;PowerConduit:102,174;PowerConduit:150,174;PowerConduit:151,174;PowerConduit:102,175;PowerConduit:103,175;PowerConduit:149,175;PowerConduit:150,175;PowerConduit:116,182;PowerConduit:117,182;PowerConduit:135,182;PowerConduit:136,182;PowerConduit:115,183;PowerConduit:116,183;PowerConduit:117,183;PowerConduit:118,183;PowerConduit:119,183;PowerConduit:120,183;PowerConduit:121,183;PowerConduit:131,183;PowerConduit:132,183;PowerConduit:133,183;PowerConduit:134,183;PowerConduit:135,183;PowerConduit:136,183;PowerConduit:137,183;PowerConduit:118,184;PowerConduit:119,184;PowerConduit:120,184;PowerConduit:121,184;PowerConduit:131,184;PowerConduit:132,184;PowerConduit:133,184;PowerConduit:134,184"
+  },
+  {
+   "tool": "jawa/spawn_batch",
+   "defName": "VFEFactory_FactoryHopper",
+   "stuff": null,
+   "rot": 0,
+   "needsManualRotation": false,
+   "count": 51,
+   "ops": "VFEFactory_FactoryHopper:107,116;VFEFactory_FactoryHopper:104,117;VFEFactory_FactoryHopper:105,117;VFEFactory_FactoryHopper:106,117;VFEFactory_FactoryHopper:103,118;VFEFactory_FactoryHopper:103,119;VFEFactory_FactoryHopper:103,120;VFEFactory_FactoryHopper:102,121;VFEFactory_FactoryHopper:93,132;VFEFactory_FactoryHopper:91,133;VFEFactory_FactoryHopper:92,133;VFEFactory_FactoryHopper:87,135;VFEFactory_FactoryHopper:87,136;VFEFactory_FactoryHopper:87,137;VFEFactory_FactoryHopper:96,163;VFEFactory_FactoryHopper:96,164;VFEFactory_FactoryHopper:94,165;VFEFactory_FactoryHopper:95,165;VFEFactory_FactoryHopper:160,165;VFEFactory_FactoryHopper:92,166;VFEFactory_FactoryHopper:96,166;VFEFactory_FactoryHopper:156,166;VFEFactory_FactoryHopper:92,167;VFEFactory_FactoryHopper:96,167;VFEFactory_FactoryHopper:156,167;VFEFactory_FactoryHopper:92,168;VFEFactory_FactoryHopper:108,177;VFEFactory_FactoryHopper:142,177;VFEFactory_FactoryHopper:108,178;VFEFactory_FactoryHopper:142,178;VFEFactory_FactoryHopper:108,179;VFEFactory_FactoryHopper:142,179;VFEFactory_FactoryHopper:104,180;VFEFactory_FactoryHopper:106,180;VFEFactory_FactoryHopper:107,180;VFEFactory_FactoryHopper:108,180;VFEFactory_FactoryHopper:142,180;VFEFactory_FactoryHopper:104,181;VFEFactory_FactoryHopper:108,181;VFEFactory_FactoryHopper:109,181;VFEFactory_FactoryHopper:110,181;VFEFactory_FactoryHopper:111,181;VFEFactory_FactoryHopper:140,181;VFEFactory_FactoryHopper:141,181;VFEFactory_FactoryHopper:142,181;VFEFactory_FactoryHopper:143,181;VFEFactory_FactoryHopper:144,181;VFEFactory_FactoryHopper:146,181;VFEFactory_FactoryHopper:147,181;VFEFactory_FactoryHopper:108,182;VFEFactory_FactoryHopper:145,182"
+  },
+  {
+   "tool": "jawa/spawn_batch",
+   "defName": "VFEFactory_Heatsink",
+   "stuff": null,
+   "rot": 0,
+   "needsManualRotation": false,
+   "count": 6,
+   "ops": "VFEFactory_Heatsink:103,183;VFEFactory_Heatsink:145,183;VFEFactory_Heatsink:103,186;VFEFactory_Heatsink:107,186;VFEFactory_Heatsink:145,186;VFEFactory_Heatsink:147,186"
+  },
+  {
+   "tool": "jawa/spawn_batch",
+   "defName": "VFEFactory_Booster",
+   "stuff": null,
+   "rot": 0,
+   "needsManualRotation": false,
+   "count": 2,
+   "ops": "VFEFactory_Booster:106,185;VFEFactory_Booster:146,185"
+  },
+  {
+   "tool": "jawa/spawn_batch",
+   "defName": "VFEFactory_AutomatedMachiningBay",
+   "stuff": null,
+   "rot": 0,
+   "needsManualRotation": false,
+   "count": 1,
+   "ops": "VFEFactory_AutomatedMachiningBay:104,114"
+  },
+  {
+   "tool": "jawa/spawn_batch",
+   "defName": "HiddenConduit",
+   "stuff": null,
+   "rot": 0,
+   "needsManualRotation": false,
+   "count": 1,
+   "ops": "HiddenConduit:126,115"
+  },
+  {
+   "tool": "jawa/spawn_batch",
+   "defName": "VFEFactory_MedicineGranulator",
+   "stuff": null,
+   "rot": 0,
+   "needsManualRotation": false,
+   "count": 1,
+   "ops": "VFEFactory_MedicineGranulator:100,119"
+  },
+  {
+   "tool": "jawa/spawn_batch",
+   "defName": "VFEFactory_Autoloom",
+   "stuff": null,
+   "rot": 0,
+   "needsManualRotation": true,
+   "count": 1,
+   "ops": "VFEFactory_Autoloom:90,131"
+  },
+  {
+   "tool": "jawa/spawn_batch",
+   "defName": "VFEFactory_AutomatedAmmunitionPress",
+   "stuff": null,
+   "rot": 0,
+   "needsManualRotation": false,
+   "count": 1,
+   "ops": "VFEFactory_AutomatedAmmunitionPress:85,135"
+  },
+  {
+   "tool": "jawa/spawn_batch",
+   "defName": "VFEFactory_ConveyorOven",
+   "stuff": null,
+   "rot": 0,
+   "needsManualRotation": true,
+   "count": 1,
+   "ops": "VFEFactory_ConveyorOven:93,163"
+  },
+  {
+   "tool": "jawa/spawn_batch",
+   "defName": "VFEFactory_Autofarmer",
+   "stuff": null,
+   "rot": 0,
+   "needsManualRotation": true,
+   "count": 1,
+   "ops": "VFEFactory_Autofarmer:158,165"
+  },
+  {
+   "tool": "jawa/spawn_batch",
+   "defName": "VFEFactory_AutomatedDrillPlatform",
+   "stuff": null,
+   "rot": 0,
+   "needsManualRotation": false,
+   "count": 1,
+   "ops": "VFEFactory_AutomatedDrillPlatform:162,164"
+  },
+  {
+   "tool": "jawa/spawn_batch",
+   "defName": "VFEFactory_AutomatedCannery",
+   "stuff": null,
+   "rot": 0,
+   "needsManualRotation": true,
+   "count": 1,
+   "ops": "VFEFactory_AutomatedCannery:89,167"
+  },
+  {
+   "tool": "jawa/spawn_batch",
+   "defName": "VFEFactory_AutomatedDistillery",
+   "stuff": null,
+   "rot": 0,
+   "needsManualRotation": false,
+   "count": 1,
+   "ops": "VFEFactory_AutomatedDistillery:94,167"
+  },
+  {
+   "tool": "jawa/spawn_batch",
+   "defName": "VFEFactory_AutomatedFishfarm",
+   "stuff": null,
+   "rot": 0,
+   "needsManualRotation": false,
+   "count": 1,
+   "ops": "VFEFactory_AutomatedFishfarm:154,167"
+  },
+  {
+   "tool": "jawa/spawn_batch",
+   "defName": "VFEFactory_AutomatedSmelter",
+   "stuff": null,
+   "rot": 0,
+   "needsManualRotation": false,
+   "count": 1,
+   "ops": "VFEFactory_AutomatedSmelter:106,177"
+  },
+  {
+   "tool": "jawa/spawn_batch",
+   "defName": "VFEFactory_AutomatedAssembler",
+   "stuff": null,
+   "rot": 0,
+   "needsManualRotation": false,
+   "count": 1,
+   "ops": "VFEFactory_AutomatedAssembler:145,178"
+  },
+  {
+   "tool": "jawa/spawn_batch",
+   "defName": "VFEFactory_AutomatedBiofuelRefinery",
+   "stuff": null,
+   "rot": 0,
+   "needsManualRotation": false,
+   "count": 1,
+   "ops": "VFEFactory_AutomatedBiofuelRefinery:110,178"
+  },
+  {
+   "tool": "jawa/spawn_batch",
+   "defName": "VFEFactory_AutomatedMasonrySaw",
+   "stuff": null,
+   "rot": 0,
+   "needsManualRotation": false,
+   "count": 1,
+   "ops": "VFEFactory_AutomatedMasonrySaw:102,181"
+  },
+  {
+   "tool": "jawa/spawn_batch",
+   "defName": "VFEFactory_AutomatedMincer",
+   "stuff": null,
+   "rot": 0,
+   "needsManualRotation": false,
+   "count": 1,
+   "ops": "VFEFactory_AutomatedMincer:106,182"
+  },
+  {
+   "tool": "jawa/spawn_batch",
+   "defName": "VFEFactory_AutomatedCrematorium",
+   "stuff": null,
+   "rot": 0,
+   "needsManualRotation": false,
+   "count": 1,
+   "ops": "VFEFactory_AutomatedCrematorium:110,183"
+  },
+  {
+   "tool": "jawa/spawn_batch",
+   "defName": "VFEFactory_AutomatedAlloyForge",
+   "stuff": null,
+   "rot": 0,
+   "needsManualRotation": false,
+   "count": 1,
+   "ops": "VFEFactory_AutomatedAlloyForge:142,184"
+  },
+  {
+   "tool": "jawa/spawn_batch",
+   "defName": "VFEFactory_NeutroamineSynthesizer",
+   "stuff": null,
+   "rot": 0,
+   "needsManualRotation": false,
+   "count": 1,
+   "ops": "VFEFactory_NeutroamineSynthesizer:148,183"
+  }
+ ],
+ "unresolvedLabels": {}
+}

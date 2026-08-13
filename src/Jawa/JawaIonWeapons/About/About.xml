@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ModMetaData>
+  <name>Jawa Ion Weapons (local)</name>
+  <packageId>mandrake.jawaionweapons</packageId>
+  <author>mandrake</author>
+  <supportedVersions>
+    <li>1.6</li>
+  </supportedVersions>
+  <description>Self-contained, industrial-tier Jawa ion armament for this run.
+
+A single signature weapon — the Jawa Ion Blaster — plus its own ion damage type and a custom "ion buildup" stun hediff. Design goals:
+- CAPTURE-NOT-KILL: the weapon disables, it does not draw blood. No lethal damage.
+- TIERED BY TARGET: relies on the vanilla stun-resistance gradient — mechanoids/droids are overloaded almost instantly; flesh pawns resist and must be worn down by accumulated ion buildup before they collapse (alive) and can be arrested.
+- NOT VERY DANGEROUS, REWARDS CUNNING + TERRAIN: low damage, slow warmup, long cooldown, modest range, accuracy falloff — you win by ganging up, using cover and chokes, and stacking stuns, not by out-shooting anyone.
+- MOSTLY-XML, PLUS ONE SMALL ASSEMBLY: the ion mechanics are our own vanilla-EMP-based defs, but Assemblies/JawaIonWeapons.dll ships a single DamageWorker subclass, JawaIonWeapons.DamageWorker_IonBuildup, wired in as the workerClass of JawaIon_Damage. It exists so each hit deposits JawaIon_Stun severity, which vanilla's additionalHediffs cannot do for a non-injury damage type. It is load-bearing: if it fails to load, JawaIon_Damage cannot resolve its workerClass. It contains no Log calls, so it is SILENT whether it works or not — a clean log is not evidence about it either way. Verify from the def dump instead: JawaIon_Damage.workerClass must read "JawaIonWeapons.DamageWorker_IonBuildup".
+
+The weapon's own gun art is bundled here (Textures/JawaIon/Weapon_JawaIonBlaster.png). For the fired look and sound it reuses Outer Rim - Core's ion bolt sprite and blaster audio, so Core is a required dependency (Core in turn pulls Vanilla Expanded Framework and Tabula Rasa).
+
+The JawaIon_Stun hediff doubles as the "stun -> down" mechanic the capture pipeline (CPERS: Arrest Here) needs.</description>
+  <modDependencies>
+    <li>
+      <packageId>Ludeon.RimWorld</packageId>
+      <displayName>RimWorld</displayName>
+    </li>
+    <li>
+      <packageId>Neronix17.OuterRim.Core</packageId>
+      <displayName>Outer Rim - Core</displayName>
+      <steamWorkshopUrl>https://steamcommunity.com/sharedfiles/filedetails/?id=2919227155</steamWorkshopUrl>
+    </li>
+  </modDependencies>
+  <loadAfter>
+    <li>Ludeon.RimWorld</li>
+    <li>Neronix17.OuterRim.Core</li>
+  </loadAfter>
+</ModMetaData>

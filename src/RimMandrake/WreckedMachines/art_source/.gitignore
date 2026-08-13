@@ -1,0 +1,34 @@
+# art_source/ is the workshop. Track the small, meaningful artefacts; keep the
+# bulk out of git. Everything ignored here still lives on the Drive, which is
+# itself backed up — this only keeps the repository honest about what is ours
+# and what is recoverable.
+
+# Third-party donor art, copied from the owning mod. Not ours to redistribute,
+# and regenerable in one command:
+#     python Source/grab_source_art.py <defName>
+*/restored/
+
+# The untouched files as they came back from the image model. Multi-megabyte,
+# and preserved automatically by fit_sprite.py so a bad fit can always be redone
+# with different parameters. Keep them on disk; do not put them in git.
+*/*/_raw/
+*/restored_regenerated/
+
+# Multi-facing sheets as they come back from the model, BEFORE cutting. One per
+# attempt, ~1.6 MB each, and an attempt is cheap — 13 of these accumulated for a
+# single machine in one afternoon and buried the two files that matter. The
+# product is the cut per-facing PNG in the tier folder; a sheet is scaffolding.
+# Swept 2026-08-12 after the owner could not find anything in here.
+*/sheets/*_SHEET.png
+# ...except the donor composite that the pipeline READS. README.md and every
+# BRIEF hand this to the image model as the reference. It is an input, not an
+# output, and it must stay.
+!*/sheets/SOURCE_SHEET.png
+
+# Tracked deliberately (do not add to this file):
+#   MANIFEST.json     the measurements every check depends on
+#   BRIEF.md          the generated commission brief
+#   HOLES.txt         what is still missing
+#   CONTACT_SHEET.png the review sheet
+#   wrecked/*.png     the conformed sprites — the actual product
+#   kludged/*.png

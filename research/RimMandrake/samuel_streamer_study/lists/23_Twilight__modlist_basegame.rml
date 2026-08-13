@@ -1,0 +1,1268 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<savedModList>
+	<meta>
+		<gameVersion>1.5.4104 rev435</gameVersion>
+		<modIds>
+			<li>zetrith.prepatcher</li>
+			<li>brrainz.harmony</li>
+			<li>brrainz.visualexceptions</li>
+			<li>ludeon.rimworld</li>
+			<li>ludeon.rimworld.royalty</li>
+			<li>ludeon.rimworld.ideology</li>
+			<li>ludeon.rimworld.biotech</li>
+			<li>ludeon.rimworld.anomaly</li>
+			<li>vanillaexpanded.backgrounds</li>
+			<li>unlimitedhugs.hugslib</li>
+			<li>latta.fsharp.core</li>
+			<li>latta.petknowstrueyou</li>
+			<li>anthitei.athsstyleableframework.style</li>
+			<li>anthitei.athsstylenorse.style</li>
+			<li>brrainz.achtung</li>
+			<li>makariaeron.adjustabletemperatureevents</li>
+			<li>ellit.tribalwater</li>
+			<li>alt4s.advancedtribalcooler</li>
+			<li>superniquito.allideoligionsarefluid</li>
+			<li>feldoh.allscenariohediffs</li>
+			<li>swablu.ambience</li>
+			<li>xrushha.animagear</li>
+			<li>imranfish.xmlextensions</li>
+			<li>seti.victor.animabodies</li>
+			<li>romyashi.ashes</li>
+			<li>automatic.autolinks</li>
+			<li>tr.autocutblight</li>
+			<li>dingo.autocloseeventnotifications</li>
+			<li>keyz182.avoiddarkness</li>
+			<li>arandomkiwi.rimthemes</li>
+			<li>mrsamuelstreamer.rimthemesrecolours</li>
+			<li>nephlite.advexplosions</li>
+			<li>redmattis.bettergeneinheritance</li>
+			<li>madeline.modmismatchformatter</li>
+			<li>falconne.bwm</li>
+			<li>misstall.bioftorchbeltz</li>
+			<li>m00nl1ght.geologicallandforms</li>
+			<li>m00nl1ght.geologicallandforms.biometransitions</li>
+			<li>mlie.blockunwantedminutiae</li>
+			<li>fuu.bloodanimations</li>
+			<li>fluffy.blueprints.fork</li>
+			<li>uuugggg.buildfrominventory</li>
+			<li>darknote.bunkbeds</li>
+			<li>owlchemist.cherrypicker.tmpfix</li>
+			<li>oskarpotocki.vanillafactionsexpanded.core</li>
+			<li>regrowth.botr.core</li>
+			<li>vanillaexpanded.vtexe</li>
+			<li>regrowth.botr.retextures</li>
+			<li>syrchalis.processor.framework</li>
+			<li>dankpyon.medieval.overhaul</li>
+			<li>sinigr.bunkbedsmedievalretexture</li>
+			<li>blackfranky.capablespecialists</li>
+			<li>monkey5206.carrycapacityfixed</li>
+			<li>void.charactereditor</li>
+			<li>neronix17.retexture.charactereditor</li>
+			<li>kb.chillout</li>
+			<li>azuraal.choiceofpsycasts</li>
+			<li>mlie.choosebiomecommonality</li>
+			<li>mlie.choosewildanimalspawns</li>
+			<li>zal.chooseyourrecipe</li>
+			<li>owlchemist.cleanpathfinding</li>
+			<li>ih.clean.textures</li>
+			<li>ih.clean.textures.less.glare</li>
+			<li>petetimessix.compacthediffs</li>
+			<li>mlie.compactworktab</li>
+			<li>vk.compressedraid.latest</li>
+			<li>taggerung.configappliedcheck</li>
+			<li>thumb.bettercremation</li>
+			<li>zcubekr.customfonts</li>
+			<li>nikidigi.deathrestbutton</li>
+			<li>unlimitedhugs.defensivepositions</li>
+			<li>merthsoft.designatorshapes</li>
+			<li>det.stoneborn</li>
+			<li>gguake.ai.dsfi</li>
+			<li>telardo.dragselect</li>
+			<li>overpl.drawnspots</li>
+			<li>dubwise.dubsperformanceanalyzer.steam</li>
+			<li>nunahuralshamikh.entosomnia</li>
+			<li>neronix17.hd.pawns</li>
+			<li>erin.body.texture</li>
+			<li>erin.hair2</li>
+			<li>erin.valheim.creatures</li>
+			<li>malistaticy.mer</li>
+			<li>keshash.extraexplosioneffects</li>
+			<li>karmgahl.factioncustomizer</li>
+			<li>kosaro.fahrenheitandcelsius</li>
+			<li>brat.fastersubquests</li>
+			<li>kathanon.fixstyledblueprints</li>
+			<li>thesepeople.gauranlenmeditation</li>
+			<li>telefonmast.graphicssettings</li>
+			<li>lts.pg</li>
+			<li>name.krypt.rimworld.rwlayout.alpha2</li>
+			<li>name.krypt.rimworld.pawntablegrouped</li>
+			<li>garethp.growgrassunderroofs</li>
+			<li>simplephysics.heavy.snow</li>
+			<li>syrus.hmschoice</li>
+			<li>dubwise.dubsmintmenus</li>
+			<li>taggerung.iaintbuildingthat</li>
+			<li>jaxe.bubbles</li>
+			<li>timuttie.justleavealready</li>
+			<li>aranmaho.betterdarkness</li>
+			<li>buggy.rimworld.letterpermanentinjury</li>
+			<li>krafs.levelup</li>
+			<li>kathanon.limitquestpawns</li>
+			<li>jaxe.rimhud</li>
+			<li>vanillaexpanded.skills</li>
+			<li>cedaro.madskillsplus</li>
+			<li>plaxen.malangeyewounds</li>
+			<li>zylle.mapdesigner</li>
+			<li>rince.gaulishgojuice</li>
+			<li>adaptive.storage.framework</li>
+			<li>liuyu.adaptive.mo</li>
+			<li>pphhyy.barbariansmosubmod</li>
+			<li>pathogenxd.minifymore</li>
+			<li>haplo.miscellaneous.training</li>
+			<li>serek.misctrainingmedievalretexture</li>
+			<li>superniquito.modoptionssort</li>
+			<li>sirrandoo.mpe</li>
+			<li>tidal.morevanilla.textures</li>
+			<li>oblitus.mylittleplanet</li>
+			<li>doll.nevergeneraterelations</li>
+			<li>kathanon.nodisabledfactions</li>
+			<li>thegoosebehindtheslaughter.noforcedslowdown</li>
+			<li>doug.nojobauthors</li>
+			<li>edern.norandomapparelonideoedit</li>
+			<li>newsofpe.nostartingresearch</li>
+			<li>avilmask.nonunopinata</li>
+			<li>ogre.ogrestack</li>
+			<li>seohyeon.optimizationmeats</li>
+			<li>oracle.erin.tattoos</li>
+			<li>oracle.anomaly.plants</li>
+			<li>saucypigeon.pawnbadge</li>
+			<li>murmur.pawnnamevariety</li>
+			<li>joseasoler.peerpressure</li>
+			<li>taranchuk.performanceoptimizer</li>
+			<li>alleykat.persistentprecepts</li>
+			<li>phaneron.basic.storage</li>
+			<li>tk421storm.prioritytreatmentressurected</li>
+			<li>hahkethomemah.prisonerswithjobs</li>
+			<li>nd.rtpj</li>
+			<li>mlie.prostheticnomissingbodyparts</li>
+			<li>dandelo.prunejob</li>
+			<li>hatti.qualitybuilder</li>
+			<li>malteschulze.rimmsqol</li>
+			<li>biomesteam.biomescore</li>
+			<li>mrsamuelstreamer.ragnarok</li>
+			<li>biomesteam.biomescaverns</li>
+			<li>avilmask.commonsense</li>
+			<li>neronix17.tweaksgalore</li>
+			<li>vanillaexpanded.vmemese</li>
+			<li>sarg.alphamemes</li>
+			<li>rebuild.cotr.doorsandcorners</li>
+			<li>mlie.realistichumansounds</li>
+			<li>mlie.recipeicons</li>
+			<li>mss.recube</li>
+			<li>mlie.recyclethis</li>
+			<li>soulretextured.recyclethis</li>
+			<li>mlie.relevantstatsindescription</li>
+			<li>kathanon.repairinthezone</li>
+			<li>uuugggg.replacestuff</li>
+			<li>garethp.replacestuffcompatibility</li>
+			<li>archangel.replantsptrees</li>
+			<li>owlchemist.researchpowl</li>
+			<li>scorpio.resourcedictionary</li>
+			<li>arandomkiwi.rimsaves</li>
+			<li>com.bymarcin.architecticons</li>
+			<li>proxyer.optionalicons4ai</li>
+			<li>mlie.tabsorting</li>
+			<li>deadmano.rimanoarchitecticons</li>
+			<li>co.uk.epicguru.factionloadout</li>
+			<li>rooboid.birthmarksandblemishes</li>
+			<li>safetemperature.1trickpwnyta</li>
+			<li>opponent019.sanguophagefeedrelationship</li>
+			<li>owlchemist.scatteredflames</li>
+			<li>romyashi.scavenging</li>
+			<li>katana.scenarioamender</li>
+			<li>nimrag.scenariosearchbar</li>
+			<li>memegoddess.searchanddestroy</li>
+			<li>kathanon.floatsubmenu</li>
+			<li>kathanon.searchablemenus</li>
+			<li>avilmask.selfdyeing</li>
+			<li>sicefe.senseofdepth</li>
+			<li>ray1203.simplecamerasetting</li>
+			<li>sarg.smartspeed</li>
+			<li>dhultgren.smarterconstruction</li>
+			<li>andromeda.stackgap</li>
+			<li>trickity.seal.spirits</li>
+			<li>trickity.wc.rags</li>
+			<li>owlchemist.tacticowl</li>
+			<li>levefun.therealflamberg</li>
+			<li>owlchemist.toggleablereadouts</li>
+			<li>smashphil.dropspot</li>
+			<li>superniquito.traiticons</li>
+			<li>shenanigans.tribaltattoos</li>
+			<li>proxyer.tribeapparelcategories</li>
+			<li>mb.trueunnaturaldarkness</li>
+			<li>paradies.resurrectorserumonrotten</li>
+			<li>ushanka.biologicalwarfare</li>
+			<li>vanillaexpanded.vanillasocialinteractionsexpanded</li>
+			<li>stagz.vsierationaltraitdevelopment</li>
+			<li>ogliss.thewhitecrayon.quarry</li>
+			<li>sirvan.quarryretexture</li>
+			<li>vanillaexpanded.vaeaccessories</li>
+			<li>vanillaexpanded.vanillaaspirationsexpanded</li>
+			<li>neronix17.retexture.vanillabeards</li>
+			<li>vanillaexpanded.vee</li>
+			<li>vanillaexpanded.vhe</li>
+			<li>neronix17.retexture.vanillahair</li>
+			<li>vanillaexpanded.vieat</li>
+			<li>vanillaexpanded.ideo.iconsandsymbols</li>
+			<li>vanillaexpanded.ideo.relicsandartifacts</li>
+			<li>vanillaracesexpanded.highmate</li>
+			<li>vanillaexpanded.temperature</li>
+			<li>nals.facialanimation</li>
+			<li>reel.facialanims</li>
+			<li>vanillaexpanded.vtexe.facialanims</li>
+			<li>vanillaexpanded.vanillatraitsexpanded</li>
+			<li>vanillaexpanded.vwetb</li>
+			<li>wall.light.relic</li>
+			<li>ogliss.g223.wanderingcaravans</li>
+			<li>cn.zhuzijun.wealthcorrector</li>
+			<li>bodlosh.weaponstats</li>
+			<li>revolus.whatsmissing.15tmp</li>
+			<li>co.uk.epicguru.whatsthatmod</li>
+			<li>lostrd.wildanimalalert</li>
+			<li>redmattis.betterconversion</li>
+			<li>cedaro.worldpawncleaner</li>
+			<li>owlchemist.toggleableoverlays</li>
+			<li>owlchemist.giddyup</li>
+			<li>com.yayo.yayoani.continued</li>
+			<li>mlie.zonetoschedule</li>
+			<li>alleyballey.firecountsasfire</li>
+			<li>cat2002.showhair</li>
+			<li>frozensnowfox.betteranomalyloot</li>
+			<li>unlimitedhugs.allowtool</li>
+			<li>dubwise.dubspaintshop</li>
+			<li>accurex.medievaloverhaul.stuff</li>
+			<li>mehni.pickupandhaul</li>
+			<li>frozensnowfox.complexjobs</li>
+			<li>frozensnowfox.filthvanisheswithrainandtime</li>
+			<li>frozensnowfox.indoortreefarms</li>
+			<li>frozensnowfox.morequests</li>
+			<li>frozensnowfox.nodefaultshelfstorage</li>
+			<li>harkon.biotechaddon.medievaldeathrestcoffin</li>
+			<li>nals.customportraits</li>
+			<li>oganesson.special.trees.tweaks</li>
+			<li>wemd.realisticdarkness</li>
+			<li>mlie.wzrdcarrycapacity</li>
+			<li>sineswiper.xenobionicpatcher</li>
+			<li>krkr.rocketman</li>
+		</modIds>
+		<modSteamIds>
+			<li>0</li>
+			<li>0</li>
+			<li>2538411704</li>
+			<li>0</li>
+			<li>1149640</li>
+			<li>1392840</li>
+			<li>1826140</li>
+			<li>2380740</li>
+			<li>0</li>
+			<li>0</li>
+			<li>0</li>
+			<li>0</li>
+			<li>0</li>
+			<li>0</li>
+			<li>730936602</li>
+			<li>0</li>
+			<li>0</li>
+			<li>0</li>
+			<li>0</li>
+			<li>0</li>
+			<li>0</li>
+			<li>0</li>
+			<li>0</li>
+			<li>0</li>
+			<li>0</li>
+			<li>0</li>
+			<li>0</li>
+			<li>0</li>
+			<li>0</li>
+			<li>0</li>
+			<li>0</li>
+			<li>0</li>
+			<li>0</li>
+			<li>0</li>
+			<li>0</li>
+			<li>0</li>
+			<li>0</li>
+			<li>0</li>
+			<li>0</li>
+			<li>0</li>
+			<li>0</li>
+			<li>0</li>
+			<li>0</li>
+			<li>0</li>
+			<li>0</li>
+			<li>0</li>
+			<li>0</li>
+			<li>0</li>
+			<li>0</li>
+			<li>0</li>
+			<li>0</li>
+			<li>0</li>
+			<li>0</li>
+			<li>0</li>
+			<li>0</li>
+			<li>0</li>
+			<li>0</li>
+			<li>0</li>
+			<li>0</li>
+			<li>0</li>
+			<li>0</li>
+			<li>0</li>
+			<li>0</li>
+			<li>0</li>
+			<li>0</li>
+			<li>0</li>
+			<li>0</li>
+			<li>0</li>
+			<li>0</li>
+			<li>0</li>
+			<li>0</li>
+			<li>0</li>
+			<li>0</li>
+			<li>0</li>
+			<li>0</li>
+			<li>0</li>
+			<li>0</li>
+			<li>0</li>
+			<li>0</li>
+			<li>0</li>
+			<li>0</li>
+			<li>0</li>
+			<li>0</li>
+			<li>0</li>
+			<li>0</li>
+			<li>0</li>
+			<li>0</li>
+			<li>0</li>
+			<li>0</li>
+			<li>0</li>
+			<li>0</li>
+			<li>0</li>
+			<li>0</li>
+			<li>0</li>
+			<li>0</li>
+			<li>0</li>
+			<li>0</li>
+			<li>0</li>
+			<li>0</li>
+			<li>0</li>
+			<li>0</li>
+			<li>0</li>
+			<li>0</li>
+			<li>0</li>
+			<li>0</li>
+			<li>0</li>
+			<li>0</li>
+			<li>0</li>
+			<li>0</li>
+			<li>0</li>
+			<li>0</li>
+			<li>0</li>
+			<li>0</li>
+			<li>0</li>
+			<li>0</li>
+			<li>0</li>
+			<li>0</li>
+			<li>0</li>
+			<li>0</li>
+			<li>0</li>
+			<li>0</li>
+			<li>0</li>
+			<li>0</li>
+			<li>0</li>
+			<li>0</li>
+			<li>0</li>
+			<li>0</li>
+			<li>0</li>
+			<li>0</li>
+			<li>0</li>
+			<li>0</li>
+			<li>0</li>
+			<li>0</li>
+			<li>0</li>
+			<li>0</li>
+			<li>0</li>
+			<li>0</li>
+			<li>0</li>
+			<li>0</li>
+			<li>0</li>
+			<li>0</li>
+			<li>0</li>
+			<li>0</li>
+			<li>0</li>
+			<li>0</li>
+			<li>0</li>
+			<li>0</li>
+			<li>0</li>
+			<li>0</li>
+			<li>0</li>
+			<li>0</li>
+			<li>0</li>
+			<li>0</li>
+			<li>0</li>
+			<li>0</li>
+			<li>0</li>
+			<li>0</li>
+			<li>0</li>
+			<li>0</li>
+			<li>0</li>
+			<li>0</li>
+			<li>0</li>
+			<li>0</li>
+			<li>0</li>
+			<li>0</li>
+			<li>0</li>
+			<li>1966995052</li>
+			<li>0</li>
+			<li>0</li>
+			<li>0</li>
+			<li>0</li>
+			<li>0</li>
+			<li>0</li>
+			<li>0</li>
+			<li>0</li>
+			<li>0</li>
+			<li>0</li>
+			<li>0</li>
+			<li>0</li>
+			<li>0</li>
+			<li>0</li>
+			<li>0</li>
+			<li>0</li>
+			<li>0</li>
+			<li>0</li>
+			<li>0</li>
+			<li>0</li>
+			<li>0</li>
+			<li>0</li>
+			<li>0</li>
+			<li>0</li>
+			<li>0</li>
+			<li>0</li>
+			<li>0</li>
+			<li>2211088777</li>
+			<li>0</li>
+			<li>0</li>
+			<li>0</li>
+			<li>0</li>
+			<li>0</li>
+			<li>0</li>
+			<li>0</li>
+			<li>0</li>
+			<li>0</li>
+			<li>0</li>
+			<li>0</li>
+			<li>0</li>
+			<li>0</li>
+			<li>0</li>
+			<li>0</li>
+			<li>0</li>
+			<li>0</li>
+			<li>0</li>
+			<li>0</li>
+			<li>0</li>
+			<li>0</li>
+			<li>0</li>
+			<li>0</li>
+			<li>0</li>
+			<li>0</li>
+			<li>0</li>
+			<li>0</li>
+			<li>0</li>
+			<li>0</li>
+			<li>0</li>
+			<li>0</li>
+			<li>0</li>
+			<li>0</li>
+			<li>0</li>
+			<li>0</li>
+			<li>0</li>
+			<li>0</li>
+			<li>0</li>
+			<li>0</li>
+			<li>0</li>
+			<li>0</li>
+			<li>0</li>
+			<li>0</li>
+			<li>0</li>
+			<li>0</li>
+			<li>0</li>
+			<li>0</li>
+			<li>0</li>
+			<li>0</li>
+			<li>0</li>
+			<li>0</li>
+			<li>0</li>
+			<li>0</li>
+			<li>0</li>
+			<li>0</li>
+		</modSteamIds>
+		<modNames>
+			<li>Prepatcher</li>
+			<li>Harmony</li>
+			<li>Visual Exceptions</li>
+			<li>Core</li>
+			<li>Royalty</li>
+			<li>Ideology</li>
+			<li>Biotech</li>
+			<li>Anomaly</li>
+			<li>Vanilla Backgrounds Expanded</li>
+			<li>HugsLib</li>
+			<li>FSharp.Core</li>
+			<li>ANDH - Animals Nuzzling Detects Horrors</li>
+			<li>ATH's Styleable Framework</li>
+			<li>ATH's styles Norse</li>
+			<li>Achtung!</li>
+			<li>Adjustable Temperature Events</li>
+			<li>El's Tribal Water</li>
+			<li>Advanced Tribal Cooler</li>
+			<li>All Ideoligions Are Fluid</li>
+			<li>All Scenario Hediffs</li>
+			<li>Ambient Rim</li>
+			<li>Anima Gear</li>
+			<li>XML Extensions</li>
+			<li>Anima Bionics - Forked</li>
+			<li>Ashes</li>
+			<li>Auto links</li>
+			<li>Auto-Cut Blight</li>
+			<li>Autoclose Event Notifications</li>
+			<li>Avoid Darkness</li>
+			<li>RimThemes</li>
+			<li>Basic RimThemes Recolours</li>
+			<li>Better Explosions</li>
+			<li>Better Gene Inheritance</li>
+			<li>Better ModMismatch Window</li>
+			<li>Better Workbench Management</li>
+			<li>Bioferrite Torchlight Belt</li>
+			<li>Geological Landforms</li>
+			<li>Biome Transitions</li>
+			<li>Block Unwanted Minutiae (Continued)</li>
+			<li>Blood Animations</li>
+			<li>Blueprints - Forked</li>
+			<li>Build From Inventory</li>
+			<li>Bunk Beds</li>
+			<li>Cherry Picker</li>
+			<li>Vanilla Expanded Framework</li>
+			<li>ReGrowth: Core</li>
+			<li>Vanilla Textures Expanded</li>
+			<li>ReGrowth: ReTextures</li>
+			<li>[SYR] Processor Framework</li>
+			<li>Medieval Overhaul</li>
+			<li>Bunk Beds Medieval Retexture</li>
+			<li>Capable Specialists</li>
+			<li>Carry Capacity Fixed (Continued)</li>
+			<li>Character Editor</li>
+			<li>Character Editor Retextured</li>
+			<li>Chill the F*** Out</li>
+			<li>Choice Of Psycasts</li>
+			<li>Choose Biome Commonality</li>
+			<li>Choose Wild Animal Spawns</li>
+			<li>Choose Your Recipe (Continued)</li>
+			<li>Clean Pathfinding 2</li>
+			<li>Clean Textures</li>
+			<li>Clean Textures - less glare</li>
+			<li>Compact Hediffs</li>
+			<li>Compact Work Tab (Continued)</li>
+			<li>Compressed Raid</li>
+			<li>Config Applied Check</li>
+			<li>Cremation smelts apparels</li>
+			<li>Custom Fonts - Forked</li>
+			<li>DeathrestButton</li>
+			<li>Defensive Positions</li>
+			<li>Designator Shapes</li>
+			<li>Det's Xenotypes - Stoneborn</li>
+			<li>Do Something for Idle</li>
+			<li>DragSelect</li>
+			<li>Drawn Spots</li>
+			<li>Dubs Performance Analyzer</li>
+			<li>Entosomnia - Medieval Cryptosleep</li>
+			<li>Vanilla Pawns Retextured</li>
+			<li>Erin's Body Retexture</li>
+			<li>Erin's Hairstyles 2</li>
+			<li>Erin's Valheim Creatures</li>
+			<li>Extinguish Refuelables</li>
+			<li>Extra Explosion Effects</li>
+			<li>Faction Customizer</li>
+			<li>Fahrenheit and Celsius</li>
+			<li>Faster Relic Subquests</li>
+			<li>Fix Styled Blueprints</li>
+			<li>Gauranlen Meditation</li>
+			<li>Graphics Settings+</li>
+			<li>Grimoires</li>
+			<li>RWLayout</li>
+			<li>Grouped Pawns Lists</li>
+			<li>Grow Grass Under Roofs</li>
+			<li>HEAVY Snow</li>
+			<li>Healer Mech Serum Choice</li>
+			<li>Dubs Mint Menus</li>
+			<li>I Aint Building That</li>
+			<li>Interaction Bubbles</li>
+			<li>Just Leave Already</li>
+			<li>Lethal Darkness</li>
+			<li>Letter Permanent Injury</li>
+			<li>Level Up!</li>
+			<li>Limit Quest Pawns</li>
+			<li>RimHUD</li>
+			<li>Vanilla Skills Expanded</li>
+			<li>Mad Skills+</li>
+			<li>Malang Eye Wounds </li>
+			<li>Map Designer</li>
+			<li>Medieval Go-juice</li>
+			<li>Adaptive Storage Framework</li>
+			<li>Medieval Overhaul - Adaptive Storage Graphic Patch</li>
+			<li>Medieval Overhaul: Barbarians</li>
+			<li>Minify More</li>
+			<li>Misc. Training</li>
+			<li>Misc. Training Medieval Retexture</li>
+			<li>Mod Options Sort</li>
+			<li>More Pause Events</li>
+			<li>More Vanilla Textures</li>
+			<li>My Little Planet</li>
+			<li>Never Generate Relations</li>
+			<li>No Disabled Factions In Quests</li>
+			<li>No Forced Slowdown</li>
+			<li>No Job Authors</li>
+			<li>No Random Apparel on Ideology Edit</li>
+			<li>No Starting Research</li>
+			<li>Non uno Pinata (don't drop items)</li>
+			<li>OgreStack</li>
+			<li>Optimization: Meats - C# Edition</li>
+			<li>Oracle + Erin's HD Tattoos</li>
+			<li>Oracle's Anomaly Plant Reflavor</li>
+			<li>Pawn Badge Fan Fork [Adopted]</li>
+			<li>Pawn Name Variety</li>
+			<li>Peer Pressure</li>
+			<li>Performance Optimizer</li>
+			<li>Persistent Precepts</li>
+			<li>Phaneron's Basic Storage</li>
+			<li>Priority Treatment Ressurected</li>
+			<li>Prisoners with jobs (definitely not slaves)</li>
+			<li>Projectile Bullet Retexture</li>
+			<li>Prosthetic No Missing Body Parts (Continued)</li>
+			<li>Prune Job</li>
+			<li>QualityBuilder</li>
+			<li>RIMMSqol</li>
+			<li>Biomes! Core</li>
+			<li>Ragnarök</li>
+			<li>Biomes! Caverns</li>
+			<li>Common Sense</li>
+			<li>Tweaks Galore</li>
+			<li>Vanilla Ideology Expanded - Memes and Structures</li>
+			<li>Alpha Memes</li>
+			<li>ReBuild: Doors and Corners</li>
+			<li>Realistic Human Sounds (Continued)</li>
+			<li>Recipe icons (Continued)</li>
+			<li>Recubes Your Cube</li>
+			<li>Recycle This (Continued)</li>
+			<li>Recycle This - Retextured!</li>
+			<li>Relevant Stats In Description</li>
+			<li>Repair in the Zone</li>
+			<li>Replace Stuff</li>
+			<li>Replace Stuff Mod Compatibility</li>
+			<li>Replantable Special Trees</li>
+			<li>ResearchPowl</li>
+			<li>Resource Dictionary</li>
+			<li>RimSaves</li>
+			<li>Architect Icons</li>
+			<li>Optional Icons for Architect Icons</li>
+			<li>Tab-sorting</li>
+			<li>Rimano: Architect Icons</li>
+			<li>Rimsential - Total Control: Continued</li>
+			<li>Roo's Birthmarks and Blemishes</li>
+			<li>Safe Temperature</li>
+			<li>Sanguophage Feed Relationship</li>
+			<li>Scattered Flames</li>
+			<li>Scavenging</li>
+			<li>Scenario Amender [1.5]</li>
+			<li>Scenario Searchbars</li>
+			<li>Search and Destroy (Unofficial Update)</li>
+			<li>Float Sub-Menus</li>
+			<li>Searchable Menus</li>
+			<li>Self Dyeing</li>
+			<li>Sense Of Depth For Tall Buildings</li>
+			<li>SimpleCameraSetting</li>
+			<li>Smart Speed</li>
+			<li>Smarter Construction</li>
+			<li>Stack gap</li>
+			<li>T's Seal the Spirits</li>
+			<li>T's Wild Child Rags</li>
+			<li>Tacticowl (temporary beta)</li>
+			<li>The REAL flamberg</li>
+			<li>Toggleable Readouts</li>
+			<li>Trade Ships Drop Spot</li>
+			<li>Trait and Backstory Icons</li>
+			<li>Tribal Tattoos</li>
+			<li>Tribe Categories</li>
+			<li>True Unnatural Darkness</li>
+			<li>Use Resurrector Mech Serum On Rotten or Skeleton People</li>
+			<li>Ushankas Biological Warfare</li>
+			<li>Vanilla Social Interactions Expanded</li>
+			<li>VSIE - Rational Trait Development</li>
+			<li>Quarry</li>
+			<li>Van's Retexture : Quarry</li>
+			<li>Vanilla Apparel Expanded — Accessories</li>
+			<li>Vanilla Aspirations Expanded</li>
+			<li>Vanilla Beards Retextured</li>
+			<li>Vanilla Events Expanded</li>
+			<li>Vanilla Hair Expanded</li>
+			<li>Vanilla Hair Retextured</li>
+			<li>Vanilla Ideology Expanded - Anima Theme</li>
+			<li>Vanilla Ideology Expanded - Icons and Symbols</li>
+			<li>Vanilla Ideology Expanded - Relics and Artifacts</li>
+			<li>Vanilla Races Expanded - Highmate</li>
+			<li>Vanilla Temperature Expanded</li>
+			<li>[NL] Facial Animation - WIP</li>
+			<li>Reel's Facial Animation Textures</li>
+			<li>Vanilla Textures Expanded - [NL] Facial Animation</li>
+			<li>Vanilla Traits Expanded</li>
+			<li>Vanilla Weapons Expanded - Tribal</li>
+			<li>Wall light Relic</li>
+			<li>Wandering Caravans</li>
+			<li>WealthCorrector</li>
+			<li>WeaponStats</li>
+			<li>What's Missing? 1.5 temp</li>
+			<li>What's That Mod</li>
+			<li>Wild Animal Alert</li>
+			<li>Wololoo - Better Conversion and Recruitment</li>
+			<li>World Pawn Cleaner</li>
+			<li>Toggleable Overlays</li>
+			<li>Giddy-Up 2 Forked</li>
+			<li>Yayo's Animation (Continued)</li>
+			<li>Zone To Schedule</li>
+			<li>[AB] Fire counts as fire</li>
+			<li>[CAT] Show Hair With Hats or Hide All Hats</li>
+			<li>[FSF] Better Anomaly Loot</li>
+			<li>Allow Tool</li>
+			<li>Dub's Paint Shop</li>
+			<li>Medieval Overhaul: Toggleable Stuff</li>
+			<li>Pick Up And Haul</li>
+			<li>[FSF] Complex Jobs</li>
+			<li>[FSF] Filth Vanishes With Rain And Time</li>
+			<li>[FSF] Indoor Tree Farms</li>
+			<li>[FSF] More Quests</li>
+			<li>[FSF] No Default Shelf Storage</li>
+			<li>[HRK] Medieval deathrest coffin</li>
+			<li>[NL] Custom Portraits</li>
+			<li>[Og] Special Trees Tweaks</li>
+			<li>[WD] Realistic Darkness</li>
+			<li>[WZRD] Carry Capacity (Continued)</li>
+			<li>Xenobionic Patcher</li>
+			<li>RocketMan - Performance Mod</li>
+		</modNames>
+	</meta>
+	<modList>
+		<ids>
+			<li>zetrith.prepatcher</li>
+			<li>brrainz.harmony</li>
+			<li>brrainz.visualexceptions</li>
+			<li>ludeon.rimworld</li>
+			<li>ludeon.rimworld.royalty</li>
+			<li>ludeon.rimworld.ideology</li>
+			<li>ludeon.rimworld.biotech</li>
+			<li>ludeon.rimworld.anomaly</li>
+			<li>vanillaexpanded.backgrounds</li>
+			<li>unlimitedhugs.hugslib</li>
+			<li>latta.fsharp.core</li>
+			<li>latta.petknowstrueyou</li>
+			<li>anthitei.athsstyleableframework.style</li>
+			<li>anthitei.athsstylenorse.style</li>
+			<li>brrainz.achtung</li>
+			<li>makariaeron.adjustabletemperatureevents</li>
+			<li>ellit.tribalwater</li>
+			<li>alt4s.advancedtribalcooler</li>
+			<li>superniquito.allideoligionsarefluid</li>
+			<li>feldoh.allscenariohediffs</li>
+			<li>swablu.ambience</li>
+			<li>xrushha.animagear</li>
+			<li>imranfish.xmlextensions</li>
+			<li>seti.victor.animabodies</li>
+			<li>romyashi.ashes</li>
+			<li>automatic.autolinks</li>
+			<li>tr.autocutblight</li>
+			<li>dingo.autocloseeventnotifications</li>
+			<li>keyz182.avoiddarkness</li>
+			<li>arandomkiwi.rimthemes</li>
+			<li>mrsamuelstreamer.rimthemesrecolours</li>
+			<li>nephlite.advexplosions</li>
+			<li>redmattis.bettergeneinheritance</li>
+			<li>madeline.modmismatchformatter</li>
+			<li>falconne.bwm</li>
+			<li>misstall.bioftorchbeltz</li>
+			<li>m00nl1ght.geologicallandforms</li>
+			<li>m00nl1ght.geologicallandforms.biometransitions</li>
+			<li>mlie.blockunwantedminutiae</li>
+			<li>fuu.bloodanimations</li>
+			<li>fluffy.blueprints.fork</li>
+			<li>uuugggg.buildfrominventory</li>
+			<li>darknote.bunkbeds</li>
+			<li>owlchemist.cherrypicker.tmpfix</li>
+			<li>oskarpotocki.vanillafactionsexpanded.core</li>
+			<li>regrowth.botr.core</li>
+			<li>vanillaexpanded.vtexe</li>
+			<li>regrowth.botr.retextures</li>
+			<li>syrchalis.processor.framework</li>
+			<li>dankpyon.medieval.overhaul</li>
+			<li>sinigr.bunkbedsmedievalretexture</li>
+			<li>blackfranky.capablespecialists</li>
+			<li>monkey5206.carrycapacityfixed</li>
+			<li>void.charactereditor</li>
+			<li>neronix17.retexture.charactereditor</li>
+			<li>kb.chillout</li>
+			<li>azuraal.choiceofpsycasts</li>
+			<li>mlie.choosebiomecommonality</li>
+			<li>mlie.choosewildanimalspawns</li>
+			<li>zal.chooseyourrecipe</li>
+			<li>owlchemist.cleanpathfinding</li>
+			<li>ih.clean.textures</li>
+			<li>ih.clean.textures.less.glare</li>
+			<li>petetimessix.compacthediffs</li>
+			<li>mlie.compactworktab</li>
+			<li>vk.compressedraid.latest</li>
+			<li>taggerung.configappliedcheck</li>
+			<li>thumb.bettercremation</li>
+			<li>zcubekr.customfonts</li>
+			<li>nikidigi.deathrestbutton</li>
+			<li>unlimitedhugs.defensivepositions</li>
+			<li>merthsoft.designatorshapes</li>
+			<li>det.stoneborn</li>
+			<li>gguake.ai.dsfi</li>
+			<li>telardo.dragselect</li>
+			<li>overpl.drawnspots</li>
+			<li>dubwise.dubsperformanceanalyzer.steam</li>
+			<li>nunahuralshamikh.entosomnia</li>
+			<li>neronix17.hd.pawns</li>
+			<li>erin.body.texture</li>
+			<li>erin.hair2</li>
+			<li>erin.valheim.creatures</li>
+			<li>malistaticy.mer</li>
+			<li>keshash.extraexplosioneffects</li>
+			<li>karmgahl.factioncustomizer</li>
+			<li>kosaro.fahrenheitandcelsius</li>
+			<li>brat.fastersubquests</li>
+			<li>kathanon.fixstyledblueprints</li>
+			<li>thesepeople.gauranlenmeditation</li>
+			<li>telefonmast.graphicssettings</li>
+			<li>lts.pg</li>
+			<li>name.krypt.rimworld.rwlayout.alpha2</li>
+			<li>name.krypt.rimworld.pawntablegrouped</li>
+			<li>garethp.growgrassunderroofs</li>
+			<li>simplephysics.heavy.snow</li>
+			<li>syrus.hmschoice</li>
+			<li>dubwise.dubsmintmenus</li>
+			<li>taggerung.iaintbuildingthat</li>
+			<li>jaxe.bubbles</li>
+			<li>timuttie.justleavealready</li>
+			<li>aranmaho.betterdarkness</li>
+			<li>buggy.rimworld.letterpermanentinjury</li>
+			<li>krafs.levelup</li>
+			<li>kathanon.limitquestpawns</li>
+			<li>jaxe.rimhud</li>
+			<li>vanillaexpanded.skills</li>
+			<li>cedaro.madskillsplus</li>
+			<li>plaxen.malangeyewounds</li>
+			<li>zylle.mapdesigner</li>
+			<li>rince.gaulishgojuice</li>
+			<li>adaptive.storage.framework</li>
+			<li>liuyu.adaptive.mo</li>
+			<li>pphhyy.barbariansmosubmod</li>
+			<li>pathogenxd.minifymore</li>
+			<li>haplo.miscellaneous.training</li>
+			<li>serek.misctrainingmedievalretexture</li>
+			<li>superniquito.modoptionssort</li>
+			<li>sirrandoo.mpe</li>
+			<li>tidal.morevanilla.textures</li>
+			<li>oblitus.mylittleplanet</li>
+			<li>doll.nevergeneraterelations</li>
+			<li>kathanon.nodisabledfactions</li>
+			<li>thegoosebehindtheslaughter.noforcedslowdown</li>
+			<li>doug.nojobauthors</li>
+			<li>edern.norandomapparelonideoedit</li>
+			<li>newsofpe.nostartingresearch</li>
+			<li>avilmask.nonunopinata</li>
+			<li>ogre.ogrestack</li>
+			<li>seohyeon.optimizationmeats</li>
+			<li>oracle.erin.tattoos</li>
+			<li>oracle.anomaly.plants</li>
+			<li>saucypigeon.pawnbadge</li>
+			<li>murmur.pawnnamevariety</li>
+			<li>joseasoler.peerpressure</li>
+			<li>taranchuk.performanceoptimizer</li>
+			<li>alleykat.persistentprecepts</li>
+			<li>phaneron.basic.storage</li>
+			<li>tk421storm.prioritytreatmentressurected</li>
+			<li>hahkethomemah.prisonerswithjobs</li>
+			<li>nd.rtpj</li>
+			<li>mlie.prostheticnomissingbodyparts</li>
+			<li>dandelo.prunejob</li>
+			<li>hatti.qualitybuilder</li>
+			<li>malteschulze.rimmsqol</li>
+			<li>biomesteam.biomescore</li>
+			<li>mrsamuelstreamer.ragnarok</li>
+			<li>biomesteam.biomescaverns</li>
+			<li>avilmask.commonsense</li>
+			<li>neronix17.tweaksgalore</li>
+			<li>vanillaexpanded.vmemese</li>
+			<li>sarg.alphamemes</li>
+			<li>rebuild.cotr.doorsandcorners</li>
+			<li>mlie.realistichumansounds</li>
+			<li>mlie.recipeicons</li>
+			<li>mss.recube</li>
+			<li>mlie.recyclethis</li>
+			<li>soulretextured.recyclethis</li>
+			<li>mlie.relevantstatsindescription</li>
+			<li>kathanon.repairinthezone</li>
+			<li>uuugggg.replacestuff</li>
+			<li>garethp.replacestuffcompatibility</li>
+			<li>archangel.replantsptrees</li>
+			<li>owlchemist.researchpowl</li>
+			<li>scorpio.resourcedictionary</li>
+			<li>arandomkiwi.rimsaves</li>
+			<li>com.bymarcin.architecticons</li>
+			<li>proxyer.optionalicons4ai</li>
+			<li>mlie.tabsorting</li>
+			<li>deadmano.rimanoarchitecticons</li>
+			<li>co.uk.epicguru.factionloadout</li>
+			<li>rooboid.birthmarksandblemishes</li>
+			<li>safetemperature.1trickpwnyta</li>
+			<li>opponent019.sanguophagefeedrelationship</li>
+			<li>owlchemist.scatteredflames</li>
+			<li>romyashi.scavenging</li>
+			<li>katana.scenarioamender</li>
+			<li>nimrag.scenariosearchbar</li>
+			<li>memegoddess.searchanddestroy</li>
+			<li>kathanon.floatsubmenu</li>
+			<li>kathanon.searchablemenus</li>
+			<li>avilmask.selfdyeing</li>
+			<li>sicefe.senseofdepth</li>
+			<li>ray1203.simplecamerasetting</li>
+			<li>sarg.smartspeed</li>
+			<li>dhultgren.smarterconstruction</li>
+			<li>andromeda.stackgap</li>
+			<li>trickity.seal.spirits</li>
+			<li>trickity.wc.rags</li>
+			<li>owlchemist.tacticowl</li>
+			<li>levefun.therealflamberg</li>
+			<li>owlchemist.toggleablereadouts</li>
+			<li>smashphil.dropspot</li>
+			<li>superniquito.traiticons</li>
+			<li>shenanigans.tribaltattoos</li>
+			<li>proxyer.tribeapparelcategories</li>
+			<li>mb.trueunnaturaldarkness</li>
+			<li>paradies.resurrectorserumonrotten</li>
+			<li>ushanka.biologicalwarfare</li>
+			<li>vanillaexpanded.vanillasocialinteractionsexpanded</li>
+			<li>stagz.vsierationaltraitdevelopment</li>
+			<li>ogliss.thewhitecrayon.quarry</li>
+			<li>sirvan.quarryretexture</li>
+			<li>vanillaexpanded.vaeaccessories</li>
+			<li>vanillaexpanded.vanillaaspirationsexpanded</li>
+			<li>neronix17.retexture.vanillabeards</li>
+			<li>vanillaexpanded.vee</li>
+			<li>vanillaexpanded.vhe</li>
+			<li>neronix17.retexture.vanillahair</li>
+			<li>vanillaexpanded.vieat</li>
+			<li>vanillaexpanded.ideo.iconsandsymbols</li>
+			<li>vanillaexpanded.ideo.relicsandartifacts</li>
+			<li>vanillaracesexpanded.highmate</li>
+			<li>vanillaexpanded.temperature</li>
+			<li>nals.facialanimation</li>
+			<li>reel.facialanims</li>
+			<li>vanillaexpanded.vtexe.facialanims</li>
+			<li>vanillaexpanded.vanillatraitsexpanded</li>
+			<li>vanillaexpanded.vwetb</li>
+			<li>wall.light.relic</li>
+			<li>ogliss.g223.wanderingcaravans</li>
+			<li>cn.zhuzijun.wealthcorrector</li>
+			<li>bodlosh.weaponstats</li>
+			<li>revolus.whatsmissing.15tmp</li>
+			<li>co.uk.epicguru.whatsthatmod</li>
+			<li>lostrd.wildanimalalert</li>
+			<li>redmattis.betterconversion</li>
+			<li>cedaro.worldpawncleaner</li>
+			<li>owlchemist.toggleableoverlays</li>
+			<li>owlchemist.giddyup</li>
+			<li>com.yayo.yayoani.continued</li>
+			<li>mlie.zonetoschedule</li>
+			<li>alleyballey.firecountsasfire</li>
+			<li>cat2002.showhair</li>
+			<li>frozensnowfox.betteranomalyloot</li>
+			<li>unlimitedhugs.allowtool</li>
+			<li>dubwise.dubspaintshop</li>
+			<li>accurex.medievaloverhaul.stuff</li>
+			<li>mehni.pickupandhaul</li>
+			<li>frozensnowfox.complexjobs</li>
+			<li>frozensnowfox.filthvanisheswithrainandtime</li>
+			<li>frozensnowfox.indoortreefarms</li>
+			<li>frozensnowfox.morequests</li>
+			<li>frozensnowfox.nodefaultshelfstorage</li>
+			<li>harkon.biotechaddon.medievaldeathrestcoffin</li>
+			<li>nals.customportraits</li>
+			<li>oganesson.special.trees.tweaks</li>
+			<li>wemd.realisticdarkness</li>
+			<li>mlie.wzrdcarrycapacity</li>
+			<li>sineswiper.xenobionicpatcher</li>
+			<li>krkr.rocketman</li>
+		</ids>
+		<names>
+			<li>Prepatcher</li>
+			<li>Harmony</li>
+			<li>Visual Exceptions</li>
+			<li>Core</li>
+			<li>Royalty</li>
+			<li>Ideology</li>
+			<li>Biotech</li>
+			<li>Anomaly</li>
+			<li>Vanilla Backgrounds Expanded</li>
+			<li>HugsLib</li>
+			<li>FSharp.Core</li>
+			<li>ANDH - Animals Nuzzling Detects Horrors</li>
+			<li>ATH's Styleable Framework</li>
+			<li>ATH's styles Norse</li>
+			<li>Achtung!</li>
+			<li>Adjustable Temperature Events</li>
+			<li>El's Tribal Water</li>
+			<li>Advanced Tribal Cooler</li>
+			<li>All Ideoligions Are Fluid</li>
+			<li>All Scenario Hediffs</li>
+			<li>Ambient Rim</li>
+			<li>Anima Gear</li>
+			<li>XML Extensions</li>
+			<li>Anima Bionics - Forked</li>
+			<li>Ashes</li>
+			<li>Auto links</li>
+			<li>Auto-Cut Blight</li>
+			<li>Autoclose Event Notifications</li>
+			<li>Avoid Darkness</li>
+			<li>RimThemes</li>
+			<li>Basic RimThemes Recolours</li>
+			<li>Better Explosions</li>
+			<li>Better Gene Inheritance</li>
+			<li>Better ModMismatch Window</li>
+			<li>Better Workbench Management</li>
+			<li>Bioferrite Torchlight Belt</li>
+			<li>Geological Landforms</li>
+			<li>Biome Transitions</li>
+			<li>Block Unwanted Minutiae (Continued)</li>
+			<li>Blood Animations</li>
+			<li>Blueprints - Forked</li>
+			<li>Build From Inventory</li>
+			<li>Bunk Beds</li>
+			<li>Cherry Picker</li>
+			<li>Vanilla Expanded Framework</li>
+			<li>ReGrowth: Core</li>
+			<li>Vanilla Textures Expanded</li>
+			<li>ReGrowth: ReTextures</li>
+			<li>[SYR] Processor Framework</li>
+			<li>Medieval Overhaul</li>
+			<li>Bunk Beds Medieval Retexture</li>
+			<li>Capable Specialists</li>
+			<li>Carry Capacity Fixed (Continued)</li>
+			<li>Character Editor</li>
+			<li>Character Editor Retextured</li>
+			<li>Chill the F*** Out</li>
+			<li>Choice Of Psycasts</li>
+			<li>Choose Biome Commonality</li>
+			<li>Choose Wild Animal Spawns</li>
+			<li>Choose Your Recipe (Continued)</li>
+			<li>Clean Pathfinding 2</li>
+			<li>Clean Textures</li>
+			<li>Clean Textures - less glare</li>
+			<li>Compact Hediffs</li>
+			<li>Compact Work Tab (Continued)</li>
+			<li>Compressed Raid</li>
+			<li>Config Applied Check</li>
+			<li>Cremation smelts apparels</li>
+			<li>Custom Fonts - Forked</li>
+			<li>DeathrestButton</li>
+			<li>Defensive Positions</li>
+			<li>Designator Shapes</li>
+			<li>Det's Xenotypes - Stoneborn</li>
+			<li>Do Something for Idle</li>
+			<li>DragSelect</li>
+			<li>Drawn Spots</li>
+			<li>Dubs Performance Analyzer</li>
+			<li>Entosomnia - Medieval Cryptosleep</li>
+			<li>Vanilla Pawns Retextured</li>
+			<li>Erin's Body Retexture</li>
+			<li>Erin's Hairstyles 2</li>
+			<li>Erin's Valheim Creatures</li>
+			<li>Extinguish Refuelables</li>
+			<li>Extra Explosion Effects</li>
+			<li>Faction Customizer</li>
+			<li>Fahrenheit and Celsius</li>
+			<li>Faster Relic Subquests</li>
+			<li>Fix Styled Blueprints</li>
+			<li>Gauranlen Meditation</li>
+			<li>Graphics Settings+</li>
+			<li>Grimoires</li>
+			<li>RWLayout</li>
+			<li>Grouped Pawns Lists</li>
+			<li>Grow Grass Under Roofs</li>
+			<li>HEAVY Snow</li>
+			<li>Healer Mech Serum Choice</li>
+			<li>Dubs Mint Menus</li>
+			<li>I Aint Building That</li>
+			<li>Interaction Bubbles</li>
+			<li>Just Leave Already</li>
+			<li>Lethal Darkness</li>
+			<li>Letter Permanent Injury</li>
+			<li>Level Up!</li>
+			<li>Limit Quest Pawns</li>
+			<li>RimHUD</li>
+			<li>Vanilla Skills Expanded</li>
+			<li>Mad Skills+</li>
+			<li>Malang Eye Wounds </li>
+			<li>Map Designer</li>
+			<li>Medieval Go-juice</li>
+			<li>Adaptive Storage Framework</li>
+			<li>Medieval Overhaul - Adaptive Storage Graphic Patch</li>
+			<li>Medieval Overhaul: Barbarians</li>
+			<li>Minify More</li>
+			<li>Misc. Training</li>
+			<li>Misc. Training Medieval Retexture</li>
+			<li>Mod Options Sort</li>
+			<li>More Pause Events</li>
+			<li>More Vanilla Textures</li>
+			<li>My Little Planet</li>
+			<li>Never Generate Relations</li>
+			<li>No Disabled Factions In Quests</li>
+			<li>No Forced Slowdown</li>
+			<li>No Job Authors</li>
+			<li>No Random Apparel on Ideology Edit</li>
+			<li>No Starting Research</li>
+			<li>Non uno Pinata (don't drop items)</li>
+			<li>OgreStack</li>
+			<li>Optimization: Meats - C# Edition</li>
+			<li>Oracle + Erin's HD Tattoos</li>
+			<li>Oracle's Anomaly Plant Reflavor</li>
+			<li>Pawn Badge Fan Fork [Adopted]</li>
+			<li>Pawn Name Variety</li>
+			<li>Peer Pressure</li>
+			<li>Performance Optimizer</li>
+			<li>Persistent Precepts</li>
+			<li>Phaneron's Basic Storage</li>
+			<li>Priority Treatment Ressurected</li>
+			<li>Prisoners with jobs (definitely not slaves)</li>
+			<li>Projectile Bullet Retexture</li>
+			<li>Prosthetic No Missing Body Parts (Continued)</li>
+			<li>Prune Job</li>
+			<li>QualityBuilder</li>
+			<li>RIMMSqol</li>
+			<li>Biomes! Core</li>
+			<li>Ragnarök</li>
+			<li>Biomes! Caverns</li>
+			<li>Common Sense</li>
+			<li>Tweaks Galore</li>
+			<li>Vanilla Ideology Expanded - Memes and Structures</li>
+			<li>Alpha Memes</li>
+			<li>ReBuild: Doors and Corners</li>
+			<li>Realistic Human Sounds (Continued)</li>
+			<li>Recipe icons (Continued)</li>
+			<li>Recubes Your Cube</li>
+			<li>Recycle This (Continued)</li>
+			<li>Recycle This - Retextured!</li>
+			<li>Relevant Stats In Description</li>
+			<li>Repair in the Zone</li>
+			<li>Replace Stuff</li>
+			<li>Replace Stuff Mod Compatibility</li>
+			<li>Replantable Special Trees</li>
+			<li>ResearchPowl</li>
+			<li>Resource Dictionary</li>
+			<li>RimSaves</li>
+			<li>Architect Icons</li>
+			<li>Optional Icons for Architect Icons</li>
+			<li>Tab-sorting</li>
+			<li>Rimano: Architect Icons</li>
+			<li>Rimsential - Total Control: Continued</li>
+			<li>Roo's Birthmarks and Blemishes</li>
+			<li>Safe Temperature</li>
+			<li>Sanguophage Feed Relationship</li>
+			<li>Scattered Flames</li>
+			<li>Scavenging</li>
+			<li>Scenario Amender [1.5]</li>
+			<li>Scenario Searchbars</li>
+			<li>Search and Destroy (Unofficial Update)</li>
+			<li>Float Sub-Menus</li>
+			<li>Searchable Menus</li>
+			<li>Self Dyeing</li>
+			<li>Sense Of Depth For Tall Buildings</li>
+			<li>SimpleCameraSetting</li>
+			<li>Smart Speed</li>
+			<li>Smarter Construction</li>
+			<li>Stack gap</li>
+			<li>T's Seal the Spirits</li>
+			<li>T's Wild Child Rags</li>
+			<li>Tacticowl (temporary beta)</li>
+			<li>The REAL flamberg</li>
+			<li>Toggleable Readouts</li>
+			<li>Trade Ships Drop Spot</li>
+			<li>Trait and Backstory Icons</li>
+			<li>Tribal Tattoos</li>
+			<li>Tribe Categories</li>
+			<li>True Unnatural Darkness</li>
+			<li>Use Resurrector Mech Serum On Rotten or Skeleton People</li>
+			<li>Ushankas Biological Warfare</li>
+			<li>Vanilla Social Interactions Expanded</li>
+			<li>VSIE - Rational Trait Development</li>
+			<li>Quarry</li>
+			<li>Van's Retexture : Quarry</li>
+			<li>Vanilla Apparel Expanded — Accessories</li>
+			<li>Vanilla Aspirations Expanded</li>
+			<li>Vanilla Beards Retextured</li>
+			<li>Vanilla Events Expanded</li>
+			<li>Vanilla Hair Expanded</li>
+			<li>Vanilla Hair Retextured</li>
+			<li>Vanilla Ideology Expanded - Anima Theme</li>
+			<li>Vanilla Ideology Expanded - Icons and Symbols</li>
+			<li>Vanilla Ideology Expanded - Relics and Artifacts</li>
+			<li>Vanilla Races Expanded - Highmate</li>
+			<li>Vanilla Temperature Expanded</li>
+			<li>[NL] Facial Animation - WIP</li>
+			<li>Reel's Facial Animation Textures</li>
+			<li>Vanilla Textures Expanded - [NL] Facial Animation</li>
+			<li>Vanilla Traits Expanded</li>
+			<li>Vanilla Weapons Expanded - Tribal</li>
+			<li>Wall light Relic</li>
+			<li>Wandering Caravans</li>
+			<li>WealthCorrector</li>
+			<li>WeaponStats</li>
+			<li>What's Missing? 1.5 temp</li>
+			<li>What's That Mod</li>
+			<li>Wild Animal Alert</li>
+			<li>Wololoo - Better Conversion and Recruitment</li>
+			<li>World Pawn Cleaner</li>
+			<li>Toggleable Overlays</li>
+			<li>Giddy-Up 2 Forked</li>
+			<li>Yayo's Animation (Continued)</li>
+			<li>Zone To Schedule</li>
+			<li>[AB] Fire counts as fire</li>
+			<li>[CAT] Show Hair With Hats or Hide All Hats</li>
+			<li>[FSF] Better Anomaly Loot</li>
+			<li>Allow Tool</li>
+			<li>Dub's Paint Shop</li>
+			<li>Medieval Overhaul: Toggleable Stuff</li>
+			<li>Pick Up And Haul</li>
+			<li>[FSF] Complex Jobs</li>
+			<li>[FSF] Filth Vanishes With Rain And Time</li>
+			<li>[FSF] Indoor Tree Farms</li>
+			<li>[FSF] More Quests</li>
+			<li>[FSF] No Default Shelf Storage</li>
+			<li>[HRK] Medieval deathrest coffin</li>
+			<li>[NL] Custom Portraits</li>
+			<li>[Og] Special Trees Tweaks</li>
+			<li>[WD] Realistic Darkness</li>
+			<li>[WZRD] Carry Capacity (Continued)</li>
+			<li>Xenobionic Patcher</li>
+			<li>RocketMan - Performance Mod</li>
+		</names>
+	</modList>
+</savedModList>

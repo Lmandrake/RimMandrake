@@ -1,0 +1,183 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ============================================================================
+  Warcasket_BuildPathCut.xml                 Jawa_Armoury · authored 2026-08-12
+  ============================================================================
+
+  THE DECISION THIS IMPLEMENTS
+  ============================
+  faction_roster_v2.md §12, open question 1, DECIDED 2026-08-11 by the owner:
+
+      "a Jawa could only wear a scavenged suit, and even then that's a
+       hilarious image and too cool to say no to."
+
+  YES to wearing a warcasket, but only a SALVAGED shell. Never a built one.
+  Building one from raw material is out-of-order power (Axis 18); cutting one
+  off a corpse is the Jawa economy working as intended.
+
+  ⚠️ READ THIS BEFORE ASSUMING THE JOB IS DONE
+  ============================================
+  THIS FILE ONLY CLOSES BUILDING. IT DOES NOT OPEN SALVAGE. Those are two
+  separate jobs and only the first one is cheap.
+
+  Per §12 Q1, a dead warcasket is unrecoverable by FOUR independent mechanisms:
+  destroyOnDrop on VFEP_WarcasketPartBase; VFEPirates.GenSpawn_Spawn_Patch
+  returning false for any WarcasketDef on the root GenSpawn.Spawn overload;
+  ThingDef::PlayerAcquirable false with no <thingCategories>, so no stockpile or
+  bill filter can see them; and DropAll skipping IsLocked apparel, which
+  warcaskets always are. Butchering a casketed corpse yields ChunkSlagSteel.
+
+  So as of today there is NO salvaged path to preserve. Deploying this file
+  alone leaves the player with no warcasket access whatsoever. That is a
+  defensible interim state — it is strictly closer to the owner's decision than
+  the status quo, which allows free manufacture — but it must be a CONSCIOUS
+  choice, not a surprise. The salvaged shell has to be built (the fusion bench,
+  §12 item 2, feasible only as a custom Building_Enterable in C#).
+
+  WHERE THE CHOKE POINT ACTUALLY IS  [audited 2026-08-12, from the files]
+  ======================================================================
+  Read from the installed mods, not assumed:
+
+    * VFEP_WarcasketFoundry is the ONLY warcasket production building in the
+      load set. Buildings_Production.xml declares exactly one non-abstract
+      ThingDef under VFEP_FoundryBase, at designationCategory Production,
+      researchPrerequisites VFEP_Warcaskets.
+
+    * Every warcasket piece — INCLUDING the helmet — is a
+      VFEPirates.WarcasketDef, not a ThingDef. They carry <costList> and
+      <researchPrerequisites>, which the foundry UI consumes. NONE of them has
+      a <recipeMaker>, so there is no bench route and no bill to remove.
+      (The two <recipeMaker> blocks in VFEP's Apparel_Various.xml belong to the
+      privateer armour and the rumsuit, which are unrelated.)
+
+    * WarCasket Expanded (Aoba.WarCasket, 2733135485) ships ONE def file,
+      1.6/Defs/Apparel_Various.xml, containing only VFEPirates.WarcasketDef
+      entries. Zero ResearchProjectDefs, zero buildings. It rides on VFEP's
+      foundry and VFEP's research.
+
+    * Farhan's Warcasket Tweaks (3533261706) and VFE Pirates – Hardworking
+      Warcaskets (dmp.vfepirates.warcasketwork, 3535194807) are patch-only.
+      The latter ships exactly ApparelPatches.xml and TraitPatches.xml.
+
+  Therefore removing the foundry from the build menu closes the player build
+  path across ALL FOUR mods. There is no second route to plug.
+
+  TWO MORE MODS REFERENCE VFEP_Warcaskets. A whole-workshop sweep (2026-08-12)
+  found exactly five folders mentioning it. Neither extra one changes the above,
+  but both are recorded so the sweep does not have to be repeated:
+
+    * Oracle's Miscellania (oracle.miscellania, 3279582979) — NOT ACTIVE in the
+      568 list. Its 1.6/Mods/VFE.Pirates/ conditional folder adds three more
+      VFEPirates.WarcasketDef pieces (VFEP_Warcasket_EarthEmpire and friends).
+      No building, no recipe. If it is ever activated, this cut still covers it,
+      because it too can only be produced at the foundry.
+
+    * Nice Research Tab (Andromeda.NiceResearchTab, 3773496046) — ACTIVE at 450.
+      A research-tab LAYOUT mod; it names VFEP_Warcaskets in a FineTune def to
+      position the node. It grants nothing and adds no route. It loads at 450
+      and we patch at 563, so our relabelled node is what it lays out. If the
+      node ever renders with the ORIGINAL label, NRT is caching def text at a
+      point we do not win — check there before suspecting op 2 failed.
+
+  NPC JUNKERS ARE UNTOUCHED, WHICH IS THE ENTIRE POINT. They get their caskets
+  from PawnKinds_Junkers.xml, and pawnkind generation never consults research or
+  designationCategory. The Junkers keep walking around in the armour the player
+  cannot make — which is exactly the tension the faction was designed for.
+
+  WHY designationCategory AND NOT DELETING THE RESEARCH NODE
+  ==========================================================
+  §12 says "cutting that one node closes the entire player build path", and it
+  is right about the topology. But REMOVING a ResearchProjectDef is the wrong
+  tool: VFEP_AdvancedWarcaskets lists it in <prerequisites>, and 45 defs across
+  VFEP and Expanded list it in <researchPrerequisites>. Deleting it converts a
+  clean cut into a wall of "Could not resolve cross-reference" — the def-loader
+  error, i.e. a live mod-set problem, not a save problem.
+
+  Clearing <designationCategory> is the technique already PROVEN in this stack:
+  it is how the droid factory was removed from the build menu, confirmed working
+  in play 2026-08-11. It breaks no references, it is one operation, and it is
+  reversible by deleting this file.
+
+  Op 2 exists so the cut is not a TRAP. With the foundry unbuildable, finishing
+  VFEP_Warcaskets grants literally nothing — the node gates the foundry plus
+  three apparel groups, and those groups can only be produced at the foundry. A
+  player would spend 3000 research points on an empty box. Verified safe to
+  rewrite: VFEP ships a Languages/English folder with NO DefInjected directory,
+  so nothing re-overrides our label or description after patching.
+
+  SAFETY AND LOAD ORDER
+  =====================
+  Positions read from runtime/backups/ModsConfig.full-568.2026-08-11.xml:
+
+      470  oskarpotocki.vfe.pirates           <- defines both targets
+      485  farhanfair.warcaskettweakspatch
+      501  dmp.vfepirates.warcasketwork
+      502  aoba.warcasket
+      563  mandrake.jawa.armoury              <- us, after all four ✅
+
+  Wrapped in PatchOperationFindMod so the whole file is a silent no-op if VFE
+  Pirates is ever removed. Each op is additionally PatchOperationConditional on
+  the exact node, so a VFEP update that restructures either def makes this fall
+  silent rather than fail.
+
+  ⚠️ Both guards return TRUE when they match nothing (see traps.md,
+  "PatchOperationFindMod(X) failed"). A clean log is therefore NOT evidence this
+  worked. Only the build menu is.
+
+  VERIFY AFTER THE NEXT LOAD
+  ==========================
+    * Architect > Production: NO "warcasket foundry". That is the whole test.
+    * Research tab: the "warcaskets (salvaged shells only)" node is present,
+      researchable, and its description says plainly that it grants no foundry.
+    * Dev-spawn a VFEP_Footsoldier: still fully casketed. If the Junkers lost
+      their armour, this file hit pawnkind generation and must be reverted.
+    * grep Player.log for "Could not resolve cross-reference" — baseline 28.
+      A jump means the research node was reached after all.
+  ============================================================================
+-->
+<Patch>
+
+  <Operation Class="PatchOperationFindMod">
+    <mods>
+      <li>Vanilla Factions Expanded - Pirates</li>
+    </mods>
+    <match Class="PatchOperationSequence">
+      <operations>
+
+        <!-- 1. THE CUT. Remove the only warcasket production building from the
+                architect menu. Everything else in this file is signposting. -->
+        <li Class="PatchOperationConditional">
+          <xpath>/Defs/ThingDef[defName="VFEP_WarcasketFoundry"]/designationCategory</xpath>
+          <match Class="PatchOperationRemove">
+            <xpath>/Defs/ThingDef[defName="VFEP_WarcasketFoundry"]/designationCategory</xpath>
+          </match>
+        </li>
+
+        <!-- 2. Do not leave a 3000-point research node that grants nothing.
+                Label and description only; the node itself stays, because 45
+                defs and one downstream project reference it. -->
+        <li Class="PatchOperationConditional">
+          <xpath>/Defs/ResearchProjectDef[defName="VFEP_Warcaskets"]/label</xpath>
+          <match Class="PatchOperationReplace">
+            <xpath>/Defs/ResearchProjectDef[defName="VFEP_Warcaskets"]/label</xpath>
+            <value>
+              <label>warcaskets (salvaged shells only)</label>
+            </value>
+          </match>
+        </li>
+
+        <li Class="PatchOperationConditional">
+          <xpath>/Defs/ResearchProjectDef[defName="VFEP_Warcaskets"]/description</xpath>
+          <match Class="PatchOperationReplace">
+            <xpath>/Defs/ResearchProjectDef[defName="VFEP_Warcaskets"]/description</xpath>
+            <value>
+              <description>Understand how a warcasket is welded shut around a living pilot.\n\nThis knowledge does NOT let the clan build one. Warcasket foundries are Junker work, and their machining tolerances are far beyond anything a scavenger crew can fabricate from scrap. No foundry can be constructed.\n\nWhat it buys is the ability to recognise, strip and eventually re-seat a shell cut off a dead Junker. A Jawa in a dead man's armour is the only warcasket this clan will ever field.</description>
+            </value>
+          </match>
+        </li>
+
+      </operations>
+    </match>
+  </Operation>
+
+</Patch>

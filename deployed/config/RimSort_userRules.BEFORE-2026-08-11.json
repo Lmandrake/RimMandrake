@@ -1,0 +1,11 @@
+{
+    "timestamp": 1786393816,
+    "rules": {
+        "mandrake.gravship.compat": {
+            "loadBottom": {
+                "comment": "Custom Mods Load Last",
+                "value": true
+            }
+        }
+    }
+}

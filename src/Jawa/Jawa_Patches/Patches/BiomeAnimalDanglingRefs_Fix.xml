@@ -1,0 +1,162 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ============================================================================
+  BiomeAnimalDanglingRefs_Fix.xml          Jawa_Patches · authored 2026-08-10
+  ============================================================================
+
+  THE BUG
+  =======
+  Sibling of AnimalBiomeDuplicates_Fix.xml. Same engine method, opposite
+  failure. BiomeDef.CommonalityOfAnimal() builds a Dictionary keyed on
+  PawnKindDef:
+
+      foreach (record in biome.wildAnimals)
+          dict.Add(record.animal, record.commonality);
+
+  If a wildAnimals entry names a PawnKindDef that does not exist, the def
+  loader logs one quiet "could not resolve cross-reference" line and leaves
+  record.animal as NULL. The record itself is NOT removed. Dictionary.Add
+  then throws on the null key:
+
+      System.ArgumentNullException: Value cannot be null. Parameter name: key
+        at System.Collections.Generic.Dictionary`2.TryInsert
+        at RimWorld.BiomeDef.CommonalityOfAnimal (PawnKindDef animalDef)
+        at RimWorld.BiomeDef+<get_AllWildAnimals>d__94.MoveNext ()
+
+  Observed live on this stack, 2026-08-10: this killed Choose Wild Animal
+  Spawns in its static constructor, so the MOD WAS DEAD AT STARTUP. It had
+  been dead for three consecutive loads, each time behind a different mask:
+
+      load 1 : ArgumentException     duplicate key   (Armadillo, fixed)
+      load 2 : ArgumentNullException null BiomeDef   (our own li bug, fixed)
+      load 3 : ArgumentNullException null PawnKindDef (THIS, the real one)
+
+  Same exception type and same stack frame across loads 2 and 3, different
+  cause. Read what is null, not just where it threw.
+
+  ROOT CAUSE, TRACED  [VERIFIED 2026-08-10]
+  =========================================
+  Primordial Geysers (IronScruff.PrimordialGeysers, WS 2896731795) ships two
+  compatibility patches that inject animals into its own biome:
+
+      1.6/Patches/PrimordialGeysers_AlphaAnimalsPatch.xml
+      1.6/Patches/PrimordialGeysers_VanillaAnimalsExpandedPatch.xml
+
+  Both are guarded by PatchOperationFindMod on the MOD NAME only. The mods
+  are installed, so the guards pass and the entries are added. But five of
+  the named PawnKindDefs do not exist in the versions we load:
+
+    AEXP_Badger, AEXP_Muskox, AEXP_Moose, AEXP_Porcupine
+        Vanilla Animals Expanded (WS 2871933948) defines these ONLY in its
+        1.6NotOdyssey folder. Its LoadFolders.xml reads:
+            <li IfModNotActive="Ludeon.RimWorld.Odyssey">1.6NotOdyssey</li>
+        Odyssey IS active here, so VAE deliberately drops those four to avoid
+        colliding with Odyssey's own badger/muskox/moose/porcupine. Correct
+        behaviour by VAE; Primordial Geysers just never accounted for it.
+
+    AA_WaywardMobileAssembler
+        Removed from Alpha Animals. Alpha Genes blacklists the name and Alpha
+        Animals has its corpse entry commented out in GenomeTable_Alpha.xml.
+
+  This is the "MayRequire / FindMod checks the mod, not the def" trap, but
+  with a far worse consequence than the usual harmless unresolved reference.
+
+  DESIGN
+  ======
+  Remove the five dangling biome-side entries.
+
+  Note this INVERTS the rule stated in AnimalBiomeDuplicates_Fix.xml ("always
+  remove the animal side, never the biome side"). That rule exists so we never
+  lose a spawn. It does not apply here: these entries resolve to null, so they
+  spawn nothing at all. Removing them costs exactly zero content, and the
+  biome already lists vanilla <Porcupine> and <Moose> in its own def anyway.
+
+  Not remapped to the Odyssey equivalents on purpose. Remapping would ADD
+  spawns to a biome, which is a design decision, not a crash fix.
+
+  LOAD ORDER  [VERIFIED 2026-08-10]
+  =================================
+  These nodes do not exist on disk. They are CREATED at runtime by Primordial
+  Geysers' patches, so this patch must apply after them. Patches run in mod
+  load order:
+
+      Primordial Geysers   entry 252
+      Jawa_Patches         entry 562   (LAST of 562 active)
+
+  Moved to last on 2026-08-10, so this holds by construction rather than by
+  luck. Keep it last.
+
+  Because the targets are patch-created, validate_patch.py reports 0 on-disk
+  matches for every xpath below. That is EXPECTED here and is not a silent
+  no-op. The validator sees unpatched defs only.
+
+  SAFETY
+  ======
+  Every op is wrapped in PatchOperationConditional testing the exact node. If
+  Primordial Geysers fixes its patches, or either animal mod restores the
+  defs, each op becomes a silent no-op instead of a red error.
+
+  VERIFY AFTER THE NEXT LOAD
+  ==========================
+  Expected in Player.log:
+    * "No Verse.PawnKindDef named AEXP_Badger found to give to
+      RimWorld.BiomeAnimalRecord"   and its four siblings: GONE
+    * "Error in static constructor of ChooseWildAnimalSpawns.Main": GONE
+    * total unresolved cross-references: 30 to 25
+  If CWAS still dies with a null key, another biome has a dangling entry that
+  did not log; grep the log for BiomeAnimalRecord and repeat this treatment.
+  ============================================================================
+-->
+<Patch>
+
+  <!-- ==================================================================
+       1. AA_WaywardMobileAssembler  (removed from Alpha Animals)
+       ================================================================== -->
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/BiomeDef[defName="IronScruff_PrimordialGeysers"]/wildAnimals/AA_WaywardMobileAssembler</xpath>
+    <match Class="PatchOperationRemove">
+      <xpath>/Defs/BiomeDef[defName="IronScruff_PrimordialGeysers"]/wildAnimals/AA_WaywardMobileAssembler</xpath>
+    </match>
+  </Operation>
+
+  <!-- ==================================================================
+       2. AEXP_Badger      (VAE 1.6NotOdyssey only; Odyssey is active)
+       ================================================================== -->
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/BiomeDef[defName="IronScruff_PrimordialGeysers"]/wildAnimals/AEXP_Badger</xpath>
+    <match Class="PatchOperationRemove">
+      <xpath>/Defs/BiomeDef[defName="IronScruff_PrimordialGeysers"]/wildAnimals/AEXP_Badger</xpath>
+    </match>
+  </Operation>
+
+  <!-- ==================================================================
+       3. AEXP_Muskox      (ditto)
+       ================================================================== -->
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/BiomeDef[defName="IronScruff_PrimordialGeysers"]/wildAnimals/AEXP_Muskox</xpath>
+    <match Class="PatchOperationRemove">
+      <xpath>/Defs/BiomeDef[defName="IronScruff_PrimordialGeysers"]/wildAnimals/AEXP_Muskox</xpath>
+    </match>
+  </Operation>
+
+  <!-- ==================================================================
+       4. AEXP_Moose       (ditto; biome already lists vanilla Moose)
+       ================================================================== -->
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/BiomeDef[defName="IronScruff_PrimordialGeysers"]/wildAnimals/AEXP_Moose</xpath>
+    <match Class="PatchOperationRemove">
+      <xpath>/Defs/BiomeDef[defName="IronScruff_PrimordialGeysers"]/wildAnimals/AEXP_Moose</xpath>
+    </match>
+  </Operation>
+
+  <!-- ==================================================================
+       5. AEXP_Porcupine   (ditto; biome already lists vanilla Porcupine)
+       ================================================================== -->
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/BiomeDef[defName="IronScruff_PrimordialGeysers"]/wildAnimals/AEXP_Porcupine</xpath>
+    <match Class="PatchOperationRemove">
+      <xpath>/Defs/BiomeDef[defName="IronScruff_PrimordialGeysers"]/wildAnimals/AEXP_Porcupine</xpath>
+    </match>
+  </Operation>
+
+</Patch>

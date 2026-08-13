@@ -1,0 +1,7 @@
+# Seed art staged for upload to an external image model. These PNGs are
+# third-party mod textures (Star Wars Xenotypes, WS 2915192253) copied here for
+# reference only — same licensing rationale that keeps mods/mod_sources/ out of
+# the repo. The brief (graphic.md) is ours and stays tracked; the borrowed
+# pixels do not. Returned/derived art gets its own decision when it lands.
+seed/
+*.png

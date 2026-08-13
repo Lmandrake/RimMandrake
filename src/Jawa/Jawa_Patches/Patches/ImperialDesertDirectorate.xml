@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ============================================================================
+  ImperialDesertDirectorate.xml          Jawa_Patches · authored 2026-08-13
+  ============================================================================
+
+  V1 ROW: "Factions — authored: ONE, the Imperial Desert Directorate, on
+  OuterRim_GalacticEmpire as vessel. Label-level reskin only — name, leader
+  title, colour." (V1_SCOPE.md, owner-ratified.)
+
+  Dossier: worldbuilding/faction_roster_v2.md §2. The Directorate is the
+  sector occupier: vertical power, nearly all of it orbital, two or three
+  surface seats clustered near the large spaceport.
+
+  READ FROM THE SHIPPED DEF 2026-08-13, game down, not inferred:
+  C:\Program Files (x86)\Steam\steamapps\workshop\content\294100\
+    2919248699\1.6\Defs\FactionDefs\FactionDefs.xml     (Outer Rim - Core)
+
+      label           Galactic Empire
+      fixedName       Galactic Empire        <- see below, this is the trap
+      leaderTitle     Grand Admiral
+      pawnsPlural     Imperial Troopers
+      colorSpectrum   RGB(255, 255, 255)     <- single entry
+      permanentEnemy  false                  <- NOT ours to change, see below
+
+  ⚠️ WHY `fixedName` IS PATCHED AND NOT JUST `label`
+  ==================================================
+  `label` is the def's display label; `fixedName` is the name the world object
+  actually carries. This def sets BOTH to "Galactic Empire". Patch only `label`
+  and the faction still introduces itself as the Galactic Empire everywhere it
+  matters — the world map, the comms console, the faction list. The v1 gate is
+  "the faction is SEEN on the world map", so `fixedName` is the field the gate
+  actually reads. Missing it would produce a reskin that passes a file diff and
+  fails the gate.
+
+  ⚠️ COLOUR: CHOSEN, NOT SPECIFIED — trivially changeable
+  =======================================================
+  The dossier gives no colour. Shipped is pure white, which is canonical
+  Imperial but reads poorly as a world-map marker on a PALE DESERT planet —
+  white on near-white. Chosen instead: a cold steel grey, RGB(74, 84, 96).
+  Still unmistakably Imperial next to the ochres and rusts of the local
+  factions, and legible against sand. One value to change if the owner
+  disagrees; nothing else depends on it.
+
+  ⛔ DELIBERATELY NOT TOUCHED — these are OUT of the v1 row
+  ========================================================
+  Everything mechanical. No goodwill, no settlement counts, no pawnGroupMakers,
+  no memes, no techLevel. The scope is label-level and the reason is that the
+  scarce resource is verification passes, not authoring.
+
+  ⚠️ One genuine discrepancy found while reading, filed NOT fixed:
+  the shipped def has `permanentEnemy false`, while the dossier's faction
+  settings table says **Permanent enemy: Yes**. That is a mechanical field and
+  therefore v2. Recorded in TODO.md so the next author does not "discover" it
+  and quietly change it inside a label-only patch.
+
+  SAFETY
+  ======
+  Every op is wrapped in PatchOperationFindMod, so the whole file is a silent
+  no-op if Outer Rim - Core is ever removed. Each individual op is a
+  PatchOperationReplace on a node READ FROM DISK above, so none of them is
+  guessing at a field that might not exist.
+  ============================================================================
+-->
+<Patch>
+
+  <Operation Class="PatchOperationFindMod">
+    <mods>
+      <li>Outer Rim - Core</li>
+    </mods>
+    <match Class="PatchOperationSequence">
+      <operations>
+
+        <!-- The display label. -->
+        <li Class="PatchOperationReplace">
+          <xpath>/Defs/FactionDef[defName="OuterRim_GalacticEmpire"]/label</xpath>
+          <value><label>Imperial Desert Directorate</label></value>
+        </li>
+
+        <!-- The name the world object carries. THE ONE THE v1 GATE READS. -->
+        <li Class="PatchOperationReplace">
+          <xpath>/Defs/FactionDef[defName="OuterRim_GalacticEmpire"]/fixedName</xpath>
+          <value><fixedName>Imperial Desert Directorate</fixedName></value>
+        </li>
+
+        <!--
+          Grand Admiral -> Sector Director. The dossier's surface seats are the
+          "Sector Directorate seat ... the local aristocracy, the face the
+          orbital timer reports to". A Grand Admiral commands a fleet; a Sector
+          Director administers an occupied world, which is the thing the player
+          actually meets.
+        -->
+        <li Class="PatchOperationReplace">
+          <xpath>/Defs/FactionDef[defName="OuterRim_GalacticEmpire"]/leaderTitle</xpath>
+          <value><leaderTitle>Sector Director</leaderTitle></value>
+        </li>
+
+        <!-- "Imperial Troopers" -> the Directorate's own term. -->
+        <li Class="PatchOperationReplace">
+          <xpath>/Defs/FactionDef[defName="OuterRim_GalacticEmpire"]/pawnsPlural</xpath>
+          <value><pawnsPlural>Directorate troopers</pawnsPlural></value>
+        </li>
+
+        <!--
+          Description rewritten to the campaign's own fiction: the occupier is
+          VERTICAL. This is the sentence that tells a new reader why there are
+          only two or three Imperial tiles on a map the Empire supposedly owns.
+        -->
+        <li Class="PatchOperationReplace">
+          <xpath>/Defs/FactionDef[defName="OuterRim_GalacticEmpire"]/description</xpath>
+          <value>
+            <description>The Sector Directorate is the Imperial administration of this world, and it governs from orbit. Its power is vertical: a garrison ring overhead, a shipyard, an orbital timer that reports to nobody the surface ever sees — and, on the ground, only two or three fortified seats clustered near the large spaceport, where the local aristocracy keeps up the forms of empire in the heat.\n\nThe Directorate does not settle where the water is. It settles on roads, on passes, and on whatever the ancients left standing, and it ships in the rest. That is what makes it an occupier rather than a neighbour: it can be anywhere, and it is beholden to nothing on the surface except its own convoys.</description>
+          </value>
+        </li>
+
+        <!-- Canonical Imperial white -> steel grey, legible on desert. -->
+        <li Class="PatchOperationReplace">
+          <xpath>/Defs/FactionDef[defName="OuterRim_GalacticEmpire"]/colorSpectrum</xpath>
+          <value>
+            <colorSpectrum>
+              <li>RGB(74, 84, 96)</li>
+              <li>RGB(108, 118, 128)</li>
+            </colorSpectrum>
+          </value>
+        </li>
+
+      </operations>
+    </match>
+  </Operation>
+
+</Patch>

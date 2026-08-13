@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ============================================================================
+  SWCPZoomerIcon_Fix.xml                     Jawa_Patches · authored 2026-08-10
+  ============================================================================
+
+  THE BUG
+  =======
+  Star Wars KotOR Resources and Materials (guy762.MM.KotORCore, WS 3254370945)
+  ships SWCP_Core.dll referencing a Unity AssetBundle that was never packaged:
+
+      <mod>\SWCP-UnityAssets\Materials\StandaloneWindows64\SWCPshaders
+
+  Absent from the Workshop upload AND the GitHub repo. Filed upstream as issue
+  #7 (open). Every launch produces:
+
+      Could not execute post-long-event action. Exception: NullReferenceException
+        at Verse.BuildableDef.ResolveIcon () [0x00081]
+        at Verse.ThingDef.ResolveIcon ()
+        at Verse.BuildableDef.<PostLoad>b__78_0 ()
+        at Verse.LongEventHandler.ExecuteToExecuteWhenFinished ()
+
+  SEVERITY, CORRECTED  [VERIFIED FROM IL 2026-08-10]
+  ==================================================
+  Our notes used to call this severity-2 on the belief that a throw here aborts
+  the rest of RimWorld's post-load queue. THAT IS FALSE. The method wraps each
+  queued action in its own try/catch (18-byte try around one Action::Invoke; the
+  handler's leave targets the loop INCREMENT). One failed action costs exactly
+  that action. See mods/benign_log_errors.md section 6 for the full evidence.
+
+  So this patch is cosmetic hygiene, not a rescue. It is worth shipping anyway:
+  the error is a red Log.Error that pops the debug window every single launch,
+  and noise that everyone learns to ignore is how real errors get missed.
+
+  ROOT CAUSE, TRACED TO ONE DEF  [VERIFIED FROM IL 2026-08-10]
+  ============================================================
+  Exactly one def is responsible, and it is the only consumer in the entire
+  Workshop tree:
+
+      SWCP_VATS_Zoomer   in  3254370945/1.6/Defs/Thing_VATS_Zoomer.xml
+
+  Its graphicClass is SWCP.Core.VATS.Graphic_Zoomer, whose MatAt() is a
+  one-liner returning the static field SWCP.Core.Unity.Materials::ZoomMat with
+  no null guard. When the bundle fails to open, LoadMaterial returns null and
+  ZoomMat is a real C# null. Vanilla BuildableDef.ResolveIcon then does:
+
+      IL_007B  callvirt Verse.Graphic::MatAt
+      IL_0080  stloc.3                       <- Material mat, null
+      IL_0081  ldloc.3                       <- the reported offset
+      IL_0082  callvirt UnityEngine.Material::get_shader   <- NRE
+
+  Note the chain is self-triggering: ResolveIcon touches ZoomMat, which is the
+  first access to Materials, whose [StaticConstructorOnStartup] cctor then
+  attempts the bundle load. That is why the "Bundle Path" lines appear
+  immediately before the NRE rather than at some unrelated point in startup.
+
+  THE FIX
+  =======
+  Give the def a uiIconPath. Vanilla BuildableDef.<PostLoad>b__78_0 checks it
+  FIRST and skips ResolveIcon entirely when it is non-empty:
+
+      IL_0000  ldfld  BuildableDef::uiIconPath
+      IL_0006  call   GenText::NullOrEmpty
+      IL_000B  brtrue.s  -> IL_0021          ; empty  -> ResolveIcon
+      IL_000D  ...      uiIcon = ContentFinder<Texture2D>.Get(uiIconPath, true)
+      IL_001F  br.s      -> IL_0027          ; non-empty -> ResolveIcon SKIPPED
+
+  That lambda is the ONLY caller of ResolveIcon in Assembly-CSharp (TerrainDef
+  and ThingDef merely chain to the base), so a non-empty uiIconPath makes the
+  NRE structurally unreachable rather than merely unlikely.
+
+  512blank is the texture the def already uses for graphicData/texPath, and
+  Textures/512blank.png really exists in the SWCP mod, so ContentFinder resolves
+  it cleanly with no new error.
+
+  WHY NOT THE OTHER OPTIONS
+  =========================
+    * Turning off the EnableZoom mod setting: DOES NOT WORK. Verified: the
+      bundle load lives in two [StaticConstructorOnStartup] cctors (Materials,
+      Shaders) that read no settings at all. EnableZoom is only read by
+      JobDriver_AttackHybrid at attack time.
+    * Replacing graphicClass with Verse.Graphic_Single: also stops the NRE, but
+      JobDriver_AttackHybrid does an unguarded castclass to Graphic_Zoomer, so
+      it trades a startup NRE for a mid-combat InvalidCastException.
+    * A stub file at the bundle path: AssetBundle.LoadFromFile returns null for
+      any unloadable file, so the mod takes the identical branch. It also means
+      writing into a Steam Workshop folder, which Steam re-validates and wipes.
+    * Disabling SWCP: not an option. It defines 1,959 defs and ships 36
+      assemblies, and the whole KotOR family loads after it.
+
+  SAFETY
+  ======
+  Conditional-wrapped, so if SWCP ships a fix or renames the def this becomes a
+  silent no-op. Adds a field the def does not currently have; changes no
+  runtime behaviour, since graphicClass is untouched and Graphic_Zoomer is still
+  what JobDriver_AttackHybrid casts to.
+
+  EXPECTED AFTER THE NEXT LOAD
+  ============================
+    * GONE:    "Could not execute post-long-event action" plus the ResolveIcon
+               NRE, and with it the last red error in the load.
+    * REMAINS: the two "Bundle Path" / "Failed to load bundle" blocks. They are
+               not caused by this def; both cctors still run, just later, from
+               StaticConstructorOnStartupUtility.CallAll. Do not read their
+               presence as the patch having failed.
+    * Confirmed twice-per-launch by IL: two distinct call sites, and the mod
+      caches a failed load as null so the guard never trips.
+  ============================================================================
+-->
+<Patch>
+
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/ThingDef[defName="SWCP_VATS_Zoomer"][not(uiIconPath)]</xpath>
+    <match Class="PatchOperationAdd">
+      <xpath>/Defs/ThingDef[defName="SWCP_VATS_Zoomer"][not(uiIconPath)]</xpath>
+      <value>
+        <uiIconPath>512blank</uiIconPath>
+      </value>
+    </match>
+  </Operation>
+
+</Patch>

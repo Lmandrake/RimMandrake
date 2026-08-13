@@ -1,0 +1,138 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ============================================================================
+  GamorreanPawnKinds.xml                     Jawa_Patches · authored 2026-08-11
+  ============================================================================
+
+  WHY
+  ===
+  Before this file, the Gamorrean was a xenotype nothing could instantiate. All
+  1718 PawnKindDefs in the live dump were searched: ZERO mentioned Gamorrean.
+  The species existed only as an entry in the pawn-editor list.
+
+  These two pawnkinds make it a thing that can actually stand in the world.
+
+  THE FIND THAT MADE THIS WORTH DOING
+  ===================================
+  The KotOR mods already ship a complete, canon Gamorrean kit that nothing in
+  the game equips. Every def and every texture below was confirmed on disk:
+
+    guy762_gamorreanaxe        "Arg'garok"                1850   tag HC_gamorreanaxe
+    guy762_vaxe_hutt           "Kajidic Soldier's Axe"    1283   tag HC_gamorrean_melee
+    guy762_vaxe                "Vibroaxe"                  725   tag HC_gamorrean_melee
+    guy762_vglaive             "Vibroglaive"               800   tag HC_gamorrean_melee
+    guy762_Clothing_gamorrean  "Gamorrean leathers"        200   tag SaV_outfit_gamorrean
+    guy762_Hat_gamorrean       "hood, leather"              75   tag SaV_outfit_gamorrean
+    guy762_HvyArmor_gamorrean  "M'uhk'gfa"                6000   tag SaV_outfit_gamorrean
+
+  The armour is named for the canon Gamorrean battle harness and the axe for the
+  canon Gamorrean weapon. The apparel art even ships per-body-type variants
+  including Fat, which is the body the xenotype uses. Someone built all of this
+  and then never wired a pawnkind to it. We are the ones wiring it.
+
+  Note the "HC_" tag prefix on the weapons — Hutt Cartel. The upstream author
+  clearly intended Hutt Cartel pawnkinds and never shipped them.
+
+  SHAPE
+  =====
+  Standalone defs, no ParentName. Checked against Core's PirateBase: a humanlike
+  PawnKindDef needs only <race>, a faction default and the gear fields — no
+  lifeStages, no abstract parent. Not parenting to OuterRimTestColonyPawnKind
+  (which AlienSpawnEnablers.xml uses) is deliberate: that base hard-sets
+  defaultFactionDef to PlayerColony, which is right for a dev-spawn stub and
+  wrong for a real hostile species.
+
+  useFactionXenotypes is explicitly false so the Gamorrean xenotype survives
+  whatever faction ends up fielding them.
+
+  ⚠️ SCOPE LIMIT — THESE DO NOT RAID YOU YET
+  ==========================================
+  A pawnkind only enters world generation when a faction lists it in
+  pawnGroupMakers. This file deliberately does NOT patch any faction, because
+  adding a new species to live raid tables changes campaign balance and that is
+  a decision for faction_roster_v2.md, not a side effect of authoring art defs.
+
+  defaultFactionDef points at OuterRim_BinaryStarRaiders — verified present in
+  the live FactionDef dump, and the closest thing the stack has to Hutt muscle.
+  There is NO Hutt Cartel faction: all 81 loaded factions were checked and none
+  matches hutt/cartel/crime/pyke/slaver/black-sun. Authoring one is the real
+  unlock, and it is still open work.
+
+  Until then these are reachable through dev mode → Spawn pawn, which is exactly
+  what is needed to look at the species and judge the art.
+  ============================================================================
+-->
+<Defs>
+
+  <!-- Door muscle. What stands either side of a Hutt's dais. -->
+  <PawnKindDef>
+    <defName>Jawa_Gamorrean_Guard</defName>
+    <label>Gamorrean guard</label>
+    <labelPlural>Gamorrean guards</labelPlural>
+    <race>Human</race>
+    <defaultFactionDef>OuterRim_BinaryStarRaiders</defaultFactionDef>
+    <combatPower>90</combatPower>
+    <isFighter>true</isFighter>
+    <canBeSapper>false</canBeSapper>
+    <useFactionXenotypes>false</useFactionXenotypes>
+    <xenotypeSet>
+      <xenotypeChances>
+        <Jawa_Xeno_Gamorrean>1.0</Jawa_Xeno_Gamorrean>
+      </xenotypeChances>
+    </xenotypeSet>
+    <itemQuality>Poor</itemQuality>
+    <gearHealthRange>0.4~1.0</gearHealthRange>
+    <apparelMoney>250~500</apparelMoney>
+    <apparelAllowHeadgearChance>1</apparelAllowHeadgearChance>
+    <apparelRequired>
+      <li>guy762_Clothing_gamorrean</li>
+      <li>guy762_Hat_gamorrean</li>
+    </apparelRequired>
+    <apparelTags>
+      <li>SaV_outfit_gamorrean</li>
+    </apparelTags>
+    <weaponMoney>700~900</weaponMoney>
+    <weaponTags>
+      <li>HC_gamorrean_melee</li>
+    </weaponTags>
+    <initialWillRange>1~3</initialWillRange>
+    <initialResistanceRange>8~14</initialResistanceRange>
+  </PawnKindDef>
+
+  <!-- The one in the battle harness carrying the axe it is named for. -->
+  <PawnKindDef>
+    <defName>Jawa_Gamorrean_Enforcer</defName>
+    <label>Gamorrean enforcer</label>
+    <labelPlural>Gamorrean enforcers</labelPlural>
+    <race>Human</race>
+    <defaultFactionDef>OuterRim_BinaryStarRaiders</defaultFactionDef>
+    <combatPower>170</combatPower>
+    <isFighter>true</isFighter>
+    <canBeSapper>false</canBeSapper>
+    <useFactionXenotypes>false</useFactionXenotypes>
+    <xenotypeSet>
+      <xenotypeChances>
+        <Jawa_Xeno_Gamorrean>1.0</Jawa_Xeno_Gamorrean>
+      </xenotypeChances>
+    </xenotypeSet>
+    <itemQuality>Normal</itemQuality>
+    <gearHealthRange>0.6~1.0</gearHealthRange>
+    <apparelMoney>6000~6600</apparelMoney>
+    <apparelAllowHeadgearChance>1</apparelAllowHeadgearChance>
+    <apparelRequired>
+      <li>guy762_HvyArmor_gamorrean</li>
+      <li>guy762_Hat_gamorrean</li>
+    </apparelRequired>
+    <apparelTags>
+      <li>SaV_outfit_gamorrean</li>
+      <li>SaV_apparel_huttgoon</li>
+    </apparelTags>
+    <weaponMoney>1900~2200</weaponMoney>
+    <weaponTags>
+      <li>HC_gamorreanaxe</li>
+    </weaponTags>
+    <initialWillRange>2~4</initialWillRange>
+    <initialResistanceRange>14~22</initialResistanceRange>
+  </PawnKindDef>
+
+</Defs>

@@ -1,0 +1,79 @@
+{
+  "machine": "AutomatedSmelter",
+  "sheet_wh": [
+    1416,
+    1416
+  ],
+  "cell": 640,
+  "cols": 2,
+  "margin": 40,
+  "gutter": 56,
+  "order": [
+    "north",
+    "east",
+    "south",
+    "west"
+  ],
+  "cells": {
+    "north": {
+      "file": "AutomatedSmelter_north.png",
+      "cell_xywh": [
+        40,
+        40,
+        640,
+        640
+      ],
+      "art_xywh": [
+        104,
+        40,
+        512,
+        640
+      ]
+    },
+    "east": {
+      "file": "AutomatedSmelter_east.png",
+      "cell_xywh": [
+        736,
+        40,
+        640,
+        640
+      ],
+      "art_xywh": [
+        736,
+        104,
+        640,
+        512
+      ]
+    },
+    "south": {
+      "file": "AutomatedSmelter_south.png",
+      "cell_xywh": [
+        40,
+        736,
+        640,
+        640
+      ],
+      "art_xywh": [
+        104,
+        736,
+        512,
+        640
+      ]
+    },
+    "west": {
+      "file": "AutomatedSmelter_west.png",
+      "cell_xywh": [
+        736,
+        736,
+        640,
+        640
+      ],
+      "art_xywh": [
+        736,
+        800,
+        640,
+        512
+      ]
+    }
+  }
+}

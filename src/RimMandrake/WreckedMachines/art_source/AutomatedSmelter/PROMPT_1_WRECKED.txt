@@ -1,0 +1,73 @@
+SINGLE FACING — paste this with ONE image (e.g. restored/AutomatedSmelter_south.png)
+=====================================================================================
+
+Edit this image in place. Keep the canvas size, and keep the object the same
+size and position it is now.
+
+Style lock: identical art style, palette, brush detail and camera angle to the
+input. Top-down colony-sim sprite.
+
+This industrial smelter has stood abandoned for decades. Rework it into a wreck:
+
+- Tear panels off. Punch holes clean through the plating. Break the corners
+  away. Peel sheet metal back. Buckle the frame so it sags.
+- All damage REMOVES material. The wreck is what is left after pieces are gone.
+- Keep every remaining edge inside the original silhouette.
+- Heavy rust, corrosion staining, bare pitted metal on the exposed interior.
+- Every indicator lamp, screen and light strip reads as dead: dark grey glass,
+  cracked lenses, empty sockets, soot. The colour of an unplugged appliance.
+- The whole object is cold, matte and inert.
+
+Transparent background.
+
+
+2x2 SHEET — paste this with sheets/SOURCE_SHEET.png
+=====================================================================================
+
+Edit this image in place. It is a 2x2 grid: one machine drawn from four sides.
+Top-left north, top-right east, bottom-left south, bottom-right west.
+
+Keep the canvas size. Keep all four machines the same size and position they are
+now. Return the same 2x2 grid.
+
+Style lock: identical art style, palette, brush detail and camera angle to the
+input. Top-down colony-sim sprite.
+
+This industrial smelter has stood abandoned for decades. Rework all four views
+into the same wreck:
+
+- Tear panels off. Punch holes clean through the plating. Break the corners
+  away. Peel sheet metal back. Buckle the frame so it sags.
+- All damage REMOVES material. The wreck is what is left after pieces are gone.
+- Keep every remaining edge inside the original silhouette.
+- Heavy rust, corrosion staining, bare pitted metal on the exposed interior.
+- Every indicator lamp, screen and light strip reads as dead: dark grey glass,
+  cracked lenses, empty sockets, soot. The colour of an unplugged appliance.
+- The whole object is cold, matte and inert.
+
+It is ONE machine seen four times. A hole torn in a flank shows in the two views
+that can see that flank. Match the damage across all four.
+
+Transparent background.
+
+
+WHY THIS IS SHORTER THAN BRIEF_1_WRECKED.md
+=====================================================================================
+
+The .md brief is the human's specification. This file is what the model reads.
+Three deliberate differences:
+
+1. NO NEGATIONS. The brief says "NO lights, NOTHING glowing, nothing may extend
+   beyond the outline". Image models condition on the tokens present, so
+   "no glowing lights" reliably produces glowing lights. Every constraint here
+   is phrased as a thing to DRAW: dead grey glass, cracked lenses, soot.
+
+2. CONSTRAINTS FIRST, ~150 words total. The brief is ~900 words and buries
+   "same size, same canvas" under prose about scavengers. Early tokens carry
+   more weight and long prose gets sampled, not followed.
+
+3. NOTHING HUMAN-FACING. No shell commands, no rationale about game tiles, no
+   explanation of why the rule exists. The model cannot act on any of it and it
+   dilutes what is left.
+
+Keep the .md — it is the record of WHY. Paste this.

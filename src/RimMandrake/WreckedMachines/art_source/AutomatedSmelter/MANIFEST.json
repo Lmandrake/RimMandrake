@@ -1,0 +1,131 @@
+{
+  "defName": "VFEFactory_AutomatedSmelter",
+  "short": "AutomatedSmelter",
+  "why_treated": "Phase 2 of the ship_deck_plan repair ladder \u2014 the first machine the player restores, so it is the pilot for the whole pipeline.",
+  "owner": {
+    "packageId": "VanillaExpanded.VFEFactory",
+    "mod_dir": "/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3686924415"
+  },
+  "thingDef": {
+    "def_file": "/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3686924415/1.6/Defs/ThingDefs_Buildings/Buildings_Factories.xml",
+    "label": "automated smelter",
+    "texPath": "Things/Building/Factories/AutomatedSmelter/AutomatedSmelter",
+    "graphicClass": "Graphic_Multi",
+    "drawSize": "(4,5)",
+    "size": "(3,4)",
+    "research": [
+      "VFE_BasicFactories"
+    ],
+    "costList": {
+      "Steel": "260",
+      "ComponentIndustrial": "7"
+    }
+  },
+  "expected_files": [
+    "AutomatedSmelter_north.png",
+    "AutomatedSmelter_east.png",
+    "AutomatedSmelter_south.png",
+    "AutomatedSmelter_west.png"
+  ],
+  "restored_present": [
+    "AutomatedSmelter_north.png",
+    "AutomatedSmelter_east.png",
+    "AutomatedSmelter_south.png",
+    "AutomatedSmelter_west.png"
+  ],
+  "restored_missing": [],
+  "measurements": {
+    "AutomatedSmelter_north.png": {
+      "file": "AutomatedSmelter_north.png",
+      "width": 512,
+      "height": 640,
+      "bbox": [
+        66,
+        49,
+        444,
+        585
+      ],
+      "bbox_wh": [
+        379,
+        537
+      ],
+      "opaque_px": 197521,
+      "semi_px": 1318,
+      "coverage_pct": 60.68,
+      "coloured_px": 51275,
+      "is_greyscale": false,
+      "has_real_alpha": true,
+      "black_pct": 6.0,
+      "light_pct": 0.0
+    },
+    "AutomatedSmelter_east.png": {
+      "file": "AutomatedSmelter_east.png",
+      "width": 640,
+      "height": 512,
+      "bbox": [
+        54,
+        45,
+        587,
+        446
+      ],
+      "bbox_wh": [
+        534,
+        402
+      ],
+      "opaque_px": 200419,
+      "semi_px": 1775,
+      "coverage_pct": 61.7,
+      "coloured_px": 41988,
+      "is_greyscale": false,
+      "has_real_alpha": true,
+      "black_pct": 5.4,
+      "light_pct": 0.0
+    },
+    "AutomatedSmelter_south.png": {
+      "file": "AutomatedSmelter_south.png",
+      "width": 512,
+      "height": 640,
+      "bbox": [
+        66,
+        49,
+        444,
+        585
+      ],
+      "bbox_wh": [
+        379,
+        537
+      ],
+      "opaque_px": 196262,
+      "semi_px": 1322,
+      "coverage_pct": 60.3,
+      "coloured_px": 49439,
+      "is_greyscale": false,
+      "has_real_alpha": true,
+      "black_pct": 5.9,
+      "light_pct": 0.0
+    },
+    "AutomatedSmelter_west.png": {
+      "file": "AutomatedSmelter_west.png",
+      "width": 640,
+      "height": 512,
+      "bbox": [
+        52,
+        45,
+        585,
+        446
+      ],
+      "bbox_wh": [
+        534,
+        402
+      ],
+      "opaque_px": 200378,
+      "semi_px": 1818,
+      "coverage_pct": 61.71,
+      "coloured_px": 41685,
+      "is_greyscale": false,
+      "has_real_alpha": true,
+      "black_pct": 5.4,
+      "light_pct": 0.0
+    }
+  }
+}

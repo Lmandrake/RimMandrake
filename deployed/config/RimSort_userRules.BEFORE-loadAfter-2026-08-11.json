@@ -1,0 +1,41 @@
+{
+    "timestamp": 1786499688,
+    "rules": {
+        "mandrake.jawa.patches": {
+            "loadBottom": {
+                "comment": "Jawa Patches - patches defs from every SW mod, must load last",
+                "value": true
+            }
+        },
+        "mandrake.jawavoice": {
+            "loadBottom": {
+                "comment": "JawaVoice - patches SpeakUp's rule packs",
+                "value": true
+            }
+        },
+        "mandrake.jawaionweapons": {
+            "loadBottom": {
+                "comment": "Jawa Ion Weapons",
+                "value": true
+            }
+        },
+        "mandrake.jawa.armoury": {
+            "loadBottom": {
+                "comment": "Jawa Armoury Rebalance - restretches other mods' weapons",
+                "value": true
+            }
+        },
+        "mandrake.jawa.doctrine": {
+            "loadBottom": {
+                "comment": "Jawa Doctrine Patches",
+                "value": true
+            }
+        },
+        "mandrake.rimdefdump": {
+            "loadBottom": {
+                "comment": "RimDefDump - dumps the finished def state, must be dead last",
+                "value": true
+            }
+        }
+    }
+}

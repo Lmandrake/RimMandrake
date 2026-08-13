@@ -1,0 +1,112 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <!--
+    JawaBench.BridgeTools - a RimBridgeServer 2.x companion assembly.
+
+    This is NOT a RimWorld mod. It ships no About.xml and is never loaded by
+    RimWorld's mod loader. RimBridgeServer loads it, late, out of the game-root
+    BridgeTools folder, and registers its [Tool] methods onto the live bridge.
+
+    THE ONE RULE THAT BREAKS EVERYTHING IF YOU GET IT WRONG
+    ======================================================
+    Nothing here may be copied to the output except our own DLL. RimBridgeServer
+    resolves RimBridgeServer.Sdk (and Assembly-CSharp, and UnityEngine) to the
+    copies the running game already loaded. Shipping our own would give the
+    process two copies of the same type, and a TerrainDef from "our"
+    Assembly-CSharp is not a TerrainDef the game will accept.
+
+    That is enforced twice, deliberately:
+      * Private=false on every Reference below
+      * <CopyLocalLockFileAssemblies>false</CopyLocalLockFileAssemblies>
+    and checked a third time by bridgetools/build.py, which fails the build if
+    any foreign DLL lands in the output folder.
+  -->
+
+  <PropertyGroup>
+    <!-- Unity's Mono runtime. netstandard2.0 would compile but cannot reference
+         the game's net472 Assembly-CSharp without warnings we would then have
+         to suppress, so match the game exactly. -->
+    <TargetFramework>net472</TargetFramework>
+    <LangVersion>latest</LangVersion>
+    <AssemblyName>JawaBench.BridgeTools</AssemblyName>
+    <RootNamespace>JawaBench.BridgeTools</RootNamespace>
+    <OutputPath>..\artifacts\BridgeTools\JawaBench\</OutputPath>
+    <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+    <GenerateAssemblyInfo>true</GenerateAssemblyInfo>
+    <Version>0.1.0</Version>
+    <Deterministic>true</Deterministic>
+    <!-- No .pdb, no .deps.json, no transitive package DLLs in the bundle. -->
+    <DebugType>none</DebugType>
+    <GenerateDependencyFile>false</GenerateDependencyFile>
+    <CopyLocalLockFileAssemblies>false</CopyLocalLockFileAssemblies>
+    <ProduceReferenceAssembly>false</ProduceReferenceAssembly>
+    <!-- Restore must work with no network: the net472 reference assemblies are
+         already in the local NuGet cache. -->
+    <RestorePackagesPath Condition="'$(RestorePackagesPath)' == ''">$(UserProfile)\.nuget\packages</RestorePackagesPath>
+  </PropertyGroup>
+
+  <!--
+    THE GM PAIR IS OFF BY DEFAULT, ON PURPOSE.
+
+    jawa/fire_incident and jawa/send_letter are a different class from every
+    other tool here. The rest change only what the caller named; fire_incident
+    hands the WORLD permission to act on the player - it can drop a raid on the
+    colony the owner is playing. So the default build omits both.
+
+    The failure modes are asymmetric, which is what decides the default: a tool
+    that is missing announces itself the first time you call it, while a raid
+    tool that is present announces itself as a raid. Opt IN, never out, by
+    passing the "gm" flag to bridgetools/build.py (or /p:JawaGmTools=true).
+
+    Owner ruling required before that ships. See AGENT_BRIDGE_state.md.
+  -->
+  <PropertyGroup>
+    <JawaGmTools Condition="'$(JawaGmTools)' == ''">false</JawaGmTools>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(JawaGmTools)' == 'true'">
+    <DefineConstants>$(DefineConstants);JAWA_GM_TOOLS</DefineConstants>
+  </PropertyGroup>
+
+  <!-- Where the running game keeps the DLLs we compile against. Override on the
+       command line if RimWorld lives somewhere else:
+         dotnet build /p:RimWorldDir="D:\Games\RimWorld"  -->
+  <PropertyGroup>
+    <RimWorldDir Condition="'$(RimWorldDir)' == ''">C:\Program Files (x86)\Steam\steamapps\common\RimWorld</RimWorldDir>
+    <RimWorldManagedDir>$(RimWorldDir)\RimWorldWin64_Data\Managed</RimWorldManagedDir>
+    <!-- The SDK is not distributed as a nupkg in this checkout (the shipped
+         RimBridgeServer-main has no Source/ tree, so scripts/pack-sdk.sh cannot
+         run). Reference the assembly the game itself loads instead - which is
+         also the exact version we will be hosted by, so a version skew between
+         compile-time and run-time SDK is impossible by construction. -->
+    <RimBridgeSdkDir Condition="'$(RimBridgeSdkDir)' == ''">C:\Program Files (x86)\Steam\steamapps\workshop\content\294100\3727949765\1.6\Assemblies</RimBridgeSdkDir>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Reference Include="RimBridgeServer.Sdk">
+      <HintPath>$(RimBridgeSdkDir)\RimBridgeServer.Sdk.dll</HintPath>
+      <Private>false</Private>
+    </Reference>
+    <Reference Include="Assembly-CSharp">
+      <HintPath>$(RimWorldManagedDir)\Assembly-CSharp.dll</HintPath>
+      <Private>false</Private>
+    </Reference>
+    <Reference Include="UnityEngine.CoreModule">
+      <HintPath>$(RimWorldManagedDir)\UnityEngine.CoreModule.dll</HintPath>
+      <Private>false</Private>
+    </Reference>
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.NETFramework.ReferenceAssemblies.net472" Version="1.0.3" PrivateAssets="all" />
+  </ItemGroup>
+
+  <!-- Fail loudly and early rather than emitting 400 "type not found" errors. -->
+  <Target Name="CheckReferences" BeforeTargets="BeforeBuild">
+    <Error Condition="!Exists('$(RimWorldManagedDir)\Assembly-CSharp.dll')"
+           Text="Assembly-CSharp.dll not found at $(RimWorldManagedDir). Pass /p:RimWorldDir=... " />
+    <Error Condition="!Exists('$(RimBridgeSdkDir)\RimBridgeServer.Sdk.dll')"
+           Text="RimBridgeServer.Sdk.dll not found at $(RimBridgeSdkDir). Is RimBridgeServer subscribed? Pass /p:RimBridgeSdkDir=... " />
+  </Target>
+
+</Project>

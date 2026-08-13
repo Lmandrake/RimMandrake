@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+
+  <!-- ========================================================================
+       PROJECTILE — a low-damage ion bolt. Uses our JawaIon_Damage damage
+       (EMP-family, harmsHealth=false). The bolt's job is to (a) EMP-stun
+       mechs/droids instantly and (b) deposit Jawa_IonStun buildup on whatever
+       it hits so flesh targets are worn down toward a live collapse.
+  ======================================================================== -->
+  <ThingDef ParentName="BaseBullet">
+    <defName>JawaIon_Bullet</defName>
+    <label>ion bolt</label>
+    <graphicData>
+      <!-- FIXED 2026-08-10. This used to point at
+           OuterRim/Projectile/BlasterBolt_Blue on the assumption that Outer Rim
+           Core supplies it. It does not: a sweep of every active mod's Textures
+           folder found NO BlasterBolt sprite anywhere in the load set, so the
+           bolt rendered as a magenta placeholder. The art was in this mod's own
+           art_candidates folder the whole time and simply never got moved into
+           Textures. Now shipped locally, so it cannot break again if Outer Rim
+           reorganises. The soundCast below WAS verified to exist. -->
+      <texPath>JawaIon/Bullet_JawaIon</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+      <shaderType>TransparentPostLight</shaderType>
+    </graphicData>
+    <projectile>
+      <damageDef>JawaIon_Damage</damageDef>
+      <!-- Low base "damage" — with harmsHealth=false this is the EMP/stun
+           magnitude, not a wound. Kept small so the gun is not very dangerous. -->
+      <damageAmountBase>8</damageAmountBase>
+      <stoppingPower>0.5</stoppingPower>
+      <speed>55</speed>
+      <armorPenetrationBase>0.10</armorPenetrationBase>
+    </projectile>
+  </ThingDef>
+
+  <!-- ========================================================================
+       WEAPON — the Jawa Ion Blaster. Industrial tech level, buildable from the
+       start at a vanilla machining/fabrication bench, cheap scrap-tech cost.
+       Tuned "weak but cunning": low damage, slow warmup, long cooldown, modest
+       range, accuracy that falls off at distance (rewards ambush + closing).
+       Stat reference cross-checked against Outer Rim Core's ion suite
+       (warmup 1.2, range 24/31/42) — we deliberately run SLOWER and SHORTER.
+  ======================================================================== -->
+  <ThingDef ParentName="BaseHumanMakeableGun">
+    <defName>JawaIon_Blaster</defName>
+    <label>Jawa ion blaster</label>
+    <description>A cobbled-together ion emitter of Jawa make — bound wire, salvaged capacitors, and a scavenged focusing coil. It fires a weak ionic bolt that overloads machines almost at once and, with sustained fire, scrambles a living target's nerves until they simply drop. It cannot kill; it is a tool for taking things (and people) intact. In Jawa hands it is not a weapon of force but of patience, numbers, and good ground.</description>
+    <techLevel>Industrial</techLevel>
+    <graphicData>
+      <!-- Bundled art: the canon Jawa ion blaster sprite (ripped from the EOL
+           Tatooine mod) lives in this mod at Textures/JawaIon/. -->
+      <texPath>JawaIon/Weapon_JawaIonBlaster</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+    </graphicData>
+    <soundInteract>Interact_Rifle</soundInteract>
+    <statBases>
+      <WorkToMake>16000</WorkToMake>
+      <Mass>2.6</Mass>
+      <MarketValue>420</MarketValue>
+      <AccuracyTouch>0.80</AccuracyTouch>
+      <AccuracyShort>0.68</AccuracyShort>
+      <AccuracyMedium>0.45</AccuracyMedium>
+      <AccuracyLong>0.22</AccuracyLong>
+      <RangedWeapon_Cooldown>2.6</RangedWeapon_Cooldown>
+    </statBases>
+    <costList>
+      <Steel>45</Steel>
+      <ComponentIndustrial>3</ComponentIndustrial>
+    </costList>
+    <recipeMaker>
+      <researchPrerequisite>JawaIon_Weaponry</researchPrerequisite>
+      <skillRequirements>
+        <Crafting>3</Crafting>
+      </skillRequirements>
+      <recipeUsers>
+        <li>TableMachining</li>
+        <li>FabricationBench</li>
+      </recipeUsers>
+    </recipeMaker>
+    <weaponTags>
+      <li>JawaIon_Damage</li>
+    </weaponTags>
+    <tradeTags>
+      <li>JawaIon_Damage</li>
+    </tradeTags>
+    <verbs>
+      <li>
+        <verbClass>Verb_Shoot</verbClass>
+        <hasStandardCommand>true</hasStandardCommand>
+        <defaultProjectile>JawaIon_Bullet</defaultProjectile>
+        <warmupTime>1.9</warmupTime>
+        <range>22</range>
+        <!-- Outer Rim - Core's blaster-bolt fire sound (Core is a hard dependency). -->
+        <soundCast>OuterRim_Shot_DLT19DBlasterBolt</soundCast>
+        <soundCastTail>GunTail_Medium</soundCastTail>
+        <muzzleFlashScale>7</muzzleFlashScale>
+      </li>
+    </verbs>
+    <tools>
+      <li>
+        <label>grip</label>
+        <capacities><li>Blunt</li></capacities>
+        <power>8</power>
+        <cooldownTime>2.0</cooldownTime>
+      </li>
+      <li>
+        <label>barrel</label>
+        <capacities><li>Blunt</li><li>Poke</li></capacities>
+        <power>9</power>
+        <cooldownTime>2.0</cooldownTime>
+      </li>
+    </tools>
+  </ThingDef>
+
+</Defs>

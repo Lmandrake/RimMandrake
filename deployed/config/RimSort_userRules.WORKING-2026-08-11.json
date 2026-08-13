@@ -1,0 +1,269 @@
+{
+    "timestamp": 1786500860,
+    "rules": {
+        "mandrake.jawaionweapons": {
+            "loadAfter": {
+                "neronix17.outerrim.core": {
+                    "comment": "supplies art/sounds it references",
+                    "name": [
+                        "Outer Rim - Core"
+                    ]
+                },
+                "guy762.kotorweapons": {
+                    "comment": "supplies art/sounds it references",
+                    "name": [
+                        "Star Wars KotOR Weapons and Armor"
+                    ]
+                }
+            },
+            "loadBottom": {
+                "comment": "local mod",
+                "value": true
+            }
+        },
+        "mandrake.jawavoice": {
+            "loadAfter": {
+                "jpt.speakup": {
+                    "comment": "patches SpeakUp's rule packs; Bubbles renders them",
+                    "name": [
+                        "SpeakUp"
+                    ]
+                },
+                "jaxe.bubbles": {
+                    "comment": "patches SpeakUp's rule packs; Bubbles renders them",
+                    "name": [
+                        "Interaction Bubbles"
+                    ]
+                }
+            },
+            "loadBottom": {
+                "comment": "local mod",
+                "value": true
+            }
+        },
+        "mandrake.jawa.armoury": {
+            "loadAfter": {
+                "guy762.kotorweapons": {
+                    "comment": "restretches these mods' weapon stats",
+                    "name": [
+                        "Star Wars KotOR Weapons and Armor"
+                    ]
+                },
+                "neronix17.outerrim.core": {
+                    "comment": "restretches these mods' weapon stats",
+                    "name": [
+                        "Outer Rim - Core"
+                    ]
+                },
+                "mlie.yayoscombat3": {
+                    "comment": "restretches these mods' weapon stats",
+                    "name": [
+                        "Yayo's Combat 3 (Continued)"
+                    ]
+                },
+                "vanillaexpanded.gravship": {
+                    "comment": "restretches these mods' weapon stats",
+                    "name": [
+                        "Vanilla Gravship Expanded - Chapter 1"
+                    ]
+                }
+            },
+            "loadBottom": {
+                "comment": "local mod",
+                "value": true
+            }
+        },
+        "mandrake.jawa.doctrine": {
+            "loadAfter": {
+                "neronix17.outerrim.droiddepot": {
+                    "comment": "patches droid recipes",
+                    "name": [
+                        "Outer Rim - Droid Depot"
+                    ]
+                }
+            },
+            "loadBottom": {
+                "comment": "local mod",
+                "value": true
+            }
+        },
+        "mandrake.jawa.patches": {
+            "loadAfter": {
+                "btd.xenotyperemix.starwars": {
+                    "comment": "Jawa Patches patches defs from this mod - MUST load after it",
+                    "name": [
+                        "[BTD] Xenotype REMIX: Star Wars"
+                    ]
+                },
+                "neronix17.outerrim.galacticdiversity": {
+                    "comment": "Jawa Patches patches defs from this mod - MUST load after it",
+                    "name": [
+                        "Outer Rim - Galactic Diversity"
+                    ]
+                },
+                "guy762.starwarsxenotypes": {
+                    "comment": "Jawa Patches patches defs from this mod - MUST load after it",
+                    "name": [
+                        "Star Wars Xenotypes"
+                    ]
+                },
+                "guy762.mm.kotorcore": {
+                    "comment": "Jawa Patches patches defs from this mod - MUST load after it",
+                    "name": [
+                        "Star Wars KotOR Resources and Materials"
+                    ]
+                },
+                "guy762.kotorweapons": {
+                    "comment": "Jawa Patches patches defs from this mod - MUST load after it",
+                    "name": [
+                        "Star Wars KotOR Weapons and Armor"
+                    ]
+                },
+                "neronix17.outland.genetics": {
+                    "comment": "Jawa Patches patches defs from this mod - MUST load after it",
+                    "name": [
+                        "Outland - Genetics"
+                    ]
+                },
+                "neronix17.outerrim.droiddepot": {
+                    "comment": "Jawa Patches patches defs from this mod - MUST load after it",
+                    "name": [
+                        "Outer Rim - Droid Depot"
+                    ]
+                },
+                "lazyfridaystudio.genesexpandedeyes": {
+                    "comment": "Jawa Patches patches defs from this mod - MUST load after it",
+                    "name": [
+                        "[LFS] Genes Expanded - Eyes"
+                    ]
+                },
+                "nals.facialanimation": {
+                    "comment": "Jawa Patches patches defs from this mod - MUST load after it",
+                    "name": [
+                        "[NL] Facial Animation - WIP"
+                    ]
+                },
+                "taranchuk.performanceoptimizer": {
+                    "comment": "Jawa Patches patches defs from this mod - MUST load after it",
+                    "name": [
+                        "Performance Optimizer"
+                    ]
+                },
+                "dubwise.dubsperformanceanalyzer.steam": {
+                    "comment": "Jawa Patches patches defs from this mod - MUST load after it",
+                    "name": [
+                        "Dubs Performance Analyzer"
+                    ]
+                }
+            },
+            "loadBottom": {
+                "comment": "the campaign patch mod - loads after everything it patches",
+                "value": true
+            }
+        },
+        "mandrake.rimdefdump": {
+            "loadAfter": {
+                "btd.xenotyperemix.starwars": {
+                    "comment": "dumps the FINISHED def state - must be dead last",
+                    "name": [
+                        "[BTD] Xenotype REMIX: Star Wars"
+                    ]
+                },
+                "neronix17.outerrim.galacticdiversity": {
+                    "comment": "dumps the FINISHED def state - must be dead last",
+                    "name": [
+                        "Outer Rim - Galactic Diversity"
+                    ]
+                },
+                "guy762.starwarsxenotypes": {
+                    "comment": "dumps the FINISHED def state - must be dead last",
+                    "name": [
+                        "Star Wars Xenotypes"
+                    ]
+                },
+                "guy762.mm.kotorcore": {
+                    "comment": "dumps the FINISHED def state - must be dead last",
+                    "name": [
+                        "Star Wars KotOR Resources and Materials"
+                    ]
+                },
+                "guy762.kotorweapons": {
+                    "comment": "dumps the FINISHED def state - must be dead last",
+                    "name": [
+                        "Star Wars KotOR Weapons and Armor"
+                    ]
+                },
+                "neronix17.outland.genetics": {
+                    "comment": "dumps the FINISHED def state - must be dead last",
+                    "name": [
+                        "Outland - Genetics"
+                    ]
+                },
+                "neronix17.outerrim.droiddepot": {
+                    "comment": "dumps the FINISHED def state - must be dead last",
+                    "name": [
+                        "Outer Rim - Droid Depot"
+                    ]
+                },
+                "lazyfridaystudio.genesexpandedeyes": {
+                    "comment": "dumps the FINISHED def state - must be dead last",
+                    "name": [
+                        "[LFS] Genes Expanded - Eyes"
+                    ]
+                },
+                "nals.facialanimation": {
+                    "comment": "dumps the FINISHED def state - must be dead last",
+                    "name": [
+                        "[NL] Facial Animation - WIP"
+                    ]
+                },
+                "taranchuk.performanceoptimizer": {
+                    "comment": "dumps the FINISHED def state - must be dead last",
+                    "name": [
+                        "Performance Optimizer"
+                    ]
+                },
+                "dubwise.dubsperformanceanalyzer.steam": {
+                    "comment": "dumps the FINISHED def state - must be dead last",
+                    "name": [
+                        "Dubs Performance Analyzer"
+                    ]
+                },
+                "mandrake.jawa.patches": {
+                    "comment": "dumps the FINISHED def state - must be dead last",
+                    "name": [
+                        "Jawa Patches (local)"
+                    ]
+                },
+                "mandrake.jawavoice": {
+                    "comment": "dumps the FINISHED def state - must be dead last",
+                    "name": [
+                        "JawaVoice (SpeakUp reskin)"
+                    ]
+                },
+                "mandrake.jawa.armoury": {
+                    "comment": "dumps the FINISHED def state - must be dead last",
+                    "name": [
+                        "Jawa Armoury Rebalance"
+                    ]
+                },
+                "mandrake.jawa.doctrine": {
+                    "comment": "dumps the FINISHED def state - must be dead last",
+                    "name": [
+                        "Jawa Doctrine Patches"
+                    ]
+                },
+                "mandrake.jawaionweapons": {
+                    "comment": "dumps the FINISHED def state - must be dead last",
+                    "name": [
+                        "Jawa Ion Weapons (local)"
+                    ]
+                }
+            },
+            "loadBottom": {
+                "comment": "dead last",
+                "value": true
+            }
+        }
+    }
+}

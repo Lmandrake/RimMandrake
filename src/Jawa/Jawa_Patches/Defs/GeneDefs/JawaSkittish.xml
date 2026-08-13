@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ============================================================================
+  JawaSkittish.xml                           Jawa_Patches · authored 2026-08-11
+  ============================================================================
+
+  WHY
+  ===
+  BTD_Jawa carried Turn_Gene_Terrified (Integrated Genes, load 180), which fires
+  Turn_MentalBreak_TerrifiedFaintingSpell — the carrier simply collapses mid-
+  firefight. Observed in-game 2026-08-11: a Jawa fainted during the ion blaster
+  test. Perfect flavour, unplayable when every colonist is a Jawa.
+
+  Turn_Gene_Terrified is used by exactly four xenotypes in the active load set:
+
+      guy762_xenotype_jawa        guy762_xenotype_nemoidian
+      BTD_Jawa                    BTD_Neimoidian
+
+  Jawa and Neimoidians — both canonically cowardly, and Neimoidians are NPCs
+  only. So rather than soften a shared gene and flatten the Trade Federation
+  along with us, this authors a Jawa-only replacement and leaves the original
+  untouched for everyone else. NPC Neimoidians keep fainting, which is a joy.
+
+  WHAT CHANGED FROM THE DONOR
+  ===========================
+  Cloned from Turn_Gene_Terrified with two deletions and one reduction:
+
+      geneClass       IntegratedGenes.Gene_Terrified  -> REMOVED  (no C# behaviour)
+      mentalBreakDef  ..TerrifiedFaintingSpell        -> REMOVED  (no collapsing)
+      biostatMet      +2                              -> +1
+
+  Kept: Terror x1.5. That is the part worth keeping — Jawa are still unusually
+  sensitive to terror, they are still poor soldiers on paper, and the campaign's
+  "win by patience, numbers and good ground" doctrine still holds. They simply
+  stay conscious while doing it.
+
+  The metabolism drops from +2 to +1 deliberately. In Biotech's economy a
+  drawback pays the xenotype, and removing the fainting removes most of the
+  drawback. Claiming the full +2 for a gene that now only multiplies Terror
+  would be quietly buying a free point of metabolism. If BTD_Jawa's totals need
+  rebalancing after this, that belongs in jawa_xenotype_and_religion.md, not
+  here.
+
+  ⚠️ NOT a drop-in stat match for the donor. RoyalFavorValue +0.5 is also gone,
+  since it was compensation for the fainting. Nobody in this campaign is farming
+  royal favour with Jawa, but say it out loud rather than let it be discovered.
+
+  IF THE FAINTING IS EVER WANTED BACK
+  ===================================
+  The right home is a second, NPC-only Jawa xenotype carrying the original gene,
+  built the way GamorreanXenotype.xml was, with wild/raider Jawa pawnkinds
+  pointed at it. Then the player's Jawa stay upright and everyone else's faint.
+  ============================================================================
+-->
+<Defs>
+
+  <GeneDef>
+    <defName>Jawa_Gene_Skittish</defName>
+    <label>skittish</label>
+    <labelShortAdj>skittish</labelShortAdj>
+    <description>Carriers of this gene have an overactive fight-or-flight response. Loud noises, blood and violence rattle them badly, and they feel dread far more keenly than others do — but they stay on their feet. A skittish Jawa does not stand and trade fire; it finds cover, finds numbers, and finds a better angle.</description>
+    <iconPath>UI/Icons/Genes/Gene_Terrified</iconPath>
+    <displayCategory>Turn_GeneCategory_Slavery</displayCategory>
+    <displayOrderInCategory>1780</displayOrderInCategory>
+    <biostatMet>1</biostatMet>
+    <statFactors>
+      <Terror>1.5</Terror>
+    </statFactors>
+  </GeneDef>
+
+</Defs>

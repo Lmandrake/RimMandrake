@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- "We give the second hand to what others discarded; we do not breed new hands."
+
+     Removes the Droid Factory from the build menu. Parts, repair and upgrading
+     are untouched and remain the whole point.
+
+     WHY THE BUILDING AND NOT THE RECIPES: OuterRim_DroidFactory is
+     Asimov.Building_AutoCrafter with CompProperties_AutoCrafter and ZERO
+     attached RecipeDefs. Droid creation is driven by the comp in C#, so there
+     are no recipes to suppress. The building is the only lever.
+
+     WHY UNBUILDABLE AND NOT DELETED: PatchOperationRemove on the ThingDef would
+     leave the mod's own C#, its research def and its architect category
+     pointing at a def that no longer exists. Clearing designationCategory takes
+     it out of the player's hands while keeping every reference intact.
+
+     Rationale: worldbuilding/balance_paradigm.md Axis 18b. -->
+<Patch>
+
+  <Operation Class="PatchOperationFindMod">
+    <mods><li>Outer Rim - Droid Depot</li></mods>
+    <match Class="PatchOperationSequence">
+      <operations>
+
+        <!-- Out of the architect menu. -->
+        <li Class="PatchOperationRemove">
+          <xpath>/Defs/ThingDef[defName="OuterRim_DroidFactory"]/designationCategory</xpath>
+        </li>
+
+        <!-- There is NO menuHidden field on ThingDef. An earlier version of
+             this patch added one as belt-and-braces; the def loader rejected it
+             on every launch with "doesn't correspond to any field in type
+             ThingDef", and the whole node was dropped. Clearing
+             designationCategory above is what actually removes the architect
+             entry, and the live dump confirms it (verified in-game 2026-08-11:
+             the droid factory is gone from the build menu). -->
+
+        <!-- Say why, in game, where a player will actually read it. -->
+        <li Class="PatchOperationReplace">
+          <xpath>/Defs/ThingDef[defName="OuterRim_DroidFactory"]/description</xpath>
+          <value>
+            <description>A droid assembly line. The Jawa do not build these. They give the second hand to what others discarded, and do not breed new hands. Droids are found, repaired, restored and reawakened; their parts can be made, but never their whole.</description>
+          </value>
+        </li>
+
+      </operations>
+    </match>
+  </Operation>
+
+</Patch>

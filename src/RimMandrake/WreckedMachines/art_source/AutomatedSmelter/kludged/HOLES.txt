@@ -1,0 +1,13 @@
+Files required in this folder (kludged tier of AutomatedSmelter)
+================================================================
+
+  [x] AutomatedSmelter_north.png
+  [x] AutomatedSmelter_east.png
+  [x] AutomatedSmelter_south.png
+  [x] AutomatedSmelter_west.png
+
+Each must match its restored/ counterpart exactly in canvas size,
+and closely in alpha bounding box, or it will not sit on its footprint
+in game. Validate with:
+
+    python Source/check_sprite.py AutomatedSmelter --tier kludged

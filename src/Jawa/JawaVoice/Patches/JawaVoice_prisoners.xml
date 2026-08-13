@@ -1,0 +1,655 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Patch>
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/InteractionDef[defName="PrisonerRapport"]/logRulesInitiator/rulesStrings</xpath>
+    <match Class="PatchOperationAdd">
+      <xpath>/Defs/InteractionDef[defName="PrisonerRapport"]/logRulesInitiator/rulesStrings</xpath>
+      <value>
+          <li>r_logentry(INITIATOR_faction==PlayerColony,priority=250)->T'uhnya zootbe mi b'oobo sawih... (It will be glorious watching your people being butchered and tortured!)</li>
+          <li>r_logentry(INITIATOR_faction==PlayerTribe,priority=250)->T'uhnya zootbe mi b'oobo sawih... (It will be glorious watching your people being butchered and tortured!)</li>
+          <li>r_logentry(INITIATOR_kind==OuterRim_Jawa,priority=250)->T'uhnya zootbe mi b'oobo sawih... (It will be glorious watching your people being butchered and tortured!)</li>
+          <li>r_logentry(INITIATOR_kind==OuterRim_JawaTribal,priority=250)->T'uhnya zootbe mi b'oobo sawih... (It will be glorious watching your people being butchered and tortured!)</li>
+          <li>r_logentry(INITIATOR_faction==PlayerColony,priority=250)->N'ob t'ut... (So I need you to release me. This way, we can avoid unnecessary bloodshed among your people.)</li>
+          <li>r_logentry(INITIATOR_faction==PlayerTribe,priority=250)->N'ob t'ut... (So I need you to release me. This way, we can avoid unnecessary bloodshed among your people.)</li>
+          <li>r_logentry(INITIATOR_kind==OuterRim_Jawa,priority=250)->N'ob t'ut... (So I need you to release me. This way, we can avoid unnecessary bloodshed among your people.)</li>
+          <li>r_logentry(INITIATOR_kind==OuterRim_JawaTribal,priority=250)->N'ob t'ut... (So I need you to release me. This way, we can avoid unnecessary bloodshed among your people.)</li>
+          <li>r_logentry(INITIATOR_faction==PlayerColony,priority=250)->Huloot ne nootib man! (I'll be willing to cooperate more if you me some...)</li>
+          <li>r_logentry(INITIATOR_faction==PlayerTribe,priority=250)->Huloot ne nootib man! (I'll be willing to cooperate more if you me some...)</li>
+          <li>r_logentry(INITIATOR_kind==OuterRim_Jawa,priority=250)->Huloot ne nootib man! (I'll be willing to cooperate more if you me some...)</li>
+          <li>r_logentry(INITIATOR_kind==OuterRim_JawaTribal,priority=250)->Huloot ne nootib man! (I'll be willing to cooperate more if you me some...)</li>
+          <li>r_logentry(INITIATOR_faction==PlayerColony,priority=250)->Gatgoo gatgoo bimee k'oonyaah k'oonyaah l'ot ki. (Please give me some ; I'll promise to cooperate more... I just need a fix, that's all.)</li>
+          <li>r_logentry(INITIATOR_faction==PlayerTribe,priority=250)->Gatgoo gatgoo bimee k'oonyaah k'oonyaah l'ot ki. (Please give me some ; I'll promise to cooperate more... I just need a fix, that's all.)</li>
+          <li>r_logentry(INITIATOR_kind==OuterRim_Jawa,priority=250)->Gatgoo gatgoo bimee k'oonyaah k'oonyaah l'ot ki. (Please give me some ; I'll promise to cooperate more... I just need a fix, that's all.)</li>
+          <li>r_logentry(INITIATOR_kind==OuterRim_JawaTribal,priority=250)->Gatgoo gatgoo bimee k'oonyaah k'oonyaah l'ot ki. (Please give me some ; I'll promise to cooperate more... I just need a fix, that's all.)</li>
+          <li>r_logentry(INITIATOR_faction==PlayerColony,priority=250)->Zuhmee zuhmeu lee shatzaab nootrih? (Please give me some ; I'll promise to cooperate more.)</li>
+          <li>r_logentry(INITIATOR_faction==PlayerTribe,priority=250)->Zuhmee zuhmeu lee shatzaab nootrih? (Please give me some ; I'll promise to cooperate more.)</li>
+          <li>r_logentry(INITIATOR_kind==OuterRim_Jawa,priority=250)->Zuhmee zuhmeu lee shatzaab nootrih? (Please give me some ; I'll promise to cooperate more.)</li>
+          <li>r_logentry(INITIATOR_kind==OuterRim_JawaTribal,priority=250)->Zuhmee zuhmeu lee shatzaab nootrih? (Please give me some ; I'll promise to cooperate more.)</li>
+          <li>r_logentry(INITIATOR_faction==PlayerColony,priority=250)->M'eebat kih... (I might consider it...)</li>
+          <li>r_logentry(INITIATOR_faction==PlayerTribe,priority=250)->M'eebat kih... (I might consider it...)</li>
+          <li>r_logentry(INITIATOR_kind==OuterRim_Jawa,priority=250)->M'eebat kih... (I might consider it...)</li>
+          <li>r_logentry(INITIATOR_kind==OuterRim_JawaTribal,priority=250)->M'eebat kih... (I might consider it...)</li>
+      </value>
+    </match>
+  </Operation>
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/InteractionDef[defName="PrisonerPassion"]/logRulesInitiator/rulesStrings</xpath>
+    <match Class="PatchOperationAdd">
+      <xpath>/Defs/InteractionDef[defName="PrisonerPassion"]/logRulesInitiator/rulesStrings</xpath>
+      <value>
+          <li>r_logentry(INITIATOR_faction==PlayerColony,priority=250)->T'uhnya zootbe mi b'oobo sawih... (It will be glorious watching your people being butchered and tortured!)</li>
+          <li>r_logentry(INITIATOR_faction==PlayerTribe,priority=250)->T'uhnya zootbe mi b'oobo sawih... (It will be glorious watching your people being butchered and tortured!)</li>
+          <li>r_logentry(INITIATOR_kind==OuterRim_Jawa,priority=250)->T'uhnya zootbe mi b'oobo sawih... (It will be glorious watching your people being butchered and tortured!)</li>
+          <li>r_logentry(INITIATOR_kind==OuterRim_JawaTribal,priority=250)->T'uhnya zootbe mi b'oobo sawih... (It will be glorious watching your people being butchered and tortured!)</li>
+          <li>r_logentry(INITIATOR_faction==PlayerColony,priority=250)->N'ob t'ut... (So I need you to release me. This way, we can avoid unnecessary bloodshed among your people.)</li>
+          <li>r_logentry(INITIATOR_faction==PlayerTribe,priority=250)->N'ob t'ut... (So I need you to release me. This way, we can avoid unnecessary bloodshed among your people.)</li>
+          <li>r_logentry(INITIATOR_kind==OuterRim_Jawa,priority=250)->N'ob t'ut... (So I need you to release me. This way, we can avoid unnecessary bloodshed among your people.)</li>
+          <li>r_logentry(INITIATOR_kind==OuterRim_JawaTribal,priority=250)->N'ob t'ut... (So I need you to release me. This way, we can avoid unnecessary bloodshed among your people.)</li>
+          <li>r_logentry(INITIATOR_faction==PlayerColony,priority=250)->Huloot ne nootib man! (I'll be willing to cooperate more if you me some...)</li>
+          <li>r_logentry(INITIATOR_faction==PlayerTribe,priority=250)->Huloot ne nootib man! (I'll be willing to cooperate more if you me some...)</li>
+          <li>r_logentry(INITIATOR_kind==OuterRim_Jawa,priority=250)->Huloot ne nootib man! (I'll be willing to cooperate more if you me some...)</li>
+          <li>r_logentry(INITIATOR_kind==OuterRim_JawaTribal,priority=250)->Huloot ne nootib man! (I'll be willing to cooperate more if you me some...)</li>
+          <li>r_logentry(INITIATOR_faction==PlayerColony,priority=250)->Gatgoo gatgoo bimee k'oonyaah k'oonyaah l'ot ki. (Please give me some ; I'll promise to cooperate more... I just need a fix, that's all.)</li>
+          <li>r_logentry(INITIATOR_faction==PlayerTribe,priority=250)->Gatgoo gatgoo bimee k'oonyaah k'oonyaah l'ot ki. (Please give me some ; I'll promise to cooperate more... I just need a fix, that's all.)</li>
+          <li>r_logentry(INITIATOR_kind==OuterRim_Jawa,priority=250)->Gatgoo gatgoo bimee k'oonyaah k'oonyaah l'ot ki. (Please give me some ; I'll promise to cooperate more... I just need a fix, that's all.)</li>
+          <li>r_logentry(INITIATOR_kind==OuterRim_JawaTribal,priority=250)->Gatgoo gatgoo bimee k'oonyaah k'oonyaah l'ot ki. (Please give me some ; I'll promise to cooperate more... I just need a fix, that's all.)</li>
+          <li>r_logentry(INITIATOR_faction==PlayerColony,priority=250)->Zuhmee zuhmeu lee shatzaab nootrih? (Please give me some ; I'll promise to cooperate more.)</li>
+          <li>r_logentry(INITIATOR_faction==PlayerTribe,priority=250)->Zuhmee zuhmeu lee shatzaab nootrih? (Please give me some ; I'll promise to cooperate more.)</li>
+          <li>r_logentry(INITIATOR_kind==OuterRim_Jawa,priority=250)->Zuhmee zuhmeu lee shatzaab nootrih? (Please give me some ; I'll promise to cooperate more.)</li>
+          <li>r_logentry(INITIATOR_kind==OuterRim_JawaTribal,priority=250)->Zuhmee zuhmeu lee shatzaab nootrih? (Please give me some ; I'll promise to cooperate more.)</li>
+          <li>r_logentry(INITIATOR_faction==PlayerColony,priority=250)->Shehtot nelaa shanteh... (During a fight, I enjoy shooting from a distance.)</li>
+          <li>r_logentry(INITIATOR_faction==PlayerTribe,priority=250)->Shehtot nelaa shanteh... (During a fight, I enjoy shooting from a distance.)</li>
+          <li>r_logentry(INITIATOR_kind==OuterRim_Jawa,priority=250)->Shehtot nelaa shanteh... (During a fight, I enjoy shooting from a distance.)</li>
+          <li>r_logentry(INITIATOR_kind==OuterRim_JawaTribal,priority=250)->Shehtot nelaa shanteh... (During a fight, I enjoy shooting from a distance.)</li>
+      </value>
+    </match>
+  </Operation>
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/InteractionDef[defName="PrisonerBestSkill"]/logRulesInitiator/rulesStrings</xpath>
+    <match Class="PatchOperationAdd">
+      <xpath>/Defs/InteractionDef[defName="PrisonerBestSkill"]/logRulesInitiator/rulesStrings</xpath>
+      <value>
+          <li>r_logentry(INITIATOR_faction==PlayerColony,priority=250)->T'uhnya zootbe mi b'oobo sawih... (It will be glorious watching your people being butchered and tortured!)</li>
+          <li>r_logentry(INITIATOR_faction==PlayerTribe,priority=250)->T'uhnya zootbe mi b'oobo sawih... (It will be glorious watching your people being butchered and tortured!)</li>
+          <li>r_logentry(INITIATOR_kind==OuterRim_Jawa,priority=250)->T'uhnya zootbe mi b'oobo sawih... (It will be glorious watching your people being butchered and tortured!)</li>
+          <li>r_logentry(INITIATOR_kind==OuterRim_JawaTribal,priority=250)->T'uhnya zootbe mi b'oobo sawih... (It will be glorious watching your people being butchered and tortured!)</li>
+          <li>r_logentry(INITIATOR_faction==PlayerColony,priority=250)->N'ob t'ut... (So I need you to release me. This way, we can avoid unnecessary bloodshed among your people.)</li>
+          <li>r_logentry(INITIATOR_faction==PlayerTribe,priority=250)->N'ob t'ut... (So I need you to release me. This way, we can avoid unnecessary bloodshed among your people.)</li>
+          <li>r_logentry(INITIATOR_kind==OuterRim_Jawa,priority=250)->N'ob t'ut... (So I need you to release me. This way, we can avoid unnecessary bloodshed among your people.)</li>
+          <li>r_logentry(INITIATOR_kind==OuterRim_JawaTribal,priority=250)->N'ob t'ut... (So I need you to release me. This way, we can avoid unnecessary bloodshed among your people.)</li>
+          <li>r_logentry(INITIATOR_faction==PlayerColony,priority=250)->Huloot ne nootib man! (I'll be willing to cooperate more if you me some...)</li>
+          <li>r_logentry(INITIATOR_faction==PlayerTribe,priority=250)->Huloot ne nootib man! (I'll be willing to cooperate more if you me some...)</li>
+          <li>r_logentry(INITIATOR_kind==OuterRim_Jawa,priority=250)->Huloot ne nootib man! (I'll be willing to cooperate more if you me some...)</li>
+          <li>r_logentry(INITIATOR_kind==OuterRim_JawaTribal,priority=250)->Huloot ne nootib man! (I'll be willing to cooperate more if you me some...)</li>
+          <li>r_logentry(INITIATOR_faction==PlayerColony,priority=250)->Gatgoo gatgoo bimee k'oonyaah k'oonyaah l'ot ki. (Please give me some ; I'll promise to cooperate more... I just need a fix, that's all.)</li>
+          <li>r_logentry(INITIATOR_faction==PlayerTribe,priority=250)->Gatgoo gatgoo bimee k'oonyaah k'oonyaah l'ot ki. (Please give me some ; I'll promise to cooperate more... I just need a fix, that's all.)</li>
+          <li>r_logentry(INITIATOR_kind==OuterRim_Jawa,priority=250)->Gatgoo gatgoo bimee k'oonyaah k'oonyaah l'ot ki. (Please give me some ; I'll promise to cooperate more... I just need a fix, that's all.)</li>
+          <li>r_logentry(INITIATOR_kind==OuterRim_JawaTribal,priority=250)->Gatgoo gatgoo bimee k'oonyaah k'oonyaah l'ot ki. (Please give me some ; I'll promise to cooperate more... I just need a fix, that's all.)</li>
+          <li>r_logentry(INITIATOR_faction==PlayerColony,priority=250)->Zuhmee zuhmeu lee shatzaab nootrih? (Please give me some ; I'll promise to cooperate more.)</li>
+          <li>r_logentry(INITIATOR_faction==PlayerTribe,priority=250)->Zuhmee zuhmeu lee shatzaab nootrih? (Please give me some ; I'll promise to cooperate more.)</li>
+          <li>r_logentry(INITIATOR_kind==OuterRim_Jawa,priority=250)->Zuhmee zuhmeu lee shatzaab nootrih? (Please give me some ; I'll promise to cooperate more.)</li>
+          <li>r_logentry(INITIATOR_kind==OuterRim_JawaTribal,priority=250)->Zuhmee zuhmeu lee shatzaab nootrih? (Please give me some ; I'll promise to cooperate more.)</li>
+          <li>r_logentry(INITIATOR_faction==PlayerColony,priority=250)->Booh see bun bun noloo m'ut! (I'm best skilled at taking care of animals.)</li>
+          <li>r_logentry(INITIATOR_faction==PlayerTribe,priority=250)->Booh see bun bun noloo m'ut! (I'm best skilled at taking care of animals.)</li>
+          <li>r_logentry(INITIATOR_kind==OuterRim_Jawa,priority=250)->Booh see bun bun noloo m'ut! (I'm best skilled at taking care of animals.)</li>
+          <li>r_logentry(INITIATOR_kind==OuterRim_JawaTribal,priority=250)->Booh see bun bun noloo m'ut! (I'm best skilled at taking care of animals.)</li>
+      </value>
+    </match>
+  </Operation>
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/InteractionDef[defName="PrisonerAccepts"]/logRulesInitiator/rulesStrings</xpath>
+    <match Class="PatchOperationAdd">
+      <xpath>/Defs/InteractionDef[defName="PrisonerAccepts"]/logRulesInitiator/rulesStrings</xpath>
+      <value>
+          <li>r_logentry(INITIATOR_faction==PlayerColony,priority=250)->Mahmeen m'eeb! (I'm done with this dark cell — I'll join!)</li>
+          <li>r_logentry(INITIATOR_faction==PlayerTribe,priority=250)->Mahmeen m'eeb! (I'm done with this dark cell — I'll join!)</li>
+          <li>r_logentry(INITIATOR_kind==OuterRim_Jawa,priority=250)->Mahmeen m'eeb! (I'm done with this dark cell — I'll join!)</li>
+          <li>r_logentry(INITIATOR_kind==OuterRim_JawaTribal,priority=250)->Mahmeen m'eeb! (I'm done with this dark cell — I'll join!)</li>
+          <li>r_logentry(INITIATOR_faction==PlayerColony,priority=250)->H'et nyaah s'uma tihnu! (I'm done with this awful dungeon — I'll join!)</li>
+          <li>r_logentry(INITIATOR_faction==PlayerTribe,priority=250)->H'et nyaah s'uma tihnu! (I'm done with this awful dungeon — I'll join!)</li>
+          <li>r_logentry(INITIATOR_kind==OuterRim_Jawa,priority=250)->H'et nyaah s'uma tihnu! (I'm done with this awful dungeon — I'll join!)</li>
+          <li>r_logentry(INITIATOR_kind==OuterRim_JawaTribal,priority=250)->H'et nyaah s'uma tihnu! (I'm done with this awful dungeon — I'll join!)</li>
+          <li>r_logentry(INITIATOR_faction==PlayerColony,priority=250)->Ma mure w'in n'yoon... (I just want to get out of this cold. I'll do whatever — I'll join!)</li>
+          <li>r_logentry(INITIATOR_faction==PlayerTribe,priority=250)->Ma mure w'in n'yoon... (I just want to get out of this cold. I'll do whatever — I'll join!)</li>
+          <li>r_logentry(INITIATOR_kind==OuterRim_Jawa,priority=250)->Ma mure w'in n'yoon... (I just want to get out of this cold. I'll do whatever — I'll join!)</li>
+          <li>r_logentry(INITIATOR_kind==OuterRim_JawaTribal,priority=250)->Ma mure w'in n'yoon... (I just want to get out of this cold. I'll do whatever — I'll join!)</li>
+          <li>r_logentry(INITIATOR_faction==PlayerColony,priority=250)->Baahmoo baahmou nyakeh n'othoon w'enyee. (I just want to get out of this heat. I'll do whatever — I'll join!)</li>
+          <li>r_logentry(INITIATOR_faction==PlayerTribe,priority=250)->Baahmoo baahmou nyakeh n'othoon w'enyee. (I just want to get out of this heat. I'll do whatever — I'll join!)</li>
+          <li>r_logentry(INITIATOR_kind==OuterRim_Jawa,priority=250)->Baahmoo baahmou nyakeh n'othoon w'enyee. (I just want to get out of this heat. I'll do whatever — I'll join!)</li>
+          <li>r_logentry(INITIATOR_kind==OuterRim_JawaTribal,priority=250)->Baahmoo baahmou nyakeh n'othoon w'enyee. (I just want to get out of this heat. I'll do whatever — I'll join!)</li>
+          <li>r_logentry(INITIATOR_faction==PlayerColony,priority=250)->Geennyeb lohze rotso toot k'on! (Now that I'm part of, I expect to be fed!)</li>
+          <li>r_logentry(INITIATOR_faction==PlayerTribe,priority=250)->Geennyeb lohze rotso toot k'on! (Now that I'm part of, I expect to be fed!)</li>
+          <li>r_logentry(INITIATOR_kind==OuterRim_Jawa,priority=250)->Geennyeb lohze rotso toot k'on! (Now that I'm part of, I expect to be fed!)</li>
+          <li>r_logentry(INITIATOR_kind==OuterRim_JawaTribal,priority=250)->Geennyeb lohze rotso toot k'on! (Now that I'm part of, I expect to be fed!)</li>
+          <li>r_logentry(INITIATOR_faction==PlayerColony,priority=250)->T'aahsheeb toobba toobbu m'aab shib mobi... (Please! If it stops you from harvesting my organs, I'll join!)</li>
+          <li>r_logentry(INITIATOR_faction==PlayerTribe,priority=250)->T'aahsheeb toobba toobbu m'aab shib mobi... (Please! If it stops you from harvesting my organs, I'll join!)</li>
+          <li>r_logentry(INITIATOR_kind==OuterRim_Jawa,priority=250)->T'aahsheeb toobba toobbu m'aab shib mobi... (Please! If it stops you from harvesting my organs, I'll join!)</li>
+          <li>r_logentry(INITIATOR_kind==OuterRim_JawaTribal,priority=250)->T'aahsheeb toobba toobbu m'aab shib mobi... (Please! If it stops you from harvesting my organs, I'll join!)</li>
+      </value>
+    </match>
+  </Operation>
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/InteractionDef[defName="PrisonerRefuses"]/logRulesInitiator/rulesStrings</xpath>
+    <match Class="PatchOperationAdd">
+      <xpath>/Defs/InteractionDef[defName="PrisonerRefuses"]/logRulesInitiator/rulesStrings</xpath>
+      <value>
+          <li>r_logentry(INITIATOR_faction==PlayerColony,priority=250)->Toomo hat? (Not at all!)</li>
+          <li>r_logentry(INITIATOR_faction==PlayerTribe,priority=250)->Toomo hat? (Not at all!)</li>
+          <li>r_logentry(INITIATOR_kind==OuterRim_Jawa,priority=250)->Toomo hat? (Not at all!)</li>
+          <li>r_logentry(INITIATOR_kind==OuterRim_JawaTribal,priority=250)->Toomo hat? (Not at all!)</li>
+          <li>r_logentry(INITIATOR_faction==PlayerColony,priority=250)->Heeh s'ah s'hoontaa zab. (Not in a million years!)</li>
+          <li>r_logentry(INITIATOR_faction==PlayerTribe,priority=250)->Heeh s'ah s'hoontaa zab. (Not in a million years!)</li>
+          <li>r_logentry(INITIATOR_kind==OuterRim_Jawa,priority=250)->Heeh s'ah s'hoontaa zab. (Not in a million years!)</li>
+          <li>r_logentry(INITIATOR_kind==OuterRim_JawaTribal,priority=250)->Heeh s'ah s'hoontaa zab. (Not in a million years!)</li>
+          <li>r_logentry(INITIATOR_faction==PlayerColony,priority=250)->Hoo gooh too. (Of course not!)</li>
+          <li>r_logentry(INITIATOR_faction==PlayerTribe,priority=250)->Hoo gooh too. (Of course not!)</li>
+          <li>r_logentry(INITIATOR_kind==OuterRim_Jawa,priority=250)->Hoo gooh too. (Of course not!)</li>
+          <li>r_logentry(INITIATOR_kind==OuterRim_JawaTribal,priority=250)->Hoo gooh too. (Of course not!)</li>
+          <li>r_logentry(INITIATOR_faction==PlayerColony,priority=250)->Nyobot gohseen gohseeu n'yablee sho. (Not under any circumstances.)</li>
+          <li>r_logentry(INITIATOR_faction==PlayerTribe,priority=250)->Nyobot gohseen gohseeu n'yablee sho. (Not under any circumstances.)</li>
+          <li>r_logentry(INITIATOR_kind==OuterRim_Jawa,priority=250)->Nyobot gohseen gohseeu n'yablee sho. (Not under any circumstances.)</li>
+          <li>r_logentry(INITIATOR_kind==OuterRim_JawaTribal,priority=250)->Nyobot gohseen gohseeu n'yablee sho. (Not under any circumstances.)</li>
+          <li>r_logentry(INITIATOR_faction==PlayerColony,priority=250)->Maah maau hu hu si si... (In no circumstances.)</li>
+          <li>r_logentry(INITIATOR_faction==PlayerTribe,priority=250)->Maah maau hu hu si si... (In no circumstances.)</li>
+          <li>r_logentry(INITIATOR_kind==OuterRim_Jawa,priority=250)->Maah maau hu hu si si... (In no circumstances.)</li>
+          <li>r_logentry(INITIATOR_kind==OuterRim_JawaTribal,priority=250)->Maah maau hu hu si si... (In no circumstances.)</li>
+          <li>r_logentry(INITIATOR_faction==PlayerColony,priority=250)->L'eeto l'eeto sheetroh? (On no account.)</li>
+          <li>r_logentry(INITIATOR_faction==PlayerTribe,priority=250)->L'eeto l'eeto sheetroh? (On no account.)</li>
+          <li>r_logentry(INITIATOR_kind==OuterRim_Jawa,priority=250)->L'eeto l'eeto sheetroh? (On no account.)</li>
+          <li>r_logentry(INITIATOR_kind==OuterRim_JawaTribal,priority=250)->L'eeto l'eeto sheetroh? (On no account.)</li>
+      </value>
+    </match>
+  </Operation>
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/InteractionDef[defName="PrisonerEndchat"]/logRulesInitiator/rulesStrings</xpath>
+    <match Class="PatchOperationAdd">
+      <xpath>/Defs/InteractionDef[defName="PrisonerEndchat"]/logRulesInitiator/rulesStrings</xpath>
+      <value>
+          <li>r_logentry(INITIATOR_faction==PlayerColony,priority=250)->N'yoo gat tahoob. (See you later, friend.)</li>
+          <li>r_logentry(INITIATOR_faction==PlayerTribe,priority=250)->N'yoo gat tahoob. (See you later, friend.)</li>
+          <li>r_logentry(INITIATOR_kind==OuterRim_Jawa,priority=250)->N'yoo gat tahoob. (See you later, friend.)</li>
+          <li>r_logentry(INITIATOR_kind==OuterRim_JawaTribal,priority=250)->N'yoo gat tahoob. (See you later, friend.)</li>
+      </value>
+    </match>
+  </Operation>
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/InteractionDef[defName="PrisonerNeed"]/logRulesInitiator/rulesStrings</xpath>
+    <match Class="PatchOperationAdd">
+      <xpath>/Defs/InteractionDef[defName="PrisonerNeed"]/logRulesInitiator/rulesStrings</xpath>
+      <value>
+          <li>r_logentry(INITIATOR_faction==PlayerColony,priority=250)->T'uhnya zootbe mi b'oobo sawih... (It will be glorious watching your people being butchered and tortured!)</li>
+          <li>r_logentry(INITIATOR_faction==PlayerTribe,priority=250)->T'uhnya zootbe mi b'oobo sawih... (It will be glorious watching your people being butchered and tortured!)</li>
+          <li>r_logentry(INITIATOR_kind==OuterRim_Jawa,priority=250)->T'uhnya zootbe mi b'oobo sawih... (It will be glorious watching your people being butchered and tortured!)</li>
+          <li>r_logentry(INITIATOR_kind==OuterRim_JawaTribal,priority=250)->T'uhnya zootbe mi b'oobo sawih... (It will be glorious watching your people being butchered and tortured!)</li>
+          <li>r_logentry(INITIATOR_faction==PlayerColony,priority=250)->N'ob t'ut... (So I need you to release me. This way, we can avoid unnecessary bloodshed among your people.)</li>
+          <li>r_logentry(INITIATOR_faction==PlayerTribe,priority=250)->N'ob t'ut... (So I need you to release me. This way, we can avoid unnecessary bloodshed among your people.)</li>
+          <li>r_logentry(INITIATOR_kind==OuterRim_Jawa,priority=250)->N'ob t'ut... (So I need you to release me. This way, we can avoid unnecessary bloodshed among your people.)</li>
+          <li>r_logentry(INITIATOR_kind==OuterRim_JawaTribal,priority=250)->N'ob t'ut... (So I need you to release me. This way, we can avoid unnecessary bloodshed among your people.)</li>
+          <li>r_logentry(INITIATOR_faction==PlayerColony,priority=250)->Huloot ne nootib man! (I'll be willing to cooperate more if you me some...)</li>
+          <li>r_logentry(INITIATOR_faction==PlayerTribe,priority=250)->Huloot ne nootib man! (I'll be willing to cooperate more if you me some...)</li>
+          <li>r_logentry(INITIATOR_kind==OuterRim_Jawa,priority=250)->Huloot ne nootib man! (I'll be willing to cooperate more if you me some...)</li>
+          <li>r_logentry(INITIATOR_kind==OuterRim_JawaTribal,priority=250)->Huloot ne nootib man! (I'll be willing to cooperate more if you me some...)</li>
+          <li>r_logentry(INITIATOR_faction==PlayerColony,priority=250)->Nyu noon b'ataah m'eet... (Please me some ; I'll promise to cooperate more... I just need a fix, that's all.)</li>
+          <li>r_logentry(INITIATOR_faction==PlayerTribe,priority=250)->Nyu noon b'ataah m'eet... (Please me some ; I'll promise to cooperate more... I just need a fix, that's all.)</li>
+          <li>r_logentry(INITIATOR_kind==OuterRim_Jawa,priority=250)->Nyu noon b'ataah m'eet... (Please me some ; I'll promise to cooperate more... I just need a fix, that's all.)</li>
+          <li>r_logentry(INITIATOR_kind==OuterRim_JawaTribal,priority=250)->Nyu noon b'ataah m'eet... (Please me some ; I'll promise to cooperate more... I just need a fix, that's all.)</li>
+          <li>r_logentry(INITIATOR_faction==PlayerColony,priority=250)->Meebno n'ub... (Please me some ; I'll promise to cooperate more.)</li>
+          <li>r_logentry(INITIATOR_faction==PlayerTribe,priority=250)->Meebno n'ub... (Please me some ; I'll promise to cooperate more.)</li>
+          <li>r_logentry(INITIATOR_kind==OuterRim_Jawa,priority=250)->Meebno n'ub... (Please me some ; I'll promise to cooperate more.)</li>
+          <li>r_logentry(INITIATOR_kind==OuterRim_JawaTribal,priority=250)->Meebno n'ub... (Please me some ; I'll promise to cooperate more.)</li>
+          <li>r_logentry(INITIATOR_faction==PlayerColony,priority=250)->Tottaat goloh bawaat bawaau ban bau. (Don't set up any lights here — I feel more comfortable in darkness.)</li>
+          <li>r_logentry(INITIATOR_faction==PlayerTribe,priority=250)->Tottaat goloh bawaat bawaau ban bau. (Don't set up any lights here — I feel more comfortable in darkness.)</li>
+          <li>r_logentry(INITIATOR_kind==OuterRim_Jawa,priority=250)->Tottaat goloh bawaat bawaau ban bau. (Don't set up any lights here — I feel more comfortable in darkness.)</li>
+          <li>r_logentry(INITIATOR_kind==OuterRim_JawaTribal,priority=250)->Tottaat goloh bawaat bawaau ban bau. (Don't set up any lights here — I feel more comfortable in darkness.)</li>
+      </value>
+    </match>
+  </Operation>
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/InteractionDef[defName="PrisonerPsychic"]/logRulesInitiator/rulesStrings</xpath>
+    <match Class="PatchOperationAdd">
+      <xpath>/Defs/InteractionDef[defName="PrisonerPsychic"]/logRulesInitiator/rulesStrings</xpath>
+      <value>
+          <li>r_logentry(INITIATOR_faction==PlayerColony,priority=250)->Shooshu nashab ruttot! (What?! Your psychic readings are completely fake...)</li>
+          <li>r_logentry(INITIATOR_faction==PlayerTribe,priority=250)->Shooshu nashab ruttot! (What?! Your psychic readings are completely fake...)</li>
+          <li>r_logentry(INITIATOR_kind==OuterRim_Jawa,priority=250)->Shooshu nashab ruttot! (What?! Your psychic readings are completely fake...)</li>
+          <li>r_logentry(INITIATOR_kind==OuterRim_JawaTribal,priority=250)->Shooshu nashab ruttot! (What?! Your psychic readings are completely fake...)</li>
+          <li>r_logentry(INITIATOR_faction==PlayerColony,priority=250)->Nyoo m'anob zesu moh. (Yes — your psychic readings are correct.)</li>
+          <li>r_logentry(INITIATOR_faction==PlayerTribe,priority=250)->Nyoo m'anob zesu moh. (Yes — your psychic readings are correct.)</li>
+          <li>r_logentry(INITIATOR_kind==OuterRim_Jawa,priority=250)->Nyoo m'anob zesu moh. (Yes — your psychic readings are correct.)</li>
+          <li>r_logentry(INITIATOR_kind==OuterRim_JawaTribal,priority=250)->Nyoo m'anob zesu moh. (Yes — your psychic readings are correct.)</li>
+          <li>r_logentry(INITIATOR_faction==PlayerColony,priority=250)->Goh koon! (Shut up, you freak!)</li>
+          <li>r_logentry(INITIATOR_faction==PlayerTribe,priority=250)->Goh koon! (Shut up, you freak!)</li>
+          <li>r_logentry(INITIATOR_kind==OuterRim_Jawa,priority=250)->Goh koon! (Shut up, you freak!)</li>
+          <li>r_logentry(INITIATOR_kind==OuterRim_JawaTribal,priority=250)->Goh koon! (Shut up, you freak!)</li>
+          <li>r_logentry(INITIATOR_faction==PlayerColony,priority=250)->T'it ne nu n'yomo? (Your won't scare me!)</li>
+          <li>r_logentry(INITIATOR_faction==PlayerTribe,priority=250)->T'it ne nu n'yomo? (Your won't scare me!)</li>
+          <li>r_logentry(INITIATOR_kind==OuterRim_Jawa,priority=250)->T'it ne nu n'yomo? (Your won't scare me!)</li>
+          <li>r_logentry(INITIATOR_kind==OuterRim_JawaTribal,priority=250)->T'it ne nu n'yomo? (Your won't scare me!)</li>
+          <li>r_logentry(INITIATOR_faction==PlayerColony,priority=250)->Mootshoo mootshoo n'oob kanboo bee soza! (Are you trying to scare me with your?)</li>
+          <li>r_logentry(INITIATOR_faction==PlayerTribe,priority=250)->Mootshoo mootshoo n'oob kanboo bee soza! (Are you trying to scare me with your?)</li>
+          <li>r_logentry(INITIATOR_kind==OuterRim_Jawa,priority=250)->Mootshoo mootshoo n'oob kanboo bee soza! (Are you trying to scare me with your?)</li>
+          <li>r_logentry(INITIATOR_kind==OuterRim_JawaTribal,priority=250)->Mootshoo mootshoo n'oob kanboo bee soza! (Are you trying to scare me with your?)</li>
+          <li>r_logentry(INITIATOR_faction==PlayerColony,priority=250)->Saza bon! (What... what are you speaking about?)</li>
+          <li>r_logentry(INITIATOR_faction==PlayerTribe,priority=250)->Saza bon! (What... what are you speaking about?)</li>
+          <li>r_logentry(INITIATOR_kind==OuterRim_Jawa,priority=250)->Saza bon! (What... what are you speaking about?)</li>
+          <li>r_logentry(INITIATOR_kind==OuterRim_JawaTribal,priority=250)->Saza bon! (What... what are you speaking about?)</li>
+      </value>
+    </match>
+  </Operation>
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/InteractionDef[defName="PrisonerCV"]/logRulesInitiator/rulesStrings</xpath>
+    <match Class="PatchOperationAdd">
+      <xpath>/Defs/InteractionDef[defName="PrisonerCV"]/logRulesInitiator/rulesStrings</xpath>
+      <value>
+          <li>r_logentry(INITIATOR_faction==PlayerColony,priority=250)->T'uhnya zootbe mi b'oobo sawih... (It will be glorious watching your people being butchered and tortured!)</li>
+          <li>r_logentry(INITIATOR_faction==PlayerTribe,priority=250)->T'uhnya zootbe mi b'oobo sawih... (It will be glorious watching your people being butchered and tortured!)</li>
+          <li>r_logentry(INITIATOR_kind==OuterRim_Jawa,priority=250)->T'uhnya zootbe mi b'oobo sawih... (It will be glorious watching your people being butchered and tortured!)</li>
+          <li>r_logentry(INITIATOR_kind==OuterRim_JawaTribal,priority=250)->T'uhnya zootbe mi b'oobo sawih... (It will be glorious watching your people being butchered and tortured!)</li>
+          <li>r_logentry(INITIATOR_faction==PlayerColony,priority=250)->N'ob t'ut... (So I need you to release me. This way, we can avoid unnecessary bloodshed among your people.)</li>
+          <li>r_logentry(INITIATOR_faction==PlayerTribe,priority=250)->N'ob t'ut... (So I need you to release me. This way, we can avoid unnecessary bloodshed among your people.)</li>
+          <li>r_logentry(INITIATOR_kind==OuterRim_Jawa,priority=250)->N'ob t'ut... (So I need you to release me. This way, we can avoid unnecessary bloodshed among your people.)</li>
+          <li>r_logentry(INITIATOR_kind==OuterRim_JawaTribal,priority=250)->N'ob t'ut... (So I need you to release me. This way, we can avoid unnecessary bloodshed among your people.)</li>
+          <li>r_logentry(INITIATOR_faction==PlayerColony,priority=250)->Huloot ne nootib man! (I'll be willing to cooperate more if you me some...)</li>
+          <li>r_logentry(INITIATOR_faction==PlayerTribe,priority=250)->Huloot ne nootib man! (I'll be willing to cooperate more if you me some...)</li>
+          <li>r_logentry(INITIATOR_kind==OuterRim_Jawa,priority=250)->Huloot ne nootib man! (I'll be willing to cooperate more if you me some...)</li>
+          <li>r_logentry(INITIATOR_kind==OuterRim_JawaTribal,priority=250)->Huloot ne nootib man! (I'll be willing to cooperate more if you me some...)</li>
+          <li>r_logentry(INITIATOR_faction==PlayerColony,priority=250)->Gatgoo gatgoo bimee k'oonyaah k'oonyaah l'ot ki. (Please give me some ; I'll promise to cooperate more... I just need a fix, that's all.)</li>
+          <li>r_logentry(INITIATOR_faction==PlayerTribe,priority=250)->Gatgoo gatgoo bimee k'oonyaah k'oonyaah l'ot ki. (Please give me some ; I'll promise to cooperate more... I just need a fix, that's all.)</li>
+          <li>r_logentry(INITIATOR_kind==OuterRim_Jawa,priority=250)->Gatgoo gatgoo bimee k'oonyaah k'oonyaah l'ot ki. (Please give me some ; I'll promise to cooperate more... I just need a fix, that's all.)</li>
+          <li>r_logentry(INITIATOR_kind==OuterRim_JawaTribal,priority=250)->Gatgoo gatgoo bimee k'oonyaah k'oonyaah l'ot ki. (Please give me some ; I'll promise to cooperate more... I just need a fix, that's all.)</li>
+          <li>r_logentry(INITIATOR_faction==PlayerColony,priority=250)->Zuhmee zuhmeu lee shatzaab nootrih? (Please give me some ; I'll promise to cooperate more.)</li>
+          <li>r_logentry(INITIATOR_faction==PlayerTribe,priority=250)->Zuhmee zuhmeu lee shatzaab nootrih? (Please give me some ; I'll promise to cooperate more.)</li>
+          <li>r_logentry(INITIATOR_kind==OuterRim_Jawa,priority=250)->Zuhmee zuhmeu lee shatzaab nootrih? (Please give me some ; I'll promise to cooperate more.)</li>
+          <li>r_logentry(INITIATOR_kind==OuterRim_JawaTribal,priority=250)->Zuhmee zuhmeu lee shatzaab nootrih? (Please give me some ; I'll promise to cooperate more.)</li>
+          <li>r_logentry(INITIATOR_faction==PlayerColony,priority=250)->Nyi kee kee. (I love butchering my enemies.)</li>
+          <li>r_logentry(INITIATOR_faction==PlayerTribe,priority=250)->Nyi kee kee. (I love butchering my enemies.)</li>
+          <li>r_logentry(INITIATOR_kind==OuterRim_Jawa,priority=250)->Nyi kee kee. (I love butchering my enemies.)</li>
+          <li>r_logentry(INITIATOR_kind==OuterRim_JawaTribal,priority=250)->Nyi kee kee. (I love butchering my enemies.)</li>
+      </value>
+    </match>
+  </Operation>
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/InteractionDef[defName="PrisonerClothes"]/logRulesInitiator/rulesStrings</xpath>
+    <match Class="PatchOperationAdd">
+      <xpath>/Defs/InteractionDef[defName="PrisonerClothes"]/logRulesInitiator/rulesStrings</xpath>
+      <value>
+          <li>r_logentry(INITIATOR_faction==PlayerColony,priority=250)->T'uhnya zootbe mi b'oobo sawih... (It will be glorious watching your people being butchered and tortured!)</li>
+          <li>r_logentry(INITIATOR_faction==PlayerTribe,priority=250)->T'uhnya zootbe mi b'oobo sawih... (It will be glorious watching your people being butchered and tortured!)</li>
+          <li>r_logentry(INITIATOR_kind==OuterRim_Jawa,priority=250)->T'uhnya zootbe mi b'oobo sawih... (It will be glorious watching your people being butchered and tortured!)</li>
+          <li>r_logentry(INITIATOR_kind==OuterRim_JawaTribal,priority=250)->T'uhnya zootbe mi b'oobo sawih... (It will be glorious watching your people being butchered and tortured!)</li>
+          <li>r_logentry(INITIATOR_faction==PlayerColony,priority=250)->N'ob t'ut... (So I need you to release me. This way, we can avoid unnecessary bloodshed among your people.)</li>
+          <li>r_logentry(INITIATOR_faction==PlayerTribe,priority=250)->N'ob t'ut... (So I need you to release me. This way, we can avoid unnecessary bloodshed among your people.)</li>
+          <li>r_logentry(INITIATOR_kind==OuterRim_Jawa,priority=250)->N'ob t'ut... (So I need you to release me. This way, we can avoid unnecessary bloodshed among your people.)</li>
+          <li>r_logentry(INITIATOR_kind==OuterRim_JawaTribal,priority=250)->N'ob t'ut... (So I need you to release me. This way, we can avoid unnecessary bloodshed among your people.)</li>
+          <li>r_logentry(INITIATOR_faction==PlayerColony,priority=250)->Huloot ne nootib man! (I'll be willing to cooperate more if you me some...)</li>
+          <li>r_logentry(INITIATOR_faction==PlayerTribe,priority=250)->Huloot ne nootib man! (I'll be willing to cooperate more if you me some...)</li>
+          <li>r_logentry(INITIATOR_kind==OuterRim_Jawa,priority=250)->Huloot ne nootib man! (I'll be willing to cooperate more if you me some...)</li>
+          <li>r_logentry(INITIATOR_kind==OuterRim_JawaTribal,priority=250)->Huloot ne nootib man! (I'll be willing to cooperate more if you me some...)</li>
+          <li>r_logentry(INITIATOR_faction==PlayerColony,priority=250)->Gatgoo gatgoo bimee k'oonyaah k'oonyaah l'ot ki. (Please give me some ; I'll promise to cooperate more... I just need a fix, that's all.)</li>
+          <li>r_logentry(INITIATOR_faction==PlayerTribe,priority=250)->Gatgoo gatgoo bimee k'oonyaah k'oonyaah l'ot ki. (Please give me some ; I'll promise to cooperate more... I just need a fix, that's all.)</li>
+          <li>r_logentry(INITIATOR_kind==OuterRim_Jawa,priority=250)->Gatgoo gatgoo bimee k'oonyaah k'oonyaah l'ot ki. (Please give me some ; I'll promise to cooperate more... I just need a fix, that's all.)</li>
+          <li>r_logentry(INITIATOR_kind==OuterRim_JawaTribal,priority=250)->Gatgoo gatgoo bimee k'oonyaah k'oonyaah l'ot ki. (Please give me some ; I'll promise to cooperate more... I just need a fix, that's all.)</li>
+          <li>r_logentry(INITIATOR_faction==PlayerColony,priority=250)->Zuhmee zuhmeu lee shatzaab nootrih? (Please give me some ; I'll promise to cooperate more.)</li>
+          <li>r_logentry(INITIATOR_faction==PlayerTribe,priority=250)->Zuhmee zuhmeu lee shatzaab nootrih? (Please give me some ; I'll promise to cooperate more.)</li>
+          <li>r_logentry(INITIATOR_kind==OuterRim_Jawa,priority=250)->Zuhmee zuhmeu lee shatzaab nootrih? (Please give me some ; I'll promise to cooperate more.)</li>
+          <li>r_logentry(INITIATOR_kind==OuterRim_JawaTribal,priority=250)->Zuhmee zuhmeu lee shatzaab nootrih? (Please give me some ; I'll promise to cooperate more.)</li>
+          <li>r_logentry(INITIATOR_faction==PlayerColony,priority=250)->Goon n'aahob noo n'oobzaa... (Actually, I'd feel more at ease without these constraining clothes...)</li>
+          <li>r_logentry(INITIATOR_faction==PlayerTribe,priority=250)->Goon n'aahob noo n'oobzaa... (Actually, I'd feel more at ease without these constraining clothes...)</li>
+          <li>r_logentry(INITIATOR_kind==OuterRim_Jawa,priority=250)->Goon n'aahob noo n'oobzaa... (Actually, I'd feel more at ease without these constraining clothes...)</li>
+          <li>r_logentry(INITIATOR_kind==OuterRim_JawaTribal,priority=250)->Goon n'aahob noo n'oobzaa... (Actually, I'd feel more at ease without these constraining clothes...)</li>
+      </value>
+    </match>
+  </Operation>
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/InteractionDef[defName="PrisonerFightingSkills"]/logRulesInitiator/rulesStrings</xpath>
+    <match Class="PatchOperationAdd">
+      <xpath>/Defs/InteractionDef[defName="PrisonerFightingSkills"]/logRulesInitiator/rulesStrings</xpath>
+      <value>
+          <li>r_logentry(INITIATOR_faction==PlayerColony,priority=250)->T'uhnya zootbe mi b'oobo sawih... (It will be glorious watching your people being butchered and tortured!)</li>
+          <li>r_logentry(INITIATOR_faction==PlayerTribe,priority=250)->T'uhnya zootbe mi b'oobo sawih... (It will be glorious watching your people being butchered and tortured!)</li>
+          <li>r_logentry(INITIATOR_kind==OuterRim_Jawa,priority=250)->T'uhnya zootbe mi b'oobo sawih... (It will be glorious watching your people being butchered and tortured!)</li>
+          <li>r_logentry(INITIATOR_kind==OuterRim_JawaTribal,priority=250)->T'uhnya zootbe mi b'oobo sawih... (It will be glorious watching your people being butchered and tortured!)</li>
+          <li>r_logentry(INITIATOR_faction==PlayerColony,priority=250)->N'ob t'ut... (So I need you to release me. This way, we can avoid unnecessary bloodshed among your people.)</li>
+          <li>r_logentry(INITIATOR_faction==PlayerTribe,priority=250)->N'ob t'ut... (So I need you to release me. This way, we can avoid unnecessary bloodshed among your people.)</li>
+          <li>r_logentry(INITIATOR_kind==OuterRim_Jawa,priority=250)->N'ob t'ut... (So I need you to release me. This way, we can avoid unnecessary bloodshed among your people.)</li>
+          <li>r_logentry(INITIATOR_kind==OuterRim_JawaTribal,priority=250)->N'ob t'ut... (So I need you to release me. This way, we can avoid unnecessary bloodshed among your people.)</li>
+          <li>r_logentry(INITIATOR_faction==PlayerColony,priority=250)->Huloot ne nootib man! (I'll be willing to cooperate more if you me some...)</li>
+          <li>r_logentry(INITIATOR_faction==PlayerTribe,priority=250)->Huloot ne nootib man! (I'll be willing to cooperate more if you me some...)</li>
+          <li>r_logentry(INITIATOR_kind==OuterRim_Jawa,priority=250)->Huloot ne nootib man! (I'll be willing to cooperate more if you me some...)</li>
+          <li>r_logentry(INITIATOR_kind==OuterRim_JawaTribal,priority=250)->Huloot ne nootib man! (I'll be willing to cooperate more if you me some...)</li>
+          <li>r_logentry(INITIATOR_faction==PlayerColony,priority=250)->Gatgoo gatgoo bimee k'oonyaah k'oonyaah l'ot ki. (Please give me some ; I'll promise to cooperate more... I just need a fix, that's all.)</li>
+          <li>r_logentry(INITIATOR_faction==PlayerTribe,priority=250)->Gatgoo gatgoo bimee k'oonyaah k'oonyaah l'ot ki. (Please give me some ; I'll promise to cooperate more... I just need a fix, that's all.)</li>
+          <li>r_logentry(INITIATOR_kind==OuterRim_Jawa,priority=250)->Gatgoo gatgoo bimee k'oonyaah k'oonyaah l'ot ki. (Please give me some ; I'll promise to cooperate more... I just need a fix, that's all.)</li>
+          <li>r_logentry(INITIATOR_kind==OuterRim_JawaTribal,priority=250)->Gatgoo gatgoo bimee k'oonyaah k'oonyaah l'ot ki. (Please give me some ; I'll promise to cooperate more... I just need a fix, that's all.)</li>
+          <li>r_logentry(INITIATOR_faction==PlayerColony,priority=250)->Zuhmee zuhmeu lee shatzaab nootrih? (Please give me some ; I'll promise to cooperate more.)</li>
+          <li>r_logentry(INITIATOR_faction==PlayerTribe,priority=250)->Zuhmee zuhmeu lee shatzaab nootrih? (Please give me some ; I'll promise to cooperate more.)</li>
+          <li>r_logentry(INITIATOR_kind==OuterRim_Jawa,priority=250)->Zuhmee zuhmeu lee shatzaab nootrih? (Please give me some ; I'll promise to cooperate more.)</li>
+          <li>r_logentry(INITIATOR_kind==OuterRim_JawaTribal,priority=250)->Zuhmee zuhmeu lee shatzaab nootrih? (Please give me some ; I'll promise to cooperate more.)</li>
+          <li>r_logentry(INITIATOR_faction==PlayerColony,priority=250)->M'itnyoon gooh m'aah mooteen... (Close combat has always been my preferred style — a style I now completely master.)</li>
+          <li>r_logentry(INITIATOR_faction==PlayerTribe,priority=250)->M'itnyoon gooh m'aah mooteen... (Close combat has always been my preferred style — a style I now completely master.)</li>
+          <li>r_logentry(INITIATOR_kind==OuterRim_Jawa,priority=250)->M'itnyoon gooh m'aah mooteen... (Close combat has always been my preferred style — a style I now completely master.)</li>
+          <li>r_logentry(INITIATOR_kind==OuterRim_JawaTribal,priority=250)->M'itnyoon gooh m'aah mooteen... (Close combat has always been my preferred style — a style I now completely master.)</li>
+      </value>
+    </match>
+  </Operation>
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/InteractionDef[defName="PrisonerConstructionSkills"]/logRulesInitiator/rulesStrings</xpath>
+    <match Class="PatchOperationAdd">
+      <xpath>/Defs/InteractionDef[defName="PrisonerConstructionSkills"]/logRulesInitiator/rulesStrings</xpath>
+      <value>
+          <li>r_logentry(INITIATOR_faction==PlayerColony,priority=250)->T'uhnya zootbe mi b'oobo sawih... (It will be glorious watching your people being butchered and tortured!)</li>
+          <li>r_logentry(INITIATOR_faction==PlayerTribe,priority=250)->T'uhnya zootbe mi b'oobo sawih... (It will be glorious watching your people being butchered and tortured!)</li>
+          <li>r_logentry(INITIATOR_kind==OuterRim_Jawa,priority=250)->T'uhnya zootbe mi b'oobo sawih... (It will be glorious watching your people being butchered and tortured!)</li>
+          <li>r_logentry(INITIATOR_kind==OuterRim_JawaTribal,priority=250)->T'uhnya zootbe mi b'oobo sawih... (It will be glorious watching your people being butchered and tortured!)</li>
+          <li>r_logentry(INITIATOR_faction==PlayerColony,priority=250)->N'ob t'ut... (So I need you to release me. This way, we can avoid unnecessary bloodshed among your people.)</li>
+          <li>r_logentry(INITIATOR_faction==PlayerTribe,priority=250)->N'ob t'ut... (So I need you to release me. This way, we can avoid unnecessary bloodshed among your people.)</li>
+          <li>r_logentry(INITIATOR_kind==OuterRim_Jawa,priority=250)->N'ob t'ut... (So I need you to release me. This way, we can avoid unnecessary bloodshed among your people.)</li>
+          <li>r_logentry(INITIATOR_kind==OuterRim_JawaTribal,priority=250)->N'ob t'ut... (So I need you to release me. This way, we can avoid unnecessary bloodshed among your people.)</li>
+          <li>r_logentry(INITIATOR_faction==PlayerColony,priority=250)->Huloot ne nootib man! (I'll be willing to cooperate more if you me some...)</li>
+          <li>r_logentry(INITIATOR_faction==PlayerTribe,priority=250)->Huloot ne nootib man! (I'll be willing to cooperate more if you me some...)</li>
+          <li>r_logentry(INITIATOR_kind==OuterRim_Jawa,priority=250)->Huloot ne nootib man! (I'll be willing to cooperate more if you me some...)</li>
+          <li>r_logentry(INITIATOR_kind==OuterRim_JawaTribal,priority=250)->Huloot ne nootib man! (I'll be willing to cooperate more if you me some...)</li>
+          <li>r_logentry(INITIATOR_faction==PlayerColony,priority=250)->Gatgoo gatgoo bimee k'oonyaah k'oonyaah l'ot ki. (Please give me some ; I'll promise to cooperate more... I just need a fix, that's all.)</li>
+          <li>r_logentry(INITIATOR_faction==PlayerTribe,priority=250)->Gatgoo gatgoo bimee k'oonyaah k'oonyaah l'ot ki. (Please give me some ; I'll promise to cooperate more... I just need a fix, that's all.)</li>
+          <li>r_logentry(INITIATOR_kind==OuterRim_Jawa,priority=250)->Gatgoo gatgoo bimee k'oonyaah k'oonyaah l'ot ki. (Please give me some ; I'll promise to cooperate more... I just need a fix, that's all.)</li>
+          <li>r_logentry(INITIATOR_kind==OuterRim_JawaTribal,priority=250)->Gatgoo gatgoo bimee k'oonyaah k'oonyaah l'ot ki. (Please give me some ; I'll promise to cooperate more... I just need a fix, that's all.)</li>
+          <li>r_logentry(INITIATOR_faction==PlayerColony,priority=250)->Zuhmee zuhmeu lee shatzaab nootrih? (Please give me some ; I'll promise to cooperate more.)</li>
+          <li>r_logentry(INITIATOR_faction==PlayerTribe,priority=250)->Zuhmee zuhmeu lee shatzaab nootrih? (Please give me some ; I'll promise to cooperate more.)</li>
+          <li>r_logentry(INITIATOR_kind==OuterRim_Jawa,priority=250)->Zuhmee zuhmeu lee shatzaab nootrih? (Please give me some ; I'll promise to cooperate more.)</li>
+          <li>r_logentry(INITIATOR_kind==OuterRim_JawaTribal,priority=250)->Zuhmee zuhmeu lee shatzaab nootrih? (Please give me some ; I'll promise to cooperate more.)</li>
+          <li>r_logentry(INITIATOR_faction==PlayerColony,priority=250)->Nyaanyu litsoo? (I enjoy building structures — and the ones I build are usually pretty impressive.)</li>
+          <li>r_logentry(INITIATOR_faction==PlayerTribe,priority=250)->Nyaanyu litsoo? (I enjoy building structures — and the ones I build are usually pretty impressive.)</li>
+          <li>r_logentry(INITIATOR_kind==OuterRim_Jawa,priority=250)->Nyaanyu litsoo? (I enjoy building structures — and the ones I build are usually pretty impressive.)</li>
+          <li>r_logentry(INITIATOR_kind==OuterRim_JawaTribal,priority=250)->Nyaanyu litsoo? (I enjoy building structures — and the ones I build are usually pretty impressive.)</li>
+      </value>
+    </match>
+  </Operation>
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/InteractionDef[defName="PrisonerMiningSkills"]/logRulesInitiator/rulesStrings</xpath>
+    <match Class="PatchOperationAdd">
+      <xpath>/Defs/InteractionDef[defName="PrisonerMiningSkills"]/logRulesInitiator/rulesStrings</xpath>
+      <value>
+          <li>r_logentry(INITIATOR_faction==PlayerColony,priority=250)->T'uhnya zootbe mi b'oobo sawih... (It will be glorious watching your people being butchered and tortured!)</li>
+          <li>r_logentry(INITIATOR_faction==PlayerTribe,priority=250)->T'uhnya zootbe mi b'oobo sawih... (It will be glorious watching your people being butchered and tortured!)</li>
+          <li>r_logentry(INITIATOR_kind==OuterRim_Jawa,priority=250)->T'uhnya zootbe mi b'oobo sawih... (It will be glorious watching your people being butchered and tortured!)</li>
+          <li>r_logentry(INITIATOR_kind==OuterRim_JawaTribal,priority=250)->T'uhnya zootbe mi b'oobo sawih... (It will be glorious watching your people being butchered and tortured!)</li>
+          <li>r_logentry(INITIATOR_faction==PlayerColony,priority=250)->N'ob t'ut... (So I need you to release me. This way, we can avoid unnecessary bloodshed among your people.)</li>
+          <li>r_logentry(INITIATOR_faction==PlayerTribe,priority=250)->N'ob t'ut... (So I need you to release me. This way, we can avoid unnecessary bloodshed among your people.)</li>
+          <li>r_logentry(INITIATOR_kind==OuterRim_Jawa,priority=250)->N'ob t'ut... (So I need you to release me. This way, we can avoid unnecessary bloodshed among your people.)</li>
+          <li>r_logentry(INITIATOR_kind==OuterRim_JawaTribal,priority=250)->N'ob t'ut... (So I need you to release me. This way, we can avoid unnecessary bloodshed among your people.)</li>
+          <li>r_logentry(INITIATOR_faction==PlayerColony,priority=250)->Huloot ne nootib man! (I'll be willing to cooperate more if you me some...)</li>
+          <li>r_logentry(INITIATOR_faction==PlayerTribe,priority=250)->Huloot ne nootib man! (I'll be willing to cooperate more if you me some...)</li>
+          <li>r_logentry(INITIATOR_kind==OuterRim_Jawa,priority=250)->Huloot ne nootib man! (I'll be willing to cooperate more if you me some...)</li>
+          <li>r_logentry(INITIATOR_kind==OuterRim_JawaTribal,priority=250)->Huloot ne nootib man! (I'll be willing to cooperate more if you me some...)</li>
+          <li>r_logentry(INITIATOR_faction==PlayerColony,priority=250)->Gatgoo gatgoo bimee k'oonyaah k'oonyaah l'ot ki. (Please give me some ; I'll promise to cooperate more... I just need a fix, that's all.)</li>
+          <li>r_logentry(INITIATOR_faction==PlayerTribe,priority=250)->Gatgoo gatgoo bimee k'oonyaah k'oonyaah l'ot ki. (Please give me some ; I'll promise to cooperate more... I just need a fix, that's all.)</li>
+          <li>r_logentry(INITIATOR_kind==OuterRim_Jawa,priority=250)->Gatgoo gatgoo bimee k'oonyaah k'oonyaah l'ot ki. (Please give me some ; I'll promise to cooperate more... I just need a fix, that's all.)</li>
+          <li>r_logentry(INITIATOR_kind==OuterRim_JawaTribal,priority=250)->Gatgoo gatgoo bimee k'oonyaah k'oonyaah l'ot ki. (Please give me some ; I'll promise to cooperate more... I just need a fix, that's all.)</li>
+          <li>r_logentry(INITIATOR_faction==PlayerColony,priority=250)->Zuhmee zuhmeu lee shatzaab nootrih? (Please give me some ; I'll promise to cooperate more.)</li>
+          <li>r_logentry(INITIATOR_faction==PlayerTribe,priority=250)->Zuhmee zuhmeu lee shatzaab nootrih? (Please give me some ; I'll promise to cooperate more.)</li>
+          <li>r_logentry(INITIATOR_kind==OuterRim_Jawa,priority=250)->Zuhmee zuhmeu lee shatzaab nootrih? (Please give me some ; I'll promise to cooperate more.)</li>
+          <li>r_logentry(INITIATOR_kind==OuterRim_JawaTribal,priority=250)->Zuhmee zuhmeu lee shatzaab nootrih? (Please give me some ; I'll promise to cooperate more.)</li>
+          <li>r_logentry(INITIATOR_faction==PlayerColony,priority=250)->Bogon meehmaa? (I enjoy mining — and my yields are extremely high and valuable.)</li>
+          <li>r_logentry(INITIATOR_faction==PlayerTribe,priority=250)->Bogon meehmaa? (I enjoy mining — and my yields are extremely high and valuable.)</li>
+          <li>r_logentry(INITIATOR_kind==OuterRim_Jawa,priority=250)->Bogon meehmaa? (I enjoy mining — and my yields are extremely high and valuable.)</li>
+          <li>r_logentry(INITIATOR_kind==OuterRim_JawaTribal,priority=250)->Bogon meehmaa? (I enjoy mining — and my yields are extremely high and valuable.)</li>
+      </value>
+    </match>
+  </Operation>
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/InteractionDef[defName="PrisonerCookingSkills"]/logRulesInitiator/rulesStrings</xpath>
+    <match Class="PatchOperationAdd">
+      <xpath>/Defs/InteractionDef[defName="PrisonerCookingSkills"]/logRulesInitiator/rulesStrings</xpath>
+      <value>
+          <li>r_logentry(INITIATOR_faction==PlayerColony,priority=250)->T'uhnya zootbe mi b'oobo sawih... (It will be glorious watching your people being butchered and tortured!)</li>
+          <li>r_logentry(INITIATOR_faction==PlayerTribe,priority=250)->T'uhnya zootbe mi b'oobo sawih... (It will be glorious watching your people being butchered and tortured!)</li>
+          <li>r_logentry(INITIATOR_kind==OuterRim_Jawa,priority=250)->T'uhnya zootbe mi b'oobo sawih... (It will be glorious watching your people being butchered and tortured!)</li>
+          <li>r_logentry(INITIATOR_kind==OuterRim_JawaTribal,priority=250)->T'uhnya zootbe mi b'oobo sawih... (It will be glorious watching your people being butchered and tortured!)</li>
+          <li>r_logentry(INITIATOR_faction==PlayerColony,priority=250)->N'ob t'ut... (So I need you to release me. This way, we can avoid unnecessary bloodshed among your people.)</li>
+          <li>r_logentry(INITIATOR_faction==PlayerTribe,priority=250)->N'ob t'ut... (So I need you to release me. This way, we can avoid unnecessary bloodshed among your people.)</li>
+          <li>r_logentry(INITIATOR_kind==OuterRim_Jawa,priority=250)->N'ob t'ut... (So I need you to release me. This way, we can avoid unnecessary bloodshed among your people.)</li>
+          <li>r_logentry(INITIATOR_kind==OuterRim_JawaTribal,priority=250)->N'ob t'ut... (So I need you to release me. This way, we can avoid unnecessary bloodshed among your people.)</li>
+          <li>r_logentry(INITIATOR_faction==PlayerColony,priority=250)->Huloot ne nootib man! (I'll be willing to cooperate more if you me some...)</li>
+          <li>r_logentry(INITIATOR_faction==PlayerTribe,priority=250)->Huloot ne nootib man! (I'll be willing to cooperate more if you me some...)</li>
+          <li>r_logentry(INITIATOR_kind==OuterRim_Jawa,priority=250)->Huloot ne nootib man! (I'll be willing to cooperate more if you me some...)</li>
+          <li>r_logentry(INITIATOR_kind==OuterRim_JawaTribal,priority=250)->Huloot ne nootib man! (I'll be willing to cooperate more if you me some...)</li>
+          <li>r_logentry(INITIATOR_faction==PlayerColony,priority=250)->Gatgoo gatgoo bimee k'oonyaah k'oonyaah l'ot ki. (Please give me some ; I'll promise to cooperate more... I just need a fix, that's all.)</li>
+          <li>r_logentry(INITIATOR_faction==PlayerTribe,priority=250)->Gatgoo gatgoo bimee k'oonyaah k'oonyaah l'ot ki. (Please give me some ; I'll promise to cooperate more... I just need a fix, that's all.)</li>
+          <li>r_logentry(INITIATOR_kind==OuterRim_Jawa,priority=250)->Gatgoo gatgoo bimee k'oonyaah k'oonyaah l'ot ki. (Please give me some ; I'll promise to cooperate more... I just need a fix, that's all.)</li>
+          <li>r_logentry(INITIATOR_kind==OuterRim_JawaTribal,priority=250)->Gatgoo gatgoo bimee k'oonyaah k'oonyaah l'ot ki. (Please give me some ; I'll promise to cooperate more... I just need a fix, that's all.)</li>
+          <li>r_logentry(INITIATOR_faction==PlayerColony,priority=250)->Zuhmee zuhmeu lee shatzaab nootrih? (Please give me some ; I'll promise to cooperate more.)</li>
+          <li>r_logentry(INITIATOR_faction==PlayerTribe,priority=250)->Zuhmee zuhmeu lee shatzaab nootrih? (Please give me some ; I'll promise to cooperate more.)</li>
+          <li>r_logentry(INITIATOR_kind==OuterRim_Jawa,priority=250)->Zuhmee zuhmeu lee shatzaab nootrih? (Please give me some ; I'll promise to cooperate more.)</li>
+          <li>r_logentry(INITIATOR_kind==OuterRim_JawaTribal,priority=250)->Zuhmee zuhmeu lee shatzaab nootrih? (Please give me some ; I'll promise to cooperate more.)</li>
+          <li>r_logentry(INITIATOR_faction==PlayerColony,priority=250)->Ba ba koneeb beesho shaatmeh? (I enjoy cooking — and my dishes are like heaven for your soul and body.)</li>
+          <li>r_logentry(INITIATOR_faction==PlayerTribe,priority=250)->Ba ba koneeb beesho shaatmeh? (I enjoy cooking — and my dishes are like heaven for your soul and body.)</li>
+          <li>r_logentry(INITIATOR_kind==OuterRim_Jawa,priority=250)->Ba ba koneeb beesho shaatmeh? (I enjoy cooking — and my dishes are like heaven for your soul and body.)</li>
+          <li>r_logentry(INITIATOR_kind==OuterRim_JawaTribal,priority=250)->Ba ba koneeb beesho shaatmeh? (I enjoy cooking — and my dishes are like heaven for your soul and body.)</li>
+      </value>
+    </match>
+  </Operation>
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/InteractionDef[defName="PrisonerPlantsSkills"]/logRulesInitiator/rulesStrings</xpath>
+    <match Class="PatchOperationAdd">
+      <xpath>/Defs/InteractionDef[defName="PrisonerPlantsSkills"]/logRulesInitiator/rulesStrings</xpath>
+      <value>
+          <li>r_logentry(INITIATOR_faction==PlayerColony,priority=250)->T'uhnya zootbe mi b'oobo sawih... (It will be glorious watching your people being butchered and tortured!)</li>
+          <li>r_logentry(INITIATOR_faction==PlayerTribe,priority=250)->T'uhnya zootbe mi b'oobo sawih... (It will be glorious watching your people being butchered and tortured!)</li>
+          <li>r_logentry(INITIATOR_kind==OuterRim_Jawa,priority=250)->T'uhnya zootbe mi b'oobo sawih... (It will be glorious watching your people being butchered and tortured!)</li>
+          <li>r_logentry(INITIATOR_kind==OuterRim_JawaTribal,priority=250)->T'uhnya zootbe mi b'oobo sawih... (It will be glorious watching your people being butchered and tortured!)</li>
+          <li>r_logentry(INITIATOR_faction==PlayerColony,priority=250)->N'ob t'ut... (So I need you to release me. This way, we can avoid unnecessary bloodshed among your people.)</li>
+          <li>r_logentry(INITIATOR_faction==PlayerTribe,priority=250)->N'ob t'ut... (So I need you to release me. This way, we can avoid unnecessary bloodshed among your people.)</li>
+          <li>r_logentry(INITIATOR_kind==OuterRim_Jawa,priority=250)->N'ob t'ut... (So I need you to release me. This way, we can avoid unnecessary bloodshed among your people.)</li>
+          <li>r_logentry(INITIATOR_kind==OuterRim_JawaTribal,priority=250)->N'ob t'ut... (So I need you to release me. This way, we can avoid unnecessary bloodshed among your people.)</li>
+          <li>r_logentry(INITIATOR_faction==PlayerColony,priority=250)->Huloot ne nootib man! (I'll be willing to cooperate more if you me some...)</li>
+          <li>r_logentry(INITIATOR_faction==PlayerTribe,priority=250)->Huloot ne nootib man! (I'll be willing to cooperate more if you me some...)</li>
+          <li>r_logentry(INITIATOR_kind==OuterRim_Jawa,priority=250)->Huloot ne nootib man! (I'll be willing to cooperate more if you me some...)</li>
+          <li>r_logentry(INITIATOR_kind==OuterRim_JawaTribal,priority=250)->Huloot ne nootib man! (I'll be willing to cooperate more if you me some...)</li>
+          <li>r_logentry(INITIATOR_faction==PlayerColony,priority=250)->Gatgoo gatgoo bimee k'oonyaah k'oonyaah l'ot ki. (Please give me some ; I'll promise to cooperate more... I just need a fix, that's all.)</li>
+          <li>r_logentry(INITIATOR_faction==PlayerTribe,priority=250)->Gatgoo gatgoo bimee k'oonyaah k'oonyaah l'ot ki. (Please give me some ; I'll promise to cooperate more... I just need a fix, that's all.)</li>
+          <li>r_logentry(INITIATOR_kind==OuterRim_Jawa,priority=250)->Gatgoo gatgoo bimee k'oonyaah k'oonyaah l'ot ki. (Please give me some ; I'll promise to cooperate more... I just need a fix, that's all.)</li>
+          <li>r_logentry(INITIATOR_kind==OuterRim_JawaTribal,priority=250)->Gatgoo gatgoo bimee k'oonyaah k'oonyaah l'ot ki. (Please give me some ; I'll promise to cooperate more... I just need a fix, that's all.)</li>
+          <li>r_logentry(INITIATOR_faction==PlayerColony,priority=250)->Zuhmee zuhmeu lee shatzaab nootrih? (Please give me some ; I'll promise to cooperate more.)</li>
+          <li>r_logentry(INITIATOR_faction==PlayerTribe,priority=250)->Zuhmee zuhmeu lee shatzaab nootrih? (Please give me some ; I'll promise to cooperate more.)</li>
+          <li>r_logentry(INITIATOR_kind==OuterRim_Jawa,priority=250)->Zuhmee zuhmeu lee shatzaab nootrih? (Please give me some ; I'll promise to cooperate more.)</li>
+          <li>r_logentry(INITIATOR_kind==OuterRim_JawaTribal,priority=250)->Zuhmee zuhmeu lee shatzaab nootrih? (Please give me some ; I'll promise to cooperate more.)</li>
+          <li>r_logentry(INITIATOR_faction==PlayerColony,priority=250)->Zen zo. (I enjoy farming — and, given the right conditions, I can guarantee lavishly abundant harvests.)</li>
+          <li>r_logentry(INITIATOR_faction==PlayerTribe,priority=250)->Zen zo. (I enjoy farming — and, given the right conditions, I can guarantee lavishly abundant harvests.)</li>
+          <li>r_logentry(INITIATOR_kind==OuterRim_Jawa,priority=250)->Zen zo. (I enjoy farming — and, given the right conditions, I can guarantee lavishly abundant harvests.)</li>
+          <li>r_logentry(INITIATOR_kind==OuterRim_JawaTribal,priority=250)->Zen zo. (I enjoy farming — and, given the right conditions, I can guarantee lavishly abundant harvests.)</li>
+      </value>
+    </match>
+  </Operation>
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/InteractionDef[defName="PrisonerAnimalsSkills"]/logRulesInitiator/rulesStrings</xpath>
+    <match Class="PatchOperationAdd">
+      <xpath>/Defs/InteractionDef[defName="PrisonerAnimalsSkills"]/logRulesInitiator/rulesStrings</xpath>
+      <value>
+          <li>r_logentry(INITIATOR_faction==PlayerColony,priority=250)->T'uhnya zootbe mi b'oobo sawih... (It will be glorious watching your people being butchered and tortured!)</li>
+          <li>r_logentry(INITIATOR_faction==PlayerTribe,priority=250)->T'uhnya zootbe mi b'oobo sawih... (It will be glorious watching your people being butchered and tortured!)</li>
+          <li>r_logentry(INITIATOR_kind==OuterRim_Jawa,priority=250)->T'uhnya zootbe mi b'oobo sawih... (It will be glorious watching your people being butchered and tortured!)</li>
+          <li>r_logentry(INITIATOR_kind==OuterRim_JawaTribal,priority=250)->T'uhnya zootbe mi b'oobo sawih... (It will be glorious watching your people being butchered and tortured!)</li>
+          <li>r_logentry(INITIATOR_faction==PlayerColony,priority=250)->N'ob t'ut... (So I need you to release me. This way, we can avoid unnecessary bloodshed among your people.)</li>
+          <li>r_logentry(INITIATOR_faction==PlayerTribe,priority=250)->N'ob t'ut... (So I need you to release me. This way, we can avoid unnecessary bloodshed among your people.)</li>
+          <li>r_logentry(INITIATOR_kind==OuterRim_Jawa,priority=250)->N'ob t'ut... (So I need you to release me. This way, we can avoid unnecessary bloodshed among your people.)</li>
+          <li>r_logentry(INITIATOR_kind==OuterRim_JawaTribal,priority=250)->N'ob t'ut... (So I need you to release me. This way, we can avoid unnecessary bloodshed among your people.)</li>
+          <li>r_logentry(INITIATOR_faction==PlayerColony,priority=250)->Huloot ne nootib man! (I'll be willing to cooperate more if you me some...)</li>
+          <li>r_logentry(INITIATOR_faction==PlayerTribe,priority=250)->Huloot ne nootib man! (I'll be willing to cooperate more if you me some...)</li>
+          <li>r_logentry(INITIATOR_kind==OuterRim_Jawa,priority=250)->Huloot ne nootib man! (I'll be willing to cooperate more if you me some...)</li>
+          <li>r_logentry(INITIATOR_kind==OuterRim_JawaTribal,priority=250)->Huloot ne nootib man! (I'll be willing to cooperate more if you me some...)</li>
+          <li>r_logentry(INITIATOR_faction==PlayerColony,priority=250)->Gatgoo gatgoo bimee k'oonyaah k'oonyaah l'ot ki. (Please give me some ; I'll promise to cooperate more... I just need a fix, that's all.)</li>
+          <li>r_logentry(INITIATOR_faction==PlayerTribe,priority=250)->Gatgoo gatgoo bimee k'oonyaah k'oonyaah l'ot ki. (Please give me some ; I'll promise to cooperate more... I just need a fix, that's all.)</li>
+          <li>r_logentry(INITIATOR_kind==OuterRim_Jawa,priority=250)->Gatgoo gatgoo bimee k'oonyaah k'oonyaah l'ot ki. (Please give me some ; I'll promise to cooperate more... I just need a fix, that's all.)</li>
+          <li>r_logentry(INITIATOR_kind==OuterRim_JawaTribal,priority=250)->Gatgoo gatgoo bimee k'oonyaah k'oonyaah l'ot ki. (Please give me some ; I'll promise to cooperate more... I just need a fix, that's all.)</li>
+          <li>r_logentry(INITIATOR_faction==PlayerColony,priority=250)->Zuhmee zuhmeu lee shatzaab nootrih? (Please give me some ; I'll promise to cooperate more.)</li>
+          <li>r_logentry(INITIATOR_faction==PlayerTribe,priority=250)->Zuhmee zuhmeu lee shatzaab nootrih? (Please give me some ; I'll promise to cooperate more.)</li>
+          <li>r_logentry(INITIATOR_kind==OuterRim_Jawa,priority=250)->Zuhmee zuhmeu lee shatzaab nootrih? (Please give me some ; I'll promise to cooperate more.)</li>
+          <li>r_logentry(INITIATOR_kind==OuterRim_JawaTribal,priority=250)->Zuhmee zuhmeu lee shatzaab nootrih? (Please give me some ; I'll promise to cooperate more.)</li>
+          <li>r_logentry(INITIATOR_faction==PlayerColony,priority=250)->Nanshoh maa l'oonna l'oonna boon boon... (I enjoy animals — and I've achieved a very deep and fruitful bond with them.)</li>
+          <li>r_logentry(INITIATOR_faction==PlayerTribe,priority=250)->Nanshoh maa l'oonna l'oonna boon boon... (I enjoy animals — and I've achieved a very deep and fruitful bond with them.)</li>
+          <li>r_logentry(INITIATOR_kind==OuterRim_Jawa,priority=250)->Nanshoh maa l'oonna l'oonna boon boon... (I enjoy animals — and I've achieved a very deep and fruitful bond with them.)</li>
+          <li>r_logentry(INITIATOR_kind==OuterRim_JawaTribal,priority=250)->Nanshoh maa l'oonna l'oonna boon boon... (I enjoy animals — and I've achieved a very deep and fruitful bond with them.)</li>
+      </value>
+    </match>
+  </Operation>
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/InteractionDef[defName="PrisonerCraftingSkills"]/logRulesInitiator/rulesStrings</xpath>
+    <match Class="PatchOperationAdd">
+      <xpath>/Defs/InteractionDef[defName="PrisonerCraftingSkills"]/logRulesInitiator/rulesStrings</xpath>
+      <value>
+          <li>r_logentry(INITIATOR_faction==PlayerColony,priority=250)->T'uhnya zootbe mi b'oobo sawih... (It will be glorious watching your people being butchered and tortured!)</li>
+          <li>r_logentry(INITIATOR_faction==PlayerTribe,priority=250)->T'uhnya zootbe mi b'oobo sawih... (It will be glorious watching your people being butchered and tortured!)</li>
+          <li>r_logentry(INITIATOR_kind==OuterRim_Jawa,priority=250)->T'uhnya zootbe mi b'oobo sawih... (It will be glorious watching your people being butchered and tortured!)</li>
+          <li>r_logentry(INITIATOR_kind==OuterRim_JawaTribal,priority=250)->T'uhnya zootbe mi b'oobo sawih... (It will be glorious watching your people being butchered and tortured!)</li>
+          <li>r_logentry(INITIATOR_faction==PlayerColony,priority=250)->N'ob t'ut... (So I need you to release me. This way, we can avoid unnecessary bloodshed among your people.)</li>
+          <li>r_logentry(INITIATOR_faction==PlayerTribe,priority=250)->N'ob t'ut... (So I need you to release me. This way, we can avoid unnecessary bloodshed among your people.)</li>
+          <li>r_logentry(INITIATOR_kind==OuterRim_Jawa,priority=250)->N'ob t'ut... (So I need you to release me. This way, we can avoid unnecessary bloodshed among your people.)</li>
+          <li>r_logentry(INITIATOR_kind==OuterRim_JawaTribal,priority=250)->N'ob t'ut... (So I need you to release me. This way, we can avoid unnecessary bloodshed among your people.)</li>
+          <li>r_logentry(INITIATOR_faction==PlayerColony,priority=250)->Huloot ne nootib man! (I'll be willing to cooperate more if you me some...)</li>
+          <li>r_logentry(INITIATOR_faction==PlayerTribe,priority=250)->Huloot ne nootib man! (I'll be willing to cooperate more if you me some...)</li>
+          <li>r_logentry(INITIATOR_kind==OuterRim_Jawa,priority=250)->Huloot ne nootib man! (I'll be willing to cooperate more if you me some...)</li>
+          <li>r_logentry(INITIATOR_kind==OuterRim_JawaTribal,priority=250)->Huloot ne nootib man! (I'll be willing to cooperate more if you me some...)</li>
+          <li>r_logentry(INITIATOR_faction==PlayerColony,priority=250)->Gatgoo gatgoo bimee k'oonyaah k'oonyaah l'ot ki. (Please give me some ; I'll promise to cooperate more... I just need a fix, that's all.)</li>
+          <li>r_logentry(INITIATOR_faction==PlayerTribe,priority=250)->Gatgoo gatgoo bimee k'oonyaah k'oonyaah l'ot ki. (Please give me some ; I'll promise to cooperate more... I just need a fix, that's all.)</li>
+          <li>r_logentry(INITIATOR_kind==OuterRim_Jawa,priority=250)->Gatgoo gatgoo bimee k'oonyaah k'oonyaah l'ot ki. (Please give me some ; I'll promise to cooperate more... I just need a fix, that's all.)</li>
+          <li>r_logentry(INITIATOR_kind==OuterRim_JawaTribal,priority=250)->Gatgoo gatgoo bimee k'oonyaah k'oonyaah l'ot ki. (Please give me some ; I'll promise to cooperate more... I just need a fix, that's all.)</li>
+          <li>r_logentry(INITIATOR_faction==PlayerColony,priority=250)->Zuhmee zuhmeu lee shatzaab nootrih? (Please give me some ; I'll promise to cooperate more.)</li>
+          <li>r_logentry(INITIATOR_faction==PlayerTribe,priority=250)->Zuhmee zuhmeu lee shatzaab nootrih? (Please give me some ; I'll promise to cooperate more.)</li>
+          <li>r_logentry(INITIATOR_kind==OuterRim_Jawa,priority=250)->Zuhmee zuhmeu lee shatzaab nootrih? (Please give me some ; I'll promise to cooperate more.)</li>
+          <li>r_logentry(INITIATOR_kind==OuterRim_JawaTribal,priority=250)->Zuhmee zuhmeu lee shatzaab nootrih? (Please give me some ; I'll promise to cooperate more.)</li>
+          <li>r_logentry(INITIATOR_faction==PlayerColony,priority=250)->Na s'aan. (I enjoy crafting — and my masterworks reflect my unrivaled craftsmanship.)</li>
+          <li>r_logentry(INITIATOR_faction==PlayerTribe,priority=250)->Na s'aan. (I enjoy crafting — and my masterworks reflect my unrivaled craftsmanship.)</li>
+          <li>r_logentry(INITIATOR_kind==OuterRim_Jawa,priority=250)->Na s'aan. (I enjoy crafting — and my masterworks reflect my unrivaled craftsmanship.)</li>
+          <li>r_logentry(INITIATOR_kind==OuterRim_JawaTribal,priority=250)->Na s'aan. (I enjoy crafting — and my masterworks reflect my unrivaled craftsmanship.)</li>
+      </value>
+    </match>
+  </Operation>
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/InteractionDef[defName="PrisonerArtisticSkills"]/logRulesInitiator/rulesStrings</xpath>
+    <match Class="PatchOperationAdd">
+      <xpath>/Defs/InteractionDef[defName="PrisonerArtisticSkills"]/logRulesInitiator/rulesStrings</xpath>
+      <value>
+          <li>r_logentry(INITIATOR_faction==PlayerColony,priority=250)->T'uhnya zootbe mi b'oobo sawih... (It will be glorious watching your people being butchered and tortured!)</li>
+          <li>r_logentry(INITIATOR_faction==PlayerTribe,priority=250)->T'uhnya zootbe mi b'oobo sawih... (It will be glorious watching your people being butchered and tortured!)</li>
+          <li>r_logentry(INITIATOR_kind==OuterRim_Jawa,priority=250)->T'uhnya zootbe mi b'oobo sawih... (It will be glorious watching your people being butchered and tortured!)</li>
+          <li>r_logentry(INITIATOR_kind==OuterRim_JawaTribal,priority=250)->T'uhnya zootbe mi b'oobo sawih... (It will be glorious watching your people being butchered and tortured!)</li>
+          <li>r_logentry(INITIATOR_faction==PlayerColony,priority=250)->N'ob t'ut... (So I need you to release me. This way, we can avoid unnecessary bloodshed among your people.)</li>
+          <li>r_logentry(INITIATOR_faction==PlayerTribe,priority=250)->N'ob t'ut... (So I need you to release me. This way, we can avoid unnecessary bloodshed among your people.)</li>
+          <li>r_logentry(INITIATOR_kind==OuterRim_Jawa,priority=250)->N'ob t'ut... (So I need you to release me. This way, we can avoid unnecessary bloodshed among your people.)</li>
+          <li>r_logentry(INITIATOR_kind==OuterRim_JawaTribal,priority=250)->N'ob t'ut... (So I need you to release me. This way, we can avoid unnecessary bloodshed among your people.)</li>
+          <li>r_logentry(INITIATOR_faction==PlayerColony,priority=250)->Huloot ne nootib man! (I'll be willing to cooperate more if you me some...)</li>
+          <li>r_logentry(INITIATOR_faction==PlayerTribe,priority=250)->Huloot ne nootib man! (I'll be willing to cooperate more if you me some...)</li>
+          <li>r_logentry(INITIATOR_kind==OuterRim_Jawa,priority=250)->Huloot ne nootib man! (I'll be willing to cooperate more if you me some...)</li>
+          <li>r_logentry(INITIATOR_kind==OuterRim_JawaTribal,priority=250)->Huloot ne nootib man! (I'll be willing to cooperate more if you me some...)</li>
+          <li>r_logentry(INITIATOR_faction==PlayerColony,priority=250)->Gatgoo gatgoo bimee k'oonyaah k'oonyaah l'ot ki. (Please give me some ; I'll promise to cooperate more... I just need a fix, that's all.)</li>
+          <li>r_logentry(INITIATOR_faction==PlayerTribe,priority=250)->Gatgoo gatgoo bimee k'oonyaah k'oonyaah l'ot ki. (Please give me some ; I'll promise to cooperate more... I just need a fix, that's all.)</li>
+          <li>r_logentry(INITIATOR_kind==OuterRim_Jawa,priority=250)->Gatgoo gatgoo bimee k'oonyaah k'oonyaah l'ot ki. (Please give me some ; I'll promise to cooperate more... I just need a fix, that's all.)</li>
+          <li>r_logentry(INITIATOR_kind==OuterRim_JawaTribal,priority=250)->Gatgoo gatgoo bimee k'oonyaah k'oonyaah l'ot ki. (Please give me some ; I'll promise to cooperate more... I just need a fix, that's all.)</li>
+          <li>r_logentry(INITIATOR_faction==PlayerColony,priority=250)->Zuhmee zuhmeu lee shatzaab nootrih? (Please give me some ; I'll promise to cooperate more.)</li>
+          <li>r_logentry(INITIATOR_faction==PlayerTribe,priority=250)->Zuhmee zuhmeu lee shatzaab nootrih? (Please give me some ; I'll promise to cooperate more.)</li>
+          <li>r_logentry(INITIATOR_kind==OuterRim_Jawa,priority=250)->Zuhmee zuhmeu lee shatzaab nootrih? (Please give me some ; I'll promise to cooperate more.)</li>
+          <li>r_logentry(INITIATOR_kind==OuterRim_JawaTribal,priority=250)->Zuhmee zuhmeu lee shatzaab nootrih? (Please give me some ; I'll promise to cooperate more.)</li>
+          <li>r_logentry(INITIATOR_faction==PlayerColony,priority=250)->Bih ratwub mihkut rootsan noh noh. (My love for arts lets me create legendary masterworks.)</li>
+          <li>r_logentry(INITIATOR_faction==PlayerTribe,priority=250)->Bih ratwub mihkut rootsan noh noh. (My love for arts lets me create legendary masterworks.)</li>
+          <li>r_logentry(INITIATOR_kind==OuterRim_Jawa,priority=250)->Bih ratwub mihkut rootsan noh noh. (My love for arts lets me create legendary masterworks.)</li>
+          <li>r_logentry(INITIATOR_kind==OuterRim_JawaTribal,priority=250)->Bih ratwub mihkut rootsan noh noh. (My love for arts lets me create legendary masterworks.)</li>
+      </value>
+    </match>
+  </Operation>
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/InteractionDef[defName="PrisonerMedicalSkills"]/logRulesInitiator/rulesStrings</xpath>
+    <match Class="PatchOperationAdd">
+      <xpath>/Defs/InteractionDef[defName="PrisonerMedicalSkills"]/logRulesInitiator/rulesStrings</xpath>
+      <value>
+          <li>r_logentry(INITIATOR_faction==PlayerColony,priority=250)->T'uhnya zootbe mi b'oobo sawih... (It will be glorious watching your people being butchered and tortured!)</li>
+          <li>r_logentry(INITIATOR_faction==PlayerTribe,priority=250)->T'uhnya zootbe mi b'oobo sawih... (It will be glorious watching your people being butchered and tortured!)</li>
+          <li>r_logentry(INITIATOR_kind==OuterRim_Jawa,priority=250)->T'uhnya zootbe mi b'oobo sawih... (It will be glorious watching your people being butchered and tortured!)</li>
+          <li>r_logentry(INITIATOR_kind==OuterRim_JawaTribal,priority=250)->T'uhnya zootbe mi b'oobo sawih... (It will be glorious watching your people being butchered and tortured!)</li>
+          <li>r_logentry(INITIATOR_faction==PlayerColony,priority=250)->N'ob t'ut... (So I need you to release me. This way, we can avoid unnecessary bloodshed among your people.)</li>
+          <li>r_logentry(INITIATOR_faction==PlayerTribe,priority=250)->N'ob t'ut... (So I need you to release me. This way, we can avoid unnecessary bloodshed among your people.)</li>
+          <li>r_logentry(INITIATOR_kind==OuterRim_Jawa,priority=250)->N'ob t'ut... (So I need you to release me. This way, we can avoid unnecessary bloodshed among your people.)</li>
+          <li>r_logentry(INITIATOR_kind==OuterRim_JawaTribal,priority=250)->N'ob t'ut... (So I need you to release me. This way, we can avoid unnecessary bloodshed among your people.)</li>
+          <li>r_logentry(INITIATOR_faction==PlayerColony,priority=250)->Huloot ne nootib man! (I'll be willing to cooperate more if you me some...)</li>
+          <li>r_logentry(INITIATOR_faction==PlayerTribe,priority=250)->Huloot ne nootib man! (I'll be willing to cooperate more if you me some...)</li>
+          <li>r_logentry(INITIATOR_kind==OuterRim_Jawa,priority=250)->Huloot ne nootib man! (I'll be willing to cooperate more if you me some...)</li>
+          <li>r_logentry(INITIATOR_kind==OuterRim_JawaTribal,priority=250)->Huloot ne nootib man! (I'll be willing to cooperate more if you me some...)</li>
+          <li>r_logentry(INITIATOR_faction==PlayerColony,priority=250)->Gatgoo gatgoo bimee k'oonyaah k'oonyaah l'ot ki. (Please give me some ; I'll promise to cooperate more... I just need a fix, that's all.)</li>
+          <li>r_logentry(INITIATOR_faction==PlayerTribe,priority=250)->Gatgoo gatgoo bimee k'oonyaah k'oonyaah l'ot ki. (Please give me some ; I'll promise to cooperate more... I just need a fix, that's all.)</li>
+          <li>r_logentry(INITIATOR_kind==OuterRim_Jawa,priority=250)->Gatgoo gatgoo bimee k'oonyaah k'oonyaah l'ot ki. (Please give me some ; I'll promise to cooperate more... I just need a fix, that's all.)</li>
+          <li>r_logentry(INITIATOR_kind==OuterRim_JawaTribal,priority=250)->Gatgoo gatgoo bimee k'oonyaah k'oonyaah l'ot ki. (Please give me some ; I'll promise to cooperate more... I just need a fix, that's all.)</li>
+          <li>r_logentry(INITIATOR_faction==PlayerColony,priority=250)->Zuhmee zuhmeu lee shatzaab nootrih? (Please give me some ; I'll promise to cooperate more.)</li>
+          <li>r_logentry(INITIATOR_faction==PlayerTribe,priority=250)->Zuhmee zuhmeu lee shatzaab nootrih? (Please give me some ; I'll promise to cooperate more.)</li>
+          <li>r_logentry(INITIATOR_kind==OuterRim_Jawa,priority=250)->Zuhmee zuhmeu lee shatzaab nootrih? (Please give me some ; I'll promise to cooperate more.)</li>
+          <li>r_logentry(INITIATOR_kind==OuterRim_JawaTribal,priority=250)->Zuhmee zuhmeu lee shatzaab nootrih? (Please give me some ; I'll promise to cooperate more.)</li>
+          <li>r_logentry(INITIATOR_faction==PlayerColony,priority=250)->Moh meh meh too tou r'ozat! (I like taking care of other people — and, even in the worst conditions, I can guarantee highly succesful surgeries and treatments.)</li>
+          <li>r_logentry(INITIATOR_faction==PlayerTribe,priority=250)->Moh meh meh too tou r'ozat! (I like taking care of other people — and, even in the worst conditions, I can guarantee highly succesful surgeries and treatments.)</li>
+          <li>r_logentry(INITIATOR_kind==OuterRim_Jawa,priority=250)->Moh meh meh too tou r'ozat! (I like taking care of other people — and, even in the worst conditions, I can guarantee highly succesful surgeries and treatments.)</li>
+          <li>r_logentry(INITIATOR_kind==OuterRim_JawaTribal,priority=250)->Moh meh meh too tou r'ozat! (I like taking care of other people — and, even in the worst conditions, I can guarantee highly succesful surgeries and treatments.)</li>
+      </value>
+    </match>
+  </Operation>
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/InteractionDef[defName="PrisonerSocialSkills"]/logRulesInitiator/rulesStrings</xpath>
+    <match Class="PatchOperationAdd">
+      <xpath>/Defs/InteractionDef[defName="PrisonerSocialSkills"]/logRulesInitiator/rulesStrings</xpath>
+      <value>
+          <li>r_logentry(INITIATOR_faction==PlayerColony,priority=250)->T'uhnya zootbe mi b'oobo sawih... (It will be glorious watching your people being butchered and tortured!)</li>
+          <li>r_logentry(INITIATOR_faction==PlayerTribe,priority=250)->T'uhnya zootbe mi b'oobo sawih... (It will be glorious watching your people being butchered and tortured!)</li>
+          <li>r_logentry(INITIATOR_kind==OuterRim_Jawa,priority=250)->T'uhnya zootbe mi b'oobo sawih... (It will be glorious watching your people being butchered and tortured!)</li>
+          <li>r_logentry(INITIATOR_kind==OuterRim_JawaTribal,priority=250)->T'uhnya zootbe mi b'oobo sawih... (It will be glorious watching your people being butchered and tortured!)</li>
+          <li>r_logentry(INITIATOR_faction==PlayerColony,priority=250)->N'ob t'ut... (So I need you to release me. This way, we can avoid unnecessary bloodshed among your people.)</li>
+          <li>r_logentry(INITIATOR_faction==PlayerTribe,priority=250)->N'ob t'ut... (So I need you to release me. This way, we can avoid unnecessary bloodshed among your people.)</li>
+          <li>r_logentry(INITIATOR_kind==OuterRim_Jawa,priority=250)->N'ob t'ut... (So I need you to release me. This way, we can avoid unnecessary bloodshed among your people.)</li>
+          <li>r_logentry(INITIATOR_kind==OuterRim_JawaTribal,priority=250)->N'ob t'ut... (So I need you to release me. This way, we can avoid unnecessary bloodshed among your people.)</li>
+          <li>r_logentry(INITIATOR_faction==PlayerColony,priority=250)->Huloot ne nootib man! (I'll be willing to cooperate more if you me some...)</li>
+          <li>r_logentry(INITIATOR_faction==PlayerTribe,priority=250)->Huloot ne nootib man! (I'll be willing to cooperate more if you me some...)</li>
+          <li>r_logentry(INITIATOR_kind==OuterRim_Jawa,priority=250)->Huloot ne nootib man! (I'll be willing to cooperate more if you me some...)</li>
+          <li>r_logentry(INITIATOR_kind==OuterRim_JawaTribal,priority=250)->Huloot ne nootib man! (I'll be willing to cooperate more if you me some...)</li>
+          <li>r_logentry(INITIATOR_faction==PlayerColony,priority=250)->Gatgoo gatgoo bimee k'oonyaah k'oonyaah l'ot ki. (Please give me some ; I'll promise to cooperate more... I just need a fix, that's all.)</li>
+          <li>r_logentry(INITIATOR_faction==PlayerTribe,priority=250)->Gatgoo gatgoo bimee k'oonyaah k'oonyaah l'ot ki. (Please give me some ; I'll promise to cooperate more... I just need a fix, that's all.)</li>
+          <li>r_logentry(INITIATOR_kind==OuterRim_Jawa,priority=250)->Gatgoo gatgoo bimee k'oonyaah k'oonyaah l'ot ki. (Please give me some ; I'll promise to cooperate more... I just need a fix, that's all.)</li>
+          <li>r_logentry(INITIATOR_kind==OuterRim_JawaTribal,priority=250)->Gatgoo gatgoo bimee k'oonyaah k'oonyaah l'ot ki. (Please give me some ; I'll promise to cooperate more... I just need a fix, that's all.)</li>
+          <li>r_logentry(INITIATOR_faction==PlayerColony,priority=250)->Zuhmee zuhmeu lee shatzaab nootrih? (Please give me some ; I'll promise to cooperate more.)</li>
+          <li>r_logentry(INITIATOR_faction==PlayerTribe,priority=250)->Zuhmee zuhmeu lee shatzaab nootrih? (Please give me some ; I'll promise to cooperate more.)</li>
+          <li>r_logentry(INITIATOR_kind==OuterRim_Jawa,priority=250)->Zuhmee zuhmeu lee shatzaab nootrih? (Please give me some ; I'll promise to cooperate more.)</li>
+          <li>r_logentry(INITIATOR_kind==OuterRim_JawaTribal,priority=250)->Zuhmee zuhmeu lee shatzaab nootrih? (Please give me some ; I'll promise to cooperate more.)</li>
+          <li>r_logentry(INITIATOR_faction==PlayerColony,priority=250)->Hoo zeni g'usho g'ushu naabee naabee. (I enjoy being around people — and I can negotiate fruitful agreements even between hostile parties.)</li>
+          <li>r_logentry(INITIATOR_faction==PlayerTribe,priority=250)->Hoo zeni g'usho g'ushu naabee naabee. (I enjoy being around people — and I can negotiate fruitful agreements even between hostile parties.)</li>
+          <li>r_logentry(INITIATOR_kind==OuterRim_Jawa,priority=250)->Hoo zeni g'usho g'ushu naabee naabee. (I enjoy being around people — and I can negotiate fruitful agreements even between hostile parties.)</li>
+          <li>r_logentry(INITIATOR_kind==OuterRim_JawaTribal,priority=250)->Hoo zeni g'usho g'ushu naabee naabee. (I enjoy being around people — and I can negotiate fruitful agreements even between hostile parties.)</li>
+      </value>
+    </match>
+  </Operation>
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/InteractionDef[defName="PrisonerIntellectualSkills"]/logRulesInitiator/rulesStrings</xpath>
+    <match Class="PatchOperationAdd">
+      <xpath>/Defs/InteractionDef[defName="PrisonerIntellectualSkills"]/logRulesInitiator/rulesStrings</xpath>
+      <value>
+          <li>r_logentry(INITIATOR_faction==PlayerColony,priority=250)->T'uhnya zootbe mi b'oobo sawih... (It will be glorious watching your people being butchered and tortured!)</li>
+          <li>r_logentry(INITIATOR_faction==PlayerTribe,priority=250)->T'uhnya zootbe mi b'oobo sawih... (It will be glorious watching your people being butchered and tortured!)</li>
+          <li>r_logentry(INITIATOR_kind==OuterRim_Jawa,priority=250)->T'uhnya zootbe mi b'oobo sawih... (It will be glorious watching your people being butchered and tortured!)</li>
+          <li>r_logentry(INITIATOR_kind==OuterRim_JawaTribal,priority=250)->T'uhnya zootbe mi b'oobo sawih... (It will be glorious watching your people being butchered and tortured!)</li>
+          <li>r_logentry(INITIATOR_faction==PlayerColony,priority=250)->N'ob t'ut... (So I need you to release me. This way, we can avoid unnecessary bloodshed among your people.)</li>
+          <li>r_logentry(INITIATOR_faction==PlayerTribe,priority=250)->N'ob t'ut... (So I need you to release me. This way, we can avoid unnecessary bloodshed among your people.)</li>
+          <li>r_logentry(INITIATOR_kind==OuterRim_Jawa,priority=250)->N'ob t'ut... (So I need you to release me. This way, we can avoid unnecessary bloodshed among your people.)</li>
+          <li>r_logentry(INITIATOR_kind==OuterRim_JawaTribal,priority=250)->N'ob t'ut... (So I need you to release me. This way, we can avoid unnecessary bloodshed among your people.)</li>
+          <li>r_logentry(INITIATOR_faction==PlayerColony,priority=250)->Huloot ne nootib man! (I'll be willing to cooperate more if you me some...)</li>
+          <li>r_logentry(INITIATOR_faction==PlayerTribe,priority=250)->Huloot ne nootib man! (I'll be willing to cooperate more if you me some...)</li>
+          <li>r_logentry(INITIATOR_kind==OuterRim_Jawa,priority=250)->Huloot ne nootib man! (I'll be willing to cooperate more if you me some...)</li>
+          <li>r_logentry(INITIATOR_kind==OuterRim_JawaTribal,priority=250)->Huloot ne nootib man! (I'll be willing to cooperate more if you me some...)</li>
+          <li>r_logentry(INITIATOR_faction==PlayerColony,priority=250)->Gatgoo gatgoo bimee k'oonyaah k'oonyaah l'ot ki. (Please give me some ; I'll promise to cooperate more... I just need a fix, that's all.)</li>
+          <li>r_logentry(INITIATOR_faction==PlayerTribe,priority=250)->Gatgoo gatgoo bimee k'oonyaah k'oonyaah l'ot ki. (Please give me some ; I'll promise to cooperate more... I just need a fix, that's all.)</li>
+          <li>r_logentry(INITIATOR_kind==OuterRim_Jawa,priority=250)->Gatgoo gatgoo bimee k'oonyaah k'oonyaah l'ot ki. (Please give me some ; I'll promise to cooperate more... I just need a fix, that's all.)</li>
+          <li>r_logentry(INITIATOR_kind==OuterRim_JawaTribal,priority=250)->Gatgoo gatgoo bimee k'oonyaah k'oonyaah l'ot ki. (Please give me some ; I'll promise to cooperate more... I just need a fix, that's all.)</li>
+          <li>r_logentry(INITIATOR_faction==PlayerColony,priority=250)->Zuhmee zuhmeu lee shatzaab nootrih? (Please give me some ; I'll promise to cooperate more.)</li>
+          <li>r_logentry(INITIATOR_faction==PlayerTribe,priority=250)->Zuhmee zuhmeu lee shatzaab nootrih? (Please give me some ; I'll promise to cooperate more.)</li>
+          <li>r_logentry(INITIATOR_kind==OuterRim_Jawa,priority=250)->Zuhmee zuhmeu lee shatzaab nootrih? (Please give me some ; I'll promise to cooperate more.)</li>
+          <li>r_logentry(INITIATOR_kind==OuterRim_JawaTribal,priority=250)->Zuhmee zuhmeu lee shatzaab nootrih? (Please give me some ; I'll promise to cooperate more.)</li>
+          <li>r_logentry(INITIATOR_faction==PlayerColony,priority=250)->Gaantob ranee no nutna. (I like pitting my wits against tricky problems — and thanks to my unsurpassed skills, I can solve any complex logic problem.)</li>
+          <li>r_logentry(INITIATOR_faction==PlayerTribe,priority=250)->Gaantob ranee no nutna. (I like pitting my wits against tricky problems — and thanks to my unsurpassed skills, I can solve any complex logic problem.)</li>
+          <li>r_logentry(INITIATOR_kind==OuterRim_Jawa,priority=250)->Gaantob ranee no nutna. (I like pitting my wits against tricky problems — and thanks to my unsurpassed skills, I can solve any complex logic problem.)</li>
+          <li>r_logentry(INITIATOR_kind==OuterRim_JawaTribal,priority=250)->Gaantob ranee no nutna. (I like pitting my wits against tricky problems — and thanks to my unsurpassed skills, I can solve any complex logic problem.)</li>
+      </value>
+    </match>
+  </Operation>
+</Patch>

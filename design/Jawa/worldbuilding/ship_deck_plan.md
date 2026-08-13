@@ -1,0 +1,302 @@
+# ship_deck_plan.md — The Ruined Vessel: deck plan + repair-progression design
+
+_Deep-think design pass, 2026-08-06. Turns the **hulk-ship reframe** (required_mods.md parked Thread 1)
+into a concrete deck architecture. Rests on three verified inputs: the **substructure cap**
+(500 + 6×250 = 2,000 connected tiles, Fetcher 2026-08-06), the **8-cell modular campus** and per-machine
+footprints from `Factory_lore.md`, and the **anti-exponential pillar** (concept.md / forbidden_mods.md).
+This doc owns the WING MAP + repair gate. `Factory_lore.md` still owns intra-cell layout craft;
+`required_mods.md` owns the adoption/restriction decisions._
+
+> **Status:** design proposal, not locked. Decisions flagged **[DECIDE]** need your call. Everything
+> else is a *recommended default* derived from the constraints, with alternatives noted.
+
+---
+
+## 0. The core insight (why this premise is strong)
+
+`Factory_lore.md`'s central finding is that the best "uses-everything" factory is **not one tangled
+belt hall** — it's an **8-cell modular campus**: independent cells, each with its own inputs, outputs,
+bill targets, power switch, and heat plan, joined by filtered warehouse trunks and a separate utility
+spine. That architecture was derived purely from *operational* concerns (routing, heat, spoilage).
+
+It happens to be the ideal skeleton for a **derelict you repair wing by wing**:
+
+- A cell = a **wing** = an independently repairable, independently isolatable unit. A derelict fails
+  wing-by-wing; you restore it wing-by-wing. The mod's "one local switch per cell / disable cells
+  during emergencies" *is* the fiction of powering up a dead section of a wreck.
+- The **utility spine** (power, boosters, heatsinks, firebreaks, maintenance corridor) = the ship's
+  **central keel** — the one thing that must be alive before any wing can run.
+- The **~2,000-tile cap** means the ship is a **fixed-size sandbox**. You cannot grow the hull; you can
+  only make more of a *fixed* hull functional. This is the anti-exponential pillar expressed as
+  architecture, not as a rule you have to remember.
+
+**Verified budget headroom (computed 2026-08-06):** the 18 machines are 261 tiles of raw footprint;
+at a realistic ~2.5× factor (factory floor + hoppers + belts + access) the full campus is **~650 tiles**.
+A full ship — factory ~650 + living ~650 + systems ~250 + carbonite ~60, +15% circulation — lands at
+**~1,850 tiles against the 2,000 cap: ~150 tiles of headroom.** The decisive consequence:
+
+> **A fully-restored ship nearly saturates the substructure cap.** Restoration isn't open-ended — it
+> literally *runs out of ship*. That is a gift: the endgame is naturally bounded, and every wing you
+> light up costs tiles you can't get back. Choices to leave a wing derelict become permanent trade-offs,
+> which is exactly the "decide what to leave behind" pillar.
+
+**Two constraints, not one — the tile budget is necessary but NOT sufficient.** Substructure connects
+only if it lies within a connection *radius*: the grav engine reaches **19 tiles**, each of up to 6
+field extenders reaches **16 tiles**, and every extender must itself sit inside the already-connected
+field (a chain rule). So a design can pass the 2,000-tile capacity check and still fail to fly because
+distant tiles are out of radius. **Verified geometrically (2026-08-06, `src/RimMandrake/mapsynth/verify_coverage.py`
++ `geom_check.py`):** with the engine mounted mid-keel and all 6 extenders chained along the spine, the
+1,732-tile layout is **100% covered (0 tiles out of radius)**, chain rule satisfied, and the farthest
+tile is **15.81 tiles** from its nearest node — just inside the 16-tile extender limit. Consequences
+baked back into the design:
+
+- **The keel MUST carry the engine + all extenders**, and they must be spaced ≤ ~32 tiles apart along
+  the spine (two radius-16 disks) so their fields overlap and chain. This is *why* the keel is repaired
+  first — it's not just utility routing, it's the literal connection backbone.
+- **No wing may extend more than ~15 tiles laterally from the keel centerline.** Beyond that, its outer
+  tiles fall outside any spine-mounted extender's radius and would show red / won't lift. The current
+  wings top out at 15 tiles — they are at the geometric limit, so widening a wing means *moving an
+  extender off the keel into that wing*, which then can't reach the opposite side. Wings grow by adding
+  *length* along the hull, never width past the radius.
+- **The scale drawing** (`ship_deck_plan_scale_map.png`) renders this: engine (yellow G) + 6 extenders
+  (blue) on the keel with their radius-19/16 coverage disks shown as the pale halo enclosing every tile.
+
+---
+
+## 1. The hull at t=0 (starting state)
+
+A **large** hull — seed it near the upper tile band so the *shape* is impressive from turn one — but
+mostly **dead**. Concretely:
+
+- **Substructure:** present across the whole footprint but **~40–55% disconnected** — showing RED on the
+  grav engine, i.e. gaping holes and severed wings that **won't lift**. The engine + keel + one small
+  wing are connected (green); everything else is red until repaired. This is a *verified* mechanic:
+  disconnected substructure displays red and isn't carried by the ship.
+- **Hull walls:** large sections **missing** — open to the desert (temperature bleed, sightlines, raid
+  ingress). Sealing the hull is early-game pressure #1.
+- **Factory machines:** present as **broken scrap** in their wings. **[DECIDE A — RESOLVED by user 2026-08-06: the "SACRED SCRAP" rule.]** Destroyed/derelict factory machines are **sacred scrap that cannot be touched, cleared, deconstructed, or reprocessed until they are *repaired*.** You may not salvage a broken machine for materials, nor bulldoze its rubble to build fresh on the cleared floor — the wreck is inviolate until the crew *restores* it in place. This **forecloses option (i)** (clear-and-rebuild) for the machines themselves and mandates a variant of **(ii): a real damaged/immovable building state that can only be *repaired* into function**, never demolished or harvested. [inference] cleanest implementation = a "wreck" ThingDef per machine (or a damaged state) that (a) has **no deconstruct designation** and **no clear/haul-away**, (b) is repaired-in-place by a construction/repair job consuming feedstock, and (c) yields *nothing* if merely destroyed further. This is stronger than the earlier "recommend (i)" note and **overrides it.** Design pay-off: it hard-couples "restore the ship" to "restore *these specific* machines" — you can't strip the wreck for a quick material windfall, which both reinforces the anti-exponential feedstock discipline (no free salvage bolus from your own hull) and gives the Jawa reverence a mechanical teeth. See the ideoligion precept in `jawa_xenotype_and_religion.md` Part 4 and the "sacred relic" framing in `context.md` §D.
+- **Grav engine:** intact but the ship is **grounded** — not enough connected substructure to lift.
+  First strategic goal = reconnect enough deck to fly. Natural, diegetic tutorial.
+
+**Why grounded-first is good:** it forces the crew to treat the crash site as a temporary base, live
+under the desert/thirst pressure (desert_world_design.md) with holes in the hull, and *earn* mobility.
+It also sidesteps the authoring problem of a flying-but-broken ship — a grounded wreck is just a map.
+
+---
+
+## 2. The wing map (campus cells → ship wings)
+
+Six production wings (Factory_lore cells A–F) + keel + habitat. Proposed spatial topology, keel-centric:
+
+```text
+        ┌───────────────────────────────────────────────────────────┐
+        │  BOW: COMMAND CORE  (pilot console, grav engine, scanner)   │
+        └───────────────────────────────────────────────────────────┘
+   WING F (precision)          ║ K ║          WING E (advanced materials)
+   medicine granulator         ║ E ║          assembler / alloy forge / neutro
+   machining bay               ║ E ║          ⚠ HOTTEST WING (5×5 forge)
+        ▲                       ║ L ║               ▲
+   WING D (textile/ammo)       ║   ║          WING B (bulk / dirty / hot)
+   autoloom / ammo press       ║ = ║          smelter / masonry / mincer /
+        ▲                    power, boosters,   cremator / biofuel refinery
+   WING C (food)             heatsinks, fire-        ▲
+   oven / cannery /          break, maint.      WING A (raw extraction)
+   distillery                corridor           autofarmer / drill / fishfarm
+        ▲                       ║ ║                   ▲
+        └────────── HABITAT RING (quarters, dining, ──┘
+                    hospital, freezer, prison, rec)
+        ┌───────────────────────────────────────────────────────────┐
+        │  STERN: THRUSTERS + CHEMFUEL TANKS + main power generation  │
+        └───────────────────────────────────────────────────────────┘
+```
+
+Design rules baked into the placement (all from Factory_lore §1.4 zoning + thermal §5):
+
+- **Hot wings (B, E) outboard.** Smelter, alloy forge (hottest machine), crematorium, drill sit against
+  the **hull edge** so their heat can dump to the exterior — and, early on, through the *unsealed holes*.
+  (See §3, heat doctrine.) Keep them **away from food (C) and habitat**.
+- **Food wing (C) adjacent to habitat + freezer**, far from crematorium/corpse lines (B). Belt runs from
+  raw buffers to oven/cannery stay short and roofed (spoilage).
+- **Precision wings (E, F) flank the keel** so they draw from the metal/chemical buffers on the spine
+  with minimal belt length; Assembler↔Alloy Forge↔Machining Bay all want the same plasteel/component
+  buffer (E and F share a wall, not their input hoppers — they *compete* for components per Factory_lore).
+- **Keel is the utility spine**: power conduits, switches, the 3-booster / 4-heatsink banks (9.9-tile
+  link radius reaches into flanking wings), firebreak, maintenance corridor. **This is repaired first.**
+- **Raw extraction (A)** at the "ground" end (stern-adjacent) — drill/autofarmer/fishfarm want exterior
+  access (fields, water, deep resources) and their output feeds *up* the ship into B and C.
+
+**[DECIDE B] — RESOLVED 2026-08-06 → #15 "Falcon Halo (hollow)".** The silhouette is now locked to the
+hull chosen from the topology menu in `ship_designs.md` (which owns the full comparison and the verified
+numbers). It is a clean working cargo **wheel** — a thin rim band holding one big cargo hold plus the
+core systems set into the band (thrusters aft, fuel port, water starboard), with **seven circular
+function-pods sunk half-into the outer rim** (the six factory wings + habitat, each an isolatable repair
+unit), a **hollow shrine-heart** at dead centre (grav-engine core + scrap-totem shrine reached by a
+single rear causeway), and a **Millennium-Falcon mandible arm** forking forward off the rim with the
+two **shuttle pads capping the prong tips** and an offset starboard **command cockpit**. Verified
+liftable: 4,057 / 4,800 tiles (743 headroom), 7 extenders, all 14 regions, single contiguous piece;
+largest cargo of the whole set (1,443).
+
+The wing/heat logic below was drafted for the earlier spinal-freighter sketch; it still governs, but
+map it onto the wheel: the rim-embedded pods are the "wings" (hot wings B/E sit on the outboard rim
+where their gaps vent straight to the biome; food C near habitat R; precision E/F share the rim band
+that carries the metal/chemical buffers), and the **rim band is the utility spine** repaired first. The
+next deliverable is the tile-level interior blueprint drawn on #15.
+
+---
+
+## 3. Heat doctrine — the sharpest tension, and its elegant resolution
+
+The single hardest problem with a factory *on a sealed ship*: VFE-Factory generates **exponential heat**
+at overclock, heatsinks only **−25%** (max 4, and "do not assume four heatsinks make 500% thermally
+trivial" — Factory_lore §5), and a sealed hull **has no outdoors to vent to**. On flat ground you just
+open a wall to the biome.
+
+The hulk premise resolves this on a **timeline** rather than fighting it:
+
+- **Early game (holes open):** the missing walls are a **feature** — the hot wings (B, E) vent straight
+  to the desert through their own gaps. Heat is free to dump; the *cost* is everything else a hole
+  brings (cold nights, heat of day, raiders, no atmosphere control). So early industry is *possible but
+  exposed*.
+- **Mid game (sealing the hull):** as you patch walls to gain temperature control, defense, and flight,
+  you **lose your free heat dump**. Sealing a hot wing forces you to *simultaneously* solve its cooling —
+  vents to a dedicated radiator bay, exterior heatsink louvres, or simply **capping overclock**. This is
+  a genuine, emergent engineering decision the player earns, not a scripted gate.
+- **Late game (sealed + flying):** heat is a permanent managed budget. **[DECIDE C — RESOLVED by
+  user 2026-08-08: BOTH (iii)].** Cooling end-state = a dedicated **radiator/vac-barrier bay** (a wing
+  deliberately kept vacuum-exposed as a heatsink via Odyssey oxygen pumps / vac barriers) **AND** a
+  **hard overclock cap** — standing "200% routine, 500% supervised burst only" policy (matches
+  Factory_lore §5 operating policy). Neither alone; the bay handles the standing load, the cap keeps
+  bursts from overwhelming it.
+
+> This is the payoff of the whole premise: **"seal the ship" and "run the factory" are in direct
+> tension**, and resolving it *is* the mid-game. A conventional colony never feels this.
+
+---
+
+## 4. Repair as the progression gate (the anti-exponential spine)
+
+Restoration order — each step is a **physical repair** (re-plate floor, seal walls, rebuild the wing's
+machines) gated by salvage feedstock / components / quests, *layered on top of* the research tiers
+(VFE_BasicFactories → VFE_ComplexFactories) rather than replacing them.
+
+> **⚠️ PROGRESSION SOURCE = QUESTS + TRADE, not research (user ruling 2026-08-06; full detail in `required_mods.md` PARKED thread 1).** The Jawa start at a low salvage-tech baseline; the jump to ship/factory capability is closed *primarily by acquiring capability from the world* — quest-earned techprints/data cores, traded blueprints/components, salvaged working parts — **not by grinding the bench.** So read every "research" gate in the table below as **quest/trade-unlocked**: keep the VFE tiers as gates, but gate their *start* behind an earned techprint/data core (Configurable Techprints or the custom XML mod). Recommend a thin research path (repair/smelting only) + quest/trade for everything advanced.
+>
+> **⚠️ THE JAWA ARE INDUSTRIAL-TIER, NOT TRIBAL (user ruling 2026-08-07).** They already *repair and run inherited industrial machines* to survive — that is the whole fantasy of this repair spine. Use the **`OuterRim_Jawa` (Industrial) pawnkind, NOT `OuterRim_JawaTribal`.** The "low baseline" means *salvage-tier industrial scavengers who don't originate advanced tech*, NOT stone-age tribals. Pawn tech level chiefly affects generated gear/apparel; keep it Industrial so the fiction (Jawa keep the machines running) and the mechanics agree.
+>
+> **⚙️ THE THREE-GATE PROGRESSION CHAIN for BIG capability jumps (user, 2026-08-07).** Advanced research (factory tiers, gravtech, droid manufacture, advanced weapons) is deliberately *hard*, gated in three sequential steps: **(1) obtain a TECHPRINT** for the tech (buy from the owning faction / loot it off that faction in battle / earn it as a quest reward — see the three acquisition routes below); **(2) build a PROTOTYPE** of the thing at the appropriate bench (Research Reinvented's `PrototypeConstruction`/`PrototypeProduction` opportunity, 1.6-native — VERIFIED in `mod_sources/ResearchReinvented-main/…/ResearchOpportunityTypes_Prototype.xml`); **(3) complete the RESEARCH** at the bench, which now merely *applies* the earned knowledge. **Tuning guardrail (recommendation, not yet locked):** apply the full three-gate ceremony ONLY to big capability jumps; let mundane survival tech use one gate or none, so the early game isn't paperwork. **Three techprint-acquisition routes, each mapped to a win-path:** (a) **BUY** from the owning faction — factory prints from Hutts/traders, weapons from Bounty Hunters, droid/brain prints from Free Droid Enclaves or Gene Consortium (Configurable Techprints assigns faction stock) → the *transactional/Hutt* path; (b) **LOOT** as a treasure-drop from defeating that faction's forces/outposts → the *tyrannical/droid-army* path (raid the droids for their brains AND their build-prints); (c) **QUEST-REWARD** authored CQF data cores that guarantee the *critical-path* prints so pacing never dies on RNG → the *solidary/coalition* path (the earned droid-build right IS the Enclaves gifting you droid prints). Buy + loot supply optional accelerants/breadth; quests guarantee the spine. **Dependency:** ✅ **1.6 VERIFIED (Fetcher `2026-08-07_techprint_progression_mods`, 2026-08-07):** Configurable Techprints Workshop page (WS 2876747024) declares "Mod, 1.3, 1.4, 1.5, **1.6**" (updated 2025-07-19; the local GitHub About.xml was merely stale) and explicitly supports "prevent it from generating in trader's stock **to make it quest-only**" — the exact lever this scheme needs (requires Royalty, already in-stack). Research Reinvented (WS 2868392160) also Workshop-confirmed 1.6. CT + Research Reinvented + custom gravtech-gating all touch research → compat check still required before locking (`required_mods.md` line 570). ⚠️ **Balance caveat (from RR's own page):** a player can build the prototype then *stop* research early to bank the item and save ~50% research time — so the prototype step is NOT a hard gate on its own; **the TECHPRINT must remain the true lock.** 💡 **Alternate/companion found:** **Techprint Expansion (WS 2910923103)** ships pre-built compat locking VFE-Mechanoids "Factory Basics" + Spacer tech behind techprints out-of-the-box — may do some Gate-2/3 locking without manual config; needs its own 1.6 check.
+
+### 4-bis. THE TECH-GATE LADDER — four weight-bands + faction-ownership map (user ACCEPTED, 2026-08-07)
+
+Tech is grouped into **four gate-weight bands** (difficulty rises with narrative weight; the full three-gate ceremony is reserved for ~4–5 marquee unlocks, not sprinkled everywhere):
+
+- **Gate 0 — Free (start knowledge).** Turn-1, no gate: hull/floor repair, rough smelting, basic power (batteries + the one starting line), simple cooking/preservation, patch-job furniture, salvaged sidearms/basic melee. The "keep ourselves alive + melt scrap" floor that preserves agency.
+- **Gate 1 — Research-only (one gate).** Ordinary survival/comfort, bench-only, no techprint: cooling, hydroponics/desert farming, basic medicine + hospital, textiles, walls + simple turrets, water/moisture infra.
+- **Gate 2 — Techprint + research (two gates).** Real industrial capability: **VFE Basic Factories**, component fabrication, mid-tier Outer Rim weapons/armor, advanced medicine, gravtech *repair* (flightworthy). Must acquire the print first; no prototype step.
+- **Gate 3 — Full three-gate (techprint → prototype → research).** Campaign-defining capstones, deliberately hard + few: **VFE Complex Factories** (the sanctioned late scaling tree), **droid manufacture**, advanced gravtech / persona-core ship systems, top-tier weapons. These are the win-path capabilities — hardest by design.
+
+**⛔ HARD CARVE-OUT (no gate exists):** droid-**brain fabrication** is owned by NO ONE and sold/researched by no path — brains stay externally-sourced only (win-path anti-exponential guardrail, [[three_win_paths]]). Faction-locking governs *where tech lives*; this is a tech that deliberately *does not exist for sale or research.*
+
+**FACTION-OWNERSHIP MAP (user ACCEPTED, 2026-08-07) — "only the appropriate factions have certain technologies."** Two distinct mechanisms, BOTH required or the lock leaks:
+1. **Who can GIVE the techprint** (buy/loot/quest source) — clean lever: Configurable Techprints assigns per-faction stock + can force quest-only.
+2. **Who FIELDS/uses the tech in-world** (so enemies' gear + loot are consistent) — *separate mechanism*: lives in each faction's PawnKindDef `weaponTags`/`apparelTags` matched against ThingDef tags + faction tech level, NOT in Configurable Techprints. **✅ 1.6 MECHANISM VERIFIED (Fetcher `2026-08-07_faction_equipment_fielding_1p6`):** pawns spawn only with weapons/apparel whose tags their PawnKindDef allows, AND RimWorld **wealth-gates** (poor pawns won't field expensive gear even if tagged — a *free* tiering assist for us). Vanilla tag vocab confirmed (wiki `Property:WeaponTags`/`ApparelTags`: `SpacerMilitary`, `IndustrialMilitaryAdvanced`, `Neolithic`, `Royal`, …). Note: apparel is also forceable via ideology, but **weapons must go through `weaponTags`**. Config-driven tool so we don't hand-edit every PawnKindDef: **Faction Weapons and Apparel Set (WS 3635005747)** — per-faction weapon/apparel pools, works with mod factions. **✅ ADOPTED as the PRIMARY equipment-fielding tool — 1.6 VERIFIED (Fetcher `2026-08-07_techprint_faction_equip_verify`, Workshop page fetched): tagged "Mod, 1.6", updated 2026-01-28, HARMONY-ONLY dependency (no Royalty), 31.9k subs.** In-game mod-settings UI: add a faction (+), edit its equipment pool; once configured, that faction's pawn generation is fully handled by the mod. Has an **"Ignore Wealth" toggle** — so our wealth-gating tiering assist is default-ON but can be overridden if a faction should field above its wealth band. Also has a per-pawnkind "Unit Mode" for fine-grained overrides. ⚠️ Watch-items (comments, unconfirmed): occasional "naked pawns" / a right-click glitch in some builds → smoke-test after configuring. **Fallback = TotalControl** (feldoh, GitHub; 1.6 via the "Rimsential – Total Control: Continued" fork WS 3063465133) — more powerful (roles/hair/colors/caravan animals per-pawnkind-per-faction) but heavier; use only if we need that granularity or hit the bugs above. Outer Rim's own trooper loadouts are source-inspectable (GitHub O21-Outer-Rim, 1.6 branch, `PawnKinds_ArmyTroopers.xml`) if we need to see exactly what the Empire fields.
+
+Domain → owning faction (canon-justified):
+- **Geonosian Foundry Hive → factory/industrial + droid MANUFACTURE** (canon: built the Separatist droid army) — owns VFE Complex Factories + droid-build prints.
+- **Free Droid Enclaves → droid tech from the inside** (chassis, repair, brain-*recovery*/liberation) — the Path-3 allied-liberation source; moral mirror of raiding the Foundry (Path 2).
+- **Arkanian–Kaminoan Gene Consortium → medicine, genetics, cloning** (canon cloners/geneticists).
+- **Bounty Hunters' Compact → weapons + armor** (blaster/armor prints; the Heat-spawned faction).
+- **Empire → gravtech / ship systems + top-tier military** (owns orbit + shipyards) — the HARDEST prints, routed through the only permanent enemy → leaving is earned.
+- **Hutts → the FENCE for everything** (not an origin; black-market reseller of any-domain prints at a markup) — the diegetic escape valve so nothing is *totally* unobtainable if you pay the transactional/Path-1 price.
+- **Aquifer League → water/moisture infrastructure** (their identity). Homestead / Tusken / Wookiee stay tech-neutral (survival-tier) — not every faction is a vendor.
+
+Payoff: the ownership map *is* the win-path structure — Empire owns the hardest tech + you fight them; Hutts fence anything for silver (Path 1); Foundry-vs-Enclaves splits raid (Path 2) vs ally (Path 3); Consortium + Bounty Hunters supply specialist breadth.
+
+⚠️ **Two leakage risks to guard (tuning items, not blockers):** (i) generic "everything-buyer" traders (MultipleTraders in `setup_checklist`) could stock prints regardless of faction — check the lock against generic traders, not just faction bases; (ii) loot-drop rules must match the trade-lock or defeating any enemy leaks prints.
+
+| Phase | Repair unlocked | What lights up | Gate (diegetic) | Pillar effect |
+|---|---|---|---|---|
+| **0. Crash** | Keel + 1 small wing (green substructure), grav engine | Power, 1 starting BASIC line (**[DECIDE D] RESOLVED → SMELTER**, per required_mods "one line" rule) | — (start state) | Dependence without economy |
+
+> **💡 The grav-controller = a persona core = LifeDawn's awakening (design idea, context.md §D).** The inciting "leader restored the central Grav controller into the old GravEngine" beat can *be* the reactivation of a vanilla **persona core** (the dormant superhuman AI already required to leave the planet). Restoring it wakes the ship's personality; voice it with a **CQF DialogTree** on a talkable ship-core building (offline, authored). Keep it a single earned/quested core (pillar-clean); craftable-core mods (Nanogel Persona Core WS 3550797935 etc.) are a later pick pending 1.6 verify. Full reasoning + mod list in context.md §D.
+| **1. Survive** | Seal habitat ring; connect enough deck to consider flight | Living quarters, freezer, defense against hole-ingress | Steel + gravlite panels (substructure = 1 gravlite + 4 steel/tile) | First scarcity wall |
+| **2. Salvage loop** | Wing B (smelter first) | Salvage → metal; the engine of everything | VFE_BasicFactories research + rebuild scrap | Bounded: feedstock = what you scavenge |
+| **3. Provision** | Wing A + rest of C | Food security (farm/fish → oven/cannery) | Refrigerated routing built; Odyssey fishfarm | Food stays pressured (desert) |
+| **4. Fly** | Reconnect ≥ target substructure; stern thrusters | Ship lifts — mobility unlocked | Enough green deck + fuel (VGE astrofuel) | Mobility earned, not given |
+| **5. Fabricate** | Wing E | Components, plasteel, gravlite (⚠ gate the forge gravlite recipe too) | VFE_ComplexFactories + Fabrication + quest/techprint | The one sanctioned scaling tree opens — *late* |
+| **6. Specialize** | Wings D + F | Medicine, ammo, textiles, gear | Strict target bills; component competition with E | Cap approached — trade-offs bite |
+| **7. Saturate** | Last derelict wings / carbonite bay | Optional luxury/trophy capacity | Tiles run out (~150 headroom) | **Hard ceiling reached** |
+
+Two anti-exponential guarantees fall out of this for free:
+
+1. **Feedstock-bound, not footprint-bound.** You can rebuild a wing, but you can't feed it without
+   salvage/exploration. The factory converts *exploration + salvage → ship*, never *ship → more ship*.
+2. **The tile cap is the final ceiling.** Phase 7 literally runs out of substructure. There is no
+   phase 8. **[DECIDE E]**: do we *want* the player to be able to reach full saturation, or should the
+   design ensure 1–2 wings are permanently uneconomical to restore (so the ship is *always* a wreck in
+   part)? Recommend the latter for theme — a Jawa hulk should never be pristine.
+
+---
+
+## 5. Integration with the rest of the campaign
+
+- **Desert / thirst (desert_world_design.md):** the grounded-wreck early game happens *in* the desert
+  scarcity layer — holes in the hull mean the water/thirst doctrine hits hardest before you seal up.
+  Food wing C's cannery is the "make scarce windfalls last across dry crossings" tool.
+- **Jawa lore (jawa_xenotype_and_religion.md Part 4):** repairing an inherited hulk *is* the Jawa
+  fantasy (scavenger-mechanics, not engineers). Gourmet-reverence → the cannery/oven wing is the
+  "aspirational cuisine against scarcity" layer. Droid-mourning / acquisition lore colors who crews
+  which wing.
+- **Carbonite (carbonite_trophy_mod.md):** the carbonite bay is a Phase-7 luxury wing — trophy/vault
+  capacity that costs precious end-cap tiles, a deliberate "spend hull on horror-decor vs. more
+  production" choice.
+- **VGE fuel leash:** Phase-4 flight depends on astrofuel (chemfuel → astrofuel, lossy) — Wing B's
+  biofuel refinery + the stern chemfuel tanks are the flight economy.
+- **Factions (faction_roster_v2.md):** open holes = early raid ingress; the Empire-as-pursuer pressure
+  gives a reason the crew *can't* just sit and slowly repair forever.
+
+---
+
+## 6. Open decisions (collected)
+
+- **[DECIDE A]** broken machines = decorative rubble (v1, simple) vs. real damaged/deconstructable state.
+- **[DECIDE B]** silhouette — ✅ **RESOLVED 2026-08-06 → #15 "Falcon Halo (hollow)"** (see §2 and
+  `ship_designs.md`). No longer open.
+- **[DECIDE C]** — ✅ **RESOLVED 2026-08-08 → BOTH** (radiator/vac-barrier bay + hard overclock cap;
+  see §heat doctrine). No longer open.
+- **[DECIDE D]** — ✅ **RESOLVED 2026-08-08 → SMELTER first** (salvage dependence, not the oven). The
+  single starting BASIC line is the smelter: it makes the crew dependent on *feeding scrap in*, which
+  is on-theme for scrappers and couples cleanly to the sacred-scrap repair economy. (Oven/survival-food
+  dependence declined.) Propagate to required_mods "recommended starting state" + phase-0 table.
+- **[DECIDE E]** — 🔵 **DEFERRED by user 2026-08-08: "decide how to handle derelict portions as we
+  go."** Do NOT hard-commit full-saturation-vs-permanent-derelict now; treat as a play-time call.
+  Design leaning (non-binding) still favors keeping 1–2 wings derelict for the anti-exp/aesthetic
+  payoff, but it's explicitly a runtime decision, not a locked gate.
+- **Authoring unknown (still the load-bearer):** how to place a large pre-broken ship as the start
+  save — scenario building-lists can't do a whole ruined ship; likely hand-edited scenario/save.
+  Routes to `save_authoring_pipeline.md` + `first_live_access.md`. This is the one true blocker between
+  design and execution.
+
+---
+
+## 7. Bottom line (decision translation)
+
+**The decision this doc serves:** whether to adopt the hulk-ship premise as the campaign's spine and
+commit to a spinal-freighter, 8-wing, repair-gated deck. **Recommendation: yes** — it strengthens the
+anti-exponential pillar (fixed hull, feedstock-bound growth, hard tile ceiling), turns the factory's
+worst problem (heat on a sealed ship) into the mid-game's best tension, and fits Jawa lore natively.
+
+**Viable alternatives:** a small-ship-that-grows (rejected — reintroduces footprint scaling the pillar
+forbids); a single-hall factory (rejected — Factory_lore shows it fails operationally and gives no
+wing/repair structure).
+
+**Principal risk:** authoring a large pre-broken ship as a start state (the one real blocker) — mitigated
+by the grounded-wreck-is-just-a-map insight and the save-authoring pipeline.
+
+**Dependencies:** verified substructure math; Factory_lore layout craft; desert/VGE/faction layers.
+
+**Missing info that would help:** in-game confirmation of (a) how disconnected substructure + holes
+actually render/behave at scale, (b) real heat numbers per machine at 200%/500% to size the radiator bay,
+(c) whether a damaged-machine state is feasible without a custom mod. All are **[DECIDE]**/verify-at-machine.
+
+**Recommended next step:** you resolve [DECIDE A–E] (or just B + D, the load-bearing two), then I draft
+the actual tile-level wing blueprints (like the coastal_mesa maps) against the 2,000-tile budget.

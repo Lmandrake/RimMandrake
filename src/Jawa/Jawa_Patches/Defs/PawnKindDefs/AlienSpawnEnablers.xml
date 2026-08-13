@@ -1,0 +1,169 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ============================================================================
+  AlienSpawnEnablers.xml                     Jawa_Patches · authored 2026-08-11
+  ============================================================================
+
+  WHY
+  ===
+  Debug "Spawn Pawn" lists PawnKindDefs, not xenotypes. Of the 74 Star Wars
+  species that have a xenotype, only 43 are reachable through any pawnkind. The
+  other 31 are fully-authored xenotypes nothing in the game can ever spawn, the
+  Hutt among them. This file adds a dev-spawn pawnkind for the ones that are
+  genuinely READY: they carry a head gene AND that head's art is present.
+
+  READINESS METHOD, AND WHY IT IS NOT A FILE CHECK
+  ================================================
+  Testing "does the art exist" turned out to be the hard part. Vanilla art is
+  packed into Unity bundles, so Core ships 2 loose PNGs and no Textures folder
+  at all. Outer Rim Galactic Diversity keeps its 554 head PNGs under Common_Old,
+  a folder its own LoadFolders.xml never lists, and they render anyway. A naive
+  file-existence test gives false negatives in both directions; one built on it
+  earlier would have neutralised dozens of working heads.
+
+  So readiness here means the head art is EITHER directly on disk under a loaded
+  Textures path, OR it sits in the same Outer Rim Heads folder as Bith and Mon
+  Calamari, both confirmed rendering in game. Precedent, not inference.
+
+  SHAPE
+  =====
+  Copied verbatim from Outer Rim's own OuterRim_MonCalamari pawnkind, proven to
+  work on this stack. ParentName OuterRimTestColonyPawnKind verified present and
+  Abstract=True (race Human, combatPower 40, defaultFactionType PlayerColony).
+
+  Pointing at the BTD_ xenotypes deliberately: REMIX removes 100 duplicates with
+  BTD preference and remaps 88 pawnkinds at runtime, so BTD_ is the side that
+  survives. Naming it directly skips the remap.
+
+  KNOWN COMPROMISES
+  =================
+  Several reuse another species' head, which is the upstream mod's choice, not
+  ours: Lasat and Zygerrian use the Cathar head, Muun the Quarren head, Ortolan
+  the Kubaz head, Nelvaanian the Bothan head. They spawn and look non-human, but
+  not uniquely so.
+
+  The two Sith entries are included only because they are technically ready.
+  Given the campaign's Force rules they are the likeliest to be unwanted; delete
+  those two defs if so.
+
+  NOT INCLUDED, 18 species: Anzati, Echani and Falleen have no head gene at all;
+  ChadraFan, Chiss, Defel, Feeorin, KelDor, Klatoonian, Nagai, Nautolan,
+  Snivvian and the rest have a head gene whose art is absent. Those need art or
+  a head reassignment first.
+
+  ✏️ CORRECTION 2026-08-11 — GAMORREAN WAS MISCLASSIFIED ABOVE
+  ============================================================
+  The original list put Gamorrean under "head gene whose art is absent". Wrong on
+  both halves, checked against the live GeneDef dump rather than the mod XML:
+
+    - It has NO species head gene. Neither guy762_xenotype_gamorrean nor
+      BTD_Gamorrean carries a guy762_Head_* gene at all.
+    - Its head therefore comes from vanilla Jaw_Heavy, whose forcedHeadTypes are
+      Male_HeavyJawNormal / Female_HeavyJawNormal — base-game art, always
+      present.
+
+  So the Gamorrean was renderable the whole time; it just renders as a heavy-jaw
+  human with a flat pig-nose decal. It is now handled properly one directory
+  over in GamorreanPawnKinds.xml, which gives it real armed pawnkinds rather
+  than a dev-spawn stub, so no Jawa_Spawn_Gamorrean entry is added here.
+
+  Worth re-testing the same assumption against the other 17: this misfire came
+  from checking for a species head gene's art without first checking whether a
+  species head gene exists.
+
+  ⚠️ These inherit defaultFactionType PlayerColony from the parent. Correct for
+  dev spawning, WRONG for world generation. Real Hutt Cartel presence needs
+  faction work, tracked separately in faction_roster_v2.md.
+  ============================================================================
+-->
+<Defs>
+
+  <PawnKindDef ParentName="OuterRimTestColonyPawnKind">
+    <defName>Jawa_Spawn_Hutt</defName>
+    <label>hutt</label>
+    <xenotypeSet><xenotypeChances><BTD_Hutt>999</BTD_Hutt></xenotypeChances></xenotypeSet>
+  </PawnKindDef>
+
+  <PawnKindDef ParentName="OuterRimTestColonyPawnKind">
+    <defName>Jawa_Spawn_Gand</defName>
+    <label>gand</label>
+    <xenotypeSet><xenotypeChances><BTD_Gand>999</BTD_Gand></xenotypeChances></xenotypeSet>
+  </PawnKindDef>
+
+  <PawnKindDef ParentName="OuterRimTestColonyPawnKind">
+    <defName>Jawa_Spawn_Kubaz</defName>
+    <label>kubaz</label>
+    <xenotypeSet><xenotypeChances><BTD_Kubaz>999</BTD_Kubaz></xenotypeChances></xenotypeSet>
+  </PawnKindDef>
+
+  <PawnKindDef ParentName="OuterRimTestColonyPawnKind">
+    <defName>Jawa_Spawn_Taung</defName>
+    <label>taung</label>
+    <xenotypeSet><xenotypeChances><BTD_Taung>999</BTD_Taung></xenotypeChances></xenotypeSet>
+  </PawnKindDef>
+
+  <PawnKindDef ParentName="OuterRimTestColonyPawnKind">
+    <defName>Jawa_Spawn_Mimbanese</defName>
+    <label>mimbanese</label>
+    <xenotypeSet><xenotypeChances><BTD_Mimbanese>999</BTD_Mimbanese></xenotypeChances></xenotypeSet>
+  </PawnKindDef>
+
+  <PawnKindDef ParentName="OuterRimTestColonyPawnKind">
+    <defName>Jawa_Spawn_Zygerrian</defName>
+    <label>zygerrian</label>
+    <xenotypeSet><xenotypeChances><BTD_Zygerrian>999</BTD_Zygerrian></xenotypeChances></xenotypeSet>
+  </PawnKindDef>
+
+  <PawnKindDef ParentName="OuterRimTestColonyPawnKind">
+    <defName>Jawa_Spawn_Lasat</defName>
+    <label>lasat</label>
+    <xenotypeSet><xenotypeChances><BTD_Lasat>999</BTD_Lasat></xenotypeChances></xenotypeSet>
+  </PawnKindDef>
+
+  <PawnKindDef ParentName="OuterRimTestColonyPawnKind">
+    <defName>Jawa_Spawn_Muun</defName>
+    <label>muun</label>
+    <xenotypeSet><xenotypeChances><BTD_Muun>999</BTD_Muun></xenotypeChances></xenotypeSet>
+  </PawnKindDef>
+
+  <PawnKindDef ParentName="OuterRimTestColonyPawnKind">
+    <defName>Jawa_Spawn_Ortolan</defName>
+    <label>ortolan</label>
+    <xenotypeSet><xenotypeChances><BTD_Ortolan>999</BTD_Ortolan></xenotypeChances></xenotypeSet>
+  </PawnKindDef>
+
+  <PawnKindDef ParentName="OuterRimTestColonyPawnKind">
+    <defName>Jawa_Spawn_Nelvaanian</defName>
+    <label>nelvaanian</label>
+    <xenotypeSet><xenotypeChances><BTD_Nelvaanian>999</BTD_Nelvaanian></xenotypeChances></xenotypeSet>
+  </PawnKindDef>
+
+  <PawnKindDef ParentName="OuterRimTestColonyPawnKind">
+    <defName>Jawa_Spawn_SithK</defName>
+    <label>sith (kissai)</label>
+    <xenotypeSet><xenotypeChances><BTD_SithK>999</BTD_SithK></xenotypeChances></xenotypeSet>
+  </PawnKindDef>
+
+  <PawnKindDef ParentName="OuterRimTestColonyPawnKind">
+    <defName>Jawa_Spawn_SithM</defName>
+    <label>sith (massassi)</label>
+    <xenotypeSet><xenotypeChances><BTD_SithM>999</BTD_SithM></xenotypeChances></xenotypeSet>
+  </PawnKindDef>
+
+  <!-- Yoder (Yoda's species). Added 2026-08-11: the xenotype exists in both
+       Star Wars Xenotypes and Xenotype REMIX, but a live def-dump sweep found
+       NO pawnkind anywhere referencing it, so it was unspawnable. The Yoder
+       seen in earlier saves came from Xenotype REMIX's runtime faction
+       remapping, not from anything the debug menu can reach. Art confirmed
+       good on screen 2026-08-11. -->
+  <PawnKindDef ParentName="OuterRimTestColonyPawnKind">
+    <defName>Jawa_Spawn_Yoder</defName>
+    <label>yoder</label>
+    <xenotypeSet>
+      <xenotypeChances>
+        <BTD_Yoder>999</BTD_Yoder>
+      </xenotypeChances>
+    </xenotypeSet>
+  </PawnKindDef>
+
+</Defs>

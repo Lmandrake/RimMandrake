@@ -1,0 +1,474 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ============================================================================
+  HuttEyes_RestoreRenderNodes.xml            Jawa_Patches · authored 2026-08-11
+  ============================================================================
+
+  THE OBSERVATION
+  ===============
+  Observed in game 2026-08-11 at full stack: Hutts have "little black eyelashed
+  eyes" instead of the vertical slit pupils HuttEyes_Slitted.xml was supposed to
+  give them. Verified from the live def dump: all six feline genes we assign have
+  renderNodeProperties = NONE, while our own Jawa_Eyes_HugeOrange still has 2.
+
+  THE CAUSE  [the interesting part]
+  =================================
+  [LFS] Genes Expanded - Eyes ships Compatibility/FacialAnimation/1.5/Patches/
+  FAFelineEyesPatch.xml, which does PatchOperationRemove on
+  renderNodeProperties for EVERY feline gene. It is gated on Facial Animation
+  being INSTALLED, not on the pawn being FA-driven — and FA is installed in this
+  stack. The mod's reasoning is sound for its own use case: if FA paints the
+  face, the gene's own eye art would double-draw, so it strips the node and hands
+  FA a colour instead via its EyeballColorDef.
+
+  But we deliberately EXCLUDED BTD_Hutt from Facial Animation so the slit art
+  could show. So neither party draws an eye:
+
+      LFS patch  -> gene has no render node, because FA is installed
+      FA         -> not drawing this pawn, because we excluded the xenotype
+
+  What is left is the Hutt head texture's own baked-in eyes. Hence eyelashes.
+
+  ⚠️ 2026-08-12: RETARGETED FROM THE FELINE FAMILY TO THE REPTILE FAMILY.
+  ==================================================================
+  Owner's call after seeing the feline eyes in game (Steam screenshots
+  20260812125725 / 125845). The art comparison and reasoning live in the sibling
+  file HuttEyes_Slitted.xml — read it there, not here.
+
+  What matters HERE is that the two files are ONE change and must move together.
+  Verified against the live def dump (captured 2026-08-12T19:23:41Z, 568 mods):
+
+    Eyes_<colour>_Feline   renderNodeProperties PRESENT  <- only because THIS
+                                                            file restored them
+    Eyes_<colour>_Reptile  renderNodeProperties STRIPPED <- nobody restored these
+
+  So swapping the gene names in HuttEyes_Slitted.xml without also swapping them
+  here hands BTD_Hutt six genes that draw nothing, and the Hutts render with no
+  eyes at all — the exact failure this file exists to prevent, merely moved to a
+  different family. All six ReptileEyes texPaths were confirmed to resolve to a
+  real PNG on disk before the edit landed.
+
+  BOTH families are restored below, on purpose. See the LEGACY FAMILY note at the
+  second block: the xenotype rolls Reptile for new pawns, while already-generated
+  pawns keep Feline in their saved data and would otherwise go eyeless.
+
+  THE FIX
+  =======
+  Put the render nodes back on just the genes BTD_Hutt uses. Copied verbatim
+  from the donor definitions in Versions/1.6/.../FelineEyes.xml, which is what
+  the gene looks like when FA is absent — same anchorTag, layer 54, offset and
+  the West flip handling on the left eye; texPath follows the family.
+
+  drawSize is the ONE deliberate deviation from the donor: 0.21 raised to 0.42.
+
+  0.55 WAS TRIED AND FAILED ON SCREEN, 2026-08-12. Six Hutts spawned live; the
+  slit and the warm iris both read correctly and the colour varied per pawn, but
+  the two eyes ABUTTED EDGE TO EDGE and read as one mass. Measured off the
+  screenshot rather than judged by eye: each iris was ~51 px wide and the two
+  centres were ~51.5 px apart, i.e. width == centre spacing, zero gap.
+
+  Horizontal position is NOT ours to set - it comes from the head's RightEye /
+  LeftEye anchorTags, and our offset is (0, 0, -0.25), vertical only. So the ONLY
+  lever on separation is drawSize. At 0.42 the iris is ~39 px against the same
+  ~51.5 px spacing, leaving a gap of about a quarter of an eye.
+
+  ⛔ 0.42 WAS ALSO TRIED AND ALSO FAILED ON SCREEN, 2026-08-12 evening.
+  =====================================================================
+  **A quarter-eye gap does not read as two eyes.** Owner called it on sight;
+  measurement then agreed. Six Hutts photographed south-on; on five of them the
+  eyes read as ONE horizontal capsule with vertical striping - the same "one
+  mass" failure 0.55 produced, merely less extreme.
+
+  ⚠️ The geometry was doing exactly what this header predicted. Measured
+  gap/iris was 0.36 against the ~0.32 predicted. **The patch was correct and the
+  TARGET was wrong** - "a gap of about a quarter of an eye" is not a sufficient
+  success condition, and it should never have been written as one.
+
+  TWO reasons a quarter-eye gap fails, both visible only on a zoomed capture:
+    1. Each iris carries a dark hourglass SLIT roughly as wide as the inter-eye
+       gap, so the eye reads as four bright bars at near-even spacing rather
+       than two eyes. The slit competes with the gap.
+    2. The two eyes' dark OUTLINES touch, enclosing both irises in a single
+       capsule. One outline reads as one object.
+
+  ⚠️ A measurement can confirm the number and still miss the read. The first
+  automated pass here reported "SEPARATED" by taking max() over gaps of 3,4,3 -
+  a 1 px difference called a verdict. Any test whose pass and fail print the
+  same thing is not a test. Demand that the inter-eye gap DOMINATE the slit gap
+  (ratio >= 2.5), do not merely find it.
+
+  NOW AT 0.37, which puts the gap at half an iris instead of a quarter. This is
+  a COMPROMISE, not a proven fix - at 0.37 the gap is only ~2x the slit width,
+  so it may still not resolve. Judge it on screen; do not assume it passed.
+
+  ⚠️ THE LADDER TRADES SIZE AGAINST SEPARATION, and the owner wants size:
+        0.42  gap/iris 0.32   apparent 0.097   FAILED on screen
+        0.37  gap/iris 0.50   apparent 0.085   <- current, +9% vs Jawa
+        0.28  gap/iris 1.00   apparent 0.064   certain read, but -18% vs Jawa
+  0.28 is the only value that certainly resolves, and it lands BELOW the
+  approved Jawa size on a much larger face - against the owner's "pretty huge"
+  call. Do not go there without asking.
+
+  ➡️ THE REAL FIX IS ART, NOT A NUMBER. The constraint is iris WIDTH against a
+  spacing we cannot set, and ReptileEyes is explicitly "a wider, flatter oval" -
+  the worst shape for this. A NARROWER, TALLER eye keeps apparent size while
+  opening a horizontal gap, and escapes the ladder entirely. That is a CREATE
+  job and it is the only way to get both "huge" and "clearly two".
+  on owner's call 2026-08-11, "they're supposed to be pretty huge". Hutts are the
+  largest xenotype in the stack (guy762_BodySizeGene_biggest) and the donor value
+  is tuned for a baseline human head, so the stock size read as small on that face.
+
+  Jawa_Patches loads at 562 and the LFS mod at 420, so our Add lands after their
+  Remove. Order matters absolutely here: reversed, this would be a silent no-op.
+
+  ⚠️ SCOPE. This edits genes shared with any other xenotype that uses them. In
+  this load only BTD_Hutt carries them, so the blast radius is Hutts. If another
+  xenotype ever adopts a feline eye gene AND is FA-driven, it would double-draw:
+  FA's painted eye plus the restored node. The correct fix then is to exclude
+  that xenotype from FA too, exactly as we did for the Hutt.
+
+  SETTLED 2026-08-13 BY THE OWNER - drawSize is 0.30. Do not walk the ladder.
+  ====================================================================
+  The ladder that used to live here (0.55 -> 0.45 -> 0.38) is spent, and it is
+  deleted rather than left as a stale instruction: every rung is now ABOVE the
+  shipped value, so following it would only ever make the eyes bigger again.
+
+  SEEN ON SCREEN first, then ruled. Two dev-spawned Hutts (Natal, Shad) at 0.37
+  on the 574 stack: two clearly separate eyes, vertical slit pupils, warm iris
+  colour, no eyelashes - so the reptile swap and the FA exclusion both work, and
+  the ONLY outstanding complaint was size. Owner called another 20% down and
+  said ship it: 0.37 x 0.8 = 0.296, shipped as 0.30 to match the two-decimal
+  convention used throughout this file (a 19% drop).
+
+  There is no open question here. If a future session thinks the eyes are wrong,
+  that is a NEW judgement needing a NEW screenshot - not a resumption of this
+  one.
+
+  SIZING MATH, so the next change is not a guess. Apparent size = drawSize x the
+  eye's share of its canvas. The LFS art puts a 38px eye in a 168px canvas, only
+  23%, whereas our own Jawa art is 49% — which is why the donor's 0.21 looked
+  like eyelashes while the Jawa's 0.16 looked right.
+
+      Jawa  0.16 x 49% = 0.078   (approved)
+      Hutt  0.42 x 23% = 0.095   (1.22x Jawa - still small on a much larger face)
+      Hutt  0.55 x 23% = 0.124   (1.59x Jawa - chosen)
+      Hutt  0.70 x 23% = 0.158   (2.03x Jawa - if it still reads small)
+    * Still no eyebrows — that is the FA exclusion and is expected.
+    * If they now have TWO sets of eyes, the FA exclusion for BTD_Hutt was lost.
+  ============================================================================
+-->
+<Patch>
+
+  <Operation Class="PatchOperationFindMod">
+    <mods>
+      <li>[LFS] Genes Expanded - Eyes</li>
+    </mods>
+    <match Class="PatchOperationSequence">
+      <operations>
+
+        <li Class="PatchOperationConditional">
+          <xpath>/Defs/GeneDef[defName="Eyes_FireRed_Reptile"][not(renderNodeProperties)]</xpath>
+          <match Class="PatchOperationAdd">
+            <xpath>/Defs/GeneDef[defName="Eyes_FireRed_Reptile"]</xpath>
+            <value>
+              <renderNodeProperties>
+                <li Class="PawnRenderNodeProperties_Eye">
+                  <texPath>Things/Pawn/Humanlike/HeadAttachments/Eyes/ReptileEyes/FireRed_Reptile</texPath>
+                  <anchorTag>RightEye</anchorTag>
+                  <rotDrawMode>Fresh, Rotting</rotDrawMode>
+                  <parentTagDef>Head</parentTagDef>
+                  <drawSize>0.30</drawSize>
+                  <side>Right</side>
+                  <drawData><defaultData><layer>54</layer><offset>(0, 0, -0.25)</offset></defaultData></drawData>
+                </li>
+                <li Class="PawnRenderNodeProperties_Eye">
+                  <texPath>Things/Pawn/Humanlike/HeadAttachments/Eyes/ReptileEyes/FireRed_Reptile</texPath>
+                  <anchorTag>LeftEye</anchorTag>
+                  <rotDrawMode>Fresh, Rotting</rotDrawMode>
+                  <parentTagDef>Head</parentTagDef>
+                  <drawSize>0.30</drawSize>
+                  <side>Left</side>
+                  <drawData><defaultData><layer>54</layer><offset>(0, 0, -0.25)</offset><flip>true</flip></defaultData><dataWest><flip>false</flip></dataWest></drawData>
+                </li>
+              </renderNodeProperties>
+            </value>
+          </match>
+        </li>
+
+        <li Class="PatchOperationConditional">
+          <xpath>/Defs/GeneDef[defName="Eyes_MarsRed_Reptile"][not(renderNodeProperties)]</xpath>
+          <match Class="PatchOperationAdd">
+            <xpath>/Defs/GeneDef[defName="Eyes_MarsRed_Reptile"]</xpath>
+            <value>
+              <renderNodeProperties>
+                <li Class="PawnRenderNodeProperties_Eye">
+                  <texPath>Things/Pawn/Humanlike/HeadAttachments/Eyes/ReptileEyes/MarsRed_Reptile</texPath>
+                  <anchorTag>RightEye</anchorTag><rotDrawMode>Fresh, Rotting</rotDrawMode><parentTagDef>Head</parentTagDef>
+                  <drawSize>0.30</drawSize><side>Right</side>
+                  <drawData><defaultData><layer>54</layer><offset>(0, 0, -0.25)</offset></defaultData></drawData>
+                </li>
+                <li Class="PawnRenderNodeProperties_Eye">
+                  <texPath>Things/Pawn/Humanlike/HeadAttachments/Eyes/ReptileEyes/MarsRed_Reptile</texPath>
+                  <anchorTag>LeftEye</anchorTag><rotDrawMode>Fresh, Rotting</rotDrawMode><parentTagDef>Head</parentTagDef>
+                  <drawSize>0.30</drawSize><side>Left</side>
+                  <drawData><defaultData><layer>54</layer><offset>(0, 0, -0.25)</offset><flip>true</flip></defaultData><dataWest><flip>false</flip></dataWest></drawData>
+                </li>
+              </renderNodeProperties>
+            </value>
+          </match>
+        </li>
+
+        <li Class="PatchOperationConditional">
+          <xpath>/Defs/GeneDef[defName="Eyes_BurntOrange_Reptile"][not(renderNodeProperties)]</xpath>
+          <match Class="PatchOperationAdd">
+            <xpath>/Defs/GeneDef[defName="Eyes_BurntOrange_Reptile"]</xpath>
+            <value>
+              <renderNodeProperties>
+                <li Class="PawnRenderNodeProperties_Eye">
+                  <texPath>Things/Pawn/Humanlike/HeadAttachments/Eyes/ReptileEyes/BurntOrange_Reptile</texPath>
+                  <anchorTag>RightEye</anchorTag><rotDrawMode>Fresh, Rotting</rotDrawMode><parentTagDef>Head</parentTagDef>
+                  <drawSize>0.30</drawSize><side>Right</side>
+                  <drawData><defaultData><layer>54</layer><offset>(0, 0, -0.25)</offset></defaultData></drawData>
+                </li>
+                <li Class="PawnRenderNodeProperties_Eye">
+                  <texPath>Things/Pawn/Humanlike/HeadAttachments/Eyes/ReptileEyes/BurntOrange_Reptile</texPath>
+                  <anchorTag>LeftEye</anchorTag><rotDrawMode>Fresh, Rotting</rotDrawMode><parentTagDef>Head</parentTagDef>
+                  <drawSize>0.30</drawSize><side>Left</side>
+                  <drawData><defaultData><layer>54</layer><offset>(0, 0, -0.25)</offset><flip>true</flip></defaultData><dataWest><flip>false</flip></dataWest></drawData>
+                </li>
+              </renderNodeProperties>
+            </value>
+          </match>
+        </li>
+
+        <li Class="PatchOperationConditional">
+          <xpath>/Defs/GeneDef[defName="Eyes_Tangerine_Reptile"][not(renderNodeProperties)]</xpath>
+          <match Class="PatchOperationAdd">
+            <xpath>/Defs/GeneDef[defName="Eyes_Tangerine_Reptile"]</xpath>
+            <value>
+              <renderNodeProperties>
+                <li Class="PawnRenderNodeProperties_Eye">
+                  <texPath>Things/Pawn/Humanlike/HeadAttachments/Eyes/ReptileEyes/Tangerine_Reptile</texPath>
+                  <anchorTag>RightEye</anchorTag><rotDrawMode>Fresh, Rotting</rotDrawMode><parentTagDef>Head</parentTagDef>
+                  <drawSize>0.30</drawSize><side>Right</side>
+                  <drawData><defaultData><layer>54</layer><offset>(0, 0, -0.25)</offset></defaultData></drawData>
+                </li>
+                <li Class="PawnRenderNodeProperties_Eye">
+                  <texPath>Things/Pawn/Humanlike/HeadAttachments/Eyes/ReptileEyes/Tangerine_Reptile</texPath>
+                  <anchorTag>LeftEye</anchorTag><rotDrawMode>Fresh, Rotting</rotDrawMode><parentTagDef>Head</parentTagDef>
+                  <drawSize>0.30</drawSize><side>Left</side>
+                  <drawData><defaultData><layer>54</layer><offset>(0, 0, -0.25)</offset><flip>true</flip></defaultData><dataWest><flip>false</flip></dataWest></drawData>
+                </li>
+              </renderNodeProperties>
+            </value>
+          </match>
+        </li>
+
+        <li Class="PatchOperationConditional">
+          <xpath>/Defs/GeneDef[defName="Eyes_TaxiCab_Reptile"][not(renderNodeProperties)]</xpath>
+          <match Class="PatchOperationAdd">
+            <xpath>/Defs/GeneDef[defName="Eyes_TaxiCab_Reptile"]</xpath>
+            <value>
+              <renderNodeProperties>
+                <li Class="PawnRenderNodeProperties_Eye">
+                  <texPath>Things/Pawn/Humanlike/HeadAttachments/Eyes/ReptileEyes/TaxiCab_Reptile</texPath>
+                  <anchorTag>RightEye</anchorTag><rotDrawMode>Fresh, Rotting</rotDrawMode><parentTagDef>Head</parentTagDef>
+                  <drawSize>0.30</drawSize><side>Right</side>
+                  <drawData><defaultData><layer>54</layer><offset>(0, 0, -0.25)</offset></defaultData></drawData>
+                </li>
+                <li Class="PawnRenderNodeProperties_Eye">
+                  <texPath>Things/Pawn/Humanlike/HeadAttachments/Eyes/ReptileEyes/TaxiCab_Reptile</texPath>
+                  <anchorTag>LeftEye</anchorTag><rotDrawMode>Fresh, Rotting</rotDrawMode><parentTagDef>Head</parentTagDef>
+                  <drawSize>0.30</drawSize><side>Left</side>
+                  <drawData><defaultData><layer>54</layer><offset>(0, 0, -0.25)</offset><flip>true</flip></defaultData><dataWest><flip>false</flip></dataWest></drawData>
+                </li>
+              </renderNodeProperties>
+            </value>
+          </match>
+        </li>
+
+        <li Class="PatchOperationConditional">
+          <xpath>/Defs/GeneDef[defName="Eyes_MidasGold_Reptile"][not(renderNodeProperties)]</xpath>
+          <match Class="PatchOperationAdd">
+            <xpath>/Defs/GeneDef[defName="Eyes_MidasGold_Reptile"]</xpath>
+            <value>
+              <renderNodeProperties>
+                <li Class="PawnRenderNodeProperties_Eye">
+                  <texPath>Things/Pawn/Humanlike/HeadAttachments/Eyes/ReptileEyes/MidasGold_Reptile</texPath>
+                  <anchorTag>RightEye</anchorTag><rotDrawMode>Fresh, Rotting</rotDrawMode><parentTagDef>Head</parentTagDef>
+                  <drawSize>0.30</drawSize><side>Right</side>
+                  <drawData><defaultData><layer>54</layer><offset>(0, 0, -0.25)</offset></defaultData></drawData>
+                </li>
+                <li Class="PawnRenderNodeProperties_Eye">
+                  <texPath>Things/Pawn/Humanlike/HeadAttachments/Eyes/ReptileEyes/MidasGold_Reptile</texPath>
+                  <anchorTag>LeftEye</anchorTag><rotDrawMode>Fresh, Rotting</rotDrawMode><parentTagDef>Head</parentTagDef>
+                  <drawSize>0.30</drawSize><side>Left</side>
+                  <drawData><defaultData><layer>54</layer><offset>(0, 0, -0.25)</offset><flip>true</flip></defaultData><dataWest><flip>false</flip></dataWest></drawData>
+                </li>
+              </renderNodeProperties>
+            </value>
+          </match>
+        </li>
+
+        <!--
+          LEGACY FAMILY — kept deliberately, 2026-08-12. DO NOT DELETE.
+          BTD_Hutt now rolls the REPTILE genes above, but pawns generated BEFORE
+          that swap carry their Feline genes in per-pawn saved data, and changing
+          a XenotypeDef never rewrites an existing pawn. Verified in
+          Saves/New Arrivals1.rws: 24 Feline eye genes across the spawned Hutts,
+          plus one Eyes_Black_Feline on an unrelated pawn.
+
+          Drop these six and every one of those pawns renders EYELESS on load,
+          because LFS still strips the Feline nodes and nothing would put them
+          back. Every op is guarded [not(renderNodeProperties)], so on a save with
+          no Feline-eyed pawns this whole block is a free no-op.
+        -->
+        <li Class="PatchOperationConditional">
+          <xpath>/Defs/GeneDef[defName="Eyes_FireRed_Feline"][not(renderNodeProperties)]</xpath>
+          <match Class="PatchOperationAdd">
+            <xpath>/Defs/GeneDef[defName="Eyes_FireRed_Feline"]</xpath>
+            <value>
+              <renderNodeProperties>
+                <li Class="PawnRenderNodeProperties_Eye">
+                  <texPath>Things/Pawn/Humanlike/HeadAttachments/Eyes/FelineEyes/FireRed_Feline</texPath>
+                  <anchorTag>RightEye</anchorTag>
+                  <rotDrawMode>Fresh, Rotting</rotDrawMode>
+                  <parentTagDef>Head</parentTagDef>
+                  <drawSize>0.30</drawSize>
+                  <side>Right</side>
+                  <drawData><defaultData><layer>54</layer><offset>(0, 0, -0.25)</offset></defaultData></drawData>
+                </li>
+                <li Class="PawnRenderNodeProperties_Eye">
+                  <texPath>Things/Pawn/Humanlike/HeadAttachments/Eyes/FelineEyes/FireRed_Feline</texPath>
+                  <anchorTag>LeftEye</anchorTag>
+                  <rotDrawMode>Fresh, Rotting</rotDrawMode>
+                  <parentTagDef>Head</parentTagDef>
+                  <drawSize>0.30</drawSize>
+                  <side>Left</side>
+                  <drawData><defaultData><layer>54</layer><offset>(0, 0, -0.25)</offset><flip>true</flip></defaultData><dataWest><flip>false</flip></dataWest></drawData>
+                </li>
+              </renderNodeProperties>
+            </value>
+          </match>
+        </li>
+
+        <li Class="PatchOperationConditional">
+          <xpath>/Defs/GeneDef[defName="Eyes_MarsRed_Feline"][not(renderNodeProperties)]</xpath>
+          <match Class="PatchOperationAdd">
+            <xpath>/Defs/GeneDef[defName="Eyes_MarsRed_Feline"]</xpath>
+            <value>
+              <renderNodeProperties>
+                <li Class="PawnRenderNodeProperties_Eye">
+                  <texPath>Things/Pawn/Humanlike/HeadAttachments/Eyes/FelineEyes/MarsRed_Feline</texPath>
+                  <anchorTag>RightEye</anchorTag><rotDrawMode>Fresh, Rotting</rotDrawMode><parentTagDef>Head</parentTagDef>
+                  <drawSize>0.30</drawSize><side>Right</side>
+                  <drawData><defaultData><layer>54</layer><offset>(0, 0, -0.25)</offset></defaultData></drawData>
+                </li>
+                <li Class="PawnRenderNodeProperties_Eye">
+                  <texPath>Things/Pawn/Humanlike/HeadAttachments/Eyes/FelineEyes/MarsRed_Feline</texPath>
+                  <anchorTag>LeftEye</anchorTag><rotDrawMode>Fresh, Rotting</rotDrawMode><parentTagDef>Head</parentTagDef>
+                  <drawSize>0.30</drawSize><side>Left</side>
+                  <drawData><defaultData><layer>54</layer><offset>(0, 0, -0.25)</offset><flip>true</flip></defaultData><dataWest><flip>false</flip></dataWest></drawData>
+                </li>
+              </renderNodeProperties>
+            </value>
+          </match>
+        </li>
+
+        <li Class="PatchOperationConditional">
+          <xpath>/Defs/GeneDef[defName="Eyes_BurntOrange_Feline"][not(renderNodeProperties)]</xpath>
+          <match Class="PatchOperationAdd">
+            <xpath>/Defs/GeneDef[defName="Eyes_BurntOrange_Feline"]</xpath>
+            <value>
+              <renderNodeProperties>
+                <li Class="PawnRenderNodeProperties_Eye">
+                  <texPath>Things/Pawn/Humanlike/HeadAttachments/Eyes/FelineEyes/BurntOrange_Feline</texPath>
+                  <anchorTag>RightEye</anchorTag><rotDrawMode>Fresh, Rotting</rotDrawMode><parentTagDef>Head</parentTagDef>
+                  <drawSize>0.30</drawSize><side>Right</side>
+                  <drawData><defaultData><layer>54</layer><offset>(0, 0, -0.25)</offset></defaultData></drawData>
+                </li>
+                <li Class="PawnRenderNodeProperties_Eye">
+                  <texPath>Things/Pawn/Humanlike/HeadAttachments/Eyes/FelineEyes/BurntOrange_Feline</texPath>
+                  <anchorTag>LeftEye</anchorTag><rotDrawMode>Fresh, Rotting</rotDrawMode><parentTagDef>Head</parentTagDef>
+                  <drawSize>0.30</drawSize><side>Left</side>
+                  <drawData><defaultData><layer>54</layer><offset>(0, 0, -0.25)</offset><flip>true</flip></defaultData><dataWest><flip>false</flip></dataWest></drawData>
+                </li>
+              </renderNodeProperties>
+            </value>
+          </match>
+        </li>
+
+        <li Class="PatchOperationConditional">
+          <xpath>/Defs/GeneDef[defName="Eyes_Tangerine_Feline"][not(renderNodeProperties)]</xpath>
+          <match Class="PatchOperationAdd">
+            <xpath>/Defs/GeneDef[defName="Eyes_Tangerine_Feline"]</xpath>
+            <value>
+              <renderNodeProperties>
+                <li Class="PawnRenderNodeProperties_Eye">
+                  <texPath>Things/Pawn/Humanlike/HeadAttachments/Eyes/FelineEyes/Tangerine_Feline</texPath>
+                  <anchorTag>RightEye</anchorTag><rotDrawMode>Fresh, Rotting</rotDrawMode><parentTagDef>Head</parentTagDef>
+                  <drawSize>0.30</drawSize><side>Right</side>
+                  <drawData><defaultData><layer>54</layer><offset>(0, 0, -0.25)</offset></defaultData></drawData>
+                </li>
+                <li Class="PawnRenderNodeProperties_Eye">
+                  <texPath>Things/Pawn/Humanlike/HeadAttachments/Eyes/FelineEyes/Tangerine_Feline</texPath>
+                  <anchorTag>LeftEye</anchorTag><rotDrawMode>Fresh, Rotting</rotDrawMode><parentTagDef>Head</parentTagDef>
+                  <drawSize>0.30</drawSize><side>Left</side>
+                  <drawData><defaultData><layer>54</layer><offset>(0, 0, -0.25)</offset><flip>true</flip></defaultData><dataWest><flip>false</flip></dataWest></drawData>
+                </li>
+              </renderNodeProperties>
+            </value>
+          </match>
+        </li>
+
+        <li Class="PatchOperationConditional">
+          <xpath>/Defs/GeneDef[defName="Eyes_TaxiCab_Feline"][not(renderNodeProperties)]</xpath>
+          <match Class="PatchOperationAdd">
+            <xpath>/Defs/GeneDef[defName="Eyes_TaxiCab_Feline"]</xpath>
+            <value>
+              <renderNodeProperties>
+                <li Class="PawnRenderNodeProperties_Eye">
+                  <texPath>Things/Pawn/Humanlike/HeadAttachments/Eyes/FelineEyes/TaxiCab_Feline</texPath>
+                  <anchorTag>RightEye</anchorTag><rotDrawMode>Fresh, Rotting</rotDrawMode><parentTagDef>Head</parentTagDef>
+                  <drawSize>0.30</drawSize><side>Right</side>
+                  <drawData><defaultData><layer>54</layer><offset>(0, 0, -0.25)</offset></defaultData></drawData>
+                </li>
+                <li Class="PawnRenderNodeProperties_Eye">
+                  <texPath>Things/Pawn/Humanlike/HeadAttachments/Eyes/FelineEyes/TaxiCab_Feline</texPath>
+                  <anchorTag>LeftEye</anchorTag><rotDrawMode>Fresh, Rotting</rotDrawMode><parentTagDef>Head</parentTagDef>
+                  <drawSize>0.30</drawSize><side>Left</side>
+                  <drawData><defaultData><layer>54</layer><offset>(0, 0, -0.25)</offset><flip>true</flip></defaultData><dataWest><flip>false</flip></dataWest></drawData>
+                </li>
+              </renderNodeProperties>
+            </value>
+          </match>
+        </li>
+
+        <li Class="PatchOperationConditional">
+          <xpath>/Defs/GeneDef[defName="Eyes_MidasGold_Feline"][not(renderNodeProperties)]</xpath>
+          <match Class="PatchOperationAdd">
+            <xpath>/Defs/GeneDef[defName="Eyes_MidasGold_Feline"]</xpath>
+            <value>
+              <renderNodeProperties>
+                <li Class="PawnRenderNodeProperties_Eye">
+                  <texPath>Things/Pawn/Humanlike/HeadAttachments/Eyes/FelineEyes/MidasGold_Feline</texPath>
+                  <anchorTag>RightEye</anchorTag><rotDrawMode>Fresh, Rotting</rotDrawMode><parentTagDef>Head</parentTagDef>
+                  <drawSize>0.30</drawSize><side>Right</side>
+                  <drawData><defaultData><layer>54</layer><offset>(0, 0, -0.25)</offset></defaultData></drawData>
+                </li>
+                <li Class="PawnRenderNodeProperties_Eye">
+                  <texPath>Things/Pawn/Humanlike/HeadAttachments/Eyes/FelineEyes/MidasGold_Feline</texPath>
+                  <anchorTag>LeftEye</anchorTag><rotDrawMode>Fresh, Rotting</rotDrawMode><parentTagDef>Head</parentTagDef>
+                  <drawSize>0.30</drawSize><side>Left</side>
+                  <drawData><defaultData><layer>54</layer><offset>(0, 0, -0.25)</offset><flip>true</flip></defaultData><dataWest><flip>false</flip></dataWest></drawData>
+                </li>
+              </renderNodeProperties>
+            </value>
+          </match>
+        </li>
+
+      </operations>
+    </match>
+  </Operation>
+
+</Patch>
