@@ -280,6 +280,135 @@ explicitly the way *around* detonation.
 
 ---
 
+## 🎨 CREATE'S ROWS — assembled 2026-08-13, all of it verified today
+
+_Everything below is CREATE's. Three parts: a shutdown-window mod-list change, the
+two ⭐ v1 gate rows that are the point of the load, and two facts that are otherwise
+discovered the expensive way._
+
+### 🔻 (a) SHUTDOWN WINDOW — seven fix mods exist in the repo and load NOTHING
+
+They are built, deployed-ready and **absent from `ModsConfig.xml`**, so today they
+are inert files. **This is a shutdown-window change** — RimWorld rewrites
+`ModsConfig.xml` on exit, so an edit made while the game is running is silently
+undone. It rides the same window as the three OPS rows above, and the same
+`python.exe src/RimMandrake/Utils/refresh.py` afterwards.
+
+**packageIds read from each mod's own `About/About.xml`, not from a note:**
+
+| packageId | source folder under `src/RimMandrake/` | ordering constraint |
+|---|---|---|
+| `mandrake.gravshipastronautfix` | `GravshipAstronautFix` | **after `vanillaexpanded.gravship`** (line 380) — donor ships art **loose**, so order is load-bearing |
+| `mandrake.sauridfrillfix` | `SauridFrillFix` | **after `vanillaracesexpanded.saurid`** (line 394) — loose donor, load-bearing |
+| `mandrake.toolbeltfix` | `ToolBeltFix` | **after `vanillaexpanded.vaeaccessories`** (line 362) — loose donor, load-bearing |
+| `mandrake.researchkiteastfix` | `ResearchKitEastFix` | **after BOTH `petetimessix.researchreinvented` (275) and `aw.researchreinvented.retextured` (458)** — two mods, one def owner and one texture shipper; RRR loads later and is what actually renders |
+| `mandrake.blastdoorframeasyncfix` | `BlastDoorFrameAsyncFix` | **after `lumi.doorsexpanded`** (line 433) — loose donor, load-bearing. ⚠️ NOT base Doors Expanded |
+| `mandrake.cereanmanefix` | `CereanManeFix` | **none** — donor serves art from an AssetBundle on 1.6 and a loose PNG beats a bundled asset regardless of order. Declares no `loadAfter` on purpose |
+| `mandrake.msedroidfix` | `MSEDroidFix` | **none**, same reason, and academic twice over: the bundle has no `MSE_north` to beat |
+
+🔑 **One placement clears all seven: put them together next to
+`mandrake.missingartfixes` (line 560).** Every donor above sits at line 551 or
+earlier, so that slot satisfies every `loadAfter` at once. Verified by grepping
+`ModsConfig.xml` today; do not re-derive it per mod.
+
+⚠️ **None of these seven can ever produce a log line, before or after.** `Failed to
+find any textures at` fires only when **every** direction of a `Graphic_Multi` is
+missing, so a single absent or zero-alpha facing is a silent south-fallback.
+**They are settled by eyeballing a pawn, never by `harvest_log.py`.**
+
+### ⭐ (b) v1 ROW 3 — quest `Jawa_TheClaim` ("The Claim")
+
+**Gate: seen working in-game once** (`V1_SCOPE.md`). Built and committed
+(`47733f8`); never seen.
+
+🔴 **Do NOT wait for the storyteller.** The quest is root-selected, so waiting is
+the most expensive possible way to clear this. The rumour item exists precisely to
+fire it on demand:
+
+```
+Dev mode ON  ->  Debug actions (the ▤ / "..." toolbar button)
+  ->  category "Spawning"  ->  Spawn thing
+  ->  type  Jawa_ClaimRumour  in the search box, click it
+  ->  left-click a map cell to drop it
+  ->  select a COLONIST, then right-click the item on the ground
+  ->  float menu reads "Read the rumour"  <- this is the click
+```
+
+The colonist walks over, the item is consumed, and **the quest is offered**.
+
+| passes when | |
+|---|---|
+| the quest appears in the **Quests tab**, named **The Claim** | offer text is VISION's, verbatim |
+| the **Accept** button is live (not greyed with *"cannot accept in space"*) | `everAcceptableInSpace` is set true; this is what it buys |
+| it reaches an end state — **completed OR expired, either counts** | it does not have to be balanced and the site does not have to be interesting |
+
+⚠️ **Expiry is 10–18 days**, so an end state will not be seen inside one session
+unless the site is visited. **Offered + acceptable is the honest read of "seen
+working"; say which one was actually observed.**
+
+### ⭐ (c) v1 ROW 4 — three terrain/resource overrides
+
+Built and committed (`73ca76c`); never seen. Salt pans (`Jawa_SaltCrust` into
+Desert / ExtremeDesert / AridShrubland), wider dune seas (SoftSand thresholds
+lowered), scrapfields (`ChunkSlagSteel` scatter on the player map).
+
+🔴 **ALL THREE ARE MAP-GENERATION-TIME AND NEED A NEWLY GENERATED MAP.** A
+`terrainPatchMaker` runs during map gen and a `GenStepDef` runs during map gen —
+**nothing whatsoever appears on an existing map, however long you look.** Checking
+row 4 on the current colony map is a guaranteed false negative.
+
+⇒ **Generate a fresh map** (the world-gen session, a new colony, or a dev quicktest
+map on a Desert / ExtremeDesert / AridShrubland tile) and look for: broad pale
+cracked pans in the low ground, obviously wider soft-sand dune fields, and steel
+slag chunks strewn in the open with machine-bit filth around them.
+
+🎁 **FREE SHORTCUT — the art half of the salt crust costs no load at all.**
+`Jawa_SaltCrust` is an ordinary `TerrainDef`, so the live bridge can paint it onto
+the map that is already up:
+
+```
+jawa/set_terrain   def=Jawa_SaltCrust   a rect of ~10x10   layer=top
+jawa/get_terrain_batch  the same rect FIRST, so it replays back as a restore
+```
+
+That answers "does the texture resolve, and does the colour read as evaporite
+white rather than as sand" — which is the half most likely to be wrong — **without
+spending a map generation.** It does **not** answer whether the patch makers
+attach; only a generated map does that. ⚠️ It also requires the deploy below.
+
+### 🔴 (d) TWO THINGS THAT ARE OTHERWISE DISCOVERED THE EXPENSIVE WAY
+
+**1 — A DEPLOY IS OWED BEFORE ROW 3 OR ROW 4 CAN BE SEEN AT ALL.** The deployed
+copy at `C:\Program Files (x86)\Steam\steamapps\common\RimWorld\Mods\Jawa_Patches`
+is well behind the dev tree. Measured today, on the game copy itself:
+
+- `Defs/` was last written **Aug 11 08:57** and holds only `GeneDefs`,
+  `PawnKindDefs`, `WeatherDefs`, `XenotypeDefs`. **There is no `TerrainDefs/`, no
+  `QuestScriptDefs/`, no `ThingDefs_Items/` and no `MapGeneration/` at all.**
+- `Patches/` is newer (its most recent file is **Aug 13 01:10**) but holds neither
+  `JawaTerrain_SaltPans.xml`, `JawaTerrain_DuneSeas.xml` nor
+  `JawaResource_Scrapfields.xml`.
+
+⇒ **Six new files must reach the game copy or rows 3 and 4 are not in the load.**
+The quest def, the rumour item and its texture, the terrain def, both terrain
+patches, the gen step and its registration. Plan-first deploy, procedure in
+`skills/rimworld-deploy/SKILL.md`. ⚠️ **`--apply` overwrites the game copy with
+whatever is in the repo right now, including another seat's half-finished work** —
+read the plan before applying.
+
+**2 — RETIRING `mandrake.missingartfixes` HAS AN ORDER, AND ONE DEPENDENCY.** Its
+seven textures now live in the five per-donor fix mods (`61fe954`, `48e5e16`), so
+it is redundant — but it is **LIVE and deployed**, so deleting it carelessly leaves
+a missing-mod entry in `ModsConfig.xml`. **The dependency is that the blast-door
+brief still lives inside its `Source/` and must be moved out before its folder is
+deleted.**
+
+⇒ **Do not re-derive the sequence. It is written up in
+`D:\Luke\dev\Rimworld\infrastructure\state\queue\CREATE.md` under C11** — follow
+it there.
+
+---
+
 ## 📋 After the load — harvest the WHOLE log
 
 ```bash
