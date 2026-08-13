@@ -1,5 +1,9 @@
-import struct, sys
-exec(open('/tmp/claude-1000/-mnt-d-Luke-dev-Rimworld/4e327811-1bab-41a8-ad20-bf4aac6d1bed/scratchpad/meta_core.py').read())
+import os, struct, sys
+# meta_core.py sits beside this file. It was once exec'd from a session
+# scratchpad, which is tmpfs -- il.py died on the next reboot. Resolve it
+# relative to __file__ so it survives.
+exec(open(os.path.join(os.path.dirname(os.path.abspath(__file__)),
+                       'meta_core.py')).read())
 
 # --- opcode table: op -> (name, operand kind) ---
 # kinds: '' none, 'i1','u1','i2','i4','i8','r4','r8','tok','br1','br4','sw','var1','var2'
