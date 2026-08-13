@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Paint the sled leather-brown to match the eopie harness. Owner's review,
+     2026-08-13: "we should also color the sled brown to match the harness".
+
+     WHY THIS IS A DEF EDIT AND NOT AN ART EDIT. The sled reads white/grey in the
+     PNG but does not render that way. AV_DogSled is drawn with
+     shaderType CutoutComplexPattern, and the mask we ship
+     (AV_DogSled_{north,south,east}m.png) emits exactly two values: RED over the
+     sled and rigging, BLACK over the animals. Red multiplies by <color>; black
+     is untinted. So the grey came entirely from the donor's
+
+         <color>(71, 71, 71)</color>
+
+     and repainting the sled costs zero pixels. The eopie team is black-masked
+     and therefore CANNOT be dragged along by this change — verified in
+     Source/build_eopie_sled_south.py L213-215, which emits the two-value mask
+     for that exact reason.
+
+     THE COLOUR is the harness leather, not a new brown. Source/build_eopie_sled_*.py
+     define LEATHER_MID (99, 65, 24) and LEATHER_HI (115, 93, 57); the tack in the
+     art is painted in those, so multiplying the near-white sled by LEATHER_MID
+     lands the sled on the same leather the harness already is. colorThree is
+     LEATHER_MID darkened to hold the donor's mid:dark relationship (71:50).
+
+     ⚠️ Only <color> can actually reach a pixel under OUR mask — colorTwo and
+     colorThree have no green/blue region to act on. They are set anyway so the
+     triple stays coherent if the mask ever gains channels, and so the vehicle's
+     paint-picker defaults do not fall back to grey next to a brown sled.
+
+     ⚠️ NOT the same as painting it in game. VF lets the player recolour a
+     vehicle; this only moves the default the sled is built with.
+
+     Verified on disk 2026-08-13:
+     .../294100/3028675048/1.6/Defs/VehicleDefs/Tier0/DogSled/DogSled_VehiclePawn.xml
+     L3 root element Vehicles.VehicleDef, L4 defName, L12-14 the grey triple.
+     Conditional rather than Replace alone so a donor update that drops the node
+     is a no-op, not a red error. -->
+<Patch>
+
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/Vehicles.VehicleDef[defName="AV_DogSled"]/graphicData/color</xpath>
+    <match Class="PatchOperationReplace">
+      <xpath>/Defs/Vehicles.VehicleDef[defName="AV_DogSled"]/graphicData/color</xpath>
+      <value><color>(99, 65, 24)</color></value>
+    </match>
+    <nomatch Class="PatchOperationAdd">
+      <xpath>/Defs/Vehicles.VehicleDef[defName="AV_DogSled"]/graphicData</xpath>
+      <value><color>(99, 65, 24)</color></value>
+    </nomatch>
+  </Operation>
+
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/Vehicles.VehicleDef[defName="AV_DogSled"]/graphicData/colorTwo</xpath>
+    <match Class="PatchOperationReplace">
+      <xpath>/Defs/Vehicles.VehicleDef[defName="AV_DogSled"]/graphicData/colorTwo</xpath>
+      <value><colorTwo>(115, 93, 57)</colorTwo></value>
+    </match>
+    <nomatch Class="PatchOperationAdd">
+      <xpath>/Defs/Vehicles.VehicleDef[defName="AV_DogSled"]/graphicData</xpath>
+      <value><colorTwo>(115, 93, 57)</colorTwo></value>
+    </nomatch>
+  </Operation>
+
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/Vehicles.VehicleDef[defName="AV_DogSled"]/graphicData/colorThree</xpath>
+    <match Class="PatchOperationReplace">
+      <xpath>/Defs/Vehicles.VehicleDef[defName="AV_DogSled"]/graphicData/colorThree</xpath>
+      <value><colorThree>(70, 46, 17)</colorThree></value>
+    </match>
+    <nomatch Class="PatchOperationAdd">
+      <xpath>/Defs/Vehicles.VehicleDef[defName="AV_DogSled"]/graphicData</xpath>
+      <value><colorThree>(70, 46, 17)</colorThree></value>
+    </nomatch>
+  </Operation>
+
+</Patch>
