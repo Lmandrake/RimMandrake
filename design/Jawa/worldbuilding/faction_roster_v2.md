@@ -568,7 +568,8 @@ Imperial settlements always generate a slave/prisoner population, drawn from **W
 - **Memes:** Supremacist, Collectivist, **Human primacy**, Proselytizer
 - **Styles:** Techist, Morbid
 - **Preferred xenotypes:** None at the precept level; uniformity comes from the 78% baseliner weight and apparel tags
-- **Primary role:** Sector governor
+- **Primary role:** Sector Director _(canon, VISION 2026-08-13 — matches the
+  deployed patch and echoes "Directorate"; "Sector governor" is retired)_
 - **Specialists:** Shooting specialist, production specialist
 
 | Issue | Setting |
