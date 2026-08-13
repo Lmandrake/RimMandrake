@@ -102,9 +102,45 @@ relations matrix, and the licensing gate. Stages 1 and 2 are closed.
 From §3d. Doc correction. The in-game persistence question that was tangled into
 the same item went to `infrastructure/state/queue/OPS.md` as O4.
 
-### V11. Space Tower — is it on-brand, and does it reach the gravship endgame? `[v2]`
-From §17. Yours to rule on; CREATE holds the technical due diligence (C2) and is
-told not to start until you have.
+### V11. Space Tower — ✅ RULED IN, conditionally. 2026-08-13, VISION
+From §17. **CREATE's C2 is unblocked** — the design call is made; run the checks.
+
+**RULED IN as `[v2]` content, on two conditions, either of which kills it.**
+
+**Why in.** Three reasons, in order of weight:
+
+1. **It is the Jawa fantasy relocated, not a new one.** A derelict hulk full of
+   ancient hostiles and a locked chest *is* the sandcrawler raid, in orbit. The
+   player fantasy this campaign sells is *"we strip what nobody else can reach"*
+   — an orbital dungeon is the purest possible expression of it.
+2. ⭐ **It fixes the gravship's actual design hole: it has nowhere to go.** The
+   deck plan, the export round-trip and the endgame branch web all give the ship
+   *capability*. **Nothing in the design gives it a destination.** A gravship
+   with nowhere worth flying is a house with an engine, and the player notices
+   that on the first flight. This is the cheapest destination available to us.
+3. **The cost is one checkbox, not a dependency chain — measured, not assumed.**
+   `hailuan.customquestframework` is **already active at load position 108 of
+   575**, and `hailuan.customquestframeworkai` at 431, in
+   `C:\Users\Mandrake\AppData\LocalLow\Ludeon Studios\RimWorld by Ludeon Studios\Config\ModsConfig.xml`.
+   Only `hailuan.spacetower` itself is absent. **We have already paid the
+   dependency and are getting nothing for it.**
+
+**Condition 1 — it must reach a gravship colony.** If `everAcceptableInSpace:
+False` means the quest cannot be *offered* while the colony is in space or
+aboard the ship, **reject it as content**: the one player who wants this is the
+one it excludes. That is C2's first question and the ruling turns on it.
+
+**Condition 2 — it must cost Imperial Heat, or it is someone else's content.**
+`desert_world_design.md:651` establishes the sky-ceiling: going up is how the
+Empire finds you. A free orbital dungeon with no consequence **contradicts a
+pillar we already shipped the fiction for**. If we take the mod, we patch
+acceptance to raise Heat. Not a nice-to-have — it is what makes the trip a
+decision instead of an errand.
+
+⭐ **Independent of the ruling: `ST_Quest_SpaceTower.xml` is the worked example
+for `V1_SCOPE.md` row 3.** Row 3 is at 0, is offline-authorable, and is on the
+critical path for the next live session. Read it for that reason even if
+conditions 1 or 2 fail.
 
 ---
 
@@ -203,3 +239,39 @@ A spec mined from the two (uninstalled, and they stay that way) Force mods is
 being written to `design/Jawa/force_users_build_spec.md`. Jedi = rare raid leader
 for the moisture farmers; Sith = rare raid leader for the Empire; both probably a
 xenotype with preferential equipment.
+
+---
+## ⭐ V-crit. The faction exclusion list — and OUR factions come FIRST
+
+**On the critical path for the next live session.** Row 2 is no longer config: it
+is *unticking factions on vanilla's Configure Factions page during the worldgen
+run*. That page is seen **once**, and there is no fixing it afterwards without
+regenerating the world again. OPS proposed a list and said explicitly that
+**VISION ratifies it, not them** — evidence in `infrastructure/state/queue/OPS.md`
+§v1, including the 21 factions Faction Control cannot reach at all.
+
+### 🔴 The owner's sequencing rule, and it is the whole point
+
+> **Define OUR factions first, so that when the others are switched off, some
+> remain.** Otherwise we instantiate a game with **no one home** by accident.
+
+Subtraction without addition is an empty world. The exclusion list is the
+*second* half of this job; the first half is having enough authored or adopted
+factions to populate a living map. **Do not hand over an exclusion list until you
+can say what is left standing after it is applied**, and roughly how many
+settlements that implies.
+
+Useful prior measurement, from the world that has since been deleted: 53 factions
+across 107 settlements, of which the fiction-breakers held ~34. That is the scale
+of the hole subtraction alone would leave.
+
+**What a finished deliverable looks like:**
+1. the KEEP list — ours, plus adopted mod factions that fit the fiction
+2. the CUT list — what gets unticked, cross-checked against what the page can
+   actually reach
+3. one line on what the map looks like afterwards: who is left, roughly how many
+   settlements, and whether anyone is hostile enough to make a game of it
+
+⚠️ Related and already ruled: the **Junkers lose `permanentEnemy`** and the
+**Imperial Droid Army no longer exists** — the Galactic Empire is the pursuer.
+Both change who is on that keep list.
