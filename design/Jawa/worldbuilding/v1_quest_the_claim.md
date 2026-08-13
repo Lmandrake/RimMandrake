@@ -103,6 +103,36 @@ player actually experiences, so they are the part that decides whether v1 reads 
 and unsentimental about property*. No exclamation, no adventure-speak, no
 "brave colonists". The clan is not excited; the clan is on time.
 
+## 🔴 Standing design rule for EVERY quest we author — not just this one
+
+_Added 2026-08-13 after CREATE found the first build defaulted to
+`everAcceptableInSpace` unset, i.e. **not offerable while the colony is aboard the
+ship**._
+
+> **A quest that cannot be offered while the clan is aboard the gravship is
+> broken for this campaign, whatever else it does.**
+
+The premise is *a clan that lives on a ship*. If our quests go quiet the moment
+the player boards, then the ship — the thing the whole campaign is built around —
+becomes the place where the game stops talking to you. **That is the single worst
+thing an authored quest can do here**, and it would be invisible in testing
+because a ground colony sees the quest fire perfectly.
+
+**So: our quests must reach the player wherever the ship is.** The two layers,
+kept apart on purpose:
+
+- **The OFFER must reach a colony in space or aboard the ship.** Always. No
+  exceptions in this campaign.
+- **The SITE may be pinned to the ground layer** — that is a separate field and a
+  separate decision, and for "The Claim" the site *is* ground. A wreck on a tile
+  you walk to is the point.
+
+⚠️ **The mechanism is being established, not assumed** — whether
+`everAcceptableInSpace` gates the offer or the site placement is CREATE's read,
+in flight. **This rule states what we need to be true; it does not claim to know
+which field delivers it.** If the field turns out to gate site placement instead,
+the rule is unchanged and CREATE finds the field that does gate the offer.
+
 ## What "done" means for row 3
 
 `V1_SCOPE.md`'s gate is **seen working in-game once**. For this row that is:
