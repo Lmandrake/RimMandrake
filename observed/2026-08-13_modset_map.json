@@ -1,0 +1,4348 @@
+{
+"generated": "2026-08-13",
+"modsconfig": "/mnt/c/Users/Mandrake/AppData/LocalLow/Ludeon Studios/RimWorld by Ludeon Studios/Config/ModsConfig.xml",
+"roots": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100",
+"/mnt/c/Program Files (x86)/Steam/steamapps/common/RimWorld/Mods",
+"/mnt/c/Program Files (x86)/Steam/steamapps/common/RimWorld/Data"
+],
+"method": "root-level <packageId> child of <ModMetaData> in About/About.xml; case-insensitive compare",
+"activeMods_order": [
+"zetrith.prepatcher",
+"brrainz.harmony",
+"aleksey.betterstacktraces",
+"ludeon.rimworld",
+"ludeon.rimworld.royalty",
+"ludeon.rimworld.ideology",
+"ludeon.rimworld.biotech",
+"ludeon.rimworld.anomaly",
+"ludeon.rimworld.odyssey",
+"thereallemon.factioncontrol",
+"owlchemist.cherrypicker",
+"aoba.framework",
+"vanillaexpanded.backgrounds",
+"thesepeople.ritualattachableoutcomes",
+"adaptive.storage.framework",
+"redmattis.betterprerequisites",
+"smashphil.vehicleframework",
+"imranfish.xmlextensions",
+"unlimitedhugs.hugslib",
+"oskarpotocki.vanillafactionsexpanded.core",
+"ebsg.framework",
+"04.23.2020",
+"ap.huntingmeme",
+"dizzy.candlesandmeditation",
+"hmc.wall.furniture",
+"m3.continued.jangodsoul.starwars.bti",
+"jm.disstynan",
+"zal.calltradeships",
+"lc.tammybee.selectablesculpturegraphic",
+"mingtuwuxiang.spacebasedecorative",
+"nals.facialanimation",
+"mlie.rfrumorhasit",
+"rh2.cpers.arrest.here",
+"cp.uncle.boris.used.furniture",
+"sbz.neatstoragefridge",
+"sbz.gravshipstorage",
+"sr.modrimworld.factionalwarcontinued",
+"mlie.syrmoreslaves",
+"zav.glowstoneforked",
+"armoredampharos.fancyrats",
+"adaptive.ideology.storage",
+"adaptive.primitivestorage",
+"adaptive.simplestorage",
+"mlie.advancedbiomes",
+"ali.growodysseyplants",
+"andrewraphaellukasik.allowdeadanimals",
+"unlimitedhugs.allowtool",
+"duz.almosttherefork",
+"sarg.alphabiomes",
+"sarg.alphamechs",
+"sarg.alphamemes",
+"swablu.ambience",
+"vita.campdangers",
+"xmb.ancientminingindustry.mo",
+"aqued.dredgeaberrations",
+"rpgwanderer.opturret",
+"neronix17.asimov",
+"asp.halituisamaricanous",
+"kshtantrumsounds.mod",
+"automatic.autolinks",
+"fuu.autostriponhaul",
+"mlie.beastsoftherim",
+"elsov.beliar",
+"io.github.relvl.rimworld.bestapparel",
+"ionfrigate12345.coolandgoodambush",
+"mlie.betterbeggars",
+"dizzyeevee.bettercrossbreeding",
+"nephlite.advexplosions",
+"arkymn.bettergrowthmoments",
+"zal.betterinfestations",
+"coldcrow.betterkibble",
+"madeline.modmismatchformatter",
+"mlie.betterprojectileorigin",
+"jm.bettertraders",
+"chaoticenrico.bettertrees",
+"falconne.bwm",
+"businburg.businfeatures",
+"redmattis.biggergravship",
+"kopp.biomecompatibilityproject",
+"biomesteam.biomesfossils",
+"biomesteam.coreframework",
+"zal.biomeskit",
+"fuu.bloodanimations",
+"bs.mbifvte",
+"gulmadred.breedingritual",
+"memegoddess.buildfrominventory",
+"8z.callforintel",
+"brrainz.cameraplus",
+"iforgotmysocks.caravanadventures",
+"joe.cephaloids",
+"kapitanoczywisty.changemapedge",
+"void.charactereditor",
+"heatherathebyne.childrenlearnoncaravan",
+"mlie.choosebiomecommonality",
+"kearril.choosewheretoland",
+"mlie.choosewildanimalspawns",
+"kikohi.coloreddeepresources",
+"petetimessix.compacthediffs",
+"com.makeitso.configurabletechprints",
+"cozyfire.velcroboy333",
+"heatherathebyne.craftingspotslavegear",
+"thumb.bettercremation",
+"greg.customgastypes",
+"hailuan.customquestframework",
+"costel.customroomnames",
+"dimonsever000.ideologyvirtues",
+"east.dancepartycustommusic",
+"van.beasts",
+"van.dacrypts",
+"darkestdungeon.incidentsounds",
+"troopersmith1.deathrattle",
+"mlie.decorativecliffs",
+"clown.dedicatedturrets",
+"gondragon.defensivepositions",
+"merthsoft.designatorshapes",
+"milkwater.destinymod",
+"garwel.destroyitem",
+"det.avaloi",
+"det.boglegs",
+"det.brawnum",
+"det.buzzers",
+"det.keshig",
+"det.venators",
+"cometopapa.deteriorated",
+"lornath.diseaseimmunityprogresstracker",
+"jecrell.doorsexpanded",
+"dubwise.dubspaintshop",
+"dubwise.dubsbadhygiene.thirst",
+"dubwise.dubsbadhygiene.lite",
+"dubwise.dubsmintmenus",
+"dubwise.dubsmintminimap",
+"dubwise.dubsrimkit",
+"blues.forge",
+"maincrep.eweb",
+"yourname.effigys.mod",
+"carnysenpai.enableoversizedweapons",
+"nep.enginesunlimited",
+"det.epochsincense",
+"det.epochspyrinth",
+"erin.ffanimals",
+"keshash.extraexplosioneffects",
+"eoralmilk.faceaddonframework",
+"azravos.factioncustomizer",
+"mlie.factionraidcooldown",
+"kosaro.fahrenheitandcelsius",
+"tyrannidae.fancyratsplus",
+"realify.firefoam",
+"aelanna.fistnerf",
+"kathanon.floatsubmenu",
+"temeez.floorlights2",
+"aoba.fortress.neolithic",
+"m00nl1ght.geologicallandforms",
+"zal.giantsnake",
+"memegoddess.giddyup",
+"lts.geg",
+"albion.goexplore",
+"mlie.graffitimod",
+"arcjc007.gravshipcrashes",
+"arcjc007.gravshipexporter",
+"imagitama.rimworldgravshiprangeonmap",
+"abrolo.grimstone.beasts",
+"arti.shrinez",
+"mlie.harvestwhenbutchering",
+"ael.tua.helmetsaddtoxresistance",
+"elsov.highborn",
+"mlie.horrors",
+"hazn.huntingtraps",
+"hailuan.iwbb",
+"amegakull.scvrole",
+"kxp.ideosymbolsasideograms",
+"llunak.moreprecepts",
+"agentblac.makepawnsprisoners",
+"mlie.incidentdisabler",
+"koth.isid",
+"haecriver.injuredcarry",
+"ferny.easycaravanformation",
+"turnovus.biotech.integratedgenes",
+"jaxe.bubbles",
+"mlie.interactionareasettings",
+"glitchgoblin.invisibleconduitcont",
+"zal.ionweaponry",
+"jecrell.jecstools",
+"kikohi.jewelry",
+"mlie.jurassicrimworlddinosaursonly",
+"mf.jfklanding",
+"timuttie.justleavealready.fork.mitasamodel",
+"mlie.justputitoverthere",
+"linnun.keepconverting",
+"vaguelysexual.modpackageid.goeshere",
+"mlie.largefactionbases",
+"zal.largeoutpost",
+"arcjc007.lasercannon",
+"costel.layeredapparel",
+"noneobsidiaexpansion.ledlightsstrip",
+"juanlopez2008.lightsout",
+"mlie.linkablesettings",
+"dorbo.watersfx",
+"tyrannidae.littlecritters",
+"mlie.logafterdeferror",
+"zylle.mapdesigner",
+"nozome.mapmodeframework",
+"m00nl1ght.mappreview",
+"udon.masslovein",
+"sirdarkelf.meaningfulencounters",
+"badoaks.meatonastick",
+"samael.npcmechsandanimals",
+"bonible.medievalmeleesounds",
+"mewn.medievalsigns",
+"spino.megafauna",
+"mlie.mercerbackpacks",
+"flangopink.metalpipe",
+"flangopink.metalpipehorseshoe",
+"andromeda.milkyway",
+"rabiosus.minesight",
+"cain.mineshaft",
+"erdelf.minifyeverything",
+"mlie.miningcoalertspeaker",
+"mlie.miningcodrillturret",
+"mlie.miningcomms",
+"mlie.miningcospaceship",
+"mlie.moevents",
+"hali.modifylandingtile",
+"kaitorisenkou.modularweapons2",
+"deadmano.moodalerts",
+"acutus.moodchainreaction",
+"zylle.moredangerousgame",
+"mlie.morefactioninteraction",
+"bichang.moresculpture",
+"garryflowers.moreslaverystuff",
+"zylle.morevanillabiomes",
+"tidal.morevanilla.textures",
+"morphsassorted.biotechretex",
+"snobi.mutatorworldicons",
+"veterano.mythicages.megafaunabestiary",
+"radzerp.naturalpaths",
+"zylle.nightlights",
+"nightmare.core",
+"dingo.noforcedslowdown",
+"mlie.nomissinggeneicons",
+"edern.norandomapparelonideoedit",
+"jaeger972.nomadfreindlyquests",
+"avilmask.nonunopinata",
+"planetace.nondestructivegravlaunch",
+"mehni.numbers",
+"onimods.electrictorches",
+"karew.orcclan",
+"coolzie.oocreboost",
+"arkymn.slowerpawntickrate",
+"alleykat.persistentprecepts",
+"mlie.perspectivebuildings",
+"meltup.polyamorybeds.vanilla",
+"xylthixlm.races.core",
+"mlie.preceptsandmemes",
+"m00nl1ght.unofficialupdates.preparelanding",
+"ironscruff.primordialgeysers",
+"mlie.prisonersshouldfearturrets",
+"laureeeeeeeeeeeeeeen.shrooms",
+"fluxilis.germanquality",
+"dawnsglow.qualcolor",
+"rah.rvte",
+"leo.raidprotectionfee",
+"ingendum.raiderswarmcompression",
+"zal.randomgrowthchoices",
+"wemd.realisticdarknesslight",
+"mlie.realistichumansounds",
+"mosi.rebalancedancientjunk",
+"mlie.recyclethis",
+"reel.turretpipeline",
+"mlie.relevantstatsindescription",
+"memegoddess.replacestuff",
+"petetimessix.researchreinvented",
+"scorpio.resourcedictionary",
+"alma.tossem",
+"lingluo.cockroach",
+"sihv.rombonesport",
+"kilokio.rimai.framework",
+"brrainz.rimbridgeserver",
+"dubwise.rimefeller",
+"rimfridge.kv.rw",
+"malteschulze.rimmsqol",
+"mlie.rimquest",
+"deon.rimtek.core",
+"sierra.rt.generaltraits",
+"depscian.rimtunes",
+"sov.sith",
+"thelastbulletbender.rwexploration",
+"mianreplicate.romanceandintimacyontherim",
+"tug.minotaur",
+"kupie.isjustdoingitlive.plzdonthateme.roofedscanning",
+"ghost.rootsofrimworld",
+"memegoddess.runandgun",
+"moja.salvagerubble",
+"plusblankplus.scenarioamenderfork",
+"memegoddess.searchanddestroy",
+"hellrevenger.searchoption",
+"avilmask.selfdyeing",
+"sensiblebedownership.1trickpwnyta",
+"boots.sensiblefactions",
+"flyingsloth.scfilthreducer",
+"victor.buymore",
+"shavius.medieval.flavour",
+"spacemoth.showknowntechprints",
+"dark.signs",
+"stokes.simplehoodcape",
+"guppyfacesarecute.skunks",
+"usgiyi.slaveoutfits",
+"mlie.slaverebellionsimproved",
+"astryl.sleepingbuddies",
+"hol.smeltpatch",
+"weilbyte.snapout",
+"krelinos.socialexpfromtrade",
+"mlie.spaceworms",
+"jpt.speakup",
+"elshender.stackablechunks",
+"balistafreak.standalonehotspring",
+"mlie.starwarsanimalcollection",
+"lumi.swlights",
+"starwars.themedsounds",
+"amoruch.rimworldstealingmod",
+"karshou.storagememory",
+"mlie.storytellerenhanced",
+"kas.strongerscaling",
+"moistestwhale.stuffontablesforked",
+"gerrymon.stylizedslavecollar",
+"jellypowered.survivaltools",
+"mlie.tabsorting",
+"ucp.tabletopdecorations",
+"summersausages2ttv.techlevelenforcement",
+"sapiently.theyatomicmonsters",
+"propickelz.tinkerbench",
+"titans.fl",
+"vlvop.tormentmaster.expansion",
+"tsa.torturepod",
+"smashphil.dropspot",
+"hobtook.tradeui",
+"mlie.tradeabletrinkets",
+"automatic.traderships",
+"joseasoler.tradergen",
+"kearril.tradingoptionscontinue",
+"aelanna.transparentsubstructure",
+"xercaine.tribal.furniture",
+"geojak.tributedemand",
+"ferny.triumphantresearch",
+"trouperton.trystantravellersshuttleschematics",
+"error277.tunneler.expanded",
+"archie.turrettargetpatch",
+"marvinkosh.ughyougotme",
+"madarauchiha.undraftaftertucking",
+"universalpregnancy.1trickpwnyta",
+"doomdrvk.unlimitednuzzles",
+"nephlite.orbitaltradecolumn",
+"sirvan.mwretextured",
+"sirvan.steelretexture",
+"vanillaexpanded.vanillaanimalsexpanded",
+"vanillaexpanded.vaewaste",
+"vanillaexpanded.vappe",
+"vanillaexpanded.vaeaccessories",
+"vanillaexpanded.vanillabackstoriesexpanded",
+"vanillaexpanded.vbrewe",
+"vanillaexpanded.vcooke",
+"vanillaexpanded.vee",
+"oskarpotocki.vfe.insectoid2",
+"oskarpotocki.vfe.tribals",
+"vanillaexpanded.vfecore",
+"vanillaexpanded.vfearchitect",
+"vanillaexpanded.vfeart",
+"vanillaexpanded.vfefactory",
+"vanillaexpanded.vfefarming",
+"vanillaexpanded.vfemedical",
+"vanillaexpanded.vfepower",
+"vanillaexpanded.vfeproduction",
+"vanillaexpanded.vfepropsanddecor",
+"vanillaexpanded.vfesecurity",
+"vanillaexpanded.vfespacer",
+"vanillaexpanded.gravship",
+"vanillaexpanded.helixiengas",
+"vanillaexpanded.viehar",
+"vanillaexpanded.ideo.relicsandartifacts",
+"vanillaexpanded.vexploratione",
+"vanillaexpanded.outposts",
+"vanillaexpanded.vplantsesucculents",
+"vanillaquestsexpanded.ancients",
+"vanillaquestsexpanded.cryptoforge",
+"vanillaquestsexpanded.generator",
+"vanillaracesexpanded.archon",
+"vanillaracesexpanded.fungoid",
+"vanillaracesexpanded.genie",
+"vanillaracesexpanded.phytokin",
+"vanillaracesexpanded.saurid",
+"vanillaracesexpanded.starjack",
+"gravenwitch.vsrexamined",
+"vanillaexpanded.vanillatradingexpanded",
+"vanillaexpanded.vanillatraitsexpanded",
+"vanillaexpanded.vwe",
+"vanillaexpanded.vwems",
+"gabrieel1482.raidvehicleframework",
+"ninagoblin.visitsettlements",
+"addvans.walktheworld",
+"honeybadger.wallmountedturretsversiontwo",
+"ogliss.g223.wanderingcaravans",
+"addvans.wasdedpawn",
+"sl4vp0wer.weareunited",
+"aelanna.weaponracks",
+"bodlosh.weaponstats",
+"revolus.whatsmissing",
+"co.uk.epicguru.whatsthatmod",
+"winggar.meaningfulparties",
+"tleno.wireheadstyle",
+"fluffy.worktab",
+"funkyshit.mods.worldedit.alpha",
+"bs.xenotypespawncontrol",
+"mlie.yayoscaravan",
+"mlie.yayoscombat3",
+"mlie.yayosmeteor",
+"btd.remix.gravshipblueprints",
+"m3.continued.jangodsoul.starwars.tsda",
+"lazyfridaystudio.genesexpandedeyes",
+"nals.facialanimationexperimentals",
+"sarg.alphaanimals",
+"xmb.ancienturbanruins.mo",
+"groovytaco.beltextractors",
+"maal.bettertreesmod",
+"m00nl1ght.geologicallandforms.biometransitions",
+"biomesteam.biomescore",
+"neronix17.retexture.charactereditor",
+"qux.comigo.bettertreesmod",
+"hailuan.customquestframeworkai",
+"lumi.doorsexpanded",
+"mlie.dungeonpack",
+"vesper.egihologramsandprojectors",
+"jaeger972.factionterritories",
+"aoba.fortress.industrial",
+"sd.fa.geneticheadsframework",
+"gmmp.dungeon",
+"zal.gianttoads",
+"sk.gravshipraids",
+"who.vfee.isopodageneline",
+"icepickgma.invisibledisplaycase",
+"neku.largepawns",
+"lwm.deepstorage",
+"smxrez.makeshiftreexamined",
+"badoaks.meatonastick.expansion",
+"zacharyfoster.mineralsframework",
+"sinnamon.moreritualrewards",
+"zal.moreutilitypacks",
+"andromeda.niceresearchtab",
+"xylthixlm.races.titan",
+"mlie.preceptsandmemesritualsmodule",
+"lambda.psykshroom",
+"ogliss.thewhitecrayon.quarry",
+"dizzyeevee.rheng",
+"regrowth.botr.core",
+"aw.researchreinvented.retextured",
+"petetimessix.researchreinvented.steppingstones",
+"kilokio.rimai.core",
+"jaxe.rimhud",
+"zal.spaceports",
+"co.uk.epicguru.factionloadout",
+"deon.rimtek.digipal",
+"deon.rimtek.docmate",
+"telardo.romanceontherim",
+"kathanon.searchablemenus",
+"scherub.stonecuttingextended",
+"cyanobot.toddlers",
+"vanillaexpanded.vchemfuele",
+"vanillaexpanded.vcookestews",
+"oskarpotocki.vfe.pirates",
+"kuhlyus.modpatch.vanillaoutpost",
+"mrhydralisk.voeadditionaloutposts",
+"arcjc007.wallstuff",
+"com.yayo.yayoani.continued",
+"fourtoo.glowingbush",
+"kyzy.shipwallenhanced",
+"daria40k.alphaanimalspatchoutposts",
+"ks.aaretextured",
+"sarg.alphagenes",
+"meteores.ancienturbanruinsalldeconstructible.aurad",
+"biomesteam.biomescaverns",
+"biomesteam.biomespollutedlands",
+"zal.comigogreaterswamps",
+"broms.deeporbit",
+"farhanfair.warcaskettweakspatch",
+"mlie.functionalvanillaexpandedprops",
+"sd.fa.geneticheadsbiotech",
+"erdelf.humanoidalienraces",
+"jellycreative.isekaileveling",
+"zacharyfoster.mineralsfrozen",
+"zacharyfoster.mineralsrock",
+"zacharyfoster.mineralssparkle",
+"mehni.pickupandhaul",
+"avius.prisonlabor",
+"reel.facialanims",
+"noxilie.regrow.wmb.advancedbiomes",
+"noxilie.regrow.wmb.alphabiomes",
+"regrowth.botr.boilingforest",
+"vanillaexpanded.vmemese",
+"vanillaexpanded.skills",
+"dmp.vfepirates.warcasketwork",
+"aoba.warcasket",
+"killathon.artificialbeings",
+"sd.fa.reelsadjustments",
+"opa.allspecialistscanwork",
+"sarg.alphaskills",
+"meteores.ancienturbanruinsvanillaloot.aurvl",
+"chezhou.chezhoulib.lib",
+"teiwaz.gtgtradercore",
+"keyz182.keyzallowutilities",
+"toastyman.moreritualseats",
+"sugarcube.puahsharedstorage",
+"legator.prisonerrealism",
+"font.rimesis",
+"petetimessix.simplesidearms",
+"tribeagle.simpleslaverycollars",
+"neronix17.toolbox",
+"vanillaexpanded.vgeneticse",
+"vanillaexpanded.vtexe.facialanims",
+"oskarpotocki.vanillavehiclesexpanded",
+"divinederivative.romance",
+"biotechrace.yautja.alleyballey",
+"teiwaz.taajg",
+"teiwaz.tacac",
+"killathon.artificialbeings.syncore",
+"brrainz.achtung",
+"sd.fa.vteadjustments",
+"sarg.alphavehiclesneolithic",
+"kem.beardadjustment",
+"redmattis.bigsmall.core",
+"lovelydovey.sex.witheuterpe",
+"chezhou.creature.sandworm",
+"neronix17.outerrim.core",
+"neronix17.outland.genetics",
+"neronix17.shieldgenerators",
+"farxmai2.vanilladeconstructablevehicles",
+"redmattis.optional",
+"redmattis.bigsmall",
+"redmattis.sapientanimals",
+"redmattis.bigweapons",
+"avilmask.commonsense",
+"lovelydovey.sex.withrosaline",
+"lovelydovey.recreation.witheuterpe",
+"leutiankane.mineablesor",
+"leutiankane.mines2patchouterrim",
+"neronix17.outerrim.droiddepot",
+"neronix17.outerrim.furnitureanddecor",
+"neronix17.outerrim.galacticdiversity",
+"neronix17.outerrim.galacticempire",
+"neronix17.outerrim.rebelalliance",
+"jelheb.rusticmealretexture",
+"guy762.starwarsxenotypes",
+"frozensnowfox.complexjobs",
+"dubwise.dubsbreakmod",
+"danzinagri.facialanimationcompatabilityproject",
+"sd.fa.geneticheadsmods",
+"mandrake.missingartfixes",
+"dubwise.dubsperformanceanalyzer.steam",
+"mandrake.jawa.doctrine",
+"mandrake.jawavoice",
+"taranchuk.performanceoptimizer",
+"co.uk.epicguru.meleeanimation",
+"lordfelix.rimcontrol",
+"lee.theforce.lightsaber",
+"btd.xenotyperemix.starwars",
+"guy762.mm.kotorcore",
+"guy762.kotorweapons",
+"mandrake.jawa.armoury",
+"mandrake.jawaionweapons",
+"mandrake.jawa.patches",
+"guy762.kotordroids",
+"btd.gbp.shippack.kotor.vge",
+"mandrake.rimdefdump"
+],
+"knownExpansions": [
+"ludeon.rimworld.royalty",
+"ludeon.rimworld.ideology",
+"ludeon.rimworld.biotech",
+"ludeon.rimworld.anomaly",
+"ludeon.rimworld.odyssey"
+],
+"packageId_to_folders": {
+"spino.megafauna": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/1055485938"
+],
+"malteschulze.rimmsqol": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/1084452457"
+],
+"4loris4.morelinkables": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/1103809207"
+],
+"oblitus.mylittleplanet": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/1117406550"
+],
+"dubwise.rimatomics": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/1127530465"
+],
+"com.bymarcin.architecticons": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/1195427067"
+],
+"smuffle.harvestorganspostmortem": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/1204502413"
+],
+"kas.strongerscaling": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/1206001612"
+],
+"merthsoft.designatorshapes": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/1235181370"
+],
+"mehni.pickupandhaul": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/1279012058"
+],
+"weilbyte.snapout": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/1319782555"
+],
+"dubwise.rimefeller": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/1321849735"
+],
+"mehni.numbers": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/1414302321"
+],
+"dingo.noforcedslowdown": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/1419593453"
+],
+"dubwise.dubsmintmenus": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/1446523594"
+],
+"techmago.bootsnstuff": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/1488970545"
+],
+"wastelandr.betterroads": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/1489564822"
+],
+"sarg.smartspeed": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/1504723424"
+],
+"frozensnowfox.filthvanisheswithrainandtime": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/1508341791"
+],
+"jaxe.rimhud": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/1508850027"
+],
+"cucumpear.azrael.varietycoats": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/1511926373"
+],
+"frozensnowfox.indoortreefarms": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/1515299608"
+],
+"jaxe.bubbles": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/1516158345"
+],
+"usgiyi.slaveoutfits": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/1522429439"
+],
+"sneaks.recycle": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/1534883539"
+],
+"mlie.wehadatrader": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/1541408076"
+],
+"voult.betterpawncontrol": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/1541460369"
+],
+"sarg.alphaanimals": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/1541721856"
+],
+"phomor.craftingqualityrebalanced": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/1542004942"
+],
+"marvinkosh.ughyougotme": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/1542424705"
+],
+"mlie.animalharvestingspot": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/1542765654"
+],
+"twistedpacifist.reasonablecomponents": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/1542915888"
+],
+"kapitanoczywisty.changemapedge": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/1546494565"
+],
+"marvinkosh.sometimesraidsgowrong": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/1551336515"
+],
+"woolstrand.realruins": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/1552146295"
+],
+"wemd.realisticdarknesslight": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/1555355332"
+],
+"sandy.rpgstyleinventory": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/1561221991"
+],
+"avilmask.commonsense": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/1561769193"
+],
+"nals.customportraits": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/1569605867"
+],
+"bdew.fullgunsellprice": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/1575464750"
+],
+"dubwise.dubspaintshop": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/1579516669"
+],
+"maaxar.dubsskylights.glasslights.patch": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/1610803364"
+],
+"bichang.moresculpture": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/1612316880"
+],
+"mlie.colourfulsteriletiles": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/1619656080"
+],
+"nals.facialanimation": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/1635901197"
+],
+"neronix17.toolbox": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/1660622094"
+],
+"dubwise.dubsmintminimap": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/1662119905"
+],
+"arandomkiwi.rimthemes": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/1668983184"
+],
+"automatic.bionicicons": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/1677616980"
+],
+"telefonmast.graphicssettings": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/1678847247"
+],
+"automatic.gradienthair": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/1687053679"
+],
+"paragon.hanul.unlimitedarmor": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/1695493009"
+],
+"krafs.levelup": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/1701592470"
+],
+"arandomkiwi.rimsaves": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/1713367505"
+],
+"sumghai.replimat": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/1715402900"
+],
+"vanillaexpanded.vfecore": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/1718190143"
+],
+"vanillaexpanded.vfemedical": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/1718191613"
+],
+"dubwise.dubsbreakmod": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/1722398508"
+],
+"avilmask.grazinglands": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/1770268130"
+],
+"avilmask.nonunopinata": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/1778821244"
+],
+"albion.goexplore": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/1814100216"
+],
+"vanillaexpanded.vwe": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/1814383360"
+],
+"vanillaexpanded.vappe": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/1814987817"
+],
+"sarg.alphabiomes": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/1841354677"
+],
+"vanillaexpanded.vfesecurity": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/1845154007"
+],
+"madeline.modmismatchformatter": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/1872244972"
+],
+"void.charactereditor": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/1874644848"
+],
+"void.szatmosphericevents": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/1874676885"
+],
+"sirrandoo.mpe": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/1874708724"
+],
+"vanillaexpanded.vfeproduction": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/1880253632"
+],
+"vanillaexpanded.vhe": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/1888705256"
+],
+"asmallrabbit.uniformgrowzone": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/1898969926"
+],
+"avius.prisonlabor": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/1899474310"
+],
+"vanillaexpanded.vcef": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/1914064942"
+],
+"unon.noburnmetal": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/1923990111"
+],
+"zylle.morevanillabiomes": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/1931453053"
+],
+"vanillaexpanded.vee": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/1938420742"
+],
+"vanillaexpanded.vfefarming": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/1957158779"
+],
+"proxyer.optionalicons4ai": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/1966995052"
+],
+"vanillaexpanded.vfeart": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/1968134023"
+],
+"smashphil.dropspot": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/1969732297"
+],
+"kyrun.reunion": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/1985186461"
+],
+"vanillaexpanded.vwel": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/1989352844"
+],
+"arcjc007.wallstuff": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/1994340640"
+],
+"flashpoint55.rpgstylelevelupmod": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/1995668415"
+],
+"dismarzero.vgp.vgpvegetablegarden": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/2007061826"
+],
+"dismarzero.vgp.xtratreesandflowers": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/2007064094"
+],
+"tradingcontrol.tad.rimworld.core": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/2007107588"
+],
+"ogliss.thewhitecrayon.quarry": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/2007576583"
+],
+"steelchicken.devilstrandhydroponics": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/2008034916"
+],
+"radzerp.naturalpaths": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/2008833499"
+],
+"brrainz.harmony": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/2009463077"
+],
+"doug.nojobauthors": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/2009825774"
+],
+"meltup.beautifuloutdoors": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/2011794898"
+],
+"jm.bettertraders": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/2012774042"
+],
+"nephlite.orbitaltradecolumn": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/2013476665"
+],
+"mlie.rfrumorhasit": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/2013940581"
+],
+"mlie.mercerbackpacks": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/2014572849"
+],
+"fed1splay.pawntargetfix": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/2014789938"
+],
+"mlie.durableclothes": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/2015395963"
+],
+"caesarv6.damageindicators": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/2016331497"
+],
+"vanillaexpanded.vtexe": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/2016436324"
+],
+"bjr1984.dubsskylights.addon": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/2016959026"
+],
+"mlie.cleaningpriority": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/2018316486"
+],
+"oskarpotocki.vanillafactionsexpanded.core": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/2023507013"
+],
+"mlie.iclearlyhaveenough": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/2023661266"
+],
+"mlie.tribalsignalfire": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/2026582975"
+],
+"onyxae.dragonsdescent": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/2026992161"
+],
+"vanillaexpanded.vfespacer": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/2028381079"
+],
+"petetimessix.compacthediffs": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/2031734067"
+],
+"automatic.gunplay": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/2034896549"
+],
+"mlie.reconanddiscovery": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/2035131107"
+],
+"mlie.moevents": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/2035143365"
+],
+"mlie.morepsycasts": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/2036349987"
+],
+"biomesteam.biomescore": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/2038000893"
+],
+"dubwise.dubsperformanceanalyzer.steam": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/2038874626"
+],
+"mlie.expandedincidents": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/2039064466"
+],
+"nathanielcwm.beautifulwater": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/2039480177"
+],
+"automatic.traderships": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/2046222331"
+],
+"automatic.autocleaner": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/2051042827"
+],
+"oskarpotocki.vanillafactionsexpanded.settlersmodule": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/2052918119"
+],
+"automatic.autolinks": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/2059389912"
+],
+"vanillaexpanded.vfepower": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/2062943477"
+],
+"frozensnowfox.complexjobs": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/2069684319"
+],
+"04.23.2020": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/2070709529"
+],
+"vanillaexpanded.vfepropsanddecor": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/2102143149"
+],
+"mlie.spaceworms": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/2105322804"
+],
+"zylle.mapdesigner": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/2111424996"
+],
+"timmyliang.tradehelper": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/2113372560"
+],
+"armoredampharos.fancyrats": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/2113851330"
+],
+"rh2.void.storyteller": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/2130957394"
+],
+"vanillaexpanded.vcooke": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/2134308519"
+],
+"vanillaexpanded.vplantse": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/2134308522"
+],
+"vanillaexpanded.vcookestews": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/2134312965"
+],
+"mlie.tabsorting": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/2138635288"
+],
+"zylle.nightlights": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/2149276108"
+],
+"vse.perrypersistent": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/2149702069"
+],
+"sumghai.medpod": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/2153065191"
+],
+"madarauchiha.undraftaftertucking": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/2157495459"
+],
+"vanillaexpanded.vbrewe": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/2186560858"
+],
+"vanillaexpanded.vbookse": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/2193152410"
+],
+"mlie.beastsoftherim": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/2194018641"
+],
+"vanillaexpanded.vplantsesucculents": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/2198652536"
+],
+"dhultgren.smarterconstruction": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/2202185773"
+],
+"balistafreak.standalonehotspring": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/2205980094"
+],
+"sierra.rt.generaltraits": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/2206957172"
+],
+"hoboofserenity.thrumbohusbandry": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/2208985736"
+],
+"name.krypt.rimworld.rwlayout.alpha2": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/2209393954"
+],
+"sirrandoo.bettersliders": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/2218078784"
+],
+"usagirei.pocketsand": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/2226330302"
+],
+"mlie.wzrdcarrycapacity": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/2237017954"
+],
+"co.uk.epicguru.whatsthatmod": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/2258431182"
+],
+"regrowth.botr.core": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/2260097569"
+],
+"mlie.rimquest": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/2263331727"
+],
+"lumi.swlights": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/2265746202"
+],
+"neronix17.hd.pawns": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/2275310562"
+],
+"vanillaexpanded.vbrewecandt": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/2275449762"
+],
+"reel.hair": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/2278578765"
+],
+"wtfomgjohnny.perishable": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/2294597530"
+],
+"ogliss.g223.wanderingcaravans": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/2295813916"
+],
+"vanillaexpanded.vanillatraitsexpanded": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/2296404655"
+],
+"mlie.pawneducation": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/2296533470"
+],
+"dubwise.dubsappareltweaks": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/2296697286"
+],
+"kittahkhan.grazeup": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/2302739121"
+],
+"mlie.combatreadinesscheck": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/2314304057"
+],
+"name.krypt.rimworld.pawntablegrouped": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/2340773428"
+],
+"hol.smeltpatch": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/2347285971"
+],
+"zylle.morepredators": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/2347596617"
+],
+"erin.hairredux": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/2361911135"
+],
+"balistafreak.stopdropandroll": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/2362707956"
+],
+"zylle.moredangerousgame": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/2364245786"
+],
+"vanillaexpanded.vaeendandext": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/2366589898"
+],
+"silencer59.timekills": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/2374079539"
+],
+"mlie.newzonetools": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/2377860105"
+],
+"mlie.morefactioninteraction": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/2379076640"
+],
+"sc.waterplace": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/2382789361"
+],
+"aoba.fortress.neolithic": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/2385960678"
+],
+"cozyfire.velcroboy333": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/2390924647"
+],
+"andrewraphaellukasik.allowdeadanimals": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/2403873031"
+],
+"reiquard.questexpirationcriticalalert": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/2405632805"
+],
+"aoba.tent": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/2407128339"
+],
+"haecriver.injuredcarry": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/2413690575"
+],
+"vanillaexpanded.vwems": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/2419690698"
+],
+"garwel.destroyitem": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/2423311270"
+],
+"co.uk.epicguru.disco": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/2436747646"
+],
+"mlie.newlimbsneedstraining": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/2439159828"
+],
+"vanillaexpanded.vanillasocialinteractionsexpanded": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/2439736083"
+],
+"aoba.tentshelters": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/2444147091"
+],
+"mlie.decorativecliffs": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/2453099145"
+],
+"vanillaexpanded.vwenl": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/2454918354"
+],
+"erin.decorations": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/2463358089"
+],
+"vanillaexpanded.vcefaddon": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/2468543398"
+],
+"jackdeg.fieldadminister": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/2472006801"
+],
+"vanillaexpanded.vtexvariations": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/2493234474"
+],
+"aoba.fortress.medieval": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/2501486827"
+],
+"jpt.speakup": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/2502518544"
+],
+"cain.mineshaft": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/2503894706"
+],
+"vanillaexpanded.vaeaccessories": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/2521176396"
+],
+"ucp.tabletopdecorations": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/2535771403"
+],
+"neronix17.shieldgenerators": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/2540563802"
+],
+"seohyeon.optimizationmeats": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/2542931556"
+],
+"carnysenpai.enableoversizedweapons": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/2543371889"
+],
+"regrowth.botr.aspenforest": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/2545774148"
+],
+"jiopaba.fences": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/2546954423"
+],
+"vanillaexpanded.ideo.iconsandsymbols": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/2552609458"
+],
+"dame.ignorance": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/2554423472"
+],
+"8z.callforintel": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/2557139479"
+],
+"tribeagle.simpleslaverycollars": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/2557274194"
+],
+"iforgotmysocks.caravanadventures": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/2558957509"
+],
+"frozensnowfox.betterancientcomplexloot": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/2559244124"
+],
+"llunak.moreprecepts": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/2559533848"
+],
+"fuu.autostriponhaul": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/2560725133"
+],
+"thesepeople.ritualattachableoutcomes": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/2561617361"
+],
+"aoba.fortress.industrial": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/2561619583"
+],
+"visibleraidpoints.1trickpwnyta": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/2562730174"
+],
+"avilmask.selfdyeing": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/2562859859"
+],
+"rh2.cpers.arrest.here": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/2563157350"
+],
+"cp.uncle.boris.used.furniture": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/2563508405"
+],
+"mlie.choosewildanimalspawns": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/2564042934"
+],
+"vanillaexpanded.ideo.relicsandartifacts": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/2564895018"
+],
+"vanillaexpanded.viehar": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/2567387768"
+],
+"dizzy.candlesandmeditation": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/2569910895"
+],
+"dubwise.dubsbadhygiene.lite": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/2570319432"
+],
+"scherub.stonecuttingextended": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/2571676542"
+],
+"nephlite.advexplosions": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/2572683272"
+],
+"mlie.functionalvanillaexpandedprops": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/2574097280"
+],
+"imranfish.xmlextensions": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/2574315206"
+],
+"inglix.fasterbiosculptingpod": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/2576257954"
+],
+"nals.facialanimationexperimentals": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/2581693737"
+],
+"sinnamon.moreritualrewards": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/2582489076"
+],
+"mlie.choosebiomecommonality": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/2582875043"
+],
+"dubwise.dubsbadhygiene.thirst": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/2582878800"
+],
+"rah.rvte": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/2583529720"
+],
+"juanlopez2008.lightsout": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/2584269293"
+],
+"scorpio.optimizationleathers": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/2591816333"
+],
+"buggy.rimworld.letterpermanentinjury": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/2592535960"
+],
+"error277.tunneler.expanded": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/2599616050"
+],
+"dimonsever000.events.specific": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/2599784515"
+],
+"telardo.dragselect": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/2599942235"
+],
+"jelly.bar0th.closesettlements": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/2600837512"
+],
+"mlie.prisonersshouldfearturrets": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/2602436826"
+],
+"mlie.storytellerenhanced": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/2604427827"
+],
+"vanillaexpanded.vfearchitect": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/2608762624"
+],
+"udon.masslovein": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/2612846082"
+],
+"dimonsever000.animaobelisk.specific": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/2614248835"
+],
+"scurvyez.steveswalls": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/2616538981"
+],
+"vanillaexpanded.vmemese": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/2636329500"
+],
+"legendaryminuteman.mai": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/2646064233"
+],
+"telardo.romanceontherim": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/2654432921"
+],
+"jdalt.nmldt": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/2657551690"
+],
+"mlie.livewiththepain": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/2659985388"
+],
+"sarg.alphamemes": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/2661356814"
+],
+"rimsenal.techist": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/2661828028"
+],
+"erin.body.texture": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/2662457442"
+],
+"taranchuk.performanceoptimizer": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/2664723367"
+],
+"vanillaexpanded.vieat": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/2666998627"
+],
+"edern.norandomapparelonideoedit": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/2669243201"
+],
+"seohyeon.letterstackcleaner": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/2669779266"
+],
+"steve.betterquestrewards": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/2671237934"
+],
+"syrus.caravanmoodbuff": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/2680751877"
+],
+"hobtook.tradeui": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/2683622537"
+],
+"vanillaexpanded.outposts": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/2688941031"
+],
+"mlie.relevantstatsindescription": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/2692669482"
+],
+"daria40k.alphaanimalspatchoutposts": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/2704392053"
+],
+"tidal.morevanilla.textures": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/2707120862"
+],
+"daria40k.biglittlemodpatch": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/2710382569"
+],
+"syrus.bpansresize": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/2710513531"
+],
+"marek15.keeponlinking": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/2717482472"
+],
+"vanillaexpanded.ideo.dryads": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/2720631512"
+],
+"oskarpotocki.vfe.pirates": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/2723801948"
+],
+"aoba.warcasket": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/2733135485"
+],
+"aoba.fortress.industrial.nucleardawn": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/2733185331"
+],
+"mlie.prostheticnomissingbodyparts": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/2739055353"
+],
+"mlie.linkablesettings": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/2739581441"
+],
+"neronix17.retexture.vanillahair": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/2748834409"
+],
+"vanillaexpanded.vplantsemore": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/2748889667"
+],
+"mooloh.dndmenagerie": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/2751849453"
+],
+"shavius.medieval.flavour": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/2767940226"
+],
+"m00nl1ght.geologicallandforms": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/2773943594"
+],
+"vanillaexpanded.backgrounds": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/2775017012"
+],
+"hg.originals.f3": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/2776936670"
+],
+"neronix17.retexture.vanillabeards": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/2777098392"
+],
+"manulinkraft.waterretextured": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/2782707284"
+],
+"vanillaexpanded.vanillatradingexpanded": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/2785616901"
+],
+"oskarpotocki.vfe.classical": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/2787850474"
+],
+"mlie.changestuffproperties": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/2788278669"
+],
+"aelanna.weaponracks": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/2788630748"
+],
+"lordkuper.equipmentmanager": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/2790435986"
+],
+"vanillaexpanded.vchemfuele": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/2792917473"
+],
+"kathanon.craftwithcolor": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/2795998250"
+],
+"mlie.stufflist": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/2798767227"
+],
+"puremj.mjrimmods.smartmeditation": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/2800676538"
+],
+"m00nl1ght.mappreview": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/2800857642"
+],
+"vanillaexpanded.vgeneticse": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/2801160906"
+],
+"zal.primitivefloors": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/2801265143"
+],
+"puremj.mjrimmods.vanillafixhaulafterslaughter": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/2801452324"
+],
+"zal.keptb": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/2803222245"
+],
+"al9000.tvc": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/2808554143"
+],
+"mrkociak.yetanotherprostheticexpansionmodcore": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/2808872704"
+],
+"p90forretail.nanomachines": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/2810755290"
+],
+"zal.fhf": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/2812503053"
+],
+"longman.smallerradiusforanimatreesandshrines": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/2812513517"
+],
+"m00nl1ght.geologicallandforms.biometransitions": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/2814391846"
+],
+"sirmashedpotato.escp.skyshards": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/2814453057"
+],
+"vanillaexpanded.vtexe.facialanims": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/2816938779"
+],
+"scorpio.resourcedictionary": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/2817607528"
+],
+"sirmashedpotato.questingmeme": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/2826539854"
+],
+"vanillaexpanded.vpersonaweaponse": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/2826922787"
+],
+"harryrobinson.primitivefloorscheap": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/2833159444"
+],
+"opa.allspecialistscanwork": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/2833543540"
+],
+"romyashi.extractanyplant": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/2833838214"
+],
+"gonezzle.pig": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/2837154037"
+],
+"kshtantrumsounds.mod": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/2839608123"
+],
+"vanillaexpanded.vpsycastse": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/2842502659"
+],
+"mlie.betterprojectileorigin": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/2843040075"
+],
+"tests.rottable": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/2845056427"
+],
+"aelanna.fistnerf": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/2845980214"
+],
+"sirvan.misctrainingretexture": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/2848956469"
+],
+"erin.hair2": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/2849477421"
+],
+"mlie.yayoscombat3": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/2854006492"
+],
+"neronix17.retexture.charactereditor": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/2855844396"
+],
+"mlie.justputitoverthere": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/2856471776"
+],
+"ucp.invisiblewalls": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/2857888739"
+],
+"vanillaexpanded.vaeroy": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/2858079457"
+],
+"vanillaexpanded.vanillabackstoriesexpanded": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/2861806869"
+],
+"arquebus.morepersonatraits": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/2863308112"
+],
+"jf.geometricfloors": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/2863525144"
+],
+"kathanon.floatsubmenu": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/2864015430"
+],
+"ih.clean.textures": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/2865361569"
+],
+"xslayer300.ax.aliens.parta": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/2866528992"
+],
+"petetimessix.researchreinvented.steppingstones": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/2868389782"
+],
+"petetimessix.researchreinvented": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/2868392160"
+],
+"arquebus.medievalpersonaweapons": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/2869057049"
+],
+"tk421storm.gardens": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/2869260174"
+],
+"vesper.notmyfault": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/2870045856"
+],
+"proxyer.dismantleancientjunk": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/2871064871"
+],
+"vanillaexpanded.vanillaanimalsexpanded": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/2871933948"
+],
+"m00nl1ght.unofficialupdates.hugslogpublisher": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/2873415404"
+],
+"superniquito.traiticons": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/2873494547"
+],
+"joe.xenomorphinsectoids": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/2873545234"
+],
+"mrhydralisk.voeadditionaloutposts": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/2873841790"
+],
+"com.makeitso.configurabletechprints": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/2876747024"
+],
+"com.yayo.yayoani.continued": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/2877292196"
+],
+"scherub.planningextended": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/2877392159"
+],
+"erin.ffanimals": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/2877589761"
+],
+"vanillaexpanded.helixiengas": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/2877699803"
+],
+"divinederivative.romance": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/2877731755"
+],
+"swwu.mechanitorcommandrange": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/2878895195"
+],
+"vingy.moreagingmulitplier": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/2879214881"
+],
+"shenanigans.tribalbackstories1.4": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/2879649038"
+],
+"kem.beardadjustment": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/2880669781"
+],
+"daysleep.humanpregnancyduration": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/2880967245"
+],
+"vanillaracesexpanded.saurid": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/2880990495"
+],
+"mute.vpesensitivity": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/2881380497"
+],
+"son1c.greenworldregrowth": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/2882040405"
+],
+"taggerung.customuiscales": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/2882372932"
+],
+"nikidigi.resurrectenemymechanoids": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/2882468335"
+],
+"rimworld.randomcoughdrop.geneassistant": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/2882497271"
+],
+"fastergene.recovery": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/2882689772"
+],
+"thereallemon.factioncontrol": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/2882785581"
+],
+"nibato.autoextractgenes": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/2882834449"
+],
+"temeez.floorlights2": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/2882927601"
+],
+"victor.genometable": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/2883081878"
+],
+"rh2.faction.void": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/2883208829"
+],
+"biotexpans.mythic": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/2883216840"
+],
+"bodilpwnz.animalbiosculpter": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/2883571601"
+],
+"redundant.oopsallgenepacks": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/2883683444"
+],
+"biotexpans.core": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/2884018485"
+],
+"thereallemon.powermill": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/2884054310"
+],
+"turnovus.biotech.integratedgenes": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/2884115974"
+],
+"cp.uncle.boris.brainwash.chair": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/2885223720"
+],
+"cyber.miniaturization": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/2885885154"
+],
+"victor.buymore": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/2886202254"
+],
+"tac.genetrader": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/2886375137"
+],
+"mlie.yayoscaravan": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/2886919774"
+],
+"mlie.realfactionguest": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/2886929245"
+],
+"gold.ultimatestoryteller": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/2887952810"
+],
+"wvc.sergkart.biotech.moremechanoidsworkmodes": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/2888380373"
+],
+"det.stoneborn": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/2888722722"
+],
+"canon.nomechsummonergizmo": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/2889317343"
+],
+"trickity.conversion.staff": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/2890481507"
+],
+"mlie.nomissinggeneicons": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/2890795292"
+],
+"doll.nevergeneraterelations": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/2891797130"
+],
+"sarg.alphagenes": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/2891845502"
+],
+"bs.xenotypespawncontrol": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/2891975564"
+],
+"kathanon.nodisabledfactions": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/2892125637"
+],
+"mlie.yayosmeteor": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/2892867866"
+],
+"frozensnowfox.frozensnowfoxtweaks": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/2893432492"
+],
+"vanillaracesexpanded.hussar": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/2893586390"
+],
+"redmattis.bigsmall": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/2894397737"
+],
+"mlie.preceptsandmemes": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/2894625496"
+],
+"mlie.preceptsandmemesritualsmodule": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/2894628849"
+],
+"troopersmith1.deathrattle": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/2896207870"
+],
+"victor.wallsaresolid": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/2896548513"
+],
+"ironscruff.primordialgeysers": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/2896731795"
+],
+"garryflowers.moreslaverystuff": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/2896845138"
+],
+"kathanon.limitquestpawns": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/2898408684"
+],
+"fluxilis.germanquality": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/2898409109"
+],
+"rimfridge.kv.rw": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/2898411376"
+],
+"mlie.harvestwhenbutchering": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/2898826891"
+],
+"vanillaracesexpanded.genie": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/2901424072"
+],
+"cyanobot.toddlers": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/2903359152"
+],
+"mlie.recipeicons": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/2904906618"
+],
+"redmattis.vanillagenesrebalanced": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/2905707100"
+],
+"rimsenal.urb": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/2908039338"
+],
+"neronix17.outland.genetics": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/2910172297"
+],
+"superniquito.modoptionssort": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/2910865748"
+],
+"mlie.miningcospaceship": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/2912642991"
+],
+"guy762.starwarsxenotypes": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/2915192253"
+],
+"mrhydralisk.voepowergrid": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/2915686437"
+],
+"mrsamuelstreamer.rimthemesrecolours": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/2916014613"
+],
+"stagz.vsierationaltraitdevelopment": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/2916405546"
+],
+"mlie.ducksnolimitsideology": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/2916566114"
+],
+"vanillaracesexpanded.customicons": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/2917311689"
+],
+"issaczhuang.muzzleflash": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/2917732219"
+],
+"neronix17.outerrim.core": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/2919227155"
+],
+"neronix17.outerrim.galacticempire": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/2919248699"
+],
+"neronix17.outerrim.rebelalliance": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/2919249903"
+],
+"neronix17.outerrim.furnitureanddecor": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/2919553599"
+],
+"spacemoth.showknowntechprints": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/2920370783"
+],
+"vanillaexpanded.vnutriente": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/2920385763"
+],
+"redmattis.bigsmall.core": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/2920751126"
+],
+"sirvan.mwretextured": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/2922441211"
+],
+"lazyfridaystudio.genesexpandedeyes": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/2922457045"
+],
+"redmattis.betterprerequisites": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/2925432336"
+],
+"redmattis.undead": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/2926556467"
+],
+"vanillaracesexpanded.phytokin": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/2927323805"
+],
+"aranmaho.rangerclass": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/2927626324"
+],
+"gold.usbasilicuspatch": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/2928443788"
+],
+"kathanon.searchablemenus": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/2928608119"
+],
+"zetrith.prepatcher": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/2934420800"
+],
+"zav.fantasymetalsforked": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/2936850549"
+],
+"rince.ideo.warframesymbols": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/2937728695"
+],
+"mlie.ultratechshades": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/2937778775"
+],
+"oskarpotocki.vfe.empire": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/2938820380"
+],
+"guy762.kotorweapons": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/2938932438"
+],
+"adamas.hospitalitycasino": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/2939292644"
+],
+"scorpio.vemedicaldripsdubsbadhygiene": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/2940894029"
+],
+"thelastbulletbender.rwexploration": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/2941608795"
+],
+"rh2.faction.utilitarian": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/2942350062"
+],
+"botchjob.medievalfantasyrareresources": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/2942661554"
+],
+"sirvan.mechanitorretexture": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/2943977908"
+],
+"co.uk.epicguru.meleeanimation": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/2944488802"
+],
+"alleykat.persistentprecepts": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/2944765939"
+],
+"io.github.relvl.rimworld.bestapparel": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/2946961833"
+],
+"mortstrudel.mortideologyscifai": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/2948947009"
+],
+"morphsassorted.biotechretex": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/2950383797"
+],
+"adamas.storefront": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/2952321484"
+],
+"sirvan.steelretexture": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/2955560866"
+],
+"sm.medievalrepair": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/2955709750"
+],
+"botchjob.medievalfantasyquestrewards": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/2955864975"
+],
+"kathanon.fixstyledblueprints": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/2957953663"
+],
+"flangopink.metalpipe": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/2960013295"
+],
+"samael.livestocktraders": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/2960610215"
+],
+"flangopink.metalpipehorseshoe": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/2961064957"
+],
+"darknote.bunkbeds": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/2961752749"
+],
+"bonible.medievalmeleesounds": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/2962064646"
+],
+"vanillaexpanded.vaewaste": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/2962126499"
+],
+"nd.rtpj": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/2962208832"
+],
+"van.dacrypts": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/2963826335"
+],
+"mlie.tradeabletrinkets": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/2966786575"
+],
+"kuhlyus.modpatch.vanillaoutpost": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/2968491314"
+],
+"biomesteam.biomescaverns": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/2969748433"
+],
+"adamas.hospitalityspa": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/2971831654"
+],
+"sarg.alphamechs": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/2973169158"
+],
+"ab.hoffa": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/2975760383"
+],
+"jf.royalcarpets": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/2977701969"
+],
+"ghost.rootsofrimworld": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/2977818583"
+],
+"soulretextured.recyclethis": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/2978527594"
+],
+"hailuan.customquestframework": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/2978572782"
+],
+"katsudon.uiretexture": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/2978831421"
+],
+"vesper.egihologramsandprojectors": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/2979598490"
+],
+"delmaintweaks.roleapparel": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/2980235255"
+],
+"neronix17.outerrim.galacticdiversity": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/2980427615"
+],
+"botchjob.possessedweapons": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/2982391372"
+],
+"shira.rgrwthpatch": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/2985646173"
+],
+"mlie.graffitimod": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/2986996933"
+],
+"vanillaexpanded.vpe.hemosage": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/2990596478"
+],
+"obsidiaexpansion.ideology.icons": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/2990607010"
+],
+"pershonkey.startdate": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/2991015129"
+],
+"adamas.hospital": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/2992224079"
+],
+"redmattis.undead.medieval": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/2994387009"
+],
+"desmond.chargestunners.7742": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/2994740520"
+],
+"vanillaracesexpanded.highmate": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/2995385834"
+],
+"neronix17.archotech.genetics": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/2995858859"
+],
+"bonible.modded.gun.sound.pack": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/2999509683"
+],
+"winglessflight.gene": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3002447909"
+],
+"mrhydralisk.voeprisonerpatch": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3002936071"
+],
+"sumika.overflowingflowers": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3005103112"
+],
+"vanillaexpanded.vplantsemushrooms": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3006389281"
+],
+"mrhydralisk.voedeliverylogistics": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3006726393"
+],
+"mlie.betterbeggars": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3006899215"
+],
+"mlie.jwlatmosphericwaterprocessor": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3007838663"
+],
+"icc.tov.tbc": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3008804056"
+],
+"coldcrow.betterkibble": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3009060901"
+],
+"nightmare.devmodehotkey": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3009274839"
+],
+"tk421storm.prioritytreatmentressurected": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3009738919"
+],
+"coldcrow.betterorbitaltraders": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3009866854"
+],
+"coldcrow.bettertradableitems": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3009963773"
+],
+"adamas.vendingmachines": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3014885065"
+],
+"oskarpotocki.vanillavehiclesexpanded": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3014906877"
+],
+"smashphil.vehicleframework": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3014915404"
+],
+"romyashi.bunnyframework": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3015333853"
+],
+"anthitei.athsstyleableframework.style": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3016405872"
+],
+"redmattis.geneextractor": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3016454783"
+],
+"botchjob.divineorder": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3017163907"
+],
+"cometopapa.deteriorated": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3018050013"
+],
+"lts.geg": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3023336989"
+],
+"chaoticenrico.castlewallsexpanded": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3024167916"
+],
+"redmattis.bsfurniture": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3024478368"
+],
+"keshash.layeredwalldestruction": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3024527775"
+],
+"oskarpotocki.vfe.deserters": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3025493377"
+],
+"phaneron.simplelearningretexture": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3026005966"
+],
+"mo.decorationsluxury": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3027639868"
+],
+"van.datools": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3028566550"
+],
+"sarg.alphavehiclesneolithic": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3028675048"
+],
+"sl4vp0wer.weareunited": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3030804445"
+],
+"vanillaexpanded.vpe.puppeteer": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3033779606"
+],
+"adaptive.storage.framework": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3033901359"
+],
+"botchjob.medievalfantasythemedrelicquests": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3035624471"
+],
+"pixelbirb.dwc": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3038525914"
+],
+"gerrymon.stylizedslavecollar": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3040600773"
+],
+"vanillaracesexpanded.fungoid": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3042690053"
+],
+"aranmaho.ravenouseye.wildhunter.psycast": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3043229067"
+],
+"nightmare.core": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3047049650"
+],
+"guy762.kotordroids": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3047371944"
+],
+"prkr.genetools": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3047454700"
+],
+"tw.tangs.retexture.weapons": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3048306872"
+],
+"tw.tangs.retexture.resource": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3050448166"
+],
+"tw.tangs.retexture.foods": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3050762215"
+],
+"yoann.proselytizingnever": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3053650876"
+],
+"tw.tangs.retexture.manufactured": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3058943402"
+],
+"co.uk.epicguru.factionloadout": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3063465133"
+],
+"hailuan.dungeon": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3064597982"
+],
+"keshash.extraexplosioneffects": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3066208882"
+],
+"vanillaracesexpanded.archon": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3067715093"
+],
+"myf.lightseeker": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3068154233"
+],
+"erin.bg3.hair": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3069933015"
+],
+"andromeda.stackgap": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3071298014"
+],
+"det.epochsincense": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3072579620"
+],
+"cedaro.csa": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3072859227"
+],
+"sirrolin.questsgivesgoodwill": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3074941619"
+],
+"xmb.ancienthydroponicfarmfacilities.mo": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3075384838"
+],
+"oskarpotocki.vfe.tribals": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3079786283"
+],
+"ghost.tribalicons": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3083595998"
+],
+"rimsenal.spacer": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3086137468"
+],
+"botchjob.hthair": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3092175321"
+],
+"det.epochspottery": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3092351095"
+],
+"neronix17.asimov": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3096481956"
+],
+"neronix17.outerrim.droiddepot": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3096501398"
+],
+"biomesteam.biomesfossils": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3100958580"
+],
+"mingtuwuxiang.gothicdecorative": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3102678787"
+],
+"taggerung.configappliedcheck": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3103608609"
+],
+"redmattis.bigweapons": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3105907309"
+],
+"wvc.sergkart.ultraexpansion": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3107443670"
+],
+"farxmai2.vanilladeconstructablevehicles": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3108171008"
+],
+"redmattis.betterconversion": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3108763487"
+],
+"romyashi.scavenging": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3108829323"
+],
+"danzen.vpe.biotechintegration": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3110971925"
+],
+"ebsg.framework": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3112549163"
+],
+"taggerung.iaintbuildingthat": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3118060751"
+],
+"reel.facialanims": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3118315633"
+],
+"reel.hair2": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3119772468"
+],
+"ok.scraptek": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3122686960"
+],
+"deadmano.moodalerts": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3128351120"
+],
+"assassinsbro.medievalbackstoriesnohar": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3128454510"
+],
+"anthitei.athsstylegothic.style": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3136210612"
+],
+"farxmai2.genebanksexapnded": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3138968978"
+],
+"det.venators": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3140248688"
+],
+"xmb.ancientminingindustry.mo": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3141472661"
+],
+"tw.tangs.retexture.ui": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3141849282"
+],
+"sarg.alphapropsparks": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3146268928"
+],
+"det.boglegs": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3146564944"
+],
+"gm.nautian.style": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3147664706"
+],
+"slaughteringmeme.rince": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3151598704"
+],
+"vanillaexpanded.recycling": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3155781848"
+],
+"swablu.ambience": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3158997430"
+],
+"dbh.upscaled": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3163175368"
+],
+"el.biotechmechrt": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3164022710"
+],
+"ferny.easycaravanformation": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3165744287"
+],
+"ferny.propscore": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3167021055"
+],
+"tw.tangs.retexture.structure": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3168625192"
+],
+"redmattis.heaven": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3170117364"
+],
+"grasstypefire.tribalbackstories.medievalpatch": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3170651153"
+],
+"grasstypefire.medieval.backstoriespatch": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3170653412"
+],
+"det.dwarvenstyle": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3172496453"
+],
+"rakros.upgradequality": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3176082972"
+],
+"cedaro.worldpawncleaner": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3181327333"
+],
+"mbee.strongerwings": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3185383404"
+],
+"vr.animaanimalscombined": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3190798512"
+],
+"futurplanet.disassemblemechanoid": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3191640281"
+],
+"vanillaexpanded.ideo.sophianstyle": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3194606539"
+],
+"wyr3d.simpleboneblocks": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3195547844"
+],
+"lingluo.cockroach": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3196253802"
+],
+"extts.fl": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3199145674"
+],
+"kxp.ideosymbolsasideograms": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3199358915"
+],
+"dev.tobot.vpe.betterautocast": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3199585285"
+],
+"det.avaloi": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3199692643"
+],
+"phaneron.basic.storage": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3201536200"
+],
+"botchjob.profaned": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3202008037"
+],
+"kikohi.coloreddeepresources": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3203269467"
+],
+"kikohi.jewelry": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3203280763"
+],
+"nightmare.museums": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3204176859"
+],
+"vanillaexpanded.basegeneration": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3209927822"
+],
+"syrchalis.processor.framework": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3210544395"
+],
+"thumb.bettercremation": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3212165730"
+],
+"deadmano.rimanoarchitecticons": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3212495112"
+],
+"vanillastorytellersexpanded.winstonwave": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3215569151"
+],
+"eoralmilk.faceaddonframework": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3217914520"
+],
+"redmattis.morexenos": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3218636337"
+],
+"cyanobot.buildfromchunk": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3218639401"
+],
+"nakomaru.vanillafyfloors": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3219321678"
+],
+"hazn.huntingtraps": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3219487356"
+],
+"owlchemist.fridgeutilities": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3219883811"
+],
+"owlchemist.smartfarming": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3220129183"
+],
+"mss.recube": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3220139435"
+],
+"nilchei.dynamicdiplomacycontinued": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3220299022"
+],
+"wall.light.relic": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3220394219"
+],
+"m00nl1ght.unofficialupdates.preparelanding": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3221125358"
+],
+"ushanka.biologicalwarfare": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3221550806"
+],
+"archie.turrettargetpatch": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3221646589"
+],
+"elshender.stackablechunks": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3222674854"
+],
+"lts.i": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3223443793"
+],
+"gt.sam.basicdoubledoors": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3223646936"
+],
+"thegoosebehindtheslaughter.noforcedslowdown": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3223768532"
+],
+"zal.spaceports": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3225120958"
+],
+"jamaicancastle.rf.fertilefields": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3225843229"
+],
+"blackmarket420.pandoraframework": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3226701491"
+],
+"fuu.bloodanimations": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3228047321"
+],
+"drwalz.contentmodnumberthreeskillbionics": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3228526665"
+],
+"frozensnowfox.betteranomalyloot": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3229997523"
+],
+"latta.petknowstrueyou": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3230195082"
+],
+"revolus.whatsmissing": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3231090162"
+],
+"zcubekr.customfonts": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3231727915"
+],
+"zav.glowstoneforked": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3231900626"
+],
+"memegoddess.searchanddestroy": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3232242247"
+],
+"karew.orcclan": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3232348025"
+],
+"ray1203.simplecamerasetting": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3232415388"
+],
+"grillmaster.integratedcreepjoiners": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3233429182"
+],
+"xercaine.wallsunlamp": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3234498246"
+],
+"gravenwitch.vsrexamined": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3235834179"
+],
+"elsov.beliar": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3237072670"
+],
+"bean.customxenotypes.goblinsoftherim": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3237397753"
+],
+"reel.expanded.storage": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3237638097"
+],
+"none1637.mechenergysetting": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3238097300"
+],
+"misstall.throwingweaponbeltz": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3238126692"
+],
+"sl4vp0wer.sleepmeditation.1.5": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3238976509"
+],
+"bionicicons.hd": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3239007545"
+],
+"arvkus.simplerecycling": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3239309389"
+],
+"lc.tammybee.selectablesculpturegraphic": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3239359525"
+],
+"cf.anomalyupscaled": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3239664028"
+],
+"alias.doormats": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3239838811"
+],
+"mrhydralisk.anomaliesexpected": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3240752689"
+],
+"escp.racetools": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3244642507"
+],
+"escp.morrowrim.dunmerstyles": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3244646489"
+],
+"escp.morrowrim.birthsignspassive": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3244646911"
+],
+"colossalfossil.animalsarefuncontinued": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3245454244"
+],
+"det.spacerarsenal": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3247891820"
+],
+"shunthewitch.termimother": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3248912334"
+],
+"starwars.themedsounds": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3249480517"
+],
+"zal.moreutilitypacks": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3249560356"
+],
+"mlie.compactworktab": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3250322299"
+],
+"fallen.anomaliesexpectedaddon": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3251944598"
+],
+"sihv.rombonesport": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3252977437"
+],
+"mlie.recyclethis": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3253550009"
+],
+"phaserrave.deathpallcalypse": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3253910772"
+],
+"guy762.mm.kotorcore": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3254370945"
+],
+"tw.tangs.retexture.apparel": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3255510656"
+],
+"gideon.castlewalls": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3256542892"
+],
+"mlie.miningcomms": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3257136373"
+],
+"mlie.largefactionbases": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3257781909"
+],
+"mlie.miningcodrillturret": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3258344832"
+],
+"keepercraft.rimkeeperanimals": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3259367736"
+],
+"mlie.slaverebellionsimproved": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3259932217"
+],
+"vanillaracesexpanded.insector": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3260509684"
+],
+"mlie.smarterdeconstructionandmining": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3261302741"
+],
+"owlchemist.moonlight": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3261311563"
+],
+"owlchemist.simplefx.smoke2": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3261314247"
+],
+"owlchemist.toggleableoverlays": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3261316725"
+],
+"owlchemist.toggleablereadouts": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3261317086"
+],
+"owlchemist.toggleableshields": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3261317430"
+],
+"delmaintweaks.ritualsizeattenuation": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3262033797"
+],
+"ghastly.visualcybernetics": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3262173908"
+],
+"rebuild.cotr.doorsandcorners": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3262718980"
+],
+"zal.chooseyourrecipe": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3263007587"
+],
+"anomaly.power.improved": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3263594825"
+],
+"redmattis.genenodes": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3264344552"
+],
+"tyrannidae.fancyratsplus": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3265419811"
+],
+"uveren.hemogenextractor": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3267565839"
+],
+"serek.misctrainingmedievalretexture": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3271602770"
+],
+"mlie.biosculptingplus": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3272451634"
+],
+"det.vanillaarsenal": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3273371966"
+],
+"gm.erotic.style": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3273776545"
+],
+"sumghai.replimatmeals": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3274344708"
+],
+"gogatio.newanomalythreats": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3274840013"
+],
+"mlie.miningcoalertspeaker": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3276121703"
+],
+"meltup.polyamorybeds.vanilla": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3276496684"
+],
+"m3.continued.jangodsoul.starwars.tsda": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3276499495"
+],
+"gerrymon.uvt": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3276562906"
+],
+"tro.soundscape.enhanced": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3276642170"
+],
+"resurrectionem.romascita": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3277109336"
+],
+"ganja.ed.embrasures": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3277482616"
+],
+"mlie.blockunwantedminutiae": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3278213153"
+],
+"zal.giantsnake": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3278855253"
+],
+"aw.researchreinvented.retextured": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3279243445"
+],
+"oracle.miscellania": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3279582979"
+],
+"lambda.psykshroom": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3280268952"
+],
+"dark.signs": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3281950776"
+],
+"killathon.artificialbeings": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3284097810"
+],
+"zal.betterinfestations": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3285516766"
+],
+"mlie.cutplantsbeforebuilding": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3286376165"
+],
+"mlie.spreadtheword": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3287847068"
+],
+"killathon.artificialbeings.syncore": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3288463094"
+],
+"linnun.kitchensinkfix": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3288756218"
+],
+"moistestwhale.stuffontablesforked": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3289533061"
+],
+"anthitei.athsstylenorse.style": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3292048218"
+],
+"ferny.progressionstorage": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3292746186"
+],
+"oels.nanamefloors": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3293767181"
+],
+"jm.disstynan": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3295112942"
+],
+"nuanki.unlimitedreborn": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3295368629"
+],
+"nozome.mapmodeframework": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3296654393"
+],
+"adaptive.simplestorage": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3297307747"
+],
+"adaptive.ideology.storage": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3301337278"
+],
+"onimods.electrictorches": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3301583634"
+],
+"oskarpotocki.vanillavehiclesexpandedupgrades": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3302208420"
+],
+"universalpregnancy.1trickpwnyta": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3303758779"
+],
+"nalzurin.betterdistresscall": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3305489753"
+],
+"goat.anomaly.events": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3307094049"
+],
+"conit.kpdl": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3308076464"
+],
+"oskarpotocki.vfe.insectoid2": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3309003431"
+],
+"reel.insectorfaction": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3309022698"
+],
+"tleno.wireheadstyle": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3311183008"
+],
+"ferny.vanillaexpandedherobackgrounds": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3313700572"
+],
+"xmb.ancienturbanruins.mo": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3316062206"
+],
+"spacemoth.youdriveisleep": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3324430833"
+],
+"gaon.lowtoolcabinet": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3326055369"
+],
+"myf.vpe.tweaks": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3328399391"
+],
+"sensiblebedownership.1trickpwnyta": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3328702448"
+],
+"andromeda.nicehealthtab": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3328729902"
+],
+"nuanki.controlledrituals": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3328826971"
+],
+"tyrannidae.littlecritters": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3331281387"
+],
+"zal.biomeskit": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3333951497"
+],
+"vanillaexpanded.vanillafoodvarietyexpanded": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3334272487"
+],
+"mosi.rebalancedancientjunk": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3336109612"
+],
+"det.epochspyrinth": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3336544632"
+],
+"azravos.factioncustomizer": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3336572602"
+],
+"zal.largeoutpost": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3337099675"
+],
+"mlie.norandomideologies": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3337263133"
+],
+"tc.tribalizedarmor": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3338236184"
+],
+"joe.rpgadventureflavour.fork": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3342554570"
+],
+"mlie.perspectivebuildings": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3346955193"
+],
+"lambda.nuclearstove": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3347342950"
+],
+"lee.xenotypefloattodialogue": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3350991041"
+],
+"goat.food.texture.variety.core": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3354455179"
+],
+"keyz182.keyzmiscresources": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3355560776"
+],
+"who.vfee.isopodageneline": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3357632382"
+],
+"agentblac.makepawnsprisoners": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3358620558"
+],
+"meteores.ancienturbanruinsalldeconstructible.aurad": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3361061429"
+],
+"mlie.syrmoreslaves": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3361231919"
+],
+"gorlath.ideonature": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3362432392"
+],
+"smeir.fastersettlementrestock": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3363826406"
+],
+"zal.gianttoads": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3365223736"
+],
+"rabiosus.vfautoparking": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3365473553"
+],
+"scurvyez.bondedanimalsrng": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3370236256"
+],
+"pesky.arcanist.style": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3370539088"
+],
+"hd2.pelican": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3370607942"
+],
+"ucp.starwarsdubshygienestuff": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3371695380"
+],
+"resurrectionem.khayrea": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3372728277"
+],
+"asf.deepstorage": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3373064575"
+],
+"det.keshig": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3376864722"
+],
+"resurrectionem.swifttools": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3378901481"
+],
+"unagi.funiture.build.window": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3379047800"
+],
+"guy762.kotorfactions": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3379096669"
+],
+"mss.flavourpack": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3379574408"
+],
+"elsov.highborn": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3380776687"
+],
+"sarg.alphacrafts": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3382446150"
+],
+"espio.pastelove": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3386437690"
+],
+"goat.food.texture.variety.vecooking": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3388883044"
+],
+"biomesteam.biomespollutedlands": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3390196656"
+],
+"mlie.nwnrealfogofwar": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3391128917"
+],
+"depscian.rimtunes": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3399705740"
+],
+"adaptive.primitivestorage": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3400037215"
+],
+"vanillaexpanded.skills": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3400246558"
+],
+"hailuan.iwbb": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3400259397"
+],
+"krelinos.socialexpfromtrade": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3400608063"
+],
+"sarg.alphabooks": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3403180654"
+],
+"samael.npcmechsandanimals": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3407831843"
+],
+"goat.food.texture.variety.vecoffetea": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3409546023"
+],
+"zaire82.rgretexpatches": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3410715318"
+],
+"vanillaquestsexpanded.generator": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3411401573"
+],
+"toastyman.moreritualseats": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3411913071"
+],
+"waffle.fantasypatches": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3413747772"
+],
+"zal.randomgrowthchoices": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3413983862"
+],
+"sbz.neatstorage": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3416243474"
+],
+"ferny.replacelib": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3417393194"
+],
+"inoshishi3.smallvehicleaddons": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3420948947"
+],
+"ionfrigate12345.coolandgoodambush": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3422946483"
+],
+"sr.modrimworld.factionalwarcontinued": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3423264477"
+],
+"reel.turretpipeline": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3424132769"
+],
+"fourtoo.glowingbush": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3425062214"
+],
+"zal.sibtl": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3428237149"
+],
+"sd.fa.reelsadjustments": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3429452043"
+],
+"det.brawnum": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3429572581"
+],
+"summersausages2ttv.techlevelenforcement": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3430230860"
+],
+"mlie.sfcomfymeditation": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3432727841"
+],
+"gm.cannibal.style": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3432956417"
+],
+"tookatee.fungoidnovomit": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3433197206"
+],
+"metalocif.morecreeps": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3434682604"
+],
+"badoaks.meatonastick": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3435027361"
+],
+"darkestdungeon.incidentsounds": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3438213596"
+],
+"mo.technicalmapvehicles": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3438366909"
+],
+"charlie.muzzle.flash.for.ancientruins": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3442021825"
+],
+"dingzhen.levelthis": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3443626025"
+],
+"oskarpotocki.vfe.medieval2": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3444347874"
+],
+"meteores.ancienturbanruinsvanillaloot.aurvl": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3446989523"
+],
+"joeownage.automatic.traderships": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3448488157"
+],
+"sarg.alphaskills": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3448953006"
+],
+"jelheb.rusticmealretexture": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3453364177"
+],
+"fluffy.worktab": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3453549086"
+],
+"koberiddle.milkandwoolpatches": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3453878341"
+],
+"smxrez.makeshiftreexamined": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3455187943"
+],
+"vpe.horaxian.sentinel": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3456508582"
+],
+"btd.xenotyperemix.starwars": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3458153185"
+],
+"joe.mo.tweaks": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3458506170"
+],
+"dimonsever000.ideologyvirtues": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3459205505"
+],
+"linnun.autocastspecialistcommands": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3459647882"
+],
+"linnun.keepconverting": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3461478214"
+],
+"vanillaquestsexpanded.cryptoforge": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3461526070"
+],
+"vpe.anima.sentinel": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3462136587"
+],
+"redtrainer.compactgenebuildings": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3466062158"
+],
+"jsin.laglesslamps": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3467878826"
+],
+"vpe.voidweaver.sentinel": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3467913565"
+],
+"addvans.wasdedpawn": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3471835151"
+],
+"van.beasts": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3472275628"
+],
+"rimeffectrenegade.core": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3473370247"
+],
+"rimeffectrenegade.asarireapers": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3473370728"
+],
+"rimeffectrenegade.drell": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3473371103"
+],
+"rimeffectrenegade.n7": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3473371554"
+],
+"rimeffectrenegade.extendedcut": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3473382290"
+],
+"noneobsidiaexpansion.ledlightsstrip": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3476135064"
+],
+"crows.dustbunny": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3480725900"
+],
+"hekmo.chimeravariants": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3482158348"
+],
+"seti.millitarism": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3482463633"
+],
+"gerrymon.mco": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3483685923"
+],
+"steve.vpe.revertsomenerf": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3484509389"
+],
+"akaster.ivdruginfuser": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3484624947"
+],
+"sov.sith": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3485069256"
+],
+"sbz.neatstoragefridge": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3486264784"
+],
+"mewn.medievalsigns": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3488857567"
+],
+"mlmlmlm.bluearchivefurniture": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3491176484"
+],
+"tixiv.whoshotmylegoff": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3491552121"
+],
+"milkwater.destinymod": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3496200631"
+],
+"vanillaquestsexpanded.deadlife": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3497226454"
+],
+"mlie.realistichumansounds": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3497264525"
+],
+"mlie.starwarsanimalcollection": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3497316713"
+],
+"heatherathebyne.childrenlearnoncaravan": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3497730368"
+],
+"kaitorisenkou.modularweapons2": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3497834944"
+],
+"lovelydovey.sex.witheuterpe": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3498422643"
+],
+"aoba.framework": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3498575851"
+],
+"sd.fa.geneticheadsframework": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3498759997"
+],
+"deon.rimtek.core": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3500429104"
+],
+"deon.rimtek.digipal": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3500443258"
+],
+"deon.rimtek.docmate": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3500863752"
+],
+"deon.rimtek.stealthbelt": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3501257149"
+],
+"sd.fa.geneticheadsbiotech": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3501317537"
+],
+"sd.fa.geneticheadsmods": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3501317734"
+],
+"det.epochstallow": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3502180016"
+],
+"heatherathebyne.craftingspotslavegear": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3502196889"
+],
+"chaoticenrico.smoothterrain": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3502765685"
+],
+"deon.rimtek.style": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3502852790"
+],
+"resurrectionem.rowmart": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3503142907"
+],
+"mlie.justignoremepassing": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3503627342"
+],
+"ael.tua.helmetsaddtoxresistance": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3503847744"
+],
+"winggar.meaningfulparties": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3504909699"
+],
+"redmattis.sapientanimals": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3505241400"
+],
+"glitchgoblin.invisibleconduitcont": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3506645273"
+],
+"lecht.lockapparel": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3507498385"
+],
+"doomdrvk.unlimitednuzzles": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3508337433"
+],
+"tinda.patches.epochstallow": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3508507223"
+],
+"hellrevenger.searchoption": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3508618083"
+],
+"orion.hospitality": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3509486825"
+],
+"orion.cashregister": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3509487668"
+],
+"orion.gastronomy": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3509488152"
+],
+"gerrymon.medievaldbh": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3510803927"
+],
+"m3.continued.jangodsoul.starwars.bti": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3511954303"
+],
+"tinda.medieval.tailor.continued": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3512201406"
+],
+"hatti.qualitybuilder": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3512466087"
+],
+"og.repair.your.gear": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3513376486"
+],
+"dawnsglow.qualcolor": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3513846773"
+],
+"ingendum.animalarmorbasic": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3513849448"
+],
+"duz.almosttherefork": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3515165298"
+],
+"ingendum.raiderswarmcompression": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3515541126"
+],
+"pphhyy.lightlessempyrean": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3517488959"
+],
+"ctrlaltfunk.vpeselfcastpluspatch": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3519928832"
+],
+"defi.autocutblight": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3520167264"
+],
+"dizzyeevee.bettercrossbreeding": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3520675842"
+],
+"owlchemist.cherrypicker": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3521312241"
+],
+"vita.campdangers": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3521383341"
+],
+"dizzyeevee.rheng": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3521663802"
+],
+"xylthixlm.races.core": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3521814323"
+],
+"ferny.worldbuilder": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3522102833"
+],
+"asp.halituisamaricanous": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3522312454"
+],
+"masstell.geneticdrift16": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3522332727"
+],
+"planetace.nondestructivegravlaunch": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3522708183"
+],
+"redmattis.biggergravship": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3522759531"
+],
+"sarg.smartodyssey": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3522762411"
+],
+"aelanna.transparentsubstructure": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3522762741"
+],
+"teiwaz.oot": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3522859265"
+],
+"teiwaz.uws": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3522909912"
+],
+"propickelz.tinkerbench": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3522976063"
+],
+"zoarak.mechplat": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3523146525"
+],
+"sirmashedpotato.bloodmoon": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3523186663"
+],
+"happycam.conditioncauserretexture": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3523231836"
+],
+"evyatar108.seedspleaseliteredux": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3523459853"
+],
+"dimonsever000.weaponproficiency": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3523531768"
+],
+"laureeeeeeeeeeeeeeen.shrooms": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3523760036"
+],
+"mingtuwuxiang.spacebasedecorative": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3523916780"
+],
+"mrwireman.powercell.01": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3524003581"
+],
+"arkymn.slowerpawntickrate": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3524116050"
+],
+"jecrell.jecstools": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3524247750"
+],
+"kearril.tradingoptionscontinue": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3524414310"
+],
+"ingendum.animalarmoruniversal": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3524467381"
+],
+"drilledhead.hybridpoweredgravships": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3524491355"
+],
+"kupie.isjustdoingitlive.plzdonthateme.roofedscanning": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3524551636"
+],
+"keyz182.keyzallowutilities": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3524716849"
+],
+"defi.generipper": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3524806362"
+],
+"defi.blueprints.fork": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3525001145"
+],
+"honeybadger.wallmountedturretsversiontwo": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3525168205"
+],
+"mf.jfklanding": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3525655208"
+],
+"flyingsloth.scfilthreducer": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3525790312"
+],
+"joseasoler.tradergen": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3525848981"
+],
+"rashomcree.odyssey.orbitalplatforms": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3525980713"
+],
+"ayas.passiononlevelupplus": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3526025445"
+],
+"setosa.power.tools": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3526160222"
+],
+"ali.growodysseyplants": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3526247608"
+],
+"memegoddess.replacestuff": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3526354009"
+],
+"frozensnowfox.betterexplorationloot": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3526957922"
+],
+"kongkim.droppodjammer": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3527131849"
+],
+"memer.minigravships": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3527312835"
+],
+"rashomcree.odyssey.asteroidgrounds": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3527371016"
+],
+"zoarak.anomalyplat": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3527726648"
+],
+"hdz.asteroidsurvival": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3527737313"
+],
+"hailuan.spacetower": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3527936083"
+],
+"coolzie.oocreboost": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3527970878"
+],
+"qwertaii.substructureanywhere": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3528440892"
+],
+"nep.enginesunlimited": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3528446690"
+],
+"louize.runtimegc.fork": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3528496623"
+],
+"turbopickle.gravshuttle": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3528998097"
+],
+"moja.salvagerubble": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3529058623"
+],
+"kilokio.rimai.framework": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3529263357"
+],
+"businburg.businfeatures": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3530082693"
+],
+"kilo.odysseusvacset": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3530182181"
+],
+"sielfyr.archeangravship": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3530307917"
+],
+"timuttie.justleavealready.fork.mitasamodel": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3530313037"
+],
+"bulldog.vanillachemfuelexpandedodysseypatch": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3530583255"
+],
+"mrhydralisk.vnpereimaginedprogression": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3530651481"
+],
+"det.halffoot": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3530817307"
+],
+"fleshforge.defilergenerator": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3530838203"
+],
+"stevezero.fullarmorhandsfeet": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3530977354"
+],
+"ushanka.necroaarchovirus": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3531035748"
+],
+"msws.growingzoneicons": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3531165541"
+],
+"boots.sensiblefactions": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3531306011"
+],
+"statistno1.enchantqualityplusunofficial": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3531518926"
+],
+"memegoddess.thickarmor": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3531630021"
+],
+"azrazalea.dbh.springwater.patch": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3531641684"
+],
+"vanillaracesexpanded.starjack": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3531912428"
+],
+"scorpio.staggeredraids": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3531990280"
+],
+"sd.fa.vteadjustments": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3532050275"
+],
+"elindis.betterhotsprings": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3532108439"
+],
+"jecrell.doorsexpanded": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3532342422"
+],
+"bs.mbifvte": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3532359201"
+],
+"tw.tangsbiome.rainbowforest": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3532501549"
+],
+"lwm.deepstorage": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3532608331"
+],
+"redmattis.optional": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3532649666"
+],
+"zal.ionweaponry": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3532877485"
+],
+"runningbugs.landingonasteroid": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3532991747"
+],
+"farhanfair.warcaskettweakspatch": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3533261706"
+],
+"hmc.wall.furniture": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3533512691"
+],
+"broms.deeporbit": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3533793836"
+],
+"souper.anomalyanywhere": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3534053654"
+],
+"memegoddess.buildfrominventory": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3534185281"
+],
+"hailuan.customquestframeworkai": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3534228105"
+],
+"lovelydovey.sex.withrosaline": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3534254491"
+],
+"mrwireman.stealthshuttle": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3534488918"
+],
+"wolfcub05.draftableanimals": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3534629428"
+],
+"andromeda.helpmebuild": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3534699220"
+],
+"gunseeker.repairstation": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3534893110"
+],
+"dmp.vfepirates.warcasketwork": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3535194807"
+],
+"mlie.horrors": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3535224844"
+],
+"abrolo.grimstone.beasts": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3535302121"
+],
+"kopp.biomecompatibilityproject": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3535674283"
+],
+"ap.huntingmeme": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3535691822"
+],
+"bart.bioformmatrix": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3535848372"
+],
+"ninagoblin.visitsettlements": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3535955435"
+],
+"oddbase.nuclearrevolution": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3536364597"
+],
+"broms.asteroidmineralscanner": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3536585361"
+],
+"ks.aaretextured": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3536598972"
+],
+"goat.archean.sunlamps": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3536650291"
+],
+"cgf1.hlrw.thecombines": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3536753286"
+],
+"scrubdaddy.hairstyles": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3536769145"
+],
+"biotechrace.yautja.alleyballey": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3536839586"
+],
+"veterano.mythicages.megafaunabestiary": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3537788184"
+],
+"kyzy.shipwallenhanced": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3537799933"
+],
+"sbz.gravshipstorage": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3537905298"
+],
+"kearril.choosewheretoland": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3537970831"
+],
+"memegoddess.mealsonwheels": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3538082807"
+],
+"jalapenolabs.rimworld.fishingisfun": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3538562620"
+],
+"chaoticenrico.bettertrees": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3539609975"
+],
+"pphhyy.demigryphsmod": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3540496928"
+],
+"xylthixlm.races.titan": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3540820354"
+],
+"hol.stellarisicons": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3540888076"
+],
+"mlie.advancedbiomes": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3541022508"
+],
+"shakeyourbunny.fastspreadinggrass": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3541038010"
+],
+"mlie.jurassicrimworlddinosaursonly": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3541510004"
+],
+"aleksey.betterstacktraces": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3541579129"
+],
+"m3.jangodsoul.aqw.armorset": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3541935426"
+],
+"karshou.storagememory": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3543261305"
+],
+"stokes.simplehoodcape": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3543386604"
+],
+"maal.bettertreesmod": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3543705507"
+],
+"m3.jangodsoul.df.void": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3543946353"
+],
+"khamenman.outfitstandsplus": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3545172389"
+],
+"det.buzzers": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3545293786"
+],
+"als.gravtech": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3545374124"
+],
+"amro.uniqueapparel": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3545666494"
+],
+"imagitama.rimworldgravshiprangeonmap": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3545884382"
+],
+"xale86.wallsolarpanels": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3545934731"
+],
+"mitasamodel.outfitted": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3546414006"
+],
+"icepickgma.invisibledisplaycase": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3546566196"
+],
+"shepirotgamer.slightlyfastermechgestator": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3546705271"
+],
+"addvans.walktheworld": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3546716725"
+],
+"wyr3d.bettercampsites": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3546818262"
+],
+"mlie.factionraidcooldown": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3547098393"
+],
+"esvn.rpgdialog": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3547971440"
+],
+"mlie.pawnnamevariety": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3548290568"
+],
+"tug.minotaur": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3548423129"
+],
+"nep.getoffmygravship": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3548548674"
+],
+"dhl.seedfish": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3549336894"
+],
+"rpgwanderer.opturret": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3550061539"
+],
+"gondragon.defensivepositions": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3550360467"
+],
+"lumi.doorsexpanded": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3550435517"
+],
+"vortex.customizeweapon": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3550585103"
+],
+"mlie.logafterdeferror": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3550944748"
+],
+"cj.rimtalk": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3551203752"
+],
+"thale.medievalerarimtheme": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3551233435"
+],
+"unclejackhughes.barbarianstylepack": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3551819421"
+],
+"koth.isid": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3551839891"
+],
+"snobi.mutatorworldicons": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3551904193"
+],
+"xelnigma.mechanoidslagtoplasteel": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3552644190"
+],
+"superpox.gravshipbiofuelrefineryretexture": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3553790634"
+],
+"jellypowered.survivaltools": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3554664966"
+],
+"chaoticenrico.followtarget": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3555423377"
+],
+"wyr3d.worthlessplants": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3555545972"
+],
+"maincrep.eweb": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3555571107"
+],
+"kitty.treememepatch": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3556875187"
+],
+"lee.theforce.standalone": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3557220601"
+],
+"lee.theforce.factions": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3557220783"
+],
+"als.anomalygravship": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3558784993"
+],
+"leutiankane.mines2patchouterrim": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3558833789"
+],
+"qux.comigo.bettertreesmod": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3559784361"
+],
+"vpe.luminis.sentinel": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3559834496"
+],
+"rooboid.hdhair.continued": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3559870636"
+],
+"kilokio.rimai.core": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3560404184"
+],
+"okagrim.duskwood": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3560499511"
+],
+"ocarina.hazzor.moon.factions": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3561739080"
+],
+"memegoddess.runandgun": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3562365100"
+],
+"zacharyfoster.mineralsframework": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3562390384"
+],
+"zacharyfoster.mineralssparkle": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3562390730"
+],
+"zacharyfoster.mineralsfrozen": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3562390973"
+],
+"zacharyfoster.mineralsrock": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3562391080"
+],
+"fip.robco": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3563825876"
+],
+"noxilie.regrow.wmb.alphabiomes": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3564679302"
+],
+"noxilie.regrow.wmb.morevanillabiomes": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3564679624"
+],
+"noxilie.regrow.wmb.advancedbiomes": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3564679844"
+],
+"amegakull.scvrole": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3565039115"
+],
+"regrowth.botr.boilingforest": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3565675704"
+],
+"leutiankane.mineablesor": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3565716659"
+],
+"arti.shrinez": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3566938404"
+],
+"okagrim.necrotexgrav": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3567591339"
+],
+"konstantynopolitaneczka.disableraidneeds": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3568265578"
+],
+"resurrectionem.wartalker": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3569670754"
+],
+"planttreeindoor.serval.patch": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3569744872"
+],
+"xale86.smallbedroomfurniture": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3570779724"
+],
+"altushka.boscompendium": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3571412768"
+],
+"tsa.torturepod": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3572173918"
+],
+"titans.fl": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3572242808"
+],
+"ghastly.echoesoftherim": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3573196843"
+],
+"jetharius.feedinfishies": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3573713081"
+],
+"mlie.incidentdisabler": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3574116665"
+],
+"btd.remix.gravshipblueprints": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3575162262"
+],
+"cn.youaresobeautiful": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3576178532"
+],
+"arcjc007.gravshipexporter": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3576790938"
+],
+"badoaks.meatonastick.expansion": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3577333297"
+],
+"arcjc007.gravshipcrashes": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3578515873"
+],
+"fox.simplelearning": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3580464748"
+],
+"danzinagri.facialanimationcompatabilityproject": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3585705988"
+],
+"arcjc007.lasercannon": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3586248892"
+],
+"unknown.forcedxenogermimplantation": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3586850201"
+],
+"hailuan.voiduniverse": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3587277884"
+],
+"annoprofi.outfitbuilderredux2": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3589354596"
+],
+"funkyshit.mods.worldedit.alpha": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3590928058"
+],
+"vaguelysexual.modpackageid.goeshere": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3595196942"
+],
+"chezhou.chezhoulib.lib": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3595247479"
+],
+"erin.kpdh.hair": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3595945875"
+],
+"niz.xenomorphtype": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3596077324"
+],
+"dprtf.darkpsychicrituals.sentinel": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3596468709"
+],
+"ru.anomalyskilltrainer": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3602237032"
+],
+"novatrium.spacewaves": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3603474848"
+],
+"goji.thesimstraits": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3604588393"
+],
+"densevoid.peerpressure": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3605155621"
+],
+"aqued.dredgeaberrations": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3606495707"
+],
+"pphhyy.guldennew": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3607066070"
+],
+"cj.rimtalk.expandmemory": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3608181242"
+],
+"vanillaexpanded.gravship": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3609835606"
+],
+"mianreplicate.romanceandintimacyontherim": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3612563959"
+],
+"saltgin.rimtalkeventmemory": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3612632140"
+],
+"btd.gbp.shippack.kotor.vge": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3614012898"
+],
+"jaeger972.nomadfreindlyquests": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3616175831"
+],
+"vanillaquestsexpanded.ancients": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3618306875"
+],
+"rp.rimtalk.personadirector": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3619548407"
+],
+"sapiently.theyatomicmonsters": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3620253282"
+],
+"zal.comigogreaterswamps": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3620545124"
+],
+"matathias.ruthlessmechanoids": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3621784437"
+],
+"jaeger972.factionterritories": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3626725895"
+],
+"costel.customroomnames": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3626983473"
+],
+"costel.customroomnames.rimtalkaddon": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3626983869"
+],
+"sanguo.rimtalk.expandactions": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3628755033"
+],
+"maiya.rimtalkdynamiccolors": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3628773219"
+],
+"oceantest5.rimtalk.enhance": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3629456304"
+],
+"oceantest6.rimtalk.promptcleaner": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3630607068"
+],
+"lovelydovey.recreation.witheuterpe": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3630896210"
+],
+"neachi.rimtalkdialoguepatch": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3631632728"
+],
+"costel.layeredapparel": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3632480044"
+],
+"cj.rimtalk.literature": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3633249209"
+],
+"wuren.rimtalkcontextupgrade": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3641774579"
+],
+"rimtalk.quests": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3642675329"
+],
+"arkymn.bettergrowthmoments": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3642805464"
+],
+"reo.rimscent": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3645569466"
+],
+"ferny.triumphantresearch": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3647618250"
+],
+"mlie.interactionareasettings": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3647833135"
+],
+"yourname.effigys.mod": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3647930333"
+],
+"statistno1.evolvedorgansredux": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3648390934"
+],
+"leo.raidprotectionfee": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3650927927"
+],
+"trouperton.trystantravellersshuttleschematics": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3655212016"
+],
+"vanillaexpanded.vexploratione": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3656316229"
+],
+"tolgrim.thermalwellexcavation": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3656836896"
+],
+"jellycreative.isekaileveling": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3657580708"
+],
+"lornath.diseaseimmunityprogresstracker": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3659005144"
+],
+"cj.rimtalk.toddlers": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3659064387"
+],
+"zruic.expand.action": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3661055729"
+],
+"zruic.expand.thoughts": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3661175034"
+],
+"zruic.expand.relation": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3661493651"
+],
+"zruic.expand.dialogue": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3662962455"
+],
+"hali.modifylandingtile": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3667490447"
+],
+"veltaris.mechanoidskins": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3667667489"
+],
+"gabrieel1482.raidvehicleframework": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3667863988"
+],
+"xercaine.tribal.furniture": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3671245310"
+],
+"krkr.rule56": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3673768803"
+],
+"memegoddess.giddyup": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3674332861"
+],
+"teiwaz.gtgtradercore": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3682209120"
+],
+"hailuan.customquestframework.rimtalk": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3684497117"
+],
+"vanillaexpanded.vfefactory": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3686924415"
+],
+"pjerri.waveraids": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3692439859"
+],
+"groovytaco.beltextractors": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3694555789"
+],
+"rimtalk.styleexpand": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3694936738"
+],
+"assssssqwww.feelingfilter": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3697500330"
+],
+"biomesteam.coreframework": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3709492514"
+],
+"geojak.tributedemand": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3711373966"
+],
+"chezhou.creature.sandworm": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3713982815"
+],
+"cyberchronicle.rimtalkexperts": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3714540653"
+],
+"cyberchronicle.rimtalkstoryteller": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3715752189"
+],
+"zal.zww": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3720234170"
+],
+"acutus.moodchainreaction": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3721381956"
+],
+"tickleyourpawn.core": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3721622218"
+],
+"zal.calltradeships": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3722921543"
+],
+"leyley.rimtalkideologypatch": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3724752618"
+],
+"oceantest7.rimtalk.memory": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3726488698"
+],
+"brrainz.rimbridgeserver": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3727949765"
+],
+"teiwaz.taajg": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3729570505"
+],
+"blues.forge": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3735443951"
+],
+"og.immersive.filter": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3735827910"
+],
+"clown.dedicatedturrets": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3739213606"
+],
+"vlvop.tormentmaster.expansion": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3746663772"
+],
+"firecat.winstonwaves.bugfix": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3749719642"
+],
+"realify.firefoam": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3749974270"
+],
+"east.dancepartycustommusic": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3752711168"
+],
+"joe.cephaloids": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3753477123"
+],
+"drati.rimtalkmoodreactions": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3755539006"
+],
+"greg.customgastypes": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3756399441"
+],
+"teiwaz.tacac": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3756658373"
+],
+"com.er.mod.winstonwavepawncap": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3757637713"
+],
+"dorbo.watersfx": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3758773902"
+],
+"legator.prisonerrealism": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3760196312"
+],
+"plusblankplus.scenarioamenderfork": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3761028060"
+],
+"robtherobotguard.toomanyrewardswinstonwave": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3763619179"
+],
+"mlie.dungeonpack": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3765496911"
+],
+"sk.gravshipraids": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3767338163"
+],
+"font.rimesis": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3767949538"
+],
+"rabiosus.minesight": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3769804600"
+],
+"gmmp.dungeon": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3772571876"
+],
+"gulmadred.breedingritual": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3772996961"
+],
+"andromeda.milkyway": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3773448562"
+],
+"andromeda.niceresearchtab": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3773496046"
+],
+"lordfelix.rimcontrol": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3774299554"
+],
+"astryl.sleepingbuddies": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3774741768"
+],
+"sugarcube.puahsharedstorage": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3774922633"
+],
+"amoruch.rimworldstealingmod": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3775811814"
+],
+"guppyfacesarecute.skunks": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3775906812"
+],
+"neku.largepawns": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3777700657"
+],
+"sirdarkelf.meaningfulencounters": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3778244635"
+],
+"alma.tossem": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3779630220"
+],
+"haplo.miscellaneous.training": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/717575199"
+],
+"hiztaar.essential.uscmcore": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/726855894"
+],
+"shinzy.apparello": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/728381322"
+],
+"brrainz.achtung": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/730936602"
+],
+"ratys.madskills": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/731111514"
+],
+"rimsenal.federation": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/736172213"
+],
+"sun.reducer": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/738063560"
+],
+"hiztaar.optionnal.uscmfcm": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/759866027"
+],
+"unlimitedhugs.allowtool": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/761421485"
+],
+"unlimitedhugs.hugslib": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/818773962"
+],
+"nanoce.glasslights": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/826153738"
+],
+"dubwise.dubsrimkit": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/832333531"
+],
+"dubwise.dubsskylights": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/833899765"
+],
+"dubwise.dubsbadhygiene": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/836308268"
+],
+"erdelf.humanoidalienraces": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/839005762"
+],
+"rah.rbse": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/850429707"
+],
+"brrainz.cameraplus": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/867467808"
+],
+"erdelf.minifyeverything": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/872762753"
+],
+"petetimessix.simplesidearms": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/927155256"
+],
+"daniledman.hardworkinganimals": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/933324235"
+],
+"falconne.bwm": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/935982361"
+],
+"kosaro.fahrenheitandcelsius": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/937759575"
+],
+"daniledman.fastregen": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/943925765"
+],
+"frozensnowfox.nodefaultshelfstorage": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/945085502"
+],
+"jkluch.haultostack": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/949498803"
+],
+"svcbot.lhm": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/965087548"
+],
+"bodlosh.weaponstats": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/974066449"
+],
+"hiztaar.optionnal.uscmxenomorphs": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/974867140"
+],
+"mandrake.jawaionweapons": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/common/RimWorld/Mods/JawaIonWeapons"
+],
+"mandrake.jawavoice": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/common/RimWorld/Mods/JawaVoice"
+],
+"mandrake.jawa.armoury": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/common/RimWorld/Mods/Jawa_Armoury"
+],
+"mandrake.jawa.doctrine": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/common/RimWorld/Mods/Jawa_Doctrine"
+],
+"mandrake.jawa.patches": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/common/RimWorld/Mods/Jawa_Patches"
+],
+"mandrake.missingartfixes": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/common/RimWorld/Mods/MissingArtFixes"
+],
+"mandrake.rimdefdump": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/common/RimWorld/Mods/RimDefDump"
+],
+"mandrake.wreckedmachines": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/common/RimWorld/Mods/WreckedMachines"
+],
+"ludeon.rimworld.anomaly": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/common/RimWorld/Data/Anomaly"
+],
+"ludeon.rimworld.biotech": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/common/RimWorld/Data/Biotech"
+],
+"ludeon.rimworld": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/common/RimWorld/Data/Core"
+],
+"ludeon.rimworld.ideology": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/common/RimWorld/Data/Ideology"
+],
+"ludeon.rimworld.odyssey": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/common/RimWorld/Data/Odyssey"
+],
+"ludeon.rimworld.royalty": [
+"/mnt/c/Program Files (x86)/Steam/steamapps/common/RimWorld/Data/Royalty"
+]
+},
+"folders_without_packageId": []
+}
