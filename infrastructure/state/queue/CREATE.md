@@ -12,13 +12,21 @@ close today without a game.
 
 | row | state | needs a load? |
 |---|---|---|
-| 3 | One `QuestScriptDef` that fires and resolves. Any premise. | 🟢 **NO — pure XML, closable offline today** |
-| 4 | Three terrain/resource overrides visible on the map | 🟢 **NO — pure XML, closable offline today** |
+| 3 | One `QuestScriptDef` that fires and resolves. Any premise. | ✅ **BUILT `47733f8` — 🔴 NOT GATED, never seen in game** |
+| 4 | Three terrain/resource overrides visible on the map | ✅ **BUILT `73ca76c` — 🔴 NOT GATED, and all three are map-gen-time** |
 | 8 | ⭐ Gravship, DEEP — design complete, build at 0 | 🔴 build wants the game; you anchor that session |
 | 1 | Empire reskin — ✅ built and seen live | ✅ done |
 
 ⚠️ **Rows 3 and 4 are at zero because nobody saw they were closable, not because
 they are hard.** Author both offline, deploy with row 2, verify in ONE session.
+
+✅ **Both are AUTHORED. Neither is GATED, and the difference is the whole point** —
+`V1_SCOPE.md`'s gate is *seen working in-game once*, and nobody has looked. The
+routes, the click paths and the map-gen trap are queued for the next load in
+`D:\Luke\dev\Rimworld\infrastructure\state\NEXT_RELOAD.md` under "CREATE'S ROWS".
+🔴 **A deploy is owed first** — the game copy of `Jawa_Patches` has no
+`Defs/TerrainDefs/`, `QuestScriptDefs/`, `ThingDefs_Items/` or `MapGeneration/`
+at all, so neither row is in the load as things stand.
 
 ---
 
@@ -118,6 +126,35 @@ mod imports PIL and would die. It is installed at
 touches an image. The queue records a peer hand-decoding IHDR and inflating IDAT
 to avoid this; that is no longer necessary.
 
+### C11. ✅ CLOSED `61fe954` — `MissingArtFixes` split into four per-donor mods
+`src/RimMandrake/CereanManeFix/`, `MSEDroidFix/`, `ToolBeltFix/` and
+`ResearchKitEastFix/`. **All seven textures are now described**, which was half the
+point: an uploadable mod cannot ship art whose defect nobody wrote down. Together
+with C5's `BlastDoorFrameAsyncFix/` that is **five** fix mods out of one bucket.
+
+⚠️ **None of the five loads yet — they are absent from `ModsConfig.xml`.** Queued
+for the next shutdown window in `NEXT_RELOAD.md`, with C6's two, packageIds read
+from each `About.xml` and the ordering constraint stated per mod. One slot next to
+`mandrake.missingartfixes` satisfies all seven `loadAfter`s.
+
+#### 🔴 RETIRING `mandrake.missingartfixes` — the order, and the one dependency
+It is **LIVE and deployed**, so this is not a folder delete. Do it in this order:
+
+1. **Move the blast-door brief OUT first.**
+   `src/RimMandrake/MissingArtFixes/Source/blast_door_frameasync_east_BRIEF.md`
+   belongs in `src/RimMandrake/BlastDoorFrameAsyncFix/Source/` — it was staged in
+   the wrong mod before the ruling existed. **This is the dependency: delete the
+   folder first and the brief goes with it.**
+2. **Confirm the five successors are in `ModsConfig.xml` and have loaded**, i.e.
+   after the shutdown-window change above, not before it.
+3. **Remove `mandrake.missingartfixes` from `ModsConfig.xml`** — shutdown window
+   again, and *before* the folder goes, or the game boots with a missing-mod entry.
+4. **Then** remove the deployed copy under
+   `C:\Program Files (x86)\Steam\steamapps\common\RimWorld\Mods\MissingArtFixes`
+   and the repo folder.
+
+<details><summary>original entry</summary>
+
 ### C11. 🔴 Split `MissingArtFixes` — it violates the ruling above
 It is one bucket holding **7 textures across several donors** (Outer Rim Galactic
 Diversity, Outer Rim Droid Depot, plus a research-kit mod and an apparel mod), and
@@ -161,6 +198,8 @@ to be blank), and Droid Depot's lists only `MSE_east`/`MSE_south` — **no
 work, so the split changes what the game loads. Retire `mandrake.missingartfixes`
 deliberately or it lingers in `ModsConfig.xml` as a missing mod.
 
+</details>
+
 ### C4. ✅ Gravship comp radii — CLOSED offline, and the question was mis-posed
 **The solver is right: 34/30/12/85 match the stored config floats exactly**, so the
 coverage figure (4,057/4,057, 8 of 12 extenders) stands on the same footing as the
@@ -190,6 +229,17 @@ state file already has live `SubstructureSupport 632.7954`, the owner's stored
 float, proving the settings path applied over VGE), `infrastructure/state/queue/VISION.md` V13 (stale
 4,800 tile cap in `design/Jawa/worldbuilding/ship_designs.md`), `TODO.md` §20 (`src/RimMandrake/Utils/ilscan.py`
 decodes only `ldc.r4`, so it cannot attribute compiled defaults to field names).
+
+### C5. ✅ CLOSED `48e5e16` — three blast-door `_east` textures, in their own fix mod
+`src/RimMandrake/BlastDoorFrameAsyncFix/` (`mandrake.blastdoorframeasyncfix`,
+donor `Lumi.doorsexpanded` ws `3550435517`, loose art so `loadAfter` is
+load-bearing). Drawn at the real 933×933 canvas, not the placeholders' 267×267.
+
+⚠️ **The brief's transform was WRONG and was corrected against the measurement, not
+followed.** Read the commit before trusting the numbers below.
+⚠️ **Not in `ModsConfig.xml` yet** — rides the shutdown window with C6's and C11's.
+
+<details><summary>original entry</summary>
 
 ### C5. Three blast-door `_east` textures — unheld, mechanical, ready to draw
 *Doors Expanded Star Wars edition*, `Lumi.doorsexpanded`, ws `3550435517`, under
@@ -237,6 +287,8 @@ mask for `FrameAsync_east` at all.
 Full brief: `src/RimMandrake/MissingArtFixes/Source/blast_door_frameasync_east_BRIEF.md`
 — **move it into the new mod's `Source/` as part of C11's split**, since it was
 staged in the wrong mod before the ruling existed.
+
+</details>
 
 ### C6. ✅ CLOSED `cb95f60` — two typo-fix mods, one per donor, no art authored
 `src/RimMandrake/GravshipAstronautFix/` (`vanillaexpanded.gravship`, ws
@@ -303,6 +355,24 @@ has a special path. Look at a red-eyed pawn first.
 512×512, real alpha, zero saturated pixels, value distribution, bounding box,
 south/north silhouette parity. **Build it before commissioning any art**, not after.
 
+### C12. `Jawa_Patches`' `About.xml` still under-documents its own mod — 14 files
+Found while appending the six new bullets (`6417c31`). The description is the text
+a stranger reads, and by the C11 ruling *every* shipped file must be in it. It now
+covers 15 files; the mod ships **29 XML files plus 5 textures**. Undescribed:
+`Defs/GeneDefs/JawaHead.xml`, `JawaSkittish.xml`, `Defs/PawnKindDefs/AlienSpawnEnablers.xml`,
+`GamorreanPawnKinds.xml`, `Defs/XenotypeDefs/GamorreanXenotype.xml`, and the
+patches `HuttEyes_RestoreRenderNodes`, `HuttEyes_Slitted`, `ImperialDesertDirectorate`,
+`IonStunMote_Blue`, `JawaCombatViability_Tuning`, `JawaEyeGlow_Stock`,
+`RebelAlliance_Suppress`, `SpeciesStartingGear_Tuning`, `WookieeHead_Upgrade`.
+Each carries its own header comment, so this is transcription, not investigation.
+
+🔴 **And two of its textures are now shipped TWICE.**
+`Textures/Pawn/CenterFrill/CenterFrill8_north.png` and
+`Textures/Things/Pawns/Mechanoid/Astronaut/{MechAncient,Allegiance_Mech}_Astronaut_north.png`
+live in `Jawa_Patches` **and** in C6's `SauridFrillFix` / `GravshipAstronautFix`.
+Two loose files at one path is decided by load order, not by intent — **decide
+which mod owns them and delete the other copy**, before both are enabled.
+
 ### C10. Tile augmentation catalogue — 31 rows, 19 v1-capable `[v2]`
 `design/Jawa/worldbuilding/tile_augmentation_catalogue.md`. Placement is pure XML (`LandmarkDef` +
 `TileMutatorDef`); cheapest are F1 (zero XML), C3, B1. §5: **never cull a spawned def.**
@@ -327,11 +397,30 @@ shows `in sync (0 files, 14 held)` instead of fourteen lines of false drift.
 it** — the cost avoided is a second implementation of a feature that was already
 there and working.
 
-### C2. Space Tower — technical due diligence `[v2]`
+### C2. ✅ Space Tower — VERDICT: **KEEP, unconditionally** `[v2]`
 **Split out of `TODO.md` §17.** The on-brand/endgame-fit judgement went to VISION;
-the technical half is yours: is either mod actually active in the running game,
-what is the licence, and does it conflict with CQF. Do not spend time on this until
-VISION rules the concept in — the design call gates the checks, not the reverse.
+the technical half was yours: is either mod actually active in the running game,
+what is the licence, and does it conflict with CQF.
+
+**Ruled by the owner and recorded by VISION (`infrastructure/state/queue/VISION.md`
+§C2 condition 2).** The towers are **Imperial infrastructure**; the Hutts pay you
+to cut them; **the Empire's retaliation IS the cost.** No blackboard variable and
+no goodwill tick — consequence the player feels as weight arriving.
+
+🔴 **So the −15 Empire goodwill patch is DROPPED, not pre-wired.** The earlier
+ruling said to ship it as a cheap proxy that "costs nothing and pre-wires the real
+thing". That is superseded: an Empire goodwill hit is bookkeeping the player will
+not notice, and a −15 against a faction that is supposed to be permanently hostile
+goes dead the moment V7 lands. **Do not author it.** The real cost was never
+goodwill — it is raid pressure.
+
+⚠️ **It no longer waits on M4 / the Heat gauge**, which was the old blocker. Still
+`[v2]`, and the dependency is already paid: `hailuan.customquestframework` is
+active at load position 108 and `...frameworkai` at 431; only `hailuan.spacetower`
+itself is absent. 🎁 **C2's real dividend was already banked elsewhere** —
+`ST_TowerMap` is where the `Jawa_ClaimRumour` three-comp readable pattern came
+from. Full design:
+`D:\Luke\dev\Rimworld\design\Jawa\worldbuilding\orbital_towers_and_the_sky_ladder.md`
 
 ### C9. Beautiful_Tilemap — evaluate the concept spec `[v2]`
 A proposed utility that scores a generated map against the 39-creator corpus and
@@ -358,7 +447,20 @@ then resume the eopie sled / Bantha work.
   spec at `design/Jawa/worldbuilding/v1_quest_the_claim.md`, strings verbatim,
   Core-only nodes on the `OpportunitySite_ItemStash` skeleton, rival clan is text
   with no `FactionDef`. **Not yet SEEN — the v1 gate is still open.**
-- **Row 4** — three terrain or resource overrides visible on the map.
+- **Row 4** — ✅ **AUTHORED OFFLINE `73ca76c`, and 🔴 NOT GATED.** Three overrides:
+  `Jawa_SaltCrust` (a cosmetic evaporite pan, fertility 0, reusing Odyssey's unused
+  `DryLakeBed` art) attached to Desert / ExtremeDesert / AridShrubland; wider dune
+  seas (Core's own SoftSand thresholds lowered, no new def and no new art); and
+  `Jawa_ScatterScrapfields`, a `ChunkSlagSteel` scatter registered into
+  `Base_Player` only. **Not yet SEEN — the v1 gate is still open.**
+
+  🔴 **All three act at MAP GENERATION TIME, so they need a NEWLY GENERATED map.**
+  Nothing appears on an existing one, however long you look; checking row 4 on the
+  current colony map is a guaranteed false negative. The one free check is the
+  salt crust's art, which the live bridge can paint with `jawa/set_terrain`
+  (capture the rect with `jawa/get_terrain_batch` first so it replays back as a
+  restore) — that answers "does the texture resolve and read as evaporite white",
+  and nothing about whether the patch makers attach.
 
 🔴 **The finding row 3 turned up, and it outlives row 3.**
 `everAcceptableInSpace` gates **acceptance by the player, not site placement** —
