@@ -231,7 +231,23 @@ RimWorld's own `Set terrain (rect)` and `Clear area (rect)` still return
 | `jawa/get_def` | a def **as the game resolved it**, after patches and parent inheritance: `statBases`, comps with class names, and the mod that supplied it. The offline dump serialises none of that and has produced two wrong conclusions |
 | `jawa/drain_log` | recent log messages. `effects.logs` structurally cannot see anything logged **during `step_game_ticks`** |
 | `jawa/damage` | graduated damage to **anything, including hostiles**, via `Thing.TakeDamage`. The debug menu's `Apply damage...` is inert and player-side only |
-| `jawa/spawn_pawn` | a pawn **in a chosen faction** — `player` \| `hostile` \| `none` \| a FactionDef. The debug menu always spawns player-side, which is how a "hostile" test ends up standing in your colony |
+| `jawa/spawn_pawn` | a pawn **in a chosen faction** — `player` \| `hostile` \| `none` \| a FactionDef. The debug menu always spawns player-side, which is how a "hostile" test ends up standing in your colony. `xenotype` forces a XenotypeDef **at generation time** via `PawnGenerationRequest.ForcedXenotype`, which `PawnGenerator` checks first and returns on, so it beats the kind's and the faction's own rolls |
+| `jawa/list_factions` | every faction on the world, hidden ones included. Read `countAllIncludingHidden`, **never** `countReturned` — `includeHidden` defaults false and the visible subset read 34 against a true 54 |
+
+**Staging a pawn for a look — art, apparel and xenotype audits**
+
+| tool | use |
+|---|---|
+| `jawa/set_pawn_rotation` | turn pawns to a named facing and **freeze them there** with `debugRotLocked`. A bare rotation write does not survive: the rotation tracker re-faces every pawn each tick from its job and drafted state. `dir='unlock'` releases. 🔴 **Always unlock when done** — `debugRotLocked` is written by `Thing.ExposeData`, so a pawn left locked stays locked across a save and load |
+| `jawa/set_pawn_style` | hair, hair colour, beard, face and body tattoo, head type, body type, fur, skin colour. Every field optional; all defNames resolve **before** anything is written, so a typo changes nothing. Calls `Notify_StyleItemChanged()`, which is what rebuilds the graphics — without it the change is correct in the save and stale on screen |
+| `jawa/set_pawn_xenotype` | convert spawned pawns to a XenotypeDef in place — what the vanilla dev "Set xenotype" action does, which is `pawn.genes?.SetXenotype(def)` and nothing else. ⚠️ It clears **xenogenes only**: an inheritable xenotype's genes land as endogenes and survive a later conversion, so pass `clearEndogenes` when converting a pawn that already has one. Jawa xenotypes on this stack: `BTD_Jawa` (the one our patches target), `OuterRim_Jawa`, `guy762_xenotype_jawa` |
+
+⚠️ **All three refuse rather than pretend when the DLC is absent** — tattoos need
+Ideology and xenotypes need Biotech, and RimWorld's own setters *return silently*
+in both cases. A rotation applied to a **downed or sleeping** pawn is likewise a
+perfect no-op: the renderer calls `LayingFacing()` for any non-standing posture
+and ignores `Rotation` entirely, so the tool reports `visible: false` and you
+photograph nothing.
 
 **🔴 GM — these let the world act on the PLAYER**
 
@@ -247,11 +263,17 @@ a compile-time flag so the ruling is reversible in one shutdown window —
 to continue if the artifact disagrees with the flag. Never fire an incident on a
 colony that matters without saying so first.
 
-⏳ **All 14 were deployed 2026-08-12 and NONE has been observed yet.** Companions
-register only at RimBridgeServer startup. **First call of the next session: count
-the `jawa/` tools the bridge reports — 14 means the deploy took, 7 means an older
-companion, 0 means the bundle did not load.** Every other check is uninformative
-until that reads 14. Deciding strings per tool: `NEXT_RELOAD.md` §[BRIDGE] B2.
+⏳ **The companion is 20 tools and SIX of them have never run in a live game** —
+the roof pair, `jawa/list_factions` (deployed 2026-08-13 10:05, one minute after
+the last session's log stopped) and the pawn-appearance three above, which were
+written offline on 2026-08-13 with the game down. They compile; nothing more is
+claimed. Companions register only at RimBridgeServer startup. **First call of the
+next session: count the `jawa/` tools the bridge reports — 20 means the current
+deploy took, 17 means the pre-appearance build, 7 means an older companion, 0
+means the bundle did not load.** Every other check is uninformative until that
+reads 20. 🔴 **The deploy must use `--gm`**, or the game copy loses
+`jawa/fire_incident` and `jawa/send_letter` and the census reads 18.
+Deciding strings per tool: `src/RimMandrake/bridgetools/prove_new_tools.py`.
 
 The write tools read every cell back off the terrain grid before answering, so
 `cellsFailedVerify` is real evidence rather than the usual `success: true`.

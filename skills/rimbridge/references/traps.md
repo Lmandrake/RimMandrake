@@ -48,6 +48,8 @@ Skim this, open what matches your task — do not read them all.
 - [Foundation can only be laid on BARE ground — a floor blocks it permanently](#foundation-can-only-be-laid-on-bare-ground--a-floor-blocks-it-permanently) 🔴
 - [Multi-cell things spawn CENTRED on the cell you name](#multi-cell-things-spawn-centred-on-the-cell-you-name)
 - [You cannot enslave a pawn in your own faction — and `T: Enslave` says `success: true`](#you-cannot-enslave-a-pawn-in-your-own-faction--and-t-enslave-says-success-true) 🔴
+- [`Thing.set_Rotation` returns SILENTLY on a locked pawn, and the lock is saved](#thingset_rotation-returns-silently-on-a-locked-pawn-and-the-lock-is-saved)
+- [The renderer ignores `Rotation` for any laying pawn, so turning a downed one is a no-op](#the-renderer-ignores-rotation-for-any-laying-pawn-so-turning-a-downed-one-is-a-no-op)
 - [Fixed in the companion — one line each](#fixed-in-the-companion--one-line-each)
 
 ---
@@ -237,6 +239,18 @@ Skim this, open what matches your task — do not read them all.
 **Cause:** a GAME rule, not a bridge defect. A pawn already in your faction cannot be enslaved; it must belong to another faction first. That holds in the UI too — the bridge merely fails to say so. `T: Turn into prisoner` sets `guestStatus` **without changing faction**, so prisoner-first does not satisfy it either.
 **Fix:** spawn into a *named* other faction, imprison, then enslave — `jawa/spawn_pawn {"kindDef":"Drifter","faction":"OuterRim_BinaryStarRaiders"}`, then `Actions\T: Turn into prisoner` and `Actions\T: Enslave` on `pawnId` = `"Thing_" + id`. Verified in the save: `4 Prisoner / 2 Slave`. ⚠️ Never pass `"hostile"` — it resolves via `FirstOrDefault` to Insect/Hive on this map, and a humanlike pawn there throws inside `PawnGenerator.GeneratePawn` (*"Humanlike pawn X was added to non-humanlike faction hive"*), an intermittent-looking separate failure.
 **Recurs when:** any mutation refused by a game rule rather than a bug — the engine never attempts it, so there is nothing to log, and the return value, `effects.logCount` and the absence of an error all agree and all are wrong. Choose the readback channel by what it can **express**: `jawa/list_pawns` has no `guestStatus` field, so only `save_game` + grep of the `.rws` could tell success from failure.
+
+## `Thing.set_Rotation` returns SILENTLY on a locked pawn, and the lock is saved
+**Symptom:** a pawn is turned east and frozen for an art shot; the next call turns it north and reports the turn, and the pawn is still facing east. Nothing errors, nothing logs.
+**Cause:** `Thing.set_Rotation` opens with `if (value == rotationInt || debugRotLocked) return;` — the freeze that makes the first turn *hold* is the same thing that makes every later turn a no-op. So the order is not a style choice: **clear `debugRotLocked`, set `Rotation`, re-lock.** Any other order writes nothing. Worse, `debugRotLocked` is written by `Thing.ExposeData`, so it goes into the `.rws`: a pawn left locked comes back locked after a load, and re-faces itself never again.
+**Fix:** `jawa/set_pawn_rotation` does clear→set→lock and reports `applied` from a read-back of `pawn.Rotation`, not from "no exception". **Always call it again with `dir='unlock'` when the audit ends** — otherwise the next session inherits a pawn that cannot turn, with no visible cause. Without the lock at all, `Pawn_RotationTracker.UpdateRotation` re-faces the pawn on the next tick from its job and path, and a **drafted** pawn is slammed to South every tick.
+**Recurs when:** any "freeze this so I can look at it" flag — the mechanism that defends the value against the engine also defends it against you, and if the flag persists to disk the damage outlives the session. Ask of every debug flag you set: does `ExposeData` write it?
+
+## The renderer ignores `Rotation` for any laying pawn, so turning a downed one is a no-op
+**Symptom:** `jawa/set_pawn_rotation` reports the rotation applied and read back correctly on a downed raider, and the screenshot shows it facing exactly as before. The field genuinely holds the new value.
+**Cause:** `PawnRenderer` reads `Thing.Rotation` only for a **standing** (or crawling) pawn. For anything laying down — downed, sleeping, resting in a bed — it calls `PawnRenderer.LayingFacing()`, which derives the facing from the bed, the current job, or `thingIDNumber % 4`. `Rotation` is not consulted at all, so the write is real and invisible. Sleeping colonists and every downed test pawn are in this state.
+**Fix:** stand the pawn up before photographing it, or accept the facing the bed gives you. `jawa/set_pawn_rotation` returns `posture` and `visible: false` per pawn and says so in `message` — believe that field over the picture you expected. In a proof harness, run rotation checks **before** the damage checks, or the pawn is downed by the time you turn it and a working tool records a FAIL.
+**Recurs when:** a field the game reads only in some states — the read-back proves the *write*, never the *effect*. Verify against the channel that actually consumes the value, and ask which state the consumer is in.
 
 ---
 

@@ -87,6 +87,29 @@ and do not re-issue it (you get a second map). Fresh connection, then poll
 | write to the letter pane | `jawa/send_letter` | letters visible in the notification pane in-screenshot |
 | dirty the mesh alone | `jawa/refresh_rect` | ⚠️ **data half only** — accepts a rect, refuses a malformed one. The VISIBLE half is unproven and the obvious test cannot work: moving the camera to photograph a stale mesh repaints it. See traps.md |
 
+### ⏳ BUILT, COMPILES, NEVER RUN — four more, as of 2026-08-13
+
+**Nothing below has been driven in a live game.** They are in the repo artifact,
+0 errors 0 warnings, and that is the whole claim. `jawa/list_factions` was
+deployed at **10:05 on 2026-08-13**, one minute *after* the last session's
+`Player.log` stopped writing, so even the deployed one has never registered in a
+running game. The other three were written offline the same day with the game
+down. Verified against `Assembly-CSharp.dll` with `src/RimMandrake/Utils/ilprobe`,
+not from memory.
+
+| capability | call | what would decide it |
+|---|---|---|
+| enumerate **every** faction | `jawa/list_factions` | `countAllIncludingHidden` > `countReturned` with `includeHidden` false. The visible subset once read **34** against a true **54** |
+| turn a pawn and hold it | `jawa/set_pawn_rotation` | `applied: true` from a read-back of `pawn.Rotation`, `locked: true`, and a **second** turn while locked still applying — `Thing.set_Rotation` returns silently on a locked pawn, so a wrong clear→set→lock order is a silent no-op |
+| restyle a pawn | `jawa/set_pawn_style` | the requested `HairDef` reads back off `pawn.story` **and** the pawn redraws — `Notify_StyleItemChanged()` is what dirties the graphics |
+| convert a pawn's xenotype | `jawa/set_pawn_xenotype` | `pawn.genes.Xenotype` reads back as the def asked for and is **not Baseliner** — `get_Xenotype` returns `XenotypeDefOf.Baseliner` for a pawn that was never converted, so Baseliner cannot distinguish success from a no-op |
+| force a xenotype at spawn | `jawa/spawn_pawn` `xenotype=` | the row's `xenotypeApplied: true` — `PawnGenerationRequest.ForcedXenotype` returns first out of `GetXenotypeForGeneratedPawn` (IL_0000), ahead of every chance roll |
+
+⚠️ **`jawa/spawn_pawn` used to report `success: true` for a batch in which every
+pawn threw during generation** — rows are added for failures too and `success`
+was `rows.Count > 0`. Fixed 2026-08-13; the response now carries `spawnedCount`
+and `failedCount`, and `success` counts only pawns that really landed.
+
 🔴 **`jawa/fire_incident` remains a different class from everything else here.**
 Proven only through `dryRun`. Firing one for real is a deliberate act; the owner
 ruled on 2026-08-12 that the tool ships, and it stays behind the `--gm`
