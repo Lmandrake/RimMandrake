@@ -173,9 +173,36 @@ Say which, because it changes the delivery artifact, not the build.
 
 ---
 
-## ⭐ v1 ROW 2 — Faction Control's settings panel, 30 seconds of clicking
+## ✅ v1 ROW 2 — Faction Control's settings panel — **DONE, DO NOT SPEND A LOAD ON IT**
 
-**Do it early in the session, before anything that might crash.** Options → Mod
+**Closed by OPS 2026-08-13 offline. The click already happened in the 09:31–10:04
+session; both confirm conditions below are MET.** Measured after the game came
+down, on
+`C:\Users\Mandrake\AppData\LocalLow\Ludeon Studios\RimWorld by Ludeon Studios\Config\Mod_2882785581_Controller.xml`:
+
+- **mtime 09:31 today**, not 2025-12-09 — the file was re-enumerated.
+- `grep -c "<faction>"` → **41**; `grep -c "<li>"` → **41**; the file has no other
+  `<li>` field, so 41 is the entry count, not an artefact of the tag.
+- `grep -c "<faction>OuterRim"` → **4** (`GalacticEmpire`, `BinaryStarRaiders`,
+  `MoistureFarmers`, `RebelAlliance`). The non-zero condition is satisfied.
+
+⚠️ **But the click bought less than this section promised, on two counts.**
+1. **41 is not "well above 32" in the way that mattered** — the 11 settlement-less
+   modded factions (`JDSCIS_CIS_Faction`, `guy762_KotORFaction_RogueDroids`,
+   `AA_BlackHive`, `HoraxCult`, …) are STILL absent. Faction Control enumerates
+   what it can place, not what exists.
+2. 🔴 **The file cannot suppress a faction at all.** `FactionDensity` serialises
+   exactly `faction` / `density` / `enabled`, and `density` is a **clumping
+   radius** (`__result = dist < fd.Density;` in the
+   `TileFinder_IsValidTileForNewSettlement` postfix), not a count. The English
+   key "setting to 0 disables the faction" is a pre-1.3 leftover string. Faction
+   removal is a **worldgen-time** choice on vanilla's Configure Factions page.
+   Full derivation in `infrastructure/state/queue/OPS.md` §5b.
+
+**So: the click is done, and row 2 is NOT closed by it.** Row 2 now lands as a
+worldgen-screen checklist, not a settings write.
+
+**Historical instruction, kept for the record — do not execute:** Options → Mod
 settings → **Faction Control** → let it draw its faction list → close with
 **Accept/OK**.
 
@@ -183,8 +210,9 @@ settings → **Faction Control** → let it draw its faction list → close with
 and is the file v1 row 2 must write into — Faction Control ships **zero defs** and
 keeps its whole capability in settings, so nothing in our pipeline can generate it.
 
-**The block is an INCOMPLETE LIST, not a stale timestamp, and that is why the fix
-works.** The file holds **32** factions, dated 2025-12-09; OPS measured **55** in
+~~**The block is an INCOMPLETE LIST, not a stale timestamp, and that is why the fix
+works.** The file holds **32** factions, dated 2025-12-09~~ — **both numbers are
+now stale: it is 41, dated 09:31 today.** OPS measured **55** in
 the world. Every Star Wars faction is missing, because mods enabled in August
 cannot appear in a file written in December. Opening the settings UI is what makes
 the mod re-enumerate against the current mod set.
