@@ -313,6 +313,71 @@ The campaign dossier for this faction is the **Homestead Compact**
 (`design/Jawa/worldbuilding/faction_roster_v2.md` §3;
 `faction_stage3_buildable_spec.md:276` — *"PATCH `OuterRim_MoistureFarmers`"*).
 
+### 1e-bis. More of the same, found on a second sweep
+
+**More Force-flavoured xenotypes, all active.** `PureBlood` ("Pureblood",
+`…\294100\3485069256\Defs\XenoType.xml`, mod *Rimwars:Pureblood Xenotype*,
+`Sov.Sith`) — cosmetics plus `PsychicAbility_Extreme`, **no** `guy762_statgene_force`,
+so no psylink. `BTD_Miraluka` (`…\3458153185\1.6\Defs\Genes\BTD_Xenotypes.xml:1279`,
+carries `OuterRim_ForceSight`), `OuterRim_Miraluka` and `OuterRim_Sith`
+(`…\294100\2980427615\1.6\Defs\GeneDefs\Xenotype_Miraluka.xml` / `Xenotype_Sith.xml`),
+`guy762_xenotype_massassi`, `guy762_xenotype_zabrakDathomiri`.
+
+⚠️ `BTD_SithM` and `BTD_SithZ` carry **no psychic genes at all** — Massassi is a
+pure melee bruiser, Zugurak a crafter caste. Only `BTD_SithK` has
+`PsychicAbility_Enhanced` + `Turn_Gene_LatentPsychic`, and none of the three has
+`guy762_statgene_force`. Use them for flavour, not for psylink.
+
+⚠️ `OuterRim_Sith`'s only Force gene is `OuterRim_ForceAdept`, gated
+`MayRequire="Neronix17.OuterRim.HokeyReligions"` — stripped in our stack. Outer
+Rim's own Sith therefore have **zero** Force content today.
+
+⚠️ **Duplicate defNames across two active mods:** `Sov.Sith` and
+`guy762.StarWarsXenotypes` both ship `Head_Bone`, `GS_Eyes_Yellow`,
+`GS_Eyes_Orange`, `Male_HeavyBoneNormal`, `Female_HeavyBoneNormal` and
+`NamerPersonPureblood`. Last-loaded wins. Not caused by anything here, but it is
+the tree this build sits in.
+
+**Only one xenotype in the whole active stack has a
+`factionlessGenerationWeight`:** `BTD_Yoder` at `0.001`. Every Sith and Miraluka
+xenotype has none, so **none of them spawns naturally anywhere today.** BTD's own
+faction injections for `BTD_SithK/M/Z` are **commented out**
+(`…\3458153185\1.6\Patches\FactionPatches.xml:60-62`). This is exactly why the
+pawnkind in §3.4 is the necessary piece.
+
+**Two innate-psylink genes exist and are active** — an alternative to §3.3:
+`AG_InnatePsylink` (Alpha Genes, `…\294100\2891845502\1.6\Mods\Royalty\Defs\GeneDefs\GeneDefs_Royalty.xml:31`)
+and `VRE_InnatePsylink` (VRE-Archon, `…\294100\3067715093\1.6\Defs\GeneDefs\GeneDefs_Archite.xml:20`).
+Both Royalty-gated, both load. Adding one to a forked xenotype is cleaner than a
+Tabula Rasa hediff injection if a fork is being authored anyway.
+
+⭐ **Five real Force AbilityDefs already exist in the stack — attached to
+animals.** *Star Wars Animal Collection* (`mlie.starwarsanimalcollection`,
+ACTIVE), all in
+`…\294100\3497316713\1.6\Defs\AbilityDefs\SW_Abilities.xml`:
+`SW_ForcePush` (:261, launches `SW_ForcePushprojectile`, Blunt 20, AP 1),
+`SW_ForceScream` (:625, `Terror` mental state, radius 19.9),
+`SW_ForceInvisibility` (:469, grants vanilla `PsychicInvisibility` 20–30 s),
+`SW_ForceChaosSkip` (:740, `CompAbilityEffect_Teleport`, Royalty-gated),
+`SW_ForceFocus` (:797, + a HediffDef of the same name: +0.25 Consciousness /
+Sight / Hearing / Manipulation for 3 h). Each is gated behind a `TrainableDef` of
+the same name; there is **no pawn or gene hookup**.
+
+That is a genuine Force Push and Force Scream sitting in our load order. Whether
+they can be granted to a humanlike pawnkind via `<abilities>` and whether the
+enemy AI would cast them **was not established** — see §7. If they can, option C
+in §3.0 gets dramatically cheaper.
+
+**A third framework worth knowing about:** VEF is active and its `VEF.dll`
+exports the `VEF.Abilities` AbilityDef system (1.6 merged the old
+`VFECore.Abilities` into it). ~320 AbilityDef nodes across the active stack
+already use it (`AbilityExtension_Projectile`, `AbilityExtension_Hediff`,
+`Ability_ShootProjectile`, `AbilityPawnFlyer`, `PawnKindAbilityExtension`, …).
+**This is the best available surface for authoring Force powers that do not need
+psylink** — and `PawnKindAbilityExtension` is specifically a pawnkind→ability
+hook. Not used by this spec's option A, but it is where option C should start
+before anyone reaches for VPE or Harmony.
+
 ### 1g. What does NOT exist in the active stack — stated plainly
 
 - **No lightsaber weapon ThingDef.** Anywhere. (§ finding 2.)
@@ -328,6 +393,41 @@ The campaign dossier for this faction is the **Homestead Compact**
 - **No NPC psycast AI.** (§ finding 4.)
 - **No FactionDef in any Jawa mod.** `grep -rln "<FactionDef"` over
   `C:\Program Files (x86)\Steam\steamapps\common\RimWorld\Mods\` returns zero.
+- **No TraitDef for Force sensitivity, and no "midichlorian" anything.** Zero
+  hits stack-wide.
+- **`guy762.KotORFactions` is NOT active** — so no Jedi Order / Sith Empire
+  FactionDef, no Jedi/Sith/Inquisitor PawnKindDef, and
+  `…\294100\3254370945\1.6\AdditionalMods\_FactionsBase\` (including
+  `Culture_Sith.xml`, `guy762_culture_sith`) does not load. The
+  `guy762_NamerPawnKind_MaleInquisitor` / `_FemaleInquisitor` RulePacks that
+  *are* loaded name pawnkinds that do not exist.
+- **Every Sith/Miraluka "pawnkind" in the stack is a debug stub.**
+  `OuterRim_Sith`, `OuterRim_SithTribal`, `OuterRim_Miraluka`,
+  `OuterRim_ForceGremlin` are all `ParentName="OuterRimTestColonyPawnKind"` /
+  `…TestTribalPawnKind` with no faction, no gear and no combatPower — dev-spawn
+  enablers only. Our own
+  `…\Mods\Jawa_Patches\Defs\PawnKindDefs\AlienSpawnEnablers.xml:142,148`
+  (`Jawa_Spawn_SithK`, `Jawa_Spawn_SithM`) are the same pattern.
+- **Dead references left by the missing Hokey Religions module:** gene
+  `OuterRim_ForceAdept`; apparel tag `ORForceUser`, dangling in
+  `…\294100\2919227155\1.6\Defs\ThingDefs_Apparel\Cloak.xml:24,76`; and orphan
+  keyed strings `OuterRim.ForceUser_0Level`…`_7Level` ("Force Sensitive / Force
+  User / Force Adept / Force Knight / Force Master") in
+  `…\2919227155\Languages\English\Keyed\OuterRimCore.xml:20-24`. Outer Rim was
+  built expecting a Force module we do not have.
+- **The KotOR lightsabers exist as files and cannot load.**
+  `guy762_lightsaber`, `guy762_kotorlightsaber` and ~45
+  `guy762_SWForceLightsabers_CrystalPart_*` sit in
+  `…\294100\2938932438\1.6\AdditionalMods\_TheForceLightsabers\Defs\`, which is
+  gated `IfModActive="lee.theforce.lightsaber"`. Confirms finding 2 from the
+  other direction: **the defNames are on disk and unreachable.** Do not reference
+  them in a patch — restoring the mod is the fix.
+- **`SWPotF_hediff_YsalamirForceDampen`**
+  (`…\294100\3254370945\1.6\AdditionalMods\VEF\Defs\Ysalamiri.xml:39`,
+  `PsychicSensitivity ×0`) loads, but the
+  `VEF.AnimalBehaviours.CompProperties_HediffEffecter` that would apply it from
+  the ysalamir is commented out — *"MOVED TO OPTIONAL PATCHES"*. The
+  Force-dampening animal currently dampens nothing.
 
 ---
 
@@ -924,6 +1024,23 @@ Stated explicitly rather than filled in.
   and those two are asserted here.
 - **The `Force_*` xenotype question is moot** — the Standalone mod ships zero
   XenotypeDefs, so there was nothing to compare our xenotypes against.
+- **Whether the five `SW_Force*` animal AbilityDefs (§1e-bis) can be granted to a
+  humanlike pawnkind and cast by enemy AI.** This is the highest-value open
+  question in the document. They are real, loaded AbilityDefs implementing Force
+  Push, Scream, Invisibility, Skip and Focus; they are attached to animals via
+  `TrainableDef`. Their `aiCanUse` flags, whether `<abilities>` on a humanlike
+  PawnKindDef would grant them, and whether any think-tree node would fire them
+  were **not checked**. If the answer is yes, option C in §3.0 costs a patch file
+  rather than a mod install. **Check this before accepting the "no Force powers"
+  conclusion.**
+- **Whether `VEF.Abilities.PawnKindAbilityExtension` grants AI-castable abilities
+  to a pawnkind.** VEF is active and the extension exists; its behaviour was not
+  read. Same reasoning — it may collapse option C.
+- **The full lightsaber sweep was cut short.** A label sweep across all 620 active
+  mod folders found only crystals, hilt parts, research and category labels — no
+  weapon. That is consistent with finding 2 but is a `<label>` sweep, not a
+  `ThingDef` census, and it was the last thing running when this pass was wrapped.
+  Treat "no lightsaber in the active stack" as strongly supported, not proven.
 
 ---
 
