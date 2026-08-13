@@ -1629,6 +1629,542 @@ namespace JawaBench.BridgeTools
             }, cancellationToken).ConfigureAwait(false);
         }
 
+        // ---- pawn selection, shared by the two pawn-appearance tools ---------
+        // Accepts one ThingID, a comma-separated list, 'all' (every spawned
+        // pawn) or 'colonists'. On ANY unknown id it fails the whole call
+        // rather than quietly operating on the ids it did recognise -- a
+        // half-applied audit is worse than a refused one, because the caller
+        // photographs it and believes the result.
+        private static List<Pawn> ResolvePawns(Map map, string pawnId, out object error)
+        {
+            error = null;
+            var sel = (pawnId ?? "").Trim();
+            if (sel.Length == 0)
+            {
+                error = Fail("pawnId is required: a ThingID, a comma-separated list, " +
+                             "'all' or 'colonists'.");
+                return null;
+            }
+
+            var spawned = map.mapPawns.AllPawnsSpawned.ToList();
+            if (string.Equals(sel, "all", StringComparison.OrdinalIgnoreCase))
+                return spawned;
+            if (string.Equals(sel, "colonists", StringComparison.OrdinalIgnoreCase))
+                return map.mapPawns.FreeColonists.ToList();
+
+            var found = new List<Pawn>();
+            var missing = new List<string>();
+            foreach (var id in sel.Split(',').Select(q => q.Trim()).Where(q => q.Length > 0))
+            {
+                var p = spawned.FirstOrDefault(
+                    q => string.Equals(q.ThingID, id, StringComparison.OrdinalIgnoreCase));
+                if (p == null) missing.Add(id); else found.Add(p);
+            }
+
+            if (missing.Count > 0)
+            {
+                error = Fail($"No spawned pawn on this map with id: {string.Join(", ", missing)}.",
+                    new
+                    {
+                        missing,
+                        pawnsOnMap = spawned.Count,
+                        onMap = spawned.Take(25).Select(q => new
+                        {
+                            id = q.ThingID,
+                            name = q.LabelShortCap,
+                            kind = q.kindDef?.defName
+                        }).ToList()
+                    });
+                return null;
+            }
+            return found;
+        }
+
+        private static bool TryParseRot(string dir, out Rot4 rot)
+        {
+            rot = Rot4.South;
+            switch ((dir ?? "").Trim().ToLowerInvariant())
+            {
+                case "n": case "north": case "0": rot = Rot4.North; return true;
+                case "e": case "east":  case "1": rot = Rot4.East;  return true;
+                case "s": case "south": case "2": rot = Rot4.South; return true;
+                case "w": case "west":  case "3": rot = Rot4.West;  return true;
+            }
+            return false;
+        }
+
+        private static List<string> DefSuggestions<T>(string name) where T : Def, new()
+        {
+            var needle = (name ?? "").ToLowerInvariant();
+            return DefDatabase<T>.AllDefsListForReading
+                .Where(d => d.defName.ToLowerInvariant().Contains(needle))
+                .Select(d => d.defName).Take(10).ToList();
+        }
+
+        // 'r,g,b' or 'r,g,b,a' in 0..1 or 0..255, '#RRGGBB', or a ColorDef defName.
+        private static bool TryParseColor(string s, out UnityEngine.Color c, out string why)
+        {
+            c = UnityEngine.Color.white;
+            why = null;
+            var t = (s ?? "").Trim();
+            if (t.Length == 0) { why = "empty"; return false; }
+
+            var cd = DefDatabase<ColorDef>.GetNamedSilentFail(t);
+            if (cd != null) { c = cd.color; return true; }
+
+            if (t.StartsWith("#")) t = t.Substring(1);
+            if (t.Length == 6 && t.All(Uri.IsHexDigit))
+            {
+                c = new UnityEngine.Color(
+                    Convert.ToInt32(t.Substring(0, 2), 16) / 255f,
+                    Convert.ToInt32(t.Substring(2, 2), 16) / 255f,
+                    Convert.ToInt32(t.Substring(4, 2), 16) / 255f);
+                return true;
+            }
+
+            var parts = t.Split(',').Select(q => q.Trim()).Where(q => q.Length > 0).ToList();
+            if (parts.Count < 3 || parts.Count > 4)
+            {
+                why = "expected 'r,g,b', 'r,g,b,a', '#RRGGBB' or a ColorDef defName";
+                return false;
+            }
+            var v = new float[4] { 0f, 0f, 0f, 1f };
+            for (var i = 0; i < parts.Count; i++)
+            {
+                float f;
+                if (!float.TryParse(parts[i], System.Globalization.NumberStyles.Float,
+                                    System.Globalization.CultureInfo.InvariantCulture, out f))
+                { why = $"'{parts[i]}' is not a number"; return false; }
+                v[i] = f;
+            }
+            // A caller writing 0..255 is unambiguous: no channel of a 0..1 colour
+            // exceeds 1. Scale rather than clamping them all to white.
+            if (v[0] > 1f || v[1] > 1f || v[2] > 1f)
+            { v[0] /= 255f; v[1] /= 255f; v[2] /= 255f; if (v[3] > 1f) v[3] /= 255f; }
+            c = new UnityEngine.Color(v[0], v[1], v[2], v[3]);
+            return true;
+        }
+
+        [Tool(
+            "jawa/set_pawn_style",
+            Description =
+                "Set a spawned pawn's APPEARANCE directly -- hair, hair colour, beard, face " +
+                "and body tattoo, head type, body type, fur and skin colour -- so a styled " +
+                "look can be staged for a screenshot without generating pawns until one comes " +
+                "out right. Every field is optional; only the ones you pass are touched. All " +
+                "defNames are resolved BEFORE anything is written, so a typo changes nothing " +
+                "instead of half-applying. After the writes it calls " +
+                "Pawn_StyleTracker.Notify_StyleItemChanged(), which is what actually rebuilds " +
+                "the graphics -- a style write without it is correct in the save and stale on " +
+                "screen.",
+            ResultDescription =
+                "Returns per pawn a before/after value for every field touched, read back off " +
+                "the pawn after the write. success is false unless every requested field reads " +
+                "back as the value asked for.")]
+        public static async Task<object> SetPawnStyle(
+            IRimBridgeContext ctx,
+            CancellationToken cancellationToken,
+            [ToolParameter(Description =
+                "One ThingID, a comma-separated list, 'all' or 'colonists'.")]
+            string pawnId,
+            [ToolParameter(Description = "HairDef defName, e.g. Bald, Shaved.", DefaultValue = null)]
+            string hair = null,
+            [ToolParameter(Description =
+                "Hair colour: 'r,g,b' (0..1 or 0..255), '#RRGGBB', or a ColorDef defName. " +
+                "⚠️ If the pawn has a gene with skinIsHairColor, RimWorld also overwrites the " +
+                "skin colour from this value.", DefaultValue = null)]
+            string hairColor = null,
+            [ToolParameter(Description = "BeardDef defName, e.g. NoBeard.", DefaultValue = null)]
+            string beard = null,
+            [ToolParameter(Description = "TattooDef defName for the face, e.g. NoTattoo_Face. " +
+                "Needs Ideology.", DefaultValue = null)]
+            string faceTattoo = null,
+            [ToolParameter(Description = "TattooDef defName for the body, e.g. NoTattoo_Body. " +
+                "Needs Ideology.", DefaultValue = null)]
+            string bodyTattoo = null,
+            [ToolParameter(Description = "HeadTypeDef defName. Not validated against the " +
+                "pawn's gender or genes -- vanilla filters on those, a direct write does not.",
+                DefaultValue = null)]
+            string headType = null,
+            [ToolParameter(Description = "BodyTypeDef defName: Male, Female, Thin, Hulk, Fat, " +
+                "Baby, Child.", DefaultValue = null)]
+            string bodyType = null,
+            [ToolParameter(Description = "FurDef defName (Biotech fur layer).", DefaultValue = null)]
+            string fur = null,
+            [ToolParameter(Description =
+                "Skin colour, same formats as hairColor, or 'clear' to drop the override and " +
+                "let genes decide. Writes story.skinColorOverride, which is the field RimWorld " +
+                "actually saves.", DefaultValue = null)]
+            string skinColor = null)
+        {
+            var asked = new List<string>();
+            if (!string.IsNullOrWhiteSpace(hair)) asked.Add("hair");
+            if (!string.IsNullOrWhiteSpace(hairColor)) asked.Add("hairColor");
+            if (!string.IsNullOrWhiteSpace(beard)) asked.Add("beard");
+            if (!string.IsNullOrWhiteSpace(faceTattoo)) asked.Add("faceTattoo");
+            if (!string.IsNullOrWhiteSpace(bodyTattoo)) asked.Add("bodyTattoo");
+            if (!string.IsNullOrWhiteSpace(headType)) asked.Add("headType");
+            if (!string.IsNullOrWhiteSpace(bodyType)) asked.Add("bodyType");
+            if (!string.IsNullOrWhiteSpace(fur)) asked.Add("fur");
+            if (!string.IsNullOrWhiteSpace(skinColor)) asked.Add("skinColor");
+            if (asked.Count == 0)
+                return Fail("Nothing to set. Pass at least one of: hair, hairColor, beard, " +
+                            "faceTattoo, bodyTattoo, headType, bodyType, fur, skinColor.");
+
+            // ⚠️ Pawn_StyleTracker.set_FaceTattoo / set_BodyTattoo open with
+            // ModLister.CheckIdeology and RETURN if it is absent. Without this
+            // guard the tool would report a tattoo it never applied.
+            if (!ModsConfig.IdeologyActive
+                && (!string.IsNullOrWhiteSpace(faceTattoo) || !string.IsNullOrWhiteSpace(bodyTattoo)))
+                return Fail("Tattoos need Ideology, and RimWorld's tattoo setters silently " +
+                            "return when it is absent. Refusing rather than reporting a " +
+                            "change that cannot happen.");
+
+            UnityEngine.Color hairCol = UnityEngine.Color.white, skinCol = UnityEngine.Color.white;
+            var clearSkin = string.Equals((skinColor ?? "").Trim(), "clear",
+                                          StringComparison.OrdinalIgnoreCase);
+            if (!string.IsNullOrWhiteSpace(hairColor))
+            {
+                string why;
+                if (!TryParseColor(hairColor, out hairCol, out why))
+                    return Fail($"hairColor '{hairColor}' is not a colour: {why}.");
+            }
+            if (!string.IsNullOrWhiteSpace(skinColor) && !clearSkin)
+            {
+                string why;
+                if (!TryParseColor(skinColor, out skinCol, out why))
+                    return Fail($"skinColor '{skinColor}' is not a colour: {why}.");
+            }
+
+            return await ctx.MainThread.InvokeAsync<object>(() =>
+            {
+                var map = Find.CurrentMap;
+                if (map == null) return Fail("No current map. Load a game first.");
+
+                object err;
+                var pawns = ResolvePawns(map, pawnId, out err);
+                if (pawns == null) return err;
+
+                // Resolve every def up front. A typo must not leave half a
+                // pawn restyled and still return success.
+                HairDef hairD = null; BeardDef beardD = null;
+                TattooDef faceD = null, bodyD = null;
+                HeadTypeDef headD = null; BodyTypeDef bodyTD = null; FurDef furD = null;
+
+                if (!string.IsNullOrWhiteSpace(hair))
+                {
+                    hairD = DefDatabase<HairDef>.GetNamedSilentFail(hair.Trim());
+                    if (hairD == null) return Fail($"No HairDef named '{hair}'.",
+                        new { suggestions = DefSuggestions<HairDef>(hair) });
+                }
+                if (!string.IsNullOrWhiteSpace(beard))
+                {
+                    beardD = DefDatabase<BeardDef>.GetNamedSilentFail(beard.Trim());
+                    if (beardD == null) return Fail($"No BeardDef named '{beard}'.",
+                        new { suggestions = DefSuggestions<BeardDef>(beard) });
+                }
+                if (!string.IsNullOrWhiteSpace(faceTattoo))
+                {
+                    faceD = DefDatabase<TattooDef>.GetNamedSilentFail(faceTattoo.Trim());
+                    if (faceD == null) return Fail($"No TattooDef named '{faceTattoo}'.",
+                        new { suggestions = DefSuggestions<TattooDef>(faceTattoo) });
+                }
+                if (!string.IsNullOrWhiteSpace(bodyTattoo))
+                {
+                    bodyD = DefDatabase<TattooDef>.GetNamedSilentFail(bodyTattoo.Trim());
+                    if (bodyD == null) return Fail($"No TattooDef named '{bodyTattoo}'.",
+                        new { suggestions = DefSuggestions<TattooDef>(bodyTattoo) });
+                }
+                if (!string.IsNullOrWhiteSpace(headType))
+                {
+                    headD = DefDatabase<HeadTypeDef>.GetNamedSilentFail(headType.Trim());
+                    if (headD == null) return Fail($"No HeadTypeDef named '{headType}'.",
+                        new { suggestions = DefSuggestions<HeadTypeDef>(headType) });
+                }
+                if (!string.IsNullOrWhiteSpace(bodyType))
+                {
+                    bodyTD = DefDatabase<BodyTypeDef>.GetNamedSilentFail(bodyType.Trim());
+                    if (bodyTD == null) return Fail($"No BodyTypeDef named '{bodyType}'.",
+                        new { suggestions = DefSuggestions<BodyTypeDef>(bodyType) });
+                }
+                if (!string.IsNullOrWhiteSpace(fur))
+                {
+                    furD = DefDatabase<FurDef>.GetNamedSilentFail(fur.Trim());
+                    if (furD == null) return Fail($"No FurDef named '{fur}'.",
+                        new { suggestions = DefSuggestions<FurDef>(fur) });
+                }
+
+                var rows = new List<object>();
+                var fullyApplied = 0;
+                foreach (var pawn in pawns)
+                {
+                    cancellationToken.ThrowIfCancellationRequested();
+
+                    // PawnComponentsUtility only allocates story and style for
+                    // humanlike pawns. Touching either on an animal is an NRE.
+                    if (pawn.story == null || pawn.style == null)
+                    {
+                        rows.Add(new
+                        {
+                            id = pawn.ThingID,
+                            name = pawn.LabelShortCap,
+                            ok = false,
+                            error = "NoStyleTrackers",
+                            message = "Not humanlike: this pawn has no story/style tracker."
+                        });
+                        continue;
+                    }
+
+                    var changes = new List<object>();
+                    var okAll = true;
+
+                    if (hairD != null)
+                    {
+                        var was = pawn.story.hairDef?.defName;
+                        pawn.story.hairDef = hairD;
+                        var now = pawn.story.hairDef?.defName;
+                        var ok = now == hairD.defName; okAll &= ok;
+                        changes.Add(new { field = "hair", was, now, ok });
+                    }
+                    if (!string.IsNullOrWhiteSpace(hairColor))
+                    {
+                        var was = ColorStr(pawn.story.HairColor);
+                        pawn.story.HairColor = hairCol;
+                        var now = ColorStr(pawn.story.HairColor);
+                        // get_HairColor filters through rot/shambler colour for
+                        // corpses and mutants, so a read-back mismatch here is
+                        // informative rather than automatically a failure --
+                        // report it, do not fail the call on it.
+                        changes.Add(new
+                        {
+                            field = "hairColor",
+                            was,
+                            now,
+                            requested = ColorStr(hairCol),
+                            ok = true,
+                            note = now == ColorStr(hairCol) ? null
+                                 : "Read-back differs: get_HairColor filters rotting/shambler pawns."
+                        });
+                    }
+                    if (beardD != null)
+                    {
+                        var was = pawn.style.beardDef?.defName;
+                        pawn.style.beardDef = beardD;
+                        var now = pawn.style.beardDef?.defName;
+                        var ok = now == beardD.defName; okAll &= ok;
+                        changes.Add(new { field = "beard", was, now, ok });
+                    }
+                    if (faceD != null)
+                    {
+                        var was = pawn.style.FaceTattoo?.defName;
+                        pawn.style.FaceTattoo = faceD;
+                        var now = pawn.style.FaceTattoo?.defName;
+                        var ok = now == faceD.defName; okAll &= ok;
+                        changes.Add(new { field = "faceTattoo", was, now, ok });
+                    }
+                    if (bodyD != null)
+                    {
+                        var was = pawn.style.BodyTattoo?.defName;
+                        pawn.style.BodyTattoo = bodyD;
+                        var now = pawn.style.BodyTattoo?.defName;
+                        var ok = now == bodyD.defName; okAll &= ok;
+                        changes.Add(new { field = "bodyTattoo", was, now, ok });
+                    }
+                    if (headD != null)
+                    {
+                        var was = pawn.story.headType?.defName;
+                        pawn.story.headType = headD;
+                        var now = pawn.story.headType?.defName;
+                        var ok = now == headD.defName; okAll &= ok;
+                        changes.Add(new { field = "headType", was, now, ok });
+                    }
+                    if (bodyTD != null)
+                    {
+                        var was = pawn.story.bodyType?.defName;
+                        pawn.story.bodyType = bodyTD;
+                        var now = pawn.story.bodyType?.defName;
+                        var ok = now == bodyTD.defName; okAll &= ok;
+                        changes.Add(new { field = "bodyType", was, now, ok });
+                    }
+                    if (furD != null)
+                    {
+                        var was = pawn.story.furDef?.defName;
+                        pawn.story.furDef = furD;
+                        var now = pawn.story.furDef?.defName;
+                        var ok = now == furD.defName; okAll &= ok;
+                        changes.Add(new { field = "fur", was, now, ok });
+                    }
+                    if (!string.IsNullOrWhiteSpace(skinColor))
+                    {
+                        var was = pawn.story.skinColorOverride.HasValue
+                            ? ColorStr(pawn.story.skinColorOverride.Value) : "(none)";
+                        pawn.story.skinColorOverride =
+                            clearSkin ? (UnityEngine.Color?)null : skinCol;
+                        var now = pawn.story.skinColorOverride.HasValue
+                            ? ColorStr(pawn.story.skinColorOverride.Value) : "(none)";
+                        var ok = clearSkin ? !pawn.story.skinColorOverride.HasValue
+                                           : now == ColorStr(skinCol);
+                        okAll &= ok;
+                        changes.Add(new { field = "skinColor", was, now, ok });
+                    }
+
+                    // THE line that makes any of it visible. It clears the
+                    // pending-look fields and then calls
+                    // pawn.Drawer.renderer.SetAllGraphicsDirty(). Main thread
+                    // only -- it runs Unity work synchronously on the caller.
+                    pawn.style.Notify_StyleItemChanged();
+
+                    if (okAll) fullyApplied++;
+                    rows.Add(new
+                    {
+                        id = pawn.ThingID,
+                        name = pawn.LabelShortCap,
+                        ok = okAll,
+                        rendered = pawn.Spawned,
+                        changes
+                    });
+                }
+
+                return new
+                {
+                    success = rows.Count > 0 && fullyApplied == rows.Count,
+                    message = $"Restyled {fullyApplied}/{rows.Count} pawn(s): " +
+                              $"{string.Join(", ", asked)}.",
+                    fieldsRequested = asked,
+                    pawnsChanged = fullyApplied,
+                    pawns = rows,
+                    ticksGame = Find.TickManager?.TicksGame ?? -1
+                };
+            }, cancellationToken).ConfigureAwait(false);
+        }
+
+        private static string ColorStr(UnityEngine.Color c) =>
+            $"{c.r:0.###},{c.g:0.###},{c.b:0.###}";
+
+        [Tool(
+            "jawa/set_pawn_rotation",
+            Description =
+                "Turn spawned pawns to face a chosen direction and FREEZE them there, so an " +
+                "art, apparel or xenotype audit can photograph a named side. A bare rotation " +
+                "write does not survive: Pawn_RotationTracker.UpdateRotation re-faces every " +
+                "pawn each tick from its job, its path and its drafted state -- a DRAFTED pawn " +
+                "is slammed to South every tick. This sets Thing.debugRotLocked, the same " +
+                "mechanism the vanilla dev 'Lock rotation' action uses, so the facing holds " +
+                "against the engine. Pass dir='unlock' to release. ALWAYS unlock when the " +
+                "audit is done: debugRotLocked is written by Thing.ExposeData, so a pawn left " +
+                "locked stays locked across a save and load.",
+            ResultDescription =
+                "Returns per pawn the requested rotation and the READ-BACK rotation, the " +
+                "posture, and 'visible' -- false when the pawn is laying or downed, because " +
+                "the renderer calls LayingFacing() and ignores Rotation entirely for those. " +
+                "success is false unless every pawn actually reads back the rotation asked " +
+                "for, so a locked or laying pawn cannot report a turn that did not happen.")]
+        public static async Task<object> SetPawnRotation(
+            IRimBridgeContext ctx,
+            CancellationToken cancellationToken,
+            [ToolParameter(Description =
+                "One ThingID, a comma-separated list of them, 'all' for every spawned pawn, " +
+                "or 'colonists'.")]
+            string pawnId,
+            [ToolParameter(Description =
+                "'north' / 'east' / 'south' / 'west' (or n/e/s/w, or 0-3), or 'unlock' to " +
+                "release a previous freeze without turning the pawn.")]
+            string dir,
+            [ToolParameter(Description =
+                "Hold the facing against the engine by setting debugRotLocked. Turn this off " +
+                "only if you want the pawn to resume normal facing on the next tick.",
+                DefaultValue = true)]
+            bool lockRotation = true)
+        {
+            var unlock = string.Equals((dir ?? "").Trim(), "unlock",
+                                       StringComparison.OrdinalIgnoreCase);
+            Rot4 want = Rot4.South;
+            if (!unlock && !TryParseRot(dir, out want))
+                return Fail($"dir '{dir}' is not a direction.", new
+                {
+                    accepted = new[] { "north", "east", "south", "west",
+                                       "n", "e", "s", "w", "0", "1", "2", "3", "unlock" }
+                });
+
+            return await ctx.MainThread.InvokeAsync<object>(() =>
+            {
+                var map = Find.CurrentMap;
+                if (map == null) return Fail("No current map. Load a game first.");
+
+                object err;
+                var pawns = ResolvePawns(map, pawnId, out err);
+                if (pawns == null) return err;
+
+                var rows = new List<object>();
+                var applied = 0;
+                var hidden = 0;
+                foreach (var pawn in pawns)
+                {
+                    cancellationToken.ThrowIfCancellationRequested();
+
+                    var posture = PawnUtility.GetPosture(pawn);
+                    // ⚠️ The renderer only reads Thing.Rotation for a STANDING or
+                    // crawling pawn. For anything laying down it calls
+                    // PawnRenderer.LayingFacing(), which derives the facing from
+                    // the bed, the job, or thingIDNumber % 4 -- so a turn applied
+                    // to a downed or sleeping pawn is a perfect silent no-op:
+                    // the field takes the value and the screen never changes.
+                    var visible = posture == PawnPosture.Standing || pawn.Crawling;
+                    var before = pawn.Rotation;
+
+                    // Order is mandatory. Thing.set_Rotation opens with
+                    //   if (value == rotationInt || debugRotLocked) return;
+                    // so setting a rotation on an already-locked pawn returns
+                    // clean and changes nothing. Clear, set, then re-lock.
+                    pawn.debugRotLocked = false;
+                    if (!unlock)
+                    {
+                        pawn.Rotation = want;
+                        pawn.debugRotLocked = lockRotation;
+                    }
+
+                    var after = pawn.Rotation;
+                    var ok = unlock || after.AsInt == want.AsInt;
+                    if (ok) applied++;
+                    if (!unlock && !visible) hidden++;
+
+                    rows.Add(new
+                    {
+                        id = pawn.ThingID,
+                        name = pawn.LabelShortCap,
+                        kind = pawn.kindDef?.defName,
+                        requested = unlock ? "unlock" : want.ToStringHuman(),
+                        before = before.ToStringHuman(),
+                        after = after.ToStringHuman(),
+                        applied = ok,
+                        locked = pawn.debugRotLocked,
+                        posture = posture.ToString(),
+                        drafted = pawn.Drafted,
+                        visible,
+                        note = visible ? null
+                             : "Laying/downed: the renderer ignores Rotation for this posture."
+                    });
+                }
+
+                var verb = unlock ? "Unlocked" : "Turned";
+                return new
+                {
+                    success = rows.Count > 0 && applied == rows.Count,
+                    message = $"{verb} {applied}/{rows.Count} pawn(s)" +
+                              (unlock ? "." : $" to {want.ToStringHuman()}.") +
+                              (hidden > 0
+                                  ? $" ⚠️ {hidden} of them are laying/downed, so the turn will " +
+                                    "not show on screen."
+                                  : ""),
+                    turned = applied,
+                    notVisible = hidden,
+                    locked = !unlock && lockRotation,
+                    pawns = rows,
+                    ticksGame = Find.TickManager?.TicksGame ?? -1
+                };
+            }, cancellationToken).ConfigureAwait(false);
+        }
+
 #if JAWA_GM_TOOLS
         // ---- THE GM PAIR -----------------------------------------------------
         // Compiled OUT unless the build defines JAWA_GM_TOOLS (build.py --gm).
