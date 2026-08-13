@@ -1,5 +1,7 @@
-import struct, sys
-exec(open('/tmp/claude-1000/-mnt-d-Luke-dev-Rimworld/4e327811-1bab-41a8-ad20-bf4aac6d1bed/scratchpad/meta_core.py').read())
+import os, struct, sys
+# Same dead-scratchpad breakage il.py had; resolve the sibling instead.
+exec(open(os.path.join(os.path.dirname(os.path.abspath(__file__)),
+                       'meta_core.py')).read())
 
 MEMBERREFPARENT = codedSz([0x02,0x01,0x1A,0x06,0x1B],3)
 HASCONSTANT = codedSz([0x04,0x08,0x17],2)
