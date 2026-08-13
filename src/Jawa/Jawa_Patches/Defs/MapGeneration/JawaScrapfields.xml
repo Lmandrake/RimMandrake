@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ============================================================================
+  JawaScrapfields.xml                    Jawa_Patches · authored 2026-08-13
+  ============================================================================
+
+  V1 ROW 4, override 3 of 3: the RESOURCE override.
+
+  WHAT THE PLAYER SEES: steel slag chunks lying half buried across the open
+  desert, with machine bits trodden into the sand around them. Not in ruins,
+  not in a mountain, out in the open where you land. The planet reads as a
+  place things have been crashing onto for a very long time, which is the
+  reason a clan of scavengers is standing on it.
+
+  ===========================================================================
+  DESIGN INTENT FOLLOWED
+  ===========================================================================
+    design/Jawa/concept.md §1
+      "A crashed Factory ship / Jawa stowaways story ... the gravship is
+       SOMEONE ELSE'S crashed industrial vessel ... which Jawa scavenger
+       mechanics have inherited and are repairing."
+
+    design/Jawa/worldbuilding/desert_world_design.md:296, the §3B terrain
+    treasure table, deep desert row:
+      "A half-buried ANCIENT SALVAGE WRECK / crashed hulk you strip |
+       components, tech, rare weapons"
+
+  And the specific thing this file does is already an authored, v1 TAGGED row
+  in the tile catalogue, which is the strongest backing any part of row 4 has:
+
+    design/Jawa/worldbuilding/tile_augmentation_catalogue.md:105
+      "| C5 | Meteoric metal field | ExtremeDesert, ZBiome_Badlands | 0.06 |
+        ChunkSlagSteel + MineralRich mutator | none | FP | v1 - mutator +
+        scatter |"
+
+    design/Jawa/worldbuilding/tile_augmentation_catalogue.md:89
+      "| A2 | Derelict geothermal tap - dead generator, AncientPipelineSection
+        run, slag | ... | + AncientPipelineSection, ChunkSlagSteel | ... |
+        v1 ... |"
+
+  So ChunkSlagSteel as desert scatter is the design's own call, not ours. Two
+  honest differences from C5, stated so nobody reads this as C5 delivered:
+  C5 is a TILE augmentation at commonality 0.06 paired with the MineralRich
+  mutator, i.e. a rare special tile. This is a thin, always-on scatter on the
+  player map instead. C5 proper is v2 work and this does not close it.
+
+  What is invented here is the NUMBER; see the tuning note.
+
+  Why slag and not crates or components: slag is the cheapest possible thing
+  to strew. It smelts to 15 steel (Core Various_Stone.xml:105-122) and only
+  after a smelter, power and hauling, so a littered map is atmosphere with a
+  work cost rather than free loot. Raising Ideology's AncientJunkClusters
+  instead would have handed out sealed crates of finished gear, which trips
+  concept.md §19.5 "no arms race". This does not.
+
+  ===========================================================================
+  EVERY FIELD BELOW IS COPIED FROM A SHIPPED GenStep_ScatterThings
+  ===========================================================================
+  Core/Defs/MapGeneration/CommonMapGenerator.xml:245-262, GenStepDef
+  "AncientMiscDebris", is the donor for order, allowInWaterBiome, isJunk,
+  minSpacing, countPer10kCellsRange, filthDef, filthExpandBy and filthChance.
+  Ideology/Defs/MapGeneration/CommonMapGenerator.xml:78-84 is the donor for
+  <thingDef> on the same genStep class.
+
+  Deliberately NOT used: <clusterSize> and <spotMustBeStandable>. Neither
+  appears on any shipped GenStep_ScatterThings anywhere in the Data tree
+  (grep: zero hits for clusterSize), and a field the engine does not read on
+  this class is a silent no op at best.
+
+  ⚠️ TUNING, and it is the ONLY number here worth arguing about:
+  countPer10kCellsRange 12~20 puts roughly 75 to 125 chunks on a 250x250 map,
+  about two or three visible per screen at normal zoom. That is the density
+  that makes the world READ as junk strewn; Core's own debris runs 0.25~0.5,
+  which is one or two per map and would not close a "seen on the map" gate.
+  Full theoretical yield if every chunk were smelted is around 1,100 to 1,900
+  steel per map, one off and non renewing, gated behind a smelter and haul
+  time. It does not create a ladder, so it clears concept.md §3, but it IS an
+  economy nudge VISION did not specify and it is the first number to cut if
+  the owner disagrees.
+
+  This GenStepDef does nothing on its own. Patches/JawaResource_Scrapfields.xml
+  registers it into the player map generator.
+  ============================================================================
+-->
+<Defs>
+
+  <GenStepDef>
+    <defName>Jawa_ScatterScrapfields</defName>
+    <order>960</order>
+    <genStep Class="GenStep_ScatterThings">
+      <thingDef>ChunkSlagSteel</thingDef>
+      <allowInWaterBiome>false</allowInWaterBiome>
+      <isJunk>true</isJunk>
+      <minSpacing>4</minSpacing>
+      <countPer10kCellsRange>12~20</countPer10kCellsRange>
+      <filthDef>Filth_MachineBits</filthDef>
+      <filthExpandBy>1</filthExpandBy>
+      <filthChance>0.35</filthChance>
+    </genStep>
+  </GenStepDef>
+
+</Defs>

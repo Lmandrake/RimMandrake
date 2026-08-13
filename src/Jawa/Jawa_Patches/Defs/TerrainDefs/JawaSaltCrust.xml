@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ============================================================================
+  JawaSaltCrust.xml                      Jawa_Patches · authored 2026-08-13
+  ============================================================================
+
+  V1 ROW 4, override 1 of 3: "Three terrain or resource overrides that are
+  visible on the map." (V1_SCOPE.md.)
+
+  ===========================================================================
+  DESIGN INTENT FOLLOWED, NOT INVENTED
+  ===========================================================================
+  The salt flat is one of the six LOCKED terrain anchors and is the ONLY one
+  with no def behind it anywhere in the stack. VISION wrote the intent and
+  nobody built it:
+
+    design/Jawa/worldbuilding/desert_world_design.md:136
+      "① Abundant: perfect flat build/landing pad + total visibility +
+       salt/mineral crust (salt = food preservation and trade good)."
+
+    design/Jawa/worldbuilding/desert_world_design.md:34
+      "| Salt flats / hardpan (open barren) | Perfect flat build/landing pad
+       + visibility + salt/mineral crust | Water; food; cover - total
+       exposure | Evaporite chems / rare salts | Zero cover ..."
+
+    design/Jawa/worldbuilding/resource_terrain_matrix.html:237
+      "Salt-flat scrape-crust: salt = food-preservation and trade; rare
+       evaporite chemicals = ③."
+
+  And the guardrail that shapes the def, quoted so nobody relaxes it later:
+
+    design/Jawa/mods/required_mods.md:459
+      "Terrain guardrail: reject any farmable-anywhere / high-fertility /
+       passive-resource-generating terrain (anti-exponential violation
+       dressed as scenery). Cosmetic sand/rock/salt = fine."
+
+    design/Jawa/worldbuilding/setup_checklist.md:142-144
+      "Desert terrain flavor: terrain QUANTITY already solved by the stack;
+       gap is desert DENSITY (sand/salt/hardpan variants). ... Guardrail:
+       reject farmable-anywhere / passive-resource terrain."
+
+  So this terrain is COSMETIC ONLY. fertility 0, no yield, no comp, nothing
+  the player can farm or harvest. The salt as a TRADE GOOD is deliberately
+  NOT implemented here; that is the terrain treasure work (desert_world_design
+  §3B, "an evaporite harvest field"), which is v2.
+
+  ===========================================================================
+  ART: REUSED, AND ART IS OWED
+  ===========================================================================
+  texturePath is Odyssey's own "Terrain/Surfaces/DryLakeBed", a pale cracked
+  hardpan. Verified to exist twice over:
+
+    Odyssey/Defs/TerrainDefs/Terrain_Natural.xml:263
+        <texturePath>Terrain/Surfaces/DryLakeBed</texturePath>
+    Odyssey/AssetBundles/resources_odyssey.manifest:682
+        Assets/Data/Odyssey/Textures/Terrain/Surfaces/DryLakeBed.psd
+
+  Core and the DLCs ship NO loose Textures folder at all, so a bundle
+  manifest string is the strongest offline proof available for a shipped
+  terrain texture. Note also that NOTHING in Core, any DLC or any biome def
+  references DryLakeBed (grep of the whole Data tree: three hits, all of them
+  its own declaration), so this art is currently unused by the game.
+
+  A purpose drawn salt texture is OWED and is v2. Reuse is the v1 route
+  precisely because the v1 gate is "a human sees it", and a texture path that
+  does not resolve is an invisible failure.
+
+  <color> pushes the cracked hardpan toward evaporite white. If a future
+  1.x quietly stops honouring <color> on natural terrain, the DryLakeBed
+  texture is STILL visually distinct from Sand and SoftSand, so this override
+  degrades to "slightly less white" rather than to "invisible". That was the
+  deciding reason for reusing DryLakeBed instead of tinting Sand.
+
+  ===========================================================================
+  WHY ParentName IS NaturalTerrainBase AND NOT Sand
+  ===========================================================================
+  Odyssey's DryLakeBed uses ParentName="Sand", which is legal because Sand
+  carries Name="Sand" (Core Terrain_Natural.xml:280). We do not copy that.
+  Inheriting from Sand would also inherit its <tools> (KickMaterialInEyes ->
+  SandInEyes) and <generatedFilth>Filth_Sand</generatedFilth>, neither of
+  which belongs on a hard mineral crust. NaturalTerrainBase is genuinely
+  Abstract="True" (Core Terrain_Natural.xml:4) and supplies Walkable,
+  natural=true and the pollution overlay fields; everything else below is
+  written out explicitly and each field is copied from a def read on disk.
+
+  Field by field provenance, Core/Defs/TerrainDefs/Terrain_Natural.xml:
+    edgeType FadeRough        Sand :286
+    categoryType Sand         Sand :287
+    renderPrecedence          Sand 350 :288, SoftSand 352; 351 sits between
+    pathCost                  Soil is 2, Sand 4; 0 = a hard flat pan
+    statBases / scatterType   Sand :290-296
+    affordances               Sand :297-303 (Walkable comes from the parent)
+    fertility 0               SoftSand :337, DryLakeBed Odyssey :269
+    takeFootprints            Sand :304
+  ============================================================================
+-->
+<Defs>
+
+  <TerrainDef ParentName="NaturalTerrainBase">
+    <defName>Jawa_SaltCrust</defName>
+    <label>salt crust</label>
+    <description>A hard evaporite pan left by water that dried out an age ago. The crust is flat, blinding at midday, and takes a footprint like chalk. It will grow nothing whatsoever, but it is the firmest ground on the planet and you can see anything coming across it long before it arrives.</description>
+    <texturePath>Terrain/Surfaces/DryLakeBed</texturePath>
+    <color>(232, 230, 218)</color>
+    <edgeType>FadeRough</edgeType>
+    <categoryType>Sand</categoryType>
+    <renderPrecedence>351</renderPrecedence>
+    <pathCost>0</pathCost>
+    <statBases>
+      <Beauty>-2</Beauty>
+      <BeautyOutdoors>0</BeautyOutdoors>
+      <Cleanliness>-1</Cleanliness>
+    </statBases>
+    <scatterType>SoftDry</scatterType>
+    <affordances>
+      <li>Light</li>
+      <li>Medium</li>
+      <li>Heavy</li>
+      <li>Diggable</li>
+    </affordances>
+    <fertility>0</fertility>
+    <takeFootprints>true</takeFootprints>
+  </TerrainDef>
+
+</Defs>

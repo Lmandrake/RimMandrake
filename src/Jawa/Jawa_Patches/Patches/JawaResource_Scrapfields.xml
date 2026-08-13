@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ============================================================================
+  JawaResource_Scrapfields.xml           Jawa_Patches · authored 2026-08-13
+  ============================================================================
+
+  V1 ROW 4, override 3 of 3 (the registration half).
+
+  Defs/MapGeneration/JawaScrapfields.xml declares the GenStepDef
+  Jawa_ScatterScrapfields. A GenStepDef on its own runs on NO map. A
+  MapGeneratorDef has to list it, exactly as a TerrainDef needs a biome to ask
+  for it. This file is that listing.
+
+  ===========================================================================
+  THE TARGET, READ FROM CORE
+  ===========================================================================
+  Core/Defs/MapGeneration/BasePlayerMapGenerator.xml:4-15
+
+      <MapGeneratorDef ParentName="MapCommonBase" Name="Base_Player">
+        <defName>Base_Player</defName>
+        <genSteps>
+          <li>RocksFromGrid</li>
+          <li>ScatterShrines</li>
+          <li>CaveHives</li>
+          <li MayRequire="Ludeon.RimWorld.Royalty">AnimaTrees</li>
+          ...
+        </genSteps>
+      </MapGeneratorDef>
+
+  <genSteps> is a PLAIN LIST of GenStepDef names, so <li> is correct here.
+  Read from the node, not assumed. The list inherits and appends to
+  MapCommonBase's own genSteps (Core CommonMapGenerator.xml:18), which is why
+  this def can carry only five entries and still generate a whole map.
+
+  ===========================================================================
+  SCOPE: Base_Player ONLY, AND THAT IS DELIBERATE
+  ===========================================================================
+  Base_Player is the generator for the map the colony settles on, so it is
+  the map the v1 gate is actually checked against. The alternative was to
+  patch the ABSTRACT MapCommonBase, which would put scrap on encounter maps,
+  faction bases and quest maps too. That is broader, more visible, and more
+  blast radius than a v1 thin row is allowed to spend. One extra Operation
+  aimed at /Defs/MapGeneratorDef[@Name="MapCommonBase"]/genSteps widens it
+  later if the owner wants the whole planet littered.
+
+  ===========================================================================
+  SAFETY
+  ===========================================================================
+  Conditional test xpath is IDENTICAL to the inner Add's xpath, so if Core
+  ever renames the def or restructures the node this becomes a silent no op
+  rather than a red error.
+  ============================================================================
+-->
+<Patch>
+
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/MapGeneratorDef[defName="Base_Player"]/genSteps</xpath>
+    <match Class="PatchOperationAdd">
+      <xpath>/Defs/MapGeneratorDef[defName="Base_Player"]/genSteps</xpath>
+      <value>
+        <li>Jawa_ScatterScrapfields</li>
+      </value>
+    </match>
+  </Operation>
+
+</Patch>

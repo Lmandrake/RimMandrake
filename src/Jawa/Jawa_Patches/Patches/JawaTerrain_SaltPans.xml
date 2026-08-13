@@ -1,0 +1,194 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ============================================================================
+  JawaTerrain_SaltPans.xml               Jawa_Patches · authored 2026-08-13
+  ============================================================================
+
+  V1 ROW 4, override 1 of 3 (the attachment half).
+
+  Defs/TerrainDefs/JawaSaltCrust.xml declares Jawa_SaltCrust. A TerrainDef on
+  its own generates NOWHERE, exactly as a WeatherDef on its own blows nowhere
+  (see SWDesertWeather_Attach.xml, same mod, same lesson). A biome must ask
+  for it. This file is that ask.
+
+  WHAT THE PLAYER SEES: broad, pale, cracked salt pans lying in the low ground
+  of desert maps, unmistakably not sand, flat enough to build and land on.
+
+  ===========================================================================
+  THE MECHANISM, READ FROM CORE, NOT INFERRED
+  ===========================================================================
+  Core/Defs/BiomeDefs/Biomes_WarmArid.xml, biome Desert, lines 256-269:
+
+      <terrainPatchMakers>
+        <li>
+          <perlinFrequency>0.05</perlinFrequency>
+          <maxFertility>0.8</maxFertility>
+          <minSize>13</minSize>
+          <thresholds>
+            <li>
+              <terrain>SoftSand</terrain>
+              <min>0.65</min>
+              <max>999</max>
+            </li>
+          </thresholds>
+        </li>
+      </terrainPatchMakers>
+
+  terrainPatchMakers is a PLAIN LIST of TerrainPatchMaker, so <li> is correct
+  here. That is not a guess: the node above already contains <li>, and the
+  child shape is decided by the field's C# type. Contrast the sibling field
+  <baseWeatherCommonalities>, which is dictionary keyed and where an <li>
+  destroyed seven biomes (SWDesertWeather_Attach.xml documents the wreckage).
+  <thresholds> is likewise a plain list. Both confirmed by reading the node.
+
+  Tuning, and why these numbers:
+    perlinFrequency 0.03  LOWER than Core's 0.05 = larger, fewer features.
+                          A salt pan is one big lake bed, not a speckle.
+    maxFertility 0.5      pans only form on the driest ground, so they never
+                          eat the rare fertile corners of AridShrubland.
+    minSize 25            Core uses 13. A pan smaller than this is noise.
+    min 0.70              the top of the perlin field only. Combined with
+                          maxFertility this lands around a tenth of a desert
+                          map, which is "obvious at a glance" without being
+                          the whole map. THIS is the number to move if the
+                          owner wants more or less salt; nothing else here
+                          is load bearing.
+
+  ===========================================================================
+  SAFETY
+  ===========================================================================
+  Desert and ExtremeDesert already own a <terrainPatchMakers> node, so those
+  are plain Conditional + Add with an identical test and inner xpath.
+
+  AridShrubland has NO terrainPatchMakers node at all (verified: its def runs
+  Biomes_WarmArid.xml:4-169 and contains terrainsByFertility at :80 but no
+  patch makers). Adding a CHILD to a node that does not exist is the exact
+  failure logged in traps-xml-and-defs.md, "One failed op silently kills every
+  op after it in the same sequence". So AridShrubland is guarded on the
+  CONTAINER: <match> adds the li, <nomatch> adds the whole element. This is
+  the only place in this file where the test xpath and the inner xpath
+  deliberately differ, and that is what a Conditional is for.
+
+  The sibling file JawaTerrain_DuneSeas.xml guards AridShrubland the same way.
+  Whichever of the two applies first creates the node; the other then takes
+  the <match> branch. Order independent by construction.
+
+  ⚠️ GEOLOGICAL LANDFORMS WINS ON LANDFORM TILES. READ BEFORE "FIXING" THIS.
+  =========================================================================
+  Geological Landforms (m00nl1ght.geologicallandforms, load 156) Harmony
+  patches RimWorld.TerrainPatchMaker itself. Symbols in
+  ...294100/2773943594/1.6/Lunar/Components/GeologicalLandforms.dll include
+  Patch_RimWorld_TerrainPatchMaker, NodeTerrainFromBiome, TpmTerrainAt.
+
+  What that means in practice, and it is NOT a reason to change this file:
+    - On an ORDINARY tile, GL's NodeTerrainFromBiome READS the biome's
+      terrainPatchMakers, so the salt pans below generate normally.
+    - On a tile carrying a LANDFORM, that landform's node graph can hard
+      write terrain over the biome result. 33 of GL's ~50 landform files
+      contain an outputTerrain node.
+
+  The specific irony, worth knowing before anyone hunts it: GL's own dry lake
+  landform hard codes SoftSand and Sand at
+  ...294100/2773943594/1.6/Landforms-v1/LandformDryLake.xml:290-291
+  So the ONE map feature that ought to be a salt pan is generated as soft
+  sand by GL, and this patch cannot reach it. Fixing that means editing a
+  serialised NodeCanvas (target Objects/Object[@refID="0"]/ArrayOfString/
+  string[1]), which is not thin v1 work. Filed, not done.
+
+  Scope note: patched to the three CORE arid biomes only. Modded desert
+  biomes (ZBiome_Badlands, ZBiome_DesertOasis, the Alpha Biomes arid set) are
+  deliberately NOT patched here. That is a v1 thinness call, not an oversight;
+  it is one extra Operation each if the owner wants wider coverage later.
+  ============================================================================
+-->
+<Patch>
+
+  <!-- Core: Desert -->
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/BiomeDef[defName="Desert"]/terrainPatchMakers</xpath>
+    <match Class="PatchOperationAdd">
+      <xpath>/Defs/BiomeDef[defName="Desert"]/terrainPatchMakers</xpath>
+      <value>
+        <li>
+          <perlinFrequency>0.03</perlinFrequency>
+          <maxFertility>0.5</maxFertility>
+          <minSize>25</minSize>
+          <thresholds>
+            <li>
+              <terrain>Jawa_SaltCrust</terrain>
+              <min>0.70</min>
+              <max>999</max>
+            </li>
+          </thresholds>
+        </li>
+      </value>
+    </match>
+  </Operation>
+
+  <!-- Core: Extreme Desert -->
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/BiomeDef[defName="ExtremeDesert"]/terrainPatchMakers</xpath>
+    <match Class="PatchOperationAdd">
+      <xpath>/Defs/BiomeDef[defName="ExtremeDesert"]/terrainPatchMakers</xpath>
+      <value>
+        <li>
+          <perlinFrequency>0.03</perlinFrequency>
+          <maxFertility>0.5</maxFertility>
+          <minSize>25</minSize>
+          <thresholds>
+            <li>
+              <terrain>Jawa_SaltCrust</terrain>
+              <min>0.68</min>
+              <max>999</max>
+            </li>
+          </thresholds>
+        </li>
+      </value>
+    </match>
+  </Operation>
+
+  <!--
+    Core: Arid Shrubland. No terrainPatchMakers node exists on this def, so
+    the <nomatch> branch has to create the whole element. See SAFETY above.
+  -->
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/BiomeDef[defName="AridShrubland"]/terrainPatchMakers</xpath>
+    <match Class="PatchOperationAdd">
+      <xpath>/Defs/BiomeDef[defName="AridShrubland"]/terrainPatchMakers</xpath>
+      <value>
+        <li>
+          <perlinFrequency>0.03</perlinFrequency>
+          <maxFertility>0.4</maxFertility>
+          <minSize>25</minSize>
+          <thresholds>
+            <li>
+              <terrain>Jawa_SaltCrust</terrain>
+              <min>0.75</min>
+              <max>999</max>
+            </li>
+          </thresholds>
+        </li>
+      </value>
+    </match>
+    <nomatch Class="PatchOperationAdd">
+      <xpath>/Defs/BiomeDef[defName="AridShrubland"]</xpath>
+      <value>
+        <terrainPatchMakers>
+          <li>
+            <perlinFrequency>0.03</perlinFrequency>
+            <maxFertility>0.4</maxFertility>
+            <minSize>25</minSize>
+            <thresholds>
+              <li>
+                <terrain>Jawa_SaltCrust</terrain>
+                <min>0.75</min>
+                <max>999</max>
+              </li>
+            </thresholds>
+          </li>
+        </terrainPatchMakers>
+      </value>
+    </nomatch>
+  </Operation>
+
+</Patch>

@@ -1,0 +1,145 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ============================================================================
+  JawaTerrain_DuneSeas.xml               Jawa_Patches · authored 2026-08-13
+  ============================================================================
+
+  V1 ROW 4, override 2 of 3.
+
+  WHAT THE PLAYER SEES: the arid maps stop being a flat sheet of Sand with an
+  occasional soft patch and become a dune sea. Wide, obviously wavy SoftSand
+  fields that you walk slowly through, with hard Sand between them. Arid
+  shrubland, which today has no dunes at all, gets them.
+
+  ===========================================================================
+  DESIGN INTENT FOLLOWED
+  ===========================================================================
+    design/Jawa/mods/required_mods.md:459
+      "Desert terrain: terrain QUANTITY is already solved (Geological
+       Landforms + Biome Transitions + Alpha Biomes + Vanilla Landmarks
+       Expanded + Choose Biome Commonality + Map Designer). Gap = desert
+       FLAVOR DENSITY (sand/salt/hardpan/dune variants) ..."
+
+    design/Jawa/worldbuilding/setup_checklist.md:142-143
+      "gap is desert DENSITY (sand/salt/hardpan variants)"
+
+    design/Jawa/worldbuilding/biome_terrain_palette.md:212
+      "| Soft Sand | SoftSand | none | 0, slows movement | Dune interiors |"
+
+  The design names the gap as density and names SoftSand as the dune terrain.
+  This file is that density change and nothing else. No new def, no new art.
+
+    design/Jawa/concept.md §7
+      "The world is a desert sea to cross, not a place to settle."
+
+  Dunes that cost movement are that sentence expressed as pathCost. SoftSand
+  is pathCost 14 against Sand's 4 (Core Terrain_Natural.xml:324 and :289), so
+  widening the dunes genuinely slows a crossing. That is intended, and it is
+  the one thing here with a gameplay cost rather than a purely visual one.
+
+  ===========================================================================
+  WHAT IS BEING CHANGED, EXACTLY
+  ===========================================================================
+  Core/Defs/BiomeDefs/Biomes_WarmArid.xml already ships one SoftSand patch
+  maker per hot desert biome, and the ONLY number touched here is its lower
+  threshold:
+
+    Desert         :256-269   threshold min 0.65   ->  0.55
+    ExtremeDesert  :405-417   threshold min 0.65   ->  0.50
+    AridShrubland  no terrainPatchMakers node      ->  gains one
+
+  Lower threshold = more of the perlin field clears the bar = wider dunes.
+  Perlin output clusters around 0.5, so 0.65 is roughly the top sixth of a
+  map and 0.55 is roughly the top third. ExtremeDesert goes further because
+  it is the deep desert and it is already 100% Sand at every fertility
+  (its terrainsByFertility is a single Sand row, -999 to 999, :398-404).
+
+  ⚠️ These two numbers, plus AridShrubland's 0.70, are the whole tuning
+  surface. Raise them back toward 0.65 to undo. Nothing else depends on them.
+
+  ===========================================================================
+  SAFETY
+  ===========================================================================
+  Desert and ExtremeDesert: the target node exists on disk, so the op is a
+  Conditional whose test xpath is IDENTICAL to the Replace's xpath. The
+  predicate [terrain="SoftSand"] is what makes it order independent with
+  respect to the sibling file JawaTerrain_SaltPans.xml, which adds a SECOND
+  <li> to the same terrainPatchMakers list. Whichever applies first, this
+  xpath still selects exactly the SoftSand threshold and never the salt one.
+
+  AridShrubland has no terrainPatchMakers node, so it is guarded on the
+  container with match/nomatch, for the reason set out at length in
+  JawaTerrain_SaltPans.xml. The two files guard it identically, so either
+  order works.
+  ============================================================================
+-->
+<Patch>
+
+  <!-- Core: Desert. Widen the shipped dune field. -->
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/BiomeDef[defName="Desert"]/terrainPatchMakers/li/thresholds/li[terrain="SoftSand"]/min</xpath>
+    <match Class="PatchOperationReplace">
+      <xpath>/Defs/BiomeDef[defName="Desert"]/terrainPatchMakers/li/thresholds/li[terrain="SoftSand"]/min</xpath>
+      <value>
+        <min>0.55</min>
+      </value>
+    </match>
+  </Operation>
+
+  <!-- Core: Extreme Desert. The deep desert is the dune sea proper. -->
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/BiomeDef[defName="ExtremeDesert"]/terrainPatchMakers/li/thresholds/li[terrain="SoftSand"]/min</xpath>
+    <match Class="PatchOperationReplace">
+      <xpath>/Defs/BiomeDef[defName="ExtremeDesert"]/terrainPatchMakers/li/thresholds/li[terrain="SoftSand"]/min</xpath>
+      <value>
+        <min>0.50</min>
+      </value>
+    </match>
+  </Operation>
+
+  <!--
+    Core: Arid Shrubland has no dunes at all today. Give it some, kept off
+    the fertile ground by maxFertility so the biome still reads as shrubland
+    rather than as a second Desert.
+  -->
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/BiomeDef[defName="AridShrubland"]/terrainPatchMakers</xpath>
+    <match Class="PatchOperationAdd">
+      <xpath>/Defs/BiomeDef[defName="AridShrubland"]/terrainPatchMakers</xpath>
+      <value>
+        <li>
+          <perlinFrequency>0.05</perlinFrequency>
+          <maxFertility>0.45</maxFertility>
+          <minSize>13</minSize>
+          <thresholds>
+            <li>
+              <terrain>SoftSand</terrain>
+              <min>0.70</min>
+              <max>999</max>
+            </li>
+          </thresholds>
+        </li>
+      </value>
+    </match>
+    <nomatch Class="PatchOperationAdd">
+      <xpath>/Defs/BiomeDef[defName="AridShrubland"]</xpath>
+      <value>
+        <terrainPatchMakers>
+          <li>
+            <perlinFrequency>0.05</perlinFrequency>
+            <maxFertility>0.45</maxFertility>
+            <minSize>13</minSize>
+            <thresholds>
+              <li>
+                <terrain>SoftSand</terrain>
+                <min>0.70</min>
+                <max>999</max>
+              </li>
+            </thresholds>
+          </li>
+        </terrainPatchMakers>
+      </value>
+    </nomatch>
+  </Operation>
+
+</Patch>
