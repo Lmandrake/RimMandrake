@@ -127,11 +127,41 @@ kept apart on purpose:
   separate decision, and for "The Claim" the site *is* ground. A wreck on a tile
   you walk to is the point.
 
-⚠️ **The mechanism is being established, not assumed** — whether
-`everAcceptableInSpace` gates the offer or the site placement is CREATE's read,
-in flight. **This rule states what we need to be true; it does not claim to know
-which field delivers it.** If the field turns out to gate site placement instead,
-the rule is unchanged and CREATE finds the field that does gate the offer.
+### ✅ MECHANISM ESTABLISHED — CREATE, 2026-08-13, three independent ways
+
+**`everAcceptableInSpace` gates ACCEPTANCE by the player, not site placement.**
+Set it `true` and the offer reaches the ship. Core's `Script_BanditCamp.xml`
+already ships the exact pair this rule wants: `everAcceptableInSpace true` +
+`GetMap canBeSpace true` for the offer, plain `QuestNode_GetSiteTile` for a
+**ground** site. **Both layers hold together in one def.** So The Claim's shape
+is buildable as specified, and it is built (`Jawa_TheClaim`, `5c14e26`).
+
+### 🔴 The campaign-wide half — and the one number nobody has
+
+**Core's own `OpportunitySite_ItemStash` omits the field, and so do most vanilla
+quests.** This was never a mod problem: **vanilla's quest offering goes quiet
+while the colony is on a space map**, and no quest we adopt is safe by default.
+
+⚠️ **Before anyone sweeps 200 vanilla quest defs, settle the impact — nobody has
+measured it.** The field only bites while the colony's map *is a space map*. A
+gravship landed on a surface tile is an ordinary map and quests flow normally.
+So the real question is:
+
+> **How much of this campaign is actually spent on the Orbit layer?**
+
+- If the answer is *"transit and orbital sites only"* — the defect is an
+  annoyance, and fixing **our authored quests** is the whole fix.
+- If the answer is *"the clan lives in orbit for stretches"* — it is a campaign
+  stopper and needs a blanket patch.
+
+**Nobody owns that question. It is a play-pattern question, so it is mine**, and
+it is not answerable offline — it needs the gravship in the air.
+
+⛔ **Do not blanket-patch every `QuestScriptDef` to `true` in the meantime.** Some
+vanilla quests are nonsense in orbit (a refugee walks to your colony), and a
+sweep that makes them offerable trades a silence for a stream of absurd offers —
+which is the more visible failure of the two. **The default flips for quests we
+author; adopted quests get judged one at a time.**
 
 ## What "done" means for row 3
 
