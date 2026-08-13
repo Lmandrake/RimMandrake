@@ -1144,3 +1144,27 @@ Every def, field and weight quoted here was read on disk on 2026-08-13 from the
 game install, the Steam Workshop tree, or the deployed
 `…\RimWorld\Mods\Jawa_Patches`. Nothing was inferred from a mod manager UI, a
 Workshop page, or memory. Where a fact could not be read, §7 says so.
+
+---
+
+## 🔴 DEPENDENCY ALERT — the saber mod is GONE from disk, 2026-08-13
+
+**This spec was written against a gap, not against the mod** (`b5796eb`). OPS has
+since established the mod was **real and running**: Workshop `3466124712`,
+`lee.theforce.lightsaber`, **333 defs including 14 wieldable lightsabers**, live
+in the 10:04 session. Its folder has since been deleted and it is absent from
+`appworkshop_294100.acf`. `ModsConfig.xml` still activates it.
+
+⚠️ **The loss is completely silent.** Every surviving saber reference is
+`MayRequire`/`IfModActive` gated, so nothing errors — **the Star Wars campaign
+simply has zero lightsabers and the log never says so.** No other active mod
+defines one: KotOR's 47 `SWSaber_KotOR_*` are 1.5-only.
+
+**Owner action: re-subscribe `3466124712` before the next load.** Fallback if the
+Workshop item is delisted: port the KotOR 1.5 saber XML.
+
+**Design consequence, and it is mine:** until this resolves, **do not promote the
+`laser sword` from Vanilla Weapons Expanded – Laser into the Force role**
+(`worldbuilding/ship_legacy_armoury.md`). A buildable common laser sword and a
+rare Sith blade cannot be the same object — if we spend the saber on the armoury
+line, the Force users have nothing left that is theirs.
