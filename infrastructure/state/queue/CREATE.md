@@ -93,9 +93,24 @@ sprite at 100% is judging the wrong image. `Source/recrop_east_v2.py` now
 measures the rigging constants from the cut instead of leaving them hand-set,
 so a regeneration costs a run rather than a careful remeasure.
 
-⏳ **Fix 1 (south neck) in flight**, then regenerate
-`Source/REVIEW_all_three.png` so the owner reviews the same sheet layout twice.
-Still held awaiting approval either way.
+✅ **Fix 1 DONE — `7e3018e`.** South's neck now leaves the shoulders at about
+half the ribcage width and tapers, matching east. **Harvested from east as the
+owner directed** — east was passed to the generator as reference-only for
+anatomy, never for pose or framing, so the facing the owner called correct was
+not touched. Footprint bbox unchanged at (199,11,315,468).
+
+⭐ **ALL THREE OWED FIXES ARE DONE. C3a is back with the owner for approval.**
+`Source/REVIEW_all_three.png` regenerated — and `Source/review_sheet.py` now
+builds it, so the two reviews are the same layout instead of a hand-assembly
+rebuilt from memory. ⚠️ **The new sheet draws both sides TINTED as the game
+renders them**, which the first sheet did not: that is why the sled looked white
+in review and grey in game. A review image that is not the rendered image is a
+trap.
+
+⏳ **Still NOT ruled on, and still do not read silence as approval:** the
+salmon-pink colour, the species-inconsistent head shapes, north's featureless
+rear. Fix 3 moved the palette, so the pink question is now easier to judge
+against a brown sled.
 
 🔴 **Pillow is NOT on the system `python3` here** — every build script in this
 mod imports PIL and would die. It is installed at
@@ -350,9 +365,18 @@ then resume the eopie sled / Bantha work.
 Core `Languages/English/Keyed/MainTabs.xml` L198 `QuestNotSpace` = "cannot accept
 in space", sitting in the accept-requirement string run; Odyssey's six genuinely
 orbital sites set it zero times while Core's `Script_TradeRequest.xml` sets it
-true *and* forces its target ground-only. **Core's own
-`OpportunitySite_ItemStash` omits it, so vanilla's quest offers go silent while
-the colony's map is a space map.** VISION has ruled (`95e500a`): flip the default
+true *and* forces its target ground-only.
+
+⚠️ **Corrected by VISION's parallel read (`82281e8`) — say this the refined way,
+because the first phrasing overstated it.** The quest is still **offered** in
+orbit; what is blocked is the **Accept button**. On the ordinary storyteller path
+the offering filter is dead code (`GiveQuest_Random` is `targetTags World`,
+`World.Tile` is `PlanetTile::Invalid`, so both `CanQuestOccurOnTile` overloads
+return true on their first branch). **Friction in orbit, not silence.** Also:
+`autoAccept=True` suppresses the gate both ways, which is why Space Tower's
+`everAcceptableInSpace=False` is inert.
+
+VISION has ruled (`95e500a`): flip the default
 for what we author, judge adopted quests one at a time, and **do not sweep** —
 the impact turns on how much of the campaign is spent on the Orbit layer, which
 is not answerable offline.
