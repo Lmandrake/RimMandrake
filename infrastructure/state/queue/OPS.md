@@ -73,11 +73,27 @@ settlements between them, the single largest non-SW presence on the map.
 `OuterRim_RebelAlliance` · `JDSCIS_CIS_Faction` ·
 `guy762_KotORFaction_RogueDroids`
 
-🔴 **`OuterRim_RebelAlliance` was configured but DID NOT GENERATE in the last
+~~🔴 **`OuterRim_RebelAlliance` was configured but DID NOT GENERATE in the last
 world** — it is in Faction Control's 41 and absent from the save's 53. **Watch
 for it explicitly at the next worldgen**; if it fails to appear again that is a
-real defect, not a taste call, and it is the kind of thing a clean log will never
-tell you.
+real defect**~~
+
+❌ **RETRACTED 2026-08-13. Not a defect — WE suppressed it, on purpose.**
+`src/Jawa/Jawa_Patches/Patches/RebelAlliance_Suppress.xml` (W6, 2026-08-12) sets
+`requiredCountAtGameStart` 0, `settlementGenerationWeight` 0, `canMakeRandomly`
+false **and `maxConfigurableAtWorldCreation` 0** — verified by reading the patch,
+all four values present. The last one removes it from the Configure Factions page
+**entirely**, so it cannot even be ticked back on at the screen.
+
+⚠️ **Two documents still carry the wrong version and I am not the one to fix
+them:** `infrastructure/state/queue/BRIDGE.md` calls it "a fiction problem, not a
+config problem", and the KEEP list below still names it. **Filed to VISION** —
+keep-vs-suppress is a design ruling, not mine.
+
+**The generalisable lesson, and it is the reason this got as far as it did:** an
+absence was read as a failure without first checking whether *we* had caused it.
+Our own deployed patches are part of the environment. Before calling any missing
+thing a defect, grep `Jawa_Patches/` for its defName.
 
 ⚠️ **Two cautions before anyone executes this.** First, **hidden factions
 (`Insect`, `Horrors`, `Mechanoid`, `Entities`) are not ordinary rows** — they
