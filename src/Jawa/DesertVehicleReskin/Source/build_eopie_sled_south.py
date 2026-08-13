@@ -110,7 +110,14 @@ TEAM_BOT = BAND_BOT                       # bottom-anchored: the animals lead
 
 # Trace stub centres in the generated pair, as a fraction of its width, so the
 # rigging follows the art if the pair is ever regenerated at another size.
-STUB_FRACS = (0.1625, 0.3696, 0.6321, 0.8352)
+# ⚠️ MEASURED off the cut pair, not eyeballed — the four leather runs in its top
+# rows. The v1 pair measured (0.1614, 0.3708, 0.6304, 0.8363) against the
+# (0.1625, 0.3696, 0.6321, 0.8352) written here, so the method agrees with the
+# hand values to ~0.001. The v2 pair genuinely moved them: a longer neck makes a
+# taller crop, and the stub columns are a fraction of WIDTH but the animals
+# shifted within it. Carrying the old numbers over would have hung the traces
+# off the wrong part of the shoulder.
+STUB_FRACS = (0.1863, 0.3505, 0.6523, 0.8126)
 
 LEATHER_MID = (99, 65, 24)
 LEATHER_HI = (115, 93, 57)
@@ -158,6 +165,20 @@ def _traces(base, attach_y, stubs):
 
 
 def main():
+    # Optional overrides so a regenerated pair can be built to a scratch path
+    # and judged at sprite scale BEFORE it replaces the shipped texture.
+    #   build_eopie_sled_south.py [pair.png [out.png [f0,f1,f2,f3]]]
+    # Defaults are the shipped values, so a bare run is unchanged.
+    global PAIR, OUT, OUT_MASK, STUB_FRACS
+    argv = sys.argv[1:]
+    if len(argv) >= 1:
+        PAIR = os.path.abspath(argv[0])
+    if len(argv) >= 2:
+        OUT = os.path.abspath(argv[1])
+        OUT_MASK = OUT.replace(".png", "m.png")
+    if len(argv) >= 3:
+        STUB_FRACS = tuple(float(v) for v in argv[2].split(","))
+
     art = Image.open(SRC_ART).convert("RGBA")
     mask = Image.open(SRC_MASK).convert("RGBA")
     if art.size != (CANVAS, CANVAS):
