@@ -3,7 +3,32 @@
 _Gravship Expedition campaign (RimWorld 1.6 / Odyssey). "Crashed Factory ship / Jawa stowaways" theme. Governed by the anti-exponential principle: the gravship + VFE-Factory are the ONLY scalable progression trees._
 
 **Created:** 2026-08-03
-**Status of the old open item** ("author a fixed Jawa xenotype if none exists"): **HALF-CLOSED.** A Jawa xenotype already ships in **Outer Rim Galactic Diversity 1.6** (`OuterRim_Jawa`), verified from local source. No authoring needed — the work is evaluation + a religion pairing, both below.
+
+> ## 🔴 SUPERSEDED, 2026-08-14 — Part 1's verdict is stale. The campaign is on `BTD_Jawa`.
+>
+> **Every "adopt `OuterRim_Jawa` unchanged / KEEP AS-IS" statement below is out of
+> date** (§1.3 line 59, §3 line 381, the summary line that used to be here, and the
+> `OuterRim_Jawa`-keyed ThoughtDef proposals in §4). The owner ruled otherwise and
+> the ruling is already built:
+> `D:\Luke\dev\Rimworld\src\Jawa\Jawa_Patches\Patches\JawaXenotype_Repoint.xml`
+> re-points **both** pawnkinds at **`BTD_Jawa`** (+20 °C heat tolerance, against
+> `OuterRim_Jawa`'s +10 °C). `V1_SCOPE.md` gate **W2**.
+>
+> **Read from the live def dump, 2026-08-14 — `BTD_Jawa` carries 24 genes to
+> `OuterRim_Jawa`'s 8**, and four of them are ours
+> (`Jawa_Eyes_HugeOrange`, `Jawa_Eyes_HugeAmber`, `Jawa_Head_Plain`,
+> `Jawa_Gene_Skittish`, all from `Jawa_Patches`). Side-by-side gene lists for all
+> three installed Jawa xenotypes:
+> `D:\Luke\dev\Rimworld\design\Jawa\worldbuilding\review\genome_register.html`
+>
+> ⭐ **This closes §4 open question 8 — "all-male forced generation, cleanest route
+> unconfirmed".** `BTD_Jawa` already carries **`Outland_AllMale`** (Outland
+> Genetics). No pawnkind `fixedGender` patch and no extra mod is needed; the gene
+> is in the xenotype the campaign already generates from.
+>
+> 🔴 **The Part 2 ideoligion work is NOT affected** — it never depended on which
+> Jawa xenotype ships. Only Part 1 and the xenotype-keyed thoughts in Part 4 need
+> re-reading with `BTD_Jawa` substituted.
 
 **Evidence tags used throughout:** ✅ verified from local source · �claim inferred (reasoning stated) · 🔎 needs in-game/source confirmation. Where I mark something inferred, I say what would confirm it.
 
