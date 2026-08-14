@@ -290,16 +290,31 @@ gate needs next*, and a cheap item that no v1 row depends on is **v2**.
 by what the *remaining* work is: authoring XML/defs/art → **CREATE**; config and
 live-stack → **OPS**; driving the live game to verify → **BRIDGE**.
 
-| # | v1 row | built | verified | owner | needs a load? |
+| # | v1 row | built | verified | owner | what is left |
 |---|---|---|---|---|---|
-| 1 | Empire reskin (labels only) | 🟩 **BUILT** | 🟩 **SEEN LIVE** | CREATE | ✅ done |
-| 2 | Faction exclusion at worldgen | ⬜ **0** | ⬜ | **OPS** + VISION | 🔴 **YES — it happens DURING the worldgen run** |
-| 3 | One `QuestScriptDef` | ⬜ **0** | ⬜ | **CREATE** | 🟢 **NO — closable offline today** |
-| 4 | Three terrain overrides | ⬜ **0** | ⬜ | **CREATE** | 🟢 **NO — closable offline today** |
-| 5 | **`BTD_Jawa`** plays (post-dedup) | 🟩 largely live | ⬜ | **BRIDGE** | 🔴 verify only |
-| 6 | Weapons/gear | 🟩 6 mods live | 🟩 partly | **BRIDGE** | 🔴 verify only |
-| 7 | Ordinary worldgen | ⬜ **0 — now a DO** | ⬜ | **BRIDGE** | 🔴 **YES — we generate the world** |
-| 8 | ⭐ **Gravship (DEEP)** | ⬜ design only | ⬜ | **CREATE** | 🔴 **build wants the game** |
+| 1 | Empire reskin (labels) | 🟩 **BUILT** | 🟩 **SEEN LIVE** | CREATE | ✅ **CLOSED** |
+| 2 | Faction exclusion at worldgen | — | ⬜ | owner + VISION | 🔴 the campaign worldgen, list ratified and waiting |
+| 3 | One `QuestScriptDef` — *The Claim* | 🟩 **BUILT**, deployed | ⬜ | CREATE | fire it and reach an end state |
+| 4 | Three terrain overrides | 🟩 **BUILT**, deployed | ⬜ | CREATE | map-gen-time — needs the campaign map |
+| 5 | Jawa xenotype plays | 🟩 live | 🟨 **genes render on scratch** | BRIDGE | see it on a naturally-spawned campaign Jawa |
+| 6 | Weapons / gear | 🟩 6 mods live | 🟩 **`JawaIonWeapons` PROVEN** `ad3e9b0` | BRIDGE | ✅ **CLOSED** |
+| 7 | Ordinary worldgen | ⬜ | ⬜ | BRIDGE | 🔴 the campaign desert world |
+| 8 | ⭐ **Gravship (DEEP)** | 🟩 **BUILT + EXPORTED** | 🟨 **3 of 4** | CREATE/BRIDGE | **boardable — never tested** |
+
+### 🔴 THE HEADLINE: the campaign world has still not been generated
+
+**Everything proven today was proven on a QUICKTEST map.** The game came up, a
+scratch colony was made, and enormous work landed on it — but the one
+irreversible step this session existed for, **worldgen with the ratified
+tick-list, has not happened.** Rows 2 and 7 are that step; rows 3, 4 and 5 all
+want the map it produces.
+
+⇒ **Nothing is lost** — the tick-list is ratified and committed, the ship is an
+exported artifact, the quest and terrain are deployed. **But v1 closed 1 row
+today (row 6) and the gate for four more is still one screen away.**
+
+**Score: 2 of 8 closed** (rows 1, 6). Rows 3, 4, 8 are *built and unverified* —
+which is a genuinely better position than this morning, when the build was 0.
 
 🟢 **Rows 3 and 4 need no game at all to BUILD — they are at 0 because nobody
 saw they were closable, not because they are hard.** Their *verification* rides
