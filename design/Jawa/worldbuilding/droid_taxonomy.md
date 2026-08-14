@@ -6,10 +6,24 @@ against.**_
 
 ---
 
-## 🔴 The self-destruct belief is wrong — 1 of 57, not half
+## 🔴 CORRECTED — the explosion tier is OUR DESIGN, not a claim about the mods
 
-`design/Jawa/droid_ruling.md` records that JDS droids *"blow up when downed, and
-that is the point"*. **Measured: that mod contains no `deathAction`, no
+⚠️ **My first version of this section said "the self-destruct belief is wrong".
+That was unfair and it misread our own paperwork.** `design/Jawa/droid_ruling.md`
+§6 *specifies* an explosion tier that we intend to author — it is a ruling, not a
+misremembered fact:
+
+> *"Explosions remain about **energy density**: only droids with large shielding…
+> cannot explode. POWER DENSITY explodes, not the fact it's a machine."*
+
+It assigns `explodeOnKilled` to **shield-generator units, heavy weapons platforms
+and reactor/battery units**, with `chanceNeverExplodeFromDamage: 1`, and
+explicitly rules that ion-blasted droids must NOT explode.
+
+**So the design stands. What the measurement corrects is narrower:**
+
+`droid_ruling.md`'s heading *"JDS droids blow up, and that is the point"* reads
+as describing the mod. It does not. **Measured: that mod contains no `deathAction`, no
 `CompExplosive` and no DLL at all.** Grepped across all three mods, **exactly one
 droid self-destructs** — `guy762_DroidRace_KX12APD`, the K-X12 assassin probe,
 via `DeathActionWorker_BigExplosion` at `AlienRace_KX12probe.xml:479`.
@@ -20,10 +34,16 @@ instead of downed, never a prisoner.** But the wreck is ordinary salvage, and th
 mod ships its own repair recipes (`JDSCIS_ResurrectDroid_Light` / `_Heavy`,
 1 corpse + 150 steel) that rebuild it into a working droid.
 
-⇒ **The question was never "loot or crater". It is "prisoner or wreck", and every
-family yields something.** If self-destruction was going to be a reason to cut a
-mod, **that reason does not exist.** Cut the one probe droid, or keep it as the
-single enemy that punishes sloppy fighting.
+⇒ **Two separate facts, both true:**
+1. **As shipped**, exactly one droid explodes. Nothing we would have to *remove*.
+2. **By our design**, an explosion tier gets *added* — to energy-dense units
+   only, on death and never on downing.
+
+⭐ **And the two fit together perfectly.** `explodeOnKilled` fires on
+`KillFinalize`; **a downed pawn has not died, so it does not explode.** The Jawa
+fantasy — down it, drag it home, repair it — survives the explosion tier
+completely intact. **The tier costs the player nothing except the units they
+choose to kill outright.**
 
 ## ⭐ The three families are three different relationships with machines
 
