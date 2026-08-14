@@ -121,6 +121,47 @@ equator, the more water there is and the less anyone wants to sell it to you.*
 Going polewards is safer and poorer; going equatorial is where the salvage is and
 where nothing drinks.
 
+### ⭐ THE THREE WATERS — owner, 2026-08-13
+
+> *"The Desert World will have a few large bodies of water (large lakes really)
+> and even a few rivers surrounded by vicious alien jungles, marshes, etc. It is
+> not a waterless world, though most of that will be concentrated in say three
+> areas on the planet while the remainder is barren sweltering dunes. It may be
+> amusing to put these bodies near the poles."*
+
+**This replaces "water is rare and scattered" with something far better: water is
+rare and CONCENTRATED.** Three regions, not a hundred lucky tiles.
+
+| | |
+|---|---|
+| **how many** | **three water regions.** Named places, not statistics |
+| **what is in them** | large lakes, a few rivers, and **vicious alien jungle and marsh around them** — feralisk-infested jungle, miasmic mangrove, mycotic growth, marsh |
+| **where** | **near the poles**, which is exactly the latitude rule above |
+| **everywhere else** | barren sweltering dune, unbroken |
+
+⭐ **Concentration is what makes the map a map.** Scattered water gives the player
+a hundred equivalent options and no geography. **Three Waters gives them three
+destinations, three journeys and three sets of neighbours** — and a crossing
+between them that is the desert doing its job.
+
+⭐ **And the jungle defends the water better than any faction could.** The Aquifer
+League's monopoly stops being a claim they enforce with warriors and becomes a
+fact of the terrain: getting to the water means going through feralisks and spore
+fields. **A faction whose power rests on geography is far more convincing than one
+whose power rests on a goodwill number.**
+
+**Consequence for the faction map:** the four cold-margin factions — Aquifer
+League, Wookiee Freeholds, Gene Consortium, Free Droid Enclaves — are **not spread
+thinly across a polar band. They are concentrated in and around the Three
+Waters**, and therefore in each other's company. The poles are crowded and
+contested; the equator is empty and lethal. That is a much stronger world than an
+evenly-populated one.
+
+⚠️ **Open, and it decides a mod adoption:** GravTide needs **ocean** tiles
+specifically. **Large lakes may or may not qualify** — under investigation. If
+lakes do not count, the deep-sea concept needs either a forced ocean tile or a
+different route.
+
 ### How the interesting tiles cluster
 
 **Three cluster types, and every one of them is a story:**
