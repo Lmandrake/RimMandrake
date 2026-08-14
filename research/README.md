@@ -30,3 +30,8 @@ was taken, and re-deriving it costs full price.
 
 `MODLIST.md` here is **hand-authored** — mods a reader needs to make sense of this
 tier's material.
+
+⏳ **`MODLIST.md` DOES NOT EXIST YET.** This section describes what it will be,
+not what is here — verified 2026-08-13, `find` returns nothing. **Do not cite it
+as though it exists**; that is the same silent-failure shape as a `loadAfter`
+naming a mod that was never installed. Build it or delete this paragraph.

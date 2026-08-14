@@ -40,3 +40,8 @@ in passing**: all five packageIds are live in `ModsConfig.xml`, so a rename is a
 load-order edit at a specific slot plus a RimSort rules change, not a `sed`.
 
 `MODLIST.md` here is **hand-authored** — what this tier's code assumes exists.
+
+⏳ **`MODLIST.md` DOES NOT EXIST YET.** This section describes what it will be,
+not what is here — verified 2026-08-13, `find` returns nothing. **Do not cite it
+as though it exists**; that is the same silent-failure shape as a `loadAfter`
+naming a mod that was never installed. Build it or delete this paragraph.

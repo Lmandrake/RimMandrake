@@ -33,3 +33,8 @@ you destroy their edit.
 - **Source** → `src/`. This tier holds build outputs and copied config.
 - **Third-party mod source** → `vendor/`.
 - **Anything a running game produced** — logs, saves, def dumps → `observed/`.
+
+⏳ **NEITHER `MODLIST.md` NOR `mods/` EXISTS YET.** Verified 2026-08-13. This
+file describes the intended tier, and the generated modlist needs
+`harvest_log.py --emit-modlist`, which was deliberately not written while the
+game was down. **Do not cite either as though it exists.**
