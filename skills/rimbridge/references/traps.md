@@ -221,6 +221,9 @@ Skim this, open what matches your task — do not read them all.
 **Cause:** map generation is a long main-thread operation that outruns the client's 30 s timeout. The timeout is a property of how long we were willing to wait; nothing cancels the operation when the client stops listening.
 **Fix:** ❌ do not retry on that connection — the late response desyncs it. ❌ do not re-issue on a fresh connection either: `start_debug_game_ready` is **not idempotent** and a second call generates a **second map**. ✅ drop the connection, open a fresh one and poll the post-condition — `jawa/list_pawns` either succeeds or returns `{'success': False, 'message': 'No current map. Load a game first.'}`. Two polls, ~30–45 s.
 **Recurs when:** any bridge call that can exceed 30 s — `start_debug_game_ready`, `spawn_*`, `fire_incident`, loading a save. Timeout plus non-idempotent call is the dangerous pair; establish idempotence *before* retrying, and never infer "it failed" from "it timed out".
+⏱️ **Measured 2026-08-13 on the 580-mod stack: `start_debug_game_ready` took 78.5 s**, not the ~30 s implied above — plan for well over a minute, and poll rather than guessing a sleep. Two independent runs the same day needed 8 polls at 10 s and one run of 78.5 s.
+⚠️ **It needs `rimworld/go_to_main_menu` first** if a game is already loaded; from inside a running colony it will not start a fresh one.
+🔴 **And it DISCARDS the current map without further warning** — that is how it gets you a clean map. Anything another seat left on the old one is gone. Announce before calling it, and check nobody is mid-audit.
 
 ## 🔴 Foundation can only be laid on BARE ground — a floor blocks it permanently
 **Symptom:** `jawa/set_terrain_batch` with `layer='foundation'` reported `cellsChanged: 16` and `cellsFailedVerify: 12` on a 4×4 rect; only 4 cells held `Substructure`. The 12 that failed were exactly those already carrying `OuterRim_StoneHex_Slate` over `Soil`.
@@ -321,3 +324,16 @@ a **stale companion DLL**: rebuild and redeploy with the game closed
 - `ticksGame` is small and the colony has no history
 ⚠️ **A non-zero `ticksGame` plus living colonists is NOT evidence of worldgen.** Both are true on a map that was conjured in 30 seconds.
 **Recurs when:** any world-, faction- or biome-level question asked of a map that BRIDGE created. This is the blast radius of rule 1c: making maps freely is cheap, and every census taken on one inherits the ambiguity. Caught 2026-08-13 by OPS before the regeneration was booked.
+
+## Client-call gotchas that cost real minutes — the exact spellings
+Collected 2026-08-13; each one cost a seat time before it was written down.
+
+- **There is no `rimbridge/list_tools`.** Use the protocol-level `tools/list`, or `rimbridge_client.py --list-tools`.
+- **`RimBridge()` takes `timeout=`, not `read_timeout=`.**
+- 🔴 **`RimBridge()` does NOT open the socket and does NOT find the token.** The constructor takes an explicit host/port/token; the token is regenerated every game start. Use `resolve_endpoint(None, None, None, None)` to scrape it from `Player.log`, then `rb.connect()`. Symptom of getting this wrong: `AttributeError: 'NoneType' object has no attribute 'sendall'`, then `session/hello failed: Invalid authentication token`.
+- **WSL cannot reach the bridge at all** — RimBridge binds Windows loopback and WSL2 is NAT-mode. Run `python.exe`, never `python3`. This is not a timeout, it is no route.
+- **`rimworld/set_camera_zoom` takes `{"rootSize": <number>}`** — a number, not a zoom name. `{"zoom": "Furthest"}` is an unknown key: dropped silently, `success: true`, camera does not move.
+- **`rimworld/execute_gizmo` takes `{"gizmoId": "<id>"}`, not an index**, and the id changes every time the selection changes. Re-list; never cache one.
+- **`rimworld/update_mod_settings` wants `values` as a DICT** — `{"gravEngineSupport": 4500}`. A list of pairs returns *"At least one settings path/value pair is required."*
+- **`jawa/damage` takes `thingId`**, not `targetId`/`pawnId`/`id`. **`jawa/destroy_batch` takes `categories`**, plural.
+- ⭐ **The pattern behind half of these: an unknown parameter name is DROPPED SILENTLY before the tool runs**, so a wrong name is indistinguishable from an omitted one and the call reports success. When a call succeeds and nothing happens, suspect the parameter NAME before suspecting the game.
