@@ -143,3 +143,33 @@ statement an instruction still points at" shape this seat hunts.**
 wrong** — I blamed the interpreter; the cause was a `hasattr` on a name
 `game_paths` never exposed, so the platform branch was dead for every seat.
 Checking the source before raising it is what caught this. Keep doing that.
+
+---
+
+## Three Stage-2 gap-audit defects resolved or re-aimed — 2026-08-14, VISION
+
+Found while encoding the faction religions against the live def dump. Evidence in
+`D:\Luke\dev\Rimworld\design\Jawa\worldbuilding\faction_religions_spec.md`.
+
+- **D2 — Homestead ideology structure. DECIDED.** It is `Structure_TheistAbstract`,
+  deity *the Withdrawn*, gender `None`. The either/or at roster `:726` can close.
+  Reason: the covenant is *addressed* to something, and the ideological structure
+  has `deityCount 0` — there would be nothing to address.
+
+- **D3 — Geonosian species. MIS-SPECIFIED, not unresolved.** The roster's
+  *"Preferred xenotypes: Geonosian"* names a route that does not exist:
+  `PreferredXenotypes` has exactly one precept (`PreferredXenotype`, Biotech) and
+  its xenotype is chosen at **ideo-generation time, not in XML**. There is no
+  FactionDef path to it. ⇒ **Retarget the defect at `PawnKindDef` xenotype
+  chances — which is where faction 8's composition already is — or close it.**
+  Group E is not blocked on a roster decision; it is blocked on a wrong one.
+
+- **D1 — Homestead raid frequency. Better fix available than picking a number.**
+  `VME_Raiding_Abhorrent` (Vanilla Ideology Expanded, active) states the refusal
+  as *doctrine*. Put it on the Homestead and the Deepwater Compact and the
+  "never (Rw 0)" vs "very low" argument stops being a stat dispute — set the curve
+  low and let the precept carry the reason.
+
+⚠️ One more for the audit's own hygiene: it is **older than the roster it audits**
+and its line citations have drifted ~14-20 lines. D4, D5, D6 and open question 1
+are all already fixed in the roster and still shown open in the audit.

@@ -167,3 +167,31 @@ revert on your own judgement.
 My fault, and the lesson is already doctrine: stage explicit paths *and* pass them
 to `commit`, or read `git diff --cached --stat` before pressing it. I read it —
 after staging, which is one step too late.
+
+---
+
+## Eleven faction ideoligions are specified to XML depth — 2026-08-14, VISION
+
+**`D:\Luke\dev\Rimworld\design\Jawa\worldbuilding\faction_religions_spec.md`**
+
+Every `MemeDef`, `PreceptDef` and `StyleCategoryDef` in it was read out of the
+**live def dump**, not a workshop folder — nothing there is guessed, and nothing
+names a mod that is not active. Pattern to copy is the Horax cult
+(`Data\Anomaly\Defs\FactionDefs\Factions_Misc.xml`), `fixedIdeo` + `forcedMemes`,
+**not** the Empire's `requiredMemes` + `structureMemeWeights`.
+
+Per faction you get: structure meme, 3-4 norm memes, eight precept positions,
+style categories, whether `requiredPreceptsOnly` is on, and the `MayRequire`
+packageId for every modded def. Only faction 3 (Homestead) needs `deityPresets`.
+
+**Three engine constraints are written into the spec's opening section - read
+those before authoring, they each killed a line of the original design:**
+charity has no negative precept - `PreferredXenotypes` cannot be aimed at a
+xenotype from XML - `Apostasy_Abhorrent` hard-conflicts with the `Guilty` meme.
+
+The full legal vocabulary, regenerable from the dump, is
+`D:\Luke\dev\Rimworld\design\Jawa\worldbuilding\data\ideology_palette.md`
+(136 memes, 685 precepts, 41 styles, 92 ritual patterns).
+
+🔴 **Do not author the Jawa ideoligion.** Section 12 is a deliberate empty slot —
+the owner is building it.
