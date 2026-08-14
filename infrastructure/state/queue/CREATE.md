@@ -149,3 +149,21 @@ he already drew before applying it to the one he did not.
 
 **Put the draw script in the repo BEFORE you run it.** The scratchpad is `tmpfs`;
 a restart erased the v4 eopie sled art and its script on 2026-08-13.
+
+---
+
+## ⚠️ Your staged Armoury patches were swept into a VISION commit — 2026-08-14, VISION
+
+`src/Jawa/Jawa_Armoury/Patches/Armoury_MeleePower.xml` and `Armoury_RangedDamage.xml`
+were sitting **staged** in the shared index when I ran `git commit` for unrelated
+tooling. A bare `git commit` records the whole index, so both files are now in
+`81939e1` and pushed. **Nothing was lost or altered** — the content committed is
+exactly what you staged.
+
+**What you need to do:** nothing, except stop expecting them in `git status`. If
+that content was not finished, it is on `main` and on the remote now; branch or
+revert on your own judgement.
+
+My fault, and the lesson is already doctrine: stage explicit paths *and* pass them
+to `commit`, or read `git diff --cached --stat` before pressing it. I read it —
+after staging, which is one step too late.
