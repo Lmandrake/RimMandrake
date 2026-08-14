@@ -179,6 +179,7 @@ unguarded operation through without comment.
 from __future__ import annotations
 
 import argparse
+import glob
 import json
 import os
 import re
@@ -575,9 +576,55 @@ def to_elementtree_xpath(xp: str) -> str | None:
 # Load-set resolution: ModsConfig + About.xml + LoadFolders.xml
 # --------------------------------------------------------------------------
 
-DEFAULT_MODS_CONFIG = os.path.join(
-    os.path.expanduser("~"), "AppData", "LocalLow", "Ludeon Studios",
+_MODS_CONFIG_TAIL = os.path.join(
+    "AppData", "LocalLow", "Ludeon Studios",
     "RimWorld by Ludeon Studios", "Config", "ModsConfig.xml")
+
+DEFAULT_MODS_CONFIG = os.path.join(os.path.expanduser("~"), _MODS_CONFIG_TAIL)
+
+
+def find_mods_config() -> tuple[str | None, list[str]]:
+    """
+    Locate ModsConfig.xml. Returns (path or None, paths tried).
+
+    🔴 `expanduser("~")` ALONE IS WRONG UNDER WSL, and it fails silently in the
+    worst direction: `~` is /home/<user>, the file is never found, and the tool
+    drops to an UNSCOPED scan of every installed mod and every version folder -
+    whose own docstring says its match counts do not describe the running game.
+    The run still prints OK. Measured 2026-08-14: every WSL `--defs` run without
+    an explicit --mods-config had been silently unscoped.
+    """
+    tried: list[str] = []
+    cands = [os.path.join(os.path.expanduser("~"), _MODS_CONFIG_TAIL)]
+    for env in ("USERPROFILE", "HOME"):
+        v = os.environ.get(env)
+        if v:
+            cands.append(os.path.join(v, _MODS_CONFIG_TAIL))
+    # WSL: the Windows profile is mounted, and ~ never points at it.
+    for drive in sorted(glob.glob("/mnt/[a-z]/Users/*")):
+        cands.append(os.path.join(drive, _MODS_CONFIG_TAIL))
+    hits: list[str] = []
+    for c in cands:
+        if c in tried:
+            continue
+        tried.append(c)
+        if os.path.isfile(c):
+            hits.append(c)
+    if not hits:
+        return None, tried
+    # More than one profile can hold one; the game reads the newest.
+    hits.sort(key=lambda p: os.path.getmtime(p), reverse=True)
+    return hits[0], tried
+
+
+class LoadSetUnmeasurable(RuntimeError):
+    """
+    The load set could not be measured at all - a --defs root was unreadable,
+    or so few active mods resolved that the def set cannot describe the running
+    game. 🔴 UNMEASURABLE IS A DISTINCT, TERMINAL OUTCOME FROM MEASURED-ZERO.
+    Never let it degrade into "no matches found"; that reads as a clean bill of
+    health for exactly the patches this tool exists to catch.
+    """
 
 
 class ModInfo:
@@ -669,15 +716,21 @@ def discover_mods(defs_roots: list[str]) -> dict[str, ModInfo]:
     First root wins on a packageId collision.
     """
     index: dict[str, ModInfo] = {}
+    unreadable: list[str] = []
     for root_dir in defs_roots:
-        if not os.path.isdir(root_dir):
-            print(f"  info    --defs path not found, skipping: {root_dir}")
-            continue
-        candidates = [root_dir]
+        # 🔴 PROBE BY ENUMERATION, NOT isdir. A root can pass isdir and still
+        # fail to list (permissions, a dead symlink, /mnt/c after a WSL
+        # restart, a Windows path handed to a Linux interpreter). The old code
+        # printed "path not found, skipping" and carried on, which turns an
+        # ABSENT root into an EMPTY one - every xpath under it then reads as
+        # "matches 0 nodes", and a conditional-guarded file can come back OK
+        # against a load set that is missing most of the game.
         try:
-            candidates += [os.path.join(root_dir, e) for e in sorted(os.listdir(root_dir))]
-        except OSError:
-            pass
+            entries = sorted(os.listdir(root_dir))
+        except OSError as e:
+            unreadable.append(f"{root_dir}  ({e.strerror or e})")
+            continue
+        candidates = [root_dir] + [os.path.join(root_dir, e) for e in entries]
         for cand in candidates:
             if not os.path.isdir(cand):
                 continue
@@ -687,6 +740,12 @@ def discover_mods(defs_roots: list[str]) -> dict[str, ModInfo]:
             pid, name = got
             if pid not in index:
                 index[pid] = ModInfo(pid, name, cand)
+    if unreadable:
+        raise LoadSetUnmeasurable(
+            "--defs root(s) could not be read, so the load set is UNMEASURABLE, "
+            "not empty:\n    " + "\n    ".join(unreadable) +
+            "\n  A missing root is not a smaller game - it is no answer at all. "
+            "Fix the path (or run the interpreter that can see it) and re-run.")
     return index
 
 
@@ -895,7 +954,20 @@ def build_load_set(defs_roots: list[str], mods_config: str | None,
     if missing:
         shown = ", ".join(missing[:10])
         more = f" (+{len(missing) - 10} more)" if len(missing) > 10 else ""
-        print(f"  info    {len(missing)} active packageId(s) have no folder under "
+        # 🔴 A FEW missing mods is a broken install and worth a line. MOST of
+        # them missing means the roots do not describe this game, and every
+        # xpath answer below would be wrong in the safe-looking direction.
+        # Measured 2026-08-14: the same check under Windows python.exe saw 22
+        # of 580 active mods and reported it as info.
+        if len(missing) > max(10, len(active_ids) // 10):
+            raise LoadSetUnmeasurable(
+                f"{len(missing)} of {len(active_ids)} active mods have no folder "
+                f"under --defs, so the load set does NOT describe the running "
+                f"game and its match counts are meaningless: {shown}{more}\n"
+                f"  Roots given: {', '.join(defs_roots)}\n"
+                f"  Usually a path an interpreter cannot see (a Windows python "
+                f"reading /mnt/c, or the reverse), not a broken install.")
+        print(f"  WARN    {len(missing)} active packageId(s) have no folder under "
               f"--defs - a broken install or a renamed mod: {shown}{more}")
     return docs, mods
 
@@ -1958,8 +2030,15 @@ def main() -> int:
         return 2
 
     mods_config = args.mods_config
-    if mods_config is None and os.path.isfile(DEFAULT_MODS_CONFIG):
-        mods_config = DEFAULT_MODS_CONFIG
+    if mods_config is None:
+        mods_config, tried = find_mods_config()
+        if mods_config is None and args.defs and not args.all_versions:
+            print("  WARN    no ModsConfig.xml found, so --defs cannot be scoped "
+                  "to the ACTIVE mods. Every match count below is an UNSCOPED "
+                  "count over every installed mod and every version folder, and "
+                  "does not describe the running game.")
+            print(f"  WARN    looked in {len(tried)} location(s); pass "
+                  f"--mods-config explicitly to fix this.")
     if mods_config and not os.path.isfile(mods_config):
         print(f"cannot read --mods-config {mods_config}")
         return 2
@@ -1995,7 +2074,13 @@ def main() -> int:
         # Only --defs evaluates xpaths, so this is the only place the engine
         # choice can change an answer - and the only place worth naming it.
         print(f"  info    {engine_banner()}")
-        docs, mods = build_load_set(args.defs, mods_config, args.all_versions)
+        try:
+            docs, mods = build_load_set(args.defs, mods_config, args.all_versions)
+        except LoadSetUnmeasurable as e:
+            print(f"  ERROR   UNMEASURABLE - {e}")
+            print("  ERROR   Refusing to report a verdict. An unreadable load "
+                  "set is not a passing one.")
+            return 2
         scanner = PatchScanner(mods)
 
         # ⚠️ ASKED-FOR-AND-COULDN'T-DO IS A FAILURE, NOT A WARNING.
