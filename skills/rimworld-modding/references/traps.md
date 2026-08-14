@@ -29,6 +29,7 @@ shorts, leave it untouched (→ `skills/rimworld-savegame/SKILL.md`).
 | call art missing, wrong, or broken | [`traps-art.md`](traps-art.md) | 13 |
 | chase a mod that is absent, dead, or ignoring its files | [`traps-mods-and-managers.md`](traps-mods-and-managers.md) | 13 |
 | believe a diagnosis, or call into a running game | [`traps-diagnosis.md`](traps-diagnosis.md) | 6 |
+| **write or debug a quest** — `QuestScriptDef`, `QuestNode`, quest text, a quest that never fires | **a different skill: `skills/rimworld-quests/`** | — |
 
 **If you only read one, read `traps-tooling.md`.** It is the largest section for
 a reason: the single most repeated failure in this project is not a wrong patch,
