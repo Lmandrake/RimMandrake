@@ -1,0 +1,657 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ShipLayoutDefV2>
+  <rows>
+    <li>
+      <li IsNull="True" />
+      <li IsNull="True" />
+      <li IsNull="True" />
+      <li IsNull="True" />
+      <li IsNull="True" />
+      <li IsNull="True" />
+      <li IsNull="True" />
+      <li IsNull="True" />
+      <li IsNull="True" />
+      </li>
+    <li>
+      <li IsNull="True" />
+      <li>
+        <foundationDef>Substructure</foundationDef>
+        <foundationStuff IsNull="True" />
+        <terrainDef>MetalTile</terrainDef>
+        <terrainStuff IsNull="True" />
+        <things>
+          <li>
+            <defName>GravshipHull</defName>
+            <stuffDef>Steel</stuffDef>
+            <rotInteger>0</rotInteger>
+            <quality IsNull="True" />
+            <plantToGrowDef IsNull="True" />
+            <exportedStorageSettings IsNull="True" />
+            <compSettings IsNull="True" />
+            </li>
+          </things>
+        </li>
+      <li>
+        <foundationDef>Substructure</foundationDef>
+        <foundationStuff IsNull="True" />
+        <terrainDef>MetalTile</terrainDef>
+        <terrainStuff IsNull="True" />
+        <things>
+          <li>
+            <defName>GravshipHull</defName>
+            <stuffDef>Steel</stuffDef>
+            <rotInteger>0</rotInteger>
+            <quality IsNull="True" />
+            <plantToGrowDef IsNull="True" />
+            <exportedStorageSettings IsNull="True" />
+            <compSettings IsNull="True" />
+            </li>
+          </things>
+        </li>
+      <li>
+        <foundationDef>Substructure</foundationDef>
+        <foundationStuff IsNull="True" />
+        <terrainDef>MetalTile</terrainDef>
+        <terrainStuff IsNull="True" />
+        <things>
+          <li>
+            <defName>GravshipHull</defName>
+            <stuffDef>Steel</stuffDef>
+            <rotInteger>0</rotInteger>
+            <quality IsNull="True" />
+            <plantToGrowDef IsNull="True" />
+            <exportedStorageSettings IsNull="True" />
+            <compSettings IsNull="True" />
+            </li>
+          </things>
+        </li>
+      <li>
+        <foundationDef>Substructure</foundationDef>
+        <foundationStuff IsNull="True" />
+        <terrainDef>MetalTile</terrainDef>
+        <terrainStuff IsNull="True" />
+        <things>
+          <li>
+            <defName>GravshipHull</defName>
+            <stuffDef>Steel</stuffDef>
+            <rotInteger>0</rotInteger>
+            <quality IsNull="True" />
+            <plantToGrowDef IsNull="True" />
+            <exportedStorageSettings IsNull="True" />
+            <compSettings IsNull="True" />
+            </li>
+          </things>
+        </li>
+      <li>
+        <foundationDef>Substructure</foundationDef>
+        <foundationStuff IsNull="True" />
+        <terrainDef>MetalTile</terrainDef>
+        <terrainStuff IsNull="True" />
+        <things>
+          <li>
+            <defName>GravshipHull</defName>
+            <stuffDef>Steel</stuffDef>
+            <rotInteger>0</rotInteger>
+            <quality IsNull="True" />
+            <plantToGrowDef IsNull="True" />
+            <exportedStorageSettings IsNull="True" />
+            <compSettings IsNull="True" />
+            </li>
+          </things>
+        </li>
+      <li>
+        <foundationDef>Substructure</foundationDef>
+        <foundationStuff IsNull="True" />
+        <terrainDef>MetalTile</terrainDef>
+        <terrainStuff IsNull="True" />
+        <things>
+          <li>
+            <defName>GravshipHull</defName>
+            <stuffDef>Steel</stuffDef>
+            <rotInteger>0</rotInteger>
+            <quality IsNull="True" />
+            <plantToGrowDef IsNull="True" />
+            <exportedStorageSettings IsNull="True" />
+            <compSettings IsNull="True" />
+            </li>
+          </things>
+        </li>
+      <li>
+        <foundationDef>Substructure</foundationDef>
+        <foundationStuff IsNull="True" />
+        <terrainDef>MetalTile</terrainDef>
+        <terrainStuff IsNull="True" />
+        <things>
+          <li>
+            <defName>GravshipHull</defName>
+            <stuffDef>Steel</stuffDef>
+            <rotInteger>0</rotInteger>
+            <quality IsNull="True" />
+            <plantToGrowDef IsNull="True" />
+            <exportedStorageSettings IsNull="True" />
+            <compSettings IsNull="True" />
+            </li>
+          </things>
+        </li>
+      <li IsNull="True" />
+      </li>
+    <li>
+      <li IsNull="True" />
+      <li>
+        <foundationDef>Substructure</foundationDef>
+        <foundationStuff IsNull="True" />
+        <terrainDef>MetalTile</terrainDef>
+        <terrainStuff IsNull="True" />
+        <things>
+          <li>
+            <defName>GravshipHull</defName>
+            <stuffDef>Steel</stuffDef>
+            <rotInteger>0</rotInteger>
+            <quality IsNull="True" />
+            <plantToGrowDef IsNull="True" />
+            <exportedStorageSettings IsNull="True" />
+            <compSettings IsNull="True" />
+            </li>
+          </things>
+        </li>
+      <li>
+        <foundationDef>Substructure</foundationDef>
+        <foundationStuff IsNull="True" />
+        <terrainDef>MetalTile</terrainDef>
+        <terrainStuff IsNull="True" />
+        <things />
+        </li>
+      <li>
+        <foundationDef>Substructure</foundationDef>
+        <foundationStuff IsNull="True" />
+        <terrainDef>MetalTile</terrainDef>
+        <terrainStuff IsNull="True" />
+        <things />
+        </li>
+      <li>
+        <foundationDef>Substructure</foundationDef>
+        <foundationStuff IsNull="True" />
+        <terrainDef>MetalTile</terrainDef>
+        <terrainStuff IsNull="True" />
+        <things />
+        </li>
+      <li>
+        <foundationDef>Substructure</foundationDef>
+        <foundationStuff IsNull="True" />
+        <terrainDef>MetalTile</terrainDef>
+        <terrainStuff IsNull="True" />
+        <things />
+        </li>
+      <li>
+        <foundationDef>Substructure</foundationDef>
+        <foundationStuff IsNull="True" />
+        <terrainDef>MetalTile</terrainDef>
+        <terrainStuff IsNull="True" />
+        <things />
+        </li>
+      <li>
+        <foundationDef>Substructure</foundationDef>
+        <foundationStuff IsNull="True" />
+        <terrainDef>MetalTile</terrainDef>
+        <terrainStuff IsNull="True" />
+        <things>
+          <li>
+            <defName>GravshipHull</defName>
+            <stuffDef>Steel</stuffDef>
+            <rotInteger>0</rotInteger>
+            <quality IsNull="True" />
+            <plantToGrowDef IsNull="True" />
+            <exportedStorageSettings IsNull="True" />
+            <compSettings IsNull="True" />
+            </li>
+          </things>
+        </li>
+      <li IsNull="True" />
+      </li>
+    <li>
+      <li IsNull="True" />
+      <li>
+        <foundationDef>Substructure</foundationDef>
+        <foundationStuff IsNull="True" />
+        <terrainDef>MetalTile</terrainDef>
+        <terrainStuff IsNull="True" />
+        <things>
+          <li>
+            <defName>GravshipHull</defName>
+            <stuffDef>Steel</stuffDef>
+            <rotInteger>0</rotInteger>
+            <quality IsNull="True" />
+            <plantToGrowDef IsNull="True" />
+            <exportedStorageSettings IsNull="True" />
+            <compSettings IsNull="True" />
+            </li>
+          </things>
+        </li>
+      <li>
+        <foundationDef>Substructure</foundationDef>
+        <foundationStuff IsNull="True" />
+        <terrainDef>MetalTile</terrainDef>
+        <terrainStuff IsNull="True" />
+        <things />
+        </li>
+      <li>
+        <foundationDef>Substructure</foundationDef>
+        <foundationStuff IsNull="True" />
+        <terrainDef>MetalTile</terrainDef>
+        <terrainStuff IsNull="True" />
+        <things />
+        </li>
+      <li>
+        <foundationDef>Substructure</foundationDef>
+        <foundationStuff IsNull="True" />
+        <terrainDef>MetalTile</terrainDef>
+        <terrainStuff IsNull="True" />
+        <things />
+        </li>
+      <li>
+        <foundationDef>Substructure</foundationDef>
+        <foundationStuff IsNull="True" />
+        <terrainDef>MetalTile</terrainDef>
+        <terrainStuff IsNull="True" />
+        <things />
+        </li>
+      <li>
+        <foundationDef>Substructure</foundationDef>
+        <foundationStuff IsNull="True" />
+        <terrainDef>MetalTile</terrainDef>
+        <terrainStuff IsNull="True" />
+        <things />
+        </li>
+      <li>
+        <foundationDef>Substructure</foundationDef>
+        <foundationStuff IsNull="True" />
+        <terrainDef>MetalTile</terrainDef>
+        <terrainStuff IsNull="True" />
+        <things>
+          <li>
+            <defName>GravshipHull</defName>
+            <stuffDef>Steel</stuffDef>
+            <rotInteger>0</rotInteger>
+            <quality IsNull="True" />
+            <plantToGrowDef IsNull="True" />
+            <exportedStorageSettings IsNull="True" />
+            <compSettings IsNull="True" />
+            </li>
+          </things>
+        </li>
+      <li IsNull="True" />
+      </li>
+    <li>
+      <li IsNull="True" />
+      <li>
+        <foundationDef>Substructure</foundationDef>
+        <foundationStuff IsNull="True" />
+        <terrainDef>MetalTile</terrainDef>
+        <terrainStuff IsNull="True" />
+        <things>
+          <li>
+            <defName>GravshipHull</defName>
+            <stuffDef>Steel</stuffDef>
+            <rotInteger>0</rotInteger>
+            <quality IsNull="True" />
+            <plantToGrowDef IsNull="True" />
+            <exportedStorageSettings IsNull="True" />
+            <compSettings IsNull="True" />
+            </li>
+          </things>
+        </li>
+      <li>
+        <foundationDef>Substructure</foundationDef>
+        <foundationStuff IsNull="True" />
+        <terrainDef>MetalTile</terrainDef>
+        <terrainStuff IsNull="True" />
+        <things />
+        </li>
+      <li>
+        <foundationDef>Substructure</foundationDef>
+        <foundationStuff IsNull="True" />
+        <terrainDef>MetalTile</terrainDef>
+        <terrainStuff IsNull="True" />
+        <things />
+        </li>
+      <li>
+        <foundationDef>Substructure</foundationDef>
+        <foundationStuff IsNull="True" />
+        <terrainDef>MetalTile</terrainDef>
+        <terrainStuff IsNull="True" />
+        <things>
+          <li>
+            <defName>GravEngine</defName>
+            <stuffDef IsNull="True" />
+            <rotInteger>0</rotInteger>
+            <quality IsNull="True" />
+            <plantToGrowDef IsNull="True" />
+            <exportedStorageSettings IsNull="True" />
+            <compSettings IsNull="True" />
+            </li>
+          </things>
+        </li>
+      <li>
+        <foundationDef>Substructure</foundationDef>
+        <foundationStuff IsNull="True" />
+        <terrainDef>MetalTile</terrainDef>
+        <terrainStuff IsNull="True" />
+        <things />
+        </li>
+      <li>
+        <foundationDef>Substructure</foundationDef>
+        <foundationStuff IsNull="True" />
+        <terrainDef>MetalTile</terrainDef>
+        <terrainStuff IsNull="True" />
+        <things />
+        </li>
+      <li>
+        <foundationDef>Substructure</foundationDef>
+        <foundationStuff IsNull="True" />
+        <terrainDef>MetalTile</terrainDef>
+        <terrainStuff IsNull="True" />
+        <things>
+          <li>
+            <defName>GravshipHull</defName>
+            <stuffDef>Steel</stuffDef>
+            <rotInteger>0</rotInteger>
+            <quality IsNull="True" />
+            <plantToGrowDef IsNull="True" />
+            <exportedStorageSettings IsNull="True" />
+            <compSettings IsNull="True" />
+            </li>
+          </things>
+        </li>
+      <li IsNull="True" />
+      </li>
+    <li>
+      <li IsNull="True" />
+      <li>
+        <foundationDef>Substructure</foundationDef>
+        <foundationStuff IsNull="True" />
+        <terrainDef>MetalTile</terrainDef>
+        <terrainStuff IsNull="True" />
+        <things>
+          <li>
+            <defName>GravshipHull</defName>
+            <stuffDef>Steel</stuffDef>
+            <rotInteger>0</rotInteger>
+            <quality IsNull="True" />
+            <plantToGrowDef IsNull="True" />
+            <exportedStorageSettings IsNull="True" />
+            <compSettings IsNull="True" />
+            </li>
+          </things>
+        </li>
+      <li>
+        <foundationDef>Substructure</foundationDef>
+        <foundationStuff IsNull="True" />
+        <terrainDef>MetalTile</terrainDef>
+        <terrainStuff IsNull="True" />
+        <things />
+        </li>
+      <li>
+        <foundationDef>Substructure</foundationDef>
+        <foundationStuff IsNull="True" />
+        <terrainDef>MetalTile</terrainDef>
+        <terrainStuff IsNull="True" />
+        <things />
+        </li>
+      <li>
+        <foundationDef>Substructure</foundationDef>
+        <foundationStuff IsNull="True" />
+        <terrainDef>MetalTile</terrainDef>
+        <terrainStuff IsNull="True" />
+        <things />
+        </li>
+      <li>
+        <foundationDef>Substructure</foundationDef>
+        <foundationStuff IsNull="True" />
+        <terrainDef>MetalTile</terrainDef>
+        <terrainStuff IsNull="True" />
+        <things />
+        </li>
+      <li>
+        <foundationDef>Substructure</foundationDef>
+        <foundationStuff IsNull="True" />
+        <terrainDef>MetalTile</terrainDef>
+        <terrainStuff IsNull="True" />
+        <things />
+        </li>
+      <li>
+        <foundationDef>Substructure</foundationDef>
+        <foundationStuff IsNull="True" />
+        <terrainDef>MetalTile</terrainDef>
+        <terrainStuff IsNull="True" />
+        <things>
+          <li>
+            <defName>GravshipHull</defName>
+            <stuffDef>Steel</stuffDef>
+            <rotInteger>0</rotInteger>
+            <quality IsNull="True" />
+            <plantToGrowDef IsNull="True" />
+            <exportedStorageSettings IsNull="True" />
+            <compSettings IsNull="True" />
+            </li>
+          </things>
+        </li>
+      <li IsNull="True" />
+      </li>
+    <li>
+      <li IsNull="True" />
+      <li>
+        <foundationDef>Substructure</foundationDef>
+        <foundationStuff IsNull="True" />
+        <terrainDef>MetalTile</terrainDef>
+        <terrainStuff IsNull="True" />
+        <things>
+          <li>
+            <defName>GravshipHull</defName>
+            <stuffDef>Steel</stuffDef>
+            <rotInteger>0</rotInteger>
+            <quality IsNull="True" />
+            <plantToGrowDef IsNull="True" />
+            <exportedStorageSettings IsNull="True" />
+            <compSettings IsNull="True" />
+            </li>
+          </things>
+        </li>
+      <li>
+        <foundationDef>Substructure</foundationDef>
+        <foundationStuff IsNull="True" />
+        <terrainDef>MetalTile</terrainDef>
+        <terrainStuff IsNull="True" />
+        <things />
+        </li>
+      <li>
+        <foundationDef>Substructure</foundationDef>
+        <foundationStuff IsNull="True" />
+        <terrainDef>MetalTile</terrainDef>
+        <terrainStuff IsNull="True" />
+        <things />
+        </li>
+      <li>
+        <foundationDef>Substructure</foundationDef>
+        <foundationStuff IsNull="True" />
+        <terrainDef>MetalTile</terrainDef>
+        <terrainStuff IsNull="True" />
+        <things />
+        </li>
+      <li>
+        <foundationDef>Substructure</foundationDef>
+        <foundationStuff IsNull="True" />
+        <terrainDef>MetalTile</terrainDef>
+        <terrainStuff IsNull="True" />
+        <things />
+        </li>
+      <li>
+        <foundationDef>Substructure</foundationDef>
+        <foundationStuff IsNull="True" />
+        <terrainDef>MetalTile</terrainDef>
+        <terrainStuff IsNull="True" />
+        <things />
+        </li>
+      <li>
+        <foundationDef>Substructure</foundationDef>
+        <foundationStuff IsNull="True" />
+        <terrainDef>MetalTile</terrainDef>
+        <terrainStuff IsNull="True" />
+        <things>
+          <li>
+            <defName>GravshipHull</defName>
+            <stuffDef>Steel</stuffDef>
+            <rotInteger>0</rotInteger>
+            <quality IsNull="True" />
+            <plantToGrowDef IsNull="True" />
+            <exportedStorageSettings IsNull="True" />
+            <compSettings IsNull="True" />
+            </li>
+          </things>
+        </li>
+      <li IsNull="True" />
+      </li>
+    <li>
+      <li IsNull="True" />
+      <li>
+        <foundationDef>Substructure</foundationDef>
+        <foundationStuff IsNull="True" />
+        <terrainDef>MetalTile</terrainDef>
+        <terrainStuff IsNull="True" />
+        <things>
+          <li>
+            <defName>GravshipHull</defName>
+            <stuffDef>Steel</stuffDef>
+            <rotInteger>0</rotInteger>
+            <quality IsNull="True" />
+            <plantToGrowDef IsNull="True" />
+            <exportedStorageSettings IsNull="True" />
+            <compSettings IsNull="True" />
+            </li>
+          </things>
+        </li>
+      <li>
+        <foundationDef>Substructure</foundationDef>
+        <foundationStuff IsNull="True" />
+        <terrainDef>MetalTile</terrainDef>
+        <terrainStuff IsNull="True" />
+        <things>
+          <li>
+            <defName>GravshipHull</defName>
+            <stuffDef>Steel</stuffDef>
+            <rotInteger>0</rotInteger>
+            <quality IsNull="True" />
+            <plantToGrowDef IsNull="True" />
+            <exportedStorageSettings IsNull="True" />
+            <compSettings IsNull="True" />
+            </li>
+          </things>
+        </li>
+      <li>
+        <foundationDef>Substructure</foundationDef>
+        <foundationStuff IsNull="True" />
+        <terrainDef>MetalTile</terrainDef>
+        <terrainStuff IsNull="True" />
+        <things>
+          <li>
+            <defName>GravshipHull</defName>
+            <stuffDef>Steel</stuffDef>
+            <rotInteger>0</rotInteger>
+            <quality IsNull="True" />
+            <plantToGrowDef IsNull="True" />
+            <exportedStorageSettings IsNull="True" />
+            <compSettings IsNull="True" />
+            </li>
+          </things>
+        </li>
+      <li>
+        <foundationDef>Substructure</foundationDef>
+        <foundationStuff IsNull="True" />
+        <terrainDef>MetalTile</terrainDef>
+        <terrainStuff IsNull="True" />
+        <things>
+          <li>
+            <defName>GravshipHull</defName>
+            <stuffDef>Steel</stuffDef>
+            <rotInteger>0</rotInteger>
+            <quality IsNull="True" />
+            <plantToGrowDef IsNull="True" />
+            <exportedStorageSettings IsNull="True" />
+            <compSettings IsNull="True" />
+            </li>
+          </things>
+        </li>
+      <li>
+        <foundationDef>Substructure</foundationDef>
+        <foundationStuff IsNull="True" />
+        <terrainDef>MetalTile</terrainDef>
+        <terrainStuff IsNull="True" />
+        <things>
+          <li>
+            <defName>GravshipHull</defName>
+            <stuffDef>Steel</stuffDef>
+            <rotInteger>0</rotInteger>
+            <quality IsNull="True" />
+            <plantToGrowDef IsNull="True" />
+            <exportedStorageSettings IsNull="True" />
+            <compSettings IsNull="True" />
+            </li>
+          </things>
+        </li>
+      <li>
+        <foundationDef>Substructure</foundationDef>
+        <foundationStuff IsNull="True" />
+        <terrainDef>MetalTile</terrainDef>
+        <terrainStuff IsNull="True" />
+        <things>
+          <li>
+            <defName>GravshipHull</defName>
+            <stuffDef>Steel</stuffDef>
+            <rotInteger>0</rotInteger>
+            <quality IsNull="True" />
+            <plantToGrowDef IsNull="True" />
+            <exportedStorageSettings IsNull="True" />
+            <compSettings IsNull="True" />
+            </li>
+          </things>
+        </li>
+      <li>
+        <foundationDef>Substructure</foundationDef>
+        <foundationStuff IsNull="True" />
+        <terrainDef>MetalTile</terrainDef>
+        <terrainStuff IsNull="True" />
+        <things>
+          <li>
+            <defName>GravshipHull</defName>
+            <stuffDef>Steel</stuffDef>
+            <rotInteger>0</rotInteger>
+            <quality IsNull="True" />
+            <plantToGrowDef IsNull="True" />
+            <exportedStorageSettings IsNull="True" />
+            <compSettings IsNull="True" />
+            </li>
+          </things>
+        </li>
+      <li IsNull="True" />
+      </li>
+    <li>
+      <li IsNull="True" />
+      <li IsNull="True" />
+      <li IsNull="True" />
+      <li IsNull="True" />
+      <li IsNull="True" />
+      <li IsNull="True" />
+      <li IsNull="True" />
+      <li IsNull="True" />
+      <li IsNull="True" />
+      </li>
+    </rows>
+  <width>9</width>
+  <height>9</height>
+  <gravEngineX>4</gravEngineX>
+  <gravEngineZ>4</gravEngineZ>
+  <defName>JawaTestSled</defName>
+  <label>Jawa test sled</label>
+  <descriptionHyperlinks IsNull="True" />
+  <ignoreIllegalLabelCharacterConfigError>False</ignoreIllegalLabelCharacterConfigError>
+  </ShipLayoutDefV2>
+
