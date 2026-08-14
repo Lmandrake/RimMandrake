@@ -189,6 +189,37 @@ needs to know which it is holding.
 
 ---
 
+## 5b. ⛔ The build-vs-buy question is SETTLED. Do not re-run this survey.
+
+**Four research sweeps, 2026-08-14, ~20 candidates.** Recording the verdict here
+so the next session does not spend the same hours reaching the same answer.
+
+**Verdict: keep the hand-rolled board. Adopt the official hook. Do not adopt a
+supervisor that owns the PTY.**
+
+| candidate | why not |
+|---|---|
+| **ccmanager** (1.2k★) | The **only** off-the-shelf tool source-verified to run several sessions on ONE shared tree (`sessionManager.ts` keys by generated id; `getSessionsForWorktree()` numbers several against the same path). ⚠️ **It owns the PTY**, so every seat relaunches under it and the Windows Terminal seat profiles stop being the launch path. Worth a pilot; not worth a migration on its own |
+| claude-squad · uzi · dev-3.0 · grove · Conductor | **Force worktree-per-agent.** Wrong shape for one shared tree |
+| claude-monitor · SessionHawk · claude-watch | **macOS-only** |
+| tmux / zellij plugins (`zj-radar`, `tmux-agent-indicator`) | Best signal UX found — and each costs a **multiplexer migration** before it renders anything |
+| ccstatusline · ccusage | Per-session metrics and cost telemetry. **No busy/waiting state at all** |
+| crystal · vibe-kanban · Terragon | **Dead or sunsetting** |
+| sampler · glances · btop · grafana+loki | Generic. `sampler` is closest and its last real commit is **2022** |
+
+🔴 **The gap that justifies the build, unanimous across all four sweeps: NOTHING
+pairs live per-agent status with a USER-MAINTAINED checklist** — owner and state
+per item — on a shared tree. Every checklist found is agent-derived (TodoWrite) or
+rides a worktree-per-task kanban. **The status half was reinvention and has been
+replaced by the `Notification` hook. The `DECIDE` band and the roster are the half
+nothing sells.**
+
+⇒ **If you are tempted to survey this again, the only thing worth re-checking is
+whether Claude Code's own `claude agents` view has grown a project checklist.**
+Everything else moved slowly and the shape of the gap is structural.
+
+---
+
 ## 6. The tools
 
 ```bash
