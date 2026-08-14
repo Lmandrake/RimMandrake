@@ -208,12 +208,17 @@ the owner is building it.
 
 ---
 
-## Cut `ZBiome_CoastalDunes` — owner's request, 2026-08-14 via VISION
+## ✅ Cut `ZBiome_CoastalDunes` — DONE and DEPLOYED, verified 2026-08-14
+
+Shipped at `src/Jawa/Jawa_Patches/Patches/JawaWorld_BiomeMix.xml:82`, and the copy
+under `Steam\steamapps\common\RimWorld\Mods\Jawa_Patches\` is **byte-identical**
+(`diff -q`). Nothing owed to OPS. ⚠️ **Bites at worldgen only** — no effect on a
+load that does not generate a world, so it is invisible until the next worldgen.
 
 **Target:** `ZBiome_CoastalDunes` (BiomeDef, More Vanilla Biomes).
 ⚠️ **Not `Dunes`** (TileMutatorDef, Odyssey) — that is the dune sea and it stays.
 
-**Route:** add to `biomeBlacklist` on the patched `TidallyLocked` def. **Not**
+**Route taken:** `biomeBlacklist` on the patched `TidallyLocked` def. **Not**
 Cherry Picker — this leaves the def alive so nothing referencing it dangles.
 
 **Why:** a wet, fertile, wooded biome wearing a sand texture — water on two map
