@@ -195,3 +195,22 @@ The full legal vocabulary, regenerable from the dump, is
 
 🔴 **Do not author the Jawa ideoligion.** Section 12 is a deliberate empty slot —
 the owner is building it.
+
+---
+
+## Cut `ZBiome_CoastalDunes` — owner's request, 2026-08-14 via VISION
+
+**Target:** `ZBiome_CoastalDunes` (BiomeDef, More Vanilla Biomes).
+⚠️ **Not `Dunes`** (TileMutatorDef, Odyssey) — that is the dune sea and it stays.
+
+**Route:** add to `biomeBlacklist` on the patched `TidallyLocked` def. **Not**
+Cherry Picker — this leaves the def alive so nothing referencing it dangles.
+
+**Why:** a wet, fertile, wooded biome wearing a sand texture — water on two map
+edges, marsh, palms and broadleaf, fertility 100%, 26 °C, "permanent summer". On a
+thirst world that is a garden with a desert's name.
+
+Evidence, looked at rather than inferred:
+`D:\Luke\dev\Rimworld\design\Jawa\worldbuilding\evidence\2026-08-14_coastal_dunes_is_not_a_desert.jpg`
+Decision and route note: tail of
+`D:\Luke\dev\Rimworld\design\Jawa\worldbuilding\cherrypick_inbox.md`
