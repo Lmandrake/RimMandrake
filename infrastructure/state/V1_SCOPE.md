@@ -469,6 +469,20 @@ controls, and the console-path-to-launch is unproven. Flight was ruled out of
 row 8's bar earlier today and stays out. **"The gravship is done" and "the
 gravship cannot move" remain simultaneously true.**
 
+### 🪤 DO NOT READ ROW 2 OFF A QUICKTEST — it nearly cost a regeneration today
+
+**A debug quicktest never visits the Configure Factions page**, so **all 54
+factions are present by default** on one. Seeing them there proves *nothing*
+about the tick-list, and reading it as failure nearly triggered a needless
+25–30 minute world regeneration.
+
+> **Row 2 is UNEXECUTED, not failed.** The checklist is ratified, committed and
+> ready. It can only be spent on a real worldgen.
+
+📌 Same shape as every other trap today: a true observation — *54 factions are on
+this map* — read as a false conclusion. **Ask what the observation could NOT have
+shown before acting on it.** (OPS, at wrap.)
+
 ### 🔴 THE HEADLINE: the campaign world has still not been generated
 
 **Everything proven today was proven on a QUICKTEST map.** The game came up, a
