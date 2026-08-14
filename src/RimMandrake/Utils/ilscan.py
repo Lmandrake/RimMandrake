@@ -29,6 +29,25 @@ Search both encodings before concluding something is absent.
 `BG_gravEngineMaxDistance`. Hand-authoring a config from field names alone
 produces a file that loads silently as nothing.
 
+⚠️ A STATIC CONSTANT AND A COMPILED DEFAULT ARE DIFFERENT CLAIMS, and until
+2026-08-13 this script could only see the first. It paired a constant load with
+`stsfld` (0x80) alone, so it read static fields and missed every C# field
+initialiser — the compiler moves `public float r = 25.9f;` into the constructor
+as `ldarg.0; ldc.r4 25.9; stfld r` (0x7D). Those ARE the mod's defaults, i.e.
+exactly the values a settings file overwrites. Now both are decoded and the
+output carries a `static` / `default` column; do not quote one as the other.
+
+Validated on `GravshipSize.dll`: the widened scan emits a vanilla-mirror block
+whose numbers reproduce
+`C:\Program Files (x86)\Steam\steamapps\common\RimWorld\Data\Odyssey\Defs\ThingDefs_Buildings\Buildings_Gravship.xml`
+— GravFieldExtender radius 16.9, GravEngine radius 18.9, ChemfuelTank 250,
+LargeChemfuelTank 750, shield radius 24.9 — and a second block carrying the mod's
+own 25.9 / 500 / 8. Before the widening BOTH blocks were invisible.
+⚠️ The names in that first block are the MOD AUTHOR'S, not Ludeon's:
+`gravExtenderMaxDistanceFromEngine` holds 18.9, which in the XML is GravEngine's
+`<radius>`. Match on the value, then confirm the meaning; do not assume the field
+name describes the same thing the XML tag does.
+
 USAGE
     python3 src/RimMandrake/Utils/ilscan.py <path-to.dll>
 
@@ -159,15 +178,31 @@ while i < n - 9:
         val = struct.unpack_from('<b', blob, i+1)[0]; ln = 2
     elif 0x16 <= op <= 0x1E:  # ldc.i4.0 .. 8
         val = op - 0x16; ln = 1
-    if val is not None and blob[i+ln] == 0x80:  # stsfld
+    # 0x80 stsfld  — a STATIC field. A compile-time constant of the type.
+    # 0x7D stfld   — an INSTANCE field, which is where a C# field initialiser
+    #                lands: the compiler moves `public float r = 25.9f;` into
+    #                every constructor as `ldarg.0; ldc.r4 25.9; stfld r`.
+    # Pairing only with stsfld therefore saw the constants and MISSED every
+    # compiled DEFAULT, which is the thing a settings file overrides — so a
+    # value could be read out of the assembly but not attributed to a name.
+    if val is not None and blob[i+ln] in (0x80, 0x7D):
+        store = 'static' if blob[i+ln] == 0x80 else 'default'
         tok = struct.unpack_from('<I', blob, i+ln+1)[0]
+        # 0x04 = Field table. An stfld may also carry a 0x0A MemberRef token
+        # when the field belongs to another assembly; that has no row in THIS
+        # Field table, so it is skipped rather than mis-named.
         if tok >> 24 == 0x04:
             ridx = tok & 0xFFFFFF
             if 1 <= ridx <= rows[4]:
-                out.append((traw+i, field_name(ridx), val))
+                out.append((traw+i, field_name(ridx), val, store))
                 i += ln + 5
                 continue
     i += 1
 
-for o, nm, v in out:
-    print('%08x  %-45s %s' % (o, nm, v))
+# The two are NOT interchangeable and the column says which. A `static` row is
+# a constant the code always uses; a `default` row is the initial value of an
+# instance field, which a settings file or a mod can overwrite at runtime. A
+# "the mod's default is X" claim needs the second; a "the mod always uses X"
+# claim needs the first.
+for o, nm, v, store in out:
+    print('%08x  %-8s %-45s %s' % (o, store, nm, v))
