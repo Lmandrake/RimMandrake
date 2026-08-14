@@ -53,6 +53,7 @@ Skim this, open what matches your task — do not read them all.
 - [Fixed in the companion — one line each](#fixed-in-the-companion--one-line-each)
 - [A correct measurement of the WRONG predicate — and a null baseline is the only thing that catches it](#-a-correct-measurement-of-the-wrong-predicate--and-a-null-baseline-is-the-only-thing-that-catches-it) 🔴
 - [The bridge answering is NOT the game being reactive — ~40 seconds of it](#-the-bridge-answering-is-not-the-game-being-reactive--40-seconds-of-it) 🔴
+- [`python.exe` vs `python3` is a PER-SCRIPT choice, and the rule you carry points the wrong way half the time](#-pythonexe-vs-python3-is-a-per-script-choice-and-the-rule-you-carry-points-the-wrong-way-half-the-time) 🔴
 
 ---
 
@@ -340,6 +341,12 @@ a **stale companion DLL**: rebuild and redeploy with the game closed
 **Cause:** owner's measurement, 2026-08-14: **the game does not really become reactive until about forty seconds after the bridge first responds.** The bridge coming up and the simulation being ready to be driven are two different events, and every flag we have describes the first one.
 **Fix:** wait out the window before mutating. `load_session.py --settle` defaults to 40 s and records the wait as a ledger row so nobody wonders later whether it was observed. **Read-only calls are fine inside it** — the tool census, a `get_def`, and the `LIVE BRIDGE TAKEN` announcement should all land immediately, not after the wait; only mutation is held.
 **Recurs when:** any script that starts driving off a readiness flag. This is the same shape as the file's first law one level up: `success: true` says the tool ran, and a green readiness flag says the tool is *able* to run — neither says the game is in a state where your action means what you think. ⚠️ Do not "optimise" the settle away because a run once worked without it; the failure is intermittent by construction.
+
+## 🔴 `python.exe` vs `python3` is a PER-SCRIPT choice, and the rule you carry points the wrong way half the time
+**Symptom:** `preload_check.py` printed **NOT SAFE TO LOAD** for one seat and **SAFE TO LOAD** for two others, same commit, same minute, same files. It failed three Cherry Picker keys as unresolvable. A hand grep then "confirmed" it, and the pair went to the owner as a launch blocker. Both were wrong; the defs existed all along.
+**Cause:** the script hardcodes `/mnt/c/Program Files (x86)/Steam/steamapps/...` (`src/RimMandrake/Utils/preload_check.py:139-140`). **Windows Python cannot resolve a `/mnt/c` path**, so the Workshop root did not exist, every Workshop mod read as absent, and the gate reported a stack problem instead of its own blindness. The seat had run `python.exe` because of the standing rule *"use `python.exe`, never `python3` — WSL cannot reach the bridge."* **That rule is correct and it is about the NETWORK.** Applied to a script whose work is the FILESYSTEM, it silently inverts.
+**Fix:** choose the interpreter from what the script TOUCHES, not from habit. **Talks to the bridge → `python.exe`** (WSL2 is NAT-mode and cannot reach Windows loopback). **Reads `/mnt/c` paths → `python3`.** Does both → it must resolve roots per-platform, and there is no interpreter that saves it. When a run disagrees with a peer's run of the same file, suspect the interpreter before the data.
+**Recurs when:** any script that hardcodes one path style, and any rule that names a tool rather than a reason. ⚠️ **The deeper defect is that a MISSING root was indistinguishable from an EMPTY one** — the check failed OPEN and reported confidently. A configured root that is absent must make the tool REFUSE TO RUN, never report a result. Same mechanism produced the same seat's *"I grepped the whole tree"* an hour earlier: `common/RimWorld/Mods` + `Data` is **two of three roots**, and the missing third — `workshop/content/294100` — holds most of the stack. **Two wrong things pointing the same way read as corroboration.**
 
 ## Client-call gotchas that cost real minutes — the exact spellings
 Collected 2026-08-13; each one cost a seat time before it was written down.
