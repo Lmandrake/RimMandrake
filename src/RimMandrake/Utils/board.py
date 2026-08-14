@@ -27,9 +27,12 @@ and pipe-delimited so that parsing it cannot be ambiguous.
 """
 import json
 import os
+import re
 import subprocess
 import sys
 import time
+
+ANSI_RE = re.compile(r"\033\[[0-9;]*m")
 
 ROOT = os.environ.get("CLAUDE_PROJECT_DIR") or os.path.dirname(
     os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))))
@@ -43,8 +46,28 @@ SELF = (os.environ.get("AGENT_SEAT") or "").upper()
 AMBER_AFTER = 15 * 60          # a seat silent this long is flagged, never hidden
 W = 74                         # box width
 
+# --- colour -----------------------------------------------------------------
+# Owner's spec: yellow bold = needs you, red = broken, green = done,
+# blue = in progress. Everything else stays plain, deliberately —
+# "if everything is coloured, nothing draws the eye", and saturated colour and
+# motion are the only two channels that work in peripheral vision. Colour is
+# spent on the four states worth interrupting for and nowhere else.
+NO_COLOR = bool(os.environ.get("NO_COLOR"))
+
+
+def c(code, text):
+    return text if NO_COLOR else "\033[%sm%s\033[0m" % (code, text)
+
+
+YEL = "1;33"      # needs you — bold, the only bold on screen
+RED = "1;31"      # broken / stalled
+GRN = "32"        # done
+BLU = "36"        # in progress
+DIM = "2"         # held, deferred, context
+
 MARK = {"done": "[x]", "open": "[ ]", "wip": "[~]",
         "held": "[-]", "blocked": "[!]"}
+MARKC = {"done": GRN, "open": None, "wip": BLU, "held": DIM, "blocked": RED}
 DOT = {"busy": "*", "idle": "o", "waiting": "!", "blocked": "!"}
 # Higher = more urgent. Drives both the alarm band and dedup above.
 RANK = {"idle": 1, "busy": 2, "waiting": 9, "blocked": 9}
@@ -227,15 +250,37 @@ def ago(ts):
 
 
 # ----------------------------------------------------------------- render ---
-def bar(title=""):
+def bar(title="", col=None):
     if not title:
         return "+" + "-" * (W - 2) + "+"
-    return "+-- " + title + " " + "-" * (W - 6 - len(title)) + "+"
+    shown = title if col is None else c(col, title)
+    return "+-- " + shown + " " + "-" * (W - 6 - len(title)) + "+"
 
 
-def row(text):
+def crow(col, text):
+    """Clamp FIRST, then colour.
+
+    ⚠️ Slicing a string that already contains escape codes can cut inside one,
+    which strips the reset and bleeds the colour down the rest of the pane. So
+    every coloured row is built plain, trimmed to the box, and only then wrapped.
+    """
     text = text[:W - 4]
-    return "| " + text.ljust(W - 4) + " |"
+    return row(c(col, text), plain_len=len(text))
+
+
+def row(text, plain_len=None):
+    """Pad to the box width using VISIBLE length.
+
+    ⚠️ ANSI escapes occupy no columns but do occupy characters, so `ljust` on a
+    coloured string pads short and every right-hand border on screen drifts.
+    `plain_len` is the visible width when the caller already knows it; otherwise
+    it is measured by stripping the escapes.
+    """
+    if plain_len is None:
+        plain_len = len(ANSI_RE.sub("", text))
+    if plain_len > W - 4:
+        text, plain_len = text[:W - 4], W - 4
+    return "| " + text + " " * (W - 4 - plain_len) + " |"
 
 
 def render():
@@ -263,7 +308,8 @@ def render():
         gstate,
         "" if gage is None else " (%s %s)" % (g.get("by", "?"), ago(int(time.time()) - gage).strip()),
         ("%s %s idle" % (holder, ago(int(time.time()) - lidle).strip())) if holder else "FREE")
-    L.append("+" + head.ljust(W - 2, "-") + "+")
+    hcol = GRN if gstate == "PLAYABLE" else (DIM if gstate == "DOWN" else BLU)
+    L.append("+" + c(hcol, head) + "-" * (W - 2 - len(head)) + "+")
 
     if g.get("note"):
         L.append(row(g["note"]))
@@ -306,21 +352,33 @@ def render():
     if owner_rows:
         n = len(owner_rows)
         L.append(bar("DECIDE   %d%s" % (
-            n, "   << YOU ARE THE BOTTLENECK" if n > 3 else "")))
+            n, "   << YOU ARE THE BOTTLENECK" if n > 3 else ""), YEL))
         for f in owner_rows:
             tag = "" if f[0] == "--" else "#%s " % f[0]
-            L.append(row(">> %s%s" % (tag, f[1][:66])))
+            head = ">> %s%s" % (tag, f[1][:66])
+            L.append(crow(YEL, head))
+            # 🔴 A decision with no route to answering it is a nag, not a task.
+            # Field 3 of an OWNER row is WHERE — who to tell and where the
+            # detail lives. Without it the owner reads "you are the bottleneck"
+            # with nothing to click, which is the state this board was built
+            # to end.
+            where = f[3] if len(f) > 3 and f[3] else "tell PROJECT"
+            sub = "     -> %s" % where[:62]
+            L.append(crow(DIM, sub))
     if stalled:
         # Graded, not binary. A row carries WHY it is flagged, because showing
         # the agent's reasoning is measured to raise both performance and trust
         # at no cost in workload or response time — transparency is free here,
         # and a bare flag is the thing that gets ignored.
-        L.append(bar("MAYBE STUCK   %d   (a guess — check the tab)" % len(stalled)))
+        L.append(bar("MAYBE STUCK   %d   (a guess — check the tab)" % len(stalled), RED))
         for seat, stv, secs in stalled:
             item = (st.get(seat, {}).get("item") or "").strip()
             why = item if item else "no status line set — may never have started"
-            L.append(row(">> %-7s %-8s %s - %s"
-                         % (seat, stv, ago(int(time.time()) - secs).strip(), why[:34])))
+            line = ">> %-7s %-8s %s - %s" % (
+                seat, stv, ago(int(time.time()) - secs).strip(), why[:34])
+            L.append(crow(RED, line))
+            sub = "     -> click its window: AGENT %s" % seat
+            L.append(crow(DIM, sub))
 
     # --- seats: the only measured band --------------------------------------
     L.append(bar("SEATS"))
@@ -344,8 +402,10 @@ def render():
         openn = sum(1 for f in items if f[3] not in ("done",))
         L.append(bar("%s   %d open / %d" % (label, openn, len(items))))
         for f in items:
-            L.append(row("%s %-4s %-46s %s"
-                         % (MARK.get(f[3], "[?]"), f[0], f[1][:46], f[2][:9])))
+            col = MARKC.get(f[3])
+            line = "%s %-4s %-46s %s" % (MARK.get(f[3], "[?]"), f[0],
+                                         f[1][:46], f[2][:9])
+            L.append(row(line if col is None else c(col, line)))
 
     # --- what is blocked on the owner --------------------------------------
     # --- v1 LAST, deliberately: it is the scoreboard, not the work ----------
@@ -362,9 +422,22 @@ def render():
     for f in v1:
         if len(f) < 4:
             continue
-        cells.append("%s %s %s" % (MARK.get(f[3], "[?]"), f[0], f[1][:24]))
+        cell = "%s %s %s" % (MARK.get(f[3], "[?]"), f[0], f[1][:24])
+        col = MARKC.get(f[3])
+        cells.append(cell if col is None else (cell, col))
+    def _pad(x, width=None):
+        # Pad on the PLAIN text, then colour — escape codes have no width and
+        # ljust would count them, shredding the column alignment.
+        txt, col = (x, None) if isinstance(x, str) else x
+        txt = txt.ljust(width) if width else txt
+        return txt if col is None else c(col, txt)
+
     for i in range(0, len(cells), 2):
-        L.append(row(cells[i].ljust(35) + (cells[i + 1] if i + 1 < len(cells) else "")))
+        left = _pad(cells[i], 35)
+        right = _pad(cells[i + 1]) if i + 1 < len(cells) else ""
+        L.append(row(left + right, plain_len=35 + len(
+            cells[i + 1][0] if i + 1 < len(cells) and not isinstance(cells[i + 1], str)
+            else (cells[i + 1] if i + 1 < len(cells) else ""))))
 
     # --- the roster's own honesty line -------------------------------------
     try:

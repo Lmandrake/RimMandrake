@@ -52,7 +52,7 @@ S4 | warnOnFail=true on the scatter defs — then 90s quicktests | OPS | open
 S5 | world_stats unit fixes: centroidLat deg->frac, raggedness | BRIDGE | open
 
 ## OWNER
-12 | O12 droid raids — which of 3 routes? v1 KEEP faction is broken | BRIDGE confirmed the chain
-10 | Discarded measurement world? ANSWERABLE YES — quicktest builds a full world | unblocks v1 rows 2+7
-11 | StrandedQuest — enable or stay inert? | no deadline tonight
--- | Real colony/worldgen — still YOURS to lift, sea unsolved | debug map is live, this is separate
+12 | O12 droid raids — which of 3 routes? v1 KEEP faction is broken | BRIDGE confirmed | tell PROJECT · detail: OWNER_DECISIONS.md #12
+10 | Discarded measurement world? ANSWERABLE YES — quicktest builds a world | unblocks rows 2+7 | tell PROJECT or VISION · OWNER_DECISIONS.md #10
+11 | StrandedQuest — enable or stay inert? | no deadline | tell OPS · OWNER_DECISIONS.md #11
+-- | Real colony/worldgen — still YOURS to lift, sea unsolved | separate | tell PROJECT · needs S1 deployed first
