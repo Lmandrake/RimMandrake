@@ -1,5 +1,33 @@
 # WORLDGEN_FACTION_CHECKLIST.md — the Configure Factions page, box by box
 
+> 🔴 **OPS banner, 2026-08-13. Read before executing.**
+>
+> **The tick-list itself is measured and safe to run**: 21 untick / 6 keep / 0 not
+> found, every defName read off disk, labels taken from the defs because the page
+> shows labels not defNames.
+>
+> **The FRAMING added late is a PROPOSAL and has not been ruled on.** Two claims in
+> here are design decisions, not measurements, and I am player zero — evidence in,
+> decisions out:
+> 1. That `RebelAlliance_Suppress.xml`'s four-field zeroing is the **template** for
+>    the rest (keep the mod for its weapons and pawnkinds, delete only the faction).
+>    That is a good pattern and it is **cheap to replicate — but only for factions
+>    whose defs expose those four fields.**
+> 2. That the resulting dangling references are **"accepted cost"**. ⚠️ **I do not
+>    accept that on the player's behalf, and it should not ride in silently.**
+>
+> **On (2), the player-zero objection, because it is the one that costs fun:** an
+> orphaned troll burrow or hornet hive is scenery and nobody minds. **A KotOR
+> distress call with no antagonist is a quest the player accepts and cannot
+> finish.** That is materially worse than the faction it removed — a broken quest
+> is noticed, remembered, and blamed on the modlist, while an absent faction is
+> never missed. Same for Yautja scenarios naming dead factions.
+>
+> ⇒ **VISION rules.** If the answer is "accept it", say so explicitly and I will
+> stop raising it. If the answer is "not the quest ones", the fix is to keep the
+> handful of factions that quests reference and drop only the rest — which costs
+> almost nothing, because those factions own no settlements anyway.
+
 **What you are doing and why.** The next world is generated from scratch (all saves
 were deleted by owner order 2026-08-13), and faction existence is decided **once, at
 world creation**, on vanilla's *Configure Factions* page that Faction Control unlocks
@@ -15,6 +43,18 @@ list at the screen, tick the boxes, and **record what you actually saw** in the
 > not the designer. Nothing below is authority to change the design; it is evidence
 > in, decision out. If VISION has not signed off, do not execute the untick list —
 > generate with it in hand and ask.
+
+**⭐ The direction this list serves (owner, 2026-08-13): we build our own factions.
+Eventually almost all mod factions get turned off; we keep their mods for the
+resources — weapons, apparel, pawnkinds, art.** So this checklist is a *step*, not
+the destination, and its keep list is transitional rather than final. Two things
+follow, and they matter for how you read the rest of the file. First, **"the mod
+stays, the faction goes" is the house pattern, not a compromise** — `RebelAlliance_Suppress.xml`
+(Section 5) is the worked example of it and should be read as the template for the
+others, not as a conflict. Second, **Section 6's "what breaks if you untick it" is
+expected cost, already accepted** — orphaned burrows, incidents with no antagonist and
+scenarios that hard-name a dead faction are the known price of keeping the content
+while dropping the polity. Record them; do not treat them as blockers.
 
 **Every defName below was located on disk. NOT FOUND count: 0.** All 27 factions
 named in the proposal exist in the live 573-mod def set
@@ -156,10 +196,13 @@ checkbox anywhere on the page.** That is the patch working, not a failure.
 
 **Record one of these three outcomes and nothing else:**
 
-- ☐ **ABSENT from the page** → patch is live and working as designed. **But it also
-  means the KEEP list above cannot be satisfied for this faction.** The proposal wants
-  Rebel Alliance kept; the deployed patch removes it. **These two contradict each
-  other and only VISION can resolve it.** Do not revert the patch at the screen.
+- ☐ **ABSENT from the page** → patch is live and working as designed, **and this is
+  the expected and desired outcome.** It does mean the KEEP list above cannot be
+  satisfied for this faction — the proposal wanted Rebel Alliance kept, the deployed
+  patch removes it — but per the owner's direction at the top of this file, *"mod
+  stays, faction goes"* is the house pattern and Rebel Alliance is simply further
+  along it than the rest. Not a contradiction to resolve; a keep-list entry to retire.
+  Do not revert the patch at the screen.
 - ☐ **PRESENT and settable** → the patch did NOT land (deploy miss, or an Outer Rim
   update renamed a field and the `PatchOperationConditional` no-opped silently). File
   it; this is the real defect shape.
