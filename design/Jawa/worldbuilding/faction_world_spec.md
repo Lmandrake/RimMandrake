@@ -379,3 +379,70 @@ on *several axes at once* rather than one blanket yes/no. The axes being
 confirmed as real before the sheet is built: **in raids · in ancient dangers /
 compounds · in mech clusters · in quests and bossgroups · player-buildable ·
 tradeable**. Only axes the engine actually separates will appear on the sheet.
+
+---
+
+## 🔴 THE PLANET WE GENERATE IS NOT THE PLANET WE SPECIFIED
+
+_Measured 2026-08-13, from three real generated worlds on disk and the worldgen
+code. **This is the largest gap between design and reality in the project.**_
+
+> **The desert world is roughly half ocean.**
+
+| save | Ocean tiles | % of planet |
+|---|---:|---:|
+| `w6_faction_check.rws` | 51,738 | **43.1%** |
+| `New Arrivals2.rws` | 58,888 | **49.1%** |
+| `rimbench_terrain_test.rws` | 66,342 | **55.3%** |
+
+`New Arrivals2` is **49.1% Ocean against 8.5% ExtremeDesert and 5.9% Desert**, with
+130 lakes, two named oceans and ten named seas. **The thirst-world identity exists
+in these documents and nowhere else.**
+
+### Why, and why the obvious lever does nothing
+
+**Ocean is an ELEVATION rule, not a biome-scoring or rainfall rule.**
+`WaterCovered` is simply `elevation <= 0`, written by `WorldGenStep_Terrain` at
+order **0** — before any biome scoring happens. ⇒ **Turning the rainfall slider to
+minimum cannot remove a single ocean tile.** It only re-labels the land.
+
+**There is no sea-level control anywhere in vanilla.** The assembly has exactly
+three world sliders — rainfall, temperature, population. **No mod in the active
+set touches water placement either** (1,242 swept, zero hits). Water is 100%
+vanilla and currently unmanaged.
+
+⚠️ **Choose Biome Commonality's Ocean and Lake dials are almost certainly inert** —
+those biomes are `isBackgroundBiome` and assigned by elevation, not by
+`GetScore`. **Do not plan around them.**
+
+### What this means for the Three Waters
+
+**The owner's ruling — three concentrated water regions near the poles, barren
+dune everywhere else — is currently contradicted by the generator by a factor of
+about a hundred.** Either the design bends or the planet does.
+
+**Recommendation: the planet bends.** The Three Waters is a better world than a
+half-drowned one, and it is the whole premise. **Three routes exist, all
+measured, none requiring new dependencies:**
+
+1. ⭐ **WorldEdit 2.0 — already ACTIVE.** Ships a real 1.6 assembly with per-tile
+   and whole-planet elevation editing, plus `IsOceanOrLake` helpers. **Set biome
+   AND elevation together** — GravTide reads elevation, so a re-labelled tile
+   with land elevation would confuse it.
+2. **A custom `WorldGenStep`** at order ~20, after Terrain and before Lakes.
+   GravTide's own volcanic-biome step is the proven pattern.
+3. **BiomesKit** (active, entirely unused) exposes `setElevation`,
+   `setNotWaterCovered` and `minimumWaterNeighbors` — the cleanest declarative
+   lever if anyone wants to shape water without code.
+
+### ✅ The GravTide objection is dead either way
+
+**I had flagged "does our world have ocean tiles" as the blocker on adopting
+GravTide. It is settled: a RimWorld world cannot generate with zero ocean.**
+There are ~52,000 targets on a representative planet. **The problem was never
+scarcity of sea — it is excess.**
+
+⚠️ **And nothing in `infrastructure/state/` records a single worldgen setting** —
+no coverage, no seed, no sliders. `setup_checklist.md` still marks planet
+coverage, seed and sliders **OPEN**. The only settings we have are inferred from
+three saves: coverage 0.300, rainfall Normal, temperature Normal.
