@@ -64,43 +64,26 @@ possible from the one you spend.**
 Three habits follow.
 
 **When you are three failed hypotheses deep, stop bisecting downward and build a
-MINIMAL load instead.** Removing one suspect at a time costs a full load per
-guess and only ever tests the guess you already had. Cutting to the ~20 mods
-that can possibly be involved costs **one** load and answers a better question:
-*does the feature work at all in isolation?* Either answer is progress — a
-known-good baseline to bisect upward from, or proof the fault is in the
-feature's own mods rather than the stack.
-
-Because it costs about one load, minimising becomes the cheapest option far
-earlier than it feels like it should: at the point where you notice you are
-*generating* hypotheses rather than *testing* a theory. **The procedure — how to
+MINIMAL load instead.** Cutting to the ~20 mods that can possibly be involved
+costs **one** load and answers a better question: *does the feature work at all
+in isolation?* **`references/minimal-load.md`** has why it beats bisecting, how to
 derive the set rather than guess it, and the two traps inside the reduced set —
-is in `references/minimal-load.md`.** Read it when you decide to minimise.
+read it the moment you notice you are *generating* hypotheses rather than
+*testing* a theory.
 
-**Verify everything verifiable offline, first.** Defs, About.xml, ModsConfig.xml
-and the whole Workshop tree are ordinary files sitting on disk right now. Run
-`scripts/validate_patch.py`, parse every XML you touched, confirm the load order
-in `ModsConfig.xml` rather than trusting the manager's UI, and cross-check def
-references by grepping the mods themselves. Anything you can establish from
-files, establish from files. A restart should be confirming a prediction, not
-conducting an experiment.
+**Verify everything verifiable offline, first.** A restart should be confirming a
+prediction, not conducting an experiment.
 
-**Batch by risk, not by count.** The one-change-at-a-time rule exists to keep
-attribution possible when something breaks — it is about *ambiguity*, not about
-quantity, so batch anything whose effects are distinguishable. Config-level
-changes (load order, mod settings, un/subscribes) carry near-zero attribution
-risk and should always ride along. A pure-XML patch that validated clean and has
-named log strings to check is also safe to include, because you know exactly
-what evidence would convict it. Keep genuinely ambiguous changes solo: a new C#
-assembly, a mod that patches broadly, or two changes that touch the same system.
-Say out loud which bucket each pending change is in before proposing a batch.
+**Batch by risk, not by count.** The rule is about *ambiguity*, not quantity:
+batch anything whose effects are distinguishable, keep a new C# assembly solo.
 
-**Harvest the whole log, not just your change.** After a restart, read the entire
-`Player.log` and update the triage list — the mod that just broke unrelatedly,
-the new unresolved reference, the count that moved. You paid for a full load; a
-single yes/no answer is a poor return on it. Keeping a running "next restart"
-queue between loads is what makes this cheap: changes accumulate in a list, and
-each load clears the list and refills the evidence.
+**Harvest the whole log, not just your change.** You paid for a full load; a single
+yes/no answer is a poor return on it.
+
+**`references/spending-a-load.md` has all three in full — what "verifiable
+offline" actually covers, which changes are safe to ride along and which must go
+solo, and the running "next restart" queue that makes harvesting cheap.** Open it
+when you are planning a load, not every session.
 
 The corollary for how you talk to the user: **do not casually suggest "restart
 and see".** Each one costs them real time. Propose a restart when the queue
@@ -166,14 +149,10 @@ fields use the *def name as the element name* — `<wildBiomes><Desert>0.3</Dese
 property of its C# type, so it is identical across every mod, and the only way to
 know is to look at what is in the node already.
 
-Getting this backwards is the most destructive mistake in this document, because
-it does not fail quietly. Add `<li>` into a dictionary-keyed field and the engine
-looks for a def literally named `li`, fails to resolve it, and **discards the
-entire parent def** — a def that was working fine before you touched it. The only
-log evidence is one cross-reference error naming `"li"`, followed much later by
-hundreds of unrelated-looking failures from everything that referenced the def
-you just destroyed. `validate_patch.py` compares your `<value>` against the live
-node's existing children for exactly this reason.
+Getting this backwards is the most destructive mistake in this document: an `<li>`
+in a dictionary-keyed field makes the engine **discard the entire parent def** — one
+that was working before you touched it. (Why, and the log signature it leaves:
+`references/patch-operations.md` §11.)
 
 **`PatchOperationRemove` deletes every match, not the first one.** There is no
 "remove one". If a def lists `<TropicalSwamp>` twice and you write the bare
@@ -197,22 +176,12 @@ guard with `PatchOperationConditional` on the def itself, which tests reality
 rather than intent.
 
 The reason this is so common is that **a mod can ship different defs depending on
-what else is loaded**, via `LoadFolders.xml`:
-
-```xml
-<v1.6>
-  <li>1.6</li>
-  <li IfModActive="sarg.alphabiomes">1.6/Mods/AlphaBiomes</li>
-  <li IfModNotActive="Ludeon.RimWorld.Odyssey">1.6NotOdyssey</li>
-</v1.6>
-```
-
-That last line is real: Vanilla Animals Expanded drops its badger, moose, muskox
-and porcupine when Odyssey is active, because Odyssey ships its own. So the def
-set is a function of the whole mod list, and "the mod is installed" tells you
-nothing about which of its defs exist. When a reference goes missing while its
-owning mod is plainly present, **read that mod's `LoadFolders.xml` before
-concluding anything** — the def may be in a folder your configuration excludes.
+what else is loaded**, via `LoadFolders.xml` — so the def set is a function of the
+whole mod list, and "the mod is installed" tells you nothing about which of its
+defs exist. **When a reference goes missing while its owning mod is plainly
+present, read that mod's `LoadFolders.xml` before concluding anything**; the
+syntax and the real Vanilla-Animals-Expanded/Odyssey case are in
+`references/patch-operations.md` §9.
 
 ### Which operation
 
@@ -240,12 +209,10 @@ python3 scripts/validate_patch.py path/to/Patch.xml \
     --defs "C:/Program Files (x86)/Steam/steamapps/workshop/content/294100"
 ```
 
-It checks: the file parses; no comment contains `--`; every `Operation` has a
-`Class`; ops are conditional-wrapped; the conditional test xpath matches the
-inner op's xpath; and — this is the valuable one — it **runs each xpath against
-the real Defs on disk and reports how many nodes it hits**. Zero hits means the
-patch would silently do nothing. More hits than you expected means a
-`Remove` is about to take out more than you think.
+The valuable check is the last one: it **runs each xpath against the real Defs on
+disk and reports how many nodes it hits**. Zero hits means the patch would silently
+do nothing; more hits than expected means a `Remove` is about to take out more than
+you think. (Its other five checks: `references/patch-operations.md` §10.)
 
 A patch that validates clean can still be wrong about *intent*, so also confirm
 in-game: load, then check the dev console (or `Player.log`) for the patch's own
@@ -253,19 +220,12 @@ name. Silence is success.
 
 ### Two things it cannot see — know these before trusting a result
 
-**It reads the defs as they sit on disk, unpatched.** Other mods' patches have
-not run. So a node that another mod *creates* at runtime is invisible, and the
-validator calls your perfectly correct xpath a zero-match silent no-op. When you
-are patching something a compat patch added, **0 matches is the expected
-result** — and it also tells you the fix now depends on load order, because you
-must apply after whoever creates the node.
-
-**It only validates `Patches/`. It does not check `Defs/` at all.** A hand-written
-Def with a field that moved between versions sails straight through. That is
-exactly how `<exposedThought>` shipped in one of our own WeatherDefs when 1.6 had
-renamed it to `<weatherThought>`. Until the tool covers Defs, diff any Def you
-author field-by-field against the closest Core def — §1, applied to your own
-files.
+It reads defs **unpatched**, so a node another mod creates at runtime is invisible
+and **0 matches can be the correct answer**; and it validates `Patches/` only —
+**it does not check `Defs/` at all**, so a hand-authored Def with a field that
+moved between versions sails straight through. **`references/patch-operations.md`
+§10** has both in full, with the WeatherDef that shipped a renamed field. Read it
+before you either trust or disbelieve a validator result.
 
 ---
 
@@ -282,43 +242,27 @@ Everything the parent supplied is simply missing, and you get
 errors about fields you never wrote. Do not assume the engine resolves
 inheritance across the whole combined document; it does not.
 
-**The damage escapes your mod.** A `PawnKindDef` that failed to inherit has no
-`race`, so `RaceProperties` is null on it — and vanilla code enumerates *all*
-pawnkinds. That produced NREs inside `ThingDef.ResolveIcon`,
-`ScenPart_StartingAnimal.PossibleAnimals` and `BiomeDef.CommonalityOfAnimal`,
-breaking map generation. **None of those stack traces named a mod.** If worldgen
-starts throwing, grep the log for `Could not find parent node` and
-`Config error in <YourDefPrefix>` before believing it is a vanilla bug.
+**The damage escapes your mod**, and none of the stack traces name it. A failed
+inheritance breaks *vanilla* code that enumerates all defs of that type — worldgen
+included. If worldgen starts throwing, grep the log for `Could not find parent
+node` and `Config error in <YourDefPrefix>` before believing it is a vanilla bug.
 
-**Assert the order in code before every launch.** Not by eye, not by trusting
-the manager. Resolve the load set, find the index of your mod and of each mod it
-patches, and fail loudly:
+**Assert the order in code before every launch.** Not by eye, not by trusting the
+manager: resolve the load set, compare the index of your mod against each mod it
+patches, and fail loudly. One check per mod you reach into.
 
-```python
-low = [m['packageId'].lower() for m in mods]
-for mine, target, why in CHECKS:
-    assert low.index(mine) > low.index(target), f"{mine} must load after {target}: {why}"
-```
-
-Keep one entry per mod you actually reach into. A three-check version passed
-while the order was still broken for a fourth mod.
+**`references/load-order.md` holds the three NRE sites that proved it, the
+assertion snippet, and why the community rules database must not be hand-edited.**
+Open it when an inheritance error appears, when writing the assertion, or before
+touching a sorter's rules database.
 
 ### Teach the mod manager, or it will keep undoing you
 
-RimSort (and similar) re-sort on demand and will silently scatter your mods.
-Fixing the resulting order by hand works but treats the symptom. The manager has
-a **user rules** database — for RimSort,
-`%LOCALAPPDATA%/RimSort/dbs/userRules.json` — and the distinction that matters
-is:
-
-- **`loadBottom`** is a *hint*. It asks for "near the end" and creates no edge,
-  so nothing prevents another mod landing after you. Several mods claim it and
-  it cannot order them among themselves.
-- **`loadAfter`** is a *constraint*. A topological sort cannot violate it.
-
-Write one `loadAfter` edge per mod you patch. After that the manager produces the
-right order unaided and your assertion becomes a cheap safety net rather than a
-repeated repair.
+Fixing a scattered order by hand treats the symptom. Write **one `loadAfter` edge
+per mod you patch** into the manager's user-rules database (RimSort:
+`%LOCALAPPDATA%/RimSort/dbs/userRules.json`) — `loadAfter` is a *constraint* a
+topological sort cannot violate, whereas **`loadBottom` is only a hint and creates
+no edge at all**. (The full distinction: `references/load-order.md`.)
 
 ⚠️ Two traps in the rules file itself. It is keyed by `packageId`, so **renaming
 your mod silently orphans every rule** — a stale rule for a dead packageId is
@@ -332,10 +276,6 @@ list back. Mitigation is one sentence — *"RimSort is open, hit Refresh"*.
 🔴 **And read `ModsConfig.xml`'s mtime immediately before writing it.** It moved
 twice in twenty minutes on 2026-08-13 while the owner re-sorted. Writing blind
 destroys their ordering silently.
-
-Do not hand-edit the *community* rules database: it is a git clone refreshed on
-startup, so local changes vanish. Community rules are a pull request to a public
-third-party repo, which is the user's call, never yours.
 
 ---
 
@@ -358,30 +298,19 @@ patches must be enabled LAST in load order, and the restart that follows.
 "it is done" that turned out to be false was reported after reading the artifact and
 never asking what last read it.
 
-**The check is one question: _what did the consumer last read, and when?_**
-
-```bash
-# the process start time IS the def-read time -- RimWorld reads defs once, at launch
-powershell.exe -NoProfile -Command "Get-Process RimWorldWin64 | Select Id,StartTime"
-find "<game>/Mods" -newermt "<that StartTime>"        # anything listed is NOT loaded
-md5sum <repo copy> <deployed copy>                   # differ => the game has the other one
-```
-
-**Two measured cases, both reported as done, both false:**
-
-* A `GenStepDef` fixed and deployed at 01:33:48 against a process started 01:03:26.
-  The map showed the OLD behaviour and read as a third failure of the fix.
-* A DLL verified with `strings -a -el` in the repo — md5 `b7730027` — while the game
-  held a different build, `82b48e53`, dated before the launch. "Verified in the
-  binary" and "verified in the game" are different claims.
+**The check is one question: _what did the consumer last read, and when?_** The
+process start time IS the def-read time — RimWorld reads defs **once, at launch** —
+so anything under `Mods/` newer than that StartTime is not loaded. **The three
+commands, and two measured cases (a `GenStepDef` and a DLL) both reported done and
+both false, are in `references/traps-mods-and-managers.md` §"A def deployed AFTER
+launch".** Run them before calling anything live.
 
 ⚠️ **Map-generation defs need MORE than a restart: they need a map generated after
 it.** Loading a save re-runs no GenStep, so a correct fix is invisible on an old map.
 
 ⚠️ **The bridge cannot answer this for you** — `jawa/get_def` returns the def that was
 *loaded* and does not expose most fields, so a successful read is not proof the def is
-current. **The mtime is the evidence.** Full worked case, both directions:
-`references/traps-mods-and-managers.md` §"A def deployed AFTER launch".
+current. **The mtime is the evidence.**
 
 ⭐ **Say which one you checked.** "Deployed" is a claim about disk; "live" is a claim
 about a process. A report that does not distinguish them will be read as the stronger
@@ -391,65 +320,19 @@ of the two.
 
 `%USERPROFILE%\AppData\LocalLow\Ludeon Studios\RimWorld by Ludeon Studios\Player.log`
 
-Triage in this order, because it sorts by severity of consequence rather than by
-position in the file:
+Triage by **consequence, not by position in the file**. The ladder, worst first:
+static-constructor / `TypeInitializationException` / `ReflectionTypeLoadException`
+(the mod is *dead*, not noisy) → `Could not execute post-long-event action` (costs
+exactly that one action; the queue continues) → `Could not resolve cross-reference`
+(benign **or** fatal — it depends entirely on the `wanter`) →
+`Patch operation … failed` (a no-op) → translation and sound errors (cosmetic).
 
-1. **`grep -n "static constructor\|TypeInitializationException\|ReflectionTypeLoadException"`** — these mods are *dead*, not noisy. A mod that
-   throws in its static constructor did not load at all, and it will not say so
-   again later. In a large stack, failures concentrate here: mods that reflect
-   over *other mods'* types at startup are the fragile class.
-2. **`Could not execute post-long-event action`** — one queued post-load action
-   failed. **It cost exactly that action; the queue continues.** Verified against
-   the IL of `Verse.LongEventHandler.ExecuteToExecuteWhenFinished` (1.6.4871):
-   the `try` spans 18 bytes around a single `Action::Invoke`, the catch logs via
-   `Log.Error`, and its `leave` targets the loop *increment*, not the exit. The
-   loop even re-reads `.Count` each pass, so actions queued during execution
-   still run.
-
-   Severity is therefore per-action — usually one def's `ResolveIcon` — not
-   "everything after this silently didn't happen." Weigh it accordingly before
-   blaming unrelated breakage on it, or disabling a mod over it.
-
-   ⚠️ The one real abort path in that method is *outside* the try: the
-   per-iteration DeepProfiler block dereferences
-   `action.Method.DeclaringType`. An NRE there escapes the loop, skips the final
-   `Clear()`, and leaves the re-entry flag set — which bricks the queue
-   permanently behind "Already executing." Distinguish the two by the stack: a
-   frame for the queued action itself (e.g. `BuildableDef.<PostLoad>b__78_0`)
-   means the survivable path.
-3. **`Could not resolve cross-reference`** — a def referenced something absent.
-   Usually a `MayRequire` guarding the wrong thing (see §4). **Do not file these
-   as harmless without reading the `wanter`.** The consequence depends entirely
-   on the field that wanted it:
-
-   - **A plain `List<Def>` field** (`wanter=pawnKindDefs`, `thingDefs`, …) drops
-     the unresolved entry and degrades gracefully. Genuinely benign.
-   - **A record that later becomes a dictionary key** — `BiomeAnimalRecord`,
-     `WeatherCommonalityRecord` and their kin — keeps the record and leaves the
-     def field **null**. The next consumer to build that dictionary calls
-     `Add(null, …)` and throws `ArgumentNullException: key`, which kills whatever
-     mod touched it first, in its static constructor, far from here.
-
-   Five such lines, filed as "five spawn-table entries are skipped", were the
-   sole cause of a dead mod for three loads running. A large count still means
-   content is silently incomplete; a *small* count is not evidence of safety.
-4. **`Patch operation ... failed`** — a no-op. Almost always benign, and the most
-   common noise category in a big stack.
-5. **Translation errors, missing sounds** — cosmetic. The engine says so itself
-   ("using undefined sound"). Do not spend time here.
-
-Two behaviours worth keeping:
-
-**Maintain a triage list of errors judged safe**, with the exact log string, the
-owning mod, the root cause, and *why* it's harmless. If you can't fill all four,
-it isn't safe yet — it's just unexplained. Without this list you re-investigate
-the same benign noise every single load.
-
-**Load order can look like a code bug.** A `ReflectionTypeLoadException` naming
-another mod's types usually means load order, not a broken assembly: a mod can
-declare a `modDependency` and still load *before* it, because dependency ≠
-ordering. `loadAfter` is what orders. When it's missing upstream, fix it locally
-with a sorter rule rather than touching the mod.
+**`references/player-log-triage.md` has each rung in full: the greps, the IL-level
+evidence for what each error actually costs, the two shapes of cross-reference
+damage, and the judged-safe list you must keep.** Open it whenever you are reading
+a log — five "benign" cross-reference lines were the sole cause of a dead mod for
+three loads running, and a `ReflectionTypeLoadException` is usually load order
+rather than a broken assembly.
 
 ---
 
@@ -567,33 +450,15 @@ src/RimMandrake/Utils/whats_new.py --seat <SEAT>` prints those added headings in
 full reread buys the same information for ~25k tokens, which is why it gets
 skipped. Run it when the game loads, or any time you want it.
 
-**After any RimWorld task, ask: did anything here surprise me?** A patch that
-didn't apply, a field that moved, a mod that failed in an unfamiliar shape, an
-xpath idiom that took three tries. If yes, append an entry to the matching topic
-file, and add its title to the index in the same commit. **The entry format, and
-the rule for choosing a file, live in `references/traps.md`** — kept in one place
-so the two cannot drift apart.
+**After any RimWorld task, ask: did anything here surprise me?** If yes, append an
+entry to the matching topic file and add its title to the index in the same commit.
+⚠️ **But most candidate lessons should be REJECTED** — `references/traps.md` carries
+a five-part admission test, and an entry failing any one of them is not a trap.
 
-⚠️ **Most candidate lessons should be REJECTED.** `references/traps.md` carries a
-five-part admission test — specific, non-obvious, actionable, domain-bound, still
-true — and an entry failing any one of them is not a trap. General software or
-process wisdom goes to `DOC_BUDGET.md` or `agents_def.md`; a log full of aphorisms
-is worse than no log, because the real entries stop being findable.
-
-If an entry would change what this skill tells you to do *by default*, don't leave
-it in the log — **promote it into the body of this file** and delete the log entry.
-The log is a staging area, not an archive; when **one topic file** grows past roughly
-forty entries, split it rather than append.
-
-> ⚠️ **That threshold went unenforced for eleven entries.** The log was one flat
-> file and reached **51**, because *a rule a document states about itself is the
-> one nobody is assigned to check.* Split 2026-08-12 into five topic files
-> (largest: 17). If you notice a file over forty, you are the one who noticed.
-
-**Where the canonical copy lives.** An installed skill is a read-only cache;
-editing it there changes nothing durable. Edit the copy in the user's project,
-re-package, and say it has been **delivered** rather than saved — installing it
-is theirs to do.
+**The entry format, the admission test, the promote-into-this-file rule, the
+forty-entry split threshold and where the canonical copy of a skill lives are all
+in `references/traps.md` → "Capture, rejection, promotion".** Open it before you
+write an entry — kept in one place so the two cannot drift apart.
 
 ---
 
@@ -607,7 +472,10 @@ is theirs to do.
 | ├ `traps-mods-and-managers.md` | A mod is absent, dead, or ignoring its files. |
 | ├ `traps-art.md` | Before calling art missing, wrong or broken. |
 | └ `traps-diagnosis.md` | Before trusting a diagnosis, or calling into a running game. |
-| `references/patch-operations.md` | An xpath won't match; you need the operation table, inheritance or worked examples. |
+| `references/patch-operations.md` | An xpath won't match; you need the operation table, inheritance, worked examples, `LoadFolders.xml` (§9), the validator's blind spots (§10) or why an `<li>` destroys a def (§11). |
+| `references/player-log-triage.md` | **Whenever you are reading a `Player.log`.** The five severity rungs in full, what each error actually costs, and the judged-safe list. |
+| `references/load-order.md` | An inheritance error appeared, you are writing the order assertion, or you are about to touch a sorter's rules database. |
+| `references/spending-a-load.md` | You are planning a load — what to verify offline, what may ride along in the batch, what to harvest. |
 | `references/csharp-and-loading.md` | Before writing any C# — Harmony, entry points, `LoadFolders.xml`. |
 | `references/minimal-load.md` | You have decided to cut the stack down to corner a bug. |
 | `scripts/validate_patch.py` | Every patch **and every def**, before it goes near the Mods folder. Point it at the mod ROOT: it dispatches on the root element and its banner states what it did and did not scan. |

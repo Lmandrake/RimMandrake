@@ -190,3 +190,39 @@ the 2026-08-12 split, after the flat log hit **51** unnoticed — a rule a docum
 states about *itself* is the one nobody is assigned to check. `src/RimMandrake/Utils/doc_budget.py`
 now enforces a 700-line ceiling on these files, so the check no longer depends on
 anyone remembering.
+
+---
+
+## Capture, rejection, promotion — the long form
+
+*(Moved from `SKILL.md` §9 on 2026-08-14 to keep the skill body under its 500-line
+budget. The short form — "capture is part of finishing the task; the format and
+the file-choosing rule live here" — stayed in the skill.)*
+
+**After any RimWorld task, ask: did anything here surprise me?** A patch that
+didn't apply, a field that moved, a mod that failed in an unfamiliar shape, an
+xpath idiom that took three tries. If yes, append an entry to the matching topic
+file, and add its title to the index in the same commit. **The entry format, and
+the rule for choosing a file, live in `references/traps.md`** — kept in one place
+so the two cannot drift apart.
+
+⚠️ **Most candidate lessons should be REJECTED.** `references/traps.md` carries a
+five-part admission test — specific, non-obvious, actionable, domain-bound, still
+true — and an entry failing any one of them is not a trap. General software or
+process wisdom goes to `DOC_BUDGET.md` or `agents_def.md`; a log full of aphorisms
+is worse than no log, because the real entries stop being findable.
+
+If an entry would change what this skill tells you to do *by default*, don't leave
+it in the log — **promote it into the body of this file** and delete the log entry.
+The log is a staging area, not an archive; when **one topic file** grows past roughly
+forty entries, split it rather than append.
+
+> ⚠️ **That threshold went unenforced for eleven entries.** The log was one flat
+> file and reached **51**, because *a rule a document states about itself is the
+> one nobody is assigned to check.* Split 2026-08-12 into five topic files
+> (largest: 17). If you notice a file over forty, you are the one who noticed.
+
+**Where the canonical copy lives.** An installed skill is a read-only cache;
+editing it there changes nothing durable. Edit the copy in the user's project,
+re-package, and say it has been **delivered** rather than saved — installing it
+is theirs to do.

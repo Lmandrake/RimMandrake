@@ -289,3 +289,76 @@ it when missing:
   patch that silently compensates for someone's bug is a maintenance liability
   that outlives your memory of why it exists — which is why every patch carries a
   dated source comment.
+
+---
+
+## 9. `LoadFolders.xml` — why a mod's def set depends on the whole mod list
+
+*(Moved from `SKILL.md` §4 on 2026-08-14. The rule stayed in the skill —
+`MayRequire` and `PatchOperationFindMod` check the MOD, not the DEF. This is the
+mechanism behind it.)*
+
+The reason that trap is so common is that **a mod can ship different defs
+depending on what else is loaded**, via `LoadFolders.xml`:
+
+```xml
+<v1.6>
+  <li>1.6</li>
+  <li IfModActive="sarg.alphabiomes">1.6/Mods/AlphaBiomes</li>
+  <li IfModNotActive="Ludeon.RimWorld.Odyssey">1.6NotOdyssey</li>
+</v1.6>
+```
+
+That last line is real: Vanilla Animals Expanded drops its badger, moose, muskox
+and porcupine when Odyssey is active, because Odyssey ships its own. So the def
+set is a function of the whole mod list, and "the mod is installed" tells you
+nothing about which of its defs exist. When a reference goes missing while its
+owning mod is plainly present, **read that mod's `LoadFolders.xml` before
+concluding anything** — the def may be in a folder your configuration excludes.
+
+---
+
+## 10. `validate_patch.py` — the full check list, and two things it cannot see
+
+*(Moved from `SKILL.md` §5 on 2026-08-14. Read before you trust — or disbelieve —
+a validator result.)*
+
+It checks: the file parses; no comment contains `--`; every `Operation` has a
+`Class`; ops are conditional-wrapped; the conditional test xpath matches the
+inner op's xpath; and — this is the valuable one — it **runs each xpath against
+the real Defs on disk and reports how many nodes it hits**. Zero hits means the
+patch would silently do nothing. More hits than you expected means a
+`Remove` is about to take out more than you think.
+
+### Two things it cannot see
+
+**It reads the defs as they sit on disk, unpatched.** Other mods' patches have
+not run. So a node that another mod *creates* at runtime is invisible, and the
+validator calls your perfectly correct xpath a zero-match silent no-op. When you
+are patching something a compat patch added, **0 matches is the expected
+result** — and it also tells you the fix now depends on load order, because you
+must apply after whoever creates the node.
+
+**It only validates `Patches/`. It does not check `Defs/` at all.** A hand-written
+Def with a field that moved between versions sails straight through. That is
+exactly how `<exposedThought>` shipped in one of our own WeatherDefs when 1.6 had
+renamed it to `<weatherThought>`. Until the tool covers Defs, diff any Def you
+author field-by-field against the closest Core def — SKILL.md §1, applied to your
+own files.
+
+---
+
+## 11. Why an `<li>` in a dictionary-keyed field destroys the parent def
+
+*(Moved from `SKILL.md` §4 on 2026-08-14. The rule stayed there — match the shape
+of the children already in the node. This is the failure mechanism and its log
+signature, which you need only once you are staring at the wreckage.)*
+
+Getting this backwards is the most destructive mistake in the skill, because
+it does not fail quietly. Add `<li>` into a dictionary-keyed field and the engine
+looks for a def literally named `li`, fails to resolve it, and **discards the
+entire parent def** — a def that was working fine before you touched it. The only
+log evidence is one cross-reference error naming `"li"`, followed much later by
+hundreds of unrelated-looking failures from everything that referenced the def
+you just destroyed. `validate_patch.py` compares your `<value>` against the live
+node's existing children for exactly this reason.

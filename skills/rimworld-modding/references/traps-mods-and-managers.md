@@ -129,3 +129,21 @@ find "<Steam>/steamapps/common/RimWorld/Mods" -newermt "<process StartTime>" -ty
 **Any file that returns is invisible to the running game.** ⚠️ **The bridge cannot answer this for you** — `jawa/get_def` returns the def that was *loaded* and does not expose most fields (`minSpacing` came back `extra: null`), so a successful read is not proof the def is current. **The mtime is the evidence.**
 🔴 **For a map-generation def, the bar is higher still: a cold load is necessary but not sufficient — the map must be GENERATED after it.** A `GenStepDef` or `terrainPatchMaker` runs at map-gen only, so loading a save made by the old process shows the old result forever.
 **Generalises to:** every long-lived process that reads configuration once — and to the general shape *"I verified the artifact, not the consumer"*. When a fix is deployed while the thing under test is already running, **the disk is not the system under test.** Ask what time the consumer last read it, and treat a post-launch deploy as a scheduled change, not a live one.
+
+**The three-command check** *(moved from `SKILL.md` §6b, 2026-08-14; the rule
+stayed there, this is the recipe)*:
+
+```bash
+# the process start time IS the def-read time -- RimWorld reads defs once, at launch
+powershell.exe -NoProfile -Command "Get-Process RimWorldWin64 | Select Id,StartTime"
+find "<game>/Mods" -newermt "<that StartTime>"        # anything listed is NOT loaded
+md5sum <repo copy> <deployed copy>                   # differ => the game has the other one
+```
+
+**Two measured cases, both reported as done, both false:**
+
+* A `GenStepDef` fixed and deployed at 01:33:48 against a process started 01:03:26.
+  The map showed the OLD behaviour and read as a third failure of the fix.
+* A DLL verified with `strings -a -el` in the repo — md5 `b7730027` — while the game
+  held a different build, `82b48e53`, dated before the launch. "Verified in the
+  binary" and "verified in the game" are different claims.
