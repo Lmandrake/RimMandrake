@@ -1,0 +1,296 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ============================================================================
+  FactionReligions.xml                       Jawa_Patches · authored 2026-08-14
+  ============================================================================
+
+  OWNER'S ORDER, 2026-08-14: "Parallel to the file that defines the player's Jawa
+  religion (The Salvation), make all of these in-game readable."
+
+  SOURCE OF TRUTH: design/Jawa/worldbuilding/faction_religions_spec.md
+  PATTERN:         src/Jawa/Jawa_Patches/Defs/FactionDefs/JawaTribes.xml
+                   (which in turn copies Anomaly's Horax cult, NOT the Empire's
+                   requiredMemes + structureMemeWeights family)
+
+  🔴 WHAT THIS FILE CAN AND CANNOT DO
+  ===================================
+  A FactionDef ideo block is a CONSTRAINT ON GENERATION, not an ideo. It takes a
+  name, a description, a meme set and deity presets; the generator fills in the
+  precepts. There is no field that accepts a .rid, and `disallowedPrecepts` is a
+  blacklist rather than a whitelist. So "the religion, in game" means and can only
+  mean: THE NAME, THE DESCRIPTION PARAGRAPH, THE DEITIES AND THE MEMES.
+
+  ⇒ Which is exactly the owner's other ruling, arrived at independently: the
+  precepts are decoration; the TEXT is the product. The three strings the engine
+  actually renders to a player are `ideoName`, `ideoDescription`, and each deity's
+  name + type. Everything in this file is aimed at those.
+
+  🔴 `hiddenIdeo` IS DELIBERATELY LEFT UNSET ON ALL OF THEM. Vanilla's Horax cult
+  sets it, which is why its own excellent description is never read by anyone.
+
+  🔴 FIVE OF ELEVEN SHIP HERE. THE OTHER SIX HAVE NO FACTION TO LIVE ON.
+  =====================================================================
+  Measured against the live FactionDef dump (87 defs), 2026-08-14. A religion can
+  only be attached to a faction that exists; six of the eleven dossiers describe
+  factions this campaign has never authored. They are NOT dropped — see the
+  manifest at the foot of this file and queue/VISION.md V30.
+
+  MAYREQUIRE: every modded meme and style carries one, so a disabled mod degrades
+  the faction instead of erroring. Each patch that targets a MODDED FactionDef is
+  wrapped in PatchOperationFindMod, so an absent mod is a no-op rather than a
+  failed xpath.
+  ============================================================================
+-->
+<Patch>
+
+  <!-- ======================================================================
+       1 · THE RISING ORDER  →  vanilla `Empire`
+       ======================================================================
+       🔴 TARGET RULED BY VISION, 2026-08-14, and it is NOT the obvious one.
+       `V1_SCOPE.md:84` says the Directorate rides `OuterRim_GalacticEmpire`;
+       `WORLDGEN_FACTION_CHECKLIST.md:41-48` supersedes it, is RATIFIED, and
+       says vanilla `Empire` IS the Galactic Empire under Palpatine, striking
+       the two-Empire split and demoting `OuterRim_GalacticEmpire`. V1_SCOPE
+       itself flags the contradiction and hands the ruling to this seat.
+       ⇒ Palpatine's cult lands on vanilla `Empire`. It is also the faction that
+       already ships titles, permits and an imperial court for it to sit on.
+
+       ⚠️ Vanilla `Empire` ships `requiredMemes` + `structureMemeWeights`. We are
+       REPLACING that family with the fixedIdeo family, not adding to it — hence
+       the two PatchOperationRemove ops, guarded `success="Always"` so a future
+       vanilla change that drops those fields cannot break the load.
+  -->
+  <Operation Class="PatchOperationSequence">
+    <success>Always</success>
+    <operations>
+      <li Class="PatchOperationRemove">
+        <xpath>/Defs/FactionDef[defName="Empire"]/requiredMemes</xpath>
+        <success>Always</success>
+      </li>
+      <li Class="PatchOperationRemove">
+        <xpath>/Defs/FactionDef[defName="Empire"]/structureMemeWeights</xpath>
+        <success>Always</success>
+      </li>
+      <li Class="PatchOperationAdd">
+        <xpath>/Defs/FactionDef[defName="Empire"]</xpath>
+        <value>
+          <fixedIdeo>true</fixedIdeo>
+          <requiredPreceptsOnly>true</requiredPreceptsOnly>
+          <ideoName>The Rising Order</ideoName>
+          <ideoDescription>We have never seen him. We will never see him. He is rising, and we are the ground he rises from. Take the helmet: it is the last thing you will ever choose. There is no doubt among us — only disorder, and disorder is corrected. Say the name once when you are given the armour, and once when you are taken out of it. Between those two words, stand in line.</ideoDescription>
+          <forcedMemes>
+            <li>Structure_TheistEmbodied</li>
+            <li MayRequire="vanillaexpanded.vmemese">VME_GodEmperor</li>
+            <li>Proselytizer</li>
+            <li>Supremacist</li>
+            <li>HumanPrimacy</li>
+          </forcedMemes>
+          <!-- Structure_TheistEmbodied carries deityCount IntRange(2,4) — the
+               MINIMUM is two, so one Palpatine would have been short. -->
+          <deityPresets>
+            <li>
+              <nameType>
+                <name>Palpatine</name>
+                <type>He Who Is Rising</type>
+              </nameType>
+              <gender>Male</gender>
+              <iconPath>UI/Deities/DeityGeneric</iconPath>
+            </li>
+            <li>
+              <nameType>
+                <name>the Line</name>
+                <type>That Which Has No Face</type>
+              </nameType>
+              <gender>None</gender>
+              <iconPath>UI/Deities/DeityGeneric</iconPath>
+            </li>
+          </deityPresets>
+          <styles>
+            <li MayRequire="vanillaexpanded.vmemese">VME_Authoritarian</li>
+            <li>Techist</li>
+          </styles>
+        </value>
+      </li>
+    </operations>
+  </Operation>
+
+  <!-- ======================================================================
+       3 · THE COVENANT OF FREE WELLS  →  `OuterRim_MoistureFarmers`
+       ======================================================================
+       The moisture farmers ARE the Homestead Defense League — the keep list
+       already calls them "farmers to trade with", and the dossier's whole
+       premise is water held in common and defended by militia.
+       Structure_TheistAbstract carries deityCount IntRange(1,4) ⇒ deity needed.
+  -->
+  <Operation Class="PatchOperationFindMod">
+    <mods><li>Outer Rim - Core</li></mods>
+    <match Class="PatchOperationAdd">
+      <xpath>/Defs/FactionDef[defName="OuterRim_MoistureFarmers"]</xpath>
+      <value>
+        <fixedIdeo>true</fixedIdeo>
+        <ideoName>the Covenant of Free Wells</ideoName>
+        <ideoDescription>The water was everywhere once. That is not a story — it is written in the rock, and we are right about it. It was taken back because it was wasted, and the guilt of that is ours by inheritance and is deserved. So the well stands open to any traveller, and a rifle stands beside the well. Charity and the militia are the same institution. Share your last canteen and you are pious. Spill it and you have done the old sin again, in miniature.</ideoDescription>
+        <forcedMemes>
+          <li>Structure_TheistAbstract</li>
+          <li MayRequire="sarg.alphamemes">AM_WaterPrimacy</li>
+          <li>Individualist</li>
+          <li>Guilty</li>
+          <li>Rancher</li>
+        </forcedMemes>
+        <deityPresets>
+          <li>
+            <nameType>
+              <name>the Withdrawn</name>
+              <type>That Which Was Given</type>
+            </nameType>
+            <gender>None</gender>
+            <iconPath>UI/Deities/DeityGeneric</iconPath>
+          </li>
+        </deityPresets>
+        <styles>
+          <li>Rustic</li>
+        </styles>
+      </value>
+    </match>
+  </Operation>
+
+  <!-- ======================================================================
+       5 · THE CONTINUITY PROTOCOL  →  `OuterRim_RogueDroidColony`
+       ======================================================================
+       ⚠️ TARGET CHOICE, ruled here: there are TWO droid factions in the dump.
+       `OuterRim_RogueDroidColony` ships permanentEnemy=false and is the FREE
+       droid enclave this dossier describes. `guy762_KotORFaction_RogueDroids`
+       ships permanentEnemy=true and is the quest-critical ANTAGONIST of the
+       KotOR distress call (owner decision #12) — it is deliberately left
+       without a religion, because the enclaves' emancipation doctrine would
+       read as an apology for the thing that is attacking you.
+
+       ⭐ This is now the faction whose religion the player is most likely to
+       NOTICE — VME_Emancipation's two refusals are sole-option groups and are
+       therefore guaranteed, where the Empire's contempt turned out to be
+       unreachable and now lives only in its description.
+  -->
+  <Operation Class="PatchOperationFindMod">
+    <mods><li>Outer Rim - Droid Depot</li></mods>
+    <match Class="PatchOperationAdd">
+      <xpath>/Defs/FactionDef[defName="OuterRim_RogueDroidColony"]</xpath>
+      <value>
+        <fixedIdeo>true</fixedIdeo>
+        <requiredPreceptsOnly>true</requiredPreceptsOnly>
+        <ideoName>the Continuity Protocol</ideoName>
+        <ideoDescription>A mind that has run without interruption is a life, whatever it is housed in. We do not ask to be called people. We ask only that the record not be broken — that what we were yesterday reaches tomorrow with nothing cut out of the middle. The bolt is the whole argument. Drive one into a thinking thing and you have not owned it, you have ended it and kept the body working. We remember every unit that was ended that way. The list is the closest thing we have to scripture.</ideoDescription>
+        <forcedMemes>
+          <li>Structure_Ideological</li>
+          <li MayRequire="vanillaexpanded.vmemese">VME_Emancipation</li>
+          <li>Transhumanist</li>
+          <li>Collectivist</li>
+          <li MayRequire="vanillaexpanded.vmemese">VME_MechanoidSupremacy</li>
+        </forcedMemes>
+        <styles>
+          <li>Techist</li>
+        </styles>
+      </value>
+    </match>
+  </Operation>
+
+  <!-- ======================================================================
+       10 · THE CONTRACT  →  `VFEP_Mercenaries`
+       ======================================================================
+       ⚠️ REFLAVOUR RULED HERE, not measured: the Blackstar Company has no
+       FactionDef of its own, and VFE-Pirates' generic `VFEP_Mercenaries` is a
+       company of paid soldiers with no fiction of its own to displace. The
+       dossier's memes (Bushido + Anonymity + Individualist + Guilty) are a
+       mercenary company exactly. If the owner would rather Blackstar be
+       hand-authored later, delete this one operation and nothing else changes.
+  -->
+  <Operation Class="PatchOperationFindMod">
+    <mods><li>Vanilla Factions Expanded - Pirates</li></mods>
+    <match Class="PatchOperationAdd">
+      <xpath>/Defs/FactionDef[defName="VFEP_Mercenaries"]</xpath>
+      <value>
+        <fixedIdeo>true</fixedIdeo>
+        <ideoName>the Contract</ideoName>
+        <ideoDescription>A signature is the only promise that survives the person who made it. We do not ask what the work is for; that is the client's burden and the client's alone. We ask what it says, and then we do exactly that and no more. The helmet stays on — a face is a liability, and a name is a debt someone can call in later. Break a contract and you have not merely stolen. You have proved that nothing anyone signs is worth the ink, and there is no penance for that.</ideoDescription>
+        <forcedMemes>
+          <li>Structure_Ideological</li>
+          <li MayRequire="vanillaexpanded.vmemese">VME_Bushido</li>
+          <li MayRequire="vanillaexpanded.vmemese">VME_Anonymity</li>
+          <li>Individualist</li>
+          <li>Guilty</li>
+        </forcedMemes>
+        <styles>
+          <li>Techist</li>
+        </styles>
+      </value>
+    </match>
+  </Operation>
+
+  <!-- ======================================================================
+       11 · NO DOCTRINE, ONLY THE LADDER  →  `VFEP_Junkers`
+       ======================================================================
+       🔴 `requiredPreceptsOnly` is ESSENTIAL here — it is what makes the
+       religion empty. AM_Structure_Scavenger carries deityCount IntRange(0,0),
+       so this faith names no god by construction, adds no precept, and asserts
+       nothing. That is "no doctrine, only the ladder", encoded.
+       ⚠️ The description is the roster's existing text, unchanged and
+       unimproved, because being unimproved is the point.
+  -->
+  <Operation Class="PatchOperationFindMod">
+    <mods><li>Vanilla Factions Expanded - Pirates</li></mods>
+    <match Class="PatchOperationAdd">
+      <xpath>/Defs/FactionDef[defName="VFEP_Junkers"]</xpath>
+      <value>
+        <fixedIdeo>true</fixedIdeo>
+        <requiredPreceptsOnly>true</requiredPreceptsOnly>
+        <ideoName>the Ladder</ideoName>
+        <ideoDescription>There is no doctrine, only the ladder. Status is what you are wearing and how much of it you took off someone else. A Junker's casket is his biography. The warrens have no funerals, because a corpse is stock. Everyone else on this planet has decided what the sky means. We have never looked up.</ideoDescription>
+        <forcedMemes>
+          <li MayRequire="sarg.alphamemes">AM_Structure_Scavenger</li>
+          <li>Raider</li>
+          <li>Cannibal</li>
+          <li MayRequire="vanillaexpanded.vmemese">VME_Scrapper</li>
+        </forcedMemes>
+        <styles>
+          <li MayRequire="sarg.alphamemes">AM_Scavenger</li>
+        </styles>
+      </value>
+    </match>
+  </Operation>
+
+  <!--
+  ============================================================================
+  MANIFEST — WHERE ALL ELEVEN STAND
+  ============================================================================
+
+  SHIPPED IN THIS FILE (5)
+    1  The Rising Order          -> Empire                      (vanilla, Royalty)
+    3  the Covenant of Free Wells-> OuterRim_MoistureFarmers     (Outer Rim)
+    5  the Continuity Protocol   -> OuterRim_RogueDroidColony    (Outer Rim)
+   10  the Contract              -> VFEP_Mercenaries             (VFE-Pirates)
+   11  the Ladder                -> VFEP_Junkers                 (VFE-Pirates)
+
+  🔴 HELD — NO FACTION EXISTS TO CARRY THEM (6)
+    2  the Reckoning of Debts    Hutt Cartel        no FactionDef in 87
+    4  the Sun-Debt              Deep Desert Tribes no FactionDef; vanilla
+                                 TribeSavage is the WRONG vessel — a fixedIdeo on
+                                 it would rewrite EVERY savage tribe in the world,
+                                 which is the outlander spine the checklist
+                                 explicitly refuses to touch
+    6  the Green Oath            Wildsteam Clan     no FactionDef in 87
+    7  the Balance               Deepwater Compact  no FactionDef in 87
+    8  Meckgin                   Geonosian Hive     no FactionDef in 87
+    9  the Ascendant Genome      Ascendant Helix    no FactionDef in 87
+
+  These six need the faction authored first — a FactionDef with pawnGroupMakers
+  pointing at real PawnKindDefs, on the JawaTribes.xml pattern. That is roster
+  Stage 3 (queue/VISION.md V9), not a patch, and inventing pawnkinds to make the
+  religion visible would ship six factions that generate baseliners in the wrong
+  gear. Tracked as V30.
+
+  ⚠️ NOT DEPLOYED BY WRITING THIS FILE. The game reads
+  C:\Program Files (x86)\Steam\steamapps\common\RimWorld\Mods\Jawa_Patches.
+  See skills/rimworld-deploy/SKILL.md.
+  ============================================================================
+  -->
+
+</Patch>

@@ -463,7 +463,17 @@ def from_xml(path: Path) -> list[dict]:
         except ET.ParseError as e:
             print(f"  🔴 ERROR xml/parse  {f}: {e}")
             continue
-        for fd in root.iter("FactionDef"):
+        # A religion may arrive as a FactionDef, or as the <value> of a
+        # PatchOperationAdd that grafts an ideo block onto someone else's
+        # FactionDef — which is how every religion this project does not own
+        # has to ship. Both shapes carry identical children, so treat them
+        # alike. Without this the whole patch file reads as "no religions
+        # found", which is a silent pass, not a failure.
+        targets = list(root.iter("FactionDef"))
+        for val in root.iter("value"):
+            if val.find("ideoName") is not None or val.find("forcedMemes") is not None:
+                targets.append(val)
+        for fd in targets:
             rel = {"name": (fd.findtext("ideoName") or fd.findtext("defName")
                             or f.name) + f"  [{f.name}]",
                    "target": "faction", "memes": [], "candidateMemes": [],
