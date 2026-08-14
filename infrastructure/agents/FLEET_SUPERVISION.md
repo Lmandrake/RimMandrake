@@ -16,7 +16,7 @@ text layer.
 
 | tier | what it means | examples |
 |---|---|---|
-| **firm** | verified from the primary, or a field study with a clean control | I-PASS (−23% errors, non-preventable events unchanged); Drew 2014 ICU alarm counts; Monk 2008 resumption lag |
+| **firm** | verified from the primary, or a field study with a clean control | I-PASS (−23% errors, non-preventable events unchanged); Drew 2014 ICU alarm counts; Monk 2008 resumption lag; Parasuraman/Mouloua/Molloy 1996 re-engagement |
 | **directionally solid** | the effect is standard and replicated; **do not quote the exact percentage** | probability-matching to alarm reliability; low-base-rate PPV collapse; the vigilance decrement's shape |
 | 🔴 **known wrong** | in wide circulation and misstated | "23 min 15 s to recover from an interruption"; "40% productivity loss" |
 
@@ -107,7 +107,7 @@ push is nearly free; the cost of a badly-timed one is that it *stacks*.
   having none. Fix it or stop using it; do not tolerate it.
 - 🔴 **THE RELIABILITY PARADOX — the fleet getting better makes you check less, and
   miss more.** Omission errors *rose* from **32.4% to 48.3%** as an aid's
-  reliability rose from **0.87 to 0.98**. Complacency also appears **only under
+  reliability rose from **0.87 to 0.98** (Bailey & Scerbo 2007). Complacency also appears **only under
   multi-task load** — which is your permanent condition — and it hits **experts
   exactly as hard as novices**, is **not cured by practice**, and is **not
   prevented by being told the aid is imperfect.** Only *exposure to real failures*
