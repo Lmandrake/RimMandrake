@@ -354,10 +354,12 @@ a whole is correct and sufficient — the mod is otherwise Ideology-free.
 
 🔴 **Icons: reuse, do not commission.** Vanilla textures live in AssetBundles and
 `Data\...\Textures\` does not exist on disk, so a bespoke `iconPath` needs art we
-would have to ship. *More Slavery Stuff* proves the reuse route works — its three
-issues all point at `UI/Issues/Slavery`. Use `UI/Issues/Charity` for the issue and
-`UI/Memes/Trader` for the meme. **Zero art cost.** Revisit only if the owner wants
-a distinct symbol.
+would have to ship. **The reuse route is proven:** all three of *More Slavery
+Stuff*'s `IssueDef`s point at `UI/Issues/Slavery`, and its `Textures\` folder
+contains nothing but one command icon — it ships no issue art at all
+(`...\294100\2896845138\Defs\Precepts.xml` lines 7, 138, 163, read 2026-08-14).
+Use `UI/Issues/Charity` for the issue and `UI/Memes/Trader` for the meme.
+**Zero art cost.** Revisit only if the owner wants a distinct symbol.
 
 ### 6.1 The issue
 
@@ -429,8 +431,9 @@ false, which is what we want.
 `Precepts_Slavery.xml` (`Slavery_Honorable`, lines 179–243), 2026-08-14.
 
 ⚠️ **`defaultSelectionWeight: 0` is mandatory.** A non-zero weight leaks the
-precept into randomly generated ideoligions across the whole world. Every one of
-*More Slavery Stuff*'s nine precepts sets it to 0 for the same reason.
+precept into randomly generated ideoligions across the whole world. **All ten** of
+*More Slavery Stuff*'s precepts set it to 0 for the same reason
+(`...\294100\2896845138\Defs\Precepts.xml`, lines 19–321).
 
 ⚠️ **`PreceptComp_KnowsMemoryThought`, not `PreceptComp_SelfTookMemoryThought`.**
 Nobody "does" a refusal — it is a colony-level event with no doer. Vanilla's three
@@ -695,6 +698,16 @@ rev591) · `C:\Program Files (x86)\Steam\steamapps\common\RimWorld\Data\Ideology
 `...\workshop\content\294100\3006899215\` (Better Beggars, `mlie.betterbeggars`, active) ·
 `...\workshop\content\294100\2896845138\` (More Slavery Stuff, `garryflowers.moreslaverystuff`, active) ·
 `D:\Luke\dev\Rimworld\design\Jawa\worldbuilding\data\ideology_palette.md`._
+
+🔴 **Defect found in an active mod, not mine to fix, filed here so it is not found
+again.** `C:\Program Files (x86)\Steam\steamapps\workshop\content\294100\2896845138\Defs\Precepts.xml`
+line 210 reads `<defName>GarryFlowers_Slave_Relation_Vanilla<defName>` — the
+closing tag is missing its slash. The live dump shows
+`GarryFlowers_Slave_Relations` with **2** positions (`_Disapproved`, `_Forceful`)
+where the XML defines **4**: `_Equality` and `_Vanilla` are silently lost. Nothing
+in this spec depends on them, and the campaign's slave-romance love-gate
+(`jawa_xenotype_and_religion.md` §4.2) uses `GarryFlowers_Slave_attendance`, which
+is unaffected. **Filed for PROJECT as `[?]`.**
 
 ⚠️ **"More Slavery Stuff (Continued)" WS `3530586159` is NOT installed** — a grep of
 all 1246 workshop `About.xml` files matches only the original `2896845138`. Several
