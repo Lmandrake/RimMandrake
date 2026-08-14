@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ModMetaData>
+  <name>Bark Head East Fix — Vanilla Races Expanded: Phytokin</name>
+  <author>Mandrake</author>
+  <packageId>mandrake.phytokinbarkheadfix</packageId>
+  <supportedVersions>
+    <li>1.6</li>
+  </supportedVersions>
+  <description>Supplies the missing east-facing head texture for a female Phytokin with bark skin and a heavy jaw, in Vanilla Races Expanded - Phytokin.
+
+The art was never missing. It is in the donor's own folder, saved under the male head's filename with " copy" appended, so the game never looks for it. This mod ships those exact bytes at the filename the donor's own HeadTypeDef asks for. Nothing was drawn, re-encoded or resized.
+
+WHAT THE PLAYER SEES WITHOUT IT
+
+A female Phytokin carrying both VRE_BarkSkin and Jaw_Heavy renders a FRONT-FACING HEAD ON A SIDE-FACING BODY, in both east and west. RimWorld's Graphic_Multi, finding no east texture, fills the slot from the north view at -90 degrees, and west is then mirrored from that. A whole head, on a colonist, every time she walks horizontally.
+
+No log line is possible. "Failed to find any textures at" fires only when EVERY direction of a Graphic_Multi is absent, and this set has north and south. One missing direction is a silent substitution.
+
+CONTENTS
+
+  Things/Pawn/Humanlike/Heads/BarkSkinFemale_Wide_Normal_east
+      The east view of the female Wide bark head. 256x256, 5,372 bytes, 9,007
+      pixels inked (13.74% of the canvas), subject bounding box (75, 80) to
+      (180, 189). Byte-for-byte the donor's own
+      Textures/Things/Pawn/Humanlike/Heads/BarkSkin_Wide_Normal_east copy.png.
+
+      THE DONOR'S ORIGINAL: absent. The mod ships 30 head textures — ten sets of
+      north, east and south — and every one of them is healthy, 256x256 and
+      non-blank. Exactly one file is missing and exactly one file is spare, and
+      they are the same file under two names.
+
+HOW WE KNOW THE " copy" IS THE FEMALE HEAD AND NOT A STRAY DUPLICATE
+
+This is the whole risk in the fix, so it is proved from the donor's own pixels
+rather than assumed from the filename. The male-to-female edit in this mod is a
+fixed, RGB-only retouch in the lip region: alpha is untouched, so the two
+silhouettes are identical and only a small cluster of colour pixels moves. Four
+of the five head sets ship BOTH genders' east view and serve as controls.
+
+  set             male -> female differs   bounding box
+  Average          90 px                   (145,131)-(164,146)
+  ElongatedHead    90 px                   (145,131)-(164,147)
+  Narrow           92 px                   ( 87,124)-(164,146)
+  Gaunt           100 px                   ( 76,114)-(164,150)
+
+  Wide: male east -> " copy"
+                   91 px                   (145,131)-(164,147)
+
+The suspect's difference from the male Wide east is 91 pixels in exactly the
+region where the known male-to-female edits land — Jaccard overlap 0.97 against
+ElongatedHead, 0.93 against Average, 0.91 against Narrow. Alpha delta is zero, so
+it is the same pose and the same silhouette, not a different drawing. It is the
+female head.
+
+The two files also differ by md5 (647df98a... for the male, 7e0b47d9... for the
+copy), so this is not a duplicate someone left behind.
+
+The check is shipped in Source/make_bark_female_wide_east.py and runs before the
+copy: if the alpha channel had moved, or the delta had failed to co-locate with a
+control, it refuses to write anything.
+
+WHERE THE DEF IS
+
+Vanilla Races Expanded - Phytokin's own HeadTypeDef names the correct path:
+
+  1.6/Defs/HeadTypeDefs/HeadTypeDefs.xml
+    line 84  defName       VRE_BarkHeavy_Female
+    line 86  graphicPath   Things/Pawn/Humanlike/Heads/BarkSkinFemale_Wide_Normal
+             gender        Female
+             requiredGenes VRE_BarkSkin + Jaw_Heavy
+
+HeadTypeDef has no graphicClass field and no facing control of any kind — zero
+hits for graphicClass, visibleFacing, drawSize or renderNodeProperties across
+this mod's HeadTypeDefs and across every vanilla HeadTypeDef. Head graphics are
+hardcoded Graphic_Multi with all four rotations, west mirrored from east.
+Nothing licenses a missing east; this is an oversight, not a choice.
+
+LOAD ORDER MATTERS HERE
+
+Vanilla Races Expanded - Phytokin ships its textures LOOSE, at the mod root:
+loadFolders.xml declares "/" and "1.6", the 1.5 and 1.6 folders contain no PNGs,
+and there is no AssetBundles folder anywhere in the mod. Between two loose files
+at the same path RimWorld resolves by load order, so this mod must load AFTER
+the donor. That is the opposite of an AssetBundle override, where a loose file
+wins regardless of order.
+
+If Vanilla Races Expanded - Phytokin ever ships the file under its correct name,
+this mod becomes a harmless no-op supplying the same bytes, and can be
+unsubscribed.
+</description>
+
+  <modDependencies>
+    <li>
+      <packageId>vanillaracesexpanded.phytokin</packageId>
+      <displayName>Vanilla Races Expanded - Phytokin</displayName>
+      <steamWorkshopUrl>steam://url/CommunityFilePage/2927323805</steamWorkshopUrl>
+    </li>
+  </modDependencies>
+
+  <loadAfter>
+    <li>vanillaracesexpanded.phytokin</li>
+  </loadAfter>
+</ModMetaData>
