@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+
+  <!--
+    ORDER 20, AND IT MUST NOT DRIFT.
+
+    Verified against the shipped defs in Data/, 2026-08-13:
+
+        Terrain     0      Tiles       5      Lakes     150
+        Rivers    200      AncientSites 300   AncientRoads 400
+        Pollution 450      Factions   500     Roads     600
+        Landmarks 650      Mutators   700     Features 1000
+
+    Nothing vanilla sits between 5 and 150, so 20 has a 145-wide gap to itself.
+
+    ⭐ The order IS the feature. We do not build rivers — we finish before vanilla
+    builds them, so vanilla's own river step at 200 flows into the seas this step
+    just made. Later than Lakes/Rivers and the rivers, roads, landmarks and
+    mutators would all have been chosen against a coastline that no longer exists.
+
+    Earlier than 5 would be worse: Tiles has not assigned biomes or elevation yet,
+    so there would be nothing to read and nothing to raise.
+  -->
+  <WorldGenStepDef>
+    <defName>Jawa_SeaShaping</defName>
+    <order>20</order>
+    <worldGenStep Class="JawaSeaShaper.WorldGenStep_JawaSea" />
+  </WorldGenStepDef>
+
+</Defs>

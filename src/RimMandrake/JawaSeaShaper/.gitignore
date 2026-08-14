@@ -1,0 +1,4 @@
+# Build intermediates. The DLL itself IS committed - it is what the game loads
+# and the only artifact a deploy copies - but obj/ is pure noise.
+Source/obj/
+Source/bin/
