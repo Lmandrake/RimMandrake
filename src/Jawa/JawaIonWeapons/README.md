@@ -1,6 +1,6 @@
 # Jawa Ion Weapons (local) — mini-mod
 
-Industrial-tier Jawa ion armament for this run. All *behavior* is our own pure-XML defs (vanilla-EMP based, no C# assembly of our own). **Depends on Outer Rim - Core** (`Neronix17.OuterRim.Core`) for the fired bolt sprite (`BlasterBolt_Blue`) and blaster fire sound (`OuterRim_Shot_DLT19DBlasterBolt`) — Core is already in the local stack, and it transitively pulls Vanilla Expanded Framework + Tabula Rasa. The gun's own sprite is bundled here (ripped from the EOL Tatooine mod).
+Industrial-tier Jawa ion armament for this run. Mostly pure-XML defs (vanilla-EMP based), plus **one small assembly of our own** — `Assemblies/JawaIonWeapons.dll`, built from `Source/DamageWorker_IonBuildup.cs`, which is what makes the flesh half of the weapon work (see "The mechanic" below). **Depends on Outer Rim - Core** (`Neronix17.OuterRim.Core`) for the fired bolt sprite (`BlasterBolt_Blue`) and blaster fire sound (`OuterRim_Shot_DLT19DBlasterBolt`) — Core is already in the local stack, and it transitively pulls Vanilla Expanded Framework + Tabula Rasa. The gun's own sprite is bundled here (ripped from the EOL Tatooine mod).
 
 Design locked 2026-08-08 (see `design/Jawa/mods/required_mods.md` §"JAWA ION WEAPONRY" — the Claude memory note `jawa_ion_weapon.md` it also cited has since been deleted).
 
@@ -42,14 +42,63 @@ Two ways to spawn 2–4 blasters in the Jawa starting inventory:
 ```
 To make them **buildable from literal turn 1** without researching, also either pre-complete `JawaIon_Weaponry` in the scenario, or delete the `<researchPrerequisite>` line from the weapon's `recipeMaker`.
 
-## ⚠️ Must verify in-game (not yet playtested)
+## The mechanic — why this mod owns a DLL
 
-Everything is XML-well-formed, but two behaviors need a live check because they depend on runtime resolution:
-1. **Buildup accrual on flesh.** The `additionalHediffs` block on `JawaIon_Damage` should apply `JawaIon_Stun` on every hit regardless of target flesh/mech. Confirm a healthy raider actually accumulates severity and collapses (downed, not dead) after ~4 hits, and that the collapse reads as arrestable. If `additionalHediffs` does not fire for the EMP-family damage on flesh, fall back to a `CompProperties` on the projectile or a small custom `DamageWorker` (would add C#).
-2. **`setMax` on Consciousness downs the pawn.** Confirm the top "overloaded" stage (`setMax 0.10`) actually forces a down state and that decay (-1.2/day) then revives them if left alone (so captures require prompt arrest).
+Two XML facts, both established the hard way, force the C#:
+
+1. **`additionalHediffs` is inert on a stun-family damage.** It is read only by
+   `DamageWorker_AddInjury.ApplyDamageToPart`, and an EMP/`StunBase`-derived def never
+   reaches that worker — every def in Core that uses `additionalHediffs` is an injury
+   damage in `Damages_MeleeWeapon.xml`. So the buildup block never executed and the flesh
+   half of the weapon had never once run in game.
+2. **The obvious XML workaround breaks the design pillar.** `DamageWorker_AddInjury` with
+   tiny damage does apply the buildup — and any injury can kill, which "capture-not-kill"
+   forbids. There is no stock worker that applies a hediff without dealing an injury. That
+   is the whole gap the assembly closes.
+
+`JawaIonWeapons.DamageWorker_IonBuildup` is wired via `<workerClass>` on `JawaIon_Damage`.
+On a hit it increments `JawaIon_Stun` by `severityPerDamageDealt × damage` (**read from the
+`<additionalHediffs>` block**, so the XML stays the tuning surface), deals no injury and no
+blood to flesh, and returns a real `DamageResult` so the hit reads as a hit in the combat
+log. Mechanoids are left to the existing `causeStun` path — it does not reimplement EMP.
+
+⚠️ **`StunBase` alone does nothing — do not revert the EMP fields.** Core's `StunBase`
+declares only `harmsHealth=false` and `makesBlood=false`: no `workerClass` and **no
+`causeStun`**. Vanilla EMP stuns because EMP itself sets `causeStun`, not by inheritance.
+Inheriting the "harms nothing" half without the "does something" half made every bolt a
+total no-op — no injury, no stun, no combat-log line — which was reported in play as
+*"it never seems to hit, even at 20 shooting"*. `JawaIon_Damage` therefore carries
+`causeStun`, `externalViolenceForMechanoids`, `stunAdaptationTicks`, `impactSoundType` and
+`combatLogRules` explicitly.
+
+**Rebuilding.** SDK is user-local at `C:\Users\Mandrake\.dotnet\dotnet.exe` (not on PATH;
+`C:\Program Files\dotnet` is runtime-only and cannot build). Copy the working `net472`
+setup from `src/RimMandrake/RimDefDump/Source/RimDefDump.csproj` rather than reconstructing
+one — game DLLs referenced from `RimWorldWin64_Data\Managed` with `<Private>false</Private>`.
+Output lands in `Assemblies/`; the game loads the deployed copy under
+`C:\Program Files (x86)\Steam\steamapps\common\RimWorld\Mods\JawaIonWeapons`, never this repo.
+
+## ⚠️ Must verify in-game
+
+The acceptance test, in one load:
+1. **Droid** — hard-stunned, drops fast (this half already worked; confirm no regression).
+2. **Flesh pawn, repeated hits** — an ion buildup hediff appears in the Health tab and its
+   severity climbs per hit; sustained fire reaches the top stage and the target **collapses
+   downed with zero injuries listed**, and reads as arrestable.
+3. **Stop firing** — severity visibly decays (`-1.2`/day) and clears, so captures require
+   prompt arrest.
+4. A flesh target **cannot** be killed no matter how long you fire.
+5. Log clean: no `workerClass` resolution error, no NRE out of the damage worker.
+
+Offline before spending the load: the assembly builds against net472, and `JawaIon_Damage`'s
+`workerClass` string matches the **compiled** type name, not just the source.
 
 Tune knobs if needed: `severityPerDamageDealt` (0.03) and the stage `minSeverity` thresholds control how many hits it takes; `severityPerDay` (-1.2) controls how fast buildup fades.
 
 ## Art
 
 `Textures/JawaIon/Weapon_JawaIonBlaster.png` is a **placeholder path** — supply real art from the graphics-review pass (Outer Rim Core's `IonBlaster`/`IonRifle`/`HeavyIonRifle` are the reference silhouettes; their PNGs were stripped from `mod_sources` and are being re-fetched). Projectile currently reuses a tinted vanilla `Bullet_Big`.
+
+**Open cosmetic todo:** the player reports the shot **sounds and looks underwhelming**.
+`soundCast` is Outer Rim's `OuterRim_Shot_DLT19DBlasterBolt` at `muzzleFlashScale 7`.
+XML-only, and strictly after the mechanic is confirmed working — never before.

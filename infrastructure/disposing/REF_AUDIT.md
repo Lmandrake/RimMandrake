@@ -127,12 +127,6 @@ Not addressable, so not listed: 994 occurrences of a rule/section number with no
 
 - L125 path `AV_ArcherTurret.png` — not in repo; may live outside it
 
-### `custom_patches\JawaIonWeapons\CSHARP_BUILD_SPEC.md`
-
-- L86 path `Damages_MeleeWeapon.xml` — not in repo; may live outside it
-- L147 path `C:\Program` — outside the repo; machine-specific
-- L154 path `netstandard.dll` — not in repo; may live outside it
-
 ### `custom_patches\JawaVoice\README.md`
 
 - L31 path `ExtraGrammarUtility.cs` — not in repo; may live outside it
