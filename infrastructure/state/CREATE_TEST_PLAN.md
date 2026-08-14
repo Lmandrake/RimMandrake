@@ -266,3 +266,44 @@ shot plus what you saw — I do not need a diagnosis, I need the image.
 
 File findings at `infrastructure/state/queue/CREATE.md`; anything that is a
 donor-side defect rather than ours goes to `TODO.md` with `[?]`.
+
+---
+
+## 🔴 Part 5 — the three §7-parked fix mods: defNames, and the FACING that tests each
+
+Resolved offline 2026-08-14 against the installed donors. **The facing is the
+whole point — only ONE rotation is broken in each**, so a shot from the wrong
+side is a false pass.
+
+⭐ **All three are HairDef or apparel texPaths, not pawnkind art. Spawning the
+pawnkind alone tests NOTHING** — the style has to be set on the pawn.
+
+| mod | spawn | then set | 🔴 face | why that facing |
+|---|---|---|---|---|
+| **CereanManeFix** | pawnkind `OuterRim_Cerean` | hair `OuterRim_CereanMane` | **SOUTH** | the file the fix ships |
+| **SauridFrillFix** | pawnkind `VRESaurids_Villager_Saurid` | hair `VRESaurids_Littlefoot` | **NORTH** | donor ships `CenterFrill8_north-.png`, **trailing hyphen**, confirmed on disk; `CenterFrill7_north.png` beside it is named correctly |
+| **ToolBeltFix** | ⛔ see below | — | **WEST** | `ToolBelt_west.png` is **753 bytes** against `ToolBelt_east.png` at **16,945** |
+
+**Sources, read not guessed:**
+- `OuterRim_CereanMane` — `HairDef`, `.../294100/2980427615/1.6/Defs/HairDefs/Hairs_Cerean.xml:37`, texPath `OuterRim/Hairs/Cerean/CereanMane`. Gated on gene `OuterRim_CereanHead`, whose `hairTagFilter` whitelists one tag, so a fresh Cerean rolls the mane about **1 in 5** — ⚠️ **set it, do not hope.** Pawnkind at `Xenotype_Cerean.xml:22` forces the xenotype at weight 999.
+- `VRESaurids_Littlefoot` — `HairDef`, `.../294100/2880990495/1.6/Defs/HairDefs/HairDefs_Saurid.xml:68`, texPath `Pawn/CenterFrill/CenterFrill8`. A "CenterFrill" is a **HairDef**, not an alien-race body addon — the gene only gates which hairs are legal. Pawnkind at `PawnKinds_Saurids.xml:5`.
+- `VAEA_Apparel_ToolBelt` — `ThingDef` apparel, `.../294100/2521176396/1.6/Defs/ThingDefs_Misc/Apparel_Utility.xml:531`, `wornGraphicPath` at `:577`.
+
+### ⛔ ToolBeltFix is UNCOLLECTABLE without an equip route — do not queue it for a load
+
+**No `PawnKindDef` spawns it wearing.** Grepped the whole workshop tree, `Mods/`
+and `Data/`: zero hits in `apparelRequired`, `specificApparelRequirements` or any
+fixed apparel list, and its only tag `VAEA_Utility_Industrial` appears in **no**
+pawnkind — so there is no random-generation path either. Every other reference is
+loot: a fishing `ThingSetMakerDef`, a TraderGen stock list, a quest reward.
+
+⇒ It needs dev-spawn **plus a force-equip**, which is the route BRIDGE is
+building. **Hold it for that tool, not for a map.** ⚠️ `renderUtilityAsPack` is
+true, so it draws in the pack layer — check from behind as well as straight west.
+
+### One load-order note, verified
+CereanManeFix correctly declares **no** `loadAfter`: Outer Rim 1.6 serves that art
+from an AssetBundle (`Common/AssetBundles/neronix17_outerrim_galacticdiversity.manifest`
+lists `Hairs/Cerean/CereanMane_south.png` and its north/east siblings), and **a
+loose PNG beats a bundle regardless of order.** The other two are loose-vs-loose,
+where order decides, and both declare `loadAfter` correctly.
