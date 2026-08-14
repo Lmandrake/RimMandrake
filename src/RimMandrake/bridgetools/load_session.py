@@ -215,6 +215,42 @@ def i_pilot_console(s, cfg):
               (r or {}).get("pathEndMode")))
 
 
+def i_dune_seas(s, cfg):
+    """v1 row 4, the dune-seas override. NOT an eyeball check.
+
+    V1_SCOPE ruled this closes on a live `terrainPatchMakers` read -- SoftSand's
+    `min` widened from vanilla 0.65 to 0.55 (Desert) and 0.50 (ExtremeDesert) --
+    because a 15% density change is not judgeable by looking at a map.
+
+    🔴 That gate had NO COLLECTABLE EVIDENCE until 2026-08-13. `jawa/get_def`
+    built its `extra` block for ThingDefs only, so a BiomeDef came back as label
+    plus description and nothing else. The field was added rather than the gate
+    weakened. Needs no map at all -- defs are loaded before any map exists.
+
+    ⚠️ Patchmaker ORDER matters: the first threshold whose band contains the
+    noise value wins. The index is reported; do not sort the list.
+    """
+    want = {"Desert": 0.55, "ExtremeDesert": 0.50}
+    for biome, target in sorted(want.items()):
+        r = s.call("jawa/get_def", defName=biome, defType="BiomeDef")
+        extra = (r or {}).get("extra") or {}
+        pms = extra.get("terrainPatchMakers")
+        if pms is None:
+            record("A5", "dune seas %s" % biome, FAIL,
+                   "get_def returned no terrainPatchMakers -- the companion "
+                   "predates the BiomeDef branch. Census said 21; check the deploy.")
+            continue
+        soft = [(pm.get("index"), t.get("min"))
+                for pm in pms
+                for t in (pm.get("thresholds") or [])
+                if t.get("terrain") == "SoftSand"]
+        hit = any(abs((m or 0) - target) < 0.001 for _, m in soft)
+        record("A5", "dune seas widened in %s" % biome, PASS if hit else FAIL,
+               "SoftSand min = %s, want %.2f (vanilla 0.65); %d patchmaker(s)"
+               % (", ".join("pm%s:%s" % (i, m) for i, m in soft) or "not found",
+                  target, extra.get("patchMakerCount")))
+
+
 def i_row5_xenotype(s, cfg):
     """v1 row 5. WHICH Jawa xenotype a pawn actually carries.
 
@@ -344,8 +380,24 @@ ITEMS = [
     # (queue/CREATE.md:38, V1_SCOPE row 4 "1 of 3 SEEN"), so re-proving the def
     # and the art would be spending live time on a closed row. What is still
     # open is VISION's B-v1 CAPABILITY question, which is a different thing.
-    ("A3", ANY_MAP, "row 5: which Jawa xenotype, read-only", i_row5_xenotype),
-    ("F1", FRESH_MAP, "v1 row 7 desert worldgen", i_desert_worldgen),
+    # Row 5 was RULED CLOSED by PROJECT (V1_SCOPE.md:608-633) -- BTD_Jawa
+    # survives the BTD dedup and the pawnkind pins were remapped onto it,
+    # measured live from Player.log. `i_row5_xenotype` stays in this file
+    # because the read is now free and would turn "measured from the log" into
+    # "measured from the pawn", but it does NOT run by default: a closed row
+    # must not spend live time.
+    ("A5", ANY_MAP, "dune seas: BiomeDef terrainPatchMakers", i_dune_seas),
+    # ⛔ Row 7 / rows 2 / Configure Factions are HELD BY THE OWNER -- the sea
+    # spec is unsolved and the click is irreversible. Not this session.
+    # FRESH_MAP now means a QUICKTEST, which rule 1c permits freely and which
+    # `CREATE_TEST_PLAN.md:99-101` accepts for the map-generation overrides.
+    # The ground hulk and the scrapfields are both registered on
+    # MapGeneratorDef[Base_Player] with NO biome filter, so they fire on any
+    # quicktest. Salt pans and dune seas are biome-patched and only appear if
+    # the quicktest happens to land on Desert/ExtremeDesert/AridShrubland --
+    # a non-desert quicktest is not a failure of those two.
+    ("F1", FRESH_MAP, "v1 row 7 desert worldgen (HELD -- do not run)",
+     i_desert_worldgen),
 ]
 
 

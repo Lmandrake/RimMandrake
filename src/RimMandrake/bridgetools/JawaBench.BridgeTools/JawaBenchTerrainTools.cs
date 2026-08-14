@@ -1355,10 +1355,18 @@ namespace JawaBench.BridgeTools
                 "serialise statBases or description and has produced wrong conclusions " +
                 "twice (a warcasket appearing to have no armour values, and an empty " +
                 "description reading as a failed patch). Returns statBases, comps with their " +
-                "class names, and the mod that actually supplied the def.",
+                "class names, and the mod that actually supplied the def. Pass " +
+                "defType='BiomeDef' to read terrainPatchMakers, which is how a " +
+                "worldgen terrain override is checked without eyeballing a map.",
             ResultDescription =
                 "Returns defType, the owning mod, description, statBases, comp classes and " +
-                "selected common fields.")]
+                "selected common fields. For a ThingDef, `extra` carries category, ticker, " +
+                "thingClass, flesh/mechanoid flags and modExtensions. For a BiomeDef it " +
+                "carries terrainPatchMakers -- each with its perlinFrequency, fertility " +
+                "band, minSize and its ordered thresholds (terrain, min, max) -- plus " +
+                "terrainsByFertility. ⚠️ Patchmaker ORDER is meaningful: the first "
+                + "threshold whose band contains the noise value wins, so the index is "
+                + "reported and the list is never sorted.")]
         public static async Task<object> GetDef(
             IRimBridgeContext ctx,
             CancellationToken cancellationToken,
@@ -1422,6 +1430,54 @@ namespace JawaBench.BridgeTools
                         isFlesh = thingDef.race?.IsFlesh,
                         intelligence = thingDef.race?.intelligence.ToString(),
                         modExtensions = thingDef.modExtensions?.Select(m => m.GetType().Name).ToList()
+                    };
+                }
+                else if (def is BiomeDef biomeDef)
+                {
+                    // 🔴 v1 row 4's dune-seas gate is a BiomeDef read, and until
+                    // now this tool could not perform it: `extra` was ThingDef-only,
+                    // so a BiomeDef came back as label + description and nothing
+                    // else. V1_SCOPE ruled dune seas "NOT an eyeball check -- it
+                    // closes on a live terrainPatchMakers read of 0.55/0.50", and
+                    // nobody checked that the read was possible. A gate whose
+                    // evidence cannot be collected is not a gate.
+                    //
+                    // Field names read from Assembly-CSharp with ilprobe:
+                    //   BiomeDef.terrainPatchMakers  -> List<TerrainPatchMaker>
+                    //   TerrainPatchMaker.thresholds -> List<TerrainThreshold>
+                    //   TerrainPatchMaker.perlinFrequency / minFertility /
+                    //     maxFertility / minSize / isPond
+                    //   TerrainThreshold.terrain / min / max
+                    extra = new
+                    {
+                        isBiome = true,
+                        // ⚠️ A patchmaker's ORDER is meaningful -- the first
+                        // threshold whose band contains the noise value wins -- so
+                        // the index is reported rather than sorting for tidiness.
+                        terrainPatchMakers = biomeDef.terrainPatchMakers?
+                            .Select((pm, i) => new
+                            {
+                                index = i,
+                                perlinFrequency = pm.perlinFrequency,
+                                minFertility = pm.minFertility,
+                                maxFertility = pm.maxFertility,
+                                minSize = pm.minSize,
+                                isPond = pm.isPond,
+                                thresholds = pm.thresholds?.Select(t => new
+                                {
+                                    terrain = t.terrain?.defName,
+                                    min = t.min,
+                                    max = t.max
+                                }).ToList()
+                            }).ToList(),
+                        patchMakerCount = biomeDef.terrainPatchMakers?.Count ?? 0,
+                        terrainsByFertility = biomeDef.terrainsByFertility?
+                            .Select(t => new
+                            {
+                                terrain = t.terrain?.defName,
+                                min = t.min,
+                                max = t.max
+                            }).ToList()
                     };
                 }
 
