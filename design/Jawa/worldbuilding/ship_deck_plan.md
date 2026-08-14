@@ -550,3 +550,46 @@ the image works because the question is unanswered.
 
 **Crop guidance for CREATE:** ≤1,200 cells, breach facing the colony, slab rows
 running across the fragment so the broken deck shows between them.
+
+#### 🔄 RE-RULED — it is a CRYPTOSLEEP hold, not a carbonite bay
+
+**CREATE is right and the correction improves the fiction.** There is **no
+carbonite slab prop anywhere on disk** — Outer Rim's "carbonite" is a cryoban
+*weapon* (a timed freeze that thaws), and our own carbonite mod is **greenlit,
+parked and unbuilt** (`design/Jawa/carbonite_trophy_mod.md`, audited 2026-08-06).
+Building a mod to make an image work is exactly backwards.
+
+⭐ **And caskets are better fiction than slabs, not merely cheaper.**
+
+> **Carbonite is Hutt tech — a thing done *to* people. Cryptosleep is what a
+> colony ship is *for*.**
+
+`LifeDawn` is a first-wave colony vessel. Its passenger hold carries **sleepers**,
+and that makes the fragment on the sand the hold of a colony **that never
+landed**.
+
+⭐⭐ **And the part I was going to have to author is native behaviour.** Vanilla
+ancient caskets already contain sleeping pawns. **"Mostly empty, a few are not"
+is what the game does by itself** — the unresolved question stands in the
+player's base for free, with no scripting and no wake-up quest, exactly as
+specified.
+
+**Everything else in the ruling survives untouched:** the breach is still Hutt
+theft, the Jawas are still the second scavengers, the rows still run across the
+crop and still interleave the broken deck.
+
+🔴 **Name the right def. `AncientCryptosleepCasket` is deconstructible;
+`AncientCryptosleepPod` is PERMANENTLY UNDECONSTRUCTIBLE.** Placing the pod
+breaks the strippable ruling outright. **Casket, always.**
+
+**And it is the richest salvage in the ruins kit — Steel 180 + Uranium 5 each** —
+so the v2 tiered economy lands on this fragment perfectly.
+
+⚠️ **Know what you are placing: vanilla sleepers can wake hostile.** That is a
+feature, not a hazard to design out — the first casket the clan cracks may fight
+back, which is the correct lesson about opening things you do not understand.
+**It is also a strong argument for leaving them shut in v1.**
+
+⭐ **A free v2 hook, if the carbonite mod is ever built:** a handful of carbonite
+slabs *among* the caskets — **the ones the Hutts had already prepared to move.**
+Costs nothing now, and it explains the scrappers' interrupted work.
