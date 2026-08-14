@@ -133,3 +133,16 @@ Entry format, admission test and the append rule: `references/traps.md`.
 **Cause:** the two halves read different fields. `WorldGenStep_Rivers.GetCoastalWaterTiles` selects river MOUTHS by `PrimaryBiome == BiomeDefOf.Ocean` with a non-Ocean neighbour. The pathing then uses `GetImpliedElevation(tile)` = `elevation + {Hilliness 2→15, 3→250, 4→500, 5→1000}` and terminates on `WaterCovered`, i.e. `elevation <= 0`. So a tile raised out of the sea without a biome change keeps its stale `Ocean` label and stays a river mouth on dry land; and a tile lowered without an `Ocean` label is water that no river will ever aim at.
 **Fix:** write `elevation` and `PrimaryBiome` **together, both directions**, in any step that moves the coastline. Nothing re-runs biome selection after `WorldGenStep_Tiles` at order 5.
 **Recurs when:** editing tiles between order 5 and order 200. Also note `hilliness` contributes up to **+1000** to implied elevation — far more than a typical elevation delta — so adjusting elevation alone can be swamped, and `AccumulateFlow` reads only `rainfall` and `temperature`, so flow volume does not follow a coastline change unless those move too.
+
+---
+
+### `xenotypeChances` is a def-keyed dictionary — the xenotype is the ELEMENT NAME, not a value
+**Symptom:** a patch re-pointing a pawn kind at a different xenotype matches nothing. The xpath looks right, the def exists, `validate_patch.py` is clean, and nothing errors — the kind just keeps generating the old xenotype.
+**Cause:** the block is
+```xml
+<xenotypeSet><xenotypeChances><OuterRim_Jawa>999</OuterRim_Jawa></xenotypeChances></xenotypeSet>
+```
+`<OuterRim_Jawa>999</OuterRim_Jawa>` means *this xenotype, this weight*. **There is no `<li>` and no text node naming the xenotype**, so every instinctive xpath — at a `<li>`, at a value, at a `defName` attribute — targets something that does not exist.
+**Fix:** replace the whole `xenotypeChances` node. Guard with `PatchOperationConditional` testing the child element (`.../xenotypeChances/OuterRim_Jawa`) and `PatchOperationReplace` the parent; the inner/outer xpath mismatch is intentional and the validator's warning about it is expected here.
+**Recurs when:** any def field RimWorld serialises as `Dictionary<Def, T>` — the def becomes a tag name. `xenotypeChances` is the one that bites, but the shape is general: **if a block's children are named after defs rather than being `<li>`, the key is the tag and you must replace the container.** ⚠️ Compounding trap in this exact case: `OuterRim_Jawa` exists as BOTH a `XenotypeDef` and a `PawnKindDef` in the same file — the `xenotypeSet` lives on the pawn kind, so patching the xenotype changes nothing.
+**Generalises to:** worldgen-read fields more broadly. `xenotypeSet` is read at PAWN GENERATION, so a patch that lands after a world exists never fixes that world's colonists — it is a pre-worldgen gate, not a tuning patch, and it fails by producing quietly wrong pawns rather than an error.
