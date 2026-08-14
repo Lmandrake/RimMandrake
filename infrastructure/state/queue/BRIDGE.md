@@ -348,3 +348,45 @@ function, room enclosure, trap triggers. None of it is runnable today.
 .MakeJob(JobDefOf.Goto, cell), JobTag.Misc)` on the main thread, returning the
 pawn's position read back after N ticks — not merely that the job was queued.
 Verify the API names with ilprobe first; do not trust this sketch.
+
+---
+
+## 📋 CARRIED FORWARD from 2026-08-13 — the NEED DOWN batch
+
+All three want the game **stopped** (a companion DLL cannot be deployed while
+RimWorld holds it). Build order is B-v3 first: it unblocks a whole class of test,
+not just one row.
+
+### B-v3 `jawa/order_pawn` — ⭐ do this one first
+Written up above. The bridge cannot make a named pawn go to a named cell.
+Blocks row 8's boardable-by-observation upgrade, every reachability question,
+door function, room enclosure. **Owner confirmed doors are visible in the outer
+hull**, so boardable is met by observation — but nobody has watched a pawn
+cross the threshold, and `NoPathToPilotConsole` is a LAUNCH gate that still
+needs a walk test.
+
+### `jawa/damage` refusal fix — BUILT, NOT DEPLOYED
+Committed `2a8c5b4`, compiles 0/0. Deploy with **`--gm --apply`** or it strips
+`jawa/fire_incident` and `jawa/send_letter` off the game copy.
+
+### B-v2 mid-game gravship import
+`ShipSketchBuilder.BuildFromLayout` is public, static and pure. Plus a terrain
+replay via `set_terrain_batch`, because floors are applied by a Harmony patch
+that does not run for a mid-game Sketch spawn.
+
+---
+
+## 🔴 PERSISTENT STATE CHANGE — not map state, survives every restart
+
+**`BG_gravEngineSupport` is now 4500**, was 632.79541, in
+`C:\Users\Mandrake\AppData\LocalLow\Ludeon Studios\RimWorld by Ludeon Studios\Config\Mod_3522759531_GravshipSizeSettings.xml`.
+
+Set live via `rimworld/update_mod_settings` **plus Bigger Gravships' own
+"Apply Settings Now!" button** — the write alone does not reach the defs, the
+button does, and **no restart is needed.** Engine `SubstructureSupport` went
+632.7954 → 4500.0 with the game running; the 4,057-cell hull went from
+`4057/633` to `4057/4500`.
+
+⚠️ **Any capacity reading on this stack now starts from 4500, not 632.8.** Do
+not rediscover this as a mystery. Original value recorded here if it is ever
+wanted back.
