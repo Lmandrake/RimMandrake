@@ -134,10 +134,29 @@ def main():
     # a new local mod is deployed. Falling back to the disk keeps a stale index
     # from raising a false "listed but absent" — which is the one alarm that
     # must never cry wolf, because the real thing silently drops a mod.
+    # 🔴 THREE COMPOUNDING BUGS LIVED HERE, found by OPS. Recorded because the
+    # shape recurs: an ABSENT INPUT TREATED AS AN EMPTY ONE.
+    #   1. It probed `GP.STEAM_WORKSHOP`, which does not exist — the attribute is
+    #      `GP.WORKSHOP`. So the hasattr was False 100% of the time and the
+    #      hardcoded fallback always won.
+    #   2. Both fallbacks were hardcoded /mnt/c/... , i.e. WSL-only. Under
+    #      Windows python.exe neither directory exists.
+    #   3. A missing root did `continue`, in SILENCE. So under python.exe this
+    #      function could never return True and said nothing about why.
+    # Net effect: the gate returned NOT SAFE under python.exe and SAFE under
+    # python3, for the same config — which is exactly the split verdict that
+    # nearly got a correct key list rewritten.
+    # Now: the real per-platform constants, and a missing root is a FAIL.
+    roots = [GP.WORKSHOP, GP.LOCAL_MODS]
+    missing_roots = [r for r in roots if not os.path.isdir(r)]
+    if missing_roots:
+        add(FAIL, "mod roots are readable",
+            "cannot see %s — the on-disk fallback is blind, so 'listed but "
+            "absent' cannot be trusted. Are you running this under Windows "
+            "python.exe instead of WSL python3?" % ", ".join(missing_roots))
+
     def on_disk(pid):
-        for root in (os.path.join(GP.STEAM_WORKSHOP) if hasattr(GP, "STEAM_WORKSHOP")
-                     else "/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100",
-                     "/mnt/c/Program Files (x86)/Steam/steamapps/common/RimWorld/Mods"):
+        for root in roots:
             if not os.path.isdir(root):
                 continue
             for entry in os.listdir(root):

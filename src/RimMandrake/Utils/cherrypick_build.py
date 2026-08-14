@@ -77,40 +77,87 @@ THINGDEF_OK_CATEGORIES = {1, 2, 3, 4, "Pawn", "Item", "Building", "Plant"}
 # Resolved in design/Jawa/worldbuilding/cherrypick_resolved.md. Every entry is
 # there with the evidence for why it is that type and not another.
 KEYS = [
-    # 🔴 THE ANOMALY PICKS WERE ALL DROPPED. Owner ruled 2026-08-14, superseding
-    # an earlier ruling the same night that kept 22 of them.
+    # 🔴 THE ANOMALY PICKS ARE IN. Owner, directly, 2026-08-14:
+    #   "I did NOT agree to that anomaly ruling! ... leave them in with Anomaly
+    #    set to zero but enabled, so we can still spawn them. And add my
+    #    cherrypicks! Do not revert them!"
     #
-    # WHY, so it is not re-litigated: the `Disabled` Anomaly playstyle ALREADY
-    # suppresses incidents, study, the threat budget and thing-set/trader-stock
-    # inclusion — established by IL xref of `enableAnomalyContent`, not inferred.
-    # So the removals bought redundancy while destroying the reskin donor library
-    # the owner explicitly ruled must stay reachable. The playstyle does the job;
-    # the picks only did damage.
+    # ⭐ THE OBJECTION THAT NEARLY REMOVED THESE WAS BASED ON A CONFLATION, and
+    # it is worth stating so it is not re-litigated a fourth time. The objection
+    # was "deleting defs destroys the reskin donor library". True in general, and
+    # irrelevant here, because the two sets are DISJOINT:
+    #     donors = what the owner KEPT   — noctols, revenant, twisted obelisk,
+    #                                      the sarlacc line, the scurrier...
+    #     picks  = what the owner REJECTED — below
+    # "Do not delete the donors" had been generalised into "do not delete
+    # anything". Only the first was ever the instruction.
     #
-    # The full resolved Anomaly list is preserved in
-    # design/Jawa/worldbuilding/cherrypick_resolved.md — it cost real research
-    # (there is no Shambler race, both obelisks are two def types, and so on) and
-    # is ready to reinstate if the playstyle ever proves insufficient.
-    #
-    # ⚠️ The Trispike death-spawn patch STAYS regardless
-    # (Jawa_Patches/Patches/Fleshbeast_TrispikeCull.xml): it is an XML edit to
-    # Bulbfreak's and Dreadmeld's divide lists, not a cherry-pick, and the
-    # playstyle does not touch it.
+    # ⚠️ And picking these does NOT stop the owner spawning them. PawnKindDef,
+    # ThingDef and IncidentDef are NEUTERED in place, not deleted (§0c) — the
+    # defs stay in the database and stay dev-spawnable. Only 13 def types are
+    # really removed, which is exactly why the two GeneDefs below are excluded.
 
-    # --- 🔴 GRAVTECH ECONOMY — the whole list, and a CONDITION not a preference.
-    # The owner enabled GravTech over forbidden_mods.md's FORBIDDEN ruling on the
-    # single condition that its economy is picked out. Without these three,
-    # gravcores become craftable and the quest-only scarcity gate is gone,
-    # silently, with a clean log.
-    # ⚠️ DO NOT let a regeneration drop these. With the list down to three lines,
-    # the entire scarcity gate rests on them.
+    # --- shamblers. There is NO Shambler race and NO Shambler PawnKindDef; it is
+    # a MutantDef, which Cherry Picker cannot reach at all. Four incidents raise
+    # them and two kinds are what get raised.
+    "IncidentDef/ShamblerAssault",
+    "IncidentDef/ShamblerSwarm",
+    "IncidentDef/SmallShamblerSwarm",
+    "IncidentDef/ShamblerSwarmAnimals",
+    "PawnKindDef/ShamblerSoldier",
+    "PawnKindDef/ShamblerSwarmer",
+
+    # --- ghouls. The kind, the surgery that makes one, and the incident that
+    # sends them at you. The inbox named only the recipe.
+    "PawnKindDef/Ghoul",
+    "RecipeDef/GhoulInfusion",
+    "IncidentDef/GhoulAttack",
+
+    # --- metalhorror. ONE kind with three lifeStages, so the kind is enough —
+    # but the arrival is a separate incident and survives without it.
+    "PawnKindDef/Metalhorror",
+    "IncidentDef/CreepJoinerJoin_Metalhorror",
+
+    # --- trispike. The death-spawn half is NOT a pick: a neutered kind is still
+    # summonable BY NAME, so Jawa_Patches/Patches/Fleshbeast_TrispikeCull.xml
+    # strikes it from Bulbfreak's and Dreadmeld's divide lists.
+    "PawnKindDef/Trispike",
+
+    # --- objects. Both obelisks exist as a ThingDef AND an IncidentDef of the
+    # same name; the type segment is the only thing telling them apart.
+    "ThingDef/GoldenCube",
+    "ThingDef/WarpedObelisk_Duplicator",
+    "IncidentDef/WarpedObelisk_Duplicator",
+    "ThingDef/WarpedObelisk_Abductor",
+    "IncidentDef/WarpedObelisk_Abductor",
+    "ThingDef/RevenantSpine",
+    # ⭐ VoidNode's ARTWORK is being reused as a power-holding ore. Removing a def
+    # never deletes a texture, so the art survives this pick. Recorded before
+    # picking, because the reuse is the whole reason it is kept:
+    #     texPath      Things/Building/VoidNode/Core
+    #     graphicClass Verse.Graphic_Single_AgeSecs
+    #     size         (7, 7)
+    "ThingDef/VoidNode",
+
+    # --- ⛔ THE TWO FLESHBEAST GENES STAY OUT. Owner ruled them dropped earlier
+    # the same night, and that ruling is untouched by the reinstatement above:
+    # GeneDef is one of the 13 types Cherry Picker genuinely DELETES, so these
+    # two were the only keys that destroyed anything.
+    #     GeneDef/AG_MeatBurst   ·   GeneDef/Turn_Gene_FleshbeastBurster
+    # The pet-shower leak they caused is closed from the other side by
+    # Fleshbeast_TrispikeCull.xml.
+
+    # --- 🔴 GRAVTECH ECONOMY. A CONDITION, not a preference: the owner enabled
+    # GravTech over forbidden_mods.md's FORBIDDEN ruling on the single condition
+    # that its economy is picked out. Without these three, gravcores become
+    # craftable and the quest-only scarcity gate is gone, silently.
     "ThingDef/GravForge",              # the forge, and its bills with it
     "RecipeDef/Make_GravcoreGF",       # "make gravcore" — the scarcity breaker
     "ThingDef/AdvShip_GravReactor",    # "The Singularity Reactor"
-    # ⚠️ ResearchProjectDef/GravForge and /GravEngineBuild are deliberately NOT
-    # here: neutralising a research project risks dangling another project's
+    # ⚠️ ResearchProjectDef/GravForge and /GravEngineBuild deliberately NOT here:
+    # neutralising a research project risks dangling another project's
     # prerequisite, and unreachable research is harmless once the building is
-    # gone. Three removals beat five and a broken tech tree. (OPS's call, kept.)
+    # gone. (OPS's call, kept.)
 ]
 
 
