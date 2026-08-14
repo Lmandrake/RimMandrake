@@ -287,3 +287,26 @@ a **stale companion DLL**: rebuild and redeploy with the game closed
 **Cause:** the designator stays armed and consumes map clicks as designation attempts rather than selections. It is a *mode*, not a one-shot.
 **Fix — none found from the bridge.** All of these were tried and all reported success while changing nothing: `press_cancel` ("Dispatched semantic 'cancel'… UI state did not change"), `right_click_cell` on empty ground, `clear_selection`, `close_context_menu`, `close_main_tab` ("No RimWorld main tab is currently open"), and `select_architect_designator` with a null id (errors). `get_designator_state` returned nothing useful. The owner clicking once in game clears it.
 **Recurs when:** any use of `select_architect_designator`. ⚠️ **Treat arming a designator as a one-way door for the rest of your bridge session** — do every selection-based read you need FIRST, then designate last. Worth a companion tool that calls `Find.DesignatorManager.Deselect()` directly.
+
+## 🔴 Zooming below the engine's floor renders the whole map FLAT RED — and it looks exactly like catastrophic texture corruption
+**Symptom:** terrain replaced by flat saturated red/cyan/yellow blocks while pawns and UI text still draw correctly. Reads unmistakably as a broken texture atlas.
+**Cause:** `rimworld/set_camera_zoom_extension {"enabled": true}` widens the camera range to 0..100. **`rootSize` below the engine's normal floor (~11) breaks the world mesh render.** `rootSize 6` produced it; 11–15 are clean.
+**Fix:** keep `rootSize` ≥ 11, and **turn the extension off when you are done** — `{"enabled": false}`. It is not harmless litter.
+**How to tell it apart from real corruption, cheaply:**
+- **It heals.** Return to a legal `rootSize` and the frame is correct again. A corrupted atlas does not heal in place.
+- **PNG file size is the corroborator.** Flat colour compresses tiny: the red frame was **0.49 MB** against **2.4–3.7 MB** for clean frames of the same scene. Check `ls -la` on the screenshot before believing your eyes.
+- Bracket it: shoot at a legal zoom 30 s either side.
+**Recurs when:** any wide-area capture, because the temptation is to zoom out past the floor to fit a big structure in frame. Use `rimworld/screenshot_cell_rect` instead.
+🔴 **This nearly cost two false verdicts in one session** — OPS almost condemned eight working art mods, and BRIDGE diagnosed a corrupted texture atlas and told the owner to restart, wrongly blaming a peer's file prune. **The zoom artifact is more convincing than the real failure it imitates.**
+
+## `take_screenshot` names files by the SECOND, so a burst silently collapses to one file
+**Symptom:** four shots taken inside one second; four calls returned `success` with four paths; one file on disk. Three captures gone, no error.
+**Cause:** the filename stamp has one-second resolution (`rimbridge_YYYYMMDD_HHMMSS`), and later writes overwrite earlier ones.
+**Fix:** pass an explicit distinct `name` per shot, or space captures more than a second apart. Verify by `ls -la` on the directory, not by the returned path — the path is returned whether or not the file survived.
+**Recurs when:** any scripted multi-shot pass, which is every contact sheet and every rotation audit.
+
+## A jammed UI does NOT block the companion route
+**Symptom:** with an architect designator armed, every `click_cell` selects nothing and `list_selected_gizmos` returns `[]` — the click-driven route is dead for the session.
+**Cause/scope:** the jam is a UI *mode*. It only affects click-and-select.
+**Fix — work around it, do not wait it out.** `jawa/spawn_pawn` places by coordinate, `jawa/set_pawn_rotation` and `jawa/set_pawn_style` act by `pawnId`, `jump_camera_to_cell` and `take_screenshot` need no selection at all. **A full spawn-rotate-photograph pass runs fine with the UI jammed** — measured by OPS, four spawns and screenshots, designator still armed throughout. Only inspect panels and gizmos are lost.
+**Recurs when:** any session that has touched `select_architect_designator`.
