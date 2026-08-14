@@ -366,3 +366,45 @@ never has to fly, because narratively it never will again.
 
 **Routed to CREATE as a design ingredient**, per the owner. Not a blocker on
 anything; an asset to build with.
+
+#### 🔴 RULED — the hulk is the clan's quarry, and stripping it is the opening arc
+
+**CREATE asked whether the rest-of-the-hulk is fixed scenery or salvageable.
+It is salvageable, and it is not close.**
+
+**A wreck the clan cannot pick over is a painting of the thing the game is
+about.** The Jawa premise is *strip what nobody else can reach*; putting an
+enormous unstrippable hulk in the opening frame would show the player the fantasy
+and then deny it. That is worse than not having the wreck at all.
+
+**What it should be:**
+
+- ✅ **Walkable, and lived in.** The clan's first base is inside it. That is where
+  a salvage clan would obviously live.
+- ✅ **Buildable on.** Rooms get patched into the dead sections.
+- ✅ **Strippable for materials** — steel first, components and plasteel rare.
+- ⛔ **Never regrows.** Once a section is gone it is gone.
+
+⭐ **Big but SLOW.** High total yield, high work cost, poor rate. **The clan should
+be chewing through its own dead ship for years**, not clearing it in a season. A
+windfall here kills the scarcity pillar in year one; a slow seam funds the early
+game honestly.
+
+⭐ **And it gives the starting map an ENDING with no scripting at all.** When the
+hulk is stripped there is nothing holding the clan to that tile. **The map itself
+tells the player when to leave** — which is exactly the "reason to move on" the
+campaign has been trying to author.
+
+**The arc, in three words: live in it → strip it → leave.**
+
+#### ⚠️ Pipeline note — this is MAP GENERATION, not ship authoring
+
+**CREATE's structural point, recorded so it cannot be mis-scoped:** the hulk sits
+on the **starting map**, so it is authored like row 4's terrain overrides — a
+`GenStep` or map-gen patch, or placed live over the bridge. **It does not ride
+the gravship export XML**, which only carries what stands on connected
+substructure.
+
+🔴 **If this is ever scoped as "part of the ship layout" it will quietly never
+happen.** Different pipeline, different tool, different owner. It is also
+provable on a quicktest map today, exactly like row 4.
