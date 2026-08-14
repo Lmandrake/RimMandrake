@@ -35,8 +35,8 @@ a fresh campaign world.**
 |---|---|---|
 | 1 Empire reskin | ✅ CLOSED | — |
 | 2 Faction exclusion | 🔴 needs worldgen | **HELD** |
-| 3 *The Claim* quest | built + deployed, never seen | §7 — the fire mechanism is uncollectable |
-| 4 Three terrain overrides | 1 of 3 seen | ⭐ **§5, the session's real target** |
+| 3 *The Claim* quest | built + deployed, never seen | 🔓 **UNBLOCKED 2026-08-14** — `jawa/fire_quest`, §1c. No longer in §7 |
+| 4 Three terrain overrides | **2 of 3 seen** — dune seas closed live | ⭐ **§5.** Scrapfields is an OPEN defect (11 vs ≥75), not a blank |
 | 5 Jawa xenotype | ✅ CLOSED checked-and-fine (`V1_SCOPE.md:608-633`) | — |
 | 6 Weapons / gear | ✅ CLOSED `ad3e9b0` | — |
 | 7 Ordinary worldgen | 🔴 needs worldgen | **HELD** |
@@ -124,10 +124,25 @@ paper only; first execution is this load.
 `jawa/fire_incident` and `jawa/send_letter` off the game copy. The build refusing
 by default is the guard working.
 
-### 1d. No deploy is owed
+### 1d. 🔴 A DEPLOY IS OWED — FOUR ITEMS, AND THE GAME MUST BE DOWN
 
-**Measured on the game copy: rows 3 and 4 are deployed and byte-identical**, and
-the ground hulk was deployed tonight. `Mods/Jawa_Patches/Defs/` holds
+**This section read "No deploy is owed" until 2026-08-14. That is now FALSE.**
+
+| item | why |
+|---|---|
+| companion DLL — `jawa/get_defs`, `jawa/fire_quest` | §1c. ⚠️ **must pass `--gm`** |
+| `isJunk` off both scatter defs (`de1018b`) | repo-only; the game copy is still 2026-08-13 16:42 **with `isJunk` present** |
+| **`JawaSeaShaper.dll` — SOLO** | repo md5 `b7730027`, deployed `82b48e53` @ 08-13 23:57, **older than the launch.** A new assembly poisons attribution for anything beside it. ⚠️ **The write FAILS `OSError 22` while the game runs** — the assembly is loaded and locked. The refusal is safe; it cannot truncate |
+
+🔴 **`--apply` overwrites the game copy with whatever is in the repo at that
+moment, including a peer's half-finished work. Scope it with `--mod`; never run it
+bare.** Deploy list and drift plan: OPS's queue.
+
+⛔ **Do not let this list grow.** The Armoury patches are HELD on scope — v1 row 6
+is closed, weapon balance is not v1, and it ships in any later window.
+
+**Still true from before:** rows 3 and 4's defs are deployed and byte-identical,
+and the ground hulk was deployed tonight. `Mods/Jawa_Patches/Defs/` holds
 `MapGeneration`, `PrefabDefs`, `QuestScriptDefs`, `TerrainDefs`, `ThingDefs_Items`;
 `Patches/` holds `JawaGroundHulk_Register.xml`, `JawaResource_Scrapfields.xml`,
 `JawaTerrain_DuneSeas.xml`, `JawaTerrain_SaltPans.xml`. **The old "A DEPLOY IS OWED
