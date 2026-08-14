@@ -64,6 +64,24 @@ pass wants to remove. Cut the *story*, keep the *citation*.
 A closed finding that cost a real debug cycle gets **one** durable home — a trap
 entry or a rule — and is deleted everywhere else. Never both.
 
+**A closed item whose body is a DELIVERABLE moves tier; it does not vanish.** A
+queue entry that answered its question with a build spec, a def, a measured table
+or an authored design is a work product that happens to be sitting in a queue.
+Draining the queue means **moving it to the tier that owns it** — `design/` for a
+spec, a skill for a method, `observed/` for a measurement — and leaving one line
+behind with the hash. Deleting it because "the item is closed" destroys the
+deliverable and keeps only the receipt.
+
+> **The test is one question: if this were deleted, would someone have to redo
+> work?** Provenance answers no and goes in the commit. A deliverable answers yes
+> and gets a home.
+
+⚠️ **`git show` is not a home.** It preserves the bytes and loses the findability,
+which is the whole value of a spec. *(Precedent: CREATE's 350-line restraint-bolt
+answer, drained 2026-08-13 to
+`design/Jawa/worldbuilding/restraining_bolt_technical.md` — VISION was still
+waiting on its IL thresholds at the time.)*
+
 ---
 
 # A written instruction rots — and it rots while still being true
