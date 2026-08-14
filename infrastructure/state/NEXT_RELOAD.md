@@ -196,13 +196,34 @@ Harvest first. Then spawn.
 ## 3. 🔴 CALL #1 — the tool-surface census. Nothing below is interpretable until it passes.
 
 ```
-rimbridge/list_tools          -> expect 22 jawa/* names
+rimbridge/list_tools          -> count the jawa/* names
 ```
 
-**22 with `--gm`; 20 without.** ⚠️ **A read of 20 does not mean a stale build — it
-means the companion was deployed WITHOUT `--gm`.** Anything else means the deployed
-companion is not the one we measured, and every result below it is evidence of
-nothing. One call, costs nothing, gates everything.
+🔴 **DO NOT COMPARE AGAINST A NUMBER WRITTEN IN A DOC. DERIVE IT.** Three files
+carried three different expected counts on 2026-08-14 — **21** in
+`EXPECTED_FAILURES_next_load.md`, **22** here, **24** in `queue/BRIDGE.md` — while
+the source artifact defined **24**. ⇒ **a CORRECT deploy would have FAILED the
+gate on the irreversible worldgen run.**
+
+**Derive the expectation at census time, from the artifact you just deployed:**
+
+```bash
+grep -rhoE '"jawa/[a-z_]+"' src/RimMandrake/bridgetools/ | sort -u | wc -l   # = 24 on 2026-08-14
+```
+
+| you deployed | expect |
+|---|---|
+| the current artifact **with `--gm`** | that count — **24** today, `get_defs` + `fire_quest` included |
+| the current artifact **without `--gm`** | that count **minus 2** — `fire_incident` and `send_letter` are stripped |
+| anything else | **STOP.** The deployed companion is not the one you measured, and every result below is evidence of nothing |
+
+⚠️ **A low read does not by itself mean a stale build** — the `--gm` strip looks
+identical to one. Check which you passed before concluding anything.
+
+📌 **Why this keeps happening: a hardcoded count in a gate document goes stale on
+every single deploy, silently, and the gate then fails the correct build.** Third
+instance in one night of *a number in a document that nobody re-derives*. **Gates
+compare measurements to measurements — never to prose.**
 
 The 22: `damage`, `destroy_batch`, `drain_log`, `fire_incident`, `get_def`,
 `get_roof_batch`, `get_terrain_batch`, `list_factions`, `list_pawns`,
