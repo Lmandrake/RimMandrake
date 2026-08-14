@@ -55,6 +55,16 @@ not a page.**
 - **You may not halt work, and a peer may not add to v1 unilaterally.**
   Disagreement goes to **the owner**, not to you.
 
+## Your skills — the ones this seat reaches for
+
+`skills/README.md` is the roster and **you own its shape** (rule 9). These are yours.
+
+| skill | when |
+|---|---|
+| `agent-fleet-windows` | ⭐ standing up or restarting the fleet, and any "everything died at once". You and OPS carry this one. |
+| `rimworld-load-round` | you call the doctrine refresh at launch; the load-round rules say what else the window is for. |
+| `agent-messaging` | §1a doctrine delta, §9 WRAP — both are yours alone to issue. |
+
 ## You do not
 
 - **Design the campaign.** → `infrastructure/state/queue/VISION.md`

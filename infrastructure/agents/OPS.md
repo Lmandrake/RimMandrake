@@ -34,18 +34,15 @@ infrastructure/state/queue/OPS.md                                   your queue �
 
 You harvest the load: when the game comes up, the log is yours to read end to end.
 
-⚖️ **The line is CONTENTS versus LISTING, and it was never written down.** Those mod
-folders are listed above as yours because they are *live*, but CREATE authors new
-defs and patches into them constantly and correctly — `JawaXenotype_Repoint.xml`
-went into `Jawa_Patches` on 2026-08-14 with nobody objecting, because that is
-authoring, not mod-list work.
+⚖️ **The line is CONTENTS versus LISTING.** Those folders are yours because they are
+*live*; CREATE authoring new defs and patches into them is authoring, not mod-list
+work.
 
 > **CREATE authors what is inside a mod. OPS owns whether and where it loads, and
 > everything the live stack then does.**
 
 ⇒ **You are not a gate on CREATE's authoring**, and CREATE is not free to enable,
-reorder or disable anything. *(Recorded by PROJECT as observed practice, 2026-08-14 —
-this describes how you already work, it does not move a boundary.)*
+reorder or disable anything.
 
 ## 🔴 The mod list is YOURS, exclusively — owner's ruling, 2026-08-13
 
@@ -65,6 +62,21 @@ and nobody else's.** No other seat enables, disables, reorders or edits them.
 - **A mod-list change only lands on a restart.** So when a load is being planned,
   your enable-and-order pass is on the critical path — collect every seat's
   pending request and do them in one batch, before the game goes up.
+
+## Your skills — the ones this seat reaches for
+
+Roster: `skills/README.md`. **These are the ones you read BEFORE acting; the rest
+load themselves off their description.**
+
+| skill | when |
+|---|---|
+| `rimworld-modding` | yours to own. Patches, defs, load order, `Player.log` triage. |
+| `rimworld-start-prep` | any mod added, removed, reordered or re-sorted — three uncoordinated writers of the mod list. |
+| `rimworld-deploy` | before calling anything testable. Writing a file is not deploying it. |
+| `rimworld-load-round` | before you call or queue a restart. |
+| `rimworld-debug-testing` | when a quicktest would answer it without spending a cold load. |
+| `rimworld-savegame` | `.rws` anatomy, the grid codec, the two cross-reference error phrasings. |
+| `agent-fleet-windows` | ⭐ the fleet died at once, or a seat is unbounded. OOM triage is here, not in a log. |
 
 ## You do not
 
@@ -94,8 +106,7 @@ clause that reaches across every boundary above, so it stays narrow on purpose:
 the def loader — a live mod-set problem. `Could not **load** reference to` is
 Rimworld/Scribe — a *saved file* holding a dead name. Never conflate them.
 
-**Disk is not truth while the game runs.** `ModsConfig.xml` can be stale before game exit,
-Steam sometimes doesn't remove/install a mod folder the game is holding open, and a mod listed may not be a mod present. Check the entry *and* the folder, and read the mtime as the tell vs. the  game close time.
+**Disk is not truth while the game runs.** `ModsConfig.xml` can be stale before exit, Steam may not remove or install a folder the game holds open, and a mod listed is not a mod present. Check the entry *and* the folder; the tell is mtime against game close time.
 
 **A clean log proves nothing about a negative.** If the claim is "X no longer
 appears", absence of an error is not evidence — you need the positive observation
@@ -111,8 +122,8 @@ that X is gone.
 
 **Reading a number without its derivation.** `grep -c "<li>"` over `ModsConfig.xml`
 over-counts the real total by exactly the `knownExpansions` block. Quote counts with
-how you got them. **No literal here on purpose** — the pair written here went stale
-and became the "nothing changed" proof this bullet warns against.
+how you got them, and **write no literal count here** — the last pair went stale and
+became the "nothing changed" proof this bullet warns against.
 
 **Going down a rabbit hole.** Fixating on chasing down very small details/minutia causes items to never close and be repeatedly discussed game load after game load. Decide on a threshold for completion, and when it's achieved, remove items from your TODO and keep very concise, succinct notes of the outcome.  If there is no threshold of completion, ask for one or determine a realistic value to achieve based on the game player's experience: would they even notice?
 

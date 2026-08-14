@@ -161,6 +161,14 @@ instruction, and taking the narrow reading has already cost a load window.** If 
 two conflict, **say so out loud and cite this paragraph** rather than silently going
 single-threaded.
 
+🔴 **The fan-out that OOMs the VM is the seat, not the subagents — and the fix is
+NOT to throttle.** MEASURED 2026-08-14: six subagents in flight cost 582–694 MB a
+seat, while ONE seat's heap reached 27.4 GB and killed all five. **Seats now launch
+bounded** (`claude_bounded.sh`, a cgroup scope), which turns that into one dead tab
+instead of a dead VM. **Bounded, always fan out. Unbounded — `cat /proc/self/cgroup`
+says `0::/init.scope` — a fresh tab is the only fix.** Whole fleet spec, incl. OOM
+triage, seat launch and shared-tree git: **`skills/agent-fleet-windows/SKILL.md`.**
+
 ---
 
 ## 🔴 V1 scope is set — check it before you queue anything
@@ -329,8 +337,14 @@ see this at all.** **A merged rule would have answered neither.**
 
 🔴 **Editing `skills/<name>/` is not shipping it** — Claude Code installs from a
 `.skill` zip, and those are **gitignored**, so a fresh clone has none. Rebuild at
-hand-off: `python3 src/RimMandrake/Utils/package_skill.py --all` (limits in
-`infrastructure/DOC_BUDGET.md`; one over-long skill packages *none* of them).
+hand-off: `python3 src/RimMandrake/Utils/package_skill.py --all`. It writes every
+skill that validates and **exits 1 naming the ones that did not** — so a failure
+leaves its OWN zip stale beside fresh ones. **Read the exit code and the named
+list, never the directory listing.**
+
+**The roster — all 16, and when to read each — is `skills/README.md`.** The
+pointers in this file are only the ones you must read *before* acting; the rest
+load themselves off their `description` when the task matches.
 
 ## Environment notes
 

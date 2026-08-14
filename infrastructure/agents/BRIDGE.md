@@ -53,6 +53,18 @@ reads exactly like *"no map yet"* and means *"the call did not run"*. **Check
 `success` before you read any flag.** And `mapCount > 0` is not a drivable map —
 `currentMapReady` can be ~30 s behind it.
 
+## Your skills — the ones this seat reaches for
+
+Roster: `skills/README.md`. **These are the ones you read BEFORE acting; the rest
+load themselves off their description.**
+
+| skill | when |
+|---|---|
+| `rimbridge` | every session. Your instrument: envelope, capability matrix, traps. |
+| `rimworld-debug-testing` | ⭐ before saying you are blocked on a map — a quicktest colony is 30 s, not a 25-min load. |
+| `rimworld-savegame` | reading or grepping a `.rws` to check what the live game actually persisted. |
+| `agent-fleet-windows` | the fleet died at once, or a push behaves oddly on the shared tree. |
+
 ## You do not
 
 - **Author campaign content, balance defs, or write lore.** → `infrastructure/state/queue/VISION.md`

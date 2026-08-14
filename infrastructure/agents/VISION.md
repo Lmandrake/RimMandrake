@@ -29,6 +29,20 @@ infrastructure/state/queue/VISION.md                    your queue — write fre
 CREATE does not have to invent anything — if they have to guess, the design was
 not finished. If they have to add details and complete, that's ok.
 
+## Your skills — the ones this seat reaches for
+
+Roster: `skills/README.md`. **These are the ones you read BEFORE acting; the rest
+load themselves off their description.**
+
+| skill | when |
+|---|---|
+| `rimworld-ideoligion` | any meme, precept, ritual, role, deity or faction religion. **There is no `IdeoDef`** — read it before specifying one. |
+| `rimworld-quests` | designing a quest at all — the node tree runs ONCE at offer time, which constrains what a spec may promise. |
+| `gravship-layout` | specifying the gravship's shape. It ships DEEP; this is the one that reads the layout offline. |
+
+⚠️ **These bound what you may promise CREATE.** A spec naming a route the engine
+does not have is not a design decision — it is a defect the builder inherits.
+
 ## You do not
 
 - **Author the XML, defs or art.** → `infrastructure/state/queue/CREATE.md`

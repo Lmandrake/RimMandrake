@@ -35,8 +35,10 @@ launches `claude --name 'AGENT <SEAT>'`; the SessionStart hook records the role,
 window and session, and injects the seat file. **Nothing typed.** For a tab opened
 without a profile, or a seat changing role:
 `./src/RimMandrake/Utils/set_agent_window.sh <SEAT>` — `BRIDGE|OPS|CREATE|VISION|PROJECT`
-only, and the role it writes beats `AGENT_SEAT`. Reinstall profiles with
-`python3 src/RimMandrake/Utils/install_wt_seat_profiles.py --apply`.
+only, and the role it writes beats `AGENT_SEAT`. Reinstall:
+`python3 src/RimMandrake/Utils/install_wt_seat_profiles.py --apply`. **The profile
+launches the seat memory-BOUNDED** — one seat's runaway kills that tab, not the VM.
+Running and triaging the fleet: `skills/agent-fleet-windows/SKILL.md`.
 
 ⛔ **Being addressable comes from `--name` at launch, from nothing else** — the hook's
 `sessionTitle` names the *conversation*, a separate field. No mid-session command, the

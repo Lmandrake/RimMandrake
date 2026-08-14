@@ -82,8 +82,9 @@ Validate without writing: `python3 src/RimMandrake/Utils/package_skill.py --all 
 symlinked skills — `editing-images`, `generating-images`,
 `generating-rimworld-sprites`, `rimbridge`, `rimworld-modding`. Edit the copy
 **here**, re-package, and say it has been **delivered**, not saved. Installing it
-is the owner's action, not ours. The other eight are repo-only and are read by
-path.
+is the owner's action, not ours. **The other eleven are repo-only and are read by
+path** — do not write a count here; `ls -d skills/*/ | wc -l` minus the five
+symlinks above is the only figure that stays true.
 
 ## The roster — count it with `ls -d skills/*/`
 
@@ -99,8 +100,10 @@ path.
 | `rimbridge` | Driving a live RimWorld from outside: spawn, build, control time, screenshot, measure. |
 | `rimworld-debug-testing` | Testing without a cold load — throwaway quicktest colonies, and what one can and cannot prove. |
 | `rimworld-deploy` | Before testing anything in game, and whenever a change "didn't take". Writing a file is not deploying it. |
+| `rimworld-ideoligion` | Any ideoligion, meme, precept, ritual, role, deity or faction religion — there is no `IdeoDef`. |
 | `rimworld-load-round` | Before calling or queueing a restart — how to spend the ~23–30 minute cold load. |
 | `rimworld-modding` | Any mod authoring, patching, def, load-order problem or `Player.log` triage. |
+| `rimworld-quests` | Any `QuestScriptDef`, quest reward or text, a quest that never fires, or designing one at all. |
 | `rimworld-savegame` | Reading, grepping or editing a `.rws` — grid codec, `fogGrid`, the two error phrasings. |
 | `rimworld-start-prep` | Mods added, removed, reordered or re-sorted — the three uncoordinated writers of the mod list. |
 
@@ -112,6 +115,8 @@ path.
 - **Campaign fiction or specs** → `design/`. A skill must survive a different
   playthrough.
 - **How to operate somebody else's mod** → `vendor/wisdom/`.
-- **Which skill to load when** → that is `CLAUDE.md`'s job, deliberately, so the
-  routing lives in the file every session already reads.
+- **A duplicate of the roster above.** `CLAUDE.md` names only the skills a seat
+  must read *before* acting; the full when-to-read-each table lives **here**, and
+  a seat's own subset lives in `infrastructure/agents/<SEAT>.md`. Three places,
+  three different questions — do not sync them by copying.
 - **Build outputs.** `<name>.skill` and `__pycache__/` are never committed.

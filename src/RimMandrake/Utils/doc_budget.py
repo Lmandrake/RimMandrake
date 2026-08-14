@@ -16,8 +16,12 @@ what a document is for:
 
   infrastructure/state/queue/*.md        150   a queue is a list of open work. If it needs 400 lines,
                           the closed items were never removed.
-  infrastructure/agents/*.md       120   an identity is read every session. Every line is a tax
-                          on all five seats, every time.
+  infrastructure/agents/*.md       150   an identity is injected at every session start — but into
+                          ONE seat, not five. Was 120 on the stated premise "a tax
+                          on all five seats, every time", which is false: that is
+                          CLAUDE.md's and agents_def.md's cost, not this file's.
+                          Raised 2026-08-14 when each seat gained a skills table,
+                          which is per-seat routing and lives nowhere else.
   AGENT_*_state.md  150   a handoff. If a successor must read 900 lines to resume,
                           it is not a handoff, it is an archive.
   CLAUDE.md         300   auto-loaded into EVERY session of every seat. The most
@@ -62,7 +66,7 @@ import sys
 
 BUDGETS = [
     ("infrastructure/state/queue/*.md", 150),
-    ("infrastructure/agents/*.md", 120),
+    ("infrastructure/agents/*.md", 150),   # was 120; premise was wrong, see docstring
     ("infrastructure/state/AGENT_*_state.md", 150),
     ("CLAUDE.md", 300),
     ("infrastructure/agents_def.md", 200),          # was 500; dissolved to 158, budget dropped

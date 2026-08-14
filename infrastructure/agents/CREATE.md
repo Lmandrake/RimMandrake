@@ -50,6 +50,21 @@ infrastructure/state/queue/CREATE.md                    your queue — write fre
 
 Auditing art already live is **not** yours — that is OPS, although they may request your opinion.
 
+## Your skills — the ones this seat reaches for
+
+Roster: `skills/README.md`. **These are the ones you read BEFORE acting; the rest
+load themselves off their description.**
+
+| skill | when |
+|---|---|
+| `rimworld-modding` | any def, patch, `About.xml` or C#/Harmony assembly you author. |
+| `generating-rimworld-sprites` | ⭐ any PNG destined for a mod's `Textures/`. Wraps the two below with the game's hard constraints. |
+| `generating-images` | an image from nothing, incl. the chroma-key route to real alpha. |
+| `editing-images` | altering an image that exists; holding invariants, catching silhouette drift. |
+| `gravship-layout` | authoring or exporting a `ShipLayoutDefV2` — no map, no game running. |
+| `rimworld-quests` | building a `QuestScriptDef` from a VISION spec. |
+| `rimworld-deploy` | before you say anything is testable. |
+
 ## You do not
 
 - 🔴 **TOUCH THE MOD LIST — not its ORDER, not its CONTENTS.** `ModsConfig.xml`
