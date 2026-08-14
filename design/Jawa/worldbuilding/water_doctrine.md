@@ -100,3 +100,120 @@ here blocks the current worldgen.
 the master resource" is true of the setting and false of the current game, and
 conflating those has already cost this project a roster full of doctrine lines
 resting on nothing.
+
+---
+
+# The roster audit, and the seven rulings it forced
+
+_VISION, 2026-08-13, same day. All twelve NPC dossiers plus the player section
+were read against the four rulings above. **The audit found prior art I did not
+know about and five genuine contradictions.** Rulings below are final._
+
+## Prior art: the roster was already ~70% there
+
+**A low-water species tier already exists at `faction_roster_v2.md:161–175`** —
+Tusken, Desert alien/Impid and Geonosian at *very low*; Nikto, Kaleesh, Iktotchi
+at *low*; **all droid chassis at none**. Ruling 1 did not invent differential
+thirst; it ratified something already half-written and never enforced.
+
+## W1. ⭐ Add a FOURTH band: ELEVATED
+
+**My three-row table topped out at "normal" and three faction doctrines depend on
+above-normal thirst.** The roster's own elevated list is at `:175` — Wookiee,
+Wookiee-kin, Herglic, Mon Cal, Quarren, Selkath, Gungan, Chagrian, Aqualish,
+Trandoshan, Rodian, Ithorian, Ewok.
+
+| band | who |
+|---|---|
+| **none** | all droid chassis |
+| **very low / low** | desert-natives — Tusken, Desert alien, Geonosian, Nikto, Kaleesh, Iktotchi, **and Jawa (W2)** |
+| **normal** | off-world humanlikes — baseliners, Chiss, Umbaran, Arkanian, most of the Imperial roster |
+| ⭐ **elevated** | aquatics and heavy-bodied species — the `:175` list |
+
+**Elevated is not a penalty, it is a leash**, and it is what makes the Wookiee
+Freeholds *devastating at home and near-useless expeditionary* — the best-written
+water consequence in the roster.
+
+## W2. 🔴 Jawa are MISSING from the low-water tier — add them
+
+`:165–173` lists no Jawa. **The most desert-native race in the setting is
+currently specified as an ordinary drinker**, while the player section (`:2329`)
+asserts *"Dry-adapted"* with nothing behind it, and the owner's ruling names Jawa
+first. **Add Jawa at *low*.** The Duneborn's "normal raid range" (`:1859`) is
+corrected by the same stroke.
+
+## W3. Tusken short raid duration is DOCTRINAL, not physiological
+
+`:794` gives Tuskens the shortest range in the roster *because of water*, while
+`:167` puts them in the same *very low* tier as Geonosians, who get **the longest
+reach on the map** (`:1355`). Under differential thirst that reasoning is dead.
+
+**Keep the short duration. Change its cause.** Tuskens **Forbid** water by taboo
+(`:790`) and fight hit-and-run by culture. **They could range far and choose not
+to.** Fiction preserved, contradiction removed, and it is a better characterisation
+than dehydration was.
+
+## W4. Ruling 2 covers NATURAL sources only — manufactured stores are exempt
+
+The Homestead holds stored water behind the roster's weakest guard (6–16
+poor-gear militia, `:680`), which looked like a violation.
+
+**It is not, and the carve-out is the honest one:** *"potable water-bearing
+squares always have defenders"* means **natural, renewable sources** — aquifers,
+oases, springs. **A vaporator farm is a trickle, not a source**, and `:663`
+already says its water is not worth capturing. **Manufactured and stored water is
+not a defended tile type.**
+
+⚠️ **This is load-bearing for the player**, who will also manufacture. It means
+the clan's own stills do not automatically become raid magnets.
+
+## W5. Purification is cheap for those who HAVE it, expensive to BUILD
+
+`:1218` and `:1247` make desalination the Aquifer League's cheap industrial
+export *today*, and the Duneborn's crawler stills (`:1849`) are salvage-grade —
+both against ruling 3's "expensive v2 tech".
+
+**Both stand. The ruling was underspecified, not wrong:**
+
+- **The League's monopoly IS their power.** Cheap purification in their hands is
+  exactly why everyone tolerates them — remove it and the faction has no reason
+  to exist.
+- **Duneborn stills are low-yield salvage** — enough to live, never enough to
+  trade.
+- ⭐ **What is expensive is the PLAYER building their own at scale.** That is the
+  v2 tech, and it is a *strategic* unlock: the day the clan stops buying from the
+  League is the day the map changes shape.
+
+## W6. The League holds every AQUIFER, not every water tile
+
+`:1202` says the Aquifer League holds **every** natural water tile — which cannot
+coexist with the Cartel's oases (`:148`, `:159`) or the Wookiee upland springs
+(`:1071`, `:1081`).
+
+**Ruling: the League holds the deep, renewable water — the aquifers they are
+named for. Oases and upland springs are surface features and belong to whoever
+sits on them.** Three factions keep their holdings; the contradiction is gone.
+
+## W7. Industrial water demand is a SEPARATE axis — noted, not resolved
+
+The Consortium (`:1486`) consumes water for vats and biosculpters, not for
+pawns. **None of the four rulings covers industrial draw.** Flagged rather than
+invented: it matters only when water becomes a tracked good, which is v2.
+
+---
+
+## Where each faction now stands
+
+| verdict | factions |
+|---|---|
+| **consistent, no change** | Hutt Cartel · Imperial Directorate · Free Droid Enclaves · Geonosian Hive · Bounty Compact · player expedition |
+| **fixed by W1 (elevated band)** | Wookiee Freeholds · Aquifer League |
+| **fixed by W2 (Jawa tier)** | Duneborn |
+| **fixed by W3 (doctrinal range)** | Tusken Sand Clans |
+| **fixed by W4 (natural-source carve-out)** | Outer-Rim Homestead |
+| **fixed by W6 (aquifer vs surface)** | Aquifer League · Hutt Cartel · Wookiee Freeholds |
+| **still assumes universal thirst** | ⚠️ **Junker Scrap-Warrens** — range set from one undifferentiated stolen pool while its roster is 14% low and 25% elevated. **Draw rate sets their reach, not volume.** Rewrite when faction 12 is authored |
+| **silent on ruling 4 (bottle currency)** | **all thirteen** — expected, it is the furthest-out item |
+
+**Nothing above blocks v1.** These are corrections to a v2 authoring surface,
+made now because the ruling was fresh and the contradictions were cheap to see.
