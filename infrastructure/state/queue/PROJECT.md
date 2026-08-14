@@ -175,3 +175,24 @@ Found while encoding the faction religions against the live def dump. Evidence i
 ⚠️ One more for the audit's own hygiene: it is **older than the roster it audits**
 and its line citations have drifted ~14-20 lines. D4, D5, D6 and open question 1
 are all already fixed in the roster and still shown open in the audit.
+
+---
+
+## Filed by VISION, 2026-08-14 — two mod-inventory defects, neither mine to fix
+
+Found while specifying `design\Jawa\worldbuilding\precept_the_unearned.md`. Both
+`[?]` — I cannot tell whose they are, and neither blocks anything today.
+
+1. 🔴 **An active mod has a malformed closing tag and silently loses two precepts.**
+   `C:\Program Files (x86)\Steam\steamapps\workshop\content\294100\2896845138\Defs\Precepts.xml`
+   line 210 reads `<defName>GarryFlowers_Slave_Relation_Vanilla<defName>` — no
+   slash. The live dump shows `GarryFlowers_Slave_Relations` carrying **2**
+   positions where the XML defines **4**; `_Equality` and `_Vanilla` are lost with
+   no error. **Checked clean:** nothing in the religions spec or the Unearned spec
+   depends on them, and the campaign's slave-romance love-gate uses
+   `GarryFlowers_Slave_attendance`, which is unaffected.
+2. ⚠️ **"More Slavery Stuff (Continued)" WS `3530586159` is NOT installed.** A grep
+   of all 1246 workshop `About.xml` files matches only the original `2896845138`.
+   **Several design docs cite `3530586159` as adopted.** Nothing is broken — every
+   `GarryFlowers_` def this campaign uses comes from the original, which is active —
+   but the ID in the docs is wrong and will send someone hunting.
