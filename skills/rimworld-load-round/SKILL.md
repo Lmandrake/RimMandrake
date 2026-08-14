@@ -44,9 +44,17 @@ bisection you will pay for later.
 ## 4. Mod-list state on disk: what is authoritative, when
 
 ⚠️ **While RimWorld is running, disk state is NOT authoritative.** The game holds
-its list in memory and rewrites `ModsConfig.xml` on exit; Steam will not remove a
-folder the game holds open. A listed mod may already be unsubscribed, and a present
-folder proves nothing.
+its list in memory; Steam will not remove a folder the game holds open. A listed
+mod may already be unsubscribed, and a present folder proves nothing.
+
+🔴 **RimWorld does NOT rewrite `ModsConfig.xml` on exit.** This line used to say it
+did, and contradicted the paragraph directly below it — a reader could leave with
+either belief. Measured 2026-08-13: at exit `Player.log`'s last write was 10:04:55
+while the config's mtime was 10:01, *older than the exit*, and the file moved again
+at 16:41:39 with no game running at all.
+**Before reasoning about the list or the order at all, read
+`skills/rimworld-start-prep/SKILL.md`** — three uncoordinated writers own different
+columns of this, and that skill is where they are set out.
 
 ⚠️ **"Safe after a clean exit" is CONDITIONAL.** A clean exit makes
 `ModsConfig.xml` authoritative about **what the game loaded**, never about **what
