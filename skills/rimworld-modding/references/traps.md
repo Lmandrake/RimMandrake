@@ -94,6 +94,7 @@ the one asked.**
 - 43. "Non-transparent pixel count" is the wrong emptiness metric, twice over
 - 44. A tint mask marks the animal's FILL, not the animal — the keyline is tagged as vehicle
 - 45. Art can be correct at source and broken at render — judge the sprite, not the file
+- Our own mods shadow each other, and identical bytes make it invisible
 
 ### `traps-mods-and-managers.md` — the mod stack
 
