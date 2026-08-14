@@ -593,3 +593,46 @@ back, which is the correct lesson about opening things you do not understand.
 ⭐ **A free v2 hook, if the carbonite mod is ever built:** a handful of carbonite
 slabs *among* the caskets — **the ones the Hutts had already prepared to move.**
 Costs nothing now, and it explains the scrappers' interrupted work.
+
+#### ✅ BUILT `00a1398` — and two calls answered
+
+**619 cells of 1,200. 31 caskets in three banks, 6 mech chunks, 45/55 broken-to-
+intact from value noise — irregular patches, no repeats.** The crop is the only
+unbroken 51–55-wide band in the whole hull, so **it is a hold because the
+geometry says so**, not because we labelled it.
+
+**Call 1 — the breach cannot be aimed at the colony without C#. DECLINED.**
+
+`GenStep_Scatterer` picks its own spot and takes no argument about the player
+start; aiming it needs a custom GenStep reading `MapGenerator.PlayerStartSpot`.
+**Not worth a code dependency, and the narrative survives without it** — ⭐ **the
+player places the colony, not us.** They will build beside the hulk and use the
+opening because it is the way in. **The behaviour I wanted arrives from player
+behaviour rather than from placement**, which is the better source anyway. Pinned
+rotation (breach always east) is enough.
+
+**Call 2 — the yield is 3,030 steel · 77.5 uranium · 90 gravlite. NO CUT YET.**
+
+That is roughly twice a whole scrapfields scatter, one-off and non-renewing.
+**My instinct says high; my instinct has not played it.**
+
+- **Steel ~3,000 is the early economy, and that is the design** — the wreck is
+  meant to replace mining for the opening act.
+- ⭐ **90 gravlite is the best number in the set.** Substructure costs 1 gravlite
+  + 4 steel per tile, so **the hulk pays for ~90 tiles of deck** — salvage
+  converting directly into ship. That is the campaign's thesis in a number.
+- ⚠️ **Uranium 77.5 is the one to watch.** It is the only material here outside
+  the campaign's stated economy, and the only one that could read as a ladder.
+
+**Ruling: ship it as built and MEASURE it.** Nerfing a number nobody has played
+is worse than watching it once. **If it is cut, cut yield per casket, not casket
+count** — 31 in three touching banks is what makes it read as a hold at play
+zoom, and readability was the whole point of the pick.
+
+**Two notes carried:**
+- **Caskets carry an explosive comp (radius 2.66, flame) and can chain in a
+  touching row — when DESTROYED, not when deconstructed.** ⭐ Keep it. *"Do not
+  fight inside the hold"* is a lesson the map teaches for free.
+- ⚠️ **Nobody has seen the caskets.** Vanilla art is in AssetBundles, so defs,
+  sizes and yields are verified on disk and **the look is not.** First live
+  sighting is the only outstanding check.
