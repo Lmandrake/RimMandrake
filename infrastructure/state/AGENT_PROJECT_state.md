@@ -50,7 +50,7 @@ tiers.
 
 1. **11 owner decisions** in `OWNER_DECISIONS.md`; #11 blocks a v1 row outright
    and three others cost one word each.
-2. **Execute the restructure** — plan in `infrastructure/output/RESTRUCTURE_PLAN.md`, staged,
+2. **Execute the restructure** — plan in `infrastructure/disposing/RESTRUCTURE_PLAN.md`, staged,
    nothing moved yet. Owner adopted option B revised, with `Jawa/` vs
    `RimMandrake/` on **new work only**.
 3. **`STRUCTURE.md` is stale and blocked** — three passes deferred because the

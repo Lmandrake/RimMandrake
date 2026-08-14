@@ -134,7 +134,9 @@ Set it `true` and the offer reaches the ship. Core's `Script_BanditCamp.xml`
 already ships the exact pair this rule wants: `everAcceptableInSpace true` +
 `GetMap canBeSpace true` for the offer, plain `QuestNode_GetSiteTile` for a
 **ground** site. **Both layers hold together in one def.** So The Claim's shape
-is buildable as specified, and it is built (`Jawa_TheClaim`, `5c14e26`).
+is buildable as specified, and it is built (`Jawa_TheClaim`, `47733f8` — the original
+hash 5c14e26 is unresolvable: it was written between the history bundle being cut and the
+2026-08-13 re-init, so it survives in neither, and `47733f8` re-lands the same def).
 
 ### ✅ REFINED 2026-08-13 — read at IL level, and the severity drops
 

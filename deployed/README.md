@@ -34,7 +34,7 @@ you destroy their edit.
 - **Third-party mod source** → `vendor/`.
 - **Anything a running game produced** — logs, saves, def dumps → `observed/`.
 
-⏳ **NEITHER `MODLIST.md` NOR `mods/` EXISTS YET.** Verified 2026-08-13. This
+⏳ **`MODLIST.md` DOES NOT EXIST YET, and neither does `mods/`.** Verified 2026-08-13. This
 file describes the intended tier, and the generated modlist needs
 `harvest_log.py --emit-modlist`, which was deliberately not written while the
 game was down. **Do not cite either as though it exists.**

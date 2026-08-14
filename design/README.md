@@ -28,7 +28,7 @@ session. The cheap error is the recoverable one.
 - **Material we did not write**, even summarised → `research/`.
 - **Anything a machine generates.** If a script writes it, it is not design.
 
-`MODLIST.md` here is **hand-authored**: a statement of which mods this tier's
+The planned `MODLIST.md` here is **hand-authored**: a statement of which mods this tier's
 documents assume exist. It changes slowly, by hand, in the commit that adds the
 dependency. It is not a record of anything that ran.
 

@@ -239,7 +239,7 @@ would erase the desert, which is the actual biome.
 It is not really about salt. **It is the first live proof of the campaign's
 central authoring thesis — that a tile can be augmented on approach** — and
 that thesis currently has zero in-game evidence behind it
-(`design\Jawa\worldbuilding\tile_augmentation_catalogue.md`). A capability
+(`D:\Luke\dev\Rimworld\design\Jawa\worldbuilding\tile_augmentation_catalogue.md`). A capability
 demonstrated once in v1 is what makes the v2 pillar fundable.
 
 **So the deliverable is the CAPABILITY, not the pan.** Report back: can the

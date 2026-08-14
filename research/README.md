@@ -28,7 +28,7 @@ artifact was worth pulling.
 it measured-and-unreproducible rather than deleting it; it was verified when it
 was taken, and re-deriving it costs full price.
 
-`MODLIST.md` here is **hand-authored** — mods a reader needs to make sense of this
+The planned `MODLIST.md` here is **hand-authored** — mods a reader needs to make sense of this
 tier's material.
 
 ⏳ **`MODLIST.md` DOES NOT EXIST YET.** This section describes what it will be,

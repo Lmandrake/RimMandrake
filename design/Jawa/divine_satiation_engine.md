@@ -450,7 +450,8 @@ ideoligion. [Inference — needs a 1.6 source hunt; filed as a Fetcher search, s
 ## 5c. The COUNCIL OF VOICES — rituals as a live godly argument (user, 2026-08-08 — the centerpiece)
 
 **★ The strongest single idea in the religious layer.** Rituals are performed at the **sacred center of
-the ship** (the hollow shrine-heart of hull #15 — `ship15_interior.md`). At the climax, the gods who have
+the ship** (the hollow shrine-heart of hull #15 — `ship_designs.md` §15; the tile-level interior is
+`ship_build.md`). At the climax, the gods who have
 **Something to Say** do not simply hand down a scored outcome — **their voices come OUT OF THE SHIP'S
 SPEAKERS**, proclaiming things that then *seem to come true.* Because the ship is a conduit to all nine
 (§4d), this is diegetically the gods themselves speaking, not a UI readout. **Reference feel (user): the

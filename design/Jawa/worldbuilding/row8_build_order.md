@@ -434,7 +434,7 @@ C:\Users\Mandrake\AppData\LocalLow\Ludeon Studios\RimWorld by Ludeon Studios\Con
                                                                                                   \<defName>.png
 ```
 (path from `GravshipExporter.cs:73`, `:83-84`.) Copy both into the repo under
-`D:\Luke\dev\Rimworld\design\Jawa\worldbuilding\ship_build\export\` and commit with
+`D:\Luke\dev\Rimworld\design\Jawa\worldbuilding\ship_build\exported\` and commit with
 an explicit pathspec, same hour. `CLAUDE.md` §"Commit AND PUSH": unreproducible +
 value persists = **commit it**.
 

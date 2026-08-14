@@ -20,7 +20,7 @@ we'll A/B against the static, already-built **JawaVoice** SpeakUp reskin.
 `jawa_xenotype_and_religion.md` (ideoligion "The Keepers of the Second Hand"; "we give the second
 hand to what others discarded, we do not breed new hands"), `jawa_dialogue_source_audit.md`
 (Grade-A canon Jawaese + the §10 synthesis rule + the `Jawaese. (English gloss)` shape),
-`kolyska_ship_name.md` (Kolyska = "Cradle"), `jawa_crew_personas.md` (the five founders).
+`ship_distinctive_features.md` (Kolyska = "Cradle"; the standalone `kolyska_ship_name.md` this once named has never been written), `jawa_crew_personas.md` (the five founders).
 
 ---
 
@@ -146,7 +146,7 @@ instruction is directly supported.
 or ThingID, not by xenotype. Cleanest options at install, in order:
 1. **COLONISTS scope** — if the colony is all-Jawa at that moment (early game usually is), scope
    to COLONISTS. Non-Jawa slaves/guests would leak into Jawaese (same accepted leak as JawaVoice's
-   slave-leak, per `jawavoice_mod.md`).
+   slave-leak, per `src/Jawa/JawaVoice/README.md` §"Known, accepted leak").
 2. **Per-pawn ThingID** — assign the instruction only to the Jawa pawns for surgical control
    (more setup; use if mixed-species crew matters).
 3. Either way, **do not also run static JawaVoice** on the same pawns — pick one lane.
@@ -189,7 +189,7 @@ dynamic, context-aware evolution of what static JawaVoice does by hand.
 
 ### B.3 The A/B this sets up (the in-situ comparison)
 
-| | **Static JawaVoice** (BUILT, `jawavoice_mod.md`) | **RimDialogue dynamic** (this prompt) |
+| | **Static JawaVoice** (BUILT, `src/Jawa/JawaVoice/README.md`) | **RimDialogue dynamic** (this prompt) |
 |---|---|---|
 | Determinism | Fully deterministic (sha256-seeded synth) | Non-deterministic (LLM) |
 | Cost / deps | Free, offline, zero runtime deps | Needs .NET 9 Local Server + Ollama + Jaxe's Bubbles |

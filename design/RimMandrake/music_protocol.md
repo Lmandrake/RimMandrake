@@ -243,7 +243,8 @@ rotation — exactly what Odyssey does with four of its five relax tracks.
 
 ### 5.4 Shipping checklist
 
-Separate mod (`src/Jawa/JawaMusic/`, `packageId: mandrake.jawamusic`) — audio
+Separate mod, planned and not yet created (`src/Jawa/JawaMusic/`,
+`packageId: mandrake.jawamusic`) — audio
 is bulky and rarely changes; mixing it into `Jawa_Patches` makes every patch edit a
 huge diff. Declare `BiomesTeam.CoreFramework` in **both** `modDependencies` *and*
 `loadAfter` (they are independent). Then:

@@ -604,7 +604,7 @@ gone; this is what they were. Full history is archived at
 | `48632a3` | 2026-08-08 | RimMaster §4b: record About.xml 1.6 pins; RimLog 1.5-only, DD Continued fork, yc Faction Editor confirmed |
 | `0d015b7` | 2026-08-08 | RimMaster §4b: finalize verdicts after re-fetch — weapon=confirmed BUILD, Phase-D deletes source-confirmed |
 | `263936f` | 2026-08-08 | RimMaster §4b: correct mod verdicts after source deep-dive — adjuster vs defined-effect |
-| `aa636f4` | 2026-08-08 | runtime/RimMaster.md §4b: record off-the-shelf mod findings (Fetcher 2026-08-08) |
+| `aa636f4` | 2026-08-08 | RimMaster §4b: record off-the-shelf mod findings (Fetcher 2026-08-08) — the file it named, `runtime/RimMaster.md`, is now `infrastructure/disposing/RimMaster.md` and no longer carries a §4b |
 | `f06a19e` | 2026-08-08 | RimMaster §4b: agent possibilities catalogue (lifecycle-phased brainstorm) |
 | `f1eacb2` | 2026-08-08 | Add promo/ material to git: Kolyska pitch + 2 concept renders |
 | `8951ad9` | 2026-08-08 | Reorg: sort docs into worldbuilding/ mods/ runtime/ buckets (scoped, safe files only) |

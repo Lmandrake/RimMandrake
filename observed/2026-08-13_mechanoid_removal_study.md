@@ -385,7 +385,8 @@ mechs removes the cleaners by a second route, even if their defs survive.**
 | Mechanitor scenario | `Data/Biotech/Defs/Scenarios/Scenarios.xml:23` | `ScenPart_StartingMech` scalar `<mechKind>` — scenario cannot start |
 
 ⚠️ **`OpportunitySite_MechanoidPlatform` has a vanilla copy-paste bug.**
-`Data/Odyssey/Defs/QuestScriptDefs/Script_SpaceSites.xml:394` guards on
+`C:\Program Files (x86)\Steam\steamapps\common\RimWorld\Data\Odyssey\Defs\QuestScriptDefs\Script_SpaceSites.xml`
+line 394 (the game's own copy — not the same-named file under `vendor/mod_sources/`) guards on
 `QuestNode_FactionExists <faction>Insect</faction>` — **not Mechanoid.** It will keep
 firing while insects exist. Cherry Picker's neutering makes this harmless (the site still
 generates, just with zero-power pawns); XML deletion would make it throw.
@@ -409,7 +410,9 @@ Everything else assumes the faction exists.
 - `OrbitalTargeterMechCluster` has `<requiresFactionToAcquire>Mechanoid</requiresFactionToAcquire>`
   — never obtainable.
 - Bossgroup call gizmos on the comms console and the two Biotech callers go dead.
-- `GenStepDef AncientMechs` (`Data/Ideology/Defs/MapGeneration/CommonMapGenerator.xml:61`)
+- `GenStepDef AncientMechs`
+  (`C:\Program Files (x86)\Steam\steamapps\common\RimWorld\Data\Ideology\Defs\MapGeneration\CommonMapGenerator.xml`
+  line 61 — the game's copy, not the same-named `vendor/mod_sources/CaveBiome` patch)
   scatters dormant ancient mechs on map gen — Cherry Picker strips it from
   `MapGeneratorDef.genSteps` cleanly.
 

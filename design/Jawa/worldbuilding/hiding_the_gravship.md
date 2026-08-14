@@ -248,7 +248,9 @@ XML boolean on a biome.** The question I said would decide whether the deep is
 cheap or enormous is answered, and the answer is **cheap**. GravTide's entire
 existence is the proof: it borrows Odyssey's whole air model — `Room.Vacuum`,
 suit resistance, suffocation, alerts, save/load — by flipping that flag and
-re-skinning it as water. Its `Docs\borrowed-vacuum.md` audits all 32 places the
+re-skinning it as water. Its `Docs\borrowed-vacuum.md` — upstream, and absent from our
+vendored snapshot `vendor/mod_sources/gravship-water-systems-main/`, which carries only
+`1.6/`, `About/` and `todo/` — audits all 32 places the
 flag is read and marks each keep/patch/wrong. **That is a ready-made map for
 anyone who ever wants a vacuum-like medium on a non-space map.**
 

@@ -286,7 +286,7 @@ operation is wrapped in `PatchOperationFindMod` naming Core, Outer Rim ×2, KotO
 JDS StarWars Armory, Yautja and three turret mods — **VWE-Laser is not in any
 guard list, so not one op touches it.**
 
-🔴 **Band collision: severe, and live.** `Jawa_Armoury\README.md` says "built,
+🔴 **Band collision: severe, and live.** `src/Jawa/Jawa_Armoury/README.md` says "built,
 validated, **NOT YET ENABLED**" — but `mandrake.jawa.armoury` **is** in
 `<activeMods>` (line 571 of `ModsConfig.xml`). Its README is stale; the retune is
 in the stack. Post-retune bands versus the untouched lasers:

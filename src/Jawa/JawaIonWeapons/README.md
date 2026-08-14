@@ -2,7 +2,7 @@
 
 Industrial-tier Jawa ion armament for this run. All *behavior* is our own pure-XML defs (vanilla-EMP based, no C# assembly of our own). **Depends on Outer Rim - Core** (`Neronix17.OuterRim.Core`) for the fired bolt sprite (`BlasterBolt_Blue`) and blaster fire sound (`OuterRim_Shot_DLT19DBlasterBolt`) — Core is already in the local stack, and it transitively pulls Vanilla Expanded Framework + Tabula Rasa. The gun's own sprite is bundled here (ripped from the EOL Tatooine mod).
 
-Design locked 2026-08-08 (see `design/Jawa/mods/required_mods.md` §"JAWA ION WEAPONRY" and memory `jawa_ion_weapon.md`).
+Design locked 2026-08-08 (see `design/Jawa/mods/required_mods.md` §"JAWA ION WEAPONRY" — the Claude memory note `jawa_ion_weapon.md` it also cited has since been deleted).
 
 ## What it is
 

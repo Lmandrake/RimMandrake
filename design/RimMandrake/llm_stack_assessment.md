@@ -49,7 +49,7 @@ rewards, no quest generation, no defs. **Pillar-safe. Recommendation reversed: a
 talk on opening lootboxes, interacting with things, triggering traps; they **receive the content of CQF's
 native dialogue system**; on CQF maps they know the map's identity.
 
-This matters because the corpus's unreconciled contradiction (§CQF, `build_plan.md` §6.1) was "we said we
+This matters because the corpus's unreconciled contradiction (§CQF, `build_plan.md` §6 item 1) was "we said we
 didn't need heavy authored quests, then built the whole 3-act arc, the three win paths and LifeDawn's voice
 on CQF." This addon means **authored CQF content and the generative voice layer are already wired together**
 by the framework author. The arc can be authored deterministically *and* narrated dynamically. That is the

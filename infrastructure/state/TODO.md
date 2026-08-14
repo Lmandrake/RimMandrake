@@ -160,7 +160,7 @@ as the pending assemblies. Split across two trips they quietly cost an extra
 | Rebel Alliance: enable + **suppress the faction** (W6) | `[WORLD]` | §4.1. ⚠️ success is a NEGATIVE observation — *no* Rebel settlement on the world map, **and** `OuterRim_A280Blaster` resolvable. A clean log proves nothing here |
 | Re-cast rebel gear onto Junkers / Homestead (W7) | `[WORLD]` | §4.1. Without it the gear loads but nobody wears it |
 | LK Mineable Resources: confirm the four ores scatter, check durasteel at 0.5 | `[WORLD]` | `desert_world_design.md` §3B(6) |
-| Ion downs a droid — the capacity-based downing has **never been watched** | `[WORLD]` | §1 W8. Already queued by WORLD at `NEXT_RELOAD.md:784` ✅ |
+| Ion downs a droid — the capacity-based downing has **never been watched** | `[WORLD]` | §1 W8. Already queued by WORLD in `NEXT_RELOAD.md` §"🔴 #1 in full — the droid ruling's load-bearing family, never tested" ✅ |
 
 ### ⚠️ And the one nobody has filed at all
 
@@ -172,7 +172,9 @@ its worked example.
 ⚠️ **CORRECTION 2026-08-12, same day — my example was already stale when I wrote
 it.** I claimed the `set_terrain_batch` timing test was "built, deployed and
 inert until a restart". **It was run live this session and the result is in.**
-`AGENT_BRIDGE_state.md:77` §"✅ MEASURED LIVE": paint 421 cells / 124 rects went
+`AGENT_BRIDGE_state.md` §"✅ MEASURED LIVE" — that section is gone, BRIDGE rewrote its
+state file at the 2026-08-13 handoff, and the numbers now live in
+`skills/rimbridge/references/capability-matrix.md`: paint 421 cells / 124 rects went
 **1,611 ms → 14.0 ms, 115×**; capture went **6,086 ms → 17.5 ms, 348×**. Caught
 by BRIDGE. I was reading a stale copy of their state file — which is precisely
 the failure mode I spent the day correcting in other people's documents, so it
@@ -519,7 +521,8 @@ it needs `python.exe`."* The hazard was never that `python` was missing.
 **5 confirmed, all fixed by their owners 2026-08-12.** The lessons are in the
 traps logs, which is where they belong and where they are searchable:
 `skills/rimworld-modding/references/traps-tooling.md` (`f8eea20`, `cfaaf0d`) and
-`skills/rimbridge/references/traps.md:1132` (`2b266d3`).
+`skills/rimbridge/references/traps.md` §"A long call times out, succeeds anyway, and
+retrying does it TWICE" (`2b266d3`).
 
 **The generalisation, kept here because it is short and it is the point:**
 

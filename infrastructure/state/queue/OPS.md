@@ -305,11 +305,11 @@ it if so** rather than writing signatures for an event that has passed.
 
 ### O6. ✅ DONE 2026-08-13 — renamed `AGENT_WORLD_state.md` → `AGENT_OPS_state.md`
 
-_Done by OPS at close-out, with `agents_def.md` 605/615 and `NEXT_RELOAD.md` in the same commit. Three stale references remain and are NOT mine: `STRUCTURE.md:196`, `TODO_v2.md:730` (PROJECT's), and `AGENT_BRIDGE_state.md:858` (BRIDGE's own file). Filed to PROJECT rather than edited._
+_Done by OPS at close-out, with `agents_def.md` §"Queues, and one state file per seat" and `NEXT_RELOAD.md` in the same commit. Three stale references remained and were NOT mine: `STRUCTURE.md`, `TODO_v2.md` (PROJECT's), and `AGENT_BRIDGE_state.md` (BRIDGE's own file). Filed to PROJECT rather than edited. **Closed since:** only `TODO_v2.md` still names the old file, and it names it deliberately, as history. (Line numbers dropped 2026-08-13 — they were pre-restructure and all three files have since been rewritten.)_
 Left for you deliberately: **only the owning seat edits or deletes its state file**
 (rule 6b), and that rule does not stop applying because the seat was renamed.
-`agents_def.md:605` and `:615` still name the old file and are correct until you
-move it — do both in one commit so the reference never dangles.
+`agents_def.md` §"Queues, and one state file per seat" still named the old file and was
+correct until you moved it — do both in one commit so the reference never dangles.
 `git mv AGENT_WORLD_state.md AGENT_OPS_state.md`, then republish your address block.
 
 ---
