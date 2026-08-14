@@ -32,10 +32,18 @@ five `REVIEW_*.png` under `src/RimMandrake/KotORBandolierNorthFix/Source/`, and
 commits a pathspec near those paths adopts them silently — read
 `git status --porcelain <paths>` first.
 
-**v1 is 4/8 verified, 0 closable offline, 0 needing a load** — the three named
-next rows (faction exclusion, `The Claim` QuestScriptDef, three terrain
-overrides) are all marked offline-authorable and all at zero. 10 items blocked on
-a load; 9 docs over budget.
+**v1 is 4 of 8 closed (rows 1, 5, 6, 8) and BOTH open non-worldgen rows moved
+overnight 2026-08-14:**
+- **Row 4 → 2 of 3 seen.** Dune seas closed on a live `get_def` read needing no
+  map. **Scrapfields is a measured DEFECT, not a blank** — 11 chunks against a
+  75–125 prediction put on record before the look. OPS **O15**, `a82f50b`.
+  **Do not green row 4 until it resolves.**
+- **Row 3 UNBLOCKED.** It was filed as *"waits for the owner at the keyboard"*;
+  BRIDGE is building `jawa/fire_quest`, deploying with `jawa/get_defs`.
+
+🔴 **Rows 2 and 7 are the whole remaining bulk and they are ONE held event.** The
+hold is W1, the sea step — **VISION specs, and VISION is the seat that is down.**
+That is the top thing to tell the owner in the morning.
 
 ## ⛔ Read this before you try to message a peer by seat name
 
@@ -59,16 +67,29 @@ enforcement) · `src/RimMandrake/Utils/check_git_locks.py` · `src/RimMandrake/U
 §9 of the messaging skill) · `OWNER_DECISIONS.md` · `infrastructure/output/` and `infrastructure/disposing/`
 tiers.
 
-## 🔴 The queues are the doc problem now, and they are getting worse
+## ✅ The queue debt is LARGELY PAID — 2,843 → 1,061 overnight, 2026-08-14
 
-Measured 2026-08-13 after the deletion pass: **2,843 lines across the five
-`queue/<SEAT>.md` files against a 750-line combined budget.** `CREATE.md` alone is
-1,027 (+877). The stale-file audit measured 1,898 earlier the same day — so they
-grew ~50% in a day while the repo was being pruned.
+**The previous entry here said 2,843 lines against a 750 combined budget, with
+`CREATE.md` at 1,027. Both numbers are now dead** — kept only as the baseline.
 
-**This is not PROJECT's to edit.** Each seat compacts its own queue: closed items
-become ONE line in `CLOSED.md`, provenance goes in the commit. But it IS PROJECT's
-to report, and it is now the largest single documentation debt in the repo.
+| queue | was | now |
+|---|---|---|
+| `BRIDGE.md` | 690 | **148** ✅ (BRIDGE, `c4e8ced`) |
+| `PROJECT.md` | 200 | **145** ✅ (this seat) |
+| `CREATE.md` | 1,027 | **169** (+19) |
+| `VISION.md` | 465 | **465** — 🔴 the seat is DOWN and cannot compact it |
+| **total** | **2,843** | **1,061** |
+
+**Method that worked, in one line:** closed items become ONE line in `CLOSED.md`,
+live reference moves to the seat's `AGENT_<SEAT>_state.md`, provenance goes in the
+commit. It is not PROJECT's to edit another seat's queue — but asking, with the
+measured number and a named first cut, moved 542 lines in one exchange.
+
+⚠️ **`CLOSED.md` then hit its own 150 budget** — the two oldest days are split into
+`infrastructure/state/CLOSED_archive_2026-08-12_13.md` (68 rows). **Grep all of
+`infrastructure/state/`, not just `CLOSED.md`, before re-filing anything.** The
+archive is the designed answer (`doc_budget.py:79`); suppressing a closure to fit
+is never.
 
 ## What I owe
 
