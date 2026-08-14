@@ -75,6 +75,38 @@ Forsakens left it running.
 *our* insectoid faction, and "unbound" says exactly how the vanilla one differs —
 **a hive with no maker and no purpose.**
 
+### Leader titles and full styles — owner's canon, 2026-08-13
+
+**This is the string the game shows and the string the player says out loud.**
+
+| faction | title | full style | species |
+|---|---|---|---|
+| **Hutt Cartel** | **Lord** | **Lord Gorga the Immense** | Hutt |
+| **The Galactic Empire** | **Emperor** | **Emperor Palpatine** | — |
+| **Homestead Defense League** | **High Marshal** | **High Marshal Taren Voss** | Human |
+| **Deep Desert Tribes** | **War Chief** | **War Chief Torr'gan** | Tusken |
+| **Free Droid Enclaves** | **First Speaker** | **First Speaker R-41 Rell** | droid |
+| **Wildsteam Clan** | **Elder** | **Elder Rroowaak** | Wookiee |
+| **Deepwater Compact** | **High Warden** | **High Warden Neris Cal** | Mon Calamari |
+| **Geonosian Foundry Hive** | **Archduke** | **Archduke Korrik the Shaper** | Geonosian |
+| **Ascendant Helix** | **Director** | **Director Ko Saiyan** | Kaminoan |
+| **Blackstar Company** | **Captain** | **Captain Jaxen Marr** | Mandalorian |
+| **Jawa Trade Moot** | **First Bargainer** | **First Bargainer Kiknik the Wealthy** | Jawa |
+| **the Junkers** | **Scraplord** | **Scraplord Tarn Vox the Brutal** | — |
+| **the Forgotten Arsenal** | — | *none — it is not a polity* | — |
+| **the Unbound Hive** | — | *none* | — |
+
+⭐ **The titles do real work: each one tells you how its faction is organised
+before you meet anybody.** *War Chief* and *Scraplord* are taken by force.
+*High Marshal* and *Captain* are appointed. *First Speaker*, *First Bargainer*
+and *Elder* are chosen by their own people. *Lord*, *Emperor* and *Archduke* are
+inherited or absolute. **Three registers on one planet, readable from a single
+word in a faction list.**
+
+⚠️ **"Director" now belongs to the Ascendant Helix.** The Empire's retired
+"Sector Director" must not come back as a local Imperial office — it would read
+as the Helix. The Empire's word is **Emperor**, top to bottom.
+
 ### Names that changed, so nobody authors from the old ones
 
 | was | is now |

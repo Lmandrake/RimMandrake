@@ -446,7 +446,7 @@ Kintan's Nikto split into distinct subspecies after a nearby supernova. Use them
 - **Memes:** Raider, Supremacist, Collectivist, High life
 - **Styles:** Spikecore, Techist, Morbid
 - **Preferred xenotypes:** None
-- **Primary role:** Kajidic patriarch/matriarch
+- **Primary role:** Lord — **Lord Gorga the Immense**
 - **Specialists:** Shooting specialist, melee specialist
 
 | Issue | Setting |
@@ -578,7 +578,7 @@ Imperial settlements always generate a slave/prisoner population, drawn from **W
 - **Memes:** Supremacist, Collectivist, **Human primacy**, Proselytizer
 - **Styles:** Techist, Morbid
 - **Preferred xenotypes:** None at the precept level; uniformity comes from the 78% baseliner weight and apparel tags
-- **Primary role:** Sector Director _(canon, VISION 2026-08-13 — matches the
+- **Primary role:** Emperor — **Emperor Palpatine** _(canon, VISION 2026-08-13 — matches the
   deployed patch and echoes "Directorate"; "Sector governor" is retired)_
 - **Specialists:** Shooting specialist, production specialist
 
@@ -724,7 +724,7 @@ The Compact requires potable water but is excluded from natural sources — the 
 - **Memes:** Individualist, Guilty
 - **Styles:** Rustic, Totemic
 - **Preferred xenotypes:** None
-- **Primary role:** Elected well-keeper or village elder
+- **Primary role:** High Marshal — **High Marshal Taren Voss**
 - **Specialists:** None, or plants specialist if a compatible custom ideology is used
 
 | Issue | Setting |
@@ -851,7 +851,7 @@ Tuskens are near-monocultural; internal variety is expressed through two tiers r
 - **Memes:** Raider, Rancher, Pain is virtue, Collectivist
 - **Styles:** Totemic, Morbid, Rustic
 - **Preferred xenotypes:** Tusken, Desert alien
-- **Primary role:** Clan speaker
+- **Primary role:** War Chief — **War Chief Torr'gan**
 - **Specialists:** Animals specialist, melee or shooting specialist
 
 | Issue | Setting |
@@ -990,7 +990,7 @@ The Enclaves settle *on* water tiles deliberately and crack them for hydrogen fu
 - **Memes:** Transhumanist, Collectivist, Loyalist, Individualist
 - **Styles:** Techist, Spikecore
 - **Preferred xenotype:** Custom droid race only
-- **Primary role:** Coordinator
+- **Primary role:** First Speaker — **First Speaker R-41 Rell**
 - **Specialists:** Research specialist, production specialist
 
 | Issue | Setting |
@@ -1130,7 +1130,7 @@ A Wookiee rescued from captivity, healed from a downed state, or freed during a 
 - **Memes:** Nature primacy, Animal personhood, Tree connection, Loyalist
 - **Styles:** Animalist, Totemic, Rustic
 - **Preferred xenotypes:** None
-- **Primary role:** Elder of the freehold
+- **Primary role:** Elder — **Elder Rroowaak**
 - **Specialists:** Animals specialist, plants specialist
 
 | Issue | Setting |
@@ -1266,7 +1266,7 @@ Two species from one homeworld with genuine political friction. Encoded as tiers
 - **Memes:** Collectivist, Loyalist
 - **Styles:** Techist, Totemic
 - **Preferred xenotypes:** None
-- **Primary role:** First custodian
+- **Primary role:** High Warden — **High Warden Neris Cal**
 - **Specialists:** Production or plants specialist
 
 | Issue | Setting |
@@ -1412,7 +1412,7 @@ Geonosian drones fight with sonic blasters, which **cannot be deflected by light
 - **Memes:** Collectivist, Supremacist, Raider, Hive primacy (Human primacy reflavoured)
 - **Styles:** Techist, Spikecore, Morbid
 - **Preferred xenotypes:** Geonosian
-- **Primary role:** Arch-overseer (aristocrat)
+- **Primary role:** Archduke — **Archduke Korrik the Shaper**
 - **Specialists:** Production specialist, shooting specialist
 
 | Issue | Setting |
@@ -1561,7 +1561,7 @@ This makes the faction's Supremacist and preferred-xenotype precepts **internall
 - **Memes:** Transhumanist, Supremacist, Collectivist, Proselytizer
 - **Styles:** Techist
 - **Preferred xenotypes:** Arkanian, Kaminoan
-- **Primary role:** Chief curator
+- **Primary role:** Director — **Director Ko Saiyan**
 - **Specialists:** Research specialist, production specialist
 
 | Issue | Setting |
@@ -1743,7 +1743,7 @@ A Trandoshan who is captured and released, or who breaks off a hunt because of t
 - **Memes:** Individualist, Loyalist, Guilty
 - **Styles:** Spikecore, Techist
 - **Preferred xenotypes:** None
-- **Primary role:** Guild adjudicator
+- **Primary role:** Captain — **Captain Jaxen Marr**
 - **Specialists:** Shooting specialist, melee specialist
 
 | Issue | Setting |
