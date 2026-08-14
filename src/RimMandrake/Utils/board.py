@@ -286,19 +286,39 @@ def render():
                and held.get(seat, 0) >= DWELL_BEFORE_ALARM]
     owner_rows = [f for f in r.get("OWNER", []) if len(f) >= 3]
     LAST_STALLED = stalled
-    if stalled or owner_rows:
-        n = len(stalled) + len(owner_rows)
-        # Kanban's andon rule: a column over its limit is itself the signal.
-        # Past ~3 the bottleneck is the human, not the agents, and the correct
-        # response is to stop starting and start finishing.
-        L.append(bar("NEEDS YOU   %d%s" % (n, "   << YOU ARE THE BOTTLENECK" if n > 3 else "")))
-        for seat, stv, secs in stalled:
-            item = (st.get(seat, {}).get("item") or "").strip() or "(no line set)"
-            L.append(row(">> %-7s STOPPED %s - %s"
-                         % (seat, ago(int(time.time()) - secs).strip(), item[:38])))
+    # Two bands, not one — they have very different hit rates and mixing them
+    # destroys the good one.
+    #
+    # An owner decision is ALWAYS real: a human wrote it down because a human
+    # must answer it. Hit rate 1.0.
+    # A seat that looks stopped is a GUESS from a process state. Sometimes it
+    # is genuinely stuck; sometimes it is between tasks or on a prompt it is
+    # about to clear.
+    #
+    # The alarm literature is blunt about why this matters: people
+    # probability-match their response rate to an alarm's observed reliability,
+    # so a band that is right half the time gets obeyed about half the time —
+    # and it drags whatever is next to it down with it. Keeping the certain
+    # items in their own band, listed first, protects the one signal that is
+    # always worth acting on.
+    if owner_rows:
+        n = len(owner_rows)
+        L.append(bar("DECIDE   %d%s" % (
+            n, "   << YOU ARE THE BOTTLENECK" if n > 3 else "")))
         for f in owner_rows:
             tag = "" if f[0] == "--" else "#%s " % f[0]
             L.append(row(">> %s%s" % (tag, f[1][:66])))
+    if stalled:
+        # Graded, not binary. A row carries WHY it is flagged, because showing
+        # the agent's reasoning is measured to raise both performance and trust
+        # at no cost in workload or response time — transparency is free here,
+        # and a bare flag is the thing that gets ignored.
+        L.append(bar("MAYBE STUCK   %d   (a guess — check the tab)" % len(stalled)))
+        for seat, stv, secs in stalled:
+            item = (st.get(seat, {}).get("item") or "").strip()
+            why = item if item else "no status line set — may never have started"
+            L.append(row(">> %-7s %-8s %s - %s"
+                         % (seat, stv, ago(int(time.time()) - secs).strip(), why[:34])))
 
     # --- seats: the only measured band --------------------------------------
     L.append(bar("SEATS"))
