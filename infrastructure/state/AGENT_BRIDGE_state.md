@@ -68,3 +68,44 @@ while RimWorld holds it.
 3. **I diagnosed a zoom artifact as texture corruption** and told the owner to
    restart, wrongly implicating a peer's file prune. The discriminator was free:
    the red frame was 0.49 MB against 2.4–3.7 MB, and it healed on a legal zoom.
+
+---
+
+## Pre-flight corrections for `CREATE_TEST_PLAN.md` — verified offline, do not re-derive
+
+Moved out of my queue 2026-08-14 during its 690→150 compaction. These change what
+you TYPE at a live console; the plan itself is still the script.
+
+- 🔴 **Part 3b's diagnostic string has NO BASIS.** `ShipChunk_Mech` needs **`Light`**
+  (inherited from `BuildingBase`), not `Heavy`; and `BrokenSubstructure` supplies
+  Light/Medium/Heavy/Walkable/Substructure — its `<affordances>` has no
+  `Inherit="False"`, so it MERGES with `FloorBase`'s. Requirement and supply are met
+  on either layer ⇒ if props are missing, look at prefab placement, blocked cells or
+  `spotMustBeStandable` — **not** the affordance.
+- ⚠️ **Scrapfields is NOT biome-gated.** `Patches\JawaResource_Scrapfields.xml:56-59`
+  adds the GenStep to `MapGeneratorDef[Base_Player]` with no biome filter, contrary
+  to the plan. A scrapfield on a non-desert quicktest is not a bug.
+- 🔴 **`jawa/set_terrain` takes `terrainDef`, not `def`.** The plan's line 118 is
+  wrong and the bridge drops unknown params silently — as written it costs live
+  minutes for nothing.
+- 🔴 **`ToolBelt` does not exist** (zero hits on disk). It is **`VAEA_Apparel_ToolBelt`**,
+  `...\294100\2521176396\1.6\Defs\ThingDefs_Misc\Apparel_Utility.xml:531`. It and
+  Survival Tools' rival are both labelled *"tool belt"* ⇒ **spawn by defName.**
+- 🔴 **The four RR research kits are APPAREL.** The fix replaces `wornGraphicPath`
+  (`Apparel_FieldKits.xml:62`); the ground `texPath` (`:51`) is one directionless
+  PNG, so a kit on the ground exercises **none** of the fixed art — it must be
+  **WORN by a pawn facing east**. There is no apparel tool on the bridge: the only
+  route is `rimworld/select_pawn` then `Actions\Wear apparel (selected)…`, which
+  works on **player colonists only** ⇒ spawn the wearer with `faction=player`.
+- `AV_DogSled` is a `Vehicles.VehicleDef`, not a ThingDef, so `spawn_thing` may not
+  construct it; its brown is a def patch (`DogSledTint_Brown.xml`, `graphicData/color`
+  → `(99,65,24)`) ⇒ a grey sled means the patch, not the art.
+- `VGE_Astronaut` has two lifeStages sharing one maskPath and only the double-r
+  `Astrronaut` files were typo'd ⇒ **shoot an adult**, or you pass on art that was
+  never broken.
+- The plan's C12 double-ship warning is **stale and names the wrong mod** — the real
+  overlap was `MissingArtFixes`, all seven pairs md5-identical, now inactive. **Load
+  order is not the suspect if rows 4 or 7 look wrong.**
+- **581 mods active as of 2026-08-13 23:18, ten art-fix mods live**; the plan's table
+  covers eight. `phytokinbarkheadfix` and `kotorbandoliernorthfix` are active and
+  deployed but untabled.

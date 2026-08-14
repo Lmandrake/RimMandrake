@@ -9,6 +9,11 @@ file. One line, with the hash — `git show <hash>` has the full story._
 | date | item | outcome | hash |
 |---|---|---|---|
 | 2026-08-13 | TODO §14 `jawa/list_factions` | built + run live, 34 factions; unblocked v1 row 1 | `7bd8b60` |
+| 2026-08-14 | BRIDGE B0 — companion deploy | DEPLOYED + byte-verified in the game copy, 17 tools, stamp `e2a2048f1434`; superseded by the 22-tool build | `e15c081` |
+| 2026-08-14 | BRIDGE B-t1 — `ilscan.py` compiled defaults | DONE: decoder widened to `stfld` (0x7D); re-verified 2026-08-14, the vanilla-mirror block reproduces `Buildings_Gravship.xml` (16.9/18.9/250/750/24.9) | `027572c` |
+| 2026-08-14 | OPS filing — `prove_new_tools.py` FAILs a healthy deploy | FIXED: `ALL_TOOLS` was 16 against a 17-tool deploy; now the full set, gate reads 20 (18 non-GM) | `68a0a30` |
+| 2026-08-14 | BRIDGE B-v3 — bridge cannot order a pawn to walk | BUILT AND DEPLOYED as `jawa/order_pawn` (+`targetId`/`pathEndMode`). Live run still owed — carried in the queue, not closed as verified | `bee5da9` |
+| 2026-08-14 | `jawa/damage` refusal fix — 'built, not deployed' | WRONG, it WAS deployed: `strings -a` misses UTF-16LE method-body literals; `strings -a -el` finds the marker in the game copy | `15bbf4a` |
 | 2026-08-13 | v1 row 1 — Empire reskin | SEEN LIVE; label renders. Antagonist gap filed as VISION V7 | `fad8bab` |
 | 2026-08-13 | TODO §7 load concentration | moot — mod-list changes must ride one restart | `8a6659e` |
 | 2026-08-13 | `runtime/` ownership | ratified as `agents_def.md` rule 9 (2026-08-12) | — |
