@@ -159,7 +159,20 @@ def playable(s):
     which point every companion tool fails with "No current map" and reads like
     a broken tool.
     """
-    st = (s.call("rimbridge/get_bridge_status") or {}).get("state") or {}
+    r = s.call("rimbridge/get_bridge_status") or {}
+    # 🔴 CHECK `success` BEFORE READING ANY FLAG. Measured live 2026-08-14: while
+    # the game is still coming up this call returns
+    #   success: false, "Timed out waiting for main-thread work after 5000ms"
+    # with NO `state` object at all. Reading straight through gives
+    # currentMapReady=None, mapCount=None, paused=None -- which is
+    # indistinguishable from "a map has not loaded yet" and is actually "the
+    # question was never asked". Two states, one face. The tool metadata answers
+    # throughout, because listing tools never touches the main thread, so the
+    # bridge looks entirely healthy while nothing simulation-side can run.
+    if r.get("success") is False:
+        return False, {"_callFailed": True,
+                       "_message": str(r.get("message"))[:160]}
+    st = r.get("state") or {}
     ready = st.get("currentMapReady") and not st.get("longEventPending")
     return ready, st
 
@@ -739,6 +752,13 @@ def run(s, cfg):
     if not have:
         return
     ready, st = playable(s)
+    if not ready and st.get("_callFailed"):
+        print("\n*** THE STATUS CALL ITSELF FAILED — this is NOT a verdict on the map ***")
+        print("     %s" % st.get("_message"))
+        print("     The main thread is busy: the game is still coming up, or a")
+        print("     long event is running. Tool metadata answers throughout, so")
+        print("     a healthy-looking bridge proves nothing here. Wait and re-run.")
+        return
     if not ready:
         print("\n*** MAP IS NOT CURRENT YET ***")
         print("     mapCount=%s currentMapReady=%s longEventPending=%s"
