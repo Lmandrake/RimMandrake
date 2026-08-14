@@ -5135,6 +5135,165 @@ namespace JawaBench.BridgeTools
         }
 
         // ---------------------------------------------------------------------
+        // jawa/inspect_string — read what the game itself says about a thing.
+        //
+        // WHY, and it is the widest gap left on this bridge. Every question of
+        // the form "is this thing actually WORKING?" is answered in game by the
+        // inspect pane, and nothing here could read it. Measured examples from
+        // one evening:
+        //   · a SmallThruster reports WarningThrusterInside / ThrusterBlockedBy
+        //     / ThrusterNotConnected — CREATE's whole L1 gate — and
+        //     get_cell_info returns only `className: Verse.Building`.
+        //   · CompGravshipThruster::get_CanBeActive folds FOUR conditions
+        //     (base, Blocked, BrokenDown, outdoors) into one bool that no tool
+        //     could see; the comp's own CompInspectStringExtra spells out which.
+        //   · a breakdown, a lack of power, a missing connection, a full
+        //     container — all of them already write a sentence nobody could read.
+        //
+        // ⇒ this is not one gate's tool. It turns "spawn it and hope" into
+        // "spawn it and read what the game concluded", for every comp that
+        // ships an inspect string — which is nearly all of them.
+        //
+        // Signatures read with ilprobe, not recalled:
+        //   Verse.Thing::GetInspectString()            public string
+        //   Verse.Thing::GetInspectStringLowPriority() public string
+        //   ThingWithComps::GetInspectString() overrides and folds in
+        //     InspectStringPartsFromComps()
+        //
+        // 🔴 GetInspectString can THROW for a comp in a bad state, and a throw
+        // here would take out a whole batch. Each thing is wrapped
+        // individually, and a thrower reports its exception in its own row
+        // rather than aborting the others — an unreadable thing must not look
+        // like an absent one.
+        // ---------------------------------------------------------------------
+        [Tool(
+            "jawa/inspect_string",
+            Description =
+                "Read the inspect-pane text the game writes for a thing — the same sentences a " +
+                "player sees when they click it. This is how you find out whether something is " +
+                "WORKING as opposed to merely present: 'Blocked by', 'Needs power', 'Broken " +
+                "down', 'will be blocked due to being indoors'. Nothing else on this bridge " +
+                "exposes comp state at all — get_cell_info reports a className and stops. Takes " +
+                "thingIds, or a defName, or a rect. Read-only.",
+            ResultDescription =
+                "Per thing: id, defName, label, position, and `inspect` — the full inspect " +
+                "string with newlines preserved as a list of lines, because the interesting " +
+                "part is usually one line among several. `lowPriority` carries the secondary " +
+                "text. ⚠️ A thing whose comps THROW while building the string is reported with " +
+                "its `error`, never dropped — an unreadable thing must not be mistaken for an " +
+                "absent one.")]
+        public static async Task<object> InspectString(
+            IRimBridgeContext ctx,
+            CancellationToken cancellationToken,
+            [ToolParameter(Description =
+                "Comma-separated ThingIDs, as returned by jawa/list_things or jawa/spawn_batch. " +
+                "Omit to select by defName and/or rect instead.", DefaultValue = null)]
+            string thingIds = null,
+            [ToolParameter(Description =
+                "Exact defName, or a comma-separated list. Combines with `rect`.",
+                DefaultValue = null)]
+            string defName = null,
+            [ToolParameter(Description =
+                "Rect filter 'x,z,w,h'. Combines with `defName`.", DefaultValue = null)]
+            string rect = null,
+            [ToolParameter(Description = "Cap on things returned.", DefaultValue = 25)]
+            int limit = 25)
+        {
+            var wantIds = new HashSet<string>((thingIds ?? "")
+                .Split(',').Select(q => q.Trim()).Where(q => q.Length > 0),
+                StringComparer.OrdinalIgnoreCase);
+            var wantDefs = new HashSet<string>((defName ?? "")
+                .Split(',').Select(q => q.Trim()).Where(q => q.Length > 0),
+                StringComparer.OrdinalIgnoreCase);
+
+            if (wantIds.Count == 0 && wantDefs.Count == 0 && string.IsNullOrWhiteSpace(rect))
+                return Fail("Give thingIds, defName, or rect — otherwise this would read the " +
+                            "whole map, which is how the bridge livelocks the game.");
+
+            CellRect? box = null;
+            if (!string.IsNullOrWhiteSpace(rect))
+            {
+                var p = rect.Split(',');
+                if (p.Length != 4
+                    || !int.TryParse(p[0].Trim(), out var rx)
+                    || !int.TryParse(p[1].Trim(), out var rz)
+                    || !int.TryParse(p[2].Trim(), out var rw)
+                    || !int.TryParse(p[3].Trim(), out var rh))
+                    return Fail($"rect must be 'x,z,w,h', got '{rect}'.");
+                box = new CellRect(rx, rz, rw, rh);
+            }
+
+            return await ctx.MainThread.InvokeAsync<object>(() =>
+            {
+                var map = Find.CurrentMap;
+                if (map == null) return Fail("No current map.");
+
+                var rows = new List<object>();
+                var examined = 0;
+                var threw = 0;
+
+                foreach (var t in map.listerThings.AllThings)
+                {
+                    if (rows.Count >= limit) break;
+                    cancellationToken.ThrowIfCancellationRequested();
+                    if (t == null) continue;
+                    examined++;
+
+                    if (wantIds.Count > 0 && !wantIds.Contains(t.ThingID)) continue;
+                    if (wantDefs.Count > 0 && !wantDefs.Contains(t.def?.defName ?? "")) continue;
+                    if (box.HasValue && !box.Value.Contains(t.Position)) continue;
+
+                    string main = null, low = null, err = null;
+                    // Wrapped per-thing on purpose. One comp in a bad state
+                    // must cost its own row, not the batch.
+                    try { main = t.GetInspectString(); }
+                    catch (Exception e) { err = e.GetType().Name + ": " + e.Message; threw++; }
+                    try { low = t.GetInspectStringLowPriority(); }
+                    catch { /* secondary text; its absence is not a finding */ }
+
+                    rows.Add(new
+                    {
+                        id = t.ThingID,
+                        defName = t.def?.defName,
+                        label = t.Label,
+                        x = t.Position.x,
+                        z = t.Position.z,
+                        className = t.GetType().FullName,
+                        // Split because the load-bearing sentence is normally
+                        // one line among several, and a caller grepping a blob
+                        // for a substring will match across a line break.
+                        inspect = string.IsNullOrEmpty(main)
+                            ? new List<string>()
+                            : main.Split('\n').Select(q => q.TrimEnd('\r')).ToList(),
+                        lowPriority = low,
+                        error = err
+                    });
+                }
+
+                return new
+                {
+                    // A filter that matched nothing is an ANSWER. It is said
+                    // out loud so it cannot be read as an empty map.
+                    success = true,
+                    message = rows.Count == 0
+                        ? $"NOTHING MATCHED. {examined} thing(s) were examined, so this is a " +
+                          "filter result, not an empty map — check the ids, the defName and " +
+                          "the rect before concluding the thing is absent."
+                        : $"{rows.Count} thing(s) inspected, {examined} examined." +
+                          (threw > 0
+                              ? $" ⚠️ {threw} threw while building their inspect string and " +
+                                "carry an `error` — they were NOT dropped."
+                              : ""),
+                    matched = rows.Count,
+                    examined,
+                    threw,
+                    things = rows,
+                    ticksGame = TicksGameSafe()
+                };
+            }, cancellationToken).ConfigureAwait(false);
+        }
+
+        // ---------------------------------------------------------------------
         // jawa/set_faction_relation — make a faction hostile so a raid can be
         // aimed at it.
         //
