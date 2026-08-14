@@ -58,6 +58,10 @@ W1 | Sea baseline read on a disposable world — 25.0% water, 2 bodies | VISION 
 E1 | Xenotype picker — 2 icons, pink square is the defect | owner | open
 O18 | Scoped patch sweep — 585/585, 0 errors (cbe6f1c) | OPS | done
 
+## CARRY
+X1 | gravship_flight_invariants.md §11 WRONG on both branches, drives planning | VISION | open | from=L1
+X2 | E1 xenotype-picker icons — owner-look, no bridge call can settle it | owner | open
+
 ## SHUTDOWN
 S1 | JawaSeaShaper.dll — SOLO, not live, gates any worldgen | OPS | open
 S2 | jawa/ideo_of — BUILT, undeployed | BRIDGE | built
