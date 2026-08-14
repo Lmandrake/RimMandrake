@@ -1,5 +1,84 @@
 # WORLDGEN_FACTION_CHECKLIST.md — the Configure Factions page, box by box
 
+> # ✅ RATIFIED — VISION, 2026-08-13. EXECUTE THE LIST.
+>
+> **21 untick / 6 keep is RATIFIED as written.** Nothing in the tick-list changes.
+> Four rulings ride with it; read them, they take ten seconds each.
+>
+> ## R1. Dangling references: OPS is RIGHT, and blanket "accepted cost" is REFUSED
+>
+> **The line is not "faction gone = cost accepted". The line is what the player is
+> asked to DO about it:**
+>
+> - **Scenery orphans are ACCEPTED.** Troll burrows, hornet hives, insect content,
+>   an achievement naming a dead hive. The player meets hostiles with no parent
+>   faction and never notices. Record them; do not chase them.
+> - **A quest or incident the player can ACCEPT and cannot FINISH is REFUSED.**
+>   That is a broken promise, it gets remembered, and it gets blamed on us. An
+>   absent faction is never missed; a dead-end quest always is.
+>
+> ⭐ **Applied to THIS list, that changes nothing** — the one quest-critical
+> faction, `guy762_KotORFaction_RogueDroids` (antagonist of the KotOR droid
+> distress call), is **already on the KEEP list**. Yautja and Caravan Adventures
+> are *scenario* references that only bite if you pick that scenario, plus
+> incident thinning — not dead-end quests. **OPS: the objection was right, it is
+> now doctrine, and it does not block this run. Stop raising it.**
+>
+> ## R2. `OuterRim_RebelAlliance` — STAYS SUPPRESSED
+>
+> **The Rebellion is not this campaign.** Jawa scavengers, an Empire that hunts
+> them, and Hutts who sell them out. A Rebel Alliance on the map steals the
+> antagonist's oxygen and offers the player a side in a war this story is not
+> about. **ABSENT from the page is the desired outcome.** Do not revert the patch
+> at the screen. Retire it from the KEEP list.
+>
+> ⚠️ It is a `permanentEnemyFactions` entry for `Force_Sith_Order` in *The Force
+> Factions* — downloaded, not active, inert today. **It stops being inert the day
+> we enable that mod for the Jedi/Sith build.** Mine to handle then, not now.
+>
+> ## R3. ⭐ ADD TO KEEP: vanilla `Empire` — it is now the FALLEN DOMINION
+>
+> **Owner's ruling, minutes ago, and it changes the antagonist design:**
+>
+> > *"The Fallen Dominion should be a local aristocracy force-welded into the
+> > Empire, fallen into disgrace with the state of the planet's rebelliousness
+> > (even though they did win the local war), so they are very eager to please and
+> > help track down 'yet more chaotic nonsense' — such as Jawa flying around in an
+> > ancient hulk enabled by imprinting their minds into a persona core.
+> > Disgraceful!"*
+>
+> **So the two-empire split is not a defect. It is the design.** The Directorate
+> is the Galactic arm; the Dominion is the disgraced local aristocracy trying to
+> earn its way back by hunting us. **Confirm vanilla `Empire` is present and its
+> count is ≥ 1.** It is not on the untick list, so it survives by default —
+> confirm it anyway.
+>
+> ⚠️ **Its name is GENERATED, so the new world will probably NOT say "Fallen
+> Dominion".** That is expected, not a failure. Whatever it generates is the
+> working name until we patch `fixedName` with the game down. **Screenshot the
+> name.**
+>
+> ## R4. Do not ship a world with no rough outlanders
+>
+> `BS_LittlePeople` declares `replacesFaction OutlanderRough`. **After unticking
+> it, confirm a rough-outlander row exists at ≥ 1.** If none appears, **leave
+> `BS_LittlePeople` at 1** rather than generate a world missing that slot — a
+> smallfolk union is a smaller fiction hole than an empty outlander tier.
+>
+> ## What REMAINS STANDING after the cut — the world is populated
+>
+> **6 keeps:** binary star raiders · Confederacy of Independent Systems ·
+> **Imperial Desert Directorate** · moisture farmers · rogue droid collective ·
+> *(Rebel Alliance retired per R2)*.
+> **Plus, untouched by this list:** vanilla **`Empire` = the Fallen Dominion**,
+> outlander unions, rough outlanders, tribes and pirates. **Nobody is unticking
+> vanilla's spine.** The world has a Galactic arm, a disgraced local aristocracy,
+> farmers to trade with, droids and separatists to fight, raiders, and the
+> ordinary outlander/tribal economy underneath. **That is a world with people in
+> it.**
+>
+> 🔴 **Screenshot the page before leaving it.** It is the only record.
+
 > 🔴 **OPS banner, 2026-08-13. Read before executing.**
 >
 > **The tick-list itself is measured and safe to run**: 21 untick / 6 keep / 0 not
