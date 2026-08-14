@@ -45,6 +45,7 @@ Skim this, open what matches your task — do not read them all.
 - [You cannot photograph a stale mesh — moving the camera repaints it](#you-cannot-photograph-a-stale-mesh--moving-the-camera-repaints-it)
 - [`amount` is a request; RimWorld decides what lands](#amount-is-a-request-rimworld-decides-what-lands)
 - [Every tool is named `rimworld/…`, so a topic grep matches all 139](#every-tool-is-named-rimworld-so-a-topic-grep-matches-all-139)
+- [The `jawa/` prefix says WHO SUPPLIES the tool, not what it does — it cannot be inferred](#the-jawa-prefix-says-who-supplies-the-tool-not-what-it-does--it-cannot-be-inferred)
 - [`jawa/list_pawns` returns `kind`, not `kindDef`](#jawalist_pawns-returns-kind-not-kinddef)
 - [A long call times out, succeeds anyway, and retrying does it TWICE](#a-long-call-times-out-succeeds-anyway-and-retrying-does-it-twice)
 - [Foundation can only be laid on BARE ground — a floor blocks it permanently](#foundation-can-only-be-laid-on-bare-ground--a-floor-blocks-it-permanently) 🔴
@@ -229,6 +230,12 @@ Skim this, open what matches your task — do not read them all.
 **Cause:** a namespace prefix is not searchable content.
 **Fix:** match the leaf — `[n for n in names if "faction" in n.split("/", 1)[-1]]`. Done correctly it shows there is **no faction, world or settlement tool** among the 139; world state comes from `save_game` plus a grep of the `.rws`.
 **Recurs when:** grepping a `.rws` for a defName — count `<def>NAME</def>`, never the bare name. Bare `grep -c OuterRim_RebelAlliance` returns **1 on a world that does not contain the faction**, because the hit is the def-name registry entry beside `OuterRim_RebelPlayerFaction`. W6 closed as 0 instantiated against 3 controls at 1 each, out of 55 factions.
+
+## The `jawa/` prefix says WHO SUPPLIES the tool, not what it does — it cannot be inferred
+**Symptom:** a run-sheet line written for a live window called `jawa/spawn_thing`. There is no such tool. The call is `rimworld/spawn_thing`; `jawa/` carries `spawn_batch`, `spawn_pawn`, `order_pawn`, `set_terrain_batch` and 22 others. Caught offline by a peer against the 26 deployed names — had it shipped, the cost was a dead call inside a ~23–30 min load window.
+**Cause:** the prefix was inferred from the *neighbourhood* of the work — the surrounding lines were companion calls, and the batch form really is `jawa/spawn_batch`, so the singular "obviously" matched it. But the namespace records **which assembly registered the tool**, and nothing about the verb. `spawn_batch` is `jawa/` and `spawn_thing` is `rimworld/` for the same reason: one was added, one was already there.
+**Fix:** read the leaf out of `skills/rimbridge/references/capability-matrix.md` — it prints every call fully qualified — or list the deployed names off the DLL. **Never type a prefix you did not just read.** ⚠️ A sibling call in the same family is not evidence: `jawa/spawn_batch` existing is exactly what made the wrong prefix feel checked.
+**Recurs when:** any two-namespace surface — and this one has 139 `rimworld/` names against 26 `jawa/`, so guessing `jawa/` is wrong ~84% of the time by count. Generalises past the bridge: this is `CLAUDE.md`'s *never guess a defName, field, or namespace*, and the namespace clause is the one that gets skipped because a prefix looks like syntax rather than content.
 
 ## `jawa/list_pawns` returns `kind`, not `kindDef`
 **Symptom:** 8 pawns spawned, `jawa/spawn_pawn` returning `success: true` with real ids, names and coordinates; the next `jawa/list_pawns` filtered on `p["kindDef"] == "Jawa_Spawn_Hutt"` returned **0**, and "neutral pawns despawn instantly" was stated out loud. Re-run against `kind`: **7 alive**, exactly where spawned.
