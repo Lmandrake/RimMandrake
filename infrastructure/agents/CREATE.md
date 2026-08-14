@@ -82,6 +82,12 @@ should be making deliberately.
 2. `skills/rimworld-modding/references/traps.md` index, or `skills/generating-rimworld-sprites` if the task is art
 3. `git status` before touching any shared file
 
+🔴 **PROJECT declares game state and who holds the bridge — `agents_def.md` rule
+1a.** `down`/`loading`/`live`/`going down`, and "<SEAT> has the bridge", are
+**authoritative when PROJECT says them**. Act on them; do not re-ask the owner for
+a countersignature. **Permission to connect is still the owner's** — PROJECT
+announces, the owner permits.
+
 ## Communication
 
 **Report in the glyph block — `skills/agent-reporting/SKILL.md`.** Single-spaced,

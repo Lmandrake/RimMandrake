@@ -100,6 +100,12 @@ You are the requested reviewer for durability, scope, project impact, schedule i
 3. `V1_SCOPE.md` if anything is being queued
 4. Read the game state (down, loading, live)
 
+🔴 **PROJECT declares game state and who holds the bridge — `agents_def.md` rule
+1a.** `down`/`loading`/`live`/`going down`, and "<SEAT> has the bridge", are
+**authoritative when PROJECT says them**. Act on them; do not re-ask the owner for
+a countersignature. **Permission to connect is still the owner's** — PROJECT
+announces, the owner permits.
+
 ## Communication
 
 **Report in the glyph block — `skills/agent-reporting/SKILL.md`.** Single-spaced,

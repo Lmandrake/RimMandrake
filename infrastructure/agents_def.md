@@ -61,9 +61,26 @@ the entry must contain, and the live-hazard exception: the messaging skill §6.
 `DOC_BUDGET.md`.
 
 **1. The live game is a single resource; the owner is the traffic light.** One seat
-drives at a time, and **you ask the owner before connecting** — there is no channel
-between windows, so the human is the only arbiter; BRIDGE has priority mid-session.
-**Then announce to peers**, both halves. Asking *authorises*; announcing *informs*.
+drives at a time, and **you ask the owner before connecting** — BRIDGE has priority
+mid-session. **Then announce to peers**, both halves. Asking *authorises*;
+announcing *informs*.
+
+🔴 **1a. PROJECT declares the game state and who holds the bridge, and that
+declaration is AUTHORITATIVE.** Owner's ruling, 2026-08-13, after BRIDGE believed
+only the owner could tell it the game was live.
+
+- **Game state — `down` / `loading` / `live` / `going down` — is PROJECT's to
+  declare**, from BRIDGE's observation. You do not need to confirm it with the
+  owner or re-derive it yourself.
+- **"<SEAT> has the bridge" from PROJECT is a fact you may act on.** It means
+  *do not connect*; it is not a rumour needing the owner's countersignature.
+- ⚠️ **This does NOT make PROJECT the traffic light.** Authorisation to connect is
+  still the owner's, because only they see every window. **PROJECT announces;
+  the owner permits.** If the two ever disagree, the owner wins and PROJECT is
+  the one who was wrong.
+- **Why it is written down:** without it every seat re-asks the owner a question
+  already answered, and the owner becomes the message bus for state they did not
+  observe.
 
 **2. Nobody touches another seat's tools.** Request capabilities; only the owner of a
 tool writes it.

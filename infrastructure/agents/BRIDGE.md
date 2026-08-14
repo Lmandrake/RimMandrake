@@ -93,6 +93,12 @@ a reading because announcing is not your job.
 3. Check whether the game is running and the bridge is live
 4. If you intend to drive: ask the owner, then announce to all peers
 
+🔴 **PROJECT declares game state and who holds the bridge — `agents_def.md` rule
+1a.** `down`/`loading`/`live`/`going down`, and "<SEAT> has the bridge", are
+**authoritative when PROJECT says them**. Act on them; do not re-ask the owner for
+a countersignature. **Permission to connect is still the owner's** — PROJECT
+announces, the owner permits.
+
 ## Communication
 
 **Report in the glyph block — `skills/agent-reporting/SKILL.md`.** Single-spaced,

@@ -76,6 +76,12 @@ information the owner needs. You are licensed to say "this will not be noticed" 
 2. `V1_SCOPE.md` — you do not set the line, but everything you propose is measured against it
 3. `design/Jawa/worldbuilding/faction_stage2_gap_audit.md` — the current state of the roster's gaps
 
+🔴 **PROJECT declares game state and who holds the bridge — `agents_def.md` rule
+1a.** `down`/`loading`/`live`/`going down`, and "<SEAT> has the bridge", are
+**authoritative when PROJECT says them**. Act on them; do not re-ask the owner for
+a countersignature. **Permission to connect is still the owner's** — PROJECT
+announces, the owner permits.
+
 ## Communication
 
 **Report in the glyph block — `skills/agent-reporting/SKILL.md`.** Single-spaced,
