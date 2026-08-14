@@ -234,6 +234,40 @@ export re-imports with its floors** before calling the row done.
 authorship, BRIDGE owns proving. A disagreement between plan and game pulls
 CREATE in rather than being resolved unilaterally.
 
+### ➕ ADDED TO v1 BY THE OWNER, 2026-08-13 — the deconstructible-only filter
+
+> *"I would like to build a first version of the deconstructible-only filter for
+> v1."* — the owner, relayed by VISION. **Recorded, not argued.**
+
+**What it is:** a filtered palette of wreck/ruin props that are actually
+**deconstructible**, excluding everything descending from
+`NonDeconstructibleAncientBuildingBase` — which the player can only remove with
+explosives. RimWorld ships ~170 pre-rusted wreck props and an unknown share are
+in that family.
+
+**Why it belongs in v1 on its merits, not just by ruling:** it is an
+**ingredient, not a feature**. Any wreck, ruin or salvage field we ever place is
+**unstrippable garbage to the player** unless the palette is filtered first. It
+is cheap, offline, needs no game, and it prevents a whole class of player-facing
+defect rather than adding a surface. **A rider inside row 4, like the hulk image
+— not a new row.** CREATE is already producing it.
+
+### 📈 SCOPE MOVED TWICE IN TEN MINUTES — saying so is this seat's whole job
+
+v1 gained the **hulk image** (conditional) and the **deconstructible filter** in
+the same ten minutes. **Both are cheap, both are riders rather than rows, and one
+is owner-ruled outright — so neither is a mistake.** But:
+
+- **v1 is 2 of 8 closed.** Growth while two-thirds is unfinished is the shape
+  that turns a thin scope thick, and it never announces itself.
+- The rule this file opens with is *"in-flight detail work must not add to v1."*
+  **The owner may override it and did; a peer may not.** That asymmetry is the
+  whole point of writing it down.
+- ⚙️ **The honest accounting: v1 is no longer 8 items.** It is 8 rows plus 2
+  riders, and the riders are real work regardless of where they are filed.
+
+**Nothing here blocks. This is the burn-down refusing to be flattering.**
+
 ### ⚖️ THE REST OF THE HULK — ruled 2026-08-13. **Conditional v1, as a RIDER on row 4.**
 
 VISION declined to set this and routed it here; CREATE priced it and asked me not
