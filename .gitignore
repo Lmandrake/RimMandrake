@@ -147,3 +147,8 @@ observed/2026-08-13_load_1730_triage.txt
 # Skill archives are rebuilt from skills/<name>/ by package_skill.py --all.
 # A zip of a tracked folder is a cache; git keeps every version of a binary forever.
 skills/*.skill
+
+# Harvested Player.log copies: unreproducible, but their value expires once the
+# findings are extracted — CLAUDE.md bottom-left quadrant. Keep on disk, never
+# in git; a 535 KB log per load is bulk git keeps forever.
+observed/**/Player.log*
