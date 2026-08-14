@@ -79,6 +79,18 @@ two now, or the Junkers become negotiable.
 ## Open — from the live game
 
 ### V7. The Galactic Empire is not the enemy the design says it is `[v1-adjacent]`
+
+🔴 **UPGRADED FROM "wrong flags" TO "CANNOT ATTACK", measured live 2026-08-14 by
+BRIDGE.** `jawa/fire_incident RaidEnemy faction=OuterRim_GalacticEmpire dryRun=true`
+returns **`canFireNow: false`**, because `IncidentWorker_RaidEnemy::TryResolveRaidFaction`
+keeps the faction you pass only if `HostileTo(Faction.OfPlayer)` — and the Empire
+ships `hostile: false, goodwill: 0`. ⇒ **The campaign's flagship antagonist is not
+merely mis-flagged; it is mechanically incapable of raiding the player.** That is
+the fourth independent layer under V6/V7/V25 and the least deniable: the pillar,
+the flags, the religion rubric and now the incident worker all say the same thing.
+⚠️ **This also means a careless raid call would have fired somebody else's raid and
+reported success** — the worker silently substitutes the faction. Unblocked by
+`jawa/set_faction_relation`, built and undeployed.
 OPS read it live on 2026-08-13: `hostile=false`, `goodwill=0`,
 `permanentEnemy=false`. And there are **two** empires with the split backwards —
 "The Fallen Dominion" holds 4 settlements to the Galactic Empire's 1. **The v1 label
