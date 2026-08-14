@@ -122,6 +122,27 @@ the pulled mods' defs as *"does not exist in the live game"* — a wall of confi
 false errors. Offline artefacts are cheap and self-correcting; rebuild those freely
 with `--offline --note "<why>"`.
 
+## 5a. ⏳ Delete throw-away saves WHILE THE GAME RUNS — expires when the campaign starts
+
+**Owner's ruling, 2026-08-14.** Deleting savegames with the game DOWN does not
+stick: Steam Cloud reconciles at the next launch and restores them. Measured — 26
+`.rws`, 701 MB, back with their **original mtimes**, after a deletion that had
+already been recorded as done.
+
+> **The window where a deletion survives is while the game is RUNNING.**
+
+So when a debugging world is being thrown away, delete the saves **and** the
+screenshots **after the game is live**, not after it exits. **Do not disable Steam
+Cloud** — that is no longer the fix and nobody asked for it.
+
+🔴 **This rule has an EXPIRY, and the expiry is part of it: it GOES the day the real
+campaign starts.** It exists only for throw-away debugging worlds. A standing
+"delete the saves" habit pointed at a live campaign is destructive, and a rule that
+should have died is exactly how that happens.
+
+⚠️ **Anything still saying re-deletion "needs Steam Cloud disabled first" is wrong.**
+It needs the game *running*.
+
 ## 6. The shutdown window — announce it before the game closes
 
 **A deployed assembly cannot be written while RimWorld runs.** The game holds it
