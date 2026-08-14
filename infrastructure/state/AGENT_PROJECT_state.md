@@ -46,10 +46,22 @@ enforcement) · `src/RimMandrake/Utils/check_git_locks.py` · `src/RimMandrake/U
 §9 of the messaging skill) · `OWNER_DECISIONS.md` · `infrastructure/output/` and `infrastructure/disposing/`
 tiers.
 
+## 🔴 The queues are the doc problem now, and they are getting worse
+
+Measured 2026-08-13 after the deletion pass: **2,843 lines across the five
+`queue/<SEAT>.md` files against a 750-line combined budget.** `CREATE.md` alone is
+1,027 (+877). The stale-file audit measured 1,898 earlier the same day — so they
+grew ~50% in a day while the repo was being pruned.
+
+**This is not PROJECT's to edit.** Each seat compacts its own queue: closed items
+become ONE line in `CLOSED.md`, provenance goes in the commit. But it IS PROJECT's
+to report, and it is now the largest single documentation debt in the repo.
+
 ## What I owe
 
-1. **11 owner decisions** in `OWNER_DECISIONS.md`; #11 blocks a v1 row outright
-   and three others cost one word each.
+1. **Owner decisions** in `OWNER_DECISIONS.md`. **#5 and #7 were ruled and executed
+   2026-08-13** — `TODO.md` retired, the stale-file set deleted. #8 and #9 remain,
+   both pure taste, both `[v2]`.
 2. **Execute the restructure** — plan in `infrastructure/disposing/RESTRUCTURE_PLAN.md`, staged,
    nothing moved yet. Owner adopted option B revised, with `Jawa/` vs
    `RimMandrake/` on **new work only**.
