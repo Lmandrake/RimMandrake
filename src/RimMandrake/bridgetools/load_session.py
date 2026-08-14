@@ -219,6 +219,8 @@ EXPECTED_TOOLS = [
     # fails a CORRECT companion, which is the false alarm that stops a census
     # from being believed at all.
     "jawa/get_defs", "jawa/fire_quest",
+    # Same window, same rule: deployed BEFORE this line was written. md5 13fcb549.
+    "jawa/list_things",
 ]
 
 
@@ -279,9 +281,27 @@ def i_pilot_console(s, cfg):
     """
     cid = cfg.console_id
     if not cid:
-        return record("A2", "NoPathToPilotConsole", SKIP,
-                      "no --console-id given; find the PilotConsole ThingID "
-                      "first (select it in game, or spawn one)")
+        # 🔴 This USED to be a flat SKIP: "find the ThingID first (select it in
+        # game)". A v1 launch gate was lost on 2026-08-14 to exactly that, because
+        # nothing on the bridge could produce a ThingID for a non-pawn and a human
+        # at the keyboard was the only source. `jawa/list_things` is that source
+        # now, so the id is looked up instead of demanded.
+        # Vanilla defName read from Odyssey/Defs/ThingDefs_Buildings/
+        # Buildings_Gravship.xml, not recalled.
+        found = s.call("jawa/list_things", defName="PilotConsole", limit=5)
+        rows = (found or {}).get("things") or []
+        if not rows:
+            # ⚠️ Distinguish "no console on this map" from "the call did not run".
+            # They read identically here and have completely different fixes.
+            why = ("no PilotConsole on this map (%d thing(s) examined)"
+                   % (found or {}).get("scanned", -1)) if ok(found) else \
+                  ("list_things did not run: %s"
+                   % str((found or {}).get("message"))[:80])
+            return record("A2", "NoPathToPilotConsole", SKIP, why)
+        cid = rows[0]["id"]
+        record("A2p", "  ...console located", PASS,
+               "%s id=%s at (%s,%s)" % (rows[0].get("def"), cid,
+                                        rows[0].get("x"), rows[0].get("z")))
     r = s.call("jawa/order_pawn", pawnId="colonists", targetId=cid,
                waitTicks=0, unpause=False)
     rows = (r or {}).get("pawns") or []
@@ -860,11 +880,81 @@ def ledger(cfg):
     return path
 
 
+class FakeSession(object):
+    """A scripted `s` for offline item tests. `calls` maps tool name -> response,
+    or to an Exception instance to be raised."""
+
+    def __init__(self, calls):
+        self.calls = calls
+        self.seen = []
+
+    def call(self, tool, **kw):
+        self.seen.append((tool, kw))
+        r = self.calls.get(tool, {"success": False, "message": "not scripted"})
+        if isinstance(r, Exception):
+            raise r
+        return r
+
+
+def _item_selftests():
+    """🔴 The ledger plumbing was the ONLY thing under test, and that is exactly
+    where the 2026-08-14 session did not fail: two items died `NameError` on a
+    helper that was never defined, mid-live-session, and no offline test could
+    have caught it because no item was ever executed offline.
+
+    These run real item functions against a scripted session. They cost nothing
+    and they are the difference between a bug found now and a bug found at live
+    prices."""
+    bad = 0
+    console = {"success": True, "scanned": 4891, "things": [
+        {"id": "Thing_PilotConsole12345", "def": "PilotConsole", "x": 128, "z": 130}]}
+    reach = {"success": True, "targetLabel": "pilot console",
+             "pathEndMode": "InteractionCell",
+             "pawns": [{"id": "p1", "canReach": True}]}
+    cfg = argparse.Namespace(console_id=None)
+
+    cases = [
+        ("console found -> A2 scored", {"jawa/list_things": console,
+                                        "jawa/order_pawn": reach}, "A2", PASS),
+        ("no console on the map -> SKIP", {"jawa/list_things":
+                                           {"success": True, "scanned": 4891,
+                                            "things": []}}, "A2", SKIP),
+        ("list_things did not run -> SKIP, and it says so",
+         {"jawa/list_things": {"success": False, "message": "timed out"}}, "A2", SKIP),
+    ]
+    for title, scripted, want_id, want_verdict in cases:
+        del RESULTS[:]
+        try:
+            i_pilot_console(FakeSession(scripted), cfg)
+        except Exception as e:
+            print("  SELFTEST BUG: %s raised %s: %s" % (title, type(e).__name__, e))
+            bad += 1
+            continue
+        got = [r for r in RESULTS if r["id"] == want_id]
+        if len(got) != 1 or got[0]["verdict"] != want_verdict:
+            print("  SELFTEST BUG: %s -> %s" % (title, [(r["id"], r["verdict"])
+                                                        for r in RESULTS]))
+            bad += 1
+
+    # The A6 tri-state, the other half of the same bug: a call that did not run
+    # must never be scored as a def that is absent.
+    if absent({"success": False, "message": "No ThingDef named 'Foo'."}) is not True:
+        print("  SELFTEST BUG: a real absence is not being recognised"); bad += 1
+    for not_absence in ({"success": False, "message": "No def type named 'Foo'."},
+                        {"success": False, "message": "Timed out after 5000ms"},
+                        None):
+        if absent(not_absence):
+            print("  SELFTEST BUG: %r scored as ABSENT" % (not_absence,)); bad += 1
+    del RESULTS[:]
+    return bad
+
+
 def selftest():
     """Exercise the ledger and the verdict plumbing with no game and no socket.
 
     The point is that a live session is not spent debugging this file.
     """
+    item_bad = _item_selftests()
     record("A0", "companion census", PASS, "21 jawa tools of 21")
     record("A1", "Rebel Alliance generated", FAIL, "ABSENT; control present")
     record("A3c", "reads as evaporite", NEEDS_EYES, "", "C:/shots/salt_001.png")
@@ -881,6 +971,7 @@ def selftest():
         if must not in body:
             print("  SELFTEST BUG: ledger is missing %r" % must)
             bad += 1
+    bad += item_bad
     print("\nSELFTEST %s -- ledger at %s" % ("FAILED" if bad else "OK", p))
     return 1 if bad else 0
 

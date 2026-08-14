@@ -4295,6 +4295,180 @@ namespace JawaBench.BridgeTools
             });
         }
 
+        // The read half of spawn_batch/destroy_batch, and the missing half of
+        // list_pawns. Every tool that acts on a specific object takes a ThingID
+        // (`jawa/damage thingId=`, `jawa/order_pawn targetId=`) and until now
+        // NOTHING on the bridge could produce one for a non-pawn: the only route
+        // was to click the thing in game and read the inspect pane, which needs a
+        // human at the keyboard and cannot be scripted.
+        //
+        // 🔴 That gap has a measured cost. The `NoPathToPilotConsole` gate --
+        // v1's launch blocker -- was SKIPPED in the 2026-08-14 live session for
+        // exactly one reason: "no --console-id given; find the PilotConsole
+        // ThingID first". A whole live item lost to an identifier we could not
+        // ask for.
+        //
+        // ⚠️ AN EMPTY RESULT IS NOT PROOF OF ABSENCE. It is equally the filter
+        // being wrong -- a defName typo, a rect that misses, a group that does
+        // not contain this thing. The shape below says which: `scanned` reports
+        // how many things were examined before filtering, so a zero with
+        // scanned=0 (no map, or an empty one) is a different answer from a zero
+        // with scanned=4,891.
+        [Tool(
+            "jawa/list_things",
+            Description =
+                "Find things on the map and return their ThingIDs — buildings, items, " +
+                "plants, corpses, anything that is not a pawn. This is how you get the id " +
+                "that jawa/damage, jawa/order_pawn and jawa/destroy_batch need, without " +
+                "clicking the object in game. Filter by defName (exact, or a comma-separated " +
+                "list), by rect, or by ThingRequestGroup. Nothing else on the bridge can " +
+                "answer 'is it there, and where exactly' for a non-pawn: list_pawns is " +
+                "pawns-only, get_cell_info reads one cell, and get_def reads the DEFINITION " +
+                "and says nothing about whether an instance exists on this map.",
+            ResultDescription =
+                "Per thing: id (the ThingID other tools take), def, label, position, " +
+                "rotation, stackCount, hitPoints/maxHitPoints, faction, stuff and quality. " +
+                "Plus scanned (things examined before filtering), countReturned, " +
+                "countMatched and isCompleteList — a zero with scanned>0 means the filter " +
+                "excluded everything, which is NOT the same as the map being empty.")]
+        public static async Task<object> ListThings(
+            IRimBridgeContext ctx,
+            CancellationToken cancellationToken,
+            [ToolParameter(Description =
+                "Exact defName, or a comma-separated list of them. Case-insensitive. " +
+                "Omit for no defName filter.", DefaultValue = null)]
+            string defName = null,
+            [ToolParameter(Description =
+                "Optional rect filter 'x,z,w,h'. Omit for the whole map.",
+                DefaultValue = null)]
+            string rect = null,
+            [ToolParameter(Description =
+                "Optional ThingRequestGroup name, e.g. BuildingArtificial, Weapon, Apparel, " +
+                "Plant, Corpse. Invalid names are REFUSED with the valid list rather than " +
+                "silently ignored — a typo here would otherwise read as 'nothing found'.",
+                DefaultValue = null)]
+            string group = null,
+            [ToolParameter(Description =
+                "Include pawns. Off by default because jawa/list_pawns reports them far " +
+                "better; on, they appear here as ordinary things.", DefaultValue = false)]
+            bool includePawns = false,
+            [ToolParameter(Description = "Cap on returned things.", DefaultValue = 200)]
+            int limit = 200)
+        {
+            int rx = 0, rz = 0, rw = 0, rh = 0;
+            if (!string.IsNullOrWhiteSpace(rect))
+            {
+                List<ParsedOp> parsedRect;
+                var rectErrors = new List<string>();
+                if (!TryParseOps(rect, "_", out parsedRect, rectErrors) || parsedRect.Count != 1)
+                    return Fail("rect must be a single 'x,z,w,h'.", new { errors = rectErrors });
+                rx = parsedRect[0].X; rz = parsedRect[0].Z;
+                rw = parsedRect[0].W; rh = parsedRect[0].H;
+            }
+
+            var wanted = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
+            if (!string.IsNullOrWhiteSpace(defName))
+                foreach (var piece in defName.Split(','))
+                    if (!string.IsNullOrWhiteSpace(piece)) wanted.Add(piece.Trim());
+
+            // Parsed BEFORE the main-thread hop so a typo costs nothing and comes
+            // back with the answer in it.
+            ThingRequestGroup grp = ThingRequestGroup.Undefined;
+            if (!string.IsNullOrWhiteSpace(group))
+            {
+                if (!Enum.TryParse(group.Trim(), true, out grp))
+                    return Fail(
+                        $"No ThingRequestGroup named '{group}'.",
+                        new { valid = Enum.GetNames(typeof(ThingRequestGroup)) });
+            }
+
+            return await ctx.MainThread.InvokeAsync<object>(() =>
+            {
+                var map = Find.CurrentMap;
+                if (map == null)
+                    return Fail("No current map. Load a game first.");
+
+                // AllThings, not a ThingRequest listing, because the group filter is
+                // optional and the def filter is the common case. The scan is one
+                // pass over the lister either way.
+                var source = grp == ThingRequestGroup.Undefined
+                    ? (IEnumerable<Thing>)map.listerThings.AllThings
+                    : map.listerThings.ThingsInGroup(grp);
+
+                var rows = new List<object>();
+                var perDef = new Dictionary<string, int>();
+                int scanned = 0, matched = 0, truncated = 0, pawnsSkipped = 0;
+
+                foreach (var thing in source)
+                {
+                    cancellationToken.ThrowIfCancellationRequested();
+                    if (thing?.def == null) continue;
+                    scanned++;
+
+                    if (!includePawns && thing is Pawn) { pawnsSkipped++; continue; }
+                    if (wanted.Count > 0 && !wanted.Contains(thing.def.defName)) continue;
+
+                    var pos = thing.Spawned ? thing.Position : IntVec3.Invalid;
+                    if (rw > 0)
+                    {
+                        if (!pos.IsValid) continue;
+                        if (pos.x < rx || pos.z < rz || pos.x >= rx + rw || pos.z >= rz + rh)
+                            continue;
+                    }
+
+                    matched++;
+                    int n;
+                    perDef.TryGetValue(thing.def.defName, out n);
+                    perDef[thing.def.defName] = n + 1;
+
+                    if (rows.Count >= limit) { truncated++; continue; }
+
+                    QualityCategory q;
+                    string quality = thing.TryGetQuality(out q) ? q.ToString() : null;
+
+                    rows.Add(new
+                    {
+                        id = thing.ThingID,
+                        def = thing.def.defName,
+                        label = thing.LabelCap.ToString(),
+                        x = pos.x,
+                        z = pos.z,
+                        spawned = thing.Spawned,
+                        rot = thing.Rotation.AsInt,
+                        stackCount = thing.stackCount,
+                        hitPoints = thing.def.useHitPoints ? thing.HitPoints : -1,
+                        maxHitPoints = thing.def.useHitPoints ? thing.MaxHitPoints : -1,
+                        faction = thing.Faction?.def?.defName,
+                        stuff = thing.Stuff?.defName,
+                        quality
+                    });
+                }
+
+                return new
+                {
+                    success = true,
+                    things = rows,
+                    // Same shape discipline as list_factions: a caller reading
+                    // fields cannot get a total that is silently a subset.
+                    scanned,
+                    countReturned = rows.Count,
+                    countMatched = matched,
+                    isCompleteList = truncated == 0,
+                    truncated,
+                    pawnsSkipped,
+                    perDef,
+                    ticksGame = Find.TickManager?.TicksGame ?? -1,
+                    message = matched == 0
+                        ? $"NOTHING MATCHED. {scanned} thing(s) were examined, so this is a " +
+                          "filter result, not an empty map — check the defName spelling, the " +
+                          "rect and the group before concluding the thing is absent."
+                        : $"{rows.Count} of {matched} matching thing(s) returned, " +
+                          $"{scanned} examined." +
+                          (truncated > 0 ? $" {truncated} beyond limit={limit} omitted." : "")
+                };
+            }, cancellationToken).ConfigureAwait(false);
+        }
+
         // One connected water mass, with the shape numbers a sea gate is written
         // against. A class rather than a tuple so the flood fill reads as English
         // and so adding a field later does not renumber anything.

@@ -228,6 +228,7 @@ RimWorld's own `Set terrain (rect)` and `Clear area (rect)` still return
 | tool | use |
 |---|---|
 | `jawa/list_pawns` | every pawn on the map — **hostiles and animals too**, not just colonists. `rimworld/list_colonists` and `ResolvePawn` are player-side only |
+| `jawa/list_things` | **the ThingID of a non-pawn** — the id `jawa/damage thingId=`, `jawa/order_pawn targetId=` and the destroy tools all demand and nothing else could produce. Filter by `defName` (comma list), `rect` or `group`. 🔴 **A zero is a filter result, not an empty map**: read `scanned` beside it, and `countMatched` beside `countReturned`. Before this, the only source of a ThingID was a human clicking the object, and the `NoPathToPilotConsole` v1 gate was SKIPPED on 2026-08-14 for exactly that |
 | `jawa/get_def` | a def **as the game resolved it**, after patches and parent inheritance: `statBases`, comps with class names, and the mod that supplied it. The offline dump serialises none of that and has produced two wrong conclusions |
 | `jawa/drain_log` | recent log messages. `effects.logs` structurally cannot see anything logged **during `step_game_ticks`** |
 | `jawa/damage` | graduated damage to **anything, including hostiles**, via `Thing.TakeDamage`. The debug menu's `Apply damage...` is inert and player-side only |
@@ -263,24 +264,24 @@ a compile-time flag so the ruling is reversible in one shutdown window —
 to continue if the artifact disagrees with the flag. Never fire an incident on a
 colony that matters without saying so first.
 
-⏳ **The companion is 24 tools and SEVEN of them have never run in a live game** —
-the roof pair, the pawn-appearance three above, and `jawa/get_defs` and
-`jawa/fire_quest` (deployed 2026-08-14 in the shutdown window, game copy md5
-`ea5952e2`). They compile; nothing more is claimed. `jawa/list_factions` and
+⏳ **The companion is 25 tools and EIGHT of them have never run in a live game** —
+the roof pair, the pawn-appearance three above, and `jawa/get_defs`,
+`jawa/fire_quest` and `jawa/list_things` (all deployed 2026-08-14 in the shutdown
+window, game copy md5 `13fcb549`). They compile; nothing more is claimed. `jawa/list_factions` and
 `jawa/order_pawn` **drove live 2026-08-14** and are no longer on this list;
 `jawa/world_stats` was called and its answer was thrown away by a harness bug, so
 it is unproven for a different reason. Companions register only at RimBridgeServer
 startup. **First call of the next session: count the `jawa/` tools the bridge
-reports — 24 means the current deploy took, 22 means the build before
-`get_defs`/`fire_quest`, 21 means before `world_stats`, 20 means before
-`order_pawn`, 7 means an older companion, 0 means the bundle did not load.** Every
-other check is uninformative until that reads 24. 🔴 **The deploy must use
+reports — 25 means the current deploy took, 24 means the build before
+`list_things`, 22 means before `get_defs`/`fire_quest`, 21 means before
+`world_stats`, 7 means an older companion, 0 means the bundle did not load.** Every
+other check is uninformative until that reads 25. 🔴 **The deploy must use
 `--gm`**, or the game copy loses `jawa/fire_incident` and `jawa/send_letter` and
-the census reads 22.
+the census reads 23.
 
 ⚠️ **Three documents disagreed about this number on 2026-08-13** — 17 in
 `EXPECTED_FAILURES_next_load.md`, 20 in `NEXT_RELOAD.md`, 21 here — and the
-number moved again to **22** the same night, and to **24** on 2026-08-14.
+number moved again to **22** the same night, and to **25** on 2026-08-14.
 **Measure it, do not quote it** — `load_session.py` now derives the gate from
 `EXPECTED_TOOLS` and `prove_new_tools.py` reads it out of the deployed DLL, so
 neither carries a literal to go stale.
