@@ -188,3 +188,32 @@ and no tuning fixes it because what is missing is the equilibrium itself.
 
 **There is no outcome in which this concept cannot ship.** Only the accounting
 moves.
+
+## The curve — specified now, so the build is not waiting on me
+
+**If a continuously-recomputed standing offset is available** (CREATE's
+`GoodwillSituationWorker` lead — unconfirmed), the offset should be computed from
+the **number of bolted droids currently held by the colony**, not from a lifetime
+total and not from droids that have left.
+
+> **offset = −2.5 × (bolted droids held), clamped at −100.**
+
+**Linear, deliberately.** Not because linear is elegant but because it is the
+only shape a player can infer without being told: *each bolted droid costs a
+little, and it adds up*. A curve with an elbow in it reads as arbitrary.
+
+| bolts held | offset | what the player sees |
+|---:|---:|---|
+| 1–2 | −3 to −5 | they notice, and trade anyway |
+| 5 | −13 | cool |
+| 12 | −30 | cold; no gifts, no help |
+| 20 | −50 | openly hostile in tone |
+| 40+ | −100 | you are what they exist to oppose |
+
+**One tunable: the coefficient.** Everything else falls out of it, and the bands
+above are consequences rather than authored thresholds.
+
+⚠️ **Count what is HELD, not what was ever fitted.** A droid sold, freed or
+destroyed stops counting the moment it is gone — that is what makes freeing one
+feel immediate, and it is the whole reason this shape was chosen over a running
+total.
