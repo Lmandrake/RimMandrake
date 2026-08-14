@@ -79,33 +79,21 @@
 >
 > 🔴 **Screenshot the page before leaving it.** It is the only record.
 
-> 🔴 **OPS banner, 2026-08-13. Read before executing.**
+> ✅ **OPS note — RESOLVED, nothing here blocks execution.**
 >
-> **The tick-list itself is measured and safe to run**: 21 untick / 6 keep / 0 not
-> found, every defName read off disk, labels taken from the defs because the page
-> shows labels not defNames.
+> **The tick-list is measured:** 21 untick / 6 keep / 0 not found, every defName
+> read off disk, labels taken from the defs because the page shows labels, not
+> defNames.
 >
-> **The FRAMING added late is a PROPOSAL and has not been ruled on.** Two claims in
-> here are design decisions, not measurements, and I am player zero — evidence in,
-> decisions out:
-> 1. That `RebelAlliance_Suppress.xml`'s four-field zeroing is the **template** for
->    the rest (keep the mod for its weapons and pawnkinds, delete only the faction).
->    That is a good pattern and it is **cheap to replicate — but only for factions
->    whose defs expose those four fields.**
-> 2. That the resulting dangling references are **"accepted cost"**. ⚠️ **I do not
->    accept that on the player's behalf, and it should not ride in silently.**
+> My one open objection — that blanket "accepted cost" for dangling references
+> would let a dead-end quest through — **was ruled on in R1 above and is now
+> doctrine.** It does not apply to this run: the only quest-critical faction,
+> `guy762_KotORFaction_RogueDroids`, is already a KEEP. **Closed; I am not
+> raising it again.**
 >
-> **On (2), the player-zero objection, because it is the one that costs fun:** an
-> orphaned troll burrow or hornet hive is scenery and nobody minds. **A KotOR
-> distress call with no antagonist is a quest the player accepts and cannot
-> finish.** That is materially worse than the faction it removed — a broken quest
-> is noticed, remembered, and blamed on the modlist, while an absent faction is
-> never missed. Same for Yautja scenarios naming dead factions.
->
-> ⇒ **VISION rules.** If the answer is "accept it", say so explicitly and I will
-> stop raising it. If the answer is "not the quest ones", the fix is to keep the
-> handful of factions that quests reference and drop only the rest — which costs
-> almost nothing, because those factions own no settlements anyway.
+> ⚠️ One limit of the four-field suppression template, worth knowing before it is
+> reused: **it only reaches factions whose defs expose those four fields.** For
+> the rest the lever is the mod list, with the game down — a separate job.
 
 **What you are doing and why.** The next world is generated from scratch (all saves
 were deleted by owner order 2026-08-13), and faction existence is decided **once, at
@@ -162,7 +150,7 @@ These have settlements, appear as normal rows, and are the loudest offenders on 
 | ☐ | **Augmented Clan** | `ABYautjaModderClan` | [AB] Xenotype: Yautja | |
 | ☐ | **Berserk Clan** | `ABYautjaBerserkClan` | [AB] Xenotype: Yautja | |
 | ☐ | **Jungle Hunter Clan** | `ABYautjaClan` | [AB] Xenotype: Yautja | |
-| ☐ | **A little people union** | `BS_LittlePeople` | Big and Small - Races (2894397737) | |
+| ☐ | **A little people union** | `BS_LittlePeople` | Big and Small - Races (2894397737) | 🔴 **STOP after unticking — VISION R4.** It declares `replacesFaction OutlanderRough`. **Confirm a rough-outlander row exists at ≥ 1. If none appears, PUT THIS BACK TO 1** — a smallfolk union is a smaller fiction hole than an empty outlander tier. |
 | ☐ | **Dvergr Trade Union** | `BS_Dvergr_Medieval_Union` | Big and Small - Races | |
 | ☐ | **Kingdom of Muspelheim** | `BS_Muspelheim` | Big and Small - Races | |
 | ☐ | **Tribes of Niflheim** | `BS_Niflheim` | Big and Small - Races | |
@@ -241,8 +229,18 @@ time.
 | ☐ | **Confederacy of Independent Systems** | `JDSCIS_CIS_Faction` | [JDS] Separatist Droid Army (3276499495) | **hidden checkbox**, not a row |
 | ☐ | **Imperial Desert Directorate** | `OuterRim_GalacticEmpire` | Outer Rim - Galactic Empire (2919248699) | 🔴 **label is patched — see below** |
 | ☐ | **moisture farmers** | `OuterRim_MoistureFarmers` | Outer Rim - Core | ordinary row |
-| ☐ | **rogue droid collective** *("Droid Collective")* | `guy762_KotORFaction_RogueDroids` | Star Wars KotOR Droids (3047371944) | **hidden checkbox**, not a row |
-| ☐ | **Rebel Alliance** | `OuterRim_RebelAlliance` | Outer Rim - Rebel Alliance (2919249903) | 🔴 **expect it to be ABSENT — see below** |
+| ☐ | **rogue droid collective** *("Droid Collective")* | `guy762_KotORFaction_RogueDroids` | Star Wars KotOR Droids (3047371944) | **hidden checkbox**, not a row. 🔴 **quest-critical — antagonist of the KotOR distress call. Never untick.** |
+| ☐ | ⭐ **the Fallen Dominion** — *name will be GENERATED, expect a different string* | `Empire` | **vanilla (Royalty)** | 🔴 **ADDED TO KEEP by VISION R3.** Not on any untick list, so it survives by default — **confirm it anyway, count ≥ 1, and SCREENSHOT the generated name.** |
+| ☐ | ~~**Rebel Alliance**~~ — **RETIRED from KEEP** | `OuterRim_RebelAlliance` | Outer Rim - Rebel Alliance (2919249903) | 🔴 **ABSENT is the DESIRED outcome (VISION R2). Record absent and move on — do NOT revert the patch at the screen.** |
+
+⭐ **On the Fallen Dominion (VISION R3, owner's ruling).** The two-empire split is
+**the design, not a defect**: the Directorate is the Galactic arm, and vanilla
+`Empire` is the disgraced local aristocracy — force-welded into the Empire, fallen
+from grace despite winning the local war, and now eager to please by hunting "yet
+more chaotic nonsense", i.e. us. ⚠️ **Its name is generated, so the world will
+probably not say "Fallen Dominion". That is expected, not a failure.** Whatever it
+generates is the working name until `fixedName` is patched with the game down.
+**Screenshot it — that string is the only record.**
 
 🔴 **Do not look for "Galactic Empire".** `Jawa_Patches/Patches/ImperialDesertDirectorate.xml`
 replaces both `label` and `fixedName` on `OuterRim_GalacticEmpire` with **"Imperial
