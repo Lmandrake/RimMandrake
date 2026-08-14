@@ -106,6 +106,43 @@ def measure_process():
         return None
 
 
+TICKER = os.path.join(os.path.dirname(STATE_FILE), "ticker.log")
+
+
+def announce(line):
+    """Make the event IMPOSSIBLE to miss — because recording it was not enough.
+
+    🔴 **Owner's ruling 2026-08-14, and it is a correction to this file's own
+    first design.** Releasing the instrument used to be a stamp: correct,
+    atomic, and **silent**. The board read `FREE`, the release had genuinely
+    happened, and the owner still had to ask who held the bridge — then point
+    out that it should have been freed. It already had been. Nobody was told.
+
+    **The old TAKEN/RELEASED pair failed LOUDLY — a dangling TAKEN is visible.
+    The lease failed QUIETLY. We swapped an obvious failure for an invisible
+    one and called it an improvement.** A timeout is not something a human can
+    watch.
+
+    So a release now pushes on every channel this script can reach by itself:
+    a toast to the owner, and a ticker line the board renders. The one channel
+    it cannot reach is the peers — a shell script cannot call SendMessage — so
+    it prints the exact line and says so, rather than pretending it sent it.
+    """
+    try:
+        with open(TICKER, "a") as fh:
+            fh.write("%d %s\n" % (int(time.time()), line))
+    except Exception:
+        pass
+    try:
+        subprocess.Popen(
+            ["powershell.exe", "-NoProfile", "-ExecutionPolicy", "Bypass",
+             "-File", os.path.join(ROOT, "src/RimMandrake/Utils/fleet_toast.ps1"),
+             "-Title", "FLEET", "-Msg", line[:120]],
+            stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
+    except Exception:
+        pass
+
+
 def show():
     d = load()
     st = d.get("state", "?")
@@ -172,6 +209,8 @@ def main():
                   % (h[0], human(h[1]), human(h[2])))
             return 1
         now = int(time.time())
+        if not h:
+            announce("BRIDGE TAKEN — %s" % seat())
         d["lease"] = {"seat": seat(),
                       "taken": (d.get("lease") or {}).get("taken", now)
                       if h else now,
@@ -190,11 +229,19 @@ def main():
         return 0
 
     if cmd == "release":
+        who = seat()
+        left = " ".join(a[1:]) if len(a) > 1 else "nothing noted"
         d["lease"] = {}
-        if len(a) > 1:
-            d["left"] = " ".join(a[1:])       # what the next seat inherits
+        d["left"] = left
         save(d)
-        return show()
+        line = "BRIDGE RELEASED — %s — %s" % (who, left)
+        announce(line)
+        print(line)
+        print("")
+        print("🔴 SEND THAT LINE TO EVERY SEAT NOW. One line, no ceremony.")
+        print("   The owner has already been told (toast + board). Your peers")
+        print("   have NOT — this script cannot call SendMessage.")
+        return 0
 
     print(__doc__.split("WHY")[0], file=sys.stderr)
     return 2

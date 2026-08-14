@@ -437,8 +437,23 @@ def render():
         # Without it five true status lines still leave the reader unable to
         # judge whether any of them is worth interrupting.
         why = (s.get("why") or "").strip()
+        exp = (s.get("expect") or "").strip()
         if why:
-            L.append(crow(DIM, "          why: %s" % why[:56]))
+            L.append(crow(DIM, "          why  %s" % why[:56]))
+        if exp:
+            # Endsley level 3 — projection. "What result ends this" is the
+            # field that lets a supervisor judge whether a seat is still on
+            # the right question, which no amount of status ever tells them.
+            L.append(crow(DIM, "          ends %s" % exp[:56]))
+        isince = s.get("item_since")
+        churn = int(s.get("churn", 0))
+        marks = []
+        if isince and int(time.time()) - int(isince) > 30 * 60:
+            marks.append("same task %s" % ago(int(isince)).strip())
+        if churn >= 3:
+            marks.append("%d task switches, same stated why" % churn)
+        if marks:
+            L.append(crow(RED, "          !! %s" % " · ".join(marks)[:56]))
 
     # --- the checklist ------------------------------------------------------
     for sec, label in (("LOAD", "THIS LOAD"), ("SHUTDOWN", "NEXT SHUTDOWN")):
@@ -495,6 +510,26 @@ def render():
             cells[i + 1][0] if i + 1 < len(cells) and not isinstance(cells[i + 1], str)
             else (cells[i + 1] if i + 1 < len(cells) else ""))))
 
+    # --- what just happened: the narrative band --------------------------
+    # The owner's words were "I need a narrative". State bands answer what IS;
+    # this answers what HAPPENED, in order, which is the thread they could not
+    # follow. Newest first, five lines, no more — a ticker that scrolls is a
+    # log, and a log is the thing they already could not read.
+    try:
+        with open(os.path.join(STATUS_DIR, "ticker.log")) as fh:
+            evs = [ln.rstrip("\n") for ln in fh][-5:][::-1]
+    except Exception:
+        evs = []
+    if evs:
+        L.append(bar("JUST HAPPENED"))
+        for e in evs:
+            ts, _, txt = e.partition(" ")
+            try:
+                when = ago(int(ts)).strip()
+            except Exception:
+                when = "?"
+            L.append(row("%-6s %s" % (when, txt[:60])))
+
     # --- the roster's own honesty line -------------------------------------
     try:
         rage = ago(int(os.path.getmtime(ROSTER)))
@@ -508,7 +543,7 @@ def render():
 
 
 # -------------------------------------------------------------------- say ---
-def say(text, why=None):
+def say(text, why=None, expect=None):
     """A seat sets its own line, and ideally its REASON.
 
         board.py say "counting slag on the 13:54 map" \
@@ -536,6 +571,21 @@ def say(text, why=None):
     cur["item"] = text
     if why is not None:
         cur["why"] = why
+    if expect is not None:
+        cur["expect"] = expect
+    # Rabbit-hole signal, computed not guessed: how long the CURRENT item has
+    # been the item, and how many times it has changed under an unchanged `why`.
+    # A seat grinding one task is fine; a seat whose task keeps changing while
+    # its stated purpose does not is drifting, and that is the shape the owner
+    # described as "fragmentation".
+    if cur.get("_last_item") != text:
+        cur["item_since"] = int(time.time())
+        if cur.get("_last_why") == cur.get("why"):
+            cur["churn"] = int(cur.get("churn", 0)) + 1
+        else:
+            cur["churn"] = 0
+        cur["_last_item"] = text
+    cur["_last_why"] = cur.get("why")
     # A seat speaking IS evidence of life. `setdefault` froze this at the very
     # first `say`, so every seat's age stopped moving the moment it spoke once —
     # and the board reported a 44-minute-old line as current. Found by BRIDGE.
@@ -552,13 +602,23 @@ def main():
     if a and a[0] == "say":
         rest = a[1:]
         why = None
-        for flag in ("--why", "--because"):
+        expect = None
+        for flag, setter in (("--expect", "expect"), ("--ends", "expect"),
+                             ("--why", "why"), ("--because", "why")):
             if flag in rest:
                 i = rest.index(flag)
-                why = " ".join(rest[i + 1:])
-                rest = rest[:i]
-                break
-        return say(" ".join(rest), why)
+                j = len(rest)
+                for k in range(i + 1, len(rest)):
+                    if rest[k].startswith("--"):
+                        j = k
+                        break
+                val = " ".join(rest[i + 1:j])
+                if setter == "why":
+                    why = val
+                else:
+                    expect = val
+                rest = rest[:i] + rest[j:]
+        return say(" ".join(rest), why, expect)
     if a and a[0] in ("--watch", "-w"):
         try:
             while True:
