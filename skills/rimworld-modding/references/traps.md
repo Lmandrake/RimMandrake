@@ -25,10 +25,10 @@ shorts, leave it untouched (→ `skills/rimworld-savegame/SKILL.md`).
 | If you are about to… | Read | Entries |
 |---|---|---|
 | write or debug a patch, an xpath, or a def | [`traps-xml-and-defs.md`](traps-xml-and-defs.md) | 18 |
-| trust what a script, grep, census or the def dump just told you | [`traps-tooling.md`](traps-tooling.md) | 36 |
+| trust what a script, grep, census or the def dump just told you | [`traps-tooling.md`](traps-tooling.md) | 37 |
 | call art missing, wrong, or broken | [`traps-art.md`](traps-art.md) | 13 |
 | chase a mod that is absent, dead, or ignoring its files | [`traps-mods-and-managers.md`](traps-mods-and-managers.md) | 13 |
-| believe a diagnosis, or call into a running game | [`traps-diagnosis.md`](traps-diagnosis.md) | 6 |
+| believe a diagnosis, or call into a running game | [`traps-diagnosis.md`](traps-diagnosis.md) | 7 |
 | **write or debug a quest** — `QuestScriptDef`, `QuestNode`, quest text, a quest that never fires | **a different skill: `skills/rimworld-quests/`** | — |
 
 **If you only read one, read `traps-tooling.md`.** It is the largest section for
@@ -100,6 +100,7 @@ the one asked.**
 
 - A `timeout`-wrapped scan that gets killed leaves a PARTIAL result that looks complete
 - The two primary RimWorld documentation domains both 403 `WebFetch` — and the web has nothing on 1.6 quests anyway
+- A redirected Python run's output file stays 0 bytes — that is buffering, not a stall
 
 ### `traps-art.md` — art, textures and what a census cannot see
 
@@ -142,6 +143,7 @@ the one asked.**
 - The same mod stayed dead through two correct fixes, for three different reasons
 - A correct general principle applied to the WRONG SET — and the leading question that launders it
 - A sampled extrapolation entered the record as a measured count — and then drifted
+- A one-shot generator's output dates the DEF THAT BUILT THE MAP, not the def on disk
 
 ### The numbers
 
