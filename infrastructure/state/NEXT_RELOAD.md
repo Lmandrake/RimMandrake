@@ -571,6 +571,27 @@ LIVE BRIDGE RELEASED — <seat>, <what changed, and anything left on the map>
 
 ---
 
+## 8b. 🔻 THE NEXT SHUTDOWN WINDOW — already booked. Do not rediscover this.
+
+**Three things need the game DOWN and none of them can be done while it runs.**
+Assembled 2026-08-14 during this load; the load itself is the build time.
+
+| # | item | owner | why it waits for a shutdown |
+|---|---|---|---|
+| S1 | 🔴 **`JawaSeaShaper.dll` — DEPLOYS SOLO** | CREATE builds · OPS deploys | Repo `b7730027` vs deployed `82b48e53` @ 08-13 23:57 — **the sea fix is NOT live.** The write **fails `OSError 22` while the game runs** (loaded and locked; the refusal is safe, it cannot truncate). A new assembly poisons attribution for anything beside it ⇒ **solo, and it is the gate on any worldgen load** |
+| S2 | `jawa/ideo_of` | BRIDGE | Built offline during this load. Companion work needs a **shutdown**, not a startup |
+| S3 | `jawa/biome_probe` | BRIDGE | Same. Unblocks 28 of 29 biome removals currently judged from def fields alone |
+
+⚠️ **S2 and S3 were deliberately kept OUT of the pre-launch build** — rushing two
+unproven tools into the one artifact that is currently proven-good, minutes before
+launch, risks 26 working tools to add 2. **That was the right call and it is not to
+be re-litigated;** it is why they are here.
+
+🔴 **Consequence to state plainly: worldgen is at minimum one shutdown away.**
+S1 must land first, and it cannot land while the game is up.
+
+---
+
 ## 9. 📋 AFTER THE LOAD — harvest, then refresh
 
 ```bash
