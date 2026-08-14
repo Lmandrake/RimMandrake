@@ -104,8 +104,14 @@ page that Faction Control unlocks and extends.
 > survive. **This does not change the checklist**: the owner's decision to regenerate
 > for v1 stands on its own, and a faction baked into the old save still cannot be
 > removed by any setting. But do not repeat "the saves are gone" — it is false on
-> disk, and whether to re-delete them (which needs Steam Cloud disabled first) is the
-> owner's call.
+> disk. ❌ **"Re-deleting needs Steam Cloud disabled first" was WRONG and is
+> superseded by the owner's ruling of 2026-08-14: delete while the game is
+> RUNNING.** Cloud reconciles at launch and wins, so a delete with the game DOWN
+> is what got undone; the live window is where it sticks. **Do NOT disable Steam
+> Cloud — that is no longer the fix and was never asked for.**
+> ⏳ **This rule EXPIRES the day the real campaign starts.** It exists only for
+> throw-away debugging worlds, and a standing "delete the saves" against a live
+> campaign would be destructive.
 
 There is no suppression setting to write to a file afterwards — Faction
 Control's `density` is a clumping radius, not a count, and setting it to 0 does
