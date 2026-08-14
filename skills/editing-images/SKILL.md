@@ -83,6 +83,75 @@ creep in. "Don't change the background" invites background changes. Write
 "the background stays flat #00ff00" instead. Full guidance:
 `../generating-images/references/prompting.md`.
 
+## Validation plan — what you owe whoever checks this
+
+`compare_images.py` proves the geometry held. It cannot prove the edit was the
+*right* edit — that judgement belongs to whoever asked for it, and their look is
+the expensive one. So an edit is not finished until it ships with the plan for
+checking it: hand over your prediction, not just the file.
+
+**1. The observable — what a player SEES when it works.**
+🔴 **A positive observation, never "no error".** Name the thing on screen.
+
+**2. The route — the exact call, click path or spawn that produces it.**
+The defName, the tool call with its arguments, the menu path. ⚠️ **If the route
+needs a tool that does not exist yet, say so and file it as blocked on the
+tool.**
+
+**3. The prediction — written BEFORE the look.**
+A number or a specific string. Without it you will rationalise whatever you see.
+
+**4. The threshold — what CLOSES it, and what is explicitly out of scope.**
+⭐ **A good threshold is usually one observation, not a battery.**
+
+**5. Batch or solo.**
+Most checks ride together. Solo is for anything that would destroy attribution.
+
+**6. What a FALSE PASS looks like.**
+The way this particular check lies. Every check has one, and it is the field
+people skip.
+
+```
+ITEM     <what is being validated>
+SEE      <the positive observation>
+ROUTE    <exact call / defName / click path>
+PREDICT  <number or string, before the look>
+CLOSE    <the bar> — NOT chasing: <the minutia deliberately skipped>
+RIDE     batch | solo (<why, if solo>)
+LIES     <how this check produces a false pass>
+```
+
+Seven lines. If it does not fit, the item is really two items.
+
+### How edit checks lie
+
+- **A plausible result read as an obeyed instruction.** The model returns a
+  competent image every time, including when it re-rendered the subject from
+  scratch and ignored the edit. Plausibility is what this failure looks like.
+  Predict the *specific* change and check for that one.
+- **Every step passed and the chain still drifted.** In a chained edit each pass
+  compares well against its immediate predecessor while the total drift from the
+  original is large. Run `compare_images.py` against the **original** at every
+  step, and say in the plan which baseline the number is against.
+- **Only the "after" was shown.** A reviewer given one image cannot see an
+  invariant break — they have nothing to break it against. Hand over before and
+  after, at the same size, or the invariant was never tested.
+- **The consumer is stale.** The edit is right and the reviewer opened the copy
+  that was already there. Give the path and its mtime, and check what they
+  actually loaded before concluding the art is wrong.
+
+### Worked example
+
+```
+ITEM     machine_rusted.png — corrosion pass over machine.png
+SEE      orange-brown pitting on the upper hull plates; the panel seams still read as straight lines
+ROUTE    open machine.png and machine_rusted.png side by side at 1:1
+PREDICT  mean colour shifts warm by 10–25 per channel; bbox and coverage within 2% of the original
+CLOSE    one side-by-side look agreeing the rust is surface, not silhouette — NOT chasing: exact hue
+RIDE     batch
+LIES     a plausible re-render passes on eyeballing; only compare_images.py catches a moved subject
+```
+
 ## Reference
 
 - `scripts/compare_images.py` — before/after geometry and colour diff.

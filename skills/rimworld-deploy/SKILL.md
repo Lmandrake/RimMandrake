@@ -135,3 +135,82 @@ tell BRIDGE before any shutdown: `skills/rimworld-load-round/SKILL.md` §6.
 - **One mod at a time**, verified before the next — `skills/rimworld-load-round/SKILL.md` §3.
 - Test on a dev-mode throwaway world and read `Player.log` for the patch's own name
   before trusting it in the campaign save.
+
+## 9. Validation plan — what you owe whoever holds the game
+
+**A deploy ends with a validation plan, not with `--apply`.** You are almost never
+the seat that will see it work: a game load costs **23–30 minutes** and one game is
+shared by five seats, so whoever holds it needs your prediction, not a nudge to
+"have a look at the Jawa stuff".
+
+### The six fields
+
+**1. The observable** — what a player SEES when it works. 🔴 A positive
+observation, never "no error"; absences are the cheapest thing in the world to
+produce by accident.
+**2. The route** — the exact call, defName or click path that produces it.
+**3. The prediction** — a number or specific string, written BEFORE the look.
+**4. The threshold** — what CLOSES it, and the minutia explicitly out of scope. An
+item with no threshold is inspected forever; one observation, not a battery.
+**5. Batch or solo** — most checks ride together; **a new assembly goes solo**,
+because if the load comes up wrong nobody can tell whether it was the DLL or the
+three def changes beside it.
+**6. What a FALSE PASS looks like** — the way this particular check lies.
+
+```
+ITEM     <what is being validated>
+SEE      <the positive observation>
+ROUTE    <exact call / defName / click path>
+PREDICT  <number or string, before the look>
+CLOSE    <the bar> — NOT chasing: <the minutia deliberately skipped>
+RIDE     batch | solo (<why, if solo>)
+LIES     <how this check produces a false pass>
+```
+
+Seven lines. If it does not fit, the item is really two items. Canonical format and
+the general false-pass catalogue:
+`/mnt/d/Luke/dev/Rimworld/skills/rimworld-debug-testing/references/validation_plan_format.md`.
+
+### The four ways a DEPLOY produces a false pass
+
+1. **A successful write says nothing about the running game.** RimWorld parses defs
+   and loads assemblies **once, at startup**. `--apply` reporting every file copied
+   and verified is a statement about the filesystem; the process that matters read
+   its copy minutes or hours ago. ⇒ **LIES** must name what the game last loaded
+   and when, not what the plan printed.
+2. **An assembly the game holds cannot be overwritten — and the failure is easy to
+   file and forget.** Windows refuses with `WinError 1224` (§7), so the copy does
+   not silently succeed; but the game folder is now carrying a **different build**
+   from the repo, and nothing in the plan output distinguishes "same DLL" from
+   "yesterday's DLL". **md5 both copies — it is the only way to know:**
+   ```bash
+   md5sum src/<Mod>/Assemblies/<Name>.dll "/mnt/c/Program Files (x86)/Steam/steamapps/common/RimWorld/Mods/<Mod>/Assemblies/<Name>.dll"
+   ```
+3. **An unscoped `--apply` deployed more than you think.** Five seats share one
+   working tree, so a bare `--apply` sweeps up whatever else is dirty — including
+   another seat's half-finished work — and any breakage in that load gets
+   attributed to your change. ⇒ **Scope every deploy: `--mod <ModName>`**, and say
+   in the plan which mods moved.
+4. **"Deployed" and "live" are different words.** A folder under `Mods/` changes
+   nothing until it is **enabled in the load order** (and, for a compatibility
+   patch, enabled LAST — §8). The plan warns when a mod is absent from
+   `ModsConfig.xml`; a plan that was not read is a mod that is on disk and inert.
+
+### Worked example
+
+A Harmony patch shipped as a new DLL for `Jawa_Patches`, deployed in the shutdown
+window:
+
+```
+ITEM     Jawa_Patches assembly 0.4.2 — melee cooldown patch
+SEE      A Jawa with a vibroblade attacks twice in the time a vanilla knife pawn attacks once
+ROUTE    Spawn Jawa + MeleeWeapon_Vibroblade, spawn a muffalo, draft and attack; watch the combat log
+PREDICT  Cooldown 1.4s (was 2.6s); Player.log prints "[Jawa_Patches] 3 patches applied"
+CLOSE    One combat-log reading at the predicted cooldown — NOT chasing DPS across quality tiers or other melee defs
+RIDE     solo (new assembly — batching it destroys attribution if the load comes up wrong)
+LIES     Game copy may be the PREVIOUS build if RimWorld was running at deploy (WinError 1224); md5 both DLLs before the load. Absent Harmony line = patch never applied, not "nothing to report".
+```
+
+⚠️ **Write it in the same commit as the deploy.** The alternative is that whoever
+holds the game invents a check, and theirs will not carry your prediction — which
+is the field that turns a look into evidence.

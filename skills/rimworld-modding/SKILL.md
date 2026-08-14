@@ -468,6 +468,88 @@ constructor rules cause a disproportionate share of "mod does nothing" reports:
 
 ---
 
+## Validation plan — what you owe whoever holds the game
+
+Anything you author and cannot check yourself — a def, a patch, an assembly —
+ends with a validation plan **in the same commit**. Not on request: a cold load
+costs 23–30 minutes (§2), and without a plan the person holding the game invents
+one, and theirs will not carry your prediction.
+
+**1. The observable — what a player SEES when it works.**
+🔴 **A positive observation, never "no error".** "No `Patch operation … failed`
+line" is an absence, and §7 item 4 says absences are the cheapest thing in that
+file. Name the thing on screen: the animal on the wildlife tab, `MoveSpeed` at
+4.6 in the stat readout, the recipe in the bill list.
+
+**2. The route — the exact call, click path or spawn that produces it.**
+The defName, the dev-mode spawner path, the bridge call with its arguments. ⚠️
+**If the route needs a tool that does not exist yet, say so and file it as
+blocked on the tool** — do not queue it for a load it cannot survive.
+
+**3. The prediction — written BEFORE the look.**
+A number or a specific string: *two* `wildBiomes` children, not "fewer". This is
+the field that turns a look into evidence; without it you rationalise the panel.
+
+**4. The threshold — what CLOSES it, and what is explicitly out of scope.**
+⭐ **Usually one observation, not a battery.** Name the minutia you are choosing
+not to chase — the icon, the translation key, the second biome.
+
+**5. Batch or solo.**
+§2's batch-by-risk rule, stated as a field. A validated pure-XML patch with named
+log strings rides along; **a new assembly goes solo**, because if the load comes
+up wrong nobody can separate the DLL from the three def changes beside it.
+
+**6. What a FALSE PASS looks like.**
+The way this particular check lies. Four that cost real cycles here:
+- **The conditional never ran.** A `PatchOperationConditional` in a mod that loads
+  *before* the mod it patches matches nothing, no-ops, and **prints no log line at
+  all** — so "clean log" and "patch applied" are indistinguishable. Load order
+  decides whether the check is even meaningful; assert the index (§5b).
+- **The consumer is stale.** The file is right and the game never read it —
+  RimWorld reads defs **once, at startup**. "Deployed" and "live" are different
+  claims (§6b), and the mtime against the process StartTime is the evidence.
+- **The instrument cannot see it.** `jawa/get_def` returns `extra: null` for def
+  types it does not model, which reads as *the field is absent*. Membership
+  questions go to the def dump, never to the probe.
+  (`traps-tooling.md` → "`jawa/get_def` returns `extra: null` for def types it does
+  not model, and it reads as \"absent\"" · "\"Empty output\" is not a result")
+- **A map-gen def checked on an old map.** A `GenStepDef` changes nothing until a
+  map is *generated after the load*; loading a save re-runs no GenStep, so a
+  correct fix reads as a third failure (§6b; `traps-diagnosis.md` → "The same mod
+  stayed dead through two correct fixes, for three different reasons").
+
+### The shape to hand over
+
+```
+ITEM     <what is being validated>
+SEE      <the positive observation>
+ROUTE    <exact call / defName / click path>
+PREDICT  <number or string, before the look>
+CLOSE    <the bar> — NOT chasing: <the minutia deliberately skipped>
+RIDE     batch | solo (<why, if solo>)
+LIES     <how this check produces a false pass>
+```
+
+Seven lines. If it does not fit, the item is really two items.
+
+Worked, for a `PatchOperationRemove` against a spawn table:
+
+```
+ITEM     Armadillo dropped from Desert spawns (Jawa_Patches/Biomes.xml)
+SEE      A freshly generated Desert map's wildlife tab lists no Armadillo, and
+         the live def dump shows 2 children under race/wildBiomes
+ROUTE    Load -> refresh the def dump -> read ThingDef Armadillo -> generate a
+         NEW Desert map (an existing save re-runs no GenStep) and open Wildlife
+PREDICT  exactly 2 wildBiomes children — was 3 (Desert, AridShrubland,
+         TropicalSwamp)
+CLOSE    The dump shows 2 — NOT chasing: Armadillos already spawned on old maps
+RIDE     batch — pure XML, validated clean, named log string to grep
+LIES     Remove deletes EVERY match (§4), so "Desert is gone" is also what a
+         too-greedy xpath looks like. Count the survivors, not the removal.
+```
+
+---
+
 ## 9. Keep this skill learning
 
 This domain's knowledge is almost entirely *earned* — each trap costs a debug

@@ -224,6 +224,83 @@ Deploying is a separate claim from writing. The game reads the Steam Mods
 folder, never this repo — run `python src/RimMandrake/Utils/deploy_custom_mods.py` for a plan,
 read it, then `--apply`. Per `agents_def.md`, only deploy your own files.
 
+## Validation plan — what you owe whoever holds the game
+
+The validator proves the file is shippable. Only the game proves the art is
+*drawn*, and a cold load costs **~23–30 minutes** — so a sprite is not finished
+until it ships with the plan for looking at it. Write the plan in the same
+commit as the PNG; the alternative is that the person holding the game invents
+one, and theirs will not carry your prediction.
+
+**1. The observable — what a player SEES when it works.**
+🔴 **A positive observation, never "no error".** Name the thing on screen.
+
+**2. The route — the exact call, click path or spawn that produces it.**
+The defName, the tool call with its arguments, the menu path. ⚠️ **If the route
+needs a tool that does not exist yet, say so and file it as blocked on the
+tool.**
+
+**3. The prediction — written BEFORE the look.**
+A number or a specific string. Without it you will rationalise whatever you see.
+
+**4. The threshold — what CLOSES it, and what is explicitly out of scope.**
+⭐ **A good threshold is usually one observation, not a battery.**
+
+**5. Batch or solo.**
+Most checks ride together. Solo is for anything that would destroy attribution.
+
+**6. What a FALSE PASS looks like.**
+The way this particular check lies. Every check has one, and it is the field
+people skip.
+
+```
+ITEM     <what is being validated>
+SEE      <the positive observation>
+ROUTE    <exact call / defName / click path>
+PREDICT  <number or string, before the look>
+CLOSE    <the bar> — NOT chasing: <the minutia deliberately skipped>
+RIDE     batch | solo (<why, if solo>)
+LIES     <how this check produces a false pass>
+```
+
+Seven lines. If it does not fit, the item is really two items.
+
+### How sprite checks lie
+
+Four earned ones — trap numbers are in
+`skills/rimworld-modding/references/traps-art.md`:
+
+- **The bare-path fallback drew instead of your file (trap 46).**
+  `Graphic_Multi.Init` calls `ContentFinder.Get(req.path)` — the path *without*
+  any `_north`/`_east` suffix — before it errors. A suffix-less PNG at the base
+  path silently satisfies a directional request, so a mis-deployed `_south`
+  renders as a pass. Name the facing you looked at.
+- **Correct at source, broken at render (trap 45).** Canvas right, alpha real,
+  bbox inside the footprint, and the muzzle still read as "cut off" because a
+  soft curve collapsed into a hard vertical wall at ~104 px. Predict what the
+  shape does at **display** size, not at generation size.
+- **A missing direction is not a defect (trap 37).** `visibleFacing` lets a def
+  ship three facings deliberately — a back attachment has no south. Read the
+  def's own declaration before calling a facing broken, or you will file a
+  commission the engine would never have drawn.
+- **The review image is not the rendered image (trap 45 companion, trap 48).**
+  A raw PNG on a contact sheet is not what the game draws: `<color>` tints it,
+  and a `HairDef`/apparel override is only drawn when that style is **selected**
+  — a pawnkind spawn rolls its own style, so the look passes or fails at random.
+  Pair the spawn with the selection.
+
+### Worked example
+
+```
+ITEM     Jawa wrecked smelter, south facing — WreckedSmelter_south.png
+SEE      a torn notch out of the upper-left housing, open ground visible through it
+ROUTE    spawn JawaWreckedSmelter on clear ground, rotate to south, default zoom
+PREDICT  the notch reads as ~15% of sprite width at 104 px; outline still fills one 1x1 tile
+CLOSE    one screenshot at default zoom showing the notch — NOT chasing: rust hue, E/W facings
+RIDE     batch
+LIES     bare-path fallback (trap 46) — a failed _south deploy draws WreckedSmelter.png and looks fine
+```
+
 ## Reference
 
 - `scripts/validate_sprite.py` — the graded reference-vs-candidate gate; `--describe` to

@@ -354,6 +354,92 @@ now in the exported artifact.
 `holdsRoof`, so spawn the door **in the same breath** as the destroy — a survey
 between the two calls is long enough for a collapse.
 
+## Validation plan — what you owe whoever holds the game
+
+`validate()` returning `[]` and `--roundtrip` passing prove the file agrees with
+itself. Neither is the game accepting the ship. So an authored layout ships with
+a validation plan **in the same commit** — because a load costs 23–30 minutes,
+and without one the seat holding the game invents a check that carries none of
+your predictions.
+
+**1. The observable — what a player SEES when it works.**
+🔴 **A positive observation, never "no error".** A ship that fails placement
+mostly fails *silently* — nothing red, nothing logged. Name the thing on screen:
+the layout's label on the choose-gravship page, `Connected substructure: 49 /
+4500` on the engine panel, a floor tile that is `MetalTile` and not dirt.
+
+**2. The route — the exact call, click path or spawn that produces it.**
+The filename in `Config\GravshipExport`, the scenario, the cell to `click_cell`,
+the gizmo. ⚠️ **If the route needs a tool that does not exist yet, say so and
+file it as blocked on the tool** — mid-game import is queued as **B-v2** and does
+not exist, so any item routed through a Sketch spawn is blocked, not queued.
+
+**3. The prediction — written BEFORE the look.**
+A number or a specific string: `49 / 4500`, two thrusters with no warning, 4,057
+`terrainDef` cells back. A layout is all counts; predict them.
+
+**4. The threshold — what CLOSES it, and what is explicitly out of scope.**
+⭐ **Usually one observation, not a battery.** Name the minutia you are skipping
+— the fog in unoccupied rooms, the missing preview PNG, the open questions in
+`gravship_flight_invariants.md` §9.
+
+**5. Batch or solo.**
+A layout file rides with anything else on the same new game — it enters at world
+creation and costs nothing extra. **A new assembly goes solo** (the B-v2 importer
+when it lands), because if the load comes up wrong nobody can separate the DLL
+from the ship beside it.
+
+**6. What a FALSE PASS looks like.**
+The way this particular check lies. Four measured here:
+- **Geometrically valid, still unplaceable.** A thruster must **STAND on
+  substructure while its exclusion zone contains NO substructure** — 1×5 behind a
+  `SmallThruster`, 2×7 behind a `LargeThruster`. `validate()` checks foundations
+  and engine coordinates and never looks at that rectangle, so a clean validator
+  run is not a clearance check (`gravship_flight_invariants.md` §5).
+- **Floors that survive export and vanish on a Sketch spawn.** Terrain is
+  re-applied by the arrival Postfix (`HarmonyPatch_DoGravship.cs:~157`), *not* by
+  `BuildFromLayout` — so a mid-game import lands the structure bare and **nothing
+  errors**. Export→import passing says nothing about the Sketch path (§"One real
+  catch"; invariants §9 q9).
+- **The surplus was silently disconnected.** `maxSimultaneous` (ours: 20 small,
+  10 large, read live) **drops the excess with no warning**. Counting thrusters in
+  the XML is not counting connected thrusters; read the engine panel (§5, §6).
+- **Under capacity read as flight-ready.** Completeness is a separate check from
+  capacity: the engine panel's red `Requires: Thruster, fuel tank, controls`, and
+  pathing (`NoPathToPilotConsole`, `PilotConsoleInaccessible`) — a sealed hull
+  connects fine and refuses to launch (invariants §1, §2).
+
+### The shape to hand over
+
+```
+ITEM     <what is being validated>
+SEE      <the positive observation>
+ROUTE    <exact call / defName / click path>
+PREDICT  <number or string, before the look>
+CLOSE    <the bar> — NOT chasing: <the minutia deliberately skipped>
+RIDE     batch | solo (<why, if solo>)
+LIES     <how this check produces a false pass>
+```
+
+Seven lines. If it does not fit, the item is really two items.
+
+Worked, for a hand-authored sled's first import:
+
+```
+ITEM     JawaTestSled.xml — thruster clearance and engine connection, first import
+SEE      Both SmallThrusters show a plain inspect panel with NO red "will be
+         blocked by gravship substructure" warning
+ROUTE    Drop JawaTestSled.xml in Config\GravshipExport -> new game, gravship-
+         arrival scenario -> choose page -> pick "Jawa test sled" -> click_cell
+         each thruster, then the GravEngine
+PREDICT  0 blocked warnings; engine panel reads "Connected substructure: 49 / 4500"
+CLOSE    Both thrusters clean and the engine reports 49 — NOT chasing whether the
+         exclusion run must also be OUTDOOR (invariants §9 q1)
+RIDE     batch — enters at world creation, rides with any other choose-page check
+LIES     validate() returns [] for this file: it checks foundation and engine
+         coords, never the 1x5 exclusion rectangle. A clean validator is not a check.
+```
+
 ## Why the file beats the build
 
 Building the v1 ship live took 31 bridge steps, 4,057 foundation cells, 4,057

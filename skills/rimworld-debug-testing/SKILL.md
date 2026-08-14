@@ -226,6 +226,103 @@ Ask in this order and stop at the first yes.
 **Before you put anything in `NEXT_RELOAD.md`, run this list.** An item that a
 quicktest could have closed does not deserve a 25-minute slot.
 
+## 7. 🔴 The validation plan — what this skill produces
+
+Everything above answers *what a result is worth*. **The validation plan is how you
+hand that judgement to somebody else** — it is this skill's deliverable, and this
+skill is its home.
+
+📄 **The canonical format, with worked false-pass examples:**
+`/mnt/d/Luke/dev/Rimworld/skills/rimworld-debug-testing/references/validation_plan_format.md`
+**Copy it verbatim into any skill that produces something the game must render,
+run or resolve** — skills package as independent zips, so a cross-skill pointer
+does not ship.
+
+The six fields, one line each, so you know whether you need to open it:
+
+| field | what it holds |
+|---|---|
+| **observable** | what a player SEES when it works — a positive sighting, never "no error" (§4) |
+| **route** | the exact call, defName or click path that produces it — blocked on a missing tool is a finding, not a queue item |
+| **prediction** | a number or string written BEFORE the look; without it you rationalise whatever you see |
+| **threshold** | what CLOSES it, and the minutia deliberately skipped (§9) |
+| **batch or solo** | most checks ride together; **a new assembly goes solo** or attribution dies |
+| **false pass** | how *this* check lies — the field everyone skips |
+
+```
+ITEM     <what is being validated>
+SEE      <the positive observation>
+ROUTE    <exact call / defName / click path>
+PREDICT  <number or string, before the look>
+CLOSE    <the bar> — NOT chasing: <the minutia deliberately skipped>
+RIDE     batch | solo (<why, if solo>)
+LIES     <how this check produces a false pass>
+```
+
+Seven lines. If it does not fit, the item is really two items.
+
+⚙️ **Write it before you run §6's list, not after.** Half the items that look like
+they need a cold load turn out, once the observable and route are written down, to
+be closable on a quicktest — and the plan is what makes that visible.
+
+## 8. Advising: turning "can you check X" into a plan
+
+Most requests arrive half-formed. *"Can you check the bandolier looks right?"*
+*"Does the ion weapon work?"* **These are not checks. They are gestures at an
+area**, and accepting one as written is how a load gets spent producing an opinion
+instead of a finding.
+
+🔴 **Ask two questions before you agree to look at anything:**
+
+1. **"What would you SEE?"** — forces the observable. If the answer is "the log
+   would be clean" or "it would work", there is no check yet; keep asking until a
+   thing on screen is named. *Bandolier looks right* → **a pawn selected, facing
+   north, with the strap drawn over the torso and not behind it.*
+2. **"What number do you expect?"** — forces the prediction. A range is fine, a
+   guess is fine, *"I don't know"* is the useful answer because it means the look
+   cannot fail and therefore cannot succeed either. *Does the ion weapon work* →
+   **a KotOR droid at 8 tiles drops in ≤3 shots.**
+
+Then close it out loud: **"so the bar is one screenshot of X, and I am not chasing
+Y."** State the threshold back to the asker (§9) — that is the half they did not
+think about, and it is the half that costs them a second load.
+
+⚠️ **You are entitled to refuse the shape, not the request.** "I can look, but as
+written nothing I see will settle it — here is the version that would" is a
+complete and helpful answer. **Never accept a check whose failure mode is
+identical to its success mode** (`DOC_BUDGET.md`: *ask what your check would print
+if the thing were broken*).
+
+⭐ **Advising is where the false-pass field earns its keep.** The asker knows what
+they built; they almost never know how the instrument lies. That is what you add.
+
+## 9. 🔴 Threshold discipline — an item with no closing bar is inspected forever
+
+**The scarce resources here are game loads and the owner's attention, not
+thoroughness.** A check with no stated bar does not fail; it recurs — looked at
+again next load, and the load after, because nobody can point at the sentence that
+closed it.
+
+Every item states **both halves**:
+
+- **the bar** — the single thing that, once seen, ends the item. *"One screenshot
+  of the pawn facing north with the strap drawn."*
+- **the minutia NOT being chased** — named on purpose, so the next reader knows it
+  was a decision rather than an oversight. *"NOT chasing: the two-pixel seam at the
+  belt buckle, or the other three rotations."*
+
+⭐ **A good threshold is usually ONE observation, not a battery.** Four rotations,
+three light levels and a stress test is not rigour — it is an item that will not
+fit in a load and will be half-done twice. Pick the one view most likely to be
+wrong (usually north, usually the rotation nobody drew) and close on it.
+
+**If you cannot say what would close it, you do not yet understand what you
+built** — and that, not the load, is the thing to go and fix.
+
+⚠️ **A threshold met is announced.** Say "closed by `<screenshot path>`" and stop
+looking. Re-inspecting something already closed costs exactly what inspecting it
+the first time cost, and buys nothing anybody asked for.
+
 ## Keeping this skill honest
 
 Every numbered trap here cost a real debug cycle. If you find another, add it with

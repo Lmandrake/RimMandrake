@@ -103,6 +103,76 @@ Codex quota. Treat each call as costing something real: use `--dry-run` while
 iterating on prompt wording, and generate at low ambition first — one small
 image proves the plumbing before a large one proves the art.
 
+## Validation plan — what you owe whoever checks this
+
+`chroma_key.py` validates its own output, and that is a claim about the file,
+not about the picture. Whoever asked for the image is the one who decides it is
+right, and their look costs more than yours — so hand the image over with the
+plan for checking it, including the prediction you made before you looked.
+
+**1. The observable — what a player SEES when it works.**
+🔴 **A positive observation, never "no error".** Name the thing on screen.
+
+**2. The route — the exact call, click path or spawn that produces it.**
+The defName, the tool call with its arguments, the menu path. ⚠️ **If the route
+needs a tool that does not exist yet, say so and file it as blocked on the
+tool.**
+
+**3. The prediction — written BEFORE the look.**
+A number or a specific string. Without it you will rationalise whatever you see.
+
+**4. The threshold — what CLOSES it, and what is explicitly out of scope.**
+⭐ **A good threshold is usually one observation, not a battery.**
+
+**5. Batch or solo.**
+Most checks ride together. Solo is for anything that would destroy attribution.
+
+**6. What a FALSE PASS looks like.**
+The way this particular check lies. Every check has one, and it is the field
+people skip.
+
+```
+ITEM     <what is being validated>
+SEE      <the positive observation>
+ROUTE    <exact call / defName / click path>
+PREDICT  <number or string, before the look>
+CLOSE    <the bar> — NOT chasing: <the minutia deliberately skipped>
+RIDE     batch | solo (<why, if solo>)
+LIES     <how this check produces a false pass>
+```
+
+Seven lines. If it does not fit, the item is really two items.
+
+### How generated-image checks lie
+
+- **Transparent and black are the same picture.** Judging alpha from the raw PNG
+  passes a fully opaque black background and fails a correct cutout for the same
+  reason: neither is visible. Route the check through `preview_alpha.py` and say
+  in the plan that the reviewer is looking at the checkerboard composite.
+- **The key came out and so did part of the subject.** A green fitting on a
+  `#00ff00` key gets holes punched through it, and the result still reads as a
+  clean cutout wherever the hole sits over dark detail. Predict the coverage
+  figure, and re-key on `#ff00ff` if it drops.
+- **An invisible fringe passes every visual check.** Pixels at alpha 1–31 are
+  invisible on screen and still corrupt every bounding box, coverage and
+  centroid measured downstream. The eyes cannot see this one; only the numbers
+  can, so put a number in the plan.
+- **The consumer is stale.** The generation succeeded and the reviewer opened
+  the previous file at the same path. Give the full path and its mtime with the
+  hand-off.
+
+### Worked example
+
+```
+ITEM     astrolabe.png — brass astrolabe icon on transparent background
+SEE      full brass ring and crossbars over the checkerboard, no green rim, no chewed edge
+ROUTE    python skills/generating-images/scripts/preview_alpha.py --input astrolabe.png --out _check.png
+PREDICT  coverage 25–40% of canvas; all four corners fully transparent; no pixels at alpha 1–31
+CLOSE    one look at _check.png with a clean rim — NOT chasing: engraving detail, exact brass hue
+RIDE     batch
+LIES     the raw PNG hides everything — an opaque black background looks identical to real alpha
+```
+
 ## Reference
 
 - `references/codex-contract.md` — verified CLI facts: how the binary is
