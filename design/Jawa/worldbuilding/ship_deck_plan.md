@@ -408,3 +408,57 @@ substructure.
 🔴 **If this is ever scoped as "part of the ship layout" it will quietly never
 happen.** Different pipeline, different tool, different owner. It is also
 provable on a quicktest map today, exactly like row 4.
+
+#### 🔴 REVISED — "big but slow" was wrong. Depth by CAPABILITY, not by work rate
+
+**CREATE priced my own ruling and it does not survive contact with RimWorld's
+work queue:** a poor yield-per-work rate on a huge hulk means the salvage
+designation sits in the backlog for years, competing with everything else the
+clan does. **The practical rate is not the one we tune — it is whatever labour is
+left over.** An arc nobody prioritises is an arc nobody experiences, which is the
+failure this seat exists to catch.
+
+**So the limiter changes. Each salvage job is ORDINARY speed. The hulk is deep
+instead.**
+
+> **The wreck opens in tiers, and the gate is what the clan can DO, not how long
+> it takes.**
+
+| tier | what it is | gate |
+|---|---|---|
+| **outer plating** | steel, and lots of it | **none — day one.** This is the early economy |
+| **inner structure** | more steel, some components | a tool the clan has to make first |
+| **the deep sections** | components, plasteel, the one or two real prizes | **research or equipment the clan does not have for a long time** |
+
+⭐ **This is strictly better than a slow grind, for three reasons:**
+
+1. **Every job completes.** Nothing rots in the queue, so the player actually
+   does it, so the arc actually lands.
+2. ⭐ **The player RETURNS to the wreck as they grow** — and each return pays
+   better. A landmark you revisit at three different capability levels is worth
+   far more than one you chew through once.
+3. **The "leave" trigger lands at the right moment.** You crack the deep sections
+   about when you are equipped to go, so the map empties exactly as you outgrow
+   it. **That timing was luck under the slow-grind version; it is designed under
+   this one.**
+
+#### The two layers — terrain buys the image, buildings carry the economy
+
+**CREATE's structural finding, and it splits the design whether we like it or
+not:** `BrokenSubstructure` is a **TerrainDef**. Terrain has no `costList` and
+cannot be deconstructed for yield — the only removal is a designator that returns
+**nothing**.
+
+| layer | def type | what it delivers | what it must never do |
+|---|---|---|---|
+| **broken floor** | Terrain | the **image** and the walkability | carry any economy — it cannot |
+| **the salvage** | **Buildings** standing on it | **all** yield, all tiering, all tuning | be pretty and empty |
+
+**Precedent is already in the stack:** *Salvage Rubble* patches a `costList` onto
+vanilla `RubblePile`. We would be doing the same thing to the ~170 pre-rusted
+wreck props the game already ships.
+
+⛔ **Filter the prop palette first.** Many `Ancient*` props descend from
+`NonDeconstructibleAncientBuildingBase` — **removable only by explosives.** Place
+one of those in the hulk and the clan *cannot strip it*, which breaks the entire
+ruling. **Deconstructible defs only.**
