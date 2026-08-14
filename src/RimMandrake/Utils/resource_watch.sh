@@ -73,6 +73,23 @@ while true; do
 
   echo "$TS,$AVAIL,$CLAUDE_RSS,$CLAUDE_N,$LOAD1,$WIN,$GPU" >> "$CSV"
 
+  # --- early warning: catch a ballooning seat while it is still climbing ---
+  # A seat's steady state is ~600 MB and the fatal one reached 27.4 GB, so the
+  # climb is long and there is real time to act. Warning at 3 GB is ~5x normal
+  # and half the 6 GB cgroup bound: enough runway to /clear or restart that one
+  # seat deliberately, which is strictly better than letting the bound kill it.
+  # The bound is the backstop; this is the part that avoids losing work at all.
+  BIG=$(ps -eo rss,pid,args --no-headers | awk '$1 > 3145728 && /claude|2\.1\./ {print}')
+  if [ -n "$BIG" ]; then
+    echo "$BIG" | while read -r rss pid rest; do
+      MSG="$TS WARN seat pid=$pid at $(( rss / 1024 )) MB (steady state ~600 MB)"
+      echo "$MSG" >> "$OUTDIR/ALERTS.txt"
+      echo "$MSG" >&2
+      # Visible even if nobody is watching this terminal.
+      command -v notify-send >/dev/null 2>&1 && notify-send -u critical "Claude seat ballooning" "$MSG"
+    done
+  fi
+
   # --- new kernel messages only (an OOM kill or a dxg fault lands here) ---
   NOW_DMESG=$(dmesg 2>/dev/null | wc -l)
   if [ "$NOW_DMESG" -gt "$LAST_DMESG" ]; then
