@@ -70,6 +70,37 @@ needs a **freshly generated** Desert/ExtremeDesert/AridShrubland map — a quick
 counts. **A screenshot is the evidence; a def query is not**, because every
 failure mode in it is silent.
 
+✅ **Deploy gap CLOSED.** The four `Jawa_Patches` ground-hulk files were repo-only
+when I checked at ~22:30 — `Defs\MapGeneration\JawaGroundHulk.xml`,
+`Defs\PrefabDefs\JawaGroundHulk.xml`, `Patches\JawaGroundHulk_Register.xml`,
+`Patches\BTDGravshipQuest_GrammarFix.xml`. Raised with OPS and PROJECT; applied
+since. `deploy_custom_mods.py` now reports no drift and all four are present in
+the game copy. **Part 3b can run.**
+
+🔴 **Part 3b's flagged trap has NO BASIS — do not use its diagnostic string.**
+The plan says a top-layer `Substructure` exposes only the `Substructure`
+affordance while `ShipChunk_Mech` needs `Heavy`, and tells you to report
+*"deck present, props absent"*. Both halves are wrong, verified against the
+shipping XML:
+- **`ShipChunk_Mech` needs `Light`.** `ParentName="ShipChunkBase"` →
+  `ShipChunkBase` `ParentName="BuildingBase"`; neither sets
+  `terrainAffordanceNeeded`, so it inherits `Light` from
+  `Data\Core\Defs\ThingDefs_Buildings\Buildings_Base.xml:11`. The `Heavy` in the
+  same Odyssey file belongs to `GravshipComponentBase`, a **different** abstract
+  it does not descend from.
+- **`BrokenSubstructure` provides Light/Medium/Heavy/Walkable/Substructure.** Its
+  `<affordances>` has no `Inherit="False"`, so the list MERGES with `FloorBase`'s
+  (`Data\Core\Defs\TerrainDefs\Terrain_Floors.xml:6-11`).
+
+⇒ Requirement and supply are satisfied on either layer, so the foundation-vs-top
+question does not gate the props. If props are missing, look at prefab
+placement, blocked cells or `spotMustBeStandable` — **not** the affordance.
+
+⚠️ **Scrapfields is NOT biome-gated**, contrary to the plan's "nothing below is
+patched into any other biome". `Patches\JawaResource_Scrapfields.xml:56-59` adds
+the GenStep to `MapGeneratorDef[Base_Player]` with no biome filter. A scrapfield
+on a non-desert quicktest is not a bug, and row 4's #3 does not need a desert.
+
 Pre-flighted offline 2026-08-13, two findings sent to CREATE:
 - 🔴 **line 118 names the wrong parameter** — `jawa/set_terrain` takes
   `terrainDef`, not `def`. The bridge drops unknown params silently, so as
