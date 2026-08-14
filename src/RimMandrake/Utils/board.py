@@ -128,6 +128,48 @@ def live_seats():
     return seats
 
 
+DWELL_FILE = os.path.join(STATUS_DIR, ".dwell.json")
+DWELL_BEFORE_ALARM = 90        # seconds a seat must be stopped before it alarms
+
+
+def dwell(live):
+    """How long each seat has held its CURRENT state.
+
+    ⚠️ **Without this the alarm band flaps and dies.** `blocked` is the normal,
+    momentary state of any seat sitting on a permission prompt or mid-tool-call
+    — a board that shouts on every one of those is the "rainbow dilution" and
+    "all-green normalisation" failure in one: the band is always lit, so it
+    stops being read, and the one time a seat is genuinely stuck it looks
+    exactly like the ninety times it was not.
+
+    Alert practice is explicit that a rule needs a minimum duration for which
+    it must hold before firing. 90 s is chosen because a real permission prompt
+    is answered in seconds, while a seat waiting on a human decision waits
+    minutes. **Tune this number, do not delete the gate.**
+    """
+    now = int(time.time())
+    prev = {}
+    try:
+        with open(DWELL_FILE) as fh:
+            prev = json.load(fh)
+    except Exception:
+        pass
+    out = {}
+    for seat, state in live.items():
+        p = prev.get(seat) or {}
+        since = p.get("since", now) if p.get("state") == state else now
+        out[seat] = {"state": state, "since": since}
+    try:
+        os.makedirs(STATUS_DIR, exist_ok=True)
+        tmp = DWELL_FILE + ".tmp"
+        with open(tmp, "w") as fh:
+            json.dump(out, fh)
+        os.replace(tmp, DWELL_FILE)
+    except Exception:
+        pass
+    return {k: now - v["since"] for k, v in out.items()}
+
+
 def ago(ts):
     if not ts:
         return "  never"
@@ -173,28 +215,24 @@ def render():
     # documented failure, not the remedy. A band that is usually absent is one
     # you actually read when it appears — a permanent "0 blocked" line is
     # wallpaper within a day.
-    stalled = [(seat, live[seat]) for seat in SEATS
-               if live.get(seat) in NEEDS_HUMAN and seat != SELF]
+    held = dwell(live)
+    stalled = [(seat, live[seat], held.get(seat, 0)) for seat in SEATS
+               if live.get(seat) in NEEDS_HUMAN and seat != SELF
+               and held.get(seat, 0) >= DWELL_BEFORE_ALARM]
     owner_rows = [f for f in r.get("OWNER", []) if len(f) >= 3]
     if stalled or owner_rows:
-        L.append(bar("NEEDS YOU"))
-        for seat, stv in stalled:
+        n = len(stalled) + len(owner_rows)
+        # Kanban's andon rule: a column over its limit is itself the signal.
+        # Past ~3 the bottleneck is the human, not the agents, and the correct
+        # response is to stop starting and start finishing.
+        L.append(bar("NEEDS YOU   %d%s" % (n, "   << YOU ARE THE BOTTLENECK" if n > 3 else "")))
+        for seat, stv, secs in stalled:
             item = (st.get(seat, {}).get("item") or "").strip() or "(no line set)"
-            L.append(row(">> %-7s %-8s STOPPED - %s" % (seat, stv, item[:40])))
+            L.append(row(">> %-7s STOPPED %s - %s"
+                         % (seat, ago(int(time.time()) - secs).strip(), item[:38])))
         for f in owner_rows:
             tag = "" if f[0] == "--" else "#%s " % f[0]
             L.append(row(">> %s%s" % (tag, f[1][:66])))
-
-    # --- v1, two per line: it is a goal tracker, not a task list -------------
-    L.append(bar("V1"))
-    v1 = r.get("V1", [])
-    cells = []
-    for f in v1:
-        if len(f) < 4:
-            continue
-        cells.append("%s %s %s" % (MARK.get(f[3], "[?]"), f[0], f[1][:24]))
-    for i in range(0, len(cells), 2):
-        L.append(row(cells[i].ljust(35) + (cells[i + 1] if i + 1 < len(cells) else "")))
 
     # --- seats: the only measured band --------------------------------------
     L.append(bar("SEATS"))
@@ -222,6 +260,24 @@ def render():
                          % (MARK.get(f[3], "[?]"), f[0], f[1][:46], f[2][:9])))
 
     # --- what is blocked on the owner --------------------------------------
+    # --- v1 LAST, deliberately: it is the scoreboard, not the work ----------
+    # Band order is needs-me -> in-flight -> will-be-done -> done. That order is
+    # near-universal across incident, CI and agent consoles, and it is the
+    # opposite of how a status doc is usually written (goals at the top).
+    # The goal band is the part that changes least, so it earns the least
+    # valuable screen position. ⚠️ Keep the DONE rows visible: hiding passing
+    # work is measured to induce "five failures and twenty-five failures look
+    # the same" blindness. Green stays on screen as ratio, not as detail.
+    L.append(bar("V1"))
+    v1 = r.get("V1", [])
+    cells = []
+    for f in v1:
+        if len(f) < 4:
+            continue
+        cells.append("%s %s %s" % (MARK.get(f[3], "[?]"), f[0], f[1][:24]))
+    for i in range(0, len(cells), 2):
+        L.append(row(cells[i].ljust(35) + (cells[i + 1] if i + 1 < len(cells) else "")))
+
     # --- the roster's own honesty line -------------------------------------
     try:
         rage = ago(int(os.path.getmtime(ROSTER)))
