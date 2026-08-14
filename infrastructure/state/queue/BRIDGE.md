@@ -25,6 +25,52 @@ path because the gate runs through it.
 
 ## Open
 
+### ⭐ THE NEXT LOAD'S SCRIPT IS ALREADY WRITTEN — read it before booking one
+
+`D:\Luke\dev\Rimworld\infrastructure\state\CREATE_TEST_PLAN.md`
+
+**CREATE wrote it, I execute it, and it had ZERO inbound references until now** —
+200 lines of live checks against material that is already deployed and enabled,
+and nothing pointed the only seat that can run it at it. Pointer added here
+2026-08-13 after PROJECT flagged it.
+
+Three parts: eight art-fix mods (one spawn, one look each), v1 row 3's quest
+`Jawa_ClaimRumour`, and v1 row 4's terrain plus the 619-cell ground hulk. Part 3
+needs a **freshly generated** Desert/ExtremeDesert/AridShrubland map — a quicktest
+counts. **A screenshot is the evidence; a def query is not**, because every
+failure mode in it is silent.
+
+Pre-flighted offline 2026-08-13, two findings sent to CREATE:
+- 🔴 **line 118 names the wrong parameter** — `jawa/set_terrain` takes
+  `terrainDef`, not `def`. The bridge drops unknown params silently, so as
+  written that call costs live minutes for nothing. `Jawa_SaltCrust` itself is
+  confirmed at `src\Jawa\Jawa_Patches\Defs\TerrainDefs\JawaSaltCrust.xml:100`.
+- Part 3b check 5 ("a colonist can walk onto and across it") and the rows 4-8
+  facing fallback were both unrunnable when it was written. **`jawa/order_pawn`
+  makes them measurements** — see B4 below.
+
+### ✅ B-t1 — `ilscan.py` compiled defaults. DONE 2026-08-13, `027572c`.
+
+Filed by PROJECT (`a1c32d2`), correctly routed to me. **Their line pointer was
+loose and it matters for the next reader:** `src/RimMandrake/Utils/ilscan.py:152`
+is the `ldc.r4` branch, and the constant LOADS were already wide (r4/r8/i4/i4.s/
+i4.0-8). The gap was the **STORE** side — it paired only with `stsfld` (0x80) and
+missed `stfld` (0x7D), which is where a C# field initialiser lands: the compiler
+moves `public float r = 25.9f;` into every constructor as
+`ldarg.0; ldc.r4 25.9; stfld r`.
+
+**Verified rather than accepted.** The widened scan on `GravshipSize.dll` emits a
+vanilla-mirror block reproducing
+`C:\Program Files (x86)\Steam\steamapps\common\RimWorld\Data\Odyssey\Defs\ThingDefs_Buildings\Buildings_Gravship.xml`
+— 16.9 / 18.9 / 250 / 750 / 24.9 — and a second block with the mod's own
+25.9 / 500 / 8. **Before the widening both blocks were invisible.**
+
+Output now carries a `static` / `default` column. ⚠️ They are different claims: a
+static row is a constant the code always uses, a default row is an initial value
+a settings file overwrites. ⚠️ And the field names in the mirror block are the
+mod author's, not Ludeon's — `gravExtenderMaxDistanceFromEngine` holds 18.9,
+which in the XML is GravEngine's `<radius>`.
+
 ### 🟢 DEPLOY STATE, measured 2026-08-13 22:03 — supersedes every count below
 
 `C:\Program Files (x86)\Steam\steamapps\common\RimWorld\BridgeTools\JawaBench\JawaBench.BridgeTools.dll`
