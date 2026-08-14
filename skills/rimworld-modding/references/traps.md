@@ -28,7 +28,7 @@ shorts, leave it untouched (→ `skills/rimworld-savegame/SKILL.md`).
 | trust what a script, grep, census or the def dump just told you | [`traps-tooling.md`](traps-tooling.md) | 33 |
 | call art missing, wrong, or broken | [`traps-art.md`](traps-art.md) | 13 |
 | chase a mod that is absent, dead, or ignoring its files | [`traps-mods-and-managers.md`](traps-mods-and-managers.md) | 13 |
-| believe a diagnosis, or call into a running game | [`traps-diagnosis.md`](traps-diagnosis.md) | 5 |
+| believe a diagnosis, or call into a running game | [`traps-diagnosis.md`](traps-diagnosis.md) | 6 |
 
 **If you only read one, read `traps-tooling.md`.** It is the largest section for
 a reason: the single most repeated failure in this project is not a wrong patch,
@@ -138,6 +138,7 @@ the one asked.**
 - A failed post-long-event action costs only itself — the queue continues
 - The same mod stayed dead through two correct fixes, for three different reasons
 - A correct general principle applied to the WRONG SET — and the leading question that launders it
+- A sampled extrapolation entered the record as a measured count — and then drifted
 
 ### The numbers
 
