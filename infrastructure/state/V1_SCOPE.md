@@ -403,18 +403,35 @@ storyteller/difficulty → Anomaly settings). Proven by IL xref of every reader 
 thing-set/trader-stock inclusion, and **never touches the def database, textures or
 map generation.**
 
-### 🔴 21 Anomaly cherry-picks WITHDRAWN by the owner, 2026-08-14 — do not re-propose
+### ✅ THE ANOMALY CHERRY-PICKS STAND — owner, 2026-08-14, correcting me
 
-A removal list would have deleted `PawnKindDef/Ghoul`, `Trispike`, `Metalhorror`, the
-Shamblers, `ThingDef/VoidNode`, `GoldenCube`, `RevenantSpine`, both obelisks and two
-`GeneDef`s — **the exact donor library this ruling says must stay reachable.** Only
-the three GravTech economy keys survive.
+> *"I did NOT agree to that anomaly ruling! I want to use some of those creatures…
+> leave them in with Anomaly set to zero but enabled, so we can still spawn them.
+> And add my cherrypicks! Do not revert them!"*
 
-📌 **The lesson, and it generalises past Anomaly: a SETTING that suppresses behaviour
-and a DELETION that removes the def are not interchangeable.** The setting is
-reversible and preserves the asset; the deletion is neither. **Check what the setting
-already covers before writing a removal list** — every incident key here was
-redundant with a playstyle we were already taking.
+**All three of the owner's positions hold together and always did:** playstyle
+`Disabled` so content is at zero · **DLC enabled** so the assets stay reachable ·
+**and the rejected creatures removed.**
+
+🔴 **I withdrew the picks on a false premise and it cost the owner nine verdicts they
+had already given.** I read the removal list, recognised Anomaly creature defs, and
+called them "the donor library" — **the two sets are DISJOINT.** The picks are what
+the owner *rejected* (metalhorror, shamblers, ghouls, golden cube, corrupted and
+warped obelisks, revenant spine, trispike). The donors are what the owner *kept*
+(sandscreamers, noctols, revenant, twisted obelisk, kybersphere, the sarlacc line,
+the Helix's three, the scurrier). **Nothing in the picks touches a donor.**
+
+📌 **The lesson is not the one I wrote here first.** *"Deleting defs destroys
+donors"* is a sound principle, reasoned from evidence — **it simply did not describe
+these defs.** A correct general principle applied to the wrong set is more dangerous
+than a wrong principle, because the reasoning survives review.
+
+> ⭐ **The check that would have caught it, and it takes two minutes: does the
+> removal list INTERSECT the keep list?** It was never run. Run it before arguing
+> that a removal is unsafe.
+
+*(The suppress-scope-delete rule stands on its own merits and is unaffected — the
+biome reroute to `PlanetTypeDef.biomeBlacklist` was right for its own reasons.)*
 
 ## 🔴 BEFORE THE NEXT WORLDGEN — things that cannot be patched in afterwards
 
