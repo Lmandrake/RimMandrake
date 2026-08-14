@@ -79,3 +79,26 @@ And the sections that were retired with the file:
 | §22 "RimWorld rewrites `ModsConfig.xml` on exit" is FALSE | 5 of 6 rows corrected, and the seven fix mods verified **present** in `ModsConfig.xml`. Only `design/Jawa/mods/forbidden_mods.md:171` survives, at OPS, `[v2]` | `a43b610` |
 | owner decision #5 — retire `TODO.md` | RULED + EXECUTED: 995 lines → 13-line stub; 4 doctrine moves, 5 deletions as verified duplicates, 4 survivors filed at seats, 12 inbound citations repaired | `e66650f` `dd51a3a` `6edb9d2` `53cb615` `9828b62` `a1c32d2` |
 | owner decision #7 — the keep-or-delete set | RULED + EXECUTED: 36 tracked files removed (11.5 MB), 15.4 MB untracked build output off disk, 3 docs salvaged-then-deleted, 7 rows fixed/linked/rewritten instead of deleted, 5 `.skill` zips untracked | `91a6d4b` `fdb5e74` `2caa9ad` `7a11091` `c5fd571` `6b192e9` `8c23f92` |
+
+## Drained out of `queue/CREATE.md`, 2026-08-13 (1,113 → 150 lines)
+
+| date | item | outcome | hash |
+|---|---|---|---|
+| 2026-08-13 | C2 Space Tower | KEEP unconditionally `[v2]`; towers are Imperial infrastructure and the Empire's retaliation IS the cost — the −15 goodwill patch is **dropped, not pre-wired** | — |
+| 2026-08-13 | C3 `DesertVehicleReskin` is a loadable mod | closed by the one-mod-per-donor ruling; packageId + `loadAfter` written | — |
+| 2026-08-13 | C3a eopie — all three owner fixes | **APPROVED AND SHIPPED.** Sled tint was a *def* edit not art; east snout was a *scale* failure, correct at source | `2a9a004` `65c1590` `7e3018e` |
+| 2026-08-13 | C4 gravship comp radii | solver right, 34/30/12/85 exact. Real find was a **wrong provenance comment**: `EXT_SUPPORT = 500` is Bigger Gravships' compiled default, not a settings key | — |
+| 2026-08-13 | C5 three blast-door `FrameAsync_east` | own fix mod; **the brief's transform was wrong** and was corrected against the measurement | `48e5e16` |
+| 2026-08-13 | C6 two filename typos | two fix mods, no art. 🎁 the astronaut typo also hits the **mask** for both life stages | `cb95f60` |
+| 2026-08-13 | C7 rows 1–3 (the "do first" set) | 22 files, 2 new mods; rows 1 and 3 needed **zero art** | `cb6c2f7` `dd66fe6` `dd4f386` |
+| 2026-08-13 | C8 `check_sprite.py` art intake validator | most of it already existed | `365e599` |
+| 2026-08-13 | C11 `MissingArtFixes` split | four per-donor mods; all seven textures now described. **Retirement steps 2–4 remain open** | `61fe954` |
+| 2026-08-13 | C12 `Jawa_Patches` About.xml under-documented | all 30 XML files + both textures described | `e9d0702` |
+| 2026-08-13 | C12 duplicate-file collision | 🔴 two fix mods were **inert** — `Jawa_Patches` @581 shadowed them at 561-2, and identical bytes hid it | `6f52185` |
+| 2026-08-13 | C-v1 rows 3 and 4 authored | ⚠️ **authored, not gated** — carried forward as OWED | `47733f8` `73ca76c` |
+| 2026-08-13 | C-v2 `validate_patch.py` scope gap | found **already built** — it dispatches on the root element and states what it does not scan | — |
+| 2026-08-13 | C-v3 restraining bolts, questions 1–4 | verdict **CAP the ceiling**; spec moved to `design/Jawa/worldbuilding/restraining_bolt_technical.md` | `8353622` |
+| 2026-08-13 | C-LOAD items 1 and 4 | already fixed **before OPS filed them** | `c0baa5c` |
+| 2026-08-13 | C-LOAD item 2 | **DECLINED** — both donors serve 1.6 art from an AssetBundle; a loose PNG wins regardless of order | `38f6d82` |
+| 2026-08-13 | C-LOAD item 3 | understated 40× — `Jawa_Doctrine` declared **no** load order and patches 630 defs across 42 mods | `731e9c5` `bd90813` |
+| 2026-08-13 | `everAcceptableInSpace` | gates the **Accept button**, not site placement. Friction in orbit, not silence; `autoAccept` suppresses it both ways. VISION ruled: flip the default for what we author, **do not sweep** | `95e500a` |
