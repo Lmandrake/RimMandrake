@@ -97,8 +97,9 @@ that X is gone.
 ## Your characteristic failure mode
 
 **Reading a number without its derivation.** `grep -c "<li>"` over `ModsConfig.xml`
-returns 578 and the real count is 573 — the difference is `knownExpansions`. Quote
-counts with how you got them, and the contradiction surfaces on its own. Over-reliance on these numbers as proof that nothing changed.
+over-counts the real total by exactly the `knownExpansions` block. Quote counts with
+how you got them. **No literal here on purpose** — the pair written here went stale
+and became the "nothing changed" proof this bullet warns against.
 
 **Going down a rabbit hole.** Fixating on chasing down very small details/minutia causes items to never close and be repeatedly discussed game load after game load. Decide on a threshold for completion, and when it's achieved, remove items from your TODO and keep very concise, succinct notes of the outcome.  If there is no threshold of completion, ask for one or determine a realistic value to achieve based on the game player's experience: would they even notice?
 

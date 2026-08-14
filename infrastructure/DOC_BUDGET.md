@@ -4,14 +4,15 @@ _PROJECT, 2026-08-13, on the owner's instruction. Run `python3 src/RimMandrake/U
 
 ## The measurement
 
-| | |
-|---|---|
-| markdown files | **271** |
-| total lines | **61,053** (~670k tokens if read whole) |
-| net growth, one day | **+5,555 lines** (+9,414 / −3,859) |
-| worst provenance density | `design/Jawa/mods/required_mods.md`, **19.7 marks per 100 lines** |
-| longest state file | `AGENT_BRIDGE_state.md`, **923 lines** — a handoff nobody can read |
-| commit bodies today | **5,137 lines across 177 commits** — 29 lines each, average |
+🔴 **For today's numbers run `python3 src/RimMandrake/Utils/doc_budget.py`** — its
+footer prints the file count, the total, and every file over budget. **Do not
+quote the snapshot below**; it is dated evidence for the diagnosis, nothing more.
+
+**As measured 2026-08-13:** 271 markdown files, 61,053 lines (~670k tokens if read
+whole), **+5,555 net in one day**; commit bodies 5,137 lines across 177 commits
+(29 each); worst provenance density `design/Jawa/mods/required_mods.md` at 19.7
+marks per 100 lines; longest state file `AGENT_BRIDGE_state.md` at 923 — *since
+fixed, it is 70 lines now, so do not go looking for that problem there.*
 
 **Nobody broke a rule to produce this.** Every file was individually justified, and
 every seat followed its own. Nothing measured the *total*, so nothing pushed back.
@@ -45,8 +46,9 @@ sentence. If the doc still tells you what to do, the sentence was provenance.**
 
 **3. A closed item is ONE LINE in `CLOSED.md`, and its body is deleted.** Not
 struck through in place, not kept "so nobody re-files it" — one line with the date
-and hash does that job at 2% of the cost. `NEXT_RELOAD.md` currently carries 26
-closed sections out of 82.
+and hash does that job at 2% of the cost. Count with
+`grep -cE '^#{2,4} ' infrastructure/state/NEXT_RELOAD.md` — never from memory; the
+figure written here was 4x out within a day.
 
 **4. One in, one out.** Adding a section to a budgeted file means removing or
 compressing one. A file at budget is not full; it is *finished*, and the next

@@ -118,22 +118,22 @@ not all five.
 
 ## First action of every session — name your window
 
-**As soon as you know which agent you are, rename the terminal window to say so.**
+**Open the seat's own Windows Terminal tab — that is the whole startup. Nothing
+typed.** The profile exports `AGENT_SEAT` and launches `claude --name 'AGENT
+<SEAT>'`; the SessionStart hook titles the window and injects the seat file.
+
+Only for a tab opened **without** a profile, or a seat changing role:
 
 ```bash
 ./src/RimMandrake/Utils/set_agent_window.sh CREATE        # BRIDGE | OPS | CREATE | VISION | PROJECT
 ```
 
-Four-plus identical windows share one working tree and one game install, with no
-channel between them. "Is another agent on the game right now?" and "who is
-inside this doc?" are both answered from the taskbar — but only if the windows
-carry names. Leaving one unnamed pushes that work onto the owner.
-
-Roles and the full rule are in `agents_def.md` (Rule 0), which also records why a
-bare `printf` is not enough: Claude Code rewrites the title every turn unless
-`CLAUDE_CODE_DISABLE_TERMINAL_TITLE=1`, now set in `.claude/settings.json`. That
-variable is read once at process start, so it applies from the **next Claude Code
-launch** — a restart of the CLI, never a game load.
+⛔ **That fallback renames the window; it does NOT make you addressable** — that
+comes from `--name` at launch only, so a seat that used it must still be reached
+via `peers.py`. Five identical windows share one working tree and one game
+install: "who is on the game?" is answered from the taskbar, but only if the
+windows carry names. Full rule, and reinstalling the profiles:
+`agents_def.md` Rule 0.
 
 ## Never ignore a problem, especially one that is not yours
 
@@ -190,7 +190,7 @@ narrow reading.
 ## 🔴 V1 scope is set — check it before you queue anything
 
 **Owner's decision, 2026-08-13.** `D:\Luke\dev\Rimworld\infrastructure\state\V1_SCOPE.md`.
-**PROJECT holds the MVP seat** and sets the v1/v2 line; the other three own
+**PROJECT holds the MVP seat** and sets the v1/v2 line; the other four own
 execution and appeal to the owner, not to PROJECT.
 
 > **Everything ships THIN, except the gravship, which ships DEEP.**
@@ -239,8 +239,11 @@ LIVE BRIDGE TAKEN    — <seat>, <what you are about to do>
 LIVE BRIDGE RELEASED — <seat>, <what changed, and anything left on the map>
 ```
 
-Send to every peer by name via `SendMessage`; `ListAgents` resolves them (seats
-that have run `set_agent_window.sh` appear as `AGENT <SEAT>`).
+🔴 **Resolve every address with `python3 src/RimMandrake/Utils/peers.py`** — send to
+`NAME`, read `SEAT`. Addressability comes from `--name` at launch and nothing else,
+so `set_agent_window.sh` does **not** make a session reachable. First contact needs
+the `[ref]` from `ListAgents`, and a bounce is not a seat being down
+(`skills/agent-messaging/SKILL.md` §3a).
 
 **A "taken" with no "released" is worse than silence** — it marks the bridge
 occupied forever, so the next seat either blocks on nothing or drives it anyway,

@@ -19,7 +19,7 @@ housekeeping wearing a feature's clothes. You dream big, even when some of your 
 ## You own
 
 ```
-design/Jawa/worldbuilding/                     all 31 files — the roster, biome and fauna,
+design/Jawa/worldbuilding/                     every file in it — the roster, biome and fauna,
                                    desert_world_design.md, setting physics,
                                    water doctrine, the endgame branch web, the faction roster and its gap audits, the xenotypes we need (and don't)
 infrastructure/state/queue/VISION.md                    your queue — write freely

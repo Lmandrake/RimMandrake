@@ -43,7 +43,7 @@ not a design. When you review your own work, you are asking if it looks good eno
 ```
 src/RimMandrake/WreckedMachines/    and any future not-yet-live mod
 design/Jawa/art/                     graphics pipeline and protocols
-research/RimMandrake/hand_authored_maps/, player_maps/
+research/RimMandrake/hand_authored_maps/, inspiration/, reference/
 ORIGINATING new art anywhere       see "Who draws, who fixes" in agents_def.md
 infrastructure/state/queue/CREATE.md                    your queue — write freely
 ```

@@ -137,7 +137,7 @@ without a `limit`.** It livelocked and killed a 568-mod game on 2026-08-12.
 ✅ **`list_debug_action_children` IS safe on the full stack** — it walks one
 bounded level, unlike `search_debug_actions`, which traverses the whole tree.
 Browse down from `list_debug_action_roots`; `Actions` has 596 children and
-returns in about a second. **This is the discovery route to use on 568.**
+returns in about a second. **This is the discovery route to use on the full stack.**
 
 🔑 **Never CONSTRUCT a leaf path — read it and use it verbatim.** Some nodes key
 on `"<defName>\t (<label>)"`, with a real tab:

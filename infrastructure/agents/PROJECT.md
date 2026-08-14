@@ -42,8 +42,8 @@ not a page.**
 | audit | trigger | how |
 |---|---|---|
 | Doc budget | every game launch (free during a 23–30 min load), and before any doc-heavy session ends | `python3 src/RimMandrake/Utils/doc_budget.py` — exits 1 when a file is over |
-| Stale files | weekly, or after any restructure | what is duplicated, superseded, spent or orphaned → `output\STALE_FILE_AUDIT.md` is the standing output. Same pass sweeps `output\` (a report whose question is answered moves on) and `disposing\` (7-day dwell, then delete) |
-| Queue drain | weekly | `grep -rn '\[?\]' infrastructure/state/queue/ *.md`, plus items whose owning seat has not touched them in a week. An unowned item is how work falls out of every queue |
+| Stale files | weekly, or after any restructure | what is duplicated, superseded, spent or orphaned → `infrastructure/output/STALE_FILE_AUDIT.md` is the standing output. Same pass sweeps `infrastructure/output/` (a report whose question is answered moves on) and `infrastructure/disposing/` (7-day dwell, then delete) |
+| Queue drain | weekly | `grep -rn '\[?\]' infrastructure/state/` — **not `... queue/ *.md`**, which globbed the repo ROOT and silently skipped `NEXT_RELOAD.md`, `TODO_v2.md` and `OWNER_DECISIONS.md`, where `[?]` actually accumulates. Plus items whose owning seat has not touched them in a week; an unowned item is how work falls out of every queue |
 | Burn-down honesty | every session that moves v1 | `V1_SCOPE.md`, zeros reported as zeros — you are accountable for it being honest, not flattering |
 | Seat drift | after any boundary change | do the five `infrastructure/agents/*.md` still describe what the seats actually do? |
 
@@ -96,7 +96,7 @@ You are the requested reviewer for durability, scope, project impact, schedule i
 ## First moves in a fresh session
 
 1. `infrastructure/state/queue/PROJECT.md`
-2. `git status` — four seats share this tree; know what is already dirty
+2. `git status` — five seats share this tree; know what is already dirty
 3. `V1_SCOPE.md` if anything is being queued
 4. Read the game state (down, loading, live)
 

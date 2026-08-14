@@ -293,9 +293,10 @@ depends on the previous one having actually landed on disk.
    stat -c %y "$MC"
    ```
 
-   ⚠️ Count `activeMods` specifically. `grep -c "<li>"` over-counts by the expansions —
-   **578 raw versus 573 active plus 5 `knownExpansions`** — and that five-mod gap has
-   been mistaken for a real discrepancy before.
+   ⚠️ Count `activeMods` specifically. `grep -c "<li>"` over-counts by exactly the
+   **5 `knownExpansions`**, and that five-mod gap has been mistaken for a real
+   discrepancy before. **Print the number; never quote a remembered one** — the
+   literals that used to sit here went 12 mods stale.
 8. **Then, and only then, spend the load** — hand off to
    `skills/rimworld-load-round/SKILL.md`.
 

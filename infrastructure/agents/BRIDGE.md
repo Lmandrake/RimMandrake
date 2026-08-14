@@ -32,7 +32,7 @@ src/RimMandrake/Utils/rimbridge_client.py, src/RimMandrake/Utils/bridge_latency.
 src/RimMandrake/Utils/frame_lock_probe.py, src/RimMandrake/Utils/rimbench/, src/RimMandrake/Utils/rimbridge_lineup.py
 src/RimMandrake/bridgetools/                      companion DLL source + build
 skills/rimbridge/                 SKILL.md and references/
-design/RimMandrake/map_authoring_decision.md, observed/2026-08-13/latency_*.json
+design/RimMandrake/map_authoring_decision.md, observed/*/latency_*.json
 infrastructure/state/queue/BRIDGE.md                   your queue — write freely, nobody blocks on it
 ```
 
