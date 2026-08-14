@@ -257,9 +257,6 @@ def main() -> None:
     report += ["symbols:"] + log
 
     # Post-conditions. Cheap, and each one has a real failure mode behind it.
-    n_precepts = text.count("\t\t\t<li Class=\"Precept") + len(
-        re.findall(r"\t\t\t<li>\n\t\t\t\t<name>", text)
-    )
     ids = re.findall(r"<ID>(\d+)</ID>", text)
     if len(ids) != len(set(ids)):
         fail("duplicate precept IDs after edit")
