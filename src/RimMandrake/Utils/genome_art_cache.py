@@ -37,8 +37,10 @@ except ImportError:
 
 from game_paths import GAME_DATA, LOCAL_MODS, MODS_CONFIG, WORKSHOP  # noqa: E402
 
-# Only these branches of the texture tree are worth the extraction time.
-WANTED = ("ui/icons/genes", "ui/icons/xenotypes", "ui/icons/xenotype")
+# Substring match, not prefix: every pack invents its own tree. Vanilla uses
+# UI/Icons/Genes, Outer Rim uses OuterRim/XenotypeIcons and OuterRim/GeneIcons,
+# Alpha Genes uses a bare GeneIcons/. A prefix list missed two of the three.
+WANTED = ("gene", "xenotype")
 
 CONTAINER_RE = re.compile(r"^assets/data/[^/]+/textures/(.*)$", re.I)
 
@@ -127,7 +129,7 @@ def main() -> int:
                 rw = rimworld_path(container) if container else ""
                 if not rw:
                     continue
-                if not args.all_paths and not any(rw.startswith(w) for w in WANTED):
+                if not args.all_paths and not any(w in rw for w in WANTED):
                     continue
                 dest = out_dir / (rw.replace("/", "%") + ".png")
                 if dest.exists():
