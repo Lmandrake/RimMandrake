@@ -9,15 +9,33 @@ import os
 import sys
 import xml.etree.ElementTree as ET
 
-# Resolved from this file, not hardcoded: the repo moved G: -> D: on 2026-08-12
-# and is reached by different paths from Windows Python and WSL.
-_REPO_ROOT = os.path.abspath(
-    os.path.join(os.path.dirname(__file__), "..", "..", "..", "..", ".."))
+# 🔴 WALK UP TO A MARKER; DO NOT COUNT "..". This file counted five of them and
+# the 2026-08-13 restructure changed its depth, so the path landed above the repo
+# and `from def_diff import ...` died with ModuleNotFoundError. The generator
+# carries the same lesson in its own header — this script was simply missed.
+# A marker file cannot miscount.
+def _find_repo_root(start):
+    d = os.path.abspath(start)
+    while True:
+        if os.path.isdir(os.path.join(d, ".git")) or \
+           os.path.isfile(os.path.join(d, "CLAUDE.md")):
+            return d
+        parent = os.path.dirname(d)
+        if parent == d:
+            raise RuntimeError(
+                "could not find the repo root above %s - no .git or CLAUDE.md "
+                "on any parent. Refusing to guess." % start)
+        d = parent
+
+
+_REPO_ROOT = _find_repo_root(os.path.dirname(os.path.abspath(__file__)))
 sys.path.insert(0, os.path.join(_REPO_ROOT, "src", "RimMandrake", "Utils"))
 from def_diff import iter_live_defs
-
-DUMP = (r"C:\Users\Mandrake\AppData\LocalLow\Ludeon Studios"
-        r"\RimWorld by Ludeon Studios\DefDump\defs\ThingDef.json")
+# ⚠️ And the dump path was a bare C:\ literal, which dies under WSL python3 with a
+# FileNotFoundError naming ThingDef.json - reading as "take a fresh dump" when the
+# dump is present and only the interpreter is wrong. game_paths resolves it.
+import game_paths as _GP
+DUMP = os.path.join(_GP.LOCALLOW, "DefDump", "defs", "ThingDef.json")
 PATCHES = os.path.join(_REPO_ROOT, "src", "Jawa", "Jawa_Armoury",
                        "Patches", "*.xml")
 TORSO = 40.0

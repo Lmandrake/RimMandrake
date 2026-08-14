@@ -146,6 +146,16 @@ BANDS = {"blaster": (24, 34), "blaster_heavy": (52, 72), "slugthrower": (18, 36)
          # projectile trap this file has already met three times.
          "artillery": (250, 600)}
 
+# What separates a siege gun from a defence turret: it detonates. Measured on the
+# live set -- ordinary turret bullets carry radius 0, while the smallest real
+# blast projectile in the load is around 1.0 cells. 1.5 keeps incidental splash
+# out of the rung without needing a name list.
+ARTILLERY_MIN_RADIUS = 1.5
+# And it must hit like a siege piece, not merely splash. Set at the emplacement
+# band's own ceiling: below 200 a fixed gun is a defence turret by our own
+# definition, so it belongs on 40-200 and not on a rung that starts at 250.
+ARTILLERY_MIN_DAMAGE = 100
+
 
 def dn_mod_is_yautja(w):
     return w["mod"] == "[AB] Xenotype: Yautja"
@@ -289,7 +299,12 @@ for d in iter_live_defs(DUMP):
         if dmg is not None:
             projectiles[d.get("defName")] = {"mod": d.get("modName") or "",
                                              "dmg": dmg,
-                                             "type": pr.get("damageDef") or ""}
+                                             "type": pr.get("damageDef") or "",
+                                             # 🔴 The DISCRIMINATOR for the artillery
+                                             # rung. Judged by what the projectile
+                                             # IS, never by what it is called --
+                                             # see classify().
+                                             "radius": pr.get("explosionRadius") or 0.0}
     isb = d.get("is") or {}
     if isb.get("weapon") or isb.get("meleeWeapon") or isb.get("rangedWeapon"):
         w = {"defName": d.get("defName") or "", "label": d.get("label") or "",
@@ -402,16 +417,34 @@ def classify(pname, p, users):
     # serves VFES_Gun_ShotgunTurret AND Gun_PumpShotgun -- so promoting them
     # would silently buff the personal gun too. Third time this project has met
     # the shared-projectile trap; exclusivity is now checked, not assumed.
+    # 🔴 THE TURBOLASER TEST MUST COME BEFORE THE TURRET BRANCH. It did not, and
+    # the turret branch swallowed it: OuterRim_Proj_HeavyTurbolaser went
+    # 2000 -> 600 (artillery) and OuterRim_Proj_Turbolaser 2000 -> 200
+    # (emplacement). Capital weapons are MOUNTED -- being turret-exclusive is
+    # what a turbolaser IS, so testing exclusivity first can only ever demote it.
+    # The ship-scale rung is defined by the weapon, not by its mounting.
+    if "turbolaser" in b:
+        return "turbolaser"
+
     everyone = all_users.get(pname) or []
     if everyone and all(is_turret(u) for u in everyone):
         if p["dmg"] <= 0:
             return None
-        # Turret-exclusive AND explosive is the artillery rung. Turret-exclusive
-        # and not explosive is an ordinary emplacement. The exclusivity test has
-        # already passed at this point, which is what keeps every hand-carried
-        # explosive out of both rungs -- see the BANDS note on L13.
-        if any(k in b for k in ("grenade", "missile", "rocket", "bomb", "charge",
-                                "shell", "mortar", "artillery")):
+        # 🔴 ARTILLERY IS JUDGED BY EXPLOSION RADIUS, NOT BY NAME. The first
+        # version matched the same word list used to EXCLUDE explosives, and
+        # "charge" is in it -- so every CHARGE weapon (charged energy, not an
+        # explosive charge) was classified as artillery: Bullet_ChargeCannon,
+        # Bullet_WallChargeTurret, VFES_Bullet_ChargeComplex and a dozen more.
+        # A 14-damage wall turret came out at 250 while the Singularity Cannon
+        # was NERFED 1000 -> 421. Ordering destroyed, by a substring.
+        # A projectile that detonates has a radius; one that does not, does not.
+        # ⚠️ A RADIUS ALONE IS NOT A SIEGE GUN. Requiring only a blast put a
+        # 20-damage Alpha Animals turret and a 30-damage wall charge onto a rung
+        # whose FLOOR is 250 -- a 12x buff, because spread() clamps anything below
+        # the source range to the band minimum. A siege piece hits hard AND
+        # detonates; a small turret that happens to splash is an emplacement.
+        if (p.get("radius", 0) >= ARTILLERY_MIN_RADIUS
+                and p["dmg"] >= ARTILLERY_MIN_DAMAGE):
             return "artillery"
         return "emplacement"
     if users and all(is_verb((u["defName"] + " " + u["label"]).lower()) for u in users):
@@ -449,7 +482,7 @@ SOURCE_RANGE = {
     # in this load run from Outer Rim's 2000 down to the small siege pieces, and
     # GravTech's Singularity Cannon sits at 1000. Clamped rather than
     # extrapolated by spread(), so a wilder mod cannot drag the rung.
-    "artillery": (50, 2000),
+    "artillery": (100, 2000),
 }
 
 
