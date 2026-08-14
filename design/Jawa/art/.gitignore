@@ -11,4 +11,11 @@ seed/
 #   python3 design/Jawa/art/scan_graphics.py
 # The census also expires whenever the mod list changes.
 census_building_graphics.tsv
-salvage_palette.tsv
+
+# ⚠️ NOT ignored, deliberately: salvage_palette.tsv and SALVAGE_PALETTE.md.
+# The deconstructible filter is a v1 DELIVERABLE (owner, 2026-08-13), not a
+# scratch artefact — it is an ingredient every future wreck placement spends, so
+# the output ships beside the script that makes it. Derived-and-expiring would
+# normally mean "gitignore it", but a filter nobody can read without first
+# running an 850 MB scan is not a deliverable. Regenerate after any modstack
+# change: python3 design/Jawa/art/salvage_filter.py
