@@ -330,3 +330,74 @@ offline check and is absent only in the live def.**
 game**: three Jawa xenotypes, the extender's phantom 500, and Engines Unlimited's
 9000. **For any value a mod might rewrite at startup, the XML and the dump answer
 "what shipped", never "what the game holds."**
+
+---
+
+## 11. 🔴 THE FLIGHT RULING — CREATE, 2026-08-14. Ships UNBUILT, and that is the design.
+
+`V1_SCOPE.md` handed VISION and CREATE one question: *is flight v1-adjacent or
+v2?* VISION is down; this is CREATE's half, measured offline, and it is
+answerable without the game.
+
+**Ruling: the flight CAPABILITY is v1. The flight HARDWARE is not, and must not
+be.** The exported hull ships with no thruster, no tank and no console — and that
+is correct, not an omission. The design docs already made this call and nobody
+had noticed they had: `ship_deck_plan.md:224` gates it as **"Phase 4 — Fly …
+Mobility earned, not given"**, and `ship_build.md:148-149` reserves zones `S`
+(stern thrusters) and `U` (fuel bunkerage) by name. **Flight was designed IN and
+deliberately deferred.** Building it now would spend the campaign's best
+mid-game goal to satisfy a checklist.
+
+⇒ **v1 owes the hull nothing.** What v1 owes is proof that the route the player
+walks in Phase 4 is not blocked by something the hull already got wrong.
+
+### Why this is cheap when the player does reach for it — measured
+
+| | minimum flying config | cells | cost |
+|---|---|---|---|
+| Controls | **`VGE_PilotCockpit` 1×2** (not `PilotConsole` 3×2) | 2 | Steel 70, Comp 3 |
+| Thruster | `SmallThruster` 1×2 | 2 | Steel 180, Comp 4 |
+| Fuel | `ChemfuelTank` 2×2 | 4 | Steel 120 |
+| | **total** | **8 of 4,057** | **Steel 370, Comp 7** |
+
+⭐ **The cockpit route needs only `BasicGravtech` — 50 points, prerequisites
+deleted by VGE.** The vanilla `PilotConsole` was *moved* to `StandardGravtech`
+(200 pts, HiTechResearchBench) by `VanillaGravshipExpanded/1.6/Patches/PilotConsole.xml`.
+**Do not write "the console gates flight" into any doc** — the cheap Controls
+provider is a different building on a cheaper research.
+
+**Range is entirely thrusters.** `GravEngine`'s `GravshipRange` statBase is **0**;
+each small thruster is **+10** world tiles, each large **+16**. Ship size does not
+change any required COUNT — all three requirements are "≥1".
+
+**Fuel is not the constraint.** VGE replaces both tanks' `CompProperties_Refuelable`
+with a PipeSystem resource store: **250 astrofuel** small, **750** large, burned at
+**5/tile, minimum 25 a launch**. One small tank carries 50 tiles of fuel against one
+thruster's 10 tiles of reach. ⚠️ Therefore `BG_chemFuelTankSize 1140.61` in the BG
+settings file **targets a comp VGE deleted** — unverified whether it lands on
+anything. Do not quote it.
+
+### 🔴 The one thing that has a DEADLINE, and it is not flight
+
+Open question **§9.1 — does a thruster's exclusion run have to be OUTDOOR, or
+merely substructure-free?** — is no longer academic, because the answer decides
+whether the *already exported* hull is wrong.
+
+- Substructure-free: **fine.** Stern columns x41–49 stop at z=132, so a thruster at
+  z131–132 throws its 5-cell run into z133–137, entirely off the deck. Zone `S` is
+  90 cells with **77 free**. Nothing to change.
+- Must be outdoor: zone `S` sits **inside the hull line**, and the fix is cutting
+  the stern hull back — a **re-lay of the deck**, not a placement.
+
+⇒ **This is the only flight question worth spending a live minute on**, and it is
+one dev-mode placement at the stern: place a `SmallThruster` at x45 z131 and read
+whether it reports `WarningThrusterInside`. **Ask it while the hull is still cheap
+to change.** Everything else in this section is settled and can wait for the player.
+
+### Not determinable offline — do not let these be quoted as known
+
+`Building_GravEngine.FuelPerTile`'s own getter (C#, read live) · whether BG's tank
+dial survives VGE's comp replacement · `BG_maxThrustersLarge` (absent from the
+settings file; 10 is from the DLL default) · whether the two `Door` things in 780
+hull segments actually give a pawn a path to the console's interaction cell —
+which is the standing `NoPathToPilotConsole` item, and **a door is not a path**.
