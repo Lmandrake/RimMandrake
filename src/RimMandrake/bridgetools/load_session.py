@@ -230,10 +230,6 @@ def i_pilot_console(s, cfg):
     beside a console and still fail InteractionCell. Do not "simplify" this to
     x/z. traps.md, "A correct measurement of the WRONG predicate".
     """
-    consoles = [t for t in ((s.call("jawa/list_pawns") or {}).get("pawns") or [])]
-    del consoles                                   # pawns are not the target
-    found = s.call("rimworld/get_cell_info", x=cfg.x, z=cfg.z)
-    del found
     cid = cfg.console_id
     if not cid:
         return record("A2", "NoPathToPilotConsole", SKIP,
@@ -330,7 +326,7 @@ def i_dune_seas(s, cfg):
         extra = (r or {}).get("extra") or {}
         pms = extra.get("terrainPatchMakers")
         if pms is None:
-            record("A5", "dune seas %s" % biome, FAIL,
+            record("A5-%s" % biome, "dune seas %s" % biome, FAIL,
                    "get_def returned no terrainPatchMakers -- the companion "
                    "predates the BiomeDef branch. Census said 21; check the deploy.")
             continue
@@ -339,7 +335,8 @@ def i_dune_seas(s, cfg):
                 for t in (pm.get("thresholds") or [])
                 if t.get("terrain") == "SoftSand"]
         hit = any(abs((m or 0) - target) < 0.001 for _, m in soft)
-        record("A5", "dune seas widened in %s" % biome, PASS if hit else FAIL,
+        record("A5-%s" % biome, "dune seas widened in %s" % biome,
+               PASS if hit else FAIL,
                "SoftSand min = %s, want %.2f (vanilla 0.65); %d patchmaker(s)"
                % (", ".join("pm%s:%s" % (i, m) for i, m in soft) or "not found",
                   target, extra.get("patchMakerCount")))
