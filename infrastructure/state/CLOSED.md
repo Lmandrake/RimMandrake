@@ -20,6 +20,24 @@ file. One line, with the hash — `git show <hash>` has the full story._
 | 2026-08-13 | Per-seat terminal colour via OSC 10 | FAILED — Windows Terminal ignores it; use WT profiles | `bc1cae8` |
 | 2026-08-13 | Tracking harvested game logs | rejected — transient value; `observed/2026-08-13/logs/` gitignored | `0d398c0` |
 
+## Drained out of `TODO_v2.md`, 2026-08-14 (1,172 → 349 lines)
+
+| date | item | outcome | hash |
+|---|---|---|---|
+| 2026-08-14 | §1 explosion spec — mechanism, IL, energy model | **MOVED, not closed.** Deliverable had no home; now `design/Jawa/explosion_energy_model.md`. §1 survives as a one-paragraph register entry | — |
+| 2026-08-14 | §1 droid explosion tiers + salvage IL | duplicate — already in `design/Jawa/droid_ruling.md` §6; the death/salvage IL trace merged into the new explosion doc | — |
+| 2026-08-14 | §0c dog sled Eopie-vs-Massiff argument | body deleted; the sled shipped (C3a) and the measurements live in `src/Jawa/DesertVehicleReskin/Source/GEOMETRY.md`. **4 vehicles still open** | `ad3e3c7` |
+| 2026-08-14 | §3.2 two-Empire fusion / aristocracy reconciliation | **STRUCK by the owner.** One Empire, one Emperor; vanilla `Empire` reskinned. Canon is `faction_world_spec.md` §5. ⚠️ `faction_roster_v2.md:357` still cites the dead §3.2 | `a8768c7` `78a0967` |
+| 2026-08-14 | §3 P2 Royalty-Empire retheme route | dissolved by the same ruling — no retheme mod, label-only, and v1 row 1 already shipped it live | `fad8bab` |
+| 2026-08-14 | §3 P1 Imperial settlement counts (10 vs "one or two") | reconciled 2026-08-12; `faction_roster_v2.md` `Target settlements` is **3** (it drives world-map placement, 10 would have inverted the doctrine) | — |
+| 2026-08-14 | §3 W1 subscribe + version-verify Galactic Empire | **1.6 CONFIRMED ON DISK**, active in the 580 stack. `required_mods.md:604` carries the verdict | — |
+| 2026-08-14 | §3 W2 correct `required_mods.md`'s "1.4/1.5 ONLY" ruling | done — the `❌ RETRACTED 2026-08-12` block plus the Rebel Alliance bullet. ⚠️ **Traps entry still owed** → `TODO_v2.md` §3a; **four bullets missed** → §3d | — |
+| 2026-08-14 | §3.35 KotOR-Sith zero-install fallback | superseded — the real Empire module is live with 19 Imperial pawnkinds incl. `OuterRim_ImpStormtrooper_Desert` | — |
+| 2026-08-14 | §3 U1 cluster N settlements near a point | mechanism found (Faction Control `factionGrouping: Tight` + CenterPoint), then **corrected at OPS**: `density` is a clumping radius, not suppression. Do not re-investigate Faction Territories, Odyssey landmarks or hand-placement — none was the answer | — |
+| 2026-08-14 | §3 W5 `live_mod_inventory.md` stale + hand-maintained | generator built; the file now reports **580 active**, captured 2026-08-14T00:45Z | `b095ff5` |
+| 2026-08-14 | §4 W6 Rebel Alliance enable + suppress | already closed both halves — see the `NEXT_RELOAD` block below | `5f68a9e` |
+| 2026-08-14 | §1 W8 ion guard collision | already closed — `IsMechanoid` is the right guard; see below | `fc460e3` |
+
 ## Drained out of `NEXT_RELOAD.md`, 2026-08-13 (2,354 → 275 lines)
 
 | date | item | outcome | hash |
