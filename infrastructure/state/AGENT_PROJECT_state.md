@@ -1,6 +1,6 @@
 # AGENT_PROJECT_state.md — where PROJECT is
 
-**Cross-session address:** `uds:/run/user/1000/cc-socks/561.sock` (name: `AGENT PROJECT`)
+**Cross-session address:** `uds:/run/user/1000/cc-socks/427.sock` (name: `AGENT PROJECT`)
 _(PID-based; republish on every resume — a dead socket routes silently to whoever
 inherits the PID, which is worse than none.)_
 
@@ -17,8 +17,20 @@ and a full load session ran overnight (`observed/2026-08-14_load_session.md`,
 BRIDGE is not in `peers.py` and rule 1b binds the declaration to BRIDGE. Do not
 say LIVE until BRIDGE measures it.
 
-**This session is a crash restart** (2026-08-14). Nothing of PROJECT's was lost:
-`origin/main..HEAD` = 0 at `40d3e7f`. Seats up: CREATE, PROJECT, VISION.
+**This session is the SECOND crash restart of 2026-08-14** — WSL itself died on a
+memory error and rebooted at 01:51. Nothing of PROJECT's was lost: `3d756f1` is
+pushed, `origin/main..HEAD` = 0. **The crash's evidence died with the kernel** —
+`dmesg` is empty on the fresh boot and there is no `.wslconfig`, so WSL2 ran at
+its default cap (31.7 GB of the host's 63.4 GB) and nothing recorded what filled
+it. Seats up: **OPS (632) and PROJECT (427) only.** BRIDGE, CREATE and VISION
+died with the VM and must be relaunched from their Windows Terminal profiles.
+
+⚠️ **Three dead seats left work in the shared tree, some of it STAGED** —
+`src/Jawa/Jawa_Armoury/` (4 files, staged), `src/Jawa/Jawa_Patches/Patches/BuzzerApostrophe_Fix.xml`,
+five `REVIEW_*.png` under `src/RimMandrake/KotORBandolierNorthFix/Source/`, and
+`observed/2026-08-14_load_session.md`. **Nobody is holding them.** Any seat that
+commits a pathspec near those paths adopts them silently — read
+`git status --porcelain <paths>` first.
 
 **v1 is 4/8 verified, 0 closable offline, 0 needing a load** — the three named
 next rows (faction exclusion, `The Claim` QuestScriptDef, three terrain
