@@ -135,62 +135,18 @@ statement an instruction still points at" shape this seat hunts.**
    the value and they were verified when taken.
 
 ---
-## ✅ P8 — DONE `a43b610`. Skill reviewed, contradiction killed. Do not re-open.
+## ✅ P8 — DONE `a43b610`. Do not re-open.
 
-**Outcome:** `rimworld-start-prep` approved and landed. Its three-writers model is
-the organising idea and it earns the file. The contradiction OPS found was real —
-`rimworld-load-round` §4 asserted the game rewrites `ModsConfig.xml` on exit and
-then denied it one paragraph below. **OPS's measurement won**: the config mtime
-predated the exit and moved again with no game running. Corrected in place and
-pointed at the new skill.
+`rimworld-start-prep` reviewed and approved; the contradiction OPS found was real and
+**OPS's measurement won** — the game does not rewrite `ModsConfig.xml` on exit.
+Corrected in `rimworld-load-round` §4 and pointed at the new skill. Full reasoning is
+in the commit and in `CLOSED.md`.
 
-<details><summary>OPS's original filing, kept for the reasoning</summary>
+---
+## P9. The traps set is over its own budget — 723 lines against 700
 
-**Filed by OPS 2026-08-13. The owner asked for this skill and asked specifically
-that you review it and then update whatever should reference it rather than
-re-specify it.** Sent as a file, not a message, because no PROJECT seat was
-reachable when it was written.
-
-**NEW:** `D:\Luke\dev\Rimworld\skills\rimworld-start-prep\SKILL.md` — preparing for
-a RimWorld start. The organising model is **three uncoordinated writers over two
-truths**: RimWorld owns the list but writes it only on an in-game change, RimSort
-owns it only when you click Save, Steam owns the folders on disk and never touches
-the list at all. Every "the change didn't take" in this project is one of those
-three being credited with a column it does not own.
-
-### 🔴 It contradicts a shipped skill, and the shipped one is wrong
-
-`skills/rimworld-load-round/SKILL.md:46-47` says flatly that the game *"holds its
-list in memory and rewrites `ModsConfig.xml` on exit"*. **The rewrite-on-exit half
-is measured FALSE** and was already corrected on 2026-08-13 in
-`skills/rimworld-modding/references/traps-mods-and-managers.md:69` — at game exit
-`Player.log`'s last write was 10:04:55 while the config's mtime was 10:01, *older
-than the exit*, and the file moved again at 16:41:39 with no game running at all.
-
-⚠️ **Line 53 of that same skill then half-corrects line 47**, so the file disagrees
-with itself and a reader can leave with either belief. **Not mine to edit — filed
-rather than fixed.**
-
-### The second ask: reference, do not restate
-
-Point these at the new skill instead of carrying their own copy of the rules —
-`CLAUDE.md` "How to work here", `agents_def.md` wherever it covers mod-list state,
-and load-round §4 once the contradiction above is resolved.
-
-### Two things in it that came from the owner this session
-
-1. **"Load at end" does not scale, because nearly every patch mod claims the
-   bottom.** A constraint asserted by everyone is satisfied by no one — the
-   topological sorter must break the tie, and your patch can land at the bottom
-   exactly as requested and *still* sit above the mod it patches. The fix is
-   relative, not absolute: `loadAfter` naming the target's packageId. Also
-   measured: `loadBottom: true` silently defeats a `loadAfter` list in the same
-   rule, and **all six of our rules in `userRules.json` currently carry both**.
-2. **RimSort's "all clear" is a starting point, not the final order.** A clean sort
-   proves only that no *declared* rule was broken. Expect a manual pair-order pass
-   before any test is meaningful, and write each hand-fix back as a User Rule or
-   the next Sort discards it.
-
-_Also mine and also uncommitted, unrelated to the above:_
-`infrastructure/state/WORLDGEN_FACTION_CHECKLIST.md`.
-</details>
+Raised by OPS 2026-08-13 while draining its queue, and it is why OPS added no new
+trap for a real finding. **Not PROJECT's to edit** — the content is domain
+expertise. PROJECT's part is the budget: either the threshold is wrong for a file
+that is now an index over six topic files, or the topic files need a split.
+Rule on which, do not silently let it drift.
