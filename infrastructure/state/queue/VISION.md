@@ -69,7 +69,7 @@ table today gets the wrong answer.**
 were added. **Note it still says ten; the roster holds twelve.**
 
 ### V6. A second permanent enemy contradicts design pillar 5 — **owner's call** `[v1-adjacent]`
-`:105` promises *"One permanent enemy only. The the Galactic Empire. Everything
+`:105` promises *"One permanent enemy only. The Galactic Empire. Everything
 else can eventually be negotiated with, so the mid-game always has a wedge."* The
 Junkers are `Permanent enemy | Yes` (`:1992`) and permanently hostile to everyone
 (`:2309`). **This is a design decision, not a typo** — either the pillar describes
@@ -87,7 +87,7 @@ ships and renders; the antagonist does not exist.** Same family as V6.
 
 ### V8. Shipped leader title does not match the spec
 `faction_roster_v2.md:571` says **"Sector governor"**; the deployed
-`ImperialDesertGalactic Empire.xml` says **`Sector Director`**. Both defensible, not the
+`ImperialDesertDirectorate.xml` says **`Sector Director`**. Both defensible, not the
 same string, and the patch is what players see. **Decide which is canon.**
 
 ---

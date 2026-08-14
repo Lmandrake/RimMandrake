@@ -102,7 +102,7 @@ Removed **Force Gremlin** and disabled WIP species remain excluded.
 2. **Water is the strategic axis.** Every faction has a water doctrine that determines where it settles, how far its warriors can operate, and whether it can besiege.
 3. **Only warriors are visible.** All water, caste, and equipment rules are written against the combat pawn kinds RimWorld actually spawns.
 4. **Hierarchy lives in pawn kinds, not xenotype percentages.** Diverse factions mostly carry no preferred-xenotype precept; rank is encoded through pawn-kind eligibility, gear, skills, and raid-point cost.
-5. **One permanent enemy only.** The the Galactic Empire. Everything else can eventually be negotiated with, so the mid-game always has a wedge.
+5. **One permanent enemy only.** The Galactic Empire. Everything else can eventually be negotiated with, so the mid-game always has a wedge.
 
 ---
 
@@ -530,7 +530,7 @@ The Galactic Empire does not site on hydrology. It settles on roads, strategic p
 | Starting goodwill | −100 |
 | Permanent enemy | **Yes** |
 | Target settlements | **3** (surface). The **10** in the strategic-balance table is the fiction total across both layers — see the † note there. ~7–8 Imperial holdings are **orbital** and are not world tiles. |
-| Settlement distribution | The 2–3 surface seats cluster near the **large spaceport** (Sector Galactic Empire seat). Otherwise: roads, strategic passes, ancient installations, central lowlands. ⚠️ The clustering **mechanism is unestablished** — see `infrastructure/state/TODO_v2.md` U1; degrade gracefully to "2–3 surface settlements somewhere" if it cannot be forced. |
+| Settlement distribution | The 2–3 surface seats cluster near the **large spaceport** (the Empire's planetary seat). Otherwise: roads, strategic passes, ancient installations, central lowlands. ⚠️ The clustering **mechanism is unestablished** — see `infrastructure/state/TODO_v2.md` U1; degrade gracefully to "2–3 surface settlements somewhere" if it cannot be forced. |
 | Raid frequency | High |
 | Caravan frequency | Military and **water-supply convoys** only |
 | Base wealth | Very high |

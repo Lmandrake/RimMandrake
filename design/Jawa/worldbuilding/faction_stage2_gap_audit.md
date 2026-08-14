@@ -13,7 +13,7 @@ faction — the Galactic Empire, *label-level reskin only* (name, leader
 title, colour). Explicitly v2: **the other 11 dossiers, `pawnGroupMakers`, memes,
 ideoligions, the relations matrix.**
 
-**And v1's faction row is already built.** `src/Jawa/Jawa_Patches/Patches/ImperialDesertGalactic Empire.xml`
+**And v1's faction row is already built.** `src/Jawa/Jawa_Patches/Patches/ImperialDesertDirectorate.xml`
 (`27a3cfe`) sets `label`, `fixedName`, `leaderTitle` and `colorSpectrum`
 (`RGB(74,84,96)` / `RGB(108,118,128)`), and the repo copy is **byte-identical to
 the deployed game copy**. Its only open item is the scope gate itself — *seen
@@ -141,7 +141,7 @@ faction whose roster is 78% + 12% Jawa. The species-coverage section was never
 updated when factions 11–12 were added; note it still says **ten**.
 
 **D6 — a second permanent enemy contradicts design pillar 5.** `:105` reads
-*"One permanent enemy only. The the Galactic Empire. Everything else can
+*"One permanent enemy only. The Galactic Empire. Everything else can
 eventually be negotiated with, so the mid-game always has a wedge."* The Junkers
 are `Permanent enemy | Yes` (`:1992`) and *"Permanently hostile faction; no trade"*
 (`:2309`). **This is a design decision, not a typo** — either the pillar now
