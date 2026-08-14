@@ -85,15 +85,25 @@ OUTDIR = os.path.join(_REPO_ROOT, "src", "Jawa", "Jawa_Armoury", "Patches")
 # Mods whose weapons sit on our ladder. Additive by design: dropping a mod name
 # in here is the whole cost of covering it, because everything downstream keys
 # off the projectile's own damage type rather than the mod it came from.
+# Mods whose HAND weapons sit on our ladder. Additive by design: dropping a mod
+# name in here is the whole cost of covering it.
+#
+# 🔴 EMPLACEMENTS ARE NO LONGER LISTED HERE, and that is the fix rather than an
+# omission. Four turret mods used to be in this tuple purely to get their turrets
+# into the candidate pool — but this tuple also drags in every NON-turret weapon
+# those mods ship, which was never the intent (Vanilla Furniture Expanded -
+# Security is a furniture mod that happens to include turrets). Turrets now
+# reach the pool through TURRET_GUNS, read from <building><turretGunDef> in the
+# defs themselves, so they need no mod name here at all.
+#
+# ⚠️ One of the four never worked anyway: "Giant imperial turret" matches NONE of
+# the 266 modNames in the live dump. It was inert in both tuples — a curated list
+# that fails silently and looks maintained. Deleted rather than corrected,
+# because nothing now needs it.
 SW_MODS = ("Star Wars KotOR Weapons and Armor", "Outer Rim - Core",
            "Outer Rim - Droid Depot", "[JDS] StarWars - Armory",
            "Star Wars : The Force - Lightsaber",
-           "[AB] Xenotype: Yautja",
-           # Emplacements. Fixed guns are their own tier: heavier than anything
-           # a person carries, an order below ship-scale.
-           "Giant imperial turret", "Rah's Vanilla Turrets Expansion",
-           "Wall Mounted Turrets Version 2",
-           "Vanilla Furniture Expanded - Security")
+           "[AB] Xenotype: Yautja")
 VERB_MARKERS = ("ion", "stun", "emp", "sonic", "disrupt", "electr", "shock",
                 "extinguish", "smoke", "gas", "tear", "foam", "net", "web")
 BANDS = {"blaster": (24, 34), "blaster_heavy": (52, 72), "slugthrower": (18, 36),
@@ -171,6 +181,10 @@ OURS = OurWrites()
 LEDGER_REC = Recorder()
 anchor_src = collections.Counter()
 tainted_skipped = []
+# Projectiles left alone because their damage is a sentinel, not a number.
+# Reported at the end rather than dropped silently: a rung that quietly declines
+# to tune things is how the emplacement list stayed wrong for weeks.
+sentinel_skipped = []
 
 
 def tool_anchors(defname, live_tools):
@@ -230,8 +244,15 @@ def anchor(defname, node, leaf, live_value):
 
 # ---------------------------------------------------------------- collect
 projectiles, weapons = {}, []
+# Every gun def named by some building's <turretGunDef>. This is what makes a
+# weapon an emplacement, and it is read from the defs rather than from a list of
+# mod names -- see TURRET_GUNS below for why that had to change.
+turret_guns = set()
 for d in iter_live_defs(DUMP):
     f = d.get("fields") or {}
+    bld = f.get("building")
+    if isinstance(bld, dict) and isinstance(bld.get("turretGunDef"), str):
+        turret_guns.add(bld["turretGunDef"])
     pr = f.get("projectile")
     if isinstance(pr, dict) and isinstance(pr.get("damageAmountBase"), (int, float)):
         dmg = anchor(d.get("defName"), "projectile",
@@ -261,21 +282,73 @@ for w in weapons:
     if w["proj"]:
         all_users[w["proj"]].append(w)
 
-TURRET_MODS = ("Giant imperial turret", "Rah's Vanilla Turrets Expansion",
-               "Wall Mounted Turrets Version 2",
-               "Vanilla Furniture Expanded - Security")
-
-
+# 🔴 THIS USED TO BE A LIST OF FOUR MOD NAMES, AND IT WAS NEVER A SURVEY OF
+# EMPLACEMENTS. Measured 2026-08-13 against the live dump (census_turrets.py):
+# the load carries 142 turret buildings across 25 mods, and the list named 3 of
+# them — plus "Giant imperial turret", which matches NONE of the 266 modNames in
+# the dump and was therefore inert. A curated list of mod names is the same trap
+# as a loadAfter naming a packageId that does not exist: it fails silently and
+# looks maintained.
+#
+# So turret-ness now comes from the defs. A building declares its gun in
+# <building><turretGunDef>, so the set of gun defNames those point at IS the set
+# of emplacement weapons, exactly and without curation. A new turret mod is
+# covered the moment it is in the load, with no edit here at all.
+#
+# ⚠️ The defName fallback stays, and it is doing real work: some emplacement
+# guns are reached through a mod's own C# or through a vehicle turret def rather
+# than through building/turretGunDef, so the join alone under-selects.
+# ⚠️ It also OVER-selects on its own — 530 defs match "turret" by name while only
+# 142 are real turret buildings — but that only matters for things that are not
+# weapons, and this predicate is asked exclusively about weapons.
 def is_turret(w):
-    return w["mod"] in TURRET_MODS or "turret" in (w["defName"] or "").lower()
+    return w["defName"] in TURRET_GUNS or "turret" in (w["defName"] or "").lower()
 
+
+# A projectile at this value or above is not a damage number, it is a sentinel
+# meaning "this always kills" — Wall Mounted Turrets, Core, [HMC]Wall Furniture
+# and Alpha Animals all ship 9999. OWNER RULED 2026-08-13: leave every 9999
+# untouched, do not investigate. They stay off the ladder exactly as ion, stun
+# and explosives do, and for the same reason — the mechanic IS the weapon.
+# 🔴 Do not lower this threshold to catch "big" numbers. GravTech's Singularity
+# Cannon is a genuine 1000 and Outer Rim tops out at a genuine 2000; both are
+# meant to be on the rung.
+SENTINEL_DAMAGE = 9999
+
+
+TURRET_GUNS = turret_guns
 
 sw_weapons = [w for w in weapons if w["mod"] in SW_MODS]
 sw_proj = collections.defaultdict(list)
 for w in sw_weapons:
     if w["proj"] in projectiles:
         sw_proj[w["proj"]].append(w)
+
+# 🔴 THE POOL IS TWO POOLS, and it used to be one. Everything downstream only
+# ever saw projectiles fired by a weapon from SW_MODS, so a turret from any
+# other mod could not reach classify() no matter what is_turret() said. That is
+# why 22 of the 25 turret-shipping mods were untuned: not a misclassification,
+# they were never candidates.
+#
+# OWNER RULED 2026-08-13: put all 25 on the rung. So emplacements are gathered
+# by what they ARE, independently of whose mod they came from — which is the
+# same principle the Yautja rows already follow ("classify by what the damage
+# type IS, not by whose mod it is").
+turret_proj = collections.defaultdict(list)
+for w in weapons:
+    if w["proj"] in projectiles and is_turret(w):
+        turret_proj[w["proj"]].append(w)
+
+candidate_proj = collections.defaultdict(list)
+for src in (sw_proj, turret_proj):
+    for pname, users in src.items():
+        for u in users:
+            if u not in candidate_proj[pname]:
+                candidate_proj[pname].append(u)
+
 print("SW weapons %d | SW projectiles %d" % (len(sw_weapons), len(sw_proj)))
+print("turret guns %d | turret projectiles %d | candidate projectiles %d"
+      % (len(TURRET_GUNS), len(turret_proj), len(candidate_proj)))
 
 
 def is_verb(b):
@@ -285,6 +358,14 @@ def is_verb(b):
 def classify(pname, p, users):
     b = (pname + " " + p["type"]).lower()
     if is_verb(b):
+        return None
+
+    # Sentinel damage is a mechanic, not a number. Owner ruled: untouched.
+    # Checked BEFORE the emplacement branch on purpose — every 9999 in the load
+    # today belongs to a turret, so putting this test lower would let the rung
+    # swallow all of them.
+    if isinstance(p["dmg"], (int, float)) and p["dmg"] >= SENTINEL_DAMAGE:
+        sentinel_skipped.append((pname, p["dmg"]))
         return None
 
     # Emplacement rung, but ONLY if every weapon firing this projectile is a
@@ -367,7 +448,7 @@ def spread(items, band, source=None):
 
 
 groups = collections.defaultdict(list)
-for pname, users in sw_proj.items():
+for pname, users in candidate_proj.items():
     r = classify(pname, projectiles[pname], users)
     if r:
         groups[r].append((pname, projectiles[pname]["dmg"]))
@@ -395,6 +476,12 @@ for r in sorted(groups):
     print("  %-14s %3d projectiles -> %s" % (r, len(groups[r]), BANDS[r]))
 for r in sorted(melee_groups):
     print("  %-14s %3d weapons     -> %s" % (r, len(melee_groups[r]), BANDS[r]))
+
+if sentinel_skipped:
+    print("  sentinel damage left untouched (owner ruled): %d projectile(s)"
+          % len(sentinel_skipped))
+    for pname, dmg in sorted(set(sentinel_skipped)):
+        print("      %-40s %s" % (pname, dmg))
 
 NL = "\n"
 HDR = ('<?xml version="1.0" encoding="utf-8"?>' + NL +
