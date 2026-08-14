@@ -352,6 +352,41 @@ patches must be enabled LAST in load order, and the restart that follows.
 
 ---
 
+## 6b. 🔴 Inspect the CONSUMER, not the artifact
+
+**A file being correct on disk says nothing about what the game is running.** Every
+"it is done" that turned out to be false was reported after reading the artifact and
+never asking what last read it.
+
+**The check is one question: _what did the consumer last read, and when?_**
+
+```bash
+# the process start time IS the def-read time -- RimWorld reads defs once, at launch
+powershell.exe -NoProfile -Command "Get-Process RimWorldWin64 | Select Id,StartTime"
+find "<game>/Mods" -newermt "<that StartTime>"        # anything listed is NOT loaded
+md5sum <repo copy> <deployed copy>                   # differ => the game has the other one
+```
+
+**Two measured cases, both reported as done, both false:**
+
+* A `GenStepDef` fixed and deployed at 01:33:48 against a process started 01:03:26.
+  The map showed the OLD behaviour and read as a third failure of the fix.
+* A DLL verified with `strings -a -el` in the repo — md5 `b7730027` — while the game
+  held a different build, `82b48e53`, dated before the launch. "Verified in the
+  binary" and "verified in the game" are different claims.
+
+⚠️ **Map-generation defs need MORE than a restart: they need a map generated after
+it.** Loading a save re-runs no GenStep, so a correct fix is invisible on an old map.
+
+⚠️ **The bridge cannot answer this for you** — `jawa/get_def` returns the def that was
+*loaded* and does not expose most fields, so a successful read is not proof the def is
+current. **The mtime is the evidence.** Full worked case, both directions:
+`references/traps-mods-and-managers.md` §"A def deployed AFTER launch".
+
+⭐ **Say which one you checked.** "Deployed" is a claim about disk; "live" is a claim
+about a process. A report that does not distinguish them will be read as the stronger
+of the two.
+
 ## 7. Debugging from Player.log
 
 `%USERPROFILE%\AppData\LocalLow\Ludeon Studios\RimWorld by Ludeon Studios\Player.log`
