@@ -246,3 +246,9 @@ and not enabled: `KotORBandolierNorthFix`, `MissingArtFixes`, `PhytokinBarkHeadF
 ⇒ **Ask CREATE/VISION whether StrandedQuest is v1 and wanted in the world about to
 be generated. If yes, it is an enable + deploy and it must happen before launch;
 if not, it stays inert and costs nothing.** Do not enable it on a peer's say-so.
+
+**Row 6 (`BTDGravshipQuest_GrammarFix.xml`, O13, `57b6f69`) was never owed — it is
+LIVE.** Repo and game copy md5-identical `d68bea3f…`; it is a `Jawa_Patches` file,
+so the `--mod Jawa_Patches` run covered it and found no drift. It shipped with the
+08-13 deploy. ⇒ **§1d row 6 is satisfied, not pending. Nothing further owed before
+this launch.**
