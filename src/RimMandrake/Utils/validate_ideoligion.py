@@ -21,12 +21,25 @@ THE JSON SPEC FORMAT (also what --md and --xml are parsed into):
     {"religions": [{
        "name": "the Unmoving Noon",
        "memes":   ["Structure_TheistEmbodied", "Loyalist", "HumanPrimacy"],
+       "candidateMemes": ["MaleSupremacy", "FemaleSupremacy"],
        "precepts":["Slavery_Acceptable", "Execution_Required"],
        "styles":  ["Techist"],
        "deities": 1,
        "fixedIdeo": true, "requiredPreceptsOnly": true,
-       "target": "faction"          // or "player" — changes two checks
+       "target": "faction",         // or "player" — changes two checks
+       // raw FactionDef lists, only for the game's own two ConfigErrors.
+       // null/absent = the tag is not on the def at all.
+       "allowedMemes": null, "disallowedMemes": null, "requiredMemes": null
     }]}
+
+🔴 HELD vs CANDIDATE. `memes` is what the religion **holds simultaneously**
+(`forcedMemes` + `requiredMemes`). `candidateMemes` is a **menu of alternatives**
+the generator draws a remainder from (`allowedMemes` + `structureMemeWeights`
+children) — its entries are NOT expected to coexist. Coexistence checks
+(`meme/exclusion`, `structure/multiple`, `precept/conflicting-meme`) therefore
+run over the held set only; candidates still get every existence check, because a
+typo in `allowedMemes` is a real bug. Merging the two was a measured false
+positive on Ludeon's own Empire (fixed 2026-08-14).
 
 ⚠️ `precepts` is a DESIGN artefact. No FactionDef or IdeoPresetDef field lists an
 ideo's precepts (FactionDef has `disallowedPrecepts`, a blacklist, and nothing
@@ -149,6 +162,8 @@ class Report:
 def check(rel: dict, D: Dump, budget) -> Report:
     r = Report(rel.get("name") or "(unnamed)")
     memes = list(dict.fromkeys(rel.get("memes") or []))
+    # a MENU the generator draws from — alternatives, never simultaneous
+    cands = [n for n in dict.fromkeys(rel.get("candidateMemes") or []) if n not in memes]
     precepts = list(dict.fromkeys(rel.get("precepts") or []))
     styles = list(dict.fromkeys(rel.get("styles") or []))
     deities = int(rel.get("deities") or 0)
@@ -158,6 +173,11 @@ def check(rel: dict, D: Dump, budget) -> Report:
     for n in memes:
         if n not in D.memes:
             r.add(r.E, "def/unknown-meme", f"{n} is not an installed MemeDef")
+    for n in cands:
+        if n not in D.memes:
+            r.add(r.E, "def/unknown-meme",
+                  f"{n} is not an installed MemeDef (candidate — allowedMemes/"
+                  "structureMemeWeights)")
     for n in precepts:
         if n not in D.precepts:
             r.add(r.E, "def/unknown-precept", f"{n} is not an installed PreceptDef")
@@ -166,11 +186,12 @@ def check(rel: dict, D: Dump, budget) -> Report:
             r.add(r.E, "def/unknown-style", f"{n} is not an installed StyleCategoryDef")
 
     known_memes = [n for n in memes if n in D.memes]
+    known_cands = [n for n in cands if n in D.memes]
     known_precepts = [n for n in precepts if n in D.precepts]
     meme_set = set(known_memes)
 
     # -- MayRequire / active mods ------------------------------------------ #
-    for n in known_memes + known_precepts + [s for s in styles if s in D.styles]:
+    for n in known_memes + known_cands + known_precepts + [s for s in styles if s in D.styles]:
         d = D.memes.get(n) or D.precepts.get(n) or D.styles[n]
         if not D.is_modded(d):
             continue
@@ -183,16 +204,31 @@ def check(rel: dict, D: Dump, budget) -> Report:
                   f'{n} → MayRequire="{d.get("packageId")}"  ({d.get("modName")})')
 
     # -- structure --------------------------------------------------------- #
+    # exactly-one applies to the HELD set. Candidate structures are a weighted
+    # pick of one, so several of them is normal, not a collision.
     structs = [n for n in known_memes if D.f(D.memes[n], "category") == "Structure"]
+    cstructs = [n for n in known_cands if D.f(D.memes[n], "category") == "Structure"]
     if not structs:
-        r.add(r.E, "structure/none",
-              "no structure meme — every ideoligion has exactly one")
+        if cands:
+            r.add(r.I, "structure/generated",
+                  "no structure meme is held; the generator picks one from "
+                  + (f"{cstructs} (weighted)" if cstructs else "the whole structure pool"))
+        else:
+            r.add(r.E, "structure/none",
+                  "no structure meme — every ideoligion has exactly one")
     elif len(structs) > 1:
         r.add(r.E, "structure/multiple", f"{len(structs)} structure memes: {structs}")
+    elif cstructs:
+        r.add(r.W, "structure/candidate-shadowed",
+              f"{structs[0]} is held, so the candidate structure(s) {cstructs} can "
+              "never be drawn — one of the two lists is wrong")
 
     # -- deities ----------------------------------------------------------- #
-    if len(structs) == 1:
-        dc = D.f(D.memes[structs[0]], "deityCount") or {}
+    # off the held structure, or an unambiguous single candidate one
+    deity_struct = structs[0] if len(structs) == 1 else (
+        cstructs[0] if not structs and len(cstructs) == 1 else None)
+    if deity_struct:
+        dc = D.f(D.memes[deity_struct], "deityCount") or {}
         lo, hi = int(dc.get("min", 0)), int(dc.get("max", 0))
         if lo < 0:
             lo = hi = 0
@@ -203,20 +239,22 @@ def check(rel: dict, D: Dump, budget) -> Report:
             # explicitly. Unproven whether the preset then displays — that is on
             # the live-load checklist (references/validation.md).
             r.add(r.W, "deity/structure-generates-none",
-                  f"{deities} deity(s) named on {structs[0]}, which has deityCount 0. "
+                  f"{deities} deity(s) named on {deity_struct}, which has deityCount 0. "
                   "Legal — HoraxCult ships exactly this — but the structure invents "
                   "no gods of its own, so the religion has only what you name.")
         elif deities and not (lo <= deities <= hi):
             r.add(r.W, "deity/count",
-                  f"{deities} deity(s) named; {structs[0]} generates {lo}..{hi}")
+                  f"{deities} deity(s) named; {deity_struct} generates {lo}..{hi}")
         elif lo > 0 and not deities:
             r.add(r.W, "deity/missing",
-                  f"{structs[0]} requires {lo}..{hi} deities and none are named — "
+                  f"{deity_struct} requires {lo}..{hi} deities and none are named — "
                   "the generator will invent them")
         elif hi > 0:
-            r.add(r.I, "deity/ok", f"{structs[0]} deityCount {lo}..{hi}, {deities} named")
+            r.add(r.I, "deity/ok", f"{deity_struct} deityCount {lo}..{hi}, {deities} named")
 
     # -- meme exclusion tags ----------------------------------------------- #
+    # HELD memes only. Two candidates sharing a tag are alternatives, which is
+    # what a menu is for — Ludeon's Empire offers Male- and FemaleSupremacy.
     tagged: dict[str, list[str]] = defaultdict(list)
     for n in known_memes:
         for t in D.f(D.memes[n], "exclusionTags") or []:
@@ -225,14 +263,41 @@ def check(rel: dict, D: Dump, budget) -> Report:
         if len(ns) > 1:
             r.add(r.E, "meme/exclusion",
                   f"{' + '.join(ns)} all carry exclusionTag '{t}' — they cannot coexist")
+    # a candidate that collides with a HELD meme can never be drawn — the menu is
+    # wrong as a set, but nothing is broken at generation, so WARN
+    for n in known_cands:
+        dead = sorted({f"{h} ('{t}')" for t in D.f(D.memes[n], "exclusionTags") or []
+                       for h in tagged.get(t, [])})
+        if dead:
+            r.add(r.W, "meme/candidate-excluded",
+                  f"candidate {n} shares an exclusionTag with held {', '.join(dead)} — "
+                  "it can never be drawn")
 
     # -- meme impact -------------------------------------------------------- #
+    # summed over the held set; candidates are alternatives, so their impacts do
+    # not add up to anything the engine ever sees at once
     total = sum(int(D.f(D.memes[n], "impact") or 0) for n in known_memes)
     per = ", ".join(f"{n}:{D.f(D.memes[n], 'impact')}" for n in known_memes)
+    if cands:
+        per += f"; + {len(cands)} candidate(s) the generator may add"
     if budget is not None and total > budget:
         r.add(r.E, "meme/impact-budget", f"total impact {total} > budget {budget} ({per})")
     else:
         r.add(r.I, "meme/impact", f"total impact {total} over {len(known_memes)} memes ({per})")
+
+    # -- the two ConfigErrors FactionDef raises for itself ------------------ #
+    # verified as game behaviour; strings live in Assembly-CSharp 1.6.4871
+    allowed = rel.get("allowedMemes")
+    if allowed is not None:
+        if rel.get("disallowedMemes") is not None:
+            r.add(r.E, "faction/both-meme-lists",
+                  "both disallowedMemes (black list) and allowedMemes (white list) are "
+                  "defined — the game rejects this as a ConfigError")
+        outside = [n for n in (rel.get("requiredMemes") or []) if n not in allowed]
+        if outside:
+            r.add(r.E, "faction/required-not-allowed",
+                  f"requiredMemes {outside} are not in allowedMemes — the game raises "
+                  '"has a required meme which is not allowed:" per entry')
 
     # -- meme requireOne: which precepts the memes DRAG IN ------------------ #
     for n in known_memes:
@@ -383,8 +448,11 @@ def from_markdown(path: Path, D: Dump) -> list[dict]:
     return rels
 
 
+# 🔴 forced/required are HELD SIMULTANEOUSLY; allowed is a MENU of alternatives.
+# They must not share a bucket — merging them false-fired meme/exclusion on
+# Ludeon's own Empire (MaleSupremacy + FemaleSupremacy), measured 2026-08-14.
 IDEO_LIST_FIELDS = {"forcedMemes": "memes", "requiredMemes": "memes",
-                    "allowedMemes": "memes", "styles": "styles"}
+                    "allowedMemes": "candidateMemes", "styles": "styles"}
 
 
 def from_xml(path: Path) -> list[dict]:
@@ -398,21 +466,31 @@ def from_xml(path: Path) -> list[dict]:
         for fd in root.iter("FactionDef"):
             rel = {"name": (fd.findtext("ideoName") or fd.findtext("defName")
                             or f.name) + f"  [{f.name}]",
-                   "target": "faction", "memes": [], "precepts": [], "styles": [],
+                   "target": "faction", "memes": [], "candidateMemes": [],
+                   "precepts": [], "styles": [],
                    "deities": len(fd.findall("./deityPresets/li")),
                    "fixedIdeo": (fd.findtext("fixedIdeo") or "").lower() == "true",
                    "requiredPreceptsOnly":
                        (fd.findtext("requiredPreceptsOnly") or "").lower() == "true"}
-        # forced/required/allowed all land in one meme set for checking purposes
             hit = False
             for tag, bucket in IDEO_LIST_FIELDS.items():
                 for li in fd.findall(f"./{tag}/li"):
                     if li.text:
                         rel[bucket].append(li.text.strip())
                         hit = True
+            # a weighted pick of exactly ONE structure — a menu, not a held set
             for w in fd.findall("./structureMemeWeights/*"):
-                rel["memes"].append(w.tag)
+                rel["candidateMemes"].append(w.tag)
                 hit = True
+            rel["candidateMemes"] = [n for n in dict.fromkeys(rel["candidateMemes"])
+                                     if n not in rel["memes"]]
+            # raw lists for the game's own two ConfigErrors. None = tag absent,
+            # which is NOT the same as an empty list and is what the game tests.
+            for tag in ("allowedMemes", "disallowedMemes", "requiredMemes"):
+                node = fd.find(tag)
+                rel[tag] = None if node is None else [li.text.strip()
+                                                      for li in node.findall("li") if li.text]
+                hit = hit or node is not None
             if hit or rel["fixedIdeo"] or rel["deities"]:
                 rels.append(rel)
     return rels
@@ -441,8 +519,11 @@ def main() -> int:
 
     if a.only:
         rels = [r for r in rels if a.only.lower() in (r.get("name") or "").lower()]
-    skipped = [r["name"] for r in rels if not (r.get("memes") or r.get("precepts"))]
-    rels = [r for r in rels if r.get("memes") or r.get("precepts")]
+    def _has_content(r):
+        return bool(r.get("memes") or r.get("candidateMemes") or r.get("precepts"))
+
+    skipped = [r["name"] for r in rels if not _has_content(r)]
+    rels = [r for r in rels if _has_content(r)]
     if not rels:
         print("no religions found in the input")
         return 1
