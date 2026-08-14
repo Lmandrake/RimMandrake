@@ -214,3 +214,35 @@ it. Full entry: `traps-mods-and-managers.md`.
 - **Warcasket deploy: "ship neither."** Both retune files stay in the repo
   undeployed, **permanently — intended state, not drift. Stop reporting it.**
   Asked three ways and answered; re-opening costs the owner twice.
+
+---
+
+## ✅ 2026-08-14 pre-launch deploy — DONE. 4 files shipped, game confirmed down.
+
+`deploy_custom_mods.py --mod Jawa_Patches --apply` → `-> VERIFIED in sync`, 4 files:
+`BuzzerApostrophe_Fix.xml` (new, `3822ef9` — the deadline item, **shipped before
+worldgen**), `JawaGroundHulk.xml`, `JawaScrapfields.xml` (`isJunk` off, `de1018b`),
+`AnimalBiomeDuplicates_Fix.xml` (`9acddd3`). Nothing was dropped; the window held.
+
+**§1d row 1 (companion DLL) was already stale-as-owed — it is DEPLOYED.** Repo
+`src/RimMandrake/bridgetools/artifacts/BridgeTools/JawaBench/JawaBench.BridgeTools.dll`
+and the game copy are **md5-identical** (`55b23629…`), 292,864 B @ 08-14 12:25.
+26 `jawa/` tool names; `get_defs`, `fire_quest`, `fire_incident` and `send_letter`
+all present ⇒ it was built **with `--gm`**, nothing stripped. ⚠️ `strings -a` proves
+NAMES only, never a method body (§1c). **Do not re-deploy it.**
+
+Held, deliberately: `JawaSeaShaper.dll` (SOLO, own load — repo/game still differ),
+Armoury ×2 (scope), WreckedMachines ×14 + GravshipAstronautFix ×1 (`DEPLOY_HOLD.txt`).
+
+### 🔴 New — `--plan` lists a mod §1d does not: **StrandedQuest, 3 files, NOT DEPLOYED**
+
+`src/Jawa/StrandedQuest/` — `About/About.xml`,
+`Defs/HistoryEventDefs/HistoryEvents_Stranded.xml`,
+`Defs/QuestScriptDefs/Quest_Stranded.xml`. **Not enabled in `ModsConfig.xml`**, so
+deploying it alone is inert and enabling it is a mod-list act that adds an
+unannounced quest surface to this load. **Left out on purpose.** Also not deployed
+and not enabled: `KotORBandolierNorthFix`, `MissingArtFixes`, `PhytokinBarkHeadFix`.
+
+⇒ **Ask CREATE/VISION whether StrandedQuest is v1 and wanted in the world about to
+be generated. If yes, it is an enable + deploy and it must happen before launch;
+if not, it stays inert and costs nothing.** Do not enable it on a peer's say-so.
