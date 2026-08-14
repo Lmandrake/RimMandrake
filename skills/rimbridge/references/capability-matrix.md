@@ -55,7 +55,13 @@ See traps.md, "The 16.7 ms latency floor is workload".
 back. Terrain is exactly restorable; the paint is not reversible. On a colony
 that matters the save is the undo.
 
-### ✅ PROVEN LIVE — all 16, the roof pair included
+### ✅ PROVEN LIVE — 14 of 21. ⚠️ The heading below said "all 16" and rotted.
+
+🔴 **Seven tools have never been driven in a live game**: `set_roof_batch`,
+`get_roof_batch`, `list_factions`, `set_pawn_rotation`, `set_pawn_style`,
+`set_pawn_xenotype`, `order_pawn`. The run recorded below predates all of them.
+**"All" is a word that goes stale silently — the count moved and the sentence
+did not.**
 
 **Latest run: 2026-08-12 on the 574-mod stack — 23 passed, 0 failed, 2 skipped**
 (the 2 are opt-in: `--letter` writes to the player's pane, `--pawns` spawns).

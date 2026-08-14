@@ -944,6 +944,21 @@ namespace JawaBench.BridgeTools
                         // Both keys now work and carry the same value.
                         kindDef = pawn.kindDef?.defName,
                         def = pawn.def?.defName,
+                        // 🔴 V1_SCOPE row 5 could not be closed without this.
+                        // The row turns on WHICH Jawa xenotype a naturally
+                        // spawned campaign pawn carries -- three are live at
+                        // once and "a Jawa spawned" is not evidence. The only
+                        // read-back available was jawa/set_pawn_xenotype's
+                        // `was` field, which means CONVERTING a campaign pawn
+                        // to find out what it already was. That is a mutation
+                        // to answer a read, so the answer belonged here.
+                        // ⚠️ null is not "no xenotype": a pawn with no gene
+                        // tracker (animal, mechanoid) and a baseliner both read
+                        // null on `xenotype`. `hasGenes` separates them.
+                        hasGenes = pawn.genes != null,
+                        xenotype = pawn.genes?.Xenotype?.defName,
+                        xenotypeLabel = pawn.genes?.XenotypeLabel,
+                        uniqueXenotype = pawn.genes?.UniqueXenotype ?? false,
                         faction = pawn.Faction?.def?.defName,
                         factionName = pawn.Faction?.Name,
                         isPlayer,

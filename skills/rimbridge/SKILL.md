@@ -263,16 +263,27 @@ a compile-time flag so the ruling is reversible in one shutdown window —
 to continue if the artifact disagrees with the flag. Never fire an incident on a
 colony that matters without saying so first.
 
-⏳ **The companion is 20 tools and SIX of them have never run in a live game** —
+⏳ **The companion is 21 tools and SEVEN of them have never run in a live game** —
 the roof pair, `jawa/list_factions` (deployed 2026-08-13 10:05, one minute after
-the last session's log stopped) and the pawn-appearance three above, which were
-written offline on 2026-08-13 with the game down. They compile; nothing more is
-claimed. Companions register only at RimBridgeServer startup. **First call of the
-next session: count the `jawa/` tools the bridge reports — 20 means the current
-deploy took, 17 means the pre-appearance build, 7 means an older companion, 0
+the last session's log stopped), the pawn-appearance three above, and
+`jawa/order_pawn`, all written offline on 2026-08-13 with the game down. They
+compile; nothing more is claimed. Companions register only at RimBridgeServer
+startup. **First call of the next session: count the `jawa/` tools the bridge
+reports — 21 means the current deploy took, 20 means the build before
+`order_pawn`, 17 means the pre-appearance build, 7 means an older companion, 0
 means the bundle did not load.** Every other check is uninformative until that
-reads 20. 🔴 **The deploy must use `--gm`**, or the game copy loses
-`jawa/fire_incident` and `jawa/send_letter` and the census reads 18.
+reads 21. 🔴 **The deploy must use `--gm`**, or the game copy loses
+`jawa/fire_incident` and `jawa/send_letter` and the census reads 19.
+
+⚠️ **Three documents disagreed about this number on 2026-08-13** — 17 in
+`EXPECTED_FAILURES_next_load.md`, 20 in `NEXT_RELOAD.md`, 21 here. **21 is the
+measured one**: 222,720 B, stamp `d2b331b385e5`, byte-verified in the game copy.
+A census gate that three files answer differently is worse than no gate, so
+check the DLL rather than any of the three:
+`strings -a "<gamedir>\BridgeTools\JawaBench\JawaBench.BridgeTools.dll" | grep -o "jawa/[a-z_]*" | sort -u | wc -l`.
+🔴 **That command proves a tool NAME only.** Tool names are attribute blobs and
+are UTF-8; a method-body MESSAGE is UTF-16LE and needs `strings -a -el`, or it
+reports ABSENT on a string that is present.
 Deciding strings per tool: `src/RimMandrake/bridgetools/prove_new_tools.py`.
 
 The write tools read every cell back off the terrain grid before answering, so
