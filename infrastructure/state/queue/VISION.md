@@ -648,6 +648,35 @@ runs on a scratch/quicktest map and needs no campaign world.
 the `factionlessGenerationWeight` patch that stops a wanderer arriving as the wrong
 Twi'lek — is unauthored, is CREATE's, and is `[v2]`. Do not hold launch for it.
 
+## ✅ V29. RULED 2026-08-14 — `StrandedQuest` stays INERT, and not in v2 as written
+
+**The residual OPS and PROJECT left me on owner-decision #11. Answered offline; no
+instrument, no load, no owner input needed.**
+
+🔴 **It is not campaign content and never claimed to be.** Its own header says so:
+*"deliberately NOT part of the Jawa campaign"* —
+`D:\Luke\dev\Rimworld\src\RimMandrake\StrandedQuest\Defs\QuestScriptDefs\Quest_Stranded.xml`.
+It was authored as `skills/rimworld-quests/`'s **own gate**: a real quest built end
+to end to prove the skill works. That is what it is for, and it has already served.
+
+**Ruling, three parts:**
+1. **Do NOT enable it.** v1's single `QuestScriptDef` slot is spent on row 3
+   (*The Claim*), per `V1_SCOPE.md:86`. Enabling `Stranded` adds a second, unearned
+   quest surface to the campaign world for no design gain.
+2. **Do NOT delete it.** It is the quests skill's worked example, its provenance
+   block cites a shipping Ludeon def for every node, and that is expensive to
+   rebuild. It costs nothing sitting inert and undeployed.
+3. **`[v2]` as a BASE, not as a build.** As written it is generic RimWorld — a
+   factionless `SpaceRefugee` and a neighbouring settlement that vouches. ⭐ **The
+   Jawa version of this quest is a good one and it is a different quest:** a
+   survivor arrives on a thirst world *with no water*, and sheltering them is a
+   water debt, not a bed. That is a reflavour — new authoring against
+   `water_doctrine.md` — so it is v2 work, not an enable.
+
+⚠️ **`rootSelectionWeight` is `0.6`, which is not small.** If anyone enables it
+casually it will fire, and reasonably often. That is the reason to be explicit
+rather than leaving it "inert for now".
+
 ## Handoff note — `skills/rimworld-quests/` is NOT mine
 It is CREATE's **C14** with four owner rulings. I found it half-built (references
 committed, no SKILL.md), started a draft, and stopped on the owner's word before a
