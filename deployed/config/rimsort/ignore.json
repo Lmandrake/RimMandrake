@@ -1,0 +1,23 @@
+{
+    "ignored_mods": [
+        "kolyska.jawaionweapons",
+        "mandrake.blastdoorframeasyncfix",
+        "mandrake.cereanmanefix",
+        "mandrake.desertvehiclereskin",
+        "mandrake.gravship.compat",
+        "mandrake.gravshipastronautfix",
+        "mandrake.jawa.armoury",
+        "mandrake.jawa.doctrine",
+        "mandrake.jawa.patches",
+        "mandrake.jawaionweapons",
+        "mandrake.jawavoice",
+        "mandrake.missingartfixes",
+        "mandrake.msedroidfix",
+        "mandrake.researchkiteastfix",
+        "mandrake.rimdefdump",
+        "mandrake.sauridfrillfix",
+        "mandrake.toolbeltfix",
+        "mandrake.wreckedmachines"
+    ],
+    "description": "Mods to ignore when checking for missing properties (identified by packageid)"
+}
