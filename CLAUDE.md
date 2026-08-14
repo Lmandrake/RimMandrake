@@ -93,6 +93,21 @@ machine; committed-but-unpushed work survives exactly one disk. Both failed here
   four other seats' work, not yours.
 - **This does not relax "commit explicit paths only".** Speed is never a reason to
   `git add -A`.
+- 🔴 **A successful `git commit` tells you NOTHING about the push, and the failures
+  are all silent.** Measured 2026-08-14, four seats, one night: `push -q` prints
+  nothing on success **and nothing on a swallowed failure**; a credential prompt makes
+  push **HANG rather than fail**, indistinguishable from slow; and `[ahead 0]` read
+  against a stale remote-tracking ref is a false all-clear, because that ref only
+  moves when a push *succeeds*.
+
+  **So verify, in this order — it costs one command:**
+  ```bash
+  GIT_TERMINAL_PROMPT=0 git push          # turns a hang into a reportable error
+  git fetch origin && git rev-list --count origin/main..HEAD    # must be 0
+  git ls-tree -r origin/main --name-only | grep <the file you care about>
+  ```
+  **`ahead 0` proves the ref moved, not that your content is there.** For anything
+  irreplaceable, list `origin/main`'s tree for the actual path.
 **Read at the start of any RimWorld task:**
 `vendor/wisdom/benign_log_errors.md` §0 (triage method) and
 `skills/rimworld-modding/references/traps.md` — the **index** of earned lessons.

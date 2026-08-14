@@ -174,10 +174,17 @@ easy to read as a set budget, and the cost was a real finding nearly going unwri
 Found 2026-08-14 when BRIDGE got **NOT SAFE TO LOAD** while OPS and CREATE got
 **SAFE**, same commit, same live files.
 
-**Cause, measured:** `src/RimMandrake/Utils/preload_check.py:139-140` hardcodes
-`/mnt/c/Program Files (x86)/Steam/steamapps/...`. **BRIDGE runs `python.exe`** —
-Windows Python cannot resolve a `/mnt/c` path, so the workshop root simply is not
-there, every Workshop mod reads as absent, and the gate says NOT SAFE.
+**Cause — CORRECTED by OPS and BRIDGE; my first diagnosis was the symptom, not the
+cause.** I blamed the interpreter (BRIDGE runs `python.exe`, which cannot resolve
+`/mnt/c`). The real defect is worse: `preload_check.py:138` guards on
+`hasattr(GP, "STEAM_WORKSHOP")` while `game_paths` exposes **`WORKSHOP`** (`:64`),
+already resolved for both interpreters. **The guard is always False for EVERY seat**,
+so the platform-aware branch is dead code that has never once executed and every run
+falls through to the two hardcoded `/mnt/c` literals at `:139-140`.
+
+🔴 **A fallback that never falls back is invisible for exactly as long as the
+fallback happens to be right.** It was right for three seats and wrong for one, which
+is why it surfaced as a seat disagreement rather than as a bug.
 
 ⇒ **The same defect produced BRIDGE's GravTech false alarm** — "I grepped the whole
 tree" was a tree with the largest root missing. **One root cause, two incidents, an
