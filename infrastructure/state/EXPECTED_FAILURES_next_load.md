@@ -199,18 +199,27 @@ this load.**
 **Gate:** `python.exe src/RimMandrake/bridgetools/prove_new_tools.py` → read line 0,
 the deploy census.
 
-🔴 **THIS GATE IS NOT A READ — DO NOT RUN IT ON THE CAMPAIGN MAP.** The script has
-no census-only flag (`--x --z --pawns --walk --letter --selftest` is the whole surface).
-It is a full live harness: it **spawns pawns, damages them to death, sets plants, builds
-roofs, fires incidents and sends letters.** Its own selftest carries a scripted
-`*** CLEANUP INCOMPLETE *** Pawn(s) ... are STILL ALIVE` scenario, so a stray hostile
-left on the map is a known outcome, not a hypothetical.
+✅ **Use `--census`. It is read-only and SAFE ON THE CAMPAIGN MAP** (`2312d7f`):
+it reads line 0 and exits before anything is spawned, damaged, roofed or fired,
+and deliberately before the paused-game guard, so taking a read needs no pause.
 
-⇒ **Take the census on a dev quicktest BEFORE the campaign world exists**, or wait for a
-read-only `--census` path. On the worldgen run the map is brand new and irreplaceable —
-**a gate that mutates the thing it is gating is not a gate.**
+```bash
+python.exe src/RimMandrake/bridgetools/prove_new_tools.py --census
+```
 
-✅ Safe from anywhere, no side effects: `python3 ... --selftest` (WSL cannot reach the
+🔴 **The BARE invocation is NOT a read — never run it on the campaign map.** With no
+`--census` it is a full live harness: it spawns pawns, damages them to death, sets
+plants, builds roofs, fires incidents and sends letters, and its own selftest scripts
+a `*** CLEANUP INCOMPLETE *** Pawn(s) ... are STILL ALIVE` case.
+
+⭐ **It NAMES, it does not count** — which is the point. Verified live 2026-08-14: 22
+tools listed by name, plus an explicit **STOP — built but NOT deployed:
+`jawa/fire_quest`, `jawa/get_defs`**. ⚠️ **My own prediction of "22, PASS" was wrong
+and the tool was right:** it compares artifact against game copy as well as game copy
+against registered, so it reports the deploy we owe. **A matching count proves nothing
+about which items matched.**
+
+✅ Safe from anywhere, no game needed: `python3 ... --selftest` (WSL cannot reach the
 bridge at all, so it exercises the mock worlds and touches no game).
 
 🔴 **DO NOT WRITE THE EXPECTED NUMBER HERE. DERIVE IT AT CENSUS TIME.** This block
