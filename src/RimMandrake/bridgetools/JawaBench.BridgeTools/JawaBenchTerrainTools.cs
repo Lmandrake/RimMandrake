@@ -35,6 +35,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+using LudeonTK;
 using RimBridgeServer.Sdk;
 using RimWorld;
 using Verse;
@@ -622,6 +623,46 @@ namespace JawaBench.BridgeTools
                                     });
                                 continue;
                             }
+                        }
+                        else if (IsVehicleDef(def))
+                        {
+                            // 🔴 Vehicle Framework vehicles CANNOT go through
+                            // ThingMaker + GenSpawn, and the failure is a bare
+                            // NullReferenceException with no hint in it -- measured
+                            // live 2026-08-14 on AV_DogSled, where it read as a
+                            // verdict on the ART when it was a gap in this tool.
+                            //
+                            // Read out of Vehicles.dll with ilprobe, not recalled:
+                            // VehiclePawn::.ctor initialises collections only, so
+                            // vehiclePather / ignition / drawTracker / kindDef are
+                            // all null, and VehiclePawn::SpawnSetup callvirts every
+                            // one of them (IL_007b, IL_0094, IL_00f8). The fields
+                            // are written by Patch_Components::CreateInitialVehicle
+                            // Components -- VF's Harmony hook on PawnComponents
+                            // Utility.CreateInitialComponents -- which MakeThing
+                            // never calls.
+                            //
+                            // Vehicles.VehicleSpawner.SpawnVehicleRandomized is
+                            // public static and does the whole job: generate, wire,
+                            // refuel, GenSpawn. Reached by REFLECTION on purpose --
+                            // a compile-time reference to Vehicles.dll would make
+                            // this companion refuse to load for anyone who does not
+                            // run Vehicle Framework.
+                            string vehErr;
+                            var veh = TrySpawnVehicle(def, cell, map, new Rot4(rot),
+                                                      out vehErr);
+                            if (veh == null)
+                            {
+                                failed++;
+                                if (errors.Count < 10)
+                                    errors.Add(new
+                                    {
+                                        op = i, def = def.defName, x = op.X, z = op.Z,
+                                        error = vehErr
+                                    });
+                                continue;
+                            }
+                            spawned++;
                         }
                         else
                         {
@@ -4295,6 +4336,112 @@ namespace JawaBench.BridgeTools
             });
         }
 
+        // 🔴 THE FINDING THAT FORCED THIS TOOL, measured 2026-08-14 by looking at
+        // the pictures instead of at the ledger:
+        //
+        // All TWELVE art screenshots from the live session are NON-EVIDENCE. The
+        // camera was aimed correctly -- `look()` jumps to the cell and the subject
+        // is dead centre -- and RimWorld's **Debug log window sits exactly on top
+        // of the centre of the screen**, 940x650 px of scrolling text over the
+        // thing being photographed. The pawn inspect pane covers the bottom-left,
+        // the dev palette the top-left. In `p5_004.png` and `p13_012.png` the
+        // subject cannot be seen AT ALL.
+        //
+        // Every one of those rows was filed NEEDS EYES, which reads as "collected,
+        // awaiting judgement" -- so a whole class of v1 art gates was going to be
+        // adjudicated from images that do not contain their subject. That is the
+        // seat's own failure mode wearing a different hat: success:true, a file on
+        // disk, and no observation in it.
+        //
+        // ⚠️ Closing the log by hand does not hold: "Auto-open is ON" reopens it
+        // on the next red error, and a modded startup produces those constantly.
+        // The close must happen in the same breath as the screenshot, every time,
+        // which is why this is a tool and not a note in the runbook.
+        [Tool(
+            "jawa/clear_ui",
+            Description =
+                "Close RimWorld's dev windows and drop the current selection, so a " +
+                "screenshot shows the MAP instead of the debug log. The Debug log window " +
+                "covers the centre of the screen — exactly where jump_camera_to_cell puts " +
+                "the subject — and 'Auto-open on error' reopens it constantly under a " +
+                "modded load. Call this immediately before every take_screenshot; it is " +
+                "cheap, it touches no game state, and without it a screenshot is not " +
+                "evidence of anything.",
+            ResultDescription =
+                "closed: the window types actually removed. remaining: what is still open, " +
+                "so a picture that is still obscured names its own culprit. deselected: how " +
+                "many things were selected (the inspect pane is drawn from the selection, " +
+                "not from a window, and cannot be closed any other way).")]
+        public static async Task<object> ClearUi(
+            IRimBridgeContext ctx,
+            CancellationToken cancellationToken,
+            [ToolParameter(Description =
+                "Close dev windows — everything deriving from LudeonTK.Window_Dev: the " +
+                "debug log, the dev palette, the debug inspector, the actions menus.",
+                DefaultValue = true)]
+            bool devWindows = true,
+            [ToolParameter(Description =
+                "Clear the selection, which is what removes the pawn inspect pane from the " +
+                "bottom-left.", DefaultValue = true)]
+            bool clearSelection = true,
+            [ToolParameter(Description =
+                "⚠️ Close EVERY window in the stack, not just dev ones. This will also " +
+                "dismiss dialogs the game is waiting on — a trade confirmation, a ritual " +
+                "prompt — and answering a dialog by destroying it is not the same as " +
+                "answering it. Off by default.", DefaultValue = false)]
+            bool all = false)
+        {
+            return await ctx.MainThread.InvokeAsync<object>(() =>
+            {
+                var stack = Find.WindowStack;
+                if (stack == null)
+                    return Fail("No WindowStack — the game is not at a UI-bearing state.");
+
+                var closed = new List<string>();
+                var remaining = new List<string>();
+
+                // Snapshot first: TryRemove mutates the live list.
+                foreach (var w in stack.Windows.ToList())
+                {
+                    cancellationToken.ThrowIfCancellationRequested();
+                    if (w == null) continue;
+                    // Window_Dev is the shared base of every LudeonTK dev window
+                    // (EditWindow -> Window_Dev), read out of the assembly with
+                    // ilprobe rather than recalled.
+                    bool isDev = w is Window_Dev;
+                    if ((all || (devWindows && isDev)) && stack.TryRemove(w, false))
+                    {
+                        closed.Add(w.GetType().Name);
+                        continue;
+                    }
+                    remaining.Add(w.GetType().Name);
+                }
+
+                int deselected = 0;
+                if (clearSelection && Find.Selector != null)
+                {
+                    deselected = Find.Selector.NumSelected;
+                    Find.Selector.ClearSelection();
+                }
+
+                return new
+                {
+                    success = true,
+                    closed,
+                    closedCount = closed.Count,
+                    remaining,
+                    deselected,
+                    message = closed.Count == 0 && deselected == 0
+                        ? "Nothing to close and nothing was selected. The view was already " +
+                          "clear — this is a no-op, not a failure."
+                        : $"Closed {closed.Count} window(s), deselected {deselected} thing(s)." +
+                          (remaining.Count > 0
+                              ? " Still open: " + string.Join(", ", remaining) + "."
+                              : "")
+                };
+            }, cancellationToken).ConfigureAwait(false);
+        }
+
         // The read half of spawn_batch/destroy_batch, and the missing half of
         // list_pawns. Every tool that acts on a specific object takes a ThingID
         // (`jawa/damage thingId=`, `jawa/order_pawn targetId=`) and until now
@@ -4477,6 +4624,85 @@ namespace JawaBench.BridgeTools
             public int Tiles;
             public int Perimeter;
             public double CentroidLat;
+        }
+
+        // ---- Vehicle Framework, reached by reflection -------------------------
+        // Resolved once and cached. `null` means the framework is not loaded,
+        // which is a legitimate state and not an error until someone asks for a
+        // vehicle.
+        private static bool _vfProbed;
+        private static Type _vehicleDefType;
+        private static System.Reflection.MethodInfo _spawnVehicleRandomized;
+
+        private static void ProbeVehicleFramework()
+        {
+            if (_vfProbed) return;
+            _vfProbed = true;
+            _vehicleDefType = GenTypes.GetTypeInAnyAssembly("Vehicles.VehicleDef");
+            var spawner = GenTypes.GetTypeInAnyAssembly("Vehicles.VehicleSpawner");
+            if (spawner == null) return;
+            // Signature read from Vehicles.dll v1.6.2144 with ilprobe sigdump:
+            //   public static VehiclePawn SpawnVehicleRandomized(
+            //       VehicleDef, IntVec3, Map, Faction, Nullable<Rot4>, bool)
+            // Matched by NAME AND PARAMETER COUNT rather than by exact types,
+            // because Nullable<Rot4> cannot be named here without the reference --
+            // and an overload set of one makes the ambiguity moot.
+            foreach (var m in spawner.GetMethods(System.Reflection.BindingFlags.Public
+                                                 | System.Reflection.BindingFlags.Static))
+            {
+                if (m.Name != "SpawnVehicleRandomized") continue;
+                if (m.GetParameters().Length != 6) continue;
+                _spawnVehicleRandomized = m;
+                break;
+            }
+        }
+
+        private static bool IsVehicleDef(ThingDef def)
+        {
+            ProbeVehicleFramework();
+            return _vehicleDefType != null && def != null
+                   && _vehicleDefType.IsInstanceOfType(def);
+        }
+
+        private static Thing TrySpawnVehicle(ThingDef def, IntVec3 cell, Map map,
+                                             Rot4 rot, out string error)
+        {
+            error = null;
+            ProbeVehicleFramework();
+            if (_spawnVehicleRandomized == null)
+            {
+                error = "'" + def.defName + "' is a Vehicles.VehicleDef but " +
+                        "Vehicles.VehicleSpawner.SpawnVehicleRandomized could not be " +
+                        "resolved. Vehicle Framework is not loaded, or its signature " +
+                        "changed. NOTHING was spawned.";
+                return null;
+            }
+            try
+            {
+                // ⚠️ A non-null Faction is deliberate. SetFactionDirect tolerates
+                // null, and then SpawnSetup takes the not-player branch: the
+                // vehicle auto-drafts and turrets acquire it. A test prop that
+                // shoots at the colony is not a test prop.
+                var pawn = _spawnVehicleRandomized.Invoke(null, new object[]
+                {
+                    def, cell, map, Faction.OfPlayer, rot, false
+                }) as Thing;
+                if (pawn == null || !pawn.Spawned)
+                {
+                    error = "VehicleSpawner returned " +
+                            (pawn == null ? "null" : "an unspawned vehicle") +
+                            " — success cannot be claimed from the call returning.";
+                    return null;
+                }
+                return pawn;
+            }
+            catch (Exception e)
+            {
+                var inner = e.InnerException ?? e;
+                error = "VehicleSpawner threw " + inner.GetType().Name + ": " +
+                        inner.Message;
+                return null;
+            }
         }
 
         private static object Fail(string message, object extra = null) =>

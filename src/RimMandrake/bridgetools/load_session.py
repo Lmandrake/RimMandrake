@@ -219,8 +219,8 @@ EXPECTED_TOOLS = [
     # fails a CORRECT companion, which is the false alarm that stops a census
     # from being believed at all.
     "jawa/get_defs", "jawa/fire_quest",
-    # Same window, same rule: deployed BEFORE this line was written. md5 13fcb549.
-    "jawa/list_things",
+    # Same window, same rule: deployed BEFORE this line was written. md5 55b2362.
+    "jawa/list_things", "jawa/clear_ui",
 ]
 
 

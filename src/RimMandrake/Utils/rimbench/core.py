@@ -234,11 +234,25 @@ class Session(object):
         self._shots += 1
         return "%s_%03d" % (name, self._shots)
 
-    def look(self, x, z, name="rimbench", zoom=None):
+    def look(self, x, z, name="rimbench", zoom=None, clear_ui=True):
         """Point the camera and take a screenshot. Returns the file path.
 
         `zoom` is a rootSize NUMBER (11-15 is the safe band), not a zoom name.
+
+        🔴 `clear_ui` is ON by default and you almost never want it off. All
+        twelve art screenshots of the 2026-08-14 live session were NON-EVIDENCE:
+        the camera was aimed correctly and RimWorld's Debug log window sits on
+        the centre of the screen, which is exactly where this method puts the
+        subject. Twelve rows filed NEEDS EYES, not one of them containing the
+        thing to be judged. Closing the log by hand does not survive either --
+        auto-open-on-error reopens it, and a modded startup throws errors all
+        session -- so the close belongs in the same breath as the shot.
         """
+        if clear_ui:
+            # Not wrapped in a bare except: an older companion without this tool
+            # must be LOUD, because the failure it prevents is silent and the
+            # picture still looks like a real picture.
+            self.call("jawa/clear_ui")
         self.call("rimworld/jump_camera_to_cell", x=x, z=z)
         if zoom is not None:
             # 🔴 The parameter is `rootSize`, a NUMBER — not `zoom`, and not a
@@ -254,8 +268,12 @@ class Session(object):
                       suppressMessage=True)
         return r.get("path")
 
-    def frame(self, x, z, w, h, name="rimbench"):
-        """Frame a rect and shoot it, so the whole thing is in view."""
+    def frame(self, x, z, w, h, name="rimbench", clear_ui=True):
+        """Frame a rect and shoot it, so the whole thing is in view.
+
+        Same debug-log occlusion as `look` — see its docstring."""
+        if clear_ui:
+            self.call("jawa/clear_ui")
         try:
             self.call("rimworld/frame_cell_rect", x=x, z=z, width=w, height=h)
         except Exception:

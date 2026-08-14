@@ -1,5 +1,26 @@
 # Live session ledger - 2026-08-14
 
+> 🔴 **DO NOT SPEND EYES ON THE TWELVE SCREENSHOTS BELOW. THEY ARE NON-EVIDENCE.**
+> Found 2026-08-14 by BRIDGE, by opening the pictures instead of reading the row.
+>
+> The camera was aimed correctly — `look()` jumps to the subject's cell and puts
+> it dead centre — and **RimWorld's Debug log window covers the centre of the
+> screen**, roughly 940x650 px of scrolling text over the thing being
+> photographed. The pawn inspect pane covers the bottom-left and the dev palette
+> the top-left. In `p5_004.png` (VAEA_Apparel_ToolBelt) and `p13_012.png`
+> (VRESaurids_Littlefoot) **the subject is not visible anywhere in frame.**
+>
+> Every one of those rows says `NEEDS EYES`, which reads as *collected, awaiting
+> judgement*. They were collected. There is nothing in them. Judging art from
+> them would have produced twelve confident verdicts about pictures of a debug
+> log — and "the art is fine" is the answer that costs the most to be wrong about.
+>
+> **Fixed for next session, not for these files:** `jawa/clear_ui` closes every
+> dev window and drops the selection, and `rimbench.core.look()` now calls it
+> before every screenshot. ⚠️ Closing the log by hand does not survive —
+> auto-open-on-error reopens it, and a modded startup throws errors all session.
+> **The twelve rows must be re-shot; they cannot be rescued.**
+
 _Written by `src/RimMandrake/bridgetools/load_session.py`. `NEEDS EYES` is a real verdict: the evidence is collected and the picture has not been looked at yet._
 
 **ERROR** 3  **NEEDS EYES** 13  **PASS** 8  **SKIP** 3
