@@ -348,3 +348,91 @@ a campaign nobody finished building.
   answer covers the *format*, not just the one mod.
 - ⚠️ **Not v1.** `V1_SCOPE.md` ships one quest and three terrain overrides. This
   is a **v2 content pillar** and is recorded here so it is not re-derived.
+
+⭐ **The storyline half of this is now written** — the towers are the Empire's
+surface access and the Hutts pay to have them cut:
+`D:\Luke\dev\Rimworld\design\Jawa\worldbuilding\orbital_towers_and_the_sky_ladder.md`
+Skyhook and elevator variants are on the register there, `[v2]`.
+
+---
+
+# 8. NEW HAZARD PALETTE — owner, 2026-08-13
+
+_Four concepts recorded the hour they were raised. **The first three are for the
+wild jungles and marshes of the Three Waters; the fourth is a general map
+augmentation.**_
+
+## 8.1 Wildpods — *the jungle*
+
+**A pod-bearing plant whose pods are SEALED, and what is inside varies.**
+
+⭐ **This is scavenging applied to botany, and it is the most Jawa hazard on the
+list.** The clan's whole instinct is *open the thing and see*. A field of pods is
+a field of unopened questions — most worthless, some valuable, some a mistake.
+
+- **Harvestable**, so it reads as a resource at first glance.
+- **A minority burst** — that is the hazard, and it must be a minority or the
+  player simply stops opening them, which kills the mechanic.
+- ⚠️ **Do not put the good outcome behind a research gate.** The pull is *I do not
+  know what is in this one*; a known distribution is just a crop.
+
+## 8.2 Poison briar and thorn fields — *the jungle*
+
+**Static, dense, passable at a cost. Area denial by terrain rather than by
+threat.**
+
+⭐ **This is a register the campaign does not have yet.** Everything hostile on
+this planet currently either *chases you* (raids, the pursuit) or *punishes
+lingering* (the Agarilux spore bubble at radius 8). **Briar does neither — it
+shapes the route.** You do not fight it and you do not flee it; you go around, or
+you pay to go through.
+
+**And that is exactly what a jungle should do to a caravan.** It is also the
+cheapest way to make the Three Waters feel defended without adding a single
+warrior.
+
+## 8.3 Quicksand and sink-silt — *the marsh, and the deep*
+
+**Terrain that traps, and can kill.**
+
+⭐ **It defends the water for free.** The Deepwater Compact's power rests on
+holding the only water worth having, and a marsh that swallows caravans enforces
+that **without them fielding anyone.** A faction whose power is geography is far
+more convincing than one whose power is a goodwill number.
+
+⭐ **And "sink-silt" has an obvious second home: the seafloor.** The same
+mechanic, in the deep, is the thing that makes walking the bottom frightening —
+and `AA_SandProwler` already *burrows through loose substrate and ambushes from
+beneath it.* **Sink-silt is where a sand prowler lives.**
+
+## 8.4 Tar pits and resin flats — *anywhere*
+
+**A general map augmentation, not tied to the jungles.**
+
+⭐ **The best thing about tar is that things die in it and STAY.** A tar pit is
+not just a hazard and a chemfuel source — **it is a salvage site with bodies in
+it**, preserved for however long the fiction wants. **For a clan whose economy is
+stripping what other people left behind, that is a gift.**
+
+- **hazard:** movement, entrapment, fire
+- **resource:** chemfuel and industrial feedstock
+- ⭐ **content:** whatever went in and did not come out
+
+**Resin flats** read as the drier, brittler cousin — a sheet rather than a pool.
+Same family, different silhouette, and a better fit for the deep desert where a
+liquid pool would not survive the heat.
+
+## 8.5 Feasibility — what exists, and what does not
+
+⚠️ **Recorded as design, not as buildable. CREATE owns the survey.**
+
+| concept | what may already exist |
+|---|---|
+| **tar pits** | ⭐ **Alpha Biomes ships `AB_TarPits` as a BIOME.** The owner wants it as a *patch on other maps* — so the question is whether its terrain and props can be scattered by a `GenStep` outside their own biome |
+| **quicksand / sink-silt** | unknown. Swamp and marsh mods are the place to look; Biomes! Islands and the Greater Swamps family are candidates |
+| **poison briar** | the existing hostile-flora audit found **only one** damaging plant in the whole stack — Alpha Biomes' `AB_AgariluxPrime`, a radius-8 gas emitter. **Briar is a different mechanic and probably does not exist yet** |
+| **wildpods** | unknown. Closest existing idea is a harvestable plant with a variable yield |
+
+🔴 **The honest read: tar is likely cheap, briar and wildpods are likely new
+work.** All four are `[v2]`, and none of them should be authored before the sea
+step and the biome mix land.
