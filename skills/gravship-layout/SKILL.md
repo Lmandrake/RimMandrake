@@ -239,6 +239,97 @@ export, where all of them are `IsNull="True"`:
 Round-tripping proves our parser agrees with itself. Do not call a hand-written
 ship done until one has been through the choose-gravship page and looked at.
 
+## 🔴 What actually makes a gravship work — measured live 2026-08-13
+
+A layout that builds is not a ship that flies. All of the below was measured on
+a running game, not read from a wiki or a def dump.
+
+### Capacity comes from the ENGINE and nowhere else
+
+`Connected substructure: <used> / <cap>` on the engine's inspect panel is the
+number that matters. The cap is **the engine's `SubstructureSupport` stat**.
+
+| source | contributes |
+|---|---|
+| `GravEngine` | **all of it** — 632.7954 as shipped by Bigger Gravships |
+| `GravFieldExtender` | **nothing**, at any distance — see the bug below |
+| `VGE_GravFieldAmplifier` | **nothing** |
+| a second `GravEngine` | **nothing, and it breaks the first** — panel reports *"Grav engine disabled: Multiple grav engines present"* and both engines go dead |
+
+Ruled out by experiment, so nobody repeats them: **distance is not the gate**
+(moved an extender from 22.0 to 15.0 tiles against a `maxDistance` of 34 — cap
+unchanged); **power is not the gate** (same cap at 4,800 W and at 0 W);
+**faction is not the gate** (the engine is already player-owned — its `Claim`
+gizmo is disabled and the Claim designator refuses with *"Must designate
+abandoned claimable structures"*).
+
+### 🟢 The capacity dial, and it applies WITHOUT a restart
+
+Bigger Gravships owns these numbers and exposes them as settings. **This is the
+lever — not a hull redesign, not a new mod, not a Harmony patch.**
+
+```
+rimworld/get_mod_settings    {"modId":"redmattis.biggergravship"}
+rimworld/update_mod_settings {"modId":"redmattis.biggergravship",
+                              "values":{"gravEngineSupport":4500}}   # NOTE: dict
+rimworld/open_mod_settings   {"modId":"redmattis.biggergravship"}
+rimworld/get_ui_layout       -> find "Apply Settings Now!" -> click_ui_target
+```
+
+🔴 **`update_mod_settings` WRITES but does not APPLY.** After the call the
+setting reads 4500 in memory and on disk, and the live def still reads 632.7954.
+The mod's **"Apply Settings Now!"** button is what pushes settings into the
+defs. Measured: engine `SubstructureSupport` went 632.7954 → **4500.0** with the
+game running, and the panel went `4057/633` → `4057/4500`.
+
+⚠️ `values` must be a **dict** — `{"gravEngineSupport": 4500}`. A list of pairs
+returns *"At least one settings path/value pair is required."*
+⚠️ The click returns *"UI state did not change"* even when it worked. Assert on
+the def, not the message.
+
+**Consequence worth more than the ship: gravship size experiments no longer
+cost a game load.** Anything BG owns — engine support and radius, extender
+count and radius, thruster counts, fuel tank sizes, shields — is a live edit.
+
+### ⚠️ Bigger Gravships applies only SOME of its own settings
+
+Two of its writes are broken. Both were mistaken for design facts before being
+measured:
+
+| setting | value | live def |
+|---|---|---|
+| `gravEngineSupport` | 632.7954 | ✅ 632.7954 |
+| `gravExtenderSupport` | **500.0** | ❌ **no `SubstructureSupport` on the def at all** |
+| `gravExtenderMaxDistanceFromEngine` | **85.0** | ❌ **34** — it gets the *engine's* number |
+
+So BG intends 632.8 + 12×500 = 6,632 and delivers 633. **Nothing in the settings
+window fixes this** — the slider is already at 500. And an XML patch cannot fix
+it either: BG's Harmony prefix on `DefGenerator.GenerateImpliedDefs` runs after
+all XML patching and is the last writer. Proof it clobbers others: Engines
+Unlimited patches `maxSimultaneous` to 9000; the live defs read BG's 20 and 10.
+
+⚠️ Probe caveat, stated because it caught this seat: `jawa/get_def` returned no
+comps block for `GravFieldExtender`, so "the stat is absent" is *absent from the
+probe*. The behaviour — 633 with eight extenders, four of them inside 34 — is
+the finding that stands.
+
+### Completeness is a separate check from capacity
+
+Being under capacity does not make a ship fly. The engine panel also lists, in
+red, **`Requires: Thruster, fuel tank, controls`**. Providers: `SmallThruster` /
+`LargeThruster`, `ChemfuelTank` / `LargeChemfuelTank`, `PilotConsole`. A hull
+with none of them builds, reports connected, and refuses to launch.
+
+**And pathing is a launch requirement, not just a boarding one** — Ludeon's own
+keyed strings include `NoPathToPilotConsole`, `PilotConsoleInaccessible` and
+`NoPathToGravship`. A sealed hull cannot fly. Our v1 hull was 782 continuous
+tiles with **no door anywhere**; doors were cut at (115,58) and (82,136) and are
+now in the exported artifact.
+
+⚠️ Cutting a hull tile drops its roof. `DoorBase` and `GravshipHull` both
+`holdsRoof`, so spawn the door **in the same breath** as the destroy — a survey
+between the two calls is long enough for a collapse.
+
 ## Why the file beats the build
 
 Building the v1 ship live took 31 bridge steps, 4,057 foundation cells, 4,057

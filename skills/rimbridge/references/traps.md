@@ -281,3 +281,9 @@ a **stale companion DLL**: rebuild and redeploy with the game closed
 **Cause:** the companion's tools resolve `Thing.ThingID`. The core `rimworld/*` tools use their own pawn addressing, which does not accept a ThingID.
 **Fix:** read `x`/`z` off `jawa/list_pawns` and use `rimworld/jump_camera_to_cell`. Verified working immediately afterwards on the same pawn.
 **Recurs when:** mixing the two tool families in one sequence — which is every screenshot workflow, since the camera verbs are core and the census verbs are ours.
+
+## An armed architect designator swallows every later click, and nothing on the bridge disarms it
+**Symptom:** after `select_architect_designator` + `click_cell`, all subsequent `click_cell` calls return `success: true` and select nothing — `list_selected_gizmos` returns `[]` forever, so no inspect panel can be read and no gizmo can be fired. Screenshots show the designator's "Shapes" palette still open with its refusal message pinned top-left.
+**Cause:** the designator stays armed and consumes map clicks as designation attempts rather than selections. It is a *mode*, not a one-shot.
+**Fix — none found from the bridge.** All of these were tried and all reported success while changing nothing: `press_cancel` ("Dispatched semantic 'cancel'… UI state did not change"), `right_click_cell` on empty ground, `clear_selection`, `close_context_menu`, `close_main_tab` ("No RimWorld main tab is currently open"), and `select_architect_designator` with a null id (errors). `get_designator_state` returned nothing useful. The owner clicking once in game clears it.
+**Recurs when:** any use of `select_architect_designator`. ⚠️ **Treat arming a designator as a one-way door for the rest of your bridge session** — do every selection-based read you need FIRST, then designate last. Worth a companion tool that calls `Find.DesignatorManager.Deselect()` directly.
