@@ -136,14 +136,13 @@ use."* Own `packageId`; `loadAfter` + `modDependencies` naming the single donor;
 an `About.xml` documenting **every** file it ships, because that text is what a
 stranger reads. Doctrine: `src/Jawa/README.md`.
 
-🔴 **A loose PNG beats an AssetBundle regardless of order — but between two
-LOOSE files, order decides.** So a loose-art donor must be in `loadAfter` or the
-fix is invisible with no log line.
+🔴 **A loose PNG beats an AssetBundle regardless of order — but between two LOOSE
+files, order decides.** A loose-art donor must be in `loadAfter` or the fix is
+invisible, with no log line.
 
-⭐ **Art can be correct at source and broken at render.** Judging a sprite at
-100% is judging the wrong image; the eopie's "nose cut off" was a *downscaling*
-failure, not a drawing one. And a **review image that is not the rendered image
-is a trap** — render the tint.
+⭐ **Art can be correct at source and broken at render** — the eopie's "nose cut
+off" was a *downscaling* failure. Judge at display size, and **render the tint**:
+a review image that is not the rendered image is a trap.
 
 ⭐ **A donor's mask is the donor's own segmentation**, and a donor's complete set
 is a **test harness**, not just a reference: score your recipe against the facing
