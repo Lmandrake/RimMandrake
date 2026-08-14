@@ -210,9 +210,14 @@ a bug in this checklist.
 
 Read from the def: `<displayInFactionSelection>false</displayInFactionSelection>`.
 There is no box to untick. **The only lever is mod removal (or, for the vanilla two,
-the Anomaly playstyle setting) — that is a separate proposition for VISION/PROJECT
-and NOT a worldgen tick.** Listed here so you do not spend ten minutes scrolling for
-a row that does not exist.
+the Anomaly playstyle setting) — NOT a worldgen tick.** Listed here so you do not
+spend ten minutes scrolling for a row that does not exist.
+
+✅ **The vanilla two are RESOLVED, not open.** The owner ruled 2026-08-13 that
+**Anomaly content is set to zero**, so `HoraxCult` and `Entities` are handled by
+that setting and need nothing from this checklist. *(This was carried here as "a
+separate proposition for VISION/PROJECT"; it is decided.)* The DLC stays enabled —
+its creatures and abilities remain available to us for reskinning.
 
 | in-game label | defName | source | the only lever |
 |---|---|---|---|

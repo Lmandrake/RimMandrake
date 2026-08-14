@@ -21,7 +21,7 @@ decided-but-verify-in-game. A **DECIDED** line records the choice + where it's a
 ---
 
 ## 0. Pre-flight: environment & mod load
-- [ ] **DLCs active:** ALL official DLC is present and enabled (standing build assumption — design never gates on "if DLC X present"). Royalty ✅(techprint gate), Ideology ✅(Jawa ideoligion + Scavenger role), Biotech ✅(Jawa genes + native pollution/wastepack mechanics), Odyssey ✅(gravship layer) all ENABLED. Anomaly OWNED and enabled but **content set OFF/minimal** (benched — not fun to user), not uninstalled — this is a deliberate content-tuning choice, not a DLC-absence.
+- [ ] **DLCs active:** ALL official DLC is present and enabled (standing build assumption — design never gates on "if DLC X present"). Royalty ✅(techprint gate), Ideology ✅(Jawa ideoligion + Scavenger role), Biotech ✅(Jawa genes + native pollution/wastepack mechanics), Odyssey ✅(gravship layer) all ENABLED. Anomaly OWNED and enabled but its **content is set to ZERO** — owner's ruling 2026-08-13, no longer "OFF/minimal" and no longer conditional. Not uninstalled: the DLC stays enabled so its **assets remain available to us**. See the carve-out at the Anomaly intensity row below.
 - [ ] **Mod list finalized in RimSort** and load-ordered (RimSort handles ordering — no manual diff).
 - [ ] **Frameworks present & 1.6-current:** Harmony, VEF Core, HAR, JecsTools Unofficial 1.6,
   neronix17.toolbox (Outer Rim), EBSG (if KotOR armor), Prepatcher (CAI-5000 dep). Verify each
@@ -46,7 +46,19 @@ decided-but-verify-in-game. A **DECIDED** line records the choice + where it's a
   *frequency*, raise raid *points*, disable enemy flee%, disable adaptation-difficulty decay. Set
   exact sliders at the machine.
 - [x] **Commitment (permadeath) mode:** **OFF — reload allowed** (user, 2026-08-04).
-- [ ] **Anomaly/monolith intensity:** set to OFF/minimal (per DLC decision).
+- [ ] 🔴 **Anomaly/monolith intensity: ZERO.** Owner's ruling 2026-08-13, and it is
+  settled — not "off/minimal", not a preference to revisit at the settings screen.
+  **The Anomaly narrative does not run in this campaign.**
+
+  ⭐ **The carve-out, and it is the reason the DLC stays enabled:** its **creatures
+  and abilities are ours to reskin and reuse for our own purposes.** Zeroing the
+  content switches off the *storyline* — the monolith, the entity events, the
+  Forsaken arc — and does nothing to the defs. A reskinned Anomaly creature dropped
+  into our own content is unaffected by this setting and is explicitly permitted.
+
+  ⇒ **Never read "Anomaly is at zero" as "Anomaly assets are off-limits."** They are
+  a def library we own and have paid for. What is switched off is the DLC telling
+  its own story on top of ours.
 
 ## 2. Ideology (Jawa ideoligion) — mostly authored, confirm in creator
 - [~] **Fixed ideology** (no fluid development) — DECIDED (`forbidden_mods.md`).

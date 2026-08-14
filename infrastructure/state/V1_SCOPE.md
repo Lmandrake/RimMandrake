@@ -385,6 +385,18 @@ afternoon, and an art commission is v2 by definition.
 too thick. **Estimates have been wrong all day; this one gets a hard stop rather
 than a hope.**
 
+### ✅ ANOMALY IS AT ZERO — owner's ruling 2026-08-13, ticked during the worldgen run
+
+**Anomaly content is set to zero, for certain.** It is a setting on the same
+irreversible run as rows 2 and 7, so **whoever drives that run ticks it there** —
+it is not separate work and it is not a v1 row.
+
+⭐ **Creatures and abilities stay ours to reskin.** The DLC remains enabled; only the
+storyline is off. **A reskinned Anomaly creature in our own content is unaffected by
+this setting** — do not treat the zero as a ban on the assets. It also resolves
+`HoraxCult` and `Entities` in `WORLDGEN_FACTION_CHECKLIST.md` §3, which were carried
+as an open proposition.
+
 ## ⚠️ Sequencing — the two dependencies that can cost a whole cycle
 
 ### 1. `jawa/list_factions` needs a SHUTDOWN window, not a startup
