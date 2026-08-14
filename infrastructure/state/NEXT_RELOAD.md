@@ -244,6 +244,25 @@ negative. *(Dune seas is the exception — it closed on a def read in §3b.)*
 
 ### 5a. Ground hulk + scrapfields — **NOT biome-gated, any fresh map shows them**
 
+🔴 **The hulk needs a COLD LOAD, and the map must be generated AFTER it.** A
+save-load of an existing map does not re-run GenSteps. Do not test it on a map
+the running process already made.
+
+> **Why, measured 2026-08-14:** the `minSpacing 85 -> 0` fix (`c74baa9`) was
+> deployed at **01:33:48**; `RimWorldWin64` PID 16112 started at **01:03:26**, and
+> RimWorld reads defs **once, at startup**. That process therefore held
+> `minSpacing 85` — the exact def that found no cell on 2 of 2 maps — so a no-show
+> on it would have read as a **third failure of a def that was already fixed**.
+> `jawa/get_def Jawa_StampGroundHulk` does **not** expose `minSpacing`
+> (`extra: null`), so the file mtime is the evidence, not the bridge.
+>
+> ⚠️ **Generalises past the hulk:** `find "<Steam>/Mods" -newermt "<process
+> StartTime>"` is the check. Any def deployed after launch is invisible to the
+> running game while looking perfectly deployed on disk.
+
+✅ **Scrapfields is unaffected** — `JawaScrapfields.xml` is 2026-08-13 16:42, well
+before any recent launch, so it is testable on a map the current process made.
+
 Both patch `Base_Player`'s `genSteps` with **no biome filter**:
 
 | item | GenStep order | file |

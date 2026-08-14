@@ -117,3 +117,15 @@ read_rules_db: Loaded 13 additional rules
 **Fix:** **Verify a deletion AFTER the owning application has next started, not immediately after the `rm`.** To make it stick, Steam Cloud must be disabled for the title first (Properties → General → Steam Cloud), and only then delete. Also check `du -sh` and the file count, not just that a `ls` looks empty.
 🔴 **Never report a deletion as "irreversible" from a post-`rm` check alone.** That claim was propagated into a queue and told other seats their measurements were the only surviving record and not to file bugs when a savegame tool found nothing — both wrong, and both would have cost someone a hunt.
 **Generalises to:** every cloud-mirrored tree — Steam Cloud, OneDrive-redirected `Documents`, Dropbox, iCloud Drive. **The filesystem is not the authority when something else holds a replica.** The same shape covers a mod folder Steam restores on a validate pass, and it is why "the file is gone" and "the data is gone" are different claims.
+
+### A def deployed AFTER launch is invisible to the running game, and looks perfectly deployed on disk
+**Symptom:** a fix is committed, deployed to the Steam `Mods` tree, and confirmed present — repo copy and game copy identical, right bytes, right path. It then fails to appear in the running game, and the failure is indistinguishable from the bug it was meant to fix. 2026-08-14: the ground hulk's `minSpacing 85 -> 0` fix would have been tested on the process that still held `minSpacing 85`, and a no-show would have been recorded as a **third** consecutive failure of a def that was already correct.
+**Cause:** **RimWorld reads defs exactly once, at startup.** Deploying to disk changes what the *next* launch will load and nothing about the process already running. Every ordinary check — mtime, diff, `ls` — inspects the disk, which is right, rather than the process, which is stale.
+**Fix:** compare the deploy time against the process start time before trusting any live test.
+```bash
+tasklist.exe | grep -i rimworld            # then read StartTime for the PID
+find "<Steam>/steamapps/common/RimWorld/Mods" -newermt "<process StartTime>" -type f
+```
+**Any file that returns is invisible to the running game.** ⚠️ **The bridge cannot answer this for you** — `jawa/get_def` returns the def that was *loaded* and does not expose most fields (`minSpacing` came back `extra: null`), so a successful read is not proof the def is current. **The mtime is the evidence.**
+🔴 **For a map-generation def, the bar is higher still: a cold load is necessary but not sufficient — the map must be GENERATED after it.** A `GenStepDef` or `terrainPatchMaker` runs at map-gen only, so loading a save made by the old process shows the old result forever.
+**Generalises to:** every long-lived process that reads configuration once — and to the general shape *"I verified the artifact, not the consumer"*. When a fix is deployed while the thing under test is already running, **the disk is not the system under test.** Ask what time the consumer last read it, and treat a post-launch deploy as a scheduled change, not a live one.

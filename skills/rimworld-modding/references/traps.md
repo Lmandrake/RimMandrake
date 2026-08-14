@@ -120,6 +120,7 @@ the one asked.**
 - A reskin whose donor ships art LOOSE fails silently if it loads first
 - Three mods shipped the base game's own assemblies, and one shipped all of it
 - 38. A dead mod that the dead-mod grep cannot see
+- A def deployed AFTER launch is invisible to the running game, and looks perfectly deployed on disk
 
 ### `traps-diagnosis.md` — believing a diagnosis, and the live game
 
