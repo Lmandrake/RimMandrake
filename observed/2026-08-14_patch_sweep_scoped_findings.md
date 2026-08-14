@@ -82,3 +82,79 @@ blank square in the xenotype picker**, and that is an owner-look item, not a gre
 running game: **72 files, 0 errors.** Every prior sweep is superseded, not merely
 old — under O16 they scanned 1,271 installed mods and 34,719 def files, so their
 non-zero counts could name mods the game never loads. This one cannot.
+
+---
+
+# 🔴 L5 — the scrapfields shortfall is NOT a count problem. `Generate` ABORTS, and it is designed to be silent.
+
+**OPS, 2026-08-14, from `ilprobe` against
+`C:\Program Files (x86)\Steam\steamapps\common\RimWorld\RimWorldWin64_Data\Managed\Assembly-CSharp.dll`.**
+Measured by BRIDGE: **4** `ChunkSlagSteel`, full-map `listerThings`, 26,213 things
+examined, truncated 0 — all four inside a 5-cell box at (214,233) (215,232) (215,237) (217,233).
+
+## 1. The count is CORRECT. That hypothesis is dead.
+
+`GenStep_Scatterer::CalculateFinalCount` (IL 63 B): `count < 0` ⇒
+`RoundToInt(CountFromPer10kCells(countPer10kCellsRange.RandomInRange, map, -1) * GetPlacementFactor(map))`.
+
+- `GenStep_Scatterer::GetPlacementFactor` IL_0000 is `ldc.r4 1.0`, and the mutator
+  product is reached **only** through `brfalse` on `isJunk` (IL_0006-000c). **`isJunk`
+  is gone from the deployed def ⇒ the factor is exactly 1.0.** Not "probably 1".
+- `CountFromPer10kCells` IL: `mapSize = map.Size.x` (250) when the arg is < 0, then
+  `RoundToInt(mapSize*mapSize / (float)RoundToInt(10000/value))`
+  = `RoundToInt(62500 / 1250)` = **50** at value 8.
+
+⇒ **The step asked for ~50 scatter spots and got one.** Nothing is scaling the count.
+
+## 2. 🔴 `Generate` RETURNS on the first failed cell search — it does not skip and continue
+
+`GenStep_Scatterer::Generate` (IL 121 B), the loop body:
+
+```
+IL_0028: callvirt GenStep_Scatterer::TryFindScatterCell
+IL_0031: brtrue.s IL_004f              ; found -> place
+IL_0034: call     get_HasFallbackValidators
+IL_0039: brfalse.s IL_004e             ; no fallback ->
+IL_0046: callvirt TryFindScatterCell   ; retry with useFallback
+IL_004b: brtrue.s IL_004f
+IL_004d: ret                           ; <-- ABORTS THE WHOLE GENSTEP
+IL_004e: ret                           ; <-- ABORTS THE WHOLE GENSTEP
+IL_004f: ... ScatterAt ... usedSpots.Add ... i++
+```
+
+**Both failure exits are `ret`, inside the loop.** One unfindable cell ends the entire
+step, discarding the remaining ~49 spots. ⭐ **This is the mechanism, and it means the
+shortfall is all-or-nothing at some iteration, not a gradual thinning.**
+
+## 3. 🔴 The silence is BY DESIGN — retire "zero scatterer warnings" as a control
+
+`TryFindScatterCell` IL_0083: `ldfld GenStep_Scatterer::warnOnFail; brfalse IL_011e` —
+the entire logging block is skipped when `warnOnFail` is false. It is a `public bool`
+that **our def never sets**. ⇒ **an aborted scatter logs NOTHING.** The observation
+"zero scatterer warnings on this map" is consistent with a healthy run *and* with a
+step that quit after one spot. **It discriminates nothing and must not be cited again.**
+
+## 4. ⚠️ The 44–56 band is mis-specified — it counts SPOTS, and `clusterSize` is 10
+
+`CalculateFinalCount` returns **scatter spots**; `GenStep_ScatterThings` places a
+cluster at each. Our deployed def sets `<clusterSize>10</clusterSize>` with
+`<minSpacing>4</minSpacing>`. **The measurement is its own proof:** 4 chunks packed
+into one 5-cell box is a single spot's cluster, not four scattered placements.
+⇒ a healthy run is ~50 spots × up to 10 = **several hundred chunks, not 44–56.**
+The band was derived treating the per-10k count as chunks. 🔴 **Whatever number this
+gate uses next, it cannot be 44–56, and the old 75–125 is not a comparison band
+either** (its own derivation omitted `GetPlacementFactor`).
+
+## What to do — the hunt is now narrow, and it does NOT need a map
+
+**Question: why does `CanScatterAt` reject the map after one placement?** The
+validator chain is `GenStep_Scatterer::CanScatterAt` → `GenSpawn::CanSpawnAt` →
+`GenStep_ScatterThings::TryGetRandomValidRotation` → the
+`terrainValidationRadius` / `terrainValidationDisallowed` loop
+(`GenStep_ScatterThings::CanScatterAt`, IL_0035 onward). **All four are readable
+offline with `ilprobe`, and the def's own fields say which are even active.**
+
+⭐ **Cheapest decisive experiment, and it costs no load:** set `<warnOnFail>true</warnOnFail>`
+on `Jawa_ScatterScrapfields`. The engine then names its own failure on the next map
+generated, instead of us inferring it. **A one-field def edit converts a silent abort
+into a log line.**
