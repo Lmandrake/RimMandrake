@@ -124,15 +124,23 @@ paper only; first execution is this load.
 `jawa/fire_incident` and `jawa/send_letter` off the game copy. The build refusing
 by default is the guard working.
 
-### 1d. 🔴 A DEPLOY IS OWED — FOUR ITEMS, AND THE GAME MUST BE DOWN
+### 1d. 🔴 A DEPLOY IS OWED — **5 SHIP · 2 HELD**, AND THE GAME MUST BE DOWN
 
 **This section read "No deploy is owed" until 2026-08-14. That is now FALSE.**
+⚠️ **The count and the table must agree. They did not, for one revision** — the
+header said four and the table listed three, omitting two genuinely drifted files.
+**Read the row count, not the adjective.** OPS's `--plan` run is the authority;
+if it lists a file this table does not, this table is the stale one.
 
-| item | why |
-|---|---|
-| companion DLL — `jawa/get_defs`, `jawa/fire_quest` | §1c. ⚠️ **must pass `--gm`** |
-| `isJunk` off both scatter defs (`de1018b`) | repo-only; the game copy is still 2026-08-13 16:42 **with `isJunk` present** |
-| **`JawaSeaShaper.dll` — SOLO** | repo md5 `b7730027`, deployed `82b48e53` @ 08-13 23:57, **older than the launch.** A new assembly poisons attribution for anything beside it. ⚠️ **The write FAILS `OSError 22` while the game runs** — the assembly is loaded and locked. The refusal is safe; it cannot truncate |
+| # | item | ship? | why |
+|---|---|---|---|
+| 1 | companion DLL — `jawa/get_defs`, `jawa/fire_quest` | ✅ | §1c. ⚠️ **must pass `--gm`** or it strips `fire_incident` and `send_letter` |
+| 2 | `JawaScrapfields.xml` — `isJunk` off (`de1018b`) | ✅ | repo-only; game copy still 2026-08-13 16:42 **with `isJunk` present** |
+| 3 | `JawaGroundHulk.xml` — `isJunk` off (`de1018b`) | ✅ | same defect class, same commit |
+| 4 | ⏳ **`BuzzerApostrophe_Fix.xml`** (`3822ef9`) | ✅ **AND IT EXPIRES** | 🔴 **The ONLY item here with a deadline. Buzzer names bake into the save as STRINGS**, so it is worth shipping **only while worldgen is still ahead of us.** Ship it now and it works forever; miss this window and it is worth nothing the moment the world is made. Validator clean, both namer sites |
+| 5 | `AnimalBiomeDuplicates_Fix.xml` (`9acddd3`) | ✅ if its seat vouches | committed and clean, no urgency either way. Confirm the owning seat, then it rides or it does not |
+| — | **`JawaSeaShaper.dll` — SOLO, its own load** | ⚠️ **not in the batch** | repo md5 `b7730027`, deployed `82b48e53` @ 08-13 23:57, **older than the launch.** A new assembly poisons attribution for everything beside it. ⚠️ **The write FAILS `OSError 22` while the game runs** — loaded and locked. The refusal is safe; it cannot truncate |
+| — | Armoury × 2 | ⛔ **HELD on scope** | v1 row 6 is closed; weapon balance is not v1 and ships in any later window |
 
 🔴 **`--apply` overwrites the game copy with whatever is in the repo at that
 moment, including a peer's half-finished work. Scope it with `--mod`; never run it
