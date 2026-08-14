@@ -328,9 +328,24 @@ def render():
     # wallpaper within a day.
     global LAST_STALLED, LAST_NEEDS
     held = dwell(live)
-    stalled = [(seat, live[seat], held.get(seat, 0)) for seat in SEATS
-               if live.get(seat) in NEEDS_HUMAN and seat != SELF
-               and held.get(seat, 0) >= DWELL_BEFORE_ALARM]
+    now = int(time.time())
+    # CERTAIN first: Claude Code's own Notification hook tells us a seat is at a
+    # prompt. No dwell gate is needed on a fact — the gate only ever existed to
+    # stop an INFERENCE from flapping.
+    certain, guessed = [], []
+    for seat in SEATS:
+        if seat == SELF:
+            continue
+        bs = st.get(seat, {}).get("blocked_since")
+        if bs:
+            certain.append((seat, st[seat].get("blocked_why", "prompt"),
+                            now - int(bs)))
+        elif (live.get(seat) in NEEDS_HUMAN
+              and held.get(seat, 0) >= DWELL_BEFORE_ALARM):
+            # No notification, but the process looks stopped — this is the case
+            # a hook cannot cover, because a CRASHED seat sends nothing at all.
+            guessed.append((seat, live[seat], held.get(seat, 0)))
+    stalled = certain + guessed
     owner_rows = [f for f in r.get("OWNER", []) if len(f) >= 3]
     LAST_STALLED = stalled
     LAST_NEEDS = len(owner_rows) + len(stalled)
@@ -365,13 +380,21 @@ def render():
             where = f[3] if len(f) > 3 and f[3] else "tell PROJECT"
             sub = "     -> %s" % where[:62]
             L.append(crow(DIM, sub))
-    if stalled:
+    if certain:
+        L.append(bar("WAITING AT A PROMPT   %d   (told, not guessed)" % len(certain), YEL))
+        for seat, why, secs in certain:
+            item = (st.get(seat, {}).get("item") or "").strip() or "no line set"
+            line = ">> %-7s %-18s %s - %s" % (
+                seat, why, ago(now - secs).strip(), item[:28])
+            L.append(crow(YEL, line))
+            L.append(crow(DIM, "     -> click its window: AGENT %s" % seat))
+    if guessed:
         # Graded, not binary. A row carries WHY it is flagged, because showing
         # the agent's reasoning is measured to raise both performance and trust
         # at no cost in workload or response time — transparency is free here,
         # and a bare flag is the thing that gets ignored.
-        L.append(bar("MAYBE STUCK   %d   (a guess — check the tab)" % len(stalled), RED))
-        for seat, stv, secs in stalled:
+        L.append(bar("MAYBE STUCK   %d   (a guess — no notification seen)" % len(guessed), RED))
+        for seat, stv, secs in guessed:
             item = (st.get(seat, {}).get("item") or "").strip()
             why = item if item else "no status line set — may never have started"
             line = ">> %-7s %-8s %s - %s" % (
