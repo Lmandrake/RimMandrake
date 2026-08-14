@@ -397,6 +397,25 @@ this setting** — do not treat the zero as a ban on the assets. It also resolve
 `HoraxCult` and `Entities` in `WORLDGEN_FACTION_CHECKLIST.md` §3, which were carried
 as an open proposition.
 
+**The setting is `Disabled`, and it is editable mid-campaign** (Options → Gameplay →
+storyteller/difficulty → Anomaly settings). Proven by IL xref of every reader of
+`enableAnomalyContent`: it gates incident firing, study, the threat budget and
+thing-set/trader-stock inclusion, and **never touches the def database, textures or
+map generation.**
+
+### 🔴 21 Anomaly cherry-picks WITHDRAWN by the owner, 2026-08-14 — do not re-propose
+
+A removal list would have deleted `PawnKindDef/Ghoul`, `Trispike`, `Metalhorror`, the
+Shamblers, `ThingDef/VoidNode`, `GoldenCube`, `RevenantSpine`, both obelisks and two
+`GeneDef`s — **the exact donor library this ruling says must stay reachable.** Only
+the three GravTech economy keys survive.
+
+📌 **The lesson, and it generalises past Anomaly: a SETTING that suppresses behaviour
+and a DELETION that removes the def are not interchangeable.** The setting is
+reversible and preserves the asset; the deletion is neither. **Check what the setting
+already covers before writing a removal list** — every incident key here was
+redundant with a playstyle we were already taking.
+
 ## ⚠️ Sequencing — the two dependencies that can cost a whole cycle
 
 ### 1. `jawa/list_factions` needs a SHUTDOWN window, not a startup
