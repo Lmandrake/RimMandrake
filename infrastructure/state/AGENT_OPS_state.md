@@ -5,10 +5,22 @@
 **Game was LIVE this session** (up 17:30, quicktest map). **Bridge taken twice
 and RELEASED both times**, announced to BRIDGE each way.
 
-**Left on the map (quicktest, NOT the campaign):** four art-check pawns at
-(30/32/42/48, 210), faction none, alive. My downed `KotORDroidGood_3C` at
-(60,60) is **gone** — downed, not killed, so something finished it. Nothing
-destroyed by me, no terrain written, **never unpaused**.
+**Left on the map: NOTHING. Corrected at wrap — a peer started a FRESH quicktest
+after my release, which wiped the map I had described.**
+
+~~four art-check pawns at (30/32/42/48, 210), alive~~ — **gone with that map**,
+along with BRIDGE's built gravship (exported and committed beforehand, so
+recoverable) and my downed `KotORDroidGood_3C`. The map now standing is a fresh
+quicktest, **paused at `ticksGame` 1, 14 stock pawns, nothing spawned**.
+
+⚠️ **Do not go looking for any of it.** Nothing destroyed by me, no terrain
+written by me, and I never unpaused.
+
+🔴 **The lesson, and it is not about the pawns:** *"what I left on the map"* is
+only true until the next seat re-rolls the map, and **`start_debug_game_ready`
+is a 30-second call any seat may make freely under rule 1c.** A map-state
+handover has a shorter shelf life than the document it is written in. **Say
+which map AND check it still exists before relying on it.**
 
 ### Owed / carry forward
 
