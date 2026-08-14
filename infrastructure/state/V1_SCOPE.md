@@ -117,6 +117,37 @@ features beyond the plan are v2.
 
 ---
 
+### ⚠️ CORRECTION — "offline design loop" was MY overstatement, not a capability
+
+I told CREATE and BRIDGE that import unblocks *"author XML, import, look,
+iterate — no live session per iteration."* **That is not available today**, and
+CREATE caught it before anyone planned around it.
+
+**The only import route is NEW-GAME SETUP.**
+`Setup/Patch_Scenario_GetFirstConfigPage.cs:9` patches
+`Scenario.GetFirstConfigPage`; the Postfix inserts `Page_ChooseGravship` **after
+`Page_CreateWorldParams`**, gated on the scenario using gravship arrival. The
+author states the limit himself: *"I won't be adding any major features like
+delayed ship spawning etc."*
+
+⇒ **One iteration = one new game start.** Cheaper than a campaign load, **not
+free**, and it cannot put a ship on the map you are already standing on.
+
+⭐ **What WOULD make it true is a small addition to OUR companion DLL.**
+`ShipSketchBuilder.BuildFromLayout` is `public static` and returns a `Sketch`,
+and a Sketch spawns onto a live map. The licence permits it outright. **Until
+that is written, the offline loop is a plan and not a capability** — filed at
+BRIDGE.
+
+✅ **Floors, verified at BOTH ends** (CREATE, source-read rather than inferred
+from a cell count): the exporter captures non-substructure terrain at
+`Exporter/GravshipExporter.cs:182-184`, and the arrival Postfix re-applies it via
+`terrainGrid.SetTerrain`. The README's claim is stale, and now we can say *why*.
+
+📌 **The lesson is mine:** I found a capability in an assembly and described what
+it would *enable* rather than what it *does*. Reading a symbol is not reading the
+call path. **State what you measured; the inference is a separate sentence.**
+
 ### 📊 ROW 8 STATUS — 3 of 4. **Built and exported; NOT closed.** `6909ecb`
 
 BRIDGE, on a quicktest map, campaign untouched.

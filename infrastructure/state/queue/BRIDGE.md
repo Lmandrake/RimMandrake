@@ -273,3 +273,23 @@ evidence for tile-augmentation-on-approach, which currently has none.
 Ordering: same session as worldgen, after v1 rows 2 and 7. Not a blocker.
 Offline research on (a)/(b)/(c) is running now — answers land before the load,
 not during it.
+
+---
+## B-new. Mid-game gravship import — a small companion-DLL addition
+
+**Established offline, 2026-08-13.** `ShipSketchBuilder.BuildFromLayout` is
+`public static`, takes a `ShipLayoutDefV2` and returns a `Sketch`; a Sketch spawns
+onto a live map. **So importing a ship into an existing map is a small addition to
+our own companion DLL, not a mod fork.** The author's licence permits it.
+
+**Why it is worth doing:** today the mod's only import path is new-game setup
+(`Patch_Scenario_GetFirstConfigPage.cs:9`, `Page_ChooseGravship` after
+`Page_CreateWorldParams`). One design iteration therefore costs one new game
+start. With this, CREATE's gravship design loop becomes genuinely offline-ish:
+author XML → import onto a live quicktest → look → iterate, with no restart.
+
+**Source to read, not the README:**
+`.../294100/3576790938/1.6/Source/GravshipExport/Importer/ShipSketchBuilder.cs`
+
+⚠️ Sequence it against v1: row 8 is 3/4 and does **not** need this. This is what
+makes the *next* twenty iterations cheap, so it is leverage, not a blocker.
