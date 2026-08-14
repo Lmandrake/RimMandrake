@@ -92,9 +92,10 @@ Then `python.exe src/RimMandrake/Utils/refresh.py` — **Windows** interpreter; 
 ### 1c. Companion — nothing owed
 
 **Deployed `C:\Program Files (x86)\Steam\steamapps\common\RimWorld\BridgeTools\JawaBench\JawaBench.BridgeTools.dll`
-— 21 tools, 235,008 B, byte-verified by `strings` on the DEPLOYED copy, not
-trusted from the build's own report.** Any earlier "20 tools" line here is dead.
-This copy carries BRIDGE's `BiomeDef` branch (`9f58702`) — see §3b.
+— 22 tools, 246,272 B @ 00:04, byte-verified by `strings` on the DEPLOYED copy,
+not trusted from the build's own report.** Any earlier "20 tools" or "21 tools"
+line is dead. This copy carries BRIDGE's `BiomeDef` branch (`9f58702`, §3b) and
+`jawa/world_stats` (`5768a10`).
 
 ⚠️ **Three tools have never executed** — `jawa/set_pawn_rotation`,
 `jawa/set_pawn_style`, `jawa/set_pawn_xenotype`. They compile and self-verify on
@@ -136,18 +137,34 @@ Harvest first. Then spawn.
 ## 3. 🔴 CALL #1 — the tool-surface census. Nothing below is interpretable until it passes.
 
 ```
-rimbridge/list_tools          -> expect 21 jawa/* names
+rimbridge/list_tools          -> expect 22 jawa/* names
 ```
 
-**21.** 20 or fewer means the deployed companion is not the one we measured, and
-every result below it is evidence of nothing. One call, costs nothing, gates
-everything.
+**22 with `--gm`; 20 without.** ⚠️ **A read of 20 does not mean a stale build — it
+means the companion was deployed WITHOUT `--gm`.** Anything else means the deployed
+companion is not the one we measured, and every result below it is evidence of
+nothing. One call, costs nothing, gates everything.
 
-The 21: `damage`, `destroy_batch`, `drain_log`, `fire_incident`, `get_def`,
+The 22: `damage`, `destroy_batch`, `drain_log`, `fire_incident`, `get_def`,
 `get_roof_batch`, `get_terrain_batch`, `list_factions`, `list_pawns`,
 `order_pawn`, `refresh_rect`, `send_letter`, `set_pawn_rotation`,
 `set_pawn_style`, `set_pawn_xenotype`, `set_plants`, `set_roof_batch`,
-`set_terrain`, `set_terrain_batch`, `spawn_batch`, `spawn_pawn`.
+`set_terrain`, `set_terrain_batch`, `spawn_batch`, `spawn_pawn`,
+**`world_stats`**.
+
+🔴 **THE GAME IS NOT REACTIVE FOR ~40 s AFTER THE BRIDGE FIRST ANSWERS**, whatever
+`currentMapReady` and `longEventPending` report. Owner-observed; baked into
+`load_session.py` as a settle before any mutation.
+**Read-only calls are fine inside that window** — this census, the §3b dune-seas
+`get_def`, and the `LIVE BRIDGE TAKEN` announcement all land immediately. **Only
+mutation waits.** ⚠️ This is a signal saying the TOOL is ready being read as the
+GAME being ready, which is the shape of half of `traps.md`.
+
+⭐ **`jawa/world_stats` is read-only and needs a WORLD, not a map** — `waterPct`,
+the **connected-water-body list**, `seedString` and `planetCoverage`. The body list
+is the half that matters: a percentage alone cannot tell *three oddly-shaped bodies*
+from *the same water smeared into forty blobs*, and those two worlds report an
+identical `waterPct`. **It turns the owner's sea spec into a number.**
 
 ### 3b. ⭐ CALL #2 — v1 row 4's dune-seas gate. **No map needed. Do it here.**
 
@@ -290,7 +307,7 @@ would produce the evidence does not exist or is measured broken.**
 | item | why it cannot be collected |
 |---|---|
 | **v1 row 3 — fire *The Claim*** | The rumour item needs a **right-click float menu** ("Read the rumour") on a colonist. `rimworld/right_click_cell` is **measured broken** — it reports *"Dispatched a live right-click…"* and nothing happens (`skills/rimbridge/references/traps.md:294`; `queue/BRIDGE.md:535`). No bridge route to a float menu exists. **Row 3 waits for the owner at the keyboard.** ⚠️ Do NOT wait for the storyteller either — the quest is root-selected |
-| **ToolBeltFix** | Needs the apparel **WORN**. There is no equip tool in the 21 |
+| **ToolBeltFix** | Needs the apparel **WORN**. There is no equip tool in the 22 |
 | **CereanManeFix / SauridFrillFix** | Neither names a pawnkind defName, so there is no `spawn_pawn` that reliably produces the pawn to look at |
 | **The seven fix mods generally** | ⚠️ **None can ever produce a log line.** `Failed to find any textures at` fires only when **every** direction of a `Graphic_Multi` is missing, so a single absent or zero-alpha facing is a silent south-fallback. They settle by eyeballing a pawn, never by `harvest_log.py` |
 
