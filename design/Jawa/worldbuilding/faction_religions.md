@@ -242,15 +242,30 @@ decided what the sky means. The Junkers have never looked up.
   religion is the one the player actually lives inside, and it is the only one on
   this list that will be *played* rather than met.
 
-## 🔴 What CREATE needs before any of this is buildable
+## ✅ All three blockers are answered — the buildable layer is next door
 
-1. **Meme availability check.** Every meme named above must exist in the installed
-   Ideology set — **`Nature primacy`, `Transhumanist`, `Tunneler`, `Loyalist` need
-   confirming**, and the roster's earlier audit already found two precepts that
-   were *not* guaranteed vanilla.
-2. ⚠️ **Can a `FactionDef` hold no ideoligion at all?** The Junkers want none.
-   If the engine forces one, they get the thinnest legal set.
-3. **`structureMemeWeights` vs `fixedIdeo`** — a fixed ideo is exact and rigid; the
-   weights let the game generate. **My recommendation: weights for everyone except
-   the Empire and the Deepwater Compact**, whose doctrines are load-bearing for
-   diplomacy and should not vary between worlds.
+**`D:\Luke\dev\Rimworld\design\Jawa\worldbuilding\faction_religions_spec.md`**
+carries the encoding: exact `MemeDef`, `PreceptDef` and `StyleCategoryDef` names
+per faction, eight precept positions each, deity blocks, and the `FactionDef`
+pattern to copy. Every defName in it was read from the **live def dump**, so it
+names nothing that is not installed. The full vocabulary is
+`D:\Luke\dev\Rimworld\design\Jawa\worldbuilding\data\ideology_palette.md`.
+
+1. ~~**Meme availability check.**~~ ✅ Done against the dump: 136 memes loaded.
+   `NaturePrimacy`, `Transhumanist`, `Tunneler`, `Loyalist` all exist. ⚠️ **The
+   KotOR Factions memes do NOT** — that mod is inactive, so the Mandalorian Creed
+   meme is unavailable and `VME_Anonymity` + `VME_Bushido` carry it instead.
+2. ~~**Can a `FactionDef` hold no ideoligion?**~~ ✅ **No — every faction gets one.**
+   The answer that survives is better than the one that lost:
+   `AM_Structure_Scavenger` has `deityCount 0`, and with `requiredPreceptsOnly`
+   the Junkers get a religion that names no god and asserts nothing.
+3. ~~**`structureMemeWeights` vs `fixedIdeo`.**~~ ✅ **`fixedIdeo` for all eleven.**
+   The weights approach was the right instinct for a generated world and the wrong
+   one here — these are eleven authored doctrines, and a generated variant of the
+   Deepwater Compact's neutrality would break the campaign's central dilemma.
+   Variation is bought back per-faction with `requiredPreceptsOnly` left false.
+
+⚠️ **Three things the engine will not let us say**, found while encoding, and each
+one changed an entry: **charity has no negative position**, **`PreferredXenotypes`
+cannot be aimed at a xenotype from XML**, and **`Apostasy_Abhorrent` hard-conflicts
+with the `Guilty` meme.** Detail in the spec's opening section.
