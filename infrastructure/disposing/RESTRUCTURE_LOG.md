@@ -70,16 +70,23 @@ the payload is gitignored (`runtime/logs/`, art `_raw`/`_cut`, `_review/`).
 |---|---|
 | `worldbuilding/` | `design/Jawa/worldbuilding/`; `Custom_World`, `faction_authoring_mechanism`, `balance_paradigm` → `design/RimMandrake/` |
 | `runtime/*.md` | 8 generic → `design/RimMandrake/`, 6 scenario → `design/Jawa/` |
-| `runtime/{logs,latency_*.json}` | `observed/2026-08-13_pre-restructure/` |
+| `runtime/{logs,latency_*.json}` | `observed/2026-08-13/` |
 | `runtime/backups/*` | `deployed/config/` (ModsConfig, `Mod_*.xml`, RimSort userRules, `xenotypes/`) |
 | `runtime/art/` | `src/Jawa/art_bench/` |
 | `mods/*.md` (8 decisions) | `design/Jawa/mods/` |
-| `mods/{live_mod_inventory.md,inventory,dumps}` | `observed/2026-08-13_pre-restructure/` |
+| `mods/{live_mod_inventory.md,inventory,dumps}` | `observed/2026-08-13/` |
 | `mods/dev/RimDefDump` | `src/RimMandrake/RimDefDump/` |
 | `custom_patches/` | six `Jawa*`/`DesertVehicleReskin` → `src/Jawa/`; `MissingArtFixes`, `WreckedMachines` → `src/RimMandrake/`; `DEPLOY_HOLD.txt` → `src/` |
 | `bridgetools/`, `Utils/` | `src/RimMandrake/` — `Utils/` as **one unit** (§4 dep 6) |
 | `player_maps/` | `src/RimMandrake/mapsynth/` (`.py`, `authored/`), run outputs → `mapsynth/runs/` |
 | `savegame/`, `image_request/`, `agents/`, `queue/`, `output/`, `disposing/`, 16 root files | per §2 |
+
+⚠️ **The `observed/` stamp above was originally created as
+`observed/2026-08-13_pre-restructure/`** — a name this script invented, which read
+as an archive snapshot when the directory is in fact the *live* home for observed
+game state. Renamed to `observed/2026-08-13/` on 2026-08-13 (the stamp is the
+axis, per `observed/README.md`); the paths in this log and in
+`do_restructure.sh` / `fix_refs.py` were rewritten to match.
 
 `runtime/`, `mods/`, `custom_patches/`, `player_maps/`, `savegame/`,
 `image_request/`, `worldbuilding/`, `agents/`, `queue/`, `output/`,

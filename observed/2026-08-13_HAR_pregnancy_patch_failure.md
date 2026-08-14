@@ -199,7 +199,7 @@ Recorded as a caveat; it does not change the conclusion, which rests on UP's ins
   `C:\Users\Mandrake\AppData\LocalLow\Ludeon Studios\RimWorld by Ludeon Studios\Player-prev.log`,
   is 708 lines and contains no `Alien race successfully completed` — HAR never reached its
   patching phase, so its silence proves nothing. The copy under
-  `observed\2026-08-13_pre-restructure\logs\` is byte-identical (same md5) to the live
+  `observed\2026-08-13\logs\` is byte-identical (same md5) to the live
   `Player.log`, so it is the same run, not a second observation.
   **Anyone who says "this started today" is over-reading one sample.** Given both mods have
   been in the stack unchanged, the honest reading is that it has probably been happening

@@ -169,7 +169,7 @@ WANT_TYPES = ("PawnKindDef",)
 # Repo-relative default for the ordering CSV, resolved against this file's
 # location so the tool works from any cwd.
 DEFAULT_CSV = os.path.normpath(os.path.join(
-    os.path.dirname(os.path.abspath(__file__)), "..", "observed", "2026-08-13_pre-restructure", "inventory", "animals.csv"))
+    os.path.dirname(os.path.abspath(__file__)), "..", "observed", "2026-08-13", "inventory", "animals.csv"))
 
 # Side suffixes, in the order we want them. `_south` is the front view and is
 # what a human recognises an animal by; the bare name covers mods that ship a

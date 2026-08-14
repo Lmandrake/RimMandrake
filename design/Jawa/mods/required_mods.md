@@ -1,5 +1,5 @@
 > ## ⚠️ LIVE-DATA OVERRIDE — read this first
-> **`observed/2026-08-13_pre-restructure/live_mod_inventory.md` is authoritative for mod identity.** Generated 2026-08-09 directly from
+> **`observed/2026-08-13/live_mod_inventory.md` is authoritative for mod identity.** Generated 2026-08-09 directly from
 > `ModsConfig.xml` + every installed `About/About.xml` on the machine (RimWorld 1.6.4871 rev590,
 > **461 active mods**). Where this file disagrees with the inventory about whether a mod exists, its
 > Workshop ID, packageId, or supported versions — **the inventory wins.** This file now carries the
@@ -1246,7 +1246,7 @@ Five mods the user flagged as *likely to be accepted*; evaluated against the ant
 
 ## 🔎 STREAMER-SAVE MOD SWEEP (2026-08-08) — candidates mined from Gravtasm (1.6) + Bounty Hunter (1.5) load orders
 
-_Source: the full mod load orders embedded in `observed/2026-08-13_pre-restructure/savegame/03_Gravtasm__starting_save.rws` (587 mods) and `observed/2026-08-13_pre-restructure/savegame/24_Bounty_Hunter__starting_save.rws` (292 mods). Raw un-decided inventory (478 mods, all categories incl. retextures/UI/performance) = `research/RimMandrake/samuel_streamer_study/mod_inventory_from_saves.md`. This section records the user's first evaluative pass on the standouts._
+_Source: the full mod load orders embedded in `observed/2026-08-13/savegame/03_Gravtasm__starting_save.rws` (587 mods) and `observed/2026-08-13/savegame/24_Bounty_Hunter__starting_save.rws` (292 mods). Raw un-decided inventory (478 mods, all categories incl. retextures/UI/performance) = `research/RimMandrake/samuel_streamer_study/mod_inventory_from_saves.md`. This section records the user's first evaluative pass on the standouts._
 
 ### ✅ ADOPT — no source download needed (pure QoL, balance-neutral; user, 2026-08-08)
 These five are long-standing, widely-used QoL staples with no economy/progression impact. Adopted on sight; **confirm `supportedVersions`=1.6 + deps in RimSort at install** per the 1.6-scoping rule (belt-and-suspenders only — all are actively maintained).
@@ -1404,7 +1404,7 @@ Rikiki's classic MiningCo. suite, all continued by emipa606/Mlie. **User ADOPTED
 
 ## LIVE STATE APPENDIX (2026-08-09, second pass)
 
-Read from the machine, not from research. See `observed/2026-08-13_pre-restructure/live_mod_inventory.md` for the full 464-mod list.
+Read from the machine, not from research. See `observed/2026-08-13/live_mod_inventory.md` for the full 464-mod list.
 
 - **SpeakUp** = WS **2502518544**, the sergiodinapoli-maintained 1.6 build and the **only** 1.6 option.
   Upstream `packageId`/`author` metadata is retained by the fork; that is not a staleness signal.

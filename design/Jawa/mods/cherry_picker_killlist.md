@@ -1,4 +1,4 @@
-> **LIVE-DATA OVERRIDE:** `observed/2026-08-13_pre-restructure/live_mod_inventory.md` (generated 2026-08-09 from the machine) is authoritative for mod identity. "Faction Filter" never existed; the live equivalents are **Sensible Factions** (3531306011) and **Faction Control** (2882785581), both active.
+> **LIVE-DATA OVERRIDE:** `observed/2026-08-13/live_mod_inventory.md` (generated 2026-08-09 from the machine) is authoritative for mod identity. "Faction Filter" never existed; the live equivalents are **Sensible Factions** (3531306011) and **Faction Control** (2882785581), both active.
 
 # Cherry Picker Kill-List — Gravship Expedition (DRAFT / candidate)
 

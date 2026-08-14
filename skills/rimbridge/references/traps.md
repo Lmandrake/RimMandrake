@@ -190,7 +190,7 @@ Skim this, open what matches your task — do not read them all.
 **Symptom:** every main-thread class measured 16.7 ms at 568 mods (`get_game_info` 16.656, `get_cell_info` 16.673, `jawa/set_terrain` 16.708) and was read as a hard 60 Hz frame gate. Two later runs on one map read `get_game_info` 5.673 then 4.358, `get_cell_info` 5.847 then 4.371, and `jawa/set_terrain` 21.017 then 13.648.
 **Cause:** unknown, and every mechanism offered has been withdrawn — pawn count went **up** while latency went **down**, so "a busier colony is slower" is contradicted by our own data, and the `jawa/set_terrain` "+26% anomaly" moved 21.0 → 13.6 with no deliberate change. What survives: **there is no fixed 60 Hz gate**, since 4.4 ms reads cannot come from a 16.67 ms tick.
 **Fix:** record the workload (colonist count, total pawns) and `ticksGame` alongside every benchmark — the `workload` block in `bridge_latency.py` caught its own author's wrong explanation within minutes of shipping. Quote a range and its conditions, or quote nothing.
-**Recurs when:** naming `observed/2026-08-13_pre-restructure/latency_*.json` by mod count. Mod tier is not the axis — three runs at 573 on one map disagree by 35%.
+**Recurs when:** naming `observed/2026-08-13/latency_*.json` by mod count. Mod tier is not the axis — three runs at 573 on one map disagree by 35%.
 
 ## You cannot photograph a stale mesh — moving the camera repaints it
 **Symptom:** paint a rect with `refresh=false`, screenshot, call `jawa/refresh_rect`, screenshot again — **the two images are identical and the "stale" one already shows the new terrain.** Reads as "refresh_rect does nothing".

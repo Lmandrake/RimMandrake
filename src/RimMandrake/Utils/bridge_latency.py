@@ -59,7 +59,7 @@ USAGE
     python src/RimMandrake/Utils/bridge_latency.py -n 500 --label 568mod-jawa21
     python src/RimMandrake/Utils/bridge_latency.py --real --label 3mod-quicktest  # real builds
     python src/RimMandrake/Utils/bridge_latency.py --label 573mod-quicktest \
-        --out observed/2026-08-13_pre-restructure/latency_573mod.json
+        --out observed/2026-08-13/latency_573mod.json
 """
 
 import argparse

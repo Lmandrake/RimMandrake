@@ -43,7 +43,7 @@ guess", which is the only safe answer.
 
 WHERE THE ORIGINALS COME FROM
 
-A ledger at observed/2026-08-13_pre-restructure/inventory/patch_ledger.json, written by the generators as they
+A ledger at observed/2026-08-13/inventory/patch_ledger.json, written by the generators as they
 emit. For patches generated before the ledger existed, bootstrap() recovers the
 originals from the "X : 15 -> 26" comments the generators already wrote next to
 every operation. Comments are a poor database, so they are used ONCE to seed the
@@ -59,7 +59,7 @@ import xml.etree.ElementTree as ET
 HERE = os.path.dirname(os.path.abspath(__file__))
 ROOT = os.path.abspath(os.path.join(HERE, "..", "..", ".."))
 CUSTOM = os.path.join(ROOT, "src")
-LEDGER = os.path.join(ROOT, "observed", "2026-08-13_pre-restructure",
+LEDGER = os.path.join(ROOT, "observed", "2026-08-13",
                       "inventory", "patch_ledger.json")
 
 # "<!-- Mid_Blue_Blaster_Bolt : 15 -> 26 -->"

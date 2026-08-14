@@ -14,8 +14,8 @@ next load overwrites it that stack is unanswerable forever.
 
 So: commit the provenance, discard the bulk.
 
-    python3 observed/2026-08-13_pre-restructure/dumps/capture_manifest.py            # capture the live manifest
-    python3 observed/2026-08-13_pre-restructure/dumps/capture_manifest.py --check    # report only, write nothing
+    python3 observed/2026-08-13/dumps/capture_manifest.py            # capture the live manifest
+    python3 observed/2026-08-13/dumps/capture_manifest.py --check    # report only, write nothing
 
 Files land as `manifest.<modCount>.<capturedUtc date>.json`, which is
 self-describing and cannot silently collide with a different run.
@@ -103,7 +103,7 @@ def main() -> int:
     shutil.copy2(src, dst)
     print("  captured %d bytes" % os.path.getsize(dst))
     print("\nCommit it — that is the whole point:")
-    print("   git add observed/2026-08-13_pre-restructure/dumps/%s && git commit -- observed/2026-08-13_pre-restructure/dumps/%s && git push"
+    print("   git add observed/2026-08-13/dumps/%s && git commit -- observed/2026-08-13/dumps/%s && git push"
           % (name, name))
     return 0
 

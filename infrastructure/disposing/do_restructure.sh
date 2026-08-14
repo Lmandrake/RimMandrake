@@ -14,7 +14,7 @@
 set -u
 cd "$(dirname "$0")/.." || exit 1
 
-STAMP="observed/2026-08-13_pre-restructure"
+STAMP="observed/2026-08-13"
 
 tracked() {
   if [ -d "$1" ]; then

@@ -1,4 +1,4 @@
-# `observed/2026-08-13_pre-restructure/dumps/` — the def dump's provenance, kept; its bulk, discarded
+# `observed/2026-08-13/dumps/` — the def dump's provenance, kept; its bulk, discarded
 
 **What is here:** one `manifest.<modCount>.<date>.json` per game load, ~144 KB
 each, plus the script that captures them.
@@ -37,8 +37,8 @@ type they produced.
 ## Use
 
 ```bash
-python3 observed/2026-08-13_pre-restructure/dumps/capture_manifest.py --check   # report, write nothing
-python3 observed/2026-08-13_pre-restructure/dumps/capture_manifest.py           # capture, then commit and push
+python3 observed/2026-08-13/dumps/capture_manifest.py --check   # report, write nothing
+python3 observed/2026-08-13/dumps/capture_manifest.py           # capture, then commit and push
 ```
 
 Run it **after every load**, before anything overwrites the dump. It finds the

@@ -2566,8 +2566,6 @@ RG_KiwiBird,ReGrowth 2,2,AnimalAdult,0.2,
 RG_Hemolope,ReGrowth 2,0,AnimalBaby,0,
 RG_Hemolope,ReGrowth 2,1,AnimalJuvenile,0.2,
 RG_Hemolope,ReGrowth 2,2,AnimalAdult,0.3333,Pawn_Muffalo_Wounded
-VFEP_Mech_Wardrone,Vanilla Factions Expanded - Pirates,0,MechanoidFullyFormed,0,Pawn_Mech_Scyther_Wounded
-VFEP_Mech_Spidermine,Vanilla Factions Expanded - Pirates,0,MechanoidFullyFormed,0,Pawn_Mech_Scyther_Wounded
 AG_OcularSlinger,Alpha Genes,0,AnimalAdult,0,Pawn_Spelopede_Pain
 BMT_AaroxisDendoriaLarvae,Biomes! Caverns,0,BMT_InsectLarvalFirst,0,
 BMT_AaroxisDendoriaLarvae,Biomes! Caverns,1,BMT_InsectLarvalSecound,0.05,
@@ -2928,6 +2926,8 @@ BMT_WasteHound,Biomes! Polluted Lands,2,AnimalAdult,0.5,Pawn_Warg_Wounded
 RG_Owlbeast,ReGrowth: Boiling,0,AnimalBaby,0,
 RG_Owlbeast,ReGrowth: Boiling,1,AnimalJuvenile,0.2,
 RG_Owlbeast,ReGrowth: Boiling,2,AnimalAdult,0.5,RG_Pawn_Owlbeast_Wounded
+VFEP_Mech_Wardrone,Vanilla Factions Expanded - Pirates,0,MechanoidFullyFormed,0,Pawn_Mech_Scyther_Wounded
+VFEP_Mech_Spidermine,Vanilla Factions Expanded - Pirates,0,MechanoidFullyFormed,0,Pawn_Mech_Scyther_Wounded
 GR_ArchotechCentipede,Vanilla Genetics Expanded,0,AnimalAdult,0,Pawn_Mech_Centipede_Wounded
 GR_Chickenbear,Vanilla Genetics Expanded,0,AnimalBabyTiny,0,Pawn_Chick_Call
 GR_Chickenbear,Vanilla Genetics Expanded,1,AnimalJuvenile,0.12,

@@ -14,7 +14,7 @@ stale data is worse than none, because it still answers questions.
 
 The artefacts, and what each costs to rebuild:
 
-  observed/2026-08-13_pre-restructure/inventory/*.csv        offline scan          seconds
+  observed/2026-08-13/inventory/*.csv        offline scan          seconds
   contact_sheets/             offline + Pillow      seconds
   DefDump/ (the live dump)    A FULL GAME LOAD      ~23 minutes
   Jawa_Armoury/Patches/*.xml  reads the live dump   seconds, but needs a
@@ -98,7 +98,7 @@ D_DUMP = _first_existing([
     os.path.join(_LOCALLOW_WIN, "DefDump"),
     os.path.join(_LOCALLOW_WSL, "DefDump"),
 ])
-INVENTORY = os.path.join(ROOT, "observed", "2026-08-13_pre-restructure",
+INVENTORY = os.path.join(ROOT, "observed", "2026-08-13",
                          "inventory")
 STAMP = os.path.join(INVENTORY, "GENERATED_FROM.json")
 SHEETS = os.path.join(INVENTORY, "contact_sheets")
@@ -273,18 +273,18 @@ def status(fp, steps_failed=False):
     have_csv = _has_files(INVENTORY, ".csv")
     if not have_csv:
         # The stamp can match perfectly while the CSVs it describes are gone.
-        rows.append(("observed/2026-08-13_pre-restructure/inventory/*.csv",
+        rows.append(("observed/2026-08-13/inventory/*.csv",
                      "no .csv on disk" if st is None
                      else "stamped %s, but no .csv" % st.get("hash"),
                      "MISSING", "--offline"))
     elif st is None:
-        rows.append(("observed/2026-08-13_pre-restructure/inventory/*.csv", "never stamped", "REBUILD", "--offline"))
+        rows.append(("observed/2026-08-13/inventory/*.csv", "never stamped", "REBUILD", "--offline"))
     elif st.get("hash") != fp["hash"]:
-        rows.append(("observed/2026-08-13_pre-restructure/inventory/*.csv",
+        rows.append(("observed/2026-08-13/inventory/*.csv",
                      "%s (%s mods)" % (st.get("hash"), st.get("modCount")),
                      "STALE", "--offline"))
     else:
-        rows.append(("observed/2026-08-13_pre-restructure/inventory/*.csv", st.get("hash"), "current", "-"))
+        rows.append(("observed/2026-08-13/inventory/*.csv", st.get("hash"), "current", "-"))
 
     sheets_ok = _has_files(SHEETS, ".png")
     rows.append(("contact_sheets/", "-" if sheets_ok else "no .png on disk",
@@ -369,7 +369,7 @@ def run(cmd, label):
 
 def do_offline(fp, note=""):
     ok = run([sys.executable, os.path.join("src", "RimMandrake", "Utils", "animal_inventory.py"),
-              "--out", os.path.join("observed", "2026-08-13_pre-restructure",
+              "--out", os.path.join("observed", "2026-08-13",
                                     "inventory")], "animal inventory")
     if ok:
         # 🔴 Both halves of this used to lie, and they compounded.

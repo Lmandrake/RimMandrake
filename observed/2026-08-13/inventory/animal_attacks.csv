@@ -2800,8 +2800,6 @@ RG_Hemolope,ReGrowth 2,head,Blunt,5,2,2.5,,HeadAttackTool,0.2
 RG_Hemolope,ReGrowth 2,left hoof,Blunt;Poke,7,2,3.5,,FrontLeftLeg,
 RG_Hemolope,ReGrowth 2,right hoof,Blunt;Poke,7,2,3.5,,FrontRightLeg,
 RG_Hemolope,ReGrowth 2,,Bite,8,2,4.0,,Teeth,0.5
-VFEP_Mech_Wardrone,Vanilla Factions Expanded - Pirates,turret,Blunt,8.5,2,4.25,,HeadAttackTool,1
-VFEP_Mech_Spidermine,Vanilla Factions Expanded - Pirates,frame,Blunt,8.5,2,4.25,,HeadAttackTool,1
 AG_OcularSlinger,Alpha Genes,left pincer,Scratch,20,1.5,13.33,,AG_PincerAttackTool,
 AG_OcularSlinger,Alpha Genes,right pincer,Scratch,20,1.5,13.33,,AG_PincerAttackTool,
 AG_OcularSlinger,Alpha Genes,,AG_ToxicSting,15,2,7.5,,AG_Sting,
@@ -3143,6 +3141,8 @@ RG_Owlbeast,ReGrowth: Boiling,left claw,Scratch,17,2,8.5,,FrontLeftPaw,
 RG_Owlbeast,ReGrowth: Boiling,right claw,Scratch,17,2,8.5,,FrontRightPaw,
 RG_Owlbeast,ReGrowth: Boiling,beak,Bite,23.6,2.6,9.08,,Teeth,0.5
 RG_Owlbeast,ReGrowth: Boiling,head,Blunt,11,2,5.5,,HeadAttackTool,0.2
+VFEP_Mech_Wardrone,Vanilla Factions Expanded - Pirates,turret,Blunt,8.5,2,4.25,,HeadAttackTool,1
+VFEP_Mech_Spidermine,Vanilla Factions Expanded - Pirates,frame,Blunt,8.5,2,4.25,,HeadAttackTool,1
 GR_ArchotechCentipede,Vanilla Genetics Expanded,head,Blunt,200,0.2,1000.0,,HeadAttackTool,0.2
 GR_Chickenbear,Vanilla Genetics Expanded,claws,Scratch,4,1.65,2.42,,Feet,
 GR_Chickenbear,Vanilla Genetics Expanded,,Bite,7,1.65,4.24,,Teeth,

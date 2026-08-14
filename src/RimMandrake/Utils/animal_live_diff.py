@@ -25,7 +25,7 @@ INPUTS
   --live     a DefDump folder (animals.json + manifest.json), written by
              src/RimMandrake/RimDefDump. See that mod's README for how to arm it.
   --offline  a folder holding animals.csv + biome_animals.csv
-             (default: observed/2026-08-13_pre-restructure/inventory)
+             (default: observed/2026-08-13/inventory)
 
 OUTPUTS
   divergence.csv       one row per animal, with a status and any field deltas
@@ -476,8 +476,8 @@ def selftest():
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--live", help="DefDump folder (animals.json + manifest.json)")
-    ap.add_argument("--offline", default=os.path.join("observed", "2026-08-13_pre-restructure", "inventory"),
-                    help="folder with animals.csv (default: observed/2026-08-13_pre-restructure/inventory)")
+    ap.add_argument("--offline", default=os.path.join("observed", "2026-08-13", "inventory"),
+                    help="folder with animals.csv (default: observed/2026-08-13/inventory)")
     ap.add_argument("--out", default=".")
     ap.add_argument("--selftest", action="store_true",
                     help="verify the differ against a synthetic dump and exit")

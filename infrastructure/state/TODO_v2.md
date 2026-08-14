@@ -283,7 +283,7 @@ in the def describes the break event.
 
 **The lightsaber donor is identified:** Star Wars: The Force – Lightsaber,
 `lee.theforce.lightsaber`, WS `3466124712`, load index 557, KotOR hard-dep —
-per `file:///D:/Luke/dev/Rimworld/observed/2026-08-13_pre-restructure/live_mod_inventory.md` line 323. The
+per `file:///D:/Luke/dev/Rimworld/observed/2026-08-13/live_mod_inventory.md` line 323. The
 roster ruling is at `design/Jawa/mods/required_mods.md` line 54: *"only The Force –
 Lightsaber (KotOR hard-dep)."* Its actual defNames are **not yet read**.
 
@@ -903,7 +903,7 @@ Also active and worth knowing: `M3.Continued.JangoDsoul.StarWars.TSDA` ships
 `JDSCIS_CIS_Faction` — **the only Star Wars faction actually live in the stack
 today**, and it is the Separatists, not the Empire.
 
-**`[WORLD]` W5. `observed/2026-08-13_pre-restructure/live_mod_inventory.md` is stale and it is a ⚙️ GENERATED
+**`[WORLD]` W5. `observed/2026-08-13/live_mod_inventory.md` is stale and it is a ⚙️ GENERATED
 file — regenerate, do not hand-edit.** It reports 1,211 installed against a tree
 now holding **1,220**, and 562 active against an actual **568**. Its "Star Wars
 content (8)" section undercounts badly — missing at least `guy762.MM.KotORCore`,

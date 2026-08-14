@@ -15,7 +15,7 @@ python src/RimMandrake/Utils/refresh.py --patches    # regenerate + validate the
 
 It fingerprints the active mod list **including load order** — RimWorld resolves
 def overrides by order, so the same mods reordered really is a different game —
-and compares that against a stamp in `observed/2026-08-13_pre-restructure/inventory/GENERATED_FROM.json` and
+and compares that against a stamp in `observed/2026-08-13/inventory/GENERATED_FROM.json` and
 against the live dump's own manifest.
 
 This file holds what is specific to *what* you added.
@@ -49,7 +49,7 @@ consecutive runs are byte-identical.
 Xenotypes mostly add `XenotypeDef`, `GeneDef` and pawnkinds rather than weapons,
 so the armoury patches are unaffected. What *does* move:
 
-- `observed/2026-08-13_pre-restructure/inventory/` — if the pack adds animals or races.
+- `observed/2026-08-13/inventory/` — if the pack adds animals or races.
 - The **live dump**, and therefore `validate_patch.py --live`. A patch you write
   against a new xenotype's defs cannot be validated until the dump includes it.
 - `vendor/wisdom/def_override_clusters.md` — new mods mean new contested defNames.

@@ -1,10 +1,10 @@
-# observed/2026-08-13_pre-restructure/inventory/ — generated animal reference for the live 562-mod stack
+# observed/2026-08-13/inventory/ — generated animal reference for the live 562-mod stack
 
 _Generated 2026-08-10 by `src/RimMandrake/Utils/animal_inventory.py` **v1.4** against
 `Config/ModsConfig.xml` (RimWorld 1.6.4871 rev590). Regenerate with:_
 
 ```
-python src/RimMandrake/Utils/animal_inventory.py --out observed/2026-08-13_pre-restructure/inventory
+python src/RimMandrake/Utils/animal_inventory.py --out observed/2026-08-13/inventory
 ```
 
 _Takes about 3 seconds. **Re-run after any mod add, remove, or update** — these
@@ -140,4 +140,4 @@ set, and the gap is not random.** See
 - `src/RimMandrake/Utils/rimworld_loadset.py` — the shared resolver these CSVs are built on.
   `validate_patch.py` carries an intentional copy (it ships as a portable skill).
 - `vendor/wisdom/benign_log_errors.md` — what the live log says, triaged.
-- `observed/2026-08-13_pre-restructure/live_mod_inventory.md` — the human-readable mod list.
+- `observed/2026-08-13/live_mod_inventory.md` — the human-readable mod list.

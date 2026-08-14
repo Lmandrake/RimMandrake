@@ -24,7 +24,7 @@ import os
 import re
 import subprocess
 
-STAMP = "observed/2026-08-13_pre-restructure"
+STAMP = "observed/2026-08-13"
 ROOT = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
 # ---------------------------------------------------------------- pass 1
@@ -73,7 +73,7 @@ TARGETED = [
     # --- Utils/ data + tool paths ------------------------------------------
     ("src/RimMandrake/Utils/refresh.py",
      'INVENTORY = os.path.join(ROOT, "mods", "inventory")',
-     'INVENTORY = os.path.join(ROOT, "observed", "2026-08-13_pre-restructure",\n'
+     'INVENTORY = os.path.join(ROOT, "observed", "2026-08-13",\n'
      '                         "inventory")'),
     ("src/RimMandrake/Utils/refresh.py",
      'ARMOURY = os.path.join(ROOT, "custom_patches", "Jawa_Armoury")',
@@ -83,7 +83,7 @@ TARGETED = [
      'os.path.join("src", "RimMandrake", "Utils", "animal_inventory.py")'),
     ("src/RimMandrake/Utils/refresh.py",
      '"--out", os.path.join("mods", "inventory")',
-     '"--out", os.path.join("observed", "2026-08-13_pre-restructure",\n'
+     '"--out", os.path.join("observed", "2026-08-13",\n'
      '                                    "inventory")'),
     ("src/RimMandrake/Utils/refresh.py",
      'os.path.join("Utils", "animal_contact_sheet.py")',
@@ -96,14 +96,14 @@ TARGETED = [
      'CUSTOM = os.path.join(ROOT, "src")'),
     ("src/RimMandrake/Utils/patch_provenance.py",
      'LEDGER = os.path.join(ROOT, "mods", "inventory", "patch_ledger.json")',
-     'LEDGER = os.path.join(ROOT, "observed", "2026-08-13_pre-restructure",\n'
+     'LEDGER = os.path.join(ROOT, "observed", "2026-08-13",\n'
      '                      "inventory", "patch_ledger.json")'),
     ("src/RimMandrake/Utils/animal_contact_sheet.py",
      '"mods", "inventory", "animals.csv"',
-     '"observed", "2026-08-13_pre-restructure", "inventory", "animals.csv"'),
+     '"observed", "2026-08-13", "inventory", "animals.csv"'),
     ("src/RimMandrake/Utils/animal_live_diff.py",
      'os.path.join("mods", "inventory")',
-     'os.path.join("observed", "2026-08-13_pre-restructure", "inventory")'),
+     'os.path.join("observed", "2026-08-13", "inventory")'),
     ("src/RimMandrake/Utils/Map_synth.py",
      'os.path.join(os.path.dirname(here), "player_maps")',
      'os.path.join(os.path.dirname(os.path.dirname(os.path.dirname(here))),\n'
@@ -160,7 +160,7 @@ TARGETED = [
      'OUTDIR = os.path.join(ROOT, "src", "Jawa", "Jawa_Armoury", "Patches")'),
     ("src/Jawa/Jawa_Armoury/Source/gen_armour_patch.py",
      'ANIMALS = os.path.join(ROOT, "mods", "inventory", "animals.csv")',
-     'ANIMALS = os.path.join(ROOT, "observed", "2026-08-13_pre-restructure",\n'
+     'ANIMALS = os.path.join(ROOT, "observed", "2026-08-13",\n'
      '                       "inventory", "animals.csv")'),
     ("src/Jawa/Jawa_Armoury/Source/gen_armoury_patch.py",
      'OUTDIR = os.path.join(_REPO_ROOT, "custom_patches", "Jawa_Armoury", "Patches")',

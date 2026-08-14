@@ -138,4 +138,4 @@ Then: Tier 3 in-game generation pass (user) → Tier 2 surgical save polish (me)
 
 ---
 
-**Artifacts:** raw save at `~/GDrive/Personal/Rimworld/observed/2026-08-13_pre-restructure/savegame/03_Gravtasm__starting_save.rws` (moved here from the Fetcher delivery 2026-08-05; kept as structural reference, do NOT load in our stack). Analysis performed 2026-08-03.
+**Artifacts:** raw save at `~/GDrive/Personal/Rimworld/observed/2026-08-13/savegame/03_Gravtasm__starting_save.rws` (moved here from the Fetcher delivery 2026-08-05; kept as structural reference, do NOT load in our stack). Analysis performed 2026-08-03.

@@ -1,6 +1,6 @@
 # Mod Inventory — Gravtasm & Bounty Hunter saves vs. our decision docs
 
-_Generated 2026-08-08. Source: the mod load orders embedded in `observed/2026-08-13_pre-restructure/savegame/03_Gravtasm__starting_save.rws` (RimWorld 1.6, 587 mods) and `observed/2026-08-13_pre-restructure/savegame/24_Bounty_Hunter__starting_save.rws` (RimWorld 1.5, 292 mods). This lists every mod that appears in one or both saves and is **not already named in our decision docs** (`mods/*.md`, `context.md`, `concept.md`, and the main worldbuilding docs). It is a raw scavenging list — inclusion here is NOT a recommendation, only 'we haven't ruled on this yet.'_
+_Generated 2026-08-08. Source: the mod load orders embedded in `observed/2026-08-13/savegame/03_Gravtasm__starting_save.rws` (RimWorld 1.6, 587 mods) and `observed/2026-08-13/savegame/24_Bounty_Hunter__starting_save.rws` (RimWorld 1.5, 292 mods). This lists every mod that appears in one or both saves and is **not already named in our decision docs** (`mods/*.md`, `context.md`, `concept.md`, and the main worldbuilding docs). It is a raw scavenging list — inclusion here is NOT a recommendation, only 'we haven't ruled on this yet.'_
 
 **478 unique un-decided mods.** Origin tag: _(Gravtasm)_, _(Bounty)_, or _(both)_.
 

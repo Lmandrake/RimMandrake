@@ -131,7 +131,7 @@ NATURAL = {
     # Stone terrain is GENERATED at runtime, one set per natural-rock ThingDef,
     # so these appear in no XML file and grepping the Data folder will not find
     # them. They are real: `Slate_Rough` was read back off a live 568-mod map
-    # (observed/2026-08-13_pre-restructure/latency_568mod.json). Substitute the map's own stone type —
+    # (observed/2026-08-13/latency_568mod.json). Substitute the map's own stone type —
     # Sandstone here is a desert-world guess, not a universal default.
     "rock_rough": "Sandstone_Rough", "rock_hewn": "Sandstone_RoughHewn",
     "rock_smooth": "Sandstone_Smooth",

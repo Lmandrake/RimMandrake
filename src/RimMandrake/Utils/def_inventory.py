@@ -205,7 +205,7 @@ def walk_xml(root_dir):
 #
 # These semantics are byte-for-byte the ones animal_inventory.py v1.4 shipped
 # and were verified against 1,243 animals. Do not "improve" them without
-# re-running src/RimMandrake/Utils/def_inventory verification against observed/2026-08-13_pre-restructure/inventory/animals.csv.
+# re-running src/RimMandrake/Utils/def_inventory verification against observed/2026-08-13/inventory/animals.csv.
 INHERIT_MAX_DEPTH = 20
 
 # Name/ParentName/Abstract describe a node's own place in the graph and must

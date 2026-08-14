@@ -18,7 +18,7 @@ file. One line, with the hash — `git show <hash>` has the full story._
 | 2026-08-13 | `DesertVehicleReskin` — own mod or fold in? | OWN MOD — owner ruled one art fix, one mod, one donor | `106bc63` |
 | 2026-08-13 | Existing world or regenerate for v1? | **REGENERATE** — owner: *"We are keeping no savegames at this time."* Row 2 lives as a worldgen checklist; row 7 becomes a DO | `14700f7` |
 | 2026-08-13 | Per-seat terminal colour via OSC 10 | FAILED — Windows Terminal ignores it; use WT profiles | `bc1cae8` |
-| 2026-08-13 | Tracking harvested game logs | rejected — transient value; `observed/2026-08-13_pre-restructure/logs/` gitignored | `0d398c0` |
+| 2026-08-13 | Tracking harvested game logs | rejected — transient value; `observed/2026-08-13/logs/` gitignored | `0d398c0` |
 
 ## Drained out of `NEXT_RELOAD.md`, 2026-08-13 (2,354 → 275 lines)
 

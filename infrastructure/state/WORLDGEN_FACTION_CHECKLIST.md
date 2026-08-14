@@ -136,7 +136,7 @@ while dropping the polity. Record them; do not treat them as blockers.
 
 **Every defName below was located on disk. NOT FOUND count: 0.** All 27 factions
 named in the proposal exist in the live 573-mod def set
-(`observed/2026-08-13_pre-restructure/dumps/manifest.573.2026-08-13.json`, 87
+(`observed/2026-08-13/dumps/manifest.573.2026-08-13.json`, 87
 FactionDefs — the `defnames.573` dump the count was first read from is bulk, deliberately
 not committed, and no longer on disk; the manifest carries the same `defCounts`) and every one was read from its source XML for its label and its
 `hidden` / `displayInFactionSelection` / `maxConfigurableAtWorldCreation` fields.

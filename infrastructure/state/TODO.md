@@ -577,7 +577,7 @@ and recompute the number.
       CREATE is taking this. Interim: scope with `--mod`.
 - [ ] 🔴 **`refresh.py` reports `current` for artefacts that do not exist.**
       **CONFIRMED by WORLD** from the code path, `src/RimMandrake/Utils/refresh.py:160-195`.
-      Delete all 7 `observed/2026-08-13_pre-restructure/inventory/*.csv`, keep `GENERATED_FROM.json`, and it
+      Delete all 7 `observed/2026-08-13/inventory/*.csv`, keep `GENERATED_FROM.json`, and it
       prints **current** — the row is built entirely from the stamp with **no
       existence check**. `contact_sheets/` and `Jawa_Armoury/Patches` are weaker
       still: **≥1** file passes for N. **`DefDump/` is sound** — the dump carries
@@ -966,3 +966,30 @@ were held back from the mod list as a "shutdown-window change" and are **still
 absent from `ModsConfig.xml`** (checked 2026-08-13 16:5x — only the seven older
 `mandrake.*` entries are there). They could have been handed to OPS and the owner
 at any point today.
+
+---
+
+## [?] Three stale `observed/2026-08-13_pre-restructure/` refs in files I could not touch
+
+`observed/2026-08-13_pre-restructure/` was renamed to `observed/2026-08-13/` —
+the old name read as an archive snapshot when the directory is the **live** home
+for observed game state, and the stamp alone is the axis per
+`observed/README.md`. All 73 inbound refs across 36 files were re-pointed in the
+same commit.
+
+**Three were left stale, because their files are owned by live seats and this
+session was instructed not to edit them.** Each needs its owner's hand:
+
+| file:line | what it says |
+|---|---|
+| `infrastructure/state/queue/OPS.md:288` | `` `observed/2026-08-13_pre-restructure/inventory/patch_ledger.json` `` — **this one is counted BROKEN by `check_refs.py`**, which is why the repo total sits at 3 rather than 2 |
+| `infrastructure/state/queue/PROJECT.md:129` | `.rws` teardown path under `~/GDrive/Personal/Rimworld/observed/2026-08-13_pre-restructure/savegame/` |
+| `infrastructure/agents/BRIDGE.md:35` | `observed/2026-08-13_pre-restructure/latency_*.json` |
+
+**Fix is mechanical:** drop the `_pre-restructure` suffix. The file the OPS entry
+points at is real and moved intact — `observed/2026-08-13/inventory/patch_ledger.json`.
+
+Already checked and **clean**: no `.gitignore` or `.claude/` reference to the old
+name; no remaining hit anywhere else in the tree (`*.md`, `*.py`, `*.sh`,
+`*.json`). The other two BROKEN entries in `check_refs` are CREATE's
+forward-looking refs to mods not yet built and are unrelated.

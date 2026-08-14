@@ -45,7 +45,7 @@ from refresh import D_DUMP
 from patch_provenance import guard
 
 OUTDIR = os.path.join(ROOT, "src", "Jawa", "Jawa_Armoury", "Patches")
-ANIMALS = os.path.join(ROOT, "observed", "2026-08-13_pre-restructure",
+ANIMALS = os.path.join(ROOT, "observed", "2026-08-13",
                        "inventory", "animals.csv")
 NL = "\n"
 
