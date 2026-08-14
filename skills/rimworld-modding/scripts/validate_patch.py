@@ -1846,6 +1846,15 @@ def validate_file(path: str, docs, scanner: PatchScanner | None,
         else:
             f.warn("no def files found under the given --defs paths; "
                    "live xpath checks skipped")
+    elif live:
+        # --defnames without --defs. These are NOT the same check and saying
+        # "static checks only" here invited exactly the wrong conclusion: that
+        # a clean run had validated the xpaths. It had not. The index proves a
+        # defNAME exists; only --defs can prove an XPATH matches anything.
+        f.info("--defnames index in use: defName existence IS checked, but "
+               "xpath matching is NOT. An xpath that matches nothing still "
+               "passes here - that is the most common silent failure, and "
+               "only --defs catches it.")
     else:
         f.info("no --defs given; static checks only. Pass --defs to catch "
                "xpaths that match nothing (the most common silent failure).")
