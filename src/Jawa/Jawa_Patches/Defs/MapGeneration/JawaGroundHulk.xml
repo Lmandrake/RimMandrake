@@ -96,7 +96,23 @@
     <order>940</order>
     <genStep Class="GenStep_ScatterGroupPrefabs">
       <allowInWaterBiome>false</allowInWaterBiome>
-      <isJunk>true</isJunk>
+      <!-- 🔴 isJunk REMOVED 2026-08-14, same defect class as JawaScrapfields.xml:
+           when isJunk is set, GenStep_Scatterer scales the count by the PRODUCT
+           of TileMutatorDef.junkDensityFactor across the tile's mutators, and
+           Dunes is one of five live mutators whose factor is ZERO. This is a
+           desert campaign on a coastal-dunes map.
+           ⚠️ HONEST READING OF THE EVIDENCE: this is a SAFETY removal, not a
+           proven fix. Both failed quicktests logged "could not find cell to
+           generate at", and a zeroed count cannot warn — so on THOSE maps the
+           count was >=1 and isJunk was not what stopped the hulk. Whether the
+           explicit <count>1</count> path is multiplied by the placement factor
+           at all is NOT determined offline (it is a method body, not a string
+           in the DLL). Removing the flag costs us nothing either way: there is
+           exactly one hulk, deliberately placed, and we want neither a 15x on
+           Junkyard tiles nor a silent zero on dunes.
+           ⇒ The minSpacing fix at c74baa9 stands on its own evidence and is NOT
+           withdrawn. The placement failure is still open and still wants a map. -->
+
       <!-- 🔴 WAS 85, AND IT CONSTRAINED NOTHING WHILE COSTING EVERYTHING.
            minSpacing is the distance between MULTIPLE placements of the same
            scatterer. With <count>1</count> there is never a second placement, so

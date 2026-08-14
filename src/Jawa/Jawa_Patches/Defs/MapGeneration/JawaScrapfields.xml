@@ -90,7 +90,26 @@
     <genStep Class="GenStep_ScatterThings">
       <thingDef>ChunkSlagSteel</thingDef>
       <allowInWaterBiome>false</allowInWaterBiome>
-      <isJunk>true</isJunk>
+      <!-- 🔴 isJunk REMOVED 2026-08-14 — it silently zeroed this entire step.
+           GenStep_Scatterer.CalculateFinalCount multiplies the per-10k count by
+           GetPlacementFactor(map), and when isJunk is true that factor is the
+           PRODUCT of TileMutatorDef.junkDensityFactor over every mutator on the
+           tile. Of 337 live mutators, 331 are 1 and Junkyard is 15 — but FIVE
+           are ZERO: Dunes, Iceberg, VEE_DetachedIceberg, VEE_IceAndFire,
+           VEE_QuicksandDunes (shipped values verified in
+           Odyssey/Defs/TileMutators/TileMutators_Natural.xml:829-840).
+           This campaign is a DESERT world and its map is coastal DUNES, so the
+           count was RoundToInt(n x 0) = 0. Measured: 11 chunks against a >=75
+           prediction, and the 11 were other mods' — Base_Player's genSteps do
+           not include AncientMiscDebris. It placed nothing and warned nothing.
+           ⚠️ A scavenger clan's scrap was switched off by the terrain it lives
+           on, silently. That is the defect isJunk buys.
+           WHAT DROPPING IT COSTS: Junkyard tiles no longer boost us 15x. We
+           accept that — this is an always-on thin scatter by design, not a
+           tile-keyed feature, and uniform is what the design asked for. The
+           15x belongs to catalogue row C5, which is v2.
+           ⛔ Do NOT "fix" this by patching Dunes' junkDensityFactor — that is a
+           shared vanilla def and would change every junk scatterer in the game. -->
       <minSpacing>4</minSpacing>
       <countPer10kCellsRange>12~20</countPer10kCellsRange>
       <filthDef>Filth_MachineBits</filthDef>
