@@ -480,6 +480,24 @@ PRESETS = [
             ("35", "genes", ""),
         ],
     ),
+    dict(
+        src="design/Jawa/worldbuilding/precept_the_unearned.md",
+        out="design/Jawa/worldbuilding/review/precept_the_unearned.html",
+        title="The Unearned",
+        heading="The Unearned — <em>begging as heresy, ownership as mercy</em>",
+        eyebrow="VISION · a doctrine for the Hutt Cartel <span>·</span>"
+        " commissioned by the owner <span>·</span> 2026-08-14",
+        standfirst="A custom meme, issue and precept set for the faction whose taboo is"
+        " already <em>forgiving</em> a debt — specified to the depth where CREATE"
+        " authors the XML without inventing anything.",
+        stats=[
+            ("Legal", "the refusal hook", "ok"),
+            ("Hutt Cartel", "faction", ""),
+            ("3", "defs to author", ""),
+            ("0", "art required", "ok"),
+            ("1", "open question", "warn"),
+        ],
+    ),
 ]
 
 

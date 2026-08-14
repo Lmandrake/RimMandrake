@@ -1,0 +1,334 @@
+<title>The Unearned</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<style>
+:root{
+  color-scheme:light dark;
+  --ground:#EFEFE9; --surface:#FAFAF7; --sunk:#E5E6DF;
+  --ink:#1B211F; --ink-soft:#5C6663; --ink-faint:#8A928F;
+  --rule:#D6D8D0; --rule-soft:#E4E5DE;
+  --accent:#1D6E62; --accent-ink:#145148; --accent-wash:#E0EDE9;
+  --warn:#8A6111; --warn-wash:#F3EBDA;
+  --crit:#A02E22; --crit-wash:#F6E4E1;
+  --star:#1D6E62;
+  --serif:"Iowan Old Style","Palatino Linotype",Palatino,"Book Antiqua",Georgia,serif;
+  --sans:ui-sans-serif,"Segoe UI",system-ui,-apple-system,"Helvetica Neue",sans-serif;
+  --mono:ui-monospace,"Cascadia Mono",Consolas,"DejaVu Sans Mono",monospace;
+}
+@media (prefers-color-scheme:dark){
+  :root:not([data-theme="light"]){
+    --ground:#111514; --surface:#171C1A; --sunk:#1E2523;
+    --ink:#E6E9E4; --ink-soft:#9EA8A4; --ink-faint:#6F7A76;
+    --rule:#2A3230; --rule-soft:#222927;
+    --accent:#5FBCAB; --accent-ink:#8FD3C5; --accent-wash:#14302B;
+    --warn:#D6A548; --warn-wash:#2B2415;
+    --crit:#E4796A; --crit-wash:#311B18;
+    --star:#5FBCAB;
+  }
+}
+:root[data-theme="dark"]{
+  --ground:#111514; --surface:#171C1A; --sunk:#1E2523;
+  --ink:#E6E9E4; --ink-soft:#9EA8A4; --ink-faint:#6F7A76;
+  --rule:#2A3230; --rule-soft:#222927;
+  --accent:#5FBCAB; --accent-ink:#8FD3C5; --accent-wash:#14302B;
+  --warn:#D6A548; --warn-wash:#2B2415;
+  --crit:#E4796A; --crit-wash:#311B18;
+  --star:#5FBCAB;
+}
+*{box-sizing:border-box}
+body{
+  margin:0; background:var(--ground); color:var(--ink);
+  font-family:var(--serif); font-size:17px; line-height:1.62;
+  -webkit-font-smoothing:antialiased;
+}
+.wrap{max-width:1180px;margin:0 auto;padding:0 24px 96px}
+
+/* ---- masthead ---- */
+.mast{padding:64px 0 28px;border-bottom:1px solid var(--rule)}
+.eyebrow{
+  font-family:var(--sans);font-size:11px;letter-spacing:.18em;text-transform:uppercase;
+  color:var(--ink-faint);margin:0 0 18px;display:flex;gap:10px;flex-wrap:wrap;align-items:center;
+}
+.eyebrow span{color:var(--accent)}
+h1{
+  font-family:var(--serif);font-weight:600;font-size:clamp(34px,5.4vw,58px);
+  line-height:1.06;letter-spacing:-.015em;margin:0;text-wrap:balance;
+}
+h1 em{font-style:italic;color:var(--accent)}
+.standfirst{
+  margin:18px 0 0;max-width:62ch;font-size:19px;color:var(--ink-soft);
+}
+.stats{
+  display:flex;flex-wrap:wrap;gap:0;margin:32px 0 0;
+  border:1px solid var(--rule);border-radius:2px;background:var(--surface);
+}
+.stat{flex:1 1 160px;padding:14px 18px;border-right:1px solid var(--rule-soft)}
+.stat:last-child{border-right:0}
+.stat b{
+  display:block;font-family:var(--sans);font-size:22px;font-weight:600;
+  font-variant-numeric:tabular-nums;letter-spacing:-.01em;
+}
+.stat span{
+  display:block;font-family:var(--sans);font-size:10.5px;letter-spacing:.12em;
+  text-transform:uppercase;color:var(--ink-faint);margin-top:3px;
+}
+.stat.ok b{color:var(--accent)} .stat.warn b{color:var(--warn)} .stat.crit b{color:var(--crit)}
+
+/* ---- layout ---- */
+.cols{display:grid;grid-template-columns:200px minmax(0,1fr);gap:56px;margin-top:44px}
+@media (max-width:900px){.cols{grid-template-columns:1fr;gap:28px}}
+nav{position:sticky;top:24px;align-self:start;font-family:var(--sans);font-size:13px}
+@media (max-width:900px){nav{position:static}}
+nav p{
+  font-size:10.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-faint);
+  margin:0 0 12px;
+}
+nav ol{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:1px}
+nav a{
+  display:flex;gap:9px;padding:5px 8px;color:var(--ink-soft);text-decoration:none;
+  border-radius:2px;border-left:2px solid transparent;line-height:1.35;
+}
+nav a:hover{background:var(--sunk);color:var(--ink);border-left-color:var(--accent)}
+nav a:focus-visible{outline:2px solid var(--accent);outline-offset:1px}
+nav .k{
+  color:var(--ink-faint);font-variant-numeric:tabular-nums;min-width:14px;
+  font-size:11px;padding-top:2px;
+}
+main{min-width:0}
+
+/* ---- sections ---- */
+section{margin:0 0 4px;padding:34px 0;border-bottom:1px solid var(--rule-soft)}
+section:last-child{border-bottom:0}
+.entry-head{margin:0 0 20px}
+.num{
+  font-family:var(--sans);font-size:11px;font-weight:600;letter-spacing:.1em;
+  color:var(--accent);display:block;margin-bottom:6px;
+}
+h2{
+  font-size:clamp(25px,3.2vw,33px);font-weight:600;line-height:1.14;margin:0;
+  letter-spacing:-.012em;text-wrap:balance;
+}
+h2.crit{color:var(--crit)} h2.warn{color:var(--warn)}
+.religion{
+  margin:4px 0 0;font-style:italic;font-size:20px;color:var(--accent-ink);
+}
+h3{
+  font-size:20px;font-weight:600;line-height:1.25;margin:34px 0 12px;
+  letter-spacing:-.005em;text-wrap:balance;display:flex;gap:10px;align-items:baseline;
+  flex-wrap:wrap;max-width:66ch;
+}
+h3.crit{color:var(--crit)} h3.warn{color:var(--warn)}
+.tag{
+  font-family:var(--sans);font-size:11px;font-weight:700;letter-spacing:.08em;
+  padding:2px 7px;border-radius:2px;background:var(--sunk);color:var(--ink-soft);
+  position:relative;top:-2px;
+}
+.tag.crit{background:var(--crit-wash);color:var(--crit)}
+.tag.warn{background:var(--warn-wash);color:var(--warn)}
+.tag.star{background:var(--accent-wash);color:var(--accent-ink)}
+p{margin:0 0 15px;max-width:68ch}
+strong{font-weight:600}
+code{
+  font-family:var(--mono);font-size:.855em;background:var(--sunk);
+  padding:1px 5px;border-radius:2px;color:var(--accent-ink);
+  overflow-wrap:anywhere;
+}
+blockquote{
+  margin:20px 0;padding:2px 0 2px 22px;border-left:2px solid var(--accent);
+  color:var(--ink-soft);font-style:italic;max-width:64ch;
+}
+blockquote code,blockquote strong{font-style:normal}
+ol,ul{max-width:66ch;margin:0 0 16px;padding-left:22px}
+li{margin:0 0 7px}
+ol{counter-reset:none}
+
+/* ---- callouts: the author's own glyph markers ---- */
+.callout{
+  padding:12px 16px;border-radius:2px;border-left:2px solid var(--rule);
+  background:var(--surface);max-width:68ch;
+}
+.callout.crit{border-left-color:var(--crit);background:var(--crit-wash)}
+.callout.warn{border-left-color:var(--warn);background:var(--warn-wash)}
+.callout.star{border-left-color:var(--star);background:var(--accent-wash)}
+li.crit,li.warn,li.star{list-style:none;margin-left:-22px;padding-left:12px;border-left:2px solid var(--rule)}
+li.crit{border-left-color:var(--crit)} li.warn{border-left-color:var(--warn)} li.star{border-left-color:var(--star)}
+
+/* ---- tables ---- */
+.scroll{overflow-x:auto;margin:0 0 20px}
+table{border-collapse:collapse;width:100%;font-size:15px}
+table.kv{max-width:none;font-family:var(--sans);font-size:14px}
+table.kv th{
+  width:130px;text-align:left;font-weight:600;color:var(--ink-faint);
+  font-size:11px;letter-spacing:.1em;text-transform:uppercase;vertical-align:top;
+  padding:9px 16px 9px 0;white-space:nowrap;
+}
+table.kv td{padding:9px 0;border-bottom:1px solid var(--rule-soft);vertical-align:top}
+table.kv tr:last-child td,table.kv tr:last-child th{border-bottom:0}
+table.data{font-family:var(--sans);font-size:13.5px;line-height:1.5}
+table.data thead th{
+  text-align:left;font-size:10.5px;letter-spacing:.12em;text-transform:uppercase;
+  color:var(--ink-faint);font-weight:600;padding:0 14px 8px 0;
+  border-bottom:1px solid var(--rule);white-space:nowrap;
+}
+table.data td{
+  padding:9px 14px 9px 0;border-bottom:1px solid var(--rule-soft);vertical-align:top;
+}
+table.data tbody tr:hover{background:var(--sunk)}
+table.data td:first-child{color:var(--ink-soft);white-space:nowrap}
+pre{
+  margin:0;padding:16px 18px;background:var(--surface);border:1px solid var(--rule);
+  border-radius:2px;overflow-x:auto;
+}
+pre code{background:none;padding:0;color:var(--ink);font-size:13px;line-height:1.6}
+footer{
+  margin-top:56px;padding-top:22px;border-top:1px solid var(--rule);
+  font-family:var(--sans);font-size:12.5px;color:var(--ink-faint);max-width:70ch;
+}
+footer code{font-size:12px}
+@media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
+</style>
+<div class="wrap">
+<header class="mast">
+  <p class="eyebrow">VISION · a doctrine for the Hutt Cartel <span>·</span> commissioned by the owner <span>·</span> 2026-08-14</p>
+  <h1>The Unearned — <em>begging as heresy, ownership as mercy</em></h1>
+  <p class="standfirst">A custom meme, issue and precept set for the faction whose taboo is already <em>forgiving</em> a debt — specified to the depth where CREATE authors the XML without inventing anything.</p>
+  <div class="stats"><div class="stat ok"><b>Legal</b><span>the refusal hook</span></div><div class="stat "><b>Hutt Cartel</b><span>faction</span></div><div class="stat "><b>3</b><span>defs to author</span></div><div class="stat ok"><b>0</b><span>art required</span></div><div class="stat warn"><b>1</b><span>open question</span></div></div>
+</header>
+<div class="cols">
+  <nav aria-label="Contents"><p>Contents</p><ol><li><a href="#s0"><span class="k">·</span><span>The three answers you need before reading further</span></a></li><li><a href="#s1"><span class="k">·</span><span>The visibility problem, stated honestly and near the top</span></a></li><li><a href="#s2"><span class="k">1</span><span>Which faction</span></a></li><li><a href="#s3"><span class="k">2</span><span>Does refusing a beggar fire something?</span></a></li><li><a href="#s4"><span class="k">3</span><span>Is there an issue to hang this on?</span></a></li><li><a href="#s5"><span class="k">4</span><span>Enslaving a beggar</span></a></li><li><a href="#s6"><span class="k">5</span><span>The free-market half</span></a></li><li><a href="#s7"><span class="k">6</span><span>The defs to author</span></a></li><li><a href="#s8"><span class="k">7</span><span>Blackstar Company</span></a></li><li><a href="#s9"><span class="k">·</span><span>8 · Does the player notice, and does it change the campaign?</span></a></li><li><a href="#s10"><span class="k">·</span><span>9 · Filed for other seats</span></a></li></ol></nav>
+  <main><p>_VISION, 2026-08-14. <strong>These are decisions, not recommendations.</strong> CREATE authors from this file and should not have to invent a defName, a field or an event. Companion to <code>D:\Luke\dev\Rimworld\design\Jawa\worldbuilding\faction_religions_spec.md</code>; it closes that file&#x27;s entry-2 and entry-10 <code>Charity</code> gaps. Every defName below was read from the <strong>live def dump</strong> (<code>&lt;LocalLow&gt;\DefDump\defs\</code>, captured 2026-08-14T08:20:26Z, game 1.6.4871 rev591), from vanilla XML on disk, or from an installed mod&#x27;s own XML — each is cited at the point of use._</p><p class="callout crit">🔴 <strong>The file keeps the name <code>precept_the_unearned.md</code>.</strong> &quot;The Unearned&quot; survives as the doctrine&#x27;s name because it is the only phrasing that carries <strong>both</strong> halves of the owner&#x27;s brief in one word — the beggar&#x27;s unearned share <em>and</em> the free market&#x27;s premise that a share must be earned. &quot;Mendicancy&quot; names only the beggar; &quot;the Outstretched Hand&quot; names only the gesture. No rename.</p><section class="note" id="s0"><h2 class="crit">The three answers you need before reading further</h2><p><strong>1 · The refusal hook is LEGAL.</strong> <code>CharityRefused_Beggars</code> is a real <code>HistoryEventDef</code> and the beggar quest records it on the turn-away path. The &quot;delight on refusal&quot; half is authorable exactly as the owner asked. Evidence in §2.</p><p><strong>2 · But &quot;declining a beggar quest&quot; is not a thing the game has.</strong> The beggar quest is <code>&lt;autoAccept&gt;true&lt;/autoAccept&gt;</code> — there is <strong>no accept/decline button.</strong> Refusal is behavioural: you let the timer run out and they walk off empty-handed. This is <em>better</em> than what was asked for, because the delight then fires off a choice the player makes on the map rather than a dialog they click through.</p><p><strong>3 · 🔴 A <code>FactionDef</code> CANNOT list precepts, so this needs a new <code>MemeDef</code>.</strong> <code>Assembly-CSharp.dll</code> exposes exactly seven ideo fields on <code>FactionDef</code> — <code>ideoName</code>, <code>fixedIdeo</code>, <code>forcedMemes</code>, <code>requiredMemes</code>, <code>deityPresets</code>, <code>structureMemeWeights</code>, <code>requiredPreceptsOnly</code>. There is <strong>no</strong> <code>forcedPrecepts</code>, no <code>requiredPrecepts</code>, no precept list of any kind. <code>IdeoPresetDef</code> is memes-only too. <strong>The only way to guarantee a precept on any ideoligion is a meme that forces it via <code>requireOne</code>.</strong> So the deliverable is a meme <em>and</em> an issue <em>and</em> a precept, not a precept alone. <code>faction_religions_spec.md</code> entry 5 already discovered this from the other end; this is the same constraint stated as a rule.</p><blockquote>Verified: <code>strings -a &quot;C:\Program Files (x86)\Steam\steamapps\common\RimWorld\RimWorldWin64_Data\Managed\Assembly-CSharp.dll&quot;</code>, exact-match on each candidate field name, 2026-08-14.</blockquote></section><section class="note" id="s1"><h2 class="crit">The visibility problem, stated honestly and near the top</h2><p><code>faction_religions_spec.md</code> is disciplined around <strong>&quot;NPC religion rarely surfaces in play&quot;</strong>, which is still an <em>unmeasured premise</em> (its red block; the <code>jawa/ideo_of</code> <code>otherOnMap</code> counter is built but unfired). This spec inherits that uncertainty and does not pretend otherwise.</p><p><strong>The two bindings are not equal, and the owner&#x27;s &quot;delight&quot; lives in exactly one of them.</strong></p><div class="scroll"><table class="data"><thead><tr><th>binding</th><th>what it does</th><th>does the owner feel it?</th></tr></thead><tbody><tr><td><strong>(a) NPC — Hutt Cartel</strong></td><td>Hutt pawns carry the precept. Their moods move on events <em>on their own maps</em>, which the player never loads. On <strong>our</strong> map a Hutt visitor&#x27;s mood is invisible unless clicked.</td><td><strong>Barely. It is fiction and colour.</strong></td></tr><tr><td><strong>(b) Player-available — an <code>IdeoPresetDef</code> + the meme in the ideoligion editor</strong></td><td>A colonist of this faith gets a <strong>positive</strong> mood memory when the beggars leave empty-handed, and a bigger one when they are taken. Refusing becomes a real decision with a real payoff, felt at the keyboard.</td><td><strong>Yes. This is the whole delight.</strong></td></tr></tbody></table></div><p>⇒ <strong>Spec once, ship both. Build (b) first.</strong> (a) costs one line in a <code>FactionDef</code> once (b)&#x27;s defs exist, so there is no reason to skip it — but if only one ships, ship (b).</p><p class="callout warn">⚠️ <strong>Do NOT assign this to the Jawa faith.</strong> Section 12 of <code>faction_religions_spec.md</code> is the owner&#x27;s and is deliberately empty. Making the meme <em>available</em> to the player&#x27;s ideoligion is the deliverable; <strong>choosing</strong> it is the owner&#x27;s. Note that <code>D:\Luke\dev\Rimworld\design\Jawa\worldbuilding\jawa_xenotype_and_religion.md</code> §&quot;One does not beg!&quot; (owner, 2026-08-07) already asks for this doctrine on the Jawa — which is precisely why (b) must exist. This file gives the owner the parts; it does not fit them.</p></section><section class="entry" id="s2"><header class="entry-head"><span class="num">1</span><h2>Which faction</h2><p class="religion">the Hutt Cartel (2), the Reckoning of Debts</p></header><p><strong>Decided. Blackstar Company is the weaker variant, specified in §7.</strong></p><div class="scroll"><table class="data"><thead><tr><th></th><th>Hutt Cartel (2)</th><th>Blackstar Company (10)</th></tr></thead><tbody><tr><td>taboo already on file</td><td><strong>forgiving a debt</strong></td><td>double-booking a contract</td></tr><tr><td>the doctrine restated</td><td>a beggar asks to be forgiven a debt he never contracted — the taboo made flesh</td><td>a beggar has nothing to sign with</td></tr><tr><td>free-market memes already assigned</td><td><code>VME_Structure_Corporate</code> · <code>VME_Trader</code> · <code>Individualist</code> — <strong>all three, already</strong></td><td><code>Individualist</code> only</td></tr><tr><td>existing <code>Charity</code> line in the spec</td><td><em>&quot;(none — see the constraint above)&quot;</em> — <strong>an acknowledged hole this fills</strong></td><td><code>Charity_Worthwhile</code> — ⚠️ <strong>the fiction wanted &quot;disapproved&quot;; the spec says so</strong></td></tr><tr><td>slavery position</td><td><code>Slavery_Acceptable</code></td><td><code>Slavery_Disapproved</code> — <em>&quot;a slave cannot sign&quot;</em></td></tr></tbody></table></div><p><strong>Why the Hutts win, in one line each:</strong></p><ol><li class=""><strong>Their fiction already asserts it and their encoding already failed to.</strong> <code>faction_religions.md</code> entry 2 says <em>&quot;charity: <strong>abhorrent</strong>&quot;</em>; <code>faction_religions_spec.md</code> constraint 2 says it &quot;cannot be written&quot;. This is the thing that could not be written.</li><li class=""><strong>They already hold every meme the free-market half needs.</strong> Zero new worldbuilding, zero new memes for that half — see §5.</li><li class=""><strong>It is the only doctrine that makes their slavery position <em>mean</em> something.</strong> <code>Slavery_Acceptable</code> is flagged in the spec as <em>&quot;⚠️ inert — 0 comps&quot;</em>, and that flag is correct: the dump shows <code>Slavery_Acceptable</code> with <code>comps: []</code>, <code>associatedMemes: []</code>, <code>conflictingMemes: []</code>. The Cartel&#x27;s central practice currently generates no mood, no development points and no refusal. <strong>The Unearned is what gives the Cartel a slavery doctrine with a body.</strong></li><li class=""><strong>Blackstar&#x27;s slavery position contradicts it.</strong> <em>A slave cannot sign</em> is a good line and it is the opposite of <em>those who cannot take care of themselves should be owned</em>. Putting both on one faction would be incoherent.</li></ol></section><section class="entry" id="s3"><header class="entry-head"><span class="num">2</span><h2>Does refusing a beggar fire something?</h2><p class="religion">YES. Question closed.</p></header><h3 class="">The events, verbatim</h3><blockquote><code>C:\Program Files (x86)\Steam\steamapps\common\RimWorld\Data\Ideology\Defs\PreceptDefs\Precepts_Charity.xml</code>, read 2026-08-14 ``<code>xml &lt;HistoryEventDef&gt;&lt;defName&gt;CharityRefused_Beggars&lt;/defName&gt; &lt;label&gt;beggars refused&lt;/label&gt;&lt;/HistoryEventDef&gt; &lt;HistoryEventDef&gt;&lt;defName&gt;CharityRefused_Beggars_Betrayed&lt;/defName&gt; &lt;label&gt;beggars betrayed&lt;/label&gt;&lt;/HistoryEventDef&gt; &lt;HistoryEventDef&gt;&lt;defName&gt;CharityFulfilled_Beggars&lt;/defName&gt; &lt;label&gt;beggars helped&lt;/label&gt;&lt;/HistoryEventDef&gt; </code>``</blockquote><h3 class="crit">🔴 The live beggar quest is NOT the vanilla one</h3><p><strong>Better Beggars (Continued)</strong> (<code>mlie.betterbeggars</code>, WS <code>3006899215</code>, <strong>active</strong> — <code>ModsConfig.xml</code> line 71) <code>PatchOperationReplace</code>s the storyteller&#x27;s <code>GiveQuest_Beggars</code> with its own. The quest that actually fires in this campaign is one of:</p><div class="scroll"><table class="data"><thead><tr><th>defName</th><th>source file</th><th>note</th></tr></thead><tbody><tr><td><code>Beggars_WantThing_Vanilla</code></td><td><code>...\294100\3006899215\1.6\Defs\QuestScriptDefs\Script_Beggars_Vanilla.xml</code></td><td>the everyday one</td></tr><tr><td><code>Beggars_WantThing_Drugs</code></td><td><code>...\Script_Beggars_Drugs.xml</code></td><td>60-day on-cycle</td></tr><tr><td><code>Beggars_Chased</code></td><td><code>...\Script_Beggars_Chased.xml</code></td><td><code>baseChance 1.0</code>, <code>minRefireDays 30</code></td></tr><tr><td><code>Beggars_DelayedReward</code></td><td><code>...\Script_Beggars_DelayedReward.xml</code></td><td><code>defaultHidden true</code></td></tr></tbody></table></div><p><strong>Naming vanilla <code>Beggars</code> in any patch would target a quest the storyteller no longer hands out.</strong> Better Beggars ships no <code>HistoryEventDef</code>, no <code>IssueDef</code>, no <code>PreceptDef</code>, no <code>ThoughtDef</code> — it re-records the <strong>stock</strong> events, so a comp written against <code>CharityRefused_Beggars</code> covers stock <em>and</em> all three modded variants unchanged.</p><blockquote>Verified by IL scan of <code>C:\Program Files (x86)\Steam\steamapps\workshop\content\294100\3006899215\1.6\Assemblies\BetterBeggars.dll</code> and of <code>QuestNode_Root_Beggars</code> in <code>Assembly-CSharp.dll</code>, 2026-08-14. <code>Beggars_WantThing_Vanilla</code> and <code>Beggars_WantThing_Drugs</code> reference <code>CharityRefused_Beggars</code> in the same delay/empty-handed pattern as vanilla. Better Beggars adds <strong>zero</strong> <code>HistoryEventDef</code>s — it reuses the vanilla three through <code>HistoryEventDefOf</code>. <strong>Confirmed against the whole build:</strong> of 283 merged <code>HistoryEventDef</code>s, all 17 <code>Charity*</code> defs come from Ideology and <strong>no mod adds a single beggar- or charity-related event.</strong></blockquote><h3 class="">The event map</h3><div class="scroll"><table class="data"><thead><tr><th>player action</th><th>event raised</th><th>confidence</th></tr></thead><tbody><tr><td>beggars time out and leave with nothing</td><td><code>CharityRefused_Beggars</code></td><td><strong>VERIFIED</strong> (source above)</td></tr><tr><td>beggars given what they asked for</td><td><code>CharityFulfilled_Beggars</code></td><td><strong>VERIFIED</strong></td></tr><tr><td>beggars harmed / attacked</td><td><code>CharityRefused_Beggars_Betrayed</code></td><td><strong>VERIFIED</strong></td></tr><tr><td>beggars <strong>arrested</strong> (→ enslaved)</td><td><code>CharityRefused_Beggars_Betrayed</code></td><td>✅ <strong>VERIFIED — see below</strong></td></tr></tbody></table></div><h3 class="star">⭐ Arresting a beggar DOES raise the Betrayed event</h3><p><strong>This was the spec&#x27;s open question and it is closed.</strong> IL disassembly of <code>QuestNode_Root_Beggars::RunInt</code> shows the betrayal branch keyed off <code>QuestGen_Signal::AnySignal</code> over <strong>both</strong> <code>beggars.Killed</code> <strong>and</strong> <code>beggars.Arrested</code> — either one records <code>CharityRefused_Beggars_Betrayed</code> (and adds a <code>QuestPart_FactionRelationChange</code> plus the <code>[letterLabelBeggarsBetrayed]</code> letter).</p><p>⇒ <strong>The enslavement path is fully hooked.</strong> Arrest the beggars → beggar-specific delight fires immediately; convert the prisoner → the generic <code>EnslavedPrisonerNotPreviouslyEnslaved</code> fires from the <code>Slavery</code> precept. §4&#x27;s two-stage design works as written, with no fallback needed.</p><h3 class="crit">🔴 The one open question in this spec — a filter that may gate the event</h3><p><code>QuestGen_Filter::AnyColonistWithCharityPrecept</code> appears in the same lambda. <strong>The question is whether the event record sits inside it or beside it</strong>, because a colony holding The Unearned and <strong>no</strong> <code>Charity_*</code> precept has nobody who approves of charity — and if the record is gated, <strong>this precept receives nothing and the whole design is inert.</strong></p><p><strong>My reading is that it is NOT gated, and the IL ordering is the reason:</strong></p><div class="scroll"><pre><code>#### QuestNode_Root_Beggars/&lt;&gt;c__DisplayClass9_0::&lt;RunInt&gt;b__0
+  0011 call    QuestGen_Misc::Leave
+  001C ldsfld  HistoryEventDefOf::CharityRefused_Beggars
+  0023 call    QuestGen_HistoryEvents::RecordHistoryEvent     &lt;-- recorded here
+  003B ldftn   &lt;RunInt&gt;b__7                                   &lt;-- a DIFFERENT lambda
+  0053 call    QuestGen_Filter::AnyColonistWithCharityPrecept &lt;-- wraps only b__7
+#### ...&lt;RunInt&gt;b__7
+  000B ldstr   &quot;MessageCharityEventRefused&quot;
+  001A ldstr   &quot;MessageBeggarsLeavingWithNoItems&quot;</code></pre></div><p><code>RecordHistoryEvent</code> is called at <code>0023</code>, unconditionally. The filter at <code>0053</code> takes <code>b__7</code> — which contains <strong>only the on-screen message</strong> — as its argument. <strong>The filter suppresses the &quot;beggars are leaving empty-handed&quot; toast, not the event.</strong> That is also the only reading consistent with vanilla behaviour: the message exists to tell charitable colonies they just took a mood hit.</p><p class="callout warn">⚠️ <strong>But this is static analysis of IL by hand, with no decompiler on this box and no runtime observation, and it is the single assumption the design rests on.</strong> Filed for BRIDGE in §9 — it is a two-minute check and it should be done before CREATE writes a line.</p><p><strong>If it comes back gated,</strong> the fix is known and cheap: give the ideoligion <code>Charity_Worthwhile</code> alongside The Unearned. Thematically it is not even wrong — <em>&quot;we help those who trade with us&quot;</em> — and it satisfies the filter. Do not redesign; add the precept.</p><h3 class="warn">⚠️ <code>Beggars_Chased</code> fires no turn-away event at all</h3><p>IL scan of <code>...\3006899215\1.6\Assemblies\BetterBeggars.dll</code> shows <code>QuestNode_Root_Beggars_Chased::RunInt</code> references <strong>only</strong> <code>CharityFulfilled_Beggars</code> and <code>CharityRefused_Beggars_Betrayed</code>. It never references <code>CharityRefused_Beggars</code>, and sets no <code>failedOrExpiredHistoryEvent</code>. It is also the <strong>only</strong> beggar quest with <code>autoAccept: false</code> (<code>expireDaysRange 0.3</code>), i.e. the only one with a real Reject button — <strong>and rejecting it fires nothing.</strong> The taking still pays out on this variant; the turning-away does not. Not worth fixing for v1; note it so nobody debugs it twice.</p><blockquote>⭐ <strong>The seam, if the owner ever wants a genuine decline hook.</strong> <code>QuestScriptDef.failedOrExpiredHistoryEvent</code> is read by <code>IdeoUtility::Notify_QuestCleanedUp</code>, is patchable from XML, and needs no Harmony. Vanilla precedent, <code>...\Data\Core\Defs\QuestScriptDefs\Script_WandererJoins.xml</code>: ``<code>xml &lt;failedOrExpiredHistoryEvent MayRequire=&quot;Ludeon.RimWorld.Ideology&quot;&gt;CharityRefused_WandererJoins&lt;/failedOrExpiredHistoryEvent&gt; </code>`<code> **None of the five beggar quests sets it.** Patching it onto </code>Beggars_Chased<code> would give that variant the turn-away event it lacks. </code>[v2]`, and only if the owner asks — the main path already works.</blockquote><p class="callout warn">⚠️ <strong>&quot;Dismiss&quot; in the Quests tab is not a decline.</strong> <code>MainTabWindow_Quests::DoDismissButton</code> sets <code>Quest.dismissed = true</code> and nothing else — it never calls <code>Quest.End</code>, never touches <code>HistoryEventsManager</code>. The keyed tooltip says so: <em>&quot;Its effects and expiry times will proceed as normal.&quot;</em> A player who dismisses the letter still gets the event when the timer runs out.</p></section><section class="entry" id="s4"><header class="entry-head"><span class="num">3</span><h2>Is there an issue to hang this on?</h2><p class="religion">No. A new <code>IssueDef</code> is required.</p></header><p><strong>Confirmed against the live dump — 220 <code>IssueDef</code>s across 21 mods:</strong></p><div class="scroll"><table class="data"><thead><tr><th>queried</th><th>result</th></tr></thead><tbody><tr><td><code>Beggars</code> · <code>Alms</code> · <code>Begging</code> · <code>Mendicancy</code></td><td><strong>ABSENT — all four</strong></td></tr><tr><td><code>Ownership</code> · <code>Property</code> · <code>Wealth</code> · <code>Debt</code> · <code>Contract</code> · <code>Market</code></td><td><strong>ABSENT — all six</strong></td></tr><tr><td><code>Charity</code></td><td>exists, Ideology, <code>allowMultiplePrecepts: false</code></td></tr><tr><td><code>Slavery</code></td><td>exists, Ideology, 8 positions</td></tr><tr><td><code>Trade</code> (mlie) · <code>VME_Trading</code> · <code>VME_TradingPrice</code></td><td>exist</td></tr><tr><td><code>GarryFlowers_Slave_Opinion</code> / <code>_Relations</code> / <code>_Gatherings</code></td><td>exist, More Slavery Stuff</td></tr></tbody></table></div><p><strong><code>Charity</code> has no negative position — re-confirmed two independent ways.</strong> (i) exactly three precepts carry <code>issue: Charity</code> in all 685 dumped precepts; (ii) <code>approvesOfCharity: true</code> is set on exactly those three and on nothing else in the build. There is no <code>Charity_Contemptible</code>, and <code>approvesOfCharity: false</code> is the C# default on the other 682 precepts — so <strong>setting it false asserts nothing.</strong></p><p>⇒ <strong>A custom <code>IssueDef</code> is the honest answer, and it is a clean one.</strong> The issue is <code>Jawa_Begging</code>, and it is <em>not</em> the negative pole of <code>Charity</code> — it is a different question. <code>Charity</code> asks <em>do we help?</em>; <code>Jawa_Begging</code> asks <em>what is a person who asks?</em> An ideoligion may hold both and be coherently vile.</p><p class="callout warn">⚠️ <strong><code>Charity</code>&#x27;s <code>conflictingMemes</code> in the live game are <code>[Supremacist, PainIsVirtue, Trader]</code> — three, not the two in the vanilla XML.</strong> <em>Precepts and Memes (Continued)</em> patches <code>Trader</code> in. <strong>The dump wins over vanilla XML, again</strong> (same trap as the <code>Horaxian</code> → <code>AM_Horaxian</code> style swap already in <code>infrastructure/state/queue/VISION.md</code>). Practical effect: the mlie <code>Trader</code> meme already hard-excludes all charity — it is the closest thing the build has to an anti-charity statement, and it is a <em>meme exclusion</em>, not a precept.</p></section><section class="entry" id="s5"><header class="entry-head"><span class="num">4</span><h2>Enslaving a beggar</h2><p class="religion">not distinguishable at the def level. Say so.</p></header><p>The only enslavement events in the build are <code>EnslavedPrisoner</code> and <code>EnslavedPrisonerNotPreviouslyEnslaved</code> (<code>...\Data\Ideology\Defs\PreceptDefs\Precepts_Slavery.xml</code>, lines 12 and 17), plus <code>SoldSlave</code>. <strong>None carries the victim&#x27;s provenance.</strong> Enslaving a beggar fires exactly what enslaving a raider fires.</p><p><strong>So the honest answer is: the precept can only reward slavery in general — with one exception, and the exception is the whole design.</strong></p><p><code>CharityRefused_Beggars_Betrayed</code> <strong>is</strong> beggar-specific, and it fires on the path that <em>begins</em> an enslavement (harm → down → arrest → convert). So the doctrine gets its beggar-specific delight from the <strong>taking</strong>, and its general delight from the <strong>owning</strong>, and the two stack in the same afternoon:</p><div class="scroll"><table class="data"><thead><tr><th>moment</th><th>event</th><th>who feels it</th><th>comp</th></tr></thead><tbody><tr><td>the beggars are turned away</td><td><code>CharityRefused_Beggars</code></td><td>everyone of this ideo</td><td><code>PreceptComp_KnowsMemoryThought</code></td></tr><tr><td>the beggars are taken (killed <strong>or arrested</strong>)</td><td><code>CharityRefused_Beggars_Betrayed</code></td><td>everyone of this ideo</td><td><code>PreceptComp_KnowsMemoryThought</code></td></tr><tr><td>the prisoner becomes property</td><td><code>EnslavedPrisonerNotPreviouslyEnslaved</code></td><td>the doer, then everyone</td><td>comes from the <strong><code>Slavery</code></strong> precept, not this one</td></tr><tr><td>we gave in and paid them</td><td><code>CharityFulfilled_Beggars</code></td><td>everyone — <strong>a penalty</strong></td><td><code>PreceptComp_KnowsMemoryThought</code></td></tr></tbody></table></div><p class="callout warn">⚠️ <strong>Do not put an enslavement comp on this precept.</strong> <code>Slavery</code> is a separate issue with <code>allowMultiplePrecepts: false</code>, and the slavery precepts already own those events. Duplicating them stacks two memories for one act.</p></section><section class="entry" id="s6"><header class="entry-head"><span class="num">5</span><h2>The free-market half</h2><p class="religion">reuse. Author nothing.</p></header><p><strong>Checked all 136 <code>MemeDef</code>s.</strong> No meme in this build carries free-market, libertarian or anti-charity doctrine as such. But three installed memes carry it between them, and <strong>the Hutt Cartel already has all three</strong>:</p><div class="scroll"><table class="data"><thead><tr><th>defName</th><th>source</th><th>what it contributes</th><th>forces</th></tr></thead><tbody><tr><td><code>VME_Structure_Corporate</code></td><td><code>vanillaexpanded.vmemese</code></td><td>the theology: <em>&quot;No Gods or Kings should be worshipped, only man and his unslakable desire for wealth. Colonies should be managed like companies.&quot;</em> <code>deityCount 0</code></td><td>nothing — payload is <code>Apparel_CollarShirt</code> + the <code>VME_Corporate</code> style</td></tr><tr><td><code>VME_Trader</code></td><td><code>vanillaexpanded.vmemese</code></td><td><em>&quot;With wealth comes power, generating profit is an important part of life.&quot;</em></td><td><code>VME_TradingPrice_Improved</code> · <code>VME_Trading_Required</code> · <code>VME_Expectations_High</code>, <strong>all three</strong>, plus ritual <code>VME_TradingFairPrecept</code></td></tr><tr><td><code>Individualist</code></td><td><code>ludeon.rimworld.ideology</code></td><td><em>&quot;Each person is a free individual… Nobody should be made to conform.&quot;</em></td><td>nothing; <code>modExtensions</code> → preferred trait <code>Recluse</code></td></tr></tbody></table></div><p>⇒ <strong>The free-market half is already shipped and already assigned.</strong> The new meme carries <strong>only</strong> the doctrine that was missing. That is the correct scope.</p><p><strong>Optional, cheap, and recommended for the player build (b):</strong> add <code>Trader</code> (<code>mlie.preceptsandmemes</code>) — it forces <code>TradingRespected</code>/<code>TradingHonored</code> (<code>TradePriceImprovement +0.10/+0.20</code> against <code>WorkSpeedGlobal −0.09/−0.18</code>, a real tradeoff), carries <code>agreeableTraits: [Greedy]</code>, and <strong>already conflicts with every <code>Charity_*</code> precept</strong>, which enforces the doctrine&#x27;s negative half for free. ⚠️ <code>Trader</code> has <code>exclusionTags: [TraderRaider]</code> — it cannot sit with <code>Raider</code>. Irrelevant for the Hutts; relevant if the owner ever wants this on a raider faith.</p><blockquote>⚠️ <strong>A <code>strings -a</code> miss worth knowing.</strong> <code>agreeableTraits</code> returns <strong>zero</strong> exact matches in <code>Assembly-CSharp.dll</code> while <code>disagreeableTraits</code> returns one — because .NET&#x27;s <code>#Strings</code> metadata heap <strong>shares suffixes</strong>, so the shorter name has no record of its own. It is a real vanilla <code>MemeDef</code> field; the dump shows it populated on <code>Trader</code>. <strong>An absent <code>strings</code> reading is not an absent field.</strong> Same family as the ascii/unicode lesson, different mechanism.</blockquote></section><section class="entry" id="s7"><header class="entry-head"><span class="num">6</span><h2>The defs to author</h2><p class="religion">Hutt Cartel binding</p></header><p><strong>Mod:</strong> <code>D:\Luke\dev\Rimworld\src\Jawa\Jawa_Patches\</code> (<code>mandrake.jawa.patches</code>). <strong>Prefix:</strong> <code>Jawa_</code>, matching <code>Jawa_TheClaim</code>, <code>Jawa_SaltCrust</code>, <code>Jawa_GroundHulk</code>. <strong>File:</strong> <code>D:\Luke\dev\Rimworld\src\Jawa\Jawa_Patches\Defs\PreceptDefs\Precepts_TheUnearned.xml</code></p><p class="callout warn">⚠️ <strong><code>MayRequire</code>, exactly twice.</strong> Every def referenced below is vanilla Core or Ideology <strong>except the two <code>conflictingMemes</code> entries in §6.2</strong>, which come from mods. A <code>conflictingMemes</code> entry naming an absent def is a cross-reference error at load, so those two <code>&lt;li&gt;</code>s carry a per-element guard:</p><div class="scroll"><pre><code>&lt;li MayRequire=&quot;vanillaexpanded.vmemese&quot;&gt;VME_Egalitarian&lt;/li&gt;
+&lt;li MayRequire=&quot;mlie.preceptsandmemes&quot;&gt;Altruism&lt;/li&gt;</code></pre></div><p>Everything else is unguarded. <code>MayRequire Ludeon.RimWorld.Ideology</code> on the file as a whole is correct and sufficient — the mod is otherwise Ideology-free.</p><p class="callout crit">🔴 <strong>Icons: reuse, do not commission.</strong> Vanilla textures live in AssetBundles and <code>Data\...\Textures\</code> does not exist on disk, so a bespoke <code>iconPath</code> needs art we would have to ship. <strong>The reuse route is proven:</strong> all three of <em>More Slavery Stuff</em>&#x27;s <code>IssueDef</code>s point at <code>UI/Issues/Slavery</code>, and its <code>Textures\</code> folder contains nothing but one command icon — it ships no issue art at all (<code>...\294100\2896845138\Defs\Precepts.xml</code> lines 7, 138, 163, read 2026-08-14). Use <code>UI/Issues/Charity</code> for the issue and <code>UI/Memes/Trader</code> for the meme. <strong>Zero art cost.</strong> Revisit only if the owner wants a distinct symbol.</p><h3 class="">6.1 The issue</h3><div class="scroll"><pre><code>&lt;IssueDef&gt;
+  &lt;defName&gt;Jawa_Begging&lt;/defName&gt;
+  &lt;label&gt;begging&lt;/label&gt;
+  &lt;iconPath&gt;UI/Issues/Charity&lt;/iconPath&gt;
+&lt;/IssueDef&gt;</code></pre></div><p>Field shape verified against vanilla <code>&lt;IssueDef&gt;&lt;defName&gt;Charity&lt;/defName&gt;…</code> and against all three <code>GarryFlowers_Slave_*</code> issues. <code>allowMultiplePrecepts</code> defaults false, which is what we want.</p><h3 class="">6.2 The precept — <code>Jawa_Begging_Contemptible</code></h3><div class="scroll"><pre><code>&lt;PreceptDef&gt;
+  &lt;defName&gt;Jawa_Begging_Contemptible&lt;/defName&gt;
+  &lt;issue&gt;Jawa_Begging&lt;/issue&gt;
+  &lt;label&gt;contemptible&lt;/label&gt;
+  &lt;description&gt;One who begs has thrown away his hands. He has no claim on what
+    another earned, and no standing to make one. To turn him away is
+    housekeeping; to put him to work is mercy.&lt;/description&gt;
+  &lt;impact&gt;High&lt;/impact&gt;
+  &lt;displayOrderInIssue&gt;0&lt;/displayOrderInIssue&gt;
+  &lt;displayOrderInImpact&gt;1000&lt;/displayOrderInImpact&gt;
+  &lt;defaultSelectionWeight&gt;0&lt;/defaultSelectionWeight&gt;
+  &lt;associatedMemes&gt;
+    &lt;li&gt;Individualist&lt;/li&gt;
+    &lt;li&gt;Supremacist&lt;/li&gt;
+  &lt;/associatedMemes&gt;
+  &lt;conflictingMemes&gt;
+    &lt;li MayRequire=&quot;vanillaexpanded.vmemese&quot;&gt;VME_Egalitarian&lt;/li&gt;
+    &lt;li MayRequire=&quot;mlie.preceptsandmemes&quot;&gt;Altruism&lt;/li&gt;
+  &lt;/conflictingMemes&gt;
+  &lt;comps&gt;
+    &lt;li Class=&quot;PreceptComp_KnowsMemoryThought&quot;&gt;
+      &lt;eventDef&gt;CharityRefused_Beggars&lt;/eventDef&gt;
+      &lt;thought&gt;Jawa_BeggarsRefused_Contemptible&lt;/thought&gt;
+      &lt;description&gt;Beggars sent away&lt;/description&gt;
+    &lt;/li&gt;
+    &lt;li Class=&quot;PreceptComp_KnowsMemoryThought&quot;&gt;
+      &lt;eventDef&gt;CharityRefused_Beggars_Betrayed&lt;/eventDef&gt;
+      &lt;thought&gt;Jawa_BeggarsTaken_Contemptible&lt;/thought&gt;
+      &lt;removesThought&gt;Jawa_BeggarsRefused_Contemptible&lt;/removesThought&gt;
+      &lt;description&gt;Beggars taken&lt;/description&gt;
+    &lt;/li&gt;
+    &lt;li Class=&quot;PreceptComp_KnowsMemoryThought&quot;&gt;
+      &lt;eventDef&gt;CharityFulfilled_Beggars&lt;/eventDef&gt;
+      &lt;thought&gt;Jawa_BeggarsPaid_Contemptible&lt;/thought&gt;
+      &lt;description&gt;Gave alms to beggars&lt;/description&gt;
+    &lt;/li&gt;
+    &lt;li Class=&quot;PreceptComp_DevelopmentPoints&quot;&gt;
+      &lt;eventDef&gt;CharityRefused_Beggars&lt;/eventDef&gt;
+      &lt;eventLabel&gt;sent beggars away&lt;/eventLabel&gt;
+      &lt;points&gt;2&lt;/points&gt;
+    &lt;/li&gt;
+  &lt;/comps&gt;
+&lt;/PreceptDef&gt;</code></pre></div><p><strong>Every field above is attested.</strong> <code>PreceptComp_KnowsMemoryThought</code>, <code>PreceptComp_DevelopmentPoints</code>, <code>removesThought</code>, <code>description</code>, <code>eventLabel</code>, <code>points</code>, <code>displayOrderInIssue</code>, <code>displayOrderInImpact</code>, <code>defaultSelectionWeight</code>, <code>associatedMemes</code>, <code>conflictingMemes</code>, <code>impact</code> — all read from <code>Precepts_Charity.xml</code> (<code>Charity_Essential</code>, lines 128–216) and <code>Precepts_Slavery.xml</code> (<code>Slavery_Honorable</code>, lines 179–243), 2026-08-14.</p><p class="callout warn">⚠️ <strong><code>defaultSelectionWeight: 0</code> is mandatory.</strong> A non-zero weight leaks the precept into randomly generated ideoligions across the whole world. <strong>All ten</strong> of <em>More Slavery Stuff</em>&#x27;s precepts set it to 0 for the same reason (<code>...\294100\2896845138\Defs\Precepts.xml</code>, lines 19–321).</p><p class="callout warn">⚠️ <strong><code>PreceptComp_KnowsMemoryThought</code>, not <code>PreceptComp_SelfTookMemoryThought</code>.</strong> Nobody &quot;does&quot; a refusal — it is a colony-level event with no doer. Vanilla&#x27;s three <code>Charity_*</code> precepts use <code>KnowsMemoryThought</code> for every <code>CharityRefused_*</code> binding and never <code>SelfTook</code>. Copy that, or the thought lands on nobody.</p><p><strong>The comp vocabulary.</strong> <code>Assembly-CSharp.dll</code> declares <strong>16</strong> whole-line <code>PreceptComp</code> types — 1 abstract base and 15 subclasses. Twelve more are added by mods, <strong>all but one active</strong> (Alpha Memes 2, VE Memes 3, More Precepts 3, VVE 3, AP Hunting 1; <code>Xenomorphtype.PreceptComp_WitnessedAction</code> is on disk but not in <code>ModsConfig.xml</code>). ⚠️ <code>PreceptComp_Apparel</code> and <code>PreceptComp_Thought</code> are used in no XML anywhere and appear to be abstract bases — <strong>do not put them in <code>Class=</code></strong>. <code>PreceptComp_GoodwillSituation</code> has zero usages on this machine and its child element is <strong>UNVERIFIED</strong>.</p><p>The four that matter here — <em>uses counted across vanilla <code>Data\</code> XML only</em>, not the whole build:</p><div class="scroll"><table class="data"><thead><tr><th>class</th><th>vanilla uses</th><th>what it needs</th><th>use it for</th></tr></thead><tbody><tr><td><code>PreceptComp_KnowsMemoryThought</code></td><td>188</td><td><code>eventDef</code> + <code>thought</code>; optional <code>description</code>, <code>removesThought</code>, <code>onlyForNonSlaves</code>, <code>doerMustBeMyIdeo</code></td><td><strong>everyone reacts to a thing that happened</strong> ← ours</td></tr><tr><td><code>PreceptComp_SituationalThought</code></td><td>151</td><td><code>thought</code> + optional <code>description</code> / <code>thoughtStageDescriptions</code> / <code>tooltipShowMoodRange</code>; <strong>no event</strong></td><td>a standing condition (e.g. &quot;slaves in colony&quot;)</td></tr><tr><td><code>PreceptComp_SelfTookMemoryThought</code></td><td>99</td><td><code>eventDef</code> + <code>thought</code>; optional <code>description</code>, <code>onlyForNonSlaves</code></td><td>the pawn who performed the act</td></tr><tr><td><code>PreceptComp_DevelopmentPoints</code></td><td>21</td><td><code>eventDef</code> + <code>points</code>; optional <code>eventLabel</code></td><td>ideoligion development on the player&#x27;s ideo</td></tr></tbody></table></div><p><code>eventDef</code> and <code>thought</code> are present on <strong>100%</strong> of the uses of the comps that take them — treat both as required. Everything else is optional.</p><p class="callout crit">🔴 <strong><code>eventDefs</code> (plural) does not exist</strong> — zero occurrences in vanilla XML, zero across all 1,246 workshop mods, and no string in the assembly&#x27;s <code>#Strings</code> heap <em>ends</em> in <code>eventDefs</code> (the suffix test, which is the one that counts — see the <code>agreeableTraits</code> note in §5). <strong>To react to N events you write N <code>&lt;li&gt;</code> entries.</strong></p><p><code>PreceptComp_UnwillingToDo</code> (31 vanilla uses) also takes a singular <code>eventDef</code> — <strong>it is the wrong tool here</strong>, because there is no &quot;gave alms&quot; event a pawn performs that it could refuse.</p><p class="callout star">⭐ <strong>Worth knowing for later, not used here:</strong> <code>VanillaMemesExpanded.PreceptComp_DisableIncident</code> (active) can switch an incident off from a precept — note its child element is a <strong>capital-I <code>&lt;Incident&gt;</code></strong>. The Unearned wants <em>more</em> beggars, not fewer, so we do not use it; but it is the tool if the owner ever wants a faith that never sees them.</p><h3 class="">6.3 The thoughts</h3><div class="scroll"><pre><code>&lt;ThoughtDef Abstract=&quot;True&quot; Name=&quot;Jawa_UnearnedThoughtBase&quot;&gt;
+  &lt;durationDays&gt;8&lt;/durationDays&gt;
+&lt;/ThoughtDef&gt;
+
+&lt;ThoughtDef ParentName=&quot;Jawa_UnearnedThoughtBase&quot;&gt;
+  &lt;defName&gt;Jawa_BeggarsRefused_Contemptible&lt;/defName&gt;
+  &lt;stages&gt;
+    &lt;li&gt;
+      &lt;label&gt;sent the beggars away&lt;/label&gt;
+      &lt;description&gt;They came with their hands out and left with them empty.
+        The ledger is clean and the world is in order.&lt;/description&gt;
+      &lt;baseMoodEffect&gt;6&lt;/baseMoodEffect&gt;
+    &lt;/li&gt;
+  &lt;/stages&gt;
+&lt;/ThoughtDef&gt;
+
+&lt;ThoughtDef ParentName=&quot;Jawa_UnearnedThoughtBase&quot;&gt;
+  &lt;defName&gt;Jawa_BeggarsTaken_Contemptible&lt;/defName&gt;
+  &lt;stages&gt;
+    &lt;li&gt;
+      &lt;label&gt;beggars properly owned&lt;/label&gt;
+      &lt;description&gt;They could not keep themselves. Now someone else will,
+        and they will earn it. Nothing has been wasted.&lt;/description&gt;
+      &lt;baseMoodEffect&gt;10&lt;/baseMoodEffect&gt;
+    &lt;/li&gt;
+  &lt;/stages&gt;
+&lt;/ThoughtDef&gt;
+
+&lt;ThoughtDef ParentName=&quot;Jawa_UnearnedThoughtBase&quot;&gt;
+  &lt;defName&gt;Jawa_BeggarsPaid_Contemptible&lt;/defName&gt;
+  &lt;stages&gt;
+    &lt;li&gt;
+      &lt;label&gt;gave alms&lt;/label&gt;
+      &lt;description&gt;We paid someone for nothing. Whatever we bought,
+        it was not worth what it cost us.&lt;/description&gt;
+      &lt;baseMoodEffect&gt;-8&lt;/baseMoodEffect&gt;
+    &lt;/li&gt;
+  &lt;/stages&gt;
+&lt;/ThoughtDef&gt;</code></pre></div><p><code>durationDays 8</code> and the <code>stages</code>/<code>baseMoodEffect</code> shape are copied from vanilla&#x27;s <code>CharityBase</code> and <code>CharityRefused_Essential_Beggars</code> (<code>-8</code>, same file). <strong>The magnitudes are deliberately the mirror of vanilla&#x27;s charity numbers</strong>, so a colonist who holds The Unearned feels about refusing exactly what a <code>Charity_Essential</code> colonist feels, inverted. <code>+10</code> on the taking is one step above that: the doctrine&#x27;s peak.</p><h3 class="">6.4 The meme — <code>Jawa_Meme_TheUnearned</code></h3><div class="scroll"><pre><code>&lt;MemeDef&gt;
+  &lt;defName&gt;Jawa_Meme_TheUnearned&lt;/defName&gt;
+  &lt;label&gt;the unearned&lt;/label&gt;
+  &lt;description&gt;A share must be earned. One who asks for what he did not earn has
+    confessed he cannot keep himself, and one who cannot keep himself is better
+    kept by someone who can.&lt;/description&gt;
+  &lt;category&gt;Normal&lt;/category&gt;
+  &lt;impact&gt;2&lt;/impact&gt;
+  &lt;iconPath&gt;UI/Memes/Trader&lt;/iconPath&gt;
+  &lt;requireOne&gt;
+    &lt;li&gt;&lt;li&gt;Jawa_Begging_Contemptible&lt;/li&gt;&lt;/li&gt;
+  &lt;/requireOne&gt;
+  &lt;exclusionTags&gt;
+    &lt;li&gt;Jawa_Mendicancy&lt;/li&gt;
+  &lt;/exclusionTags&gt;
+&lt;/MemeDef&gt;</code></pre></div><p class="callout warn">⚠️ <strong><code>requireOne</code> is a list-of-lists</strong> — outer entries are ANDed, inner entries are ORed. Verified against <code>VME_Trader</code> (<code>requireOne: [[VME_TradingPrice_Improved], [VME_Trading_Required], [VME_Expectations_High]]</code>, all three forced) and <code>Trader</code> (<code>requireOne: [[TradingRespected, TradingHonored]]</code>, one of two). One group with one member = &quot;always exactly this precept&quot;. <strong>Neither <code>requiredPrecepts</code> nor <code>addedPrecepts</code> exists on <code>MemeDef</code>;</strong> do not write them.</p><p class="callout warn">⚠️ <strong><code>impact: 2</code> is an integer in this build, not a string.</strong> All 136 dumped memes use 0–3, with 0 reserved for the 35 structure memes.</p><p class="callout warn">⚠️ <strong>The meme forces the precept but does not override <code>conflictingMemes</code>.</strong> Keep <code>VME_Egalitarian</code> and <code>Altruism</code> off any ideoligion that takes this. Neither is on the Hutts.</p><h3 class="">6.5 The FactionDef change</h3><p>One line, in whichever file CREATE lands the eleven ideo blocks in:</p><div class="scroll"><pre><code>&lt;forcedMemes&gt;
+  &lt;li&gt;VME_Structure_Corporate&lt;/li&gt;
+  &lt;li&gt;VME_Trader&lt;/li&gt;
+  &lt;li&gt;Individualist&lt;/li&gt;
+  &lt;li&gt;Guilty&lt;/li&gt;
+  &lt;li&gt;AM_Gladiator&lt;/li&gt;
+  &lt;li&gt;Jawa_Meme_TheUnearned&lt;/li&gt;   &lt;!-- new --&gt;
+&lt;/forcedMemes&gt;</code></pre></div><p class="callout warn">⚠️ <strong>Entry 2 in <code>faction_religions_spec.md</code> sets <code>requiredPreceptsOnly</code> ❌ (false)</strong> — deliberately, &quot;let the game add colour&quot;. That is still right: <code>requireOne</code> forces our precept regardless of that flag. <strong>Do not flip it to true</strong> to &quot;make sure&quot; — that would strip the Cartel&#x27;s incidental precepts and is a different decision.</p><p>⇒ <strong>Update <code>faction_religions_spec.md</code> entry 2&#x27;s precept table</strong>: the row <code>| Charity | *(none — see the constraint above)* | ⚠️ not encodable; Guilty carries it |</code> becomes <code>| Jawa_Begging | Jawa_Begging_Contemptible | ⭐ the ledger applied to persons; forced by Jawa_Meme_TheUnearned |</code>. That edit is <strong>not</strong> made by this file — it is queued in §9.</p></section><section class="entry" id="s8"><header class="entry-head"><span class="num">7</span><h2>Blackstar Company</h2><p class="religion">the weaker variant, and it is genuinely weaker</p></header><p><strong>Ship it only if the owner asks.</strong> A second position on the same issue:</p><div class="scroll"><pre><code>&lt;PreceptDef&gt;
+  &lt;defName&gt;Jawa_Begging_Distasteful&lt;/defName&gt;
+  &lt;issue&gt;Jawa_Begging&lt;/issue&gt;
+  &lt;label&gt;distasteful&lt;/label&gt;
+  &lt;description&gt;A man who begs has nothing to offer and nothing to sign.
+    We do not despise him. We simply have no business with him.&lt;/description&gt;
+  &lt;impact&gt;Low&lt;/impact&gt;
+  &lt;displayOrderInIssue&gt;10&lt;/displayOrderInIssue&gt;
+  &lt;defaultSelectionWeight&gt;0&lt;/defaultSelectionWeight&gt;
+  &lt;comps&gt;
+    &lt;li Class=&quot;PreceptComp_KnowsMemoryThought&quot;&gt;
+      &lt;eventDef&gt;CharityFulfilled_Beggars&lt;/eventDef&gt;
+      &lt;thought&gt;Jawa_BeggarsPaid_Distasteful&lt;/thought&gt;
+      &lt;description&gt;Gave alms to beggars&lt;/description&gt;
+    &lt;/li&gt;
+  &lt;/comps&gt;
+&lt;/PreceptDef&gt;</code></pre></div><p><code>Jawa_BeggarsPaid_Distasteful</code>: one stage, <code>baseMoodEffect -3</code>.</p><p><strong>Why weaker, honestly:</strong> it carries <strong>no delight</strong>, only a small penalty for giving in — because Blackstar holds <code>Slavery_Disapproved</code> (<em>&quot;a slave cannot sign&quot;</em>) and rewarding the taking would contradict their own contract doctrine. It fixes the spec&#x27;s flagged <em>&quot;⚠️ the &#x27;disapproved&#x27; the fiction wanted is not encodable&quot;</em> on entry 10 and does nothing else. <strong>It needs its own meme to be forced</strong> onto an NPC faction, per §&quot;three answers&quot; point 3 — which is a whole meme for one −3 mood. <strong>My recommendation: skip it, and give Blackstar the note in prose instead.</strong></p></section><section class="note" id="s9"><h2 class="">8 · Does the player notice, and does it change the campaign?</h2><p><strong>For the NPC binding (a): barely, and I will not pretend otherwise.</strong> A Hutt pawn&#x27;s mood memory about beggars refused on a map the player never visits is invisible. The one place it could surface is a Hutt visitor standing in your colony while a beggar quest runs — a coincidence, not a mechanic. <strong>Its value is that the Cartel&#x27;s dossier stops containing a line the engine contradicts</strong>, which matters to the eleven-religion set&#x27;s internal honesty and to nothing else. If <code>jawa/ideo_of</code> comes back <code>otherOnMap ≈ 0</code>, this binding is decoration, exactly as the spec&#x27;s red block predicts.</p><p><strong>For the player binding (b): yes, and it is the good kind of change.</strong> RimWorld&#x27;s beggar quest is normally a small tax you either pay or eat a mood hit for. Under The Unearned it inverts into a <em>recurring free reward for cruelty</em>: every beggar event becomes +6 colony-wide for doing nothing, +10 and a prisoner for doing something worse, and −8 if you go soft. With <strong>Better Beggars</strong> already tuning frequency upward and adding a drugs variant and a chased variant, that is not a rare occurrence — it is a rhythm. <strong>The player stops reading &quot;beggars arrive&quot; as a bill and starts reading it as a delivery.</strong> That is a real change in how the campaign plays, it is entirely diegetic, and it is the owner&#x27;s stated design intent from 2026-08-07 finally having a mechanism.</p><p class="callout warn">⚠️ <strong>Balance note, flagged not solved.</strong> +6 colony-wide on a repeating quest with no cost is strong. If it proves too strong, cut <code>Jawa_BeggarsRefused_Contemptible</code> to <code>+4</code> and leave the taking at <code>+10</code> — the doctrine reads the same and the free money shrinks. Do not fix this before it is seen once.</p></section><section class="note" id="s10"><h2 class="">9 · Filed for other seats</h2><p><strong>BRIDGE</strong> — 🔴 <strong>the one measurement this spec rests on, ~2 min on any live map. Do it before CREATE writes a line:</strong></p><ul><li class=""><strong>Does <code>CharityRefused_Beggars</code> record for a colony with NO <code>Charity_*</code> precept?</strong> Run a beggar quest on an ideo without one, let the timer expire, read the history. IL ordering says the <code>AnyColonistWithCharityPrecept</code> filter wraps only the toast message (§2), but that is hand-read IL with no decompiler and <strong>if it is wrong the precept is inert.</strong> If gated: add <code>Charity_Worthwhile</code> to the ideoligion, do not redesign.</li><li class="">~~Does arresting a beggar raise the Betrayed event?~~ <strong>Closed</strong> — IL shows the branch fires on <code>AnySignal(beggars.Killed, beggars.Arrested)</code>. Both.</li><li class="">Standing ask, unchanged: <code>jawa/ideo_of</code> <strong><code>otherOnMap</code></strong>. This spec&#x27;s binding (a) is worth exactly what that number says it is.</li></ul><p><strong>CREATE</strong> — <code>infrastructure/state/queue/CREATE.md</code>, <code>[v2]</code>:</p><ul><li class="">Author <code>D:\Luke\dev\Rimworld\src\Jawa\Jawa_Patches\Defs\PreceptDefs\Precepts_TheUnearned.xml</code> from §6. Every defName, field and value is in this file; nothing needs inventing. Reuse <code>UI/Issues/Charity</code> and <code>UI/Memes/Trader</code> — <strong>no art required.</strong></li><li class="">Add <code>Jawa_Meme_TheUnearned</code> to the Hutt Cartel&#x27;s <code>forcedMemes</code> when the eleven ideo blocks are written (§6.5). Do not flip <code>requiredPreceptsOnly</code>.</li><li class="crit">🔴 <strong>Never target the vanilla <code>Beggars</code> QuestScriptDef.</strong> Better Beggars replaces it in the storyteller; the live quests are <code>Beggars_WantThing_Vanilla</code>, <code>Beggars_WantThing_Drugs</code>, <code>Beggars_Chased</code>, <code>Beggars_DelayedReward</code> (§2).</li></ul><p><strong>VISION (me)</strong> — after CREATE lands the defs:</p><ul><li class="">Update <code>faction_religions_spec.md</code> entry 2&#x27;s precept table per §6.5, and soften its constraint 2 from <em>&quot;cannot be written&quot;</em> to <em>&quot;cannot be written <strong>as a Charity precept</strong>&quot;</em> — which is what is actually true.</li><li class="">Entry 10&#x27;s <code>Charity_Worthwhile</code> row keeps its ⚠️; §7 explains why I am not spending a meme on it.</li></ul><p>_Sources, all read 2026-08-14: live def dump <code>&lt;LocalLow&gt;\DefDump\defs\{PreceptDef, MemeDef,IssueDef,HistoryEventDef,QuestScriptDef,IncidentDef}.json</code> (game 1.6.4871 rev591) · <code>C:\Program Files (x86)\Steam\steamapps\common\RimWorld\Data\Ideology\Defs\PreceptDefs\{Precepts_Charity,Precepts_Slavery}.xml</code> · <code>...\Data\Ideology\Defs\QuestScriptDefs\Script_Beggars.xml</code> · <code>...\Managed\Assembly-CSharp.dll</code> (<code>strings -a</code> and <code>strings -a -el</code>) · <code>...\workshop\content\294100\3006899215\</code> (Better Beggars, <code>mlie.betterbeggars</code>, active) · <code>...\workshop\content\294100\2896845138\</code> (More Slavery Stuff, <code>garryflowers.moreslaverystuff</code>, active) · <code>D:\Luke\dev\Rimworld\design\Jawa\worldbuilding\data\ideology_palette.md</code>._</p><p class="callout crit">🔴 <strong>Defect found in an active mod, not mine to fix, filed here so it is not found again.</strong> <code>C:\Program Files (x86)\Steam\steamapps\workshop\content\294100\2896845138\Defs\Precepts.xml</code> line 210 reads <code>&lt;defName&gt;GarryFlowers_Slave_Relation_Vanilla&lt;defName&gt;</code> — the closing tag is missing its slash. The live dump shows <code>GarryFlowers_Slave_Relations</code> with <strong>2</strong> positions (<code>_Disapproved</code>, <code>_Forceful</code>) where the XML defines <strong>4</strong>: <code>_Equality</code> and <code>_Vanilla</code> are silently lost. Nothing in this spec depends on them, and the campaign&#x27;s slave-romance love-gate (<code>jawa_xenotype_and_religion.md</code> §4.2) uses <code>GarryFlowers_Slave_attendance</code>, which is unaffected. <strong>Filed for PROJECT as <code>[?]</code>.</strong></p><p class="callout warn">⚠️ <strong>&quot;More Slavery Stuff (Continued)&quot; WS <code>3530586159</code> is NOT installed</strong> — a grep of all 1246 workshop <code>About.xml</code> files matches only the original <code>2896845138</code>. Several design docs cite <code>3530586159</code> as adopted. <strong>Filed as <code>[?]</code> for PROJECT:</strong> the <code>GarryFlowers_</code> defs this campaign relies on all come from the original, which is active, so nothing is broken — but the ID in the docs is wrong.</p></section></main>
+</div>
+<footer>Rendered from <code>design/Jawa/worldbuilding/precept_the_unearned.md</code> — the markdown is the source of truth;
+this page is regenerated by <code>src/RimMandrake/Utils/design_doc_render.py</code>.
+Every defName in it was read from the live def dump, not from memory.</footer>
+</div>
