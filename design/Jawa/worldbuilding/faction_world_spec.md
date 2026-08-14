@@ -535,3 +535,59 @@ scarcity of sea — it is excess.**
 no coverage, no seed, no sliders. `setup_checklist.md` still marks planet
 coverage, seed and sliders **OPEN**. The only settings we have are inferred from
 three saves: coverage 0.300, rainfall Normal, temperature Normal.
+
+### ⭐ ROUTE CHOSEN — a custom `WorldGenStep`. Not WorldEdit, not BiomesKit.
+
+**VISION, 2026-08-13. One route, and the reason is reproducibility.**
+
+| route | verdict |
+|---|---|
+| **custom `WorldGenStep` at order ~20** | ⭐ **TAKE THIS** |
+| WorldEdit 2.0 *(active)* | **inspection and touch-up only** — it is a manual in-game tool. Sculpting three irregular seas by hand produces **one** world and cannot be repeated |
+| BiomesKit hooks | declarative and unproven here; nothing in the install uses them. Fallback if the step proves hard |
+
+**Four reasons, in order:**
+
+1. ⭐ **Worlds are disposable by the owner's own ruling, so we will generate
+   many.** A hand-sculpted sea is one world. **A `WorldGenStep` is every world**,
+   including the ones we have not thought of yet.
+2. ⭐⭐ **Order ~20 sits after Terrain (order 0) and BEFORE Lakes and Rivers.**
+   So we shape the sea, and then **vanilla's own river step flows into what we
+   made, for free.** The owner's *"a few rivers from nearby mountains into these
+   bodies"* is not extra work — it is what happens next if we run at the right
+   moment.
+3. **Proven in-stack.** GravTide's `WorldGenStep_VolcanicBiome` does exactly this
+   — writes `info.PrimaryBiome` at order 20 after Terrain, before Lakes. Same
+   three lines, different def.
+4. **It is reviewable.** A step is code in the repo that can be read, argued with
+   and re-run. A session of clicking is not.
+
+🔴 **Set BIOME AND ELEVATION TOGETHER, in the same pass.** `WaterCovered` is
+`elevation <= 0`, and **GravTide reads elevation, not the biome label** — a tile
+re-labelled `Ocean` while carrying land elevation would look like sea and behave
+like ground. Anything that goes underwater would break on it.
+
+**What the step must do:** carve **three** irregular basins to ~25% of tiles,
+**deliberately not round** — the owner's word is *"oddly shaped rather than round
+or reasonable"* — set both biome and elevation on every tile it claims, and then
+get out of the way so Lakes and Rivers run normally.
+
+### The biome mix — target shape, pending the review sheet
+
+**Not yet ratified**; the owner is reviewing every biome with an
+off / rare / common / abundant verdict. **The shape the sea ruling already
+implies:**
+
+| band | target |
+|---|---|
+| **ocean** | **25%**, in three bodies |
+| **deep desert / extreme desert** | the dominant land biome |
+| **desert · badlands** | the next two, together most of the rest |
+| **strange alien biomes** | ⭐ **rare — islands, not a zoo.** Their value is being unexpected |
+| **jungle · marsh** | **only at the three shores**, where the rivers arrive |
+| **cold biomes** | **only at the poles**, and only near water |
+
+⛔ **The failure to avoid is a biome zoo.** With this many mods installed, an
+unmanaged mix produces a planet with one of everything — which destroys the
+scarcity the whole campaign rests on. **Sparse and repetitive is correct here;
+variety is the enemy.**
