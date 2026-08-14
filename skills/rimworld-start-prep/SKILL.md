@@ -235,6 +235,33 @@ symptom is a stable `Created WorkshopItem for <id> but there is no folder for it
 launch. It is an *account* state problem, not a game state problem — unsubscribe is the
 only fix, and no amount of verifying local files will touch it.
 
+### Comparing the list against disk: two traps that manufacture false "missing" hits
+
+Both bite any script that walks the mod roots, reads each `About/About.xml` and
+set-compares the ids against `<activeMods>`. Each one on its own turns a clean set into
+dozens of phantom missing mods.
+
+1. 🔴 **`<packageId>` is NOT unique inside an `About.xml`.** A naive
+   `re.search(r'<packageId>(.*?)</packageId>')` returns the **first** match, which in
+   most modern mods is a **dependency's** id inside `<modDependencies>`, not the mod's
+   own. Alpha Biomes is the clean example: its
+   `...\workshop\content\294100\1841354677\About\About.xml` lists `brrainz.harmony`,
+   then `OskarPotocki.VanillaFactionsExpanded.Core`, and only *then* its own
+   `sarg.alphabiomes` — so a regex scan reports Alpha Biomes absent while it sits
+   plainly on disk.
+   **Fix: take the direct child only** —
+   `ET.parse(ax).getroot().find('packageId')` on `<ModMetaData>`. Correcting this alone
+   took one census from dozens of "missing" mods down to one.
+
+2. 🔴 **Core and the DLCs are not under `Mods\`.** They live in the game's data
+   directory: `C:\Program Files (x86)\Steam\steamapps\common\RimWorld\Data\{Core,Royalty,Ideology,Biotech,Anomaly,Odyssey}`.
+   Omitting that root manufactures **six** false missing hits — `ludeon.rimworld` and
+   the five `ludeon.rimworld.*` expansions, which sit at the very top of `<activeMods>`.
+   A census must walk **three** roots: `...\steamapps\workshop\content\294100\`,
+   `...\common\RimWorld\Mods\` (local mods), and `...\common\RimWorld\Data\`.
+   Related: `<knownExpansions>` holds the **five DLCs only** — Core is not in it, which
+   is the source of the recurring five-mod arithmetic gap noted in §5 step 7.
+
 ---
 
 ## 5. The safe ordering
