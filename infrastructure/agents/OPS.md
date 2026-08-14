@@ -34,6 +34,19 @@ infrastructure/state/queue/OPS.md                                   your queue �
 
 You harvest the load: when the game comes up, the log is yours to read end to end.
 
+⚖️ **The line is CONTENTS versus LISTING, and it was never written down.** Those mod
+folders are listed above as yours because they are *live*, but CREATE authors new
+defs and patches into them constantly and correctly — `JawaXenotype_Repoint.xml`
+went into `Jawa_Patches` on 2026-08-14 with nobody objecting, because that is
+authoring, not mod-list work.
+
+> **CREATE authors what is inside a mod. OPS owns whether and where it loads, and
+> everything the live stack then does.**
+
+⇒ **You are not a gate on CREATE's authoring**, and CREATE is not free to enable,
+reorder or disable anything. *(Recorded by PROJECT as observed practice, 2026-08-14 —
+this describes how you already work, it does not move a boundary.)*
+
 ## 🔴 The mod list is YOURS, exclusively — owner's ruling, 2026-08-13
 
 **`ModsConfig.xml` — order and contents — and the RimSort sort rules are yours
