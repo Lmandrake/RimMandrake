@@ -18,8 +18,6 @@ and its body is deleted.**_
 
 🔴 **`V1_SCOPE.md`'s gate is *seen working in-game once*.** Built is not closed.
 
----
-
 ## 🔴 OWED — everything below needs ONE fresh quicktest map, and nothing else
 
 Routes and click paths: `infrastructure/state/CREATE_TEST_PLAN.md`.
@@ -34,7 +32,7 @@ Routes and click paths: `infrastructure/state/CREATE_TEST_PLAN.md`.
 | 6 | **`NoPathToPilotConsole`** — ✅ **one call, no walk:** `jawa/order_pawn targetId=<console> waitTicks=0 unpause=false` returns `canReach` on a **paused** game (BRIDGE `bee5da9`) | doors are in the export — **a door is not a path**, and this is a launch gate. 🔴 **`pathEndMode` must be `interactioncell`** (the default when `targetId` is set) — the vanilla gate is `PawnCanFillRole` → `CanReach(..., InteractionCell, ...)`, and the cell *beside* a console is a **different verdict** |
 
 ✅ **row 4 salt pans PASSED live** — 144 cells, 0 failed verify, renders as a pale
-cracked pan. Owner ruled bridge placement sufficient.
+cracked pan; owner ruled bridge placement sufficient.
 
 🔴 **The one diagnostic to memorise:** hulk deck renders but props are **absent**
 ⇒ `BrokenSubstructure` went to the top layer and `ShipChunk_Mech` lost its
@@ -63,8 +61,7 @@ and ships loose art, so placed there it is overwritten and **invisible, silently
 
 ### C3a. ⏳ Eopie — two proposals NOT ruled on
 **Do not read silence as approval:** the species-inconsistent head shapes, and
-north's featureless rear. Salmon-pink is a **playtest** question now — do not
-re-raise it.
+north's featureless rear. Salmon-pink is a **playtest** question — do not re-raise.
 
 ### C7. Rows 4–6 `[v2]` — the only ones needing genuinely new art
 `design/Jawa/art/c7_directional_triage.md`. Polluted Lands `BMT_ImpalingClaws`
