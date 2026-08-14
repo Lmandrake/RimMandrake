@@ -1147,7 +1147,22 @@ Workshop page, or memory. Where a fact could not be read, §7 says so.
 
 ---
 
-## 🔴 DEPENDENCY ALERT — the saber mod is GONE from disk, 2026-08-13
+## ✅ CLOSED — FALSE ALARM. The saber mod IS installed. 2026-08-13
+
+**Checked and fine — recorded rather than deleted, so the next seat does not
+re-find it.** `lee.theforce.lightsaber` is **installed at workshop `3466124712`**,
+verified against its own `<packageId>` in `About.xml`, and `ModsConfig.xml:575` is
+correct. **No startup complaint is coming.** OPS closed the same item on the same
+evidence.
+
+**Nothing in the spec below was ever at risk**, and the design consequence I drew
+from the alarm — *do not spend the laser sword on the armoury line* — **still
+stands on its own merits** (a buildable common laser sword and a rare Sith blade
+cannot be the same object), not because of a missing mod.
+
+_Superseded alarm, kept for the trail:_
+
+## ~~🔴 DEPENDENCY ALERT — the saber mod is GONE from disk~~ (WITHDRAWN)
 
 **This spec was written against a gap, not against the mod** (`b5796eb`). OPS has
 since established the mod was **real and running**: Workshop `3466124712`,
