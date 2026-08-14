@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ============================================================================
+  BuzzerApostrophe_Fix.xml                   Jawa_Patches · authored 2026-08-14
+  ============================================================================
+
+  THE GOAL
+  ========
+  Det's Xenotypes - Buzzers generates faction and settlement names that can
+  carry a DOUBLED apostrophe, and can never carry none. Two rule strings, one
+  character each. Smoking gun from the last world: the settlement `Caz'vi''vi`.
+
+  WHY IT IS BROKEN  [MEASURED 2026-08-14, from the mod's own XML, game down]
+  ==========================================================================
+  Source of truth, read directly:
+
+    .../workshop/content/294100/3545293786/1.6/Defs/RulePackDefs/
+      RulePacks_Namers_Faction.xml
+        line 16  DV_NamerFactionOutlanderBuzzer
+        line 56  DV_NamerSettlementOutlanderBuzzer
+
+      <li>maybeApostrophe->''</li>        the defect
+      <li>maybeApostrophe(p=3)->'</li>    fine as written
+
+  The author wanted a "sometimes an apostrophe" symbol. In RimWorld's grammar an
+  EMPTY production is written with nothing after the arrow. Writing `''`
+  instead does not mean "empty string" — the grammar has no quoting, so those
+  are TWO LITERAL APOSTROPHES.
+
+  THE ARITHMETIC, because the filed figure deserved its derivation
+  ===============================================================
+  Default weight is 1; the second rule declares p=3. Total 4.
+
+      25%  ->  ''   two apostrophes     (intended: none)
+      75%  ->  '    one apostrophe
+
+  So the "no apostrophe" branch became a "double apostrophe" branch, and a
+  Buzzer name NEVER comes out clean. `nameCore` chains up to TWO of these, so a
+  single name can draw the doubled branch twice.
+
+  ⭐ THE AUTHOR WAS COPYING A VANILLA IDIOM AND MISSED ONE CHARACTER
+  =================================================================
+  Vanilla writes exactly this shape, empty RHS and all:
+
+      <li>maybeHyphen(p=3)-></li>        Core
+      <li>maybeThe-></li>                Core
+      <li>skillAdvMaybe-></li>           Core
+
+  Swept the whole `Data/` tree: 7 `questDescription->`, 3 `skillAdvMaybe->`,
+  2 `maybeThe->`, 2 `maybeHyphen(p=3)->` and more. The empty production is
+  ordinary, supported and idiomatic. This patch writes the same form.
+
+  ❌ TWO CORRECTIONS TO THE FILED FINDING, both mine to make
+  ==========================================================
+  1. It said "vanilla leaves the right-hand side empty" for this symbol.
+     **There is no vanilla `maybeApostrophe` at all** — zero hits across the
+     entire `Data/` tree. The symbol is this mod's own invention, so the fix is
+     justified by the vanilla IDIOM, not by a vanilla counterpart.
+  2. It described ONE site. There are **TWO**: faction names and settlement
+     names. Fixing one would have left half the defect in place and looked
+     like the patch had failed.
+
+  Also swept the whole workshop tree for `maybeApostrophe->''`: **exactly one
+  file, this one.** It has not spread, so one patch is the whole job.
+
+  WHAT THIS FIXES, AND WHAT IT CANNOT
+  ===================================
+  🔴 **Names already generated are BAKED INTO THE SAVE as plain strings.** This
+  patch changes names generated in FUTURE worlds only. It is therefore worth
+  shipping only while a world regeneration is still ahead of us — which it is,
+  worldgen being held rather than done. After the campaign world is made, this
+  patch stops being worth anything and should be judged again.
+
+  After the fix the weights are unchanged, so: 25% no apostrophe, 75% one,
+  0% doubled. The author's taste is left alone; only the broken branch moves.
+
+  SUCCESS LOOKS LIKE
+  ==================
+  POSITIVE observation at the next worldgen: Buzzer faction and settlement
+  names containing at most ONE apostrophe, and some containing none. There is
+  no log line for this either way — a rulepack that resolves is silent.
+-->
+<Patch>
+
+  <Operation Class="PatchOperationFindMod">
+    <mods>
+      <li>Det's Xenotypes - Buzzers</li>
+    </mods>
+    <match Class="PatchOperationSequence">
+      <operations>
+
+        <li Class="PatchOperationReplace">
+          <xpath>/Defs/RulePackDef[defName="DV_NamerFactionOutlanderBuzzer"]/rulePack/rulesStrings/li[text()="maybeApostrophe->''"]</xpath>
+          <value>
+            <li>maybeApostrophe-></li>
+          </value>
+        </li>
+
+        <li Class="PatchOperationReplace">
+          <xpath>/Defs/RulePackDef[defName="DV_NamerSettlementOutlanderBuzzer"]/rulePack/rulesStrings/li[text()="maybeApostrophe->''"]</xpath>
+          <value>
+            <li>maybeApostrophe-></li>
+          </value>
+        </li>
+
+      </operations>
+    </match>
+  </Operation>
+
+</Patch>
