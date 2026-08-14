@@ -920,3 +920,38 @@ error, it silently falls back.
 **Fix if taken:** ship both files at the correct name in a `Lumi.doorsexpanded`
 override mod — same bytes, no art to draw, exactly the C6 shape. `[v2]`, because
 it is a tint artefact on one facing of two doors, not a missing texture.
+
+---
+
+## 22. [?] "RimWorld rewrites `ModsConfig.xml` on exit" is FALSE and is written in five more places
+
+**Owner's ruling 2026-08-13:** *"RimWorld does NOT rewrite that file on exit, nor
+does RimSort. It is only modified by these agents, or by the user using
+RimSort."* And the process: **OPS determines which mods go in; the OWNER does the
+RimSort ordering by hand and then tells OPS it is done and the game is started.**
+
+CREATE has corrected its own two rows (`NEXT_RELOAD.md` §CREATE'S ROWS (a),
+`queue/CREATE.md` C5/C6/C11). **The claim is still asserted, verbatim or nearly,
+in five files CREATE does not own** — each needs its owner's hand, and two are
+skills, which a peer's ask cannot authorise editing:
+
+| file:line | what it says |
+|---|---|
+| `skills/rimworld-load-round/SKILL.md:47` | "…rewrites `ModsConfig.xml` on exit" — and the SKILL's own front-matter description sells "what ModsConfig.xml is and is not authoritative about" |
+| `skills/rimworld-modding/references/traps-mods-and-managers.md:69` | whole trap entry *"Mod-list state on disk is not authoritative while the game is running"* rests on it (indexed at `traps.md:107`) |
+| `skills/rimworld-modding/SKILL.md:326` | "the manager holds rules in memory and rewrites the file on exit" |
+| `infrastructure/state/TODO.md:644` | §13, the Mythological Creatures removal — "the running game rewrites `ModsConfig.xml` from memory on exit", used to say a `<li>` still present "proves nothing" |
+| `design/Jawa/mods/forbidden_mods.md:171` | same, gating a follow-up on a clean exit |
+
+⚠️ **The Steam half of those entries is a SEPARATE claim and may well still be
+true** — Steam does not delete an unsubscribed mod's folder while RimWorld holds
+files open in it. Do not delete those sentences wholesale; only the
+`ModsConfig`-rewrite half is refuted.
+
+**Where it was already acted on, not just written:** the seven fix mods
+(`mandrake.gravshipastronautfix`, `sauridfrillfix`, `toolbeltfix`,
+`researchkiteastfix`, `blastdoorframeasyncfix`, `cereanmanefix`, `msedroidfix`)
+were held back from the mod list as a "shutdown-window change" and are **still
+absent from `ModsConfig.xml`** (checked 2026-08-13 16:5x — only the seven older
+`mandrake.*` entries are there). They could have been handed to OPS and the owner
+at any point today.

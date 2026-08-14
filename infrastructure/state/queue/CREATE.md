@@ -115,10 +115,13 @@ renders them**, which the first sheet did not: that is why the sled looked white
 in review and grey in game. A review image that is not the rendered image is a
 trap.
 
+✅ **RULED 2026-08-13 — the salmon-pink colour: KEEP, revisit after playtest.**
+Owner: *"Keep them pink for now and playtest them. If it bugs us later, we can
+always regenerate."* **Do not re-raise it** — it is a playtest question now, not
+an approval one.
+
 ⏳ **Still NOT ruled on, and still do not read silence as approval:** the
-salmon-pink colour, the species-inconsistent head shapes, north's featureless
-rear. Fix 3 moved the palette, so the pink question is now easier to judge
-against a brown sled.
+species-inconsistent head shapes, north's featureless rear.
 
 🔴 **Pillow is NOT on the system `python3` here** — every build script in this
 mod imports PIL and would die. It is installed at
@@ -132,10 +135,16 @@ to avoid this; that is no longer necessary.
 point: an uploadable mod cannot ship art whose defect nobody wrote down. Together
 with C5's `BlastDoorFrameAsyncFix/` that is **five** fix mods out of one bucket.
 
-⚠️ **None of the five loads yet — they are absent from `ModsConfig.xml`.** Queued
-for the next shutdown window in `NEXT_RELOAD.md`, with C6's two, packageIds read
-from each `About.xml` and the ordering constraint stated per mod. One slot next to
+⚠️ **None of the five loads yet — they are absent from `ModsConfig.xml`.** Handed
+to OPS in `NEXT_RELOAD.md`, with C6's two, packageIds read from each `About.xml`
+and the ordering constraint stated per mod. One slot next to
 `mandrake.missingartfixes` satisfies all seven `loadAfter`s.
+
+🔴 **Who actually changes `ModsConfig.xml`:** only us or the owner in RimSort —
+**RimWorld does not rewrite it on exit and neither does RimSort** (an earlier note
+in this file said it did; that was wrong). **OPS determines which mods go in; the
+OWNER does the RimSort ordering by hand and then tells OPS it is done and the game
+is started.** CREATE's job ends at handing over the list and the constraints.
 
 #### 🔴 RETIRING `mandrake.missingartfixes` — the order, and the one dependency
 It is **LIVE and deployed**, so this is not a folder delete. Do it in this order:
@@ -146,9 +155,11 @@ It is **LIVE and deployed**, so this is not a folder delete. Do it in this order
    the wrong mod before the ruling existed. **This is the dependency: delete the
    folder first and the brief goes with it.**
 2. **Confirm the five successors are in `ModsConfig.xml` and have loaded**, i.e.
-   after the shutdown-window change above, not before it.
-3. **Remove `mandrake.missingartfixes` from `ModsConfig.xml`** — shutdown window
-   again, and *before* the folder goes, or the game boots with a missing-mod entry.
+   after OPS has added them and the owner has ordered and started the game — not
+   before.
+3. **Ask OPS to drop `mandrake.missingartfixes` from the list** (CREATE does not
+   edit `ModsConfig.xml`; the owner reorders in RimSort). It must go *before* the
+   folder does, or the game boots with a missing-mod entry.
 4. **Then** remove the deployed copy under
    `C:\Program Files (x86)\Steam\steamapps\common\RimWorld\Mods\MissingArtFixes`
    and the repo folder.
@@ -237,7 +248,7 @@ load-bearing). Drawn at the real 933×933 canvas, not the placeholders' 267×267
 
 ⚠️ **The brief's transform was WRONG and was corrected against the measurement, not
 followed.** Read the commit before trusting the numbers below.
-⚠️ **Not in `ModsConfig.xml` yet** — rides the shutdown window with C6's and C11's.
+⚠️ **Not in `ModsConfig.xml` yet** — handed to OPS with C6's and C11's.
 
 <details><summary>original entry</summary>
 

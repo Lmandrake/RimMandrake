@@ -282,17 +282,22 @@ explicitly the way *around* detonation.
 
 ## 🎨 CREATE'S ROWS — assembled 2026-08-13, all of it verified today
 
-_Everything below is CREATE's. Three parts: a shutdown-window mod-list change, the
+_Everything below is CREATE's. Three parts: a mod-list change handed to OPS, the
 two ⭐ v1 gate rows that are the point of the load, and two facts that are otherwise
 discovered the expensive way._
 
-### 🔻 (a) SHUTDOWN WINDOW — seven fix mods exist in the repo and load NOTHING
+### 🔻 (a) FOR OPS — seven fix mods exist in the repo and load NOTHING
 
 They are built, deployed-ready and **absent from `ModsConfig.xml`**, so today they
-are inert files. **This is a shutdown-window change** — RimWorld rewrites
-`ModsConfig.xml` on exit, so an edit made while the game is running is silently
-undone. It rides the same window as the three OPS rows above, and the same
-`python.exe src/RimMandrake/Utils/refresh.py` afterwards.
+are inert files. **This is a hand-off, not an edit CREATE makes.**
+
+🔴 **`ModsConfig.xml` is changed only by us or by the owner in RimSort. RimWorld
+does NOT rewrite it on exit, and neither does RimSort** — an older note here said
+it did; that was wrong. **OPS decides WHICH mods go in; the OWNER does the
+ORDERING in RimSort by hand, then tells OPS it is done and the game is started.**
+So what CREATE owes is the list and the ordering constraints below — no agent
+should be editing `ModsConfig.xml` to reorder anything. `python.exe
+src/RimMandrake/Utils/refresh.py` afterwards, as with the OPS rows above.
 
 **packageIds read from each mod's own `About/About.xml`, not from a note:**
 
@@ -306,10 +311,11 @@ undone. It rides the same window as the three OPS rows above, and the same
 | `mandrake.cereanmanefix` | `CereanManeFix` | **none** — donor serves art from an AssetBundle on 1.6 and a loose PNG beats a bundled asset regardless of order. Declares no `loadAfter` on purpose |
 | `mandrake.msedroidfix` | `MSEDroidFix` | **none**, same reason, and academic twice over: the bundle has no `MSE_north` to beat |
 
-🔑 **One placement clears all seven: put them together next to
-`mandrake.missingartfixes` (line 560).** Every donor above sits at line 551 or
-earlier, so that slot satisfies every `loadAfter` at once. Verified by grepping
-`ModsConfig.xml` today; do not re-derive it per mod.
+🔑 **One slot clears all seven: together, next to `mandrake.missingartfixes`
+(line 560).** Every donor above sits at line 551 or earlier, so that placement
+satisfies every `loadAfter` at once. Verified by grepping `ModsConfig.xml` today;
+**hand this line to the owner as the ordering ask — do not re-derive it per
+mod.**
 
 ⚠️ **None of these seven can ever produce a log line, before or after.** `Failed to
 find any textures at` fires only when **every** direction of a `Graphic_Multi` is
