@@ -26,6 +26,32 @@ campaign itself had no seat.** Everyone optimised their own patch and nobody own
 
 ## The rule
 
+### 🔴 OWNER'S RULINGS, 2026-08-14 — these define v1 and outrank anything below
+
+**1. v1 is the 8 rows PLUS ONE PLAYABLE SESSION.** Not "the world was made". The
+campaign world is generated with the ratified settings, the gravship lands, all 8
+rows have been seen working once, **and the campaign then survives a real play
+session** — pawns work, no red errors, the fiction reads.
+⚠️ **This is a scope EXPANSION and nobody had scoped it.** It adds a verification
+phase after the worldgen run. **Treat the play session as a v1 deliverable with a
+gate, not as "and then we play."**
+
+**2. Flight: CAPABILITY is v1, HARDWARE is v2.** The layout must be
+flight-capable; the thruster, fuel tank and console are earned in play. This is
+what the deck plan already said at Phase 4, with zones `S` and `U` reserved by
+name. ⇒ **No new build row.** The v1 item is confirming the exported layout is
+flight-capable, not making it fly.
+
+**3. Scrapfields SHIPS. Row 4 is CLOSED.** *"Ships regardless, investigate
+later."* The 11-vs-≥75 count becomes a **`[v2]`** density item with the defect
+filed. **Do not hold a v1 row on it.**
+
+**4. The worldgen inputs are decided AT THE SCREEN, by the owner.** Planet
+coverage, seed, planet type and the landing tile. ⛔ **Do NOT prepare recommended
+values** — the owner has taken these. Our job is to have the runbook and the
+warnings in front of them, not an answer.
+
+
 > **Everything ships THIN, except the gravship, which ships DEEP.**
 
 Breadth is preserved — v1 contains the whole premise, so you are playing *your*
@@ -370,13 +396,13 @@ live-stack → **OPS**; driving the live game to verify → **BRIDGE**.
 | 1 | Empire reskin (labels) | 🟩 **BUILT** | 🟩 **SEEN LIVE** | CREATE | ✅ **CLOSED** |
 | 2 | Faction exclusion at worldgen | — | ⬜ | owner + VISION | 🔴 the campaign worldgen, list ratified and waiting |
 | 3 | One `QuestScriptDef` — *The Claim* | 🟩 **BUILT**, deployed | ⬜ | CREATE | 🔓 **unblocked 2026-08-14** — was *"waits for the owner at the keyboard"*; BRIDGE is building `jawa/fire_quest`, deploying with `jawa/get_defs` |
-| 4 | Three terrain overrides | 🟩 **BUILT**, deployed | 🟨 **2 of 3 SEEN** — salt pans + dune seas | CREATE | 🔴 **scrapfields is a measured DEFECT, not a blank** — 11 chunks against a predicted 75–125. OPS **O15**, `a82f50b` |
+| 4 | Three terrain overrides | 🟩 **BUILT**, deployed | 🟩 **CLOSED — owner's ruling 2026-08-14** | CREATE | ✅ **CLOSED.** Salt pans and dune seas seen live; **scrapfields SHIPS despite the 11-vs-≥75 count.** Owner: *"ships regardless, investigate later."* Density is now a **`[v2]`** tuning item with the defect filed (OPS **O15**). ⛔ **Do not re-open row 4 on the count** |
 | 5 | Jawa xenotype plays | 🟩 live | 🟩 **CLOSED — checked-and-fine** | BRIDGE | ✅ **CLOSED.** `BTD_Jawa` survives BTD's load-time dedup and the pawnKind pins were remapped onto it, measured live from `Player.log`. Our patches target the right xenotype |
 | 6 | Weapons / gear | 🟩 6 mods live | 🟩 **`JawaIonWeapons` PROVEN** `ad3e9b0` | BRIDGE | ✅ **CLOSED** |
 | 7 | Ordinary worldgen | ⬜ | ⬜ | BRIDGE | 🔴 the campaign desert world |
 | 8 | ⭐ **Gravship (DEEP)** | 🟩 **BUILT + EXPORTED** | 🟩 **SEEN — 4 of 4** | CREATE/BRIDGE | ✅ **CLOSED** |
 
-> ### 📊 SCORE: **4 of 8 closed** — rows 1, 5, 6, 8.
+> ### 📊 SCORE: **5 of 8 closed** — rows 1, **4**, 5, 6, 8.
 >
 > **Row 4 moved 1-of-3 → 2-of-3 on 2026-08-14, and its last item turned into a
 > defect.** ✅ **Dune seas CLOSED** on a live `jawa/get_def defType=BiomeDef` read

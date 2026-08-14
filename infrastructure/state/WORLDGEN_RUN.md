@@ -40,6 +40,12 @@ different claims, and this table can only ever make the first.**
 **This is why the file exists.** Each is a one-shot choice with no ratified answer
 anywhere in the repo as of 2026-08-14. I am not guessing them; I am naming them.
 
+🔴 **OWNER'S RULING 2026-08-14: A, B and C are the OWNER'S, decided AT THE SCREEN.**
+⛔ **Do not prepare recommended values and do not ratify them in advance.** The job
+of this section is to put the constraints and the warnings in front of them at the
+moment of the click — **not to pre-answer it.** Anyone who "helpfully" ratifies a
+coverage or a seed here is overriding a decision the owner has explicitly kept.
+
 ### A. Planet coverage · seed · planet type
 **No ratified value exists.** `TidallyLocked` is the intended planet type — the
 whole temperature design rests on its curve, and `JawaWorld_BiomeMix.xml` patches
