@@ -16,6 +16,46 @@ world that event creates.
 
 ---
 
+## 🔴 D1–D5 ARE RULED — owner, 2026-08-13. Read this before step 1.
+
+The plan below was written with five decisions open. **They are closed. Where the
+text downstream still reads as a choice, this section wins.**
+
+| # | question | **owner's ruling** | what it changes below |
+|---|---|---|---|
+| **D1** | the design describes a **wreck**; the plan builds the finished ship | **BUILD IT FINISHED** | the damage pass is not in scope. `ship_deck_plan.md:274-277` calls placing a pre-broken ship *"the one true blocker"* — it stays blocked, and stays **v2**. Do not partially break anything "for flavour". |
+| **D2** | which map, given step 9 destroys everything in 11,438 cells and the hull lands on a fresh colony's arrival site | **A SCRATCH QUICKTEST MAP**, then export and bring the export to the campaign | step 9 is now **free** — nothing on that map is worth keeping. The campaign map is **not touched** this session. |
+| **D3** | two of eight heatsinks conflict with the hull footprint | **BUILD WITH SIX** | do **not** regenerate the sheet, so BRIDGE's `SHEET_SHA256` pin stands untouched. Ship runs hotter than designed; one-line fix later. |
+| **D4** | east or west for the four `needsManualRotation` machines | **spawn at `rot=1`** rather than rotating afterwards — my recommendation, unopposed | one call per machine instead of two; no reliance on a manual rotation step |
+| **D5** | does the export happen this session | **YES — it is the point.** D2 makes the build worthless without it | step 20 is now load-bearing, not optional. See the fallback note on its gizmo route. |
+
+⇒ **Two consequences worth stating plainly.** The riskiest step in the plan
+(step 9, the destroy) is now the *cheapest*, because the map is disposable. And
+the riskiest step is now **step 20, the export** — it is the only thing that
+carries the work off the scratch map, and its gizmo route
+(`list_selected_gizmos` → `execute_gizmo` → `click_ui_target`) is the one
+unproven dependency in the whole sheet. **Fallback: the owner clicks Export on
+the grav engine — three clicks.** Confirm the export file exists before the
+scratch map is discarded.
+
+✅ **Two questions this sheet had booked for the live session are already answered
+offline**, from Gravship Exporter's own shipped C# source: **floors survive the
+round trip** (`GravshipExporter.cs:183-184` captures non-substructure terrain;
+`HarmonyPatch_DoGravship.cs:125-158` restores it via `SetTerrain` — the README's
+"you can't save floors" is stale), and **extenders export** (the exclusion list
+at `GravshipExporter.cs:190-196` is engine, pawns, items only). The 5-minute
+small-ship test is **dropped**.
+
+⚠️ **Still unbuildable as written, and NOT fixed by D1–D5** — these are gaps in
+the design, not in the plan: no doors anywhere (782 continuous hull tiles = a
+sealed interior), no `PilotConsole`, no thrusters, no fuel, no power source, no
+water tank; and `SWC_CarboniteRack`, "scanner", "gravlite panels", "astrofuel",
+the Spirit Shrine and the oculus floor are **labels with no def behind them**.
+`ship_build.md:311` files all of that under "interior detail", which is doing
+heavy lifting for a door. **Named for VISION, not invented here.**
+
+---
+
 ## 0. What this session is buying, and what it is not
 
 | buys | does not buy |
