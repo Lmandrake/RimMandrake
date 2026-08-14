@@ -82,6 +82,27 @@ only the owner could tell it the game was live.
   already answered, and the owner becomes the message bus for state they did not
   observe.
 
+🔴 **1b. "Live" means A MAP EXISTS. Declare it from BRIDGE's MEASUREMENT, never
+from anyone's word — including the owner's.** Earned within minutes of writing
+1a: PROJECT broadcast "GAME IS LIVE", BRIDGE took the bridge and measured
+`rimworld/get_game_info -> "status": "no_game"` and `list_pawns -> "No current
+map."` Process up, GABP answering, **no game loaded.** The whole batch needed a
+map; zero of it could run.
+
+| state | what is true | what you may do |
+|---|---|---|
+| `down` | no process | offline work only |
+| `loading` | process up, defs loading | nothing live |
+| **`process up, no map`** | bridge ANSWERS, `status: no_game` | tool census only |
+| **`live`** | **a map exists** | the batch |
+
+⚠️ **"The bridge is reachable" and "the game is loaded" are DIFFERENT CLAIMS**,
+and the envelope returns `Success: true` for both — a call can succeed while
+telling you there is nothing there. **A seat that trusts a premature `live` burns
+its batch discovering this.** BRIDGE's is the measurement; PROJECT's is the
+announcement; the owner's is the permission. Three roles, and PROJECT relaying
+the owner's optimism as a measurement is precisely how 1a goes wrong.
+
 **2. Nobody touches another seat's tools.** Request capabilities; only the owner of a
 tool writes it.
 
