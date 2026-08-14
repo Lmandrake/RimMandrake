@@ -160,9 +160,45 @@ clears — **a bigger hull would not.**
 | extender `maxDistance` | **34** | live; the settings key `BG_gravExtenderMaxDistanceFromEngine 85` reaches no def |
 | extenders max | 12 | live |
 
-⇒ **Ceiling is 632.8 and nothing in this modset raises it.** Extenders buy
-**reach** (footprint radius 30), never **budget**. Reach and capacity are
-different axes and only the engine carries the second.
+🔴 **CORRECTED 2026-08-13 — the mechanism above is right about the OBSERVATION
+and was wrong about the CAUSE, and the ceiling IS raisable.**
+
+**What the compiled game does:** the cap is
+`engine.GetStatValue(SubstructureSupport)` = **`statBases` PLUS
+`CompAffectedByFacilities::GetStatOffset`**, which sums `CompFacility.StatOffsets`
+over linked facilities that are active. **The extender's support was never in
+`statBases`** — vanilla declares 250 inside `CompProperties_GravshipFacility.statOffsets`
+(`Odyssey/.../Buildings_Gravship.xml`), and Bigger Gravships' live offset is
+**500**. Two seats searched `statBases`, found nothing, and agreed with each
+other. ⚠️ **And the live probe returns NO COMPS AT ALL for that def, so "absent
+live" was a blind spot in the probe, not a fact about the game.** Nothing was
+measured that could have distinguished the two.
+
+**Tested and closed:** the leading explanation was that a dev-spawned engine
+might be factionless — facilities find the engine through
+`ListerBuildings::AllBuildingsColonistOfClass`, which files a building only when
+`Faction == Faction.OfPlayer`. **Refuted:** the engine is already player faction
+(its `Claim` gizmo is disabled, and the Claim designator refuses it as *"not
+abandoned"*).
+
+⏳ **So the observation stands and is UNEXPLAINED:** 8 extenders, 4 of them
+inside `maxDistance` 34, engine player-faction — capacity still read exactly the
+engine's own 632.8. **Recorded as an open question, not a conclusion.** Do not
+build a design on "extenders contribute", and do not assert they cannot.
+
+✅ **It stopped mattering, and the fix needs no load.** `gravEngineSupport`
+raised **632.8 → 4500** through the mod's settings plus its **"Apply Settings
+Now!"** button, **with the game running**: the live def changed and the panel
+went to **4057 / 4500**. No restart, no reload, no hull shrink.
+⇒ **The ceiling is a slider, and it is adjustable live.** That is the lever,
+and it is cheaper than either the XML route (dead) or a Harmony postfix.
+
+⚠️ **Edge case from the IL, easy to trip over:** a support value of **0 or
+negative means UNLIMITED**, not zero — `FloodFiller` compares the running count
+with `beq`, not `>=`.
+
+⇒ Extenders demonstrably buy **reach** (footprint radius 30). Whether they buy
+**budget** is open here, whatever the vanilla IL says.
 
 🔴 **This is almost certainly a Bigger Gravships bug, not a design fact.** Vanilla
 is documented as **500 base + 250 per extender, max 6 → 2,000**, so vanilla
