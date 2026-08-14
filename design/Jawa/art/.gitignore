@@ -5,3 +5,9 @@
 # pixels do not. Returned/derived art gets its own decision when it lands.
 seed/
 *.png
+
+# Offline review sheets and the def census are DERIVED: regenerate with
+#   /home/mandrake/.venvs/art/bin/python design/Jawa/art/preview_gravship_rust.py
+#   python3 design/Jawa/art/scan_graphics.py
+# The census also expires whenever the mod list changes.
+census_building_graphics.tsv
