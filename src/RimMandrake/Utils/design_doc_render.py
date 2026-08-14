@@ -1,23 +1,29 @@
 #!/usr/bin/env python3
-"""Render faction_religions_spec.md into a reviewable HTML page.
+"""Render one of this project's design/review markdown docs as an HTML page
+the owner can read in a browser.
 
-Derived artifact -- the markdown is the source of truth. Regenerate with:
-    python3 src/RimMandrake/Utils/religions_spec_render.py
+Derived artifact -- the markdown is always the source of truth. Regenerate the
+two that exist today with no arguments:
+    python3 src/RimMandrake/Utils/design_doc_render.py
+Or render any other doc:
+    python3 src/RimMandrake/Utils/design_doc_render.py SRC.md OUT.html \\
+        --title "Name" --eyebrow "VISION - context" --standfirst "one sentence" \\
+        --stat "11|religions specified|ok"
 
 Deliberately dependency-free (no `markdown` module on this box). Handles only
-the constructs the spec actually uses: headings, key/value and data tables,
-fenced xml, blockquotes, ordered/unordered lists, and the author's own
-glyph markers (RED/WARN/STAR) which become callouts.
+the constructs these docs actually use: headings, key/value and data tables,
+fenced code, blockquotes, ordered/unordered lists, and the author's own glyph
+markers (RED/AMBER/WARN/STAR), which become callouts.
 """
+import argparse
 import html
 import re
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[3]
-SRC = ROOT / "design/Jawa/worldbuilding/faction_religions_spec.md"
-OUT = ROOT / "design/Jawa/worldbuilding/review/faction_religions_spec.html"
 
 CRIT, WARN, STAR = "\U0001f534", "⚠️", "⭐"
+AMBER = ("\U0001f7e0", "\U0001f7e1")  # orange / yellow circles, used for severity
 
 
 # ---------------------------------------------------------------- inline ----
@@ -41,7 +47,7 @@ def callout_class(text):
     stripped = text.lstrip()
     if stripped.startswith(CRIT):
         return "crit"
-    if stripped.startswith(WARN):
+    if stripped.startswith(WARN) or stripped.startswith(AMBER):
         return "warn"
     if stripped.startswith(STAR):
         return "star"
@@ -202,7 +208,12 @@ def convert(lines):
                 open_section = True
             else:
                 flush_para(para, out)
-                out.append(f"<h3>{inline(text)}</h3>")
+                # a leading short id (D1, A2, C3) is a real handle in these docs
+                m_id = re.match(r"^([A-Z]\d{1,2})\s+(.*)$", text)
+                tag, rest = (m_id.group(1), m_id.group(2)) if m_id else ("", text)
+                cls = callout_class(rest)
+                chip = f'<span class="tag {cls}">{tag}</span>' if tag else ""
+                out.append(f'<h3 class="{cls}">{chip}{inline(rest)}</h3>')
             i += 1
             continue
 
@@ -334,9 +345,19 @@ h2.crit{color:var(--crit)} h2.warn{color:var(--warn)}
   margin:4px 0 0;font-style:italic;font-size:20px;color:var(--accent-ink);
 }
 h3{
-  font-family:var(--sans);font-size:12px;font-weight:600;letter-spacing:.13em;
-  text-transform:uppercase;color:var(--ink-faint);margin:34px 0 12px;
+  font-size:20px;font-weight:600;line-height:1.25;margin:34px 0 12px;
+  letter-spacing:-.005em;text-wrap:balance;display:flex;gap:10px;align-items:baseline;
+  flex-wrap:wrap;max-width:66ch;
 }
+h3.crit{color:var(--crit)} h3.warn{color:var(--warn)}
+.tag{
+  font-family:var(--sans);font-size:11px;font-weight:700;letter-spacing:.08em;
+  padding:2px 7px;border-radius:2px;background:var(--sunk);color:var(--ink-soft);
+  position:relative;top:-2px;
+}
+.tag.crit{background:var(--crit-wash);color:var(--crit)}
+.tag.warn{background:var(--warn-wash);color:var(--warn)}
+.tag.star{background:var(--accent-wash);color:var(--accent-ink)}
 p{margin:0 0 15px;max-width:68ch}
 strong{font-weight:600}
 code{
@@ -399,47 +420,132 @@ footer code{font-size:12px}
 @media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
 """
 
-TEMPLATE = """<title>Eleven Religions</title>
+TEMPLATE = """<title>{title}</title>
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <style>{css}</style>
 <div class="wrap">
 <header class="mast">
-  <p class="eyebrow">VISION · design/Jawa/worldbuilding <span>·</span> the encoding layer
-    <span>·</span> 2026-08-14</p>
-  <h1>Eleven religions, <em>buildable</em></h1>
-  <p class="standfirst">Every NPC faction on the desert world gets an ideoligion whether we
-  author one or not. These are the eleven we author — decisions, not recommendations,
-  and the file CREATE builds the <code>FactionDef</code> blocks from.</p>
-  <div class="stats">
-    <div class="stat ok"><b>11</b><span>religions specified</span></div>
-    <div class="stat ok"><b>11/11</b><span>validator: VALID</span></div>
-    <div class="stat warn"><b>4</b><span>inert precepts (WARN)</span></div>
-    <div class="stat crit"><b>1</b><span>unmeasured premise</span></div>
-    <div class="stat"><b>12</b><span>Jawa slot — owner’s</span></div>
-  </div>
+  <p class="eyebrow">{eyebrow}</p>
+  <h1>{heading}</h1>
+  <p class="standfirst">{standfirst}</p>
+  {stats}
 </header>
 <div class="cols">
   <nav aria-label="Contents"><p>Contents</p><ol>{toc}</ol></nav>
   <main>{body}</main>
 </div>
-<footer>Rendered from <code>design/Jawa/worldbuilding/faction_religions_spec.md</code> —
-the markdown is the source of truth; this page is regenerated by
-<code>src/RimMandrake/Utils/religions_spec_render.py</code>. Every meme, precept and style
-defName was read from the live def dump, 2026-08-14.</footer>
+<footer>Rendered from <code>{src}</code> — the markdown is the source of truth;
+this page is regenerated by <code>src/RimMandrake/Utils/design_doc_render.py</code>.
+Every defName in it was read from the live def dump, not from memory.</footer>
 </div>
 """
 
+# The two docs that exist today. Each entry is the argument set `main()` would
+# otherwise take on the command line.
+PRESETS = [
+    dict(
+        src="design/Jawa/worldbuilding/faction_religions_spec.md",
+        out="design/Jawa/worldbuilding/review/faction_religions_spec.html",
+        title="Eleven Religions",
+        heading="Eleven religions, <em>buildable</em>",
+        eyebrow="VISION · design/Jawa/worldbuilding <span>·</span> the encoding layer"
+        " <span>·</span> 2026-08-14",
+        standfirst="Every NPC faction on the desert world gets an ideoligion whether we"
+        " author one or not. These are the eleven we author — decisions, not"
+        " recommendations, and the file CREATE builds the <code>FactionDef</code>"
+        " blocks from.",
+        stats=[
+            ("11", "religions specified", "ok"),
+            ("11/11", "validator: VALID", "ok"),
+            ("4", "inert precepts (WARN)", "warn"),
+            ("1", "unmeasured premise", "crit"),
+            ("12", "Jawa slot — owner’s", ""),
+        ],
+    ),
+    dict(
+        src="design/Jawa/worldbuilding/review/mandrakejawa_xenotype_review.md",
+        out="design/Jawa/worldbuilding/review/mandrakejawa_xenotype_review.html",
+        title="MandrakeJawa Review",
+        heading="<em>MandrakeJawa</em> — design + engineering review",
+        eyebrow="VISION · the owner's custom xenotype <span>·</span> 35 genes"
+        " <span>·</span> 2026-08-14",
+        standfirst="A gene-by-gene audit of the xenotype against the live def dump —"
+        " what it costs, what silently overrides what, and the question underneath"
+        " all of it: does anything in the world ever spawn one?",
+        stats=[
+            ("Never", "spawns in world", "crit"),
+            ("5", "real defects", "warn"),
+            ("0", "metabolic efficiency", "ok"),
+            ("31", "complexity", ""),
+            ("35", "genes", ""),
+        ],
+    ),
+]
 
-def main():
-    body, toc = convert(SRC.read_text(encoding="utf-8").splitlines())
+
+def render(src, out, title, heading, eyebrow, standfirst, stats):
+    src_path, out_path = ROOT / src, ROOT / out
+    body, toc = convert(src_path.read_text(encoding="utf-8").splitlines())
     nav = "".join(
         f'<li><a href="#{a}"><span class="k">{k or "·"}</span>'
         f'<span>{html.escape(label)}</span></a></li>'
         for a, k, label in toc
     )
-    OUT.parent.mkdir(parents=True, exist_ok=True)
-    OUT.write_text(TEMPLATE.format(css=CSS, toc=nav, body=body), encoding="utf-8")
-    print(f"{OUT}  {OUT.stat().st_size:,} bytes  {len(toc)} sections")
+    strip = ""
+    if stats:
+        cells = "".join(
+            f'<div class="stat {cls}"><b>{html.escape(value)}</b>'
+            f"<span>{html.escape(label)}</span></div>"
+            for value, label, cls in stats
+        )
+        strip = f'<div class="stats">{cells}</div>'
+    out_path.parent.mkdir(parents=True, exist_ok=True)
+    out_path.write_text(
+        TEMPLATE.format(
+            css=CSS,
+            title=html.escape(title),
+            heading=heading,
+            eyebrow=eyebrow,
+            standfirst=standfirst,
+            stats=strip,
+            toc=nav,
+            body=body,
+            src=html.escape(src),
+        ),
+        encoding="utf-8",
+    )
+    print(f"{out_path}  {out_path.stat().st_size:,} bytes  {len(toc)} sections")
+
+
+def main():
+    ap = argparse.ArgumentParser(description=__doc__)
+    ap.add_argument("src", nargs="?", help="repo-relative markdown source")
+    ap.add_argument("out", nargs="?", help="repo-relative html destination")
+    ap.add_argument("--title", default="")
+    ap.add_argument("--heading", default="")
+    ap.add_argument("--eyebrow", default="")
+    ap.add_argument("--standfirst", default="")
+    ap.add_argument(
+        "--stat",
+        action="append",
+        default=[],
+        metavar="VALUE|LABEL|CLASS",
+        help="masthead stat, class one of ok/warn/crit or empty. Repeatable.",
+    )
+    a = ap.parse_args()
+    if not a.src:
+        for preset in PRESETS:
+            render(**preset)
+        return
+    render(
+        src=a.src,
+        out=a.out,
+        title=a.title or Path(a.src).stem,
+        heading=a.heading or a.title or Path(a.src).stem,
+        eyebrow=a.eyebrow,
+        standfirst=a.standfirst,
+        stats=[tuple((s.split("|") + ["", ""])[:3]) for s in a.stat],
+    )
 
 
 if __name__ == "__main__":
