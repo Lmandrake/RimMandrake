@@ -37,7 +37,7 @@ L1 | SmallThruster at stern x45 z131 -> WarningThrusterInside | CREATE | open
 L2 | order_pawn canReach on pilot console, pathEndMode interactioncell | CREATE | open
 L3 | Empire raid — read the faction BACK, pass points explicitly | VISION | open
 L4 | O12 CONFIRMED — 2nd droid threw NRE as predicted | OPS | done
-L5 | Full-map slag count — ONLY on a map generated this session | OPS | open
+L5 | MEASURED: 4 chunks on the 13:54 quicktest. Row 4 does NOT close | OPS | wip
 L6 | Never-run tools: list_things, clear_ui, roof batch | BRIDGE | open
 L7 | Re-run P1 AV_DogSled through the reflection path | BRIDGE | open
 W1 | Sea baseline read on a disposable world — 25.0% water, 2 bodies | VISION | wip
@@ -48,6 +48,8 @@ O18 | Scoped patch sweep — 585/585, 0 errors (cbe6f1c) | OPS | done
 S1 | JawaSeaShaper.dll — SOLO, not live, gates any worldgen | OPS | open
 S2 | jawa/ideo_of | BRIDGE | wip
 S3 | jawa/biome_probe | BRIDGE | wip
+S4 | warnOnFail=true on the scatter defs — then 90s quicktests | OPS | open
+S5 | world_stats unit fixes: centroidLat deg->frac, raggedness | BRIDGE | open
 
 ## OWNER
 12 | O12 droid raids — which of 3 routes? v1 KEEP faction is broken | BRIDGE confirmed the chain
