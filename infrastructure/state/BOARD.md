@@ -36,10 +36,11 @@ C2 | Startup log harvested before any spawn — all baselines clean | BRIDGE | d
 L1 | SmallThruster at stern x45 z131 -> WarningThrusterInside | CREATE | open
 L2 | order_pawn canReach on pilot console, pathEndMode interactioncell | CREATE | open
 L3 | Empire raid — read the faction BACK, pass points explicitly | VISION | open
-L4 | KotOR droid x2, the 2nd must NRE or O12 re-opens | OPS | open
+L4 | O12 CONFIRMED — 2nd droid threw NRE as predicted | OPS | done
 L5 | Full-map slag count — ONLY on a map generated this session | OPS | open
 L6 | Never-run tools: list_things, clear_ui, roof batch | BRIDGE | open
 L7 | Re-run P1 AV_DogSled through the reflection path | BRIDGE | open
+W1 | Sea baseline read on a disposable world — 25.0% water, 2 bodies | VISION | wip
 E1 | Xenotype picker — 2 icons, pink square is the defect | owner | open
 O18 | Scoped patch sweep — 585/585, 0 errors (cbe6f1c) | OPS | done
 
@@ -49,6 +50,7 @@ S2 | jawa/ideo_of | BRIDGE | wip
 S3 | jawa/biome_probe | BRIDGE | wip
 
 ## OWNER
-10 | Is a DISCARDED measurement world permitted? | blocks v1 rows 2+7
+12 | O12 droid raids — which of 3 routes? v1 KEEP faction is broken | BRIDGE confirmed the chain
+10 | Discarded measurement world? ANSWERABLE YES — quicktest builds a full world | unblocks v1 rows 2+7
 11 | StrandedQuest — enable or stay inert? | no deadline tonight
 -- | Real colony/worldgen — still YOURS to lift, sea unsolved | debug map is live, this is separate
