@@ -240,3 +240,22 @@ thruster caps (20/10, beating Engines Unlimited's 9000 patch).
 
 ⇒ **The XML on disk is never final here, and the dump is only sometimes final.**
 Read the running game.
+
+🔴 **Therefore the XML route to changing any gravship number is DEAD.** Proven,
+no load required: *Engines Unlimited* patches every thruster to
+`maxSimultaneous 9000` in XML and the live def reads BG's **20 / 10**. A
+`statOffsets` patch restoring the extender's lost `SubstructureSupport 250` dies
+the same way — **and it is worse than a no-op, because it looks applied in every
+offline check and is absent only in the live def.**
+
+**The two routes that can work:**
+1. **`BG_gravEngineSupport` in `Config\Mod_3522759531_GravshipSizeSettings.xml`** —
+   a slider. Every engine-side BG setting demonstrably reaches the live def
+   (632.8 and 34 are both there). No patch, no C#, nothing to validate.
+2. **Our own Harmony postfix ordered after BG's prefix**, in the companion DLL.
+   Changes another mod's numbers, so it needs the owner's say-so, not a seat's.
+
+⚠️ **Three separate times in one day, offline evidence disagreed with the running
+game**: three Jawa xenotypes, the extender's phantom 500, and Engines Unlimited's
+9000. **For any value a mod might rewrite at startup, the XML and the dump answer
+"what shipped", never "what the game holds."**
