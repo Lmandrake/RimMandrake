@@ -109,8 +109,55 @@ three numbers each: `pct`, `bodiesTotal`, `bodiesOverMinSize`.**
 | outcome | what it means | what we do |
 |---|---|---|
 | **some seeds land 22–28% in exactly 3 bodies** | vanilla already reaches the gate on requirements 1 and 2 | ⭐ **seed-hunt instead of building.** S1 shrinks from a `WorldGenStep` to a rejection loop at the preview screen. **This deletes a v1 build item.** |
-| **water fraction is right but body count never is** | the step's real job is *partitioning*, not volume | build S1, but scope it to splitting and shaping — **do not write elevation** |
+| ✅ **water fraction is right but body count never is** | the step's real job is *partitioning*, not volume | **MEASURED — this is the one.** See below |
 | **the spread is wide and mostly wrong** | vanilla is noise and `"green"` was luck | build S1 as specified. The spec stands unchanged |
+
+### ✅ MEASURED, 2026-08-14 — and it rescopes the build
+
+BRIDGE, 4 seeds, `planetCoverage 0.3`, 119,904 tiles, `minBodySize` 8. Full data:
+`D:\Luke\dev\Rimworld\observed\2026-08-14_sea_baseline_seeds.md`
+
+| seed | waterPct | bodiesTotal | bodiesOverMinSize | largestBodyPct |
+|---|---|---|---|---|
+| green | 25.0 | 2 | 2 | 16.67 |
+| cards | 25.0 | 1 | 1 | 25.0 |
+| guts | 25.0 | 2 | 2 | 16.67 |
+| sickle | 16.74 | 1 | 1 | 16.74 |
+
+**Requirement 1: 3 of 4. Requirement 2: 0 of 4 — never three, always one or two.**
+
+🔴 **The shape is the OPPOSITE of what this spec feared.** `bodiesTotal ==
+bodiesOverMinSize` in all four — **there are no puddles at all.** Vanilla is not
+smearing water into forty blobs; it is producing one or two huge masses. The
+*"43–55% in scattered blobs"* that motivated this step does not describe this
+generator at 0.3 coverage, **and the compactness worry may be the wrong worry.**
+
+⇒ 🔴 **S1 IS RESCOPED: it PARTITIONS, it does not write the sea.** The volume
+arrives roughly right on its own three times in four; the thing vanilla will not
+do is *split* one mass into three. **A step that carves an existing mass is a much
+smaller thing to build than one that writes elevation from scratch, and it need
+not touch requirement 1 at all.**
+
+⭐ **And the rescope pays a second time, for free.** Carving a channel or land
+bridge **adds boundary tiles without adding area** — which is exactly the
+numerator of requirement 3. **A partitioning step improves raggedness as a side
+effect of doing its actual job**, where an elevation-writing step had to chase
+raggedness deliberately and against the grain of every blob-growth algorithm.
+
+⚠️ **Requirement 5 still applies, in the other direction.** A cut *releases*
+tiles: every one must come out with `elevation > 0` **and** a land biome. The
+surface is smaller, not absent.
+
+🔴 **Two cautions, both BRIDGE's, and the second is the one that bites:**
+1. **n = 4. This is a direction, not a distribution.** The sweep stopped early —
+   loadavg 22.58 with the owner playing on the same disk. It resumes on a free
+   machine. **Do not author S1 until the rest lands**; do plan it as a partitioner.
+2. 🔴 **25.0% is NOT a constant.** Three seeds read exactly 25.0 and the fourth
+   read 16.74 one sample later. **Requirement 1 is a real gate, not a freebie** —
+   a design that assumes the fraction is free will ship a 16.7% ocean.
+
+📌 **What would reverse this:** the remaining seeds producing three-or-more bodies,
+or a wide water spread. Either sends S1 back to the full spec. Nothing else does.
 
 ⚠️ **Requirements 3 and 4 stay out of this test** — they are the miscalibrated
 pair. A seed that passes 1 and 2 is a *candidate*, never an acceptance.
