@@ -125,3 +125,50 @@ finding a door they cannot explain is a better scene than one where a codex entr
 tells them. **The unattributed version is the only one that cannot be
 contradicted by canon**, and it is the one I would ship if the choice were mine
 alone.
+
+---
+
+# ⭐⭐ THE ANSWER WAS ALREADY IN THE STACK — the Forsakens
+
+_2026-08-13, from a full read of Alpha Biomes' `AB_RockyCrags`._
+
+**The dark biome ships its own dead precursor civilisation, and nobody had
+noticed.** Its own description, verbatim:
+
+> *"This desertic landscape appears to be perpetually covered in an unnatural fog
+> that seeps all light from the sun. **In the ancient past it was partly
+> terraformed by a mysterious humanoid alien race simply known as Forsakens.**"*
+
+## Why this settles the open question
+
+**Whose world was it? The Forsakens'.** And they are better than either canon
+option:
+
+| | Rakata | Techno Union | ⭐ **the Forsakens** |
+|---|---|---|---|
+| canon risk | ⚠️ Legends, not Disney | ✅ canon | ⭐ **none — they are not Star Wars at all, so they cannot contradict it** |
+| dead precursor? | yes | no, a corporation | ⭐ **yes, by definition** |
+| already in the stack? | as a *race* only | no | ⭐ **as a biome, a rock type, a terrain set, a weather system and a fauna roster** |
+| explains the darkness? | no | no | ⭐ **yes — the dark IS their failed terraforming** |
+
+⭐ **One noun now carries the entire back-story**: the world was terraformed by
+somebody, they failed, they left, the light never came back, and **their
+automatic defences are still standing.** The mechanoids are the Forsakens'
+garrison. The ancient dangers are Forsaken compounds. The salvage economy is
+Forsaken debris. **The Jawas are picking over a dead civilisation's estate**,
+which is the most Jawa sentence this design has produced.
+
+**And it costs nothing.** The name already exists in a def a player can read
+in-game. We are not inventing lore, we are *noticing* it.
+
+⚠️ **The Jawas still do not know who the Forsakens were.** Keep the player-facing
+ignorance from the earlier ruling — a clan finding a door they cannot explain is
+the better scene. The name exists in the world; the explanation does not.
+
+## What follows mechanically
+
+- **Rename the Mechanoid faction to the Forsakens' garrison** — one label
+  operation, and it now *means* something.
+- **"Secret Compound" becomes "Forsaken compound"**, answering the owner's
+  naming instinct with a word the game already uses.
+- **The dark biome is their heartland**, not a random hazard tile.

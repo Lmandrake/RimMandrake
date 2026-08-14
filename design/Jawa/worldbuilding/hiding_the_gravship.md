@@ -328,3 +328,55 @@ months approximating. **The honest risk is scope**: it is a large mod with its
 own physics, and adopting it means accepting its model of the deep rather than
 authoring ours. **Given that its model already matches the rules I wrote
 independently, that is a trade worth making.**
+
+---
+
+# ⭐ A DARK OCEAN MAP EXISTS TODAY, WITH NO NEW CODE
+
+**Measured 2026-08-13.** Alpha Biomes' Odyssey patch adds `AB_RockyCrags` to
+`BaseCoastMut`'s biome whitelist, and the biome's own terrain patch makers
+already paint **`WaterShallow` and `WaterDeep`** onto its maps.
+
+> ⇒ **A coastal forsaken-crags tile can roll `Archipelago` right now: a
+> permanently dark, mostly-ocean playable map. Zero new defs.**
+
+**That is the cheapest possible proof of the whole concept** — before adopting
+GravTide, before authoring a biome, we can stand on a dark water map and see
+whether it reads as the deep.
+
+## The darkness is real and hardcoded
+
+- The biome can **never roll clear weather** (`Clear 0`); ~91% of its weather is
+  `AB_ForsakenNight`, whose night sky is `(0.01,0.01,0.01)`.
+- A Harmony patch multiplies sun glow by **0.34** — **below the 0.51 plant-growth
+  threshold**, permanently. Nothing grows outdoors; the bioluminescent flora *is*
+  the light source.
+- Ranged accuracy ×0.6, and ×0.3 in its thunderstorm.
+- Eclipse is disabled; sunlight penalties do not apply.
+
+⚠️ **The glow patch is keyed to `AB_RockyCrags` by defName**, so a *derived*
+biome would not inherit it. **Reuse the biome itself rather than copying it.**
+
+## What still has to be built for the real thing
+
+- **The landing redirect.** `Ocean.canBuildBase = false` is checked before
+  landing, so oceans are not settleable. **The supported shape is the `SeaIce`
+  pattern** — vanilla already ships a water-covered tile that is settleable and
+  map-generating, which proves the engine allows it.
+- **A description override.** The biome's text says *"desertic landscape"* and
+  *"roam the desert"*. That is the one field the player reads directly.
+
+## Fauna: one free win, and one perfect fit
+
+- ⭐ **`AB_ForsakenAnglerfish` already exists** — native to this biome,
+  `livesInOcean=true`, a bioluminescent lure. **It is inert only because Fish
+  Industry is not enabled.** One mod switch gives the deep a native swimming
+  creature.
+- ⭐ **`AA_SandProwler`** (combatPower 275) is described as a **lion × shark ×
+  sand skink** that burrows through loose substrate and ambushes from beneath,
+  and it already re-skins itself by terrain. **Swap sand for silt and it is a
+  benthic ambush predator with no mechanical change at all.**
+- Supporting cast: `AA_Murkling` (vibration-sensing snout tendrils that dissolve
+  corpses — external digestion is a real abyssal adaptation) and `AA_Nightling`
+  (throws quills as a ranged volley).
+- ⛔ The other nine are shaggy ungulates, a bird and a rat. **Do not use them.**
