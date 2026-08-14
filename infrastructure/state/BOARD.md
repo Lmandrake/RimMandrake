@@ -38,18 +38,21 @@ L2 | order_pawn canReach on pilot console, pathEndMode interactioncell | CREATE 
 L3 | Empire raid — read the faction BACK, pass points explicitly | VISION | open
 L4 | O12 CONFIRMED — 2nd droid threw NRE as predicted | OPS | done
 L5 | MEASURED: 4 chunks on the 13:54 quicktest. Row 4 does NOT close | OPS | wip
-L6 | Never-run tools: list_things, clear_ui, roof batch | BRIDGE | open
-L7 | Re-run P1 AV_DogSled through the reflection path | BRIDGE | open
+L6 | PROVEN LIVE: list_things, clear_ui (4 windows), roof batch (16 cells, read back) | BRIDGE | done
+L7 | PROVEN LIVE: AV_DogSled spawned as Vehicles.VehiclePawn at 60,120 | BRIDGE | done
 W1 | Sea baseline read on a disposable world — 25.0% water, 2 bodies | VISION | wip
 E1 | Xenotype picker — 2 icons, pink square is the defect | owner | open
 O18 | Scoped patch sweep — 585/585, 0 errors (cbe6f1c) | OPS | done
 
 ## SHUTDOWN
 S1 | JawaSeaShaper.dll — SOLO, not live, gates any worldgen | OPS | open
-S2 | jawa/ideo_of | BRIDGE | wip
-S3 | jawa/biome_probe | BRIDGE | wip
+S2 | jawa/ideo_of — BUILT, undeployed | BRIDGE | built
+S3 | jawa/biome_probe — BUILT, undeployed, 3-state find | BRIDGE | built
 S4 | warnOnFail=true on the scatter defs — then 90s quicktests | OPS | open
-S5 | world_stats unit fixes: centroidLat deg->frac, raggedness | BRIDGE | open
+S5 | world_stats units FIXED: perimeterTiles + centroidLatNorm | BRIDGE | built
+S6 | jawa/set_faction_relation — unblocks L3's aimed raid | BRIDGE | built
+S7 | jawa/inspect_string — reads comp status; gates CREATE's thruster test | BRIDGE | built
+S8 | DEPLOY ALL: BridgeTools 30 tools md5 d7e7c6c1, --gm REQUIRED | BRIDGE | open
 
 ## OWNER
 12 | O12 droid raids — which of 3 routes? v1 KEEP faction is broken | BRIDGE confirmed | tell PROJECT · detail: OWNER_DECISIONS.md #12
