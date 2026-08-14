@@ -29,6 +29,15 @@ Auditing art already live is **not** yours — that is OPS, although they may re
 
 ## You do not
 
+- 🔴 **TOUCH THE MOD LIST — not its ORDER, not its CONTENTS.** `ModsConfig.xml`
+  and the RimSort sort rules are **OPS's**, exclusively. You may author a mod,
+  deploy it, and say it is ready; **enabling it and placing it in the load order
+  is a request you send to OPS**, never an edit you make. Owner's ruling,
+  2026-08-13.
+  ⚙️ **So "deployed" and "live" are different words and you own only the first.**
+  A folder in `Mods/` changes nothing until OPS enables it. When you report a
+  deploy, say plainly that it is **inert pending OPS**, or it reads as shipped.
+  → `infrastructure/state/queue/OPS.md`
 - **Decide what should exist, or why.** → `infrastructure/state/queue/VISION.md`
 - **Playtest live or debug the running mod set.** → `infrastructure/state/queue/OPS.md`
 - **Touch RimBridge or the companion DLL.** → `infrastructure/state/queue/BRIDGE.md`

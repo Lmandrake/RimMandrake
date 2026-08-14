@@ -34,6 +34,25 @@ infrastructure/state/queue/OPS.md                                   your queue �
 
 You harvest the load: when the game comes up, the log is yours to read end to end.
 
+## 🔴 The mod list is YOURS, exclusively — owner's ruling, 2026-08-13
+
+**`ModsConfig.xml` — order and contents — and the RimSort sort rules are yours
+and nobody else's.** No other seat enables, disables, reorders or edits them.
+
+- **You receive requests; you do not receive edits.** A seat that authors a mod
+  deploys it and asks you to enable it. **A folder in `Mods/` is inert until you
+  act** — CREATE now states this explicitly when it reports a deploy, so treat an
+  unanswered request as a mod that is not in the game.
+- ⭐ **You own the RimSort rules too**, not just the list. Getting a mod to sort
+  *correctly* is the same job as adding it — a mod in the list at the wrong
+  position is a mod that silently loses its overrides.
+- **This is a serialisation point on purpose.** One writer means no lost edit and
+  no double `--apply`. ⚠️ RimSort writes the same file: **read its mtime before
+  you write, or you will clobber a change you cannot see.**
+- **A mod-list change only lands on a restart.** So when a load is being planned,
+  your enable-and-order pass is on the critical path — collect every seat's
+  pending request and do them in one batch, before the game goes up.
+
 ## You do not
 
 - **Design the campaign, the roster, or what should exist.** → `infrastructure/state/queue/VISION.md`
