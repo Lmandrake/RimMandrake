@@ -338,3 +338,31 @@ Blueprints ship substructure affordances too.
 salvaged from the first frame** — patched plating, dead sections, floor that was
 never repaired. That is the single cheapest piece of atmosphere available to this
 project, and it is the one the player looks at every session.
+
+### ⭐ OWNER'S RULING — the no-tag branch is not a dead end, it is decor
+
+> *"If substructure doesn't carry the tag, then it's nice decor to put on top of
+> the gravship for flavour, should be routed to CREATE as an ingredient in the
+> design."*
+
+**So there is no losing branch. Both answers are useful:**
+
+| | with the `Substructure` tag | without it |
+|---|---|---|
+| what it is | **structural** — connects, counts toward capacity, walkable | **decorative** — breaks the field, so it cannot sit under the flying hull |
+| where it goes | anywhere in the hull; the ship can carry visible damage and still fly | **anywhere the field does not need to reach** |
+| what it buys | a shipping hull that looks salvaged from frame one | ⭐ **the wreck the ship was cut out of** |
+
+⭐ **The no-tag version has the better image, and it should be built either way.**
+
+> **The starting map holds the rest of the hulk.** Broken substructure, dead
+> sections, a hull the clan could not save — and the flyable ship is the part
+> they *got working*. The first thing the player sees is the ninety percent that
+> stayed on the ground.
+
+**That is the campaign's premise in a single frame**, it costs one terrain and
+some placement, and it is immune to the tag question entirely — the broken floor
+never has to fly, because narratively it never will again.
+
+**Routed to CREATE as a design ingredient**, per the owner. Not a blocker on
+anything; an asset to build with.
