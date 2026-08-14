@@ -25,7 +25,7 @@ shorts, leave it untouched (→ `skills/rimworld-savegame/SKILL.md`).
 | If you are about to… | Read | Entries |
 |---|---|---|
 | write or debug a patch, an xpath, or a def | [`traps-xml-and-defs.md`](traps-xml-and-defs.md) | 18 |
-| trust what a script, grep, census or the def dump just told you | [`traps-tooling.md`](traps-tooling.md) | 31 |
+| trust what a script, grep, census or the def dump just told you | [`traps-tooling.md`](traps-tooling.md) | 32 |
 | call art missing, wrong, or broken | [`traps-art.md`](traps-art.md) | 13 |
 | chase a mod that is absent, dead, or ignoring its files | [`traps-mods-and-managers.md`](traps-mods-and-managers.md) | 13 |
 | believe a diagnosis, or call into a running game | [`traps-diagnosis.md`](traps-diagnosis.md) | 5 |
@@ -93,6 +93,8 @@ the one asked.**
 - A blind string replace becomes an ABORT INSTRUCTION when it crosses into a filename or an expected observation
 - A SETTING that suppresses behaviour and a DELETION that removes the def are not interchangeable
 - `strings` scans 7-bit ASCII, so a deployed message reads as ABSENT
+
+- A `timeout`-wrapped scan that gets killed leaves a PARTIAL result that looks complete
 
 ### `traps-art.md` — art, textures and what a census cannot see
 
