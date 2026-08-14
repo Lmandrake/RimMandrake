@@ -68,10 +68,10 @@ quoting 632.8 is stale.
 AssetBundles — `Data/*/Textures` does not exist — so 297 usable wreck defs cannot
 be rendered offline. Defs, sizes and yields are verified; **the look is not.**
 
-🔴 **The one diagnostic to know:** if the hulk's deck renders and its props are
-**absent**, `BrokenSubstructure` went to the top layer and `ShipChunk_Mech` lost
-its `Heavy` affordance. **Terrain swap, not a redesign.** Report it as
-*"deck present, props absent"*.
+⛔ **That diagnostic was WRONG — struck 2026-08-13 (BRIDGE).** `ShipChunk_Mech`
+needs `Light`, not `Heavy`, and `BrokenSubstructure` appends to `FloorBase` so it
+supplies Light/Medium/Heavy/Walkable/Substructure. **Either layer satisfies it.**
+Missing props ⇒ look at prefab placement, blocked cells, `spotMustBeStandable`.
 
 ---
 

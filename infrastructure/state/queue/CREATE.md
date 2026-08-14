@@ -7,6 +7,22 @@ and its body is deleted.**_
 
 ---
 
+## 🔴 STANDING DIRECTIVE — STOP FIXING ART. Owner, 2026-08-13, verbatim
+
+> *"We have learned that 'missing art' is a red herring due to our lack of
+> understanding about how art assets work. Please inform CREATE to stop fixing
+> art until user can verify that the art doesn't work. This is a new standing
+> directive, period."*
+
+**No new art-fix mods, no new texture overrides, no chasing a missing-texture
+symptom.** The gate is **the owner's own eyes** — not a clean log, not a blank
+alpha channel, not an md5. ⚠️ **The PREMISE is what is suspect**, so a "fix" may
+be repairing something that was never broken. **Already-deployed work stays in
+place**; this stops *new* fixes only.
+
+⛔ **PARKED by this directive:** C7 rows 4–6, C-t2, and any Anomaly reskin under
+C13 that is art rather than def work. **Do not resume without the owner.**
+
 ## ⭐ v1 — your four rows
 
 | row | state |
@@ -34,40 +50,36 @@ Routes and click paths: `infrastructure/state/CREATE_TEST_PLAN.md`.
 ✅ **row 4 salt pans PASSED live** — 144 cells, 0 failed verify, renders as a pale
 cracked pan; owner ruled bridge placement sufficient.
 
-🔴 **The one diagnostic to memorise:** hulk deck renders but props are **absent**
-⇒ `BrokenSubstructure` went to the top layer and `ShipChunk_Mech` lost its
-`Heavy` affordance. **A terrain swap, not a redesign.** Report it as *"deck
-present, props absent"*.
+⛔ **My "one diagnostic to memorise" was WRONG — disproved by BRIDGE.**
+`ShipChunk_Mech` needs `Light`, not `Heavy`; `BrokenSubstructure` has no
+`Inherit="False"` so it APPENDS to `FloorBase` and supplies all of it. **Either
+layer satisfies it.** Missing props ⇒ prefab placement, blocked cells,
+`spotMustBeStandable`. **Do not report "deck present, props absent".**
+⭐ I inferred an affordance from a def's NAME and from which file the value sat
+in. **Walk the ParentName chain; check `Inherit="False"`.**
 
-⚠️ **Not verifiable offline, ever:** vanilla and DLC art lives in AssetBundles —
-`Data/*/Textures` does not exist — so **297 usable wreck defs cannot be
-rendered**, `AncientCryptosleepCasket` among them. Defs, sizes and yields are
-proven; the look is not. **Nobody has ever seen a casket.**
+⚠️ **Not verifiable offline, ever:** vanilla and DLC art is in AssetBundles, so
+**297 wreck defs cannot be rendered** — `AncientCryptosleepCasket` included.
+Defs, sizes and yields proven; the look is not. **Nobody has seen a casket.**
 
 ---
 
 ## Open
 
-### 📦 Two fix mods built, NOT deployed, NOT in `ModsConfig.xml` — with OPS
-`38f6d82`. **CREATE does not touch the mod list; deployed ≠ live.**
+### 📦 ✅ Both new fix mods DEPLOYED and ENABLED by OPS — `cb6c2f7`, `dd66fe6`
+`mandrake.phytokinbarkheadfix` @562 (donor @388) and
+`mandrake.kotorbandoliernorthfix` @**579** — deliberately outside the 556–563
+art-fix slot, because its donor `guy762.mm.kotorcore` is at **572** and ships
+loose art. `mandrake.missingartfixes` removed from the list, closing C11 step 3.
+⚠️ **These shipped BEFORE the stop-fixing-art directive and stay in place.**
 
-| packageId | must load after |
-|---|---|
-| `mandrake.phytokinbarkheadfix` `cb6c2f7` | `vanillaracesexpanded.phytokin` @389 — donor art is **LOOSE** |
-| `mandrake.kotorbandoliernorthfix` `dd66fe6` | `guy762.MM.KotORCore` **@573** |
-
-🔴 **The KotOR one must NOT join the 556–564 fix slot.** Its donor loads *later*
-and ships loose art, so placed there it is overwritten and **invisible, silently**.
-
-### C3a. ⏳ Eopie — two proposals NOT ruled on
+### C3a. ⛔ PARKED — Eopie, two proposals never ruled on
 **Do not read silence as approval:** the species-inconsistent head shapes, and
 north's featureless rear. Salmon-pink is a **playtest** question — do not re-raise.
 
-### C7. Rows 4–6 `[v2]` — the only ones needing genuinely new art
-`design/Jawa/art/c7_directional_triage.md`. Polluted Lands `BMT_ImpalingClaws`
-north+east (2 files, 256²); Dark Ages `BlackScribeScorpling_north` (1 file, "only
-if someone is already in the file"); Caverns pupae (**8 sprites, lowest value per
-effort in C7 — not recommended**).
+### C7. ⛔ PARKED by the art directive. Rows 4–6 `[v2]`
+Fully triaged with per-file canvases and verdicts:
+`design/Jawa/art/c7_directional_triage.md`. Nothing is lost by stopping here.
 
 ### C10. Tile augmentation catalogue — 31 rows, 19 v1-capable `[v2]`
 `design/Jawa/worldbuilding/tile_augmentation_catalogue.md`. Pure XML
@@ -81,20 +93,13 @@ zero" as "Anomaly assets are off-limits."** ⚠️ Same inversion one level down
 `anomaly_register.html`'s KEEP/CUT judged whether an *arc* runs and is **inert**
 for the asset question — a CUT gorehulk is as available as a KEEP noctol.
 
-**Measured today — it decides how a reskin gets built.** `Data/Anomaly/Textures`
-**does not exist**; 991 texture assets (415 pawn: Ghoul 90, Nociosphere 46,
-Fleshbeast 33, Chimera 24, Gorehulk 21) live in `AssetBundles/resources_anomaly`.
-✅ Overriding is easy — loose beats bundled regardless of order, **no `loadAfter`
-needed**. ✅ The exact paths ARE readable offline: `resources_anomaly.manifest` is
-plain-text YAML listing every asset as `Assets/Data/Anomaly/Textures/...` — strip
-that prefix. 🔴 **The pixels are NOT.** Every Anomaly reskin is a from-scratch
-draw or wants a live screenshot first; **budget it as new art, never a retouch.**
+**Measured:** 991 Anomaly texture assets (415 pawn) are bundle-only —
+`Data/Anomaly/Textures` does not exist. Overriding needs **no `loadAfter`** (loose
+beats bundled); paths are readable from the plain-text `resources_anomaly.manifest`;
+**the pixels are not**, so any reskin is a from-scratch draw. ⛔ Art side parked.
 
-### C11. ⏳ Retiring `mandrake.missingartfixes` — steps 2–4, blocked on OPS
-LIVE and deployed, so not a folder delete. Successors built, blocker cleared.
-**2.** confirm the five successors are in `ModsConfig.xml` and loaded → **3.** OPS
-drops `mandrake.missingartfixes` *(before the folder goes, or the game boots with
-a missing-mod entry)* → **4.** remove the deployed copy and the repo folder.
+### C11. ⏳ `mandrake.missingartfixes` — OPS dropped it from the list; folder remains
+Step 3 done. **4.** remove the deployed copy and the repo folder — unblocked, not urgent.
 
 ### C-v3. `[v2]` Restraining bolts — ANSWERED, spec drained to a design doc
 `design/Jawa/worldbuilding/restraining_bolt_technical.md` (`8353622`).
@@ -108,17 +113,13 @@ duplicate must precede us and is unidentified.** `PatchOperationConditional`, so
 a wrong order is a silent no-op. **OPS's def index should answer it in one query.**
 
 ### C-t1 `[v2]` — `validate_patch.py:1363` says "IN ONE MOD"
-Under `--all-versions` there is no load set, so "one mod" describes a **folder**,
-not the game. Reword to say which.
-⛔ **Do not "fix" the walk to match the wording** — the walk is correct and
-`--all-versions` depends on it. Wording only.
+Under `--all-versions` there is no load set, so "one mod" means a **folder**, not
+the game. Reword. ⛔ **Do not change the walk** — it is correct. Wording only.
 
-### C-t2 `[v2]` — two donor mask filenames RimWorld never looks for
-`SWDoorBlastBDoor_Frame_east_m.png` and `SWDoorBlastDDoor_Frame_east_m.png` carry
-an underscore before the `m`. The convention is `...eastm.png`, proven by the
-correctly-spelled `SWDoorBlastDoor_Frame_eastm.png` beside them. **The masks are
-never loaded and nothing errors.** Fix is an override mod — CREATE's by the
-one-donor-one-fix-mod ruling.
+### C-t2 ⛔ PARKED by the art directive `[v2]` — mask filenames
+`SWDoorBlast{B,D}Door_Frame_east_m.png` carry an underscore before the `m`; the
+convention is `...eastm.png`. ⚠️ **This is exactly the class the directive
+suspects** — nothing errors, and nobody has looked at it in game.
 
 ---
 

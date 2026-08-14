@@ -171,16 +171,31 @@ interleaved 45% `BrokenSubstructure` / 55% intact.
 → **SHOT: the whole wreck from a zoomed-out view**, and a second closer on a
 casket bank.
 
-🔴 **THE ONE TRAP, and it has a known cause and a known fix.**
-`BrokenSubstructure` is `isFoundation: true`, and it could not be established
-offline whether `PrefabDef` terrain application routes it to the **foundation**
-layer or writes it to the **top** layer — there is no decompiler on this box.
-**Both render, so the deck looks right either way.** But a top-layer
-`Substructure` exposes only the `Substructure` affordance, and `ShipChunk_Mech`
-needs `Heavy`.
-⇒ **If props come up MISSING while the deck looks fine, that is the cause.** It
-is a terrain swap, not a redesign. Report it as *"deck present, props absent"*
-and I will know exactly what to change.
+⛔ **THE "ONE TRAP" BELOW WAS WRONG. Struck 2026-08-13, disproved by BRIDGE
+against the actual defs — do not act on it and do not report its phrase.**
+
+I wrote that a top-layer `Substructure` exposes only the `Substructure`
+affordance and that `ShipChunk_Mech` needs `Heavy`. **Both halves are false:**
+
+- `ShipChunk_Mech` needs **`Light`**. `ParentName="ShipChunkBase"` →
+  `BuildingBase`, and neither sets `terrainAffordanceNeeded`, so it inherits
+  `Light` from `Data\Core\Defs\ThingDefs_Buildings\Buildings_Base.xml:11`. The
+  `Heavy` in that Odyssey file belongs to `GravshipComponentBase`, a **different**
+  abstract that `ShipChunk_Mech` does not descend from.
+- `BrokenSubstructure` supplies **Light/Medium/Heavy/Walkable/Substructure**. Its
+  `<affordances>` carries no `Inherit="False"`, so RimWorld list-merge APPENDS to
+  `FloorBase`'s set (`Data\Core\Defs\TerrainDefs\Terrain_Floors.xml:6-11`).
+
+⇒ **Requirement and supply are satisfied on EITHER layer, so the
+foundation-vs-top question does not gate the props.** If props come up missing,
+look at prefab placement, blocked cells, or `spotMustBeStandable`.
+
+⭐ **The lesson is bigger than the hulk: I inferred an affordance from a def's
+NAME and from which file the value sat in.** `Heavy` was in the same Odyssey file
+and belonged to a sibling abstract; `isFoundation: true` sounded like it would
+narrow the affordance list when the merge widens it. **Walk the ParentName chain
+and check for `Inherit="False"` — never read a value's neighbourhood as its
+owner.**
 
 ⚠️ **Two known-and-ruled non-bugs, so you do not file them:** the breach does
 **not** aim at the colony (aiming needs C#, ruled v2 — pinned rotation only), and
