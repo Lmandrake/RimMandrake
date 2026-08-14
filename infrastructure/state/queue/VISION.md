@@ -521,3 +521,64 @@ arrived.** Re-request if the visual comparison sheet is wanted.
 - **Jawa faith:** the name contradicts itself in its own file ("The Salvation" vs
   "The Articles of Passage") and Nomad-vs-Tunneler is still a coin. **Owner's,
   not mine** — but flag both if he opens it.
+
+---
+
+# 🔴 SESSION 2, 2026-08-14 — the ideoligion skill is finished, and it convicted the spec
+
+**`skills/rimworld-ideoligion/` is complete and pushed** — SKILL.md plus four
+references (`49a744f`, `d2ff36e`). The crash had left `references/` empty while
+SKILL.md cited four files. `package_skill.py --all --check` passes.
+
+## ⚠️ Four claims I wrote in SKILL.md yesterday were FALSE. All corrected.
+
+Writing the references measured the claims and broke them. **Do not trust an
+unmeasured sentence in a skill just because a skill is where it lives.**
+
+| I claimed | measured 2026-08-14 |
+|---|---|
+| impact is a **budget** the engine caps | a **rating**. Ceiling is a COUNT — `MemeCountRangeAbsolute` 1–4 normal memes. Two shipped presets total impact 10. **Never pass `--impact-budget`** |
+| `TreeCutting_Prohibited` is the benchmark | `defaultSelectionWeight: 0`, no meme's `requireOne` yields it ⇒ **unreachable for an NPC faction**. `Mining_Prohibited` is `enabledForNPCFactions: false` |
+| the validator checks deity count | **WARN**, never ERROR |
+| the validator checks `MayRequire` | 🔴 **it does not.** Its INFO line makes it look like it does. Still the largest hole; **on you, every time** |
+
+## 🔴 V24. Nine of the eleven religions are INVALID — mine to repair
+
+`--md` reports **2/11 VALID** (Wildsteam, Deepwater Compact). Dominated by
+`precept/required-meme` (10×). **The validator fix did not cause this** — `--md`
+output is byte-identical before and after, verified by diff.
+Decision sheet in progress: `design\Jawa\worldbuilding\review\religions_repair_sheet.md`.
+
+**Faction 5 — the entry SKILL.md §2 names as the roster's BEST — has two silent
+defects.** `OuterRim_DroidPrimacy` exists in neither the live dump nor the palette,
+and its `Corpses_DontCare` requires eight memes it holds none of; seven of the
+eight are illegal here and the eighth is absurd. **Drop the precept.**
+
+## 🔴 V25. The Empire scores 0 on DECISION — the third independent measurement
+
+The rubric scores the flagship antagonist's religion at **zero** on the
+decision axis: no refusal comp, no High-impact precept anywhere in its eight.
+**This is V6 and V7 in a third layer.** The pillar says one permanent enemy; the
+faction flags say `hostile=false`; the religion asks the player to choose nothing.
+⇒ **Owner-level, not a queue item.** Raised directly 2026-08-14.
+
+## V26. Homestead fails the name-blind test against the Deepwater Compact
+24% Jaccard, the roster's worst pair, and **the Homestead is the decoration half.**
+⇒ Cut it or differentiate it. Do not polish it. Note this collides with D2, where
+I ruled Homestead `Structure_TheistAbstract` yesterday — that ruling stands only if
+the faction survives this one.
+
+## V27. `VME_SecularSpirituality` has `thingDefStyles: []`
+The Deepwater Compact's only style category **renders nothing in play.** Not an
+error — the Compact is VALID — but it is invisible by construction. Cheap fix,
+pick a category that actually ships styles.
+
+## ⭐ Generalises past ideoligions — worth promoting to `traps-*.md`
+**A vanilla `styles` list is not what the game has.** Anomaly writes
+`<li>Horaxian</li>`; the resolved dump says `AM_Horaxian`, because Alpha Memes
+`PatchOperationReplace`s the whole list. **Read the dump, never the vanilla XML.**
+
+## Handoff note — `skills/rimworld-quests/` is NOT mine
+It is CREATE's **C14** with four owner rulings. I found it half-built (references
+committed, no SKILL.md), started a draft, and stopped on the owner's word before a
+byte was written. CREATE notified twice. **Do not pick it up.**
