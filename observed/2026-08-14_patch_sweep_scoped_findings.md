@@ -134,16 +134,46 @@ that **our def never sets**. ⇒ **an aborted scatter logs NOTHING.** The observ
 "zero scatterer warnings on this map" is consistent with a healthy run *and* with a
 step that quit after one spot. **It discriminates nothing and must not be cited again.**
 
-## 4. ⚠️ The 44–56 band is mis-specified — it counts SPOTS, and `clusterSize` is 10
+## 4. ❌ RETRACTED — the 44–56 band is CORRECT. I had `clusterSize` backwards.
 
-`CalculateFinalCount` returns **scatter spots**; `GenStep_ScatterThings` places a
-cluster at each. Our deployed def sets `<clusterSize>10</clusterSize>` with
-`<minSpacing>4</minSpacing>`. **The measurement is its own proof:** 4 chunks packed
-into one 5-cell box is a single spot's cluster, not four scattered placements.
-⇒ a healthy run is ~50 spots × up to 10 = **several hundred chunks, not 44–56.**
-The band was derived treating the per-10k count as chunks. 🔴 **Whatever number this
-gate uses next, it cannot be 44–56, and the old 75–125 is not a comparison band
-either** (its own derivation omitted `GetPlacementFactor`).
+**This section originally claimed `CalculateFinalCount` returns SPOTS and that
+`clusterSize 10` multiplies it into hundreds of chunks. That is WRONG, and the def's
+own comment (`JawaScrapfields.xml:86-90`) was right all along.**
+
+`GenStep_ScatterThings::TryFindScatterCell` IL_0014-0072: when `clusterSize > 1`, a
+`leftInCluster <= 0` finds a **cluster centre** through the base method and sets
+`leftInCluster = clusterSize`; otherwise it **decrements `leftInCluster`** and returns
+a cell near the existing centre. ⇒ **every cluster member consumes one iteration of
+`Generate`'s loop.** `CalculateFinalCount` counts **things**, not spots. ~50 chunks in
+~5 clumps of 10 — which is exactly the readability effect VISION asked for.
+
+⭐ **What went wrong in my reasoning, because it is the reusable part:** I read
+`Generate` and `CalculateFinalCount`, saw a per-iteration `ScatterAt`, and inferred
+clustering must happen *inside* `ScatterAt`. **I never read the override that actually
+implements it** — and the override is on the *cell finder*, not the placer. Then I
+contradicted a def comment that cited the correct fields (`clusterCenter`,
+`leftInCluster`, `ClusterRadius`) without reading the method those fields live in.
+**Reading three methods of a five-method chain is not reading the chain.**
+
+## 5. Two MORE diagnostics exist and both are ungated — and both read ZERO
+
+- `GenStep_ScatterThings::TryFindScatterCell` IL_003d: `Log::Error("Could not find
+  cluster center to scatter …")` — **not gated on `warnOnFail`.** **0 hits in the log.**
+- `GenStep_ScatterThings::ScatterAt` IL_000c: `Log::Warning("Could not find any valid
+  rotation for …")` — **also ungated.** **0 hits.**
+
+⇒ **The step did not fail loudly, so the §2 abort path is no longer the leading
+hypothesis** — in the cluster branch `TryFindScatterCell` returns true almost always
+and `Generate` rarely reaches its `ret`. §2 and §3 remain true as engine facts; they
+are simply not the explanation here.
+
+## 6. 🔴 The 4 chunks may not be OURS at all — check before diagnosing our def
+
+`ChunkSlagSteel` is scattered by vanilla and by other mods. **4 chunks in a tight
+cluster is equally consistent with somebody else's debris pile and a
+`Jawa_ScatterScrapfields` that placed ZERO.** ⚠️ **Nobody has established that these
+four came from our genStep**, and every diagnosis above assumes they did. Establishing
+provenance is a prerequisite, not a refinement.
 
 ## What to do — the hunt is now narrow, and it does NOT need a map
 
