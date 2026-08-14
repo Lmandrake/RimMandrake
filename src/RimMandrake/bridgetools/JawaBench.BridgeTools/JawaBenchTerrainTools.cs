@@ -5134,6 +5134,176 @@ namespace JawaBench.BridgeTools
             }, cancellationToken).ConfigureAwait(false);
         }
 
+        // ---------------------------------------------------------------------
+        // jawa/set_faction_relation — make a faction hostile so a raid can be
+        // aimed at it.
+        //
+        // WHY, and it is a blocked gate rather than an itch. VISION's biggest
+        // open design question is whether the Galactic Empire READS as an
+        // antagonist, and the only way to find out is to look at one of its
+        // raids. `jawa/fire_incident RaidEnemy faction=OuterRim_GalacticEmpire`
+        // returned `canFireNow: false` on the first live attempt, because
+        // IncidentWorker_RaidEnemy::TryResolveRaidFaction keeps the faction you
+        // pass ONLY if FactionUtility::HostileTo(Faction.OfPlayer) — and the
+        // Empire ships neutral (goodwill 0). ⇒ the raid cannot be aimed until
+        // something makes it hostile, and NOTHING on the bridge could: 133 tools
+        // and not one touches faction relations. The debug tree has no usable
+        // action either — a search for "goodwill" returns a single
+        // QuestPart test entry.
+        //
+        // 🔴 Worse, the failure was SILENT-SHAPED. Fired without dryRun,
+        // TryResolveRaidFaction passes `parms.faction` BY REFERENCE into
+        // PawnGroupMakerUtility::TryGetRandomFactionForCombatPawnGroupWeighted
+        // (IL_0059/006a) and overwrites it with a weighted random pick — so the
+        // raid arrives, reports success, and is somebody else's faction. The
+        // screenshot would have been of the wrong antagonist with nothing
+        // flagging it.
+        //
+        // Signatures read with ilprobe, not recalled:
+        //   Faction::SetRelationDirect(Faction, FactionRelationKind, bool
+        //       canSendHostilityLetter, string reason, GlobalTargetInfo?)
+        //   Faction::RelationWith(Faction other, bool allowNull)
+        //       -> FactionRelation { other, baseGoodwill, kind }
+        //   Faction::GoodwillWith(Faction) · Faction::get_PlayerGoodwill
+        // ---------------------------------------------------------------------
+        [Tool(
+            "jawa/set_faction_relation",
+            Description =
+                "Set a faction's relation to the PLAYER — hostile, neutral or ally — and " +
+                "optionally its goodwill number. Exists to unblock aimed raids: an incident " +
+                "worker will silently substitute a random faction for one that is not hostile, " +
+                "so testing 'does THIS faction read as an antagonist' is impossible until the " +
+                "faction can be made hostile on demand. Suppresses the hostility letter by " +
+                "default so a test does not narrate itself into the player's log.",
+            ResultDescription =
+                "Returns `was` and `now` for BOTH kind and goodwill, each READ BACK off the " +
+                "faction after the call — never inferred from the setter returning, which is " +
+                "void. success means the read-back matches what was asked for. `dryRun` " +
+                "reports the current relation and changes nothing.")]
+        public static async Task<object> SetFactionRelation(
+            IRimBridgeContext ctx,
+            CancellationToken cancellationToken,
+            [ToolParameter(Description =
+                "Faction defName, e.g. OuterRim_GalacticEmpire. ⚠️ The defName, not the " +
+                "generated name — 'Imperial Desert Directorate' is a name, not a def.")]
+            string faction,
+            [ToolParameter(Description =
+                "Hostile, Neutral or Ally. Case-insensitive. Omit to change goodwill only.",
+                DefaultValue = null)]
+            string kind = null,
+            [ToolParameter(Description =
+                "Base goodwill, -100..100. Omit to leave it alone. ⚠️ Setting goodwill does " +
+                "NOT by itself change the relation KIND — pass `kind` if that is what you need.",
+                DefaultValue = -9999)]
+            int goodwill = -9999,
+            [ToolParameter(Description =
+                "Let RimWorld send its hostility letter. Off by default: a test should not " +
+                "narrate itself.", DefaultValue = false)]
+            bool sendLetter = false,
+            [ToolParameter(Description = "Report the current relation and change nothing.",
+                DefaultValue = false)]
+            bool dryRun = false)
+        {
+            if (string.IsNullOrWhiteSpace(faction)) return Fail("faction is required.");
+
+            return await ctx.MainThread.InvokeAsync<object>(() =>
+            {
+                var fm = Find.FactionManager;
+                if (fm == null)
+                    return Fail("No FactionManager. This needs a GAME loaded.");
+
+                var player = Faction.OfPlayer;
+                if (player == null) return Fail("No player faction.");
+
+                var target = fm.AllFactions.FirstOrDefault(
+                    q => string.Equals(q?.def?.defName, faction, StringComparison.OrdinalIgnoreCase));
+                if (target == null)
+                    return Fail($"No faction with defName '{faction}'.", new
+                    {
+                        // Named rather than left to a guess: the defName/name
+                        // split has already cost one call today.
+                        hint = "Use the DEFNAME. jawa/list_factions returns both.",
+                        suggestions = fm.AllFactions.Where(q => q?.def != null)
+                            .Select(q => q.def.defName)
+                            .Where(q => q.IndexOf(faction, StringComparison.OrdinalIgnoreCase) >= 0)
+                            .Take(12).ToList()
+                    });
+
+                if (target == player) return Fail("Cannot set the player's relation to itself.");
+
+                var wasKind = target.RelationKindWith(player).ToString();
+                var wasGoodwill = target.GoodwillWith(player);
+
+                FactionRelationKind parsed = default;
+                var wantKind = !string.IsNullOrWhiteSpace(kind);
+                if (wantKind && !Enum.TryParse(kind.Trim(), true, out parsed))
+                    return Fail($"'{kind}' is not a FactionRelationKind.", new
+                    {
+                        valid = Enum.GetNames(typeof(FactionRelationKind))
+                    });
+
+                var wantGoodwill = goodwill != -9999;
+                if (wantGoodwill && (goodwill < -100 || goodwill > 100))
+                    return Fail($"goodwill must be -100..100, got {goodwill}.");
+
+                if (!wantKind && !wantGoodwill && !dryRun)
+                    return Fail("Nothing to do: pass `kind`, `goodwill`, or both.");
+
+                if (!dryRun)
+                {
+                    // Goodwill first, then kind. Order matters: SetRelationDirect
+                    // is the authority on kind, and doing it last means a
+                    // goodwill write cannot drag the kind somewhere unasked.
+                    if (wantGoodwill)
+                    {
+                        var rel = target.RelationWith(player, false);
+                        if (rel == null)
+                            return Fail("Faction has no relation record with the player.");
+                        rel.baseGoodwill = goodwill;
+                    }
+
+                    if (wantKind)
+                        target.SetRelationDirect(player, parsed, sendLetter,
+                            "Set by jawa/set_faction_relation for testing.", null);
+                }
+
+                // 🔴 Read back. SetRelationDirect returns void and the goodwill
+                // write is a bare field assignment, so neither can tell us it
+                // worked. Everything below is measured off the faction after the
+                // fact, and `success` compares the read-back to the request.
+                var nowKind = target.RelationKindWith(player).ToString();
+                var nowGoodwill = target.GoodwillWith(player);
+
+                var kindOk = !wantKind || dryRun
+                             || string.Equals(nowKind, parsed.ToString(),
+                                              StringComparison.OrdinalIgnoreCase);
+                var goodwillOk = !wantGoodwill || dryRun || nowGoodwill == goodwill;
+
+                return new
+                {
+                    success = kindOk && goodwillOk,
+                    message = dryRun
+                        ? $"{target.def.defName} ('{target.Name}') is {nowKind}, " +
+                          $"goodwill {nowGoodwill}. (dry run, nothing changed.)"
+                        : $"{target.def.defName} ('{target.Name}'): kind {wasKind} -> {nowKind}, " +
+                          $"goodwill {wasGoodwill} -> {nowGoodwill}." +
+                          (kindOk && goodwillOk
+                              ? ""
+                              : " ⚠️ READ-BACK DOES NOT MATCH THE REQUEST — the engine " +
+                                "overrode it. Do not treat this faction as set."),
+                    defName = target.def.defName,
+                    factionName = target.Name,
+                    dryRun,
+                    kind = new { was = wasKind, now = nowKind, asked = wantKind ? parsed.ToString() : null, ok = kindOk },
+                    goodwill = new { was = wasGoodwill, now = nowGoodwill, asked = wantGoodwill ? (int?)goodwill : null, ok = goodwillOk },
+                    // The thing the caller actually wants to know before firing
+                    // a raid, stated plainly rather than left to be derived.
+                    hostileToPlayer = target.HostileTo(player),
+                    ticksGame = TicksGameSafe()
+                };
+            }, cancellationToken).ConfigureAwait(false);
+        }
+
         // What a BiomeDef DECLARES, as opposed to what it resolves to spawn.
         // The difference is the whole removal audit: a record zeroed to
         // commonality 0 vanishes from AllWildAnimals/AllWildPlants exactly like
