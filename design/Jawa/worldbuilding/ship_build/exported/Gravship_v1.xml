@@ -28059,17 +28059,7 @@
         <foundationStuff IsNull="True" />
         <terrainDef>MetalTile</terrainDef>
         <terrainStuff IsNull="True" />
-        <things>
-          <li>
-            <defName>BoulderGlacialIce</defName>
-            <stuffDef IsNull="True" />
-            <rotInteger>0</rotInteger>
-            <quality IsNull="True" />
-            <plantToGrowDef IsNull="True" />
-            <exportedStorageSettings IsNull="True" />
-            <compSettings IsNull="True" />
-          </li>
-        </things>
+        <things />
       </li>
       <li>
         <foundationDef>Substructure</foundationDef>
@@ -28369,34 +28359,14 @@
         <foundationStuff IsNull="True" />
         <terrainDef>MetalTile</terrainDef>
         <terrainStuff IsNull="True" />
-        <things>
-          <li>
-            <defName>BoulderGlacialIce</defName>
-            <stuffDef IsNull="True" />
-            <rotInteger>0</rotInteger>
-            <quality IsNull="True" />
-            <plantToGrowDef IsNull="True" />
-            <exportedStorageSettings IsNull="True" />
-            <compSettings IsNull="True" />
-          </li>
-        </things>
+        <things />
       </li>
       <li>
         <foundationDef>Substructure</foundationDef>
         <foundationStuff IsNull="True" />
         <terrainDef>MetalTile</terrainDef>
         <terrainStuff IsNull="True" />
-        <things>
-          <li>
-            <defName>BoulderGlacialIce</defName>
-            <stuffDef IsNull="True" />
-            <rotInteger>0</rotInteger>
-            <quality IsNull="True" />
-            <plantToGrowDef IsNull="True" />
-            <exportedStorageSettings IsNull="True" />
-            <compSettings IsNull="True" />
-          </li>
-        </things>
+        <things />
       </li>
       <li>
         <foundationDef>Substructure</foundationDef>
@@ -29023,17 +28993,7 @@
         <foundationStuff IsNull="True" />
         <terrainDef>MetalTile</terrainDef>
         <terrainStuff IsNull="True" />
-        <things>
-          <li>
-            <defName>WeatheredGlacialIce</defName>
-            <stuffDef IsNull="True" />
-            <rotInteger>0</rotInteger>
-            <quality IsNull="True" />
-            <plantToGrowDef IsNull="True" />
-            <exportedStorageSettings IsNull="True" />
-            <compSettings IsNull="True" />
-          </li>
-        </things>
+        <things />
       </li>
       <li>
         <foundationDef>Substructure</foundationDef>
@@ -29547,17 +29507,7 @@
         <foundationStuff IsNull="True" />
         <terrainDef>MetalTile</terrainDef>
         <terrainStuff IsNull="True" />
-        <things>
-          <li>
-            <defName>RiverRock</defName>
-            <stuffDef IsNull="True" />
-            <rotInteger>0</rotInteger>
-            <quality IsNull="True" />
-            <plantToGrowDef IsNull="True" />
-            <exportedStorageSettings IsNull="True" />
-            <compSettings IsNull="True" />
-          </li>
-        </things>
+        <things />
       </li>
       <li>
         <foundationDef>Substructure</foundationDef>
@@ -29619,17 +29569,7 @@
         <foundationStuff IsNull="True" />
         <terrainDef>MetalTile</terrainDef>
         <terrainStuff IsNull="True" />
-        <things>
-          <li>
-            <defName>WeatheredGlacialIce</defName>
-            <stuffDef IsNull="True" />
-            <rotInteger>0</rotInteger>
-            <quality IsNull="True" />
-            <plantToGrowDef IsNull="True" />
-            <exportedStorageSettings IsNull="True" />
-            <compSettings IsNull="True" />
-          </li>
-        </things>
+        <things />
       </li>
       <li>
         <foundationDef>Substructure</foundationDef>
@@ -30131,34 +30071,14 @@
         <foundationStuff IsNull="True" />
         <terrainDef>MetalTile</terrainDef>
         <terrainStuff IsNull="True" />
-        <things>
-          <li>
-            <defName>RiverRock</defName>
-            <stuffDef IsNull="True" />
-            <rotInteger>0</rotInteger>
-            <quality IsNull="True" />
-            <plantToGrowDef IsNull="True" />
-            <exportedStorageSettings IsNull="True" />
-            <compSettings IsNull="True" />
-          </li>
-        </things>
+        <things />
       </li>
       <li>
         <foundationDef>Substructure</foundationDef>
         <foundationStuff IsNull="True" />
         <terrainDef>MetalTile</terrainDef>
         <terrainStuff IsNull="True" />
-        <things>
-          <li>
-            <defName>RiverRock</defName>
-            <stuffDef IsNull="True" />
-            <rotInteger>0</rotInteger>
-            <quality IsNull="True" />
-            <plantToGrowDef IsNull="True" />
-            <exportedStorageSettings IsNull="True" />
-            <compSettings IsNull="True" />
-          </li>
-        </things>
+        <things />
       </li>
       <li>
         <foundationDef>Substructure</foundationDef>
@@ -30206,34 +30126,14 @@
         <foundationStuff IsNull="True" />
         <terrainDef>MetalTile</terrainDef>
         <terrainStuff IsNull="True" />
-        <things>
-          <li>
-            <defName>WeatheredGlacialIce</defName>
-            <stuffDef IsNull="True" />
-            <rotInteger>0</rotInteger>
-            <quality IsNull="True" />
-            <plantToGrowDef IsNull="True" />
-            <exportedStorageSettings IsNull="True" />
-            <compSettings IsNull="True" />
-          </li>
-        </things>
+        <things />
       </li>
       <li>
         <foundationDef>Substructure</foundationDef>
         <foundationStuff IsNull="True" />
         <terrainDef>MetalTile</terrainDef>
         <terrainStuff IsNull="True" />
-        <things>
-          <li>
-            <defName>WeatheredGlacialIce</defName>
-            <stuffDef IsNull="True" />
-            <rotInteger>0</rotInteger>
-            <quality IsNull="True" />
-            <plantToGrowDef IsNull="True" />
-            <exportedStorageSettings IsNull="True" />
-            <compSettings IsNull="True" />
-          </li>
-        </things>
+        <things />
       </li>
       <li>
         <foundationDef>Substructure</foundationDef>
@@ -30526,34 +30426,14 @@
         <foundationStuff IsNull="True" />
         <terrainDef>MetalTile</terrainDef>
         <terrainStuff IsNull="True" />
-        <things>
-          <li>
-            <defName>WeatheredGlacialIce</defName>
-            <stuffDef IsNull="True" />
-            <rotInteger>0</rotInteger>
-            <quality IsNull="True" />
-            <plantToGrowDef IsNull="True" />
-            <exportedStorageSettings IsNull="True" />
-            <compSettings IsNull="True" />
-          </li>
-        </things>
+        <things />
       </li>
       <li>
         <foundationDef>Substructure</foundationDef>
         <foundationStuff IsNull="True" />
         <terrainDef>MetalTile</terrainDef>
         <terrainStuff IsNull="True" />
-        <things>
-          <li>
-            <defName>WeatheredGlacialIce</defName>
-            <stuffDef IsNull="True" />
-            <rotInteger>0</rotInteger>
-            <quality IsNull="True" />
-            <plantToGrowDef IsNull="True" />
-            <exportedStorageSettings IsNull="True" />
-            <compSettings IsNull="True" />
-          </li>
-        </things>
+        <things />
       </li>
       <li>
         <foundationDef>Substructure</foundationDef>
@@ -32568,17 +32448,7 @@
         <foundationStuff IsNull="True" />
         <terrainDef>MetalTile</terrainDef>
         <terrainStuff IsNull="True" />
-        <things>
-          <li>
-            <defName>RiverRock</defName>
-            <stuffDef IsNull="True" />
-            <rotInteger>0</rotInteger>
-            <quality IsNull="True" />
-            <plantToGrowDef IsNull="True" />
-            <exportedStorageSettings IsNull="True" />
-            <compSettings IsNull="True" />
-          </li>
-        </things>
+        <things />
       </li>
       <li>
         <foundationDef>Substructure</foundationDef>
@@ -33230,17 +33100,7 @@
         <foundationStuff IsNull="True" />
         <terrainDef>CarpetMarine</terrainDef>
         <terrainStuff IsNull="True" />
-        <things>
-          <li>
-            <defName>RiverRock</defName>
-            <stuffDef IsNull="True" />
-            <rotInteger>0</rotInteger>
-            <quality IsNull="True" />
-            <plantToGrowDef IsNull="True" />
-            <exportedStorageSettings IsNull="True" />
-            <compSettings IsNull="True" />
-          </li>
-        </things>
+        <things />
       </li>
       <li>
         <foundationDef>Substructure</foundationDef>
@@ -33254,17 +33114,7 @@
         <foundationStuff IsNull="True" />
         <terrainDef>MetalTile</terrainDef>
         <terrainStuff IsNull="True" />
-        <things>
-          <li>
-            <defName>RiverRock</defName>
-            <stuffDef IsNull="True" />
-            <rotInteger>0</rotInteger>
-            <quality IsNull="True" />
-            <plantToGrowDef IsNull="True" />
-            <exportedStorageSettings IsNull="True" />
-            <compSettings IsNull="True" />
-          </li>
-        </things>
+        <things />
       </li>
       <li>
         <foundationDef>Substructure</foundationDef>
@@ -33593,34 +33443,14 @@
         <foundationStuff IsNull="True" />
         <terrainDef>CarpetMarine</terrainDef>
         <terrainStuff IsNull="True" />
-        <things>
-          <li>
-            <defName>RiverRock</defName>
-            <stuffDef IsNull="True" />
-            <rotInteger>0</rotInteger>
-            <quality IsNull="True" />
-            <plantToGrowDef IsNull="True" />
-            <exportedStorageSettings IsNull="True" />
-            <compSettings IsNull="True" />
-          </li>
-        </things>
+        <things />
       </li>
       <li>
         <foundationDef>Substructure</foundationDef>
         <foundationStuff IsNull="True" />
         <terrainDef>MetalTile</terrainDef>
         <terrainStuff IsNull="True" />
-        <things>
-          <li>
-            <defName>RiverRock</defName>
-            <stuffDef IsNull="True" />
-            <rotInteger>0</rotInteger>
-            <quality IsNull="True" />
-            <plantToGrowDef IsNull="True" />
-            <exportedStorageSettings IsNull="True" />
-            <compSettings IsNull="True" />
-          </li>
-        </things>
+        <things />
       </li>
       <li>
         <foundationDef>Substructure</foundationDef>
@@ -33965,17 +33795,7 @@
         <foundationStuff IsNull="True" />
         <terrainDef>CarpetMarine</terrainDef>
         <terrainStuff IsNull="True" />
-        <things>
-          <li>
-            <defName>RiverRock</defName>
-            <stuffDef IsNull="True" />
-            <rotInteger>0</rotInteger>
-            <quality IsNull="True" />
-            <plantToGrowDef IsNull="True" />
-            <exportedStorageSettings IsNull="True" />
-            <compSettings IsNull="True" />
-          </li>
-        </things>
+        <things />
       </li>
       <li>
         <foundationDef>Substructure</foundationDef>
@@ -34642,51 +34462,21 @@
         <foundationStuff IsNull="True" />
         <terrainDef>CarpetMarine</terrainDef>
         <terrainStuff IsNull="True" />
-        <things>
-          <li>
-            <defName>RiverRock</defName>
-            <stuffDef IsNull="True" />
-            <rotInteger>0</rotInteger>
-            <quality IsNull="True" />
-            <plantToGrowDef IsNull="True" />
-            <exportedStorageSettings IsNull="True" />
-            <compSettings IsNull="True" />
-          </li>
-        </things>
+        <things />
       </li>
       <li>
         <foundationDef>Substructure</foundationDef>
         <foundationStuff IsNull="True" />
         <terrainDef>CarpetMarine</terrainDef>
         <terrainStuff IsNull="True" />
-        <things>
-          <li>
-            <defName>RiverRock</defName>
-            <stuffDef IsNull="True" />
-            <rotInteger>0</rotInteger>
-            <quality IsNull="True" />
-            <plantToGrowDef IsNull="True" />
-            <exportedStorageSettings IsNull="True" />
-            <compSettings IsNull="True" />
-          </li>
-        </things>
+        <things />
       </li>
       <li>
         <foundationDef>Substructure</foundationDef>
         <foundationStuff IsNull="True" />
         <terrainDef>CarpetMarine</terrainDef>
         <terrainStuff IsNull="True" />
-        <things>
-          <li>
-            <defName>RiverRock</defName>
-            <stuffDef IsNull="True" />
-            <rotInteger>0</rotInteger>
-            <quality IsNull="True" />
-            <plantToGrowDef IsNull="True" />
-            <exportedStorageSettings IsNull="True" />
-            <compSettings IsNull="True" />
-          </li>
-        </things>
+        <things />
       </li>
       <li>
         <foundationDef>Substructure</foundationDef>
@@ -35015,17 +34805,7 @@
         <foundationStuff IsNull="True" />
         <terrainDef>MetalTile</terrainDef>
         <terrainStuff IsNull="True" />
-        <things>
-          <li>
-            <defName>RiverRock</defName>
-            <stuffDef IsNull="True" />
-            <rotInteger>0</rotInteger>
-            <quality IsNull="True" />
-            <plantToGrowDef IsNull="True" />
-            <exportedStorageSettings IsNull="True" />
-            <compSettings IsNull="True" />
-          </li>
-        </things>
+        <things />
       </li>
       <li>
         <foundationDef>Substructure</foundationDef>
@@ -45357,17 +45137,7 @@
         <foundationStuff IsNull="True" />
         <terrainDef>SterileTile</terrainDef>
         <terrainStuff IsNull="True" />
-        <things>
-          <li>
-            <defName>RiverRock</defName>
-            <stuffDef IsNull="True" />
-            <rotInteger>0</rotInteger>
-            <quality IsNull="True" />
-            <plantToGrowDef IsNull="True" />
-            <exportedStorageSettings IsNull="True" />
-            <compSettings IsNull="True" />
-          </li>
-        </things>
+        <things />
       </li>
       <li>
         <foundationDef>Substructure</foundationDef>
@@ -45405,17 +45175,7 @@
         <foundationStuff IsNull="True" />
         <terrainDef>MetalTile</terrainDef>
         <terrainStuff IsNull="True" />
-        <things>
-          <li>
-            <defName>RiverRock</defName>
-            <stuffDef IsNull="True" />
-            <rotInteger>0</rotInteger>
-            <quality IsNull="True" />
-            <plantToGrowDef IsNull="True" />
-            <exportedStorageSettings IsNull="True" />
-            <compSettings IsNull="True" />
-          </li>
-        </things>
+        <things />
       </li>
       <li>
         <foundationDef>Substructure</foundationDef>
@@ -45784,17 +45544,7 @@
         <foundationStuff IsNull="True" />
         <terrainDef>SterileTile</terrainDef>
         <terrainStuff IsNull="True" />
-        <things>
-          <li>
-            <defName>RiverRock</defName>
-            <stuffDef IsNull="True" />
-            <rotInteger>0</rotInteger>
-            <quality IsNull="True" />
-            <plantToGrowDef IsNull="True" />
-            <exportedStorageSettings IsNull="True" />
-            <compSettings IsNull="True" />
-          </li>
-        </things>
+        <things />
       </li>
       <li>
         <foundationDef>Substructure</foundationDef>
@@ -45808,17 +45558,7 @@
         <foundationStuff IsNull="True" />
         <terrainDef>SterileTile</terrainDef>
         <terrainStuff IsNull="True" />
-        <things>
-          <li>
-            <defName>RiverRock</defName>
-            <stuffDef IsNull="True" />
-            <rotInteger>0</rotInteger>
-            <quality IsNull="True" />
-            <plantToGrowDef IsNull="True" />
-            <exportedStorageSettings IsNull="True" />
-            <compSettings IsNull="True" />
-          </li>
-        </things>
+        <things />
       </li>
       <li>
         <foundationDef>Substructure</foundationDef>
@@ -45832,17 +45572,7 @@
         <foundationStuff IsNull="True" />
         <terrainDef>SterileTile</terrainDef>
         <terrainStuff IsNull="True" />
-        <things>
-          <li>
-            <defName>RiverRock</defName>
-            <stuffDef IsNull="True" />
-            <rotInteger>0</rotInteger>
-            <quality IsNull="True" />
-            <plantToGrowDef IsNull="True" />
-            <exportedStorageSettings IsNull="True" />
-            <compSettings IsNull="True" />
-          </li>
-        </things>
+        <things />
       </li>
       <li>
         <foundationDef>Substructure</foundationDef>
@@ -45867,15 +45597,6 @@
         <terrainDef>MetalTile</terrainDef>
         <terrainStuff IsNull="True" />
         <things>
-          <li>
-            <defName>RiverRock</defName>
-            <stuffDef IsNull="True" />
-            <rotInteger>0</rotInteger>
-            <quality IsNull="True" />
-            <plantToGrowDef IsNull="True" />
-            <exportedStorageSettings IsNull="True" />
-            <compSettings IsNull="True" />
-          </li>
           <li>
             <defName>PowerConduit</defName>
             <stuffDef IsNull="True" />
@@ -46294,17 +46015,7 @@
         <foundationStuff IsNull="True" />
         <terrainDef>SterileTile</terrainDef>
         <terrainStuff IsNull="True" />
-        <things>
-          <li>
-            <defName>RiverRock</defName>
-            <stuffDef IsNull="True" />
-            <rotInteger>0</rotInteger>
-            <quality IsNull="True" />
-            <plantToGrowDef IsNull="True" />
-            <exportedStorageSettings IsNull="True" />
-            <compSettings IsNull="True" />
-          </li>
-        </things>
+        <things />
       </li>
       <li>
         <foundationDef>Substructure</foundationDef>
@@ -46318,34 +46029,14 @@
         <foundationStuff IsNull="True" />
         <terrainDef>SterileTile</terrainDef>
         <terrainStuff IsNull="True" />
-        <things>
-          <li>
-            <defName>RiverRock</defName>
-            <stuffDef IsNull="True" />
-            <rotInteger>0</rotInteger>
-            <quality IsNull="True" />
-            <plantToGrowDef IsNull="True" />
-            <exportedStorageSettings IsNull="True" />
-            <compSettings IsNull="True" />
-          </li>
-        </things>
+        <things />
       </li>
       <li>
         <foundationDef>Substructure</foundationDef>
         <foundationStuff IsNull="True" />
         <terrainDef>MetalTile</terrainDef>
         <terrainStuff IsNull="True" />
-        <things>
-          <li>
-            <defName>RiverRock</defName>
-            <stuffDef IsNull="True" />
-            <rotInteger>0</rotInteger>
-            <quality IsNull="True" />
-            <plantToGrowDef IsNull="True" />
-            <exportedStorageSettings IsNull="True" />
-            <compSettings IsNull="True" />
-          </li>
-        </things>
+        <things />
       </li>
       <li>
         <foundationDef>Substructure</foundationDef>
@@ -46377,15 +46068,6 @@
         <terrainDef>MetalTile</terrainDef>
         <terrainStuff IsNull="True" />
         <things>
-          <li>
-            <defName>RiverRock</defName>
-            <stuffDef IsNull="True" />
-            <rotInteger>0</rotInteger>
-            <quality IsNull="True" />
-            <plantToGrowDef IsNull="True" />
-            <exportedStorageSettings IsNull="True" />
-            <compSettings IsNull="True" />
-          </li>
           <li>
             <defName>PowerConduit</defName>
             <stuffDef IsNull="True" />
@@ -46848,17 +46530,7 @@
         <foundationStuff IsNull="True" />
         <terrainDef>MetalTile</terrainDef>
         <terrainStuff IsNull="True" />
-        <things>
-          <li>
-            <defName>RiverRock</defName>
-            <stuffDef IsNull="True" />
-            <rotInteger>0</rotInteger>
-            <quality IsNull="True" />
-            <plantToGrowDef IsNull="True" />
-            <exportedStorageSettings IsNull="True" />
-            <compSettings IsNull="True" />
-          </li>
-        </things>
+        <things />
       </li>
       <li>
         <foundationDef>Substructure</foundationDef>
@@ -46872,51 +46544,21 @@
         <foundationStuff IsNull="True" />
         <terrainDef>MetalTile</terrainDef>
         <terrainStuff IsNull="True" />
-        <things>
-          <li>
-            <defName>RiverRock</defName>
-            <stuffDef IsNull="True" />
-            <rotInteger>0</rotInteger>
-            <quality IsNull="True" />
-            <plantToGrowDef IsNull="True" />
-            <exportedStorageSettings IsNull="True" />
-            <compSettings IsNull="True" />
-          </li>
-        </things>
+        <things />
       </li>
       <li>
         <foundationDef>Substructure</foundationDef>
         <foundationStuff IsNull="True" />
         <terrainDef>MetalTile</terrainDef>
         <terrainStuff IsNull="True" />
-        <things>
-          <li>
-            <defName>RiverRock</defName>
-            <stuffDef IsNull="True" />
-            <rotInteger>0</rotInteger>
-            <quality IsNull="True" />
-            <plantToGrowDef IsNull="True" />
-            <exportedStorageSettings IsNull="True" />
-            <compSettings IsNull="True" />
-          </li>
-        </things>
+        <things />
       </li>
       <li>
         <foundationDef>Substructure</foundationDef>
         <foundationStuff IsNull="True" />
         <terrainDef>MetalTile</terrainDef>
         <terrainStuff IsNull="True" />
-        <things>
-          <li>
-            <defName>RiverRock</defName>
-            <stuffDef IsNull="True" />
-            <rotInteger>0</rotInteger>
-            <quality IsNull="True" />
-            <plantToGrowDef IsNull="True" />
-            <exportedStorageSettings IsNull="True" />
-            <compSettings IsNull="True" />
-          </li>
-        </things>
+        <things />
       </li>
       <li>
         <foundationDef>Substructure</foundationDef>
@@ -47431,85 +47073,35 @@
         <foundationStuff IsNull="True" />
         <terrainDef>MetalTile</terrainDef>
         <terrainStuff IsNull="True" />
-        <things>
-          <li>
-            <defName>RiverRock</defName>
-            <stuffDef IsNull="True" />
-            <rotInteger>0</rotInteger>
-            <quality IsNull="True" />
-            <plantToGrowDef IsNull="True" />
-            <exportedStorageSettings IsNull="True" />
-            <compSettings IsNull="True" />
-          </li>
-        </things>
+        <things />
       </li>
       <li>
         <foundationDef>Substructure</foundationDef>
         <foundationStuff IsNull="True" />
         <terrainDef>MetalTile</terrainDef>
         <terrainStuff IsNull="True" />
-        <things>
-          <li>
-            <defName>RiverRock</defName>
-            <stuffDef IsNull="True" />
-            <rotInteger>0</rotInteger>
-            <quality IsNull="True" />
-            <plantToGrowDef IsNull="True" />
-            <exportedStorageSettings IsNull="True" />
-            <compSettings IsNull="True" />
-          </li>
-        </things>
+        <things />
       </li>
       <li>
         <foundationDef>Substructure</foundationDef>
         <foundationStuff IsNull="True" />
         <terrainDef>MetalTile</terrainDef>
         <terrainStuff IsNull="True" />
-        <things>
-          <li>
-            <defName>RiverRock</defName>
-            <stuffDef IsNull="True" />
-            <rotInteger>0</rotInteger>
-            <quality IsNull="True" />
-            <plantToGrowDef IsNull="True" />
-            <exportedStorageSettings IsNull="True" />
-            <compSettings IsNull="True" />
-          </li>
-        </things>
+        <things />
       </li>
       <li>
         <foundationDef>Substructure</foundationDef>
         <foundationStuff IsNull="True" />
         <terrainDef>MetalTile</terrainDef>
         <terrainStuff IsNull="True" />
-        <things>
-          <li>
-            <defName>RiverRock</defName>
-            <stuffDef IsNull="True" />
-            <rotInteger>0</rotInteger>
-            <quality IsNull="True" />
-            <plantToGrowDef IsNull="True" />
-            <exportedStorageSettings IsNull="True" />
-            <compSettings IsNull="True" />
-          </li>
-        </things>
+        <things />
       </li>
       <li>
         <foundationDef>Substructure</foundationDef>
         <foundationStuff IsNull="True" />
         <terrainDef>MetalTile</terrainDef>
         <terrainStuff IsNull="True" />
-        <things>
-          <li>
-            <defName>RiverRock</defName>
-            <stuffDef IsNull="True" />
-            <rotInteger>0</rotInteger>
-            <quality IsNull="True" />
-            <plantToGrowDef IsNull="True" />
-            <exportedStorageSettings IsNull="True" />
-            <compSettings IsNull="True" />
-          </li>
-        </things>
+        <things />
       </li>
       <li>
         <foundationDef>Substructure</foundationDef>
@@ -52277,17 +51869,7 @@
         <foundationStuff IsNull="True" />
         <terrainDef>MetalTile</terrainDef>
         <terrainStuff IsNull="True" />
-        <things>
-          <li>
-            <defName>Wall</defName>
-            <stuffDef>WoodLog</stuffDef>
-            <rotInteger>0</rotInteger>
-            <quality IsNull="True" />
-            <plantToGrowDef IsNull="True" />
-            <exportedStorageSettings IsNull="True" />
-            <compSettings IsNull="True" />
-          </li>
-        </things>
+        <things />
       </li>
       <li>
         <foundationDef>Substructure</foundationDef>
