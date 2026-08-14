@@ -127,3 +127,75 @@ options `{Toughspike, Trispike}`. Never Fingerspike.** So:
    **what the adult Sarlacc spawns cannot be established offline.** It is the
    centrepiece of the sarlacc line and the one part of it nobody can read.
    **Live check, next session.**
+
+---
+
+## E. BIOMES — owner's verdicts, 2026-08-14. **29 REMOVE, 4 explicit KEEP.**
+
+**Every defName resolved against the live def dump. Source mod given because
+several removals are duplicates of each other under different names.**
+
+### REMOVE
+
+| defName | label | mod |
+|---|---|---|
+| `ZBiome_CoastalDunes` | coastal dunes | More Vanilla Biomes |
+| `ZBiome_Sandbar_NoBeach` | sandbar | More Vanilla Biomes |
+| `ZBiome_Iceberg_NoBeach` | ice floes | More Vanilla Biomes |
+| `SeaIce` | sea ice | **Core** |
+| `ZBiome_Marsh` | marsh | More Vanilla Biomes |
+| `TropicalRainforest` | tropical rainforest | **Core** |
+| `ColdBog` | cold bog | **Core** |
+| `COMIGO_GreaterSwamp_Cold` | greater cold bog | Comigo's Greater Swamps |
+| `COMIGO_GreaterSwamp_Temperate` | greater temperate swamp | Comigo's Greater Swamps |
+| `TemperateSwamp` | temperate swamp | **Core** |
+| `TropicalSwamp` | tropical swamp | **Core** |
+| `Wetland` | wetland | Advanced Biomes (Continued) |
+| `Labyrinth` | labyrinth | **Anomaly** |
+| `MetalHell` | metal hell | **Anomaly** |
+| `Savanna` | savanna | Advanced Biomes (Continued) |
+| `ZBiome_Grasslands` | ⚠️ **stormy savanna** | More Vanilla Biomes |
+| `Grasslands` | ⚠️ **grassland** | **Odyssey** |
+| `AB_GelatinousSuperorganism` | gelatinous superorganism | Alpha Biomes |
+| `AB_IdyllicMeadows` | idyllic meadows | Alpha Biomes |
+| `TemperateForest` | temperate forest | **Core** |
+| `GlacialPlain` | glacial plain | **Odyssey** |
+| `AG_NereidPocketPlane` | nereid pocket plane | Alpha Genes |
+| `AG_PocketPlane` | pocket plane | Alpha Genes |
+| `ZBiome_AlpineMeadow` | alpine meadow | More Vanilla Biomes |
+| `BorealForest` | boreal forest | **Core** |
+| `ZBiome_CloudForest` | cloud forest | More Vanilla Biomes |
+| `ZBiome_GlacialShield` | glacial shield | More Vanilla Biomes |
+| `IceSheet` | ice sheet | **Core** |
+| `Tundra` | tundra | **Core** |
+
+⚠️ **"Stormy savanna" and "grassland" are two different defs in two different
+mods** — `ZBiome_Grasslands` is *labelled* "stormy savanna" and Odyssey's
+`Grasslands` is *labelled* "grassland". **Both are on the list; do not resolve
+either by label.**
+
+### KEEP — explicit, with placement
+
+| defName | label | why it survives |
+|---|---|---|
+| `RG_BoilingForest` | boiling forest | **Hold until we can explore it.** Not endorsed, not cut |
+| `AB_TarPits` | tar pits | **Hold until explored** — and it is the donor for the tar-pit augmentation |
+| `AB_PropaneLakes` | propane lakes | ⭐ **Place along the terminator, before it turns fully into forsaken crags.** A chemical margin between twilight and permanent night |
+| `AB_MechanoidIntrusion` | mechanoid intrusion | ⭐ **The Forgotten Arsenal's home.** The owner named it — this is where the Forsakens' automata are |
+
+### Three consequences worth stating
+
+1. ⭐ **Every surviving jungle and marsh is ALIEN.** Vanilla's rainforest and all
+   three vanilla swamps are gone, so what the Wildsteam Clan lives in is
+   `AB_FeraliskInfestedJungle`, `AB_MycoticJungle` and `AB_MiasmicMangrove`.
+   **The wet places are not Earth-like — they are wrong, and that is now
+   structural rather than decorative.**
+2. ⚠️ **`COMIGO_GreaterSwamp_Tropical` was NOT named and survives.** Cold and
+   temperate were cut; tropical was not. **Assuming that is deliberate** — it is
+   the one conventional marsh left, and it fits the river country. **Flagging so
+   it is a decision rather than an oversight.**
+3. ⚠️ **`SeaIce` is being removed, and it was our worked example.** It is
+   vanilla's proof that a **water-covered tile can be settleable and
+   map-generating** — the template for anything that goes on or under water.
+   **Removing the biome is fine; do not lose the knowledge.** It is recorded in
+   `hiding_the_gravship.md`.
