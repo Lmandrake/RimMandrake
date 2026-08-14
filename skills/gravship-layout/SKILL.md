@@ -34,8 +34,8 @@ README says floors cannot be saved, and that is false**: our v1 export carries
 | `gravEngineX/Z` are layout-local | **MEASURED** — map (126,149) → file (45,92) |
 | the three export dialogs | **MEASURED** — driven live via the bridge |
 | the file paths | **READ OFF THE GAME'S OWN POPUP**, not inferred |
-| **how a layout is IMPORTED** | 🔴 **UNPROVEN — see "Loading" below** |
-| `quality`, `compSettings`, `exportedStorageSettings` shapes | **NEVER OBSERVED POPULATED** — always `IsNull="True"` in our export |
+| how a layout is IMPORTED | **READ AT SOURCE** — scenario-side only; see "Loading" |
+| `quality`, `compSettings`, `exportedStorageSettings` shapes | **READ AT SOURCE** — declared in `ShipThingEntry.cs` / `StorageSettingsSnapshot.cs`, never populated in our own export |
 
 **Do not restate what other skills own.** `.rws` anatomy and the grid codec are
 `skills/rimworld-savegame/`; the bridge call surface and its traps are
@@ -163,29 +163,81 @@ C:\Users\Mandrake\AppData\LocalLow\Ludeon Studios\RimWorld by Ludeon Studios\Con
 **Read the screen before searching the disk.** The popup names the folder; a
 `find` across the user profile is slower and less certain.
 
-## Loading a layout — 🔴 UNPROVEN, do not assume
+## Loading a layout
 
-**Everything above is measured. This is not.** What was checked, all negative:
+🔴 **Stop looking for an import gizmo. There is none, and that is deliberate.**
+Import happens **only at new-game setup**, and the author says so in his README:
+*"I won't be adding any major features like delayed ship spawning etc."*
 
-- The grav engine's gizmos are Claim, Deconstruct, Select Blueprint, Selection
-  tools, Edit item, Set Rotation, Place Blueprint, Deactivate Engine, Inspect,
-  Export Gravship Layout. **There is no Import.** "Select Blueprint" opens
-  nothing and is believed to belong to a different mod.
-- `rimworld/search_debug_actions` for `gravship`, `layout` and `ship` returns
-  **zero** hits.
-- **`ShipLayoutDefV2` is not in the live def dump**, so it is not loaded as a
-  Def at game start despite carrying `defName`/`label`. The mod reads these
-  files at runtime from somewhere else.
+Source, at
+`C:\Program Files (x86)\Steam\steamapps\workshop\content\294100\3576790938\1.6\Source\GravshipExport\`
+(read directly — the mod ships its source, and its licence permits use and
+adaptation):
 
-Two hand-authored ships are already sitting in `Config/GravshipExport`
-(`JawaTestSled.xml` 9×9, `JawaTestBarge.xml` 22×16) waiting for whoever settles
-this. **The next step is to read Gravship Exporter's own source for its import
-entry point** — CREATE has read it and has been asked.
+| what | where |
+|---|---|
+| scenario page inserted | `Setup/Patch_Scenario_GetFirstConfigPage.cs:9` — Postfix on `Scenario.GetFirstConfigPage` puts `Page_ChooseGravship` **after** `Page_CreateWorldParams`, only when the scenario's arrival method is gravship |
+| your pick materialised | `HarmonyPatch_DoGravship` on `ScenPart_PlayerPawnsArriveMethod.DoGravship` |
+| where files are read | `Settings/ShipManager.cs:14` — `Path.Combine(GenFilePaths.ConfigFolderPath, "GravshipExport")` |
+| how they are read | `:41` `Directory.GetFiles(ExportFolder, "*.xml")` → `:45` `DirectXmlLoader.ItemFromXmlFile<ShipLayoutDefV2>(file)` |
+| floors re-applied on arrival | `Exporter/GravshipExporter.cs:182-184` captures non-substructure terrain; `HarmonyPatch_DoGravship.cs:~157` re-applies via `terrainGrid.SetTerrain` |
 
-⚠️ Until the import route is proven, **a hand-authored layout is an unvalidated
-artifact.** Round-tripping through this library proves our parser agrees with
-itself, *not* that RimWorld will accept the file. Do not ship a hand-written
-ship as done until one has been loaded in-game and looked at.
+**This is why `ShipLayoutDefV2` is absent from the def dump and that absence was
+correct evidence, not a failed search** — it is never registered as a Def. It is
+deserialised from loose files at runtime, which is also why dropping a
+hand-written XML into that folder is enough to make it selectable: no mod, no
+`About.xml`, no restart-into-Defs dance. Just the file.
+
+**So the round trip is: author → drop in `Config/GravshipExport` → start a new
+game with a gravship-arrival scenario → the ship appears on the choose page.**
+
+### The mid-game import button does not exist yet, and it is ours to build
+
+`Importer/ShipSketchBuilder.cs:14` is a **`public static class`** and `:24`
+exposes **`public static Sketch BuildFromLayout(ShipLayoutDefV2 layout)`**
+(verified: the file also holds `public static ShipLayoutDefV2 CurrentLayout` and
+`public static Sketch CurrentSketch`). A `Sketch` spawns onto a live map. So
+mid-game import is a small companion tool calling one public method — not a
+reimplementation of anything.
+
+**Is it reachable outside a scenario start? YES — checked, not assumed.**
+`BuildFromLayout`'s file contains **zero** references to `Find.`, `Current.`,
+`GameInitData`, `Scenario` or `Map`. It is a pure function: layout in, `Sketch`
+out, resolving defs through `DefDatabase` and its own caches. The scenario page
+is its only *caller*, not a constraint on it. So the difference between a
+one-shot and an offline design loop is a call we have not written yet.
+
+⚠️ **One real catch for a mid-game spawn.** Terrain is not re-applied by
+`BuildFromLayout`. Floors land during arrival via
+`HarmonyPatch_DoGravship.cs:~157` (`terrainGrid.SetTerrain`), and **that patch
+does not run when you spawn a Sketch mid-game** — so a mid-game import would
+produce the structure with no floors. Fix is already in our hands: replay the
+layout's `terrainDef` cells through `jawa/set_terrain_batch` after the spawn.
+`gravship_layout.py` can emit those ops straight from the file.
+
+That is a BRIDGE job, queued as **B-v2** in
+`infrastructure/state/queue/BRIDGE.md`. Until it exists, a layout can only enter
+the game at world creation.
+
+### Fields this project has never seen populated
+
+Declared in the mod's own model classes rather than inferred from our one
+export, where all of them are `IsNull="True"`:
+
+- `ShipThingEntry.cs` — `string defName`, `string stuffDef`, `int rotInteger`,
+  `string quality`, `string plantToGrowDef`,
+  `StorageSettingsSnapshot exportedStorageSettings`,
+  `List<CompSettingsSnapshot> compSettings`
+- `StorageSettingsSnapshot.cs` — `string priority`, `List<string>
+  allowedThingDefs / allowedCategories / allowedStuffCategories`,
+  `FloatRange? hitpointsRange`, `FloatRange? mentalBreakRange`,
+  `QualityRange? qualityRange`, `Dictionary<string,bool> specialFilterStates`
+- `ShipCell.cs` — `foundationDef`, `foundationStuff`, `terrainDef`,
+  `terrainStuff`, `List<ShipThingEntry> things`
+
+⚠️ **A layout this library accepts is still not one the game has accepted.**
+Round-tripping proves our parser agrees with itself. Do not call a hand-written
+ship done until one has been through the choose-gravship page and looked at.
 
 ## Why the file beats the build
 

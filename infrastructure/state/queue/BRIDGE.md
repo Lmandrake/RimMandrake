@@ -293,3 +293,32 @@ author XML → import onto a live quicktest → look → iterate, with no restar
 
 ⚠️ Sequence it against v1: row 8 is 3/4 and does **not** need this. This is what
 makes the *next* twenty iterations cheap, so it is leverage, not a blocker.
+
+---
+
+### B-v2. `jawa/import_gravship` — mid-game layout import `[v2]`
+The missing button. Gravship Exporter imports **only at new-game setup**
+(`Page_ChooseGravship`, inserted after `Page_CreateWorldParams`), by design —
+the author says so in his README. But the builder underneath it is public and
+pure.
+
+**Why this is small:**
+`Importer/ShipSketchBuilder.cs:14` is a `public static class`; `:24` is
+`public static Sketch BuildFromLayout(ShipLayoutDefV2 layout)`. Checked at
+source: that file references **no** `Find.`, `Current.`, `GameInitData`,
+`Scenario` or `Map` — it is layout in, `Sketch` out. A `Sketch` spawns onto a
+live map with vanilla API. So the tool is: read the XML, call one public
+method, spawn.
+
+Source (mod ships it; licence permits use and adaptation):
+`C:\Program Files (x86)\Steam\steamapps\workshop\content\294100\3576790938\1.6\Source\GravshipExport\`
+
+⚠️ **Floors will NOT come with it.** Terrain is re-applied by
+`HarmonyPatch_DoGravship.cs:~157` during arrival, and that patch does not run
+for a mid-game Sketch spawn. Replay the layout's `terrainDef` cells through
+`jawa/set_terrain_batch` afterwards — `src/RimMandrake/Utils/gravship_layout.py`
+already parses them and can emit the ops.
+
+**Payoff:** closes the design loop. Author a ship offline, import it, look at
+it, edit the file, re-import — no worldgen, no 25-minute load per iteration.
+Blocked on a deploy, which needs the game DOWN.
