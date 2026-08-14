@@ -391,20 +391,42 @@ Nobody "does" a refusal — it is a colony-level event with no doer. Vanilla's t
 `Charity_*` precepts use `KnowsMemoryThought` for every `CharityRefused_*` binding
 and never `SelfTook`. Copy that, or the thought lands on nobody.
 
-**The comp vocabulary that exists in this build** (24 subclasses, 1091 instances,
-counted across all 685 dumped precepts) — the four that matter here:
+**The comp vocabulary.** `Assembly-CSharp.dll` declares **16** whole-line
+`PreceptComp` types — 1 abstract base and 15 subclasses. Twelve more are added by
+mods, **all but one active** (Alpha Memes 2, VE Memes 3, More Precepts 3, VVE 3,
+AP Hunting 1; `Xenomorphtype.PreceptComp_WitnessedAction` is on disk but not in
+`ModsConfig.xml`). ⚠️ `PreceptComp_Apparel` and `PreceptComp_Thought` are used in no
+XML anywhere and appear to be abstract bases — **do not put them in `Class=`**.
+`PreceptComp_GoodwillSituation` has zero usages on this machine and its child
+element is **UNVERIFIED**.
 
-| class | uses | what it needs | use it for |
+The four that matter here — *uses counted across vanilla `Data\` XML only*, not the
+whole build:
+
+| class | vanilla uses | what it needs | use it for |
 |---|---|---|---|
-| `PreceptComp_KnowsMemoryThought` | 298 | `eventDef` + `thought`; optional `description`, `removesThought`, `onlyForNonSlaves`, `doerMustBeMyIdeo` | **everyone reacts to a thing that happened** ← ours |
-| `PreceptComp_SelfTookMemoryThought` | 234 | same | the pawn who performed the act |
-| `PreceptComp_SituationalThought` | 345 | `thought` + optional `description` / `thoughtStageDescriptions`; **no event** | a standing condition (e.g. "slaves in colony") |
-| `PreceptComp_DevelopmentPoints` | 56 | `eventDef` + `points` + optional `eventLabel` | ideoligion development on the player's ideo |
+| `PreceptComp_KnowsMemoryThought` | 188 | `eventDef` + `thought`; optional `description`, `removesThought`, `onlyForNonSlaves`, `doerMustBeMyIdeo` | **everyone reacts to a thing that happened** ← ours |
+| `PreceptComp_SituationalThought` | 151 | `thought` + optional `description` / `thoughtStageDescriptions` / `tooltipShowMoodRange`; **no event** | a standing condition (e.g. "slaves in colony") |
+| `PreceptComp_SelfTookMemoryThought` | 99 | `eventDef` + `thought`; optional `description`, `onlyForNonSlaves` | the pawn who performed the act |
+| `PreceptComp_DevelopmentPoints` | 21 | `eventDef` + `points`; optional `eventLabel` | ideoligion development on the player's ideo |
 
-All take `eventDef` **singular**; no `eventDefs` plural form exists in this build.
-`PreceptComp_UnwillingToDo` (61) also takes a singular `eventDef` — **it is the
-wrong tool here**, because there is no "gave alms" event a pawn performs that it
-could refuse.
+`eventDef` and `thought` are present on **100%** of the uses of the comps that take
+them — treat both as required. Everything else is optional.
+
+🔴 **`eventDefs` (plural) does not exist** — zero occurrences in vanilla XML, zero
+across all 1,246 workshop mods, and no string in the assembly's `#Strings` heap
+*ends* in `eventDefs` (the suffix test, which is the one that counts — see the
+`agreeableTraits` note in §5). **To react to N events you write N `<li>` entries.**
+
+`PreceptComp_UnwillingToDo` (31 vanilla uses) also takes a singular `eventDef` —
+**it is the wrong tool here**, because there is no "gave alms" event a pawn performs
+that it could refuse.
+
+⭐ **Worth knowing for later, not used here:**
+`VanillaMemesExpanded.PreceptComp_DisableIncident` (active) can switch an incident
+off from a precept — note its child element is a **capital-I `<Incident>`**. The
+Unearned wants *more* beggars, not fewer, so we do not use it; but it is the tool if
+the owner ever wants a faith that never sees them.
 
 ### 6.3 The thoughts
 
