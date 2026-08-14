@@ -74,6 +74,35 @@ the catch). All 24 keys re-validated for shape; zero malformed.
 silently drop my three keys.** Until they fold them into the generator, a
 regeneration re-breaks the scarcity gate **with a clean log.**
 
+### 🔴 MOD-LIST CONSTRAINTS that must survive every future re-sort
+
+**Check these after ANY RimSort sort. They are silent when broken.**
+
+| constraint | current | why |
+|---|---|---|
+| `owlchemist.cherrypicker` **near the TOP** | **@10** ✅ | Author's changelog: *"near the top… so it can process def removals before mods initialize."* `StaticConstructorOnStartup` order follows LOAD order, so any mod caching def lists in its own cctor caches them **before** Cherry Picker neuters anything. **A late position degrades removals silently — no error.** |
+| `oskarpotocki.vanillafactionsexpanded.core` **AFTER** cherrypicker | **@19** ✅ | Named by the author: VEF's recipe inheritance breaks if it loads first. |
+| `mandrake.rimdefdump` **LAST** | @584 ✅ | A dumper that is not last describes a game that is not the one running. |
+| GravTech trio **after** `vanillaexpanded.gravship` | 575–577 vs **@378** ✅ | Four turret buildings are `ParentName` children of `VGE_Gravship*Base`. A missed parent is a **red error**, not silent. |
+| `mandrake.jawa.armoury` **after** `als.gravtech.bc` | @578 vs @576 ✅ | So our weapon patches can reach the cannons. |
+
+🔴 **RIMSORT CLOBBERED THE WHOLE BATCH ONCE ALREADY, 2026-08-14 00:20:35.** A Save
+wrote its **stale in-memory view**: dropped the GravTech trio and
+`jawaseashaper`, restored `missingartfixes`, and added the owner's two
+`7f.alienworlds` mods. **I merged rather than reverted**, so the owner's addition
+survived. Snapshots both sides in `deployed/config/`.
+
+**The lesson, and it corrects something I wrote earlier today:** *"the game being
+down"* buys **no exclusivity at all** on this file. Only the mtime check does —
+and an mtime guard aborts on a change **during** a write, not on one that lands
+**between** two of your batches. **Re-read and re-verify at the end, not just at
+the start.** I found this only because I re-checked before saying "ready".
+
+⚠️ **Anchor traps when inserting:** *"insert before the first `mandrake.` entry"*
+put the GravTech trio at **@91, before VGE @381**, because the re-sort had moved a
+`mandrake.` mod early. **Anchor on the mod the constraint actually names**, never
+on a naming convention — and always assert the ordering after writing.
+
 ### 🔴 The one thing a successor must not re-derive
 
 **`observed/2026-08-13/load_expected_signatures.md` was written BEFORE the launch,
