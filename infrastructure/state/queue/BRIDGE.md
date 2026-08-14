@@ -101,6 +101,38 @@ patched into any other biome". `Patches\JawaResource_Scrapfields.xml:56-59` adds
 the GenStep to `MapGeneratorDef[Base_Player]` with no biome filter. A scrapfield
 on a non-desert quicktest is not a bug, and row 4's #3 does not need a desert.
 
+#### Part 1 pre-flight — 11 of 13 names correct, 6 defects sent to CREATE
+
+Checked against `observed\2026-08-13\dumps\defnames.580.2026-08-13.json` plus a
+full-disk `<defName>` sweep. Only what changes what you do:
+
+- 🔴 **`ToolBelt` DOES NOT EXIST** — zero hits anywhere. The def is
+  **`VAEA_Apparel_ToolBelt`**,
+  `...\294100\2521176396\1.6\Defs\ThingDefs_Misc\Apparel_Utility.xml:531`.
+  ⚠️ Both it and Survival Tools' rival are labelled *"tool belt"*, so **the
+  label is ambiguous — spawn by defName.**
+- 🔴 **The four RR research kits are APPAREL.** The fix replaces
+  `wornGraphicPath` (`Apparel_FieldKits.xml:62`); the ground `texPath` (`:51`)
+  is one directionless PNG. **A kit on the ground exercises none of the fixed
+  art — it must be WORN by a pawn facing east.**
+  ⚠️ There is **no apparel tool on the bridge.** The only route is
+  `rimworld/select_pawn` then the `Actions\Wear apparel (selected)...` debug
+  action, which works on **player colonists only** — so spawn the wearer with
+  `jawa/spawn_pawn faction=player`.
+- `AV_DogSled` is a `Vehicles.VehicleDef`, not a ThingDef — `spawn_thing` may
+  not construct it. Its brown is a **def patch**
+  (`DesertVehicleReskin\Patches\DogSledTint_Brown.xml`, `graphicData/color`
+  → `(99,65,24)`), so a grey sled means the patch, not the art.
+- `VGE_Astronaut` has two lifeStages sharing one maskPath and only the
+  double-r `Astrronaut` files were typo'd — a spawn on lifeStage 0 can pass on
+  art that was never broken. Shoot an adult.
+- The plan's C12 double-ship warning is **stale and names the wrong mod**. The
+  real overlap was `MissingArtFixes`, all seven pairs **md5-identical**, and it
+  is now inactive. **Load order is not the suspect if rows 4 or 7 look wrong.**
+- **ModsConfig moved at 23:18 — 581 active, ten art-fix mods live**; the plan's
+  table covers eight. `phytokinbarkheadfix` and `kotorbandoliernorthfix` are
+  active and deployed but untabled.
+
 Pre-flighted offline 2026-08-13, two findings sent to CREATE:
 - 🔴 **line 118 names the wrong parameter** — `jawa/set_terrain` takes
   `terrainDef`, not `def`. The bridge drops unknown params silently, so as
