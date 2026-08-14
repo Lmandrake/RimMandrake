@@ -254,3 +254,61 @@ the corpus**, so this is a hypothesis, not a finding.
 runtime is installed, and a bare env var does **not** cross into the Windows
 process without `WSLENV`). Types are under their real namespace —
 `RimWorld.PawnComponentsUtility`, `Verse.PawnGenerator`.
+
+---
+
+# ✅ CONFIRMED IN THE LIVE GAME — 2026-08-14, L4. The chain holds, and the frame is sharper than we had it.
+
+**Test (BRIDGE fired it, OPS validated it):** `jawa/spawn_pawn kindDef=KotORDroidGood_3C`, twice, same def, `ticksGame 1`.
+- **#1** → ok, `"3C-W3"`, id `guy762_DroidRace_3Cseries33260`.
+- **#2** → `success:false`, `spawnedCount 0`, `failedCount 1`, `NullReferenceException`.
+
+**Prediction was "the 2nd same-def droid must NRE". It did. Predicted value = true value.**
+
+## Attribution is airtight, and this is why
+
+🔴 **`grep -c "GeneratePawnRelations"` over `Player.log` was **0** before any spawn**
+(measured by OPS at the main menu, after `harvest_log.py` and before the bridge
+mutated anything) **and is 9 after.** The two deliberate spawns are the only
+pawn-generation events between those two readings. **This is the positive
+observation, not an absence-of-error argument.**
+
+## The exact frame — name THIS, not "a relations NRE"
+
+`Player.log:6854-6860`:
+
+```
+Error while generating pawn. Rethrowing. Exception: System.NullReferenceException
+  at AlienRace.HarmonyPatches.GenerationChanceGenderless (PawnRelationDef, Pawn pawn,
+        Pawn current, PawnGenerationRequest) [0x00195]  HarmonyPatches.cs:2669
+  at AlienRace.HarmonyPatches+<>c__DisplayClass165_0.<GeneratePawnRelationsPrefix>b__2
+        (KeyValuePair`2[TKey,TValue] x)                 HarmonyPatches.cs:2615
+  at Verse.GenCollection.RandomElementByWeightWithDefault[T] (...)
+  at AlienRace.HarmonyPatches.GeneratePawnRelationsPrefix (...) HarmonyPatches.cs:2614
+  at Verse.PawnGenerator.GeneratePawnRelations (...)
+```
+
+⭐ **The throw is in the WEIGHT SELECTOR, iterating pawns that already exist.** HAR's
+prefix runs `RandomElementByWeightWithDefault` over a collection and calls
+`GenerationChanceGenderless(relationDef, pawn, current, request)` per candidate. With
+zero same-race pawns on the map the collection is empty and nothing is dereferenced —
+**which is exactly why the first spawn is always clean.** The second spawn iterates the
+first, and it is **`current`** — the already-spawned droid — whose missing
+`Pawn_RelationsTracker` is dereferenced.
+
+## What this changes for the owner's three routes
+
+- 🔴 **The victim is the OTHER pawn, not the one being generated.** Any fix must give
+  the tracker to **every** such pawn already on the map, not merely to the pawn under
+  construction. **Route 2 (~5 lines of Harmony, tracker for Humanlike regardless of
+  `IsFlesh`) is consistent with this frame** — it is a per-pawn construction fix, so it
+  covers `current` too. **A fix applied only at the generation site would not.**
+- **Route 1 and route 3 are unaffected** by this detail.
+- ⚠️ It also means **the bug scales with population**: one droid on a map is harmless,
+  and every subsequent same-race droid throws. A RogueDroids raid is exactly the shape
+  that triggers it.
+
+**O12's evidence phase is CLOSED. The remaining block is the owner's route choice —
+still unmade, and nobody should read a preference into this file.**
+
+⚠️ Litter from the test: one hostile droid alive at (0,0), game paused. BRIDGE's map.

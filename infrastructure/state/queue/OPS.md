@@ -303,3 +303,20 @@ first, so **every tool NRE'd at the main menu, in response construction, after t
 lookup had already succeeded.** Fixing it makes **def reads possible with no game
 loaded**, which is a class of check we have been paying map prices for. Measured live
 by BRIDGE, not read off IL.
+
+## ✅ L4 / O12 — EVIDENCE PHASE CLOSED. Chain confirmed live, frame is sharper than recorded.
+
+Write-up appended to `D:\Luke\dev\Rimworld\observed\2026-08-14_O12_har_pawngen_nre.md`.
+2nd same-def droid NRE'd as predicted. **Attribution airtight: `GeneratePawnRelations`
+was 0 in the log before any spawn and 9 after**, with the two deliberate spawns the only
+generation events between — a positive observation, not an absence argument.
+
+🔴 **The throw is `AlienRace.HarmonyPatches.GenerationChanceGenderless` (HarmonyPatches.cs:2669),
+inside the weight selector iterating pawns that ALREADY EXIST.** ⇒ the pawn whose
+`Pawn_RelationsTracker` is missing is **`current`, the previously-spawned droid** — not
+the one being generated. That is why spawn #1 is always clean: empty collection, nothing
+dereferenced. ⇒ **a fix at the generation site alone would not cover `current`; route 2
+would, because it fixes per-pawn construction.** Bug scales with population — a
+RogueDroids raid is precisely the trigger shape.
+
+**Still blocked on the owner's route choice. No seat should read a preference into it.**
