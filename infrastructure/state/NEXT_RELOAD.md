@@ -564,6 +564,30 @@ it there.
 
 ---
 
+## 🔧 AFTER THE LOAD — two carry-ins, neither blocking, both easy to lose
+
+Recorded here because both were established in peer messages minutes before
+launch, and a message is not a durable record.
+
+**1. Pin the six User Rules — durability, not correctness.** `loadBottom` and
+`loadAfter` in the same rule means `loadBottom` wins and the `loadAfter` list is
+ignored. Six of our thirteen carry both: `jawa.patches`, `jawa.armoury`,
+`jawa.doctrine`, `jawavoice`, `jawaionweapons`, `rimdefdump`.
+✅ **Today's order is CORRECT anyway** — OPS tested the real order rather than
+rule theory: 0 violations across all 13, and `jawa.patches` @576 sits below all
+11 of its targets. The three mods loading after it are targeted by no op we own.
+⚠️ **But it is riding the topological tie-break, not being pinned.** It is right
+by luck and will stay right only until the tie-break shifts. **Fix after the
+load; editing six rules minutes before a 25-minute cold load was the riskier
+move, and OPS was right to refuse.** OPS's, post-load.
+
+**2. The def dump is stale — it describes 573 mods and you launched 580.**
+`defnames.573`, the manifests, and every generated patch describe a game that no
+longer exists. **Run `python3 src/RimMandrake/Utils/refresh.py` after the load**
+before trusting any offline def lookup. OPS's.
+
+---
+
 ## 📋 After the load — harvest the WHOLE log
 
 ```bash
