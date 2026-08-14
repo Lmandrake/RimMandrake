@@ -81,6 +81,7 @@ the one asked.**
 - One wrong operator became a week-long "impossible" claim
 - `jawa/get_def` returns `extra: null` for def types it does not model, and it reads as "absent"
 - A grep over `Data/` proves no shipped def uses a field — never that the engine ignores it
+- A check that CANNOT run must fail loud — a benign verdict from a blind instrument is the worst outcome
 - `ls -la` columns mean different things per row
 - A deploy check compared the commit, not the tool surface
 - The interpreter, not the data, rewrote 13,158 rows
