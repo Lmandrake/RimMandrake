@@ -77,64 +77,33 @@ THINGDEF_OK_CATEGORIES = {1, 2, 3, 4, "Pawn", "Item", "Building", "Plant"}
 # Resolved in design/Jawa/worldbuilding/cherrypick_resolved.md. Every entry is
 # there with the evidence for why it is that type and not another.
 KEYS = [
-    # --- shamblers. There is NO Shambler race and NO Shambler PawnKindDef; it
-    # is a MutantDef, which Cherry Picker cannot reach. Four incidents raise
-    # them and two kinds are what get raised.
-    "IncidentDef/ShamblerAssault",
-    "IncidentDef/ShamblerSwarm",
-    "IncidentDef/SmallShamblerSwarm",
-    "IncidentDef/ShamblerSwarmAnimals",
-    "PawnKindDef/ShamblerSoldier",
-    "PawnKindDef/ShamblerSwarmer",
-
-    # --- ghouls. Three keys: the kind, the surgery that makes one, and the
-    # incident that sends them at you.
-    "PawnKindDef/Ghoul",
-    "RecipeDef/GhoulInfusion",
-    "IncidentDef/GhoulAttack",
-
-    # --- metalhorror. The kind alone leaves the arrival intact.
-    "PawnKindDef/Metalhorror",
-    "IncidentDef/CreepJoinerJoin_Metalhorror",
-
-    # --- trispike. The death-spawn half is NOT a pick — Jawa_Patches'
-    # Fleshbeast_TrispikeCull.xml strikes it from Bulbfreak's and Dreadmeld's
-    # divide lists, because a neutered kind is still summonable by name.
-    "PawnKindDef/Trispike",
-
-    # --- objects. Both obelisks exist as a ThingDef AND an IncidentDef of the
-    # same name; the type segment is what tells them apart, so both are needed.
-    "ThingDef/GoldenCube",
-    "ThingDef/WarpedObelisk_Duplicator",
-    "IncidentDef/WarpedObelisk_Duplicator",
-    "ThingDef/WarpedObelisk_Abductor",
-    "IncidentDef/WarpedObelisk_Abductor",
-    "ThingDef/RevenantSpine",
-    "ThingDef/VoidNode",
-
-    # --- ⛔ THE TWO FLESHBEAST GENES ARE DELIBERATELY NOT PICKED.
-    # Owner ruled 2026-08-14, after PROJECT flagged the tension.
+    # 🔴 THE ANOMALY PICKS WERE ALL DROPPED. Owner ruled 2026-08-14, superseding
+    # an earlier ruling the same night that kept 22 of them.
     #
-    # Anomaly's content is at zero BUT its creatures and abilities stay ours to
-    # reskin, so the defs must stay REACHABLE. That ruling and these picks only
-    # collide where a def is genuinely DELETED — and GeneDef is one of the 13
-    # types Cherry Picker really removes from the database (§0c). PawnKindDef,
-    # ThingDef and IncidentDef are neutered in place and survive, so every other
-    # key here leaves its def reachable and does not conflict.
+    # WHY, so it is not re-litigated: the `Disabled` Anomaly playstyle ALREADY
+    # suppresses incidents, study, the threat budget and thing-set/trader-stock
+    # inclusion — established by IL xref of `enableAnomalyContent`, not inferred.
+    # So the removals bought redundancy while destroying the reskin donor library
+    # the owner explicitly ruled must stay reachable. The playstyle does the job;
+    # the picks only did damage.
     #
-    # ⇒ Only these two were destructive, so only these two are dropped:
-    #     GeneDef/AG_MeatBurst                 (Alpha Genes)
-    #     GeneDef/Turn_Gene_FleshbeastBurster  (Integrated Genes)
-    # The pet-shower leak they caused is already closed from the other side by
-    # Jawa_Patches/Patches/Fleshbeast_TrispikeCull.xml.
+    # The full resolved Anomaly list is preserved in
+    # design/Jawa/worldbuilding/cherrypick_resolved.md — it cost real research
+    # (there is no Shambler race, both obelisks are two def types, and so on) and
+    # is ready to reinstate if the playstyle ever proves insufficient.
+    #
+    # ⚠️ The Trispike death-spawn patch STAYS regardless
+    # (Jawa_Patches/Patches/Fleshbeast_TrispikeCull.xml): it is an XML edit to
+    # Bulbfreak's and Dreadmeld's divide lists, not a cherry-pick, and the
+    # playstyle does not touch it.
 
-    # --- 🔴 GRAVTECH ECONOMY. Added by OPS 2026-08-14, and these are a CONDITION,
-    # not a preference. The owner enabled GravTech over the FORBIDDEN ruling in
-    # forbidden_mods.md on the single condition that its economy is picked out.
-    # Without these three, gravcores become craftable and the quest-only scarcity
-    # gate is gone — silently, with a clean log.
-    # ⚠️ DO NOT DROP THESE WHEN REGENERATING. My first list was Anomaly-only and
-    # omitted them; a regeneration without them re-breaks the gate.
+    # --- 🔴 GRAVTECH ECONOMY — the whole list, and a CONDITION not a preference.
+    # The owner enabled GravTech over forbidden_mods.md's FORBIDDEN ruling on the
+    # single condition that its economy is picked out. Without these three,
+    # gravcores become craftable and the quest-only scarcity gate is gone,
+    # silently, with a clean log.
+    # ⚠️ DO NOT let a regeneration drop these. With the list down to three lines,
+    # the entire scarcity gate rests on them.
     "ThingDef/GravForge",              # the forge, and its bills with it
     "RecipeDef/Make_GravcoreGF",       # "make gravcore" — the scarcity breaker
     "ThingDef/AdvShip_GravReactor",    # "The Singularity Reactor"
