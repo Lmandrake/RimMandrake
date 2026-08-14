@@ -187,7 +187,7 @@ namespace JawaBench.BridgeTools
                     refreshed = refresh && changed > 0,
                     samples,
                     mapSize = new { x = size.x, z = size.z },
-                    ticksGame = Find.TickManager?.TicksGame ?? -1
+                    ticksGame = TicksGameSafe()
                 };
             }, cancellationToken).ConfigureAwait(false);
         }
@@ -370,7 +370,7 @@ namespace JawaBench.BridgeTools
                     errors,
                     samples,
                     mapSize = new { x = size.x, z = size.z },
-                    ticksGame = Find.TickManager?.TicksGame ?? -1
+                    ticksGame = TicksGameSafe()
                 };
             }, cancellationToken).ConfigureAwait(false);
         }
@@ -483,7 +483,7 @@ namespace JawaBench.BridgeTools
                     cellsNullTerrain = nullTerrain,
                     distinctTerrains = distinct.OrderBy(n => n).ToList(),
                     mapSize = new { x = size.x, z = size.z },
-                    ticksGame = Find.TickManager?.TicksGame ?? -1
+                    ticksGame = TicksGameSafe()
                 };
             }, cancellationToken).ConfigureAwait(false);
         }
@@ -717,7 +717,7 @@ namespace JawaBench.BridgeTools
                     perDef = perDef.OrderByDescending(kv => kv.Value)
                                    .Take(12).ToDictionary(kv => kv.Key, kv => kv.Value),
                     errors,
-                    ticksGame = Find.TickManager?.TicksGame ?? -1
+                    ticksGame = TicksGameSafe()
                 };
             }, cancellationToken).ConfigureAwait(false);
         }
@@ -833,7 +833,7 @@ namespace JawaBench.BridgeTools
                     pawnsSkipped = skippedPawns,
                     perCategory,
                     samples,
-                    ticksGame = Find.TickManager?.TicksGame ?? -1
+                    ticksGame = TicksGameSafe()
                 };
             }, cancellationToken).ConfigureAwait(false);
         }
@@ -1032,7 +1032,7 @@ namespace JawaBench.BridgeTools
                     returned = rows.Count,
                     truncated,
                     totalOnMap = map.mapPawns.AllPawnsSpawned.Count,
-                    ticksGame = Find.TickManager?.TicksGame ?? -1
+                    ticksGame = TicksGameSafe()
                 };
             }, cancellationToken).ConfigureAwait(false);
         }
@@ -1209,7 +1209,7 @@ namespace JawaBench.BridgeTools
                     cellsOutOfBounds = outOfBounds,
                     growth,
                     errors,
-                    ticksGame = Find.TickManager?.TicksGame ?? -1
+                    ticksGame = TicksGameSafe()
                 };
             }, cancellationToken).ConfigureAwait(false);
         }
@@ -1383,7 +1383,7 @@ namespace JawaBench.BridgeTools
                     // from a save parse, not from this call. Do not read its
                     // absence as "no hediff was applied".
                     verdictFields = new[] { "downed", "dead", "destroyed" },
-                    ticksGame = Find.TickManager?.TicksGame ?? -1
+                    ticksGame = TicksGameSafe()
                 };
             }, cancellationToken).ConfigureAwait(false);
         }
@@ -1578,7 +1578,7 @@ namespace JawaBench.BridgeTools
                         : $"⚠️ `extra` is NOT modelled for {def.GetType().Name} — this null means "
                           + "NOT INSPECTED, not 'absent'. Do not read a missing field as a missing "
                           + "value. Use jawa/get_defs with an explicit fields list to read this type.",
-                    ticksGame = Find.TickManager?.TicksGame ?? -1
+                    ticksGame = TicksGameSafe()
                 };
             }, cancellationToken).ConfigureAwait(false);
         }
@@ -1621,7 +1621,7 @@ namespace JawaBench.BridgeTools
                     message = $"{rows.Count} message(s) of {msgs.Count} in the buffer.",
                     totalInBuffer = msgs.Count,
                     messages = rows,
-                    ticksGame = Find.TickManager?.TicksGame ?? -1
+                    ticksGame = TicksGameSafe()
                 };
             }, cancellationToken).ConfigureAwait(false);
         }
@@ -1879,7 +1879,7 @@ namespace JawaBench.BridgeTools
                     failedCount = rows.Count - landed,
                     xenotypeRequested = xeno?.defName,
                     pawns = rows,
-                    ticksGame = Find.TickManager?.TicksGame ?? -1
+                    ticksGame = TicksGameSafe()
                 };
             }, cancellationToken).ConfigureAwait(false);
         }
@@ -2305,7 +2305,7 @@ namespace JawaBench.BridgeTools
                     fieldsRequested = asked,
                     pawnsChanged = fullyApplied,
                     pawns = rows,
-                    ticksGame = Find.TickManager?.TicksGame ?? -1
+                    ticksGame = TicksGameSafe()
                 };
             }, cancellationToken).ConfigureAwait(false);
         }
@@ -2432,7 +2432,7 @@ namespace JawaBench.BridgeTools
                     notVisible = hidden,
                     locked = !unlock && lockRotation,
                     pawns = rows,
-                    ticksGame = Find.TickManager?.TicksGame ?? -1
+                    ticksGame = TicksGameSafe()
                 };
             }, cancellationToken).ConfigureAwait(false);
         }
@@ -2588,7 +2588,7 @@ namespace JawaBench.BridgeTools
                     xenotype = xeno.defName,
                     pawnsChanged = applied,
                     pawns = rows,
-                    ticksGame = Find.TickManager?.TicksGame ?? -1
+                    ticksGame = TicksGameSafe()
                 };
             }, cancellationToken).ConfigureAwait(false);
         }
@@ -2834,7 +2834,7 @@ namespace JawaBench.BridgeTools
                 elapsedMs += 100;
                 polls++;
                 ticksNow = await ctx.MainThread.InvokeAsync(
-                    () => Find.TickManager?.TicksGame ?? -1,
+                    () => TicksGameSafe(),
                     cancellationToken).ConfigureAwait(false);
             }
 
@@ -3342,7 +3342,7 @@ namespace JawaBench.BridgeTools
                     malformed,
                     fieldsAsked = want.ToList(),
                     defs = rows,
-                    ticksGame = Find.TickManager?.TicksGame ?? -1
+                    ticksGame = TicksGameSafe()
                 };
             }, cancellationToken).ConfigureAwait(false);
         }
@@ -3435,7 +3435,7 @@ namespace JawaBench.BridgeTools
                         rootMinPoints = qdef.rootMinPoints,
                         rootSelectionWeight = qdef.rootSelectionWeight,
                         created = false,
-                        ticksGame = Find.TickManager?.TicksGame ?? -1
+                        ticksGame = TicksGameSafe()
                     };
 
                 // Snapshot the ids present BEFORE, so the new quest is identified by
@@ -3504,7 +3504,7 @@ namespace JawaBench.BridgeTools
                     ticksUntilExpiry = landed.TicksUntilExpiry,
                     points = usePoints,
                     questCountAfter = manager.QuestsListForReading.Count,
-                    ticksGame = Find.TickManager?.TicksGame ?? -1
+                    ticksGame = TicksGameSafe()
                 };
             }, cancellationToken).ConfigureAwait(false);
         }
@@ -3586,7 +3586,7 @@ namespace JawaBench.BridgeTools
                     fired,
                     points = parms.points,
                     faction = parms.faction?.def?.defName,
-                    ticksGame = Find.TickManager?.TicksGame ?? -1
+                    ticksGame = TicksGameSafe()
                 };
             }, cancellationToken).ConfigureAwait(false);
         }
@@ -3639,7 +3639,7 @@ namespace JawaBench.BridgeTools
                     label,
                     letterDef = ldef.defName,
                     hasLookTarget = map != null && x >= 0 && z >= 0,
-                    ticksGame = Find.TickManager?.TicksGame ?? -1
+                    ticksGame = TicksGameSafe()
                 };
             }, cancellationToken).ConfigureAwait(false);
         }
@@ -3788,7 +3788,7 @@ namespace JawaBench.BridgeTools
                     cellsOutOfBounds = outOfBounds,
                     perDef,
                     errors,
-                    ticksGame = Find.TickManager?.TicksGame ?? -1,
+                    ticksGame = TicksGameSafe(),
                 };
             }, cancellationToken).ConfigureAwait(false);
         }
@@ -3871,7 +3871,7 @@ namespace JawaBench.BridgeTools
                     cellsRead = found.Count,
                     cellsOutOfBounds = outOfBounds,
                     roofs = distinct,
-                    ticksGame = Find.TickManager?.TicksGame ?? -1,
+                    ticksGame = TicksGameSafe(),
                 };
             }, cancellationToken).ConfigureAwait(false);
         }
@@ -4604,7 +4604,7 @@ namespace JawaBench.BridgeTools
                     truncated,
                     pawnsSkipped,
                     perDef,
-                    ticksGame = Find.TickManager?.TicksGame ?? -1,
+                    ticksGame = TicksGameSafe(),
                     message = matched == 0
                         ? $"NOTHING MATCHED. {scanned} thing(s) were examined, so this is a " +
                           "filter result, not an empty map — check the defName spelling, the " +
@@ -4858,7 +4858,7 @@ namespace JawaBench.BridgeTools
                     pawnsScanned,
                     nonPlayerBelieversTotal = npcTotal,
                     ideos = rows,
-                    ticksGame = Find.TickManager?.TicksGame ?? -1
+                    ticksGame = TicksGameSafe()
                 };
             }, cancellationToken).ConfigureAwait(false);
         }
@@ -5129,7 +5129,7 @@ namespace JawaBench.BridgeTools
                     searched = findNames.ToList(),
                     absentFromEveryProbedBiome = absentEverywhere,
                     biomes = rows,
-                    ticksGame = Find.TickManager?.TicksGame ?? -1
+                    ticksGame = TicksGameSafe()
                 };
             }, cancellationToken).ConfigureAwait(false);
         }
@@ -5289,6 +5289,33 @@ namespace JawaBench.BridgeTools
                 return null;
             }
         }
+
+        // 🔴 THE ONE LINE THAT KILLED EVERY TOOL AT THE MAIN MENU.
+        //
+        // Every tool used to end `ticksGame = Find.TickManager?.TicksGame ?? -1`.
+        // That LOOKS null-guarded and is not: `Find.TickManager` compiles to
+        // `call Current::get_Game` then `ldfld Game::tickManager`, with no null
+        // check — so with no game loaded the GETTER throws before `?.` is ever
+        // reached. The operator protects the value returned, not the call that
+        // produces it.
+        //
+        // MEASURED LIVE 2026-08-14 at `programState: Entry`, which is what
+        // turned this from a read of the IL into a fact: `jawa/get_defs` on two
+        // RulePackDefs returned a bare NullReferenceException at
+        // `<GetDefs>b__2 [0x002d4]` — the response-construction line, NOT the
+        // def lookup. ⚠️ **The defs had resolved. The tool threw away a correct
+        // answer while packing it**, and reported only "Object reference not set
+        // to an instance of an object", naming nothing.
+        //
+        // Defs are fully loaded at the main menu, so the whole class of
+        // "check a def, no game needed" work was unreachable for want of this.
+        // Guard the OWNER, not the result, in one place so it cannot be got
+        // wrong per-tool. `&&` short-circuits, so `Find.TickManager` is only
+        // touched once `Current.Game` is known non-null.
+        private static int TicksGameSafe() =>
+            Current.Game != null && Find.TickManager != null
+                ? Find.TickManager.TicksGame
+                : -1;
 
         private static object Fail(string message, object extra = null) =>
             new { success = false, message, details = extra };
