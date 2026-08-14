@@ -112,7 +112,7 @@ Add-Type -AssemblyName System.Drawing
 
 $form                 = New-Object Windows.Forms.Form
 $form.Text            = 'WSL fleet'
-$form.Size            = New-Object Drawing.Size(300, 132)
+$form.Size            = New-Object Drawing.Size(330, 176)
 $form.TopMost         = $true          # visible over a windowed RimWorld
 $form.FormBorderStyle = 'FixedToolWindow'   # thin frame, no taskbar clutter
 $form.ShowInTaskbar   = $false
@@ -140,11 +140,16 @@ function NewLabel($x, $y, $w, $h, $size, $bold) {
   $form.Controls.Add($l); return $l
 }
 
-$lblBig  = NewLabel 10   4 275 40 22 $true
-$lblBar  = NewLabel 10  46 275 10  6 $false
-$lblSub  = NewLabel 10  60 275 18 10 $false
-$lblSub2 = NewLabel 10  78 275 18 10 $false
-$lblFoot = NewLabel 10  96 275 16  8 $false
+# Every line says what it means. An earlier version rendered "VM OK  warn 16
+# crit 22 GB", which is unreadable unless you wrote it — the owner said so, and
+# they were right. A monitor you have to decode is a monitor you stop glancing at.
+$lblBig  = NewLabel 10   4 305 38 21 $true    # the number
+$lblCap  = NewLabel 10  40 305 16  8 $false   # what the number IS
+$lblBar  = NewLabel 10  56 305 12  6 $false   # progress toward the red line
+$lblSub  = NewLabel 10  72 305 18 10 $false   # plain-English verdict
+$lblSub2 = NewLabel 10  92 305 18  9 $false   # thresholds
+$lblSub3 = NewLabel 10 112 305 18  9 $false   # inside-the-VM detail
+$lblFoot = NewLabel 10 134 305 16  8 $false   # freshness
 
 # Drag from anywhere on the panel - a tool window's thin frame is fiddly to grab.
 $script:drag = $false; $script:dragOrigin = New-Object Drawing.Point(0,0)
@@ -158,7 +163,7 @@ $move = {
   }
 }
 $up = { $script:drag = $false; try { Set-Content -Path $PosFile -Value ("{0},{1}" -f $form.Location.X, $form.Location.Y) } catch { } }
-foreach ($c in @($form, $lblBig, $lblSub, $lblSub2, $lblFoot, $lblBar)) {
+foreach ($c in @($form, $lblBig, $lblCap, $lblSub, $lblSub2, $lblSub3, $lblFoot, $lblBar)) {
   $c.Add_MouseDown($down); $c.Add_MouseMove($move); $c.Add_MouseUp($up)
 }
 
@@ -183,24 +188,31 @@ $timer.Add_Tick({
     }
 
     if ($lvl -eq 'DOWN') {
-      $lblBig.Text = 'WSL down'
-      $lblSub.Text = 'no vmmemWSL process'
+      $lblBig.Text = 'WSL is down'
+      $lblCap.Text = 'no virtual machine running'
+      $lblBar.Text = ''
+      $lblSub.Text = 'nothing to watch'
     } else {
-      $lblBig.Text = ("{0,5:N1} GB" -f $s.GB)
+      $lblBig.Text = ("{0:N1} GB" -f $s.GB)
+      $lblCap.Text = 'used by the whole WSL VM (all seats together)'
       $pct = [math]::Min(100, [int](100 * $s.GB / $CritGB))
-      $lblSub.Text = ("VM {0}  warn {1}  crit {2} GB" -f $lvl, $WarnGB, $CritGB)
-      # A crude inline bar: proportion of the way to CRITICAL.
-      $lblBar.Text = ('=' * [int]($pct / 3.6))
+      $lblBar.Text = ('|' * [int]($pct / 3.3)).PadRight(30, [char]0x00B7)
+      $lblSub.Text = switch ($lvl) {
+        'CRITICAL' { 'CRITICAL - restart the biggest seat now' }
+        'WARN'     { 'climbing - restart a seat while it is cheap' }
+        default    { 'healthy' }
+      }
+      $lblSub2.Text = ("turns amber at {0} GB, red at {1} GB" -f $WarnGB, $CritGB)
     }
-    $lblBig.ForeColor = $col; $lblBar.ForeColor = $col
+    $lblBig.ForeColor = $col; $lblBar.ForeColor = $col; $lblSub.ForeColor = $col
 
-    if ($d.Stale)            { $lblSub2.Text = 'in-VM sampler stale >2min' }
+    if ($d.Stale) { $lblSub3.Text = 'in-VM detail stale >2min - VM may be thrashing' }
     elseif ($null -ne $d.Seats) {
-      $sw = if ($d.SwapTotal) { "{0}/{1}MB" -f $d.SwapFree, $d.SwapTotal } else { '-' }
-      $lblSub2.Text = ("seats {0}MB   swap {1}" -f $d.Seats, $sw)
-    } else { $lblSub2.Text = 'seat detail unavailable' }
+      $sw = if ($d.SwapTotal) { "{0:N1} of {1:N1} GB free" -f ($d.SwapFree/1024), ($d.SwapTotal/1024) } else { 'n/a' }
+      $lblSub3.Text = ("Claude seats {0:N1} GB   swap {1}" -f ($d.Seats/1024), $sw)
+    } else { $lblSub3.Text = 'per-seat detail unavailable' }
 
-    $lblFoot.Text = ("updated {0}   drag to move" -f (Get-Date -Format 'HH:mm:ss'))
+    $lblFoot.Text = ("updated {0}  -  drag to move" -f (Get-Date -Format 'HH:mm:ss'))
 
     Set-Content -Path $StatusFile -Value ("{0}  vmmemWSL={1}GB  {2}" -f $lvl, $s.GB, (Get-Date -Format 'HH:mm:ss'))
 
