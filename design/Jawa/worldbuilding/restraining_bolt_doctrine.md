@@ -154,3 +154,37 @@ delivered.
 costs you standing with the Free Droid Enclaves, unconditionally. Only the shape
 of the accounting moved, and it moved because a build constraint exposed a better
 answer.
+
+## Fallback if no equilibrium exists — cap the ceiling, do not drain the pool
+
+**CREATE's analysis, which I accept:** if vanilla goodwill drift is a **constant
+per day** rather than **proportional to the gap**, there is no resting point for
+an ongoing penalty to find. A penalty under the drift does nothing; a penalty a
+hair over it walks to the floor regardless of size. **2 bolts and 40 bolts both
+end at the floor, only at different speeds** — a step function, not a gradient,
+and no tuning fixes it because what is missing is the equilibrium itself.
+
+⭐ **In that case the design does not die, it changes shape again — to a CAP:**
+
+> **Bolts do not push your standing down. They lower the ceiling it can reach.**
+
+- Drift is no longer an opponent. It carries you *up to* the cap and stops.
+- **It scales exactly as required**: 2 bolts → nearly no ceiling loss; 40 → they
+  will trade but never help, and eventually not even trade.
+- **It is already in this project's vocabulary.** `faction_roster_v2.md:2317`
+  specifies the Duneborn as *"Friendly, capped at +75, never allied"* — a
+  goodwill ceiling is a thing this design already asks for elsewhere.
+- **It reads better in play.** Not *"they are angry at me"* but *"they will deal
+  with me, and they will never trust me"* — which is a truer statement of what a
+  slaver is to an abolitionist.
+
+**So the recon has three possible verdicts, and all three have a build:**
+
+| drift shape | build |
+|---|---|
+| a standing persistent modifier exists | **state a level** — best case |
+| drift is proportional | **state a rate** — the equilibrium design as written |
+| drift is constant | ⭐ **cap the ceiling** — no drift fight at all |
+
+**There is no outcome in which this concept cannot ship.** Only the accounting
+moves.
