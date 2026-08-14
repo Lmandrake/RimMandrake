@@ -85,10 +85,11 @@ symlinked skills — `editing-images`, `generating-images`,
 is the owner's action, not ours. The other eight are repo-only and are read by
 path.
 
-## The thirteen
+## The roster — count it with `ls -d skills/*/`
 
 | Skill | Read it when |
 |---|---|
+| `agent-fleet-windows` | Standing up or restarting a multi-seat fleet on Windows/WSL, when every session dies at once, before a wide subagent fan-out, or when a commit or push behaves oddly on the shared tree. |
 | `agent-messaging` | Before any cross-session send — send vs file vs commit, the ten-line ceiling, live-bridge announcements, what a peer cannot authorise. |
 | `agent-reporting` | Reporting to the owner — glyph-led format, 72-char cap, terse by default, numbers over adjectives. |
 | `editing-images` | Altering an image that already exists; holding invariants steady and detecting silhouette drift. |
