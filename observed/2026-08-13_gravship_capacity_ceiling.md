@@ -55,3 +55,42 @@ it is 632.8. A flightworthy hull is ~633 cells, not 4,057.
 `NEXT_RELOAD.md`'s "84.72 against an 85 cap, 0.28 of a cell of margin" is false
 precision twice over: the live `maxDistance` is **34**, and the extender it
 positions contributes nothing at any distance.
+
+---
+
+## UPDATE — it is a MOD BUG, with a mechanism, and possibly fixable
+
+⚠️ **Correction to my own reasoning above.** Vanilla puts the extender's support
+in **`statOffsets`**, not `statBases`, and my first live read only searched
+`statBases`. Re-checked the entire def: `SubstructureSupport` appears **zero**
+times and there is **no `statOffsets` block at all**, so the conclusion stands —
+but the argument as first given was incomplete.
+
+**Vanilla**, `Data/Odyssey/Defs/ThingDefs_Buildings/Buildings_Gravship.xml`:
+
+| def | vanilla | live in our game |
+|---|---|---|
+| `GravFieldExtender` radius | 16.9 | **30.0** |
+| `GravFieldExtender` support | **`statOffsets` 250** | **absent entirely** |
+| `GravFieldExtender` maxSimultaneous | 6 (documented) | **12** |
+| `GravEngine` support | `statBases` 500 | 632.7954 |
+
+**Mechanism.** The live def still reports `modName: Odyssey`, and a grep of the
+whole workshop tree finds **no XML anywhere touching `GravFieldExtender`**. So
+nothing patches it in XML — the values are rewritten in **C# at startup**, which
+is exactly what `NEXT_RELOAD.md` records of Bigger Gravships: it bakes radii
+into defs at startup via a Harmony prefix on `DefGenerator.GenerateImpliedDefs`.
+It raises the radius and the cap, and the `statOffsets` do not survive.
+
+**So the ceiling is not a design fact, it is a regression:**
+
+- vanilla: 500 + 6 x 250 = **2,000**
+- ours: 632.8 + 12 x 0 = **633**
+
+Bigger Gravships made the extender larger and worthless.
+
+**Candidate fix, for OPS/CREATE to rule on, not BRIDGE:** patch `statOffsets`
+back onto `GravFieldExtender`. If it survives, 633 + 12 x 250 = **3,633**.
+🔴 **Unproven, and it is the entire question** — whether an XML patch survives
+BG's startup rewrite or is clobbered by it. Only a load answers that. Do not
+scope a hull on 3,633 until it is measured.
