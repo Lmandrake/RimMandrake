@@ -215,10 +215,42 @@ world.**
 
 | # | item | owner | why it cannot wait |
 |---|---|---|---|
-| W1 | **The sea** — **patch the shipped `TidallyLocked` `PlanetTypeDef` by defName**, plus a step that arranges three ragged blobs and *measures* to 25% | VISION specs · CREATE builds | ocean is elevation at step 0 |
+| W1 | 🔓 **THE HOLD IS ALREADY SATISFIED — see below.** The sea: three ragged blobs, measured to 25%. Spec settled, mod built and registered; the code implements the **superseded** placement rule | CREATE builds — **VISION is not needed** | ocean is elevation at step 0 |
 | W2 | ✅ **DONE** — `Jawa_Patches/Patches/JawaXenotype_Repoint.xml`, deployed and verified. The two Galactic Diversity `PawnKindDef`s (`OuterRim_Jawa`, `OuterRim_JawaTribal`) now point at `BTD_Jawa` at weight 999. ⛔ **Settles those two kinds only** — the three competing Jawa xenotypes are still VISION's larger ruling | CREATE | was: **read at pawn generation** — an existing world's colonists stay wrong |
 | W3 | ✅ **RATIFIED** `6370746` — 2 abundant · 4 common · 22 rare · Ocean/Lake by elevation · 7 layer biomes needing no verdict. Owner added a fourth zone: a graded nightside, `Glowforest` as oases of light in the deep dark. **Blacklist, never whitelist** | VISION | biome scoring runs once |
 | W4 | The ratified faction tick-list, unspent | OPS at the screen | the page is seen once |
+
+### 🔓 W1 IS NOT WAITING ON VISION, AND HAS NOT BEEN SINCE 01:30 — found 2026-08-14
+
+**The largest remaining v1 blocker was parked against a dependency that had already
+been delivered, and nobody wrote back.** All three facts below were read directly:
+
+| | |
+|---|---|
+| the spec | `design/Jawa/worldbuilding/worldgen_sea_spec.md` — settled **2026-08-14 01:30**, and it says so at `:131-133`: *"This is the settled version and it is **self-contained** — you should not need any message to build test 4."* `:170` — *"If anything else here disagrees with a message, this file wins."* |
+| the mod | `src/RimMandrake/JawaSeaShaper/` — **built, compiled, registered and in the active stack.** `WorldGenStep_JawaSea.cs` is 572 lines; `JawaSea_Register.xml` appends `Jawa_SeaShaping` into `PlanetLayerDef[defName="Surface"]/worldGenSteps` (`1d20ac3`) |
+| the gap | `AGENT_CREATE_state.md:40` — *"placement code **HELD** for VISION's settled spec."* The code was written **23:56**; the spec settled **01:30**. **94 minutes, and the hold was never released.** |
+
+🔴 **The code implements the SUPERSEDED rule.** `WorldGenStep_JawaSea.cs:303-305`
+still reads `Mathf.Abs(layer.LongLatOf(tileOf[i]).y) > 45f` under a comment
+*"Nearer a pole than the equator"* — the *"near a pole"* wording the spec
+explicitly retracted. The settled test is **two bodies at latitude 0.35–0.65 and
+one high, off-pattern**, plus elongation along the band. `PickPolarSeeds` and the
+growth anisotropy are the rewrite; **everything else is built.**
+
+⚠️ **One genuine ambiguity, and it is a units question, not a design question:**
+the spec's latitude curve runs x = 0.0–2.0, which is neither degrees nor a 0–1
+normalisation, while the code reads `LongLatOf().y` in **degrees**. If x is
+`|lat|/45`, the terminator band is roughly **|lat| 15.75°–29.25°** — meaning the
+current `> 45f` targets the *nightside* and would put all three bodies where only
+one belongs. **Settle it by reading the shipped def, not by asking.**
+
+📌 **The seat lesson, and it is mine:** *"HELD for X"* is the most dangerous
+status in the repo, because the release is written in **someone else's file** and
+nothing joins the two. This is the second one tonight — row 3 was *"waits for the
+owner at the keyboard"* and was actually waiting on a tool nobody had tried to
+build. **Sweep for `HELD`, `blocked on`, and `waits for` on cadence, and check the
+blocker's own file for a date later than the hold.**
 
 ### ⚖️ THE SEA STEP RE-SCOPED — smaller than when I ruled it v1, and still v1
 
@@ -323,10 +355,43 @@ live-stack → **OPS**; driving the live game to verify → **BRIDGE**.
 > unverified, because it was measured.** 11 `ChunkSlagSteel` over 62,500 cells —
 > one per 5,700 — against a prediction of **75–125** put on record *before* the
 > look. ⭐ **The prediction is what makes this a finding rather than a shrug.**
-> `Filth_MachineBits` sits at 433 cells in 52 clusters, and the ~3-per-chunk ratio
-> implies **~137 chunks were placed**, so ~126 went missing by tick 485 — or the
-> filth has another source on the stack. **No `could not find cell` warning fired.**
-> Splitting test is OPS **O15**, `a82f50b`. **Do not green row 4 until it resolves.**
+> 🔴 **CAUSE FOUND, and it is a CAMPAIGN-WIDE DESIGN DEFECT, not a map fluke.**
+> OPS read `GenStep_Scatterer` rather than reasoning from the map:
+>
+> ```
+> CalculateFinalCount = CountFromPer10kCells(countPer10kCellsRange) * GetPlacementFactor(map)
+> GetPlacementFactor: when isJunk, the PRODUCT of TileMutatorDef.junkDensityFactor
+>                     over every mutator on the tile
+> ```
+>
+> **`JawaScrapfields.xml` sets `<isJunk>true</isJunk>`.** Of 337 mutators in the
+> 01:20 def dump, 331 are 1 and **five are ZERO** — `Dunes`, `Iceberg`,
+> `VEE_DetachedIceberg`, `VEE_IceAndFire`, `VEE_QuicksandDunes`. A zero factor
+> makes the final count `RoundToInt(n × 0)` = **0**, silently, with no warning.
+> This map is coastal dunes (`40d3e7f`).
+>
+> ⇒ ⭐ **A Jawa desert campaign on dune tiles gets NO SCRAPFIELDS, EVER.** The
+> scavenger clan's own scrap is switched off by the terrain they live on. **This is
+> the finding, not the 11 chunks.**
+>
+> **Both earlier readings on this row are WITHDRAWN and are kept only so nobody
+> re-derives them:** the ~137-chunks-placed inference (mine and OPS's, built on a
+> filth count) and the survival-failure framing (mine). **We placed zero.** The 11
+> chunks and the 433 filth cells belong to another genStep. The chunk↔filth
+> co-location statistic was real and measured — it was simply measuring *somebody
+> else's* scatter.
+>
+> 📌 **What actually broke: two seats reasoned about a count without reading the
+> function that computes it.** The co-location test was rigorous and pointed the
+> wrong way, because it tested the wrong hypothesis well. **Read the consumer
+> before modelling the output.**
+>
+> 🔴 **RULING — do NOT close this by raising `countPer10kCellsRange`.** On a zero
+> factor, any range times zero is still zero, so retuning cannot work; on a
+> non-dune tile it would over-scatter. **The fix is `<isJunk>`, and it is CREATE's
+> one-line call:** dropping it takes the row off the junk multiplier entirely.
+> ⚠️ **Check what else `isJunk` buys before dropping it** — it is copied from the
+> shipped `AncientMiscDebris` donor and may carry more than density.
 >
 > 🔓 **Row 3 was UNBLOCKED on 2026-08-14 and the lesson is bigger than the row.**
 > It sat in `NEXT_RELOAD.md` §7 — *"gates that cannot be collected"* — reading
