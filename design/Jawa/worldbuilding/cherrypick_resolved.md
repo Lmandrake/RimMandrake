@@ -117,6 +117,42 @@ matter here:
 
 ---
 
+## 0e. ⭐ THE DefOf SCARE, AND WHY IT IS NOT ONE
+
+A reference audit found that **five of the six pawn kinds here are hardcoded
+`PawnKindDefOf` fields** — `ShamblerSwarmer`, `ShamblerGorehulk`, `Trispike`,
+`Metalhorror`, `Ghoul` (plus `MutantDefOf.Ghoul`, and one mod DefOf,
+`HoraxDefOf.Ghoul` in VPE-Horax). Only `ShamblerSoldier` is free of one. The
+conclusion drawn was that picking any of them fails DefOf resolution at startup
+and NREs every C# worker that uses it.
+
+**That conclusion is wrong, and the reason is in §0c: `PawnKindDef` is NOT one of
+the 13 types Cherry Picker actually deletes.** It is neutered in place —
+`combatPower = float.MaxValue`, cluster/manhunter/sapper flags cleared. **The def
+stays in `DefDatabase`, so every `PawnKindDefOf` field still binds.** Same for
+`IncidentDef` and `ThingDef`, which are also neutered rather than removed.
+
+⇒ **No DefOf hazard for 18 of the 21 keys.** The audit assumed removal meant
+deletion; the IL says otherwise for these types. Two findings, each correct in
+isolation, that had to be read against each other.
+
+⚠️ **The three keys that ARE really deleted** (`RecipeDef/GhoulInfusion`,
+`GeneDef/AG_MeatBurst`, `GeneDef/Turn_Gene_FleshbeastBurster`) were checked
+separately: **none is a `RecipeDefOf` or `GeneDefOf` field.** Cross-references:
+`Turn_Gene_FleshbeastBurster` 0; `AG_MeatBurst` 1 (Alpha Genes'
+`AG_MeatBurst_Astrogene`); **`GhoulInfusion` 1,144** — almost all humanlike
+`ThingDef`s listing it in `<recipes>`.
+
+🔴 **So `RecipeDef/GhoulInfusion` is the one key that may be INEFFECTIVE rather
+than dangerous.** Those 1,144 are direct object references resolved before
+`StaticConstructorOnStartup` runs, so removing the def from `DefDatabase`
+afterwards need not remove the surgery from a pawn's recipe list. **It is kept
+because the downside is "does nothing", not "breaks" — but if a ghoul infusion is
+still offered in game, that is why, and the fix is an XML patch stripping it from
+`ThingDef/Human`'s `recipes`, which is CREATE's to author.**
+
+---
+
 ## 1. 🔴 The three findings that would have wasted the reload
 
 ### a. `Shambler` is not a race, and there is no `Shambler` PawnKindDef
