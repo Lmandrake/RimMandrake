@@ -26,7 +26,7 @@ shorts, leave it untouched (→ `skills/rimworld-savegame/SKILL.md`).
 |---|---|---|
 | write or debug a patch, an xpath, or a def | [`traps-xml-and-defs.md`](traps-xml-and-defs.md) | 18 |
 | trust what a script, grep, census or the def dump just told you | [`traps-tooling.md`](traps-tooling.md) | 31 |
-| call art missing, wrong, or broken | [`traps-art.md`](traps-art.md) | 12 |
+| call art missing, wrong, or broken | [`traps-art.md`](traps-art.md) | 13 |
 | chase a mod that is absent, dead, or ignoring its files | [`traps-mods-and-managers.md`](traps-mods-and-managers.md) | 13 |
 | believe a diagnosis, or call into a running game | [`traps-diagnosis.md`](traps-diagnosis.md) | 5 |
 
@@ -108,6 +108,7 @@ the one asked.**
 - Our own mods shadow each other, and identical bytes make it invisible
 - 46. `Graphic_Multi` falls back to the BARE path, and render nodes are lazy — a clean log proves almost nothing
 - 47. A mask is NOT required to tint a building — plain `Cutout` honours `<color>`, and it multiplies
+- 48. Spawning the pawn does not test the art — a style override is only drawn when the style is SELECTED
 
 ### `traps-mods-and-managers.md` — the mod stack
 
