@@ -21,16 +21,14 @@ document nobody is required to shrink.
 
 ## The five rules
 
-**1. Budgets, per file class.** `src/RimMandrake/Utils/doc_budget.py` enforces them and exits 1
-when a file is over. Queue 150 · identity 120 · state 150 · `CLAUDE.md` 300 ·
-`agents_def.md` **200** · traps 700 · `TODO_v2.md` 600.
-*(`TODO.md` still has a 400 budget in the tool, but it is **retired** — a 13-line
-pointer stub as of 2026-08-13. That number is a ceiling on a corpse, not room to
-grow; file work in `infrastructure/state/queue/<SEAT>.md`.)*
-*(This line said 500 for `agents_def.md` while the tool enforced 200 — the doc
-describing the rule disagreed with the rule. The tool is authoritative; read
-`BUDGETS` in the script, not this sentence.)* Design docs and rosters are unbudgeted — their
-length is content, not accumulation.
+**1. Budgets, per file class.** 🔴 **`BUDGETS` in `src/RimMandrake/Utils/doc_budget.py`
+is the authoritative list — run the tool, do not read a number here.** It exits 1
+when a file is over. **No copy of those numbers lives in this file**, deliberately:
+the inline list carried 7 classes while the tool enforced 14, and once said 500 for
+`agents_def.md` against the tool's 200 — *the doc describing the rule disagreed with
+the rule.* Design docs and rosters are unbudgeted; their length is content, not
+accumulation. *(`TODO.md` retains a budget in the tool but is **retired** — a
+pointer stub. That number is a ceiling on a corpse.)*
 
 🔴 **`skills/*/SKILL.md` is budgeted by a DIFFERENT tool and was undocumented
 here: body under 500 lines, `description:` under 1024 chars, enforced by
