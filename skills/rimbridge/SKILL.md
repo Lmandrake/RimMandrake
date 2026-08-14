@@ -263,21 +263,27 @@ a compile-time flag so the ruling is reversible in one shutdown window —
 to continue if the artifact disagrees with the flag. Never fire an incident on a
 colony that matters without saying so first.
 
-⏳ **The companion is 22 tools and EIGHT of them have never run in a live game** —
-the roof pair, `jawa/list_factions` (deployed 2026-08-13 10:05, one minute after
-the last session's log stopped), the pawn-appearance three above, and
-`jawa/order_pawn` and `jawa/world_stats`, all written offline with the game down. They
-compile; nothing more is claimed. Companions register only at RimBridgeServer
+⏳ **The companion is 24 tools and SEVEN of them have never run in a live game** —
+the roof pair, the pawn-appearance three above, and `jawa/get_defs` and
+`jawa/fire_quest` (deployed 2026-08-14 in the shutdown window, game copy md5
+`ea5952e2`). They compile; nothing more is claimed. `jawa/list_factions` and
+`jawa/order_pawn` **drove live 2026-08-14** and are no longer on this list;
+`jawa/world_stats` was called and its answer was thrown away by a harness bug, so
+it is unproven for a different reason. Companions register only at RimBridgeServer
 startup. **First call of the next session: count the `jawa/` tools the bridge
-reports — 22 means the current deploy took, 21 means the build before
-`world_stats`, 20 means the build before `order_pawn`, 17 means the pre-appearance build, 7 means an older companion, 0
-means the bundle did not load.** Every other check is uninformative until that
-reads 22. 🔴 **The deploy must use `--gm`**, or the game copy loses
-`jawa/fire_incident` and `jawa/send_letter` and the census reads 20.
+reports — 24 means the current deploy took, 22 means the build before
+`get_defs`/`fire_quest`, 21 means before `world_stats`, 20 means before
+`order_pawn`, 7 means an older companion, 0 means the bundle did not load.** Every
+other check is uninformative until that reads 24. 🔴 **The deploy must use
+`--gm`**, or the game copy loses `jawa/fire_incident` and `jawa/send_letter` and
+the census reads 22.
 
 ⚠️ **Three documents disagreed about this number on 2026-08-13** — 17 in
 `EXPECTED_FAILURES_next_load.md`, 20 in `NEXT_RELOAD.md`, 21 here — and the
-number moved again to **22** the same night. **Measure it, do not quote it.**
+number moved again to **22** the same night, and to **24** on 2026-08-14.
+**Measure it, do not quote it** — `load_session.py` now derives the gate from
+`EXPECTED_TOOLS` and `prove_new_tools.py` reads it out of the deployed DLL, so
+neither carries a literal to go stale.
 A census gate that three files answer differently is worse than no gate, so
 check the DLL rather than any of the three:
 `strings -a "<gamedir>\BridgeTools\JawaBench\JawaBench.BridgeTools.dll" | grep -o "jawa/[a-z_]*" | sort -u | wc -l`.

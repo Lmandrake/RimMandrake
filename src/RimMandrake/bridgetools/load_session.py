@@ -122,14 +122,20 @@ def absent(r):
 
 # --------------------------------------------------------------- gates
 
-def census(s, expect=22):
+def census(s, expect=None):
     """THE gate. Every other result is uninformative until this passes.
 
-    22 = the current GM deploy, with jawa/world_stats.
-    21 = the build before world_stats.  20 = before order_pawn.
-    20 with the GM pair missing = a build made without --gm.
+    24 = the current GM deploy, with jawa/get_defs and jawa/fire_quest.
+    22 = the build before them.  21 = before world_stats.  20 = before order_pawn.
+    22 with the GM pair missing = a build made without --gm.
     0 = RimBridgeServer never loaded the bundle at all.
+
+    🔴 The number is DERIVED from EXPECTED_TOOLS, never written twice. Three
+    documents disagreed about it on 2026-08-13 (17 / 20 / 21) and it moved again
+    the same night; a gate two files answer differently is worse than no gate.
     """
+    if expect is None:
+        expect = len(EXPECTED_TOOLS)
     names = {t.get("name") for t in s._rb.list_tools()}
     jawa = sorted(n for n in names if n and n.startswith("jawa/"))
     ok = len(jawa) == expect
@@ -207,12 +213,12 @@ EXPECTED_TOOLS = [
     "jawa/set_pawn_rotation", "jawa/set_pawn_xenotype", "jawa/fire_incident",
     "jawa/send_letter", "jawa/set_roof_batch", "jawa/get_roof_batch",
     "jawa/list_factions", "jawa/order_pawn", "jawa/world_stats",
-    # ⛔ `jawa/get_defs` is BUILT (23 in the artifact) and NOT DEPLOYED — the
-    # game was already holding the DLL when it was written, and a companion
-    # cannot be overwritten while RimWorld runs. **It goes in the NEXT shutdown
-    # window and the census stays 22 tonight.** Adding it here early would FAIL
-    # a correct deploy, which is the false alarm that stops a census being
-    # believed.
+    # ✅ Deployed 2026-08-14 in the shutdown window; the game copy measures 24,
+    # md5 ea5952e2, and both names are in it. The gate is raised in the SAME
+    # commit as the deploy and never before it -- a gate ahead of the deploy
+    # fails a CORRECT companion, which is the false alarm that stops a census
+    # from being believed at all.
+    "jawa/get_defs", "jawa/fire_quest",
 ]
 
 

@@ -15,16 +15,15 @@ authored offline by OPS/CREATE and all of it verifies in ONE session.
 
 ## Open
 
-### 🔴 OWED AT THE NEXT SHUTDOWN WINDOW — `jawa/get_defs` + `jawa/fire_quest`
-**Two tools, one window.** `f4ecb68` and `jawa/fire_quest` (2026-08-14), both
-compile 0/0. Deployed copy is 22; the artifact is **24**.
-
-```bash
-python.exe src/RimMandrake/bridgetools/build.py --gm --apply   # game CLOSED
-```
-Then bump to **24** in the same commit: `EXPECTED_TOOLS` (`load_session.py`),
-`ALL_TOOLS` (`prove_new_tools.py`), `census(expect=)`, `skills/rimbridge/SKILL.md`.
-Non-GM is 22. **Do not raise the gate early** — it fails a correct deploy.
+### ✅ DONE 2026-08-14 — `jawa/get_defs` + `jawa/fire_quest` are DEPLOYED
+Window taken with the game confirmed down. Game copy
+`…\BridgeTools\JawaBench\JawaBench.BridgeTools.dll` md5 **`ea5952e2`**, **24**
+`jawa/` names, both new ones in it, GM pair present. Gate raised in the same
+commit — and it is no longer a literal: `census()` derives from `EXPECTED_TOOLS`
+and `prove_new_tools.ALL_TOOLS` reads the deployed DLL, so the number cannot go
+stale in two files again.
+⛔ **This is a DEPLOY, not a proof.** Neither tool has been called. RimBridgeServer
+registers companions only at startup, so nothing changes until the next launch.
 
 **`jawa/fire_quest` closes v1 row 3**, which was filed UNCOLLECTABLE only because
 its route (read an in-world item → float menu) needs `rimworld/right_click_cell`,
@@ -42,17 +41,25 @@ because `get_def`'s rich block was **ThingDef-only**, each fix adding another
 hardcoded branch. `get_defs` reads a `fields` list reflectively off **any** def type
 ⇒ a new question needs **no new build**, and a build needs the game closed.
 
-### 🟡 BUILT AND DEPLOYED, NEVER RUN — five tools awaiting one live session
-**Deployed copy measured 2026-08-14:** `…\BridgeTools\JawaBench\JawaBench.BridgeTools.dll`,
-md5 `45fe3874…`, **22 tools**. Compiles clean; **not one has been driven live** —
-do not let another seat treat these as working tooling.
+### 🟡 BUILT AND DEPLOYED, NEVER RUN — awaiting one live session
+**Deployed copy measured 2026-08-14 after the window:** md5 `ea5952e2`, **24 tools**.
+Compiles clean; the rows below have **never been driven live** — do not let another
+seat treat them as working tooling.
 
 | tool | commit | what closes it |
 |---|---|---|
 | `jawa/set_pawn_rotation` | `7b8d5b7` | `prove_new_tools.py --pawns` |
 | `jawa/set_pawn_style` | `7b8d5b7` | ″ |
 | `jawa/set_pawn_xenotype` + `xenotype` on `spawn_pawn` | `e60197a` | ″ |
-| `jawa/order_pawn` | `bee5da9` | `prove_new_tools.py --pawns --walk`, live paused map |
+| `jawa/get_defs` | 2026-08-14 | any def-type question that is not a ThingDef |
+| `jawa/fire_quest` | 2026-08-14 | v1 row 3 — `questDef=Jawa_TheClaim` |
+| roof pair | — | `set_roof_batch` / `get_roof_batch` |
+
+✅ **Off this list, live-proven 2026-08-14:** `jawa/order_pawn` (Paige walked
+111→117 and back, `ticksElapsed=240`, left undrafted) and `jawa/list_factions`
+(54 factions, A1/A1b both PASS). ⚠️ `jawa/world_stats` was CALLED and its answer
+was **discarded by a harness NameError** — unproven for a different reason, and
+the harness bug is fixed (`3e17731`).
 
 🔴 **The finding that shaped `order_pawn`: `TryTakeOrderedJob` returns TRUE for a
 job it merely ENQUEUED** (IL_013f/01ac/01fa each `ldc.i4.1; ret` after
