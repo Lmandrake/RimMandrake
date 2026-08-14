@@ -462,7 +462,7 @@ live-stack → **OPS**; driving the live game to verify → **BRIDGE**.
 | 2 | Faction exclusion at worldgen | — | ⬜ | owner + VISION | 🔴 the campaign worldgen, list ratified and waiting |
 | 3 | One `QuestScriptDef` — *The Claim* | 🟩 **BUILT**, deployed | ⬜ | CREATE | fire it and reach an end state |
 | 4 | Three terrain overrides | 🟩 **BUILT**, deployed | 🟨 **1 of 3 SEEN** — `Jawa_SaltCrust` passed live | CREATE | scrapfields: any fresh map. ⚠️ **dune seas is NOT an eyeball check** — see below |
-| 5 | Jawa xenotype plays | 🟩 live | 🟨 **genes render on scratch** | BRIDGE | see it on a naturally-spawned campaign Jawa |
+| 5 | Jawa xenotype plays | 🟩 live | 🟩 **CLOSED — checked-and-fine** | BRIDGE | ✅ **CLOSED.** `BTD_Jawa` survives BTD's load-time dedup and the pawnKind pins were remapped onto it, measured live from `Player.log`. Our patches target the right xenotype |
 | 6 | Weapons / gear | 🟩 6 mods live | 🟩 **`JawaIonWeapons` PROVEN** `ad3e9b0` | BRIDGE | ✅ **CLOSED** |
 | 7 | Ordinary worldgen | ⬜ | ⬜ | BRIDGE | 🔴 the campaign desert world |
 | 8 | ⭐ **Gravship (DEEP)** | 🟩 **BUILT + EXPORTED** | 🟩 **SEEN — 4 of 4** | CREATE/BRIDGE | ✅ **CLOSED** |

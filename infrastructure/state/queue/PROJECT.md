@@ -143,10 +143,27 @@ Corrected in `rimworld-load-round` §4 and pointed at the new skill. Full reason
 in the commit and in `CLOSED.md`.
 
 ---
-## P9. The traps set is over its own budget — 723 lines against 700
+## ✅ P9 — CLOSED, and the constraint never existed. Do not re-raise.
 
-Raised by OPS 2026-08-13 while draining its queue, and it is why OPS added no new
-trap for a real finding. **Not PROJECT's to edit** — the content is domain
-expertise. PROJECT's part is the budget: either the threshold is wrong for a file
-that is now an index over six topic files, or the topic files need a split.
-Rule on which, do not silently let it drift.
+OPS declined to write a real trap because *"the traps set is at 723 lines against a
+700 budget"*. **Measured: the 700 is PER FILE**, glob `skills/*/references/traps*.md`
+(`doc_budget.py:69`), and its own comment reads *"append-only by nature; the index is
+what stays short."*
+
+| file | lines |
+|---|---|
+| `skills/rimbridge/references/traps.md` | 348 |
+| `traps.md` (index) | 177 |
+| `traps-tooling.md` | 172 |
+| the other four | 41–119 |
+
+**Not one is within half of 700.** The 723 was the SET total compared against a
+per-file number.
+
+🔴 **The ruling: never suppress a trap for the budget.** The traps files are
+designed to grow; only the **index** is held short, and that is what a split is for.
+A trap not written costs a full debug cycle to re-find — the budget exists to stop
+doc bloat, not to stop learning.
+
+📌 **The lesson is mine, not OPS's.** A per-file budget printed as a flat column is
+easy to read as a set budget, and the cost was a real finding nearly going unwritten.
