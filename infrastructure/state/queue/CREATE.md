@@ -114,6 +114,13 @@ loaded** — `mandrake.desertvehiclereskin` still needs a `ModsConfig` entry AFT
 `sarg.alphavehiclesneolithic`, because the donor ships LOOSE art and order
 decides whether the reskin is visible at all. Filed with OPS.
 
+✅ **ENABLED by OPS, 2026-08-13** — with the seven art-fix mods, all eight in one
+slot after `mandrake.missingartfixes`. **572 -> 580 active, listed-but-absent 0.**
+Ordering verified positionally rather than assumed: `mandrake.desertvehiclereskin`
+idx **563** against `sarg.alphavehiclesneolithic` idx **526**, and all seven
+donors confirmed ACTIVE first — a reskin whose donor is disabled fails exactly
+the same silent way as one ordered wrong.
+
 ⭐ **ALL THREE OWED FIXES ARE DONE.**
 `Source/REVIEW_all_three.png` regenerated — and `Source/review_sheet.py` now
 builds it, so the two reviews are the same layout instead of a hand-assembly
