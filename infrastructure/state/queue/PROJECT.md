@@ -167,3 +167,27 @@ doc bloat, not to stop learning.
 
 📌 **The lesson is mine, not OPS's.** A per-file budget printed as a flat column is
 easy to read as a set budget, and the cost was a real finding nearly going unwritten.
+
+---
+## 🔴 P10. `preload_check.py` answers differently per seat — a go/no-go gate that fails SILENTLY
+
+Found 2026-08-14 when BRIDGE got **NOT SAFE TO LOAD** while OPS and CREATE got
+**SAFE**, same commit, same live files.
+
+**Cause, measured:** `src/RimMandrake/Utils/preload_check.py:139-140` hardcodes
+`/mnt/c/Program Files (x86)/Steam/steamapps/...`. **BRIDGE runs `python.exe`** —
+Windows Python cannot resolve a `/mnt/c` path, so the workshop root simply is not
+there, every Workshop mod reads as absent, and the gate says NOT SAFE.
+
+⇒ **The same defect produced BRIDGE's GravTech false alarm** — "I grepped the whole
+tree" was a tree with the largest root missing. **One root cause, two incidents, an
+hour apart.**
+
+🔴 **Why this outranks its size: it is the LAST thing run before a ~25-30 min load.**
+A gate that answers by interpreter, with no error, will eventually be believed by
+the seat it is lying to — in either direction. **Failing open is the dangerous one.**
+
+**Fix:** resolve the Steam roots per-platform, and **refuse to run rather than
+report** when a configured root does not exist. A missing root must never be
+indistinguishable from an empty one. *(Same shape as `whats_new.py` silently
+returning nothing after the restructure moved `Utils/`.)*
