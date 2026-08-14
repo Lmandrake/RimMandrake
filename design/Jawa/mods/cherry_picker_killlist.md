@@ -14,8 +14,9 @@ date, not a header field. The categorised sections below (§§1–5) were last w
 
 # 0. 📥 THE INBOX — append here the moment you notice something
 
-**Created 2026-08-12 by PROJECT at the owner's request. WORLD owns this file and
-maintains it from here.**
+**Created 2026-08-12 by PROJECT at the owner's request. OPS owns this file and
+maintains it from here** (`design/Jawa/mods/` per `infrastructure/agents/OPS.md`;
+the seat was called WORLD until it was renamed on 2026-08-13).
 
 **Why an inbox and not just the categorised lists below:** §§1–5 are a *plan* —
 producing an entry there costs a pass. This is a *capture log*, and it exists for

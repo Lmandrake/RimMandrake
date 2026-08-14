@@ -139,7 +139,10 @@ that could make a downed chassis resolve as a corpse instead of a prisoner.
 **[INFERRED — not measured. That is the point.]**
 
 45 KotOR pawnkinds are installed to test with (`KotORDroidGood_*`,
-`KotORDroidBad_*`). Filed in `NEXT_RELOAD.md` as `[WORLD]`.
+`KotORDroidBad_*`). ⚠️ **No longer filed anywhere** — `NEXT_RELOAD.md` was
+rebuilt from the queue files and carries neither this item nor the `[WORLD]` tag
+(that seat is now OPS). Refile it in `infrastructure/state/queue/OPS.md` if it
+still matters.
 
 ## Mechanoids are OFF
 

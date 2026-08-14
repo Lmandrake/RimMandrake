@@ -967,7 +967,8 @@ in the workshop tree owns `VanillaExpanded.VPsycastsE`.**
 
 Either the ruling was never executed, or VPE was removed and the docs were not
 updated. **This is not mine to resolve** — it is a mod-roster decision, and
-`required_mods.md` is WORLD's file. It must be filed, not silently worked around
+`required_mods.md` is OPS's file (`infrastructure/agents/OPS.md`). It must be
+filed, not silently worked around
 (§6). Adding VPE now is a dependency change to a 570-mod order and a full
 re-verification, at ~23–30 min per cold load; it is not a side effect of building
 a pawnkind.
@@ -1061,12 +1062,12 @@ of these needs the game running, so they belong in `TODO.md`.
    `LoadFolders.xml` has its `_NO_ForceLightsabers` fallback commented out for
    `v1.6`, so nothing substitutes. Either resubscribe the mod or uncomment
    nothing — the fix is upstream, not ours.
-2. **`[WORLD]` `VanillaExpanded.VPsycastsE` is not installed, and
+2. **`[OPS]` `VanillaExpanded.VPsycastsE` is not installed, and
    `required_mods.md:620-642` still calls it "the sole Force substrate".** Two
    more docs depend on the same assumption:
    `faction_roster_v2.md:229-231` and `TODO_v2.md:1081` (U4). The VPE defName
    shopping list at `required_mods.md:638-642` currently names defs that are not
-   in the game. WORLD owns `required_mods.md`; this needs a roster decision
+   in the game. OPS owns `required_mods.md`; this needs a roster decision
    (install VPE, or restate the Force design against what we run), not a doc edit
    by a research pass.
 3. **`[v2]` U4's premise is now cheaper than it was written.** `TODO_v2.md:1081`
