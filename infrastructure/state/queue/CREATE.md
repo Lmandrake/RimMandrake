@@ -30,7 +30,7 @@ C13 that is art rather than def work. **Do not resume without the owner.**
 | 1 | Empire reskin — ✅ **done, seen live** |
 | 3 | `QuestScriptDef` — ✅ built `47733f8`, deployed. 🔴 **NEVER SEEN** |
 | 4 | three terrain/resource overrides — ✅ built `73ca76c`. 🔴 **NEVER SEEN**, and all three are **map-gen-time** |
-| 8 | ⭐ Gravship, DEEP — design complete, **build at 0**; wants the game, you anchor that session |
+| 8 | ⭐ Gravship, DEEP — ✅ **CLOSED `6909ecb`**: built, exported, deck-plan-faithful. ⏳ Open rider: **is flight v1 or v2?** VISION+CREATE's call — ship carries no thruster/fuel/controls |
 
 🔴 **`V1_SCOPE.md`'s gate is *seen working in-game once*.** Built is not closed.
 
