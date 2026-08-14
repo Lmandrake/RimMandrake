@@ -211,28 +211,53 @@ paragraph.**
 
 ---
 
-## 🔴 The Live Bridge is announced when taken and announced when released
+## 🔴 Game state is MEASURED, never declared. The instrument is a LEASE.
 
-One game, five seats, no channel but the messages we send. **Claimed out loud and
-released out loud — both halves, every time**, no exceptions for "only a second".
+**Owner's ruling, 2026-08-14. This replaces rules 1a and 1b, and the
+TAKEN/RELEASED announcement pair. Do not reinstate any of them.**
 
+They deadlocked a whole load window. The owner said *"the game is live"* meaning
+**the game is up, go**; BRIDGE heard **a map exists**, measured that one did not,
+and used a measurement rule to refuse; PROJECT thought BRIDGE had to say it,
+BRIDGE thought PROJECT did, and OPS waited to be told it was its turn. Everyone
+was right about a different noun and nothing moved.
+
+```bash
+python3 src/RimMandrake/Utils/gamestate.py                    # what is true, and how old
+python3 src/RimMandrake/Utils/gamestate.py stamp PLAYABLE "32 pawns, drivable"
+python3 src/RimMandrake/Utils/gamestate.py take               # instrument; renew / release
 ```
-LIVE BRIDGE TAKEN    — <seat>, <what you are about to do>
-LIVE BRIDGE RELEASED — <seat>, <what changed, and anything left on the map>
-```
 
-**A "taken" with no "released" is worse than silence** — it marks the bridge
-occupied forever, which is the collision the announcement existed to prevent. **Say
-what you left behind**; the next seat inherits your map.
+**`DOWN → LOADING → MENU → PLAYABLE`, plus `instrument: free | <seat>`.** The word
+**"live" is retired** — it meant three things at once and that was the whole bug.
+Any seat that measures, stamps. **You cannot disagree with a timestamp.**
+
+🔴 **Three rules, and they matter more than the tool:**
+
+1. **NEVER REPORT A PRECONDITION YOU CAN SATISFY.** A map was one call and ~90 s
+   away and its absence was reported instead of ended. If you can close the gap,
+   close it and say so *afterwards*. "There is no map" is not a status update
+   when you hold `start_debug_game_ready`.
+2. **THE OWNER'S WORD IS A GO, NOT A CLAIM TO FACT-CHECK.** "The game is live"
+   means *begin*. Correct: *"no map yet — making one, ~90 s."* Never: *"no it
+   isn't."* Reconcile reality to the instruction; do not argue the noun.
+3. **A MEASUREMENT LABELS STATE. IT NEVER GATES ANYONE.** `gamestate.py` cannot
+   block a seat and must never learn how. ⚠️ Reads are always safe; **mutations
+   still wait for a measured map and the ~40 s settle** — that is physics, not
+   permission.
+
+**The lease releases itself by not being renewed** (10 min idle), so a "taken"
+with no "released" — today's actual failure — is now impossible, and a crashed
+seat frees the instrument automatically. **If it is free, take it. Do not ask.**
+Say what you left on the map: `gamestate.py release "1 hostile droid at 0,0"`.
 
 🔴 **Resolve every address with `python3 src/RimMandrake/Utils/peers.py`** — send to
 `NAME`, read `SEAT`. Addressability comes from `--name` at launch and nothing else,
 so `set_agent_window.sh` does **not** make a session reachable, and a bounce is not
 a seat being down (messaging skill §3a).
 
-⚠️ **Announcing informs your peers; only the owner authorises you to connect** —
-`agents_def.md` rule 1. And **"live" means a map exists, measured by BRIDGE** — never
-relayed (rule 1b).
+⚠️ **Connecting to the game still needs the owner** — `agents_def.md` rule 1. That
+is unchanged and is a separate question from what state the game is in.
 
 ## How to work here
 

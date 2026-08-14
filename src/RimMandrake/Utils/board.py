@@ -243,14 +243,34 @@ def render():
     live = live_seats()
     L = []
 
-    game = kv(r.get("GAME", []), "state", "?").upper()
-    bridge = kv(r.get("GAME", []), "bridge", "--") or "--"
-    head = " FLEET   game: %s   bridge: %s " % (game, bridge)
+    # Game state is MEASURED and STAMPED, never declared (gamestate.py). The
+    # roster no longer carries it: a fact you can measure must not also be a
+    # sentence someone has to remember to write.
+    g = {}
+    try:
+        with open(os.path.join(STATUS_DIR, "game.json")) as fh:
+            g = json.load(fh)
+    except Exception:
+        pass
+    gstate = g.get("state", "UNSTAMPED")
+    gage = int(time.time()) - int(g.get("at", 0)) if g.get("at") else None
+    ls = g.get("lease") or {}
+    lidle = int(time.time()) - int(ls.get("renewed", 0)) if ls.get("renewed") else None
+    holder = ls.get("seat") if (lidle is not None and lidle < 600) else None
+
+    head = " FLEET   game: %s%s   instrument: %s " % (
+        gstate,
+        "" if gage is None else " (%s %s)" % (g.get("by", "?"), ago(int(time.time()) - gage).strip()),
+        ("%s %s idle" % (holder, ago(int(time.time()) - lidle).strip())) if holder else "FREE")
     L.append("+" + head.ljust(W - 2, "-") + "+")
 
-    note = kv(r.get("GAME", []), "note")
-    if note:
-        L.append(row(note))
+    if g.get("note"):
+        L.append(row(g["note"]))
+    # A stamp nobody has refreshed is the failure this replaced. Say its age
+    # loudly rather than letting a stale value read as current fact.
+    if gage is not None and gage > 900:
+        L.append(row("!! game state stamped %s ago — nobody has measured since"
+                     % ago(int(time.time()) - gage).strip()))
 
     # --- THE ALARM BAND ------------------------------------------------------
     # Rendered FIRST, and only when it has something to say. The research is

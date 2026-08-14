@@ -16,9 +16,9 @@ open that is closed, so **close rows here in the same commit that closes them.**
 ---
 
 ## GAME
-state | LIVE
-note  | quicktest map, 32 pawns, Playing — BRIDGE measured (rule 1b met)
-bridge | BRIDGE  (taken)
+_Removed 2026-08-14. Game state is MEASURED by `gamestate.py`, not written here —
+a fact you can measure must not also be a sentence someone remembers to update.
+The board reads it with its age and who measured it._
 
 ## V1
 1 | Empire reskin | — | done
