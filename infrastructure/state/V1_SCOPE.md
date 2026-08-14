@@ -449,7 +449,7 @@ live-stack → **OPS**; driving the live game to verify → **BRIDGE**.
 | 1 | Empire reskin (labels) | 🟩 **BUILT** | 🟩 **SEEN LIVE** | CREATE | ✅ **CLOSED** |
 | 2 | Faction exclusion at worldgen | — | ⬜ | owner + VISION | 🔴 the campaign worldgen, list ratified and waiting |
 | 3 | One `QuestScriptDef` — *The Claim* | 🟩 **BUILT**, deployed | ⬜ | CREATE | fire it and reach an end state |
-| 4 | Three terrain overrides | 🟩 **BUILT**, deployed | ⬜ | CREATE | map-gen-time — needs the campaign map |
+| 4 | Three terrain overrides | 🟩 **BUILT**, deployed | 🟨 **1 of 3 SEEN** — `Jawa_SaltCrust` passed live | CREATE | two more, on any fresh map |
 | 5 | Jawa xenotype plays | 🟩 live | 🟨 **genes render on scratch** | BRIDGE | see it on a naturally-spawned campaign Jawa |
 | 6 | Weapons / gear | 🟩 6 mods live | 🟩 **`JawaIonWeapons` PROVEN** `ad3e9b0` | BRIDGE | ✅ **CLOSED** |
 | 7 | Ordinary worldgen | ⬜ | ⬜ | BRIDGE | 🔴 the campaign desert world |
