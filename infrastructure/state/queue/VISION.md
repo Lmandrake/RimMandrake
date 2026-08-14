@@ -98,7 +98,10 @@ same string, and the patch is what players see. **Decide which is canon.**
 From §0. The other 11 dossiers, `pawnGroupMakers`, memes, ideoligions, the
 relations matrix, and the licensing gate. Stages 1 and 2 are closed.
 
-### V10. `faction_roster_v2.md:42` claims `FactionDef` expresses "goodwill" — it does not
+### V10. ✅ CLOSED — already fixed in the file, the queue entry was stale
+`faction_roster_v2.md:44` now reads *"`FactionDef` does NOT express goodwill, and
+this line used to say it did"*, with the measurement behind it (88 FactionDefs,
+125 fields, zero hits). **Nothing to do; checked 2026-08-13.** Original entry:
 From §3d. Doc correction. The in-game persistence question that was tangled into
 the same item went to `infrastructure/state/queue/OPS.md` as O4.
 
