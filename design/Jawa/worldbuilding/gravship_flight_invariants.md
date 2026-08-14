@@ -65,6 +65,16 @@ true in this modset:
 ⇒ **A hull with none of these builds, reports connected, photographs perfectly,
 and refuses to lift.** That was exactly our state when this was written.
 
+⚠️ **The engine's own `GravshipRange` is 0. ALL range comes from thrusters** —
++10 per small, +16 per large. So a thruster-less ship is not a short-range ship,
+it is a ship that cannot go anywhere. Thrusters are the propulsion *and* the
+map budget, not a formality.
+
+⚠️ **Launch is an Ideology RITUAL, and the ritual needs a co-pilot interaction
+cell** offset from the pilot's. One report has a statue on that cell stalling the
+launch silently and forever. **Leave clearance on both sides of the console** —
+a validator that only checks the console's own footprint will pass this.
+
 ---
 
 ## 3. The grav engine
