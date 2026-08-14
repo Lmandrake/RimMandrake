@@ -134,6 +134,11 @@ src/RimMandrake/mapsynth/runs/
 *.rws
 research/**/*.pdf
 vendor/salvage/**/*.dll
+# Bulk census/dump output and raw load triage: derived, transient, and large.
+# One blanket add away from being in history forever (audit #7, 2026-08-13).
+design/Jawa/art/census_building_graphics.tsv
+observed/quicktest_terrain_top_250x250.json
+observed/2026-08-13_load_1730_triage.txt
 
 # Claude Code per-session scratch: role files are ephemeral, not project state.
 .claude/session_roles/
