@@ -98,12 +98,21 @@
            are ZERO: Dunes, Iceberg, VEE_DetachedIceberg, VEE_IceAndFire,
            VEE_QuicksandDunes (shipped values verified in
            Odyssey/Defs/TileMutators/TileMutators_Natural.xml:829-840).
-           This campaign is a DESERT world and its map is coastal DUNES, so the
-           count was RoundToInt(n x 0) = 0. Measured: 11 chunks against a >=75
-           prediction, and the 11 were other mods' — Base_Player's genSteps do
-           not include AncientMiscDebris. It placed nothing and warned nothing.
-           ⚠️ A scavenger clan's scrap was switched off by the terrain it lives
-           on, silently. That is the defect isJunk buys.
+           This campaign is a DESERT world whose landing tile carries Dunes, so
+           on the CAMPAIGN map the count would be RoundToInt(n x 0) = 0 —
+           a scavenger clan's scrap switched off by the terrain it lives on,
+           silently, with no warning. That is the latent defect isJunk buys and
+           it is why the flag is gone.
+           ⚠️ THIS IS NOT THE EXPLANATION FOR THE MEASURED 11. That reading was
+           WITHDRAWN by OPS the same night (queue/OPS.md O15) and it was wrong:
+           Jawa_StampGroundHulk is also isJunk, shares the tile, and inherits
+           CalculateFinalCount unchanged — yet the hulk DID warn, and a zeroed
+           count never enters the placement loop and so cannot warn. ⇒ the
+           factor was NOT 0 on that quicktest tile, and scrapfields should have
+           placed >=75 there. Registration is not the cause either: both defs
+           are in Base_Player's genSteps in the fresh 01:20 dump.
+           🔴 WHERE 64+ CHUNKS WENT IS STILL OPEN. Do not read this removal as
+           the fix for it.
            WHAT DROPPING IT COSTS: Junkyard tiles no longer boost us 15x. We
            accept that — this is an always-on thin scatter by design, not a
            tile-keyed feature, and uniform is what the design asked for. The

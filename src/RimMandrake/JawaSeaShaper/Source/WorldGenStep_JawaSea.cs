@@ -7,7 +7,10 @@ using Verse.Noise;
 
 namespace JawaSeaShaper
 {
-    // A quarter ocean, in three torn bodies near the poles.
+    // A quarter ocean, in three torn bodies in the habitable ring.
+    //
+    // NOT near the poles - this planet's isotherms are circles around the
+    // subsolar point, not latitude bands. See PickHabitableRingSeeds.
     //
     // Spec: design/Jawa/worldbuilding/worldgen_sea_spec.md (VISION, c2b0026).
     // Owner's ruling it implements: "A quarter ocean, split into three different
@@ -132,7 +135,9 @@ namespace JawaSeaShaper
             }
 
             // ---------------------------------------------------------------
-            // PHASE 2 — three seeds, poles-ward, deterministic from the world seed.
+            // PHASE 2 — three seeds in the HABITABLE RING (31.5-58.5 deg of arc from
+            // the subsolar point), deterministic from the world seed. NOT poles-ward:
+            // see PickHabitableRingSeeds for why latitude is the wrong axis here.
             // ---------------------------------------------------------------
             int worldSeed = Gen.HashCombineInt(Find.World.info.Seed, SeedPart);
             Perlin shape = new Perlin(ShapeFrequency, 2.0, 0.5, 4,
@@ -141,7 +146,7 @@ namespace JawaSeaShaper
             int quota = Mathf.RoundToInt(count * TargetWaterFraction);
             int perBody = Mathf.Max(1, quota / Bodies);
 
-            List<int> seeds = PickPolarSeeds(layer, tileOf, count, worldSeed);
+            List<int> seeds = PickHabitableRingSeeds(layer, tileOf, count, worldSeed);
 
             // ---------------------------------------------------------------
             // PHASE 3 — grow each body by INVASION PERCOLATION.
@@ -290,48 +295,114 @@ namespace JawaSeaShaper
         }
 
         // -------------------------------------------------------------------
-        // Three start tiles, each nearer a pole than the equator (acceptance
-        // test 4), and spread apart so the bodies do not immediately merge.
-        // Deterministic: Rand is pushed with a seed derived from the world's.
+        // 🔴 THIS PLANET'S CLIMATE IS NOT BANDED BY LATITUDE. Corrected
+        // 2026-08-14 against the shipping source of Alien Worlds - Tidally
+        // Locked, workshop 3631364335, Source/PlanetTypeDef.cs:83-90:
+        //
+        //     effectiveLat = Acos(Cos(lon*Deg2Rad) * Cos(lat*Deg2Rad)) * Rad2Deg
+        //     temp         = AvgTempByLatitudeCurve.Evaluate(effectiveLat / 90)
+        //
+        // A transpiler on WorldGenStep_Terrain.GenerateTileFor DELETES the .y
+        // load and calls that instead, so vanilla's latitude-only path never
+        // runs on this planet. `effectiveLat` is the great-circle ARC DISTANCE
+        // FROM THE SUBSOLAR POINT (lon 0, lat 0) — the isotherms are CIRCLES
+        // centred on (0,0), not latitude bands. That is also why the curve runs
+        // past x = 1.0 at all: |lat| alone tops out at 90 deg, and only
+        // longitude can carry the argument to 2.0.
+        //
+        // ⚠️ Why latitude cannot be patched into working: lat 45 / lon 0 is 45
+        // deg of arc out and warm, while lat 45 / lon 120 is 110.7 deg out and
+        // about -62 C. Same latitude, opposite worlds. The old predicate here
+        // (|lat| > 45) could not tell them apart, and it aimed at the NIGHTSIDE.
+        //
+        // The band below is the spec's own 0.35-0.65 read on the correct axis:
+        // the curve's x is effectiveLat/90, so x 0.35-0.65 is 31.5-58.5 deg of
+        // arc. Independently interpolated off the shipped curve points
+        // (0.0,70 · 0.1,65 · 0.5,14 · 1.0,-37 · 1.3,-70 · 2.0,-80), liquid water
+        // sits at 0 C at 57.3 deg and +30 C at 33.7 deg — inside this band. The
+        // spec's NUMBERS were right; only its axis label ("latitude", and x=0.5
+        // called "the terminator") was wrong. The true terminator is x = 1.0.
         // -------------------------------------------------------------------
-        private static List<int> PickPolarSeeds(PlanetLayer layer, PlanetTile[] tileOf,
-                                                int count, int worldSeed)
+        private const float RingInnerDeg = 31.5f;   // curve x 0.35, about +32 C
+        private const float RingOuterDeg = 58.5f;   // curve x 0.65, about -3 C
+        // Past the true terminator (90 deg, curve x 1.0, -37 C). This is where the
+        // deliberately off-pattern third body goes — see PickHabitableRingSeeds.
+        private const float NightsideMinDeg = 100f; // curve x 1.11, about -45 C
+
+        /// <summary>
+        /// Great-circle arc distance in degrees from the subsolar point
+        /// (lon 0, lat 0). Mirrors the mod's own BaseTemperatureAtLongLat, so
+        /// this bands on exactly what the game scores the tile with.
+        /// </summary>
+        private static float ArcFromSubsolar(PlanetLayer layer, PlanetTile tile)
         {
-            List<int> polar = new List<int>();
+            Vector2 ll = layer.LongLatOf(tile);
+            float c = Mathf.Cos(ll.x * Mathf.Deg2Rad) * Mathf.Cos(ll.y * Mathf.Deg2Rad);
+            return Mathf.Acos(Mathf.Clamp(c, -1f, 1f)) * Mathf.Rad2Deg;
+        }
+
+        private static List<int> PickHabitableRingSeeds(PlanetLayer layer, PlanetTile[] tileOf,
+                                                        int count, int worldSeed)
+        {
+            // 🔴 TWO POOLS, NOT ONE. Spec test 4 items 1 and 2: two bodies in the
+            // habitable ring, and the THIRD deliberately off-pattern — owner's
+            // words, "one near the pole to make it feel really alien", which on a
+            // tidally locked planet means a frozen sea out on the NIGHTSIDE.
+            // Seeding all three in the ring would also walk straight into item 3,
+            // "NOT A RING" — three ring bodies grown along one band read as a
+            // diagram, which is the thing the owner explicitly rejected.
+            List<int> ring = new List<int>();
+            List<int> night = new List<int>();
             for (int i = 0; i < count; i++)
             {
-                // LongLatOf returns (longitude, latitude) in degrees. "Nearer a
-                // pole than the equator" is |lat| > 45.
-                if (Mathf.Abs(layer.LongLatOf(tileOf[i]).y) > 45f)
+                float arc = ArcFromSubsolar(layer, tileOf[i]);
+                if (arc >= RingInnerDeg && arc <= RingOuterDeg)
                 {
-                    polar.Add(i);
+                    ring.Add(i);
+                }
+                else if (arc >= NightsideMinDeg)
+                {
+                    night.Add(i);
                 }
             }
-            if (polar.Count == 0)
+            if (ring.Count == 0)
             {
-                // A world with no high latitudes at all. Fall back to anything
+                // No tile in the habitable ring at all. Fall back to anything
                 // rather than returning nothing and silently making no sea.
                 for (int i = 0; i < count; i++)
                 {
-                    polar.Add(i);
+                    ring.Add(i);
                 }
+            }
+            if (night.Count == 0)
+            {
+                // Nowhere cold enough to be off-pattern. Better a third ring body
+                // than no third body — test 2 counts bodies, and an empty one
+                // fails it outright.
+                night = ring;
             }
 
             List<int> seeds = new List<int>(Bodies);
             Rand.PushState(worldSeed);
             try
             {
-                for (int b = 0; b < Bodies && polar.Count > 0; b++)
+                for (int b = 0; b < Bodies; b++)
                 {
+                    // The last body is the off-pattern one; the rest ride the ring.
+                    List<int> pool = (b == Bodies - 1) ? night : ring;
+                    if (pool.Count == 0)
+                    {
+                        continue;
+                    }
                     int best = -1;
                     float bestScore = float.NegativeInfinity;
                     // Sample rather than sort: pick the candidate furthest from
                     // the seeds already chosen, out of a bounded random draw.
                     // Bounded on purpose — no unbounded search anywhere here.
-                    int draws = Mathf.Min(polar.Count, 256);
+                    int draws = Mathf.Min(pool.Count, 256);
                     for (int d = 0; d < draws; d++)
                     {
-                        int cand = polar[Rand.Range(0, polar.Count)];
+                        int cand = pool[Rand.Range(0, pool.Count)];
                         float score = float.MaxValue;
                         for (int s = 0; s < seeds.Count; s++)
                         {
@@ -529,7 +600,7 @@ namespace JawaSeaShaper
             for (int b = 1; b <= bodyCount; b++)
             {
                 int area = 0, perimeter = 0;
-                float latSum = 0f;
+                float arcSum = 0f;
                 for (int i = 0; i < count; i++)
                 {
                     if (bodyOf[i] != b)
@@ -537,7 +608,7 @@ namespace JawaSeaShaper
                         continue;
                     }
                     area++;
-                    latSum += Mathf.Abs(layer.LongLatOf(tileOf[i]).y);
+                    arcSum += ArcFromSubsolar(layer, tileOf[i]);
                     int[] near = neighboursOf[i];
                     for (int n = 0; n < near.Length; n++)
                     {
@@ -557,10 +628,10 @@ namespace JawaSeaShaper
                 // Perimeter squared over area. A circle is 4*pi = 12.57; the spec
                 // wants at least 25, i.e. twice as ragged as a circle.
                 float compactness = (float)perimeter * perimeter / area;
-                sb.AppendFormat(" | body {0}: {1} tiles, perimeter {2}, compactness {3:F1} ({4}), mean |lat| {5:F0}",
+                sb.AppendFormat(" | body {0}: {1} tiles, perimeter {2}, compactness {3:F1} ({4}), mean arc {5:F0} deg",
                     b, area, perimeter, compactness,
                     compactness >= MinCompactness ? "PASS" : "FAIL — too round",
-                    latSum / area);
+                    arcSum / area);
             }
 
             sb.AppendFormat(" | bodies {0}/{1} — test 2 {2}",
