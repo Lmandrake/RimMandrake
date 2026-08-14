@@ -25,6 +25,40 @@ path because the gate runs through it.
 
 ## Open
 
+### 🔴 OWED AT THE NEXT SHUTDOWN WINDOW — `jawa/get_defs`, built and undeployed
+
+`f4ecb68`. Compiles 0/0. **Artifact is 23 tools; the game copy is 22.** Written
+while the game already held the DLL, so it could not be applied. **The census
+gate stays 22 until it is deployed** — raising it early fails a correct deploy,
+which is the false alarm that stops a census being believed.
+
+```bash
+python.exe src/RimMandrake/bridgetools/build.py --gm --apply   # game CLOSED
+```
+Then bump `EXPECTED_TOOLS` (`load_session.py`), `ALL_TOOLS`
+(`prove_new_tools.py`), `census(expect=)` and `skills/rimbridge/SKILL.md` to
+**23** in the same commit. Non-GM would be 21.
+
+**Why it matters more than one tool.** FIVE v1 gates this cycle had no
+collectable evidence, all for one reason: `get_def`'s rich block was
+**ThingDef-only**, so every other def type returned label plus description.
+Row 4's dune seas wanted `BiomeDef.terrainPatchMakers`; row 5 wanted a xenotype;
+the Cherry Picker audit wanted `PawnKindDef.combatPower` and
+`ThingDef.tradeability`. Each was fixed by adding another hardcoded branch —
+which closes one gate and leaves the next to be found at live prices.
+
+`jawa/get_defs` takes a `fields` list and reads them reflectively off **any** def
+type, and batches. So: a new question needs **no new build**, and a build needs
+the game **closed** — that is the whole point. It also turns the 22-key audit
+from 22 round trips into one.
+
+⚠️ Two deliberate refusals in it, both the same shape as tonight's traps: a field
+you **asked for** that does not exist returns `"(no such field)"`, never null, so
+a typo cannot look like a null value; and an entry with no `/` is reported in
+`malformed` rather than skipped, because Cherry Picker's own
+`key.Split('/')[1]` sits outside its catch and one slashless key aborts every
+removal after it.
+
 ### 🟢 RUN THIS, DO NOT COMPOSE CALLS — `src/RimMandrake/bridgetools/load_session.py`
 
 ```bash
