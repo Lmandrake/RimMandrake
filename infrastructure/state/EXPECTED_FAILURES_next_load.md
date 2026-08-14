@@ -1,405 +1,424 @@
-# EXPECTED_FAILURES_next_load.md — the three assemblies, written BEFORE the load
-
-**Written 2026-08-13 by OPS, game DOWN. For: the NEXT cold load** (the first load
-after the three-assemblies batch, i.e. the one that follows the 2026-08-13 10:05
-companion deploy). Queue item **O5**, ruled LIVE by the owner.
+# EXPECTED_FAILURES — expected-failure signatures, written BEFORE each load
 
 **Why this file exists.** The owner granted the three-assemblies waiver
-(`skills/rimworld-load-round/SKILL.md` §3, "the waiver STANDS. Batch it.") on one mandatory condition: *write
-the three expected-failure signatures down before launching.* A signature invented
-after reading the log is not evidence, it is a story that fits. This is that
-document. **Do not edit the signatures below after the log exists** — append
-results underneath instead.
+(`skills/rimworld-load-round/SKILL.md` §3) on one mandatory condition: *write the
+expected-failure signatures down before launching.* **A signature invented after
+reading the log is not evidence, it is a story that fits.**
 
-⚠️ **A clean log proves NOTHING here.** Two of the three assemblies emit zero
-bytes to `Player.log` in any state. For those, the positive sighting is the whole
-test.
+**Two standing rules, and the second was learned the hard way:**
 
----
+1. **Do not edit a block's signatures after that load's log exists.** Fill the
+   block's Results table instead.
+2. 🔴 **Every load gets its OWN numbered block, with the event and date in the
+   heading. Never reuse a block for a second load.** On 2026-08-13 this file was
+   written for the 17:30 load, that load ran and was harvested, the Results table
+   stayed blank, and the file was about to be spent again on a completely
+   different event — a new world generation, against signatures written for a
+   campaign reload. **A blank Results table means UNFINISHED, not stale. Do not
+   launch against a block that still has one.**
 
-## The three, and their deploy state (all verified on disk 2026-08-13, game down)
-
-| # | assembly | deployed to | size | mtime | state |
-|---|---|---|---|---|---|
-| A1 | `JawaBench.BridgeTools` | `C:\Program Files (x86)\Steam\steamapps\common\RimWorld\BridgeTools\JawaBench\JawaBench.BridgeTools.dll` | 154,112 B | 2026-08-13 10:05 | byte-identical to repo artifact |
-| A2 | `JawaIonWeapons` | `C:\Program Files (x86)\Steam\steamapps\common\RimWorld\Mods\JawaIonWeapons\Assemblies\JawaIonWeapons.dll` | 5,120 B | 2026-08-12 21:53 | md5 `b72cade88872860ab36206c1e01cccae`, identical to repo |
-| A3 | `OuterRimGalacticEmpire` | `C:\Program Files (x86)\Steam\steamapps\workshop\content\294100\2919248699\1.6\Assemblies\OuterRimGalacticEmpire.dll` | 10,752 B | 2026-08-12 16:06 | Workshop, **1.6 folder** — matches the 10,752 B recorded when the waiver was re-put (`infrastructure/state/CLOSED.md`, TODO §7, `8a6659e`) |
-
-**All three are already on disk. None needs a shutdown window.** The 1.4 and 1.5
-copies of A3 are 10,240 B; only the 1.6 one is 10,752 B, so 1.6 is what loads.
-
-**Log path for every grep below:**
-`C:\Users\Mandrake\AppData\LocalLow\Ludeon Studios\RimWorld by Ludeon Studios\Player.log`
+**Log path for every grep in this file:**
 
 ```bash
 LOG="/mnt/c/Users/Mandrake/AppData/LocalLow/Ludeon Studios/RimWorld by Ludeon Studios/Player.log"
 ```
 
+⚠️ **`Player.log` is rotated by the launcher, not appended.** On launch the
+current log becomes `Player-prev.log` and the old `Player-prev.log` is destroyed.
+Harvested logs are gitignored (`0d398c0`), so **a block's log evidence survives
+exactly one further launch.** Quote line numbers into the Results table while the
+log still exists.
+
 ---
 
-# A1 — `JawaBench.BridgeTools` (BRIDGE's companion, 17 tools)
+## INDEX OF LOADS
 
-**What it is.** Not a RimWorld mod — it ships no `About.xml` and RimWorld's mod
-loader never sees it. `RimBridgeServer` scans the game-root `BridgeTools\` folder
-late in startup and registers the `[Tool("jawa/...")]`-attributed static methods
-off `JawaBench.BridgeTools.JawaBenchTerrainTools`. One source file, 2,415 lines,
-zero Harmony, zero `Log.*`, zero `throw`.
+| block | load event | date | status |
+|---|---|---|---|
+| **§1** | three-assemblies batch, reload of the (now deleted) campaign — quicktest map | started **2026-08-13 17:30:59**, harvested 18:11, game up to ~21:10 | ✅ **CLOSED 2026-08-13** — Results filled, incl. two rows honestly marked NOT COLLECTED |
+| **§2** | 🔴 **NEW WORLD GENERATION** — v1 rows 2 + 7 in one irreversible run, plus Anomaly-to-zero | written **2026-08-13**, game DOWN. **Load not yet run.** | ⬜ **OPEN** — signatures written, Results blank |
 
-**17 tools, VERIFIED by scanning the deployed DLL's string heaps:**
+---
 
-```
-jawa/damage        jawa/destroy_batch  jawa/drain_log      jawa/fire_incident
-jawa/get_def       jawa/get_roof_batch jawa/get_terrain_batch
-jawa/list_factions jawa/list_pawns     jawa/refresh_rect   jawa/send_letter
-jawa/set_plants    jawa/set_roof_batch jawa/set_terrain    jawa/set_terrain_batch
-jawa/spawn_batch   jawa/spawn_pawn
-```
+# §1 — LOAD 2026-08-13 17:30. **CLOSED.**
 
-## ✅ EXPECTED SUCCESS — the positive sighting (do this FIRST)
+**Event:** cold load of the three-assemblies batch (the load following the
+2026-08-13 10:05 companion deploy). Queue item **O5**, ruled LIVE by the owner.
+Session ran on a **quicktest** map; the campaign save had already been deleted.
 
-**Nothing in `Player.log` proves A1 works.** The census is the test:
+⚠️ **Signatures below are as written before the load. Compressed at close-out —
+the greps and verdict tables are unaltered; the pre-load descriptive prose about
+what each assembly is was dropped, as it is now history.**
 
-```bash
-python.exe src/RimMandrake/bridgetools/prove_new_tools.py
-```
+## §1 deploy state at the time (verified on disk, game down)
 
-Read line 0, the deploy census. **The number to see is 17.**
+| # | assembly | deployed to | size | mtime |
+|---|---|---|---|---|
+| A1 | `JawaBench.BridgeTools` | `C:\Program Files (x86)\Steam\steamapps\common\RimWorld\BridgeTools\JawaBench\JawaBench.BridgeTools.dll` | 154,112 B | 2026-08-13 10:05 |
+| A2 | `JawaIonWeapons` | `C:\Program Files (x86)\Steam\steamapps\common\RimWorld\Mods\JawaIonWeapons\Assemblies\JawaIonWeapons.dll` | 5,120 B | 2026-08-12 21:53 |
+| A3 | `OuterRimGalacticEmpire` | `C:\Program Files (x86)\Steam\steamapps\workshop\content\294100\2919248699\1.6\Assemblies\OuterRimGalacticEmpire.dll` | 10,752 B | 2026-08-12 16:06 |
 
-| census reads | meaning |
-|---|---|
-| **17** | ✅ the 2026-08-13 10:05 `--gm` build is live. A1 PASSES. |
-| 16 | pre-`list_factions` build — deploy did not take |
-| 14 | pre-roof build |
-| 7 | the old seven, i.e. a stale companion the deploy could not overwrite |
-| 0 | RimBridgeServer never loaded the bundle at all |
+⚠️ **A clean log proved NOTHING here.** A1 and A2 emit zero bytes to `Player.log`
+in any state. For those, the positive sighting was the whole test.
 
-🔴 **PRE-EMPT THIS FALSE ALARM.** `prove_new_tools.py:79-85` `ALL_TOOLS` lists only
-**16** entries — it predates `jawa/list_factions`. So on a *correct* deploy the
-script prints a **FAIL**: `all 16 companion tools registered   17 of 16`. **That
-FAIL is the pass.** 17-of-16 = healthy. Do not "fix" the deploy on the strength of
-it, and do not fix the script during the load — note it and move on.
+## §1 A1 — signatures as written
 
-Second, cheaper positive: `rimbridge/get_bridge_status` → `companions.diagnostics`
-carries `companionCount` / `companionWarningCount` / `companionErrorCount`.
-Want `companionErrorCount = 0` and a non-zero `companionCount`.
+Gate: `python.exe src/RimMandrake/bridgetools/prove_new_tools.py`, census line 0.
+17 = pass · 16 = pre-`list_factions` · 14 = pre-roof · 7 = old seven · 0 = bundle
+never loaded. *(At the time `ALL_TOOLS` held only 16 names, so a correct deploy
+printed `17 of 16` as a FAIL and that FAIL was the pass.)*
 
-## ❌ EXPECTED FAILURE SIGNATURES
-
-**A1 is the one of the three that CAN fail loudly** — the host reports on the
-companion's behalf. All strings below are **VERIFIED** in the `#US` heap of
-`C:\Program Files (x86)\Steam\steamapps\workshop\content\294100\3727949765\1.6\Assemblies\RimBridgeServer.dll`.
-`{0}` etc. are .NET format placeholders — grep the literal prefix, not the braces.
-
-| signature (VERIFIED) | means |
-|---|---|
-| `[RimBridge] Failed to load companion assembly '` | the DLL is corrupt or targets the wrong framework |
-| `[RimBridge] Failed to scan companion assembly '` | loaded but reflection over it threw |
-| `[RimBridge] Loader exception while scanning companion assembly '` | a referenced type is missing — usually an SDK mismatch |
-| `[RimBridge] Failed to inspect companion tool type '` | `JawaBenchTerrainTools` found, attribute read failed |
-| `[RimBridge] Failed to prepare companion tool type '` | tool methods found, instantiation failed |
-| `[RimBridge] Skipping companion tool type '` | type rejected — the follow-on fragment is `' has instance tool methods but no public parameterless constructor.` |
-| `[RimBridge] Could not resolve global BridgeTools folder: ` | the game-root `BridgeTools\` folder was not found at all |
-| `[RimBridge] Failed to register annotated extension provider '` | registration itself failed |
-| `[RimBridge] Ignoring companion-local SDK copy '` | a stray `RimBridgeServer.Sdk.dll` shipped beside ours. Follow-on: `'. Companion tools must bind to the SDK shipped by RimBridgeServer.` |
-| `Companion references RimBridgeServer.Sdk ` | SDK version drift. Follow-on fragments: `, but the running host provides ` and `. Rebuild/redeploy the companion and restart RimWorld if tool calls fail.` |
-| `[RimBridge] STARTUP_INIT_FAILURE: ` | the bridge itself did not come up — A1 is untestable, not failed |
-| `[RimBridge] Failed to start server: ` | same; nothing bridge-side is measurable this load |
-
-**One-shot grep — paste this:**
+Log negative — all strings VERIFIED in the `#US` heap of `RimBridgeServer.dll`:
 
 ```bash
 grep -nE "\[RimBridge\] (Failed to (load|scan|inspect|prepare|register)|Loader exception|Skipping companion|Could not resolve global BridgeTools|Ignoring companion-local SDK|STARTUP_INIT_FAILURE|Failed to start server)|Companion references RimBridgeServer\.Sdk" "$LOG"
 ```
-
-**Want: zero lines.** Then confirm the bridge came up at all:
-
+Want zero lines. Then the bridge came up at all:
 ```bash
 grep -nE "\[RimBridge\] (GABP server running standalone|Startup conditions satisfied|STARTUP_TIMING phase=tools\.register-extensions)" "$LOG"
 ```
-*(All three were present in the 2026-08-13 07:55 baseline log, lines 5794/5805/5811.)*
 
-## Silent-failure mode
+**Silent-failure mode:** a companion deploy attempted while the game runs cannot
+write the file and *nothing* says so; the host then loads the OLD companion
+cleanly. **That is why the census, not the log, is the A1 gate.**
 
-🔴 **YES — the commonest A1 failure is silent.** Windows keeps the companion
-memory-mapped for the life of the process, so a deploy attempted while the game
-runs *cannot* write the file and **nothing anywhere says so**. The host then loads
-the OLD companion cleanly, logs nothing, and every `[RimBridge]` line above stays
-absent. **This is why the census, not the log, is the A1 gate.** The deploy at
-10:05 was in a shutdown window and byte-verified, so this should not bite — but
-17-vs-16-vs-7 is what settles it.
+## §1 A2 — signatures as written
 
-Also silent by design: every in-tool error is a JSON `{success:false, message:...}`
-payload, never a log line. A tool that *runs* and refuses tells you in the reply.
+`JawaIonWeapons.dll`'s `#US` heap is **4 bytes, all `0x00`** — the assembly cannot
+log anything, in any state. Every signature is RimWorld's own error shape.
 
----
-
-# A2 — `JawaIonWeapons` (OPS's ion rebuild)
-
-**What it is.** One class, `JawaIonWeapons.DamageWorker_IonBuildup`, wired in
-purely from XML — `Defs/DamageDefs_JawaIon.xml:60`
-`<workerClass>JawaIonWeapons.DamageWorker_IonBuildup</workerClass>`. **No Harmony
-at all**; the assembly references only `mscorlib` and `Assembly-CSharp`. It exists
-because `additionalHediffs` is only read by `DamageWorker_AddInjury.ApplyDamageToPart`,
-which a `StunBase`-derived def never reaches — so the XML block was inert and the
-worker hand-applies it.
-
-**The rebuild being tested is the guard fix.** `Source/DamageWorker_IonBuildup.cs:92`:
-
-```csharp
-if (pawn.RaceProps == null || pawn.RaceProps.IsMechanoid)
-```
-
-`IsMechanoid` is the *post-fix* guard (`CLOSED.md:37`, W8). The old wrong version
-was `!pawn.RaceProps.IsFlesh`, which `Jawa_Doctrine/Patches/DroidsAreMachines.xml`
-(`isOrganic:false`) silently inverted. **VERIFIED in the deployed IL**: `Apply`
-IL_0033 is `callvirt RaceProperties::get_IsMechanoid`, and `get_IsFlesh` appears
-nowhere in the DLL.
-
-Defs it owns: `JawaIon_Damage` (DamageDef), `JawaIon_Stun` (HediffDef),
-`JawaIon_Bullet` + `JawaIon_Blaster` (ThingDefs), `JawaIon_Weaponry` (ResearchProjectDef).
-
-## ✅ EXPECTED SUCCESS — the positive sighting
-
-**This is the live check already queued as `NEXT_RELOAD.md` §"Live checks" row 1
-(Ion vs a KotOR droid). It is the ONLY thing that proves A2.**
-
-```
-jawa/spawn_pawn  kindDef=KotORDroidBad_KM1MD  faction=hostile
-jawa/damage      JawaIon_Damage, repeatedly   (W8 needed 14 applications — `amount` is a request, not a delivery)
-jawa/list_pawns  -> read the droid back
-```
-
-| must see | value |
+| signature | means |
 |---|---|
-| `JawaIon_Stun` hediff **present** on the droid | severity climbing past 0.35 → 0.65 → 0.9 |
-| at severity ≥ 0.9 | `downed: true` |
-| the pawn | **still exists** — not a corpse, not destroyed |
-
-⚠️ Severity stuck at **0.0** = the guard is wrongly blocking it. That is the exact
-failure the rebuild was meant to fix.
-
-⚠️ `ABF_FleshType_Synstruct_Base` is a **third** flesh def, never tested, and it
-ships `CorpsesMechanoid`. If the downed KotOR chassis resolves as a *corpse*
-rather than a capturable pawn, the capture-and-upgrade loop is dead while every
-static check still looks green. Watch for a corpse.
-
-**Offline confirmation, cheap, do it while the game loads:** the def dump must show
-
-```
-JawaIon_Damage.workerClass == JawaIonWeapons.DamageWorker_IonBuildup
-```
-
-## ❌ EXPECTED FAILURE SIGNATURES
-
-🔴 **The assembly contains ZERO strings.** VERIFIED at the binary level: the DLL's
-`#US` (user-string) heap is **4 bytes, all `0x00`** — the assembly has no user
-strings whatsoever, so it is incapable of logging anything. `About.xml:15` states
-this deliberately: *"It contains no Log calls, so it is SILENT whether it works or
-not — a clean log is not evidence about it either way."*
-
-Every signature below therefore comes from **RimWorld's own** error shapes, not
-from the mod. Marked accordingly.
-
-| signature | verdict | means |
-|---|---|---|
-| `Could not find type named JawaIonWeapons.DamageWorker_IonBuildup` | **PREDICTED** (RimWorld def-loader shape) | the DLL did not load, or the type name drifted |
-| `Exception loading def from file DamageDefs_JawaIon.xml` | **PREDICTED** (RimWorld shape, confirmed as a real family in `vendor/wisdom/benign_log_errors.md:81`) | the def failed to parse at all |
-| `Could not resolve cross-reference: No Verse.HediffDef named JawaIon_Stun found` | **PREDICTED** (shape verified verbatim at `benign_log_errors.md:96`) | the hediff def did not load |
-| `Could not resolve cross-reference: No Verse.ThingDef named JawaIon_Bullet found` | **PREDICTED**, same shape | the bullet def did not load |
-| `NullReferenceException` in a stack naming `Verse.DamageDef.get_Worker` or `DamageWorker_IonBuildup.Apply` | **PREDICTED**, but the mechanism is **VERIFIED**: `Verse.DamageDef::get_Worker` in the game's own `Assembly-CSharp.dll` is `ldfld workerClass` → `Activator::CreateInstance` → `castclass DamageWorker`, with **no null check**. A null `workerClass` throws on the first shot. | fires on the first ion bolt |
-
-**One-shot grep — paste this:**
+| `Could not find type named JawaIonWeapons.DamageWorker_IonBuildup` | the DLL did not load, or the type name drifted |
+| `Exception loading def from file DamageDefs_JawaIon.xml` | the def failed to parse |
+| `Could not resolve cross-reference: No Verse.HediffDef named JawaIon_Stun found` | the hediff def did not load |
+| `Could not resolve cross-reference: No Verse.ThingDef named JawaIon_Bullet found` | the bullet def did not load |
+| `NullReferenceException` naming `Verse.DamageDef.get_Worker` or `DamageWorker_IonBuildup.Apply` | `get_Worker` has no null check on `workerClass` — throws on the first bolt |
 
 ```bash
 grep -nE "JawaIon|DamageWorker_IonBuildup|jawaionweapons" "$LOG"
-```
-
-**Want: exactly one hit** — `  - mandrake.jawaionweapons` in the active-mod list
-(that was line 6707 of the 2026-08-13 baseline log). **Any second hit is the
-failure.** Then:
-
-```bash
 grep -nE "Could not find type named JawaIonWeapons|Exception loading def from file DamageDefs_JawaIon|No Verse\.(HediffDef|ThingDef|DamageDef) named JawaIon" "$LOG"
 ```
+*(Written as: "want exactly one hit, the mod-list entry; any second hit is the
+failure." **That rule was wrong — see the Results.**)*
 
-## Silent-failure mode
+Live gate: spawn `KotORDroidBad_KM1MD` hostile, apply `JawaIon_Damage` ~14×,
+`JawaIon_Stun` severity climbs 0.35 → 0.65 → 0.9, `downed: true`, **pawn still
+exists — not a corpse.**
 
-🔴 **YES, and A2 is the worst of the three.** `Apply` has **four early `return`
-paths** — null/dead pawn, mechanoid, null `additionalHediffs`, zero severity — and
-**not one of them logs anything**. In that state the ion blaster behaves like a
-plain EMP stun gun with no buildup, and `Player.log` is spotless. **This is exactly
-the regime the old `!IsFlesh` bug lived in for days.**
+**Silent-failure mode:** `Apply` has four unlogged early returns. **For A2 the log
+is not evidence in either direction; the live droid test is the ONLY gate.**
 
-**So for A2 the log is not evidence in either direction. The live droid test is
-the ONLY gate. If it is not run, A2 is UNVERIFIED — do not record it as passed.**
+## §1 A3 — signatures as written
 
----
-
-# A3 — `OuterRimGalacticEmpire` (the adopted Empire module)
-
-**What it is.** The smallest of the three and nearly inert: 5 source files, ~200
-lines. A `Verse.Mod` subclass (`OuterRimGalacticEmpireMod`), a `ModSettings` with
-8 bools, **exactly one Harmony patch** — a `[HarmonyPostfix]` on
-`OuterRimCore.OuterRimCoreMod.DoOptionsCategoryContents` that appends to the
-settings UI — and one unused custom `PatchOperation`. **No ThingComp, no
-IncidentWorker, no GameComponent, no def classes.** Everything the mod actually
-ships is XML. The Occupation / Inquisitor / flyover / tax systems named in the
-settings strings are commented out in source.
-
-Harmony ID (**VERIFIED** in IL at `.ctor` IL_0091): `Neronix17.OuterRim.GalacticEmpire`.
-Built against `Assembly-CSharp 1.6.9293` — a genuine 1.6 build, not a 1.5 carry-over.
-
-⚠️ **Use the Workshop tree, not `vendor/mod_sources/`.** The vendor snapshot ships
-1.4/1.5 only, is a different build with a different logging path, and will predict
-the wrong log output. It is not what the game loads.
-
-⚠️ **Two hard runtime dependencies are UNDECLARED** — neither is in
-`<modDependencies>`, which lists only `Neronix17.OuterRim.Core`:
-- **`TabulaRasa`** (ships in `neronix17.toolbox`) — the assembly references it and
-  calls `TabulaRasa.SettingsUtil::Note`; `FactionDefs.xml` uses
-  `Class="TabulaRasa.PawnGroupMaker_Temperature"` and
-  `Class="TabulaRasa.DefModExt_FactionExtension"` with **no `MayRequire`**.
-- `OuterRimCore.OuterRimCoreMod.DoOptionsCategoryContents` must still exist for
-  `PatchAll` to succeed.
-
-Both are satisfied on this install and in the right load order — `neronix17.toolbox`
-at `ModsConfig.xml:518`, `neronix17.outerrim.core` at `:534`,
-`neronix17.outerrim.galacticempire` at `:550`. **That is the fragile link if the
-Workshop updates anything.**
-
-## ✅ EXPECTED SUCCESS — the positive sighting
-
-🔴 **A3 has a real, verbatim, single-line success marker — the only one of the
-three that does.** VERIFIED present at **line 716** of both the current
-`Player.log` and the harvested `2026-08-13 07:55` baseline:
+Positive: a verbatim single-line success marker, `Log.Message` at the top of the
+mod constructor, *before* `Harmony.PatchAll`:
 
 ```
 <color=#00FFFFFF>:: Outer Rim - Galactic Empire :: </color>1.6.9308 ::
 ```
-
-It is emitted by `Log.Message` at the very top of the mod constructor
-(`OuterRimGalacticEmpireMod.cs:36`), **before** `Harmony.PatchAll`. The `1.6.9308`
-suffix tracks `AssemblyVersion` and will change if the Workshop item updates.
-
 ```bash
 grep -n "Outer Rim - Galactic Empire" "$LOG"
 ```
+Want exactly one line, version still `1.6.9308`. **The banner alone is not
+sufficient** — it prints before `PatchAll`, so pair it with the negative grep.
 
-**Want: exactly one line, and the version to still read `1.6.9308`.**
-
-⚠️ **The banner alone is NOT sufficient.** It prints before `PatchAll`, so it can
-appear on a load where the Harmony patch then throws. Pair it with the failure
-grep below.
-
-Second positive, defs — these are the sighting targets for "the faction is live":
-
-| def | defName |
+| signature | means |
 |---|---|
-| FactionDef | `OuterRim_GalacticEmpire` |
-| player FactionDef | `OuterRim_EmpirePlayerFaction` |
-| basic member PawnKind | `OuterRim_ImpStormtrooper` |
-| leader PawnKind | `OuterRim_ImpStormCommander` |
-
-Live: `jawa/list_factions` must return `OuterRim_GalacticEmpire`, and
-`jawa/get_def PawnKindDef OuterRim_ImpStormtrooper` must resolve. That closes
-`NEXT_RELOAD.md` "Live checks" row 3 (trooper ladder). The rest of the ladder:
-`_Officer`, `OuterRim_ImpStormArty`, `_ImpStormJump`, `_ImpStormIncinerator`,
-`_Desert`, `_Snow`, `OuterRim_ImpStormScout`, `OuterRim_ImperialOfficer`,
-`OuterRim_ImpISBAgent`.
-
-## ❌ EXPECTED FAILURE SIGNATURES
-
-**The assembly's ENTIRE user-string heap is 18 strings, dumped VERIFIED. Only two
-can ever reach the log**, and one of them is dead code. Everything else below is a
-RimWorld/Harmony shape.
-
-| signature | verdict | means |
-|---|---|---|
-| **absence** of `:: Outer Rim - Galactic Empire ::` | **VERIFIED** marker | the mod class never constructed — the hardest failure, and it shows as a missing line, not an error |
-| `HarmonyException` naming `Patch_OuterRimCoreMod_Settings` or `DoOptionsCategoryContents` | **PREDICTED** (Harmony shape) | Outer Rim - Core renamed/removed the patch target |
-| `ReflectionTypeLoadException` naming `TabulaRasa` | **PREDICTED** (shape verified as a real family at `traps-mods-and-managers.md:60`) | `neronix17.toolbox` disabled or updated — the undeclared dep |
-| `Could not find type named TabulaRasa.PawnGroupMaker_Temperature` | **PREDICTED** (RimWorld XML shape) | same cause, seen from `FactionDefs.xml` |
-| `Could not find type named TabulaRasa.DefModExt_FactionExtension` | **PREDICTED**, same | same |
-| `Could not resolve cross-reference: No Verse.PawnKindDef named OuterRim_ImpStormtrooper found` | **PREDICTED** (shape verbatim at `benign_log_errors.md:96`) | the pawnkind defs did not load; the faction has no members |
-| `Configuration error in patch, { settings[i]} is not an existing setting in this mod. This can only check existing boolean settings.` | 🔴 **VERIFIED verbatim** in the `#US` heap, including the author's broken interpolation — the missing `$` means `{ settings[i]}` prints **literally** | dead code. The mod as shipped cannot emit it. If you see it, someone added a `PatchOperation_SettingActive` to the XML. |
-
-**One-shot grep — paste this:**
+| **absence** of the banner | the mod class never constructed — shows as a missing line, not an error |
+| `HarmonyException` naming `Patch_OuterRimCoreMod_Settings` or `DoOptionsCategoryContents` | Outer Rim - Core renamed/removed the patch target |
+| `ReflectionTypeLoadException` naming `TabulaRasa` | `neronix17.toolbox` disabled/updated — an **undeclared** hard dependency |
+| `Could not find type named TabulaRasa.PawnGroupMaker_Temperature` / `…DefModExt_FactionExtension` | same cause, seen from `FactionDefs.xml` |
+| `Could not resolve cross-reference: No Verse.PawnKindDef named OuterRim_ImpStormtrooper found` | the pawnkind defs did not load; the faction has no members |
 
 ```bash
 grep -nE "Outer Rim - Galactic Empire|OuterRimGalacticEmpire|Patch_OuterRimCoreMod_Settings|TabulaRasa|OuterRim_GalacticEmpire|OuterRim_ImpStorm" "$LOG"
 ```
-
-**Want:** the banner line, the `  - Neronix17.OuterRim.GalacticEmpire` mod-list
-entry (line 6688 of the baseline), **and nothing else**.
-
-## Silent-failure mode
-
-**Mostly LOUD — A3 is the safest of the three.** The banner is a genuine positive
-sighting and both realistic breakages (Harmony target gone, TabulaRasa gone) throw
-named exceptions.
-
-**The one silent path** is the *absence* of the banner: if the mod class never
-constructs, nothing red is guaranteed, and the only tell is a line that is not
-there. That is why the grep above is a **positive** check, not a negative one —
-run it looking for a hit, not for silence.
-
-Second silent path, XML-only and outside the assembly: the defs load, the faction
-exists, and **it simply never generates a settlement**. `OuterRim_RebelAlliance`
-did exactly this (`queue/OPS.md:76`, `:133`) — configured, present, did not
-generate. So "the faction resolves" ≠ "the Empire is in the world". Confirm on the
-world map, not in the def list.
+Live gate: `jawa/list_factions` returns `OuterRim_GalacticEmpire`,
+`jawa/get_def PawnKindDef OuterRim_ImpStormtrooper` resolves, **and a settlement
+actually exists on the world map** — `OuterRim_RebelAlliance` was configured,
+present, and never generated, so "the faction resolves" ≠ "it is in the world".
 
 ---
 
-## Attribution at a glance — the property the waiver was granted on
+## §1 RESULTS — filled 2026-08-13 against the 17:30 log, game down
 
-The batch is only affordable because the three fail in **different places**:
-
-| | A1 BridgeTools | A2 JawaIonWeapons | A3 GalacticEmpire |
-|---|---|---|---|
-| **fails as** | a tool missing from `tools/list` | a droid that stuns but never downs | a missing faction / missing stormtroopers |
-| **loud in Player.log?** | **partly** — host-side `[RimBridge] Failed to …` covers type-scan failures | 🔴 **NO — never, in any state.** 0-byte string heap | **mostly yes**, plus a verbatim success banner |
-| **own log strings** | 0 | **0** (`#US` heap is 4 bytes, all zero) | 2, one of them dead code |
-| **the real gate** | `prove_new_tools.py` census = 17 | the live KotOR droid test | the banner at log line ~716 + the faction on the world map |
-| **worst case** | stale DLL loads cleanly, deploy silently never happened | early `return`, gun acts like a plain EMP stunner, log spotless | banner absent — a line that is not there |
-
-**No two of the three can produce the same evidence.** If exactly one gate fails,
-attribution is unambiguous.
-
----
-
-## 5-minute execution order
-
-```bash
-LOG="/mnt/c/Users/Mandrake/AppData/LocalLow/Ludeon Studios/RimWorld by Ludeon Studios/Player.log"
-```
-
-1. **A3, positive** — `grep -n "Outer Rim - Galactic Empire" "$LOG"`. **Want one
-   hit** reading `1.6.9308`. Absence = A3 failed.
-2. **A1, negative** — the `[RimBridge]` one-liner. Want **zero** lines. Then the
-   three `[RimBridge]` startup lines present.
-3. **A2, negative** — `grep -nE "JawaIon|DamageWorker_IonBuildup|jawaionweapons" "$LOG"`.
-   Want **exactly one** hit: the mod-list entry.
-4. **A3, negative** — the `TabulaRasa` / `Patch_OuterRimCoreMod_Settings` one-liner.
-5. **A1, gate** — `python.exe src/RimMandrake/bridgetools/prove_new_tools.py`;
-   census must read **17**. It prints this as a FAIL (`17 of 16`) — **that FAIL is
-   the pass.**
-6. **A2, gate (live, the only proof)** — spawn `KotORDroidBad_KM1MD` hostile, apply
-   `JawaIon_Damage` ~14×, confirm `JawaIon_Stun` severity climbs to ≥0.9,
-   `downed: true`, **and the pawn still exists** (not a corpse).
-7. **A3, gate (live)** — `jawa/list_factions` returns `OuterRim_GalacticEmpire`;
-   `OuterRim_ImpStormtrooper` resolves; and a settlement actually exists on the
-   world map.
-
-🔴 **Anything unrun stays UNVERIFIED. An unrun check is not a pass, and for A2 a
-clean log is not evidence in either direction.**
-
----
-
-## Results — fill in AFTER the load, do not edit anything above
+**Log used:** the live `Player.log`, confirmed as this load — single `Mono path[0]`,
+first timestamped line `[17:31:34]` at 644, 8,700 lines, mtime 21:10.
+**It is not harvested to the repo and survives one further launch as
+`Player-prev.log`. The line numbers below are the only durable record.**
 
 | assembly | log grep | live gate | verdict |
 |---|---|---|---|
-| A1 BridgeTools | | | |
-| A2 JawaIonWeapons | | | |
-| A3 GalacticEmpire | | | |
+| **A1 BridgeTools** | ✅ **PASS** — the `[RimBridge]` failure grep returned **zero lines**. All three startup markers present: `Startup conditions satisfied` 5771, `STARTUP_TIMING phase=tools.register-extensions` 5782, `GABP server running standalone on port 5174` 5788. *(File predicted 5794/5805/5811 off the 07:55 baseline; present is what mattered.)* | ⬜ **NOT COLLECTED.** No record anywhere in the repo of `prove_new_tools.py` being run against this load. | 🟨 **UNVERIFIED at its own named gate.** Companion tools demonstrably ran all session — `jawa/damage` (18:03), `set_terrain` (20:46), `spawn_batch`/`set_terrain_batch`/`set_roof_batch` (20:56) — which proves the bundle loaded, but **does not distinguish 16 from 17**, and the census existed for exactly that. ⚙️ One negative datum: `13ee5c5` (20:47) records `order_pawn` as *needing a deploy*, so the build running was pre-`order_pawn`. |
+| **A2 JawaIonWeapons** | ✅ **PASS.** Def-loader grep: **zero hits**. 🔴 **But the written rule "exactly one hit, any second is the failure" is WRONG and would have raised a false alarm.** The log holds **two** `  - mandrake.jawaionweapons` lines, 6687 and 8241 — **RimWorld printed the active-mod list twice this run** (1,163 `  - ` lines total). Both hits are mod-list entries; neither is an error. **Corrected rule: want only mod-list lines, and there are two dumps per run.** | ✅ **PASS** — `ad3e9b0` 18:03, `observed/2026-08-13_ion_weapon_live_test.md`, screenshot `observed/evidence/2026-08-13_ion_downs_kotor_droid.png`. | 🟩 **PASS**, with three stated deviations from the written gate: target was **`KotORDroidGood_3C`**, not `KotORDroidBad_KM1MD` (which NREs in the pawn generator in *every* faction tried — a separate, real KotOR-mod defect); **15 damage in one application**, not 14; and ⬜ **the `JawaIon_Stun` severity ladder was NOT recorded** — the test closed on `downed=True, dead=False, pawn still on map`. The "severity climbs 0.35→0.65→0.9" half is NOT COLLECTED; the "downed, alive, not a corpse" half passed. |
+| **A3 GalacticEmpire** | ✅ **PASS.** Banner present at **line 716**, exactly one hit, version reads **`1.6.9308`** as predicted. Negative grep clean: no `HarmonyException`, no `Could not find type named TabulaRasa.*`, no `OuterRim_*` cross-reference failure. The three `TabulaRasa` hits (5269, 5383, 6832) are Harmony patch-listing lines for `Neronix17.TabulaRasa.RimWorld` — the dependency **present and patching**, the opposite of the failure shape. | ⬜ **NOT COLLECTED on this load.** | 🟨 **Log half PASS, live gate not collected.** v1 row 1 closed earlier the same day (`CLOSED.md:12`, hash `fad8bab`) against the world that has since been deleted; nothing ties a faction read to the 17:30 session. ⚙️ **And it could not have counted anyway:** the session ran on a quicktest, and a quicktest never visits Configure Factions (OPS's trap, `2d1685e`), so a faction census there says nothing about the campaign. **A3's live half is re-booked into §2 S3.** |
+
+### §1 close-out notes worth carrying
+
+- **Two of three live gates were never run.** The log greps are cheap and all three
+  passed; the gates that actually decide A1 and A3 were skipped. That is the
+  recurring shape — *a clean log read as a result.*
+- ⚠️ **`CLOSED.md:11` and `:12` cite `7bd8b60` and `fad8bab`, and neither hash
+  resolves in this working tree.** Not mine to fix — **filed for PROJECT**, who
+  owns `CLOSED.md`. Both are the sole citation for a closed v1 claim.
+
+---
+
+# §2 — NEXT LOAD: **NEW WORLD GENERATION**. ⬜ OPEN
+
+**Event:** a **new world generated from the main menu** — not a save load. This is
+v1 **rows 2 and 7**, which `V1_SCOPE.md` establishes are **one irreversible event**,
+plus the owner's **Anomaly-to-zero** ruling ticked on the same screens.
+**Written 2026-08-13, game DOWN, before the load.**
+
+🔴 **§1's signatures do NOT carry over wholesale.** They were written against a
+campaign reload. Everything below is scoped to *this* event; §1's A2 and A3 log
+greps are re-run only as free regression checks (S6), and their live gates are not
+re-booked.
+
+## §2 deploy state — what changed on disk since §1
+
+| # | assembly | size | mtime | changed since §1? |
+|---|---|---|---|---|
+| **B1** | `JawaBench.BridgeTools` — `C:\Program Files (x86)\Steam\steamapps\common\RimWorld\BridgeTools\JawaBench\JawaBench.BridgeTools.dll` | **227,840 B** | **2026-08-13 22:23** | 🔴 **YES — a new build that has NEVER been loaded.** 154,112 B → 227,840 B. **21 tools, was 17**; adds `order_pawn`, `set_pawn_rotation`, `set_pawn_style`, `set_pawn_xenotype`. md5 `b9aef17f79ee7bef101a4b5ada7f1c7a`, **byte-identical** to the repo artifact `D:\Luke\dev\Rimworld\src\RimMandrake\bridgetools\artifacts\BridgeTools\JawaBench\JawaBench.BridgeTools.dll`. |
+| **B2** | `JawaIonWeapons` | 5,120 B | 2026-08-12 21:53 | no |
+| **B3** | `OuterRimGalacticEmpire` | 10,752 B | 2026-08-12 16:06 | no |
+
+**Game version for every VERIFIED string below:** `RimWorld 1.6.4871 rev591`,
+strings dumped from the deployed
+`C:\Program Files (x86)\Steam\steamapps\common\RimWorld\RimWorldWin64_Data\Managed\Assembly-CSharp.dll`.
+
+---
+
+## S1 — the 21-tool companion, **first load of this build**
+
+🔴 **The only assembly that changed, so it is the only genuinely new assembly
+risk this load.**
+
+**Gate:** `python.exe src/RimMandrake/bridgetools/prove_new_tools.py` → read line 0,
+the deploy census.
+
+| census reads | meaning |
+|---|---|
+| **21** | ✅ the 22:23 build is live. **S1 PASSES.** |
+| 20 | pre-`order_pawn` build — the 22:23 deploy did not take |
+| 17 | the §1 build loaded — deploy did not take |
+| 7 / 0 | old seven / bundle never loaded at all |
+
+🔴 **§1's "the FAIL is the pass" inversion is DEAD — do not carry it forward.**
+`ALL_TOOLS` was corrected at `68a0a30` (16:38) and now holds **21** names
+(`prove_new_tools.py:93-102`), matching the deployed DLL's string heap exactly.
+**A correct deploy now prints PASS. A FAIL now means a real miss.**
+
+Cheaper second positive: `rimbridge/get_bridge_status` →
+`companions.diagnostics` — want `companionErrorCount = 0`, `companionCount` non-zero.
+
+**Log negative — host is unchanged, so §1's grep stands verbatim:**
+
+```bash
+grep -nE "\[RimBridge\] (Failed to (load|scan|inspect|prepare|register)|Loader exception|Skipping companion|Could not resolve global BridgeTools|Ignoring companion-local SDK|STARTUP_INIT_FAILURE|Failed to start server)|Companion references RimBridgeServer\.Sdk" "$LOG"
+```
+**Pass:** zero lines **and** census 21. **Fail:** any line, or census ≠ 21.
+
+**Silent-failure mode, unchanged:** a companion deploy attempted while the game
+runs cannot write the file and nothing says so. The 22:23 deploy landed with the
+game down and is md5-verified against the repo artifact, so this should not bite —
+**the census is what settles it, not the log.**
+
+---
+
+## S2 — worldgen itself completes (v1 row 7)
+
+🔴 **New for this load. §1 had nothing about worldgen because §1 was a reload.**
+
+| signature — **VERIFIED verbatim** in `Assembly-CSharp.dll` | means |
+|---|---|
+| `Error in WorldGenStep: ` | a worldgen step threw. **The top-level worldgen catch — this is the one that matters.** |
+| `Could not generate world features of def ` | a world-feature generator failed; the world exists but is malformed |
+| `Failed to find faction base tile for ` | a faction that had to be placed had nowhere to go — **the expected over-exclusion shape** |
+| `No terrain found in biome ` | a biome has no terrain to lay — a real risk on a modded desert world |
+| `Could not find player faction.` | worldgen produced no player faction |
+| `Could not generate starting map because there is no any player faction base.` | the run is dead at the landing step |
+| `No tiles on layer ` | a planet layer never initialised |
+
+```bash
+grep -nE "Error in WorldGenStep: |Could not generate world features of def |Failed to find faction base tile for |No terrain found in biome |Could not find player faction\.|Could not generate starting map because there is no any player faction base\.|No tiles on layer " "$LOG"
+```
+
+**Pass:** zero lines. **Fail:** any line — and `Error in WorldGenStep:` alone is
+enough to distrust the world.
+
+🔴 **There is no worldgen success banner. I looked — RimWorld emits none.** So the
+positive sighting is an **observation, not a grep**: the world map renders and the
+player reaches the landing-site screen.
+
+> **Evidence command: `rimworld/take_screenshot` at the world map, before landing.**
+> That screenshot **is** row 7's gate — `V1_SCOPE.md`'s bar is *seen working
+> in-game once*, and a world map on screen is that.
+
+---
+
+## S3 — faction exclusion took (v1 row 2)
+
+**The list is `D:\Luke\dev\Rimworld\infrastructure\state\WORLDGEN_FACTION_CHECKLIST.md`**
+— RATIFIED by VISION: **20 untick** (12 ordinary count rows in its §1, 8 hidden
+checkboxes in its §2), **6 keep** (its §4), plus `OuterRim_RebelAlliance` recorded
+present/absent (its §5).
+
+🔴 **Row 2's evidence is NOT a log grep. Nothing in `Player.log` records what was
+ticked.** The only call that produces the evidence:
+
+> **`jawa/list_factions`, run AFTER the world exists**, compared against the
+> checklist's CUT and KEEP columns.
+
+| result | verdict |
+|---|---|
+| every CUT defName **absent** AND every KEEP defName **present** | ✅ **PASS** |
+| any CUT defName present | that box did not take — **record WHICH one; do not regenerate** |
+| any KEEP defName absent | 🔴 worse than a stray cut — a faction the world exists for is missing |
+
+⚠️ **Do not read this off a quicktest.** A debug quicktest never visits Configure
+Factions and shows all 54 factions by default — OPS's trap, `2d1685e`, which
+nearly triggered a needless regeneration. **`list_factions` is evidence only on
+the world you just generated.**
+
+**Downstream signatures — what OVER-exclusion looks like afterwards.** All
+**VERIFIED verbatim** in `Assembly-CSharp.dll`:
+
+| signature | means |
+|---|---|
+| `No valid factions found for trade caravans` | 🔴 cut too deep — no trade partners left |
+| `Could not find any valid faction for ` · `Could not find any valid faction for this site.` | a quest or site had no faction to hang on |
+| `No factions with royal titles found.` | the vanilla `Empire` KEEP entry did not survive |
+| `No raid strategy found, defaulting to ImmediateAttack. Faction=` | a kept faction lost its raid config |
+| `QuestNode_GetPawn tried generating pawn but couldn't find a proper faction for new pawn.` | quest pawn generation has no faction pool |
+
+```bash
+grep -nE "No valid factions found for trade caravans|Could not find any valid faction for|No factions with royal titles found\.|No raid strategy found, defaulting to ImmediateAttack\. Faction=|couldn't find a proper faction for new pawn" "$LOG"
+```
+
+**Want zero. ⚠️ These fire during PLAY, not at load — re-grep at session end, not
+only after the load completes.**
+
+---
+
+## S4 — the two label checks that catch a deploy miss **before** the irreversible click
+
+Both are read off the Configure Factions page itself, **before** generating.
+Evidence: eyes on the page plus `rimworld/take_screenshot`.
+
+| check | pass | fail |
+|---|---|---|
+| `OuterRim_GalacticEmpire` renders as **"Imperial Desert Galactic Empire"** | the `Jawa_Patches` label patch is live | reads **"Galactic Empire"** → 🔴 **STOP before generating.** The Jawa_Patches deploy did not land — check `C:\Program Files (x86)\Steam\steamapps\common\RimWorld\Mods\Jawa_Patches` |
+| `OuterRim_RebelAlliance` is **ABSENT** from the page | `RebelAlliance_Suppress.xml` set `maxConfigurableAtWorldCreation` to 0 — **absence is the DESIRED outcome, not a defect** | **present and settable** → the patch did not land; file it. **Present but locked at 0** → harmless, worth a line. **Do not revert the patch at the screen.** |
+
+**Also record, as an observation with no pass/fail:** vanilla `Empire`'s name is
+**generated**, so the page will probably not say "Fallen Dominion". Screenshot it —
+per the checklist, that string is the only record of it.
+
+---
+
+## S5 — Anomaly at zero (owner's ruling, same run)
+
+**Setting:** the Anomaly playstyle. defNames **VERIFIED** in `Assembly-CSharp.dll`:
+`AnomalyFrequency_None` · `_VeryRare` · `_Rare` · `_Balanced` · `_Intense` ·
+`_Overwhelming`. **Want `AnomalyFrequency_None`.** The DLC stays **enabled** — only
+the storyline is off; its creatures and abilities remain ours to reskin.
+
+**Evidence command:**
+
+```
+rimworld/save_game        # then grep the .rws on disk:
+grep -o "anomalyPlaystyleDef>[^<]*" <the .rws>
+```
+
+`anomalyPlaystyleDef` is the serialised field name, **verified in
+`Assembly-CSharp.dll`**. **Pass:** it reads `AnomalyFrequency_None`. **Fail:**
+anything else.
+
+⚠️ **This costs one save, and there is no other read-back.**
+`rimworld/get_game_info` returns only `ticksGame` and `mapCount` and cannot answer
+it. **If the save is not taken, S5 is NOT COLLECTED** — the setup screen is gone
+and the answer is unrecoverable short of another worldgen.
+
+---
+
+## S6 — carry-over regression, free (B2 and B3, unchanged on disk)
+
+Both passed their §1 log greps and neither DLL changed. Re-run both — two seconds —
+purely to confirm the new load did not regress them:
+
+```bash
+grep -nE "JawaIon|DamageWorker_IonBuildup|jawaionweapons" "$LOG"   # want ONLY mod-list lines
+grep -n "Outer Rim - Galactic Empire" "$LOG"                        # want one hit, version 1.6.9308
+```
+
+🔴 **Expect TWO `mandrake.jawaionweapons` hits, not one** — RimWorld prints the
+active-mod list twice per run (measured in §1: 6687 and 8241). §1's "any second hit
+is the failure" rule was wrong; it is corrected here so nobody re-raises it.
+
+**No live gate is booked for either.** A2's is closed (`ad3e9b0`); A3's live half
+is now S3's KEEP check on `OuterRim_GalacticEmpire`.
+
+---
+
+## 🔪 DROPPED — signatures with no collectable evidence, and why
+
+**A signature whose evidence cannot be collected is not a signature, it is a wish.**
+`V1_SCOPE.md` counts eleven gates that failed this way in one day. These four were
+considered and cut rather than written:
+
+| dropped | why |
+|---|---|
+| *"the desert world is actually desert"* as a **signature** | `V1_SCOPE`'s row-4 correction demands a live `BiomeDef` read, and `jawa/get_def BiomeDef <name>` can supply one — **but only once the landing tile's biome NAME is known, and no call reads a tile's biome back.** Kept instead as S2's screenshot observation, which is what row 7's gate actually asks for. |
+| *"the tick-list was ticked correctly at the screen"* | **There is no read-back of the Configure Factions page.** The only evidence is `list_factions` on the world afterwards, which is S3. A second row for the screen itself would be unfalsifiable. |
+| *"the Fallen Dominion's generated name is X"* | `Empire`'s name is generated at worldgen and nothing greps it out of the log. Recorded in S4 as a screenshot **observation**, deliberately with no pass/fail. |
+| *`OuterRim_ImpStormtrooper` resolves* | A def-existence check. It was already true at §1 and worldgen cannot change it. **Not a worldgen signature.** |
+
+---
+
+## §2 execution order
+
+**Before the irreversible click:**
+1. **S4** — both label checks on the Configure Factions page. A miss here means
+   **stop and fix the deploy**, and it is the only point where that is still cheap.
+2. **S3, the act** — drive the 20 unticks and confirm the 6 keeps, from
+   `WORLDGEN_FACTION_CHECKLIST.md`. Tick **Anomaly → `AnomalyFrequency_None`** on
+   the same screens (S5).
+
+**Immediately after the world exists:**
+3. **S2** — the worldgen grep. Want zero lines. Screenshot the world map (row 7's gate).
+4. **S3, the evidence** — `jawa/list_factions`, diff against the checklist.
+5. **S1** — `prove_new_tools.py`; census must read **21**, and it should print PASS.
+6. **S5** — `rimworld/save_game`, then grep the `.rws` for `anomalyPlaystyleDef`.
+
+**At session end, before the next launch destroys the log:**
+7. **S6** plus a re-run of **S3's downstream grep** — those fire during play, not at load.
+
+🔴 **Anything unrun stays UNVERIFIED. An unrun check is not a pass** — §1 closed
+with two live gates never run, and that is exactly what this line existed to
+prevent.
+
+---
+
+## §2 RESULTS — **for the NEW WORLD GENERATION load only.** Fill in AFTER it runs.
+
+⬜ **Blank as of 2026-08-13, game down. This load has NOT yet run.**
+🔴 **If you are reading this table blank after a load has happened, the load was
+spent without closing it — say so, and mark the rows NOT COLLECTED. Do not
+reconstruct a result from the log.**
+
+| # | check | evidence collected? | result |
+|---|---|---|---|
+| S1 | companion census = 21 | | |
+| S1 | `[RimBridge]` failure grep = 0 | | |
+| S2 | worldgen error grep = 0 | | |
+| S2 | world map screenshot (row 7 gate) | | |
+| S3 | `jawa/list_factions` vs checklist — 20 CUT absent | | |
+| S3 | `jawa/list_factions` vs checklist — 6 KEEP present | | |
+| S3 | downstream over-exclusion grep = 0 (at session end) | | |
+| S4 | Empire label reads "Imperial Desert Galactic Empire" | | |
+| S4 | `OuterRim_RebelAlliance` absent from the page | | |
+| S5 | `.rws` `anomalyPlaystyleDef` = `AnomalyFrequency_None` | | |
+| S6 | A2 / A3 log greps unchanged | | |
