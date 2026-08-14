@@ -21,6 +21,23 @@ PS=/mnt/c/Windows/System32/WindowsPowerShell/v1.0/powershell.exe
 INTERVAL="${1:-15}"
 
 mkdir -p "$OUTDIR"
+
+# 🔴 SINGLETON, enforced here rather than by whoever launches it. Every seat
+# fires this on startup, so without a lock five seats mean five samplers — and
+# on 2026-08-14 two concurrent instances with different column layouts appended
+# to the SAME csv, producing rows that did not match their own header. The guard
+# lives in the thing being made singleton so no caller can get it wrong.
+#
+# flock holds for the lifetime of the process and is released automatically if it
+# is killed, so a crashed sampler never leaves a stale lock behind — which a
+# pidfile would. Non-blocking: a second caller exits quietly and successfully,
+# because "someone else is already sampling" is the desired end state, not an error.
+LOCK="$OUTDIR/.watcher.lock"
+exec 9>"$LOCK" || exit 0
+if ! flock -n 9; then
+  exit 0
+fi
+
 STAMP=$(date +%Y%m%d_%H%M%S)
 CSV="$OUTDIR/watch_$STAMP.csv"
 DMESG="$OUTDIR/watch_$STAMP.dmesg"
@@ -92,8 +109,8 @@ while true; do
   # --- alarm 2: a seat still climbing, the EARLY signal ---
   # A seat's steady state is ~600 MB and the fatal one reached 27.4 GB, so the
   # climb is long and there is real time to act. Warning at 3 GB is ~5x normal
-  # and half the 6 GB cgroup bound: enough runway to /clear or restart that one
-  # seat deliberately, which is strictly better than letting the bound kill it.
+  # and well under the 10 GB cgroup bound: enough runway to /clear or restart that
+  # one seat deliberately, which beats letting the bound kill it.
   BIG=$(ps -eo rss,pid,args --no-headers | awk '$1 > 3145728 && /claude|2\.1\./ {print}')
   if [ -n "$BIG" ]; then
     echo "$BIG" | while read -r rss pid rest; do

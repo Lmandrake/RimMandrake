@@ -84,6 +84,18 @@ if ! systemd-run --user --scope --quiet -- true >/dev/null 2>&1; then
   exec "$CLAUDE_BIN" "$@"
 fi
 
+# Start the forensic sampler if it is not already up. It is a singleton by its
+# own flock, so all five seats can fire this and exactly one survives.
+#
+# ⚠️ Deliberately started BEFORE the exec, so it stays in /init.scope rather than
+# inside this seat's cgroup. If it lived in the scope, a seat hitting MemoryMax
+# would take the sampler with it — losing precisely the last few samples that
+# explain what happened. The instrument must outlive the thing it measures.
+WATCHER=/mnt/d/Luke/dev/Rimworld/src/RimMandrake/Utils/resource_watch.sh
+if [ -x "$WATCHER" ]; then
+  setsid nohup "$WATCHER" 15 >/dev/null 2>&1 < /dev/null &
+fi
+
 exec systemd-run --user --scope --quiet \
   --unit="claude-seat-${AGENT_SEAT:-unknown}-$$" \
   -p MemoryMax="$MEM_MAX" \
