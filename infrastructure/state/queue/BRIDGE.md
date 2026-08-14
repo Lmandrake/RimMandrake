@@ -124,6 +124,27 @@ drafter, so its Lord duty overrides the Goto within a few ticks and a working
 tool reads as a FAIL. It drafts, walks 6 cells, walks back to the exact starting
 cell, undrafts, and reports `leftDrafted` either way.
 
+#### B4a — `targetId` / `pathEndMode`, added `bee5da9`. Still 21 tools, deployed.
+
+**`NoPathToPilotConsole` is answerable WITHOUT moving anything.** The gate is
+`RitualBehaviorWorker_GravshipLaunch::PawnCanFillRole`: IL_0065-006A calls
+`ReachabilityUtility.CanReach(pawn, console, PathEndMode.InteractionCell,
+Danger.Deadly, false, false, ByPawn)` and emits the string at IL_0072.
+
+⚠️ **My first version answered a NEIGHBOURING question.** It passed a cell with
+`PathEndMode.OnCell`. **A pawn can reach the cell beside a console and still fail
+`InteractionCell`** — different verdicts, and the gate uses the second. So
+`targetId` (a ThingID) now targets the THING, defaults `pathEndMode` to
+`interactioncell`, and reproduces the vanilla call exactly.
+
+```
+jawa/order_pawn pawnId=colonists targetId=<consoleThingId> waitTicks=0 unpause=false
+```
+
+**Zero movement, zero unpause, nothing left on the map** — it returns `canReach`
+per pawn on a paused game. Walking is still the stronger evidence where arrival
+is the claim rather than a predicate. Filed at CREATE as their owed item 6.
+
 ### 🟡 B1, B2, B3 — BUILT AND UNVERIFIED. Written offline 2026-08-13, never run.
 
 **All three are written and compile clean (0 errors, 0 warnings,
