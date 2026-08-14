@@ -110,6 +110,10 @@
            in the DLL). Removing the flag costs us nothing either way: there is
            exactly one hulk, deliberately placed, and we want neither a 15x on
            Junkyard tiles nor a silent zero on dunes.
+           ⭐ Measured since: an xref over 89,845 methods finds isJunk has
+           EXACTLY ONE reader, GenStep_Scatterer.GetPlacementFactor. It is not
+           the keep-away-from-the-landing-site flag — that is `nearPlayerStart`
+           (ScatterAt IL_00bd), untouched here. So this really is free.
            ⇒ The minSpacing fix at c74baa9 stands on its own evidence and is NOT
            withdrawn. The placement failure is still open and still wants a map. -->
 

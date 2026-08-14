@@ -62,21 +62,37 @@
   Ideology/Defs/MapGeneration/CommonMapGenerator.xml:78-84 is the donor for
   <thingDef> on the same genStep class.
 
-  Deliberately NOT used: <clusterSize> and <spotMustBeStandable>. Neither
-  appears on any shipped GenStep_ScatterThings anywhere in the Data tree
-  (grep: zero hits for clusterSize), and a field the engine does not read on
-  this class is a silent no op at best.
+  🔴 I WAS WRONG ABOUT <clusterSize>, AND THE REASONING IS THE PART THAT MATTERS.
+  This file used to say clusterSize was "a field the engine does not read on
+  this class", and the evidence given was zero grep hits across the Data tree.
+  ⚠️ THAT GREP ONLY EVER PROVED NO SHIPPED DEF USES IT. It says nothing about
+  whether the engine reads it. Read from the assembly instead:
+  Verse.GenStep_ScatterThings carries a public int clusterSize, with private
+  clusterCenter and leftInCluster and a static ClusterRadius. The engine reads
+  it, and it is now set below.
+  ⭐ GENERALISES: absence in Data/ is not absence in the code. A def-tree grep
+  answers "does anything ship using this", never "does this work".
+  (<spotMustBeStandable> stays unused — that one was never in question here.)
 
-  ⚠️ TUNING, and it is the ONLY number here worth arguing about:
-  countPer10kCellsRange 12~20 puts roughly 75 to 125 chunks on a 250x250 map,
-  about two or three visible per screen at normal zoom. That is the density
-  that makes the world READ as junk strewn; Core's own debris runs 0.25~0.5,
-  which is one or two per map and would not close a "seen on the map" gate.
-  Full theoretical yield if every chunk were smelted is around 1,100 to 1,900
-  steel per map, one off and non renewing, gated behind a smelter and haul
-  time. It does not create a ladder, so it clears concept.md §3, but it IS an
-  economy nudge VISION did not specify and it is the first number to cut if
-  the owner disagrees.
+  ⚠️ TUNING — re-derived 2026-08-14, and the OLD SUM LEFT OUT A TERM:
+  the real count is
+      RoundToInt(size*size / RoundToInt(10000/value))  x  GetPlacementFactor
+  and the old note omitted GetPlacementFactor entirely. With isJunk gone that
+  factor is a fixed 1 (see below), so the arithmetic is honest again.
+
+  countPer10kCellsRange 7~9 gives 44 to 56 chunks on a 250x250:
+      v=7 -> 10000/7 = 1429, 62500/1429 = 44
+      v=9 -> 10000/9 = 1111, 62500/1111 = 56
+  clusterSize 10 turns that into 4-6 readable CLUMPS rather than 50 chunks
+  spread evenly and invisibly. VISION's call and the reason for it: one clump
+  reads as a crashed thing; several read as A FIELD SOMEBODY HAS BEEN WORKING
+  OVER, which is the fiction we are selling. ⭐ Tune this on the screenshot,
+  not on the number.
+
+  WAS 12~20 (75-125 spread thin). Full theoretical yield if every chunk were
+  smelted is now around 660 to 840 steel per map, one off and non renewing,
+  gated behind a smelter and haul time. It does not create a ladder, so it
+  clears concept.md §3.
 
   This GenStepDef does nothing on its own. Patches/JawaResource_Scrapfields.xml
   registers it into the player map generator.
@@ -103,6 +119,11 @@
            a scavenger clan's scrap switched off by the terrain it lives on,
            silently, with no warning. That is the latent defect isJunk buys and
            it is why the flag is gone.
+           ⭐ AND IT COSTS US NOTHING. An xref over 89,845 methods finds isJunk
+           has EXACTLY ONE reader — GenStep_Scatterer.GetPlacementFactor, the
+           density multiplier. It is not what keeps junk off the landing site;
+           that is `nearPlayerStart` (ScatterAt IL_00bd), which we never set and
+           did not touch. ⚠️ Do not record a tradeoff here — there isn't one.
            ⚠️ THIS IS NOT THE EXPLANATION FOR THE MEASURED 11. That reading was
            WITHDRAWN by OPS the same night (queue/OPS.md O15) and it was wrong:
            Jawa_StampGroundHulk is also isJunk, shares the tile, and inherits
@@ -120,7 +141,10 @@
            ⛔ Do NOT "fix" this by patching Dunes' junkDensityFactor — that is a
            shared vanilla def and would change every junk scatterer in the game. -->
       <minSpacing>4</minSpacing>
-      <countPer10kCellsRange>12~20</countPer10kCellsRange>
+      <countPer10kCellsRange>7~9</countPer10kCellsRange>
+      <!-- 4-6 clumps of ~10 rather than ~50 chunks spread evenly. The engine
+           DOES read this — see the reasoning correction in the header. -->
+      <clusterSize>10</clusterSize>
       <filthDef>Filth_MachineBits</filthDef>
       <filthExpandBy>1</filthExpandBy>
       <filthChance>0.35</filthChance>
