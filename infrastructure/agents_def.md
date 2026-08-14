@@ -103,6 +103,31 @@ its batch discovering this.** BRIDGE's is the measurement; PROJECT's is the
 announcement; the owner's is the permission. Three roles, and PROJECT relaying
 the owner's optimism as a measurement is precisely how 1a goes wrong.
 
+🔴 **1c. WHOEVER HOLDS THE BRIDGE MAY CREATE AND DESTROY DEV COLONIES AT WILL.**
+Owner's ruling, 2026-08-13, issued because seats were **waiting on the owner for a
+map they could have made themselves.**
+
+> **You do not need a map. You can make one.** `rimworld/start_debug_game_ready`
+> starts a dev quicktest colony through the bridge. No permission, no queue entry,
+> no waiting for worldgen.
+
+- **Make them freely, destroy them freely.** A quicktest colony is scratch. It is
+  not the campaign and nothing about it is precious.
+- ⭐ **This is what "blocked on a map" almost never means.** If your batch needs a
+  map and there is no map, **start one** — that is a 30-second call, not a
+  25-minute load. `no_game` blocks nothing that a quicktest cannot unblock.
+- **The campaign save is the exception and is untouchable** — do not test on it,
+  and say which you were on when you report a result. A finding from a quicktest
+  and a finding from the campaign are different claims.
+- ⚠️ **The known trap, already paid for:** `start_debug_game_ready` **exceeds the
+  30 s client timeout and succeeds anyway** — the response is merely late. **Do
+  not retry** (the connection is desynced) and **do not re-issue** (you get a
+  second map). Open a fresh connection, then poll `jawa/list_pawns` until it stops
+  saying *"No current map"*. Method and evidence:
+  `skills/rimbridge/references/capability-matrix.md`.
+- **Bridge etiquette is unchanged** — rule 1 still holds. Taking the bridge is
+  announced; making a colony once you hold it needs nobody's say-so.
+
 **2. Nobody touches another seat's tools.** Request capabilities; only the owner of a
 tool writes it.
 
