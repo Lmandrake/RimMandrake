@@ -30,13 +30,26 @@ text downstream still reads as a choice, this section wins.**
 | **D5** | does the export happen this session | **YES — it is the point.** D2 makes the build worthless without it | step 20 is now load-bearing, not optional. See the fallback note on its gizmo route. |
 
 ⇒ **Two consequences worth stating plainly.** The riskiest step in the plan
-(step 9, the destroy) is now the *cheapest*, because the map is disposable. And
+(step 9, the destroy) is now the *cheapest*, because no map is precious. And
 the riskiest step is now **step 20, the export** — it is the only thing that
 carries the work off the scratch map, and its gizmo route
 (`list_selected_gizmos` → `execute_gizmo` → `click_ui_target`) is the one
 unproven dependency in the whole sheet. **Fallback: the owner clicks Export on
 the grav engine — three clicks.** Confirm the export file exists before the
 scratch map is discarded.
+
+🔴 **STANDING RULING, owner 2026-08-13 — it retires D2 and half of D1.**
+> *"No agent should try to preserve map contents or campaign integrity at this
+> time or any time in the future. You will be informed when we get to that
+> phase. Stop asking for now."*
+
+**No map is precious. Build, wipe, rebuild; iterate destructively.** Do not ask
+permission to spawn, destroy or overwrite, and do not defer a test because it
+would disturb a colony. Step 6's save-first is no longer a precondition, and
+step 9 is not a point of no return — it is just a step.
+
+**What survives, and it is not preservation:** *say which map a result came from.*
+Quicktest and campaign are different **claims**. That is evidence hygiene.
 
 ✅ **Two questions this sheet had booked for the live session are already answered
 offline**, from Gravship Exporter's own shipped C# source: **floors survive the
@@ -125,7 +138,7 @@ guards.
 | # | question | my recommendation |
 |---|---|---|
 | **D1** 🔴 | **Where does the ship go?** The plan centres an 86×133 hull on a 250×250 map at x 82–167 / z 58–190. On a fresh colony the player's own arrival gravship and starting pawns are at the map centre — i.e. **inside this footprint**. | **Survey first (step 5), then choose.** If the arrival ship is in the rect, offset the build clear of it and regenerate: `python3 src/RimMandrake/Utils/rimbench/shipbuild.py --origin X,Z`. Do not build over the colony. |
-| **D2** 🔴 | **Is this map disposable?** `jawa/destroy_batch categories=All` over 11,438 cells destroys every building, item and plant in the rect, and the terrain reset destroys plants. On the *shipping* colony that is not reversible by restore — `capture()/restore()` puts the TerrainDef back and does not bring the plants back (`skills/rimbridge/SKILL.md:315-320`). | **Say out loud which map this is.** If it is the shipping colony, take the save at step 6 and treat it as the only undo. If it is a dev quicktest map, skip step 6 and go fast. |
+| **D2** ⚪ **MOOT — see the ruling below the table** | **Is this map disposable?** `jawa/destroy_batch categories=All` over 11,438 cells destroys every building, item and plant in the rect, and the terrain reset destroys plants. On the *shipping* colony that is not reversible by restore — `capture()/restore()` puts the TerrainDef back and does not bring the plants back (`skills/rimbridge/SKILL.md:315-320`). | **Say out loud which map this is.** If it is the shipping colony, take the save at step 6 and treat it as the only undo. If it is a dev quicktest map, skip step 6 and go fast. |
 | **D3** | **Two heatsinks are held back** as footprint conflicts — (26,126) inside Mincer, (66,126) inside Neutro Synth (`ship_bridge.json` → `footprintConflicts`). Fixing regenerates `build_sheet_15.json`, trips BRIDGE's `SHEET_SHA256` pin and moves five machines. | **Build with 6 of 8 and file the other two `[v2]`.** The ship does not need them to fly and the regeneration cost lands on another seat mid-session. |
 | **D4** | **Four machines have an undetermined facing** — `Autofarmer`, `Autoloom`, `ConveyorOven`, `AutomatedCannery` are emitted `rot=0` with `needsManualRotation` because a footprint cannot tell east from west (`ship_bridge.json`; `NEXT_RELOAD.md:279-281`). | **Spawn each at `rot=1` (East), screenshot, flip to 3 if it reads wrong.** Each is its own single-op call, so the facing is a call parameter — there is no "rotate by hand" step, and no reason to leave four machines facing north. |
 | **D5** | **Does the export happen this session?** The exporter's button is a gizmo on the grav engine; it writes to the *Config* folder, not the repo. | **Yes, and copy the output into the repo the same hour** (step 21). An export left in `Config\GravshipExport\` is one reinstall from gone. |
@@ -639,7 +652,7 @@ does not belong inside the build.
 | Phase A (1–6) | **nothing changed** | step 1 |
 | step 7 | four 3×3 sand patches at the hull corners | step 7 (idempotent) |
 | step 8 | a 5×5 patch of Substructure at (82,58) | step 8 — re-running is a no-op, `cellsAlreadyCorrect` absorbs it |
-| step 9–10 | 🔴 **a cleared, sanded 86×133 rect and nothing else.** Irreversible for plants | step 9. **This is the point of no return; D2 must have been answered.** |
+| step 9–10 | **a cleared, sanded 86×133 rect and nothing else.** Plants do not come back via `restore()` | step 9. Not a gate — no map is precious (ruling above). Just record which map it was. |
 | step 11 | 4,057 substructure cells on bare sand — invisible from above, real in the grid | step 12. **Do not re-run step 10** — sanding over foundation is untested and pointless |
 | step 12 | a floor plan, no walls: a ship-shaped floor | step 13 |
 | step 13 | engine + 8 extenders standing alone on the floor | step 14 |

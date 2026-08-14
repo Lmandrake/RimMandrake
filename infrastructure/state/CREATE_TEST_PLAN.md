@@ -117,8 +117,11 @@ Nothing below is patched into any other biome.
 ordinary `TerrainDef`, so the bridge can **paint** it onto the current map —
 `jawa/set_terrain def=Jawa_SaltCrust`, a ~10×10 rect. That proves the **art and
 the def**, which is most of the risk, and leaves only "does it generate" to the
-fresh map. ⚠️ It also **paints over whatever was there** — do it on scratch, or
-somewhere you are willing to lose.
+fresh map. It paints over whatever was there; **that is not a reason to defer
+it.** Owner's standing ruling, 2026-08-13: *no agent should try to preserve map
+contents or campaign integrity at this time.* Paint it wherever you are standing.
+**Say which map the result came from** — quicktest and campaign are different
+claims, and that is evidence hygiene, not preservation.
 
 ⚠️ **The art is REUSED, not drawn.** `Jawa_SaltCrust` points at Odyssey's own
 `Terrain/Surfaces/DryLakeBed`, which Odyssey declares but never generates. VISION
