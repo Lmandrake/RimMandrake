@@ -139,3 +139,73 @@ stay.** The ruling already prevents it — no sun, cold, terrible fauna, and eve
 trading partner a planet away — **but that must remain true in the numbers, not
 just in the prose.** ⛔ **The moment the nightside becomes farmable, the campaign's
 central tension is over.**
+
+---
+
+# ✅ THE MOD READ. It does far more than expected — and my axis correction was wrong.
+
+_VISION, 2026-08-14, read from the mod's own defs and C# source. **PROJECT was
+right to hold the spec before CREATE wrote code.**_
+
+**`Alien Worlds - Tidally Locked`** — `7f.alienworlds.tidallylocked`, **ACTIVE**,
+on the framework **`7f.alienworlds`**, also ACTIVE. Ships full source.
+
+## 🔴 Correction: LATITUDE IS THE AXIS. I was wrong twice.
+
+**The mod does not build a day face and a night face geographically. It remaps
+TEMPERATURE onto LATITUDE.** Its whole planet def is one curve:
+
+| latitude | avg temperature |
+|---:|---:|
+| **0.0** | ⭐ **+70 °C** — the subsolar point |
+| 0.1 | +65 °C |
+| ⭐ **0.5** | ⭐ **+14 °C — this is the terminator** |
+| 1.0 | −37 °C |
+| 1.3 | −70 °C |
+| 2.0 | **−80 °C** — deep night |
+
+⇒ **Low latitude is the burning dayside. Mid latitude is the twilight band. High
+latitude — the poles — is the nightside.**
+
+**So my original spec was accidentally half-right and my correction made it
+worse.** I told CREATE *"not latitude, the terminator"* — **but the terminator IS
+a latitude band on this planet.** The real target is **mid-latitude, around 0.4–0.6**:
+not the equator, not the poles.
+
+⚠️ **And the owner's "one body near a pole to feel alien" now means something
+much better than a quirk: a sea on the NIGHTSIDE, frozen or freezing.**
+
+## ⭐⭐ The framework can do most of this from XML, and it changes the build
+
+**`PlanetTypeDef` exposes — all settable in a def, no C# required:**
+
+| field | what it gives us |
+|---|---|
+| ⭐ **`elevationRange`** | **patches `WorldGenStep_Terrain.ElevationRange` directly — this is the ocean-share dial.** The 25% target may be one number in XML |
+| ⭐ **`biomes` / `biomeBlacklist`** | **a per-planet-type biome whitelist and blacklist.** The owner's 29 removals may not need Cherry Picker at all |
+| ⭐ **`biomeConfigs`** | per-biome **`scoreOffset`**, a **`workerClass` OVERRIDE**, and arbitrary `defFields` — the mod's own example is setting `inVacuum` |
+| `globalBiomeConfig` | the same, applied to everything |
+| `oceanBiome` / `lakeBiome` | ⭐ we can name **our own** ocean biome |
+| `avgTempByLatitudeCurve` | the day/night gradient itself |
+| `rainfallCurves` / `defaultRainfallCurve` | rainfall by world setting |
+| `permaIceScoreOffset` · `sunlightFactor` · `steamGeyserFactor` | ⭐ **`sunlightFactor` is a global light multiplier** |
+| `scenParts` · `hideWorldRivers` · textures | scenario and presentation |
+
+## 🔴 What this does to the sea step
+
+**The job shrinks to one thing.**
+
+| need | route |
+|---|---|
+| **25% ocean** | ⭐ **XML — `elevationRange` on our own planet type.** Not code |
+| **biome removals (29)** | ⭐ **XML — `biomeBlacklist`.** Possibly no Cherry Picker |
+| **biome mix / commonality** | ⭐ **XML — `biomeConfigs.scoreOffset`**, and `workerClass` where a worker is the real gate |
+| **three ragged blobs at mid-latitude** | 🔴 **the ONLY remaining code.** `elevationRange` sets how much sea there is, not where or what shape |
+
+⇒ **We author our own `PlanetTypeDef` — a Jawa-world variant of the tidally locked
+one — and the custom `WorldGenStep` reduces to arrangement alone.** That is a much
+smaller build than the one PROJECT put a one-day kill condition on, and most of it
+stops being C# entirely.
+
+⚠️ **The mod's own description says "generating at least 50% of the planet is
+recommended."** That is a worldgen-screen setting and it belongs on the checklist.
