@@ -81,7 +81,7 @@ critical path, not beside it.** Batch anything that genuinely needs a load.
 
 | system | v1 bar (thin) | deferred to v2 |
 |---|---|---|
-| **Factions — authored** | **One**: the Imperial Desert Directorate, on `OuterRim_GalacticEmpire` as vessel. Label-level reskin only — name, leader title, colour. | The other 11 dossiers. `pawnGroupMakers`, memes, ideoligions, the relations matrix. |
+| **Factions — authored** | 🔴 **CONTRADICTED — DO NOT BUILD FROM THIS CELL.** It reads *"the Imperial Desert Directorate, on `OuterRim_GalacticEmpire` as vessel"*. **`WORLDGEN_FACTION_CHECKLIST.md:41-48` supersedes it and is RATIFIED:** vanilla **`Empire`** is the Galactic Empire under Palpatine, the campaign's one permanent enemy, and *"the Fallen Dominion and the two-Empire split are **STRUCK**"*; `:279-282` demotes `OuterRim_GalacticEmpire` to *"no longer the antagonist the design hangs on"*. ⚠️ **Row 1 is marked CLOSED against the demoted vessel.** → **VISION rules on whether row 1 still delivers v1's one authored faction. PROJECT does not resolve a design question.** | The other 11 dossiers. `pawnGroupMakers`, memes, ideoligions, the relations matrix. |
 | **Factions — subtractive** | **Untick the fiction-breakers on vanilla's Configure Factions page during the worldgen run.** Not config — Faction Control has no suppression field. List proposed by OPS, ratified by VISION. | Per-faction density tuning, biome weighting, `CenterPoint` clustering. |
 | **Quests** | **One** `QuestScriptDef` that fires and resolves. Any premise. | Quest chains, faction-linked arcs, the Hutt extortion loop. |
 | **Resources / terrain** | **Three** terrain or resource overrides that are visible on the map. | The full resource-terrain matrix, biome palette, water doctrine. |
@@ -259,12 +259,20 @@ been delivered, and nobody wrote back.** All three facts below were read directl
 | the mod | `src/RimMandrake/JawaSeaShaper/` — **built, compiled, registered and in the active stack.** `WorldGenStep_JawaSea.cs` is 572 lines; `JawaSea_Register.xml` appends `Jawa_SeaShaping` into `PlanetLayerDef[defName="Surface"]/worldGenSteps` (`1d20ac3`) |
 | the gap | `AGENT_CREATE_state.md:40` — *"placement code **HELD** for VISION's settled spec."* The code was written **23:56**; the spec settled **01:30**. **94 minutes, and the hold was never released.** |
 
-🔴 **The code implements the SUPERSEDED rule.** `WorldGenStep_JawaSea.cs:303-305`
-still reads `Mathf.Abs(layer.LongLatOf(tileOf[i]).y) > 45f` under a comment
-*"Nearer a pole than the equator"* — the *"near a pole"* wording the spec
-explicitly retracted. The settled test is **two bodies at latitude 0.35–0.65 and
-one high, off-pattern**, plus elongation along the band. `PickPolarSeeds` and the
-growth anisotropy are the rewrite; **everything else is built.**
+✅ **THE REWRITE IS DONE — `c3ee8e7`, 2026-08-14 02:39.** Measured in the source:
+`ArcFromSubsolar()` at `:344`, the habitable-ring seed test at `:369-374`, the
+31.5–58.5° band at `:149`, and an **aspect-ratio assertion** at `:730-736`.
+**`PickPolarSeeds`, `> 45f` and `latSum` no longer exist in the file.**
+
+⚠️ **This paragraph said the opposite until 2026-08-14, and the correction is the
+lesson: the rewrite landed ELEVEN MINUTES after this doc was saved.** A burn-down
+written at 02:28 described as outstanding a thing committed at 02:39. **A scope
+doc goes stale in minutes when the work it tracks is moving** — which is exactly
+why the checklist, not this file, is where a reader should look for state.
+
+🔴 **What is genuinely left on W1 is the DEPLOY, and nothing else.** Repo DLL md5
+`b7730027`, deployed `82b48e53` @ 08-13 23:57 — **older than the launch.** It is
+correct in the repo and live nowhere. It ships SOLO, game down.
 
 ### 🔴 THE SEA SPEC'S AXIS IS WRONG — measured 2026-08-14, and it is not latitude
 
