@@ -171,7 +171,18 @@ fi
 # --- 2 and 3. the conversation, and the name peers message ---------------
 # Keyed by session id, which Claude Code exports here and also puts on the hook
 # payload, so both sides agree without either guessing.
-REPO_ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
+# ⚠️ Utils/ moved from <repo>/Utils to <repo>/src/RimMandrake/Utils on 2026-08-13,
+# so "one level up" silently became src/RimMandrake — a directory that EXISTS, so
+# nothing raised. Two seats wrote their role file to src/RimMandrake/.claude/,
+# where the hook (which uses CLAUDE_PROJECT_DIR) never looks, and booted with no
+# identity. Walk up to the real root instead of counting levels.
+REPO_ROOT="${CLAUDE_PROJECT_DIR:-}"
+if [ -z "$REPO_ROOT" ]; then
+    REPO_ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+    while [ "$REPO_ROOT" != "/" ] && [ ! -d "$REPO_ROOT/.git" ]; do
+        REPO_ROOT="$(dirname "$REPO_ROOT")"
+    done
+fi
 ROLE_DIR="${CLAUDE_PROJECT_DIR:-$REPO_ROOT}/.claude/session_roles"
 SID="${CLAUDE_CODE_SESSION_ID:-}"
 
