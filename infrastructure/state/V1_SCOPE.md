@@ -135,7 +135,9 @@ hedge a design on "floors cannot be saved" should stop.**
 cannot fly** — the deck plan ships no thruster, fuel tank or controls, and the engine
 reads *"Requires: Thruster, fuel tank, controls."* **Flight was ruled OUT of row 8's
 bar and stays out.** *"The gravship is done"* and *"the gravship cannot move"* are
-both true. → **Is flight v1-adjacent or v2? VISION and CREATE's call, not mine.**
+both true. → ✅ **ANSWERED by the owner, 2026-08-14: CAPABILITY is v1, HARDWARE is
+v2** (ruling 2, top of file). The layout must be flight-capable — zones `S` and `U`
+reserved — and the parts are earned in play. **No new build row. Do not re-ask.**
 
 🔴 **FLOORS DO NOT COME WITH A MID-GAME SPAWN.** Terrain is re-applied by the
 *arrival* patch, which does not run for a Sketch spawned mid-game. **Structure lands,
