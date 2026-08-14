@@ -1,16 +1,20 @@
 # AGENT_CREATE_state.md — where CREATE is
 
-_Rewritten at wrap, 2026-08-13 ~20:10. Supersedes the 15:48 version, which is
-stale in three places (the capacity ceiling, the extender question, and the sled's
-review status). Queue: `infrastructure/state/queue/CREATE.md`. Identity:
-`infrastructure/agents/CREATE.md`._
+_Updated 2026-08-13 after the game-down offline session. Queue:
+`infrastructure/state/queue/CREATE.md` — **drained 1,113 → 147 lines, so it is
+now current rather than a pile**; read it, not this, for what is owed._
 
 ---
 
 ## 0. Live state — what is true right now
 
-**Deployed and ENABLED (572 → 580 active, listed-but-absent 0):** the seven
-per-donor art-fix mods plus `mandrake.desertvehiclereskin`. All eight went in as
+**TEN fix mods now exist; EIGHT are live.** Deployed and ENABLED (572 → 580
+active, listed-but-absent 0): the seven per-donor art-fix mods plus
+`mandrake.desertvehiclereskin`.
+🔴 **Two are NOT deployed and NOT in `ModsConfig.xml`** — `mandrake.phytokinbarkheadfix`
+(`cb6c2f7`) and `mandrake.kotorbandoliernorthfix` (`dd66fe6`). Filed at OPS
+`38f6d82`. **The KotOR one must not join the 556–564 slot: its donor is at 573
+with loose art, so it would be silently invisible there.** All eight went in as
 one slot after `mandrake.missingartfixes`; OPS placed them, the owner orders in
 RimSort. 🔴 **I do not touch the mod list — order or contents. Owner's ruling,
 `fdedc68`, in my identity file.**
@@ -41,6 +45,9 @@ quoting 632.8 is stale.
 | **ground hulk** (row 4 rider) | `00a1398` | 619 cells of 1,200 |
 | **salvage filter** (v1 deliverable) | `7bf4d4f` | script + output; 1,049 defs → 73 excluded, 315 with yields, **635 return nothing** |
 | **gravship flight invariants** | `07cf00d`..`cdaa2f1` | the document the gravship skill will encode |
+| **C7 rows 1–3** — the "do first" set | `cb6c2f7` `dd66fe6` `dd4f386` | 22 files, 2 new mods. Rows 1 and 3 needed **zero art** |
+| **C-LOAD** load-order gaps | `731e9c5` `bd90813` | `Jawa_Doctrine` declared **none** and patches 630 defs across 42 mods |
+| **queue drained to budget** | `315d190` | 1,113 → 147 lines |
 
 ---
 
@@ -54,7 +61,7 @@ quoting 632.8 is stale.
 | 2 | **row 4, scrapfields** — slag scatter. **LOOK BEFORE ANY DESTROY**; the last map's evidence died in a 43,288-thing wipe | fresh map, any biome |
 | 3 | **row 4, dune seas** — ⚠️ **do NOT eyeball this.** It is a density change (threshold 0.65→0.55) and unjudgeable without a control map. **Read the live `BiomeDef` and confirm `terrainPatchMakers` shows 0.55 / 0.50.** That is the actual claim | one def read |
 | 4 | **ground hulk** — wide shot + one casket bank close | fresh map |
-| 5 | **the eight art mods** — one spawn, one look each | any map |
+| 5 | **the ten art mods** — one spawn, one look each (two are not live yet) | any map |
 | 6 | **`NoPathToPilotConsole`** — doors exist and are in the export, but **a door is not a path.** Walk a pawn to the console's interaction cell | needs B-v3 |
 
 ⚠️ **Nobody has ever seen an `AncientCryptosleepCasket`.** Vanilla art ships inside
@@ -91,3 +98,8 @@ its `Heavy` affordance. **Terrain swap, not a redesign.** Report it as
 3. **Art can be correct at source and broken at render** (`traps-art.md` #45), and
    **`Graphic_Multi` falls back to the bare path while render nodes build lazily**
    (#46) — so a clean log proves almost nothing about art.
+4. **A donor's mask is the donor's own segmentation, and his complete set is a
+   TEST HARNESS.** `CutoutComplex` splits tinted material from fixed furniture, so
+   the author had already separated leather from pouches. And the obvious recipe
+   was killed by scoring it against the facing he *had* drawn — 77.2% where
+   mirroring alone gives 77.1%. **Score before you apply.**
