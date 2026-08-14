@@ -13,6 +13,17 @@ Targets (design/Jawa/worldbuilding/setting_physics.md, torso ~40 HP):
   ion/stun/sonic     UNCHANGED -- the verb is the weapon (L4/L16)
   explosives         UNCHANGED -- balanced by scarcity alone (L13)
 
+THREE FIXED-GUN TIERS, owner ruled 2026-08-14:
+  emplacement         40-200   a defence turret hits like a heavy blaster
+  artillery          250-600   a siege gun is heavier, and still not ship-scale
+  turbolaser        800-2000   unchanged; the separation above is what keeps
+                               "turbolaser" meaning anything
+
+  ⚠️ The artillery rung is a NARROW carve-out from L13 and must not widen. It
+  catches only projectiles fired EXCLUSIVELY by turrets -- a gun bolted to a
+  power grid is not scarce the way a satchel charge in a pawn's pack is. Every
+  hand-carried explosive is still untouched.
+
 TWO MISTAKES THIS SCRIPT ENCODES, both found by reading its own output:
 
 1. Projectiles are SHARED. Ranking WEAPONS and writing the result onto their
@@ -82,9 +93,6 @@ import game_paths as _GP
 DUMP = os.path.join(_GP.LOCALLOW, "DefDump", "defs", "ThingDef.json")
 OUTDIR = os.path.join(_REPO_ROOT, "src", "Jawa", "Jawa_Armoury", "Patches")
 
-# Mods whose weapons sit on our ladder. Additive by design: dropping a mod name
-# in here is the whole cost of covering it, because everything downstream keys
-# off the projectile's own damage type rather than the mod it came from.
 # Mods whose HAND weapons sit on our ladder. Additive by design: dropping a mod
 # name in here is the whole cost of covering it.
 #
@@ -115,7 +123,28 @@ BANDS = {"blaster": (24, 34), "blaster_heavy": (52, 72), "slugthrower": (18, 36)
          # giant imperial gun hits like nothing a person can carry. Still an
          # order of magnitude below the ship-scale rung (L9), which is the
          # separation that keeps "turbolaser" meaning something.
-         "emplacement": (40, 200)}
+         "emplacement": (40, 200),
+         # 🔴 ARTILLERY — a THIRD fixed-gun tier, owner ruled 2026-08-14.
+         # Defence turret 40-200, siege gun 250-600, turbolaser 800-2000. The
+         # gravship's main gun has to read as heavier than a wall turret without
+         # becoming ship-scale, and one emplacement rung could not say both.
+         #
+         # ⚠️ THIS BENDS SETTING LAW 13, DELIBERATELY AND NARROWLY, AND THAT MUST
+         # NOT BE QUIETLY WIDENED. L13 says explosives are UNCHANGED because
+         # blast has no hard counter and is balanced by scarcity alone. Most
+         # artillery is explosive, so an artillery rung necessarily touches
+         # blast damage.
+         #
+         # The reconciliation, and the reason the classifier checks turret
+         # exclusivity FIRST: scarcity is what balances a blast weapon, and a
+         # thing bolted to the ground on a power grid is not scarce the way a
+         # satchel charge in a pawn's inventory is. So this rung catches ONLY
+         # projectiles fired exclusively by turrets. Every hand-carried grenade,
+         # rocket, mortar shell and charge still returns None and is never
+         # touched. If a future edit lets a shared projectile onto this rung it
+         # will buff the personal weapon too, which is the exact shared-
+         # projectile trap this file has already met three times.
+         "artillery": (250, 600)}
 
 
 def dn_mod_is_yautja(w):
@@ -375,11 +404,16 @@ def classify(pname, p, users):
     # the shared-projectile trap; exclusivity is now checked, not assumed.
     everyone = all_users.get(pname) or []
     if everyone and all(is_turret(u) for u in everyone):
-        if p["dmg"] > 0 and not any(k in b for k in ("grenade", "missile", "rocket",
-                                                     "bomb", "charge", "shell",
-                                                     "mortar", "artillery")):
-            return "emplacement"
-        return None
+        if p["dmg"] <= 0:
+            return None
+        # Turret-exclusive AND explosive is the artillery rung. Turret-exclusive
+        # and not explosive is an ordinary emplacement. The exclusivity test has
+        # already passed at this point, which is what keeps every hand-carried
+        # explosive out of both rungs -- see the BANDS note on L13.
+        if any(k in b for k in ("grenade", "missile", "rocket", "bomb", "charge",
+                                "shell", "mortar", "artillery")):
+            return "artillery"
+        return "emplacement"
     if users and all(is_verb((u["defName"] + " " + u["label"]).lower()) for u in users):
         return None
     if any(s in b for s in ("grenade", "missile", "rocket", "bomb", "charge")):
@@ -411,6 +445,11 @@ SOURCE_RANGE = {
     "turbolaser": (40, 80), "lightsaber": (24, 34), "vibro": (16, 50),
     "alienblade": (20, 28),
     "emplacement": (12, 110),
+    # Measured off the live dump, not chosen: turret-exclusive blast projectiles
+    # in this load run from Outer Rim's 2000 down to the small siege pieces, and
+    # GravTech's Singularity Cannon sits at 1000. Clamped rather than
+    # extrapolated by spread(), so a wilder mod cannot drag the rung.
+    "artillery": (50, 2000),
 }
 
 
