@@ -1000,3 +1000,28 @@ defers it), and the bolt hediff. Resolve the latter with
 rather than throwing on every recache.
 
 `[v2]` — lands with the Enclaves.
+
+---
+## C-t1 `[v2]` — `validate_patch.py:1363` says "IN ONE MOD", which is not what it checked
+
+Migrated from `TODO.md` §9 on its retirement (owner decision #5). Verified still
+present today.
+
+The warning reads *"xpath matches N nodes IN ONE MOD"*, which reads as a scoping
+claim. Under `--all-versions` there is no load set, so "one mod" describes a
+**folder**, not the game. Reword to say which it means.
+
+⛔ **Do not "fix" the walk to match the wording** — the walk is correct and
+`--all-versions` depends on it. This is a wording defect only.
+
+## C-t2 `[v2]` — two donor mask filenames RimWorld will never look for
+
+Migrated from `TODO.md` §21. Verified on disk 2026-08-13.
+
+`SWDoorBlastBDoor_Frame_east_m.png` and `SWDoorBlastDDoor_Frame_east_m.png` carry
+an underscore before the `m`. RimWorld's mask convention is `...eastm.png` — proven
+by the correctly-spelled `SWDoorBlastDoor_Frame_eastm.png` sitting beside them.
+**The masks are therefore never loaded and nothing errors.**
+
+`[?]` resolved to CREATE by PROJECT: the fix is authoring an override mod, which is
+CREATE's by `infrastructure/agents/CREATE.md` and by the one-donor-one-fix-mod ruling.

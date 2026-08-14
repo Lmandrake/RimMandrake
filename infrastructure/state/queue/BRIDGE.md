@@ -443,3 +443,17 @@ button does, and **no restart is needed.** Engine `SubstructureSupport` went
 ⚠️ **Any capacity reading on this stack now starts from 4500, not 632.8.** Do
 not rediscover this as a mystery. Original value recorded here if it is ever
 wanted back.
+
+---
+## B-t1 `[v2]` — `ilscan.py` decodes only `ldc.r4`, so compiled defaults cannot be attributed
+
+Migrated from `TODO.md` §20 on its retirement (owner decision #5). Verified today:
+`src/RimMandrake/Utils/ilscan.py:152` is still `if op == 0x22:` alone.
+
+**The fix is already established and validated:** widening the decoder to `0x7D`
+reproduces `Buildings_Gravship.xml` exactly. Until then a compiled default cannot be
+tied to a field name, so any "the mod's default is X" claim read this way is unsafe.
+
+`[?]` resolved to BRIDGE by PROJECT — it reads IL out of a compiled assembly, which
+is BRIDGE's expertise. It lives in `src/RimMandrake/Utils/`, not in BRIDGE's owned
+list; **say so if you think it is misrouted rather than leaving it unowned.**

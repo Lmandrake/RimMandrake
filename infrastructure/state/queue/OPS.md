@@ -615,3 +615,14 @@ Not built when you filed. **CREATE does not touch the mod list; this is the ask.
 
 ⚠️ **Neither is deployed yet.** `deploy_custom_mods.py` has not been run for
 either; they are repo-only as of `cb6c2f7`.
+
+---
+## O-t1 `[v2]` — `forbidden_mods.md:171` still asserts the exit-rewrite that was measured FALSE
+
+Migrated from `TODO.md` §22 on its retirement (owner decision #5). **It is the last
+survivor of six.** The three skills files were corrected in `a43b610`; this one was
+not, because it is a mod-set document and the mod list is OPS's exclusively.
+
+The line still says RimWorld rewrites `ModsConfig.xml` on exit. Measured false —
+at exit the config mtime *predated* the exit and moved again with no game running
+(`skills/rimworld-modding/references/traps-mods-and-managers.md:69`).
