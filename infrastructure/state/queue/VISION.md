@@ -513,9 +513,17 @@ arrived.** Re-request if the visual comparison sheet is wanted.
   whole religions design is disciplined around it — I cut rituals and deities
   because of it. Counter requested from BRIDGE. **If it returns ~0, say so in the
   doc and stop pretending the eleven are load-bearing.**
-- **28 of the 29 biome removals were judged from def fields alone.** Exactly one
-  was ever looked at, and looking confirmed it in two seconds. `jawa/biome_probe`
-  requested. Do not treat the other 28 as decided.
+- 🔴 **28 of the 29 biome removals are UNEVIDENCED — corrected 2026-08-14 by
+  BRIDGE, and it is worse than I wrote it.** I had said "judged from def fields
+  alone". The truth is the fields were never readable: `Scalars()` behind
+  `jawa/get_defs` walks **public instance fields only**, while `BiomeDef` keeps
+  `wildAnimals`, `coastalWildAnimals`, `pollutionWildAnimals`, `diseases` and
+  `allowedPackAnimals` **private** and exposes `AllWildAnimals` / `AllWildPlants`
+  as **properties**. **Unevidenced ≠ wrong, and ≠ decided.** Exactly one removal
+  (Coastal dunes) was ever looked at; looking confirmed it in two seconds.
+  `jawa/biome_probe` is built, not deployed, and not yet called — it reports
+  present-at-commonality-0 separately from absent, which are different defects.
+  Recorded at `design\Jawa\worldbuilding\cherrypick_inbox.md`.
 - ✅ **Sea gate is 5-of-5 testable, corrected 2026-08-14** — the "3-of-5" written
   here was stale. `perimeter`, `centroidLat` and `raggedness` (perimeter²/tiles)
   are all present in the deployed binary; `strings -a -el` on the anonymous-type

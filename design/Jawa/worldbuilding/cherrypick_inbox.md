@@ -276,3 +276,17 @@ dangles. **No change to the verdict, only to the lever.**
 fields and labels. This is the first one anyone has LOOKED at, and looking
 confirmed it in about two seconds.** Where a cheap look is available, take it —
 `PoisonForest` is already filed for exactly that treatment.
+
+🔴 **Sharpened 2026-08-14 by BRIDGE, and it is worse than "un-looked-at": the
+fields were never readable in the first place.** `Scalars()`, the reflective
+reader behind `jawa/get_defs`, walks **public instance FIELDS only**. On
+`BiomeDef`, `wildAnimals`, `coastalWildAnimals`, `pollutionWildAnimals`,
+`diseases` and `allowedPackAnimals` are **private**, and `AllWildAnimals` /
+`AllWildPlants` are **properties** — neither form is visible to it. ⇒ **The other
+28 are not wrong; they are UNEVIDENCED, which is a different verdict.** Do not
+cite "the def says" for any of them until `jawa/biome_probe` has run (built, not
+yet deployed, and not yet called).
+
+📌 **Generalises past biomes — same shape as `strings -a` vs `strings -a -el`:
+before trusting a conclusion drawn "from the def", check the instrument can SEE
+the field. An absent reading and an unreadable one are not the same answer.**

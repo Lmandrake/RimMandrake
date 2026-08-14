@@ -21,6 +21,12 @@ is **deferred** — the tool needs an IL-verified route and does not exist yet
 (PROJECT, 2026-08-14: it is built offline during this load and deploys at the next
 shutdown window).
 
+⭐ **The counter now has a shape, and BRIDGE built it right.** `jawa/ideo_of`
+splits believers into **colonists / otherOnMap / worldPawns** deliberately — a
+single total would let "NPC religion surfaces in play" survive on the strength of
+your *own* colony's believers, which is not the claim being tested. **The number
+that decides this file is `otherOnMap`.**
+
 **Read the eleven as provisionally scoped, not as settled.** Two directions this
 resolves in:
 - returns **~0** ⇒ the eleven are decoration; say so here and stop spending
