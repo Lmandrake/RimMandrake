@@ -421,6 +421,14 @@ def render():
             flag = " !"
         L.append(row("%s %-7s %-8s %-36s %s%s"
                      % (dot, seat, state[:8], item[:36], age, flag)))
+        # 🔴 WHY, not just WHAT. A status board answers "what is it doing",
+        # which is situation-awareness level 1 — perception. The supervisor
+        # needs level 2, comprehension: what this MEANS and what it is FOR.
+        # Without it five true status lines still leave the reader unable to
+        # judge whether any of them is worth interrupting.
+        why = (s.get("why") or "").strip()
+        if why:
+            L.append(crow(DIM, "          why: %s" % why[:56]))
 
     # --- the checklist ------------------------------------------------------
     for sec, label in (("LOAD", "THIS LOAD"), ("SHUTDOWN", "NEXT SHUTDOWN")):
@@ -431,8 +439,18 @@ def render():
         L.append(bar("%s   %d open / %d" % (label, openn, len(items))))
         for f in items:
             col = MARKC.get(f[3])
-            line = "%s %-4s %-46s %s" % (MARK.get(f[3], "[?]"), f[0],
-                                         f[1][:46], f[2][:9])
+            # A 5th field `from=<id>` names what SPAWNED this row. Rendered as
+            # an indent so the thread is visible as shape, not as prose — the
+            # supervisor's complaint was never "too few facts", it was "I
+            # cannot follow which fact came from which".
+            parent = ""
+            for extra in f[4:]:
+                if extra.startswith("from="):
+                    parent = extra[5:].strip()
+            lead = ("  from %-4s " % parent) if parent else ""
+            line = "%s%s %-4s %-*s %s" % (
+                lead, MARK.get(f[3], "[?]"), f[0],
+                46 - len(lead), f[1][:46 - len(lead)], f[2][:9])
             L.append(row(line if col is None else c(col, line)))
 
     # --- what is blocked on the owner --------------------------------------
@@ -480,9 +498,17 @@ def render():
 
 
 # -------------------------------------------------------------------- say ---
-def say(text):
-    """A seat sets its own one-line 'what I am doing'. Merges into the stamp
-    file so the hook's liveness fields survive."""
+def say(text, why=None):
+    """A seat sets its own line, and ideally its REASON.
+
+        board.py say "counting slag on the 13:54 map" \
+                 --why "row 4 cannot close until we know if the 4 chunks are ours"
+
+    ⚠️ The `why` is the half the supervisor actually needs and the half a busy
+    seat drops first. It is optional here only because a stale why is worse
+    than none — but a line with no why renders bare, and that absence is itself
+    visible on the board.
+    """
     seat = (os.environ.get("AGENT_SEAT") or "").upper()
     if not seat:
         print("no AGENT_SEAT in env — run this from a fleet seat", file=sys.stderr)
@@ -498,6 +524,8 @@ def say(text):
             pass
     cur["seat"] = seat
     cur["item"] = text
+    if why is not None:
+        cur["why"] = why
     cur.setdefault("updated", int(time.time()))
     tmp = p + ".tmp"
     with open(tmp, "w") as fh:
@@ -509,7 +537,15 @@ def say(text):
 def main():
     a = sys.argv[1:]
     if a and a[0] == "say":
-        return say(" ".join(a[1:]))
+        rest = a[1:]
+        why = None
+        for flag in ("--why", "--because"):
+            if flag in rest:
+                i = rest.index(flag)
+                why = " ".join(rest[i + 1:])
+                rest = rest[:i]
+                break
+        return say(" ".join(rest), why)
     if a and a[0] in ("--watch", "-w"):
         try:
             while True:
