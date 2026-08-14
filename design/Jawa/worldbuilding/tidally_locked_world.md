@@ -240,3 +240,55 @@ change nobody chose, arriving through a mod-priority accident.
 switches off titles, permits, honour and imperial favour. **A Jawa scavenger clan
 earning imperial knighthood reads badly anyway**, and the Empire being
 un-negotiable is the point. Recorded so nobody re-proposes it as a bug.
+
+---
+
+## ✅ ANSWERED FROM SOURCE — the blacklist HARD-EXCLUDES. And a whitelist is better.
+
+_VISION, 2026-08-14, read from `PlanetTypeManager.cs:108-125` and
+`PlanetTypeDef.cs:17-31`. The background agent died twice on server errors; this
+was one grep._
+
+**`GetBiomeScorePrefix` is a Harmony prefix on `BiomeWorker.GetScore`:**
+
+```
+if (activePlanetType == null ||
+    (!biomeBlacklist.Contains(biome.defName) && (!biomes.Any() || biomes.Contains(biome.defName))))
+        return true;          // run the original
+__result = -1000f;
+return false;                 // skip the original entirely
+```
+
+⭐ **So a blacklisted biome is forced to −1000 and the real worker never runs.**
+That is a hard exclusion in practice — **nothing in the game scores anywhere near
+−1000** — and it replaces 29 Cherry Picker keys with one list in one def.
+
+### ⭐ And `<biomes>` is a WHITELIST — which is the better tool
+
+`PlanetTypeDef.biomes` is *"biomes that can generate"*, and the code shows that
+**if it is non-empty, anything absent is excluded.** So we have a choice:
+
+| | blacklist 29 removals | ⭐ **whitelist ~35 survivors** |
+|---|---|---|
+| maintenance | every new mod's biomes leak in **by default** | ⭐ **new biomes are excluded by default** |
+| failure mode | silent contamination — a biome we never chose appears | **silent absence** — a biome we wanted is missing, and we notice |
+| review | 29 lines that must stay in sync with the install | **one list that IS the design** |
+
+⇒ **Whitelist. `<biomes>` naming exactly what belongs on this planet.** It fails in
+the direction we can see, and the owner has already added mods twice today —
+**a blacklist would have to be revisited every time.**
+
+⚠️ **If we whitelist, our ocean biome MUST be on the list.** The def's own comment:
+*"oceanBiome / lakeBiome also have to be specified in `<biomes>`, otherwise they
+won't spawn."*
+
+### 🔴 Two limits of this lever, and the first one bites
+
+1. **It patches `GetScore` — so it cannot touch anything not assigned by scoring.**
+   ⚠️ **`Ocean` and `Lake` are `isBackgroundBiome` and are assigned by the
+   ELEVATION threshold, not by a biome worker.** Blacklisting them would do
+   **nothing**. Ocean share stays an `elevationRange` job, exactly as specced.
+   *(`SeaIce` **is** score-based and can be excluded this way.)*
+2. **`scoreOffset` is a postfix ADD to the vanilla score** — so it is a genuine
+   commonality dial, not an override. **That is the biome-mix lever**, and it
+   composes with the whitelist rather than replacing it.
