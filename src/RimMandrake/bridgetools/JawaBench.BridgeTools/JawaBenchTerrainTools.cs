@@ -4908,10 +4908,12 @@ namespace JawaBench.BridgeTools
                 "Per biome: the public generation flags (implemented, generatesNaturally, " +
                 "canBuildBase, canAutoChoose, densities, forageability) plus `animals` and " +
                 "`plants` as {defName, commonality}, largest first. When `find` is given, " +
-                "`findResults` reports each name as present/absent WITH its commonality — " +
-                "⚠️ present-at-commonality-0 and absent are different outcomes and are " +
-                "reported differently, because a removal that left a zeroed record behind is " +
-                "not the same defect as one that removed the record.")]
+                "`findResults` reports each name with a THREE-state `state`: `spawning` " +
+                "(declared and resolves above zero), `zeroed` (record still declared but " +
+                "weight 0 — it will not spawn, and it comes straight back if anything " +
+                "re-weights it) or `absent` (no record at all). ⚠️ `present` alone cannot " +
+                "tell zeroed from absent, because the engine's own resolved lists drop both — " +
+                "and they are different defects.")]
         public static async Task<object> BiomeProbe(
             IRimBridgeContext ctx,
             CancellationToken cancellationToken,
@@ -5027,18 +5029,49 @@ namespace JawaBench.BridgeTools
                     List<object> findRows = null;
                     if (findNames.Count > 0)
                     {
+                        // 🔴 The resolved list ALONE cannot answer a removal
+                        // audit, and this is measured, not assumed:
+                        // <get_AllWildAnimals>d__94::MoveNext yields a kind only
+                        // if CommonalityOfAnimal > 0 OR CommonalityOfPollution
+                        // Animal > 0 OR CommonalityOfCoastalAnimal > 0
+                        // (IL_0055/0063/0071), and get_AllWildPlants filters on
+                        // CommonalityOfPlant > 0 (IL_0038). ⇒ **an animal whose
+                        // commonality was set to 0 is ABSENT from the resolved
+                        // list, exactly like one whose record was deleted.**
+                        // Reporting only `present` would make those two
+                        // indistinguishable — and they are different defects: a
+                        // zeroed record still costs the world a def and lets the
+                        // animal straight back if anything re-weights it.
+                        //
+                        // So `state` is decided against the DECLARED records:
+                        //   spawning — declared and resolves above zero
+                        //   zeroed   — declared, but weight 0: it will not spawn
+                        //              and the record is still there
+                        //   absent   — no record at all
+                        var declared = DeclaredBiomeEntries(b);
                         findRows = new List<object>();
                         foreach (var q in findNames)
                         {
                             var inA = animalIndex.TryGetValue(q, out var ca);
                             var inP = plantIndex.TryGetValue(q, out var cp);
-                            if (inA || inP) foundSomewhere.Add(q);
+                            var spawning = inA || inP;
+                            var isDeclared = declared.TryGetValue(q, out var decl);
+                            if (spawning) foundSomewhere.Add(q);
+
                             findRows.Add(new
                             {
                                 defName = q,
-                                present = inA || inP,
-                                where = inA ? "animal" : (inP ? "plant" : null),
-                                commonality = inA ? ca : (inP ? cp : 0f)
+                                // Kept as its own column even when every entry
+                                // is false — VISION's ask. `present` means WILL
+                                // SPAWN, nothing weaker.
+                                present = spawning,
+                                state = spawning ? "spawning"
+                                                 : (isDeclared ? "zeroed" : "absent"),
+                                declared = isDeclared,
+                                where = inA ? "animal"
+                                            : (inP ? "plant" : decl.Kind),
+                                commonality = inA ? ca : (inP ? cp : 0f),
+                                declaredCommonality = isDeclared ? decl.Commonality : 0f
                             });
                         }
                     }
@@ -5099,6 +5132,73 @@ namespace JawaBench.BridgeTools
                     ticksGame = Find.TickManager?.TicksGame ?? -1
                 };
             }, cancellationToken).ConfigureAwait(false);
+        }
+
+        // What a BiomeDef DECLARES, as opposed to what it resolves to spawn.
+        // The difference is the whole removal audit: a record zeroed to
+        // commonality 0 vanishes from AllWildAnimals/AllWildPlants exactly like
+        // a record that was deleted, and those are different defects.
+        private struct DeclaredEntry
+        {
+            public string Kind;        // "animal" | "coastalAnimal" | "pollutionAnimal" | "plant"
+            public float Commonality;
+        }
+
+        // The three animal lists are PRIVATE on BiomeDef, so reflection is the
+        // only route — resolved once and cached, because this runs per biome and
+        // a probe over every biome is 40+ calls. `wildPlants` is public and is
+        // read directly; mixing the two styles is deliberate, not an oversight.
+        private static System.Reflection.FieldInfo[] _biomeAnimalFields;
+
+        private static Dictionary<string, DeclaredEntry> DeclaredBiomeEntries(BiomeDef b)
+        {
+            var outp = new Dictionary<string, DeclaredEntry>(StringComparer.OrdinalIgnoreCase);
+            if (b == null) return outp;
+
+            if (_biomeAnimalFields == null)
+            {
+                var flags = System.Reflection.BindingFlags.NonPublic
+                          | System.Reflection.BindingFlags.Public
+                          | System.Reflection.BindingFlags.Instance;
+                _biomeAnimalFields = new[]
+                {
+                    typeof(BiomeDef).GetField("wildAnimals", flags),
+                    typeof(BiomeDef).GetField("coastalWildAnimals", flags),
+                    typeof(BiomeDef).GetField("pollutionWildAnimals", flags)
+                };
+            }
+
+            var kinds = new[] { "animal", "coastalAnimal", "pollutionAnimal" };
+            for (var i = 0; i < _biomeAnimalFields.Length; i++)
+            {
+                // A field that is not there is reported by ABSENCE of entries,
+                // never by a silent empty dictionary that reads as "nothing
+                // declared" — so a rename in a future RimWorld shows up as every
+                // find returning `absent`, which is loud enough to notice.
+                if (_biomeAnimalFields[i] == null) continue;
+                if (!(_biomeAnimalFields[i].GetValue(b) is System.Collections.IEnumerable seq))
+                    continue;
+                foreach (var rec in seq)
+                {
+                    if (!(rec is BiomeAnimalRecord r) || r.animal == null) continue;
+                    outp[r.animal.defName] = new DeclaredEntry
+                    {
+                        Kind = kinds[i], Commonality = r.commonality
+                    };
+                }
+            }
+
+            if (b.wildPlants != null)
+                foreach (var r in b.wildPlants)
+                {
+                    if (r?.plant == null) continue;
+                    outp[r.plant.defName] = new DeclaredEntry
+                    {
+                        Kind = "plant", Commonality = r.commonality
+                    };
+                }
+
+            return outp;
         }
 
         // One connected water mass, with the shape numbers a sea gate is written
