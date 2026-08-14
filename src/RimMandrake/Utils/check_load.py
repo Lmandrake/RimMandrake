@@ -71,25 +71,49 @@ def loaded(path):
             man.get("gameVersion"), man.get("capturedUtc"))
 
 
-def main():
-    quiet = "--quiet" in sys.argv
-    for p in (CONFIG, MANIFEST):
-        if not os.path.isfile(p):
-            print("MISSING: %s" % p, file=sys.stderr)
-            print("Cannot tell. A missing file is not a pass.", file=sys.stderr)
-            return 2
+def evaluate(config=None, manifest=None):
+    """The whole verdict, as data. No printing, no exit codes, no globals.
 
-    want = requested(CONFIG)
-    got, version, captured = loaded(MANIFEST)
+    Paths are injectable so `selftest_checkers.py` can drive this against
+    fixtures; the defaults are the real game files, so the CLI is unchanged.
+    Returns a dict; `absent` names a required file that does not exist, in
+    which case the caller must report 2 — a missing file is NOT a pass.
+    """
+    config = CONFIG if config is None else config
+    manifest = MANIFEST if manifest is None else manifest
+    for p in (config, manifest):
+        if not os.path.isfile(p):
+            return {"absent": p}
+
+    want = requested(config)
+    got, version, captured = loaded(manifest)
     want_set, got_set = set(want), set(got)
     missing = [p for p in want if p not in got_set]
     extra = [p for p in got if p not in want_set]
     ordered = want == got
 
     # A manifest older than the request describes a DIFFERENT load.
-    stale = os.path.getmtime(MANIFEST) < os.path.getmtime(CONFIG)
+    stale = os.path.getmtime(manifest) < os.path.getmtime(config)
 
-    ok = not missing and not extra and ordered and not stale
+    return {"absent": None, "want": want, "got": got, "missing": missing,
+            "extra": extra, "ordered": ordered, "stale": stale,
+            "version": version, "captured": captured,
+            "ok": not missing and not extra and ordered and not stale}
+
+
+def main():
+    quiet = "--quiet" in sys.argv
+    r = evaluate()
+    if r["absent"]:
+        print("MISSING: %s" % r["absent"], file=sys.stderr)
+        print("Cannot tell. A missing file is not a pass.", file=sys.stderr)
+        return 2
+
+    want, got = r["want"], r["got"]
+    missing, extra = r["missing"], r["extra"]
+    ordered, stale, ok = r["ordered"], r["stale"], r["ok"]
+    version, captured = r["version"], r["captured"]
+
     if quiet:
         return 0 if ok else 1
 

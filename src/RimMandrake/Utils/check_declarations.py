@@ -69,10 +69,14 @@ def repo_root():
     return d
 
 
-def installed():
-    """Every packageId present on disk, lowercased."""
+def installed(mod_roots=None):
+    """Every packageId present on disk, lowercased.
+
+    `mod_roots` is injectable so `selftest_checkers.py` can point this at a
+    fixture tree. Default is the real install — CLI behaviour is unchanged.
+    """
     ids = {}
-    for root in MOD_ROOTS:
+    for root in (MOD_ROOTS if mod_roots is None else mod_roots):
         for about in glob.glob(os.path.join(root, "*", "About", "About.xml")):
             # ⚠️ Parse, do NOT regex. An About.xml lists its DEPENDENCIES'
             # packageIds inside <modDependencies> before its own, so the first
@@ -95,9 +99,10 @@ def installed():
     return ids
 
 
-def active():
+def active(config=None):
+    """Active packageIds, lowercased, or None if ModsConfig.xml is unreadable."""
     try:
-        root = ET.parse(CONFIG).getroot()
+        root = ET.parse(CONFIG if config is None else config).getroot()
         return {(li.text or "").strip().lower()
                 for li in root.find("activeMods").findall("li")}
     except Exception:
@@ -121,18 +126,21 @@ def declared(about_path):
     return out
 
 
-def main():
-    quiet = "--quiet" in sys.argv
-    root = repo_root()
-    on_disk = installed()
-    if not on_disk:
-        print("No mods found on disk — cannot tell.", file=sys.stderr)
-        return 2
-    act = active()
+def our_abouts(src_root):
+    """Every About.xml belonging to one of OUR mods, sorted."""
+    return sorted(glob.glob(os.path.join(src_root, "**", "About", "About.xml"),
+                            recursive=True))
 
+
+def analyse(src_root, on_disk, act):
+    """The whole verdict, as data. No printing, no exit codes, no globals.
+
+    Returns (missing, inactive, checked, abouts). ⚠️ INACTIVE is deliberately
+    NOT a failure — only MISSING is. See the module docstring.
+    """
     missing, inactive, checked = [], [], 0
-    for about in sorted(glob.glob(os.path.join(root, "src", "**", "About", "About.xml"),
-                                  recursive=True)):
+    abouts = our_abouts(src_root)
+    for about in abouts:
         mod = os.path.basename(os.path.dirname(os.path.dirname(about)))
         for field, pid in declared(about):
             checked += 1
@@ -140,12 +148,24 @@ def main():
                 missing.append((mod, field, pid))
             elif act is not None and pid not in act:
                 inactive.append((mod, field, pid))
+    return missing, inactive, checked, abouts
+
+
+def main():
+    quiet = "--quiet" in sys.argv
+    root = os.path.join(repo_root(), "src")
+    on_disk = installed()
+    if not on_disk:
+        print("No mods found on disk — cannot tell.", file=sys.stderr)
+        return 2
+    act = active()
+
+    missing, inactive, checked, abouts = analyse(root, on_disk, act)
 
     if not quiet:
         print("checked %d declarations across %d of our mods"
               % (checked, len(set(m for m, _, _ in missing + inactive)) or
-                 len(glob.glob(os.path.join(root, "src", "**", "About", "About.xml"),
-                               recursive=True))))
+                 len(abouts)))
         if missing:
             print("\n🔴 MISSING — named, but NO mod on disk declares this id.")
             print("   These constrain NOTHING and never have. Nothing logs it.")
