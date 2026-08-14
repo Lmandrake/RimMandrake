@@ -94,3 +94,37 @@ back onto `GravFieldExtender`. If it survives, 633 + 12 x 250 = **3,633**.
 🔴 **Unproven, and it is the entire question** — whether an XML patch survives
 BG's startup rewrite or is clobbered by it. Only a load answers that. Do not
 scope a hull on 3,633 until it is measured.
+
+---
+
+## The XML-patch route is DEAD, and a mod already ran the experiment for us
+
+**Do not spend a load testing whether an XML patch survives BG's startup
+rewrite. It does not.** Engines Unlimited (`nep.enginesunlimited`, active) ships
+exactly that patch and it is clobbered:
+
+| | value |
+|---|---|
+| Engines Unlimited XML, `workshop/…/3528446690/1.6/Patches/Odyssey_enginecount.xml:8` | `<maxSimultaneous>9000</maxSimultaneous>` |
+| **live def, `SmallThruster`** | **20** |
+| **live def, `LargeThruster`** | **10** |
+
+20 and 10 are Bigger Gravships' numbers. BG's Harmony prefix on
+`DefGenerator.GenerateImpliedDefs` runs **after** all XML patching and is the
+last writer, so an XML patch on any def BG touches is silently overwritten.
+
+🔴 **This failure mode is worse than a no-op**: the patch looks applied in every
+offline check — the XML is there, the file loads, no error — and is absent only
+in the live def. It is the same shape as the `SubstructureSupport: 500` ghost
+and the three-Jawa claim, and that is now **three instances in one day of
+offline evidence disagreeing with the running game.**
+
+⇒ A `statOffsets` patch on `GravFieldExtender` would be eaten the same way.
+Two routes remain, neither BRIDGE's to choose: the BG settings slider
+(`BG_gravEngineSupport`, and engine-side settings demonstrably DO reach the live
+def — 632.8 and 34 are both in there), or our own Harmony postfix ordered after
+BG's prefix, in the companion DLL.
+
+⚠️ And 3,633 was optimistic regardless: support would presumably only count
+extenders the engine can see, and ours sit at up to 84.7 against `maxDistance`
+34. The realistic figure is 633 + 250 × (extenders inside 34), not 633 + 250×12.
