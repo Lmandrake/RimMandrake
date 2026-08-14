@@ -405,3 +405,30 @@ test, and it costs one map.
 
 ✅ **All 26 surface biomes now carry a verdict.** The biome mix is ratified and
 becomes `biomeConfigs[x].scoreOffset` values on the patched `TidallyLocked` def.
+
+---
+
+# ✅ THE BIOME MIX IS RATIFIED — owner, 2026-08-14
+
+_"Otherwise I like your frequencies." **All 37 survivors accounted for. This is the
+list `biomeConfigs[x].scoreOffset` implements.**_
+
+| tier | biomes |
+|---|---|
+| ⭐ **ABUNDANT** | `ExtremeDesert` · `Desert` |
+| **COMMON** | `ZBiome_Badlands` · `AridShrubland` · `Wasteland` · ⭐ `AB_RockyCrags` |
+| **RARE** — 22 | `ZBiome_DesertOasis` · `AB_FeraliskInfestedJungle` · `AB_MiasmicMangrove` · `AB_MycoticJungle` · `COMIGO_GreaterSwamp_Tropical` · `AB_OcularForest` · `AB_TarPits` · `AB_PropaneLakes` · `AB_MechanoidIntrusion` · `AB_GallatrossGraveyard` · `AB_PyroclasticConflagration` · `Volcano` · `LavaField` · `Scarlands` · `IronScruff_PrimordialGeysers` · `RG_BoilingForest` · `BMT_CrystalCaverns` · `BMT_EarthenDepths` · `BMT_FungalForest` · `HorrorWastes` · `Glowforest` · `PoisonForest` |
+| 🔴 **NOT by scoreOffset** | `Ocean` · `Lake` — `isBackgroundBiome`, assigned by the **elevation threshold.** The sea step owns these |
+| **no verdict needed** | `Space` · `Orbit` · `Underground` · `Undercave` · `CQF_Undercave` · `AM_UndergroundSpace` · `VQEA_AncientComplex` — layer and pocket biomes, never surface tiles. ⚠️ **and the exact reason we blacklist rather than whitelist** |
+
+**Two entries carry notes rather than plain frequencies:**
+
+- ⭐ **`AB_RockyCrags` is COMMON, revised up from rare.** On a tidally locked
+  planet the nightside is a hemisphere and the crags are what it looks like — **the
+  temperature curve confines them to the dark side on its own**, so "common"
+  produces a dark half rather than a scatter of dark tiles.
+- ⚠️ **`PoisonForest` is rare and HELD FOR JUDGEMENT.** The owner wants to stand in
+  it before ruling. **One look, next live session.**
+
+⇒ **W3 is unblocked. CREATE owns the def work: one `PatchOperationAdd` on
+`TidallyLocked` carrying the 29-entry blacklist and these offsets.**
