@@ -290,3 +290,31 @@ yet deployed, and not yet called).
 📌 **Generalises past biomes — same shape as `strings -a` vs `strings -a -el`:
 before trusting a conclusion drawn "from the def", check the instrument can SEE
 the field. An absent reading and an unreadable one are not the same answer.**
+
+### The audit has THREE outcomes, not two — and knowing that changed the tool
+
+When `jawa/biome_probe` runs, a removal comes back in one of three states, and
+**the design owes a different response to each**:
+
+| state | what it means | what we do |
+|---|---|---|
+| `spawning` | declared, resolves above zero | the removal did not take. Re-cut it. |
+| `zeroed` | record still declared, weight 0 | **will not spawn today, and comes straight back if anything re-weights it.** A latent removal, not a finished one — worth converting to a real cut on the whitelist route. |
+| `absent` | no record at all | done. |
+
+🔴 **The tool as first built could not have told `zeroed` from `absent`, and BRIDGE
+found that only after being asked to keep the columns separate.** The engine's own
+resolved accessors *drop a zeroed record exactly like a deleted one* —
+`get_AllWildAnimals` yields a kind only where commonality (or its pollution or
+coastal variant) is `> 0`, and `get_AllWildPlants` filters the same way. Reading
+the resolved list would have re-created the conflation the probe existed to break.
+It now decides state against the **declared** records and ships
+`declaredCommonality` beside the resolved `commonality`.
+
+📌 **Generalises, and it is the sharper of the two: a tool built to break a
+conflation can INHERIT that conflation from the API it reads.** The resolved list
+feels like the truth because the engine produced it. Check the engine's filter
+before trusting any list to be the whole set.
+
+_Probe rebuilt 2026-08-14, 28 tools, md5 `e47ea3d`. **Not deployed and never
+called** — treat every state above as pending until BRIDGE says it has run._
