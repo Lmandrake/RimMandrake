@@ -55,7 +55,7 @@ in the repo AT THAT MOMENT — scope it with `--mod`, never run it bare.**
 | file | why |
 |---|---|
 | `~ Jawa_Armoury/Patches/Armoury_MeleePower.xml` · `Armoury_RangedDamage.xml` | **Swept into `81939e1`, whose subject is genome tooling** — committed under an unrelated message, never reviewed, and carrying **no provenance banner**. The queue rule stands: `unknown` anchors means stop. Re-run the generator and read the banner before these ship. |
-| `~ JawaSeaShaper/1.6/Assemblies/JawaSeaShaper.dll` | **STALE BUILD.** DLL is **02:32:22**; its source `Source/WorldGenStep_JawaSea.cs` is **02:39:34 and uncommitted**. The binary matches neither the committed nor the working source. **And a new assembly goes SOLO** — it is the one change that destroys attribution in a batch. |
+| `~ JawaSeaShaper/1.6/Assemblies/JawaSeaShaper.dll` | ⚠️ **Reason UPDATED — my earlier "stale build" is no longer true.** CREATE committed DLL and source together in `c3ee8e7`, so the repo pair is consistent and clean. 🔴 **The live fact that replaces it: the game is running a DIFFERENT binary.** Repo DLL md5 `b7730027a639`; deployed/loaded DLL md5 `82b48e53e668`, mtime **08-13 23:57:29**, which predates the 01:03:26 launch. ⇒ **the arc-distance and elongation work verified in `c3ee8e7` is NOT in the running game** — G1 is done in the repo and live nowhere. **The assembly is loaded and therefore locked: this deploy can only happen while the game is DOWN, and a new assembly goes SOLO** so the load that carries it can attribute what it does. |
 
 
 ## Open — offline, no game needed
