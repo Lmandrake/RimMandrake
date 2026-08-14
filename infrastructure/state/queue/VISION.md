@@ -370,7 +370,16 @@ does the fiction work), and **keep the mod installed** for now. That gets you
 ~all the benefit at zero cost and defers the irreversible half.
 
 ---
-## V-x. `[v2]` Which Jawa xenotype is the campaign's? Our tuning may be inert
+## ✅ V-x. CLOSED CHECKED-AND-FINE — our Jawa tuning is NOT inert
+
+🔴 **Do not re-investigate this.** BTD Xenotype Remix dedups at load and keeps
+`BTD_Jawa`, remapping 552 xenotype chances across 9 factions and 99 pawnkinds.
+`OuterRim_Jawa` does not exist at runtime. **Our patches already target the
+surviving xenotype.** Measured live by BRIDGE from `Player.log`; the original
+finding came off a def dump captured pre-dedup, i.e. disk rather than runtime.
+Body kept below only so the reasoning is legible.
+
+<details><summary>original (WRONG) filing</summary>
 
 **Raised by BRIDGE, ruled out of v1 by PROJECT (`0c36ad8`), yours to settle.**
 
@@ -389,3 +398,4 @@ plays", and it does). **This is the depth question, and depth is v2.**
 **Your call:** which xenotype should the campaign's Jawas be? Then CREATE
 re-points the patches. **Do not let it close as if the two were the same Jawa** —
 BRIDGE's words, and the reason this is filed rather than dropped.
+</details>

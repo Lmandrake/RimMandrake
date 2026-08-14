@@ -182,7 +182,7 @@ live-stack → **OPS**; driving the live game to verify → **BRIDGE**.
 | 2 | Faction exclusion at worldgen | ⬜ **0** | ⬜ | **OPS** + VISION | 🔴 **YES — it happens DURING the worldgen run** |
 | 3 | One `QuestScriptDef` | ⬜ **0** | ⬜ | **CREATE** | 🟢 **NO — closable offline today** |
 | 4 | Three terrain overrides | ⬜ **0** | ⬜ | **CREATE** | 🟢 **NO — closable offline today** |
-| 5 | ⚠️ **WHICH** Jawa xenotype plays | 🟩 largely live | ⬜ | **BRIDGE** | 🔴 verify only |
+| 5 | **`BTD_Jawa`** plays (post-dedup) | 🟩 largely live | ⬜ | **BRIDGE** | 🔴 verify only |
 | 6 | Weapons/gear | 🟩 6 mods live | 🟩 partly | **BRIDGE** | 🔴 verify only |
 | 7 | Ordinary worldgen | ⬜ **0 — now a DO** | ⬜ | **BRIDGE** | 🔴 **YES — we generate the world** |
 | 8 | ⭐ **Gravship (DEEP)** | ⬜ design only | ⬜ | **CREATE** | 🔴 **build wants the game** |
@@ -263,13 +263,40 @@ decorating a xenotype nothing spawns.
 `set_pawn_xenotype`'s read-back instead. **A gate whose evidence cannot be
 collected is not a gate**, which is why this had sat as "verify only" all day.
 
-### ⚖️ Row 5 RULED, 2026-08-13 — it closes on `OuterRim_Jawa`, and the mismatch is v2
+### ⚖️ Row 5 RULED — it closes on `BTD_Jawa`. **Our tuning is NOT inert.**
+
+🔴 **This reverses the ruling that stood here for an hour, and the reversal is the
+lesson.** I ruled row 5 closes on `OuterRim_Jawa` and filed "our Jawa tuning may
+be doing nothing in play" at VISION as v2. **Both were wrong.**
+
+**BTD Xenotype Remix rewrites the xenotype set AT LOAD**, measured live by BRIDGE
+from `Player.log`:
+
+```
+Current xenotype count: 250
+Remapped 552 xenotype chances across 9 factions and 99 pawnkinds
+Successfully removed 100 duplicate xenotypes (BTD preference active)
+Final xenotype count: 150
+```
+
+**`BTD_Jawa` is what survives the dedup, and the pawnKind pins were remapped onto
+it.** `OuterRim_Jawa` does not exist at runtime. Our patches target `BTD_Jawa` —
+i.e. they target exactly the right thing. **Closed as checked-and-fine; the v2
+item at VISION is withdrawn.**
+
+📌 **THE TRAP, and it is general: a def dump is DISK, not RUNTIME.** The
+three-Jawa finding came off a dump captured *before* the dedup ran. Any mod that
+mutates defs at load — dedup, remap, implied-def generation — makes every
+disk-derived conclusion about those defs unsafe. **When a claim is about what the
+game HAS, only the live game or the log can settle it.**
+
+
 
 BRIDGE raised the sharp version: **`OuterRim_Jawa` is what the pawnKinds pin;
 `BTD_Jawa` is what our tuning patches target.** So a row 5 that closes on
 `OuterRim_Jawa` closes on a pawn **our patches never touched**.
 
-**MVP ruling: row 5 still closes on `OuterRim_Jawa`.** The v1 bar is *"a Jawa
+**MVP ruling (SUPERSEDED — see above): row 5 closes on `BTD_Jawa`.** The v1 bar is *"a Jawa
 spawns and plays"*, and it does. Tuning depth is explicitly v2 under
 "everything ships THIN".
 
