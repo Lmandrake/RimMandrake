@@ -96,6 +96,15 @@ characteristic failure mode:** `grep -c "<li>" ModsConfig.xml` = **585**, minus
 across 436 types but **73,396 UNIQUE** defNames — a name can appear under more
 than one type file. **Say which one you mean.**
 
+🔴 **`manifest.json`'s `allDefs` is NOT comparable to earlier dumps — it is a NEW key.**
+Measured 2026-08-14: the live 585 manifest carries `allDefs: 30742`, while the
+committed **573 / 574 / 580** manifests do not have the key **at all**. The figure
+this project has always quoted (84,749 → 84,698) is **`sum(defCounts)`**.
+Comparing the two reads as a **64% def collapse** that did not happen: the real
+number is **84,698 → 85,057, up 359** — `ThingDef` **+243**, `RecipeDef` +28,
+`EffecterDef` +17, `FleckDef` +17, all consistent with GravTech loading.
+**Always compare `sum(defCounts)`, and say which figure you mean.**
+
 **`live_mod_inventory.md` is the single source of truth for mod identity** —
 existence, packageId, Workshop ID, author, versions. It is GENERATED; regenerate,
 never hand-edit. Any doc claiming 562 or 573 active is stale.

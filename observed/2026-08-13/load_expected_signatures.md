@@ -1,5 +1,47 @@
 # Expected-failure signatures — the load launched 2026-08-13/14 evening
 
+## ✅ RESULTS — startup harvest, 2026-08-14 ~01:23, 5,837 lines
+
+_Snapshot frozen **before any bridge mutation** at
+`observed/2026-08-13/logs/Player.startup.585.2026-08-14.log` (gitignored —
+transient, so the findings live here instead). **No map had been generated when
+this was taken**, which bounds what it can answer._
+
+| row | verdict | evidence |
+|---|---|---|
+| 3 `missingartfixes` removed | ✅ **PASS** | `Failed to find any textures at` = **0**. The 7 successors cover it. |
+| 5 gravship quest patch | ✅ **PASS (no loud failure)** | 0 errors naming `BTD_DownedGravship`. The 2 `PatchOperationReplace` failures in the log are **Biomes! Caverns** (`2969748433`), not ours. Guard matched, Replace applied. ⚠️ Description rendering still needs the Quests tab. |
+| 6 GravTech | ✅ **PASS** | 0 cross-reference failures on `VGE_GravshipBuildingBase`/`ArtilleryBase` — the four turrets resolved their parents. Independently corroborated by the dump: **ThingDef +243**. |
+| 8 `rimdefdump` last | ✅ **PASS** | Fresh dump `modCount: 585`, matching `ModsConfig` exactly. rev591, captured 01:20:26. |
+| baseline | ✅ **HELD** | **25** `Could not resolve cross-reference`, **0** `Could not load reference to` — unchanged from the previous load despite +5 mods. |
+| 1–2 art baseline | ⏸ **not answerable from a log**, by design | Needs the screenshots. |
+| 4 ground hulk | ⏸ **untestable** | Map generation only, and no map was generated. |
+| 7 `[JawaSea]` | ⏸ **untestable** | Worldgen only, and worldgen is HELD this session. |
+| O12 pawn-gen NRE | ⏸ **NOT SETTLED** | 0 hits — **but every map-generation marker is also 0.** A zero for something with no opportunity to occur is not evidence. |
+
+### 🔴 THE FINDING THAT OVERTURNS A SHARED BELIEF: the log DOES confirm Cherry Picker
+
+Two seats recorded that Cherry Picker's result *cannot* be read from the log,
+because it is silent for an unresolvable key and silent for an out-of-scope def.
+**That is true of FAILURES only. This build logs every SUCCESS, by name:**
+
+```
+[Cherry Picker] The database was processed in 01.09090 seconds and the
+following defs were removed:
+ - IncidentDef/ShamblerAssault, … - ThingDef/GravForge,
+ - RecipeDef/Make_GravcoreGF, - ThingDef/AdvShip_GravReactor
+```
+
+**22 requested · 22 removed · 0 requested-but-missing · 0 unexpected · 0 `FAILED:`.**
+
+⇒ 🔴 **The gravcore scarcity gate is CLOSED, and proven rather than assumed.**
+`ThingDef/GravForge` and `RecipeDef/Make_GravcoreGF` are both gone. **No
+architect-menu check is needed.** Parse the block by anchoring on the header line
+and reading `- ` entries until they stop — **the last entry has no trailing
+comma**, which produced three false negatives before I stopped hand-grepping.
+
+
+
 _OPS. **Written BEFORE the launch, deliberately** — that is the whole point. A
 signature written after reading the log is not a prediction, it is a
 rationalisation, and it cannot tell you the difference between "this worked" and
