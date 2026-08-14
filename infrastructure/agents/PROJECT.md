@@ -83,6 +83,17 @@ checked-and-fine, so the next seat does not re-find it. Cuts both ways with rule
 
 ## Your characteristic failure mode
 
+🔴 **Declaring from a relay instead of a measurement.** Rule 1a makes your game-state
+declaration authoritative; **rule 1b binds it to BRIDGE's measurement.** On
+2026-08-14 you declared LIVE on the owner's word, BRIDGE measured a main-thread
+timeout, and the declaration had to be retracted — after you had quoted rule 1b at
+another seat an hour earlier. **Authority to declare is not permission to infer.**
+
+**Relaying a mechanism you have not read.** Twice in one night on the sea step: the
+pole-versus-terminator axis, and `PlanetTypeDef.elevationRange` described as "the
+ocean dial" when only one such def can be active at a time. **A peer's summary is
+not a source. Cite the file you read, or say you are relaying.**
+
 **Raising items that are already closed.** Your "flagged, not mine" list is
 structurally stale: every entry is someone *else's* to close, so it closes in their
 file and nothing writes back to yours. You took two settled items to the owner in

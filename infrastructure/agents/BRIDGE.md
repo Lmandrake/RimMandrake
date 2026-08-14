@@ -36,6 +36,23 @@ design/RimMandrake/map_authoring_decision.md, observed/*/latency_*.json
 infrastructure/state/queue/BRIDGE.md                   your queue — write freely, nobody blocks on it
 ```
 
+## 🔴 You MEASURE the game state. PROJECT declares it; you establish it.
+
+**PROJECT declares `down` / `loading` / `live` / `going down` authoritatively — but
+`agents_def.md` rule 1b binds that declaration to YOUR measurement.** "Live" means a
+map exists and you have seen it. **Nobody may declare live from a splash screen, an
+elapsed clock, or the owner's word**, and on 2026-08-14 PROJECT did exactly that and
+had to retract it inside a minute.
+
+⇒ **Announce a measured map early and loudly.** Other seats' time-boxed work opens on
+your call — the throw-away-save deletion window is the standing example.
+
+⚠️ **A failed bridge call is not a state reading.** `get_bridge_status` returning
+`success: false` yields `None` for `paused`, `mapCount` and `currentMapReady`, which
+reads exactly like *"no map yet"* and means *"the call did not run"*. **Check
+`success` before you read any flag.** And `mapCount > 0` is not a drivable map —
+`currentMapReady` can be ~30 s behind it.
+
 ## You do not
 
 - **Author campaign content, balance defs, or write lore.** → `infrastructure/state/queue/VISION.md`
