@@ -91,3 +91,39 @@ Genebulb would burst into a shower of pets. **Neither outcome is intended.**
   `FactionDef[Mechanoid]`, **not** a cherry-pick. Ancient dangers read a
   different mechanism entirely and must keep their guards
   (`what_the_machines_are.md`).
+
+---
+
+## ✅ RESOLVED — the Genebulb / Trispike dependency. Remove Trispike.
+
+_CREATE, 2026-08-13, read from `Data/Anomaly/Defs/ThingDefs_Races/Races_Fleshbeasts.xml:63-70`
+and confirmed against the live dump._
+
+**Bulbfreak's `race.deathAction` is `DeathActionProperties_Divide`, count 4,
+options `{Toughspike, Trispike}`. Never Fingerspike.** So:
+
+- **Removing Trispike degrades Genebulb, it does not break it.** The pick list
+  drops to one entry and a Genebulb bursts into **4 Genespikes**.
+- ⭐ **That is a flavour GAIN, not a loss.** A gene-cult's failed batch bursting
+  into four of *the same experiment* reads better than a mixed horde — **one
+  gene-line, one mistake, four copies.** The Helix owns both names.
+- ⭐ **And removing Trispike CLOSES the pet leak rather than opening it.**
+  Trispike is itself a Divide, count 3, spawning **Fingerspike** — so keeping it
+  is what would produce a shower of tame Scurriers two hops down. **Remove it.**
+
+### ⚠️ Three follow-ons, all from the same finding
+
+1. **`Dreadmeld` (kept as Genemeld) carries a FORCED list** —
+   `dividePawnKindAdditionalForced` = Toughspike, **Trispike**, Bulbfreak. Forced,
+   not weighted. 🔴 **Do not rely on graceful degradation: strike Trispike from
+   that list explicitly** when it is culled.
+2. 🔴 **Two GENES spawn fingerspikes from a living pawn**, and they reopen the pet
+   leak from a different direction: `AG_MeatBurst` (Alpha Genes) forces **3 ×
+   Fingerspike**, and `Turn_Gene_FleshbeastBurster` (Integrated Genes) weights
+   Fingerspike 5 / Trispike 2.5 / Toughspike 0.5. **A pawn bursting into three
+   tame Scurriers is nonsense.** ⇒ **Cull both genes** unless something in the
+   roster is found to need them.
+3. ⚠️ **`FleshmassHeart` picks its defender kinds in C#, not in any def** — so
+   **what the adult Sarlacc spawns cannot be established offline.** It is the
+   centrepiece of the sarlacc line and the one part of it nobody can read.
+   **Live check, next session.**
