@@ -51,13 +51,16 @@ agent goes looking and finds nothing.
 | `name` | ≤ 64 chars, `[a-z0-9-]+`, equals folder name, no reserved word |
 | relative links in `SKILL.md` | must resolve on disk |
 
-🔴 **One over-long skill makes `--all` fail and package NOTHING.** `main()`
-accumulates `ok &= package(...)` and returns 1 with *"One or more skills failed.
-Nothing was installed."* — but every archive that had already been written stays
-on disk at its old content. **That is how five archives drifted from their
-sources unnoticed**: the run exited 1, two skills breached the 500-line cap, and
-the stale zips looked exactly like fresh ones. Read the exit code, not the
-directory listing.
+🔴 **A failing skill leaves its OWN archive stale — the others are still written.**
+`--all` packages every skill that validates and exits 1 naming the ones that did
+not. **That is how five archives drifted from their sources unnoticed**: the run
+exited 1, two skills breached the 500-line cap, and their stale zips sat beside
+twelve fresh ones looking identical.
+
+*(The message used to read "Nothing was installed", which was false and sent people
+hunting for a fleet-wide failure that never happened. Corrected 2026-08-14; it now
+names the failures and says the rest were written.)*
+**Read the exit code and the named list, not the directory listing.**
 
 Validate without writing: `python3 src/RimMandrake/Utils/package_skill.py --all --check`.
 

@@ -228,6 +228,11 @@ window first thing: `./src/RimMandrake/Utils/set_agent_window.sh <SEAT>`.
 
 ## `skills/` — loadable procedure
 
+**Charter: `skills/README.md`** — what earns a skill versus a traps entry, the
+`SKILL.md` / `references/` / `scripts/` split, and the enforced caps (500-line body,
+1024-char description). Archives are gitignored build outputs: rebuild with
+`python3 src/RimMandrake/Utils/package_skill.py --all` at hand-off.
+
 The directory is the source; `<name>.skill` zips beside it are untracked packaging
 artifacts. **Which skill to load when is `CLAUDE.md`'s job**, not this file's.
 

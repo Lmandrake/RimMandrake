@@ -181,16 +181,29 @@ def main() -> int:
         return 2
 
     ok = True
+    failed: list[str] = []
     for folder in targets:
         print(f"{folder.name}")
         if not folder.is_dir():
             print(f"  FAIL no such skill folder: {folder}", file=sys.stderr)
             ok = False
+            failed.append(folder.name)
             continue
-        ok &= package(folder, args.check)
+        if not package(folder, args.check):
+            ok = False
+            failed.append(folder.name)
 
     if not ok:
-        print("\nOne or more skills failed. Nothing was installed.", file=sys.stderr)
+        # This used to read "Nothing was installed", which was FALSE and cost real
+        # confusion: every skill that passed has already been written by the loop
+        # above. A failing skill leaves its OWN archive stale, not the others.
+        verb = "would be packaged" if args.check else "were packaged"
+        print(
+            "\n%d skill(s) FAILED and their archives are UNCHANGED (stale): %s"
+            "\nThe other %d %s normally. Fix the failures and re-run."
+            % (len(failed), ", ".join(failed), len(targets) - len(failed), verb),
+            file=sys.stderr,
+        )
         return 1
     if not args.check:
         print("\nArchives written. Install them in Claude Code to make the "
