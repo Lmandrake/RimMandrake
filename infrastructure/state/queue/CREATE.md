@@ -32,6 +32,34 @@ at all, so neither row is in the load as things stand.
 
 ## Open
 
+### 🔴 WRAP 2026-08-13 — what is half-done, and what was already checked
+
+**Everything owed needs ONE fresh quicktest map.** Full state, with commits:
+`infrastructure/state/AGENT_CREATE_state.md`.
+
+| owed | already checked, do not redo |
+|---|---|
+| **row 3 gate** — spawn `Jawa_ClaimRumour`, read it, quest fires + resolves | def authored, validated, deployed (`47733f8`); every QuestNode class verified against a shipping Ludeon def |
+| **row 4, scrapfields** | **not biome-gated** — hooks `Base_Player` genSteps, so ANY fresh map shows it. 🔴 **Look before any destroy**; the last map's evidence died in a 43,288-thing wipe |
+| **row 4, dune seas** | ⚠️ **do not eyeball it.** Density change (0.65→0.55), unjudgeable without a control map. **Read the live `BiomeDef`** and confirm `terrainPatchMakers` 0.55 / 0.50 |
+| **row 4, salt pans** | ✅ **PASSED live** — 144 cells painted, 0 failed verify, renders as a pale cracked pan. Only "does it generate" remained, and the owner ruled placement via bridge is sufficient |
+| **ground hulk** (`00a1398`) | 619 of 1,200 cells, structurally validated: 0 overlaps, 0 out-of-bounds, 0 props off-deck |
+| **the eight art mods** | all deployed and ENABLED; each is one spawn and one look |
+| **`NoPathToPilotConsole`** | doors cut into the **outer** hull and carried in the export — but **a door is not a path**, and this is a launch gate |
+
+🔴 **The one diagnostic worth memorising:** if the hulk's deck renders and its
+props are **absent**, `BrokenSubstructure` went to the top layer and
+`ShipChunk_Mech` lost its `Heavy` affordance. **A terrain swap, not a redesign.**
+
+⚠️ **Not verifiable offline, ever:** vanilla and DLC art lives in AssetBundles —
+`Data/*/Textures` does not exist — so **297 usable wreck defs cannot be rendered**,
+`AncientCryptosleepCasket` among them. Defs, sizes and yields are proven; the look
+is not.
+
+**Left deliberately uncommitted:** `src/RimMandrake/BlastDoorFrameAsyncFix/Source/REVIEW_before_after.png`
+— a run-artifact, regenerable in ~1 min from the committed `render_review.py`.
+
+
 ### 🔴 THE RULING that governs C3, C5, C6 and C11 — owner, 2026-08-13
 
 > **"Each mod that we fix art in should get its own fix patch, so we could in
