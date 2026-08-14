@@ -90,3 +90,23 @@ Entry format, admission test and the append rule: `references/traps.md`.
 **Recurs when:** `Could not find type named X` — a third cause, after "mod absent" and "type renamed", is an assembly present but loaded too early to resolve its own references. Sweeping all 568 `About.xml` files for `modDependencies` edges pointing *later* found 8 inversions, of which exactly one logged anything; parse the XML and take the root's direct child, because a naive first-`<packageId>` regex reads a *dependency's* id as the mod's own and misses the very mod that motivated the sweep.
 
 ---
+
+### RimSort's "ignore" dismisses a WARNING, not your sort rules
+**Symptom:** the owner clicks *ignore* on RimSort's "no Publisher ID" complaint about locally-authored mods, several times a session, and reasonably fears the dismissal is also discarding the User Rules that pin those same mods' load order. A mod that will not stay where it was put makes the fear look confirmed.
+**Cause:** they are **two separate databases under `AppData\Local\RimSort\dbs\`, both keyed by `packageId`, and neither reads the other.** `ignore.json` is self-described as *"Mods to ignore when checking for missing properties (identified by packageid)"* — pure warning suppression. `userRules.json` holds the sort rules. Dismissing a warning cannot touch a rule.
+**Fix:** read RimSort's own log rather than reasoning about the UI. `AppData\Local\RimSort\Logs\RimSort.log` prints the count on every start:
+```
+read_rules_db: Checking Rules DB at: ...\dbs\userRules.json
+read_rules_db: DB exists!
+read_rules_db: Loaded 13 additional rules
+```
+**Count the rules in the file and check the number matches.** 2026-08-13: 7 existing + 6 added = the 13 it logged, so every rule loaded. Two independent confirmations agreed — the log count, and `ignore.json`'s mtime (17:24) being *later* than `userRules.json`'s (17:19) with the rules still intact.
+⚠️ **`PublishedFileId.txt` is Steam-assigned and is CORRECT to be absent on a local mod. Never invent one** — a made-up id can collide with a real Workshop item and pull that item's metadata onto ours.
+**Generalises to:** any tool where a dismissal dialog and a behaviour store are different files. **The dialog is not the state.** Before believing a UI action had a side effect, find the file it writes and diff it — and prefer a log line that *counts* what was loaded over any inference from the interface.
+
+### A reskin whose donor ships art LOOSE fails silently if it loads first
+**Symptom:** an art-replacement mod is deployed, enabled, correctly named, throws nothing, and is simply invisible in game — the original art still draws.
+**Cause:** when both donor and reskin ship textures **loose** (not in an AssetBundle), nothing arbitrates but **load order** — last writer wins. Placed before its donor, the reskin loads, is overwritten, and RimWorld logs **nothing at all**, because no error occurred. Where the donor serves from an **AssetBundle**, loose beats bundle regardless and order is irrelevant.
+**Fix:** for every reskin, establish which way the donor ships its art, and pin `loadAfter` in `userRules.json` — not just a hand-placement in `ModsConfig.xml`, which the next Sort discards. 🔴 **Do NOT add `loadBottom` to a reskin.** `loadBottom` outranks `loadAfter`: the rule is then satisfied trivially by sinking to the end and carries no placement force relative to the donor, which is the defect six pre-existing rules in this repo already have.
+**Verify positionally, never by assumption:** read both indices out of `<activeMods>` and assert `reskin_idx > donor_idx`. Also assert the **donor is active at all** — a reskin whose donor is disabled fails the same invisible way.
+**Generalises to:** every last-writer-wins resource with no conflict detection — texture overrides, loose XML patches on the same node, two mods writing the same def. **The absence of an error is not evidence of success**, and these are exactly the failures a clean log will never show you.
