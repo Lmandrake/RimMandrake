@@ -39,3 +39,16 @@ WreckedMachines/*                                 # owner: parked to v2, 2026-08
 # ⚠️ Deployed is not loaded: mandrake.desertvehiclereskin still needs a
 # ModsConfig entry AFTER sarg.alphavehiclesneolithic — the donor ships LOOSE art,
 # so order decides whether the reskin is visible at all. Filed with OPS.
+
+# --- Art pulled pending the owner's verification ------------------------------
+# Owner's standing directive 2026-08-14: stop fixing art until the owner has
+# verified the art actually does not work, because the missing-art PREMISE is
+# suspect. The owner then ruled today's three fixes out of the current load so
+# that it renders the donors' unmodified art and produces the baseline
+# screenshots the directive asks for.
+#
+# The other two rode out via ModsConfig (OPS). This one could not: it is a
+# texture inside GravshipAstronautFix, which also carries the earlier astronaut
+# typo fixes that are NOT part of the ruling. Holding the single file keeps
+# those live. Lift this the moment the owner rules on the genebank's north view.
+GravshipAstronautFix/Textures/Things/Structures/GravshipGenebank/GravshipGenebank_north.png   # owner: pulled pending art verification, 2026-08-14

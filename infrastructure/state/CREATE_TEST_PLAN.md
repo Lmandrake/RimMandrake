@@ -30,11 +30,11 @@ magenta, that is a real failure even though everything "worked".
 
 ---
 
-## Part 1 — the TEN mods. Cheapest first, all doable on any map
+## Part 1 — the EIGHT live mods. Cheapest first, all doable on any map
 
-Nine art-fix mods plus the sled reskin. **581 active as of 23:18** — OPS enabled
-`mandrake.phytokinbarkheadfix` (@562) and `mandrake.kotorbandoliernorthfix`
-(@579) and removed `mandrake.missingartfixes` from the list.
+Seven art-fix mods plus the sled reskin. `mandrake.missingartfixes` is out of the
+list; **the two mods enabled at 23:18 were pulled again on the owner's ruling** —
+see Part 1b, which is why.
 Each is *one spawn and one look*. Nothing here needs a fresh map or a colony.
 
 🔴 **THIS PART IS NOW THE OWNER'S VERIFICATION GATE, not a victory lap.** The
@@ -53,8 +53,30 @@ a disappointing one. Record what you see, not what the row predicts.
 | 6 | `CereanManeFix` | a Cerean pawn, hair `OuterRim_CereanMane` | facing **SOUTH** | hair present — the donor's file is 1,514 B of **fully transparent** pixels, so the fail is a bald head |
 | 7 | `SauridFrillFix` | a Saurid pawn, hair `VRESaurids_Littlefoot` | facing **NORTH** | the centre frill draws |
 | 8 | `ToolBeltFix` | 🔴 apparel **`VAEA_Apparel_ToolBelt`**, worn | facing **WEST** | the belt draws on the pawn |
-| 9 | `PhytokinBarkHeadFix` | a **female** Phytokin with genes `VRE_BarkSkin` **+** `Jaw_Heavy` | facing **EAST** | a side-on head. FAIL = a front-facing head on a side-facing body |
-| 10 | `KotORBandolierNorthFix` | apparel `bandolier_chewbacca` or `bandolier_traveler`, worn | facing **NORTH** | a **bare leather strap**. FAIL = chest pouches drawn on the pawn's back |
+
+---
+
+## 🔴 Part 1b — THE BASELINE SHOTS. This is the highest-value thing in the file.
+
+**Owner's ruling, 2026-08-14: the evidence that unblocks all art work is an
+in-game screenshot of the SUSPECT AS IT CURRENTLY RENDERS — no fix, no
+comparison.** Three of my fixes were deliberately **pulled from this load** so
+that these three shots show the donors' own unmodified art.
+
+⚠️ **Do not report these as failures.** They are not tests. **Whatever they look
+like IS the result**, and "this looked completely normal" is the single most
+useful sentence you can send back — it is what the directive suspects.
+
+| # | shoot | how to reach it | what is claimed to be wrong |
+|---|---|---|---|
+| B1 | a **female** Phytokin head, **facing EAST** | needs genes `VRE_BarkSkin` **+** `Jaw_Heavy` | claim: a front-facing head renders on a side-facing body, because the donor ships no female east |
+| B2 | a pawn wearing `bandolier_chewbacca` or `bandolier_traveler`, **facing NORTH** | worn apparel, KotOR Resources | claim: the chest pouches draw on the pawn's **back**, at layer 65, on top of everything |
+| B3 | a `GravshipGenebank`, **rotated NORTH** | 1×1 Biotech buildable | claim: the north view is pixel-identical to the south, so its open front points at the viewer |
+
+🔴 **`mandrake.phytokinbarkheadfix` and `mandrake.kotorbandoliernorthfix` are OUT
+of `ModsConfig` for this load, and the genebank texture is held out of the
+deploy.** If any of B1–B3 looks *correct*, the fix was unnecessary and the
+premise behind it was wrong — which is exactly what the owner wants to know.
 
 ⚠️ **Rows 4–8 are pawn-facing checks, so the pawn must actually face that way.**
 `jawa/set_pawn_rotation` exists but **has never executed**. If it fails, the
