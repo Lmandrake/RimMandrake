@@ -45,11 +45,19 @@
 
 set -uo pipefail
 
-# 6G is ~10x a seat's measured steady-state (~600 MB), and the budget closes: five
-# seats x 6G = 30G, plus ~3G of python3 tooling, fits inside a 36 GB VM with margin.
-# So even ALL FIVE ballooning at once cannot trigger a global OOM. If a seat needs
-# more (heavy subagent fan-out), raise MEM_MAX for THAT seat, never remove the bound.
-MEM_MAX="${MEM_MAX:-6G}"
+# 10G, raised from 6G on 2026-08-14 after measuring what a scope actually has to
+# hold. The bound covers the whole PROCESS TREE, not just the tab: a seat spawns
+# `claude daemon run`, which spawns `bg-pty-host` processes, which spawn the
+# versioned binary per background session - and children inherit the parent's
+# cgroup. Measured on one idle seat with three background jobs:
+#
+#   tab 0.65G + daemon 0.33G + 3x pty-host 0.59G + 3x session 1.24G = 2.81 GB
+#
+# That was already 47% of a 6 GB bound while doing nothing, which would have made
+# spurious kills likely. 10G is ~3.5x that idle tree and still far below the
+# ~27 GB a real runaway reached, so it catches the failure with room to spare.
+# If a seat legitimately needs more, raise MEM_MAX for THAT seat; never remove it.
+MEM_MAX="${MEM_MAX:-10G}"
 SWAP_MAX="${SWAP_MAX:-2G}"
 
 CLAUDE_BIN="$(command -v claude || true)"
