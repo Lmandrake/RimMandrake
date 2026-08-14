@@ -22,7 +22,10 @@ document nobody is required to shrink.
 
 **1. Budgets, per file class.** `src/RimMandrake/Utils/doc_budget.py` enforces them and exits 1
 when a file is over. Queue 150 · identity 120 · state 150 · `CLAUDE.md` 300 ·
-`agents_def.md` 500 · traps 700. Design docs and rosters are unbudgeted — their
+`agents_def.md` **200** · traps 700 · `TODO.md` 400 · `TODO_v2.md` 600.
+*(This line said 500 for `agents_def.md` while the tool enforced 200 — the doc
+describing the rule disagreed with the rule. The tool is authoritative; read
+`BUDGETS` in the script, not this sentence.)* Design docs and rosters are unbudgeted — their
 length is content, not accumulation.
 
 **2. Provenance lives in the commit, not the doc.** A doc says *what is true now*.

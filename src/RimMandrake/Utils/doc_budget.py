@@ -80,6 +80,15 @@ BUDGETS = [
     # NEXT_RELOAD.md is a queue for ONE event. It should be harvested and cleared
     # after each load, so accumulation here is the symptom, not the content.
     ("infrastructure/state/NEXT_RELOAD.md", 400),
+    # 🔴 The two biggest state files matched NO glob until 2026-08-13 and were
+    # therefore never measured: TODO.md (965) and TODO_v2.md (1,168) — 3,078
+    # unmeasured lines, MORE than the entire measured excess across every other
+    # file combined. A budget tool that silently omits its largest subject is
+    # reporting on the wrong tier; found by a doc-budget sweep, not by the tool.
+    # Budgets are deliberately generous: these are being retired, not trimmed,
+    # and a budget that fails on day one gets ignored rather than obeyed.
+    ("infrastructure/state/TODO.md", 400),
+    ("infrastructure/state/TODO_v2.md", 600),
 ]
 
 # Lines that record HOW WE LEARNED something rather than WHAT IS TRUE. They earn
