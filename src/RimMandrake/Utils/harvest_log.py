@@ -256,6 +256,17 @@ EXPECTED = [
 # success condition without naming a log string, it belongs in this list, not
 # in CHECKS or QUEUED.
 IN_GAME = [
+    # TOP OF THE LIST DELIBERATELY. This is the only item here that CANNOT log
+    # even in principle: JawaIonWeapons.dll's user-string heap is 4 bytes, all
+    # zero, so the assembly is physically incapable of emitting a message, and
+    # Apply() has four unlogged early returns. Every other entry below could at
+    # least in theory produce a line; this one never will. Measured 2026-08-13,
+    # signatures in infrastructure/state/EXPECTED_FAILURES_next_load.md (A2).
+    ("JawaIonWeapons - ion vs a KotOR droid ACTUALLY does something",
+     "Dev-spawn a KotOR droid, hit it with the ion weapon. Want: severity "
+     "climbs, 'downed: true', pawn still exists (stunned, not killed). "
+     "PROTECT THIS TEST IF THE SESSION RUNS SHORT - a clean log is NOT "
+     "evidence it worked, and no other observation substitutes."),
     ("W6 - Rebel Alliance faction is ABSENT",
      "World map -> faction list. NOT the visible tiles; scroll the list. "
      "A settlement anywhere means the suppression did not apply."),
