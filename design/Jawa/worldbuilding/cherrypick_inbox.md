@@ -199,3 +199,52 @@ either by label.**
    map-generating** — the template for anything that goes on or under water.
    **Removing the biome is fine; do not lose the knowledge.** It is recorded in
    `hiding_the_gravship.md`.
+
+---
+
+## 🔴 CORRECTION OF THE RECORD — the Anomaly picks were NEVER withdrawn by the owner
+
+_2026-08-14. **A withdrawal was relayed to me and to CREATE as an owner ruling. It
+was not one.** The owner's actual position, in their words:_
+
+> **"I did NOT agree to that anomaly ruling! I want to use some of those
+> creatures… please leave them in with Anomaly set to zero but enabled, so we can
+> still spawn them. And add my cherrypicks! Do not revert them!"**
+
+**⇒ Both halves stand, and they were never in conflict:**
+
+| | |
+|---|---|
+| **Anomaly** | **`Disabled` playstyle — content at zero — but the DLC stays ENABLED**, so every creature and ability remains spawnable and reskinnable |
+| **The cherry-picks** | ⭐ **stand as given. Add them. Do not revert them.** |
+
+### ⭐ Why there was never a conflict, which is the part that got lost
+
+**The objection raised was that deleting defs destroys the reskin donor library.
+True in general — and irrelevant here, because the two sets are DISJOINT.**
+
+- **The donor library is what the owner KEPT:** sandscreamers, noctols, the
+  revenant, the twisted obelisk, the kybersphere, the sarlacc line, the Helix's
+  three, the scurrier.
+- **The cherry-picks are what the owner REJECTED:** metalhorror, shamblers,
+  ghouls, the golden cube, the corrupted and warped obelisks, the revenant spine,
+  trispike.
+
+🔴 **"Do not delete the donors" was generalised into "do not delete anything."**
+Those are different instructions and only the first was ever true.
+
+### The list, unchanged and standing
+
+`Metalhorror` · `Shambler` · `Ghoul` · `Trispike` · `GoldenCube` ·
+`WarpedObelisk_Duplicator` · `WarpedObelisk_Abductor` · `RevenantSpine` ·
+`VoidNode`
+
+⚠️ **One genuine nuance, and it is the only caveat I would keep:** the owner ruled
+`VoidNode` *"disabled but keep the artwork, perhaps as a power-holding ore."*
+**The texture file stays on disk regardless of what happens to the def** — a new
+ore def can point at the same `texPath`. **So picking it is safe, but record the
+texture path before you do**, because the whole point of keeping it is to reuse it.
+
+✅ **Trispike is confirmed correct to remove** — CREATE established Bulbfreak
+divides into `{Toughspike, Trispike}` and Trispike divides into `Fingerspike`, so
+**removing Trispike closes the tame-pet leak rather than opening it.**
