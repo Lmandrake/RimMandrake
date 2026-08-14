@@ -23,6 +23,57 @@ quoted interchangeably.** I wrote against the file with an mtime guard that woul
 have aborted on a concurrent RimSort write. **Re-derive; do not reuse a quoted
 index.**
 
+### 🔴 ARMED AND WAITING — delete the saves the moment the game is LIVE
+
+**Owner-authorised, confirmed directly in my session 2026-08-14** (and separately
+by PROJECT first-hand). **Trigger: BRIDGE's game-live announcement.** They have
+agreed to call it at first map, not at run-sheet time.
+
+```bash
+S="/mnt/c/Users/Mandrake/AppData/LocalLow/Ludeon Studios/RimWorld by Ludeon Studios"
+rm -f "$S/Saves/"*.rws "$S/Saves/"*.bak "$S/Screenshots/"*.png
+```
+
+**Pre-flight inventory, recorded 2026-08-14 while the game was still down:**
+**26 saves / 734,286,763 B** · **44 screenshots / 98,105,480 B** ·
+Steam `userdata/.../294100/screenshots` **already empty (0 files)**.
+
+🔴 **THE MECHANISM, and it is the whole point:** deleting with the game **DOWN**
+is what let Steam Cloud restore all 26 with **original mtimes** at the last
+launch. Cloud reconciles at launch and wins. **The live window is where a delete
+sticks.** ⛔ **Do NOT disable Steam Cloud** — not the fix, never asked for.
+
+**Verify AFTER the NEXT launch, not after the `rm`.** The post-`rm` check is
+exactly what fooled us last time: `Saves/` genuinely was empty and it meant
+nothing.
+
+**Screenshots ruled DISPOSABLE by the owner** — all 44 are tonight's
+`rimbridge_*` agent captures. Only 6 evidence files are committed to
+`observed/evidence/`. BRIDGE was warned of the deadline.
+
+⏳ **THIS RULE EXPIRES THE DAY THE REAL CAMPAIGN STARTS.** It exists only for
+throw-away debugging worlds. A standing "delete the saves" against a live
+campaign is destructive. **Do not let it outlive the debugging phase.**
+
+### 🔴 GravTech cherry-pick — DONE offline, NOT a live obligation
+
+CREATE generated `Config/Mod_3521312241_Mod_CherryPicker.xml` with 21 keys, **all
+Anomaly, zero GravTech**. The owner enabled GravTech over `forbidden_mods.md`'s
+FORBIDDEN ruling **on condition the economy came out**, so that gap would have
+shipped craftable gravcores. **I added three keys (`fe66a59`):**
+`ThingDef/GravForge` · `RecipeDef/Make_GravcoreGF` · `ThingDef/AdvShip_GravReactor`
+— def types read from the mod's own XML **element names**, not guessed.
+Applies in the `StaticConstructorOnStartup` pass, so it lands on this load.
+
+⚠️ **The log cannot confirm it** — Cherry Picker is silent for unresolvable and
+out-of-scope keys alike. Only `[Cherry Picker] Error processing master def list`
+matters: if it fires, **every** removal was lost (`key.Split('/')[1]` sits outside
+the catch). All 24 keys re-validated for shape; zero malformed.
+
+🔴 **Residual risk is CREATE's, not mine: `cherrypick_build.py --write` would
+silently drop my three keys.** Until they fold them into the generator, a
+regeneration re-breaks the scarcity gate **with a clean log.**
+
 ### 🔴 The one thing a successor must not re-derive
 
 **`observed/2026-08-13/load_expected_signatures.md` was written BEFORE the launch,
