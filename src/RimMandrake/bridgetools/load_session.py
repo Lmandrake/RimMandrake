@@ -172,6 +172,12 @@ EXPECTED_TOOLS = [
     "jawa/set_pawn_rotation", "jawa/set_pawn_xenotype", "jawa/fire_incident",
     "jawa/send_letter", "jawa/set_roof_batch", "jawa/get_roof_batch",
     "jawa/list_factions", "jawa/order_pawn", "jawa/world_stats",
+    # ⛔ `jawa/get_defs` is BUILT (23 in the artifact) and NOT DEPLOYED — the
+    # game was already holding the DLL when it was written, and a companion
+    # cannot be overwritten while RimWorld runs. **It goes in the NEXT shutdown
+    # window and the census stays 22 tonight.** Adding it here early would FAIL
+    # a correct deploy, which is the false alarm that stops a census being
+    # believed.
 ]
 
 

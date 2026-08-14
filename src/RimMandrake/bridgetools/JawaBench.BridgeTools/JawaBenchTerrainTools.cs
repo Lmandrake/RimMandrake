@@ -3071,6 +3071,162 @@ namespace JawaBench.BridgeTools
             }, cancellationToken).ConfigureAwait(false);
         }
 
+        // ---- jawa/get_defs ---------------------------------------------------
+        // WHY THIS EXISTS, and it is a pattern not an itch.
+        // On 2026-08-13/14 FIVE separate v1 gates turned out to have no
+        // collectable evidence, every one for the same reason: `jawa/get_def`
+        // built its rich `extra` block for ThingDef only, so every other def
+        // type came back as label + description. Row 4's dune seas needed
+        // BiomeDef.terrainPatchMakers; row 5 needed a xenotype; the Cherry
+        // Picker audit needed PawnKindDef.combatPower and ThingDef.tradeability.
+        // Each was fixed by adding another hardcoded branch -- which fixes one
+        // gate and leaves the next one to be discovered at live prices.
+        //
+        // This ends that. Name the fields you want off ANY def type and they are
+        // read reflectively. A future gate needs no deploy, and a deploy is the
+        // one thing that cannot be done while the game is running.
+        //
+        // It is also a BATCH: reading the 22 Cherry Picker keys was 22 round
+        // trips, and a round trip on this stack is not free.
+        [Tool(
+            "jawa/get_defs",
+            Description =
+                "Read MANY defs of ANY types in one call, and pull named fields off them " +
+                "reflectively. Supersedes calling jawa/get_def in a loop. Two reasons it " +
+                "exists: a batch audit (say, confirming a mod-removal list) is one call " +
+                "instead of twenty-two, and — more importantly — `fields` means a new " +
+                "question can be answered WITHOUT a new companion build. That matters " +
+                "because a companion can only be deployed while the game is CLOSED, so a " +
+                "missing field otherwise costs a whole restart cycle to add.",
+            ResultDescription =
+                "Per requested def: found, defName, defType, label, modName, and a `fields` " +
+                "map. ⚠️ A field you ASKED FOR that does not exist on that type comes back " +
+                "as '(no such field)', never as null — a typo must not be indistinguishable " +
+                "from a genuinely null value. Scalars, strings, enums, Defs (rendered as " +
+                "defName) and lists of those are returned; anything else is skipped rather " +
+                "than half-serialised. `notFound` lists the defs that did not resolve at all.")]
+        public static async Task<object> GetDefs(
+            IRimBridgeContext ctx,
+            CancellationToken cancellationToken,
+            [ToolParameter(Description =
+                "Semicolon-separated `DefType/defName` pairs, e.g. " +
+                "'ThingDef/GravForge;RecipeDef/Make_GravcoreGF;PawnKindDef/Ghoul'. " +
+                "⚠️ Give the TYPE: names collide across types — GravForge is both a " +
+                "ThingDef and a ResearchProjectDef, and both WarpedObelisk_* names are a " +
+                "ThingDef AND an IncidentDef. A bare name would answer about one of them " +
+                "and you would not know which.")]
+            string defs,
+            [ToolParameter(Description =
+                "Comma-separated field names to read off each def, e.g. " +
+                "'combatPower,tradeability,thingCategories'. Empty returns every public " +
+                "scalar field on the def, which is verbose but is how you find out what " +
+                "is there.")]
+            string fields = null,
+            [ToolParameter(Description = "Cap on how many defs to resolve.",
+                DefaultValue = 200)]
+            int limit = 200)
+        {
+            if (string.IsNullOrWhiteSpace(defs))
+                return Fail("defs is required: 'DefType/defName' pairs separated by ';'.",
+                    new { example = "ThingDef/Steel;PawnKindDef/Ghoul" });
+
+            var want = new HashSet<string>((fields ?? "")
+                .Split(',').Select(q => q.Trim()).Where(q => q.Length > 0));
+
+            return await ctx.MainThread.InvokeAsync<object>(() =>
+            {
+                var rows = new List<object>();
+                var notFound = new List<string>();
+                var malformed = new List<string>();
+                var found = 0;
+
+                foreach (var raw in defs.Split(';').Select(q => q.Trim())
+                                        .Where(q => q.Length > 0).Take(limit))
+                {
+                    cancellationToken.ThrowIfCancellationRequested();
+                    var slash = raw.IndexOf('/');
+                    if (slash <= 0 || slash == raw.Length - 1)
+                    {
+                        // Named loudly rather than skipped. Cherry Picker's own
+                        // ToDefName is `key.Split('/')[1]` with no bounds check
+                        // OUTSIDE its catch, so one key missing its slash aborts
+                        // every removal after it. Silence about a malformed entry
+                        // is how that class of bug survives.
+                        malformed.Add(raw);
+                        continue;
+                    }
+                    var typeName = raw.Substring(0, slash).Trim();
+                    var defName = raw.Substring(slash + 1).Trim();
+
+                    var dbType = GenTypes.GetTypeInAnyAssembly(typeName)
+                              ?? GenTypes.GetTypeInAnyAssembly("RimWorld." + typeName)
+                              ?? GenTypes.GetTypeInAnyAssembly("Verse." + typeName);
+                    if (dbType == null)
+                    {
+                        rows.Add(new
+                        {
+                            requested = raw, found = false, defType = typeName,
+                            defName,
+                            error = $"No def TYPE named '{typeName}'."
+                        });
+                        notFound.Add(raw);
+                        continue;
+                    }
+
+                    var db = typeof(DefDatabase<>).MakeGenericType(dbType);
+                    var get = db.GetMethod("GetNamedSilentFail",
+                        System.Reflection.BindingFlags.Public
+                        | System.Reflection.BindingFlags.Static);
+                    var def = get?.Invoke(null, new object[] { defName }) as Def;
+
+                    if (def == null)
+                    {
+                        rows.Add(new
+                        {
+                            requested = raw, found = false, defType = typeName, defName
+                        });
+                        notFound.Add(raw);
+                        continue;
+                    }
+
+                    found++;
+                    rows.Add(new
+                    {
+                        requested = raw,
+                        found = true,
+                        defName = def.defName,
+                        defType = def.GetType().Name,
+                        label = def.label,
+                        modName = def.modContentPack?.Name,
+                        packageId = def.modContentPack?.PackageId,
+                        fields = Scalars(def, want)
+                    });
+                }
+
+                return new
+                {
+                    // ⚠️ success means the CALL resolved cleanly, NOT that every
+                    // def was found. An audit whose whole point is finding
+                    // absences must not report failure for finding them.
+                    success = malformed.Count == 0,
+                    message =
+                        $"{found} of {rows.Count} def(s) resolved" +
+                        (notFound.Count > 0 ? $"; {notFound.Count} not found" : "") +
+                        (malformed.Count > 0
+                            ? $". ⚠️ {malformed.Count} entry/entries had no '/' and were "
+                              + "SKIPPED: " + string.Join(", ", malformed)
+                            : ""),
+                    requested = rows.Count,
+                    foundCount = found,
+                    notFound,
+                    malformed,
+                    fieldsAsked = want.ToList(),
+                    defs = rows,
+                    ticksGame = Find.TickManager?.TicksGame ?? -1
+                };
+            }, cancellationToken).ConfigureAwait(false);
+        }
+
 #if JAWA_GM_TOOLS
         // ---- THE GM PAIR -----------------------------------------------------
         // Compiled OUT unless the build defines JAWA_GM_TOOLS (build.py --gm).
@@ -3666,6 +3822,54 @@ namespace JawaBench.BridgeTools
         // Public instance fields of a CompProperties, filtered to values that are
         // meaningful in JSON. Reflection is the only route: CompProperties
         // subclasses are mod-defined and share no interface.
+        // Generalised out of CompScalars, which did exactly this for comps only.
+        // ⚠️ Scalars, strings, enums, Defs and LISTS of those. Anything else is
+        // skipped rather than truncated -- a half-serialised object is worse
+        // than an absent one, because it reads as data.
+        private static Dictionary<string, object> Scalars(object o, HashSet<string> want)
+        {
+            var outp = new Dictionary<string, object>();
+            if (o == null) return outp;
+            var flags = System.Reflection.BindingFlags.Public
+                      | System.Reflection.BindingFlags.Instance;
+            foreach (var f in o.GetType().GetFields(flags))
+            {
+                if (want != null && want.Count > 0 && !want.Contains(f.Name)) continue;
+                object v;
+                try { v = f.GetValue(o); } catch { continue; }
+                if (v == null) { outp[f.Name] = null; continue; }
+                if (v is Def d) { outp[f.Name] = d.defName; continue; }
+                var t = v.GetType();
+                if (t.IsPrimitive || v is string || t.IsEnum || v is decimal)
+                {
+                    outp[f.Name] = t.IsEnum ? v.ToString() : v;
+                    continue;
+                }
+                if (v is System.Collections.IEnumerable seq && !(v is string))
+                {
+                    var items = new List<object>();
+                    foreach (var it in seq)
+                    {
+                        if (it == null) { items.Add(null); continue; }
+                        if (it is Def id) { items.Add(id.defName); continue; }
+                        var it2 = it.GetType();
+                        if (it2.IsPrimitive || it is string || it2.IsEnum)
+                            items.Add(it2.IsEnum ? it.ToString() : it);
+                        else items.Add(it2.Name);
+                        if (items.Count >= 64) break;
+                    }
+                    outp[f.Name] = items;
+                }
+            }
+            // A field ASKED FOR and not found must say so, or a typo in the
+            // request is indistinguishable from a field that is genuinely null
+            // -- the same silent-success shape as a dropped parameter.
+            if (want != null)
+                foreach (var w in want)
+                    if (!outp.ContainsKey(w)) outp[w] = "(no such field)";
+            return outp;
+        }
+
         private static Dictionary<string, object> CompScalars(CompProperties c)
         {
             var outp = new Dictionary<string, object>();
