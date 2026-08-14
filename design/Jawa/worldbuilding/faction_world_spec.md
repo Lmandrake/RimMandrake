@@ -23,14 +23,15 @@ for whoever configures the mods._
 | | |
 |---|---|
 | ✅ **Twelve NPC factions exist**, plus the player's Jawa expedition | |
-| ✅ **All twelve are authored by us from scratch.** Own `FactionDef`, own name, own pawn kinds, own xenotype mix | |
+| ✅ **Eleven of the twelve are authored by us from scratch.** Own `FactionDef`, own name, own pawn kinds, own xenotype mix | |
+| ✅ **The twelfth — the Galactic Empire — is the ONE deliberate reskin**, on vanilla `Empire` | see §5 |
 | ✅ **Mod factions survive ONLY where something we cannot change is wired to them** — an incident's antagonist, a scenario part, a quest chain | |
 | ✅ **The world is BIG and sparse.** ~72 settlements across a large planet | |
 | ✅ **Interesting tiles cluster.** Around living settlements, and around dead ones | |
 | ✅ **One permanent enemy: the Galactic Empire** — vanilla `Empire`, reskinned, led by Palpatine | |
 | ✅ **Water increases with latitude.** The equator is the killing ground; the poles hold the only standing water | |
 | ❌ **No mod faction is kept "because it is Star Wars"** | flavour is not a dependency |
-| ❌ **No faction is a reskin of a mod faction** | the v1 Directorate label-patch is a temporary stand-in, not the design |
+| ❌ **No faction is a reskin of a MOD faction** | the Empire reskins *vanilla*, which is a different thing — see §5. The v1 `OuterRim_GalacticEmpire` label-patch is superseded scaffolding |
 | ❌ **No faction generates Jawa except faction 11** | the player race is not a common sight |
 | ❌ **The world is not auto-generated and accepted** | generate a seed, then author on top of it |
 | ❌ **Nobody except the Empire is permanently un-negotiable** | the mid-game always has a wedge |
@@ -42,7 +43,7 @@ for whoever configures the mods._
 | # | Faction | Settlements | Tech | Goodwill | Perm. enemy | Raids |
 |---|---|---:|---|---:|---|---|
 | 1 | **Hutt Cartel Confederacy** | 8 | Industrial | −35 | No | Medium, distance-scaled |
-| 2 | **Imperial Desert Directorate** | **3 surface** *(+~7 orbital, not world tiles)* | Spacer | −100 | 🔴 **Yes** | High |
+| 2 | ⭐ **The Galactic Empire** *(reskin of vanilla `Empire`)* | **3 surface** *(+~7 orbital, not world tiles)* | Spacer | −100 | 🔴 **Yes** | High |
 | 3 | **Outer-Rim Homestead Compact** | 13 | Industrial | +25 | No | **None random — event-driven only** |
 | 4 | **Tusken Sand Clans** | 9 | Industrial, gear-restricted | −80 | No | High near their territory; very short, no siege |
 | 5 | **Free Droid Enclaves** | 3 | Spacer | 0 | No | Disabled — quests and incidents only |
@@ -62,7 +63,7 @@ for whoever configures the mods._
 | faction | title |
 |---|---|
 | Hutt Cartel | Kajidic patriarch / matriarch |
-| Imperial Directorate | **Sector Director** |
+| **The Galactic Empire** | 🔴 **Emperor Palpatine** *("Sector Director" survives only as the local office's title, if we use it at all)* |
 | Homestead Compact | Elected well-keeper |
 | Tusken Sand Clans | Clan speaker |
 | Free Droid Enclaves | Coordinator |
@@ -84,7 +85,7 @@ practically change points at it. **Nothing on this list is kept for flavour.**
 | faction | what is wired to it | consequence of removing it |
 |---|---|---|
 | **`Mechanoid`** *(vanilla)* | ⚠️ **CORRECTED 2026-08-13.** The pursuit is **NOT** a reason — *Ruthless Faction Pursuit* redirects it at any faction, and it will be pointed at the Galactic Empire. The real dependencies are narrower: **ancient dangers / sealed complexes**, **mech clusters**, and the **`Gravcore_Mechhive` endgame chain (7 of 9 subquests)** | loses the ancient-danger population and, if the mechhive dependency holds, the Odyssey endgame. **Under research — see §9** |
-| **`Empire`** *(vanilla Royalty)* | Royalty's entire title, permit and quest surface — **and it is now the Fallen Dominion** (§5) | loses both the DLC's content and our second empire |
+| **`Empire`** *(vanilla Royalty)* | Royalty's entire title, permit, gear-tier and quest surface — **and it is now the Galactic Empire itself** (§5) | there would be no Empire, and a DLC's worth of structure would have to be rebuilt |
 | **`guy762_KotORFaction_RogueDroids`** | `hostileFactionDef` of the droid distress-call incident in [BTD] Ship Pack: KotOR Ships | a distress call with no antagonist — **a quest the player accepts and cannot finish** |
 | **`Insect`** *(vanilla)* | infestations, VFE Insectoids genelines, Alpha Animals hives, and Anomaly's `Entities` relations | removing the faction does not remove the bugs; it orphans them |
 | **`Entities`, `HoraxCult`** *(Anomaly)* | not removable at world creation at all — no lever short of disabling the DLC | n/a — kept by force, not by choice |
@@ -215,7 +216,7 @@ their yards, and *they never knew it could still fly*. Comedy-adjacent, with
 teeth. The best market on the planet is also the one most likely to sell your
 position.
 
-**2 · Imperial Desert Directorate.** Not hateful — **procedural**. You are a
+**2 · The Galactic Empire.** Not hateful — **procedural**. You are a
 logistics problem they are closing out. Their doctrine holds that the galaxy
 tends toward entropy and only one ordered, human, obedient hierarchy holds the
 chaos back; every alien and every independent act is disorder to be corrected.
