@@ -69,7 +69,7 @@ Ask these **before** spawning N subagents, not after the box freezes.
 1. **How much headroom does the VM have right now?** One command, §3. Under
    ~8 GB available, do the work serially.
 2. **Am I bounded?** `cat /proc/self/cgroup`. `0::/init.scope` means **no
-   bound** — your balloon is everyone's problem (§5).
+   bound** — your balloon is everyone's problem. §4 installs it.
 3. **Is this fan-out read-heavy or read-wide?** Many small greps are cheap.
    Agents that each read large files return large results **into your process**.
 4. **Is the game running?** All three OOM events had RimWorld up. That is
@@ -78,7 +78,36 @@ Ask these **before** spawning N subagents, not after the box freezes.
    working and when seats are busiest.
 
 ⚠️ **Bounded, the answer to all four is "fan out".** The check exists because
-the fix is not installed everywhere yet (§5).
+the fix is not installed everywhere yet (§4).
+
+### What the vendor actually says
+
+DOCUMENTED (https://code.claude.com/docs/en/workflows, `/agents`): **up to 16
+concurrent agents**, fewer on fewer CPUs, "bounds local resource use"; 1,000
+agents total per run; size guidance `small` <5, `medium` <15, `large` <50, with
+a warning past 25. **There is no general cap on parallel subagents** — a request
+for `maxParallelAgents` (issue #15487, after 24 subagents in two minutes locked
+a 2-vCPU box hard) was **closed as not planned**. The `/agents` docs warn only
+about *tokens*, not memory.
+
+⇒ **Nothing upstream will stop you. The bound has to be yours.**
+
+For a seat that is already heavy, before you fan out again:
+
+- **`/compact`** — DOCUMENTED as the first remedy for high memory.
+- **Restart the seat between major tasks** — also Anthropic's own advice, and
+  the only reliable way to release a grown heap.
+- **`/heapdump`** — real, absent from the command menu, type it in full. Writes
+  `<session-id>.heapsnapshot` + `-diagnostics.json` to `~/Desktop` and prints
+  RSS, JS heap, array buffers and leak indicators.
+  🔴 **The `.heapsnapshot` contains the full conversation and credentials.**
+  Never commit it; attach only the `-diagnostics.json` to an issue.
+
+🔴 **Do not reach for `NODE_OPTIONS=--max-old-space-size`.** Every GitHub thread
+recommends it and it is very likely inert: MEASURED on `2.1.232` here, the
+binary is a Bun `--compile` ELF running **JavaScriptCore, not V8** (226
+JavaScriptCore/WebKit strings, 1505 `bun`). A V8 heap flag has no engine to
+configure. Detail and the UNVERIFIED edge: `references/windows-hosting.md` §8.
 
 ---
 
@@ -379,9 +408,25 @@ Decision table, filesystem measurements, and the honest lock-in argument:
 **`references/windows-hosting.md`**.
 
 The headline, because it is counter-intuitive: **the OOM containment described
-here is a WSL advantage, not a WSL problem.** Native Windows has no per-process
-memory cgroup equivalent — the nearest thing is a Job Object, which Claude Code
-does not set up for you. Losing the cgroup would mean losing the fix.
+here is a WSL advantage, not a WSL problem.**
+
+- 🔴 **The runaway is not a WSL phenomenon.** DOCUMENTED on *native* Windows
+  (issue #42169): one `claude.exe` at 13.3 → 14.2 GB over 4 h, Non-Paged Pool at
+  31.5 GB, reboot needed to clear zombies. **Migrating does not fix the memory
+  problem; it removes the cheap fix.**
+- **Windows has no shipped per-process memory cap.** Job Objects are the right
+  primitive but cap *commit charge*, and exceeding one is an **allocation
+  failure, not a kill** — you build the kill yourself. `MaxWorkingSet` in
+  PowerShell is a soft trimming hint and will not contain anything.
+- **Claude Code sandboxing is supported on WSL2 and NOT on native Windows.**
+- ⚠️ **Against WSL, and DOCUMENTED by Anthropic:** search across the `/mnt`
+  mount "may result in fewer-than-expected matches" — a *recall* penalty, not
+  just a speed one. It applies to this repo.
+- **Node is not a blocker either way** — the installed binary does not use your
+  Node at runtime, and native installers ship one.
+- **Cygwin is maintained (3.6.10-1, Jul 2026) and still wrong here**: no
+  Cygwin-native Node, and Claude Code's Bash tool has shell builtins failing
+  outright (#26482, closed not planned).
 
 ---
 
