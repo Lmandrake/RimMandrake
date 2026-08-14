@@ -309,8 +309,23 @@ After any RimWorld task, ask what surprised you. If something did, append it to
 the matching `skills/rimworld-modding/references/traps-*.md` — symptom, cause,
 fix, and above all **"generalises to"** — and add its title to the index in
 `traps.md` in the same commit. When an entry would change default behaviour,
-promote it into `SKILL.md` and delete it from the log. Every entry there cost a
-real debug cycle.
+promote it into `SKILL.md`. Every entry there cost a real debug cycle.
+
+**Promote the RULE; keep the residue only if it carries operational detail the
+rule cannot, and point `SKILL.md` at it.** The old wording said *delete it from
+the log*, which is right when the trap is wholly absorbed and wrong when it is
+not — measured 2026-08-14, promoting "inspect the CONSUMER, not the artifact"
+into §6b while the source trap still held the bridge caveat and the map-gen
+escalation. **Deleting it would have destroyed detail to satisfy a tidiness
+rule.** Two entries saying the same thing is the waste being prevented; one
+entry with detail the other lacks is not.
+
+⚠️ **Do not merge two traps because they rhyme.** Same night: three findings
+looked like one family and were two. *Artifact right, consumer stale* (a def
+deployed post-launch; a DLL verified in the repo) is answered by **what did the
+consumer last read, and when.** *An absent input read as an empty one* (a tool
+returning null for a field it never models) is answered by **can the instrument
+see this at all.** **A merged rule would have answered neither.**
 
 🔴 **Editing `skills/<name>/` is not shipping it** — Claude Code installs from a
 `.skill` zip, and those are **gitignored**, so a fresh clone has none. Rebuild at
