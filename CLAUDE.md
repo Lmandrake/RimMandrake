@@ -259,6 +259,27 @@ repo, and nothing syncs the two. Plan-first deploy, `-` lines and `--pull`,
 grid codec, the `fogGrid` bitfield, grepping with `<def>NAME</def>`, and the two
 error phrasings: **`skills/rimworld-savegame/SKILL.md`**.
 
+🔴 **`git commit <path>` COMMITS THE WORKING TREE, NOT YOUR INDEX.** Promoted here
+2026-08-13 after it bit an agent that had *deliberately* staged carefully to avoid
+sweeping a peer's work — and then defeated its own precaution with a pathspec
+commit, carrying seven of that peer's uncommitted files into its commit. Nothing
+was lost; the commit boundary was simply wrong, and two seats had committed on top
+before it was noticed.
+
+- **A pathspec on `commit` bypasses the index entirely.** It records whatever is
+  in the working tree at that path — including a peer's uncommitted edits to the
+  same file. Staging carefully first buys you nothing.
+- **Corollary, same root cause:** `git rm --cached <f>` followed by
+  `git commit <f>` silently **re-adds** the file. To untrack while keeping it on
+  disk, move it aside, commit the path while it is absent, move it back.
+- ⇒ **Before any commit, read `git status --porcelain <paths>`.** If a path you
+  are committing is dirty with work that is not yours, it is about to become
+  yours.
+
+*(This lived in `queue/PROJECT.md` for a day, where only PROJECT would read it.
+A trap filed in a private queue is a trap nobody else avoids — the third time
+today something bit because it was written in the wrong file.)*
+
 **Commit explicit paths only. Never `git add -A`, `git add .`, or `git commit -a`.**
 Five seats share ONE working tree and ONE index, so a blanket add sweeps someone
 else's unfinished — and staged — work into your commit. Name every file, and read
