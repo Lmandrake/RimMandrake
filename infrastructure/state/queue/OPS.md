@@ -409,3 +409,54 @@ and both run on a player map. **Do not assume it is theirs and do not assume it 
 run the 90 s quicktests to verify row 4, **watch for this line**. If it recurs on a map
 where scrapfields now places ~50, it is not ours; if it vanishes with the fix, it was.
 **One observation, already-scheduled work, no extra load.**
+
+---
+
+# 🔴 SHUTDOWN HANDOFF — run this the moment the game is DOWN. Written 2026-08-14 while it was still up.
+
+**Nothing here needs OPS specifically. Any seat can execute it; the order and the traps
+are what matter.** Confirm the game is actually gone first — a write under
+`common\RimWorld\` fails `OSError 22` while it holds the file, and that refusal is SAFE
+(it cannot truncate), but a "successful" run that silently skipped is not.
+
+```bash
+tasklist.exe /FI "IMAGENAME eq RimWorldWin64.exe"     # must report no tasks
+```
+
+### 1. S9 — the v1 row 4 fix. **Highest value item here.**
+```bash
+python3 src/RimMandrake/Utils/deploy_custom_mods.py --mod Jawa_Patches --apply
+```
+Ships `JawaScrapfields.xml` with `minSpacing` **4 → 1** (`8a7a5ee`). Root cause:
+`minSpacing` equalled the engine's **hardcoded `ClusterRadius` of 4**, so each cluster
+self-exhausted after ~4 chunks, `TryFindScatterCell` returned an invalid cell, and
+`GenStep_Scatterer::Generate` **`ret`s inside its loop** — killing the step and
+discarding ~46 of 50 chunks. ⚠️ **`--mod Jawa_Patches` also re-verifies every other file
+in that mod**; a `-> VERIFIED in sync` line is a statement about all of them.
+
+### 2. S1 — `JawaSeaShaper.dll`. **SOLO, its own load.**
+```bash
+python3 src/RimMandrake/Utils/deploy_custom_mods.py --mod JawaSeaShaper --apply
+```
+Repo md5 `b7730027` vs deployed `82b48e53`. A **mod assembly** poisons attribution for
+anything loaded beside it ⇒ do not batch it with a load meant to prove something else.
+
+### 3. BridgeTools DLL — **BRIDGE's, and it rides free.**
+⚠️ **Must be built/deployed with `--gm`** or it strips `jawa/fire_incident` and
+`jawa/send_letter`. ⭐ **It is NOT in the mod stack** (`common\RimWorld\BridgeTools\`,
+loaded by the bridge, not RimWorld's mod loader) ⇒ **zero attribution cost, batch it with
+anything.** "New assembly ⇒ solo load" is a rule about MOD assemblies only.
+
+### ⛔ Do NOT deploy
+`Armoury_MeleePower.xml` / `Armoury_RangedDamage.xml` — HELD on scope. `StrandedQuest` —
+**stays inert, tagged `[v2]`**: `V1_SCOPE.md:86` gives v1 **one** `QuestScriptDef` and
+row 3 (*The Claim*) already fills it. Never run `--apply` bare.
+
+### After the next load — two free observations, no extra cost
+1. **Full-map `listerThings` count of `ChunkSlagSteel`, no sampling.** Expect **44–56 in
+   ~5 clumps of 10**. 🔴 **Only valid on a map GENERATED after this deploy** — a GenStep
+   bakes its output at map creation, so an older save measures the OLD def. **Name the map.**
+2. **Grep the log for `GenStep_ScatterThings.ScatterAt` NRE** (seen once, `Player.log:9022`,
+   during BRIDGE's sweep — **not** on the map we measured). **Vanishes with the fix ⇒ it was
+   ours. Recurs on a map where scrapfields now places ~50 ⇒ it is Biomes Core's.** Free
+   attribution, riding work already scheduled.
