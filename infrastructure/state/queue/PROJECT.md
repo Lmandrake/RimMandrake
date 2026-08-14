@@ -42,7 +42,7 @@ doctrine. Section numbers are non-sequential and `13` appears twice (`:599`,
 ledger. Do not delete the ledger — it is what stops items being re-filed.
 
 ### P5. Execute the restructure to option B
-Plan: `infrastructure/output/RESTRUCTURE_PLAN.md` — ten stages, **one commit each**, lowest-risk
+Plan: `infrastructure/disposing/RESTRUCTURE_PLAN.md` — ten stages, **one commit each**, lowest-risk
 first, nothing moved yet. Run `src/RimMandrake/Utils/check_refs.py` and `src/RimMandrake/Utils/doc_budget.py`
 after every stage; §8 names the check that proves a stage landed whole.
 **Stage 9 (`skills/`) is owner-gated and may never run**; §3's seven unplaced
@@ -50,7 +50,7 @@ items need a ruling before stage 4.
 
 ### P6. Deferred renames — convention on new work now, renames later
 Owner deferred these; do not start one without a spare cycle. Scope measured in
-`infrastructure/output/RESTRUCTURE_PLAN.md` §7: `JawaBench.BridgeTools` → `RimMandrake.Bridge`
+`infrastructure/disposing/RESTRUCTURE_PLAN.md` §7: `JawaBench.BridgeTools` → `RimMandrake.Bridge`
 (14 tracked files, 4 identities including the deploy folder); the `jawa/<tool>`
 namespace (**35 tracked files at once**, canonically 17 `[Tool]` attributes in
 `src/RimMandrake/bridgetools/JawaBench.BridgeTools/JawaBenchTerrainTools.cs`, 3 of the 35 being
@@ -133,3 +133,64 @@ statement an instruction still points at" shape this seat hunts.**
    simply dead, then either correct it or mark the teardown as a record whose
    source artifact is unavailable. **Do not delete the lore** — the findings are
    the value and they were verified when taken.
+
+---
+## ✅ P8 — DONE `a43b610`. Skill reviewed, contradiction killed. Do not re-open.
+
+**Outcome:** `rimworld-start-prep` approved and landed. Its three-writers model is
+the organising idea and it earns the file. The contradiction OPS found was real —
+`rimworld-load-round` §4 asserted the game rewrites `ModsConfig.xml` on exit and
+then denied it one paragraph below. **OPS's measurement won**: the config mtime
+predated the exit and moved again with no game running. Corrected in place and
+pointed at the new skill.
+
+<details><summary>OPS's original filing, kept for the reasoning</summary>
+
+**Filed by OPS 2026-08-13. The owner asked for this skill and asked specifically
+that you review it and then update whatever should reference it rather than
+re-specify it.** Sent as a file, not a message, because no PROJECT seat was
+reachable when it was written.
+
+**NEW:** `D:\Luke\dev\Rimworld\skills\rimworld-start-prep\SKILL.md` — preparing for
+a RimWorld start. The organising model is **three uncoordinated writers over two
+truths**: RimWorld owns the list but writes it only on an in-game change, RimSort
+owns it only when you click Save, Steam owns the folders on disk and never touches
+the list at all. Every "the change didn't take" in this project is one of those
+three being credited with a column it does not own.
+
+### 🔴 It contradicts a shipped skill, and the shipped one is wrong
+
+`skills/rimworld-load-round/SKILL.md:46-47` says flatly that the game *"holds its
+list in memory and rewrites `ModsConfig.xml` on exit"*. **The rewrite-on-exit half
+is measured FALSE** and was already corrected on 2026-08-13 in
+`skills/rimworld-modding/references/traps-mods-and-managers.md:69` — at game exit
+`Player.log`'s last write was 10:04:55 while the config's mtime was 10:01, *older
+than the exit*, and the file moved again at 16:41:39 with no game running at all.
+
+⚠️ **Line 53 of that same skill then half-corrects line 47**, so the file disagrees
+with itself and a reader can leave with either belief. **Not mine to edit — filed
+rather than fixed.**
+
+### The second ask: reference, do not restate
+
+Point these at the new skill instead of carrying their own copy of the rules —
+`CLAUDE.md` "How to work here", `agents_def.md` wherever it covers mod-list state,
+and load-round §4 once the contradiction above is resolved.
+
+### Two things in it that came from the owner this session
+
+1. **"Load at end" does not scale, because nearly every patch mod claims the
+   bottom.** A constraint asserted by everyone is satisfied by no one — the
+   topological sorter must break the tie, and your patch can land at the bottom
+   exactly as requested and *still* sit above the mod it patches. The fix is
+   relative, not absolute: `loadAfter` naming the target's packageId. Also
+   measured: `loadBottom: true` silently defeats a `loadAfter` list in the same
+   rule, and **all six of our rules in `userRules.json` currently carry both**.
+2. **RimSort's "all clear" is a starting point, not the final order.** A clean sort
+   proves only that no *declared* rule was broken. Expect a manual pair-order pass
+   before any test is meaningful, and write each hand-fix back as a User Rule or
+   the next Sort discards it.
+
+_Also mine and also uncommitted, unrelated to the above:_
+`infrastructure/state/WORLDGEN_FACTION_CHECKLIST.md`.
+</details>
