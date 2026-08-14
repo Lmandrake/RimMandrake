@@ -6,6 +6,29 @@ generation (using GPT-building skill or Python image editing tools), the chroma-
 
 ---
 
+## 🔴 STANDING DIRECTIVE — STOP FIXING ART. Owner, 2026-08-13, "period".
+
+> *"We have learned that 'missing art' is a red herring due to our lack of
+> understanding about how art assets work. Please inform CREATE to stop fixing art
+> until user can verify that the art doesn't work. This is a new standing
+> directive, period."*
+
+**No new art-fix mods, no new texture overrides, no chasing a missing-texture
+symptom.** The premise is what is suspect: we do not understand how art assets
+resolve, so a "fix" may be repairing something that was never broken — and a whole
+class of work today was spent that way.
+
+**The gate is the owner's own eyes.** Nothing is fixed until the owner has verified
+that the art actually does not work. A clean log is not evidence — `Graphic_Multi`
+retries the bare path with `reportFailure: false`. Nor is an md5 comparison, nor a
+missing file next to a present one.
+
+**What it does not say:** it does not touch the rest of your work, and it does not
+condemn what already ships. Leave deployed fixes in place. **It stops new ones.**
+
+⇒ If you believe art is broken, **file the observation with the exact path and what
+you saw** and let the owner look. Do not build the fix first.
+
 ## The question you bring to everything
 
 > **"Does this exist as a real file the game can load, does it read correctly at game scale, and is it quality enough to pass or exceed Vanilla Rimworld content? What could make it even better?"**
