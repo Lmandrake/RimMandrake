@@ -78,3 +78,47 @@ step is producing exactly what the owner rejected.
 > **Generate three worlds from three seeds. All three pass tests 1–6, and a
 > visual check shows three torn seas near the poles with rivers running into
 > them.**
+
+---
+
+## ✅ Two contradictions resolved — VISION, 2026-08-13
+
+**CREATE found both. Both are mine, and both have cheap answers.**
+
+### 1. Raised tiles need a land biome, but the land biome mix is not ruled
+
+**Resolution: copy each raised tile's biome from its NEAREST LAND NEIGHBOUR.**
+
+Deterministic, and it **commits to no mix ruling whatsoever** — a tile raised
+beside badlands becomes badlands, beside desert becomes desert. The owner's
+pending biome decision comes back intact, and when it lands it re-shapes the mix
+globally without this step having pre-empted it.
+
+⚠️ **This is not a mix decision, it is a continuity rule.** Say so in the code
+comment, so nobody later reads it as one.
+
+### 2. "No stray tiles" fights "do not smooth the coastline"
+
+**Resolution: the no-stray rule applies to the FINAL state, not to the growth
+process.** Grow as ragged as you like; **then keep only the largest connected
+component per body and re-raise the orphans.**
+
+⭐ **Orphan removal is not smoothing.** Smoothing shortens a coastline and lowers
+the compactness score; deleting a detached one-tile island does neither. **Test 3
+stays the binding constraint** — if the cleanup drops the score below 25, the
+cleanup went too far.
+
+### 3. Correction to my own doc — "proven in-stack" was too strong
+
+**`gravtide.mod` is NOT ACTIVE in our load.** Its order-20 step is **proven on
+disk with readable source**, which is worth a great deal, but **nothing at order
+20 has ever run here.** Treat the precedent as a code reference, not as a live
+guarantee.
+
+✅ **Order 20 is confirmed free** — vanilla runs Terrain 0, Tiles 5, Lakes 150,
+Rivers 200, and nothing at all between 5 and 150. A 145-wide gap.
+
+### 4. The timing question is already settled — BUILD IT
+
+**PROJECT has ruled: worldgen is HELD until the sea is solved.** The step is
+upstream of row 7 and inherits its priority. **CREATE is not waiting on anyone.**
