@@ -497,6 +497,20 @@ in the reply flags it.
 workers take `IncidentParms` **by ref** and rewrite it. **Assert on the value read
 back, never the value sent.** Same shape as `set_terrain`'s dropped `def=`.
 
+#### 👁️ EYES-ON, no bridge call possible — open the xenotype picker and LOOK
+
+**OPS, from the O18 scoped sweep (`cbe6f1c`). Two `iconPath` warnings that cannot
+be settled offline** — vanilla textures live in asset bundles, so a right path and
+a wrong one look identical from outside the game.
+
+| look at | path |
+|---|---|
+| xenotype **`Jawa_Xeno_Gamorrean`** | `UI/Icons/Xenotypes/Pigskin` |
+| gene **`Jawa_Head_Plain`** | `UI/Icons/Genes/Gene_Hair` |
+
+**A pink or blank square is the defect. Both drawing closes them permanently.**
+Cheapest eyes-on item on the sheet — one screen, no map required.
+
 ⛔ **NOT in any batch, deliberately:** the ten art-fix mods. The standing directive
 makes **the owner's own eyes** the gate, so it is an owner-look item and no seat
 can close it with a bridge call. CREATE's ruling, and it is right.
