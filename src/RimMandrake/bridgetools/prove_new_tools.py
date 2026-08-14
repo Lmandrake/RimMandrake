@@ -16,27 +16,28 @@ eighteen:
 Each check prints the deciding string from NEXT_RELOAD.md B2, so a pass here is
 the queue item closed, not a vague "it returned success".
 
-STATUS: 14 of 22 PROVEN LIVE 2026-08-12 on the 573-mod stack (20 passed, 0
-failed) against a dev quicktest colony. SEVEN have never been driven in a live
-game: the roof pair (set_roof_batch, get_roof_batch), list_factions -- which was
-deployed at 10:05 on 2026-08-13, one minute AFTER the last session's log stopped
--- the three pawn-appearance tools (set_pawn_rotation, set_pawn_style,
-set_pawn_xenotype), and order_pawn, all written offline on 2026-08-13 with the
-game down. This file is both the regression harness and the proof run for those
-seven; run it after any companion change, not just after a deploy.
+STATUS: run `--census` for what is deployed right now; this paragraph does not
+try to hold that number. What matters and does not go stale: several tools have
+been BUILT and DEPLOYED but never once driven in a live game -- the roof pair,
+list_factions, the three pawn-appearance tools and order_pawn were all authored
+offline with the game down. This file is both the regression harness and the
+first proof run for those; run it after any companion change, not just after a
+deploy.
 
 THE FIRST CHECK IS THE ONLY ONE THAT MATTERS UNTIL IT PASSES
 ============================================================
-Count the registered `jawa/` tools. 22 = the current deploy took. 21 = the build
-before world_stats. 20 = the build before order_pawn. 17 = the 10:05 build, before the
-pawn-appearance three. 16 = pre-list_factions. 14 = the pre-roof build. 7 = an
-older companion still. 0 = RimBridgeServer did not load the bundle at all. Every
-other result here is uninformative until that reads 22, so the script says so
-loudly and keeps going only to gather evidence about WHICH build is live.
+The census compares the tools the GAME registered against the tools the DEPLOYED
+DLL actually contains. Both sides are measured, so there is no expected number
+to keep up to date and none is written here on purpose -- an earlier version of
+this header listed seven of them and every one went stale. If the two disagree
+the script names the individual tools, which is the answer you wanted anyway.
 
-⚠️ 20, not 22, is the correct count for a build made WITHOUT `--gm`:
-fire_incident and send_letter are compiled out. Deploy with `--gm` or the game
-copy loses them.
+`--gm` needs no special case: a non-GM build simply contains two fewer names
+(fire_incident, send_letter), and the deployed DLL reports that itself.
+
+0 registered means RimBridgeServer did not load the bundle at all; a subset
+matching the old seven means a stale companion, which is what happens when a
+deploy was attempted while the game held the file.
 
 READ THE SCHEMA, DO NOT GUESS IT
 ================================
@@ -73,9 +74,14 @@ This runs against whatever map is loaded, which may be a colony that matters.
 If cleanup fails the script does not fail quietly -- it prints the pawn id and
 position and tells you to deal with it.
 
-    python.exe src/RimMandrake/bridgetools/prove_new_tools.py                # safe subset
+    python.exe src/RimMandrake/bridgetools/prove_new_tools.py --census      # READ ONLY
+    python.exe src/RimMandrake/bridgetools/prove_new_tools.py                # + mutation
     python.exe src/RimMandrake/bridgetools/prove_new_tools.py --pawns        # + spawn/damage
     python3     src/RimMandrake/bridgetools/prove_new_tools.py --selftest    # no game needed
+
+Only --census and --selftest are non-destructive. The bare form is NOT a "safe
+subset": it spawns things, builds roofs, sets plants and fires a dryRun
+incident. On an irreplaceable map use --census and nothing else.
 """
 import argparse
 import os
@@ -1087,6 +1093,10 @@ def main(argv=None):
                     help="also send a real letter to the player's pane.")
     ap.add_argument("--selftest", action="store_true",
                     help="run against a stub. No game, no socket.")
+    ap.add_argument("--census", action="store_true",
+                    help="READ ONLY. Take the deploy census and exit before "
+                         "anything is spawned, damaged, built or fired. Safe on "
+                         "an irreplaceable map.")
     args = ap.parse_args(argv)
 
     if args.selftest:
@@ -1095,6 +1105,24 @@ def main(argv=None):
     from core import Session                                   # noqa: E402
     with Session() as s:
         have = census(s)
+
+        # 🔴 --census exits HERE, and the exit must come before the pause check
+        # below, because that check is a guard on MUTATION and this path does
+        # not mutate. Requiring a paused game to take a read would make the
+        # safe option the harder one, which is how people end up running the
+        # unsafe one.
+        #
+        # WHY THIS FLAG EXISTS. Everything after this point spawns pawns,
+        # damages them to death, sets plants, builds roofs, fires incidents and
+        # sends letters. The census was nonetheless described in a run sheet as
+        # "read line 0" and scheduled against a brand-new campaign map that
+        # cannot be regenerated. The selftest already scripts a "pawns STILL
+        # ALIVE" cleanup failure, so litter is a known outcome, not a risk.
+        # A gate that certifies a deploy must not be able to damage what it
+        # certifies.
+        if args.census:
+            print("\n--census: read only, exiting before any mutation.")
+            return summarise()
 
         # Read-only first: if the bridge is sick, find out before mutating.
         print("\n1. read-only tools")
