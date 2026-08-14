@@ -4616,6 +4616,491 @@ namespace JawaBench.BridgeTools
             }, cancellationToken).ConfigureAwait(false);
         }
 
+        // ---------------------------------------------------------------------
+        // jawa/ideo_of — read the ideoligions the game ACTUALLY built, and count
+        // who believes them.
+        //
+        // WHY. VISION authored eleven ideoligions and has never seen one after
+        // generation: "the game built the ideoligion I specified" is an
+        // inference off the XML. An Ideo is not a Def — it is a runtime object
+        // assembled by the generator from memes, a structure and a precept
+        // roll — so there is no def to read and `jawa/get_defs` cannot reach it.
+        //
+        // 🔴 THE SECOND HALF IS THE ONE THAT MATTERS. VISION disciplined the
+        // whole religions design around "NPC religion rarely surfaces in play"
+        // and cut rituals and deities because of it — a belief that has NEVER
+        // been measured. `believers` counts pawns per ideo across every map and
+        // the world-pawn pool. **If the non-player counts come back ~0, the
+        // eleven are not load-bearing and the design should say so.** That is a
+        // finding either way, which is why the count is not optional-by-default.
+        //
+        // Names read with ilprobe, not recalled:
+        //   Find.IdeoManager -> IdeoManager::get_IdeosListForReading
+        //   Ideo::name/adjective/memberName/culture/memes/id/hidden/
+        //     initialPlayerIdeo, get_PreceptsListForReading,
+        //     get_StructureMeme, get_KeyDeityName, get_DeityCountRange,
+        //     get_RolesListForReading, get_VeneratedAnimals,
+        //     get_PreferredXenotypes, get_SupremeGender, get_Fluid
+        //   Faction::ideos (public) -> FactionIdeosTracker::get_PrimaryIdeo
+        //   Pawn_IdeoTracker::get_Ideo · MapPawns::get_AllPawns
+        //   WorldPawns::get_AllPawnsAliveOrDead · ModsConfig::get_IdeologyActive
+        //
+        // ⚠️ Faction membership is derived by walking FactionManager and reading
+        // each faction's PrimaryIdeo, NOT by IdeoManager::GetFactionsWithIdeo.
+        // Both would answer; only the first uses getters this file has verified.
+        // ---------------------------------------------------------------------
+        [Tool(
+            "jawa/ideo_of",
+            Description =
+                "Read the ideoligions the running game actually generated — memes, structure, " +
+                "deity, precepts, roles, venerated animals — and count how many pawns believe " +
+                "each one. An Ideo is a RUNTIME object, not a Def, so no amount of def reading " +
+                "can reach it and an authored ideoligion is otherwise unverifiable. The believer " +
+                "counts answer a separate question the design has been assuming rather than " +
+                "measuring: whether NPC religion surfaces in play at all. Read-only.",
+            ResultDescription =
+                "Per ideo: id, name, adjective, memberName, culture, structure meme, key deity, " +
+                "memes, precepts (with `enabledForNPCFactions`, which is what decides whether a " +
+                "precept is ever seen off the player's colony), roles, venerated animals, " +
+                "preferred xenotypes, and the factions whose PRIMARY ideo it is. " +
+                "🔴 `believers` splits into colonists / otherOnMap / worldPawns — a total alone " +
+                "hides the whole question, because an ideo held only by the player's colony is " +
+                "not evidence that NPC religion surfaces. `ideologyActive:false` is reported as " +
+                "a loud failure, not as zero ideoligions.")]
+        public static async Task<object> IdeoOf(
+            IRimBridgeContext ctx,
+            CancellationToken cancellationToken,
+            [ToolParameter(Description =
+                "Case-insensitive substring of the ideo NAME, or its numeric id. Empty returns " +
+                "every ideo. ⚠️ An Ideo has no defName — its `name` is generated text, so match " +
+                "on a fragment and check what came back.", DefaultValue = null)]
+            string ideo = null,
+            [ToolParameter(Description =
+                "Include the full precept list per ideo.", DefaultValue = true)]
+            bool precepts = true,
+            [ToolParameter(Description =
+                "Count believers across all maps and the world-pawn pool. Costs one pass over " +
+                "every pawn; on a large save that is thousands of objects, so it is skippable — " +
+                "but it is the half that answers whether NPC religion exists in play.",
+                DefaultValue = true)]
+            bool believers = true,
+            [ToolParameter(Description = "Cap on ideos returned.", DefaultValue = 50)]
+            int limit = 50)
+        {
+            return await ctx.MainThread.InvokeAsync<object>(() =>
+            {
+                // Loud, and deliberately not "0 ideoligions". An absent DLC and
+                // an empty result are different answers, and the trap this
+                // project keeps hitting is an instrument that cannot see a
+                // thing reporting that the thing is not there.
+                if (!ModsConfig.IdeologyActive)
+                    return Fail("Ideology is NOT active in this build. There are no ideoligions " +
+                                "to read — this is a capability answer, not a count of zero.");
+
+                var mgr = Find.IdeoManager;
+                if (mgr == null)
+                    return Fail("No IdeoManager. This reads runtime ideoligions, so it needs a " +
+                                "GAME loaded — the main menu is not enough.");
+
+                var all = mgr.IdeosListForReading;
+                if (all == null) return Fail("IdeoManager returned no ideo list.");
+
+                var wanted = (ideo ?? "").Trim();
+                var byId = -1;
+                var isId = wanted.Length > 0 && int.TryParse(wanted, out byId);
+
+                var picked = all.Where(q => q != null).Where(q =>
+                    wanted.Length == 0
+                    || (isId && q.id == byId)
+                    || (q.name ?? "").IndexOf(wanted, StringComparison.OrdinalIgnoreCase) >= 0)
+                    .Take(limit).ToList();
+
+                // Believer counts, one pass. Split three ways on purpose: a
+                // total is exactly the number that would let "NPC religion
+                // surfaces" survive on the player colony's own believers.
+                var colonists = new Dictionary<int, int>();
+                var otherOnMap = new Dictionary<int, int>();
+                var worldPawns = new Dictionary<int, int>();
+                var pawnsScanned = 0;
+                if (believers)
+                {
+                    void Bump(Dictionary<int, int> d, int id)
+                    {
+                        d.TryGetValue(id, out var c);
+                        d[id] = c + 1;
+                    }
+
+                    var maps = Find.Maps;
+                    if (maps != null)
+                        foreach (var m in maps)
+                        {
+                            var mp = m?.mapPawns?.AllPawns;
+                            if (mp == null) continue;
+                            foreach (var p in mp)
+                            {
+                                cancellationToken.ThrowIfCancellationRequested();
+                                pawnsScanned++;
+                                var pi = p?.ideo?.Ideo;
+                                if (pi == null) continue;
+                                if (p.Faction != null && p.Faction.IsPlayer)
+                                    Bump(colonists, pi.id);
+                                else Bump(otherOnMap, pi.id);
+                            }
+                        }
+
+                    var wp = Find.WorldPawns?.AllPawnsAliveOrDead;
+                    if (wp != null)
+                        foreach (var p in wp)
+                        {
+                            cancellationToken.ThrowIfCancellationRequested();
+                            pawnsScanned++;
+                            var pi = p?.ideo?.Ideo;
+                            if (pi != null) Bump(worldPawns, pi.id);
+                        }
+                }
+
+                // Faction -> primary ideo, walked once and inverted, so N ideos
+                // cost one pass rather than N.
+                var facByIdeo = new Dictionary<int, List<string>>();
+                var fm = Find.FactionManager;
+                if (fm?.AllFactions != null)
+                    foreach (var f in fm.AllFactions)
+                    {
+                        var pi = f?.ideos?.PrimaryIdeo;
+                        if (pi == null) continue;
+                        if (!facByIdeo.TryGetValue(pi.id, out var lst))
+                            facByIdeo[pi.id] = lst = new List<string>();
+                        lst.Add(f.Name ?? f.def?.defName ?? "(unnamed)");
+                    }
+
+                int Get(Dictionary<int, int> d, int id)
+                {
+                    d.TryGetValue(id, out var c);
+                    return c;
+                }
+
+                var rows = new List<object>();
+                foreach (var i in picked)
+                {
+                    cancellationToken.ThrowIfCancellationRequested();
+                    facByIdeo.TryGetValue(i.id, out var facs);
+
+                    rows.Add(new
+                    {
+                        id = i.id,
+                        name = i.name,
+                        adjective = i.adjective,
+                        memberName = i.memberName,
+                        culture = i.culture?.defName,
+                        structureMeme = i.StructureMeme?.defName,
+                        keyDeityName = i.KeyDeityName,
+                        deityCountRange = i.DeityCountRange.ToString(),
+                        supremeGender = i.SupremeGender.ToString(),
+                        hidden = i.hidden,
+                        fluid = i.Fluid,
+                        initialPlayerIdeo = i.initialPlayerIdeo,
+                        memes = i.memes?.Where(q => q != null)
+                                 .Select(q => q.defName).ToList(),
+                        preceptCount = i.PreceptsListForReading?.Count ?? 0,
+                        precepts = precepts
+                            ? i.PreceptsListForReading?.Where(q => q?.def != null)
+                                .Select(q => new
+                                {
+                                    defName = q.def.defName,
+                                    label = q.def.label,
+                                    issue = q.def.issue?.defName,
+                                    impact = q.def.impact.ToString(),
+                                    // The field that decides whether this
+                                    // precept is ever visible off the player's
+                                    // own colony. VISION's counter question
+                                    // lives here as much as in the pawn counts.
+                                    enabledForNPCFactions = q.def.enabledForNPCFactions
+                                }).Cast<object>().ToList()
+                            : null,
+                        roles = i.RolesListForReading?.Where(q => q?.def != null)
+                                 .Select(q => q.def.defName).ToList(),
+                        veneratedAnimals = i.VeneratedAnimals?.Where(q => q != null)
+                                            .Select(q => q.defName).ToList(),
+                        preferredXenotypes = i.PreferredXenotypes?.Where(q => q != null)
+                                              .Select(q => q.defName).ToList(),
+                        primaryFactions = facs ?? new List<string>(),
+                        believers = believers
+                            ? (object)new
+                            {
+                                colonists = Get(colonists, i.id),
+                                otherOnMap = Get(otherOnMap, i.id),
+                                worldPawns = Get(worldPawns, i.id),
+                                total = Get(colonists, i.id) + Get(otherOnMap, i.id)
+                                        + Get(worldPawns, i.id)
+                            }
+                            : null
+                    });
+                }
+
+                var npcTotal = believers
+                    ? picked.Sum(q => Get(otherOnMap, q.id) + Get(worldPawns, q.id))
+                    : -1;
+
+                return new
+                {
+                    success = true,
+                    message =
+                        $"{picked.Count} of {all.Count} ideoligion(s) returned" +
+                        (believers
+                            ? $"; {pawnsScanned} pawns scanned, {npcTotal} NON-PLAYER believer(s) " +
+                              "across them. 🔴 A non-player total near zero means NPC religion " +
+                              "does not surface in this save, whatever the design assumes."
+                            : "; believer counting was SKIPPED."),
+                    ideologyActive = true,
+                    ideosTotal = all.Count,
+                    ideosReturned = picked.Count,
+                    believersCounted = believers,
+                    pawnsScanned,
+                    nonPlayerBelieversTotal = npcTotal,
+                    ideos = rows,
+                    ticksGame = Find.TickManager?.TicksGame ?? -1
+                };
+            }, cancellationToken).ConfigureAwait(false);
+        }
+
+        // ---------------------------------------------------------------------
+        // jawa/biome_probe — what a biome RESOLVES to spawn, not what its XML says.
+        //
+        // WHY, and it is not a convenience wrapper over get_defs.
+        // VISION judged 29 biome removals from def fields alone and looked at
+        // exactly one. I went to check whether get_defs could have answered the
+        // other 28 and it CANNOT, for a reason worth writing down:
+        //
+        //   🔴 `Scalars()` reads PUBLIC INSTANCE FIELDS. On BiomeDef,
+        //      `wildAnimals`, `coastalWildAnimals`, `pollutionWildAnimals`,
+        //      `diseases` and `allowedPackAnimals` are all **private**, and
+        //      `AllWildAnimals` / `AllWildPlants` are **properties**.
+        //      ⇒ every tool this bridge ships is blind to them. The 28
+        //      "judged from def fields" were judged from fields nothing here
+        //      can read.
+        //
+        // And the resolved answer differs from the XML anyway: AllWildPlants is
+        // built by filtering every ThingDef to CommonalityOfPlant > 0
+        // (IL_0033/0038), and CommonalityOfAnimal folds wildAnimals into a cache
+        // that any load-time mutation has already touched. A def dump is DISK;
+        // this is RUNTIME, and where they disagree runtime wins.
+        //
+        // ⚠️ Both getters build their own cache lazily (get_AllWildPlants
+        // IL_0006, CommonalityOfAnimal IL_0006), so calling them cold is safe
+        // and does not need a map.
+        //
+        // Diseases and pack animals are deliberately NOT exposed: their backing
+        // lists are private and their record types (BiomeDiseaseRecord) would
+        // need reflection to read. An honest gap beats a half-serialised one.
+        // ---------------------------------------------------------------------
+        [Tool(
+            "jawa/biome_probe",
+            Description =
+                "Ask a biome what it will ACTUALLY spawn — the resolved wild-animal and " +
+                "wild-plant sets with their commonalities, read off the runtime caches rather " +
+                "than off XML. Built for removal audits: `find` answers 'is this animal still " +
+                "in these biomes' across every biome in one call, which is the check that " +
+                "distinguishes a removal that took from a removal that silently no-opped. " +
+                "🔴 No other tool here can see these — the backing fields are private and the " +
+                "resolved lists are properties, so reflective def reading returns nothing. " +
+                "Read-only; needs a GAME but no map.",
+            ResultDescription =
+                "Per biome: the public generation flags (implemented, generatesNaturally, " +
+                "canBuildBase, canAutoChoose, densities, forageability) plus `animals` and " +
+                "`plants` as {defName, commonality}, largest first. When `find` is given, " +
+                "`findResults` reports each name as present/absent WITH its commonality — " +
+                "⚠️ present-at-commonality-0 and absent are different outcomes and are " +
+                "reported differently, because a removal that left a zeroed record behind is " +
+                "not the same defect as one that removed the record.")]
+        public static async Task<object> BiomeProbe(
+            IRimBridgeContext ctx,
+            CancellationToken cancellationToken,
+            [ToolParameter(Description =
+                "Comma-separated BiomeDef defNames. Empty probes every biome with " +
+                "generatesNaturally=true, which is the set a campaign can actually land on.",
+                DefaultValue = null)]
+            string biomes = null,
+            [ToolParameter(Description =
+                "Comma-separated PawnKindDef and/or ThingDef defNames to look for in every " +
+                "probed biome. This is the removal audit: one call answers 'did it go'.",
+                DefaultValue = null)]
+            string find = null,
+            [ToolParameter(Description =
+                "Include the full animal list per biome.", DefaultValue = true)]
+            bool animals = true,
+            [ToolParameter(Description =
+                "Include the full plant list per biome. Verbose — a temperate biome carries " +
+                "dozens.", DefaultValue = false)]
+            bool plants = false,
+            [ToolParameter(Description = "Cap on biomes probed.", DefaultValue = 40)]
+            int limit = 40,
+            [ToolParameter(Description =
+                "Cap on entries in each per-biome list.", DefaultValue = 60)]
+            int topN = 60)
+        {
+            var findNames = new HashSet<string>((find ?? "")
+                .Split(',').Select(q => q.Trim()).Where(q => q.Length > 0),
+                StringComparer.OrdinalIgnoreCase);
+
+            return await ctx.MainThread.InvokeAsync<object>(() =>
+            {
+                var wanted = (biomes ?? "").Split(',')
+                    .Select(q => q.Trim()).Where(q => q.Length > 0).ToList();
+
+                var picked = new List<BiomeDef>();
+                var notFound = new List<string>();
+
+                if (wanted.Count > 0)
+                {
+                    foreach (var w in wanted.Take(limit))
+                    {
+                        var b = DefDatabase<BiomeDef>.GetNamedSilentFail(w);
+                        if (b == null) notFound.Add(w);
+                        else picked.Add(b);
+                    }
+                }
+                else
+                {
+                    picked.AddRange(DefDatabase<BiomeDef>.AllDefsListForReading
+                        .Where(q => q != null && q.generatesNaturally)
+                        .Take(limit));
+                }
+
+                if (picked.Count == 0)
+                    return Fail("No biome resolved.", new
+                    {
+                        notFound,
+                        suggestion = "Leave `biomes` empty to probe every naturally " +
+                                     "generating biome."
+                    });
+
+                var rows = new List<object>();
+                // Which searched names were found in ANY probed biome. Kept as a
+                // plain set while the rows are built: the alternative is
+                // reflecting back over anonymous types after the fact, which is
+                // how a summary line quietly stops agreeing with the rows it
+                // summarises.
+                var foundSomewhere = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
+
+                foreach (var b in picked)
+                {
+                    cancellationToken.ThrowIfCancellationRequested();
+
+                    // Both of these populate their own cache on first touch.
+                    // Counts are taken over the WHOLE resolved set; the emitted
+                    // list is capped afterwards, so a cap can never read as a
+                    // small biome.
+                    var animalIndex = new Dictionary<string, float>(
+                        StringComparer.OrdinalIgnoreCase);
+                    foreach (var a in b.AllWildAnimals)
+                    {
+                        if (a == null) continue;
+                        animalIndex[a.defName] = b.CommonalityOfAnimal(a);
+                    }
+
+                    var plantIndex = new Dictionary<string, float>(
+                        StringComparer.OrdinalIgnoreCase);
+                    foreach (var p in b.AllWildPlants)
+                    {
+                        if (p == null) continue;
+                        plantIndex[p.defName] = b.CommonalityOfPlant(p);
+                    }
+
+                    var animalCount = animalIndex.Count;
+                    var plantCount = plantIndex.Count;
+
+                    var animalList = animals
+                        ? animalIndex.OrderByDescending(kv => kv.Value).Take(topN)
+                            .Select(kv => (object)new
+                            {
+                                defName = kv.Key, commonality = kv.Value
+                            }).ToList()
+                        : null;
+                    var plantList = plants
+                        ? plantIndex.OrderByDescending(kv => kv.Value).Take(topN)
+                            .Select(kv => (object)new
+                            {
+                                defName = kv.Key, commonality = kv.Value
+                            }).ToList()
+                        : null;
+
+                    List<object> findRows = null;
+                    if (findNames.Count > 0)
+                    {
+                        findRows = new List<object>();
+                        foreach (var q in findNames)
+                        {
+                            var inA = animalIndex.TryGetValue(q, out var ca);
+                            var inP = plantIndex.TryGetValue(q, out var cp);
+                            if (inA || inP) foundSomewhere.Add(q);
+                            findRows.Add(new
+                            {
+                                defName = q,
+                                present = inA || inP,
+                                where = inA ? "animal" : (inP ? "plant" : null),
+                                commonality = inA ? ca : (inP ? cp : 0f)
+                            });
+                        }
+                    }
+
+                    rows.Add(new
+                    {
+                        defName = b.defName,
+                        label = b.label,
+                        modName = b.modContentPack?.Name,
+                        implemented = b.implemented,
+                        generatesNaturally = b.generatesNaturally,
+                        canBuildBase = b.canBuildBase,
+                        canAutoChoose = b.canAutoChoose,
+                        isExtremeBiome = b.isExtremeBiome,
+                        isWaterBiome = b.isWaterBiome,
+                        impassable = b.impassable,
+                        animalDensity = b.animalDensity,
+                        plantDensity = b.plantDensity,
+                        diseaseMtbDays = b.diseaseMtbDays,
+                        forageability = b.forageability,
+                        foragedFood = b.foragedFood?.defName,
+                        settlementSelectionWeight = b.settlementSelectionWeight,
+                        // The COUNTS are over the whole resolved set; the lists
+                        // are capped. Reporting only a capped list would let a
+                        // truncation read as a small biome.
+                        wildAnimalCount = animalCount,
+                        wildPlantCount = plantCount,
+                        animalsListed = animalList?.Count ?? 0,
+                        plantsListed = plantList?.Count ?? 0,
+                        animals = animalList,
+                        plants = plantList,
+                        findResults = findRows
+                    });
+                }
+
+                var absentEverywhere = findNames.Where(q => !foundSomewhere.Contains(q))
+                                                .ToList();
+
+                return new
+                {
+                    // success is "the probe ran". A `find` that found nothing is
+                    // the ANSWER to a removal audit, never a failure of it.
+                    success = notFound.Count == 0,
+                    message =
+                        $"{picked.Count} biome(s) probed" +
+                        (notFound.Count > 0
+                            ? $"; ⚠️ {notFound.Count} not found: " + string.Join(", ", notFound)
+                            : "") +
+                        (findNames.Count > 0
+                            ? $"; searched for {findNames.Count} name(s) — read `findResults` " +
+                              "per biome, and note that present-at-commonality-0 is NOT absent."
+                            : ""),
+                    biomesProbed = picked.Count,
+                    notFound,
+                    searched = findNames.ToList(),
+                    absentFromEveryProbedBiome = absentEverywhere,
+                    biomes = rows,
+                    ticksGame = Find.TickManager?.TicksGame ?? -1
+                };
+            }, cancellationToken).ConfigureAwait(false);
+        }
+
         // One connected water mass, with the shape numbers a sea gate is written
         // against. A class rather than a tuple so the flood fill reads as English
         // and so adding a field later does not renumber anything.
