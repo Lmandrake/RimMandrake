@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Patch>
+
+  <!--
+    🔴 WITHOUT THIS FILE THE MOD DOES NOTHING, AND NOTHING SAYS SO.
+
+    Defining a WorldGenStepDef is NOT enough to make it run. Verified two ways:
+
+      1. In the compiled code, PlanetLayerDef.GenStepsInOrder is
+             worldGenSteps.Where(...).OrderBy(...)
+         over the layer def's own PRIVATE List<WorldGenStepDef> worldGenSteps —
+         NOT over DefDatabase<WorldGenStepDef>.AllDefs.
+
+      2. On disk, Data/Core/Defs/PlanetLayerDefs/PlanetLayers.xml lines 14-26
+         list the Surface layer's steps BY DEFNAME: Terrain, Lakes, Rivers,
+         Mutators, Landmarks, AncientSites, AncientRoads, Pollution, Factions,
+         Roads, Features.
+
+    A step that is not in that list is loaded, is valid, is visible in the def
+    database, and is never called. There is no error and no warning — worldgen
+    simply produces an unshaped planet, which looks exactly like a step that ran
+    and did nothing. This is the most expensive class of failure this project
+    keeps meeting: a silent no-op that costs a full world generation to notice.
+
+    ⚠️ POSITION IN THE LIST DOES NOT SET THE ORDER. GenStepsInOrder sorts by the
+    WorldGenStepDef's own <order> field, so appending at the end is correct and
+    our order 20 still places us after Tiles (5) and before Lakes (150).
+    Do not "fix" this by trying to insert the <li> at a particular position.
+
+    ⚠️ The list is cached in PlanetLayerDef.cachedGenSteps on first read, so this
+    has to be a load-time patch. It cannot be done at runtime.
+
+    Conditional so that a future vanilla change which already includes us, or a
+    layer def that has been restructured, degrades to a no-op instead of an error.
+  -->
+
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/PlanetLayerDef[defName="Surface"]/worldGenSteps</xpath>
+    <match Class="PatchOperationConditional">
+      <xpath>/Defs/PlanetLayerDef[defName="Surface"]/worldGenSteps/li[text()="Jawa_SeaShaping"]</xpath>
+      <nomatch Class="PatchOperationAdd">
+        <xpath>/Defs/PlanetLayerDef[defName="Surface"]/worldGenSteps</xpath>
+        <value>
+          <li>Jawa_SeaShaping</li>
+        </value>
+      </nomatch>
+    </match>
+  </Operation>
+
+</Patch>
