@@ -37,7 +37,7 @@ The board reads it with its age and who measured it._
 ## V1
 1 | Empire reskin | — | done
 2 | Faction exclusion | VISION | held
-3 | The Claim quest — built, deployed, never seen | BRIDGE | open
+3 | The Claim SEEN LIVE — quest id 0 "The Claim", NotYetAccepted, questCountAfter 1 | BRIDGE | done
 4 | Three terrain overrides — scrapfields open | OPS | wip
 5 | Jawa xenotype | — | done
 6 | Weapons / gear | — | done
