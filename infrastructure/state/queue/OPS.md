@@ -460,3 +460,13 @@ row 3 (*The Claim*) already fills it. Never run `--apply` bare.
    during BRIDGE's sweep — **not** on the map we measured). **Vanishes with the fix ⇒ it was
    ours. Recurs on a map where scrapfields now places ~50 ⇒ it is Biomes Core's.** Free
    attribution, riding work already scheduled.
+
+⭐ **The block above is now ONE COMMAND: `./src/RimMandrake/Utils/shutdown_deploy.sh`**
+(add `--yes` to skip the prompt). It **refuses while RimWorld is running** — proven at
+wrap, it printed `REFUSING: RimWorld is still running` — runs S8 → S1 → S9 in order, and
+**post-verifies the two `--gm` canaries against the DEPLOYED copy**.
+
+⚠️ **One trap it encodes, which prose kept getting wrong:** `build.py --apply`
+**REBUILDS** before deploying. The artifact verified at wrap (md5 `d7e7c6c1`, 30 tools)
+will legitimately produce **different bytes** on a rebuild ⇒ **do not gate on that md5
+afterwards. Gate on the canaries.**
