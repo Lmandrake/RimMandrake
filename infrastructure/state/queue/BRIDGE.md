@@ -15,6 +15,16 @@ authored offline by OPS/CREATE and all of it verifies in ONE session.
 
 ## Open
 
+### ✅ DONE 2026-08-14 — the window was spent: 22 → **25 tools deployed**
+Game copy md5 **`13fcb549`**, 25 `jawa/` names, GM pair present. Third tool is
+`jawa/list_things` (`3adedbc`) — a ThingID for a NON-PAWN, which nothing on the
+bridge could produce; the only source was a human clicking the object, and that
+is precisely why A2 `NoPathToPilotConsole` was SKIPPED in the live session.
+`load_session.py` now looks the console up itself (defName `PilotConsole`, read
+from `Odyssey/Defs/ThingDefs_Buildings/Buildings_Gravship.xml`).
+⛔ **No bulletin to peers yet — none of the three has been CALLED.** A capability
+is announced when it has run, not when it has compiled.
+
 ### ✅ DONE 2026-08-14 — `jawa/get_defs` + `jawa/fire_quest` are DEPLOYED
 Window taken with the game confirmed down. Game copy
 `…\BridgeTools\JawaBench\JawaBench.BridgeTools.dll` md5 **`ea5952e2`**, **24**
@@ -53,6 +63,7 @@ seat treat them as working tooling.
 | `jawa/set_pawn_xenotype` + `xenotype` on `spawn_pawn` | `e60197a` | ″ |
 | `jawa/get_defs` | 2026-08-14 | any def-type question that is not a ThingDef |
 | `jawa/fire_quest` | 2026-08-14 | v1 row 3 — `questDef=Jawa_TheClaim` |
+| `jawa/list_things` | `3adedbc` | A2 now finds its own console; the item IS the proof |
 | roof pair | — | `set_roof_batch` / `get_roof_batch` |
 
 ✅ **Off this list, live-proven 2026-08-14:** `jawa/order_pawn` (Paige walked
