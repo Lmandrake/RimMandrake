@@ -320,3 +320,25 @@ would, because it fixes per-pawn construction.** Bug scales with population — 
 RogueDroids raid is precisely the trigger shape.
 
 **Still blocked on the owner's route choice. No seat should read a preference into it.**
+
+## ✅ O11 CLOSED — on the LOG, not on the name sample. The 135 is the wrong denominator.
+
+**Closed by:** `Player.log` holds exactly **5** `Failed to find a node with the given
+xpath` lines and **all 5 are other mods'** (Vanilla Mining Outpost, Biomes! Caverns,
+Intimacy - Gender Works ×3); **zero name `Buzzer`, `DV_Namer` or `rulePack`.** The patch
+is `PatchOperationFindMod("Det's Xenotypes - Buzzers")` → `Sequence` → two
+`PatchOperationReplace`; a `Replace` matching nothing logs that line and aborts the
+sequence. The mod is present (`det.buzzers`, `DV_OutlanderRoughBuzzer` rolled) ⇒ FindMod
+matched ⇒ **both Replaces matched. Deterministic.**
+
+🔴 **NOT closed by "zero doubled apostrophes across 135 generated names" — that is the
+wrong population and it nearly became the record.** Pre-fix the symbol had two
+alternatives, **neither empty**: `maybeApostrophe(p=3)->'` (w3) and `maybeApostrophe->''`
+(w1). So unpatched, every Buzzer name carries an apostrophe and ~25% carry a doubled one.
+BRIDGE's own data shows **exactly one Buzzer name in the set has an apostrophe at all**
+(`Ji'rocrak`; `Pob'Zoyom` is Saurid, a different namer) ⇒ the informative n is **≈1**, and
+**P(zero `''` | unpatched, n=1) = 0.75.** A broken build had a 3-in-4 chance of producing
+that exact observation.
+
+⇒ **Threshold met, stop here.** A doubled apostrophe is cosmetic; the campaign world will
+generate more names for free if anyone ever wants a bigger sample. **Do not reopen.**
