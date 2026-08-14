@@ -49,6 +49,7 @@ DOT = {"busy": "*", "idle": "o", "waiting": "!", "blocked": "!"}
 # Higher = more urgent. Drives both the alarm band and dedup above.
 RANK = {"idle": 1, "busy": 2, "waiting": 9, "blocked": 9}
 NEEDS_HUMAN = ("waiting", "blocked")
+LAST_STALLED = []              # set by render(), consumed by push() and the title
 
 
 # ---------------------------------------------------------------- roster ----
@@ -170,6 +171,49 @@ def dwell(live):
     return {k: now - v["since"] for k, v in out.items()}
 
 
+TOASTED_FILE = os.path.join(STATUS_DIR, ".toasted.json")
+
+
+def push(stalled):
+    """One OS notification per stall, never per render.
+
+    ⚠️ **The edge, not the level.** A toast every 5 s while a seat is stuck
+    trains the owner to dismiss toasts, and the next real one is dismissed too.
+    So we fire when a seat CROSSES into stalled and stay silent until it
+    recovers — the same discipline an on-call system uses to keep its own
+    channel worth reading.
+
+    Failure here is always silent: a board that dies because a notifier failed
+    is worse than a board with no notifications.
+    """
+    try:
+        with open(TOASTED_FILE) as fh:
+            already = set(json.load(fh))
+    except Exception:
+        already = set()
+    now_stalled = {x[0] for x in stalled}
+    fresh = now_stalled - already
+    for seat, state, secs in stalled:
+        if seat not in fresh:
+            continue
+        try:
+            subprocess.Popen(
+                ["powershell.exe", "-NoProfile", "-ExecutionPolicy", "Bypass",
+                 "-File", os.path.join(ROOT, "src/RimMandrake/Utils/fleet_toast.ps1"),
+                 "-Title", "FLEET - %s NEEDS YOU" % seat,
+                 "-Msg", ("%s for %dm - check its tab" % (state, secs // 60))[:120]],
+                stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
+        except Exception:
+            pass
+    if fresh or (already - now_stalled):
+        try:
+            os.makedirs(STATUS_DIR, exist_ok=True)
+            with open(TOASTED_FILE, "w") as fh:
+                json.dump(sorted(now_stalled), fh)
+        except Exception:
+            pass
+
+
 def ago(ts):
     if not ts:
         return "  never"
@@ -215,11 +259,13 @@ def render():
     # documented failure, not the remedy. A band that is usually absent is one
     # you actually read when it appears — a permanent "0 blocked" line is
     # wallpaper within a day.
+    global LAST_STALLED
     held = dwell(live)
     stalled = [(seat, live[seat], held.get(seat, 0)) for seat in SEATS
                if live.get(seat) in NEEDS_HUMAN and seat != SELF
                and held.get(seat, 0) >= DWELL_BEFORE_ALARM]
     owner_rows = [f for f in r.get("OWNER", []) if len(f) >= 3]
+    LAST_STALLED = stalled
     if stalled or owner_rows:
         n = len(stalled) + len(owner_rows)
         # Kanban's andon rule: a column over its limit is itself the signal.
@@ -327,7 +373,13 @@ def main():
                 # \033[H homes the cursor instead of scrolling; \033[J clears
                 # to end of screen. Together they redraw in place, which is the
                 # entire point — this pane must never produce scrollback.
-                sys.stdout.write("\033[H\033[J" + render() + "\n")
+                out = render()
+                push(LAST_STALLED)
+                # OSC 0: the tab title carries the count, so the fleet is
+                # legible from the taskbar with no pane visible at all.
+                title = ("%d NEEDS YOU - fleet" % len(LAST_STALLED)) if LAST_STALLED else "fleet - all running"
+                sys.stdout.write("\033]0;%s\007" % title)
+                sys.stdout.write("\033[H\033[J" + out + "\n")
                 sys.stdout.flush()
                 time.sleep(5)
         except KeyboardInterrupt:
