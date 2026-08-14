@@ -1,0 +1,17 @@
+# Collective ceiling for every Claude Code seat, 2026-08-14.
+#
+# Per-seat MemoryMax=10G catches the observed failure: ONE seat running away,
+# which is 100% of the events on record. But five seats x 10G = 50 GB against a
+# 36 GB VM, so the per-seat bound alone does NOT prove a global OOM is
+# impossible - four concurrent runaways would still exhaust the VM and take init
+# down, which is the exact outcome the bound exists to prevent.
+#
+# A slice closes that. Seats are scopes INSIDE this slice, so there are two
+# ceilings: 10 GB stops one seat, 24 GB stops all of them together. 24 GB sits
+# under the current 31.7 GB VM and well under the 36 GB it becomes once
+# .wslconfig applies, leaving room for python tooling (~3 GB measured) and the
+# kernel. Either limit produces CONSTRAINT_MEMCG, never global_oom.
+[Slice]
+MemoryAccounting=yes
+MemoryMax=24G
+MemorySwapMax=8G

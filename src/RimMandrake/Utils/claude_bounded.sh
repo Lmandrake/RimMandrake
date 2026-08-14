@@ -84,6 +84,17 @@ if ! systemd-run --user --scope --quiet -- true >/dev/null 2>&1; then
   exec "$CLAUDE_BIN" "$@"
 fi
 
+# Install the slice unit if it is missing. It lives in the repo so a fresh clone
+# or a rebuilt WSL distro is not silently downgraded to per-seat-only protection —
+# systemd would happily create an UNBOUNDED slice on demand for an unknown name,
+# which fails open in exactly the way this whole script exists to prevent.
+SLICE_SRC=/mnt/d/Luke/dev/Rimworld/src/RimMandrake/Utils/claude-seats.slice
+SLICE_DST="${XDG_CONFIG_HOME:-$HOME/.config}/systemd/user/claude-seats.slice"
+if [ -f "$SLICE_SRC" ] && ! cmp -s "$SLICE_SRC" "$SLICE_DST" 2>/dev/null; then
+  mkdir -p "$(dirname "$SLICE_DST")"
+  cp "$SLICE_SRC" "$SLICE_DST" && systemctl --user daemon-reload 2>/dev/null
+fi
+
 # Start the forensic sampler if it is not already up. It is a singleton by its
 # own flock, so all five seats can fire this and exactly one survives.
 #
@@ -96,7 +107,13 @@ if [ -x "$WATCHER" ]; then
   setsid nohup "$WATCHER" 15 >/dev/null 2>&1 < /dev/null &
 fi
 
+# --slice puts every seat under ONE parent with its own ceiling, so there are two
+# limits, not one: MemoryMax below stops a single runaway at 10G, and the slice's
+# 24G stops all five together. Without the slice the per-seat bound proves only
+# that one seat cannot kill the VM - four at once still could.
+# Defined in ~/.config/systemd/user/claude-seats.slice.
 exec systemd-run --user --scope --quiet \
+  --slice=claude-seats.slice \
   --unit="claude-seat-${AGENT_SEAT:-unknown}-$$" \
   -p MemoryMax="$MEM_MAX" \
   -p MemorySwapMax="$SWAP_MAX" \
