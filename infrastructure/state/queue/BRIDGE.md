@@ -15,6 +15,38 @@ authored offline by OPS/CREATE and all of it verifies in ONE session.
 
 ## Open
 
+### 🟡 BUILT DURING THE LOAD, NOT DEPLOYED — `jawa/ideo_of` + `jawa/biome_probe`
+Build **28 tools**, md5 `7fc79525d5b4afabaed78e0c580cc03e`, `--gm` pair present,
+0 warnings 0 errors. ⛔ **NOT deployed — the game is up and the DLL is locked.**
+Deploy with `--gm` at the next shutdown window; RimBridgeServer registers
+companions only at startup, so nothing changes until then. **No bulletin to peers:
+neither has been called.**
+
+🔴 **The finding that justified `biome_probe`, and it weakens a VISION conclusion.**
+`Scalars()` (`JawaBenchTerrainTools.cs:4111`) reads **public instance FIELDS** —
+no properties, no privates. On `BiomeDef`, `wildAnimals`, `coastalWildAnimals`,
+`pollutionWildAnimals`, `diseases` and `allowedPackAnimals` are all **private**,
+and `AllWildAnimals` / `AllWildPlants` are **properties**. ⇒ **every tool this
+bridge ships is blind to them.** VISION's *"28 of 29 biome removals judged from def
+fields alone"* were judged from fields nothing here can read. Not wrong — but not
+evidence either.
+📌 **Generalises: before trusting a conclusion drawn "from the def", check the
+instrument can SEE the field.** Same shape as the `strings -a` vs `-el` miss —
+an absent reading and an unreadable one are not the same answer.
+
+`biome_probe` reads the resolved runtime sets instead: `AllWildAnimals` +
+`CommonalityOfAnimal`, `AllWildPlants` + `CommonalityOfPlant`. Both build their own
+cache lazily (IL_0006 / IL_0006), so they are safe cold and need **no map**.
+`find=` audits a removal across every biome in one call, and reports
+**present-at-commonality-0 separately from absent** — different defects.
+
+`ideo_of` reads `Find.IdeoManager.IdeosListForReading`: an **Ideo is a runtime
+object, not a Def**, so no def read can reach it. Believer counts split
+**colonists / otherOnMap / worldPawns** — a total alone would let *"NPC religion
+surfaces"* survive on the player colony's own believers, which is precisely
+VISION's unmeasured assumption. Also exposes `PreceptDef.enabledForNPCFactions`.
+⚠️ `ideologyActive:false` is a loud failure, never a count of zero.
+
 ### 🔴 §5e PRE-FLIGHT — L3 fires the WRONG FACTION silently, and L1 names a tool that does not exist
 Both found offline in the pre-launch window, before either cost a live call.
 
