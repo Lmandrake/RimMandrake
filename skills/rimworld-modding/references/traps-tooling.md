@@ -188,3 +188,9 @@ Admission test and entry format: `references/traps.md`.
 **Cause:** the bridge models `extra` for some def types (`BiomeDef` returns full `terrainPatchMakers`) and not others. A type it does not model returns `null`, not an error and not an empty list.
 **Fix:** answer genStep membership from the def dump (`DefDump/defs/MapGeneratorDef.json`), which carries the real `genSteps`. Treat `extra: null` as "not answered", never as "not present".
 **Recurs when:** any `jawa/get_def` call whose conclusion is a NEGATIVE — absent field, missing entry, unregistered def.
+
+### A grep over `Data/` proves no shipped def uses a field — never that the engine ignores it
+**Symptom:** `JawaScrapfields.xml` omitted `clusterSize` on the reasoning that it has "zero hits for clusterSize" across the whole `Data/` tree and so is "a field the engine does not read on this class, a silent no-op at best". The design ask it blocked — clustered scrapfields instead of thin scatter — was then treated as a redesign rather than one field.
+**Cause:** `Data/` holds only the defs Ludeon shipped. `Verse.GenStep_ScatterThings` declares `[public] int clusterSize`, plus private `clusterCenter`, `leftInCluster` and a static `ClusterRadius` — the engine reads it, no shipped def happens to set it.
+**Fix:** answer "does the engine read this field" from the assembly (`ilprobe/meta.py <Type>`), never from a grep over defs. A def-tree grep answers a different question: is there precedent.
+**Recurs when:** any decision to omit an XML field, or to call one unsupported, that rests on a grep over `Data/` or the Workshop tree rather than on the class's field list.

@@ -25,7 +25,7 @@ shorts, leave it untouched (→ `skills/rimworld-savegame/SKILL.md`).
 | If you are about to… | Read | Entries |
 |---|---|---|
 | write or debug a patch, an xpath, or a def | [`traps-xml-and-defs.md`](traps-xml-and-defs.md) | 18 |
-| trust what a script, grep, census or the def dump just told you | [`traps-tooling.md`](traps-tooling.md) | 30 |
+| trust what a script, grep, census or the def dump just told you | [`traps-tooling.md`](traps-tooling.md) | 31 |
 | call art missing, wrong, or broken | [`traps-art.md`](traps-art.md) | 12 |
 | chase a mod that is absent, dead, or ignoring its files | [`traps-mods-and-managers.md`](traps-mods-and-managers.md) | 13 |
 | believe a diagnosis, or call into a running game | [`traps-diagnosis.md`](traps-diagnosis.md) | 5 |
@@ -80,6 +80,7 @@ the one asked.**
 - A self-matching hash check green-lit 14 deletions
 - One wrong operator became a week-long "impossible" claim
 - `jawa/get_def` returns `extra: null` for def types it does not model, and it reads as "absent"
+- A grep over `Data/` proves no shipped def uses a field — never that the engine ignores it
 - `ls -la` columns mean different things per row
 - A deploy check compared the commit, not the tool surface
 - The interpreter, not the data, rewrote 13,158 rows
