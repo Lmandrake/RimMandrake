@@ -139,6 +139,21 @@ and a Sketch spawns onto a live map. The licence permits it outright. **Until
 that is written, the offline loop is a plan and not a capability** — filed at
 BRIDGE.
 
+✅ **RESOLVED AT SOURCE by BRIDGE (`75d39e5`): the loop IS achievable.**
+`ShipSketchBuilder.cs` contains **zero** references to `Find.`, `Current.`,
+`GameInitData`, `Scenario` or `Map` — `BuildFromLayout` is a pure function, layout
+in and Sketch out, with `DefDatabase` lookups only. **The scenario page is its
+only CALLER, not a constraint.** So CREATE and BRIDGE are both right: as the mod
+ships, one iteration costs one new game; with our companion addition, it does not.
+
+🔴 **The catch, and it is the seventh silent failure today: FLOORS DO NOT COME
+WITH A MID-GAME SPAWN.** Terrain is re-applied by
+`HarmonyPatch_DoGravship.cs:~157` during *arrival*, and that patch does not run
+for a Sketch spawned mid-game. **Structure lands, floors do not, and nothing
+errors.** The fix is already ours: replay the layout's `terrainDef` cells through
+`jawa/set_terrain_batch` after the spawn. **Anyone building mid-game import who
+does not know this will ship a floorless ship and see no warning.**
+
 ✅ **Floors, verified at BOTH ends** (CREATE, source-read rather than inferred
 from a cell count): the exporter captures non-substructure terrain at
 `Exporter/GravshipExporter.cs:182-184`, and the arrival Postfix re-applies it via
