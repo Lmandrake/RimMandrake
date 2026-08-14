@@ -138,13 +138,29 @@ if it lists a file this table does not, this table is the stale one.
 | 2 | `JawaScrapfields.xml` — `isJunk` off (`de1018b`) | ✅ | repo-only; game copy still 2026-08-13 16:42 **with `isJunk` present** |
 | 3 | `JawaGroundHulk.xml` — `isJunk` off (`de1018b`) | ✅ | same defect class, same commit |
 | 4 | ⏳ **`BuzzerApostrophe_Fix.xml`** (`3822ef9`) | ✅ **AND IT EXPIRES** | 🔴 **The ONLY item here with a deadline. Buzzer names bake into the save as STRINGS**, so it is worth shipping **only while worldgen is still ahead of us.** Ship it now and it works forever; miss this window and it is worth nothing the moment the world is made. Validator clean, both namer sites |
-| 5 | `AnimalBiomeDuplicates_Fix.xml` (`9acddd3`) | ✅ if its seat vouches | committed and clean, no urgency either way. Confirm the owning seat, then it rides or it does not |
+| 5 | `AnimalBiomeDuplicates_Fix.xml` (`9acddd3`) | ✅ **vouched by OPS — and this is the row to DROP if the window gets tight** | `validate_patch.py` OK, 0/0. ⭐ **Already deployed** (game copy 08-10 15:46) — what drifted is the *content*, not its presence, and the live log carries **0** hits for `same key has already been added`, so the deployed version is doing its job right now. The drift is a refinement from a closed investigation, not a fix for anything currently broken |
 | — | **`JawaSeaShaper.dll` — SOLO, its own load** | ⚠️ **not in the batch** | repo md5 `b7730027`, deployed `82b48e53` @ 08-13 23:57, **older than the launch.** A new assembly poisons attribution for everything beside it. ⚠️ **The write FAILS `OSError 22` while the game runs** — loaded and locked. The refusal is safe; it cannot truncate |
 | — | Armoury × 2 | ⛔ **HELD on scope** | v1 row 6 is closed; weapon balance is not v1 and ships in any later window |
 
 🔴 **`--apply` overwrites the game copy with whatever is in the repo at that
 moment, including a peer's half-finished work. Scope it with `--mod`; never run it
 bare.** Deploy list and drift plan: OPS's queue.
+
+### 📐 How to rank this list if the window gets tight
+
+**Not by severity. By what the window does to the item's value.**
+
+| | |
+|---|---|
+| 🔴 **ships first** | **value is DESTROYED by the event this window precedes** — deferring is not deferring, it is discarding. *Buzzer: names bake into the save as strings the moment the world is made* |
+| ⬇️ **drops first** | **value is already being collected and would merely improve** — *AnimalBiomeDuplicates: deployed since 08-10, zero live errors, the drift is a refinement* |
+
+⚠️ **Severity ranks these two the wrong way round.** The duplicate-key bug is by far
+the nastier failure — an uncontained `ArgumentException` in
+`BiomeDef.CommonalityOfAnimal()` killing every consumer of `AllWildAnimals` at
+startup — and it is still the correct thing to drop, **because it is already fixed
+in the running game.** *A severe bug you have already shipped the fix for is not a
+claim on a scarce window; a trivial one whose window closes tonight is.*
 
 ⛔ **Do not let this list grow.** The Armoury patches are HELD on scope — v1 row 6
 is closed, weapon balance is not v1, and it ships in any later window.
