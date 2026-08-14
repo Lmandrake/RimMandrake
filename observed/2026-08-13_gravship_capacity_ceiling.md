@@ -176,3 +176,56 @@ contribute nothing, a second engine does disable the first, capacity is not
 power-dependent. What was wrong was the **conclusion** that the ceiling was
 therefore fixed at 633. It is a configurable number, it was simply set low, and
 the hull never had to shrink.
+
+---
+
+## 🟢 THE EXTENDER BUG, EXPLAINED — BG rebuilds the comp and drops `statOffsets`
+
+Live `GravFieldExtender` comps, read in full (7 of them):
+
+```
+CompProperties / KeepOnComp
+CompProperties_SubstructureFootprint    radius 30.0
+CompProperties_Glower
+CompProperties_GravshipFacility         maxDistance 34.0, maxSimultaneous 12,
+                                        onlyRequiresLooseConnection true,
+                                        requiresLOS false, providesFuel false
+                                        ← and NO statOffsets field at all
+CompProperties_GravMaintainable
+CompProperties_Breakdownable
+CompProperties / CompOffsetter
+```
+
+Vanilla, `Data/Odyssey/Defs/ThingDefs_Buildings/Buildings_Gravship.xml`:
+
+```xml
+<li Class="CompProperties_GravshipFacility">
+  <statOffsets>
+    <SubstructureSupport>250</SubstructureSupport>
+  </statOffsets>
+  <requiresLOS>false</requiresLOS>
+  <maxSimultaneous>6</maxSimultaneous>
+```
+
+**The facility comp is present and configured — BG demonstrably wrote to it
+(`maxSimultaneous` 6 → 12, `maxDistance` → 34) — and the rebuild discards the
+`statOffsets` block.** The extender still links; it contributes nothing. That is
+exactly the `4057 / 633` on the panel.
+
+**Upstream bug, cleanly stateable:** *Bigger Gravships re-stamps
+`CompProperties_GravshipFacility` on `GravFieldExtender` and loses its
+`statOffsets`, so extenders provide 0 substructure support instead of 250.*
+
+### 🔴 The method failure, mine, twice in one session
+
+Both times I reported a **truncated print as an absence**:
+
+1. "`GravFieldExtender` has no `SubstructureSupport`" — I had searched only
+   `statBases`. Vanilla puts it in `statOffsets`.
+2. "the probe returns no comps for `GravFieldExtender`" — it returns all seven;
+   my `json.dumps(...)[:260]` cut them off.
+
+The conclusion survived both times, which is luck, not method. **A truncated
+read is not a negative result.** When asserting that something is ABSENT, print
+the whole structure and say which field you searched. `jawa/get_def` returns
+comps and their fields faithfully — the probe was never the problem.
