@@ -11,6 +11,33 @@ function, what broke, what is the smallest test.
 
 ---
 
+## 🔴 PENDING OWNER DECISION — O12, the droid relations NRE. **NOT CHOSEN YET.**
+
+**Recorded 2026-08-14 12:5x by OPS at the owner's instruction, at shutdown.**
+🔴 **The owner asked for the choice to be recorded, and did NOT state which
+route. Nobody has picked one. Do not read a preference into this block, and do
+not implement any route until the owner names it.** Evidence and the full chain:
+row **O12** below, and `observed/2026-08-14_O12_har_pawngen_nre.md`.
+
+**What is broken:** our `Jawa_Doctrine/Patches/DroidsAreMachines.xml` sets
+`isOrganic=false` on the KotOR flesh type ⇒ `IsFlesh` false ⇒ no
+`Pawn_RelationsTracker` ⇒ HAR NREs on the **2nd and later same-race droid**.
+Worldgen is unaffected (four grounds, in O12). `RogueDroids` **raids** are — and
+that faction is the KotOR distress call's antagonist and a **v1 KEEP**.
+
+| route | cost | side effects |
+|---|---|---|
+| **1 — drop the KotOR flesh type from our patch** | one xpath, no assembly | restores tending on droids; **loses vanilla EMP behaviour** on them; ⭐ **does NOT affect our ion weapon** — its guard moved to `IsMechanoid` on 08-13 |
+| **2 — ~5 lines of Harmony** in an assembly we already ship | a build + a deploy + a load | give Humanlike pawns a relations tracker regardless of `IsFlesh`; keeps both the machine framing and working raids |
+| **3 — accept broken droid raids** | free | the quest antagonist cannot raid past its first pawn |
+| ⛔ **excluded** | — | retargeting to vanilla `Mechanoid` — it would make our own ion weapon block them |
+
+**Before implementing whichever is chosen:** the 30-second live confirmation —
+spawn `KotORDroidGood_3C` twice on any map, the second must NRE. If it does not,
+the chain is wrong and all three routes are moot.
+
+---
+
 ## ⭐ v1 — Row 2, the worldgen faction cut. UNEXECUTED.
 
 🔴 **The whole body of this item is now
