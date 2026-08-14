@@ -29,6 +29,40 @@ quoting 632.8 is stale.
 
 ---
 
+## 0b. 🔴 THE PRE-WORLDGEN GATES — what shipped in the 2026-08-14 window
+
+Worldgen was HELD for these. All are deployed and `VERIFIED in sync`.
+
+| gate | what | why it could not wait |
+|---|---|---|
+| **W2** | `JawaXenotype_Repoint.xml` — both Jawa pawn kinds → `BTD_Jawa` (+20 °C) | `xenotypeSet` is read at **pawn generation**; a later patch never fixes an existing world's colonists |
+| **W3** | `JawaWorld_BiomeMix.xml` — 29 `biomeBlacklist` exclusions + abundance tiers, patched into the **shipped `TidallyLocked` def** | biome scoring runs once, `WorldGenStep_Terrain` order 0 |
+| **W1** | sea step built (`JawaSeaShaper`, order 20) — ⏳ **placement code HELD** for VISION's settled spec | a `WorldGenStep` runs once, at world creation |
+| — | `Fleshbeast_TrispikeCull.xml` — Trispike out of Bulbfreak's and Dreadmeld's divide lists | a cherry-picked kind is **neutered, not deleted**, so it is still summonable BY NAME |
+
+🔴 **Three measured facts that decided the shape of W1/W3, none of them guessable:**
+1. **Only ONE `AlienWorlds.PlanetTypeDef` is active** (`activePlanetType`, mod
+   settings, scribed per save). A second def would REPLACE tidal lock and drop its
+   temperature curve ⇒ **patch the shipped def, never author ours.**
+2. **`scoreOffset` is in DEGREES** — `BiomeWorker_Desert::Score` is literally
+   `tile.temperature`. ⚠️ And disallowed biomes floor at **0**, so on the negative
+   nightside a big negative offset loses the argmax to a biome that is not even
+   allowed. **Do not deepen past ~−5.**
+3. **`elevationRange` is NOT an ocean dial** — its author's own comment is *"I have
+   absolutely no clue how it actually works"*. Coarse nudge only.
+
+⛔ **Cherry Picker: 22 keys live** (owner's Anomaly picks + GravTech's three).
+Picked defs are **neutered, not deleted**, so they stay dev-spawnable — which is
+what reconciled "content at zero" with "creatures stay reachable for reskinning".
+Generator: `src/RimMandrake/Utils/cherrypick_build.py`. **Never hand-edit** — one
+key without a `/` aborts every removal after it.
+
+⭐ **`src/RimMandrake/Utils/preload_check.py` is the pre-launch gate.** Nine checks,
+all silent-failure classes. Run it as the LAST act before boot; the config moved
+three times on 2026-08-13/14, once from a seat writing `ModsConfig` directly.
+
+---
+
 ## 1. Closed today
 
 | item | commit | note |
