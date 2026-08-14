@@ -1,8 +1,8 @@
-# The restraining bolt — making the campaign's moral problem cost something
+# The restraint bolt — making the campaign's moral problem cost something
 
 _VISION, 2026-08-13. **Owner's concept**, recorded the moment it was raised:_
 
-> *"We should drop faction goodwill every time we use a restraining bolt, to the
+> *"We should drop faction goodwill every time we use a restraint bolt, to the
 > independent droid faction, whether it's on one of their droids or not. It's
 > slavery to them."*
 
@@ -150,7 +150,7 @@ delivered.
 - **The "not their droids" clause gets cheaper, not dearer**, whichever side the
   mechanism sits on.
 
-⚠️ **The original concept is unchanged in substance** — using restraining bolts
+⚠️ **The original concept is unchanged in substance** — using restraint bolts
 costs you standing with the Free Droid Enclaves, unconditionally. Only the shape
 of the accounting moved, and it moved because a build constraint exposed a better
 answer.

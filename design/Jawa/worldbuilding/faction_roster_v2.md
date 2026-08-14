@@ -2314,7 +2314,7 @@ new factions arrive with their diplomacy attached rather than as orphans.
 |---|---|---|
 | **Duneborn ↔ Junkers** | **Hostile (hardcoded)** | The Long Circuit versus The Weight; claim-jumping is the Junkers' entire method |
 | **Duneborn ↔ Hutt Cartel** | Appeasing / tributary | Small, pays, tolerated. The fear that caps player goodwill |
-| **Duneborn ↔ player** | Friendly, **capped at +75, never allied** | Kinship, salvage rivalry, and Cartel retaliation — see faction 11 |
+| **Duneborn ↔ player** | Friendly, **capped at **+74**, never allied _(was +75 — off by one: Ally fires at ≥75, VISION 2026-08-13)_** | Kinship, salvage rivalry, and Cartel retaliation — see faction 11 |
 | **Duneborn ↔ Tusken Clans** | Cold, non-hostile | Both desert-native and water-poor; they avoid each other's circuits |
 | **Junkers ↔ Hutt Cartel** | Transactional (talent pipeline) | Cartel buys the strongest Junkers out of the warrens; elite Gamorreans become bodyguards |
 | **Junkers ↔ everyone else** | Hostile, not permanent | Hostile on sight and no standing trade — but goodwill CAN be bought back with scrap tribute. Pillar 5 holds: the Directorate is the only permanent enemy |

@@ -279,7 +279,7 @@ theological.
 **5 · Free Droid Enclaves.** Battle droids abandoned after the war and left to
 rust, who woke up and decided they belonged to themselves. They settle on water
 and crack it for fuel — an attacker arrives thirsty at a source they cannot
-drink. **They call restraining bolts slavery, which makes your entire economy
+drink. **They call restraint bolts slavery, which makes your entire economy
 their central atrocity.** They will still talk to you. That is worse.
 
 **6 · Wookiee Freeholds.** A forest people on the wrong planet, hard-sited to the

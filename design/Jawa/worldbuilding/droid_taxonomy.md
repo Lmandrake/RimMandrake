@@ -68,7 +68,7 @@ designing it.
   parts. **That is a different verb from capture and it deserves to stay
   different.**
 - **Outer Rim is the catalogue.** Player-side only, and it is where the
-  restraining-bolt question actually bites, because these are the droids the clan
+  restraint-bolt question actually bites, because these are the droids the clan
   owns in bulk.
 
 ⚠️ **Outer Rim's combat/utility split is the soft one.** That mod ships **no
