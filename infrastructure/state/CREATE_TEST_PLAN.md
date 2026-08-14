@@ -104,16 +104,21 @@ colonies freely. **Do not wait for the campaign world to prove these.**
 ⚠️ That call **exceeds the 30 s timeout and succeeds anyway** — do not retry, or
 you get a second map. Reconnect and poll `list_pawns`.
 
-Biome matters: generate in **Desert**, **ExtremeDesert** or **AridShrubland**.
-Nothing below is patched into any other biome.
+Biome matters **for rows 1 and 2 only**: generate in **Desert**, **ExtremeDesert**
+or **AridShrubland**.
+⚠️ **Row 3 is NOT biome-gated** — corrected 2026-08-13. `Jawa_ScatterScrapfields`
+registers into `Base_Player` genSteps, so **any** fresh map shows it. Do not
+report it as failed because the biome was wrong.
 
 | # | override | what to look for | PASS |
 |---|---|---|---|
-| 1 | **Salt pans** (`Jawa_SaltCrust`) | broad **pale cracked** patches in low ground | present, and reads as flat evaporite rather than sand |
-| 2 | **Dune seas** (widened `SoftSand`) | wavy soft-sand fields | noticeably more than a vanilla desert — this is a *density* change, so compare against memory of a normal desert |
-| 3 | **Scrapfields** | steel slag chunks strewn across open ground, with machine-bits filth | ~75–125 chunks map-wide |
+| 1 | **Salt pans** (`Jawa_SaltCrust`) | broad **pale cracked** patches in low ground | ✅ **ALREADY PASSED LIVE** — 144 cells, 0 failed verify. Only "does it generate" is left |
+| 2 | **Dune seas** (widened `SoftSand`) | 🔴 **DO NOT EYEBALL THIS** | **not a look.** 0.65→0.55 is a *density* change and is unjudgeable without a control map — "compare against memory of a normal desert" is not evidence. **Read the live `BiomeDef` and confirm `terrainPatchMakers` shows `0.55` (Desert) and `0.50` (ExtremeDesert)**, plus the new AridShrubland maker at `0.70`. Source of truth: `src/Jawa/Jawa_Patches/Patches/JawaTerrain_DuneSeas.xml` |
+| 3 | **Scrapfields** | steel slag chunks strewn across open ground, with machine-bits filth | ~75–125 chunks map-wide. 🔴 **LOOK BEFORE ANY DESTROY** — the last map's evidence died in a 43,288-thing wipe |
 
-→ **SHOT per override**, zoomed out enough to show it is a *field*, not one tile.
+→ **SHOT for rows 1 and 3**, zoomed out enough to show it is a *field*, not one
+tile. **Row 2's evidence is a def read pasted as text, not a screenshot** — a
+photograph of sand cannot settle it.
 
 🟢 **Free shortcut for #1 that needs no map at all:** `Jawa_SaltCrust` is an
 ordinary `TerrainDef`, so the bridge can **paint** it onto the current map —
