@@ -339,11 +339,83 @@ def unmasked_sheet():
         panels)
 
 
+def decal_sheet():
+    """The floor-sigil route: an EXISTING shipped system, one PNG, N colours.
+
+    Outer Rim - Furniture & Decor (Neronix17.OuterRim.FurnitureAndDecor, ACTIVE)
+    ships 234 floor decals off one abstract parent, `OuterRim_DecalBase`
+    (.../294100/2919553599/1.6/Defs/ThingDefs_Buildings/Decals__Base.xml:4-47):
+
+        shaderType Transparent, color (255,255,255,160)   <- painted-on look
+        altitudeLayer Floor, drawerType MapMeshOnly       <- lies flat on the deck
+        passability Standable, pathCost 0, fillPercent 0,
+        isEdifice false, clearBuildingArea false          <- blocks nothing
+        comps: CompColorable + building/paintable true    <- 181 ColorDefs, in game
+        costList OuterRim_Durasteel 1, WorkToBuild 5, Beauty 1
+
+    A new sigil is EIGHT LINES of XML (defName, label, texPath, drawSize, size)
+    plus one greyscale PNG. This sheet composites a real shipped decal over a
+    real shipped deck plate to show the finished look before anything is drawn.
+    """
+    deck = load(os.path.join(CRASH,
+                             "Terrain/Surfaces/Substructure/BrokenSubstructure.png"))
+    deck = tint(deck, None, RUST_WASH).convert("RGBA")
+    sigil = load(os.path.join(
+        WS, "2919553599/Common_Old/Textures/OuterRim/Building/Decals/"
+            "Factions/BlackSun.png"))
+
+    # A decal is 3x3 cells over a 1x1 terrain tile, so the deck must be tiled 3x3
+    # underneath it or the mockup lies about the scale.
+    tile = deck.resize((256, 256), Image.LANCZOS)
+    bed = Image.new("RGBA", (768, 768))
+    for ty in range(3):
+        for tx in range(3):
+            bed.paste(tile, (tx * 256, ty * 256))
+
+    # Deliberately including a DARK paint as the third panel. It is not a mistake:
+    # the decal draws at alpha 160, so a dark ColorDef over an already-rusted deck
+    # is very nearly invisible. The sigil has to be painted LIGHT — bone, sand,
+    # limestone — which is the opposite of the hull palette. Measured here so it
+    # does not have to be discovered in game.
+    CHOICES = [
+        ("Structure_White / bone  <- READS", (255, 255, 255)),
+        ("Structure_Limestone (158,153,135)  <- READS", (158, 153, 135)),
+        ("Structure_UmberBurnt (90,58,32)  <- VANISHES", (90, 58, 32)),
+    ]
+    panels = []
+    for name, rgb in CHOICES:
+        s = sigil.resize((768, 768), Image.LANCZOS)
+        s = tint(s, None, rgb)
+        s.putalpha(s.getchannel("A").point(lambda a: int(a * 160 / 255)))  # def alpha 160
+        comp = bed.copy()
+        comp.alpha_composite(s)
+        panels.append(dict(label=f"OuterRim_DecalBase + {name}",
+                           sub="3x3 floor decal over rusted BrokenSubstructure deck",
+                           cells=3, before=bed, after=comp))
+    build_sheet(
+        os.path.join(HERE, "REVIEW_gravship_deck_sigil.png"),
+        "FLOOR SIGILS — an ALREADY-SHIPPED system. LEFT: bare rusted deck. "
+        "RIGHT: the same deck with a paintable decal on it.",
+        ["OuterRim_DecalBase is ACTIVE in this campaign and already carries 234 decals. A new "
+         "Jawa sigil = 8 lines of XML + one greyscale PNG.",
+         "It is CompColorable and building/paintable, so ONE texture yields all 181 shipped "
+         "ColorDefs, chosen in game, with no reload.",
+         "The three panels differ ONLY by the paint colour, and panel 3 is the warning: at the "
+         "decal's alpha 160 a DARK paint on a rusted deck vanishes.",
+         "Paint the sigil LIGHT — bone, limestone, sand. That is the opposite of the hull "
+         "palette, and it is what makes the glyph read at all.",
+         "Scale warning (traps-art #45): a 512 px sigil draws at 3 cells = 192 px. Draw the "
+         "glyph BOLD; fine line-work will not survive."],
+        panels)
+
+
 def main():
     print("=== sheet 1: masked (CutoutComplex) ===")
     masked_sheet()
     print("\n=== sheet 2: unmasked (plain Cutout) ===")
     unmasked_sheet()
+    print("\n=== sheet 3: floor sigils (existing decal system) ===")
+    decal_sheet()
     print("\nnearest SHIPPED ColorDefs for the paintable deck (Data/Core/.../ColorDefs.xml):")
     for name, rgb in SHIPPED_RUST_COLORDEFS:
         print(f"    {name:<24} {rgb}")
