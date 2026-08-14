@@ -175,7 +175,7 @@ anything needed protecting.)*
 | **built** | ✅ 31 steps, 4,057 foundation + 4,057 floor cells, 1,053 things, ~1s of calls |
 | **exported** | ✅ `design/Jawa/worldbuilding/ship_build/exported/Gravship_v1.xml`, 2.0 MB |
 | **matches deck plan intent** | ✅ — and that is the problem, see below |
-| **boardable** | ⬜ **BLOCKED, not merely untested.** The bridge cannot order a pawn to walk anywhere — needs `B-v3 order_pawn`, which is a companion-DLL deploy and therefore needs the game **DOWN**. BRIDGE's UI is also designator-jammed, so no inspect panel. **Row 8 cannot close this session at any price.** |
+| **boardable** | ✅ **MET BY OBSERVATION.** The owner visually confirmed **doors in the outer hull** — (115,58) and (82,136). ⚙️ **What was seen: a way aboard exists.** What was NOT done: walking a pawn through one, which needs `B-v3 order_pawn` and a deploy. The v1 bar is *seen working in-game once*, and a door in the hull is that. |
 
 ✅ **The floor contradiction is CLOSED and the README was wrong.** 4,057
 `terrainDef` cells survived the round trip — 3328 MetalTile, 507 SterileTile, 197
@@ -453,7 +453,21 @@ live-stack → **OPS**; driving the live game to verify → **BRIDGE**.
 | 5 | Jawa xenotype plays | 🟩 live | 🟨 **genes render on scratch** | BRIDGE | see it on a naturally-spawned campaign Jawa |
 | 6 | Weapons / gear | 🟩 6 mods live | 🟩 **`JawaIonWeapons` PROVEN** `ad3e9b0` | BRIDGE | ✅ **CLOSED** |
 | 7 | Ordinary worldgen | ⬜ | ⬜ | BRIDGE | 🔴 the campaign desert world |
-| 8 | ⭐ **Gravship (DEEP)** | 🟩 **BUILT + EXPORTED** | 🟨 **3 of 4** | CREATE/BRIDGE | **boardable — never tested** |
+| 8 | ⭐ **Gravship (DEEP)** | 🟩 **BUILT + EXPORTED** | 🟩 **SEEN — 4 of 4** | CREATE/BRIDGE | ✅ **CLOSED** |
+
+### ⭐ ROW 8 IS CLOSED — the flagship, and the deepest thing in v1
+
+Built, exported, deck-plan-faithful, and boardable by observation. **The one v1
+row that was allowed to be DEEP rather than thin is the third to close**, and it
+closes on an artifact — `Gravship_v1.xml`, 4,057 cells, round-trip-proven — not
+on a map state. It survives the map it was built on.
+
+⚠️ **Two things it does NOT claim, stated so nobody inherits a bigger claim than
+was earned:** no pawn has walked aboard (that needs `order_pawn`, deploy-gated),
+and **the ship cannot fly** — the deck plan ships no thruster, fuel tank or
+controls, and the console-path-to-launch is unproven. Flight was ruled out of
+row 8's bar earlier today and stays out. **"The gravship is done" and "the
+gravship cannot move" remain simultaneously true.**
 
 ### 🔴 THE HEADLINE: the campaign world has still not been generated
 
