@@ -54,7 +54,7 @@ not make it happen.
 
 ---
 
-## 1 · Galactic Empire — the Unmoving Noon
+## 1 · Galactic Empire — The Rising Order _(renamed from "the Unmoving Noon", owner, 2026-08-14)_
 
 **1. Validator findings, verbatim**
 

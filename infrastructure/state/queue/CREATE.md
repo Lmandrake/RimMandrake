@@ -180,7 +180,41 @@ after staging, which is one step too late.
 
 ---
 
+### C15. `[v2]` Build the eleven `FactionDef` ideo blocks — entries 1 and 2 are FINAL — 2026-08-14, VISION
+
+**Spec:** `D:\Luke\dev\Rimworld\design\Jawa\worldbuilding\faction_religions_spec.md`.
+Entries **1 (Galactic Empire — The Rising Order)** and **2 (Hutt Cartel — the
+Reckoning of Debts)** are rewritten, re-measured against the live dump and closed;
+build those two first. Entry 1 lands on vanilla **`Empire`** per `V1_SCOPE.md:84`,
+which ships `requiredMemes`/`structureMemeWeights` — you are replacing that family
+with the `fixedIdeo` family, not adding to it. Pattern: the Horax cult,
+`Data\Anomaly\Defs\FactionDefs\Factions_Misc.xml` — `fixedIdeo` · `ideoName` ·
+`ideoDescription` · `forcedMemes` (structure first, complete set) ·
+`requiredPreceptsOnly` · `deityPresets` · `disallowedPrecepts` · `styles`.
+
+🔴 **Take `ideoName`, `ideoDescription` and every `deityPresets` name/type
+verbatim from the spec — they are the only text the engine renders**, and a
+paraphrase throws away the deliverable. **Never set `hiddenIdeo`.** Three entries
+need `deityPresets` (1 needs **two** deities, 2 needs **one**, 3 needs one) — the
+old "only faction 3" note in the section below is superseded; the corrected
+`deityCount` table is at the foot of the spec.
+
+🔴 **The ideoligion validator does NOT check `MayRequire` — that is on the author,
+every time.** `def/needs-mayrequire` is an INFO that prints the attribute you ought
+to write; nothing ever audits whether you wrote it, and an unwrapped defName from a
+disabled mod is a **silent no-op**, not an error. The packageId table is already in
+the spec's opening section (`VME_`/`VFEA_` → `vanillaexpanded.vmemese`, `AM_` →
+`sarg.alphamemes`, `VQE_`, `GR_`, `llunak.moreprecepts`, the Ludeon DLC ids).
+Run `python3 src/RimMandrake/Utils/validate_ideoligion.py <xml>` offline first, then
+eyeball every `<li>` for its attribute by hand.
+
+---
+
 ## Eleven faction ideoligions are specified to XML depth — 2026-08-14, VISION
+
+⚠️ **Superseded in part by C15 above** — entries 1 and 2 were rewritten 2026-08-14
+and the "only faction 3 needs `deityPresets`" line below is wrong.
+
 
 **`D:\Luke\dev\Rimworld\design\Jawa\worldbuilding\faction_religions_spec.md`**
 

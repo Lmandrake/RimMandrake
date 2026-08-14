@@ -24,7 +24,7 @@ raid trigger has been left out on purpose.**
 
 ---
 
-## 1 · The Galactic Empire — **the Unmoving Noon**
+## 1 · The Galactic Empire — **The Rising Order**
 
 **Position on the light: they face it, and they believe that is not an accident.**
 

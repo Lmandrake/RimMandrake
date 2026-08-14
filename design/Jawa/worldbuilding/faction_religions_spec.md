@@ -37,6 +37,50 @@ resolves in:
 
 ---
 
+## 🔴 THE TEXT IS THE PRODUCT — and the engine renders exactly three strings
+
+**Owner's ruling, 2026-08-14: "the precepts are there mostly as decoration, it's
+the text that matters."** He is right, and the constraint is sharper than it
+sounds — *beautiful prose in this document reaches nobody.* The only place text
+reaches a player is a field the engine draws.
+
+**Every text field a `FactionDef` ideo block can author.** Measured from the live
+dump's `FactionDef.json`, field-key union across all 100+ faction defs, 2026-08-14
+— the complete ideo-related field set is `fixedIdeo · ideoName · ideoDescription ·
+forcedMemes · requiredMemes · allowedMemes · disallowedMemes · structureMemeWeights
+· requiredPreceptsOnly · disallowedPrecepts · deityPresets · hiddenIdeo ·
+classicIdeo · styles`:
+
+| surface | authorable? | who writes the words |
+|---|---|---|
+| `ideoName` | ✅ **ours** | us — the ideo's name everywhere it appears |
+| `ideoDescription` | ✅ **ours** | us — **the only paragraph a player ever reads** |
+| `deityPresets[].nameType.name` / `.type` | ✅ **ours** | us — one line per god, in the ideo panel |
+| precept label / description | ❌ | Ludeon or the mod author. There is no field. |
+| meme label / description | ❌ | Ludeon or the mod author. There is no field. |
+| ritual label / description | ❌ | the `PreceptDef`/`RitualPatternDef` we picked |
+| the "three doctrines" and the taboo below | ❌ | **nobody — they are design register only** |
+
+⇒ **`ideoName`, `ideoDescription`, and two-to-four deity name/type pairs. That is
+the entire budget of authored prose in an eleven-religion project.** Everything
+else in an entry — the doctrines, the taboo, the "what the player meets" — is
+briefing material for us and reaches the player only *through* those three fields
+or not at all.
+
+🔴 **`hiddenIdeo: true` deletes the whole budget.** The vanilla Horax cult sets it
+(`Data\Anomaly\Defs\FactionDefs\Factions_Misc.xml`), so its excellent 287-character
+description is never read by anyone. **Leave `hiddenIdeo` unset on all eleven.**
+
+**Length, calibrated against shipped examples:** `HoraxCult` = 287 chars,
+`DV_PirateKeshig` = 472 chars. **Write one paragraph, 250–500 characters.** Longer
+is not richer; it is a scroll bar.
+
+⇒ **Entries 1 and 2 below are therefore restructured: the engine-visible text
+block comes FIRST and is the deliverable. The tables are an appendix.** The other
+nine still lead with tables and should be converted when they are next touched.
+
+---
+
 ## What the engine actually allows — read this before the entries
 
 Four things were checked in the dump, and three of them changed a design.
@@ -80,6 +124,23 @@ is a silent no-op — the faction just generates without it. The Creed is carrie
 instead by `VME_Bushido` + `VME_Anonymity`, and the second of those is arguably
 better: *anonymity* is a helmet that never comes off.
 
+**6. 🔴 `defaultSelectionWeight` is `1` on exactly ONE precept per issue and `0`
+on every other.** Measured 2026-08-14 across `PreceptDef.json`: `Execution` → only
+`Execution_HorribleIfInnocent` is 1 · `Slavery` → only `Slavery_Acceptable` ·
+`IdeoDiversity` → only `IdeoDiversity_Standard` · `Scarification` → only
+`Scarification_Horrible` · all four `DrugUse` precepts are 0.
+
+⇒ **This is the rule that makes most of the precept tables in this file fiction.**
+A precept reaches a faction by exactly two routes: a meme's `requireOne` forces it,
+or it is the one weight-`1` default for its issue. **Anything else is unreachable
+regardless of `requiredPreceptsOnly`,** and `disallowedPrecepts` cannot promote a
+weight-`0` precept — blacklisting its rivals leaves the issue *empty*, not
+converted. (The file already relied on this without naming it: the `DrugUse`
+observation in entry 2 is this rule.)
+
+⇒ Entries 1 and 2 now mark every precept **guaranteed / rolled / unreachable**.
+The other nine have not been audited against this and should be assumed optimistic.
+
 ### The binding pattern, from a real def
 
 Copy the Horax cult (`Data\Anomaly\Defs\FactionDefs\Factions_Misc.xml`), not the
@@ -119,96 +180,283 @@ instead of erroring. PackageIds used below:
 
 ---
 
-## 1 · Galactic Empire — **the Unmoving Noon**
+## 1 · Galactic Empire — **The Rising Order**
 
-**Deity:** the Emperor, embodied and living. Not a metaphor — the structure meme is
-*embodied* theist because the Empire's god answers correspondence.
+**Renamed 2026-08-14, owner's decision.** *Unmoving Noon* was a boast: the sun at
+its zenith, the empire complete, nothing left to do. **A rising order inverts it —
+the sun is still climbing.** The Empire is not finished, which is not modesty; it
+is a threat, and it is the difference between a state you can bargain with and one
+you cannot.
+
+### 🔴 The engine-visible text — this is the deliverable
+
+```xml
+<ideoName>The Rising Order</ideoName>
+<ideoDescription>We have never seen him. We will never see him. He is rising, and we are the ground he rises from. Take the helmet: it is the last thing you will ever choose. There is no doubt among us — only disorder, and disorder is corrected. Say the name once when you are given the armour, and once when you are taken out of it. Between those two words, stand in line.</ideoDescription>
+<deityPresets>
+  <li>
+    <nameType><name>Palpatine</name><type>He Who Is Rising</type></nameType>
+    <gender>Male</gender>
+    <iconPath>UI/Deities/DeityGeneric</iconPath>
+  </li>
+  <li>
+    <nameType><name>the Line</name><type>That Which Has No Face</type></nameType>
+    <gender>None</gender>
+    <iconPath>UI/Deities/DeityGeneric</iconPath>
+  </li>
+</deityPresets>
+```
+
+*(`ideoDescription` is 356 characters — inside the 250–500 band set by the shipped
+`HoraxCult` at 287 and `DV_PirateKeshig` at 472. `iconPath` is the path the vanilla
+Horax cult uses, read from `Factions_Misc.xml`, not guessed.)*
+
+🔴 **This entry needed a `deityPresets` block and did not have one — a real defect,
+now fixed.** `Structure_TheistEmbodied` carries `deityCount` `IntRange(min 2, max
+4)` (`<LocalLow>\DefDump\defs\MemeDef.json`, 2026-08-14). **The minimum is TWO, not
+one**, so a single Palpatine entry would still have been short. The file's closing
+note claiming "only faction 3 needs a `deityPresets` block" was wrong and is
+corrected below.
+
+**Why two gods, and why these two.** The register is not the Emperor's own
+propaganda — it is the *stormtrooper's* faith, written from inside the helmet by
+someone who has never seen the god-king and never will.
+
+- **Palpatine, *He Who Is Rising*.** The owner asked for the name and the name is
+  used, but the theology is *how often it may be said*. A trooper speaks it exactly
+  twice in a life — at enlistment and at death — which is why a religion built on
+  blind loyalty can carry a proper noun at all without domesticating it.
+- **the Line, *That Which Has No Face*.** The formation itself, deified. It is the
+  god a trooper can actually see: the rank to his left and the rank to his right,
+  identical, replaceable, and never once individually addressed. **Anonymity is the
+  sacrament.** The helmet does not come off.
+
+**Three doctrines** *(design register — the engine renders none of this; it reaches
+the player only through the paragraph above)*
+
+1. He is still rising. A finished empire could be measured, argued with, bargained
+   down. Ours is not finished.
+2. The helmet is not a uniform. It is the reason you may be handed a rifle:
+   nothing behind it wants anything.
+3. A deviation is not a crime. It is a *disorder*, and disorders are not punished,
+   they are **corrected**.
+
+**Taboo:** doubt spoken aloud. Not doubt — *spoken* doubt. Privacy of thought is
+the one liberty The Rising Order concedes, and it concedes it because it cannot
+see inside.
+
+### Appendix — the mechanical shell
 
 | | |
 |---|---|
-| **structure** | `Structure_TheistEmbodied` |
+| **structure** | `Structure_TheistEmbodied` — `deityCount` 2–4 ⇒ **`deityPresets` mandatory** |
 | **memes** | `VME_GodEmperor` · `Proselytizer` · `Supremacist` · `HumanPrimacy` |
 | **styles** | `VME_Authoritarian` · `Techist` |
-| **fixedIdeo** | ✅ · `requiredPreceptsOnly` ✅ — the doctrine is load-bearing for diplomacy and must not vary between worlds |
+| **fixedIdeo** | ✅ · `requiredPreceptsOnly` ✅ · `hiddenIdeo` ❌ **(must stay unset, or the description above is never read)** |
 
-**Three doctrines**
-1. The centre does not move, and neither does the truth. Position is proof.
-2. A deviation is not a crime, it is a *disorder*, and disorders are corrected.
-3. What is human is what is finished. Everything else is a draft the galaxy
-   has not yet cleaned up.
+**No meme collision.** `exclusionTags` read 2026-08-14: `VME_GodEmperor`
+`[VME_GodEmperor]` · `Proselytizer` `[IsolationistProselytizer, VME_Proselytism]` ·
+`Supremacist` `[GroupRelation, SupremacistIndividualist, AM_NonViolenceVowVsSupremacist,
+PacifismSupremacist, VME_PacifistsVsSupremacist]` · `HumanPrimacy` `[Primacy]`. No
+tag appears twice. Four normal memes = the `MemeCountRangeAbsolute` ceiling exactly.
 
-**Taboo:** doubt spoken aloud. Not doubt — *spoken* doubt. Privacy of thought is
-the one liberty the Unmoving Noon concedes, and it concedes it because it cannot
-see inside.
+**Precepts — what will actually exist** (`requiredPreceptsOnly` ✅, so *only* what a
+meme forces)
 
-**Precepts (8)**
-
-| issue | precept | why |
+| issue | precept | reachability |
 |---|---|---|
-| Slavery | `Slavery_Acceptable` | labour is administration |
-| Execution | `Execution_Required` | the sentence is the ritual |
-| IdeoDiversity | `IdeoDiversity_Abhorrent` | ⭐ the raid trigger the player feels |
-| Apostasy | `Apostasy_Abhorrent` | leaving is the only real crime |
-| Proselytizing | `Proselytizing_Frequently` | ⭐ Imperial visitors will preach at your colonists. ⚠️ the tier is a 3-way roll; *occasional* or *sometimes* is equally likely |
-| Research | `Research_Fast` | order is a technology |
-| Comfort | `Comfort_Important` `MayRequire llunak.moreprecepts` | officers live well |
-| Scarification | `Scarification_Horrible` | ⭐ marking the body is what the frontier does |
+| VME_LeaderDivinity | `VME_Leader_Godlike` | ✅ **guaranteed** — sole option of a `VME_GodEmperor` group. High impact. ⭐ **the god-king, mechanised** |
+| VME_Power | `VME_Power_Exalted` | ✅ **guaranteed** — sole option, `VME_GodEmperor`. Medium |
+| Bonding | `Bonding_Disapproved` | ✅ **guaranteed** — sole option, `HumanPrimacy` |
+| Slavery | `Slavery_Acceptable` \| `_Honorable` \| `GarryFlowers_Slavery_StatusSymbol` \| `_Terror` | 🎲 4-way roll, `Supremacist` |
+| Execution | `Execution_Required` \| `_RespectedIfGuilty` \| `_DontCare` | 🎲 3-way roll, `Supremacist` |
+| Proselytizing | `Proselytizing_Occasionally` \| `_Sometimes` \| `_Frequently` | 🎲 3-way roll, `Proselytizer` |
 
-**What the player meets:** Imperial traders and quest-givers proselytizing at your
-Jawa, and every conversion attempt reading as an insult because your ideoligion is
-one the Empire holds abhorrent. ⭐ **This is the only faction whose religion the
-player will notice without being told it exists.**
+🔴 **Five precepts the old table claimed are UNREACHABLE and have been removed.**
+`IdeoDiversity_Abhorrent`, `Apostasy_Abhorrent`, `Research_Fast`,
+`Comfort_Important` and `Scarification_Horrible` are each `defaultSelectionWeight:
+0` with **no meme in this set forcing them** — see constraint 6. Under
+`requiredPreceptsOnly` ✅ they simply do not exist, and there is no XML route that
+creates them. ⚠️ **This kills the old entry's headline claim.** *"`IdeoDiversity_Abhorrent`
+— ⭐ the raid trigger the player feels"* was never going to fire; the only
+IdeoDiversity precept reachable by weight is `IdeoDiversity_Standard`, and no meme
+here forces any. **The Empire's contempt for your faith now lives in the
+`ideoDescription` and nowhere else — which is exactly the owner's ruling, arrived
+at by measurement rather than by taste.**
 
-**Ritual:** `LeaderSpeech` pattern (the leader-speech family in
-`Data\Ideology\Defs\PreceptDefs\RitualPatternDefs\RitualPatterns.xml`). No custom
-ritual — the player never attends an Imperial one.
+**What the player meets:** Imperial visitors preaching at your Jawa
+(`Proselytizing_*` is guaranteed at *some* tier), and an ideo panel naming a god
+nobody in the faction has seen. ⚠️ **Corrected:** the old entry called this "the
+only faction whose religion the player will notice without being told it exists."
+With `IdeoDiversity_Abhorrent` gone that is no longer true — **faction 5 now holds
+that title alone**, because `VME_Emancipation`'s two refusals are sole-option groups
+and therefore guaranteed. (Do not substitute faction 6: the skill measured
+`TreeCutting_Prohibited` at weight 0 with no meme forcing it, so it is unreachable
+for an NPC faction too — entry 6 needs the same audit this entry just had.)
+
+**Ritual:** none authored. `VME_GodEmperor` forces no ritual, and the player never
+attends an Imperial one.
 
 ---
 
 ## 2 · Hutt Cartel — **the Reckoning of Debts**
 
-**Deity:** none. `VME_Structure_Corporate` has `deityCount 0`, and the ledger is
-not a god — it is an *instrument*, which is worse.
+Name unchanged — the owner keeps it. Three things change: **Execution goes as far
+toward *beloved* as the engine allows**, **`HighLife` is forced** on the owner's
+overrule, and the deity block this entry wrongly claimed it did not need is added.
 
-| | |
-|---|---|
-| **structure** | `VME_Structure_Corporate` |
-| **memes** | `VME_Trader` · `Individualist` · `Guilty` · `AM_Gladiator` |
-| **styles** | `VME_Corporate` · `VME_Hedonist` |
-| **fixedIdeo** | ✅ · `requiredPreceptsOnly` ❌ — let the game add colour |
+### 🔴 The engine-visible text — this is the deliverable
 
-**Three doctrines**
+```xml
+<ideoName>the Reckoning of Debts</ideoName>
+<ideoDescription>Everything on this world evaporates, freezes, or is stolen. A debt does none of these. It is the only object that survives crossing between the faces, and so it is the only true account of a person: what you owe is what you are. We do not forgive — forgiving destroys value that belonged to everyone. We sell the smoke, we breathe the smoke, and what the book cannot settle, the pit does.</ideoDescription>
+<deityPresets>
+  <li>
+    <nameType><name>the Ledger</name><type>That Which Does Not Forgive</type></nameType>
+    <gender>None</gender>
+    <iconPath>UI/Deities/DeityGeneric</iconPath>
+  </li>
+</deityPresets>
+```
+
+*(388 characters, inside the 250–500 band.)*
+
+🔴 **"Deity: none" was wrong and this entry needed a `deityPresets` block too.**
+`VME_Structure_Corporate` carries `deityCount` `IntRange(min 1, max 1)` —
+`<LocalLow>\DefDump\defs\MemeDef.json`, 2026-08-14. **Exactly one deity, mandatory.**
+
+**The correction improves the entry rather than damaging it.** The old line — *"the
+ledger is not a god, it is an instrument, which is worse"* — was the right instinct
+and the engine simply refuses it. So the Ledger is deified, and the type line does
+the work the old sentence did: **it is not addressed, it is not petitioned, and it
+does not forgive.** A god you can only ever owe.
+
+**Three doctrines** *(design register — reaches the player only through the
+paragraph above)*
+
 1. A debt is the only object on this planet that survives crossing between the
    faces. Everything else evaporates, freezes, or is stolen.
 2. What you owe is what you are. There is no other account of a person.
-3. The pit settles what the book cannot. `AM_Gladiator` is doctrine, not decor.
+3. The smoke is the sacrament and the pit is the court. **A death is a payment**,
+   and the Ledger does not care which column it closes.
 
 **Taboo:** forgiving a debt. Not defaulting — *forgiving*. A defaulter is an asset
 class; a forgiver has destroyed value that belonged to everyone.
 
-**Precepts (7)**
+### 🔴 Execution — how close to *beloved* the engine gets
 
-| issue | precept | why |
+**Decision: `Execution_Required`.** It is the strongest position that exists on the
+`Execution` issue, and it is legal here.
+
+⚠️ **Nothing in the engine reads as "beloved" or "celebrated" — this is the
+closest, and it is close.** All seven `Execution` precepts were read from
+`<LocalLow>\DefDump\defs\PreceptDef.json`, 2026-08-14; the ladder is
+`_Abhorrent → _Horrible → _HorribleIfInnocent → _DontCare → _RespectedIfGuilty →
+_Required`, with no rung above it and no modded addition. `Execution_Required` is
+the only one of the seven at **Medium** impact (the rest are Low), the only one
+carrying a `PreceptComp_SituationalThought`, and its shipped description is the
+beloved reading in Ludeon's own words:
+
+> *"Prisoners must be executed on a regular basis. When they are, it is a happy
+> occasion."*
+
+`enabledForNPCFactions: true` · `visible: true` · `conflictingMemes: []` — legal
+against every meme in this set.
+
+🔴 **Getting it is not the same as choosing it, and this needs
+`disallowedPrecepts`.** No meme in the Cartel's set has an `Execution` group, and
+`Execution_Required` is `defaultSelectionWeight: 0` — so under `requiredPreceptsOnly`
+❌ the generator falls to the issue's only weight-`1` precept,
+**`Execution_HorribleIfInnocent`**, which is the exact opposite of the doctrine.
+
+⇒ **Blacklist the other six on the issue** so the default cannot win:
+
+```xml
+<disallowedPrecepts>
+  <li MayRequire="Ludeon.RimWorld.Ideology">Execution_Abhorrent</li>
+  <li MayRequire="Ludeon.RimWorld.Ideology">Execution_Horrible</li>
+  <li MayRequire="Ludeon.RimWorld.Ideology">Execution_HorribleIfInnocent</li>
+  <li MayRequire="Ludeon.RimWorld.Ideology">Execution_DontCare</li>
+  <li MayRequire="Ludeon.RimWorld.Ideology">Execution_RespectedIfGuilty</li>
+  <li MayRequire="Ludeon.RimWorld.Ideology">Execution_Classic</li>
+</disallowedPrecepts>
+```
+
+⚠️ **UNVERIFIED — whether the generator then takes the weight-`0` survivor or
+leaves the issue empty.** Constraint 6 says a blacklist cannot *promote* a
+weight-`0` precept, so **empty is the likely outcome**. Ship it anyway: empty is
+strictly better than *horrible if innocent*, the doctrine survives in the
+`ideoDescription` either way, and it costs one XML block to find out at the next
+load. **Do not report this as measured until it has been seen in game.**
+
+### 🔴 HighLife — forced, and what it actually buys
+
+**Both halves of the old caution re-verified against the live dump, 2026-08-14, and
+both hold.** `DrugUse_Essential`: `requiredMemes: ['HighLife']` ✅ and
+`enabledForNPCFactions: false` ✅. It is the **sole** option in `HighLife`'s only
+`requireOne` group, so that group yields nothing on an NPC faction. **The Cartel
+will have no `DrugUse` precept, and no XML can give it one.**
+
+**The overrule is still right, because the caution was about the precept and the
+owner asked for the meme.** `HighLife` is `category: Normal`, `impact: 2`,
+`exclusionTags: ['DrugUse', 'AM_AsceticVsHighLife']` — **no clash**: `VME_Trader`
+`[]`, `Guilty` `[GroupRelation]`, `AM_Gladiator` `[AM_Combat, AM_GladiatorVsDryads,
+AM_NonViolenceVowVsGladiator]`. It is legal. And it is **not** inert:
+
+| what `HighLife` forces | NPC-legal? | the player sees |
 |---|---|---|
-| Slavery | `Slavery_Acceptable` | the highest expression of a settled account. ⚠️ inert — 0 comps |
-| OrganUse | `OrganUse_Acceptable` | collateral |
-| Execution | `Execution_RespectedIfGuilty` | guilt is arithmetic |
-| Skullspike | `Skullspike_Desired` | the pit's receipts |
-| IdeoDiversity | `IdeoDiversity_Approved` | a customer's faith is not their business |
-| Cannibalism | `Cannibalism_Disapproved` | bad for trade |
-| Charity | *(none — see the constraint above)* | ⚠️ not encodable; `Guilty` carries it |
+| `DrugUse_Essential` | ❌ `enabledForNPCFactions: false` | **nothing** — the headline precept is barred |
+| ritual `DateRitualConsumable`, pattern `SmokeCircle`, building `Burnbong` | ✅ | ⭐ **the spice sacrament, as a ritual** — a named rite in the Cartel's ideo panel and a Burnbong in their settlements |
+| `ApparelDesired_Soft_Subordinate` + `Apparel_Flophat`, `noneChance: 0` | ✅ | ⭐ **flophats on Hutt pawns, always.** Vanilla's Horax cult explicitly blacklists this precept; **we keep it** — a Cartel enforcer in a flophat is the single most legible thing on this faction |
+| `agreeableTraits: DrugDesire` (degrees 1–2) | — | Cartel pawns skew chemical-interested. ⚠️ UNVERIFIED that meme `agreeableTraits` weight NPC pawn generation |
+| `addDesignators: Autobong`, `addDesignatorGroups: Floor_MindbendCarpet`, `consumableBuildings: Burnbong` | ✅ | Cartel base décor |
 
-⚠️ **The spice sacrament has no encodable position.** `DrugUse_Essential` is gated
-behind `HighLife` **and** carries `enabledForNPCFactions: false`, so it can never
-appear on a faction ideoligion. The `DrugUse` issue is left empty deliberately: no
-precept on it carries a default selection weight, so the Cartel ends up with no drug
-rules at all — which is mechanically what "our product is our sacrament" wants. The
-spice stays in the fiction.
+⇒ **The precept is dead and the meme is alive.** ⭐ **And the sacrament's real home
+is the `ideoDescription` — "we sell the smoke, we breathe the smoke" — which by the
+owner's own ruling is where it mattered most.** That sentence is the whole thesis
+of this rewrite, stated on the one faction where it is provable.
 
-**What the player meets:** the only faction that stays tradeable while hostile,
-and the reason is doctrinal rather than a mechanic exception. ⭐ **They are also the
-only non-Imperial orbital node — the Cartel's religion is what makes "buy your way
-off this planet" coherent.**
+🔴 **`HighLife` costs a meme slot and `Individualist` pays for it.**
+`MemeCountRangeAbsolute` is **1–4 normal memes** and the Cartel already listed four.
+`Individualist` is the correct one to cut: its `requireOne` is **null** — it forces
+*no precept at all* — so dropping it removes exactly nothing mechanical, while
+`Guilty` (three groups), `AM_Gladiator` (one) and `VME_Trader` (three) each carry
+real weight. The Cartel's individualism was always doctrine, and doctrine lives in
+the text now. Combined impact after the swap: 2+1+1+2 = **6**.
+
+### Appendix — the mechanical shell
+
+| | |
+|---|---|
+| **structure** | `VME_Structure_Corporate` — `deityCount` 1–1 ⇒ **exactly one `deityPresets` entry** |
+| **memes** | `VME_Trader` · `Guilty` · `AM_Gladiator` · **`HighLife`** ~~`Individualist`~~ |
+| **styles** | `VME_Corporate` · `VME_Hedonist` |
+| **fixedIdeo** | ✅ · `requiredPreceptsOnly` ❌ — let the game add colour · `hiddenIdeo` ❌ **(must stay unset)** · `disallowedPrecepts` per the Execution block above |
+
+**Precepts — what will actually exist**
+
+| issue | precept | reachability |
+|---|---|---|
+| VME_TradingPrice | `VME_TradingPrice_Improved` | ✅ **guaranteed** — sole option, `VME_Trader`. Medium |
+| VME_Trading | `VME_Trading_Required` | ✅ **guaranteed** — sole option, `VME_Trader`. Medium. ⭐ the trade doctrine, mechanised |
+| VME_Expectations | `VME_Expectations_High` | ✅ **guaranteed** — sole option, `VME_Trader` |
+| AM_CombatProwess | `AM_CombatProwess_Melee` | ✅ **guaranteed** — sole option, `AM_Gladiator`. The pit |
+| Pain | `Pain_Idealized` | ✅ **guaranteed** — sole option, `Guilty`. Medium |
+| Ritual | `VME_TradingFairPrecept` / `VME_TradingFairRitual` | ✅ forced ritual, `VME_Trader` |
+| Ritual | `DateRitualConsumable` / `SmokeCircle` / `Burnbong` | ✅ forced ritual, `HighLife` |
+| ApparelDesire | `ApparelDesired_Soft_Subordinate` + `Apparel_Flophat` | ✅ `noneChance: 0` ⇒ guaranteed |
+| Charity | `Charity_Essential` \| `_Important` \| `_Worthwhile` | 🎲 3-way roll, `Guilty`. ⚠️ **the Cartel WILL hold a positive charity position** — all three conflict only with `Supremacist`/`PainIsVirtue`/`Trader` (vanilla `Trader`, **not** `VME_Trader`), none of which is here. Correction to the old "not encodable" note: charity-*abhorrent* is unsayable, a positive charity precept is **unavoidable** |
+| Compassion | `Compassion_NonHostile` \| `_Allies` | 🎲 2-way — `Compassion_All` and `_NonGuiltyEnemies` are `enabledForNPCFactions: false` and drop out |
+| Execution | `Execution_Required` | ⚠️ see the Execution block — blacklist-dependent, outcome UNVERIFIED |
+| Slavery | `Slavery_Acceptable` | 🎲 the issue's weight-`1` default; `_Honorable` and both `GarryFlowers_*` conflict with `Guilty` |
+| DrugUse | *(none — barred)* | ❌ `DrugUse_Essential` is `enabledForNPCFactions: false` |
+| OrganUse · Skullspike · IdeoDiversity · Cannibalism | *(removed)* | ❌ all weight-`0`, none forced by any meme here. The old table listed them; they were never going to exist |
+
+**What the player meets:** the only faction that stays tradeable while hostile, and
+the reason is doctrinal — `VME_Trading_Required` is a *guaranteed* precept, not a
+mechanic exception. ⭐ **They are also the only non-Imperial orbital node — the
+Cartel's religion is what makes "buy your way off this planet" coherent.** And they
+arrive in flophats.
 
 ---
 
@@ -696,7 +944,17 @@ describe.
 - Eleven `FactionDef` ideo blocks, patterned on the Horax cult. Every defName in
   this file was read from the live dump; the full palette is
   `design/Jawa/worldbuilding/data/ideology_palette.md`.
-- Only faction 3 needs a `deityPresets` block. Everything else is `deityCount 0`.
+- 🔴 **CORRECTED 2026-08-14 — "only faction 3 needs a `deityPresets` block" was
+  wrong on two counts.** `deityCount` read from `<LocalLow>\DefDump\defs\MemeDef.json`:
+
+  | structure | deityCount | entries | deityPresets |
+  |---|---|---|---|
+  | `Structure_TheistEmbodied` | **2..4** | 1 | ✅ **two minimum** — one entry is short |
+  | `VME_Structure_Corporate` | **1..1** | 2 | ✅ **exactly one** |
+  | `Structure_TheistAbstract` | 1..4 | 3 | ✅ |
+  | `Structure_Animist` · `Structure_Ideological` · `AM_Structure_Scavenger` | 0..0 | 4–11 | ❌ none |
+
+  **Three entries need one, not one entry.** Blocks for 1 and 2 are written above.
 
 ---
 
