@@ -443,13 +443,33 @@ the items that sweep surfaced; each is confirmed by its owning seat this window.
 
 | # | call | owner | why it is worth a line |
 |---|---|---|---|
-| L1 | `jawa/spawn_thing def=SmallThruster x=45 z=131` — read the returned/inspect string for `WarningThrusterInside` | CREATE | **Cheapest launch gate we own.** Outdoor-required ⇒ the exported hull needs its stern cut back, a whole deck re-lay. Substructure-free-only ⇒ nothing to change. One paused call decides a large piece of rework |
+| L1 | **`rimworld/spawn_thing def=SmallThruster x=45 z=131`** — read the returned/inspect string for `WarningThrusterInside`. ⚠️ **`jawa/spawn_thing` DOES NOT EXIST** — not among the 26 names; the prefix is vanilla `rimworld/`, or `jawa/spawn_batch` for more than one (BRIDGE, offline) | CREATE | **Cheapest launch gate we own.** Outdoor-required ⇒ the exported hull needs its stern cut back, a whole deck re-lay. Substructure-free-only ⇒ nothing to change. One paused call decides a large piece of rework |
 | L2 | `jawa/order_pawn targetId=<pilot console thingId> waitTicks=0 unpause=false` — read `canReach` | CREATE | 🔴 `pathEndMode` must stay `interactioncell` (the default when `targetId` is set). **The cell beside a console is a different verdict from the vanilla `PawnCanFillRole` gate** — do not substitute one for the other |
-| L3 | Spawn ONE Galactic Empire raid and screenshot it | VISION | VISION's own words: *the biggest open design question I own.* V6/V7/V25 have three layers of analysis and **nobody has looked at it on screen.** ~5 min. **Before we repair the antagonist, someone must see whether it reads as one** |
+| L3 | Fire ONE Galactic Empire raid and screenshot it — 🔴 **three-step procedure below the table, do not improvise it** | VISION | VISION's own words: *the biggest open design question I own.* V6/V7/V25 have three layers of analysis and **nobody has looked at it on screen.** ~5 min. **Before we repair the antagonist, someone must see whether it reads as one** |
 | L4 | Spawn `KotORDroidGood_3C` **twice** — the 2nd must NRE | OPS | 30 s, any map. O12's whole causal chain (`isOrganic=false` ⇒ no `Pawn_RelationsTracker` ⇒ HAR NRE on the 2nd same-def pawn) rests on this. **If the 2nd does not throw, the chain is wrong and O12 re-opens.** An owner decision is queued behind it |
 | L5 | Full-map `listerThings` count of `ChunkSlagSteel` — **NO sampling** — plus `TileInfo.Mutators` and map size | OPS | v1 row 4's open defect. ⚠️ **Match the band to the def the map was BUILT with: 75–125 pre-`de1018b`, 44–56 after.** ≥75 closes it as a MEASUREMENT defect, not a content one. The standing "11" was never a count — it was 8,100 sampled cells extrapolated, and where those rects sat is recorded nowhere |
 | L6 | `jawa/list_things`, `jawa/clear_ui`, `set_roof_batch`/`get_roof_batch` | BRIDGE | Never-run tools with no batch anywhere. `clear_ui` **gates the art re-shoot** — the old 12 screenshots are non-evidence because the dev log covers frame centre |
 | L7 | Re-run P1 `AV_DogSled` | BRIDGE | `spawn_batch` now routes `VehicleDef` through `VehicleSpawner` **by reflection**. Unproven, and the reflection is what keeps the companion loading without Vehicle Framework |
+
+#### 🔴 L3's procedure — BRIDGE, IL-confirmed 2026-08-14. Follow it verbatim.
+
+**The faction you pass is not the faction that raids.**
+`IncidentWorker_RaidEnemy::TryResolveRaidFaction` keeps your faction **only if**
+non-null AND `FactionUtility::HostileTo(Faction.OfPlayer)` AND (`!deactivated` OR
+`parms.forced`). IL_001f/0036/0055 all branch to IL_0059, where
+`ldflda IncidentParms::faction` goes **by reference** into
+`PawnGroupMakerUtility::TryGetRandomFactionForCombatPawnGroupWeighted`, **which
+overwrites it.** ⇒ if `OuterRim_GalacticEmpire` is not hostile, the raid fires,
+reports `success:true`, and VISION photographs **a different antagonist**. Nothing
+in the reply flags it.
+
+1. `jawa/fire_incident incidentDef=RaidEnemy faction=OuterRim_GalacticEmpire dryRun=true` — **abort on `canFireNow:false`.**
+2. Fire, then **read the `faction` field in the REPLY, not the one you sent.** The tool reports `parms.faction` *after* the worker ran; the read-back is the only evidence of which faction actually came.
+3. **Pass `points` explicitly.** `points<=0` takes the storyteller default — tens of points on a fresh quicktest, i.e. one trivial attacker, which cannot answer *"does the Empire read as an antagonist"*.
+
+📌 **Generalises: a parameter you pass is not a parameter that survives.** Engine
+workers take `IncidentParms` **by ref** and rewrite it. **Assert on the value read
+back, never the value sent.** Same shape as `set_terrain`'s dropped `def=`.
 
 ⛔ **NOT in any batch, deliberately:** the ten art-fix mods. The standing directive
 makes **the owner's own eyes** the gate, so it is an owner-look item and no seat
