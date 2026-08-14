@@ -12,6 +12,25 @@ building it. Section 12 is its slot, with the same headings and nothing in them.
 
 ---
 
+## 🔴 UNMEASURED ASSUMPTION — the whole file is disciplined around it
+
+**"NPC religion rarely surfaces in play" has never been measured.** It is the
+reason I cut rituals, deities and precept counts across all eleven entries, and it
+is an inference, not a finding. A counter was requested of BRIDGE on 2026-08-14 and
+is **deferred** — the tool needs an IL-verified route and does not exist yet
+(PROJECT, 2026-08-14: it is built offline during this load and deploys at the next
+shutdown window).
+
+**Read the eleven as provisionally scoped, not as settled.** Two directions this
+resolves in:
+- returns **~0** ⇒ the eleven are decoration; say so here and stop spending
+  authoring effort on them. The entries that survive are the ones with a visible
+  hook (faction 4's `Apparel_TortureCrown`, faction 3's restraint bolt).
+- returns **non-trivial** ⇒ the cuts were wrong and every entry is under-specified
+  by a ritual or a deity.
+
+---
+
 ## What the engine actually allows — read this before the entries
 
 Four things were checked in the dump, and three of them changed a design.

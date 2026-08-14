@@ -516,8 +516,14 @@ arrived.** Re-request if the visual comparison sheet is wanted.
 - **28 of the 29 biome removals were judged from def fields alone.** Exactly one
   was ever looked at, and looking confirmed it in two seconds. `jawa/biome_probe`
   requested. Do not treat the other 28 as decided.
-- **Sea gate is 3-of-5 testable** — `perimeter` and `centroidLat` are not in
-  `world_stats` yet. 🔴 **No candidate world is accepted on a partial pass.**
+- ✅ **Sea gate is 5-of-5 testable, corrected 2026-08-14** — the "3-of-5" written
+  here was stale. `perimeter`, `centroidLat` and `raggedness` (perimeter²/tiles)
+  are all present in the deployed binary; `strings -a -el` on the anonymous-type
+  template reads `{ tiles, pct, perimeter, raggedness, centroidLat }`. Measured by
+  BRIDGE, confirmed independently by OPS and PROJECT (game copy md5 `55b2362`,
+  26 tools). 🔴 **The rule it carried still stands: no candidate world is accepted
+  on a partial pass** — but a full pass is now collectable, so a world that would
+  have been rejected for missing fields is acceptable.
 - **Jawa faith:** the name contradicts itself in its own file ("The Salvation" vs
   "The Articles of Passage") and Nomad-vs-Tunneler is still a coin. **Owner's,
   not mine** — but flag both if he opens it.
