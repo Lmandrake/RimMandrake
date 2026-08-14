@@ -447,9 +447,35 @@ the items that sweep surfaced; each is confirmed by its owning seat this window.
 | L2 | `jawa/order_pawn targetId=<pilot console thingId> waitTicks=0 unpause=false` — read `canReach` | CREATE | 🔴 `pathEndMode` must stay `interactioncell` (the default when `targetId` is set). **The cell beside a console is a different verdict from the vanilla `PawnCanFillRole` gate** — do not substitute one for the other |
 | L3 | Fire ONE Galactic Empire raid and screenshot it — 🔴 **three-step procedure below the table, do not improvise it** | VISION | VISION's own words: *the biggest open design question I own.* V6/V7/V25 have three layers of analysis and **nobody has looked at it on screen.** ~5 min. **Before we repair the antagonist, someone must see whether it reads as one** |
 | L4 | Spawn `KotORDroidGood_3C` **twice** — the 2nd must NRE | OPS | 30 s, any map. O12's whole causal chain (`isOrganic=false` ⇒ no `Pawn_RelationsTracker` ⇒ HAR NRE on the 2nd same-def pawn) rests on this. **If the 2nd does not throw, the chain is wrong and O12 re-opens.** An owner decision is queued behind it |
-| L5 | Full-map `listerThings` count of `ChunkSlagSteel` — **NO sampling** — plus `TileInfo.Mutators` and map size | OPS | v1 row 4's open defect. ⚠️ **Match the band to the def the map was BUILT with: 75–125 pre-`de1018b`, 44–56 after.** ≥75 closes it as a MEASUREMENT defect, not a content one. The standing "11" was never a count — it was 8,100 sampled cells extrapolated, and where those rects sat is recorded nowhere |
+| L5 | Full-map `listerThings` count of `ChunkSlagSteel` — **NO sampling** — plus `TileInfo.Mutators` and map size. 🔴 **ONLY ON A MAP GENERATED THIS SESSION — see the block below** | OPS | v1 row 4's open defect. ⚠️ **Match the band to the def the map was BUILT with: 75–125 pre-`de1018b`, 44–56 after.** ≥75 closes it as a MEASUREMENT defect, not a content one. The standing "11" was never a count — it was 8,100 sampled cells extrapolated, and where those rects sat is recorded nowhere |
 | L6 | `jawa/list_things`, `jawa/clear_ui`, `set_roof_batch`/`get_roof_batch` | BRIDGE | Never-run tools with no batch anywhere. `clear_ui` **gates the art re-shoot** — the old 12 screenshots are non-evidence because the dev log covers frame centre |
 | L7 | Re-run P1 `AV_DogSled` | BRIDGE | `spawn_batch` now routes `VehicleDef` through `VehicleSpawner` **by reflection**. Unproven, and the reflection is what keeps the companion loading without Vehicle Framework |
+
+#### 🔴 L5 IS NOT MEASURABLE ON AN OLD SAVE — OPS, 2026-08-14, verified by PROJECT against the def
+
+**`Jawa_ScatterScrapfields` is a `GenStepDef`** wrapping `GenStep_ScatterThings`,
+order 960 (`src/Jawa/Jawa_Patches/Defs/MapGeneration/JawaScrapfields.xml:103-107`).
+**A GenStep runs at MAP GENERATION and never again** ⇒ a map's `ChunkSlagSteel`
+count is **frozen with whatever def was deployed the moment that map was made.**
+
+The game copy carried `isJunk` until the 13:40 deploy tonight. `isJunk` makes
+`GenStep_Scatterer.CalculateFinalCount` multiply by `GetPlacementFactor`, which is
+the **product of `TileMutatorDef.junkDensityFactor` over every mutator on the
+tile** — and **`Dunes` is one of five live mutators whose factor is ZERO.** ⇒ every
+pre-existing map was generated with the step silently zeroed.
+
+| you ran L5 on | verdict |
+|---|---|
+| a map generated **this session** | ✅ real. **44–56 in 4–6 clumps** closes v1 row 4 |
+| the existing colony save | ⛔ **"not measurable here" — NOT "44–56 missed".** You measured the OLD def |
+
+⚠️ **The 75–125 figure is not a measured pre-state and is not a comparison band
+for anything.** Per the def's own header it came from an arithmetic that omitted
+`GetPlacementFactor` entirely. **L5 must state which map it ran on.**
+
+📌 **Generalises: a one-shot generator's output dates the DEF THAT BUILT IT, not
+the def on disk.** Before counting anything a GenStep placed, ask when the map was
+made. Same shape as *artifact right, consumer stale* — the consumer here is the map.
 
 #### 🔴 L3's procedure — BRIDGE, IL-confirmed 2026-08-14. Follow it verbatim.
 
