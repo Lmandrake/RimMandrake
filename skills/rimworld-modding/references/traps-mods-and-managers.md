@@ -101,7 +101,7 @@ read_rules_db: DB exists!
 read_rules_db: Loaded 13 additional rules
 ```
 **Count the rules in the file and check the number matches.** 2026-08-13: 7 existing + 6 added = the 13 it logged, so every rule loaded. Two independent confirmations agreed — the log count, and `ignore.json`'s mtime (17:24) being *later* than `userRules.json`'s (17:19) with the rules still intact.
-⚠️ **`PublishedFileId.txt` is Steam-assigned and is CORRECT to be absent on a local mod. Never invent one** — a made-up id can collide with a real Workshop item and pull that item's metadata onto ours.
+⚠️ **On the field itself — why it is absent and why never to fabricate one — see "Mods with Missing Publish Field ID in RimSort is not an error" above.** This entry is only about whether *dismissing* the warning costs you anything. It does not.
 **Generalises to:** any tool where a dismissal dialog and a behaviour store are different files. **The dialog is not the state.** Before believing a UI action had a side effect, find the file it writes and diff it — and prefer a log line that *counts* what was loaded over any inference from the interface.
 
 ### A reskin whose donor ships art LOOSE fails silently if it loads first
