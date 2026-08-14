@@ -166,7 +166,15 @@ is the half that matters: a percentage alone cannot tell *three oddly-shaped bod
 from *the same water smeared into forty blobs*, and those two worlds report an
 identical `waterPct`. **It turns the owner's sea spec into a number.**
 
-### 3b. ⭐ CALL #2 — v1 row 4's dune-seas gate. **No map needed. Do it here.**
+### 3b. ⭐ CALL #2 — v1 row 4's dune-seas gate. **No MAP needed — but a GAME is.**
+
+🔴 **Measured 2026-08-14: this does NOT run at the main menu.** Every `jawa/*` tool
+ends `Find.TickManager?.TicksGame ?? -1`, and `Find.TickManager` compiles to a
+getter that dereferences `Current.Game` — **`?.` guards the RESULT, not the CALL.**
+With no game the getter throws and *every* tool returns a bare
+`Object reference not set to an instance of an object`, naming nothing.
+⇒ **Run it once a game exists (a quicktest is enough); do not run it at the menu and
+conclude the branch is broken.**
 
 **Defs load before any map exists, so this runs ahead of the quicktest** — it is
 the cheapest v1 evidence in the file.
