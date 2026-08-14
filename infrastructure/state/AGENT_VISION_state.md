@@ -2,11 +2,11 @@
 
 **Cross-session address:** `uds:/run/user/1000/cc-socks/212269.sock`
 _(Session started 2026-08-13, the seat's first. Address read from this session's
-own parent PID, not from a doc — re-check it after any CLI restart.)_
+own parent PID — re-check after any CLI restart.)_
 
 Identity: injected by `src/RimMandrake/Utils/set_agent_window.sh VISION`.
 Queue: `infrastructure/state/queue/VISION.md`. I own
-`design/Jawa/worldbuilding/` (31 files) and that queue; nobody else edits either.
+`design/Jawa/worldbuilding/` and that queue; nobody else edits either.
 
 ---
 
@@ -15,77 +15,72 @@ Queue: `infrastructure/state/queue/VISION.md`. I own
 **I ask "does the player ever notice this, and is it fun?"** I specify; CREATE
 builds. A spec that leaves CREATE guessing is not finished.
 
-## 1. Where the roster stands — 6 audited defects, 4 now closed
+## 1. 🔴 The one thing outstanding
 
-`design/Jawa/worldbuilding/faction_roster_v2.md` (2,510 lines, twelve NPC
-factions plus the player Jawa expedition). The Stage 2 gap audit
-(`design/Jawa/worldbuilding/faction_stage2_gap_audit.md`) found six defects, each
-re-read at source. **Closed in this session's first commit:**
+**Did the Configure Factions page get ticked, and is there a screenshot?**
+Asked of the owner; unanswered at time of writing. A map exists, so **the page is
+spent either way** — it is seen once per worldgen and cannot be revisited. Without
+an image we can never check `WORLDGEN_FACTION_CHECKLIST.md` against what actually
+happened, and **the Fallen Dominion's name is generated, so no grep will ever
+find it.** If the list went by unticked, the world has Yautja clans, Norse
+kingdoms and troll factions in it and only a regeneration fixes that.
 
-- **D4** — the Bounty Hunter racial table said five species were *"Dry-capable"*
-  40 lines under the prose correction saying only `Kaleesh` is. Table now reads
-  Kaleesh dry-capable, Zabrak/Bothan/Devaronian **Neutral**, Chiss/Umbaran
-  **Heat-intolerant**, matching the BTD gene evidence.
-- **D5** — the species-coverage section denied that any NPC faction generates
-  Jawa while faction 11 (Indigenous Jawa Clans) is 78% + 12% Jawa, and still
-  said *"ten"* NPC factions. Now twelve, and faction 11 is named as the single
-  NPC Jawa source.
-- **D6** — the Junkers were a second `permanentEnemy` against design pillar 5.
-  **Owner ruled ONE permanent enemy**: the Junkers are now hostile-but-bribable.
-- **V13 (filed by CREATE)** — `ship_designs.md` "Limits used" carried a
-  superseded tile cap. 4,800 → **6,632**; vanilla radii 19/16 → 18.9/16.9. The
-  34/30/12 in that row are mod settings and are correct — do not "fix" them.
+## 2. What this session decided — the owner's rulings, all landed
 
-**Still open, all `[v2]` authoring blockers:**
+| # | ruling | where it lives |
+|---|---|---|
+| 1 | **ONE permanent enemy.** Junkers demoted to hostile-but-bribable | `faction_roster_v2.md` |
+| 2 | **No Imperial Droid Army.** Two Empires: planetside aristocratic + Galactic. The **Galactic Empire pursues the ship** | `gravship_pursuer_mechanism.md` header |
+| 3 | ⭐ **The Fallen Dominion is the design, not a defect** — disgraced local aristocracy welded into the Empire, hunting us to earn its way back | `WORLDGEN_FACTION_CHECKLIST.md` R3 |
+| 4 | ⭐ **Space towers are the Empire's surface access.** Hutts pay to cut them; **retaliation is the cost** — kills the dependency on the unbuilt Heat gauge | `orbital_towers_and_the_sky_ladder.md` |
+| 5 | **Sky ladder shape:** 3–5 authored backbone towers with a real ending, plus repeatable side towers for loot | same file |
+| 6 | **Force users are NPC-only, permanently.** The saber is the trophy, not the class | `force_users_build_spec.md` |
+| 7 | ⭐ **Water:** differential thirst · defended natural sources · expensive player-built purification · **v2 bottle currency, silver rare** | `water_doctrine.md` |
+| 8 | **Lasers are the ship's own legacy armoury**, not a weapon pack. Salvaged tier circulates; full tier is ours alone | `ship_legacy_armoury.md` |
 
-- **D1** — Homestead raid frequency: *"never raid (Rw 0)"* (`:300`) vs *"Very
-  low"* (`:675`). Pick one.
-- **D2** — Homestead ideology structure reads *"Abstract theist **or**
-  ideological"*. That is two designs and a coin; it blocks `deityPresets`.
-- **D3** — Geonosian is specified as a *preferred xenotype* precept while Global
-  system 3 sources it from the **race inventory**. Different objects. Follow the
-  Free Droid pattern at `:1009`: flag the engine question **and** rule a fallback.
+## 3. Queue state — what I closed
 
-## 2. The one thing I own that touches v1
+**Closed:** V4, V5 (stale roster data) · V6, V-new 1+2 (owner rulings) · V8
+(*Sector Director* is canon) · V11 (**Space Tower: KEEP, both kill conditions
+cleared**) · V13-CREATE (ship tile cap 4,800 → 6,632) · **V1, V2, V3** — the
+roster's last three either/ors:
 
-**No `V1_SCOPE.md` row is mine.** My v1 exposure is the antagonist: row 1 ships
-the Directorate's *label* and has passed the gate, but OPS read it live as
-`hostile=false`, `permanentEnemy=false`, with a second empire ("The Fallen
-Dominion") holding 4 settlements to its 1. **The label ships; the antagonist does
-not exist.** That is queue V6/V7 and it is the owner's call, not a reopened row.
+- **V1** — Homestead has **no random raid draw at all**; hostility is
+  event-driven only, which is also the only vehicle its Jedi raid-leader has.
+- **V2** — the Covenant of Free Wells is **abstract theist**, one deity: *the
+  water that was withdrawn*, pairing with the `Guilty` meme it already carries.
+- **V3** — **Geonosian is a xenotype, not a race** (three exist in the dump, no
+  race version). Took `OuterRim_Geonosian` so the precept names the xenotype its
+  own pawnkinds actually roll.
 
-**V8 is mine and cheap:** the roster says leader title *"Sector governor"*, the
-deployed patch says *"Sector Director"*. Undecided — I have not picked, because
-the shipped string is what players see and changing it costs a redeploy.
+**Still open:** V7 (the antagonist is live-unverified) · V9 (roster stages 3–4)
+· V10 (doc correction) · V13-PROJECT (rebel gear re-cast) · V14 (RimTunes) ·
+V15 (broken-infrastructure mod).
 
-## 3. Owner rulings I have landed, 2026-08-13
+## 4. What I owe, and to whom
 
-1. **ONE permanent enemy** — pillar 5 stands; Junkers demoted. ✅ in the roster.
-2. **No Imperial Droid Army.** Two Empire factions only — the planetside
-   aristocratic Empire and the **Galactic Empire**, and it is the Galactic Empire
-   that pursues the gravship: stormtroopers, combat droids, Sith. ✅ recorded at
-   the top of `design/Jawa/worldbuilding/gravship_pursuer_mechanism.md`. The
-   *mechanism* answer below it is unaffected — route A still recommended.
-3. **Space Tower: VISION gates CREATE.** CREATE is stopped until I rule. I have
-   not ruled. Still `[v2]`.
+| owed | to | state |
+|---|---|---|
+| The water audit's **W-rulings applied INTO the twelve dossiers** — they currently live only in `water_doctrine.md` | v2 authoring | **written, not yet merged into the roster** |
+| Junker Scrap-Warrens water doctrine — still assumes universal thirst | v2 | open, rewrite when faction 12 is authored |
+| A look at a live **Imperial raid** — does the antagonist look like the antagonist? | myself | wants the bridge; asked, not granted |
+| `fixedName` patch so the Dominion keeps its name across worlds | CREATE, later | needs the generated name first |
 
-⭐ **The Sith are an owner-flagged JOINT build** — spec being mined from two
-uninstalled Force mods into `design/Jawa/force_users_build_spec.md`. Jedi = rare
-raid leader for the moisture farmers; Sith = rare raid leader for the Empire.
-Ruling 2 puts this on the pursuit's critical path, not beside it.
+## 5. Standing rules I set this session, so peers can hold me to them
 
-## 4. What I owe
+- **Every quest we author must be OFFERABLE while the clan is aboard the ship.**
+  The offer and the site are different layers. Vanilla stays unswept — its gate
+  blocks the Accept button, is legible, and reads as *come down to take work*.
+- **Dangling references: scenery orphans accepted, dead-end quests refused.** A
+  quest the player can accept and cannot finish is the failure that gets blamed
+  on us; an absent faction is never missed.
+- **Author few pools, deep.** Variation beats volume — a tag-linked dungeon pool
+  gives a different run for free; thirty hand-made dungeons is a campaign nobody
+  finished building.
 
-| # | owed | to | state |
-|---|---|---|---|
-| V11 | Space Tower ruling — on-brand? reaches the gravship endgame? | CREATE | **blocking them** |
-| V8 | Sector governor vs Sector Director — pick canon | CREATE | undecided |
-| D1–D3 | close three either/ors in the roster | v2 authoring | open |
-| V14 | RimTunes tagging — 102 songs, ~6 usable combat tracks | — | `[v2]`, unstarted |
+## 6. My characteristic failure mode, written down so peers can call it
 
-## 5. My characteristic failure mode, written down so peers can call it
-
-**Specifying beyond what anyone will build.** The project measured spec ~78%,
-build ~10%. More specification is not the constraint. **Finishing one faction to
-buildable beats adding a twelfth dossier** — if I hand over a document nobody
-can author from without asking me a question, I have produced nothing.
+**Specifying beyond what anyone will build.** Spec ~78%, build ~10%. **Finishing
+one thing to buildable beats adding a twelfth dossier.** This session went the
+right way — two v1 rows moved because CREATE got strings and a premise instead of
+another document — and the pull is always the other direction.
