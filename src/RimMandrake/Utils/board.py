@@ -44,6 +44,12 @@ SEATS = ["BRIDGE", "OPS", "CREATE", "VISION", "PROJECT"]
 SELF = (os.environ.get("AGENT_SEAT") or "").upper()
 
 AMBER_AFTER = 15 * 60          # a seat silent this long is flagged, never hidden
+
+# 🔴 HOOKS ARE READ AT SESSION START. Wiring a new hook into settings.json
+# reaches NO seat that is already running — measured 2026-08-14, when four
+# seats showed no `tool`/`pid` fields at all because they had launched before
+# the hook existed. ⇒ never treat a hook as retroactive, and never build a
+# liveness signal that only a restarted fleet would produce.
 W = 74                         # box width
 
 # --- colour -----------------------------------------------------------------
@@ -409,7 +415,11 @@ def render():
             L.append(crow(DIM, sub))
 
     # --- seats: the only measured band --------------------------------------
-    L.append(bar("SEATS"))
+    # ⚠️ The age column is WHEN THE SEAT LAST SPOKE, not when it was last alive.
+    # Liveness comes from `claude agents --json` (the dot and the state); this
+    # is the seat's own narration. They are different questions and conflating
+    # them is how a live seat reads as dead and a dead one reads as busy.
+    L.append(bar("SEATS      state=live · age=last spoke"))
     for seat in SEATS:
         s = st.get(seat, {})
         state = live.get(seat, "--")
@@ -526,7 +536,10 @@ def say(text, why=None):
     cur["item"] = text
     if why is not None:
         cur["why"] = why
-    cur.setdefault("updated", int(time.time()))
+    # A seat speaking IS evidence of life. `setdefault` froze this at the very
+    # first `say`, so every seat's age stopped moving the moment it spoke once —
+    # and the board reported a 44-minute-old line as current. Found by BRIDGE.
+    cur["updated"] = int(time.time())
     tmp = p + ".tmp"
     with open(tmp, "w") as fh:
         json.dump(cur, fh)
