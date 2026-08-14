@@ -105,6 +105,7 @@ the one asked.**
 - "Mods with Missing Publish Field ID" in RimSort is not an error
 - Disabling a mod orphaned its add-on's assembly and killed Prepatcher outright
 - Mod-list state on disk is not authoritative while the game is running
+- A delete in a Steam-synced folder is undone by the next launch
 - RimSort's "ignore" dismisses a WARNING, not your sort rules
 - A reskin whose donor ships art LOOSE fails silently if it loads first
 - Three mods shipped the base game's own assemblies, and one shipped all of it

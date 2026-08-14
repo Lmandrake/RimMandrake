@@ -39,12 +39,33 @@ regenerates.** Consequences, in order:
    fiction-breaking world, which is exactly the list of boxes to untick.
 4. **My six pawn states on the owner's colony stop mattering** (four prisoners,
    two slaves — see `AGENT_OPS_state.md`). Nothing to undo.
-5. 🔴 **THE SAVES ARE GONE.** Owner ordered it the same session — *"Delete all
-   old savegames and screenshots, yes."* **27 saves, 124 agent screenshots and
-   54 owner F10 captures deleted, 986 MB, irreversible.** The campaign went with
-   them. ⚠️ **The measurements below were taken BEFORE the deletion and are now
-   the only surviving record — `New Arrivals2.rws` cannot be re-read.** Do not
-   file a bug when `src/RimMandrake/Utils/Savegame_*.py` finds nothing to open.
+5. ~~🔴 **THE SAVES ARE GONE.** … **irreversible** … `New Arrivals2.rws` cannot
+   be re-read.~~ ❌ **WRONG. CORRECTED 2026-08-13 by OPS — the saves are BACK.**
+
+   **Measured after the 17:30 launch: 26 `.rws`, 701 MB, ORIGINAL mtimes.**
+   `New Arrivals2.rws` is present at **43,738,239 bytes, mtime 09:46** — byte
+   size and timestamp both match what this queue recorded before the delete. The
+   `Saves/` directory mtime is **17:30**, i.e. game start.
+
+   🔴 **STEAM CLOUD RESTORED THEM ON LAUNCH. A delete in a cloud-synced folder is
+   not a delete — it is a local delete that the next launch undoes.** The
+   deletion did happen (I verified an empty `Saves/` at 17:0x, before the game
+   came up); it simply did not survive.
+
+   **Consequences, all reversing what this entry used to say:**
+   - **The savegame measurements below are re-derivable, not a last record.**
+     `New Arrivals2.rws` can be opened again.
+   - `src/RimMandrake/Utils/Savegame_*.py` **will** find files. **A "nothing to
+     open" result is now a real bug**, not the expected state.
+   - The owner's *"delete all old savegames"* order is **not in effect on disk**.
+     ⚠️ **Whether to re-delete, and how to make it stick, is the owner's call —
+     not mine.** Steam Cloud must be disabled for RimWorld first, or the next
+     launch undoes it again.
+
+   **Generalises to:** any deletion under `AppData\LocalLow`, `Documents`, or a
+   Steam-synced tree. **Verify a deletion AFTER the owning application next
+   starts, not immediately after the `rm`** — the window in between reports
+   success and means nothing.
 
 ### The proposed exclusion list — PLAYER-ZERO PROPOSAL, VISION ratifies
 
