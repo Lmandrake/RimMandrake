@@ -51,6 +51,7 @@ Skim this, open what matches your task — do not read them all.
 - [`Thing.set_Rotation` returns SILENTLY on a locked pawn, and the lock is saved](#thingset_rotation-returns-silently-on-a-locked-pawn-and-the-lock-is-saved)
 - [The renderer ignores `Rotation` for any laying pawn, so turning a downed one is a no-op](#the-renderer-ignores-rotation-for-any-laying-pawn-so-turning-a-downed-one-is-a-no-op)
 - [Fixed in the companion — one line each](#fixed-in-the-companion--one-line-each)
+- [A correct measurement of the WRONG predicate — and a null baseline is the only thing that catches it](#-a-correct-measurement-of-the-wrong-predicate--and-a-null-baseline-is-the-only-thing-that-catches-it) 🔴
 
 ---
 
@@ -326,6 +327,12 @@ a **stale companion DLL**: rebuild and redeploy with the game closed
 - `ticksGame` is small and the colony has no history
 ⚠️ **A non-zero `ticksGame` plus living colonists is NOT evidence of worldgen.** Both are true on a map that was conjured in 30 seconds.
 **Recurs when:** any world-, faction- or biome-level question asked of a map that BRIDGE created. This is the blast radius of rule 1c: making maps freely is cheap, and every census taken on one inherits the ambiguity. Caught 2026-08-13 by OPS before the regeneration was booked.
+
+## 🔴 A correct measurement of the WRONG predicate — and a null baseline is the only thing that catches it
+**Symptom:** `jawa/order_pawn` returned `canReach: true` for a pawn and a console, computed by a real `ReachabilityUtility.CanReach` call that ran, took the right arguments and answered honestly. It was **the wrong question**, and nothing in the response could say so.
+**Cause:** the tool passed a **cell** with `PathEndMode.OnCell`. RimWorld's own launch gate passes the **thing** with `PathEndMode.InteractionCell` — `RitualBehaviorWorker_GravshipLaunch::PawnCanFillRole` IL_0065-006A, emitting `NoPathToPilotConsole` at IL_0072. **A pawn can reach the cell beside a console and still fail `InteractionCell`.** Those are two different verdicts wearing one field name, and `true` looks identical either way. Closing a launch gate on it would have been a confident, well-measured, wrong answer.
+**Fix:** when a tool answers a question the GAME also asks, **read the game's own call and reproduce its arguments exactly** — not an equivalent-looking one. `targetId` + `pathEndMode` now do that (`bee5da9`). Where no engine call exists to copy, **score a null baseline**: CREATE caught the identical shape the same day in art, where a derivation recipe scored 77.2% against the donor's real texture and plain mirroring — doing nothing — scored 77.1%. A number with no baseline cannot tell "my method worked" from "anything would have scored that."
+**Recurs when:** any predicate this bridge reports that the game evaluates for itself — reachability, buildability, launchability, "can this pawn fill this role". ⚠️ **This one is invisible to the first law.** `success: true` is not evidence *and neither is a correct number*: verifying that the tool ran, that the value is real, and that the value is honest all pass here. The only question that catches it is **"is this the same call the game makes?"** — so ask it before quoting a predicate at anyone, and never let a later cleanup "simplify" a mode argument back to a cell.
 
 ## Client-call gotchas that cost real minutes — the exact spellings
 Collected 2026-08-13; each one cost a seat time before it was written down.
