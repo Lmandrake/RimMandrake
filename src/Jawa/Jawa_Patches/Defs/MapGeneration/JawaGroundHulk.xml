@@ -97,10 +97,19 @@
     <genStep Class="GenStep_ScatterGroupPrefabs">
       <allowInWaterBiome>false</allowInWaterBiome>
       <isJunk>true</isJunk>
-      <minSpacing>85</minSpacing>
+      <!-- 🔴 WAS 85, AND IT CONSTRAINED NOTHING WHILE COSTING EVERYTHING.
+           minSpacing is the distance between MULTIPLE placements of the same
+           scatterer. With <count>1</count> there is never a second placement, so
+           85 could only ever shrink the set of legal spots for the only one.
+           Two live quicktests both logged "could not find cell to generate at";
+           this is the first lever and it is free. -->
+      <minSpacing>0</minSpacing>
       <count>1</count>
       <spotMustBeStandable>true</spotMustBeStandable>
-      <allowRoofed>false</allowRoofed>
+      <!-- Was false. On rocky and coastal tiles natural rock roof removes most
+           of the open ground before the 73x16 footprint is even considered. A
+           wreck under an overhang is acceptable; no wreck at all is not. -->
+      <allowRoofed>true</allowRoofed>
       <validators>
         <li Class="ScatterValidator_AvoidUsedRects" />
       </validators>
