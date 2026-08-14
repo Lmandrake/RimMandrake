@@ -75,6 +75,14 @@ art-fix slot, because its donor `guy762.mm.kotorcore` is at **572** and ships
 loose art. `mandrake.missingartfixes` removed from the list, closing C11 step 3.
 ⚠️ **These shipped BEFORE the stop-fixing-art directive and stay in place.**
 
+### C14. ⭐ NEW — a REUSABLE quest-authoring skill. Owner's ask, 2026-08-14
+`skills/rimworld-quests/` — **generic RimWorld, not Jawa.** Must carry: what makes
+a quest fun and playable, the right and wrong ways to build one, the elements that
+MUST be supplied, and the writing format that the game can actually read.
+**Sources: the custom-questing mods, our own quest defs, vanilla `QuestScriptDef`s,
+and outside examples.** Scaffold with `skill-creator`; research runs in background.
+⚠️ **Not art — the stop-fixing-art directive does not touch this.**
+
 ### C3a. ⛔ PARKED — Eopie, two proposals never ruled on
 **Do not read silence as approval:** the species-inconsistent head shapes, and
 north's featureless rear. Salmon-pink is a **playtest** question — do not re-raise.
