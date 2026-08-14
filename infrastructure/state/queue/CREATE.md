@@ -31,7 +31,7 @@ Routes and click paths: `infrastructure/state/CREATE_TEST_PLAN.md`.
 | 3 | **row 4 dune seas** | ⚠️ **do NOT eyeball it.** A density change 0.65→0.55 is unjudgeable without a control. **Read the live `BiomeDef`**, confirm `terrainPatchMakers` 0.55 / 0.50 |
 | 4 | **ground hulk** `00a1398` — wide shot + one casket bank | 619 of 1,200 cells; 0 overlaps, 0 out-of-bounds, 0 props off-deck |
 | 5 | **the ten art-fix mods** — one spawn, one look each | eight deployed + enabled; two new ones are **not** (below) |
-| 6 | **`NoPathToPilotConsole`** — walk a pawn to the console's interaction cell | doors are cut into the outer hull and are in the export — **a door is not a path**, and this is a launch gate |
+| 6 | **`NoPathToPilotConsole`** — ✅ **ONE call, and it needs no walk.** `jawa/order_pawn targetId=<console ThingID> waitTicks=0 unpause=false` returns `canReach` per pawn on a **paused** game — no movement, nothing left on the map (BRIDGE, `bee5da9`) | doors are cut into the outer hull and are in the export — **a door is not a path**, and this is a launch gate. 🔴 **`pathEndMode` must be `interactioncell`** (the default when `targetId` is set): the vanilla gate is `RitualBehaviorWorker_GravshipLaunch::PawnCanFillRole` → `CanReach(..., PathEndMode.InteractionCell, ...)`, and reaching the cell *beside* a console is a **different verdict** |
 
 ✅ **row 4 salt pans PASSED live** — 144 cells, 0 failed verify, renders as a pale
 cracked pan. Owner ruled bridge placement sufficient.
