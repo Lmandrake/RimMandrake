@@ -173,6 +173,13 @@ rather than omit them.
 - Conventional names other nodes silently expect: `map`, `asker`, `rewardValue`,
   `points`, `enemyFaction`, `site`, `siteTile`, `sitePartsParams`, `walkInSpot`,
   `customLetterLabel`/`customLetterText`. **Convention only — grep the consumer.**
+- 🔴 **A list var is made with `<addToList>`, which is a plain field on the
+  generating node** — `QuestNode_GeneratePawn` takes `<addToList>lodgers</addToList>`
+  instead of `<storeAs>`, and `QuestNode_AddToList`/`AddRangeToList` append to one.
+  This matters far more than it looks: **object signals hang on the list var**
+  (`lodgers.Recruited`), and the elements re-register as `lodgers0`, `lodgers1` for
+  text (`[lodgers0_nameDef]`). Use `storeAs` for one pawn and you have no signal to
+  listen to.
 - **Generate ≠ spawn.** `QuestNode_GenerateWorldObject` then
   `QuestNode_SpawnWorldObjects`, so a later failure leaves no litter on the planet.
 
@@ -253,6 +260,27 @@ concurrent quests using the same name can never collide.
 Give rewards on the same signal as the end, in a **separate sibling node** placed
 before it, so the payout resolves before the quest closes. `sendStandardLetter true`
 produces the built-in completed/failed letter — omit it when you send your own.
+
+🔴 **Nothing you schedule after `QuestNode_End` ever runs.** The quest is cleaned
+up, and its `QuestParts` with it — so "fail the quest, then send the retaliation
+raid three days later" does not work as written. **The delayed consequence you
+want is the goodwill change**, which the storyteller turns into raids on its own
+schedule. `QuestNode_End` carries it directly:
+
+```xml
+<li Class="QuestNode_End">
+  <outcome>Fail</outcome>
+  <goodwillChangeAmount>-12</goodwillChangeAmount>
+  <goodwillChangeFactionOf>$asker</goodwillChangeFactionOf>
+  <goodwillChangeReason>StrandedTravellerTaken</goodwillChangeReason>
+</li>
+```
+
+⚠️ **`goodwillChangeReason` is a `HistoryEventDef`, not a string** — it is the line
+the player reads in the faction tab. Core keeps its own in
+`Data\Core\Defs\Goodwill\GoodwillEvents_Quests.xml` (`QuestPawnLost`,
+`QuestPrisonerRecruited`, …); if none fits, ship your own — it is a `defName` and a
+`label`, nothing more.
 
 ---
 
@@ -345,7 +373,29 @@ name the mod in `<modDependencies>`. VEF ships one node under three namespaces.
 
 ---
 
-## 10. Keep this skill learning
+## 10. A worked example, and what it could not tell me
+
+`src/RimMandrake/StrandedQuest/` is a complete one-quest mod written from this
+skill and nothing else: About, one `QuestScriptDef`, one `HistoryEventDef`, pure
+vanilla nodes, no DLC dependency. Its header carries the spec it was built from and
+a file-and-line provenance line for every node shape. Read it before writing your
+first quest; it is faster than reading vanilla, because vanilla's teaching examples
+are 300 lines with a DLC's vocabulary in them.
+
+**Two things stayed unknown, and both cost a design decision rather than a load:**
+
+- **`arrivalMode` has exactly one value with XML precedent — `RandomDrop`.** The
+  enum has more, but nothing shipped names them, so the fiction was written around
+  a drop pod rather than a walk-in. When only one value is attested, that is the
+  cheap value.
+- **`QuestNode_GetRandomPawnKindForFaction` is used twice in vanilla and both uses
+  supply an Empire-specific `<choices>` block.** Whether `<choices>` is optional is
+  not established. The example sidesteps it with a factionless `SpaceRefugee`.
+
+**That is the honest shape of this domain.** Neither gap is in any tutorial, and
+both were found by trying to build something. When you hit one, write it here.
+
+## 11. Keep this skill learning
 
 After any quest work, ask what surprised you. If something did, add it here —
 symptom, cause, fix, and **"generalises to"**. The failure table in
