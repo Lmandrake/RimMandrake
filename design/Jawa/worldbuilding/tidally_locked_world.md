@@ -209,3 +209,34 @@ stops being C# entirely.
 
 ⚠️ **The mod's own description says "generating at least 50% of the planet is
 recommended."** That is a worldgen-screen setting and it belongs on the checklist.
+
+---
+
+## ✅ OWNER'S RULINGS, 2026-08-14 — three answers that close open items
+
+**1. 🔴 The pursuit is GREATLY EXTENDED on the nightside, never terminated.**
+
+> **The player can always buy time. They can never buy safety.**
+
+⭐ **This is the stronger design and it removes a whole class of problem.** A
+pursuit that stops would mean a player who solves the nightside's problems has
+solved the campaign's central threat — and it would force us to detect and price
+"has the player cheated the hunt". **Extended-but-never-stopped needs no state, no
+detection and no escalation ladder: the nightside is a reprieve, and reprieves
+expire on their own.**
+
+**2. 🔴 Jawa heat tolerance: RE-POINT the faction xenotypeSets at `BTD_Jawa`
+(+20 °C).**
+
+The sets currently name `OuterRim_Jawa`, which grants only +10 °C. **On a planet
+whose subsolar point is +70 °C, halving the clan's heat tolerance would have
+quietly made the deep dayside impassable to the player faction** — a balance
+change nobody chose, arriving through a mod-priority accident.
+
+⚠️ **This is a patch on every faction that fields Jawa**, and it must land
+**before worldgen**, because `xenotypeSet` is read when pawns generate.
+
+**3. Royalty's progression is ACCEPTED as lost.** A permanently hostile Empire
+switches off titles, permits, honour and imperial favour. **A Jawa scavenger clan
+earning imperial knighthood reads badly anyway**, and the Empire being
+un-negotiable is the point. Recorded so nobody re-proposes it as a bug.
