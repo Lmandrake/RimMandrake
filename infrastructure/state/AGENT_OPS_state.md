@@ -23,7 +23,45 @@ quoted interchangeably.** I wrote against the file with an mtime guard that woul
 have aborted on a concurrent RimSort write. **Re-derive; do not reuse a quoted
 index.**
 
-### 🔴 ARMED AND WAITING — delete the saves the moment the game is LIVE
+### ✅ EXECUTED 2026-08-14 ~01:30 — saves + screenshots deleted in the live window
+
+**Trigger met properly:** BRIDGE **measured** `mapCount=1, currentMapReady=true,
+paused=true` on a dev quicktest — not inferred, not relayed. Game process
+confirmed running before **and** after.
+
+**Deleted:** 26 `.rws` / **734,286,763 B** · 44 `.png` / **98,105,480 B**.
+Both folders kept, both now 0 files / 0 bytes. Steam `userdata` screenshots were
+already empty. BRIDGE had salvaged 3 load-bearing captures into
+`observed/evidence/` beforehand (`f897a4c`).
+
+🔴 **NOT YET VERIFIED, AND THIS IS THE WHOLE POINT.** The post-`rm` check is
+exactly what fooled us last time — `Saves/` genuinely was empty then too, and
+Steam Cloud restored all 26 with **original mtimes** at the next launch.
+**The only check that means anything is a count AFTER the game next starts.**
+Until then the correct statement is *"deleted, unverified"*, never *"gone"*.
+
+⏳ **RULE EXPIRES the day the real campaign starts.** Throw-away debugging worlds
+only. A standing delete against a live campaign is destructive.
+
+### 🔴 TRAP — a compound `rm` with an unmatched glob deletes NOTHING under zsh
+
+**Measured, first attempt at the above.** This command deleted **zero** files:
+```zsh
+rm -f "$S/Saves/"*.rws "$S/Saves/"*.bak "$S/Screenshots/"*.png
+```
+No `.bak` existed. **zsh's default `nomatch` aborts the ENTIRE command before it
+runs** — unlike bash, which passes the unmatched pattern through and deletes the
+rest. The only output was `zsh: no matches found: …*.bak`, which reads like a
+warning about one pattern and is actually a report that **nothing happened at
+all**.
+
+**Generalises to every destructive zsh one-liner with more than one glob** — and
+to `mv`, `cp`, `chmod` equally. **Use `find … -delete`**, which has no glob
+expansion, or capture a before/after count. **I only caught it because I printed
+post-counts; a "success" report here would have been pure fiction, and the next
+launch would have "restored" files that were never removed.**
+
+### ~~ARMED AND WAITING — delete the saves the moment the game is LIVE~~ (done, above)
 
 **Owner-authorised, confirmed directly in my session 2026-08-14** (and separately
 by PROJECT first-hand). **Trigger: BRIDGE's game-live announcement.** They have
