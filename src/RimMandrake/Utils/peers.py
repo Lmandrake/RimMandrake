@@ -112,7 +112,13 @@ def main():
     rows.sort(key=lambda s: (s.get("_seat") or "~", s.get("name") or ""))
 
     mismatched = False
-    print("%-9s %-12s %-8s %-9s %s"
+    # 🔴 The name is QUOTED and the column is wide enough for the longest seat
+    # name. It used to be a bare "%-12s", and 'AGENT BRIDGE' is exactly 12 chars
+    # — so the field consumed its own padding and the PID ran onto the end of the
+    # name: `AGENT BRIDGE 932`. A seat read that as the address and the send
+    # bounced. Only `AGENT OPS` (9 chars) ever rendered correctly, which is why
+    # the bug hid: replying to OPS worked, so the format looked fine.
+    print("%-9s %-17s %-8s %-9s %s"
           % ("SEAT", "NAME (send to this)", "PID", "STATUS", "ADDRESS"))
     for s in rows:
         pid = s.get("pid")
@@ -129,8 +135,8 @@ def main():
         if seat != "?" and not name.endswith(seat):
             flags.append("name!=seat")
             mismatched = True
-        print("%-9s %-12s %-8s %-9s uds:%s %s" % (
-            seat, name, pid, s.get("status") or "?",
+        print("%-9s %-17s %-8s %-9s uds:%s %s" % (
+            seat, "'%s'" % name, pid, s.get("status") or "?",
             s.get("messagingSocketPath") or "?", " ".join(flags)))
 
     print("\n⭐ SEND TO THE NAME COLUMN, NEVER THE SEAT COLUMN. They agree only "
