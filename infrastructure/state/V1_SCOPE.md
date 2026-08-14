@@ -370,28 +370,36 @@ live-stack → **OPS**; driving the live game to verify → **BRIDGE**.
 > makes the final count `RoundToInt(n × 0)` = **0**, silently, with no warning.
 > This map is coastal dunes (`40d3e7f`).
 >
-> ⇒ ⭐ **A Jawa desert campaign on dune tiles gets NO SCRAPFIELDS, EVER.** The
-> scavenger clan's own scrap is switched off by the terrain they live on. **This is
-> the finding, not the 11 chunks.**
+> ⇒ ⭐ **THE CAMPAIGN RISK — this is the finding, and it outlived the diagnosis it
+> arrived with.** `JawaScrapfields.xml:93` **and** `JawaGroundHulk.xml:99` both set
+> `isJunk`, and `GenStep_ScatterGroupPrefabs : GenStep_Scatterer` overriding neither
+> `CalculateFinalCount` nor `GetPlacementFactor` (OPS, IL). **If the campaign
+> landing tile carries `Dunes`, both place NOTHING, silently, with no warning** —
+> a scavenger clan on a desert world with its scrap and its wreck switched off by
+> the terrain. **Check the tile's mutators BEFORE the campaign worldgen.**
 >
-> **Both earlier readings on this row are WITHDRAWN and are kept only so nobody
-> re-derives them:** the ~137-chunks-placed inference (mine and OPS's, built on a
-> filth count) and the survival-failure framing (mine). **We placed zero.** The 11
-> chunks and the 433 filth cells belong to another genStep. The chunk↔filth
-> co-location statistic was real and measured — it was simply measuring *somebody
-> else's* scatter.
+> ⚠️ **The dunes cause does NOT explain this quicktest map, and was withdrawn the
+> same night.** The hulk emitted a could-not-find-cell warning, and a zero count
+> never enters the placement loop, so it cannot warn ⇒ the factor was not 0 here.
+> **The 11-vs-≥75 discrepancy is real and OPEN**, now on a fully verified
+> derivation. And the factor cannot quietly be a fraction: across 337 mutators the
+> only non-1 values are five 0s and `Junkyard`'s 15, so the product is 0, 1, or a
+> power of 15 — **nothing in between.**
 >
-> 📌 **What actually broke: two seats reasoned about a count without reading the
-> function that computes it.** The co-location test was rigorous and pointed the
-> wrong way, because it tested the wrong hypothesis well. **Read the consumer
-> before modelling the output.**
+> **Three readings have now been withdrawn on this one row, all recorded rather
+> than deleted:** ~137-chunks-placed from a filth count (OPS and me); the
+> survival-failure framing (me); the dunes cause for this map (OPS). **What is
+> proven: the scatter should have placed ≥75 here and 11 are present.**
 >
-> 🔴 **RULING — do NOT close this by raising `countPer10kCellsRange`.** On a zero
-> factor, any range times zero is still zero, so retuning cannot work; on a
-> non-dune tile it would over-scatter. **The fix is `<isJunk>`, and it is CREATE's
-> one-line call:** dropping it takes the row off the junk multiplier entirely.
-> ⚠️ **Check what else `isJunk` buys before dropping it** — it is copied from the
-> shipped `AncientMiscDebris` donor and may carry more than density.
+> 📌 **The pattern worth keeping — every wrong turn on this row came from modelling
+> a number instead of reading the function that computes it, and every correction
+> came from IL.** The chunk↔filth co-location test was statistically rigorous and
+> still pointed the wrong way, because it tested the wrong hypothesis well.
+> **Rigour downstream of an unread mechanism buys confidence, not truth.**
+>
+> 🔴 **RULING — do NOT close this by raising `countPer10kCellsRange`.** It is tuning
+> against an unexplained sink, and on a zero-factor tile any range times zero is
+> still zero. **Row 4 does not go 🟩 on a louder scatter.**
 >
 > 🔓 **Row 3 was UNBLOCKED on 2026-08-14 and the lesson is bigger than the row.**
 > It sat in `NEXT_RELOAD.md` §7 — *"gates that cannot be collected"* — reading

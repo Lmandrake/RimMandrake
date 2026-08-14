@@ -264,18 +264,28 @@ negative. *(Dune seas is the exception — it closed on a def read in §3b.)*
 
 ### 5a. Ground hulk + scrapfields — **NOT biome-gated, any fresh map shows them**
 
-🛑 **DO NOT SPEND THE LOAD ON THE HULK UNTIL `isJunk` IS SETTLED — added 2026-08-14.**
-`JawaGroundHulk.xml:99` sets `<isJunk>true</isJunk>`, and OPS measured that
-`GenStep_Scatterer.GetPlacementFactor` multiplies the count by
-`TileMutatorDef.junkDensityFactor` when `isJunk` is set — **`Dunes` is one of five
-mutators whose factor is 0**, which is why scrapfields placed nothing at all. If
-`GenStep_ScatterGroupPrefabs` inherits that factor, the hulk's *"no cell on 2 of 2
-maps"* was never a `minSpacing` problem and **`c74baa9` (85 → 0) fixed the wrong
-thing** — and this check would burn 25–30 minutes returning a third zero.
-⚠️ **One measured fact cuts against it:** the hulk emitted a could-not-find-cell
-warning and scrapfields emitted none — and a zero count cannot warn, because the
-placement loop never runs. So on those two maps the hulk's count was non-zero.
-**Answerable from IL and the def dump in minutes. Answer it before booking a load.**
+✅ **THE HULK LOAD IS WORTH SPENDING — a hold was raised and then cleared, both on
+2026-08-14, and the clearing is recorded so nobody re-raises it.**
+
+I held this check on the theory that `isJunk` × `Dunes` (`junkDensityFactor` 0) had
+zeroed the hulk exactly as it appeared to zero scrapfields. **OPS settled it from
+IL in minutes and the hold is WRONG:**
+- `GenStep_ScatterGroupPrefabs : GenStep_Scatterer`, overriding neither
+  `CalculateFinalCount` nor `GetPlacementFactor` — so the hulk **is** subject to the
+  junk factor. That half held.
+- **But the hulk emitted a could-not-find-cell warning (`Player.log:6759`), and a
+  zero count never enters the placement loop, so it cannot warn.** ⇒ count ≥ 1 ⇒
+  the factor was not 0 on that tile.
+⇒ **`c74baa9` (minSpacing 85 → 0) did NOT fix the wrong thing.** The
+minSpacing/roofed hypothesis is live and this is the load that tests it.
+
+🔴 **What survives, and it is a CAMPAIGN risk, not a quicktest one:** the mutator
+table is real — of 337 mutators, **`Dunes`, `Iceberg`, `VEE_DetachedIceberg`,
+`VEE_IceAndFire` and `VEE_QuicksandDunes` have `junkDensityFactor` 0**, and both
+`JawaScrapfields.xml:93` and `JawaGroundHulk.xml:99` set `isJunk`. **If the campaign
+landing tile carries `Dunes`, both place NOTHING, silently, with no warning.** The
+Jawa clan is a scavenger clan on a desert world. **Check the tile's mutators before
+the campaign worldgen, not after.**
 
 🔴 **The hulk needs a COLD LOAD, and the map must be generated AFTER it.** A
 save-load of an existing map does not re-run GenSteps. Do not test it on a map
