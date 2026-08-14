@@ -168,3 +168,60 @@ descent, two monsters — proving the loop. If it lands, it grows.
 (2) does anything in the stack render or generate an underwater map, (3) can the
 pursuit be suppressed while submerged. **Question 1 is the one that decides
 whether this is cheap or enormous**, and it is under investigation.
+
+---
+
+# 🔴 THE CHEAP ROUTE — owner, 2026-08-13, and it changes the whole proposition
+
+> *"There's a pitch black Alpha Biomes biome already that is very alien and
+> strange and almost perfect to pretend is at the bottom of the ocean, making
+> this mod just inspirational to allow us to 'go to that biome' when we try to
+> land on water instead."*
+
+⭐ **This is the version to build.** Everything above described an environment we
+would have to construct. This describes a **redirect**:
+
+> **Landing on a water tile takes you to the dark biome.**
+
+**We do not build the ocean floor. We arrive at one that already exists.**
+
+## What that buys, itemised
+
+| we thought we needed | what we actually need |
+|---|---|
+| an underwater map type | **none** — an existing biome generates it |
+| underwater rendering | **none** |
+| a new fauna set — "problematic monsters" | ⭐ **the biome ships its own**, and Alpha's creatures read as genuinely *not from here*, which is exactly right for the abyss |
+| flora, terrain, weather, temperature | **all included** |
+| vacuum/breathing plumbing | ⚠️ **now OPTIONAL** — a layer we may add for tension, not a prerequisite |
+
+**GravTide drops from dependency to inspiration.** Whatever it does, the concept
+no longer waits on it. **Evaluate it on its own merits, not as a blocker.**
+
+## The one thing we do have to build
+
+**The redirect itself: water tile + land → that biome's map.** That is the whole
+mechanism, and it is the only feasibility question left that matters.
+Under investigation: whether anything in the stack already lets a water tile
+generate a playable map, and whether a biome can be forced for a given landing.
+
+## The fiction, which now writes itself
+
+**You do not fly to the dark place. You go down into it.** The descent is the
+transition, and the strangeness on arrival is the point: **the clan expected mud
+and found something alien and lit by nothing.** Nobody down there is Star Wars,
+which is precisely why it is frightening — every other threat on this planet has
+a name and a faction and a price.
+
+⚠️ **One coherence cost, accepted with eyes open.** Alpha Biomes' dark biome was
+authored for its own setting, so some of its flora and creatures will not read as
+oceanic. **Do not repaint the biome** — that is the expensive path we just
+escaped. **Cast it instead**: the clan calls it the deep, and what the clan calls
+things is what the campaign calls them.
+
+## Where this now sits
+
+- **Feasibility is a single question**, not a research programme.
+- **Cost has collapsed** from "a new environment class" to "a landing redirect".
+- **Still v2** — but it moved from *aspirational* to *plausible* in one sentence,
+  which is the best kind of design note to receive.
