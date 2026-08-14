@@ -219,7 +219,7 @@ def read_delta(title):
         return None
 
     root = os.environ.get("CLAUDE_PROJECT_DIR") or os.getcwd()
-    script = os.path.join(root, "Utils", "whats_new.py")
+    script = os.path.join(root, "src", "RimMandrake", "Utils", "whats_new.py")
     if not os.path.isfile(script):
         return None
     try:
@@ -248,7 +248,7 @@ def read_locks():
     mean "your next commit fails". 0 and anything unexpected are silence.
     """
     root = os.environ.get("CLAUDE_PROJECT_DIR") or os.getcwd()
-    script = os.path.join(root, "Utils", "check_git_locks.py")
+    script = os.path.join(root, "src", "RimMandrake", "Utils", "check_git_locks.py")
     if not os.path.isfile(script):
         return None
     try:

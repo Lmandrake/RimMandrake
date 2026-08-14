@@ -90,9 +90,31 @@ SEAT_RE = re.compile(r"[A-Z][A-Z0-9_]{1,15}")
 
 
 def repo_root():
-    return os.environ.get("CLAUDE_PROJECT_DIR") or os.path.dirname(
-        os.path.dirname(os.path.abspath(__file__))
-    )
+    """Walk up to the marker rather than counting directories.
+
+    This counted two levels up, which was the repo root until the 2026-08-13
+    restructure moved Utils/ to src/RimMandrake/Utils/. It then resolved to
+    src/RimMandrake, the seat roster glob matched nothing, and `--all` printed a
+    header with zero rows -- a missing input reported as an empty one. Anchor on a
+    file that only the root has, so the next move cannot break it silently.
+    """
+    env = os.environ.get("CLAUDE_PROJECT_DIR")
+    if env:
+        return env
+    d = os.path.dirname(os.path.abspath(__file__))
+    while True:
+        if os.path.isfile(os.path.join(d, "CLAUDE.md")) and os.path.isdir(
+            os.path.join(d, ".claude")
+        ):
+            return d
+        parent = os.path.dirname(d)
+        if parent == d:
+            raise SystemExit(
+                "whats_new.py: could not locate the repo root (no CLAUDE.md + "
+                ".claude above %s). Refusing to run rather than report an empty "
+                "delta." % os.path.abspath(__file__)
+            )
+        d = parent
 
 
 _GIT_CACHE = {}
