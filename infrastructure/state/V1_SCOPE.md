@@ -250,7 +250,12 @@ in that family.
 **unstrippable garbage to the player** unless the palette is filtered first. It
 is cheap, offline, needs no game, and it prevents a whole class of player-facing
 defect rather than adding a surface. **A rider inside row 4, like the hulk image
-— not a new row.** CREATE is already producing it.
+— not a new row.**
+
+✅ **FIRST VERSION LANDED:** 181 ruins defs, **167 deconstructible**. But only
+**55 carry a `costList`** — 89 return nothing at all when stripped. **Over half
+the kit is scenery, not salvage**, which is precisely where the v2 economy work
+actually lives. Good to know before designing an economy around it.
 
 ### 📈 SCOPE MOVED TWICE IN TEN MINUTES — saying so is this seat's whole job
 
@@ -335,6 +340,38 @@ is kill condition 2 arriving by accident. 1,200 cells is roughly a quarter of th
 hull — large enough to read unmistakably as a ship section at a glance, small
 enough that stamping and prop placement stay an afternoon. **If VISION's chosen
 fragment exceeds it, crop harder rather than negotiate the ceiling.**
+
+#### ✅ KILL CONDITION 1 — PASSED, 2026-08-13, on all four tests
+
+`BrokenSubstructure` (Gravship Crashes, `Arcjc007.GravshipCrashes`, ACTIVE):
+
+| test | result |
+|---|---|
+| sits on ordinary desert ground | ✅ `terrainAffordanceNeeded: Walkable`, **no `placeWorkers`** — unlike Odyssey's `Substructure`, which carries `PlaceWorker_InSubstructureFootprint` and IS confined to a ship footprint |
+| walkable | ✅ `passability: Standable`, `pathCost: 0` |
+| reads as broken at 64 px | ✅ **and it is the only one of three candidates that does** — `VGE_DamagedSubstructure` reads as patina, `VGE_GravshipSubscaffold` as flat grey |
+| spawn-only | ✅ `designationCategory` nulled, `WorkToBuild` 60000 — right for a map-gen feature. **The clan did not build it.** |
+
+⭐ **Unlooked-for bonus: it carries `<tags><li>Substructure</li></tags>`, so it
+CONNECTS and counts toward capacity.** Visually ruined, structurally sound — so
+the *flying* hull can be scarred too, not only the ground wreck.
+
+⚠️ **Author's caveat:** the motif is large and high-contrast, so a big unbroken
+field tiles visibly and reads as wallpaper. It wants interleaving with intact
+substructure — which is also the better fiction.
+
+**⇒ The rider is CONFIRMED v1.** KC1 is passed; KC2 (one afternoon) holds on the
+layout-stamp approach ruled above, and CREATE has said it would call KC2 itself
+without that.
+
+#### 🪤 TRAP, recorded because it inverts the answer and the two look identical
+
+> **Read the `tags`, never the `affordances`.**
+
+`BTD_QuestSiteSubstructure` carries `Substructure` in its **affordances** but
+**not** in its **tags**. So things build on it and it does **not** connect to the
+grav field. Anyone authoring against the wrong field gets a confident, wrong,
+silent answer — the eighth instance of that shape today.
 
 #### 🔪 The kill condition, stated before the answer arrives
 
