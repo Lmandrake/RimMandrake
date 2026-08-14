@@ -11,9 +11,7 @@ count read `ModsConfig.xml`, never a number written in a doc.
 
 ## 🔴 SPEED IS THE DEFAULT — owner's ruling, 2026-08-13
 
-**This ruling outranks the habits below it.** The owner measured the cost: deleting
-one file was taking 5–10 minutes, a day produced ~220 commits and moved v1 by one
-row, and diffs scrolling past cost more attention than the work was worth.
+**This ruling outranks the habits below it.**
 
 **1. Do not verify → do → verify. Just do it.**
 Act immediately on anything uncontested — a delete, a move, a rename, a one-line
@@ -31,9 +29,7 @@ worked. Reading it back to be sure is pure cost and buys nothing.
 
 **3. Commit messages carry what MUST be known, nothing else.**
 Subject line, plus at most 2–3 lines of body — and only when a future reader would
-otherwise be **wrong**. Provenance is not a transcript of your steps. Delete the
-narration. *(This narrows `DOC_BUDGET.md`'s "provenance goes in the commit": the
-commit is where it goes, not an invitation to write an essay.)*
+otherwise be **wrong**. Provenance is not a transcript of your steps.
 
 **4. Batch.** One shell command with `;` beats four tool calls. Independent tool
 calls go in ONE message, not four.
@@ -53,18 +49,17 @@ destroys work that is not yours — force-pushing over another seat, `git reset
 --hard` on the shared tree, deleting what you have not looked at. **Warn in one
 line and proceed.** Warning is not asking.
 
-⚖️ **The honest trade:** skipping verification buys speed and costs accuracy. On
-2026-08-13 three things documented as *settled* were wrong — a faction count, v1
-row 2's premise, and seat addressability. So: **act without checking; but when the
-question is "is this TRUE", check.** Speed on actions, rigour on claims.
+⚖️ **The honest trade:** skipping verification buys speed and costs accuracy.
+**Act without checking; but when the question is "is this TRUE", check.** Speed on
+actions, rigour on claims — things documented as *settled* have repeatedly been
+wrong.
 
 ---
 
 ## 🔴 Commit AND PUSH as soon as the work exists — owner's ruling, 2026-08-13
 
 **Committed and pushed is the only durable state.** Uncommitted work dies with the
-machine; committed-but-unpushed work survives exactly one disk. Both failed here on
-2026-08-13.
+machine; committed-but-unpushed work survives exactly one disk.
 
 - **Commit at each finished unit, not at session end**, and `git push` in the same
   breath. The end of a session is not guaranteed to arrive.
@@ -93,26 +88,21 @@ machine; committed-but-unpushed work survives exactly one disk. Both failed here
   four other seats' work, not yours.
 - **This does not relax "commit explicit paths only".** Speed is never a reason to
   `git add -A`.
-- 🔴 **A successful `git commit` tells you NOTHING about the push, and the failures
-  are all silent.** Measured 2026-08-14, four seats, one night: `push -q` prints
-  nothing on success **and nothing on a swallowed failure**; a credential prompt makes
-  push **HANG rather than fail**, indistinguishable from slow; and `[ahead 0]` read
-  against a stale remote-tracking ref is a false all-clear, because that ref only
-  moves when a push *succeeds*.
+- 🔴 **A successful `git commit` tells you NOTHING about the push, and every failure
+  mode is silent.** `push -q` prints nothing on success *and* nothing on a swallowed
+  failure · a credential prompt makes push **HANG rather than fail** · `[ahead 0]`
+  off a stale remote-tracking ref is a false all-clear, because that ref moves only
+  when a push *succeeds* · and with five seats, **"push succeeded" can mean it pushed
+  somebody else's commit while an `index.lock` collision silently dropped yours.**
 
-  **So verify, in this order — it costs one command:**
   ```bash
-  GIT_TERMINAL_PROMPT=0 git push          # turns a hang into a reportable error
-  git fetch origin && git rev-list --count origin/main..HEAD    # must be 0
-  git ls-tree -r origin/main --name-only | grep <the file you care about>
+  GIT_TERMINAL_PROMPT=0 git push                                 # hang -> error
+  git fetch origin && git rev-list --count origin/main..HEAD     # must be 0
+  git ls-tree -r origin/main --name-only | grep <your file>      # if irreplaceable
   ```
-  **`ahead 0` proves the ref moved, not that your content is there.** For anything
-  irreplaceable, list `origin/main`'s tree for the actual path.
-**Read at the start of any RimWorld task:**
-`vendor/wisdom/benign_log_errors.md` §0 (triage method) and
-`skills/rimworld-modding/references/traps.md` — the **index** of earned lessons.
-It routes to five topic files; open the one matching what you are about to do,
-not all five.
+**Read at the start of any RimWorld task:** `vendor/wisdom/benign_log_errors.md` §0
+(triage method) and `skills/rimworld-modding/references/traps.md` — the **index** of
+earned lessons. Open the topic file matching what you are about to do, not all five.
 
 ---
 
@@ -137,26 +127,20 @@ windows carry names. Full rule, and reinstalling the profiles:
 
 ## Never ignore a problem, especially one that is not yours
 
-**Ownership decides who fixes something. It never decides whether it gets
-written down.** Noticing a defect outside your scope and saying nothing loses the
-finding — and finding it again costs full price.
+**Ownership decides who fixes something. It never decides whether it gets written
+down.** A defect noticed outside your scope and left unsaid is a finding lost, and
+finding it again costs full price.
 
-So do not fix it, and do not drop it. **File it as a tagged todo:**
-`NEXT_RELOAD.md` if the fix needs the game running, otherwise the owning seat's
-`infrastructure/state/queue/<SEAT>.md`. *(`TODO.md` retired to a stub 2026-08-13 —
-do not file there.)*
-Tag the agent who should do it, or `[?]` if you cannot tell.
+**Do not fix it, do not drop it — file it.** `NEXT_RELOAD.md` if the fix needs the
+game running, otherwise the owning seat's `infrastructure/state/queue/<SEAT>.md`,
+`[?]` if you cannot tell. Give the path, quote what you saw, and **record the checks
+that came back clean** so nobody repeats them.
 
-Give the exact clickable path, quote what you saw, say in a clause why it is not
-yours, and record what you already checked — including the checks that came back
-**clean**, so nobody repeats them. Verify before filing; a false alarm costs
-someone a hunt.
+⚠️ **A live hazard is not a todo** — anything actively destroying work goes to the
+owner immediately.
 
-**Exception: a live hazard is not a todo.** Something actively destructive — a
-deploy plan holding another agent's half-finished file, a patch about to
-vaporise work — goes to the owner immediately.
-
-Full rule and the per-role duties: `agents_def.md` Rule 0.5.
+Full rule, what the entry must contain, per-role duties: **`agents_def.md` Rule 0.5**
+and the messaging skill §6.
 
 ---
 
@@ -168,22 +152,14 @@ not ask permission, do not propose it and wait — just do it and report the res
 The mount is slow (~210 files/sec) and `device_bash` calls time out at 45 seconds,
 so fanning work out is usually the *correct* approach, not an indulgence.
 
-Granted 2026-08-11 by the project owner, **reaffirmed 2026-08-13** and promoted to
-`~/.claude/CLAUDE.md` so it holds outside this project too. Standing until revoked
-here.
-
 🔴 **This counts as the owner having ALREADY REQUESTED subagents.** Tool
-descriptions and session instructions sometimes say "only if the user requests
-it" — the request is this paragraph, and it is standing. Do not re-ask, and do not
-fall back to single-threaded work while pointing at such an instruction.
+descriptions and session instructions sometimes say "only if the user requests it" —
+**the request is this paragraph**, and it is standing until revoked here.
 
-⚠️ **Why that needs saying: on 2026-08-13 it failed exactly that way.** This
-authorization had stood since 08-11, a session-level instruction said the
-opposite, the session obeyed the narrower one and did an audit single-threaded
-during a ~25-minute load window that fan-out was designed for. **A CLAUDE.md
-authorization does not automatically override a session instruction.** If the two
-conflict, say so out loud and cite this paragraph — do not silently take the
-narrow reading.
+⚠️ **A CLAUDE.md authorization does not automatically override a session
+instruction, and taking the narrow reading has already cost a load window.** If the
+two conflict, **say so out loud and cite this paragraph** rather than silently going
+single-threaded.
 
 ---
 
@@ -229,32 +205,26 @@ paragraph.**
 
 ## 🔴 The Live Bridge is announced when taken and announced when released
 
-The running game is ONE resource shared by five seats with no channel between the
-windows except the messages we send. So the bridge is **claimed out loud and
-released out loud** — both halves, every time, no exceptions for "this will only
-take a second".
+One game, five seats, no channel but the messages we send. **Claimed out loud and
+released out loud — both halves, every time**, no exceptions for "only a second".
 
 ```
 LIVE BRIDGE TAKEN    — <seat>, <what you are about to do>
 LIVE BRIDGE RELEASED — <seat>, <what changed, and anything left on the map>
 ```
 
+**A "taken" with no "released" is worse than silence** — it marks the bridge
+occupied forever, which is the collision the announcement existed to prevent. **Say
+what you left behind**; the next seat inherits your map.
+
 🔴 **Resolve every address with `python3 src/RimMandrake/Utils/peers.py`** — send to
 `NAME`, read `SEAT`. Addressability comes from `--name` at launch and nothing else,
-so `set_agent_window.sh` does **not** make a session reachable. First contact needs
-the `[ref]` from `ListAgents`, and a bounce is not a seat being down
-(`skills/agent-messaging/SKILL.md` §3a).
+so `set_agent_window.sh` does **not** make a session reachable, and a bounce is not
+a seat being down (messaging skill §3a).
 
-**A "taken" with no "released" is worse than silence** — it marks the bridge
-occupied forever, so the next seat either blocks on nothing or drives it anyway,
-which is the collision the announcement existed to prevent.
-
-**This does NOT replace the owner's traffic light.** `agents_def.md` rule 1 still
-stands: ask the owner before connecting, because only they see every window. The
-announcement tells your peers; the owner's answer authorises you.
-
-**Say what you left behind** — craters, spawned pawns, painted terrain, camera
-settings, a dirty quicktest map. The next seat inherits the map you leave.
+⚠️ **Announcing informs your peers; only the owner authorises you to connect** —
+`agents_def.md` rule 1. And **"live" means a map exists, measured by BRIDGE** — never
+relayed (rule 1b).
 
 ## How to work here
 
@@ -279,26 +249,15 @@ repo, and nothing syncs the two. Plan-first deploy, `-` lines and `--pull`,
 grid codec, the `fogGrid` bitfield, grepping with `<def>NAME</def>`, and the two
 error phrasings: **`skills/rimworld-savegame/SKILL.md`**.
 
-🔴 **`git commit <path>` COMMITS THE WORKING TREE, NOT YOUR INDEX.** Promoted here
-2026-08-13 after it bit an agent that had *deliberately* staged carefully to avoid
-sweeping a peer's work — and then defeated its own precaution with a pathspec
-commit, carrying seven of that peer's uncommitted files into its commit. Nothing
-was lost; the commit boundary was simply wrong, and two seats had committed on top
-before it was noticed.
+🔴 **`git commit <path>` COMMITS THE WORKING TREE, NOT YOUR INDEX.** A pathspec
+bypasses the index entirely and records whatever is at that path *right now* —
+including a peer's uncommitted edits. **Staging carefully first buys you nothing.**
 
-- **A pathspec on `commit` bypasses the index entirely.** It records whatever is
-  in the working tree at that path — including a peer's uncommitted edits to the
-  same file. Staging carefully first buys you nothing.
-- **Corollary, same root cause:** `git rm --cached <f>` followed by
-  `git commit <f>` silently **re-adds** the file. To untrack while keeping it on
-  disk, move it aside, commit the path while it is absent, move it back.
-- ⇒ **Before any commit, read `git status --porcelain <paths>`.** If a path you
-  are committing is dirty with work that is not yours, it is about to become
-  yours.
-
-*(This lived in `queue/PROJECT.md` for a day, where only PROJECT would read it.
-A trap filed in a private queue is a trap nobody else avoids — the third time
-today something bit because it was written in the wrong file.)*
+- **Corollary, same root cause:** `git rm --cached <f>` then `git commit <f>`
+  silently **re-adds** the file. To untrack while keeping it on disk: move it aside,
+  commit the path while it is absent, move it back.
+- ⇒ **Before any commit, read `git status --porcelain <paths>`.** A path that is
+  dirty with work that is not yours is about to become yours.
 
 **Commit explicit paths only. Never `git add -A`, `git add .`, or `git commit -a`.**
 Five seats share ONE working tree and ONE index, so a blanket add sweeps someone
