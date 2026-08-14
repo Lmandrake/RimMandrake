@@ -34,6 +34,14 @@ after already being answered._
 
 ## Checked and NOT listed — so nobody re-adds them
 
+- **#11 `StrandedQuest`, enable or leave inert — CLOSED 2026-08-14 WITHOUT the
+  owner, correctly.** OPS answered it from `V1_SCOPE.md:86`, which I verified:
+  v1 gets **one** `QuestScriptDef` that fires and resolves, and **row 3 already
+  fills it** (*The Claim*, seen live). ⇒ `StrandedQuest` stays deployed-but-inert
+  and is `[v2]`. 📌 **This row should never have reached the owner.** It looked
+  like a scope call and was answerable from the scope document — the test in this
+  file's own rule. Do not re-file it.
+
 - **#5, `TODO.md`'s retirement, and #7, the keep-or-delete set** — both ruled by the
   owner 2026-08-13 and **executed the same hour**. Do not re-raise either; the
   outcomes are in `CLOSED.md`. `TODO.md` is now a pointer stub, so filing anything
