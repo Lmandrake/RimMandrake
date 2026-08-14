@@ -1,0 +1,180 @@
+<title>Species Register</title>
+<style>
+:root{--bg:#F5F3EF;--panel:#FFF;--ink:#191614;--dim:#6B635C;--line:#DDD7CF;--hot:#B45309;--warm:#A16207;--neu:#57534E;--cold:#2E6E86}
+:root:not([data-theme="light"]){@media (prefers-color-scheme:dark){--bg:#12100E;--panel:#1B1815;--ink:#EDE8E2;--dim:#9A918A;--line:#2E2A26;--hot:#F0A14A;--warm:#D9A441;--neu:#A29A93;--cold:#6FB4CE}}
+:root[data-theme="dark"]{--bg:#12100E;--panel:#1B1815;--ink:#EDE8E2;--dim:#9A918A;--line:#2E2A26;--hot:#F0A14A;--warm:#D9A441;--neu:#A29A93;--cold:#6FB4CE}
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--ink);font:16px/1.55 ui-sans-serif,system-ui,"Segoe UI",Roboto,sans-serif;margin:0;padding:2.5rem 1.25rem 5rem}
+.wrap{max-width:1180px;margin:0 auto;display:flex;flex-direction:column;gap:2.6rem}
+h1{font-size:clamp(1.7rem,4vw,2.5rem);margin:0;letter-spacing:-.02em}
+.lede{color:var(--dim);max-width:64ch;margin:.6rem 0 0} .lede b{color:var(--ink)}
+.callout{border:1px solid var(--line);border-left:3px solid var(--hot);background:var(--panel);border-radius:4px;padding:1rem 1.1rem;display:flex;flex-direction:column;gap:.55rem}
+.callout h2{margin:0;font-size:1rem;color:var(--hot)} .callout p{margin:0;font-size:.9rem;color:var(--dim)} .callout b{color:var(--ink)}
+.tier>header{border-top:2px solid var(--line);padding-top:.85rem;margin-bottom:1rem;display:flex;justify-content:space-between;align-items:center;gap:1rem}
+.tier h2{margin:0;font-size:1.1rem;letter-spacing:.01em}
+.tier .n{font:600 .78rem/1 ui-monospace,Menlo,monospace;color:var(--dim);border:1px solid var(--line);padding:.28rem .5rem;border-radius:3px}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(268px,1fr));gap:.9rem}
+.m{background:var(--panel);border:1px solid var(--line);border-radius:4px;padding:.85rem;display:flex;flex-direction:column;gap:.35rem}
+.hd{display:flex;justify-content:space-between;align-items:baseline;gap:.5rem}
+.m h3{margin:0;font-size:1rem}
+.hd i{font:600 .62rem/1 ui-monospace,Menlo,monospace;font-style:normal;padding:.26rem .38rem;border-radius:3px;border:1px solid var(--line);white-space:nowrap;letter-spacing:.02em}
+.h-hot{color:var(--hot);border-color:var(--hot)!important} .h-warm{color:var(--warm)} .h-neu{color:var(--neu)} .h-cold{color:var(--cold);border-color:var(--cold)!important}
+.look{margin:0;font-size:.87rem}
+.soc{margin:0;font-size:.85rem;color:var(--dim)}
+.also{margin:0;font:.72rem ui-monospace,Menlo,monospace;color:var(--dim);opacity:.8}
+.dn{margin:.15rem 0 0;font:.68rem ui-monospace,Menlo,monospace;color:var(--dim)}
+</style>
+<div class="wrap">
+<header><h1>Species Register</h1>
+<p class="lede">The Star Wars species actually loaded in this install, grouped by <b>the faction they belong to</b> rather than alphabetically — because assigning them is the job. Each carries what it looks like, where it sits in galactic society, and its <b>heat tolerance</b>, which on this planet decides who can live where.</p></header>
+<div class="callout">
+<h2>🔴 Read this first: every species is loaded THREE TIMES</h2>
+<p><b>Three overlapping Star Wars xenotype mods are active, not one</b> — <code>[BTD] Xenotype REMIX</code> (70), <code>Star Wars Xenotypes</code> by guy762 (58) and <code>Outer Rim – Galactic Diversity</code> (44). <b>80 distinct species across 172 defs.</b></p>
+<p>🔴 <b>They are not identical, and the differences bite.</b> Jawa exists as <code>BTD_Jawa</code>, <code>guy762_xenotype_jawa</code> and <code>OuterRim_Jawa</code> — the first two grant <b>+20&nbsp;°C heat tolerance, the third only +10</b>. On a desert world that is not a rounding error.</p>
+<p>⇒ <b>The design must name ONE canonical def per species or pawn generation will roll all three.</b> Each card below carries my recommendation. <b>Default: BTD</b> — it is the most complete set and carries the strongest desert genes. Two exceptions are noted where guy762's version is better.</p>
+<p>⚠️ <b>Outer Rim's versions are cosmetic-only</b> — head shape and skin, almost no stat genes. Fine as a fallback, wrong as the canonical choice for a campaign where temperature is a mechanic.</p>
+</div>
+<section class="tier"><header><h2>Hutt Cartel</h2><span class="n">10</span></header><div class="grid"><article class="m"><div class="hd"><h3>Nikto</h3><i class="h-warm">+10 °C heat</i></div>
+<p class="look">Scaly coarse hide, horned or spined face, four sub-species tiers.</p><p class="soc">Vontor-servile to the Hutts for generations. The Cartel&#x27;s muscle and mid-caste.</p>
+<p class="dn">canonical def: <b>BTD</b></p></article><article class="m"><div class="hd"><h3>Hutt</h3><i class="h-warm">+10 °C heat</i></div>
+<p class="look">Vast sluglike hermaphrodite, up to five metres. Ninefold human lifespan.</p><p class="soc">Owns the oases and everyone who drinks. Rules by debt.</p>
+<p class="dn">canonical def: <b>BTD</b></p></article><article class="m"><div class="hd"><h3>Klatoonian</h3><i class="h-warm">+10 °C heat</i></div>
+<p class="look">Heavy build, green-brown hide, dog-like snout, green blood.</p><p class="soc">Bound to the Hutts by ancient treaty. Labour and enforcement.</p>
+<p class="dn">canonical def: <b>BTD</b></p></article><article class="m"><div class="hd"><h3>Weequay</h3><i class="h-warm">+10 °C heat</i></div>
+<p class="look">Leathery cracked skin built for desert glare; gaunt face.</p><p class="soc">Pirates and mercenaries. Sell to whoever pays; Hutt-adjacent by habit.</p><p class="also">also: Blackstar</p>
+<p class="dn">canonical def: <b>BTD</b></p></article><article class="m"><div class="hd"><h3>Neimoidian</h3><i class="h-warm">+10 °C heat</i></div>
+<p class="look">Duros-kin, grey-green, hooded eyes, cowardly.</p><p class="soc">Trade Federation stock. Money, contracts, and no appetite for a fight.</p><p class="also">also: Ascendant Helix</p>
+<p class="dn">canonical def: <b>BTD</b></p></article><article class="m"><div class="hd"><h3>Falleen</h3><i class="h-hot">+20 °C heat</i></div>
+<p class="look">Mottled green repto-mammal, ridged skull, long black hair, pheromones.</p><p class="soc">Aristocratic manipulators. Rarely seen, always brokering.</p>
+<p class="dn">canonical def: <b>BTD</b></p></article><article class="m"><div class="hd"><h3>Twi&#x27;lek</h3><i class="h-neu">neutral</i></div>
+<p class="look">Head-tails, skin in many colours, slender.</p><p class="soc">Historically enslaved by the Hutts. Dancers, spies, servants.</p><p class="also">also: Homestead</p>
+<p class="dn">canonical def: <b>BTD</b></p></article><article class="m"><div class="hd"><h3>Zeltron</h3><i class="h-neu">neutral</i></div>
+<p class="look">Red skin, dark hair, empathic and pheromonal.</p><p class="soc">Negotiators and hedonists. Disarming in both senses.</p><p class="also">also: Blackstar</p>
+<p class="dn">canonical def: <b>BTD</b></p></article><article class="m"><div class="hd"><h3>Zygerrian</h3><i class="h-neu">neutral</i></div>
+<p class="look">Feline, tufted ears, predatory and imperious.</p><p class="soc">Slavers by tradition. Detested by the Free Droids on principle.</p><p class="also">also: Blackstar</p>
+<p class="dn">canonical def: <b>BTD</b></p></article><article class="m"><div class="hd"><h3>Pyke</h3><i class="h-neu">neutral</i></div>
+<p class="look">Narrow elongated skull, sunken features, gaunt.</p><p class="soc">Spice cartel. The Hutts&#x27; rivals and occasional partners.</p><p class="also">also: Geonosian Foundry</p>
+<p class="dn">canonical def: <b>BTD</b></p></article></div></section><section class="tier"><header><h2>Galactic Empire</h2><span class="n">6</span></header><div class="grid"><article class="m"><div class="hd"><h3>Sith Pureblood</h3><i class="h-hot">+20 °C heat</i></div>
+<p class="look">Red ridged skin, chin tendrils, bone-crested skull.</p><p class="soc">The Empire&#x27;s dark-side castes. Rare, feared, never negotiated with.</p>
+<p class="dn">canonical def: <b>BTD_SithK</b></p></article><article class="m"><div class="hd"><h3>Massassi</h3><i class="h-neu">neutral</i></div>
+<p class="look">Huge red warriors, face tendrils, ridged hide.</p><p class="soc">Sith war-caste. Shock troops, not diplomats.</p>
+<p class="dn">canonical def: <b>BTD_SithM</b></p></article><article class="m"><div class="hd"><h3>Dathomirian</h3><i class="h-neu">neutral</i></div>
+<p class="look">Horned; males orange-red and patterned, females pale grey.</p><p class="soc">Nightsister-descended. Latent psychic, hyper-aggressive.</p><p class="also">also: Deep Desert Tribes</p>
+<p class="dn">canonical def: <b>BTD</b></p></article><article class="m"><div class="hd"><h3>Chiss</h3><i class="h-cold">cold-adapted</i></div>
+<p class="look">Blue skin, glowing red eyes, cold-world near-human.</p><p class="soc">Disciplined, cold-mannered tacticians. Imperial officer stock.</p>
+<p class="dn">canonical def: <b>BTD</b></p></article><article class="m"><div class="hd"><h3>Umbaran</h3><i class="h-cold">cold-adapted</i></div>
+<p class="look">Pale to bluish, colourless eyes, gaunt. Sees in the dark.</p><p class="soc">Secretive shadow-world nobility. Infiltrators.</p><p class="also">also: Ascendant Helix</p>
+<p class="dn">canonical def: <b>BTD</b></p></article><article class="m"><div class="hd"><h3>Sith Zugurak</h3><i class="h-neu">neutral</i></div>
+<p class="look">Gaunt, ridged, long-fingered engineer caste.</p><p class="soc">Sith artificers. Build what the war-caste uses.</p>
+<p class="dn">canonical def: <b>BTD_SithZ</b></p></article></div></section><section class="tier"><header><h2>Homestead Defense League</h2><span class="n">6</span></header><div class="grid"><article class="m"><div class="hd"><h3>Mirialan</h3><i class="h-warm">+10 °C heat</i></div>
+<p class="look">Green or yellow skin, geometric facial tattoos marking achievement.</p><p class="soc">Devout, disciplined, historically Force-adjacent. Frontier settlers here.</p>
+<p class="dn">canonical def: <b>BTD</b></p></article><article class="m"><div class="hd"><h3>Iktotchi</h3><i class="h-warm">+10 °C heat</i></div>
+<p class="look">Red skin, two great down-curving horns, hardened hide, precognitive.</p><p class="soc">Rare psychic scouts and wardens. Trusted as early warning.</p>
+<p class="dn">canonical def: <b>BTD</b></p></article><article class="m"><div class="hd"><h3>Cerean</h3><i class="h-neu">neutral</i></div>
+<p class="look">Tall conical cranium housing a binary brain.</p><p class="soc">Analysts and mediators. Overrepresented in leadership.</p>
+<p class="dn">canonical def: <b>BTD</b></p></article><article class="m"><div class="hd"><h3>Sullustan</h3><i class="h-neu">neutral</i></div>
+<p class="look">Small, jowled, enormous dark eyes, big ears.</p><p class="soc">Navigators and manufacturers. Cheerful, clannish.</p>
+<p class="dn">canonical def: <b>BTD</b></p></article><article class="m"><div class="hd"><h3>Abednedo</h3><i class="h-neu">neutral</i></div>
+<p class="look">Long drooping facial tendrils under a wide flat face.</p><p class="soc">Labourers and mechanics. Unglamorous and everywhere.</p>
+<p class="dn">canonical def: <b>BTD</b></p></article><article class="m"><div class="hd"><h3>Pantoran</h3><i class="h-cold">cold-adapted</i></div>
+<p class="look">Blue-skinned near-human with golden facial markings.</p><p class="soc">Cold-world colonial administrators. Out of place here.</p>
+<p class="dn">canonical def: <b>BTD</b></p></article></div></section><section class="tier"><header><h2>Deep Desert Tribes</h2><span class="n">2</span></header><div class="grid"><article class="m"><div class="hd"><h3>Tusken</h3><i class="h-hot">+20 °C heat</i></div>
+<p class="look">Wrapped head to foot in bandaging and breath filters. Gaunt.</p><p class="soc">Nomadic, isolationist, water is sacred. Hostile to moisture farming as sacrilege.</p>
+<p class="dn">canonical def: <b>BTD</b></p></article><article class="m"><div class="hd"><h3>Togorian</h3><i class="h-warm">+10 °C heat</i></div>
+<p class="look">Large digitigrade felines, short fur, heavy build.</p><p class="soc">Nomadic hunters. Clannish, contemptuous of settled life.</p>
+<p class="dn">canonical def: <b>BTD</b></p></article></div></section><section class="tier"><header><h2>Wildsteam Clan</h2><span class="n">4</span></header><div class="grid"><article class="m"><div class="hd"><h3>Wookiee</h3><i class="h-cold">cold-adapted</i></div>
+<p class="look">Nearly three metres, full fur, four-times human lifespan.</p><p class="soc">Life-debt culture. Enslaved by the Empire; hunted by Trandoshans.</p>
+<p class="dn">canonical def: <b>BTD</b></p></article><article class="m"><div class="hd"><h3>Ewok</h3><i class="h-neu">neutral</i></div>
+<p class="look">Waist-high, furred, primitive, surprisingly aggressive.</p><p class="soc">Forest primitives. Out of their world entirely in a desert.</p>
+<p class="dn">canonical def: <b>BTD</b></p></article><article class="m"><div class="hd"><h3>Lasat</h3><i class="h-neu">neutral</i></div>
+<p class="look">Tall, short-furred, powerful legs, feline face.</p><p class="soc">Near-extinct warrior people. Few, formidable, displaced.</p>
+<p class="dn">canonical def: <b>BTD</b></p></article><article class="m"><div class="hd"><h3>Nelvaanian</h3><i class="h-cold">cold-adapted</i></div>
+<p class="look">Blue-furred lupine humanoids with long snouts.</p><p class="soc">Primitive shamanic clans. Deeply out of place in heat.</p>
+<p class="dn">canonical def: <b>BTD</b></p></article></div></section><section class="tier"><header><h2>Deepwater Compact</h2><span class="n">6</span></header><div class="grid"><article class="m"><div class="hd"><h3>Quarren</h3><i class="h-warm">+10 °C heat</i></div>
+<p class="look">Squid-faced, face-tentacled, ink-spray glands.</p><p class="soc">Deepwater labour caste, resentful of Mon Calamari leadership.</p>
+<p class="dn">canonical def: <b>BTD</b></p></article><article class="m"><div class="hd"><h3>Mon Calamari</h3><i class="h-cold">cold-adapted</i></div>
+<p class="look">High-domed head, huge swivelling eyes, webbed hands.</p><p class="soc">Shipwrights and leaders. The Deepwater&#x27;s governing caste.</p>
+<p class="dn">canonical def: <b>BTD</b></p></article><article class="m"><div class="hd"><h3>Selkath</h3><i class="h-cold">cold-adapted</i></div>
+<p class="look">Aquatic, finned skull, venomous talons.</p><p class="soc">Enforce brutal neutrality; sit on the only water worth having.</p>
+<p class="dn">canonical def: <b>BTD</b></p></article><article class="m"><div class="hd"><h3>Nautolan</h3><i class="h-cold">cold-adapted</i></div>
+<p class="look">Head-tentacles, huge black eyes, amphibious.</p><p class="soc">Easy-going amphibians. Swim where others drown.</p>
+<p class="dn">canonical def: <b>BTD</b></p></article><article class="m"><div class="hd"><h3>Gungan</h3><i class="h-cold">cold-adapted</i></div>
+<p class="look">Tall, long-eared, amphibious, powerful leaping legs.</p><p class="soc">Underwater cities, dismissed by everyone above the waterline.</p>
+<p class="dn">canonical def: <b>BTD</b></p></article><article class="m"><div class="hd"><h3>Chagrian</h3><i class="h-neu">neutral</i></div>
+<p class="look">Blue, horned, with thick sensory head-tentacles. Fire-fearing.</p><p class="soc">Amphibious administrators. Formal and legalistic.</p>
+<p class="dn">canonical def: <b>BTD</b></p></article></div></section><section class="tier"><header><h2>Geonosian Foundry Hive</h2><span class="n">1</span></header><div class="grid"><article class="m"><div class="hd"><h3>Geonosian</h3><i class="h-neu">neutral</i></div>
+<p class="look">Winged chitinous insectoid; drone caste faceless and obedient.</p><p class="soc">Hive castes. Build droid armies in spire foundries.</p>
+<p class="dn">canonical def: <b>BTD</b></p></article></div></section><section class="tier"><header><h2>Ascendant Helix</h2><span class="n">5</span></header><div class="grid"><article class="m"><div class="hd"><h3>Arkanian</h3><i class="h-cold">cold-adapted</i></div>
+<p class="look">White hair and eyes, four clawed digits, sees infrared.</p><p class="soc">Geneticists convinced of their own superiority.</p>
+<p class="dn">canonical def: <b>BTD</b></p></article><article class="m"><div class="hd"><h3>Kaminoan</h3><i class="h-neu">neutral</i></div>
+<p class="look">Very tall, thin, long-necked amphibians. Cyan blood. Physically frail.</p><p class="soc">Cloners for hire. Amoral, precise, expensive.</p>
+<p class="dn">canonical def: <b>BTD</b></p></article><article class="m"><div class="hd"><h3>Rakata</h3><i class="h-cold">cold-adapted</i></div>
+<p class="look">Amphibious, gaunt, ridged skull. Aggressive, latent psychic.</p><p class="soc">Precursor Infinite Empire remnant. Studied more than met.</p>
+<p class="dn">canonical def: <b>BTD</b></p></article><article class="m"><div class="hd"><h3>Muun</h3><i class="h-neu">neutral</i></div>
+<p class="look">Very tall, very thin, long-faced bankers.</p><p class="soc">InterGalactic Banking Clan. Own debts, not territory.</p><p class="also">also: Hutt Cartel</p>
+<p class="dn">canonical def: <b>BTD</b></p></article><article class="m"><div class="hd"><h3>Echani</h3><i class="h-neu">neutral</i></div>
+<p class="look">White hair, silver eyes, pale — an Arkanian experiment on humans.</p><p class="soc">Duelists who read fighting as conversation.</p><p class="also">also: Blackstar</p>
+<p class="dn">canonical def: <b>BTD</b></p></article></div></section><section class="tier"><header><h2>Blackstar Company</h2><span class="n">7</span></header><div class="grid"><article class="m"><div class="hd"><h3>Kaleesh</h3><i class="h-warm">+10 °C heat</i></div>
+<p class="look">Reptilian, masked in beast skulls, tusked jaw, yellow eyes.</p><p class="soc">Warrior culture from a resource-poor world. Hire out as elite hunters.</p>
+<p class="dn">canonical def: <b>BTD</b></p></article><article class="m"><div class="hd"><h3>Trandoshan</h3><i class="h-warm">+10 °C heat</i></div>
+<p class="look">Big reptilian bipeds, regenerating, scaled, predatory.</p><p class="soc">Hunters who keep a literal score. Hate Wookiees on doctrine.</p>
+<p class="dn">canonical def: <b>BTD</b></p></article><article class="m"><div class="hd"><h3>Rodian</h3><i class="h-warm">+10 °C heat</i></div>
+<p class="look">Green scaled skin, huge pupil-less infrared eyes, antennae.</p><p class="soc">Bounty hunters and gunmen. Cheap, plentiful, expendable.</p>
+<p class="dn">canonical def: <b>BTD</b></p></article><article class="m"><div class="hd"><h3>Defel</h3><i class="h-neu">neutral</i></div>
+<p class="look">Furred, under 1.3 m, light-bending — reads as a shadow.</p><p class="soc">Wraiths. Assassins by reputation, and they trade on it.</p>
+<p class="dn">canonical def: <b>guy762</b></p></article><article class="m"><div class="hd"><h3>Nagai</h3><i class="h-neu">neutral</i></div>
+<p class="look">Tall, pale, agile, sharp-featured. Honour-bound.</p><p class="soc">Wild Space raiders turned mercenaries.</p>
+<p class="dn">canonical def: <b>BTD</b></p></article><article class="m"><div class="hd"><h3>Taung</h3><i class="h-neu">neutral</i></div>
+<p class="look">Grey-skinned, bony-crested predators. Need to kill.</p><p class="soc">Mandalorian ancestors. A killing culture with no small talk.</p>
+<p class="dn">canonical def: <b>BTD</b></p></article><article class="m"><div class="hd"><h3>Gand</h3><i class="h-neu">neutral</i></div>
+<p class="look">Ammonia-breathing insectoid in a sealed respirator.</p><p class="soc">Findsmen — mystic trackers. Speak of themselves in third person.</p>
+<p class="dn">canonical def: <b>BTD</b></p></article></div></section><section class="tier"><header><h2>Jawa Trade Moot</h2><span class="n">2</span></header><div class="grid"><article class="m"><div class="hd"><h3>Ugnaught</h3><i class="h-neu">neutral</i></div>
+<p class="look">Squat, snouted, industrious; twice human lifespan.</p><p class="soc">Born labourers, often indentured. Skilled and overlooked.</p><p class="also">also: Junkers</p>
+<p class="dn">canonical def: <b>BTD</b></p></article><article class="m"><div class="hd"><h3>Chadra-Fan</h3><i class="h-neu">neutral</i></div>
+<p class="look">Metre-tall furred rodentine, four nostrils, huge ears.</p><p class="soc">Tinkerers and thieves. Natural allies of Jawa scavengers.</p>
+<p class="dn">canonical def: <b>guy762</b></p></article></div></section><section class="tier"><header><h2>Junkers</h2><span class="n">4</span></header><div class="grid"><article class="m"><div class="hd"><h3>Aqualish</h3><i class="h-neu">neutral</i></div>
+<p class="look">Walrus-tusked or spider-eyed, coarse fur, four eyes in some.</p><p class="soc">Thugs and dockhands. Quick to violence.</p><p class="also">also: Hutt Cartel</p>
+<p class="dn">canonical def: <b>BTD</b></p></article><article class="m"><div class="hd"><h3>Gamorrean</h3><i class="h-neu">neutral</i></div>
+<p class="look">Green porcine bruisers with tusks and jowls.</p><p class="soc">Muscle for hire, sold cheap. Bottom of every hierarchy.</p><p class="also">also: Hutt Cartel</p>
+<p class="dn">canonical def: <b>BTD</b></p></article><article class="m"><div class="hd"><h3>Snivvian</h3><i class="h-cold">cold-adapted</i></div>
+<p class="look">Large nostrils, protruding lower tusks, wrinkled hide.</p><p class="soc">Scouts and bounty-trackers. Unpleasant company.</p><p class="also">also: Blackstar</p>
+<p class="dn">canonical def: <b>BTD</b></p></article><article class="m"><div class="hd"><h3>Mimbanese</h3><i class="h-neu">neutral</i></div>
+<p class="look">Red-skinned, ridge-browed, mud-world primitives.</p><p class="soc">Conscripted labour, everywhere resented.</p>
+<p class="dn">canonical def: <b>BTD</b></p></article></div></section><section class="tier"><header><h2>factionless</h2><span class="n">2</span></header><div class="grid"><article class="m"><div class="hd"><h3>Miraluka</h3><i class="h-neu">neutral</i></div>
+<p class="look">No eyes at all; sees through the Force behind a veil.</p><p class="soc">Force-sighted mystics. Rare, quiet, unsettling.</p><p class="also">also: Homestead</p>
+<p class="dn">canonical def: <b>BTD</b></p></article><article class="m"><div class="hd"><h3>Anzati</h3><i class="h-neu">neutral</i></div>
+<p class="look">Human-seeming with chin tendrils that unfurl to feed on minds.</p><p class="soc">Assassins who feed on their targets. Legendary, denied.</p><p class="also">also: Blackstar</p>
+<p class="dn">canonical def: <b>BTD</b></p></article></div></section><section class="tier"><header><h2>PLAYER</h2><span class="n">1</span></header><div class="grid"><article class="m"><div class="hd"><h3>Jawa</h3><i class="h-hot">+20 °C heat</i></div>
+<p class="look">Waist-high, hooded, glowing orange eyes, grey blood, fur under the robe.</p><p class="soc">Scavengers and traders. Everyone&#x27;s supplier, nobody&#x27;s ally. Fear the Hutts, tolerate everyone.</p><p class="also">also: Jawa Trade Moot</p>
+<p class="dn">canonical def: <b>BTD</b></p></article></div></section><section class="tier"><header><h2>Blackstar</h2><span class="n">5</span></header><div class="grid"><article class="m"><div class="hd"><h3>Devaronian</h3><i class="h-warm">+10 °C heat</i></div>
+<p class="look">Males bald and horned, females smooth-plated. Black blood. Fire-resistant.</p><p class="soc">Wanderers and traders with a reputation for sharp practice.</p><p class="also">also: Hutt Cartel</p>
+<p class="dn">canonical def: <b>BTD</b></p></article><article class="m"><div class="hd"><h3>Zabrak / Iridonian</h3><i class="h-neu">neutral</i></div>
+<p class="look">Crown of small horns, facial ridges, otherwise near-human.</p><p class="soc">Tough, independent, duel-minded. Found everywhere as fighters.</p><p class="also">also: Homestead</p>
+<p class="dn">canonical def: <b>BTD_Iridonian</b></p></article><article class="m"><div class="hd"><h3>Bothan</h3><i class="h-neu">neutral</i></div>
+<p class="look">Furred canine-feline anthropoids, roughly 1.5 m.</p><p class="soc">Spymasters. Everyone assumes they are listening, correctly.</p><p class="also">also: Homestead</p>
+<p class="dn">canonical def: <b>BTD</b></p></article><article class="m"><div class="hd"><h3>Feeorin</h3><i class="h-neu">neutral</i></div>
+<p class="look">Thick head tendrils, heavy build; grow stronger with age, live 400 years.</p><p class="soc">Old pirates who never weakened. Respected and avoided.</p><p class="also">also: Junkers</p>
+<p class="dn">canonical def: <b>BTD</b></p></article><article class="m"><div class="hd"><h3>Kubaz</h3><i class="h-neu">neutral</i></div>
+<p class="look">Long snouted proboscis, goggled eyes, insect-eating.</p><p class="soc">Informants. Sell what they see, to anyone.</p><p class="also">also: Junkers</p>
+<p class="dn">canonical def: <b>BTD</b></p></article></div></section><section class="tier"><header><h2>Homestead</h2><span class="n">6</span></header><div class="grid"><article class="m"><div class="hd"><h3>Bith</h3><i class="h-neu">neutral</i></div>
+<p class="look">Domed hairless skull, huge lidless black eyes, delicate.</p><p class="soc">Technicians and musicians. Fragile, indispensable.</p><p class="also">also: Ascendant Helix</p>
+<p class="dn">canonical def: <b>BTD</b></p></article><article class="m"><div class="hd"><h3>Duros</h3><i class="h-warm">+10 °C heat</i></div>
+<p class="look">Smooth blue skin, red eyes, no nose, lipless.</p><p class="soc">The galaxy&#x27;s oldest pilots and navigators. Everywhere, unremarked.</p><p class="also">also: Jawa Trade Moot</p>
+<p class="dn">canonical def: <b>BTD</b></p></article><article class="m"><div class="hd"><h3>Togruta</h3><i class="h-neu">neutral</i></div>
+<p class="look">Montrals and head-tails, white-marked colourful skin.</p><p class="soc">Communal hunters with an ingrained pack sense.</p><p class="also">also: Blackstar</p>
+<p class="dn">canonical def: <b>BTD</b></p></article><article class="m"><div class="hd"><h3>Ithorian</h3><i class="h-neu">neutral</i></div>
+<p class="look">Long curved neck, two mouths either side, hammer-headed.</p><p class="soc">Pacifist herbivores and famed ecologists. Rarely fight.</p><p class="also">also: Wildsteam</p>
+<p class="dn">canonical def: <b>BTD</b></p></article><article class="m"><div class="hd"><h3>Kel Dor</h3><i class="h-neu">neutral</i></div>
+<p class="look">Masked and goggled; cannot breathe our air unaided.</p><p class="soc">Antenna-jawed ascetics. Dependent on their gear to live.</p><p class="also">also: Ascendant Helix</p>
+<p class="dn">canonical def: <b>BTD</b></p></article><article class="m"><div class="hd"><h3>Ortolan</h3><i class="h-cold">cold-adapted</i></div>
+<p class="look">Squat blue elephantine bipeds with vast floppy ears.</p><p class="soc">Musicians and gluttons. Comic relief with a good memory.</p><p class="also">also: Hutt Cartel</p>
+<p class="dn">canonical def: <b>BTD</b></p></article></div></section><section class="tier"><header><h2>Wildsteam</h2><span class="n">1</span></header><div class="grid"><article class="m"><div class="hd"><h3>Cathar</h3><i class="h-neu">neutral</i></div>
+<p class="look">Feline bipeds with manes, fast and predatory.</p><p class="soc">Honour-bound hunters. Historically enslaved by Mandalorians.</p><p class="also">also: Blackstar</p>
+<p class="dn">canonical def: <b>BTD</b></p></article></div></section><section class="tier"><header><h2>Deepwater</h2><span class="n">1</span></header><div class="grid"><article class="m"><div class="hd"><h3>Herglic</h3><i class="h-neu">neutral</i></div>
+<p class="look">Enormous black cetacean bipeds, oily-eyed.</p><p class="soc">Traders and gamblers. Huge, slow, hard to shift.</p><p class="also">also: Hutt Cartel</p>
+<p class="dn">canonical def: <b>BTD</b></p></article></div></section><section class="tier"><header><h2>factionless only</h2><span class="n">1</span></header><div class="grid"><article class="m"><div class="hd"><h3>Yoder / Force Gremlin</h3><i class="h-neu">neutral</i></div>
+<p class="look">Tiny, green, ancient — nine human lifespans, extreme psychic.</p><p class="soc">Vanishingly rare. Not a population; a rumour with a face.</p>
+<p class="dn">canonical def: <b>BTD_Yoder</b></p></article></div></section>
+<footer class="lede" style="border-top:1px solid var(--line);padding-top:1.4rem">
+<b>What is NOT here, deliberately.</b> The install also carries ~170 non-Star-Wars xenotypes — Big and Small's giants and trolls, Alpha Genes' demons and phytokin, Det's spliced menagerie, Yautja, and 1,073 auto-generated animal-people from a sapient-animals mod. <b>None belong on this planet</b> and they are listed for suppression, not distribution. Two are worth a second look regardless: <b>impid</b> (vanilla, +20&nbsp;°C, made for desert life) and <b>saurid</b> (arid-flavoured but mechanically penalised at both temperature extremes — a trap).
+</footer></div>
