@@ -84,10 +84,12 @@ OPS read it live on 2026-08-13: `hostile=false`, `goodwill=0`,
 "The Fallen Dominion" holds 4 settlements to the Galactic Empire's 1. **The v1 label
 ships and renders; the antagonist does not exist.** Same family as V6.
 
-### V8. Shipped leader title does not match the spec
-`faction_roster_v2.md:571` says **"Sector governor"**; the deployed
-`ImperialDesertDirectorate.xml` says **`Sector Director`**. Both defensible, not the
-same string, and the patch is what players see. **Decide which is canon.**
+### V8. ✅ CLOSED 2026-08-14 — `Sector Director` is canon, and the residue is swept
+The decision was already recorded at `faction_roster_v2.md:585` ("Sector governor
+is retired") but **two ritual entries at :610 and :612 still used the retired
+title**, including a ritual *named* "Governor's Address". Both corrected; the
+ritual is now "Director's Address". The deployed patch was right all along —
+`Director` also echoes the faction's own name, Imperial Desert Directorate.
 
 ---
 

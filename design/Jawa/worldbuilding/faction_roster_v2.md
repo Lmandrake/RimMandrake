@@ -607,9 +607,9 @@ The Doctrine teaches that the galaxy trends toward entropy and that only one ord
 
 ### Rituals and observances
 
-- **Rite of Compliance (conversion ritual).** The Proselytizer meme + Proselytizing: Frequent already drive vanilla conversion rituals; reflavour the vanilla conversion ceremony as a compliance rite led by the Sector governor. *Mechanical encoding: vanilla Ideology conversion ritual — buildable as-is.*
+- **Rite of Compliance (conversion ritual).** The Proselytizer meme + Proselytizing: Frequent already drive vanilla conversion rituals; reflavour the vanilla conversion ceremony as a compliance rite led by the Sector Director. *Mechanical encoding: vanilla Ideology conversion ritual — buildable as-is.*
 - **The Correction (public execution).** Execution: Required is expressed as a public spectacle rather than a quiet killing. *Mechanical encoding: vanilla execution precept + the vanilla execution ritual; buildable as-is.*
-- **Governor's Address (speech).** The Sector governor uses the vanilla Leader role's speech abilities to reinforce loyalty and diversity-of-thought bigotry. *Mechanical encoding: vanilla Leader role speech — buildable as-is.*
+- **Director's Address (speech).** The Sector Director uses the vanilla Leader role's speech abilities to reinforce loyalty and diversity-of-thought bigotry. *Mechanical encoding: vanilla Leader role speech — buildable as-is.*
 - **Style:** Techist + Morbid styles carry the reading into architecture and apparel (sharp, uniform, trophy-adjacent). *Mechanical encoding: vanilla Ideology styles — buildable as-is.*
 
 Every observance above is pure vanilla Ideology; the Empire needs no mod beyond the DLC to run this belief system exactly as written.
