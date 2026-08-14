@@ -1,0 +1,3052 @@
+[
+ {
+  "defName": "AM_Apoptosis",
+  "label": "apoptosis",
+  "mod": "Alpha Mechs",
+  "weight": "UltraHeavy",
+  "bodySize": "1.0",
+  "body": "AM_ApocritonWinged",
+  "work": [],
+  "tools": [
+   "wing blade",
+   "head"
+  ],
+  "verbs": [],
+  "weaponTags": [
+   "AM_Gun_AcidSpewer"
+  ],
+  "combatPower": [
+   "750"
+  ],
+  "gestation": null,
+  "kinds": [
+   "AM_Apoptosis"
+  ],
+  "texPaths": [
+   "Things/Pawn/Mechanoid/AM_Apoptosis/AM_Apoptosis_Clean",
+   "Things/Pawn/Mechanoid/AM_Apoptosis/AM_Apoptosis"
+  ],
+  "texFiles": {
+   "Things/Pawn/Mechanoid/AM_Apoptosis/AM_Apoptosis_Clean": [
+    "/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/2973169158/Textures/Things/Pawn/Mechanoid/AM_Apoptosis/AM_Apoptosis_Clean_east.png",
+    "/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/2973169158/Textures/Things/Pawn/Mechanoid/AM_Apoptosis/AM_Apoptosis_Clean_north.png",
+    "/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/2973169158/Textures/Things/Pawn/Mechanoid/AM_Apoptosis/AM_Apoptosis_Clean_south.png"
+   ],
+   "Things/Pawn/Mechanoid/AM_Apoptosis/AM_Apoptosis": [
+    "/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/2973169158/Textures/Things/Pawn/Mechanoid/AM_Apoptosis/AM_Apoptosis_Clean_east.png",
+    "/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/2973169158/Textures/Things/Pawn/Mechanoid/AM_Apoptosis/AM_Apoptosis_Clean_north.png",
+    "/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/2973169158/Textures/Things/Pawn/Mechanoid/AM_Apoptosis/AM_Apoptosis_Clean_south.png",
+    "/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/2973169158/Textures/Things/Pawn/Mechanoid/AM_Apoptosis/AM_Apoptosis_east.png",
+    "/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/2973169158/Textures/Things/Pawn/Mechanoid/AM_Apoptosis/AM_Apoptosis_north.png",
+    "/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/2973169158/Textures/Things/Pawn/Mechanoid/AM_Apoptosis/AM_Apoptosis_south.png"
+   ]
+  },
+  "file": "/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/2973169158/1.6/Mods/Biotech/Defs/ThingDefs_RacesMechanoids/Races_Apoptosis.xml",
+  "desc": "Malice incarnate, the Apoptosis is an advanced Apocriton that acts as a commander designed to coordinate and motivate other mechs during long extermination campaigns. They are less adept at resurrecting other mechanoids "
+ },
+ {
+  "defName": "AM_Aura",
+  "label": "aura",
+  "mod": "Alpha Mechs",
+  "weight": "Medium",
+  "bodySize": "1.0",
+  "body": "AM_AuraBody",
+  "work": [],
+  "tools": [
+   "wing blade",
+   "head"
+  ],
+  "verbs": [],
+  "weaponTags": [],
+  "combatPower": [
+   "200"
+  ],
+  "gestation": null,
+  "kinds": [
+   "AM_Aura"
+  ],
+  "texPaths": [
+   "Things/Pawn/Mechanoid/AM_MechAura/AM_MechAuraClean",
+   "Things/Pawn/Mechanoid/AM_MechAura/AM_MechAura"
+  ],
+  "texFiles": {
+   "Things/Pawn/Mechanoid/AM_MechAura/AM_MechAuraClean": [
+    "/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/2973169158/Textures/Things/Pawn/Mechanoid/AM_MechAura/AM_MechAuraClean_east.png",
+    "/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/2973169158/Textures/Things/Pawn/Mechanoid/AM_MechAura/AM_MechAuraClean_north.png",
+    "/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/2973169158/Textures/Things/Pawn/Mechanoid/AM_MechAura/AM_MechAuraClean_south.png"
+   ],
+   "Things/Pawn/Mechanoid/AM_MechAura/AM_MechAura": [
+    "/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/2973169158/Textures/Things/Pawn/Mechanoid/AM_MechAura/AM_MechAura_east.png",
+    "/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/2973169158/Textures/Things/Pawn/Mechanoid/AM_MechAura/AM_MechAura_north.png",
+    "/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/2973169158/Textures/Things/Pawn/Mechanoid/AM_MechAura/AM_MechAura_south.png"
+   ]
+  },
+  "file": "/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/2973169158/1.6/Defs/ThingDefs_RacesMechanoids/Races_Aura.xml",
+  "desc": "The Aura, also known as Avenging Angels, are angel-shaped mechanoids surrounded by a whirling cloud of six levitating metallic blades. They favour close combat, approaching their victims and engulfing them in an eviscera"
+ },
+ {
+  "defName": "AM_Blitzkrieg",
+  "label": "blitzkrieg",
+  "mod": "Alpha Mechs",
+  "weight": "Light",
+  "bodySize": "0.7",
+  "body": "Mech_Light",
+  "work": [],
+  "tools": [
+   "head"
+  ],
+  "verbs": [],
+  "weaponTags": [],
+  "combatPower": [
+   "95"
+  ],
+  "gestation": null,
+  "kinds": [
+   "AM_Blitzkrieg"
+  ],
+  "texPaths": [
+   "Things/Pawn/Mechanoid/AM_Blitzkrieg/AM_Blitzkrieg_Clean",
+   "Things/Pawn/Mechanoid/AM_Blitzkrieg/AM_Blitzkrieg"
+  ],
+  "texFiles": {
+   "Things/Pawn/Mechanoid/AM_Blitzkrieg/AM_Blitzkrieg_Clean": [
+    "/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/2973169158/Textures/Things/Pawn/Mechanoid/AM_Blitzkrieg/AM_Blitzkrieg_Clean_east.png",
+    "/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/2973169158/Textures/Things/Pawn/Mechanoid/AM_Blitzkrieg/AM_Blitzkrieg_Clean_north.png",
+    "/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/2973169158/Textures/Things/Pawn/Mechanoid/AM_Blitzkrieg/AM_Blitzkrieg_Clean_south.png"
+   ],
+   "Things/Pawn/Mechanoid/AM_Blitzkrieg/AM_Blitzkrieg": [
+    "/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/2973169158/Textures/Things/Pawn/Mechanoid/AM_Blitzkrieg/AM_Blitzkrieg_Clean_east.png",
+    "/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/2973169158/Textures/Things/Pawn/Mechanoid/AM_Blitzkrieg/AM_Blitzkrieg_Clean_north.png",
+    "/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/2973169158/Textures/Things/Pawn/Mechanoid/AM_Blitzkrieg/AM_Blitzkrieg_Clean_south.png",
+    "/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/2973169158/Textures/Things/Pawn/Mechanoid/AM_Blitzkrieg/AM_Blitzkrieg_east.png",
+    "/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/2973169158/Textures/Things/Pawn/Mechanoid/AM_Blitzkrieg/AM_Blitzkrieg_north.png",
+    "/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/2973169158/Textures/Things/Pawn/Mechanoid/AM_Blitzkrieg/AM_Blitzkrieg_south.png"
+   ]
+  },
+  "file": "/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/2973169158/1.6/Mods/Biotech/Defs/ThingDefs_RacesMechanoids/Races_Blitzkrieg.xml",
+  "desc": "The Blietzkrieg is a unique mechanoid designed for tactical warfare and area denial. Shaped like a sleek and menacing metallic mine, it is capable of self-propelling itself to the intended target location before detonati"
+ },
+ {
+  "defName": "AM_Daggersnout",
+  "label": "daggersnout",
+  "mod": "Alpha Mechs",
+  "weight": "Light",
+  "bodySize": "1.0",
+  "body": "AM_DaggerSnoutBody",
+  "work": [],
+  "tools": [
+   "snout blade",
+   "head"
+  ],
+  "verbs": [],
+  "weaponTags": [],
+  "combatPower": [
+   "95"
+  ],
+  "gestation": null,
+  "kinds": [
+   "AM_Daggersnout"
+  ],
+  "texPaths": [
+   "Things/Pawn/Mechanoid/AM_MechDaggersnout/AM_MechDaggersnoutClean",
+   "Things/Pawn/Mechanoid/AM_MechDaggersnout/AM_MechDaggersnout"
+  ],
+  "texFiles": {
+   "Things/Pawn/Mechanoid/AM_MechDaggersnout/AM_MechDaggersnoutClean": [
+    "/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/2973169158/Textures/Things/Pawn/Mechanoid/AM_MechDaggersnout/AM_MechDaggersnoutClean_east.png",
+    "/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/2973169158/Textures/Things/Pawn/Mechanoid/AM_MechDaggersnout/AM_MechDaggersnoutClean_north.png",
+    "/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/2973169158/Textures/Things/Pawn/Mechanoid/AM_MechDaggersnout/AM_MechDaggersnoutClean_south.png"
+   ],
+   "Things/Pawn/Mechanoid/AM_MechDaggersnout/AM_MechDaggersnout": [
+    "/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/2973169158/Textures/Things/Pawn/Mechanoid/AM_MechDaggersnout/AM_MechDaggersnout_east.png",
+    "/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/2973169158/Textures/Things/Pawn/Mechanoid/AM_MechDaggersnout/AM_MechDaggersnout_north.png",
+    "/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/2973169158/Textures/Things/Pawn/Mechanoid/AM_MechDaggersnout/AM_MechDaggersnout_south.png"
+   ]
+  },
+  "file": "/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/2973169158/1.6/Defs/ThingDefs_RacesMechanoids/Races_Daggersnout.xml",
+  "desc": "The daggersnout is a fast, insectlike combat mechanoid armed with a vicious sharp blade on its head. It isn't as dangerous as other close-ranged mechanoids, such as scythers, but they usually appear in greater numbers.\\n"
+ },
+ {
+  "defName": "AM_Demolisher",
+  "label": "demolisher",
+  "mod": "Alpha Mechs",
+  "weight": "Heavy",
+  "bodySize": "4",
+  "body": "AM_DemolisherBody",
+  "work": [],
+  "tools": [
+   "mechanoid claws"
+  ],
+  "verbs": [],
+  "weaponTags": [
+   "AM_MechanoidDemolisherCharges"
+  ],
+  "combatPower": [
+   "400"
+  ],
+  "gestation": null,
+  "kinds": [
+   "AM_Demolisher"
+  ],
+  "texPaths": [
+   "Things/Pawn/Mechanoid/AM_MechDemolisher/AM_MechDemolisherClean",
+   "Things/Pawn/Mechanoid/AM_MechDemolisher/AM_MechDemolisher"
+  ],
+  "texFiles": {
+   "Things/Pawn/Mechanoid/AM_MechDemolisher/AM_MechDemolisherClean": [
+    "/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/2973169158/Textures/Things/Pawn/Mechanoid/AM_MechDemolisher/AM_MechDemolisherClean_east.png",
+    "/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/2973169158/Textures/Things/Pawn/Mechanoid/AM_MechDemolisher/AM_MechDemolisherClean_north.png",
+    "/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/2973169158/Textures/Things/Pawn/Mechanoid/AM_MechDemolisher/AM_MechDemolisherClean_south.png"
+   ],
+   "Things/Pawn/Mechanoid/AM_MechDemolisher/AM_MechDemolisher": [
+    "/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/2973169158/Textures/Things/Pawn/Mechanoid/AM_MechDemolisher/AM_MechDemolisher_east.png",
+    "/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/2973169158/Textures/Things/Pawn/Mechanoid/AM_MechDemolisher/AM_MechDemolisher_north.png",
+    "/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/2973169158/Textures/Things/Pawn/Mechanoid/AM_MechDemolisher/AM_MechDemolisher_south.png"
+   ]
+  },
+  "file": "/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/2973169158/1.6/Defs/ThingDefs_RacesMechanoids/Races_Demolisher.xml",
+  "desc": "The strange demolisher mechanoid looks like a weird amalgamation of a deep sea crab, a star-nosed mole and an armoured combat vehicle. Demolishers are armed with a very dangerous short range turret that fires demolisher "
+ },
+ {
+  "defName": "AM_Fireworm",
+  "label": "fireworm",
+  "mod": "Alpha Mechs",
+  "weight": "Heavy",
+  "bodySize": "1.8",
+  "body": "MechanicalCentipede",
+  "work": [],
+  "tools": [
+   "head"
+  ],
+  "verbs": [],
+  "weaponTags": [
+   "AM_MechanoidFlamethrower"
+  ],
+  "combatPower": [
+   "300"
+  ],
+  "gestation": null,
+  "kinds": [
+   "AM_Fireworm"
+  ],
+  "texPaths": [
+   "Things/Pawn/Mechanoid/AM_MechFireworm/AM_MechFirewormClean",
+   "Things/Pawn/Mechanoid/AM_MechFireworm/AM_MechFireworm"
+  ],
+  "texFiles": {
+   "Things/Pawn/Mechanoid/AM_MechFireworm/AM_MechFirewormClean": [
+    "/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/2973169158/Textures/Things/Pawn/Mechanoid/AM_MechFireworm/AM_MechFirewormClean_east.png",
+    "/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/2973169158/Textures/Things/Pawn/Mechanoid/AM_MechFireworm/AM_MechFirewormClean_north.png",
+    "/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/2973169158/Textures/Things/Pawn/Mechanoid/AM_MechFireworm/AM_MechFirewormClean_south.png"
+   ],
+   "Things/Pawn/Mechanoid/AM_MechFireworm/AM_MechFireworm": [
+    "/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/2973169158/Textures/Things/Pawn/Mechanoid/AM_MechFireworm/AM_MechFireworm_east.png",
+    "/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/2973169158/Textures/Things/Pawn/Mechanoid/AM_MechFireworm/AM_MechFireworm_north.png",
+    "/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/2973169158/Textures/Things/Pawn/Mechanoid/AM_MechFireworm/AM_MechFireworm_south.png"
+   ]
+  },
+  "file": "/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/2973169158/1.6/Defs/ThingDefs_RacesMechanoids/Races_Fireworm.xml",
+  "desc": "A huge mechanical worm armed with a dangerous chemfuel flamethrower. Their weapon has a very short range, so don't let a fireworm approach your defenses!\\n\\nThe fireworm superficially resembles a Frostbound Behemoth. A c"
+ },
+ {
+  "defName": "AM_Goliath",
+  "label": "goliath",
+  "mod": "Alpha Mechs",
+  "weight": "Heavy",
+  "bodySize": "1.8",
+  "body": "Lancer",
+  "work": [],
+  "tools": [
+   "head"
+  ],
+  "verbs": [],
+  "weaponTags": [
+   "AM_Gun_GoliathChargeBlaster",
+   "AM_Gun_GoliathNeedle"
+  ],
+  "combatPower": [
+   "400"
+  ],
+  "gestation": null,
+  "kinds": [
+   "AM_Goliath"
+  ],
+  "texPaths": [
+   "Things/Pawn/Mechanoid/AM_MechGoliath/AM_MechGoliathClean",
+   "Things/Pawn/Mechanoid/AM_MechGoliath/AM_MechGoliath"
+  ],
+  "texFiles": {
+   "Things/Pawn/Mechanoid/AM_MechGoliath/AM_MechGoliathClean": [
+    "/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/2973169158/Textures/Things/Pawn/Mechanoid/AM_MechGoliath/AM_MechGoliathClean_east.png",
+    "/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/2973169158/Textures/Things/Pawn/Mechanoid/AM_MechGoliath/AM_MechGoliathClean_north.png",
+    "/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/2973169158/Textures/Things/Pawn/Mechanoid/AM_MechGoliath/AM_MechGoliathClean_south.png"
+   ],
+   "Things/Pawn/Mechanoid/AM_MechGoliath/AM_MechGoliath": [
+    "/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/2973169158/Textures/Things/Pawn/Mechanoid/AM_MechGoliath/AM_MechGoliath_east.png",
+    "/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/2973169158/Textures/Things/Pawn/Mechanoid/AM_MechGoliath/AM_MechGoliath_north.png",
+    "/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/2973169158/Textures/Things/Pawn/Mechanoid/AM_MechGoliath/AM_MechGoliath_south.png"
+   ]
+  },
+  "file": "/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/2973169158/1.6/Defs/ThingDefs_RacesMechanoids/Races_Goliath.xml",
+  "desc": "The Goliath is a heavy combat mechanoid with a humanoid body plan. They are faster than centipedes, and are usually armed with heavy mechanoid weapons or needle guns.\\n\\n<color=#E5E54C>Gameplay effect:</color> Faster tha"
+ },
+ {
+  "defName": "AM_Infernus",
+  "label": "infernus",
+  "mod": "Alpha Mechs",
+  "weight": "UltraHeavy",
+  "bodySize": "4",
+  "body": "Mech_Diabolus",
+  "work": [],
+  "tools": [
+   "head"
+  ],
+  "verbs": [],
+  "weaponTags": [
+   "AM_Gun_HellsphereOrbital"
+  ],
+  "combatPower": [
+   "750"
+  ],
+  "gestation": null,
+  "kinds": [
+   "AM_Infernus"
+  ],
+  "texPaths": [
+   "Things/Pawn/Mechanoid/AM_Infernus/AM_Infernus_Clean",
+   "Things/Pawn/Mechanoid/AM_Infernus/AM_Infernus"
+  ],
+  "texFiles": {
+   "Things/Pawn/Mechanoid/AM_Infernus/AM_Infernus_Clean": [
+    "/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/2973169158/Textures/Things/Pawn/Mechanoid/AM_Infernus/AM_Infernus_Clean_east.png",
+    "/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/2973169158/Textures/Things/Pawn/Mechanoid/AM_Infernus/AM_Infernus_Clean_north.png",
+    "/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/2973169158/Textures/Things/Pawn/Mechanoid/AM_Infernus/AM_Infernus_Clean_south.png"
+   ],
+   "Things/Pawn/Mechanoid/AM_Infernus/AM_Infernus": [
+    "/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/2973169158/Textures/Things/Pawn/Mechanoid/AM_Infernus/AM_Infernus_Clean_east.png",
+    "/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/2973169158/Textures/Things/Pawn/Mechanoid/AM_Infernus/AM_Infernus_Clean_north.png",
+    "/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/2973169158/Textures/Things/Pawn/Mechanoid/AM_Infernus/AM_Infernus_Clean_south.png",
+    "/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/2973169158/Textures/Things/Pawn/Mechanoid/AM_Infernus/AM_Infernus_east.png",
+    "/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/2973169158/Textures/Things/Pawn/Mechanoid/AM_Infernus/AM_Infernus_north.png",
+    "/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/2973169158/Textures/Things/Pawn/Mechanoid/AM_Infernus/AM_Infernus_south.png"
+   ]
+  },
+  "file": "/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/2973169158/1.6/Mods/Biotech/Defs/ThingDefs_RacesMechanoids/Races_Infernus.xml",
+  "desc": "An ultra-heavy mechanoid with an incredibly dangerous orbital strike targeter. The targeter won't cause any damage on its own, but a devastating orbital strike will be launched a few seconds after it finishes focusing on"
+ },
+ {
+  "defName": "AM_Mech_Artilleron",
+  "label": "artilleron",
+  "mod": "Alpha Mechs",
+  "weight": "Light",
+  "bodySize": "0.95",
+  "body": "Mech_Light",
+  "work": [],
+  "tools": [
+   "head"
+  ],
+  "verbs": [],
+  "weaponTags": [
+   "AM_MechanoidMiniSniper",
+   "AM_MechanoidMortar"
+  ],
+  "combatPower": [
+   "85"
+  ],
+  "gestation": null,
+  "kinds": [
+   "AM_Mech_Artilleron"
+  ],
+  "texPaths": [
+   "Things/Pawn/Mechanoid/AM_Bellicor_Mortar/AM_Bellicor_Mortar_Clean"
+  ],
+  "texFiles": {
+   "Things/Pawn/Mechanoid/AM_Bellicor_Mortar/AM_Bellicor_Mortar_Clean": [
+    "/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/2973169158/Textures/Things/Pawn/Mechanoid/AM_Bellicor_Mortar/AM_Bellicor_Mortar_Clean_east.png",
+    "/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/2973169158/Textures/Things/Pawn/Mechanoid/AM_Bellicor_Mortar/AM_Bellicor_Mortar_Clean_north.png",
+    "/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/2973169158/Textures/Things/Pawn/Mechanoid/AM_Bellicor_Mortar/AM_Bellicor_Mortar_Clean_south.png"
+   ]
+  },
+  "file": "/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/2973169158/1.6/Mods/Biotech/Defs/ThingDefs_RacesMechanoids/Races_Bellicor_Mortar.xml",
+  "desc": "A variation of the militor and bellicor, the artilleron stands at a height of around 5 feet and it is armed with a powerful mortar that fires explosive canisters with great accuracy. With its reduced durability, the Arti"
+ },
+ {
+  "defName": "AM_Mech_Bellicor",
+  "label": "bellicor",
+  "mod": "Alpha Mechs",
+  "weight": "Light",
+  "bodySize": "0.95",
+  "body": "Mech_Light",
+  "work": [],
+  "tools": [
+   "head"
+  ],
+  "verbs": [],
+  "weaponTags": [
+   "AM_MechanoidTacticalShotgun"
+  ],
+  "combatPower": [
+   "85"
+  ],
+  "gestation": null,
+  "kinds": [
+   "AM_Mech_Bellicor"
+  ],
+  "texPaths": [
+   "Things/Pawn/Mechanoid/AM_Bellicor/AM_Bellicor_Clean",
+   "Things/Pawn/Mechanoid/AM_Bellicor/AM_Bellicor"
+  ],
+  "texFiles": {
+   "Things/Pawn/Mechanoid/AM_Bellicor/AM_Bellicor_Clean": [
+    "/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/2973169158/Textures/Things/Pawn/Mechanoid/AM_Bellicor/AM_Bellicor_Clean_east.png",
+    "/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/2973169158/Textures/Things/Pawn/Mechanoid/AM_Bellicor/AM_Bellicor_Clean_north.png",
+    "/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/2973169158/Textures/Things/Pawn/Mechanoid/AM_Bellicor/AM_Bellicor_Clean_south.png"
+   ],
+   "Things/Pawn/Mechanoid/AM_Bellicor/AM_Bellicor": [
+    "/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/2973169158/Textures/Things/Pawn/Mechanoid/AM_Bellicor/AM_Bellicor_Clean_east.png",
+    "/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/2973169158/Textures/Things/Pawn/Mechanoid/AM_Bellicor/AM_Bellicor_Clean_north.png",
+    "/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/2973169158/Textures/Things/Pawn/Mechanoid/AM_Bellicor/AM_Bellicor_Clean_south.png",
+    "/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/2973169158/Textures/Things/Pawn/Mechanoid/AM_Bellicor/AM_Bellicor_east.png",
+    "/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/2973169158/Textures/Things/Pawn/Mechanoid/AM_Bellicor/AM_Bellicor_north.png",
+    "/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/2973169158/Textures/Things/Pawn/Mechanoid/AM_Bellicor/AM_Bellicor_south.png"
+   ]
+  },
+  "file": "/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/2973169158/1.6/Mods/Biotech/Defs/ThingDefs_RacesMechanoids/Races_Bellicor.xml",
+  "desc": "An advanced combat mechanoid designed to excel in high-risk combat situations. With a height of around 5 feet, it is armed with a rapid-firing tactical mechanoid shotgun. Unlike its predecessor, the Militor, the Bellicor"
+ },
+ {
+  "defName": "AM_Mech_Geneticor",
+  "label": "geneticor",
+  "mod": "Alpha Mechs",
+  "weight": "Light",
+  "bodySize": "0.7",
+  "body": "Mech_Light",
+  "work": [
+   "GR_Genetics"
+  ],
+  "tools": [
+   "head"
+  ],
+  "verbs": [],
+  "weaponTags": [],
+  "combatPower": [
+   "10"
+  ],
+  "gestation": [
+   "AM_Gestate_Geneticor",
+   "MechGestator"
+  ],
+  "kinds": [
+   "AM_Mech_Geneticor"
+  ],
+  "texPaths": [
+   "Things/Pawn/Mechanoid/AM_Geneticor/AM_Geneticor_Clean",
+   "Things/Pawn/Mechanoid/AM_Geneticor/AM_Geneticor"
+  ],
+  "texFiles": {
+   "Things/Pawn/Mechanoid/AM_Geneticor/AM_Geneticor_Clean": [
+    "/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/2973169158/Textures/Things/Pawn/Mechanoid/AM_Geneticor/AM_Geneticor_Clean_east.png",
+    "/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/2973169158/Textures/Things/Pawn/Mechanoid/AM_Geneticor/AM_Geneticor_Clean_north.png",
+    "/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/2973169158/Textures/Things/Pawn/Mechanoid/AM_Geneticor/AM_Geneticor_Clean_south.png"
+   ],
+   "Things/Pawn/Mechanoid/AM_Geneticor/AM_Geneticor": [
+    "/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/2973169158/Textures/Things/Pawn/Mechanoid/AM_Geneticor/AM_Geneticor_Clean_east.png",
+    "/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/2973169158/Textures/Things/Pawn/Mechanoid/AM_Geneticor/AM_Geneticor_Clean_north.png",
+    "/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/2973169158/Textures/Things/Pawn/Mechanoid/AM_Geneticor/AM_Geneticor_Clean_south.png",
+    "/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/2973169158/Textures/Things/Pawn/Mechanoid/AM_Geneticor/AM_Geneticor_east.png",
+    "/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/2973169158/Textures/Things/Pawn/Mechanoid/AM_Geneticor/AM_Geneticor_north.png",
+    "/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/2973169158/Textures/Things/Pawn/Mechanoid/AM_Geneticor/AM_Geneticor_south.png"
+   ]
+  },
+  "file": "/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/2973169158/1.6/Mods/VanillaGeneticsExpanded/Patches/ThingDefs_Races/Races_GeneticorMech.xml",
+  "desc": "The Geneticor mechanoid is a humanoid robot designed for genetic engineering tasks. With advanced sensors and programming, it can analyze and manipulate DNA sequences with exceptional precision and speed. The Geneticor i"
+ },
+ {
+  "defName": "AM_Mech_Guttersnipe",
+  "label": "guttersnipe",
+  "mod": "Alpha Mechs",
+  "weight": "Light",
+  "bodySize": "0.7",
+  "body": "AM_Mech_Guttersnipe",
+  "work": [],
+  "tools": [
+   "head"
+  ],
+  "verbs": [],
+  "weaponTags": [],
+  "combatPower": [
+   "10"
+  ],
+  "gestation": null,
+  "kinds": [
+   "AM_Mech_Guttersnipe"
+  ],
+  "texPaths": [
+   "Things/Pawn/Mechanoid/AM_Guttersnipe/AM_Guttersnipe_Clean",
+   "Things/Pawn/Mechanoid/AM_Guttersnipe/AM_Guttersnipe"
+  ],
+  "texFiles": {
+   "Things/Pawn/Mechanoid/AM_Guttersnipe/AM_Guttersnipe_Clean": [
+    "/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/2973169158/Textures/Things/Pawn/Mechanoid/AM_Guttersnipe/AM_Guttersnipe_Clean_east.png",
+    "/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/2973169158/Textures/Things/Pawn/Mechanoid/AM_Guttersnipe/AM_Guttersnipe_Clean_north.png",
+    "/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/2973169158/Textures/Things/Pawn/Mechanoid/AM_Guttersnipe/AM_Guttersnipe_Clean_south.png"
+   ],
+   "Things/Pawn/Mechanoid/AM_Guttersnipe/AM_Guttersnipe": [
+    "/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/2973169158/Textures/Things/Pawn/Mechanoid/AM_Guttersnipe/AM_Guttersnipe_Clean_east.png",
+    "/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/2973169158/Textures/Things/Pawn/Mechanoid/AM_Guttersnipe/AM_Guttersnipe_Clean_north.png",
+    "/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/2973169158/Textures/Things/Pawn/Mechanoid/AM_Guttersnipe/AM_Guttersnipe_Clean_south.png",
+    "/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/2973169158/Textures/Things/Pawn/Mechanoid/AM_Guttersnipe/AM_Guttersnipe_east.png",
+    "/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/2973169158/Textures/Things/Pawn/Mechanoid/AM_Guttersnipe/AM_Guttersnipe_north.png",
+    "/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/2973169158/Textures/Things/Pawn/Mechanoid/AM_Guttersnipe/AM_Guttersnipe_south.png"
+   ]
+  },
+  "file": "/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/2973169158/1.6/Mods/Biotech/Defs/ThingDefs_RacesMechanoids/Races_Guttersnipe.xml",
+  "desc": "A small, deployable combat mechanoid usually manufactured inside an ultra-heavy war empress mech. Contrary to War urchins, the Guttersnipe is a melee fighter, using its wicked circular saws to lunge at their targets. The"
+ },
+ {
+  "defName": "AM_Mech_Legate",
+  "label": "legate",
+  "mod": "Alpha Mechs",
+  "weight": "UltraHeavy",
+  "bodySize": "3.6",
+  "body": "Mech_Centurion",
+  "work": [],
+  "tools": [
+   "head"
+  ],
+  "verbs": [],
+  "weaponTags": [
+   "AM_Gun_SuperHeavyChargeBlaster"
+  ],
+  "combatPower": [
+   "450"
+  ],
+  "gestation": null,
+  "kinds": [
+   "AM_Mech_Legate"
+  ],
+  "texPaths": [
+   "Things/Pawn/Mechanoid/AM_Legate/AM_Legate_Clean",
+   "Things/Pawn/Mechanoid/AM_Legate/AM_Legate"
+  ],
+  "texFiles": {
+   "Things/Pawn/Mechanoid/AM_Legate/AM_Legate_Clean": [
+    "/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/2973169158/Textures/Things/Pawn/Mechanoid/AM_Legate/AM_Legate_Clean_east.png",
+    "/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/2973169158/Textures/Things/Pawn/Mechanoid/AM_Legate/AM_Legate_Clean_north.png",
+    "/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/2973169158/Textures/Things/Pawn/Mechanoid/AM_Legate/AM_Legate_Clean_south.png"
+   ],
+   "Things/Pawn/Mechanoid/AM_Legate/AM_Legate": [
+    "/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/2973169158/Textures/Things/Pawn/Mechanoid/AM_Legate/AM_Legate_Clean_east.png",
+    "/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/2973169158/Textures/Things/Pawn/Mechanoid/AM_Legate/AM_Legate_Clean_north.png",
+    "/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/2973169158/Textures/Things/Pawn/Mechanoid/AM_Legate/AM_Legate_Clean_south.png",
+    "/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/2973169158/Textures/Things/Pawn/Mechanoid/AM_Legate/AM_Legate_east.png",
+    "/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/2973169158/Textures/Things/Pawn/Mechanoid/AM_Legate/AM_Legate_north.png",
+    "/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/2973169158/Textures/Things/Pawn/Mechanoid/AM_Legate/AM_Legate_south.png"
+   ]
+  },
+  "file": "/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/2973169158/1.6/Mods/Biotech/Defs/ThingDefs_RacesMechanoids/Races_Legate.xml",
+  "desc": "An ultraheavy mech with a built-in advanced shield bubble generator. The Legate lacks the point-defense bulb turret present in Centurions, but in exchange it is armed with a super heavy charge blaster that is much more d"
+ },
+ {
+  "defName": "AM_Mech_Lux",
+  "label": "lux",
+  "mod": "Alpha Mechs",
+  "weight": "Medium",
+  "bodySize": "1.0",
+  "body": "Lancer",
+  "work": [],
+  "tools": [
+   "left fist",
+   "right fist",
+   "head"
+  ],
+  "verbs": [],
+  "weaponTags": [
+   "AM_Gun_HeavyLaser"
+  ],
+  "combatPower": [
+   "250"
+  ],
+  "gestation": null,
+  "kinds": [
+   "AM_Mech_Lux"
+  ],
+  "texPaths": [
+   "Things/Pawn/Mechanoid/AM_Harpyia/AM_Harpyia_Clean",
+   "Things/Pawn/Mechanoid/AM_Harpyia/AM_Harpyia"
+  ],
+  "texFiles": {
+   "Things/Pawn/Mechanoid/AM_Harpyia/AM_Harpyia_Clean": [
+    "/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/2973169158/Textures/Things/Pawn/Mechanoid/AM_Harpyia/AM_Harpyia_Clean_east.png",
+    "/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/2973169158/Textures/Things/Pawn/Mechanoid/AM_Harpyia/AM_Harpyia_Clean_north.png",
+    "/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/2973169158/Textures/Things/Pawn/Mechanoid/AM_Harpyia/AM_Harpyia_Clean_south.png"
+   ],
+   "Things/Pawn/Mechanoid/AM_Harpyia/AM_Harpyia": [
+    "/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/2973169158/Textures/Things/Pawn/Mechanoid/AM_Harpyia/AM_Harpyia_Clean_east.png",
+    "/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/2973169158/Textures/Things/Pawn/Mechanoid/AM_Harpyia/AM_Harpyia_Clean_north.png",
+    "/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/2973169158/Textures/Things/Pawn/Mechanoid/AM_Harpyia/AM_Harpyia_Clean_south.png",
+    "/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/2973169158/Textures/Things/Pawn/Mechanoid/AM_Harpyia/AM_Harpyia_east.png",
+    "/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/2973169158/Textures/Things/Pawn/Mechanoid/AM_Harpyia/AM_Harpyia_north.png",
+    "/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/2973169158/Textures/Things/Pawn/Mechanoid/AM_Harpyia/AM_Harpyia_south.png"
+   ]
+  },
+  "file": "/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/2973169158/1.6/Mods/Biotech/Defs/ThingDefs_RacesMechanoids/Races_Lux.xml",
+  "desc": "The Lux is a sleek and agile humanoid mechanoid designed for fast-paced combat operations. Equipped with a powerful heavy laser weapon, it is capable of dealing devastating damage to both ground and air targets with pinp"
+ },
+ {
+  "defName": "AM_Mech_MasterChef",
+  "label": "culinarius",
+  "mod": "Alpha Mechs",
+  "weight": "Light",
+  "bodySize": "0.7",
+  "body": "Mech_Light",
+  "work": [
+   "Cooking"
+  ],
+  "tools": [
+   "head"
+  ],
+  "verbs": [],
+  "weaponTags": [],
+  "combatPower": [
+   "10"
+  ],
+  "gestation": null,
+  "kinds": [
+   "AM_Mech_MasterChef"
+  ],
+  "texPaths": [
+   "Things/Pawn/Mechanoid/AM_MasterChef/AM_MasterChef_Clean",
+   "Things/Pawn/Mechanoid/AM_MasterChef/AM_MasterChef"
+  ],
+  "texFiles": {
+   "Things/Pawn/Mechanoid/AM_MasterChef/AM_MasterChef_Clean": [
+    "/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/2973169158/Textures/Things/Pawn/Mechanoid/AM_MasterChef/AM_MasterChef_Clean_east.png",
+    "/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/2973169158/Textures/Things/Pawn/Mechanoid/AM_MasterChef/AM_MasterChef_Clean_north.png",
+    "/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/2973169158/Textures/Things/Pawn/Mechanoid/AM_MasterChef/AM_MasterChef_Clean_south.png"
+   ],
+   "Things/Pawn/Mechanoid/AM_MasterChef/AM_MasterChef": [
+    "/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/2973169158/Textures/Things/Pawn/Mechanoid/AM_MasterChef/AM_MasterChef_Clean_east.png",
+    "/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/2973169158/Textures/Things/Pawn/Mechanoid/AM_MasterChef/AM_MasterChef_Clean_north.png",
+    "/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/2973169158/Textures/Things/Pawn/Mechanoid/AM_MasterChef/AM_MasterChef_Clean_south.png",
+    "/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/2973169158/Textures/Things/Pawn/Mechanoid/AM_MasterChef/AM_MasterChef_east.png",
+    "/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/2973169158/Textures/Things/Pawn/Mechanoid/AM_MasterChef/AM_MasterChef_north.png",
+    "/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/2973169158/Textures/Things/Pawn/Mechanoid/AM_MasterChef/AM_MasterChef_south.png"
+   ]
+  },
+  "file": "/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/2973169158/1.6/Mods/Biotech/Defs/ThingDefs_RacesMechanoids/Races_MasterChef.xml",
+  "desc": "Designed for culinary arts, the Culinarius can analyze ingredients and create delicious meals with exceptional precision and consistency. The Culinarius can access an extensive database of recipes, culinary techniques, a"
+ },
+ {
+  "defName": "AM_Mech_Munifex",
+  "label": "munifex",
+  "mod": "Alpha Mechs",
+  "weight": "Medium",
+  "bodySize": "1.0",
+  "body": "Lancer",
+  "work": [],
+  "tools": [
+   "left fist",
+   "right fist",
+   "head"
+  ],
+  "verbs": [],
+  "weaponTags": [
+   "AM_Gun_CoilLance"
+  ],
+  "combatPower": [
+   "250"
+  ],
+  "gestation": null,
+  "kinds": [
+   "AM_Mech_Munifex"
+  ],
+  "texPaths": [
+   "Things/Pawn/Mechanoid/AM_Munifex/AM_Munifex_Clean",
+   "Things/Pawn/Mechanoid/AM_Munifex/AM_Munifex"
+  ],
+  "texFiles": {
+   "Things/Pawn/Mechanoid/AM_Munifex/AM_Munifex_Clean": [
+    "/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/2973169158/Textures/Things/Pawn/Mechanoid/AM_Munifex/AM_Munifex_Clean_east.png",
+    "/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/2973169158/Textures/Things/Pawn/Mechanoid/AM_Munifex/AM_Munifex_Clean_north.png",
+    "/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/2973169158/Textures/Things/Pawn/Mechanoid/AM_Munifex/AM_Munifex_Clean_south.png"
+   ],
+   "Things/Pawn/Mechanoid/AM_Munifex/AM_Munifex": [
+    "/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/2973169158/Textures/Things/Pawn/Mechanoid/AM_Munifex/AM_Munifex_Clean_east.png",
+    "/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/2973169158/Textures/Things/Pawn/Mechanoid/AM_Munifex/AM_Munifex_Clean_north.png",
+    "/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/2973169158/Textures/Things/Pawn/Mechanoid/AM_Munifex/AM_Munifex_Clean_south.png",
+    "/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/2973169158/Textures/Things/Pawn/Mechanoid/AM_Munifex/AM_Munifex_east.png",
+    "/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/2973169158/Textures/Things/Pawn/Mechanoid/AM_Munifex/AM_Munifex_north.png",
+    "/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/2973169158/Textures/Things/Pawn/Mechanoid/AM_Munifex/AM_Munifex_south.png"
+   ]
+  },
+  "file": "/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/2973169158/1.6/Mods/Biotech/Defs/ThingDefs_RacesMechanoids/Races_Munifex.xml",
+  "desc": "The Munifex are formidable human-sized combat mechanoids designed specifically for long-range combat scenarios. They are equipped with advanced coil lances, which are mass driver weapons that fire electromagnetically acc"
+ },
+ {
+  "defName": "AM_Mech_Optio",
+  "label": "optio",
+  "mod": "Alpha Mechs",
+  "weight": "Medium",
+  "bodySize": "1.0",
+  "body": "Lancer",
+  "work": [],
+  "tools": [
+   "left fist",
+   "right fist",
+   "head"
+  ],
+  "verbs": [],
+  "weaponTags": [
+   "AM_MechanoidGunRotaryNeedle"
+  ],
+  "combatPower": [
+   "180"
+  ],
+  "gestation": null,
+  "kinds": [
+   "AM_Mech_Optio"
+  ],
+  "texPaths": [
+   "Things/Pawn/Mechanoid/AM_Optio/AM_Optio_Clean",
+   "Things/Pawn/Mechanoid/AM_Optio/AM_Optio"
+  ],
+  "texFiles": {
+   "Things/Pawn/Mechanoid/AM_Optio/AM_Optio_Clean": [
+    "/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/2973169158/Textures/Things/Pawn/Mechanoid/AM_Optio/AM_Optio_Clean_east.png",
+    "/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/2973169158/Textures/Things/Pawn/Mechanoid/AM_Optio/AM_Optio_Clean_north.png",
+    "/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/2973169158/Textures/Things/Pawn/Mechanoid/AM_Optio/AM_Optio_Clean_south.png"
+   ],
+   "Things/Pawn/Mechanoid/AM_Optio/AM_Optio": [
+    "/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/2973169158/Textures/Things/Pawn/Mechanoid/AM_Optio/AM_Optio_Clean_east.png",
+    "/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/2973169158/Textures/Things/Pawn/Mechanoid/AM_Optio/AM_Optio_Clean_north.png",
+    "/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/2973169158/Textures/Things/Pawn/Mechanoid/AM_Optio/AM_Optio_Clean_south.png",
+    "/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/2973169158/Textures/Things/Pawn/Mechanoid/AM_Optio/AM_Optio_east.png",
+    "/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/2973169158/Textures/Things/Pawn/Mechanoid/AM_Optio/AM_Optio_north.png",
+    "/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/2973169158/Textures/Things/Pawn/Mechanoid/AM_Optio/AM_Optio_south.png"
+   ]
+  },
+  "file": "/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/2973169158/1.6/Mods/Biotech/Defs/ThingDefs_RacesMechanoids/Races_Optio.xml",
+  "desc": "An elite combat support mechanoid that employs a rotary needle launcher. Its armor is reinforced to withstand heavy firepower, and it can project a formidable energy shield to protect nearby allies. The Optio is a valuab"
+ },
+ {
+  "defName": "AM_Mech_Polychoron",
+  "label": "polychoron",
+  "mod": "Alpha Mechs",
+  "weight": "Medium",
+  "bodySize": "1.2",
+  "body": "Lancer",
+  "work": [],
+  "tools": [
+   "left fist",
+   "right fist",
+   "head"
+  ],
+  "verbs": [],
+  "weaponTags": [
+   "AM_BeamGraserCannon"
+  ],
+  "combatPower": [
+   "250"
+  ],
+  "gestation": null,
+  "kinds": [
+   "AM_Mech_Polychoron"
+  ],
+  "texPaths": [
+   "Things/Pawn/Mechanoid/AM_Polychoron/AM_Polychoron_Clean",
+   "Things/Pawn/Mechanoid/AM_Polychoron/AM_Polychoron"
+  ],
+  "texFiles": {
+   "Things/Pawn/Mechanoid/AM_Polychoron/AM_Polychoron_Clean": [
+    "/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/2973169158/Textures/Things/Pawn/Mechanoid/AM_Polychoron/AM_Polychoron_Clean_east.png",
+    "/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/2973169158/Textures/Things/Pawn/Mechanoid/AM_Polychoron/AM_Polychoron_Clean_north.png",
+    "/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/2973169158/Textures/Things/Pawn/Mechanoid/AM_Polychoron/AM_Polychoron_Clean_south.png"
+   ],
+   "Things/Pawn/Mechanoid/AM_Polychoron/AM_Polychoron": [
+    "/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/2973169158/Textures/Things/Pawn/Mechanoid/AM_Polychoron/AM_Polychoron_Clean_east.png",
+    "/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/2973169158/Textures/Things/Pawn/Mechanoid/AM_Polychoron/AM_Polychoron_Clean_north.png",
+    "/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/2973169158/Textures/Things/Pawn/Mechanoid/AM_Polychoron/AM_Polychoron_Clean_south.png",
+    "/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/2973169158/Textures/Things/Pawn/Mechanoid/AM_Polychoron/AM_Polychoron_east.png",
+    "/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/2973169158/Textures/Things/Pawn/Mechanoid/AM_Polychoron/AM_Polychoron_north.png",
+    "/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/2973169158/Textures/Things/Pawn/Mechanoid/AM_Polychoron/AM_Polychoron_south.png"
+   ]
+  },
+  "file": "/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/2973169158/1.6/Mods/Biotech/Defs/ThingDefs_RacesMechanoids/Races_Polychoron.xml",
+  "desc": "A heavy combat mechanoid with a graser cannon that can deal massive damage to armored targets. Though it lacks agility, its graser cannon is capable of firing focused energy beams that can cut through most shielding and "
+ },
+ {
+  "defName": "AM_Mech_PristineAssembler",
+  "label": "pristine assembler",
+  "mod": "Alpha Mechs",
+  "weight": "Medium",
+  "bodySize": "2",
+  "body": "AM_Assembler",
+  "work": [],
+  "tools": [
+   "head"
+  ],
+  "verbs": [],
+  "weaponTags": [],
+  "combatPower": [
+   "250"
+  ],
+  "gestation": null,
+  "kinds": [
+   "AM_Mech_PristineAssembler"
+  ],
+  "texPaths": [
+   "Things/Pawn/Mechanoid/AM_PristineAssembler/AM_PristineAssembler_Clean",
+   "Things/Pawn/Mechanoid/AM_PristineAssembler/AM_PristineAssembler"
+  ],
+  "texFiles": {
+   "Things/Pawn/Mechanoid/AM_PristineAssembler/AM_PristineAssembler_Clean": [
+    "/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/2973169158/Textures/Things/Pawn/Mechanoid/AM_PristineAssembler/AM_PristineAssembler_Clean_east.png",
+    "/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/2973169158/Textures/Things/Pawn/Mechanoid/AM_PristineAssembler/AM_PristineAssembler_Clean_north.png",
+    "/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/2973169158/Textures/Things/Pawn/Mechanoid/AM_PristineAssembler/AM_PristineAssembler_Clean_south.png"
+   ],
+   "Things/Pawn/Mechanoid/AM_PristineAssembler/AM_PristineAssembler": [
+    "/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/2973169158/Textures/Things/Pawn/Mechanoid/AM_PristineAssembler/AM_PristineAssembler_Clean_east.png",
+    "/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/2973169158/Textures/Things/Pawn/Mechanoid/AM_PristineAssembler/AM_PristineAssembler_Clean_north.png",
+    "/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/2973169158/Textures/Things/Pawn/Mechanoid/AM_PristineAssembler/AM_PristineAssembler_Clean_south.png",
+    "/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/2973169158/Textures/Things/Pawn/Mechanoid/AM_PristineAssembler/AM_PristineAssembler_east.png",
+    "/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/2973169158/Textures/Things/Pawn/Mechanoid/AM_PristineAssembler/AM_PristineAssembler_north.png",
+    "/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/2973169158/Textures/Things/Pawn/Mechanoid/AM_PristineAssembler/AM_PristineAssembler_south.png"
+   ]
+  },
+  "file": "/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/2973169158/1.6/Mods/Biotech/Defs/ThingDefs_RacesMechanoids/Races_PristineAssembler.xml",
+  "desc": "An automated, mobile mechanoid factory. The assembler is designed for efficient energy-to-matter conversion. Using its advanced molecular assembly system, it can convert various forms of energy into usable materials with"
+ },
+ {
+  "defName": "AM_Mech_PristineSlurrypede",
+  "label": "pristine slurrypede",
+  "mod": "Alpha Mechs",
+  "weight": "Medium",
+  "bodySize": "2",
+  "body": "AM_SlurrypedeBody",
+  "work": [],
+  "tools": [
+   "head"
+  ],
+  "verbs": [],
+  "weaponTags": [],
+  "combatPower": [
+   "250"
+  ],
+  "gestation": null,
+  "kinds": [
+   "AM_Mech_PristineSlurrypede"
+  ],
+  "texPaths": [
+   "Things/Pawn/Mechanoid/AM_PristineSlurrypede/AM_PristineSlurrypede_Clean",
+   "Things/Pawn/Mechanoid/AM_PristineSlurrypede/AM_PristineSlurrypede"
+  ],
+  "texFiles": {
+   "Things/Pawn/Mechanoid/AM_PristineSlurrypede/AM_PristineSlurrypede_Clean": [
+    "/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/2973169158/Textures/Things/Pawn/Mechanoid/AM_PristineSlurrypede/AM_PristineSlurrypede_Clean_east.png",
+    "/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/2973169158/Textures/Things/Pawn/Mechanoid/AM_PristineSlurrypede/AM_PristineSlurrypede_Clean_north.png",
+    "/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/2973169158/Textures/Things/Pawn/Mechanoid/AM_PristineSlurrypede/AM_PristineSlurrypede_Clean_south.png"
+   ],
+   "Things/Pawn/Mechanoid/AM_PristineSlurrypede/AM_PristineSlurrypede": [
+    "/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/2973169158/Textures/Things/Pawn/Mechanoid/AM_PristineSlurrypede/AM_PristineSlurrypede_Clean_east.png",
+    "/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/2973169158/Textures/Things/Pawn/Mechanoid/AM_PristineSlurrypede/AM_PristineSlurrypede_Clean_north.png",
+    "/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/2973169158/Textures/Things/Pawn/Mechanoid/AM_PristineSlurrypede/AM_PristineSlurrypede_Clean_south.png",
+    "/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/2973169158/Textures/Things/Pawn/Mechanoid/AM_PristineSlurrypede/AM_PristineSlurrypede_east.png",
+    "/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/2973169158/Textures/Things/Pawn/Mechanoid/AM_PristineSlurrypede/AM_PristineSlurrypede_north.png",
+    "/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/2973169158/Textures/Things/Pawn/Mechanoid/AM_PristineSlurrypede/AM_PristineSlurrypede_south.png"
+   ]
+  },
+  "file": "/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/2973169158/1.6/Mods/Biotech/Defs/ThingDefs_RacesMechanoids/Races_PristineSlurrypede.xml",
+  "desc": "Although rare, mechanoids have been known to capture prisoners, and the Slurrypede is their solution to feed them in the most efficient way possible. The Slurrypede is a modified bio-mechanoid capable of extracting energ"
+ },
+ {
+  "defName": "AM_Mech_Sagittarius",
+  "label": "sagittarius",
+  "mod": "Alpha Mechs",
+  "weight": "Medium",
+  "bodySize": "1.0",
+  "body": "Lancer",
+  "work": [],
+  "tools": [
+   "left fist",
+   "right fist",
+   "head"
+  ],
+  "verbs": [],
+  "weaponTags": [
+   "AM_TeslaGun"
+  ],
+  "combatPower": [
+   "250"
+  ],
+  "gestation": null,
+  "kinds": [
+   "AM_Mech_Sagittarius"
+  ],
+  "texPaths": [
+   "Things/Pawn/Mechanoid/AM_Sagittarius/AM_Sagittarius_Clean",
+   "Things/Pawn/Mechanoid/AM_Sagittarius/AM_Sagittarius"
+  ],
+  "texFiles": {
+   "Things/Pawn/Mechanoid/AM_Sagittarius/AM_Sagittarius_Clean": [
+    "/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/2973169158/Textures/Things/Pawn/Mechanoid/AM_Sagittarius/AM_Sagittarius_Clean_east.png",
+    "/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/2973169158/Textures/Things/Pawn/Mechanoid/AM_Sagittarius/AM_Sagittarius_Clean_north.png",
+    "/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/2973169158/Textures/Things/Pawn/Mechanoid/AM_Sagittarius/AM_Sagittarius_Clean_south.png"
+   ],
+   "Things/Pawn/Mechanoid/AM_Sagittarius/AM_Sagittarius": [
+    "/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/2973169158/Textures/Things/Pawn/Mechanoid/AM_Sagittarius/AM_Sagittarius_Clean_east.png",
+    "/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/2973169158/Textures/Things/Pawn/Mechanoid/AM_Sagittarius/AM_Sagittarius_Clean_north.png",
+    "/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/2973169158/Textures/Things/Pawn/Mechanoid/AM_Sagittarius/AM_Sagittarius_Clean_south.png",
+    "/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/2973169158/Textures/Things/Pawn/Mechanoid/AM_Sagittarius/AM_Sagittarius_east.png",
+    "/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/2973169158/Textures/Things/Pawn/Mechanoid/AM_Sagittarius/AM_Sagittarius_north.png",
+    "/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/2973169158/Textures/Things/Pawn/Mechanoid/AM_Sagittarius/AM_Sagittarius_south.png"
+   ]
+  },
+  "file": "/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/2973169158/1.6/Mods/Biotech/Defs/ThingDefs_RacesMechanoids/Races_Sagittarius.xml",
+  "desc": "The Sagittarius is a humanoid mechanoid equipped with a powerful tesla gun, a fearsome energy weapon designed to unleash a cascade of electromagnetic energy upon its targets. Capable of generating a burst of EMP energy t"
+ },
+ {
+  "defName": "AM_Mech_TurboCleaner",
+  "label": "turbocleaner",
+  "mod": "Alpha Mechs",
+  "weight": "Light",
+  "bodySize": "0.2",
+  "body": "Mech_Light",
+  "work": [
+   "Cleaning"
+  ],
+  "tools": [
+   "head"
+  ],
+  "verbs": [],
+  "weaponTags": [],
+  "combatPower": [
+   "10"
+  ],
+  "gestation": null,
+  "kinds": [
+   "AM_Mech_TurboCleaner"
+  ],
+  "texPaths": [
+   "Things/Pawn/Mechanoid/AM_TurboCleaner/AM_TurboCleaner_Clean",
+   "Things/Pawn/Mechanoid/AM_TurboCleaner/AM_TurboCleaner"
+  ],
+  "texFiles": {
+   "Things/Pawn/Mechanoid/AM_TurboCleaner/AM_TurboCleaner_Clean": [
+    "/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/2973169158/Textures/Things/Pawn/Mechanoid/AM_TurboCleaner/AM_TurboCleaner_Clean_east.png",
+    "/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/2973169158/Textures/Things/Pawn/Mechanoid/AM_TurboCleaner/AM_TurboCleaner_Clean_north.png",
+    "/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/2973169158/Textures/Things/Pawn/Mechanoid/AM_TurboCleaner/AM_TurboCleaner_Clean_south.png"
+   ],
+   "Things/Pawn/Mechanoid/AM_TurboCleaner/AM_TurboCleaner": [
+    "/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/2973169158/Textures/Things/Pawn/Mechanoid/AM_TurboCleaner/AM_TurboCleaner_Clean_east.png",
+    "/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/2973169158/Textures/Things/Pawn/Mechanoid/AM_TurboCleaner/AM_TurboCleaner_Clean_north.png",
+    "/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/2973169158/Textures/Things/Pawn/Mechanoid/AM_TurboCleaner/AM_TurboCleaner_Clean_south.png",
+    "/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/2973169158/Textures/Things/Pawn/Mechanoid/AM_TurboCleaner/AM_TurboCleaner_east.png",
+    "/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/2973169158/Textures/Things/Pawn/Mechanoid/AM_TurboCleaner/AM_TurboCleaner_north.png",
+    "/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/2973169158/Textures/Things/Pawn/Mechanoid/AM_TurboCleaner/AM_TurboCleaner_south.png"
+   ]
+  },
+  "file": "/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/2973169158/1.6/Mods/Biotech/Defs/ThingDefs_RacesMechanoids/Races_TurboCleaner.xml",
+  "desc": "Basically a cleansweeper mounted on two small gyro-stabilized turbine engines. The turbocleaner hovers over terrain, using a vacuum nozzle to suction dirt and other debris. Absurdly useless in combat.\\n\\n<color=#E5E54C>G"
+ },
+ {
+  "defName": "AM_Phalanx",
+  "label": "phalanx",
+  "mod": "Alpha Mechs",
+  "weight": "Heavy",
+  "bodySize": "1.7",
+  "body": "MechanicalCentipede",
+  "work": [],
+  "tools": [
+   "head"
+  ],
+  "verbs": [],
+  "weaponTags": [
+   "AM_MechanoidCryoweapon"
+  ],
+  "combatPower": [
+   "275"
+  ],
+  "gestation": null,
+  "kinds": [
+   "AM_Phalanx"
+  ],
+  "texPaths": [
+   "Things/Pawn/Mechanoid/AM_MechPhalanx/AM_MechPhalanxClean",
+   "Things/Pawn/Mechanoid/AM_MechPhalanx/AM_MechPhalanx"
+  ],
+  "texFiles": {
+   "Things/Pawn/Mechanoid/AM_MechPhalanx/AM_MechPhalanxClean": [
+    "/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/2973169158/Textures/Things/Pawn/Mechanoid/AM_MechPhalanx/AM_MechPhalanxClean_east.png",
+    "/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/2973169158/Textures/Things/Pawn/Mechanoid/AM_MechPhalanx/AM_MechPhalanxClean_north.png",
+    "/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/2973169158/Textures/Things/Pawn/Mechanoid/AM_MechPhalanx/AM_MechPhalanxClean_south.png"
+   ],
+   "Things/Pawn/Mechanoid/AM_MechPhalanx/AM_MechPhalanx": [
+    "/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/2973169158/Textures/Things/Pawn/Mechanoid/AM_MechPhalanx/AM_MechPhalanx_east.png",
+    "/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/2973169158/Textures/Things/Pawn/Mechanoid/AM_MechPhalanx/AM_MechPhalanx_north.png",
+    "/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/2973169158/Textures/Things/Pawn/Mechanoid/AM_MechPhalanx/AM_MechPhalanx_south.png"
+   ]
+  },
+  "file": "/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/2973169158/1.6/Defs/ThingDefs_RacesMechanoids/Races_Phalanx.xml",
+  "desc": "A hulking mechanoid based on a rhinoceros beetle body plan. The phalanx's plasteel carapace hides a very powerful cryogenic engine capable of constantly producing compacted pellets of supercooled gas. These are fired fro"
+ },
+ {
+  "defName": "AM_PristineStrider",
+  "label": "pristine strider",
+  "mod": "Alpha Mechs",
+  "weight": "Medium",
+  "bodySize": null,
+  "body": "MechanicalTermite",
+  "work": [
+   "Hauling"
+  ],
+  "tools": [
+   "head"
+  ],
+  "verbs": [],
+  "weaponTags": [],
+  "combatPower": [
+   "10"
+  ],
+  "gestation": null,
+  "kinds": [
+   "AM_PristineStrider"
+  ],
+  "texPaths": [
+   "Things/Pawn/Mechanoid/AM_PristineStrider/AM_PristineStrider_Clean",
+   "Things/Pawn/Mechanoid/AM_PristineStrider/AM_PristineStrider"
+  ],
+  "texFiles": {
+   "Things/Pawn/Mechanoid/AM_PristineStrider/AM_PristineStrider_Clean": [
+    "/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/2973169158/Textures/Things/Pawn/Mechanoid/AM_PristineStrider/AM_PristineStrider_Clean_east.png",
+    "/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/2973169158/Textures/Things/Pawn/Mechanoid/AM_PristineStrider/AM_PristineStrider_Clean_north.png",
+    "/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/2973169158/Textures/Things/Pawn/Mechanoid/AM_PristineStrider/AM_PristineStrider_Clean_south.png"
+   ],
+   "Things/Pawn/Mechanoid/AM_PristineStrider/AM_PristineStrider": [
+    "/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/2973169158/Textures/Things/Pawn/Mechanoid/AM_PristineStrider/AM_PristineStrider_Clean_east.png",
+    "/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/2973169158/Textures/Things/Pawn/Mechanoid/AM_PristineStrider/AM_PristineStrider_Clean_north.png",
+    "/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/2973169158/Textures/Things/Pawn/Mechanoid/AM_PristineStrider/AM_PristineStrider_Clean_south.png",
+    "/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/2973169158/Textures/Things/Pawn/Mechanoid/AM_PristineStrider/AM_PristineStrider_east.png",
+    "/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/2973169158/Textures/Things/Pawn/Mechanoid/AM_PristineStrider/AM_PristineStrider_north.png",
+    "/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/2973169158/Textures/Things/Pawn/Mechanoid/AM_PristineStrider/AM_PristineStrider_south.png"
+   ]
+  },
+  "file": "/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/2973169158/1.6/Mods/Biotech/Defs/ThingDefs_RacesMechanoids/Races_PristineStrider.xml",
+  "desc": "A more advanced, mechanite-grown version of the autostrider, the pristine strider has a large carrying capacity, making it perfect as a partner on long caravan trips. Can also be ridden by pawns to increase travel speed."
+ },
+ {
+  "defName": "AM_Siegebreaker",
+  "label": "siegebreaker",
+  "mod": "Alpha Mechs",
+  "weight": "UltraHeavy",
+  "bodySize": "4",
+  "body": "AM_SiegebreakerBody",
+  "work": [],
+  "tools": [
+   "head"
+  ],
+  "verbs": [],
+  "weaponTags": [
+   "AM_SiegebreakerTurret"
+  ],
+  "combatPower": [
+   "400"
+  ],
+  "gestation": null,
+  "kinds": [
+   "AM_Siegebreaker"
+  ],
+  "texPaths": [
+   "Things/Pawn/Mechanoid/AM_MechSiegebreaker/AM_MechSiegebreakerClean",
+   "Things/Pawn/Mechanoid/AM_MechSiegebreaker/AM_MechSiegebreaker"
+  ],
+  "texFiles": {
+   "Things/Pawn/Mechanoid/AM_MechSiegebreaker/AM_MechSiegebreakerClean": [
+    "/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/2973169158/Textures/Things/Pawn/Mechanoid/AM_MechSiegebreaker/AM_MechSiegebreakerClean_east.png",
+    "/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/2973169158/Textures/Things/Pawn/Mechanoid/AM_MechSiegebreaker/AM_MechSiegebreakerClean_north.png",
+    "/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/2973169158/Textures/Things/Pawn/Mechanoid/AM_MechSiegebreaker/AM_MechSiegebreakerClean_south.png"
+   ],
+   "Things/Pawn/Mechanoid/AM_MechSiegebreaker/AM_MechSiegebreaker": [
+    "/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/2973169158/Textures/Things/Pawn/Mechanoid/AM_MechSiegebreaker/AM_MechSiegebreaker_east.png",
+    "/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/2973169158/Textures/Things/Pawn/Mechanoid/AM_MechSiegebreaker/AM_MechSiegebreaker_north.png",
+    "/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/2973169158/Textures/Things/Pawn/Mechanoid/AM_MechSiegebreaker/AM_MechSiegebreaker_south.png"
+   ]
+  },
+  "file": "/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/2973169158/1.6/Defs/ThingDefs_RacesMechanoids/Races_Siegebreaker.xml",
+  "desc": "The siegebreaker is a particularly dangerous tank-shaped mechanoid. Armed with a Siegebreaker Cannon that fires explosive shells, they can detect a hostile presence from hundreds of meters away, acting as unrelenting sie"
+ },
+ {
+  "defName": "AM_Siegemelter",
+  "label": "siegemelter",
+  "mod": "Alpha Mechs",
+  "weight": "UltraHeavy",
+  "bodySize": "4",
+  "body": "AM_SiegebreakerBody",
+  "work": [],
+  "tools": [
+   "head"
+  ],
+  "verbs": [],
+  "weaponTags": [
+   "AM_SiegemelterTurret"
+  ],
+  "combatPower": [
+   "400"
+  ],
+  "gestation": null,
+  "kinds": [
+   "AM_Siegemelter"
+  ],
+  "texPaths": [
+   "Things/Pawn/Mechanoid/AM_MechSiegebreaker/AM_Siegemelter_Clean",
+   "Things/Pawn/Mechanoid/AM_MechSiegebreaker/AM_Siegemelter"
+  ],
+  "texFiles": {
+   "Things/Pawn/Mechanoid/AM_MechSiegebreaker/AM_Siegemelter_Clean": [
+    "/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/2973169158/Textures/Things/Pawn/Mechanoid/AM_MechSiegebreaker/AM_Siegemelter_Clean_east.png",
+    "/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/2973169158/Textures/Things/Pawn/Mechanoid/AM_MechSiegebreaker/AM_Siegemelter_Clean_north.png",
+    "/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/2973169158/Textures/Things/Pawn/Mechanoid/AM_MechSiegebreaker/AM_Siegemelter_Clean_south.png"
+   ],
+   "Things/Pawn/Mechanoid/AM_MechSiegebreaker/AM_Siegemelter": [
+    "/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/2973169158/Textures/Things/Pawn/Mechanoid/AM_MechSiegebreaker/AM_Siegemelter_Clean_east.png",
+    "/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/2973169158/Textures/Things/Pawn/Mechanoid/AM_MechSiegebreaker/AM_Siegemelter_Clean_north.png",
+    "/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/2973169158/Textures/Things/Pawn/Mechanoid/AM_MechSiegebreaker/AM_Siegemelter_Clean_south.png",
+    "/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/2973169158/Textures/Things/Pawn/Mechanoid/AM_MechSiegebreaker/AM_Siegemelter_east.png",
+    "/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/2973169158/Textures/Things/Pawn/Mechanoid/AM_MechSiegebreaker/AM_Siegemelter_north.png",
+    "/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/2973169158/Textures/Things/Pawn/Mechanoid/AM_MechSiegebreaker/AM_Siegemelter_south.png"
+   ]
+  },
+  "file": "/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/2973169158/1.6/Mods/Biotech/Defs/ThingDefs_RacesMechanoids/Races_Siegemelter.xml",
+  "desc": "The siegemelter is a variant of the siegebreaker armed with a powerful flamethrower. Their movement is incredibly slow, but their siegemelter turret has a considerable range, so they should be treated as priority targets"
+ },
+ {
+  "defName": "AM_Starfire",
+  "label": "starfire",
+  "mod": "Alpha Mechs",
+  "weight": "UltraHeavy",
+  "bodySize": "4",
+  "body": "AM_SiegebreakerBody",
+  "work": [],
+  "tools": [
+   "head"
+  ],
+  "verbs": [],
+  "weaponTags": [
+   "AM_StarfireTurret"
+  ],
+  "combatPower": [
+   "600"
+  ],
+  "gestation": null,
+  "kinds": [
+   "AM_Starfire"
+  ],
+  "texPaths": [
+   "Things/Pawn/Mechanoid/AM_MechSiegebreaker/AM_Starfire_Clean",
+   "Things/Pawn/Mechanoid/AM_MechSiegebreaker/AM_Starfire"
+  ],
+  "texFiles": {
+   "Things/Pawn/Mechanoid/AM_MechSiegebreaker/AM_Starfire_Clean": [
+    "/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/2973169158/Textures/Things/Pawn/Mechanoid/AM_MechSiegebreaker/AM_Starfire_Clean_east.png",
+    "/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/2973169158/Textures/Things/Pawn/Mechanoid/AM_MechSiegebreaker/AM_Starfire_Clean_north.png",
+    "/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/2973169158/Textures/Things/Pawn/Mechanoid/AM_MechSiegebreaker/AM_Starfire_Clean_south.png"
+   ],
+   "Things/Pawn/Mechanoid/AM_MechSiegebreaker/AM_Starfire": [
+    "/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/2973169158/Textures/Things/Pawn/Mechanoid/AM_MechSiegebreaker/AM_Starfire_Clean_east.png",
+    "/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/2973169158/Textures/Things/Pawn/Mechanoid/AM_MechSiegebreaker/AM_Starfire_Clean_north.png",
+    "/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/2973169158/Textures/Things/Pawn/Mechanoid/AM_MechSiegebreaker/AM_Starfire_Clean_south.png",
+    "/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/2973169158/Textures/Things/Pawn/Mechanoid/AM_MechSiegebreaker/AM_Starfire_east.png",
+    "/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/2973169158/Textures/Things/Pawn/Mechanoid/AM_MechSiegebreaker/AM_Starfire_north.png",
+    "/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/2973169158/Textures/Things/Pawn/Mechanoid/AM_MechSiegebreaker/AM_Starfire_south.png"
+   ]
+  },
+  "file": "/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/2973169158/1.6/Mods/Biotech/Defs/ThingDefs_RacesMechanoids/Races_Starfire.xml",
+  "desc": "The Starfire mechanoid is a massive tank-like machine, equipped with a powerful cannon that fires very slow-moving unstable singularities. These singularities are generated by a complex fusion reactor at the heart of the"
+ },
+ {
+  "defName": "AM_WarEmpress",
+  "label": "war empress",
+  "mod": "Alpha Mechs",
+  "weight": "UltraHeavy",
+  "bodySize": "5",
+  "body": "AM_Mech_WarEmpress",
+  "work": [],
+  "tools": [
+   "left rending claws",
+   "right rending claws",
+   "head"
+  ],
+  "verbs": [],
+  "weaponTags": [],
+  "combatPower": [
+   "850"
+  ],
+  "gestation": null,
+  "kinds": [
+   "AM_WarEmpress"
+  ],
+  "texPaths": [
+   "Things/Pawn/Mechanoid/AM_WarEmpress/AM_WarEmpress_Clean",
+   "Things/Pawn/Mechanoid/AM_WarEmpress/AM_WarEmpress"
+  ],
+  "texFiles": {
+   "Things/Pawn/Mechanoid/AM_WarEmpress/AM_WarEmpress_Clean": [
+    "/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/2973169158/Textures/Things/Pawn/Mechanoid/AM_WarEmpress/AM_WarEmpress_Clean_east.png",
+    "/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/2973169158/Textures/Things/Pawn/Mechanoid/AM_WarEmpress/AM_WarEmpress_Clean_north.png",
+    "/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/2973169158/Textures/Things/Pawn/Mechanoid/AM_WarEmpress/AM_WarEmpress_Clean_south.png"
+   ],
+   "Things/Pawn/Mechanoid/AM_WarEmpress/AM_WarEmpress": [
+    "/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/2973169158/Textures/Things/Pawn/Mechanoid/AM_WarEmpress/AM_WarEmpress_Clean_east.png",
+    "/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/2973169158/Textures/Things/Pawn/Mechanoid/AM_WarEmpress/AM_WarEmpress_Clean_north.png",
+    "/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/2973169158/Textures/Things/Pawn/Mechanoid/AM_WarEmpress/AM_WarEmpress_Clean_south.png",
+    "/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/2973169158/Textures/Things/Pawn/Mechanoid/AM_WarEmpress/AM_WarEmpress_east.png",
+    "/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/2973169158/Textures/Things/Pawn/Mechanoid/AM_WarEmpress/AM_WarEmpress_north.png",
+    "/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/2973169158/Textures/Things/Pawn/Mechanoid/AM_WarEmpress/AM_WarEmpress_south.png"
+   ]
+  },
+  "file": "/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/2973169158/1.6/Mods/Biotech/Defs/ThingDefs_RacesMechanoids/Races_WarEmpress.xml",
+  "desc": "An ultra-heavy mech with a built-in mech gestator. Fed with appropriate resources, the War empress can form swarms of small melee-adept guttersnipe combat mechs within its massive carapace and deploy them into combat. Th"
+ },
+ {
+  "defName": "CACrystalScythe",
+  "label": "Crystal scythe",
+  "mod": "Caravan Adventures",
+  "weight": null,
+  "bodySize": "1.0",
+  "body": "Scyther",
+  "work": [],
+  "tools": [
+   "left blade",
+   "right blade",
+   "head"
+  ],
+  "verbs": [],
+  "weaponTags": [],
+  "combatPower": [
+   "240000"
+  ],
+  "gestation": null,
+  "kinds": [
+   "CABossMechCrystalScythe"
+  ],
+  "texPaths": [
+   "Things/Bosses/2"
+  ],
+  "texFiles": {
+   "Things/Bosses/2": [
+    "/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/2558957509/Textures/Things/Bosses/2_east.png",
+    "/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/2558957509/Textures/Things/Bosses/2_north.png",
+    "/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/2558957509/Textures/Things/Bosses/2_south.png"
+   ]
+  },
+  "file": "/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/2558957509/1.6/Story/Defs/BossBodyAndRaceDefs/BossRaceDefs.xml",
+  "desc": "01010011 01100101 01100101 01101011 01101001 01101110 01100111 00100000 01101000 01110101 01101101 01100001 01101110 00100000 01100001 01101110 01101110 01101001 01101000 01101001 01101100 01100001 01110100 01101001 0110"
+ },
+ {
+  "defName": "CADevourer",
+  "label": "Devourer",
+  "mod": "Caravan Adventures",
+  "weight": null,
+  "bodySize": "3.2",
+  "body": "MechanicalCentipede",
+  "work": [],
+  "tools": [
+   "head"
+  ],
+  "verbs": [],
+  "weaponTags": [
+   "MechanoidGunFake"
+  ],
+  "combatPower": [
+   "250000"
+  ],
+  "gestation": null,
+  "kinds": [
+   "CABossMechDevourer"
+  ],
+  "texPaths": [
+   "Things/Bosses/1"
+  ],
+  "texFiles": {
+   "Things/Bosses/1": [
+    "/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/2558957509/Textures/Things/Bosses/1_east.png",
+    "/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/2558957509/Textures/Things/Bosses/1_north.png",
+    "/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/2558957509/Textures/Things/Bosses/1_south.png"
+   ]
+  },
+  "file": "/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/2558957509/1.6/Story/Defs/BossBodyAndRaceDefs/BossRaceDefs.xml",
+  "desc": "01010011 01100101 01100101 01101011 01101001 01101110 01100111 00100000 01101000 01110101 01101101 01100001 01101110 00100000 01100001 01101110 01101110 01101001 01101000 01101001 01101100 01100001 01110100 01101001 0110"
+ },
+ {
+  "defName": "CAEndBossMech",
+  "label": "Judgment",
+  "mod": "Caravan Adventures",
+  "weight": null,
+  "bodySize": "3.2",
+  "body": "MechanicalCentipede",
+  "work": [],
+  "tools": [
+   "head"
+  ],
+  "verbs": [],
+  "weaponTags": [
+   "MechanoidGunFake"
+  ],
+  "combatPower": [
+   "400000000"
+  ],
+  "gestation": null,
+  "kinds": [
+   "CAEndBossMech"
+  ],
+  "texPaths": [
+   "Things/Bosses/5"
+  ],
+  "texFiles": {
+   "Things/Bosses/5": [
+    "/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/2558957509/Textures/Things/Bosses/5_east.png",
+    "/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/2558957509/Textures/Things/Bosses/5_north.png",
+    "/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/2558957509/Textures/Things/Bosses/5_south.png"
+   ]
+  },
+  "file": "/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/2558957509/1.6/Story/Defs/BossBodyAndRaceDefs/BossRaceDefs.xml",
+  "desc": "01010011 01100101 01100101 01101011 01101001 01101110 01100111 00100000 01101000 01110101 01101101 01100001 01101110 00100000 01100001 01101110 01101110 01101001 01101000 01101001 01101100 01100001 01110100 01101001 0110"
+ },
+ {
+  "defName": "CAHarbinger",
+  "label": "Harbinger",
+  "mod": "Caravan Adventures",
+  "weight": null,
+  "bodySize": "1.0",
+  "body": "Scyther",
+  "work": [],
+  "tools": [
+   "left blade",
+   "right blade",
+   "head"
+  ],
+  "verbs": [],
+  "weaponTags": [],
+  "combatPower": [
+   "240000"
+  ],
+  "gestation": null,
+  "kinds": [
+   "CABossMechHarbinger"
+  ],
+  "texPaths": [
+   "Things/Bosses/4"
+  ],
+  "texFiles": {
+   "Things/Bosses/4": [
+    "/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/2558957509/Textures/Things/Bosses/4_east.png",
+    "/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/2558957509/Textures/Things/Bosses/4_north.png",
+    "/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/2558957509/Textures/Things/Bosses/4_south.png"
+   ]
+  },
+  "file": "/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/2558957509/1.6/Story/Defs/BossBodyAndRaceDefs/BossRaceDefs.xml",
+  "desc": "01010011 01100101 01100101 01101011 01101001 01101110 01100111 00100000 01101000 01110101 01101101 01100001 01101110 00100000 01100001 01101110 01101110 01101001 01101000 01101001 01101100 01100001 01110100 01101001 0110"
+ },
+ {
+  "defName": "CAHavoc",
+  "label": "Havoc",
+  "mod": "Caravan Adventures",
+  "weight": null,
+  "bodySize": "1.0",
+  "body": "Scyther",
+  "work": [],
+  "tools": [
+   "left blade",
+   "right blade",
+   "head"
+  ],
+  "verbs": [],
+  "weaponTags": [
+   "MechanoidGunFake"
+  ],
+  "combatPower": [
+   "240000"
+  ],
+  "gestation": null,
+  "kinds": [
+   "CABossMechHavoc"
+  ],
+  "texPaths": [
+   "Things/Bosses/3"
+  ],
+  "texFiles": {
+   "Things/Bosses/3": [
+    "/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/2558957509/Textures/Things/Bosses/3_east.png",
+    "/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/2558957509/Textures/Things/Bosses/3_north.png",
+    "/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/2558957509/Textures/Things/Bosses/3_south.png"
+   ]
+  },
+  "file": "/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/2558957509/1.6/Story/Defs/BossBodyAndRaceDefs/BossRaceDefs.xml",
+  "desc": "01010011 01100101 01100101 01101011 01101001 01101110 01100111 00100000 01101000 01110101 01101101 01100001 01101110 00100000 01100001 01101110 01101110 01101001 01101000 01101001 01101100 01100001 01110100 01101001 0110"
+ },
+ {
+  "defName": "CAMech_Scyther",
+  "label": "summoned scyther",
+  "mod": "Caravan Adventures",
+  "weight": null,
+  "bodySize": "1.0",
+  "body": "Scyther",
+  "work": [],
+  "tools": [
+   "left blade",
+   "right blade",
+   "head"
+  ],
+  "verbs": [],
+  "weaponTags": [],
+  "combatPower": [
+   "15"
+  ],
+  "gestation": null,
+  "kinds": [
+   "CAMech_Scyther"
+  ],
+  "texPaths": [
+   "Things/Pawn/Mechanoid/Scyther"
+  ],
+  "texFiles": {
+   "Things/Pawn/Mechanoid/Scyther": []
+  },
+  "file": "/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/2558957509/1.6/Story/Defs/AbilityDefs/FriendlyMechDefs.xml",
+  "desc": "Fast, spindly, human-sized combat mechanoids specializing in rapid approach and close-range combat. Their bodies are covered in points and blades, but they mostly use their two arm blades to lop off limbs or gut their vi"
+ },
+ {
+  "defName": "JDSCIS_AQ_Battle_Droid",
+  "label": "AQ Battle Droid",
+  "mod": "[JDS] SW Separatist Droid Army",
+  "weight": "Light",
+  "bodySize": "0.7",
+  "body": "JDSSWCIS_Med_Droid",
+  "work": [],
+  "tools": [
+   "head"
+  ],
+  "verbs": [],
+  "weaponTags": [
+   "AQ_Battle_Blaster"
+  ],
+  "combatPower": [
+   "45"
+  ],
+  "gestation": null,
+  "kinds": [
+   "JDSCIS_AQ_Battle_Droid"
+  ],
+  "texPaths": [
+   "Things/AQ_Battle_Droid"
+  ],
+  "texFiles": {
+   "Things/AQ_Battle_Droid": [
+    "/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3276499495/Common/Textures/Things/AQ_Battle_Droid.png",
+    "/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3276499495/Common/Textures/Things/AQ_Battle_Droid_east.png",
+    "/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3276499495/Common/Textures/Things/AQ_Battle_Droid_north.png",
+    "/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3276499495/Common/Textures/Things/AQ_Battle_Droid_south.png"
+   ]
+  },
+  "file": "/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3276499495/1.6/Defs/ThingDefs_Race.xml",
+  "desc": "Aqua droids, were an amphibious model of battle droid manufactured by Haor Chall Engineering Corporation. They were excellent swimmers, posessed a retractable laser cannon on their right wrist."
+ },
+ {
+  "defName": "JDSCIS_B1_Battle_Droid",
+  "label": "B1 Battle Droid",
+  "mod": "[JDS] SW Separatist Droid Army",
+  "weight": "Light",
+  "bodySize": "0.7",
+  "body": "JDSSWCIS_Med_Droid",
+  "work": [
+   "Hauling"
+  ],
+  "tools": [
+   "head"
+  ],
+  "verbs": [],
+  "weaponTags": [
+   "E-5_Blaster_Rifle"
+  ],
+  "combatPower": [
+   "45"
+  ],
+  "gestation": null,
+  "kinds": [
+   "JDSCIS_B1_Battle_Droid"
+  ],
+  "texPaths": [
+   "Things/B1_Battle_Droids"
+  ],
+  "texFiles": {
+   "Things/B1_Battle_Droids": [
+    "/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3276499495/Common/Textures/Things/B1_Battle_Droids.png",
+    "/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3276499495/Common/Textures/Things/B1_Battle_Droids_east.png",
+    "/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3276499495/Common/Textures/Things/B1_Battle_Droids_north.png",
+    "/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3276499495/Common/Textures/Things/B1_Battle_Droids_south.png"
+   ]
+  },
+  "file": "/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3276499495/1.6/Defs/ThingDefs_Race.xml",
+  "desc": "A B1 battle droid is a type of humanoid droid used as an infantry unit by the Trade Federation and the Separatist Alliance during the Clone Wars. They are mass-produced on the planet Geonosis and are designed to be soldi"
+ },
+ {
+  "defName": "JDSCIS_B1_Commander_Droid",
+  "label": "B1 Commander Droid",
+  "mod": "[JDS] SW Separatist Droid Army",
+  "weight": "Light",
+  "bodySize": "0.7",
+  "body": "JDSSWCIS_Med_Droid",
+  "work": [],
+  "tools": [
+   "head"
+  ],
+  "verbs": [],
+  "weaponTags": [
+   "SE-14_Light_Blaster_Pistol"
+  ],
+  "combatPower": [
+   "45"
+  ],
+  "gestation": null,
+  "kinds": [
+   "JDSCIS_B1_Commander_Droid"
+  ],
+  "texPaths": [
+   "Things/B1_Commander_Droids"
+  ],
+  "texFiles": {
+   "Things/B1_Commander_Droids": [
+    "/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3276499495/Common/Textures/Things/B1_Commander_Droids.png",
+    "/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3276499495/Common/Textures/Things/B1_Commander_Droids_east.png",
+    "/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3276499495/Common/Textures/Things/B1_Commander_Droids_north.png",
+    "/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3276499495/Common/Textures/Things/B1_Commander_Droids_south.png"
+   ]
+  },
+  "file": "/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3276499495/1.6/Defs/ThingDefs_Race.xml",
+  "desc": "A B1 commander droid is a type of battle droid that is used to lead and coordinate the actions of other B1 battle droids in combat. They are equipped with advanced AI systems that allow them to make strategic decisions a"
+ },
+ {
+  "defName": "JDSCIS_B1_Security_Droid",
+  "label": "B1 Security Droid",
+  "mod": "[JDS] SW Separatist Droid Army",
+  "weight": "Light",
+  "bodySize": "0.7",
+  "body": "JDSSWCIS_Med_Droid",
+  "work": [
+   "Hauling"
+  ],
+  "tools": [
+   "head"
+  ],
+  "verbs": [],
+  "weaponTags": [
+   "SE-14_Light_Blaster_Pistol"
+  ],
+  "combatPower": [
+   "45"
+  ],
+  "gestation": null,
+  "kinds": [
+   "JDSCIS_B1_Security_Droid"
+  ],
+  "texPaths": [
+   "Things/B1_Security_Droids"
+  ],
+  "texFiles": {
+   "Things/B1_Security_Droids": [
+    "/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3276499495/Common/Textures/Things/B1_Security_Droids.png",
+    "/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3276499495/Common/Textures/Things/B1_Security_Droids_east.png",
+    "/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3276499495/Common/Textures/Things/B1_Security_Droids_north.png",
+    "/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3276499495/Common/Textures/Things/B1_Security_Droids_south.png"
+   ]
+  },
+  "file": "/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3276499495/1.6/Defs/ThingDefs_Race.xml",
+  "desc": "A B1 battle droid is a type of humanoid droid used as an infantry unit by the Trade Federation and the Separatist Alliance during the Clone Wars. They are mass-produced on the planet Geonosis and are designed to be soldi"
+ },
+ {
+  "defName": "JDSCIS_B2_HA_Super_Battle_Droid",
+  "label": "B2 HA Super Battle Droid",
+  "mod": "[JDS] SW Separatist Droid Army",
+  "weight": "Light",
+  "bodySize": "0.7",
+  "body": "JDSSWCIS_Med_Droid",
+  "work": [],
+  "tools": [
+   "head"
+  ],
+  "verbs": [],
+  "weaponTags": [
+   "B2_HA_Wrist_Cannon"
+  ],
+  "combatPower": [
+   "45"
+  ],
+  "gestation": null,
+  "kinds": [
+   "JDSCIS_B2_HA_Super_Battle_Droid"
+  ],
+  "texPaths": [
+   "Things/B2_HA_Super_Battle_Droid"
+  ],
+  "texFiles": {
+   "Things/B2_HA_Super_Battle_Droid": [
+    "/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3276499495/Common/Textures/Things/B2_HA_Super_Battle_Droid.png",
+    "/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3276499495/Common/Textures/Things/B2_HA_Super_Battle_Droid_east.png",
+    "/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3276499495/Common/Textures/Things/B2_HA_Super_Battle_Droid_north.png",
+    "/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3276499495/Common/Textures/Things/B2_HA_Super_Battle_Droid_south.png"
+   ]
+  },
+  "file": "/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3276499495/1.6/Defs/ThingDefs_Race.xml",
+  "desc": "B2-HA super battle droid was a heavy weapons variant of the B2-series super battle droid used by the Confederacy of Independent Systems during the Clone Wars."
+ },
+ {
+  "defName": "JDSCIS_B2_Super_Battle_Droid",
+  "label": "B2 Super Battle Droid",
+  "mod": "[JDS] SW Separatist Droid Army",
+  "weight": "Light",
+  "bodySize": "0.7",
+  "body": "JDSSWCIS_Med_Droid",
+  "work": [],
+  "tools": [
+   "head"
+  ],
+  "verbs": [],
+  "weaponTags": [
+   "B2_Wrist_Blaster"
+  ],
+  "combatPower": [
+   "45"
+  ],
+  "gestation": null,
+  "kinds": [
+   "JDSCIS_B2_Super_Battle_Droid"
+  ],
+  "texPaths": [
+   "Things/B2_Super_Battle_Droid"
+  ],
+  "texFiles": {
+   "Things/B2_Super_Battle_Droid": [
+    "/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3276499495/Common/Textures/Things/B2_Super_Battle_Droid.png",
+    "/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3276499495/Common/Textures/Things/B2_Super_Battle_Droid_east.png",
+    "/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3276499495/Common/Textures/Things/B2_Super_Battle_Droid_north.png",
+    "/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3276499495/Common/Textures/Things/B2_Super_Battle_Droid_south.png"
+   ]
+  },
+  "file": "/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3276499495/1.6/Defs/ThingDefs_Race.xml",
+  "desc": "Super battle droids were much stronger than their predecessors, and like the updated B1s used by the Confederacy, they did not require a command system to operate, which gave the droids limited independence. Another impr"
+ },
+ {
+  "defName": "JDSCIS_BX_Commando_Droid",
+  "label": "BX Commando Droid",
+  "mod": "[JDS] SW Separatist Droid Army",
+  "weight": "Light",
+  "bodySize": "0.7",
+  "body": "JDSSWCIS_Med_Droid",
+  "work": [],
+  "tools": [
+   "head"
+  ],
+  "verbs": [],
+  "weaponTags": [
+   "E-5S_Sniper_Rifle"
+  ],
+  "combatPower": [
+   "45"
+  ],
+  "gestation": null,
+  "kinds": [
+   "JDSCIS_BX_Commando_Droid"
+  ],
+  "texPaths": [
+   "Things/BX_Commando_Droids"
+  ],
+  "texFiles": {
+   "Things/BX_Commando_Droids": [
+    "/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3276499495/Common/Textures/Things/BX_Commando_Droids_east.png",
+    "/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3276499495/Common/Textures/Things/BX_Commando_Droids_north.png",
+    "/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3276499495/Common/Textures/Things/BX_Commando_Droids_south.png"
+   ]
+  },
+  "file": "/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3276499495/1.6/Defs/ThingDefs_Race.xml",
+  "desc": "BX commando droids are a type of advanced battle droid used by the Separatist Alliance during the Clone Wars. They are equipped with advanced AI systems and are capable of carrying out complex military operations. BX com"
+ },
+ {
+  "defName": "JDSCIS_DSD1_Dwarf_Spider_Droid",
+  "label": "DSD1 Dwarf Spider Droid",
+  "mod": "[JDS] SW Separatist Droid Army",
+  "weight": "Light",
+  "bodySize": "0.7",
+  "body": "JDSSWCIS_Med_Droid",
+  "work": [],
+  "tools": [
+   "head"
+  ],
+  "verbs": [],
+  "weaponTags": [
+   "DSD1_Dwarf_Spider_Blaster"
+  ],
+  "combatPower": [
+   "45"
+  ],
+  "gestation": null,
+  "kinds": [
+   "JDSCIS_DSD1_Dwarf_Spider_Droid"
+  ],
+  "texPaths": [
+   "Things/DSD1_Dwarf_Spider_Droid"
+  ],
+  "texFiles": {
+   "Things/DSD1_Dwarf_Spider_Droid": [
+    "/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3276499495/Common/Textures/Things/DSD1_Dwarf_Spider_Droid.png",
+    "/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3276499495/Common/Textures/Things/DSD1_Dwarf_Spider_Droid_east.png",
+    "/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3276499495/Common/Textures/Things/DSD1_Dwarf_Spider_Droid_north.png",
+    "/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3276499495/Common/Textures/Things/DSD1_Dwarf_Spider_Droid_south.png"
+   ]
+  },
+  "file": "/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3276499495/1.6/Defs/ThingDefs_Race.xml",
+  "desc": "Spider droid for its ability to invade narrow spaces, it was armed with a powerful laser cannon capable of both rapid-fire and high-intensity burst.The four legs of the droid were designed and manufactured to allow attac"
+ },
+ {
+  "defName": "JDSCIS_Demolition_Droid",
+  "label": "Demolition Droid",
+  "mod": "[JDS] SW Separatist Droid Army",
+  "weight": "Light",
+  "bodySize": "0.7",
+  "body": "JDSSWCIS_Med_Droid",
+  "work": [],
+  "tools": [
+   "head"
+  ],
+  "verbs": [],
+  "weaponTags": [
+   "Thermal_Detonator"
+  ],
+  "combatPower": [
+   "45"
+  ],
+  "gestation": null,
+  "kinds": [
+   "JDSCIS_Demolition_Droid"
+  ],
+  "texPaths": [
+   "Things/Demolition_Droid"
+  ],
+  "texFiles": {
+   "Things/Demolition_Droid": [
+    "/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3276499495/Common/Textures/Things/Demolition_Droid.png",
+    "/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3276499495/Common/Textures/Things/Demolition_Droid_east.png",
+    "/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3276499495/Common/Textures/Things/Demolition_Droid_north.png",
+    "/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3276499495/Common/Textures/Things/Demolition_Droid_south.png"
+   ]
+  },
+  "file": "/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3276499495/1.6/Defs/ThingDefs_Race.xml",
+  "desc": "A small combat mechanoid armed with a low-power mini-shotgun. Roughly four feet tall, Scythers lack the power, range, and toughness of more senior combat mechs. However, it is cheap to gestate and maintain, and so is oft"
+ },
+ {
+  "defName": "JDSCIS_Droideka_Droid",
+  "label": "Droideka Droid",
+  "mod": "[JDS] SW Separatist Droid Army",
+  "weight": "Light",
+  "bodySize": "0.7",
+  "body": "JDSSWCIS_Droideka_Droid_Bodies",
+  "work": [],
+  "tools": [
+   "head"
+  ],
+  "verbs": [],
+  "weaponTags": [
+   "Droidekas_Blaster"
+  ],
+  "combatPower": [
+   "45"
+  ],
+  "gestation": null,
+  "kinds": [
+   "JDSCIS_Droideka_Droid"
+  ],
+  "texPaths": [
+   "Things/Droideka_Droid"
+  ],
+  "texFiles": {
+   "Things/Droideka_Droid": [
+    "/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3276499495/Common/Textures/Things/Droideka_Droid.png",
+    "/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3276499495/Common/Textures/Things/Droideka_Droid_east.png",
+    "/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3276499495/Common/Textures/Things/Droideka_Droid_north.png",
+    "/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3276499495/Common/Textures/Things/Droideka_Droid_south.png"
+   ]
+  },
+  "file": "/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3276499495/1.6/Defs/ThingDefs_Race.xml",
+  "desc": "droidekas were dangerous and deadly, designed to exterminate their adversaries with extreme prejudice. They could transform their shape by curling into a ball and moving up to 75 kilometers per hour across a surface, or "
+ },
+ {
+  "defName": "JDSCIS_Droideka_Sharpshooter_Droid",
+  "label": "Droideka Sharpshooter Droid",
+  "mod": "[JDS] SW Separatist Droid Army",
+  "weight": "Light",
+  "bodySize": "0.7",
+  "body": "JDSSWCIS_Droideka_Droid_Bodies",
+  "work": [],
+  "tools": [
+   "head"
+  ],
+  "verbs": [],
+  "weaponTags": [
+   "Droideka_Long_Blaster"
+  ],
+  "combatPower": [
+   "45"
+  ],
+  "gestation": null,
+  "kinds": [
+   "JDSCIS_Droideka_Sharpshooter_Droid"
+  ],
+  "texPaths": [
+   "Things/Droideka_Sharpshooter_Droid"
+  ],
+  "texFiles": {
+   "Things/Droideka_Sharpshooter_Droid": [
+    "/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3276499495/Common/Textures/Things/Droideka_Sharpshooter_Droid.png",
+    "/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3276499495/Common/Textures/Things/Droideka_Sharpshooter_Droid_east.png",
+    "/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3276499495/Common/Textures/Things/Droideka_Sharpshooter_Droid_north.png",
+    "/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3276499495/Common/Textures/Things/Droideka_Sharpshooter_Droid_south.png"
+   ]
+  },
+  "file": "/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3276499495/1.6/Defs/ThingDefs_Race.xml",
+  "desc": "sharpshooter droideka, the sniper droid, or the sharpshooter droid, was a variation of droideka that specialized in sniping. Unlike the original droideka, it was equipped with a single blaster rifle in the middle, and us"
+ },
+ {
+  "defName": "JDSCIS_IG-100_MagnaGuards",
+  "label": "IG-100 MagnaGuards",
+  "mod": "[JDS] SW Separatist Droid Army",
+  "weight": "Light",
+  "bodySize": "0.7",
+  "body": "JDSSWCIS_Med_Droid",
+  "work": [],
+  "tools": [
+   "head"
+  ],
+  "verbs": [],
+  "weaponTags": [
+   "Electrostaff"
+  ],
+  "combatPower": [
+   "45"
+  ],
+  "gestation": null,
+  "kinds": [
+   "JDSCIS_IG-100_MagnaGuards"
+  ],
+  "texPaths": [
+   "Things/IG-100_MagnaGuards"
+  ],
+  "texFiles": {
+   "Things/IG-100_MagnaGuards": [
+    "/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3276499495/Common/Textures/Things/IG-100_MagnaGuards.png",
+    "/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3276499495/Common/Textures/Things/IG-100_MagnaGuards_east.png",
+    "/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3276499495/Common/Textures/Things/IG-100_MagnaGuards_north.png",
+    "/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3276499495/Common/Textures/Things/IG-100_MagnaGuards_south.png"
+   ]
+  },
+  "file": "/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3276499495/1.6/Defs/ThingDefs_Race.xml",
+  "desc": "IG-100 MagnaGuards are a type of humanoid droid used by the Confederacy of Independent Systems during the Clone Wars. They are designed to serve as bodyguards and enforcers, and are equipped with advanced AI systems. IG-"
+ },
+ {
+  "defName": "JDSCIS_LR-57_Combat_Droid",
+  "label": "LR-57 Combat Droid",
+  "mod": "[JDS] SW Separatist Droid Army",
+  "weight": "Light",
+  "bodySize": "0.7",
+  "body": "JDSSWCIS_Med_Droid",
+  "work": [],
+  "tools": [
+   "head"
+  ],
+  "verbs": [],
+  "weaponTags": [
+   "LR-57_Combat_Blaster"
+  ],
+  "combatPower": [
+   "45"
+  ],
+  "gestation": null,
+  "kinds": [
+   "JDSCIS_LR-57_Combat_Droid"
+  ],
+  "texPaths": [
+   "Things/LR-57_Combat_Droid"
+  ],
+  "texFiles": {
+   "Things/LR-57_Combat_Droid": [
+    "/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3276499495/Common/Textures/Things/LR-57_Combat_Droid.png",
+    "/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3276499495/Common/Textures/Things/LR-57_Combat_Droid_east.png",
+    "/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3276499495/Common/Textures/Things/LR-57_Combat_Droid_north.png",
+    "/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3276499495/Common/Textures/Things/LR-57_Combat_Droid_south.png"
+   ]
+  },
+  "file": "/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3276499495/1.6/Defs/ThingDefs_Race.xml",
+  "desc": "Retail Caucus droid, retail droid, or mine droid, was a model of battle droid used by the Confederacy of Independent Systems during the Clone Wars. Primarily used as sentinels, these droids were bipedal and possessed two"
+ },
+ {
+  "defName": "JDSCIS_Pistoeka_Sotage_Droid",
+  "label": "Pistoeka Sotage Droid",
+  "mod": "[JDS] SW Separatist Droid Army",
+  "weight": "Light",
+  "bodySize": "0.7",
+  "body": "JDSSWCIS_Pistoeka_Sotage_Droid_Bodies",
+  "work": [
+   "Mining",
+   "Construction"
+  ],
+  "tools": [
+   "right blade"
+  ],
+  "verbs": [],
+  "weaponTags": [],
+  "combatPower": [
+   "45"
+  ],
+  "gestation": null,
+  "kinds": [
+   "JDSCIS_Pistoeka_Sotage_Droid"
+  ],
+  "texPaths": [
+   "Things/Pistoeka_Sotage_Droid"
+  ],
+  "texFiles": {
+   "Things/Pistoeka_Sotage_Droid": [
+    "/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3276499495/Common/Textures/Things/Pistoeka_Sotage_Droid.png",
+    "/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3276499495/Common/Textures/Things/Pistoeka_Sotage_Droid_east.png",
+    "/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3276499495/Common/Textures/Things/Pistoeka_Sotage_Droid_north.png",
+    "/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3276499495/Common/Textures/Things/Pistoeka_Sotage_Droid_south.png"
+   ]
+  },
+  "file": "/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3276499495/1.6/Defs/ThingDefs_Race.xml",
+  "desc": "A Pistoeka sabotage droid is a small droid used by the Confederacy of Independent Systems during the Clone Wars. These droids are equipped with a variety of tools and are often used for sabotage and infiltration missions"
+ },
+ {
+  "defName": "JDSCIS_ST_Super_Tactical_Droid",
+  "label": "ST Super Tactical Droid",
+  "mod": "[JDS] SW Separatist Droid Army",
+  "weight": "Light",
+  "bodySize": "0.7",
+  "body": "JDSSWCIS_Med_Droid",
+  "work": [
+   "Crafting",
+   "Smithing",
+   "Tailoring",
+   "Cooking",
+   "Research"
+  ],
+  "tools": [
+   "head"
+  ],
+  "verbs": [],
+  "weaponTags": [
+   "SE-14_Light_Blaster_Pistol"
+  ],
+  "combatPower": [
+   "45"
+  ],
+  "gestation": null,
+  "kinds": [
+   "JDSCIS_ST_Super_Tactical_Droid"
+  ],
+  "texPaths": [
+   "Things/ST_Super_Tactical_Droid"
+  ],
+  "texFiles": {
+   "Things/ST_Super_Tactical_Droid": [
+    "/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3276499495/Common/Textures/Things/ST_Super_Tactical_Droid.png",
+    "/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3276499495/Common/Textures/Things/ST_Super_Tactical_Droid_east.png",
+    "/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3276499495/Common/Textures/Things/ST_Super_Tactical_Droid_north.png",
+    "/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3276499495/Common/Textures/Things/ST_Super_Tactical_Droid_south.png"
+   ]
+  },
+  "file": "/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3276499495/1.6/Defs/ThingDefs_Race.xml",
+  "desc": "super tactical droids, were an advanced model of tactical droid that was utilized as an enhanced version of the T-series military strategic analysis and tactics droid. In the second year of the Clone Wars, due to the inf"
+ },
+ {
+  "defName": "JDSCIS_T1_Tactical_Droid",
+  "label": "T1 Tactical Droid",
+  "mod": "[JDS] SW Separatist Droid Army",
+  "weight": "Light",
+  "bodySize": "0.7",
+  "body": "JDSSWCIS_Med_Droid",
+  "work": [
+   "Crafting",
+   "Smithing",
+   "Tailoring",
+   "Cooking"
+  ],
+  "tools": [
+   "head"
+  ],
+  "verbs": [],
+  "weaponTags": [
+   "SE-14_Light_Blaster_Pistol"
+  ],
+  "combatPower": [
+   "45"
+  ],
+  "gestation": null,
+  "kinds": [
+   "JDSCIS_T1_Tactical_Droid"
+  ],
+  "texPaths": [
+   "Things/T1_Tactical_Droid"
+  ],
+  "texFiles": {
+   "Things/T1_Tactical_Droid": [
+    "/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3276499495/Common/Textures/Things/T1_Tactical_Droid.png",
+    "/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3276499495/Common/Textures/Things/T1_Tactical_Droid_east.png",
+    "/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3276499495/Common/Textures/Things/T1_Tactical_Droid_north.png",
+    "/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3276499495/Common/Textures/Things/T1_Tactical_Droid_south.png"
+   ]
+  },
+  "file": "/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3276499495/1.6/Defs/ThingDefs_Race.xml",
+  "desc": "T-series tactical droid, the standard tactical droid, or the T-1 and initially designated the CDE-T, was a model of tactical droid manufactured by Baktoid Combat Automata. Used by the Confederacy of Independent Systems d"
+ },
+ {
+  "defName": "Ling_Cockroach_Mechanoid",
+  "label": "\u673a\u68b0\u87d1\u8782",
+  "mod": "Rim cockroach",
+  "weight": "Medium",
+  "bodySize": "2",
+  "body": "Scorcher_SixLeg",
+  "work": [],
+  "tools": [
+   "\u53e3\u5668"
+  ],
+  "verbs": [],
+  "weaponTags": [],
+  "combatPower": [
+   "400",
+   "400"
+  ],
+  "gestation": [
+   "Ling_Cockroach_Mechanoid",
+   "LargeMechGestator"
+  ],
+  "kinds": [
+   "Ling_Cockroach_Mechanoid",
+   "Ling_Cockroach_Mechanoid"
+  ],
+  "texPaths": [
+   "Things/Pawn/Animal/LingCockroachMechanoid/LingCockroachMechanoid"
+  ],
+  "texFiles": {
+   "Things/Pawn/Animal/LingCockroachMechanoid/LingCockroachMechanoid": [
+    "/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3196253802/Textures/Things/Pawn/Animal/LingCockroachMechanoid/LingCockroachMechanoid_east.png",
+    "/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3196253802/Textures/Things/Pawn/Animal/LingCockroachMechanoid/LingCockroachMechanoid_north.png",
+    "/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3196253802/Textures/Things/Pawn/Animal/LingCockroachMechanoid/LingCockroachMechanoid_south.png"
+   ]
+  },
+  "file": "/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3196253802/Defs/Normal.xml",
+  "desc": "\u4e00\u53ea\u87d1\u8782\u5f62\u6001\u7684\u673a\u68b0,\u4f46\u5927\u5c0f\u663e\u7136\u5e76\u4e0d\u6b63\u5e38,\u8fd9\u53ea2\u4eba\u5927\u7684\u673a\u68b0\u87d1\u8782\u6709\u7740\u950b\u5229\u7684\u53e3\u5668\u548c\u5f39\u5c04\u88c5\u7f6e,\u53ef\u4ee5\u4ece\u4e2d\u7b49\u8ddd\u79bb\u6251\u5230\u654c\u4eba\u7684\u8138\u4e0a\u5e76\u526a\u65ad\u4ed6\u4eec\u7684\u8116\u5b50,\u6740\u4f24\u529b\u6781\u5176\u6050\u6016,\u4e14\u539a\u91cd\u7684\u88c5\u7532\u8d4b\u4e88\u4e86\u5176\u6781\u5f3a\u7684\u7684\u751f\u5b58\u80fd\u529b,\u80fd\u591f\u5728\u67aa\u6797\u5f39\u96e8\u4e2d\u7a7f\u68ad\u5982\u98ce"
+ },
+ {
+  "defName": "Mech_Agrihand",
+  "label": "agrihand",
+  "mod": "Biotech",
+  "weight": "Light",
+  "bodySize": "0.7",
+  "body": "Mech_Agrihand",
+  "work": [
+   "PlantCutting",
+   "Growing"
+  ],
+  "tools": [
+   "right blade"
+  ],
+  "verbs": [],
+  "weaponTags": [],
+  "combatPower": [
+   "10"
+  ],
+  "gestation": null,
+  "kinds": [
+   "Mech_Agrihand"
+  ],
+  "texPaths": [
+   "Things/Pawn/Mechanoid/Agrihand",
+   "Things/Pawn/Mechanoid/AgrihandAncient"
+  ],
+  "texFiles": {
+   "Things/Pawn/Mechanoid/Agrihand": [],
+   "Things/Pawn/Mechanoid/AgrihandAncient": []
+  },
+  "file": "/mnt/c/Program Files (x86)/Steam/steamapps/common/RimWorld/Data/Biotech/Defs/ThingDefs_Races/Races_Mechanoids_Light.xml",
+  "desc": "A small mechanoid designed to sow and harvest crops. While it is better suited to labor than combat, it can fight with built-in cutting blades if necessary."
+ },
+ {
+  "defName": "Mech_Apocriton",
+  "label": "apocriton",
+  "mod": "Biotech",
+  "weight": "UltraHeavy",
+  "bodySize": "1.0",
+  "body": "Apocriton",
+  "work": [],
+  "tools": [
+   "head"
+  ],
+  "verbs": [],
+  "weaponTags": [
+   "MechanoidGunToxicNeedle"
+  ],
+  "combatPower": [
+   "600"
+  ],
+  "gestation": null,
+  "kinds": [
+   "Mech_Apocriton"
+  ],
+  "texPaths": [
+   "Things/Pawn/Mechanoid/Apocriton",
+   "Things/Pawn/Mechanoid/ApocritonAncient"
+  ],
+  "texFiles": {
+   "Things/Pawn/Mechanoid/Apocriton": [],
+   "Things/Pawn/Mechanoid/ApocritonAncient": []
+  },
+  "file": "/mnt/c/Program Files (x86)/Steam/steamapps/common/RimWorld/Data/Biotech/Defs/ThingDefs_Races/Races_Mechanoids_SuperHeavy.xml",
+  "desc": "A mechanoid commander designed to coordinate and motivate other mechs during long extermination campaigns. Its most obvious power is its ability to resurrect recently-killed mechs by supercharging their self-repair proce"
+ },
+ {
+  "defName": "Mech_CentipedeBlaster",
+  "label": "centipede blaster",
+  "mod": "Core",
+  "weight": "Heavy",
+  "bodySize": "3.0",
+  "body": "MechanicalCentipede",
+  "work": [],
+  "tools": [
+   "head"
+  ],
+  "verbs": [],
+  "weaponTags": [
+   "ChargeBlasterHeavyGun"
+  ],
+  "combatPower": [
+   "400"
+  ],
+  "gestation": null,
+  "kinds": [
+   "Mech_CentipedeBlaster"
+  ],
+  "texPaths": [
+   "Things/Pawn/Mechanoid/CentipedeClean",
+   "Things/Pawn/Mechanoid/Centipede"
+  ],
+  "texFiles": {
+   "Things/Pawn/Mechanoid/CentipedeClean": [],
+   "Things/Pawn/Mechanoid/Centipede": []
+  },
+  "file": "/mnt/c/Program Files (x86)/Steam/steamapps/common/RimWorld/Data/Core/Defs/ThingDefs_Races/Races_Mechanoid.xml",
+  "desc": "Heavy combat mechanoids that glide on dozens of tiny legs. Their thick carapace and firepower makes them very effective against bunched-up static defenders. They are somewhat vulnerable to mobile hit-and-run tactics."
+ },
+ {
+  "defName": "Mech_CentipedeBurner",
+  "label": "centipede burner",
+  "mod": "Core",
+  "weight": "Heavy",
+  "bodySize": "3.0",
+  "body": "MechanicalCentipede",
+  "work": [],
+  "tools": [
+   "head"
+  ],
+  "verbs": [],
+  "weaponTags": [
+   "InfernoCannonGun"
+  ],
+  "combatPower": [
+   "400"
+  ],
+  "gestation": null,
+  "kinds": [
+   "Mech_CentipedeBurner"
+  ],
+  "texPaths": [
+   "Things/Pawn/Mechanoid/CentipedeBurnerClean",
+   "Things/Pawn/Mechanoid/CentipedeBurner"
+  ],
+  "texFiles": {
+   "Things/Pawn/Mechanoid/CentipedeBurnerClean": [],
+   "Things/Pawn/Mechanoid/CentipedeBurner": []
+  },
+  "file": "/mnt/c/Program Files (x86)/Steam/steamapps/common/RimWorld/Data/Core/Defs/ThingDefs_Races/Races_Mechanoid.xml",
+  "desc": "Heavy combat mechanoids that glide on dozens of tiny legs. Their thick carapace and firepower makes them very effective against bunched-up static defenders. They are somewhat vulnerable to mobile hit-and-run tactics."
+ },
+ {
+  "defName": "Mech_CentipedeGunner",
+  "label": "centipede gunner",
+  "mod": "Core",
+  "weight": "Heavy",
+  "bodySize": "3.0",
+  "body": "MechanicalCentipede",
+  "work": [],
+  "tools": [
+   "head"
+  ],
+  "verbs": [],
+  "weaponTags": [
+   "Minigun"
+  ],
+  "combatPower": [
+   "400"
+  ],
+  "gestation": null,
+  "kinds": [
+   "Mech_CentipedeGunner"
+  ],
+  "texPaths": [
+   "Things/Pawn/Mechanoid/CentipedeGunnerClean",
+   "Things/Pawn/Mechanoid/CentipedeGunner"
+  ],
+  "texFiles": {
+   "Things/Pawn/Mechanoid/CentipedeGunnerClean": [],
+   "Things/Pawn/Mechanoid/CentipedeGunner": []
+  },
+  "file": "/mnt/c/Program Files (x86)/Steam/steamapps/common/RimWorld/Data/Core/Defs/ThingDefs_Races/Races_Mechanoid.xml",
+  "desc": "Heavy combat mechanoids that glide on dozens of tiny legs. Their thick carapace and firepower makes them very effective against bunched-up static defenders. They are somewhat vulnerable to mobile hit-and-run tactics."
+ },
+ {
+  "defName": "Mech_Centurion",
+  "label": "centurion",
+  "mod": "Biotech",
+  "weight": "UltraHeavy",
+  "bodySize": "3.6",
+  "body": "Mech_Centurion",
+  "work": [],
+  "tools": [
+   "head"
+  ],
+  "verbs": [],
+  "weaponTags": [],
+  "combatPower": [
+   "250"
+  ],
+  "gestation": null,
+  "kinds": [
+   "Mech_Centurion"
+  ],
+  "texPaths": [
+   "Things/Pawn/Mechanoid/Centurion",
+   "Things/Pawn/Mechanoid/CenturionAncient"
+  ],
+  "texFiles": {
+   "Things/Pawn/Mechanoid/Centurion": [],
+   "Things/Pawn/Mechanoid/CenturionAncient": []
+  },
+  "file": "/mnt/c/Program Files (x86)/Steam/steamapps/common/RimWorld/Data/Biotech/Defs/ThingDefs_Races/Races_Mechanoids_SuperHeavy.xml",
+  "desc": "An ultraheavy mech with a built-in shield bubble generator. The centurion carries a point-defense bulb turret capable of firing while the mechanoid is moving."
+ },
+ {
+  "defName": "Mech_Cleansweeper",
+  "label": "cleansweeper",
+  "mod": "Biotech",
+  "weight": "Light",
+  "bodySize": "0.3",
+  "body": "Mech_Light",
+  "work": [
+   "Cleaning"
+  ],
+  "tools": [
+   "head"
+  ],
+  "verbs": [],
+  "weaponTags": [],
+  "combatPower": [
+   "10"
+  ],
+  "gestation": null,
+  "kinds": [
+   "Mech_Cleansweeper"
+  ],
+  "texPaths": [
+   "Things/Pawn/Mechanoid/Cleansweeper",
+   "Things/Pawn/Mechanoid/CleansweeperAncient"
+  ],
+  "texFiles": {
+   "Things/Pawn/Mechanoid/Cleansweeper": [],
+   "Things/Pawn/Mechanoid/CleansweeperAncient": []
+  },
+  "file": "/mnt/c/Program Files (x86)/Steam/steamapps/common/RimWorld/Data/Biotech/Defs/ThingDefs_Races/Races_Mechanoids_Light.xml",
+  "desc": "A light mechanoid designed for cleaning. Lacking a ranged weapon, it can make only weak melee attacks."
+ },
+ {
+  "defName": "Mech_Constructoid",
+  "label": "constructoid",
+  "mod": "Biotech",
+  "weight": "Light",
+  "bodySize": "0.7",
+  "body": "Mech_Light",
+  "work": [
+   "Construction"
+  ],
+  "tools": [
+   "torso"
+  ],
+  "verbs": [],
+  "weaponTags": [],
+  "combatPower": [
+   "10"
+  ],
+  "gestation": null,
+  "kinds": [
+   "Mech_Constructoid"
+  ],
+  "texPaths": [
+   "Things/Pawn/Mechanoid/Constructoid",
+   "Things/Pawn/Mechanoid/ConstructoidAncient"
+  ],
+  "texFiles": {
+   "Things/Pawn/Mechanoid/Constructoid": [],
+   "Things/Pawn/Mechanoid/ConstructoidAncient": []
+  },
+  "file": "/mnt/c/Program Files (x86)/Steam/steamapps/common/RimWorld/Data/Biotech/Defs/ThingDefs_Races/Races_Mechanoids_Light.xml",
+  "desc": "A small mechanoid designed to perform construction tasks. It can perform blunt melee attacks if necessary."
+ },
+ {
+  "defName": "Mech_Cyclops",
+  "label": "cyclops",
+  "mod": "Odyssey",
+  "weight": "Medium",
+  "bodySize": "1.0",
+  "body": "Cyclops",
+  "work": [],
+  "tools": [
+   "front left leg",
+   "front right leg",
+   "head"
+  ],
+  "verbs": [],
+  "weaponTags": [
+   "WeaponBeamRepeater"
+  ],
+  "combatPower": [
+   "110"
+  ],
+  "gestation": [
+   "Cyclops",
+   "LargeMechGestator"
+  ],
+  "kinds": [
+   "Mech_Cyclops"
+  ],
+  "texPaths": [
+   "Things/Pawn/Mechanoid/MechCyclops/Cyclops",
+   "Things/Pawn/Mechanoid/MechCyclops/Cyclops_Ancient"
+  ],
+  "texFiles": {
+   "Things/Pawn/Mechanoid/MechCyclops/Cyclops": [],
+   "Things/Pawn/Mechanoid/MechCyclops/Cyclops_Ancient": []
+  },
+  "file": "/mnt/c/Program Files (x86)/Steam/steamapps/common/RimWorld/Data/Odyssey/Defs/ThingDefs_Races/Races_Mechanoids_Medium.xml",
+  "desc": "A front-line combat mechanoid named for its large optical array. The cyclops specializes in counter-shield attacks. It takes a long time to lock onto a target, but once locked on, it fires a near endless barrage of shiel"
+ },
+ {
+  "defName": "Mech_Diabolus",
+  "label": "diabolus",
+  "mod": "Biotech",
+  "weight": "UltraHeavy",
+  "bodySize": "4",
+  "body": "Mech_Diabolus",
+  "work": [],
+  "tools": [
+   "head"
+  ],
+  "verbs": [],
+  "weaponTags": [
+   "HellsphereCannonGun"
+  ],
+  "combatPower": [
+   "500"
+  ],
+  "gestation": null,
+  "kinds": [
+   "Mech_Diabolus"
+  ],
+  "texPaths": [
+   "Things/Pawn/Mechanoid/Diabolus",
+   "Things/Pawn/Mechanoid/DiabolusAncient"
+  ],
+  "texFiles": {
+   "Things/Pawn/Mechanoid/Diabolus": [],
+   "Things/Pawn/Mechanoid/DiabolusAncient": []
+  },
+  "file": "/mnt/c/Program Files (x86)/Steam/steamapps/common/RimWorld/Data/Biotech/Defs/ThingDefs_Races/Races_Mechanoids_SuperHeavy.xml",
+  "desc": "An ultra-heavy mechanoid with an ultra-powerful hellsphere cannon. Made for siegebreaking, its hellsphere cannon takes time to charge up a shot, but can melt concrete and vaporize bone. The diabolus dissipates the hellsp"
+ },
+ {
+  "defName": "Mech_Fabricor",
+  "label": "fabricor",
+  "mod": "Biotech",
+  "weight": "Light",
+  "bodySize": "0.7",
+  "body": "Mech_Light",
+  "work": [
+   "Crafting",
+   "Smithing",
+   "Tailoring",
+   "Cooking",
+   "Research"
+  ],
+  "tools": [
+   "head"
+  ],
+  "verbs": [],
+  "weaponTags": [],
+  "combatPower": [
+   "10"
+  ],
+  "gestation": null,
+  "kinds": [
+   "Mech_Fabricor"
+  ],
+  "texPaths": [
+   "Things/Pawn/Mechanoid/Fabricor",
+   "Things/Pawn/Mechanoid/FabricorAncient"
+  ],
+  "texFiles": {
+   "Things/Pawn/Mechanoid/Fabricor": [],
+   "Things/Pawn/Mechanoid/FabricorAncient": []
+  },
+  "file": "/mnt/c/Program Files (x86)/Steam/steamapps/common/RimWorld/Data/Biotech/Defs/ThingDefs_Races/Races_Mechanoids_Light.xml",
+  "desc": "A small work mechanoid designed to craft all manner of manufactured objects."
+ },
+ {
+  "defName": "Mech_Lancer",
+  "label": "lancer",
+  "mod": "Core",
+  "weight": "Medium",
+  "bodySize": "1.0",
+  "body": "Lancer",
+  "work": [],
+  "tools": [
+   "left fist",
+   "right fist",
+   "head"
+  ],
+  "verbs": [],
+  "weaponTags": [
+   "MechanoidGunMedium"
+  ],
+  "combatPower": [
+   "190"
+  ],
+  "gestation": null,
+  "kinds": [
+   "Mech_Lancer"
+  ],
+  "texPaths": [
+   "Things/Pawn/Mechanoid/LancerClean",
+   "Things/Pawn/Mechanoid/Lancer"
+  ],
+  "texFiles": {
+   "Things/Pawn/Mechanoid/LancerClean": [],
+   "Things/Pawn/Mechanoid/Lancer": []
+  },
+  "file": "/mnt/c/Program Files (x86)/Steam/steamapps/common/RimWorld/Data/Core/Defs/ThingDefs_Races/Races_Mechanoid.xml",
+  "desc": "Fast human-sized combat mechanoids built for medium and long-range combat. Their bodies are light, making them vulnerable targets at close range - especially in melee combat."
+ },
+ {
+  "defName": "Mech_Legionary",
+  "label": "legionary",
+  "mod": "Biotech",
+  "weight": "Medium",
+  "bodySize": "1.0",
+  "body": "Lancer",
+  "work": [],
+  "tools": [
+   "left fist",
+   "right fist",
+   "head"
+  ],
+  "verbs": [],
+  "weaponTags": [
+   "MechanoidGunNeedleLauncher"
+  ],
+  "combatPower": [
+   "150"
+  ],
+  "gestation": null,
+  "kinds": [
+   "Mech_Legionary"
+  ],
+  "texPaths": [
+   "Things/Pawn/Mechanoid/Legionary",
+   "Things/Pawn/Mechanoid/LegionaryAncient"
+  ],
+  "texFiles": {
+   "Things/Pawn/Mechanoid/Legionary": [],
+   "Things/Pawn/Mechanoid/LegionaryAncient": []
+  },
+  "file": "/mnt/c/Program Files (x86)/Steam/steamapps/common/RimWorld/Data/Biotech/Defs/ThingDefs_Races/Races_Mechanoids_Medium.xml",
+  "desc": "A combat support mechanoid with a wide-range bullet shield and mid-range needle gun. Designed to support other mechanoids, the legionary is vulnerable to anyone who can get inside its shield."
+ },
+ {
+  "defName": "Mech_Lifter",
+  "label": "lifter",
+  "mod": "Biotech",
+  "weight": "Light",
+  "bodySize": "0.7",
+  "body": "Mech_Light",
+  "work": [
+   "Hauling"
+  ],
+  "tools": [
+   "head"
+  ],
+  "verbs": [],
+  "weaponTags": [],
+  "combatPower": [
+   "10"
+  ],
+  "gestation": null,
+  "kinds": [
+   "Mech_Lifter"
+  ],
+  "texPaths": [
+   "Things/Pawn/Mechanoid/Lifter",
+   "Things/Pawn/Mechanoid/LifterAncient"
+  ],
+  "texFiles": {
+   "Things/Pawn/Mechanoid/Lifter": [],
+   "Things/Pawn/Mechanoid/LifterAncient": []
+  },
+  "file": "/mnt/c/Program Files (x86)/Steam/steamapps/common/RimWorld/Data/Biotech/Defs/ThingDefs_Races/Races_Mechanoids_Light.xml",
+  "desc": "A small mechanoid designed for hauling. Lacking a ranged weapon, it can make only weak melee attacks."
+ },
+ {
+  "defName": "Mech_Militor",
+  "label": "militor",
+  "mod": "Biotech",
+  "weight": "Light",
+  "bodySize": "0.7",
+  "body": "Mech_Light",
+  "work": [],
+  "tools": [
+   "head"
+  ],
+  "verbs": [],
+  "weaponTags": [
+   "MechanoidGunShortRange"
+  ],
+  "combatPower": [
+   "45"
+  ],
+  "gestation": null,
+  "kinds": [
+   "Mech_Militor"
+  ],
+  "texPaths": [
+   "Things/Pawn/Mechanoid/Militor",
+   "Things/Pawn/Mechanoid/MilitorAncient"
+  ],
+  "texFiles": {
+   "Things/Pawn/Mechanoid/Militor": [],
+   "Things/Pawn/Mechanoid/MilitorAncient": []
+  },
+  "file": "/mnt/c/Program Files (x86)/Steam/steamapps/common/RimWorld/Data/Biotech/Defs/ThingDefs_Races/Races_Mechanoids_Light.xml",
+  "desc": "A small combat mechanoid armed with a low-power mini-shotgun. Roughly four feet tall, militors lack the power, range, and toughness of more senior combat mechs. However, it is cheap to gestate and maintain, and so is oft"
+ },
+ {
+  "defName": "Mech_Paramedic",
+  "label": "paramedic",
+  "mod": "Biotech",
+  "weight": "Light",
+  "bodySize": "0.7",
+  "body": "Mech_Light",
+  "work": [
+   "Doctor",
+   "Firefighter"
+  ],
+  "tools": [
+   "head"
+  ],
+  "verbs": [],
+  "weaponTags": [],
+  "combatPower": [
+   "10"
+  ],
+  "gestation": null,
+  "kinds": [
+   "Mech_Paramedic"
+  ],
+  "texPaths": [
+   "Things/Pawn/Mechanoid/Paramedic",
+   "Things/Pawn/Mechanoid/ParamedicAncient"
+  ],
+  "texFiles": {
+   "Things/Pawn/Mechanoid/Paramedic": [],
+   "Things/Pawn/Mechanoid/ParamedicAncient": []
+  },
+  "file": "/mnt/c/Program Files (x86)/Steam/steamapps/common/RimWorld/Data/Biotech/Defs/ThingDefs_Races/Races_Mechanoids_Light.xml",
+  "desc": "A small mechanoid designed for non-violent emergency situation management and medical care. The paramedic can rescue the wounded, fight fires, treat the sick, and even perform surgery when a more-qualified human is not a"
+ },
+ {
+  "defName": "Mech_Pikeman",
+  "label": "pikeman",
+  "mod": "Core",
+  "weight": "Medium",
+  "bodySize": "1.0",
+  "body": "Pikeman",
+  "work": [],
+  "tools": [
+   "front left leg",
+   "front right leg",
+   "head"
+  ],
+  "verbs": [],
+  "weaponTags": [
+   "MechanoidGunLongRange"
+  ],
+  "combatPower": [
+   "110"
+  ],
+  "gestation": null,
+  "kinds": [
+   "Mech_Pikeman"
+  ],
+  "texPaths": [
+   "Things/Pawn/Mechanoid/PikemanClean",
+   "Things/Pawn/Mechanoid/Pikeman"
+  ],
+  "texFiles": {
+   "Things/Pawn/Mechanoid/PikemanClean": [],
+   "Things/Pawn/Mechanoid/Pikeman": []
+  },
+  "file": "/mnt/c/Program Files (x86)/Steam/steamapps/common/RimWorld/Data/Core/Defs/ThingDefs_Races/Races_Mechanoid.xml",
+  "desc": "A clunky multi-legged combat mechanoid specialized as a long-range weapons platform. While effective at distance, it is weak in close-range fights and in melee combat.\\n\\nVeterans of mechanoid wars know that often, the s"
+ },
+ {
+  "defName": "Mech_Scorcher",
+  "label": "scorcher",
+  "mod": "Biotech",
+  "weight": "Medium",
+  "bodySize": "1.0",
+  "body": "Scorcher",
+  "work": [],
+  "tools": [
+   "front left leg",
+   "front right leg",
+   "head"
+  ],
+  "verbs": [],
+  "weaponTags": [
+   "MechanoidGunMiniFlameblaster"
+  ],
+  "combatPower": [
+   "75"
+  ],
+  "gestation": null,
+  "kinds": [
+   "Mech_Scorcher"
+  ],
+  "texPaths": [
+   "Things/Pawn/Mechanoid/Scorcher",
+   "Things/Pawn/Mechanoid/ScorcherAncient"
+  ],
+  "texFiles": {
+   "Things/Pawn/Mechanoid/Scorcher": [],
+   "Things/Pawn/Mechanoid/ScorcherAncient": []
+  },
+  "file": "/mnt/c/Program Files (x86)/Steam/steamapps/common/RimWorld/Data/Biotech/Defs/ThingDefs_Races/Races_Mechanoids_Medium.xml",
+  "desc": "A close-approach war mechanoid that specializes in incendiary attacks. Its flame burst attack has little reach, but once it closes on a group of defenders it can ignite and disrupt them with blasts of searing flame."
+ },
+ {
+  "defName": "Mech_Scyther",
+  "label": "scyther",
+  "mod": "Core",
+  "weight": "Medium",
+  "bodySize": "1.0",
+  "body": "Scyther",
+  "work": [],
+  "tools": [
+   "left blade",
+   "right blade",
+   "head"
+  ],
+  "verbs": [],
+  "weaponTags": [],
+  "combatPower": [
+   "150"
+  ],
+  "gestation": null,
+  "kinds": [
+   "Mech_Scyther"
+  ],
+  "texPaths": [
+   "Things/Pawn/Mechanoid/ScytherClean",
+   "Things/Pawn/Mechanoid/Scyther"
+  ],
+  "texFiles": {
+   "Things/Pawn/Mechanoid/ScytherClean": [],
+   "Things/Pawn/Mechanoid/Scyther": []
+  },
+  "file": "/mnt/c/Program Files (x86)/Steam/steamapps/common/RimWorld/Data/Core/Defs/ThingDefs_Races/Races_Mechanoid.xml",
+  "desc": "Fast, spindly, human-sized combat mechanoids specializing in rapid approach and close-range combat. Their bodies are covered in points and blades, but they mostly use their two arm blades to lop off limbs or gut their vi"
+ },
+ {
+  "defName": "Mech_Termite",
+  "label": "termite",
+  "mod": "Core",
+  "weight": "Medium",
+  "bodySize": "1.6",
+  "body": "MechanicalTermite",
+  "work": [],
+  "tools": [
+   "head"
+  ],
+  "verbs": [],
+  "weaponTags": [
+   "MechanoidGunBreach"
+  ],
+  "combatPower": [
+   "110"
+  ],
+  "gestation": null,
+  "kinds": [
+   "Mech_Termite_Breach"
+  ],
+  "texPaths": [
+   "Things/Pawn/Mechanoid/Termite"
+  ],
+  "texFiles": {
+   "Things/Pawn/Mechanoid/Termite": []
+  },
+  "file": "/mnt/c/Program Files (x86)/Steam/steamapps/common/RimWorld/Data/Core/Defs/ThingDefs_Races/Races_Mechanoid.xml",
+  "desc": "A medium-sized mechanoid. Termites specialize in burrowing, digging, and breaking through defensive structures. Defenders need to decide whether to try to eliminate the termite before it can dig through their defenses, o"
+ },
+ {
+  "defName": "Mech_Tesseron",
+  "label": "tesseron",
+  "mod": "Biotech",
+  "weight": "Medium",
+  "bodySize": "1.0",
+  "body": "Lancer",
+  "work": [],
+  "tools": [
+   "left fist",
+   "right fist",
+   "head"
+  ],
+  "verbs": [],
+  "weaponTags": [
+   "BeamGraserGun"
+  ],
+  "combatPower": [
+   "150"
+  ],
+  "gestation": null,
+  "kinds": [
+   "Mech_Tesseron"
+  ],
+  "texPaths": [
+   "Things/Pawn/Mechanoid/Tesseron",
+   "Things/Pawn/Mechanoid/TesseronAncient"
+  ],
+  "texFiles": {
+   "Things/Pawn/Mechanoid/Tesseron": [],
+   "Things/Pawn/Mechanoid/TesseronAncient": []
+  },
+  "file": "/mnt/c/Program Files (x86)/Steam/steamapps/common/RimWorld/Data/Biotech/Defs/ThingDefs_Races/Races_Mechanoids_Medium.xml",
+  "desc": "A medium-range combat mechanoid. While it is fairly vulnerable to attacks, the tesseron's sweeping beam graser can pierce thick armor and even ignite shielded targets."
+ },
+ {
+  "defName": "Mech_Tunneler",
+  "label": "tunneler",
+  "mod": "Biotech",
+  "weight": "Heavy",
+  "bodySize": "3.5",
+  "body": "Mech_Tunneler",
+  "work": [
+   "Mining"
+  ],
+  "tools": [
+   "left power claw",
+   "right power claw"
+  ],
+  "verbs": [],
+  "weaponTags": [],
+  "combatPower": [
+   "250"
+  ],
+  "gestation": null,
+  "kinds": [
+   "Mech_Tunneler"
+  ],
+  "texPaths": [
+   "Things/Pawn/Mechanoid/Tunneler",
+   "Things/Pawn/Mechanoid/TunnelerAncient"
+  ],
+  "texFiles": {
+   "Things/Pawn/Mechanoid/Tunneler": [],
+   "Things/Pawn/Mechanoid/TunnelerAncient": []
+  },
+  "file": "/mnt/c/Program Files (x86)/Steam/steamapps/common/RimWorld/Data/Biotech/Defs/ThingDefs_Races/Races_Mechanoids_Heavy.xml",
+  "desc": "A heavy mechanoid built for mining in treacherous locations. While intended for excavation, the tunneler's gigantic power claws and ultra-thick armor makes it a dangerous force in combat."
+ },
+ {
+  "defName": "Mech_WarUrchin",
+  "label": "war urchin",
+  "mod": "Biotech",
+  "weight": "Light",
+  "bodySize": "0.7",
+  "body": "Mech_Light",
+  "work": [],
+  "tools": [
+   "head"
+  ],
+  "verbs": [],
+  "weaponTags": [
+   "MechanoidGunSpiner"
+  ],
+  "combatPower": [
+   "10"
+  ],
+  "gestation": null,
+  "kinds": [
+   "Mech_WarUrchin"
+  ],
+  "texPaths": [
+   "Things/Pawn/Mechanoid/WarUrchin",
+   "Things/Pawn/Mechanoid/WarUrchinAncient"
+  ],
+  "texFiles": {
+   "Things/Pawn/Mechanoid/WarUrchin": [],
+   "Things/Pawn/Mechanoid/WarUrchinAncient": []
+  },
+  "file": "/mnt/c/Program Files (x86)/Steam/steamapps/common/RimWorld/Data/Biotech/Defs/ThingDefs_Races/Races_Mechanoids_Light.xml",
+  "desc": "A small, deployable combat mechanoid usually manufactured inside an ultra-heavy war queen mech. War urchins are expendable fighters designed to swarm-attack enemies. They are mounted with short-ranged spiner guns and hav"
+ },
+ {
+  "defName": "Mech_Warqueen",
+  "label": "war queen",
+  "mod": "Biotech",
+  "weight": "UltraHeavy",
+  "bodySize": "4",
+  "body": "Mech_Warqueen",
+  "work": [],
+  "tools": [
+   "head"
+  ],
+  "verbs": [],
+  "weaponTags": [],
+  "combatPower": [
+   "600"
+  ],
+  "gestation": null,
+  "kinds": [
+   "Mech_Warqueen"
+  ],
+  "texPaths": [
+   "Things/Pawn/Mechanoid/Warqueen",
+   "Things/Pawn/Mechanoid/WarqueenAncient"
+  ],
+  "texFiles": {
+   "Things/Pawn/Mechanoid/Warqueen": [],
+   "Things/Pawn/Mechanoid/WarqueenAncient": []
+  },
+  "file": "/mnt/c/Program Files (x86)/Steam/steamapps/common/RimWorld/Data/Biotech/Defs/ThingDefs_Races/Races_Mechanoids_SuperHeavy.xml",
+  "desc": "An ultra-heavy mech with a built-in mech gestator. Fed with appropriate resources, the war queen can form small war urchin combat mechs within its massive carapace and deploy them into combat.\\n\\nEven more than other mec"
+ },
+ {
+  "defName": "VFEP_Mech_Spidermine",
+  "label": "spidermine",
+  "mod": "VFE - Pirates",
+  "weight": null,
+  "bodySize": "0.25",
+  "body": "VFEP_Spidermine",
+  "work": [],
+  "tools": [
+   "frame"
+  ],
+  "verbs": [],
+  "weaponTags": [],
+  "combatPower": [
+   "15"
+  ],
+  "gestation": null,
+  "kinds": [
+   "VFEP_Mech_Spidermine"
+  ],
+  "texPaths": [
+   "Things/Pawn/Mechanoid/WarcasketSpidermine"
+  ],
+  "texFiles": {
+   "Things/Pawn/Mechanoid/WarcasketSpidermine": [
+    "/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/2723801948/Textures/Things/Pawn/Mechanoid/WarcasketSpidermine.png"
+   ]
+  },
+  "file": "/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/2723801948/1.6/Defs/ThingDefs_Races/Races_Mechanoid.xml",
+  "desc": "Semi-autonomous combat drone with onboard pathfinding capability. Equipped with a self-destruction module and tracking system, designed to be launched as a payload and then seek out enemy targets. If no nearby targets ca"
+ },
+ {
+  "defName": "VFEP_Mech_Wardrone",
+  "label": "wardrone",
+  "mod": "VFE - Pirates",
+  "weight": null,
+  "bodySize": "0.25",
+  "body": "VFEP_Wardrone",
+  "work": [],
+  "tools": [
+   "turret"
+  ],
+  "verbs": [],
+  "weaponTags": [
+   "VFEP_GunWardrone"
+  ],
+  "combatPower": [
+   "15"
+  ],
+  "gestation": null,
+  "kinds": [
+   "VFEP_Mech_Wardrone"
+  ],
+  "texPaths": [
+   "Things/Pawn/Mechanoid/WarcasketCombatDrone"
+  ],
+  "texFiles": {
+   "Things/Pawn/Mechanoid/WarcasketCombatDrone": [
+    "/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/2723801948/Textures/Things/Pawn/Mechanoid/WarcasketCombatDrone.png",
+    "/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/2723801948/Textures/Things/Pawn/Mechanoid/WarcasketCombatDrone_Gun.png"
+   ]
+  },
+  "file": "/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/2723801948/1.6/Defs/ThingDefs_Races/Races_Mechanoid.xml",
+  "desc": "Semi-autonomous flying combat drone with limited combat functionality. Equipped with a lightweight semi-automatic miniturret due to limited recoil absorption and an onboard self-destruction module to both prevent enemy c"
+ },
+ {
+  "defName": "VGE_Astronaut",
+  "label": "astronaut",
+  "mod": "Vanilla Gravship Expanded",
+  "weight": "Light",
+  "bodySize": "1",
+  "body": "Drone",
+  "work": [
+   "Construction",
+   "Firefighter"
+  ],
+  "tools": [
+   "torso"
+  ],
+  "verbs": [],
+  "weaponTags": [],
+  "combatPower": [
+   "20"
+  ],
+  "gestation": [
+   "VGE_AstronautRecipe",
+   "MechGestator"
+  ],
+  "kinds": [
+   "VGE_Astronaut"
+  ],
+  "texPaths": [
+   "Things/Pawns/Mechanoid/Astronaut/Mech_Astronaut",
+   "Things/Pawns/Mechanoid/Astronaut/MechAncient_Astronaut"
+  ],
+  "texFiles": {
+   "Things/Pawns/Mechanoid/Astronaut/Mech_Astronaut": [
+    "/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3609835606/Textures/Things/Pawns/Mechanoid/Astronaut/Mech_Astronaut_east.png",
+    "/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3609835606/Textures/Things/Pawns/Mechanoid/Astronaut/Mech_Astronaut_north.png",
+    "/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3609835606/Textures/Things/Pawns/Mechanoid/Astronaut/Mech_Astronaut_south.png"
+   ],
+   "Things/Pawns/Mechanoid/Astronaut/MechAncient_Astronaut": [
+    "/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3609835606/Textures/Things/Pawns/Mechanoid/Astronaut/MechAncient_Astronaut_east.png",
+    "/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3609835606/Textures/Things/Pawns/Mechanoid/Astronaut/MechAncient_Astronaut_south.png"
+   ]
+  },
+  "file": "/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3609835606/1.6/Mods/Biotech/Defs/ThingDefs_RacesMechanoids/Races_Astronaut.xml",
+  "desc": "A medium sized mechanoid designed to perform construction and firefighting tasks in orbit. It can perform blunt melee attacks if necessary. It is not affected by the slow space traversing speeds."
+ },
+ {
+  "defName": "VGE_Astropede",
+  "label": "astropede",
+  "mod": "Vanilla Gravship Expanded",
+  "weight": "Heavy",
+  "bodySize": "3.0",
+  "body": "VGE_Astropede",
+  "work": [],
+  "tools": [
+   "head"
+  ],
+  "verbs": [],
+  "weaponTags": [
+   "VGE_MassLance"
+  ],
+  "combatPower": [
+   "500"
+  ],
+  "gestation": [
+   "VGE_AstropedeRecipe",
+   "LargeMechGestator"
+  ],
+  "kinds": [
+   "VGE_Astropede"
+  ],
+  "texPaths": [
+   "Things/Pawns/Mechanoid/Astropede/Astropede",
+   "Things/Pawns/Mechanoid/Astropede/AncientAstropede"
+  ],
+  "texFiles": {
+   "Things/Pawns/Mechanoid/Astropede/Astropede": [
+    "/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3609835606/Textures/Things/Pawns/Mechanoid/Astropede/Astropede_east.png",
+    "/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3609835606/Textures/Things/Pawns/Mechanoid/Astropede/Astropede_north.png",
+    "/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3609835606/Textures/Things/Pawns/Mechanoid/Astropede/Astropede_south.png"
+   ],
+   "Things/Pawns/Mechanoid/Astropede/AncientAstropede": [
+    "/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3609835606/Textures/Things/Pawns/Mechanoid/Astropede/AncientAstropede_east.png",
+    "/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3609835606/Textures/Things/Pawns/Mechanoid/Astropede/AncientAstropede_north.png",
+    "/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3609835606/Textures/Things/Pawns/Mechanoid/Astropede/AncientAstropede_south.png"
+   ]
+  },
+  "file": "/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3609835606/1.6/Defs/ThingDefs_RacesMechanoids/Races_Astropede.xml",
+  "desc": "Heavily armored mechanoids adapted for zero-G warfare. Astropedes drift silently through space using gravitic stabilizers, unleashing explosive kinetic barrages from their minified mass lances. Their hovering profile mak"
+ },
+ {
+  "defName": "VGE_Hunter",
+  "label": "hunter",
+  "mod": "Vanilla Gravship Expanded",
+  "weight": "Light",
+  "bodySize": "0.7",
+  "body": "Drone",
+  "work": [],
+  "tools": [
+   "head"
+  ],
+  "verbs": [],
+  "weaponTags": [
+   "VGE_RocketswarmPod"
+  ],
+  "combatPower": [
+   "300"
+  ],
+  "gestation": [
+   "VGE_HunterRecipe",
+   "LargeMechGestator"
+  ],
+  "kinds": [
+   "VGE_Hunter"
+  ],
+  "texPaths": [
+   "Things/Pawns/Mechanoid/Hunter/Hunter",
+   "Things/Pawns/Mechanoid/Hunter/AncientHunter"
+  ],
+  "texFiles": {
+   "Things/Pawns/Mechanoid/Hunter/Hunter": [
+    "/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3609835606/Textures/Things/Pawns/Mechanoid/Hunter/Hunter_east.png",
+    "/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3609835606/Textures/Things/Pawns/Mechanoid/Hunter/Hunter_north.png",
+    "/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3609835606/Textures/Things/Pawns/Mechanoid/Hunter/Hunter_south.png"
+   ],
+   "Things/Pawns/Mechanoid/Hunter/AncientHunter": [
+    "/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3609835606/Textures/Things/Pawns/Mechanoid/Hunter/AncientHunter_east.png",
+    "/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3609835606/Textures/Things/Pawns/Mechanoid/Hunter/AncientHunter_north.png",
+    "/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3609835606/Textures/Things/Pawns/Mechanoid/Hunter/AncientHunter_south.png"
+   ]
+  },
+  "file": "/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3609835606/1.6/Defs/ThingDefs_RacesMechanoids/Races_Hunter.xml",
+  "desc": "A fast, human-sized combat mechanoid designed for zero-gravity warfare. It drifts effortlessly through space, closing in on the target before unleashing devastating salvos from the twin-linked javelin launcher. While the"
+ }
+]
