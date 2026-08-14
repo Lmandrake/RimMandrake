@@ -171,6 +171,15 @@ PRECEPT_ADDITIONS = [
         cls="Precept_Apparel",
         extra=[("apparelDef", "OuterRim_DesertHood")],
     ),
+    # Ta'Baa's theology, and it costs NO meme slot - `requiredMemes` is empty.
+    # MEASURED: `GravshipUtility::ArriveNewMap` unconditionally stamps
+    # `IdeoManager.lastResettledTick`, which is the only thing this precept's
+    # ThoughtWorker reads. So a jump to a fresh tile IS a resettle to the
+    # engine, not "building our own base again". +4 mood for 5 days after a
+    # landing, -3 once you sit 20+ days, +30% caravan speed.
+    # ⚠️ Landing back on a tile you already hold resets nothing -
+    # `ArriveExistingMap` does not write the field.
+    dict(name="nomadic", defName="Nomadic_Preferred"),
 ]
 
 
