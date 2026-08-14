@@ -350,11 +350,10 @@ fix, and above all **"generalises to"** — and add its title to the index in
 promote it into `SKILL.md` and delete it from the log. Every entry there cost a
 real debug cycle.
 
-🔴 **Editing `skills/<name>/` is not shipping the skill — same trap as writing a
-mod file without deploying it.** Claude Code installs from a `.skill` zip, and
-those archives are **gitignored**, so a fresh clone has none. Rebuild before any
-hand-off or install: `python3 src/RimMandrake/Utils/package_skill.py --all`
-(`--check` verifies and writes nothing).
+🔴 **Editing `skills/<name>/` is not shipping it** — Claude Code installs from a
+`.skill` zip, and those are **gitignored**, so a fresh clone has none. Rebuild at
+hand-off: `python3 src/RimMandrake/Utils/package_skill.py --all` (limits in
+`infrastructure/DOC_BUDGET.md`; one over-long skill packages *none* of them).
 
 ## Environment notes
 

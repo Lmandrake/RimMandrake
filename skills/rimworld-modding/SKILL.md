@@ -484,16 +484,12 @@ is theirs to do.
 
 | File | Read it when |
 |---|---|
-| `references/traps.md` | **First, and append last.** The *index* of earned lessons — routes to five topic files. Open the one you need, never all five. |
+| `references/traps.md` | **First, and append last.** The *index* of earned lessons — routes to five topic files; open the one you need, never all five. **Entry counts live in its "Which file" table and nowhere else** — they were duplicated here and went stale by 24. |
 | ├ `traps-tooling.md` | **If you read only one, read this.** Nearly every entry is a tool that answered a different question than the one asked. |
 | ├ `traps-xml-and-defs.md` | Before writing a patch — these cost a game load, not a rerun. |
 | ├ `traps-mods-and-managers.md` | A mod is absent, dead, or ignoring its files. |
 | ├ `traps-art.md` | Before calling art missing, wrong or broken. |
 | └ `traps-diagnosis.md` | Before trusting a diagnosis, or calling into a running game. |
-
-**Entry counts live in `references/traps.md`'s "Which file" table and nowhere
-else.** They were duplicated here and went stale by 24 entries — a count copied
-into a second file is a count that will be wrong.
 | `references/patch-operations.md` | An xpath won't match; you need the operation table, inheritance or worked examples. |
 | `references/csharp-and-loading.md` | Before writing any C# — Harmony, entry points, `LoadFolders.xml`. |
 | `references/minimal-load.md` | You have decided to cut the stack down to corner a bug. |

@@ -31,6 +31,13 @@ describing the rule disagreed with the rule. The tool is authoritative; read
 `BUDGETS` in the script, not this sentence.)* Design docs and rosters are unbudgeted — their
 length is content, not accumulation.
 
+🔴 **`skills/*/SKILL.md` is budgeted by a DIFFERENT tool and was undocumented
+here: body under 500 lines, `description:` under 1024 chars, enforced by
+`src/RimMandrake/Utils/package_skill.py`.** Blow either and `--all` packages
+**nothing** — every skill's hand-off blocks on one over-long file. Run
+`python3 src/RimMandrake/Utils/package_skill.py --all --check` after editing a
+skill; `doc_budget.py` does not cover these.
+
 **2. Provenance lives in the commit, not the doc.** A doc says *what is true now*.
 The commit says *how we learned it, what it replaced, and who was wrong*. Git
 already stores that perfectly and nobody pays to read it. **The test: delete the
