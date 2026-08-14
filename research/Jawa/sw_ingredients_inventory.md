@@ -2,9 +2,10 @@
 
 # Star Wars Faction-Mod Ingredient Inventory — INSPIRATION ONLY
 
-> ## ⚠️⚠️ NOT 1.6 — DO NOT LOAD THESE SIX MODS ⚠️⚠️
-> **Every mod in the "Outer Rim faction series" section below ships `1.4` + `1.5` folders ONLY — no `/1.6` folder, no `LoadFolders.xml` remap, About.xml `supportedVersions` = 1.4/1.5.** [SRC-AUDITED 2026-08-06, all six extracted in `mod_sources/`.]
-> They are kept in `mod_sources/` as a **parts bin / design donor** — a catalogue of how the Outer Rim series structures factions, unit ladders, weapons, and mechanics — **NOT** as installable content. Anything we want from here must be **re-authored** for 1.6. **XML-vs-assembly triage COMPLETE (2026-08-06) — see the ⭐ TRIAGE section below: the port is cheap (content is ~99% pure XML; the real mechanics we want already ship in 1.6 Core + Droid Depot).** Treat this whole file as a mood board, not a shopping list.
+> ## 🔴 THE OLD "NOT 1.6 — DO NOT LOAD" BANNER WAS WRONG AND HAS BEEN STRUCK
+> **Retracted by the owner 2026-08-12 on on-disk evidence:** Galactic Empire (`2919248699`), Rebel Alliance (`2919249903`), Separatists (`3097604003`) and Chiss Ascendancy (`2919962538`) all declare `supportedVersions` **1.4 1.5 1.6**, and **Galactic Empire was ADOPTED and 1.6-verified on disk**. The old banner read the `*-main` GitHub extracts in `mod_sources/`, which lag the Workshop builds. Evidence and the licence caveat (**CC BY-NC-ND 4.0 — ND forbids shipping derivatives; patch, never copy**): `design/Jawa/mods/required_mods.md:588-603`. Mandalore and Galactic Republic are **not yet disk-verified** — confirm from a Workshop `About.xml`, never from a `*-main` extract.
+>
+> **What this file is still good for:** the per-mod FactionDef / pawnkind / ThingDef census below, which exists nowhere else. It is a design donor and mood board — read the version verdict from `required_mods.md`, not from here.
 
 **Last updated:** 2026-08-06
 
