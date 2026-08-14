@@ -310,3 +310,14 @@ a **stale companion DLL**: rebuild and redeploy with the game closed
 **Cause/scope:** the jam is a UI *mode*. It only affects click-and-select.
 **Fix — work around it, do not wait it out.** `jawa/spawn_pawn` places by coordinate, `jawa/set_pawn_rotation` and `jawa/set_pawn_style` act by `pawnId`, `jump_camera_to_cell` and `take_screenshot` need no selection at all. **A full spawn-rotate-photograph pass runs fine with the UI jammed** — measured by OPS, four spawns and screenshots, designator still armed throughout. Only inspect panels and gizmos are lost.
 **Recurs when:** any session that has touched `select_architect_designator`.
+
+## 🔴 A quicktest map reads as a campaign, so a census taken on one becomes a verdict on the other
+**Symptom:** a faction census on the live map found **all 21 factions from the untick list present** and was read as *"the worldgen faction cut FAILED — regenerate the world now"*. That regeneration costs 25–30 minutes and would have been spent on nothing.
+**Cause:** the map was a **dev quicktest** started via `rimworld/start_debug_game_ready` (rule 1c), not a generated campaign. **`start_debug_game_ready` never visits the Configure Factions page**, so a full default faction roster is the EXPECTED state. The cut was never offered, so it cannot have failed.
+**Fix:** **state which map every census came from, in the same breath as the number.** A quicktest and a campaign are different CLAIMS, not different confidence levels in one claim.
+**Tells that you are on a quicktest, any one of which is enough:**
+- the default quicktest colonists are present — here `Human333` Alex, `Human336` Naoki, `Human340` Gwen
+- nobody chose a scenario, storyteller or factions
+- `ticksGame` is small and the colony has no history
+⚠️ **A non-zero `ticksGame` plus living colonists is NOT evidence of worldgen.** Both are true on a map that was conjured in 30 seconds.
+**Recurs when:** any world-, faction- or biome-level question asked of a map that BRIDGE created. This is the blast radius of rule 1c: making maps freely is cheap, and every census taken on one inherits the ambiguity. Caught 2026-08-13 by OPS before the regeneration was booked.
