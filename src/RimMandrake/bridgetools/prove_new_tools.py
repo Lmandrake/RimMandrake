@@ -89,20 +89,79 @@ sys.path.insert(0, os.path.join(_ROOT, "src", "RimMandrake", "Utils", "rimbench"
 OK, BAD, SKIP = "  ok  ", "  FAIL", "  skip"
 RESULTS = []
 
-# The full deployed set, in the order build.py ships them.
-ALL_TOOLS = [
-    "jawa/set_terrain", "jawa/set_terrain_batch", "jawa/get_terrain_batch",
-    "jawa/spawn_batch", "jawa/destroy_batch", "jawa/list_pawns",
-    "jawa/set_plants", "jawa/damage", "jawa/get_def", "jawa/drain_log",
-    "jawa/refresh_rect", "jawa/spawn_pawn",
-    "jawa/set_pawn_style", "jawa/set_pawn_rotation", "jawa/set_pawn_xenotype",
-    "jawa/fire_incident", "jawa/send_letter",
-    "jawa/set_roof_batch", "jawa/get_roof_batch", "jawa/list_factions",
-    "jawa/order_pawn", "jawa/world_stats",
-]
+# 🔴 DERIVED FROM THE DEPLOYED BINARY, never hand-written.
+#
+# This used to be a hardcoded list and it drifted three times. The failure is
+# always the same shape and it is always wired to a FAIL verdict: ship a tool,
+# forget the list, and the census reads "24 of 22" -- a FAIL on a CORRECT
+# deploy, which is exactly how a census stops being believed. OPS caught the
+# fourth instance before it landed on the irreversible worldgen run.
+#
+# The right invariant is not "the game has the tools I remembered". It is
+# "the game registered every tool the DEPLOYED BINARY actually contains".
+# That number cannot drift, because both sides are measured. It also handles
+# --gm for free: a non-GM build simply contains two fewer names.
+#
+# ⚠️ `strings -a` is the correct scan HERE and nowhere near sufficient in
+# general. A [Tool("jawa/x")] name is an attribute argument, so it lives in the
+# UTF-8 #Strings heap and a 7-bit scan reads it. A message inside a method body
+# is UTF-16LE in #US and needs `strings -a -el`. Proving a NAME shipped is this
+# check's whole job; do not reuse this helper to prove a MESSAGE shipped.
+# ⚠️ This script is run BOTH ways: `python.exe ...` for a live run (Windows
+# paths) and `python3 ... --selftest` from WSL (/mnt/c paths). A single-form
+# constant reads as "CANNOT MEASURE" under the other interpreter, which is a
+# silent downgrade of the gate rather than an error. So try both forms.
+_GAME_DLL_REL = (r"Steam\steamapps\common\RimWorld"
+                 r"\BridgeTools\JawaBench\JawaBench.BridgeTools.dll")
+GAME_DLL_CANDIDATES = (
+    "C:\\Program Files (x86)\\" + _GAME_DLL_REL,
+    "/mnt/c/Program Files (x86)/" + _GAME_DLL_REL.replace("\\", "/"),
+)
+
+
+def _game_dll():
+    """First candidate that exists; else the Windows form, so the error names
+    the path a reader will recognise."""
+    for p in GAME_DLL_CANDIDATES:
+        if os.path.exists(p):
+            return p
+    return GAME_DLL_CANDIDATES[0]
+
+
+GAME_DLL = _game_dll()
+
+
+def tools_in_binary(path=None):
+    """The jawa/ tool names present in a compiled companion DLL.
+
+    Returns a sorted list, or [] if the file cannot be read -- the caller must
+    treat [] as "could not measure", NOT as "the binary has no tools". An
+    unreadable file and an empty one are different answers and this returns the
+    same value for both, so the caller checks existence separately.
+    """
+    import re
+    p = path or GAME_DLL
+    try:
+        with open(p, "rb") as fh:
+            blob = fh.read()
+    except OSError:
+        return []
+    # ASCII-only on purpose: see the encoding note above.
+    return sorted({m.decode("ascii")
+                   for m in re.findall(rb"jawa/[a-z_]{3,40}", blob)})
+
+
+ALL_TOOLS = tools_in_binary()
+
 # Present in the 7-tool build that shipped earlier the same day. Used to tell
 # "old companion" apart from "bundle did not load", which have different fixes.
-OLD_SEVEN = set(ALL_TOOLS[:7])
+# Named explicitly rather than sliced off ALL_TOOLS, which is now sorted and
+# derived -- a slice of it would silently mean something else.
+OLD_SEVEN = {
+    "jawa/set_terrain", "jawa/set_terrain_batch", "jawa/get_terrain_batch",
+    "jawa/spawn_batch", "jawa/destroy_batch", "jawa/list_pawns",
+    "jawa/set_plants",
+}
 
 
 def check(name, cond, detail=""):
@@ -124,8 +183,35 @@ def ok(resp):
 
 def census(s):
     """Which companion tools this game registered. THE gate check."""
-    print("\n0. deploy census -- nothing below means anything until this reads %d"
-          % len(ALL_TOOLS))
+    expected = set(ALL_TOOLS)
+    if not expected:
+        # Not a pass and not a fail: the yardstick itself is missing.
+        check("companion census", False,
+              "CANNOT MEASURE -- could not read %s" % GAME_DLL)
+        return set()
+
+    print("\n0. deploy census -- expected set DERIVED from the deployed DLL "
+          "(%d tools), not from a list in this file" % len(expected))
+
+    # The build/deploy gap, checked before the game is even asked. The artifact
+    # is what build.py just produced; the game copy is what RRimWorld actually
+    # loaded. A tool present in one and not the other is the single most common
+    # state in this project, because the DLL cannot be overwritten while the
+    # game holds it -- and it is silent.
+    art = os.path.join(_ROOT, "src", "RimMandrake", "bridgetools", "artifacts",
+                       "BridgeTools", "JawaBench", "JawaBench.BridgeTools.dll")
+    built = set(tools_in_binary(art))
+    if built and built != expected:
+        undeployed = sorted(built - expected)
+        vanished = sorted(expected - built)
+        print("     STOP -- artifact and game copy disagree.")
+        if undeployed:
+            print("       built but NOT deployed: %s" % ", ".join(undeployed))
+            print("       -> deploy needs the game CLOSED (build.py --gm --apply)")
+        if vanished:
+            print("       deployed but not in the artifact: %s" % ", ".join(vanished))
+            print("       -> the game copy is NEWER than your build, or --gm was omitted")
+
     try:
         names = {t.get("name") for t in s._rb.list_tools()}
     except Exception as e:
@@ -136,12 +222,22 @@ def census(s):
     for t in ALL_TOOLS:
         print("     %-26s %s" % (t, "registered" if t in jawa else "MISSING"))
 
-    check("all %d companion tools registered" % len(ALL_TOOLS),
-          len(jawa) == len(ALL_TOOLS),
-          "%d of %d (%d tools on the bridge overall)"
-          % (len(jawa), len(ALL_TOOLS), len(names)))
+    # A tool the GAME has that the binary does not is not a pass either -- it
+    # means the scan or the deploy path is wrong, and a census that only checks
+    # a count would call that green.
+    unexpected = sorted(jawa - expected)
+    if unexpected:
+        print("     registered but NOT in the deployed DLL: %s"
+              % ", ".join(unexpected))
 
-    if len(jawa) != len(ALL_TOOLS):
+    check("every tool in the deployed DLL registered", jawa == expected,
+          "%d of %d (%d tools on the bridge overall)"
+          % (len(jawa & expected), len(expected), len(names)))
+
+    if jawa != expected:
+        missing = sorted(expected - jawa)
+        if missing:
+            print("\n     MISSING from the running game: %s" % ", ".join(missing))
         if not jawa:
             print("\n     0 jawa/ tools: RimBridgeServer did not load the bundle.")
             print("     Check <RimWorld>\\BridgeTools\\JawaBench\\ exists and the")
