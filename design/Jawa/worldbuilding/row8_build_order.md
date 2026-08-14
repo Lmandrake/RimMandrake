@@ -38,10 +38,10 @@ unproven dependency in the whole sheet. **Fallback: the owner clicks Export on
 the grav engine — three clicks.** Confirm the export file exists before the
 scratch map is discarded.
 
-🔴 **STANDING RULING, owner 2026-08-13 — it retires D2 and half of D1.**
-> *"No agent should try to preserve map contents or campaign integrity at this
-> time or any time in the future. You will be informed when we get to that
-> phase. Stop asking for now."*
+🔴 **Map preservation is OFF — it retires D2 and half of D1.** Read the rule at
+its source, `infrastructure/agents_def.md` (the ⏸️ bullet in the quicktest-map
+section): it is **SUSPENDED, not repealed**, and carries a reactivation trigger.
+Quoted here it would freeze; if it comes back, D1/D2 come back with it.
 
 **No map is precious. Build, wipe, rebuild; iterate destructively.** Do not ask
 permission to spawn, destroy or overwrite, and do not defer a test because it
