@@ -229,8 +229,15 @@ Identity: `infrastructure/agents/OPS.md`. Queue: `infrastructure/state/queue/OPS
 - **Warcasket Heat stays `Cap(0.90)`** — owner: *"They're terrifying."* Wanted.
 - **Warcasket deploy: "ship neither."** Both retune files stay in the repo
   undeployed, **permanently — intended state, not drift. Stop reporting it.**
-- **Gravship radius unresolved** — Bigger Gravships set to 34 in
-  `Config/Mod_3522759531_GravshipSizeSettings.xml` but bakes radii at **startup**.
-  If this session's defs carry the ~25.9 defaults, **a ship built now will not lift
-  and nothing logs why.** BRIDGE owes the `get_def GravFieldExtender` call.
-  **Do not build a ship until settled.**
+- ✅ **Gravship radius RESOLVED — the hold is lifted.** Measured live 2026-08-14 on
+  PID 16112 via `jawa/get_def ThingDef GravFieldExtender`:
+  `CompProperties_SubstructureFootprint.radius` = **30.0**,
+  `CompProperties_GravshipFacility.maxDistance` = **34.0**, `maxSimultaneous` = **12**.
+  **34.0 is the configured value from `Config/Mod_3522759531_GravshipSizeSettings.xml`,
+  not the ~25.9 compiled default** ⇒ Bigger Gravships DID apply its settings this
+  session, and the feared "built ship will not lift" case is disproven for the field
+  the config names. **Building a ship is no longer blocked on this.**
+  ⚠️ `GravEngine` reads radius **11.9**, maxDistance **5.9**, maxSimultaneous **1** —
+  a different comp on a different building. **Do not quote it as "the engine radius"**
+  until someone maps the mod's setting keys onto these comp fields; the two are not
+  the same number and were never meant to be.
