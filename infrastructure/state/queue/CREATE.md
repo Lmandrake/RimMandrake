@@ -76,13 +76,14 @@ loose art. `mandrake.missingartfixes` removed from the list, closing C11 step 3.
 ⚠️ **These shipped BEFORE the stop-fixing-art directive and stay in place.**
 
 ### C14. ✅ CLOSED `ebec4b4` — the quest skill ships, all four rulings met
-One line in `CLOSED.md`. Two small riders left, neither urgent:
-- **Cross-link `skills/rimworld-quests/` from the `traps.md` index** — owed by the
-  research (`mod_patterns.md` §7: the modding skill says nothing about quests).
-  ⚠️ **Not done because `traps.md` was dirty with a peer's uncommitted work**, and
-  `git commit <path>` would have swept it. Do it when the tree is clean.
+One line in `CLOSED.md`. `traps.md` cross-link landed `aa9b455`. One rider left:
 - **`src/RimMandrake/StrandedQuest/` is a repo-only example mod** — deliberately
   NOT deployed and not v1. Enabling it is OPS's call and nobody has asked for it.
+  ⚠️ **Nothing in the skill has been seen in game**: the quest, the validator and
+  the vanilla calibration are all offline claims.
+- **Skill zip rebuilt** — `skills/rimworld-quests.skill` (65 KB) is on disk and
+  **gitignored**, so a fresh clone has none. Re-run `package_skill.py --all` at
+  hand-off.
 
 ### C3a. ⛔ PARKED — Eopie, two proposals never ruled on
 **Do not read silence as approval:** the species-inconsistent head shapes, and
