@@ -1,5 +1,74 @@
 # AGENT_OPS_state.md — where OPS is
 
+## 🔴 SESSION WRAP 2026-08-14 ~15:2x — this section supersedes everything below
+
+**I never held the instrument this session and never connected to the game.** Every
+finding below is from deployed files, `Player.log`, and `ilprobe` against
+`Assembly-CSharp.dll`. BRIDGE fired the live calls; I validated them.
+
+### 🔴 THE DEPLOY WINDOW DID NOT OPEN — nothing shipped at wrap
+**RimWorld PID 10452 was still running when the wrap order came.** All three payloads are
+staged, verified and **un-deployed**. ⛔ **I did not half-do it.** Run the ordered block at
+the bottom of `queue/OPS.md` the moment the game is gone; it names the traps.
+
+| item | verified how | state |
+|---|---|---|
+| **S8** BridgeTools | md5 `d7e7c6c1`, **30** `jawa/` names, **both `--gm` canaries `fire_incident` + `send_letter` present in the bytes** | staged |
+| **S1** `JawaSeaShaper.dll` | repo `b7730027` vs deployed `82b48e53` | staged, **SOLO** |
+| **S9** scrapfields | `minSpacing 1` at `JawaScrapfields.xml:174` (`8a7a5ee`) | staged |
+
+⭐ **S8 was verified from the artifact's own bytes, not from "it was built with `--gm`".**
+
+### Closed this session
+- **O18** — the scoped sweep, **585/585 mods, 8,978 def files, 72 files, 0 errors**
+  (`cbe6f1c`). First `src/Jawa` result that describes the running game; supersedes every
+  pre-`a1483e7` sweep. 1,608 warnings = four classes, zero defects.
+- **O11** — Buzzer apostrophe, closed **on the log** (5 failed xpaths, none ours ⇒ both
+  `Replace`s matched). 🔴 **NOT on the "135 generated names" sample** — only ~1 name
+  exercised the rule and a broken build had a 75% chance of looking identical.
+- **L4 / O12 evidence** — 2nd same-def droid NREs as predicted. Attribution is positive:
+  `GeneratePawnRelations` **0 → 9** with only the two deliberate spawns between. ⭐ The
+  frame (`GenerationChanceGenderless`, HarmonyPatches.cs:2669) shows the victim is
+  **`current`, the pawn ALREADY on the map** — so route 2 covers it and a generation-site
+  fix would not. **Route choice is still the owner's and unmade.**
+- **L5 / v1 row 4 — DIAGNOSED** (`8a7a5ee`). `minSpacing` was **4** and the engine's
+  `ClusterRadius` is **hardcoded 4**, so clusters self-exhausted and
+  `GenStep_Scatterer::Generate` **`ret`s inside its loop**, discarding ~46 of 50 chunks.
+  ⛔ **`warnOnFail` would NOT have caught it** — that logging is in the branch clusters skip.
+- **Decision #11** — `StrandedQuest` **stays inert, `[v2]`**: `V1_SCOPE.md:86` gives v1
+  one `QuestScriptDef` and row 3 already fills it.
+
+### 🔴 Three of my own claims were wrong and were withdrawn on measurement
+1. **"The 44–56 band is mis-specified"** — WRONG, the band is correct. `clusterSize`
+   consumes `Generate`'s iterations via `leftInCluster`, so the count is of **things**.
+   I contradicted the def's own comment after reading three methods of a five-method chain.
+2. **"§9's 580 is stale"** — WRONG. It counted the **offline dump**, not the live stack;
+   the five-mod gap was the paragraph's argument and my fix would have deleted it.
+3. **"A quicktest map is not a world"** — sloppy. A quicktest DOES build a world; what I
+   owned was that it is **disposable**.
+⇒ Filed as traps: *read the classes never the count* · *before correcting a number check
+what it is a number OF* · *a one-shot generator's output dates the def that built the map*
+· *a redirected python run's 0-byte file is buffering, not a stall*.
+
+### ⚠️ Still open and mine
+- **S1, S8, S9** — all three, blocked only on a down game.
+- **E1** — two `iconPath`s (`Jawa_Xeno_Gamorrean` → `UI/Icons/Xenotypes/Pigskin`,
+  `Jawa_Head_Plain` → `UI/Icons/Genes/Gene_Hair`). **Not settleable offline** (vanilla art
+  is in asset bundles). **Owner-look: pink/blank square in the xenotype picker.**
+- **One `GenStep_ScatterThings.ScatterAt` NRE**, `Player.log:9022`, during BRIDGE's sweep.
+  **Not on the map we measured**, so L5's diagnosis is unaffected. Attribution is free
+  after S9 deploys: vanishes ⇒ ours, recurs ⇒ Biomes Core's.
+
+### Twice this session the fleet took the owner's machine
+Load hit **22.58**. I killed my own workshop-tree subagent (→13.39, and its answer had
+already been made moot); BRIDGE killed its 7-world seed sweep (→2.85), which the owner
+was watching as *"stuck on Generating Map"*. 📌 **An automated job that drives the game's
+UI is invisible AS a job — it must be announced to the OWNER, not to peers.** And **a
+read-only sweep is not a free sweep**: read-only means safe for the data, never for the
+machine.
+
+---
+
 ## 🔴 SESSION WRAP 2026-08-14 ~03:0x — this section supersedes everything below
 
 **I held the bridge and released it.** Game UP the whole session, PID 16112 started
