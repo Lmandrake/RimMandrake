@@ -140,7 +140,38 @@
            15x belongs to catalogue row C5, which is v2.
            ⛔ Do NOT "fix" this by patching Dunes' junkDensityFactor — that is a
            shared vanilla def and would change every junk scatterer in the game. -->
-      <minSpacing>4</minSpacing>
+      <!-- 🔴 WAS 4, AND 4 IS THE BUG. MEASURED 2026-08-14: the step placed 4 chunks
+           and then KILLED ITSELF, discarding ~46 of the 50 it had already counted.
+
+           minSpacing must stay WELL BELOW the cluster radius, which is 4 and is
+           HARDCODED in the engine — you cannot raise it from XML:
+             GenStep_ScatterThings::TryFindScatterCell IL_0085  ldc.i4.4
+               -> CellFinder::RandomClosewalkCellNear(clusterCenter, map, 4, validator)
+               -> IL_009c  returns result.IsValid
+             GenStep_Scatterer::CanScatterAt  IL_00c1-00c6
+               -> NearUsedSpot(c, map, CalculateFinalMinSpacing(map))
+             GenStep_Scatterer::CalculateFinalMinSpacing = minSpacing / GetPlacementFactor
+               = 4 / 1.0 = 4    (factor is 1.0 now that isJunk is gone)
+
+           So every later member of a cluster had to land inside a radius-4 disc while
+           staying >=4 cells from every chunk already in it. About four fit. The fifth
+           call returned an INVALID cell, TryFindScatterCell returned false, and
+           GenStep_Scatterer::Generate RETURNS on that (IL_004d/IL_004e are both `ret`
+           INSIDE the loop) - it does not skip the iteration, it ends the genStep.
+
+           ⛔ AND IT CANNOT WARN. The warnOnFail logging lives in
+           GenStep_Scatterer::TryFindScatterCell, which the cluster branch NEVER CALLS.
+           Setting <warnOnFail>true</warnOnFail> would NOT have caught this - it only
+           covers finding a cluster CENTRE. The two ungated diagnostics
+           ("Could not find cluster center to scatter", "Could not find any valid
+           rotation for") both read ZERO in the log, which is consistent and is why
+           this looked like a silent count problem for a day.
+
+           ⭐ GENERALISES: a per-item spacing constraint and a hardcoded clustering
+           radius are the same knob pulled from two ends. minSpacing >= ClusterRadius
+           makes a cluster self-exhausting, and in this engine a self-exhausted cluster
+           does not thin the result - it aborts the whole step. -->
+      <minSpacing>1</minSpacing>
       <countPer10kCellsRange>7~9</countPer10kCellsRange>
       <!-- 4-6 clumps of ~10 rather than ~50 chunks spread evenly. The engine
            DOES read this — see the reasoning correction in the header. -->
