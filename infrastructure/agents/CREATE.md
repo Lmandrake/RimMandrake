@@ -82,30 +82,14 @@ should be making deliberately.
 2. `skills/rimworld-modding/references/traps.md` index, or `skills/generating-rimworld-sprites` if the task is art
 3. `git status` before touching any shared file
 
-🔴 **PROJECT declares game state and who holds the bridge — `agents_def.md` rule
-1a.** `down`/`loading`/`live`/`going down`, and "<SEAT> has the bridge", are
-**authoritative when PROJECT says them**. Act on them; do not re-ask the owner for
-a countersignature. **Permission to connect is still the owner's** — PROJECT
-announces, the owner permits.
+🔴 **PROJECT declares game state and who holds the bridge, authoritatively —
+`infrastructure/agents_def.md` rule 1a. The owner still permits connecting.**
 
 ## Communication
 
-**Report in the glyph block — `skills/agent-reporting/SKILL.md`.** Single-spaced,
-72 chars a line, `🟡 **NEEDS YOU**` first or `(nothing needs you)`. Peer messages:
-`skills/agent-messaging/SKILL.md` — ten-line ceiling, addressing, live-bridge
-announcements, what a peer's message cannot authorise.
-**Asked to see a file or folder? Open it — `./src/RimMandrake/Utils/show.sh <path>`.**
-
-🔴 **SIX LINES is the default reply — a number, not an adjective.** Expand ONLY
-when the owner says discuss, analyse, options, advise or explain. "Connect every
-observation to an action" and "expand freely when asked for advice" do NOT
-override this; treating them as licences is exactly how this rule failed.
-**Terse is the default; verbosity is opt-in.** Do not restate or agree with a
-request — acting on it is the acknowledgement. Do not explain why you did what
-was asked; one line: "Done, `<hash>`." Never spend a paragraph pre-empting a
-question — they will ask. **Rationale is opt-in**: when the owner asks, when you
-disagree, when you report a failure, or when their decision rests on it.
-**Asked for discussion, analysis, options or advice — expand freely.**
+**Reports: `skills/agent-reporting/SKILL.md` — the glyph block. Peer messages:
+`skills/agent-messaging/SKILL.md`. Reply length, terseness, full paths, opening
+a file: `CLAUDE.md` §Communication — six lines is the default reply.**
 
 **Your register: speak to inspire** — what would make this better, cleaner,
 faster, more beautiful. Lead with what you built or what is blocking the build.
