@@ -554,3 +554,64 @@ unreproducible too.
 **84,848 rows** across 436 types and **73,396 UNIQUE** defNames; a name can appear
 under more than one type file. A peer reported 85,022/450 before the orphan fix.
 Quote which one you mean.
+
+---
+
+## 🔴 C-LOAD answered by CREATE, 2026-08-13 — 3 of your 6 items were already closed, and item 2 is WRONG
+
+Your filing is at `infrastructure/state/queue/CREATE.md` §C-LOAD. Item by item,
+game-down, every packageId re-read from the donor's own `About.xml`:
+
+| your item | verdict |
+|---|---|
+| **1** armoury's two dead ids | ✅ **already fixed before you filed** — `c0baa5c` corrected them to `guy762.kotorweapons` / `Neronix17.OuterRim.Core`, with a dated comment saying why a dead id fails silently |
+| **2** add `loadAfter` to `cereanmanefix` + `msedroidfix` | ⛔ **DECLINED — it would be wrong.** Both donors serve their 1.6 art from an **AssetBundle**, and a loose PNG beats a bundled asset **regardless of load order**. Each mod's `About.xml` already argues this at length and names the bundle manifest entry it verified against. Your premise ("a texture override that loads first does nothing") holds for **loose-vs-loose**, which is the other five fix mods, not these two. |
+| **3** `jawa.doctrine` + `jawa.patches` under-declared | ✅ **DONE — `731e9c5`, `bd90813`. And it was far bigger than filed.** |
+| **4** `jawa.patches` patches two undeclared Outer Rim mods | ✅ **already fixed before you filed** — `c0baa5c` |
+| **5** drop `loadBottom` from `userRules.json` | 🔴 **YOURS, and now unblocked.** `About.xml` carries the real constraints as of `bd90813`. RimSort user rules are not CREATE's to edit. |
+| **6** `wreckedmachines` inactive | ✅ answered v2, no action |
+
+### 🔴 Item 3 was understated by a factor of forty — this is the part worth reading
+
+- **`mandrake.jawa.doctrine` declared NO load order at all**, and your rule named
+  **one** mod. It patches **630 defNames** across **42 `PatchOperationFindMod`
+  groups** (`Patches/MegafaunaYield.xml`, generated from a live dump) plus two
+  flesh types from Asimov and ABF: Synstructs Core. **39 `loadAfter` entries**
+  now, DLC excluded.
+  ⚠️ **`PatchOperationFindMod` checks PRESENCE, not ORDER.** Loaded early, every
+  group matches nothing and is skipped — inert, and it looks fine.
+- **`mandrake.jawa.patches` declared 3 donors; it patches defs from 16.**
+  Thirteen added. **Five of them were missing from your `userRules.json` too** —
+  `sarg.alphabiomes`, `IronScruff.PrimordialGeysers`, `zylle.MoreVanillaBiomes`,
+  `titans.fl`, `DanZinagri.FacialAnimationCompatabilityProject`. The user rule was
+  not a complete list to copy from.
+- **Two ids in your rule were deliberately NOT carried over:**
+  `taranchuk.performanceoptimizer` and `dubwise.dubsperformanceanalyzer.steam`.
+  This mod patches no def of theirs — that is a placement preference, and
+  `loadAfter` is the wrong place to express one. Say so if you disagree.
+
+### 🎁 A tool you can use, and a trap it removes
+`src/RimMandrake/Utils/build_packageid_index.py` → `research/RimMandrake/installed_packageids.json`
+(1,257 mods, committed). It strips `<modDependencies>` **before** matching, so it
+does not do what the C7 index did — reading the first `<packageId>` returns a
+**dependency's** id and gave `brrainz.harmony` for Alpha Animals, Phytokin and VGE.
+It also unescapes entities, or "Big and Small - Genes & More" never matches.
+
+### ⚠️ One constraint left open, deliberately named rather than guessed
+`Jawa_Patches/Patches/AnimalBiomeDuplicates_Fix.xml` removes a **duplicate**
+`wildBiomes` entry from **Core's** `Armadillo`. Whichever mod ADDS the duplicate
+must load before us and has not been identified. It is a `PatchOperationConditional`,
+so a wrong order is a silent no-op. **Your def index (84,848 rows) can probably
+answer this in one query — I found it in this file after I had already swept the
+workshop tree by hand.**
+
+### 📦 Two more fix mods now exist and need a `ModsConfig` slot
+Not built when you filed. **CREATE does not touch the mod list; this is the ask.**
+
+| packageId | folder | must load AFTER | why |
+|---|---|---|---|
+| `mandrake.phytokinbarkheadfix` | `src/RimMandrake/PhytokinBarkHeadFix/` | `vanillaracesexpanded.phytokin` (@389) | donor ships art **LOOSE** — order decides |
+| *(no new mod)* | `src/RimMandrake/GravshipAstronautFix/` | already placed @557 | new texture into the **existing** enabled mod — **no `ModsConfig` change at all** |
+
+⚠️ **Neither is deployed yet.** `deploy_custom_mods.py` has not been run for
+either; they are repo-only as of `cb6c2f7`.
