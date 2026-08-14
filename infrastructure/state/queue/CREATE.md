@@ -31,7 +31,7 @@ Routes and click paths: `infrastructure/state/CREATE_TEST_PLAN.md`.
 | 3 | **row 4 dune seas** | ⚠️ **do NOT eyeball it.** A density change 0.65→0.55 is unjudgeable without a control. **Read the live `BiomeDef`**, confirm `terrainPatchMakers` 0.55 / 0.50 |
 | 4 | **ground hulk** `00a1398` — wide shot + one casket bank | 619 of 1,200 cells; 0 overlaps, 0 out-of-bounds, 0 props off-deck |
 | 5 | **the ten art-fix mods** — one spawn, one look each | eight deployed + enabled; two new ones are **not** (below) |
-| 6 | **`NoPathToPilotConsole`** — ✅ **ONE call, and it needs no walk.** `jawa/order_pawn targetId=<console ThingID> waitTicks=0 unpause=false` returns `canReach` per pawn on a **paused** game — no movement, nothing left on the map (BRIDGE, `bee5da9`) | doors are cut into the outer hull and are in the export — **a door is not a path**, and this is a launch gate. 🔴 **`pathEndMode` must be `interactioncell`** (the default when `targetId` is set): the vanilla gate is `RitualBehaviorWorker_GravshipLaunch::PawnCanFillRole` → `CanReach(..., PathEndMode.InteractionCell, ...)`, and reaching the cell *beside* a console is a **different verdict** |
+| 6 | **`NoPathToPilotConsole`** — ✅ **one call, no walk:** `jawa/order_pawn targetId=<console> waitTicks=0 unpause=false` returns `canReach` on a **paused** game (BRIDGE `bee5da9`) | doors are in the export — **a door is not a path**, and this is a launch gate. 🔴 **`pathEndMode` must be `interactioncell`** (the default when `targetId` is set) — the vanilla gate is `PawnCanFillRole` → `CanReach(..., InteractionCell, ...)`, and the cell *beside* a console is a **different verdict** |
 
 ✅ **row 4 salt pans PASSED live** — 144 cells, 0 failed verify, renders as a pale
 cracked pan. Owner ruled bridge placement sufficient.
@@ -61,47 +61,54 @@ proven; the look is not. **Nobody has ever seen a casket.**
 🔴 **The KotOR one must NOT join the 556–564 fix slot.** Its donor loads *later*
 and ships loose art, so placed there it is overwritten and **invisible, silently**.
 
-### C3a. ⏳ Eopie — two proposals still NOT ruled on
-**Do not read silence as approval, and do not act on them:** the
-species-inconsistent head shapes, and north's featureless rear. The three owner
-fixes are shipped and approved; the salmon-pink is a **playtest** question now
-(owner: *"keep them pink for now"*) — **do not re-raise it**.
+### C3a. ⏳ Eopie — two proposals NOT ruled on
+**Do not read silence as approval:** the species-inconsistent head shapes, and
+north's featureless rear. Salmon-pink is a **playtest** question now — do not
+re-raise it.
 
 ### C7. Rows 4–6 `[v2]` — the only ones needing genuinely new art
 `design/Jawa/art/c7_directional_triage.md`. Polluted Lands `BMT_ImpalingClaws`
-north+east (2 files, 256²); Dark Ages `BlackScribeScorpling_north` (1 file, "do
-it only if someone is already in the file"); Caverns pupae (**8 sprites, lowest
-value per effort in C7 — not recommended**).
+north+east (2 files, 256²); Dark Ages `BlackScribeScorpling_north` (1 file, "only
+if someone is already in the file"); Caverns pupae (**8 sprites, lowest value per
+effort in C7 — not recommended**).
 
 ### C10. Tile augmentation catalogue — 31 rows, 19 v1-capable `[v2]`
-`design/Jawa/worldbuilding/tile_augmentation_catalogue.md`. Placement is pure XML
-(`LandmarkDef` + `TileMutatorDef`); cheapest are F1 (zero XML), C3, B1.
+`design/Jawa/worldbuilding/tile_augmentation_catalogue.md`. Pure XML
+(`LandmarkDef` + `TileMutatorDef`); cheapest F1 (zero XML), C3, B1.
 §5: **never cull a spawned def.**
 
+### C13. ⭐ Anomaly is a reskin LIBRARY, not a locked door — owner ruled `f1016a5`
+Narrative at **zero, for certain**; **creatures and abilities are ours to reskin**,
+and the DLC stays enabled so they stay reachable. 🔴 **Never read "Anomaly is at
+zero" as "Anomaly assets are off-limits."** ⚠️ Same inversion one level down:
+`anomaly_register.html`'s KEEP/CUT judged whether an *arc* runs and is **inert**
+for the asset question — a CUT gorehulk is as available as a KEEP noctol.
+
+**Measured today — it decides how a reskin gets built.** `Data/Anomaly/Textures`
+**does not exist**; 991 texture assets (415 pawn: Ghoul 90, Nociosphere 46,
+Fleshbeast 33, Chimera 24, Gorehulk 21) live in `AssetBundles/resources_anomaly`.
+✅ Overriding is easy — loose beats bundled regardless of order, **no `loadAfter`
+needed**. ✅ The exact paths ARE readable offline: `resources_anomaly.manifest` is
+plain-text YAML listing every asset as `Assets/Data/Anomaly/Textures/...` — strip
+that prefix. 🔴 **The pixels are NOT.** Every Anomaly reskin is a from-scratch
+draw or wants a live screenshot first; **budget it as new art, never a retouch.**
+
 ### C11. ⏳ Retiring `mandrake.missingartfixes` — steps 2–4, blocked on OPS
-It is LIVE and deployed, so this is not a folder delete. The blocking dependency
-(the blast-door brief) is cleared and its four successors are built.
-**2.** confirm the five successors are in `ModsConfig.xml` and have loaded →
-**3.** OPS drops `mandrake.missingartfixes` from the list *(before the folder
-goes, or the game boots with a missing-mod entry)* → **4.** then remove the
-deployed copy and the repo folder.
+LIVE and deployed, so not a folder delete. Successors built, blocker cleared.
+**2.** confirm the five successors are in `ModsConfig.xml` and loaded → **3.** OPS
+drops `mandrake.missingartfixes` *(before the folder goes, or the game boots with
+a missing-mod entry)* → **4.** remove the deployed copy and the repo folder.
 
 ### C-v3. `[v2]` Restraining bolts — ANSWERED, spec drained to a design doc
 `design/Jawa/worldbuilding/restraining_bolt_technical.md` (`8353622`).
 **Verdict: CAP the goodwill ceiling. One XML def + ~40 lines of C#, no Harmony.**
 Lands with the Free Droid Enclaves, whose `FactionDef` is unbuilt.
 
-### C-LOAD. ⏳ One item left, and it is OPS's
-Answered in full at `infrastructure/state/queue/OPS.md` `38f6d82`; 3 of 6 were
-already closed when filed, item 2 was **declined** (both donors serve art from an
-**AssetBundle**, where a loose PNG wins regardless of order). **Item 5 — dropping
-`loadBottom` from `userRules.json` — is OPS's and is now unblocked.**
-
-⏳ **One constraint still open, named rather than guessed:**
-`Jawa_Patches/Patches/AnimalBiomeDuplicates_Fix.xml` removes a duplicate
-`wildBiomes` entry from **Core's** `Armadillo`; whichever mod ADDS the duplicate
-must precede us and is unidentified. `PatchOperationConditional`, so a wrong
-order is a silent no-op. **OPS's def index (84,848 rows) should answer it.**
+### C-LOAD. ⏳ One constraint open; the rest is OPS's
+Answered at `queue/OPS.md` `38f6d82`. ⏳ **`AnimalBiomeDuplicates_Fix.xml` removes
+a duplicate `wildBiomes` entry from Core's `Armadillo`; whichever mod ADDS the
+duplicate must precede us and is unidentified.** `PatchOperationConditional`, so
+a wrong order is a silent no-op. **OPS's def index should answer it in one query.**
 
 ### C-t1 `[v2]` — `validate_patch.py:1363` says "IN ONE MOD"
 Under `--all-versions` there is no load set, so "one mod" describes a **folder**,
@@ -125,10 +132,9 @@ and would die. Use `/home/mandrake/.venvs/art/bin/python`.
 
 🔴 **One art-fix mod per DONOR** — owner, 2026-08-13: *"each mod that we fix art
 in should get its own fix patch, so we could in theory upload it for others to
-use."* Not one per defect, not one shared bucket. Own `packageId`; `loadAfter` +
-`modDependencies` naming the single donor; and an `About.xml` that documents
-**every** file it ships, because that text is what a stranger reads. Doctrine and
-the load-order trap: `src/Jawa/README.md`.
+use."* Own `packageId`; `loadAfter` + `modDependencies` naming the single donor;
+an `About.xml` documenting **every** file it ships, because that text is what a
+stranger reads. Doctrine: `src/Jawa/README.md`.
 
 🔴 **A loose PNG beats an AssetBundle regardless of order — but between two
 LOOSE files, order decides.** So a loose-art donor must be in `loadAfter` or the
