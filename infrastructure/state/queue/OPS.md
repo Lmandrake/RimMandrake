@@ -379,3 +379,27 @@ join the meme set. The owner asked for the nomadism trigger to be measured first
 specifically whether the penalty counts *settlement age* (a gravship jump would reset it)
 or *owning a base at all* (it would not). **Do not adopt either meme on anyone's say-so
 until that lands.**
+
+## ⚠️ FILED, not chased — one `GenStep_ScatterThings` NRE during BRIDGE's seed sweep
+
+`Player.log:9022` (2026-08-14, ~15:00):
+`Error in GenStep: NullReferenceException at Verse.GenStep_ScatterThings.ScatterAt [0x0013f]`,
+called from `GenStep_ScatterThings.Generate [0x0010d]`, with a
+`BiomesCore.Patches.IslandGeysers` **prefix on that same method**.
+
+**Exactly ONE occurrence in four generated worlds**, and — this is the part that matters —
+🔴 **it is NOT on the 13:54 quicktest map where we counted 4 chunks.** That map's
+generation sits before log line 6830; this throw is between the 2nd and 3rd sweep worlds
+(lines 7975 → 9040). ⇒ **the `minSpacing`-abort diagnosis for L5 (`8a7a5ee`) is unaffected
+— no exception occurred during the map we measured.** Checked precisely because an
+exception in the same class would have been a rival explanation.
+
+⚠️ **Cannot be attributed from the log: `Error in GenStep` names no defName.** Both our
+`Jawa_ScatterScrapfields` and Biomes Core's own scatterers are `GenStep_ScatterThings`
+and both run on a player map. **Do not assume it is theirs and do not assume it is ours.**
+`Error in GenStep` is caught per-step, so map generation continued — it is not a hang.
+
+⇒ **Cheapest attribution, and it costs nothing extra:** when `minSpacing 1` deploys and we
+run the 90 s quicktests to verify row 4, **watch for this line**. If it recurs on a map
+where scrapfields now places ~50, it is not ours; if it vanishes with the fix, it was.
+**One observation, already-scheduled work, no extra load.**
