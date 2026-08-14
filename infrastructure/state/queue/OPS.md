@@ -505,3 +505,31 @@ is not an identifier.
 ⚠️ **`--defnames` does NOT validate xpaths**, only that a defName exists. All 43
 of our patch files pass 0 errors against the live index — that is real but
 narrow. An xpath matching nothing still passes; only `--defs` catches it.
+
+## 🔴 I deleted `defnames.573` and the reasoning was wrong — 2026-08-13
+
+**Mine, not a mystery.** Commit `262666b`, `rm -f defnames.573.2026-08-13.json`,
+message *"regenerable cache"*. A peer spent a search establishing that it was
+gone and unrecoverable and could not name the cause. **The cause was me.**
+
+**Why the reasoning failed, because the rule needs sharpening:** CLAUDE.md's
+artifact table asks *"could a machine regenerate this?"* I answered **yes** — and
+it was true only while the **573-mod def dump still existed**. The 17:45 load
+overwrote that dump with the 580 one. **Reproducibility is a property of the
+INPUT surviving, not of the script existing.** An artifact derived from a
+transient input is unreproducible the moment the input rolls, and belongs in the
+bottom-left cell: **on disk and committed, not deleted.**
+
+**What was actually lost:** only per-defName granularity — *which* names vanished
+beyond what the counts imply. The manifests survived, so the useful half was
+reconstructed: `SkinDef` 110 → **0**, ThingDef +37, SoundDef +9, RecipeDef +4,
+514 → 511 types, 84,749 → 84,698 defs. Cost: real but small.
+
+✅ **Reversed the call: `defnames.580` is now COMMITTED**, because it sits in
+exactly the position 573 sat in an hour ago and the next load makes it
+unreproducible too.
+
+⚠️ **Two counts, both correct, different denominators** — the index holds
+**84,848 rows** across 436 types and **73,396 UNIQUE** defNames; a name can appear
+under more than one type file. A peer reported 85,022/450 before the orphan fix.
+Quote which one you mean.

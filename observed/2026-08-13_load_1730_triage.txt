@@ -1,0 +1,38 @@
+# Player.log triage — load started 17:30:59, harvested 18:11
+# 580 active mods, fingerprint 7da4e5aa2d2d9a95
+
+=== Could not resolve cross-reference (25) ===
+[1045] Could not resolve cross-reference: No Verse.SoundDef named Pawn_Melee_Punch_HitBuilding found to give to Verse.RaceProperties Verse.RaceProperties (using undefined sound instead)
+[1046] Could not resolve cross-reference: No Verse.SoundDef named Pawn_Melee_Punch_HitBuilding found to give to Verse.RaceProperties Verse.RaceProperties (using undefined sound instead)
+[1047] Could not resolve cross-reference: No Verse.SoundDef named Pawn_Melee_Punch_HitBuilding found to give to Verse.RaceProperties Verse.RaceProperties (using undefined sound instead)
+[1048] Could not resolve cross-reference: No Verse.SoundDef named Pawn_Melee_Punch_HitBuilding found to give to Verse.RaceProperties Verse.RaceProperties (using undefined sound instead)
+[1049] Could not resolve cross-reference: No Verse.SoundDef named Pawn_Melee_Punch_HitBuilding found to give to Verse.RaceProperties Verse.RaceProperties (using undefined sound instead)
+[1050] Could not resolve cross-reference: No Verse.SoundDef named Pawn_Melee_Punch_HitBuilding found to give to Verse.RaceProperties Verse.RaceProperties (using undefined sound instead)
+[1051] Could not resolve cross-reference: No Verse.SoundDef named Pawn_Melee_Punch_HitBuilding found to give to Verse.RaceProperties Verse.RaceProperties (using undefined sound instead)
+[1052] Could not resolve cross-reference: No Verse.SoundDef named Pawn_Melee_Punch_HitBuilding found to give to Verse.RaceProperties Verse.RaceProperties (using undefined sound instead)
+[1053] Could not resolve cross-reference: No Verse.SoundDef named Pawn_Melee_Punch_HitBuilding found to give to Verse.RaceProperties Verse.RaceProperties (using undefined sound instead)
+[1054] Could not resolve cross-reference: No Verse.SoundDef named Pawn_Melee_Punch_HitBuilding found to give to Verse.RaceProperties Verse.RaceProperties (using undefined sound instead)
+[1055] Could not resolve cross-reference: No Verse.SoundDef named Pawn_Melee_Punch_HitBuilding found to give to Verse.RaceProperties Verse.RaceProperties (using undefined sound instead)
+[1056] Could not resolve cross-reference: No Verse.SoundDef named Pawn_Melee_Punch_HitBuilding found to give to Verse.RaceProperties Verse.RaceProperties (using undefined sound instead)
+[1057] Could not resolve cross-reference: No Verse.SoundDef named Pawn_Melee_Punch_HitBuilding found to give to Verse.RaceProperties Verse.RaceProperties (using undefined sound instead)
+[1058] Could not resolve cross-reference: No Verse.SoundDef named Pawn_Melee_Punch_HitBuilding found to give to Verse.RaceProperties Verse.RaceProperties (using undefined sound instead)
+[1059] Could not resolve cross-reference: No Verse.SoundDef named Pawn_Melee_Punch_HitBuilding found to give to Verse.RaceProperties Verse.RaceProperties (using undefined sound instead)
+[1060] Could not resolve cross-reference: No Verse.SoundDef named Pawn_Melee_Punch_HitBuilding found to give to Verse.RaceProperties Verse.RaceProperties (using undefined sound instead)
+[1073] Could not resolve cross-reference to Verse.PawnKindDef named BMT_Boomapillar (wanter=pawnKindDefs)
+[1078] Could not resolve cross-reference to Verse.PawnKindDef named BMT_BoomMoth (wanter=pawnKindDefs)
+[1083] Could not resolve cross-reference to Verse.PawnKindDef named BMT_Goeto (wanter=pawnKindDefs)
+[1094] Could not resolve cross-reference to Verse.PawnKindDef named BMT_Jewelbug (wanter=pawnKindDefs)
+[1099] Could not resolve cross-reference to Verse.PawnKindDef named BMT_SandyToad (wanter=pawnKindDefs)
+[1104] Could not resolve cross-reference to Verse.PawnKindDef named BMT_Woolybat (wanter=pawnKindDefs)
+[1109] Could not resolve cross-reference to Verse.PawnKindDef named BMT_WoollySpider (wanter=pawnKindDefs)
+[1114] Could not resolve cross-reference to Verse.ThingDef named BMT_BoomSpore (wanter=thingDefs)
+[1121] Could not resolve cross-reference: No Verse.ThingDef named VWE_Tool_Whip found to give to RimWorld.StockGenerator_SingleDef RimWorld.StockGenerator_SingleDef
+
+=== Could not find type named (2) ===
+878:Exception loading def from file ElectricTorches_DarkAgesCrypts_Thoughts.xml: System.ArgumentException: Could not find type named VanillaFurnitureExpanded.ThoughtGiverByProximityDefExtension from node <li MayRequire="Ludeon.RimWorld.Royalty" Class="VanillaF
+1001:Exception loading def from file ElectricTorches_DarkAgesCrypts_Thoughts.xml: System.ArgumentException: Could not find type named VanillaFurnitureExpanded.ThoughtGiverByProximityDefExtension from node <li Class="VanillaFurnitureExpanded.ThoughtGiverByProxi
+
+=== Exception loading def (2) / XML error (1) ===
+878:Exception loading def from file ElectricTorches_DarkAgesCrypts_Thoughts.xml: System.ArgumentException: Could not find type named VanillaFurnitureExpanded.ThoughtGiverByProximityDefExtension from node <li MayRequire="Ludeon.RimWorld.Royalty" Class="VanillaFurnitureExpanded.ThoughtGiverByProximity
+1001:Exception loading def from file ElectricTorches_DarkAgesCrypts_Thoughts.xml: System.ArgumentException: Could not find type named VanillaFurnitureExpanded.ThoughtGiverByProximityDefExtension from node <li Class="VanillaFurnitureExpanded.ThoughtGiverByProximityDefExtension"><ThingToGiveThought>On
+1008:XML error: <drawStyleCategory>Wall</drawStyleCategory> doesn't correspond to any field in type BuildingProperties. Context: <building><isInert>true</isInert><isPlaceOverableWall>true</isPlaceOverableWall><ai_chillDestination>false</ai_chillDestination><supportsWallAttachments>true</supportsWall
