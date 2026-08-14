@@ -27,6 +27,7 @@ and pipe-delimited so that parsing it cannot be ambiguous.
 """
 import json
 import os
+import subprocess
 import sys
 import time
 
@@ -35,13 +36,19 @@ ROOT = os.environ.get("CLAUDE_PROJECT_DIR") or os.path.dirname(
 ROSTER = os.path.join(ROOT, "infrastructure/state/BOARD.md")
 STATUS_DIR = os.path.join(ROOT, "infrastructure/state/status")
 SEATS = ["BRIDGE", "OPS", "CREATE", "VISION", "PROJECT"]
+# A seat cannot usefully raise an alarm about itself: it is "blocked" for
+# the duration of the very tool call that renders this board.
+SELF = (os.environ.get("AGENT_SEAT") or "").upper()
 
 AMBER_AFTER = 15 * 60          # a seat silent this long is flagged, never hidden
 W = 74                         # box width
 
 MARK = {"done": "[x]", "open": "[ ]", "wip": "[~]",
         "held": "[-]", "blocked": "[!]"}
-DOT = {"busy": "*", "idle": "o"}
+DOT = {"busy": "*", "idle": "o", "waiting": "!", "blocked": "!"}
+# Higher = more urgent. Drives both the alarm band and dedup above.
+RANK = {"idle": 1, "busy": 2, "waiting": 9, "blocked": 9}
+NEEDS_HUMAN = ("waiting", "blocked")
 
 
 # ---------------------------------------------------------------- roster ----
@@ -84,22 +91,41 @@ def read_status():
 
 
 def live_seats():
-    """Ask peers.py, which reads the session registry Claude Code maintains.
-    Falls back to {} rather than guessing — an unknown state prints as '?'."""
+    """Seat -> state, from `claude agents --json`.
+
+    ⚠️ **This replaced a hand-rolled join over the session registry.** The CLI is
+    the SUPPORTED surface, it already reports interactive sessions (not only
+    background ones), and — the reason that matters — it distinguishes
+    `blocked` / `waiting` from `busy`. **That distinction is the whole point:**
+    on 2026-08-14 BRIDGE sat waiting on the owner's word at the main menu while
+    the owner believed work was in flight, because nothing on any screen
+    separated "thinking hard" from "stopped, needs a human".
+
+    ⚠️ **Deliberately shells out to `claude`, never to `git`.** A status pane
+    that runs `git status` on a timer grabs `.git/index.lock` and loses a
+    seat's commit — a documented failure in shared-tree fleets. The roster age
+    below is read with `os.path.getmtime`, not a git subprocess, for the same
+    reason. **Never add a git call to this file.**
+    """
     try:
-        sys.path.insert(0, os.path.join(ROOT, "src/RimMandrake/Utils"))
-        import peers                                    # noqa: E402
-        out = {}
-        for s in peers.load():
-            pid = s.get("pid")
-            if not pid or not peers.alive(pid):
-                continue
-            seat = peers.seat_of(ROOT, s.get("sessionId") or s.get("session_id"))
-            if seat:
-                out[seat.upper()] = s.get("status") or "?"
-        return out
+        out = subprocess.run(["claude", "agents", "--json"],
+                             capture_output=True, text=True, timeout=15)
+        rows = json.loads(out.stdout)
     except Exception:
         return {}
+    seats = {}
+    for r in rows:
+        name = (r.get("name") or "").upper()
+        if not name.startswith("AGENT "):
+            continue
+        seat = name[6:].strip()
+        st = r.get("status") or r.get("state") or "?"
+        # A seat with several rows (a dead PID beside a live one) resolves to
+        # the one that needs a human: blocked beats busy beats idle.
+        if seat in seats and RANK.get(seats[seat], 0) >= RANK.get(st, 0):
+            continue
+        seats[seat] = st
+    return seats
 
 
 def ago(ts):
@@ -140,6 +166,25 @@ def render():
     if note:
         L.append(row(note))
 
+    # --- THE ALARM BAND ------------------------------------------------------
+    # Rendered FIRST, and only when it has something to say. The research is
+    # unanimous that the fix for a silently-stalled agent is PUSH, not poll:
+    # a human scanning five panes for a seat that has quietly stopped is the
+    # documented failure, not the remedy. A band that is usually absent is one
+    # you actually read when it appears — a permanent "0 blocked" line is
+    # wallpaper within a day.
+    stalled = [(seat, live[seat]) for seat in SEATS
+               if live.get(seat) in NEEDS_HUMAN and seat != SELF]
+    owner_rows = [f for f in r.get("OWNER", []) if len(f) >= 3]
+    if stalled or owner_rows:
+        L.append(bar("NEEDS YOU"))
+        for seat, stv in stalled:
+            item = (st.get(seat, {}).get("item") or "").strip() or "(no line set)"
+            L.append(row(">> %-7s %-8s STOPPED - %s" % (seat, stv, item[:40])))
+        for f in owner_rows:
+            tag = "" if f[0] == "--" else "#%s " % f[0]
+            L.append(row(">> %s%s" % (tag, f[1][:66])))
+
     # --- v1, two per line: it is a goal tracker, not a task list -------------
     L.append(bar("V1"))
     v1 = r.get("V1", [])
@@ -177,13 +222,6 @@ def render():
                          % (MARK.get(f[3], "[?]"), f[0], f[1][:46], f[2][:9])))
 
     # --- what is blocked on the owner --------------------------------------
-    own = [f for f in r.get("OWNER", []) if len(f) >= 3]
-    if own:
-        L.append(bar("WAITING ON YOU   %d" % len(own)))
-        for f in own:
-            tag = "" if f[0] == "--" else "#%s " % f[0]
-            L.append(row("%s%s" % (tag, f[1][:52]) + "  " + f[2][:22]))
-
     # --- the roster's own honesty line -------------------------------------
     try:
         rage = ago(int(os.path.getmtime(ROSTER)))
