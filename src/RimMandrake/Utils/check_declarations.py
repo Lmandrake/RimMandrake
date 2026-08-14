@@ -145,7 +145,15 @@ def analyse(src_root, on_disk, act):
         for field, pid in declared(about):
             checked += 1
             if pid not in on_disk:
-                missing.append((mod, field, pid))
+                # ⚠️ incompatibleWith is the exception: declaring incompatibility
+                # with a mod you have not installed is normal and harmless. Only
+                # a LOAD-ORDER or DEPENDENCY declaration that names nothing is a
+                # real fault, because only those were supposed to constrain
+                # something. Found by selftest_checkers.py before it ever fired.
+                if field == "incompatibleWith":
+                    inactive.append((mod, field, pid + "  (incompatibleWith, not installed — fine)"))
+                else:
+                    missing.append((mod, field, pid))
             elif act is not None and pid not in act:
                 inactive.append((mod, field, pid))
     return missing, inactive, checked, abouts
@@ -164,8 +172,7 @@ def main():
 
     if not quiet:
         print("checked %d declarations across %d of our mods"
-              % (checked, len(set(m for m, _, _ in missing + inactive)) or
-                 len(abouts)))
+              % (checked, len(abouts)))
         if missing:
             print("\n🔴 MISSING — named, but NO mod on disk declares this id.")
             print("   These constrain NOTHING and never have. Nothing logs it.")
