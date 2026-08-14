@@ -283,7 +283,9 @@ in the def describes the break event.
 
 **The lightsaber donor is identified:** Star Wars: The Force – Lightsaber,
 `lee.theforce.lightsaber`, WS `3466124712`, load index 557, KotOR hard-dep —
-per `file:///D:/Luke/dev/Rimworld/observed/2026-08-13/live_mod_inventory.md` line 323. The
+per `file:///D:/Luke/dev/Rimworld/observed/2026-08-13/live_mod_inventory.md`, §1 row
+`lee.theforce.lightsaber` (search the packageId — that file is generated and its line
+numbers move on every regeneration). The
 roster ruling is at `design/Jawa/mods/required_mods.md` line 54: *"only The Force –
 Lightsaber (KotOR hard-dep)."* Its actual defNames are **not yet read**.
 
@@ -820,7 +822,9 @@ neither adopted:
   say 1.4, and per 3.0 that evidence class is now suspect. Verify by branch.
 - **Star Wars Retheme: VFE — Empire** (WS `3038088559` / `3292633931` per
   `required_mods.md:586`) — needs **VFE-Empire**, which is **not active** here
-  (it is on disk at 1.4/1.5/1.6 per `live_mod_inventory.md:820`). Two-mod install.
+  (it is on disk at 1.4/1.5/1.6 — `live_mod_inventory.md` §2 INACTIVE, packageId
+  `OskarPotocki.VFE.Empire`; search the packageId, not a line number, that file is
+  generated). Two-mod install.
 
   Cheapest third option, and probably the right one: **no retheme mod at all** —
   a label-only XML patch renaming Royalty titles to Imperial ranks. Zero
