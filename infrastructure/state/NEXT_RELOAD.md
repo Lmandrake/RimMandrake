@@ -17,17 +17,50 @@ Rows marked ⭐ below are gate items. Everything else rides along.
 
 ## 🔻 BEFORE THE GAME GOES DOWN — the shutdown window
 
-**Announce it to BRIDGE before the game closes** (skill §6). Companion-DLL work and
-mod-list work both need the game **down** and are unrecoverable once it relaunches.
+❌ **CORRECTED 2026-08-13 by OPS. Mod-list work was NEVER load-gated, and this
+block held three rows all day for a reason that does not exist.**
+
+The old text said mod-list work "needs the game **down** and is unrecoverable once
+it relaunches". **RimWorld does not rewrite `ModsConfig.xml` on exit.** Measured
+twice today, and the second one is decisive:
+
+| observation | value |
+|---|---|
+| `Player.log` last write (game exit) | **10:04:55** |
+| `ModsConfig.xml` mtime at that moment | **10:01** — *earlier* than the exit |
+| `ModsConfig.xml` mtime at 16:41, game **DOWN** | **16:41:39** — it changed with no game running |
+
+An exit that leaves the file untouched, and a write that happens with no game
+alive, together mean the writer is **us or the owner via RimSort** — never the
+game closing. So a mod-list edit is not a window you can miss. Confirmed against
+the owner's own correction, relayed by CREATE (`14754e0`).
+
+🔴 **But there IS a real hazard, and it is the opposite one — a LIVE collision.**
+`ModsConfig.xml` changed **twice in the twenty minutes** it took to write this
+(22,328 B at 16:21 → 22,406 B at 16:41; two mods added; load order changed from
+index 291). **The owner reorders in RimSort while the game is down.** A seat
+writing `ModsConfig.xml` during that clobbers their ordering, and RimSort will not
+warn either party.
+
+**So the rule is not "wait for the game to go down". It is:**
+> **Do not write `ModsConfig.xml` unless you have just read its mtime and it is
+> older than your last check.** Announce mod-list edits like the live bridge.
+> If in doubt, ask the owner whether RimSort is open — that is the only reader
+> who knows.
+
+⚠️ **What the old claim got right and must not be lost:** a mod-list change takes
+effect **only at startup**. Editing while the game runs is not destructive, it is
+simply *inert* until the next load — and reading the running game as evidence the
+edit "did not work" is the trap.
 
 **Companion:** nothing owed. BRIDGE's B0 deployed 2026-08-13 10:05, byte-verified,
 17 tools (`infrastructure/state/queue/BRIDGE.md`).
 
-**Mod list — OPS's alone (rule 7), all three ride one window:**
+**Mod list — OPS's alone (rule 7):**
 
 | # | change | why |
 |---|---|---|
-| 1 | **Enable `matathias.ruthlessmechanoids`** — downloaded, 1.6, deps present, **not in `ModsConfig`** | the whole pursuit design is inert until it is enabled |
+| 1 | ✅ **DONE — the owner enabled `matathias.ruthlessmechanoids` themselves**, seen in `ModsConfig.xml` at 16:41 (absent at 16:21). Nothing owed. ⚠️ It is **Ruthless Faction Pursuit**, the gravship pursuer redirect — **not** a mech mod. Leave it on. | the whole pursuit design is inert until it is enabled |
 | 2 | **Turn mechanoids OFF**, against which they are currently on | owner's ruling; needs #1 first |
 | 3 | **Disable `com.yayo.yayoAni.continued`** `[v2]` | the lightsaber flies up and behind **on draft**; Yayo's is the suspect (the Force lightsaber mod ships a `Mods/MeleeAnim` compat folder and nothing for Yayo's). The pawn-render items it was held back for are all closed, so it no longer creates ambiguity |
 
