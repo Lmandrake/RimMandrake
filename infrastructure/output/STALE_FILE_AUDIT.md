@@ -1,5 +1,22 @@
 # STALE_FILE_AUDIT.md — keep-or-delete candidates, post-restructure
 
+> # ✅ EXECUTED 2026-08-13 — the owner ruled this set and it has been carried out.
+>
+> **This is now a RECORD of what was removed and why, not a proposal.** Do not
+> re-run its recommendations. 36 tracked files removed (11.5 MB), 15.4 MB of
+> untracked build output deleted from disk, 3 docs salvaged-then-deleted, and the
+> rows marked *fix / link / rewrite* were fixed rather than deleted. Commits in
+> `CLOSED.md` under owner decision #7.
+>
+> ⚠️ **Two rows were already stale when the owner read them**, which is the
+> failure this seat exists to catch:
+> - `observed/2026-08-13/live_mod_inventory.md` — the "562 against 580" claim was
+>   fixed before the audit was ruled on (`b095ff5`, OPS). It reads 580 today.
+>   **Nothing to do; do not re-raise.**
+> - `observed/quicktest_terrain_top_250x250.json` — **does not exist anywhere in
+>   the tree.** The `.gitignore` guard was added anyway, in case it regenerates.
+
+
 > # 🔴 NOTHING HERE HAS BEEN DELETED, AND NOTHING WILL BE BY ANY SEAT
 >
 > **Deletion is the owner's call by standing rule.** This file is a list and an

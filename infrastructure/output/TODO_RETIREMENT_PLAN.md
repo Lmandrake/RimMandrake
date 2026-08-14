@@ -1,5 +1,12 @@
 # TODO_RETIREMENT_PLAN.md — the mechanical plan for retiring `infrastructure/state/TODO.md`
 
+> # ✅ EXECUTED 2026-08-13. `TODO.md` is a 13-line pointer stub.
+>
+> **This is a record, not a plan.** All five steps ran; the four LIVE items are
+> filed at their seats, the doctrine moved or was deleted as duplicate, and 12
+> inbound citations were repaired. Commits in `CLOSED.md` under owner decision #5.
+> Everything below describes the tree as it was BEFORE the retirement.
+
 _Written 2026-08-13. **This is a STAGING document. Nothing has been moved, and no
 queue file, `TODO.md`, `CLOSED.md` or doctrine file has been edited.** Seats are
 writing to their queues right now; executing against a live queue is the collision
