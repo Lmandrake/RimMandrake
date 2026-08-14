@@ -191,25 +191,39 @@ strings dumped from the deployed
 
 ---
 
-## S1 — the 21-tool companion, **first load of this build**
+## S1 — the companion bundle, **first load of this build**
 
-🔴 **The only assembly that changed, so it is the only genuinely new assembly
-risk this load.**
+🔴 **The only assembly that changed, so it is the only genuinely new assembly risk
+this load.**
 
 **Gate:** `python.exe src/RimMandrake/bridgetools/prove_new_tools.py` → read line 0,
 the deploy census.
 
-| census reads | meaning |
-|---|---|
-| **21** | ✅ the 22:23 build is live. **S1 PASSES.** |
-| 20 | pre-`order_pawn` build — the 22:23 deploy did not take |
-| 17 | the §1 build loaded — deploy did not take |
-| 7 / 0 | old seven / bundle never loaded at all |
+🔴 **DO NOT WRITE THE EXPECTED NUMBER HERE. DERIVE IT AT CENSUS TIME.** This block
+used to say *"21 = PASS"*. The gate script already held **22**, the live game already
+reported **22**, and the artifact source holds **24** — so the prose would have
+**failed a correct deploy on the run we cannot repeat.** A hardcoded count goes stale
+at every deploy, silently, and then fails the good build.
 
-🔴 **§1's "the FAIL is the pass" inversion is DEAD — do not carry it forward.**
-`ALL_TOOLS` was corrected at `68a0a30` (16:38) and now holds **21** names
-(`prove_new_tools.py:93-102`), matching the deployed DLL's string heap exactly.
-**A correct deploy now prints PASS. A FAIL now means a real miss.**
+```bash
+# what the companion SHOULD expose, from the artifact — this is the expected value
+grep -rhoE '"jawa/[a-z_]+"' src/RimMandrake/bridgetools/ | sort -u | wc -l
+# what the gate script will compare against — MUST agree with the line above
+python3 -c "import re;s=open('src/RimMandrake/bridgetools/prove_new_tools.py').read();\
+m=re.search(r'ALL_TOOLS\s*=\s*\[(.*?)\]',s,re.S);print(len(re.findall(r'"[^"]+"',m.group(1))))"
+```
+
+| census against the derived number | meaning |
+|---|---|
+| **equal** | ✅ the new build is live. **S1 PASSES.** |
+| **short by exactly 2** | the `get_defs` + `fire_quest` deploy did not take |
+| **short by more** | an older bundle loaded — read which names are missing, not just how many |
+| **0** | the bundle never loaded at all |
+
+⚠️ **If the two commands above disagree with each other, STOP** — the gate script's
+`ALL_TOOLS` (`prove_new_tools.py:92-103`) is stale and will fail a correct deploy.
+That is BRIDGE's file; it must be regenerated in the same commit that ships a new
+tool. **Gates compare measurements to measurements, never to prose.**
 
 Cheaper second positive: `rimbridge/get_bridge_status` →
 `companions.diagnostics` — want `companionErrorCount = 0`, `companionCount` non-zero.
