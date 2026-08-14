@@ -95,6 +95,7 @@ the one asked.**
 - 44. A tint mask marks the animal's FILL, not the animal — the keyline is tagged as vehicle
 - 45. Art can be correct at source and broken at render — judge the sprite, not the file
 - 46. `Graphic_Multi` falls back to the BARE path, and render nodes are lazy — a clean log proves almost nothing
+- 47. A mask is NOT required to tint a building — plain `Cutout` honours `<color>`, and it multiplies
 - Our own mods shadow each other, and identical bytes make it invisible
 
 ### `traps-mods-and-managers.md` — the mod stack
