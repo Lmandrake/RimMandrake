@@ -310,7 +310,7 @@ Evidence: eyes on the page plus `rimworld/take_screenshot`.
 
 | check | pass | fail |
 |---|---|---|
-| `OuterRim_GalacticEmpire` renders as **"Imperial Desert Galactic Empire"** | the `Jawa_Patches` label patch is live | reads **"Galactic Empire"** → 🔴 **STOP before generating.** The Jawa_Patches deploy did not land — check `C:\Program Files (x86)\Steam\steamapps\common\RimWorld\Mods\Jawa_Patches` |
+| `OuterRim_GalacticEmpire` renders as **"Imperial Desert Directorate"** | the `Jawa_Patches` label patch is live — this is the string the deployed `Patches\ImperialDesertDirectorate.xml` actually writes (`label`, `fixedName`; `leaderTitle` = "Sector Director") | reads **"Galactic Empire"** → the patch did not land; check `C:\Program Files (x86)\Steam\steamapps\common\RimWorld\Mods\Jawa_Patches`. ⚠️ **Record it and carry on — do NOT abort worldgen.** VISION ruled this faction superseded scaffolding; the real gate is vanilla `Empire` present with count ≥ 1 |
 | `OuterRim_RebelAlliance` is **ABSENT** from the page | `RebelAlliance_Suppress.xml` set `maxConfigurableAtWorldCreation` to 0 — **absence is the DESIRED outcome, not a defect** | **present and settable** → the patch did not land; file it. **Present but locked at 0** → harmless, worth a line. **Do not revert the patch at the screen.** |
 
 **Also record, as an observation with no pass/fail:** vanilla `Empire`'s name is
@@ -418,7 +418,7 @@ reconstruct a result from the log.**
 | S3 | `jawa/list_factions` vs checklist — 20 CUT absent | | |
 | S3 | `jawa/list_factions` vs checklist — 6 KEEP present | | |
 | S3 | downstream over-exclusion grep = 0 (at session end) | | |
-| S4 | Empire label reads "Imperial Desert Galactic Empire" | | |
+| S4 | `OuterRim_GalacticEmpire` label reads "Imperial Desert Directorate" (observation, not a gate) | | |
 | S4 | `OuterRim_RebelAlliance` absent from the page | | |
 | S5 | `.rws` `anomalyPlaystyleDef` = `AnomalyFrequency_None` | | |
 | S6 | A2 / A3 log greps unchanged | | |
