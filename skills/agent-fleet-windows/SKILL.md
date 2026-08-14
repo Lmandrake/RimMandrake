@@ -181,9 +181,9 @@ means **the unit did not install and only the per-seat bound is live** (§6).
 
 ⚠️ **Only NEW tabs are protected** — a running session cannot be moved into a
 cgroup retroactively. `C:\Users\Mandrake\.wslconfig` (`memory=36GB`, `swap=16GB`,
-`autoMemoryReclaim=gradual`) **is now live** — MEASURED 2026-08-14, `free -g`
-reports 35 GiB total against the pre-change 31.7 GiB. **`free -g` is the check;
-editing that file pends a `wsl --shutdown` that kills every seat.**
+`autoMemoryReclaim=gradual`) **is live** — MEASURED 2026-08-14, `free -g` reports
+35 GiB against the pre-change 31.7. **That is the check; editing the file pends a
+`wsl --shutdown` that kills every seat.**
 
 ### 🔴 The guard trap that would have defeated the whole thing silently
 
@@ -479,9 +479,8 @@ Conclusions that stand (evidence in `references/windows-hosting.md`):
   restart a seat on the strength of a badge. ⚠️ **#19926's orphan-accumulation
   signature does not apply here** (§5 step 3).
 - 🔴 **A skill's `name` may not contain `claude` or `anthropic`** — reserved in
-  the Agent Skills spec, and a violating skill may be *silently rejected at
-  install time*. MEASURED: this one was first written as `claude-code-fleet` and
-  `package_skill.py` refused it. Name a fleet skill after the *fleet*.
+  the Agent Skills spec; a violating skill may be *silently rejected at install
+  time*. MEASURED: this one was first `claude-code-fleet` and was refused.
 - 🔴 **An over-budget skill leaves its OWN zip stale, beside fresh ones.**
   `package_skill.py --all` writes every skill that validates and **exits 1
   naming the failures** — so the directory listing looks complete and one
@@ -491,14 +490,12 @@ Conclusions that stand (evidence in `references/windows-hosting.md`):
 
 ## 13. What to write down after an incident
 
-Symptom, the **exact** kernel or event string, what it discriminates, and what
-you ruled out **with the evidence that ruled it out**. A refuted hypothesis is a
-deliverable — record your *own* theories too, since nobody else will think to
-test those.
+Symptom, the **exact** kernel or event string, what it discriminates, and what you
+ruled out **with the evidence that ruled it out**. A refuted hypothesis is a
+deliverable — record your *own* theories too; nobody else will think to test them.
 
-⚠️ **And record what the write-up is worth.** Evaluated against a no-skill
-baseline (`references/measuring-the-fleet.md` §4): **delta +0.00**, because the
+⚠️ **And record what the write-up is worth.** Against a no-skill baseline
+(`references/measuring-the-fleet.md` §4) this skill scored **delta +0.00** — the
 facts were already reachable from `CLAUDE.md`, `observed/` and a commented
-`.wslconfig` — the baseline even *beat* the with-skill run twice. The value here
-is **consolidation and portability**, so do not restate what a file the reader
-already loads will tell them anyway.
+`.wslconfig`, and the baseline *beat* it twice. Its value is consolidation, so
+**do not restate what a file the reader already loads will tell them.**
