@@ -140,6 +140,19 @@ push is nearly free; the cost of a badly-timed one is that it *stacks*.
 - ⚠️ **`BOARD.md` is hand-maintained and is the one part of the board that can
   lie.** It prints its own age for that reason. Everything else on screen is
   measured.
+- ⚠️ **A parallel fan-out shares one quota, and the early agents can STARVE the
+  late ones.** Measured here 2026-08-14: four research agents launched at once
+  consumed the session's entire 200-call web-search budget, and the two that
+  finished last had to fall back to slower routes and returned the thinnest
+  results — on the two topics that were arguably most important. **Fan-out does
+  not divide a shared resource fairly; it races for it.** ⇒ when a budget is
+  shared and the topics are unequal, stage the important ones FIRST rather than
+  launching all at once, and expect the tail of a wide fan-out to be degraded.
+- ⚠️ **A finished background agent can re-report the same result repeatedly.**
+  The same agent delivered four near-identical reports here; two were pure cost
+  and one contradicted an earlier pass about which sources were verified.
+  **Read the first, act on it, then `TaskStop` it.** Re-reads of the same
+  material are where a duplicate finding turns into a duplicate decision.
 - ⚠️ **Anthropic's guidance is that coding parallelises worse than research** —
   *"most coding tasks involve fewer truly parallelizable tasks"* — and that
   *"letting a team run unattended for too long increases the risk of wasted
