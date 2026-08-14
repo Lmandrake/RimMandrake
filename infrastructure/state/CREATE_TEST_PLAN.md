@@ -133,6 +133,46 @@ and its *own* dry-lake landform hard-codes `SoftSand`. So the one feature that
 ought to be a salt pan will not be. Ruled: leave it. **Do not report this as a
 failure of override #1** — check somewhere off a landform.
 
+### Part 3b — the GROUND HULK, row 4's rider. Same map, same run.
+
+Built `00a1398`, approved v1 by PROJECT as a **rider inside row 4** rather than a
+ninth row, so it rides row 4's gate and its map. **619 cells** stamped from our
+own exported ship layout: a torn-open cryptosleep hold, three banks of
+`AncientCryptosleepCasket` (31), `ShipChunk_Mech` scattered between them, deck
+interleaved 45% `BrokenSubstructure` / 55% intact.
+
+> **The fiction, so you know what you are looking at:** the flyable gravship is
+> the part the clan got working. **This is the part that stayed on the ground** —
+> the hold of a colony that never landed. The breach is where Hutt scrappers cut
+> in to take the cargo; the Jawas are the second scavengers on this wreck.
+
+| # | check | PASS |
+|---|---|---|
+| 1 | it **generated at all** | a ship-shaped wreck somewhere on the map. It is stamped by a `GenStep` at order 940, so it claims its rect before the junk prefabs and slag |
+| 2 | 🔴 **the caskets are THERE** | 31 of them, in three touching banks. **See the trap below — this is the one likely failure** |
+| 3 | the deck reads as **damaged, not patterned** | irregular broken patches, not a checkerboard and not a solid slab |
+| 4 | 🔴 **the caskets LOOK right** | ⚠️ **nobody has ever seen them.** Vanilla art ships inside AssetBundles, so defs, sizes and yields are verified on disk and **the appearance is not**. This sighting is the only thing that closes it |
+| 5 | a colonist can **walk onto and across it** | `pathCost 0`; if they path around it, the terrain went in wrong |
+
+→ **SHOT: the whole wreck from a zoomed-out view**, and a second closer on a
+casket bank.
+
+🔴 **THE ONE TRAP, and it has a known cause and a known fix.**
+`BrokenSubstructure` is `isFoundation: true`, and it could not be established
+offline whether `PrefabDef` terrain application routes it to the **foundation**
+layer or writes it to the **top** layer — there is no decompiler on this box.
+**Both render, so the deck looks right either way.** But a top-layer
+`Substructure` exposes only the `Substructure` affordance, and `ShipChunk_Mech`
+needs `Heavy`.
+⇒ **If props come up MISSING while the deck looks fine, that is the cause.** It
+is a terrain swap, not a redesign. Report it as *"deck present, props absent"*
+and I will know exactly what to change.
+
+⚠️ **Two known-and-ruled non-bugs, so you do not file them:** the breach does
+**not** aim at the colony (aiming needs C#, ruled v2 — pinned rotation only), and
+each casket carries an explosive comp, so destroying one in a touching row can
+chain. Deconstructing cannot. Both deliberate.
+
 ---
 
 ## What a FALSE PASS looks like — read before reporting anything green
