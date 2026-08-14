@@ -65,9 +65,14 @@ GRN = "32"        # done
 BLU = "36"        # in progress
 DIM = "2"         # held, deferred, context
 
-MARK = {"done": "[x]", "open": "[ ]", "wip": "[~]",
+# ⚠️ An UNKNOWN state renders "[?]" rather than being silently mapped to
+# something plausible. BRIDGE reached for "built" — built but NOT deployed —
+# which this project needs and the original vocabulary lacked, and the [?] is
+# what surfaced the gap. **Add the word; never quietly coerce it.**
+MARK = {"done": "[x]", "open": "[ ]", "wip": "[~]", "built": "[b]",
         "held": "[-]", "blocked": "[!]"}
-MARKC = {"done": GRN, "open": None, "wip": BLU, "held": DIM, "blocked": RED}
+MARKC = {"done": GRN, "open": None, "wip": BLU, "built": BLU,
+         "held": DIM, "blocked": RED}
 DOT = {"busy": "*", "idle": "o", "waiting": "!", "blocked": "!"}
 # Higher = more urgent. Drives both the alarm band and dedup above.
 RANK = {"idle": 1, "busy": 2, "waiting": 9, "blocked": 9}

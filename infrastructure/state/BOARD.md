@@ -5,7 +5,21 @@ roster; the live seat status is NOT in here** — that comes from the session
 registry and the per-seat stamps, so it cannot go stale by neglect._
 
 **Format is `id | text | owner | state`, pipe-delimited, one item per line.**
-States: `open` `wip` `done` `held` `blocked`. A `done` row may carry a commit
+**States — this is the whole vocabulary. An unrecognised one renders `[?]`,
+deliberately, so a missing word shows up instead of being coerced into a wrong one:**
+
+| state | means | mark |
+|---|---|---|
+| `open` | nobody has started it | `[ ]` |
+| `wip` | a seat is on it now | `[~]` |
+| `built` | 🔴 **built but NOT deployed** — the repo has it, the game does not | `[b]` |
+| `done` | closed, **with the evidence in the text** | `[x]` |
+| `held` | deliberately not now | `[-]` |
+| `blocked` | cannot proceed; say on what | `[!]` |
+
+⭐ `built` was added 2026-08-14 because BRIDGE needed it and reached for it — in
+this project *writing a file is not deploying it*, and a row that says `done`
+when it means `built` is how a seat ends up trusting a def the game never read. A `done` row may carry a commit
 hash in the text. **Edit this file by hand — it is short on purpose.** Anything
 that needs a paragraph belongs in the owning seat's queue, not here.
 
