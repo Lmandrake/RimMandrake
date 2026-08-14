@@ -54,15 +54,26 @@
 
   TARGETS AND SOURCES
   ===================
-  Armadillo  [VERIFIED 2026-08-10]
-      Odyssey  Biomes_WarmArid.xml lists <Armadillo MayRequire="...Odyssey">0.2
-               in BOTH AridShrubland and Desert  (biome side, keep)
+  Armadillo  [VERIFIED 2026-08-10; source and load order RE-VERIFIED 2026-08-14]
+      CORE     Data/Core/Defs/BiomeDefs/Biomes_WarmArid.xml lists
+               <Armadillo MayRequire="Ludeon.RimWorld.Odyssey">0.2 in BOTH
+               AridShrubland (L147) and Desert (L305)  (biome side, keep).
+               NOTE: the biome file is CORE's, not Odyssey's - only the entry
+               is Odyssey-gated. Do not go looking for it under Data/Odyssey.
       Odyssey  Races_Animal.xml Armadillo ThingDef declares NO wildBiomes,
                so the xpaths below cannot touch vanilla
-      Beasts of the Rim (Continued), WS 2194018641, redefines the Armadillo
-               defName and adds wildBiomes: AridShrubland 0.3, Desert 0.3,
-               ExtremeDesert 0.3.  The first two collide. ExtremeDesert does
-               NOT (vanilla omits Armadillo there), so it is LEFT IN PLACE.
+      Beasts of the Rim (Continued), WS 2194018641, mlie.beastsoftherim, is the
+               SOLE animal-side contributor - re-verified by grepping the whole
+               workshop tree, plus every wildBiomes-touching PatchOperation, for
+               an indirect xpath route. There is none.
+               It redefines the Armadillo defName in
+               1.6/Defs/ThingDefs_Races/Races_Animal_Armadillo.xml (L93-97) and
+               adds wildBiomes: AridShrubland 0.3, Desert 0.3, ExtremeDesert 0.3.
+               The first two collide. ExtremeDesert does NOT (vanilla omits
+               Armadillo there), so it is LEFT IN PLACE.
+      ORDER    mlie.beastsoftherim is at 63, mandrake.jawa.patches at 581, so
+               we load 518 slots later and the conditional SEES the duplicate.
+               This op is firing, not silently no-opping.
 
   Titan      [VERIFIED 2026-08-10]
       Titans, WS 3572242808, Defs/ThingDefs_Races/Races_Animal_Titan.xml lists

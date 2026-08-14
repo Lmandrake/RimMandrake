@@ -30,7 +30,7 @@ C13 that is art rather than def work. **Do not resume without the owner.**
 | 1 | Empire reskin — ✅ **done, seen live** |
 | 3 | `QuestScriptDef` — ✅ built `47733f8`, deployed. 🔴 **NEVER SEEN** |
 | 4 | three terrain/resource overrides — ✅ built `73ca76c`. 🔴 **NEVER SEEN**, and all three are **map-gen-time** |
-| 8 | ⭐ Gravship, DEEP — ✅ **CLOSED `6909ecb`**: built, exported, deck-plan-faithful. ⏳ Open rider: **is flight v1 or v2?** VISION+CREATE's call — ship carries no thruster/fuel/controls |
+| 8 | ⭐ Gravship, DEEP — ✅ **CLOSED `6909ecb`**. Flight rider **RULED**: capability v1, hardware NOT — the deck plan always gated it as *"Phase 4, mobility earned"*. §11 of `gravship_flight_invariants.md` |
 
 🔴 **`V1_SCOPE.md`'s gate is *seen working in-game once*.** Built is not closed.
 
@@ -46,6 +46,8 @@ Routes and click paths: `infrastructure/state/CREATE_TEST_PLAN.md`.
 | 4 | **ground hulk** `00a1398` — wide shot + one casket bank | 619 of 1,200 cells; 0 overlaps, 0 out-of-bounds, 0 props off-deck |
 | 5 | **the ten art-fix mods** — one spawn, one look each | eight deployed + enabled; two new ones are **not** (below) |
 | 6 | **`NoPathToPilotConsole`** — ✅ **one call, no walk:** `jawa/order_pawn targetId=<console> waitTicks=0 unpause=false` returns `canReach` on a **paused** game (BRIDGE `bee5da9`) | doors are in the export — **a door is not a path**, and this is a launch gate. 🔴 **`pathEndMode` must be `interactioncell`** (the default when `targetId` is set) — the vanilla gate is `PawnCanFillRole` → `CanReach(..., InteractionCell, ...)`, and the cell *beside* a console is a **different verdict** |
+
+| 7 | 🔴 **NEW, and it is the cheapest-now item here** — place one `SmallThruster` at the stern (x45 z131) and read whether it says `WarningThrusterInside`. **Outdoor-required ⇒ the EXPORTED hull needs its stern cut back**, a deck re-lay; substructure-free-only ⇒ nothing to change (77 free cells in zone `S`, exclusion run falls off the deck at z133-137). Ruling and numbers: §11 |
 
 ✅ **row 4 salt pans PASSED live** — 144 cells, 0 failed verify, renders as a pale
 cracked pan; owner ruled bridge placement sufficient.
@@ -106,11 +108,14 @@ Step 3 done. **4.** remove the deployed copy and the repo folder — unblocked, 
 **Verdict: CAP the goodwill ceiling. One XML def + ~40 lines of C#, no Harmony.**
 Lands with the Free Droid Enclaves, whose `FactionDef` is unbuilt.
 
-### C-LOAD. ⏳ One constraint open; the rest is OPS's
-Answered at `queue/OPS.md` `38f6d82`. ⏳ **`AnimalBiomeDuplicates_Fix.xml` removes
-a duplicate `wildBiomes` entry from Core's `Armadillo`; whichever mod ADDS the
-duplicate must precede us and is unidentified.** `PatchOperationConditional`, so
-a wrong order is a silent no-op. **OPS's def index should answer it in one query.**
+### C-LOAD. ✅ CLOSED — the last constraint is answered, nothing owed
+Answered at `queue/OPS.md` `38f6d82`. The Armadillo duplicate's source is
+**Beasts of the Rim (Continued)** (`mlie.beastsoftherim`, WS 2194018641) — sole
+contributor, confirmed against the whole workshop tree *and* against every
+`wildBiomes`-touching `PatchOperation` for an indirect xpath. **It is at 63, we
+are at 581, so the conditional fires; no silent no-op.** ⚠️ The biome side is
+**Core's** `Biomes_WarmArid.xml`, only the entry is Odyssey-gated — the patch
+header said Odyssey and is corrected.
 
 ### C-t1 `[v2]` — `validate_patch.py:1363` says "IN ONE MOD"
 Under `--all-versions` there is no load set, so "one mod" means a **folder**, not
