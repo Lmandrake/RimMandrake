@@ -297,6 +297,45 @@ generic one."* The first thing the player ever sees is the ninety percent of the
 hulk that never flew. That is the premise, in the opening frame, for an
 afternoon.
 
+#### ✅ APPROACH RULED — stamp the exported layout, do NOT write a shape generator
+
+CREATE flagged the thing that would have quietly broken this: **scrapfields
+SCATTERS; a hulk has a SHAPE.** Random placement produces confetti, not a wreck,
+and writing a hull-outline generator is *"the v2 cross-section arriving early
+wearing v1's clothes."* Correct, and it would have been discovered halfway
+through the afternoon.
+
+**The approach is APPROVED: read BRIDGE's exported `ShipLayoutDefV2` and stamp
+broken substructure where it has substructure.** 88×135, 4,057 cells,
+round-trip-proven with zero differences. **A parser we already own instead of a
+generator we would have to invent.**
+
+⭐ **And it is better fiction, not a compromise:** the hulk is the same class of
+vessel as the one the clan flies, because it *is* the same ship. The premise
+writes itself.
+
+**Accepted risk, stated rather than buried:** this couples row 4's rider to
+BRIDGE's export format, where scrapfields had no dependency at all. Low —
+the format is committed and round-trip-proven — but real. **If that format
+churns, the rider churns.**
+
+#### 📐 THE CROP — ruled, because "somebody should pick it" is how it grows
+
+CREATE is right that 88×135 is enormous for a starting map and that the crop must
+be chosen deliberately rather than discovered at 4,057 cells. So:
+
+| | |
+|---|---|
+| **who picks WHICH fragment** | **VISION** — it is a fiction question: which part of the ship stayed on the ground |
+| **who crops and stamps** | **CREATE** |
+| **hard ceiling** | 🔴 **1,200 cells.** Not a target — a ceiling. |
+
+**Why a ceiling at all:** the crop size *is* the work size, and an unbounded crop
+is kill condition 2 arriving by accident. 1,200 cells is roughly a quarter of the
+hull — large enough to read unmistakably as a ship section at a glance, small
+enough that stamping and prop placement stay an afternoon. **If VISION's chosen
+fragment exceeds it, crop harder rather than negotiate the ceiling.**
+
 #### 🔪 The kill condition, stated before the answer arrives
 
 **If CREATE's live check fails — `BrokenSubstructure` cannot sit on ordinary
