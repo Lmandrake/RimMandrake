@@ -167,9 +167,20 @@ that is the shape to look for — and it should be judged against the ceiling te
 first, because "costs no food" is exactly the sort of thing that raises it.
 
 ⚠️ **Follow-up is game-gated and is filed in `TODO.md`.** Steam will not delete
-the folder while RimWorld holds it open, and the running game rewrites
-`ModsConfig.xml` on exit — so nothing on disk is authoritative until a clean
-exit. Do not report "the removal didn't land" before then.
+the folder while RimWorld holds it open, so **the folder** is not authoritative
+until a clean exit. Do not report "the removal didn't land" before then.
+
+❌ **The `ModsConfig.xml` half of that warning was WRONG and is removed. The game
+does NOT rewrite `ModsConfig.xml` on exit.** Measured by OPS 2026-08-13: the file
+carried mtime **17:26**, the game ran **17:30 → 21:10**, and the mtime was
+**unchanged** after a clean exit — 3h40m of play, including a mod-settings
+session, wrote nothing. RimWorld writes that file when the **mod list is changed
+in-game**, not on shutdown. **Consequence: `ModsConfig.xml` on disk IS
+authoritative while the game runs, and an edit made mid-session is not going to
+be clobbered at exit — it is going to be ignored until the next start.** The
+thing that *does* silently rewrite it is RimSort; read the mtime before writing.
+_(Last of six copies of this claim; the three skills files were fixed in
+`a43b610`, this one was missed because the mod list is OPS's exclusively.)_
 
 ## Competing gravship overhauls — Mini Gravships forbidden (2026-08-02)
 
