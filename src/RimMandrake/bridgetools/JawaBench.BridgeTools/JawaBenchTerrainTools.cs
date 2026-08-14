@@ -3036,8 +3036,20 @@ namespace JawaBench.BridgeTools
                 // into forty blobs" -- two worlds that report an identical
                 // waterPct and are nothing alike. A percentage alone cannot
                 // answer the owner's question.
+                // 🔴 Per-body SHAPE, not just size. VISION's sea gate has five
+                // numeric criteria and two of them were uncollectable from tile
+                // counts alone: perimeter²/area (the "is it a sea or a smear"
+                // test, and the one VISION flagged as most likely to be quietly
+                // failed) and the body's centroid latitude. Worldgen is an
+                // IRREVERSIBLE click, so a candidate that cannot be measured
+                // before it is kept is a candidate kept on hope.
+                //
+                // perimeter = count of tile edges where a body tile touches
+                // non-water or the grid edge. area = tile count. Both are in
+                // tile units, so the ratio is dimensionless and comparable
+                // across worlds — which is what makes a threshold meaningful.
                 var seen = new bool[n];
-                var sizes = new List<int>();
+                var sizes = new List<BodyShape>();
                 var stack = new Stack<int>();
                 // Fully qualified on purpose: `PlanetTile` lives in
                 // RimWorld.Planet and there is no `using` for it here. Adding one
@@ -3049,28 +3061,42 @@ namespace JawaBench.BridgeTools
                     if (!water[i] || seen[i]) continue;
                     cancellationToken.ThrowIfCancellationRequested();
                     var size = 0;
+                    var perimeter = 0;
+                    // Latitude is averaged over the body's tiles. Longitude is
+                    // deliberately NOT averaged: it wraps at the antimeridian, so
+                    // a body straddling it would average to the wrong hemisphere.
+                    // Latitude does not wrap, so the mean is sound.
+                    var latSum = 0.0;
                     stack.Push(i);
                     seen[i] = true;
                     while (stack.Count > 0)
                     {
                         var cur = stack.Pop();
                         size++;
+                        latSum += grid.LongLatOf(cur).y;
                         nbrs.Clear();
                         grid.GetTileNeighbors(cur, nbrs);
                         foreach (var nb in nbrs)
                         {
                             int id = nb;
-                            if (id < 0 || id >= n || seen[id] || !water[id]) continue;
+                            // An edge to land, or off the grid, is a perimeter edge.
+                            if (id < 0 || id >= n || !water[id]) { perimeter++; continue; }
+                            if (seen[id]) continue;
                             seen[id] = true;
                             stack.Push(id);
                         }
                     }
-                    sizes.Add(size);
+                    sizes.Add(new BodyShape
+                    {
+                        Tiles = size,
+                        Perimeter = perimeter,
+                        CentroidLat = size > 0 ? latSum / size : 0.0
+                    });
                 }
-                sizes.Sort((a, b) => b.CompareTo(a));
+                sizes.Sort((a, b) => b.Tiles.CompareTo(a.Tiles));
 
                 double Pct(int v) => Math.Round(100.0 * v / n, 2);
-                var big = sizes.Count(v => v >= minBodySize);
+                var big = sizes.Count(v => v.Tiles >= minBodySize);
                 var info = world.info;
 
                 return new
@@ -3080,7 +3106,7 @@ namespace JawaBench.BridgeTools
                         $"{Pct(waterCount)}% water over {n} tiles, in {big} " +
                         $"body/bodies of >= {minBodySize} tiles " +
                         $"({sizes.Count} counting puddles). Largest is " +
-                        $"{(sizes.Count > 0 ? Pct(sizes[0]) : 0)}% of the planet." +
+                        $"{(sizes.Count > 0 ? Pct(sizes[0].Tiles) : 0)}% of the planet." +
                         (previewing
                             ? " (Measured on a world being PREVIEWED at the creation "
                               + "screen, not a loaded one.)"
@@ -3093,9 +3119,22 @@ namespace JawaBench.BridgeTools
                     bodiesOverMinSize = big,
                     bodiesTotal = sizes.Count,
                     minBodySize,
-                    largestBodyPct = sizes.Count > 0 ? Pct(sizes[0]) : 0,
+                    largestBodyPct = sizes.Count > 0 ? Pct(sizes[0].Tiles) : 0,
                     bodies = sizes.Take(limit)
-                        .Select(v => new { tiles = v, pct = Pct(v) }).ToList(),
+                        .Select(v => new
+                        {
+                            tiles = v.Tiles,
+                            pct = Pct(v.Tiles),
+                            perimeter = v.Perimeter,
+                            // The raggedness number VISION's gate is written against.
+                            // Guarded rather than assumed: a zero-area body cannot
+                            // occur here, but dividing by it silently would produce
+                            // Infinity and read as a spectacular pass.
+                            raggedness = v.Tiles > 0
+                                ? Math.Round((double)v.Perimeter * v.Perimeter / v.Tiles, 2)
+                                : 0.0,
+                            centroidLat = Math.Round(v.CentroidLat, 3)
+                        }).ToList(),
                     bodiesListed = Math.Min(limit, sizes.Count),
                     biomes = biomes.OrderByDescending(kv => kv.Value)
                         .ToDictionary(kv => kv.Key, kv => kv.Value),
@@ -4254,6 +4293,16 @@ namespace JawaBench.BridgeTools
                                   : "")
                 };
             });
+        }
+
+        // One connected water mass, with the shape numbers a sea gate is written
+        // against. A class rather than a tuple so the flood fill reads as English
+        // and so adding a field later does not renumber anything.
+        private sealed class BodyShape
+        {
+            public int Tiles;
+            public int Perimeter;
+            public double CentroidLat;
         }
 
         private static object Fail(string message, object extra = null) =>
