@@ -87,7 +87,7 @@ heavy lifting for a door. **Named for VISION, not invented here.**
 | P1 | The world has been generated and a colony map is loaded | `jawa/list_pawns` answers instead of `{"success": false, "message": "No current map. Load a game first."}` (`skills/rimbridge/references/traps.md`, timeout entry) |
 | P2 | The owner has given the traffic light | you asked; `agents_def.md` rule 1 — only they see every window |
 | P3 | `LIVE BRIDGE TAKEN — CREATE, row 8 gravship build` sent to every peer | `CLAUDE.md` §"The Live Bridge"; the RELEASED half is owed at the end whatever happens |
-| P4 | Bigger Gravships' four settings are still 34 / 30 / 12 / 85 | read the FILE, not the panel: `C:\Users\Mandrake\AppData\LocalLow\Ludeon Studios\RimWorld by Ludeon Studios\Config\Mod_3522759531_GravshipSizeSettings.xml` — see §2 |
+| P4 | Bigger Gravships' settings still read 34 / 30 / 12 / 85 — ⚠️ but the **85 is not what the game enforces**; the resolved extender def says `maxDistance: 34`. Check the file for drift, do not plan against 85 | read the FILE, not the panel: `C:\Users\Mandrake\AppData\LocalLow\Ludeon Studios\RimWorld by Ludeon Studios\Config\Mod_3522759531_GravshipSizeSettings.xml` — see §2 |
 | P5 | The companion reports **20** `jawa/` tools | step 2 below. Every later check is uninformative until this reads 20 (`skills/rimbridge/SKILL.md:266-275`) |
 | P6 | `runInBackground` is on, or the game window has focus | otherwise every main-thread call times out at 30 s while `ping` answers in 0.5 ms (`traps.md`, `runInBackground` entry) |
 
@@ -107,13 +107,13 @@ go.**
 | grav engine connection radius | **34** | `Config\Mod_3522759531_GravshipSizeSettings.xml` → `BG_gravEngineMaxDistance`; mirrored `src/RimMandrake/mapsynth/ship_designs.py:64` |
 | field extender radius | **30** | same file, `BG_gravExtenderMaxDistance`; `ship_designs.py:65` |
 | max field extenders | **12** | same file, `BG_gravExtenderMax`; `ship_designs.py:66` |
-| max extender distance from engine | **85** | same file, `BG_gravExtenderMaxDistanceFromEngine`; `ship_designs.py:67` |
+| max extender distance from engine | 🔴 **34, NOT 85** | **The resolved def, verified twice.** `DefDump/defs/ThingDef.json` byte ~29005500 `"maxDistance":34`, and BRIDGE's live `jawa/get_def GravFieldExtender` returns `34.0`. **The 85 in `BG_gravExtenderMaxDistanceFromEngine` appears in the settings file and in NO resolved def.** `ship_designs.py:67` plans against 85 and is wrong. |
 | engine substructure support | **632.8** | same file, `BG_gravEngineSupport` = 632.79541 (`ship_designs.py:72`, `:80`) |
 | extender substructure support | **500** | 🔴 **NOT in that file. There is no `BG_gravExtenderSupport` key.** 500 is Bigger Gravships' *compiled mod default* (`ship_designs.py:73-74`, queue `CREATE.md` C4) |
 | capacity cap | **6,632** = 632.8 + 500×12 | `ship_designs.py:82` |
 | hull tiles | **4,057** | `ship_bridge.json` → `foundation.cells`; matches `ship_build.md:20` |
 | extenders needed | **8** of 12 | `ship_bridge.json` → spawn call 1, 8 ops; `ship_build.md:84` |
-| worst-case extender distance | **84.72** against the 85 cap | `AGENT_CREATE_state.md:85` — **0.28 of a cell of margin** |
+| worst-case extender distance | ⛔ **84.72 — 50 cells OUTSIDE the real 34** | The old note called this *"0.28 of a cell of margin"* against an 85 cap. **That was false precision on a number the game never reads.** A tight margin against the wrong constant is not a margin. |
 | origin offset | **+81, +57** | `ship_bridge.json` → `origin`, `"centred on a 250x250 map"` |
 | hull extent | **86 × 133**, map cells **x 82–167, z 58–190** | `ship_bridge.json` → `hullExtent`, `mapCells` |
 | batch guards | **4,096 ops / 70,000 cells** per call | `src/RimMandrake/bridgetools/JawaBench.BridgeTools/JawaBenchTerrainTools.cs:2821-2822` |
@@ -217,7 +217,7 @@ three including spawn_batch; that line is wrong. Use `get_terrain_batch`.
 grep -E "gravEngineMaxDistance|gravExtenderMaxDistance|gravExtenderMax|gravEngineSupport" \
   "/mnt/c/Users/Mandrake/AppData/LocalLow/Ludeon Studios/RimWorld by Ludeon Studios/Config/Mod_3522759531_GravshipSizeSettings.xml"
 ```
-✅ **Passes when:** 34 / 30 / 12 / 85 as in §2. ⚠️ **An absent key means DEFAULT,
+✅ **Passes when:** 34 / 30 / 12 / 85 as in §2 — ⚠️ **but 85 is a settings key the resolved def does not carry.** Plan extenders against **34**. ⚠️ **An absent key means DEFAULT,
 not zero** — only non-default values are written.
 
 **Step 5 — site survey. This answers D1.**
