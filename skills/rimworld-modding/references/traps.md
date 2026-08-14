@@ -24,8 +24,8 @@ shorts, leave it untouched (→ `skills/rimworld-savegame/SKILL.md`).
 
 | If you are about to… | Read | Entries |
 |---|---|---|
-| write or debug a patch, an xpath, or a def | [`traps-xml-and-defs.md`](traps-xml-and-defs.md) | 17 |
-| trust what a script, grep, census or the def dump just told you | [`traps-tooling.md`](traps-tooling.md) | 29 |
+| write or debug a patch, an xpath, or a def | [`traps-xml-and-defs.md`](traps-xml-and-defs.md) | 18 |
+| trust what a script, grep, census or the def dump just told you | [`traps-tooling.md`](traps-tooling.md) | 30 |
 | call art missing, wrong, or broken | [`traps-art.md`](traps-art.md) | 12 |
 | chase a mod that is absent, dead, or ignoring its files | [`traps-mods-and-managers.md`](traps-mods-and-managers.md) | 13 |
 | believe a diagnosis, or call into a running game | [`traps-diagnosis.md`](traps-diagnosis.md) | 5 |
@@ -50,6 +50,7 @@ the one asked.**
 - "PatchOperationFindMod(X) failed" does not mean mod X is missing
 - A def's XML element name IS its C# class — `VFEPirates.WarcasketDef` is invisible to `/Defs/ThingDef` yet lives in `ThingDef.json`
 - 34. One failed op silently kills every op after it in the same sequence
+- `isJunk` on a scatterer lets a world-tile mutator silently multiply its count to ZERO
 - 35. Retargeting a gene family is two files, and the old family must stay
 - 36. The comp you are designing a patch around may not exist
 - A build-over tier ladder deadlocks if the rungs disagree on terrain affordance
@@ -78,6 +79,7 @@ the one asked.**
 - `grep` for a packageId is case-sensitive; `ModsConfig.xml` is lowercased
 - A self-matching hash check green-lit 14 deletions
 - One wrong operator became a week-long "impossible" claim
+- `jawa/get_def` returns `extra: null` for def types it does not model, and it reads as "absent"
 - `ls -la` columns mean different things per row
 - A deploy check compared the commit, not the tool surface
 - The interpreter, not the data, rewrote 13,158 rows
