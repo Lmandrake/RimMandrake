@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ============================================================================
+  JawaGroundHulk_Register.xml            Jawa_Patches · authored 2026-08-13
+  ============================================================================
+
+  V1 ROW 4, RIDER: the GROUND HULK. The registration half, 3 of 3.
+
+  Defs/PrefabDefs/JawaGroundHulk.xml declares the stamp. Defs/MapGeneration/
+  JawaGroundHulk.xml declares the GenStepDef Jawa_StampGroundHulk that places
+  it. A GenStepDef on its own runs on NO map; a MapGeneratorDef has to list
+  it. This file is that listing, and it is deliberately the same three-file
+  shape as JawaResource_Scrapfields.xml, which is already deployed and proven.
+
+  ===========================================================================
+  THE TARGET, READ FROM CORE
+  ===========================================================================
+  C:\Program Files (x86)\Steam\steamapps\common\RimWorld\Data\Core\Defs\MapGeneration\BasePlayerMapGenerator.xml:4-15
+
+      <MapGeneratorDef ParentName="MapCommonBase" Name="Base_Player">
+        <defName>Base_Player</defName>
+        <genSteps>
+          <li>RocksFromGrid</li>
+          <li>ScatterShrines</li>
+          ...
+        </genSteps>
+      </MapGeneratorDef>
+
+  <genSteps> is a PLAIN LIST of GenStepDef names, so <li> is correct here.
+  Read from the node, not assumed.
+
+  ===========================================================================
+  SCOPE: Base_Player ONLY, AND THAT IS DELIBERATE
+  ===========================================================================
+  Same call as the scrapfields override, and for a stronger reason. There is
+  ONE wreck. The fiction is that this map — the map the clan settles on — is
+  where the rest of their own ship came down. Patching the abstract
+  MapCommonBase would strew identical hulks across encounter maps, faction
+  bases and quest maps, which is not atmosphere, it is a continuity error.
+
+  ===========================================================================
+  SAFETY — TWO CONDITIONS, NESTED, AND BOTH ARE LOAD-BEARING
+  ===========================================================================
+  OUTER tests that Gravship Crashes is present, by testing for the terrain
+  it defines:
+    C:\Program Files (x86)\Steam\steamapps\workshop\content\294100\3578515873\1.6\Defs\Terrain\Terrain_Foundation.xml:4-5
+    packageId Arcjc007.GravshipCrashes (its About\About.xml)
+
+  This mirrors the MayRequire="Ludeon.RimWorld.Odyssey,Arcjc007.GravshipCrashes"
+  on both defs. If either mod is absent, MayRequire drops the GenStepDef at
+  load — and adding <li>Jawa_StampGroundHulk</li> to a live genSteps list
+  when that def no longer exists is a red error on every map generation.
+  🔴 So the two guards must always be changed together. Weakening this one
+  turns a clean no-op into a hard failure for anyone without the mod.
+
+  A terrain test can be trusted here regardless of load order: RimWorld
+  merges every active mod's Defs into one document FIRST and runs every
+  mod's Patches against that merged document afterwards, so the node is
+  visible whether Gravship Crashes loads before or after Jawa_Patches.
+
+  INNER test xpath is IDENTICAL to the Add's xpath, so if Core ever renames
+  Base_Player or restructures the node this becomes a silent no-op rather
+  than a red error. Same discipline as JawaResource_Scrapfields.xml.
+  ============================================================================
+-->
+<Patch>
+
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/TerrainDef[defName="BrokenSubstructure"]</xpath>
+    <match Class="PatchOperationConditional">
+      <xpath>/Defs/MapGeneratorDef[defName="Base_Player"]/genSteps</xpath>
+      <match Class="PatchOperationAdd">
+        <xpath>/Defs/MapGeneratorDef[defName="Base_Player"]/genSteps</xpath>
+        <value>
+          <li>Jawa_StampGroundHulk</li>
+        </value>
+      </match>
+    </match>
+  </Operation>
+
+</Patch>

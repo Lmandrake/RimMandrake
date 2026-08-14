@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ============================================================================
+  JawaGroundHulk.xml                     Jawa_Patches · authored 2026-08-13
+  ============================================================================
+
+  V1 ROW 4, RIDER: the GROUND HULK. The GenStepDef half, 2 of 3.
+
+  Defs/PrefabDefs/JawaGroundHulk.xml holds the stamp itself — the deck, the
+  breach and the caskets. A PrefabDef on its own is inert: nothing places it.
+  This file is the genStep that does, and Patches/JawaGroundHulk_Register.xml
+  is what puts this genStep on the player map. Three files, same shape as
+  row 4's scrapfields, which is already deployed and proven (73ca76c).
+
+  ===========================================================================
+  EVERY FIELD BELOW IS COPIED FROM A SHIPPED GenStep_ScatterGroupPrefabs
+  ===========================================================================
+  C:\Program Files (x86)\Steam\steamapps\common\RimWorld\Data\Odyssey\Defs\MapGeneration\CommonMapGenerator.xml:82-91
+  GenStepDef "ScarlandsJunkPrefabs", order 950, is the donor for the class
+  and for allowInWaterBiome, isJunk, minSpacing, spotMustBeStandable,
+  allowRoofed and the whole <groups> block shape — weight, indoorRuin,
+  filthDef, filthExpandBy, filthChance, max.
+
+  The <groups> keys are PrefabDef defNames, read from the node, not assumed:
+  ScarlandsJunkPrefabs keys on <Exterior_AncientContainerForklift> and that
+  is the defName of a PrefabDef in the same DLC
+  (Odyssey\Defs\PrefabDefs\AncientExteriorPrefabs.xml:6-7). So <Jawa_GroundHulk>
+  here names our PrefabDef.
+
+  <count>1</count> in place of countPer10kCellsRange: donor is
+  C:\Program Files (x86)\Steam\steamapps\common\RimWorld\Data\Ideology\Defs\MapGeneration\CommonMapGenerator.xml:22-36,
+  GenStepDef "MechanoidRemains", which is the shipped precedent for a
+  scatterer that places exactly one landmark on a map. There is one wreck.
+
+  ScatterValidator_AvoidUsedRects is from the same Ideology block, line 34,
+  and it is the field that matters most here — see below.
+
+  ===========================================================================
+  ORDER 940, AND WHY IT IS NOT 960
+  ===========================================================================
+  Four ordering constraints, all read off shipped defs:
+
+    600  GenStep_ReserveGravshipArea   Odyssey\Defs\MapGeneration\BasePlayerMapGenerator.xml:5-7
+    850  FindPlayerStartSpot           Core\Defs\MapGeneration\CommonMapGenerator.xml:167-169
+    950  ScarlandsJunkPrefabs          Odyssey\Defs\MapGeneration\CommonMapGenerator.xml:82-84
+    960  Jawa_ScatterScrapfields       Jawa_Patches\Defs\MapGeneration\JawaScrapfields.xml
+
+  940 puts the hulk after the gravship area is reserved and after the player
+  start spot exists, and BEFORE the two scatterers. That direction is
+  deliberate: the hulk claims its rect first, so the junk prefabs and the
+  slag scatter arrange themselves AROUND the wreck instead of the wreck
+  landing on top of them. Slag landing on the hulk deck afterwards is fine
+  and wanted — junk on a wreck deck is the correct picture.
+
+  🔴 ScatterValidator_AvoidUsedRects IS THE ONE THAT PROTECTS THE CAMPAIGN.
+  The gravship lands on this map. GenStep_ReserveGravshipArea at order 600
+  registers that landing area as a used rect; this validator is what stops a
+  73 x 16 wreck being stamped through it. Do not remove it to make placement
+  easier — a hulk under the gravship is the failure this line prevents.
+
+  Deliberately NOT used: ScattererValidator_Buildable. It was tried and
+  reasoned away rather than forgotten. To cover a 73-wide prefab its radius
+  would have to be ~38, i.e. it would demand a 76-cell circle of Heavy
+  affordance terrain, and on a rocky or coastal desert tile that fails and
+  the scatterer then silently places NOTHING — the wreck just would not be
+  on the map, with no error to find it by. The shipped ScarlandsJunkPrefabs
+  places prefabs up to 27x13 with no validators at all, so the prefab
+  spawner does its own fit check; that is the behaviour relied on here.
+
+  ===========================================================================
+  ⚠ THE ONE PLACE THIS FALLS SHORT OF THE BRIEF, STATED PLAINLY
+  ===========================================================================
+  The brief says the breach faces the colony. It cannot, from XML. A
+  GenStep_Scatterer picks its spot at random and takes no argument about the
+  player start spot, so no XML field can aim the wreck. What IS done instead:
+  the PrefabDef pins <rotations>North</rotations>, so the breach is not
+  randomised either — it always opens EAST, a known fixed direction rather
+  than one of four. Aiming it at the colony needs a custom C# GenStep that
+  reads MapGenerator.PlayerStartSpot, which is v2 work and is not started
+  here. RimWorld is top-down and the torn edge reads from every side, so the
+  image survives; the narrative approach is what is missing.
+
+  ===========================================================================
+  SAFETY
+  ===========================================================================
+  MayRequire lists BOTH mods, matching the PrefabDef exactly. If Odyssey or
+  Gravship Crashes is absent this def is dropped at load, and
+  Patches/JawaGroundHulk_Register.xml gates on the same condition so nothing
+  is left referring to a def that no longer exists.
+  ============================================================================
+-->
+<Defs>
+
+  <GenStepDef MayRequire="Ludeon.RimWorld.Odyssey,Arcjc007.GravshipCrashes">
+    <defName>Jawa_StampGroundHulk</defName>
+    <order>940</order>
+    <genStep Class="GenStep_ScatterGroupPrefabs">
+      <allowInWaterBiome>false</allowInWaterBiome>
+      <isJunk>true</isJunk>
+      <minSpacing>85</minSpacing>
+      <count>1</count>
+      <spotMustBeStandable>true</spotMustBeStandable>
+      <allowRoofed>false</allowRoofed>
+      <validators>
+        <li Class="ScatterValidator_AvoidUsedRects" />
+      </validators>
+      <groups>
+        <Jawa_GroundHulk>
+          <weight>1.0</weight>
+          <indoorRuin>false</indoorRuin>
+          <filthDef>Filth_MachineBits</filthDef>
+          <filthExpandBy>1</filthExpandBy>
+          <filthChance>0.35</filthChance>
+          <max>1</max>
+        </Jawa_GroundHulk>
+      </groups>
+    </genStep>
+  </GenStepDef>
+
+</Defs>

@@ -1,0 +1,329 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ============================================================================
+  JawaGroundHulk.xml                     Jawa_Patches · authored 2026-08-13
+  ============================================================================
+
+  V1 ROW 4, RIDER: the GROUND HULK. The PrefabDef half.
+
+  WHAT THE PLAYER SEES: the rest of the wreck. The gravship is the part the
+  clan got flying; this is the part that stayed on the ground. A bow section
+  of gravship deck lying in the sand — broken substructure and intact
+  substructure in patches, a torn bite cut through the starboard flank, and
+  thirty-one ancient cryptosleep caskets still standing in their rows inside
+  the hold. The Hutts cut in first and took the cargo. The Jawas are the
+  SECOND scavengers on this wreck, and the caskets are what the first crew
+  did not think was worth the trouble.
+
+  ===========================================================================
+  THE FOOTPRINT IS NOT INVENTED. IT IS THE SHIP.
+  ===========================================================================
+  Stamped from BRIDGE's own gravship export, not from a shape generator:
+
+    C:\Users\Mandrake\AppData\LocalLow\Ludeon Studios\RimWorld by Ludeon Studios\Config\GravshipExport\Gravship.xml
+
+  That file is a ShipLayoutDefV2: 135 rows of 88, 4,057 occupied cells. In
+  that format the OUTER <li> is z running SOUTH to NORTH and the INNER <li>
+  is x running WEST to EAST, so rows[0][0] is the SOUTH-WEST corner. Read
+  that way and printed north-up, the ship is a broad forward delta on a
+  spine with two swept wings and a twin-rail tail.
+
+  The crop taken here is the BOW: source rows z=118..133, x=9..81 — 691
+  occupied cells in a 73 x 16 box. It was chosen because z=123..130 is the
+  only band of the whole ship that is a SINGLE unbroken run 51 to 55 cells
+  wide. That is a hold. Everything south of it splits into three separate
+  runs (port wing, spine, starboard wing) and everything north of it frays
+  into the prow tips, so this is the one slice of the ship that reads as a
+  room rather than as a slice.
+
+  ⚠ CROP CEILING WAS 1,200 CELLS AND THIS IS 619 STAMPED. Deliberately
+  under. The ceiling is a ceiling; 691 raw cells minus 76 failure gaps plus
+  4 cells of plating thrown clear of the breach is what the bay actually is.
+  Widening the crop south to z=115 would buy ~130 more cells and would buy
+  them as two disconnected 20-wide wing stubs, which is the "random slice"
+  the ruling told us not to ship.
+
+  ===========================================================================
+  TERRAIN — EVERY defName READ OFF DISK
+  ===========================================================================
+  BrokenSubstructure   Gravship Crashes, packageId Arcjc007.GravshipCrashes
+                       C:\Program Files (x86)\Steam\steamapps\workshop\content\294100\3578515873\1.6\Defs\Terrain\Terrain_Foundation.xml:4-35
+                       ParentName FloorBase, isFoundation true, pathCost is
+                       not set so it inherits 0, terrainAffordanceNeeded
+                       Walkable, no placeWorkers. It sits on ordinary desert.
+
+  Substructure         Odyssey, C:\Program Files (x86)\Steam\steamapps\common\RimWorld\Data\Odyssey\Defs\TerrainDefs\Terrain_Foundation.xml:4-36
+                       Same shape, same isFoundation true, same affordance
+                       list — which is why the two tile together cleanly.
+
+  🔴 NOT A SOLID SLAB, AND THAT IS THE WHOLE POINT.
+  The BrokenSubstructure motif is large and high-contrast; laid edge to edge
+  it tiles into wallpaper at any zoom the player actually uses. So the deck
+  is INTERLEAVED: 278 cells broken, 341 cells intact, 76 cells left as bare
+  desert. 45% broken / 55% intact, assigned from smoothed value noise on a
+  5-cell lattice (fixed seed) so the two form irregular patches of three to
+  six cells rather than a checkerboard, and so no two parts of the deck
+  repeat. A real wreck fails in patches, so the failure rate is not uniform
+  either: it rises with how frayed the hull outline already is at that cell,
+  and it goes to certainty inside the breach.
+
+  ===========================================================================
+  THE BREACH
+  ===========================================================================
+  An elliptical bite centred at local (58,7), radii 9 x 5, cut clean through
+  the STARBOARD flank of the hold and opening east. Cells inside it are gone
+  entirely; cells on its rim are eroded but not removed; four cells of
+  BrokenSubstructure lie OUTSIDE the hull line beyond the mouth, which is
+  plating thrown clear. The starboard casket bank is deliberately short
+  three units where the cut passes through it — that is the cargo the Hutts
+  took, and the empty deck where it stood is the only evidence left.
+
+  <rotations>North</rotations> locks the stamp, so the breach always opens
+  EAST. See the honest limitation noted in the GenStepDef file.
+
+  ===========================================================================
+  PROPS — CHECKED AGAINST THE SALVAGE PALETTE, NOT GUESSED
+  ===========================================================================
+  AncientCryptosleepCasket   Core, C:\Program Files (x86)\Steam\steamapps\common\RimWorld\Data\Core\Defs\ThingDefs_Buildings\Buildings_Misc.xml:1084-1130
+                             size (1,2), thingClass Building_AncientCryptosleepCasket,
+                             no designationCategory, so spawn-only.
+                             design/Jawa/art/salvage_palette.tsv:826 — USABLE-YIELDS,
+                             deconstructible true, fraction 0.5.
+
+  🔴 NEVER AncientCryptosleepPod. Core Buildings_Ancient_Active.xml:5.
+     salvage_palette.tsv:23 lists it EXCLUDED — deconstructible FALSE. It is
+     one word away from the right def and it is permanently unstrippable,
+     which would break the ruling that this wreck is strippable. The word to
+     check for is CASKET.
+
+  ShipChunk_Mech             Odyssey, C:\Program Files (x86)\Steam\steamapps\common\RimWorld\Data\Odyssey\Defs\ThingDefs_Buildings\Buildings_Gravship.xml:65-89
+                             size (2,2), Graphic_Random, rotatable false,
+                             terrainAffordanceNeeded Heavy.
+                             salvage_palette.tsv:870 — USABLE-YIELDS at
+                             deconstruct fraction 1.0, Steel 40 + GravlitePanel 15.
+                             It is literally a chunk of ship, on a ship.
+                             Graphic_Random means six of them do not read as
+                             copy-paste.
+
+  LAYOUT RULE FOLLOWED: at play zoom a 1x1 prop is about 22px and a lone one
+  is a speck nobody registers, so nothing here is placed singly. The caskets
+  are in three banks of touching rows running across the hold, and the six
+  ship chunks sit among and between those banks to break the grid.
+
+  ⚠ THE CASKETS ARE SHUT AND STAY SHUT. Vanilla sleepers can wake hostile;
+  that is a feature for later, not for v1. v1 needs only the image.
+
+  ⚠ TUNING, AND IT IS THE ONE NUMBER WORTH ARGUING ABOUT: 31 caskets is
+  31 x (90 steel + 2.5 uranium) = 2,790 steel and 77 uranium if every one is
+  deconstructed, plus 240 steel and 90 gravlite panel from the chunks. That
+  is roughly twice what the whole scrapfields scatter yields per map. It is
+  one-off, non-renewing and gated behind deconstruct work on a wreck the
+  player has to walk to, so it does not create a ladder (concept.md §3), but
+  it IS an economy nudge nobody specified. It is the FIRST number to cut.
+  Also note each casket carries CompProperties_Explosive, radius 2.66 Flame:
+  destroying one in a touching row can chain. Deconstructing does not.
+
+  ===========================================================================
+  SAFETY
+  ===========================================================================
+  MayRequire names BOTH mods this def cannot exist without. If either is
+  absent the whole def is dropped at load and nothing dangles — which is
+  also why Patches/JawaGroundHulk_Register.xml gates its genStep
+  registration on the SAME condition. Do not change one without the other.
+
+  ⚠ ONE MECHANISM HERE IS NOT VERIFIED OFFLINE, stated so nobody reads this
+  as proven: BrokenSubstructure is a FOUNDATION terrain (isFoundation true),
+  and Gravship Crashes places it with map.terrainGrid.SetFoundation — see
+  its own source at ...\3578515873\1.6\Source\GravshipCrashes\Util\GravshipSpawnUtility.cs:581.
+  Whether PrefabDef terrain application routes an isFoundation terrain to
+  the foundation layer or writes it to the top layer could not be read off
+  disk (no decompiler on this machine). Both outcomes render, because both
+  layers draw, and the broken/intact interleave reads either way — so the
+  ART is safe under both. What is NOT certain under the top-layer outcome is
+  prop placement, because a top-layer Substructure exposes only the
+  Substructure affordance and ShipChunk_Mech needs Heavy. If the caskets or
+  chunks come up missing on the first load, that is the cause and the fix is
+  a one-line terrain swap, not a redesign.
+  ============================================================================
+-->
+<Defs>
+
+  <PrefabDef MayRequire="Ludeon.RimWorld.Odyssey,Arcjc007.GravshipCrashes">
+    <defName>Jawa_GroundHulk</defName>
+    <rotations>North</rotations>
+    <size>(73,16)</size>
+    <things>
+
+      <!-- The hold. Three banks of touching rows; the starboard bank is
+           three units short where the breach cuts through it. -->
+      <AncientCryptosleepCasket>
+        <positions>
+          <li>(15,0,5)</li>
+          <li>(16,0,5)</li>
+          <li>(17,0,5)</li>
+          <li>(18,0,5)</li>
+          <li>(19,0,5)</li>
+          <li>(20,0,5)</li>
+          <li>(15,0,8)</li>
+          <li>(16,0,8)</li>
+          <li>(17,0,8)</li>
+          <li>(18,0,8)</li>
+          <li>(19,0,8)</li>
+          <li>(20,0,8)</li>
+          <li>(31,0,5)</li>
+          <li>(32,0,5)</li>
+          <li>(33,0,5)</li>
+          <li>(34,0,5)</li>
+          <li>(35,0,5)</li>
+          <li>(36,0,5)</li>
+          <li>(31,0,8)</li>
+          <li>(32,0,8)</li>
+          <li>(33,0,8)</li>
+          <li>(34,0,8)</li>
+          <li>(35,0,8)</li>
+          <li>(36,0,8)</li>
+          <li>(46,0,5)</li>
+          <li>(47,0,5)</li>
+          <li>(48,0,5)</li>
+          <li>(49,0,5)</li>
+          <li>(46,0,8)</li>
+          <li>(47,0,8)</li>
+          <li>(48,0,8)</li>
+        </positions>
+      </AncientCryptosleepCasket>
+
+      <!-- Torn hull plate, scattered through the banks to break the grid. -->
+      <ShipChunk_Mech>
+        <positions>
+          <li>(11,0,10)</li>
+          <li>(25,0,11)</li>
+          <li>(41,0,11)</li>
+          <li>(53,0,3)</li>
+          <li>(24,0,3)</li>
+          <li>(57,0,9)</li>
+        </positions>
+      </ShipChunk_Mech>
+
+    </things>
+    <terrain>
+
+      <!-- Broken deck: 278 cells, including 4 thrown clear of the breach. -->
+      <BrokenSubstructure>
+        <rects>
+          <li>(3,0,6,0)</li>
+          <li>(34,0,38,0)</li>
+          <li>(59,0,62,0)</li>
+          <li>(65,0,72,0)</li>
+          <li>(3,1,3,1)</li>
+          <li>(34,1,38,1)</li>
+          <li>(50,1,51,1)</li>
+          <li>(59,1,64,1)</li>
+          <li>(69,1,69,1)</li>
+          <li>(34,2,38,2)</li>
+          <li>(49,2,49,2)</li>
+          <li>(59,2,64,2)</li>
+          <li>(19,3,21,3)</li>
+          <li>(34,3,37,3)</li>
+          <li>(62,3,63,3)</li>
+          <li>(18,4,22,4)</li>
+          <li>(28,4,28,4)</li>
+          <li>(34,4,36,4)</li>
+          <li>(18,5,22,5)</li>
+          <li>(29,5,36,5)</li>
+          <li>(63,5,63,5)</li>
+          <li>(17,6,22,6)</li>
+          <li>(29,6,36,6)</li>
+          <li>(63,6,63,6)</li>
+          <li>(17,7,22,7)</li>
+          <li>(28,7,36,7)</li>
+          <li>(65,7,65,7)</li>
+          <li>(17,8,22,8)</li>
+          <li>(28,8,33,8)</li>
+          <li>(43,8,48,8)</li>
+          <li>(50,8,50,8)</li>
+          <li>(56,8,59,8)</li>
+          <li>(66,8,66,8)</li>
+          <li>(16,9,22,9)</li>
+          <li>(28,9,32,9)</li>
+          <li>(38,9,38,9)</li>
+          <li>(41,9,50,9)</li>
+          <li>(56,9,59,9)</li>
+          <li>(16,10,22,10)</li>
+          <li>(28,10,32,10)</li>
+          <li>(38,10,52,10)</li>
+          <li>(56,10,59,10)</li>
+          <li>(16,11,22,11)</li>
+          <li>(28,11,32,11)</li>
+          <li>(38,11,54,11)</li>
+          <li>(56,11,59,11)</li>
+          <li>(17,12,17,12)</li>
+          <li>(19,12,20,12)</li>
+          <li>(29,12,33,12)</li>
+          <li>(37,12,53,12)</li>
+          <li>(15,13,15,13)</li>
+          <li>(33,13,44,13)</li>
+          <li>(50,13,51,13)</li>
+          <li>(14,14,16,14)</li>
+          <li>(32,14,40,14)</li>
+        </rects>
+      </BrokenSubstructure>
+
+      <!-- Deck that held: 341 cells. Interleaved with the above, never a slab. -->
+      <Substructure>
+        <rects>
+          <li>(0,0,2,0)</li>
+          <li>(7,0,20,0)</li>
+          <li>(52,0,58,0)</li>
+          <li>(7,1,22,1)</li>
+          <li>(52,1,58,1)</li>
+          <li>(8,2,23,2)</li>
+          <li>(50,2,58,2)</li>
+          <li>(9,3,11,3)</li>
+          <li>(13,3,18,3)</li>
+          <li>(22,3,25,3)</li>
+          <li>(38,3,38,3)</li>
+          <li>(47,3,58,3)</li>
+          <li>(10,4,17,4)</li>
+          <li>(23,4,27,4)</li>
+          <li>(37,4,38,4)</li>
+          <li>(44,4,55,4)</li>
+          <li>(10,5,17,5)</li>
+          <li>(23,5,28,5)</li>
+          <li>(37,5,55,5)</li>
+          <li>(10,6,16,6)</li>
+          <li>(23,6,28,6)</li>
+          <li>(37,6,52,6)</li>
+          <li>(9,7,16,7)</li>
+          <li>(23,7,27,7)</li>
+          <li>(37,7,51,7)</li>
+          <li>(10,8,16,8)</li>
+          <li>(23,8,27,8)</li>
+          <li>(34,8,42,8)</li>
+          <li>(49,8,49,8)</li>
+          <li>(10,9,15,9)</li>
+          <li>(33,9,37,9)</li>
+          <li>(10,10,15,10)</li>
+          <li>(23,10,27,10)</li>
+          <li>(33,10,37,10)</li>
+          <li>(11,11,15,11)</li>
+          <li>(23,11,27,11)</li>
+          <li>(33,11,37,11)</li>
+          <li>(11,12,16,12)</li>
+          <li>(21,12,28,12)</li>
+          <li>(34,12,36,12)</li>
+          <li>(54,12,61,12)</li>
+          <li>(12,13,14,13)</li>
+          <li>(16,13,22,13)</li>
+          <li>(28,13,32,13)</li>
+          <li>(52,13,60,13)</li>
+          <li>(17,14,20,14)</li>
+          <li>(52,14,58,14)</li>
+          <li>(17,15,17,15)</li>
+          <li>(55,15,55,15)</li>
+        </rects>
+      </Substructure>
+
+    </terrain>
+  </PrefabDef>
+
+</Defs>
