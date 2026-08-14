@@ -165,7 +165,10 @@ call path. **State what you measured; the inference is a separate sentence.**
 
 ### 📊 ROW 8 STATUS — 3 of 4. **Built and exported; NOT closed.** `6909ecb`
 
-BRIDGE, on a quicktest map, campaign untouched.
+BRIDGE, on a quicktest map. *(Reported at the time as "campaign untouched" — no
+longer a virtue: the owner has ruled that no map or campaign is to be preserved.
+The map is recorded because it changes what the result CLAIMS, not because
+anything needed protecting.)*
 
 | criterion | state |
 |---|---|

@@ -65,8 +65,19 @@ a stale one is confusing yourself about which map a result came from (§3).
 **A quicktest finding and a campaign finding are different claims.** Report which
 one you were on, every time, or the next reader cannot tell what you established.
 
-🔴 **The campaign save is untouchable.** Do not test on it. It is the one map that
-cannot be regenerated in thirty seconds.
+🔴 **RETRACTED 2026-08-13 — nothing is untouchable.** This section said the
+campaign save must not be tested on. **Owner's standing ruling overrides it:**
+
+> *"NO AGENT SHOULD TRY TO PRESERVE MAP CONTENTS OR CAMPAIGN INTEGRITY AT THIS
+> TIME OR ANY TIME IN THE FUTURE. YOU WILL BE INFORMED WHEN WE GET TO THAT
+> PHASE. STOP ASKING FOR NOW."*
+
+**Test destructively. Wipe, overwrite, regenerate.** Do not defer a test, hoard
+one as a scarce-session item, or ask permission, to protect a map.
+
+⚙️ **Saying which map a result came from still stands** — that is evidence
+hygiene, not preservation. A quicktest finding and a campaign finding are
+different claims regardless of how disposable both maps are.
 
 ## 4. A clean log is not evidence
 

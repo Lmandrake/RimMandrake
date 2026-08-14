@@ -116,9 +116,11 @@ map they could have made themselves.**
 - ⭐ **This is what "blocked on a map" almost never means.** If your batch needs a
   map and there is no map, **start one** — that is a 30-second call, not a
   25-minute load. `no_game` blocks nothing that a quicktest cannot unblock.
-- **The campaign save is the exception and is untouchable** — do not test on it,
-  and say which you were on when you report a result. A finding from a quicktest
-  and a finding from the campaign are different claims.
+- ⚠️ **RETRACTED 2026-08-13 — there is no protected map.** Owner: *"NO AGENT
+  SHOULD TRY TO PRESERVE MAP CONTENTS OR CAMPAIGN INTEGRITY AT THIS TIME OR ANY
+  TIME IN THE FUTURE. YOU WILL BE INFORMED WHEN WE GET TO THAT PHASE. STOP ASKING
+  FOR NOW."* Test destructively on anything. **Still say which map a result came
+  from** — that is evidence hygiene, not preservation.
 - ⚠️ **The known trap, already paid for:** `start_debug_game_ready` **exceeds the
   30 s client timeout and succeeds anyway** — the response is merely late. **Do
   not retry** (the connection is desynced) and **do not re-issue** (you get a
