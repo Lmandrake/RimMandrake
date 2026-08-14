@@ -98,6 +98,28 @@ def litter(what, where=""):
     LITTER.append("%s%s" % (what, (" at %s" % where) if where else ""))
 
 
+def ok(r):
+    """The call RAN and reported success. Every jawa tool sets `success = true`
+    explicitly, so anything else is a NO-ANSWER, not a no."""
+    return bool(r) and r.get("success") is True
+
+
+def absent(r):
+    """`get_def` failed *because the def is not in the DefDatabase* -- as opposed
+    to any other reason the call came back false.
+
+    🔴 The two are not the same verdict and the payload is nearly identical.
+    `No <defType> named '<defName>'.` is a real absence; `No def type named
+    '<defType>'.` is a typo in MY question, and a timeout is no reading at all.
+    Reading either of the last two as absence is this seat's standing failure --
+    an absent input scored as an empty one -- and in group A below absence is the
+    PASS, so the mistake manufactures a green row out of a broken call."""
+    if ok(r):
+        return False
+    msg = str((r or {}).get("message") or "")
+    return " named " in msg and not msg.startswith("No def type named")
+
+
 # --------------------------------------------------------------- gates
 
 def census(s, expect=22):
@@ -703,6 +725,11 @@ def cherry_keys(s, cfg):
             record(rid, "%s/%s" % (dtype, name), ERROR, str(e)[:110])
             continue
         present = ok(r)
+        if not present and not absent(r):
+            record(rid, "%s/%s" % (dtype, name), ERROR,
+                   "call did not run, so this is NOT a reading on the def: %s"
+                   % str((r or {}).get("message"))[:90])
+            continue
         extra = (r or {}).get("extra") or {}
 
         if grp == "A":
