@@ -15,7 +15,52 @@ Rows marked ⭐ below are gate items. Everything else rides along.
 
 ---
 
+## 🌍 THE ANCHOR OF THIS SESSION — WORLDGEN, AND IT HAPPENS ONCE
+
+**This load exists to generate a world.** It was going to be the gravship build;
+it is not. Worldgen is upstream of everything else, so it goes first and the ship
+build follows it in the same session.
+
+> 🔴 **The Configure Factions page is seen ONCE and cannot be revisited.**
+> Get it wrong and the only repair is generating another world — i.e. paying this
+> entire ~25-30 minute session again. **Have the checklist open BEFORE clicking
+> into worldgen, not after.**
+
+**The list, box by box:** `infrastructure/state/WORLDGEN_FACTION_CHECKLIST.md`
+— 21 untick / 6 keep / 0 not-found, every defName read off disk, and labels taken
+from the defs because **the page shows labels, not defNames.**
+
+⚠️ **Two things in that file are NOT settled and must not be executed silently.**
+OPS flagged them itself: the claim that `RebelAlliance_Suppress.xml`'s four-field
+zeroing is the template for the rest, and the claim that the resulting dangling
+references are "accepted cost". **Those are design calls and VISION has not ruled
+on them.** The tick-list is safe to run; the framing around it is a proposal.
+
+### What rides on this one screen
+
+| row | what it needs from worldgen |
+|---|---|
+| **2** | the unticking itself — there is no config for it, this page IS the row |
+| **7** | the world being generated at all; it stopped being "verify only" |
+| **4** | all three terrain overrides are **map-generation-time** — they cannot appear on an existing map |
+| **8** | the ship is built *after* the world exists, not instead of it |
+
+### The owner's rule, which outranks the list
+
+> **Define OUR factions first, so that when the others are switched off, some
+> remain.** Otherwise we instantiate a world with **no one home.**
+
+Subtraction without addition is an empty map. For scale, from the world since
+deleted: 53 factions across 107 settlements, of which the fiction-breakers held
+roughly 34. **Do not execute the cut without knowing what is left standing.**
+
+---
+
 ## 🔻 BEFORE THE GAME GOES DOWN — the shutdown window
+
+⚠️ **MOOT FOR THIS LOAD — the game is already down.** Kept for the next cycle.
+OPS established the mod-list work here was never load-gated (`7872165`); the real
+hazard is a RimSort write collision, so read mtime before writing.
 
 ❌ **CORRECTED 2026-08-13 by OPS. Mod-list work was NEVER load-gated, and this
 block held three rows all day for a reason that does not exist.**
