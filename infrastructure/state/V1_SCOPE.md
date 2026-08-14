@@ -304,7 +304,7 @@ live-stack → **OPS**; driving the live game to verify → **BRIDGE**.
 | 1 | Empire reskin (labels) | 🟩 **BUILT** | 🟩 **SEEN LIVE** | CREATE | ✅ **CLOSED** |
 | 2 | Faction exclusion at worldgen | — | ⬜ | owner + VISION | 🔴 the campaign worldgen, list ratified and waiting |
 | 3 | One `QuestScriptDef` — *The Claim* | 🟩 **BUILT**, deployed | ⬜ | CREATE | fire it and reach an end state |
-| 4 | Three terrain overrides | 🟩 **BUILT**, deployed | 🟨 **1 of 3 SEEN** — `Jawa_SaltCrust` passed live | CREATE | scrapfields: any fresh map. ⚠️ **dune seas is NOT an eyeball check** — see below |
+| 4 | Three terrain overrides | 🟩 **BUILT**, deployed | 🟨 **2 of 3 SEEN** — salt pans + dune seas | CREATE | 🔴 **scrapfields is a measured DEFECT, not a blank** — 11 chunks against a predicted 75–125. OPS **O15**, `a82f50b` |
 | 5 | Jawa xenotype plays | 🟩 live | 🟩 **CLOSED — checked-and-fine** | BRIDGE | ✅ **CLOSED.** `BTD_Jawa` survives BTD's load-time dedup and the pawnKind pins were remapped onto it, measured live from `Player.log`. Our patches target the right xenotype |
 | 6 | Weapons / gear | 🟩 6 mods live | 🟩 **`JawaIonWeapons` PROVEN** `ad3e9b0` | BRIDGE | ✅ **CLOSED** |
 | 7 | Ordinary worldgen | ⬜ | ⬜ | BRIDGE | 🔴 the campaign desert world |
@@ -312,10 +312,25 @@ live-stack → **OPS**; driving the live game to verify → **BRIDGE**.
 
 > ### 📊 SCORE: **4 of 8 closed** — rows 1, 5, 6, 8.
 >
-> **Rows 3 and 4 are BUILT and deployed, awaiting verification only.** Row 4 can
-> reach 3-of-3 plus its rider on a ~30 s quicktest — the ground hulk and scrapfields
-> patch `Base_Player` with no biome filter, and dune seas closes on a live
-> `get_def defType=BiomeDef` read needing no map at all.
+> **Row 4 moved 1-of-3 → 2-of-3 on 2026-08-14, and its last item turned into a
+> defect.** ✅ **Dune seas CLOSED** on a live `jawa/get_def defType=BiomeDef` read
+> needing no map: `Desert` SoftSand min **0.55** (was 0.65), `ExtremeDesert`
+> **0.5**, and `AridShrubland` gained a patch maker at maxFertility 0.45 / min
+> 0.70 matching `JawaTerrain_DuneSeas.xml:112-117` exactly — so it is ours, not
+> vanilla. **The no-eyeball gate was right and was honoured.**
+>
+> 🔴 **Scrapfields did NOT pass, and this is the honest reading: it is worse than
+> unverified, because it was measured.** 11 `ChunkSlagSteel` over 62,500 cells —
+> one per 5,700 — against a prediction of **75–125** put on record *before* the
+> look. ⭐ **The prediction is what makes this a finding rather than a shrug.**
+> `Filth_MachineBits` sits at 433 cells in 52 clusters, and the ~3-per-chunk ratio
+> implies **~137 chunks were placed**, so ~126 went missing by tick 485 — or the
+> filth has another source on the stack. **No `could not find cell` warning fired.**
+> Splitting test is OPS **O15**, `a82f50b`. **Do not green row 4 until it resolves.**
+>
+> ⚠️ **Row 3 is not "awaiting verification" — it is BLOCKED on a missing tool**
+> (`NEXT_RELOAD.md` §7: the rumour needs a float menu, `rimworld/right_click_cell`
+> is measured broken). A `jawa/fire_quest` proposal is with BRIDGE.
 >
 > 🔴 **Rows 2 and 7 are ONE event, and it is HELD by the owner** until the sea is
 > shapeable. They are not blocked on us and not late — they are deferred by choice,
