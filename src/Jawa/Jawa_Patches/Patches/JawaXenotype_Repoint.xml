@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Patch>
+
+  <!--
+    Re-point the two Jawa pawn kinds at BTD_Jawa (+20 C) instead of
+    OuterRim_Jawa (+10 C). Owner ruled; V1_SCOPE.md gate W2.
+
+    🔴 THIS IS A WORLDGEN GATE, NOT A TUNING PATCH. xenotypeSet is read at PAWN
+    GENERATION, so a patch landing after a world exists does not fix that world's
+    colonists — you get a campaign whose Jawas are quietly the wrong xenotype on a
+    desert planet, and nothing errors. It has to be in the load that makes the
+    world.
+
+    WHAT IT TOUCHES. Two PawnKindDefs from Outer Rim - Galactic Diversity
+    (ws 2980427615, 1.6/Defs/GeneDefs/Xenotype_Jawa.xml:28-46):
+
+        OuterRim_Jawa        ParentName OuterRimTestColonyPawnKind
+        OuterRim_JawaTribal  ParentName OuterRimTestTribalPawnKind
+
+    Both carry exactly:
+
+        <xenotypeSet><xenotypeChances><OuterRim_Jawa>999</OuterRim_Jawa></xenotypeChances></xenotypeSet>
+
+    ⚠️ THE XENOTYPE IS THE ELEMENT NAME, NOT A VALUE. `xenotypeChances` is a
+    def-keyed dictionary — <OuterRim_Jawa>999</OuterRim_Jawa> means "this
+    xenotype, this weight". So there is no text node to edit: the whole
+    xenotypeChances block is replaced. A PatchOperationReplace aimed at a
+    <li> or at a value would match nothing here.
+
+    ⚠️ Three mods define a Jawa xenotype (Galactic Diversity, BTD Xenotype REMIX,
+    guy762 Star Wars Xenotypes) and generation rolls whichever these kinds name.
+    This patch settles ONLY these two kinds; it does not deduplicate the
+    xenotypes themselves, which is a separate and much larger ruling.
+
+    LOAD ORDER: Jawa_Patches declares loadAfter Neronix17.OuterRim.GalacticDiversity,
+    so this lands after the defs it edits. Without that the xpath matches nothing
+    and fails silently.
+
+    Conditional so a donor restructure degrades to a no-op rather than an error.
+  -->
+
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/PawnKindDef[defName="OuterRim_Jawa"]/xenotypeSet/xenotypeChances/OuterRim_Jawa</xpath>
+    <match Class="PatchOperationReplace">
+      <xpath>/Defs/PawnKindDef[defName="OuterRim_Jawa"]/xenotypeSet/xenotypeChances</xpath>
+      <value>
+        <xenotypeChances>
+          <BTD_Jawa>999</BTD_Jawa>
+        </xenotypeChances>
+      </value>
+    </match>
+  </Operation>
+
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/PawnKindDef[defName="OuterRim_JawaTribal"]/xenotypeSet/xenotypeChances/OuterRim_Jawa</xpath>
+    <match Class="PatchOperationReplace">
+      <xpath>/Defs/PawnKindDef[defName="OuterRim_JawaTribal"]/xenotypeSet/xenotypeChances</xpath>
+      <value>
+        <xenotypeChances>
+          <BTD_Jawa>999</BTD_Jawa>
+        </xenotypeChances>
+      </value>
+    </match>
+  </Operation>
+
+</Patch>
