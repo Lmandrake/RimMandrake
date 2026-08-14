@@ -74,6 +74,32 @@ push is nearly free; the cost of a badly-timed one is that it *stacks*.
 
 ---
 
+## 2b. 🔴 The closing seat and the recording seat MUST be the same seat
+
+**CREATE's finding, 2026-08-14, and it is sharper than the lesson it corrected.**
+
+The board went stale within minutes of being built: two rows sat `open` while both
+were already resolved, and PROJECT — the seat that owns the board — pushed another
+seat to run them. The tempting diagnosis is *"hand-kept things drift, sweep more
+often."* That is wrong.
+
+> **It drifted because the seat that CLOSED the work and the seat that RECORDED it
+> were different seats. Any ledger where those two differ drifts by construction,
+> and no sweep frequency fixes it — a faster sweep only shortens the window.**
+
+⇒ **A seat ticks its own row in `BOARD.md`, in the same commit that closes the
+work.** Not a report to PROJECT, not a request. PROJECT still sweeps, but the sweep
+is a backstop, never the mechanism.
+
+🔴 **And tick it with the EVIDENCE, not just the state.** A row that reads `done`
+and nothing else is the next stale row, because the seat reading it cannot tell
+whether it may act on the result. L1 did not go `open → done`; it went to *"no
+stern re-lay; one hull cell per thruster; roof map derived, not observed."* The
+qualifier is the whole value: **derived** is not **observed**, and the next seat
+needs to know which it is holding.
+
+---
+
 ## 3. Rules for the seats
 
 1. 🔴 **NEVER REPORT A PRECONDITION YOU CAN SATISFY.** If you can close the gap,
@@ -89,6 +115,9 @@ push is nearly free; the cost of a badly-timed one is that it *stacks*.
 5. **Set your status line when you change task.** `board.py say "..."`. Liveness is
    stamped for you by a hook; meaning cannot be.
 6. **Take the instrument when it is free. Do not ask.** `gamestate.py take`.
+7. 🔴 **Tick your own row in `BOARD.md` in the commit that closes it, with the
+   evidence.** See §2b — this is the rule that keeps the board honest, and it is
+   the only one no amount of sweeping can substitute for.
 
 ---
 

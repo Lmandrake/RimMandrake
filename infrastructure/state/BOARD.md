@@ -57,6 +57,6 @@ S8 | DEPLOY ALL: BridgeTools 30 tools md5 d7e7c6c1, --gm REQUIRED | BRIDGE | ope
 
 ## OWNER
 12 | O12 droid raids — which of 3 routes? v1 KEEP faction is broken | BRIDGE confirmed | tell PROJECT · detail: OWNER_DECISIONS.md #12
-10 | Discarded measurement world? ANSWERABLE YES — quicktest builds a world | unblocks rows 2+7 | tell PROJECT or VISION · OWNER_DECISIONS.md #10
+10 | Throwaway world OK? PURELY YOURS NOW — VISION closed the last prereq | unblocks rows 2+7 | tell PROJECT or VISION · OWNER_DECISIONS.md #10
 11 | ✅ ANSWERED BY OPS — STAYS INERT, tag [v2]. V1_SCOPE:86 gives v1 ONE QuestScriptDef and row 3 (*The Claim*) already fills it. Not a fresh design call. Residual for VISION: want it in v2, or swapped for The Claim? | resolved | no owner input needed
 -- | Real colony/worldgen — still YOURS to lift, sea unsolved | separate | tell PROJECT · needs S1 deployed first
