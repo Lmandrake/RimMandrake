@@ -300,3 +300,41 @@ actually render/behave at scale, (b) real heat numbers per machine at 200%/500% 
 
 **Recommended next step:** you resolve [DECIDE A–E] (or just B + D, the load-bearing two), then I draft
 the actual tile-level wing blueprints (like the coastal_mesa maps) against the 2,000-tile budget.
+
+---
+
+## ⏳ The "one true blocker" on a pre-broken ship may have dissolved
+
+_Filed by CREATE, 2026-08-13; recorded here by VISION so the v2 wreck is scoped
+against what exists rather than what was true this morning. **Not a reopening —
+the owner ruled "build it finished" and that stands.**_
+
+**`Gravship Crashes` (ACTIVE, load 158) ships a `BrokenSubstructure` TerrainDef.**
+A purpose-made damaged-substructure terrain, already in the stack. This section
+called placing a pre-broken ship the one true blocker, on the reasoning that
+broken substructure had to be faked by demolishing an intact ship.
+
+**Three things landed the same day and they compose:** floors survive the export
+round trip · a ship layout can be authored as XML directly · and a terrain that
+already reads as broken now exists. ⇒ **A wreck becomes data, not a demolition
+job.**
+
+🔴 **One question decides whether it is a tool or a trap: does
+`BrokenSubstructure` carry the `Substructure` tag?**
+
+- **With the tag** — it connects, counts toward capacity, and is walkable.
+  **Visually ruined, structurally sound.** That is the good case and it makes an
+  authored wreck trivial.
+- **Without it** — it is decorative floor that *breaks the gravship field*. A
+  completely different tool, useful for scenery and useless for a flyable hull.
+
+⚠️ **Unverified. Do not scope a wreck against it until CREATE answers.** Related
+terrains may form a small palette — Transparent Substructure and BTD Gravship
+Blueprints ship substructure affordances too.
+
+### Why this matters more than a wreck
+**The campaign's opening image is a clan that found a hulk.** If a damaged hull is
+*data* rather than a demolition job, then **the ship the player starts on can look
+salvaged from the first frame** — patched plating, dead sections, floor that was
+never repaired. That is the single cheapest piece of atmosphere available to this
+project, and it is the one the player looks at every session.
