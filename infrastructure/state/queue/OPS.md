@@ -58,6 +58,37 @@ in the repo AT THAT MOMENT — scope it with `--mod`, never run it bare.**
 | `~ JawaSeaShaper/1.6/Assemblies/JawaSeaShaper.dll` | ⚠️ **Reason UPDATED — my earlier "stale build" is no longer true.** CREATE committed DLL and source together in `c3ee8e7`, so the repo pair is consistent and clean. 🔴 **The live fact that replaces it: the game is running a DIFFERENT binary.** Repo DLL md5 `b7730027a639`; deployed/loaded DLL md5 `82b48e53e668`, mtime **08-13 23:57:29**, which predates the 01:03:26 launch. ⇒ **the arc-distance and elongation work verified in `c3ee8e7` is NOT in the running game** — G1 is done in the repo and live nowhere. **The assembly is loaded and therefore locked: this deploy can only happen while the game is DOWN, and a new assembly goes SOLO** so the load that carries it can attribute what it does. |
 
 
+## ⭐ THE ART-OBSERVATION BATCH — runnable on ANY live map, no fresh map, no load
+
+**CREATE supplied defNames, file:line and the broken FACING for each. All three tools
+already exist in the live 147** — `jawa/spawn_pawn`, `jawa/set_pawn_style`,
+`jawa/set_pawn_rotation` — **so this needs no new capability and no map generation.**
+⚠️ Observation only. The owner's stop on art *fixing* stands; looking is not fixing.
+
+🔴 **A pawnkind spawn ALONE tests none of these.** All three are HairDef/apparel
+`texPath`s, not pawnkind art — **the style has to be SET**, or you photograph a default
+and call it passed.
+
+| item | spawn | then set | face |
+|---|---|---|---|
+| **CereanManeFix** | pawnkind `OuterRim_Cerean` (forces the xenotype, weight 999) | hair `OuterRim_CereanMane` — a fresh Cerean rolls it ~1 in 5, so **set it, do not hope** | **SOUTH** |
+| **SauridFrillFix** | pawnkind `VRESaurids_Villager_Saurid` | hair `VRESaurids_Littlefoot` (`texPath Pawn/CenterFrill/CenterFrill8`) | **NORTH** — the donor ships `CenterFrill8_north-.png` with a **trailing hyphen**; `CenterFrill7_north.png` next to it is named correctly. North is the ONLY broken rotation |
+
+**Both leave `NEXT_RELOAD.md` §7.** They were parked there for "no pawnkind defName";
+CREATE found both, with file and line.
+
+### Still uncollectable, and now for a proven reason
+**ToolBeltFix.** `VAEA_Apparel_ToolBelt` is spawned by **no** PawnKindDef — CREATE
+grepped the workshop tree, `Mods/` and `Data/`: zero hits in `apparelRequired`,
+`specificApparelRequirements` or any fixed list, and its only tag
+`VAEA_Utility_Industrial` appears in no pawnkind, so there is no random path either.
+Every other reference is loot. ⇒ **needs dev-spawn plus a FORCE-EQUIP, which is the
+route BRIDGE is building. Hold it for that tool, NOT for a load.** When it lands:
+face **WEST** (`ToolBelt_west.png` is 753 bytes against `ToolBelt_east.png` at 16,945),
+and ⚠️ `renderUtilityAsPack` is true so it draws in the pack layer — **check from
+behind as well as straight west.**
+
+
 ## Open — offline, no game needed
 
 | # | item | note |
