@@ -5,7 +5,7 @@ after the three-assemblies batch, i.e. the one that follows the 2026-08-13 10:05
 companion deploy). Queue item **O5**, ruled LIVE by the owner.
 
 **Why this file exists.** The owner granted the three-assemblies waiver
-(`TODO.md` §7, "the waiver STANDS. Batch it.") on one mandatory condition: *write
+(`skills/rimworld-load-round/SKILL.md` §3, "the waiver STANDS. Batch it.") on one mandatory condition: *write
 the three expected-failure signatures down before launching.* A signature invented
 after reading the log is not evidence, it is a story that fits. This is that
 document. **Do not edit the signatures below after the log exists** — append
@@ -23,7 +23,7 @@ test.
 |---|---|---|---|---|---|
 | A1 | `JawaBench.BridgeTools` | `C:\Program Files (x86)\Steam\steamapps\common\RimWorld\BridgeTools\JawaBench\JawaBench.BridgeTools.dll` | 154,112 B | 2026-08-13 10:05 | byte-identical to repo artifact |
 | A2 | `JawaIonWeapons` | `C:\Program Files (x86)\Steam\steamapps\common\RimWorld\Mods\JawaIonWeapons\Assemblies\JawaIonWeapons.dll` | 5,120 B | 2026-08-12 21:53 | md5 `b72cade88872860ab36206c1e01cccae`, identical to repo |
-| A3 | `OuterRimGalacticEmpire` | `C:\Program Files (x86)\Steam\steamapps\workshop\content\294100\2919248699\1.6\Assemblies\OuterRimGalacticEmpire.dll` | 10,752 B | 2026-08-12 16:06 | Workshop, **1.6 folder** — matches the 10,752 B recorded in `TODO.md:216` |
+| A3 | `OuterRimGalacticEmpire` | `C:\Program Files (x86)\Steam\steamapps\workshop\content\294100\2919248699\1.6\Assemblies\OuterRimGalacticEmpire.dll` | 10,752 B | 2026-08-12 16:06 | Workshop, **1.6 folder** — matches the 10,752 B recorded when the waiver was re-put (`infrastructure/state/CLOSED.md`, TODO §7, `8a6659e`) |
 
 **All three are already on disk. None needs a shutdown window.** The 1.4 and 1.5
 copies of A3 are 10,240 B; only the 1.6 one is 10,752 B, so 1.6 is what loads.

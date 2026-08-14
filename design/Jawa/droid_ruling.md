@@ -1,7 +1,7 @@
 # Droid ruling — ion, capture, and what detonates
 
 _Owner's design ask, 2026-08-12, with everything verified against the live install
-and the game assembly. Referenced from `TODO.md` §1._
+and the game assembly. Referenced from `infrastructure/state/TODO_v2.md` §1._
 
 **Status: research complete and UNBLOCKED, nothing built.** No XML written, no mod changed. This
 doc exists so the build starts from ground truth instead of from a guess.
@@ -430,7 +430,7 @@ of a claim gaining authority purely by being restated.
 
 ⚠️ **Use `explodeOnKilled`, never `explodeOnDestroyed`.** The latter also fires on
 `DestroyMode.Deconstruct`, which would detonate a machine in the face of the
-colonist salvaging it — see `TODO.md` §1.
+colonist salvaging it — see `infrastructure/state/TODO_v2.md` §1.
 
 ⚠️ **A damaging blast destroys its own corpse.** Pawns do *not* get the
 leavings-protection shield buildings get (`Thing::Destroy` registers it only

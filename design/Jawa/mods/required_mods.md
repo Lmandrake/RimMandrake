@@ -591,7 +591,7 @@ _Evidence tier: [WS-CONFIRMED] = the Workshop page / packageId / GitHub org veri
 > | Galactic Empire | `2919248699` | **1.4 1.5 1.6** |
 > | Rebel Alliance | `2919249903` | **1.4 1.5 1.6** |
 > | Separatists | `3097604003` | **1.4 1.5 1.6** |
-> | Chiss Ascendancy | `2919962538` | **1.4 1.5 1.6** (rejected on other grounds — see `TODO.md` §4) |
+> | Chiss Ascendancy | `2919962538` | **1.4 1.5 1.6** (rejected on other grounds — see `infrastructure/state/TODO_v2.md` §4) |
 >
 > **Not yet disk-verified:** Mandalore and Galactic Republic. Old Republic's `1.6` branch declares 1.4/1.5/1.6 on GitHub but has not been pulled. Assume the same pattern; **confirm from a Workshop `About.xml`, never from a `*-main` extract.**
 >
@@ -601,7 +601,7 @@ _Evidence tier: [WS-CONFIRMED] = the Workshop page / packageId / GitHub org veri
 >
 > _(Retraction by [PROJECT] on the owner's instruction, 2026-08-12. WORLD owns this file — the evidence is above so the verdict can be re-checked rather than taken on trust.)_
 
-- **Outer Rim – Galactic Empire** (WS `2919248699`, `Neronix17.OuterRim.GalacticEmpire`) — ✅ **ADOPTED 2026-08-12, 1.6 VERIFIED ON DISK.** Dependency `Neronix17.OuterRim.Core` already active. Ships the Galactic Empire faction, the trooper ladder (`PawnKinds_Stormtroopers/ArmyTroopers/DeathTroopers/RangeTroopers`), the full stormtrooper wardrobe and **`Imp_OfficerUniform_Black`** — the black officer uniform the owner asked for — plus ISB, scout/snow/range variants, `TraderKindDefs` and training hediffs. `FactionDef` ships `permanentEnemy false`, `settlementGenerationWeight 0.3`, `requiredCountAtGameStart 1`, techLevel Ultra; the roster wants permanent-enemy, so that is a patch. Carries a **10.7 KB** Harmony assembly — **solo-load requirement waived by the owner 2026-08-12**, it may batch. Design + jobs: `TODO.md` §3.
+- **Outer Rim – Galactic Empire** (WS `2919248699`, `Neronix17.OuterRim.GalacticEmpire`) — ✅ **ADOPTED 2026-08-12, 1.6 VERIFIED ON DISK.** Dependency `Neronix17.OuterRim.Core` already active. Ships the Galactic Empire faction, the trooper ladder (`PawnKinds_Stormtroopers/ArmyTroopers/DeathTroopers/RangeTroopers`), the full stormtrooper wardrobe and **`Imp_OfficerUniform_Black`** — the black officer uniform the owner asked for — plus ISB, scout/snow/range variants, `TraderKindDefs` and training hediffs. `FactionDef` ships `permanentEnemy false`, `settlementGenerationWeight 0.3`, `requiredCountAtGameStart 1`, techLevel Ultra; the roster wants permanent-enemy, so that is a patch. Carries a **10.7 KB** Harmony assembly — **solo-load requirement waived by the owner 2026-08-12**, it may batch. Design + jobs: `infrastructure/state/TODO_v2.md` §3.
 - **Outer Rim – Galactic Republic** (WS 2971930101) — ⚠️ **INSPIRATION ONLY (1.4/1.5, SRC-AUDITED).** Ships Republic faction + 122 pawnkinds + the **Fett clone** xenotype (also 1.4/1.5-gated).
 - **Outer Rim – Separatists** (WS 3097604003) — ⚠️ **INSPIRATION ONLY (1.4/1.5, SRC-AUDITED).** CIS/Separatist droid-swarm ladder (B1→B2→commando→tactical→super-tactical→droideka→crab).
 - **Outer Rim – Mandalore** (WS 2920516629, `neronix17.outerrim.mandalore`) — ⚠️ **INSPIRATION ONLY (1.4/1.5, SRC-AUDITED).** Four factions (Death Watch / Death Watch Honour / Neo-Crusaders / Outpost); **unique "Honour Raid" verb** + 16 clan-decal heraldry apparel — both worth stealing as design patterns.

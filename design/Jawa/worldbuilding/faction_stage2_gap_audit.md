@@ -1,6 +1,6 @@
 # Faction Stage 2 — gap audit
 
-_PROJECT, 2026-08-13. `TODO.md` §0 Stage 2. Offline audit of
+_PROJECT, 2026-08-13. Faction roster Stage 2 (`infrastructure/state/queue/VISION.md` **V9**). Offline audit of
 `faction_roster_v2.md` against the live `FactionDef` surface. **Stage 2 was
 specified as a gap audit, not an authoring pass** — nothing here proposes a value._
 
@@ -66,7 +66,7 @@ the 88 live defs), `xenotypeSet` (38), `basicMemberKind` (27), `backstoryFilters
 
 ## Readiness — 12 factions, not 10
 
-⚠️ **The roster holds TWELVE factions.** `TODO.md` §0 and `AGENT_PROJECT_state.md`
+⚠️ **The roster holds TWELVE factions.** `infrastructure/state/queue/VISION.md` **V9** and `AGENT_PROJECT_state.md`
 both said ten. **11. Indigenous Jawa Clans** (line 1809) and **12. Junker
 Scrap-Warrens** (line 1932) were added later and several global sections were
 never updated to match — which is the direct cause of defect **D5** below.

@@ -1,6 +1,7 @@
 # Faction Stage 3 — the buildable spec
 
-_Written by **PROJECT**, 2026-08-13 overnight, against `TODO.md` §0 Stage 3.
+_Written by **PROJECT**, 2026-08-13 overnight, against faction roster Stage 3
+(`infrastructure/state/queue/VISION.md` **V9**).
 Substrate is the 574-mod dump. **This is `[v2]` spec work**: `V1_SCOPE.md` cuts
 build *depth*, not spec, and speccing costs no verification pass. v1 still ships
 one thin Empire reskin._
@@ -459,7 +460,7 @@ no new XML defs, no licence exposure, no art.
    says `false`. I recommend keeping `false` + very negative goodwill, so the
    faction can still generate quests and trade. **Setting it `true` makes them
    one-note.**
-3. **Goodwill persistence is still unproven** (`TODO.md` §3d) — Faction Customizer
+3. **Goodwill persistence is still unproven** (`infrastructure/state/queue/OPS.md` **O4**) — Faction Customizer
    has `set_BaseGoodWill`, but whether it persists across worlds is untested. Every
    starting-goodwill number in the roster rides on this.
 4. **The Tusken water-raid group may not be pure XML** (§4). Verify before

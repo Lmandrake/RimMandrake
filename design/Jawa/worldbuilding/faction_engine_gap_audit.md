@@ -1,6 +1,7 @@
 # Faction engine gap audit — Stage 2
 
-_Written by **PROJECT**, 2026-08-12, against `TODO.md` §0 Stage 2. Audits
+_Written by **PROJECT**, 2026-08-12, against the faction roster Stage 2 work
+(now `infrastructure/state/queue/VISION.md` **V9**). Audits
 `file:///D:/Luke/dev/Rimworld/design/Jawa/worldbuilding/faction_roster_v2.md` (2,433 lines,
 12 faction dossiers) against what RimWorld's `FactionDef` actually accepts._
 
@@ -156,7 +157,7 @@ is owned by whoever owns the subject. Filed, not edited.
 
 ### "125 distinct fields" is a schema, not a checklist
 
-`TODO.md` §0 records **88 `FactionDef`s and 125 distinct fields** as the Stage 3
+`infrastructure/state/queue/VISION.md` **V9** records **88 `FactionDef`s and 125 distinct fields** as the Stage 3
 checklist. Measured against the dump: **all 125 fields are present on all 88
 defs** — the dump serialises defaults. So 125 is the size of the *schema*, not a
 list of decisions anyone made.
@@ -178,7 +179,7 @@ Recorded here because this audit's data comes from that dump.
 
 The dump's identity is **"what the game loaded"** — and that includes *our own
 patches*. It is therefore structurally the wrong source for any question of the
-form *"does the mod already do X?"*. Full write-up: `TODO.md` §12.
+form *"does the mod already do X?"*. Full write-up: `skills/rimworld-modding/references/traps-tooling.md` §"An artifact that records an OUTCOME cannot answer a question about a CAPABILITY".
 
 **Bounded for this audit** — of the ten Star-Wars-relevant live `FactionDef`s,
 our patches modify exactly one:

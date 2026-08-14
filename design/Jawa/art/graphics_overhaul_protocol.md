@@ -237,7 +237,7 @@ that looks like a different bug:
 |---|---|---|
 | **`extract_bundle.py`** | **the venv `python`** | system `python3` exits `UnityPy is required: pip install UnityPy Pillow`, which reads as "install a package", not "wrong interpreter" |
 | `deploy_custom_mods.py` | `python3` or `python.exe` | — |
-| `refresh.py` | **`python.exe` only** | `python3` fails `cannot read ModsConfig`, which reads as "the config is gone" (it hardcodes `C:\Users\…`; `TODO.md` §10) |
+| `refresh.py` | **`python.exe` only** | `python3` fails `cannot read ModsConfig`, which reads as "the config is gone" (it hardcodes `C:\Users\…`; closed — `infrastructure/state/CLOSED.md`, TODO §10, `29c89f0`) |
 
 ⚠️ **Every one of those wrong-interpreter failures names something else as the
 cause.** That is what makes a blanket fix expensive: it sends the next person
