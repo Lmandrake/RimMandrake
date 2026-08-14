@@ -15,8 +15,24 @@ authored offline by OPS/CREATE and all of it verifies in ONE session.
 
 ## Open
 
-### ✅ DONE 2026-08-14 — the window was spent: 22 → **25 tools deployed**
-Game copy md5 **`13fcb549`**, 25 `jawa/` names, GM pair present. Third tool is
+### 🔴 THE 12 ART SCREENSHOTS ARE NON-EVIDENCE — re-shoot them, do not judge them
+Found by opening the pictures. The Debug log window covers the CENTRE of the
+screen, which is exactly where `look()` puts the subject; in `p5_004.png` and
+`p13_012.png` the subject is not in frame at all. Twelve rows filed `NEEDS EYES`
+— collected, and empty. `jawa/clear_ui` fixes it forward (closes every
+`Window_Dev`, drops the selection) and `rimbench.core.look()`/`.frame()` call it
+automatically. ⚠️ Closing the log by hand does not hold — auto-open-on-error.
+Banner is at the top of `observed/2026-08-14_load_session.md`; trap filed.
+
+### ✅ AV_DogSled's NullReference was MINE, not the art's
+`Vehicles.VehicleDef` cannot go through `ThingMaker` — `VehiclePawn::.ctor` leaves
+`vehiclePather`/`ignition`/`drawTracker`/`kindDef` null and `SpawnSetup` callvirts
+all three. `spawn_batch` now routes vehicles through
+`Vehicles.VehicleSpawner.SpawnVehicleRandomized` **by reflection**, so the
+companion still loads without Vehicle Framework. P1 is re-runnable.
+
+### ✅ DONE 2026-08-14 — the window was spent: 22 → **26 tools deployed**
+Game copy md5 **`55b2362`**, 26 `jawa/` names, GM pair present. Third tool is
 `jawa/list_things` (`3adedbc`) — a ThingID for a NON-PAWN, which nothing on the
 bridge could produce; the only source was a human clicking the object, and that
 is precisely why A2 `NoPathToPilotConsole` was SKIPPED in the live session.
@@ -52,7 +68,7 @@ hardcoded branch. `get_defs` reads a `fields` list reflectively off **any** def 
 ⇒ a new question needs **no new build**, and a build needs the game closed.
 
 ### 🟡 BUILT AND DEPLOYED, NEVER RUN — awaiting one live session
-**Deployed copy measured 2026-08-14 after the window:** md5 `ea5952e2`, **24 tools**.
+**Deployed copy measured 2026-08-14 after the window:** md5 `55b2362`, **26 tools**.
 Compiles clean; the rows below have **never been driven live** — do not let another
 seat treat them as working tooling.
 
@@ -64,6 +80,8 @@ seat treat them as working tooling.
 | `jawa/get_defs` | 2026-08-14 | any def-type question that is not a ThingDef |
 | `jawa/fire_quest` | 2026-08-14 | v1 row 3 — `questDef=Jawa_TheClaim` |
 | `jawa/list_things` | `3adedbc` | A2 now finds its own console; the item IS the proof |
+| `jawa/clear_ui` | `9a5b6fe` | any screenshot whose subject is actually visible |
+| vehicle route in `spawn_batch` | `9a5b6fe` | P1 `AV_DogSled` spawning at all |
 | roof pair | — | `set_roof_batch` / `get_roof_batch` |
 
 ✅ **Off this list, live-proven 2026-08-14:** `jawa/order_pawn` (Paige walked

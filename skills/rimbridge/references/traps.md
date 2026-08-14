@@ -21,6 +21,8 @@ Skim this, open what matches your task — do not read them all.
 - [`debugToolChanged: false` means nothing](#debugtoolchanged-false-means-nothing)
 - [`designatorId` is a UI path, not a defName](#designatorid-is-a-ui-path-not-a-defname)
 - [A screenshot taken while paused can be the previous frame](#a-screenshot-taken-while-paused-can-be-the-previous-frame)
+- [`ThingMaker.MakeThing` builds a wreck for any def whose framework wires it elsewhere](#thingmakermakething-builds-a-wreck-for-any-def-whose-framework-wires-it-elsewhere)
+- [The debug log window sits on the middle of every screenshot](#-the-debug-log-window-sits-on-the-middle-of-every-screenshot) 🔴
 - [Shell quoting eats debug action paths](#shell-quoting-eats-debug-action-paths)
 - [Enumeration can livelock the game — and `limit` does not save you at 568](#enumeration-can-livelock-the-game--and-limit-does-not-save-you-at-568) 🔴
 - [`runInBackground` is off by default, and it starves the bridge silently](#runinbackground-is-off-by-default-and-it-starves-the-bridge-silently)
@@ -81,6 +83,18 @@ Skim this, open what matches your task — do not read them all.
 **Cause:** the game was paused, so no new frame had been rendered between the two captures. The crop was real, the change was real, the image was stale.
 **Fix:** `step_game_ticks` a few ticks before capturing, and `frame_cell_rect` on the target first — zoomed out over dense canopy a 6×6 patch is too small to see anyway.
 **Recurs when:** `screenshot_cell_rect` with `set_time_speed` at 0. A screenshot is evidence about the *renderer*, not about game state; settle state with a data read and let the picture cover only what data cannot show.
+
+## `ThingMaker.MakeThing` builds a wreck for any def whose framework wires it elsewhere
+**Symptom:** `jawa/spawn_batch AV_DogSled` returned `NullReferenceException: Obje…` with nothing else in it, and the row was read as a verdict on the ART — "the sled does not spawn" — when it was a gap in the spawning tool.
+**Cause:** `AV_DogSled` is a `Vehicles.VehicleDef`, and `VehiclePawn::.ctor` initialises collections only. `vehiclePather`, `ignition`, `drawTracker`, `statHandler` and `kindDef` are all written by `Patch_Components::CreateInitialVehicleComponents` — Vehicle Framework's Harmony hook on `PawnComponentsUtility.CreateInitialComponents`, which `MakeThing` never calls. `VehiclePawn::SpawnSetup` then `callvirt`s all three nulls (IL_007b, IL_0094, IL_00f8). Read with `ilprobe`, not recalled.
+**Fix:** route through the framework's own public static factory — `Vehicles.VehicleSpawner.SpawnVehicleRandomized(def, cell, map, faction, rot, autoFill)`, which generates, wires, refuels and spawns. Reached by **reflection** (`GenTypes.GetTypeInAnyAssembly`), never a compile-time reference: a companion that hard-references a mod's DLL refuses to load for anyone without that mod. Pass a non-null Faction — `null` is tolerated by `SetFactionDirect` and then `SpawnSetup` takes the not-player branch and the vehicle auto-drafts.
+**Recurs when:** any def type a framework mod introduces — vehicles, mechs, some animals. **Generalises to: `MakeThing` constructs the OBJECT, not the object's WORLD.** If a mod adds a def class, assume it also adds a factory, and find it before assuming the def is broken. And a bare NRE from a spawn is a statement about the TOOL until proven otherwise.
+
+## 🔴 The debug log window sits on the middle of every screenshot
+**Symptom:** twelve art screenshots from one live session, every one filed `NEEDS EYES` with a real path to a real 1878x1312 PNG — and in `p5_004.png` and `p13_012.png` **the photographed subject is not in the frame at all.** No error, no failed call, no clue in the ledger.
+**Cause:** `look()` does its job — `jump_camera_to_cell` puts the subject dead centre — and RimWorld's **Debug log window is also dead centre**, ~940x650 px of scrolling text. The pawn inspect pane covers the bottom-left, the dev palette the top-left. Between them the middle of the screen is the one place a subject must not stand.
+**Fix:** `jawa/clear_ui` before every capture — it removes every `LudeonTK.Window_Dev` and clears the selection (the inspect pane is drawn from the *selection*, not from a window, so nothing else closes it). `rimbench.core.look()` and `.frame()` call it automatically. ⚠️ Closing the log by hand does not hold: **auto-open-on-error reopens it**, and a 568-mod startup throws errors all session.
+**Recurs when:** any instrument that captures a VIEW rather than a value. The check that passed was "did a file get written"; the question was "is the subject in it". **Generalises to: a capture tool must be told what to EXCLUDE, and the only way to know it obeyed is to look at the output — the twelve rows say `NEEDS EYES`, which reads as *collected, awaiting judgement*, and they were collected and empty.** Nothing in the response, the ledger or the log distinguishes a good frame from a photograph of a debug log.
 
 ## Shell quoting eats debug action paths
 **Symptom:** a path containing backslashes passed through `--json` dies with a JSON decode error.
