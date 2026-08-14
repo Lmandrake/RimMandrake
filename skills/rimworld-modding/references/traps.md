@@ -25,7 +25,7 @@ shorts, leave it untouched (→ `skills/rimworld-savegame/SKILL.md`).
 | If you are about to… | Read | Entries |
 |---|---|---|
 | write or debug a patch, an xpath, or a def | [`traps-xml-and-defs.md`](traps-xml-and-defs.md) | 18 |
-| trust what a script, grep, census or the def dump just told you | [`traps-tooling.md`](traps-tooling.md) | 33 |
+| trust what a script, grep, census or the def dump just told you | [`traps-tooling.md`](traps-tooling.md) | 34 |
 | call art missing, wrong, or broken | [`traps-art.md`](traps-art.md) | 13 |
 | chase a mod that is absent, dead, or ignoring its files | [`traps-mods-and-managers.md`](traps-mods-and-managers.md) | 13 |
 | believe a diagnosis, or call into a running game | [`traps-diagnosis.md`](traps-diagnosis.md) | 6 |
@@ -70,6 +70,7 @@ the one asked.**
 - A validator honouring `LoadFolders.xml` can still triple-count
 - Blanket find-and-replace eats the markup syntax it lives inside
 - The patch validator cannot evaluate `text()` — lxml can
+- A vanilla def's XML is not what the game loaded — read the dump, even for Core and DLC
 - A generator that reads the live dump eats its own output
 - `stat()` on the Drive mount returns a stale size
 - The def dump is `{defType, defs, count}`, not a bare list
