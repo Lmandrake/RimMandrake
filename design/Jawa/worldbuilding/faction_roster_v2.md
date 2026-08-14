@@ -1679,6 +1679,14 @@ remaining three and they are **not merely unverified — they are unsupported**:
 "dry-capable" at all** — two heat-intolerant, three neutral. The water-clock
 doctrine is sound; the species list under it was decoration.
 
+⚠️ **A seventh, found 2026-08-14 outside the original six: Iktotchi.** The racial
+mixture table below carried it as *Dry-capable*; `BTD_Iktotchi` holds
+`MinTemp_SmallIncrease` **and no Max bound at all** — the same profile as
+`BTD_Devaronian`, which this block already reads as cold-hardy and neutral.
+Corrected in the table. ⇒ **`Kaleesh` is the only dry-capable entry in the
+thirteen-row mixture, not merely in the six audited names** — it is the sole
+xenotype in the faction carrying `MaxTemp_SmallIncrease`.
+
 ⚠️ **This depends on BTD being the canon xenotype family.** The Outer Rim
 versions of these species carry *no* temperature genes at all
 (`OuterRim_Umbaran`, `OuterRim_Kaleesh`) or only a Min bound
@@ -1719,7 +1727,7 @@ those instead. That choice is open — see `faction_stage3_buildable_spec.md`.
 | **Chiss** | 7% | Heat-intolerant | Snipers and tactical leaders |
 | **Umbaran** | 6% | Heat-intolerant | Infiltration and night operations |
 | **Zeltron** | 5% | Neutral | Negotiators and recruiters |
-| **Iktotchi** | 3% | Dry-capable | Trackers and rare psychic hunters |
+| **Iktotchi** | 3% | Neutral | Trackers and rare psychic hunters |
 | **Togruta** | 3% | Water-hungry | Scouts |
 | **Duros** | 3% | Neutral | Mechanics and ranged specialists |
 | **Total** | **100%** | | |

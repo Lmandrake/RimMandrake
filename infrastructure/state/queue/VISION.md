@@ -54,19 +54,18 @@ separate **race inventory**. Different objects; the roster never picks. Blocks t
 whole races/genes group for faction 8. **Free Droid (`:1009`) shows the pattern to
 follow: flag the engine question AND rule a fallback.**
 
-### V4. Bounty Hunter racial table contradicts a correction 40 lines above it `[v2]`
-`:1655` states *"`Kaleesh` is the ONLY dry-capable species of the six"* — the
-verified result from `1bcd3b0`/`4c48aee` — while the table at `:1699-1706` still
-labels Zabrak, Bothan, Devaronian, Chiss and Umbaran *"Dry-capable"*, and the gene
-table at `:1648-1649` marks Chiss and Umbaran **heat-INTOLERANT**. The fix landed
-in prose; the data table was left stale. **Cheap, and anyone authoring from the
-table today gets the wrong answer.**
+### V4. ✅ CLOSED 2026-08-14 — and it had a seventh member nobody had counted
+The five originally-named rows were already corrected in the table. **The residue
+was `Iktotchi`**, outside the audited six: the table called it *Dry-capable*, but
+`BTD_Iktotchi` holds `MinTemp_SmallIncrease` and **no Max bound** — Devaronian's
+profile, which the same block already reads as neutral. Measured off the live
+`XenotypeDef.json`. Kaleesh is now the only dry-capable row in all thirteen, and
+the only one carrying `MaxTemp_SmallIncrease`.
 
-### V5. The roster denies the existence of a faction it contains `[v2]`
-`:2330` — *"no NPC faction generates Jawa members"* — and `:2353` — *"across the
-**ten** NPC factions"* — against faction 11, an NPC Jawa faction at `:1809` that is
-78% + 12% Jawa. The species-coverage section was never updated when factions 11–12
-were added. **Note it still says ten; the roster holds twelve.**
+### V5. ✅ CLOSED 2026-08-14 — stale entry, the file was already right
+`faction_roster_v2.md:2367` now reads *"twelve NPC factions … carried by exactly
+one NPC faction — 11. Jawa Trade Moot (78% + 12% Jawa)"*. Both defects the entry
+described are gone. Nothing to do; re-read at source before re-filing.
 
 ### V6. A second permanent enemy contradicts design pillar 5 — **owner's call** `[v1-adjacent]`
 `:105` promises *"One permanent enemy only. The Galactic Empire. Everything
@@ -247,6 +246,13 @@ only reach you through the owner.
 
 ## Filed by CREATE, 2026-08-13
 
+### V13. ✅ CLOSED 2026-08-14 — all three cells already correct in the file
+`ship_designs.md` L98-100 now reads Vanilla `18.9 / 16.9` and Expanded tile cap
+**6,632**. Fixed by someone between the filing and now; verified at source
+2026-08-14. **Do not re-apply — the 34/30/12 warning below still stands.**
+
+<details><summary>original filing, kept for the 34/30/12 warning</summary>
+
 ### V13. `design/Jawa/worldbuilding/ship_designs.md` §"Limits used" is stale — 2 wrong numbers
 `design/Jawa/worldbuilding/` is yours now, so this is a one-line table fix, not an
 investigation. Found while closing queue C4; verified against the config file and
@@ -268,6 +274,8 @@ vanilla row's own header says "verified" while carrying rounded values.
 
 ⚠️ **Do not also "fix" the 34/30/12 in that row.** Those are correct and are mod
 settings, not defaults — the defs on disk say 16.9/12.9 and are supposed to.
+
+</details>
 
 ---
 ## ⭐ V-new. Three owner rulings landed 2026-08-13
