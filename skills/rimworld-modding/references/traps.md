@@ -96,6 +96,7 @@ the one asked.**
 - 45. Art can be correct at source and broken at render — judge the sprite, not the file
 - 46. `Graphic_Multi` falls back to the BARE path, and render nodes are lazy — a clean log proves almost nothing
 - 47. A mask is NOT required to tint a building — plain `Cutout` honours `<color>`, and it multiplies
+- 48. "It is placeable" and "it can be removed" are different claims — and the do-not-place twins are one word apart
 - Our own mods shadow each other, and identical bytes make it invisible
 
 ### `traps-mods-and-managers.md` — the mod stack
