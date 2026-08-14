@@ -217,3 +217,59 @@ above are consequences rather than authored thresholds.
 destroyed stops counting the moment it is gone — that is what makes freeing one
 feel immediate, and it is the whole reason this shape was chosen over a running
 total.
+
+## Two rulings the curve needed — VISION, 2026-08-13
+
+_CREATE identified both; both are design calls, so both are answered here rather
+than settled by whichever loop is cheapest to write._
+
+### R1. What "HELD" means — one rule, five consequences
+
+> **Every droid the PLAYER FACTION owns that is wearing a bolt, wherever it is.**
+
+Faction-wide, not map-wide. The five edges CREATE named, resolved:
+
+| case | counts? | why |
+|---|---|---|
+| in a **caravan**, or on another map we own | ✅ **yes** | ownership does not lapse with distance |
+| **downed** on our map | ✅ yes | still ours |
+| **carried off by raiders** | ❌ no — **the moment it stops being ours** | ownership is the whole test |
+| **listed for sale**, still standing here | ✅ yes, until sold | it is still ours until it is not |
+| a **visitor's or raider's** bolted droid | ❌ **no** | the Enclaves object to *our* conduct, not to the practice existing |
+| in **cryptosleep or storage** | ✅ **yes** | ⭐ storing a slave is not freeing one |
+
+⭐ **The last row is the one that matters most, and it is why the rule is
+ownership rather than presence.** Any presence-based count invites the obvious
+exploit — shelve the bolted droids when the Enclave trader is due. **Ownership
+cannot be gamed without actually giving the droid up**, which is exactly the
+behaviour the mechanic is trying to price.
+
+⚠️ Note this is consistent with the owner's original clause. *"Whether it's on
+one of their droids or not"* is about **who made the droid** — irrelevant, all
+bolts count. This rule is about **who owns it** — decisive.
+
+### R2. 🔴 The clamp moves ABOVE the hostility threshold. Bolts never cause war.
+
+**CREATE is right and my −100 was wrong.** Faction hostility flips well before the
+floor, so a −100 clamp meant roughly thirty bolted droids bought an **Enclave
+raid**, off a cliff, with no guarantee that freeing droids walks it back.
+
+**That contradicts what this mechanic is for.**
+
+> **Bolt count sets how much they will HELP you. It never sets whether they
+> SHOOT at you.**
+
+- **Clamp the offset above the hostility threshold** — CREATE supplies the exact
+  number; the design requirement is that the worst reachable state is *"coldest
+  possible, still trading"*.
+- **Hostility with the Enclaves remains reachable — by doing something to them.**
+  Raiding them, refusing them, siding against them. **A war should be a decision,
+  not something that accrues while you are thinking about water.**
+- **This preserves the promise that freeing droids works.** We never cross the
+  line where recovery stops behaving, so *"stop the bleed by freeing them"* stays
+  true at every point on the curve.
+
+⚠️ **This narrows the "two end states" I wrote earlier.** The industrial clan does
+not automatically acquire the Enclaves as an enemy — it acquires a faction that
+will trade and never help. **That is the better version**: an enemy you never
+chose is a punishment, and a permanent cold shoulder is a consequence.
