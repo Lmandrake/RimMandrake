@@ -181,10 +181,36 @@ might be factionless — facilities find the engine through
 (its `Claim` gizmo is disabled, and the Claim designator refuses it as *"not
 abandoned"*).
 
-⏳ **So the observation stands and is UNEXPLAINED:** 8 extenders, 4 of them
+✅ **SOLVED 2026-08-13 — and it is an upstream bug with a name.**
+
+**Bigger Gravships rebuilds `CompProperties_GravshipFacility` on the extender —
+and in rebuilding it, DROPS the `statOffsets` block.** Read from the live def,
+in full: the comp is present and carries `maxDistance 34.0`,
+`maxSimultaneous 12`, `onlyRequiresLooseConnection true` — BG's own values,
+written over vanilla's 18.9 and 6 — **and no `statOffsets` field at all**, where
+vanilla `Data/Odyssey/.../Buildings_Gravship.xml` declares
+`<statOffsets><SubstructureSupport>250</SubstructureSupport></statOffsets>`.
+
+⇒ **The extender still LINKS. It simply offers nothing.** That is exactly
+`4057 / 633`, and it is not a faction problem, not a range problem, and not a
+probe artefact. **Reportable upstream as: "re-stamping
+`CompProperties_GravshipFacility` discards `statOffsets`."**
+
+⚠️ **How this was nearly missed twice, and it is the lesson worth keeping:** the
+first two live reads reported *"no comps at all"* and *"no `SubstructureSupport`
+in `statBases`"*. Both were **truncated or wrongly-scoped output reported as
+absence** — one print cut at 260 characters, one search of the wrong field. **An
+absence is only evidence if you can show the probe would have displayed a
+presence.** The discriminator that cracked it was comparing the *shape* of a
+healthy def's response against the suspect one, rather than reading either alone.
+
+<details><summary>the observation as it stood before the cause was known</summary>
+
+⏳ **The observation stands and is UNEXPLAINED:** 8 extenders, 4 of them
 inside `maxDistance` 34, engine player-faction — capacity still read exactly the
-engine's own 632.8. **Recorded as an open question, not a conclusion.** Do not
-build a design on "extenders contribute", and do not assert they cannot.
+engine's own 632.8. **Recorded as an open question, not a conclusion.**
+
+</details>
 
 ✅ **It stopped mattering, and the fix needs no load.** `gravEngineSupport`
 raised **632.8 → 4500** through the mod's settings plus its **"Apply Settings
