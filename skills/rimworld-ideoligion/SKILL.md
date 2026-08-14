@@ -60,6 +60,14 @@ Full treatment: `references/design.md`. The four rules that survive compression:
    otherwise do by reflex*.** `TreeCutting_Prohibited` is a better design than
    any three mood modifiers, because the player meets it on turn one without
    being told the religion exists.
+   🔴 **But that example is the PLAYER's ideo, and it does not transfer.** Measured
+   2026-08-14: `TreeCutting_Prohibited` carries `defaultSelectionWeight: 0` and **no
+   meme's `requireOne` can yield it**, so an NPC faction will effectively never
+   generate it; `Mining_Prohibited` is `enabledForNPCFactions: false` and is
+   impossible outright. Combined with §1 — no XML route whitelists a precept — **the
+   reflex-forbidding design is reachable for the player and largely unreachable for
+   an NPC faction.** Design NPC religions from memes that *guarantee* a refusal
+   (only 20 of 136 do); see `references/design.md`.
 2. **Belief is only visible through friction.** A precept nobody's action ever
    triggers is invisible regardless of how well it is written. Rank every precept
    by *events per campaign hour*, not by flavour. §5's interest rubric is that
@@ -71,10 +79,15 @@ Full treatment: `references/design.md`. The four rules that survive compression:
 4. **Name-blind test.** Strip the names off two neighbouring factions' religions.
    If a player could not tell which is which, one of them is decoration.
 
-⚠️ **Impact is a budget, not a rating.** `MemeDef.impact` is an int; structure
-memes are all 0 and normal memes are 1–3 (measured: 35 at 0, 27 at 1, 50 at 2,
-24 at 3). The engine enforces a ceiling — see `references/authoring.md` §meme
-budget for the measured cap and where it is read from.
+🔴 **Impact is a RATING, not a budget — I had this backwards.** `MemeDef.impact`
+is an int; structure memes are all 0 and normal memes are 1–3 (measured: 35 at 0,
+27 at 1, 50 at 2, 24 at 3). `MaxMemeImpact = 3` and `MaxCombinedImpact = 9` exist
+in `IdeoImpactUtility` but are **label-scale clamps only** — shipped presets
+`VME_Inhuman_Ravagers` and `VME_Insectoid_Psykers` both total **10**. **The
+enforced ceiling is a COUNT:** `MemeCountRangeAbsolute = 1–4` normal memes
+(structure excluded), NPC initial 1–3, `MaxStyleCategories = 3`, `MaxRituals = 6`.
+⇒ **Never pass `--impact-budget` to the validator**; its `None` default is correct.
+Derivation: `references/authoring.md` §meme budget.
 
 ---
 
@@ -135,11 +148,18 @@ Full protocol: `references/validation.md`. The offline half is a script:
 python3 src/RimMandrake/Utils/validate_ideoligion.py <spec-or-faction-xml>
 ```
 
-**Offline, before any game load** — every defName exists in the live dump; one
-structure meme and only one; no meme `exclusionTags` collision; no precept
-`conflictingMemes` collision; deity count inside the structure's `deityCount`
-`IntRange`; no `visible:false` precept; `MayRequire` on every modded def and the
-packageId actually active in `ModsConfig.xml`.
+**Offline, before any game load.** 28 finding codes, 15 of them ERROR-capable —
+the ones that decide VALID/INVALID: every defName exists in the live dump · one
+structure meme and only one · no meme `exclusionTags` collision · no precept
+`conflictingMemes` collision · no `visible:false` precept · no precept whose
+`requiredMemes` are absent. Deity count against the structure's `deityCount`
+`IntRange` is **WARN, not ERROR** — it cannot make a religion INVALID.
+
+🔴 **The script does NOT check `MayRequire`, and it looks like it does.**
+`def/needs-mayrequire` is an **INFO** that prints the attribute you ought to
+write; nothing ever audits whether you wrote it (`from_xml` reads `li.text` and
+never inspects attributes). **This is the one silent failure mode with no offline
+check at all — it is on you, every time.**
 
 **Only a game load can prove** the ideo was *built* — that `fixedIdeo` took, that
 the generator did not substitute, that the deity names appear, that the styles
