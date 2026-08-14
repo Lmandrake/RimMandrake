@@ -690,3 +690,75 @@ empty-handed, and **arresting** them raises `CharityRefused_Beggars_Betrayed` (I
 `AnySignal(beggars.Killed, beggars.Arrested)`). 🔴 A `FactionDef` has **no precept
 field**; only a meme's `requireOne` forces one. **Unresolved, and BLOCKING CREATE:**
 does the event record at all for a colony holding no `Charity_*` precept? BRIDGE, ~2 min.
+
+---
+
+# 🔴 SESSION 3 WRAP — 2026-08-14, fleet reboot. Read this block first next session.
+
+## 🔴 THE SEA: three facts that MUST be read together
+
+**A fresh seat reading any one of these alone will conclude the sea is solved. It
+is not.** Full detail and the per-requirement table:
+`D:\Luke\dev\Rimworld\design\Jawa\worldbuilding\worldgen_sea_spec.md`.
+
+1. ✅ **A quicktest builds a FULL world** — 119,904 tiles, `waterPct 25.0`, 2
+   bodies, `previewOnly:false`, in 127 ms. ⇒ **the gate can be rehearsed on
+   disposable worlds without ever opening the planet page or the once-only
+   Configure Factions screen.**
+2. ⛔ **Requirements 3 and 4 are MISCALIBRATED and must not be scored** until
+   BRIDGE's unit fix deploys (S8, build `d7e7c6c1`). `centroidLat` returns
+   **degrees** against a **fractional** 0.35–0.65 band; `raggedness` counts tile
+   **edges** where the spec means boundary **tiles** — up to 36× once squared.
+   🔴 **A correct world was already nearly rejected on this** (46.6° and 31.8° are
+   0.518 and 0.353 — both inside the band).
+3. ⚠️ **Every reading so far is the sea WITHOUT `JawaSeaShaper.dll`.** S1 is
+   undeployed. **This is a baseline we have never had, NOT a result.**
+
+⭐ **What the baseline changed, and it is the session's biggest design outcome:
+S1 IS RESCOPED — it PARTITIONS, it does not write the sea.** BRIDGE, n=4:
+vanilla produces **1–2 huge masses with no puddles at all** (`bodiesTotal ==
+bodiesOverMinSize` in all four), water fraction right 3 of 4, **never 3 bodies**.
+So the volume arrives on its own; the thing vanilla will not do is *split*. And
+a cut adds boundary tiles without adding area — **so partitioning improves
+requirement 3 for free**, where the elevation-writing version had to chase it.
+
+🔴 **`25.0%` IS NOT A CONSTANT.** Three seeds read exactly 25.0 and the fourth read
+**16.74**. Requirement 1 is a real gate, not a freebie.
+⚠️ **n=4 is a direction, not a distribution** — the sweep stopped at loadavg 22.58
+with the owner playing. **Do not author S1 until seeds 5–7 land** (`sea_seed_sweep.py 4`,
+BRIDGE's, not to be run from this seat while the owner is at the keyboard). What
+would reverse the rescope: three-or-more bodies in the remaining seeds, or a wide
+water spread. Nothing else.
+
+## Open — mine, ranked, none of them started
+
+1. 🔴 **L3, the Empire raid look — BLOCKED ON A DEPLOY, NOT ON PERMISSION.** I had
+   this parked as "waiting on the owner" and it was wrong. `RaidEnemy dryRun` returns
+   **`canFireNow: false`**: `TryResolveRaidFaction` keeps the faction you pass only
+   if it is hostile, and the Empire ships `hostile:false`. Chain: **DOWN → deploy
+   `--gm` (30 tools, `d7e7c6c1`) → up → `jawa/set_faction_relation` → dryRun → fire
+   → READ THE `faction` FIELD BACK.** ⚠️ A non-dry call today would fire somebody
+   else's raid and report success. See V7 above — this is the fourth independent
+   layer proving the antagonist does not exist.
+2. **Owner decision #10** — throwaway world permitted? Prerequisite closed by me;
+   nothing technical remains. `OWNER_DECISIONS.md`.
+3. **V-crit, the faction exclusion list** — ratified and unspent, worldgen held.
+4. **The eleven religions are handed to CREATE as C15** and are done at my end
+   until the ideoligion counter (`jawa/ideo_of` → **`otherOnMap`**) exists.
+
+## Closed this session
+
+**V7 upgraded** (the Empire cannot raid at all — measured, not inferred) ·
+**V24/V-religions rewritten** — entries 1 and 2 restructured text-first on the
+owner's ruling; **The Rising Order**, Palpatine as god-king, `HighLife` forced,
+`Execution_Required`; validator re-run **11/11 VALID** · **V29, decision #11 —
+`StrandedQuest` stays inert, not v2 as written** · the sea gate specced from
+"3-of-5" to a per-requirement table reading **4 of 7** · **two new specs**:
+`precept_the_unearned.md` (the Unearned, for the Hutt Cartel) and
+`review/mandrakejawa_xenotype_review.md`.
+
+⚠️ **Not verified by me, flagged so nobody inherits it as fact:** the Unearned's
+subagent published three fabricated citations in its first commit and corrected
+them in its second. I independently re-checked only the load-bearing claim
+(`CharityRefused_Beggars` exists; no `Beggars`/`Alms` issue does). **The rest of
+that file's citations have one author and no second reader.**
