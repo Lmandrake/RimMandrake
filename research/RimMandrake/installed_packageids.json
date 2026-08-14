@@ -1,0 +1,6287 @@
+{
+ "(NWN) Real Fog of War (Continued)": {
+  "folder": "3391128917",
+  "packageId": "Mlie.NWNRealFogOfWar",
+  "source": "workshop"
+ },
+ "AA FancyRats": {
+  "folder": "2113851330",
+  "packageId": "ArmoredAmpharos.fancyrats",
+  "source": "workshop"
+ },
+ "ABF: Artificial Beings Framework": {
+  "folder": "3284097810",
+  "packageId": "Killathon.ArtificialBeings",
+  "source": "workshop"
+ },
+ "ABF: Synstructs Core": {
+  "folder": "3288463094",
+  "packageId": "Killathon.ArtificialBeings.SynCore",
+  "source": "workshop"
+ },
+ "ANDH - Animals Nuzzling Detects Horrors": {
+  "folder": "3230195082",
+  "packageId": "latta.petknowstrueyou",
+  "source": "workshop"
+ },
+ "ATH's Styleable Framework": {
+  "folder": "3016405872",
+  "packageId": "Anthitei.ATHsStyleableFramework.Style",
+  "source": "workshop"
+ },
+ "ATH's style Gothic and Bloody Gothic": {
+  "folder": "3136210612",
+  "packageId": "anthitei.athsstylegothic.style",
+  "source": "workshop"
+ },
+ "ATH's styles Norse": {
+  "folder": "3292048218",
+  "packageId": "anthitei.athsstylenorse.style",
+  "source": "workshop"
+ },
+ "Achtung!": {
+  "folder": "730936602",
+  "packageId": "brrainz.achtung",
+  "source": "workshop"
+ },
+ "Adaptive Ideology Storage": {
+  "folder": "3301337278",
+  "packageId": "Adaptive.Ideology.Storage",
+  "source": "workshop"
+ },
+ "Adaptive Primitive Storage": {
+  "folder": "3400037215",
+  "packageId": "Adaptive.PrimitiveStorage",
+  "source": "workshop"
+ },
+ "Adaptive Simple Storage": {
+  "folder": "3297307747",
+  "packageId": "Adaptive.SimpleStorage",
+  "source": "workshop"
+ },
+ "Adaptive Storage Framework": {
+  "folder": "3033901359",
+  "packageId": "adaptive.storage.framework",
+  "source": "workshop"
+ },
+ "Adjustments for Reel's Facial Animation Textures": {
+  "folder": "3429452043",
+  "packageId": "sd.fa.reelsadjustments",
+  "source": "workshop"
+ },
+ "Adjustments for Vanilla Textures Expanded - [NL] Facial Animation": {
+  "folder": "3532050275",
+  "packageId": "sd.fa.vteadjustments",
+  "source": "workshop"
+ },
+ "Advanced Biomes (Continued)": {
+  "folder": "3541022508",
+  "packageId": "Mlie.AdvancedBiomes",
+  "source": "workshop"
+ },
+ "Ali's Grow All Odyssey Plants": {
+  "folder": "3526247608",
+  "packageId": "Ali.GrowOdysseyPlants",
+  "source": "workshop"
+ },
+ "Alien | Rimworld": {
+  "folder": "3596077324",
+  "packageId": "niz.xenomorphtype",
+  "source": "workshop"
+ },
+ "Aliens: Xenocide (MKI)": {
+  "folder": "2866528992",
+  "packageId": "xslayer300.ax.aliens.parta",
+  "source": "workshop"
+ },
+ "All Specialists Can Work": {
+  "folder": "2833543540",
+  "packageId": "OPA.AllSpecialistsCanWork",
+  "source": "workshop"
+ },
+ "Allow Dead Animals": {
+  "folder": "2403873031",
+  "packageId": "AndrewRaphaelLukasik.AllowDeadAnimals",
+  "source": "workshop"
+ },
+ "Allow Tool": {
+  "folder": "761421485",
+  "packageId": "UnlimitedHugs.AllowTool",
+  "source": "workshop"
+ },
+ "Almost There! Fork": {
+  "folder": "3515165298",
+  "packageId": "duz.almosttherefork",
+  "source": "workshop"
+ },
+ "Alpha Animals": {
+  "folder": "1541721856",
+  "packageId": "sarg.alphaanimals",
+  "source": "workshop"
+ },
+ "Alpha Animals Patch for Outposts Mines": {
+  "folder": "2704392053",
+  "packageId": "Daria40K.AlphaAnimalsPatchOutposts",
+  "source": "workshop"
+ },
+ "Alpha Animals Retextured": {
+  "folder": "3536598972",
+  "packageId": "ks.aaretextured",
+  "source": "workshop"
+ },
+ "Alpha Biomes": {
+  "folder": "1841354677",
+  "packageId": "sarg.alphabiomes",
+  "source": "workshop"
+ },
+ "Alpha Books": {
+  "folder": "3403180654",
+  "packageId": "sarg.alphabooks",
+  "source": "workshop"
+ },
+ "Alpha Crafts": {
+  "folder": "3382446150",
+  "packageId": "sarg.alphacrafts",
+  "source": "workshop"
+ },
+ "Alpha Genes": {
+  "folder": "2891845502",
+  "packageId": "sarg.alphagenes",
+  "source": "workshop"
+ },
+ "Alpha Mechs": {
+  "folder": "2973169158",
+  "packageId": "sarg.alphamechs",
+  "source": "workshop"
+ },
+ "Alpha Memes": {
+  "folder": "2661356814",
+  "packageId": "Sarg.AlphaMemes",
+  "source": "workshop"
+ },
+ "Alpha Props - Parks and Gardens": {
+  "folder": "3146268928",
+  "packageId": "sarg.alphapropsparks",
+  "source": "workshop"
+ },
+ "Alpha Skills": {
+  "folder": "3448953006",
+  "packageId": "sarg.alphaskills",
+  "source": "workshop"
+ },
+ "Alpha Vehicles - Neolithic": {
+  "folder": "3028675048",
+  "packageId": "sarg.alphavehiclesneolithic",
+  "source": "workshop"
+ },
+ "Ambient Rim": {
+  "folder": "3158997430",
+  "packageId": "swablu.ambience",
+  "source": "workshop"
+ },
+ "Ancient Dangers on Campsites and Encounter maps": {
+  "folder": "3521383341",
+  "packageId": "Vita.CampDangers",
+  "source": "workshop"
+ },
+ "Ancient Ruins All Deconstructible": {
+  "folder": "3361061429",
+  "packageId": "Meteores.AncientUrbanRuinsAllDeconstructible.AURAD",
+  "source": "workshop"
+ },
+ "Ancient Urban Ruins Hit Point": {
+  "folder": "3446989523",
+  "packageId": "Meteores.AncientUrbanRuinsVanillaLoot.AURVL",
+  "source": "workshop"
+ },
+ "Ancient hydroponic farm facilities": {
+  "folder": "3075384838",
+  "packageId": "XMB.AncientHydroponicFarmFacilities.MO",
+  "source": "workshop"
+ },
+ "Ancient mining industry": {
+  "folder": "3141472661",
+  "packageId": "XMB.AncientMiningIndustry.MO",
+  "source": "workshop"
+ },
+ "Ancient urban ruins": {
+  "folder": "3316062206",
+  "packageId": "XMB.AncientUrbanrUins.MO",
+  "source": "workshop"
+ },
+ "Anima Animals Combined (Continued)": {
+  "folder": "3190798512",
+  "packageId": "vr.AnimaAnimalsCombined",
+  "source": "workshop"
+ },
+ "Animal Apparel: Basic Armor": {
+  "folder": "3513849448",
+  "packageId": "Ingendum.AnimalArmorBasic",
+  "source": "workshop"
+ },
+ "Animal Apparel: Universal Basic Armor": {
+  "folder": "3524467381",
+  "packageId": "Ingendum.AnimalArmorUniversal",
+  "source": "workshop"
+ },
+ "Animal Biosculpter": {
+  "folder": "2883571601",
+  "packageId": "bodilpwnz.AnimalBiosculpter",
+  "source": "workshop"
+ },
+ "Animal Variety Coats": {
+  "folder": "1511926373",
+  "packageId": "cucumpear.azrael.varietycoats",
+  "source": "workshop"
+ },
+ "AnimalHarvestingSpot (Continued)": {
+  "folder": "1542765654",
+  "packageId": "Mlie.AnimalHarvestingSpot",
+  "source": "workshop"
+ },
+ "Animals are fun! (Continued)": {
+  "folder": "3245454244",
+  "packageId": "ColossalFossil.AnimalsAreFunContinued",
+  "source": "workshop"
+ },
+ "Anomalies Expected": {
+  "folder": "3240752689",
+  "packageId": "MrHydralisk.AnomaliesExpected",
+  "source": "workshop"
+ },
+ "Anomalies Expected Addon": {
+  "folder": "3251944598",
+  "packageId": "Fallen.AnomaliesExpectedAddon",
+  "source": "workshop"
+ },
+ "Anomaly - Chimera Variants": {
+  "folder": "3482158348",
+  "packageId": "hekmo.ChimeraVariants",
+  "source": "workshop"
+ },
+ "Anomaly Anywhere": {
+  "folder": "3534053654",
+  "packageId": "Souper.AnomalyAnywhere",
+  "source": "workshop"
+ },
+ "Anomaly Events Extended": {
+  "folder": "3307094049",
+  "packageId": "Goat.Anomaly.Events",
+  "source": "workshop"
+ },
+ "Anomaly Power Improved": {
+  "folder": "3263594825",
+  "packageId": "Anomaly.Power.Improved",
+  "source": "workshop"
+ },
+ "Anomaly Research Asteroid": {
+  "folder": "3527726648",
+  "packageId": "zoarak.anomalyplat",
+  "source": "workshop"
+ },
+ "Anomaly Skill Trainer": {
+  "folder": "3602237032",
+  "packageId": "ru.anomalySkillTrainer",
+  "source": "workshop"
+ },
+ "Anomaly for Gravship": {
+  "folder": "3558784993",
+  "packageId": "als.anomalygravship",
+  "source": "workshop"
+ },
+ "Apparello 2": {
+  "folder": "728381322",
+  "packageId": "Shinzy.Apparello",
+  "source": "workshop"
+ },
+ "Aqued Dredge Aberrations": {
+  "folder": "3606495707",
+  "packageId": "Aqued.DredgeAberrations",
+  "source": "workshop"
+ },
+ "Archean Tree Sunlamps": {
+  "folder": "3536650291",
+  "packageId": "Goat.Archean.Sunlamps",
+  "source": "workshop"
+ },
+ "Archean Tree in Gravship": {
+  "folder": "3530307917",
+  "packageId": "Sielfyr.ArcheanGravship",
+  "source": "workshop"
+ },
+ "Architect Icons": {
+  "folder": "1195427067",
+  "packageId": "com.bymarcin.ArchitectIcons",
+  "source": "workshop"
+ },
+ "Archotech Blaster Turret": {
+  "folder": "3550061539",
+  "packageId": "rpgwanderer.opturret",
+  "source": "workshop"
+ },
+ "Archotech Genetics": {
+  "folder": "2995858859",
+  "packageId": "Neronix17.Archotech.Genetics",
+  "source": "workshop"
+ },
+ "Ars Mythica - Lightseeker": {
+  "folder": "3068154233",
+  "packageId": "Myf.LightSeeker",
+  "source": "workshop"
+ },
+ "Artificial Water Place": {
+  "folder": "2382789361",
+  "packageId": "SC.waterplace",
+  "source": "workshop"
+ },
+ "Asimov": {
+  "folder": "3096481956",
+  "packageId": "Neronix17.Asimov",
+  "source": "workshop"
+ },
+ "Asteroid Grounds": {
+  "folder": "3527371016",
+  "packageId": "RashoMcree.Odyssey.AsteroidGrounds",
+  "source": "workshop"
+ },
+ "Asteroid Mineral Scanner": {
+  "folder": "3536585361",
+  "packageId": "Broms.AsteroidMineralScanner",
+  "source": "workshop"
+ },
+ "Astronaut North Fix — Vanilla Gravship Expanded": {
+  "folder": "GravshipAstronautFix",
+  "packageId": "mandrake.gravshipastronautfix",
+  "source": "local"
+ },
+ "Astronomy Style Pack": {
+  "folder": "3522312454",
+  "packageId": "ASP.HalituisAmaricanous",
+  "source": "workshop"
+ },
+ "AuthenticTantrumNoises": {
+  "folder": "2839608123",
+  "packageId": "kshtantrumsounds.Mod",
+  "source": "workshop"
+ },
+ "Auto Strip on Haul": {
+  "folder": "2560725133",
+  "packageId": "Fuu.AutoStripOnHaul",
+  "source": "workshop"
+ },
+ "Auto links": {
+  "folder": "2059389912",
+  "packageId": "automatic.autolinks",
+  "source": "workshop"
+ },
+ "Auto-Cast Specialist Commands": {
+  "folder": "3459647882",
+  "packageId": "Linnun.AutoCastSpecialistCommands",
+  "source": "workshop"
+ },
+ "Auto-Cut Blight - 1.6": {
+  "folder": "3520167264",
+  "packageId": "Defi.AutoCutBlight",
+  "source": "workshop"
+ },
+ "AutoExtractGenes": {
+  "folder": "2882834449",
+  "packageId": "Nibato.AutoExtractGenes",
+  "source": "workshop"
+ },
+ "Autocleaner": {
+  "folder": "2051042827",
+  "packageId": "automatic.autocleaner",
+  "source": "workshop"
+ },
+ "Automatic Parking": {
+  "folder": "3365473553",
+  "packageId": "rabiosus.vfautoparking",
+  "source": "workshop"
+ },
+ "Barbarian Style Pack": {
+  "folder": "3551819421",
+  "packageId": "unclejackhughes.barbarianstylepack",
+  "source": "workshop"
+ },
+ "Basic Double Doors": {
+  "folder": "3223646936",
+  "packageId": "GT.Sam.BasicDoubleDoors",
+  "source": "workshop"
+ },
+ "Basic RimThemes Recolours": {
+  "folder": "2916014613",
+  "packageId": "MrSamuelStreamer.RimThemesRecolours",
+  "source": "workshop"
+ },
+ "Beard Adjustment": {
+  "folder": "2880669781",
+  "packageId": "Kem.BeardAdjustment",
+  "source": "workshop"
+ },
+ "Beasts of the Rim (Continued)": {
+  "folder": "2194018641",
+  "packageId": "Mlie.BeastsoftheRim",
+  "source": "workshop"
+ },
+ "Beautiful Outdoors": {
+  "folder": "2011794898",
+  "packageId": "Meltup.BeautifulOutdoors",
+  "source": "workshop"
+ },
+ "Beautiful Water (Fork)": {
+  "folder": "2039480177",
+  "packageId": "nathanielcwm.BeautifulWater",
+  "source": "workshop"
+ },
+ "Beliar Xenotype": {
+  "folder": "3237072670",
+  "packageId": "ElSov.Beliar",
+  "source": "workshop"
+ },
+ "Belt Extractors - VFE Factory Patch": {
+  "folder": "3694555789",
+  "packageId": "GroovyTaco.BeltExtractors",
+  "source": "workshop"
+ },
+ "BestApparel": {
+  "folder": "2946961833",
+  "packageId": "io.github.Relvl.Rimworld.BestApparel",
+  "source": "workshop"
+ },
+ "Better Ambushes Continued": {
+  "folder": "3422946483",
+  "packageId": "Ionfrigate12345.Coolandgoodambush",
+  "source": "workshop"
+ },
+ "Better Beggars (Continued)": {
+  "folder": "3006899215",
+  "packageId": "Mlie.BetterBeggars",
+  "source": "workshop"
+ },
+ "Better Crossbreeding": {
+  "folder": "3520675842",
+  "packageId": "DizzyEevee.BetterCrossbreeding",
+  "source": "workshop"
+ },
+ "Better Distress Call": {
+  "folder": "3305489753",
+  "packageId": "Nalzurin.BetterDistressCall",
+  "source": "workshop"
+ },
+ "Better Explosions": {
+  "folder": "2572683272",
+  "packageId": "nephlite.advexplosions",
+  "source": "workshop"
+ },
+ "Better Growth Moments": {
+  "folder": "3642805464",
+  "packageId": "Arkymn.BetterGrowthMoments",
+  "source": "workshop"
+ },
+ "Better Hot Springs": {
+  "folder": "3532108439",
+  "packageId": "elindis.BetterHotSprings",
+  "source": "workshop"
+ },
+ "Better Infestations (Continued)": {
+  "folder": "3285516766",
+  "packageId": "zal.betterinfestations",
+  "source": "workshop"
+ },
+ "Better Kibble": {
+  "folder": "3009060901",
+  "packageId": "coldcrow.betterkibble",
+  "source": "workshop"
+ },
+ "Better ModMismatch Window": {
+  "folder": "1872244972",
+  "packageId": "Madeline.ModMismatchFormatter",
+  "source": "workshop"
+ },
+ "Better Orbital Traders": {
+  "folder": "3009866854",
+  "packageId": "coldcrow.betterorbitaltraders",
+  "source": "workshop"
+ },
+ "Better Pawn Control": {
+  "folder": "1541460369",
+  "packageId": "VouLT.BetterPawnControl",
+  "source": "workshop"
+ },
+ "Better Projectile Origin": {
+  "folder": "2843040075",
+  "packageId": "Mlie.BetterProjectileOrigin",
+  "source": "workshop"
+ },
+ "Better Quest Rewards": {
+  "folder": "2671237934",
+  "packageId": "Steve.betterquestrewards",
+  "source": "workshop"
+ },
+ "Better Roads": {
+  "folder": "1489564822",
+  "packageId": "wastelandr.BetterRoads",
+  "source": "workshop"
+ },
+ "Better Stacktraces": {
+  "folder": "3541579129",
+  "packageId": "aleksey.betterstacktraces",
+  "source": "workshop"
+ },
+ "Better Tradable Items": {
+  "folder": "3009963773",
+  "packageId": "coldcrow.bettertradableitems",
+  "source": "workshop"
+ },
+ "Better Traders": {
+  "folder": "2012774042",
+  "packageId": "JM.betterTraders",
+  "source": "workshop"
+ },
+ "Better Trees": {
+  "folder": "3539609975",
+  "packageId": "ChaoticEnrico.BetterTrees",
+  "source": "workshop"
+ },
+ "Better Trees: More Djeeshka Like Textures": {
+  "folder": "3543705507",
+  "packageId": "Maal.BetterTreesMod",
+  "source": "workshop"
+ },
+ "Better Workbench Management": {
+  "folder": "935982361",
+  "packageId": "falconne.BWM",
+  "source": "workshop"
+ },
+ "Better autocasting for Vanilla Psycasts Expanded": {
+  "folder": "3199585285",
+  "packageId": "dev.tobot.vpe.betterautocast",
+  "source": "workshop"
+ },
+ "BetterSliders": {
+  "folder": "2218078784",
+  "packageId": "sirrandoo.bettersliders",
+  "source": "workshop"
+ },
+ "Betures": {
+  "folder": "3530082693",
+  "packageId": "BusinBurg.BusinFeatures",
+  "source": "workshop"
+ },
+ "Big Little Mod Patch": {
+  "folder": "2710382569",
+  "packageId": "Daria40K.BigLittleModPatch",
+  "source": "workshop"
+ },
+ "Big and Small - Enable All Optional Content": {
+  "folder": "3532649666",
+  "packageId": "RedMattis.Optional",
+  "source": "workshop"
+ },
+ "Big and Small - Framework": {
+  "folder": "2925432336",
+  "packageId": "RedMattis.BetterPrerequisites",
+  "source": "workshop"
+ },
+ "Big and Small - Genes & More": {
+  "folder": "2920751126",
+  "packageId": "RedMattis.BigSmall.Core",
+  "source": "workshop"
+ },
+ "Big and Small - Heaven and Hell": {
+  "folder": "3170117364",
+  "packageId": "RedMattis.Heaven",
+  "source": "workshop"
+ },
+ "Big and Small - More Xenotypes": {
+  "folder": "3218636337",
+  "packageId": "RedMattis.MoreXenos",
+  "source": "workshop"
+ },
+ "Big and Small - Races": {
+  "folder": "2894397737",
+  "packageId": "RedMattis.BigSmall",
+  "source": "workshop"
+ },
+ "Big and Small - Sapient Animals": {
+  "folder": "3505241400",
+  "packageId": "RedMattis.SapientAnimals",
+  "source": "workshop"
+ },
+ "Big and Small - Weapons": {
+  "folder": "3105907309",
+  "packageId": "RedMattis.BigWeapons",
+  "source": "workshop"
+ },
+ "Big and Small Furniture": {
+  "folder": "3024478368",
+  "packageId": "RedMattis.BSFurniture",
+  "source": "workshop"
+ },
+ "Bigger Gravships (and other Odyssey spaceship related settings)": {
+  "folder": "3522759531",
+  "packageId": "RedMattis.BiggerGravship",
+  "source": "workshop"
+ },
+ "BioSculptingPlus (Continued)": {
+  "folder": "3272451634",
+  "packageId": "Mlie.BioSculptingPlus",
+  "source": "workshop"
+ },
+ "Bioform Matrix": {
+  "folder": "3535848372",
+  "packageId": "Bart.BioformMatrix",
+  "source": "workshop"
+ },
+ "Biome Compatibility Project": {
+  "folder": "3535674283",
+  "packageId": "Kopp.BiomeCompatibilityProject",
+  "source": "workshop"
+ },
+ "Biome Transitions": {
+  "folder": "2814391846",
+  "packageId": "m00nl1ght.GeologicalLandforms.BiomeTransitions",
+  "source": "workshop"
+ },
+ "Biomes! Caverns": {
+  "folder": "2969748433",
+  "packageId": "BiomesTeam.BiomesCaverns",
+  "source": "workshop"
+ },
+ "Biomes! Core": {
+  "folder": "2038000893",
+  "packageId": "BiomesTeam.BiomesCore",
+  "source": "workshop"
+ },
+ "Biomes! Fossils": {
+  "folder": "3100958580",
+  "packageId": "BiomesTeam.BiomesFossils",
+  "source": "workshop"
+ },
+ "Biomes! Framework": {
+  "folder": "3709492514",
+  "packageId": "BiomesTeam.CoreFramework",
+  "source": "workshop"
+ },
+ "Biomes! Polluted Lands": {
+  "folder": "3390196656",
+  "packageId": "BiomesTeam.BiomesPollutedLands",
+  "source": "workshop"
+ },
+ "BiomesKit (Continued)": {
+  "folder": "3333951497",
+  "packageId": "zal.biomeskit",
+  "source": "workshop"
+ },
+ "Bionic icons": {
+  "folder": "1677616980",
+  "packageId": "automatic.bionicicons",
+  "source": "workshop"
+ },
+ "Biosculpter Pod and Neural Supercharger Resize": {
+  "folder": "2710513531",
+  "packageId": "Syrus.BPaNSResize",
+  "source": "workshop"
+ },
+ "Biotech Expansion - Core": {
+  "folder": "2884018485",
+  "packageId": "biotexpans.core",
+  "source": "workshop"
+ },
+ "Biotech Expansion - Mythic": {
+  "folder": "2883216840",
+  "packageId": "biotexpans.mythic",
+  "source": "workshop"
+ },
+ "Biotech Mechanoid Retexture": {
+  "folder": "3164022710",
+  "packageId": "EL.BiotechMechRT",
+  "source": "workshop"
+ },
+ "Blast Door Split-Frame East Fix — Doors Expanded Star Wars edition": {
+  "folder": "BlastDoorFrameAsyncFix",
+  "packageId": "mandrake.blastdoorframeasyncfix",
+  "source": "local"
+ },
+ "Block Unwanted Minutiae (Continued)": {
+  "folder": "3278213153",
+  "packageId": "Mlie.BlockUnwantedMinutiae",
+  "source": "workshop"
+ },
+ "Blood Animations": {
+  "folder": "3228047321",
+  "packageId": "Fuu.BloodAnimations",
+  "source": "workshop"
+ },
+ "Blue Archive Furniture": {
+  "folder": "3491176484",
+  "packageId": "mlmlmlm.bluearchivefurniture",
+  "source": "workshop"
+ },
+ "Blueprints Forked - 1.6": {
+  "folder": "3525001145",
+  "packageId": "Defi.Blueprints.fork",
+  "source": "workshop"
+ },
+ "Bonded Animals RNG": {
+  "folder": "3370236256",
+  "packageId": "Scurvyez.BondedAnimalsRNG",
+  "source": "workshop"
+ },
+ "Boots and Stuff": {
+  "folder": "1488970545",
+  "packageId": "Techmago.BootsnStuff",
+  "source": "workshop"
+ },
+ "Bradson's Main Button Icons (Forked + Expanded)": {
+  "folder": "3532359201",
+  "packageId": "bs.mbifvte",
+  "source": "workshop"
+ },
+ "Breeding Ritual": {
+  "folder": "3772996961",
+  "packageId": "GulMadred.BreedingRitual",
+  "source": "workshop"
+ },
+ "Build From Chunk": {
+  "folder": "3218639401",
+  "packageId": "cyanobot.buildfromchunk",
+  "source": "workshop"
+ },
+ "Build From Inventory - Continued": {
+  "folder": "3534185281",
+  "packageId": "Memegoddess.BuildFromInventory",
+  "source": "workshop"
+ },
+ "Bunk Beds": {
+  "folder": "2961752749",
+  "packageId": "Darknote.BunkBeds",
+  "source": "workshop"
+ },
+ "Bunny Framework": {
+  "folder": "3015333853",
+  "packageId": "Romyashi.BunnyFramework",
+  "source": "workshop"
+ },
+ "Call For Intel": {
+  "folder": "2557139479",
+  "packageId": "8Z.CallForIntel",
+  "source": "workshop"
+ },
+ "Camera+": {
+  "folder": "867467808",
+  "packageId": "brrainz.cameraplus",
+  "source": "workshop"
+ },
+ "Camping Tent": {
+  "folder": "2407128339",
+  "packageId": "Aoba.Tent",
+  "source": "workshop"
+ },
+ "Caravan Adventures": {
+  "folder": "2558957509",
+  "packageId": "iforgotmysocks.CaravanAdventures",
+  "source": "workshop"
+ },
+ "Caravan Mood Buff": {
+  "folder": "2680751877",
+  "packageId": "Syrus.CaravanMoodBuff",
+  "source": "workshop"
+ },
+ "Cash Register (Continued)": {
+  "folder": "3509487668",
+  "packageId": "Orion.CashRegister",
+  "source": "workshop"
+ },
+ "Castle Walls Expanded": {
+  "folder": "3024167916",
+  "packageId": "ChaoticEnrico.CastleWallsExpanded",
+  "source": "workshop"
+ },
+ "Castle Walls Reborn": {
+  "folder": "3256542892",
+  "packageId": "Gideon.CastleWalls",
+  "source": "workshop"
+ },
+ "Center Frill North Fix — Vanilla Races Expanded: Saurid": {
+  "folder": "SauridFrillFix",
+  "packageId": "mandrake.sauridfrillfix",
+  "source": "local"
+ },
+ "Cephaloids": {
+  "folder": "3753477123",
+  "packageId": "Joe.Cephaloids",
+  "source": "workshop"
+ },
+ "Cerean Mane South Fix — Outer Rim: Galactic Diversity": {
+  "folder": "CereanManeFix",
+  "packageId": "mandrake.cereanmanefix",
+  "source": "local"
+ },
+ "Change Stuff Properties": {
+  "folder": "2788278669",
+  "packageId": "Mlie.ChangeStuffProperties",
+  "source": "workshop"
+ },
+ "Change Style Anytime": {
+  "folder": "3072859227",
+  "packageId": "cedaro.csa",
+  "source": "workshop"
+ },
+ "Change map edge limit": {
+  "folder": "1546494565",
+  "packageId": "kapitanoczywisty.changemapedge",
+  "source": "workshop"
+ },
+ "Character Editor": {
+  "folder": "1874644848",
+  "packageId": "void.charactereditor",
+  "source": "workshop"
+ },
+ "Character Editor Retextured": {
+  "folder": "2855844396",
+  "packageId": "Neronix17.Retexture.CharacterEditor",
+  "source": "workshop"
+ },
+ "Charge Stunners": {
+  "folder": "2994740520",
+  "packageId": "Desmond.ChargeStunners.7742",
+  "source": "workshop"
+ },
+ "Cheaper Primitive Floors": {
+  "folder": "2833159444",
+  "packageId": "HarryRobinson.PrimitiveFloorsCheap",
+  "source": "workshop"
+ },
+ "Cherry Picker": {
+  "folder": "3521312241",
+  "packageId": "Owlchemist.CherryPicker",
+  "source": "workshop"
+ },
+ "ChezhouLib": {
+  "folder": "3595247479",
+  "packageId": "Chezhou.ChezhouLib.lib",
+  "source": "workshop"
+ },
+ "Children Learn on Caravan": {
+  "folder": "3497730368",
+  "packageId": "heatherathebyne.childrenlearnoncaravan",
+  "source": "workshop"
+ },
+ "Choose Biome Commonality": {
+  "folder": "2582875043",
+  "packageId": "Mlie.ChooseBiomeCommonality",
+  "source": "workshop"
+ },
+ "Choose Where To Land": {
+  "folder": "3537970831",
+  "packageId": "kearril.ChooseWhereToLand",
+  "source": "workshop"
+ },
+ "Choose Wild Animal Spawns": {
+  "folder": "2564042934",
+  "packageId": "Mlie.ChooseWildAnimalSpawns",
+  "source": "workshop"
+ },
+ "Choose Your Recipe (Continued)": {
+  "folder": "3263007587",
+  "packageId": "zal.chooseyourrecipe",
+  "source": "workshop"
+ },
+ "Clean Textures": {
+  "folder": "2865361569",
+  "packageId": "IH.Clean.Textures",
+  "source": "workshop"
+ },
+ "Cleaning Priority (Continued)": {
+  "folder": "2018316486",
+  "packageId": "Mlie.CleaningPriority",
+  "source": "workshop"
+ },
+ "Close Settlements": {
+  "folder": "2600837512",
+  "packageId": "jelly.Bar0th.CloseSettlements",
+  "source": "workshop"
+ },
+ "Colored deep resources": {
+  "folder": "3203269467",
+  "packageId": "kikohi.ColoredDeepResources",
+  "source": "workshop"
+ },
+ "Colourful Sterile Tiles": {
+  "folder": "1619656080",
+  "packageId": "Mlie.ColourfulSterileTiles",
+  "source": "workshop"
+ },
+ "Combat Readiness Check (Continued)": {
+  "folder": "2314304057",
+  "packageId": "Mlie.CombatReadinessCheck",
+  "source": "workshop"
+ },
+ "Comigo - A Better Trees Mod": {
+  "folder": "3559784361",
+  "packageId": "Qux.Comigo.BetterTreesMod",
+  "source": "workshop"
+ },
+ "Comigo's Greater Swamps (Continued)": {
+  "folder": "3620545124",
+  "packageId": "zal.comigogreaterswamps",
+  "source": "workshop"
+ },
+ "Common Sense": {
+  "folder": "1561769193",
+  "packageId": "avilmask.CommonSense",
+  "source": "workshop"
+ },
+ "Compact Gene Banks/Processors": {
+  "folder": "3466062158",
+  "packageId": "redtrainer.compactgenebuildings",
+  "source": "workshop"
+ },
+ "Compact Hediffs": {
+  "folder": "2031734067",
+  "packageId": "PeteTimesSix.CompactHediffs",
+  "source": "workshop"
+ },
+ "Compact Work Tab (Continued)": {
+  "folder": "3250322299",
+  "packageId": "Mlie.CompactWorkTab",
+  "source": "workshop"
+ },
+ "Config Applied Check": {
+  "folder": "3103608609",
+  "packageId": "Taggerung.ConfigAppliedCheck",
+  "source": "workshop"
+ },
+ "Configurable Techprints": {
+  "folder": "2876747024",
+  "packageId": "com.makeitso.configurabletechprints",
+  "source": "workshop"
+ },
+ "Controlled Rituals - Anomaly": {
+  "folder": "3328826971",
+  "packageId": "NuanKi.ControlledRituals",
+  "source": "workshop"
+ },
+ "Cozy Fires": {
+  "folder": "2390924647",
+  "packageId": "CozyFire.Velcroboy333",
+  "source": "workshop"
+ },
+ "Craft with Color": {
+  "folder": "2795998250",
+  "packageId": "kathanon.CraftWithColor",
+  "source": "workshop"
+ },
+ "Crafting Quality Rebalanced": {
+  "folder": "1542004942",
+  "packageId": "phomor.CraftingQualityRebalanced",
+  "source": "workshop"
+ },
+ "Crafting Spot Slave Gear": {
+  "folder": "3502196889",
+  "packageId": "heatherathebyne.craftingspotslavegear",
+  "source": "workshop"
+ },
+ "Cremation smelts apparels": {
+  "folder": "3212165730",
+  "packageId": "Thumb.BetterCremation",
+  "source": "workshop"
+ },
+ "Custom Fonts - Forked": {
+  "folder": "3231727915",
+  "packageId": "zcubekr.customfonts",
+  "source": "workshop"
+ },
+ "Custom Gas Types": {
+  "folder": "3756399441",
+  "packageId": "Greg.CustomGasTypes",
+  "source": "workshop"
+ },
+ "Custom Quest Framework": {
+  "folder": "2978572782",
+  "packageId": "HaiLuan.CustomQuestFramework",
+  "source": "workshop"
+ },
+ "Custom Quest Framework-Level AI": {
+  "folder": "3534228105",
+  "packageId": "HaiLuan.CustomQuestFrameworkAI",
+  "source": "workshop"
+ },
+ "Custom Quest Framework-Rimtalk addon": {
+  "folder": "3684497117",
+  "packageId": "HaiLuan.CustomQuestFramework.RimTalk",
+  "source": "workshop"
+ },
+ "Custom Ritual Framework": {
+  "folder": "2561617361",
+  "packageId": "thesepeople.RitualAttachableOutcomes",
+  "source": "workshop"
+ },
+ "Custom Room Names": {
+  "folder": "3626983473",
+  "packageId": "costel.CustomRoomNames",
+  "source": "workshop"
+ },
+ "Custom Room Names - RimTalk Addon": {
+  "folder": "3626983869",
+  "packageId": "costel.CustomRoomNames.RimTalkAddon",
+  "source": "workshop"
+ },
+ "CustomUIScales": {
+  "folder": "2882372932",
+  "packageId": "Taggerung.CustomUIScales",
+  "source": "workshop"
+ },
+ "Customize Weapon": {
+  "folder": "3550585103",
+  "packageId": "Vortex.CustomizeWeapon",
+  "source": "workshop"
+ },
+ "Cut plants before building (Continued)": {
+  "folder": "3286376165",
+  "packageId": "Mlie.CutPlantsBeforeBuilding",
+  "source": "workshop"
+ },
+ "Cybranian - Anima Obelisk": {
+  "folder": "2614248835",
+  "packageId": "DimonSever000.AnimaObelisk.Specific",
+  "source": "workshop"
+ },
+ "Cybranian - Events": {
+  "folder": "2599784515",
+  "packageId": "DimonSever000.Events.Specific",
+  "source": "workshop"
+ },
+ "Cybranian - Ideology Virtues": {
+  "folder": "3459205505",
+  "packageId": "DimonSever000.IdeologyVirtues",
+  "source": "workshop"
+ },
+ "Cybranian - Weapon Proficiency": {
+  "folder": "3523531768",
+  "packageId": "DimonSever000.WeaponProficiency",
+  "source": "workshop"
+ },
+ "Damage Indicators [1.6]": {
+  "folder": "2016331497",
+  "packageId": "CaesarV6.DamageIndicators",
+  "source": "workshop"
+ },
+ "Dance Party Custom Music": {
+  "folder": "3752711168",
+  "packageId": "East.DancePartyCustomMusic",
+  "source": "workshop"
+ },
+ "Dark Ages : Beasts and Monsters": {
+  "folder": "3472275628",
+  "packageId": "Van.Beasts",
+  "source": "workshop"
+ },
+ "Dark Ages : Crypts and Tombs": {
+  "folder": "2963826335",
+  "packageId": "Van.DACrypts",
+  "source": "workshop"
+ },
+ "Dark Ages : Medieval Tools": {
+  "folder": "3028566550",
+  "packageId": "Van.DATools",
+  "source": "workshop"
+ },
+ "Dark Psychic Rituals: The Following": {
+  "folder": "3596468709",
+  "packageId": "DPRTF.DarkPsychicRituals.Sentinel",
+  "source": "workshop"
+ },
+ "Darkest Dungeon Incident Sounds": {
+  "folder": "3438213596",
+  "packageId": "DarkestDungeon.IncidentSounds",
+  "source": "workshop"
+ },
+ "Death Rattle Continued [1.2+]": {
+  "folder": "2896207870",
+  "packageId": "Troopersmith1.DeathRattle",
+  "source": "workshop"
+ },
+ "Deathpallcalypse": {
+  "folder": "3253910772",
+  "packageId": "PhaserRave.Deathpallcalypse",
+  "source": "workshop"
+ },
+ "Decorations and dishes at Gorgeous banquet": {
+  "folder": "3027639868",
+  "packageId": "MO.DecorationsLuxury",
+  "source": "workshop"
+ },
+ "Decorative Cliffs (Continued)": {
+  "folder": "2453099145",
+  "packageId": "Mlie.DecorativeCliffs",
+  "source": "workshop"
+ },
+ "Dedicated Turrets": {
+  "folder": "3739213606",
+  "packageId": "clown.dedicatedturrets",
+  "source": "workshop"
+ },
+ "Deep Orbit": {
+  "folder": "3533793836",
+  "packageId": "Broms.DeepOrbit",
+  "source": "workshop"
+ },
+ "Defensive Positions - Forked": {
+  "folder": "3550360467",
+  "packageId": "GonDragon.DefensivePositions",
+  "source": "workshop"
+ },
+ "Defiler Generator": {
+  "folder": "3530838203",
+  "packageId": "FleshForge.DefilerGenerator",
+  "source": "workshop"
+ },
+ "Delmain Tweaks - Role Apparel": {
+  "folder": "2980235255",
+  "packageId": "DelmainTweaks.RoleApparel",
+  "source": "workshop"
+ },
+ "Desert Vehicle Reskin — Alpha Vehicles Neolithic": {
+  "folder": "DesertVehicleReskin",
+  "packageId": "mandrake.desertvehiclereskin",
+  "source": "local"
+ },
+ "Designator Shapes": {
+  "folder": "1235181370",
+  "packageId": "Merthsoft.DesignatorShapes",
+  "source": "workshop"
+ },
+ "Destiny Exotic Weapons": {
+  "folder": "3496200631",
+  "packageId": "Milkwater.DestinyMod",
+  "source": "workshop"
+ },
+ "Destroy Item": {
+  "folder": "2423311270",
+  "packageId": "Garwel.DestroyItem",
+  "source": "workshop"
+ },
+ "Det's Xenotypes - Avaloi": {
+  "folder": "3199692643",
+  "packageId": "det.avaloi",
+  "source": "workshop"
+ },
+ "Det's Xenotypes - Boglegs": {
+  "folder": "3146564944",
+  "packageId": "det.boglegs",
+  "source": "workshop"
+ },
+ "Det's Xenotypes - Brawnum": {
+  "folder": "3429572581",
+  "packageId": "det.brawnum",
+  "source": "workshop"
+ },
+ "Det's Xenotypes - Buzzers": {
+  "folder": "3545293786",
+  "packageId": "det.buzzers",
+  "source": "workshop"
+ },
+ "Det's Xenotypes - Half-foot": {
+  "folder": "3530817307",
+  "packageId": "det.halffoot",
+  "source": "workshop"
+ },
+ "Det's Xenotypes - Keshig": {
+  "folder": "3376864722",
+  "packageId": "det.keshig",
+  "source": "workshop"
+ },
+ "Det's Xenotypes - Stoneborn": {
+  "folder": "2888722722",
+  "packageId": "det.stoneborn",
+  "source": "workshop"
+ },
+ "Det's Xenotypes - Venators": {
+  "folder": "3140248688",
+  "packageId": "det.venators",
+  "source": "workshop"
+ },
+ "Deteriorable Filter": {
+  "folder": "3018050013",
+  "packageId": "cometopapa.deteriorated",
+  "source": "workshop"
+ },
+ "Development Mode Hotkey": {
+  "folder": "3009274839",
+  "packageId": "Nightmare.DevModeHotkey",
+  "source": "workshop"
+ },
+ "Devilstrand Hydroponics": {
+  "folder": "2008034916",
+  "packageId": "SteelChicken.DevilstrandHydroponics",
+  "source": "workshop"
+ },
+ "Disable Raid Needs": {
+  "folder": "3568265578",
+  "packageId": "konstantynopolitaneczka.disableraidneeds",
+  "source": "workshop"
+ },
+ "Disassemble Mechanoid": {
+  "folder": "3191640281",
+  "packageId": "futurplanet.disassemblemechanoid",
+  "source": "workshop"
+ },
+ "Disco!": {
+  "folder": "2436747646",
+  "packageId": "co.uk.epicguru.disco",
+  "source": "workshop"
+ },
+ "Disease Immunity Progress Tracker": {
+  "folder": "3659005144",
+  "packageId": "Lornath.DiseaseImmunityProgressTracker",
+  "source": "workshop"
+ },
+ "Dismantle Ancient Junk": {
+  "folder": "2871064871",
+  "packageId": "proxyer.dismantleancientjunk",
+  "source": "workshop"
+ },
+ "Divine Order": {
+  "folder": "3017163907",
+  "packageId": "BotchJob.divineorder",
+  "source": "workshop"
+ },
+ "Dlc collaboration - Void universe": {
+  "folder": "3587277884",
+  "packageId": "HaiLuan.VoidUniverse",
+  "source": "workshop"
+ },
+ "Doormats": {
+  "folder": "3239838811",
+  "packageId": "Alias.Doormats",
+  "source": "workshop"
+ },
+ "Doors Expanded": {
+  "folder": "3532342422",
+  "packageId": "jecrell.doorsexpanded",
+  "source": "workshop"
+ },
+ "Doors Expanded Star Wars edition": {
+  "folder": "3550435517",
+  "packageId": "Lumi.doorsexpanded",
+  "source": "workshop"
+ },
+ "Draftable Animals - Releashed": {
+  "folder": "3534629428",
+  "packageId": "Wolfcub05.DraftableAnimals",
+  "source": "workshop"
+ },
+ "DragSelect": {
+  "folder": "2599942235",
+  "packageId": "telardo.DragSelect",
+  "source": "workshop"
+ },
+ "Dragons Descent": {
+  "folder": "2026992161",
+  "packageId": "onyxae.dragonsdescent",
+  "source": "workshop"
+ },
+ "Drop Pod Raid Jammer": {
+  "folder": "3527131849",
+  "packageId": "kongkim.DropPodJammer",
+  "source": "workshop"
+ },
+ "Dub's Paint Shop": {
+  "folder": "1579516669",
+  "packageId": "Dubwise.DubsPaintShop",
+  "source": "workshop"
+ },
+ "Dubs Apparel Tweaks": {
+  "folder": "2296697286",
+  "packageId": "Dubwise.DubsApparelTweaks",
+  "source": "workshop"
+ },
+ "Dubs Bad Hygiene": {
+  "folder": "836308268",
+  "packageId": "Dubwise.DubsBadHygiene",
+  "source": "workshop"
+ },
+ "Dubs Bad Hygiene - Spring Water Patch": {
+  "folder": "3531641684",
+  "packageId": "azrazalea.dbh.springwater.patch",
+  "source": "workshop"
+ },
+ "Dubs Bad Hygiene - Thirst": {
+  "folder": "2582878800",
+  "packageId": "Dubwise.DubsBadHygiene.Thirst",
+  "source": "workshop"
+ },
+ "Dubs Bad Hygiene Lite": {
+  "folder": "2570319432",
+  "packageId": "Dubwise.DubsBadHygiene.Lite",
+  "source": "workshop"
+ },
+ "Dubs Break Mod": {
+  "folder": "1722398508",
+  "packageId": "Dubwise.DubsBreakMod",
+  "source": "workshop"
+ },
+ "Dubs Mint Menus": {
+  "folder": "1446523594",
+  "packageId": "Dubwise.DubsMintMenus",
+  "source": "workshop"
+ },
+ "Dubs Mint Minimap": {
+  "folder": "1662119905",
+  "packageId": "dubwise.dubsmintminimap",
+  "source": "workshop"
+ },
+ "Dubs Performance Analyzer": {
+  "folder": "2038874626",
+  "packageId": "Dubwise.DubsPerformanceAnalyzer.steam",
+  "source": "workshop"
+ },
+ "Dubs Rimatomics": {
+  "folder": "1127530465",
+  "packageId": "Dubwise.Rimatomics",
+  "source": "workshop"
+ },
+ "Dubs Rimkit": {
+  "folder": "832333531",
+  "packageId": "Dubwise.DubsRimkit",
+  "source": "workshop"
+ },
+ "Dubs Skylights": {
+  "folder": "833899765",
+  "packageId": "Dubwise.DubsSkylights",
+  "source": "workshop"
+ },
+ "Dubs Skylights Addon": {
+  "folder": "2016959026",
+  "packageId": "BJR1984.DubsSkylights.addon",
+  "source": "workshop"
+ },
+ "Dubs Skylights Glass+Lights Patch": {
+  "folder": "1610803364",
+  "packageId": "Maaxar.DubsSkylights.glasslights.patch",
+  "source": "workshop"
+ },
+ "Ducks' No Limits - Ideology (Continued)": {
+  "folder": "2916566114",
+  "packageId": "Mlie.DucksNoLimitsIdeology",
+  "source": "workshop"
+ },
+ "Dungeon Core": {
+  "folder": "3064597982",
+  "packageId": "HaiLuan.Dungeon",
+  "source": "workshop"
+ },
+ "Dungeon Pack (Continued)": {
+  "folder": "3765496911",
+  "packageId": "Mlie.DungeonPack",
+  "source": "workshop"
+ },
+ "Durable Clothes (Continued)": {
+  "folder": "2015395963",
+  "packageId": "Mlie.DurableClothes",
+  "source": "workshop"
+ },
+ "Dusk Wood Biome": {
+  "folder": "3560499511",
+  "packageId": "Okagrim.duskwood",
+  "source": "workshop"
+ },
+ "Dust Bunnies": {
+  "folder": "3480725900",
+  "packageId": "Crows.DustBunny",
+  "source": "workshop"
+ },
+ "Dynamic Diplomacy - Continued": {
+  "folder": "3220299022",
+  "packageId": "nilchei.dynamicdiplomacycontinued",
+  "source": "workshop"
+ },
+ "Dynamic Effects Forge": {
+  "folder": "3735443951",
+  "packageId": "blues.forge",
+  "source": "workshop"
+ },
+ "Dynamic Weapon Cooldown": {
+  "folder": "3038525914",
+  "packageId": "pixelbirb.dwc",
+  "source": "workshop"
+ },
+ "E-Web Heavy Repeating Blaster": {
+  "folder": "3555571107",
+  "packageId": "maincrep.eweb",
+  "source": "workshop"
+ },
+ "EBSG Framework": {
+  "folder": "3112549163",
+  "packageId": "EBSG.Framework",
+  "source": "workshop"
+ },
+ "ED-Embrasures (Continued)": {
+  "folder": "3277482616",
+  "packageId": "Ganja.ED.Embrasures",
+  "source": "workshop"
+ },
+ "EGI Holograms and Projectors": {
+  "folder": "2979598490",
+  "packageId": "Vesper.EGIHologramsandProjectors",
+  "source": "workshop"
+ },
+ "ESCP - Race Tools": {
+  "folder": "3244642507",
+  "packageId": "ESCP.RaceTools",
+  "source": "workshop"
+ },
+ "ESCP - Skyshards": {
+  "folder": "2814453057",
+  "packageId": "SirMashedPotato.ESCP.Skyshards",
+  "source": "workshop"
+ },
+ "Echoes of the Rim": {
+  "folder": "3573196843",
+  "packageId": "Ghastly.EchoesOfTheRim",
+  "source": "workshop"
+ },
+ "Effigys - Terror Spikes": {
+  "folder": "3647930333",
+  "packageId": "YourName.Effigys.Mod",
+  "source": "workshop"
+ },
+ "Empiricism and Faith - Mort's Ideologies: Memes and Precepts": {
+  "folder": "2948947009",
+  "packageId": "MortStrudel.MortIdeologySciFai",
+  "source": "workshop"
+ },
+ "Enable Oversized Weapons": {
+  "folder": "2543371889",
+  "packageId": "CarnySenpai.EnableOversizedWeapons",
+  "source": "workshop"
+ },
+ "EnchantQualityPlus": {
+  "folder": "3531518926",
+  "packageId": "StatistNo1.EnchantQualityPlusUnofficial",
+  "source": "workshop"
+ },
+ "Engines Unlimited": {
+  "folder": "3528446690",
+  "packageId": "nep.enginesunlimited",
+  "source": "workshop"
+ },
+ "Epochs - Incense": {
+  "folder": "3072579620",
+  "packageId": "det.epochsincense",
+  "source": "workshop"
+ },
+ "Epochs - Pottery": {
+  "folder": "3092351095",
+  "packageId": "det.epochspottery",
+  "source": "workshop"
+ },
+ "Epochs - Pyrinth": {
+  "folder": "3336544632",
+  "packageId": "det.epochspyrinth",
+  "source": "workshop"
+ },
+ "Epochs - Tallow": {
+  "folder": "3502180016",
+  "packageId": "det.epochstallow",
+  "source": "workshop"
+ },
+ "Epochs Tallow - Butchery Patch": {
+  "folder": "3508507223",
+  "packageId": "Tinda.Patches.EpochsTallow",
+  "source": "workshop"
+ },
+ "Equipment Manager": {
+  "folder": "2790435986",
+  "packageId": "LordKuper.EquipmentManager",
+  "source": "workshop"
+ },
+ "Erin's Baldur's Gate 3 Hairs": {
+  "folder": "3069933015",
+  "packageId": "Erin.BG3.Hair",
+  "source": "workshop"
+ },
+ "Erin's Body Retexture": {
+  "folder": "2662457442",
+  "packageId": "Erin.Body.Texture",
+  "source": "workshop"
+ },
+ "Erin's Decorations": {
+  "folder": "2463358089",
+  "packageId": "erin.decorations",
+  "source": "workshop"
+ },
+ "Erin's Final Fantasy Animals": {
+  "folder": "2877589761",
+  "packageId": "Erin.FFAnimals",
+  "source": "workshop"
+ },
+ "Erin's Hairstyles - Redux": {
+  "folder": "2361911135",
+  "packageId": "Erin.Hairredux",
+  "source": "workshop"
+ },
+ "Erin's Hairstyles 2": {
+  "folder": "2849477421",
+  "packageId": "Erin.Hair2",
+  "source": "workshop"
+ },
+ "Erin's KPop Demon Hunters Hairs": {
+  "folder": "3595945875",
+  "packageId": "Erin.KPDH.Hair",
+  "source": "workshop"
+ },
+ "EvolvedOrgansRedux": {
+  "folder": "3648390934",
+  "packageId": "StatistNo1.EvolvedOrgansRedux",
+  "source": "workshop"
+ },
+ "Expanded Incidents (Continued)": {
+  "folder": "2039064466",
+  "packageId": "Mlie.ExpandedIncidents",
+  "source": "workshop"
+ },
+ "Extra Explosion Effects": {
+  "folder": "3066208882",
+  "packageId": "Keshash.ExtraExplosionEffects",
+  "source": "workshop"
+ },
+ "Extra Mini-Turrets": {
+  "folder": "3199145674",
+  "packageId": "extts.fl",
+  "source": "workshop"
+ },
+ "Extract Any Plant": {
+  "folder": "2833838214",
+  "packageId": "Romyashi.ExtractAnyPlant",
+  "source": "workshop"
+ },
+ "F3: Spacer Jumpsuits and More": {
+  "folder": "2776936670",
+  "packageId": "HG.Originals.F3",
+  "source": "workshop"
+ },
+ "FIP - RobCo": {
+  "folder": "3563825876",
+  "packageId": "FIP.RobCo",
+  "source": "workshop"
+ },
+ "Face Addon Framework": {
+  "folder": "3217914520",
+  "packageId": "EoralMilk.FaceAddonFramework",
+  "source": "workshop"
+ },
+ "Facial Animation Compatability Project": {
+  "folder": "3585705988",
+  "packageId": "DanZinagri.FacialAnimationCompatabilityProject",
+  "source": "workshop"
+ },
+ "Faction Control (1.4-1.6)": {
+  "folder": "2882785581",
+  "packageId": "thereallemon.factioncontrol",
+  "source": "workshop"
+ },
+ "Faction Customizer": {
+  "folder": "3336572602",
+  "packageId": "azravos.factioncustomizer",
+  "source": "workshop"
+ },
+ "Faction Raid Cooldown (Continued)": {
+  "folder": "3547098393",
+  "packageId": "Mlie.FactionRaidCooldown",
+  "source": "workshop"
+ },
+ "Faction Territories and Vassalage": {
+  "folder": "3626725895",
+  "packageId": "jaeger972.factionterritories",
+  "source": "workshop"
+ },
+ "Fahrenheit and Celsius": {
+  "folder": "937759575",
+  "packageId": "kosaro.fahrenheitandcelsius",
+  "source": "workshop"
+ },
+ "FancyRats+": {
+  "folder": "3265419811",
+  "packageId": "tyrannidae.fancyratsplus",
+  "source": "workshop"
+ },
+ "Farhan's Warcasket Tweaks (Vacuum and Temperature)": {
+  "folder": "3533261706",
+  "packageId": "Farhanfair.WarcasketTweaksPatch",
+  "source": "workshop"
+ },
+ "Fast Spreading Grass": {
+  "folder": "3541038010",
+  "packageId": "shakeyourbunny.fastspreadinggrass",
+  "source": "workshop"
+ },
+ "Fast regen 1.6": {
+  "folder": "943925765",
+  "packageId": "Daniledman.FastRegen",
+  "source": "workshop"
+ },
+ "Faster Biosculpter Pod": {
+  "folder": "2576257954",
+  "packageId": "Inglix.FasterBiosculptingPod",
+  "source": "workshop"
+ },
+ "Faster Gene Recovery": {
+  "folder": "2882689772",
+  "packageId": "FasterGene.Recovery",
+  "source": "workshop"
+ },
+ "Faster Settlement Restock": {
+  "folder": "3363826406",
+  "packageId": "smeir.FasterSettlementRestock",
+  "source": "workshop"
+ },
+ "FeedinFishies": {
+  "folder": "3573713081",
+  "packageId": "jetharius.FeedinFishies",
+  "source": "workshop"
+ },
+ "Fertile Fields 1.6": {
+  "folder": "3225843229",
+  "packageId": "jamaicancastle.RF.fertilefields",
+  "source": "workshop"
+ },
+ "Field Administer": {
+  "folder": "2472006801",
+  "packageId": "JackDeg.FieldAdminister",
+  "source": "workshop"
+ },
+ "Firefoam poppers aren't ugly!": {
+  "folder": "3749974270",
+  "packageId": "realify.firefoam",
+  "source": "workshop"
+ },
+ "Fishing Is Fun": {
+  "folder": "3538562620",
+  "packageId": "jalapenolabs.rimworld.fishingisfun",
+  "source": "workshop"
+ },
+ "Fists Aren't Made of Steel": {
+  "folder": "2845980214",
+  "packageId": "Aelanna.FistNerf",
+  "source": "workshop"
+ },
+ "Fix Styled Blueprints": {
+  "folder": "2957953663",
+  "packageId": "kathanon.FixStyledBlueprints",
+  "source": "workshop"
+ },
+ "Float Sub-Menus": {
+  "folder": "2864015430",
+  "packageId": "kathanon.FloatSubMenu",
+  "source": "workshop"
+ },
+ "Floor Lights 2": {
+  "folder": "2882927601",
+  "packageId": "temeez.floorlights2",
+  "source": "workshop"
+ },
+ "Follow Target": {
+  "folder": "3555423377",
+  "packageId": "ChaoticEnrico.FollowTarget",
+  "source": "workshop"
+ },
+ "Food Texture Variety - Vanilla Expanded Coffee and Tea": {
+  "folder": "3409546023",
+  "packageId": "Goat.Food.Texture.Variety.VECoffeTea",
+  "source": "workshop"
+ },
+ "Food Texture Variety - Vanilla Expanded Cooking": {
+  "folder": "3388883044",
+  "packageId": "Goat.Food.Texture.Variety.VECooking",
+  "source": "workshop"
+ },
+ "Food Texture Variety Core": {
+  "folder": "3354455179",
+  "packageId": "Goat.Food.Texture.Variety.Core",
+  "source": "workshop"
+ },
+ "Forced Xenogerm Implantation": {
+  "folder": "3586850201",
+  "packageId": "unknown.ForcedXenogermImplantation",
+  "source": "workshop"
+ },
+ "Fortification Industrial -Nuclear Dawn": {
+  "folder": "2733185331",
+  "packageId": "Aoba.Fortress.Industrial.NuclearDawn",
+  "source": "workshop"
+ },
+ "Fortifications - Industrial": {
+  "folder": "2561619583",
+  "packageId": "Aoba.Fortress.Industrial",
+  "source": "workshop"
+ },
+ "Fortifications - Medieval": {
+  "folder": "2501486827",
+  "packageId": "Aoba.Fortress.Medieval",
+  "source": "workshop"
+ },
+ "Fortifications - Neolithic": {
+  "folder": "2385960678",
+  "packageId": "Aoba.Fortress.Neolithic",
+  "source": "workshop"
+ },
+ "Fortified Features Framework": {
+  "folder": "3498575851",
+  "packageId": "AOBA.Framework",
+  "source": "workshop"
+ },
+ "Friendly Hostile Factions (Continued)": {
+  "folder": "2812503053",
+  "packageId": "zal.FHF",
+  "source": "workshop"
+ },
+ "Full Armor - Hands and Feet [1.6]": {
+  "folder": "3530977354",
+  "packageId": "stevezero.FullArmorHandsFeet",
+  "source": "workshop"
+ },
+ "Full Gun Sell Price": {
+  "folder": "1575464750",
+  "packageId": "BDew.FullGunSellPrice",
+  "source": "workshop"
+ },
+ "Functional Vanilla Expanded Props (Continued)": {
+  "folder": "2574097280",
+  "packageId": "Mlie.FunctionalVanillaExpandedProps",
+  "source": "workshop"
+ },
+ "Fungoids aren't that ugly!": {
+  "folder": "3433197206",
+  "packageId": "tookatee.Fungoidnovomit",
+  "source": "workshop"
+ },
+ "GTG Trader Core": {
+  "folder": "3682209120",
+  "packageId": "Teiwaz.GTGTraderCore",
+  "source": "workshop"
+ },
+ "Gardens": {
+  "folder": "2869260174",
+  "packageId": "tk421storm.Gardens",
+  "source": "workshop"
+ },
+ "Gastronomy (Continued)": {
+  "folder": "3509488152",
+  "packageId": "Orion.Gastronomy",
+  "source": "workshop"
+ },
+ "Gauranlen Supremacy doesn't need Tree Connection!": {
+  "folder": "3556875187",
+  "packageId": "Kitty.TreeMemePatch",
+  "source": "workshop"
+ },
+ "Gene Extractor Tiers": {
+  "folder": "3016454783",
+  "packageId": "RedMattis.GeneExtractor",
+  "source": "workshop"
+ },
+ "Gene Nodes - Genes for Sale": {
+  "folder": "3264344552",
+  "packageId": "RedMattis.GeneNodes",
+  "source": "workshop"
+ },
+ "Gene Ripper": {
+  "folder": "3524806362",
+  "packageId": "Defi.GeneRipper",
+  "source": "workshop"
+ },
+ "Gene Tools - Forked": {
+  "folder": "3047454700",
+  "packageId": "prkr.GeneTools",
+  "source": "workshop"
+ },
+ "Gene Trader": {
+  "folder": "2886375137",
+  "packageId": "tac.genetrader",
+  "source": "workshop"
+ },
+ "Genetic Biotech for Facial Animation": {
+  "folder": "3501317537",
+  "packageId": "sd.fa.geneticheadsbiotech",
+  "source": "workshop"
+ },
+ "Genetic Drift 1.6": {
+  "folder": "3522332727",
+  "packageId": "masstell.geneticdrift16",
+  "source": "workshop"
+ },
+ "Genetic Heads Framework for [NL] Facial Animation": {
+  "folder": "3498759997",
+  "packageId": "sd.fa.geneticheadsframework",
+  "source": "workshop"
+ },
+ "Genetic Mods for Facial Animation": {
+  "folder": "3501317734",
+  "packageId": "sd.fa.geneticheadsmods",
+  "source": "workshop"
+ },
+ "Geological Landforms": {
+  "folder": "2773943594",
+  "packageId": "m00nl1ght.GeologicalLandforms",
+  "source": "workshop"
+ },
+ "Gerrymon's Cannibal Style": {
+  "folder": "3432956417",
+  "packageId": "GM.Cannibal.Style",
+  "source": "workshop"
+ },
+ "Gerrymon's Erotic Style": {
+  "folder": "3273776545",
+  "packageId": "GM.Erotic.Style",
+  "source": "workshop"
+ },
+ "Gerrymon's Medieval DBH Retexture": {
+  "folder": "3510803927",
+  "packageId": "Gerrymon.MedievalDBH",
+  "source": "workshop"
+ },
+ "Gerrymon's Misc Props: Dungeon": {
+  "folder": "3772571876",
+  "packageId": "GMMP.Dungeon",
+  "source": "workshop"
+ },
+ "Gerrymon's Nautian Style": {
+  "folder": "3147664706",
+  "packageId": "GM.Nautian.Style",
+  "source": "workshop"
+ },
+ "Gerrymon's Upscaled Vanilla Textures": {
+  "folder": "3276562906",
+  "packageId": "Gerrymon.UVT",
+  "source": "workshop"
+ },
+ "Get Off My Gravship!": {
+  "folder": "3548548674",
+  "packageId": "nep.getoffmygravship",
+  "source": "workshop"
+ },
+ "Giant Snake (Continued)": {
+  "folder": "3278855253",
+  "packageId": "zal.giantsnake",
+  "source": "workshop"
+ },
+ "Giant Toads (Continued)": {
+  "folder": "3365223736",
+  "packageId": "zal.gianttoads",
+  "source": "workshop"
+ },
+ "Giddy-Up 2 - Continued": {
+  "folder": "3674332861",
+  "packageId": "MemeGoddess.GiddyUp",
+  "source": "workshop"
+ },
+ "Glass+Lights": {
+  "folder": "826153738",
+  "packageId": "NanoCE.GlassLights",
+  "source": "workshop"
+ },
+ "Glowing eyes genes": {
+  "folder": "3023336989",
+  "packageId": "lts.GEG",
+  "source": "workshop"
+ },
+ "Go Explore!": {
+  "folder": "1814100216",
+  "packageId": "Albion.GoExplore",
+  "source": "workshop"
+ },
+ "Goblins of the Rim": {
+  "folder": "3237397753",
+  "packageId": "bean.customxenotypes.goblinsoftherim",
+  "source": "workshop"
+ },
+ "Gorlath's Flowery Ideology Addon": {
+  "folder": "3362432392",
+  "packageId": "gorlath.ideonature",
+  "source": "workshop"
+ },
+ "Gradient Hair": {
+  "folder": "1687053679",
+  "packageId": "automatic.gradienthair",
+  "source": "workshop"
+ },
+ "Graffiti Mod (Continued)": {
+  "folder": "2986996933",
+  "packageId": "Mlie.GraffitiMod",
+  "source": "workshop"
+ },
+ "Graphics Settings+": {
+  "folder": "1678847247",
+  "packageId": "Telefonmast.GraphicsSettings",
+  "source": "workshop"
+ },
+ "Grav-Shuttle": {
+  "folder": "3528998097",
+  "packageId": "TurboPickle.GravShuttle",
+  "source": "workshop"
+ },
+ "GravTech": {
+  "folder": "3545374124",
+  "packageId": "als.gravtech",
+  "source": "workshop"
+ },
+ "GravTech - Big cannons": {
+  "folder": "3628174105",
+  "packageId": "als.gravtech.bc",
+  "source": "workshop"
+ },
+ "GravTech - Big cannons Retextured": {
+  "folder": "3738856637",
+  "packageId": "HalituisAmaricanous.gravtechbigcannons",
+  "source": "workshop"
+ },
+ "GravTide": {
+  "folder": "3779600989",
+  "packageId": "gravtide.mod",
+  "source": "workshop"
+ },
+ "Gravship Biofuel Refinery Retexture": {
+  "folder": "3553790634",
+  "packageId": "SuperPox.GravshipBiofuelRefineryRetexture",
+  "source": "workshop"
+ },
+ "Gravship Crashes": {
+  "folder": "3578515873",
+  "packageId": "Arcjc007.GravshipCrashes",
+  "source": "workshop"
+ },
+ "Gravship Exporter": {
+  "folder": "3576790938",
+  "packageId": "Arcjc007.GravshipExporter",
+  "source": "workshop"
+ },
+ "Gravship Raids": {
+  "folder": "3767338163",
+  "packageId": "sk.gravshipraids",
+  "source": "workshop"
+ },
+ "Gravship Range On Map": {
+  "folder": "3545884382",
+  "packageId": "imagitama.rimworldgravshiprangeonmap",
+  "source": "workshop"
+ },
+ "Gravship Substructure Anywhere": {
+  "folder": "3528440892",
+  "packageId": "qwertaii.SubstructureAnywhere",
+  "source": "workshop"
+ },
+ "Grazing Lands": {
+  "folder": "1770268130",
+  "packageId": "avilmask.GrazingLands",
+  "source": "workshop"
+ },
+ "Greenworld - ReGrowth": {
+  "folder": "2882040405",
+  "packageId": "son1C.GreenWorldReGrowth",
+  "source": "workshop"
+ },
+ "Grimstone : Beasts": {
+  "folder": "3535302121",
+  "packageId": "Abrolo.Grimstone.Beasts",
+  "source": "workshop"
+ },
+ "Grouped Pawns Lists": {
+  "folder": "2340773428",
+  "packageId": "name.krypt.rimworld.pawntablegrouped",
+  "source": "workshop"
+ },
+ "GrowingZoneIcons": {
+  "folder": "3531165541",
+  "packageId": "MSWS.GrowingZoneIcons",
+  "source": "workshop"
+ },
+ "Guaranteed Ancient Dangers": {
+  "folder": "3566938404",
+  "packageId": "Arti.Shrinez",
+  "source": "workshop"
+ },
+ "Gulden Biome (Continued)": {
+  "folder": "3607066070",
+  "packageId": "pphhyy.GuldenNew",
+  "source": "workshop"
+ },
+ "Gunplay": {
+  "folder": "2034896549",
+  "packageId": "automatic.gunplay",
+  "source": "workshop"
+ },
+ "HLRW - The Combine": {
+  "folder": "3536753286",
+  "packageId": "cgf1.hlrw.thecombines",
+  "source": "workshop"
+ },
+ "Hard Times: Hair and Beards": {
+  "folder": "3092175321",
+  "packageId": "BotchJob.HTHair",
+  "source": "workshop"
+ },
+ "Hardworking animals 1.6": {
+  "folder": "933324235",
+  "packageId": "Daniledman.HardworkingAnimals",
+  "source": "workshop"
+ },
+ "Harmony": {
+  "folder": "2009463077",
+  "packageId": "brrainz.harmony",
+  "source": "workshop"
+ },
+ "Harvest Organs Post Mortem Continued": {
+  "folder": "1204502413",
+  "packageId": "Smuffle.HarvestOrgansPostMortem",
+  "source": "workshop"
+ },
+ "Harvest When Butchering": {
+  "folder": "2898826891",
+  "packageId": "Mlie.HarvestWhenButchering",
+  "source": "workshop"
+ },
+ "Haul to Stack": {
+  "folder": "949498803",
+  "packageId": "jkluch.HaulToStack",
+  "source": "workshop"
+ },
+ "Head Set For [NL]Facial Animation": {
+  "folder": "2975760383",
+  "packageId": "ab.hoffa",
+  "source": "workshop"
+ },
+ "Help me build": {
+  "folder": "3534699220",
+  "packageId": "Andromeda.HelpMeBuild",
+  "source": "workshop"
+ },
+ "Hemogen Extractor": {
+  "folder": "3267565839",
+  "packageId": "Uveren.HemogenExtractor",
+  "source": "workshop"
+ },
+ "High Tech Helmets Give Tox Gas Resistance": {
+  "folder": "3503847744",
+  "packageId": "Ael.Tua.HelmetsAddToxResistance",
+  "source": "workshop"
+ },
+ "Highborn Xenotype": {
+  "folder": "3380776687",
+  "packageId": "ElSov.Highborn",
+  "source": "workshop"
+ },
+ "Horrors (Continued)": {
+  "folder": "3535224844",
+  "packageId": "Mlie.Horrors",
+  "source": "workshop"
+ },
+ "Hospital": {
+  "folder": "2992224079",
+  "packageId": "Adamas.Hospital",
+  "source": "workshop"
+ },
+ "Hospitality (Continued)": {
+  "folder": "3509486825",
+  "packageId": "Orion.Hospitality",
+  "source": "workshop"
+ },
+ "Hospitality: Casino": {
+  "folder": "2939292644",
+  "packageId": "Adamas.HospitalityCasino",
+  "source": "workshop"
+ },
+ "Hospitality: Spa": {
+  "folder": "2971831654",
+  "packageId": "Adamas.HospitalitySpa",
+  "source": "workshop"
+ },
+ "Hospitality: Storefront": {
+  "folder": "2952321484",
+  "packageId": "Adamas.Storefront",
+  "source": "workshop"
+ },
+ "Hospitality: Vending machines": {
+  "folder": "3014885065",
+  "packageId": "Adamas.VendingMachines",
+  "source": "workshop"
+ },
+ "HugsLib": {
+  "folder": "818773962",
+  "packageId": "UnlimitedHugs.HugsLib",
+  "source": "workshop"
+ },
+ "Human Pregnancy Duration Settings": {
+  "folder": "2880967245",
+  "packageId": "Daysleep.HumanPregnancyDuration",
+  "source": "workshop"
+ },
+ "Humanoid Alien Races": {
+  "folder": "839005762",
+  "packageId": "erdelf.HumanoidAlienRaces",
+  "source": "workshop"
+ },
+ "Hunting Traps": {
+  "folder": "3219487356",
+  "packageId": "hazN.huntingtraps",
+  "source": "workshop"
+ },
+ "I Aint Building That": {
+  "folder": "3118060751",
+  "packageId": "Taggerung.IAintBuildingThat",
+  "source": "workshop"
+ },
+ "I Clearly Have Enough! (Continued)": {
+  "folder": "2023661266",
+  "packageId": "Mlie.IClearlyHaveEnough",
+  "source": "workshop"
+ },
+ "I will be back": {
+  "folder": "3400259397",
+  "packageId": "HaiLuan.IWBB",
+  "source": "workshop"
+ },
+ "ISEKAI RPG LEVELING": {
+  "folder": "3657580708",
+  "packageId": "JellyCreative.IsekaiLeveling",
+  "source": "workshop"
+ },
+ "IV Drug Infuser": {
+  "folder": "3484624947",
+  "packageId": "akaster.ivdruginfuser",
+  "source": "workshop"
+ },
+ "Ideology Scavenger Role": {
+  "folder": "3565039115",
+  "packageId": "amegakull.SCVRole",
+  "source": "workshop"
+ },
+ "Ideology Warframe Icons": {
+  "folder": "2937728695",
+  "packageId": "Rince.Ideo.WarframeSymbols",
+  "source": "workshop"
+ },
+ "Ideology symbols as Ideograms": {
+  "folder": "3199358915",
+  "packageId": "kxp.IdeoSymbolsAsIdeograms",
+  "source": "workshop"
+ },
+ "Ideology: More Precepts": {
+  "folder": "2559533848",
+  "packageId": "llunak.MorePrecepts",
+  "source": "workshop"
+ },
+ "Ignorance Is Bliss": {
+  "folder": "2554423472",
+  "packageId": "dame.ignorance",
+  "source": "workshop"
+ },
+ "Imprisonment On The Go! (Continued)": {
+  "folder": "3358620558",
+  "packageId": "AgentBlac.MakePawnsPrisoners",
+  "source": "workshop"
+ },
+ "Incident Disabler (Continued)": {
+  "folder": "3574116665",
+  "packageId": "Mlie.IncidentDisabler",
+  "source": "workshop"
+ },
+ "Infestations Spawn in Darkness 1.6": {
+  "folder": "3551839891",
+  "packageId": "Koth.ISiD",
+  "source": "workshop"
+ },
+ "Injured Carry": {
+  "folder": "2413690575",
+  "packageId": "Haecriver.InjuredCarry",
+  "source": "workshop"
+ },
+ "Insectoids 2 - Isopoda geneline": {
+  "folder": "3357632382",
+  "packageId": "Who.VFEE.IsopodaGeneline",
+  "source": "workshop"
+ },
+ "Instant Caravan": {
+  "folder": "3165744287",
+  "packageId": "ferny.EasyCaravanFormation",
+  "source": "workshop"
+ },
+ "Integrated Creep Joiners": {
+  "folder": "3233429182",
+  "packageId": "GrillMaster.integratedcreepjoiners",
+  "source": "workshop"
+ },
+ "Integrated Genes": {
+  "folder": "2884115974",
+  "packageId": "Turnovus.Biotech.IntegratedGenes",
+  "source": "workshop"
+ },
+ "Integrated Implants": {
+  "folder": "3223443793",
+  "packageId": "lts.I",
+  "source": "workshop"
+ },
+ "Interaction Bubbles": {
+  "folder": "1516158345",
+  "packageId": "Jaxe.Bubbles",
+  "source": "workshop"
+ },
+ "Interaction-Area Settings": {
+  "folder": "3647833135",
+  "packageId": "Mlie.InteractionAreaSettings",
+  "source": "workshop"
+ },
+ "Intimacy - Friends n' Lovers": {
+  "folder": "3498422643",
+  "packageId": "LovelyDovey.Sex.WithEuterpe",
+  "source": "workshop"
+ },
+ "Intimacy - Gender Works": {
+  "folder": "3534254491",
+  "packageId": "LovelyDovey.Sex.WithRosaline",
+  "source": "workshop"
+ },
+ "Intimacy - Socio Butterfly": {
+  "folder": "3630896210",
+  "packageId": "LovelyDovey.Recreation.WithEuterpe",
+  "source": "workshop"
+ },
+ "Invisible Conduit Continued": {
+  "folder": "3506645273",
+  "packageId": "GlitchGoblin.InvisibleConduitCont",
+  "source": "workshop"
+ },
+ "Invisible Display Case Continued": {
+  "folder": "3546566196",
+  "packageId": "Icepickgma.InvisibleDisplayCase",
+  "source": "workshop"
+ },
+ "Ion Weaponry (Continued)": {
+  "folder": "3532877485",
+  "packageId": "zal.ionweaponry",
+  "source": "workshop"
+ },
+ "Jawa Armoury Rebalance": {
+  "folder": "Jawa_Armoury",
+  "packageId": "mandrake.jawa.armoury",
+  "source": "local"
+ },
+ "Jawa Doctrine Patches": {
+  "folder": "Jawa_Doctrine",
+  "packageId": "mandrake.jawa.doctrine",
+  "source": "local"
+ },
+ "Jawa Ion Weapons (local)": {
+  "folder": "JawaIonWeapons",
+  "packageId": "mandrake.jawaionweapons",
+  "source": "local"
+ },
+ "Jawa Patches (local)": {
+  "folder": "Jawa_Patches",
+  "packageId": "mandrake.jawa.patches",
+  "source": "local"
+ },
+ "JawaVoice (SpeakUp reskin)": {
+  "folder": "JawaVoice",
+  "packageId": "mandrake.jawavoice",
+  "source": "local"
+ },
+ "JecsTools Unofficial 1.6 BETA": {
+  "folder": "3524247750",
+  "packageId": "jecrell.jecstools",
+  "source": "workshop"
+ },
+ "Jewelry": {
+  "folder": "3203280763",
+  "packageId": "kikohi.jewelry",
+  "source": "workshop"
+ },
+ "Joe's Tweaks": {
+  "folder": "3458506170",
+  "packageId": "Joe.MO.Tweaks",
+  "source": "workshop"
+ },
+ "Jurassic Rimworld - Dinosaurs Only (Continued)": {
+  "folder": "3541510004",
+  "packageId": "Mlie.JurassicRimworldDinosaursOnly",
+  "source": "workshop"
+ },
+ "Just F*King Landing": {
+  "folder": "3525655208",
+  "packageId": "MF.JFKLanding",
+  "source": "workshop"
+ },
+ "Just Ignore Me Passing (Continued)": {
+  "folder": "3503627342",
+  "packageId": "Mlie.JustIgnoreMePassing",
+  "source": "workshop"
+ },
+ "Just Leave Already": {
+  "folder": "3530313037",
+  "packageId": "Timuttie.JustLeaveAlready.fork.mitasamodel",
+  "source": "workshop"
+ },
+ "Just Put It Over There": {
+  "folder": "2856471776",
+  "packageId": "Mlie.JustPutItOverThere",
+  "source": "workshop"
+ },
+ "KEP:Toolbox Bionics (Continued)": {
+  "folder": "2803222245",
+  "packageId": "zal.KEPTB",
+  "source": "workshop"
+ },
+ "Keep Converting": {
+  "folder": "3461478214",
+  "packageId": "Linnun.KeepConverting",
+  "source": "workshop"
+ },
+ "Keep On Linking": {
+  "folder": "2717482472",
+  "packageId": "Marek15.KeepOnLinking",
+  "source": "workshop"
+ },
+ "Keyz Misc Resources": {
+  "folder": "3355560776",
+  "packageId": "keyz182.KeyzMiscResources",
+  "source": "workshop"
+ },
+ "Keyz' Allow Utilities": {
+  "folder": "3524716849",
+  "packageId": "keyz182.KeyzAllowUtilities",
+  "source": "workshop"
+ },
+ "Khayrea Pass Stylepack": {
+  "folder": "3372728277",
+  "packageId": "Resurrectionem.Khayrea",
+  "source": "workshop"
+ },
+ "Kidnapped Pawns Die Less": {
+  "folder": "3308076464",
+  "packageId": "Conit.KPDL",
+  "source": "workshop"
+ },
+ "Kitchen Sink Fix for Vanilla Cooking Expanded": {
+  "folder": "3288756218",
+  "packageId": "Linnun.KitchenSinkFix",
+  "source": "workshop"
+ },
+ "Knick Knacks - Let your colonists decorate!": {
+  "folder": "3595196942",
+  "packageId": "VaguelySexual.ModPackageId.GoesHere",
+  "source": "workshop"
+ },
+ "LED Lights Strip": {
+  "folder": "3476135064",
+  "packageId": "NoneObsidiaExpansion.LEDLightsStrip",
+  "source": "workshop"
+ },
+ "LEVIATHANS:SANDWORM": {
+  "folder": "3713982815",
+  "packageId": "chezhou.creature.sandworm",
+  "source": "workshop"
+ },
+ "LK Mineable Resources Outer Rim": {
+  "folder": "3565716659",
+  "packageId": "LeutianKane.MineablesOR",
+  "source": "workshop"
+ },
+ "LK Mines 2.0 Compatability[Outer Rim Core]": {
+  "folder": "3558833789",
+  "packageId": "LeutianKane.Mines2patchOuterRim",
+  "source": "workshop"
+ },
+ "LWM's Adaptive Deep Storage": {
+  "folder": "3373064575",
+  "packageId": "ASF.DeepStorage",
+  "source": "workshop"
+ },
+ "LWM's Deep Storage": {
+  "folder": "3532608331",
+  "packageId": "LWM.DeepStorage",
+  "source": "workshop"
+ },
+ "Lagless Lamps - C#": {
+  "folder": "3467878826",
+  "packageId": "Jsin.LaglessLamps",
+  "source": "workshop"
+ },
+ "Lambda's Nuclear-Powered Stove": {
+  "folder": "3347342950",
+  "packageId": "lambda.NuclearStove",
+  "source": "workshop"
+ },
+ "Landing On Asteroid 着陆小行星": {
+  "folder": "3532991747",
+  "packageId": "RunningBugs.LandingOnAsteroid",
+  "source": "workshop"
+ },
+ "Large Faction Bases (Continued)": {
+  "folder": "3257781909",
+  "packageId": "Mlie.LargeFactionBases",
+  "source": "workshop"
+ },
+ "Large Outpost (Continued)": {
+  "folder": "3337099675",
+  "packageId": "zal.largeoutpost",
+  "source": "workshop"
+ },
+ "Large Pawns": {
+  "folder": "3777700657",
+  "packageId": "neku.largepawns",
+  "source": "workshop"
+ },
+ "Laser Cannon": {
+  "folder": "3586248892",
+  "packageId": "Arcjc007.LaserCannon",
+  "source": "workshop"
+ },
+ "Layered Apparel": {
+  "folder": "3632480044",
+  "packageId": "costel.layeredapparel",
+  "source": "workshop"
+ },
+ "Layered Wall Destruction": {
+  "folder": "3024527775",
+  "packageId": "Keshash.LayeredWallDestruction",
+  "source": "workshop"
+ },
+ "Letter Permanent Injury": {
+  "folder": "2592535960",
+  "packageId": "Buggy.RimWorld.LetterPermanentInjury",
+  "source": "workshop"
+ },
+ "Letter stack cleaner": {
+  "folder": "2669779266",
+  "packageId": "seohyeon.letterstackcleaner",
+  "source": "workshop"
+ },
+ "Level This! (Continued)": {
+  "folder": "3443626025",
+  "packageId": "dingzhen.levelthis",
+  "source": "workshop"
+ },
+ "Level Up!": {
+  "folder": "1701592470",
+  "packageId": "Krafs.LevelUp",
+  "source": "workshop"
+ },
+ "Lightless Empyrean Reborn": {
+  "folder": "3517488959",
+  "packageId": "pphhyy.lightlessempyrean",
+  "source": "workshop"
+ },
+ "LightsOut": {
+  "folder": "2584269293",
+  "packageId": "juanlopez2008.LightsOut",
+  "source": "workshop"
+ },
+ "Limit Quest Pawns": {
+  "folder": "2898408684",
+  "packageId": "kathanon.LimitQuestPawns",
+  "source": "workshop"
+ },
+ "Linkable Settings": {
+  "folder": "2739581441",
+  "packageId": "Mlie.LinkableSettings",
+  "source": "workshop"
+ },
+ "LiquidSFX": {
+  "folder": "3758773902",
+  "packageId": "dorbo.watersfx",
+  "source": "workshop"
+ },
+ "Little Critters": {
+  "folder": "3331281387",
+  "packageId": "tyrannidae.littlecritters",
+  "source": "workshop"
+ },
+ "Live With The Pain": {
+  "folder": "2659985388",
+  "packageId": "Mlie.LiveWithThePain",
+  "source": "workshop"
+ },
+ "Livestock Traders": {
+  "folder": "2960610215",
+  "packageId": "Samael.LivestockTraders",
+  "source": "workshop"
+ },
+ "Lock apparel": {
+  "folder": "3507498385",
+  "packageId": "lecht.lockapparel",
+  "source": "workshop"
+ },
+ "Log After Def Error (Continued)": {
+  "folder": "3550944748",
+  "packageId": "Mlie.LogAfterDefError",
+  "source": "workshop"
+ },
+ "Log Publisher from HugsLib": {
+  "folder": "2873415404",
+  "packageId": "m00nl1ght.UnofficialUpdates.HugsLogPublisher",
+  "source": "workshop"
+ },
+ "Luci heals more!": {
+  "folder": "965087548",
+  "packageId": "svcbot.LHM",
+  "source": "workshop"
+ },
+ "Luciferium Mood Boost": {
+  "folder": "2810755290",
+  "packageId": "P90ForRetail.NanoMachines",
+  "source": "workshop"
+ },
+ "MSE Droid North Fix — Outer Rim: Droid Depot": {
+  "folder": "MSEDroidFix",
+  "packageId": "mandrake.msedroidfix",
+  "source": "local"
+ },
+ "MSS Tweaks and Fun": {
+  "folder": "3379574408",
+  "packageId": "MSS.FlavourPack",
+  "source": "workshop"
+ },
+ "Mad Skills": {
+  "folder": "731111514",
+  "packageId": "ratys.madskills",
+  "source": "workshop"
+ },
+ "Makeshift: Re-Examined": {
+  "folder": "3455187943",
+  "packageId": "Smxrez.makeshiftreexamined",
+  "source": "workshop"
+ },
+ "Map Designer": {
+  "folder": "2111424996",
+  "packageId": "zylle.MapDesigner",
+  "source": "workshop"
+ },
+ "Map Mode Framework": {
+  "folder": "3296654393",
+  "packageId": "NozoMe.MapModeFramework",
+  "source": "workshop"
+ },
+ "Map Preview": {
+  "folder": "2800857642",
+  "packageId": "m00nl1ght.MapPreview",
+  "source": "workshop"
+ },
+ "Mashed's Bloodmoon": {
+  "folder": "3523186663",
+  "packageId": "SirMashedPotato.Bloodmoon",
+  "source": "workshop"
+ },
+ "Mass Lovin'": {
+  "folder": "2612846082",
+  "packageId": "Udon.MassLoveIn",
+  "source": "workshop"
+ },
+ "Meals On Wheels - Continued": {
+  "folder": "3538082807",
+  "packageId": "Memegoddess.MealsOnWheels",
+  "source": "workshop"
+ },
+ "Meaningful Encounters": {
+  "folder": "3778244635",
+  "packageId": "SirDarkElf.MeaningfulEncounters",
+  "source": "workshop"
+ },
+ "Meat on a Stick": {
+  "folder": "3435027361",
+  "packageId": "badoaks.MeatOnAStick",
+  "source": "workshop"
+ },
+ "Meat on a Stick - Expansion": {
+  "folder": "3577333297",
+  "packageId": "badoaks.MeatOnAStick.expansion",
+  "source": "workshop"
+ },
+ "Mech energy setting": {
+  "folder": "3238097300",
+  "packageId": "None1637.MechEnergySetting",
+  "source": "workshop"
+ },
+ "Mechanitor Orbital Platform": {
+  "folder": "3523146525",
+  "packageId": "zoarak.mechplat",
+  "source": "workshop"
+ },
+ "Mechanoid Cluster Retexture": {
+  "folder": "3523231836",
+  "packageId": "Happycam.ConditionCauserRetexture",
+  "source": "workshop"
+ },
+ "Mechanoid slag to Plasteel": {
+  "folder": "3552644190",
+  "packageId": "xelnigma.mechanoidslagtoplasteel",
+  "source": "workshop"
+ },
+ "Mechs and Animals for NPC Factions": {
+  "folder": "3407831843",
+  "packageId": "Samael.NPCMechsAndAnimals",
+  "source": "workshop"
+ },
+ "MedPod": {
+  "folder": "2153065191",
+  "packageId": "sumghai.Medpod",
+  "source": "workshop"
+ },
+ "Medieval Backstories No HAR": {
+  "folder": "3128454510",
+  "packageId": "AssassinsBro.MedievalBackstoriesNoHAR",
+  "source": "workshop"
+ },
+ "Medieval Backstories Patch": {
+  "folder": "3170653412",
+  "packageId": "GrassTypeFire.Medieval.BackstoriesPatch",
+  "source": "workshop"
+ },
+ "Medieval Coastal Outfits": {
+  "folder": "3483685923",
+  "packageId": "Gerrymon.MCO",
+  "source": "workshop"
+ },
+ "Medieval Era RimTheme": {
+  "folder": "3551233435",
+  "packageId": "Thale.MedievalEraRimTheme",
+  "source": "workshop"
+ },
+ "Medieval Fantasy Psycaster Raids": {
+  "folder": "3413747772",
+  "packageId": "Waffle.FantasyPatches",
+  "source": "workshop"
+ },
+ "Medieval Fantasy Themed Quest Rewards": {
+  "folder": "2955864975",
+  "packageId": "BotchJob.medievalfantasyquestrewards",
+  "source": "workshop"
+ },
+ "Medieval Fantasy Themed Rare Resources": {
+  "folder": "2942661554",
+  "packageId": "BotchJob.medievalfantasyrareresources",
+  "source": "workshop"
+ },
+ "Medieval Fantasy Themed Relic Quests": {
+  "folder": "3035624471",
+  "packageId": "BotchJob.medievalfantasythemedrelicquests",
+  "source": "workshop"
+ },
+ "Medieval Melee Sounds": {
+  "folder": "2962064646",
+  "packageId": "Bonible.MedievalMeleeSounds",
+  "source": "workshop"
+ },
+ "Medieval Persona Weapons": {
+  "folder": "2869057049",
+  "packageId": "Arquebus.MedievalPersonaWeapons",
+  "source": "workshop"
+ },
+ "Medieval Repair": {
+  "folder": "2955709750",
+  "packageId": "SM.MedievalRepair",
+  "source": "workshop"
+ },
+ "Medieval Signs": {
+  "folder": "3488857567",
+  "packageId": "Mewn.MedievalSigns",
+  "source": "workshop"
+ },
+ "Medieval Tailor Continued": {
+  "folder": "3512201406",
+  "packageId": "Tinda.Medieval.Tailor.Continued",
+  "source": "workshop"
+ },
+ "Medieval Tool Cabinet (Continued)": {
+  "folder": "3326055369",
+  "packageId": "Gaon.LowToolCabinet",
+  "source": "workshop"
+ },
+ "Medieval Trader Airships (Legacy)": {
+  "folder": "3448488157",
+  "packageId": "joeownage.automatic.traderships",
+  "source": "workshop"
+ },
+ "Medieval Undead Hordes": {
+  "folder": "2994387009",
+  "packageId": "RedMattis.Undead.Medieval",
+  "source": "workshop"
+ },
+ "Megafauna": {
+  "folder": "1055485938",
+  "packageId": "Spino.Megafauna",
+  "source": "workshop"
+ },
+ "Melee Animation": {
+  "folder": "2944488802",
+  "packageId": "co.uk.epicguru.meleeanimation",
+  "source": "workshop"
+ },
+ "Mercer's Backpacks (Continued)": {
+  "folder": "2014572849",
+  "packageId": "Mlie.MercerBackpacks",
+  "source": "workshop"
+ },
+ "Metal Pipe": {
+  "folder": "2960013295",
+  "packageId": "flangopink.MetalPipe",
+  "source": "workshop"
+ },
+ "Metal Pipe Horseshoe Replacement": {
+  "folder": "2961064957",
+  "packageId": "flangopink.MetalPipeHorseshoe",
+  "source": "workshop"
+ },
+ "Milky Way": {
+  "folder": "3773448562",
+  "packageId": "Andromeda.MilkyWay",
+  "source": "workshop"
+ },
+ "Millitarism Meme": {
+  "folder": "3482463633",
+  "packageId": "seti.millitarism",
+  "source": "workshop"
+ },
+ "Mine Sight": {
+  "folder": "3769804600",
+  "packageId": "rabiosus.minesight",
+  "source": "workshop"
+ },
+ "Minerals Framework": {
+  "folder": "3562390384",
+  "packageId": "zacharyfoster.mineralsframework",
+  "source": "workshop"
+ },
+ "Minerals Frozen": {
+  "folder": "3562390973",
+  "packageId": "zacharyfoster.mineralsfrozen",
+  "source": "workshop"
+ },
+ "Minerals Rock": {
+  "folder": "3562391080",
+  "packageId": "zacharyfoster.mineralsrock",
+  "source": "workshop"
+ },
+ "Minerals Sparkle": {
+  "folder": "3562390730",
+  "packageId": "zacharyfoster.mineralssparkle",
+  "source": "workshop"
+ },
+ "Mines 2.0": {
+  "folder": "2503894706",
+  "packageId": "Cain.Mineshaft",
+  "source": "workshop"
+ },
+ "Mini Gravships": {
+  "folder": "3527312835",
+  "packageId": "memer.minigravships",
+  "source": "workshop"
+ },
+ "Miniaturization (Minify)": {
+  "folder": "2885885154",
+  "packageId": "Cyber.Miniaturization",
+  "source": "workshop"
+ },
+ "MinifyEverything": {
+  "folder": "872762753",
+  "packageId": "erdelf.MinifyEverything",
+  "source": "workshop"
+ },
+ "MiningCo. Alert speaker (Continued)": {
+  "folder": "3276121703",
+  "packageId": "Mlie.MiningCoAlertSpeaker",
+  "source": "workshop"
+ },
+ "MiningCo. DrillTurret (Continued)": {
+  "folder": "3258344832",
+  "packageId": "Mlie.MiningCoDrillTurret",
+  "source": "workshop"
+ },
+ "MiningCo. MMS (Continued)": {
+  "folder": "3257136373",
+  "packageId": "Mlie.MiningCoMMS",
+  "source": "workshop"
+ },
+ "MiningCo. Spaceship (Continued)": {
+  "folder": "2912642991",
+  "packageId": "Mlie.MiningCoSpaceship",
+  "source": "workshop"
+ },
+ "Misc. Training": {
+  "folder": "717575199",
+  "packageId": "Haplo.Miscellaneous.Training",
+  "source": "workshop"
+ },
+ "Misc. Training Medieval Retexture": {
+  "folder": "3271602770",
+  "packageId": "Serek.MiscTrainingMedievalRetexture",
+  "source": "workshop"
+ },
+ "Missing Art Fixes": {
+  "folder": "MissingArtFixes",
+  "packageId": "mandrake.missingartfixes",
+  "source": "local"
+ },
+ "Mo'Events (Continued)": {
+  "folder": "2035143365",
+  "packageId": "Mlie.MoEvents",
+  "source": "workshop"
+ },
+ "Mod Options Sort": {
+  "folder": "2910865748",
+  "packageId": "Superniquito.ModOptionsSort",
+  "source": "workshop"
+ },
+ "Modded Weapon Sound Replacement": {
+  "folder": "2999509683",
+  "packageId": "Bonible.Modded.Gun.Sound.Pack",
+  "source": "workshop"
+ },
+ "Modify Tiles at Game Start": {
+  "folder": "3667490447",
+  "packageId": "Hali.ModifyLandingTile",
+  "source": "workshop"
+ },
+ "ModularWeapons 2": {
+  "folder": "3497834944",
+  "packageId": "kaitorisenkou.ModularWeapons2",
+  "source": "workshop"
+ },
+ "Mood Alerts": {
+  "folder": "3128351120",
+  "packageId": "Deadmano.MoodAlerts",
+  "source": "workshop"
+ },
+ "Mood Chain Reaction": {
+  "folder": "3721381956",
+  "packageId": "acutus.moodchainreaction",
+  "source": "workshop"
+ },
+ "Mooloh's Dnd Menagerie": {
+  "folder": "2751849453",
+  "packageId": "mooloh.dndmenagerie",
+  "source": "workshop"
+ },
+ "Moon Factions": {
+  "folder": "3561739080",
+  "packageId": "ocarina.hazzor.moon.factions",
+  "source": "workshop"
+ },
+ "Moonlight": {
+  "folder": "3261311563",
+  "packageId": "Owlchemist.Moonlight",
+  "source": "workshop"
+ },
+ "More Archotech Implants": {
+  "folder": "2646064233",
+  "packageId": "LegendaryMinuteman.MAI",
+  "source": "workshop"
+ },
+ "More Creepjoiners": {
+  "folder": "3434682604",
+  "packageId": "metalocif.morecreeps",
+  "source": "workshop"
+ },
+ "More Dangerous Game": {
+  "folder": "2364245786",
+  "packageId": "zylle.MoreDangerousGame",
+  "source": "workshop"
+ },
+ "More Faction Interaction (Continued)": {
+  "folder": "2379076640",
+  "packageId": "Mlie.MoreFactionInteraction",
+  "source": "workshop"
+ },
+ "More Linkables": {
+  "folder": "1103809207",
+  "packageId": "4loris4.MoreLinkables",
+  "source": "workshop"
+ },
+ "More Milkable and Shearable Animals": {
+  "folder": "3453878341",
+  "packageId": "KobeRiddle.MilkAndWoolPatches",
+  "source": "workshop"
+ },
+ "More Pause Events": {
+  "folder": "1874708724",
+  "packageId": "sirrandoo.mpe",
+  "source": "workshop"
+ },
+ "More Persona Traits": {
+  "folder": "2863308112",
+  "packageId": "Arquebus.MorePersonaTraits",
+  "source": "workshop"
+ },
+ "More Predators": {
+  "folder": "2347596617",
+  "packageId": "zylle.MorePredators",
+  "source": "workshop"
+ },
+ "More Prop Categories": {
+  "folder": "3167021055",
+  "packageId": "ferny.propscore",
+  "source": "workshop"
+ },
+ "More Psycasts (Continued)": {
+  "folder": "2036349987",
+  "packageId": "Mlie.MorePsycasts",
+  "source": "workshop"
+ },
+ "More Ritual Rewards": {
+  "folder": "2582489076",
+  "packageId": "Sinnamon.MoreRitualRewards",
+  "source": "workshop"
+ },
+ "More Ritual Seats": {
+  "folder": "3411913071",
+  "packageId": "toastyman.moreritualseats",
+  "source": "workshop"
+ },
+ "More Sculpture": {
+  "folder": "1612316880",
+  "packageId": "Bichang.MoreSculpture",
+  "source": "workshop"
+ },
+ "More Slavery Stuff": {
+  "folder": "2896845138",
+  "packageId": "GarryFlowers.MoreSlaveryStuff",
+  "source": "workshop"
+ },
+ "More Utility Packs (Continued)": {
+  "folder": "3249560356",
+  "packageId": "zal.moreutilitypacks",
+  "source": "workshop"
+ },
+ "More Vanilla Biomes": {
+  "folder": "1931453053",
+  "packageId": "zylle.MoreVanillaBiomes",
+  "source": "workshop"
+ },
+ "More Vanilla Fences": {
+  "folder": "2546954423",
+  "packageId": "Jiopaba.Fences",
+  "source": "workshop"
+ },
+ "More Vanilla Textures": {
+  "folder": "2707120862",
+  "packageId": "tidal.morevanilla.textures",
+  "source": "workshop"
+ },
+ "MoreAgingMultiplier": {
+  "folder": "2879214881",
+  "packageId": "vingy.moreagingmulitplier",
+  "source": "workshop"
+ },
+ "Morphs Assorted Biotech Retex": {
+  "folder": "2950383797",
+  "packageId": "MorphsAssorted.BiotechRetex",
+  "source": "workshop"
+ },
+ "MorrowRim - Dunmer Styles": {
+  "folder": "3244646489",
+  "packageId": "ESCP.MorrowRim.DunmerStyles",
+  "source": "workshop"
+ },
+ "MorrowRim - Passive Birthsigns": {
+  "folder": "3244646911",
+  "packageId": "ESCP.MorrowRim.BirthsignsPassive",
+  "source": "workshop"
+ },
+ "Museums": {
+  "folder": "3204176859",
+  "packageId": "Nightmare.Museums",
+  "source": "workshop"
+ },
+ "MutatorWorldIcons": {
+  "folder": "3551904193",
+  "packageId": "Snobi.MutatorWorldIcons",
+  "source": "workshop"
+ },
+ "Muzzle Flash": {
+  "folder": "2917732219",
+  "packageId": "IssacZhuang.MuzzleFlash",
+  "source": "workshop"
+ },
+ "My Little Planet": {
+  "folder": "1117406550",
+  "packageId": "Oblitus.MyLittlePlanet",
+  "source": "workshop"
+ },
+ "Myf's Vanilla Psycast Expanded Tweaks": {
+  "folder": "3328399391",
+  "packageId": "Myf.VPE.Tweaks",
+  "source": "workshop"
+ },
+ "Mythic Ages: Megafauna Bestiary": {
+  "folder": "3537788184",
+  "packageId": "veterano.mythicages.megafaunabestiary",
+  "source": "workshop"
+ },
+ "NANAME Floors": {
+  "folder": "3293767181",
+  "packageId": "oels.nanamefloors",
+  "source": "workshop"
+ },
+ "Natural Paths": {
+  "folder": "2008833499",
+  "packageId": "RadZerp.naturalPaths",
+  "source": "workshop"
+ },
+ "Never Generate Relations": {
+  "folder": "2891797130",
+  "packageId": "doll.nevergeneraterelations",
+  "source": "workshop"
+ },
+ "New Anomaly Threats": {
+  "folder": "3274840013",
+  "packageId": "GoGaTio.NewAnomalyThreats",
+  "source": "workshop"
+ },
+ "New Limbs Needs Training": {
+  "folder": "2439159828",
+  "packageId": "Mlie.NewLimbsNeedsTraining",
+  "source": "workshop"
+ },
+ "New Zone Tools (Continued)": {
+  "folder": "2377860105",
+  "packageId": "Mlie.NewZoneTools",
+  "source": "workshop"
+ },
+ "Nice Health Tab": {
+  "folder": "3328729902",
+  "packageId": "Andromeda.NiceHealthTab",
+  "source": "workshop"
+ },
+ "Nice Research Tab": {
+  "folder": "3773496046",
+  "packageId": "Andromeda.NiceResearchTab",
+  "source": "workshop"
+ },
+ "Night Lights": {
+  "folder": "2149276108",
+  "packageId": "zylle.NightLights",
+  "source": "workshop"
+ },
+ "Nightmare Core": {
+  "folder": "3047049650",
+  "packageId": "Nightmare.Core",
+  "source": "workshop"
+ },
+ "No Burn Metal": {
+  "folder": "1923990111",
+  "packageId": "Unon.NoBurnMetal",
+  "source": "workshop"
+ },
+ "No Disabled Factions In Quests": {
+  "folder": "2892125637",
+  "packageId": "kathanon.NoDisabledFactions",
+  "source": "workshop"
+ },
+ "No Forced Slowdown": {
+  "folder": "1419593453",
+  "packageId": "Dingo.NoForcedSlowdown",
+  "source": "workshop"
+ },
+ "No Job Authors": {
+  "folder": "2009825774",
+  "packageId": "Doug.NoJobAuthors",
+  "source": "workshop"
+ },
+ "No Missing Gene Icons": {
+  "folder": "2890795292",
+  "packageId": "Mlie.NoMissingGeneIcons",
+  "source": "workshop"
+ },
+ "No More Lethal Damage Threshold": {
+  "folder": "2657551690",
+  "packageId": "Jdalt.NMLDT",
+  "source": "workshop"
+ },
+ "No Random Apparel on Ideology Edit": {
+  "folder": "2669243201",
+  "packageId": "Edern.NoRandomApparelOnIdeoEdit",
+  "source": "workshop"
+ },
+ "No Random Ideologies": {
+  "folder": "3337263133",
+  "packageId": "Mlie.NoRandomIdeologies",
+  "source": "workshop"
+ },
+ "No Summon Mech Threat Gizmo": {
+  "folder": "2889317343",
+  "packageId": "Canon.NoMechSummonerGizmo",
+  "source": "workshop"
+ },
+ "Nomad Friendly Quests": {
+  "folder": "3616175831",
+  "packageId": "jaeger972.nomadfreindlyquests",
+  "source": "workshop"
+ },
+ "Non uno Pinata (don't drop items)": {
+  "folder": "1778821244",
+  "packageId": "avilmask.NonUnoPinata",
+  "source": "workshop"
+ },
+ "Non-Destructive Gravlaunch": {
+  "folder": "3522708183",
+  "packageId": "planetace.nondestructivegravlaunch",
+  "source": "workshop"
+ },
+ "Not My Fault": {
+  "folder": "2870045856",
+  "packageId": "Vesper.NotMyFault",
+  "source": "workshop"
+ },
+ "Nuclear revolution": {
+  "folder": "3536364597",
+  "packageId": "oddbase.nuclearrevolution",
+  "source": "workshop"
+ },
+ "Numbers": {
+  "folder": "1414302321",
+  "packageId": "Mehni.Numbers",
+  "source": "workshop"
+ },
+ "Nutrient Paste Love": {
+  "folder": "3386437690",
+  "packageId": "espio.pastelove",
+  "source": "workshop"
+ },
+ "Obsidia Expansion - Ideology Icons": {
+  "folder": "2990607010",
+  "packageId": "ObsidiaExpansion.Ideology.Icons",
+  "source": "workshop"
+ },
+ "Odysseus Vacsuit Set": {
+  "folder": "3530182181",
+  "packageId": "Kilo.OdysseusVacSet",
+  "source": "workshop"
+ },
+ "Oktober's Scrap-Tek": {
+  "folder": "3122686960",
+  "packageId": "OK.ScrapTek",
+  "source": "workshop"
+ },
+ "Ollie's Invisible Walls": {
+  "folder": "2857888739",
+  "packageId": "ucp.invisiblewalls",
+  "source": "workshop"
+ },
+ "Onimods - Electric Torches and Braziers": {
+  "folder": "3301583634",
+  "packageId": "Onimods.ElectricTorches",
+  "source": "workshop"
+ },
+ "Oops All Gene Banks": {
+  "folder": "2883683444",
+  "packageId": "redundant.oopsallgenepacks",
+  "source": "workshop"
+ },
+ "Optimization: Leathers - C# Edition": {
+  "folder": "2591816333",
+  "packageId": "Scorpio.OptimizationLeathers",
+  "source": "workshop"
+ },
+ "Optimization: Meats - C# Edition": {
+  "folder": "2542931556",
+  "packageId": "seohyeon.OptimizationMeats",
+  "source": "workshop"
+ },
+ "Optional Icons for Architect Icons": {
+  "folder": "1966995052",
+  "packageId": "proxyer.optionalicons4ai",
+  "source": "workshop"
+ },
+ "Oracle's Miscellania": {
+  "folder": "3279582979",
+  "packageId": "oracle.miscellania",
+  "source": "workshop"
+ },
+ "Orbital Platforms": {
+  "folder": "3525980713",
+  "packageId": "RashoMcree.Odyssey.OrbitalPlatforms",
+  "source": "workshop"
+ },
+ "Orc Clan + Xenotype": {
+  "folder": "3232348025",
+  "packageId": "Karew.OrcClan",
+  "source": "workshop"
+ },
+ "Out of Combat ReBoost": {
+  "folder": "3527970878",
+  "packageId": "Coolzie.OOCReBoost",
+  "source": "workshop"
+ },
+ "Outer Rim - Core": {
+  "folder": "2919227155",
+  "packageId": "Neronix17.OuterRim.Core",
+  "source": "workshop"
+ },
+ "Outer Rim - Droid Depot": {
+  "folder": "3096501398",
+  "packageId": "Neronix17.OuterRim.DroidDepot",
+  "source": "workshop"
+ },
+ "Outer Rim - Furniture & Decor": {
+  "folder": "2919553599",
+  "packageId": "Neronix17.OuterRim.FurnitureAndDecor",
+  "source": "workshop"
+ },
+ "Outer Rim - Galactic Diversity": {
+  "folder": "2980427615",
+  "packageId": "Neronix17.OuterRim.GalacticDiversity",
+  "source": "workshop"
+ },
+ "Outer Rim - Galactic Empire": {
+  "folder": "2919248699",
+  "packageId": "Neronix17.OuterRim.GalacticEmpire",
+  "source": "workshop"
+ },
+ "Outer Rim - Rebel Alliance": {
+  "folder": "2919249903",
+  "packageId": "Neronix17.OuterRim.RebelAlliance",
+  "source": "workshop"
+ },
+ "Outfit Builder Redux^2": {
+  "folder": "3589354596",
+  "packageId": "ANNOProfi.OutfitBuilderRedux2",
+  "source": "workshop"
+ },
+ "Outfit Stands Plus": {
+  "folder": "3545172389",
+  "packageId": "khamenman.OutfitStandsPLus",
+  "source": "workshop"
+ },
+ "Outfitted 1.6": {
+  "folder": "3546414006",
+  "packageId": "mitasamodel.Outfitted",
+  "source": "workshop"
+ },
+ "Outland - Genetics": {
+  "folder": "2910172297",
+  "packageId": "Neronix17.Outland.Genetics",
+  "source": "workshop"
+ },
+ "OverflowingFlowers": {
+  "folder": "3005103112",
+  "packageId": "sumika.OverflowingFlowers",
+  "source": "workshop"
+ },
+ "Pandora's Framework": {
+  "folder": "3226701491",
+  "packageId": "BlackMarket420.PandoraFramework",
+  "source": "workshop"
+ },
+ "Passion On Level Up Plus": {
+  "folder": "3526025445",
+  "packageId": "Ayas.PassionOnLevelUpPlus",
+  "source": "workshop"
+ },
+ "Pawn Education (Continued)": {
+  "folder": "2296533470",
+  "packageId": "Mlie.PawnEducation",
+  "source": "workshop"
+ },
+ "Pawn Name Variety (Continued)": {
+  "folder": "3548290568",
+  "packageId": "Mlie.PawnNameVariety",
+  "source": "workshop"
+ },
+ "Pawn Target Fix": {
+  "folder": "2014789938",
+  "packageId": "fed1sPlay.PawnTargetFix",
+  "source": "workshop"
+ },
+ "Peer Pressure (Continued)": {
+  "folder": "3605155621",
+  "packageId": "densevoid.peerpressure",
+  "source": "workshop"
+ },
+ "Performance - Slower Pawn Tick Rate": {
+  "folder": "3524116050",
+  "packageId": "Arkymn.SlowerPawnTickRate",
+  "source": "workshop"
+ },
+ "Performance Optimizer": {
+  "folder": "2664723367",
+  "packageId": "Taranchuk.PerformanceOptimizer",
+  "source": "workshop"
+ },
+ "Perishable": {
+  "folder": "2294597530",
+  "packageId": "wtfomgjohnny.Perishable",
+  "source": "workshop"
+ },
+ "Persistent Precepts": {
+  "folder": "2944765939",
+  "packageId": "Alleykat.PersistentPrecepts",
+  "source": "workshop"
+ },
+ "Perspective: Buildings (Continued)": {
+  "folder": "3346955193",
+  "packageId": "Mlie.PerspectiveBuildings",
+  "source": "workshop"
+ },
+ "Pesky's Arcanist Ideology Style Pack": {
+  "folder": "3370539088",
+  "packageId": "pesky.arcanist.style",
+  "source": "workshop"
+ },
+ "Phaneron's Basic Storage": {
+  "folder": "3201536200",
+  "packageId": "phaneron.basic.storage",
+  "source": "workshop"
+ },
+ "Pick Up And Haul": {
+  "folder": "1279012058",
+  "packageId": "Mehni.PickUpAndHaul",
+  "source": "workshop"
+ },
+ "Pick Up And Haul - Shared Storage Access": {
+  "folder": "3774922633",
+  "packageId": "sugarcube.puahsharedstorage",
+  "source": "workshop"
+ },
+ "Pigs are smart": {
+  "folder": "2837154037",
+  "packageId": "gOnezZle.Pig",
+  "source": "workshop"
+ },
+ "Planning Extended": {
+  "folder": "2877392159",
+  "packageId": "Scherub.PlanningExtended",
+  "source": "workshop"
+ },
+ "PlantTreeIndoor": {
+  "folder": "3569744872",
+  "packageId": "planttreeindoor.serval.patch",
+  "source": "workshop"
+ },
+ "Pocket Sand": {
+  "folder": "2226330302",
+  "packageId": "usagirei.pocketsand",
+  "source": "workshop"
+ },
+ "Polyamory Beds (Vanilla Edition)": {
+  "folder": "3276496684",
+  "packageId": "Meltup.PolyamoryBeds.Vanilla",
+  "source": "workshop"
+ },
+ "Possessed Weapons": {
+  "folder": "2982391372",
+  "packageId": "BotchJob.PossessedWeapons",
+  "source": "workshop"
+ },
+ "Post-apocalyptic Shelters": {
+  "folder": "2444147091",
+  "packageId": "Aoba.TentShelters",
+  "source": "workshop"
+ },
+ "Posthuman Drift Core Mod": {
+  "folder": "3521814323",
+  "packageId": "Xylthixlm.Races.Core",
+  "source": "workshop"
+ },
+ "Posthuman Drift Titan Xenotype": {
+  "folder": "3540820354",
+  "packageId": "Xylthixlm.Races.Titan",
+  "source": "workshop"
+ },
+ "Power mill (1.4-1.6)": {
+  "folder": "2884054310",
+  "packageId": "thereallemon.powermill",
+  "source": "workshop"
+ },
+ "Practical Powercells": {
+  "folder": "3524003581",
+  "packageId": "mrwireman.powercell.01",
+  "source": "workshop"
+ },
+ "Precepts and Memes (Continued)": {
+  "folder": "2894625496",
+  "packageId": "Mlie.PreceptsAndMemes",
+  "source": "workshop"
+ },
+ "Precepts and Memes - Rituals module (Continued)": {
+  "folder": "2894628849",
+  "packageId": "Mlie.PreceptsAndMemesRitualsModule",
+  "source": "workshop"
+ },
+ "Premade Xenotype Floatmenu to Dialog": {
+  "folder": "3350991041",
+  "packageId": "Lee.XenotypeFloattoDialogue",
+  "source": "workshop"
+ },
+ "Prepare Landing (Continued)": {
+  "folder": "3221125358",
+  "packageId": "m00nl1ght.UnofficialUpdates.PrepareLanding",
+  "source": "workshop"
+ },
+ "Prepatcher": {
+  "folder": "2934420800",
+  "packageId": "zetrith.prepatcher",
+  "source": "workshop"
+ },
+ "Primitive Floors (Continued)": {
+  "folder": "2801265143",
+  "packageId": "zal.PrimitiveFloors",
+  "source": "workshop"
+ },
+ "Primordial Geysers": {
+  "folder": "2896731795",
+  "packageId": "IronScruff.PrimordialGeysers",
+  "source": "workshop"
+ },
+ "Priority Treatment Ressurected": {
+  "folder": "3009738919",
+  "packageId": "tk421storm.PriorityTreatmentRessurected",
+  "source": "workshop"
+ },
+ "Prison Labor": {
+  "folder": "1899474310",
+  "packageId": "avius.prisonlabor",
+  "source": "workshop"
+ },
+ "Prisoner Realism": {
+  "folder": "3760196312",
+  "packageId": "Legator.PrisonerRealism",
+  "source": "workshop"
+ },
+ "Prisoners Should Fear Turrets": {
+  "folder": "2602436826",
+  "packageId": "Mlie.PrisonersShouldFearTurrets",
+  "source": "workshop"
+ },
+ "Progression: Storage": {
+  "folder": "3292746186",
+  "packageId": "ferny.progressionstorage",
+  "source": "workshop"
+ },
+ "Projectile Bullet Retexture": {
+  "folder": "2962208832",
+  "packageId": "ND.RTPJ",
+  "source": "workshop"
+ },
+ "Proselytizing Never": {
+  "folder": "3053650876",
+  "packageId": "Yoann.ProselytizingNever",
+  "source": "workshop"
+ },
+ "Prosthetic No Missing Body Parts (Continued)": {
+  "folder": "2739055353",
+  "packageId": "Mlie.ProstheticNoMissingBodyParts",
+  "source": "workshop"
+ },
+ "Psilocap Cultivation": {
+  "folder": "3523760036",
+  "packageId": "Laureeeeeeeeeeeeeeen.shrooms",
+  "source": "workshop"
+ },
+ "Psychic Sensitivity Affects More (VPE)": {
+  "folder": "2881380497",
+  "packageId": "mute.vpesensitivity",
+  "source": "workshop"
+ },
+ "Psyshrooms": {
+  "folder": "3280268952",
+  "packageId": "lambda.Psykshroom",
+  "source": "workshop"
+ },
+ "Quality Affects HP": {
+  "folder": "2898409109",
+  "packageId": "fluxilis.germanquality",
+  "source": "workshop"
+ },
+ "Quality Colors (Continued)": {
+  "folder": "3513846773",
+  "packageId": "DawnsGlow.qualcolor",
+  "source": "workshop"
+ },
+ "QualityBuilder Unofficial 1.6": {
+  "folder": "3512466087",
+  "packageId": "hatti.qualitybuilder",
+  "source": "workshop"
+ },
+ "Quarry": {
+  "folder": "2007576583",
+  "packageId": "Ogliss.TheWhiteCrayon.Quarry",
+  "source": "workshop"
+ },
+ "Quest Expiration Critical Alert": {
+  "folder": "2405632805",
+  "packageId": "reiquard.questexpirationcriticalalert",
+  "source": "workshop"
+ },
+ "Questing Gives Goodwill (1.6)": {
+  "folder": "3074941619",
+  "packageId": "SirRolin.QuestsGivesGoodwill",
+  "source": "workshop"
+ },
+ "Questing Meme": {
+  "folder": "2826539854",
+  "packageId": "SirMashedPotato.QuestingMeme",
+  "source": "workshop"
+ },
+ "R-Hen-G: Chaos Chickens": {
+  "folder": "3521663802",
+  "packageId": "DizzyEevee.RHenG",
+  "source": "workshop"
+ },
+ "RBSE": {
+  "folder": "850429707",
+  "packageId": "Rah.RBSE",
+  "source": "workshop"
+ },
+ "RIMMSqol": {
+  "folder": "1084452457",
+  "packageId": "MalteSchulze.RIMMSqol",
+  "source": "workshop"
+ },
+ "RImtalk Expand : News, Expert and Colony Chronicle": {
+  "folder": "3714540653",
+  "packageId": "cyberchronicle.rimtalkexperts",
+  "source": "workshop"
+ },
+ "RPG Adventure Flavour Pack - Fork": {
+  "folder": "3342554570",
+  "packageId": "Joe.RPGAdventureFlavour.Fork",
+  "source": "workshop"
+ },
+ "RPG Dialog": {
+  "folder": "3547971440",
+  "packageId": "esvn.RPGDialog",
+  "source": "workshop"
+ },
+ "RPG Style Inventory": {
+  "folder": "1561221991",
+  "packageId": "Sandy.RPGStyleInventory",
+  "source": "workshop"
+ },
+ "RPG Style Level Up Mod": {
+  "folder": "1995668415",
+  "packageId": "FLASHPOINT55.RPGStyleLevelUpMod",
+  "source": "workshop"
+ },
+ "RWLayout": {
+  "folder": "2209393954",
+  "packageId": "name.krypt.rimworld.rwlayout.alpha2",
+  "source": "workshop"
+ },
+ "Rah's Vanilla Turrets Expansion": {
+  "folder": "2583529720",
+  "packageId": "Rah.RVTE",
+  "source": "workshop"
+ },
+ "Raid Protection Fee": {
+  "folder": "3650927927",
+  "packageId": "Leo.RaidProtectionFee",
+  "source": "workshop"
+ },
+ "Raider Swarm Compression": {
+  "folder": "3515541126",
+  "packageId": "Ingendum.RaiderSwarmCompression",
+  "source": "workshop"
+ },
+ "Random's Gene Assistant": {
+  "folder": "2882497271",
+  "packageId": "rimworld.randomcoughdrop.geneassistant",
+  "source": "workshop"
+ },
+ "RandomGrowthChoices (Continued)": {
+  "folder": "3413983862",
+  "packageId": "zal.randomgrowthchoices",
+  "source": "workshop"
+ },
+ "ReBuild: Doors and Corners": {
+  "folder": "3262718980",
+  "packageId": "ReBuild.COTR.DoorsAndCorners",
+  "source": "workshop"
+ },
+ "ReGrowth 2": {
+  "folder": "2260097569",
+  "packageId": "ReGrowth.BOTR.Core",
+  "source": "workshop"
+ },
+ "ReGrowth 2 World Map Beautification for Advanced Biomes (Continued)": {
+  "folder": "3564679844",
+  "packageId": "noxilie.regrow.wmb.advancedbiomes",
+  "source": "workshop"
+ },
+ "ReGrowth 2 World Map Beautification for Alpha Biomes": {
+  "folder": "3564679302",
+  "packageId": "noxilie.regrow.wmb.alphabiomes",
+  "source": "workshop"
+ },
+ "ReGrowth 2 World Map Beautification for More Vanilla Biomes": {
+  "folder": "3564679624",
+  "packageId": "noxilie.regrow.wmb.morevanillabiomes",
+  "source": "workshop"
+ },
+ "ReGrowth 2: Aspen": {
+  "folder": "2545774148",
+  "packageId": "ReGrowth.BOTR.AspenForest",
+  "source": "workshop"
+ },
+ "ReGrowth ReTextures Patches": {
+  "folder": "3410715318",
+  "packageId": "Zaire82.RGRetexPatches",
+  "source": "workshop"
+ },
+ "ReGrowth: Boiling": {
+  "folder": "3565675704",
+  "packageId": "ReGrowth.BOTR.BoilingForest",
+  "source": "workshop"
+ },
+ "ReGrowth: Core Animal Texture Patch": {
+  "folder": "2985646173",
+  "packageId": "SHIRA.RGRWTHPATCH",
+  "source": "workshop"
+ },
+ "Real Faction Guest (Continued)": {
+  "folder": "2886929245",
+  "packageId": "Mlie.RealFactionGuest",
+  "source": "workshop"
+ },
+ "Real Ruins": {
+  "folder": "1552146295",
+  "packageId": "Woolstrand.RealRuins",
+  "source": "workshop"
+ },
+ "Realistic Darkness (Light)": {
+  "folder": "1555355332",
+  "packageId": "Wemd.RealisticDarknessLight",
+  "source": "workshop"
+ },
+ "Realistic Human Sounds (Continued)": {
+  "folder": "3497264525",
+  "packageId": "Mlie.RealisticHumanSounds",
+  "source": "workshop"
+ },
+ "Reasonable Components": {
+  "folder": "1542915888",
+  "packageId": "twistedpacifist.ReasonableComponents",
+  "source": "workshop"
+ },
+ "Rebalanced Ancient Junk": {
+  "folder": "3336109612",
+  "packageId": "mosi.RebalancedAncientJunk",
+  "source": "workshop"
+ },
+ "Recipe icons (Continued)": {
+  "folder": "2904906618",
+  "packageId": "Mlie.RecipeIcons",
+  "source": "workshop"
+ },
+ "Recon And Discovery (Continued)": {
+  "folder": "2035131107",
+  "packageId": "Mlie.ReconAndDiscovery",
+  "source": "workshop"
+ },
+ "Recubes Your Cube": {
+  "folder": "3220139435",
+  "packageId": "mss.recube",
+  "source": "workshop"
+ },
+ "Recycle 1.5": {
+  "folder": "1534883539",
+  "packageId": "sneaks.recycle",
+  "source": "workshop"
+ },
+ "Recycle This (Continued)": {
+  "folder": "3253550009",
+  "packageId": "Mlie.RecycleThis",
+  "source": "workshop"
+ },
+ "Reel's Expanded Storage": {
+  "folder": "3237638097",
+  "packageId": "reel.expanded.storage",
+  "source": "workshop"
+ },
+ "Reel's Facial Animation Textures": {
+  "folder": "3118315633",
+  "packageId": "Reel.FacialAnims",
+  "source": "workshop"
+ },
+ "Reel's Frieren Hairs": {
+  "folder": "3119772468",
+  "packageId": "Reel.Hair2",
+  "source": "workshop"
+ },
+ "Reel's Galactic Hairs": {
+  "folder": "2278578765",
+  "packageId": "Reel.Hair",
+  "source": "workshop"
+ },
+ "Reel's Insector Faction": {
+  "folder": "3309022698",
+  "packageId": "Reel.InsectorFaction",
+  "source": "workshop"
+ },
+ "Reel's Turret Pipeline": {
+  "folder": "3424132769",
+  "packageId": "Reel.TurretPipeline",
+  "source": "workshop"
+ },
+ "Relevant Stats In Description": {
+  "folder": "2692669482",
+  "packageId": "Mlie.RelevantStatsInDescription",
+  "source": "workshop"
+ },
+ "Repair Station": {
+  "folder": "3534893110",
+  "packageId": "gunseeker.repairstation",
+  "source": "workshop"
+ },
+ "Replace Stuff - Continued": {
+  "folder": "3526354009",
+  "packageId": "Memegoddess.ReplaceStuff",
+  "source": "workshop"
+ },
+ "ReplaceLib": {
+  "folder": "3417393194",
+  "packageId": "ferny.ReplaceLib",
+  "source": "workshop"
+ },
+ "Replimat": {
+  "folder": "1715402900",
+  "packageId": "sumghai.Replimat",
+  "source": "workshop"
+ },
+ "Replimat Meals": {
+  "folder": "3274344708",
+  "packageId": "sumghai.ReplimatMeals",
+  "source": "workshop"
+ },
+ "Research Kit East Fix — Research Reinvented (Retextured)": {
+  "folder": "ResearchKitEastFix",
+  "packageId": "mandrake.researchkiteastfix",
+  "source": "local"
+ },
+ "Research Reinvented": {
+  "folder": "2868392160",
+  "packageId": "PeteTimesSix.ResearchReinvented",
+  "source": "workshop"
+ },
+ "Research Reinvented Retextured": {
+  "folder": "3279243445",
+  "packageId": "aw.researchreinvented.retextured",
+  "source": "workshop"
+ },
+ "Research Reinvented: Stepping Stones": {
+  "folder": "2868389782",
+  "packageId": "PeteTimesSix.ResearchReinvented.SteppingStones",
+  "source": "workshop"
+ },
+ "Resource Dictionary": {
+  "folder": "2817607528",
+  "packageId": "Scorpio.ResourceDictionary",
+  "source": "workshop"
+ },
+ "Resurrect Enemy Mechanoids": {
+  "folder": "2882468335",
+  "packageId": "nikidigi.ResurrectEnemyMechanoids",
+  "source": "workshop"
+ },
+ "Retextured! - Recycle This": {
+  "folder": "2978527594",
+  "packageId": "SoulRetextured.RecycleThis",
+  "source": "workshop"
+ },
+ "Reunion": {
+  "folder": "1985186461",
+  "packageId": "Kyrun.Reunion",
+  "source": "workshop"
+ },
+ "Right Click to Toss Carried Pawn": {
+  "folder": "3779630220",
+  "packageId": "Alma.TossEm",
+  "source": "workshop"
+ },
+ "Rim Control": {
+  "folder": "3774299554",
+  "packageId": "lordfelix.RimControl",
+  "source": "workshop"
+ },
+ "Rim cockroach": {
+  "folder": "3196253802",
+  "packageId": "LingLuo.Cockroach",
+  "source": "workshop"
+ },
+ "Rim of Madness - Bones Unofficial Fix": {
+  "folder": "3252977437",
+  "packageId": "sihv.rombonesPort",
+  "source": "workshop"
+ },
+ "Rim-Effect Renegade: Asari and Reapers": {
+  "folder": "3473370728",
+  "packageId": "RimEffectRenegade.AsariReapers",
+  "source": "workshop"
+ },
+ "Rim-Effect Renegade: Core": {
+  "folder": "3473370247",
+  "packageId": "RimEffectRenegade.Core",
+  "source": "workshop"
+ },
+ "Rim-Effect Renegade: Drell": {
+  "folder": "3473371103",
+  "packageId": "RimEffectRenegade.Drell",
+  "source": "workshop"
+ },
+ "Rim-Effect Renegade: Extended Cut": {
+  "folder": "3473382290",
+  "packageId": "RimEffectRenegade.ExtendedCut",
+  "source": "workshop"
+ },
+ "Rim-Effect Renegade: N7": {
+  "folder": "3473371554",
+  "packageId": "RimEffectRenegade.N7",
+  "source": "workshop"
+ },
+ "RimAI Core (BETA)": {
+  "folder": "3560404184",
+  "packageId": "kilokio.rimai.core",
+  "source": "workshop"
+ },
+ "RimAI Framework": {
+  "folder": "3529263357",
+  "packageId": "kilokio.rimai.framework",
+  "source": "workshop"
+ },
+ "RimBridgeServer": {
+  "folder": "3727949765",
+  "packageId": "brrainz.rimbridgeserver",
+  "source": "workshop"
+ },
+ "RimDefDump (local tooling)": {
+  "folder": "RimDefDump",
+  "packageId": "mandrake.rimdefdump",
+  "source": "local"
+ },
+ "RimFridge: Now with Shelves!": {
+  "folder": "2898411376",
+  "packageId": "rimfridge.kv.rw",
+  "source": "workshop"
+ },
+ "RimHUD": {
+  "folder": "1508850027",
+  "packageId": "Jaxe.RimHUD",
+  "source": "workshop"
+ },
+ "RimKeeper - Wild Animal Procreation": {
+  "folder": "3259367736",
+  "packageId": "Keepercraft.RimKeeperAnimals",
+  "source": "workshop"
+ },
+ "RimQuest (Continued)": {
+  "folder": "2263331727",
+  "packageId": "Mlie.RimQuest",
+  "source": "workshop"
+ },
+ "RimSaves": {
+  "folder": "1713367505",
+  "packageId": "aRandomKiwi.RimSaves",
+  "source": "workshop"
+ },
+ "RimScent": {
+  "folder": "3645569466",
+  "packageId": "reo.RimScent",
+  "source": "workshop"
+ },
+ "RimTalk": {
+  "folder": "3551203752",
+  "packageId": "cj.rimtalk",
+  "source": "workshop"
+ },
+ "RimTalk - Expand Actions": {
+  "folder": "3628755033",
+  "packageId": "sanguo.rimtalk.expandactions",
+  "source": "workshop"
+ },
+ "RimTalk - Expand Actions Core": {
+  "folder": "3661055729",
+  "packageId": "zruic.expand.action",
+  "source": "workshop"
+ },
+ "RimTalk - Expand Dialogue": {
+  "folder": "3662962455",
+  "packageId": "zruic.expand.dialogue",
+  "source": "workshop"
+ },
+ "RimTalk - Expand Literature": {
+  "folder": "3633249209",
+  "packageId": "cj.rimtalk.literature",
+  "source": "workshop"
+ },
+ "RimTalk - Expand Memory": {
+  "folder": "3608181242",
+  "packageId": "cj.rimtalk.expandmemory",
+  "source": "workshop"
+ },
+ "RimTalk - Expand Relation": {
+  "folder": "3661493651",
+  "packageId": "zruic.expand.relation",
+  "source": "workshop"
+ },
+ "RimTalk - Expand Thoughts": {
+  "folder": "3661175034",
+  "packageId": "zruic.expand.thoughts",
+  "source": "workshop"
+ },
+ "RimTalk - Expand Toddlers": {
+  "folder": "3659064387",
+  "packageId": "cj.rimtalk.toddlers",
+  "source": "workshop"
+ },
+ "RimTalk - Quests": {
+  "folder": "3642675329",
+  "packageId": "rimtalk.quests",
+  "source": "workshop"
+ },
+ "RimTalk Context Upgrade": {
+  "folder": "3641774579",
+  "packageId": "wuren.rimtalkcontextupgrade",
+  "source": "workshop"
+ },
+ "RimTalk Dialogue Patch": {
+  "folder": "3631632728",
+  "packageId": "neachi.RimTalkDialoguePatch",
+  "source": "workshop"
+ },
+ "RimTalk DynamicColors 边缘世谭-言出多彩": {
+  "folder": "3628773219",
+  "packageId": "Maiya.RimTalkDynamicColors",
+  "source": "workshop"
+ },
+ "RimTalk Event+": {
+  "folder": "3612632140",
+  "packageId": "saltgin.rimtalkeventmemory",
+  "source": "workshop"
+ },
+ "RimTalk Expand: AI Storyteller": {
+  "folder": "3715752189",
+  "packageId": "cyberchronicle.rimtalkstoryteller",
+  "source": "workshop"
+ },
+ "RimTalk Ideology Patch": {
+  "folder": "3724752618",
+  "packageId": "leyley.RimTalkIdeologyPatch",
+  "source": "workshop"
+ },
+ "RimTalk Mood Reactions": {
+  "folder": "3755539006",
+  "packageId": "drati.RimTalkMoodReactions",
+  "source": "workshop"
+ },
+ "RimTalk StyleExpand": {
+  "folder": "3694936738",
+  "packageId": "RimTalk.StyleExpand",
+  "source": "workshop"
+ },
+ "RimTalk-MemoryDigest": {
+  "folder": "3726488698",
+  "packageId": "OCEANTest7.rimtalk.memory",
+  "source": "workshop"
+ },
+ "RimTalk-Message Filter": {
+  "folder": "3697500330",
+  "packageId": "assssssqwww.FeelingFilter",
+  "source": "workshop"
+ },
+ "RimTalk-PromptCleaner": {
+  "folder": "3630607068",
+  "packageId": "OCEANTest6.Rimtalk.PromptCleaner",
+  "source": "workshop"
+ },
+ "RimTalk.DisplayOptimization": {
+  "folder": "3629456304",
+  "packageId": "OCEANTest5.Rimtalk.Enhance",
+  "source": "workshop"
+ },
+ "RimTalk: Persona Director": {
+  "folder": "3619548407",
+  "packageId": "RP.RimTalk.PersonaDirector",
+  "source": "workshop"
+ },
+ "RimTek Core": {
+  "folder": "3500429104",
+  "packageId": "Deon.rimtek.core",
+  "source": "workshop"
+ },
+ "RimTek DigiPal": {
+  "folder": "3500443258",
+  "packageId": "Deon.rimtek.digipal",
+  "source": "workshop"
+ },
+ "RimTek DocMate": {
+  "folder": "3500863752",
+  "packageId": "Deon.rimtek.docmate",
+  "source": "workshop"
+ },
+ "RimTek StealthBelt": {
+  "folder": "3501257149",
+  "packageId": "Deon.rimtek.stealthbelt",
+  "source": "workshop"
+ },
+ "RimTek Style": {
+  "folder": "3502852790",
+  "packageId": "Deon.rimtek.style",
+  "source": "workshop"
+ },
+ "RimThemes": {
+  "folder": "1668983184",
+  "packageId": "aRandomKiwi.RimThemes",
+  "source": "workshop"
+ },
+ "RimTraits - General Traits": {
+  "folder": "2206957172",
+  "packageId": "Sierra.RT.GeneralTraits",
+  "source": "workshop"
+ },
+ "RimTunes": {
+  "folder": "3399705740",
+  "packageId": "DepsCian.RimTunes",
+  "source": "workshop"
+ },
+ "Rimano: Architect Icons": {
+  "folder": "3212495112",
+  "packageId": "Deadmano.RimanoArchitectIcons",
+  "source": "workshop"
+ },
+ "Rimefeller": {
+  "folder": "1321849735",
+  "packageId": "Dubwise.Rimefeller",
+  "source": "workshop"
+ },
+ "Rimesis": {
+  "folder": "3767949538",
+  "packageId": "Font.Rimesis",
+  "source": "workshop"
+ },
+ "Rimsenal Faction Pack - Federation": {
+  "folder": "736172213",
+  "packageId": "rimsenal.federation",
+  "source": "workshop"
+ },
+ "Rimsenal Faction Pack - Spacer": {
+  "folder": "3086137468",
+  "packageId": "Rimsenal.Spacer",
+  "source": "workshop"
+ },
+ "Rimsenal Style Pack - Techist": {
+  "folder": "2661828028",
+  "packageId": "rimsenal.Techist",
+  "source": "workshop"
+ },
+ "Rimsenal Style Pack - Urbworld": {
+  "folder": "2908039338",
+  "packageId": "rimsenal.Urb",
+  "source": "workshop"
+ },
+ "Rimsential - Spaceports (Continued)": {
+  "folder": "3225120958",
+  "packageId": "zal.spaceports",
+  "source": "workshop"
+ },
+ "Rimsential - Total Control: Continued": {
+  "folder": "3063465133",
+  "packageId": "co.uk.epicguru.factionloadout",
+  "source": "workshop"
+ },
+ "Rimwars:Pureblood Xenotype": {
+  "folder": "3485069256",
+  "packageId": "Sov.Sith",
+  "source": "workshop"
+ },
+ "Rimworld Exploration Mode": {
+  "folder": "2941608795",
+  "packageId": "TheLastBulletBender.RWExploration",
+  "source": "workshop"
+ },
+ "Rimworld: Soundscape Enhanced": {
+  "folder": "3276642170",
+  "packageId": "tro.soundscape.enhanced",
+  "source": "workshop"
+ },
+ "Ritual Size Attenuation": {
+  "folder": "3262033797",
+  "packageId": "DelmainTweaks.RitualSizeAttenuation",
+  "source": "workshop"
+ },
+ "Romance & Intimacy On The Rim": {
+  "folder": "3612563959",
+  "packageId": "mianreplicate.romanceandintimacyontherim",
+  "source": "workshop"
+ },
+ "Romance On The Rim": {
+  "folder": "2654432921",
+  "packageId": "telardo.RomanceOnTheRim",
+  "source": "workshop"
+ },
+ "Romascita Style pack": {
+  "folder": "3277109336",
+  "packageId": "Resurrectionem.Romascita",
+  "source": "workshop"
+ },
+ "Roo's HD Hairstyles (continued)": {
+  "folder": "3559870636",
+  "packageId": "rooboid.hdhair.continued",
+  "source": "workshop"
+ },
+ "Roo's Minotaur Xenotype": {
+  "folder": "3548423129",
+  "packageId": "tug.Minotaur",
+  "source": "workshop"
+ },
+ "Roofed Scanning 1.6": {
+  "folder": "3524551636",
+  "packageId": "Kupie.IsJustDoingItLive.PlzDontHateMe.RoofedScanning",
+  "source": "workshop"
+ },
+ "Roots of Rimworld": {
+  "folder": "2977818583",
+  "packageId": "GHOST.RootsofRimworld",
+  "source": "workshop"
+ },
+ "Rottable Filter": {
+  "folder": "2845056427",
+  "packageId": "tests.Rottable",
+  "source": "workshop"
+ },
+ "RowMart Stylepack": {
+  "folder": "3503142907",
+  "packageId": "Resurrectionem.RowMart",
+  "source": "workshop"
+ },
+ "RunAndGun - Continued": {
+  "folder": "3562365100",
+  "packageId": "MemeGoddess.RunAndGun",
+  "source": "workshop"
+ },
+ "RuntimeGC [1.6] fork2": {
+  "folder": "3528496623",
+  "packageId": "louize.RuntimeGC.fork",
+  "source": "workshop"
+ },
+ "Rustic Meal Retexture": {
+  "folder": "3453364177",
+  "packageId": "Jelheb.RusticMealRetexture",
+  "source": "workshop"
+ },
+ "Ruthless Faction Pursuit": {
+  "folder": "3621784437",
+  "packageId": "matathias.ruthlessmechanoids",
+  "source": "workshop"
+ },
+ "SF Comfy Meditation (Continued)": {
+  "folder": "3432727841",
+  "packageId": "Mlie.SFComfyMeditation",
+  "source": "workshop"
+ },
+ "SZ_Atmospheric Events": {
+  "folder": "1874676885",
+  "packageId": "void.szatmosphericevents",
+  "source": "workshop"
+ },
+ "Salvage Rubble": {
+  "folder": "3529058623",
+  "packageId": "moja.salvagerubble",
+  "source": "workshop"
+ },
+ "Scavenging": {
+  "folder": "3108829323",
+  "packageId": "Romyashi.Scavenging",
+  "source": "workshop"
+ },
+ "Scenario Amender [1.6 Fixed]": {
+  "folder": "3761028060",
+  "packageId": "plusblankplus.scenarioamenderfork",
+  "source": "workshop"
+ },
+ "ScrubDaddy's Hairstyles": {
+  "folder": "3536769145",
+  "packageId": "ScrubDaddy.Hairstyles",
+  "source": "workshop"
+ },
+ "Search Option": {
+  "folder": "3508618083",
+  "packageId": "HellRevenger.SearchOption",
+  "source": "workshop"
+ },
+ "Search and Destroy (Continued)": {
+  "folder": "3232242247",
+  "packageId": "MemeGoddess.SearchAndDestroy",
+  "source": "workshop"
+ },
+ "Searchable Menus": {
+  "folder": "2928608119",
+  "packageId": "kathanon.SearchableMenus",
+  "source": "workshop"
+ },
+ "Seed Fish Tool": {
+  "folder": "3549336894",
+  "packageId": "dhl.seedfish",
+  "source": "workshop"
+ },
+ "SeedsPlease: Lite Redux": {
+  "folder": "3523459853",
+  "packageId": "Evyatar108.SeedsPleaseLiteRedux",
+  "source": "workshop"
+ },
+ "Self Dyeing": {
+  "folder": "2562859859",
+  "packageId": "avilmask.SelfDyeing",
+  "source": "workshop"
+ },
+ "Sellable Odyssey Unique Weapons": {
+  "folder": "3522909912",
+  "packageId": "Teiwaz.uws",
+  "source": "workshop"
+ },
+ "Sensible Bed Ownership": {
+  "folder": "3328702448",
+  "packageId": "sensiblebedownership.1trickPwnyta",
+  "source": "workshop"
+ },
+ "Sensible Factions": {
+  "folder": "3531306011",
+  "packageId": "Boots.SensibleFactions",
+  "source": "workshop"
+ },
+ "Sentience Catalyst Filth Rate Reducer": {
+  "folder": "3525790312",
+  "packageId": "FlyingSloth.SCFilthReducer",
+  "source": "workshop"
+ },
+ "Setosa's Power Tools": {
+  "folder": "3526160222",
+  "packageId": "setosa.power.tools",
+  "source": "workshop"
+ },
+ "Settlements buy more": {
+  "folder": "2886202254",
+  "packageId": "Victor.BuyMore",
+  "source": "workshop"
+ },
+ "Shavius's Medieval Flavour Pack": {
+  "folder": "2767940226",
+  "packageId": "shavius.Medieval.Flavour",
+  "source": "workshop"
+ },
+ "Shield Generators": {
+  "folder": "2540563802",
+  "packageId": "neronix17.shieldgenerators",
+  "source": "workshop"
+ },
+ "Show Known Techprints": {
+  "folder": "2920370783",
+  "packageId": "Spacemoth.ShowKnownTechprints",
+  "source": "workshop"
+ },
+ "Signs and Comments": {
+  "folder": "3281950776",
+  "packageId": "Dark.Signs",
+  "source": "workshop"
+ },
+ "Simple Apparel Recycling": {
+  "folder": "3239309389",
+  "packageId": "arvkus.simplerecycling",
+  "source": "workshop"
+ },
+ "Simple Cape and Hood Retexture": {
+  "folder": "3543386604",
+  "packageId": "Stokes.simplehoodcape",
+  "source": "workshop"
+ },
+ "Simple FX: Smoke": {
+  "folder": "3261314247",
+  "packageId": "Owlchemist.SimpleFX.Smoke2",
+  "source": "workshop"
+ },
+ "Simple Learning (Continued)": {
+  "folder": "3580464748",
+  "packageId": "Fox.SimpleLearning",
+  "source": "workshop"
+ },
+ "Simple Learning Retexture": {
+  "folder": "3026005966",
+  "packageId": "Phaneron.SimpleLearningRetexture",
+  "source": "workshop"
+ },
+ "Simple Slavery Collars": {
+  "folder": "2557274194",
+  "packageId": "TRIBeagle.simpleslaverycollars",
+  "source": "workshop"
+ },
+ "Simple Utilities: Fridge": {
+  "folder": "3219883811",
+  "packageId": "Owlchemist.FridgeUtilities",
+  "source": "workshop"
+ },
+ "Simple sidearms": {
+  "folder": "927155256",
+  "packageId": "PeteTimesSix.SimpleSidearms",
+  "source": "workshop"
+ },
+ "SimpleCameraSetting": {
+  "folder": "3232415388",
+  "packageId": "ray1203.SimpleCameraSetting",
+  "source": "workshop"
+ },
+ "Skill Bionics": {
+  "folder": "3228526665",
+  "packageId": "drwalz.contentmodnumberthreeskillbionics",
+  "source": "workshop"
+ },
+ "Skunks": {
+  "folder": "3775906812",
+  "packageId": "guppyfacesarecute.skunks",
+  "source": "workshop"
+ },
+ "Slaughtering Meme": {
+  "folder": "3151598704",
+  "packageId": "slaughteringMeme.rince",
+  "source": "workshop"
+ },
+ "Slave Outfits [1.6]": {
+  "folder": "1522429439",
+  "packageId": "Usgiyi.SlaveOutfits",
+  "source": "workshop"
+ },
+ "Slave Rebellions Improved (Continued)": {
+  "folder": "3259932217",
+  "packageId": "Mlie.SlaveRebellionsImproved",
+  "source": "workshop"
+ },
+ "Sleep Meditation": {
+  "folder": "3238976509",
+  "packageId": "Sl4vP0weR.SleepMeditation.1.5",
+  "source": "workshop"
+ },
+ "Sleeping Buddies": {
+  "folder": "3774741768",
+  "packageId": "astryl.SleepingBuddies",
+  "source": "workshop"
+ },
+ "Slightly Faster Mech Gestator": {
+  "folder": "3546705271",
+  "packageId": "ShepirotGamer.SlightlyFasterMechGestator",
+  "source": "workshop"
+ },
+ "Small Bedroom Furniture": {
+  "folder": "3570779724",
+  "packageId": "Xale86.SmallBedroomFurniture",
+  "source": "workshop"
+ },
+ "Small Vehicle Add-ons": {
+  "folder": "3420948947",
+  "packageId": "Inoshishi3.SmallVehicleAddons",
+  "source": "workshop"
+ },
+ "Smaller radius for Anima Trees, Shrines and Animus Stones": {
+  "folder": "2812513517",
+  "packageId": "Longman.SmallerRadiusForAnimaTreesAndShrines",
+  "source": "workshop"
+ },
+ "Smart Farming": {
+  "folder": "3220129183",
+  "packageId": "Owlchemist.SmartFarming",
+  "source": "workshop"
+ },
+ "Smart Meditation": {
+  "folder": "2800676538",
+  "packageId": "PureMJ.MjRimMods.SmartMeditation",
+  "source": "workshop"
+ },
+ "Smart Odyssey": {
+  "folder": "3522762411",
+  "packageId": "sarg.smartodyssey",
+  "source": "workshop"
+ },
+ "Smart Speed": {
+  "folder": "1504723424",
+  "packageId": "sarg.smartspeed",
+  "source": "workshop"
+ },
+ "Smarter Construction": {
+  "folder": "2202185773",
+  "packageId": "dhultgren.smarterconstruction",
+  "source": "workshop"
+ },
+ "Smarter Deconstruction and Mining (Continued)": {
+  "folder": "3261302741",
+  "packageId": "Mlie.SmarterDeconstructionAndMining",
+  "source": "workshop"
+ },
+ "Smelt More Stuff": {
+  "folder": "2347285971",
+  "packageId": "Hol.SmeltPatch",
+  "source": "workshop"
+ },
+ "Smooth Terrain": {
+  "folder": "3502765685",
+  "packageId": "ChaoticEnrico.SmoothTerrain",
+  "source": "workshop"
+ },
+ "Snap Out!": {
+  "folder": "1319782555",
+  "packageId": "weilbyte.snapout",
+  "source": "workshop"
+ },
+ "Social Experience from Trade": {
+  "folder": "3400608063",
+  "packageId": "Krelinos.SocialEXPFromTrade",
+  "source": "workshop"
+ },
+ "Sometimes Raids Go Wrong": {
+  "folder": "1551336515",
+  "packageId": "marvinkosh.sometimesraidsgowrong",
+  "source": "workshop"
+ },
+ "Space Tower": {
+  "folder": "3527936083",
+  "packageId": "HaiLuan.SpaceTower",
+  "source": "workshop"
+ },
+ "Space Worms (Continued)": {
+  "folder": "2105322804",
+  "packageId": "Mlie.SpaceWorms",
+  "source": "workshop"
+ },
+ "Spacer Arsenal": {
+  "folder": "3247891820",
+  "packageId": "det.spacerarsenal",
+  "source": "workshop"
+ },
+ "SpeakUp": {
+  "folder": "2502518544",
+  "packageId": "JPT.speakup",
+  "source": "workshop"
+ },
+ "Spread The Word (Continued)": {
+  "folder": "3287847068",
+  "packageId": "Mlie.SpreadTheWord",
+  "source": "workshop"
+ },
+ "Stack gap": {
+  "folder": "3071298014",
+  "packageId": "Andromeda.StackGap",
+  "source": "workshop"
+ },
+ "Stackable Chunks": {
+  "folder": "3222674854",
+  "packageId": "Elshender.stackablechunks",
+  "source": "workshop"
+ },
+ "Staggered Raids": {
+  "folder": "3531990280",
+  "packageId": "Scorpio.StaggeredRaids",
+  "source": "workshop"
+ },
+ "Standalone Hot Spring": {
+  "folder": "2205980094",
+  "packageId": "balistafreak.StandaloneHotSpring",
+  "source": "workshop"
+ },
+ "Star Wars : The Force - Lightsaber": {
+  "folder": "3466124712",
+  "packageId": "lee.theforce.lightsaber",
+  "source": "workshop"
+ },
+ "Star Wars : The Force Factions": {
+  "folder": "3557220783",
+  "packageId": "lee.theforce.factions",
+  "source": "workshop"
+ },
+ "Star Wars : The Force Standalone": {
+  "folder": "3557220601",
+  "packageId": "lee.theforce.standalone",
+  "source": "workshop"
+ },
+ "Star Wars Animal Collection (Continued)": {
+  "folder": "3497316713",
+  "packageId": "Mlie.StarWarsAnimalCollection",
+  "source": "workshop"
+ },
+ "Star Wars Dub's Hygiene Stuff": {
+  "folder": "3371695380",
+  "packageId": "ucp.starwarsdubshygienestuff",
+  "source": "workshop"
+ },
+ "Star Wars KotOR Droids": {
+  "folder": "3047371944",
+  "packageId": "guy762.KotORDroids",
+  "source": "workshop"
+ },
+ "Star Wars KotOR Factions": {
+  "folder": "3379096669",
+  "packageId": "guy762.KotORFactions",
+  "source": "workshop"
+ },
+ "Star Wars KotOR Resources and Materials": {
+  "folder": "3254370945",
+  "packageId": "guy762.MM.KotORCore",
+  "source": "workshop"
+ },
+ "Star Wars KotOR Weapons and Armor": {
+  "folder": "2938932438",
+  "packageId": "guy762.KotORWeapons",
+  "source": "workshop"
+ },
+ "Star Wars Lights": {
+  "folder": "2265746202",
+  "packageId": "lumi.swlights",
+  "source": "workshop"
+ },
+ "Star Wars Themed Sounds": {
+  "folder": "3249480517",
+  "packageId": "StarWars.ThemedSounds",
+  "source": "workshop"
+ },
+ "Star Wars Xenotypes": {
+  "folder": "2915192253",
+  "packageId": "guy762.StarWarsXenotypes",
+  "source": "workshop"
+ },
+ "Start Date": {
+  "folder": "2991015129",
+  "packageId": "Pershonkey.StartDate",
+  "source": "workshop"
+ },
+ "Stealing Mod": {
+  "folder": "3775811814",
+  "packageId": "amoruch.RimWorldStealingMod",
+  "source": "workshop"
+ },
+ "Stealth Shuttle": {
+  "folder": "3534488918",
+  "packageId": "mrwireman.StealthShuttle",
+  "source": "workshop"
+ },
+ "Stellaris Ideology Icons": {
+  "folder": "3540888076",
+  "packageId": "Hol.StellarisIcons",
+  "source": "workshop"
+ },
+ "Steve's Walls": {
+  "folder": "2616538981",
+  "packageId": "Scurvyez.StevesWalls",
+  "source": "workshop"
+ },
+ "Stoneborn - Dwarven Style Pack": {
+  "folder": "3172496453",
+  "packageId": "det.dwarvenstyle",
+  "source": "workshop"
+ },
+ "Stonecutting Extended": {
+  "folder": "2571676542",
+  "packageId": "Scherub.StonecuttingExtended",
+  "source": "workshop"
+ },
+ "Stop, Drop, And Roll! [BAL]": {
+  "folder": "2362707956",
+  "packageId": "balistafreak.StopDropAndRoll",
+  "source": "workshop"
+ },
+ "Storage Memory": {
+  "folder": "3543261305",
+  "packageId": "Karshou.StorageMemory",
+  "source": "workshop"
+ },
+ "Storyteller Enhanced (Continued)": {
+  "folder": "2604427827",
+  "packageId": "Mlie.StorytellerEnhanced",
+  "source": "workshop"
+ },
+ "Stranger In Black Techlevel": {
+  "folder": "3428237149",
+  "packageId": "zal.sibtl",
+  "source": "workshop"
+ },
+ "Stronger Quality Scaling (1.6)": {
+  "folder": "1206001612",
+  "packageId": "Kas.StrongerScaling",
+  "source": "workshop"
+ },
+ "Stronger Wings": {
+  "folder": "3185383404",
+  "packageId": "mbee.strongerwings",
+  "source": "workshop"
+ },
+ "Stuff List (Continued)": {
+  "folder": "2798767227",
+  "packageId": "Mlie.StuffList",
+  "source": "workshop"
+ },
+ "Stuff on Tables Forked": {
+  "folder": "3289533061",
+  "packageId": "moistestWhale.stuffOnTablesForked",
+  "source": "workshop"
+ },
+ "Stylized Slave Collars and Headgears": {
+  "folder": "3040600773",
+  "packageId": "Gerrymon.StylizedSlaveCollar",
+  "source": "workshop"
+ },
+ "Sun Lamp Power": {
+  "folder": "738063560",
+  "packageId": "sun.reducer",
+  "source": "workshop"
+ },
+ "Survival Tools Reborn": {
+  "folder": "3554664966",
+  "packageId": "jellypowered.survivaltools",
+  "source": "workshop"
+ },
+ "Swift Tools Stylepack": {
+  "folder": "3378901481",
+  "packageId": "Resurrectionem.SwiftTools",
+  "source": "workshop"
+ },
+ "T's Conversion Staff": {
+  "folder": "2890481507",
+  "packageId": "Trickity.Conversion.Staff",
+  "source": "workshop"
+ },
+ "TC Tribalized Armor": {
+  "folder": "3338236184",
+  "packageId": "TC.TribalizedArmor",
+  "source": "workshop"
+ },
+ "Tab-sorting": {
+  "folder": "2138635288",
+  "packageId": "Mlie.TabSorting",
+  "source": "workshop"
+ },
+ "Tabletop Decorations": {
+  "folder": "2535771403",
+  "packageId": "ucp.TabletopDecorations",
+  "source": "workshop"
+ },
+ "Tabula Rasa": {
+  "folder": "1660622094",
+  "packageId": "neronix17.toolbox",
+  "source": "workshop"
+ },
+ "Taste of Vanilla - The Brotherhood Compendium": {
+  "folder": "3008804056",
+  "packageId": "ICC.TOV.TBC",
+  "source": "workshop"
+ },
+ "Tastier Vanilla Clothes": {
+  "folder": "2808554143",
+  "packageId": "al9000.tvc",
+  "source": "workshop"
+ },
+ "Tech Level Enforcement": {
+  "folder": "3430230860",
+  "packageId": "Summersausages2TTV.TechLevelEnforcement",
+  "source": "workshop"
+ },
+ "Technical map Vehicles": {
+  "folder": "3438366909",
+  "packageId": "MO.TechnicalMapVehicles",
+  "source": "workshop"
+ },
+ "The Brotherhood Compendium 1.6": {
+  "folder": "3571412768",
+  "packageId": "altushka.BosCompendium",
+  "source": "workshop"
+ },
+ "The Profaned": {
+  "folder": "3202008037",
+  "packageId": "BotchJob.Profaned",
+  "source": "workshop"
+ },
+ "The Sims Traits": {
+  "folder": "3604588393",
+  "packageId": "Goji.TheSimsTraits",
+  "source": "workshop"
+ },
+ "Thermal Well Excavation": {
+  "folder": "3656836896",
+  "packageId": "Tolgrim.ThermalWellExcavation",
+  "source": "workshop"
+ },
+ "They! (Giant Ants)": {
+  "folder": "3620253282",
+  "packageId": "Sapiently.TheyAtomicMonsters",
+  "source": "workshop"
+ },
+ "Thick Armor - Continued": {
+  "folder": "3531630021",
+  "packageId": "Memegoddess.ThickArmor",
+  "source": "workshop"
+ },
+ "Throwing Weapon Belt": {
+  "folder": "3238126692",
+  "packageId": "misstall.throwingweaponbeltz",
+  "source": "workshop"
+ },
+ "Thrumbo Husbandry": {
+  "folder": "2208985736",
+  "packageId": "hoboofserenity.thrumbohusbandry",
+  "source": "workshop"
+ },
+ "Tickle Your Pawn": {
+  "folder": "3721622218",
+  "packageId": "tickleyourpawn.core",
+  "source": "workshop"
+ },
+ "Time Kills": {
+  "folder": "2374079539",
+  "packageId": "silencer59.timekills",
+  "source": "workshop"
+ },
+ "Tinkering Bench and Biohacking Station": {
+  "folder": "3522976063",
+  "packageId": "Propickelz.TinkerBench",
+  "source": "workshop"
+ },
+ "Titans": {
+  "folder": "3572242808",
+  "packageId": "titans.fl",
+  "source": "workshop"
+ },
+ "Toddlers": {
+  "folder": "2903359152",
+  "packageId": "cyanobot.toddlers",
+  "source": "workshop"
+ },
+ "Toggleable Overlays": {
+  "folder": "3261316725",
+  "packageId": "Owlchemist.ToggleableOverlays",
+  "source": "workshop"
+ },
+ "Toggleable Readouts": {
+  "folder": "3261317086",
+  "packageId": "Owlchemist.ToggleableReadouts",
+  "source": "workshop"
+ },
+ "Toggleable Shields": {
+  "folder": "3261317430",
+  "packageId": "Owlchemist.ToggleableShields",
+  "source": "workshop"
+ },
+ "Too Many Rewards - A Winston Wave Addon": {
+  "folder": "3763619179",
+  "packageId": "RobTheRobotGuard.TooManyRewardsWinstonWave",
+  "source": "workshop"
+ },
+ "Tool Belt West Fix — Vanilla Apparel Expanded: Accessories": {
+  "folder": "ToolBeltFix",
+  "packageId": "mandrake.toolbeltfix",
+  "source": "local"
+ },
+ "Torment Master": {
+  "folder": "3746663772",
+  "packageId": "vlvop.tormentmaster.expansion",
+  "source": "workshop"
+ },
+ "Torture Pod": {
+  "folder": "3572173918",
+  "packageId": "TSA.TorturePod",
+  "source": "workshop"
+ },
+ "Trade Ships Drop Spot": {
+  "folder": "1969732297",
+  "packageId": "smashphil.dropspot",
+  "source": "workshop"
+ },
+ "Trade UI Revised": {
+  "folder": "2683622537",
+  "packageId": "hobtook.tradeui",
+  "source": "workshop"
+ },
+ "TradeHelper": {
+  "folder": "2113372560",
+  "packageId": "TimmyLiang.TradeHelper",
+  "source": "workshop"
+ },
+ "Tradeable Trinkets (Continued)": {
+  "folder": "2966786575",
+  "packageId": "Mlie.TradeableTrinkets",
+  "source": "workshop"
+ },
+ "Trader ships": {
+  "folder": "2046222331",
+  "packageId": "automatic.traderships",
+  "source": "workshop"
+ },
+ "TraderGen": {
+  "folder": "3525848981",
+  "packageId": "joseasoler.TraderGen",
+  "source": "workshop"
+ },
+ "Trading Control": {
+  "folder": "2007107588",
+  "packageId": "TradingControl.Tad.Rimworld.Core",
+  "source": "workshop"
+ },
+ "Trading Options Continue": {
+  "folder": "3524414310",
+  "packageId": "kearril.TradingOptionsContinue",
+  "source": "workshop"
+ },
+ "Trait and Backstory Icons": {
+  "folder": "2873494547",
+  "packageId": "Superniquito.TraitIcons",
+  "source": "workshop"
+ },
+ "Transparent Substructure": {
+  "folder": "3522762741",
+  "packageId": "Aelanna.TransparentSubstructure",
+  "source": "workshop"
+ },
+ "Tribal Backstories": {
+  "folder": "2879649038",
+  "packageId": "Shenanigans.TribalBackstories1.4",
+  "source": "workshop"
+ },
+ "Tribal Backstories - Medieval Patch": {
+  "folder": "3170651153",
+  "packageId": "GrassTypeFire.TribalBackstories.MedievalPatch",
+  "source": "workshop"
+ },
+ "Tribal Furniture": {
+  "folder": "3671245310",
+  "packageId": "Xercaine.Tribal.Furniture",
+  "source": "workshop"
+ },
+ "Tribal Ideology Icons": {
+  "folder": "3083595998",
+  "packageId": "GHOST.TribalIcons",
+  "source": "workshop"
+ },
+ "Tribal Signal Fire (Continued)": {
+  "folder": "2026582975",
+  "packageId": "Mlie.TribalSignalFire",
+  "source": "workshop"
+ },
+ "Tribute Demand": {
+  "folder": "3711373966",
+  "packageId": "geojak.TributeDemand",
+  "source": "workshop"
+ },
+ "Triumphant Research": {
+  "folder": "3647618250",
+  "packageId": "ferny.TriumphantResearch",
+  "source": "workshop"
+ },
+ "Trystan Traveller's Shuttle Schematics": {
+  "folder": "3655212016",
+  "packageId": "Trouperton.TrystanTravellersShuttleSchematics",
+  "source": "workshop"
+ },
+ "Tunneler Expanded": {
+  "folder": "2599616050",
+  "packageId": "Error277.Tunneler.Expanded",
+  "source": "workshop"
+ },
+ "Turrets Shoot Hunting Predators": {
+  "folder": "3221646589",
+  "packageId": "archie.turrettargetpatch",
+  "source": "workshop"
+ },
+ "UI Retexture": {
+  "folder": "2978831421",
+  "packageId": "Katsudon.UIRetexture",
+  "source": "workshop"
+ },
+ "UNAGI Decorative Furniture": {
+  "folder": "3379047800",
+  "packageId": "UNAGI.Funiture.Build.window",
+  "source": "workshop"
+ },
+ "USCM - Colonial Marines Corps Faction": {
+  "folder": "759866027",
+  "packageId": "Hiztaar.Optionnal.USCMFCM",
+  "source": "workshop"
+ },
+ "USCM - Core": {
+  "folder": "726855894",
+  "packageId": "Hiztaar.Essential.USCMCore",
+  "source": "workshop"
+ },
+ "USCM - Xenomorphs Faction": {
+  "folder": "974867140",
+  "packageId": "Hiztaar.Optionnal.USCMXenomorphs",
+  "source": "workshop"
+ },
+ "Ugh You Got Me": {
+  "folder": "1542424705",
+  "packageId": "marvinkosh.ughyougotme",
+  "source": "workshop"
+ },
+ "Ultimate Storyteller - Basilicus Patch [1.4-1.6]": {
+  "folder": "2928443788",
+  "packageId": "Gold.USBasilicusPatch",
+  "source": "workshop"
+ },
+ "Ultimate Storyteller [1.4-1.6]": {
+  "folder": "2887952810",
+  "packageId": "Gold.UltimateStoryteller",
+  "source": "workshop"
+ },
+ "Ultratech Shades (Continued)": {
+  "folder": "2937778775",
+  "packageId": "Mlie.UltratechShades",
+  "source": "workshop"
+ },
+ "Un-Limited Reborn": {
+  "folder": "3295368629",
+  "packageId": "NuanKi.UnlimitedReborn",
+  "source": "workshop"
+ },
+ "UnLimitedArmor": {
+  "folder": "1695493009",
+  "packageId": "Paragon.Hanul.UnLimitedArmor",
+  "source": "workshop"
+ },
+ "Undraft After Tucking": {
+  "folder": "2157495459",
+  "packageId": "madarauchiha.undraftaftertucking",
+  "source": "workshop"
+ },
+ "Uniform Growing Zone Tool": {
+  "folder": "1898969926",
+  "packageId": "asmallrabbit.UniformGrowZone",
+  "source": "workshop"
+ },
+ "Unique Apparel & Armor": {
+  "folder": "3545666494",
+  "packageId": "Amro.UniqueApparel",
+  "source": "workshop"
+ },
+ "Universal Pregnancy": {
+  "folder": "3303758779",
+  "packageId": "universalpregnancy.1trickPwnyta",
+  "source": "workshop"
+ },
+ "Unlimited Mechanitor Command Range": {
+  "folder": "2878895195",
+  "packageId": "swwu.MechanitorCommandRange",
+  "source": "workshop"
+ },
+ "UnlimitedNuzzles": {
+  "folder": "3508337433",
+  "packageId": "doomdrvk.UnlimitedNuzzles",
+  "source": "workshop"
+ },
+ "Upgrade Quality": {
+  "folder": "3176082972",
+  "packageId": "rakros.upgradequality",
+  "source": "workshop"
+ },
+ "Ushankas Biological Warfare": {
+  "folder": "3221550806",
+  "packageId": "Ushanka.BiologicalWarfare",
+  "source": "workshop"
+ },
+ "Ushankas Necroa Archovirus": {
+  "folder": "3531035748",
+  "packageId": "Ushanka.NecroaArchovirus",
+  "source": "workshop"
+ },
+ "Utility Columns": {
+  "folder": "2013476665",
+  "packageId": "nephlite.orbitaltradecolumn",
+  "source": "workshop"
+ },
+ "VE Medical drips - Dubs Bad Hygiene patch": {
+  "folder": "2940894029",
+  "packageId": "Scorpio.VEMedicalDripsDubsBadHygiene",
+  "source": "workshop"
+ },
+ "VFE Pirates - Hardworking Warcaskets": {
+  "folder": "3535194807",
+  "packageId": "dmp.vfepirates.warcasketwork",
+  "source": "workshop"
+ },
+ "VGP Vegetable Garden": {
+  "folder": "2007061826",
+  "packageId": "dismarzero.VGP.VGPVegetableGarden",
+  "source": "workshop"
+ },
+ "VGP Xtra Trees and Flowers": {
+  "folder": "2007064094",
+  "packageId": "dismarzero.VGP.XtraTreesandFlowers",
+  "source": "workshop"
+ },
+ "VPE - Anima": {
+  "folder": "3462136587",
+  "packageId": "VPE.Anima.Sentinel",
+  "source": "workshop"
+ },
+ "VPE - Horaxian": {
+  "folder": "3456508582",
+  "packageId": "VPE.Horaxian.Sentinel",
+  "source": "workshop"
+ },
+ "VPE - Luminis": {
+  "folder": "3559834496",
+  "packageId": "VPE.Luminis.Sentinel",
+  "source": "workshop"
+ },
+ "VPE - Ranger": {
+  "folder": "2927626324",
+  "packageId": "Aranmaho.RangerClass",
+  "source": "workshop"
+ },
+ "VPE - Voidweaver": {
+  "folder": "3467913565",
+  "packageId": "VPE.Voidweaver.Sentinel",
+  "source": "workshop"
+ },
+ "VPE Self-Cast This! Plus Temp 1.6": {
+  "folder": "3519928832",
+  "packageId": "CtrlAltFunk.VPESelfCastPlusPatch",
+  "source": "workshop"
+ },
+ "VPE: Revert Some Nerfs (Continued)": {
+  "folder": "3484509389",
+  "packageId": "steve.vpe.revertsomenerf",
+  "source": "workshop"
+ },
+ "VSIE - Rational Trait Development": {
+  "folder": "2916405546",
+  "packageId": "Stagz.VSIERationalTraitDevelopment",
+  "source": "workshop"
+ },
+ "VVE - Deconstructable Vehicles Junk": {
+  "folder": "3108171008",
+  "packageId": "Farxmai2.VanillaDeconstructableVehicles",
+  "source": "workshop"
+ },
+ "Vampires, Demons, and the Undead": {
+  "folder": "2926556467",
+  "packageId": "RedMattis.Undead",
+  "source": "workshop"
+ },
+ "Van's Retexture : Mechanitor": {
+  "folder": "2943977908",
+  "packageId": "SirVan.MechanitorRetexture",
+  "source": "workshop"
+ },
+ "Van's Retexture : Melee Weapons": {
+  "folder": "2922441211",
+  "packageId": "sirvan.MWRetextured",
+  "source": "workshop"
+ },
+ "Van's Retexture : Misc. Training": {
+  "folder": "2848956469",
+  "packageId": "SirVan.MiscTrainingRetexture",
+  "source": "workshop"
+ },
+ "Van's Retexture : Steel": {
+  "folder": "2955560866",
+  "packageId": "SirVan.SteelRetexture",
+  "source": "workshop"
+ },
+ "Vanilla Animals Expanded": {
+  "folder": "2871933948",
+  "packageId": "VanillaExpanded.VanillaAnimalsExpanded",
+  "source": "workshop"
+ },
+ "Vanilla Animals Expanded — Endangered": {
+  "folder": "2366589898",
+  "packageId": "VanillaExpanded.VAEEndAndExt",
+  "source": "workshop"
+ },
+ "Vanilla Animals Expanded — Royal Animals": {
+  "folder": "2858079457",
+  "packageId": "VanillaExpanded.VAERoy",
+  "source": "workshop"
+ },
+ "Vanilla Animals Expanded — Waste Animals": {
+  "folder": "2962126499",
+  "packageId": "VanillaExpanded.VAEWaste",
+  "source": "workshop"
+ },
+ "Vanilla Apparel Expanded": {
+  "folder": "1814987817",
+  "packageId": "VanillaExpanded.VAPPE",
+  "source": "workshop"
+ },
+ "Vanilla Apparel Expanded — Accessories": {
+  "folder": "2521176396",
+  "packageId": "VanillaExpanded.VAEAccessories",
+  "source": "workshop"
+ },
+ "Vanilla Arsenal": {
+  "folder": "3273371966",
+  "packageId": "det.vanillaarsenal",
+  "source": "workshop"
+ },
+ "Vanilla Backgrounds Expanded": {
+  "folder": "2775017012",
+  "packageId": "vanillaexpanded.backgrounds",
+  "source": "workshop"
+ },
+ "Vanilla Backstories Expanded": {
+  "folder": "2861806869",
+  "packageId": "VanillaExpanded.VanillaBackstoriesExpanded",
+  "source": "workshop"
+ },
+ "Vanilla Base Generation Expanded": {
+  "folder": "3209927822",
+  "packageId": "VanillaExpanded.BaseGeneration",
+  "source": "workshop"
+ },
+ "Vanilla Beards Retextured": {
+  "folder": "2777098392",
+  "packageId": "Neronix17.Retexture.VanillaBeards",
+  "source": "workshop"
+ },
+ "Vanilla Books Expanded": {
+  "folder": "2193152410",
+  "packageId": "VanillaExpanded.VBooksE",
+  "source": "workshop"
+ },
+ "Vanilla Brewing Expanded": {
+  "folder": "2186560858",
+  "packageId": "VanillaExpanded.VBrewE",
+  "source": "workshop"
+ },
+ "Vanilla Brewing Expanded - Coffees and Teas": {
+  "folder": "2275449762",
+  "packageId": "VanillaExpanded.VBrewECandT",
+  "source": "workshop"
+ },
+ "Vanilla Chemfuel Expanded": {
+  "folder": "2792917473",
+  "packageId": "VanillaExpanded.VChemfuelE",
+  "source": "workshop"
+ },
+ "Vanilla Chemfuel Expanded - Odyssey Patch": {
+  "folder": "3530583255",
+  "packageId": "Bulldog.VanillaChemfuelExpandedOdysseyPatch",
+  "source": "workshop"
+ },
+ "Vanilla Cooking Expanded": {
+  "folder": "2134308519",
+  "packageId": "VanillaExpanded.VCookE",
+  "source": "workshop"
+ },
+ "Vanilla Cooking Expanded - Stews": {
+  "folder": "2134312965",
+  "packageId": "VanillaExpanded.VCookEStews",
+  "source": "workshop"
+ },
+ "Vanilla Events Expanded": {
+  "folder": "1938420742",
+  "packageId": "VanillaExpanded.VEE",
+  "source": "workshop"
+ },
+ "Vanilla Expanded Framework": {
+  "folder": "2023507013",
+  "packageId": "OskarPotocki.VanillaFactionsExpanded.Core",
+  "source": "workshop"
+ },
+ "Vanilla Expanded: Hero Backgrounds": {
+  "folder": "3313700572",
+  "packageId": "ferny.vanillaexpandedherobackgrounds",
+  "source": "workshop"
+ },
+ "Vanilla Factions Expanded - Classical": {
+  "folder": "2787850474",
+  "packageId": "OskarPotocki.VFE.Classical",
+  "source": "workshop"
+ },
+ "Vanilla Factions Expanded - Deserters": {
+  "folder": "3025493377",
+  "packageId": "OskarPotocki.VFE.Deserters",
+  "source": "workshop"
+ },
+ "Vanilla Factions Expanded - Empire": {
+  "folder": "2938820380",
+  "packageId": "OskarPotocki.VFE.Empire",
+  "source": "workshop"
+ },
+ "Vanilla Factions Expanded - Insectoids 2": {
+  "folder": "3309003431",
+  "packageId": "OskarPotocki.VFE.Insectoid2",
+  "source": "workshop"
+ },
+ "Vanilla Factions Expanded - Medieval 2": {
+  "folder": "3444347874",
+  "packageId": "OskarPotocki.VFE.Medieval2",
+  "source": "workshop"
+ },
+ "Vanilla Factions Expanded - Pirates": {
+  "folder": "2723801948",
+  "packageId": "OskarPotocki.VFE.Pirates",
+  "source": "workshop"
+ },
+ "Vanilla Factions Expanded - Settlers": {
+  "folder": "2052918119",
+  "packageId": "OskarPotocki.VanillaFactionsExpanded.SettlersModule",
+  "source": "workshop"
+ },
+ "Vanilla Factions Expanded - Tribals": {
+  "folder": "3079786283",
+  "packageId": "OskarPotocki.VFE.Tribals",
+  "source": "workshop"
+ },
+ "Vanilla Fishing Expanded": {
+  "folder": "1914064942",
+  "packageId": "VanillaExpanded.VCEF",
+  "source": "workshop"
+ },
+ "Vanilla Fishing Expanded - Fishing Treasures AddOn": {
+  "folder": "2468543398",
+  "packageId": "VanillaExpanded.VCEFAddon",
+  "source": "workshop"
+ },
+ "Vanilla Fix: Haul After Slaughter": {
+  "folder": "2801452324",
+  "packageId": "PureMJ.MjRimMods.VanillaFixHaulAfterSlaughter",
+  "source": "workshop"
+ },
+ "Vanilla Food Variety Expanded": {
+  "folder": "3334272487",
+  "packageId": "VanillaExpanded.VanillaFoodVarietyExpanded",
+  "source": "workshop"
+ },
+ "Vanilla Furniture Expanded": {
+  "folder": "1718190143",
+  "packageId": "VanillaExpanded.VFECore",
+  "source": "workshop"
+ },
+ "Vanilla Furniture Expanded - Architect": {
+  "folder": "2608762624",
+  "packageId": "VanillaExpanded.VFEArchitect",
+  "source": "workshop"
+ },
+ "Vanilla Furniture Expanded - Art": {
+  "folder": "1968134023",
+  "packageId": "VanillaExpanded.VFEArt",
+  "source": "workshop"
+ },
+ "Vanilla Furniture Expanded - Factory": {
+  "folder": "3686924415",
+  "packageId": "VanillaExpanded.VFEFactory",
+  "source": "workshop"
+ },
+ "Vanilla Furniture Expanded - Farming": {
+  "folder": "1957158779",
+  "packageId": "VanillaExpanded.VFEFarming",
+  "source": "workshop"
+ },
+ "Vanilla Furniture Expanded - Medical Module": {
+  "folder": "1718191613",
+  "packageId": "VanillaExpanded.VFEMedical",
+  "source": "workshop"
+ },
+ "Vanilla Furniture Expanded - Power": {
+  "folder": "2062943477",
+  "packageId": "VanillaExpanded.VFEPower",
+  "source": "workshop"
+ },
+ "Vanilla Furniture Expanded - Production": {
+  "folder": "1880253632",
+  "packageId": "VanillaExpanded.VFEProduction",
+  "source": "workshop"
+ },
+ "Vanilla Furniture Expanded - Props and Decor": {
+  "folder": "2102143149",
+  "packageId": "VanillaExpanded.VFEPropsandDecor",
+  "source": "workshop"
+ },
+ "Vanilla Furniture Expanded - Security": {
+  "folder": "1845154007",
+  "packageId": "VanillaExpanded.VFESecurity",
+  "source": "workshop"
+ },
+ "Vanilla Furniture Expanded - Spacer Module": {
+  "folder": "2028381079",
+  "packageId": "VanillaExpanded.VFESpacer",
+  "source": "workshop"
+ },
+ "Vanilla Genes Rebalanced": {
+  "folder": "2905707100",
+  "packageId": "RedMattis.VanillaGenesRebalanced",
+  "source": "workshop"
+ },
+ "Vanilla Genetics Expanded": {
+  "folder": "2801160906",
+  "packageId": "VanillaExpanded.VGeneticsE",
+  "source": "workshop"
+ },
+ "Vanilla Genetics Expanded - Genome Extracting Table ALL Genomes": {
+  "folder": "2883081878",
+  "packageId": "Victor.genometable",
+  "source": "workshop"
+ },
+ "Vanilla Gravship Expanded - Chapter 1": {
+  "folder": "3609835606",
+  "packageId": "vanillaexpanded.gravship",
+  "source": "workshop"
+ },
+ "Vanilla Hair Expanded": {
+  "folder": "1888705256",
+  "packageId": "VanillaExpanded.VHE",
+  "source": "workshop"
+ },
+ "Vanilla Hair Retextured": {
+  "folder": "2748834409",
+  "packageId": "Neronix17.Retexture.VanillaHair",
+  "source": "workshop"
+ },
+ "Vanilla Helixien Gas Expanded": {
+  "folder": "2877699803",
+  "packageId": "VanillaExpanded.HelixienGas",
+  "source": "workshop"
+ },
+ "Vanilla Ideology Expanded - Anima Theme": {
+  "folder": "2666998627",
+  "packageId": "VanillaExpanded.VIEAT",
+  "source": "workshop"
+ },
+ "Vanilla Ideology Expanded - Dryads": {
+  "folder": "2720631512",
+  "packageId": "VanillaExpanded.Ideo.Dryads",
+  "source": "workshop"
+ },
+ "Vanilla Ideology Expanded - Hats and Rags": {
+  "folder": "2567387768",
+  "packageId": "VanillaExpanded.VIEHAR",
+  "source": "workshop"
+ },
+ "Vanilla Ideology Expanded - Icons and Symbols": {
+  "folder": "2552609458",
+  "packageId": "VanillaExpanded.Ideo.IconsandSymbols",
+  "source": "workshop"
+ },
+ "Vanilla Ideology Expanded - Memes and Structures": {
+  "folder": "2636329500",
+  "packageId": "VanillaExpanded.VMemesE",
+  "source": "workshop"
+ },
+ "Vanilla Ideology Expanded - Relics and Artifacts": {
+  "folder": "2564895018",
+  "packageId": "VanillaExpanded.Ideo.RelicsAndArtifacts",
+  "source": "workshop"
+ },
+ "Vanilla Ideology Expanded - Sophian Style": {
+  "folder": "3194606539",
+  "packageId": "VanillaExpanded.Ideo.SophianStyle",
+  "source": "workshop"
+ },
+ "Vanilla Landmarks Expanded": {
+  "folder": "3656316229",
+  "packageId": "VanillaExpanded.VExplorationE",
+  "source": "workshop"
+ },
+ "Vanilla Mining Outpost Patch": {
+  "folder": "2968491314",
+  "packageId": "Kuhlyus.ModPatch.VanillaOutpost",
+  "source": "workshop"
+ },
+ "Vanilla Nutrient Paste Expanded": {
+  "folder": "2920385763",
+  "packageId": "VanillaExpanded.VNutrientE",
+  "source": "workshop"
+ },
+ "Vanilla Nutrient Paste Expanded: Reimagined Progression": {
+  "folder": "3530651481",
+  "packageId": "MrHydralisk.VNPEReimaginedProgression",
+  "source": "workshop"
+ },
+ "Vanilla Outposts Expanded": {
+  "folder": "2688941031",
+  "packageId": "vanillaexpanded.outposts",
+  "source": "workshop"
+ },
+ "Vanilla Outposts Expanded: Additional Outposts": {
+  "folder": "2873841790",
+  "packageId": "MrHydralisk.VOEAdditionalOutposts",
+  "source": "workshop"
+ },
+ "Vanilla Outposts Expanded: Delivery Logistics": {
+  "folder": "3006726393",
+  "packageId": "MrHydralisk.VOEDeliveryLogistics",
+  "source": "workshop"
+ },
+ "Vanilla Outposts Expanded: Power Grid": {
+  "folder": "2915686437",
+  "packageId": "MrHydralisk.VOEPowerGrid",
+  "source": "workshop"
+ },
+ "Vanilla Outposts Expanded: Prisoner Patch": {
+  "folder": "3002936071",
+  "packageId": "MrHydralisk.VOEPrisonerPatch",
+  "source": "workshop"
+ },
+ "Vanilla Pawns Retextured": {
+  "folder": "2275310562",
+  "packageId": "neronix17.hd.pawns",
+  "source": "workshop"
+ },
+ "Vanilla Persona Weapons Expanded": {
+  "folder": "2826922787",
+  "packageId": "VanillaExpanded.VPersonaWeaponsE",
+  "source": "workshop"
+ },
+ "Vanilla Plants Expanded": {
+  "folder": "2134308522",
+  "packageId": "VanillaExpanded.VPlantsE",
+  "source": "workshop"
+ },
+ "Vanilla Plants Expanded - More Plants": {
+  "folder": "2748889667",
+  "packageId": "VanillaExpanded.VPlantsEMore",
+  "source": "workshop"
+ },
+ "Vanilla Plants Expanded - Mushrooms": {
+  "folder": "3006389281",
+  "packageId": "VanillaExpanded.VPlantsEMushrooms",
+  "source": "workshop"
+ },
+ "Vanilla Plants Expanded - Succulents": {
+  "folder": "2198652536",
+  "packageId": "VanillaExpanded.VPlantsESucculents",
+  "source": "workshop"
+ },
+ "Vanilla Psycast Expanded - Biotech Integration": {
+  "folder": "3110971925",
+  "packageId": "Danzen.VPE.BiotechIntegration",
+  "source": "workshop"
+ },
+ "Vanilla Psycasts Expanded": {
+  "folder": "2842502659",
+  "packageId": "VanillaExpanded.VPsycastsE",
+  "source": "workshop"
+ },
+ "Vanilla Psycasts Expanded - Hemosage": {
+  "folder": "2990596478",
+  "packageId": "VanillaExpanded.VPE.Hemosage",
+  "source": "workshop"
+ },
+ "Vanilla Psycasts Expanded - Puppeteer": {
+  "folder": "3033779606",
+  "packageId": "VanillaExpanded.VPE.Puppeteer",
+  "source": "workshop"
+ },
+ "Vanilla Quests Expanded - Ancients": {
+  "folder": "3618306875",
+  "packageId": "vanillaquestsexpanded.ancients",
+  "source": "workshop"
+ },
+ "Vanilla Quests Expanded - Cryptoforge": {
+  "folder": "3461526070",
+  "packageId": "vanillaquestsexpanded.cryptoforge",
+  "source": "workshop"
+ },
+ "Vanilla Quests Expanded - Deadlife": {
+  "folder": "3497226454",
+  "packageId": "vanillaquestsexpanded.deadlife",
+  "source": "workshop"
+ },
+ "Vanilla Quests Expanded - The Generator": {
+  "folder": "3411401573",
+  "packageId": "vanillaquestsexpanded.generator",
+  "source": "workshop"
+ },
+ "Vanilla Races Expanded - Archon": {
+  "folder": "3067715093",
+  "packageId": "vanillaracesexpanded.archon",
+  "source": "workshop"
+ },
+ "Vanilla Races Expanded - Custom Icons": {
+  "folder": "2917311689",
+  "packageId": "vanillaracesexpanded.customicons",
+  "source": "workshop"
+ },
+ "Vanilla Races Expanded - Fungoid": {
+  "folder": "3042690053",
+  "packageId": "vanillaracesexpanded.fungoid",
+  "source": "workshop"
+ },
+ "Vanilla Races Expanded - Genie": {
+  "folder": "2901424072",
+  "packageId": "vanillaracesexpanded.genie",
+  "source": "workshop"
+ },
+ "Vanilla Races Expanded - Highmate": {
+  "folder": "2995385834",
+  "packageId": "vanillaracesexpanded.highmate",
+  "source": "workshop"
+ },
+ "Vanilla Races Expanded - Hussar": {
+  "folder": "2893586390",
+  "packageId": "vanillaracesexpanded.hussar",
+  "source": "workshop"
+ },
+ "Vanilla Races Expanded - Insector": {
+  "folder": "3260509684",
+  "packageId": "vanillaracesexpanded.insector",
+  "source": "workshop"
+ },
+ "Vanilla Races Expanded - Phytokin": {
+  "folder": "2927323805",
+  "packageId": "vanillaracesexpanded.phytokin",
+  "source": "workshop"
+ },
+ "Vanilla Races Expanded - Saurid": {
+  "folder": "2880990495",
+  "packageId": "vanillaracesexpanded.saurid",
+  "source": "workshop"
+ },
+ "Vanilla Races Expanded - Starjack": {
+  "folder": "3531912428",
+  "packageId": "vanillaracesexpanded.starjack",
+  "source": "workshop"
+ },
+ "Vanilla Recycling Expanded": {
+  "folder": "3155781848",
+  "packageId": "VanillaExpanded.Recycling",
+  "source": "workshop"
+ },
+ "Vanilla Skills Expanded": {
+  "folder": "3400246558",
+  "packageId": "vanillaexpanded.skills",
+  "source": "workshop"
+ },
+ "Vanilla Skills Rexamined": {
+  "folder": "3235834179",
+  "packageId": "Gravenwitch.VSRexamined",
+  "source": "workshop"
+ },
+ "Vanilla Social Interactions Expanded": {
+  "folder": "2439736083",
+  "packageId": "VanillaExpanded.VanillaSocialInteractionsExpanded",
+  "source": "workshop"
+ },
+ "Vanilla Storytellers Expanded - Perry Persistent": {
+  "folder": "2149702069",
+  "packageId": "VSE.PerryPersistent",
+  "source": "workshop"
+ },
+ "Vanilla Storytellers Expanded - Winston Waves": {
+  "folder": "3215569151",
+  "packageId": "VanillaStorytellersExpanded.WinstonWave",
+  "source": "workshop"
+ },
+ "Vanilla Textures Expanded": {
+  "folder": "2016436324",
+  "packageId": "VanillaExpanded.VTEXE",
+  "source": "workshop"
+ },
+ "Vanilla Textures Expanded - Variations": {
+  "folder": "2493234474",
+  "packageId": "VanillaExpanded.VTEXVariations",
+  "source": "workshop"
+ },
+ "Vanilla Textures Expanded - [NL] Facial Animation": {
+  "folder": "2816938779",
+  "packageId": "VanillaExpanded.VTEXE.FacialAnims",
+  "source": "workshop"
+ },
+ "Vanilla Trading Expanded": {
+  "folder": "2785616901",
+  "packageId": "VanillaExpanded.VanillaTradingExpanded",
+  "source": "workshop"
+ },
+ "Vanilla Traits Expanded": {
+  "folder": "2296404655",
+  "packageId": "VanillaExpanded.VanillaTraitsExpanded",
+  "source": "workshop"
+ },
+ "Vanilla Vehicles Expanded": {
+  "folder": "3014906877",
+  "packageId": "OskarPotocki.VanillaVehiclesExpanded",
+  "source": "workshop"
+ },
+ "Vanilla Vehicles Expanded - Upgrades": {
+  "folder": "3302208420",
+  "packageId": "OskarPotocki.VanillaVehiclesExpandedUpgrades",
+  "source": "workshop"
+ },
+ "Vanilla Weapons Expanded": {
+  "folder": "1814383360",
+  "packageId": "VanillaExpanded.VWE",
+  "source": "workshop"
+ },
+ "Vanilla Weapons Expanded - Laser": {
+  "folder": "1989352844",
+  "packageId": "VanillaExpanded.VWEL",
+  "source": "workshop"
+ },
+ "Vanilla Weapons Expanded - Makeshift": {
+  "folder": "2419690698",
+  "packageId": "VanillaExpanded.VWEMS",
+  "source": "workshop"
+ },
+ "Vanilla Weapons Expanded - Non-Lethal": {
+  "folder": "2454918354",
+  "packageId": "VanillaExpanded.VWENL",
+  "source": "workshop"
+ },
+ "Vanillafy Floors": {
+  "folder": "3219321678",
+  "packageId": "nakomaru.VanillafyFloors",
+  "source": "workshop"
+ },
+ "Vehicle Framework": {
+  "folder": "3014915404",
+  "packageId": "SmashPhil.VehicleFramework",
+  "source": "workshop"
+ },
+ "VehicleRaid Framework": {
+  "folder": "3667863988",
+  "packageId": "gabrieel1482.raidvehicleframework",
+  "source": "workshop"
+ },
+ "Vehicles - Pelican(Helldivers 2)": {
+  "folder": "3370607942",
+  "packageId": "HD2.pelican",
+  "source": "workshop"
+ },
+ "Visible Cybernetics": {
+  "folder": "3262173908",
+  "packageId": "Ghastly.VisualCybernetics",
+  "source": "workshop"
+ },
+ "Visible Raid Points": {
+  "folder": "2562730174",
+  "packageId": "visibleraidpoints.1trickPwnyta",
+  "source": "workshop"
+ },
+ "Visit Settlements": {
+  "folder": "3535955435",
+  "packageId": "NinaGoblin.VisitSettlements",
+  "source": "workshop"
+ },
+ "WASDed Pawn": {
+  "folder": "3471835151",
+  "packageId": "addvans.WASDedPawn",
+  "source": "workshop"
+ },
+ "WM420_Mother": {
+  "folder": "3248912334",
+  "packageId": "ShunTheWitch.Termimother",
+  "source": "workshop"
+ },
+ "WVC - Ultra Expansion II": {
+  "folder": "3107443670",
+  "packageId": "wvc.sergkart.ultraexpansion",
+  "source": "workshop"
+ },
+ "WVC - Work Modes": {
+  "folder": "2888380373",
+  "packageId": "wvc.sergkart.biotech.MoreMechanoidsWorkModes",
+  "source": "workshop"
+ },
+ "Walk the World": {
+  "folder": "3546716725",
+  "packageId": "addvans.WalkTheWorld",
+  "source": "workshop"
+ },
+ "Wall Mounted Turrets Version 2": {
+  "folder": "3525168205",
+  "packageId": "HoneyBadger.WallMountedTurretsVersionTwo",
+  "source": "workshop"
+ },
+ "Wall Sun Lamp": {
+  "folder": "3234498246",
+  "packageId": "Xercaine.WallSunLamp",
+  "source": "workshop"
+ },
+ "Wall light Relic": {
+  "folder": "3220394219",
+  "packageId": "Wall.Light.Relic",
+  "source": "workshop"
+ },
+ "Wall mounted solar panels": {
+  "folder": "3545934731",
+  "packageId": "Xale86.WallSolarPanels",
+  "source": "workshop"
+ },
+ "WallStuff": {
+  "folder": "1994340640",
+  "packageId": "Arcjc007.WallStuff",
+  "source": "workshop"
+ },
+ "Walls are solid": {
+  "folder": "2896548513",
+  "packageId": "Victor.WallsAreSolid",
+  "source": "workshop"
+ },
+ "Wandering Caravans": {
+  "folder": "2295813916",
+  "packageId": "Ogliss.g223.wanderingcaravans",
+  "source": "workshop"
+ },
+ "WarCasket Expanded": {
+  "folder": "2733135485",
+  "packageId": "Aoba.WarCasket",
+  "source": "workshop"
+ },
+ "Wartalker Stylepack": {
+  "folder": "3569670754",
+  "packageId": "Resurrectionem.Wartalker",
+  "source": "workshop"
+ },
+ "Water retextured": {
+  "folder": "2782707284",
+  "packageId": "manulinkraft.WaterRetextured",
+  "source": "workshop"
+ },
+ "Wave Raids": {
+  "folder": "3692439859",
+  "packageId": "PJerri.WaveRaids",
+  "source": "workshop"
+ },
+ "Way Better Romance": {
+  "folder": "2877731755",
+  "packageId": "divineDerivative.Romance",
+  "source": "workshop"
+ },
+ "We Are United": {
+  "folder": "3030804445",
+  "packageId": "Sl4vP0weR.WeAreUnited",
+  "source": "workshop"
+ },
+ "We Had a Trader? (Continued)": {
+  "folder": "1541408076",
+  "packageId": "Mlie.WeHadATrader",
+  "source": "workshop"
+ },
+ "Weapon Racks": {
+  "folder": "2788630748",
+  "packageId": "Aelanna.WeaponRacks",
+  "source": "workshop"
+ },
+ "WeaponStats": {
+  "folder": "974066449",
+  "packageId": "bodlosh.WeaponStats",
+  "source": "workshop"
+ },
+ "What's Missing?": {
+  "folder": "3231090162",
+  "packageId": "Revolus.WhatsMissing",
+  "source": "workshop"
+ },
+ "What's That Mod": {
+  "folder": "2258431182",
+  "packageId": "co.uk.epicguru.whatsthatmod",
+  "source": "workshop"
+ },
+ "Who shot my leg off?": {
+  "folder": "3491552121",
+  "packageId": "Tixiv.WhoShotMyLegOff",
+  "source": "workshop"
+ },
+ "Wildheart Psycast": {
+  "folder": "3043229067",
+  "packageId": "Aranmaho.RavenousEye.Wildhunter.Psycast",
+  "source": "workshop"
+ },
+ "Wing's Meaningful Parties": {
+  "folder": "3504909699",
+  "packageId": "winggar.meaningfulparties",
+  "source": "workshop"
+ },
+ "Wingless Flight Gene": {
+  "folder": "3002447909",
+  "packageId": "WinglessFlight.Gene",
+  "source": "workshop"
+ },
+ "Winston Wave Pawn Cap": {
+  "folder": "3757637713",
+  "packageId": "com.er.mod.winstonwavepawncap",
+  "source": "workshop"
+ },
+ "Winston Waves Bugfix": {
+  "folder": "3749719642",
+  "packageId": "firecat.winstonwaves.bugfix",
+  "source": "workshop"
+ },
+ "Winston Waves Odyssey integration": {
+  "folder": "3603474848",
+  "packageId": "novatrium.spacewaves",
+  "source": "workshop"
+ },
+ "Wirehead Style": {
+  "folder": "3311183008",
+  "packageId": "Tleno.WireheadStyle",
+  "source": "workshop"
+ },
+ "Wololoo - Better Conversion and Recruitment": {
+  "folder": "3108763487",
+  "packageId": "RedMattis.BetterConversion",
+  "source": "workshop"
+ },
+ "Wood's Muzzle Flash for Ancient urban ruins": {
+  "folder": "3442021825",
+  "packageId": "Charlie.Muzzle.Flash.for.ancientruins",
+  "source": "workshop"
+ },
+ "Work Tab": {
+  "folder": "3453549086",
+  "packageId": "Fluffy.WorkTab",
+  "source": "workshop"
+ },
+ "World Pawn Cleaner": {
+  "folder": "3181327333",
+  "packageId": "cedaro.worldpawncleaner",
+  "source": "workshop"
+ },
+ "WorldEdit 2.0": {
+  "folder": "3590928058",
+  "packageId": "FunkyShit.Mods.WorldEdit.alpha",
+  "source": "workshop"
+ },
+ "Worldbuilder": {
+  "folder": "3522102833",
+  "packageId": "ferny.Worldbuilder",
+  "source": "workshop"
+ },
+ "Wrecked Machines": {
+  "folder": "WreckedMachines",
+  "packageId": "mandrake.wreckedmachines",
+  "source": "local"
+ },
+ "XML Extensions": {
+  "folder": "2574315206",
+  "packageId": "imranfish.xmlextensions",
+  "source": "workshop"
+ },
+ "XenomorphInsectoids": {
+  "folder": "2873545234",
+  "packageId": "Joe.XenomorphInsectoids",
+  "source": "workshop"
+ },
+ "Xenotype Spawn Control": {
+  "folder": "2891975564",
+  "packageId": "bs.xenotypespawncontrol",
+  "source": "workshop"
+ },
+ "Yayo's Animation (Continued)": {
+  "folder": "2877292196",
+  "packageId": "com.yayo.yayoAni.continued",
+  "source": "workshop"
+ },
+ "Yayo's Caravan (Continued)": {
+  "folder": "2886919774",
+  "packageId": "Mlie.YayosCaravan",
+  "source": "workshop"
+ },
+ "Yayo's Combat 3 (Continued)": {
+  "folder": "2854006492",
+  "packageId": "Mlie.YayosCombat3",
+  "source": "workshop"
+ },
+ "Yayo's Meteor (Continued)": {
+  "folder": "2892867866",
+  "packageId": "Mlie.YayosMeteor",
+  "source": "workshop"
+ },
+ "Yet another prosthetic expansion mod - Core": {
+  "folder": "2808872704",
+  "packageId": "MrKociak.YetAnotherProstheticExpansionModCore",
+  "source": "workshop"
+ },
+ "You Are So Beautiful": {
+  "folder": "3576178532",
+  "packageId": "CN.YouAreSoBeautiful",
+  "source": "workshop"
+ },
+ "You Drive, I Sleep": {
+  "folder": "3324430833",
+  "packageId": "Spacemoth.YouDriveISleep",
+  "source": "workshop"
+ },
+ "Zalcore Winston Waves Control Panel": {
+  "folder": "3720234170",
+  "packageId": "zal.zww",
+  "source": "workshop"
+ },
+ "[1.1]TO[1.6]MultipleTraders": {
+  "folder": "2070709529",
+  "packageId": "04.23.2020",
+  "source": "workshop"
+ },
+ "[1.6] CAI 5000 - Advanced AI + Fog Of War (continued)": {
+  "folder": "3673768803",
+  "packageId": "Krkr.rule56",
+  "source": "workshop"
+ },
+ "[42G]Glowing Bushes | Fork by [ETF]": {
+  "folder": "3425062214",
+  "packageId": "fourtoo.glowingbush",
+  "source": "workshop"
+ },
+ "[AB] Xenotype: Yautja": {
+  "folder": "3536839586",
+  "packageId": "biotechrace.yautja.alleyballey",
+  "source": "workshop"
+ },
+ "[AP] Hunting Meme": {
+  "folder": "3535691822",
+  "packageId": "AP.huntingmeme",
+  "source": "workshop"
+ },
+ "[AV] Mechanoid Skins": {
+  "folder": "3667667489",
+  "packageId": "Veltaris.MechanoidSkins",
+  "source": "workshop"
+ },
+ "[BTD] Gravship Blueprints": {
+  "folder": "3575162262",
+  "packageId": "btd.remix.gravshipblueprints",
+  "source": "workshop"
+ },
+ "[BTD] Ship Pack: KotOR Ships VGE": {
+  "folder": "3614012898",
+  "packageId": "btd.gbp.shippack.kotor.vge",
+  "source": "workshop"
+ },
+ "[BTD] Xenotype REMIX: Star Wars": {
+  "folder": "3458153185",
+  "packageId": "btd.XenotypeRemix.StarWars",
+  "source": "workshop"
+ },
+ "[CF] Anomaly Upscaled": {
+  "folder": "3239664028",
+  "packageId": "cf.anomalyupscaled",
+  "source": "workshop"
+ },
+ "[CF] Bionic Icons HD": {
+  "folder": "3239007545",
+  "packageId": "Bionicicons.hd",
+  "source": "workshop"
+ },
+ "[CF] Dubs Bad Hygiene Upscaled": {
+  "folder": "3163175368",
+  "packageId": "DBH.Upscaled",
+  "source": "workshop"
+ },
+ "[DHM]Hybrid-Powered Gravships": {
+  "folder": "3524491355",
+  "packageId": "drilledhead.HybridPoweredGravships",
+  "source": "workshop"
+ },
+ "[Dizzy] Candles and Hidden Meditation": {
+  "folder": "2569910895",
+  "packageId": "Dizzy.CandlesandMeditation",
+  "source": "workshop"
+ },
+ "[FM] Gene Banks Expanded": {
+  "folder": "3138968978",
+  "packageId": "Farxmai2.GeneBanksExapnded",
+  "source": "workshop"
+ },
+ "[FSF] Better Ancient Complex Loot": {
+  "folder": "2559244124",
+  "packageId": "FrozenSnowFox.BetterAncientComplexLoot",
+  "source": "workshop"
+ },
+ "[FSF] Better Anomaly Loot": {
+  "folder": "3229997523",
+  "packageId": "FrozenSnowFox.BetterAnomalyLoot",
+  "source": "workshop"
+ },
+ "[FSF] Better Exploration Loot": {
+  "folder": "3526957922",
+  "packageId": "FrozenSnowFox.BetterExplorationLoot",
+  "source": "workshop"
+ },
+ "[FSF] Complex Jobs": {
+  "folder": "2069684319",
+  "packageId": "FrozenSnowFox.ComplexJobs",
+  "source": "workshop"
+ },
+ "[FSF] Filth Vanishes With Rain And Time": {
+  "folder": "1508341791",
+  "packageId": "FrozenSnowFox.FilthVanishesWithRainAndTime",
+  "source": "workshop"
+ },
+ "[FSF] FrozenSnowFox Tweaks": {
+  "folder": "2893432492",
+  "packageId": "FrozenSnowFox.FrozenSnowFoxTweaks",
+  "source": "workshop"
+ },
+ "[FSF] Indoor Tree Farms": {
+  "folder": "1515299608",
+  "packageId": "FrozenSnowFox.IndoorTreeFarms",
+  "source": "workshop"
+ },
+ "[FSF] No Default Shelf Storage": {
+  "folder": "945085502",
+  "packageId": "FrozenSnowFox.NoDefaultShelfStorage",
+  "source": "workshop"
+ },
+ "[GTG]Odyssey Orbital Trader": {
+  "folder": "3522859265",
+  "packageId": "Teiwaz.OOT",
+  "source": "workshop"
+ },
+ "[GTG]Traders Accept All Junk Gear": {
+  "folder": "3729570505",
+  "packageId": "Teiwaz.TAAJG",
+  "source": "workshop"
+ },
+ "[GTG]Traders Accept Chunks & Corpses": {
+  "folder": "3756658373",
+  "packageId": "Teiwaz.TACAC",
+  "source": "workshop"
+ },
+ "[HMC]Wall Furniture": {
+  "folder": "3533512691",
+  "packageId": "HMC.Wall.Furniture",
+  "source": "workshop"
+ },
+ "[JDS] AQW Armor Set": {
+  "folder": "3541935426",
+  "packageId": "m3.JangoDsoul.AQW.ArmorSet",
+  "source": "workshop"
+ },
+ "[JDS] Dead Frontier - V.O.I.D": {
+  "folder": "3543946353",
+  "packageId": "m3.JangoDsoul.DF.VOID",
+  "source": "workshop"
+ },
+ "[JDS] StarWars - Armory": {
+  "folder": "3511954303",
+  "packageId": "M3.Continued.JangoDsoul.StarWars.BTI",
+  "source": "workshop"
+ },
+ "[JDS] StarWars - The Separatist Droid Army": {
+  "folder": "3276499495",
+  "packageId": "M3.Continued.JangoDsoul.StarWars.TSDA",
+  "source": "workshop"
+ },
+ "[JF] Geometric Floors": {
+  "folder": "2863525144",
+  "packageId": "JF.GeometricFloors",
+  "source": "workshop"
+ },
+ "[JF] Royal Carpets": {
+  "folder": "2977701969",
+  "packageId": "JF.RoyalCarpets",
+  "source": "workshop"
+ },
+ "[JM]Disable Pseudo Translate 禁用泰南语": {
+  "folder": "3295112942",
+  "packageId": "jm.disstynan",
+  "source": "workshop"
+ },
+ "[JWL] Atmospheric Water Processor (Continued)": {
+  "folder": "3007838663",
+  "packageId": "Mlie.JWLAtmosphericWaterProcessor",
+  "source": "workshop"
+ },
+ "[KV] Call Trade Ships (Continued)": {
+  "folder": "3722921543",
+  "packageId": "zal.calltradeships",
+  "source": "workshop"
+ },
+ "[Kit] Graze up": {
+  "folder": "2302739121",
+  "packageId": "kittahkhan.grazeup",
+  "source": "workshop"
+ },
+ "[LC] Selectable Sculpture Graphic": {
+  "folder": "3239359525",
+  "packageId": "lc.tammybee.selectablesculpturegraphic",
+  "source": "workshop"
+ },
+ "[LFS] Genes Expanded - Eyes": {
+  "folder": "2922457045",
+  "packageId": "LazyFridayStudio.GenesExpandedEyes",
+  "source": "workshop"
+ },
+ "[MUS]哥特式吸血鬼家具 Gothicstyle Vampire Furniture": {
+  "folder": "3102678787",
+  "packageId": "mingtuwuxiang.GothicDecorative",
+  "source": "workshop"
+ },
+ "[MUS]太空基地家具Space Base Furniture": {
+  "folder": "3523916780",
+  "packageId": "mingtuwuxiang.SpaceBaseDecorative",
+  "source": "workshop"
+ },
+ "[NL] Custom Portraits": {
+  "folder": "1569605867",
+  "packageId": "Nals.CustomPortraits",
+  "source": "workshop"
+ },
+ "[NL] Facial Animation - Experimentals": {
+  "folder": "2581693737",
+  "packageId": "Nals.FacialAnimationExperimentals",
+  "source": "workshop"
+ },
+ "[NL] Facial Animation - WIP": {
+  "folder": "1635901197",
+  "packageId": "Nals.FacialAnimation",
+  "source": "workshop"
+ },
+ "[Odyssey] Necrotic Gravship Retextured": {
+  "folder": "3567591339",
+  "packageId": "Okagrim.NecroTexGrav",
+  "source": "workshop"
+ },
+ "[Og] Immersive Filter": {
+  "folder": "3735827910",
+  "packageId": "Og.Immersive.Filter",
+  "source": "workshop"
+ },
+ "[Og] Repair Your Gear": {
+  "folder": "3513376486",
+  "packageId": "Og.Repair.Your.Gear",
+  "source": "workshop"
+ },
+ "[RF] Rumor Has It.... (Continued)": {
+  "folder": "2013940581",
+  "packageId": "Mlie.RFRumorHasIt",
+  "source": "workshop"
+ },
+ "[RH2] CPERS: Arrest Here!": {
+  "folder": "2563157350",
+  "packageId": "RH2.CPERS.Arrest.Here",
+  "source": "workshop"
+ },
+ "[RH2] Faction: Utilitarian": {
+  "folder": "2942350062",
+  "packageId": "RH2.Faction.Utilitarian",
+  "source": "workshop"
+ },
+ "[RH2] Faction: V.O.I.D.": {
+  "folder": "2883208829",
+  "packageId": "RH2.Faction.VOID",
+  "source": "workshop"
+ },
+ "[RH2] Uncle Boris' - Brainwash Chair": {
+  "folder": "2885223720",
+  "packageId": "CP.Uncle.Boris.Brainwash.Chair",
+  "source": "workshop"
+ },
+ "[RH2] Uncle Boris' - Used Furniture": {
+  "folder": "2563508405",
+  "packageId": "CP.Uncle.Boris.Used.Furniture",
+  "source": "workshop"
+ },
+ "[RH2] V.O.I.D. Storyteller": {
+  "folder": "2130957394",
+  "packageId": "RH2.VOID.Storyteller",
+  "source": "workshop"
+ },
+ "[SR]Factional War (fork)": {
+  "folder": "3423264477",
+  "packageId": "SR.ModRimworld.FactionalWarContinued",
+  "source": "workshop"
+ },
+ "[SYR] More Slaves (Continued)": {
+  "folder": "3361231919",
+  "packageId": "Mlie.SYRMoreSlaves",
+  "source": "workshop"
+ },
+ "[SYR] Processor Framework": {
+  "folder": "3210544395",
+  "packageId": "syrchalis.processor.framework",
+  "source": "workshop"
+ },
+ "[TW1.6]堂丸贴图重置~UI Tang's~Retexture~UI": {
+  "folder": "3141849282",
+  "packageId": "TW.Tangs.Retexture.UI",
+  "source": "workshop"
+ },
+ "[TW1.6]堂丸贴图重置~制成品 Tang's_Retexture_Manufactured": {
+  "folder": "3058943402",
+  "packageId": "TW.Tangs.Retexture.Manufactured",
+  "source": "workshop"
+ },
+ "[TW1.6]堂丸贴图重置~原材料 Tang's~Retexture~Resource": {
+  "folder": "3050448166",
+  "packageId": "TW.Tangs.Retexture.Resource",
+  "source": "workshop"
+ },
+ "[TW1.6]堂丸贴图重置~服饰 Tang's~Retexture~Apparel": {
+  "folder": "3255510656",
+  "packageId": "TW.Tangs.Retexture.Apparel",
+  "source": "workshop"
+ },
+ "[TW1.6]堂丸贴图重置~武器 Tang's~Retexture~Weapons": {
+  "folder": "3048306872",
+  "packageId": "TW.Tangs.Retexture.Weapons",
+  "source": "workshop"
+ },
+ "[TW1.6]堂丸贴图重置~结构 Tang's~Retexture~Structure": {
+  "folder": "3168625192",
+  "packageId": "TW.Tangs.Retexture.Structure",
+  "source": "workshop"
+ },
+ "[TW1.6]堂丸贴图重置~食物 Tang's~Retexture~Foods": {
+  "folder": "3050762215",
+  "packageId": "TW.Tangs.Retexture.Foods",
+  "source": "workshop"
+ },
+ "[TW1.6]幻彩林地 Rainbow forest": {
+  "folder": "3532501549",
+  "packageId": "TW.TangsBiome.RainbowForest",
+  "source": "workshop"
+ },
+ "[WYD] Better Campsites": {
+  "folder": "3546818262",
+  "packageId": "Wyr3d.BetterCampsites",
+  "source": "workshop"
+ },
+ "[WYD] Bone": {
+  "folder": "3195547844",
+  "packageId": "Wyr3d.SimpleBoneBlocks",
+  "source": "workshop"
+ },
+ "[WYD] Worthless Plants": {
+  "folder": "3555545972",
+  "packageId": "wyr3d.worthlessplants",
+  "source": "workshop"
+ },
+ "[WZRD] Carry Capacity (Continued)": {
+  "folder": "2237017954",
+  "packageId": "Mlie.WZRDCarryCapacity",
+  "source": "workshop"
+ },
+ "[ZAV] Fantasy Metals": {
+  "folder": "2936850549",
+  "packageId": "zav.fantasymetalsForked",
+  "source": "workshop"
+ },
+ "[ZAV] Glowstone": {
+  "folder": "3231900626",
+  "packageId": "zav.glowstoneForked",
+  "source": "workshop"
+ },
+ "[kyzy] Ship Wall Enhanced": {
+  "folder": "3537799933",
+  "packageId": "Kyzy.ShipWallEnhanced",
+  "source": "workshop"
+ },
+ "[sbz] Fridge": {
+  "folder": "3486264784",
+  "packageId": "sbz.NeatStorageFridge",
+  "source": "workshop"
+ },
+ "[sbz] Gravship Storage": {
+  "folder": "3537905298",
+  "packageId": "sbz.GravshipStorage",
+  "source": "workshop"
+ },
+ "[sbz] Neat Storage": {
+  "folder": "3416243474",
+  "packageId": "sbz.NeatStorage",
+  "source": "workshop"
+ },
+ "pphhyy's Demigryphs Continued": {
+  "folder": "3540496928",
+  "packageId": "pphhyy.DemigryphsMod",
+  "source": "workshop"
+ },
+ "剧本扩展:小行星空岛生存": {
+  "folder": "3527737313",
+  "packageId": "Hdz.AsteroidSurvival",
+  "source": "workshop"
+ }
+}

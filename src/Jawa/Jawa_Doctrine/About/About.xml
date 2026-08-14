@@ -13,4 +13,70 @@ manufacture them.
 
 Rationale lives in worldbuilding/balance_paradigm.md (Axis 18a/18b).
 Load last.</description>
+
+  <!-- LOAD ORDER, 2026-08-13. There was none declared here at all, and the
+       RimSort user rule named ONE mod (Outer Rim - Droid Depot). That was short
+       by a factor of forty: MegafaunaYield.xml alone carries 630 defNames
+       grouped into 42 PatchOperationFindMod blocks, and DroidsAreMachines.xml
+       rewrites flesh types belonging to Asimov and ABF: Synstructs Core.
+
+       A PatchOperationFindMod checks that a mod is PRESENT. It does not order
+       anything. Loaded before its target, every operation in the group matches
+       nothing and is skipped with one log line among thousands - the patch is
+       inert and looks fine. That is why this list is long rather than tidy.
+
+       Every packageId below was resolved from the donor's own About.xml with
+       src/RimMandrake/Utils/build_packageid_index.py, which strips
+       <modDependencies> before matching - reading the first <packageId> in the
+       file returns a DEPENDENCY's id and has produced wrong answers here before.
+
+       Deliberately absent:
+        * Core, Biotech, Anomaly and Odyssey - base game and DLC always load
+          first, so a loadAfter naming them buys nothing.
+        * "Mythological Creatures!" - MegafaunaYield has a group for it, but no
+          such mod is installed today. A loadAfter naming a packageId that does
+          not exist fails SILENTLY and constrains nothing, which is exactly how
+          mandrake.jawa.armoury's rule sat inert. Its patch group is a harmless
+          no-op; if the mod is ever reinstalled, add it here. -->
+  <loadAfter>
+    <li>Abrolo.Grimstone.Beasts</li>                      <!-- Grimstone : Beasts -->
+    <li>BiomesTeam.BiomesCaverns</li>                     <!-- Biomes! Caverns -->
+    <li>BiomesTeam.BiomesCore</li>                        <!-- Biomes! Core -->
+    <li>BiomesTeam.BiomesPollutedLands</li>               <!-- Biomes! Polluted Lands -->
+    <li>Erin.FFAnimals</li>                               <!-- Erin's Final Fantasy Animals -->
+    <li>IronScruff.PrimordialGeysers</li>                 <!-- Primordial Geysers -->
+    <li>Joe.Cephaloids</li>                               <!-- Cephaloids -->
+    <li>Killathon.ArtificialBeings.SynCore</li>           <!-- ABF: Synstructs Core -->
+    <li>LingLuo.Cockroach</li>                            <!-- Rim cockroach -->
+    <li>Mlie.AdvancedBiomes</li>                          <!-- Advanced Biomes (Continued) -->
+    <li>Mlie.BeastsoftheRim</li>                          <!-- Beasts of the Rim (Continued) -->
+    <li>Mlie.Horrors</li>                                 <!-- Horrors (Continued) -->
+    <li>Mlie.JurassicRimworldDinosaursOnly</li>           <!-- Jurassic Rimworld - Dinosaurs Only (Continued) -->
+    <li>Mlie.MoEvents</li>                                <!-- Mo'Events (Continued) -->
+    <li>Mlie.StarWarsAnimalCollection</li>                <!-- Star Wars Animal Collection (Continued) -->
+    <li>Neronix17.Asimov</li>                             <!-- Asimov -->
+    <li>Neronix17.OuterRim.DroidDepot</li>                <!-- Outer Rim - Droid Depot -->
+    <li>OskarPotocki.VFE.Insectoid2</li>                  <!-- Vanilla Factions Expanded - Insectoids 2 -->
+    <li>RedMattis.BetterPrerequisites</li>                <!-- Big and Small - Framework -->
+    <li>RedMattis.BigSmall.Core</li>                      <!-- Big and Small - Genes &amp; More -->
+    <li>ReGrowth.BOTR.BoilingForest</li>                  <!-- ReGrowth: Boiling -->
+    <li>ReGrowth.BOTR.Core</li>                           <!-- ReGrowth 2 -->
+    <li>Sapiently.TheyAtomicMonsters</li>                 <!-- They! (Giant Ants) -->
+    <li>sarg.alphaanimals</li>                            <!-- Alpha Animals -->
+    <li>sarg.alphagenes</li>                              <!-- Alpha Genes -->
+    <li>Spino.Megafauna</li>                              <!-- Megafauna -->
+    <li>titans.fl</li>                                    <!-- Titans -->
+    <li>Van.Beasts</li>                                   <!-- Dark Ages : Beasts and Monsters -->
+    <li>VanillaExpanded.VAEWaste</li>                     <!-- Vanilla Animals Expanded — Waste Animals -->
+    <li>VanillaExpanded.VanillaAnimalsExpanded</li>       <!-- Vanilla Animals Expanded -->
+    <li>VanillaExpanded.VGeneticsE</li>                   <!-- Vanilla Genetics Expanded -->
+    <li>vanillaquestsexpanded.ancients</li>               <!-- Vanilla Quests Expanded - Ancients -->
+    <li>vanillaquestsexpanded.cryptoforge</li>            <!-- Vanilla Quests Expanded - Cryptoforge -->
+    <li>vanillaracesexpanded.phytokin</li>                <!-- Vanilla Races Expanded - Phytokin -->
+    <li>veterano.mythicages.megafaunabestiary</li>        <!-- Mythic Ages: Megafauna Bestiary -->
+    <li>Who.VFEE.IsopodaGeneline</li>                     <!-- Insectoids 2 - Isopoda geneline -->
+    <li>zal.betterinfestations</li>                       <!-- Better Infestations (Continued) -->
+    <li>zal.giantsnake</li>                               <!-- Giant Snake (Continued) -->
+    <li>zal.gianttoads</li>                               <!-- Giant Toads (Continued) -->
+  </loadAfter>
 </ModMetaData>
