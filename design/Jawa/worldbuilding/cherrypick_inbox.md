@@ -248,3 +248,31 @@ texture path before you do**, because the whole point of keeping it is to reuse 
 ✅ **Trispike is confirmed correct to remove** — CREATE established Bulbfreak
 divides into `{Toughspike, Trispike}` and Trispike divides into `Fingerspike`, so
 **removing Trispike closes the tame-pet leak rather than opening it.**
+
+
+---
+
+## 📸 EVIDENCE — `ZBiome_CoastalDunes`, confirmed by sight, 2026-08-14
+
+**Already on the removal list** — the owner named it first of the 29. **This is the
+picture of why**, taken on a live quicktest map:
+
+`design/Jawa/worldbuilding/evidence/2026-08-14_coastal_dunes_is_not_a_desert.jpg`
+
+**What the tile shows:** water on **two** edges of one map · marsh · palms and
+broadleaf trees · grass, flowers and mushrooms · and the status line reading
+🔴 **fertility 100%**. Clear, 26 °C, "Permanent summer".
+
+⭐ **"Coastal dunes" is a wet, fertile, wooded biome with a sand texture.** On a
+thirst world it is not a desert with a beach — **it is a garden that has been
+labelled a dune.** The name is the only arid thing about it.
+
+⇒ **Confirms the cut.** ⚠️ **Route note:** this now goes in the
+**`biomeBlacklist`** on the patched `TidallyLocked` def rather than through Cherry
+Picker — same outcome, and it leaves the def alive so nothing that references it
+dangles. **No change to the verdict, only to the lever.**
+
+📌 **And it is a reminder worth keeping: the 29 removals were judged from def
+fields and labels. This is the first one anyone has LOOKED at, and looking
+confirmed it in about two seconds.** Where a cheap look is available, take it —
+`PoisonForest` is already filed for exactly that treatment.
