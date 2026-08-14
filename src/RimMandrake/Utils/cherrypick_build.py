@@ -191,6 +191,14 @@ def mods_missing_from_dump():
     try:
         live = set(refresh.loadset_fingerprint()["mods"])
         dumped = set(refresh.dump_fingerprint().get("mods") or [])
+    except refresh.LoadsetUnmeasurable as exc:
+        # Do not let this leave as a quiet []. An empty return here means "no
+        # mod was added since the dump", which is a MEASUREMENT — and we did
+        # not make one. Same shape returned, but the reader is told why.
+        sys.stderr.write("warning: cannot tell which mods postdate the dump, "
+                         "so no def key will be excused on that ground.\n%s\n"
+                         % exc)
+        return []
     except Exception:
         return []
     newly = {m.lower() for m in live - dumped}

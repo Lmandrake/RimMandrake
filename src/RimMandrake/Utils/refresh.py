@@ -126,6 +126,51 @@ def _has_files(dirpath, suffix):
 
 
 # ---------------------------------------------------------------- fingerprint
+class LoadsetUnmeasurable(RuntimeError):
+    """The listed-vs-installed comparison could not be PERFORMED.
+
+    Deliberately distinct from "performed, and nothing was missing". Both used
+    to arrive as the same cheerful `missing: []`, and that is the failure this
+    class exists to make impossible: an ABSENT input reported as an EMPTY one.
+
+    Subclasses RuntimeError so callers that already catch RuntimeError (main()
+    below, and anything scripting this) keep working unchanged.
+    """
+
+
+def _survey_roots(roots):
+    """
+    (readable, unreadable) for the mod roots, deciding it by ENUMERATION.
+
+    ⚠️ `os.path.isdir()` is not the test. A root can pass isdir and still fail
+    to list — a permission error, a dead symlink, an unmounted /mnt/c after a
+    WSL restart — and `discover_mods` swallows exactly that with `except
+    OSError: pass`. So the probe here is the same call the indexer makes.
+
+    Anything that cannot be enumerated is returned as unreadable with a reason,
+    and the caller must treat that as terminal. Skipping it instead produces the
+    signature bug: every mod that lived under the vanished root reads as
+    'listed but not installed', or — if it was the last root — the whole answer
+    collapses to a confident, wrong zero.
+    """
+    readable, unreadable = [], []
+    for r in roots:
+        if not r:
+            unreadable.append(("<empty path>", "no path configured"))
+            continue
+        try:
+            os.listdir(r)
+        except OSError as exc:
+            why = "does not exist" if not os.path.exists(r) else str(exc)
+            if "\\" in r and os.sep == "/":
+                why += ("; this is a Windows-form path under Linux, so "
+                        "game_paths found NEITHER candidate for this root")
+            unreadable.append((r, why))
+            continue
+        readable.append(r)
+    return readable, unreadable
+
+
 def loadset_fingerprint(config=D_CONFIG, roots=None):
     """
     A stable identity for 'which mods are active, in what order'.
@@ -146,21 +191,43 @@ def loadset_fingerprint(config=D_CONFIG, roots=None):
     missing this is byte-identical to the old hash, so no existing stamp is
     invalidated; it only diverges when there is a real defect to report, and
     the caller gets the offenders in ["missing"] to print loudly.
+
+    🔴 UNMEASURABLE IS NOT ZERO. If any root cannot be enumerated this raises
+    LoadsetUnmeasurable rather than carrying on with the roots that worked.
+    "Workshop tree gone, so 1,246 mods are missing" and "workshop tree fine,
+    nothing missing" are answers a caller cannot tell apart once one has been
+    quietly downgraded into the other, and only one of them is safe to act on.
     """
     root = ET.parse(config).getroot()
     listed = [(li.text or "").strip().lower()
               for li in root.find("activeMods").findall("li")]
     version = (root.findtext("version") or "").strip()
 
-    index = _RL.discover_mods(list(MOD_ROOTS if roots is None else roots))
+    want = list(MOD_ROOTS if roots is None else roots)
+    ok_roots, bad_roots = _survey_roots(want)
+    if bad_roots:
+        raise LoadsetUnmeasurable(
+            "%d of %d mod roots could not be read, so 'is this mod installed' "
+            "was NOT answered for any of them. This is not 'nothing is "
+            "missing' — it is 'unmeasurable'. Fix the root, then re-run.\n"
+            % (len(bad_roots), len(want))
+            + "\n".join("    UNREADABLE  %s  (%s)" % (r, why)
+                        for r, why in bad_roots)
+            + ("\n" if ok_roots else "")
+            + "\n".join("    ok          %s" % r for r in ok_roots))
+
+    index = _RL.discover_mods(ok_roots)
     if not index:
-        # Never fingerprint against an empty index: every listed mod would
-        # read as missing and the hash would describe an empty game. Same
-        # family as the validator that "passed" having checked nothing.
-        raise RuntimeError(
-            "no installed mods found under any root, so 'is this mod present' "
-            "could not be answered. Roots tried:\n    "
-            + "\n    ".join(MOD_ROOTS if roots is None else roots))
+        # Every root enumerated cleanly and still not one About.xml turned up.
+        # That is measurable and absurd, so it is still terminal — but it is a
+        # DIFFERENT fault from an unreadable root and says so.
+        raise LoadsetUnmeasurable(
+            "every mod root read cleanly yet contained no mod with an "
+            "About/About.xml, so 'is this mod present' could not be answered "
+            "for any listed mod. Roots read:\n    " + "\n    ".join(ok_roots))
+    counts = {r: 0 for r in ok_roots}
+    for info in index.values():
+        counts[info["root"]] = counts.get(info["root"], 0) + 1
     missing = [p for p in listed if p not in index]
     mods = [p for p in listed if p in index]
     # The MOD LIST alone, deliberately. ModsConfig's <version> records the build
@@ -177,6 +244,13 @@ def loadset_fingerprint(config=D_CONFIG, roots=None):
         "missing": missing,
         "version": version,
         "mods": mods,
+        # Provenance for the comparison itself, so "0 missing" can be audited
+        # rather than trusted: which roots were read, and how many installed
+        # mods each contributed. A root sitting at 0 is the tell that it exists
+        # but is not the tree you thought it was.
+        "roots": list(ok_roots),
+        "rootCounts": counts,
+        "installedCount": len(index),
     }
 
 
@@ -247,10 +321,36 @@ def compare(current, other):
 
 
 # ---------------------------------------------------------------- status
+def status_only_fingerprint(fp):
+    """Just the listed-vs-installed answer. No artefacts, no dump, no load."""
+    print("=== LISTED (ModsConfig.xml) vs INSTALLED (on disk) ===")
+    print("  RimWorld %s | fingerprint %s" % (fp["version"], fp["hash"]))
+    for r, n in fp["rootCounts"].items():
+        print("  root  %5d mods  %s" % (n, r))
+    print("  listed active : %d" % fp["listedCount"])
+    print("  resolved      : %d" % fp["modCount"])
+    print("  MISSING       : %d" % len(fp["missing"]))
+    for p in fp["missing"]:
+        print("     ? %s" % p)
+
+
 def status(fp, steps_failed=False):
     print("\n=== CURRENT LOAD SET ===")
     print("  RimWorld %s | %d active mods | fingerprint %s"
           % (fp["version"], fp["modCount"], fp["hash"]))
+    if fp.get("rootCounts"):
+        def _label(r):
+            b = os.path.basename(r.rstrip("/\\"))
+            return "Workshop" if b.isdigit() else (b or r)
+        print("  listed %d, resolved %d against %d installed mods in %s"
+              % (fp["listedCount"], fp["modCount"], fp.get("installedCount", 0),
+                 " + ".join("%d %s" % (n, _label(r))
+                            for r, n in fp["rootCounts"].items())))
+        # A root that read cleanly and held nothing is not an error, but it is
+        # the shape an absent root would have if the guard above ever slipped.
+        for r, n in fp["rootCounts"].items():
+            if n == 0:
+                print("  ?? mod root read OK but contains no mods: %s" % r)
 
     # Loud, and above the artefact table: a mod in ModsConfig.xml with no
     # folder is a broken install, and no amount of regenerating fixes it.
@@ -449,6 +549,12 @@ def main():
     ap.add_argument("--patches", action="store_true",
                     help="regenerate and validate the armoury patches")
     ap.add_argument("--all", action="store_true", help="--offline then --patches")
+    ap.add_argument("--fingerprint", action="store_true",
+                    help="only compare ModsConfig.xml against the mods actually "
+                         "on disk, print the result and exit. Touches no "
+                         "artefact and needs no game load. Exit 0 = measured, "
+                         "nothing missing; 1 = measured, mods are missing; "
+                         "2 = UNMEASURABLE (a mod root could not be read).")
     ap.add_argument("--note", default="",
                     help="record WHY this rebuild happened, e.g. 'VSIE pulled "
                          "for debugging'. Stored in GENERATED_FROM.json and "
@@ -460,8 +566,19 @@ def main():
         fp = loadset_fingerprint(a.config)
     except (OSError, ET.ParseError) as exc:
         sys.exit("cannot read ModsConfig: %s" % exc)
+    except LoadsetUnmeasurable as exc:
+        # Exit 2, not 1, and its own wording. "The check failed" and "the check
+        # could not run" are different facts and a script must be able to tell
+        # them apart from the exit status alone.
+        sys.stderr.write("\n!! LOAD SET UNMEASURABLE — no answer was produced.\n"
+                         "%s\n" % exc)
+        sys.exit(2)
     except RuntimeError as exc:
         sys.exit("cannot resolve the load set: %s" % exc)
+
+    if a.fingerprint:
+        status_only_fingerprint(fp)
+        sys.exit(1 if fp["missing"] else 0)
 
     status(fp)
 
