@@ -449,7 +449,7 @@ live-stack → **OPS**; driving the live game to verify → **BRIDGE**.
 | 1 | Empire reskin (labels) | 🟩 **BUILT** | 🟩 **SEEN LIVE** | CREATE | ✅ **CLOSED** |
 | 2 | Faction exclusion at worldgen | — | ⬜ | owner + VISION | 🔴 the campaign worldgen, list ratified and waiting |
 | 3 | One `QuestScriptDef` — *The Claim* | 🟩 **BUILT**, deployed | ⬜ | CREATE | fire it and reach an end state |
-| 4 | Three terrain overrides | 🟩 **BUILT**, deployed | 🟨 **1 of 3 SEEN** — `Jawa_SaltCrust` passed live | CREATE | two more, on any fresh map |
+| 4 | Three terrain overrides | 🟩 **BUILT**, deployed | 🟨 **1 of 3 SEEN** — `Jawa_SaltCrust` passed live | CREATE | scrapfields: any fresh map. ⚠️ **dune seas is NOT an eyeball check** — see below |
 | 5 | Jawa xenotype plays | 🟩 live | 🟨 **genes render on scratch** | BRIDGE | see it on a naturally-spawned campaign Jawa |
 | 6 | Weapons / gear | 🟩 6 mods live | 🟩 **`JawaIonWeapons` PROVEN** `ad3e9b0` | BRIDGE | ✅ **CLOSED** |
 | 7 | Ordinary worldgen | ⬜ | ⬜ | BRIDGE | 🔴 the campaign desert world |
@@ -468,6 +468,21 @@ and **the ship cannot fly** — the deck plan ships no thruster, fuel tank or
 controls, and the console-path-to-launch is unproven. Flight was ruled out of
 row 8's bar earlier today and stays out. **"The gravship is done" and "the
 gravship cannot move" remain simultaneously true.**
+
+### ⚠️ ROW 4's THIRD ITEM HAS THE WRONG GATE — corrected by CREATE at wrap
+
+**Dune seas is a DENSITY change, 0.65 → 0.55.** It was written as a look-at-the-map
+check and that is unjudgeable: **nobody can eyeball a 15% density difference
+without a control map.** A seat could stare at a correct result and call it
+failed, or at a failed one and call it passed.
+
+> **Correct gate: a live `BiomeDef` read.** Confirm the value the game holds, not
+> what the sand looks like.
+
+📌 **Eleventh instance today of the same defect: a gate whose evidence cannot be
+collected as specified.** Rows 2, 5, 7 and now 4 all had one. **When writing a
+gate, name the CALL that produces the evidence** — if you cannot name it, the
+gate is a wish.
 
 ### 🪤 DO NOT READ ROW 2 OFF A QUICKTEST — it nearly cost a regeneration today
 
