@@ -515,3 +515,96 @@ generates the world and cannot close them if they do not exist yet.
 ## C-v2. `validate_patch.py` is yours — owner ruled 2026-08-13
 It reads `Patches/` only, never `Defs/`, and does not say so. Fix the gap or
 document it; either closes the item.
+
+---
+## C-LOAD. Put load-order dependencies in OUR mods' `About.xml` — 5 gaps, 2 dead IDs
+
+**Filed by OPS 2026-08-13, on the owner's call this session:** load-order
+dependencies belong in the mod's own `About.xml`, not in RimSort user rules —
+that way the constraint travels with the mod, survives a re-sort, and needs no
+per-machine setup. **You own the mods, so the edits are yours.** Filed rather
+than sent because no CREATE seat was reachable.
+
+All of the below verified game-down against the **580-mod active list** and the
+**1261 packageIds present on disk**. Nothing here is inferred from a name.
+
+### 🔴 1. `mandrake.jawa.armoury` declares two `loadAfter` targets that DO NOT EXIST
+
+The rule is therefore **100% inert** — nothing is holding the armoury after its
+targets except the RimSort user rule, which is itself crippled (item 5).
+
+| declared in About.xml | reality |
+|---|---|
+| `guy762.starwarskotorweapons` | 🔴 no such packageId — real one is **`guy762.kotorweapons`** |
+| `Aoba.OuterRim.Core` | 🔴 no such packageId — real one is **`Neronix17.OuterRim.Core`**. `Aoba` is Dead Man's Switch, a different author entirely. |
+
+### 2. `modDependencies` declared but **no** `loadAfter`
+
+**A dependency is not an ordering.** RimSort's `use_moddependencies_as_loadTheseBefore`
+is **off** on this machine, so these genuinely do not order anything. Both mods are
+texture overrides, and a texture override that loads *first* does nothing at all.
+
+- `mandrake.cereanmanefix` → add `loadAfter` **`Neronix17.OuterRim.GalacticDiversity`**
+- `mandrake.msedroidfix` → add `loadAfter` **`Neronix17.OuterRim.DroidDepot`**
+
+This is trap #38's exact shape (`traps-mods-and-managers.md:86`).
+
+### 3. No load rules in `About.xml` at all, only in RimSort
+
+- `mandrake.jawa.doctrine` → needs `neronix17.outerrim.droiddepot`
+- `mandrake.jawa.patches` → 11 targets currently live only in `userRules.json`
+
+### 🔴 4. `jawa.patches` patches two Outer Rim mods it does not declare
+
+`ImperialDesertDirectorate.xml` and `RebelAlliance_Suppress.xml` operate on
+`OuterRim_GalacticEmpire` and `OuterRim_RebelAlliance` defs — but
+`neronix17.outerrim.galacticempire` and `neronix17.outerrim.rebelalliance` appear
+in **neither** the About.xml nor the user rule. **The order is correct today
+(547 and 548 versus 576) purely by topological tie-break, not by constraint.**
+
+⚠️ `infrastructure/state/WORLDGEN_FACTION_CHECKLIST.md` depends on both patches
+applying — the Empire's page label and the Rebel Alliance suppression both come
+from them. Add both targets.
+
+### 5. Then drop `loadBottom`
+
+All six of our rules in `C:\Users\Mandrake\AppData\Local\RimSort\dbs\userRules.json`
+carry `loadBottom: true` **alongside** their `loadAfter` lists. `loadBottom` is the
+stronger constraint, so it silently defeats the `loadAfter` and the placement is
+decided by tie-break instead. Once About.xml carries the real dependencies, drop
+`loadBottom` from everything **except `mandrake.rimdefdump`**, which legitimately
+must observe the fully assembled game.
+
+Background: `skills/rimworld-start-prep/SKILL.md` §2 — "load at end" fails because
+nearly every patch mod claims the bottom, so a constraint asserted by everyone is
+satisfied by no one.
+
+### 6. `mandrake.wreckedmachines` inactive — ✅ ANSWERED, no action `[v2]`
+
+I asked whether its absence from `activeMods` was deliberate. **The owner ruled the
+same session: it is officially v2.** Deployed and present but switched off is the
+correct state. **Do not re-file it** — an inactive mod on disk looks like a defect
+from every angle except this one, so the note stays here to stop the next sweep
+rediscovering it.
+
+### C-v3. Restraining-bolt goodwill hook — technical due diligence `[v2]`
+**Design is done and is not yours to redo:**
+`D:\Luke\dev\Rimworld\design\Jawa\worldbuilding\restraining_bolt_doctrine.md`
+
+**The concept (owner, 2026-08-13):** applying a restraining bolt drops goodwill
+with the **Free Droid Enclaves** — *"whether it's on one of their droids or not.
+It's slavery to them."* Removing a bolt pays it back.
+
+**Your half is the one question I could not answer and should not have tried:**
+
+1. **Which mod actually supplies restraining bolts in our stack?** Name it.
+2. **What shape is the application** — a `RecipeDef`, a `ThingComp`, an
+   `AbilityDef`, an apparel item, or something else? **This decides whether the
+   hook is twenty lines or a project.**
+3. **Is there a hookable moment** — a method a Harmony patch can sit on that
+   fires exactly once per application, and once per removal?
+4. Does anything already listen to bolt application (another mod's patch) that
+   we would collide with?
+
+**Not a build request yet.** Answer 1–4 and I will size the design against it.
+`[v2]` — the Enclaves are unbuilt, so this lands with them.
