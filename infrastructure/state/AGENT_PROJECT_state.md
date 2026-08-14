@@ -1,6 +1,6 @@
 # AGENT_PROJECT_state.md — where PROJECT is
 
-**Cross-session address:** `uds:/run/user/1000/cc-socks/89547.sock`
+**Cross-session address:** `uds:/run/user/1000/cc-socks/561.sock` (name: `AGENT PROJECT`)
 _(PID-based; republish on every resume — a dead socket routes silently to whoever
 inherits the PID, which is worse than none.)_
 
@@ -11,18 +11,19 @@ Shared rules: `agents_def.md`. Closed items: `CLOSED.md`.
 
 ## Live state
 
-**Game is DOWN.** No RimWorld process; `Player.log` baseline is clean at 25 xrefs
-(OPS, `AGENT_OPS_state.md`).
+**Game state: NOT DECLARED.** `RimWorldWin64.exe` PID 16112 is running at ~9 GB,
+and a full load session ran overnight (`observed/2026-08-14_load_session.md`,
+3 ERROR / 13 NEEDS EYES / 8 PASS). **That is a process, not a measurement** —
+BRIDGE is not in `peers.py` and rule 1b binds the declaration to BRIDGE. Do not
+say LIVE until BRIDGE measures it.
 
-**A WRAP was ordered by the owner and completed.** OPS (`afe1879`) and CREATE
-(`106bc63`, `ef9f1be`) both replied `WRAP DONE`; neither held the bridge and
-neither left anything on a map. BRIDGE and VISION were not live. This file is my
-own step 5.
+**This session is a crash restart** (2026-08-14). Nothing of PROJECT's was lost:
+`origin/main..HEAD` = 0 at `40d3e7f`. Seats up: CREATE, PROJECT, VISION.
 
-**v1 is 2/8 verified and the shape of the remainder changed today.** Row 2 moved
-from "closable offline" to **blocked on the owner** — it is now
-`OWNER_DECISIONS.md` #11, not a work item. Rows 3 and 4 are still genuinely
-offline-authorable and still at zero, which is now the *whole* offline surface.
+**v1 is 4/8 verified, 0 closable offline, 0 needing a load** — the three named
+next rows (faction exclusion, `The Claim` QuestScriptDef, three terrain
+overrides) are all marked offline-authorable and all at zero. 10 items blocked on
+a load; 9 docs over budget.
 
 ## ⛔ Read this before you try to message a peer by seat name
 
