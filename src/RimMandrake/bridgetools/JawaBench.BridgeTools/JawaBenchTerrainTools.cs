@@ -2968,11 +2968,28 @@ namespace JawaBench.BridgeTools
 
             return await ctx.MainThread.InvokeAsync<object>(() =>
             {
-                var world = Find.World;
+                // 🔴 Current.CreatingWorld is the whole point of this fallback.
+                // The owner's sea problem is "generate, look, keep or discard",
+                // and the moment that decision is made is AT THE WORLD-CREATION
+                // SCREEN -- before any commit, while Find.World may still be
+                // null. WorldGenerator.GenerateWorld sets Current.CreatingWorld
+                // (IL_009f) and reads the grid back through Find during
+                // generation, so a world being previewed is readable here.
+                //
+                // ⚠️ Deliberately NOT shipping a jawa/generate_world to drive
+                // that loop from outside. GenerateWorld runs the whole
+                // GameSetupStep chain, and I could not establish offline that
+                // calling it with no Current.Game is safe -- it would clobber
+                // Find.World if a colony were loaded. A tool that might destroy
+                // a session on its first use is not worth the round trip it
+                // saves. The human clicks generate; this measures what came out.
+                var world = Find.World ?? Current.CreatingWorld;
                 if (world == null)
                     return Fail("No world. This reads the PLANET, so it needs a world " +
-                                "loaded — a map is not required, but the main menu is not " +
-                                "enough.");
+                                "either loaded or being created — the main menu alone is " +
+                                "not enough. Open the world-creation screen and generate " +
+                                "one, then call again.");
+                var previewing = Find.World == null;
                 var grid = world.grid;
                 if (grid == null) return Fail("World has no grid.");
 
@@ -3048,7 +3065,11 @@ namespace JawaBench.BridgeTools
                         $"{Pct(waterCount)}% water over {n} tiles, in {big} " +
                         $"body/bodies of >= {minBodySize} tiles " +
                         $"({sizes.Count} counting puddles). Largest is " +
-                        $"{(sizes.Count > 0 ? Pct(sizes[0]) : 0)}% of the planet.",
+                        $"{(sizes.Count > 0 ? Pct(sizes[0]) : 0)}% of the planet." +
+                        (previewing
+                            ? " (Measured on a world being PREVIEWED at the creation "
+                              + "screen, not a loaded one.)"
+                            : ""),
                     tilesTotal = n,
                     waterTiles = waterCount,
                     waterPct = Pct(waterCount),
@@ -3063,6 +3084,10 @@ namespace JawaBench.BridgeTools
                     bodiesListed = Math.Min(limit, sizes.Count),
                     biomes = biomes.OrderByDescending(kv => kv.Value)
                         .ToDictionary(kv => kv.Key, kv => kv.Value),
+                    // Which world this measurement is ABOUT. A number with no
+                    // provenance is how a quicktest census became a verdict on
+                    // a campaign.
+                    previewOnly = previewing,
                     seedString = info?.seedString,
                     planetCoverage = info?.planetCoverage ?? -1f,
                     overallRainfall = info?.overallRainfall.ToString(),
