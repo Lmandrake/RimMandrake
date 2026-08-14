@@ -7,7 +7,7 @@ for whoever configures the mods._
 
 **Owner's two governing rulings, this session:**
 
-> **"We keep factions only when they are wired into specific game events or
+> **"We keep and reskin/rename factions only when they are wired into specific game events or
 > functions we can't change. Otherwise we author from scratch. We want total
 > control, no inheriting strange stuff."**
 
@@ -92,17 +92,29 @@ practically change points at it. **Nothing on this list is kept for flavour.**
 | **`Ancients` / `AncientsHostile`** | ancient danger rooms, and the orbital tower dungeons | the towers lose their garrison |
 | ⚠️ **Outlanders · Pirates · Tribes** *(vanilla)* | an enormous volume of vanilla incident, trade and quest content assumes they exist | **OPEN CALL — see §8.** My recommendation is keep-as-structure |
 
-### Renames — deliberately almost none
+### Renames — the owner widened this rule, so the answer changed
 
-**Because we author our own, there is nothing to rename.** Two exceptions:
+🔴 **Owner's amendment, 2026-08-13: "we keep AND RESKIN/RENAME factions only when
+they are wired into specific game events."** So a kept faction is not kept *as
+it is* — **it is kept for its wiring and reskinned to fit the world.** The wiring
+does not care what the label says.
 
-| faction | rename to | why |
+⇒ **Every survivor gets a Star Wars reading. A Star Wars planet should not have
+"ancients" and "insectoids" on its faction list.**
+
+| faction | rename to | note |
 |---|---|---|
-| **`Empire`** *(vanilla)* | ⭐ **The Galactic Empire**, led by **Emperor Palpatine** | owner's ruling — one Empire, reskinned rather than authored. See §5 |
-| **`Mechanoid`** | a Star Wars reading — *the Derelict Automata*, or similar | **whatever survives the cherry-pick** should stop saying "mechanoid" on a Star Wars world. Label only, one operation, zero risk |
+| **`Empire`** *(vanilla)* | ⭐ **The Galactic Empire**, led by **Emperor Palpatine** | the one full reskin — see §5 |
+| **`Mechanoid`** | ⭐ **the Forsaken garrison** | the dark biome names the **Forsakens** as the vanished race that terraformed this world; its automata are their standing defences (`what_the_machines_are.md`). **Whatever survives the cherry-pick wears this name** |
+| **`Ancients`** / **`AncientsHostile`** | **the sleepers** — or leave | "Ancients" is genre-neutral enough to survive untouched. **Lowest priority** |
+| **`Insect`** | **needs a call** | ⚠️ On a Star Wars desert world "insectoids" reads as a RimWorld noun. The Geonosian Hive is *our* insectoid faction, so the vanilla one wants a name that does not compete with it |
+| **`Entities`, `HoraxCult`** *(Anomaly)* | ⚠️ **rename is cosmetic; the tone is the real problem** | Anomaly's register is horror, not Star Wars, and **we cannot remove it.** A label change does not fix that. Flagged, not solved |
+| **`guy762_KotORFaction_RogueDroids`** | **none needed** | already Star Wars |
 
-**Everything else on the keep list stays exactly as it is**, because it is kept for
-its wiring, not its identity, and a rename buys nothing.
+**Cost is one `label` operation each, zero risk, and it is the cheapest coherence
+win available** — the faction list is a screen the player reads.
+
+
 
 ---
 
