@@ -1117,6 +1117,18 @@ class LiveIndex:
                 print(f"  (--live: no defs/ under {dumpdir}; live checks skipped)")
                 return idx
 
+        # 🔴 defs/ ACCUMULATES; it is not a snapshot. RimDefDump writes a file per
+        # def type that exists NOW and never deletes the file for a type that has
+        # stopped existing, so a folder that looks freshly written can hold
+        # orphans from a mod removed weeks ago. Measured 2026-08-13: 528 files on
+        # disk against 511 live types — 17 orphans, oldest 2026-08-10, including
+        # SkinDef.json from four mech mods removed that afternoon. They put 174
+        # dead defNames into the index, and a dead defName in the index makes a
+        # patch that references a REMOVED def validate clean. Fail-toward-success.
+        #
+        # manifest.json IS a true snapshot of the load, so it is the authority on
+        # which types are live. Restrict to it when it is present.
+        live_types: set[str] | None = None
         man = os.path.join(os.path.dirname(defs_dir), "manifest.json")
         if os.path.isfile(man):
             try:
@@ -1126,16 +1138,26 @@ class LiveIndex:
                 idx.game_version = m.group(1) if m else ""
                 m = re.search(r'"modCount"\s*:\s*(\d+)', raw)
                 idx.mod_count = int(m.group(1)) if m else 0
+                try:
+                    counts = (json.loads(raw).get("defCounts") or {})
+                    if counts:
+                        live_types = set(counts.keys())
+                except (ValueError, AttributeError):
+                    live_types = None
             except OSError:
                 pass
 
         # Streamed with a carry-over tail: ThingDef.json alone can be several
         # hundred MB, and a validator that needs a gigabyte of RAM is a
         # validator nobody runs.
+        skipped_orphans: list[str] = []
         for fn in sorted(os.listdir(defs_dir)):
             if not fn.lower().endswith(".json"):
                 continue
             deftype = fn[:-5]
+            if live_types is not None and deftype not in live_types:
+                skipped_orphans.append(deftype)
+                continue
             found: set[str] = set()
             try:
                 with open(os.path.join(defs_dir, fn), encoding="utf-8",
@@ -1155,6 +1177,15 @@ class LiveIndex:
             if found:
                 idx.by_type[deftype] = found
                 idx.names |= found
+
+        if skipped_orphans:
+            # Say it out loud. A silently-narrowed index is the same class of
+            # problem as the wide one it replaced.
+            print(f"  (--live: skipped {len(skipped_orphans)} orphan def-type "
+                  f"file(s) absent from manifest.json — stale leftovers from "
+                  f"removed mods, not part of this load: "
+                  f"{', '.join(skipped_orphans[:6])}"
+                  f"{' …' if len(skipped_orphans) > 6 else ''})")
 
         idx.loaded = bool(idx.names)
         return idx
