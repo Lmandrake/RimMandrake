@@ -173,7 +173,7 @@ anything needed protecting.)*
 | criterion | state |
 |---|---|
 | **built** | ✅ 31 steps, 4,057 foundation + 4,057 floor cells, 1,053 things, ~1s of calls |
-| **exported** | ✅ `design/Jawa/worldbuilding/ship_build/exported/Gravship_v1.xml`, 2.0 MB |
+| **exported** | ✅ `design/Jawa/worldbuilding/ship_build/exported/Gravship_v1.xml`, 2.0 MB — visual record of the same export: `design/Jawa/worldbuilding/ship_build/exported/Gravship_v1.png` |
 | **matches deck plan intent** | ✅ — and that is the problem, see below |
 | **boardable** | ✅ **MET BY OBSERVATION.** The owner visually confirmed **doors in the outer hull** — (115,58) and (82,136). ⚙️ **What was seen: a way aboard exists.** What was NOT done: walking a pawn through one, which needs `B-v3 order_pawn` and a deploy. The v1 bar is *seen working in-game once*, and a door in the hull is that. |
 
