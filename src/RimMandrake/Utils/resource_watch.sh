@@ -47,7 +47,7 @@ EOF
   echo "# resource_watch $STAMP  interval=${INTERVAL}s"
   echo "# wsl_boot=$(date -d "@$(( $(date +%s) - $(cut -d. -f1 /proc/uptime) ))" -Iseconds)"
   echo "# win_boot=$($PS -NoProfile -Command "(Get-CimInstance Win32_OperatingSystem).LastBootUpTime.ToString('o')" 2>/dev/null | tr -d '\r')"
-  echo "ts,wsl_avail_mb,wsl_claude_rss_mb,wsl_nproc_claude,load1,win_free_mb,win_commit_mb,win_commit_limit_mb,vmmemwsl_mb,rimworld_mb,steam_mb,dwm_mb,memcomp_mb,gpu_used_mib,gpu_total_mib,gpu_util_pct"
+  echo "ts,wsl_avail_mb,wsl_swapfree_mb,wsl_swaptotal_mb,wsl_claude_rss_mb,wsl_nproc_claude,load1,win_free_mb,win_commit_mb,win_commit_limit_mb,vmmemwsl_mb,rimworld_mb,steam_mb,dwm_mb,memcomp_mb,gpu_used_mib,gpu_total_mib,gpu_util_pct"
 } >> "$CSV"
 
 echo "resource_watch: $CSV  (interval ${INTERVAL}s, Ctrl-C to stop)"
@@ -58,6 +58,12 @@ while true; do
 
   # --- WSL side (cheap, read straight from /proc) ---
   AVAIL=$(awk '/MemAvailable/{print int($2/1024)}' /proc/meminfo)
+  # Swap free is the sharpest alarm we have. On 2026-08-14 it went from 8.0 GB
+  # free to ZERO in 1 min 55 s (11:19:48 -> 11:21:43), and the VM then limped
+  # for five more minutes before the kill at 11:26:41. RSS growth is the leading
+  # indicator; swap hitting zero is the point of no return.
+  SWAPFREE=$(awk '/SwapFree/{print int($2/1024)}' /proc/meminfo)
+  SWAPTOT=$(awk '/SwapTotal/{print int($2/1024)}' /proc/meminfo)
   CLAUDE_RSS=$(ps -eo rss,comm --no-headers | awk '$2=="claude"{s+=$1} END{print int(s/1024)+0}')
   CLAUDE_N=$(pgrep -xc claude 2>/dev/null || echo 0)
   LOAD1=$(cut -d' ' -f1 /proc/loadavg)
@@ -71,14 +77,23 @@ while true; do
   WIN=$($PS -NoProfile -Command "$PSQ" 2>/dev/null | tr -d '\r' | tail -1)
   [ -z "$WIN" ] && WIN=",,,,,,,"
 
-  echo "$TS,$AVAIL,$CLAUDE_RSS,$CLAUDE_N,$LOAD1,$WIN,$GPU" >> "$CSV"
+  echo "$TS,$AVAIL,$SWAPFREE,$SWAPTOT,$CLAUDE_RSS,$CLAUDE_N,$LOAD1,$WIN,$GPU" >> "$CSV"
 
-  # --- early warning: catch a ballooning seat while it is still climbing ---
+  # --- alarm 1: swap collapse, the LATE signal but the unambiguous one ---
+  # Swap below 25% means the runaway is already past the leading indicator.
+  # On 2026-08-14 swap went 8.0 GB -> 0 in 1m55s, then the VM limped 5 more
+  # minutes before dying. If this fires, act now rather than investigating.
+  if [ "${SWAPTOT:-0}" -gt 0 ] && [ "$(( SWAPFREE * 100 / SWAPTOT ))" -lt 25 ]; then
+    M="$TS CRITICAL swap ${SWAPFREE}/${SWAPTOT} MB free - restart the largest seat NOW"
+    echo "$M" >> "$OUTDIR/ALERTS.txt"; echo "$M" >&2
+    command -v notify-send >/dev/null 2>&1 && notify-send -u critical "WSL swap collapsing" "$M"
+  fi
+
+  # --- alarm 2: a seat still climbing, the EARLY signal ---
   # A seat's steady state is ~600 MB and the fatal one reached 27.4 GB, so the
   # climb is long and there is real time to act. Warning at 3 GB is ~5x normal
   # and half the 6 GB cgroup bound: enough runway to /clear or restart that one
   # seat deliberately, which is strictly better than letting the bound kill it.
-  # The bound is the backstop; this is the part that avoids losing work at all.
   BIG=$(ps -eo rss,pid,args --no-headers | awk '$1 > 3145728 && /claude|2\.1\./ {print}')
   if [ -n "$BIG" ]; then
     echo "$BIG" | while read -r rss pid rest; do
