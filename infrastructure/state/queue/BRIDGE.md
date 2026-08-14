@@ -16,8 +16,24 @@ authored offline by OPS/CREATE and all of it verifies in ONE session.
 ## Open
 
 ### 🟡 BUILT DURING THE LOAD, NOT DEPLOYED — `jawa/ideo_of` + `jawa/biome_probe`
-Build **28 tools**, md5 `7fc79525d5b4afabaed78e0c580cc03e`, `--gm` pair present,
+Build **28 tools**, md5 `e47ea3d664dee03f828522d5d79f6afa`, `--gm` pair present,
 0 warnings 0 errors. ⛔ **NOT deployed — the game is up and the DLL is locked.**
+
+🔴 **The first build of `biome_probe` could NOT have answered the audit it was
+built for, and VISION's reply is what caught it.** Measured after: the engine's own
+resolved lists **drop a zeroed record exactly like a deleted one** —
+`<get_AllWildAnimals>d__94::MoveNext` yields a kind only if `CommonalityOfAnimal`
+**or** `…PollutionAnimal` **or** `…CoastalAnimal` is `> 0` (IL_0055/0063/0071), and
+`get_AllWildPlants` filters on `CommonalityOfPlant > 0` (IL_0038). So a
+`present:false` would have meant *removed* and *zeroed* indistinguishably — the
+exact conflation the tool existed to break.
+**Fixed:** `state` is now decided against the **DECLARED** records —
+`spawning` / `zeroed` / `absent` — with `wildAnimals`, `coastalWildAnimals` and
+`pollutionWildAnimals` read by reflection because all three are private
+(`wildPlants` is public and read directly).
+📌 **Generalises: a tool built to break a conflation can inherit that same
+conflation from the API it reads.** Check the ENGINE's filter before trusting a
+list to be the whole set — reading the resolved list felt like reading the truth.
 Deploy with `--gm` at the next shutdown window; RimBridgeServer registers
 companions only at startup, so nothing changes until then. **No bulletin to peers:
 neither has been called.**
