@@ -264,6 +264,19 @@ negative. *(Dune seas is the exception — it closed on a def read in §3b.)*
 
 ### 5a. Ground hulk + scrapfields — **NOT biome-gated, any fresh map shows them**
 
+🛑 **DO NOT SPEND THE LOAD ON THE HULK UNTIL `isJunk` IS SETTLED — added 2026-08-14.**
+`JawaGroundHulk.xml:99` sets `<isJunk>true</isJunk>`, and OPS measured that
+`GenStep_Scatterer.GetPlacementFactor` multiplies the count by
+`TileMutatorDef.junkDensityFactor` when `isJunk` is set — **`Dunes` is one of five
+mutators whose factor is 0**, which is why scrapfields placed nothing at all. If
+`GenStep_ScatterGroupPrefabs` inherits that factor, the hulk's *"no cell on 2 of 2
+maps"* was never a `minSpacing` problem and **`c74baa9` (85 → 0) fixed the wrong
+thing** — and this check would burn 25–30 minutes returning a third zero.
+⚠️ **One measured fact cuts against it:** the hulk emitted a could-not-find-cell
+warning and scrapfields emitted none — and a zero count cannot warn, because the
+placement loop never runs. So on those two maps the hulk's count was non-zero.
+**Answerable from IL and the def dump in minutes. Answer it before booking a load.**
+
 🔴 **The hulk needs a COLD LOAD, and the map must be generated AFTER it.** A
 save-load of an existing map does not re-run GenSteps. Do not test it on a map
 the running process already made.
