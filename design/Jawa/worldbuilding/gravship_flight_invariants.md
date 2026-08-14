@@ -41,6 +41,15 @@ PilotConsoleInaccessible    "Pilot console is not accessible from gravship"
 NoPathToGravship            "No path to gravship"
 ```
 
+✅ **Doors: DONE and in the artifact.** Two cut into the **outer** hull — which
+was the real risk, since a door in an interior partition photographs identically
+and leaves the ship sealed. Both are in the exported layout, so every future
+import carries them; a sealed hull was a defect in the design, not in one
+instance.
+⏳ **But the gate is still UNPROVEN.** A door existing is not a path. Nobody has
+yet walked a pawn to the pilot console's interaction cell, and that — not the
+door — is what `NoPathToPilotConsole` actually tests.
+
 🔴 **The last three make PATHING a launch requirement.** A sealed hull does not
 merely fail "boardable" — **it cannot fly**. A pilot must be able to walk from
 outside, through a door, to the console's interaction tile. This is the single
@@ -154,7 +163,7 @@ clears — **a bigger hull would not.**
 
 | | value | source |
 |---|---|---|
-| engine `SubstructureSupport` | **632.8** | live; `BG_gravEngineSupport 632.79541` |
+| engine `SubstructureSupport` | 🔴 **4500 — the baseline CHANGED 2026-08-13** | live. Was `632.79541`; raised through Bigger Gravships' settings dial + its **"Apply Settings Now!"** button **with the game running**, no restart. **It persists.** Any future capacity reading on this stack starts from 4500, not 632.8 — a doc or a memory quoting 632.8 is now stale. |
 | extender `SubstructureSupport` | **none — the stat is absent** | **live def** |
 | `VGE_GravFieldAmplifier` support | **none — the stat is absent** | **live def**; the dump's +200 is a ghost |
 | extender `maxDistance` | **34** | live; the settings key `BG_gravExtenderMaxDistanceFromEngine 85` reaches no def |
