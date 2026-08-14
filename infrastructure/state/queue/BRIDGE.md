@@ -322,3 +322,29 @@ already parses them and can emit the ops.
 **Payoff:** closes the design loop. Author a ship offline, import it, look at
 it, edit the file, re-import — no worldgen, no 25-minute load per iteration.
 Blocked on a deploy, which needs the game DOWN.
+
+---
+
+### B-v3. `jawa/order_pawn` — the bridge cannot order a pawn to walk anywhere
+Found 2026-08-13 trying to prove row 8's "boardable" gate. **There is no working
+way to make a named pawn go to a named cell.**
+
+Measured, on a quicktest with the game ticking:
+- `rimworld/set_draft {pawnName}` works — pawn drafts, panel shows Undraft.
+- `rimworld/right_click_cell {x,z}` returns *"Dispatched a live right-click…"*
+  and **produces no move order.** Pawn sat at (118,137) through 2,400 ticks with
+  the target on screen.
+- Ticks were genuinely advancing (`ticksGame` 4520 → 4820 → 5120), so this is
+  not a paused-game artifact.
+- Pathing itself is fine: undrafted, the same colonists wandered across four
+  distinct positions under normal AI. **The game moves pawns; we cannot aim
+  them.**
+
+**Why it matters beyond this row:** "walk a pawn somewhere and see what happens"
+is the shape of a whole class of live test — boardability, reachability, door
+function, room enclosure, trap triggers. None of it is runnable today.
+
+**Build:** a companion tool calling `pawn.jobs.TryTakeOrderedJob(JobMaker
+.MakeJob(JobDefOf.Goto, cell), JobTag.Misc)` on the main thread, returning the
+pawn's position read back after N ticks — not merely that the job was queued.
+Verify the API names with ilprobe first; do not trust this sketch.

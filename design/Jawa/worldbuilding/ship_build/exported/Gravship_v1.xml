@@ -245,7 +245,7 @@
         <terrainStuff IsNull="True" />
         <things>
           <li>
-            <defName>GravshipHull</defName>
+            <defName>Door</defName>
             <stuffDef>Steel</stuffDef>
             <rotInteger>0</rotInteger>
             <quality IsNull="True" />
@@ -29027,7 +29027,7 @@
         <terrainStuff IsNull="True" />
         <things>
           <li>
-            <defName>GravshipHull</defName>
+            <defName>Door</defName>
             <stuffDef>Steel</stuffDef>
             <rotInteger>0</rotInteger>
             <quality IsNull="True" />
