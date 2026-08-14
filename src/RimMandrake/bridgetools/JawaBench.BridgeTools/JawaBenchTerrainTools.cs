@@ -3102,7 +3102,22 @@ namespace JawaBench.BridgeTools
                     if (!water[i] || seen[i]) continue;
                     cancellationToken.ThrowIfCancellationRequested();
                     var size = 0;
-                    var perimeter = 0;
+                    // 🔴 TWO perimeters, and the distinction cost a wrong gate
+                    // reading on 2026-08-14. The sea spec defines perimeter as
+                    // "count of water tiles with at least one land neighbour" —
+                    // a count of TILES. The original implementation counted
+                    // EDGES, and a hex tile has ~6 of them, so the two differ by
+                    // up to 6x — and `raggedness` SQUARES it, so up to 36x. The
+                    // first real reading returned 82,715 against a threshold of
+                    // 25 whose reference is a circle at 4pi = 12.57.
+                    // ⇒ both are reported, and `raggedness` is computed from the
+                    // TILE count, because that is the one the gate is written
+                    // against. VISION checked the threshold against this grid
+                    // rather than assuming: for a hex disc of radius r, tiles
+                    // 3r^2+3r+1 and boundary 6r give P^2/A -> ~12 as r grows, so
+                    // "beat 25" still means "twice as ragged as round".
+                    var perimeterEdges = 0;
+                    var perimeterTiles = 0;
                     // Latitude is averaged over the body's tiles. Longitude is
                     // deliberately NOT averaged: it wraps at the antimeridian, so
                     // a body straddling it would average to the wrong hemisphere.
@@ -3117,20 +3132,31 @@ namespace JawaBench.BridgeTools
                         latSum += grid.LongLatOf(cur).y;
                         nbrs.Clear();
                         grid.GetTileNeighbors(cur, nbrs);
+                        var onBoundary = false;
                         foreach (var nb in nbrs)
                         {
                             int id = nb;
                             // An edge to land, or off the grid, is a perimeter edge.
-                            if (id < 0 || id >= n || !water[id]) { perimeter++; continue; }
+                            if (id < 0 || id >= n || !water[id])
+                            {
+                                perimeterEdges++;
+                                onBoundary = true;
+                                continue;
+                            }
                             if (seen[id]) continue;
                             seen[id] = true;
                             stack.Push(id);
                         }
+                        // Counted ONCE per tile however many land neighbours it
+                        // has — that is what makes it a tile count rather than
+                        // an edge count.
+                        if (onBoundary) perimeterTiles++;
                     }
                     sizes.Add(new BodyShape
                     {
                         Tiles = size,
-                        Perimeter = perimeter,
+                        Perimeter = perimeterEdges,
+                        PerimeterTiles = perimeterTiles,
                         CentroidLat = size > 0 ? latSum / size : 0.0
                     });
                 }
@@ -3166,15 +3192,32 @@ namespace JawaBench.BridgeTools
                         {
                             tiles = v.Tiles,
                             pct = Pct(v.Tiles),
-                            perimeter = v.Perimeter,
-                            // The raggedness number VISION's gate is written against.
-                            // Guarded rather than assumed: a zero-area body cannot
-                            // occur here, but dividing by it silently would produce
-                            // Infinity and read as a spectacular pass.
+                            // Both, named for what they count. `perimeter` was
+                            // ambiguous and the ambiguity produced a wrong gate
+                            // reading, so the old name is retired.
+                            perimeterEdges = v.Perimeter,
+                            perimeterTiles = v.PerimeterTiles,
+                            // The raggedness number the sea gate is written
+                            // against — computed from the TILE count, matching
+                            // the spec's own definition. Guarded rather than
+                            // assumed: a zero-area body cannot occur here, but
+                            // dividing by it silently would produce Infinity and
+                            // read as a spectacular pass.
                             raggedness = v.Tiles > 0
+                                ? Math.Round((double)v.PerimeterTiles * v.PerimeterTiles
+                                             / v.Tiles, 2)
+                                : 0.0,
+                            // Edge-based ratio, kept only so the two can be told
+                            // apart in any reading taken before this fix.
+                            raggednessEdges = v.Tiles > 0
                                 ? Math.Round((double)v.Perimeter * v.Perimeter / v.Tiles, 2)
                                 : 0.0,
-                            centroidLat = Math.Round(v.CentroidLat, 3)
+                            centroidLat = Math.Round(v.CentroidLat, 3),
+                            // 🔴 The gate's band (0.35-0.65) is a FRACTION and
+                            // the doc never said so. Degrees alone made 46.634
+                            // read as a catastrophic failure when |lat|/90 =
+                            // 0.518 sits mid-band. Ship both; name the units.
+                            centroidLatNorm = Math.Round(Math.Abs(v.CentroidLat) / 90.0, 4)
                         }).ToList(),
                     bodiesListed = Math.Min(limit, sizes.Count),
                     biomes = biomes.OrderByDescending(kv => kv.Value)
@@ -5536,7 +5579,15 @@ namespace JawaBench.BridgeTools
         private sealed class BodyShape
         {
             public int Tiles;
+            // Edges to land or off-grid. Kept because it is a real measure of
+            // frontier length; NOT the one the sea gate is written against.
             public int Perimeter;
+            // Tiles with at least one land neighbour — the spec's definition,
+            // and the one `raggedness` is computed from.
+            public int PerimeterTiles;
+            // Degrees, -90..90. Normalised to 0..1 at the point of reporting;
+            // both are emitted, because the gate's band is a fraction and
+            // shipping only degrees made a passing world read as a failure.
             public double CentroidLat;
         }
 
