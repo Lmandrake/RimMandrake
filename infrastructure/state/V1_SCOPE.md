@@ -175,7 +175,7 @@ anything needed protecting.)*
 | **built** | ✅ 31 steps, 4,057 foundation + 4,057 floor cells, 1,053 things, ~1s of calls |
 | **exported** | ✅ `design/Jawa/worldbuilding/ship_build/exported/Gravship_v1.xml`, 2.0 MB |
 | **matches deck plan intent** | ✅ — and that is the problem, see below |
-| **boardable** | ⬜ **UNTESTED. Built, exported, seen — not boarded.** |
+| **boardable** | ⬜ **BLOCKED, not merely untested.** The bridge cannot order a pawn to walk anywhere — needs `B-v3 order_pawn`, which is a companion-DLL deploy and therefore needs the game **DOWN**. BRIDGE's UI is also designator-jammed, so no inspect panel. **Row 8 cannot close this session at any price.** |
 
 ✅ **The floor contradiction is CLOSED and the README was wrong.** 4,057
 `terrainDef` cells survived the round trip — 3328 MetalTile, 507 SterileTile, 197
