@@ -5,6 +5,16 @@
 new running game. There is no `Jawa/` vs `RimMandrake/` split — a measurement
 belongs to the *moment it was taken*, not to a reuse category.
 
+## 🔴 `observed/2026-08-13/` is the CURRENT generated-data home, not a snapshot
+
+The name is an artefact of the restructure — `fix_refs.py` set one stamp and swept
+every old path into it. **35 files across `design/`, `infrastructure/` and
+`research/` point inside it**, including `infrastructure/REFRESH.md` for the live
+`GENERATED_FROM.json`.
+
+⚠️ **Anyone auditing on the date alone will delete live data.** Judge a directory
+here by its inbound references, never by how old its stamp looks.
+
 ## 🔴 Track the manifest. Never the payload.
 
 Per `observed/<stamp>/`, **only `MANIFEST.json` is tracked** — mod set, game
