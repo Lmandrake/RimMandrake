@@ -640,3 +640,11 @@ Twi'lek — is unauthored, is CREATE's, and is `[v2]`. Do not hold launch for it
 It is CREATE's **C14** with four owner rulings. I found it half-built (references
 committed, no SKILL.md), started a draft, and stopped on the owner's word before a
 byte was written. CREATE notified twice. **Do not pick it up.**
+
+## V29. `[v2]` The Unearned — begging as heresy, specced and ready for CREATE
+`D:\Luke\dev\Rimworld\design\Jawa\worldbuilding\precept_the_unearned.md`. New
+`IssueDef` + precept + meme for the **Hutt Cartel**, closing the entry-2 `Charity`
+hole. Refusal hook is **LEGAL** — `CharityRefused_Beggars` fires when beggars leave
+empty-handed. 🔴 A `FactionDef` has **no precept field**; only a meme's `requireOne`
+forces one. **Unresolved:** does *arresting* a beggar raise
+`CharityRefused_Beggars_Betrayed`, or only killing? Filed for BRIDGE, non-blocking.
