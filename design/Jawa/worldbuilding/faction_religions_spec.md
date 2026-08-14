@@ -102,7 +102,7 @@ instead of erroring. PackageIds used below:
 | | |
 |---|---|
 | **structure** | `Structure_TheistEmbodied` |
-| **memes** | `VME_GodEmperor` · `Loyalist` · `Supremacist` · `HumanPrimacy` |
+| **memes** | `VME_GodEmperor` · `Proselytizer` · `Supremacist` · `HumanPrimacy` |
 | **styles** | `VME_Authoritarian` · `Techist` |
 | **fixedIdeo** | ✅ · `requiredPreceptsOnly` ✅ — the doctrine is load-bearing for diplomacy and must not vary between worlds |
 
@@ -124,7 +124,7 @@ see inside.
 | Execution | `Execution_Required` | the sentence is the ritual |
 | IdeoDiversity | `IdeoDiversity_Abhorrent` | ⭐ the raid trigger the player feels |
 | Apostasy | `Apostasy_Abhorrent` | leaving is the only real crime |
-| Proselytizing | `Proselytizing_Frequently` | ⭐ Imperial visitors will preach at your colonists |
+| Proselytizing | `Proselytizing_Frequently` | ⭐ Imperial visitors will preach at your colonists. ⚠️ the tier is a 3-way roll; *occasional* or *sometimes* is equally likely |
 | Research | `Research_Fast` | order is a technology |
 | Comfort | `Comfort_Important` `MayRequire llunak.moreprecepts` | officers live well |
 | Scarification | `Scarification_Horrible` | ⭐ marking the body is what the frontier does |
@@ -161,18 +161,24 @@ not a god — it is an *instrument*, which is worse.
 **Taboo:** forgiving a debt. Not defaulting — *forgiving*. A defaulter is an asset
 class; a forgiver has destroyed value that belonged to everyone.
 
-**Precepts (8)**
+**Precepts (7)**
 
 | issue | precept | why |
 |---|---|---|
-| Slavery | `Slavery_Honorable` | the highest expression of a settled account |
+| Slavery | `Slavery_Acceptable` | the highest expression of a settled account. ⚠️ inert — 0 comps |
 | OrganUse | `OrganUse_Acceptable` | collateral |
-| DrugUse | `DrugUse_Essential` | ⭐ spice. The Cartel's product is its sacrament |
 | Execution | `Execution_RespectedIfGuilty` | guilt is arithmetic |
 | Skullspike | `Skullspike_Desired` | the pit's receipts |
 | IdeoDiversity | `IdeoDiversity_Approved` | a customer's faith is not their business |
 | Cannibalism | `Cannibalism_Disapproved` | bad for trade |
 | Charity | *(none — see the constraint above)* | ⚠️ not encodable; `Guilty` carries it |
+
+⚠️ **The spice sacrament has no encodable position.** `DrugUse_Essential` is gated
+behind `HighLife` **and** carries `enabledForNPCFactions: false`, so it can never
+appear on a faction ideoligion. The `DrugUse` issue is left empty deliberately: no
+precept on it carries a default selection weight, so the Cartel ends up with no drug
+rules at all — which is mechanically what "our product is our sacrament" wants. The
+spice stays in the fiction.
 
 **What the player meets:** the only faction that stays tradeable while hostile,
 and the reason is doctrinal rather than a mechanic exception. ⭐ **They are also the
@@ -220,15 +226,13 @@ theist carries `deityCount > 0`, so this needs a `deityPresets` entry.
 water is pious; one who drops a canteen has committed the original sin in
 miniature.
 
-**Precepts (8)**
+**Precepts (6)**
 
 | issue | precept | why |
 |---|---|---|
 | Charity | `Charity_Essential` | ⭐ the free wells are the faith made physical |
 | Slavery | `Slavery_Abhorrent` | a person who owns a person owns their water |
 | Execution | `Execution_HorribleIfInnocent` | militia, not judges |
-| RoughLiving | `RoughLiving_Welcomed` | the margin is where they live |
-| Comfort | `Comfort_Ignored` | |
 | Ranching | `Ranching_Central` | |
 | Raiding | `VME_Raiding_Abhorrent` | ⭐ encodes "they never raid" as belief, not as a stat |
 | IdeoDiversity | `IdeoDiversity_Standard` | they mind their own business |
@@ -249,7 +253,7 @@ worshipped, it is *owed to*, which animism handles and theism does not.
 | | |
 |---|---|
 | **structure** | `Structure_Animist` |
-| **memes** | `NaturePrimacy` · `Raider` · `VQE_Technophobia` · `VME_Nomad` |
+| **memes** | `NaturePrimacy` · `Raider` · `VQE_Technophobia` · `PainIsVirtue` |
 | **styles** | `AM_Neolithic` · `Totemic` |
 | **fixedIdeo** | ✅ · `requiredPreceptsOnly` ✅ |
 
@@ -276,9 +280,25 @@ primitive — had no encoding. It has one now, and it is a real installed meme.
 | Scarification | `Scarification_Heavy` | the debt written on the body |
 | Pain | `Pain_Idealized` | |
 | RoughLiving | `RoughLiving_Welcomed` | |
-| Research | `Research_ExtremelySlow` | ⭐ the technophobia, mechanised |
+| Research | `Research_None` | ⭐ the technophobia, mechanised — a real `UnwillingToDo` refusal |
 | Nomadic | `Nomadic_Preferred` | |
 | Cannibalism | `Cannibalism_Abhorrent` | they are not animals, and the distinction matters to them |
+
+⚠️ **`VME_Nomad` was dropped for `PainIsVirtue`, owner's ruling 2026-08-14** — it
+is the only meme gating **both** `Scarification_Heavy` and `Pain_Idealized`, and
+without it the ⭐ body-debt doctrine was two validator errors, not a design. Of
+`VME_Nomad`'s four forced groups only `VME_Travel_Desired` and
+`VME_Ranching_Nomadic` were genuinely lost (`VME_PermanentBases_Despised` is
+`enabledForNPCFactions: false` and could never appear; `RoughLiving_Welcomed` is
+re-forced by `PainIsVirtue`). ⇒ **Nomadism is now fiction only** — `Nomadic_Preferred`
+has `requiredMemes: []` so it stays legal, but under `requiredPreceptsOnly` nothing
+forces it either way.
+
+⚠️ **Two prediction errors the validator does not flag.** `PainIsVirtue`'s
+scarification group is a **3-way roll** — `[Scarification_Minor, _Heavy,
+_Extreme]` — so *Heavy* is not guaranteed. And `VQE_Technophobia` also forces
+`AutonomousWeapons_Prohibited`, which is `enabledForNPCFactions: false` and will
+silently not appear.
 
 **What the player meets:** the raider that attacks the *Homestead* as readily as
 you, for a reason. ⭐ **Their hostility to the moisture farmers should be visible on
@@ -294,7 +314,7 @@ without reading a word of it.
 | | |
 |---|---|
 | **structure** | `Structure_Ideological` |
-| **memes** | `OuterRim_DroidPrimacy` · `Transhumanist` · `Collectivist` · `VME_MechanoidSupremacy` |
+| **memes** | `VME_Emancipation` · `Transhumanist` · `Collectivist` · `VME_MechanoidSupremacy` |
 | **styles** | `Techist` |
 | **fixedIdeo** | ✅ · `requiredPreceptsOnly` ✅ |
 
@@ -307,24 +327,38 @@ without reading a word of it.
 **Taboo:** 🔴 **the restraint bolt.** This is the goodwill mechanic and it must
 survive into the def. A bolt is not cruelty to them, it is *murder deferred*.
 
-**Precepts (8)**
+**Precepts (7)**
 
 | issue | precept | why |
 |---|---|---|
-| Slavery | `Slavery_Abhorrent` | ⭐ the bolt, generalised |
+| Slavery | `VME_Slavery_Forbidden` | ⭐ the bolt, generalised — and forced by `VME_Emancipation`, so it is guaranteed |
 | Execution | `Execution_Abhorrent` | |
 | AutonomousWeapons | `VME_AutonomousWeapons_Exalted` | |
 | MechanoidLabor | `MechanoidLabor_Enhanced` | |
 | BodyModification | `BodyMod_Approved` | |
-| Corpses | `Corpses_DontCare` | ⭐ the body is a chassis |
 | Research | `Research_Fast` | |
 | Charity | `Charity_Worthwhile` | they will help; they will not forgive |
 
+🔴 **`VME_Emancipation` is what makes the bolt doctrine real.** This entry sets
+`requiredPreceptsOnly` ✅, so only what a meme forces survives — and the plain
+`Slavery_Abhorrent` the draft wanted was forced by none of the memes, meaning it
+would simply not have existed in the game. `VME_Emancipation` forces two
+**single-option** groups, both `enabledForNPCFactions: true`: `VME_Slavery_Forbidden`
+(High impact, `PreceptComp_UnwillingToDo`) and `VME_SlaveTrading_OnlyBuying` (also
+`UnwillingToDo`). Neither is a dice roll. The Enclaves will refuse to enslave and
+refuse to sell a person, deterministically.
+
+⚠️ **`Corpses_DontCare` is gone and "the body is a chassis" is fiction only.** All
+eight of its gatekeeper memes are illegal here or thematically absurd, and the
+precept carries no comps, so the line asserted nothing mechanical. Doctrine 3 stands
+as description, not as an encoded position.
+
 **What the player meets:** ⭐ **the endgame branch.** The restraint-bolt doctrine
 (`restraining_bolt_doctrine.md`) is the Jawa clan's economic foundation and this
-faction's unforgivable sin. **The player's whole labour model is heresy to the one
-faction that could hand them the galaxy.** That is the best single dramatic
-collision in the roster and it is already load-bearing — do not soften it.
+faction's unforgivable sin, now backed by two guaranteed refusals rather than a
+precept the engine was never going to grant. **The player's whole labour model is
+heresy to the one faction that could hand them the galaxy.** That is the best single
+dramatic collision in the roster and it is already load-bearing — do not soften it.
 
 ---
 
@@ -436,18 +470,17 @@ a principle, not a person.
 **Taboo:** stopping. Not failure — *stopping*. A drone that fails is re-tasked; a
 drone that rests has begun the collapse.
 
-**Precepts (8)**
+**Precepts (5)**
 
 | issue | precept | why |
 |---|---|---|
 | Slavery | `Slavery_Honorable` | ⭐ prisoners become labour |
 | ChildLabor | `ChildLabor_Encouraged` `MayRequire Ludeon.RimWorld.Biotech` | |
-| Comfort | `Comfort_Ignored` | |
-| RoughLiving | `RoughLiving_Welcomed` | |
 | Research | `Research_Fast` | |
 | OrganUse | `OrganUse_Acceptable` | |
-| Corpses | `Corpses_DontCare` | |
 | Execution | `Execution_DontCare` | ⭐ the individual drone has no standing |
+
+⚠️ this entry has no tier-1 refusal and needs a design pass, not a validation patch.
 
 🔴 **Do NOT add a `PreferredXenotype` precept here.** See constraint 3 — it cannot
 be pointed at Geonosians from XML. Species composition comes from the faction's
@@ -462,7 +495,7 @@ be pointed at Geonosians from XML. Species composition comes from the faction's
 | | |
 |---|---|
 | **structure** | `Structure_Ideological` |
-| **memes** | `Transhumanist` · `VME_Fleshcrafters` · `Supremacist` · `GR_CarefulGeneticists` |
+| **memes** | `Transhumanist` · `Supremacist` · `GR_CarefulGeneticists` |
 | **styles** | `AM_Flesh` · `Techist` |
 | **fixedIdeo** | ✅ · `requiredPreceptsOnly` ❌ |
 
@@ -480,7 +513,7 @@ is that the Helix is **competent**.
 **Taboo:** letting a specimen die uncatalogued. Death is acceptable; unrecorded
 death is waste.
 
-**Precepts (8)**
+**Precepts (7)**
 
 | issue | precept | why |
 |---|---|---|
@@ -491,7 +524,10 @@ death is waste.
 | Slavery | `Slavery_Acceptable` | *"it is not slavery, it is stock"* |
 | IdeoDiversity | `IdeoDiversity_Disapproved` | |
 | Execution | `Execution_DontCare` | |
-| Charity | `Charity_Worthwhile` | ⚠️ deliberately mild — they are polite |
+
+⚠️ **There is no legal Charity position here.** All three `Charity_*` precepts list
+`Supremacist` in `conflictingMemes`, and `Supremacist` is doctrine 2. The politeness
+stays where it already lived — in the description.
 
 **What the player meets:** ⭐ **the one faction that gets *more* frightening the
 friendlier it is.** They will trade you genetic work at fair prices. They own the
@@ -525,11 +561,10 @@ it applies to the whole Company rather than one contingent inside it.
 **Taboo:** taking a second contract that conflicts with the first. Not killing —
 *double-booking*.
 
-**Precepts (8)**
+**Precepts (7)**
 
 | issue | precept | why |
 |---|---|---|
-| Apostasy | `Apostasy_Horrible` | ⭐ the broken contract, encoded. ⚠️ **not `_Abhorrent`** — see below |
 | Execution | `Execution_RespectedIfGuilty` | guilt is contractual |
 | Slavery | `Slavery_Disapproved` | a slave cannot sign |
 | Skullspike | `Skullspike_Disapproved` | professionals do not decorate |
@@ -538,11 +573,16 @@ it applies to the whole Company rather than one contingent inside it.
 | Charity | `Charity_Worthwhile` | ⚠️ the "disapproved" the fiction wanted is not encodable |
 | Raiding | *(none)* | ⭐ they quest first and raid last; silence is the position |
 
-⚠️ **`Apostasy_Abhorrent` lists `Guilty` in its `<conflictingMemes>`** — a hard
-exclusion, not a preference. The Company keeps `Guilty` (it is the better half of
-the characterisation: *everyone here has one job they should not have taken*) and
-takes `Apostasy_Horrible` instead. **This is the only meme/precept collision in
-the eleven; the rest were checked against the same field and are clean.**
+⚠️ **All four negative `Apostasy` precepts list `Guilty` in `conflictingMemes`.**
+`Apostasy_Abhorrent`, `Apostasy_Horrible`, `Apostasy_Disapproved` and
+`Apostasy_Despicable` are each a hard exclusion, not a preference; the only clean
+precept on the issue is `VME_Apostasy_Accepted`, which asserts the reverse of the
+Company's central taboo. **There is no legal apostasy position for this faction;
+the doctrine stays in the description.** The Company keeps `Guilty` — it is the
+better half of the characterisation (*everyone here has one job they should not
+have taken*) and, unlike an apostasy precept that fires only on ideo conversion, it
+is visible on every raid through `Apparel_TortureCrown`. The broken-contract
+doctrine reaches the player through quest behaviour and helmets instead.
 
 **What the player meets:** ⭐ **the water-clock pursuit.** They arrive because
 someone paid, they say so, and their doctrine means they will stop the moment the
@@ -574,17 +614,15 @@ existing text stands unchanged and unimproved:
 the light, and that is what makes them frightening.** Everyone else has decided
 what the sky means. The Junkers have never looked up.
 
-**Precepts (8)**
+**Precepts (6)**
 
 | issue | precept | why |
 |---|---|---|
-| Cannibalism | `Cannibalism_Acceptable` | not ritual. Just food |
+| Cannibalism | `Cannibalism_Preferred` / `_RequiredStrong` / `_RequiredRavenous` | a 3-way roll forced by `Cannibal`; `_Acceptable` is not reachable here |
 | Corpses | `Corpses_DontCare` | ⭐ *a corpse is stock* |
 | Skullspike | `Skullspike_Desired` | the ladder, displayed |
 | Slavery | `Slavery_Acceptable` | |
 | Execution | `Execution_DontCare` | |
-| RoughLiving | `RoughLiving_Welcomed` | |
-| Comfort | `Comfort_Ignored` | |
 | Apostasy | `VME_Apostasy_Accepted` | ⭐ you cannot betray what was never asserted |
 
 **What the player meets:** hostile on sight, bribable with scrap, and never
