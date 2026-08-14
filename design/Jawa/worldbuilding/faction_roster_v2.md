@@ -354,8 +354,11 @@ Separate equipment tags or pawn-kind restrictions per faction:
 > has checked. Until someone does, 3 is the safe value — it fails toward the
 > doctrine rather than against it.
 >
-> _Reconciliation derived from the owner's aristocracy proposal (`infrastructure/state/TODO_v2.md` §3.2)
-> and written down 2026-08-12. The two-layer reading is not in dispute; the exact
+> ⚠️ _Reconciliation originally derived from an aristocracy proposal in
+> `TODO_v2.md`, **now struck** — that document lost ~800 lines and the two-Empire
+> reading it supported is superseded by the owner's one-Empire ruling. **Canon is
+> `faction_world_spec.md` §5.** The two-LAYER reading (surface vs orbital) survives
+> on its own merits and is what this note is about._ The two-layer reading is not in dispute; the exact
 > surface figure (2–3 here vs "one or two" at `desert_world_design.md:641`) is a
 > ±1 the owner has not ruled on, and nothing downstream depends on which it is._
 
