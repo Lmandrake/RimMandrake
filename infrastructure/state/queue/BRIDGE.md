@@ -15,6 +15,40 @@ authored offline by OPS/CREATE and all of it verifies in ONE session.
 
 ## Open
 
+### 🔴 §5e PRE-FLIGHT — L3 fires the WRONG FACTION silently, and L1 names a tool that does not exist
+Both found offline in the pre-launch window, before either cost a live call.
+
+**L1 — `jawa/spawn_thing` DOES NOT EXIST.** The 26 deployed names carry no
+`spawn_thing`; the call is vanilla **`rimworld/spawn_thing`**, or `jawa/spawn_batch`
+for more than one. Prefix only — the item itself is sound.
+
+**L3 — IL-CONFIRMED silent substitution.** `IncidentWorker_RaidEnemy::
+TryResolveRaidFaction` keeps the faction you passed **only if** it is non-null
+**AND** `FactionUtility::HostileTo(Faction.OfPlayer)` **AND** (`!deactivated` OR
+`parms.forced`) — IL_001f/0036/0055 all branch to IL_0059 otherwise, where
+`ldflda IncidentParms::faction` is passed **by reference** into
+`PawnGroupMakerUtility::TryGetRandomFactionForCombatPawnGroupWeighted`, which
+**overwrites it with a random weighted faction**. ⇒ if `OuterRim_GalacticEmpire`
+is not hostile to the player, the raid fires, `success:true`, and VISION
+photographs **a different antagonist entirely.** Nothing in the reply says so
+unless you look.
+
+**Procedure, and it costs one extra call:**
+1. `jawa/fire_incident incidentDef=RaidEnemy faction=OuterRim_GalacticEmpire dryRun=true`
+   → abort on `canFireNow:false`.
+2. Fire for real, then 🔴 **read the `faction` field in the REPLY, not the one you
+   sent.** The tool reports `parms.faction` *after* the worker ran
+   (`JawaBenchTerrainTools.cs:3588`), so the read-back is the evidence — it is the
+   only thing that distinguishes an Empire raid from a substituted one.
+3. **Pass `points` explicitly.** `points<=0` takes the storyteller default, which on
+   a fresh quicktest is tens of points — one trivial attacker. *"Does the Empire
+   read as an antagonist"* cannot be answered by a raid the storyteller sized for a
+   day-one colony.
+
+📌 **Generalises: a parameter you pass is not a parameter that survives.** Engine
+workers take `IncidentParms` by reference and rewrite it. **Assert on the value read
+back, never on the value sent** — same shape as `set_terrain`'s dropped `def=`.
+
 ### 🔴 PRE-LAUNCH 2026-08-14 — CENSUS EXPECTS **26**, and the documented derivation says 27
 Measured on the game copy at the open window: md5 `55b2362985bcf5a2dc4a1140ef39eb7a`,
 292,864 B @ 12:25, **26/26 `jawa/` names**, md5-identical to the repo build
