@@ -65,6 +65,7 @@ import argparse
 import datetime
 import os
 import sys
+import time
 import traceback
 
 _ROOT = os.path.dirname(os.path.dirname(os.path.dirname(
@@ -99,12 +100,13 @@ def litter(what, where=""):
 
 # --------------------------------------------------------------- gates
 
-def census(s, expect=21):
+def census(s, expect=22):
     """THE gate. Every other result is uninformative until this passes.
 
-    21 = the 2026-08-13 22:03 GM deploy, with jawa/order_pawn.
-    19 = a build made without --gm; the GM pair was compiled out.
-    20 = the build before order_pawn.  0 = the bundle never loaded.
+    22 = the current GM deploy, with jawa/world_stats.
+    21 = the build before world_stats.  20 = before order_pawn.
+    20 with the GM pair missing = a build made without --gm.
+    0 = RimBridgeServer never loaded the bundle at all.
     """
     names = {t.get("name") for t in s._rb.list_tools()}
     jawa = sorted(n for n in names if n and n.startswith("jawa/"))
@@ -121,6 +123,31 @@ def census(s, expect=21):
         print("       python.exe src/RimMandrake/bridgetools/build.py --gm --apply")
         print("     Missing: %s" % (set(EXPECTED_TOOLS) - set(jawa) or "none"))
     return set(jawa)
+
+
+def settle(s, cfg):
+    """🔴 THE BRIDGE ANSWERING IS NOT THE GAME BEING REACTIVE.
+
+    Owner, 2026-08-14: the game does not really become reactive until about
+    FORTY SECONDS after the bridge first responds. Every readiness flag we have
+    -- `currentMapReady`, `longEventPending`, `playable` -- can be satisfied
+    inside that window, so a script that trusts them alone starts mutating into
+    a game that is still settling and gets results it cannot attribute.
+
+    This is the same shape as every other entry in traps.md: a signal that says
+    the TOOL is ready being read as the GAME being ready. Read-only calls are
+    fine during it; mutation waits.
+    """
+    if cfg.settle <= 0:
+        return
+    waited = 0
+    while waited < cfg.settle:
+        time.sleep(2)
+        waited += 2
+    record("A0b", "settle window", PASS,
+           "waited %ds after first bridge contact before mutating (owner: the "
+           "game is not reactive for ~40s, whatever the ready flags say)"
+           % waited)
 
 
 def playable(s):
@@ -144,7 +171,7 @@ EXPECTED_TOOLS = [
     "jawa/refresh_rect", "jawa/spawn_pawn", "jawa/set_pawn_style",
     "jawa/set_pawn_rotation", "jawa/set_pawn_xenotype", "jawa/fire_incident",
     "jawa/send_letter", "jawa/set_roof_batch", "jawa/get_roof_batch",
-    "jawa/list_factions", "jawa/order_pawn",
+    "jawa/list_factions", "jawa/order_pawn", "jawa/world_stats",
 ]
 
 
@@ -561,6 +588,8 @@ def run(s, cfg):
         print("like a broken tool and is not one. Wait, then re-run.")
         return
 
+    settle(s, cfg)
+
     for item_id, phase, title, fn in ITEMS:
         if cfg.phase != "all" and phase != cfg.phase:
             record(item_id, title, SKIP, "phase=%s, this run is %s"
@@ -629,7 +658,8 @@ def selftest():
     record("F1", "row 7 desert terrain", SKIP, "phase=fresh")
     litter("Jawa_SaltCrust painted 10x10", "(100,100)")
     cfg = argparse.Namespace(date="0000-00-00", phase="all", x=0, z=0,
-                             console_id=None, wearer="Colonist", trace=False)
+                             console_id=None, wearer="Colonist", settle=0,
+                             trace=False)
     p = ledger(cfg)
     body = open(p, encoding="utf-8").read()
     bad = 0
@@ -653,6 +683,11 @@ def main(argv=None):
                          "the shutdown window is still open.")
     ap.add_argument("--x", type=int, default=100, help="working cell X")
     ap.add_argument("--z", type=int, default=100, help="working cell Z")
+    ap.add_argument("--settle", type=int, default=40,
+                    help="Seconds to wait after the bridge answers before "
+                         "mutating anything. The owner measured ~40s during "
+                         "which the game is NOT reactive even though every "
+                         "readiness flag is already true. 0 disables it.")
     ap.add_argument("--wearer", default="Colonist",
                     help="PawnKindDef used as the body for the apparel and "
                          "hair rows. Must be humanlike and is spawned "

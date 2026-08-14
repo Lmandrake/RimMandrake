@@ -2885,6 +2885,164 @@ namespace JawaBench.BridgeTools
             }, cancellationToken).ConfigureAwait(false);
         }
 
+        // ---- jawa/world_stats ------------------------------------------------
+        // WHY THIS EXISTS. The owner's world spec is "about a quarter ocean, in
+        // three oddly-shaped bodies". The generator unaided gives 43-55% ocean in
+        // scattered blobs, and ocean is an elevation rule at worldgen step 0 --
+        // no slider touches it. So worldgen was HELD, because the only way to
+        // find out what a world looks like was to spend the irreversible
+        // Configure Factions click and look at it. That is not a search, it is a
+        // guess costing 25-30 minutes a try.
+        //
+        // This measures instead. "43-55% in scattered blobs" becomes a number and
+        // a body list, so a seed can be judged in one call rather than a session.
+        //
+        // Names read from Assembly-CSharp with ilprobe, not recalled:
+        //   RimWorld.Planet.World.grid / .info
+        //   WorldGrid.TilesCount, WorldGrid.get_Item(int) -> SurfaceTile,
+        //     WorldGrid.GetTileNeighbors(PlanetTile, List<PlanetTile>)
+        //   PlanetTile.op_Implicit(int)
+        //   Tile.PrimaryBiome / .WaterCovered / .IsCoastal / .elevation
+        //   WorldInfo.seedString / .planetCoverage / .overallRainfall /
+        //     .overallTemperature
+        [Tool(
+            "jawa/world_stats",
+            Description =
+                "Measure the generated PLANET: how much of it is water, how that water is " +
+                "distributed into separate bodies, and what the land is made of. Built for " +
+                "one question — the owner's world spec asks for roughly a quarter ocean in " +
+                "three oddly-shaped bodies, and the generator gives 43-55% in scattered " +
+                "blobs. Ocean is an elevation rule at worldgen step 0 and no setting moves " +
+                "it, so the only way to steer it is to generate, measure, and keep or " +
+                "discard. This is the measure half. Read-only: it touches nothing and is " +
+                "safe on a campaign world.",
+            ResultDescription =
+                "waterPct and landPct over all tiles; `bodies` — every connected water mass " +
+                "with its tile count and share of the planet, largest first, which is what " +
+                "answers 'how many oceans' rather than merely 'how much ocean'; " +
+                "`biomes` — land tile counts by defName; coastalTiles; and the world's own " +
+                "seedString and planetCoverage so a measurement can be tied back to the " +
+                "world that produced it. ⚠️ A body of 1-2 tiles is a puddle, not an ocean: " +
+                "read `bodiesOverMinSize`, not `bodies.Count`.")]
+        public static async Task<object> WorldStats(
+            IRimBridgeContext ctx,
+            CancellationToken cancellationToken,
+            [ToolParameter(Description =
+                "Ignore water bodies smaller than this when counting how many there are. " +
+                "The raw list is still returned in full.", DefaultValue = 8)]
+            int minBodySize = 8,
+            [ToolParameter(Description =
+                "Cap on how many bodies to list, largest first. The COUNTS are computed " +
+                "over every body regardless of this.", DefaultValue = 25)]
+            int limit = 25)
+        {
+            if (minBodySize < 1) return Fail($"minBodySize must be >= 1, got {minBodySize}.");
+
+            return await ctx.MainThread.InvokeAsync<object>(() =>
+            {
+                var world = Find.World;
+                if (world == null)
+                    return Fail("No world. This reads the PLANET, so it needs a world " +
+                                "loaded — a map is not required, but the main menu is not " +
+                                "enough.");
+                var grid = world.grid;
+                if (grid == null) return Fail("World has no grid.");
+
+                var n = grid.TilesCount;
+                if (n <= 0) return Fail($"World grid reports {n} tiles.");
+
+                var water = new bool[n];
+                var biomes = new Dictionary<string, int>();
+                var waterCount = 0;
+                var coastal = 0;
+
+                for (var i = 0; i < n; i++)
+                {
+                    if ((i & 1023) == 0) cancellationToken.ThrowIfCancellationRequested();
+                    var t = grid[i];
+                    if (t == null) continue;
+                    if (t.WaterCovered) { water[i] = true; waterCount++; }
+                    else
+                    {
+                        var b = t.PrimaryBiome?.defName ?? "(null)";
+                        biomes.TryGetValue(b, out var c);
+                        biomes[b] = c + 1;
+                        if (t.IsCoastal) coastal++;
+                    }
+                }
+
+                // Connected water masses. THIS is the part that distinguishes
+                // "three oddly-shaped bodies" from "the same water area smeared
+                // into forty blobs" -- two worlds that report an identical
+                // waterPct and are nothing alike. A percentage alone cannot
+                // answer the owner's question.
+                var seen = new bool[n];
+                var sizes = new List<int>();
+                var stack = new Stack<int>();
+                // Fully qualified on purpose: `PlanetTile` lives in
+                // RimWorld.Planet and there is no `using` for it here. Adding one
+                // would drag in World, Tile and Settlement alongside names this
+                // file already uses.
+                var nbrs = new List<RimWorld.Planet.PlanetTile>();
+                for (var i = 0; i < n; i++)
+                {
+                    if (!water[i] || seen[i]) continue;
+                    cancellationToken.ThrowIfCancellationRequested();
+                    var size = 0;
+                    stack.Push(i);
+                    seen[i] = true;
+                    while (stack.Count > 0)
+                    {
+                        var cur = stack.Pop();
+                        size++;
+                        nbrs.Clear();
+                        grid.GetTileNeighbors(cur, nbrs);
+                        foreach (var nb in nbrs)
+                        {
+                            int id = nb;
+                            if (id < 0 || id >= n || seen[id] || !water[id]) continue;
+                            seen[id] = true;
+                            stack.Push(id);
+                        }
+                    }
+                    sizes.Add(size);
+                }
+                sizes.Sort((a, b) => b.CompareTo(a));
+
+                double Pct(int v) => Math.Round(100.0 * v / n, 2);
+                var big = sizes.Count(v => v >= minBodySize);
+                var info = world.info;
+
+                return new
+                {
+                    success = true,
+                    message =
+                        $"{Pct(waterCount)}% water over {n} tiles, in {big} " +
+                        $"body/bodies of >= {minBodySize} tiles " +
+                        $"({sizes.Count} counting puddles). Largest is " +
+                        $"{(sizes.Count > 0 ? Pct(sizes[0]) : 0)}% of the planet.",
+                    tilesTotal = n,
+                    waterTiles = waterCount,
+                    waterPct = Pct(waterCount),
+                    landPct = Pct(n - waterCount),
+                    coastalTiles = coastal,
+                    bodiesOverMinSize = big,
+                    bodiesTotal = sizes.Count,
+                    minBodySize,
+                    largestBodyPct = sizes.Count > 0 ? Pct(sizes[0]) : 0,
+                    bodies = sizes.Take(limit)
+                        .Select(v => new { tiles = v, pct = Pct(v) }).ToList(),
+                    bodiesListed = Math.Min(limit, sizes.Count),
+                    biomes = biomes.OrderByDescending(kv => kv.Value)
+                        .ToDictionary(kv => kv.Key, kv => kv.Value),
+                    seedString = info?.seedString,
+                    planetCoverage = info?.planetCoverage ?? -1f,
+                    overallRainfall = info?.overallRainfall.ToString(),
+                    overallTemperature = info?.overallTemperature.ToString()
+                };
+            }, cancellationToken).ConfigureAwait(false);
+        }
+
 #if JAWA_GM_TOOLS
         // ---- THE GM PAIR -----------------------------------------------------
         // Compiled OUT unless the build defines JAWA_GM_TOOLS (build.py --gm).

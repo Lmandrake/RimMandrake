@@ -16,7 +16,7 @@ eighteen:
 Each check prints the deciding string from NEXT_RELOAD.md B2, so a pass here is
 the queue item closed, not a vague "it returned success".
 
-STATUS: 14 of 21 PROVEN LIVE 2026-08-12 on the 573-mod stack (20 passed, 0
+STATUS: 14 of 22 PROVEN LIVE 2026-08-12 on the 573-mod stack (20 passed, 0
 failed) against a dev quicktest colony. SEVEN have never been driven in a live
 game: the roof pair (set_roof_batch, get_roof_batch), list_factions -- which was
 deployed at 10:05 on 2026-08-13, one minute AFTER the last session's log stopped
@@ -27,14 +27,14 @@ seven; run it after any companion change, not just after a deploy.
 
 THE FIRST CHECK IS THE ONLY ONE THAT MATTERS UNTIL IT PASSES
 ============================================================
-Count the registered `jawa/` tools. 21 = the current deploy took. 20 = the
-2026-08-13 17:02 build, before order_pawn. 17 = the 10:05 build, before the
+Count the registered `jawa/` tools. 22 = the current deploy took. 21 = the build
+before world_stats. 20 = the build before order_pawn. 17 = the 10:05 build, before the
 pawn-appearance three. 16 = pre-list_factions. 14 = the pre-roof build. 7 = an
 older companion still. 0 = RimBridgeServer did not load the bundle at all. Every
-other result here is uninformative until that reads 21, so the script says so
+other result here is uninformative until that reads 22, so the script says so
 loudly and keeps going only to gather evidence about WHICH build is live.
 
-⚠️ 19, not 21, is the correct count for a build made WITHOUT `--gm`:
+⚠️ 20, not 22, is the correct count for a build made WITHOUT `--gm`:
 fire_incident and send_letter are compiled out. Deploy with `--gm` or the game
 copy loses them.
 
@@ -98,7 +98,7 @@ ALL_TOOLS = [
     "jawa/set_pawn_style", "jawa/set_pawn_rotation", "jawa/set_pawn_xenotype",
     "jawa/fire_incident", "jawa/send_letter",
     "jawa/set_roof_batch", "jawa/get_roof_batch", "jawa/list_factions",
-    "jawa/order_pawn",
+    "jawa/order_pawn", "jawa/world_stats",
 ]
 # Present in the 7-tool build that shipped earlier the same day. Used to tell
 # "old companion" apart from "bundle did not load", which have different fixes.
@@ -926,7 +926,7 @@ def selftest():
     """
     global RESULTS
     scenarios = [
-        ("all 21 registered", dict(), 0, None),
+        ("all 22 registered", dict(), 0, None),
         ("STALE companion -- only the old 7", dict(tools=ALL_TOOLS[:7]), 1,
          "old seven"),
         ("bundle never loaded -- 0 jawa tools", dict(tools=[]), 1, "0 jawa"),
