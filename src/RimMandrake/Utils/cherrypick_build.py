@@ -112,10 +112,21 @@ KEYS = [
     "ThingDef/RevenantSpine",
     "ThingDef/VoidNode",
 
-    # --- the two fleshbeast-bursting genes. GeneDef, not HediffDef —
-    # AG_MeatBurst exists as both and only the gene is selectable.
-    "GeneDef/AG_MeatBurst",
-    "GeneDef/Turn_Gene_FleshbeastBurster",
+    # --- ⛔ THE TWO FLESHBEAST GENES ARE DELIBERATELY NOT PICKED.
+    # Owner ruled 2026-08-14, after PROJECT flagged the tension.
+    #
+    # Anomaly's content is at zero BUT its creatures and abilities stay ours to
+    # reskin, so the defs must stay REACHABLE. That ruling and these picks only
+    # collide where a def is genuinely DELETED — and GeneDef is one of the 13
+    # types Cherry Picker really removes from the database (§0c). PawnKindDef,
+    # ThingDef and IncidentDef are neutered in place and survive, so every other
+    # key here leaves its def reachable and does not conflict.
+    #
+    # ⇒ Only these two were destructive, so only these two are dropped:
+    #     GeneDef/AG_MeatBurst                 (Alpha Genes)
+    #     GeneDef/Turn_Gene_FleshbeastBurster  (Integrated Genes)
+    # The pet-shower leak they caused is already closed from the other side by
+    # Jawa_Patches/Patches/Fleshbeast_TrispikeCull.xml.
 
     # --- 🔴 GRAVTECH ECONOMY. Added by OPS 2026-08-14, and these are a CONDITION,
     # not a preference. The owner enabled GravTech over the FORBIDDEN ruling in
