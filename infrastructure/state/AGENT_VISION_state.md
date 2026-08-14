@@ -15,15 +15,19 @@ Queue: `infrastructure/state/queue/VISION.md`. I own
 **I ask "does the player ever notice this, and is it fun?"** I specify; CREATE
 builds. A spec that leaves CREATE guessing is not finished.
 
-## 1. 🔴 The one thing outstanding
+## 1. Nothing is outstanding — and preservation is RETIRED
 
-**Did the Configure Factions page get ticked, and is there a screenshot?**
-Asked of the owner; unanswered at time of writing. A map exists, so **the page is
-spent either way** — it is seen once per worldgen and cannot be revisited. Without
-an image we can never check `WORLDGEN_FACTION_CHECKLIST.md` against what actually
-happened, and **the Fallen Dominion's name is generated, so no grep will ever
-find it.** If the list went by unticked, the world has Yautja clans, Norse
-kingdoms and troll factions in it and only a regeneration fixes that.
+🔴 **Owner's standing ruling, 2026-08-13:** *"No agent should try to preserve map
+contents or campaign integrity at this time or any time in the future. You will
+be informed when we get to that phase. Stop asking."*
+
+**So the question I was holding — whether the Configure Factions page got ticked
+and whether there is a screenshot — is withdrawn and must not be re-raised.**
+Worlds are disposable; generating another is cheap and permitted. The page is
+still one-shot *within* a world, which is a mechanic, not preservation.
+
+**Design consequence: propose freely.** Do not hedge a roster or faction call to
+avoid disturbing a campaign that is itself disposable.
 
 ## 2. What this session decided — the owner's rulings, all landed
 
