@@ -618,13 +618,30 @@ Verify the API names with ilprobe first; do not trust this sketch.
 
 ---
 
-## 📋 CARRIED FORWARD from 2026-08-13 — the NEED DOWN batch
+## ⛔ SUPERSEDED 2026-08-14 08:5x — two of these three are ALREADY DEPLOYED
 
-All three want the game **stopped** (a companion DLL cannot be deployed while
-RimWorld holds it). Build order is B-v3 first: it unblocks a whole class of test,
-not just one row.
+**Byte-measured against the game copy**
+`C:\Program Files (x86)\Steam\steamapps\common\RimWorld\BridgeTools\JawaBench\JawaBench.BridgeTools.dll`
+(00:51, md5 `45fe3874…`) vs the repo build (01:10, md5 `628474b1…`):
 
-### B-v3 `jawa/order_pawn` — ⭐ do this one first
+- **`jawa/order_pawn` — DEPLOYED.** In the game DLL's UTF-8 strings *and* in the
+  live `--list-tools` response. Not a NEED-DOWN item.
+- **`jawa/damage` refusal fix `2a8c5b4` — DEPLOYED.** Its marker literal
+  `bridge dropped it silently` is present in the game copy. ⚠️ Found only with
+  `strings -a -el` (UTF-16 #US heap); a plain `strings` says absent and is wrong.
+- **The ONE genuinely undeployed tool is `jawa/get_defs`** (`f4ecb68`) — the sole
+  `jawa/*` name in the repo build and not the game copy. That, alone, is what the
+  next shutdown window owes. Matches the ⭐ entry at the top of this file.
+
+🔴 **Method note, and the reason this block exists.** This file is newest-at-top;
+a fresh seat that `tail`s it reads the OLDEST state and acts on it. That happened
+this session — three items were carried into a report as open when the correct
+entries sat at lines 28, 179 and 216. **Read the head of this queue, never the
+tail.**
+
+Text below preserved as written. Do not action it without re-measuring.
+
+### B-v3 `jawa/order_pawn` — ⭐ do this one first — ⛔ DEPLOYED, see above
 Written up above. The bridge cannot make a named pawn go to a named cell.
 Blocks row 8's boardable-by-observation upgrade, every reachability question,
 door function, room enclosure. **Owner confirmed doors are visible in the outer
@@ -632,7 +649,7 @@ hull**, so boardable is met by observation — but nobody has watched a pawn
 cross the threshold, and `NoPathToPilotConsole` is a LAUNCH gate that still
 needs a walk test.
 
-### `jawa/damage` refusal fix — BUILT, NOT DEPLOYED
+### `jawa/damage` refusal fix — ⛔ DEPLOYED 2026-08-14, see above
 Committed `2a8c5b4`, compiles 0/0. Deploy with **`--gm --apply`** or it strips
 `jawa/fire_incident` and `jawa/send_letter` off the game copy.
 
