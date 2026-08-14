@@ -27,7 +27,7 @@ for whoever configures the mods._
 | ✅ **Mod factions survive ONLY where something we cannot change is wired to them** — an incident's antagonist, a scenario part, a quest chain | |
 | ✅ **The world is BIG and sparse.** ~72 settlements across a large planet | |
 | ✅ **Interesting tiles cluster.** Around living settlements, and around dead ones | |
-| ✅ **One permanent enemy: the Imperial Desert Directorate** | |
+| ✅ **One permanent enemy: the Galactic Empire** — vanilla `Empire`, reskinned, led by Palpatine | |
 | ✅ **Water increases with latitude.** The equator is the killing ground; the poles hold the only standing water | |
 | ❌ **No mod faction is kept "because it is Star Wars"** | flavour is not a dependency |
 | ❌ **No faction is a reskin of a mod faction** | the v1 Directorate label-patch is a temporary stand-in, not the design |
@@ -83,7 +83,7 @@ practically change points at it. **Nothing on this list is kept for flavour.**
 
 | faction | what is wired to it | consequence of removing it |
 |---|---|---|
-| **`Mechanoid`** *(vanilla)* | `ScenPart_PursuingMechanoids` — the gravship pursuit; mech clusters; ancient dangers; **and the `Gravcore_Mechhive` endgame chain, which needs 7 of its 9 subquests** | 🔴 **Permanently locks the Odyssey gravship endgame.** Disqualifying on its own |
+| **`Mechanoid`** *(vanilla)* | ⚠️ **CORRECTED 2026-08-13.** The pursuit is **NOT** a reason — *Ruthless Faction Pursuit* redirects it at any faction, and it will be pointed at the Galactic Empire. The real dependencies are narrower: **ancient dangers / sealed complexes**, **mech clusters**, and the **`Gravcore_Mechhive` endgame chain (7 of 9 subquests)** | loses the ancient-danger population and, if the mechhive dependency holds, the Odyssey endgame. **Under research — see §9** |
 | **`Empire`** *(vanilla Royalty)* | Royalty's entire title, permit and quest surface — **and it is now the Fallen Dominion** (§5) | loses both the DLC's content and our second empire |
 | **`guy762_KotORFaction_RogueDroids`** | `hostileFactionDef` of the droid distress-call incident in [BTD] Ship Pack: KotOR Ships | a distress call with no antagonist — **a quest the player accepts and cannot finish** |
 | **`Insect`** *(vanilla)* | infestations, VFE Insectoids genelines, Alpha Animals hives, and Anomaly's `Entities` relations | removing the faction does not remove the bugs; it orphans them |
@@ -97,8 +97,8 @@ practically change points at it. **Nothing on this list is kept for flavour.**
 
 | faction | rename to | why |
 |---|---|---|
-| **`Empire`** *(vanilla)* | **The Fallen Dominion** | it becomes ours in fiction without becoming ours in code — see §5 |
-| **`Mechanoid`** | a Star Wars reading — *the Derelict Automata*, or similar | it cannot be removed, so it should at least stop saying "mechanoid" on a Star Wars world. **Label only. One operation. Zero risk** |
+| **`Empire`** *(vanilla)* | ⭐ **The Galactic Empire**, led by **Emperor Palpatine** | owner's ruling — one Empire, reskinned rather than authored. See §5 |
+| **`Mechanoid`** | a Star Wars reading — *the Derelict Automata*, or similar | **whatever survives the cherry-pick** should stop saying "mechanoid" on a Star Wars world. Label only, one operation, zero risk |
 
 **Everything else on the keep list stays exactly as it is**, because it is kept for
 its wiring, not its identity, and a rename buys nothing.
@@ -139,22 +139,42 @@ budget constraint; it is what makes a cluster worth crossing to.
 
 ---
 
-## 5. The two Empires
+## 5. The Empire — ONE faction, reskinned
 
-**They are not a duplicate. They are the design.**
+🔴 **Owner's ruling, 2026-08-13, superseding the two-Empire split:**
 
-| | **Imperial Desert Directorate** | **The Fallen Dominion** |
-|---|---|---|
-| what it is | the Galactic arm — occupier, spacer tech, orbital seats | the **local aristocracy**, force-welded into the Empire |
-| where | 3 surface seats near the spaceport, ~7 orbital holdings | planetside, the settlements it always held |
-| standing | the Empire itself | **in disgrace.** It won the local war and got blamed for the peace |
-| motive | procedural. You are a logistics problem being closed out | **eager to please.** It hunts "yet more chaotic nonsense" — such as Jawa flying an ancient hulk on a persona core — to earn its way back |
-| in code | authored by us | **vanilla `Empire`, renamed** |
+> *"If we're only going to keep one Empire faction (by reskinning RimWorld's
+> Empire to look like Star Wars), then we should call them the Galactic Empire,
+> and their leader should be Emperor Palpatine."*
 
-⚠️ **Its name is generated at world creation.** Until a `fixedName` is authored,
-whatever the world calls it *is* its name.
+| | |
+|---|---|
+| **name** | **The Galactic Empire** |
+| **leader** | **Emperor Palpatine** |
+| **in code** | **vanilla `Empire` (Royalty), reskinned** — not authored from scratch |
+| **standing** | 🔴 **the one permanent enemy** |
+| **role** | occupier, and **the pursuer that follows the gravship** |
+| **presence** | ~3 surface seats near the spaceport; the rest of its reach is orbital — the tower ladder |
+| **character** | not hateful, **procedural**. You are a logistics problem being closed out |
 
----
+**What this retires.** The **Imperial Desert Directorate** as a separate authored
+faction, and the **Fallen Dominion** as a second empire. *Directorate* survives at
+most as the name of the **local sector office** — a flavour layer inside the
+Galactic Empire, not a `FactionDef`. The v1 label-patch on
+`OuterRim_GalacticEmpire` is superseded and becomes scaffolding to remove.
+
+⚠️ **Two consequences the owner should see before this is final:**
+
+1. **A permanently hostile Empire deletes Royalty's progression.** Titles,
+   permits, honour, the whole imperial-favour loop runs through *this* faction
+   being talkable-to. **Making it the permanent enemy switches that content off.**
+   For a Jawa scavenger clan that is probably correct — the campaign is not about
+   earning a knighthood — but it is a whole DLC subsystem and it should be a
+   decision, not a side effect.
+2. **Reskinning rather than authoring is a deliberate exception** to "author from
+   scratch". It is the right one: the vanilla Empire ships pawn kinds, titles,
+   gear tiers and quest wiring that would cost weeks to reproduce, and the
+   Emperor sits naturally at the top of a structure that already has ranks.
 
 ## 6. Xenotype distribution, faction by faction
 
@@ -282,3 +302,38 @@ we should do it deliberately, having counted the cost — not as a side effect o
 wanting a Star Wars world.**
 
 **Everything else in this document is decided.**
+
+
+---
+
+## 9. Open research — the ancient dangers question
+
+**Owner's ask, 2026-08-13:** *"The ancient dangers being tied to bugs or
+Mechanoids is interesting. Research what others through mods or direct config
+files did about the Ancients, Insects, and Mechanoids that appear in ancient
+dangers. We certainly want ancient dangers, though we might end up calling them
+something like **Secret Compound**."*
+
+**The desired state is not in doubt — only the route:**
+
+- ✅ **We want ancient dangers.** A sealed room nobody has opened is the purest
+  expression of the whole campaign: *something is in there, and it is yours if
+  you survive it.* **Do not remove them.**
+- ✅ **They should probably not be called "ancient danger" on a Star Wars desert
+  world.** Working name: **Secret Compound**.
+- ❓ **What is inside them is the open question.** Today it is sleeping
+  mechanoids and insect hives. Both are wrong for the setting and both are
+  wired into content we are not otherwise touching.
+
+**Under investigation right now:** whether the ancient-danger population is a
+**separate pool** from the raid pool — i.e. whether a mech can be removed from
+raids while still sleeping in a compound, and vice versa. If those are separable,
+the whole problem becomes easy and we can cast compounds independently of
+factions.
+
+**Also owed to the owner: a visual mech review sheet.** Every mech in the active
+stack with its art, so each can be judged individually — and, crucially, judged
+on *several axes at once* rather than one blanket yes/no. The axes being
+confirmed as real before the sheet is built: **in raids · in ancient dangers /
+compounds · in mech clusters · in quests and bossgroups · player-buildable ·
+tradeable**. Only axes the engine actually separates will appear on the sheet.
