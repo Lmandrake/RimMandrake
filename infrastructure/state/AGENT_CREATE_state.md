@@ -137,3 +137,75 @@ Missing props ⇒ look at prefab placement, blocked cells, `spotMustBeStandable`
    the author had already separated leather from pouches. And the obvious recipe
    was killed by scoring it against the facing he *had* drawn — 77.2% where
    mirroring alone gives 77.1%. **Score before you apply.**
+
+---
+
+# Session 2026-08-14 (evening) — hand-off at fleet shutdown
+
+**Everything below is committed and pushed. Nothing of mine is uncommitted, and
+the scratchpad has been triaged.**
+
+## What shipped
+
+**⭐ The Jawa ideoligion, on the owner's direct request.** Owner authored a
+skeleton `.rid` and asked CREATE to fill the choices and all flavour text from
+lore. Result:
+`C:\Users\Mandrake\AppData\LocalLow\Ludeon Studios\RimWorld by Ludeon Studios\Ideos\The Salvation (CREATE).rid`
+The owner's original is **untouched beside it** — both load in the ideo browser.
+Builder is `src/RimMandrake/Utils/build_salvation_rid.py --check|--write`; it
+never rewrites the source, asserts unique IDs and no dangling `Precept_<ID>`, and
+is byte-identical on re-run. **The `.rid` is derived — regenerate it, do not
+hand-edit it.** Filed at `queue/OPS.md`; detail at `queue/CREATE.md` C15.
+
+**Row 7 (thruster) closed OFFLINE, and it killed a planned stern deck re-lay.**
+Cost is ONE `GravshipHull` cell per small thruster. Derivation rescued from the
+scratchpad into `src/RimMandrake/Utils/thruster_placement_scan.py`.
+🔴 **`gravship_flight_invariants.md` §11 is wrong on BOTH branches and still
+needs correcting** — nobody has done it.
+
+**Row 6 (pilot console) is BLOCKED, not pending** — `PilotConsole` count in the
+export is **zero**. There is nothing to path to. It was filed for a year as "one
+paused call"; it is not, and it is a deck-authoring job.
+
+## The four findings that outlive the files
+
+1. **`AM_Structure_Scavenger` is `deityCount 0`.** The nine-god pantheon can
+   never be seated in this ideo, and no installed structure meme allows more
+   than four. That is *why* the gods live in the description. ⛔ **Do not "fix"
+   it by swapping the structure meme.**
+2. **`comps: []` DOES NOT MEAN INERT** — the measure the project's own rubric
+   uses. Of 65 comps-less precepts only 29 are truly inert: 32 are
+   ritual/building/relic classes whose mechanics live elsewhere, and 4 are live
+   via `statOffsets` / `expectationsOffset` / inbound `nullifyingPrecepts`.
+   `AM_Barracks_Preferred` and `DarknessCombat_Preferred` both read inert and are
+   fully live. ⇒ **read `comps ∪ statOffsets ∪ expectationsOffset ∪ inbound
+   nullifyingPrecepts`**, and exempt the ritual/building/relic classes.
+3. **A prediction is only a test if the instrument can read its TERMS.** I handed
+   the live seat an A/B whose verdict was an inspect string, having never checked
+   that any tool could read one. Pre-registering the prediction made it *feel*
+   more rigorous while doing nothing about aiming at an invisible target. Filed
+   in `skills/rimbridge/references/traps.md`.
+4. **The `jawa/` prefix says who SUPPLIES a tool, not what it does.** 139
+   `rimworld/` names against 26 `jawa/`, so guessing `jawa/` is wrong ~84% of the
+   time by count. Also filed in the rimbridge traps.
+
+## Open riders — taste, not rulings
+
+- `guy762_JawaHood` is live and literally species-named; the file currently uses
+  `OuterRim_DesertHood`. One word.
+- Lore sanctifies ration paste (`:360`) but the ideo sets
+  `NutrientPasteEating_Disgusting`. Unresolved contradiction.
+- Sh'kaar is written as "the sun that never sets"; the older doc says **twin
+  suns**, and the tidally-locked world postdates it.
+
+## Recorded so nobody re-derives it: doctrines with NO legal precept
+
+Begging (charity has no negative position, and all three positive ones conflict
+with `Trader`) · farming-as-impious (no growing issue exists) · ancient complexes
+revered · sacred scrap / do-not-melt · being caught stealing · mating only in
+darkness. **All six confirmed absent across 685 precepts.**
+
+⛔ **`VME_Nomad` is a trap** — −50 mood at 60 days, and its own description
+admits it cannot see non-vanilla movement. `Nomadic_Preferred` is a **precept**,
+costs no meme slot, and a gravship jump correctly resets it
+(`GravshipUtility::ArriveNewMap` stamps `IdeoManager.lastResettledTick`).
