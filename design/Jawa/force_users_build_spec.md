@@ -1168,3 +1168,33 @@ Workshop item is delisted: port the KotOR 1.5 saber XML.
 (`worldbuilding/ship_legacy_armoury.md`). A buildable common laser sword and a
 rare Sith blade cannot be the same object — if we spend the saber on the armoury
 line, the Force users have nothing left that is theirs.
+
+---
+
+## 🔴 OWNER'S RULING 2026-08-13 — Force users are NPC-ONLY, PERMANENTLY
+
+**The player never becomes a Force user. Not late, not rarely, not as a reward.**
+
+**Why this is the right call and should not be relitigated:**
+
+- **The anti-exponential pillar.** A player Force user is the single fastest way
+  to break a scarcity campaign. Everything else in this design — water, salvage,
+  droid labour, the pursuit — is about *not* snowballing. One lightsaber in the
+  player's hands undoes all of it.
+- **Rarity is the whole effect.** A Jedi or a Sith is frightening because you
+  cannot be one. Make it obtainable and it becomes a build order.
+- **It is not the Jawa fantasy.** The clan's fantasy is *taking apart the things
+  powerful people leave behind*. **The saber is the trophy, not the class** — and
+  a trophy you cannot use is a better story than a weapon you can.
+
+**So Jedi and Sith stay what the spec already makes them: rare raid leaders.**
+Jedi for the moisture farmers, Sith for the Empire.
+
+⚠️ **Consequence for whoever builds it:** the xenotype (if we use one) must be
+**unrecruitable and unbreedable by the player** — check that capture, recruitment
+and gene extraction cannot route around this. That is the actual build work this
+ruling creates, and it is easy to miss because the default is permissive.
+
+**What the player CAN get:** the saber, the armour, the corpse, the story. Design
+the loot so that beating one feels like the reward, because it is the only reward
+there will ever be.

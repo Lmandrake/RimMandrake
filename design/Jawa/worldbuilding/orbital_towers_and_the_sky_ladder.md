@@ -98,3 +98,40 @@ more dungeons.** Volume is not the goal here (see
 | the Hutt Cartel | faction 1 in the roster, `[v2]` for authoring |
 | the Galactic Empire | owner's ruling 2026-08-13 — the ship's pursuer, `pawnGroupMakers` unbuilt |
 | Imperial Heat gauge | **M4, not built — and this pillar no longer waits on it** |
+
+---
+
+## ⭐ SHAPE RULED — owner, 2026-08-13: finite backbone, repeatable sides
+
+**A small number of AUTHORED towers that form an arc with a real ending, plus
+randomly-offered ones for loot.**
+
+**Why this shape and not the other two:**
+
+- **A purely finite arc** has the most weight and then stops. When the last tower
+  falls the best content in the campaign is over, and what remains is farming.
+- **A purely repeatable job** never means anything. If the sky always refills,
+  cutting it is a chore with a payout, and the player learns their actions do not
+  land.
+- **Both together is the only version where the story has a shape AND the player
+  still has something to do afterwards.**
+
+### How to keep them distinct, because this is where it goes wrong
+
+| | backbone towers | side towers |
+|---|---|---|
+| **count** | **few. Three to five.** Authored, hand-placed, named | as many as the storyteller offers |
+| **who offers it** | the **Hutt Cartel**, as a commission with a stated goal | ordinary rumour purchase / random offer |
+| **what falls** | **Imperial reach in that region, permanently** | loot |
+| **can it be repeated** | **no** | yes |
+| **the player should feel** | *I am winning a war* | *I am making rent* |
+
+⛔ **The failure mode to avoid: making the side towers feel like the backbone.**
+If a random tower also shortens Imperial reach, the arc stops mattering. **Only
+backbone towers move the world state.** Side towers pay in salvage and nothing
+else — and that is not a lesser reward, it is the campaign's normal income.
+
+⭐ **The ending must be real.** When the backbone is cut, the Empire's local
+surface access is broken and the player should be *told* — a letter, a visible
+change in raid pressure, the Hutts paying out and going quiet. **A finite arc
+that ends without ceremony reads as content running out rather than a victory.**
