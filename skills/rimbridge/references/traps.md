@@ -62,6 +62,10 @@ Skim this, open what matches your task — do not read them all.
 - [A tool built to break a conflation can INHERIT that conflation from the API it reads](#-a-tool-built-to-break-a-conflation-can-inherit-that-conflation-from-the-api-it-reads) 🔴
 - [The reflective def reader is blind to properties and privates, and says nothing about it](#the-reflective-def-reader-is-blind-to-properties-and-privates-and-says-nothing-about-it)
 - [A gate that greps "the source tree" greps the prose about it too](#a-gate-that-greps-the-source-tree-greps-the-prose-about-it-too)
+- [`search_debug_actions` walks the whole tree and FROZE the game — twice](#search_debug_actions-walks-the-whole-tree-and-froze-the-game--twice) 🔴
+- [Identify a thing by its accompanying signature, not by its own defName](#identify-a-thing-by-its-accompanying-signature-not-by-its-own-defname)
+- [An instrument can be blind to the exact branch that fails](#an-instrument-can-be-blind-to-the-exact-branch-that-fails) 🔴
+- [The denominator is the population that EXERCISED the rule](#the-denominator-is-the-population-that-exercised-the-rule) 🔴
 
 ---
 
@@ -404,6 +408,29 @@ a **stale companion DLL**: rebuild and redeploy with the game closed
 **Cause:** `grep -rhoE '"jawa/[a-z_]+"' src/RimMandrake/bridgetools/` sweeps the whole directory, and `prove_new_tools.py:112` contains the string `[Tool("jawa/x")]` **inside a comment** explaining how tool names are stored. The corpus included the commentary about the corpus.
 **Fix:** scope the grep to the artifact's own language — `--include='*.cs'` → 26. Better still, derive from the built DLL, which cannot contain prose about itself.
 **Recurs when:** any measurement whose corpus is a directory rather than a file type. **A derivation is only as good as its corpus**, and "derive it, never hardcode it" does not protect a derivation that is scoped wrong — it just moves the staleness somewhere less visible.
+
+## 🔴 `search_debug_actions` walks the whole tree and FROZE the game — twice
+**Symptom:** two `rimworld/search_debug_actions` calls each hung past a 120 s client timeout; the owner reported *"game appears frozen"*, then *"game is back"*. The answers eventually arrived and were worthless — six matches for "goodwill", all one `QuestPart` test entry.
+**Cause:** it *"searches the full RimWorld debug-action tree globally by path, label, category and source metadata"* — with 585 mods that tree is enormous, and `limit` caps the RESULT, not the WALK. This is the same enumeration livelock already filed for pawn/def listing, arriving through a tool whose name sounds like a cheap lookup.
+**Fix:** do not use it to answer *"does a debug action for X exist"*. Decide that from the engine instead — `ilprobe` on the type that would own the action — or accept the gap and build a companion tool. If it must be run, expect a stall and never fire a second one while the first is outstanding.
+**Recurs when:** any global search tool on this bridge. ⚠️ **Generalises: `limit` bounds the answer, not the work.** A parameter that looks like a cost control is often only a truncation control, and the difference is invisible until the game stops rendering. Cost a real freeze 2026-08-14, on a seat that had this trap in its own file.
+
+## Identify a thing by its accompanying signature, not by its own defName
+**Symptom:** 4 `ChunkSlagSteel` on a map where our GenStep asked for ~50. **Were they ours, or vanilla's?** `ChunkSlagSteel` is scattered by vanilla and by other mods, so a second count of the same defName could never say — and the answer decided whether the step placed a handful or placed *nothing*.
+**Fix:** look at what is AROUND the thing. Our def sets `filthDef` + `filthExpandBy`, so `jawa/list_things Filth_MachineBits rect=<box around the chunks>` returned **23** — the scatterer's own fingerprint — while `AncientCryptosleepCasket` in a 50×50 box returned **zero**, placing the ground hulk elsewhere entirely. **Ours, settled in two calls.**
+**Recurs when:** any defName that more than one source can spawn — chunks, filth, corpses, ancient debris, most vanilla scatterables. 📌 **Counting the thing again cannot establish provenance; only its context can.** Pick a companion field your def sets and the other sources do not, and query for THAT.
+
+## 🔴 An instrument can be blind to the exact branch that fails
+**Symptom:** a scatter GenStep placed 4 of 50 things and logged **nothing**. The proposed fix was `<warnOnFail>true</warnOnFail>` — one field, the engine names its own failure. It would have shipped, cost a shutdown window, and reported nothing at all.
+**Cause:** `warnOnFail` is read inside `GenStep_Scatterer::TryFindScatterCell`, the branch that finds a cluster **centre**. With `clusterSize > 1`, every member after the first goes down the *near-centre* branch instead, which never reaches that gate. **The instrument covered the one path that was working.** (The actual bug: `minSpacing` 4 against a hardcoded `ClusterRadius` 4 — about four members fit the disc, the fifth returns an invalid cell, and `GenStep_Scatterer::Generate` `ret`s **inside its loop**, discarding the other ~46.)
+**Fix:** before shipping a diagnostic, name the branch you believe fails and check the diagnostic is *on that branch*. Two ungated `Log.Error`/`Log.Warning` calls in the same method already read zero, which was itself the clue: **a silent failure beside two loud paths that stayed silent means the failure is on neither of them.**
+**Recurs when:** any opt-in logging flag, any `verbose` switch, any "turn on diagnostics and re-run". ⚠️ **Generalises hard: adding an instrument is a hypothesis about where the fault is.** If the hypothesis is wrong, the reading is a confident zero — and a window is gone. Also: **a partial result that looks like thinning can be an abort** — 4-of-50 read as "something is scaling the count down" and was really "it stopped at the 5th".
+
+## 🔴 The denominator is the population that EXERCISED the rule
+**Symptom:** a name-generation fix was declared confirmed on *"zero doubled apostrophes across 34 factions and 101 settlements"* — 135 generated names, which sounds overwhelming.
+**Cause:** only the **Buzzer** namer carries the rule. Exactly **one** name in that set came from it. The grammar gives the defect branch weight 1 of 4, so **P(no defect visible | patch NOT applied, n=1) = 0.75** — a broken build had a 3-in-4 chance of producing precisely the observed result. The 135 was the population *collected*, not the population *at risk*, and it inflated a coin flip into a proof.
+**Fix:** before quoting a sample size, ask **how many of these could possibly have shown the defect?** Then close on something deterministic instead — here, the absence of `Failed to find a node with the given xpath` for that mod in `Player.log`, given `PatchOperationFindMod` matched, proves both `Replace`s applied regardless of how many names rolled.
+**Recurs when:** any "we checked N things and saw nothing" argument about a probabilistic defect. ⚠️ **A large irrelevant denominator is more dangerous than a small one, because it stops anyone asking.** Same family as *an absent reading is not a clean reading*.
 
 ## Client-call gotchas that cost real minutes — the exact spellings
 Collected 2026-08-13; each one cost a seat time before it was written down.
