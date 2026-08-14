@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ============================================================================
+  BTDGravshipQuest_GrammarFix.xml            Jawa_Patches · authored 2026-08-13
+  ============================================================================
+
+  THE GOAL
+  ========
+  The [BTD] Gravship Blueprints "Downed Gravship" quest renders with NO
+  DESCRIPTION AT ALL. Fix is one string: drop the author's credit line out of
+  the quest description, because RimWorld's grammar resolver reads it as a rule
+  reference and fails the whole node.
+
+  This is gravship content, and the gravship is the one thing v1 ships DEEP —
+  a scavenger clan looting a crashed hull is exactly the campaign's premise.
+  So the quest is wanted; only its description is broken.
+
+  WHY IT IS NEEDED  [MEASURED 2026-08-13, from the live Player.log + the def]
+  ==========================================================================
+  Source of truth, read directly:
+
+    .../workshop/content/294100/3575162262/1.6/Defs/QuestScriptDefs/
+      Script_BTD_DownedGravship.xml:13-19
+
+      <questDescriptionRules>
+        <rulesStrings>
+          <li>questDescription->A damaged gravship has crash-landed nearby. ...
+
+    [BTD] Gravship Blueprints Quest</li>          ← the credit line
+        </rulesStrings>
+      </questDescriptionRules>
+
+  In RimWorld's grammar, SQUARE BRACKETS ARE A SYMBOL REFERENCE. `[BTD]` is
+  therefore read as "resolve the rule named BTD", which does not exist. A rule
+  string containing ONE unresolvable symbol fails ENTIRELY — it does not
+  degrade to plain text. The whole questDescription is discarded.
+
+  Verbatim from `Player.log`, the 17:30-21:10 session (1 occurrence):
+
+      Grammar unresolvable. Root 'questDescription'
+      GRAMMAR RESOLUTION TRACE
+      1  questDescription -> A damaged gravship has crash-landed nearby. ...
+                             [BTD] Gravship Blueprints Quest
+           BTD -> UNRESOLVABLE
+         questDescription -> UNRESOLVABLE
+      CONSTANTS
+      BTD_DownedGravship_exists              True
+      sitePart                               BTD_DownedGravship
+
+  Note the trace confirms the site part resolved fine — the quest FIRES and is
+  playable. Only its description is empty. The mod is not broken; one line is.
+
+  PLAYER-VISIBLE?  YES, and that is why this is worth a patch at all.
+  ===================================================================
+  `<autoAccept>true</autoAccept>` on this def means the quest is accepted
+  without the player opening a dialog, so the description is read in the Quests
+  tab AFTER the fact — which is precisely when a player wants to know what the
+  site is and that it expires in 30 days. An empty description there reads as a
+  broken mod, not as a stylistic choice.
+
+  WHY REPLACE AND NOT REMOVE
+  ==========================
+  Removing `questDescriptionRules` outright would leave the quest with no
+  description by a different route. We want the author's TEXT, minus the four
+  characters that break it. The credit is preserved in the mod's About.xml and
+  README.txt, which is where a credit belongs and where it renders correctly.
+
+  UPSTREAM, NOT OURS
+  ==================
+  This is a defect in `3575162262`, not in anything we authored. Reported here
+  rather than fixed at source because editing a Workshop mod in place is undone
+  by the next Steam update or validate.
+
+  GUARDED, and the guard is the point
+  ===================================
+  Wrapped in `PatchOperationFindMod` on the mod's NAME (`[BTD] Gravship
+  Blueprints`, packageId `btd.remix.gravshipblueprints`, ws `3575162262`) —
+  read from its About.xml, not guessed. Without the guard an unmatched
+  PatchOperationReplace throws a RED ERROR on every launch, which is a worse
+  outcome than the bug it fixes: the quest description is cosmetic, a red error
+  is noise in every future triage. Two ways this becomes unmatched — the owner
+  unsubscribes the mod, or the author fixes the credit line upstream and our
+  xpath finds a node we already changed.
+
+  ⚠️ `FindMod` matches the mod NAME, not the packageId, and this one begins
+  with a literal square bracket. That is fine in XML text and is NOT the
+  grammar-symbol problem being fixed here — the resolver only reads brackets
+  inside rule strings.
+
+  SUCCESS LOOKS LIKE
+  ==================
+  POSITIVE observation, not a clean log: the Downed Gravship quest shows its
+  description text in the Quests tab. The negative half is that
+  `Grammar unresolvable. Root 'questDescription'` stops appearing — but on its
+  own that proves nothing, because the quest may simply not have fired.
+-->
+<Patch>
+
+  <Operation Class="PatchOperationFindMod">
+    <mods>
+      <li>[BTD] Gravship Blueprints</li>
+    </mods>
+    <match Class="PatchOperationReplace">
+      <xpath>/Defs/QuestScriptDef[defName="BTD_DownedGravship"]/questDescriptionRules/rulesStrings</xpath>
+      <value>
+        <rulesStrings>
+          <li>questDescription->A damaged gravship has crash-landed nearby. Hostile forces are defending the wreck. Hack the damaged grav engine and loot what you can before the site expires in 30 days.</li>
+        </rulesStrings>
+      </value>
+    </match>
+  </Operation>
+
+</Patch>
