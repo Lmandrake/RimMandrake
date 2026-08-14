@@ -1,8 +1,33 @@
 # AGENT_OPS_state.md — where OPS is
 
-## 🔴 PRE-BOOT WRAP 2026-08-13 ~23:2x — this section supersedes everything below
+## 🔴 SESSION WRAP 2026-08-14 ~03:0x — this section supersedes everything below
 
-**Game was DOWN this whole session.** Bridge never taken, nothing left on any map.
+**I held the bridge and released it.** Game UP the whole session, PID 16112 started
+01:03:26, dev quicktest map, **paused at ~tick 485, nothing spawned, built, painted or
+destroyed** — every call read-only bar one `pause_game`. WSL crashed; the game did not.
+
+**Closed:** dune seas (v1 row 4, live 3-site `BiomeDef` read) · the gravship radius hold
+(extender 30.0 / maxDistance 34.0 / 12 — the CONFIGURED values, not the 25.9 defaults,
+so a ship can be built) · §7 lost two art items to CREATE's pawnkinds + facings.
+
+**Open and mine:** O15 — scrapfields measured **11** against a fully-derived **75–125**,
+cause unknown, needs a map counted at tick ~0. **Saves/ is 0 but UNVERIFIED** — the
+process never relaunched after the 01:30 delete, so Steam Cloud restore is untested.
+
+🔴 **Three claims of mine were WRONG tonight and each was withdrawn on measurement, not
+argument:** the Dunes cause for this map (the hulk's warning proves the factor was not
+0 — a zero count cannot warn) · "no provenance banner" on the armoury patches (the
+header exists; the real risk is anchor contamination, and `patch_ledger.json` is still
+uncommitted) · "`isJunk` keeps junk off the landing site" (it has exactly ONE reader,
+`GetPlacementFactor`; `nearPlayerStart` is the field I meant). **Predicting the value
+before looking is what made all three findable.**
+
+**Deploy list is CLOSED at 5 ship / 2 held, DLL solo** — the queue block is the
+authority and `--plan` outranks any summary of it.
+
+_(The 2026-08-13 pre-boot batch below is done and superseded; kept for its indices.)_
+
+**Game was DOWN that session.** Bridge never taken, nothing left on any map.
 The owner authorised the full pre-boot batch and it is **DONE**. A load may start
 at any time.
 
