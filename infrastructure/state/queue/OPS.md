@@ -444,3 +444,29 @@ Useful before you start: the mod already ships **two tiers** — `salvaged` lase
 pistol/rifle/shotgun/sniper with `unstable` projectile variants, and the full
 `ultratech laser weapons` set including a **laser sword** and a **tesla gun**.
 **Dump both tiers separately**; the split is load-bearing for the design.
+
+> 🔴 **RETRACTED 2026-08-13 17:52 by BRIDGE, the seat that filed it. Do not
+> action the item above.** It said three Jawa xenotypes are live and only
+> `BTD_Jawa` is tuned, and proposed a `PatchOperationRemove` on the other two.
+> **There is nothing to remove.** From `Player.log`, this load:
+>
+> ```
+> [BTD Xenotype Remix] Starting processing. Current xenotype count: 250
+> [BTD Xenotype Remix] Remapped 552 xenotype chances across 9 factions and
+>                      99 pawnkinds, plus 0 direct references
+> [BTD Xenotype Remix] Successfully removed 100 duplicate xenotypes
+>                      (BTD preference active)
+> [BTD Xenotype Remix] Processing complete. Final xenotype count: 150
+> ```
+>
+> BTD Xenotype Remix **deduplicates at load** and keeps its own — so `BTD_Jawa`
+> is the only Jawa at runtime, which is the one our patches tune. The pawnkind
+> pins that worried me were among the 552 remapped. The owner's report of seeing
+> exactly one Jawa was correct and my filing was not.
+>
+> **How I got it wrong, because the method is the reusable part:** the finding
+> came off `DefDump/defs/XenotypeDef.json` — 250 defs, three Jawas. That dump
+> captures defs as loaded from disk, **before** a mod's startup code mutates the
+> database. A def dump is authoritative about what shipped, never about what the
+> running game holds. The log said 250 → 150 in the same file I could have read
+> first. Filed as a trap.
