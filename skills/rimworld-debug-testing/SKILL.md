@@ -114,6 +114,20 @@ v1 gate ever asked for:
 4. **When a result surprises you, look before you theorise.** Two rulings were
    wrong for an hour today because they reasoned from a file instead of looking.
 
+🔴 **CLEAR THE DEBUG LOG WINDOW BEFORE YOU SHOOT.** Owner's instruction,
+2026-08-13. Dev mode's log window sits over the game and eats most of the frame,
+so the screenshot documents *our own error console* instead of the thing being
+tested. **Close it, and clear it, then take the shot.**
+
+Two reasons, and the second is the one that bites:
+
+1. **It occludes the evidence.** A shot that is 70% debug output proves nothing
+   about the map underneath it.
+2. **Stale lines read as fresh failures.** An unfiltered log window carries
+   errors from earlier in the session, so the next reader attributes them to the
+   thing in the screenshot. **Clear it, then act, then shoot** — anything showing
+   afterwards was caused by what you just did, which is a far stronger claim.
+
 ⚙️ Zoom and camera matter: an object correctly spawned off-screen is
 indistinguishable from one that never spawned. Frame it before you shoot.
 
