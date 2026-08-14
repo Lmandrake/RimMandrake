@@ -323,8 +323,15 @@ repeated repair.
 ⚠️ Two traps in the rules file itself. It is keyed by `packageId`, so **renaming
 your mod silently orphans every rule** — a stale rule for a dead packageId is
 indistinguishable from no rule, which is exactly how this went unnoticed for
-days. And the manager holds rules in memory and rewrites the file on exit, so
-**close it before editing, and reopen to confirm your edit survived.**
+days. ❌ **Corrected 2026-08-13 — "the manager rewrites the file on exit, so close
+it before editing" is FALSE for RimSort**, and it contradicted this skill's own
+trap entry. RimSort saves only when the owner clicks Save; **"close RimSort first"
+is never a precondition.** The real hazard is the reverse and it is live: after an
+external edit RimSort's in-memory view is stale, so a later Save writes the OLD
+list back. Mitigation is one sentence — *"RimSort is open, hit Refresh"*.
+🔴 **And read `ModsConfig.xml`'s mtime immediately before writing it.** It moved
+twice in twenty minutes on 2026-08-13 while the owner re-sorted. Writing blind
+destroys their ordering silently.
 
 Do not hand-edit the *community* rules database: it is a git clone refreshed on
 startup, so local changes vanish. Community rules are a pull request to a public

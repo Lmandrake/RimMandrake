@@ -641,10 +641,17 @@ here.
 
 ⚠️ **This cannot be verified while the game is up, and the failure mode is
 reporting it wrong.** Steam does not delete an unsubscribed mod's folder while
-RimWorld holds it open, and the running game rewrites `ModsConfig.xml` from
-memory on exit. So a folder still present under `294100/3520377015` proves
-nothing, and a `<li>` still in `ModsConfig.xml` proves nothing. **Never tell the
-owner the removal "didn't land" before a clean exit.**
+RimWorld holds it open. So a folder still present under `294100/3520377015`
+proves nothing. **Never tell the owner the removal "didn't land" while the game
+is running.**
+
+❌ **One half of this was FALSE and is struck, 2026-08-13:** ~~the running game
+rewrites `ModsConfig.xml` from memory on exit~~. It does not — at exit
+(`Player.log` 10:04:55) the config was still 10:01, and it changed again at
+16:41 with no game running. **A `<li>` in `ModsConfig.xml` therefore DOES mean
+something even mid-session** — it is simply not proof the folder exists. The two
+halves fail differently: the config is trustworthy and can be stale about
+*disk*; the folder is untrustworthy about *subscription*.
 
 **After the next clean exit, in this order:**
 
