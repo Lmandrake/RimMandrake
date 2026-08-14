@@ -52,9 +52,48 @@ Currently contains:
        one re-sort away from silently inverting. A patch mod above its target
        patches nothing and logs nothing.
        The whole worldgen faction checklist rests on these two ops applying. -->
+  <!-- Extended 2026-08-13, second pass. The three ids above covered the two
+       faction patches and nothing else; this mod patches defs belonging to
+       thirteen further mods, and those constraints lived only in RimSort's
+       userRules.json - i.e. on one machine, lost on any re-sort or re-install.
+       Every id below was resolved by reading the DONOR's own About.xml through
+       src/RimMandrake/Utils/build_packageid_index.py, then confirmed by grepping
+       the workshop tree for the defName this mod actually patches. Nothing here
+       is inferred from a mod's name. -->
   <loadAfter>
     <li>Neronix17.OuterRim.Core</li>
-    <li>Neronix17.OuterRim.GalacticEmpire</li>
-    <li>Neronix17.OuterRim.RebelAlliance</li>
+    <li>Neronix17.OuterRim.GalacticEmpire</li>              <!-- OuterRim_GalacticEmpire      ImperialDesertDirectorate.xml -->
+    <li>Neronix17.OuterRim.RebelAlliance</li>               <!-- OuterRim_RebelAlliance       RebelAlliance_Suppress.xml -->
+    <li>Neronix17.OuterRim.GalacticDiversity</li>           <!-- OuterRim_Jawa, OuterRim_WookieeHead -->
+    <li>Neronix17.OuterRim.DroidDepot</li>                  <!-- OuterRim_*Droid              DroidFemaleTexture_Fix.xml -->
+    <li>Neronix17.Outland.Genetics</li>                     <!-- Outland_AllMale              JawaAppearance_Tuning.xml -->
+    <li>btd.XenotypeRemix.StarWars</li>                     <!-- BTD_Hutt, BTD_Jawa, BTD_Wookiee -->
+    <li>LazyFridayStudio.GenesExpandedEyes</li>             <!-- Eyes_*_Feline / Eyes_*_Reptile -->
+    <li>guy762.StarWarsXenotypes</li>                       <!-- guy762_Eyes_HugeYellow -->
+    <li>guy762.MM.KotORCore</li>                            <!-- SWCP_VATS_Zoomer             SWCPZoomerIcon_Fix.xml -->
+    <li>guy762.KotORWeapons</li>
+    <li>sarg.alphabiomes</li>                               <!-- AB_PyroclasticConflagration -->
+    <li>IronScruff.PrimordialGeysers</li>                   <!-- IronScruff_PrimordialGeysers BiomeAnimalDanglingRefs_Fix.xml -->
+    <li>zylle.MoreVanillaBiomes</li>                        <!-- ZBiome_Badlands, ZBiome_DesertOasis -->
+    <li>titans.fl</li>                                      <!-- Titan                        AnimalBiomeDuplicates_Fix.xml -->
+    <li>Nals.FacialAnimation</li>                           <!-- supplies the FaceAdjustmentDef TYPE -->
+    <li>DanZinagri.FacialAnimationCompatabilityProject</li> <!-- BS_InsectoidHumanoid_FourArmed_FaceAdjustment -->
+    <li>ab.hoffa</li>                                       <!-- HeadSetForFA_Revive.xml -->
   </loadAfter>
+
+  <!-- DELIBERATELY NOT LISTED, so the next reader does not "restore" them:
+
+       * taranchuk.performanceoptimizer and dubwise.dubsperformanceanalyzer.steam
+         are in the RimSort user rule but this mod patches no def of theirs. They
+         were a placement preference, not a patch constraint, and a loadAfter is
+         the wrong place to express one.
+       * Core and Biotech (Armadillo, Skin_InkBlack) - base game and DLC always
+         load first.
+
+       ONE CONSTRAINT IS STILL UNRESOLVED, and it is honest to say so rather than
+       guess: AnimalBiomeDuplicates_Fix.xml removes a DUPLICATE wildBiomes entry
+       from Core's Armadillo. Whichever mod ADDS the duplicate must load before
+       us, and it has not been identified. The patch is PatchOperationConditional
+       so a wrong order is a silent no-op, not an error - which is exactly why
+       nobody would notice. -->
 </ModMetaData>
