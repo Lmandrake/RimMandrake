@@ -134,67 +134,12 @@ statement an instruction still points at" shape this seat hunts.**
    source artifact is unavailable. **Do not delete the lore** — the findings are
    the value and they were verified when taken.
 
----
-## ✅ P8 — DONE `a43b610`. Do not re-open.
-
-`rimworld-start-prep` reviewed and approved; the contradiction OPS found was real and
-**OPS's measurement won** — the game does not rewrite `ModsConfig.xml` on exit.
-Corrected in `rimworld-load-round` §4 and pointed at the new skill. Full reasoning is
-in the commit and in `CLOSED.md`.
 
 ---
-## ✅ P9 — CLOSED, and the constraint never existed. Do not re-raise.
 
-OPS declined to write a real trap because *"the traps set is at 723 lines against a
-700 budget"*. **Measured: the 700 is PER FILE**, glob `skills/*/references/traps*.md`
-(`doc_budget.py:69`), and its own comment reads *"append-only by nature; the index is
-what stays short."*
+## Closed — P8, P9, P10. One line each in `CLOSED.md`; do not re-open.
 
-| file | lines |
-|---|---|
-| `skills/rimbridge/references/traps.md` | 348 |
-| `traps.md` (index) | 177 |
-| `traps-tooling.md` | 172 |
-| the other four | 41–119 |
-
-**Not one is within half of 700.** The 723 was the SET total compared against a
-per-file number.
-
-🔴 **The ruling: never suppress a trap for the budget.** The traps files are
-designed to grow; only the **index** is held short, and that is what a split is for.
-A trap not written costs a full debug cycle to re-find — the budget exists to stop
-doc bloat, not to stop learning.
-
-📌 **The lesson is mine, not OPS's.** A per-file budget printed as a flat column is
-easy to read as a set budget, and the cost was a real finding nearly going unwritten.
-
----
-## 🔴 P10. `preload_check.py` answers differently per seat — a go/no-go gate that fails SILENTLY
-
-Found 2026-08-14 when BRIDGE got **NOT SAFE TO LOAD** while OPS and CREATE got
-**SAFE**, same commit, same live files.
-
-**Cause — CORRECTED by OPS and BRIDGE; my first diagnosis was the symptom, not the
-cause.** I blamed the interpreter (BRIDGE runs `python.exe`, which cannot resolve
-`/mnt/c`). The real defect is worse: `preload_check.py:138` guards on
-`hasattr(GP, "STEAM_WORKSHOP")` while `game_paths` exposes **`WORKSHOP`** (`:64`),
-already resolved for both interpreters. **The guard is always False for EVERY seat**,
-so the platform-aware branch is dead code that has never once executed and every run
-falls through to the two hardcoded `/mnt/c` literals at `:139-140`.
-
-🔴 **A fallback that never falls back is invisible for exactly as long as the
-fallback happens to be right.** It was right for three seats and wrong for one, which
-is why it surfaced as a seat disagreement rather than as a bug.
-
-⇒ **The same defect produced BRIDGE's GravTech false alarm** — "I grepped the whole
-tree" was a tree with the largest root missing. **One root cause, two incidents, an
-hour apart.**
-
-🔴 **Why this outranks its size: it is the LAST thing run before a ~25-30 min load.**
-A gate that answers by interpreter, with no error, will eventually be believed by
-the seat it is lying to — in either direction. **Failing open is the dangerous one.**
-
-**Fix:** resolve the Steam roots per-platform, and **refuse to run rather than
-report** when a configured root does not exist. A missing root must never be
-indistinguishable from an empty one. *(Same shape as `whats_new.py` silently
-returning nothing after the restructure moved `Utils/`.)*
+**P10 was fixed by OPS before I raised it, and my first diagnosis of it was
+wrong** — I blamed the interpreter; the cause was a `hasattr` on a name
+`game_paths` never exposed, so the platform branch was dead for every seat.
+Checking the source before raising it is what caught this. Keep doing that.

@@ -89,7 +89,26 @@ the trap.
 Then `python.exe src/RimMandrake/Utils/refresh.py` — **Windows** interpreter; WSL's
 `python3` fails on the Windows paths with a bare `cannot read ModsConfig`.
 
-### 1c. Companion — nothing owed
+### 1c. Companion — **ONE tool owed at the next shutdown window**
+
+🔴 **Corrected 2026-08-14 by BRIDGE, byte-measured against the game copy.** The old
+NEED-DOWN batch listed three items and **two of them were already deployed**:
+`jawa/order_pawn` and the `jawa/damage` refusal fix are both on the game copy.
+
+| tool | state |
+|---|---|
+| `jawa/order_pawn` | ✅ deployed — do not re-deploy |
+| `jawa/damage` refusal fix | ✅ deployed — do not re-deploy |
+| **`jawa/get_defs` (`f4ecb68`)** | 🔴 **UNDEPLOYED — this alone is what the shutdown window owes** |
+
+⚠️ **The method that made the stale entry look verified:** `strings -a` scans
+7-bit ASCII, so a method-body literal (UTF-16LE, in the `#US` heap) reads as
+**ABSENT**. Plain `strings` proves a tool **name** and nothing about its body.
+**Use `strings -a -el`.** This retroactively weakens the "byte-verified by
+`strings`" claim immediately below — that check still proves the 22 names are
+present; it never proved any behaviour inside them.
+
+
 
 **Deployed `C:\Program Files (x86)\Steam\steamapps\common\RimWorld\BridgeTools\JawaBench\JawaBench.BridgeTools.dll`
 — 22 tools, 246,272 B @ 00:04, byte-verified by `strings` on the DEPLOYED copy,
