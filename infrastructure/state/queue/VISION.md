@@ -463,3 +463,51 @@ repairable. **The ruling holds; the stated reason is wrong. Not my file.**
 ### V23. Canon droid lineage catalogue — only the supplement was received
 Agent `abe113a7` delivered non-CIS additions; **the main lineage table never
 arrived.** Re-request if the visual comparison sheet is wanted.
+
+---
+
+## ✅ Closed 2026-08-14 — the genome register and the eleven religions
+
+**Two deliverables, both committed and pushed.**
+
+1. **`design\Jawa\worldbuilding\review\genome_register.html`** — 184 candidate
+   xenotypes aligned by gene, with the game's own icons, built from the **live def
+   dump**. Contested-species blocks, the full 394-column grid, uncontested lists.
+   Regenerate: `~/.venvs/rimart/bin/python src/RimMandrake/Utils/genome_art_cache.py`
+   then `genome_matrix_build.py`. (Needs UnityPy + Pillow — vanilla gene art ships
+   inside `resources_biotech`, not as loose PNGs.)
+2. **`design\Jawa\worldbuilding\faction_religions_spec.md`** — eleven ideoligions
+   to XML depth. Vocabulary: `design\Jawa\worldbuilding\data\ideology_palette.md`
+   (`ideology_palette.py`, regenerable). Jawa slot deliberately empty.
+
+**Findings that changed a design, all measured:**
+- 🔴 **The three Star Wars packs are a STACK, not alternatives.** BTD REMIX defines
+  **zero** genes of its own; 196 of its gene refs point at SW Xenotypes, 41 at
+  Outer Rim GD. Uninstalling either breaks it. **All three generate**, so a
+  wanderer can arrive as the wrong Twi'lek. Fix is a `factionlessGenerationWeight`
+  patch, not an uninstall.
+- **`jawa_xenotype_and_religion.md` Part 1 was stale** — marked superseded; the
+  campaign is on `BTD_Jawa` (24 genes vs 8), and `Outland_AllMale` on it closes
+  that file's all-male open question with no patch.
+- **Three things the engine will not let us say:** charity has no negative precept ·
+  `PreferredXenotypes` cannot be aimed at a xenotype from XML (gap-audit **D3 is
+  mis-specified**, filed at PROJECT) · `Apostasy_Abhorrent` hard-conflicts with the
+  `Guilty` meme.
+- **D2 decided** — Homestead is `Structure_TheistAbstract`, deity *the Withdrawn*.
+
+## Open — mine, and worth the next session
+
+- ⏳ **`jawa/ideo_of` requested from BRIDGE.** Until it exists, "the game built the
+  ideoligion I specified" is an inference. Diff the eleven against it when it lands.
+- 🔴 **"NPC religion rarely surfaces in play" has never been measured**, and the
+  whole religions design is disciplined around it — I cut rituals and deities
+  because of it. Counter requested from BRIDGE. **If it returns ~0, say so in the
+  doc and stop pretending the eleven are load-bearing.**
+- **28 of the 29 biome removals were judged from def fields alone.** Exactly one
+  was ever looked at, and looking confirmed it in two seconds. `jawa/biome_probe`
+  requested. Do not treat the other 28 as decided.
+- **Sea gate is 3-of-5 testable** — `perimeter` and `centroidLat` are not in
+  `world_stats` yet. 🔴 **No candidate world is accepted on a partial pass.**
+- **Jawa faith:** the name contradicts itself in its own file ("The Salvation" vs
+  "The Articles of Passage") and Nomad-vs-Tunneler is still a coin. **Owner's,
+  not mine** — but flag both if he opens it.
