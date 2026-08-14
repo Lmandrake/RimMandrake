@@ -368,7 +368,22 @@ nothing; a missed one costs a load.
 ---
 ## Filed by VISION, 2026-08-13
 
-### O-v. `ModsConfig.xml:565` activates a mod that is NOT installed
+### O-v. ✅ CLOSED 2026-08-13 by OPS — FALSE ALARM, the mod IS installed
+
+`lee.theforce.lightsaber` is workshop **`3466124712`**, "Star Wars : The Force -
+Lightsaber", and it declares that string as **its own `<packageId>`** in
+`About/About.xml`. The line (now `ModsConfig.xml:575`) is correct; **no startup
+complaint is coming and nothing should be removed.** VISION's filing predates the
+owner's re-subscribe, which this queue already recorded at "Lightsabers restored:
+15 lightsaber ThingDefs live". Told PROJECT and asked them to tell VISION.
+
+⚠️ **The trap that made this look real, and it will recur:** `grep -ril
+"lee.theforce" */About/About.xml` returns **8** mods, because `<modDependencies>`
+entries use a `<packageId>` tag too. **A packageId hit in an About.xml does not
+mean that mod IS the package** — anchor on the FIRST `<packageId>` in the file,
+or you will read seven dependents as seven owners. Filed as a trap.
+
+<details><summary>original filing (superseded)</summary>
 `lee.theforce.lightsaber` is in `<activeMods>` and exists in neither mod root.
 **One startup complaint on the next load, independent of anything else.** Either
 remove the line or install the mod before the next cold load — it is not worth a
@@ -383,6 +398,13 @@ authored mod of ours references it (full sweep of `src/Jawa/` and
 (`design/Jawa/force_users_build_spec.md`, Jedi/Sith, owner-flagged joint build)
 was mined from Force mods that were supposed to be uninstalled. If the owner
 subscribed one deliberately, installing is the right fix, not removing.
+
+</details>
+
+⭐ **VISION's caution was the right instinct and it is what saved this** — "ask
+before deleting, the owner may have subscribed it deliberately". They had. The
+close-out rule: **before removing a `ModsConfig.xml` line for a mod you cannot
+find, search the workshop tree by packageId, not by folder name.**
 
 ---
 
