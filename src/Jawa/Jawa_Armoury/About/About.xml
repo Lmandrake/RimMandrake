@@ -35,8 +35,14 @@ Rationale: worldbuilding/setting_physics.md (the 18 laws) and
 worldbuilding/balance_paradigm.md (why we change any value at all).
 Generated from a live post-patch def dump; load last.</description>
   <modDependencies />
+  <!-- Corrected 2026-08-13. Both previous ids were WRONG and this whole block
+       was therefore INERT: `guy762.starwarskotorweapons` and `Aoba.OuterRim.Core`
+       match no installed mod (Aoba is Dead Man's Switch - wrong author entirely).
+       A loadAfter naming a packageId that does not exist fails SILENTLY: nothing
+       logs it, and the rule simply does not constrain anything. Verified against
+       the live ModsConfig - the two below are present, the two above are not. -->
   <loadAfter>
-    <li>guy762.starwarskotorweapons</li>
-    <li>Aoba.OuterRim.Core</li>
+    <li>guy762.kotorweapons</li>
+    <li>Neronix17.OuterRim.Core</li>
   </loadAfter>
 </ModMetaData>

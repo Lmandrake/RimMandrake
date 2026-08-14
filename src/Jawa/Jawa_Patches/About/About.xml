@@ -26,4 +26,19 @@ Currently contains:
   <supportedVersions>
     <li>1.6</li>
   </supportedVersions>
+  <!-- Added 2026-08-13. This mod patches Outer Rim faction defs
+       (ImperialDesertDirectorate.xml rewrites OuterRim_GalacticEmpire's label and
+       fixedName; RebelAlliance_Suppress.xml zeroes OuterRim_RebelAlliance's four
+       generation fields) and it declared NOTHING about load order - not here, and
+       not in RimSort's userRules.
+       It worked anyway on 2026-08-13 (this mod @576 vs 547/548) but only by the
+       topological TIE-BREAK, not by any constraint - i.e. correct by luck, and
+       one re-sort away from silently inverting. A patch mod above its target
+       patches nothing and logs nothing.
+       The whole worldgen faction checklist rests on these two ops applying. -->
+  <loadAfter>
+    <li>Neronix17.OuterRim.Core</li>
+    <li>Neronix17.OuterRim.GalacticEmpire</li>
+    <li>Neronix17.OuterRim.RebelAlliance</li>
+  </loadAfter>
 </ModMetaData>
