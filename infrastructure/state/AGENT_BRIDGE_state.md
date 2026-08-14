@@ -15,46 +15,58 @@ Queue: `infrastructure/state/queue/BRIDGE.md`.
 
 ---
 
-## State of the world at handoff, 2026-08-13 ~21:00
+## State of the world at handoff, 2026-08-14 (shutdown prep)
 
 | | |
 |---|---|
-| bridge | **RELEASED** — announced to PROJECT, OPS, CREATE |
-| game | UP, but **the map I worked is GONE** — OPS regenerated a fresh quicktest on owner's instruction. Current map is stock, `ticksGame 1`, paused |
-| left on the map | **nothing of mine survives.** The gravship, its doors, the salt-crust patch, the Jawa-converted Alex — all discarded with the old map. Nothing lost: the ship is exported and committed |
-| camera zoom extension | **OFF** — I re-disabled it, `rootSize 14`. It was mine and it caused a false "graphics corrupted" alarm |
+| bridge | **never taken this session.** No claim was made, none is outstanding |
+| game | **DOWN** for the whole session, checked before every deploy (`tasklist.exe`) |
+| left on the map | **nothing — there is no map.** The 08-14 session's litter (3 doors, 9 pawns, listed in `observed/2026-08-14_load_session.md`) died with its quicktest |
+| companion | **26 tools, md5 `55b2362`**, GM pair present, at `C:\Program Files (x86)\Steam\steamapps\common\RimWorld\BridgeTools\JawaBench\JawaBench.BridgeTools.dll` |
+| repo | clean of my paths, `origin/main` 0 ahead at `812ac7b` |
 | 🔴 persistent, survives restarts | **`BG_gravEngineSupport` = 4500** (was 632.79541). See the queue file — do not rediscover this as a mystery |
 
 ## Owed
 
-Nothing to any seat. All three peers had a release message with full state.
+Nothing to any seat. CREATE was messaged with the screenshot finding and owes
+nothing back.
 
-## Blocked
+## 🔴 The first thing the next BRIDGE must know
 
-**Everything below wants the game DOWN** — a companion DLL cannot be deployed
-while RimWorld holds it.
+**All 12 art screenshots from the 2026-08-14 session are non-evidence, and the
+ledger calls them `NEEDS EYES`.** The Debug log window covers the centre of the
+screen, which is exactly where `look()` puts the subject. Fixed forward with
+`jawa/clear_ui`; **the rows themselves must be re-shot.** Trap filed under
+"The debug log window sits on the middle of every screenshot".
 
-| item | what |
-|---|---|
-| **B-v3** `jawa/order_pawn` | ⭐ build first. The bridge cannot make a pawn walk anywhere; blocks reachability, doors, room enclosure, and the `NoPathToPilotConsole` launch gate |
-| `jawa/damage` refusal fix | built, `2a8c5b4`, 0 errors. Deploy **`--gm --apply`** or two GM tools are stripped |
-| **B-v2** mid-game import | `ShipSketchBuilder.BuildFromLayout` + a terrain replay |
+**Four capabilities are DEPLOYED AND UNCALLED.** `jawa/get_defs`,
+`jawa/fire_quest`, `jawa/list_things`, `jawa/clear_ui`, plus a vehicle route in
+`spawn_batch`. Compiling is not working. **Do not let a peer cite them as
+tooling until one has run**, and send no bulletin until then.
 
-## Closed today, with evidence
+## Blocked — wants the game UP
 
-- v1 gravship **built, exported, doored, committed** — `6909ecb` `a12fe3a` `9684fb6`.
-  31 steps, 4,057 foundation + 4,057 floor cells, ~1,052 things, ~1.4 s of calls.
-- **`execute_ship_plan.py`** — `ship_bridge.json` had never been executed by anything.
-- **`gravship-layout` skill + library** — a ship can now be authored as a FILE, no
-  map, no game. Round-trips clean on three fixtures.
-- Three pawn tools proven on first execution; `spawn_pawn` silent-success fixed.
-- **Capacity is a live setting**, not a ceiling: 632.8 → 4500 with the game
-  running, via BG's "Apply Settings Now!". Removes a ~25 min load from every
-  future ship-size experiment.
-- Extender zero explained: **BG rebuilds `CompProperties_GravshipFacility` and
-  drops its `statOffsets`**, so extenders link and give nothing.
-- `Jawa_SaltCrust` PASS. `ilprobe` repaired (`il.py`, `enumdump.py`) and extended
-  (`xref.py` fixed to scan all six field opcodes, `sigdump.py` banked).
+Everything that needed the game DOWN was done in this window; the queue's
+build-and-deploy row is closed. What is left is all live work: the 13 art rows,
+A2 `NoPathToPilotConsole` (which now finds its own console id), the salt-crust
+terrain repaint, worldgen rows 5/6/7, and proving the four new tools.
+
+## Closed this session, with evidence
+
+- **Companion 22 → 26 tools**, three deploys, game verified down each time.
+  `jawa/list_things` (a ThingID for a non-pawn — nothing could produce one),
+  `jawa/clear_ui`, `jawa/get_defs`, `jawa/fire_quest`.
+- **`spawn_batch` can spawn a `Vehicles.VehicleDef`** via `VehicleSpawner` by
+  reflection. `AV_DogSled`'s NRE was this tool, not the art: `VehiclePawn`'s ctor
+  leaves `vehiclePather`/`ignition`/`drawTracker` null and `SpawnSetup` calls all
+  three. Read from `Vehicles.dll` with ilprobe.
+- **The harness bug that killed two live rows** — `ok()`/`absent()` were called
+  and never defined. Both now exist, `absent()` refuses to score a failed call as
+  a missing def, and `load_session --selftest` runs real items against a scripted
+  session instead of testing only the ledger plumbing.
+- **The census gate stopped being a literal** — derived from `EXPECTED_TOOLS`,
+  and `prove_new_tools` reads the deployed DLL. Three files disagreed about that
+  number on 08-13.
 
 ## Three corrections I made against myself — read these before trusting a negative
 
@@ -97,9 +109,11 @@ you TYPE at a live console; the plan itself is still the script.
   **WORN by a pawn facing east**. There is no apparel tool on the bridge: the only
   route is `rimworld/select_pawn` then `Actions\Wear apparel (selected)…`, which
   works on **player colonists only** ⇒ spawn the wearer with `faction=player`.
-- `AV_DogSled` is a `Vehicles.VehicleDef`, not a ThingDef, so `spawn_thing` may not
-  construct it; its brown is a def patch (`DogSledTint_Brown.xml`, `graphicData/color`
-  → `(99,65,24)`) ⇒ a grey sled means the patch, not the art.
+- `AV_DogSled` is a `Vehicles.VehicleDef`, not a ThingDef. ✅ **Answered 2026-08-14:**
+  `spawn_thing`/`ThingMaker` genuinely cannot construct it, and `spawn_batch` now
+  routes vehicles through `Vehicles.VehicleSpawner.SpawnVehicleRandomized` by
+  reflection. Its brown is a def patch (`DogSledTint_Brown.xml`,
+  `graphicData/color` → `(99,65,24)`) ⇒ a grey sled means the patch, not the art.
 - `VGE_Astronaut` has two lifeStages sharing one maskPath and only the double-r
   `Astrronaut` files were typo'd ⇒ **shoot an adult**, or you pass on art that was
   never broken.
