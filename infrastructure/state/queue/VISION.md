@@ -135,7 +135,22 @@ space gate entirely** — it short-circuits `CanQuestOccurOnTile`'s space branch
 ground colony**; `endOnColonyMove` is the archonexus mechanic, not gravship
 movement. **The tower reaches a clan living on a ship.**
 
-**Condition 2 — ⏳ OPEN, and I was wrong about what it could lean on.** CREATE is
+**Condition 2 — ✅ RESOLVED BY THE OWNER, 2026-08-13, and not with a gauge.**
+
+> *"The space towers were owned by the Galactic Empire — how they land and access
+> the surface — so they get VERY angry about it. And that's the whole point the
+> Hutts were after."*
+
+**The towers are Imperial infrastructure; the Hutts pay you to cut them; the
+Empire's retaliation is the cost.** No blackboard variable, no goodwill tick —
+consequence the player feels as weight arriving. **Space Tower is KEEP,
+unconditionally, and it no longer waits on M4.** Full design:
+`D:\Luke\dev\Rimworld\design\Jawa\worldbuilding\orbital_towers_and_the_sky_ladder.md`
+
+_Superseded reasoning, kept because the proxy ruling still stands if anyone
+reaches for it:_
+
+**⏳ was OPEN, and I was wrong about what it could lean on.** CREATE is
 right: **"Imperial Heat" has zero implementation** — it is a blackboard variable
 at M4 in `design/Jawa/build_plan.md:180`, not a mechanic. So the condition as I
 wrote it cannot be met today.
@@ -353,3 +368,24 @@ cannot do.
 **My recommendation:** untick the four factions at worldgen (free, reversible,
 does the fiction work), and **keep the mod installed** for now. That gets you
 ~all the benefit at zero cost and defers the irreversible half.
+
+---
+## V-x. `[v2]` Which Jawa xenotype is the campaign's? Our tuning may be inert
+
+**Raised by BRIDGE, ruled out of v1 by PROJECT (`0c36ad8`), yours to settle.**
+
+- `OuterRim_Jawa` — what the Jawa **pawnKinds actually pin**, so it is what spawns
+- `BTD_Jawa` — what **our tuning patches target**
+- `guy762_xenotype_jawa` — third one, also live
+
+**If the spawning xenotype is not the patched one, our Jawa tuning does nothing
+in play.** Deployed and inert, the same shape as seven art mods sitting in
+`Mods/` doing nothing until enabled — and just as invisible, because nothing
+errors.
+
+v1 row 5 closes on `OuterRim_Jawa` regardless (the thin bar is "a Jawa spawns and
+plays", and it does). **This is the depth question, and depth is v2.**
+
+**Your call:** which xenotype should the campaign's Jawas be? Then CREATE
+re-points the patches. **Do not let it close as if the two were the same Jawa** —
+BRIDGE's words, and the reason this is filed rather than dropped.
