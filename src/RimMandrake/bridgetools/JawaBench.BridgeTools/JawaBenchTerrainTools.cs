@@ -1509,6 +1509,15 @@ namespace JawaBench.BridgeTools
                     };
                 }
 
+                // 🔴 `extra` is hand-modelled and covers exactly THREE types:
+                // ThingDef, PawnKindDef, BiomeDef. For every other def type it is
+                // null — and a null `extra` is INDISTINGUISHABLE from "the field
+                // you asked about is genuinely absent". That cost a real defect on
+                // 2026-08-14: MapGeneratorDef returned extra:null and was read as
+                // "the genStep is not registered", which was false. So say which
+                // it is, out loud, and name the tool that CAN answer.
+                var extraModelled = thingDef != null || def is PawnKindDef || def is BiomeDef;
+
                 return new
                 {
                     success = true,
@@ -1522,6 +1531,12 @@ namespace JawaBench.BridgeTools
                     statBases = stats,
                     comps,
                     extra,
+                    extraModelled,
+                    extraNote = extraModelled
+                        ? null
+                        : $"⚠️ `extra` is NOT modelled for {def.GetType().Name} — this null means "
+                          + "NOT INSPECTED, not 'absent'. Do not read a missing field as a missing "
+                          + "value. Use jawa/get_defs with an explicit fields list to read this type.",
                     ticksGame = Find.TickManager?.TicksGame ?? -1
                 };
             }, cancellationToken).ConfigureAwait(false);
