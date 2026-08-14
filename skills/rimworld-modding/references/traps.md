@@ -25,7 +25,7 @@ shorts, leave it untouched (→ `skills/rimworld-savegame/SKILL.md`).
 | If you are about to… | Read | Entries |
 |---|---|---|
 | write or debug a patch, an xpath, or a def | [`traps-xml-and-defs.md`](traps-xml-and-defs.md) | 18 |
-| trust what a script, grep, census or the def dump just told you | [`traps-tooling.md`](traps-tooling.md) | 34 |
+| trust what a script, grep, census or the def dump just told you | [`traps-tooling.md`](traps-tooling.md) | 36 |
 | call art missing, wrong, or broken | [`traps-art.md`](traps-art.md) | 13 |
 | chase a mod that is absent, dead, or ignoring its files | [`traps-mods-and-managers.md`](traps-mods-and-managers.md) | 13 |
 | believe a diagnosis, or call into a running game | [`traps-diagnosis.md`](traps-diagnosis.md) | 6 |
@@ -90,6 +90,7 @@ the one asked.**
 - A def can exist in the game and in NO file
 - "Empty output" is not a result
 - `len()` answers for any container, so the wrong number is plausible
+- A guard that tests a STATUS STRING instead of the capability fails safe-looking and silent
 - A field xref that scans three opcodes reports "no writers" for a field with writers
 - An artifact that records an OUTCOME cannot answer a question about a CAPABILITY
 - Take the RULE from a precedent, never the NUMBER

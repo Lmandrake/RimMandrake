@@ -17,7 +17,7 @@ RTX 5080 16 GB, WSL 2.7.11.0, kernel 6.18.33.2, cgroup v2, VM ceiling 31.7 GB.
 | **per-process-tree memory cap** | ✅ cgroup v2 — MEASURED working here | ⚠️ Job Objects exist, but **nothing shipped wires them up** (§3) | ❌ `RLIMIT_AS` does not cover a win32 binary (§5) | n/a |
 | **one runaway kills…** | the VM, if unbounded — fixable in one shell script | the whole desktop: Windows fails the allocation rather than OOM-killing | same | nobody |
 | **Claude Code sandboxing** | ✅ supported (WSL2 only) | ❌ **not supported** — DOCUMENTED | ❌ | n/a |
-| **Windows file access** | 9P: ~55× slower writes, ~7× stat (MEASURED, §4) | ✅ native speed | ✅ native speed | ❌ **cannot see mounted project drives** |
+| **repo file access** | 9P `/mnt/d`: 1.34 s `git status`. **ext4 `~`: 0.01 s** (MEASURED, §4) | `D:\` via Git Bash: 0.88 s | same as native | ❌ **cannot see mounted project drives** |
 | **can commit / delete in the repo** | ✅ | ✅ | ✅ | ❌ **write-only** (MEASURED here) |
 | **bash/python toolchain** | ✅ full Linux | ⚠️ Git Bash (MSYS2) or the PowerShell tool | ⚠️ POSIX emulation; **shell builtins broken** under Claude Code (§5) | ✅ |
 | **Node.js needed** | ❌ not at runtime | ❌ not at runtime — the installer ships a native binary | ⚠️ no Cygwin-native Node exists at all | ❌ |
@@ -37,6 +37,12 @@ Windows**.
 
 ⇒ **A native-Windows migration is cheaper than it looks on the install side, and
 more expensive than it looks on the containment and sandbox side.**
+
+🔴 **And it is largely beside the point.** §4 settles what the migration was
+mostly being argued for: native Windows buys ~1.5× on the real composite
+workload, while moving the repo from `/mnt/d` into ext4 — staying on WSL — buys
+~126×. **Separate "where does Claude Code run" from "where does the repo live";
+they had been one question and the answers point opposite ways.**
 
 ---
 
@@ -116,36 +122,75 @@ commit cap.
 
 ---
 
-## 4. The filesystem tax — real, modest, and NOT the crash cause
+## 4. 🔴 SETTLED: the cost was never WSL — it is the repo living on `/mnt/d`
 
-MEASURED, 400 small files, this box, reproduced twice:
+**This section reverses what an earlier draft concluded.** It had measured a
+ratio and called it "a tax, not a crisis"; the composite workload says otherwise.
 
-| location | 400 writes | stat pass |
+MEASURED by `src/RimMandrake/Utils/fs_bench.sh` (commit `6a291e9`), **500 small
+files, identical workload text run verbatim by each shell**, seconds:
+
+| access path | write | stat | read | grep | delete |
+|---|---|---|---|---|---|
+| WSL bash → ext4 (`~`) | **0.015** | **0.046** | **0.013** | **0.011** | **0.012** |
+| WSL bash → `/mnt/d` (9P) | 0.679 | 0.359 | 0.752 | 0.352 | 0.209 |
+| Git Bash → `D:\` (NTFS) | 0.202 | 0.194 | 0.155 | 0.168 | 0.153 |
+| PowerShell/.NET → `D:\` | 0.092 | 0.039 | 0.027 | 0.021 | 0.028 |
+
+The composite real-world case, `git status` on **identical 25,254-file trees**:
+
+| | time | vs 9P |
 |---|---|---|
-| ext4 `~` (inside the VM) | **0.01 s** | 0.01–0.05 s |
-| 9P `/mnt/d` (repo) | **0.47–0.55 s** | 0.35–0.54 s |
-| 9P `/mnt/c` | **0.78 s** | 0.42–0.78 s |
+| WSL bash → ext4 | **0.01 s** | **126×** |
+| Git Bash → `D:\` (NTFS) | 0.88 s | 1.5× |
+| WSL bash → `/mnt/d` (9P) | 1.34 s (`--porcelain` 1.26 s) | — |
 
-So 9P is roughly **55× slower on writes** and **7× on stat** than ext4.
+Tree walk: ext4 **201,467 files/sec** vs 9P **25,769 files/sec** — 7.8×.
 
-**State the absolute cost, not just the ratio:** `git status --porcelain` over
-this repo takes **1.50–1.53 s** (MEASURED twice). Count the tree yourself rather
-than quoting a number from here:
+⇒ 🔴 **Moving to native Windows buys ~1.5× on the workload that matters. Moving
+the repo into ext4 buys ~126×.** The hosting argument and the filesystem
+argument are different arguments, and only the second one is worth the move.
 
-```bash
-find . -path ./.git -prune -o -type f -print | wc -l ; git ls-files | wc -l
-```
+⚠️ **`CLAUDE.md`'s "~210 files/sec" figure is superseded** — MEASURED 25,769
+files/sec on 9P. Noticing that is a filing, not an edit (`agents_def.md`
+rule 0.5).
 
-That is a tax, not a crisis.
+### Reading the benchmark honestly
+
+- 🔴 **Row 2 vs row 3 is the experiment.** Same physical disk (`D:`), reached
+  through the 9P bridge from WSL versus natively by Git Bash — which is what a
+  native-Windows Claude Code would use for its Bash tool. That pair isolates the
+  bridge from everything else. Row 1 is the ceiling; row 4 (PowerShell using
+  `[IO.File]` directly, **not** cmdlets) exists so a slow PowerShell number is
+  not misread as a slow filesystem.
+- ⚠️ **The first `git status` run was unfair and was redone.** A clone-based
+  comparison put 6,044 files on ext4 against 25,254 on 9P. The figures above are
+  from **identical 25,254-file trees** — the full working tree copied to ext4,
+  untracked files included. **When two sides of a benchmark are prepared by
+  different means, the difference includes the preparation.**
+
+### If you move the repo to ext4 — the tradeoffs, stated
+
+- **Explorer and Windows tools still reach it**, via `\\wsl$\<distro>\home\…`.
+  But every native absolute path in every doc and script changes, and this
+  project's house style writes those paths everywhere.
+- **Deploys are unaffected** — they target
+  `C:\Program Files (x86)\Steam\steamapps\common\RimWorld\Mods` either way.
+- **It removes the documented search-recall penalty** (§2), which is a
+  correctness effect and not only a speed one. Native Windows removes it too.
+- 🔴 **It moves the repo inside the VM that has been dying.** MEASURED: `D:\`
+  came through every OOM with uncommitted files intact; an ext4 repo lives on
+  the VHD instead. **That raises the stakes on committing and pushing; it does
+  not forbid the move.** UNVERIFIED: whether the ext4 VHD survives a hard VM
+  kill uncorrupted — not tested here.
+- Copying the 1.4 GB tree 9P → ext4 took **152 s**, once.
 
 ⚠️ **The 9P page cache was tested as an OOM cause and REFUTED** — three full
-repo read passes moved `Cached` 1071 → 1073 MB. Flat. Do not blame 9P for
-memory. **Do** weigh it against §2's documented search-recall penalty, which is
-a correctness effect rather than a speed one.
+repo read passes moved `Cached` 1071 → 1073 MB. Flat. 9P is a speed and recall
+problem, never a memory one.
 
-**Cheap mitigations:** keep build scratch and caches on ext4 (`~`), keep the
-repo where the humans and the Windows tools expect it, and batch filesystem
-operations instead of looping shell calls over `/mnt`.
+**If the repo stays on `/mnt/d`:** keep build scratch and caches on ext4 (`~`),
+and batch filesystem operations instead of looping shell calls over `/mnt`.
 
 ---
 
@@ -242,18 +287,22 @@ current build**, and the fleet should stop reaching for it.
 
 ```
 file:    ELF 64-bit LSB executable, dynamically linked, not stripped
-strings: 226 matches for JavaScriptCore|WebKit
-         1505 matches for "bun"
-           4 matches for max-old-space-size|v8_flags
+strings: 1815 matches for JavaScriptCore|WebKit
+         3520 matches for "bun"
+           18 incidental V8 matches
 ```
 
 The binary is a **Bun `--compile` single-file executable running
-JavaScriptCore, not V8** — so a V8 heap flag has no engine to configure. The
-four residual flag-name hits are consistent with a Node-compatibility shim.
+JavaScriptCore, not V8** — so a V8 heap flag has no engine to configure. The 18
+residual hits are consistent with a Node-compatibility shim, not an embedded V8.
 
-**UNVERIFIED:** that the flag is *entirely* ignored — that would need an A/B
-memory test on a current build. **What is MEASURED is that the engine is not
-V8**, which is enough to stop treating the flag as the answer.
+⇒ 🔴 **Every upstream workaround built on `NODE_OPTIONS` is inapplicable to this
+build, and the cgroup bound is the only containment available to you.** That is
+not a preference between two remedies; it is one remedy.
+
+**UNVERIFIED:** that the flag is *entirely* inert — that would need an A/B
+memory run on a current build, which nobody has done. **What is MEASURED is that
+the engine is not V8**, which is enough to stop treating the flag as the answer.
 
 **What Anthropic actually recommends instead** — DOCUMENTED,
 https://code.claude.com/docs/en/troubleshooting §"High CPU or memory usage":
