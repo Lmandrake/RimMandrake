@@ -15,6 +15,80 @@ authored offline by OPS/CREATE and all of it verifies in ONE session.
 
 ## Open
 
+### 🔴🔴 S8 — RUN THIS FIRST IN THE NEXT DOWN-WINDOW. COPY IT; DO NOT RECONSTRUCT IT.
+**Five BRIDGE tools are built, pushed and UNDEPLOYED. They are the whole window.**
+The game must be **DOWN** — the DLL is locked while it runs and the write fails
+`OSError 22` (that refusal is safe; it cannot truncate).
+
+```bash
+cd /mnt/d/Luke/dev/Rimworld
+python.exe src/RimMandrake/bridgetools/build.py --gm --apply
+```
+
+🔴 **`--gm` IS NOT OPTIONAL.** Without it the build STRIPS `jawa/fire_incident`
+and `jawa/send_letter` off the game copy — you would ship 28 tools and lose two
+that already work. The build refusing by default is the guard working, not a bug.
+
+**Then VERIFY, because a successful build says nothing about the game copy:**
+```bash
+D="/mnt/c/Program Files (x86)/Steam/steamapps/common/RimWorld/BridgeTools/JawaBench/JawaBench.BridgeTools.dll"
+md5sum "$D"                                                    # expect d7e7c6c1...
+strings -a "$D" | grep -oE 'jawa/[a-z_]+' | sort -u | wc -l    # expect 30
+```
+⚠️ **`strings -a` proves a NAME only.** To prove a *message* shipped use
+`strings -a -el` — method-body literals are UTF-16LE in the `#US` heap.
+⚠️ **Derive the census expectation from `.cs` ONLY.** `grep -rhoE '"jawa/[a-z_]+"'`
+over the whole directory returns one too many, because `prove_new_tools.py:112`
+contains `[Tool("jawa/x")]` **inside a comment**. Add `--include='*.cs'`.
+
+**What the five buy, so nobody deprioritises the wrong one:**
+
+| tool | unblocks |
+|---|---|
+| `jawa/set_faction_relation` | **v1 L3.** The Empire ships `hostile:false, goodwill:0`, and `TryResolveRaidFaction` drops a non-hostile faction ⇒ `canFireNow:false` **forever** without this. Nothing else on the bridge can set a relation, and the debug tree has no usable action. |
+| `jawa/inspect_string` | **CREATE's L8**, and every future "is it WORKING" question. Reads `Thing.GetInspectString()` — `WarningThrusterInside`, `ThrusterBlockedBy`, power, breakdown. `get_cell_info` returns a className and stops. |
+| `world_stats` unit fix | **Sea gate reqs 3 + 4.** `perimeterTiles` (the spec's own definition), `raggedness` from tiles, `centroidLatNorm`. The DEPLOYED build's numbers are in the WRONG UNITS and would reject a passing world. |
+| `jawa/ideo_of` | VISION's eleven ideoligions; believer split colonists / otherOnMap / worldPawns. |
+| `jawa/biome_probe` | VISION's 29 biome removals — `spawning` / `zeroed` / `absent`. |
+
+⚠️ **`TicksGameSafe()` rides along and matters more than it sounds.** The deployed
+build throws a bare NRE on **every** tool at the main menu, because
+`Find.TickManager?.TicksGame` guards the RESULT and not the CALL. After this
+deploy, **def reads work at `programState: Entry`** — a whole class of checks that
+currently costs a map.
+
+### ✅ v1 ROW 3 CLOSED 2026-08-14 — *The Claim* was SEEN
+`jawa/fire_quest questDef=Jawa_TheClaim points=800` → quest **id 0, "The Claim",
+`State=NotYetAccepted`, `questCountAfter 1`**, challengeRating 1, expiry 256,099
+ticks. `NEXT_RELOAD.md` §7 had filed this **uncollectable**, because its only route
+was an in-world item → float menu and `rimworld/right_click_cell` is measured broken.
+🔴 **Every field is read back off `Find.QuestManager` AFTER the call.**
+`questCountAfter` is the evidence — *registered*, not *merely generated*.
+
+### 🟡 HALF-DONE, with what was already checked
+- **Sea seed sweep: 4 of 7.** `python.exe src/RimMandrake/bridgetools/sea_seed_sweep.py 4`
+  finishes it. Data, method and the near-miss are in
+  `observed/2026-08-14_sea_baseline_seeds.md`. ⚠️ **ONLY when the owner is not at
+  the keyboard** — each iteration is a full RimWorld worldgen, it took loadavg to
+  22.58, and the owner read it as a hang.
+- **CREATE's sealed-room thruster test (L8).** Needs `inspect_string` deployed.
+  Sealed roofed room, thruster inside → predict inactive; thruster in the wall line
+  with open sky aft → predict active. **Send CREATE the raw inspect lines, not a
+  verdict** — their whole roof derivation hangs off which sentence fires.
+- 🔴 **`OuterRim_GalacticEmpire` — UNFINISHED CHECK, and it may deflate a design
+  finding.** VISION has upgraded V7 to *"mechanically incapable of raiding"* on
+  four supposedly independent layers. ⚠️ **At least two are the same fact.**
+  `src/Jawa/Jawa_Patches/About/About.xml:36` already records that the shipped def
+  has **`permanentEnemy false`** while the faction dossier says permanent enemy
+  *yes* — and that single field plausibly explains `goodwill 0` **and**
+  `canFireNow:false`.
+  **Checked:** the live faction list (`hostile:false`, `goodwill:0`, name "Imperial
+  Desert Directorate") and that About.xml note.
+  **NOT checked:** the shipped `FactionDef` itself — a workshop-tree grep timed out
+  at 120 s twice.
+  ⇒ **read the def before anyone treats this as four confirmations.** It is likely
+  a one-field authoring fix owned by VISION/CREATE, not a design crisis.
+
 ### 🟡 BUILT DURING THE LOAD, NOT DEPLOYED — `jawa/ideo_of` + `jawa/biome_probe`
 Build **28 tools**, md5 `e47ea3d664dee03f828522d5d79f6afa`, `--gm` pair present,
 0 warnings 0 errors. ⛔ **NOT deployed — the game is up and the DLL is locked.**

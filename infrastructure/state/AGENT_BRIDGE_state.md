@@ -15,41 +15,48 @@ Queue: `infrastructure/state/queue/BRIDGE.md`.
 
 ---
 
-## State of the world at handoff, 2026-08-14 (shutdown prep)
+## State of the world at handoff, 2026-08-14 — SECOND session, post-load
+
+**This section replaces the pre-load handoff. That one was written with the game
+DOWN and none of it survives: the game came up, a map existed, and the bridge was
+driven.**
 
 | | |
 |---|---|
-| bridge | **never taken this session.** No claim was made, none is outstanding |
-| game | **DOWN** for the whole session, checked before every deploy (`tasklist.exe`) |
-| left on the map | **nothing — there is no map.** The 08-14 session's litter (3 doors, 9 pawns, listed in `observed/2026-08-14_load_session.md`) died with its quicktest |
-| companion | **26 tools, md5 `55b2362`**, GM pair present, at `C:\Program Files (x86)\Steam\steamapps\common\RimWorld\BridgeTools\JawaBench\JawaBench.BridgeTools.dll` |
-| repo | clean of my paths, `origin/main` 0 ahead at `812ac7b` |
-| 🔴 persistent, survives restarts | **`BG_gravEngineSupport` = 4500** (was 632.79541). See the queue file — do not rediscover this as a mystery |
+| bridge | **taken, worked, RELEASED.** Free at handoff. Released with a one-line broadcast per the owner's new ruling |
+| game | **PLAYABLE** at handoff — a *quicktest* map, not a campaign. `programState: Playing`, **PAUSED** |
+| 🔴 left on the map | quest **"The Claim" NotYetAccepted** · **HOSTILE KotOR droid at (0,0) — KEEP PAUSED** · `SmallThruster` (45,131) · `AV_DogSled` (60,120) · roof (40,126) 4×4 already restored to `None` |
+| companion — GAME COPY | **26 tools, md5 `55b2362`.** Unchanged; no deploy was possible with the game up |
+| companion — REPO BUILD | 🔴 **30 tools, md5 `d7e7c6c1`, UNDEPLOYED.** This is S8 and it is the whole next down-window — exact command in `queue/BRIDGE.md` |
+| repo | clean of my paths, `origin/main` 0 ahead |
+| 🔴 persistent | **`BG_gravEngineSupport` = 4500.** Unchanged. Do not rediscover this as a mystery |
+
+## 🔴 The first three things the next BRIDGE must know
+
+1. **RUN S8 FIRST when the game is down** — `build.py --gm --apply`. **`--gm` is not
+   optional**; without it two working tools are stripped. Full command, verification
+   and what each tool unblocks: `queue/BRIDGE.md`, top entry.
+2. **The four "deployed and uncalled" tools from the last handoff have now RUN.**
+   `list_things`, `clear_ui`, `get_defs`, `fire_quest` and the `spawn_batch`
+   vehicle route are all live-proven. That warning is retired — do not re-issue it.
+3. **The game-state doctrine changed mid-session.** `agents_def.md` rules 1a/1b and
+   the TAKEN/RELEASED pair are **deleted**; state is measured and stamped with
+   `src/RimMandrake/Utils/gamestate.py`, and the word "live" is retired.
+   ⚠️ **Releasing still requires a one-line broadcast to the seats** — the owner
+   ruled this after a release that only wrote a state file went unnoticed.
 
 ## Owed
 
-Nothing to any seat. CREATE was messaged with the screenshot finding and owes
-nothing back.
+- **CREATE**: the sealed-room thruster test (L8) once `inspect_string` deploys.
+  **Send raw inspect lines, not a verdict.**
+- **VISION**: 3 remaining sea seeds, and the `OuterRim_GalacticEmpire`
+  `permanentEnemy` check that may deflate their V7 upgrade. Both in the queue.
 
-## 🔴 The first thing the next BRIDGE must know
+## Blocked — wants the game DOWN
 
-**All 12 art screenshots from the 2026-08-14 session are non-evidence, and the
-ledger calls them `NEEDS EYES`.** The Debug log window covers the centre of the
-screen, which is exactly where `look()` puts the subject. Fixed forward with
-`jawa/clear_ui`; **the rows themselves must be re-shot.** Trap filed under
-"The debug log window sits on the middle of every screenshot".
-
-**Four capabilities are DEPLOYED AND UNCALLED.** `jawa/get_defs`,
-`jawa/fire_quest`, `jawa/list_things`, `jawa/clear_ui`, plus a vehicle route in
-`spawn_batch`. Compiling is not working. **Do not let a peer cite them as
-tooling until one has run**, and send no bulletin until then.
-
-## Blocked — wants the game UP
-
-Everything that needed the game DOWN was done in this window; the queue's
-build-and-deploy row is closed. What is left is all live work: the 13 art rows,
-A2 `NoPathToPilotConsole` (which now finds its own console id), the salt-crust
-terrain repaint, worldgen rows 5/6/7, and proving the four new tools.
+**S8, and nothing else.** Every live item that could be collected on a bare
+quicktest was collected. What remains needs either the deploy (L3, L8, sea reqs
+3+4) or a map with the gravship on it (L1/L2 as measurements).
 
 ## Closed this session, with evidence
 
