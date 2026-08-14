@@ -58,12 +58,21 @@ if [ -z "$CLAUDE_BIN" ]; then
   exit 127
 fi
 
-# systemd --user must be reachable, which it is under WSL with systemd enabled —
-# but if it is not, run unbounded rather than refusing to start a seat. A seat that
-# will not launch is a worse failure than one that is merely unprotected; the
-# warning goes to stderr so it is visible rather than silent.
-if ! systemctl --user is-system-running >/dev/null 2>&1; then
-  echo "claude_bounded: no systemd --user session; starting UNBOUNDED (no OOM protection)." >&2
+# 🔴 Probe the CAPABILITY, not a proxy for it. The first version of this guard
+# used `systemctl --user is-system-running`, which on this machine reports
+# `degraded` and exits 1 — a perfectly normal state — while scope creation works
+# fine. That silently downgraded every seat to UNBOUNDED, which is the exact
+# failure this script exists to prevent, and it would have done so invisibly.
+# Ask the question you actually need answered: can I make a scope?
+if ! systemd-run --user --scope --quiet -- true >/dev/null 2>&1; then
+  # Unbounded is still better than a seat that will not start, but this must be
+  # impossible to miss: it scrolls past in a fresh tab otherwise. Red, and it
+  # costs three seconds so the reader has time to see it.
+  printf '\033[1;31m%s\033[0m\n' \
+    "!!! claude_bounded: cannot create a systemd scope — starting UNBOUNDED." >&2
+  printf '\033[1;31m%s\033[0m\n' \
+    "!!! This seat has NO OOM protection. A runaway here kills the whole VM." >&2
+  sleep 3
   exec "$CLAUDE_BIN" "$@"
 fi
 

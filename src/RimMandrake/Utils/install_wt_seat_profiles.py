@@ -100,7 +100,19 @@ DISTRO = "Ubuntu"
 #
 # Single quotes, deliberately: this is interpolated into `bash -lc "…"` inside a
 # JSON string, so a double-quoted argument would terminate the command early.
-LAUNCH = "claude --dangerously-skip-permissions --name 'AGENT {seat}'"
+#
+# 🔴 LAUNCHED THROUGH claude_bounded.sh, NOT bare `claude` — 2026-08-14.
+# Bare `claude` under `wsl.exe -- bash -lc` lands every seat in ONE shared,
+# unbounded cgroup (`/init.scope`, `memory.max=max`). On 2026-08-14 one seat
+# reached 27.4 GB of the VM's 31.7 GB and the kernel logged
+# `constraint=CONSTRAINT_NONE, global_oom` — a whole-VM kill, which takes init
+# and therefore ALL FIVE SEATS. Twice in one day. The wrapper puts each seat in
+# its own `systemd-run --user --scope` with MemoryMax/MemorySwapMax, which turns
+# that into `constraint=CONSTRAINT_MEMCG`: the offending seat dies alone and the
+# other four never notice. Full evidence: observed/2026-08-14_wsl_oom.md.
+# Arguments pass through untouched, so `--name` still does its job below.
+LAUNCH = ("/mnt/d/Luke/dev/Rimworld/src/RimMandrake/Utils/claude_bounded.sh "
+          "--dangerously-skip-permissions --name 'AGENT {seat}'")
 
 # Hue-distinct and legible on Campbell's near-black background.
 SEATS = {
