@@ -433,6 +433,44 @@ tradeable**. Only axes the engine actually separates will appear on the sheet.
 
 ---
 
+## 🔴 THE SHAPE OF THE SEA — owner's ruling, 2026-08-13. WORLDGEN-TIME.
+
+> **"The world should be a quarter ocean, split into three different bodies that
+> are oddly shaped rather than round or reasonable. Only a few rivers flow from
+> nearby mountains into these bodies. The rest of the world is shades of
+> badlands, desert, deep desert, and strange alien biomes."**
+
+**This is the target, and it must be true BEFORE the world exists.** Ocean is
+written by elevation at worldgen step 0, before any biome scoring runs — so no
+later patch reshapes it.
+
+| | target | what the generator does unaided |
+|---|---|---|
+| **ocean share** | **25%** | 43–55% measured across three real saves |
+| **number of bodies** | **THREE** | scattered everywhere |
+| **shape** | ⭐ **oddly shaped — not round, not reasonable** | perlin-blobby |
+| **rivers** | **a few, flowing from nearby mountains into the three bodies** | scattered by `WorldGenStep_Rivers` |
+| **everything else** | badlands · desert · deep desert · strange alien biomes | temperate variety |
+
+⭐ **"Oddly shaped rather than round or reasonable" is the instruction that makes
+the map worth looking at.** A round sea reads as a generator artefact; a torn,
+irregular one reads as *something happened here* — which, on a world the
+Forsakens half-terraformed and abandoned, is the point. **Do not let a shaping
+pass smooth them.**
+
+⭐ **And three bodies plus a few mountain-fed rivers gives the Three Waters its
+plumbing.** The rivers are why anything grows at the poles at all, the jungles
+sit where the rivers arrive, and everyone who matters at the cold end lives on
+one of three shores. **The Deepwater Compact holds three places, not a hundred.**
+
+**Routes, all measured, none needing a new dependency:** WorldEdit 2.0 (already
+active, sets elevation per-tile and planet-wide, plus `IsOceanOrLake` helpers) ·
+a custom `WorldGenStep` at order ~20 · BiomesKit's unused `setElevation` /
+`setNotWaterCovered` / `minimumWaterNeighbors` hooks.
+
+⚠️ **Set biome AND elevation together.** GravTide reads elevation, so a
+re-labelled tile carrying land elevation would confuse anything that goes down.
+
 ## 🔴 THE PLANET WE GENERATE IS NOT THE PLANET WE SPECIFIED
 
 _Measured 2026-08-13, from three real generated worlds on disk and the worldgen
