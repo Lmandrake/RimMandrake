@@ -24,10 +24,10 @@ shorts, leave it untouched (→ `skills/rimworld-savegame/SKILL.md`).
 
 | If you are about to… | Read | Entries |
 |---|---|---|
-| write or debug a patch, an xpath, or a def | [`traps-xml-and-defs.md`](traps-xml-and-defs.md) | 16 |
-| trust what a script, grep, census or the def dump just told you | [`traps-tooling.md`](traps-tooling.md) | 27 |
-| call art missing, wrong, or broken | [`traps-art.md`](traps-art.md) | 10 |
-| chase a mod that is absent, dead, or ignoring its files | [`traps-mods-and-managers.md`](traps-mods-and-managers.md) | 10 |
+| write or debug a patch, an xpath, or a def | [`traps-xml-and-defs.md`](traps-xml-and-defs.md) | 17 |
+| trust what a script, grep, census or the def dump just told you | [`traps-tooling.md`](traps-tooling.md) | 28 |
+| call art missing, wrong, or broken | [`traps-art.md`](traps-art.md) | 12 |
+| chase a mod that is absent, dead, or ignoring its files | [`traps-mods-and-managers.md`](traps-mods-and-managers.md) | 13 |
 | believe a diagnosis, or call into a running game | [`traps-diagnosis.md`](traps-diagnosis.md) | 5 |
 
 **If you only read one, read `traps-tooling.md`.** It is the largest section for
@@ -54,11 +54,14 @@ the one asked.**
 - 36. The comp you are designing a patch around may not exist
 - A build-over tier ladder deadlocks if the rungs disagree on terrain affordance
 - Building one thing over another is vanilla in 1.6 (`replaceTags`) — and Replace Stuff forbids our case
+- 48. "It is placeable" and "it can be removed" are different claims — and the do-not-place twins are one word apart
+- A `WorldGenStepDef` that is not listed on the layer def is loaded, valid, and never called
+- Vanilla's river step sources its mouths from the BIOME, but paths on ELEVATION
+- `xenotypeChances` is a def-keyed dictionary — the xenotype is the ELEMENT NAME, not a value
 
 ### `traps-tooling.md` — our own tooling and offline analysis
 
 - Vanilla textures are NOT on disk — every check for a Core texture path is blind
-
 - A live def dump has no abstracts
 - `--defs` inherits the LIVE `ModsConfig.xml`
 - Workshop-tree scans count every version folder a mod ships
@@ -84,6 +87,8 @@ the one asked.**
 - A field xref that scans three opcodes reports "no writers" for a field with writers
 - An artifact that records an OUTCOME cannot answer a question about a CAPABILITY
 - Take the RULE from a precedent, never the NUMBER
+- A blind string replace becomes an ABORT INSTRUCTION when it crosses into a filename or an expected observation
+- A SETTING that suppresses behaviour and a DELETION that removes the def are not interchangeable
 
 ### `traps-art.md` — art, textures and what a census cannot see
 
@@ -96,10 +101,9 @@ the one asked.**
 - 43. "Non-transparent pixel count" is the wrong emptiness metric, twice over
 - 44. A tint mask marks the animal's FILL, not the animal — the keyline is tagged as vehicle
 - 45. Art can be correct at source and broken at render — judge the sprite, not the file
+- Our own mods shadow each other, and identical bytes make it invisible
 - 46. `Graphic_Multi` falls back to the BARE path, and render nodes are lazy — a clean log proves almost nothing
 - 47. A mask is NOT required to tint a building — plain `Cutout` honours `<color>`, and it multiplies
-- 48. "It is placeable" and "it can be removed" are different claims — and the do-not-place twins are one word apart
-- Our own mods shadow each other, and identical bytes make it invisible
 
 ### `traps-mods-and-managers.md` — the mod stack
 
@@ -123,10 +127,11 @@ the one asked.**
 - A strictly read-only live-bridge call hung the game and cost a 23-minute load
 - A failed post-long-event action costs only itself — the queue continues
 - The same mod stayed dead through two correct fixes, for three different reasons
+- A correct general principle applied to the WRONG SET — and the leading question that launders it
 
 ### The numbers
 
-Entries 34–47 carry numbers from when this was one flat file. **They are kept so
+Entries 34–48 carry numbers from when this was one flat file. **They are kept so
 older commit messages that cite "traps 45" still resolve** — the numbers are
 historical IDs, not positions, and they were never contiguous with the entries
 before them (what is labelled 34 was the 37th entry). **39 no longer exists on its
