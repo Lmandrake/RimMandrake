@@ -96,6 +96,29 @@ close to spec on requirements 1 and 2 and is a *baseline, not a result*. **If
 vanilla can land that close, the honest question before we build the step is what
 it buys beyond body count and shape** — do not let the step ship on momentum.
 
+### 🔴 The cheap test that could delete this entire build item — run it FIRST
+
+**One seed is an anecdote.** `"green"` landed 25.0% / 2 bodies; we do not know
+whether that is vanilla's central tendency or a lucky roll. **Requirements 1 and 2
+are readable RIGHT NOW** — they need no redeploy and no fixed units — and a
+quicktest world is disposable.
+
+⇒ **Run 6–8 quicktest seeds at the campaign's real `planetCoverage` and record
+three numbers each: `pct`, `bodiesTotal`, `bodiesOverMinSize`.**
+
+| outcome | what it means | what we do |
+|---|---|---|
+| **some seeds land 22–28% in exactly 3 bodies** | vanilla already reaches the gate on requirements 1 and 2 | ⭐ **seed-hunt instead of building.** S1 shrinks from a `WorldGenStep` to a rejection loop at the preview screen. **This deletes a v1 build item.** |
+| **water fraction is right but body count never is** | the step's real job is *partitioning*, not volume | build S1, but scope it to splitting and shaping — **do not write elevation** |
+| **the spread is wide and mostly wrong** | vanilla is noise and `"green"` was luck | build S1 as specified. The spec stands unchanged |
+
+⚠️ **Requirements 3 and 4 stay out of this test** — they are the miscalibrated
+pair. A seed that passes 1 and 2 is a *candidate*, never an acceptance.
+
+📌 **The general form, and it is worth more than this decision: measure the
+baseline before building the thing that improves it.** We were one commit from
+authoring a `WorldGenStep` to produce a number vanilla may already produce.
+
 ⭐ **The affordance that changes the process: a world merely being PREVIEWED at
 the creation screen can be measured.** BRIDGE, 2026-08-14 — the call needs a world
 loaded *or previewed*, and the main menu alone is not enough. ⇒ **We can reject a
