@@ -50,11 +50,18 @@ step is producing exactly what the owner rejected.
 
 ### ✅ How the gate is READ — armed 2026-08-14, and it can be read BEFORE we commit
 
-**`jawa/world_stats` now returns all five measurable fields**, confirmed live in
-the 26-tool set: `tiles`, `pct`, `perimeter`, `raggedness` (perimeter²/tiles) and
-`centroidLat`. The "3-of-5 testable" caveat that used to sit against this gate was
-stale — requirements 1, 3 and 4 above are all directly readable, and `raggedness`
-is the compactness test computed for us.
+**`jawa/world_stats` reads FOUR of the seven requirements**, confirmed live in the
+26-tool set: `tiles`, `pct`, `perimeter`, `raggedness` (perimeter²/tiles),
+`centroidLat`, `bodiesTotal`, `bodiesOverMinSize` and the `minBodySize` passed in.
+The "3-of-5 testable" caveat that used to sit against this gate was stale twice
+over — it undercounted both the fields and the requirements they answer.
+
+| req | read by | note |
+|---|---|---|
+| 1 · ~25% water | `pct` | |
+| 2 · exactly three bodies | `bodiesTotal` **vs** `bodiesOverMinSize` | ⭐ **the gap between the two numbers IS the stray-tile test.** `3 / 3` passes; `47 / 3` is the fail this requirement was written for, and a percentage alone could never tell them apart |
+| 3 · oddly shaped | `raggedness` | the compactness test, computed for us. Beat 25 |
+| 4 · centroids in the terminator band | per-body `centroidLat` | including the one deliberate high-latitude body |
 
 ⭐ **The affordance that changes the process: a world merely being PREVIEWED at
 the creation screen can be measured.** BRIDGE, 2026-08-14 — the call needs a world
@@ -63,9 +70,18 @@ candidate world at the preview screen instead of generating it, playing it, and
 discovering the sea is round.** On a screen that is seen once, that is the
 difference between a gate and a post-mortem.
 
-🔴 **No candidate world is accepted on a partial pass.** Requirements 2, 5, 6 and 7
-are not in `world_stats` and still need their own read — a green `pct` and a good
-`raggedness` say nothing about whether there are three bodies or thirty.
+**The three that are genuinely outside it, and why each is a different problem:**
+
+| req | why no reader | disposition |
+|---|---|---|
+| 5 · elevation ≤ 0 **and** a water biome, per tile | a per-tile join the tool does not do — it reports `biomes` for land tiles only | 🔴 **requested of BRIDGE 2026-08-14, ranked third** behind `ideo_of` and `biome_probe`. It is the only remaining requirement whose failure is **visible to the player and unfixable after worldgen** — a tile written half-water reads as a desert square in the middle of the sea |
+| 6 · deterministic from seed | needs *two* generations compared; one call cannot answer it | a process, not a tool. `seedString` ships, so the comparison is possible whenever we care |
+| 7 · rivers terminate in our bodies | no reader at all | look at it once on a real world. Cheaper to see than to instrument |
+
+🔴 **No candidate world is accepted on a partial pass, and four of seven is still
+partial.** Requirement 5 in particular cannot be inferred from a good `pct` — a
+world can score perfectly on water fraction while every claimed tile carries the
+wrong biome.
 
 - ⛔ **No coastline detailing, no per-body character, no shoreline biome art.**
   All v2, all explicitly out.
