@@ -49,7 +49,8 @@ DOT = {"busy": "*", "idle": "o", "waiting": "!", "blocked": "!"}
 # Higher = more urgent. Drives both the alarm band and dedup above.
 RANK = {"idle": 1, "busy": 2, "waiting": 9, "blocked": 9}
 NEEDS_HUMAN = ("waiting", "blocked")
-LAST_STALLED = []              # set by render(), consumed by push() and the title
+LAST_STALLED = []              # set by render(), consumed by push()
+LAST_NEEDS = 0                 # decisions + stalled seats — what the TITLE counts
 
 
 # ---------------------------------------------------------------- roster ----
@@ -279,13 +280,14 @@ def render():
     # documented failure, not the remedy. A band that is usually absent is one
     # you actually read when it appears — a permanent "0 blocked" line is
     # wallpaper within a day.
-    global LAST_STALLED
+    global LAST_STALLED, LAST_NEEDS
     held = dwell(live)
     stalled = [(seat, live[seat], held.get(seat, 0)) for seat in SEATS
                if live.get(seat) in NEEDS_HUMAN and seat != SELF
                and held.get(seat, 0) >= DWELL_BEFORE_ALARM]
     owner_rows = [f for f in r.get("OWNER", []) if len(f) >= 3]
     LAST_STALLED = stalled
+    LAST_NEEDS = len(owner_rows) + len(stalled)
     # Two bands, not one — they have very different hit rates and mixing them
     # destroys the good one.
     #
@@ -417,7 +419,15 @@ def main():
                 push(LAST_STALLED)
                 # OSC 0: the tab title carries the count, so the fleet is
                 # legible from the taskbar with no pane visible at all.
-                title = ("%d NEEDS YOU - fleet" % len(LAST_STALLED)) if LAST_STALLED else "fleet - all running"
+                # ⚠️ MUST keep the literal "FLEET BOARD" in it. open_board.ps1
+                # finds and closes this window by title substring, and an
+                # earlier version renamed itself out of its own launcher's
+                # reach — two orphan boards, neither closable.
+                # Counts DECIDE + MAYBE STUCK. The taskbar entry is the
+                # only part visible when the window is covered, so it carries
+                # everything waiting on the owner, not just stalled seats.
+                title = ("FLEET BOARD - %d NEEDS YOU" % LAST_NEEDS
+                         ) if LAST_NEEDS else "FLEET BOARD - all running"
                 sys.stdout.write("\033]0;%s\007" % title)
                 sys.stdout.write("\033[H\033[J" + out + "\n")
                 sys.stdout.flush()
