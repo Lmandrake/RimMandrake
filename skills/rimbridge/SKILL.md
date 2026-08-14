@@ -424,7 +424,7 @@ RimBridgeServer 2.x loads mod-authored `[Tool]` methods from `BridgeTools`
 folders. This is documented and supported, not a hack:
 
 * `vendor/mod_sources/RimBridgeServer-main/skills/rimbridge-companion-tools/SKILL.md`
-* `.../references/companion-dll-guide.md` (243 lines: csproj, load model,
+* `vendor/mod_sources/RimBridgeServer-main/skills/rimbridge-companion-tools/references/companion-dll-guide.md` (243 lines: csproj, load model,
   authoring pattern, validation checklist)
 
 **This stopped being a proposal.** The three methods sketched here originally —

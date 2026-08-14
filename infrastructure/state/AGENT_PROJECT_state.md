@@ -68,8 +68,9 @@ to report, and it is now the largest single documentation debt in the repo.
 3. **`STRUCTURE.md` is stale and blocked** — three passes deferred because the
    file was `M` under other agents. Still lists `promo/`, misses `infrastructure/state/queue/`,
    `infrastructure/agents/`, `infrastructure/output/`.
-4. **20 broken references** in `infrastructure/output/REF_AUDIT.md`, mostly line citations into
-   files that shrank 80% today.
+4. **12 broken references** in `infrastructure/output/REF_AUDIT.md` (regenerate with
+   `python3 src/RimMandrake/Utils/check_refs.py --markdown > infrastructure/output/REF_AUDIT.md`),
+   mostly line citations into files that shrank 80% today.
 5. **3 docs over budget** (`python3 src/RimMandrake/Utils/doc_budget.py`).
 6. **Deferred renames** — `JawaBench.BridgeTools` → `RimMandrake.Bridge`, the
    `jawa/` tool namespace (35 files, 3 generated), five `Jawa*` mod folders whose

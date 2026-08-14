@@ -522,8 +522,9 @@ def main():
 
     if args.markdown:
         out = ["# REF_AUDIT", "",
-               "Generated: `python3 Utils\\check_refs.py --markdown > "
-               "output\\REF_AUDIT.md`. Do not hand-edit; fix the citation and "
+               "Generated: `python3 src/RimMandrake/Utils/check_refs.py "
+               "--markdown > infrastructure/output/REF_AUDIT.md`. "
+               "Do not hand-edit; fix the citation and "
                "rerun.", "",
                "**%d BROKEN, %d UNVERIFIED** across %d tracked `*.md`."
                % (nb, nu, ndocs), "",

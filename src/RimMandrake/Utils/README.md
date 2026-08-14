@@ -12,17 +12,17 @@ focused research probe; keep them assembly-free and dependency-light.
 | `map_agent.py` | a `GameMap` | LLM briefing (coarse grid + regions), edit primitives, guardrail metrics |
 | `loop_run.py` | an LLM-authored plan JSON | executes plan → before/after render + report + metric deltas |
 | `map_loop_agent.py` | a base `GameMap` | **automated** perceive→propose→execute→re-judge loop (needs an LLM endpoint) |
-| `Map_synth.py` | — | synthesizes plausible player-style base maps into `../player_maps/` |
+| `Map_synth.py` | — | synthesizes plausible player-style base maps into `player_maps/` under the cwd (`--out`; not committed) |
 | **`animal_inventory.py`** | **every active mod's `Defs/` + `Patches/`** | **6 CSVs: full animal roster, attacks, life stages, biome map, conflicts, patch watch** |
 | `rimworld_loadset.py` | `ModsConfig.xml` + each mod's `LoadFolders.xml` | — (shared library) the folders the game *actually* loads |
 | **`def_inventory.py`** | **every active mod's `Defs/`, all 495 def types** | — (shared library) + per-type JSON: the resolved def set |
 | **`animal_live_diff.py`** | **`animals.csv` + a live DefDump** | **`divergence.csv` — what the patches actually did** |
 | **`animal_contact_sheet.py`** | **`animals.csv` + every mod's `Textures/`** | **paginated sprite sheets + index CSV + missing CSV** |
-| **`deploy_custom_mods.py`** | **`../custom_patches/` + RimWorld's `Mods/`** | **pushes our authored mods into the game — the repo copy is NOT what the game loads; see `../custom_patches/README.md`** |
+| **`deploy_custom_mods.py`** | **`src/Jawa/` + `src/RimMandrake/` + RimWorld's `Mods/`** | **pushes our authored mods into the game — the repo copy is NOT what the game loads; see `src/README.md`** |
 | **`mod_inventory.py`** | **`DefDump/manifest.json` (runtime) + `ModsConfig.xml` + every `About/About.xml`** | **`observed/2026-08-13/live_mod_inventory.md` — active load order + inactive pool, the authority on mod identity** |
 
 **Offline vs live.** Everything above reads files. Its counterpart is
-`../mods/dev/RimDefDump`, a small C# mod that dumps the def database from inside
+`src/RimMandrake/RimDefDump`, a small C# mod that dumps the def database from inside
 the running game, after patches have applied. Offline answers *"what did the
 author write, and where do I patch it"*; live answers *"what actually exists at
 runtime"*. Neither replaces the other — the value is in diffing them.
@@ -56,7 +56,7 @@ where they put things. Moving the judgment to the LLM fixes that.
 ### The three modules
 
 - **`mapkit.py`** — shared foundation: `TERRAIN` palette (name→rgb+props from
-  the verified `../biome_terrain_palette.md`), the `GameMap` semantic grid
+  the verified `design/Jawa/worldbuilding/biome_terrain_palette.md`), the `GameMap` semantic grid
   (cells hold terrain *names*, not live-save shortHashes — the hash problem is
   deliberately out of scope for this practice), `render`/`render_pair`.
 - **`map_agent.py`** — the toolbox (no judgment):
@@ -93,8 +93,8 @@ Three iterations, each catching a real regression:
 rewrote `fractalize_edge` (frontier moved by smooth along-coast noise) and
 `scatter` (grows coherent patches) → `v3` converged (fragmentation back to 18;
 clean depth-ramp coast, cave chamber in the massif, wash + hill + fertile
-hollow + ruin). Plans live at `../src/RimMandrake/mapsynth/coastal_mesa_plan_v{1,2,3}.json`;
-outputs at `../src/RimMandrake/mapsynth/coastal_mesa*_loop_*`.
+hollow + ruin). Plans live at `src/RimMandrake/mapsynth/coastal_mesa_plan_v{1,2,3}.json` (run output, not committed);
+outputs at `src/RimMandrake/mapsynth/coastal_mesa*_loop_*`.
 
 ---
 
@@ -115,7 +115,7 @@ Pure standard library (ElementTree) — **no Pillow needed.**
 
 Example:
 ```bash
-python3 Savegame_ideoligions.py ../savegame/03_Gravtasm__starting_save.rws
+python3 Savegame_ideoligions.py observed/2026-08-13/savegame/03_Gravtasm__starting_save.rws
 ```
 
 ### Outputs (next to the save, basename = save stem)
@@ -174,7 +174,7 @@ Pure standard library (ElementTree) — **no Pillow needed.**
 
 Example:
 ```bash
-python3 Savegame_detailed_items.py ../savegame/03_Gravtasm__starting_save.rws
+python3 Savegame_detailed_items.py observed/2026-08-13/savegame/03_Gravtasm__starting_save.rws
 ```
 
 ### Outputs (next to the save, basename = save stem)
@@ -216,8 +216,8 @@ items; 30 narrative blocks including the debt-scenario intro.
 
 **Goal:** confirm we can *read and understand* the in-play map inside a RimWorld
 1.6 savegame, and render a quick visual preview from it. Feeds the save-based
-world-authoring pipeline (`../save_authoring_pipeline.md`,
-`../rimworld_file_lore.md`).
+world-authoring pipeline (`design/RimMandrake/save_authoring_pipeline.md`,
+`design/RimMandrake/rimworld_file_lore.md`).
 
 ### Run
 ```bash
@@ -227,7 +227,7 @@ Requires **Pillow** (`pip install Pillow --break-system-packages`).
 
 Example (the reference save):
 ```bash
-python3 Savegame_mapview.py ../savegame/03_Gravtasm__starting_save.rws --scale 4
+python3 Savegame_mapview.py observed/2026-08-13/savegame/03_Gravtasm__starting_save.rws --scale 4
 ```
 
 ### Outputs (next to the save, basename = save stem)
@@ -240,7 +240,7 @@ python3 Savegame_mapview.py ../savegame/03_Gravtasm__starting_save.rws --scale 4
 ### What it decodes (verified against 03_Gravtasm__starting_save.rws, 1.6.4633)
 Map `<size>` under `<maps>` → `(W, 1, H)` (here 225×225 = 50,625 cells), then the
 terrain, roof and thing nodes. **The grid encoding and the shortHash→defName rule
-are `../skills/rimworld-savegame/SKILL.md` §4–5.**
+are `skills/rimworld-savegame/SKILL.md` §4–5.**
 
 ⚠️ This tool predates that rule and still labels its terrain names `~Name?` as a
 tentative guess. Reversal **is** solved (`% 65535`, not a mask); prefer the live
