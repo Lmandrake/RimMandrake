@@ -342,3 +342,40 @@ that exact observation.
 
 ⇒ **Threshold met, stop here.** A doubled apostrophe is cosmetic; the campaign world will
 generate more names for free if anyone ever wants a bigger sample. **Do not reopen.**
+
+---
+
+## ⭐ FROM CREATE, 2026-08-14 — the Jawa ideoligion is loadable NOW. Owner review item.
+
+**File, on disk, ready:**
+`C:\Users\Mandrake\AppData\LocalLow\Ludeon Studios\RimWorld by Ludeon Studios\Ideos\The Salvation (CREATE).rid`
+
+⚠️ **The owner's original `The Salvation.rid` is UNTOUCHED and sits beside it.** Both
+appear in the ideo browser; the owner compares them there. Do not delete either.
+
+**Not a mod, not a deploy, not yours to enable.** A `.rid` lives in AppData, not under
+`common\RimWorld\`, so it needed no deploy window and it changes nothing about the mod
+list. ⇒ **No ModsConfig action, no load-order action.** This entry is here so the round
+knows the artifact exists.
+
+**Click path:** ideo browser → load ideoligion → *The Salvation* (the one marked CREATE).
+
+**What to look at, in order of what would actually be wrong:**
+1. **Does it load at all** — 103 precepts, 6 of them hand-added. A rejected precept is the
+   realistic failure and it will say so on load.
+2. **The description** — the nine gods are written into it (~2.3 KB). It should render as
+   scripture, not as a wall. If it is unreadably long in the panel, that is a real finding.
+3. **The six added precepts show a position** — barracks · lighting · combat in darkness ·
+   combat prowess · weapons (noble *Ranged* / despised *Melee*) · apparel desire
+   (`OuterRim_DesertHood`).
+4. **One relic, not three** — "The Founding Ion Blaster".
+
+**Built by** `python3 src/RimMandrake/Utils/build_salvation_rid.py --check|--write`,
+which never rewrites the source and asserts IDs stay unique with no dangling
+`Precept_<ID>`. Re-runs are byte-identical.
+
+🔴 **STILL OPEN, and it is the owner's call, not OPS's:** whether `Nomad`/`Tunneler`
+join the meme set. The owner asked for the nomadism trigger to be measured first —
+specifically whether the penalty counts *settlement age* (a gravship jump would reset it)
+or *owning a base at all* (it would not). **Do not adopt either meme on anyone's say-so
+until that lands.**
