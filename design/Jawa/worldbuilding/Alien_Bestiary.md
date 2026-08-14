@@ -4,7 +4,7 @@ _Companion to `desert_world_design.md`, `faction_roster_v2.md`. Created 2026-08-
 
 **Scope decision:** this file names **all 104** VGE creatures plus the four special outputs. Nothing is left as an Earth portmanteau, because a half-renamed bestiary is worse than an unrenamed one — one stray "bearchicken" in a spawn log breaks the whole illusion.
 
-**Every entry gets two names:** a **vernacular** name (what Jawas, homesteaders and Tuskens call it — this is the one that appears in-game) and a **registry/faction** name (what the Consortium, Imperial Directorate or Foundry Hive calls the same organism). The second name is not decoration: it is how a C- or D-grade creature earns its place in the world. A "bearman" is nonsense as wildlife; **Consortium Model UR-7 "Vhek," an abandoned labour-line prototype**, is exactly the kind of thing your Ascendant Helix leaves lying around.
+**Every entry gets two names:** a **vernacular** name (what Jawas, homesteaders and Tuskens call it — this is the one that appears in-game) and a **registry/faction** name (what the Consortium, the Galactic Empire or Foundry Hive calls the same organism). The second name is not decoration: it is how a C- or D-grade creature earns its place in the world. A "bearman" is nonsense as wildlife; **Consortium Model UR-7 "Vhek," an abandoned labour-line prototype**, is exactly the kind of thing your Ascendant Helix leaves lying around.
 
 ---
 
@@ -48,7 +48,7 @@ The source doc treats C and D as exclusion categories. In this setting they're *
 | Registry | Owner | Naming pattern | Covers |
 |---|---|---|---|
 | **Labour-line** | Ascendant Helix | `Model XX-N "Rolename"` | Every humanoid-dominant hybrid. The Consortium's *Ascendant Genome* doctrine already builds a "labour-line"; these are its discarded iterations. They talk because they were **designed to take instruction**, which is a Kaminoan design decision, not a joke. |
-| **Purge catalog** | Imperial Desert Directorate | `XX-N "Codename"` + field nickname | Every mechanoid-dominant hybrid. Directorate doctrine is droid-averse per the roster — so these are filed as *ordnance*, never as droids. That prejudice is itself the flavor. |
+| **Purge catalog** | the Galactic Empire | `XX-N "Codename"` + field nickname | Every mechanoid-dominant hybrid. Galactic Empire doctrine is droid-averse per the roster — so these are filed as *ordnance*, never as droids. That prejudice is itself the flavor. |
 | **Foundry caste** | Geonosian Foundry Hive | caste-noun (`unmaker`, `silk`, `hauler`) | Insectoid-dominant hybrids. Sterility is not a defect here; it's caste discipline. Every one you meet was *made*, which the Hive considers the only respectable way to exist. |
 | **Alchemical / relic** | Sith remnant, Rakatan ruin, Anomaly | `tuk'ata`-style names, apostrophes allowed | Colossal apexes with no ecological story, plus the archotech line. |
 
@@ -173,7 +173,7 @@ Sterility is the story. Every one of these was made by the Geonosian Foundry Hiv
 | Boombeetle | **azzik** | *bombardier caste* | TP, VO, Foundry | Fires acid sacs. Bombardier-beetle logic is real biology — this one needs no excuse at all. |
 | Chickenspider | **thessik** | *silk caste* | Foundry, FJ | Spins caste-silk and lays sterile product-eggs. Foundry husbandry, escaped populations in the jungle. |
 | Muffalopede | **grallik** | *hauler caste* | Foundry, GF | Hive mast and shearable chitin. The Hive's freight animal. |
-| Wolfscarab | **skirrak** | *runner caste* | DD, Foundry | Extremely fast armored pursuit. Original lore is slave-hunting — **keep that**, and give it to the Hive and the Directorate both. |
+| Wolfscarab | **skirrak** | *runner caste* | DD, Foundry | Extremely fast armored pursuit. Original lore is slave-hunting — **keep that**, and give it to the Hive and the Galactic Empire both. |
 | Spidercat | **nettik** | *binder caste* | FJ, Foundry | Spits adhesive silk to blind and hold. Not a hairball — a capture caste. |
 | Manscarab | *"the unmaker"* | **Foundry unmaker caste** | Foundry, SH | Deconstructs structures on command. Perfectly coherent for a hive that builds things: something has to take the scaffolding down. **Promote this one out of C-grade** — it's the least ridiculous humanoid hybrid in the set once the Hive owns it. |
 
@@ -228,21 +228,21 @@ None of these are wildlife. All of them are **Model numbers on a manifest** and 
 
 ### 3.13 Mechanoid-dominant — the Imperial Purge catalog
 
-Filed as **ordnance**, never as droids, per Directorate doctrine. Field nicknames come from the troops who have to work alongside them.
+Filed as **ordnance**, never as droids, per Galactic Empire doctrine. Field nicknames come from the troops who have to work alongside them.
 
 | VGE | Field name | Imperial designation | Hook |
 |---|---|---|---|
 | Mechabear | *plasmaback* | **PX-4 "Bulwark"** | Mobile heavy weapon. Assigned to garrison commanders who have annoyed someone. |
-| Mechalope | *ashmaker* | **IN-6 "Censer"** | Burns ground. Named for what the Directorate does to noncompliant settlements. |
+| Mechalope | *ashmaker* | **IN-6 "Censer"** | Burns ground. Named for what the Galactic Empire does to noncompliant settlements. |
 | Mecha-chicken | *needlebird* | **SR-2 "Quill"** | Recon sniper. Lays electro-eggs as remote sensors — reframe them as *seeded telemetry*, which is genuinely clever. |
 | Mechaspider | *the spindle* | **AS-8 "Loomrig"** | Sustained laser fire. The thing that ends a breach attempt. |
-| Mecha-muffalo | *smokebeast* | **LG-3 "Draywork"** | Freight plus smoke screen. Directorate convoys are built around these — **and your design doc says convoys are the Empire's attack surface.** This is what you're ambushing. |
+| Mecha-muffalo | *smokebeast* | **LG-3 "Draywork"** | Freight plus smoke screen. Galactic Empire convoys are built around these — **and your design doc says convoys are the Empire's attack surface.** This is what you're ambushing. |
 | Mecha-rat | *stunmite* | **SW-1 "Tick"** | Disposable swarm. Deployed by the hundred and accounted for by the crate. |
-| Mechaturtle | *spitshell* | **BK-7 "Redoubt"** | Static poison turret. Guards the things the Directorate can't afford to move. |
+| Mechaturtle | *spitshell* | **BK-7 "Redoubt"** | Static poison turret. Guards the things the Galactic Empire can't afford to move. |
 | Mechawolf | *frostrunner* | **CR-5 "Hoarfrost"** | Cryogenic hunter-killer. Used for capture operations — freeze, don't kill. |
 | Mechathrumbo | *the siege-beast* | **AG-0 "Doomtoll"** | Mobile antigrain artillery. Strategic asset; its deployment is an Act-III beat, not an encounter. |
 | Mechacat | *tailblade* | **BL-9 "Scyther"** | Throws and regrows a blade. Skirmisher; Sith escorts favor them. |
-| Mecha-horse | *ventsteed* | **CV-6 "Emberrider"** | Fast mount that scorches what it passes. Directorate outrider cavalry. |
+| Mecha-horse | *ventsteed* | **CV-6 "Emberrider"** | Fast mount that scorches what it passes. Galactic Empire outrider cavalry. |
 | Mecha-mime | *the Quiet One* | **XN-0 "Silence"** | **Not Imperial-made** — recovered, catalogued, and not understood. Its cannon ignores armor because it ignores *space*. Loses control fast and destroys whatever it was guarding. Perfect Anomaly-tier containment set-piece for the Shipyards or a Rakatan ruin. Never fauna, never twice. |
 
 ### 3.14 Special outputs

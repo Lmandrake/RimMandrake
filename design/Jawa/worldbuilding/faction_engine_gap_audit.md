@@ -31,7 +31,7 @@ differs completely between "author our own" and "patch theirs".
 | # | roster faction | plausible live vessel | status |
 |---|---|---|---|
 | 1 | Hutt Cartel | none — `OuterRim_BinaryStarRaiders` already used as Hutt muscle by our `GamorreanPawnKinds.xml` | **unassigned** |
-| 2 | Imperial Desert Directorate | `OuterRim_GalacticEmpire` and/or `Empire` (Royalty) | the two-Empire design exists; not written as a def decision |
+| 2 | the Galactic Empire | `OuterRim_GalacticEmpire` and/or `Empire` (Royalty) | the two-Empire design exists; not written as a def decision |
 | 3 | Homestead Defense League | `OuterRim_MoistureFarmers` (live, 8 `pawnGroupMakers`) | **best-placed of the 12** |
 | 4 | Deep Desert Tribes | none identified | **unassigned** |
 | 5 | Free Droid Enclaves | none — confirmed absent, U3 | **unassigned, and known** |

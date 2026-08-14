@@ -103,9 +103,9 @@ and *Elder* are chosen by their own people. *Lord*, *Emperor* and *Archduke* are
 inherited or absolute. **Three registers on one planet, readable from a single
 word in a faction list.**
 
-⚠️ **"Director" now belongs to the Ascendant Helix.** The Empire's retired
-"Sector Director" must not come back as a local Imperial office — it would read
-as the Helix. The Empire's word is **Emperor**, top to bottom.
+⚠️ **"Director" belongs to the Ascendant Helix.** The Empire's retired "Sector
+Director" is struck and cannot return — **there is no local Imperial office to
+give it to.** The Empire's word is **Emperor**, top to bottom.
 
 ### Names that changed, so nobody authors from the old ones
 
@@ -173,7 +173,7 @@ name** — that is the fallback and it costs nothing.
 | band | terrain | water | who lives there |
 |---|---|---|---|
 | **Equatorial — the Dune Sea** | open sand, canyon systems, wreck fields, ore-rich rock | **none but what you carry** | **Tuskens** (canyons, caves, ridges — never water) · **Jawa Trade Moot** (crawler circuit nodes) · **Geonosian Hive** (subterranean, deep-rock condensate) · **Junkers** (tailings and wreck fields) |
-| **Mid-latitude — the Scrub and the Roads** | rocky desert, salt pans, marginal farmland, roads, passes | **oases only — owned, tolled, defended** | **Hutt Cartel** (every settlement on an oasis) · **Homestead Defense League** (marginal dry flats, vaporators, no source) · **Imperial Directorate** (the spaceport and the passes — they site on logistics, not hydrology) · **Blackstar Company** (trade hubs, road junctions) |
+| **Mid-latitude — the Scrub and the Roads** | rocky desert, salt pans, marginal farmland, roads, passes | **oases only — owned, tolled, defended** | **Hutt Cartel** (every settlement on an oasis) · **Homestead Defense League** (marginal dry flats, vaporators, no source) · **the Galactic Empire** (the spaceport and the passes — they site on logistics, not hydrology) · **Blackstar Company** (trade hubs, road junctions) |
 | **High-latitude — the Cold Margin** | cold desert, remnant marsh, upland springs, the rare wooded pocket | **the only standing water on the planet** | **Deepwater Compact** (all oases, marshes, lakes, coasts) · **Wildsteam Clan** (cool uplands, upland springs, rare woods) · **Ascendant Helix** (isolated highlands, secure sites) · **Free Droid Enclaves** (settle *on* water and crack it — remote ruins) |
 
 ⭐ **The one sentence that makes the map readable:** *the further you go from the
@@ -241,42 +241,36 @@ budget constraint; it is what makes a cluster worth crossing to.
 
 ---
 
-## 5. The Empire — ONE faction, reskinned
+## 5. The Empire — ONE faction, and only one
 
-🔴 **Owner's ruling, 2026-08-13, superseding the two-Empire split:**
-
-> *"If we're only going to keep one Empire faction (by reskinning RimWorld's
-> Empire to look like Star Wars), then we should call them the Galactic Empire,
-> and their leader should be Emperor Palpatine."*
+🔴 **Owner's ruling, 2026-08-13: there is no local Empire, and no plan for one.
+The two-Empire split is struck from the design completely.**
 
 | | |
 |---|---|
 | **name** | **The Galactic Empire** |
 | **leader** | **Emperor Palpatine** |
-| **in code** | **vanilla `Empire` (Royalty), reskinned** — not authored from scratch |
+| **in code** | **vanilla `Empire` (Royalty), reskinned** |
 | **standing** | 🔴 **the one permanent enemy** |
-| **role** | occupier, and **the pursuer that follows the gravship** |
+| **role** | occupier, **and the pursuer that follows the gravship** |
 | **presence** | ~3 surface seats near the spaceport; the rest of its reach is orbital — the tower ladder |
 | **character** | not hateful, **procedural**. You are a logistics problem being closed out |
 
-**What this retires.** The **Imperial Desert Directorate** as a separate authored
-faction, and the **Fallen Dominion** as a second empire. *Directorate* survives at
-most as the name of the **local sector office** — a flavour layer inside the
-Galactic Empire, not a `FactionDef`. The v1 label-patch on
-`OuterRim_GalacticEmpire` is superseded and becomes scaffolding to remove.
+**What is struck, and must not return in any doc:** the *Imperial Desert
+Directorate* as a separate faction, the *Fallen Dominion*, the "disgraced local
+aristocracy" reading, and any Imperial office called **Sector Director** — that
+word belongs to the Ascendant Helix now.
 
-⚠️ **Two consequences the owner should see before this is final:**
+⭐ **The simplification is an improvement.** Two empires split the antagonist's
+weight in half and asked the player to keep track of which one was chasing them.
+**One Empire, one Emperor, one silhouette** — and everything the local arm was
+going to do is just what the Empire does on the ground.
 
-1. **A permanently hostile Empire deletes Royalty's progression.** Titles,
-   permits, honour, the whole imperial-favour loop runs through *this* faction
-   being talkable-to. **Making it the permanent enemy switches that content off.**
-   For a Jawa scavenger clan that is probably correct — the campaign is not about
-   earning a knighthood — but it is a whole DLC subsystem and it should be a
-   decision, not a side effect.
-2. **Reskinning rather than authoring is a deliberate exception** to "author from
-   scratch". It is the right one: the vanilla Empire ships pawn kinds, titles,
-   gear tiers and quest wiring that would cost weeks to reproduce, and the
-   Emperor sits naturally at the top of a structure that already has ranks.
+⚠️ **One consequence to price deliberately: a permanently hostile Empire deletes
+Royalty's progression.** Titles, permits, honour and imperial favour all run
+through this faction being talkable-to. For a Jawa scavenger clan that is almost
+certainly correct — the campaign is not about earning a knighthood — but it is a
+whole DLC subsystem and it should be a decision, not a side effect.
 
 ## 6. Xenotype distribution, faction by faction
 
@@ -285,7 +279,7 @@ Galactic Empire, not a `FactionDef`. The v1 label-patch on
 | faction | distribution |
 |---|---|
 | **1 Hutt Cartel** | Nikto 22 · Gamorrean 18 · Rodian 11 · Trandoshan 10 · Aqualish 9 · Twi'lek 8 · Pyke 7 · Devaronian 5 · Herglic 4 · **Hutt 3** · Zeltron 2 · human 1 |
-| **2 Imperial Directorate** | **baseliner human 78** · Chiss 7 · Umbaran 6 · Arkanian 4 · Zabrak 3 · Savant 2 — *Sith and Massassi only inside escort pawn kinds* |
+| **2 the Galactic Empire** | **baseliner human 78** · Chiss 7 · Umbaran 6 · Arkanian 4 · Zabrak 3 · Savant 2 — *Sith and Massassi only inside escort pawn kinds* |
 | **3 Homestead Defense League** | human 20 · Ithorian 12 · Duros 10 · Sullustan 10 · Abednedo 9 · Pantoran 8 · Mirialan 7 · Twi'lek 7 · Iktotchi 5 · Togruta 5 · Cerean 4 · Bith 2 · Miraluka 1 |
 | **4 Deep Desert Tribes** | **Tusken (Dune Sea) 50 · Tusken (Canyon) 35** · Desert alien 8 · Brute 4 · Nikto 3 |
 | **5 Free Droid Enclaves** | **100% droid chassis, 0% biological** — Labor 25 · Maintenance 20 · Utility 15 · Scout 12 · Medical 8 · Security 8 · Protocol 7 · Heavy defence 4 · Coordinator core 1 |

@@ -102,7 +102,7 @@ Removed **Force Gremlin** and disabled WIP species remain excluded.
 2. **Water is the strategic axis.** Every faction has a water doctrine that determines where it settles, how far its warriors can operate, and whether it can besiege.
 3. **Only warriors are visible.** All water, caste, and equipment rules are written against the combat pawn kinds RimWorld actually spawns.
 4. **Hierarchy lives in pawn kinds, not xenotype percentages.** Diverse factions mostly carry no preferred-xenotype precept; rank is encoded through pawn-kind eligibility, gear, skills, and raid-point cost.
-5. **One permanent enemy only.** The Imperial Directorate. Everything else can eventually be negotiated with, so the mid-game always has a wedge.
+5. **One permanent enemy only.** The the Galactic Empire. Everything else can eventually be negotiated with, so the mid-game always has a wedge.
 
 ---
 
@@ -148,7 +148,7 @@ Four states. Each governs settlement siting **and** the operational range of tha
 | Hutt Cartel | **Require** (oasis-anchored) | Every compound sits on a fiercely held oasis tile |
 | Outer-Rim Homestead | **Manufacture** | Vaporators: stores water, has no source |
 | Ascendant Helix | **Allow** (high consumption) | Buys bulk water from the League |
-| Imperial Directorate | **Allow** (supplied) | Can settle anywhere; convoys are an attack surface |
+| the Galactic Empire | **Allow** (supplied) | Can settle anywhere; convoys are an attack surface |
 | Blackstar Company | **Allow** (water clock) | Hunt teams carry a finite supply — range is the fight |
 | Geonosian Foundry Hive | **Forbid** (arid-adapted) | Only faction that can sustain a deep-desert siege |
 | Deep Desert Tribes | **Forbid** (taboo) | High raid frequency, very short duration, no siege |
@@ -234,7 +234,7 @@ Royalty psycast mechanics, not a bespoke Force system, unless a Force mod is alr
 
 **Jedi placement — BOTH channels are true** (reconciliation ruling, 2026-08-06, overriding the original factionless-only phrasing).
 
-*Primary channel — factionless wanderers.* Jedi generate as hidden wanderer pawns hunted by the Imperial Directorate, not as members of the Homestead Defense League or any other faction. Eligible races: Miraluka, Mirialan, Togruta, Iktotchi, Cerean, or Baseliner human. Psylink 3–6; monosword, persona monosword, or custom lightsaber; shield belt; no heavy armour; defensive, mobility, perception, and control psycasts; extreme pawn combat value; maximum one per group.
+*Primary channel — factionless wanderers.* Jedi generate as hidden wanderer pawns hunted by the Galactic Empire, not as members of the Homestead Defense League or any other faction. Eligible races: Miraluka, Mirialan, Togruta, Iktotchi, Cerean, or Baseliner human. Psylink 3–6; monosword, persona monosword, or custom lightsaber; shield belt; no heavy armour; defensive, mobility, perception, and control psycasts; extreme pawn combat value; maximum one per group.
 
 *Secondary channel — the rare sheltered Jedi.* In addition, a **rare Jedi may shelter within a sympathetic Homestead / Moisture-Farmer group** at a very low spawn weight (the "hidden protector" the player may discover as an ally rather than a hunted stranger). Same curated VPE light/control loadout, same one-per-group cap. This does not make Jedi faction *members* in the roster sense — it is an occasional embedded guardian, not a standing pawn-kind slot in the faction's ordinary generation.
 
@@ -242,12 +242,12 @@ Both channels draw on the same curated NPC-only VPE ability set; the player and 
 
 **Sith** appear only in Imperial Sith-escort pawn kinds. Psylink 4–6; persona melee weapon; shield belt or prestige armour; offensive and control psycasts; high Melee, Social, Intellectual; always accompanied by elite troops; extreme spawn cost.
 
-**Miraluka are never ordinary Imperial personnel.** All Miraluka are Force-sensitive, so under the Directorate they appear exclusively as prisoners in Imperial settlements and as rescue-quest targets.
+**Miraluka are never ordinary Imperial personnel.** All Miraluka are Force-sensitive, so under the Galactic Empire they appear exclusively as prisoners in Imperial settlements and as rescue-quest targets.
 
 ## Global system 6 — Droid implementation split
 
 1. **Independent droid race pawns** — Free Droid Enclaves. Protocol, maintenance, medical, utility, and self-owned combat chassis. Ordinary faction membership and ideology.
-2. **Military droids and mechanoids** — Imperial Directorate (reskinned base-game mechanoids) and Geonosian Foundry Hive. Generated through combat pawn groups; no independent ideology.
+2. **Military droids and mechanoids** — the Galactic Empire (reskinned base-game mechanoids) and Geonosian Foundry Hive. Generated through combat pawn groups; no independent ideology.
 
 Naming is kept strictly separate so the two hostile spacer factions read differently on the field:
 
@@ -258,7 +258,7 @@ Naming is kept strictly separate so the two hostile spacer factions read differe
 
 Counts are world-generation targets. Generate, inspect, then correct with a faction/world editor, preserving relative abundance.
 
-- **numerous:** Homestead Defense League, Imperial Directorate
+- **numerous:** Homestead Defense League, the Galactic Empire
 - **common:** Hutt Cartel, Tusken Clans
 - **limited:** Deepwater Compact, Geonosian Hive
 - **rare:** Wildsteam Clan, Blackstar Company
@@ -296,7 +296,7 @@ Separate equipment tags or pawn-kind restrictions per faction:
 
 | Faction | Goodwill | N | Rw | Tw | Qw | Dominant contact mode |
 |---|---:|---:|---:|---:|---:|---|
-| **Imperial Directorate** *(spine)* | −100 perm | 10 | **9** | 0 | 4 | Siege + staged assault; **escalates across the 3 acts** |
+| **the Galactic Empire** *(spine)* | −100 perm | 10 | **9** | 0 | 4 | Siege + staged assault; **escalates across the 3 acts** |
 | **Deep Desert Tribes** | −80 | 9 | **7** | 0 | 1 | Frequent raid *harassment* — short, weak, no siege |
 | **Geonosian Foundry Hive** *(spine)* | −100 | 5 | **7** | 0 | 2 | Deep-desert siege (only faction that can sustain one) |
 | **Hutt Cartel** *(spine)* | −35 | 8 | 6 | **9** | 7 | Trade + extortion + the endgame door-off-world questline |
@@ -320,7 +320,7 @@ Separate equipment tags or pawn-kind restrictions per faction:
 | Faction | Initial stance | Permanent hostile? | Settlements | Tech level | Water state | Strategic weight |
 |---|---:|---:|---:|---|---|---|
 | Hutt Cartel | −35 | No | 8 | Industrial | Require (oasis) | Major regional power |
-| Imperial Desert Directorate | −100 | **Yes** | 10 † | Spacer | Allow (supplied) | Dominant military occupier |
+| the Galactic Empire | −100 | **Yes** | 10 † | Spacer | Allow (supplied) | Dominant military occupier |
 | Homestead Defense League | +25 | No | 13 | Industrial | Manufacture | Numerous weak settlements |
 | Deep Desert Tribes | −80 | No | 9 | Industrial, restricted | Forbid | Territorial raider culture |
 | Free Droid Enclaves | 0 | No | 3 | Spacer | Deny | Rare reclusive specialists |
@@ -338,7 +338,7 @@ Separate equipment tags or pawn-kind restrictions per faction:
 > two numbers describe different layers, and neither doc said so.
 >
 > **The split:** **2–3 surface**, clustered near the large spaceport as the Sector
-> Directorate seat (the local aristocracy — the face the orbital timer reports to);
+> Galactic Empire seat (the local aristocracy — the face the orbital timer reports to);
 > the remaining **~7–8 orbital**. Ten total, two or three *reachable*.
 >
 > ⚠️ **Consequence for worldgen, and it is the reason this matters:** the
@@ -509,7 +509,7 @@ The theist structure is load-bearing. The Hutts did not merely conquer the Nikto
 
 ---
 
-# 2. Imperial Desert Directorate
+# 2. the Galactic Empire
 
 ## Mechanical identity
 
@@ -517,7 +517,7 @@ The strongest conventional military faction and the only permanent enemy: standa
 
 ## Water doctrine — **Allow (supplied)**
 
-The Directorate does not site on hydrology. It settles on roads, strategic passes, and ancient installations; atmospheric condensers and shipped supply do the rest. This is the correct feel for an occupier — **they can be anywhere.**
+The Galactic Empire does not site on hydrology. It settles on roads, strategic passes, and ancient installations; atmospheric condensers and shipped supply do the rest. This is the correct feel for an occupier — **they can be anywhere.**
 
 - Garrisons in dry tiles are supply-dependent. **Water convoys are an attack surface** and the primary way to hurt a permanent enemy without a frontal assault.
 - Massassi shock troops are Yavin-jungle stock. A Sith hunt group containing them signals a wet-tile origin base — a free intelligence tell.
@@ -530,7 +530,7 @@ The Directorate does not site on hydrology. It settles on roads, strategic passe
 | Starting goodwill | −100 |
 | Permanent enemy | **Yes** |
 | Target settlements | **3** (surface). The **10** in the strategic-balance table is the fiction total across both layers — see the † note there. ~7–8 Imperial holdings are **orbital** and are not world tiles. |
-| Settlement distribution | The 2–3 surface seats cluster near the **large spaceport** (Sector Directorate seat). Otherwise: roads, strategic passes, ancient installations, central lowlands. ⚠️ The clustering **mechanism is unestablished** — see `infrastructure/state/TODO_v2.md` U1; degrade gracefully to "2–3 surface settlements somewhere" if it cannot be forced. |
+| Settlement distribution | The 2–3 surface seats cluster near the **large spaceport** (Sector Galactic Empire seat). Otherwise: roads, strategic passes, ancient installations, central lowlands. ⚠️ The clustering **mechanism is unestablished** — see `infrastructure/state/TODO_v2.md` U1; degrade gracefully to "2–3 surface settlements somewhere" if it cannot be forced. |
 | Raid frequency | High |
 | Caravan frequency | Military and **water-supply convoys** only |
 | Base wealth | Very high |
@@ -579,7 +579,7 @@ Imperial settlements always generate a slave/prisoner population, drawn from **W
 - **Styles:** Techist, Morbid
 - **Preferred xenotypes:** None at the precept level; uniformity comes from the 78% baseliner weight and apparel tags
 - **Primary role:** Emperor — **Emperor Palpatine** _(canon, VISION 2026-08-13 — matches the
-  deployed patch and echoes "Directorate"; "Sector governor" is retired)_
+  deployed patch and echoes "Galactic Empire"; "Sector governor" is retired)_
 - **Specialists:** Shooting specialist, production specialist
 
 | Issue | Setting |
@@ -600,7 +600,7 @@ Imperial settlements always generate a slave/prisoner population, drawn from **W
 | Child labor | Encouraged |
 | Growth vats | No restriction |
 
-The Doctrine teaches that the galaxy trends toward entropy and that only one ordered hierarchy — human, centralised, obedient — holds the chaos back. Every alien species, every deviation, every act of independent thought is disorder to be corrected. This is why the meme set reads Supremacist + Human primacy + Collectivist + Proselytizer as a single coherent engine rather than four bolted-on flags: supremacy supplies the target (the non-human, the deviant), collectivism supplies the instrument (the individual is nothing, the Directorate is everything), and proselytising is not persuasion but the conquest of the mind — an extension of the same campaign the stormtroopers wage with rifles. Execution: Required is doctrinally load-bearing, not cruelty for its own sake: a heretic left alive is unpruned disorder, so correction is a civic duty.
+The Doctrine teaches that the galaxy trends toward entropy and that only one ordered hierarchy — human, centralised, obedient — holds the chaos back. Every alien species, every deviation, every act of independent thought is disorder to be corrected. This is why the meme set reads Supremacist + Human primacy + Collectivist + Proselytizer as a single coherent engine rather than four bolted-on flags: supremacy supplies the target (the non-human, the deviant), collectivism supplies the instrument (the individual is nothing, the Galactic Empire is everything), and proselytising is not persuasion but the conquest of the mind — an extension of the same campaign the stormtroopers wage with rifles. Execution: Required is doctrinally load-bearing, not cruelty for its own sake: a heretic left alive is unpruned disorder, so correction is a civic duty.
 
 ### Rituals and observances
 
@@ -927,7 +927,7 @@ A tiny faction of self-owned droids descended from **battle droids abandoned aft
 
 ## Origin
 
-Enclave chassis are **escaped Geonosian Foundry product** — units built for a war, abandoned by the Empire, and never recovered. This chains three factions: the Foundry built them, the Directorate discarded them, and the Cartel occasionally still hires them.
+Enclave chassis are **escaped Geonosian Foundry product** — units built for a war, abandoned by the Empire, and never recovered. This chains three factions: the Foundry built them, the Galactic Empire discarded them, and the Cartel occasionally still hires them.
 
 ## Water doctrine — **Deny**
 
@@ -1097,7 +1097,7 @@ Large, high-mass, fur-bearing, rainforest-evolved fighters on a desert world. Wo
 | Melee share | 45–60% of combat points |
 | Animal share | 5–15% |
 | Spacer equipment | Rare heirlooms only |
-| Hardcoded hostility | Hutt Cartel, Blackstar Company, Imperial Directorate |
+| Hardcoded hostility | Hutt Cartel, Blackstar Company, the Galactic Empire |
 
 ## Racial mixture
 
@@ -1211,7 +1211,7 @@ Every combat pawn kind is amphibian or aquatic-evolved. This is physiology, not 
 
 - The League **holds every natural water tile on the map**.
 - Wardens dehydrate before they can reach anyone, so raid generation is effectively disabled. This mechanically enforces the neutrality doctrine without needing an ideological workaround.
-- **The League sells water to everyone, including the Imperial Directorate.** Attacking Imperial water convoys costs the player League goodwill. This is the intended central diplomatic dilemma of the game.
+- **The League sells water to everyone, including the Galactic Empire.** Attacking Imperial water convoys costs the player League goodwill. This is the intended central diplomatic dilemma of the game.
 - League purification and EMP specialists are the standing counter to Free Droid runoff contamination.
 
 ## Faction settings
@@ -1369,7 +1369,7 @@ Geonosis is arid rock and hives are subterranean. Drones take moisture from food
 | Combat-droid share | 35–55% of combat points |
 | Drop-pod use | Occasional |
 | Siege use | Common, including deep-desert sieges |
-| Hardcoded hostility | Imperial Directorate |
+| Hardcoded hostility | the Galactic Empire |
 
 ## Racial mixture
 
@@ -2317,7 +2317,7 @@ new factions arrive with their diplomacy attached rather than as orphans.
 | **Jawa Trade Moot ↔ player** | Friendly, **capped at **+74**, never allied _(was +75 — off by one: Ally fires at ≥75, VISION 2026-08-13)_** | Kinship, salvage rivalry, and Cartel retaliation — see faction 11 |
 | **Jawa Trade Moot ↔ Tusken Clans** | Cold, non-hostile | Both desert-native and water-poor; they avoid each other's circuits |
 | **Junkers ↔ Hutt Cartel** | Transactional (talent pipeline) | Cartel buys the strongest Junkers out of the warrens; elite Gamorreans become bodyguards |
-| **Junkers ↔ everyone else** | Hostile, not permanent | Hostile on sight and no standing trade — but goodwill CAN be bought back with scrap tribute. Pillar 5 holds: the Directorate is the only permanent enemy |
+| **Junkers ↔ everyone else** | Hostile, not permanent | Hostile on sight and no standing trade — but goodwill CAN be bought back with scrap tribute. Pillar 5 holds: the Galactic Empire is the only permanent enemy |
 | **Junkers ↔ Free Droid Enclaves** | **Hostile (severe)** | Junkers strip droids for parts while active — the Enclaves' founding atrocity |
 
 **Water doctrine additions for Global system 2:** Jawa Trade Moot = **Manufacture**

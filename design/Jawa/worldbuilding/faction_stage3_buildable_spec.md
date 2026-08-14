@@ -55,7 +55,7 @@ roster; and `Lee_xenotype_kage` (Kage, 14 genes) — **the only species with a
 single source anywhere in the stack.** Worth keeping for that reason alone.
 
 ⭐ **`BTD_SithK/M/Z` is a gift the roster has not spent.** Three Sith castes —
-Kissai (priest), Massassi (warrior), Zugurak — let the Directorate's Sith element
+Kissai (priest), Massassi (warrior), Zugurak — let the Galactic Empire's Sith element
 be a *caste system* rather than one "Sith" tag. See §2.
 
 ### 0b. The water doctrine IS expressible — that is the headline finding
@@ -190,7 +190,7 @@ defs is a derivative** — CC BY-NC-ND).
 | # | roster faction | vessel | route | pawnkinds available |
 |---|---|---|---|---|
 | 1 | Hutt Cartel | — | **AUTHOR** | uses Gamorrean/Nikto kinds; see §1a |
-| 2 | **Imperial Desert Directorate** | `OuterRim_GalacticEmpire` | **PATCH** ⭐ | **24**, incl. `OuterRim_ImpStormtrooper_Desert` |
+| 2 | **the Galactic Empire** | `OuterRim_GalacticEmpire` | **PATCH** ⭐ | **24**, incl. `OuterRim_ImpStormtrooper_Desert` |
 | 3 | Homestead Defense League | `OuterRim_MoistureFarmers` | **PATCH** ⭐ | 4 (`TownSettler/Guard/Councilman/Trader`) |
 | 4 | Deep Desert Tribes | — | **AUTHOR** | none — needs authored kinds |
 | 5 | Free Droid Enclaves | `OuterRim_RogueDroidColony` | **PATCH** (U3) | 1 (`OuterRim_EscapedBattleDroid`) — needs more |
@@ -252,16 +252,16 @@ Control; the water they *sell* is the extortion mechanic.
 settlements must therefore survive to endgame — do **not** make them permanently
 hostile.
 
-### 2. Imperial Desert Directorate — PATCH `OuterRim_GalacticEmpire` ⭐ v1 ROW
+### 2. the Galactic Empire — PATCH `OuterRim_GalacticEmpire` ⭐ v1 ROW
 ```
-label                         "Imperial Desert Directorate"
+label                         "the Galactic Empire"
 leaderTitle                   "Moff"            // was "Grand Admiral"
 description                   rewrite
 colorSpectrum                 Imperial grey/black
 permanentEnemy                false → keep false   // see below
 techLevel                     Ultra (unchanged)
 ```
-⚠️ **The roster calls the Directorate "the only permanent enemy". The live def
+⚠️ **The roster calls the Galactic Empire "the only permanent enemy". The live def
 has `permanentEnemy: false`.** Setting it true removes every quest, trade and
 truce hook and makes the faction one-note. **Recommendation: leave `false` and
 express hostility through a very negative starting goodwill** (Faction Customizer,
@@ -356,7 +356,7 @@ canRequestTraders             true
 `BTD_Nautolan` · `BTD_Gungan` · `BTD_Herglic`. **All amphibian/aquatic — this is
 physiology, not preference.**
 ⭐ **A faction that cannot attack you is a design gift, not a gap.** The League is
-pure economy and politics: it sells water to everyone *including the Directorate*,
+pure economy and politics: it sells water to everyone *including the Galactic Empire*,
 so Imperial water convoys are an attack surface the player can exploit without
 ever fighting the League itself.
 
@@ -440,7 +440,7 @@ interaction (Faction Raid Cooldown is live at load 146).
 
 | order | faction | why |
 |---|---|---|
-| **1** | **Imperial Directorate** | v1 row; vessel + 24 kinds exist; labels only |
+| **1** | **the Galactic Empire** | v1 row; vessel + 24 kinds exist; labels only |
 | **2** | Blackstar Company | vessel + 13 kinds exist; field edits only |
 | **3** | Homestead Defense League | vessel + 4 kinds; field edits only |
 | **4** | Free Droid Enclaves | vessel exists, **needs authored pawnGroupMakers** (U3) |
@@ -456,7 +456,7 @@ no new XML defs, no licence exposure, no art.
 
 1. **Binary Star: Bounty Hunters or Hutt muscle?** (§1a) I recommend Bounty
    Hunters; the Gamorrean patch survives either way.
-2. **Directorate `permanentEnemy`** — roster says "only permanent enemy", live def
+2. **Galactic Empire `permanentEnemy`** — roster says "only permanent enemy", live def
    says `false`. I recommend keeping `false` + very negative goodwill, so the
    faction can still generate quests and trade. **Setting it `true` makes them
    one-note.**

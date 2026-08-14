@@ -9,11 +9,11 @@ specified as a gap audit, not an authoring pass** — nothing here proposes a va
 ## 🔴 Read this before spending any time on the table below
 
 **V1_SCOPE.md line 57 defers almost all of it to v2.** v1 is **one** authored
-faction — the Imperial Desert Directorate, *label-level reskin only* (name, leader
+faction — the Galactic Empire, *label-level reskin only* (name, leader
 title, colour). Explicitly v2: **the other 11 dossiers, `pawnGroupMakers`, memes,
 ideoligions, the relations matrix.**
 
-**And v1's faction row is already built.** `src/Jawa/Jawa_Patches/Patches/ImperialDesertDirectorate.xml`
+**And v1's faction row is already built.** `src/Jawa/Jawa_Patches/Patches/ImperialDesertGalactic Empire.xml`
 (`27a3cfe`) sets `label`, `fixedName`, `leaderTitle` and `colorSpectrum`
 (`RGB(74,84,96)` / `RGB(108,118,128)`), and the repo copy is **byte-identical to
 the deployed game copy**. Its only open item is the scope gate itself — *seen
@@ -74,7 +74,7 @@ never updated to match — which is the direct cause of defect **D5** below.
 | # | Faction | A | B | C | D | E | F | G | H | Ready |
 |---|---|:-:|:-:|:-:|:-:|:-:|:-:|:-:|:-:|:-:|
 | 1 | Hutt Cartel | ~ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ❌ | 7/8 |
-| 2 | **Imperial Desert Directorate** *(v1)* | ~ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ❌ | 7/8 |
+| 2 | **the Galactic Empire** *(v1)* | ~ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ❌ | 7/8 |
 | 3 | Homestead Defense League | ~ | ✅ | ✅ | ✅ | ✅ | ⚠️ | ✅ | ❌ | 7/8 |
 | 4 | Deep Desert Tribes | ❌ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ❌ | 6/8 |
 | 5 | Free Droid Enclaves | ❌ | ✅ | ✅ | ✅ | ⚠️ | ⚠️ | ✅ | ❌ | 6/8 |
@@ -141,7 +141,7 @@ faction whose roster is 78% + 12% Jawa. The species-coverage section was never
 updated when factions 11–12 were added; note it still says **ten**.
 
 **D6 — a second permanent enemy contradicts design pillar 5.** `:105` reads
-*"One permanent enemy only. The Imperial Directorate. Everything else can
+*"One permanent enemy only. The the Galactic Empire. Everything else can
 eventually be negotiated with, so the mid-game always has a wedge."* The Junkers
 are `Permanent enemy | Yes` (`:1992`) and *"Permanently hostile faction; no trade"*
 (`:2309`). **This is a design decision, not a typo** — either the pillar now

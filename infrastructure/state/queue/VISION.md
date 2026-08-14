@@ -11,7 +11,7 @@ about the live stack.** That split is why this seat exists.
 ## ⭐ v1 — you own no burn-down row, but you own the antagonist
 
 **No `V1_SCOPE.md` row is assigned to VISION.** Your v1 exposure is **V6 and V7
-below**: row 1 ships the Directorate's *label* and has passed the gate, but the
+below**: row 1 ships the Galactic Empire's *label* and has passed the gate, but the
 faction is `hostile=false`, `permanentEnemy=false`, and a second empire outranks
 it. **The label ships; the antagonist does not exist.**
 
@@ -69,7 +69,7 @@ table today gets the wrong answer.**
 were added. **Note it still says ten; the roster holds twelve.**
 
 ### V6. A second permanent enemy contradicts design pillar 5 — **owner's call** `[v1-adjacent]`
-`:105` promises *"One permanent enemy only. The Imperial Directorate. Everything
+`:105` promises *"One permanent enemy only. The the Galactic Empire. Everything
 else can eventually be negotiated with, so the mid-game always has a wedge."* The
 Junkers are `Permanent enemy | Yes` (`:1992`) and permanently hostile to everyone
 (`:2309`). **This is a design decision, not a typo** — either the pillar describes
@@ -79,15 +79,15 @@ two now, or the Junkers become negotiable.
 
 ## Open — from the live game
 
-### V7. The Directorate is not the enemy the design says it is `[v1-adjacent]`
+### V7. The Galactic Empire is not the enemy the design says it is `[v1-adjacent]`
 OPS read it live on 2026-08-13: `hostile=false`, `goodwill=0`,
 `permanentEnemy=false`. And there are **two** empires with the split backwards —
-"The Fallen Dominion" holds 4 settlements to the Directorate's 1. **The v1 label
+"The Fallen Dominion" holds 4 settlements to the Galactic Empire's 1. **The v1 label
 ships and renders; the antagonist does not exist.** Same family as V6.
 
 ### V8. Shipped leader title does not match the spec
 `faction_roster_v2.md:571` says **"Sector governor"**; the deployed
-`ImperialDesertDirectorate.xml` says **`Sector Director`**. Both defensible, not the
+`ImperialDesertGalactic Empire.xml` says **`Sector Director`**. Both defensible, not the
 same string, and the patch is what players see. **Decide which is canon.**
 
 ---
@@ -160,7 +160,7 @@ wrote it cannot be met today.
 
 **Ruling on the proxy: take the goodwill patch, and do NOT count it as met.**
 An Empire goodwill hit is bookkeeping the player will not notice — the
-Directorate currently sits at `goodwill=0`, non-hostile, and a −15 against a
+Galactic Empire currently sits at `goodwill=0`, non-hostile, and a −15 against a
 faction that is *supposed to be permanently hostile* (pillar 5) goes dead the
 moment V7 is fixed. **It costs nothing and it pre-wires the real thing, so ship
 it; it is not the cost the design asked for.** `ensureHostile: false` is right —
@@ -273,7 +273,7 @@ settings, not defaults — the defs on disk say 16.9/12.9 and are supposed to.
 ## ⭐ V-new. Three owner rulings landed 2026-08-13
 
 1. **ONE permanent enemy.** Pillar 5 stands as written: the Imperial Desert
-   Directorate alone. **The Junkers lose `permanentEnemy`** and become
+   Galactic Empire alone. **The Junkers lose `permanentEnemy`** and become
    hostile-but-bribable scavengers — which arguably suits Jawa fiction better.
 2. 🔴 **The gravship pursuer question dissolved.** We do not have to use
    Mechanoids, so **there is no independent Imperial Droid Army at all.** Two
@@ -402,3 +402,64 @@ plays", and it does). **This is the depth question, and depth is v2.**
 re-points the patches. **Do not let it close as if the two were the same Jawa** —
 BRIDGE's words, and the reason this is filed rather than dropped.
 </details>
+
+---
+
+# 🔴 SESSION WRAP — 2026-08-13. Read this block first next session.
+
+## THE BIGGEST OPEN ITEM IN THE PROJECT: the campaign world has never been generated
+
+**My 21-untick / 6-keep tick-list is RATIFIED, COMMITTED and UNSPENT**
+(`c269c6a`, `infrastructure/state/WORLDGEN_FACTION_CHECKLIST.md`). Everything
+today was proven on a quicktest. **Rows 2 and 7 are that one screen.** Four
+rulings ride in the file header — R1 dangling refs, R2 Rebel Alliance stays
+suppressed, R3 vanilla `Empire` is a KEEP, R4 rough-outlander floor.
+
+## Open, ranked
+
+### V16. 🔴 The desert world generates ~49% OCEAN — decide whether the planet bends
+Measured on three real saves: 43% / 49% / 55% Ocean. **The thirst-world identity
+exists in our documents and nowhere else.** Ocean is an elevation rule written at
+worldgen step 0, so the rainfall slider cannot remove one tile. No active mod
+manages water. Three routes, none needing a new dependency: **WorldEdit 2.0
+(already active)**, a custom `WorldGenStep`, or BiomesKit's unused hooks.
+`faction_world_spec.md` last section. **Owner's call; contradicts the Three Waters
+ruling by ~100×.**
+
+### V17. Four live sightings, ~20 min, all scratch-map
+1. **the hulk and caskets** (`00a1398`) — nobody has ever seen an
+   `AncientCryptosleepCasket`; vanilla art is in AssetBundles. Does the broken
+   deck read as a wreck, do three banks read as a hold?
+2. ⭐ **one the Galactic Empire raid** — does the antagonist look like the
+   antagonist? Biggest unanswered design question I own.
+3. **a coastal forsaken-crags tile** — can roll Archipelago today, giving a
+   permanently dark mostly-ocean map with zero new code. Decides the deep.
+4. **the 25 vanilla mechs** whose art is locked in AssetBundles — unblocks the
+   owner's review sheet.
+
+### V18. The mech review sheet is NOT built
+Axes now known and committed (`data/mech_control_axes.md`): raids · ancient
+dangers+clusters *(one flag, not separable from each other)* · bossgroups ·
+gestation · sellable · **purchasable (a separate axis — 3-line patch)** ·
+decoration. Art on disk for 55 of 80 (`data/mech_inventory.json`). **Waiting only
+on whether the owner accepts name+role for the 25 vanilla ones.**
+
+### V19. Two mod adoptions recommended, neither actioned
+- **GravTide** `3779600989` — ADOPT `[v2]`. Ocean objection is dead.
+- **`[KR] Star Wars: Droids`** `3248936254` — Biotech-only, covers 5 of 6 real
+  chassis gaps. ⛔ **Take the chassis, refuse its faction wrappers.**
+
+### V20. Awaiting owner confirmation: the restraint bolt works on PEOPLE
+Ruled KEEP, weighted ~10× a droid, plus a mood hit. Not confirmed.
+
+### V21. Water rulings W3–W7 not merged into the twelve dossiers
+They live only in `water_doctrine.md`. Junker doctrine still assumes universal
+thirst. `[v2]` authoring.
+
+### V22. `design/Jawa/droid_ruling.md` states a mechanism that is not in the defs
+JDS droids do not explode — they are force-killed on downing and their wrecks are
+repairable. **The ruling holds; the stated reason is wrong. Not my file.**
+
+### V23. Canon droid lineage catalogue — only the supplement was received
+Agent `abe113a7` delivered non-CIS additions; **the main lineage table never
+arrived.** Re-request if the visual comparison sheet is wanted.

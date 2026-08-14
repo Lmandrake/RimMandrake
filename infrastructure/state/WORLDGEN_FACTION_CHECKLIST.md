@@ -36,29 +36,22 @@
 > Factions* — downloaded, not active, inert today. **It stops being inert the day
 > we enable that mod for the Jedi/Sith build.** Mine to handle then, not now.
 >
-> ## R3. ⭐ ADD TO KEEP: vanilla `Empire` — it is now the FALLEN DOMINION
->
-> **Owner's ruling, minutes ago, and it changes the antagonist design:**
->
-> > *"The Fallen Dominion should be a local aristocracy force-welded into the
-> > Empire, fallen into disgrace with the state of the planet's rebelliousness
-> > (even though they did win the local war), so they are very eager to please and
-> > help track down 'yet more chaotic nonsense' — such as Jawa flying around in an
-> > ancient hulk enabled by imprinting their minds into a persona core.
-> > Disgraceful!"*
->
-> **So the two-empire split is not a defect. It is the design.** The Directorate
-> is the Galactic arm; the Dominion is the disgraced local aristocracy trying to
-> earn its way back by hunting us. **Confirm vanilla `Empire` is present and its
-> count is ≥ 1.** It is not on the untick list, so it survives by default —
-> confirm it anyway.
->
-> ⚠️ **Its name is GENERATED, so the new world will probably NOT say "Fallen
-> Dominion".** That is expected, not a failure. Whatever it generates is the
-> working name until we patch `fixedName` with the game down. **Screenshot the
-> name.**
->
-> ## R4. Do not ship a world with no rough outlanders
+> ## R3. ⭐ ADD vanilla `Empire` to KEEP — it is THE GALACTIC EMPIRE
+
+**Owner's canon, 2026-08-13.** Vanilla `Empire` is reskinned as **the Galactic
+Empire**, led by **Emperor Palpatine**. It is the campaign's **one permanent
+enemy** and the thing that pursues the gravship.
+
+🔴 **The "Fallen Dominion" and the two-Empire split are STRUCK from the design.**
+There is no local or planetside Empire. Any earlier note describing a disgraced
+local aristocracy is superseded and must not be acted on.
+
+**Confirm vanilla `Empire` is present and its count is ≥ 1.** It is not on the
+untick list, so it survives by default — confirm it anyway. ⚠️ **Its name is
+generated**, so the world will not say "Galactic Empire" until a `fixedName`
+patch lands. **Screenshot whatever it does say.**
+
+## R4. Do not ship a world with no rough outlanders
 >
 > `BS_LittlePeople` declares `replacesFaction OutlanderRough`. **After unticking
 > it, confirm a rough-outlander row exists at ≥ 1.** If none appears, **leave
@@ -68,7 +61,7 @@
 > ## What REMAINS STANDING after the cut — the world is populated
 >
 > **6 keeps:** binary star raiders · Confederacy of Independent Systems ·
-> **Imperial Desert Directorate** · moisture farmers · rogue droid collective ·
+> **the Galactic Empire** · moisture farmers · rogue droid collective ·
 > *(Rebel Alliance retired per R2)*.
 > **Plus, untouched by this list:** vanilla **`Empire` = the Fallen Dominion**,
 > outlander unions, rough outlanders, tribes and pirates. **Nobody is unticking
@@ -239,14 +232,14 @@ time.
 |---|---|---|---|---|
 | ☐ | **binary star raiders** | `OuterRim_BinaryStarRaiders` | Outer Rim - Core (2919227155) | ordinary row, permanent enemy |
 | ☐ | **Confederacy of Independent Systems** | `JDSCIS_CIS_Faction` | [JDS] Separatist Droid Army (3276499495) | **hidden checkbox**, not a row |
-| ☐ | **Imperial Desert Directorate** | `OuterRim_GalacticEmpire` | Outer Rim - Galactic Empire (2919248699) | 🔴 **label is patched — see below** |
+| ☐ | **the Galactic Empire** | `OuterRim_GalacticEmpire` | Outer Rim - Galactic Empire (2919248699) | 🔴 **label is patched — see below** |
 | ☐ | **moisture farmers** | `OuterRim_MoistureFarmers` | Outer Rim - Core | ordinary row |
 | ☐ | **rogue droid collective** *("Droid Collective")* | `guy762_KotORFaction_RogueDroids` | Star Wars KotOR Droids (3047371944) | **hidden checkbox**, not a row. 🔴 **quest-critical — antagonist of the KotOR distress call. Never untick.** |
 | ☐ | ⭐ **the Fallen Dominion** — *name will be GENERATED, expect a different string* | `Empire` | **vanilla (Royalty)** | 🔴 **ADDED TO KEEP by VISION R3.** Not on any untick list, so it survives by default — **confirm it anyway, count ≥ 1, and SCREENSHOT the generated name.** |
 | ☐ | ~~**Rebel Alliance**~~ — **RETIRED from KEEP** | `OuterRim_RebelAlliance` | Outer Rim - Rebel Alliance (2919249903) | 🔴 **ABSENT is the DESIRED outcome (VISION R2). Record absent and move on — do NOT revert the patch at the screen.** |
 
 ⭐ **On the Fallen Dominion (VISION R3, owner's ruling).** The two-empire split is
-**the design, not a defect**: the Directorate is the Galactic arm, and vanilla
+**the design, not a defect**: the Galactic Empire is the Galactic arm, and vanilla
 `Empire` is the disgraced local aristocracy — force-welded into the Empire, fallen
 from grace despite winning the local war, and now eager to please by hunting "yet
 more chaotic nonsense", i.e. us. ⚠️ **Its name is generated, so the world will
@@ -254,9 +247,9 @@ probably not say "Fallen Dominion". That is expected, not a failure.** Whatever 
 generates is the working name until `fixedName` is patched with the game down.
 **Screenshot it — that string is the only record.**
 
-🔴 **Do not look for "Galactic Empire".** `Jawa_Patches/Patches/ImperialDesertDirectorate.xml`
+🔴 **Do not look for "Galactic Empire".** `Jawa_Patches/Patches/ImperialDesertGalactic Empire.xml`
 replaces both `label` and `fixedName` on `OuterRim_GalacticEmpire` with **"Imperial
-Desert Directorate"**. That is the string on the page. If you see "Galactic Empire"
+Desert Galactic Empire"**. That is the string on the page. If you see "Galactic Empire"
 instead, the Jawa_Patches deploy did not land — stop and check
 `C:\Program Files (x86)\Steam\steamapps\common\RimWorld\Mods\Jawa_Patches` before
 generating.

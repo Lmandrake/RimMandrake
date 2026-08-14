@@ -6,11 +6,12 @@
 > lightsaber-bearing Sith — not mechanoids, and **not an independent Imperial
 > Droid Army, which no longer exists in the design at all.**
 
-**Two Empire factions only:** the planetside aristocratic Empire (vanilla
-Royalty core, reskinned as the Imperial Desert Directorate) and the **Galactic
-Empire**, which is the one that follows the ship. The droid-averse contradiction
-— a Jawa campaign whose antagonist was a machine army the fiction says the Jawas
-scavenge — **is resolved by deletion, not by argument.**
+**ONE Empire. There is no local or planetside Empire and there never will be** —
+owner's ruling, 2026-08-13, striking the two-Empire split entirely. The Galactic
+Empire is a single faction, reskinned onto vanilla `Empire`, led by **Emperor
+Palpatine**, and it is the thing that follows the ship. The droid-averse
+contradiction — a Jawa campaign whose antagonist was a machine army the fiction
+says the Jawas scavenge — **is resolved by deletion, not by argument.**
 
 **What this does NOT change:** everything below. The mechanism question ("can the
 hardcoded mechanoid pursuit be pointed at another faction?") is unaffected by
@@ -195,7 +196,7 @@ the Rebel Alliance def rather than delete it.
 
 ⚠️ **`fixedName` needs `Add`, not `Replace`.** Vanilla `Mechanoid` has no
 `<fixedName>` element, so a `PatchOperationReplace` on it fails silently — the
-exact trap the Imperial Desert Directorate patch header records.
+exact trap the Galactic Empire patch header records.
 
 ## ⬜ The open risk, and it decides "reskin" vs "project"
 
@@ -215,7 +216,7 @@ they may *already* be eligible to appear. Check before writing any C#.
 
 ## The fiction collision to resolve first
 
-`faction_roster_v2.md:244` rules that the Directorate is **droid-averse** —
+`faction_roster_v2.md:244` rules that the Galactic Empire is **droid-averse** —
 *"**Never 'battle droid'**"*, its machines are "dark trooper, purge sentry, probe
 droid, KX security", and `Alien_Bestiary.md:51` files them as **ordnance, never
 droids**, calling that prejudice "itself the flavor".
