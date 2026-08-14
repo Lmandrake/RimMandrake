@@ -695,7 +695,7 @@ unstarted, not partially done.
 Named so nobody re-proposes them:
 
 - The 11 unbuilt faction dossiers, and all of Stage 3 / Stage 4 authoring
-- The **energy-density explosion model** (`TODO.md` §1) — large, self-contained, pure v2
+- The **energy-density explosion model** (`TODO_v2.md` §1) — large, self-contained, pure v2
 - **Water and thirst doctrine** — the declared master resource, zero implementation, v2
 - The **two-Empire aristocracy design** beyond a label reskin
 - **Free Droid Enclaves** (U3), the Homestead Jedi wiring (U4)
@@ -715,8 +715,9 @@ one condition:
 > **In-flight detail work must not add to v1.** Anything it turns up is filed
 > `[v2]` unless it blocks a v1 row.
 
-That covers `TODO.md` §12's remaining sweep, W8, the deploy hold-list, and the
-traps logs. **The one piece explicitly on the critical path is BRIDGE's live
+That covers the fail-toward-success tooling sweep (now
+`skills/rimworld-modding/references/traps-tooling.md`), W8, the deploy hold-list,
+and the traps logs. **The one piece explicitly on the critical path is BRIDGE's live
 tooling**, because the gate depends on it.
 
 ---

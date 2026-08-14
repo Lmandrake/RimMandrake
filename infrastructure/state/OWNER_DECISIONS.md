@@ -24,14 +24,17 @@ after already being answered._
 
 | # | the ask | why the owner and not a seat | blocked until answered | source |
 |---|---|---|---|---|
-| 5 | **Where does `TODO.md`'s surviving doctrine go?** ✅ **Now answerable in one word** — the staging plan lists all 9 doctrine items with a destination and a one-line case each: `infrastructure/output/TODO_RETIREMENT_PLAN.md`. **The analysis recommends 4 moves, 5 deletions as verified duplicates, and NOTHING into `agents_def.md`.** Say "take the recommendation" and it executes; name any item you want kept instead. | Which destination gets read is a judgement about readers, not a fact. | Retiring 968 lines of which **801 are provably not live**. | `infrastructure/output/TODO_RETIREMENT_PLAN.md` |
-| 7 | **Rule on the keep-or-delete set.** ✅ Fresh audit now exists: `infrastructure/output/STALE_FILE_AUDIT.md`, 50 rows, nothing deleted. ⚠️ **My earlier framing of this row was wrong twice:** the "~85 MB / ~3,480 lines" estimate was off — the four items you actually named total **~140 KB** — and the **pitch deck does not exist and never was tracked.** Real scope: ~14.1 MB tracked, and 8.3 MB of that is five undisputed images. | Deletion is the owner's call by standing rule. | Nothing blocks on it; it is tidying, not debt. | `infrastructure/output/STALE_FILE_AUDIT.md` |
 | 8 | **Dinosaurs — owner wants to REVIEW THEM NEXT TO THEIR IMAGES** and pick "the wildest and weirdest". Not a keep/cut ruling: a request for a new deliverable, an image-backed review sheet of the roster. | Taste, and it cannot be exercised from defNames alone. | The fauna roster §3–§4. `[v2]`, but the deliverable is now specified. | `design/Jawa/worldbuilding/biome_and_fauna_roster.md` §7 |
 | 9 | **The xenotype keep/reflavor set** — how "pure SW" versus "populated galaxy" should the roster feel? | Pure taste; there is no technical answer to find. | The Cherry Picker §2 deletions. `[v2]` | `design/Jawa/mods/cherry_picker_killlist.md` |
 
 ---
 
 ## Checked and NOT listed — so nobody re-adds them
+
+- **#5, `TODO.md`'s retirement, and #7, the keep-or-delete set** — both ruled by the
+  owner 2026-08-13 and **executed the same hour**. Do not re-raise either; the
+  outcomes are in `CLOSED.md`. `TODO.md` is now a pointer stub, so filing anything
+  there is a mistake — the seat queues took the four survivors.
 
 - **A hook guarding `git commit` without a pathspec** — described as needing the
   owner because it is config. **Already built and live:**

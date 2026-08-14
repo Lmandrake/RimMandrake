@@ -127,7 +127,9 @@ written down.** Noticing a defect outside your scope and saying nothing loses th
 finding — and finding it again costs full price.
 
 So do not fix it, and do not drop it. **File it as a tagged todo:**
-`NEXT_RELOAD.md` if the fix needs the game running, `TODO.md` if it does not.
+`NEXT_RELOAD.md` if the fix needs the game running, otherwise the owning seat's
+`infrastructure/state/queue/<SEAT>.md`. *(`TODO.md` retired to a stub 2026-08-13 —
+do not file there.)*
 Tag the agent who should do it, or `[?]` if you cannot tell.
 
 Give the exact clickable path, quote what you saw, say in a clause why it is not
@@ -179,7 +181,7 @@ execution and appeal to the owner, not to PROJECT.
 > **Everything ships THIN, except the gravship, which ships DEEP.**
 > **Gate: every v1 item seen working in-game once** — not "the log is clean".
 
-**Before adding to `TODO.md` or `NEXT_RELOAD.md`, check `V1_SCOPE.md`. If it is
+**Before adding to a seat queue or `NEXT_RELOAD.md`, check `V1_SCOPE.md`. If it is
 not v1, tag it `[v2]`.** In-flight work is not frozen, but **must not add to v1**.
 
 Verification rides the **live bridge**, not the reload — a per-item gate is
