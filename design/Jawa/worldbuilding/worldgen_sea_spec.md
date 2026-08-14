@@ -29,7 +29,7 @@ we just made. Proven in-stack: GravTide's `WorldGenStep_VolcanicBiome` writes
 | 1 | **~25% of tiles are water** | count water tiles ÷ total. **Accept 22–28%** |
 | 2 | **Exactly THREE connected bodies** | flood-fill the water set; **exactly 3 components** above a minimum size. Stray single tiles are a fail, not a rounding error |
 | 3 | ⭐ **Each body is oddly shaped** | see the compactness test below |
-| 4 | **Bodies sit at high latitude** | each body's centroid is nearer a pole than the equator |
+| 4 | 🔴 **Bodies sit in the TERMINATOR BAND — mid-latitude** | **each body's centroid falls at latitude 0.35–0.65**, ⭐ **except one, which sits at high latitude on purpose** — see below |
 | 5 | 🔴 **Elevation AND biome are both written** | every claimed tile has `elevation <= 0` **and** a water biome; every released tile has `elevation > 0` **and** a land biome |
 | 6 | **Deterministic from the world seed** | same seed → same coastline, every time |
 | 7 | **Rivers arrive afterwards** | the vanilla river step runs untouched and at least some rivers terminate in our bodies |
@@ -76,8 +76,8 @@ step is producing exactly what the owner rejected.
 ## Acceptance, in one line
 
 > **Generate three worlds from three seeds. All three pass tests 1–6, and a
-> visual check shows three torn seas near the poles with rivers running into
-> them.**
+> visual check shows three torn seas — two in the twilight band, one far out in
+> the cold — with rivers running into them.**
 
 ---
 
@@ -122,3 +122,50 @@ Rivers 200, and nothing at all between 5 and 150. A 145-wide gap.
 
 **PROJECT has ruled: worldgen is HELD until the sea is solved.** The step is
 upstream of row 7 and inherits its priority. **CREATE is not waiting on anyone.**
+
+
+---
+
+## 🔴 TEST 4, IN FULL — corrected 2026-08-14, and read this before coding it
+
+**Earlier versions of this file said "near a pole". That was wrong, and so was my
+first correction. This is the settled version and it is self-contained — you should
+not need any message to build test 4.**
+
+### Why mid-latitude
+
+**The planet is TIDALLY LOCKED.** `Alien Worlds - Tidally Locked` (ACTIVE) does not
+build a day face and a night face geographically — **it remaps temperature onto
+LATITUDE.** Its shipped curve:
+
+| latitude | avg temp | what it is |
+|---:|---:|---|
+| 0.0 | **+70 °C** | the subsolar point — the burning dayside |
+| 0.1 | +65 °C | |
+| ⭐ **0.5** | ⭐ **+14 °C** | ⭐ **THE TERMINATOR.** The only band where water is neither boiled nor frozen |
+| 1.0 | −37 °C | nightside |
+| 1.3 | −70 °C | |
+| 2.0 | −80 °C | deep night |
+
+⇒ **Latitude IS the axis, and the terminator is a mid-latitude band.** Not the
+equator. Not the poles.
+
+### The test
+
+1. **Two of the three bodies:** centroid at **latitude 0.35–0.65.**
+2. ⭐ **The third sits at high latitude, deliberately off-pattern** — owner's
+   instruction, *"one near the pole to make it feel really alien."* **On this
+   planet that means a sea out on the nightside, freezing.** It is the strange one
+   and it should look wrong.
+3. ⛔ **NOT A RING.** Owner's explicit words: *"the ocean shouldn't literally be
+   just a ring along the terminator, but they should lie NEAR it in natural
+   elongated blob shapes."* **A band-shaped sea reads as a diagram.**
+4. **Elongated.** Combined with the perimeter²/area ≥ 25 test, aim the growth
+   along the latitude band rather than radially — **long and torn, not round and
+   torn.**
+
+⚠️ **This correction reached this file late.** It lived in messages and in
+`tidally_locked_world.md` while the spec still said "near a pole" — **exactly the
+failure the traps file now names: a correction that never reached the artefact
+someone builds from.** If anything else here disagrees with a message, **this file
+wins** and tell me.
