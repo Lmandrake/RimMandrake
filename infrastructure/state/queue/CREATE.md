@@ -370,11 +370,24 @@ on the pawn's back); Biomes! Caverns 4 pupae `_east` only (`BeetlePupa` alone ba
 6 defs); plus Dark Ages Beasts, VGE failures, and the Alpha Genes emblem (lowest
 confidence — `layer -2` may make it deliberate).
 
+✅ **TRIAGED — `design/Jawa/art/c7_directional_triage.md`.** Do first: Phytokin
+`BarkSkinFemale_Wide_Normal_east` (zero art — the file is in the donor as
+`..._east copy.png`), KotOR `bandolier_chewbacca`/`_traveler` north (most-seen
+defect here; KotOR is at load 573, AFTER our fix slot 556-564), VGE
+`GravshipGenebank_north` (180° rotation, goes INTO `GravshipAstronautFix`).
+**2 new mods.** Alpha Genes emblem and `Eyes_Red` are correct as shipped — struck.
+🔴 **C7's own method was insufficient:** `visibleFacing` is set in C# for eyes, and
+`Graphic_Multi.Init` has a bare-path fallback, so a clean log proves nothing.
+
+<details><summary>original flag</summary>
+
 👁️ **One vanilla item to eyeball, do NOT patch blind:** Biotech `Eyes_Red` ships
 only `RedEyes_Female_east` plus a non-directional `RedEyes_Male`, while every
 sibling face-feature ships east+south — but the log has **zero** `Failed to find
 any textures at`, which a bare male file should have produced. Eye rendering likely
 has a special path. Look at a red-eyed pawn first.
+
+</details>
 
 ### C8. `check_sprite.py` — art intake validator
 512×512, real alpha, zero saturated pixels, value distribution, bounding box,
