@@ -377,9 +377,16 @@ would produce the evidence does not exist or is measured broken.**
 | item | why it cannot be collected |
 |---|---|
 | ~~**v1 row 3 — fire *The Claim***~~ | 🔓 **NO LONGER TRUE — moved out of this section 2026-08-14.** The float-menu route is still dead (`rimworld/right_click_cell` reports *"Dispatched a live right-click…"* and does nothing — `skills/rimbridge/references/traps.md:294`), but the menu was never the only route. **BRIDGE is building `jawa/fire_quest`**, deploying in the same shutdown window as `jawa/get_defs`. See §1c |
-| **ToolBeltFix** | Needs the apparel **WORN**. There is no equip tool in the 22 |
-| **CereanManeFix / SauridFrillFix** | Neither names a pawnkind defName, so there is no `spawn_pawn` that reliably produces the pawn to look at |
+| **ToolBeltFix** | Needs the apparel **WORN**, and the reason is now PROVEN rather than assumed: **no `PawnKindDef` spawns `VAEA_Apparel_ToolBelt` anywhere** in the workshop tree, `Mods/` or `Data/` — every reference is loot. ⇒ held for a **force-equip tool**, not for a load. ⛔ **`[v2]`** — the equip primitive is not v1 and must not take window space |
+| ~~**CereanManeFix / SauridFrillFix**~~ | 🔓 **NO LONGER TRUE — collectable on ANY standing map, 2026-08-14.** Both DO name a pawnkind: `OuterRim_Cerean` (hair `OuterRim_CereanMane`, face **SOUTH**) and `VRESaurids_Villager_Saurid` (hair `VRESaurids_Littlefoot`, face **NORTH** — the donor ships `CenterFrill8_north-.png` with a trailing hyphen while `CenterFrill7_north.png` beside it is correct, so north is the only broken rotation). `jawa/spawn_pawn` + `jawa/set_pawn_style` + `jawa/set_pawn_rotation` are all live. **No load, no fresh map.** ⛔ **`[v2]` — observation only, and it does NOT compete with the three v1 window items** |
 | **The seven fix mods generally** | ⚠️ **None can ever produce a log line.** `Failed to find any textures at` fires only when **every** direction of a `Graphic_Multi` is missing, so a single absent or zero-alpha facing is a silent south-fallback. They settle by eyeballing a pawn, never by `harvest_log.py` |
+
+🔴 **THE TRAP THAT WOULD HAVE WASTED THE TWO ITEMS ABOVE — a pawnkind spawn alone
+tests NONE of them.** All three fixes are `HairDef`/apparel **`texPath`s**, not
+pawnkind art. Spawn the pawn without setting the style and you photograph a
+default and record it as passed. **Spawn, THEN set style, THEN set rotation.**
+📌 Generalises: *the call existing is not the same as the call being sufficient* —
+name the call **and** the state it must be in.
 
 🔴 **DO NOT ADD ART-FIX WORK.** Standing directive from the owner: **CREATE stops
 fixing art until the owner personally verifies art is broken.** Art *observation*
