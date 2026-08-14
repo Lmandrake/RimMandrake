@@ -116,6 +116,21 @@ KEYS = [
     # AG_MeatBurst exists as both and only the gene is selectable.
     "GeneDef/AG_MeatBurst",
     "GeneDef/Turn_Gene_FleshbeastBurster",
+
+    # --- 🔴 GRAVTECH ECONOMY. Added by OPS 2026-08-14, and these are a CONDITION,
+    # not a preference. The owner enabled GravTech over the FORBIDDEN ruling in
+    # forbidden_mods.md on the single condition that its economy is picked out.
+    # Without these three, gravcores become craftable and the quest-only scarcity
+    # gate is gone — silently, with a clean log.
+    # ⚠️ DO NOT DROP THESE WHEN REGENERATING. My first list was Anomaly-only and
+    # omitted them; a regeneration without them re-breaks the gate.
+    "ThingDef/GravForge",              # the forge, and its bills with it
+    "RecipeDef/Make_GravcoreGF",       # "make gravcore" — the scarcity breaker
+    "ThingDef/AdvShip_GravReactor",    # "The Singularity Reactor"
+    # ⚠️ ResearchProjectDef/GravForge and /GravEngineBuild are deliberately NOT
+    # here: neutralising a research project risks dangling another project's
+    # prerequisite, and unreachable research is harmless once the building is
+    # gone. Three removals beat five and a broken tech tree. (OPS's call, kept.)
 ]
 
 
@@ -138,9 +153,79 @@ def load_index(types_needed):
     return index, quest_refs
 
 
+def mods_missing_from_dump():
+    """Active mod folders whose defs are NOT in the dump.
+
+    The dump is a snapshot. A mod enabled after it was taken has no records in
+    it, so a key naming that mod's def looks unresolvable when it is perfectly
+    valid — which is how three correct GravTech keys got flagged as broken.
+    """
+    import refresh
+    try:
+        live = set(refresh.loadset_fingerprint()["mods"])
+        dumped = set(refresh.dump_fingerprint().get("mods") or [])
+    except Exception:
+        return []
+    newly = {m.lower() for m in live - dumped}
+    if not newly:
+        return []
+    idx_path = os.path.join(HERE, "..", "..", "..", "research", "RimMandrake",
+                            "installed_packageids.json")
+    try:
+        with open(os.path.abspath(idx_path), encoding="utf-8") as fh:
+            idx = json.load(fh)
+    except OSError:
+        return []
+    roots = ["/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100",
+             "/mnt/c/Program Files (x86)/Steam/steamapps/common/RimWorld/Mods"]
+    out = []
+    for v in idx.values():
+        if v["packageId"].lower() in newly:
+            for r in roots:
+                cand = os.path.join(r, v["folder"])
+                if os.path.isdir(cand):
+                    out.append(cand)
+    return out
+
+
+def scan_mod_xml(folders, names):
+    """defName -> set of declaring element names, from raw mod XML.
+
+    The element NAME is the def type — that is the authority for a mod the dump
+    has never seen. Matches whole def blocks so a nested <defName> cannot be
+    mistaken for the block's own.
+    """
+    import re
+    found = {}
+    for folder in folders:
+        for f in glob.glob(os.path.join(folder, "**", "*.xml"), recursive=True):
+            try:
+                text = open(f, encoding="utf-8-sig", errors="replace").read()
+            except OSError:
+                continue
+            for m in re.finditer(r"<(\w+Def)\b[^>]*>(.*?)</\1>", text, re.S):
+                dm = re.search(r"<defName>\s*([^<\s]+)\s*</defName>", m.group(2))
+                if dm and dm.group(1) in names:
+                    found.setdefault(dm.group(1), set()).add(m.group(1))
+    return found
+
+
 def check(keys):
     types_needed = {k.split("/")[0] for k in keys if "/" in k}
     index, quest_refs = load_index(types_needed)
+
+    # Anything the dump does not know about, resolved from the raw XML of mods
+    # enabled since the dump was taken.
+    unknown = {k.split("/")[1] for k in keys if "/" in k
+               and k.split("/")[0] not in index.get(k.split("/")[1], {})}
+    fallback = {}
+    if unknown:
+        folders = mods_missing_from_dump()
+        if folders:
+            fallback = scan_mod_xml(folders, unknown)
+            if fallback:
+                print("  (%d key(s) resolved from mod XML — enabled since the dump)"
+                      % len(fallback))
 
     problems = []
     for key in keys:
@@ -165,10 +250,13 @@ def check(keys):
         # 3. the def exists with that exact type
         got = index.get(dname, {}).get(dtype)
         if got is None:
-            other = sorted(index.get(dname, {}))
+            if dtype in fallback.get(dname, ()):
+                continue          # confirmed from mod XML; no dump record to gate
+            other = sorted(index.get(dname, {})) + sorted(fallback.get(dname, ()))
             hint = (" (exists as: %s)" % ", ".join(other)) if other else ""
             problems.append((key, "SILENT",
-                             "no %s named %s in the live dump%s" % (dtype, dname, hint)))
+                             "no %s named %s in the dump or in any mod enabled "
+                             "since it%s" % (dtype, dname, hint)))
             continue
 
         # 4. per-type gates
