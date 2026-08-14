@@ -462,3 +462,41 @@ wreck props the game already ships.
 `NonDeconstructibleAncientBuildingBase` — **removable only by explosives.** Place
 one of those in the hulk and the clan *cannot strip it*, which breaks the entire
 ruling. **Deconstructible defs only.**
+
+#### ✅ SETTLED — the gate is GEOMETRY, and the last prize is BURIED. No C#.
+
+**CREATE found that my capability gate does not exist as a field: RimWorld has no
+research or tool requirement on deconstruction.** Expressing it literally would
+cost a C# comp in the companion DLL. **Declined.** Two better routes were offered
+and both are taken.
+
+**Route A — geometry gates the tiers.** Nothing is locked. **The deep sections
+are BURIED behind the shallow ones.** Outer plating is reachable on day one;
+inner structure only once the plating is gone; the holds only behind both.
+
+⭐ **This is better than a research gate, not merely cheaper.** A research gate
+says *"you may not touch this yet"* — a permission. **Geometry says "you have not
+got there yet" — a place.** In a game about digging through a wreck, the second
+is the right sentence every time, and it means the hulk is **explorable rather
+than unlockable**.
+
+It also costs nothing, adds no dependency, and **cannot be patched out from under
+us by another mod** — geometry is not a field anyone can override.
+
+**Route B — the last prize is genuinely underground.** Plasteel and components go
+**beneath** the wreck as a **deep resource deposit**, which RimWorld already gates
+behind a **ground-penetrating scanner plus a deep drill** — research *and*
+equipment, shipped and balanced by Ludeon.
+
+⭐ **The fiction is the best part: the clan strips the hull for years and then
+finds what it was CARRYING.** The wreck's last secret is under it.
+
+⭐ **And the scanner turns that prize into a promise.** The player can *see* the
+deposit long before they can reach it — a target on the map they are working
+towards. **That is far stronger than a surprise**, and it is the thing that keeps
+a clan on a tile they have otherwise exhausted.
+
+**Sequence, whole: plating → structure → drill → leave.**
+
+⛔ **No hard gate, no comp, no companion-DLL dependency.** A permanent maintenance
+cost is not worth buying something geometry provides for free.
