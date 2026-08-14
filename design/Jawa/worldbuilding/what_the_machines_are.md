@@ -107,7 +107,7 @@ trade-off:**
 |---|---|---|
 | canon standing | ⚠️ **Legends, not Disney canon** — but the KotOR mods we already run are built on it | ✅ **Disney canon**, Clone Wars era |
 | fits "dead precursor"? | ⭐ **Perfectly.** A galaxy-spanning precursor empire whose ruins and automated systems outlive it is what they are *for* | ✖️ Poorly. The Techno Union is a corporation with a factory, not a vanished civilisation |
-| already in our roster? | ⭐ **Yes** — Rakata appear in the Gene Consortium and the Geonosian Hive, and as Imperial "relic-recovery specialists" | no |
+| already in our roster? | ⭐ **Yes** — Rakata appear in the Ascendant Helix and the Geonosian Hive, and as Imperial "relic-recovery specialists" | no |
 | what the ruins then are | a precursor holding, its garrison still standing to orders nobody remembers | an abandoned production world |
 
 **My recommendation: Rakata**, and the reason is that the roster already contains

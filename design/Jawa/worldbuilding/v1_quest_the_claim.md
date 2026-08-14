@@ -202,7 +202,7 @@ site does not have to be interesting.** Balance and site design are v2.
 ## Where this goes next — v2, and only noted so the thin version does not fight it
 
 The same premise deepens without being rewritten: the rival clan becomes faction
-11 (Indigenous Jawa Clans), the wreck becomes an Imperial one and raises Heat to
+11 (Jawa Trade Moot), the wreck becomes an Imperial one and raises Heat to
 loot, and the reward becomes a droid chassis with a bolt still in it — which
 hands the player the Free Droid Enclaves' moral problem the first time they use
 it. **None of that is v1. All of it is reachable from this text unchanged.**
@@ -254,7 +254,7 @@ everything fell and will sell you anything including your own location — the
 roster already says the best market is the one that might betray you, and it has
 never been mechanical. **This makes it mechanical for the price of one trader
 stock entry.** The Homestead are farmers and do not know; the Empire would not
-tell you; the Aquifer League deals in water, not coordinates.
+tell you; the Deepwater Compact deals in water, not coordinates.
 
 ## v1 vs v2, stated so nobody over-builds
 

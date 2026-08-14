@@ -67,24 +67,24 @@ the 88 live defs), `xenotypeSet` (38), `basicMemberKind` (27), `backstoryFilters
 ## Readiness — 12 factions, not 10
 
 ⚠️ **The roster holds TWELVE factions.** `infrastructure/state/queue/VISION.md` **V9** and `AGENT_PROJECT_state.md`
-both said ten. **11. Indigenous Jawa Clans** (line 1809) and **12. Junker
+both said ten. **11. Jawa Trade Moot** (line 1809) and **12. Junker
 Scrap-Warrens** (line 1932) were added later and several global sections were
 never updated to match — which is the direct cause of defect **D5** below.
 
 | # | Faction | A | B | C | D | E | F | G | H | Ready |
 |---|---|:-:|:-:|:-:|:-:|:-:|:-:|:-:|:-:|:-:|
-| 1 | Hutt Cartel Confederacy | ~ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ❌ | 7/8 |
+| 1 | Hutt Cartel | ~ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ❌ | 7/8 |
 | 2 | **Imperial Desert Directorate** *(v1)* | ~ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ❌ | 7/8 |
-| 3 | Outer-Rim Homestead Compact | ~ | ✅ | ✅ | ✅ | ✅ | ⚠️ | ✅ | ❌ | 7/8 |
-| 4 | Tusken Sand Clans | ❌ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ❌ | 6/8 |
+| 3 | Homestead Defense League | ~ | ✅ | ✅ | ✅ | ✅ | ⚠️ | ✅ | ❌ | 7/8 |
+| 4 | Deep Desert Tribes | ❌ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ❌ | 6/8 |
 | 5 | Free Droid Enclaves | ❌ | ✅ | ✅ | ✅ | ⚠️ | ⚠️ | ✅ | ❌ | 6/8 |
-| 6 | Wookiee Freeholds | ❌ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ❌ | 6/8 |
-| 7 | Aquifer League | ❌ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ❌ | 6/8 |
+| 6 | Wildsteam Clan | ❌ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ❌ | 6/8 |
+| 7 | Deepwater Compact | ❌ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ❌ | 6/8 |
 | 8 | Geonosian Foundry Hive | ❌ | ✅ | ✅ | ✅ | ❌ | ✅ | ✅ | ❌ | 5/8 |
 | 9 | Arkanian–Kaminoan Consortium | ❌ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ❌ | 6/8 |
-| 10 | Bounty Hunters' Compact | ❌ | ✅ | ✅ | ✅ | ⚠️ | ✅ | ✅ | ❌ | 6/8 |
-| 11 | Indigenous Jawa Clans | ❌ | ✅ | ✅ | ✅ | ✅ | ❌ | ✅ | ❌ | 5/8 |
-| 12 | Junker Scrap-Warrens | ❌ | ⚠️ | ⚠️ | ✅ | ✅ | ❌ | ✅ | ❌ | 5/8 |
+| 10 | Blackstar Company | ❌ | ✅ | ✅ | ✅ | ⚠️ | ✅ | ✅ | ❌ | 6/8 |
+| 11 | Jawa Trade Moot | ❌ | ✅ | ✅ | ✅ | ✅ | ❌ | ✅ | ❌ | 5/8 |
+| 12 | the Junkers | ❌ | ⚠️ | ⚠️ | ✅ | ✅ | ❌ | ✅ | ❌ | 5/8 |
 
 `~` = partially decided (leader title only). `⚠️` = decided but carrying a defect below.
 
@@ -136,7 +136,7 @@ different file. Anyone authoring from the table gets the wrong answer.
 **D5 — the roster denies the existence of a faction it contains.** `:2330` reads
 *"no NPC faction generates Jawa members"* and `:2353` reads *"Every installed race
 is used at least once across the **ten** NPC factions, except Jawa, which is
-reserved for the player"* — while **11. Indigenous Jawa Clans** (`:1809`) is an NPC
+reserved for the player"* — while **11. Jawa Trade Moot** (`:1809`) is an NPC
 faction whose roster is 78% + 12% Jawa. The species-coverage section was never
 updated when factions 11–12 were added; note it still says **ten**.
 

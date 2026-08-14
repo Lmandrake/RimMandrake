@@ -20,101 +20,117 @@ for whoever configures the mods._
 
 ## 1. What is true, and what is not
 
+🔴 **Canon names and leaders were set by the owner, 2026-08-13.** This section was
+rewritten against them, and the shape of the whole design changed with it.
+
 | | |
 |---|---|
-| ✅ **Twelve NPC factions exist**, plus the player's Jawa expedition | |
-| ✅ **Eleven of the twelve are authored by us from scratch.** Own `FactionDef`, own name, own pawn kinds, own xenotype mix | |
-| ✅ **The twelfth — the Galactic Empire — is the ONE deliberate reskin**, on vanilla `Empire` | see §5 |
-| ✅ **Mod factions survive ONLY where something we cannot change is wired to them** — an incident's antagonist, a scenario part, a quest chain | |
-| ✅ **The world is BIG and sparse.** ~72 settlements across a large planet | |
-| ✅ **Interesting tiles cluster.** Around living settlements, and around dead ones | |
-| ✅ **One permanent enemy: the Galactic Empire** — vanilla `Empire`, reskinned, led by Palpatine | |
-| ✅ **Water increases with latitude.** The equator is the killing ground; the poles hold the only standing water | |
+| ✅ **Fourteen NPC factions exist**, plus the player's Jawa expedition | two more than before — the machines and the hive are now named factions, not anonymous survivors |
+| 🔴 **SEVEN of them are reskins of VANILLA factions**, not authored from scratch | Empire · Outlanders · Tribes · Pirates · Ancients · Mechanoids · Insects |
+| ✅ **Seven are authored by us** | Hutt Cartel · Free Droid Enclaves · Wildsteam Clan · Deepwater Compact · Geonosian Foundry Hive · Jawa Trade Moot · the Junkers |
+| ✅ **Every faction has a NAMED LEADER** | the world has people in it, not offices |
+| ✅ **The world is BIG and sparse** — ~72 settlements across a large planet | |
+| ✅ **Interesting tiles cluster** — around living settlements, and around dead ones | |
+| ✅ **One permanent enemy: the Galactic Empire** | led by Palpatine |
+| ✅ **Water increases with latitude** | the equator kills; the poles hold the standing water |
 | ❌ **No mod faction is kept "because it is Star Wars"** | flavour is not a dependency |
-| ❌ **No faction is a reskin of a MOD faction** | the Empire reskins *vanilla*, which is a different thing — see §5. The v1 `OuterRim_GalacticEmpire` label-patch is superseded scaffolding |
-| ❌ **No faction generates Jawa except faction 11** | the player race is not a common sight |
+| ❌ **No faction generates Jawa except the Trade Moot** | the player race is not a common sight |
 | ❌ **The world is not auto-generated and accepted** | generate a seed, then author on top of it |
 | ❌ **Nobody except the Empire is permanently un-negotiable** | the mid-game always has a wedge |
 
+⭐ **What the canon list changed, and it is not cosmetic.** Reskinning vanilla's
+outlanders, tribes and pirates instead of suppressing them **closes §8's open
+call** and removes the project's largest unmeasured risk in one stroke: we no
+longer have to find out what breaks when vanilla's economic spine is deleted,
+because it is not deleted — **it is wearing our names.**
+
 ---
 
-## 2. The factions we author — twelve
+## 2. The fourteen factions
 
-| # | Faction | Settlements | Tech | Goodwill | Perm. enemy | Raids |
-|---|---|---:|---|---:|---|---|
-| 1 | **Hutt Cartel Confederacy** | 8 | Industrial | −35 | No | Medium, distance-scaled |
-| 2 | ⭐ **The Galactic Empire** *(reskin of vanilla `Empire`)* | **3 surface** *(+~7 orbital, not world tiles)* | Spacer | −100 | 🔴 **Yes** | High |
-| 3 | **Outer-Rim Homestead Compact** | 13 | Industrial | +25 | No | **None random — event-driven only** |
-| 4 | **Tusken Sand Clans** | 9 | Industrial, gear-restricted | −80 | No | High near their territory; very short, no siege |
-| 5 | **Free Droid Enclaves** | 3 | Spacer | 0 | No | Disabled — quests and incidents only |
-| 6 | **Wookiee Freeholds** | 4 | Industrial | +35 | No | Very low |
-| 7 | **Aquifer League** | 5 | Industrial | +10 | No | **None** — cannot operate away from water |
-| 8 | **Geonosian Foundry Hive** | 5 | Spacer | −100 | No | High; **longest reach on the map**; sieges common |
-| 9 | **Arkanian–Kaminoan Gene Consortium** | 3 | Spacer | 0 | No | Low — retrieval operations only |
-| 10 | **Bounty Hunters' Compact** | 4 | Industrial | −10 | No | Very low; **targeted hunts, not raids** |
-| 11 | **Indigenous Jawa Clans — "the Duneborn"** | 7 | Industrial, salvage-grade | **+40, capped +75, never allied** | No | Very low — only after a claim dispute |
-| 12 | **Junker Scrap-Warrens** | 8 | Industrial, degraded | −90 | No — **hostile but bribable** | High; long duration |
-| — | **Jawa Gravship Expedition** *(player)* | — | Salvage-dependent | — | — | — |
+| # | Faction | Leader | rides on | Settlements | Goodwill | Perm. enemy |
+|---|---|---|---|---:|---:|---|
+| 1 | **Hutt Cartel** | **Gorga the Immense** *(Hutt)* | authored | 8 | −35 | No |
+| 2 | ⭐ **The Galactic Empire** | 🔴 **Emperor Palpatine** | **vanilla `Empire`** | **3 surface** *(+~7 orbital)* | −100 | 🔴 **Yes** |
+| 3 | **Homestead Defense League** | **Taren Voss** *(Human)* | **vanilla Outlanders**, beefed up | 13 | +25 | No |
+| 4 | **Deep Desert Tribes** | **Torr'gan** *(Tusken)* | **vanilla Tribes**, beefed up | 9 | −80 | No |
+| 5 | **Free Droid Enclaves** | **R-41 Rell** | authored | 3 | 0 | No |
+| 6 | **Wildsteam Clan** | **Rroowaak** *(Wookiee)* | authored | 4 | +35 | No |
+| 7 | **Deepwater Compact** | **Neris Cal** *(Mon Calamari)* | authored | 5 | +10 | No |
+| 8 | **Geonosian Foundry Hive** | **Korrik the Shaper** *(Geonosian)* | authored | 5 | −100 | No |
+| 9 | **Ascendant Helix** | **Director Ko Saiyan** *(Kaminoan)* | **vanilla `Ancients`** *if possible* | 3 | 0 | No |
+| 10 | **Blackstar Company** | **Jaxen Marr** *(Mandalorian)* | **vanilla Pirates**, beefed up | 4 | −10 | No |
+| 11 | **Jawa Trade Moot** | **Kiknik the Wealthy** *("leads")* | authored | 7 | **+40, capped +74** | No |
+| 12 | **the Junkers** | **Tarn Vox the Brutal** | authored | 8 | −90 | No — bribable |
+| 13 | ⭐ **the Forgotten Arsenal** | — *(no leader; it is not a polity)* | **vanilla `Mechanoid`** | none | — | — |
+| 14 | ⭐ **the Unbound Hive** | — *(no leader)* | **vanilla `Insect`** | none | — | — |
+| — | **Jawa Gravship Expedition** *(player)* | the clan chief | — | — | — | — |
 
-**Total: 72 world settlements.** Sparse across a big planet, which is the point.
+⭐ **The Forgotten Arsenal is the best name in the list**, because it says what
+`what_the_machines_are.md` ruled: **not an army, an armoury nobody came back
+for.** It is a *what*, not a *who* — no leader, no settlements, no diplomacy. The
+Forsakens left it running.
 
-### Leader titles
+⭐ **The Unbound Hive** solves the collision I flagged: the Geonosian Foundry is
+*our* insectoid faction, and "unbound" says exactly how the vanilla one differs —
+**a hive with no maker and no purpose.**
 
-| faction | title |
+### Names that changed, so nobody authors from the old ones
+
+| was | is now |
 |---|---|
-| Hutt Cartel | Kajidic patriarch / matriarch |
-| **The Galactic Empire** | 🔴 **Emperor Palpatine** *("Sector Director" survives only as the local office's title, if we use it at all)* |
-| Homestead Compact | Elected well-keeper |
-| Tusken Sand Clans | Clan speaker |
-| Free Droid Enclaves | Coordinator |
-| Wookiee Freeholds | Elder of the freehold |
-| Aquifer League | First custodian |
-| Geonosian Foundry Hive | Arch-overseer *(the Queen is immobile and is the settlement objective, not the diplomatic leader)* |
-| Gene Consortium | Chief curator |
-| Bounty Compact | Guild adjudicator |
-| Duneborn | Scrap-Singer *(elder; quest-giver)* |
-| Junker Scrap-Warrens | Warren Boss |
+| Outer-Rim Homestead Compact | **Homestead Defense League** |
+| Tusken Sand Clans | **Deep Desert Tribes** |
+| Wookiee Freeholds | **Wildsteam Clan** |
+| Aquifer League | **Deepwater Compact** |
+| Arkanian–Kaminoan Gene Consortium | **Ascendant Helix** |
+| Bounty Hunters' Compact | **Blackstar Company** |
+| Indigenous Jawa Clans / the Duneborn | **Jawa Trade Moot** |
+| Junker Scrap-Warrens | **the Junkers** |
+| *(vanilla Mechanoid)* | **the Forgotten Arsenal** |
+| *(vanilla Insect)* | **the Unbound Hive** |
+
+⚠️ **Two are not just renames — their MEMBERSHIP widened**, and the dossiers must
+follow:
+
+- **Wildsteam Clan** is no longer Wookiees alone. It is **Wookiees, Ewoks and
+  every other badly desert-adapted settler**, living in the **jungles and marshes**
+  — which places it squarely in the Three Waters.
+- **Deepwater Compact** is **amphibian and aquatic races dwelling in the deep
+  bodies of water** — no longer a trading league that happens to be aquatic, but
+  the people who live *in* the water. ⭐ **That makes them the natives of the deep,
+  and the natural gatekeepers of anything down there.**
 
 ---
 
-## 3. The factions we KEEP, and the exact dependency that earns it
+## 3. What each reskin costs, and what it earns
 
-**These are the only survivors.** Each is kept because something we cannot
-practically change points at it. **Nothing on this list is kept for flavour.**
+**Seven vanilla factions are kept and reskinned. Each is kept because something we
+cannot practically change is wired to it — the wiring does not care what the label
+says.**
 
-| faction | what is wired to it | consequence of removing it |
+| our faction | vanilla def | what the wiring buys us |
 |---|---|---|
-| **`Mechanoid`** *(vanilla)* | ⚠️ **CORRECTED 2026-08-13.** The pursuit is **NOT** a reason — *Ruthless Faction Pursuit* redirects it at any faction, and it will be pointed at the Galactic Empire. The real dependencies are narrower: **ancient dangers / sealed complexes**, **mech clusters**, and the **`Gravcore_Mechhive` endgame chain (7 of 9 subquests)** | loses the ancient-danger population and, if the mechhive dependency holds, the Odyssey endgame. **Under research — see §9** |
-| **`Empire`** *(vanilla Royalty)* | Royalty's entire title, permit, gear-tier and quest surface — **and it is now the Galactic Empire itself** (§5) | there would be no Empire, and a DLC's worth of structure would have to be rebuilt |
-| **`guy762_KotORFaction_RogueDroids`** | `hostileFactionDef` of the droid distress-call incident in [BTD] Ship Pack: KotOR Ships | a distress call with no antagonist — **a quest the player accepts and cannot finish** |
-| **`Insect`** *(vanilla)* | infestations, VFE Insectoids genelines, Alpha Animals hives, and Anomaly's `Entities` relations | removing the faction does not remove the bugs; it orphans them |
-| **`Entities`, `HoraxCult`** *(Anomaly)* | not removable at world creation at all — no lever short of disabling the DLC | n/a — kept by force, not by choice |
-| **`Ancients` / `AncientsHostile`** | ancient danger rooms, and the orbital tower dungeons | the towers lose their garrison |
-| ⚠️ **Outlanders · Pirates · Tribes** *(vanilla)* | an enormous volume of vanilla incident, trade and quest content assumes they exist | **OPEN CALL — see §8.** My recommendation is keep-as-structure |
+| **The Galactic Empire** | `Empire` | Royalty's titles, permits, gear tiers and quest surface |
+| **Homestead Defense League** | Outlanders | the trade and caravan economy the whole game assumes |
+| **Deep Desert Tribes** | Tribes | tribal incidents, neolithic pawn kinds, the raid tier below the Empire |
+| **Blackstar Company** | Pirates | the default hostile-raid backbone |
+| **Ascendant Helix** | `Ancients` | ancient danger rooms and the orbital tower garrisons ⚠️ *"if possible" — needs a feasibility check* |
+| **the Forgotten Arsenal** | `Mechanoid` | ancient dangers, clusters, and the `Gravcore_Mechhive` endgame chain |
+| **the Unbound Hive** | `Insect` | infestations, VFE Insectoid genelines, Alpha hives, Anomaly's relations |
 
-### Renames — the owner widened this rule, so the answer changed
+**Still kept without a rename:**
 
-🔴 **Owner's amendment, 2026-08-13: "we keep AND RESKIN/RENAME factions only when
-they are wired into specific game events."** So a kept faction is not kept *as
-it is* — **it is kept for its wiring and reskinned to fit the world.** The wiring
-does not care what the label says.
+| faction | why |
+|---|---|
+| **`guy762_KotORFaction_RogueDroids`** | antagonist of the KotOR droid distress call — already Star Wars |
+| **`Entities`, `HoraxCult`** *(Anomaly)* | not removable at world creation at all. ⚠️ Their problem is **tone, not label** — see the Anomaly register |
 
-⇒ **Every survivor gets a Star Wars reading. A Star Wars planet should not have
-"ancients" and "insectoids" on its faction list.**
-
-| faction | rename to | note |
-|---|---|---|
-| **`Empire`** *(vanilla)* | ⭐ **The Galactic Empire**, led by **Emperor Palpatine** | the one full reskin — see §5 |
-| **`Mechanoid`** | ⭐ **the Forsaken garrison** | the dark biome names the **Forsakens** as the vanished race that terraformed this world; its automata are their standing defences (`what_the_machines_are.md`). **Whatever survives the cherry-pick wears this name** |
-| **`Ancients`** / **`AncientsHostile`** | **the sleepers** — or leave | "Ancients" is genre-neutral enough to survive untouched. **Lowest priority** |
-| **`Insect`** | **needs a call** | ⚠️ On a Star Wars desert world "insectoids" reads as a RimWorld noun. The Geonosian Hive is *our* insectoid faction, so the vanilla one wants a name that does not compete with it |
-| **`Entities`, `HoraxCult`** *(Anomaly)* | ⚠️ **rename is cosmetic; the tone is the real problem** | Anomaly's register is horror, not Star Wars, and **we cannot remove it.** A label change does not fix that. Flagged, not solved |
-| **`guy762_KotORFaction_RogueDroids`** | **none needed** | already Star Wars |
-
-**Cost is one `label` operation each, zero risk, and it is the cheapest coherence
-win available** — the faction list is a screen the player reads.
-
-
+🔴 **The one open feasibility question: can `Ascendant Helix` really ride
+`Ancients`?** The Ancients are the sealed-complex people and their pawn kinds are
+cryptosleep-era humans, which is a poor fit for a Kaminoan gene-cult. **If it does
+not work, the Helix is authored from scratch and `Ancients` keeps a neutral
+name** — that is the fallback and it costs nothing.
 
 ---
 
@@ -124,9 +140,9 @@ win available** — the faction list is a screen the player reads.
 
 | band | terrain | water | who lives there |
 |---|---|---|---|
-| **Equatorial — the Dune Sea** | open sand, canyon systems, wreck fields, ore-rich rock | **none but what you carry** | **Tuskens** (canyons, caves, ridges — never water) · **Duneborn** (crawler circuit nodes) · **Geonosian Hive** (subterranean, deep-rock condensate) · **Junkers** (tailings and wreck fields) |
-| **Mid-latitude — the Scrub and the Roads** | rocky desert, salt pans, marginal farmland, roads, passes | **oases only — owned, tolled, defended** | **Hutt Cartel** (every settlement on an oasis) · **Homestead Compact** (marginal dry flats, vaporators, no source) · **Imperial Directorate** (the spaceport and the passes — they site on logistics, not hydrology) · **Bounty Compact** (trade hubs, road junctions) |
-| **High-latitude — the Cold Margin** | cold desert, remnant marsh, upland springs, the rare wooded pocket | **the only standing water on the planet** | **Aquifer League** (all oases, marshes, lakes, coasts) · **Wookiee Freeholds** (cool uplands, upland springs, rare woods) · **Gene Consortium** (isolated highlands, secure sites) · **Free Droid Enclaves** (settle *on* water and crack it — remote ruins) |
+| **Equatorial — the Dune Sea** | open sand, canyon systems, wreck fields, ore-rich rock | **none but what you carry** | **Tuskens** (canyons, caves, ridges — never water) · **Jawa Trade Moot** (crawler circuit nodes) · **Geonosian Hive** (subterranean, deep-rock condensate) · **Junkers** (tailings and wreck fields) |
+| **Mid-latitude — the Scrub and the Roads** | rocky desert, salt pans, marginal farmland, roads, passes | **oases only — owned, tolled, defended** | **Hutt Cartel** (every settlement on an oasis) · **Homestead Defense League** (marginal dry flats, vaporators, no source) · **Imperial Directorate** (the spaceport and the passes — they site on logistics, not hydrology) · **Blackstar Company** (trade hubs, road junctions) |
+| **High-latitude — the Cold Margin** | cold desert, remnant marsh, upland springs, the rare wooded pocket | **the only standing water on the planet** | **Deepwater Compact** (all oases, marshes, lakes, coasts) · **Wildsteam Clan** (cool uplands, upland springs, rare woods) · **Ascendant Helix** (isolated highlands, secure sites) · **Free Droid Enclaves** (settle *on* water and crack it — remote ruins) |
 
 ⭐ **The one sentence that makes the map readable:** *the further you go from the
 equator, the more water there is and the less anyone wants to sell it to you.*
@@ -163,7 +179,7 @@ fields. **A faction whose power rests on geography is far more convincing than o
 whose power rests on a goodwill number.**
 
 **Consequence for the faction map:** the four cold-margin factions — Aquifer
-League, Wookiee Freeholds, Gene Consortium, Free Droid Enclaves — are **not spread
+League, Wildsteam Clan, Ascendant Helix, Free Droid Enclaves — are **not spread
 thinly across a polar band. They are concentrated in and around the Three
 Waters**, and therefore in each other's company. The poles are crowded and
 contested; the equator is empty and lethal. That is a much stronger world than an
@@ -186,7 +202,7 @@ different route.
    campaign is about**, and they should be the richest and the most defended by
    whatever moved in afterwards.
 3. **Around the wrecks** — the crash lanes, where things came down. Salvage, and
-   the reason Junkers and Duneborn both have circuits.
+   the reason Junkers and Jawa Trade Moot both have circuits.
 
 ⛔ **The desert between clusters should be genuinely empty.** Sparse is not a
 budget constraint; it is what makes a cluster worth crossing to.
@@ -238,16 +254,16 @@ Galactic Empire, not a `FactionDef`. The v1 label-patch on
 |---|---|
 | **1 Hutt Cartel** | Nikto 22 · Gamorrean 18 · Rodian 11 · Trandoshan 10 · Aqualish 9 · Twi'lek 8 · Pyke 7 · Devaronian 5 · Herglic 4 · **Hutt 3** · Zeltron 2 · human 1 |
 | **2 Imperial Directorate** | **baseliner human 78** · Chiss 7 · Umbaran 6 · Arkanian 4 · Zabrak 3 · Savant 2 — *Sith and Massassi only inside escort pawn kinds* |
-| **3 Homestead Compact** | human 20 · Ithorian 12 · Duros 10 · Sullustan 10 · Abednedo 9 · Pantoran 8 · Mirialan 7 · Twi'lek 7 · Iktotchi 5 · Togruta 5 · Cerean 4 · Bith 2 · Miraluka 1 |
-| **4 Tusken Sand Clans** | **Tusken (Dune Sea) 50 · Tusken (Canyon) 35** · Desert alien 8 · Brute 4 · Nikto 3 |
+| **3 Homestead Defense League** | human 20 · Ithorian 12 · Duros 10 · Sullustan 10 · Abednedo 9 · Pantoran 8 · Mirialan 7 · Twi'lek 7 · Iktotchi 5 · Togruta 5 · Cerean 4 · Bith 2 · Miraluka 1 |
+| **4 Deep Desert Tribes** | **Tusken (Dune Sea) 50 · Tusken (Canyon) 35** · Desert alien 8 · Brute 4 · Nikto 3 |
 | **5 Free Droid Enclaves** | **100% droid chassis, 0% biological** — Labor 25 · Maintenance 20 · Utility 15 · Scout 12 · Medical 8 · Security 8 · Protocol 7 · Heavy defence 4 · Coordinator core 1 |
-| **6 Wookiee Freeholds** | Wookiee 48 · Wookiee-kin 25 · Cathar 10 · Ewok 8 · Togruta 6 · Ithorian 3 |
-| **7 Aquifer League** | Quarren 23 · Mon Calamari 22 · Selkath 20 · Gungan 14 · Chagrian 8 · Herglic 5 · Aqualish 4 · Ithorian 2 · Duros 2 — **every one aquatic or amphibian** |
+| **6 Wildsteam Clan** | Wookiee 48 · Wookiee-kin 25 · Cathar 10 · Ewok 8 · Togruta 6 · Ithorian 3 |
+| **7 Deepwater Compact** | Quarren 23 · Mon Calamari 22 · Selkath 20 · Gungan 14 · Chagrian 8 · Herglic 5 · Aqualish 4 · Ithorian 2 · Duros 2 — **every one aquatic or amphibian** |
 | **8 Geonosian Foundry Hive** | **Geonosian 76** · Savant 8 · Bith 6 · Brute 5 · Pyke 3 · Rakata 2 — *plus a 35–55% droid share on top* |
-| **9 Gene Consortium** | Arkanian 26 · Kaminoan 20 · **Brute stock 12 (the engineered underclass)** · Cerean 8 · Bith 8 · Savant 8 · Chiss 6 · Rakata 4 · Umbaran 4 · Miraluka 2 · Neimoidian 2 |
-| **10 Bounty Compact** | Kaleesh 15 · Zabrak 12 · Trandoshan 12 · Rodian 10 · Bothan 8 · Devaronian 8 · Cathar 8 · Chiss 7 · Umbaran 6 · Zeltron 5 · Iktotchi 3 · Togruta 3 · Duros 3 |
-| **11 Duneborn** | **Jawa (clan) 78 · Jawa (shaman/elder) 12** · Ugnaught 6 · vermin-kin 4 |
-| **12 Junker Scrap-Warrens** | Gamorrean 26 · Weequay 16 · Nikto (low caste) 14 · Aqualish 12 · Ugnaught 10 · Rodian 8 · Snivvian 7 · Trandoshan (disgraced) 5 · Devaronian 2 |
+| **9 Ascendant Helix** | Arkanian 26 · Kaminoan 20 · **Brute stock 12 (the engineered underclass)** · Cerean 8 · Bith 8 · Savant 8 · Chiss 6 · Rakata 4 · Umbaran 4 · Miraluka 2 · Neimoidian 2 |
+| **10 Blackstar Company** | Kaleesh 15 · Zabrak 12 · Trandoshan 12 · Rodian 10 · Bothan 8 · Devaronian 8 · Cathar 8 · Chiss 7 · Umbaran 6 · Zeltron 5 · Iktotchi 3 · Togruta 3 · Duros 3 |
+| **11 Jawa Trade Moot** | **Jawa (clan) 78 · Jawa (shaman/elder) 12** · Ugnaught 6 · vermin-kin 4 |
+| **12 the Junkers** | Gamorrean 26 · Weequay 16 · Nikto (low caste) 14 · Aqualish 12 · Ugnaught 10 · Rodian 8 · Snivvian 7 · Trandoshan (disgraced) 5 · Devaronian 2 |
 | **player** | **Jawa.** Other races may join by recruitment |
 
 ⚠️ **Thirst is differential and it is set by species, not faction.** Jawa, Tusken,
@@ -262,7 +278,7 @@ table decides how far every faction can operate.
 **One paragraph each. This is the impression the faction should leave after three
 encounters, not its history.**
 
-**1 · Hutt Cartel Confederacy.** Oily, transactional, amused by your desperation.
+**1 · Hutt Cartel.** Oily, transactional, amused by your desperation.
 They own the water you need and will sell it at a price that insults you, and
 they are also the only door out — your gravship was being scrapped in one of
 their yards, and *they never knew it could still fly*. Comedy-adjacent, with
@@ -276,13 +292,13 @@ chaos back; every alien and every independent act is disorder to be corrected.
 They are the only permanent enemy, they can be anywhere because they truck their
 own water, and their reach is a ladder of orbital towers.
 
-**3 · Outer-Rim Homestead Compact.** Farmers who wrung a living out of dead sand
+**3 · Homestead Defense League.** Farmers who wrung a living out of dead sand
 and never forgot how close they came to dying of thirst. Decent, tired, armed
 badly. Their faith carries guilt: they believe survival was bought at someone's
 expense — claims jumped, wells that ran dry while a neighbour's held. **They
 never raid you unprovoked.** Anger them and it is personal.
 
-**4 · Tusken Sand Clans.** Water is sacred and moisture farming is sacrilege.
+**4 · Deep Desert Tribes.** Water is sacred and moisture farming is sacrilege.
 They arrive fast, hit hard, and are gone before you can organise — not because
 they cannot range further, but because their way of war says they should not.
 Near-monocultural, absolutely certain, and the only faction whose hostility is
@@ -294,13 +310,13 @@ and crack it for fuel — an attacker arrives thirsty at a source they cannot
 drink. **They call restraint bolts slavery, which makes your entire economy
 their central atrocity.** They will still talk to you. That is worse.
 
-**6 · Wookiee Freeholds.** A forest people on the wrong planet, hard-sited to the
+**6 · Wildsteam Clan.** A forest people on the wrong planet, hard-sited to the
 handful of cool upland springs, holding a covenant that treats every living thing
 around them as kin. Devastating at home and near-useless anywhere else, because
 they are the thirstiest fighters alive. **Free one from captivity and they never
 leave.**
 
-**7 · Aquifer League.** They hold the water and they sell it to everyone —
+**7 · Deepwater Compact.** They hold the water and they sell it to everyone —
 including the Empire that is hunting you. Their neutrality is not politeness, it
 is a monopoly with teeth. Their warriors physically cannot come after you; they
 have never needed to. **Raiding an Imperial water convoy costs you their
@@ -312,26 +328,26 @@ between them the Foundry is **the only power on the planet that can sustain a
 siege in deep desert**. Their reach is the longest on the map. Their queen never
 moves.
 
-**9 · Arkanian–Kaminoan Gene Consortium.** They believe the body is a rough draft
+**9 · Ascendant Helix.** They believe the body is a rough draft
 and the species is a project — and they despise their own manufactured underclass
 most of all. **The planet's freakish spliced wildlife is theirs**: escaped
 experiments, still roaming, still breeding. They do not raid. They *retrieve*.
 
-**10 · Bounty Hunters' Compact.** Not a faction so much as **one dangerous person
+**10 · Blackstar Company.** Not a faction so much as **one dangerous person
 with a name who is coming for you.** A hunting party carries no supply train, so
 every hunt is a water duel — retreat into dry country and the hunter must break
 off or gamble. Shame one and he comes back alone, better equipped, for the
 specific pawn who beat him.
 
-**11 · The Duneborn.** Jawa who never left — the same sandcrawler running the same
+**11 · The Jawa Trade Moot.** Jawa who never left — the same sandcrawler running the same
 circuit for two hundred years. Visiting them should make you feel **superior and
 homesick at once**: this is the life your expedition lost. Salvage is inheritance,
 not property, and cutting another clan's circuit is closer to blasphemy than to
 theft. They will help you. **They will not be seen helping you** — the Hutts are
 watching.
 
-**12 · Junker Scrap-Warrens.** The bottom of the heap, armed and holding a
-grudge. Where the Duneborn scavenge by inherited right, Junkers scavenge by
+**12 · the Junkers.** The bottom of the heap, armed and holding a
+grudge. Where the Jawa Trade Moot scavenge by inherited right, Junkers scavenge by
 arriving second and killing whoever arrived first. There is no doctrine, only the
 ladder: a Junker's warcasket is his biography, and every plate was cut off a
 body. **They can be bought. That is not the same as being trusted.**
@@ -344,19 +360,16 @@ for you.
 
 ---
 
-## 8. The one open call
+## 8. ✅ CLOSED — vanilla outlanders, pirates and tribes STAY
 
-⚠️ **Vanilla outlanders, pirates and tribes.** Total control argues for deleting
-them; a very large volume of vanilla trade, incident and quest content assumes
-they exist, and unlike the Mechanoid case nobody has measured how much.
+**They are not deleted. They are our factions.** The canon list makes vanilla's
+Outlanders the **Homestead Defense League**, its Tribes the **Deep Desert
+Tribes**, and its Pirates the **Blackstar Company**.
 
-**My recommendation: keep them as structure**, unlabelled and unloved, until
-someone measures what breaks. They are the economy's floor. **If we delete them
-we should do it deliberately, having counted the cost — not as a side effect of
-wanting a Star Wars world.**
-
-**Everything else in this document is decided.**
-
+⭐ **This was the largest unmeasured risk in the design and it is gone.** The open
+question was *"how much vanilla trade, incident and quest content breaks if we
+remove the economic spine"* — and nobody had counted. **We never have to count,
+because nothing is removed.** The spine keeps working and wears our names.
 
 ---
 

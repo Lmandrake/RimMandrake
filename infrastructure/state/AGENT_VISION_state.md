@@ -66,7 +66,7 @@ V15 (broken-infrastructure mod).
 | owed | to | state |
 |---|---|---|
 | The water audit's **W-rulings applied INTO the twelve dossiers** — they currently live only in `water_doctrine.md` | v2 authoring | **written, not yet merged into the roster** |
-| Junker Scrap-Warrens water doctrine — still assumes universal thirst | v2 | open, rewrite when faction 12 is authored |
+| the Junkers water doctrine — still assumes universal thirst | v2 | open, rewrite when faction 12 is authored |
 | A look at a live **Imperial raid** — does the antagonist look like the antagonist? | myself | wants the bridge; asked, not granted |
 | `fixedName` patch so the Dominion keeps its name across worlds | CREATE, later | needs the generated name first |
 

@@ -4,7 +4,7 @@ _Companion to `desert_world_design.md`, `faction_roster_v2.md`. Created 2026-08-
 
 **Scope decision:** this file names **all 104** VGE creatures plus the four special outputs. Nothing is left as an Earth portmanteau, because a half-renamed bestiary is worse than an unrenamed one — one stray "bearchicken" in a spawn log breaks the whole illusion.
 
-**Every entry gets two names:** a **vernacular** name (what Jawas, homesteaders and Tuskens call it — this is the one that appears in-game) and a **registry/faction** name (what the Consortium, Imperial Directorate or Foundry Hive calls the same organism). The second name is not decoration: it is how a C- or D-grade creature earns its place in the world. A "bearman" is nonsense as wildlife; **Consortium Model UR-7 "Vhek," an abandoned labour-line prototype**, is exactly the kind of thing your Gene Consortium leaves lying around.
+**Every entry gets two names:** a **vernacular** name (what Jawas, homesteaders and Tuskens call it — this is the one that appears in-game) and a **registry/faction** name (what the Consortium, Imperial Directorate or Foundry Hive calls the same organism). The second name is not decoration: it is how a C- or D-grade creature earns its place in the world. A "bearman" is nonsense as wildlife; **Consortium Model UR-7 "Vhek," an abandoned labour-line prototype**, is exactly the kind of thing your Ascendant Helix leaves lying around.
 
 ---
 
@@ -37,7 +37,7 @@ Star Wars creature names are short, consonant-heavy, and almost never descriptiv
 - `dhak` (wolfbear) → **`dhakmaw`** (thrumwolf)
 - `obbak` (muffalohorse) → **`obbakar`** (thrumhorse)
 
-This solves the source doc's hardest problem — colossals are "encounter-scale, not population fauna" — *diegetically*. They aren't a separate boss species that inexplicably has no population; they're what happens to one of these animals if nothing kills it for eighty years. Homesteaders will tell you every skarn is a skarnath that got unlucky. That also gives you a free quest hook: killing the local elder form is a service the Homestead Compact will pay for.
+This solves the source doc's hardest problem — colossals are "encounter-scale, not population fauna" — *diegetically*. They aren't a separate boss species that inexplicably has no population; they're what happens to one of these animals if nothing kills it for eighty years. Homesteaders will tell you every skarn is a skarnath that got unlucky. That also gives you a free quest hook: killing the local elder form is a service the Homestead Defense League will pay for.
 
 ---
 
@@ -47,7 +47,7 @@ The source doc treats C and D as exclusion categories. In this setting they're *
 
 | Registry | Owner | Naming pattern | Covers |
 |---|---|---|---|
-| **Labour-line** | Arkanian–Kaminoan Gene Consortium | `Model XX-N "Rolename"` | Every humanoid-dominant hybrid. The Consortium's *Ascendant Genome* doctrine already builds a "labour-line"; these are its discarded iterations. They talk because they were **designed to take instruction**, which is a Kaminoan design decision, not a joke. |
+| **Labour-line** | Ascendant Helix | `Model XX-N "Rolename"` | Every humanoid-dominant hybrid. The Consortium's *Ascendant Genome* doctrine already builds a "labour-line"; these are its discarded iterations. They talk because they were **designed to take instruction**, which is a Kaminoan design decision, not a joke. |
 | **Purge catalog** | Imperial Desert Directorate | `XX-N "Codename"` + field nickname | Every mechanoid-dominant hybrid. Directorate doctrine is droid-averse per the roster — so these are filed as *ordnance*, never as droids. That prejudice is itself the flavor. |
 | **Foundry caste** | Geonosian Foundry Hive | caste-noun (`unmaker`, `silk`, `hauler`) | Insectoid-dominant hybrids. Sterility is not a defect here; it's caste discipline. Every one you meet was *made*, which the Hive considers the only respectable way to exist. |
 | **Alchemical / relic** | Sith remnant, Rakatan ruin, Anomaly | `tuk'ata`-style names, apostrophes allowed | Colossal apexes with no ecological story, plus the archotech line. |
@@ -186,7 +186,7 @@ Your Tusken/Jawa mobility layer. Anchor names to canon riding beasts (dewback, l
 | Bearhorse | **thorrak** | *luggabeast-kin* | DD, SF | Heavy, omnivorous, sleeps little. The freight mount. |
 | Boomhorse | **haskir** | *tapper-steed* | Cartel routes | Produces more gas the further it walks. Cartel long-haul stock; caravans park them downwind. |
 | Chickenhorse | **sirrak** | *fathier-kin* | AR, RV | Breeds on the move. Nomad clans time foaling to migration — a genuinely elegant bit of ecology. |
-| Cathorse | **vokkir** | *pounce-mount* | Bounty Compact, FC | Carnivorous cavalry that leaps. Bounty Hunters' Compact signature mount — expensive, fed on meat, unmistakable on approach. |
+| Cathorse | **vokkir** | *pounce-mount* | Blackstar Company, FC | Carnivorous cavalry that leaps. Blackstar Company signature mount — expensive, fed on meat, unmistakable on approach. |
 | Molehorse | **dunnik** | *cave-runner* | GF, OC, WA | Small tunnel mount with low upkeep. What the droid enclaves and cavern settlements ride. |
 | Wolfhorse | **verrak** | *steppe-hunter* | AR, DD | Fast predatory mount. Straightforward and excellent — Tusken raiding stock. |
 | Muffalohorse | **obbak** | *the herd-beast* | DD, AR, SF | Forages while migrating; produces only while moving. **The single most thematically perfect animal in the mod for a nomad culture** — it is literally only productive if you keep travelling. Give this to the Tuskens and make it sacred. Elder form `obbakar`. |
@@ -222,7 +222,7 @@ None of these are wildlife. All of them are **Model numbers on a manifest** and 
 | Manalope | *"the sapper"* | **Model HL-4 "Sapper"** | Hovers; places charges on a schedule nobody remembers setting. Wasteland approaches are mined by something patient. |
 | Manchicken | *"provision"* | **Model HK-0 "Provision"** | Bred to be eaten and content about it. The single darkest thing in your setting — use it **once**, in one Kaminoan facility, and never explain it further. |
 | Manffalo | *"the drover"* | **Model HM-7 "Drover"** | Carries more the longer it has served. A loyalty metric expressed as anatomy. |
-| Manwolf | *"the tracker"* | **Model HW-2 "Tracker"** | Intelligent, hardy, regenerative. The prototype the Consortium was proudest of; sold to the Bounty Compact. |
+| Manwolf | *"the tracker"* | **Model HW-2 "Tracker"** | Intelligent, hardy, regenerative. The prototype the Consortium was proudest of; sold to the Blackstar Company. |
 | Mancat | *"the companion"* | **Model HC-3 "Companion"** | Built for company. Consortium executives keep them. Deeply unsettling in a way nobody local remarks upon. |
 | Mansquirrel | *"the sweeper"* | **Model HS-5 "Sweeper"** | Works at night, clears ground. Harmless. Somehow the saddest one. |
 

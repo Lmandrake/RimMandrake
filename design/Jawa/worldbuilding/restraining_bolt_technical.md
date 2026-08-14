@@ -215,7 +215,7 @@ holds mechanically, with **no removal hook at all** — provided base goodwill h
 not itself been driven under 0 by real raids. That exception only exists if we go
 hostile, which the clamp below prevents.
 
-### 3c″. Is Duneborn "capped at +75, never allied" an existing mechanism?
+### 3c″. Is Jawa Trade Moot "capped at +75, never allied" an existing mechanism?
 
 `design\Jawa\worldbuilding\faction_roster_v2.md:2317`. **Yes — this exact
 mechanism. And the number in the roster is off by one.**

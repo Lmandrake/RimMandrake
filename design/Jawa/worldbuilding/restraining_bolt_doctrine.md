@@ -172,7 +172,7 @@ and no tuning fixes it because what is missing is the equilibrium itself.
 - **It scales exactly as required**: 2 bolts → nearly no ceiling loss; 40 → they
   will trade but never help, and eventually not even trade.
 - **It is already in this project's vocabulary.** `faction_roster_v2.md:2317`
-  specifies the Duneborn as *"Friendly, capped at +75, never allied"* — a
+  specifies the Jawa Trade Moot as *"Friendly, capped at +75, never allied"* — a
   goodwill ceiling is a thing this design already asks for elsewhere.
 - **It reads better in play.** Not *"they are angry at me"* but *"they will deal
   with me, and they will never trust me"* — which is a truer statement of what a

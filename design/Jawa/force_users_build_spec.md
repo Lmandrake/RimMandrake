@@ -309,7 +309,7 @@ Its own pawnkinds (`…\2919227155\1.6\Defs\PawnKindDefs\PawnKinds_MoistureFarme
 `OuterRim_TownTrader` cp 145 · `OuterRim_TownCouncilman` cp 140
 (`factionLeader true`).
 
-The campaign dossier for this faction is the **Homestead Compact**
+The campaign dossier for this faction is the **Homestead Defense League**
 (`design/Jawa/worldbuilding/faction_roster_v2.md` §3;
 `faction_stage3_buildable_spec.md:276` — *"PATCH `OuterRim_MoistureFarmers`"*).
 

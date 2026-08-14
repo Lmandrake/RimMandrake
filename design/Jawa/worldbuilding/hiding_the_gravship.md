@@ -30,7 +30,7 @@ whole characterisation, and nothing mechanical has ever expressed it.
 |---|---|---|
 | conceals from | anything looking down | anything looking with eyes |
 | where it exists | the handful of polar seas, marshes and lakes | caverns, deep canyons, polar night |
-| who owns it | 🔴 **the Aquifer League holds every natural water tile** | nobody — it is worthless ground |
+| who owns it | 🔴 **the Deepwater Compact holds every natural water tile** | nobody — it is worthless ground |
 | what it costs you | **a diplomatic price**, every time | **isolation** |
 
 ⭐ **The combined version is the good one: a drowned cavern under polar night.**
@@ -65,7 +65,7 @@ rich, and one kind is *safe and poor*.
 
 ## How it meshes with what is already decided
 
-- **The Aquifer League becomes load-bearing.** They hold the water; hiding under
+- **The Deepwater Compact becomes load-bearing.** They hold the water; hiding under
   it either costs goodwill or is stolen. **This turns the League from a trade
   partner into a gatekeeper**, which is a much better use of a faction that
   cannot raid you.
@@ -133,7 +133,7 @@ need to be wide to be deep.**
 ## What lives down there
 
 **Star Wars has better underwater monsters than almost any setting**, and this
-world's aquatic species are already in the roster — the Aquifer League is Selkath,
+world's aquatic species are already in the roster — the Deepwater Compact is Selkath,
 Mon Calamari, Quarren and Gungan. **The natives already exist; only the fauna is
 missing.** Canon register to draw from: firaxa-class sharks under the Selkath
 seas, and the Naboo lineage of things that eat each other in sequence.
@@ -149,7 +149,7 @@ improves on that: it costs progress AND it is dangerous.**
 
 - **It explains why the Empire does not simply follow you down.** The best kind
   of safety is somewhere the enemy could reach and chooses not to.
-- **It gives the Aquifer League its real power.** They do not merely own the
+- **It gives the Deepwater Compact its real power.** They do not merely own the
   water — **they own the one place the rest of the galaxy cannot follow them.**
   Every other faction's leverage stops at the shoreline.
 - **It makes hiding a gamble rather than a wait.** You are not safe down there.
@@ -303,7 +303,7 @@ ocean tiles at all, and whether a few can be forced.** If the answer is none,
 GravTide has nothing to work with.
 
 ⭐ **If the answer is "a few", that is better than a lot.** Three or four deep
-seas on an entire desert planet, each one the property of the Aquifer League,
+seas on an entire desert planet, each one the property of the Deepwater Compact,
 each one the only place in the world you cannot be found — **that is a far
 stronger setting than an ocean world would be.** Scarcity is the campaign's whole
 grammar, and it should apply to sanctuary too.

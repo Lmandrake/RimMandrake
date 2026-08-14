@@ -30,18 +30,18 @@ differs completely between "author our own" and "patch theirs".
 
 | # | roster faction | plausible live vessel | status |
 |---|---|---|---|
-| 1 | Hutt Cartel Confederacy | none — `OuterRim_BinaryStarRaiders` already used as Hutt muscle by our `GamorreanPawnKinds.xml` | **unassigned** |
+| 1 | Hutt Cartel | none — `OuterRim_BinaryStarRaiders` already used as Hutt muscle by our `GamorreanPawnKinds.xml` | **unassigned** |
 | 2 | Imperial Desert Directorate | `OuterRim_GalacticEmpire` and/or `Empire` (Royalty) | the two-Empire design exists; not written as a def decision |
-| 3 | Outer-Rim Homestead Compact | `OuterRim_MoistureFarmers` (live, 8 `pawnGroupMakers`) | **best-placed of the 12** |
-| 4 | Tusken Sand Clans | none identified | **unassigned** |
+| 3 | Homestead Defense League | `OuterRim_MoistureFarmers` (live, 8 `pawnGroupMakers`) | **best-placed of the 12** |
+| 4 | Deep Desert Tribes | none identified | **unassigned** |
 | 5 | Free Droid Enclaves | none — confirmed absent, U3 | **unassigned, and known** |
-| 6 | Wookiee Freeholds | none identified | **unassigned** |
-| 7 | Aquifer League | none identified | **unassigned** |
+| 6 | Wildsteam Clan | none identified | **unassigned** |
+| 7 | Deepwater Compact | none identified | **unassigned** |
 | 8 | Geonosian Foundry Hive | none identified | **unassigned** |
-| 9 | Arkanian–Kaminoan Gene Consortium | none identified | **unassigned** |
-| 10 | Bounty Hunters' Compact | none identified | **unassigned** |
-| 11 | Indigenous Jawa Clans | the player faction | different problem |
-| 12 | Junker Scrap-Warrens | none identified | **unassigned** |
+| 9 | Ascendant Helix | none identified | **unassigned** |
+| 10 | Blackstar Company | none identified | **unassigned** |
+| 11 | Jawa Trade Moot | the player faction | different problem |
+| 12 | the Junkers | none identified | **unassigned** |
 
 ⚠️ **The "plausible vessel" column is PROJECT's inference, not a ruling.** Only
 #3 and #5 rest on recorded work. Do not treat the blanks as "no vessel exists" —

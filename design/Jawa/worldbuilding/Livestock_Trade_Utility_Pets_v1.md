@@ -74,7 +74,7 @@ Every settlement has a problem it doesn't discuss. On a desert world with a wate
 
 ## 3. Weaponized companions — the bodyguard trade
 
-The Bounty Hunters' Compact and the Directorate both buy here.
+The Blackstar Company and the Directorate both buy here.
 
 | Creature | Mod | What it does | SW name | The shock |
 |---|---|---|---|---|
@@ -144,10 +144,10 @@ Mapping to `faction_roster_v2.md`:
 | **Jawa clans (player)** | Anything that eats waste or metal; droid-adjacent utility | `slurrik`, `korrik`, `skreev` |
 | **Hutt Cartel** | Power, uranium, vice, spectacle pets | `vokka`, `urrak`, `vissa`, `sarlik` |
 | **Tusken / Sand Clans** | Mounts and medicine; they do not sell breeding stock | `obbak`, `hubbak` |
-| **Homestead Compact** | Honest livestock, comfort animals, pest control | `zharn`, `kiba-fowl`, cats |
-| **Bounty Hunters' Compact** | Weaponized companions, sentience catalysts | `thrass`, `grissk`, `vokkir` |
+| **Homestead Defense League** | Honest livestock, comfort animals, pest control | `zharn`, `kiba-fowl`, cats |
+| **Blackstar Company** | Weaponized companions, sentience catalysts | `thrass`, `grissk`, `vokkir` |
 | **Geonosian Foundry Hive** | Castes, not animals — and regards `karramat` ownership as atrocity | `karrak`, `karrik` |
-| **Gene Consortium** | The catalysts themselves, and anything that shouldn't exist | `vissarath`, labour-line Models |
+| **Ascendant Helix** | The catalysts themselves, and anything that shouldn't exist | `vissarath`, labour-line Models |
 | **Imperial Directorate** | Officially nothing; unofficially `thrass` suppression | — |
 | **Free Droid Enclaves** | Buy `vokka` for power; fear `thrass` existentially | `dunnik` |
 
@@ -242,10 +242,10 @@ This is the layer that makes the **Giddy-Up + Large Pawns + Bantha-caravan** sta
 | **Bantha** | SW Animal Collection | The freight & wool spine. Wool, milk, meat, and it will defend a caravan line. | Jawa clans (wealth measured in bantha, per the bestiary's `ghorn` framing), Tusken, Compact | The single most important domestic animal in the campaign. Large Pawns makes it a genuine 2×2–3×3 footprint → real corridor/loading geometry on the ship. **Grazer guardrail applies: a bantha herd is fine as caravan muscle; don't turn it into a meat/wool printer.** |
 | **Dewback** | SW Animal Collection | Riding + light freight reptile, heat-immune. | Tusken (signature), Compact patrols | The iconic desert mount. Pairs with the reptile-clade heat-tolerance fiction. Giddy-Up mount. |
 | **Tauntaun** | SW Animal Collection | Cold-biome mount (Glowforest / cavern / polluted-cold tiles). | Compact, cavern settlements | Its niche is the *cold* tiles — a mount that works where the dewback can't. Gives the dark/cavern refuge tiles their own rideable animal. |
-| **Kaadu** ⚠ | SW Animal Collection | Fast wetland/river runner. | Homestead Compact (river corridor) | Ties to the water-ecology layer (§13): a river-valley animal, abundant where it's wet. |
+| **Kaadu** ⚠ | SW Animal Collection | Fast wetland/river runner. | Homestead Defense League (river corridor) | Ties to the water-ecology layer (§13): a river-valley animal, abundant where it's wet. |
 | **Varactyl** ⚠ | SW Animal Collection | Large climbing/riding lizard, forsaken-crags terrain. | Compact, wealthy Tusken | The prestige mount — big, colorful, expensive. A Varactyl string signals a rich clan. |
 | **Ronto** ⚠ | SW Animal Collection | Heavy pack beast. | Jawa clans (canon Jawa animal!), Compact | **Canon-perfect for the player faction** — Ronto are literally the beasts Jawas drive in the films. Make this a starting-plausible Jawa freight animal. |
-| **Nerf** ⚠ | SW Animal Collection | Herd meat/leather/milk animal ("nerf-herder"). | Homestead Compact | The Compact's honest livestock. **This is the one the grazer guardrail exists for** — a nerf herd is the textbook ranchable printer, so it belongs to the *NPC* economy you trade with, not a player barn. |
+| **Nerf** ⚠ | SW Animal Collection | Herd meat/leather/milk animal ("nerf-herder"). | Homestead Defense League | The Compact's honest livestock. **This is the one the grazer guardrail exists for** — a nerf herd is the textbook ranchable printer, so it belongs to the *NPC* economy you trade with, not a player barn. |
 | **Massiff** | SW Animal Collection | Small vicious guard-reptile. | Tusken (camp guards), bounty hunters | The Tusken watchdog. Cheap, mean, everywhere in Sand-People fiction. |
 
 ### 10.2 The Hutt arena & spectacle tier (the dangerous purchases)
@@ -286,7 +286,7 @@ The Salacious-Crumb category's big brother: creatures kept not for utility but t
 | **Titanis** (terror bird), **Andrewsarchus**, **Short-faced Bear**, **Megalania**, **Dinocrocuta**, **Daeodon** | ~375–500 | Pure ④-threat wildlife. Trophy/carcass trade only. Manhunter-prone (many at `manhunterOnDamageChance` 1.0) → wound one, the pack turns. |
 | **Doedicurus**, **Pulmonoscorpius**, **Procoptodon** | mid | Desert-native texture; occasional exotic-pet or trophy interest. |
 
-**Frame:** Megafauna are the reason the Homestead Compact posts bounties and the Cartel runs arenas. A Cartel that can deliver a *live* cp-550 heavy to an arena is powerful; the fact that "nobody has managed it twice" (the `rannok` note) is the flavor. This is the layer that makes the wild desert feel *inhabited by things bigger than you*, and its commerce is bounty + trophy + the very rare tamed titan, never a herd.
+**Frame:** Megafauna are the reason the Homestead Defense League posts bounties and the Cartel runs arenas. A Cartel that can deliver a *live* cp-550 heavy to an arena is powerful; the fact that "nobody has managed it twice" (the `rannok` note) is the flavor. This is the layer that makes the wild desert feel *inhabited by things bigger than you*, and its commerce is bounty + trophy + the very rare tamed titan, never a herd.
 
 ---
 
@@ -354,10 +354,10 @@ On this world, **vegetation regrows fast everywhere, and the water gradient is e
 | **Jawa clans (player)** | Waste/metal-eaters + droid-adjacent utility + canon Jawa beasts of burden | `slurrik`, `korrik`, `skreev`, **Ronto**, **Dianoga** (the real one), a comfort **Porg** |
 | **Hutt Cartel** | Power/uranium/vice pets + the **arena & spectacle** trade | `vokka`, `urrak`, `vissa`, `sarlik`, **Rancor**, **Acklay**, **Reek**, **Nexu**, tamed Megafauna titans |
 | **Tusken / Sand Clans** | Mounts + medicine; do not sell breeding stock | `obbak`, `hubbak`, **Dewback**, **Massiff**, **Varactyl** (prestige) |
-| **Homestead Compact** | Honest livestock, comfort animals, pest control, **the nerf-herd meat trade** | `zharn`, `kiba-fowl`, cats, **Bantha**, **Nerf**, **Kaadu** |
-| **Bounty Hunters' Compact** | Weaponized companions, trained predator packs, sentience catalysts | `thrass`, `grissk`, `vokkir`, **raptor pack**, **Nexu** |
+| **Homestead Defense League** | Honest livestock, comfort animals, pest control, **the nerf-herd meat trade** | `zharn`, `kiba-fowl`, cats, **Bantha**, **Nerf**, **Kaadu** |
+| **Blackstar Company** | Weaponized companions, trained predator packs, sentience catalysts | `thrass`, `grissk`, `vokkir`, **raptor pack**, **Nexu** |
 | **Geonosian Foundry Hive** | Castes, not animals — plus the **arena monsters** (Acklay canon) | `karrak`, `karrik`, **Acklay** |
-| **Gene Consortium** | The catalysts + anything that shouldn't exist + the JP-apex "we made it" set-pieces | `vissarath`, labour-line Models, **Indominus/Indoraptor** |
+| **Ascendant Helix** | The catalysts + anything that shouldn't exist + the JP-apex "we made it" set-pieces | `vissarath`, labour-line Models, **Indominus/Indoraptor** |
 | **Imperial Directorate** | Officially nothing; unofficially `thrass` suppression + prestige tamed arena beasts for officers | — |
 | **Free Droid Enclaves / cavern-dwellers** | Buy `vokka` for power; cave-adapted fauna trade | `dunnik`, **Tauntaun**, Biomes! Caverns fauna |
 | **Rogue-android faction (wasteland)** | Sours tiles → deals implicitly in the polluted fauna that follow | tox-wool sheep (wild), waste hounds, wasteland scavengers |
@@ -398,7 +398,7 @@ RimWorld already has every hook this needs. The whole subsystem is **XML-only** 
 </li>
 ```
 
-The key realization: **`tradeTagsSell` is the entire per-faction lever.** Give the Cartel trader `AnimalExotic` + `BadassAnimal` + `Sithspawn` and it sells arena monsters; give the Homestead Compact trader `AnimalFarm` + `AnimalCommon` and it sells honest herd stock. You never have to name individual animals — the tags already ship on the defs (§16.2).
+The key realization: **`tradeTagsSell` is the entire per-faction lever.** Give the Cartel trader `AnimalExotic` + `BadassAnimal` + `Sithspawn` and it sells arena monsters; give the Homestead Defense League trader `AnimalFarm` + `AnimalCommon` and it sells honest herd stock. You never have to name individual animals — the tags already ship on the defs (§16.2).
 
 **(b) The tags already exist on the animals — verified from the SWAC source.** `StarWarsAnimalCollection_src/1.6/Defs/ThingDefs_Races/Races_Animal_SW.xml` tags all ~160 canonical beasts with vanilla trade tags **plus a custom `Sithspawn` tag** (found on `Gundark`, `Tukata`, and 8 others). Confirmed examples:
 
@@ -442,10 +442,10 @@ The key realization: **`tradeTagsSell` is the entire per-faction lever.** Give t
 A merchant is a *character*, and the delivery mode is part of the fiction. Five archetypes, each mapped to a faction and a `TraderKindDef` shape:
 
 1. **The Sand-Caravaneer** (Tusken / *caravan*). Arrives on foot/dewback across the dunes with mounts and medicine. Sells working reptiles, never breeding stock. High commonality — the everyday beast-monger. `tradeTagsSell: AnimalCommon (reptile-clade), AnimalPet(Massiff)`.
-2. **The Homestead Drover** (Homestead Compact / *caravan + base*). The honest herd-trader: bantha, nerf, shaak, poultry, comfort pets. This is the one you buy your *working* animals from. `tradeTagsSell: AnimalFarm, AnimalCommon`.
+2. **The Homestead Drover** (Homestead Defense League / *caravan + base*). The honest herd-trader: bantha, nerf, shaak, poultry, comfort pets. This is the one you buy your *working* animals from. `tradeTagsSell: AnimalFarm, AnimalCommon`.
 3. **The Cartel Beast-Barge** (Hutt Cartel / *visitor + base*, rare + expensive). Rolls in heavy: arena monsters, grotesque status pets, the "resource" beasts, and the one-shot horrors. Lower commonality, absurd prices. `tradeTagsSell: AnimalExotic, BadassAnimal, AnimalFighter` + hand-added grotesques.
-4. **The Compact Hunter's Kennel** (Bounty Hunters' Compact / *visitor*). Sells weaponized companions and trained predator *packs* — the `thrass`/`grissk`/raptor tier — and carries sentience catalysts. `tradeTagsSell: AnimalFighter, AnimalPet(Anooba/Strill)`.
-5. **The Consortium Specimen Courier** (Gene Consortium / *rare visitor*, sinister). Doesn't sell "animals" — sells *specimens*: `Sithspawn`-tagged beasts, VGE aberrations, the "we made this" set-pieces, and the black-market `nessik`/`sarlik` tier. Rarest arrival; every visit is a set-piece. `tradeTagsSell: Sithspawn, AnimalExotic` + hand-added aberrations.
+4. **The Compact Hunter's Kennel** (Blackstar Company / *visitor*). Sells weaponized companions and trained predator *packs* — the `thrass`/`grissk`/raptor tier — and carries sentience catalysts. `tradeTagsSell: AnimalFighter, AnimalPet(Anooba/Strill)`.
+5. **The Consortium Specimen Courier** (Ascendant Helix / *rare visitor*, sinister). Doesn't sell "animals" — sells *specimens*: `Sithspawn`-tagged beasts, VGE aberrations, the "we made this" set-pieces, and the black-market `nessik`/`sarlik` tier. Rarest arrival; every visit is a set-piece. `tradeTagsSell: Sithspawn, AnimalExotic` + hand-added aberrations.
 
 ### 16.3 Per-faction stock specialization — WHO sells WHAT (and who sells nothing)
 
@@ -454,11 +454,11 @@ Design layer, built on the verified tags in §16.1. The important discipline the
 | Faction | Sells livestock? | `tradeTagsSell` (the lever) | Signature stock | Never sells |
 |---|---|---|---|---|
 | **Jawa clans (player)** | Buys more than sells | (player — buys via any of the above) | Trades *droids*, not beasts; keeps `slurrik`/`korrik`/`skreev`, a **Ronto** (canon Jawa beast), a comfort **Porg** | Doesn't run a herd trade — Jawa acquire, they don't ranch |
-| **Homestead Compact** | ✅ **Yes — the herd trade** | `AnimalFarm, AnimalCommon` | **Bantha, Nerf, Shaak, Kybuck, Nuna, Eopie**, comfort cats/pandas, **Kaadu** (river) | Arena monsters, `Sithspawn`, grotesques |
+| **Homestead Defense League** | ✅ **Yes — the herd trade** | `AnimalFarm, AnimalCommon` | **Bantha, Nerf, Shaak, Kybuck, Nuna, Eopie**, comfort cats/pandas, **Kaadu** (river) | Arena monsters, `Sithspawn`, grotesques |
 | **Tusken / Sand Clans** | ✅ Yes — **mounts & medicine only** | `AnimalCommon` (reptile), `AnimalPet` | **Dewback, Massiff**, `hubbak` (cactipine medicine), **Varactyl** (prestige) | **Breeding stock** (cultural — they sell the animal, never the *bloodline*) |
 | **Hutt Cartel** | ✅ Yes — **the spectacle & vice trade** | `AnimalExotic, BadassAnimal, AnimalFighter` | **Rancor, Acklay, Reek, Nexu, KowakianMonkeyLizard**, `vissa`, `sarlik`, resource beasts (`urrak`/`vokka`), tamed Megafauna titans | Nothing is off-limits — that's the point |
-| **Bounty Hunters' Compact** | ✅ Yes — **weaponized companions** | `AnimalFighter, AnimalPet` | `thrass`, `grissk`, **Anooba, Strill, CorellianHound**, trained **raptor packs**, **sentience catalysts** | Farm/food animals (beneath them) |
-| **Gene Consortium** | ✅ Rarely — **specimens, not livestock** | `Sithspawn, AnimalExotic` | `Gundark`, `Tukata`, VGE aberrations, `vissarath`, the `nessik`/black-market tier, "we made it" JP-apexes | Anything honest or useful |
+| **Blackstar Company** | ✅ Yes — **weaponized companions** | `AnimalFighter, AnimalPet` | `thrass`, `grissk`, **Anooba, Strill, CorellianHound**, trained **raptor packs**, **sentience catalysts** | Farm/food animals (beneath them) |
+| **Ascendant Helix** | ✅ Rarely — **specimens, not livestock** | `Sithspawn, AnimalExotic` | `Gundark`, `Tukata`, VGE aberrations, `vissarath`, the `nessik`/black-market tier, "we made it" JP-apexes | Anything honest or useful |
 | **Geonosian Foundry Hive** | ❌ **No — sells no animals** | — | Deals in *castes*, not property; regards a kept `karramat` (hive queen) as atrocity | **Everything** — the refusal *is* the characterization |
 | **Imperial Directorate** | ❌ **Officially no** | — (unofficial `thrass` suppression only) | Officers privately buy prestige arena beasts; the state sells none | Publicly, all livestock (beneath imperial dignity) |
 | **Free Droid Enclaves** | ❌ **No — they buy, don't sell** | — (buyer of `vokka` for power) | Fear `thrass` existentially; have no herds to sell | They're droids — livestock is alien to them |
@@ -474,7 +474,7 @@ Each archetype gets its own d20-style stock lean, but **all of them preserve the
 
 **The mechanic.** The same faction-flavored trade layer that governs beasts (§16.1–§16.4) runs in parallel over *people*: **factions that practice slavery will frequently have slaves for sale.** RimWorld already models this natively — slaves are `Pawn`s traded via `StockGenerator_Slaves` (vanilla, Ideology-gated), and the adopted stack deepens it (memory: **More Slavery Stuff Continued** `3530586159`, **Tribute Demand** `3711373966`, **Raid Protection Fee** `3650927927`, plus the Jawa precept *"one does not beg!" → enslave*). So a slaver faction's `visitor/caravan/baseTraderKinds` can carry a `StockGenerator_Slaves` line the same way the beast-mongers carry `StockGenerator_Animals`. ⚠ **Confirm before build:** the exact `StockGenerator_Slaves` field spelling, the trader-kind pattern, and each faction's Ideology slavery stance need an in-hand source read from the installed slavery mods before this goes to `Defs/` — this subsection is *design*, resting on verified-elsewhere trade plumbing.
 
-**Which factions sell slaves** (design, aligned to `faction_roster_v2.md`): the **Hutt Cartel** (chattel is core to the vice economy), the **Bounty Hunters' Compact** (captives are inventory), the **Imperial Directorate** (penal/"labor assignment" framing — sells officially where beasts were beneath dignity), and the **Geonosian Foundry Hive** (which sells *no animals* precisely because it treats *life* as property — so it is exactly the faction that would traffic sapients). The **Homestead Compact** and **Free Droid Enclaves** do not. This inverts the beast table interestingly: the Foundry's empty animal-stock and its full slave-stock are the *same* worldview read two ways.
+**Which factions sell slaves** (design, aligned to `faction_roster_v2.md`): the **Hutt Cartel** (chattel is core to the vice economy), the **Blackstar Company** (captives are inventory), the **Imperial Directorate** (penal/"labor assignment" framing — sells officially where beasts were beneath dignity), and the **Geonosian Foundry Hive** (which sells *no animals* precisely because it treats *life* as property — so it is exactly the faction that would traffic sapients). The **Homestead Defense League** and **Free Droid Enclaves** do not. This inverts the beast table interestingly: the Foundry's empty animal-stock and its full slave-stock are the *same* worldview read two ways.
 
 **The Jawa imperative (the heart of the directive).** Jawa appearing on a slave block should be **rare but possible** — the galaxy occasionally traffics the little scavengers. When it happens, and **when we have the resources, we MUST buy them out** from under the non-Jawa seller. This is not optional opportunism; it is a **standing moral law of the clan** — kin do not stay in alien hands. Encode it three ways:
 - **As a custom Ideology precept** (belongs in `jawa_xenotype_and_religion.md`): *"A Jawa in chains is a debt on the whole clan"* — buying out an enslaved Jawa is a **required** act (mood buff on redemption; mood penalty / precept violation if we can afford it and walk away). This makes the "MUST" a *game-enforced pull*, not just a roleplay note.

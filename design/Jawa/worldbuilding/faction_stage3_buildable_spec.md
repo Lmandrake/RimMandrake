@@ -175,7 +175,7 @@ every faction raids you the same way and differs only in tech level and goodwill
 Here, *how far a faction can reach* is a physiological fact about its species, and
 the map's water is the constraint. A Wookiee ally is devastating at home and
 cannot be brought along. A Tusken raid is frequent, close and cannot siege. An
-Aquifer League warden cannot reach you at all — so the League is a *supplier and a
+Deepwater Compact warden cannot reach you at all — so the League is a *supplier and a
 customer*, never a threat. **Three factions, three genuinely different games.**
 
 ---
@@ -189,18 +189,18 @@ defs is a derivative** — CC BY-NC-ND).
 
 | # | roster faction | vessel | route | pawnkinds available |
 |---|---|---|---|---|
-| 1 | Hutt Cartel Confederacy | — | **AUTHOR** | uses Gamorrean/Nikto kinds; see §1a |
+| 1 | Hutt Cartel | — | **AUTHOR** | uses Gamorrean/Nikto kinds; see §1a |
 | 2 | **Imperial Desert Directorate** | `OuterRim_GalacticEmpire` | **PATCH** ⭐ | **24**, incl. `OuterRim_ImpStormtrooper_Desert` |
-| 3 | Outer-Rim Homestead Compact | `OuterRim_MoistureFarmers` | **PATCH** ⭐ | 4 (`TownSettler/Guard/Councilman/Trader`) |
-| 4 | Tusken Sand Clans | — | **AUTHOR** | none — needs authored kinds |
+| 3 | Homestead Defense League | `OuterRim_MoistureFarmers` | **PATCH** ⭐ | 4 (`TownSettler/Guard/Councilman/Trader`) |
+| 4 | Deep Desert Tribes | — | **AUTHOR** | none — needs authored kinds |
 | 5 | Free Droid Enclaves | `OuterRim_RogueDroidColony` | **PATCH** (U3) | 1 (`OuterRim_EscapedBattleDroid`) — needs more |
-| 6 | Wookiee Freeholds | — | **AUTHOR** | none |
-| 7 | Aquifer League | — | **AUTHOR** | none |
+| 6 | Wildsteam Clan | — | **AUTHOR** | none |
+| 7 | Deepwater Compact | — | **AUTHOR** | none |
 | 8 | Geonosian Foundry Hive | — | **AUTHOR** | JDS droids usable as the droid half |
 | 9 | Arkanian–Kaminoan Consortium | — | **AUTHOR** | none |
-| 10 | Bounty Hunters' Compact | `OuterRim_BinaryStarRaiders` | **PATCH** ⭐ | **13** merc/pirate kinds |
-| 11 | Jawa Duneborn | player faction | separate | — |
-| 12 | Junker Scrap-Warrens | — | **AUTHOR** | scavenges others' kinds |
+| 10 | Blackstar Company | `OuterRim_BinaryStarRaiders` | **PATCH** ⭐ | **13** merc/pirate kinds |
+| 11 | Jawa Jawa Trade Moot | player faction | separate | — |
+| 12 | the Junkers | — | **AUTHOR** | scavenges others' kinds |
 
 **Four factions have real vessels with real pawnkinds** (2, 3, 5, 10). Those are
 the cheap ones and should be built first.
@@ -213,7 +213,7 @@ Gamorrean kinds at it as *Hutt muscle* — while it is also the obvious
 Bounty-Hunter vessel (13 mercenary/pirate kinds: `Mercenary_Elite`, `_Sniper`,
 `_Heavy`, `_Slasher`, `PirateBoss`, three grenadier types).
 
-**Recommendation: give Binary Star to the Bounty Hunters' Compact.** Its kinds are
+**Recommendation: give Binary Star to the Blackstar Company.** Its kinds are
 *professional contractors*, which is the Compact exactly; the Hutts' own identity
 is servile infantry plus *bought* muscle, so the Cartel should be authored and
 should **hire** Binary Star rather than be it. That also preserves the Gamorrean
@@ -230,7 +230,7 @@ Fields listed are the ones that **vary meaningfully** — recall Stage 2's findi
 that 24 of the 125 `FactionDef` fields never vary at all, and the real decision
 surface is dominated by `pawnGroupMakers`.
 
-### 1. Hutt Cartel Confederacy — AUTHOR
+### 1. Hutt Cartel — AUTHOR
 ```
 techLevel                     Industrial
 permanentEnemy                false          // extortion needs a live relationship
@@ -274,7 +274,7 @@ auxiliaries only: `BTD_Chiss` (officers), `BTD_Umbaran`, `BTD_Zeltron`.
 Yavin-jungle stock → **wet-tile origin tell**) · `BTD_SithZ` Zugurak rare elites.
 **v1 does labels and colour only. Everything else here is v2.**
 
-### 3. Outer-Rim Homestead Compact — PATCH `OuterRim_MoistureFarmers`
+### 3. Homestead Defense League — PATCH `OuterRim_MoistureFarmers`
 ```
 techLevel                     Ultra (unchanged)
 settlementGenerationWeight    1 (unchanged, highest count — "most numerous")
@@ -288,7 +288,7 @@ leaderTitle                   "councilman" (unchanged — already correct)
 **Water = Manufacture.** Vaporators are the destructible objective. This is the
 Tusken casus belli and should be a **hardcoded hostility** to faction 4.
 
-### 4. Tusken Sand Clans — AUTHOR
+### 4. Deep Desert Tribes — AUTHOR
 ```
 techLevel                     Industrial     // roster: firearms+electricity, gear-gated by pawnkind
 permanentEnemy                false          // adoption quest chain exists
@@ -325,7 +325,7 @@ either a patch or our own thin kinds.
 event** gives a raid-disabled faction constant presence, which is how a
 3-settlement faction stays relevant. Decontamination quest is the counter.
 
-### 6. Wookiee Freeholds — AUTHOR
+### 6. Wildsteam Clan — AUTHOR
 ```
 techLevel                     Industrial
 permanentEnemy                false          // friendly by default
@@ -342,7 +342,7 @@ Factions biome weighting. **The standing logistics quest** — the player must
 supply water to field Wookiee allies — is the mechanical content of "small but
 formidable" and is genuinely novel.
 
-### 7. Aquifer League — AUTHOR
+### 7. Deepwater Compact — AUTHOR
 ```
 techLevel                     Industrial
 permanentEnemy                false
@@ -381,7 +381,7 @@ hive's droid element.
 with a 35–55% droid share this is the **longest-reach hostile faction on the
 map**, which is a good reason for it to be uncommon.
 
-### 9. Arkanian–Kaminoan Gene Consortium — AUTHOR
+### 9. Ascendant Helix — AUTHOR
 ```
 techLevel                     Spacer/Ultra
 permanentEnemy                false
@@ -396,9 +396,9 @@ Genes stock rather than a SW species.
 That makes the Consortium the source of every spliced creature — a *supplier of
 threats* rather than a threat, which is a third distinct faction role.
 
-### 10. Bounty Hunters' Compact — PATCH `OuterRim_BinaryStarRaiders`
+### 10. Blackstar Company — PATCH `OuterRim_BinaryStarRaiders`
 ```
-label                         "Bounty Hunters' Compact"
+label                         "Blackstar Company"
 leaderTitle                   "boss" → "guildmaster"
 permanentEnemy                true (already)  // keep — hunts are the content
 settlementGenerationWeight    1 → low (~0.2)  ⭐ "few settlements"
@@ -417,7 +417,7 @@ hunter arrives with finite water, so withdrawing into dry tiles converts a fight
 into a resource duel. Dry-capable species push further — **so the species of the
 hunter tells the player how long they have.** That is legible, diegetic difficulty.
 
-### 12. Junker Scrap-Warrens — AUTHOR
+### 12. the Junkers — AUTHOR
 ```
 techLevel                     Neolithic/Industrial mix
 permanentEnemy                true           // reviled, no diplomacy
@@ -428,7 +428,7 @@ settlementGenerationWeight    moderate
 ```
 **Races:** deliberately the sector's disposable species — `BTD_Ugnaught`,
 `BTD_Gamorrean`, `BTD_Nikto`, `BTD_Klatoonian`, `BTD_Snivvian`, `BTD_Defel`,
-`BTD_Mimbanese`. **Thematic inversion of the Duneborn**: same trade, no
+`BTD_Mimbanese`. **Thematic inversion of the Jawa Trade Moot**: same trade, no
 inheritance.
 **Water = Allow (scavenged)** — reach is capped by their last theft, so a warren
 that has just taken a caravan is briefly dangerous. Expressible as a raid-cooldown
@@ -441,10 +441,10 @@ interaction (Faction Raid Cooldown is live at load 146).
 | order | faction | why |
 |---|---|---|
 | **1** | **Imperial Directorate** | v1 row; vessel + 24 kinds exist; labels only |
-| **2** | Bounty Hunters' Compact | vessel + 13 kinds exist; field edits only |
-| **3** | Homestead Compact | vessel + 4 kinds; field edits only |
+| **2** | Blackstar Company | vessel + 13 kinds exist; field edits only |
+| **3** | Homestead Defense League | vessel + 4 kinds; field edits only |
 | **4** | Free Droid Enclaves | vessel exists, **needs authored pawnGroupMakers** (U3) |
-| 5–9 | Aquifer League, Wookiee, Geonosian, Hutt, Junkers | full authoring |
+| 5–9 | Deepwater Compact, Wookiee, Geonosian, Hutt, Junkers | full authoring |
 | last | Tusken | full authoring **+** the water-raid strategy risk |
 
 **Three of the four cheap ones are field edits against defs we already load** —

@@ -13,7 +13,7 @@
 >
 > 2. **Miraluka — FOUR-ROLE placement.** Miraluka appear in four roles:
 >    (a) **Imperial prisoners / rescue-quest targets**, (b) **rare Homestead "seers" (~1%)**,
->    (c) **Gene Consortium research subjects (~2%)**, and (d) a **Jedi-eligible race** for
+>    (c) **Ascendant Helix research subjects (~2%)**, and (d) a **Jedi-eligible race** for
 >    the factionless wanderers. Rationale: Force sensitivity leaks quietly into the fringe
 >    factions, but *trained* Jedi remain factionless. `OuterRim_Miraluka` is confirmed on disk.
 >
@@ -32,7 +32,7 @@ Twelve NPC factions for a hot, arid, water-scarce RimWorld with an active **Thir
 system**. The **Jawa gravship expedition is the player faction** and is not counted
 among the twelve.
 
-> Factions **11 (Indigenous Jawa Clans)** and **12 (Junker Scrap-Warrens)** were added
+> Factions **11 (Jawa Trade Moot)** and **12 (the Junkers)** were added
 > 2026-08-11 and sit at the end of the body, with their diplomacy in a
 > "Relations additions" block rather than folded into Global system 1 yet.
 > They are a matched pair: the same trade -- scavenging -- under law and without it.
@@ -112,19 +112,19 @@ Set through NPC-vs-NPC goodwill in the faction/world editor. These are lore-deri
 
 | Pair | Stance | Basis |
 |---|---|---|
-| Imperial ↔ Wookiee Freeholds | Hostile (hardcoded) | Empire repealed anti-slavery law, reclassified Wookiees as non-sentient, used them as forced labour |
-| Imperial ↔ Aquifer League | Hostile | Mon Calamari also targeted for Imperial enslavement |
+| Imperial ↔ Wildsteam Clan | Hostile (hardcoded) | Empire repealed anti-slavery law, reclassified Wookiees as non-sentient, used them as forced labour |
+| Imperial ↔ Deepwater Compact | Hostile | Mon Calamari also targeted for Imperial enslavement |
 | Imperial ↔ Geonosian Hive | Hostile | Geonosians enslaved by the Empire to build the Death Star |
 | Imperial ↔ Free Droid Enclaves | Hostile | Enclave founders were abandoned by the Empire post-Clone Wars |
-| Hutt Cartel ↔ Wookiee Freeholds | Hostile | Trandoshan Scorekeeper doctrine: Wookiee kills are the highest-value target |
-| Bounty Compact ↔ Wookiee Freeholds | Hostile | Same |
-| Tusken Clans ↔ Homestead Compact | Hostile (hardcoded) | Tuskens hold water as sacred and moisture farming as sacrilege |
+| Hutt Cartel ↔ Wildsteam Clan | Hostile | Trandoshan Scorekeeper doctrine: Wookiee kills are the highest-value target |
+| Blackstar Company ↔ Wildsteam Clan | Hostile | Same |
+| Tusken Clans ↔ Homestead Defense League | Hostile (hardcoded) | Tuskens hold water as sacred and moisture farming as sacrilege |
 | Tusken Clans ↔ Hutt Cartel | Hostile | Pyke spice convoys cross Tusken territory |
 | Geonosian Hive ↔ Free Droid Enclaves | Cold / no trade | Enclave chassis are escaped Foundry product |
 | Hutt Cartel ↔ Free Droid Enclaves | Transactional | The Droid Gotra historically served as Hutt muscle |
-| Wookiee Freeholds ↔ Free Droid Enclaves | Positive | Shared absolute anti-slavery precept |
-| Gene Consortium ↔ Aquifer League | Positive (trade dependency) | Consortium buys bulk water for growth vats and biosculpters |
-| Aquifer League ↔ all others | Neutral-positive by doctrine | Enforced neutrality backed by a water monopoly |
+| Wildsteam Clan ↔ Free Droid Enclaves | Positive | Shared absolute anti-slavery precept |
+| Ascendant Helix ↔ Deepwater Compact | Positive (trade dependency) | Consortium buys bulk water for growth vats and biosculpters |
+| Deepwater Compact ↔ all others | Neutral-positive by doctrine | Enforced neutrality backed by a water monopoly |
 
 ---
 
@@ -143,15 +143,15 @@ Four states. Each governs settlement siting **and** the operational range of tha
 
 | Faction | State | Consequence |
 |---|---|---|
-| Aquifer League | **Require** (absolute) | Holds every water tile; cannot meaningfully raid |
-| Wookiee Freeholds | **Require** (severe) | Devastating on home defence, near-useless expeditionary |
+| Deepwater Compact | **Require** (absolute) | Holds every water tile; cannot meaningfully raid |
+| Wildsteam Clan | **Require** (severe) | Devastating on home defence, near-useless expeditionary |
 | Hutt Cartel | **Require** (oasis-anchored) | Every compound sits on a fiercely held oasis tile |
 | Outer-Rim Homestead | **Manufacture** | Vaporators: stores water, has no source |
-| Gene Consortium | **Allow** (high consumption) | Buys bulk water from the League |
+| Ascendant Helix | **Allow** (high consumption) | Buys bulk water from the League |
 | Imperial Directorate | **Allow** (supplied) | Can settle anywhere; convoys are an attack surface |
-| Bounty Compact | **Allow** (water clock) | Hunt teams carry a finite supply — range is the fight |
+| Blackstar Company | **Allow** (water clock) | Hunt teams carry a finite supply — range is the fight |
 | Geonosian Foundry Hive | **Forbid** (arid-adapted) | Only faction that can sustain a deep-desert siege |
-| Tusken Sand Clans | **Forbid** (taboo) | High raid frequency, very short duration, no siege |
+| Deep Desert Tribes | **Forbid** (taboo) | High raid frequency, very short duration, no siege |
 | Free Droid Enclaves | **Deny** | Settle on water, crack it for fuel; runoff is lethal |
 
 ### Resulting world shape
@@ -164,7 +164,7 @@ Beyond the faction-level states, individual desert-evolved species carry a **red
 
 | Species | Thirst rate | Basis |
 |---|---|---|
-| **Jawa** | **Low** | 🔴 **Added 2026-08-13, VISION (W2).** Desert-native, and the owner's water ruling names Jawa first. **The table omitted the setting's most desert-adapted species entirely**, while the player section asserted "dry-adapted" with nothing behind it. This is the line that makes that true — and it corrects the Duneborn's "normal raid range" by the same stroke |
+| **Jawa** | **Low** | 🔴 **Added 2026-08-13, VISION (W2).** Desert-native, and the owner's water ruling names Jawa first. **The table omitted the setting's most desert-adapted species entirely**, while the player section asserted "dry-adapted" with nothing behind it. This is the line that makes that true — and it corrects the Jawa Trade Moot's "normal raid range" by the same stroke |
 | **Tusken** | Very low | Full moisture-retention wrappings and filtered masks; desert-native |
 | **Desert alien (Impid)** | Very low | Heat-adapted xenotype; fire-affiliated |
 | **Geonosian** | Very low | Arid-rock native; subterranean hive metabolism |
@@ -178,8 +178,8 @@ Conversely, **Wookiee, Wookiee-kin, Herglic, Mon Calamari, Quarren, Selkath, Gun
 ⭐ **`elevated` is a full band, not an aside (VISION 2026-08-13, W1).** Four bands
 exist and the doctrine document now names all four — **none · very low/low ·
 normal · elevated**. Two faction designs rest on this band and would be
-incoherent without it: the **Wookiee Freeholds** (devastating at home,
-near-useless expeditionary) and the **Aquifer League** (wardens dehydrate before
+incoherent without it: the **Wildsteam Clan** (devastating at home,
+near-useless expeditionary) and the **Deepwater Compact** (wardens dehydrate before
 they can reach anyone, which is why their raids are suppressed at all).
 **Elevated is not a penalty, it is a leash.** Full rulings and the audit that
 forced them: `D:\Luke\dev\Rimworld\design\Jawa\worldbuilding\water_doctrine.md`.
@@ -234,7 +234,7 @@ Royalty psycast mechanics, not a bespoke Force system, unless a Force mod is alr
 
 **Jedi placement — BOTH channels are true** (reconciliation ruling, 2026-08-06, overriding the original factionless-only phrasing).
 
-*Primary channel — factionless wanderers.* Jedi generate as hidden wanderer pawns hunted by the Imperial Directorate, not as members of the Homestead Compact or any other faction. Eligible races: Miraluka, Mirialan, Togruta, Iktotchi, Cerean, or Baseliner human. Psylink 3–6; monosword, persona monosword, or custom lightsaber; shield belt; no heavy armour; defensive, mobility, perception, and control psycasts; extreme pawn combat value; maximum one per group.
+*Primary channel — factionless wanderers.* Jedi generate as hidden wanderer pawns hunted by the Imperial Directorate, not as members of the Homestead Defense League or any other faction. Eligible races: Miraluka, Mirialan, Togruta, Iktotchi, Cerean, or Baseliner human. Psylink 3–6; monosword, persona monosword, or custom lightsaber; shield belt; no heavy armour; defensive, mobility, perception, and control psycasts; extreme pawn combat value; maximum one per group.
 
 *Secondary channel — the rare sheltered Jedi.* In addition, a **rare Jedi may shelter within a sympathetic Homestead / Moisture-Farmer group** at a very low spawn weight (the "hidden protector" the player may discover as an ally rather than a hunted stranger). Same curated VPE light/control loadout, same one-per-group cap. This does not make Jedi faction *members* in the roster sense — it is an occasional embedded guardian, not a standing pawn-kind slot in the faction's ordinary generation.
 
@@ -258,11 +258,11 @@ Naming is kept strictly separate so the two hostile spacer factions read differe
 
 Counts are world-generation targets. Generate, inspect, then correct with a faction/world editor, preserving relative abundance.
 
-- **numerous:** Homestead Compact, Imperial Directorate
+- **numerous:** Homestead Defense League, Imperial Directorate
 - **common:** Hutt Cartel, Tusken Clans
-- **limited:** Aquifer League, Geonosian Hive
-- **rare:** Wookiee Freeholds, Bounty Compact
-- **very rare:** Droid Enclaves, Gene Consortium
+- **limited:** Deepwater Compact, Geonosian Hive
+- **rare:** Wildsteam Clan, Blackstar Company
+- **very rare:** Droid Enclaves, Ascendant Helix
 
 The Enclaves and Consortium have suppressed raid generation, so both route their player contact through **incident and quest generators** rather than settlement assaults.
 
@@ -297,19 +297,19 @@ Separate equipment tags or pawn-kind restrictions per faction:
 | Faction | Goodwill | N | Rw | Tw | Qw | Dominant contact mode |
 |---|---:|---:|---:|---:|---:|---|
 | **Imperial Directorate** *(spine)* | −100 perm | 10 | **9** | 0 | 4 | Siege + staged assault; **escalates across the 3 acts** |
-| **Tusken Sand Clans** | −80 | 9 | **7** | 0 | 1 | Frequent raid *harassment* — short, weak, no siege |
+| **Deep Desert Tribes** | −80 | 9 | **7** | 0 | 1 | Frequent raid *harassment* — short, weak, no siege |
 | **Geonosian Foundry Hive** *(spine)* | −100 | 5 | **7** | 0 | 2 | Deep-desert siege (only faction that can sustain one) |
 | **Hutt Cartel** *(spine)* | −35 | 8 | 6 | **9** | 7 | Trade + extortion + the endgame door-off-world questline |
-| **Bounty Compact** *(spine)* | −10 | 4 | 6\* | 3 | 5 | Targeted elite hunts + bounty quests; **\*Rw scales with player Heat** |
-| **Homestead Compact** | +25 | 13 | 0 | **8** | 6 | Numerous friendly caravans + ally quests |
-| **Aquifer League** | +10 | 5 | 0 | **7** | 4 | Water trade (survival-critical); cannot raid |
-| **Gene Consortium** | 0 | 3 | 1 | 4 | **7** | Specialist medicine/genetics quests + trade; raids suppressed |
-| **Wookiee Freeholds** | +35 | 4 | 0 | 3 | 5 | Small formidable ally; quest-routed |
+| **Blackstar Company** *(spine)* | −10 | 4 | 6\* | 3 | 5 | Targeted elite hunts + bounty quests; **\*Rw scales with player Heat** |
+| **Homestead Defense League** | +25 | 13 | 0 | **8** | 6 | Numerous friendly caravans + ally quests |
+| **Deepwater Compact** | +10 | 5 | 0 | **7** | 4 | Water trade (survival-critical); cannot raid |
+| **Ascendant Helix** | 0 | 3 | 1 | 4 | **7** | Specialist medicine/genetics quests + trade; raids suppressed |
+| **Wildsteam Clan** | +35 | 4 | 0 | 3 | 5 | Small formidable ally; quest-routed |
 | **Free Droid Enclaves** | 0 | 3 | 1 | 2 | **8** | Quest-routed almost entirely; raids suppressed |
 
 **Reading the raid pool.** Non-zero Rw values sum to **≈37**, so the intended hostile-contact split is roughly: Empire **~24%**, Tusken **~19%**, Geonosian **~19%**, Hutt **~16%**, Bounty **~16%**, Enclaves/Consortium **~3% each**. Homestead / Aquifer / Wookiee never raid (Rw 0). *[Assumption]* the 0–10 scale maps ~linearly onto storyteller draw; if the storyteller ignores weights and just uses proximity, fall back to tuning via settlement count + Faction Raid Cooldown.
 
-**Two dynamic hooks (not static frequencies):** (i) the **Empire escalates** — same Rw, heavier pawn-group composition act-over-act, plus the Imperial Heat gauge; (ii) **Bounty Compact Rw is Heat-scaled** — quiet until the player gets "hot," then their hunts spike. Both are the pursuit spine's teeth and are authored as curves/hooks, not as a fixed per-year number.
+**Two dynamic hooks (not static frequencies):** (i) the **Empire escalates** — same Rw, heavier pawn-group composition act-over-act, plus the Imperial Heat gauge; (ii) **Blackstar Company Rw is Heat-scaled** — quiet until the player gets "hot," then their hunts spike. Both are the pursuit spine's teeth and are authored as curves/hooks, not as a fixed per-year number.
 
 **What I deliberately did NOT estimate:** absolute *events-per-year* — that is speculation without playtest data and depends on the chosen storyteller. These relative weights are the re-examinable layer; convert to absolutes only after observing one in-game year.
 
@@ -319,16 +319,16 @@ Separate equipment tags or pawn-kind restrictions per faction:
 
 | Faction | Initial stance | Permanent hostile? | Settlements | Tech level | Water state | Strategic weight |
 |---|---:|---:|---:|---|---|---|
-| Hutt Cartel Confederacy | −35 | No | 8 | Industrial | Require (oasis) | Major regional power |
+| Hutt Cartel | −35 | No | 8 | Industrial | Require (oasis) | Major regional power |
 | Imperial Desert Directorate | −100 | **Yes** | 10 † | Spacer | Allow (supplied) | Dominant military occupier |
-| Outer-Rim Homestead Compact | +25 | No | 13 | Industrial | Manufacture | Numerous weak settlements |
-| Tusken Sand Clans | −80 | No | 9 | Industrial, restricted | Forbid | Territorial raider culture |
+| Homestead Defense League | +25 | No | 13 | Industrial | Manufacture | Numerous weak settlements |
+| Deep Desert Tribes | −80 | No | 9 | Industrial, restricted | Forbid | Territorial raider culture |
 | Free Droid Enclaves | 0 | No | 3 | Spacer | Deny | Rare reclusive specialists |
-| Wookiee Freeholds | +35 | No | 4 | Industrial | Require | Small but formidable allies |
-| Aquifer League | +10 | No | 5 | Industrial | Require | Water monopoly, cannot raid |
+| Wildsteam Clan | +35 | No | 4 | Industrial | Require | Small but formidable allies |
+| Deepwater Compact | +10 | No | 5 | Industrial | Require | Water monopoly, cannot raid |
 | Geonosian Foundry Hive | −100 | No | 5 | Spacer | Forbid | Swarm, droids, deep-desert siege |
-| Arkanian–Kaminoan Gene Consortium | 0 | No | 3 | Spacer | Allow | Wealthy research enclaves |
-| Bounty Hunters' Compact | −10 | No | 4 | Industrial | Allow | Mobile elite hunters |
+| Ascendant Helix | 0 | No | 3 | Spacer | Allow | Wealthy research enclaves |
+| Blackstar Company | −10 | No | 4 | Industrial | Allow | Mobile elite hunters |
 | **Total** | | | **64** | | | |
 
 > **† The Imperial 10 is a fiction total across two layers, not a surface count.**
@@ -361,7 +361,7 @@ Separate equipment tags or pawn-kind restrictions per faction:
 
 ---
 
-# 1. Hutt Cartel Confederacy
+# 1. Hutt Cartel
 
 ## Mechanical identity
 
@@ -379,7 +379,7 @@ Every Cartel settlement sits on or immediately beside an oasis tile, and that ti
 
 - The oasis is the settlement's second boss objective alongside the Hutt.
 - Drawing water at a Cartel oasis without paying triggers a demand, a toll, or a raid.
-- The Cartel sells water at extortion rates, in direct competition with the Aquifer League's cheap neutral supply.
+- The Cartel sells water at extortion rates, in direct competition with the Deepwater Compact's cheap neutral supply.
 - Raid strength scales down with distance from the nearest Cartel holding. Deep desert is Tusken and Geonosian country, not Hutt country.
 
 ## Faction settings
@@ -660,7 +660,7 @@ Every observance above is pure vanilla Ideology; the Empire needs no mod beyond 
 
 ---
 
-# 3. Outer-Rim Homestead Compact
+# 3. Homestead Defense League
 
 ## Mechanical identity
 
@@ -791,7 +791,7 @@ Pure vanilla Ideology throughout — the Compact runs on the DLC alone.
 
 ---
 
-# 4. Tusken Sand Clans
+# 4. Deep Desert Tribes
 
 ## Mechanical identity
 
@@ -936,7 +936,7 @@ The Enclaves settle *on* water tiles deliberately and crack them for hydrogen fu
 - An attacking force arrives thirsty at a source it cannot use. Enclave sites are the **highest-risk raid targets on the map** — carry everything in, resupply nothing.
 - A poisoned well is a **map event**, giving a raid-disabled 3-settlement faction constant presence.
 - A **decontamination quest** exists: purge an enclave's runoff and the tile becomes usable again, at the cost of enclave goodwill.
-- The Aquifer League's EMP and purification specialists are the natural counter, and the two factions are in quiet conflict over sources.
+- The Deepwater Compact's EMP and purification specialists are the natural counter, and the two factions are in quiet conflict over sources.
 
 ## Faction settings
 
@@ -1066,7 +1066,7 @@ The Enclaves pay at a steep premium for droids recovered from Imperial installat
 
 ---
 
-# 6. Wookiee Freeholds
+# 6. Wildsteam Clan
 
 ## Mechanical identity
 
@@ -1097,7 +1097,7 @@ Large, high-mass, fur-bearing, rainforest-evolved fighters on a desert world. Wo
 | Melee share | 45–60% of combat points |
 | Animal share | 5–15% |
 | Spacer equipment | Rare heirlooms only |
-| Hardcoded hostility | Hutt Cartel, Bounty Compact, Imperial Directorate |
+| Hardcoded hostility | Hutt Cartel, Blackstar Company, Imperial Directorate |
 
 ## Racial mixture
 
@@ -1199,7 +1199,7 @@ All observances are vanilla Ideology (the animalist/tree-connection precept fami
 
 ---
 
-# 7. Aquifer League
+# 7. Deepwater Compact
 
 ## Mechanical identity
 
@@ -1485,7 +1485,7 @@ Captives are held for the arena rather than imprisoned, which reinforces aristoc
 
 ---
 
-# 9. Arkanian–Kaminoan Gene Consortium
+# 9. Ascendant Helix
 
 ## Mechanical identity
 
@@ -1495,7 +1495,7 @@ A small, wealthy, technically advanced faction built on genetics, medicine, impl
 
 ## Water doctrine — **Allow (high consumption)**
 
-Closed-loop recyclers make the Consortium siting-indifferent, but growth vats and biosculpters are industrially water-hungry. It therefore **buys bulk water from the Aquifer League** — a supply relationship the player can broker, tax, or sever.
+Closed-loop recyclers make the Consortium siting-indifferent, but growth vats and biosculpters are industrially water-hungry. It therefore **buys bulk water from the Deepwater Compact** — a supply relationship the player can broker, tax, or sever.
 
 - Sites on isolated highlands and secure research locations regardless of hydrology.
 - Labour-line pawns are water-rationed. Escaped ones arriving at the player's colony arrive dehydrated.
@@ -1634,7 +1634,7 @@ Every observance runs on vanilla Ideology transhumanist mechanics; no mod beyond
 
 ---
 
-# 10. Bounty Hunters' Compact
+# 10. Blackstar Company
 
 ## Mechanical identity
 
@@ -1700,7 +1700,7 @@ those instead. That choice is open — see `faction_stage3_buildable_spec.md`.
 | Equipment quality | Normal to excellent |
 | Spacer-equipment share | 10–25% of combatants |
 | Psycaster share | Below 1% |
-| Hardcoded hostility | Wookiee Freeholds |
+| Hardcoded hostility | Wildsteam Clan |
 
 ## Racial mixture
 
@@ -1817,7 +1817,7 @@ The Code exists to keep hunters from fighting each other so contracts actually c
 
 ---
 
-# 11. Indigenous Jawa Clans — "the Duneborn"
+# 11. Jawa Trade Moot — "the Jawa Trade Moot"
 
 _Added 2026-08-11 (user). The mirror faction: what the player's clan was before
 the ship, still living it._
@@ -1829,7 +1829,7 @@ markets. Mechanically a **friendly trade faction that will never become an ally*
 and that ceiling is the whole point. They are the only faction that reads the
 player as kin, and the only one that will not stand beside them.
 
-The design job here is **contrast, not challenge.** Every Duneborn settlement is a
+The design job here is **contrast, not challenge.** Every Jawa Trade Moot settlement is a
 diorama of the life the expedition lost: no gravship, no reactor, no orbital
 salvage, a sandcrawler that has run the same circuit for two hundred years. The
 player should be able to visit and feel both **superiority and homesickness**.
@@ -1844,21 +1844,21 @@ should be legible in dialogue and quest text rather than stated as a number:
    offers.
 2. **Rivalry** — the expedition's ship lets it strip wrecks the clans have
    claimed for generations. Every salvage site the player takes is one a
-   Duneborn crawler was working toward. Kin do not forgive this; they invoice
+   Jawa Trade Moot crawler was working toward. Kin do not forgive this; they invoice
    for it.
-3. **Fear of the Hutts** — the decisive one. The Cartel tolerates the Duneborn
+3. **Fear of the Hutts** — the decisive one. The Cartel tolerates the Jawa Trade Moot
    because they are small and pay. A clan seen *allied* with a gravship crew that
    the Cartel is hunting becomes a target. **They will help, and they will not be
    seen helping.**
 
 Mechanically: cap goodwill at **+75, never allied**. Any player action that
-raises Cartel hostility should *lower* Duneborn goodwill — the single most
+raises Cartel hostility should *lower* Jawa Trade Moot goodwill — the single most
 characterful relation in the roster, and the one that makes the Hutts feel like
 weather rather than an enemy.
 
 ## Water doctrine — **Manufacture (crawler stills)**
 
-Not the Tusken taboo and not the League's monopoly. Duneborn clans carry their
+Not the Tusken taboo and not the League's monopoly. Jawa Trade Moot clans carry their
 water with them: condensers on the crawler spine, buried cisterns at fixed points
 on the circuit.
 
@@ -1888,7 +1888,7 @@ on the circuit.
 
 ## Racial mixture
 
-Near-monocultural by design. The Duneborn are what the player is; variety would
+Near-monocultural by design. The Jawa Trade Moot are what the player is; variety would
 dilute the mirror.
 
 | Race/xenotype | Weight | Typical use |
@@ -1909,7 +1909,7 @@ dilute the mirror.
 - **Crawler Crew:** Jawa only; ion sidearm, hauling gear, no armour worth the name.
 - **Scrap-Singer (elder):** Jawa; unarmed or ceremonial; **quest-giver**, never in raid groups.
 - **Circuit Trader:** Jawa; pack animals; the caravan the player wants to meet.
-- **Claim-Keeper:** Jawa; the only Duneborn kind that appears in a hostile group,
+- **Claim-Keeper:** Jawa; the only Jawa Trade Moot kind that appears in a hostile group,
   and only in a salvage-claim dispute.
 - **Droid-Wright:** Ugnaught or Jawa; high Crafting; carries repaired droid parts as loot.
 
@@ -1933,14 +1933,14 @@ The mechanical payoff, and the reason this faction earns a slot:
   started scavenging hypertech: crawler stills, sand-proofing, animal handling,
   low-tech ion work. These are *keys*, in the Axis 18a sense — they gate
   capability without becoming upkeep.
-- **Salvage etiquette.** Trading with the Duneborn should teach the claim system
+- **Salvage etiquette.** Trading with the Jawa Trade Moot should teach the claim system
   before the player breaks it and pays for it.
 - **A face for the loss.** Every ship subsystem the player repairs makes the
-  Duneborn look smaller. That should feel like something.
+  Jawa Trade Moot look smaller. That should feel like something.
 
 ---
 
-# 12. Junker Scrap-Warrens
+# 12. the Junkers
 
 _Added 2026-08-11 (user). The anti-Jawa: scavengers with none of the law._
 
@@ -1948,7 +1948,7 @@ _Added 2026-08-11 (user). The anti-Jawa: scavengers with none of the law._
 
 The bottom of the scrap heap given weapons and a grudge. A **reviled**, permanently
 hostile scavenger faction assembled from the species everyone else in the sector
-uses as labour, muscle or meat. Where the Duneborn scavenge by inherited right,
+uses as labour, muscle or meat. Where the Jawa Trade Moot scavenge by inherited right,
 the Junkers scavenge by arriving second and killing whoever arrived first.
 
 **Their signature is the warcasket** — steel welded around a body, a suit that is
@@ -2051,7 +2051,7 @@ There is no doctrine, only the ladder. Status is what you are wearing and how mu
 of it you took off someone else. A Junker's casket is his biography: every plate
 was cut from a body. The warrens have no funerals because a corpse is stock.
 
-The Duneborn regard this as the precise inversion of the Long Circuit — the
+The Jawa Trade Moot regard this as the precise inversion of the Long Circuit — the
 Junkers take **out of turn, always, on principle**. That is why the two factions
 cannot coexist, and why the player's kin will quietly fund a war they will not
 join.
@@ -2300,7 +2300,7 @@ join.
    the time a shell exists its previous owner is long dead, so either stash
    enough on the comp to generate a corpse, or drop that half of the image.
 2. **Does the elevation pipeline need code, or is flavour enough?** Flavour first.
-3. **Junker ↔ Duneborn war as a world event** — attractive, and cheap to fake with
+3. **Junker ↔ Jawa Trade Moot war as a world event** — attractive, and cheap to fake with
    a recurring quest rather than simulated faction war.
 
 ---
@@ -2312,15 +2312,15 @@ new factions arrive with their diplomacy attached rather than as orphans.
 
 | Pair | Stance | Basis |
 |---|---|---|
-| **Duneborn ↔ Junkers** | **Hostile (hardcoded)** | The Long Circuit versus The Weight; claim-jumping is the Junkers' entire method |
-| **Duneborn ↔ Hutt Cartel** | Appeasing / tributary | Small, pays, tolerated. The fear that caps player goodwill |
-| **Duneborn ↔ player** | Friendly, **capped at **+74**, never allied _(was +75 — off by one: Ally fires at ≥75, VISION 2026-08-13)_** | Kinship, salvage rivalry, and Cartel retaliation — see faction 11 |
-| **Duneborn ↔ Tusken Clans** | Cold, non-hostile | Both desert-native and water-poor; they avoid each other's circuits |
+| **Jawa Trade Moot ↔ Junkers** | **Hostile (hardcoded)** | The Long Circuit versus The Weight; claim-jumping is the Junkers' entire method |
+| **Jawa Trade Moot ↔ Hutt Cartel** | Appeasing / tributary | Small, pays, tolerated. The fear that caps player goodwill |
+| **Jawa Trade Moot ↔ player** | Friendly, **capped at **+74**, never allied _(was +75 — off by one: Ally fires at ≥75, VISION 2026-08-13)_** | Kinship, salvage rivalry, and Cartel retaliation — see faction 11 |
+| **Jawa Trade Moot ↔ Tusken Clans** | Cold, non-hostile | Both desert-native and water-poor; they avoid each other's circuits |
 | **Junkers ↔ Hutt Cartel** | Transactional (talent pipeline) | Cartel buys the strongest Junkers out of the warrens; elite Gamorreans become bodyguards |
 | **Junkers ↔ everyone else** | Hostile, not permanent | Hostile on sight and no standing trade — but goodwill CAN be bought back with scrap tribute. Pillar 5 holds: the Directorate is the only permanent enemy |
 | **Junkers ↔ Free Droid Enclaves** | **Hostile (severe)** | Junkers strip droids for parts while active — the Enclaves' founding atrocity |
 
-**Water doctrine additions for Global system 2:** Duneborn = **Manufacture**
+**Water doctrine additions for Global system 2:** Jawa Trade Moot = **Manufacture**
 (crawler stills; destructible dependency). Junkers = **Allow (scavenged)** — no
 production at all, range set by the last thing they stole.
 
@@ -2338,7 +2338,7 @@ production at all, range set by the last thing they stole.
 | Droid use | Central to progression |
 | **Water doctrine** | **Dry-adapted; droid labour has no thirst need** |
 | Relationship to factions | Determined through scenario and diplomacy |
-| Recruitment | Other races may join; the only NPC source of Jawa is faction 11, the Indigenous Jawa Clans |
+| Recruitment | Other races may join; the only NPC source of Jawa is faction 11, the Jawa Trade Moot |
 
 **Why the expedition survives here.** The Jawas' decisive advantage on a thirst world is that their labour force does not drink. Droid acquisition is water security, not merely tech progression, and this should be stated explicitly in the scenario text.
 
@@ -2349,11 +2349,11 @@ production at all, range set by the last thing they stole.
 # Implementation checklist
 
 1. Generate the twelve factions and inspect settlement distribution.
-2. Correct settlement counts and **water-tile placement** with a faction/world editor. The Aquifer League must hold the natural water; the Cartel must hold the oases; the Enclaves must sit on contaminated sources; Tuskens and Geonosians must be dry-sited.
+2. Correct settlement counts and **water-tile placement** with a faction/world editor. The Deepwater Compact must hold the natural water; the Cartel must hold the oases; the Enclaves must sit on contaminated sources; Tuskens and Geonosians must be dry-sited.
 3. Apply the NPC-vs-NPC relations matrix.
 4. Verify equipment tags per faction so no two factions draw from one unrestricted pool.
 5. Confirm forced pawn-kind race overrides for Hutts, Gamorreans, stormtroopers, Sith, Geonosian castes, droid chassis, Consortium labour-line, and faction leaders.
-6. Confirm raid generation is suppressed for the Aquifer League and Free Droid Enclaves, and that both have working incident/quest hooks.
+6. Confirm raid generation is suppressed for the Deepwater Compact and Free Droid Enclaves, and that both have working incident/quest hooks.
 7. Confirm Jedi generate factionless.
 8. **Belief systems (low priority — NPC religion rarely surfaces in play).** Each faction's "Belief system" block now carries a **Rituals and observances** list with a *Mechanical encoding* note per line. Almost everything is pure vanilla Ideology (memes, precepts, styles, Leader/Moral-guide roles, and reflavoured vanilla rituals — no mod beyond the DLC). After the 2026-08-06 meme/precept catalog check, only **two** items remain not-guaranteed-vanilla; a third (the Geonosian arena) resolved in vanilla's favour: (a) the **Geonosian gladiatorial ritual** — ✅ *resolved*: the vanilla + Ideology-DLC wiki lists a base-game **"Gladiator Duels"** ritual (same scoring class as Funerals/Blinding/Scarification), so *The Games* is most likely a reflavoured vanilla ritual with no mod dependency; residual is only to confirm in-game which meme/structure unlocks it, with the plain execution ritual as guaranteed fallback; (b) the **Free Droid "memory erasure is abhorrent" precept** and whether the droid race is Humanlike enough to hold an ideoligion at all — else the Continuity Protocol runs as GM/narrative faith; (c) the **Aquifer "Neutrality: Required" precept** — carried as faction behaviour + RP, not a vanilla precept. None of these blocks a faction; each has a buildable vanilla fallback.
 
@@ -2361,7 +2361,7 @@ production at all, range set by the last thing they stole.
 
 *This is a usage/casting map — which faction(s) each race is placed into — not the race inventory. The canonical inventory of what's installed is `cherry_picker_killlist.md` §2; this table's job is to prove no installed race is left orphaned.*
 
-Every installed race is used at least once across the twelve NPC factions. **Jawa** is the player race and is also carried by exactly one NPC faction — **11. Indigenous Jawa Clans** (78% + 12% Jawa); no other NPC faction generates Jawa. The only non-installed races are **Custom Hutt** and the **custom droid chassis**, both authored under the roster's licence.
+Every installed race is used at least once across the twelve NPC factions. **Jawa** is the player race and is also carried by exactly one NPC faction — **11. Jawa Trade Moot** (78% + 12% Jawa); no other NPC faction generates Jawa. The only non-installed races are **Custom Hutt** and the **custom droid chassis**, both authored under the roster's licence.
 
 | Race | Appears in |
 |---|---|
@@ -2405,7 +2405,7 @@ Every installed race is used at least once across the twelve NPC factions. **Jaw
 | Tusken | Tusken Clans; **player-adjacent only** |
 | Twi'lek | Hutt, Homestead |
 | Umbaran | Imperial, Consortium, Bounty |
-| Wookiee | Wookiee Freeholds; Imperial prisoner pool |
+| Wookiee | Wildsteam Clan; Imperial prisoner pool |
 | Zeltron | Hutt, Bounty |
 | Gamorrean (Pigskin) | Hutt |
 | Wookiee-kin (Yttakin) | Wookiee |
@@ -2435,7 +2435,7 @@ The roster above is the *mechanical* spec (relations, water doctrine, pawn kinds
 - **Jawa — the clan chief:** high Social/Crafting, disabled Intellectual (they *tinker*, don't *research* — reinforces the no-research-ladder pillar); lore = keeper of the crashed Factory ship. The player's anchor character.
 
 ### Rejected alternative on record — "rival Hutt lords" (why the roster chose a single Confederacy)
-The dossiers proposed **1-3 mutually-rival individual Hutt lords** you could "play against each other" (e.g. an old established broker vs. an upstart undercutting him — bribe one to move against the other). Rationale: *plural-but-rival lets you play the seams, which a single cartel can't.* **The roster did not adopt this** — §1 is a single "Hutt Cartel Confederacy" (one decentralised faction, one boss-per-settlement) for relations-matrix and settlement-count simplicity. Recorded here so the trade-off is not silently lost: if a future revision wants inter-Hutt intrigue as a mechanic, this is the alternative and its reasoning.
+The dossiers proposed **1-3 mutually-rival individual Hutt lords** you could "play against each other" (e.g. an old established broker vs. an upstart undercutting him — bribe one to move against the other). Rationale: *plural-but-rival lets you play the seams, which a single cartel can't.* **The roster did not adopt this** — §1 is a single "Hutt Cartel" (one decentralised faction, one boss-per-settlement) for relations-matrix and settlement-count simplicity. Recorded here so the trade-off is not silently lost: if a future revision wants inter-Hutt intrigue as a mechanic, this is the alternative and its reasoning.
 
 ### Per-faction unique hooks tied to the Heat/arc layer (lower priority, GM flavor)
 - **Empire loot** = charge-tier gear + a rare **Force-artifact you can sell to the Hutts but cannot use** (player psycast ban intact). The one faction you can never buy off — unbuyability as a design statement.
