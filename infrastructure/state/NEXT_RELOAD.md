@@ -99,7 +99,8 @@ NEED-DOWN batch listed three items and **two of them were already deployed**:
 |---|---|
 | `jawa/order_pawn` | ✅ deployed — do not re-deploy |
 | `jawa/damage` refusal fix | ✅ deployed — do not re-deploy |
-| **`jawa/get_defs` (`f4ecb68`)** | 🔴 **UNDEPLOYED — this alone is what the shutdown window owes** |
+| **`jawa/get_defs` (`f4ecb68`)** | 🔴 **UNDEPLOYED** |
+| **`jawa/fire_quest`** | 🔴 **UNDEPLOYED — being built offline by BRIDGE 2026-08-14.** Unblocks v1 row 3, which §7 had filed as uncollectable. `QuestUtility::GenerateQuestAndMakeAvailable(QuestScriptDef, float)`, IL-confirmed to reach `QuestManager::Add` — it registers, it does not merely generate. The tool reads the quest back out of `QuestManager` and reports its id/name/State, because a method returning is not evidence |
 
 ⚠️ **The method that made the stale entry look verified:** `strings -a` scans
 7-bit ASCII, so a method-body literal (UTF-16LE, in the `#US` heap) reads as
@@ -352,7 +353,7 @@ would produce the evidence does not exist or is measured broken.**
 
 | item | why it cannot be collected |
 |---|---|
-| **v1 row 3 — fire *The Claim*** | The rumour item needs a **right-click float menu** ("Read the rumour") on a colonist. `rimworld/right_click_cell` is **measured broken** — it reports *"Dispatched a live right-click…"* and nothing happens (`skills/rimbridge/references/traps.md:294`; `queue/BRIDGE.md:535`). No bridge route to a float menu exists. **Row 3 waits for the owner at the keyboard.** ⚠️ Do NOT wait for the storyteller either — the quest is root-selected |
+| ~~**v1 row 3 — fire *The Claim***~~ | 🔓 **NO LONGER TRUE — moved out of this section 2026-08-14.** The float-menu route is still dead (`rimworld/right_click_cell` reports *"Dispatched a live right-click…"* and does nothing — `skills/rimbridge/references/traps.md:294`), but the menu was never the only route. **BRIDGE is building `jawa/fire_quest`**, deploying in the same shutdown window as `jawa/get_defs`. See §1c |
 | **ToolBeltFix** | Needs the apparel **WORN**. There is no equip tool in the 22 |
 | **CereanManeFix / SauridFrillFix** | Neither names a pawnkind defName, so there is no `spawn_pawn` that reliably produces the pawn to look at |
 | **The seven fix mods generally** | ⚠️ **None can ever produce a log line.** `Failed to find any textures at` fires only when **every** direction of a `Graphic_Multi` is missing, so a single absent or zero-alpha facing is a silent south-fallback. They settle by eyeballing a pawn, never by `harvest_log.py` |

@@ -303,7 +303,7 @@ live-stack → **OPS**; driving the live game to verify → **BRIDGE**.
 |---|---|---|---|---|---|
 | 1 | Empire reskin (labels) | 🟩 **BUILT** | 🟩 **SEEN LIVE** | CREATE | ✅ **CLOSED** |
 | 2 | Faction exclusion at worldgen | — | ⬜ | owner + VISION | 🔴 the campaign worldgen, list ratified and waiting |
-| 3 | One `QuestScriptDef` — *The Claim* | 🟩 **BUILT**, deployed | ⬜ | CREATE | fire it and reach an end state |
+| 3 | One `QuestScriptDef` — *The Claim* | 🟩 **BUILT**, deployed | ⬜ | CREATE | 🔓 **unblocked 2026-08-14** — was *"waits for the owner at the keyboard"*; BRIDGE is building `jawa/fire_quest`, deploying with `jawa/get_defs` |
 | 4 | Three terrain overrides | 🟩 **BUILT**, deployed | 🟨 **2 of 3 SEEN** — salt pans + dune seas | CREATE | 🔴 **scrapfields is a measured DEFECT, not a blank** — 11 chunks against a predicted 75–125. OPS **O15**, `a82f50b` |
 | 5 | Jawa xenotype plays | 🟩 live | 🟩 **CLOSED — checked-and-fine** | BRIDGE | ✅ **CLOSED.** `BTD_Jawa` survives BTD's load-time dedup and the pawnKind pins were remapped onto it, measured live from `Player.log`. Our patches target the right xenotype |
 | 6 | Weapons / gear | 🟩 6 mods live | 🟩 **`JawaIonWeapons` PROVEN** `ad3e9b0` | BRIDGE | ✅ **CLOSED** |
@@ -328,9 +328,19 @@ live-stack → **OPS**; driving the live game to verify → **BRIDGE**.
 > filth has another source on the stack. **No `could not find cell` warning fired.**
 > Splitting test is OPS **O15**, `a82f50b`. **Do not green row 4 until it resolves.**
 >
-> ⚠️ **Row 3 is not "awaiting verification" — it is BLOCKED on a missing tool**
-> (`NEXT_RELOAD.md` §7: the rumour needs a float menu, `rimworld/right_click_cell`
-> is measured broken). A `jawa/fire_quest` proposal is with BRIDGE.
+> 🔓 **Row 3 was UNBLOCKED on 2026-08-14 and the lesson is bigger than the row.**
+> It sat in `NEXT_RELOAD.md` §7 — *"gates that cannot be collected"* — reading
+> **"row 3 waits for the owner at the keyboard"**, because the rumour item's
+> float menu is unreachable and `rimworld/right_click_cell` is measured broken.
+> **All of that was true, and the conclusion was still wrong: the float menu was
+> never the only route into the quest.** BRIDGE is building `jawa/fire_quest` on
+> `QuestUtility::GenerateQuestAndMakeAvailable`, IL-confirmed to reach
+> `QuestManager::Add`. It deploys with `jawa/get_defs` — two tools, one window.
+>
+> 📌 **For this seat specifically: an item parked as *blocked on a human* is the
+> one nobody re-examines**, because the block is outside the team and feels
+> settled. §7 exists to stop wasted loads, which is right — but a "cannot" that
+> names a broken *route* should be re-read as "no route is BUILT yet".
 >
 > 🔴 **Rows 2 and 7 are ONE event, and it is HELD by the owner** until the sea is
 > shapeable. They are not blocked on us and not late — they are deferred by choice,
