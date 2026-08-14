@@ -128,3 +128,51 @@ BG's prefix, in the companion DLL.
 ⚠️ And 3,633 was optimistic regardless: support would presumably only count
 extenders the engine can see, and ours sit at up to 84.7 against `maxDistance`
 34. The realistic figure is 633 + 250 × (extenders inside 34), not 633 + 250×12.
+
+---
+
+## 🟢 RESOLVED — it was a settings value, and it applies LIVE with no restart
+
+**The owner's instinct was right: this was never a hard ceiling.** Sequence,
+all live on the running game, no reload:
+
+1. `rimworld/get_mod_settings redmattis.biggergravship` — BG's live settings:
+
+   | setting | value | reaches the def? |
+   |---|---|---|
+   | `gravEngineSupport` | 632.7954 | ✅ yes |
+   | `gravExtenderSupport` | **500.0** | ❌ **no — def has no SubstructureSupport at all** |
+   | `gravExtenderMaxDistanceFromEngine` | **85.0** | ❌ **no — def reads 34** |
+
+2. `rimworld/update_mod_settings` with `{"values": {"gravEngineSupport": 4500}}`
+   → setting became 4500 in memory and persisted to
+   `Config/Mod_3522759531_GravshipSizeSettings.xml`.
+   ⚠️ **The def did NOT change yet** — still 632.7954. Writing the setting is
+   not applying it.
+3. `rimworld/open_mod_settings`, then clicked **"Apply Settings Now!"**
+   (`ui-element:10:6:63`). Response: *"UI state did not change"* — which is
+   wrong; the def changed.
+4. Live `GravEngine` re-read: **`SubstructureSupport: 4500.0`**.
+5. Engine panel: **`Connected substructure: 4057 / 4500`** — under capacity.
+
+**So a BG size change needs no game restart.** That removes a ~25-minute load
+from every future experiment on ship size. It does need the Apply button; the
+settings write alone is inert.
+
+### The extender bug is real and survives Apply
+
+After Apply, `GravFieldExtender` **still** has zero occurrences of
+`SubstructureSupport`. BG's own setting says extenders are worth 500 each and
+the value never reaches the def — so BG intends 632.8 + 12×500 = 6,632 and
+delivers 633. Two of its writes are broken (extender support, and extender
+max-distance-from-engine, which gets the engine's 34 instead of its own 85).
+**Not our bug and not fixable from the settings window** — the slider is already
+set to 500.
+
+### Correction to the "ceiling" framing above
+
+Everything measured above stands as measurement — extenders and amplifiers do
+contribute nothing, a second engine does disable the first, capacity is not
+power-dependent. What was wrong was the **conclusion** that the ceiling was
+therefore fixed at 633. It is a configurable number, it was simply set low, and
+the hull never had to shrink.
