@@ -500,10 +500,41 @@ Present in the design, absent from all 26 spawn calls (checked against
 but "interior detail" is doing heavy lifting for *doors, thrusters, the pilot
 console and the power supply*. **Furniture is v2; a door is not furniture.**
 
-⇒ **Recommendation:** after step 19, if time remains, spawn **doors and a
-`PilotConsole` by hand** — they are the two that change what the screenshot means.
-Both are vanilla defs already named in `ship_build.md:176-179`. Everything else in
-that table is a genuine v2 authoring pass and should be filed, not improvised.
+## 🔴 STEP 19b — CUT A DOOR. PROMOTED FROM "IF TIME REMAINS" TO A GATE STEP.
+
+**PROJECT named the open criterion for row 8 as BOARDABLE, 2026-08-13. A sealed
+hull is not boardable, so this stopped being optional the moment that was said.**
+782 continuous hull tiles means no colonist can ever get inside; the ship would
+pass every flight check and fail the only criterion left.
+
+⚠️ **Do not skip this if the session is running short.** A ship with a door and
+no pilot console still clears the gate. A ship with a console and no door does
+not. **If exactly one thing gets placed after step 19, it is a door.**
+
+**Defs verified in Core, not remembered:** `Door` and `Autodoor` —
+`Data/Core/Defs/ThingDefs_Buildings/Buildings_Structure.xml:66` and `:89`. Use
+**`Autodoor`** if power reaches it; plain `Door` otherwise, and plain `Door` is
+the safe pick because the ship has no power source (§6.2).
+
+**Procedure — mechanical, no judgement needed mid-build:**
+1. After the hull walls exist, query the wall ring on the **south face** of the
+   hull rect (`x82-167, z58-190`) at roughly the x-midpoint, `x≈124`.
+2. Pick one wall cell there. **Destroy that one wall thing**, then spawn `Door`
+   at the same cell.
+3. Cut a **second** door on a different face. One door is a single point of
+   failure — if it lands on an interior partition rather than the exterior
+   wall, the ship is still sealed and the screenshot will not show it.
+
+🔴 **The gate test is NOT "a door exists".** Order a colonist to walk to an
+interior cell and confirm they **arrive**. Pathing is the only thing that proves
+boardable — a door in an interior wall, a door blocked by substructure edge, or
+a door with no reachable route all look correct in a screenshot. **Shoot the
+colonist standing inside.**
+
+⇒ **After the door, if time remains:** a `PilotConsole`, then everything else in
+the table above. Those are vanilla defs already named in `ship_build.md:176-179`.
+Everything beyond them is a genuine v2 authoring pass and should be filed, not
+improvised.
 
 ### 6.3 Named by label, or not a def at all
 
