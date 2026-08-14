@@ -275,8 +275,8 @@ def i_cherry_picker(s, cfg):
     if failed:
         record("A6b", "  ...per-key failures", FAIL, "; ".join(failed)[:200])
     record("A6c", "  ...and silence proves nothing", SKIP,
-           "an unresolvable key logs NOTHING. Confirm the 24 keys by reading "
-           "defs back, not by a quiet log. CREATE owns the list.")
+           "an unresolvable key logs NOTHING. The keys are read back below.")
+    cherry_keys(s, cfg)
 
 
 def i_world_stats(s, cfg):
@@ -634,6 +634,102 @@ ITEMS = [
 
 
 # ------------------------------------------------------------------- run
+
+# CREATE's list, 2026-08-14. 🔴 Cherry Picker DELETES only 13 def types and
+# NEUTERS the rest, so `get_def` returns almost every key whether the pick
+# worked or not. **Absence is the right test for exactly two of them.** For the
+# others the tell is a FIELD VALUE, which is why `get_def` grew combatPower,
+# tradeability and thingCategories the same night.
+#   A: must be ABSENT from the DefDatabase
+#   B: present, combatPower must read float.MaxValue (3.4028235E+38)
+#   C: present, MarketValue 0 / tradeability None / no thingCategories
+#   D: present; report what is seen -- no expectation is set, and inventing one
+#      then "confirming" it is how a measurement becomes a story
+CHERRY = [
+    ("A", "RecipeDef", "GhoulInfusion"),
+    ("A", "RecipeDef", "Make_GravcoreGF"),
+    ("B", "PawnKindDef", "ShamblerSoldier"),
+    ("B", "PawnKindDef", "ShamblerSwarmer"),
+    ("B", "PawnKindDef", "Ghoul"),
+    ("B", "PawnKindDef", "Metalhorror"),
+    ("B", "PawnKindDef", "Trispike"),
+    ("C", "ThingDef", "GoldenCube"),
+    ("C", "ThingDef", "RevenantSpine"),
+    ("C", "ThingDef", "VoidNode"),
+    ("C", "ThingDef", "WarpedObelisk_Duplicator"),
+    ("C", "ThingDef", "WarpedObelisk_Abductor"),
+    ("C", "ThingDef", "GravForge"),
+    ("C", "ThingDef", "AdvShip_GravReactor"),
+    ("D", "IncidentDef", "ShamblerAssault"),
+    ("D", "IncidentDef", "ShamblerSwarm"),
+    ("D", "IncidentDef", "SmallShamblerSwarm"),
+    ("D", "IncidentDef", "ShamblerSwarmAnimals"),
+    ("D", "IncidentDef", "GhoulAttack"),
+    ("D", "IncidentDef", "CreepJoinerJoin_Metalhorror"),
+    ("D", "IncidentDef", "WarpedObelisk_Duplicator"),
+    ("D", "IncidentDef", "WarpedObelisk_Abductor"),
+]
+
+
+def cherry_keys(s, cfg):
+    """Read every Cherry Picker key back BY TYPE, not by name.
+
+    ⚠️ `WarpedObelisk_Duplicator` and `_Abductor` each exist as BOTH a ThingDef
+    and an IncidentDef. `jawa/get_def` takes an explicit `defType`, so the two
+    are separable -- a bare-name lookup would answer about one of them and the
+    reader would not know which.
+    """
+    for grp, dtype, name in CHERRY:
+        rid = "A6%s-%s" % (grp, name[:18])
+        try:
+            r = s.call("jawa/get_def", defName=name, defType=dtype)
+        except Exception as e:
+            record(rid, "%s/%s" % (dtype, name), ERROR, str(e)[:110])
+            continue
+        present = ok(r)
+        extra = (r or {}).get("extra") or {}
+
+        if grp == "A":
+            note = ("absent from the DefDatabase, as intended" if not present
+                    else "PRESENT -- the pick did not delete it")
+            if present and name == "Make_GravcoreGF":
+                note += ". 🔴 The GravTech scarcity gate is OPEN."
+            if not present and name == "GhoulInfusion":
+                note += (". ⚠️ 1,144 defs reference it in <recipes> as direct "
+                         "object references resolved before startup, so absence "
+                         "here does NOT mean the surgery is gone -- check a pawn.")
+            record(rid, "%s/%s absent" % (dtype, name),
+                   PASS if not present else FAIL, note)
+
+        elif grp == "B":
+            if not present:
+                record(rid, "%s/%s neutered" % (dtype, name), FAIL,
+                       "def not found at all -- expected present-but-neutered")
+                continue
+            record(rid, "%s/%s combatPower" % (dtype, name),
+                   PASS if extra.get("combatPowerIsMaxValue") else FAIL,
+                   "combatPower=%s (want float.MaxValue; a NORMAL value means "
+                   "the pick did not apply, and the def existing means nothing)"
+                   % extra.get("combatPower"))
+
+        elif grp == "C":
+            if not present:
+                record(rid, "%s/%s neutered" % (dtype, name), FAIL,
+                       "def not found at all -- expected present-but-neutered")
+                continue
+            mv = ((r or {}).get("statBases") or {}).get("MarketValue")
+            cats = extra.get("thingCategoryCount")
+            good = (not mv) and extra.get("tradeability") == "None" and not cats
+            record(rid, "%s/%s neutered" % (dtype, name),
+                   PASS if good else FAIL,
+                   "MarketValue=%s tradeability=%s thingCategories=%s"
+                   % (mv, extra.get("tradeability"), cats))
+
+        else:
+            record(rid, "%s/%s" % (dtype, name), NEEDS_EYES,
+                   "%s, label=%r -- reporting what is there; no expectation set"
+                   % ("present" if present else "ABSENT", (r or {}).get("label")))
+
 
 def run(s, cfg):
     have = census(s)

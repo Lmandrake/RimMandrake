@@ -1429,7 +1429,35 @@ namespace JawaBench.BridgeTools
                         isMechanoid = thingDef.race?.IsMechanoid,
                         isFlesh = thingDef.race?.IsFlesh,
                         intelligence = thingDef.race?.intelligence.ToString(),
-                        modExtensions = thingDef.modExtensions?.Select(m => m.GetType().Name).ToList()
+                        modExtensions = thingDef.modExtensions?.Select(m => m.GetType().Name).ToList(),
+                        // 🔴 The three fields a Cherry Picker NEUTER moves. It
+                        // deletes only 13 def types; for everything else the def
+                        // stays in the database with its value stripped, so
+                        // EXISTENCE PROVES NOTHING and `get_def` returning the
+                        // def is not evidence the pick failed. The tell is the
+                        // value, so the value has to be readable.
+                        tradeability = thingDef.tradeability.ToString(),
+                        thingCategories = thingDef.thingCategories?
+                            .Select(c => c.defName).ToList(),
+                        thingCategoryCount = thingDef.thingCategories?.Count ?? 0,
+                        tradeTags = thingDef.tradeTags
+                    };
+                }
+                else if (def is PawnKindDef pawnKindDef)
+                {
+                    // Cherry Picker neuters a PawnKindDef by setting combatPower
+                    // to float.MaxValue (3.4028235E+38) so the storyteller can
+                    // never afford it. THAT NUMBER IS THE CONFIRMATION -- a
+                    // normal value means the pick did not apply, and the def
+                    // existing tells you nothing either way.
+                    extra = new
+                    {
+                        isPawnKind = true,
+                        combatPower = pawnKindDef.combatPower,
+                        combatPowerIsMaxValue =
+                            pawnKindDef.combatPower >= float.MaxValue,
+                        race = pawnKindDef.race?.defName,
+                        defaultFactionDef = pawnKindDef.defaultFactionDef?.defName
                     };
                 }
                 else if (def is BiomeDef biomeDef)
