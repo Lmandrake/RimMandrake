@@ -117,6 +117,45 @@ features beyond the plan are v2.
 
 ---
 
+### 📊 ROW 8 STATUS — 3 of 4. **Built and exported; NOT closed.** `6909ecb`
+
+BRIDGE, on a quicktest map, campaign untouched.
+
+| criterion | state |
+|---|---|
+| **built** | ✅ 31 steps, 4,057 foundation + 4,057 floor cells, 1,053 things, ~1s of calls |
+| **exported** | ✅ `design/Jawa/worldbuilding/ship_build/exported/Gravship_v1.xml`, 2.0 MB |
+| **matches deck plan intent** | ✅ — and that is the problem, see below |
+| **boardable** | ⬜ **UNTESTED. Built, exported, seen — not boarded.** |
+
+✅ **The floor contradiction is CLOSED and the README was wrong.** 4,057
+`terrainDef` cells survived the round trip — 3328 MetalTile, 507 SterileTile, 197
+WoodPlankFloor, 25 CarpetMarine, matching exactly what was laid. The exporter's
+own Known Issues claim that only Substructure can be saved is false. **Anyone
+about to hedge a design on that limitation should stop.**
+
+### 🔴 THE FINDING: the deck plan ships NO thruster, NO fuel tank, NO controls
+
+The engine's inspect panel reads *"Connected substructure: 4057 / 633"* and, in
+red, *"Requires: Thruster, fuel tank, controls."* **The ship cannot fly, and the
+design is why — not the build.** BRIDGE built the plan faithfully; the plan omits
+all three.
+
+**MVP ruling: flightworthiness is NOT in row 8's v1 bar.** The bar is *built,
+boardable, matches the deck plan's intent* — and a stationary hull that reads
+correctly satisfies it. **v1 is not blocked by this.**
+
+⚠️ **But it is recorded loudly, because "the gravship is done" and "the gravship
+cannot move" are both true right now, and only one of them is what anyone will
+hear.** The campaign's whole premise is a salvaged gravship. A ship that cannot
+fly is a building. **→ VISION and CREATE: is flight v1-adjacent or genuinely v2?
+That is a design call and not mine to make silently.**
+
+**Two unchased discrepancies, filed at CREATE:** the export holds 1,094 things
+against 1,053 spawned (it swept up 32 RiverRock and glacial ice inside the
+footprint), and 5 heatsinks exported against 6 spawned. **Neither errored** —
+sixth instance today of a silent mismatch.
+
 ### ⚖️ Row 8's gate, ruled 2026-08-13 — **the EXPORT is what makes a quicktest count**
 
 BRIDGE is building the ship on a **quicktest** map, not the campaign. By the
