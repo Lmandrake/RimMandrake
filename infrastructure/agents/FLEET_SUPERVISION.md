@@ -89,6 +89,20 @@ push is nearly free; the cost of a badly-timed one is that it *stacks*.
 - **A seat you must reject more than ~30% of the time is a net negative, not a
   slow positive.** Below ~0.70 reliability, automation measurably underperforms
   having none. Fix it or stop using it; do not tolerate it.
+- 🔴 **THE RELIABILITY PARADOX — the fleet getting better makes you check less, and
+  miss more.** Omission errors *rose* from **32.4% to 48.3%** as an aid's
+  reliability rose from **0.87 to 0.98**. Complacency also appears **only under
+  multi-task load** — which is your permanent condition — and it hits **experts
+  exactly as hard as novices**, is **not cured by practice**, and is **not
+  prevented by being told the aid is imperfect.** Only *exposure to real failures*
+  reduced it. ⇒ **the more reliable these five seats become, the more deliberate
+  your sampling has to be.** This is the one finding that gets worse with success.
+- **Structured handover is the best-evidenced fix in the whole sweep.** I-PASS
+  across 9 hospitals and 10,740 admissions cut medical errors **23%** and
+  preventable adverse events **30%**, with **no increase in workflow time** — and
+  non-preventable events unchanged, which is the control that makes it credible.
+  ⇒ `gamestate.py release "what you left behind"` is not bookkeeping. **It is the
+  intervention.** The next seat inherits your map.
 - **Trust breaks fast and mends slowly** — and people distrust even a reliable aid
   after seeing errors *unless given an explanation of why the errors happen*. ⇒
   when a seat is wrong, the write-up of **why** is not optional politeness; it is
