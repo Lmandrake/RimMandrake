@@ -83,7 +83,7 @@ instead of erroring. PackageIds used below:
 |---|---|
 | `VME_`, `VFEA_` | `vanillaexpanded.vmemese` |
 | `AM_` | `sarg.alphamemes` |
-| `OuterRim_` | `neronix17.outerrim.droiddepot` |
+| `OuterRim_` | `neronix17.outerrim.droiddepot` — ⚠️ **no entry uses this prefix.** Faction 5 was the only consumer and its `OuterRim_DroidPrimacy` never existed in the dump. Kept as vocabulary; do not treat as evidence a meme is available. |
 | `VQE_` | `vanillaquestsexpanded.generator` |
 | `GR_` | `vanillaexpanded.vgeneticse` |
 | `Comfort_Wanted/Important/Essential` | `llunak.moreprecepts` |

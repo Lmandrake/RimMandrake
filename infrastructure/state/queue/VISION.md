@@ -542,6 +542,19 @@ unmeasured sentence in a skill just because a skill is where it lives.**
 | the validator checks deity count | **WARN**, never ERROR |
 | the validator checks `MayRequire` | 🔴 **it does not.** Its INFO line makes it look like it does. Still the largest hole; **on you, every time** |
 
+## ✅ V24. CLOSED 2026-08-14 — 2/11 → **11/11 VALID** (`653f2c8`)
+All nine repaired against the live dump. Decision sheet, every legal option per
+faction with its cost: `design\Jawa\worldbuilding\review\religions_repair_sheet.md`
+(`ee288bd`). **Faction 4 took `PainIsVirtue` on the owner's ruling** — nomadism is
+now fiction only, and Tusken raiders arrive scarred and crowned instead of generic.
+Two doctrines turned out never to have existed: faction 5's `OuterRim_DroidPrimacy`
+(in neither dump nor palette) and faction 10's apostasy position (**all four**
+negative Apostasy precepts carry `conflictingMemes: ['Guilty']`, so there is no
+legal one). ⚠️ **Validator says VALID, not GOOD** — it still WARNs 4 inert precepts
+across the set. Original entry below.
+
+<details><summary>original filing</summary>
+
 ## 🔴 V24. Nine of the eleven religions are INVALID — mine to repair
 
 `--md` reports **2/11 VALID** (Wildsteam, Deepwater Compact). Dominated by
@@ -553,6 +566,8 @@ Decision sheet in progress: `design\Jawa\worldbuilding\review\religions_repair_s
 defects.** `OuterRim_DroidPrimacy` exists in neither the live dump nor the palette,
 and its `Corpses_DontCare` requires eight memes it holds none of; seven of the
 eight are illegal here and the eighth is absurd. **Drop the precept.**
+
+</details>
 
 ## 🔴 V25. The Empire scores 0 on DECISION — the third independent measurement
 
