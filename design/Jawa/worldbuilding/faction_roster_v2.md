@@ -164,6 +164,7 @@ Beyond the faction-level states, individual desert-evolved species carry a **red
 
 | Species | Thirst rate | Basis |
 |---|---|---|
+| **Jawa** | **Low** | 🔴 **Added 2026-08-13, VISION (W2).** Desert-native, and the owner's water ruling names Jawa first. **The table omitted the setting's most desert-adapted species entirely**, while the player section asserted "dry-adapted" with nothing behind it. This is the line that makes that true — and it corrects the Duneborn's "normal raid range" by the same stroke |
 | **Tusken** | Very low | Full moisture-retention wrappings and filtered masks; desert-native |
 | **Desert alien (Impid)** | Very low | Heat-adapted xenotype; fire-affiliated |
 | **Geonosian** | Very low | Arid-rock native; subterranean hive metabolism |
@@ -173,6 +174,15 @@ Beyond the faction-level states, individual desert-evolved species carry a **red
 | **All droid chassis** | **None** | No thirst need whatsoever |
 
 Conversely, **Wookiee, Wookiee-kin, Herglic, Mon Calamari, Quarren, Selkath, Gungan, Chagrian, Aqualish, Trandoshan, Rodian, Ithorian, and Ewok** carry an **elevated** thirst rate. They are the pawns that make a faction slow.
+
+⭐ **`elevated` is a full band, not an aside (VISION 2026-08-13, W1).** Four bands
+exist and the doctrine document now names all four — **none · very low/low ·
+normal · elevated**. Two faction designs rest on this band and would be
+incoherent without it: the **Wookiee Freeholds** (devastating at home,
+near-useless expeditionary) and the **Aquifer League** (wardens dehydrate before
+they can reach anyone, which is why their raids are suppressed at all).
+**Elevated is not a penalty, it is a leash.** Full rulings and the audit that
+forced them: `D:\Luke\dev\Rimworld\design\Jawa\worldbuilding\water_doctrine.md`.
 
 ---
 
