@@ -470,3 +470,38 @@ pistol/rifle/shotgun/sniper with `unstable` projectile variants, and the full
 > database. A def dump is authoritative about what shipped, never about what the
 > running game holds. The log said 250 → 150 in the same file I could have read
 > first. Filed as a trap.
+
+---
+
+## ✅ 2026-08-13 live-load confirmations (580 mods, rev591, dump 17:45)
+
+**Jawa_Patches defs are IN THE GAME, not just on disk** — all four resolve in the
+live dump, which closes the def half of v1 rows 3 and 4:
+`Jawa_SaltCrust` (TerrainDef) · `Jawa_ScatterScrapfields` (GenStepDef) ·
+`Jawa_TheClaim` (QuestScriptDef) · `Jawa_ClaimRumour` (ThingDef).
+⚠️ Still unproven: that they *do* anything. The terrain and scrapfields act at
+**map generation only**, so an existing map shows nothing — that is a worldgen
+observation, not a def check.
+
+**`JawaIonWeapons` PROVEN live** — 15 `JawaIon_Damage` downed `KotORDroidGood_3C`,
+`downed=true dead=false`, quicktest map. Evidence
+`observed/evidence/2026-08-13_ion_downs_kotor_droid.png`, write-up
+`observed/2026-08-13_ion_weapon_live_test.md`. **This is the only v1 item whose
+proof is a screenshot rather than a log line, and it always will be.**
+
+**Lightsabers restored:** 15 lightsaber ThingDefs live after the owner's
+re-subscribe of workshop `3466124712`. **VWEL:** 11 `VWEL_Gun_*` live.
+
+**573 → 580 def delta, with the counter-intuitive bit:** total defs went **DOWN**
+84,749 → 84,698 despite +7 mods, because the four removed mech mods took **110
+`SkinDef`s** with them. A falling def count is not evidence something broke.
+
+🔴 **My own error, recorded because it is the project's own rule:** I first
+reported two of those four defs MISSING because I looked them up by **filename**.
+`JawaSaltCrust.xml` declares `Jawa_SaltCrust`; `JawaScrapfields.xml` declares
+`Jawa_ScatterScrapfields`. **Never guess a defName — read the def.** A filename
+is not an identifier.
+
+⚠️ **`--defnames` does NOT validate xpaths**, only that a defName exists. All 43
+of our patch files pass 0 errors against the live index — that is real but
+narrow. An xpath matching nothing still passes; only `--defs` catches it.
