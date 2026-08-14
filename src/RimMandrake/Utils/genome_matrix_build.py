@@ -239,6 +239,28 @@ td.on.noart::after{content:"\\25CF";color:var(--fg);font-size:.7rem}
 .tag.ours{background:#2f8f4e33;color:var(--fg)}
 .star{color:var(--star)}
 .only{font-size:.72rem;color:var(--dim);max-width:70ch}
+.sbs{margin:0 0 2.2rem;border:1px solid var(--rule);border-radius:6px;
+background:var(--card);overflow:hidden}
+.sbs>h3{margin:0;padding:.55rem .8rem;font-size:1rem;border-bottom:1px solid var(--rule);
+display:flex;align-items:center;gap:.5rem;flex-wrap:wrap}
+.sbs>h3 img{width:22px;height:22px}
+.sbs .verdict{font-size:.8rem;color:var(--dim);font-weight:400;margin-left:auto}
+.sbs .inner{overflow-x:auto}
+.sbs table{font-size:.78rem;min-width:100%}
+.sbs thead th{height:8.5rem;background:var(--card)}
+.sbs th.rot>div{max-height:6.6rem}
+.sbs tbody th{min-width:15rem}
+.agree{color:var(--ours)}
+.disagree{color:var(--warn)}
+.chips{display:flex;flex-wrap:wrap;gap:.3rem;padding:.5rem .8rem}
+.g{display:inline-flex;align-items:center;gap:.25rem;border:1px solid var(--rule);
+border-radius:4px;padding:.05rem .35rem .05rem .2rem;font-size:.75rem;background:var(--bg)}
+.g img{width:16px;height:16px}
+.solo{border:1px solid var(--rule);border-radius:6px;background:var(--card);
+margin:0 0 .9rem}
+.solo>h3{margin:0;padding:.45rem .8rem;font-size:.92rem;font-weight:600;
+border-bottom:1px solid var(--rule);display:flex;align-items:center;gap:.45rem}
+.solo>h3 img{width:20px;height:20px}
 footer{margin-top:3rem;padding-top:1rem;border-top:1px solid var(--rule);
 color:var(--dim);font-size:.85rem;max-width:78ch}
 """
@@ -340,6 +362,78 @@ def build(args) -> int:
       '<span>&#9679; gene present, art not recovered</span>'
       '</div>')
 
+    # ---- helpers shared by the species blocks and the full grid
+    def glabel(g: str) -> str:
+        return (gene_by_name.get(g) or {}).get("label") or g
+
+    def gicon(g: str, px: int) -> str | None:
+        ip = (gene_by_name.get(g) or {}).get("fields", {}).get("iconPath")
+        return data_uri(icons[ip], px) if ip and ip in icons else None
+
+    def xicon(x: dict, px: int) -> str:
+        ip = x["fields"].get("iconPath")
+        uri = data_uri(icons[ip], px) if ip and ip in icons else None
+        return f'<img src="{uri}" alt="">' if uri else ""
+
+    def cell(g: str, present: bool) -> str:
+        if not present:
+            return "<td></td>"
+        tip = esc(f"{glabel(g)} — {g}")
+        uri = gicon(g, 20)
+        if uri:
+            return f'<td class="on"><img src="{uri}" alt="{esc(glabel(g))}" title="{tip}"></td>'
+        return f'<td class="on noart" title="{tip}"></td>'
+
+    # ---- Section 1: the contested species, side by side.
+    w("<h2>Contested species &mdash; where the packs disagree</h2>")
+    w('<p class="lede">One block per species that more than one active pack '
+      'defines. Columns are that species&rsquo; gene union only, ordered by how many '
+      'implementations carry them, so the leftmost columns are the agreed core and '
+      'everything to the right is a pack making its own call.</p>')
+
+    for s in contested:
+        impls = by_species[s]
+        union: Counter = Counter()
+        for x in impls:
+            for g in x["fields"].get("genes") or []:
+                union[g] += 1
+        cols = sorted(union, key=lambda g: (-union[g], glabel(g)))
+        agreed = sum(1 for g in cols if union[g] == len(impls))
+        marker = ('<span class="star">&#9733;</span>' if s in ROSTER_SPECIES
+                  else "&#9675;")
+        w('<div class="sbs">')
+        w(f'<h3>{xicon(impls[0], 22)}{marker} {esc(pretty_species(s))}'
+          f'<span class="chip">{len(impls)} implementations</span>'
+          f'<span class="verdict"><span class="agree">{agreed} genes agreed</span>'
+          f' &middot; <span class="disagree">{len(cols) - agreed} contested</span>'
+          f' of {len(cols)}</span></h3>')
+        w('<div class="inner"><table><thead><tr><th class="corner">&nbsp;</th>')
+        for g in cols:
+            uri = gicon(g, 18)
+            img = f'<img src="{uri}" alt="">' if uri else ""
+            cls = "rot"
+            tip = f"{glabel(g)} — {g}\ncarried by {union[g]} of {len(impls)}"
+            w(f'<th class="{cls}" title="{esc(tip)}">{img}<div>{esc(glabel(g))}</div></th>')
+        w("</tr></thead><tbody>")
+        for x in impls:
+            have = set(x["fields"].get("genes") or [])
+            pack_label, pack_cls = CANDIDATE_PACKS[x["packageId"].lower()]
+            w("<tr>")
+            w(f'<th title="{esc(x["defName"])}">{xicon(x, 20)}'
+              f'{esc(x.get("label") or x["defName"])}'
+              f'<span class="tag {pack_cls}">{esc(pack_label)}</span>'
+              f'<span class="chip">{len(have)} genes</span></th>')
+            for g in cols:
+                w(cell(g, g in have))
+            w("</tr>")
+        w("</tbody></table></div></div>")
+
+    # ---- Section 2: the full grid.
+    w("<h2>The full grid &mdash; every candidate, every shared gene</h2>")
+    w(f'<p class="lede">All {len(rows)} rows against all {len(columns)} gene '
+      f'columns. Wide by construction: this is the view for spotting a gene that '
+      f'runs across species, not for picking one. Row labels and the header stay '
+      f'put as you scroll.</p>')
     w('<div class="scroll"><table><thead><tr>')
     w('<th class="corner">&nbsp;</th>')
     for g in columns:
@@ -391,6 +485,30 @@ def build(args) -> int:
             w(f'<td class="only" title="{esc(names)}">{len(uniq)}</td>')
             w("</tr>")
     w("</tbody></table></div>")
+
+    # ---- Section 3: the species only one pack defines.
+    uncontested = [s for s in species_order if len(by_species[s]) == 1]
+    w("<h2>Uncontested &mdash; one pack, no decision to make</h2>")
+    w(f'<p class="lede">{len(uncontested)} species come from exactly one active '
+      f'pack, so there is nothing to choose. Listed with their full gene set for '
+      f'reference; a gene the game generated from a template rather than shipping '
+      f'as a file is included the same as any other.</p>')
+    for s in uncontested:
+        x = by_species[s][0]
+        have = sorted(x["fields"].get("genes") or [], key=glabel)
+        pack_label, pack_cls = CANDIDATE_PACKS[x["packageId"].lower()]
+        marker = ('<span class="star">&#9733;</span>' if s in ROSTER_SPECIES
+                  else "&#9675;")
+        w('<div class="solo">')
+        w(f'<h3>{xicon(x, 20)}{marker} {esc(pretty_species(s))}'
+          f'<span class="tag {pack_cls}">{esc(pack_label)}</span>'
+          f'<span class="chip">{len(have)} genes</span></h3>')
+        w('<div class="chips">')
+        for g in have:
+            uri = gicon(g, 16)
+            img = f'<img src="{uri}" alt="">' if uri else ""
+            w(f'<span class="g" title="{esc(g)}">{img}{esc(glabel(g))}</span>')
+        w("</div></div>")
 
     w("<h2>What was left out, and why</h2>")
     w("<p class=\"lede\">These xenotypes are installed and loading, but belong to a "
