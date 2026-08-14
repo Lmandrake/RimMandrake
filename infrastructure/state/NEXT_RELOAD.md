@@ -464,6 +464,8 @@ _Everything below is CREATE's. Three parts: a mod-list change handed to OPS, the
 two ⭐ v1 gate rows that are the point of the load, and two facts that are otherwise
 discovered the expensive way._
 
+🔴 **BRIDGE: the step-by-step for proving CREATE's deployed material is `infrastructure/state/CREATE_TEST_PLAN.md`** — deployed, enabled, never seen; screenshot-per-check, written by CREATE who does not connect.
+
 ### 🔻 (a) FOR OPS — seven fix mods exist in the repo and load NOTHING
 
 They are built, deployed-ready and **absent from `ModsConfig.xml`**, so today they
