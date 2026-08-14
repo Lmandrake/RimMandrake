@@ -30,21 +30,31 @@ magenta, that is a real failure even though everything "worked".
 
 ---
 
-## Part 1 — the eight mods. Cheapest first, all doable on any map
+## Part 1 — the TEN mods. Cheapest first, all doable on any map
 
-Seven art-fix mods plus the sled reskin, all enabled by OPS (572 → 580 active).
+Nine art-fix mods plus the sled reskin. **581 active as of 23:18** — OPS enabled
+`mandrake.phytokinbarkheadfix` (@562) and `mandrake.kotorbandoliernorthfix`
+(@579) and removed `mandrake.missingartfixes` from the list.
 Each is *one spawn and one look*. Nothing here needs a fresh map or a colony.
+
+🔴 **THIS PART IS NOW THE OWNER'S VERIFICATION GATE, not a victory lap.** The
+standing directive of 2026-08-13 stops all new art fixes *until the owner has
+verified the art actually does not work* — because the missing-art premise itself
+is suspect. **So a row that comes back looking FINE is the valuable result**, not
+a disappointing one. Record what you see, not what the row predicts.
 
 | # | mod | spawn / find | look at | PASS looks like |
 |---|---|---|---|---|
-| 1 | `DesertVehicleReskin` | vehicle `AV_DogSled` | all three facings, then rotate | **two eopie**, not four dogs; **sled body BROWN**, not grey |
+| 1 | `DesertVehicleReskin` | ⚠️ `AV_DogSled` is a **`Vehicles.VehicleDef`**, not a ThingDef — a plain `spawn_thing` may not construct it | all three facings, then rotate | **two eopie**, not four dogs; **sled body BROWN**, not grey. 🔴 **Grey sled ⇒ suspect the DEF PATCH, not the art** — the brown comes from `Patches/DogSledTint_Brown.xml` replacing `graphicData/color` with `(99,65,24)`, so zero pixels carry it |
 | 2 | `BlastDoorFrameAsyncFix` | buildings `PH_DoorBlastCDoor`, `PH_DoorThickBlastBDoor`, `PH_DoorBlastDDoor` | each rotated **EAST**, door open and closed | the frame's inner rim draws **in front of** the moving leaves; D-door keeps its iris ring |
-| 3 | `ResearchKitEastFix` | items `RR_FieldResearchKitSimple`, `…HiTech`, `…MultiAnalyzer`, `…Remote` | each rotated **EAST** | four visible kits; none blank, none magenta |
-| 4 | `GravshipAstronautFix` | pawn kind `VGE_Astronaut` | facing **NORTH** | a body, and its **faction-colour overlay** present (the mask typo hit both life stages) |
+| 3 | `ResearchKitEastFix` | 🔴 **They are APPAREL and must be WORN.** `RR_FieldResearchKitSimple`, `…HiTech`, `…MultiAnalyzer`, `…Remote` | **worn by a pawn facing EAST** | four visible kits; none blank, none magenta. ⚠️ **Dropping them on the ground exercises NONE of the fixed art** — the fix replaces `wornGraphicPath` (`Apparel_FieldKits.xml:62`); the ground `texPath` (`:51`) is a single directionless PNG that was never broken |
+| 4 | `GravshipAstronautFix` | pawn kind `VGE_Astronaut` — ⚠️ **spawn BOTH life stages** | facing **NORTH** | a body, and its **faction-colour overlay** present. 🔴 **The ordinary adult's `Mech_Astronaut_north.png` was NEVER broken** — only the double-r `Astrronaut` files were, so checking the wrong life stage passes a row that was never at risk |
 | 5 | `MSEDroidFix` | pawn kind `OuterRim_MSEDroid` | facing **NORTH** | a droid, not an invisible or south-facing fallback |
 | 6 | `CereanManeFix` | a Cerean pawn, hair `OuterRim_CereanMane` | facing **SOUTH** | hair present — the donor's file is 1,514 B of **fully transparent** pixels, so the fail is a bald head |
 | 7 | `SauridFrillFix` | a Saurid pawn, hair `VRESaurids_Littlefoot` | facing **NORTH** | the centre frill draws |
-| 8 | `ToolBeltFix` | apparel `ToolBelt`, worn | facing **WEST** | the belt draws on the pawn |
+| 8 | `ToolBeltFix` | 🔴 apparel **`VAEA_Apparel_ToolBelt`**, worn | facing **WEST** | the belt draws on the pawn |
+| 9 | `PhytokinBarkHeadFix` | a **female** Phytokin with genes `VRE_BarkSkin` **+** `Jaw_Heavy` | facing **EAST** | a side-on head. FAIL = a front-facing head on a side-facing body |
+| 10 | `KotORBandolierNorthFix` | apparel `bandolier_chewbacca` or `bandolier_traveler`, worn | facing **NORTH** | a **bare leather strap**. FAIL = chest pouches drawn on the pawn's back |
 
 ⚠️ **Rows 4–8 are pawn-facing checks, so the pawn must actually face that way.**
 `jawa/set_pawn_rotation` exists but **has never executed**. If it fails, the
@@ -53,10 +63,16 @@ fallback is to draft the pawn and order a move so it turns, or shoot it walking.
 `draft=true` included, and returns the read-back position.
 Do not report the art broken on the strength of a rotation call failing.
 
-🔴 **Watch for the double-ship collision (my `C12`).** `CenterFrill8_north.png`
-and the two Astronaut norths are shipped by **both** `Jawa_Patches` and their new
-fix mod — two loose files at one path, and **load order alone decides which one
-renders**. If 4 or 7 looks wrong, that is the first suspect, not the art.
+⛔ **My `C12` double-ship warning was STALE and named the wrong mod. Struck.**
+`Jawa_Patches/Textures/` holds exactly two PNGs and neither collides. The real
+overlap was `MissingArtFixes`, whose seven pairs are **md5-identical** — so it was
+never a rendering hazard at all — and it is now inactive.
+**If rows 4 or 7 look wrong, load order is NOT the suspect.**
+
+🔴 **Row 8's def name was wrong until now: `ToolBelt` does not exist anywhere** —
+not in the workshop tree, not in `Mods/`, not in `Data/`. ⚠️ **Two different mods
+label an item "tool belt"** (VAEA's and Survival Tools'), so typing the *label*
+is ambiguous. Use the defName.
 
 ---
 
