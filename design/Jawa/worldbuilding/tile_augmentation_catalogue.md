@@ -145,8 +145,20 @@ content.** That is the useful answer.
 1. **F1 — Sarlacc pit.** Zero XML. `sw_Sarlacc` is a live `LandmarkDef`, `commonality 0.1` on
    `Sandy`/`DryGround`/`Dunes` — **already on the desert world**. Cost = find one, screenshot it.
    **A v1 gate pass for the price of a bridge call.**
-2. **C3 — Junkyard drift.** One `PatchOperation` adding desert biomes to `TileMutatorDef Junkyard`
-   (`junkDensityFactor: 15`, `extraGenSteps: ScarlandsJunkClusters/Prefabs`). No new def.
+2. **C3 — Junkyard drift.** ⛔ **PREMISE CORRECTED, CREATE 2026-08-14 — read the def before
+   patching it.** `TileMutatorDef Junkyard` (`Data/Odyssey/Defs/TileMutators/TileMutators_Modifiers.xml:153-163`)
+   has **NO `biomeWhitelist` and NO `biomeBlacklist` at all.** There is nothing to add desert
+   biomes to: it **already fires on every biome**, deserts included, at
+   `chanceOnNonLandmarkTile 0.01`. `junkDensityFactor 15` and the two `extraGenSteps` are as
+   described.
+   ⇒ **The only lever is the 1% chance**, and that is now a design call rather than a mechanical
+   patch, because the field is global:
+     * **raise `chanceOnNonLandmarkTile`** — more junkyards everywhere. On a mostly-desert planet
+       that is nearly the same thing as "more in the desert", and it is a one-value patch.
+     * **add a `biomeWhitelist` AND raise it** — scopes junkyards to our deserts, but that
+       *removes* them from every other biome, which is a bigger change than the row asks for.
+   🔴 **Worldgen-gated either way:** mutator selection happens at `WorldGenStep_Mutators`
+   (order 700), so a chance patch that misses a worldgen never applies to that world.
 3. **B1 — Abandoned moisture-farm homestead.** One `GenStep_ScatterGroup` over
    `KotOR_MoistureVaporator_big` + `KotOR_watertank`. Three live defs, and it closes
    `desert_world_design.md` §3E's **AR** row — most on-theme content per line of XML in the file.
