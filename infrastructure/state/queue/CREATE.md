@@ -68,6 +68,48 @@ Defs, sizes and yields proven; the look is not. **Nobody has seen a casket.**
 
 ## Open
 
+### ⭐ C15. The Jawa ideoligion — BUILT and LOADABLE, awaiting the owner's eyes
+`C:\Users\Mandrake\AppData\LocalLow\Ludeon Studios\RimWorld by Ludeon Studios\Ideos\The Salvation (CREATE).rid`
+The owner's original `The Salvation.rid` sits beside it, **untouched** — both load in the
+ideo browser and the owner compares. Filed at `queue/OPS.md`. Builder:
+`src/RimMandrake/Utils/build_salvation_rid.py --check|--write` (never rewrites the source,
+asserts unique IDs + no dangling `Precept_<ID>`, byte-identical on re-run).
+
+**Owner rulings applied:** renamed to the 2026-08-08 lock **The Salvation** · one relic,
+renamed **The Founding Ion Blaster** · `AM_Fertility` added · **Prime Trader kept** (lore
+says Chief/Captain; owner overruled it) · nine gods written into the description
+(291 → 2,362 chars) · both trader memes kept.
+
+**5 precepts swapped, 7 added.** The swap that mattered: `HAR_EatingAliens_Acceptable` →
+`_Abhorrent`, because `Cannibalism_Horrible` was enforcing the taboo on humans while the
+alien half — the bigger half in this stack — sat neutral.
+
+🔴 **Three findings worth more than the file:**
+1. **`AM_Structure_Scavenger` is `deityCount 0`** — the nine-god pantheon **cannot** be
+   seated in this ideo at all, and no installed structure meme allows more than 4. That is
+   why the gods live in the description. **Do not "fix" this by swapping the structure.**
+2. **`comps: []` DOES NOT MEAN INERT.** Of 65 comps-less precepts only 29 are truly inert;
+   32 are ritual/building/relic classes whose mechanics live elsewhere, and 4 are live via
+   `statOffsets` / `expectationsOffset` / inbound `nullifyingPrecepts`. `AM_Barracks_Preferred`
+   and `DarknessCombat_Preferred` read inert and are fully live. ⇒ **the rubric's axis-6
+   measure over-and under-reports; read `comps ∪ statOffsets ∪ expectationsOffset ∪ inbound
+   nullifyingPrecepts`.**
+3. **`Nomadic_Preferred` is a PRECEPT, not a meme** — zero slot cost. `ArriveNewMap` stamps
+   `lastResettledTick`, so a gravship jump reads as a resettle. ⛔ **`VME_Nomad` is the
+   trap**: −50 mood at 60 days and it cannot see non-vanilla movement.
+
+**Open riders, none blocking:** `guy762_JawaHood` is live and literally species-named — one
+word to swap for `OuterRim_DesertHood` · lore sanctifies ration paste but the ideo sets
+`NutrientPasteEating_Disgusting` · Sh'kaar is written as "the sun that never sets"; the
+older doc says twin suns, and the tidally-locked world postdates it.
+
+⚠️ **Doctrines with NO legal precept — recorded so nobody re-derives them:** begging
+(charity has no negative position, and all three positive ones conflict with `Trader`) ·
+farming-as-impious (no growing issue exists) · ancient complexes revered (no such issue) ·
+sacred scrap / do-not-melt (no smelting issue) · being caught stealing · mating only in
+darkness.
+
+
 ### 📦 ✅ Both new fix mods DEPLOYED and ENABLED by OPS — `cb6c2f7`, `dd66fe6`
 `mandrake.phytokinbarkheadfix` @562 (donor @388) and
 `mandrake.kotorbandoliernorthfix` @**579** — deliberately outside the 556–563
