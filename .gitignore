@@ -143,3 +143,7 @@ observed/2026-08-13_load_1730_triage.txt
 # Claude Code per-session scratch: role files are ephemeral, not project state.
 .claude/session_roles/
 .claude/settings.local.json
+
+# Skill archives are rebuilt from skills/<name>/ by package_skill.py --all.
+# A zip of a tracked folder is a cache; git keeps every version of a binary forever.
+skills/*.skill
