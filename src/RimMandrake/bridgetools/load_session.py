@@ -250,6 +250,65 @@ def i_pilot_console(s, cfg):
               (r or {}).get("pathEndMode")))
 
 
+def i_cherry_picker(s, cfg):
+    """Filed by CREATE. SILENCE IS NOT CONFIRMATION here.
+
+    Cherry Picker logs `" - FAILED: <key>"` only when a def was FOUND and
+    RemoveDef threw. An unresolvable key and a def outside its `allDefs` scope
+    are both **completely silent** -- so a clean log is consistent with every
+    removal having worked and with none of them having worked.
+
+    🔴 And one line means total loss, not partial: `Error processing master def
+    list` means EVERY removal was lost, not the one that broke. Worth a call on
+    its own because nothing else surfaces it.
+    """
+    r = s.call("jawa/drain_log", limit=200, contains="Cherry Picker")
+    msgs = [m.get("text", "") for m in ((r or {}).get("messages") or [])]
+    fatal = [m for m in msgs if "Error processing master def list" in m]
+    failed = [m for m in msgs if "FAILED:" in m]
+    record("A6", "Cherry Picker: no total-loss line",
+           FAIL if fatal else PASS,
+           "%d Cherry Picker line(s); %d FAILED; %s"
+           % (len(msgs), len(failed),
+              "🔴 MASTER DEF LIST ERROR -- every removal was lost"
+              if fatal else "no master-list error"))
+    if failed:
+        record("A6b", "  ...per-key failures", FAIL, "; ".join(failed)[:200])
+    record("A6c", "  ...and silence proves nothing", SKIP,
+           "an unresolvable key logs NOTHING. Confirm the 24 keys by reading "
+           "defs back, not by a quiet log. CREATE owns the list.")
+
+
+def i_world_stats(s, cfg):
+    """The owner's sea spec, measured instead of argued.
+
+    Spec: about a quarter ocean, in three oddly-shaped bodies. The generator
+    unaided gives 43-55% in scattered blobs, and ocean is an elevation rule at
+    worldgen step 0 that no setting moves.
+
+    ⚠️ The body count is the half that matters. Two worlds can report an
+    identical waterPct and be nothing alike -- three oceans versus the same
+    water smeared into forty puddles. `bodiesOverMinSize`, not `bodiesTotal`.
+
+    ⚠️ On a QUICKTEST this measures whatever default world the quicktest made,
+    which is not a campaign world. Say which it was; a quicktest and a campaign
+    are different claims, not different confidence in one claim.
+    """
+    r = s.call("jawa/world_stats", minBodySize=8, limit=25)
+    if not ok(r):
+        return record("A7", "world_stats", FAIL,
+                      str((r or {}).get("message"))[:120])
+    wp = r.get("waterPct")
+    big = r.get("bodiesOverMinSize")
+    near = (wp is not None and 20 <= wp <= 30)
+    record("A7", "sea vs the owner's spec (~25%, 3 bodies)",
+           PASS if (near and big == 3) else NEEDS_EYES,
+           "water %s%% in %s bodies >=8 tiles (%s total), largest %s%% of "
+           "planet; seed=%s coverage=%s. Spec is ~25%% in 3."
+           % (wp, big, r.get("bodiesTotal"), r.get("largestBodyPct"),
+              r.get("seedString"), r.get("planetCoverage")))
+
+
 def i_dune_seas(s, cfg):
     """v1 row 4, the dune-seas override. NOT an eyeball check.
 
@@ -557,6 +616,8 @@ ITEMS = [
     # "measured from the pawn", but it does NOT run by default: a closed row
     # must not spend live time.
     ("A5", ANY_MAP, "dune seas: BiomeDef terrainPatchMakers", i_dune_seas),
+    ("A6", ANY_MAP, "Cherry Picker actually removed things", i_cherry_picker),
+    ("A7", ANY_MAP, "world_stats: the sea, measured", i_world_stats),
     ("P", ANY_MAP, "CREATE_TEST_PLAN Part 1 - the art rows", i_art_rows),
     # ⛔ Row 7 / rows 2 / Configure Factions are HELD BY THE OWNER -- the sea
     # spec is unsolved and the click is irreversible. Not this session.
