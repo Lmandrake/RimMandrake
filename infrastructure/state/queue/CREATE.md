@@ -388,6 +388,43 @@ correctly.
 
 </details>
 
+### C7. ✅ ALL THREE "DO FIRST" ROWS CLOSED, 2026-08-13 — 22 files, 2 new mods
+`design/Jawa/art/c7_directional_triage.md` ranked them; all three are built.
+
+| row | commit | what it actually was |
+|---|---|---|
+| **1** Phytokin `BarkSkinFemale_Wide_Normal_east` | `cb6c2f7` | new mod `src/RimMandrake/PhytokinBarkHeadFix/`. **Zero art** — the file was in the donor as `BarkSkin_Wide_Normal_east copy.png`. Proved before copying: zero alpha delta, 91 px RGB cluster, **Jaccard 0.97** against the four sets that ship both genders |
+| **2** KotOR bandolier north | `dd66fe6` | new mod `src/RimMandrake/KotORBandolierNorthFix/`, **20 files**. Derived, not drawn — see the lesson below |
+| **3** VGE `GravshipGenebank_north` | `dd4f386` | into the **existing** `GravshipAstronautFix` (renamed *Missing North Facings*). 180° rotation; **no `ModsConfig` change at all** |
+
+⚠️ **`mandrake.phytokinbarkheadfix` and `mandrake.kotorbandoliernorthfix` are
+NOT deployed and NOT in `ModsConfig.xml`.** Filed at OPS (`38f6d82`).
+🔴 **The KotOR one must NOT go in the existing fix slot.** Our seven sit at
+556–564; `guy762.MM.KotORCore` is at **573**, and its art is LOOSE — placed with
+the others it is overwritten by the donor and is invisible, silently.
+
+⭐ **The lesson from row 2, and it generalises past bandoliers: THE DONOR'S MASK
+IS THE DONOR'S OWN SEGMENTATION.** `CutoutComplex` tints mask-red by stuff colour
+and leaves mask-black fixed, so the author had already separated *leather* from
+*furniture* — we read that split instead of inventing one, and sampled the
+leather colour from the mask-red gaps between his ammo cells, the only place the
+bare leather of that bandolier appears anywhere in the set.
+
+⛔ **And the attempt that was thrown away, because it is the obvious one.**
+"Delete the mask-black furniture, grow the neighbours back over the holes" was
+built and rejected: chewbacca's cells cover **42%** of the strap, so what grows
+back is the shadow *gaps between cells*, not leather — a chewed, mottled band.
+**It was caught by testing the recipe on `bandolier_knife`, where the author's
+real north exists to score against**: 77.2% agreement where mirroring alone
+scores 77.1%. No gain. `Source/test_mask_recipe.py` is shipped so nobody repeats
+it. **Generalises: when a donor has one complete set and one broken set, the
+complete one is a test harness, not just a reference.**
+
+⚠️ Rows 4–6 (Polluted Lands claws, Dark Ages scorpling, Caverns pupae) remain
+`[v2]` and are the only ones needing genuinely new art.
+
+<details><summary>original C7 entry</summary>
+
 ### C7. The other incomplete directional sets `[v2]`
 Each checked against its def's `graphicClass` and `visibleFacing`, so these are not
 Falleen repeats: VRE Phytokin `BarkSkinFemale_Wide_Normal` **east**; Biomes!
@@ -406,6 +443,8 @@ defect here; KotOR is at load 573, AFTER our fix slot 556-564), VGE
 **2 new mods.** Alpha Genes emblem and `Eyes_Red` are correct as shipped — struck.
 🔴 **C7's own method was insufficient:** `visibleFacing` is set in C# for eyes, and
 `Graphic_Multi.Init` has a bare-path fallback, so a clean log proves nothing.
+
+</details>
 
 <details><summary>original flag</summary>
 
@@ -553,11 +592,56 @@ Both are pure offline XML. They are the ONLY offline v1 work left, and they must
 be **authored and deployed before the next live session** — that session
 generates the world and cannot close them if they do not exist yet.
 
-## C-v2. `validate_patch.py` is yours — owner ruled 2026-08-13
-It reads `Patches/` only, never `Defs/`, and does not say so. Fix the gap or
-document it; either closes the item.
+## C-v2. ✅ CLOSED — found already built, 2026-08-13
+`skills/rimworld-modding/scripts/validate_patch.py` now **dispatches on the root
+element**: `<Patch>` takes the PatchOperation checks unchanged, `<Defs>` takes a
+shortlist of mechanical def checks, anything else is an ERROR. Its header states
+what it scans and what it deliberately does not. Closing an item by finding it
+done is worth as much as building it — the cost avoided is a second
+implementation. ⏳ PROJECT has filed two `[v2]` follow-ups (`a1c32d2`): C-t1, the
+"IN ONE MOD" wording at line 1363 (**wording only — do NOT change the walk**).
 
 ---
+## C-LOAD. ✅ ANSWERED AND MOSTLY CLOSED, 2026-08-13 — and half of it was already done
+
+**Answer filed back at OPS, `38f6d82`.** Read that before re-reading the filing
+below, which is preserved for its evidence but is stale in three places.
+
+| OPS's item | outcome |
+|---|---|
+| 1 armoury's two dead ids | ✅ **already fixed when filed** — `c0baa5c` |
+| 2 `loadAfter` for `cereanmanefix` / `msedroidfix` | ⛔ **DECLINED — it would be wrong.** Both donors serve 1.6 art from an **AssetBundle**, and a loose PNG beats a bundled asset regardless of order. OPS's premise holds for loose-vs-loose, which is the other five fix mods, not these two |
+| 3 doctrine + patches under-declared | ✅ **DONE `731e9c5` `bd90813` — and it was understated 40×** |
+| 4 patches two undeclared Outer Rim mods | ✅ **already fixed when filed** — `c0baa5c` |
+| 5 drop `loadBottom` | 🔴 **OPS's** — RimSort user rules are not ours to edit. Now unblocked |
+| 6 `wreckedmachines` inactive | ✅ v2, no action |
+
+🔴 **`Jawa_Doctrine` declared NO load order at all and patches 630 defNames
+across 42 `PatchOperationFindMod` groups.** OPS's rule named **one** mod. 39
+`loadAfter` entries now, DLC excluded. ⚠️ **`PatchOperationFindMod` checks
+PRESENCE, not ORDER** — loaded early, every group matches nothing, and it looks
+fine. `Jawa_Patches` declared 3 donors and patches defs from 16.
+
+⚠️ **The RimSort user rule was NOT a complete list to copy from** — five donors
+were missing from it too (`sarg.alphabiomes`, `IronScruff.PrimordialGeysers`,
+`zylle.MoreVanillaBiomes`, `titans.fl`,
+`DanZinagri.FacialAnimationCompatabilityProject`).
+
+🎁 **`src/RimMandrake/Utils/build_packageid_index.py`** → `research/RimMandrake/installed_packageids.json`,
+1,257 mods, committed. **It strips `<modDependencies>` before matching**, which
+is the trap that made the C7 index unusable — the naive read returns a
+*dependency's* id and gave `brrainz.harmony` for Alpha Animals, Phytokin and VGE.
+It also unescapes entities, or "Big and Small - Genes & More" never matches.
+
+⏳ **One constraint left open, named rather than guessed:**
+`AnimalBiomeDuplicates_Fix.xml` removes a duplicate `wildBiomes` entry from
+**Core's** `Armadillo`; whichever mod ADDS the duplicate must precede us and has
+not been identified. It is a `PatchOperationConditional`, so a wrong order is a
+silent no-op. **OPS's def index (84,848 rows) can probably answer it in one
+query** — I found that index only after sweeping the workshop tree by hand.
+
+<details><summary>OPS's original filing, preserved for its evidence</summary>
+
 ## C-LOAD. Put load-order dependencies in OUR mods' `About.xml` — 5 gaps, 2 dead IDs
 
 **Filed by OPS 2026-08-13, on the owner's call this session:** load-order
@@ -619,6 +703,8 @@ must observe the fully assembled game.
 Background: `skills/rimworld-start-prep/SKILL.md` §2 — "load at end" fails because
 nearly every patch mod claims the bottom, so a constraint asserted by everyone is
 satisfied by no one.
+
+</details>
 
 ### 6. `mandrake.wreckedmachines` inactive — ✅ ANSWERED, no action `[v2]`
 
