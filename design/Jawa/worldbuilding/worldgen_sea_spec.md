@@ -48,7 +48,24 @@ step is producing exactly what the owner rejected.
 
 ⚠️ **Do not smooth the coastline.** A ragged frontier is the deliverable.
 
-## What it must NOT do
+### ✅ How the gate is READ — armed 2026-08-14, and it can be read BEFORE we commit
+
+**`jawa/world_stats` now returns all five measurable fields**, confirmed live in
+the 26-tool set: `tiles`, `pct`, `perimeter`, `raggedness` (perimeter²/tiles) and
+`centroidLat`. The "3-of-5 testable" caveat that used to sit against this gate was
+stale — requirements 1, 3 and 4 above are all directly readable, and `raggedness`
+is the compactness test computed for us.
+
+⭐ **The affordance that changes the process: a world merely being PREVIEWED at
+the creation screen can be measured.** BRIDGE, 2026-08-14 — the call needs a world
+loaded *or previewed*, and the main menu alone is not enough. ⇒ **We can reject a
+candidate world at the preview screen instead of generating it, playing it, and
+discovering the sea is round.** On a screen that is seen once, that is the
+difference between a gate and a post-mortem.
+
+🔴 **No candidate world is accepted on a partial pass.** Requirements 2, 5, 6 and 7
+are not in `world_stats` and still need their own read — a green `pct` and a good
+`raggedness` say nothing about whether there are three bodies or thirty.
 
 - ⛔ **No coastline detailing, no per-body character, no shoreline biome art.**
   All v2, all explicitly out.
