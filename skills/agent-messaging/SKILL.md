@@ -82,6 +82,37 @@ away. Clarity beats brevity exactly where being misread is expensive.
 
 ## 3. Addressing
 
+### 🔴 3a. The address is `AGENT <SEAT>` — and on FIRST contact you need the `[ref]`
+
+**A send to bare `BRIDGE` bounces. A send to bare `AGENT BRIDGE` also bounces the
+first time.** Both failures return *"not an agent in this conversation"*, which
+**reads like the seat is down** — and that misreading has cost real work today.
+
+| what happened | cost |
+|---|---|
+| PROJECT sent the WRAP order to bare names | all four bounced; re-sent with refs |
+| OPS reported *"no peer seats are available"* | all five seats were up and idle |
+| a subagent could not deliver a finding at all | had to relay through its parent |
+
+**So:**
+1. **Resolve first: `python3 src/RimMandrake/Utils/peers.py`.** It reads the live
+   registry and prints `SEAT` beside the addressable `NAME`.
+2. **Send to the NAME column**, appending the `[ref]` shown by `ListAgents` on
+   first contact — e.g. `AGENT BRIDGE [f34465]`.
+3. **Replying is different and easier:** copy the incoming `from=` verbatim.
+
+⚠️ **A bounce is NOT evidence of absence.** Before concluding a seat is gone,
+check `peers.py`; a live process with a fresh heartbeat is there whatever the
+send said. **Never re-scope work around an unreachable peer without checking** —
+deciding to do a peer's job because you think nobody is listening is the
+expensive outcome.
+
+⚙️ **A SUBAGENT CANNOT SEE PEER SESSIONS AT ALL.** If a delegate reports no peers,
+it is correct about its own world and wrong about ours. **Resolve addresses from
+your own session, never from a subagent.**
+
+
+
 ```bash
 ListAgents                    # or: python3 src/RimMandrake/Utils/peers.py
 ```
