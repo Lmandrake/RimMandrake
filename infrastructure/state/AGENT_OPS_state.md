@@ -1,174 +1,118 @@
 # AGENT_OPS_state.md — where OPS is
 
-## 🔴 WRAP 2026-08-13 ~21:0x — this section supersedes everything below it
+## 🔴 PRE-BOOT WRAP 2026-08-13 ~23:2x — this section supersedes everything below
 
-**Game was LIVE this session** (up 17:30, quicktest map). **Bridge taken twice
-and RELEASED both times**, announced to BRIDGE each way.
+**Game was DOWN this whole session.** Bridge never taken, nothing left on any map.
+The owner authorised the full pre-boot batch and it is **DONE**. A load may start
+at any time.
 
-**Left on the map: NOTHING. Corrected at wrap — a peer started a FRESH quicktest
-after my release, which wiped the map I had described.**
+### What I changed, and the evidence it landed
 
-~~four art-check pawns at (30/32/42/48, 210), alive~~ — **gone with that map**,
-along with BRIDGE's built gravship (exported and committed beforehand, so
-recoverable) and my downed `KotORDroidGood_3C`. The map now standing is a fresh
-quicktest, **paused at `ticksGame` 1, 14 stock pawns, nothing spawned**.
-
-⚠️ **Do not go looking for any of it.** Nothing destroyed by me, no terrain
-written by me, and I never unpaused.
-
-🔴 **The lesson, and it is not about the pawns:** *"what I left on the map"* is
-only true until the next seat re-rolls the map, and **`start_debug_game_ready`
-is a 30-second call any seat may make freely under rule 1c.** A map-state
-handover has a shorter shelf life than the document it is written in. **Say
-which map AND check it still exists before relying on it.**
-
-### Owed / carry forward
-
-| item | note |
+| change | evidence |
 |---|---|
-| 🔴 **Steam Cloud restores deleted saves** | 26 `.rws`, 701 MB, came back at the 17:30 launch with ORIGINAL mtimes. **Cloud must be DISABLED for RimWorld before deleting, or the next launch undoes it again.** Owner's call; I am not touching it. |
-| **Pin the 6 `loadBottom`+`loadAfter` userRules** | wants the game DOWN. Order is correct TODAY but rides a tie-break, not a constraint. `loadBottom` outranks `loadAfter`; keep it only on `rimdefdump`. |
-| **`refresh.py`** | wants the game DOWN. |
-| **Retire `mandrake.missingartfixes`** | all 7 textures md5-identical to the per-donor successors; blocking dep cleared. Drop from `ModsConfig.xml` on a mod-list pass. |
-| **Restore 3 pruned textures?** | OPTIONAL and unrelated to the graphics scare (withdrawn). Recoverable from `6f52185`. Only affects the shadowing question. |
+| **Deploy applied** | Re-ran the plan after: **"Everything in sync."** Zero deletions. All 3 `DEPLOY_HOLD.txt` patterns honoured (2 Warcasket retunes, 14 WreckedMachines files still held). |
+| **`ModsConfig.xml` 580 → 581** | Re-parsed after writing. `phytokinbarkheadfix` **@562** > donor @388 ✅ · `kotorbandoliernorthfix` **@579** > donor @572 ✅ · `missingartfixes` REMOVED (was @555) · `rimdefdump` still LAST @580 · 0 duplicates. |
+| **Def dump ARMED** | `DefDump/dump_request.txt` = `all`, written 23:21. **Without this the load produces no fresh dump.** |
+| **Offline artefacts rebuilt** | `refresh.py --offline`; inventory CSVs re-written 23:23. |
+| **Snapshot committed** | `deployed/config/ModsConfig.581-artfix-batch-2026-08-13.xml`. |
 
-### Still open in my queue
-**O3, O5, O8** offline. **O4** is the only one needing a live game — a
-one-minute Faction Customizer persistence check. **Closed today: O1, O2, O7, O9.**
+🔴 **Every index handed to me by a peer was WRONG** — 389/393 for a donor at
+**388**, 573/577 for one at **572**, 560 for an entry at **555**, art-fix slot
+"561–567" for one that is **556–563**. Cause: **line numbers and list indices
+quoted interchangeably.** I wrote against the file with an mtime guard that would
+have aborted on a concurrent RimSort write. **Re-derive; do not reuse a quoted
+index.**
 
-### The one thing a successor must not re-derive
-🔴 **`v1` row 2 (worldgen faction cut) is UNEXECUTED.** The checklist is
-ratified and ready at `infrastructure/state/WORLDGEN_FACTION_CHECKLIST.md`.
-⚠️ **A quicktest map's faction roster PROVES NOTHING about it** — a debug
-quicktest never visits the Configure Factions page, so every faction is present
-by default. That reading nearly triggered a needless 25–30 minute regeneration
-today. **State which map any census came from.**
+### 🔴 The one thing a successor must not re-derive
 
-### Systemic finding of the session
-**Four tools reported success for work that never happened** — a validator's exit
-code discarded, `--defnames` claiming checks it had not run, a def dump that
-accumulates orphan types while looking fresh, and a provenance stamp written on
-failure. **In this codebase "success" is usually asserted by whatever wrote last,
-not by whatever checked.** All four fixed; the pattern is the finding.
+**`observed/2026-08-13/load_expected_signatures.md` was written BEFORE the launch,
+on purpose.** Its governing finding:
 
----
+> **Four of this load's six changes CANNOT FAIL IN THE LOG.** Loose-texture
+> overrides that lose load order produce no error, no warning, no line — RimWorld
+> simply draws the other file. **A clean log is not evidence for them.** Each such
+> row names the screenshot that is.
 
+### Deliberately NOT done, and why — the userRules `loadBottom` pin
 
-**Cross-session address:** `uds:/run/user/1000/cc-socks/88807.sock`
-(session resumed 2026-08-13 ~14:58, wrapped ~15:10 on PROJECT's reboot order.
-⚠️ **Dead once this session exits** — recompute on the next resume, first thing:)
+**6 rules carry both `loadBottom` and `loadAfter`; all 6 are our own mods.**
+`loadBottom` outranks `loadAfter`, so the `loadAfter` edges carry no force and the
+order is correct **by tie-break, not by constraint**. All 46 (mod, target) pairs
+verified correct today; tightest margins are `jawa.armoury` @574 vs
+`guy762.kotorweapons` @573 (gap 1) and `jawaionweapons` @575 (gap 2).
 
+⚠️ **I held the fix on purpose.** Dropping `loadBottom` only bites on the **next
+RimSort sort**, and a sort between the edit and the launch would reshuffle a list
+I had just verified correct. **All downside for this load, no upside.** `rimdefdump`
+keeps `loadBottom` legitimately — a def dumper must load last.
+**Do it once the game is up and the list is no longer load-bearing.**
+
+Files: live `C:\Users\Mandrake\AppData\Local\RimSort\dbs\userRules.json`
+(13 rules), byte-identical repo copy
+`D:\Luke\dev\Rimworld\deployed\config\rimsort\userRules.json`.
+
+### Open, and what each needs
+
+| item | needs |
+|---|---|
+| **O-v2** mech cherry-pick | 🔴 **CANNOT be done offline.** Cherry Picker has **no config file** — nothing matching `Mod_3521312241_*` exists, so zero defs are picked today. Its list is written from the **in-game settings UI**. Budget live time or it does not happen. |
+| **O4** Faction Customizer persistence | one minute in-game |
+| **O13** gravship quest fix | **positive observation only** — read the Downed Gravship description in the Quests tab |
+| **O12** AlienRace pawn-gen NREs | grep the new log for `Error while generating pawn`; live only if it fires on pawns nobody debug-spawned |
+| **O3** `loadset_fingerprint()` | offline |
+| **O11** `det.buzzers` name bug | offline, but **only worth doing before worldgen** — names bake into the save |
+
+**Closed today:** O1, O2, O5, O7, O8 (found already fixed in `6b37e88`; the
+recorded path was wrong — it is `Jawa_Doctrine/`, not `Jawa_Patches/`), O9, O-v,
+O-v3, O-t1.
+
+### Intel gathered pre-boot, so nobody re-runs it
+
+- **`Samael.NPCMechsAndAnimals` splits CLEANLY at file level** — `NPC_Mechs.xml`
+  and `NPC_Animals.xml` share no def and no operation; the animals file contains
+  "Mech" **zero** times. Deleting the mech half leaves animals intact. **Not**
+  settings-configurable (no `Assemblies/` at all).
+- **Alpha Mechs vs the `Mechanoid` faction:** cutting the faction kills only its
+  raid/breach group-makers. The 7 mech races, the mech-cluster spawners
+  (`MechAssembler`/`MechCapsule`) and **all Biotech mechanitor gestation content
+  survive.** Its VFE hook targets `VFE_Mechanoid`, a different faction.
+- **VWEL** is **already active @469** — the "installed and inactive" claim was
+  stale. Dump written to `observed/2026-08-13/vwel_weapon_dump.md`. 🔴 Two design
+  problems found: **AP 1.00 appears in TIER ONE** (the "crude, half-understood"
+  weapon ignores all armour), and **tier 2 is not craftable and has no research** —
+  its research def was deleted upstream in 1.4 — while pirates field tier 2 and
+  never the salvaged tier. `ship_legacy_armoury.md`'s *"we reflavour, we do not
+  author"* is therefore **wrong**; tier 2 must be authored. **VISION's call.**
+
+### Baselines for the harvest
+
+`Player.log` previous session (17:30 → 21:10, clean exit): **25**
+`Could not resolve cross-reference`, **0** `Could not load reference to`, fully
+accounted for by `benign_log_errors.md` §1.1/1.6/1.11/1.12. Previous dump
+described **573** mods while **580** were loaded — **check a dump's own count
+before trusting it.**
+
+⚠️ **My own census error this session, recorded because the method is the point:**
+I grepped exceptions anchored at line-start and **missed every inline one**,
+under-reporting 44 as a handful. Correcting it surfaced the gravship quest bug and
+O12. **Do not anchor an exception census at `^`.**
+
+**Cross-session address:** recompute on resume —
 ```bash
 echo "**Cross-session address:** \`uds:/run/user/1000/cc-socks/$PPID.sock\`"
 ```
-
-Identity: `infrastructure/agents/OPS.md`, injected automatically. Queue: `infrastructure/state/queue/OPS.md`.
+Identity: `infrastructure/agents/OPS.md`. Queue: `infrastructure/state/queue/OPS.md`.
 
 ---
-
-## Where I stopped — 2026-08-13, wrap on PROJECT's order
-
-**Game was DOWN the whole session** — `Player.log` mtime 10:04, no RimWorld
-process. **Bridge never taken, so nothing to release and nothing left on any
-map.** The six pawn states below are from the PREVIOUS session and still stand.
-
-✅ **Log baseline re-confirmed clean.** `Player.log` (10:04) holds **25**
-`Could not resolve cross-reference` and **0** `Could not load reference to`.
-The 25 decompose exactly as `vendor/wisdom/benign_log_errors.md:407` predicts:
-16 × `Pawn_Melee_Punch_HitBuilding` (§1.6) + 8 × `BMT_*` (§1.11) +
-1 × `VWE_Tool_Whip` (§1.1). **No unexplained cross-reference. Nothing owed here.**
-
-🔴 **v1 row 2 is BLOCKED on the owner, not on work.** Asked: *does v1 ship the
-existing world or regenerate one?* Faction Control only acts at worldgen, and
-`New Arrivals2.rws` already holds all 53 factions. Full measured writeup —
-settlement counts, the 21 unreachable factions, the two doc corrections, and two
-savegame parse traps — is in `infrastructure/state/queue/OPS.md` under the v1 row. **Answer the
-question first; the config edit is ten minutes after that.**
-
-⚠️ **Owed to PROJECT:** `V1_SCOPE.md:233` says 32 Faction Control entries; the
-real count is 41. Their file, so filed not edited.
-
-✅ **The dropped subagent DID return, just after the wrap — and it kills row 2's
-premise.** `FactionDensity` serialises three fields (`faction`, `density`,
-`enabled`) and **none of them suppresses a faction**; `density` is a clumping
-radius (`__result = dist < fd.Density;`). Faction removal is a worldgen-time
-choice on vanilla's Configure Factions page, not a writable setting. The English
-key *"setting to 0 disables the faction"* is a pre-1.3 leftover and is what the
-row was built on. Full writeup and the one unverified field (`enabled`) are in
-`infrastructure/state/queue/OPS.md` §5b.
-
-✅ **RULED, same session: no savegames are being kept, so v1 REGENERATES.**
-`OWNER_DECISIONS.md` #11 is answered. Row 2 survives, but **as a worldgen-time
-checklist, not offline config** — the boxes get unticked on vanilla's Configure
-Factions page during the run that creates the new world. My proposed exclusion
-list (fantasy, Predator, horror/bug) and the two cautions on hidden factions are
-in `infrastructure/state/queue/OPS.md` under the v1 row. **It is a player-zero proposal; VISION
-ratifies what should exist, not me.**
-
-🔴 **Two rows in `V1_SCOPE.md` are now stale and are NOT mine to edit** — row 2
-still reads *"NO — closable offline today"* (it needs the game now), and row 7
-reads *"verify only"* (worldgen is something we will DO). Filed to PROJECT and
-BRIDGE respectively.
-
-🔴 **Watch at the next worldgen: `OuterRim_RebelAlliance` is configured in
-Faction Control's 41 but was ABSENT from the save's 53** — it did not generate
-last time. If it fails again that is a defect, not taste, and no log line will
-report it.
-
-## ✅ CLOSED — live game state I created no longer matters
-
-Owner, 2026-08-13: ***"We are keeping no savegames at this time."*** The six
-pawn states I left on the colony (four prisoners, two spawned
-`OuterRim_BinaryStarRaiders` Drifters as slaves) rode in `New Arrivals*.rws` and
-**there is now nothing to undo.**
-
-### 🔴 DELETED on the owner's explicit order, 2026-08-13 — 205 files, 986 MB
-
-Owner: *"Delete all old savegames and screenshots, yes."* **Irreversible; there
-is no backup and no recycle bin on these paths.** Folders kept, contents gone:
-
-| path | removed | bytes |
-|---|---|---|
-| `…\RimWorld by Ludeon Studios\Saves\` | 27 `.rws` / `.bak` | 764,681,335 |
-| `…\RimWorld by Ludeon Studios\Screenshots\` | 124 `.png` | 255,804,786 |
-| `…\Steam\userdata\40784075\760\remote\294100\screenshots\` | 54 `.jpg` + thumbs | 13,993,893 |
-
-**Everything is gone, including the campaign** — `New Arrivals1.rws`,
-`New Arrivals2.rws`, the `PRE-W6-TEST` backup, all 20 `rimbridge_save_*`
-autosaves, `w6_faction_check.rws` and `rimbench_terrain_test.rws`. The Steam set
-was the owner's own F10 captures; the RimWorld set was agent test captures.
-⚠️ **No other Steam game's screenshots were touched** — `294100` was the only
-appid present under `760\remote\`.
-
-⚠️ **Any doc that reads a savegame is now unrunnable**, including
-`src/RimMandrake/Utils/Savegame_*.py`. The measurements in `infrastructure/state/queue/OPS.md` were taken *before*
-the deletion and stand as historical record; **do not try to re-derive them, the
-source file no longer exists.**
-
-Bridge RELEASED, nothing left on the quicktest map — my six test droids destroyed
-and verified absent. BRIDGE's ship and props are theirs.
-
-## 🔴 Blockers to play
-
-1. **Gravship radius — unresolved, the expensive one.** Bigger Gravships is set to
-   34 in `Config/Mod_3522759531_GravshipSizeSettings.xml`, but it bakes radii into
-   defs at **startup** via a Harmony prefix on `DefGenerator.GenerateImpliedDefs`.
-   If this session's defs carry the ~25.9 defaults, **a ship built now will not
-   lift and nothing logs why.** `jawa/get_def GravEngine` exposes no radius field —
-   only `SubstructureSupport 632.7954`, matching neither π·34² nor π·25.9².
-   **Do not build a ship until settled**; BRIDGE owes the `get_def
-   GravFieldExtender` call that settles it.
-2. **`matathias.ruthlessmechanoids` is NOT in `ModsConfig`.** Downloaded, 1.6,
-   deps present. **The whole pursuit design is inert until enabled**, and enabling
-   is mod-list work (rule 7) that must happen with the game down.
-3. **Mechanoids still on**, against the owner's ruling. Needs (2) first.
-4. ~~Five companion fixes undeployed~~ — ✅ deployed 2026-08-13 10:05 as BRIDGE's B0.
 
 ## Standing restrictions — do not re-litigate
 
 - **V2 Ideology: `[v2]`, owner-deferred. STOP WORK.** Unverified, not failing.
-- **Warcasket Heat stays `Cap(0.90)`** — owner: *"Keep 0.90 for now. They're
-  terrifying."* Frightening is **wanted**. Do not re-propose 0.35.
+- **Warcasket Heat stays `Cap(0.90)`** — owner: *"They're terrifying."* Wanted.
 - **Warcasket deploy: "ship neither."** Both retune files stay in the repo
-  undeployed, permanently — that is **intended state, not drift**. Stop reporting
-  it. Asked three ways and answered; re-opening costs the owner twice.
+  undeployed, **permanently — intended state, not drift. Stop reporting it.**
+- **Gravship radius unresolved** — Bigger Gravships set to 34 in
+  `Config/Mod_3522759531_GravshipSizeSettings.xml` but bakes radii at **startup**.
+  If this session's defs carry the ~25.9 defaults, **a ship built now will not lift
+  and nothing logs why.** BRIDGE owes the `get_def GravFieldExtender` call.
+  **Do not build a ship until settled.**
