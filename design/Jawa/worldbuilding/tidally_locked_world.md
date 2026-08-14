@@ -432,3 +432,54 @@ list `biomeConfigs[x].scoreOffset` implements.**_
 
 ⇒ **W3 is unblocked. CREATE owns the def work: one `PatchOperationAdd` on
 `TidallyLocked` carrying the 29-entry blacklist and these offsets.**
+
+---
+
+## ⭐⭐ THE COLD IS THE MECHANIC — owner, 2026-08-14. And it is MEASURED.
+
+> *"The night side should be REALLY cold, disturbingly so, and the poor Jawa just
+> can't handle cold… unless they've invested in dramatic heater technology they'll
+> have to move on rapidly. Though their factories make quite a lot of heat."*
+
+### ✅ Confirmed from the def dump: no Jawa variant has ANY cold-tolerance gene
+
+| variant | heat | ⭐ **cold** |
+|---|---|---|
+| `OuterRim_Jawa` | `MaxTemp_SmallIncrease` (+10) | 🔴 **none** |
+| `guy762_xenotype_jawa` | `MaxTemp_LargeIncrease` (+20) | 🔴 **none** |
+| `BTD_Jawa` | `MaxTemp_LargeIncrease` (+20) | 🔴 **none** |
+
+**All three buy heat. None buys cold.** So on a nightside running **−37 °C at
+latitude 1.0 and −80 °C at 2.0**, the clan sits at **baseline human cold
+tolerance** — which is not survival, it is a countdown.
+
+### ⭐ And the loop closes on itself, which is why this is the best mechanic yet
+
+> **The clan's own industry is the only thing keeping it alive in the dark — and
+> that industry is how it makes money.**
+
+Smelters, forges and the salvage line **throw heat**. So the nightside refuge is
+survivable **exactly as long as the factory runs**, and the factory runs on
+feedstock hauled from the dayside.
+
+⭐ **That closes the hiding loop without a single new system:**
+
+- **hiding costs FUEL**, and fuel is the same resource as production
+- **you can smelt or you can not freeze** — and early on, not both
+- **the refuge has a running cost**, so it expires on its own with no timer
+- ⭐ **and the thing that saves you is the thing you already built to get rich.**
+  The clan does not need a survival mechanic bolted on; **its economy IS the
+  survival mechanic**, pointed sideways.
+
+### What this makes true, and it is a lot
+
+- **The pursuit ruling holds** — extended, never terminated — and now the *cold*
+  supplies the pressure that a stopped clock would have removed.
+- ⭐ **"Dramatic heater technology" becomes a real progression tier**, and it is the
+  first thing the clan would want that is not a weapon or a wall.
+- **`AB_RockyCrags` grows plants at glow 0.34 — nothing.** So the nightside has no
+  food either. **Cold, dark, hungry, and running on imported fuel.**
+- ⚠️ **A Wildsteam pawn would be FINE out there** — Wookiees, Ewoks, Nelvaanians
+  are all furred and cold-adapted. **The species that cannot use the dayside are
+  the ones who could live in the dark**, which is a trade the player can actually
+  make: recruit the wrong-for-here people to hold the place you hide in.
