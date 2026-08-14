@@ -1,5 +1,47 @@
 # AGENT_OPS_state.md — where OPS is
 
+## 🔴 WRAP 2026-08-13 ~21:0x — this section supersedes everything below it
+
+**Game was LIVE this session** (up 17:30, quicktest map). **Bridge taken twice
+and RELEASED both times**, announced to BRIDGE each way.
+
+**Left on the map (quicktest, NOT the campaign):** four art-check pawns at
+(30/32/42/48, 210), faction none, alive. My downed `KotORDroidGood_3C` at
+(60,60) is **gone** — downed, not killed, so something finished it. Nothing
+destroyed by me, no terrain written, **never unpaused**.
+
+### Owed / carry forward
+
+| item | note |
+|---|---|
+| 🔴 **Steam Cloud restores deleted saves** | 26 `.rws`, 701 MB, came back at the 17:30 launch with ORIGINAL mtimes. **Cloud must be DISABLED for RimWorld before deleting, or the next launch undoes it again.** Owner's call; I am not touching it. |
+| **Pin the 6 `loadBottom`+`loadAfter` userRules** | wants the game DOWN. Order is correct TODAY but rides a tie-break, not a constraint. `loadBottom` outranks `loadAfter`; keep it only on `rimdefdump`. |
+| **`refresh.py`** | wants the game DOWN. |
+| **Retire `mandrake.missingartfixes`** | all 7 textures md5-identical to the per-donor successors; blocking dep cleared. Drop from `ModsConfig.xml` on a mod-list pass. |
+| **Restore 3 pruned textures?** | OPTIONAL and unrelated to the graphics scare (withdrawn). Recoverable from `6f52185`. Only affects the shadowing question. |
+
+### Still open in my queue
+**O3, O5, O8** offline. **O4** is the only one needing a live game — a
+one-minute Faction Customizer persistence check. **Closed today: O1, O2, O7, O9.**
+
+### The one thing a successor must not re-derive
+🔴 **`v1` row 2 (worldgen faction cut) is UNEXECUTED.** The checklist is
+ratified and ready at `infrastructure/state/WORLDGEN_FACTION_CHECKLIST.md`.
+⚠️ **A quicktest map's faction roster PROVES NOTHING about it** — a debug
+quicktest never visits the Configure Factions page, so every faction is present
+by default. That reading nearly triggered a needless 25–30 minute regeneration
+today. **State which map any census came from.**
+
+### Systemic finding of the session
+**Four tools reported success for work that never happened** — a validator's exit
+code discarded, `--defnames` claiming checks it had not run, a def dump that
+accumulates orphan types while looking fresh, and a provenance stamp written on
+failure. **In this codebase "success" is usually asserted by whatever wrote last,
+not by whatever checked.** All four fixed; the pattern is the finding.
+
+---
+
+
 **Cross-session address:** `uds:/run/user/1000/cc-socks/88807.sock`
 (session resumed 2026-08-13 ~14:58, wrapped ~15:10 on PROJECT's reboot order.
 ⚠️ **Dead once this session exits** — recompute on the next resume, first thing:)
