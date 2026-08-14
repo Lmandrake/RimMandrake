@@ -37,7 +37,7 @@ pass rather than now, so nobody's citation breaks mid-session.
 These six were found by the Stage 2 gap audit on 2026-08-13 and **each was re-read
 at its source line before being written down**. Full evidence and the five
 candidate findings that did *not* survive checking:
-`file:///D:/Luke/dev/Rimworld/design/Jawa/worldbuilding/faction_stage2_gap_audit.md`
+`D:\Luke\dev\Rimworld\design\Jawa\worldbuilding\faction_stage2_gap_audit.md`
 
 ### V1. Homestead raid frequency contradicts Global system 9 `[v2]`
 `faction_roster_v2.md:300` says *"Homestead / Aquifer / Wookiee never raid (Rw 0)"*;

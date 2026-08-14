@@ -2,7 +2,7 @@
 
 _Written by **PROJECT**, 2026-08-12, against the faction roster Stage 2 work
 (now `infrastructure/state/queue/VISION.md` **V9**). Audits
-`file:///D:/Luke/dev/Rimworld/design/Jawa/worldbuilding/faction_roster_v2.md` (2,433 lines,
+`D:\Luke\dev\Rimworld\design\Jawa\worldbuilding\faction_roster_v2.md` (2,433 lines,
 12 faction dossiers) against what RimWorld's `FactionDef` actually accepts._
 
 **Stage 2 asked: "is every field RimWorld needs actually decided, or only the
@@ -93,7 +93,7 @@ entire settings schema is:
 </ModSettings>
 ```
 
-— `file:///C:/Users/Mandrake/AppData/LocalLow/Ludeon%20Studios/RimWorld%20by%20Ludeon%20Studios/Config/Mod_2882785581_Controller.xml`
+— `C:\Users\Mandrake\AppData\LocalLow\Ludeon Studios\RimWorld by Ludeon Studios\Config\Mod_2882785581_Controller.xml`
 
 **Density only. No goodwill, no relations.**
 
