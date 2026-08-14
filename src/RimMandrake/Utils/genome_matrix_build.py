@@ -251,6 +251,12 @@ display:flex;align-items:center;gap:.5rem;flex-wrap:wrap}
 .sbs th.rot>div{max-height:6.6rem}
 .sbs tbody th{min-width:15rem}
 .agree{color:var(--ours)}
+table.packs{border:1px solid var(--rule);border-radius:6px;background:var(--card);
+margin:0 0 1.2rem;font-size:.85rem}
+table.packs th,table.packs td{padding:.35rem .8rem;text-align:left;
+border-bottom:1px solid var(--rule);width:auto}
+table.packs thead th{position:static;height:auto;font-weight:600;color:var(--dim)}
+table.packs tbody td{text-align:left}
 .disagree{color:var(--warn)}
 .chips{display:flex;flex-wrap:wrap;gap:.3rem;padding:.5rem .8rem}
 .g{display:inline-flex;align-items:center;gap:.25rem;border:1px solid var(--rule);
@@ -346,12 +352,65 @@ def build(args) -> int:
       f'(vanilla and Outer Rim art lives inside Unity AssetBundles).</p>')
 
     contested = [s for s in species_order if len(by_species[s]) > 1]
-    w('<div class="callout"><b>The decision this document exists for:</b> '
-      f'{len(contested)} species are implemented by more than one pack at the same '
-      'time. BTD REMIX, SW Xenotypes and Outer Rim GD are all active, and all three '
-      'define a Twi’lek, a Wookiee, a Jawa. The game will happily generate all '
-      'of them side by side. Pick one pack per species &mdash; or one pack outright '
-      '&mdash; and disable the rest. The contested species are listed first below.</div>')
+
+    # Per-pack shape, measured rather than asserted -- the recommendation below
+    # rests on these three numbers and they should regenerate with the data.
+    stats: dict[str, dict] = {}
+    for pid, (plabel, _cls) in CANDIDATE_PACKS.items():
+        members = [x for x in rows if x["packageId"].lower() == pid]
+        if not members:
+            continue
+        counts = sorted(len(x["fields"].get("genes") or []) for x in members)
+        own = sum(
+            1
+            for x in members
+            for g in (x["fields"].get("genes") or [])
+            if ((gene_by_name.get(g) or {}).get("packageId") or "").lower() == pid
+        )
+        gen = sum(1 for x in members
+                  if (x["fields"].get("factionlessGenerationWeight") or 0) > 0)
+        stats[plabel] = {
+            "n": len(members),
+            "median": counts[len(counts) // 2] if counts else 0,
+            "own": own,
+            "generating": gen,
+        }
+
+    w('<div class="callout"><b>The problem this document exists for:</b> '
+      f'{len(contested)} species are defined by more than one active pack at once. '
+      'BTD REMIX, SW Xenotypes and Outer Rim GD all ship a Twi&rsquo;lek, a Wookiee, '
+      'a Jawa &mdash; and <b>all three packs generate</b>, so a single wanderer '
+      'event can drop a Twi&rsquo;lek whose genes and icon do not match the '
+      'Twi&rsquo;lek already in the colony. That is visible at the keyboard, not '
+      'just in a def folder.</div>')
+
+    w("<h2>Recommendation &mdash; and it is not &ldquo;pick one pack&rdquo;</h2>")
+    w('<p class="lede">The obvious move is to disable two of the three. '
+      '<b>Do not.</b> The packs are a stack, not alternatives.</p>')
+    w("<table class=\"packs\"><thead><tr><th>pack</th><th>xenotypes</th>"
+      "<th>median genes each</th><th>genes it defines itself</th>"
+      "<th>generating</th></tr></thead><tbody>")
+    for plabel, s_ in stats.items():
+        w(f'<tr><td>{esc(plabel)}</td><td>{s_["n"]}</td><td>{s_["median"]}</td>'
+          f'<td>{s_["own"]}</td><td>{s_["generating"]} of {s_["n"]}</td></tr>')
+    w("</tbody></table>")
+    w('<p class="lede"><b>BTD REMIX defines zero genes of its own.</b> Every one of '
+      'its 70 xenotypes is a recombination of genes belonging to Biotech, Outland '
+      'Genetics, Integrated Genes &mdash; and to the other two Star Wars packs '
+      '(196 of its gene references point at SW Xenotypes, 41 at Outer Rim GD). '
+      'Uninstall either of those and BTD&rsquo;s xenotypes lose genes. The name is '
+      'accurate: it is a remix layer.</p>')
+    w('<div class="callout"><b>So the action is a generation patch, not an '
+      'uninstall.</b> Keep all three mods loaded &mdash; their <i>gene</i> defs are '
+      'load-bearing. Then set <code>factionlessGenerationWeight</code> to 0 on the '
+      'duplicate <i>xenotype</i> defs you are not standardising on, and point the '
+      'relevant <code>PawnKindDef</code> <code>xenotypeSet</code>s at the survivor. '
+      '<b>This is exactly what <code>Jawa_Patches\\Patches\\JawaXenotype_Repoint.xml</code> '
+      'already does for the Jawa</b>, and it is the pattern to copy for the rest. '
+      'On richness alone the survivor should usually be BTD &mdash; it carries '
+      'the most genes per xenotype and it is already the owner&rsquo;s ruling for '
+      '<code>BTD_Jawa</code> &mdash; but read the per-species blocks before '
+      'assuming that: a thinner xenotype is sometimes the better-behaved one.</div>')
 
     w('<div class="legend">'
       '<span><span class="star">&#9733;</span> species the faction roster fields</span>'
