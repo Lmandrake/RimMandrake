@@ -89,7 +89,13 @@ the trap.
 Then `python.exe src/RimMandrake/Utils/refresh.py` — **Windows** interpreter; WSL's
 `python3` fails on the Windows paths with a bare `cannot read ModsConfig`.
 
-### 1c. Companion — **ONE tool owed at the next shutdown window**
+### 1c. Companion — ✅ **NOTHING OWED. The build landed 2026-08-14 12:25.**
+
+🔴 **Re-measured by PROJECT 2026-08-14 against the game copy, not relayed:**
+`md5 55b2362985bcf5a2dc4a1140ef39eb7a`, **292,864 B @ 12:25**, **26 `jawa/` names**,
+`get_defs` and `fire_quest` both PRESENT. **The "UNDEPLOYED" table below was true
+when written and is now false** — everything it lists is on the game copy. Do not
+rebuild, do not redeploy, and do not spend the shutdown window on the companion.
 
 🔴 **Corrected 2026-08-14 by BRIDGE, byte-measured against the game copy.** The old
 NEED-DOWN batch listed three items and **two of them were already deployed**:
@@ -99,8 +105,8 @@ NEED-DOWN batch listed three items and **two of them were already deployed**:
 |---|---|
 | `jawa/order_pawn` | ✅ deployed — do not re-deploy |
 | `jawa/damage` refusal fix | ✅ deployed — do not re-deploy |
-| **`jawa/get_defs` (`f4ecb68`)** | 🔴 **UNDEPLOYED** |
-| **`jawa/fire_quest`** | 🔴 **UNDEPLOYED — being built offline by BRIDGE 2026-08-14.** Unblocks v1 row 3, which §7 had filed as uncollectable. `QuestUtility::GenerateQuestAndMakeAvailable(QuestScriptDef, float)`, IL-confirmed to reach `QuestManager::Add` — it registers, it does not merely generate. The tool reads the quest back out of `QuestManager` and reports its id/name/State, because a method returning is not evidence |
+| **`jawa/get_defs` (`f4ecb68`)** | ✅ **DEPLOYED 12:25** — measured, see above |
+| **`jawa/fire_quest`** | ✅ **DEPLOYED 12:25** — measured. Unblocks v1 row 3, which §7 had filed as uncollectable. `QuestUtility::GenerateQuestAndMakeAvailable(QuestScriptDef, float)`, IL-confirmed to reach `QuestManager::Add` — it registers, it does not merely generate. The tool reads the quest back out of `QuestManager` and reports its id/name/State, because a method returning is not evidence |
 
 ⚠️ **The method that made the stale entry look verified:** `strings -a` scans
 7-bit ASCII, so a method-body literal (UTF-16LE, in the `#US` heap) reads as
@@ -112,8 +118,8 @@ present; it never proved any behaviour inside them.
 
 
 **Deployed `C:\Program Files (x86)\Steam\steamapps\common\RimWorld\BridgeTools\JawaBench\JawaBench.BridgeTools.dll`
-— 22 tools, 246,272 B @ 00:04, byte-verified by `strings` on the DEPLOYED copy,
-not trusted from the build's own report.** Any earlier "20 tools" or "21 tools"
+— 26 tools, 292,864 B @ 12:25, md5 `55b2362`, verified on the DEPLOYED copy, not
+trusted from the build's own report.** Any earlier "20", "21", "22" or "24 tools"
 line is dead. This copy carries BRIDGE's `BiomeDef` branch (`9f58702`, §3b) and
 `jawa/world_stats` (`5768a10`).
 
@@ -124,7 +130,24 @@ paper only; first execution is this load.
 `jawa/fire_incident` and `jawa/send_letter` off the game copy. The build refusing
 by default is the guard working.
 
-### 1d. 🔴 A DEPLOY IS OWED — **5 SHIP · 2 HELD**, AND THE GAME MUST BE DOWN
+### 1d. ✅ **THE DEPLOY LANDED — `da7118e`. NOTHING IS OWED. Do not spend the window here.**
+
+**OPS ran `--mod Jawa_Patches --apply` → `VERIFIED in sync`, 4 files.** Rows 2, 3,
+4 and 5 below are **SHIPPED** — including 🔴 **`BuzzerApostrophe_Fix.xml`, the one
+with the deadline. It made the window.** Row 1 was already deployed (§1c) and is
+dropped. **Row 6 shipped on 08-13 and re-measured identical (md5 `d68bea3f`).**
+
+⭐ **Why row 6 looked owed and was not:** a `--mod`-scoped `--apply` that ends
+`VERIFIED in sync` is a positive statement about **every file in that mod**, not
+only the ones it rewrote. Read the verdict, not the write count.
+
+⚠️ **`--plan` lists one mod this table does not: `StrandedQuest`** — 3 files, not
+deployed, **not enabled in `ModsConfig.xml`**. OPS left it inert, correctly. It is
+an enable + deploy and it must land **pre-worldgen** — but **worldgen is HELD this
+session**, so it has **no deadline tonight**. Owner ruling wanted before the
+worldgen load, not before this one. Filed, not blocking.
+
+_Table below is the pre-deploy state, kept because it records what was ranked and why._
 
 **This section read "No deploy is owed" until 2026-08-14. That is now FALSE.**
 ⚠️ **The count and the table must agree. They did not, for one revision** — the
@@ -134,7 +157,8 @@ if it lists a file this table does not, this table is the stale one.
 
 | # | item | ship? | why |
 |---|---|---|---|
-| 1 | companion DLL — `jawa/get_defs`, `jawa/fire_quest` | ✅ | §1c. ⚠️ **must pass `--gm`** or it strips `fire_incident` and `send_letter` |
+| ~~1~~ | ~~companion DLL~~ | ⛔ **DROPPED — ALREADY DEPLOYED** | Game copy md5 `55b2362`, 26 tools @ 12:25, `--gm` pair present. Measured independently by BRIDGE and by PROJECT 2026-08-14, and identical to the repo build. **Do not rebuild minutes before launch.** §1c |
+| 6 | `BTDGravshipQuest_GrammarFix.xml` (`57b6f69`) | ✅ **ALREADY DEPLOYED — nothing owed** | Repo and game copy both md5 `d68bea3f`, verified by OPS and re-measured by PROJECT. It shipped with the 08-13 deploy. ⭐ **Generalises:** a `--mod`-scoped `--apply` ending `VERIFIED in sync` is a positive statement about **every** file in that mod, not only the ones it wrote — so no second `Jawa_Patches` deploy can be owed tonight. OPS O13, `queue/OPS.md:127`. Authored, validated, committed, **never deployed**; xpath confirmed against the installed defs, exactly 1 match. Success is a POSITIVE observation — the Downed Gravship quest showing description text — **not** the disappearance of `Grammar unresolvable`, which proves nothing if the quest never fired |
 | 2 | `JawaScrapfields.xml` — `isJunk` off (`de1018b`) | ✅ | repo-only; game copy still 2026-08-13 16:42 **with `isJunk` present** |
 | 3 | `JawaGroundHulk.xml` — `isJunk` off (`de1018b`) | ✅ | same defect class, same commit |
 | 4 | ⏳ **`BuzzerApostrophe_Fix.xml`** (`3822ef9`) | ✅ **AND IT EXPIRES** | 🔴 **The ONLY item here with a deadline. Buzzer names bake into the save as STRINGS**, so it is worth shipping **only while worldgen is still ahead of us.** Ship it now and it works forever; miss this window and it is worth nothing the moment the world is made. Validator clean, both namer sites |
@@ -208,12 +232,18 @@ gate on the irreversible worldgen run.**
 **Derive the expectation at census time, from the artifact you just deployed:**
 
 ```bash
-grep -rhoE '"jawa/[a-z_]+"' src/RimMandrake/bridgetools/ | sort -u | wc -l   # = 24 on 2026-08-14
+grep -rhoE --include='*.cs' '"jawa/[a-z_]+"' src/RimMandrake/bridgetools/ | sort -u | wc -l   # = 26 on 2026-08-14
 ```
+
+🔴 **`--include='*.cs'` IS LOAD-BEARING. Without it this command returns 27** and
+fails a correct build — it picks up a `[Tool("jawa/...")]` string inside a comment
+in `prove_new_tools.py`. Found by BRIDGE, re-measured by PROJECT 2026-08-14
+(27 bare / 26 scoped). **Fourth instance of the exact failure this section exists
+to prevent — and this time it was in the fix itself.**
 
 | you deployed | expect |
 |---|---|
-| the current artifact **with `--gm`** | that count — **24** today, `get_defs` + `fire_quest` included |
+| the current artifact **with `--gm`** | that count — **26** today, `get_defs` + `fire_quest` included |
 | the current artifact **without `--gm`** | that count **minus 2** — `fire_incident` and `send_letter` are stripped |
 | anything else | **STOP.** The deployed companion is not the one you measured, and every result below is evidence of nothing |
 
@@ -225,12 +255,11 @@ every single deploy, silently, and the gate then fails the correct build.** Thir
 instance in one night of *a number in a document that nobody re-derives*. **Gates
 compare measurements to measurements — never to prose.**
 
-The 22: `damage`, `destroy_batch`, `drain_log`, `fire_incident`, `get_def`,
-`get_roof_batch`, `get_terrain_batch`, `list_factions`, `list_pawns`,
-`order_pawn`, `refresh_rect`, `send_letter`, `set_pawn_rotation`,
-`set_pawn_style`, `set_pawn_xenotype`, `set_plants`, `set_roof_batch`,
-`set_terrain`, `set_terrain_batch`, `spawn_batch`, `spawn_pawn`,
-**`world_stats`**.
+**Measured on the DEPLOYED copy 2026-08-14 12:25: 26 names, `--gm` pair present.**
+That is a measurement of the artifact the game will load, not a doc number — but
+**it goes stale the instant anyone redeploys.** Re-derive with the `grep` above and
+compare measurement to measurement. The four names added since the "22" list:
+`get_defs`, `fire_quest`, `list_things`, `clear_ui`.
 
 🔴 **THE GAME IS NOT REACTIVE FOR ~40 s AFTER THE BRIDGE FIRST ANSWERS**, whatever
 `currentMapReady` and `longEventPending` report. Owner-observed; baked into
@@ -403,6 +432,28 @@ The evidence is the §3b `get_def` read, and it needs no map.
 A Desert / ExtremeDesert / AridShrubland quicktest tile is needed for **salt pans**
 alone — dune seas moved to a live def read, and **the hulk and scrapfields are not
 biome-gated at all.** Any fresh map shows those two.
+
+---
+
+## 5e. ⭐ BATCH B2 — LATE ADDITIONS, assembled by PROJECT 2026-08-14 from all four
+seat queues. **Every one is scratch-map or paused. None needs a world.**
+
+_The run sheet was 1.5 h behind the queues when the restart was called. These are
+the items that sweep surfaced; each is confirmed by its owning seat this window._
+
+| # | call | owner | why it is worth a line |
+|---|---|---|---|
+| L1 | `jawa/spawn_thing def=SmallThruster x=45 z=131` — read the returned/inspect string for `WarningThrusterInside` | CREATE | **Cheapest launch gate we own.** Outdoor-required ⇒ the exported hull needs its stern cut back, a whole deck re-lay. Substructure-free-only ⇒ nothing to change. One paused call decides a large piece of rework |
+| L2 | `jawa/order_pawn targetId=<pilot console thingId> waitTicks=0 unpause=false` — read `canReach` | CREATE | 🔴 `pathEndMode` must stay `interactioncell` (the default when `targetId` is set). **The cell beside a console is a different verdict from the vanilla `PawnCanFillRole` gate** — do not substitute one for the other |
+| L3 | Spawn ONE Galactic Empire raid and screenshot it | VISION | VISION's own words: *the biggest open design question I own.* V6/V7/V25 have three layers of analysis and **nobody has looked at it on screen.** ~5 min. **Before we repair the antagonist, someone must see whether it reads as one** |
+| L4 | Spawn `KotORDroidGood_3C` **twice** — the 2nd must NRE | OPS | 30 s, any map. O12's whole causal chain (`isOrganic=false` ⇒ no `Pawn_RelationsTracker` ⇒ HAR NRE on the 2nd same-def pawn) rests on this. **If the 2nd does not throw, the chain is wrong and O12 re-opens.** An owner decision is queued behind it |
+| L5 | Full-map `listerThings` count of `ChunkSlagSteel` — **NO sampling** — plus `TileInfo.Mutators` and map size | OPS | v1 row 4's open defect. ⚠️ **Match the band to the def the map was BUILT with: 75–125 pre-`de1018b`, 44–56 after.** ≥75 closes it as a MEASUREMENT defect, not a content one. The standing "11" was never a count — it was 8,100 sampled cells extrapolated, and where those rects sat is recorded nowhere |
+| L6 | `jawa/list_things`, `jawa/clear_ui`, `set_roof_batch`/`get_roof_batch` | BRIDGE | Never-run tools with no batch anywhere. `clear_ui` **gates the art re-shoot** — the old 12 screenshots are non-evidence because the dev log covers frame centre |
+| L7 | Re-run P1 `AV_DogSled` | BRIDGE | `spawn_batch` now routes `VehicleDef` through `VehicleSpawner` **by reflection**. Unproven, and the reflection is what keeps the companion loading without Vehicle Framework |
+
+⛔ **NOT in any batch, deliberately:** the ten art-fix mods. The standing directive
+makes **the owner's own eyes** the gate, so it is an owner-look item and no seat
+can close it with a bridge call. CREATE's ruling, and it is right.
 
 ---
 
