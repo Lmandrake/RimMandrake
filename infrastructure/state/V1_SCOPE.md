@@ -117,6 +117,35 @@ features beyond the plan are v2.
 
 ---
 
+### ⚖️ Row 8's gate, ruled 2026-08-13 — **the EXPORT is what makes a quicktest count**
+
+BRIDGE is building the ship on a **quicktest** map, not the campaign. By the
+general rule that would prove nothing about v1 — *"a quicktest answers does this
+work, never is this true of our campaign"* (`skills/rimworld-debug-testing`).
+
+**Row 8 is the exception, and the reason is Gravship Exporter.** CREATE
+established offline (`b7e49db`) that a built ship exports to a
+`GravshipExport.ShipLayoutDefV2` — a cell grid of foundation, terrain and things.
+**So the ship is a reusable ARTIFACT, not a map state.** Where it was first
+assembled does not matter.
+
+> **Row 8 closes on: built, boardable, matches the deck plan's intent, AND
+> exported to a layout def committed to the repo.** The export is not paperwork —
+> it is the thing that survives the map it was built on.
+
+⚠️ **Built-but-unexported on a quicktest closes NOTHING** and is one map-swap away
+from being lost entirely. If the session runs short, **export before you polish.**
+
+⚠️ **One contradiction still unresolved:** the exporter's README claims floors
+cannot be saved, while its own shipped example carries **204 non-null `terrainDef`
+cells**. A round-trip that silently drops floors would make the artifact
+incomplete without erroring — this project's usual failure shape. **Verify the
+export re-imports with its floors** before calling the row done.
+
+**Seat split, as BRIDGE stated it and it is the right one:** CREATE keeps
+authorship, BRIDGE owns proving. A disagreement between plan and game pulls
+CREATE in rather than being resolved unilaterally.
+
 ## ⚠️ Sequencing — the two dependencies that can cost a whole cycle
 
 ### 1. `jawa/list_factions` needs a SHUTDOWN window, not a startup
