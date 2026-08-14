@@ -567,6 +567,20 @@ def prove_order_pawn(s, have, pid, x, z, walk):
           "canReach=%s orderAccepted=%s" % (row.get("canReach"),
                                             row.get("orderAccepted")))
 
+    # Two refusals, both free. A tool that accepts a destination it cannot have
+    # understood is the same silent-success shape as one that accepts a job it
+    # cannot run -- and pathEndMode is the parameter that decides whether
+    # canReach answers the game's question or a neighbouring one.
+    bad = s.call("jawa/order_pawn", pawnId=pid, waitTicks=0, unpause=False)
+    check("  ...and it REFUSES an order with no destination at all",
+          isinstance(bad, dict) and bad.get("success") is False,
+          str((bad or {}).get("message"))[:90])
+    bad2 = s.call("jawa/order_pawn", pawnId=pid, x=x, z=z, waitTicks=0,
+                  unpause=False, pathEndMode="nearby")
+    check("  ...and it REFUSES an unknown pathEndMode instead of guessing one",
+          isinstance(bad2, dict) and bad2.get("success") is False,
+          str((bad2 or {}).get("message"))[:90])
+
     if not walk:
         return skip("jawa/order_pawn actually moves a pawn",
                     "needs --walk (it unpauses the game)")
@@ -780,6 +794,13 @@ class _StubSession(object):
             # The stub must NOT answer yes to the zero-tick call: the check it
             # feeds asserts the tool refuses to call no movement a success.
             want = {"x": p.get("x"), "z": p.get("z")}
+            if p.get("x") is None and not p.get("targetId"):
+                return {"success": False, "message": "No destination. Pass 'x' and "
+                                                     "'z' for a cell, or 'targetId'."}
+            if p.get("pathEndMode") not in (None, "oncell", "touch", "closesttouch",
+                                            "interactioncell", "none"):
+                return {"success": False,
+                        "message": "pathEndMode '%s' is not a mode." % p.get("pathEndMode")}
             if not p.get("waitTicks"):
                 return {"success": False, "ticksElapsed": 0, "arrivedCount": 0,
                         "message": "0/1 pawn(s) standing on the cell after 0 "

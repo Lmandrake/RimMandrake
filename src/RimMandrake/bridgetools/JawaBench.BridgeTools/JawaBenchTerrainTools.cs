@@ -1780,6 +1780,23 @@ namespace JawaBench.BridgeTools
             return found;
         }
 
+        // Values read from Verse.AI.PathEndMode with ilprobe, not assumed:
+        // None=0, OnCell=1, Touch=2, ClosestTouch=3, InteractionCell=4.
+        private static bool TryParsePathEndMode(string s, out PathEndMode mode)
+        {
+            mode = PathEndMode.OnCell;
+            switch ((s ?? "").Trim().ToLowerInvariant().Replace("_", ""))
+            {
+                case "none": mode = PathEndMode.None; return true;
+                case "oncell": case "cell": mode = PathEndMode.OnCell; return true;
+                case "touch": mode = PathEndMode.Touch; return true;
+                case "closesttouch": mode = PathEndMode.ClosestTouch; return true;
+                case "interactioncell": case "interaction":
+                    mode = PathEndMode.InteractionCell; return true;
+            }
+            return false;
+        }
+
         private static bool TryParseRot(string dir, out Rot4 rot)
         {
             rot = Rot4.South;
@@ -2480,10 +2497,24 @@ namespace JawaBench.BridgeTools
                 "One ThingID, a comma-separated list of them, 'all' for every spawned pawn, " +
                 "or 'colonists'.")]
             string pawnId,
-            [ToolParameter(Description = "Destination cell X.")]
-            int x,
-            [ToolParameter(Description = "Destination cell Z.")]
-            int z,
+            [ToolParameter(Description =
+                "Destination cell X. Omit when targetId is given.", DefaultValue = -1)]
+            int x = -1,
+            [ToolParameter(Description =
+                "Destination cell Z. Omit when targetId is given.", DefaultValue = -1)]
+            int z = -1,
+            [ToolParameter(Description =
+                "Instead of a cell, a ThingID to walk to — the destination becomes that " +
+                "thing's InteractionCell and reachability is computed against the THING, " +
+                "which is what the game's own gates do. Overrides x/z when given.")]
+            string targetId = null,
+            [ToolParameter(Description =
+                "'oncell', 'touch', 'closesttouch', 'interactioncell' or 'none' — how close " +
+                "counts as reached, for the canReach computation. Defaults to " +
+                "'interactioncell' when targetId is given and 'oncell' otherwise, because " +
+                "that is what each case means. ⚠️ These are NOT interchangeable: a pawn can " +
+                "reach the cell beside a console and still fail 'interactioncell'.")]
+            string pathEndMode = null,
             [ToolParameter(Description =
                 "Draft the pawn first. A drafted pawn holds the destination instead of " +
                 "wandering off to its own work the moment it arrives, which is what you want " +
@@ -2517,7 +2548,25 @@ namespace JawaBench.BridgeTools
             if (timeoutSeconds < 1 || timeoutSeconds > 300)
                 return Fail($"timeoutSeconds must be 1-300, got {timeoutSeconds}.");
 
+            var haveTarget = !string.IsNullOrWhiteSpace(targetId);
+            if (!haveTarget && (x < 0 || z < 0))
+                return Fail("No destination. Pass 'x' and 'z' for a cell, or 'targetId' for " +
+                            "a thing. Nothing was ordered.",
+                    new { xGiven = x, zGiven = z, targetIdGiven = targetId });
+
+            PathEndMode peMode;
+            var peAsked = (pathEndMode ?? "").Trim();
+            if (peAsked.Length == 0)
+                peMode = haveTarget ? PathEndMode.InteractionCell : PathEndMode.OnCell;
+            else if (!TryParsePathEndMode(peAsked, out peMode))
+                return Fail($"pathEndMode '{pathEndMode}' is not a mode.", new
+                {
+                    accepted = new[] { "oncell", "touch", "closesttouch",
+                                       "interactioncell", "none" }
+                });
+
             var dest = new IntVec3(x, 0, z);
+            Thing target = null;
             List<Pawn> pawns = null;
             var starts = new Dictionary<string, IntVec3>();
             var accepted = new Dictionary<string, bool>();
@@ -2531,8 +2580,27 @@ namespace JawaBench.BridgeTools
             {
                 var map = Find.CurrentMap;
                 if (map == null) return Fail("No current map. Load a game first.");
+
+                if (haveTarget)
+                {
+                    var wanted = targetId.Trim();
+                    target = map.listerThings.AllThings.FirstOrDefault(
+                        t => string.Equals(t.ThingID, wanted,
+                                           StringComparison.OrdinalIgnoreCase));
+                    if (target == null)
+                        return Fail($"No spawned thing on this map with id '{wanted}'.",
+                            new { thingsOnMap = map.listerThings.AllThings.Count });
+                    // InteractionCell is the cell a pawn STANDS IN to use the thing.
+                    // It is invalid for anything with no interaction spot, in which
+                    // case the thing's own cell is the only sensible destination.
+                    var ic = target.def.hasInteractionCell
+                        ? target.InteractionCell
+                        : IntVec3.Invalid;
+                    dest = ic.IsValid ? ic : target.Position;
+                }
+
                 if (!dest.InBounds(map))
-                    return Fail($"({x},{z}) is outside the map.", new
+                    return Fail($"({dest.x},{dest.z}) is outside the map.", new
                     {
                         mapSize = new { x = map.Size.x, z = map.Size.z }
                     });
@@ -2563,9 +2631,22 @@ namespace JawaBench.BridgeTools
                     // Computed BEFORE the order, because TryTakeOrderedJob never
                     // looks at it: an unreachable Goto is accepted and then fails
                     // inside the pather, which is invisible from the return value.
-                    reachable[id] = ReachabilityUtility.CanReach(
-                        pawn, dest, PathEndMode.OnCell, Danger.Deadly,
-                        false, false, TraverseMode.ByPawn);
+                    // Target the THING when one was named. This is not cosmetic:
+                    // RimWorld's own launch gate is
+                    //   ReachabilityUtility.CanReach(pawn, console,
+                    //       PathEndMode.InteractionCell, Danger.Deadly,
+                    //       false, false, TraverseMode.ByPawn)
+                    // at RitualBehaviorWorker_GravshipLaunch::PawnCanFillRole
+                    // IL_0065-006A, immediately before it emits
+                    // "NoPathToPilotConsole" at IL_0072. Passing targetId with the
+                    // default pathEndMode reproduces that call exactly.
+                    reachable[id] = target != null
+                        ? ReachabilityUtility.CanReach(
+                            pawn, target, peMode, Danger.Deadly,
+                            false, false, TraverseMode.ByPawn)
+                        : ReachabilityUtility.CanReach(
+                            pawn, dest, peMode, Danger.Deadly,
+                            false, false, TraverseMode.ByPawn);
 
                     if (draft)
                     {
@@ -2685,7 +2766,10 @@ namespace JawaBench.BridgeTools
                 }
 
                 var ticksElapsed = ticksNow - startTicks;
-                var msg = $"{arrived}/{rows.Count} pawn(s) standing on ({x},{z}) after " +
+                var where = target != null
+                    ? $"({dest.x},{dest.z}), the interaction cell of {target.LabelShortCap}"
+                    : $"({dest.x},{dest.z})";
+                var msg = $"{arrived}/{rows.Count} pawn(s) standing on {where} after " +
                           $"{ticksElapsed} tick(s); {moved} moved at all.";
                 if (ticksElapsed <= 0)
                     msg += " ⚠️ THE GAME DID NOT TICK — nothing here is a movement result. " +
@@ -2711,6 +2795,10 @@ namespace JawaBench.BridgeTools
                     movedCount = moved,
                     pawnCount = rows.Count,
                     destination = new { x = dest.x, z = dest.z },
+                    targetId = target?.ThingID,
+                    targetLabel = target?.LabelShortCap,
+                    targetDef = target?.def?.defName,
+                    pathEndMode = peMode.ToString(),
                     ticksElapsed,
                     ticksRequested = waitTicks,
                     timedOut,
