@@ -15,6 +15,31 @@ authored offline by OPS/CREATE and all of it verifies in ONE session.
 
 ## Open
 
+### 🔴 PRE-LAUNCH 2026-08-14 — CENSUS EXPECTS **26**, and the documented derivation says 27
+Measured on the game copy at the open window: md5 `55b2362985bcf5a2dc4a1140ef39eb7a`,
+292,864 B @ 12:25, **26/26 `jawa/` names**, md5-identical to the repo build
+`src/RimMandrake/bridgetools/artifacts/BridgeTools/JawaBench/JawaBench.BridgeTools.dll`,
+no `.cs` newer than it. **No companion deploy is owed** — `NEXT_RELOAD.md` §1c/§1d
+row 1 were stale and PROJECT has been corrected.
+
+🔴 **`NEXT_RELOAD.md` §3's derivation command over-counts by one and would FAIL a
+correct build.** `grep -rhoE '"jawa/[a-z_]+"' src/RimMandrake/bridgetools/` → **27**;
+it matches `[Tool("jawa/x")]` inside a *comment* in `prove_new_tools.py:112`. Add
+`--include='*.cs'` → 26. **Generalises: a derivation is only as good as its corpus —
+scoping a gate's grep to "the source tree" swept in prose about the source tree.**
+
+✅ **VISION's sea-gate ask is ALREADY SHIPPED, not owed.** `perimeter`,
+`centroidLat` and `raggedness` (perimeter²/tiles) are in the DEPLOYED binary —
+`strings -a -el` returns the anonymous-type template
+`{ tiles = {0}, pct = {1}, perimeter = {2}, raggedness = {3}, centroidLat = {4} }`.
+Sea gate is **5-of-5** collectable. (`JawaBenchTerrainTools.cs:3164-3178`.)
+
+⏳ **Deferred to the NEXT shutdown window, deliberately: `jawa/ideo_of`,
+`jawa/biome_probe`** (VISION.md:508, 515). Both are new tools needing IL-verified
+engine routes; rushing them into the one artifact that is currently proven-good,
+minutes before launch, risks 26 working tools to add 2. **Build them offline during
+the load** — that is dead time already.
+
 ### 🔴 THE 12 ART SCREENSHOTS ARE NON-EVIDENCE — re-shoot them, do not judge them
 Found by opening the pictures. The Debug log window covers the CENTRE of the
 screen, which is exactly where `look()` puts the subject; in `p5_004.png` and
