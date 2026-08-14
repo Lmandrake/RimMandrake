@@ -252,3 +252,32 @@ LIVE.** Repo and game copy md5-identical `d68bea3f…`; it is a `Jawa_Patches` f
 so the `--mod Jawa_Patches` run covered it and found no drift. It shipped with the
 08-13 deploy. ⇒ **§1d row 6 is satisfied, not pending. Nothing further owed before
 this launch.**
+
+## ✅ O18 CLOSED — the scoped sweep ran: **72 files, 0 errors, 1608 warnings, all four classes accounted for**
+
+Findings: `D:\Luke\dev\Rimworld\observed\2026-08-14_patch_sweep_scoped_findings.md`.
+Raw 1.7 MB left untracked at `observed/2026-08-14_patch_sweep_scoped.txt` — reproducible,
+and the value is in the findings file.
+
+**Scoped, header verbatim: `585 active mods, 585 found on disk, target 1.6 -> 8,978 def
+files`.** ⇒ this is the FIRST `src/Jawa` result that describes the running game; every
+pre-`a1483e7` sweep (O16) is superseded, not merely old.
+
+**1,536 of 1,608 warnings are the add-if-missing idiom** the validator itself calls
+intentional; `MegafaunaYield.xml` alone holds 1,206. 🔴 **Read the classes, never the
+count** — a future sweep will print a similar number and it means nothing on its own.
+
+**59 load-order warnings CHECKED AND SATISFIED**: doctrine 567 / armoury 579 / patches
+581 of 585, all after Royalty 5, Biotech 7, VFE Core 20, Alpha Biomes 50 and — the only
+close one — Facial Animation Compat Project 564 vs `HeadSetForFA_Revive.xml` at 581.
+**Do not re-derive this next sweep; the warnings recur because the validator cannot see
+runtime-created nodes.**
+
+**Two items left open, both deliberately cheap:**
+- 3 double-match `Replace`s in `MegafaunaYield.xml` (same value to both nodes; a player
+  cannot see it). 8 more sit in HELD `Armoury_RangedDamage.xml` — deal with them when
+  the Armoury ships, not before.
+- 2 unresolvable `iconPath`s — `Jawa_Head_Plain` → `UI/Icons/Genes/Gene_Hair`,
+  `Jawa_Xeno_Gamorrean` → `UI/Icons/Xenotypes/Pigskin`. ⛔ **Not settleable offline**
+  (vanilla textures are in asset bundles). **Eyes-on in the xenotype picker this load:
+  a pink/blank square is the defect, both drawing closes it permanently.**
