@@ -215,9 +215,9 @@ world.**
 
 | # | item | owner | why it cannot wait |
 |---|---|---|---|
-| W1 | **The sea** — a Jawa-world `AlienWorlds.PlanetTypeDef` plus a step that arranges three ragged blobs | VISION specs · CREATE builds | ocean is elevation at step 0 |
+| W1 | **The sea** — **patch the shipped `TidallyLocked` `PlanetTypeDef` by defName**, plus a step that arranges three ragged blobs and *measures* to 25% | VISION specs · CREATE builds | ocean is elevation at step 0 |
 | W2 | ✅ **DONE** — `Jawa_Patches/Patches/JawaXenotype_Repoint.xml`, deployed and verified. The two Galactic Diversity `PawnKindDef`s (`OuterRim_Jawa`, `OuterRim_JawaTribal`) now point at `BTD_Jawa` at weight 999. ⛔ **Settles those two kinds only** — the three competing Jawa xenotypes are still VISION's larger ruling | CREATE | was: **read at pawn generation** — an existing world's colonists stay wrong |
-| W3 | **The biome mix**, via `PlanetTypeDef.biomeBlacklist` | VISION | biome scoring runs once |
+| W3 | ✅ **RATIFIED** `6370746` — 2 abundant · 4 common · 22 rare · Ocean/Lake by elevation · 7 layer biomes needing no verdict. Owner added a fourth zone: a graded nightside, `Glowforest` as oases of light in the deep dark. **Blacklist, never whitelist** | VISION | biome scoring runs once |
 | W4 | The ratified faction tick-list, unspent | OPS at the screen | the page is seen once |
 
 ### ⚖️ THE SEA STEP RE-SCOPED — smaller than when I ruled it v1, and still v1
@@ -229,10 +229,20 @@ world.**
 reads as **a sea on the freezing nightside**, which is better fiction than it was as
 a shape note.
 
-⭐ **And most of it is XML, not C#.** `AlienWorlds.PlanetTypeDef` (`7f.alienworlds`,
-active) exposes **`elevationRange`** — which patches `WorldGenStep_Terrain`'s own
-range and **is the 25%-ocean dial, in a def** — plus `biomeConfigs`, `oceanBiome`,
+⭐ **Much of it is XML, not C#** — `AlienWorlds.PlanetTypeDef` (`7f.alienworlds`,
+active) exposes `elevationRange`, `biomeConfigs`, `biomeBlacklist`, `oceanBiome`,
 `sunlightFactor` and `rainfallCurves`.
+
+🔴 **Two corrections to what this section first said, both VISION's and both mine to
+have recorded wrong:**
+1. **Do NOT author our own `PlanetTypeDef` — only ONE is active at a time.** A Jawa
+   world would *replace* `TidallyLocked` and drop the temperature curve the whole
+   design rests on. **Patch the shipped def by defName.**
+2. **`elevationRange` is NOT a reliable ocean dial.** The mod author's own comment
+   reads *"I have absolutely no clue how it actually works."* Treat it as a coarse
+   nudge; **the step measures and hits 25%** rather than trusting the field.
+3. **Blacklist, never whitelist.** A whitelist silently excludes `Space`, `Orbit`,
+   `Underground` and the undercaves, breaking every pocket map.
 
 ⇒ **The code shrinks to ONE job: arranging three ragged blobs.** The one-day kill
 condition stands and is now comfortable rather than tight. ⚠️ **Registration is still
