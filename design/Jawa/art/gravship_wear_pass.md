@@ -191,18 +191,24 @@ place them and we have never seen most of them.
 
 Grouped by what they say. All Core or Odyssey, all mapgen-only today.
 
+⚠️ **Cross-checked against §2.3c — the struck-through entries below are
+NON-DECONSTRUCTIBLE and must NOT be placed** where the clan is meant to salvage.
+My first draft of this list recommended eight of them; the census caught it.
+
 **Structural failure — "this section is broken":**
 `AncientDestroyedConsole`, `AncientDestroyedConsoleLarge`, `AncientCraneArm`,
 `AncientCraneArmSmall`, `AncientCraneBase`, `AncientCraneColumn`, `AncientPipe`,
-`AncientPipelineSection`, `AncientPipes`, `AncientHeatVent`, `AncientSmokeVent`,
-`AncientToxVent`
+`AncientPipelineSection`, `AncientPipes` — but ~~`AncientHeatVent`~~,
+~~`AncientSmokeVent`~~, ~~`AncientToxVent`~~ are permanent 7×7 blocks. **Do not place.**
 
 **Dead ship systems — the fiction of a wreck being healed:**
-`AncientGravEngine`, `AncientGravReactor`, `AncientTerraformer`, `AncientUplink`,
-`AncientShipBeacon` ("ancient nav beacon"), `AncientMechDropBeacon`,
+`AncientUplink` (Steel 100), `AncientShipBeacon`, `AncientMechDropBeacon`,
 `AncientRustedDropship`, `AncientDropshipEngine`, `AncientJetEngine`,
-`AncientTransportPod`, `AncientRustedEngineBlock`, `AncientLargeRustedEngineBlock`,
-`AncientSecurityTerminal`
+`AncientRustedEngineBlock`, `AncientLargeRustedEngineBlock`, `AncientSecurityTerminal` —
+but ~~`AncientGravEngine`~~, ~~`AncientGravReactor`~~, ~~`AncientTerraformer`~~,
+~~`AncientTransportPod`~~ are permanent. **The most thematically perfect props in the
+whole kit are the ones the clan can never strip** — place them only where a permanent
+scar is *wanted*, e.g. the dead prong (§4 of `ship_distinctive_features.md`).
 
 **Scavenger clutter — the hold, the aisles, the shrine approach:**
 `AncientBox_SteelSlag`, `AncientPallet_SteelSlag` (literally "steel scrap"),
@@ -211,7 +217,7 @@ Grouped by what they say. All Core or Odyssey, all mapgen-only today.
 `AncientFilingCabinet`, `AncientLockers`, `AncientSafe`, `AncientShelf`,
 `AncientIndustrialShelf`, `AncientWoodenCrate`, `AncientCardboardBox`
 
-**Crew quarters that are already ruined** — and note these two carry a mask:
+**Crew quarters that are already ruined** (all deconstructible) — and note these two carry a mask:
 `AncientSingleBed` / `AncientDoubleBed` (Odyssey, `Buildings_Ancient.xml:722,742`,
 `shaderType CutoutComplex`, texPaths `.../House/RustedSingleBed` and `RustedDoubleBed`).
 The Jawa sleep among the machines (`ship_distinctive_features.md` §7) — a **rusted** bed is
@@ -228,6 +234,91 @@ the correct bed, and it is two-region tintable on top.
 Crashes, **active**), and `VGE_GravhulkEngine` — the **only wreck-looking def in the game
 that is already player-buildable** (`designationCategory VGE_Platform`).
 
+### 2.1b `BrokenSubstructure` — the answer, and it is better than expected
+
+Coordinator's lead, run down to source. **It carries the tag.**
+
+**Identity.** `defName BrokenSubstructure`, label _"broken gravship substructure"_,
+description _"A broken gravship substructure, now worthless."_ Defined by **Gravship
+Crashes**, `packageId Arcjc007.GravshipCrashes`, workshop id **3578515873**, **verified
+ACTIVE**. File: `.../294100/3578515873/1.6/Defs/Terrain/Terrain_Foundation.xml`, lines
+**4-35**. It is **not** an Odyssey def that the mod retextures — Gravship Crashes *defines*
+it, `ParentName="FloorBase"`. _(My earlier draft said "Odyssey, retextured by Gravship
+Crashes". That was wrong; corrected here.)_
+
+**1. Does it behave as substructure? YES — and this is the decisive answer.**
+`IsSubstructure` is `OdysseyActive && HasTag("Substructure")`, and the def declares the tag
+itself at **lines 32-34**:
+
+```xml
+<affordances><li>Substructure</li></affordances>     <!-- line 18-20 -->
+<tags><li>Substructure</li></tags>                   <!-- line 32-34 -->
+```
+
+Confirmed in the live dump: `tags: ['Floor', 'Substructure']` (the `Floor` half is inherited
+from `FloorBase`), `affordances: ['Light','Medium','Heavy','Walkable','Substructure',
+'FactoryFloor']`, `isFoundation: true`. **So it connects and counts toward gravship
+capacity. Visually broken, structurally sound — a hull that carries its scars and still
+flies.**
+
+The contrast that proves the distinction is real: **`BTD_QuestSiteSubstructure`** ([BTD]
+Gravship Blueprints) has `tags: ['Floor']` — **no `Substructure` tag** — while its
+*affordances* still include `Substructure`. So `IsSubstructure` is **false** for it: things
+needing a substructure affordance can be built on it, but it does **not** connect and does
+**not** count. That is the coordinator's "decorative floor that breaks the field" tool.
+**Both tools exist, and the tag is what separates them.** Read the tag, never the
+affordance.
+
+**2. Can it go on ordinary ground? YES.** `<terrainAffordanceNeeded>Walkable</...>`, which
+desert soil and sand satisfy — it does **not** require a foundation underneath. It also has
+**no `<placeWorkers>`**, where Odyssey's `Substructure` carries
+`PlaceWorker_InSubstructureFootprint` and `PlaceWorker_BuildingsValidOverSubstructure`.
+**It is not confined to a ship footprint.** A ground hulk is possible.
+
+**3. Walkable, and free.** `passability: Standable`, `pathCost: 0` — no movement penalty at
+all. The clan picks over its own wreck at full speed. (VISION ranked this first; it passes.)
+
+**4. Player-buildable? NO — spawn-only, deliberately.** Lines 16-17 null both hooks:
+`<designationCategory />` and `<designatorDropdown />`, and `WorkToBuild` is **60000**
+against ordinary `Substructure`'s 600. It is authored to be placed by map generation, not
+by a colonist. For the ground hulk that is *correct*: the clan did not build it.
+
+**5. Affordances — you can build anything on it.** Full `Light/Medium/Heavy/FactoryFloor`.
+A wreck the clan salvages *into*, not merely walks across. `costList` is `Steel 4` (no
+`GravlitePanel`, unlike `Substructure`), and `resourcesFractionWhenDeconstructed: 1`.
+
+🔴 **But it can never yield anything on removal, because it is TERRAIN.** A `TerrainDef`
+has no deconstruct-for-resources route — removing a floor returns nothing, and the
+`costList` above is a *build* cost that no player will ever pay, since the def is not
+buildable. **The broken floor buys the image and the walkability, and nothing else.**
+**All salvage value must sit in the BUILDINGS standing on it** (§2.3b). Tune the building
+layer; the terrain layer has no dial.
+
+**Does it read as broken at sprite scale? YES — the only one of the three that does.**
+Rendered in `REVIEW_substructure_damage.png`, tiled 4×4 at 64 px/cell and 22 px/cell:
+
+| terrain | source | reads at 64 px/cell | verdict |
+|---|---|---|---|
+| **`BrokenSubstructure`** | 2048², mean (81,82,86) | **bold dark tears, unmistakable** | **the one to use** |
+| `VGE_DamagedSubstructure` | 2048², mean (93,92,93) | mottled grime — reads as *patina*, not damage | good for "worn", not "broken" |
+| `VGE_GravshipSubscaffold` | 2048², mean (96,98,105) | fine mesh, nearly flat grey | reads as bare ribbing only against a plated neighbour |
+
+⚠️ **The one real caveat: it tiles visibly.** `BrokenSubstructure`'s motif is large and
+high-contrast, so a big field of it repeats in a hard grid and starts to read as wallpaper —
+the exact failure §4.1 warns about. **Break it up**: interleave with
+`VGE_DamagedSubstructure` and intact deck, and lay wreck props over the seams.
+
+**The substructure palette — six variants, not one.** All active; tag decides connection:
+
+| defName | mod | `Substructure` tag → connects? | buildable | note |
+|---|---|---|---|---|
+| `Substructure` | Odyssey | **yes** | yes (`VGE_Platform`) | the intact baseline |
+| `BrokenSubstructure` | Gravship Crashes | **yes** | **no** (nulled) | reads broken; `pathCost 0` |
+| `VGE_DamagedSubstructure` | VGE | **yes** | no | patina; `GravlitePanel 1` |
+| `VGE_GravshipSubscaffold` | VGE | **yes** | yes, research `StandardGravtech` | **`pathCost 9`** and **no Light/Medium/Heavy** — pawns slow down and you cannot build heavy on it. The wounded wing. |
+| `TransparentFoundation_Substructure` | Transparent Substructure | **yes** | yes (`Odyssey`) | invisible deck; `isPaintable false` |
+| `BTD_QuestSiteSubstructure` | [BTD] Gravship Blueprints | **NO** | no | affordance only — the field-breaking tool |
+
 ### 2.2 Broken deck terrain — already shipped, already ours
 
 | TerrainDef | mod | texture |
@@ -239,6 +330,162 @@ that is already player-buildable** (`designationCategory VGE_Platform`).
 `VGE_GravshipSubscaffold` is bare structural ribbing with no deck plate over it. **That is
 the "dead prong" (§4) and the un-repaired wing, for free, today, with no mod at all** — just
 lay subscaffold instead of substructure where the ship is meant to be wounded.
+
+### 2.2b Two uses for the broken deck, and they are different projects
+
+VISION's ruling splits `BrokenSubstructure` into two applications that share a def and
+share nothing else.
+
+**Use A — the flying hull carries its scars.** Because the tag is present, damaged deck
+*connects* and *counts toward capacity*. Patched plating, a dead section, a scarred wing —
+on a ship that still flies. This rides the normal ship layout and the gravship export.
+
+⭐ **Use B — the ground hulk: the ninety percent that never flew.** The flyable ship is the
+part the clan got working; the first thing the player ever sees is the rest of the wreck,
+still on the ground. That floor never leaves the tile, **so the tag is irrelevant to Use B**
+— what matters is that it sits on ordinary desert ground (it does, §2.1b/2), that pawns
+cross it freely (`pathCost 0`), and that things can be built on it (full affordances).
+Every one of those passes.
+
+🔴 **Use B is a MAP-GENERATION problem, not a ship problem. Say this out loud so nobody
+plans it into the ship layout.** The ground hulk lives on the **starting map**. It is
+authored the way the terrain overrides are, or placed over the live bridge. **It does not
+ride the gravship export XML**, it is not bounded by the ~2,000-tile substructure cap or the
+engine/extender connection radius (`ship_deck_plan.md`), and it cannot be built by a
+colonist. **Different pipeline, different owner, different timing** from everything else in
+this document.
+
+### 2.3b Where the salvage value has to live — the layer split
+
+VISION's arc: the clan lives in the wreck, builds into its dead sections, and **strips it
+for steel over years** — high total yield, poor rate, never regrows. When it is stripped,
+nothing holds them to the tile and they fly. The map ends itself with no scripting.
+
+🔴 **The terrain layer cannot carry any of that.** `BrokenSubstructure` is a `TerrainDef`;
+terrain has no deconstruct-for-resources route, so removing the broken floor returns
+**nothing**, ever. **100% of the salvage economy has to sit in the buildings standing on
+it.** Tuning the floor is tuning a dial that is not connected.
+
+🔴 **And a prop that cannot be deconstructed breaks the arc outright.** The ruins kit has
+two abstract parents (`Data/Core/Defs/ThingDefs_Buildings/Buildings_Ancient_Outdoors.xml:4-28`):
+
+```xml
+<ThingDef Abstract="True" Name="AncientBuildingBase" ParentName="BuildingBase">
+  <building><claimable>false</claimable><isInert>true</isInert>
+            <alwaysDeconstructible>true</alwaysDeconstructible></building>
+</ThingDef>
+<ThingDef Abstract="True" Name="NonDeconstructibleAncientBuildingBase" ParentName="AncientBuildingBase">
+  <building><deconstructible>false</deconstructible>
+            <alwaysDeconstructible>false</alwaysDeconstructible></building>
+</ThingDef>
+```
+
+A prop on the second parent **can only be removed by blowing it up** — no steel, no salvage
+job, a colonist simply refuses. **These are visually indistinguishable from the good ones in
+a mod's texture folder**; the difference surfaces only when the job is refused, in a
+playthrough, hours in. Hence the explicit do-not-place list in §2.3c.
+
+**Precedent, already installed:** *Salvage Rubble*
+(`$WS/3529058623/Patches/RubblePilePatch.xml`) patches a `<costList>` (Steel 1000, WoodLog
+30, ComponentIndustrial 10, Gold 2, Plasteel 1) and
+`<resourcesFractionWhenDeconstructed>0.00025</...>` onto vanilla `RubblePile`, with no new
+art. **Patching salvage economics onto the ruins kit is known-good here, not novel** — and
+that fraction is exactly the "high total yield, poor rate" shape VISION described.
+
+### 2.3c The filtered salvage palette
+
+_Generated by `design/Jawa/art/scan_salvage.py` from the live merged def state (not the
+shipped XML), which is the only source that reflects every mod's patches. Regenerate with
+`python3 design/Jawa/art/scan_salvage.py`; output is gitignored as derived + expiring._
+
+**The headline number.** Across the Core + DLC ruins kit — 181 defs — **167 are
+deconstructible and 14 are not.** But deconstructible is only half the test:
+
+| of the 167 deconstructible | count | what a colonist actually gets |
+|---|---:|---|
+| has a `costList` → **real deconstruct yield** | **55** | `costList` × `resourcesFractionWhenDeconstructed` |
+| has `killedLeavings` only | 33 | must be destroyed, usually `ChunkSlagSteel` |
+| **neither — returns NOTHING either way** | **89** | pure scenery |
+
+🔴 **Over half the ruins kit is scenery, not salvage.** That is where the patching work
+actually is — not in unlocking placement, but in giving the 89 a `costList`.
+
+**#1 — The salvage list: deconstructible AND yields.** The 20 best for a Jawa hulk, out of
+the 55. Yield shown is the raw `costList`; multiply by the fraction column.
+
+| defName | mod | size | graphic | frac | deconstruct yield |
+|---|---|---|---|---:|---|
+| `AncientCryptosleepCasket` | Core | 1×2 | Multi | 0.5 | **Steel 180, Uranium 5** |
+| `AncientUplink` | Odyssey | 2×2 | Single | 0.5 | **Steel 100** |
+| `ShipChunk` | Core | 2×2 | **Random** | 0.5 | **ComponentIndustrial 11, Steel 40** |
+| `ShipChunk_Mech` | Odyssey | 2×2 | **Random** | **1.0** | **Steel 40, GravlitePanel 15** ⭐ |
+| `AncientStandardRecharger` | Core | 3×2 | Multi | 0.5 | ComponentIndustrial 1, Steel 45 |
+| `AncientLargeMechGestator` | Core | 4×3 | Single | 0.5 | ComponentIndustrial 1, Steel 45 |
+| `AncientMachine` | Core | 5×3 | Multi | 0.5 | ChunkSlagSteel 5, Steel 35, Component 1 |
+| `AncientGenerator` | Core | 2×2 | **Random** | 0.5 | Chemfuel 29, Steel 35 |
+| `AncientPipelineSection` | Core | 2×1 | Single | 0.5 | ChunkSlagSteel 5, Chemfuel 37, Steel 5 |
+| `AncientStorageCylinder` | Core | 2×1 | Multi | 0.5 | Steel 25 |
+| `AncientBandNode` | Biotech | 2×2 | Single | 0.5 | ComponentIndustrial 1, Steel 25 |
+| `AncientMechGestator` | Core | 3×2 | Multi | 0.5 | ComponentIndustrial 1, Steel 25 |
+| `AncientBasicRecharger` | Core | 3×1 | Multi | 0.5 | ComponentIndustrial 1, Steel 25 |
+| `AncientMechDropBeacon` | Core | 1×1 | **Random** | 0.5 | ComponentIndustrial 1, Steel 20 |
+| `AncientMegaCannonBarrel` | Core | 1×2 | Multi | 0.5 | ChunkSlagSteel 5, Steel 20 |
+| `AncientFuelNode` | Core | 1×1 | **Random** | 0.5 | Chemfuel 50 |
+| `AncientConcreteBarrier` / `AncientLamppost` | Core | 1×1 | **Random** | 0.5 | Steel 15 |
+| `AncientSecurityTurret` | Core | 1×1 | **Random** | 0.5 | ComponentIndustrial 1, Steel 10 |
+| `AncientCrate` / `AncientSmallCrate` / `AncientLongCrate` | Core | 1×1 | Random/Single | 0.5 | Steel 7 |
+| `AncientBarrel` | Core | 1×1 | **Random** | 0.5 | Chemfuel 3, Steel 5 |
+
+⭐ **`ShipChunk_Mech` is the standout** — the only one that returns **GravlitePanel** (15, at
+fraction **1.0**, plus 15 more in `killedLeavings`). Gravlite is the gravship currency, it
+is `Graphic_Random` so it never repeats, and it is a ship chunk on a ship wreck. **If the
+ground hulk has one salvage currency, this is it.**
+
+🔴 **#2 — The do-not-place list.** These refuse deconstruction outright
+(`building.deconstructible: false`) — removable **only by explosives**, no salvage, and a
+colonist simply refuses the job. **They are indistinguishable from the good ones in a
+texture folder.** Full count across the active stack: **73**. The ones that would otherwise
+be tempting for a ship hulk:
+
+| defName | mod | size | why it is tempting, and must still be refused |
+|---|---|---|---|
+| **`AncientGravEngine`** | Odyssey | 3×3 | the obvious centrepiece of a dead gravship — **and it can never be stripped** |
+| **`AncientGravReactor`** | Odyssey | 5×5 | same trap, bigger |
+| `AncientTerraformer` | Odyssey | 4×4 | Rekko's dream object; permanent once placed |
+| `AncientTransportPod` | Odyssey | 1×1 | reads perfectly as scavenger clutter |
+| `AncientHeatVent` / `AncientSmokeVent` / `AncientToxVent` | Odyssey | **7×7** | huge footprint, permanently un-removable |
+| `AncientHatch` / `AncientHatchExit` | Odyssey | 3×3 | |
+| `AncientFortifiedWall` / `OrbitalAncientFortifiedWall` | Odyssey | 1×1 | ⚠️ also the `<color>` demo pair from §1.1 — fine to *tint*, never to *place* |
+| `AncientBlastDoor` | Odyssey | 1×1 | ⚠️ **double trap**: also `ignoreThingDrawColor`, so it refuses tint *and* deconstruction |
+| `Turret_AncientArmoredTurret` | Odyssey | 1×1 | |
+| `MechRelay_Crashed` | Odyssey | 3×3 | |
+| `CerebrexCore_Destroyed` | Odyssey | 7×7 | |
+| `AncientCryptosleepPod` | Core | 1×2 | ⚠️ note `AncientCryptosleepCasket` **is** deconstructible and is the single richest yield in the kit — **the two differ by one word in the defName** |
+| `AncientMechGestatorTank` | Core | 2×2 | |
+| `CollapsedRocks` | Core | 1×1 | |
+| `AncientCommsConsole` | Ideology | 3×2 | |
+| `ScrapCubeSculpture` | Anomaly | 1×1 | |
+| `BTD_GravEngine_Damaged`, `BTD_GravhulkEngine_Damaged`, `BTD_GravhulkEngine_Encrypted`, `BTD_GravjumperEngine_Damaged` | [BTD] Gravship Blueprints | 3×3–5×5 | **purpose-made damaged gravship engines — exactly what a hulk wants, and all four are permanent** |
+| 15 × `VQE_*` (Cryptoforge), 9 × `VQEA_*` (Ancients), 14 × `AM_*` stairs/escalators (Ancient urban ruins) | — | — | full list in `salvage_palette.tsv` |
+
+`AncientCryptosleepPod` vs `AncientCryptosleepCasket` is the sharpest instance of the
+hazard: near-identical name, near-identical art, and one is the richest salvage in the kit
+while the other can only be blown up.
+
+**#3 — Free variety.** Of the 167 deconstructible ruins defs, **55 are `Graphic_Random`**
+and **63 are `Graphic_Multi`** — the def already picks a different image per instance, at no
+cost. §4.1: repetition-breaking is one of the few age signals that survives every zoom, and
+a big wreck built from `Graphic_Single` props will read as wallpaper. **Prefer the
+`Graphic_Random` entries wherever a prop is placed more than a handful of times** — they are
+marked in the salvage table above.
+
+**Second precedent, stronger than the first.** *Vanilla Vehicles Expanded* has **already**
+patched vehicle-part salvage onto the whole Core vehicle-wreck set — `AncientRustedCar`,
+`AncientRustedTruck`, `AncientRustedJeep`, `AncientTank`, `AncientAPC`,
+`AncientRustedDropship`, the warwalker limbs and the exostrider parts all now return
+`VVE_EngineBlock`, `VVE_CarWiring`, `VVE_CarBattery`, `VVE_CarSuspension` and friends.
+So the ruins kit in **this** install is *already* a salvage economy that somebody else
+built. Patching more `costList`s onto it is the established local idiom.
 
 ### 2.3 The proposed mechanism, and the honest caveat
 
@@ -544,6 +791,8 @@ placeholder PNG answers it, and the bridge can place substructure without a relo
 | **4** | **Unlock ~20 `Ancient*` wreck props** with a `PatchOperationAdd` of `designationCategory` + `costList`. | one XML file + a 5-def bench test | Converts ~170 pieces of shipped, pre-rusted art from invisible to placeable. The single largest art library gain available, and we do not draw any of it. Ranked below 3 only because it needs verification first. |
 | **5** | **Subscaffold the dead prong.** Lay `VGE_GravshipSubscaffold` instead of `Substructure` on the un-repaired wing. | zero — in game | Delivers `ship_distinctive_features.md` §4 with a build choice. Exposed ribbing reads as a wound at every zoom. |
 | **6** | **Differentiate the Falcon arm's `<color>`** from the ring hull. | ~6 lines | §3 "asymmetry as identity", made legible from orbit. Cheap, and it is the one thing that makes the ship read as *assembled* rather than merely dirty. |
+| **6b** | ⭐ **The ground hulk** — `BrokenSubstructure` on desert ground on the STARTING MAP, dressed with deconstructible wreck props from §2.3c. | map-gen / bridge authoring, **zero art** | VISION's arc: the clan lives in the wreck, strips it over years, then flies. Every gate passes — walkable at `pathCost 0`, sits on ordinary ground, full build affordances, reads as broken at 64 px. ⚠️ **Different pipeline** (§2.2b): starting map, not ship layout, not the export XML. |
+| **6c** | **Patch `costList`s onto the 89 ruins props that currently return nothing** (§2.3c). | one XML file | This is where the salvage economy actually lives — the terrain layer can never carry it. Two working precedents already installed (Salvage Rubble, Vanilla Vehicles Expanded). |
 | **7** | **Deck-wear scatter** — patch a `scatterType` onto `Substructure` + 3–4 rust/scorch/oil-smear `ScatterableDef` textures (§4.2b). | 1 patch + 1 placeholder PNG **to test**; 3–4 small PNGs if it works | Potentially the best age-per-pixel in the document — random non-tiling stains up to 7 cells wide, across the whole ship, automatically. Ranked here **only** because the C# may not run scatter over a foundation terrain. **Cheap to falsify: do the test before the art.** If it passes, this jumps to #3. |
 | **8** | **Hand-drawn damage overlays** — torn plating, blown panels as placeable props. | real art, several pieces | Only worth starting after 1–7 land, because 1–7 may make it unnecessary. |
 
@@ -632,6 +881,8 @@ These are places where I would be inventing lore if I proceeded, so I have stopp
 - Workshop mods: `C:\Program Files (x86)\Steam\steamapps\workshop\content\294100\` — `3254370945` (KotOR Resources and Materials), `3609835606` (Vanilla Gravship Expanded Ch.1), `3578515873` (Gravship Crashes), `2919553599` (Outer Rim Furniture & Decor). All four verified ACTIVE against `ModsConfig.xml` by packageId.
 - Scripts, committed: `D:\Luke\dev\Rimworld\design\Jawa\art\scan_graphics.py`, `D:\Luke\dev\Rimworld\design\Jawa\art\preview_gravship_rust.py`.
 - Terrain/wreckage census (fan-out subagent, 2026-08-13): swept Core + 5 DLCs + all 1,242 workshop mods. Key negatives established there: **zero** `TerrainDef` subclasses anywhere, `TerrainDef` has no `graphicClass`/`graphicData`/`drawSize` field, and **zero** `Ancient*` defs carry a `designationCategory`.
+- Salvage census: `D:\Luke\dev\Rimworld\design\Jawa\art\scan_salvage.py` -> `salvage_palette.tsv` (1,104 wreck defs, 73 non-deconstructible). Derived + expiring, so gitignored; regenerate with `python3 design/Jawa/art/scan_salvage.py`.
+- `BrokenSubstructure` read from source: `C:\Program Files (x86)\Steam\steamapps\workshop\content\294100\3578515873\1.6\Defs\Terrain\Terrain_Foundation.xml` lines 4-35 (`Arcjc007.GravshipCrashes`, ACTIVE).
 - Fiction followed, not invented: `D:\Luke\dev\Rimworld\design\Jawa\worldbuilding\jawa_xenotype_and_religion.md` §2.0b/§2.0c/§2.0d, `D:\Luke\dev\Rimworld\design\Jawa\worldbuilding\ship_distinctive_features.md` §1/§3/§4/§5/§6/§7.
 - Method precedent: `D:\Luke\dev\Rimworld\src\Jawa\DesertVehicleReskin\Source\preview_tint.py` and `...\Patches\DogSledTint_Brown.xml`.
 - Scale discipline: `D:\Luke\dev\Rimworld\skills\rimworld-modding\references\traps-art.md` #45.

@@ -409,6 +409,79 @@ def decal_sheet():
         panels)
 
 
+def substructure_sheet():
+    """Does 'broken substructure' actually READ as broken at the size a tile draws?
+
+    Trap #45 territory. A deck plate draws at 64 px (max zoom) or ~22 px (play zoom)
+    from a 2048 px source — a 32x-93x downsample, the harshest in the whole ship.
+    Art that is unmistakably torn at 2048 px can average into a plain recolour at
+    22 px, and a 'broken floor' that reads as a recolour buys nothing.
+
+    Terrain also TILES, so a single tile is the wrong unit to judge: what the
+    player sees is the same square repeated across a room. Each variant is drawn
+    4x4 so seam repetition is visible, which is itself an age signal (§4.1).
+
+    ⚠️ Vanilla `Substructure` cannot be shown. Odyssey ships NO loose textures —
+    everything is packed in AssetBundles/resources_odyssey — and the only loose
+    copy on disk belongs to an INACTIVE mod. So the intact baseline is absent by
+    necessity, not by oversight.
+    """
+    specs = [
+        ("BrokenSubstructure", "Gravship Crashes (ACTIVE) | tag Substructure | spawn-only",
+         os.path.join(CRASH, "Terrain/Surfaces/Substructure/BrokenSubstructure.png")),
+        ("VGE_DamagedSubstructure", "Vanilla Gravship Expanded (ACTIVE) | tag Substructure | spawn-only",
+         os.path.join(VGE, "Things/Terrain/Substructure/DamagedSubstructure.png")),
+        ("VGE_GravshipSubscaffold", "VGE (ACTIVE) | BUILDABLE | pathCost 9, no Heavy affordance",
+         os.path.join(VGE, "Things/Terrain/Substructure/Subscaffolding.png")),
+    ]
+    big, pad, head = 384, 18, 118
+    n = len(specs)
+    col_w = big + pad
+    sheet = Image.new("RGBA", (pad + n * (col_w + pad) + 220,
+                              head + big + 24 + 64 * 4 + 24 + 22 * 4 + 60),
+                      (34, 34, 38, 255))
+    d = ImageDraw.Draw(sheet)
+    d.text((pad, 12), "DAMAGED DECK TERRAIN — does 'broken' survive the downsample? "
+                      "Each variant tiled 4x4, then at TRUE tile size.",
+           fill=(255, 235, 200, 255))
+    for i, line in enumerate([
+            "A deck tile draws at 64 px (max zoom) or ~22 px (play zoom) from a 2048 px source: a 32x-93x "
+            "downsample, the harshest on the ship.",
+            "Terrain TILES, so one square is the wrong unit to judge - the player sees it repeated. "
+            "4x4 here shows the seam and the repeat.",
+            "Vanilla Substructure is absent because Odyssey ships no loose textures (AssetBundles only) "
+            "and the sole loose copy belongs to an INACTIVE mod.",
+            "Judge the bottom strip, not the top one. If the tear does not read at 22 px it is a recolour, "
+            "and a recolour is free from <color> anyway."]):
+        d.text((pad, 34 + i * 14), line, fill=(200, 200, 205, 255))
+
+    x = pad
+    for name, sub, path in specs:
+        art = load(path)
+        m, _ = mean_luma(art, None, None)
+        print(f"  {name:<26} {art.size} mean {tuple(round(v) for v in m)}")
+        d.text((x, head - 30), name, fill=(255, 255, 255, 255))
+        d.text((x, head - 17), sub, fill=(180, 180, 190, 255))
+        for zoom, label, span in ((None, "4x4 tiled, magnified", big),
+                                  (PX_PER_CELL_MAX, "4x4 at max zoom (64 px/cell)", 64 * 4),
+                                  (PX_PER_CELL_PLAY, "4x4 at play zoom (22 px/cell)", 22 * 4)):
+            cell = span // 4
+            grid = Image.new("RGBA", (cell * 4, cell * 4))
+            t = art.resize((cell, cell), Image.LANCZOS)
+            for gy in range(4):
+                for gx in range(4):
+                    grid.paste(t, (gx * cell, gy * cell))
+            y = head if zoom is None else (head + big + 24 if zoom == PX_PER_CELL_MAX
+                                           else head + big + 24 + 64 * 4 + 24)
+            paste_on_check(sheet, grid, (x, y))
+            d.text((x, y - 12), label,
+                   fill=(160, 160, 170, 255) if zoom is None else (255, 200, 140, 255))
+        x += col_w + pad
+    out = os.path.join(HERE, "REVIEW_substructure_damage.png")
+    sheet.save(out)
+    print("wrote", out, sheet.size)
+
+
 def main():
     print("=== sheet 1: masked (CutoutComplex) ===")
     masked_sheet()
@@ -416,6 +489,8 @@ def main():
     unmasked_sheet()
     print("\n=== sheet 3: floor sigils (existing decal system) ===")
     decal_sheet()
+    print("\n=== sheet 4: damaged deck terrain at true tile size ===")
+    substructure_sheet()
     print("\nnearest SHIPPED ColorDefs for the paintable deck (Data/Core/.../ColorDefs.xml):")
     for name, rgb in SHIPPED_RUST_COLORDEFS:
         print(f"    {name:<24} {rgb}")

@@ -11,3 +11,4 @@ seed/
 #   python3 design/Jawa/art/scan_graphics.py
 # The census also expires whenever the mod list changes.
 census_building_graphics.tsv
+salvage_palette.tsv
