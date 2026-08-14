@@ -1,0 +1,147 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ModMetaData>
+  <name>Bandolier North Fix — Star Wars KotOR Resources and Materials</name>
+  <author>Mandrake</author>
+  <packageId>mandrake.kotorbandoliernorthfix</packageId>
+  <supportedVersions>
+    <li>1.6</li>
+  </supportedVersions>
+  <description>Adds the missing north-facing worn art for two of the four bandoliers in Star Wars KotOR Resources and Materials: bandolier_chewbacca and bandolier_traveler.
+
+WHAT THE PLAYER SEES WITHOUT IT — worse than a missing bandolier
+
+The bandolier does not vanish when a pawn turns its back. RimWorld's Graphic_Multi, finding no north texture, fills the slot from the south at 180 degrees, so the pawn gets its CHEST POUCHES DRAWN ON ITS BACK — and the def's own drawData puts the north view at layer 65, on top of everything else the pawn is wearing. Wrong art rather than absent art, which is why it reads as intentional and nobody reports it.
+
+No log line is possible. "Failed to find any textures at" fires only when EVERY direction of a set is missing, and these sets have east and south.
+
+Both items carry wide generation tags — chewbacca on KotORAccessory_any / heavy / outlaw / trooper / bandolier, traveler adding civilian and richcivilian — so they land on colonists, traders and raiders alike, and north is roughly one facing in four. This is the most-seen missing-facing defect we have found in this mod set.
+
+CONTENTS — 20 files
+
+  SWApparel/Accessories/bandolier_chewbacca/Apparel_{Male,Female,Thin,Fat,Hulk}_north
+  SWApparel/Accessories/bandolier_chewbacca/Apparel_{Male,Female,Thin,Fat,Hulk}_northm
+  SWApparel/Accessories/bandolier_traveler/Apparel_{Male,Female,Thin,Fat,Hulk}_north
+  SWApparel/Accessories/bandolier_traveler/Apparel_{Male,Female,Thin,Fat,Hulk}_northm
+
+      All 512x512, the canvas of every other file in both sets. Ten art files and
+      ten tint masks. A complete set here is 32 files and each of these two ships
+      22, missing north and northm for all five body types.
+
+      THE DONOR'S ORIGINALS: there are none. Neither north nor northm exists at
+      any load folder for either set. The other two bandoliers in the same folder
+      — bandolier_double and bandolier_knife — ship north for all five body types
+      and are healthy.
+
+HOW THE ART WAS DERIVED — from the author's own finished work, not invented
+
+Nothing here is a fresh drawing. The two complete sets in the same folder are the
+specification, and they were measured rather than eyeballed:
+
+  1. NORTH IS A MIRROR. bandolier_knife's north agrees with its own MIRRORED
+     south 77.4% by silhouette, and with its unmirrored south only 34.3%. A strap
+     worn over one shoulder swaps sides when you walk round the pawn.
+     bandolier_double is an X-cross and scores 96% either way, so it neither
+     confirms nor denies — the knife decides it.
+
+  2. THE BACK OF A BANDOLIER IS BARE LEATHER. Both of the author's north views
+     are the strap with its front furniture gone: his bandolier_double north is
+     the X-cross without the pouch blocks his south carries, and his
+     bandolier_knife north is the strap and belt without the three sheathed
+     knives. Pouches hang on the chest.
+
+  3. HIS MASK SAYS WHICH PIXELS ARE FURNITURE, so that step is not guesswork.
+     CutoutComplex tints mask-RED by the apparel's stuff colour and leaves
+     mask-BLACK fixed, and in both target sets the mask-black regions are exactly
+     the ammo cells and the buckle while the mask-red is the leather and the hip
+     pouch. The author drew the split himself; we read it.
+
+  4. THE LEATHER COLOUR IS HIS TOO. It is sampled from the strap pixels his own
+     mask calls red — the gaps between his ammo cells, which is the only place
+     the bare leather of THIS bandolier is visible anywhere in the set — then
+     quantised into five stops and laid across the band, darkest at the edge and
+     lightest at the core, which is how he shades every strap in the folder.
+
+  5. THE MASKS ARE A SOLID RED FIELD, because after step 4 there is no
+     fixed-colour furniture left on this facing for a mask to protect. That
+     matches the author: his own Apparel_*_northm.png files are a solid red
+     field, shipped at 16x16. Ours are the same field at the art's own 512x512,
+     where the file cannot be mistaken for a truncated one.
+
+  The generator is shipped in Source/build_north.py, with the two survey scripts
+  that produced the measurements above (Source/survey_donor_north.py,
+  Source/survey_broken_sets.py) and the test that rejected the first recipe
+  (Source/test_mask_recipe.py).
+
+WHY IT IS A REPAINT AND NOT AN INPAINT — the attempt that was thrown away
+
+The obvious build is "delete the mask-black furniture, then grow the neighbouring
+pixels back over the holes". It was written, run, and rejected on sight. On
+bandolier_chewbacca the ammo cells cover 42% of the strap, so what grows back
+into the holes is not leather but the shadow gaps BETWEEN cells, and the result
+reads as a chewed, mottled band. There is no clean strap surface anywhere in the
+set to inpaint from — which is exactly why the leather has to be sampled and
+relaid rather than recovered.
+
+That failure was caught by testing the recipe against bandolier_knife, where the
+author's real north exists to score against. It reproduced his north 77.2% where
+mirroring alone scores 77.1%: no gain. The test is shipped as
+Source/test_mask_recipe.py so the next person does not repeat it.
+
+WHAT THE BUILD REFUSES TO SHIP
+
+The generator gates every file before writing and prints what it rejected:
+canvas must equal the donor's; the alpha channel must be pixel-for-pixel
+unchanged, because a repaint that moves the silhouette is not a repaint; at least
+one fully opaque pixel must exist; and at least 10% of the drawn area must
+actually have changed, or the furniture is still on the pawn's back and the file
+is a mirror pretending to be a fix.
+
+  The faint alpha fringe these files carry (1.09% on the Hulk traveler) is the
+  DONOR'S, present at the identical figure in his own south, and inherited rather
+  than introduced — the repaint never touches the alpha channel at all.
+
+WHERE THE DEFS ARE
+
+  1.6/Defs/ThingDefs_WeaponsArmorsGadgets/Apparel_SWAccessories.xml
+    chewbacca  lines 383-387 and 403-432
+    traveler   lines 478-482 and 497-525
+      line 426  wornGraphicPath      SWApparel/Accessories/bandolier_chewbacca/Apparel
+      line 427  useWornGraphicMask   true
+      line 428  drawData/dataNorth/layer  65
+
+The Graphic_Single on line 385 governs the ground and inventory item art only.
+The worn graphic comes from wornGraphicPath and is always resolved as
+Graphic_Multi over path_BodyType_facing. There is no visibleFacing, no
+bodyTypeGraphicPaths and no per-facing suppression anywhere in either def, so
+nothing declares north deliberately absent.
+
+LOAD ORDER MATTERS HERE, AND THIS ONE DOES NOT SIT WITH THE OTHERS
+
+Star Wars KotOR Resources and Materials ships its textures LOOSE — Textures/ at
+the mod root, no AssetBundles folder and no .bundle anywhere in the mod. Between
+two loose files at the same path RimWorld resolves by load order, so this mod
+must load AFTER the donor.
+
+That is a real constraint rather than a formality: the donor sits LATER in the
+load order than the slot our other art-fix mods occupy. Placed with them, this
+mod would be overwritten by the donor and would be completely invisible, with no
+error and no log line. It must go after Star Wars KotOR Resources and Materials,
+not beside mandrake.missingartfixes.
+
+Swept the whole workshop tree and the local Mods folder: exactly one mod ships
+these texture paths, so nothing else is supplying a north and nothing else is
+being overridden.
+</description>
+
+  <modDependencies>
+    <li>
+      <packageId>guy762.MM.KotORCore</packageId>
+      <displayName>Star Wars KotOR Resources and Materials</displayName>
+      <steamWorkshopUrl>steam://url/CommunityFilePage/3254370945</steamWorkshopUrl>
+    </li>
+  </modDependencies>
+
+  <loadAfter>
+    <li>guy762.MM.KotORCore</li>
+  </loadAfter>
+</ModMetaData>

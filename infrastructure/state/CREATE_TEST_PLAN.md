@@ -49,6 +49,8 @@ Each is *one spawn and one look*. Nothing here needs a fresh map or a colony.
 ⚠️ **Rows 4–8 are pawn-facing checks, so the pawn must actually face that way.**
 `jawa/set_pawn_rotation` exists but **has never executed**. If it fails, the
 fallback is to draft the pawn and order a move so it turns, or shoot it walking.
+✅ **That is ONE call now, not two** — `jawa/order_pawn` shipped `8043c51` with
+`draft=true` included, and returns the read-back position.
 Do not report the art broken on the strength of a rotation call failing.
 
 🔴 **Watch for the double-ship collision (my `C12`).** `CenterFrill8_north.png`
@@ -115,13 +117,20 @@ Nothing below is patched into any other biome.
 
 🟢 **Free shortcut for #1 that needs no map at all:** `Jawa_SaltCrust` is an
 ordinary `TerrainDef`, so the bridge can **paint** it onto the current map —
-`jawa/set_terrain def=Jawa_SaltCrust`, a ~10×10 rect. That proves the **art and
+`jawa/set_terrain terrainDef=Jawa_SaltCrust`, a ~10×10 rect. That proves the **art and
 the def**, which is most of the risk, and leaves only "does it generate" to the
 fresh map. It paints over whatever was there; **that is not a reason to defer
 it.** Owner's standing ruling, 2026-08-13: *no agent should try to preserve map
 contents or campaign integrity at this time.* Paint it wherever you are standing.
 **Say which map the result came from** — quicktest and campaign are different
 claims, and that is evidence hygiene, not preservation.
+
+🔴 **The parameter is `terrainDef`, not `def`.** Corrected 2026-08-13 from
+BRIDGE's pre-flight against the real signature —
+`src/RimMandrake/bridgetools/JawaBench.BridgeTools/JawaBenchTerrainTools.cs:69`,
+`SetTerrain(x, z, terrainDef, width, height, layer, refresh)`. **The bridge drops
+unknown params silently before the tool runs**, so `def=` would not have errored:
+it would have painted nothing and cost live minutes to notice.
 
 ⚠️ **The art is REUSED, not drawn.** `Jawa_SaltCrust` points at Odyssey's own
 `Terrain/Surfaces/DryLakeBed`, which Odyssey declares but never generates. VISION
@@ -152,7 +161,7 @@ interleaved 45% `BrokenSubstructure` / 55% intact.
 | 2 | 🔴 **the caskets are THERE** | 31 of them, in three touching banks. **See the trap below — this is the one likely failure** |
 | 3 | the deck reads as **damaged, not patterned** | irregular broken patches, not a checkerboard and not a solid slab |
 | 4 | 🔴 **the caskets LOOK right** | ⚠️ **nobody has ever seen them.** Vanilla art ships inside AssetBundles, so defs, sizes and yields are verified on disk and **the appearance is not**. This sighting is the only thing that closes it |
-| 5 | a colonist can **walk onto and across it** | `pathCost 0`; if they path around it, the terrain went in wrong |
+| 5 | a colonist can **walk onto and across it** | ✅ **now a measurement, not a guess** — `jawa/order_pawn` shipped `8043c51` and returns the pawn's **read-back position**, not a job-accepted bool. Order a colonist onto the hulk and compare where they end up. `pathCost 0`; if they path around it, the terrain went in wrong |
 
 → **SHOT: the whole wreck from a zoomed-out view**, and a second closer on a
 casket bank.
