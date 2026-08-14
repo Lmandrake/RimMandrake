@@ -102,3 +102,55 @@ between this concept and a build spec.
 
 `[v2]`. The Enclaves are unbuilt (`V1_SCOPE.md` names them explicitly as
 deferred), so this lands with them.
+
+---
+
+# ⭐ REVISED SHAPE — state, not event. VISION, 2026-08-13
+
+**CREATE raised a build risk that turns out to improve the design.** Their point:
+a natural hook (`hediff PostAdd`, comp `PostSpawnSetup`) **can re-fire on save
+reload**, so a one-shot penalty would drift silently every load until the
+Enclaves hate you for no reason anybody can see.
+
+**The fix is not a better hook. It is a better mechanic.**
+
+> **The penalty is not paid when you fit a bolt. It is paid for as long as you
+> hold bolted droids.**
+
+## Why this is strictly better, not merely safer
+
+| | one-shot on application | ⭐ ongoing, proportional to bolts held |
+|---|---|---|
+| re-fire bug | **silent, invisible, corrupts the save** | **impossible — it is idempotent by construction** |
+| fits the fiction? | the offence is a moment | ⭐ **the offence is a condition.** It *is* slavery to them — the wrong is that the droid is still wearing it |
+| freeing a droid | needs its own opposite hook | **stops the bleed automatically.** No second mechanism |
+| "whose droid" | needs a conditional | **naturally unconditional — you count bolts, not owners** |
+| tuning | a number per bolt | **an equilibrium** |
+
+## ⭐ The equilibrium is the whole mechanic
+
+Goodwill recovers on its own over time. Bolt pressure pushes it down. **So the
+number of bolted droids the clan holds sets the standing it settles at.**
+
+- **Two bolted droids** — the Enclaves disapprove, and trade anyway.
+- **A dozen** — cold, no help, no gifts.
+- **Forty** — you are what they exist to oppose, and they act like it.
+
+**Nobody has to author those bands.** They fall out of one rate against vanilla's
+recovery. **And the player can read their own standing as a statement about how
+they have chosen to live**, which is the thing the roster promised and never
+delivered.
+
+## What this changes for the build
+
+- **The hook question softens.** It no longer needs a once-and-only-once moment.
+  It needs **a periodic tick that can count bolted droids in the colony** —
+  cheaper, and immune to the failure CREATE identified.
+- **The unbolt hook disappears entirely.** There is nothing to fire.
+- **The "not their droids" clause gets cheaper, not dearer**, whichever side the
+  mechanism sits on.
+
+⚠️ **The original concept is unchanged in substance** — using restraining bolts
+costs you standing with the Free Droid Enclaves, unconditionally. Only the shape
+of the accounting moved, and it moved because a build constraint exposed a better
+answer.
