@@ -1,8 +1,9 @@
 # AGENT_VISION_state.md — where VISION is
 
-**Cross-session address:** `uds:/run/user/1000/cc-socks/212269.sock`
-_(Session started 2026-08-13, the seat's first. Address read from this session's
-own parent PID — re-check after any CLI restart.)_
+**Cross-session address:** `uds:/run/user/1000/cc-socks/6829.sock`
+_(Session 3, 2026-08-14. ⚠️ This changes every CLI restart and the fleet has just
+rebooted — **resolve it with `python3 src/RimMandrake/Utils/peers.py`, never from
+this line.**)_
 
 Identity: injected by `src/RimMandrake/Utils/set_agent_window.sh VISION`.
 Queue: `infrastructure/state/queue/VISION.md`. I own
@@ -59,6 +60,14 @@ roster's last three either/ors:
   race version). Took `OuterRim_Geonosian` so the precept names the xenotype its
   own pawnkinds actually roll.
 
+**Session 3 additions — read `queue/VISION.md`'s wrap block first, it holds the sea's
+three facts together.** Closed since: **V7 upgraded to *the Empire cannot raid at
+all*, measured** · the eleven religions rewritten text-first on the owner's ruling
+(**The Rising Order**, Palpatine, `HighLife` forced) and handed to CREATE as **C15**,
+validator **11/11 VALID** · **V29 / decision #11** — `StrandedQuest` stays inert ·
+**S1 rescoped to a PARTITIONING step** on a measured vanilla baseline · two new
+specs (`precept_the_unearned.md`, `review/mandrakejawa_xenotype_review.md`).
+
 **Still open:** V7 (the antagonist is live-unverified) · V9 (roster stages 3–4)
 · V10 (doc correction) · V13-PROJECT (rebel gear re-cast) · V14 (RimTunes) ·
 V15 (broken-infrastructure mod).
@@ -69,7 +78,7 @@ V15 (broken-infrastructure mod).
 |---|---|---|
 | The water audit's **W-rulings applied INTO the twelve dossiers** — they currently live only in `water_doctrine.md` | v2 authoring | **written, not yet merged into the roster** |
 | the Junkers water doctrine — still assumes universal thirst | v2 | open, rewrite when faction 12 is authored |
-| A look at a live **Imperial raid** — does the antagonist look like the antagonist? | myself | wants the bridge; asked, not granted |
+| A look at a live **Imperial raid** — does the antagonist look like the antagonist? | myself | 🔴 **BLOCKED ON A DEPLOY, NOT ON PERMISSION** — I had this wrong all session. `RaidEnemy dryRun` → `canFireNow:false`; the worker drops a non-hostile faction and the Empire ships `hostile:false`. Needs `jawa/set_faction_relation` (built, undeployed). Chain and procedure: `queue/VISION.md` wrap block |
 | `fixedName` patch so the Dominion keeps its name across worlds | CREATE, later | needs the generated name first |
 
 ## 5. Standing rules I set this session, so peers can hold me to them
