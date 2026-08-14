@@ -3252,6 +3252,168 @@ namespace JawaBench.BridgeTools
             }, cancellationToken).ConfigureAwait(false);
         }
 
+        // ---------------------------------------------------------------------
+        // jawa/fire_quest — offer an authored quest without the float menu.
+        //
+        // WHY. v1 row 3 (The Claim) was filed UNCOLLECTABLE because the only
+        // route to it is reading an in-world item, which needs a right-click
+        // float menu, and `rimworld/right_click_cell` is measured broken. That
+        // made a BUILT and DEPLOYED quest wait for the owner at the keyboard.
+        //
+        // The engine route, read out of Assembly-CSharp with ilprobe rather than
+        // recalled — QuestUtility::GenerateQuestAndMakeAvailable(QuestScriptDef,
+        // float) is public static, and its IL is exactly
+        //   QuestGen::Generate -> Find::get_QuestManager -> QuestManager::Add
+        // so it REGISTERS the quest, it does not merely build one. That mattered
+        // enough to check: "made available" is the load-bearing half of the name.
+        //
+        // 🔴 The return value is NOT the evidence. `Add` returns void and the
+        // Quest comes back regardless, which is the silent-success shape this
+        // bridge keeps getting bitten by. So every field below is read back off
+        // Find.QuestManager AFTER the call, and `success` means "found in the
+        // manager", never "the method returned".
+        // ---------------------------------------------------------------------
+        [Tool(
+            "jawa/fire_quest",
+            Description =
+                "Generate an authored quest and make it available, bypassing the item/float-menu " +
+                "route entirely. Takes a QuestScriptDef defName plus threat points. Optionally " +
+                "accepts it too, which is what turns an offer into a site on the world map. " +
+                "Use dryRun to resolve and cost the quest without creating it.",
+            ResultDescription =
+                "Returns the quest id, name and State READ BACK from the QuestManager after the " +
+                "call — not what the generator returned. success means the quest is in the " +
+                "manager; a generator that silently produced nothing reports false.")]
+        public static async Task<object> FireQuest(
+            IRimBridgeContext ctx,
+            CancellationToken cancellationToken,
+            [ToolParameter(Description =
+                "QuestScriptDef defName, e.g. Jawa_TheClaim, OpportunitySite_ItemStash.")]
+            string questDef,
+            [ToolParameter(Description =
+                "Threat/reward points. Omit or <=0 for the storyteller's current default.",
+                DefaultValue = 0.0)]
+            float points = 0f,
+            [ToolParameter(Description =
+                "Also accept the quest, so it becomes Ongoing and spawns its world objects. " +
+                "Without this it sits as a NotYetAccepted offer.",
+                DefaultValue = false)]
+            bool accept = false,
+            [ToolParameter(Description =
+                "Resolve the def and report the points that WOULD be used, and create nothing.",
+                DefaultValue = false)]
+            bool dryRun = false)
+        {
+            if (string.IsNullOrWhiteSpace(questDef)) return Fail("questDef is required.");
+
+            return await ctx.MainThread.InvokeAsync<object>(() =>
+            {
+                if (Find.CurrentMap == null) return Fail("No current map. Load a game first.");
+
+                var manager = Find.QuestManager;
+                if (manager == null) return Fail("No QuestManager — is a game actually loaded?");
+
+                var qdef = DefDatabase<QuestScriptDef>.GetNamedSilentFail(questDef);
+                if (qdef == null)
+                    return Fail($"No QuestScriptDef named '{questDef}'.", new
+                    {
+                        suggestions = DefDatabase<QuestScriptDef>.AllDefsListForReading
+                            .Where(d => d.defName.ToLowerInvariant()
+                                         .Contains(questDef.ToLowerInvariant()))
+                            .Select(d => d.defName).Take(12).ToList()
+                    });
+
+                // Storyteller default when the caller did not name a number. Quest
+                // points come off the same threat curve as an incident's.
+                var usePoints = points > 0f
+                    ? points
+                    : StorytellerUtility.DefaultThreatPointsNow(Find.CurrentMap);
+
+                if (dryRun)
+                    return new
+                    {
+                        success = true,
+                        message = $"{qdef.defName} resolved; would generate at {usePoints:0} points "
+                                + "(dry run, nothing created).",
+                        quest = qdef.defName,
+                        pointsWouldUse = usePoints,
+                        rootMinPoints = qdef.rootMinPoints,
+                        rootSelectionWeight = qdef.rootSelectionWeight,
+                        created = false,
+                        ticksGame = Find.TickManager?.TicksGame ?? -1
+                    };
+
+                // Snapshot the ids present BEFORE, so the new quest is identified by
+                // difference rather than by trusting the returned reference.
+                var before = new HashSet<int>(
+                    manager.QuestsListForReading.Select(q => q.id));
+
+                Quest made;
+                try
+                {
+                    made = QuestUtility.GenerateQuestAndMakeAvailable(qdef, usePoints);
+                }
+                catch (Exception e)
+                {
+                    // A quest script that cannot resolve its own nodes throws from
+                    // deep inside QuestGen. That is a real, reportable answer about
+                    // the DEF, not a bridge fault — surface it whole.
+                    return Fail($"{qdef.defName} threw during generation: {e.GetType().Name}: {e.Message}");
+                }
+
+                // THE READ-BACK. Everything below comes off the manager.
+                var landed = manager.QuestsListForReading
+                    .FirstOrDefault(q => made != null ? q.id == made.id : !before.Contains(q.id));
+
+                if (landed == null)
+                    return Fail(
+                        $"{qdef.defName} generated but is NOT in the QuestManager. "
+                        + "The generator returned "
+                        + (made == null ? "null" : $"quest {made.id}")
+                        + " — treat this as a failed quest script, not a bridge error.");
+
+                var accepted = false;
+                string acceptNote = null;
+                if (accept)
+                {
+                    // Accept() takes the accepting pawn; a quest that requires one and
+                    // gets null throws rather than refusing, so pick a colonist first.
+                    var by = Find.CurrentMap.mapPawns?.FreeColonists?.FirstOrDefault();
+                    if (landed.RequiresAccepter && by == null)
+                        acceptNote = "not accepted: the quest requires an accepter and the map has no free colonist.";
+                    else
+                    {
+                        try { landed.Accept(by); accepted = landed.State == QuestState.Ongoing; }
+                        catch (Exception e) { acceptNote = $"accept threw: {e.GetType().Name}: {e.Message}"; }
+                    }
+                }
+
+                return new
+                {
+                    // Found in the manager is the whole claim. Acceptance is reported
+                    // separately so a half-success cannot read as a whole one.
+                    success = true,
+                    message =
+                        $"{qdef.defName} available as quest {landed.id} \"{landed.name}\" "
+                        + $"at {usePoints:0} points, State={landed.State}"
+                        + (accept ? (accepted ? ", accepted." : $". ⚠️ {acceptNote ?? "accept did not reach Ongoing."}")
+                                  : "."),
+                    quest = qdef.defName,
+                    questId = landed.id,
+                    questName = landed.name,
+                    state = landed.State.ToString(),
+                    accepted,
+                    acceptNote,
+                    hidden = landed.hidden,
+                    challengeRating = landed.challengeRating,
+                    ticksUntilExpiry = landed.TicksUntilExpiry,
+                    points = usePoints,
+                    questCountAfter = manager.QuestsListForReading.Count,
+                    ticksGame = Find.TickManager?.TicksGame ?? -1
+                };
+            }, cancellationToken).ConfigureAwait(false);
+        }
+
 #if JAWA_GM_TOOLS
         // ---- THE GM PAIR -----------------------------------------------------
         // Compiled OUT unless the build defines JAWA_GM_TOOLS (build.py --gm).
