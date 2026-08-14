@@ -36,6 +36,35 @@ zeroing is the template for the rest, and the claim that the resulting dangling
 references are "accepted cost". **Those are design calls and VISION has not ruled
 on them.** The tick-list is safe to run; the framing around it is a proposal.
 
+### ✅ RATIFIED by VISION, `c269c6a` — plus TWO decisions taken AT the screen
+
+21 untick / 6 keep stands as written. **What remains standing: 5 Star Wars keeps
++ vanilla Empire, outlanders, rough outlanders, tribes, pirates. The world is
+populated** — the owner's "no one home" test is met, and was checked rather than
+assumed.
+
+🔴 **R3 — ADD vanilla `Empire` to KEEP. It IS the Fallen Dominion.** Owner ruled
+during the launch window: the disgraced local aristocracy welded into the Empire,
+eager to please, hunting us. **The two-empire split is the DESIGN, not the
+defect** — earlier burn-down text called it a defect and that reading is dead.
+⚙️ Confirm present, count ≥1. **Its name is generated, so expect a different
+string** — screenshot it rather than matching text.
+
+🔴 **R4 — a CONDITIONAL you evaluate live, not beforehand.** After unticking
+`BS_LittlePeople`, **look at the rough-outlander row. If it is 0, leave
+`BS_LittlePeople` at 1.** Do not ship a world with an empty outlander tier.
+*This is the one box whose correct value is not knowable until you are on the
+screen.*
+
+**R2 — `OuterRim_RebelAlliance` stays suppressed.** ABSENT is the desired
+outcome, not a fault. **Do not revert the suppression patch at the screen**; it
+has been retired from the KEEP list. (This retires my own earlier "it silently
+failed to generate" finding — it was our own config, working.)
+
+**R1 — scenery orphans accepted, dead-end quests refused.** Changes nothing this
+run: the only quest-critical faction, `guy762_KotORFaction_RogueDroids`, is
+already on KEEP.
+
 ### What rides on this one screen
 
 | row | what it needs from worldgen |
