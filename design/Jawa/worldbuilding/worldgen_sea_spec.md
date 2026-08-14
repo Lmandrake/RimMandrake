@@ -29,7 +29,7 @@ we just made. Proven in-stack: GravTide's `WorldGenStep_VolcanicBiome` writes
 | 1 | **~25% of tiles are water** | count water tiles ÷ total. **Accept 22–28%** |
 | 2 | **Exactly THREE connected bodies** | flood-fill the water set; **exactly 3 components** above a minimum size. Stray single tiles are a fail, not a rounding error |
 | 3 | ⭐ **Each body is oddly shaped** | see the compactness test below |
-| 4 | 🔴 **Bodies sit in the TERMINATOR BAND — mid-latitude** | **each body's centroid falls at latitude 0.35–0.65**, ⭐ **except one, which sits at high latitude on purpose** — see below |
+| 4 | 🔴 **Bodies sit in the TERMINATOR BAND — mid-latitude** | **each body's centroid falls at normalised latitude 0.35–0.65**, i.e. **`\|lat\|` between 31.5° and 58.5°**, ⭐ **except one, which sits at high latitude on purpose** — see below. 🔴 **UNITS: the band is a FRACTION; the engine's `LongLatOf().y` is DEGREES, −90…+90.** Compare `\|deg\|/90`, never the raw degrees — see below |
 | 5 | 🔴 **Elevation AND biome are both written** | every claimed tile has `elevation <= 0` **and** a water biome; every released tile has `elevation > 0` **and** a land biome |
 | 6 | **Deterministic from the world seed** | same seed → same coastline, every time |
 | 7 | **Rivers arrive afterwards** | the vanilla river step runs untouched and at least some rivers terminate in our bodies |
@@ -46,6 +46,19 @@ one requirement most likely to be quietly failed**, because every natural
 blob-growth algorithm trends toward round. If the score comes in at 13–15, the
 step is producing exactly what the owner rejected.
 
+🔴 **UNITS, and this is the half of the defect that was mine.** "Perimeter" has two
+defensible readings on a hex grid and they differ by up to **6×** — boundary
+**tiles** (what this spec means) versus tile **edges** touching non-water (six per
+tile). Squared, that is up to **36×**, which is how a real reading of `82,715`
+turned up beside a threshold of `25`. **The gate is written in boundary TILES.**
+
+⭐ **And the 4π reference survives contact with the grid — checked, not assumed.**
+4π ≈ 12.57 is continuum geometry, and a hex grid is not a plane. For a hexagonal
+disc of radius *r* hexes, tiles = `3r²+3r+1` and boundary tiles = `6r`, so
+P²/A → **12** as *r* grows (r=10 → 10.9, r=20 → 11.4). **Close enough to 4π that
+"beat 25" still means "twice as ragged as round".** Small bodies score slightly
+*lower* than a circle, so the threshold is if anything conservative — good.
+
 ⚠️ **Do not smooth the coastline.** A ragged frontier is the deliverable.
 
 ### ✅ How the gate is READ — armed 2026-08-14, and it can be read BEFORE we commit
@@ -60,8 +73,28 @@ over — it undercounted both the fields and the requirements they answer.
 |---|---|---|
 | 1 · ~25% water | `pct` | |
 | 2 · exactly three bodies | `bodiesTotal` **vs** `bodiesOverMinSize` | ⭐ **the gap between the two numbers IS the stray-tile test.** `3 / 3` passes; `47 / 3` is the fail this requirement was written for, and a percentage alone could never tell them apart |
-| 3 · oddly shaped | `raggedness` | the compactness test, computed for us. Beat 25 |
-| 4 · centroids in the terminator band | per-body `centroidLat` | including the one deliberate high-latitude body |
+| 3 · oddly shaped | `raggedness` | ⛔ **NOT READABLE YET — wrong units.** Built from perimeter *edges*, not boundary *tiles*; up to 36× off once squared. `perimeterTiles` + a tiles-based `raggedness` are in the pending build |
+| 4 · centroids in the terminator band | per-body `centroidLat` | ⛔ **NOT READABLE YET — wrong units.** Returns **degrees** (−90…+90); the gate is a fraction. `centroidLatNorm` is in the pending build |
+
+🔴 **Requirements 3 and 4 are ARMED BUT MISCALIBRATED — do not score a world on
+them until BRIDGE redeploys.** First real reading, 2026-08-14 (quicktest,
+`seedString "green"`, coverage 0.3, 119,904 tiles): centroids came back at
+**46.634° and 31.803°**, which read as catastrophic failures against a 0.35–0.65
+band and are in fact **0.518 and 0.353 — both inside it.** ⇒ **A correct world
+would have been rejected.** 📌 The lesson is the one this project keeps paying for
+in a new costume: *a reading in the wrong units is worse than no reading*, because
+a missing number stops you and a wrong one convinces you.
+
+⭐ **The affordance found in the same measurement outranks the defect: a quicktest
+builds a REAL world, so the entire gate can be rehearsed on disposable planets
+without ever touching the once-only creation screen.** Rehearse it there until it
+is boring, then spend the real one.
+
+⚠️ That baseline is the sea **without** `JawaSeaShaper.dll` — S1 is undeployed. It
+came in at **25.0% water in exactly 2 bodies, no puddles**, which is startlingly
+close to spec on requirements 1 and 2 and is a *baseline, not a result*. **If
+vanilla can land that close, the honest question before we build the step is what
+it buys beyond body count and shape** — do not let the step ship on momentum.
 
 ⭐ **The affordance that changes the process: a world merely being PREVIEWED at
 the creation screen can be measured.** BRIDGE, 2026-08-14 — the call needs a world
