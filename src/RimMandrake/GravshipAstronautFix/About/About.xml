@@ -1,12 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ModMetaData>
-  <name>Astronaut North Fix — Vanilla Gravship Expanded</name>
+  <name>Missing North Facings — Vanilla Gravship Expanded</name>
   <author>Mandrake</author>
   <packageId>mandrake.gravshipastronautfix</packageId>
   <supportedVersions>
     <li>1.6</li>
   </supportedVersions>
-  <description>Restores the north-facing art of the VGE_Astronaut mechanoid in Vanilla Gravship Expanded - Chapter 1.
+  <description>Supplies the north-facing textures Vanilla Gravship Expanded - Chapter 1 asks for and does not ship: both life stages of the VGE_Astronaut mechanoid, and the gravship gene bank.
+
+None of these is a redraw. Two are the donor's own bytes at the filename its def already names; the third is the donor's own south view rotated 180 degrees, which is exactly the bitmap RimWorld itself would have substituted had the east texture been absent.
+
+THE ASTRONAUT — A FILENAME TYPO
 
 The art is not missing and it is not broken. Both north textures ship complete inside the donor mod — they are simply saved under a misspelled filename, "Astrronaut" with a double R, so the game never finds them. RimWorld's Graphic_Multi silently falls back to the south texture when a direction is absent, which is why an astronaut walking away from you faces you: you are looking at its front view, mirrored onto its back.
 
@@ -28,6 +32,48 @@ CONTENTS
       for BOTH life stages, so the same typo also strips the faction-colour
       overlay from the north view of the ordinary astronaut, whose own
       Mech_Astronaut_north.png is named correctly and does render.
+
+  Things/Structures/GravshipGenebank/GravshipGenebank_north
+      The back of the gravship gene bank. 128x128, 4,311 bytes, 98.66% of the
+      canvas inked — the donor's own GravshipGenebank_south.png rotated 180
+      degrees. Not a redraw and not an invention: see below.
+
+      THE DONOR'S ORIGINAL: there is none. Vanilla Gravship Expanded ships
+      GravshipGenebank_south.png and GravshipGenebank_east.png (both 128x128,
+      both healthy, 98.7% and 98.1% coverage) and no north texture at any load
+      folder.
+
+      WHY A ROTATION IS THE CORRECT FIX HERE. Graphic_Multi, when its north
+      texture is null, substitutes in a fixed order and applies an angle offset:
+      south at 180 degrees first, then east at -90, then west at +90, then the
+      un-suffixed bare path at 0. Had the donor shipped no east texture, the
+      engine would itself have drawn the south bitmap rotated 180 degrees for
+      the north facing. This file is that bitmap, baked. It is the engine's own
+      answer, not a guess at what the artist would have drawn.
+
+      WHY THE ENGINE DOES NOT ALREADY DO IT. That substitution path is dead for
+      this def, because _east DOES exist. With east present and differing from
+      the north material, Graphic_Multi's ShouldDrawRotated is false, so the
+      north facing falls through to the south texture drawn UNROTATED. The south
+      art is an open-fronted rack cabinet with a pronounced front lip along the
+      bottom edge — 71.8% of its pixels change under a 180 degree rotation, so
+      it is emphatically not symmetric. A north-facing gene bank is therefore
+      pixel-identical to a south-facing one: its opening points toward the
+      viewer when it should be showing its back.
+
+      The generator is shipped in Source/make_genebank_north.py, which reads the
+      canvas from the donor's own siblings rather than from a hardcoded number,
+      and refuses to write if the south view turns out to be 180-symmetric.
+
+      WHERE THE DEF IS:
+        1.6/Mods/Biotech/Defs/ThingDefs_Buildings/Buildings_Biotech.xml
+          line 212  texPath       Things/Structures/GravshipGenebank/GravshipGenebank
+          line 214  graphicClass  Graphic_Multi
+          line 229  size          (1, 1)
+      Neither the def nor its vanilla parent GeneBuildingBase declares rotatable,
+      visibleFacing, drawData or renderNodeProperties, and ThingDef.rotatable
+      defaults to true — so all four rotations are placeable and the rotate
+      button shows. Nothing licenses a missing north.
 
 WHERE THE TYPO IS
 
