@@ -17,7 +17,7 @@ BEFORE the run rather than at the screen, at 3am, alone._
 
 | # | precondition | owner | why it cannot slip |
 |---|---|---|---|
-| G1 | **The sea step places on the right predicate** — `effectiveLat = Acos(Cos(lon·Deg2Rad)·Cos(lat·Deg2Rad))·Rad2Deg`, banding on arc distance from the subsolar point, **not latitude** | CREATE | `WorldGenStep` runs once, at world creation. See `V1_SCOPE.md` §"THE SEA SPEC'S AXIS IS WRONG" |
+| G1 | ✅ **DONE `c3ee8e7`, on origin.** The sea step places on the right predicate — `effectiveLat = Acos(Cos(lon·Deg2Rad)·Cos(lat·Deg2Rad))·Rad2Deg`, banding on arc distance from the subsolar point, **not latitude** | CREATE | Verified by `strings -a -el` on the built DLL: `aspect {5:F1}` and `mean arc {7:F0} deg` present, the old `mean |lat|` literal **absent**. ⚠️ **Deploys SOLO** — a new assembly poisons attribution for everything beside it — and **cannot be written while RimWorld runs** (`OSError 22` on the locked file; the refusal is safe, it cannot truncate) |
 | G2 | **`Jawa_SeaShaping` is registered** in `PlanetLayerDef[defName="Surface"]/worldGenSteps` | CREATE | ⚠️ **A `WorldGenStepDef` absent from the layer loads, validates and NEVER RUNS, with no log line.** Registration is silent both ways |
 | G3 | **The companion DLL carries the shutdown-window tools** — `jawa/get_defs`, `jawa/fire_quest` | BRIDGE | Companion work needs a **shutdown**, not a startup. Miss it and row 3 waits a full cycle |
 | G4 | ✅ **`isJunk` is RESOLVED — removed from both scatter defs, `de1018b`.** What remains is a **DEPLOY**: the game copy is still 2026-08-13 16:42 with `isJunk` present | CREATE decided · OPS deploys | §2.D. **Decided, not done** — the fix is repo-only until it ships |
