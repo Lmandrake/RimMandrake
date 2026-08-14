@@ -1,6 +1,30 @@
 #!/usr/bin/env python3
 """
-validate_patch.py - static + live validation for RimWorld XML PatchOperation files.
+validate_patch.py - static + live validation for RimWorld mod XML:
+PatchOperation files under Patches/ AND def files under Defs/.
+
+WHAT IS SCANNED, AND WHAT IS NOT
+================================
+Until 2026-08-13 this tool checked <Patch> files ONLY. Every file whose root was
+<Defs> was reported as "root element is <Defs>, expected <Patch>" - so pointing
+it at a whole mod, which `traps-xml-and-defs.md` explicitly tells you to do
+before a deploy ("validate EVERY file in the mod folder, the blast radius is the
+mod"), produced one false ERROR per def file. A mod whose content is defs got
+either a clean bill of health it had not earned (aim at Patches/) or a wall of
+noise (aim at the mod root). Both readings were wrong.
+
+It now dispatches on the ROOT ELEMENT, and the run banner states exactly what it
+scanned and what it could not:
+
+  <Patch>  -> the PatchOperation checks, unchanged, byte for byte.
+  <Defs>   -> the def checks listed below.
+  anything else -> ERROR, as before.
+
+The def checks are deliberately a SHORTLIST of mechanical, decidable failures.
+This is not a def linter and does not pretend to be one; the banner says so.
+What it does NOT check is stated out loud rather than left to be assumed:
+field names, field types, value ranges, C# class members, and anything a
+PatchOperation creates at load time.
 
 WHY THIS EXISTS
 ===============
@@ -58,7 +82,10 @@ Live (with --defs pointing at real Defs directories):
   9. Each xpath is executed against the resolved load set, and the number of
      matching nodes is reported, grouped by mod.
        0 matches  -> ERROR for an inner operation (the patch would no-op),
-                     INFO for a conditional test (a legitimate no-op guard).
+                     INFO for a conditional test (a legitimate no-op guard),
+                     and INFO for an operation in the <match> branch of a
+                     conditional testing the SAME xpath - that branch is simply
+                     unreachable at 0 matches, so it cannot no-op silently.
        >1 matches -> WARNING on Remove/Replace only when the extra nodes live
                      in ONE mod (a genuine duplicate you are about to hit all
                      of). Spread across several mods it is an INFO line: that
@@ -108,6 +135,12 @@ FLAGS
                   mod, active or not. Restores the old inflated counts. Useful
                   only when you are deliberately auditing files the game will
                   never load.
+  --live DUMPDIR  a RimDefDump folder. Re-streams the whole dump (~1.3 GB) on
+                  every run to rebuild the defName set.
+  --defnames FILE the same set, precomputed. Identical checks, a set lookup
+                  instead of a gigabyte of I/O. Write it once with
+                  `--live DUMPDIR --write-defnames FILE`, then pass --defnames
+                  forever after. Wins over --live when both are given.
   --quiet         suppress info lines.
 
 NOTES ON THE XPATH ENGINE
@@ -146,6 +179,7 @@ unguarded operation through without comment.
 from __future__ import annotations
 
 import argparse
+import json
 import os
 import re
 import sys
@@ -376,15 +410,44 @@ def xpath_of(op: ET.Element) -> str | None:
     return (node.text or "").strip()
 
 
-def check_structure(root: ET.Element, f: Findings) -> list[tuple[ET.Element, str, str]]:
+def _guarded_by_identical_test(path: str, xp: str,
+                               cond_tests: dict[str, str]) -> bool:
+    """
+    True for the one shape a 0-match CANNOT be a silent no-op in: an operation
+    in the <match> branch of a PatchOperationConditional whose test xpath is
+    byte-identical to the operation's own.
+
+    If the test had matched nothing the <match> branch would never have run, so
+    "matches 0 nodes, this does nothing" is a FALSE POSITIVE — the <nomatch>
+    branch is what fires, and that is the whole point of the add-if-missing
+    idiom (Jawa_Doctrine/Patches/DroidsAreMachines.xml: Replace under <match>,
+    Add under <nomatch>, because neither FleshTypeDef declares <isOrganic> on
+    disk — it is a C# field default).
+
+    Deliberately narrow. <nomatch> is NOT included (an op there really can be a
+    no-op), a differing xpath is NOT included (that is the copy-paste slip the
+    warning above already catches), and only the immediately enclosing
+    conditional counts. Widening any of those would blunt the 0-match check,
+    which catches real bugs.
+    """
+    suffix = " > match"
+    if not path.endswith(suffix):
+        return False
+    return cond_tests.get(path[: -len(suffix)]) == xp
+
+
+def check_structure(root: ET.Element, f: Findings) -> list[tuple[ET.Element, str, str, bool]]:
     """
     Walk every operation, run the static checks, and return the list of
-    (element, path, xpath) tuples to be evaluated live.
+    (element, path, xpath, guarded_by_identical_test) tuples to be evaluated
+    live. iter_operations yields a container BEFORE descending into it, so a
+    conditional's test xpath is always recorded before its branches are seen.
     """
     if root.tag != "Patch":
         f.error(f"root element is <{root.tag}>, expected <Patch>")
 
-    to_evaluate: list[tuple[ET.Element, str, str]] = []
+    to_evaluate: list[tuple[ET.Element, str, str, bool]] = []
+    cond_tests: dict[str, str] = {}
 
     top_level = root.findall("./Operation")
     if not top_level:
@@ -400,13 +463,18 @@ def check_structure(root: ET.Element, f: Findings) -> list[tuple[ET.Element, str
 
         xp = xpath_of(op)
 
+        if cls == "PatchOperationConditional" and xp:
+            cond_tests[path] = xp
+
         if cls in OPS_NEEDING_XPATH:
             if xp is None:
                 f.error(f"{path} ({cls}): no <xpath> child")
             elif not xp:
                 f.error(f"{path} ({cls}): <xpath> is empty")
             else:
-                to_evaluate.append((op, path, xp))
+                to_evaluate.append(
+                    (op, path, xp,
+                     _guarded_by_identical_test(path, xp, cond_tests)))
 
         if cls == "PatchOperationFindMod" and op.find("mods") is None:
             f.error(f"{path} (PatchOperationFindMod): no <mods> child")
@@ -1091,6 +1159,86 @@ class LiveIndex:
         idx.loaded = bool(idx.names)
         return idx
 
+    # ----------------------------------------------------------------
+    # the same index, precomputed  (--defnames / --write-defnames)
+    # ----------------------------------------------------------------
+    # load() above re-derives this set on EVERY run by regex-streaming the whole
+    # DefDump - 1.3 GB, of which 810 MB is ThingDef.json - to end up with a few
+    # hundred thousand short strings. The names are the only part any check
+    # actually consults (has()), so the read is ~99.9% waste, paid per
+    # invocation, on a slow mount, by four agents.
+    #
+    # So: extract once, keep the extract. The file is small enough to commit,
+    # cannot be regenerated without a game load, and its value does not expire
+    # with the dump - which by CLAUDE.md's own test makes it a work product
+    # rather than a cache.
+    #
+    # THE FORMAT IS NOT NEW. It mirrors manifest.json's key names
+    # (gameVersion / modCount / defCounts, as written by
+    # observed/.../dumps/capture_manifest.py) and adds the one thing manifest
+    # withholds - the names themselves, under defNames, keyed by def type so
+    # by_type survives the round trip. A plain text file of one defName per
+    # line is also accepted, because that is what a human writes by hand.
+
+    @classmethod
+    def load_names(cls, path: str) -> "LiveIndex":
+        """
+        Load a precomputed defName list written by --write-defnames (JSON), or
+        any file of one bare defName per line.
+        """
+        idx = cls()
+        try:
+            with open(path, encoding="utf-8") as fh:
+                raw = fh.read()
+        except OSError as e:
+            print(f"  (--defnames: cannot read {path}: {e}; live checks skipped)")
+            return idx
+
+        if raw.lstrip().startswith("{"):
+            try:
+                blob = json.loads(raw)
+            except ValueError as e:
+                print(f"  (--defnames: {path} is not valid JSON: {e}; "
+                      f"live checks skipped)")
+                return idx
+            idx.game_version = str(blob.get("gameVersion", "") or "")
+            try:
+                idx.mod_count = int(blob.get("modCount", 0) or 0)
+            except (TypeError, ValueError):
+                idx.mod_count = 0
+            for deftype, names in (blob.get("defNames") or {}).items():
+                found = {str(n) for n in names}
+                if found:
+                    idx.by_type[str(deftype)] = found
+                    idx.names |= found
+        else:
+            # One name per line. '#' starts a comment so a hand-kept list can
+            # say where it came from; that provenance is the whole reason the
+            # JSON form carries gameVersion.
+            for line in raw.splitlines():
+                line = line.split("#", 1)[0].strip()
+                if line:
+                    idx.names.add(line)
+
+        idx.loaded = bool(idx.names)
+        if not idx.loaded:
+            print(f"  (--defnames: {path} held no defNames; live checks skipped)")
+        return idx
+
+    def write_names(self, path: str, source: str = "") -> None:
+        """Persist this index in the --defnames JSON form."""
+        blob = {
+            "tool": "validate_patch.py --write-defnames",
+            "source": source,
+            "gameVersion": self.game_version,
+            "modCount": self.mod_count,
+            "defCounts": {t: len(n) for t, n in sorted(self.by_type.items())},
+            "defNames": {t: sorted(n) for t, n in sorted(self.by_type.items())},
+        }
+        with open(path, "w", encoding="utf-8") as fh:
+            json.dump(blob, fh, indent=1, sort_keys=False)
+            fh.write("\n")
+
 
 def xpath_identity(xp: str) -> str | None:
     """
@@ -1113,7 +1261,7 @@ def check_live(to_evaluate, docs, f: Findings,
                scanner: PatchScanner | None = None,
                own_basename: str = "",
                live: "LiveIndex | None" = None) -> None:
-    for op, path, xp in to_evaluate:
+    for op, path, xp, guarded in to_evaluate:
         cls = short(op.get("Class", ""))
         n, where, elems, n_mods, unsupported = count_matches(xp, docs)
         if unsupported:
@@ -1144,7 +1292,16 @@ def check_live(to_evaluate, docs, f: Findings,
                 # target really is there at runtime (patch-created, fine) or it
                 # is not (genuinely broken). Without one, fall back to guessing
                 # from other mods' patch files.
-                if live is not None and live.loaded and ident:
+                if guarded:
+                    # Unreachable branch, not a no-op. See
+                    # _guarded_by_identical_test() for why this is the ONE shape
+                    # where 0 matches proves nothing.
+                    f.info(f"{path} ({cls}): 0 nodes on disk, but this operation "
+                           f"is in the <match> branch of a conditional testing "
+                           f"the SAME xpath, so it cannot silently no-op - with "
+                           f"0 matches the branch never runs at all and <nomatch> "
+                           f"fires instead. Check the <nomatch> branch is right.")
+                elif live is not None and live.loaded and ident:
                     if live.has(ident):
                         f.info(f"{path} ({cls}): 0 nodes on disk, but '{ident}' "
                                f"EXISTS in the live game - created or completed by "
@@ -1187,6 +1344,411 @@ def check_live(to_evaluate, docs, f: Findings,
 
 
 # --------------------------------------------------------------------------
+# Defs/ checks
+# --------------------------------------------------------------------------
+# A SHORTLIST, on purpose. These are the def failures that are mechanically
+# decidable from files on disk and that cost a ~25-minute game load to find any
+# other way. Everything else - field names, types, value ranges, C# members - is
+# NOT checked and the banner says so, because a validator that implies more
+# coverage than it has is worse than one that has none.
+#
+#   1. the file parses as XML at all                (shared with the patch path)
+#   2. no '--' inside a comment body                (shared with the patch path)
+#   3. every concrete def has a <defName>
+#   4. no (defType, defName) pair defined twice inside the mod
+#   5. ParentName resolves to a def carrying that Name=   (needs --defs)
+#   6. every Class="..." is one some shipping def already uses  (needs --defs)
+#   7. every texPath / uiIconPath resolves to a file on disk
+#
+# KNOWN LIMITATIONS, stated rather than assumed:
+#   * If the mod under validation is ALSO deployed and active, its deployed copy
+#     is inside the load set, so checks 5 and 6 can confirm themselves against
+#     it. They still catch a typo, which is what they are for.
+#   * A mod that ships Assemblies/ may legitimately name its own C# classes, so
+#     check 6 drops to an info line for those mods instead of a warning.
+#   * texPath resolution is by directory listing, not by RimWorld's own loader.
+#     A path that resolves here can still fail in game if it is shadowed.
+
+_TEX_EXT = (".png", ".jpg", ".jpeg")
+_TEX_DIRECTIONS = ("_north", "_south", "_east", "_west")
+_ICON_TAGS = {"uiiconpath", "iconpath", "menuiconpath", "leaflessgraphicpath"}
+
+
+def _is_texture_tag(tag: str) -> bool:
+    """<texPath>, <graphicData><texPath>, <uiIconPath> and friends."""
+    if not isinstance(tag, str):
+        return False
+    t = tag.lower()
+    return t.endswith("texpath") or t in _ICON_TAGS
+
+
+def find_mod_root(path: str) -> str | None:
+    """The nearest ancestor directory holding About/About.xml, or None."""
+    d = os.path.dirname(os.path.abspath(path))
+    prev = ""
+    while d and d != prev:
+        if os.path.isfile(os.path.join(d, "About", "About.xml")):
+            return d
+        prev, d = d, os.path.dirname(d)
+    return None
+
+
+class TextureIndex:
+    """
+    'Does this texPath exist?' answered by cached directory listings.
+
+    Listings rather than an os.walk: the Workshop tree holds ~1,200 mods and
+    walking every Textures/ folder would take longer than the game load this
+    check exists to save. A texPath names exactly one directory, so one
+    os.listdir per (root, directory) pair answers every query in it.
+
+    Matching is case-INSENSITIVE with an exact-case flag returned alongside.
+    NTFS does not care and Linux does, so a case slip is invisible on the
+    machine that wrote it and fatal on the one that ships it.
+    """
+
+    def __init__(self, roots: list[str], own_top: set[str] | None = None,
+                 vanilla_loose: bool = False) -> None:
+        self.roots = roots
+        # Top-level folder names inside THIS mod's own Textures/. A texPath
+        # whose first segment is one of these is the mod's own art, so a miss is
+        # its own bug. A path under any other namespace may belong to vanilla or
+        # to another mod - see `vanilla_loose`.
+        self.own_top = own_top or set()
+        # 🔴 Is the GAME's own art on disk as loose PNGs? On a Steam install it
+        # is NOT: Data/Core, Data/Biotech and the rest ship About/, Defs/ and
+        # Languages/ only, with every texture inside a Unity asset bundle.
+        # Measured 2026-08-13. So a def pointing at a perfectly correct vanilla
+        # path such as UI/Icons/Xenotypes/Pigskin resolves to nothing here, and
+        # calling that an ERROR is a false alarm - which on the first full-stack
+        # run it duly was, twice, on Jawa_Patches.
+        self.vanilla_loose = vanilla_loose
+        self._listing: dict[str, dict[str, str]] = {}
+
+    def _names(self, d: str) -> dict[str, str]:
+        key = os.path.normcase(d)
+        got = self._listing.get(key)
+        if got is None:
+            try:
+                got = {n.lower(): n for n in os.listdir(d)}
+            except OSError:
+                got = {}
+            self._listing[key] = got
+        return got
+
+    def find(self, texpath: str) -> tuple[str | None, bool]:
+        """(absolute path of the first hit, exact-case) or (None, False)."""
+        rel = texpath.replace("\\", "/").strip().strip("/")
+        if not rel:
+            return None, False
+        parent_rel, _, base = rel.rpartition("/")
+        for root in self.roots:
+            d = os.path.join(root, *parent_rel.split("/")) if parent_rel else root
+            names = self._names(d)
+            if not names:
+                continue
+            # Graphic_Single: <path>.png
+            for ext in _TEX_EXT:
+                hit = names.get((base + ext).lower())
+                if hit:
+                    return os.path.join(d, hit), hit == base + ext
+            # Graphic_Multi: <path>_north.png ...
+            for direction in _TEX_DIRECTIONS:
+                for ext in _TEX_EXT:
+                    hit = names.get((base + direction + ext).lower())
+                    if hit:
+                        return os.path.join(d, hit), hit[:len(base)] == base
+            # A folder of variants (Graphic_Random, pawn bodies)
+            hit = names.get(base.lower())
+            if hit and os.path.isdir(os.path.join(d, hit)):
+                return os.path.join(d, hit), hit == base
+        return None, False
+
+
+class LoadSetIndex:
+    """
+    Abstract def Names and Class attribute values present in the load set.
+
+    Both are LAZY. Collecting Class values walks every element of every def file
+    in the load set, which is only worth doing if a def under validation
+    actually carries a Class attribute - and abstract Names are only needed if
+    one carries a ParentName.
+    """
+
+    def __init__(self, docs) -> None:
+        self._docs = docs
+        self._names: set[str] | None = None
+        self._classes: set[str] | None = None
+
+    def abstract_names(self) -> set[str]:
+        if self._names is None:
+            s: set[str] = set()
+            for _p, root, _m in self._docs:
+                for child in root:                 # Name= is top level only
+                    n = child.get("Name") if hasattr(child, "get") else None
+                    if n:
+                        s.add(n)
+            self._names = s
+        return self._names
+
+    def classes(self) -> set[str]:
+        if self._classes is None:
+            s: set[str] = set()
+            for _p, root, _m in self._docs:
+                for el in root.iter():
+                    try:
+                        c = el.get("Class")
+                    except AttributeError:         # a comment/PI node
+                        continue
+                    if c:
+                        s.add(c)
+                        s.add(short(c))
+            self._classes = s
+        return self._classes
+
+
+class DefContext:
+    """
+    A pre-pass over the files under validation.
+
+    Two of the def checks are cross-file and cannot be answered one file at a
+    time: a duplicate defName is only visible once every file has been read, and
+    a ParentName may point at an abstract declared in a sibling file of a mod
+    that is not deployed yet (so the load set has never heard of it).
+    """
+
+    def __init__(self, files: list[str]) -> None:
+        self.def_files: list[str] = []
+        self.patch_files: list[str] = []
+        self.other_files: list[str] = []
+        self.meta_files: list[str] = []
+        self.local_names: set[str] = set()
+        self.defname_locs: dict[tuple[str, str], list[str]] = {}
+
+        for p in files:
+            try:
+                root = ET.parse(p).getroot()
+            except Exception:
+                self.other_files.append(p)         # the per-file pass reports it
+                continue
+            if root.tag == "Patch":
+                self.patch_files.append(p)
+                continue
+            if root.tag in ("ModMetaData", "loadFolders"):
+                self.meta_files.append(p)
+                continue
+            if root.tag != "Defs":
+                self.other_files.append(p)
+                continue
+            self.def_files.append(p)
+            for child in root:
+                if not isinstance(child.tag, str):
+                    continue
+                nm = child.get("Name")
+                if nm:
+                    self.local_names.add(nm)
+                if (child.get("Abstract") or "").lower() == "true":
+                    continue
+                dn = child.find("defName")
+                if dn is not None and (dn.text or "").strip():
+                    self.defname_locs.setdefault(
+                        (child.tag, dn.text.strip()), []).append(p)
+
+
+def check_def_structure(root: ET.Element, path: str, f: Findings,
+                        ctx: DefContext | None,
+                        tex: TextureIndex | None,
+                        index: LoadSetIndex | None,
+                        mod_ships_dll: bool) -> None:
+    """Run the def shortlist over one <Defs> document."""
+    kids = [c for c in root if isinstance(c.tag, str)]
+    if not kids:
+        f.warn("<Defs> contains no def elements - this file does nothing")
+    dup_reported: set[tuple[str, str]] = set()   # one line per clash, not per copy
+
+    for n, child in enumerate(kids, 1):
+        tag = child.tag
+        abstract = (child.get("Abstract") or "").lower() == "true"
+        name_attr = child.get("Name") or ""
+        dn = child.find("defName")
+        defname = (dn.text or "").strip() if dn is not None and dn.text else ""
+        who = defname or (f"Name={name_attr}" if name_attr else f"<{tag}> #{n}")
+
+        # 3. a concrete def with no defName never enters the DefDatabase.
+        if not defname and not abstract and not name_attr:
+            f.error(f"<{tag}> #{n}: no <defName> and no Name= attribute. A def "
+                    f"with neither is never registered and never inherited "
+                    f"from - it is dead weight the game loads and discards.")
+        if abstract and not name_attr:
+            f.warn(f"<{tag}> #{n}: Abstract=\"True\" with no Name= attribute. "
+                   f"Nothing can ever inherit from it.")
+
+        # 4. duplicate (defType, defName) inside the mod.
+        if defname and not abstract and ctx is not None:
+            locs = ctx.defname_locs.get((tag, defname), [])
+            if len(locs) > 1 and (tag, defname) not in dup_reported:
+                dup_reported.add((tag, defname))
+                here = sum(1 for x in locs if x == path)
+                others = sorted({x for x in locs if x != path})
+                where = (f"{here} times in this file" if here > 1 else "")
+                if others:
+                    where = (where + "; also in " if where else "also in ") + \
+                            ", ".join(others[:3])
+                f.error(f"{tag} '{defname}': defined more than once inside this "
+                        f"mod ({where}). RimWorld keeps the LAST one loaded and "
+                        f"the earlier definitions vanish silently.")
+
+        # 5. ParentName must name an abstract that actually exists.
+        parent = child.get("ParentName")
+        if parent:
+            known_local = ctx is not None and parent in ctx.local_names
+            if not known_local and index is not None:
+                if parent not in index.abstract_names():
+                    f.error(f"{tag} '{who}': ParentName=\"{parent}\" resolves to "
+                            f"no def carrying Name=\"{parent}\", in this mod or "
+                            f"anywhere in the load set. The def fails to "
+                            f"resolve and is DISCARDED - it will not exist in "
+                            f"game.")
+            elif not known_local and index is None:
+                f.info(f"{tag} '{who}': ParentName=\"{parent}\" is not declared "
+                       f"in the files scanned. Pass --defs to check it against "
+                       f"the real load set.")
+
+        # 6/7. class attributes and texture paths, anywhere in the subtree.
+        for el in child.iter():
+            if not isinstance(el.tag, str):
+                continue
+
+            cls_attr = el.get("Class")
+            if cls_attr and index is not None:
+                if cls_attr not in index.classes():
+                    msg = (f"{tag} '{who}': <{el.tag} Class=\"{cls_attr}\"> - no "
+                           f"def in the load set uses that class. A Class the "
+                           f"game cannot resolve throws away the whole parent "
+                           f"def.")
+                    if mod_ships_dll:
+                        f.info(msg + " This mod ships Assemblies/, so it may be "
+                                     "its own class - confirm it is public and "
+                                     "the namespace matches.")
+                    else:
+                        f.warn(msg + " This mod ships no Assemblies/, so there "
+                                     "is nothing here to define it.")
+
+            if _is_texture_tag(el.tag) and (el.text or "").strip():
+                tp = el.text.strip()
+                if tex is None:
+                    continue
+                hit, exact = tex.find(tp)
+                if hit is None:
+                    top = tp.replace("\\", "/").strip("/").split("/")[0].lower()
+                    mine = top in tex.own_top
+                    where = (f"<{el.tag}>{tp}</{el.tag}> - no file, folder or "
+                             f"_north/_south/_east/_west variant of that path "
+                             f"exists under any Textures/ root scanned.")
+                    if mine or tex.vanilla_loose:
+                        f.error(f"{tag} '{who}': {where} '{top}/' IS this mod's "
+                                f"own texture namespace, so nothing else can "
+                                f"supply it. The thing renders as a pink "
+                                f"placeholder."
+                                if mine else
+                                f"{tag} '{who}': {where} The thing renders as a "
+                                f"pink placeholder.")
+                    else:
+                        f.warn(f"{tag} '{who}': {where} Cannot be called a typo: "
+                               f"the GAME's own textures are inside Unity asset "
+                               f"bundles, not loose files, so a correct vanilla "
+                               f"path looks identical to a wrong one from here. "
+                               f"'{top}/' is not this mod's namespace either. "
+                               f"Check it against a def that already works.")
+                elif not exact:
+                    f.warn(f"{tag} '{who}': <{el.tag}>{tp}</{el.tag}> only "
+                           f"matches with different CASE ({os.path.basename(hit)}). "
+                           f"Windows does not care; a case-sensitive filesystem "
+                           f"does, and so does the Workshop upload.")
+
+
+def _textures_for(path: str, mods: list[ModInfo] | None,
+                  cache: dict | None) -> tuple[TextureIndex | None, bool]:
+    """
+    (TextureIndex for the mod this def file belongs to, does it ship a DLL).
+
+    Root ORDER is the whole point: the mod's own Textures/ first, then every
+    active mod in load order. Own-first means the common case - a def naming art
+    the same mod ships - is answered by one listdir, and the wide search only
+    runs for paths that miss, which are the ones about to be an error anyway.
+    """
+    mod_root = find_mod_root(path)
+    if mod_root is None:
+        # Not laid out as a mod (a loose Defs folder, a scratch file). Fall back
+        # to the nearest ancestor that has a Textures/ sibling.
+        d = os.path.dirname(os.path.abspath(path))
+        prev = ""
+        while d and d != prev:
+            if os.path.isdir(os.path.join(d, "Textures")):
+                mod_root = d
+                break
+            prev, d = d, os.path.dirname(d)
+    if mod_root is None:
+        return None, False
+
+    if cache is not None and mod_root in cache:
+        return cache[mod_root]
+
+    roots: list[str] = []
+    own: list[str] = []
+
+    def add(p: str, is_own: bool = False) -> None:
+        if os.path.isdir(p) and p not in roots:
+            roots.append(p)
+            if is_own:
+                own.append(p)
+
+    add(os.path.join(mod_root, "Textures"), True)
+    try:                                    # versioned folders: 1.6/Textures
+        for e in sorted(os.listdir(mod_root)):
+            add(os.path.join(mod_root, e, "Textures"), True)
+    except OSError:
+        pass
+    for m in (mods or ()):
+        for folder in m.folders or [m.folder]:
+            add(os.path.join(folder, "Textures"))
+
+    own_top: set[str] = set()
+    for p in own:
+        try:
+            own_top |= {n.lower() for n in os.listdir(p)}
+        except OSError:
+            pass
+
+    # Vanilla art is loose only on an unusual install. Detected rather than
+    # assumed: Core is the mod every load set contains.
+    vanilla_loose = False
+    for m in (mods or ()):
+        if m.package_id == "ludeon.rimworld":
+            vanilla_loose = any(os.path.isdir(os.path.join(fo, "Textures"))
+                                for fo in (m.folders or [m.folder]))
+            break
+
+    ships_dll = False
+    for base in (mod_root,) + tuple(
+            os.path.join(mod_root, e) for e in (os.listdir(mod_root)
+                                                if os.path.isdir(mod_root) else ())):
+        adir = os.path.join(base, "Assemblies")
+        if os.path.isdir(adir):
+            try:
+                if any(n.lower().endswith(".dll") for n in os.listdir(adir)):
+                    ships_dll = True
+                    break
+            except OSError:
+                pass
+
+    got = (TextureIndex(roots, own_top, vanilla_loose), ships_dll)
+    if cache is not None:
+        cache[mod_root] = got
+    return got
+
+
+# --------------------------------------------------------------------------
 # main
 # --------------------------------------------------------------------------
 
@@ -1218,8 +1780,16 @@ def collect_patch_files(targets: list[str]) -> tuple[list[str], list[str]]:
 
 def validate_file(path: str, docs, scanner: PatchScanner | None,
                   have_defs: bool, quiet: bool,
-                  live: "LiveIndex | None" = None) -> tuple[int, int, int]:
-    """Returns (exit_code, n_errors, n_warnings) for one patch file."""
+                  live: "LiveIndex | None" = None,
+                  ctx: DefContext | None = None,
+                  index: LoadSetIndex | None = None,
+                  tex_cache: dict | None = None,
+                  mods: list[ModInfo] | None = None) -> tuple[int, int, int]:
+    """Returns (exit_code, n_errors, n_warnings) for one XML file.
+
+    Dispatches on the ROOT ELEMENT: <Patch> takes the PatchOperation path
+    unchanged, <Defs> takes the def shortlist, anything else is still an error.
+    """
     f = Findings()
     try:
         with open(path, "rb") as fh:
@@ -1235,6 +1805,37 @@ def validate_file(path: str, docs, scanner: PatchScanner | None,
         root = ET.fromstring(raw)
     except ET.ParseError as e:
         f.error(f"XML does not parse: {e}")
+        return f.report(quiet), len(f.errors), len(f.warnings)
+
+    # About.xml and LoadFolders.xml are swept up by any directory argument and
+    # are not patches. Reporting them as "expected <Patch>" was a false error
+    # that punished exactly the habit the deploy skill asks for - validate the
+    # WHOLE mod folder, About.xml included, because the blast radius is the mod.
+    if root.tag == "ModMetaData":
+        pid = root.find("packageId")
+        if pid is None or not (pid.text or "").strip():
+            f.error("About.xml has no <packageId> as a direct child of "
+                    "<ModMetaData>. The mod is not loadable and not deployable.")
+        if root.find("name") is None:
+            f.warn("About.xml has no <name>; the mod list will show the folder "
+                   "name instead.")
+        f.info("About.xml: parsed, packageId and name checked. Nothing else "
+               "here is validated.")
+        return f.report(quiet), len(f.errors), len(f.warnings)
+
+    if root.tag == "loadFolders":
+        f.info("LoadFolders.xml: parsed. Folder resolution is exercised by the "
+               "--defs load set, not checked here.")
+        return f.report(quiet), len(f.errors), len(f.warnings)
+
+    if root.tag == "Defs":
+        tex, ships_dll = _textures_for(path, mods, tex_cache)
+        check_def_structure(root, path, f, ctx, tex, index, ships_dll)
+        if index is None:
+            f.info("no --defs given; ParentName resolution and Class-attribute "
+                   "checks were SKIPPED. texPath checks used this mod's own "
+                   "Textures/ only, so a path served by another mod cannot be "
+                   "told apart from a typo.")
         return f.report(quiet), len(f.errors), len(f.warnings)
 
     to_evaluate = check_structure(root, f)
@@ -1280,9 +1881,35 @@ def main() -> int:
                          "and defs lost to an override, and decides whether a "
                          "0-match xpath is patch-created or simply broken. "
                          "Optional - everything works without it.")
+    ap.add_argument("--defnames", default=None, metavar="FILE",
+                    help="a precomputed defName list (written by "
+                         "--write-defnames, or one bare defName per line). "
+                         "Exactly the same checks as --live, without "
+                         "re-streaming the whole multi-gigabyte dump on every "
+                         "run. Wins over --live if both are given.")
+    ap.add_argument("--write-defnames", default=None, metavar="FILE",
+                    help="extract the defNames from the --live dump into FILE "
+                         "and exit. Run once per dump; use --defnames FILE "
+                         "thereafter.")
     ap.add_argument("--quiet", action="store_true",
                     help="suppress info lines")
     args = ap.parse_args()
+
+    # Extraction is a mode, not a side effect of a validation run: it needs a
+    # dump and produces a file, and doing it silently inside a normal run would
+    # make one invocation mean two different things.
+    if args.write_defnames:
+        if not args.live:
+            print("--write-defnames needs --live DUMPDIR to extract from")
+            return 2
+        src = LiveIndex.load(args.live)
+        if not src.loaded:
+            print(f"--write-defnames: no defNames found under {args.live}")
+            return 2
+        src.write_names(args.write_defnames, args.live)
+        print(f"wrote {len(src.names):,} defNames across {len(src.by_type)} "
+              f"def types to {args.write_defnames}")
+        return 0
 
     files, bad = collect_patch_files(args.patch)
     for b in bad:
@@ -1297,7 +1924,29 @@ def main() -> int:
         print(f"cannot read --mods-config {mods_config}")
         return 2
 
-    print(f"\nvalidate_patch.py - {len(files)} patch file(s)\n")
+    # THE BANNER MUST SAY WHAT WAS NOT SCANNED.
+    # This tool spent months checking Patches/ only while reporting "OK", which
+    # reads as "this mod is fine" and never was. A verdict is only as honest as
+    # its stated scope, so the scope is printed on every run, before any finding.
+    ctx = DefContext(files)
+    print(f"\nvalidate_patch.py - {len(files)} XML file(s): "
+          f"{len(ctx.patch_files)} <Patch>, {len(ctx.def_files)} <Defs>"
+          + (f", {len(ctx.meta_files)} About/LoadFolders" if ctx.meta_files else "")
+          + (f", {len(ctx.other_files)} neither" if ctx.other_files else ""))
+    print("  SCANNED     Patches/: operation shape, guards, value shape, live "
+          "xpath hit counts")
+    print("              Defs/:    XML parse, comment bodies, missing/duplicate "
+          "defName, ParentName")
+    print("                        resolution, Class attributes, texPath "
+          "existence and case")
+    print("  NOT SCANNED field names, field types, value ranges, C# class "
+          "members, and any node")
+    print("              a PatchOperation creates at load time. This is not a "
+          "def linter.")
+    if not args.defs:
+        print("  NOTE        no --defs: ParentName and Class checks are SKIPPED "
+              "and no xpath is executed.")
+    print()
 
     docs: list = []
     mods: list[ModInfo] = []
@@ -1339,21 +1988,35 @@ def main() -> int:
             return 1
 
     live: LiveIndex | None = None
-    if args.live:
+    if args.defnames:
+        # Same index, same checks, same wording downstream - only the source of
+        # the names differs, so --defnames wins outright rather than merging.
+        live = LiveIndex.load_names(args.defnames)
+        source = f"defName list {args.defnames}"
+        if live.loaded and args.live:
+            print(f"  info    --defnames given; --live {args.live} not read")
+    elif args.live:
         live = LiveIndex.load(args.live)
+        source = "live dump"
+    if live is not None:
         if live.loaded:
-            print(f"live dump: {len(live.names)} defNames across "
-                  f"{len(live.by_type)} def types"
+            # by_type is empty for a bare one-name-per-line list; saying
+            # "across 1 def types" there would be an invented number.
+            print(f"{source}: {len(live.names)} defNames"
+                  + (f" across {len(live.by_type)} def types" if live.by_type else "")
                   + (f", RimWorld {live.game_version}" if live.game_version else "")
                   + (f", {live.mod_count} mods" if live.mod_count else ""))
         else:
-            print("live dump: nothing usable found; live checks skipped")
+            print(f"{source}: nothing usable found; live checks skipped")
+
+    index = LoadSetIndex(docs) if (args.defs and docs) else None
+    tex_cache: dict = {}
 
     total_err = total_warn = 0
     for p in files:
         print(f"\n=== {p} ===")
         _rc, ne, nw = validate_file(p, docs, scanner, bool(args.defs), args.quiet,
-                                    live)
+                                    live, ctx, index, tex_cache, mods)
         total_err += ne
         total_warn += nw
 
