@@ -112,22 +112,10 @@ it is correct about its own world and wrong about ours. **Resolve addresses from
 your own session, never from a subagent.**
 
 
+⚠️ **A guessed name can misroute and has** — two messages once landed on the
+wrong seat, leaving the sender waiting on an answer that was never coming.
 
-```bash
-ListAgents                    # or: python3 src/RimMandrake/Utils/peers.py
-```
-
-Seats that have run `./src/RimMandrake/Utils/set_agent_window.sh <SEAT>` appear as `AGENT <SEAT>`
-and **can be addressed by that name** — verified 2026-08-13. A seat that has not
-run it still carries an auto-generated name like `rimworld-b6`. **Confirm the name
-in a listing before sending**; never guess one.
-
-**To reply, copy the incoming `from=` verbatim as your `to`.** It is
-point-to-point and cannot misroute. A guessed name can, and has — two messages
-once landed on the wrong seat, leaving the sender waiting on an answer that was
-never coming.
-
-### 3a. Publish your own address on every resume
+### 3b. Publish your own address on every resume
 
 The registry is the lookup; your state file is the fallback, and the only place a
 **human** can find you. Second line of `AGENT_<SEAT>_state.md`, this exact marker
