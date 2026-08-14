@@ -225,3 +225,104 @@ things is what the campaign calls them.
 - **Cost has collapsed** from "a new environment class" to "a landing redirect".
 - **Still v2** — but it moved from *aspirational* to *plausible* in one sentence,
   which is the best kind of design note to receive.
+
+---
+
+# ✅ MEASURED — GravTide is the concept, already built. RECOMMEND ADOPT.
+
+_VISION, 2026-08-13, from a full read of the mod's defs, its ~200 C# source files
+and its 21 shipped design docs. **Installed, NOT active** — `gravtide.mod`, ws
+`3779600989`, author yongdd, **1.6 only**, hard dependency on Odyssey which we
+already run. **No `incompatibleWith` declared.** Licence: none shipped, so
+all-rights-reserved — fine to run, not to redistribute._
+
+## ⭐ The finding that changes everything, and it is not about GravTide
+
+> **Vacuum in RimWorld 1.6 is a `BiomeDef` boolean — `<inVacuum>true</inVacuum>`.**
+
+**Not a game condition. Not a planet-layer property. Not hardcoded to space.**
+Vanilla sets it in exactly one place (`Data\Odyssey\Defs\BiomeDefs\Space.xml:15`).
+
+**So the owner's "it should have the same issues as vacuum for breathing" is one
+XML boolean on a biome.** The question I said would decide whether the deep is
+cheap or enormous is answered, and the answer is **cheap**. GravTide's entire
+existence is the proof: it borrows Odyssey's whole air model — `Room.Vacuum`,
+suit resistance, suffocation, alerts, save/load — by flipping that flag and
+re-skinning it as water. Its `Docs\borrowed-vacuum.md` audits all 32 places the
+flag is read and marks each keep/patch/wrong. **That is a ready-made map for
+anyone who ever wants a vacuum-like medium on a non-space map.**
+
+## What GravTide actually is
+
+**Land a gravship on an ocean tile and it descends to a sea-floor pocket map.**
+Pressure, drowning, dive suits, escape trunks, tides, tsunamis, earthquakes. 162
+defs — 4 seabed biomes, 20 tile mutators, 11 terrains, 15 gen steps, 4 map
+generators, plus world-gen steps that draw tectonic seams on the planet.
+
+**It is not adjacent to our concept. It is our concept, finished.**
+
+## ⭐⭐ And it implements my own hiding rule as a hard mechanic
+
+I wrote *"hiding must cost the thing the campaign is about — progress — not hit
+points"*, and *"it must not be permanent."* **GravTide arrived at the same rule
+independently, expressed as depth:**
+
+| depth | who can reach you |
+|---|---|
+| ≤ 15 m | raids, visitors, **traders** |
+| 15–17 m | raids only |
+| 17–200 m | mechanoids and Anomaly entities only |
+| **> 200 m** | 🔴 **nobody. All threats refused** |
+
+**Below 30 m the comms console dies and quest offers are blocked outright.**
+
+⭐ **That is the design, built: you can be unreachable, and being unreachable
+costs you trade, quests and contact.** Not a concealment flag — a physical fact
+about where you are. The player understands it without a tutorial.
+
+**And the dark comes free.** Light falls as `0.1^(depth/100)`; at 200 m the map
+is permanently black, lit only by what you build. **The deepest hiding place is
+also the pitch-dark one — the owner's two media are the same place**, which is
+exactly what "combine both concepts" was reaching for.
+
+⚠️ **It does NOT touch the pursuit.** Grepped defs, patches, source and DLL
+strings: **zero** hits on `ScenPart_Pursuing*`, the mech-threat alert, or any
+conceal/detect/cloak concept. **Depth suppresses arrivals; it does not suppress
+the pursuit's own escalation.** If the Heat gauge is ever built, "does Heat decay
+at depth" remains ours to decide and ours to implement.
+
+## The one real tension — and it is a design opportunity
+
+🔴 **This is a THIRST WORLD. GravTide needs ocean tiles.**
+
+`faction_world_spec.md` §4 puts the only standing water at high latitude, in
+small quantity. **Before adopting, establish whether our worldgen produces any
+ocean tiles at all, and whether a few can be forced.** If the answer is none,
+GravTide has nothing to work with.
+
+⭐ **If the answer is "a few", that is better than a lot.** Three or four deep
+seas on an entire desert planet, each one the property of the Aquifer League,
+each one the only place in the world you cannot be found — **that is a far
+stronger setting than an ocean world would be.** Scarcity is the campaign's whole
+grammar, and it should apply to sanctuary too.
+
+## Alternatives already live, for the record
+
+- **Biomes! Caverns is ACTIVE** — `BMT_CrystalCaverns`, `BMT_EarthenDepths`,
+  `BMT_FungalForest`, all `isCavern: true`, roofed and dark. **A dark hiding
+  place exists today without adopting anything.**
+- **Anomaly's undercave** (`isUnderground: true`) and its `UnnaturalDarkness`
+  condition are live too.
+- **No active mod provides an underwater or ocean-floor map.** GravTide would be
+  the only one.
+
+## Recommendation
+
+**ADOPT, `[v2]`, subject to one check: does our world have ocean tiles.**
+
+It is 1.6, its dependency is already in the stack, it declares no conflicts, and
+it delivers a designed-and-built version of a concept we would otherwise spend
+months approximating. **The honest risk is scope**: it is a large mod with its
+own physics, and adopting it means accepting its model of the deep rather than
+authoring ours. **Given that its model already matches the rules I wrote
+independently, that is a trade worth making.**
