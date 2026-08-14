@@ -246,10 +246,35 @@ Turning the mapgen library into a Jawa decor set is **one `PatchOperationAdd` pe
 adding `<designationCategory>` and a `<costList>` (steel + slag, which is what a Jawa would
 pay). No new art, no C#.
 
-⚠️ **Not verified: whether each of these defs is actually placeable once given a category.**
-Some mapgen props may lack a `<building>` block, a blueprint, or a construction affordance,
-and will error or place strangely. This needs a bench test on ~5 representative defs before
-committing to 30. It does **not** need a game load — the rimbridge can spawn them live.
+**The approach has a working precedent already installed.** *Salvage Rubble*
+(`$WS/3529058623/Patches/RubblePilePatch.xml`) is patch-only and does exactly this shape of
+thing to a mapgen prop — it adds a `<costList>` and
+`<resourcesFractionWhenDeconstructed>` to vanilla `RubblePile`, with no new art. So
+patching economics onto the ruins kit is a known-good move, not a novel one.
+
+⚠️ **Two caveats, one of them sharp.**
+
+1. **Many of these are deliberately non-deconstructible.** The ruins kit has two abstract
+   parents (`Data/Core/Defs/ThingDefs_Buildings/Buildings_Ancient_Outdoors.xml:4-28`):
+   `AncientBuildingBase` sets `alwaysDeconstructible true`, but
+   `NonDeconstructibleAncientBuildingBase` sets `deconstructible false`. **A prop on the
+   second parent, once placed, can only be removed by blowing it up.** That is a fine
+   property for the dead prong and a terrible one for a decor item you might reposition.
+   Check the parent before adding any def to the buildable list. Affected among my picks:
+   the crane set, `AncientForklift`, `AncientIndustrialTruck`, `AncientOpenContainer`,
+   the container sizes, `AncientChemtruck`, `AncientTunnelerHusk`/`Claw`,
+   `AncientMilitaryBarrier`.
+2. **Not verified: whether each def actually places once given a category.** Some mapgen
+   props may lack a blueprint or a construction affordance and will error or place
+   strangely. Bench-test ~5 representatives before committing to 30. This does **not** need
+   a game load — the rimbridge can spawn them live.
+
+Also worth knowing: **`RubblePile`** (Odyssey,
+`Things/Building/RubblePile`, parent `AncientSmallWalkableBuildingBase`) is a literal
+walkable pile of rubble, and the shipped **filth** layer already carries
+`Filth_RubbleBuilding`, `SlagRubble` and `SandbagRubble`
+(`Data/Core/Defs/ThingDefs_Misc/Filth_Various.xml`) — filth sticks to the floor, has no
+building footprint, and needs no def work at all to place.
 
 ---
 
@@ -288,7 +313,9 @@ Read what that buys:
   `pathCost 0`, `fillPercent 0`, `isEdifice false`, `clearBuildingArea false`. Pawns walk
   over it, you can build furniture on top of it, it never fights the layout.
 - **`CompColorable` + `paintable true`** — the player repaints it **in game, with no
-  reload**, in any of the **181 shipped `ColorDef`s**. One greyscale PNG becomes 181 looks.
+  reload**, in any shipped `ColorDef` — **181 in this campaign's live game** (81 from Core, 34
+  Ideology, 29 KotOR, 20 Odyssey; 92 of the 181 are `colorType Structure`). One greyscale PNG
+  becomes 181 looks.
 - **A new decal is EIGHT LINES of XML.** Verbatim shape from `Decals_Misc.xml:14-22`:
 
 ```xml
@@ -324,6 +351,44 @@ inventions; they are quoted:
 **Seven of nine already have a drawable glyph.** Two (Ta'Baa, Zizzik) are described as
 things that resist depiction, which is a fiction problem before it is an art problem — see
 §6.
+
+### 3.2b Three carriers, not one — and the vanilla one is a ritual focus
+
+The Outer Rim decal is not the only route, and for the **shrine-core specifically it may be
+the wrong one**. Three shipped carriers, all player-buildable, all walkable:
+
+| carrier | size | how the art is swapped | the reason to pick it |
+|---|---|---|---|
+| **`OuterRim_DecalBase`** (Outer Rim F&D) | 1–3 cells | one `texPath` per def | cheapest per sigil, paintable in game, 234 siblings already in the menu |
+| **`Ideogram`** (Ideology, vanilla) | 3×3 | **`ThingStyleDef`** — it sets `<canEditAnyStyle>true</canEditAnyStyle>` | **it is `<isAltar>true</isAltar>` with `buildingTags: RitualFocus`** — the art is wired to the faith, not merely near it |
+| **`BuildingFloorCoveringBase`** (Ideology) | 3×3 and 4×4 | `Graphic_Random` — **one def carries several variants** | `minifiedDef MinifiedThing` (the sigil can be *carried*, which suits a nomad clan), `Beauty 15/30`, `StyleDominance 30/40`, `isEdifice false` |
+
+`Ideogram`, verbatim from `Data/Ideology/Defs/ThingDefs_Buildings/Buildings_Ideo.xml:155-169`:
+
+```xml
+<defName>Ideogram</defName>
+<description>A large image drawn on the ground and reinforced with metal edges.
+             It is used as a focus for rituals.</description>
+<graphicData>
+  <graphicClass>Graphic_Single</graphicClass>
+  <color>(105,105,105)</color>
+  <texPath>Things/Building/Misc/Ideogram/IconChristian/IconChristianA</texPath>
+  <drawSize>(3,3)</drawSize>
+</graphicData>
+<size>(3,3)</size>
+<costList><Steel>50</Steel></costList>
+```
+
+That description — _"a large image drawn on the ground… a focus for rituals"_ — is the
+shrine-core, written by Ludeon. **Recommendation: `Ideogram` + `ThingStyleDef`s for the
+shrine-core and the seven pod altars; `OuterRim_DecalBase` for the cheap scattered
+marks — airlock tallies, aisle glyphs, graffiti.** The two are complementary, not rivals:
+one is a ritual object, the other is a sticker.
+
+⚠️ Not yet checked: whether The Salvation's ideoligion can be given a `StyleCategoryDef`
+carrying our `ThingStyleDef`s without disturbing the fixed-ideology rule
+(`jawa_xenotype_and_religion.md` §2.0 — no fluid development). Styles are cosmetic and
+should be safe, but that is PROJECT's call, not mine.
 
 ### 3.3 Where the sigils go, from the deck plan
 
@@ -418,6 +483,43 @@ The scales in play here, at max zoom (64 px per cell) and at ordinary play zoom 
 - **Detail on the deck specifically.** The deck is the most-repeated, smallest-drawn surface
   on the ship. It is the *worst* place to spend pixels and the *best* place to spend paint.
 
+### 4.2b `ScatterableDef` — the engine already stamps random non-tiling wear on terrain
+
+This is the one mechanism I nearly missed, and it is the best answer to "how do you make a
+deck look old without drawing a deck".
+
+`TerrainDef.scatterType` is matched against `ScatterableDef.scatterType`, and
+`Verse.SectionLayer_TerrainScatter` then stamps that scatterable's texture over cells of
+that terrain **at a random size and position**. From
+`Data/Core/Defs/Misc/ScatterableDefs/Scatterables.xml`:
+
+```xml
+<ScatterableDef Abstract="True" Name="StoneRoot">
+  <minSize>0.4</minSize><maxSize>1.0</maxSize><scatterType>Rocky</scatterType>
+</ScatterableDef>
+<ScatterableDef Abstract="True" Name="SmearRoot">
+  <minSize>1.5</minSize><maxSize>7.0</maxSize>          <!-- SEVEN cells across -->
+</ScatterableDef>
+```
+
+Odyssey's own `MicrocraterA/B/C` add `<scatterChance>0.3</scatterChance>` and
+`<placeUnderNaturalRoofs>false</placeUnderNaturalRoofs>`.
+
+**`maxSize 7.0` proves the engine already draws a single non-tiling terrain overlay up to
+seven cells wide.** Three or four rust-stain / scorch / oil-smear PNGs on a
+`Jawa_DeckWear` scatter type would break up the deck's repetition **automatically, randomly,
+across the whole ship**, from a handful of small textures — and §4.1 says repetition-breaking
+is one of the few age signals that survives every zoom.
+
+⚠️ **Two things must be true and only one is confirmed.** Confirmed: `Substructure`
+(`Data/Odyssey/Defs/TerrainDefs/Terrain_Foundation.xml:5-13`) declares `isPaintable` and
+**no `scatterType`** — so it would have to be patched in. **Unconfirmed:** whether
+`SectionLayer_TerrainScatter` runs over a foundation terrain at all, or only over the
+natural terrains that ship with a `scatterType` (`Gravel`, `Sand`, `PackedDirt`,
+`MossyTerrain`, `Riverbank`, `MarshyTerrain`, `GraySurface`). That is a C# behaviour I
+cannot settle from defs. **Test it before drawing anything for it** — one patch and one
+placeholder PNG answers it, and the bridge can place substructure without a reload.
+
 ### 4.3 The three age signals I would actually use, in order
 
 1. **Warm-dark tint** (free) — the single largest perceived change per unit of effort.
@@ -437,12 +539,13 @@ The scales in play here, at max zoom (64 px per cell) and at ordinary play zoom 
 | # | do this | effort | why it ranks here |
 |---:|---|---|---|
 | **1** | **Paint the deck.** `Substructure` is `isPaintable: true`. Pick `Structure_UmberBurnt` or `Structure_BrownDirt` and paint the whole ship. | **zero** — in game, no mod, no patch, no reload | Biggest surface on the ship, largest colour change available, and it costs one in-game action. Nothing else has this ratio. |
-| **2** | **Nine god-sigil decals** on the existing `OuterRim_DecalBase`. | 9 PNGs + ~80 lines XML | This is the "reward a closer look" ask, answered exactly. The system, the placement doctrine and the iconography are all already written; only the pixels are missing. Paintable in game, so one draw serves every colour. |
+| **2** | **Nine god-sigils** — `Ideogram` + `ThingStyleDef` for the shrine-core and the seven pod altars, `OuterRim_DecalBase` for scattered marks (§3.2b). | 9 PNGs + ~80 lines XML | This is the "reward a closer look" ask, answered exactly. The system, the placement doctrine and the iconography are all already written; only the pixels are missing. `Ideogram` is `isAltar` + `RitualFocus`, so the art is wired to the faith rather than merely near it. |
 | **3** | **Tint patch on the gravship set** — one `<color>` node per def across the ~38 core platform/fuel/vacuum defs, plus the two KotOR hull overlays with solved `<color>`/`<colorTwo>`. | one XML file, zero pixels | Turns the whole ship warm and corroded in a single patch. Values already solved in §1.3–1.4. Skip `AncientBlastDoor`. |
 | **4** | **Unlock ~20 `Ancient*` wreck props** with a `PatchOperationAdd` of `designationCategory` + `costList`. | one XML file + a 5-def bench test | Converts ~170 pieces of shipped, pre-rusted art from invisible to placeable. The single largest art library gain available, and we do not draw any of it. Ranked below 3 only because it needs verification first. |
 | **5** | **Subscaffold the dead prong.** Lay `VGE_GravshipSubscaffold` instead of `Substructure` on the un-repaired wing. | zero — in game | Delivers `ship_distinctive_features.md` §4 with a build choice. Exposed ribbing reads as a wound at every zoom. |
 | **6** | **Differentiate the Falcon arm's `<color>`** from the ring hull. | ~6 lines | §3 "asymmetry as identity", made legible from orbit. Cheap, and it is the one thing that makes the ship read as *assembled* rather than merely dirty. |
-| **7** | **Hand-drawn damage overlays** — torn plating, blown panels as placeable props. | real art, several pieces | Only worth starting after 1–6 land, because 1–6 may make it unnecessary. |
+| **7** | **Deck-wear scatter** — patch a `scatterType` onto `Substructure` + 3–4 rust/scorch/oil-smear `ScatterableDef` textures (§4.2b). | 1 patch + 1 placeholder PNG **to test**; 3–4 small PNGs if it works | Potentially the best age-per-pixel in the document — random non-tiling stains up to 7 cells wide, across the whole ship, automatically. Ranked here **only** because the C# may not run scatter over a foundation terrain. **Cheap to falsify: do the test before the art.** If it passes, this jumps to #3. |
+| **8** | **Hand-drawn damage overlays** — torn plating, blown panels as placeable props. | real art, several pieces | Only worth starting after 1–7 land, because 1–7 may make it unnecessary. |
 
 ---
 
@@ -453,10 +556,16 @@ The scales in play here, at max zoom (64 px per cell) and at ordinary play zoom 
   see what you are matching without extracting a Unity bundle, so you would be drawing
   blind against art the player already knows. And **VGE has already retextured that set**,
   so we would be overwriting a maintained mod's work with a worse guess. Tint it instead.
-- **I would not author custom floor `TerrainDef`s for iconography.** A terrain is a tiling
-  atlas with edge cases; it cannot carry a one-off symbol, cannot be repositioned, and
-  cannot be repainted in game. The decal system does all three and costs 8 lines. This was
-  the obvious first idea and it is the wrong one.
+- **I would not author custom floor `TerrainDef`s for iconography — this is now proven, not
+  argued.** A swept census of Core + all five DLCs + **all 1,242 workshop mods** found
+  **zero** `<TerrainDef Class="...">` subclasses anywhere, and `TerrainDef` has **no
+  `graphicClass`, no `graphicData` and no `drawSize` field at all** — the graphic class is
+  hard-wired to `Verse.Graphic_Terrain`. **A terrain is always one tiling square texture.
+  It is structurally incapable of carrying a one-off symbol.** The workaround some style
+  packs use (ATH Norse splits a 3×3 rite frame into nine separate single-cell TerrainDefs
+  with nine designators, at 2048² each) is nine defs and nine textures to do what one
+  `Ideogram` does with one. This was the obvious first idea and it is the wrong one twice
+  over.
 - **I would not draw rust speckle, panel lines or hairline cracks** on anything that draws
   at 1 cell. §4.2: they average to a flat tone at 22 px. This is the trap-#45 failure mode
   applied before the work rather than after.
@@ -522,6 +631,7 @@ These are places where I would be inventing lore if I proceeded, so I have stopp
 - Shipped XML: `C:\Program Files (x86)\Steam\steamapps\common\RimWorld\Data\Odyssey\Defs\` and `...\Data\Core\Defs\`.
 - Workshop mods: `C:\Program Files (x86)\Steam\steamapps\workshop\content\294100\` — `3254370945` (KotOR Resources and Materials), `3609835606` (Vanilla Gravship Expanded Ch.1), `3578515873` (Gravship Crashes), `2919553599` (Outer Rim Furniture & Decor). All four verified ACTIVE against `ModsConfig.xml` by packageId.
 - Scripts, committed: `D:\Luke\dev\Rimworld\design\Jawa\art\scan_graphics.py`, `D:\Luke\dev\Rimworld\design\Jawa\art\preview_gravship_rust.py`.
+- Terrain/wreckage census (fan-out subagent, 2026-08-13): swept Core + 5 DLCs + all 1,242 workshop mods. Key negatives established there: **zero** `TerrainDef` subclasses anywhere, `TerrainDef` has no `graphicClass`/`graphicData`/`drawSize` field, and **zero** `Ancient*` defs carry a `designationCategory`.
 - Fiction followed, not invented: `D:\Luke\dev\Rimworld\design\Jawa\worldbuilding\jawa_xenotype_and_religion.md` §2.0b/§2.0c/§2.0d, `D:\Luke\dev\Rimworld\design\Jawa\worldbuilding\ship_distinctive_features.md` §1/§3/§4/§5/§6/§7.
 - Method precedent: `D:\Luke\dev\Rimworld\src\Jawa\DesertVehicleReskin\Source\preview_tint.py` and `...\Patches\DogSledTint_Brown.xml`.
 - Scale discipline: `D:\Luke\dev\Rimworld\skills\rimworld-modding\references\traps-art.md` #45.
