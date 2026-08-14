@@ -65,8 +65,10 @@ a stale one is confusing yourself about which map a result came from (§3).
 **A quicktest finding and a campaign finding are different claims.** Report which
 one you were on, every time, or the next reader cannot tell what you established.
 
-🔴 **RETRACTED 2026-08-13 — nothing is untouchable.** This section said the
-campaign save must not be tested on. **Owner's standing ruling overrides it:**
+⏸️ **SUSPENDED 2026-08-13 — not repealed. It comes back when play starts.**
+This section said the campaign save must not be tested on. That protection is
+correct *for a campaign being played* and premature now — nothing is being
+played yet, so it costs tests and buys nothing. **Owner's standing ruling:**
 
 > *"NO AGENT SHOULD TRY TO PRESERVE MAP CONTENTS OR CAMPAIGN INTEGRITY AT THIS
 > TIME OR ANY TIME IN THE FUTURE. YOU WILL BE INFORMED WHEN WE GET TO THAT
@@ -74,6 +76,15 @@ campaign save must not be tested on. **Owner's standing ruling overrides it:**
 
 **Test destructively. Wipe, overwrite, regenerate.** Do not defer a test, hoard
 one as a scarce-session item, or ask permission, to protect a map.
+
+🔔 **THE TRIGGER THAT BRINGS IT BACK:** the owner says the play phase has begun.
+**Nobody else may reinstate it, and nobody should ask.** When that word comes,
+this section reverts to *"the campaign save is untouchable — do not test on it"*
+and every seat is told. **Until then, test destructively.**
+
+⚠️ **This is written as a suspension rather than a deletion on purpose.** A rule
+that is simply erased does not come back when the situation that justified it
+returns — it is forgotten, and rediscovered by losing a colony.
 
 ⚙️ **Saying which map a result came from still stands** — that is evidence
 hygiene, not preservation. A quicktest finding and a campaign finding are

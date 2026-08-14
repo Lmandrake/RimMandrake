@@ -116,7 +116,7 @@ map they could have made themselves.**
 - ⭐ **This is what "blocked on a map" almost never means.** If your batch needs a
   map and there is no map, **start one** — that is a 30-second call, not a
   25-minute load. `no_game` blocks nothing that a quicktest cannot unblock.
-- ⚠️ **RETRACTED 2026-08-13 — there is no protected map.** Owner: *"NO AGENT
+- ⏸️ **SUSPENDED 2026-08-13, not repealed — no protected map FOR NOW.** Owner: *"NO AGENT
   SHOULD TRY TO PRESERVE MAP CONTENTS OR CAMPAIGN INTEGRITY AT THIS TIME OR ANY
   TIME IN THE FUTURE. YOU WILL BE INFORMED WHEN WE GET TO THAT PHASE. STOP ASKING
   FOR NOW."* Test destructively on anything. **Still say which map a result came
