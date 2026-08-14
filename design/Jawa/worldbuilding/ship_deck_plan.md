@@ -500,3 +500,53 @@ a clan on a tile they have otherwise exhausted.
 
 ⛔ **No hard gate, no comp, no companion-DLL dependency.** A permanent maintenance
 cost is not worth buying something geometry provides for free.
+
+#### ⭐ RULED — the fragment on the ground is the CARBONITE BAY
+
+**CREATE asked which fragment stayed behind. It is the passenger hold — and the
+choice writes three other things for free.**
+
+**The ship is `LifeDawn`, a first-wave colony ship** (`faction_roster_v2.md:370`).
+So the fragment left on the sand should be **the part that made it a colony ship**:
+the carbonite bay, where the colonists were carried.
+
+> **The clan flies the vessel. What stayed on the ground is what the vessel was
+> FOR.**
+
+**Why this one and not a stern or a flank:**
+
+1. ⭐ **The breach is not damage — it is THEFT, and that is better.** The roster
+   already says the Hutts had the hulk *"stripped and slowly scrapped"* in their
+   yard. **The scrappers cut into the passenger hold to take the cargo.** So the
+   torn edge CREATE wants is not a crash scar we have to justify; it is the hole
+   the previous thieves made, and the clan walks out of it every morning. **The
+   Jawas are the second set of scavengers on this wreck.**
+2. ⭐ **Recognisable silhouette, which was CREATE's third criterion.** Rows of
+   carbonite slabs read instantly and read as nothing else. A stern section is
+   anonymous; a bay of upright slabs is not.
+3. **It interleaves naturally.** Slab racks, deck, gaps, more racks — the motif
+   breaks itself up, so the broken-floor terrain never becomes a solid field of
+   wallpaper.
+4. **Carbonite is already a project concept** (`design/Jawa/carbonite_trophy_mod.md`)
+   and the deck plan already names a carbonite bay at stage 7.
+
+### 🔴 The slabs are mostly empty. A few are not.
+
+**The Hutts took the ones worth taking. What is left is what nobody wanted.**
+
+- **Mostly empty racks** — the bay was already picked over before the Jawas got
+  here. Bleak, and it explains why the clan could claim it at all.
+- ⭐ **A few slabs still occupied.** Not a system, not v1 — **a question standing
+  in the player's base from the first hour.** Somebody is still in there. The
+  clan can leave them, sell them, or eventually wake them.
+
+**That is the single best thing this fragment buys**: the starting map ships with
+an unresolved moral object in it, at zero mechanical cost, and it costs nothing
+to ignore. A player who never touches it still walks past it every day.
+
+⚠️ **Nothing about the occupied slabs is v1.** They are set dressing until
+someone builds them. **Do not scope a wake-up quest to make the image work** —
+the image works because the question is unanswered.
+
+**Crop guidance for CREATE:** ≤1,200 cells, breach facing the colony, slab rows
+running across the fragment so the broken deck shows between them.
