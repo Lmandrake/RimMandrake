@@ -51,3 +51,29 @@ file. One line, with the hash — `git show <hash>` has the full story._
 | 2026-08-13 | Did the last load consume OPS's O5? | Owner does not recall → **treat as still standing**; three signatures are cheap, a missed one costs a load | — |
 | 2026-08-13 | Space Tower dependency direction | **VISION gates CREATE**, as filed. Still `[v2]` | — |
 | 2026-08-13 | Name the gravship pursuer | **Question dissolved.** No Mechanoids needed, so no Imperial Droid Army exists. The **Galactic Empire** pursues — stormtroopers + combat droids + lightsaber Sith | — |
+
+## Drained out of `TODO.md`, 2026-08-13 (995 lines → a pointer stub)
+
+`TODO.md`'s own closed table, moved verbatim so the hashes stay findable.
+
+| item | outcome | commit |
+|---|---|---|
+| 3a. Do symlinked skills get discovered? | **Yes.** Layout stays; the directories fallback is dead. | `0ee33f6` |
+| 3c. `src/Jawa/README.md` said four mods | Six. Corrected. | — |
+| 5. Docs instructed the call that livelocks the game | All five instances **replaced**, not just warned. | `0b44a1c` |
+| 8. Companion build output untracked | Tracked; false rationale removed. | — |
+| 3b2. rimbridge traps described its own size | Fixed, then the **fix decayed too** — "short" → "It is 800 lines" at 1,127. Number removed, not corrected. | `b267fab` `297f19d` |
+| 3b3. `savemap.py` save-write gotchas | `paint()` no longer orphans `underGrid` (measured 829 buried cells; tested 4/4 incl. write+reload). **`fogGrid` deliberately NOT fixed** — `skills/rimworld-savegame/SKILL.md` §6. | `cccfeb5` `914eecd` |
+| 10. `refresh.py` interpreter/path failures | **Both halves fixed.** `D_CONFIG`/`D_DUMP` are candidate lists via `_first_existing`; `run()` now prints `FAILED (exit N)` and `do_offline` refuses to stamp on failure. **Verified under WSL `python` — clean run, exit 0.** | `29c89f0` |
+
+And the sections that were retired with the file:
+
+| item | outcome | commit |
+|---|---|---|
+| §0 faction roster, Stages 1–2 | done; the evidence is `design/Jawa/worldbuilding/faction_engine_gap_audit.md`. Stages 3–4 migrated to `queue/VISION.md` **V9** `[v2]` | — |
+| §9 `validate_patch.py` "matches N nodes IN ONE MOD" | reproduction record closed — it is a **mode confusion, not a validator bug**; `--all-versions` has no load set, so ⛔ do NOT "fix" the walk. The wording fix alone survives, at CREATE, `[v2]` | — |
+| §13 Mythological Creatures! removal | removed, 573 active, fingerprint `87050b782f95012f`. Its own prediction was **wrong**: the clean exit left `ModsConfig.xml` untouched; RimSort reconciled it ~90 s later | — |
+| §15 graphics protocol premise | replaced; the per-script table and warning kept verbatim, venv at `~/.venvs/rimworld` | `c585929` |
+| §16 `refresh.py --patches` validated against NOTHING under WSL | **fixed and re-verified in the code** — refuses to validate when any input is absent, uses `_GP.WORKSHOP/LOCAL_MODS/GAME_DATA`, and `and ok`s the validator's exit code. ⚠️ `queue/OPS.md` **O1** is stale-open against this | — |
+| §17 Space Tower | ruled and answered twice — `queue/CREATE.md` **C2** KEEP unconditionally, `queue/VISION.md` **V11** ruled in, VISION gates CREATE. The measured file survey does not need re-running | — |
+| §22 "RimWorld rewrites `ModsConfig.xml` on exit" is FALSE | 5 of 6 rows corrected, and the seven fix mods verified **present** in `ModsConfig.xml`. Only `design/Jawa/mods/forbidden_mods.md:171` survives, at OPS, `[v2]` | `a43b610` |
