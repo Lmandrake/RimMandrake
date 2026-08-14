@@ -43,38 +43,34 @@ its own eyes on a pawn FA is not drawing.
 
 ---
 
-## 🖼️ Three typo'd filenames, repaired by shipping the same bytes at the right name
+## 🖼️ MOVED OUT 2026-08-13 — the three typo'd-filename repairs no longer live here
 
-_Added 2026-08-12 by WORLD._
+_Added 2026-08-12 by WORLD, removed 2026-08-13 by CREATE._
 
-Three textures in other people's mods are **misnamed**, so the engine looks for a
-file that does not exist and the pawn/mech renders its **south** art while facing
-north. None of this can ever appear in a log: `Failed to find any textures at`
-fires only when **every** direction is missing, and here two of three are fine.
+This mod used to ship three loose texture overrides repairing misnamed files in
+other people's mods. They are **gone from here** and now ship in their own
+per-donor fix mods, by the owner's ruling that an art fix belongs in one
+independently uploadable mod per donor:
 
-| shipped as | copied verbatim from | in |
+| the file | now shipped by | donor |
 |---|---|---|
-| `Textures/Things/Pawns/Mechanoid/Astronaut/MechAncient_Astronaut_north.png` | `MechAncient_Astrronaut_north.png` (double R) | Vanilla Gravship Expanded – Ch.1 |
-| `Textures/Things/Pawns/Mechanoid/Astronaut/Allegiance_Mech_Astronaut_north.png` | `Allegiance_Mech_Astrronaut_north.png` (double R) | same |
-| `Textures/Pawn/CenterFrill/CenterFrill8_north.png` | `CenterFrill8_north-.png` (trailing hyphen) | Vanilla Races Expanded – Saurid |
+| `Textures/Things/Pawns/Mechanoid/Astronaut/MechAncient_Astronaut_north.png` | `mandrake.gravshipastronautfix` | Vanilla Gravship Expanded – Ch.1 |
+| `Textures/Things/Pawns/Mechanoid/Astronaut/Allegiance_Mech_Astronaut_north.png` | same | same |
+| `Textures/Pawn/CenterFrill/CenterFrill8_north.png` | `mandrake.sauridfrillfix` | Vanilla Races Expanded – Saurid |
 
-**Verified, not assumed.** The Astronaut def asks for the *correct* spelling —
-`<texPath>Things/Pawns/Mechanoid/Astronaut/MechAncient_Astronaut</texPath>` and
-`<maskPath>…/Allegiance_Mech_Astronaut</maskPath>`, `graphicClass Graphic_Multi`,
-in `3609835606/1.6/Mods/Biotech/Defs/ThingDefs_RacesMechanoids/Races_Astronaut.xml:79`
-— while the file on disk carries the typo. The correctly-spelled `_east` and
-`_south` sit in the same folder, which is what proves the intended stem. For the
-Saurid frill, `CenterFrill7` has a complete north/east/south set and only `8` is
-malformed.
+🔴 **Do not re-add them.** Both mods were enabled in `ModsConfig.xml` while this
+mod still carried its own copies, and **`mandrake.jawa.patches` sits below both**
+in the load order — so this mod's copy was winning, and the fix mods were
+inert. Two loose files at one texture path are resolved by **load order, not by
+intent**, and a texture that loses to another texture produces **no log line at
+all**. The README's old closing line said these were "trivially movable if the
+owner would rather they lived in a dedicated override mod". The owner did.
 
-⚠️ **Check `visibleFacing` before ever calling a missing direction a bug.** The
-Falleen ridged-spine "bug" was the engine correctly not drawing a South texture
-the gene never asked for. These three are different: the def asks, and the art
-exists under a name one keystroke off.
+The reasoning that justified the repair is unchanged and now lives in each fix
+mod's own `About.xml`: the def asks for the correct spelling, the correctly
+spelled `_east` and `_south` sit beside the typo'd `_north`, and the bytes are
+copied verbatim so not one pixel changes.
 
-**Why this is repair and not origination:** the bytes are copied verbatim, so not
-one pixel changes. CREATE declined these for exactly that reason. Placed here
-following the `jawaeyes_glow` precedent — this mod already ships a loose texture
-override and loads last, so `ContentFinder` resolves each direction independently
-and picks these up. **Trivially movable** if the owner would rather they lived in
-a dedicated override mod; nothing references them by mod name.
+⚠️ **The surviving lesson, which is not about these files:** check `visibleFacing`
+before ever calling a missing direction a bug. The Falleen ridged-spine "bug" was
+the engine correctly declining to draw a South texture the gene never asked for.
