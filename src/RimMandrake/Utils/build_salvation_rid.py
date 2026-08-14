@@ -23,6 +23,7 @@ import argparse
 import re
 import shutil
 import sys
+import zlib
 from pathlib import Path
 
 IDEOS = Path(
@@ -103,10 +104,74 @@ RELICS_TO_CUT = ["Trade-Hood", "Endcrux"]
 # The surviving relic keeps a generator name; the lore gives it a real one.
 RELIC_RENAME = ("Scavenging Relic", "The Founding Ion Blaster")
 
-# Precept swaps land here once the lore sweep reports. Each is
-# (issue_label, old_def, new_def) and is applied by locating the <li> whose
-# <def> matches old_def and rewriting only that one line.
-PRECEPT_SWAPS: list[tuple[str, str, str]] = []
+# Precept swaps. Each is (issue_label, old_def, new_def), applied by rewriting
+# the single <def> line of the matching <li>. Every replacement was checked in
+# the live dump on 2026-08-14: all are `RimWorld.Precept` (no extra fields to
+# author), all have empty `requiredMemes`, and none of their `conflictingMemes`
+# is in this ideo's set.
+PRECEPT_SWAPS: list[tuple[str, str, str]] = [
+    # STRONG. Slavery is load-bearing lore (:427 "core, not optional") but the
+    # vanilla Slavery precept covers humans, and in this stack nearly every
+    # captive is an alien - so the doctrine was landing on almost nobody.
+    ("alien slavery", "HAR_AlienSlavery_Acceptable", "HAR_AlienSlavery_Honorable"),
+    # STRONG. Cannibalism_Horrible was already set for humans while eating
+    # aliens sat neutral - half the taboo unenforced, and the bigger half.
+    ("eating aliens", "HAR_EatingAliens_Acceptable", "HAR_EatingAliens_Abhorrent"),
+    # STRONG. The owner is adding the AM_Fertility meme; this is the precept
+    # that gives it teeth (Fertility +0.20). Without it the meme is decorative.
+    ("fertility", "AM_FertilityIssue_Normal", "AM_FertilityIssue_Increased"),
+    # MODERATE. The gear triad's third axis - "proud of humble gear, indifferent
+    # to provenance, COMPULSIVE about condition" (:388). Condition was the one
+    # axis with no bite.
+    ("tattered apparel", "VME_TatteredApparel_Disapproved", "VME_TatteredApparel_Abhorrent"),
+    # MODERATE. "walk, burrow, pry, carry, flee, endure" (:335). Mood-only, so
+    # it does not violate the no-work-multiplier pillar.
+    ("dumb labor", "VME_DumbLabor_Indifferent", "VME_DumbLabor_Exalted"),
+]
+
+# Precepts ADDED on issues the ideo held no position on at all. This is where
+# the named doctrines were missing - each one below is a lore line that had no
+# mechanical existence in the file.
+#
+# `name` is the IssueDef's own label, read from the dump, because that is what
+# the .rid stores and what the UI shows. IDs are minted above the file's current
+# maximum; seeds are derived from the defName so a re-run is byte-identical.
+PRECEPT_ADDITIONS = [
+    # STRONG. ":324 The clan sleeps as one body; to sleep alone is to be already
+    # exiled." The doc flags this "add this precept immediately". Note the
+    # vanilla Barracks_Preferred is ILLEGAL here (requires the Collectivist
+    # meme); the Alpha Memes one has no meme requirement.
+    dict(name="barracks", defName="AM_Barracks_Preferred"),
+    # STRONG. The light-taboo (:216) - to make a light in the dark is to do
+    # Sh'kaar's work.
+    dict(name="lighting", defName="Darklight_Preferred"),
+    # STRONG. ":126 ambush from cover and darkness." Carries no comps but four
+    # statOffsets: +0.25 accuracy in darkness, -0.20 in light.
+    dict(name="combat in darkness", defName="DarknessCombat_Preferred"),
+    # STRONG, and deliberately the "distance" position, not the melee one.
+    dict(name="combat prowess", defName="AM_CombatProwess_Increased"),
+    # STRONG. ":126 to fight hand-to-hand is to be dragged out of cover, into
+    # the open, seen and gripped - the impious way to fight." Melee/Ranged is a
+    # legal axis: WeaponClassPairDef `MeleeRanged` ships, and both
+    # WeaponClassDefs exist.
+    dict(
+        name="weapons",
+        defName="NobleDespisedWeapons",
+        cls="Precept_Weapon",
+        extra=[("noble", "Ranged"), ("despised", "Melee")],
+    ),
+    # STRONG. The Never-Nudes (:126, :132 apparel-always) and the hooded look
+    # (:360). `_Subordinate` so it does not fight armour; `_Strong` for the
+    # full mood. Also makes members ARRIVE wearing it.
+    # ⚠️ OWNER: `guy762_JawaHood` ("hood, heavy") is also live and is literally
+    # named for the species. One word to change if you prefer it.
+    dict(
+        name="apparel desire",
+        defName="ApparelDesired_Strong_Subordinate",
+        cls="Precept_Apparel",
+        extra=[("apparelDef", "OuterRim_DesertHood")],
+    ),
+]
 
 
 def fail(msg: str) -> None:
@@ -197,6 +262,54 @@ def swap_precepts(text: str, swaps) -> tuple[str, list[str]]:
     return text, log
 
 
+def add_precepts(text: str, additions) -> tuple[str, list[str]]:
+    """Append new <li> precept blocks just before </precepts>.
+
+    A precept is only safe to hand-author when its `preceptClass` needs no
+    generated content. Every entry here was checked against the live dump and
+    against a real save's serialization, so the shapes below are copied, not
+    guessed.
+    """
+    log = []
+    used = {int(i) for i in re.findall(r"<ID>(\d+)</ID>", text)}
+    next_id = max(used) + 1
+    close = "\t\t</precepts>\n"
+    if text.count(close) != 1:
+        fail("</precepts> is not unique")
+
+    blocks = []
+    for a in additions:
+        if f"<def>{a['defName']}</def>" in text:
+            log.append(f"  {a['defName']}: already present, skipped")
+            continue
+        pid = next_id
+        next_id += 1
+        # Deterministic seed: the game only uses it to pick generated flavour,
+        # and a stable value keeps re-runs byte-identical. crc32, NOT hash() -
+        # Python randomises string hashing per process, which would make every
+        # run produce a different file for no reason.
+        seed = zlib.crc32(a["defName"].encode()) - 2_147_483_648
+        cls = f' Class="{a["cls"]}"' if a.get("cls") else ""
+        b = [
+            f"\t\t\t<li{cls}>\n",
+            f"\t\t\t\t<name>{a['name']}</name>\n",
+            f"\t\t\t\t<def>{a['defName']}</def>\n",
+            f"\t\t\t\t<ID>{pid}</ID>\n",
+            f"\t\t\t\t<randomSeed>{seed}</randomSeed>\n",
+            "\t\t\t\t<usesDefiniteArticle>True</usesDefiniteArticle>\n",
+        ]
+        for k, v in a.get("extra", []):
+            b.append(f"\t\t\t\t<{k}>{v}</{k}>\n")
+        b.append("\t\t\t</li>\n")
+        blocks.append("".join(b))
+        detail = " ".join(f"{k}={v}" for k, v in a.get("extra", []))
+        log.append(f"  +{a['defName']} (ID {pid}){' ' + detail if detail else ''}")
+
+    if blocks:
+        text = text.replace(close, "".join(blocks) + close, 1)
+    return text, log
+
+
 def refresh_symbols(text: str) -> tuple[str, list[str]]:
     """usedSymbols is the ledger of strings the generator already consumed.
 
@@ -251,7 +364,11 @@ def main() -> None:
 
     if PRECEPT_SWAPS:
         text, log = swap_precepts(text, PRECEPT_SWAPS)
-        report += ["precepts:"] + log
+        report += ["precepts changed:"] + log
+
+    if PRECEPT_ADDITIONS:
+        text, log = add_precepts(text, PRECEPT_ADDITIONS)
+        report += ["precepts added:"] + log
 
     text, log = refresh_symbols(text)
     report += ["symbols:"] + log
