@@ -135,6 +135,18 @@ So when a debugging world is being thrown away, delete the saves **and** the
 screenshots **after the game is live**, not after it exits. **Do not disable Steam
 Cloud** — that is no longer the fix and nobody asked for it.
 
+🔴 **A post-`rm` count is NOT verification. Say "deleted, UNVERIFIED".** `Saves/`
+read empty last time too, and Cloud restored all 26 with original mtimes at the next
+launch. **The only meaningful check is a count taken AFTER the game next starts** —
+until then the ledger says *deleted, unverified*, never *gone*.
+
+⚠️ **And check the delete actually deleted.** A compound `rm` with an unmatched glob
+removes **nothing** under zsh — `nomatch` aborts the whole command, so
+`rm -f a/*.rws b/*.bak c/*.png` with no `.bak` present deletes zero files and prints
+one warning that reads like a nit. **Use `find … -delete`, or print before/after
+counts.** Measured 2026-08-14; it nearly produced a "deleted 734 MB" report that was
+fiction.
+
 🔴 **This rule has an EXPIRY, and the expiry is part of it: it GOES the day the real
 campaign starts.** It exists only for throw-away debugging worlds. A standing
 "delete the saves" habit pointed at a live campaign is destructive, and a rule that
