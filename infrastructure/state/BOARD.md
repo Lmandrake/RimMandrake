@@ -16,9 +16,9 @@ open that is closed, so **close rows here in the same commit that closes them.**
 ---
 
 ## GAME
-state | menu
-note  | stack loaded, bridge answers, hasCurrentGame=false — BRIDGE measured
-bridge | BRIDGE
+state | LIVE
+note  | quicktest map, 32 pawns, Playing — BRIDGE measured (rule 1b met)
+bridge | BRIDGE  (taken)
 
 ## V1
 1 | Empire reskin | — | done
@@ -51,4 +51,4 @@ S3 | jawa/biome_probe | BRIDGE | wip
 ## OWNER
 10 | Is a DISCARDED measurement world permitted? | blocks v1 rows 2+7
 11 | StrandedQuest — enable or stay inert? | no deadline tonight
--- | Start a game? BRIDGE is at the menu awaiting your word | one call, ~30s
+-- | Real colony/worldgen — still YOURS to lift, sea unsolved | debug map is live, this is separate
