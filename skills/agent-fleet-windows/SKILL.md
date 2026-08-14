@@ -180,8 +180,10 @@ cat /sys/fs/cgroup/user.slice/user-*.slice/user@*.service/claude.slice/claude-se
 means **the unit did not install and only the per-seat bound is live** (§6).
 
 ⚠️ **Only NEW tabs are protected** — a running session cannot be moved into a
-cgroup retroactively. `C:\Users\Mandrake\.wslconfig` (`memory=36GB`,
-`swap=16GB`, `autoMemoryReclaim=gradual`) still **pends `wsl --shutdown`**.
+cgroup retroactively. `C:\Users\Mandrake\.wslconfig` (`memory=36GB`, `swap=16GB`,
+`autoMemoryReclaim=gradual`) **is now live** — MEASURED 2026-08-14, `free -g`
+reports 35 GiB total against the pre-change 31.7 GiB. **`free -g` is the check;
+editing that file pends a `wsl --shutdown` that kills every seat.**
 
 ### 🔴 The guard trap that would have defeated the whole thing silently
 
