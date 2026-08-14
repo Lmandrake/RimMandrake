@@ -2,7 +2,7 @@
 <Patch>
 
   <!--
-    Re-point the two Jawa pawn kinds at BTD_Jawa (+20 C) instead of
+    Re-point the two Jawa pawn kinds at MandrakeJawa (owner ruling 2026-08-14: it is the ONLY active Jawa xenotype) instead of
     OuterRim_Jawa (+10 C). Owner ruled; V1_SCOPE.md gate W2.
 
     🔴 THIS IS A WORLDGEN GATE, NOT A TUNING PATCH. xenotypeSet is read at PAWN
@@ -45,7 +45,7 @@
       <xpath>/Defs/PawnKindDef[defName="OuterRim_Jawa"]/xenotypeSet/xenotypeChances</xpath>
       <value>
         <xenotypeChances>
-          <BTD_Jawa>999</BTD_Jawa>
+          <MandrakeJawa>999</MandrakeJawa>
         </xenotypeChances>
       </value>
     </match>
@@ -57,7 +57,7 @@
       <xpath>/Defs/PawnKindDef[defName="OuterRim_JawaTribal"]/xenotypeSet/xenotypeChances</xpath>
       <value>
         <xenotypeChances>
-          <BTD_Jawa>999</BTD_Jawa>
+          <MandrakeJawa>999</MandrakeJawa>
         </xenotypeChances>
       </value>
     </match>

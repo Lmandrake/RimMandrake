@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ============================================================================
+  OnlyMandrakeJawa.xml                       Jawa_Patches · authored 2026-08-14
+  ============================================================================
+
+  OWNER'S RULING, 2026-08-14, verbatim: "the xenotype MandrakeJawa is the ONLY
+  Jawa xenotype active anymore."
+
+  THE THREE THAT ARE BEING STOOD DOWN, read from the live def dump 2026-08-14:
+      OuterRim_Jawa          Outer Rim - Galactic Diversity
+      guy762_xenotype_jawa   Star Wars Xenotypes
+      BTD_Jawa               [BTD] Xenotype REMIX: Star Wars
+
+  🔴 WHY THIS SUPPRESSES RATHER THAN DELETES
+  ==========================================
+  `tile_augmentation_catalogue.md` §5, standing: **never cull a spawned def.**
+  These three are referenced by PawnKindDefs, faction xenotype sets and namers
+  belonging to mods we do not own. Removing the defs would leave every one of
+  those references dangling, and a dangling xenotype reference is a red error at
+  best and a null pawn at worst. Setting the generation weights to zero achieves
+  the owner's intent — no new pawn is ever a Jawa of the wrong kind — while
+  leaving every existing reference resolvable.
+
+  ⚠️ WHAT THIS DOES NOT DO, deliberately:
+  - It does not retroactively change pawns already generated in a save. An
+    existing colony's Jawa keep whatever xenotype they were born with.
+  - It does not stop a modded PawnKindDef that names one of these xenotypes
+    EXPLICITLY in its own `xenotypeSet`. Those are hard references, not weighted
+    rolls. If one turns up in play, patch that PawnKindDef, not this file.
+  - `Jawa_Xeno_Gamorrean` is NOT touched. It is ours, it is a Gamorrean, and it
+    is not a Jawa xenotype despite the `Jawa_` prefix, which is our mod's
+    namespace and not a species claim.
+
+  Each operation is wrapped `MayRequire`-style with success="Always" so a mod
+  leaving the load order does not turn this file into a red error.
+  ============================================================================
+-->
+<Patch>
+
+  <!-- Outer Rim - Galactic Diversity -->
+  <Operation Class="PatchOperationSequence">
+    <success>Always</success>
+    <operations>
+      <li Class="PatchOperationAddOrReplace">
+        <xpath>Defs/XenotypeDef[defName="OuterRim_Jawa"]</xpath>
+        <value>
+          <factionlessGenerationWeight>0</factionlessGenerationWeight>
+        </value>
+      </li>
+      <li Class="PatchOperationAddOrReplace">
+        <xpath>Defs/XenotypeDef[defName="OuterRim_Jawa"]</xpath>
+        <value>
+          <canGenerateAsCombatant>false</canGenerateAsCombatant>
+        </value>
+      </li>
+    </operations>
+  </Operation>
+
+  <!-- Star Wars Xenotypes -->
+  <Operation Class="PatchOperationSequence">
+    <success>Always</success>
+    <operations>
+      <li Class="PatchOperationAddOrReplace">
+        <xpath>Defs/XenotypeDef[defName="guy762_xenotype_jawa"]</xpath>
+        <value>
+          <factionlessGenerationWeight>0</factionlessGenerationWeight>
+        </value>
+      </li>
+      <li Class="PatchOperationAddOrReplace">
+        <xpath>Defs/XenotypeDef[defName="guy762_xenotype_jawa"]</xpath>
+        <value>
+          <canGenerateAsCombatant>false</canGenerateAsCombatant>
+        </value>
+      </li>
+    </operations>
+  </Operation>
+
+  <!-- [BTD] Xenotype REMIX: Star Wars -->
+  <Operation Class="PatchOperationSequence">
+    <success>Always</success>
+    <operations>
+      <li Class="PatchOperationAddOrReplace">
+        <xpath>Defs/XenotypeDef[defName="BTD_Jawa"]</xpath>
+        <value>
+          <factionlessGenerationWeight>0</factionlessGenerationWeight>
+        </value>
+      </li>
+      <li Class="PatchOperationAddOrReplace">
+        <xpath>Defs/XenotypeDef[defName="BTD_Jawa"]</xpath>
+        <value>
+          <canGenerateAsCombatant>false</canGenerateAsCombatant>
+        </value>
+      </li>
+    </operations>
+  </Operation>
+
+</Patch>

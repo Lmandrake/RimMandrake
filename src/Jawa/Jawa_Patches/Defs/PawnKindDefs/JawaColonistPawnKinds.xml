@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ============================================================================
+  JawaColonistPawnKinds.xml                  Jawa_Patches · authored 2026-08-14
+  ============================================================================
+
+  OWNER'S REQUEST, 2026-08-14: "make a pawntype for the player colonists that is
+  MandrakeJawa xenotype and with The Salvation religion."
+
+  🔴 THE HALF THAT A PawnKindDef CANNOT DO, AND WHERE IT LIVES INSTEAD
+  ===================================================================
+  A `PawnKindDef` carries a XENOTYPE but it cannot carry an IDEOLIGION. There is
+  no ideo field on PawnKindDef in 1.6 — a pawn takes the ideo of the FACTION it
+  is generated into. So the request splits, and both halves are done:
+
+      xenotype  -> HERE, `xenotypeSet` below.
+      religion  -> the PLAYER's ideo is chosen at game start by loading
+                   `The Salvation.rid` in the ideoligion browser (committed at
+                   `src/Jawa/ideoligion/The Salvation.rid`);
+                   the INDIGENOUS tribes get it from their FactionDef, in
+                   `../FactionDefs/JawaTribes.xml`.
+
+  ⛔ Do not "fix" this by adding an ideo field to a PawnKindDef. It does not
+  exist, and XML that names a field the def does not have fails SILENTLY.
+
+  Two kinds ship here: the colonist proper, and a tribal variant for the
+  indigenous Jawa faction so its members are Jawa rather than baseliners.
+  ============================================================================
+-->
+<Defs>
+
+  <!-- The player's starting stock and anything the game generates as "one of
+       ours". Derived from the vanilla Colonist so it inherits the normal
+       apparel/weapon money and skill spread; only the xenotype is imposed. -->
+  <PawnKindDef ParentName="Colonist">
+    <defName>Jawa_Colonist</defName>
+    <label>Jawa scavenger</label>
+    <xenotypeSet>
+      <xenotypeChances>
+        <MandrakeJawa>1.0</MandrakeJawa>
+      </xenotypeChances>
+    </xenotypeSet>
+  </PawnKindDef>
+
+  <!-- The indigenous tribes' rank and file. Tribal parent, not Colonist, so
+       they arrive with neolithic-appropriate gear rather than colony kit. -->
+  <PawnKindDef ParentName="Tribal_Berserker">
+    <defName>Jawa_Tribal_Scavenger</defName>
+    <label>Jawa scrounger</label>
+    <xenotypeSet>
+      <xenotypeChances>
+        <MandrakeJawa>1.0</MandrakeJawa>
+      </xenotypeChances>
+    </xenotypeSet>
+  </PawnKindDef>
+
+  <PawnKindDef ParentName="Tribal_Archer">
+    <defName>Jawa_Tribal_Slinger</defName>
+    <label>Jawa slinger</label>
+    <xenotypeSet>
+      <xenotypeChances>
+        <MandrakeJawa>1.0</MandrakeJawa>
+      </xenotypeChances>
+    </xenotypeSet>
+  </PawnKindDef>
+
+  <PawnKindDef ParentName="Tribal_ChiefMelee">
+    <defName>Jawa_Tribal_Elder</defName>
+    <label>Jawa clan elder</label>
+    <xenotypeSet>
+      <xenotypeChances>
+        <MandrakeJawa>1.0</MandrakeJawa>
+      </xenotypeChances>
+    </xenotypeSet>
+  </PawnKindDef>
+
+</Defs>

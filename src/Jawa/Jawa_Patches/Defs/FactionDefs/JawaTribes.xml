@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ============================================================================
+  JawaTribes.xml                             Jawa_Patches · authored 2026-08-14
+  ============================================================================
+
+  OWNER'S RULING, 2026-08-14: The Salvation is the approved religion and is to
+  be "both our faction religion and that of the indigenous Jawa tribes."
+
+  🔴 WHAT TRANSFERS TO AN NPC FACTION, AND WHAT CANNOT
+  ====================================================
+  The player's ideo is a fully expanded runtime object loaded from
+  `The Salvation.rid` — 103 precepts, named rituals, named roles, one relic.
+  **A FactionDef cannot receive any of that.** The ideo block on a FactionDef is
+  a CONSTRAINT ON GENERATION, not an ideo: it takes `forcedMemes` and a name,
+  and the generator fills in the precepts itself. There is no field that accepts
+  a `.rid`, and `disallowedPrecepts` is a blacklist, not a whitelist.
+
+  ⇒ So "the same religion" means, and can only mean: **the same name, the same
+  memes, and therefore the same doctrinal shape.** The tribes will not carry the
+  Interment of Scrap, the Prime Trader or the Founding Ion Blaster. That is an
+  engine limit, not an omission — do not file it as a bug and do not try to
+  route around it with a patch.
+
+  MEMES are copied from the owner's approved `The Salvation.rid` as it stood on
+  2026-08-14, verbatim and in order:
+      AM_Structure_Scavenger (structure) · Trader · VME_Scrapper · VME_Trader · VME_Nomad
+
+  ⚠️ `VME_Nomad` is carried here ONLY because the owner's approved file carries
+  it. It is measured as hazardous — see the note in
+  `design/Jawa/worldbuilding/ideoligion/the_salvation_description.md`. If the
+  owner drops it from the player ideo, drop it here in the same commit or the
+  two religions silently diverge.
+  ============================================================================
+-->
+<Defs>
+
+  <FactionDef ParentName="FactionBase">
+    <defName>Jawa_IndigenousTribes</defName>
+    <label>Jawa tribes</label>
+    <description>Clans of the deep sand who never took a ship. They keep the same nine gods and the same ledger as the crew of the Kolyska, and they will trade with anyone who does not look down at them for long. What they cannot buy they scavenge; what they cannot scavenge they remember the location of, and sell.</description>
+    <pawnSingular>Jawa</pawnSingular>
+    <pawnsPlural>Jawa</pawnsPlural>
+    <categoryTag>Tribal</categoryTag>
+    <listOrderPriority>45</listOrderPriority>
+    <settlementGenerationWeight>1.0</settlementGenerationWeight>
+    <requiredCountAtGameStart>1</requiredCountAtGameStart>
+    <maxCountAtGameStart>2</maxCountAtGameStart>
+    <canMakeRandomly>true</canMakeRandomly>
+    <canSiege>false</canSiege>
+    <canStageAttacks>true</canStageAttacks>
+    <leaderTitle>Prime Trader</leaderTitle>
+    <naturalEnemy>false</naturalEnemy>
+    <permanentEnemy>false</permanentEnemy>
+    <techLevel>Neolithic</techLevel>
+    <backstoryFilters>
+      <li>
+        <categories>
+          <li>Tribal</li>
+        </categories>
+      </li>
+    </backstoryFilters>
+
+    <!-- The religion. `fixedIdeo` stops worldgen rolling a random faith over
+         it; `forcedMemes` is what actually makes it The Salvation in substance.
+         Pattern copied from Anomaly's Horax cult
+         (Data\Anomaly\Defs\FactionDefs\Factions_Misc.xml), NOT from the
+         Empire's requiredMemes + structureMemeWeights. -->
+    <ideoName>The Salvation</ideoName>
+    <fixedIdeo>true</fixedIdeo>
+    <forcedMemes>
+      <li>AM_Structure_Scavenger</li>
+      <li>Trader</li>
+      <li>VME_Scrapper</li>
+      <li>VME_Trader</li>
+      <li>VME_Nomad</li>
+    </forcedMemes>
+
+    <!-- Every member is a Jawa. Without this the faction generates baseliners
+         wearing tribal gear, which is the failure mode that makes a custom
+         faction feel like a reskin. -->
+    <xenotypeSet>
+      <xenotypeChances>
+        <MandrakeJawa>1.0</MandrakeJawa>
+      </xenotypeChances>
+    </xenotypeSet>
+
+    <pawnGroupMakers>
+      <li>
+        <kindDef>Combat</kindDef>
+        <options>
+          <Jawa_Tribal_Scavenger>10</Jawa_Tribal_Scavenger>
+          <Jawa_Tribal_Slinger>10</Jawa_Tribal_Slinger>
+          <Jawa_Tribal_Elder>1</Jawa_Tribal_Elder>
+        </options>
+      </li>
+      <li>
+        <kindDef>Peaceful</kindDef>
+        <options>
+          <Jawa_Tribal_Scavenger>10</Jawa_Tribal_Scavenger>
+          <Jawa_Tribal_Slinger>5</Jawa_Tribal_Slinger>
+        </options>
+      </li>
+      <li>
+        <kindDef>Trader</kindDef>
+        <options>
+          <Jawa_Tribal_Elder>1</Jawa_Tribal_Elder>
+        </options>
+        <traders>
+          <Jawa_Tribal_Elder>1</Jawa_Tribal_Elder>
+        </traders>
+        <carriers>
+          <Muffalo>6</Muffalo>
+          <Dromedary>5</Dromedary>
+        </carriers>
+        <guards>
+          <Jawa_Tribal_Scavenger>10</Jawa_Tribal_Scavenger>
+          <Jawa_Tribal_Slinger>8</Jawa_Tribal_Slinger>
+        </guards>
+      </li>
+    </pawnGroupMakers>
+  </FactionDef>
+
+</Defs>

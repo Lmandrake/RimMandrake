@@ -68,7 +68,22 @@ Defs, sizes and yields proven; the look is not. **Nobody has seen a casket.**
 
 ## Open
 
-### ⭐ C15. The Jawa ideoligion — BUILT and LOADABLE, awaiting the owner's eyes
+### ✅ C15. APPROVED AND SHIPPED — xenotype + religion are settled, 2026-08-14
+🔴 **Authoritative record: `design/Jawa/worldbuilding/ideoligion/APPROVED.md`.**
+Owner ruled `MandrakeJawa` is the ONLY active Jawa xenotype and **"The Salvation"
+is the approved religion**, for the player faction and the indigenous tribes.
+Built this session: the `.rid` and `.xtp` committed for git protection, a real
+`XenotypeDef` promoted from the `.xtp`, colonist + tribal `PawnKindDef`s, the
+`Jawa_IndigenousTribes` `FactionDef`, and a patch standing down the other three
+Jawa xenotypes **by zeroing generation weights, not by deleting defs**.
+⚠️ **NOT DEPLOYED** — `Jawa_Patches` in the repo is not what the game reads.
+⚠️ **Two defects in the approved `.rid`, reported not fixed:** `AM_Fertility` was
+dropped while two precepts still require it, and **`VME_Nomad` is in** — the one
+nomadism meme measured as hazardous (−50 mood at 60 days; its own description
+says non-vanilla movement will not register). `Nomadic_Preferred` already does
+the job safely and is already in the file. Detail in `APPROVED.md`.
+
+### (historical) The ideoligion build — BUILT and LOADABLE
 `C:\Users\Mandrake\AppData\LocalLow\Ludeon Studios\RimWorld by Ludeon Studios\Ideos\The Salvation (CREATE).rid`
 The owner's original `The Salvation.rid` sits beside it, **untouched** — both load in the
 ideo browser and the owner compares. Filed at `queue/OPS.md`. Builder:

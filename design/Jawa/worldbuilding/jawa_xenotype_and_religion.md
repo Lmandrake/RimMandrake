@@ -4,7 +4,26 @@ _Gravship Expedition campaign (RimWorld 1.6 / Odyssey). "Crashed Factory ship / 
 
 **Created:** 2026-08-03
 
-> ## 🔴 SUPERSEDED, 2026-08-14 — Part 1's verdict is stale. The campaign is on `BTD_Jawa`.
+> ## 🔴🔴 SUPERSEDED TWICE. The campaign is on **`MandrakeJawa`** — owner's ruling, 2026-08-14 (evening), verbatim: *"the xenotype MandrakeJawa is the ONLY Jawa xenotype active anymore."*
+>
+> **`BTD_Jawa` is no longer the answer either**, and neither is `OuterRim_Jawa`.
+> `MandrakeJawa` is the owner's own custom xenotype, authored in the game's editor
+> and now promoted to a real def so pawnkinds can reference it:
+> - def: `src\Jawa\Jawa_Patches\Defs\XenotypeDefs\MandrakeJawaXenotype.xml` (35 genes, `inheritable`)
+> - source of truth: `src\Jawa\ideoligion\MandrakeJawa.xtp` (committed copy of the owner's `.xtp`)
+> - the other three Jawa xenotypes are **suppressed, not deleted** —
+>   `src\Jawa\Jawa_Patches\Patches\OnlyMandrakeJawa.xml` zeroes their generation weights.
+>
+> ⚠️ **Everything in the stale banner below about `BTD_Jawa`'s 24 genes and its
+> `Outland_AllMale` is now only of historical interest** — `MandrakeJawa` carries
+> `Outland_AllMale` too, so the all-male conclusion survives the change; the gene
+> counts and the +20 °C comparison do not.
+>
+> ⭐ **The religion is settled too: "The Salvation" is APPROVED** and is committed
+> at `src\Jawa\ideoligion\The Salvation.rid`. It is the player faction's ideo and
+> the indigenous tribes' (`Jawa_IndigenousTribes`).
+
+> ## ⛔ STALE BANNER, kept for provenance — Part 1's verdict, superseded above
 >
 > **Every "adopt `OuterRim_Jawa` unchanged / KEEP AS-IS" statement below is out of
 > date** (§1.3 line 59, §3 line 381, the summary line that used to be here, and the
