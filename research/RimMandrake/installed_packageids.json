@@ -84,6 +84,16 @@
   "packageId": "Ali.GrowOdysseyPlants",
   "source": "workshop"
  },
+ "Alien Worlds - Tidally Locked": {
+  "folder": "3631364335",
+  "packageId": "7f.alienworlds.tidallylocked",
+  "source": "workshop"
+ },
+ "Alien Worlds Framework": {
+  "folder": "3626210061",
+  "packageId": "7f.alienworlds",
+  "source": "workshop"
+ },
  "Alien | Rimworld": {
   "folder": "3596077324",
   "packageId": "niz.xenomorphtype",
@@ -349,11 +359,6 @@
   "packageId": "Broms.AsteroidMineralScanner",
   "source": "workshop"
  },
- "Astronaut North Fix — Vanilla Gravship Expanded": {
-  "folder": "GravshipAstronautFix",
-  "packageId": "mandrake.gravshipastronautfix",
-  "source": "local"
- },
  "Astronomy Style Pack": {
   "folder": "3522312454",
   "packageId": "ASP.HalituisAmaricanous",
@@ -399,10 +404,20 @@
   "packageId": "rabiosus.vfautoparking",
   "source": "workshop"
  },
+ "Bandolier North Fix — Star Wars KotOR Resources and Materials": {
+  "folder": "KotORBandolierNorthFix",
+  "packageId": "mandrake.kotorbandoliernorthfix",
+  "source": "local"
+ },
  "Barbarian Style Pack": {
   "folder": "3551819421",
   "packageId": "unclejackhughes.barbarianstylepack",
   "source": "workshop"
+ },
+ "Bark Head East Fix — Vanilla Races Expanded: Phytokin": {
+  "folder": "PhytokinBarkHeadFix",
+  "packageId": "mandrake.phytokinbarkheadfix",
+  "source": "local"
  },
  "Basic Double Doors": {
   "folder": "3223646936",
@@ -1544,6 +1559,11 @@
   "packageId": "Mlie.ExpandedIncidents",
   "source": "workshop"
  },
+ "Extinct Fauna Pack - Cenozoic": {
+  "folder": "3663622769",
+  "packageId": "sneezingseal.extinctfaunapack.cenozoic",
+  "source": "workshop"
+ },
  "Extra Explosion Effects": {
   "folder": "3066208882",
   "packageId": "Keshash.ExtraExplosionEffects",
@@ -2284,6 +2304,11 @@
   "packageId": "mandrake.jawa.patches",
   "source": "local"
  },
+ "Jawa Sea Shaper": {
+  "folder": "JawaSeaShaper",
+  "packageId": "mandrake.jawaseashaper",
+  "source": "local"
+ },
  "JawaVoice (SpeakUp reskin)": {
   "folder": "JawaVoice",
   "packageId": "mandrake.jawavoice",
@@ -2824,6 +2849,11 @@
   "packageId": "mandrake.missingartfixes",
   "source": "local"
  },
+ "Missing North Facings — Vanilla Gravship Expanded": {
+  "folder": "GravshipAstronautFix",
+  "packageId": "mandrake.gravshipastronautfix",
+  "source": "local"
+ },
  "Mo'Events (Continued)": {
   "folder": "2035143365",
   "packageId": "Mlie.MoEvents",
@@ -3027,6 +3057,11 @@
  "Natural Paths": {
   "folder": "2008833499",
   "packageId": "RadZerp.naturalPaths",
+  "source": "workshop"
+ },
+ "Nature's Pretty Sweet (Continued)": {
+  "folder": "3542949511",
+  "packageId": "Mlie.NaturesPrettySweet",
   "source": "workshop"
  },
  "Never Generate Relations": {
