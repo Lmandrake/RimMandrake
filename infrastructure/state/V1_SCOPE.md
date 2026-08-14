@@ -365,23 +365,27 @@ save. Under the no-savegames ruling BRIDGE *generates* that world, and row 2 is
 ticked on the Configure Factions page inside the same run. **Rows 2 and 7 are one
 event and must be scheduled as one.**
 
-**Build ≈ 0 on every authored row.** Rows 5 and 6 are inherited from the mod
-stack, not built by us.
+✅ **SUPERSEDED — this block said "v1 build is still 0" and contradicted the
+table above it by 70 lines.** It was written this morning and was true then. Rows
+3, 4 and 8 have since been BUILT. Kept only as the record of a real drift, and
+because a burn-down that quietly overwrites its own bad news is worth nothing.
 
-⚠️ **AMENDED 2026-08-13 overnight — the owner reassigned CREATE to the Bantha
-reskin** (`TODO_v2.md` §0c: finish the eopie sled, then Banthas for four
-horse/ox vehicles, desert art). **That is v2 work pulled into v1 time by the
-owner — their call, not an appeal, and recorded rather than argued.**
+> **The morning position:** the owner reassigned CREATE to the Bantha reskin
+> (`TODO_v2.md` §0c), which was v2 work pulled into v1 time — their call, recorded
+> rather than argued. The stated consequence was that rows 3 and 8 were not
+> started and v1 build was 0.
+>
+> **What actually happened:** CREATE built row 3 (`47733f8`) and row 4
+> (`73ca76c`) offline within the hour once the owner re-ordered them ahead of the
+> art, and row 8 was built and exported the same evening (`6909ecb`). **The drift
+> was real and it was also reversed the same day.**
 
-**Consequence, stated honestly because the burn-down is worthless otherwise:**
-
-- **Row 3 (`QuestScriptDef`) — not started, and now unowned in practice.**
-- **Row 8 (gravship build) — not started.** The *spec* is unaffected and complete
-  (`b7e49db`); only the build slips. CREATE still anchors the next live session.
-- **Net: v1 build is still 0, and the two rows that moved were both CREATE's.**
-
-**This is the drift the MVP seat exists to make visible, not to prevent** — the
-owner may spend v1 time on v2 work; PROJECT's job is to say so plainly.
+📌 **The lesson is about this document, not about CREATE.** A burn-down carries
+two things that rot at different speeds: a TABLE that gets updated because people
+look at it, and PROSE that does not, because nobody re-reads a paragraph they
+already agree with. **The prose outlived its truth by a full day and was found by
+a doc-budget sweep, not by me** — and I am the seat accountable for this file
+being honest. **When the table moves, re-read the prose.**
 
 ### ⚠️ Row 5's gate was wrong — BRIDGE, `01f95a8`
 
