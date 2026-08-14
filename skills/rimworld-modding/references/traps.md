@@ -25,7 +25,7 @@ shorts, leave it untouched (→ `skills/rimworld-savegame/SKILL.md`).
 | If you are about to… | Read | Entries |
 |---|---|---|
 | write or debug a patch, an xpath, or a def | [`traps-xml-and-defs.md`](traps-xml-and-defs.md) | 18 |
-| trust what a script, grep, census or the def dump just told you | [`traps-tooling.md`](traps-tooling.md) | 37 |
+| trust what a script, grep, census or the def dump just told you | [`traps-tooling.md`](traps-tooling.md) | 38 |
 | call art missing, wrong, or broken | [`traps-art.md`](traps-art.md) | 13 |
 | chase a mod that is absent, dead, or ignoring its files | [`traps-mods-and-managers.md`](traps-mods-and-managers.md) | 13 |
 | believe a diagnosis, or call into a running game | [`traps-diagnosis.md`](traps-diagnosis.md) | 7 |
@@ -101,6 +101,7 @@ the one asked.**
 - A `timeout`-wrapped scan that gets killed leaves a PARTIAL result that looks complete
 - The two primary RimWorld documentation domains both 403 `WebFetch` — and the web has nothing on 1.6 quests anyway
 - A redirected Python run's output file stays 0 bytes — that is buffering, not a stall
+- Read the CLASSES, never the count — a validator's warning total is not a backlog
 
 ### `traps-art.md` — art, textures and what a census cannot see
 
