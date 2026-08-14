@@ -15,9 +15,17 @@ BEFORE the run rather than at the screen, at 3am, alone._
 
 ## 1. The gate — what must be TRUE before anyone books the load
 
+🔴 **EVERY ROW BELOW IS A REPO-STATE GATE. NOT ONE OF THEM IS LIVE.** A ✅ here
+means *"correct, committed, and ready to ship"* — it never means the running game
+has it. **The deploy is step 3.2, and it is the only thing that makes any of this
+real.** Measured 2026-08-14: the repo `JawaSeaShaper.dll` is md5 `b7730027`, the
+deployed and loaded one is md5 `82b48e53`, mtime 08-13 23:57 — **older than the
+01:03:26 launch.** ⇒ **"verified in the binary" and "verified in the game" are
+different claims, and this table can only ever make the first.**
+
 | # | precondition | owner | why it cannot slip |
 |---|---|---|---|
-| G1 | ✅ **DONE `c3ee8e7`, on origin.** The sea step places on the right predicate — `effectiveLat = Acos(Cos(lon·Deg2Rad)·Cos(lat·Deg2Rad))·Rad2Deg`, banding on arc distance from the subsolar point, **not latitude** | CREATE | Verified by `strings -a -el` on the built DLL: `aspect {5:F1}` and `mean arc {7:F0} deg` present, the old `mean |lat|` literal **absent**. ⚠️ **Deploys SOLO** — a new assembly poisons attribution for everything beside it — and **cannot be written while RimWorld runs** (`OSError 22` on the locked file; the refusal is safe, it cannot truncate) |
+| G1 | ✅ **READY IN THE REPO — `c3ee8e7`, on origin. NOT LIVE.** The sea step places on the right predicate — `effectiveLat = Acos(Cos(lon·Deg2Rad)·Cos(lat·Deg2Rad))·Rad2Deg`, banding on arc distance from the subsolar point, **not latitude** | CREATE | Verified by `strings -a -el` on the built DLL: `aspect {5:F1}` and `mean arc {7:F0} deg` present, the old `mean |lat|` literal **absent**. ⚠️ **Deploys SOLO** — a new assembly poisons attribution for everything beside it — and **cannot be written while RimWorld runs** (`OSError 22` on the locked file; the refusal is safe, it cannot truncate) |
 | G2 | **`Jawa_SeaShaping` is registered** in `PlanetLayerDef[defName="Surface"]/worldGenSteps` | CREATE | ⚠️ **A `WorldGenStepDef` absent from the layer loads, validates and NEVER RUNS, with no log line.** Registration is silent both ways |
 | G3 | **The companion DLL carries the shutdown-window tools** — `jawa/get_defs`, `jawa/fire_quest` | BRIDGE | Companion work needs a **shutdown**, not a startup. Miss it and row 3 waits a full cycle |
 | G4 | ✅ **`isJunk` is RESOLVED — removed from both scatter defs, `de1018b`.** What remains is a **DEPLOY**: the game copy is still 2026-08-13 16:42 with `isJunk` present | CREATE decided · OPS deploys | §2.D. **Decided, not done** — the fix is repo-only until it ships |
