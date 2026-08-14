@@ -80,7 +80,21 @@ loose art. `mandrake.missingartfixes` removed from the list, closing C11 step 3.
 a quest fun and playable, the right and wrong ways to build one, the elements that
 MUST be supplied, and the writing format that the game can actually read.
 **Sources: the custom-questing mods, our own quest defs, vanilla `QuestScriptDef`s,
-and outside examples.** Scaffold with `skill-creator`; research runs in background.
+and outside examples.** Research ran as three background agents into
+`skills/rimworld-quests/references/`.
+
+🔴 **OWNER'S FOUR RULINGS, 2026-08-14 — do not re-litigate:**
+1. **XML-first, C# as an escape hatch.** Vanilla QuestNodes are the main path;
+   a short section on *when you genuinely need* a custom node and how to tell.
+2. **Ship `validate_quest.py`** — unknown QuestNode classes, unresolved `$slate`
+   vars, missing rule packs, no reachable end state. **A cold load is 23-30 min;
+   one catch pays for it.**
+3. **Cover BOTH stages** — a prose spec template (the ask, the stakes, the
+   choice, the failure state, the reward, the deadline) AND how it maps onto def
+   fields. This is what makes the "is it fun" wisdom actionable.
+4. 🔴 **The gate is ONE REAL QUEST, authored end to end with the skill, and it
+   must NOT be Jawa.** Whatever the skill failed to tell me is the defect list.
+   No eval-loop benchmarking.
 ⚠️ **Not art — the stop-fixing-art directive does not touch this.**
 
 ### C3a. ⛔ PARKED — Eopie, two proposals never ruled on
