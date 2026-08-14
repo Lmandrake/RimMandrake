@@ -292,3 +292,64 @@ won't spawn."*
 2. **`scoreOffset` is a postfix ADD to the vanilla score** — so it is a genuine
    commonality dial, not an override. **That is the biome-mix lever**, and it
    composes with the whitelist rather than replacing it.
+
+---
+
+## 🔴 THREE CORRECTIONS from CREATE — two of them to me, and one reverses my own advice
+
+### 1. ⚠️ **BLACKLIST, not whitelist. I was wrong, and the reason is the layer biomes.**
+
+I argued for whitelisting the ~26 survivors because a blacklist lets new mods leak
+in. **That argument ignored 11 biomes that are not surface tiles at all** —
+`Space`, `Orbit`, `Underground`, `Undercave`, `CQF_Undercave`,
+`AM_UndergroundSpace`, `VQEA_AncientComplex` and kin.
+
+🔴 **A whitelist excludes anything absent from it — and those are precisely the
+entries nobody thinks to list.** Whitelisting the surface would silently break
+space maps, the gravship's orbital layer and every pocket map in the game.
+
+⭐ **So the failure directions are the opposite of what I claimed.** A blacklist
+fails toward *"an unwanted biome appeared"* — visible, and one line to fix. **A
+whitelist fails toward *"a pocket map does not generate"*** — invisible until
+something the player needs is missing.
+
+⇒ **Blacklist the 29. Leave `<biomes>` empty**, which the framework reads as *all
+allowed*. Confirmed: blacklist wins over whitelist and an empty whitelist is
+permissive.
+
+### 2. 🔴 **PATCH the shipped def. Do NOT author our own planet type.**
+
+**Only one `PlanetTypeDef` is active at a time** — `activePlanetType`, chosen in
+mod settings and scribed per save. **So authoring a "Jawa world" would REPLACE
+`TidallyLocked` and silently drop its temperature curve** — the one thing the
+whole design now rests on.
+
+⭐ **`<biomes>`, `<biomeBlacklist>`, `<biomeConfigs>` and `<elevationRange>` are
+base-class fields, so a `PatchOperationAdd` into the shipped def gives us all of
+it with tidal lock intact** and no selection question at all. **Much smaller than
+a new planet type.**
+
+⚠️ Patch by **`defName`**, not by class — the shipped def is a *subclass*,
+`AlienWorlds.TidallyLocked.PlanetTypeDef`.
+
+### 3. 🔴 **`elevationRange` is NOT the 25%-ocean dial. Stop calling it one.**
+
+The mod author's own comment, verbatim:
+
+> *"useful if you want more/less ocean. **note: I have absolutely no clue how it
+> actually works**, but reducing the second number while keeping the first one at
+> −500 seems to do things"*
+
+**A knob its author does not understand, with no stated mapping to an ocean
+fraction.** ⇒ **Coarse nudge only.** The **`WorldGenStep` measures the actual
+fraction and hits the number** — that stays the mechanism, and my "the dial is in
+XML" claim was too strong.
+
+### What survives unchanged
+
+✅ **The axis** — confirmed from the shipped curve: latitude, with **0.5 = +14 °C =
+the terminator.**
+✅ **`biomeConfigs[x].scoreOffset`** is the soft commonality dial and is exactly
+what the owner's abundance verdicts become.
+⚠️ **`oceanBiome` / `lakeBiome` must ALSO appear in `<biomes>`** if a whitelist is
+ever used — a reason to keep `<biomes>` empty.
