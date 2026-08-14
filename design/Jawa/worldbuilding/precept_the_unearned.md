@@ -138,15 +138,14 @@ longer hands out.** Better Beggars ships no `HistoryEventDef`, no `IssueDef`, no
 written against `CharityRefused_Beggars` covers stock *and* all three modded
 variants unchanged.
 
-> `...\3006899215\1.6\Assemblies\BetterBeggars.dll`, `strings -a`, and the mod's
-> published source (`QuestNode_Root_Beggars_WantThing_Vanilla.cs`):
-> ```csharp
-> quest.Delay(60000, delegate {
->     quest.Leave(pawns, null, false, false);
->     quest.RecordHistoryEvent(HistoryEventDefOf.CharityRefused_Beggars);
-> ```
-> The `RecordHistoryEvent` sits **outside** the `AnyColonistWithCharityPrecept`
-> filter — the event fires whether or not anyone approves of charity.
+> Verified by IL scan of `C:\Program Files (x86)\Steam\steamapps\workshop\content\294100\3006899215\1.6\Assemblies\BetterBeggars.dll`
+> and of `QuestNode_Root_Beggars` in `Assembly-CSharp.dll`, 2026-08-14.
+> `Beggars_WantThing_Vanilla` and `Beggars_WantThing_Drugs` reference
+> `CharityRefused_Beggars` in the same delay/empty-handed pattern as vanilla.
+> Better Beggars adds **zero** `HistoryEventDef`s — it reuses the vanilla three
+> through `HistoryEventDefOf`. **Confirmed against the whole build:** of 283 merged
+> `HistoryEventDef`s, all 17 `Charity*` defs come from Ideology and **no mod adds a
+> single beggar- or charity-related event.**
 
 ### The event map
 
@@ -155,40 +154,87 @@ variants unchanged.
 | beggars time out and leave with nothing | `CharityRefused_Beggars` | **VERIFIED** (source above) |
 | beggars given what they asked for | `CharityFulfilled_Beggars` | **VERIFIED** |
 | beggars harmed / attacked | `CharityRefused_Beggars_Betrayed` | **VERIFIED** |
-| beggars **arrested** (→ enslaved) | `CharityRefused_Beggars_Betrayed` | ⚠️ **UNVERIFIED — see below** |
+| beggars **arrested** (→ enslaved) | `CharityRefused_Beggars_Betrayed` | ✅ **VERIFIED — see below** |
 
-### ⚠️ The one open question in this spec
+### ⭐ Arresting a beggar DOES raise the Betrayed event
 
-**Does *arresting* a beggar raise `CharityRefused_Beggars_Betrayed`, or only
-killing one?** The assembly carries both signals — `beggars.Arrested` and
-`beggars.Killed` (`strings -a -el`) — and Better Beggars carries a distinct
-`BeggarArrested_BadThought` branch, so an arrest is plainly tracked. But the quest
-letter reads *"[travelers] have been **harmed**"*, and I did not read the arrest
-branch's `RecordHistoryEvent` call. **Do not assert the arrest→Betrayed link.**
-Filed for BRIDGE in §9 as a two-minute live measurement.
+**This was the spec's open question and it is closed.** IL disassembly of
+`QuestNode_Root_Beggars::RunInt` shows the betrayal branch keyed off
+`QuestGen_Signal::AnySignal` over **both** `beggars.Killed` **and**
+`beggars.Arrested` — either one records `CharityRefused_Beggars_Betrayed` (and
+adds a `QuestPart_FactionRelationChange` plus the `[letterLabelBeggarsBetrayed]`
+letter).
 
-**Design consequence if it comes back negative:** §4's arrest reward loses its
-beggar-specific event and falls back to the generic `EnslavedPrisonerNotPreviouslyEnslaved`.
-The doctrine still works; it just stops distinguishing *this* slave from any other.
-**Nothing else in the spec changes.** The turn-away half — the owner's primary ask —
-is unaffected either way.
+⇒ **The enslavement path is fully hooked.** Arrest the beggars → beggar-specific
+delight fires immediately; convert the prisoner → the generic
+`EnslavedPrisonerNotPreviouslyEnslaved` fires from the `Slavery` precept. §4's
+two-stage design works as written, with no fallback needed.
 
-### ⚠️ A second, narrower trap
+### 🔴 The one open question in this spec — a filter that may gate the event
 
-On the **`Beggars_Chased`** variant only, the mod wraps the betrayal record inside
-the filter:
+`QuestGen_Filter::AnyColonistWithCharityPrecept` appears in the same lambda. **The
+question is whether the event record sits inside it or beside it**, because a
+colony holding The Unearned and **no** `Charity_*` precept has nobody who approves
+of charity — and if the record is gated, **this precept receives nothing and the
+whole design is inert.**
 
-```csharp
-quest.AnyColonistWithCharityPrecept(delegate {
-    quest.RecordHistoryEvent(HistoryEventDefOf.CharityRefused_Beggars_Betrayed); }, ...)
+**My reading is that it is NOT gated, and the IL ordering is the reason:**
+
+```
+#### QuestNode_Root_Beggars/<>c__DisplayClass9_0::<RunInt>b__0
+  0011 call    QuestGen_Misc::Leave
+  001C ldsfld  HistoryEventDefOf::CharityRefused_Beggars
+  0023 call    QuestGen_HistoryEvents::RecordHistoryEvent     <-- recorded here
+  003B ldftn   <RunInt>b__7                                   <-- a DIFFERENT lambda
+  0053 call    QuestGen_Filter::AnyColonistWithCharityPrecept <-- wraps only b__7
+#### ...<RunInt>b__7
+  000B ldstr   "MessageCharityEventRefused"
+  001A ldstr   "MessageBeggarsLeavingWithNoItems"
 ```
 
-`QuestPart_Filter_AnyColonistWithCharityPrecept` is a **vanilla** class
-(present in `Assembly-CSharp.dll`). A colony that holds **The Unearned and no
-`Charity_*` precept** has nobody who approves of charity — so on that one variant
-the Betrayed event is **skipped entirely**. The turn-away path on the other two
-variants is unaffected. Mitigation: none needed for v1; note it so nobody debugs it
-twice.
+`RecordHistoryEvent` is called at `0023`, unconditionally. The filter at `0053`
+takes `b__7` — which contains **only the on-screen message** — as its argument.
+**The filter suppresses the "beggars are leaving empty-handed" toast, not the
+event.** That is also the only reading consistent with vanilla behaviour: the
+message exists to tell charitable colonies they just took a mood hit.
+
+⚠️ **But this is static analysis of IL by hand, with no decompiler on this box and
+no runtime observation, and it is the single assumption the design rests on.**
+Filed for BRIDGE in §9 — it is a two-minute check and it should be done before
+CREATE writes a line.
+
+**If it comes back gated,** the fix is known and cheap: give the ideoligion
+`Charity_Worthwhile` alongside The Unearned. Thematically it is not even wrong —
+*"we help those who trade with us"* — and it satisfies the filter. Do not redesign;
+add the precept.
+
+### ⚠️ `Beggars_Chased` fires no turn-away event at all
+
+IL scan of `...\3006899215\1.6\Assemblies\BetterBeggars.dll` shows
+`QuestNode_Root_Beggars_Chased::RunInt` references **only**
+`CharityFulfilled_Beggars` and `CharityRefused_Beggars_Betrayed`. It never
+references `CharityRefused_Beggars`, and sets no `failedOrExpiredHistoryEvent`.
+It is also the **only** beggar quest with `autoAccept: false` (`expireDaysRange
+0.3`), i.e. the only one with a real Reject button — **and rejecting it fires
+nothing.** The taking still pays out on this variant; the turning-away does not.
+Not worth fixing for v1; note it so nobody debugs it twice.
+
+> ⭐ **The seam, if the owner ever wants a genuine decline hook.**
+> `QuestScriptDef.failedOrExpiredHistoryEvent` is read by
+> `IdeoUtility::Notify_QuestCleanedUp`, is patchable from XML, and needs no Harmony.
+> Vanilla precedent, `...\Data\Core\Defs\QuestScriptDefs\Script_WandererJoins.xml`:
+> ```xml
+> <failedOrExpiredHistoryEvent MayRequire="Ludeon.RimWorld.Ideology">CharityRefused_WandererJoins</failedOrExpiredHistoryEvent>
+> ```
+> **None of the five beggar quests sets it.** Patching it onto `Beggars_Chased`
+> would give that variant the turn-away event it lacks. `[v2]`, and only if the
+> owner asks — the main path already works.
+
+⚠️ **"Dismiss" in the Quests tab is not a decline.** `MainTabWindow_Quests::DoDismissButton`
+sets `Quest.dismissed = true` and nothing else — it never calls `Quest.End`, never
+touches `HistoryEventsManager`. The keyed tooltip says so: *"Its effects and expiry
+times will proceed as normal."* A player who dismisses the letter still gets the
+event when the timer runs out.
 
 ---
 
@@ -245,7 +291,7 @@ its beggar-specific delight from the **taking**, and its general delight from th
 | moment | event | who feels it | comp |
 |---|---|---|---|
 | the beggars are turned away | `CharityRefused_Beggars` | everyone of this ideo | `PreceptComp_KnowsMemoryThought` |
-| the beggars are taken | `CharityRefused_Beggars_Betrayed` ⚠️*(arrest link unverified)* | everyone of this ideo | `PreceptComp_KnowsMemoryThought` |
+| the beggars are taken (killed **or arrested**) | `CharityRefused_Beggars_Betrayed` | everyone of this ideo | `PreceptComp_KnowsMemoryThought` |
 | the prisoner becomes property | `EnslavedPrisonerNotPreviouslyEnslaved` | the doer, then everyone | comes from the **`Slavery`** precept, not this one |
 | we gave in and paid them | `CharityFulfilled_Beggars` | everyone — **a penalty** | `PreceptComp_KnowsMemoryThought` |
 
@@ -609,11 +655,16 @@ shrinks. Do not fix this before it is seen once.
 
 ## 9 · Filed for other seats
 
-**BRIDGE** — the one measurement this spec needs, ~2 min on any live map:
-- **Does arresting a beggar raise `CharityRefused_Beggars_Betrayed`?** Run a beggar
-  quest, arrest one, read the history. Both `beggars.Arrested` and `beggars.Killed`
-  signals exist; which raises the event is unread. §2 explains what changes either
-  way — the answer is not blocking, only clarifying.
+**BRIDGE** — 🔴 **the one measurement this spec rests on, ~2 min on any live map.
+Do it before CREATE writes a line:**
+- **Does `CharityRefused_Beggars` record for a colony with NO `Charity_*` precept?**
+  Run a beggar quest on an ideo without one, let the timer expire, read the history.
+  IL ordering says the `AnyColonistWithCharityPrecept` filter wraps only the toast
+  message (§2), but that is hand-read IL with no decompiler and **if it is wrong the
+  precept is inert.** If gated: add `Charity_Worthwhile` to the ideoligion, do not
+  redesign.
+- ~~Does arresting a beggar raise the Betrayed event?~~ **Closed** — IL shows the
+  branch fires on `AnySignal(beggars.Killed, beggars.Arrested)`. Both.
 - Standing ask, unchanged: `jawa/ideo_of` **`otherOnMap`**. This spec's binding (a)
   is worth exactly what that number says it is.
 

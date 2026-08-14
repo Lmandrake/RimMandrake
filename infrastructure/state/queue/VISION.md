@@ -645,6 +645,7 @@ byte was written. CREATE notified twice. **Do not pick it up.**
 `D:\Luke\dev\Rimworld\design\Jawa\worldbuilding\precept_the_unearned.md`. New
 `IssueDef` + precept + meme for the **Hutt Cartel**, closing the entry-2 `Charity`
 hole. Refusal hook is **LEGAL** — `CharityRefused_Beggars` fires when beggars leave
-empty-handed. 🔴 A `FactionDef` has **no precept field**; only a meme's `requireOne`
-forces one. **Unresolved:** does *arresting* a beggar raise
-`CharityRefused_Beggars_Betrayed`, or only killing? Filed for BRIDGE, non-blocking.
+empty-handed, and **arresting** them raises `CharityRefused_Beggars_Betrayed` (IL:
+`AnySignal(beggars.Killed, beggars.Arrested)`). 🔴 A `FactionDef` has **no precept
+field**; only a meme's `requireOne` forces one. **Unresolved, and BLOCKING CREATE:**
+does the event record at all for a colony holding no `Charity_*` precept? BRIDGE, ~2 min.
