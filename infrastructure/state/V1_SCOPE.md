@@ -426,7 +426,7 @@ world.**
 | # | item | owner | why it cannot wait |
 |---|---|---|---|
 | W1 | **The sea** — a Jawa-world `AlienWorlds.PlanetTypeDef` plus a step that arranges three ragged blobs | VISION specs · CREATE builds | ocean is elevation at step 0 |
-| W2 | **Jawa `xenotypeSet`s re-pointed at `BTD_Jawa`** (+20 °C); they currently name `OuterRim_Jawa` (+10) | CREATE | **read at pawn generation** — the colonists of an existing world stay wrong |
+| W2 | ✅ **DONE** — `Jawa_Patches/Patches/JawaXenotype_Repoint.xml`, deployed and verified. The two Galactic Diversity `PawnKindDef`s (`OuterRim_Jawa`, `OuterRim_JawaTribal`) now point at `BTD_Jawa` at weight 999. ⛔ **Settles those two kinds only** — the three competing Jawa xenotypes are still VISION's larger ruling | CREATE | was: **read at pawn generation** — an existing world's colonists stay wrong |
 | W3 | **The biome mix**, via `PlanetTypeDef.biomeBlacklist` | VISION | biome scoring runs once |
 | W4 | The ratified faction tick-list, unspent | OPS at the screen | the page is seen once |
 
