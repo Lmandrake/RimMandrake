@@ -94,7 +94,7 @@ And the sections that were retired with the file:
 | 2026-08-13 | C8 `check_sprite.py` art intake validator | most of it already existed | `365e599` |
 | 2026-08-13 | C11 `MissingArtFixes` split | four per-donor mods; all seven textures now described. **Retirement steps 2–4 remain open** | `61fe954` |
 | 2026-08-13 | C12 `Jawa_Patches` About.xml under-documented | all 30 XML files + both textures described | `e9d0702` |
-| 2026-08-13 | C12 duplicate-file collision | 🔴 two fix mods were **inert** — `Jawa_Patches` @581 shadowed them at 561-2, and identical bytes hid it | `6f52185` |
+| 2026-08-13 | C12 duplicate-file collision | ⚠️ **overstated, corrected by BRIDGE.** Two fix mods were shadowed by `Jawa_Patches`, but the files are **md5-identical**, so it was never a rendering hazard — identical bytes did not *hide* the bug, they *were* the reason there was no bug. Real overlap was `MissingArtFixes`, now inactive | `6f52185` |
 | 2026-08-13 | C-v1 rows 3 and 4 authored | ⚠️ **authored, not gated** — carried forward as OWED | `47733f8` `73ca76c` |
 | 2026-08-13 | C-v2 `validate_patch.py` scope gap | found **already built** — it dispatches on the root element and states what it does not scan | — |
 | 2026-08-13 | C-v3 restraining bolts, questions 1–4 | verdict **CAP the ceiling**; spec moved to `design/Jawa/worldbuilding/restraining_bolt_technical.md` | `8353622` |
