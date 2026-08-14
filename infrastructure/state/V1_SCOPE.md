@@ -238,12 +238,46 @@ explicitly retracted. The settled test is **two bodies at latitude 0.35–0.65 a
 one high, off-pattern**, plus elongation along the band. `PickPolarSeeds` and the
 growth anisotropy are the rewrite; **everything else is built.**
 
-⚠️ **One genuine ambiguity, and it is a units question, not a design question:**
-the spec's latitude curve runs x = 0.0–2.0, which is neither degrees nor a 0–1
-normalisation, while the code reads `LongLatOf().y` in **degrees**. If x is
-`|lat|/45`, the terminator band is roughly **|lat| 15.75°–29.25°** — meaning the
-current `> 45f` targets the *nightside* and would put all three bodies where only
-one belongs. **Settle it by reading the shipped def, not by asking.**
+### 🔴 THE SEA SPEC'S AXIS IS WRONG — measured 2026-08-14, and it is not latitude
+
+**The spec, the code, and every message about this step have all banded on
+LATITUDE. The planet does not use latitude.** Read directly from the mod's shipped
+source, `…\workshop\content\294100\3631364335\Source\PlanetTypeDef.cs:83-90`:
+
+```csharp
+var effectiveLat = Mathf.Acos(
+    Mathf.Cos(pos.x*Mathf.Deg2Rad) * Mathf.Cos(pos.y*Mathf.Deg2Rad)) * Mathf.Rad2Deg;
+return AlienWorlds.FieldPatcher.AvgTempByLatitudeCurve.Evaluate(effectiveLat / 90f);
+```
+
+A transpiler on `WorldGenStep_Terrain.GenerateTileFor` deletes the `.y` load and
+calls this, **so the vanilla latitude-only path never runs on this planet.** The
+curve's x is **great-circle arc distance from the subsolar point (lon 0, lat 0),
+over 90** — isotherms are **circles centred on (0,0)**, not bands. Def points:
+`0.0,70 · 0.1,65 · 0.5,14 · 1.0,-37 · 1.3,-70 · 2.0,-80`.
+
+| | |
+|---|---|
+| **x = 1.0 is the terminator** | 90° of arc, −37 °C |
+| `worldgen_sea_spec.md:141-148` says x = 0.5 is the terminator | **wrong** — 45° of arc, +14 °C, firmly dayside |
+| habitable ring | **~34–57° of arc from (0,0)**: +30 °C at 33.7°, +15 °C at 44.3°, 0 °C at 57.3° |
+| why the curve exceeds 1.0 at all | `|lat|` alone maxes at x = 1.0. **Only longitude reaches 2.0** |
+
+🔴 **Latitude cannot be repaired into working.** lat 45 / lon 0 is 45° out and
+warm; **lat 45 / lon 120 is 110.7° out, ≈ −62 °C, deep nightside.** Same latitude,
+opposite worlds. `WorldGenStep_JawaSea.cs:305` (`Abs(...y) > 45f`) and `:540`
+(`latSum += Abs(...y)`) both band on a predicate that cannot tell them apart.
+**Fix: use the mod's own formula and band on `effectiveLat`.**
+
+⚠️ **This overrules a spec that declares itself settled and says *"this file
+wins"* (`:170`) — it wins over MESSAGES, not over shipped source.** VISION is down
+and I have not edited VISION's file; this section supersedes it on this one point
+only. **VISION reviews it on return.**
+
+📌 **Third time tonight the same shape:** row 3 blocked on an unbuilt route, row 4
+modelled without reading `GenStep_Scatterer`, and now a whole worldgen axis
+inferred from a curve nobody opened. **The mechanism was shipped as readable
+source the entire time.**
 
 📌 **The seat lesson, and it is mine:** *"HELD for X"* is the most dangerous
 status in the repo, because the release is written in **someone else's file** and
