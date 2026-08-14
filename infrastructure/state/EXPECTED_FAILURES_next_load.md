@@ -199,6 +199,20 @@ this load.**
 **Gate:** `python.exe src/RimMandrake/bridgetools/prove_new_tools.py` → read line 0,
 the deploy census.
 
+🔴 **THIS GATE IS NOT A READ — DO NOT RUN IT ON THE CAMPAIGN MAP.** The script has
+no census-only flag (`--x --z --pawns --walk --letter --selftest` is the whole surface).
+It is a full live harness: it **spawns pawns, damages them to death, sets plants, builds
+roofs, fires incidents and sends letters.** Its own selftest carries a scripted
+`*** CLEANUP INCOMPLETE *** Pawn(s) ... are STILL ALIVE` scenario, so a stray hostile
+left on the map is a known outcome, not a hypothetical.
+
+⇒ **Take the census on a dev quicktest BEFORE the campaign world exists**, or wait for a
+read-only `--census` path. On the worldgen run the map is brand new and irreplaceable —
+**a gate that mutates the thing it is gating is not a gate.**
+
+✅ Safe from anywhere, no side effects: `python3 ... --selftest` (WSL cannot reach the
+bridge at all, so it exercises the mock worlds and touches no game).
+
 🔴 **DO NOT WRITE THE EXPECTED NUMBER HERE. DERIVE IT AT CENSUS TIME.** This block
 used to say *"21 = PASS"*. The gate script already held **22**, the live game already
 reported **22**, and the artifact source holds **24** — so the prose would have
