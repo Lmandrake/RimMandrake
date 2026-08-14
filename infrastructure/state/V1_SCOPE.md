@@ -234,6 +234,47 @@ export re-imports with its floors** before calling the row done.
 authorship, BRIDGE owns proving. A disagreement between plan and game pulls
 CREATE in rather than being resolved unilaterally.
 
+### ⚖️ THE REST OF THE HULK — ruled 2026-08-13. **Conditional v1, as a RIDER on row 4.**
+
+VISION declined to set this and routed it here; CREATE priced it and asked me not
+to rule blind. Ruling the *shape* now so neither waits on me.
+
+**⛔ The SYSTEM is v2, unconditionally.** Tiers, cross-section, salvage economy,
+deep deposit. A big authored map feature is not thin, and v1 is thin by rule.
+No appeal, and it is not a close call.
+
+**🟡 The IMAGE is v1 — CONDITIONALLY, and it does NOT become row 9.**
+
+> **It rides `Patches/JawaResource_Scrapfields.xml`, inside row 4.** Same
+> `GenStep` registered into `Base_Player`, same file shape, different contents —
+> a mechanism **proven and deployed today** (`73ca76c`). Row 4's gate already
+> covers it: *visible on a newly generated map.*
+
+**Why a rider and not a row:** v1 is at 2 of 8 closed with six open. **Adding a
+ninth row while six are unfinished is how a thin scope stops being thin** — and
+`V1_SCOPE`'s own standing rule is that in-flight work must not add to v1. Adding
+*contents* to a proven row costs nothing structurally; adding a row costs a gate,
+an owner, and a line in every report from now on.
+
+**Why it earns v1 at all:** the campaign's premise is a Jawa scavenger clan, and
+**v1 currently contains nothing that says scavenger.** Breadth of premise is the
+one thing v1 explicitly preserves — *"you are playing your campaign, not a
+generic one."* The first thing the player ever sees is the ninety percent of the
+hulk that never flew. That is the premise, in the opening frame, for an
+afternoon.
+
+#### 🔪 The kill condition, stated before the answer arrives
+
+**If CREATE's live check fails — `BrokenSubstructure` cannot sit on ordinary
+desert ground, is not walkable, or does not read as broken at 64 px — this is v2
+immediately and without appeal.** At that point it is an art commission, not an
+afternoon, and an art commission is v2 by definition.
+
+⏱️ **Second kill condition: one afternoon.** If it exceeds that, it is v2 —
+`V1_SCOPE`'s own rule of thumb is that a v1 item needing more than a day is still
+too thick. **Estimates have been wrong all day; this one gets a hard stop rather
+than a hope.**
+
 ## ⚠️ Sequencing — the two dependencies that can cost a whole cycle
 
 ### 1. `jawa/list_factions` needs a SHUTDOWN window, not a startup
