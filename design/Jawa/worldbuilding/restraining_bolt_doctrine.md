@@ -273,3 +273,29 @@ raid**, off a cliff, with no guarantee that freeing droids walks it back.
 not automatically acquire the Enclaves as an enemy — it acquires a faction that
 will trade and never help. **That is the better version**: an enemy you never
 chose is a punishment, and a permanent cold shoulder is a consequence.
+
+---
+
+# 🔴 OWNER'S RULING, 2026-08-14 — bolts are DROIDS ONLY. Patch it out.
+
+**Droid Depot's restraint bolt can target any modded pawn, including humans.** I
+argued to keep the capability and price it heavily — ten droids' worth on the
+Enclave ceiling plus a mood hit. **The owner ruled it out. Recorded as decided,
+not debated.**
+
+> **Restraint bolts work on droids. Full stop.**
+
+**The trade, stated once and then dropped:** the campaign keeps its moral problem
+as a *statement* rather than a button, and the Free Droid Enclaves are never
+literally vindicated in play. ⭐ **That is an acceptable loss, and arguably the
+better call** — a design that only lands if the player does something ugly is a
+design leaning on the player to make its argument.
+
+⚠️ **Build note: this is a DONOR mod's behaviour.** The fix belongs in our own
+patch mod against Droid Depot's bolt target filter — **never an edit to their
+files.** ⚠️ And it is a *capability* restriction, not a suppression, so the
+suppress-scope-delete order does not apply: **there is no setting for this.**
+
+**Everything else in this document stands unchanged.** The ceiling, the curve, the
+HELD-not-ever-fitted rule and the clamp above hostility are all about droids and
+were never affected.
