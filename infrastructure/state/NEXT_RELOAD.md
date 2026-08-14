@@ -624,7 +624,14 @@ above that says *look* or *screenshot* is settled on screen only.
 - **Art items have no log strings at all.** A present-but-empty PNG is a
   successful load by every measure the engine has.
 
-**The offline dump describes 580 mods** — `observed/2026-08-13/dumps/defnames.580.2026-08-13.json`.
+**The offline dump describes 580 mods** — `observed/2026-08-13/dumps/defnames.580.2026-08-13.json`
+— while **the live stack is 585** (`<activeMods>` in `ModsConfig.xml`, measured by
+OPS and agreed independently by the O18 sweep header). ⚠️ **Both numbers are
+correct and they are about different things:** 580 is what the dump *was built
+from* on 08-13, 585 is what is loaded now. **That five-mod gap IS the reason to
+re-run `refresh.py`** — it is not an error to fix. (A naive `grep -c "<li>"` says
+590; the `<knownExpansions>` block is the difference, and is the likely origin of
+any stray count.)
 Re-run `refresh.py` after the load before trusting any offline def lookup, and
 remember: **a def dump is DISK, not RUNTIME.** Any mod that mutates defs at load —
 dedup, remap, implied-def generation — makes a disk-derived conclusion unsafe.

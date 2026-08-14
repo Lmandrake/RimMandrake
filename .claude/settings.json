@@ -38,6 +38,26 @@
             "statusMessage": "Naming this conversation"
           }
         ]
+      },
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "python3 \"${CLAUDE_PROJECT_DIR:-.}/.claude/hooks/stamp_seat_status.py\" 2>/dev/null || true",
+            "timeout": 5
+          }
+        ]
+      }
+    ],
+    "PostToolUse": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "python3 \"${CLAUDE_PROJECT_DIR:-.}/.claude/hooks/stamp_seat_status.py\" 2>/dev/null || true",
+            "timeout": 5
+          }
+        ]
       }
     ]
   }
