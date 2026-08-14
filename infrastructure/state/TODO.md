@@ -942,6 +942,7 @@ skills, which a peer's ask cannot authorise editing:
 | `skills/rimworld-modding/SKILL.md:326` | "the manager holds rules in memory and rewrites the file on exit" |
 | `infrastructure/state/TODO.md:644` | §13, the Mythological Creatures removal — "the running game rewrites `ModsConfig.xml` from memory on exit", used to say a `<li>` still present "proves nothing" |
 | `design/Jawa/mods/forbidden_mods.md:171` | same, gating a follow-up on a clean exit |
+| `infrastructure/state/NEXT_RELOAD.md:18-35` | **[OPS]** — the shutdown-window block puts OPS's three mod-list changes there and says mod-list work "needs the game **down** and is unrecoverable once it relaunches". CREATE did not rewrite another seat's row; OPS should, and may find its three changes are not load-gated at all |
 
 ⚠️ **The Steam half of those entries is a SEPARATE claim and may well still be
 true** — Steam does not delete an unsubscribed mod's folder while RimWorld holds
