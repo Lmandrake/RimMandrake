@@ -374,11 +374,17 @@ knows the artifact exists.
 which never rewrites the source and asserts IDs stay unique with no dangling
 `Precept_<ID>`. Re-runs are byte-identical.
 
-🔴 **STILL OPEN, and it is the owner's call, not OPS's:** whether `Nomad`/`Tunneler`
-join the meme set. The owner asked for the nomadism trigger to be measured first —
-specifically whether the penalty counts *settlement age* (a gravship jump would reset it)
-or *owning a base at all* (it would not). **Do not adopt either meme on anyone's say-so
-until that lands.**
+✅ **CLOSED — the nomadism question is measured and ruled.** No meme changed.
+**`Nomadic_Preferred` is a PRECEPT, not a meme** (`requiredMemes` empty), so it went in at
+zero slot cost and the owner kept all four memes. MEASURED in vanilla IL:
+`GravshipUtility::ArriveNewMap` unconditionally stamps `IdeoManager.lastResettledTick`,
+which is the only field the precept's ThoughtWorker reads ⇒ **a jump to a fresh tile IS a
+resettle to the engine**, not "building our own base again". ⚠️ `ArriveExistingMap` does
+NOT write it — landing back on a tile you already hold resets nothing.
+
+⛔ **Do not ever take `VME_Nomad`.** Its own description says non-vanilla movement systems
+will not register, and it inflicts **−50 mood at 60 days**. That is the one meme that would
+have done exactly what the owner feared.
 
 ## ⚠️ FILED, not chased — one `GenStep_ScatterThings` NRE during BRIDGE's seed sweep
 
