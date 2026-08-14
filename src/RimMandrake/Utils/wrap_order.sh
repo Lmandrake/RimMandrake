@@ -41,7 +41,13 @@
 # 2 = live lock, wait). Those are findings to print, not failures to abort on.
 set -uo pipefail
 
-REPO_ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
+# ⚠️ THREE levels up, not one. This script lives at
+# src/RimMandrake/Utils/wrap_order.sh; the `/..` was correct when it sat at
+# Utils/ and silently survived the restructure, so every path below resolved to
+# src/RimMandrake/src/RimMandrake/... and the lock check and the peer list BOTH
+# failed — at the exact moment WRAP is issued, which is the moment nobody has
+# spare attention to debug a helper. Measured 2026-08-14.
+REPO_ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/../../.." && pwd)"
 cd "$REPO_ROOT" || exit 2
 
 DEGRADED=0

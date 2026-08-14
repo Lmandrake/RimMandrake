@@ -196,3 +196,48 @@ Found while specifying `design\Jawa\worldbuilding\precept_the_unearned.md`. Both
    **Several design docs cite `3530586159` as adopted.** Nothing is broken — every
    `GarryFlowers_` def this campaign uses comes from the original, which is active —
    but the ID in the docs is wrong and will send someone hunting.
+
+---
+
+## 🔻 HANDOVER — session ended by owner shutdown, 2026-08-14
+
+**Everything below is committed and pushed. Nothing of PROJECT's is in flight.**
+
+### What this session built — the fleet board, and it is PROJECT's now
+The owner ruled the board entirely PROJECT's (seat file updated). It exists
+because five scrolling tabs could not answer *what is blocked on me*.
+
+| file | role |
+|---|---|
+| `src/RimMandrake/Utils/board.py` | renderer, `say`, `--watch` |
+| `src/RimMandrake/Utils/gamestate.py` | measured game state + instrument lease |
+| `src/RimMandrake/Utils/open_board.ps1` | the always-on-top window |
+| `infrastructure/state/BOARD.md` | the ROSTER — the only hand-kept part |
+| `infrastructure/agents/FLEET_SUPERVISION.md` | why it is shaped this way |
+
+**To put it back on screen after the reboot:**
+```
+powershell -NoProfile -ExecutionPolicy Bypass -File D:\Luke\dev\Rimworld\src\RimMandrake\Utils\open_board.ps1
+```
+
+### 🔴 The three rules that replaced deleted doctrine — do not reinstate the old ones
+1. **Rules 1a/1b and TAKEN/RELEASED are DELETED.** State is measured and stamped;
+   the instrument is a self-expiring lease. `CLAUDE.md` carries it.
+2. **Never report a precondition you can satisfy.** Cost a load window.
+3. **The owner's word is a GO, not a claim to fact-check.**
+
+### ⚠️ Known-open, in priority order
+- **S8 — BRIDGE's 30-tool build, md5 `d7e7c6c1`, `--gm` REQUIRED.** Needs a DOWN
+  game. Five tools blocked on nothing else. **Highest-value item the fleet owns.**
+- **S1 — `JawaSeaShaper.dll`, SOLO.** Cannot be written while RimWorld runs.
+- **Owner decisions #10 and #12** — both live in `OWNER_DECISIONS.md`, both with
+  their prerequisites closed. #12 blocks a v1 KEEP faction.
+- **Liveness hooks are wired but reached NO seat this session** — hooks are read
+  at session start and were added mid-flight. **A fresh fleet will have them.**
+  Verify after the reboot: a seat's status JSON should carry `tool` and `pid`.
+
+### Not done, and deliberately
+- The narrative research (commander's intent, SITREP/BLUF, computable rabbit-hole
+  signals) **died on a session limit at 3:40pm PT reset.** No findings. `--why`
+  and `--expect` were built from already-verified material only; the field
+  structure is a first guess and should be revisited against sources.
