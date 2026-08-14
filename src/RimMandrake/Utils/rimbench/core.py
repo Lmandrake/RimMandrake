@@ -235,13 +235,21 @@ class Session(object):
         return "%s_%03d" % (name, self._shots)
 
     def look(self, x, z, name="rimbench", zoom=None):
-        """Point the camera and take a screenshot. Returns the file path."""
+        """Point the camera and take a screenshot. Returns the file path.
+
+        `zoom` is a rootSize NUMBER (11-15 is the safe band), not a zoom name.
+        """
         self.call("rimworld/jump_camera_to_cell", x=x, z=z)
-        if zoom:
-            try:
-                self.call("rimworld/set_camera_zoom", zoom=zoom)
-            except Exception:
-                pass
+        if zoom is not None:
+            # 🔴 The parameter is `rootSize`, a NUMBER — not `zoom`, and not a
+            # zoom name. `{"zoom": "Furthest"}` is an unknown key: the bridge
+            # drops it silently, returns success: true, and the camera does not
+            # move. This call spent a year of session-time looking correct.
+            # traps.md, "Client-call gotchas". The bare `except: pass` that used
+            # to wrap it made the silence total, so it is gone too.
+            # ⚠️ rootSize below ~11 breaks the world mesh render (flat red);
+            # 11-15 are clean, and the extension must be enabled for >23.
+            self.call("rimworld/set_camera_zoom", rootSize=float(zoom))
         r = self.call("rimworld/take_screenshot", fileName=self._shot_name(name),
                       suppressMessage=True)
         return r.get("path")
