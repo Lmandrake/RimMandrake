@@ -619,6 +619,25 @@ pick a category that actually ships styles.
 `<li>Horaxian</li>`; the resolved dump says `AM_Horaxian`, because Alpha Memes
 `PatchOperationReplace`s the whole list. **Read the dump, never the vanilla XML.**
 
+## ⛔ V-DEPRECATED 2026-08-14, owner's ruling — do NOT rebuild either of these
+
+**Both were delivered, reviewed by the owner, and retired the same session. The
+files are deleted from the tree; git history holds them if anyone ever needs the
+working. Do not re-derive, do not re-file, do not "helpfully" restore.**
+
+1. ⛔ **"Begging as heresy" / the Unearned — DEPRECATED.** Owner: *"too hard, will
+   just be role-played."* The doctrine survives as **fiction the player narrates**,
+   not as a `MemeDef` + `IssueDef` + `PreceptDef` set. It was buildable — the
+   refusal hook (`CharityRefused_Beggars`) is real and measured — and it was still
+   the wrong trade for the authoring cost. **The Hutt Cartel's meanness now lives
+   entirely in `the Reckoning of Debts`' `ideoDescription`**, which is shipped.
+2. ⛔ **The `MandrakeJawa` gene review — CLOSED, genes FIXED.** Owner has defined
+   the gene set, likes it, and it is now **settled**. ⚠️ **The five defects that
+   review raised are ruled moot by that decision, not outstanding** — do not
+   re-audit the xenotype against the def dump and do not file its findings as
+   defects. `design/Jawa/worldbuilding/ideoligion/APPROVED.md` is the authority on
+   the xenotype; this seat does not reopen it.
+
 ## ⭐ V28. VISION's ask for the 2026-08-14 no-worldgen session — ranked, all scratch-map
 
 Filed into the pre-launch window PROJECT opened. **Worldgen is held, so V-crit and
