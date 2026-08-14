@@ -53,8 +53,19 @@ effect **only at startup**. Editing while the game runs is not destructive, it i
 simply *inert* until the next load — and reading the running game as evidence the
 edit "did not work" is the trap.
 
-**Companion:** nothing owed. BRIDGE's B0 deployed 2026-08-13 10:05, byte-verified,
-17 tools (`infrastructure/state/queue/BRIDGE.md`).
+**Companion:** nothing owed. **Redeployed 2026-08-13 17:02 — 199,680 B, stamp
+`fe180a3ac177`, 20 tools**, byte-verified by `strings` on the DEPLOYED copy at
+`C:\Program Files (x86)\Steam\steamapps\common\RimWorld\BridgeTools\JawaBench\JawaBench.BridgeTools.dll`,
+not trusted from the build's own report. Supersedes the 10:05 / 17-tool line.
+New since then: `jawa/set_pawn_rotation`, `jawa/set_pawn_style`,
+`jawa/set_pawn_xenotype`, a `xenotype` parameter on `jawa/spawn_pawn`, and a
+silent-success fix in `jawa/spawn_pawn` (a batch where every pawn threw used to
+report `success: true`). GM pair intact.
+⚠️ **None of the three new tools has ever run.** They compile and self-verify on
+paper only — first execution is this load.
+⚠️ **Any future companion deploy must pass `--gm`** or it strips
+`jawa/fire_incident` and `jawa/send_letter` off the game copy; the build refuses
+by default, which is the guard working.
 
 **Mod list — OPS's alone (rule 7):**
 
@@ -96,6 +107,66 @@ wing is short a machine — survivable, and much cheaper to know before the buil
 
 **3 — the map size**, because the plan on disk may be aimed at the wrong map. See
 the gravship section.
+
+---
+
+## 🌉 BRIDGE'S OWN ROWS — one batch, ~2 minutes of calls, no per-item gate
+
+**Order matters only in that the tool-surface census runs FIRST** — if the
+companion did not load, every row below is unrunnable and we want to know that in
+call one, not call nine. Everything after it is independent and can be fired in
+any order.
+
+```
+0. list_tools                      -> expect 20 jawa/* names. THE gate.
+1. jawa/list_pawns                 -> v1 row 5+6 evidence, and ids for 4-6
+2. jawa/get_terrain_batch  full map, layer=top   -> v1 row 7 AND B-v1, one call
+3. jawa/spawn_pawn  kindDef=<jawa kind>, faction=player, xenotype=BTD_Jawa
+4. jawa/set_pawn_xenotype  pawnId=<id from 3>, xenotype=BTD_Jawa
+5. jawa/set_pawn_rotation  pawnId=<id>, dir=east      then dir=unlock
+6. jawa/set_pawn_style     pawnId=<id>, hair=..., beard=...
+```
+
+**0 — the census is the gate.** `list_tools` must return **20** `jawa/*` names.
+19 or fewer means the redeploy did not take and nothing below is evidence of
+anything. This is one call and it costs nothing.
+
+**1 — `jawa/list_pawns` answers v1 rows 5 and 6 together.** Row 5 is "the Jawa
+xenotype spawns and plays"; row 6 is "weapons/gear from the 6 live mods seen in
+use". One census returns kind, faction and equipment for every pawn on the map.
+⚠️ **Row 5 needs the XENOTYPE per pawn, and `list_pawns` does not return one.**
+Three Jawa xenotypes are live — `BTD_Jawa` (the one our patches tune),
+`OuterRim_Jawa` (what the Jawa *pawnkinds* actually pin) and
+`guy762_xenotype_jawa`. **"A Jawa spawned" does not close row 5; "which Jawa"
+does.** Until `list_pawns` carries it, read it off `jawa/set_pawn_xenotype`'s
+read-back in step 4, which reports the xenotype it found before it changed
+anything.
+
+**2 — one read-only call serves two rows.** Full-map `get_terrain_batch` at
+`layer=top` gives ordinary-desert confirmation (row 7) *and* the dry-lake
+footprint data for B-v1, dumped to a file for offline flood-fill. **No write, no
+reload.** Budgets are `MaxOps 4096` / `MaxCells 70000`; a 250×250 map is 62,500,
+so the whole map fits in one call — but check `cellsOutOfBounds` and the op count
+in the reply rather than assuming.
+
+**3-6 — first execution of three never-run tools.** Assert on the read-back
+fields, never on `success` alone:
+- `set_pawn_rotation` returns `applied`, `posture` and `visible`. **`visible:
+false` means the pawn is laying or downed and the renderer ignores the turn** —
+that is a real no-op wearing a success. Stand the pawn up and repeat.
+- 🔴 **`dir=unlock` is owed.** `debugRotLocked` is serialised by
+`Thing.ExposeData`, so a pawn left locked stays locked across every future load.
+Leaving one locked is litter that outlives the session.
+- `set_pawn_style` returns per-field `was`/`now`/`ok`. Tattoos silently no-op
+without Ideology; the tool refuses rather than lying, so a refusal there is
+correct behaviour, not a bug.
+- `set_pawn_xenotype` clears xenogenes but **not** endogenes. `BTD_Jawa` is
+inheritable, so its 24 genes land as endogenes and survive a later conversion —
+pass `clearEndogenes` deliberately or expect residue.
+
+**What I leave on the map:** whatever step 3 spawns, plus any style/xenotype
+changes to it. Disposable quicktest map assumed. Reconciled in the release
+message — and **rotation unlocked before I let go of the bridge**.
 
 ---
 
