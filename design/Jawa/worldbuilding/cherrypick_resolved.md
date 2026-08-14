@@ -4,9 +4,9 @@ _CREATE, 2026-08-14. **VISION's `cherrypick_inbox.md` names races and objects;
 this resolves every one to the def the game actually keys on.** Every row below
 was read from the live def dump, not from the design doc and not from memory._
 
-🔴 **Read `§0 The key format` before entering anything.** A wrong def TYPE is not
-a wrong guess, it is a silent miss — and several of these names exist as four or
-five different def types at once.
+🔴 **Read §0b before entering anything.** A wrong def TYPE is not a wrong guess,
+it is a **silent** miss — and several of these names exist as four or five
+different def types at once.
 
 ---
 
@@ -101,9 +101,19 @@ Config/Mod_3521312241_Mod_CherryPicker.xml
       </keys>
 ```
 
-⭐ **A bad key is NOT silent.** `CherryPickerUtility.ProcessList` appends
-`" - FAILED: <key>"` to its report for anything that will not resolve. That
-report is the confirmation this list is correct.
+⛔ **CORRECTION — "a bad key is not silent" was WRONG, and it was my claim.**
+The `" - FAILED: <key>"` report line fires in exactly ONE case: the def was found
+and `RemoveDef` threw. It does **not** fire for the two failures that actually
+matter here:
+
+| what went wrong | what you see |
+|---|---|
+| def found, `RemoveDef` threw | `" - FAILED: <key>"` in the report ✅ |
+| type or defName does not resolve | **nothing** — `ProcessList` `brfalse` skips it |
+| def resolves but is outside `allDefs` | **nothing** — dropped from the working set |
+| key has no `/` | **the whole remaining list is lost** (§0b) |
+
+⇒ **The log cannot confirm this list.** Only the offline validation in §0b can.
 
 ---
 
