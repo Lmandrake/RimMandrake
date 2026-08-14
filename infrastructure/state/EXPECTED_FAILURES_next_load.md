@@ -256,7 +256,12 @@ Cheaper second positive: `rimbridge/get_bridge_status` →
 ```bash
 grep -nE "\[RimBridge\] (Failed to (load|scan|inspect|prepare|register)|Loader exception|Skipping companion|Could not resolve global BridgeTools|Ignoring companion-local SDK|STARTUP_INIT_FAILURE|Failed to start server)|Companion references RimBridgeServer\.Sdk" "$LOG"
 ```
-**Pass:** zero lines **and** census 21. **Fail:** any line, or census ≠ 21.
+**Pass:** zero lines **and** the census equal to the number DERIVED by the two
+commands above, at census time. **Fail:** any line, or a census that disagrees
+with the derived number — then read WHICH names are missing, not just how many.
+🔴 **This used to read "census 21" and that was the very error the box above
+forbids.** The gate script already held 22, the live game reported 22, and the
+artifact holds 24, so the literal would have failed a correct deploy.
 
 **Silent-failure mode, unchanged:** a companion deploy attempted while the game
 runs cannot write the file and nothing says so. The 22:23 deploy landed with the
@@ -427,7 +432,8 @@ considered and cut rather than written:
 **Immediately after the world exists:**
 3. **S2** — the worldgen grep. Want zero lines. Screenshot the world map (row 7's gate).
 4. **S3, the evidence** — `jawa/list_factions`, diff against the checklist.
-5. **S1** — `prove_new_tools.py`; census must read **21**, and it should print PASS.
+5. **S1** — `prove_new_tools.py --census`; derive the expected number first (S1's two
+   commands), then compare. **No literal count belongs in this step.**
 6. **S5** — `rimworld/save_game`, then grep the `.rws` for `anomalyPlaystyleDef`.
 
 **At session end, before the next launch destroys the log:**
@@ -448,7 +454,7 @@ reconstruct a result from the log.**
 
 | # | check | evidence collected? | result |
 |---|---|---|---|
-| S1 | companion census = 21 | | |
+| S1 | companion census = the number derived at census time (record BOTH: derived, and observed) | | |
 | S1 | `[RimBridge]` failure grep = 0 | | |
 | S2 | worldgen error grep = 0 | | |
 | S2 | world map screenshot (row 7 gate) | | |
