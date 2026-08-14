@@ -27,6 +27,14 @@ an agent looking at the image decides.
 It DOES decide anything with a read-back: a position, a terrain defName, a
 faction list, a count. Those are PASS/FAIL here and need no eyes.
 
+🔴 **"IT LOOKED FINE" IS A RESULT. WRITE IT DOWN.** Owner's directive, 2026-08-13:
+all new art fixes are stopped until someone verifies the art was actually broken,
+because the missing-art premise is itself suspect. So a row that comes back
+looking NORMAL is the evidence being asked for, not a check that failed to fire.
+This is the null-baseline problem in another costume -- without knowing what the
+UNFIXED art looks like, a fix that changed nothing is indistinguishable from a
+fix that worked. Record what you saw either way.
+
 ORDERING, AND WHY IT IS NOT NEGOTIABLE
 ======================================
 1. **Census first.** Nothing below is interpretable until the companion reports
@@ -372,6 +380,141 @@ def i_desert_worldgen(s, cfg):
     record("F1b", "  ...and it READS as desert", NEEDS_EYES, "", shot)
 
 
+# CREATE_TEST_PLAN.md Part 1. CREATE owns WHAT to look at; this table owns the
+# driving. Names are the corrected ones -- `ToolBelt` does not exist anywhere and
+# the research kits are APPAREL, whose fix touches wornGraphicPath, not the
+# directionless ground texPath.
+#   (id, defName, kind, note printed with the shot)
+ART_ROWS = [
+    ("P1", "AV_DogSled", "vehicle",
+     "VehicleDef, not a ThingDef. Want TWO EOPIE not four dogs, and a BROWN "
+     "body -- the brown is a def patch (graphicData/color 99,65,24), so grey "
+     "means the patch did not apply, NOT that the art is wrong."),
+    ("P2", "PH_DoorBlastCDoor", "building", "rotated EAST, open and closed"),
+    ("P3", "PH_DoorThickBlastBDoor", "building", "rotated EAST, open and closed"),
+    ("P4", "PH_DoorBlastDDoor", "building", "EAST; the iris ring must survive"),
+    ("P5", "VAEA_Apparel_ToolBelt", "apparel-worn",
+     "⚠️ NOT `ToolBelt`, which exists nowhere. Two mods label an item 'tool "
+     "belt', so never spawn this by label. WORN, pawn facing WEST."),
+    ("P6", "RR_FieldResearchKitSimple", "apparel-worn", "WORN, facing EAST"),
+    ("P7", "RR_FieldResearchKitHiTech", "apparel-worn", "WORN, facing EAST"),
+    ("P8", "RR_FieldResearchKitMultiAnalyzer", "apparel-worn", "WORN, facing EAST"),
+    ("P9", "RR_FieldResearchKitRemote", "apparel-worn", "WORN, facing EAST"),
+    ("P10", "VGE_Astronaut", "pawn",
+     "facing NORTH, and spawn BOTH life stages -- the adult's north was never "
+     "broken, so a juvenile-only shot can pass on art nobody fixed"),
+    ("P11", "OuterRim_MSEDroid", "pawn", "facing NORTH"),
+    ("P12", "OuterRim_CereanMane", "hair", "facing SOUTH; donor is 1,514 B of "
+     "fully transparent pixels, so the failure is a bald head"),
+    ("P13", "VRESaurids_Littlefoot", "hair", "facing NORTH; centre frill"),
+]
+
+
+def i_art_rows(s, cfg):
+    """Part 1. Spawn or dress, point the camera, shoot, and DO NOT judge.
+
+    ⚠️ Apparel has no bridge tool. The only route is `rimworld/select_pawn`
+    then the `Actions\\Wear apparel (selected)...` debug action, which works on
+    PLAYER COLONISTS ONLY -- so the wearer must be spawned faction=player. Rows
+    marked apparel-worn are recorded SKIP with that note rather than silently
+    shot on the ground: the ground sprite is a different, unfixed texture, and
+    photographing it would be a false PASS.
+    """
+    bx, bz = cfg.x, cfg.z + 20
+    step = 6
+    for n, (rid, defName, kind, note) in enumerate(ART_ROWS):
+        x, z = bx + (n % 6) * step, bz + (n // 6) * step
+        try:
+            if kind == "apparel-worn":
+                # No apparel tool exists on the bridge. The only route is
+                # select_pawn + the `Actions\\Wear apparel (selected)...` debug
+                # action, which accepts PLAYER COLONISTS ONLY.
+                sp = s.call("jawa/spawn_pawn", kindDef=cfg.wearer, x=x, z=z,
+                            faction="player", count=1)
+                row = ((sp or {}).get("pawns") or [{}])[0]
+                pid = row.get("id")
+                if not pid:
+                    record(rid, defName, FAIL,
+                           "could not spawn a wearer (%s): %s"
+                           % (cfg.wearer, str((sp or {}).get("message"))[:80]))
+                    continue
+                litter("pawn %s (%s wearer)" % (pid, defName), "(%d,%d)" % (x, z))
+                # rimworld/* wants Thing_-prefixed ids; jawa/* returns bare.
+                s.call("rimworld/select_pawn", pawnId="Thing_" + pid)
+                s.call("rimworld/execute_debug_action",
+                       path="Actions" + chr(92) + "Wear apparel (selected)..."
+                            + chr(92) + defName)
+                face = "west" if defName.startswith("VAEA") else "east"
+                s.call("jawa/set_pawn_rotation", pawnId=pid, dir=face,
+                       lockRotation=True)
+                shot = s.look(x, z, name=rid.lower(), zoom=11)
+                # 🔴 debugRotLocked is written by Thing.ExposeData and survives a
+                # save/load. Unlock every pawn we froze, in the same breath.
+                s.call("jawa/set_pawn_rotation", pawnId=pid, dir="unlock")
+                record(rid, defName, NEEDS_EYES,
+                       "WORN, facing %s. %s" % (face.upper(), note), shot)
+                continue
+
+            if kind in ("pawn", "hair"):
+                kd = defName if kind == "pawn" else cfg.wearer
+                sp = s.call("jawa/spawn_pawn", kindDef=kd, x=x, z=z,
+                            faction="player", count=1)
+                row = ((sp or {}).get("pawns") or [{}])[0]
+                pid = row.get("id")
+                if not pid:
+                    record(rid, defName, FAIL,
+                           "spawn failed: %s"
+                           % str((sp or {}).get("message"))[:100])
+                    continue
+                litter("pawn %s (%s)" % (pid, defName), "(%d,%d)" % (x, z))
+                if kind == "hair":
+                    st = s.call("jawa/set_pawn_style", pawnId=pid, hair=defName)
+                    srow = ((st or {}).get("pawns") or [{}])[0]
+                    if not srow.get("ok"):
+                        record(rid, defName, FAIL,
+                               "set_pawn_style refused the hair: %s"
+                               % str(srow.get("error")
+                                     or (st or {}).get("message"))[:90])
+                        continue
+                face = "south" if "Cerean" in defName else "north"
+                rot = s.call("jawa/set_pawn_rotation", pawnId=pid, dir=face,
+                             lockRotation=True)
+                rrow = ((rot or {}).get("pawns") or [{}])[0]
+                shot = s.look(x, z, name=rid.lower(), zoom=11)
+                s.call("jawa/set_pawn_rotation", pawnId=pid, dir="unlock")
+                # A rotation that did not take makes the shot worthless -- say so
+                # on the row rather than letting the picture be judged as art.
+                warn = ("" if rrow.get("applied")
+                        else " ⚠️ ROTATION DID NOT TAKE (%s) -- this shot may be "
+                             "another facing." % rrow.get("note"))
+                record(rid, defName, NEEDS_EYES,
+                       "facing %s. %s%s" % (face.upper(), note, warn), shot)
+                continue
+
+            # buildings and the vehicle
+            rot = 1 if kind == "building" else 0
+            sb = s.call("jawa/spawn_batch", ops="%s:%d,%d" % (defName, x, z),
+                        rot=rot)
+            if not (sb or {}).get("spawned"):
+                record(rid, defName,
+                       FAIL if kind == "building" else NEEDS_EYES,
+                       "spawn_batch placed nothing: %s%s"
+                       % (str((sb or {}).get("errors"))[:90],
+                          " -- a VehicleDef may not construct through "
+                          "spawn_batch at all; that is a TOOL gap, not a "
+                          "verdict on the art." if kind == "vehicle" else ""))
+                continue
+            litter("%s x%s" % (defName, (sb or {}).get("spawned")),
+                   "(%d,%d)" % (x, z))
+            shot = s.look(x, z, name=rid.lower(), zoom=11)
+            record(rid, defName, NEEDS_EYES,
+                   "%s%s" % ("rotated EAST. " if kind == "building" else "",
+                             note), shot)
+        except Exception as e:
+            record(rid, defName, ERROR, "%s: %s" % (type(e).__name__,
+                                                    str(e)[:120]))
+
+
 ITEMS = [
     ("A1", ANY_MAP, "Rebel Alliance faction watch", i_factions),
     ("A2", ANY_MAP, "NoPathToPilotConsole predicate", i_pilot_console),
@@ -387,6 +530,7 @@ ITEMS = [
     # "measured from the pawn", but it does NOT run by default: a closed row
     # must not spend live time.
     ("A5", ANY_MAP, "dune seas: BiomeDef terrainPatchMakers", i_dune_seas),
+    ("P", ANY_MAP, "CREATE_TEST_PLAN Part 1 - the art rows", i_art_rows),
     # ⛔ Row 7 / rows 2 / Configure Factions are HELD BY THE OWNER -- the sea
     # spec is unsolved and the click is irreversible. Not this session.
     # FRESH_MAP now means a QUICKTEST, which rule 1c permits freely and which
@@ -454,6 +598,16 @@ def ledger(cfg):
     if shots:
         lines += ["", "## Screenshots - open these", ""]
         lines += ["- `%s` - %s" % (r["shot"], r["title"]) for r in shots]
+    eyes = [r for r in RESULTS if r["verdict"] == NEEDS_EYES]
+    if eyes:
+        lines += ["", "## Awaiting a look - %d item(s)" % len(eyes), "",
+                  "🔴 **Record what you actually saw, INCLUDING \"this looked "
+                  "normal\".** Owner's directive 2026-08-13: art fixes are "
+                  "stopped until someone verifies the art was broken in the "
+                  "first place, so a normal-looking row is the evidence being "
+                  "asked for. A blank entry loses it.", "",
+                  "| id | item | what I saw |", "|---|---|---|"]
+        lines += ["| %s | %s |  |" % (r["id"], r["title"]) for r in eyes]
     lines += ["", "## Left on the map", ""]
     lines += (["- %s" % x for x in LITTER] if LITTER else
               ["Nothing. Every mutation was reverted in-run."])
@@ -475,7 +629,7 @@ def selftest():
     record("F1", "row 7 desert terrain", SKIP, "phase=fresh")
     litter("Jawa_SaltCrust painted 10x10", "(100,100)")
     cfg = argparse.Namespace(date="0000-00-00", phase="all", x=0, z=0,
-                             console_id=None, trace=False)
+                             console_id=None, wearer="Colonist", trace=False)
     p = ledger(cfg)
     body = open(p, encoding="utf-8").read()
     bad = 0
@@ -499,6 +653,11 @@ def main(argv=None):
                          "the shutdown window is still open.")
     ap.add_argument("--x", type=int, default=100, help="working cell X")
     ap.add_argument("--z", type=int, default=100, help="working cell Z")
+    ap.add_argument("--wearer", default="Colonist",
+                    help="PawnKindDef used as the body for the apparel and "
+                         "hair rows. Must be humanlike and is spawned "
+                         "faction=player, because the Wear apparel debug "
+                         "action accepts player colonists only.")
     ap.add_argument("--console-id",
                     help="ThingID of the PilotConsole, for the "
                          "NoPathToPilotConsole predicate")
