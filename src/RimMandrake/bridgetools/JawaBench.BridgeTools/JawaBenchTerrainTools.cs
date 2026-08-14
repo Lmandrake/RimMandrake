@@ -1219,10 +1219,41 @@ namespace JawaBench.BridgeTools
                 }
                 else
                 {
+                    // 🔴 NO TARGET AT ALL. This used to fall through with the
+                    // x/z defaults of -1, pass a bounds check that only tested
+                    // the UPPER bound, hit an empty cell list and report
+                    // "damaged 0 things" -- which OPS read as "the weapon is
+                    // broken" and nearly filed against a weapon that works on
+                    // the first hit. The real cause was a parameter named
+                    // `targetId`, which this tool does not have: the SDK drops
+                    // unknown parameters silently, so the call arrives here
+                    // looking like a caller who asked for nothing.
+                    // Name the accepted parameters in the refusal. A caller who
+                    // guessed a name must be told which name is right.
+                    if (x < 0 || z < 0)
+                        return Fail(
+                            "No target. jawa/damage takes 'thingId' (a ThingID string, as " +
+                            "returned by jawa/list_pawns and jawa/spawn_pawn) OR 'x' and 'z' " +
+                            "for a cell. Nothing was damaged. ⚠️ If you passed 'targetId', " +
+                            "'pawnId' or 'id', that is not a parameter of this tool and the " +
+                            "bridge dropped it silently before the tool ran.",
+                            new
+                            {
+                                accepted = new[] { "thingId", "x", "z", "damageDef", "amount",
+                                                   "armorPenetration", "bodyPart", "allowColonists" },
+                                thingIdGiven = false,
+                                xGiven = x,
+                                zGiven = z
+                            });
+
                     var cell = new IntVec3(x, 0, z);
                     var size = map.Size;
                     if (x >= size.x || z >= size.z) return Fail("Cell is outside the map.");
                     targets.AddRange(map.thingGrid.ThingsListAtFast(cell).ToList());
+                    if (targets.Count == 0)
+                        return Fail($"Nothing at ({x},{z}) to damage. The cell is empty, so " +
+                                    "this is a miss, not a failure of the damage itself.",
+                                    new { x, z });
                 }
 
                 var results = new List<object>();
