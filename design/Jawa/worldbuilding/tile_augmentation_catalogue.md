@@ -362,19 +362,49 @@ _Four concepts recorded the hour they were raised. **The first three are for the
 wild jungles and marshes of the Three Waters; the fourth is a general map
 augmentation.**_
 
-## 8.1 Wildpods — *the jungle*
+## 8.1 Wildpods — *the jungle and the marsh*
 
-**A pod-bearing plant whose pods are SEALED, and what is inside varies.**
+⚠️ **CORRECTED. I first read "pods" as seed pods and wrote a paragraph about
+botany. Wrong. Wildpods are GIANT ANIMALS that move in pods.**
 
-⭐ **This is scavenging applied to botany, and it is the most Jawa hazard on the
-list.** The clan's whole instinct is *open the thing and see*. A field of pods is
-a field of unopened questions — most worthless, some valuable, some a mistake.
+> **Megafauna, in groups, living where the water is.**
 
-- **Harvestable**, so it reads as a resource at first glance.
-- **A minority burst** — that is the hazard, and it must be a minority or the
-  player simply stops opening them, which kills the mechanic.
-- ⚠️ **Do not put the good outcome behind a research gate.** The pull is *I do not
-  know what is in this one*; a known distribution is just a crop.
+⭐ **This is a better version of the thing I credited to briar — a presence that
+shapes the route, except it MOVES.** A pod of giant animals is not a raid and not
+a hazard. It is a fact occupying part of the map, and the player plans around it
+the way you plan around weather that has legs.
+
+### Why they matter more than their meat
+
+⭐ **They explain the jungle.** The obvious question about a desert world with
+three green regions is *why has nobody taken them?* **Because something enormous
+already has.** The pods are simultaneously the reason the jungles are worth having
+and the reason they are still empty — one fact answering two questions, which is
+the cheapest kind of worldbuilding there is.
+
+⭐ **And they are the Wildsteam Clan's whole claim to existence.** Wookiees, Ewoks
+and every other badly desert-adapted settler live in exactly the jungles the pods
+occupy. **They are the only people who came to terms with them** — herding,
+avoiding, or hunting on terms the pods tolerate. That is why a faction of
+cold-adapted forest species survives on a thirst world at all, and it is far more
+interesting than "they live where it is cooler."
+
+### What they must be, mechanically
+
+- **Thrumbo-class, in groups.** Passive until provoked, catastrophic when
+  provoked. ⛔ **Not a manhunter pack** — a pack of giants that decides to attack
+  a starting colony is not a hazard, it is a save-deleting event.
+- **Enormous yield.** On a world where food is pressured, one wildpod is a
+  season. **Killing one is a project, not a fight** — and that is the point: it is
+  the largest deliberate undertaking available early.
+- **They should move between the three water regions**, so a pod is news rather
+  than scenery. A herd that arrives is an event; a herd that is always there is
+  terrain.
+
+⚠️ **Feasibility looks good and I have not checked it properly:** **Megafauna is
+already active** in the stack and was noted as contributing nothing to the crags.
+**It is the obvious donor** — CREATE surveys what it ships before anything is
+authored.
 
 ## 8.2 Poison briar and thorn fields — *the jungle*
 
@@ -431,8 +461,9 @@ liquid pool would not survive the heat.
 | **tar pits** | ⭐ **Alpha Biomes ships `AB_TarPits` as a BIOME.** The owner wants it as a *patch on other maps* — so the question is whether its terrain and props can be scattered by a `GenStep` outside their own biome |
 | **quicksand / sink-silt** | unknown. Swamp and marsh mods are the place to look; Biomes! Islands and the Greater Swamps family are candidates |
 | **poison briar** | the existing hostile-flora audit found **only one** damaging plant in the whole stack — Alpha Biomes' `AB_AgariluxPrime`, a radius-8 gas emitter. **Briar is a different mechanic and probably does not exist yet** |
-| **wildpods** | unknown. Closest existing idea is a harvestable plant with a variable yield |
+| **wildpods** | ⭐ **Megafauna is ACTIVE** and is the obvious donor — giant animals already exist, the work is herd behaviour, placement and yield. **Likely the cheapest of the four** |
 
-🔴 **The honest read: tar is likely cheap, briar and wildpods are likely new
-work.** All four are `[v2]`, and none of them should be authored before the sea
+🔴 **The honest read: wildpods and tar are likely cheap — both have donors in the
+stack. Briar is probably new work**, since the hostile-flora audit found exactly
+one damaging plant in the whole install and it is a gas emitter, not terrain. All four are `[v2]`, and none of them should be authored before the sea
 step and the biome mix land.
