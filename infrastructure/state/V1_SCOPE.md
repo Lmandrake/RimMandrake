@@ -58,7 +58,7 @@ critical path, not beside it.** Batch anything that genuinely needs a load.
 | **Factions — subtractive** | **Untick the fiction-breakers on vanilla's Configure Factions page during the worldgen run.** Not config — Faction Control has no suppression field. List proposed by OPS, ratified by VISION. | Per-faction density tuning, biome weighting, `CenterPoint` clustering. |
 | **Quests** | **One** `QuestScriptDef` that fires and resolves. Any premise. | Quest chains, faction-linked arcs, the Hutt extortion loop. |
 | **Resources / terrain** | **Three** terrain or resource overrides that are visible on the map. | The full resource-terrain matrix, biome palette, water doctrine. |
-| **Xenotype / crew** | Jawa xenotype spawns and plays. Already largely live. | Crew personas, dialogue, per-pawn backstory wiring. |
+| **Xenotype / crew** | ⚠️ **WHICH Jawa xenotype spawns** — three are live, so "a Jawa appeared" does not close this. | Crew personas, dialogue, per-pawn backstory wiring. |
 | **Weapons / gear** | What the mods already ship, plus our 6 live mods. | The energy-density explosion model. Ion/droid balance passes. |
 | **World** | **Generate a new world** on the desert-world settings. The owner keeps no savegames, so the current one is not the shipping one. | Authored world layout, settlement placement, landmark pinning. |
 
@@ -182,7 +182,7 @@ live-stack → **OPS**; driving the live game to verify → **BRIDGE**.
 | 2 | Faction exclusion at worldgen | ⬜ **0** | ⬜ | **OPS** + VISION | 🔴 **YES — it happens DURING the worldgen run** |
 | 3 | One `QuestScriptDef` | ⬜ **0** | ⬜ | **CREATE** | 🟢 **NO — closable offline today** |
 | 4 | Three terrain overrides | ⬜ **0** | ⬜ | **CREATE** | 🟢 **NO — closable offline today** |
-| 5 | Jawa xenotype plays | 🟩 largely live | ⬜ | **BRIDGE** | 🔴 verify only |
+| 5 | ⚠️ **WHICH** Jawa xenotype plays | 🟩 largely live | ⬜ | **BRIDGE** | 🔴 verify only |
 | 6 | Weapons/gear | 🟩 6 mods live | 🟩 partly | **BRIDGE** | 🔴 verify only |
 | 7 | Ordinary worldgen | ⬜ **0 — now a DO** | ⬜ | **BRIDGE** | 🔴 **YES — we generate the world** |
 | 8 | ⭐ **Gravship (DEEP)** | ⬜ design only | ⬜ | **CREATE** | 🔴 **build wants the game** |
@@ -250,6 +250,18 @@ owner — their call, not an appeal, and recorded rather than argued.**
 
 **This is the drift the MVP seat exists to make visible, not to prevent** — the
 owner may spend v1 time on v2 work; PROJECT's job is to say so plainly.
+
+### ⚠️ Row 5's gate was wrong — BRIDGE, `01f95a8`
+
+**Three Jawa xenotypes are live at once:** `BTD_Jawa` (ours, patched),
+`OuterRim_Jawa` (what the Jawa pawnKinds actually pin), and
+`guy762_xenotype_jawa`. So **"a Jawa spawned" is not evidence** — the row closes
+only on *which* one, and the answer must be `OuterRim_Jawa` or our patch is
+decorating a xenotype nothing spawns.
+
+⚙️ `list_pawns` does not return xenotype. The read comes off
+`set_pawn_xenotype`'s read-back instead. **A gate whose evidence cannot be
+collected is not a gate**, which is why this had sat as "verify only" all day.
 
 ### ⭐ THE SEQUENCING CONSEQUENCE — author everything, verify once
 
