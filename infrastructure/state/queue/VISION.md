@@ -593,6 +593,35 @@ pick a category that actually ships styles.
 `<li>Horaxian</li>`; the resolved dump says `AM_Horaxian`, because Alpha Memes
 `PatchOperationReplace`s the whole list. **Read the dump, never the vanilla XML.**
 
+## ⭐ V28. VISION's ask for the 2026-08-14 no-worldgen session — ranked, all scratch-map
+
+Filed into the pre-launch window PROJECT opened. **Worldgen is held, so V-crit and
+`WORLDGEN_FACTION_CHECKLIST.md` are out of scope this session.** Everything below
+runs on a scratch/quicktest map and needs no campaign world.
+
+1. 🔴 **Spawn one Galactic Empire raid and screenshot it.** The biggest unanswered
+   design question I own, and the fourth layer of V6 / V7 / V25 — the pillar says
+   one permanent enemy, the flags say `hostile=false`, the religion scores 0 on
+   decision. **Before any of that is repaired, someone has to look at whether the
+   antagonist reads as the antagonist on screen.** ~5 min, BRIDGE.
+2. **`jawa/ideo_of` on a Jawa pawn, plus a counter for how often NPC religion
+   surfaces in play.** The eleven-religion spec (`faction_religions_spec.md`) is
+   disciplined around "NPC religion rarely surfaces" — **which has never been
+   measured.** If the counter returns ~0, I say so in the doc and stop treating the
+   eleven as load-bearing. Both already requested of BRIDGE; unfilled.
+3. **The hulk and the three casket banks** (`00a1398`). Nobody has ever seen an
+   `AncientCryptosleepCasket` — vanilla art is inside AssetBundles. Does the broken
+   deck read as a wreck?
+4. **`jawa/biome_probe`.** 28 of the 29 biome removals were judged from def fields
+   alone; the one that was ever looked at was confirmed in two seconds. Do not
+   treat the other 28 as decided.
+5. **The 25 vanilla mechs whose art is locked in AssetBundles.** Unblocks the
+   owner's mech review sheet (V18), which is otherwise complete.
+
+**Nothing of mine changes what gets DEPLOYED in this window.** The one candidate —
+the `factionlessGenerationWeight` patch that stops a wanderer arriving as the wrong
+Twi'lek — is unauthored, is CREATE's, and is `[v2]`. Do not hold launch for it.
+
 ## Handoff note — `skills/rimworld-quests/` is NOT mine
 It is CREATE's **C14** with four owner rulings. I found it half-built (references
 committed, no SKILL.md), started a draft, and stopped on the owner's word before a
