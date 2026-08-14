@@ -457,7 +457,7 @@ PRESETS = [
         stats=[
             ("11", "religions specified", "ok"),
             ("11/11", "validator: VALID", "ok"),
-            ("4", "inert precepts (WARN)", "warn"),
+            ("3", "strings the engine renders", "warn"),
             ("1", "unmeasured premise", "crit"),
             ("12", "Jawa slot — owner’s", ""),
         ],
