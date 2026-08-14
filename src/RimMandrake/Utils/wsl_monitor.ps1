@@ -110,49 +110,68 @@ Add-Type -AssemblyName System.Windows.Forms
 Add-Type -AssemblyName System.Drawing
 [Windows.Forms.Application]::EnableVisualStyles()
 
+# 🔴 NOTHING HERE USES A HARDCODED PIXEL POSITION, deliberately. The first
+# version laid labels out at fixed coordinates in a fixed 330x176 window; on a
+# scaled display the font rendered larger than those boxes and the bottom line
+# was clipped with "free" wrapped off the right edge. Font size in points is not
+# a promise about pixels — DPI decides that, and DPI is not knowable here.
+# So: AutoSize labels stacked in a FlowLayoutPanel, and a form that grows to fit
+# whatever it is handed. Correct at 100%, 150%, 200% or a display we never saw.
 $form                 = New-Object Windows.Forms.Form
 $form.Text            = 'WSL fleet'
-$form.Size            = New-Object Drawing.Size(330, 176)
-$form.TopMost         = $true          # visible over a windowed RimWorld
-$form.FormBorderStyle = 'FixedToolWindow'   # thin frame, no taskbar clutter
+$form.TopMost         = $true                 # visible over a windowed RimWorld
+$form.FormBorderStyle = 'FixedToolWindow'
 $form.ShowInTaskbar   = $false
 $form.BackColor       = [Drawing.Color]::FromArgb(12, 12, 12)
+$form.AutoSize        = $true
+$form.AutoSizeMode    = 'GrowAndShrink'
+$form.Padding         = New-Object Windows.Forms.Padding(10, 6, 10, 8)
 
-# Restore last position; fall back to the top-right corner of the primary screen.
-$pos = $null
-if (Test-Path $PosFile) {
-  try { $p = (Get-Content $PosFile -Raw) -split ','; $pos = New-Object Drawing.Point([int]$p[0], [int]$p[1]) } catch { }
-}
-if ($pos) { $form.StartPosition = 'Manual'; $form.Location = $pos }
-else {
-  $wa = [Windows.Forms.Screen]::PrimaryScreen.WorkingArea
-  $form.StartPosition = 'Manual'
-  $form.Location = New-Object Drawing.Point(($wa.Right - 312), ($wa.Top + 12))
-}
+$panel               = New-Object Windows.Forms.FlowLayoutPanel
+$panel.FlowDirection = 'TopDown'
+$panel.AutoSize      = $true
+$panel.AutoSizeMode  = 'GrowAndShrink'
+$panel.WrapContents  = $false                 # never reflow into columns
+$panel.Dock          = 'Fill'
+$form.Controls.Add($panel)
 
-function NewLabel($x, $y, $w, $h, $size, $bold) {
+function NewLabel($size, $bold) {
   $l           = New-Object Windows.Forms.Label
-  $l.Location  = New-Object Drawing.Point($x, $y)
-  $l.Size      = New-Object Drawing.Size($w, $h)
+  $l.AutoSize  = $true                        # the label decides its own width
   $l.Font      = New-Object Drawing.Font('Consolas', $size, $(if ($bold) { [Drawing.FontStyle]::Bold } else { [Drawing.FontStyle]::Regular }))
   $l.ForeColor = [Drawing.Color]::Gainsboro
   $l.BackColor = [Drawing.Color]::Transparent
-  $form.Controls.Add($l); return $l
+  $l.Margin    = New-Object Windows.Forms.Padding(0, 1, 0, 1)
+  $panel.Controls.Add($l); return $l
 }
 
-# Every line says what it means. An earlier version rendered "VM OK  warn 16
-# crit 22 GB", which is unreadable unless you wrote it — the owner said so, and
-# they were right. A monitor you have to decode is a monitor you stop glancing at.
-$lblBig  = NewLabel 10   4 305 38 21 $true    # the number
-$lblCap  = NewLabel 10  40 305 16  8 $false   # what the number IS
-$lblBar  = NewLabel 10  56 305 12  6 $false   # progress toward the red line
-$lblSub  = NewLabel 10  72 305 18 10 $false   # plain-English verdict
-$lblSub2 = NewLabel 10  92 305 18  9 $false   # thresholds
-$lblSub3 = NewLabel 10 112 305 18  9 $false   # inside-the-VM detail
-$lblFoot = NewLabel 10 134 305 16  8 $false   # freshness
+# Every line states its own meaning. An earlier version rendered
+# "VM OK  warn 16  crit 22 GB", which is unreadable unless you wrote it.
+$lblBig  = NewLabel 20 $true     # the number
+$lblCap  = NewLabel  8 $false    # what the number IS
+$lblBar  = NewLabel  7 $false    # progress toward the red line
+$lblSub  = NewLabel 10 $false    # plain-English verdict
+$lblSub2 = NewLabel  8 $false    # thresholds
+$lblSub3 = NewLabel  8 $false    # inside-the-VM detail
+$lblFoot = NewLabel  7 $false    # freshness
+
+# Restore last position; otherwise top-right of the primary screen. Done AFTER
+# layout so the width used to offset from the right edge is the real one.
+$form.Add_Shown({
+  $pos = $null
+  if (Test-Path $PosFile) {
+    try { $q = (Get-Content $PosFile -Raw) -split ','; $pos = New-Object Drawing.Point([int]$q[0], [int]$q[1]) } catch { }
+  }
+  if ($pos) { $form.Location = $pos }
+  else {
+    $wa = [Windows.Forms.Screen]::PrimaryScreen.WorkingArea
+    $form.Location = New-Object Drawing.Point(($wa.Right - $form.Width - 12), ($wa.Top + 12))
+  }
+})
+$form.StartPosition = 'Manual'
 
 # Drag from anywhere on the panel - a tool window's thin frame is fiddly to grab.
-$script:drag = $false; $script:dragOrigin = New-Object Drawing.Point(0,0)
+$script:drag = $false
 $down = { $script:drag = $true; $script:dragOrigin = [Windows.Forms.Cursor]::Position; $script:formOrigin = $form.Location }
 $move = {
   if ($script:drag) {
@@ -163,7 +182,7 @@ $move = {
   }
 }
 $up = { $script:drag = $false; try { Set-Content -Path $PosFile -Value ("{0},{1}" -f $form.Location.X, $form.Location.Y) } catch { } }
-foreach ($c in @($form, $lblBig, $lblCap, $lblSub, $lblSub2, $lblSub3, $lblFoot, $lblBar)) {
+foreach ($c in @($form, $panel, $lblBig, $lblCap, $lblBar, $lblSub, $lblSub2, $lblSub3, $lblFoot)) {
   $c.Add_MouseDown($down); $c.Add_MouseMove($move); $c.Add_MouseUp($up)
 }
 
@@ -172,13 +191,11 @@ $timer          = New-Object Windows.Forms.Timer
 $timer.Interval = $IntervalSec * 1000
 
 $timer.Add_Tick({
-  # Everything in here is wrapped: a transient WMI or file hiccup must never
-  # take the window down, because a monitor that quietly vanished reads exactly
-  # like a monitor saying "fine".
+  # Wrapped throughout: a transient WMI or file hiccup must never take the window
+  # down, because a monitor that quietly vanished reads exactly like one saying
+  # "fine". On error the footer says so and the next tick tries again.
   try {
-    $s   = Get-Sample
-    $d   = $s.Detail
-    $lvl = $s.Level
+    $s = Get-Sample; $d = $s.Detail; $lvl = $s.Level
 
     $col = switch ($lvl) {
       'CRITICAL' { [Drawing.Color]::FromArgb(255,  80,  80) }
@@ -188,28 +205,31 @@ $timer.Add_Tick({
     }
 
     if ($lvl -eq 'DOWN') {
-      $lblBig.Text = 'WSL is down'
-      $lblCap.Text = 'no virtual machine running'
-      $lblBar.Text = ''
-      $lblSub.Text = 'nothing to watch'
+      $lblBig.Text  = 'WSL is down'
+      $lblCap.Text  = 'no virtual machine running'
+      $lblBar.Text  = ''
+      $lblSub.Text  = 'nothing to watch'
+      $lblSub2.Text = ''
     } else {
-      $lblBig.Text = ("{0:N1} GB" -f $s.GB)
-      $lblCap.Text = 'used by the whole WSL VM (all seats together)'
+      $lblBig.Text  = ("{0:N1} GB" -f $s.GB)
+      $lblCap.Text  = 'used by the whole WSL VM, all seats together'
       $pct = [math]::Min(100, [int](100 * $s.GB / $CritGB))
-      $lblBar.Text = ('|' * [int]($pct / 3.3)).PadRight(30, [char]0x00B7)
-      $lblSub.Text = switch ($lvl) {
+      $lblBar.Text  = ('|' * [int]($pct / 4)).PadRight(25, [char]0x00B7)
+      $lblSub.Text  = switch ($lvl) {
         'CRITICAL' { 'CRITICAL - restart the biggest seat now' }
         'WARN'     { 'climbing - restart a seat while it is cheap' }
         default    { 'healthy' }
       }
-      $lblSub2.Text = ("turns amber at {0} GB, red at {1} GB" -f $WarnGB, $CritGB)
+      $lblSub2.Text = ("amber at {0} GB, red at {1} GB" -f $WarnGB, $CritGB)
     }
     $lblBig.ForeColor = $col; $lblBar.ForeColor = $col; $lblSub.ForeColor = $col
 
-    if ($d.Stale) { $lblSub3.Text = 'in-VM detail stale >2min - VM may be thrashing' }
+    # Two short lines rather than one long one - a single line is what ran off
+    # the edge before, and short lines survive a wider font too.
+    if ($d.Stale) { $lblSub3.Text = 'in-VM detail stale >2min' }
     elseif ($null -ne $d.Seats) {
-      $sw = if ($d.SwapTotal) { "{0:N1} of {1:N1} GB free" -f ($d.SwapFree/1024), ($d.SwapTotal/1024) } else { 'n/a' }
-      $lblSub3.Text = ("Claude seats {0:N1} GB   swap {1}" -f ($d.Seats/1024), $sw)
+      $sw = if ($d.SwapTotal) { "{0:N1}/{1:N1} GB" -f ($d.SwapFree/1024), ($d.SwapTotal/1024) } else { 'n/a' }
+      $lblSub3.Text = ("seats {0:N1} GB   swap free {1}" -f ($d.Seats/1024), $sw)
     } else { $lblSub3.Text = 'per-seat detail unavailable' }
 
     $lblFoot.Text = ("updated {0}  -  drag to move" -f (Get-Date -Format 'HH:mm:ss'))
@@ -218,14 +238,14 @@ $timer.Add_Tick({
 
     if ($lvl -ne $script:lastLevel) {
       Write-Log $lvl ("vmmemWSL={0}GB seats={1}MB" -f $s.GB, $d.Seats)
-      # Sound only on the way INTO trouble, and never a dialog. The colour is
-      # the notification; this is just in case you are looking elsewhere.
+      # Sound only on the way INTO trouble, and never a dialog. Colour is the
+      # notification; this is in case you are looking elsewhere.
       if (-not $NoBeep -and $lvl -eq 'CRITICAL') { try { 880,1046,1318 | ForEach-Object { [console]::beep($_, 200) } } catch { } }
-      elseif (-not $NoBeep -and $lvl -eq 'WARN') { try { [console]::beep(660, 150) } catch { } }
+      elseif (-not $NoBeep -and $lvl -eq 'WARN')  { try { [console]::beep(660, 150) } catch { } }
     }
     $script:lastLevel = $lvl
   } catch {
-    $lblFoot.Text = 'sample error - still running'
+    try { $lblFoot.Text = 'sample error - still running' } catch { }
   }
 })
 
