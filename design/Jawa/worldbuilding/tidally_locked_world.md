@@ -353,3 +353,55 @@ the terminator.**
 what the owner's abundance verdicts become.
 ⚠️ **`oceanBiome` / `lakeBiome` must ALSO appear in `<biomes>`** if a whitelist is
 ever used — a reason to keep `<biomes>` empty.
+
+---
+
+## ⭐⭐ THE NIGHTSIDE IS GRADED — owner, 2026-08-14. A fourth zone.
+
+_Answering the three open biomes, the owner invented structure the design did not
+have._
+
+> **`HorrorWastes`** — *"might be a night-side area where some light remains so
+> it's not quite the crags yet."*
+> **`Glowforest`** — *"makes sense there too, like little oases of light in the
+> middle of the dark."*
+> **`PoisonForest`** — *"I want to experience it so I can judge it. Could be more
+> weird dark-terminator terrain."*
+
+⭐ **The nightside is no longer one thing. It has a gradient**, and that fixes a
+problem I had not flagged: **a hemisphere of nothing but forsaken crags would be
+monotonous.** A graded dark side has internal structure, and it gives the player
+**landmarks in the dark**, which is exactly what a dark map needs most.
+
+| band | biome | reads as |
+|---|---|---|
+| terminator | the seas, the jungles, the marshes | twilight and water |
+| ⭐ **dark margin** | **`HorrorWastes`** · **`PoisonForest`** · `AB_PropaneLakes` | **dim and strange — light failing, not yet gone** |
+| deep night | **`AB_RockyCrags`** | **glow 0.34, permanent. The Forsakens' heartland** |
+| ⭐ **inside the dark** | **`Glowforest`** | ⭐ **oases of LIGHT** |
+
+### ⭐ The symmetry, and it is the best thing in this ruling
+
+> **On the dayside, an oasis is water in a desert of heat.**
+> **On the nightside, a glowforest is light in a desert of dark.**
+
+**Same shape, opposite substance** — and the player will feel the rhyme without
+anyone explaining it. **Both are the thing you cross a hostile expanse to reach,
+and both are worth fighting over.** ⭐ It also means the nightside has something to
+*want*, not only something to survive, which is what stops a refuge from being a
+punishment.
+
+### Verdicts
+
+| biome | verdict | placement |
+|---|---|---|
+| `HorrorWastes` | **rare** | the dark margin — between terminator and full crags |
+| `Glowforest` | **rare** | ⭐ **inside the deep night**, as isolated points |
+| `PoisonForest` | ⭐ **rare — HELD FOR JUDGEMENT** | dark terminator, provisionally |
+
+⚠️ **`PoisonForest` carries an explicit "see it before ruling" flag.** The owner
+wants to stand in it. **File it for the next live session** — it is a look, not a
+test, and it costs one map.
+
+✅ **All 26 surface biomes now carry a verdict.** The biome mix is ratified and
+becomes `biomeConfigs[x].scoreOffset` values on the patched `TidallyLocked` def.
