@@ -7,6 +7,22 @@ supervisory control, and status-display UX. **Findings are cited only where they
 changed a decision.** Where a widely-quoted number turned out to be wrong, that is
 said plainly — three of them were._
 
+## 0. ⚠️ How much to trust the numbers in this file
+
+**The design decisions here do not rest on any single figure, and that is
+deliberate.** Two research passes disagreed with each other about which primaries
+were recoverable — several sit behind paywalls, and one is a scanned image with no
+text layer.
+
+| tier | what it means | examples |
+|---|---|---|
+| **firm** | verified from the primary, or a field study with a clean control | I-PASS (−23% errors, non-preventable events unchanged); Drew 2014 ICU alarm counts; Monk 2008 resumption lag |
+| **directionally solid** | the effect is standard and replicated; **do not quote the exact percentage** | probability-matching to alarm reliability; low-base-rate PPV collapse; the vigilance decrement's shape |
+| 🔴 **known wrong** | in wide circulation and misstated | "23 min 15 s to recover from an interruption"; "40% productivity loss" |
+
+⇒ **Argue from the mechanism, not from the decimal.** If a rule below only works
+when a number is exactly right, the rule is wrong.
+
 ---
 
 ## 1. The human looks at THREE things. Everything else is pull, not push.
