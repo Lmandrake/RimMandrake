@@ -37,6 +37,27 @@ section still exists at all:**
 
 ---
 
+## 🔴 THE SHUTDOWN-WINDOW DEPLOY LIST — mine, and nobody calls the window without me
+
+**Plan run 2026-08-14, read-only, `deploy_custom_mods.py` with no `--apply`: 7 files drifted,
+4 `DEPLOY_HOLD.txt` patterns honoured.** ⚠️ **`--apply` overwrites the game copy with whatever is
+in the repo AT THAT MOMENT — scope it with `--mod`, never run it bare.**
+
+### SHIP
+| file | why it is ready |
+|---|---|
+| `+ Jawa_Patches/Patches/BuzzerApostrophe_Fix.xml` | committed `3822ef9`, `validate_patch.py` clean, both namer sites. **Worth shipping ONLY before worldgen** — names bake into the save as strings. |
+| `~ Jawa_Patches/Defs/MapGeneration/JawaScrapfields.xml` | CREATE's `de1018b` drops `isJunk`; `clusterSize` 8-12 still inbound. Deployed copy is still **08-13 16:42:35 with `isJunk` present**. |
+| `~ Jawa_Patches/Defs/MapGeneration/JawaGroundHulk.xml` | same edit. ⚠️ Both are **map-generation** defs: they need a cold load **AND a map generated after it**. |
+| `~ Jawa_Patches/Patches/AnimalBiomeDuplicates_Fix.xml` | committed and clean — confirm the owning seat before it rides. |
+
+### 🔴 HOLD — do not let these ride the window
+| file | why |
+|---|---|
+| `~ Jawa_Armoury/Patches/Armoury_MeleePower.xml` · `Armoury_RangedDamage.xml` | **Swept into `81939e1`, whose subject is genome tooling** — committed under an unrelated message, never reviewed, and carrying **no provenance banner**. The queue rule stands: `unknown` anchors means stop. Re-run the generator and read the banner before these ship. |
+| `~ JawaSeaShaper/1.6/Assemblies/JawaSeaShaper.dll` | **STALE BUILD.** DLL is **02:32:22**; its source `Source/WorldGenStep_JawaSea.cs` is **02:39:34 and uncommitted**. The binary matches neither the committed nor the working source. **And a new assembly goes SOLO** — it is the one change that destroys attribution in a batch. |
+
+
 ## Open — offline, no game needed
 
 | # | item | note |
