@@ -9,95 +9,95 @@
     <mods><li>Outer Rim - Core</li></mods>
     <match Class="PatchOperationSequence">
       <operations>
-        <!-- OuterRim_VibroAxe / handle : 9 -> 11 -->
+        <!-- OuterRim_VibroAxe / handle : 9 -> 14 -->
         <li Class="PatchOperationReplace">
           <xpath>/Defs/ThingDef[defName="OuterRim_VibroAxe"]/tools/li[label="handle"]/power</xpath>
-          <value><power>11</power></value>
+          <value><power>14</power></value>
         </li>
-        <!-- OuterRim_VibroAxe / point : 17 -> 21 -->
+        <!-- OuterRim_VibroAxe / point : 17 -> 27 -->
         <li Class="PatchOperationReplace">
           <xpath>/Defs/ThingDef[defName="OuterRim_VibroAxe"]/tools/li[label="point"]/power</xpath>
-          <value><power>21</power></value>
+          <value><power>27</power></value>
         </li>
-        <!-- OuterRim_VibroAxe / edge : 21 -> 25 -->
+        <!-- OuterRim_VibroAxe / edge : 21 -> 34 -->
         <li Class="PatchOperationReplace">
           <xpath>/Defs/ThingDef[defName="OuterRim_VibroAxe"]/tools/li[label="edge"]/power</xpath>
-          <value><power>25</power></value>
+          <value><power>34</power></value>
         </li>
-        <!-- OuterRim_VibroBlade / handle : 9 -> 11 -->
+        <!-- OuterRim_VibroBlade / handle : 9 -> 14 -->
         <li Class="PatchOperationReplace">
           <xpath>/Defs/ThingDef[defName="OuterRim_VibroBlade"]/tools/li[label="handle"]/power</xpath>
-          <value><power>11</power></value>
+          <value><power>14</power></value>
         </li>
-        <!-- OuterRim_VibroBlade / point : 17 -> 21 -->
+        <!-- OuterRim_VibroBlade / point : 17 -> 27 -->
         <li Class="PatchOperationReplace">
           <xpath>/Defs/ThingDef[defName="OuterRim_VibroBlade"]/tools/li[label="point"]/power</xpath>
-          <value><power>21</power></value>
+          <value><power>27</power></value>
         </li>
-        <!-- OuterRim_VibroBlade / edge : 21 -> 25 -->
+        <!-- OuterRim_VibroBlade / edge : 21 -> 34 -->
         <li Class="PatchOperationReplace">
           <xpath>/Defs/ThingDef[defName="OuterRim_VibroBlade"]/tools/li[label="edge"]/power</xpath>
-          <value><power>25</power></value>
+          <value><power>34</power></value>
         </li>
-        <!-- OuterRim_VibroCleaver / handle : 9 -> 11 -->
+        <!-- OuterRim_VibroCleaver / handle : 9 -> 12 -->
         <li Class="PatchOperationReplace">
           <xpath>/Defs/ThingDef[defName="OuterRim_VibroCleaver"]/tools/li[label="handle"]/power</xpath>
-          <value><power>11</power></value>
+          <value><power>12</power></value>
         </li>
         <!-- OuterRim_VibroCleaver / point : 3 -> 4 -->
         <li Class="PatchOperationReplace">
           <xpath>/Defs/ThingDef[defName="OuterRim_VibroCleaver"]/tools/li[label="point"]/power</xpath>
           <value><power>4</power></value>
         </li>
-        <!-- OuterRim_VibroCleaver / edge : 28 -> 33 -->
+        <!-- OuterRim_VibroCleaver / edge : 28 -> 37 -->
         <li Class="PatchOperationReplace">
           <xpath>/Defs/ThingDef[defName="OuterRim_VibroCleaver"]/tools/li[label="edge"]/power</xpath>
-          <value><power>33</power></value>
+          <value><power>37</power></value>
         </li>
-        <!-- OuterRim_VibroDagger / handle : 9 -> 11 -->
+        <!-- OuterRim_VibroDagger / handle : 9 -> 17 -->
         <li Class="PatchOperationReplace">
           <xpath>/Defs/ThingDef[defName="OuterRim_VibroDagger"]/tools/li[label="handle"]/power</xpath>
-          <value><power>11</power></value>
+          <value><power>17</power></value>
         </li>
-        <!-- OuterRim_VibroDagger / point : 14 -> 18 -->
+        <!-- OuterRim_VibroDagger / point : 14 -> 26 -->
         <li Class="PatchOperationReplace">
           <xpath>/Defs/ThingDef[defName="OuterRim_VibroDagger"]/tools/li[label="point"]/power</xpath>
-          <value><power>18</power></value>
+          <value><power>26</power></value>
         </li>
-        <!-- OuterRim_VibroDagger / edge : 16 -> 20 -->
+        <!-- OuterRim_VibroDagger / edge : 16 -> 30 -->
         <li Class="PatchOperationReplace">
           <xpath>/Defs/ThingDef[defName="OuterRim_VibroDagger"]/tools/li[label="edge"]/power</xpath>
-          <value><power>20</power></value>
+          <value><power>30</power></value>
         </li>
-        <!-- OuterRim_VibroDoubleBlade / handle : 9 -> 11 -->
+        <!-- OuterRim_VibroDoubleBlade / handle : 9 -> 16 -->
         <li Class="PatchOperationReplace">
           <xpath>/Defs/ThingDef[defName="OuterRim_VibroDoubleBlade"]/tools/li[label="handle"]/power</xpath>
-          <value><power>11</power></value>
+          <value><power>16</power></value>
         </li>
-        <!-- OuterRim_VibroDoubleBlade / point : 15 -> 19 -->
+        <!-- OuterRim_VibroDoubleBlade / point : 15 -> 26 -->
         <li Class="PatchOperationReplace">
           <xpath>/Defs/ThingDef[defName="OuterRim_VibroDoubleBlade"]/tools/li[label="point"]/power</xpath>
-          <value><power>19</power></value>
+          <value><power>26</power></value>
         </li>
-        <!-- OuterRim_VibroDoubleBlade / edge : 18 -> 22 -->
+        <!-- OuterRim_VibroDoubleBlade / edge : 18 -> 31 -->
         <li Class="PatchOperationReplace">
           <xpath>/Defs/ThingDef[defName="OuterRim_VibroDoubleBlade"]/tools/li[label="edge"]/power</xpath>
-          <value><power>22</power></value>
+          <value><power>31</power></value>
         </li>
-        <!-- OuterRim_VibroGlaive / handle : 9 -> 11 -->
+        <!-- OuterRim_VibroGlaive / handle : 9 -> 13 -->
         <li Class="PatchOperationReplace">
           <xpath>/Defs/ThingDef[defName="OuterRim_VibroGlaive"]/tools/li[label="handle"]/power</xpath>
-          <value><power>11</power></value>
+          <value><power>13</power></value>
         </li>
-        <!-- OuterRim_VibroGlaive / point : 19 -> 22 -->
+        <!-- OuterRim_VibroGlaive / point : 19 -> 28 -->
         <li Class="PatchOperationReplace">
           <xpath>/Defs/ThingDef[defName="OuterRim_VibroGlaive"]/tools/li[label="point"]/power</xpath>
-          <value><power>22</power></value>
+          <value><power>28</power></value>
         </li>
-        <!-- OuterRim_VibroGlaive / edge : 24 -> 28 -->
+        <!-- OuterRim_VibroGlaive / edge : 24 -> 35 -->
         <li Class="PatchOperationReplace">
           <xpath>/Defs/ThingDef[defName="OuterRim_VibroGlaive"]/tools/li[label="edge"]/power</xpath>
-          <value><power>28</power></value>
+          <value><power>35</power></value>
         </li>
       </operations>
     </match>
@@ -122,35 +122,35 @@
           <xpath>/Defs/ThingDef[defName="Force_Broadsaber"]/tools/li[label="edge"]/power</xpath>
           <value><power>120</power></value>
         </li>
-        <!-- Force_Darksaber / hilt : 41 -> 56 -->
+        <!-- Force_Darksaber / hilt : 56 -> 56 -->
         <li Class="PatchOperationReplace">
           <xpath>/Defs/ThingDef[defName="Force_Darksaber"]/tools/li[label="hilt"]/power</xpath>
           <value><power>56</power></value>
         </li>
-        <!-- Force_Darksaber / tip : 88 -> 120 -->
+        <!-- Force_Darksaber / tip : 120 -> 120 -->
         <li Class="PatchOperationReplace">
           <xpath>/Defs/ThingDef[defName="Force_Darksaber"]/tools/li[label="tip"]/power</xpath>
           <value><power>120</power></value>
         </li>
-        <!-- Force_Darksaber / edge : 88 -> 120 -->
+        <!-- Force_Darksaber / edge : 120 -> 120 -->
         <li Class="PatchOperationReplace">
           <xpath>/Defs/ThingDef[defName="Force_Darksaber"]/tools/li[label="edge"]/power</xpath>
           <value><power>120</power></value>
         </li>
-        <!-- Force_LightsaberBase / hilt : 12 -> 15 -->
+        <!-- Force_LightsaberBase / hilt : 12 -> 41 -->
         <li Class="PatchOperationReplace">
           <xpath>/Defs/ThingDef[@Name="Force_LightsaberBase"]/tools/li[label="hilt"]/power</xpath>
-          <value><power>15</power></value>
+          <value><power>41</power></value>
         </li>
-        <!-- Force_LightsaberBase / point : 28 -> 35 -->
+        <!-- Force_LightsaberBase / point : 28 -> 96 -->
         <li Class="PatchOperationReplace">
           <xpath>/Defs/ThingDef[@Name="Force_LightsaberBase"]/tools/li[label="point"]/power</xpath>
-          <value><power>35</power></value>
+          <value><power>96</power></value>
         </li>
-        <!-- Force_LightsaberBase / edge : 28 -> 35 -->
+        <!-- Force_LightsaberBase / edge : 28 -> 96 -->
         <li Class="PatchOperationReplace">
           <xpath>/Defs/ThingDef[@Name="Force_LightsaberBase"]/tools/li[label="edge"]/power</xpath>
-          <value><power>35</power></value>
+          <value><power>96</power></value>
         </li>
         <!-- Force_Lightsaber_Crossguard / hilt : 64 -> 64 -->
         <li Class="PatchOperationReplace">
@@ -167,77 +167,77 @@
           <xpath>/Defs/ThingDef[defName="Force_Lightsaber_Crossguard"]/tools/li[label="edge"]/power</xpath>
           <value><power>120</power></value>
         </li>
-        <!-- Force_Lightsaber_Curved / hilt : 34 -> 46 -->
+        <!-- Force_Lightsaber_Curved / hilt : 46 -> 46 -->
         <li Class="PatchOperationReplace">
           <xpath>/Defs/ThingDef[defName="Force_Lightsaber_Curved"]/tools/li[label="hilt"]/power</xpath>
           <value><power>46</power></value>
         </li>
-        <!-- Force_Lightsaber_Curved / tip : 88 -> 120 -->
+        <!-- Force_Lightsaber_Curved / tip : 120 -> 120 -->
         <li Class="PatchOperationReplace">
           <xpath>/Defs/ThingDef[defName="Force_Lightsaber_Curved"]/tools/li[label="tip"]/power</xpath>
           <value><power>120</power></value>
         </li>
-        <!-- Force_Lightsaber_Curved / edge : 88 -> 120 -->
+        <!-- Force_Lightsaber_Curved / edge : 120 -> 120 -->
         <li Class="PatchOperationReplace">
           <xpath>/Defs/ThingDef[defName="Force_Lightsaber_Curved"]/tools/li[label="edge"]/power</xpath>
           <value><power>120</power></value>
         </li>
-        <!-- Force_Lightsaber_Custom / hilt : 41 -> 56 -->
+        <!-- Force_Lightsaber_Custom / hilt : 56 -> 56 -->
         <li Class="PatchOperationReplace">
           <xpath>/Defs/ThingDef[defName="Force_Lightsaber_Custom"]/tools/li[label="hilt"]/power</xpath>
           <value><power>56</power></value>
         </li>
-        <!-- Force_Lightsaber_Custom / tip : 88 -> 120 -->
+        <!-- Force_Lightsaber_Custom / tip : 120 -> 120 -->
         <li Class="PatchOperationReplace">
           <xpath>/Defs/ThingDef[defName="Force_Lightsaber_Custom"]/tools/li[label="tip"]/power</xpath>
           <value><power>120</power></value>
         </li>
-        <!-- Force_Lightsaber_Custom / edge : 88 -> 120 -->
+        <!-- Force_Lightsaber_Custom / edge : 120 -> 120 -->
         <li Class="PatchOperationReplace">
           <xpath>/Defs/ThingDef[defName="Force_Lightsaber_Custom"]/tools/li[label="edge"]/power</xpath>
           <value><power>120</power></value>
         </li>
-        <!-- Force_Lightsaber_Dual / hilt : 20 -> 27 -->
+        <!-- Force_Lightsaber_Dual / hilt : 27 -> 27 -->
         <li Class="PatchOperationReplace">
           <xpath>/Defs/ThingDef[defName="Force_Lightsaber_Dual"]/tools/li[label="hilt"]/power</xpath>
           <value><power>27</power></value>
         </li>
-        <!-- Force_Lightsaber_Dual / tip : 88 -> 120 -->
+        <!-- Force_Lightsaber_Dual / tip : 120 -> 120 -->
         <li Class="PatchOperationReplace">
           <xpath>/Defs/ThingDef[defName="Force_Lightsaber_Dual"]/tools/li[label="tip"]/power</xpath>
           <value><power>120</power></value>
         </li>
-        <!-- Force_Lightsaber_Dual / edge : 88 -> 120 -->
+        <!-- Force_Lightsaber_Dual / edge : 120 -> 120 -->
         <li Class="PatchOperationReplace">
           <xpath>/Defs/ThingDef[defName="Force_Lightsaber_Dual"]/tools/li[label="edge"]/power</xpath>
           <value><power>120</power></value>
         </li>
-        <!-- Force_Lightsaber_Inquisitor / hilt : 20 -> 27 -->
+        <!-- Force_Lightsaber_Inquisitor / hilt : 27 -> 27 -->
         <li Class="PatchOperationReplace">
           <xpath>/Defs/ThingDef[defName="Force_Lightsaber_Inquisitor"]/tools/li[label="hilt"]/power</xpath>
           <value><power>27</power></value>
         </li>
-        <!-- Force_Lightsaber_Inquisitor / tip : 88 -> 120 -->
+        <!-- Force_Lightsaber_Inquisitor / tip : 120 -> 120 -->
         <li Class="PatchOperationReplace">
           <xpath>/Defs/ThingDef[defName="Force_Lightsaber_Inquisitor"]/tools/li[label="tip"]/power</xpath>
           <value><power>120</power></value>
         </li>
-        <!-- Force_Lightsaber_Inquisitor / edge : 88 -> 120 -->
+        <!-- Force_Lightsaber_Inquisitor / edge : 120 -> 120 -->
         <li Class="PatchOperationReplace">
           <xpath>/Defs/ThingDef[defName="Force_Lightsaber_Inquisitor"]/tools/li[label="edge"]/power</xpath>
           <value><power>120</power></value>
         </li>
-        <!-- Force_Lightsaber_Shoto / hilt : 33 -> 50 -->
+        <!-- Force_Lightsaber_Shoto / hilt : 50 -> 50 -->
         <li Class="PatchOperationReplace">
           <xpath>/Defs/ThingDef[defName="Force_Lightsaber_Shoto"]/tools/li[label="hilt"]/power</xpath>
           <value><power>50</power></value>
         </li>
-        <!-- Force_Lightsaber_Shoto / tip : 80 -> 120 -->
+        <!-- Force_Lightsaber_Shoto / tip : 120 -> 120 -->
         <li Class="PatchOperationReplace">
           <xpath>/Defs/ThingDef[defName="Force_Lightsaber_Shoto"]/tools/li[label="tip"]/power</xpath>
           <value><power>120</power></value>
         </li>
-        <!-- Force_Lightsaber_Shoto / edge : 80 -> 120 -->
+        <!-- Force_Lightsaber_Shoto / edge : 120 -> 120 -->
         <li Class="PatchOperationReplace">
           <xpath>/Defs/ThingDef[defName="Force_Lightsaber_Shoto"]/tools/li[label="edge"]/power</xpath>
           <value><power>120</power></value>
@@ -250,135 +250,135 @@
     <mods><li>Star Wars KotOR Weapons and Armor</li></mods>
     <match Class="PatchOperationSequence">
       <operations>
-        <!-- guy762_vaxe / handle : 12 -> 14 -->
+        <!-- guy762_vaxe / handle : 12 -> 16 -->
         <li Class="PatchOperationReplace">
           <xpath>/Defs/ThingDef[defName="guy762_vaxe"]/tools/li[label="handle"]/power</xpath>
-          <value><power>14</power></value>
+          <value><power>16</power></value>
         </li>
-        <!-- guy762_vaxe / edge : 30 -> 34 -->
+        <!-- guy762_vaxe / edge : 30 -> 39 -->
         <li Class="PatchOperationReplace">
           <xpath>/Defs/ThingDef[defName="guy762_vaxe"]/tools/li[label="edge"]/power</xpath>
-          <value><power>34</power></value>
+          <value><power>39</power></value>
         </li>
-        <!-- guy762_vblade / handle : 6 -> 7 -->
+        <!-- guy762_vblade / handle : 6 -> 9 -->
         <li Class="PatchOperationReplace">
           <xpath>/Defs/ThingDef[defName="guy762_vblade"]/tools/li[label="handle"]/power</xpath>
-          <value><power>7</power></value>
+          <value><power>9</power></value>
         </li>
-        <!-- guy762_vblade / point : 22 -> 27 -->
+        <!-- guy762_vblade / point : 22 -> 33 -->
         <li Class="PatchOperationReplace">
           <xpath>/Defs/ThingDef[defName="guy762_vblade"]/tools/li[label="point"]/power</xpath>
-          <value><power>27</power></value>
+          <value><power>33</power></value>
         </li>
-        <!-- guy762_vblade / edge : 18 -> 22 -->
+        <!-- guy762_vblade / edge : 18 -> 27 -->
         <li Class="PatchOperationReplace">
           <xpath>/Defs/ThingDef[defName="guy762_vblade"]/tools/li[label="edge"]/power</xpath>
-          <value><power>22</power></value>
+          <value><power>27</power></value>
         </li>
-        <!-- guy762_vblade_echani / handle : 6 -> 7 -->
+        <!-- guy762_vblade_echani / handle : 6 -> 9 -->
         <li Class="PatchOperationReplace">
           <xpath>/Defs/ThingDef[defName="guy762_vblade_echani"]/tools/li[label="handle"]/power</xpath>
-          <value><power>7</power></value>
+          <value><power>9</power></value>
         </li>
-        <!-- guy762_vblade_echani / point : 22 -> 27 -->
+        <!-- guy762_vblade_echani / point : 22 -> 33 -->
         <li Class="PatchOperationReplace">
           <xpath>/Defs/ThingDef[defName="guy762_vblade_echani"]/tools/li[label="point"]/power</xpath>
-          <value><power>27</power></value>
+          <value><power>33</power></value>
         </li>
-        <!-- guy762_vblade_echani / edge : 18 -> 22 -->
+        <!-- guy762_vblade_echani / edge : 18 -> 27 -->
         <li Class="PatchOperationReplace">
           <xpath>/Defs/ThingDef[defName="guy762_vblade_echani"]/tools/li[label="edge"]/power</xpath>
-          <value><power>22</power></value>
+          <value><power>27</power></value>
         </li>
-        <!-- guy762_vblade_prototype / handle : 6 -> 7 -->
+        <!-- guy762_vblade_prototype / handle : 6 -> 9 -->
         <li Class="PatchOperationReplace">
           <xpath>/Defs/ThingDef[defName="guy762_vblade_prototype"]/tools/li[label="handle"]/power</xpath>
-          <value><power>7</power></value>
+          <value><power>9</power></value>
         </li>
-        <!-- guy762_vblade_prototype / point : 22 -> 27 -->
+        <!-- guy762_vblade_prototype / point : 22 -> 33 -->
         <li Class="PatchOperationReplace">
           <xpath>/Defs/ThingDef[defName="guy762_vblade_prototype"]/tools/li[label="point"]/power</xpath>
-          <value><power>27</power></value>
+          <value><power>33</power></value>
         </li>
-        <!-- guy762_vblade_prototype / edge : 19 -> 23 -->
+        <!-- guy762_vblade_prototype / edge : 19 -> 28 -->
         <li Class="PatchOperationReplace">
           <xpath>/Defs/ThingDef[defName="guy762_vblade_prototype"]/tools/li[label="edge"]/power</xpath>
-          <value><power>23</power></value>
+          <value><power>28</power></value>
         </li>
-        <!-- guy762_vdubblade / handle : 6 -> 7 -->
+        <!-- guy762_vdubblade / handle : 6 -> 9 -->
         <li Class="PatchOperationReplace">
           <xpath>/Defs/ThingDef[defName="guy762_vdubblade"]/tools/li[label="handle"]/power</xpath>
-          <value><power>7</power></value>
+          <value><power>9</power></value>
         </li>
-        <!-- guy762_vdubblade / point : 20 -> 24 -->
+        <!-- guy762_vdubblade / point : 20 -> 30 -->
         <li Class="PatchOperationReplace">
           <xpath>/Defs/ThingDef[defName="guy762_vdubblade"]/tools/li[label="point"]/power</xpath>
-          <value><power>24</power></value>
-        </li>
-        <!-- guy762_vdubblade / edge : 22 -> 27 -->
-        <li Class="PatchOperationReplace">
-          <xpath>/Defs/ThingDef[defName="guy762_vdubblade"]/tools/li[label="edge"]/power</xpath>
-          <value><power>27</power></value>
-        </li>
-        <!-- guy762_vglaive / handle : 8 -> 9 -->
-        <li Class="PatchOperationReplace">
-          <xpath>/Defs/ThingDef[defName="guy762_vglaive"]/tools/li[label="handle"]/power</xpath>
-          <value><power>9</power></value>
-        </li>
-        <!-- guy762_vglaive / point : 24 -> 28 -->
-        <li Class="PatchOperationReplace">
-          <xpath>/Defs/ThingDef[defName="guy762_vglaive"]/tools/li[label="point"]/power</xpath>
-          <value><power>28</power></value>
-        </li>
-        <!-- guy762_vglaive / edge : 20 -> 24 -->
-        <li Class="PatchOperationReplace">
-          <xpath>/Defs/ThingDef[defName="guy762_vglaive"]/tools/li[label="edge"]/power</xpath>
-          <value><power>24</power></value>
-        </li>
-        <!-- guy762_vglaive_echani / handle : 8 -> 9 -->
-        <li Class="PatchOperationReplace">
-          <xpath>/Defs/ThingDef[defName="guy762_vglaive_echani"]/tools/li[label="handle"]/power</xpath>
-          <value><power>9</power></value>
-        </li>
-        <!-- guy762_vglaive_echani / point : 24 -> 28 -->
-        <li Class="PatchOperationReplace">
-          <xpath>/Defs/ThingDef[defName="guy762_vglaive_echani"]/tools/li[label="point"]/power</xpath>
-          <value><power>28</power></value>
-        </li>
-        <!-- guy762_vglaive_echani / edge : 20 -> 24 -->
-        <li Class="PatchOperationReplace">
-          <xpath>/Defs/ThingDef[defName="guy762_vglaive_echani"]/tools/li[label="edge"]/power</xpath>
-          <value><power>24</power></value>
-        </li>
-        <!-- guy762_vsword / handle : 8 -> 9 -->
-        <li Class="PatchOperationReplace">
-          <xpath>/Defs/ThingDef[defName="guy762_vsword"]/tools/li[label="handle"]/power</xpath>
-          <value><power>9</power></value>
-        </li>
-        <!-- guy762_vsword / point : 20 -> 24 -->
-        <li Class="PatchOperationReplace">
-          <xpath>/Defs/ThingDef[defName="guy762_vsword"]/tools/li[label="point"]/power</xpath>
-          <value><power>24</power></value>
-        </li>
-        <!-- guy762_vsword / edge : 24 -> 28 -->
-        <li Class="PatchOperationReplace">
-          <xpath>/Defs/ThingDef[defName="guy762_vsword"]/tools/li[label="edge"]/power</xpath>
-          <value><power>28</power></value>
-        </li>
-        <!-- guy762_vsword_echani / handle : 8 -> 12 -->
-        <li Class="PatchOperationReplace">
-          <xpath>/Defs/ThingDef[defName="guy762_vsword_echani"]/tools/li[label="handle"]/power</xpath>
-          <value><power>12</power></value>
-        </li>
-        <!-- guy762_vsword_echani / point : 20 -> 30 -->
-        <li Class="PatchOperationReplace">
-          <xpath>/Defs/ThingDef[defName="guy762_vsword_echani"]/tools/li[label="point"]/power</xpath>
           <value><power>30</power></value>
         </li>
-        <!-- guy762_vsword_echani / edge : 24 -> 36 -->
+        <!-- guy762_vdubblade / edge : 22 -> 33 -->
+        <li Class="PatchOperationReplace">
+          <xpath>/Defs/ThingDef[defName="guy762_vdubblade"]/tools/li[label="edge"]/power</xpath>
+          <value><power>33</power></value>
+        </li>
+        <!-- guy762_vglaive / handle : 8 -> 12 -->
+        <li Class="PatchOperationReplace">
+          <xpath>/Defs/ThingDef[defName="guy762_vglaive"]/tools/li[label="handle"]/power</xpath>
+          <value><power>12</power></value>
+        </li>
+        <!-- guy762_vglaive / point : 24 -> 35 -->
+        <li Class="PatchOperationReplace">
+          <xpath>/Defs/ThingDef[defName="guy762_vglaive"]/tools/li[label="point"]/power</xpath>
+          <value><power>35</power></value>
+        </li>
+        <!-- guy762_vglaive / edge : 20 -> 29 -->
+        <li Class="PatchOperationReplace">
+          <xpath>/Defs/ThingDef[defName="guy762_vglaive"]/tools/li[label="edge"]/power</xpath>
+          <value><power>29</power></value>
+        </li>
+        <!-- guy762_vglaive_echani / handle : 8 -> 12 -->
+        <li Class="PatchOperationReplace">
+          <xpath>/Defs/ThingDef[defName="guy762_vglaive_echani"]/tools/li[label="handle"]/power</xpath>
+          <value><power>12</power></value>
+        </li>
+        <!-- guy762_vglaive_echani / point : 24 -> 35 -->
+        <li Class="PatchOperationReplace">
+          <xpath>/Defs/ThingDef[defName="guy762_vglaive_echani"]/tools/li[label="point"]/power</xpath>
+          <value><power>35</power></value>
+        </li>
+        <!-- guy762_vglaive_echani / edge : 20 -> 29 -->
+        <li Class="PatchOperationReplace">
+          <xpath>/Defs/ThingDef[defName="guy762_vglaive_echani"]/tools/li[label="edge"]/power</xpath>
+          <value><power>29</power></value>
+        </li>
+        <!-- guy762_vsword / handle : 8 -> 12 -->
+        <li Class="PatchOperationReplace">
+          <xpath>/Defs/ThingDef[defName="guy762_vsword"]/tools/li[label="handle"]/power</xpath>
+          <value><power>12</power></value>
+        </li>
+        <!-- guy762_vsword / point : 20 -> 29 -->
+        <li Class="PatchOperationReplace">
+          <xpath>/Defs/ThingDef[defName="guy762_vsword"]/tools/li[label="point"]/power</xpath>
+          <value><power>29</power></value>
+        </li>
+        <!-- guy762_vsword / edge : 24 -> 35 -->
+        <li Class="PatchOperationReplace">
+          <xpath>/Defs/ThingDef[defName="guy762_vsword"]/tools/li[label="edge"]/power</xpath>
+          <value><power>35</power></value>
+        </li>
+        <!-- guy762_vsword_echani / handle : 8 -> 27 -->
+        <li Class="PatchOperationReplace">
+          <xpath>/Defs/ThingDef[defName="guy762_vsword_echani"]/tools/li[label="handle"]/power</xpath>
+          <value><power>27</power></value>
+        </li>
+        <!-- guy762_vsword_echani / point : 20 -> 67 -->
+        <li Class="PatchOperationReplace">
+          <xpath>/Defs/ThingDef[defName="guy762_vsword_echani"]/tools/li[label="point"]/power</xpath>
+          <value><power>67</power></value>
+        </li>
+        <!-- guy762_vsword_echani / edge : 24 -> 80 -->
         <li Class="PatchOperationReplace">
           <xpath>/Defs/ThingDef[defName="guy762_vsword_echani"]/tools/li[label="edge"]/power</xpath>
-          <value><power>36</power></value>
+          <value><power>80</power></value>
         </li>
       </operations>
     </match>
@@ -388,125 +388,125 @@
     <mods><li>[AB] Xenotype: Yautja</li></mods>
     <match Class="PatchOperationSequence">
       <operations>
-        <!-- ABYautja_Melee_BladedMaul / point : 28 -> 28 -->
+        <!-- ABYautja_Melee_BladedMaul / point : 28 -> 45 -->
         <li Class="PatchOperationReplace">
           <xpath>/Defs/ThingDef[defName="ABYautja_Melee_BladedMaul"]/tools/li[label="point"]/power</xpath>
-          <value><power>28</power></value>
+          <value><power>45</power></value>
         </li>
-        <!-- ABYautja_Melee_BladedMaul / blade : 22 -> 22 -->
+        <!-- ABYautja_Melee_BladedMaul / blade : 22 -> 35 -->
         <li Class="PatchOperationReplace">
           <xpath>/Defs/ThingDef[defName="ABYautja_Melee_BladedMaul"]/tools/li[label="blade"]/power</xpath>
-          <value><power>22</power></value>
+          <value><power>35</power></value>
         </li>
-        <!-- ABYautja_Melee_BladedMaul / handle : 9 -> 9 -->
+        <!-- ABYautja_Melee_BladedMaul / handle : 9 -> 14 -->
         <li Class="PatchOperationReplace">
           <xpath>/Defs/ThingDef[defName="ABYautja_Melee_BladedMaul"]/tools/li[label="handle"]/power</xpath>
-          <value><power>9</power></value>
+          <value><power>14</power></value>
         </li>
-        <!-- ABYautja_Melee_CeremonialDagger / handle : 10 -> 15 -->
+        <!-- ABYautja_Melee_CeremonialDagger / handle : 10 -> 16 -->
         <li Class="PatchOperationReplace">
           <xpath>/Defs/ThingDef[defName="ABYautja_Melee_CeremonialDagger"]/tools/li[label="handle"]/power</xpath>
-          <value><power>15</power></value>
+          <value><power>16</power></value>
         </li>
-        <!-- ABYautja_Melee_CeremonialDagger / blade : 14 -> 21 -->
+        <!-- ABYautja_Melee_CeremonialDagger / blade : 14 -> 22 -->
         <li Class="PatchOperationReplace">
           <xpath>/Defs/ThingDef[defName="ABYautja_Melee_CeremonialDagger"]/tools/li[label="blade"]/power</xpath>
-          <value><power>21</power></value>
-        </li>
-        <!-- ABYautja_Melee_CeremonialDagger / point : 17 -> 26 -->
-        <li Class="PatchOperationReplace">
-          <xpath>/Defs/ThingDef[defName="ABYautja_Melee_CeremonialDagger"]/tools/li[label="point"]/power</xpath>
-          <value><power>26</power></value>
-        </li>
-        <!-- ABYautja_Melee_ElderSword / handle : 6 -> 7 -->
-        <li Class="PatchOperationReplace">
-          <xpath>/Defs/ThingDef[defName="ABYautja_Melee_ElderSword"]/tools/li[label="handle"]/power</xpath>
-          <value><power>7</power></value>
-        </li>
-        <!-- ABYautja_Melee_ElderSword / blade : 24 -> 28 -->
-        <li Class="PatchOperationReplace">
-          <xpath>/Defs/ThingDef[defName="ABYautja_Melee_ElderSword"]/tools/li[label="blade"]/power</xpath>
-          <value><power>28</power></value>
-        </li>
-        <!-- ABYautja_Melee_ElderSword / point : 20 -> 24 -->
-        <li Class="PatchOperationReplace">
-          <xpath>/Defs/ThingDef[defName="ABYautja_Melee_ElderSword"]/tools/li[label="point"]/power</xpath>
-          <value><power>24</power></value>
-        </li>
-        <!-- ABYautja_Melee_Flail / point : 28 -> 28 -->
-        <li Class="PatchOperationReplace">
-          <xpath>/Defs/ThingDef[defName="ABYautja_Melee_Flail"]/tools/li[label="point"]/power</xpath>
-          <value><power>28</power></value>
-        </li>
-        <!-- ABYautja_Melee_Flail / flail : 28 -> 28 -->
-        <li Class="PatchOperationReplace">
-          <xpath>/Defs/ThingDef[defName="ABYautja_Melee_Flail"]/tools/li[label="flail"]/power</xpath>
-          <value><power>28</power></value>
-        </li>
-        <!-- ABYautja_Melee_Flail / handle : 9 -> 9 -->
-        <li Class="PatchOperationReplace">
-          <xpath>/Defs/ThingDef[defName="ABYautja_Melee_Flail"]/tools/li[label="handle"]/power</xpath>
-          <value><power>9</power></value>
-        </li>
-        <!-- ABYautja_Melee_Glaive / point : 26 -> 29 -->
-        <li Class="PatchOperationReplace">
-          <xpath>/Defs/ThingDef[defName="ABYautja_Melee_Glaive"]/tools/li[label="point"]/power</xpath>
-          <value><power>29</power></value>
-        </li>
-        <!-- ABYautja_Melee_Glaive / blade : 20 -> 22 -->
-        <li Class="PatchOperationReplace">
-          <xpath>/Defs/ThingDef[defName="ABYautja_Melee_Glaive"]/tools/li[label="blade"]/power</xpath>
           <value><power>22</power></value>
         </li>
-        <!-- ABYautja_Melee_HandScythe / blade : 19 -> 27 -->
+        <!-- ABYautja_Melee_CeremonialDagger / point : 17 -> 27 -->
         <li Class="PatchOperationReplace">
-          <xpath>/Defs/ThingDef[defName="ABYautja_Melee_HandScythe"]/tools/li[label="blade"]/power</xpath>
+          <xpath>/Defs/ThingDef[defName="ABYautja_Melee_CeremonialDagger"]/tools/li[label="point"]/power</xpath>
           <value><power>27</power></value>
         </li>
-        <!-- ABYautja_Melee_HandScythe / point : 21 -> 30 -->
+        <!-- ABYautja_Melee_ElderSword / handle : 6 -> 10 -->
+        <li Class="PatchOperationReplace">
+          <xpath>/Defs/ThingDef[defName="ABYautja_Melee_ElderSword"]/tools/li[label="handle"]/power</xpath>
+          <value><power>10</power></value>
+        </li>
+        <!-- ABYautja_Melee_ElderSword / blade : 24 -> 39 -->
+        <li Class="PatchOperationReplace">
+          <xpath>/Defs/ThingDef[defName="ABYautja_Melee_ElderSword"]/tools/li[label="blade"]/power</xpath>
+          <value><power>39</power></value>
+        </li>
+        <!-- ABYautja_Melee_ElderSword / point : 20 -> 32 -->
+        <li Class="PatchOperationReplace">
+          <xpath>/Defs/ThingDef[defName="ABYautja_Melee_ElderSword"]/tools/li[label="point"]/power</xpath>
+          <value><power>32</power></value>
+        </li>
+        <!-- ABYautja_Melee_Flail / point : 28 -> 45 -->
+        <li Class="PatchOperationReplace">
+          <xpath>/Defs/ThingDef[defName="ABYautja_Melee_Flail"]/tools/li[label="point"]/power</xpath>
+          <value><power>45</power></value>
+        </li>
+        <!-- ABYautja_Melee_Flail / flail : 28 -> 45 -->
+        <li Class="PatchOperationReplace">
+          <xpath>/Defs/ThingDef[defName="ABYautja_Melee_Flail"]/tools/li[label="flail"]/power</xpath>
+          <value><power>45</power></value>
+        </li>
+        <!-- ABYautja_Melee_Flail / handle : 9 -> 14 -->
+        <li Class="PatchOperationReplace">
+          <xpath>/Defs/ThingDef[defName="ABYautja_Melee_Flail"]/tools/li[label="handle"]/power</xpath>
+          <value><power>14</power></value>
+        </li>
+        <!-- ABYautja_Melee_Glaive / point : 26 -> 40 -->
+        <li Class="PatchOperationReplace">
+          <xpath>/Defs/ThingDef[defName="ABYautja_Melee_Glaive"]/tools/li[label="point"]/power</xpath>
+          <value><power>40</power></value>
+        </li>
+        <!-- ABYautja_Melee_Glaive / blade : 20 -> 31 -->
+        <li Class="PatchOperationReplace">
+          <xpath>/Defs/ThingDef[defName="ABYautja_Melee_Glaive"]/tools/li[label="blade"]/power</xpath>
+          <value><power>31</power></value>
+        </li>
+        <!-- ABYautja_Melee_HandScythe / blade : 19 -> 28 -->
+        <li Class="PatchOperationReplace">
+          <xpath>/Defs/ThingDef[defName="ABYautja_Melee_HandScythe"]/tools/li[label="blade"]/power</xpath>
+          <value><power>28</power></value>
+        </li>
+        <!-- ABYautja_Melee_HandScythe / point : 21 -> 32 -->
         <li Class="PatchOperationReplace">
           <xpath>/Defs/ThingDef[defName="ABYautja_Melee_HandScythe"]/tools/li[label="point"]/power</xpath>
-          <value><power>30</power></value>
+          <value><power>32</power></value>
         </li>
         <!-- ABYautja_Melee_PredatorAxe / handle : 4 -> 6 -->
         <li Class="PatchOperationReplace">
           <xpath>/Defs/ThingDef[defName="ABYautja_Melee_PredatorAxe"]/tools/li[label="handle"]/power</xpath>
           <value><power>6</power></value>
         </li>
-        <!-- ABYautja_Melee_PredatorAxe / blade : 17 -> 26 -->
+        <!-- ABYautja_Melee_PredatorAxe / blade : 17 -> 27 -->
         <li Class="PatchOperationReplace">
           <xpath>/Defs/ThingDef[defName="ABYautja_Melee_PredatorAxe"]/tools/li[label="blade"]/power</xpath>
-          <value><power>26</power></value>
+          <value><power>27</power></value>
         </li>
-        <!-- ABYautja_Melee_PredatorKatana / handle : 5 -> 7 -->
+        <!-- ABYautja_Melee_PredatorKatana / handle : 5 -> 8 -->
         <li Class="PatchOperationReplace">
           <xpath>/Defs/ThingDef[defName="ABYautja_Melee_PredatorKatana"]/tools/li[label="handle"]/power</xpath>
-          <value><power>7</power></value>
+          <value><power>8</power></value>
         </li>
-        <!-- ABYautja_Melee_PredatorKatana / blade : 22 -> 29 -->
+        <!-- ABYautja_Melee_PredatorKatana / blade : 22 -> 34 -->
         <li Class="PatchOperationReplace">
           <xpath>/Defs/ThingDef[defName="ABYautja_Melee_PredatorKatana"]/tools/li[label="blade"]/power</xpath>
-          <value><power>29</power></value>
+          <value><power>34</power></value>
         </li>
-        <!-- ABYautja_Melee_PredatorKatana / point : 18 -> 24 -->
+        <!-- ABYautja_Melee_PredatorKatana / point : 18 -> 28 -->
         <li Class="PatchOperationReplace">
           <xpath>/Defs/ThingDef[defName="ABYautja_Melee_PredatorKatana"]/tools/li[label="point"]/power</xpath>
-          <value><power>24</power></value>
-        </li>
-        <!-- ABYautja_Melee_PredatorScythe / point : 24 -> 28 -->
-        <li Class="PatchOperationReplace">
-          <xpath>/Defs/ThingDef[defName="ABYautja_Melee_PredatorScythe"]/tools/li[label="point"]/power</xpath>
           <value><power>28</power></value>
         </li>
-        <!-- ABYautja_Melee_PredatorScythe / blade : 20 -> 24 -->
+        <!-- ABYautja_Melee_PredatorScythe / point : 24 -> 39 -->
+        <li Class="PatchOperationReplace">
+          <xpath>/Defs/ThingDef[defName="ABYautja_Melee_PredatorScythe"]/tools/li[label="point"]/power</xpath>
+          <value><power>39</power></value>
+        </li>
+        <!-- ABYautja_Melee_PredatorScythe / blade : 20 -> 32 -->
         <li Class="PatchOperationReplace">
           <xpath>/Defs/ThingDef[defName="ABYautja_Melee_PredatorScythe"]/tools/li[label="blade"]/power</xpath>
-          <value><power>24</power></value>
+          <value><power>32</power></value>
         </li>
-        <!-- ABYautja_Melee_PredatorScythe / handle blade : 19 -> 22 -->
+        <!-- ABYautja_Melee_PredatorScythe / handle blade : 19 -> 31 -->
         <li Class="PatchOperationReplace">
           <xpath>/Defs/ThingDef[defName="ABYautja_Melee_PredatorScythe"]/tools/li[label="handle blade"]/power</xpath>
-          <value><power>22</power></value>
+          <value><power>31</power></value>
         </li>
         <!-- ABYautja_Melee_PredatorSword / handle : 4 -> 6 -->
         <li Class="PatchOperationReplace">
@@ -523,30 +523,30 @@
           <xpath>/Defs/ThingDef[defName="ABYautja_Melee_PredatorSword"]/tools/li[label="point"]/power</xpath>
           <value><power>26</power></value>
         </li>
-        <!-- ABYautja_Melee_PredatorWarAxe / edge : 22 -> 26 -->
+        <!-- ABYautja_Melee_PredatorWarAxe / edge : 22 -> 35 -->
         <li Class="PatchOperationReplace">
           <xpath>/Defs/ThingDef[defName="ABYautja_Melee_PredatorWarAxe"]/tools/li[label="edge"]/power</xpath>
-          <value><power>26</power></value>
+          <value><power>35</power></value>
         </li>
-        <!-- ABYautja_Melee_PredatorWarAxe / blade : 24 -> 28 -->
+        <!-- ABYautja_Melee_PredatorWarAxe / blade : 24 -> 39 -->
         <li Class="PatchOperationReplace">
           <xpath>/Defs/ThingDef[defName="ABYautja_Melee_PredatorWarAxe"]/tools/li[label="blade"]/power</xpath>
-          <value><power>28</power></value>
+          <value><power>39</power></value>
         </li>
-        <!-- ABYautja_Melee_WarClub / handle : 10 -> 15 -->
+        <!-- ABYautja_Melee_WarClub / handle : 10 -> 16 -->
         <li Class="PatchOperationReplace">
           <xpath>/Defs/ThingDef[defName="ABYautja_Melee_WarClub"]/tools/li[label="handle"]/power</xpath>
-          <value><power>15</power></value>
+          <value><power>16</power></value>
         </li>
-        <!-- ABYautja_Melee_WarClub / club : 16 -> 24 -->
+        <!-- ABYautja_Melee_WarClub / club : 16 -> 25 -->
         <li Class="PatchOperationReplace">
           <xpath>/Defs/ThingDef[defName="ABYautja_Melee_WarClub"]/tools/li[label="club"]/power</xpath>
-          <value><power>24</power></value>
+          <value><power>25</power></value>
         </li>
-        <!-- ABYautja_Melee_WarClub / club blade : 13 -> 20 -->
+        <!-- ABYautja_Melee_WarClub / club blade : 13 -> 21 -->
         <li Class="PatchOperationReplace">
           <xpath>/Defs/ThingDef[defName="ABYautja_Melee_WarClub"]/tools/li[label="club blade"]/power</xpath>
-          <value><power>20</power></value>
+          <value><power>21</power></value>
         </li>
       </operations>
     </match>
@@ -561,25 +561,25 @@
           <xpath>/Defs/ThingDef[defName="JDSA_Vibroaxe"]/tools/li[label="handle"]/power</xpath>
           <value><power>5</power></value>
         </li>
-        <!-- JDSA_Vibroaxe / point : 50 -> 50 -->
+        <!-- JDSA_Vibroaxe / point : 50 -> 52 -->
         <li Class="PatchOperationReplace">
           <xpath>/Defs/ThingDef[defName="JDSA_Vibroaxe"]/tools/li[label="point"]/power</xpath>
-          <value><power>50</power></value>
+          <value><power>52</power></value>
         </li>
-        <!-- JDSA_Vibroblade / point : 50 -> 50 -->
+        <!-- JDSA_Vibroblade / point : 50 -> 52 -->
         <li Class="PatchOperationReplace">
           <xpath>/Defs/ThingDef[defName="JDSA_Vibroblade"]/tools/li[label="point"]/power</xpath>
-          <value><power>50</power></value>
+          <value><power>52</power></value>
         </li>
         <!-- JDSA_Vibrosword / handle : 5 -> 5 -->
         <li Class="PatchOperationReplace">
           <xpath>/Defs/ThingDef[defName="JDSA_Vibrosword"]/tools/li[label="handle"]/power</xpath>
           <value><power>5</power></value>
         </li>
-        <!-- JDSA_Vibrosword / point : 50 -> 50 -->
+        <!-- JDSA_Vibrosword / point : 50 -> 52 -->
         <li Class="PatchOperationReplace">
           <xpath>/Defs/ThingDef[defName="JDSA_Vibrosword"]/tools/li[label="point"]/power</xpath>
-          <value><power>50</power></value>
+          <value><power>52</power></value>
         </li>
       </operations>
     </match>
