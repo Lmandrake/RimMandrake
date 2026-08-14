@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!--
+  A goodwill change needs a reason, and the reason is a HistoryEventDef - it is
+  what the faction tab shows the player next to the number. Core keeps its own in
+  Data\Core\Defs\Goodwill\GoodwillEvents_Quests.xml (QuestPawnLost, QuestPrisonerRecruited,
+  MonumentDestroyed, ...); ours is the same shape, one label, nothing else.
+-->
+<Defs>
+
+  <HistoryEventDef>
+    <defName>StrandedTravellerTaken</defName>
+    <label>took in a survivor we vouched for</label>
+  </HistoryEventDef>
+
+</Defs>

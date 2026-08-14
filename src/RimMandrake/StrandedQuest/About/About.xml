@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ModMetaData>
+  <packageId>mandrake.strandedquest</packageId>
+  <name>Stranded</name>
+  <author>Mandrake</author>
+  <supportedVersions>
+    <li>1.6</li>
+  </supportedVersions>
+  <description>Adds one quest, "Stranded".
+
+A neighbouring settlement's transport breaks up over your land and drops a
+survivor on your map. Their people will come for them in six to ten days. Shelter
+the survivor until then and the settlement pays a finder's fee and remembers it.
+
+The survivor is a whole person, alone, with no faction to protect them — so the
+quest is really an offer of a colonist you did not have to recruit. Take them and
+the settlement finds out. That costs goodwill, and goodwill is what buys you the
+next few weeks of quiet.
+
+Everything here is XML built on vanilla quest nodes. There is no assembly, and no
+DLC is required — Royalty and Ideology files are cited in the def's header only as
+provenance for a node's shape, never as a dependency.
+
+Ships:
+  Defs/QuestScriptDefs/Quest_Stranded.xml     the quest
+  Defs/HistoryEventDefs/HistoryEvents_Stranded.xml   one goodwill reason
+</description>
+</ModMetaData>

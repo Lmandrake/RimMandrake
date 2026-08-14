@@ -1,0 +1,279 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!--
+  Stranded - one survivor, six to ten days, and the choice of keeping them.
+
+  Written 2026-08-14 against RimWorld 1.6 with skills/rimworld-quests/SKILL.md, as
+  that skill's own gate: a real quest authored end to end, deliberately NOT part of
+  the Jawa campaign.
+
+  THE SPEC IT WAS BUILT FROM (skill §2):
+    ask         shelter one stranded survivor for 6-10 days, unharmed and free
+    reason      a neighbouring settlement vouched for them and cannot reach them
+    choice      hand them back, or recruit / arrest / enslave a whole person you
+                did not have to earn - the settlement finds out either way
+    failure     they are taken, harmed, or wander off: quest fails, goodwill drops,
+                the colony survives it
+    reward      standard reward roll for the points, plus goodwill for a clean return
+    deadline    the pickup is a shown quest timer; the OFFER expires in 1-2 days,
+                because a pod is on the ground right now
+
+  PROVENANCE - every node's XML shape copied from a shipping Ludeon def, never
+  recalled. Paths under C:\Program Files (x86)\Steam\steamapps\common\RimWorld\Data:
+    QuestNode_GetMap, GetNearbySettlement(storeFactionLeaderAs), GetFactionOf,
+    Delay(isQuestTimeout, inspectString), GiveRewards(parms), Letter, End,
+    End(goodwillChangeAmount/FactionOf/Reason)     Core\...\Script_TradeRequest.xml
+                                                    Royalty\...\Hospitality\Script_Hospitality_Worker.xml:1039-1075
+    QuestNode_GeneratePawn(kindDef, faction, addToList)
+                                                    Royalty\...\Utility\Scripts_Utility_Helpers.xml
+    QuestNode_PawnsArrive(pawns, joinPlayer, arrivalMode RandomDrop)
+                                                    Core\...\Scripts_Utility_RewardsCore.xml
+    QuestNode_LeaveOnCleanup(pawns, sendStandardLetter)
+                                                    Royalty\...\Script_Hospitality_Worker.xml:836-840
+    QuestNode_SubScript Util_GetDefaultRewardValueFromPoints
+                                                    Core\...\Script_ItemStash.xml
+    lodgers.Recruited / .Arrested / .Enslaved / .Destroyed / .LeftMap
+                                                    Royalty\...\Script_Hospitality_Worker.xml:1020-1160
+    PawnKindDef SpaceRefugee                        Core\...\PawnKindDefs_Humanlikes\PawnKinds_Special.xml
+  Royalty paths are cited for SHAPE only. Every class named here lives in
+  Assembly-CSharp, so this mod has no DLC dependency.
+
+  TWO DECISIONS WORTH KNOWING:
+  * The survivor is generated with NO faction. A faction-appropriate lodger needs
+    QuestNode_GetRandomPawnKindForFaction, and both vanilla uses of that node supply
+    an Empire-specific <choices> block - whether <choices> is optional is not
+    established, and guessing it costs a game load. A factionless survivor also says
+    the thing the quest is about: nobody is coming to protect them but the deadline.
+  * There is no delayed retaliation raid. A QuestPart scheduled after QuestNode_End
+    never runs - the quest is cleaned up. The delayed consequence is the goodwill
+    loss, which the storyteller turns into raids on its own schedule. That is how
+    vanilla expresses it too (Script_Hospitality_Worker's fail branches carry
+    goodwillChange* on the End node and nothing else).
+
+  NOT SEEN IN GAME. Offline-validated only:
+    python3 skills/rimworld-quests/scripts/validate_quest.py \
+        src/RimMandrake/StrandedQuest/Defs/QuestScriptDefs/Quest_Stranded.xml
+-->
+<Defs>
+
+  <QuestScriptDef>
+    <defName>Stranded</defName>
+
+    <!-- Route 1, the natural random pool: weight > 0 and randomlySelectable left
+         at its default true. 0.6 is mid-family (shipped weights run 0.15-2.0). -->
+    <rootSelectionWeight>0.6</rootSelectionWeight>
+    <rootMinPoints>0</rootMinPoints>
+    <!-- Do not offer a stranger to a colony that cannot feed itself yet. -->
+    <rootMinProgressScore>3</rootMinProgressScore>
+    <!-- One memorable premise: do not tell it twice in a season. -->
+    <minRefireDays>25</minRefireDays>
+    <!-- The OFFER window. Short on purpose - a pod is on the ground now. This is a
+         different clock from the shelter timer below, and the player sees both. -->
+    <expireDaysRange>1~2</expireDaysRange>
+    <defaultChallengeRating>1</defaultChallengeRating>
+    <!-- Acceptance is blocked on a space map without this, and that is invisible
+         in ground testing. The arrival is a drop pod, so orbit is fine. -->
+    <everAcceptableInSpace>true</everAcceptableInSpace>
+
+    <questNameRules>
+      <rulesStrings>
+        <li>questName->Stranded</li>
+        <li>questName->Pod down</li>
+        <li>questName->The survivor</li>
+      </rulesStrings>
+    </questNameRules>
+
+    <questDescriptionRules>
+      <rulesStrings>
+        <li>questDescription->A transport out of [settlement_label] came apart on the way down last night. One pod made it to the ground on your land, and something inside it is still moving.\n\n[asker_nameDef] of [faction_name] is asking you to keep whoever walks out of that pod alive, unharmed and free for [shelterTicks_duration], until their people can come the long way round to collect them.\n\nThe survivor is nobody's colonist and carries no faction's protection. Hand them back and you will be paid. Keep them, and [asker_nameDef] will hear which of you it was.[caravanNote]</li>
+
+        <!-- A conditional line ALWAYS needs its bare fallback sibling, or the
+             whole description becomes unresolvable the moment it is false. -->
+        <li>caravanNote(canCaravan==False,priority=1)-> Your colony cannot reach [settlement_label] overland; they will have to come to you.</li>
+        <li>caravanNote-></li>
+      </rulesStrings>
+    </questDescriptionRules>
+
+    <root Class="QuestNode_Sequence">
+      <nodes>
+
+        <li Class="QuestNode_GetMap" />
+
+        <!-- The asker is a real settlement's leader, so the text can name them and
+             the goodwill consequences have somewhere to land. -->
+        <li Class="QuestNode_GetNearbySettlement">
+          <storeAs>settlement</storeAs>
+          <storeFactionLeaderAs>asker</storeFactionLeaderAs>
+          <storeCanCaravanAs>canCaravan</storeCanCaravanAs>
+          <maxTileDistance>32</maxTileDistance>
+        </li>
+        <li Class="QuestNode_GetFactionOf">
+          <thing>$asker</thing>
+          <storeAs>faction</storeAs>
+        </li>
+
+        <!-- rewardValue is a slate var QuestNode_GiveRewards reads; this sub-script
+             is the standard points -> value curve. -->
+        <li Class="QuestNode_SubScript">
+          <def>Util_GetDefaultRewardValueFromPoints</def>
+        </li>
+
+        <li Class="QuestNode_Set">
+          <name>shelterTicks</name>
+          <value>$(randInt(6,10)*60000)</value>
+        </li>
+
+        <!-- The survivor. addToList, not storeAs: the object signals below are
+             raised on the LIST var, which is how vanilla writes lodgers.*  -->
+        <li Class="QuestNode_GeneratePawn">
+          <kindDef>SpaceRefugee</kindDef>
+          <addToList>lodgers</addToList>
+          <allowAddictions>false</allowAddictions>
+        </li>
+
+        <li Class="QuestNode_PawnsArrive">
+          <pawns>$lodgers</pawns>
+          <joinPlayer>false</joinPlayer>
+          <arrivalMode>RandomDrop</arrivalMode>
+          <customLetterLabel TKey="LetterLabelStrandedArrived">Pod down: [lodgers0_nameDef]</customLetterLabel>
+          <customLetterText TKey="LetterTextStrandedArrived">The pod came in hard on the far side of your land. [lodgers0_nameDef] walked out of it.\n\n[asker_nameDef]'s people will be [shelterTicks_duration] getting here. Until then [lodgers0_nameDef] is your problem, and your guest.</customLetterText>
+        </li>
+
+        <!-- On cleanup rather than on a signal, so the survivor leaving can never
+             race the end of the quest. -->
+        <li Class="QuestNode_LeaveOnCleanup">
+          <pawns>$lodgers</pawns>
+          <sendStandardLetter>false</sendStandardLetter>
+        </li>
+
+        <!-- The shown timer. isQuestTimeout makes it the quest's own clock. -->
+        <li Class="QuestNode_Delay">
+          <delayTicks>$shelterTicks</delayTicks>
+          <isQuestTimeout>true</isQuestTimeout>
+          <inspectString TKey="InspectStringTimeLeft">Time left: {0}</inspectString>
+          <outSignalComplete>PickupDue</outSignalComplete>
+        </li>
+
+        <!-- SUCCESS. Rewards resolve in a sibling BEFORE the End on the same
+             signal, or the quest closes before the payout is registered. -->
+        <li Class="QuestNode_Letter">
+          <inSignal>PickupDue</inSignal>
+          <label TKey="LetterLabelStrandedCollected">Collected: [lodgers0_nameDef]</label>
+          <letterDef>PositiveEvent</letterDef>
+          <text TKey="LetterTextStrandedCollected">[asker_nameDef]'s people came for [lodgers0_nameDef] and found them whole and free to walk out.\n\nWord of that travels further than the fee does.</text>
+        </li>
+        <li Class="QuestNode_GiveRewards">
+          <inSignal>PickupDue</inSignal>
+          <parms>
+            <allowGoodwill>true</allowGoodwill>
+            <allowRoyalFavor>false</allowRoyalFavor>
+          </parms>
+        </li>
+        <li Class="QuestNode_End">
+          <inSignal>PickupDue</inSignal>
+          <outcome>Success</outcome>
+          <sendStandardLetter>false</sendStandardLetter>
+        </li>
+
+        <!-- THE CHOICE, priced. Three ways to keep a person, one price. -->
+        <li Class="QuestNode_Signal">
+          <inSignal>lodgers.Recruited</inSignal>
+          <node Class="QuestNode_Sequence">
+            <nodes>
+              <li Class="QuestNode_Letter">
+                <label TKey="LetterLabelStrandedKept">Kept: [lodgers0_nameDef]</label>
+                <letterDef>NegativeEvent</letterDef>
+                <text TKey="LetterTextStrandedKept">[lodgers0_nameDef] is one of yours now. [asker_nameDef] vouched for them to you, and will draw the obvious conclusion when nobody walks out to meet the pickup.</text>
+              </li>
+              <li Class="QuestNode_End">
+                <outcome>Fail</outcome>
+                <goodwillChangeAmount>-12</goodwillChangeAmount>
+                <goodwillChangeFactionOf>$asker</goodwillChangeFactionOf>
+                <goodwillChangeReason>StrandedTravellerTaken</goodwillChangeReason>
+              </li>
+            </nodes>
+          </node>
+        </li>
+
+        <li Class="QuestNode_Signal">
+          <inSignal>lodgers.Enslaved</inSignal>
+          <node Class="QuestNode_Sequence">
+            <nodes>
+              <li Class="QuestNode_Letter">
+                <label TKey="LetterLabelStrandedEnslaved">Enslaved: [lodgers0_nameDef]</label>
+                <letterDef>NegativeEvent</letterDef>
+                <text TKey="LetterTextStrandedEnslaved">[lodgers0_nameDef] was vouched for, and is now property. [asker_nameDef] will hear it from the pickup crew.</text>
+              </li>
+              <li Class="QuestNode_End">
+                <outcome>Fail</outcome>
+                <goodwillChangeAmount>-20</goodwillChangeAmount>
+                <goodwillChangeFactionOf>$asker</goodwillChangeFactionOf>
+                <goodwillChangeReason>StrandedTravellerTaken</goodwillChangeReason>
+              </li>
+            </nodes>
+          </node>
+        </li>
+
+        <li Class="QuestNode_Signal">
+          <inSignal>lodgers.Arrested</inSignal>
+          <node Class="QuestNode_Sequence">
+            <nodes>
+              <li Class="QuestNode_Letter">
+                <label TKey="LetterLabelStrandedArrested">Imprisoned: [lodgers0_nameDef]</label>
+                <letterDef>NegativeEvent</letterDef>
+                <text TKey="LetterTextStrandedArrested">[lodgers0_nameDef] is in a cell rather than a guest bed. The pickup crew will not be told a story they believe.</text>
+              </li>
+              <li Class="QuestNode_End">
+                <outcome>Fail</outcome>
+                <goodwillChangeAmount>-12</goodwillChangeAmount>
+                <goodwillChangeFactionOf>$asker</goodwillChangeFactionOf>
+                <goodwillChangeReason>StrandedTravellerTaken</goodwillChangeReason>
+              </li>
+            </nodes>
+          </node>
+        </li>
+
+        <!-- Died in your care. Vanilla uses .Destroyed for a dead quest pawn -
+             .Killed is legal and has no XML precedent anywhere. Cheaper than
+             taking them: a raider killed them, or you were slow, but nobody
+             chose it. -->
+        <li Class="QuestNode_Signal">
+          <inSignal>lodgers.Destroyed</inSignal>
+          <node Class="QuestNode_Sequence">
+            <nodes>
+              <li Class="QuestNode_Letter">
+                <label TKey="LetterLabelStrandedDied">Died in your care: [lodgers0_nameDef]</label>
+                <letterDef>NegativeEvent</letterDef>
+                <text TKey="LetterTextStrandedDied">[lodgers0_nameDef] did not live to the pickup. [asker_nameDef] will be told, and will decide for themselves how it happened.</text>
+              </li>
+              <li Class="QuestNode_End">
+                <outcome>Fail</outcome>
+                <goodwillChangeAmount>-6</goodwillChangeAmount>
+                <goodwillChangeFactionOf>$asker</goodwillChangeFactionOf>
+                <goodwillChangeReason>QuestPawnLost</goodwillChangeReason>
+              </li>
+            </nodes>
+          </node>
+        </li>
+
+        <!-- Walked off on their own: nobody's fault, no verdict, no reputation
+             change. That is exactly what Unknown is for. -->
+        <li Class="QuestNode_End">
+          <inSignal>lodgers.LeftMap</inSignal>
+          <outcome>Unknown</outcome>
+        </li>
+
+        <!-- The two ways this becomes impossible through no choice of the player. -->
+        <li Class="QuestNode_End">
+          <inSignal>faction.BecameHostileToPlayer</inSignal>
+          <outcome>Fail</outcome>
+        </li>
+        <li Class="QuestNode_End">
+          <inSignal>map.MapRemoved</inSignal>
+          <outcome>Fail</outcome>
+        </li>
+
+      </nodes>
+    </root>
+  </QuestScriptDef>
+
+</Defs>

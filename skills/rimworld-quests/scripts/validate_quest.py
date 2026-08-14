@@ -387,6 +387,10 @@ def collect_writes(root: ET.Element, corpus: dict | None) -> tuple[set[str], set
             name = el.findtext("addTo") or el.findtext("name")
             if name:
                 written.add(name.strip().lstrip("$"))
+
+        # <addToList> is also a plain field on QuestNode_GeneratePawn and others.
+        if el.tag == "addToList" and (el.text or "").strip():
+            written.add(el.text.strip().lstrip("$"))
     return written, subscripts
 
 
@@ -622,8 +626,8 @@ def check_def(defname: str, el: ET.Element, corpus: dict, rep: Report, src: Path
             return True
         if "." in sig:
             var, _, suffix = sig.rpartition(".")
-            if var.lstrip("$") not in written:
-                if var.lstrip("$") not in known and not opaque_root:
+            if var.lstrip("$") not in known:
+                if not opaque_root:
                     add(WARN, "signal-var",
                         f"{where} listens for '{sig}' but nothing stores '{var}' in the "
                         f"slate. An object signal is <slateVarName>.<Suffix> - rename a "
