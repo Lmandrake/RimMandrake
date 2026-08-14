@@ -117,10 +117,6 @@ are at 581, so the conditional fires; no silent no-op.** ⚠️ The biome side i
 **Core's** `Biomes_WarmArid.xml`, only the entry is Odyssey-gated — the patch
 header said Odyssey and is corrected.
 
-### C-t1 `[v2]` — `validate_patch.py:1363` says "IN ONE MOD"
-Under `--all-versions` there is no load set, so "one mod" means a **folder**, not
-the game. Reword. ⛔ **Do not change the walk** — it is correct. Wording only.
-
 ### C-t2 ⛔ PARKED by the art directive `[v2]` — mask filenames
 `SWDoorBlast{B,D}Door_Frame_east_m.png` carry an underscore before the `m`; the
 convention is `...eastm.png`. ⚠️ **This is exactly the class the directive
