@@ -26,14 +26,39 @@ import sys
 
 # Resolved from this file, not hardcoded: the repo moved G: -> D: on 2026-08-12
 # and is reached by different paths from Windows Python and WSL.
-_REPO_ROOT = os.path.abspath(
-    os.path.join(os.path.dirname(__file__), "..", "..", "..", "..", ".."))
+# Walk UP until the repo root announces itself, rather than counting "..".
+# 🔴 Counting broke twice: the drive move made it look fragile, and the
+# 2026-08-13 restructure changed this file's depth so the five ".." landed one
+# directory ABOVE the repo. `from def_diff import ...` then raised
+# ModuleNotFoundError, both generators died, and refresh.py --patches still
+# exited 0 — a failure that regenerated nothing while reporting success.
+# A marker file cannot miscount.
+def _find_repo_root(start):
+    d = os.path.abspath(start)
+    while True:
+        if os.path.isdir(os.path.join(d, ".git")) or \
+           os.path.isfile(os.path.join(d, "CLAUDE.md")):
+            return d
+        parent = os.path.dirname(d)
+        if parent == d:
+            raise RuntimeError(
+                "could not find the repo root above %s - no .git or CLAUDE.md "
+                "on any parent. Refusing to guess." % start)
+        d = parent
+
+
+_REPO_ROOT = _find_repo_root(os.path.dirname(__file__))
 sys.path.insert(0, os.path.join(_REPO_ROOT, "src", "RimMandrake", "Utils"))
 from def_diff import iter_live_defs
 from def_inventory import build as build_offline, D_CONFIG, D_WORKSHOP, D_LOCAL, D_DATA
 
-DUMP = (r"C:\Users\Mandrake\AppData\LocalLow\Ludeon Studios"
-        r"\RimWorld by Ludeon Studios\DefDump\defs\ThingDef.json")
+# Resolved per-platform, never a bare C:\ literal. A hardcoded Windows path
+# here made this generator die under WSL python3 with a FileNotFoundError
+# naming ThingDef.json - which reads as "take a fresh dump", when the dump
+# was present and only the interpreter was wrong. refresh.py carries the
+# same lesson in its own header; game_paths.LOCALLOW is the shared fix.
+import game_paths as _GP
+DUMP = os.path.join(_GP.LOCALLOW, "DefDump", "defs", "ThingDef.json")
 OUT = os.path.join(_REPO_ROOT, "src", "Jawa", "Jawa_Armoury", "Patches",
                    "Armoury_TorpedoSpeed.xml")
 
