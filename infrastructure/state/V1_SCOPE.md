@@ -263,6 +263,34 @@ decorating a xenotype nothing spawns.
 `set_pawn_xenotype`'s read-back instead. **A gate whose evidence cannot be
 collected is not a gate**, which is why this had sat as "verify only" all day.
 
+### ⚖️ Row 5 RULED, 2026-08-13 — it closes on `OuterRim_Jawa`, and the mismatch is v2
+
+BRIDGE raised the sharp version: **`OuterRim_Jawa` is what the pawnKinds pin;
+`BTD_Jawa` is what our tuning patches target.** So a row 5 that closes on
+`OuterRim_Jawa` closes on a pawn **our patches never touched**.
+
+**MVP ruling: row 5 still closes on `OuterRim_Jawa`.** The v1 bar is *"a Jawa
+spawns and plays"*, and it does. Tuning depth is explicitly v2 under
+"everything ships THIN".
+
+🔴 **But it does NOT close silently, and this is the part that matters:** if our
+patches target a xenotype nothing spawns, **our Jawa tuning is doing nothing in
+play** — the same shape as seven art mods sitting deployed and inert. That is a
+real finding, not a checkbox caveat. **Filed as v2, owned by VISION** (which
+xenotype the campaign's Jawas should actually be) with CREATE re-pointing the
+patches once ruled.
+
+**Evidence path is two-deep, so the row is closable either way** — BRIDGE,
+unprompted:
+
+| | |
+|---|---|
+| primary | `jawa/set_pawn_xenotype` read-back — unproven, now first mutation in the batch |
+| fallback | `rimworld/save_game` then grep the `.rws` — proven method, zero new code, costs one save |
+
+**A gate with a proven fallback is a real gate.** The earlier re-word is
+withdrawn.
+
 ### ⭐ THE SEQUENCING CONSEQUENCE — author everything, verify once
 
 **Two of eight rows are still fully offline-authorable — 3 and 4.** That is down
