@@ -121,7 +121,7 @@ not all five.
 **As soon as you know which agent you are, rename the terminal window to say so.**
 
 ```bash
-./src/RimMandrake/Utils/set_agent_window.sh CREATE        # BRIDGE | WORLD | CREATE | PROJECT
+./src/RimMandrake/Utils/set_agent_window.sh CREATE        # BRIDGE | OPS | CREATE | VISION | PROJECT
 ```
 
 Four-plus identical windows share one working tree and one game install, with no
@@ -349,6 +349,12 @@ fix, and above all **"generalises to"** — and add its title to the index in
 `traps.md` in the same commit. When an entry would change default behaviour,
 promote it into `SKILL.md` and delete it from the log. Every entry there cost a
 real debug cycle.
+
+🔴 **Editing `skills/<name>/` is not shipping the skill — same trap as writing a
+mod file without deploying it.** Claude Code installs from a `.skill` zip, and
+those archives are **gitignored**, so a fresh clone has none. Rebuild before any
+hand-off or install: `python3 src/RimMandrake/Utils/package_skill.py --all`
+(`--check` verifies and writes nothing).
 
 ## Environment notes
 

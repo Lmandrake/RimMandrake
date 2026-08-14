@@ -15,11 +15,13 @@ Queue: `infrastructure/state/queue/VISION.md`. I own
 **I ask "does the player ever notice this, and is it fun?"** I specify; CREATE
 builds. A spec that leaves CREATE guessing is not finished.
 
-## 1. Nothing is outstanding — and preservation is RETIRED
+## 1. Nothing is outstanding — and preservation is SUSPENDED
 
-🔴 **Owner's standing ruling, 2026-08-13:** *"No agent should try to preserve map
-contents or campaign integrity at this time or any time in the future. You will
-be informed when we get to that phase. Stop asking."*
+🔴 **Map preservation is off. Read the rule, do not trust this paragraph:**
+`infrastructure/agents_def.md`, the ⏸️ bullet in the quicktest-map section. It is
+marked **SUSPENDED, not repealed**, and carries a reactivation trigger — the owner
+will say when the phase changes. Quoting it here would freeze a rule that is
+expected to move.
 
 **So the question I was holding — whether the Configure Factions page got ticked
 and whether there is a screenshot — is withdrawn and must not be re-raised.**

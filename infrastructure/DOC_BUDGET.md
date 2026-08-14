@@ -22,7 +22,10 @@ document nobody is required to shrink.
 
 **1. Budgets, per file class.** `src/RimMandrake/Utils/doc_budget.py` enforces them and exits 1
 when a file is over. Queue 150 · identity 120 · state 150 · `CLAUDE.md` 300 ·
-`agents_def.md` **200** · traps 700 · `TODO.md` 400 · `TODO_v2.md` 600.
+`agents_def.md` **200** · traps 700 · `TODO_v2.md` 600.
+*(`TODO.md` still has a 400 budget in the tool, but it is **retired** — a 13-line
+pointer stub as of 2026-08-13. That number is a ceiling on a corpse, not room to
+grow; file work in `infrastructure/state/queue/<SEAT>.md`.)*
 *(This line said 500 for `agents_def.md` while the tool enforced 200 — the doc
 describing the rule disagreed with the rule. The tool is authoritative; read
 `BUDGETS` in the script, not this sentence.)* Design docs and rosters are unbudgeted — their
