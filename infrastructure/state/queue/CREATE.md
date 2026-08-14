@@ -107,7 +107,14 @@ owner directed** — east was passed to the generator as reference-only for
 anatomy, never for pose or framing, so the facing the owner called correct was
 not touched. Footprint bbox unchanged at (199,11,315,468).
 
-⭐ **ALL THREE OWED FIXES ARE DONE. C3a is back with the owner for approval.**
+✅ **APPROVED AND SHIPPED, owner 2026-08-13: "Eopie is reviewed! Ship it!"**
+`DEPLOY_HOLD.txt` entry lifted, `deploy_custom_mods.py --apply --mod
+DesertVehicleReskin` wrote 8 files and VERIFIED in sync. ⚠️ **Deployed is not
+loaded** — `mandrake.desertvehiclereskin` still needs a `ModsConfig` entry AFTER
+`sarg.alphavehiclesneolithic`, because the donor ships LOOSE art and order
+decides whether the reskin is visible at all. Filed with OPS.
+
+⭐ **ALL THREE OWED FIXES ARE DONE.**
 `Source/REVIEW_all_three.png` regenerated — and `Source/review_sheet.py` now
 builds it, so the two reviews are the same layout instead of a hand-assembly
 rebuilt from memory. ⚠️ **The new sheet draws both sides TINTED as the game

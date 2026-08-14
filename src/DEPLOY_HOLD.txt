@@ -26,18 +26,16 @@ Jawa_Armoury/Patches/Armour_Ratings.xml           # owner: SHIP NEITHER, 2026-08
 # custom_patches/WreckedMachines/V2.md is the register of what moved and why.
 WreckedMachines/*                                 # owner: parked to v2, 2026-08-12
 
-# ---- DesertVehicleReskin — the eopie sled, awaiting owner review -------------
-# The dog sled's three facings are finished and validated but NOT ruled on, and
-# the mod is 1 of 5 vehicles.
+# ---- DesertVehicleReskin — HOLD LIFTED 2026-08-13, owner approved the art ----
+# The hold said "lift this when the owner approves the art — nothing else."
+# They did: "Eopie is reviewed! Ship it!", after the three owed fixes landed
+# (7e3018e south neck, 65c1590 east snout, 2a9a004 sled tint) and the review
+# sheet was regenerated tinted-as-rendered.
 #
-# ✅ The loadability half is RESOLVED. The owner ruled 2026-08-13 that each mod
-# we fix art in gets its own uploadable fix mod, which settles the host question:
-# About/About.xml now exists, packageId mandrake.desertvehiclereskin, loadAfter
-# sarg.alphavehiclesneolithic (required — the donor ships LOOSE art, so order
-# decides). Doctrine in custom_patches/README.md.
+# Nothing here now. Left as a note rather than deleted because the entry records
+# WHY three facings sat undeployed for a day, and the next person to hold a whole
+# mod pre-review should see that it ended in one line from the owner.
 #
-# ⏳ ONE reason to hold remains: the owner has not reviewed the art.
-# Review sheet: DesertVehicleReskin/Source/REVIEW_all_three.png
-# Held whole rather than per-file because every file is pre-review.
-# CREATE, 2026-08-13. Lift this when the owner approves the art — nothing else.
-DesertVehicleReskin/*                 # CREATE: art pre-review (About.xml now OK)
+# ⚠️ Deployed is not loaded: mandrake.desertvehiclereskin still needs a
+# ModsConfig entry AFTER sarg.alphavehiclesneolithic — the donor ships LOOSE art,
+# so order decides whether the reskin is visible at all. Filed with OPS.
