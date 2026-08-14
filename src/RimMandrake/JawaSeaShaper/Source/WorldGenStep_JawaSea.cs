@@ -45,6 +45,17 @@ namespace JawaSeaShaper
         private const int Bodies = 3;                      // exactly three
         private const float MinCompactness = 25f;          // a circle is 4*pi = 12.57
 
+        // 🔴 THE SPEC'S ONE SHAPE REQUIREMENT THAT CARRIED NO NUMBER.
+        // worldgen_sea_spec.md test 4 item 4 says "long and torn, not round and
+        // torn" and stops there, while raggedness has a hard gate (25, above).
+        // An unmeasured requirement is the one that gets quietly failed, so this
+        // is a number I chose rather than one I was given: a body must be at
+        // least twice as long as it is wide. 2.0 is deliberately modest — it
+        // rejects a disc without demanding a ribbon, and item 3 of the same test
+        // forbids a ring, so pushing this higher would walk into that.
+        // ⚠️ If VISION sets a real number, this constant is the only edit.
+        private const float MinAspect = 2.0f;
+
         // Depth we write for claimed sea, and the floor we guarantee for raised
         // land. Both only have to sit the right side of zero — see the IL above.
         private const float SeaElevation = -350f;
@@ -582,6 +593,94 @@ namespace JawaSeaShaper
         // The log line is the acceptance evidence — the whole spec is decided by
         // reading it across three seeds.
         // -------------------------------------------------------------------
+        /// <summary>
+        /// Long axis over width, for one body. Bounded and O(n), deliberately:
+        /// the exact diameter is an O(n^2) pairwise scan and a sea body can run
+        /// to thousands of tiles.
+        ///
+        /// DOUBLE SWEEP, the standard graph-diameter approximation: from any
+        /// member find the furthest member A, from A find the furthest member B.
+        /// A-B is the long axis. Width is then twice the greatest perpendicular
+        /// distance from that axis, in one more linear pass.
+        ///
+        /// ⚠️ This APPROXIMATES the diameter — a double sweep can under-report on
+        /// a pathological shape. It is a diagnostic gate, not a proof, and it
+        /// errs toward reporting a body as rounder than it is, which is the safe
+        /// direction for a floor.
+        /// </summary>
+        private static float AspectRatio(int b, int[] bodyOf, int count,
+                                         PlanetLayer layer, PlanetTile[] tileOf)
+        {
+            int first = -1;
+            for (int i = 0; i < count && first < 0; i++)
+            {
+                if (bodyOf[i] == b)
+                {
+                    first = i;
+                }
+            }
+            if (first < 0)
+            {
+                return 0f;
+            }
+
+            int a = FurthestFrom(first, b, bodyOf, count, layer, tileOf);
+            int c = FurthestFrom(a, b, bodyOf, count, layer, tileOf);
+
+            Vector3 pa = layer.GetTileCenter(tileOf[a]);
+            Vector3 pc = layer.GetTileCenter(tileOf[c]);
+            Vector3 axis = pc - pa;
+            float length = axis.magnitude;
+            if (length <= 0.0001f)
+            {
+                // One tile, or all members coincident. Not elongated, and not a
+                // divide-by-zero either.
+                return 0f;
+            }
+            Vector3 unit = axis / length;
+
+            float maxPerp = 0f;
+            for (int i = 0; i < count; i++)
+            {
+                if (bodyOf[i] != b)
+                {
+                    continue;
+                }
+                Vector3 d = layer.GetTileCenter(tileOf[i]) - pa;
+                float perp = (d - unit * Vector3.Dot(d, unit)).magnitude;
+                if (perp > maxPerp)
+                {
+                    maxPerp = perp;
+                }
+            }
+
+            // Width is the full span across the axis, not the half-span.
+            float width = maxPerp * 2f;
+            return width <= 0.0001f ? 999f : length / width;
+        }
+
+        private static int FurthestFrom(int from, int b, int[] bodyOf, int count,
+                                        PlanetLayer layer, PlanetTile[] tileOf)
+        {
+            Vector3 origin = layer.GetTileCenter(tileOf[from]);
+            int best = from;
+            float bestSq = -1f;
+            for (int i = 0; i < count; i++)
+            {
+                if (bodyOf[i] != b)
+                {
+                    continue;
+                }
+                float sq = (layer.GetTileCenter(tileOf[i]) - origin).sqrMagnitude;
+                if (sq > bestSq)
+                {
+                    bestSq = sq;
+                    best = i;
+                }
+            }
+            return best;
+        }
+
         private static void Report(int count, int originalWater, int claimed, int quota,
                                    int[] bodyOf, int[][] neighboursOf, PlanetLayer layer,
                                    PlanetTile[] tileOf, int bodyCount, int orphans)
@@ -628,9 +727,13 @@ namespace JawaSeaShaper
                 // Perimeter squared over area. A circle is 4*pi = 12.57; the spec
                 // wants at least 25, i.e. twice as ragged as a circle.
                 float compactness = (float)perimeter * perimeter / area;
-                sb.AppendFormat(" | body {0}: {1} tiles, perimeter {2}, compactness {3:F1} ({4}), mean arc {5:F0} deg",
+                float aspect = AspectRatio(b, bodyOf, count, layer, tileOf);
+                sb.AppendFormat(" | body {0}: {1} tiles, perimeter {2}, compactness {3:F1} ({4}), "
+                              + "aspect {5:F1} ({6}), mean arc {7:F0} deg",
                     b, area, perimeter, compactness,
                     compactness >= MinCompactness ? "PASS" : "FAIL — too round",
+                    aspect,
+                    aspect >= MinAspect ? "PASS" : "FAIL — too round, not elongated",
                     arcSum / area);
             }
 
