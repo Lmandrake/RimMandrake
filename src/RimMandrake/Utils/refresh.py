@@ -247,7 +247,7 @@ def compare(current, other):
 
 
 # ---------------------------------------------------------------- status
-def status(fp):
+def status(fp, steps_failed=False):
     print("\n=== CURRENT LOAD SET ===")
     print("  RimWorld %s | %d active mods | fingerprint %s"
           % (fp["version"], fp["modCount"], fp["hash"]))
@@ -341,6 +341,15 @@ def status(fp):
         print("  Everything else can be rebuilt now with --offline.")
     elif any(r[2] in ("STALE", "MISSING", "REBUILD") for r in rows):
         print("  Offline artefacts are stale or missing. Run --all; no game load needed.")
+    elif steps_failed:
+        # The artefact table is built from STAMPS, so it can only ever describe
+        # past runs. It cannot see that a step in THIS run exited non-zero, and
+        # on 2026-08-13 it printed "Everything is current" directly after four
+        # such failures. The run's own outcome outranks the table.
+        print("  🔴 NOT current. The table above reads clean because it is built")
+        print("     from stamps, but a step in THIS run FAILED (see the exit")
+        print("     codes above). Fix the failure and re-run — do not treat any")
+        print("     artefact as matching this load set.")
     else:
         print("  Everything is current.")
     if fp.get("missing"):
@@ -363,10 +372,26 @@ def do_offline(fp, note=""):
               "--out", os.path.join("observed", "2026-08-13_pre-restructure",
                                     "inventory")], "animal inventory")
     if ok:
-        run([sys.executable, os.path.join("src", "RimMandrake", "Utils", "animal_contact_sheet.py"),
-             "--out", SHEETS], "contact sheets")
-        write_stamp(fp, note)
-        print("    stamped %s" % STAMP)
+        # 🔴 Both halves of this used to lie, and they compounded.
+        # The contact-sheet exit code was DISCARDED, and write_stamp() ran
+        # unconditionally — so a failed run still stamped the fingerprint, the
+        # artefact table then read that stamp and reported "current", and the
+        # final verdict said "Everything is current" after four steps exited 1.
+        # Measured 2026-08-13 in observed/2026-08-13_refresh_all.log:2085-2116,
+        # where "contact sheets FAILED (exit 1)" is followed on the next line by
+        # "stamped .../GENERATED_FROM.json".
+        # A stamp asserts "this artefact was generated from that load set". Only
+        # a step that SUCCEEDED may assert it.
+        sheets_ok = run([sys.executable,
+                         os.path.join("src", "RimMandrake", "Utils", "animal_contact_sheet.py"),
+                         "--out", SHEETS], "contact sheets")
+        ok = ok and sheets_ok
+        if ok:
+            write_stamp(fp, note)
+            print("    stamped %s" % STAMP)
+        else:
+            print("    NOT stamped - a generating step failed, so the artefacts "
+                  "do NOT match this load set. Re-run after fixing the failure.")
     return ok
 
 
@@ -460,7 +485,7 @@ def main():
 
     if a.all or a.offline or a.patches:
         print()
-        status(fp)
+        status(fp, steps_failed=failed)
     if failed:
         sys.exit(1)
 

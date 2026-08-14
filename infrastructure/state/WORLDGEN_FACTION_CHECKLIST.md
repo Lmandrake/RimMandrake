@@ -95,10 +95,21 @@
 > reused: **it only reaches factions whose defs expose those four fields.** For
 > the rest the lever is the mod list, with the game down — a separate job.
 
-**What you are doing and why.** The next world is generated from scratch (all saves
-were deleted by owner order 2026-08-13), and faction existence is decided **once, at
-world creation**, on vanilla's *Configure Factions* page that Faction Control unlocks
-and extends. There is no suppression setting to write to a file afterwards — Faction
+**What you are doing and why.** v1 generates a new world from scratch, and faction
+existence is decided **once, at world creation**, on vanilla's *Configure Factions*
+page that Faction Control unlocks and extends.
+
+> ⚠️ **Premise corrected 2026-08-13, same day this was written.** The original text
+> here said the old saves were deleted and therefore gone. **They are back** — Steam
+> Cloud restored 26 `.rws` (701 MB, original mtimes) at the 17:30 launch, including
+> `New Arrivals2.rws` at 43,738,239 bytes. The delete happened and simply did not
+> survive. **This does not change the checklist**: the owner's decision to regenerate
+> for v1 stands on its own, and a faction baked into the old save still cannot be
+> removed by any setting. But do not repeat "the saves are gone" — it is false on
+> disk, and whether to re-delete them (which needs Steam Cloud disabled first) is the
+> owner's call.
+
+There is no suppression setting to write to a file afterwards — Faction
 Control's `density` is a clumping radius, not a count, and setting it to 0 does
 nothing. So this page is the only lever, and it fires once. The goal is a world that
 reads as Star Wars: keep the SW factions, drop the Norse/medieval/fantasy ones, the
