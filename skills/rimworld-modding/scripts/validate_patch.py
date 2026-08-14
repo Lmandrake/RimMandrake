@@ -1360,12 +1360,12 @@ def check_live(to_evaluate, docs, f: Findings,
                        f"will be a no-op with these mods active. Expected if the "
                        f"target mod is not installed.")
         elif n > 1 and cls in DESTRUCTIVE_OPS and n_mods == 1:
-            f.warn(f"{path} ({cls}): xpath matches {n} nodes IN ONE MOD and this "
-                   f"operation applies to ALL of them{loc}. If you meant one, add "
-                   f"a positional predicate such as [1] or [2] - and put the same "
-                   f"predicate in the conditional test.\n              {xp}")
+            f.warn(f"{path} ({cls}): xpath matches {n} nodes in ONE mod folder and "
+                   f"this operation applies to ALL of them{loc}. If you meant one, "
+                   f"add a positional predicate such as [1] or [2] - and put the "
+                   f"same predicate in the conditional test.\n              {xp}")
         elif n > 1 and cls in DESTRUCTIVE_OPS:
-            f.info(f"{path} ({cls}): {n} match(es) across {n_mods} mods{loc}. "
+            f.info(f"{path} ({cls}): {n} match(es) across {n_mods} mod folders{loc}. "
                    f"Several mods define this def; RimWorld merges them into one "
                    f"document and this operation patches every matching node. "
                    f"Usually correct - do NOT add a positional predicate to "
