@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Patch>
+
+  <!--
+    Strike Trispike out of the two DEATH-SPAWN lists that name it directly.
+
+    VISION ruled Trispike removed (cherrypick_inbox.md §A). This patch is the
+    half a cherry-pick cannot do, and it is NOT belt-and-braces:
+
+    🔴 CHERRY PICKER NEUTRALISES A PawnKindDef; IT DOES NOT DELETE IT.
+    Removing a PawnKindDef sets combatPower = float.MaxValue and clears
+    allowInMechClusters / canArriveManhunter / canBeSapper — which is what stops
+    the kind being CHOSEN by pawn generation, raids, clusters and manhunter
+    packs, because all of those weigh candidates by combatPower.
+
+    ⇒ A DIRECT DEF REFERENCE IS UNAFFECTED. DeathActionWorker_Divide does not
+    weigh anything; it reads the list it was given and spawns from it. So a
+    cherry-picked Trispike would STILL pour out of every Bulbfreak and Dreadmeld
+    that dies. Neither list is a generation path.
+
+    That is the trap this file exists to close, and it generalises: cherry-picking
+    a def stops it being SELECTED, never being SUMMONED by name.
+
+    THE TWO LISTS, read from
+    Data/Anomaly/Defs/ThingDefs_Races/Races_Fleshbeasts.xml —
+
+      Bulbfreak (kept, renamed Genebulb), :63-70
+        deathAction Class="DeathActionProperties_Divide"
+        dividePawnCount 4, dividePawnKindOptions { Toughspike, Trispike }
+        ⇒ with Trispike gone the list drops to one entry and a Genebulb bursts
+          into FOUR Toughspikes. VISION rules that a flavour gain, not a loss:
+          one gene-line, one mistake, four copies.
+
+      Dreadmeld (kept, renamed Genemeld), :526-532
+        dividePawnKindAdditionalForced { Toughspike, Trispike, Bulbfreak }
+        ⚠️ FORCED, not weighted — every entry spawns, every time. There is no
+          graceful degradation to rely on here.
+
+    ⭐ AND REMOVING TRISPIKE CLOSES A LEAK RATHER THAN OPENING ONE. Trispike is
+    itself a Divide, count 3, spawning Fingerspike — which is being repurposed as
+    a tame pet. Keeping Trispike is what would produce a shower of tame Scurriers
+    two hops down from a single Genebulb.
+
+    Conditional per list, so this is a clean no-op if Anomaly ever restructures
+    these defs, rather than a red error.
+  -->
+
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/ThingDef[defName="Bulbfreak"]/race/deathAction/dividePawnKindOptions/li[text()="Trispike"]</xpath>
+    <match Class="PatchOperationRemove">
+      <xpath>/Defs/ThingDef[defName="Bulbfreak"]/race/deathAction/dividePawnKindOptions/li[text()="Trispike"]</xpath>
+    </match>
+  </Operation>
+
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/ThingDef[defName="Dreadmeld"]/race/deathAction/dividePawnKindAdditionalForced/li[text()="Trispike"]</xpath>
+    <match Class="PatchOperationRemove">
+      <xpath>/Defs/ThingDef[defName="Dreadmeld"]/race/deathAction/dividePawnKindAdditionalForced/li[text()="Trispike"]</xpath>
+    </match>
+  </Operation>
+
+</Patch>
