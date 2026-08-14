@@ -10,7 +10,77 @@ five different def types at once.
 
 ---
 
-## 0. The key format, read from `CherryPicker.dll` IL
+## 0. HOW IT IS APPLIED — a hand-written file works, and no restart is needed
+
+**Read from IL, not assumed.** `CherryPickerUtility` carries
+`[StaticConstructorOnStartup]` and its `.cctor` ends `Setup(false)`:
+
+```
+Mod_CherryPicker::.ctor -> GetSettings<ModSettings_CherryPicker>
+    -> ReadModSettings -> ExposeData -> Scribe_Collections.Look(allRemovedDefs, "keys")
+StaticConstructorOnStartupUtility.CallAll()
+    -> CherryPickerUtility::.cctor -> Setup(false)
+        -> MakeWorkingList   (reads allRemovedDefs)
+        -> ProcessList       (resolves each key, calls RemoveDef)
+```
+
+⇒ **No UI interaction, no click-OK, no settings write.** The removals are applied
+inline during the startup pass of the load we are already paying for.
+
+⚠️ **`Scribe.mode == 1` is `Saving`, not `LoadingVars`** — so the `ProcessList`
+call inside `ExposeData` fires only when the settings window is closed. The
+startup path above is the one that matters, and it is unconditional.
+
+⚠️ **Restart dialogs exist but do not apply to us.** `CherryPicker.RestartRequired`
+is raised only from the *restore* path (un-picking something), and the reload
+dialog only when `ProgramState == Playing`. A fresh, additive list needs neither.
+
+---
+
+## 0b. 🔴 THE TWO WAYS A HAND-WRITTEN FILE FAILS SILENTLY
+
+**1. A key with no `/` kills the ENTIRE remaining list.**
+`DefUtility::ToDefName` is `key.Split('/')[1]` with **no bounds check**
+(IL_0000–IL_000b). A key containing no slash throws `IndexOutOfRangeException`,
+and that call sits in `MakeWorkingList` / `ProcessList` — **outside**
+`RemoveDef`'s catch. `ProcessList` has no catch of its own, so it propagates up
+to `Setup`, which logs `[Cherry Picker] Error processing master def list...` and
+returns. **Every removal after the bad key is lost.** One typo, no picks.
+
+**2. A def outside `allDefs` is accepted and never applied — with no report line.**
+`allDefs` is not every def. `ThingDef`s are filtered to category **Item / Building
+/ Plant / Pawn** only, excluding blueprints, frames and `isUnfinishedThing`;
+`PawnKindDef` excludes `Colonist`; `FactionDef` requires
+`maxConfigurableAtWorldCreation > 0`; `QuestScriptDef` requires that no
+`IncidentDef` references it. **Out-of-scope keys produce no FAILED line** — they
+are simply dropped from the working set and kept in the file forever.
+
+⇒ **Validate offline before writing: exactly one or two `/`, and the def in
+scope.** Those two checks are the whole difference between a working file and a
+wasted load.
+
+---
+
+## 0c. What "removal" actually does
+
+**13 def types are really deleted** from the database — `RecipeDef`, `TraitDef`,
+`ResearchProjectDef`, `DesignationCategoryDef`, `MemeDef`, `PreceptDef`,
+`RitualPatternDef`, `HairDef`, `BeardDef`, `TattooDef`, `BackstoryDef`,
+**`GeneDef`**, `XenotypeDef`. Everything else is **neutered in place**.
+
+`PawnKindDef`: `combatPower = float.MaxValue`, `canArriveManhunter`,
+`canBeSapper`, `allowInMechClusters` all false, `minGenerationAge = 0`. The
+`CompProperties_SpawnerPawn` strip happens separately in `PostProcess`, via
+`spawnablePawnKinds.RemoveAll(processedDefs.Contains)`.
+
+⚠️ **`HediffDef` is a NO-OP inside `RemoveDef`** — it returns immediately. Hediffs
+are blocked at runtime instead, by a Harmony prefix on
+`Pawn_HealthTracker.AddHediff`. So picking a HediffDef works, but by a different
+mechanism.
+
+---
+
+## 0d. The key format, read from `CherryPicker.dll` IL
 
 Cherry Picker stores one string per removal. `DefUtility.ToDefName` is
 `key.Split('/')[1]` and `ToType` is `[0]`, with an optional `[2]` namespace
