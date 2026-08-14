@@ -79,6 +79,8 @@ Currently contains:
     <li>Nals.FacialAnimation</li>                           <!-- supplies the FaceAdjustmentDef TYPE -->
     <li>DanZinagri.FacialAnimationCompatabilityProject</li> <!-- BS_InsectoidHumanoid_FourArmed_FaceAdjustment -->
     <li>ab.hoffa</li>                                       <!-- HeadSetForFA_Revive.xml -->
+    <li>7f.alienworlds.tidallylocked</li>                   <!-- JawaWorld_BiomeMix.xml patches its PlanetTypeDef -->
+    <li>7f.alienworlds</li>                                 <!-- the framework that def's fields belong to -->
   </loadAfter>
 
   <!-- DELIBERATELY NOT LISTED, so the next reader does not "restore" them:

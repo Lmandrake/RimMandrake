@@ -1,0 +1,153 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Patch>
+
+  <!--
+    The Jawa world's biome mix. Owner-ratified; V1_SCOPE gate W3.
+    Tiers from VISION (design/Jawa/worldbuilding/tidally_locked_world.md, 6370746);
+    the offset NUMBERS are CREATE's, and the reasoning for them is below because
+    the units are not what anyone would guess.
+
+    🔴 WORLDGEN-GATED. Biome scoring runs once, in WorldGenStep_Terrain at order 0.
+    A patch that misses a worldgen never touches that world.
+
+    WHY THIS PATCHES THE SHIPPED TidallyLocked DEF RATHER THAN ADDING OUR OWN.
+    AlienWorlds keeps exactly ONE active PlanetTypeDef (PlanetTypeManager
+    .activePlanetType, chosen in mod settings, scribed per save). A second def
+    would REPLACE tidal lock and silently drop the temperature curve this whole
+    design rests on. So we add fields to theirs.
+    ⚠️ The def's class is the SUBCLASS `AlienWorlds.TidallyLocked.PlanetTypeDef`,
+    so match on defName and never on the element name.
+
+    HOW THE TWO FIELDS DIFFER (PlanetTypeManager.cs):
+      :111-114  biomeBlacklist is the ALLOWED PREDICATE — a hard exclusion.
+                Blacklist beats whitelist, and an EMPTY <biomes> means "all
+                allowed", which is why <biomes> stays empty here.
+      :123-124  biomeConfigs[x].scoreOffset is ADDED to BiomeWorker.GetScore —
+                a soft competitive nudge, not an exclusion.
+
+    ⚠️ <biomes> IS DELIBERATELY LEFT EMPTY, and this is the correction that
+    matters most. A whitelist excludes everything absent from it — and the
+    entries nobody thinks to list are the non-surface ones: Space, Orbit,
+    Underground, Undercave, CQF_Undercave, AM_UndergroundSpace,
+    VQEA_AncientComplex. Whitelisting would have silently broken space maps, the
+    gravship's orbital layer and every pocket map. A blacklist fails toward "an
+    unwanted biome appeared" — visible, one line to fix.
+
+    🔴 THE OFFSET UNITS, MEASURED, BECAUSE THEY ARE NOT DIMENSIONLESS.
+    BiomeWorker_Desert::Score is 13 bytes of IL and it is exactly:
+
+        return tile.temperature + 0.0001f;
+
+    THE SCORE IS DEGREES CELSIUS. On this planet's own curve that runs +70 at the
+    subsolar point to -80 on the far nightside. So a scoreOffset of +10 buys ten
+    degrees of competitive advantage, which is a large move, not a tweak.
+
+    🔴 AND THE FLOOR IS THE TRAP. BiomeWorker_*::GetScore returns -100 for water
+    and **0 when the biome is simply not Allowed**. So on the NIGHTSIDE, where
+    temperatures are already negative, a big negative offset can push an ALLOWED
+    biome below the 0 that a DISALLOWED one returns — and the disallowed biome
+    wins the argmax. That inverts the intent silently.
+    ⇒ Negative offsets are kept small. Do not deepen them past about -5 without
+    re-deriving this; "rare" is expressed by the narrowness of each biome's own
+    Allowed range far more than by our nudge.
+
+      ABUNDANT  +12   a clear win wherever they are allowed at all
+      COMMON     +4   tips close contests without dominating
+      RARE       -4   loses head-to-head, still wins where it is the only
+                      allowed biome — which is what "rare" should mean
+
+    ⭐ AB_RockyCrags is COMMON on purpose, not abundant: the temperature curve
+    already confines it to the dark hemisphere, so common yields a dark half
+    rather than a planet-wide scatter.
+
+    🔴 Ocean and Lake appear NOWHERE here, deliberately. They are
+    isBackgroundBiome, assigned by the elevation threshold rather than by any
+    worker score (BiomeWorker_Ocean::GetScore is `WaterCovered ? 0 : -100`), so a
+    score offset cannot move them. The sea step owns them.
+
+    ⏳ Not expressible as a flat offset, and left for a later pass rather than
+    faked: HorrorWastes and PoisonForest should form the dark MARGIN between
+    twilight and full crags, and Glowforest should sit inside the deep night as
+    isolated points of light. Frequency alone cannot say "at this latitude"; that
+    wants a workerClass override.
+  -->
+
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/AlienWorlds.TidallyLocked.PlanetTypeDef[defName="TidallyLocked"]</xpath>
+    <match Class="PatchOperationAdd">
+      <xpath>/Defs/AlienWorlds.TidallyLocked.PlanetTypeDef[defName="TidallyLocked"]</xpath>
+      <value>
+
+        <biomeBlacklist>
+          <li>ZBiome_CoastalDunes</li>
+          <li>ZBiome_Sandbar_NoBeach</li>
+          <li>ZBiome_Iceberg_NoBeach</li>
+          <li>SeaIce</li>
+          <li>ZBiome_Marsh</li>
+          <li>TropicalRainforest</li>
+          <li>ColdBog</li>
+          <li>COMIGO_GreaterSwamp_Cold</li>
+          <li>COMIGO_GreaterSwamp_Temperate</li>
+          <li>TemperateSwamp</li>
+          <li>TropicalSwamp</li>
+          <li>Wetland</li>
+          <li>Labyrinth</li>
+          <li>MetalHell</li>
+          <li>Savanna</li>
+          <li>ZBiome_Grasslands</li>
+          <li>Grasslands</li>
+          <li>AB_GelatinousSuperorganism</li>
+          <li>AB_IdyllicMeadows</li>
+          <li>TemperateForest</li>
+          <li>GlacialPlain</li>
+          <li>AG_NereidPocketPlane</li>
+          <li>AG_PocketPlane</li>
+          <li>ZBiome_AlpineMeadow</li>
+          <li>BorealForest</li>
+          <li>ZBiome_CloudForest</li>
+          <li>ZBiome_GlacialShield</li>
+          <li>IceSheet</li>
+          <li>Tundra</li>
+        </biomeBlacklist>
+
+        <biomeConfigs>
+          <!-- ABUNDANT -->
+          <ExtremeDesert><scoreOffset>12</scoreOffset></ExtremeDesert>
+          <Desert><scoreOffset>12</scoreOffset></Desert>
+
+          <!-- COMMON -->
+          <ZBiome_Badlands><scoreOffset>4</scoreOffset></ZBiome_Badlands>
+          <AridShrubland><scoreOffset>4</scoreOffset></AridShrubland>
+          <Wasteland><scoreOffset>4</scoreOffset></Wasteland>
+          <AB_RockyCrags><scoreOffset>4</scoreOffset></AB_RockyCrags>
+
+          <!-- RARE -->
+          <ZBiome_DesertOasis><scoreOffset>-4</scoreOffset></ZBiome_DesertOasis>
+          <AB_FeraliskInfestedJungle><scoreOffset>-4</scoreOffset></AB_FeraliskInfestedJungle>
+          <AB_MiasmicMangrove><scoreOffset>-4</scoreOffset></AB_MiasmicMangrove>
+          <AB_MycoticJungle><scoreOffset>-4</scoreOffset></AB_MycoticJungle>
+          <COMIGO_GreaterSwamp_Tropical><scoreOffset>-4</scoreOffset></COMIGO_GreaterSwamp_Tropical>
+          <AB_OcularForest><scoreOffset>-4</scoreOffset></AB_OcularForest>
+          <AB_TarPits><scoreOffset>-4</scoreOffset></AB_TarPits>
+          <AB_PropaneLakes><scoreOffset>-4</scoreOffset></AB_PropaneLakes>
+          <AB_MechanoidIntrusion><scoreOffset>-4</scoreOffset></AB_MechanoidIntrusion>
+          <AB_GallatrossGraveyard><scoreOffset>-4</scoreOffset></AB_GallatrossGraveyard>
+          <AB_PyroclasticConflagration><scoreOffset>-4</scoreOffset></AB_PyroclasticConflagration>
+          <Volcano><scoreOffset>-4</scoreOffset></Volcano>
+          <LavaField><scoreOffset>-4</scoreOffset></LavaField>
+          <Scarlands><scoreOffset>-4</scoreOffset></Scarlands>
+          <IronScruff_PrimordialGeysers><scoreOffset>-4</scoreOffset></IronScruff_PrimordialGeysers>
+          <RG_BoilingForest><scoreOffset>-4</scoreOffset></RG_BoilingForest>
+          <BMT_CrystalCaverns><scoreOffset>-4</scoreOffset></BMT_CrystalCaverns>
+          <BMT_EarthenDepths><scoreOffset>-4</scoreOffset></BMT_EarthenDepths>
+          <BMT_FungalForest><scoreOffset>-4</scoreOffset></BMT_FungalForest>
+          <HorrorWastes><scoreOffset>-4</scoreOffset></HorrorWastes>
+          <Glowforest><scoreOffset>-4</scoreOffset></Glowforest>
+          <PoisonForest><scoreOffset>-4</scoreOffset></PoisonForest>
+        </biomeConfigs>
+
+      </value>
+    </match>
+  </Operation>
+
+</Patch>
