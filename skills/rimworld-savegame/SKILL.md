@@ -112,6 +112,19 @@ untouched. The only cost is that already-explored ground stays revealed.
 **Generalises:** before adding a row to a fixed-width table, divide the byte length
 by the cell count and confirm the element width.
 
+⚠️ **This section is a prohibition, not an unfinished fix, and it says why on
+purpose.** Sometimes the correct output of an investigation is a
+**DO-NOT-DO-THIS** — and unless the prohibition carries its reason, the next
+person helpfully undoes it. Twice now the maintenance instinct has been the
+defect: adding `fogGrid` "for completeness", and putting a stale line count back
+into a doc that had deliberately removed it.
+
+⚠️ **`foundationGrid` is UNIFORM across all 62,500 cells** on the map measured —
+every cell the same value. Untested beyond that, and flagged for exactly that
+reason: **a rule inferred from a uniform sample is how a wrong rule gets baked
+in.** Do not generalise its encoding or its meaning from that sample; find a map
+where it varies first.
+
 ## 7. Back up first, and never write in place
 
 **Timestamped backup → edit → parse-validate the XML → reload-test in game.** No

@@ -25,7 +25,7 @@ shorts, leave it untouched (→ `skills/rimworld-savegame/SKILL.md`).
 | If you are about to… | Read | Entries |
 |---|---|---|
 | write or debug a patch, an xpath, or a def | [`traps-xml-and-defs.md`](traps-xml-and-defs.md) | 13 |
-| trust what a script, grep, census or the def dump just told you | [`traps-tooling.md`](traps-tooling.md) | 23 |
+| trust what a script, grep, census or the def dump just told you | [`traps-tooling.md`](traps-tooling.md) | 25 |
 | call art missing, wrong, or broken | [`traps-art.md`](traps-art.md) | 10 |
 | chase a mod that is absent, dead, or ignoring its files | [`traps-mods-and-managers.md`](traps-mods-and-managers.md) | 10 |
 | believe a diagnosis, or call into a running game | [`traps-diagnosis.md`](traps-diagnosis.md) | 4 |
@@ -82,6 +82,8 @@ the one asked.**
 - "Empty output" is not a result
 - `len()` answers for any container, so the wrong number is plausible
 - A field xref that scans three opcodes reports "no writers" for a field with writers
+- An artifact that records an OUTCOME cannot answer a question about a CAPABILITY
+- Take the RULE from a precedent, never the NUMBER
 
 ### `traps-art.md` — art, textures and what a census cannot see
 

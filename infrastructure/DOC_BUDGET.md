@@ -69,7 +69,7 @@ entry or a rule — and is deleted everywhere else. Never both.
 # A written instruction rots — and it rots while still being true
 
 _Was `agents_def.md` Rule 0.6; moved here 2026-08-13 when that file was dissolved.
-Cited from `STRUCTURE.md`, `TODO.md` and `NEXT_RELOAD.md`._
+Cited from `STRUCTURE.md` and `NEXT_RELOAD.md`._
 
 The rules above are about what you fail to write down and how much of it. **This
 is about what you *do* write, and how it decays.** Five seats run on instructions
@@ -90,6 +90,12 @@ of them a mistake when written:
 first person who follows it. A necessary-but-insufficient one gets followed
 successfully, answers a narrower question than the one asked, and everyone
 downstream inherits it. Correctness is what makes it survive.
+
+**Corollary — a closed item may ship a PROHIBITION rather than a fix, and the
+prohibition must say *why* or the next person will helpfully undo it.** A
+do-not-do-this with no reason attached reads as unfinished work, and the
+maintenance instinct is what re-opens it. (Worked instances:
+`skills/rimworld-savegame/SKILL.md` §6.)
 
 ## Before you collapse, summarise or defer anything: check the target exists
 

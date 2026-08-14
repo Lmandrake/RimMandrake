@@ -41,6 +41,15 @@ item's blame; isolate anything that can.
 Twenty config changes in one load is fine. Two assemblies in one load is a
 bisection you will pay for later.
 
+🔴 **The owner's three-assembly waiver STANDS — "batch it" — on one mandatory
+condition: write the three expected-failure signatures down BEFORE launching.**
+Batching is only affordable because the assemblies fail in *distinguishable*
+places, and that property is worthless unless the distinctions are on paper
+before the log exists. **A signature invented after reading the log is not
+evidence, it is a story that fits.** One signature per assembly, in
+`infrastructure/state/EXPECTED_FAILURES_next_load.md`, before the game starts.
+Do not re-litigate the waiver, and do not quietly split the load out of caution.
+
 ## 4. Mod-list state on disk: what is authoritative, when
 
 ⚠️ **While RimWorld is running, disk state is NOT authoritative.** The game holds
