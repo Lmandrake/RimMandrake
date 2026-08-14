@@ -5,6 +5,13 @@ description: Testing anything in RimWorld without spending a cold load — start
 
 # Debug testing: never wait for a map you can make
 
+⚠️ **This skill is METHOD, not mechanics.** How to drive the bridge — the call
+palette, debug actions, map authoring, speed, the companion DLL — is
+`skills/rimbridge/SKILL.md`, and its hard-won failure catalogue is
+`skills/rimbridge/references/traps.md`. **Read the traps file before any live
+session; it is the one that stops you re-paying for a lesson.** This file only
+answers *what to test on, and what a result is worth.*
+
 A cold load costs **~23–30 minutes** and one game is shared by five seats. A dev
 quicktest colony costs **~30 seconds** and belongs to nobody.
 
@@ -102,6 +109,29 @@ v1 gate ever asked for:
   the notification pane, a pawn actually holding the weapon.
 - **Anything where "it exists in a def" and "the player experiences it" differ**,
   which after today is most things.
+
+### 🔴 A SCREENSHOT IS A CACHE, NOT AN OBSERVATION — read this before trusting one
+
+**Two traps already cost real debug cycles and both are in
+`skills/rimbridge/references/traps.md`. That file is the home; this is the
+pointer.** They matter here because §4a tells you to trust an image:
+
+1. **Screenshots overwrite by FILENAME, so a stale image reads as a failed
+   action.** Measured: eight Jawas spawned, `success: true` on all eight, and the
+   screenshot showed **empty ground** — because the call reused a `fileName` from
+   an earlier failed attempt and the old file was read. `list_colonists` showed
+   all eight exactly where requested.
+   ⇒ **Give every screenshot a UNIQUE name**, or cross-check with
+   `list_colonists` / `get_camera_state` before believing it. **When the action
+   reports success and the picture says nothing happened, suspect the picture.**
+2. **You cannot photograph a stale mesh** — every framed-shot tool moves the
+   camera, and camera movement repaints the map sections. Any visual A/B over the
+   bridge must ask what the act of looking changed.
+
+⚠️ **So §4a and this section are in tension on purpose.** Look at the image —
+*and* know that an image file is the one piece of evidence that can be silently
+out of date. It is the same silent-failure family as everything else in this
+project: nothing errors.
 
 ### How to use it well
 
