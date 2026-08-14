@@ -25,6 +25,36 @@ path because the gate runs through it.
 
 ## Open
 
+### 🟢 RUN THIS, DO NOT COMPOSE CALLS — `src/RimMandrake/bridgetools/load_session.py`
+
+```bash
+python.exe src/RimMandrake/bridgetools/load_session.py --phase any     # BEFORE worldgen
+python.exe src/RimMandrake/bridgetools/load_session.py --phase fresh   # after it
+python3     src/RimMandrake/bridgetools/load_session.py --selftest     # no game
+```
+
+**The load is not wasted by slow calls — it is wasted by COMPOSING calls while
+the game is up**, looking up a defName, guessing a parameter, discovering a thing
+was never deployed. All of that is offline work bought at live prices. Every item
+is written and argued before boot; the session becomes "run this and look at the
+images".
+
+- Writes **one ledger** to `observed\<date>_load_session.md` and **one line per
+  item** to the terminal. Nothing spews.
+- 🔴 **It does not adjudicate art.** Visual items end in `NEEDS EYES` plus a
+  screenshot path. It decides only what has a read-back — a position, a terrain
+  defName, a faction list, a count.
+- Tracks **LITTER** and prints it at the end. The release message is written from
+  that list, not from memory.
+- ⚠️ Census gate is **21**, and `--phase any` runs first *on purpose*: a stale
+  companion is a shutdown-window fix, and you want to learn that while the window
+  is still open rather than after the anchor load is spent.
+
+Corrections already folded in, each of which would have cost live time:
+`jawa/get_terrain_batch` takes **`rects`** (plural), the salt-crust paint is
+**already closed** so it is not re-run, and the Rebel Alliance polarity is
+inverted from what B-new below says.
+
 ### ⭐ THE NEXT LOAD'S SCRIPT IS ALREADY WRITTEN — read it before booking one
 
 `D:\Luke\dev\Rimworld\infrastructure\state\CREATE_TEST_PLAN.md`
@@ -264,6 +294,26 @@ drop accordingly. ⚠️ **Do not read the def literals as a contradiction:** on
 to disagree with 30.
 
 ---
+
+## ⛔ B-new is SUPERSEDED — read this before the section below
+
+🔴 **ABSENT IS THE DESIRED OUTCOME. The section below tells you the opposite and
+it is stale.** It was written when the Rebel Alliance failing to generate was an
+unexplained mystery. It is not one: VISION R2 ruled it stays suppressed, and
+`src\Jawa\Jawa_Patches\Patches\RebelAlliance_Suppress.xml` exists to do exactly
+that. `infrastructure\state\WORLDGEN_FACTION_CHECKLIST.md:244` —
+*"ABSENT is the DESIRED outcome (VISION R2). Record absent and move on — do NOT
+revert the patch at the screen."*
+
+⇒ **PRESENT is the failure**: it means the suppression patch did not take.
+Control is `OuterRim_GalacticEmpire`, which must be present — one
+`jawa/list_factions` call answers both, and the control half also closes the
+EXPECTED_FAILURES A3 gate.
+
+**Caught 2026-08-13 while scripting the session**, having encoded the wrong
+polarity in `load_session.py` first. The measurements below stand as history and
+are still the only surviving record of that world; the *instruction* attached to
+them does not.
 
 ## B-new. Watch for `OuterRim_RebelAlliance` at the next worldgen — it silently did not generate
 
