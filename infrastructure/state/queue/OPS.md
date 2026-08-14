@@ -281,3 +281,25 @@ runtime-created nodes.**
   `Jawa_Xeno_Gamorrean` → `UI/Icons/Xenotypes/Pigskin`. ⛔ **Not settleable offline**
   (vanilla textures are in asset bundles). **Eyes-on in the xenotype picker this load:
   a pink/blank square is the defect, both drawing closes it permanently.**
+
+## 📌 NEXT SHUTDOWN WINDOW — two DLLs owed, and they CAN share the window
+
+Recorded 2026-08-14 by OPS while the game sits at `Entry`.
+
+| item | attribution cost | why |
+|---|---|---|
+| `JawaSeaShaper.dll` — repo md5 `b7730027` vs deployed `82b48e53` | 🔴 **SOLO** | a new **game assembly** in the mod stack; it patches the world and poisons attribution for anything loaded beside it |
+| **BridgeTools `JawaBench.BridgeTools.dll`** — 28 tools, md5 `d3ace1f6c26fd12f9c326b42145d02e4`, built by BRIDGE 2026-08-14 | ✅ **free — rides any window** | **it is NOT in the mod stack.** `C:\Program Files (x86)\Steam\steamapps\common\RimWorld\BridgeTools\`, loaded by the bridge, not by RimWorld's mod loader ⇒ it cannot change what the game does and **consumes no attribution** |
+
+⇒ **"New assembly ⇒ solo load" applies to MOD assemblies, not to every DLL we ship.**
+The test is *does the game's mod loader read it* — BridgeTools fails that test, so it
+is deploy-and-forget. ⚠️ Both writes **fail `OSError 22` while the game runs** (loaded
+and locked); the refusal is safe and cannot truncate.
+
+**What the new bridge DLL buys, and it is worth taking the moment it is possible:**
+`TicksGameSafe()` fixes `ticksGame = Find.TickManager?.TicksGame ?? -1` across all 25
+sites — `?.` guarded the RESULT while the getter dereferenced `Current.Game` and threw
+first, so **every tool NRE'd at the main menu, in response construction, after the
+lookup had already succeeded.** Fixing it makes **def reads possible with no game
+loaded**, which is a class of check we have been paying map prices for. Measured live
+by BRIDGE, not read off IL.
