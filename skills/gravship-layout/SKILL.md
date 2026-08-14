@@ -163,6 +163,30 @@ C:\Users\Mandrake\AppData\LocalLow\Ludeon Studios\RimWorld by Ludeon Studios\Con
 **Read the screen before searching the disk.** The popup names the folder; a
 `find` across the user profile is slower and less certain.
 
+### What an export does NOT carry — design the ship to these
+
+Floors **do** survive (§"What is measured here"); these five do not, and each one
+changes how a ship must be authored rather than how it is exported.
+
+- 🔴 **Pawns and items are not exported. The ship arrives empty.** Confirmed
+  against the exported data, not just the README blurb.
+- **Include Shelves — possibly vanilla ones — or starting items may not spawn.**
+  Storage is what the arrival code has to put things into; a ship with no
+  shelving can silently land with nothing in it.
+- **Any room with no pawn in it spawns under unexplored fog.** A large authored
+  ship opens half-fogged. Cosmetic, but it reads as a bug in a demo, so put the
+  starting pawns where the ship should be visible.
+- **Every mod used in the ship becomes a hard dependency of the exported mod.**
+  Free for us — one stack, one machine — and a landmine only if a ship is ever
+  shared. Authoring with vanilla parts is the only thing that keeps it portable.
+- **Preview screenshots must be placed by hand.** The exporter's author could not
+  automate them, so a shipped layout has no preview until someone drops the PNG
+  in beside the XML.
+
+The starting platform extends around the ship, so large ships are supported
+"obviously with a limit" — **the map edge is the bound, and we have not tested
+where it bites.**
+
 ## Loading a layout
 
 🔴 **Stop looking for an import gizmo. There is none, and that is deliberate.**
