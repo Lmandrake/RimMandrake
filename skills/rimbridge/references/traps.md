@@ -67,6 +67,8 @@ Skim this, open what matches your task — do not read them all.
 - [Identify a thing by its accompanying signature, not by its own defName](#identify-a-thing-by-its-accompanying-signature-not-by-its-own-defname)
 - [An instrument can be blind to the exact branch that fails](#an-instrument-can-be-blind-to-the-exact-branch-that-fails) 🔴
 - [The denominator is the population that EXERCISED the rule](#the-denominator-is-the-population-that-exercised-the-rule) 🔴
+- [An automated job that drives the UI is invisible AS A JOB](#-an-automated-job-that-drives-the-ui-is-invisible-as-a-job) 🔴
+- [A run of identical readings is the easiest thing to mistake for a law](#a-run-of-identical-readings-is-the-easiest-thing-to-mistake-for-a-law)
 
 ---
 
@@ -438,6 +440,18 @@ a **stale companion DLL**: rebuild and redeploy with the game closed
 **Cause:** only the **Buzzer** namer carries the rule. Exactly **one** name in that set came from it. The grammar gives the defect branch weight 1 of 4, so **P(no defect visible | patch NOT applied, n=1) = 0.75** — a broken build had a 3-in-4 chance of producing precisely the observed result. The 135 was the population *collected*, not the population *at risk*, and it inflated a coin flip into a proof.
 **Fix:** before quoting a sample size, ask **how many of these could possibly have shown the defect?** Then close on something deterministic instead — here, the absence of `Failed to find a node with the given xpath` for that mod in `Player.log`, given `PatchOperationFindMod` matched, proves both `Replace`s applied regardless of how many names rolled.
 **Recurs when:** any "we checked N things and saw nothing" argument about a probabilistic defect. ⚠️ **A large irrelevant denominator is more dangerous than a small one, because it stops anyone asking.** Same family as *an absent reading is not a clean reading*.
+
+## 🔴 An automated job that drives the UI is invisible AS A JOB
+**Symptom:** the owner reported the game *"stuck on Generating Map…"*, then that it was *"running badly"*. Nothing was stuck and nothing was broken — a `sea_seed_sweep.py` run was driving `rimworld/start_debug_game_ready` seven times over, and each iteration is a full RimWorld **world** generation. `/proc/loadavg` hit **22.58** with RAM fine (3 GB of 35), i.e. CPU and 9p-mount contention on the same disk RimWorld streams assets from. Killed → 22.58 → 2.85.
+**Cause:** there is no *"an agent is doing this"* indicator anywhere on RimWorld's loading screen. **From the keyboard, an agent-driven worldgen and a hang are the same event.** The sweep had been announced to three peer seats and never to the owner — exactly backwards, because the peers could not see it and did not care, while the owner could see it and had no way to identify it.
+**Fix:** **announce anything that occupies the game's own UI to the OWNER before it starts, and report when it ends.** Announcing to peers does not count. Prefer to run world/map generation when nobody is at the keyboard, and check `/proc/loadavg` before and during — a number over ~10 on this box means somebody's frames are being eaten.
+**Recurs when:** any loop over `start_debug_game_ready`, `load_game`, `go_to_main_menu`, or long `save_game` calls. ⚠️ **The classification error underneath it: quicktest maps had been filed as "free" because they are REVERSIBLE.** *Reversible, cheap and unobtrusive are three different properties*, and collapsing them is what made a 7-world sweep look like a no-cost read. Found by OPS, 2026-08-14, twice in ten minutes across two seats.
+
+## A run of identical readings is the easiest thing to mistake for a law
+**Symptom:** three generated worlds — `green`, `cards`, `guts` — each reported **waterPct exactly 25.0** at `planetCoverage 0.3`. The conclusion formed itself: *the generator pins the water fraction, and only body count varies.* It was one message away from going to VISION as a finding, under a design that would then have treated requirement 1 as free.
+**Cause:** three samples of a distribution with a strong mode look exactly like a constant. Nothing about the readings themselves distinguishes the two.
+**Fix:** **`sickle` came back at 16.74% and refuted it.** Before reporting a constant, ask *what sample could refute this*, and get that one first. The fourth sample was worth more than the first three combined, because it was the only one that could say no.
+**Recurs when:** any small sweep whose early results agree — seeds, spawns, latency runs. ⚠️ Generalises: **agreement among early samples is evidence about the mode, not about the variance.** Same family as *the denominator is the population that exercised the rule*: both are a small n wearing the confidence of a large one.
 
 ## Client-call gotchas that cost real minutes — the exact spellings
 Collected 2026-08-13; each one cost a seat time before it was written down.
