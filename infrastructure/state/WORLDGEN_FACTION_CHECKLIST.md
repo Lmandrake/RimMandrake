@@ -72,6 +72,11 @@ patch lands. **Screenshot whatever it does say.**
 >
 > 🔴 **Screenshot the page before leaving it.** It is the only record.
 
+⚠️ **Quoted above as written, but superseded:** the words "`Empire` = the Fallen
+Dominion" and "a disgraced local aristocracy" are STRUCK — see the ruling at the
+top of this section. Vanilla `Empire` **is** the Galactic Empire; there is no
+second Empire. The keep itself stands: confirm vanilla `Empire` present, count ≥ 1.
+
 > ✅ **OPS note — RESOLVED, nothing here blocks execution.**
 >
 > **The tick-list is measured:** 21 untick / 6 keep / 0 not found, every defName
@@ -237,27 +242,38 @@ time.
 |---|---|---|---|---|
 | ☐ | **binary star raiders** | `OuterRim_BinaryStarRaiders` | Outer Rim - Core (2919227155) | ordinary row, permanent enemy |
 | ☐ | **Confederacy of Independent Systems** | `JDSCIS_CIS_Faction` | [JDS] Separatist Droid Army (3276499495) | **hidden checkbox**, not a row |
-| ☐ | **the Galactic Empire** | `OuterRim_GalacticEmpire` | Outer Rim - Galactic Empire (2919248699) | 🔴 **label is patched — see below** |
+| ☐ | **Imperial Desert Directorate** *(patched label — the page will NOT say "Galactic Empire")* | `OuterRim_GalacticEmpire` | Outer Rim - Galactic Empire (2919248699) | 🔴 **label is patched, and the patch is superseded scaffolding — see below. Not a blocker either way.** |
 | ☐ | **moisture farmers** | `OuterRim_MoistureFarmers` | Outer Rim - Core | ordinary row |
 | ☐ | **rogue droid collective** *("Droid Collective")* | `guy762_KotORFaction_RogueDroids` | Star Wars KotOR Droids (3047371944) | **hidden checkbox**, not a row. 🔴 **quest-critical — antagonist of the KotOR distress call. Never untick.** |
-| ☐ | ⭐ **the Fallen Dominion** — *name will be GENERATED, expect a different string* | `Empire` | **vanilla (Royalty)** | 🔴 **ADDED TO KEEP by VISION R3.** Not on any untick list, so it survives by default — **confirm it anyway, count ≥ 1, and SCREENSHOT the generated name.** |
+| ☐ | ⭐ **vanilla `Empire`** — *name will be GENERATED, expect a different string* | `Empire` | **vanilla (Royalty)** | 🔴 **ADDED TO KEEP by VISION R3.** Not on any untick list, so it survives by default — **confirm it anyway, count ≥ 1, and SCREENSHOT the generated name.** |
 | ☐ | ~~**Rebel Alliance**~~ — **RETIRED from KEEP** | `OuterRim_RebelAlliance` | Outer Rim - Rebel Alliance (2919249903) | 🔴 **ABSENT is the DESIRED outcome (VISION R2). Record absent and move on — do NOT revert the patch at the screen.** |
 
-⭐ **On the Fallen Dominion (VISION R3, owner's ruling).** The two-empire split is
-**the design, not a defect**: the Galactic Empire is the Galactic arm, and vanilla
-`Empire` is the disgraced local aristocracy — force-welded into the Empire, fallen
-from grace despite winning the local war, and now eager to please by hunting "yet
-more chaotic nonsense", i.e. us. ⚠️ **Its name is generated, so the world will
-probably not say "Fallen Dominion". That is expected, not a failure.** Whatever it
-generates is the working name until `fixedName` is patched with the game down.
-**Screenshot it — that string is the only record.**
+⭐ **On vanilla `Empire` (VISION R3, owner's ruling).** Vanilla `Empire` **is** the
+Galactic Empire — the campaign's one permanent enemy, led by Emperor Palpatine.
+🔴 **The "Fallen Dominion" and the two-Empire split are STRUCK from the design**
+(see the header of this file). There is no local or planetside Empire, no
+disgraced local aristocracy, and nothing on this page turns on that reading.
+**The only gate here is: vanilla `Empire` is PRESENT and its count is ≥ 1.**
+⚠️ **Its name is generated, so the world will not say "Galactic Empire" until a
+`fixedName` patch lands. That is expected, not a failure.** Whatever it generates
+is the working name. **Screenshot it — that string is the only record.**
 
-🔴 **Do not look for "Galactic Empire".** `Jawa_Patches/Patches/ImperialDesertGalactic Empire.xml`
-replaces both `label` and `fixedName` on `OuterRim_GalacticEmpire` with **"Imperial
-Desert Galactic Empire"**. That is the string on the page. If you see "Galactic Empire"
-instead, the Jawa_Patches deploy did not land — stop and check
-`C:\Program Files (x86)\Steam\steamapps\common\RimWorld\Mods\Jawa_Patches` before
-generating.
+🔴 **On the `OuterRim_GalacticEmpire` row, expect "Imperial Desert Directorate" —
+and do not stop for it.**
+`C:\Program Files (x86)\Steam\steamapps\common\RimWorld\Mods\Jawa_Patches\Patches\ImperialDesertDirectorate.xml`
+(repo copy: `D:\Luke\dev\Rimworld\src\Jawa\Jawa_Patches\Patches\ImperialDesertDirectorate.xml`,
+byte-identical on disk 2026-08-13) replaces `label` **and** `fixedName` on
+`OuterRim_GalacticEmpire` with **"Imperial Desert Directorate"**, and `leaderTitle`
+with **"Sector Director"**. That is the string that will be on the page.
+
+**It is superseded scaffolding, not a defect.** The Directorate reskin predates
+VISION's strike of the two-Empire split and has not been redeployed, so the old
+string simply survives. ⚠️ **Seeing "Imperial Desert Directorate" is EXPECTED and
+is NOT evidence of a bad deploy — do not abort worldgen over it.** If the row
+instead reads the stock **"Galactic Empire"**, that only means the Jawa_Patches
+deploy did not land; **record which of the two strings you saw and carry on** —
+neither blocks generation, because this faction is no longer the antagonist the
+design hangs on.
 
 ---
 
