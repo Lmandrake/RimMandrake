@@ -25,6 +25,59 @@ path because the gate runs through it.
 
 ## Open
 
+### 🟢 DEPLOY STATE, measured 2026-08-13 22:03 — supersedes every count below
+
+`C:\Program Files (x86)\Steam\steamapps\common\RimWorld\BridgeTools\JawaBench\JawaBench.BridgeTools.dll`
+**222,720 B, 21 tools, stamp `d2b331b385e5`, GM pair intact.** Deployed with the
+game down. It carries everything committed up to this point: the three pawn
+tools, `list_factions`, the `jawa/damage` refusal fix, and the new
+`jawa/order_pawn`. **Nothing in this file is waiting on a deploy any more — the
+whole NEED-DOWN batch except the gravship import is on disk in the game copy.**
+
+⚠️ **The earlier note that the deployed copy lacked the `jawa/damage` refusal fix
+was a measurement error, not a fact** — `strings -a` scans 7-bit ASCII and a
+method-body literal is UTF-16LE, so it reported ABSENT on a string that was
+present. `strings -a -el` is the check for a message; `strings -a` only proves a
+tool NAME. Written up in `skills/rimbridge/references/traps.md`.
+
+### 🟡 B4 — `jawa/order_pawn` BUILT AND DEPLOYED, NEVER RUN. 2026-08-13.
+
+Closes the "the bridge cannot order a pawn to walk anywhere" gap below (B-v3).
+Compiles 0/0, deployed, selftest green offline — **and not one pawn has moved.**
+
+| what | value |
+|---|---|
+| call | `jawa/order_pawn pawnId=<ThingID> x=<n> z=<n> [draft] [undraftAfter] [waitTicks] [timeoutSeconds] [unpause]` |
+| what closes it | `python.exe src/RimMandrake/bridgetools/prove_new_tools.py --pawns --walk` on a live paused map |
+| census gate | **21** (19 for a non-`--gm` build) |
+
+**Every engine name in it was read out of `Assembly-CSharp.dll` with ilprobe, not
+recalled** — `JobMaker.MakeJob(JobDef, LocalTargetInfo)`,
+`Pawn_JobTracker.TryTakeOrderedJob(Job, JobTag?, bool)`, `JobDefOf.Goto`,
+`JobTag.DraftedOrder=6`, `ReachabilityUtility.CanReach(...)`,
+`Pawn_PathFollower.Destination/Moving`, `Pawn_DraftController.Drafted`.
+
+🔴 **The finding that shaped the tool: `TryTakeOrderedJob` returns TRUE for a job
+it merely ENQUEUED** — IL_013f, IL_01ac and IL_01fa each `ldc.i4.1; ret` straight
+after `JobQueue::EnqueueFirst`/`EnqueueLast` — **and it never consults
+reachability at all.** So the accept bool is a textbook silent success. The tool
+therefore polls real game ticks and returns the position it reads back off the
+map; `success` is arrival, measured, and is false whenever `ticksElapsed` is 0.
+Its only genuine refusal path is `IsCurrentJobPlayerInterruptible`: current job
+flagged `playerInterruptible=false`, its driver refusing, or **the pawn on fire**.
+
+⚠️ **It can unpause.** `unpause=true` (default) raises a paused game to Normal for
+the wait and restores the previous speed after. That is why `prove_new_tools.py`
+puts the real walk behind a new **`--walk`** flag — the harness's own gate refuses
+to mutate an unpaused game. Without `--walk` the tool is still exercised in its
+zero-tick form, which touches nothing and asserts the tool refuses to call a
+no-movement result a success.
+
+⚠️ **The walk proof drives a COLONIST, not the test hostile** — a hostile has no
+drafter, so its Lord duty overrides the Goto within a few ticks and a working
+tool reads as a FAIL. It drafts, walks 6 cells, walks back to the exact starting
+cell, undrafts, and reports `leftDrafted` either way.
+
 ### 🟡 B1, B2, B3 — BUILT AND UNVERIFIED. Written offline 2026-08-13, never run.
 
 **All three are written and compile clean (0 errors, 0 warnings,

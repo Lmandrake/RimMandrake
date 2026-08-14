@@ -3,37 +3,38 @@
 WHAT THIS IS FOR
 ================
 `prove_capture_restore.py` covers the terrain three. This covers the other
-seventeen:
+eighteen:
 
     jawa/get_def       jawa/drain_log     jawa/list_pawns    jawa/refresh_rect
     jawa/set_plants    jawa/spawn_batch   jawa/destroy_batch
     jawa/set_roof_batch  jawa/get_roof_batch  jawa/list_factions
     jawa/spawn_pawn    jawa/damage
     jawa/set_pawn_rotation  jawa/set_pawn_style  jawa/set_pawn_xenotype
+    jawa/order_pawn    (the real walk needs --walk -- see SAFETY)
     jawa/fire_incident jawa/send_letter   (GM pair -- see SAFETY)
 
 Each check prints the deciding string from NEXT_RELOAD.md B2, so a pass here is
 the queue item closed, not a vague "it returned success".
 
-STATUS: 14 of 20 PROVEN LIVE 2026-08-12 on the 573-mod stack (20 passed, 0
-failed) against a dev quicktest colony. SIX have never been driven in a live
+STATUS: 14 of 21 PROVEN LIVE 2026-08-12 on the 573-mod stack (20 passed, 0
+failed) against a dev quicktest colony. SEVEN have never been driven in a live
 game: the roof pair (set_roof_batch, get_roof_batch), list_factions -- which was
 deployed at 10:05 on 2026-08-13, one minute AFTER the last session's log stopped
--- and the three pawn-appearance tools (set_pawn_rotation, set_pawn_style,
-set_pawn_xenotype), written offline on 2026-08-13 with the game down. This file
-is both the regression harness and the proof run for those six; run it after any
-companion change, not just after a deploy.
+-- the three pawn-appearance tools (set_pawn_rotation, set_pawn_style,
+set_pawn_xenotype), and order_pawn, all written offline on 2026-08-13 with the
+game down. This file is both the regression harness and the proof run for those
+seven; run it after any companion change, not just after a deploy.
 
 THE FIRST CHECK IS THE ONLY ONE THAT MATTERS UNTIL IT PASSES
 ============================================================
-Count the registered `jawa/` tools. 20 = the current deploy took. 17 = the
-2026-08-13 10:05 build, before the pawn-appearance three. 16 = pre-list_factions.
-14 = the pre-roof build. 7 = an older companion still. 0 = RimBridgeServer did
-not load the bundle at all. Every other result here is uninformative until that
-reads 20, so the script says so loudly and keeps going only to gather evidence
-about WHICH build is live.
+Count the registered `jawa/` tools. 21 = the current deploy took. 20 = the
+2026-08-13 17:02 build, before order_pawn. 17 = the 10:05 build, before the
+pawn-appearance three. 16 = pre-list_factions. 14 = the pre-roof build. 7 = an
+older companion still. 0 = RimBridgeServer did not load the bundle at all. Every
+other result here is uninformative until that reads 21, so the script says so
+loudly and keeps going only to gather evidence about WHICH build is live.
 
-⚠️ 18, not 20, is the correct count for a build made WITHOUT `--gm`:
+⚠️ 19, not 21, is the correct count for a build made WITHOUT `--gm`:
 fire_incident and send_letter are compiled out. Deploy with `--gm` or the game
 copy loses them.
 
@@ -64,6 +65,10 @@ This runs against whatever map is loaded, which may be a colony that matters.
     paused. Per traps.md, unpausing with freshly-spawned hostiles on the map
     once wiped half a colony.
   * Planted vegetation is removed again via `jawa/destroy_batch`.
+  * `jawa/order_pawn`'s real walk is OFF unless you pass --walk, because it
+    UNPAUSES the game for a couple of seconds -- the one thing the pause gate
+    below exists to prevent. Without --walk the tool is still exercised, but
+    only in its zero-tick form, which touches nothing.
 
 If cleanup fails the script does not fail quietly -- it prints the pawn id and
 position and tells you to deal with it.
@@ -93,6 +98,7 @@ ALL_TOOLS = [
     "jawa/set_pawn_style", "jawa/set_pawn_rotation", "jawa/set_pawn_xenotype",
     "jawa/fire_incident", "jawa/send_letter",
     "jawa/set_roof_batch", "jawa/get_roof_batch", "jawa/list_factions",
+    "jawa/order_pawn",
 ]
 # Present in the 7-tool build that shipped earlier the same day. Used to tell
 # "old companion" apart from "bundle did not load", which have different fixes.
@@ -522,6 +528,95 @@ def prove_spawn_pawn_xenotype(s, have, xeno, x, z):
     return row.get("id")
 
 
+def prove_order_pawn(s, have, pid, x, z, walk):
+    """Deciding string: the pawn's READ-BACK position, not the accept bool.
+
+    TryTakeOrderedJob returns true for a job it merely enqueued and never looks
+    at reachability (IL_013f / IL_01ac / IL_01fa in Pawn_JobTracker). So the
+    only thing that closes this row is a position read back off the map after
+    real ticks have passed.
+
+    Two halves, deliberately split by risk:
+
+      always (--pawns)  the PAUSED probe. waitTicks=0, unpause=False, so the
+                        game is not touched. It asserts the tool REFUSES to
+                        call a no-movement result a success -- the exact
+                        silent-success shape this seat exists to kill.
+      opt-in (--walk)   the real walk. This UNPAUSES the game for a couple of
+                        seconds, which is why it is not on by default: the
+                        script's own safety gate demands a paused game before
+                        it mutates anything, and a live hostile that gets a
+                        turn is a different risk from one standing frozen.
+    """
+    if "jawa/order_pawn" not in have:
+        return skip("jawa/order_pawn", "not registered")
+    if not pid:
+        return skip("jawa/order_pawn", "no test pawn id")
+
+    # --- half one: paused, zero ticks, nothing touched.
+    r = s.call("jawa/order_pawn", pawnId=pid, x=x + 6, z=z,
+               waitTicks=0, unpause=False, draft=False)
+    check("jawa/order_pawn will not call a no-tick result a success",
+          isinstance(r, dict) and r.get("success") is False
+          and r.get("ticksElapsed") == 0,
+          "success=%s ticksElapsed=%s"
+          % ((r or {}).get("success"), (r or {}).get("ticksElapsed")))
+    row = ((r or {}).get("pawns") or [{}])[0]
+    check("  ...and it reports canReach, computed BEFORE the order",
+          "canReach" in row,
+          "canReach=%s orderAccepted=%s" % (row.get("canReach"),
+                                            row.get("orderAccepted")))
+
+    if not walk:
+        return skip("jawa/order_pawn actually moves a pawn",
+                    "needs --walk (it unpauses the game)")
+
+    # The walk uses a COLONIST, not the test hostile. A hostile has no drafter,
+    # so its own Lord duty overrides the Goto within a few ticks and a perfectly
+    # working tool reads as a FAIL. A DRAFTED colonist holds the destination --
+    # that is the whole reason the vanilla right-click order drafts first.
+    lp = s.call("jawa/list_pawns", faction="player")
+    cands = [p for p in ((lp or {}).get("pawns") or [])
+             if not p.get("dead") and not p.get("downed") and p.get("id")]
+    if not cands:
+        return skip("jawa/order_pawn actually moves a pawn",
+                    "no standing player pawn to walk")
+    c = cands[0]
+    cid, hx, hz = c.get("id"), c.get("x"), c.get("z")
+
+    # Out six cells, then back to the cell they were standing in. Self-cleaning:
+    # the colonist ends where it started, undrafted.
+    w = s.call("jawa/order_pawn", pawnId=cid, x=hx + 6, z=hz,
+               waitTicks=240, timeoutSeconds=20, draft=True, undraftAfter=False)
+    wrow = ((w or {}).get("pawns") or [{}])[0]
+    if wrow.get("canReach") is False:
+        skip("jawa/order_pawn actually moves a pawn",
+             "(%s,%s) unreachable from (%s,%s) -- a map fact, not a tool fault"
+             % (hx + 6, hz, hx, hz))
+    else:
+        check("jawa/order_pawn actually moves a pawn",
+              ok(w) and wrow.get("arrived") is True,
+              "%s: start=%s end=%s arrived=%s ticksElapsed=%s"
+              % (c.get("name"), wrow.get("start"), wrow.get("end"),
+                 wrow.get("arrived"), (w or {}).get("ticksElapsed")))
+        check("  ...and the game really ticked while it walked",
+              ((w or {}).get("ticksElapsed") or 0) > 0,
+              "ticksElapsed=%s timedOut=%s" % ((w or {}).get("ticksElapsed"),
+                                               (w or {}).get("timedOut")))
+
+    # Put them back, and undraft. Reported either way -- litter that is not
+    # reconciled is this seat's characteristic failure.
+    b = s.call("jawa/order_pawn", pawnId=cid, x=hx, z=hz,
+               waitTicks=240, timeoutSeconds=20, draft=True, undraftAfter=True)
+    brow = ((b or {}).get("pawns") or [{}])[0]
+    check("  ...and the colonist is back where it started, undrafted",
+          brow.get("arrived") is True
+          and not ((b or {}).get("leftDrafted") or []),
+          "home=(%s,%s) end=%s leftDrafted=%s speedRestored=%s"
+          % (hx, hz, brow.get("end"), (b or {}).get("leftDrafted"),
+             (b or {}).get("speedRestored")))
+
+
 def kill_pawn(s, pid):
     """Hit until dead, bounded. `amount` is a request, not a delivery."""
     d = s.call("jawa/damage", damageDef="Bullet", amount=400, thingId=pid)
@@ -537,7 +632,7 @@ def kill_pawn(s, pid):
     return d, first
 
 
-def prove_pawns(s, have, x, z):
+def prove_pawns(s, have, x, z, walk=False):
     """The only genuinely risky check, so it is opt-in and self-cleaning.
 
     Deciding strings, two at once:
@@ -578,6 +673,7 @@ def prove_pawns(s, have, x, z):
     prove_pawn_rotation(s, have, pid)
     prove_pawn_style(s, have, pid)
     prove_pawn_xenotype(s, have, pid, xeno)
+    prove_order_pawn(s, have, pid, x, z, walk)
 
     # A SECOND hostile, forced to the xenotype at generation time. Cleaned up
     # in the same pass below -- both ids are killed and both are checked gone.
@@ -670,12 +766,35 @@ class _StubSession(object):
             n = 3 if p.get("errorsOnly") else 11
             return {"success": True, "messages": [{"text": "m"}] * n}
         if tool == "jawa/list_pawns":
+            if p.get("faction") == "player":
+                return {"success": True, "totalOnMap": 19, "pawns": [
+                    {"id": "Colonist1", "name": "Tam", "x": 40, "z": 40,
+                     "dead": False, "downed": False}]}
             # Must match the id the spawn stub hands back, or the cleanup check
             # compares against a pawn that was never spawned and reports a
             # clean-up that did not happen. The selftest caught exactly that.
             alive = ([{"id": "Human1", "dead": False}]
                      if self._hostile_survives else [])
             return {"success": True, "totalOnMap": 19, "pawns": alive}
+        if tool == "jawa/order_pawn":
+            # The stub must NOT answer yes to the zero-tick call: the check it
+            # feeds asserts the tool refuses to call no movement a success.
+            want = {"x": p.get("x"), "z": p.get("z")}
+            if not p.get("waitTicks"):
+                return {"success": False, "ticksElapsed": 0, "arrivedCount": 0,
+                        "message": "0/1 pawn(s) standing on the cell after 0 "
+                                   "tick(s). THE GAME DID NOT TICK",
+                        "leftDrafted": [], "pawns": [
+                            {"id": p.get("pawnId"), "canReach": True,
+                             "orderAccepted": True, "arrived": False,
+                             "start": {"x": 40, "z": 40}, "end": {"x": 40, "z": 40}}]}
+            left = [] if p.get("undraftAfter") else [p.get("pawnId")]
+            return {"success": True, "ticksElapsed": 240, "arrivedCount": 1,
+                    "timedOut": False, "speedRestored": True,
+                    "leftDrafted": left, "pawns": [
+                        {"id": p.get("pawnId"), "name": "Tam", "canReach": True,
+                         "orderAccepted": True, "arrived": True,
+                         "start": {"x": 40, "z": 40}, "end": want}]}
         if tool == "jawa/refresh_rect":
             return ({"success": False, "message": "rect must be 'x,z,w,h'"}
                     if "," not in str(p.get("rect")) else {"success": True})
@@ -763,7 +882,7 @@ class _StubSession(object):
         return {"success": True}
 
 
-def _run_all(s, letter=True):
+def _run_all(s, letter=True, walk=True):
     have = census(s)
     prove_get_def(s, have)
     prove_drain_log(s, have)
@@ -773,7 +892,7 @@ def _run_all(s, letter=True):
     prove_roofs(s, have, 10, 10)
     prove_set_plants(s, have, 10, 10)
     prove_gm(s, have, send_letter=letter)
-    prove_pawns(s, have, 10, 10)
+    prove_pawns(s, have, 10, 10, walk=walk)
 
 
 def selftest():
@@ -786,7 +905,7 @@ def selftest():
     """
     global RESULTS
     scenarios = [
-        ("all 20 registered", dict(), 0, None),
+        ("all 21 registered", dict(), 0, None),
         ("STALE companion -- only the old 7", dict(tools=ALL_TOOLS[:7]), 1,
          "old seven"),
         ("bundle never loaded -- 0 jawa tools", dict(tools=[]), 1, "0 jawa"),
@@ -842,6 +961,11 @@ def main(argv=None):
                     help="also spawn ONE hostile at --x/--z and kill it with "
                          "jawa/damage. Off by default: the worst outcome here "
                          "is a live hostile the script failed to clean up.")
+    ap.add_argument("--walk", action="store_true",
+                    help="also drive jawa/order_pawn's real walk: draft a "
+                         "colonist, send it 6 cells and back, undraft. Off by "
+                         "default because it UNPAUSES the game for a few "
+                         "seconds, which the script otherwise refuses to do.")
     ap.add_argument("--letter", action="store_true",
                     help="also send a real letter to the player's pane.")
     ap.add_argument("--selftest", action="store_true",
@@ -901,7 +1025,7 @@ def main(argv=None):
 
         print("\n4. spawn + damage")
         if args.pawns:
-            prove_pawns(s, have, args.x, args.z)
+            prove_pawns(s, have, args.x, args.z, walk=args.walk)
         else:
             skip("pawn spawn/damage", "needs --pawns")
 

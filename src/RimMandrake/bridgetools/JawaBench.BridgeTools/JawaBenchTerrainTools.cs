@@ -38,6 +38,7 @@ using System.Threading.Tasks;
 using RimBridgeServer.Sdk;
 using RimWorld;
 using Verse;
+using Verse.AI;
 
 namespace JawaBench.BridgeTools
 {
@@ -2416,6 +2417,311 @@ namespace JawaBench.BridgeTools
                     pawnsChanged = applied,
                     pawns = rows,
                     ticksGame = Find.TickManager?.TicksGame ?? -1
+                };
+            }, cancellationToken).ConfigureAwait(false);
+        }
+
+        // ---- jawa/order_pawn -------------------------------------------------
+        // Every name below was READ OUT OF Assembly-CSharp.dll with ilprobe on
+        // 2026-08-13. None of it is from memory.
+        //   Verse.JobMaker.MakeJob(JobDef, LocalTargetInfo)
+        //   Verse.LocalTargetInfo.op_Implicit(IntVec3)
+        //   Verse.AI.Pawn_JobTracker.TryTakeOrderedJob(Job, JobTag?, bool)
+        //   RimWorld.JobDefOf.Goto
+        //   Verse.AI.JobTag.DraftedOrder = 6 / JobTag.Misc = 0   (enumdump)
+        //   Verse.ReachabilityUtility.CanReach(Pawn, LocalTargetInfo, PathEndMode,
+        //       Danger, bool canBashDoors, bool canBashFences, TraverseMode)
+        //   Verse.PathEndMode.OnCell = 1, Verse.Danger.Deadly = 3,
+        //       Verse.TraverseMode.ByPawn = 0
+        //   Verse.Pawn_PathFollower.Destination / Moving  (Pawn.pather)
+        //   RimWorld.Pawn_DraftController.Drafted         (Pawn.drafter)
+        //   Verse.TickManager.CurTimeSpeed / Paused / TicksGame
+        //
+        // 🔴 WHY THE READ-BACK IS THE ENTIRE TOOL.
+        // TryTakeOrderedJob returns TRUE for a job it merely ENQUEUED: IL_013f,
+        // IL_01ac and IL_01fa each `ldc.i4.1; ret` immediately after
+        // JobQueue::EnqueueFirst / EnqueueLast, and nothing anywhere in the
+        // method consults reachability. So "order accepted" is NOT "pawn moved",
+        // and a tool that returned that bool would be a textbook silent success.
+        // This one waits for real game ticks and reports the position it read
+        // back afterwards. success is arrival, measured.
+        //
+        // The one refusal path worth naming: IL_004a calls
+        // IsCurrentJobPlayerInterruptible, which is false when the current
+        // JobDef has playerInterruptible=false, when the JobDriver says so, or
+        // when the pawn is ON FIRE (AttachmentUtility.HasAttachment(Fire)).
+        // That is the only case where the bool itself comes back false.
+        [Tool(
+            "jawa/order_pawn",
+            Description =
+                "Order named pawns to WALK to a map cell, then wait for game ticks and report " +
+                "where they actually ended up. This is the primitive the bridge was missing: " +
+                "rimworld/right_click_cell dispatches a synthetic click and produces no move " +
+                "order at all (measured 2026-08-13: pawn sat still through 2,400 ticks with " +
+                "the target on screen). This issues the real thing — JobMaker.MakeJob(Goto, " +
+                "cell) through Pawn_JobTracker.TryTakeOrderedJob, the same call the vanilla " +
+                "right-click menu makes. Use it for reachability, door function, room " +
+                "enclosure, boardability and trap tests: 'walk a pawn there and see' is a " +
+                "whole class of live test, and none of it was runnable before this. " +
+                "⚠️ A paused game cannot move a pawn; unpause=true briefly sets Normal speed " +
+                "and restores the previous speed when done.",
+            ResultDescription =
+                "Per pawn: the start cell, the READ-BACK end cell, arrived, moved, the " +
+                "straight-line distance before and after, canReach computed BEFORE the order, " +
+                "whether TryTakeOrderedJob accepted it, the pawn's current job and its pather " +
+                "destination. Top level carries ticksElapsed — if that is 0 the game never " +
+                "ticked and nothing below it means anything. success is true only when every " +
+                "pawn is standing on the requested cell, read back from the map; the accept " +
+                "bool is never treated as arrival.")]
+        public static async Task<object> OrderPawn(
+            IRimBridgeContext ctx,
+            CancellationToken cancellationToken,
+            [ToolParameter(Description =
+                "One ThingID, a comma-separated list of them, 'all' for every spawned pawn, " +
+                "or 'colonists'.")]
+            string pawnId,
+            [ToolParameter(Description = "Destination cell X.")]
+            int x,
+            [ToolParameter(Description = "Destination cell Z.")]
+            int z,
+            [ToolParameter(Description =
+                "Draft the pawn first. A drafted pawn holds the destination instead of " +
+                "wandering off to its own work the moment it arrives, which is what you want " +
+                "for a measurement. Pawns with no drafter (animals, non-player pawns) are " +
+                "ordered undrafted and say so in their row.",
+                DefaultValue = true)]
+            bool draft = true,
+            [ToolParameter(Description =
+                "Undraft again once the walk is measured. Leave false if you are about to " +
+                "issue more orders; the response lists anyone left drafted either way.",
+                DefaultValue = false)]
+            bool undraftAfter = false,
+            [ToolParameter(Description =
+                "How many GAME ticks to wait for the walk before reading back. 300 is ~5 " +
+                "seconds of Normal speed and crosses roughly 60 cells of open ground.",
+                DefaultValue = 300)]
+            int waitTicks = 300,
+            [ToolParameter(Description =
+                "Wall-clock ceiling on the wait, so a paused or hitching game cannot hang the " +
+                "call. Hitting this is reported, never silently treated as arrival.",
+                DefaultValue = 30)]
+            int timeoutSeconds = 30,
+            [ToolParameter(Description =
+                "If the game is paused, run at Normal speed for the duration of the wait and " +
+                "restore the previous speed afterwards. With this off, a paused game returns " +
+                "ticksElapsed=0 and nobody moves.",
+                DefaultValue = true)]
+            bool unpause = true)
+        {
+            if (waitTicks < 0) return Fail($"waitTicks must be >= 0, got {waitTicks}.");
+            if (timeoutSeconds < 1 || timeoutSeconds > 300)
+                return Fail($"timeoutSeconds must be 1-300, got {timeoutSeconds}.");
+
+            var dest = new IntVec3(x, 0, z);
+            List<Pawn> pawns = null;
+            var starts = new Dictionary<string, IntVec3>();
+            var accepted = new Dictionary<string, bool>();
+            var reachable = new Dictionary<string, bool>();
+            var drafterMissing = new List<string>();
+            var startTicks = 0;
+            TimeSpeed speedBefore = TimeSpeed.Paused;
+            var speedChanged = false;
+
+            var setup = await ctx.MainThread.InvokeAsync<object>(() =>
+            {
+                var map = Find.CurrentMap;
+                if (map == null) return Fail("No current map. Load a game first.");
+                if (!dest.InBounds(map))
+                    return Fail($"({x},{z}) is outside the map.", new
+                    {
+                        mapSize = new { x = map.Size.x, z = map.Size.z }
+                    });
+
+                object err;
+                pawns = ResolvePawns(map, pawnId, out err);
+                if (pawns == null) return err;
+                if (pawns.Count == 0) return Fail("No pawns matched.");
+
+                var tm = Find.TickManager;
+                startTicks = tm?.TicksGame ?? -1;
+                if (tm != null)
+                {
+                    speedBefore = tm.CurTimeSpeed;
+                    if (unpause && tm.CurTimeSpeed == TimeSpeed.Paused)
+                    {
+                        tm.CurTimeSpeed = TimeSpeed.Normal;
+                        speedChanged = true;
+                    }
+                }
+
+                foreach (var pawn in pawns)
+                {
+                    cancellationToken.ThrowIfCancellationRequested();
+                    var id = pawn.ThingID;
+                    starts[id] = pawn.Position;
+
+                    // Computed BEFORE the order, because TryTakeOrderedJob never
+                    // looks at it: an unreachable Goto is accepted and then fails
+                    // inside the pather, which is invisible from the return value.
+                    reachable[id] = ReachabilityUtility.CanReach(
+                        pawn, dest, PathEndMode.OnCell, Danger.Deadly,
+                        false, false, TraverseMode.ByPawn);
+
+                    if (draft)
+                    {
+                        if (pawn.drafter == null) drafterMissing.Add(id);
+                        else if (!pawn.drafter.Drafted) pawn.drafter.Drafted = true;
+                    }
+
+                    if (pawn.jobs == null) { accepted[id] = false; continue; }
+                    var job = JobMaker.MakeJob(JobDefOf.Goto, dest);
+                    var tag = (pawn.Drafted ? JobTag.DraftedOrder : JobTag.Misc);
+                    accepted[id] = pawn.jobs.TryTakeOrderedJob(job, tag, false);
+                }
+                return null;
+            }, cancellationToken).ConfigureAwait(false);
+            if (setup != null) return setup;
+
+            // ---- the wait. Polled in game TICKS, not wall clock: the same
+            // 300 ticks is 5 s at Normal and well under 1 s at Ultrafast, so a
+            // fixed Task.Delay would either truncate the walk or waste a minute.
+            var polls = 0;
+            var elapsedMs = 0;
+            var ticksNow = startTicks;
+            var timedOut = false;
+            while (true)
+            {
+                cancellationToken.ThrowIfCancellationRequested();
+                if (ticksNow - startTicks >= waitTicks) break;
+                if (elapsedMs >= timeoutSeconds * 1000) { timedOut = true; break; }
+                await Task.Delay(100, cancellationToken).ConfigureAwait(false);
+                elapsedMs += 100;
+                polls++;
+                ticksNow = await ctx.MainThread.InvokeAsync(
+                    () => Find.TickManager?.TicksGame ?? -1,
+                    cancellationToken).ConfigureAwait(false);
+            }
+
+            return await ctx.MainThread.InvokeAsync<object>(() =>
+            {
+                var tm = Find.TickManager;
+                if (speedChanged && tm != null) tm.CurTimeSpeed = speedBefore;
+
+                var rows = new List<object>();
+                var arrived = 0;
+                var moved = 0;
+                var leftDrafted = new List<string>();
+
+                foreach (var pawn in pawns)
+                {
+                    var id = pawn.ThingID;
+                    var start = starts.TryGetValue(id, out var s) ? s : IntVec3.Invalid;
+                    var gone = !pawn.Spawned || pawn.Destroyed;
+                    var end = gone ? IntVec3.Invalid : pawn.Position;
+                    var here = !gone && end == dest;
+                    if (here) arrived++;
+                    if (!gone && end != start) moved++;
+
+                    if (undraftAfter && pawn.drafter != null && pawn.drafter.Drafted)
+                        pawn.drafter.Drafted = false;
+                    if (pawn.drafter != null && pawn.drafter.Drafted) leftDrafted.Add(id);
+
+                    var ok = accepted.TryGetValue(id, out var acc) && acc;
+                    var canGo = reachable.TryGetValue(id, out var r) && r;
+                    var pathDest = (!gone && pawn.pather != null && pawn.pather.Moving)
+                        ? pawn.pather.Destination.Cell
+                        : IntVec3.Invalid;
+
+                    string note = null;
+                    if (gone) note = "Pawn is no longer spawned on this map.";
+                    else if (here) note = null;
+                    else if (!ok) note =
+                        "TryTakeOrderedJob REFUSED the order. Its only refusal path is " +
+                        "IsCurrentJobPlayerInterruptible: the current job is flagged " +
+                        "playerInterruptible=false, its driver refuses interruption, or the " +
+                        "pawn is on fire.";
+                    else if (!canGo) note =
+                        "Order accepted but the cell was UNREACHABLE when it was issued " +
+                        "(CanReach false). The Goto job was taken and then failed in the " +
+                        "pather — this is exactly the case the accept bool cannot see.";
+                    else if (ticksNow - startTicks <= 0) note =
+                        "The game did not tick. Nothing could move.";
+                    else if (pawn.Downed) note = "Pawn is downed; it cannot walk.";
+                    else if (pawn.pather != null && pawn.pather.Moving) note =
+                        "Still walking — en route, not stalled. Re-read with a larger " +
+                        "waitTicks, or call again with waitTicks=0 to sample the position.";
+                    else note =
+                        "Order accepted, cell reachable, ticks advanced, and the pawn is not " +
+                        "moving. Something ended the job — check the pawn's current job.";
+
+                    var dxS = start.x - dest.x; var dzS = start.z - dest.z;
+                    var dxE = end.x - dest.x;   var dzE = end.z - dest.z;
+                    rows.Add(new
+                    {
+                        id,
+                        name = pawn.LabelShortCap,
+                        kind = pawn.kindDef?.defName,
+                        drafted = pawn.drafter != null && pawn.drafter.Drafted,
+                        hasDrafter = pawn.drafter != null,
+                        requested = new { x = dest.x, z = dest.z },
+                        start = new { x = start.x, z = start.z },
+                        end = gone ? null : new { x = end.x, z = end.z },
+                        arrived = here,
+                        moved = !gone && end != start,
+                        distanceBefore = Math.Round(Math.Sqrt(dxS * dxS + dzS * dzS), 2),
+                        distanceAfter = gone
+                            ? -1.0
+                            : Math.Round(Math.Sqrt(dxE * dxE + dzE * dzE), 2),
+                        canReach = canGo,
+                        orderAccepted = ok,
+                        stillMoving = !gone && pawn.pather != null && pawn.pather.Moving,
+                        pathDestination = pathDest.IsValid
+                            ? new { x = pathDest.x, z = pathDest.z }
+                            : null,
+                        curJob = gone ? null : pawn.CurJobDef?.defName,
+                        downed = !gone && pawn.Downed,
+                        note
+                    });
+                }
+
+                var ticksElapsed = ticksNow - startTicks;
+                var msg = $"{arrived}/{rows.Count} pawn(s) standing on ({x},{z}) after " +
+                          $"{ticksElapsed} tick(s); {moved} moved at all.";
+                if (ticksElapsed <= 0)
+                    msg += " ⚠️ THE GAME DID NOT TICK — nothing here is a movement result. " +
+                           (unpause
+                               ? "Speed was raised but no ticks landed; the game may be " +
+                                 "force-paused (a dialog is open) or not running."
+                               : "Pass unpause=true, or set the speed yourself first.");
+                else if (timedOut)
+                    msg += $" ⚠️ Timed out at {timeoutSeconds}s with only {ticksElapsed} of " +
+                           $"{waitTicks} ticks elapsed.";
+                if (drafterMissing.Count > 0)
+                    msg += $" {drafterMissing.Count} pawn(s) have no drafter and were ordered " +
+                           "undrafted.";
+                if (leftDrafted.Count > 0)
+                    msg += $" ⚠️ LEFT DRAFTED: {string.Join(", ", leftDrafted)}. " +
+                           "Pass undraftAfter=true or undraft them yourself.";
+
+                return new
+                {
+                    success = rows.Count > 0 && arrived == rows.Count && ticksElapsed > 0,
+                    message = msg,
+                    arrivedCount = arrived,
+                    movedCount = moved,
+                    pawnCount = rows.Count,
+                    destination = new { x = dest.x, z = dest.z },
+                    ticksElapsed,
+                    ticksRequested = waitTicks,
+                    timedOut,
+                    polls,
+                    waitedSeconds = Math.Round(elapsedMs / 1000.0, 1),
+                    speedBefore = speedBefore.ToString(),
+                    speedRestored = speedChanged,
+                    leftDrafted,
+                    noDrafter = drafterMissing,
+                    pawns = rows,
+                    ticksGame = tm?.TicksGame ?? -1
                 };
             }, cancellationToken).ConfigureAwait(false);
         }
