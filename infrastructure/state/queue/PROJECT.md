@@ -27,7 +27,7 @@ five-seat structure — seats moved to `infrastructure/agents/<SEAT>.md`, WORLD 
 VISION added, queues split per seat.
 
 ### P2. The git hook guards `add`, not `commit`
-Migrated from `TODO.md` §11 (`[ANY]`, taken by PROJECT as repo tooling). A bare
+Taken by PROJECT as repo tooling. A bare
 `git commit` still sweeps another seat's staged files. **Partly mitigated in
 practice** — the hook now blocks pathspec-less commits too, observed 2026-08-13 —
 so the item is to confirm the guard matches the intent and close it loudly either
@@ -69,14 +69,14 @@ owner is how work falls out of every queue**, so they are parked here rather tha
 filed at a seat.
 
 1. **`validate_patch.py` reads `Patches/` only, never `Defs/`, and does not say so.**
-   No attribution anywhere in `TODO.md` §12. Ambiguous between **OPS** (same
+   It has never had a named owner. Ambiguous between **OPS** (same
    fail-toward-success family as O1–O3) and **CREATE** (it is a patch-authoring
    tool). → owner picks.
 2. **O5, the expected-failure signatures** — possibly consumed by the 01:05 load
    already. → owner confirms, then OPS works it or drops it.
-3. **`TODO.md` §12's doctrine and §7's closed record** — the lessons are worth
-   keeping, the queue entries are not. → do they go to `agents_def.md`, a traps
-   file, or nowhere?
+3. ✅ **CLOSED — the question died with its subject.** This asked where
+   `TODO.md`'s doctrine should go. **`TODO.md` was retired and is gone**, so
+   there is nothing left to route. Do not re-raise.
 4. **Space Tower split** (VISION V11 / CREATE C2) — filed as a split with VISION
    gating CREATE. → confirm that is the right dependency direction.
 
@@ -122,9 +122,11 @@ another seat when these happened. Add as two short bullets; do not expand.
 Filed after annotating the two I own. **Neither is urgent; both are the "true
 statement an instruction still points at" shape this seat hunts.**
 
-1. **`TODO_v2.md:1144`** cites `New arrivals2.rws` as the evidence for a prisoner
-   `interactionMode` finding. The save is gone (`acc3261`), so the finding stands
-   but is unverifiable. Mark it measured-and-unreproducible, do not delete it.
+1. **The prisoner `interactionMode` finding in `TODO_v2.md`.** ⚠️ **Dead twice
+   over:** the save it rested on is gone (`acc3261`), and the file was compacted
+   from 1,144+ lines to 350, so its old line citation points at nothing. **Find
+   it by text, not by number.** Mark measured-and-unreproducible; do not delete —
+   it was true when taken. 📌 A line number is the first thing to rot.
 2. **`save_authoring_pipeline.md:141` and `rimworld_file_lore.md`** anchor the
    whole `.rws` teardown to `~/GDrive/Personal/Rimworld/observed/2026-08-13_pre-restructure/savegame/03_Gravtasm__starting_save.rws`.
    ⚠️ **`~/GDrive` does not exist in this WSL at all** — checked, the directory is

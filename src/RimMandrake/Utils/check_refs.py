@@ -244,12 +244,37 @@ class Audit:
         # absolute / drive-qualified
         if re.match(r"^[A-Za-z]:[\\/]", tok) or tok.startswith("file:///"):
             raw = tok[len("file:///"):] if tok.startswith("file:///") else tok
+            # 🔴 Strip a trailing line citation BEFORE the existence check.
+            # The relative branch below has always skipped `foo.md:285` via
+            # LINECITE, but that pattern never matched a drive-qualified token,
+            # so `D:\...\traps.md:285` was stat-ed WITH the ":285" attached and
+            # reported BROKEN against a 64 KB file that was right there.
+            # This was invisible until 2026-08-13 made native `D:\...` paths the
+            # mandated form and `file:///` the retired one: the audit acquired a
+            # blind spot on exactly the format the project had just standardised
+            # on. A checker that silently stops covering a convention change is
+            # worse than no checker, because the clean run is believed.
+            m_cite = re.match(r"^(.*?):(\d+)(?:-\d+)?$", raw)
+            cite_line = None
+            if m_cite and not re.match(r"^[A-Za-z]:[\\/]?$", m_cite.group(1)):
+                raw, cite_line = m_cite.group(1), int(m_cite.group(2))
             posix = win_to_posix(raw)
             if not posix:
                 return
             inside = posix.lower().startswith(ROOT.lower() + "/")
             self.tally("path")
             if os.path.exists(posix):
+                # Same standard the relative branch applies: a citation past the
+                # end of the file is a broken reference, not a passing one.
+                if cite_line and inside and os.path.isfile(posix):
+                    try:
+                        with open(posix, "rb") as fh:
+                            n = sum(1 for _ in fh)
+                    except OSError:
+                        return
+                    if cite_line > n:
+                        self.add(owner, ln, "path", tok, "BROKEN",
+                                 "line %d but the file has %d" % (cite_line, n))
                 return
             if inside and not soft:
                 self.add(owner, ln, "path", tok, "BROKEN", "no such file in repo")
