@@ -416,6 +416,39 @@ reversible and preserves the asset; the deletion is neither. **Check what the se
 already covers before writing a removal list** — every incident key here was
 redundant with a playstyle we were already taking.
 
+## 🔴 BEFORE THE NEXT WORLDGEN — things that cannot be patched in afterwards
+
+**Worldgen is HELD by the owner (2026-08-14) until the sea is shapeable.** That hold
+is not free time — it is a window, and these must land inside it. **Each is read
+once, at world or pawn generation; a patch after the fact does not fix an existing
+world.**
+
+| # | item | owner | why it cannot wait |
+|---|---|---|---|
+| W1 | **The sea** — a Jawa-world `AlienWorlds.PlanetTypeDef` plus a step that arranges three ragged blobs | VISION specs · CREATE builds | ocean is elevation at step 0 |
+| W2 | **Jawa `xenotypeSet`s re-pointed at `BTD_Jawa`** (+20 °C); they currently name `OuterRim_Jawa` (+10) | CREATE | **read at pawn generation** — the colonists of an existing world stay wrong |
+| W3 | **The biome mix**, via `PlanetTypeDef.biomeBlacklist` | VISION | biome scoring runs once |
+| W4 | The ratified faction tick-list, unspent | OPS at the screen | the page is seen once |
+
+### ⚖️ THE SEA STEP RE-SCOPED — smaller than when I ruled it v1, and still v1
+
+**VISION corrected its own axis correction, and the second one is the mechanism:**
+`Tidally Locked` maps temperature onto **latitude** — 0.0 = +70 °C subsolar, **0.5 =
++14 °C, the terminator**, 1.0 = −37 °C, 2.0 = −80 °C. ⇒ **the target is mid-latitude
+0.4–0.6**, not the poles and not the equator. The owner's *"one near a pole"* now
+reads as **a sea on the freezing nightside**, which is better fiction than it was as
+a shape note.
+
+⭐ **And most of it is XML, not C#.** `AlienWorlds.PlanetTypeDef` (`7f.alienworlds`,
+active) exposes **`elevationRange`** — which patches `WorldGenStep_Terrain`'s own
+range and **is the 25%-ocean dial, in a def** — plus `biomeConfigs`, `oceanBiome`,
+`sunlightFactor` and `rainfallCurves`.
+
+⇒ **The code shrinks to ONE job: arranging three ragged blobs.** The one-day kill
+condition stands and is now comfortable rather than tight. ⚠️ **Registration is still
+required and still silent** — a `WorldGenStepDef` absent from `PlanetLayers.xml`
+loads, validates and never runs, with no log line.
+
 ## ⚠️ Sequencing — the two dependencies that can cost a whole cycle
 
 ### 1. `jawa/list_factions` needs a SHUTDOWN window, not a startup
