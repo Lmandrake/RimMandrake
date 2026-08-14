@@ -5,9 +5,11 @@ map_agent.py  —  toolbox for the LLM-in-the-loop map improver
 
 ARCHITECTURE (per user direction, 2026-08-05)
 ---------------------------------------------
-The earlier Map_improver.py was wrong: it baked all judgment into fixed Python
-heuristics with blind coordinates, so placements couldn't respond to the actual
-map — "ridiculous and unjustified." The correct design puts the LLM's reasoning
+The earlier all-Python improver was wrong (deleted 2026-08-13): it baked all
+judgment into fixed Python heuristics with blind coordinates, so placements
+couldn't respond to the actual map — "ridiculous and unjustified." Heuristics
+that never look at the map cannot justify where they put things. The correct
+design puts the LLM's reasoning
 IN the loop each iteration; Python is only the HANDS:
 
     perceive (Python)  →  decompose + judge + propose (LLM)  →  execute (Python

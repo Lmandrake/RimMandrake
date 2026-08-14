@@ -13,7 +13,6 @@ focused research probe; keep them assembly-free and dependency-light.
 | `loop_run.py` | an LLM-authored plan JSON | executes plan → before/after render + report + metric deltas |
 | `map_loop_agent.py` | a base `GameMap` | **automated** perceive→propose→execute→re-judge loop (needs an LLM endpoint) |
 | `Map_synth.py` | — | synthesizes plausible player-style base maps into `../player_maps/` |
-| `Map_improver.py` | a `GameMap` | ⚠️ superseded heuristic improver — see note below |
 | **`animal_inventory.py`** | **every active mod's `Defs/` + `Patches/`** | **6 CSVs: full animal roster, attacks, life stages, biome map, conflicts, patch watch** |
 | `rimworld_loadset.py` | `ModsConfig.xml` + each mod's `LoadFolders.xml` | — (shared library) the folders the game *actually* loads |
 | **`def_inventory.py`** | **every active mod's `Defs/`, all 495 def types** | — (shared library) + per-type JSON: the resolved def set |
@@ -47,11 +46,12 @@ perceives, executes parameterized primitives, and computes cheap objective
 guardrail metrics (transition coherence, fragmentation, diversity). Those
 metrics are guardrails/tie-breakers, **not** the subjective judge.
 
-Why this replaced the first attempt: `Map_improver.py` (kept for reference)
-baked all judgment into fixed Python heuristics with blind coordinates
-(`rng.uniform(...)`), so placements couldn't respond to the actual map — the
-output looked "ridiculous and unjustified." Moving the judgment to the LLM fixes
-that.
+Why this replaced the first attempt (an 826-line all-Python improver, deleted
+2026-08-13): it baked all judgment into fixed Python heuristics with blind
+coordinates (`rng.uniform(...)`), so placements couldn't respond to the actual
+map — the output looked "ridiculous and unjustified." **The lesson, not the
+file, is what mattered:** heuristics that never look at the map cannot justify
+where they put things. Moving the judgment to the LLM fixes that.
 
 ### The three modules
 

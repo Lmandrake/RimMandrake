@@ -3,7 +3,7 @@
 mapkit.py  —  shared terrain palette + semantic map model + renderer
 ====================================================================
 
-Foundation for the map-improver practice agent (see Map_improver.py). This is
+Foundation for the map-improver practice agent (see map_agent.py). This is
 the "screenshot-level" layer: we work with a SEMANTIC terrain grid — each cell
 holds a real RimWorld terrain *name* we assign — NOT the load-order shortHashes
 of a live save. That is deliberate: the exercise is creative worldcraft on
