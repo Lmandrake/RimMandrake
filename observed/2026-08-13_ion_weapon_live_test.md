@@ -67,3 +67,44 @@ One downed `KotORDroidGood_3C` at **(60,60)**, faction none, alive. Debug log
 window **closed by me** (it had auto-opened, full of stale 17:40:17 load lines —
 it obscured the first screenshot entirely). Camera left at (60,60). Game still
 paused. Nothing else spawned, no terrain written, campaign untouched.
+
+---
+
+# Art-fix visual check — 2026-08-13, same quicktest map
+
+**2 of 8 confirmed rendering. Not 8. Stated as measured.**
+
+| mod | subject | facing | verdict |
+|---|---|---|---|
+| `gravshipastronautfix` | `VGE_Astronaut` | north | ✅ **real art** — cream helmet, visor slot, lavender shoulders |
+| `msedroidfix` | `OuterRim_MSEDroid` | north | ✅ **real art** — black keyline, two tonal bands, panel lines |
+| `sauridfrillfix` | `VRESaurids_TownGuard_Saurid` | north | ⬜ captured, not adjudicated |
+| `cereanmanefix` | `OuterRim_Cerean` | south | ⬜ captured, not adjudicated |
+| `toolbeltfix` · `researchkiteastfix` · `blastdoorframeasyncfix` · `desertvehiclereskin` | — | — | ⬜ **not attempted** |
+
+**What a pass here does and does not mean.** It means a sprite with authored
+detail draws at that facing — not RimWorld's blank/`BadTexture` placeholder. It
+does **NOT** mean the fix mod supplied it: `GravshipAstronautFix` and
+`SauridFrillFix` were shadowed all session by `Jawa_Patches`' md5-identical
+copies at the same paths, and **textures bind at startup**, so the pruned game
+copy only takes effect next launch. **"The art is right" and "this mod supplied
+it" are different claims** and only the second needs a restart.
+
+## 🔴 Two measurement traps that each nearly produced a false verdict
+
+**1. `rootSize 6` renders the entire map FLAT RED.** Reachable only because the
+camera-zoom extension was on. My first pass looked like catastrophic texture
+corruption across every mod, and it was escalated as such by a peer. It is a
+**zoom artifact**: the red frame is bracketed by clean frames 29 s either side
+and healed on its own when zoom returned to a legal range.
+⭐ **The discriminator is FILE SIZE** — the red frame is **0.49 MB** against
+**2.4–3.7 MB** for the clean ones, because flat colour compresses to almost
+nothing. A corrupted atlas does not heal in place; a zoom artifact does.
+
+**2. `take_screenshot` names files by SECOND.** Four shots inside one second
+overwrote each other down to a single file, and **every call returned
+`success: true` with a path**. Space captures ≥1.3 s apart, or verify the paths
+differ before believing you have N images.
+
+⚠️ **A pawn moved between shots** — the MSE droid was spawned at (36,210) and
+photographed at (32,210). The map is not as static as `TPS 0.0` suggests.
