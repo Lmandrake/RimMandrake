@@ -276,16 +276,23 @@ number that matters. The cap is **the engine's `SubstructureSupport` stat**.
 | source | contributes |
 |---|---|
 | `GravEngine` | **all of it** — 632.7954 as shipped by Bigger Gravships |
-| `GravFieldExtender` | **nothing**, at any distance — see the bug below |
+| `GravFieldExtender` | ⚠️ **CORRECTED 2026-08-15 — it contributes +500 each, but ONLY once claimed and powered.** The 2026-08-13 reading of "nothing, at any distance" was taken while the extenders were unclaimed and unpowered, so they could not have contributed whatever the distance. Measured after the four gates below were satisfied: engine cap went **4,680 → 51,480** as nine extenders came online |
 | `VGE_GravFieldAmplifier` | **nothing** |
 | a second `GravEngine` | **nothing, and it breaks the first** — panel reports *"Grav engine disabled: Multiple grav engines present"* and both engines go dead |
 
-Ruled out by experiment, so nobody repeats them: **distance is not the gate**
-(moved an extender from 22.0 to 15.0 tiles against a `maxDistance` of 34 — cap
-unchanged); **power is not the gate** (same cap at 4,800 W and at 0 W);
-**faction is not the gate** (the engine is already player-owned — its `Claim`
-gizmo is disabled and the Claim designator refuses with *"Must designate
-abandoned claimable structures"*).
+⚠️ **The three "ruled out" claims below were CONFOUNDED and two are now known
+false.** They were measured while every part except the engine was unclaimed, a
+state in which nothing connects regardless of what else you vary — so each
+experiment moved a variable that could not have mattered yet, and read "no
+change" as "not the gate". Kept here because the reasoning error is the lesson:
+**you cannot rule a variable out while a dominating gate is still closed.**
+
+- **distance** — genuinely not the gate. Thrusters 40 tiles from the engine work
+  fine once the four gates below are met. Still true.
+- **power** — ~~not the gate~~ **IS a gate.** See below; the extenders need real
+  wattage and the engine alone will not carry them.
+- **faction** — ~~not the gate~~ **IS the first gate.** The engine being
+  player-owned says nothing about the other 1,000 parts, which are not.
 
 ### 🟢 The capacity dial, and it applies WITHOUT a restart
 
@@ -353,6 +360,67 @@ now in the exported artifact.
 ⚠️ Cutting a hull tile drops its roof. `DoorBase` and `GravshipHull` both
 `holdsRoof`, so spawn the door **in the same breath** as the destroy — a survey
 between the two calls is long enough for a collapse.
+
+## 🔴 The FOUR GATES — why a printed gravship never flies (measured live 2026-08-15)
+
+A ship written by this skill, stamped onto a map and spawned through the bridge is
+**geometrically perfect and completely inert.** Owner drove the fix by hand; every
+line here is a before/after read off `jawa/inspect_string`.
+
+Result: `Gravship range: 0 -> 40`, all four thrusters GREEN, all nine extenders
+connected, engine capacity `4,680 -> 51,480`.
+
+**The gates, in dependency order. Each one silently blocks everything after it.**
+
+1. **CLAIM EVERY PART.** Bridge-spawned buildings arrive `faction: None`, and a
+   factionless part does not join the gravship. ⚠️ **The engine being
+   `PlayerColony` proves nothing about the rest** — on the measured ship the
+   engine was player-owned while the console, tank, hull, extenders and thrusters
+   were all `None`. Claim is per-thing.
+2. **RUN CONDUIT TO EVERYTHING.** Not "conduit exists on the map" — an actual
+   connected run reaching each consumer, through the floor.
+3. **ADD BATTERIES.** The extenders draw more than the engine alone will carry.
+   After the fix the engine reads `Power output 4,424 W`, `Grid excess -2,216 W`
+   with `5,990 Wd stored` — i.e. it runs **at a deficit**, off batteries.
+4. **PIPE ASTROFUEL** from the tank to the thrusters **and to the grav engine**.
+   A console reading `Stored astrofuel: 250 / 250` while thrusters read
+   `Astrofuel net excess/stored in network: 0 l/d / 0 l` means fuel exists and is
+   not plumbed to them.
+
+### 🔴 The error string lies about the cause
+
+Every unmet gate above reports the **same** message on the part:
+
+```
+Not functional: Not connected to grav engine
+Must be placed within range of a grav engine
+```
+
+It reads like geometry and it is almost never geometry. On the measured ship it
+meant, in turn: unclaimed, then unpowered, then unfuelled. **Do not move a part in
+response to this message until all four gates are satisfied** — I relocated a
+whole thruster bank chasing it, and the bank was never the problem.
+
+### Red herrings, so nobody spends the hours again
+
+- **Substructure connectivity was intact the whole time.** 4,037 cells, 4,034
+  linked to the engine — matching the engine's own `Connected substructure: 4034`
+  exactly. All eight thruster cells were substructure AND connected. Verify this
+  cheaply with a 4-way flood fill from the engine over the `foundation` layer and
+  compare to the engine's own number; if they agree, substructure is not your bug.
+- **Distance is not the gate.** Thrusters 40 tiles out work once claimed and fed.
+- **`onlyRequiresLooseConnection`** differs between parts (`GravFieldExtender`
+  true, `SmallThruster` false) and is a genuine def difference — but it is not
+  what was blocking, and reading it as the cause sends you to geometry again.
+- **A colonist must INSPECT the grav engine** before anything binds to it, and an
+  uninspected engine makes every part report the same "not connected" line. That
+  is a real gate, and it is upstream of all four above. Reaching the engine needs
+  a door: on the measured hull the engine chamber had **none**, and the whole ship
+  has 2 doors for an 86x133 hull.
+
+⇒ **A gravship cannot be printed.** The layout file gets you a hull and correct
+placement. Claiming, wiring, powering, fuelling and inspecting are colonist work,
+and the ship is inert until they are done.
 
 ## Validation plan — what you owe whoever holds the game
 
