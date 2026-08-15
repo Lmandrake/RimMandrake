@@ -310,28 +310,101 @@ def clean_name(species):
     return SPECIES_PREFIX + re.sub(r"[^A-Za-z0-9]", "", species)
 
 
-def pick_species(x, g):
-    """Source preference BTD, then SWX, then Outer Rim. BTD exists specifically
-    to reconcile the other two, so its gene list is the best starting point."""
+def _genes_of(el):
+    """Gene list straight off a donor's XML element."""
+    node = el.find("genes")
+    return [li.text.strip() for li in node] if node is not None else []
+
+
+def _forces_head(gene, g, donor_defs=None):
+    """Does this gene force a head type?
+
+    Checks the dump AND the donors' XML, because neither alone is complete:
+    once a donor is switched off its genes vanish from the dump, and a gene
+    from a mod we keep is not in the donor XML."""
+    f = (g.get(gene) or {}).get("fields") or {}
+    if f.get("forcedHeadTypes"):
+        return True
+    if donor_defs and gene in donor_defs:
+        el = donor_defs[gene][1]
+        node = el.find("forcedHeadTypes")
+        return node is not None and len(node) > 0
+    return False
+
+
+def _gene_exists(gene, g, donor_defs):
+    """A gene is real if the live game has it OR a donor's XML defines it.
+
+    🔴 The dump alone is not enough and the reason is subtle: this generator is
+    normally re-run AFTER the donors have been switched off, at which point
+    their genes are absent from the dump exactly as their xenotypes are. Judging
+    'does this gene resolve' from that dump rejects every species the donors
+    supplied -- which is the whole catalogue."""
+    return gene in g or gene in donor_defs
+
+
+def _is_specific(gene, species):
+    """A head gene named for the species beats a generic one.
+
+    `guy762_Head_rodian` gives a Rodian its snoot; `Outland_ScaleSkin` gives it
+    a generic reptile head and renders a scaly human. Both force a head, so a
+    count of head-forcing genes cannot tell them apart -- the NAME can."""
+    key = re.sub(r"[^a-z]", "", species.lower())
+    return bool(key) and key in re.sub(r"[^a-z]", "", gene.lower())
+
+
+def pick_species(x, g, donor_defs):
+    """Compose each species from the DONORS' XML ON DISK, unioning head genes.
+
+    🔴 THIS USED TO READ THE LIVE DEF DUMP AND WAS STRUCTURALLY BLIND.
+    The preference order was BTD, then SWX, then Outer Rim -- but the dump was
+    captured with BTD ACTIVE, and BTD's Harmony patch DELETES the SWX and Outer
+    Rim duplicates at load. Those two candidates were already absent from the
+    dump, so the fallback could never fire and every species came from BTD.
+    BTD's lists carry head-BONE genes without the head-TYPE genes the other
+    donors have, so ten species rendered with plain human heads and others got
+    a generic reptile head instead of their own.
+
+    ⇒ Choosing between three donors by reading a post-dedup dump cannot work.
+    Read the XML on disk, where all three still exist whatever the load order
+    did to them.
+    """
     built, skipped = [], []
     for species, cand in sorted(species_table(x).items()):
         if species in DROP_SPECIES:
             skipped.append((species, "dropped by owner ruling"))
             continue
-        src = next((c for c in cand if c and c in x), None)
-        if src is None:
-            skipped.append((species, "no source xenotype resolves"))
+        # every donor's version of this species, from DISK
+        versions = [(c, donor_defs[c][1]) for c in cand if c and c in donor_defs]
+        if not versions:
+            skipped.append((species, "no donor XML defines it"))
             continue
-        f = x[src]["fields"]
-        glist = f.get("genes") or []
+        src, base_el = versions[0]
+        glist = list(_genes_of(base_el))
+        # union the head genes the base is missing
+        extra = []
+        for name, el in versions[1:]:
+            for n in _genes_of(el):
+                if (n not in glist
+                        and _forces_head(n, g, donor_defs)
+                        and _is_specific(n, species)):
+                    extra.append(n)
+        if extra:
+            # a species-specific head wins; drop generic head-forcers so two
+            # genes are not fighting over the same head slot
+            glist = [n for n in glist
+                     if not (_forces_head(n, g, donor_defs)
+                             and not _is_specific(n, species))]
+            glist += [n for n in extra if n not in glist]
         if not glist:
             skipped.append((species, "source carries no genes"))
             continue
-        missing = [n for n in glist if n not in g]
+        missing = [n for n in glist if not _gene_exists(n, g, donor_defs)]
         if missing:
             skipped.append((species, "genes do not resolve: %s" % missing[:3]))
             continue
-        built.append(dict(species=species, src=src, f=f, genes=glist))
+        built.append(dict(species=species, src=src, f=(x.get(src) or {}).get("fields", {}),
+                          genes=glist, headless=not [n for n in glist if _forces_head(n, g, donor_defs)]))
     return built, skipped
 
 
@@ -783,7 +856,7 @@ def main():
              len(texidx["SWX"]), len(texidx["OR"]),
              len(stridx["SWX"]), len(stridx["OR"])), file=sys.stderr)
 
-    built, skipped = pick_species(x, g)
+    built, skipped = pick_species(x, g, defs)
     tbl = species_table(x)
     used = sorted({n for b in built for n in b["genes"]})
     seeds = [n for n in used
