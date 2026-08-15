@@ -65,11 +65,12 @@ navigate into every direction of travel.
   that is dangerous without being *empty* — the opposite failure mode from deep
   desert.
 
-⚠️ **Worldgen consequence, and step 10 is manual.** The owner makes and saves the
-world by hand, so this is guidance at the world screen rather than XML: **choose a
-world with abundant mountain, and reject a generation that comes out flat.** A
-flat world silently invalidates R-H1, R-H2 and the entire water economy, and there
-is no patch for it afterwards.
+⚠️ **The world is BUILT BY HAND — owner, 2026-08-15.** So this is a placement
+instruction, not a generator constraint: **many ranges, dotted with volcanoes,
+distributed to break the deep desert up rather than gathered into one spine.** A
+world that comes out flat silently invalidates R-H1, R-H2 and the entire water
+economy, and there is no patch for it afterwards. See "How this world gets made"
+at the end of this document.
 
 ## R-H1 · The water cycle: it rains ONLY on the high peaks
 
@@ -252,9 +253,16 @@ and step 8 is already ratified. Reopening it needs a ruling, not a patch.
 
 ---
 
-## Naming — candidates, not yet decided
+## Naming
 
-### The savanna
+### 🔴 The savanna is `The Pyrelands` — OWNER'S RULING, 2026-08-15
+
+Chosen from the candidates below. *Burning savanna* survives as the common name;
+**the Pyrelands** is what the world is called. It reads grand, funereal and
+faintly religious — which is the right register for a place that burns forever
+and that at least one faction will end up worshipping.
+
+### The savanna — the candidates it was chosen from
 
 | name | what it leans on |
 |---|---|
@@ -269,9 +277,7 @@ and step 8 is already ratified. Reopening it needs a ruling, not a patch.
 | **The Scorchgrass Sea** | grassland-as-ocean, which suits a tile you cross rather than hold |
 | **The Cinderveldt** | contraction of the two strongest halves; reads as a proper place-name |
 
-**Recommendation: `The Cinderveldt`** as the biome's proper name, with *burning
-savanna* surviving as what people call it. A world reads better when the formal
-name and the common name differ.
+*(Superseded by the ruling above. Kept so the shortlist is not re-derived.)*
 
 ### The planet
 
@@ -295,3 +301,120 @@ a probe once visited.
 
 ⚠️ Both recommendations are DECIDE's opinion, not rulings. The owner names the
 world.
+
+---
+
+## R-H6 · The nightside is a DECAY GRADIENT, not a biome
+
+**Owner's ruling, 2026-08-15.** Past the terminator the world does not simply get
+dark and stop. It runs a **spatial sequence of decay biomes**, each further into
+the lightlessness than the last, and the sequence *fades* rather than ending at a
+border:
+
+| distance past the terminator | biome | character |
+|---|---|---|
+| the seam itself | **poison forest** (R-H2b) | stunted, persistent, toxin-concentrating |
+| deeper | **mycotic jungle** | fungal, lightless, feeding on what the seam drops |
+| deeper still, in **patches only** | **gelatinous superorganism** | the end state — not plants any more |
+
+**What unifies them is decomposition, not darkness.** Each of these biomes speaks
+of decay, of limited-but-available moisture, and of **extremely rapid
+breakdown** — the counterpart to the dayside's freakish growth. On the lit side
+matter is assembled obscenely fast; on the dark side it is taken apart just as
+fast. Same planetary metabolism, opposite sign.
+
+🔴 **The gelatinous superorganism is PATCHES, never a band.** A few of them,
+scattered. It is the strangest thing on the map and rarity is what keeps it
+strange; a continuous belt of it would read as terrain rather than as a horror.
+
+⚠️ **Both are downstream of the terminator's water, not of rain.** The moisture is
+the same trace condensation that feeds the poison forest, thinning as the air
+gives up the last of it — which is why the gradient *fades spatially* instead of
+ending. Nothing here is fed by a river.
+
+## R-H7 · The ocular forests — the mountains have their own horror
+
+**Owner's ruling, 2026-08-15.** High on the mountains, in the valleys where R-H1's
+near-perpetual rain actually falls, grow the **ocular forests**.
+
+- They **drink the high rain** — they are the only large organisms with unlimited
+  water on this planet, and it shows.
+- They **excrete red-flowing water**: streams running out of the high valleys
+  loaded with **reproductive spores and alien toxins**. Absolutely unsafe to drink.
+- ⭐ **The toxins and spores volatilise out of the stream before it reaches the
+  formal desert rivers.** By the time the water arrives in the lowlands it is
+  potable again.
+
+**That last point is the whole design, and it must not be lost.** It means the
+rivers everyone drinks from *begin* as poison, and the planet detoxifies them by
+accident, in transit. The player who follows a good river upstream far enough
+finds it turning red — and finds out why nobody lives at the top.
+
+**The flavour to hold on to:** *as though life's flesh invested this biome long
+ago, and was released from the ordinary constraints of bodily boundaries that
+everything else obeys.* These are not trees. They are one organism's tissue that
+has forgotten where it is supposed to stop. **Rare and horrible.**
+
+⇒ It also completes the water story. The peaks make the water (R-H1), the ocular
+forests **poison** it, distance **cleans** it, the desert rivers **carry** it, and
+the hypersaline seas **end** it (R-H2).
+
+## R-H8 · The genetics are wrong on purpose — an ancient bioweapon, still under test
+
+**Owner's ruling, 2026-08-15.** The biology of these biomes — the ocular forests,
+the gelatinous superorganism, the mycotic jungle, the poison forest — is
+**genetically bizarre in a way ordinary evolution does not explain.** It is the
+residue of an **ancient deployed bioweapon**.
+
+🔴 **And it is still a live testing ground for the `Ascendant Helix`**
+(`Jawa_AscendantHelix`, `FACTION_SPEC.md` §9) — the gene-cult that "believes the
+body is a rough draft and the species a project," which **does not raid, it
+retrieves**, and whose standing pawn groups already include **Research caravan**,
+**Retrieval raid**, **Acquisition team** and — the one that suddenly means
+something — **Containment response**.
+
+**This costs nothing and pays for a great deal.** No new faction, no new mechanic:
+
+- It explains why an obscenely wealthy spacer gene-cult is on a dying desert
+  world at all, which the faction spec never answered.
+- Their settlement placement gains a rule: **near the strange biomes, not near the
+  people.** Isolated and secure was already their brief.
+- It makes every encounter with them legible. A Research caravan in the mycotic
+  jungle is them *working*. A Containment response is something having got out.
+- The player has a reason to go somewhere horrible other than curiosity.
+
+⚠️ **Do not settle who deployed the weapon, or against whom.** An unanswered
+question here is worth more than an answer, and the Ascendant Helix not knowing
+either — only that the samples are extraordinary — is the better story.
+
+---
+
+## How this world gets made — hand-built, with one honest caveat
+
+**Owner's ruling, 2026-08-15: the world is built BY HAND.** No generator will be
+written. The constraint set — three thermal bands, a decay gradient that fades
+spatially, volcanic ranges scattered rather than spined, rain only at altitude,
+patches of one biome and bands of another — is too tangled to be worth permuting
+as free variables, and the result has to be *judged*, not validated.
+
+⚠️ **The one thing DECIDE would say against it, stated once and then dropped:**
+this is not all-or-nothing, because `Alien Worlds - Tidally Locked`
+(`7f.alienworlds.tidallylocked`, ACTIVE) already exposes most of the *physics* as
+XML on a `PlanetTypeDef` — `avgTempByLatitudeCurve` for the day/night gradient,
+**`rainfallCurves`** for R-H1, **`elevationRange`** for the mountain share of
+R-H0, `biomes`/`biomeBlacklist` for what may appear at all, and `biomeConfigs`
+with per-biome `scoreOffset` for pushing a biome toward a latitude band.
+
+⇒ **The distinction worth keeping is zonation versus placement.** Zonation is the
+part that must hold *everywhere* — and a human placing hundreds of tiles by hand
+will drift, because consistency across a whole globe is exactly what people are
+bad at. Placement — a few patches of gelatinous superorganism, one sea near a
+pole, where the ocular valleys sit — is the part a generator cannot do well and a
+person can do in minutes.
+
+**So the cheap version of "otherwise" is: let the planet type carry the curves and
+the mountain dial, and hand-place everything that is rare.** That is still a
+hand-built world; it just does not ask the hand to enforce a gradient.
+
+**If the owner declines this, nothing above changes** — every ruling in this
+document is a placement instruction either way, and manual remains the ruling.
