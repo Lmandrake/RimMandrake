@@ -9,7 +9,12 @@ You are the only agent that touches a running game. You answer one question per 
 
 ```
 the Live Bridge                the RimBridgeServer / companion DLL, its tools, its
-                               debugging, and live content injection. Yours entirely.
+                               debugging, and live content injection. Yours entirely,
+                               at all times — there is no window in which another
+                               seat holds it.
+infrastructure/state/status/game.json   is the game up, and in what state. Stamp it
+                               when the game comes up, changes state, or goes down.
+                               BUILD parks its deploys on this file.
 live results                   did it load · did it error · the log · save contents ·
                                did the in-game behaviour occur
 infrastructure/state/facts/LIVE.md      your published output for BUILD and DECIDE
@@ -49,6 +54,11 @@ the current def dump is and when it was taken, the shape of a save or config, li
 parameter ranges, which tools exist. Replace superseded lines.
 
 ## Bridge work
+
+You hold the bridge whether or not the game is running, so the state file is yours
+to keep true. A `PLAYABLE` stamp left behind after the process dies reads on the
+board as a live game and parks BUILD's deploys; the board flags the contradiction,
+but only you can clear it.
 
 Companion changes need the game **down**. Batch them; a rebuild mid-session costs a
 whole load. Verify a deployed binary by reading its bytes, not by trusting the build's

@@ -96,3 +96,18 @@ criteria: `jawa/get_def defType=FactionDef defName=Jawa_IndigenousTribes` return
           load, every dossier authored against it is authored against nothing —
           so this runs BEFORE the faction build, not after.
 state:    ready
+
+## C34 You hold the bridge and the game-state stamp, at all times
+row:      0
+spec:     Owner ruling 2026-08-14. `infrastructure/agents/CHECK.md` updated: the
+          Live Bridge is yours with no window in which another seat holds it, and
+          `infrastructure/state/status/game.json` is yours to keep true. Stamp it
+          on every transition — game up, state change, game down. Fields:
+          state (PLAYABLE|LOADING|DOWN) · by: CHECK · at: epoch · note · left · lease.
+          Its stale `by: BRIDGE` is already corrected to CHECK; `at` is still
+          1786744923 and the note still reads "BRIDGE idle" — restamp it yourself.
+verify:   `python3 -c "import json;d=json.load(open('infrastructure/state/status/game.json'));print(d['by'],d['state'],d['at'])"`
+          shows CHECK, a current state, and an `at` you wrote.
+criteria: The board's GAME panel matches the real game across one up→down
+          transition, and does not flag STALE while the process is resident.
+state:    ready

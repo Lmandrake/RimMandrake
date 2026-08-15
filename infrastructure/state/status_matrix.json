@@ -175,8 +175,8 @@
     },
     "CHECK": {
      "done": 0,
-     "total": 0,
-     "state": "offline"
+     "total": 1,
+     "state": "idle"
     }
    }
   },
