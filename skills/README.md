@@ -18,7 +18,7 @@ it, and the `.skill` zips are gitignored.
 | owner | skills |
 |---|---|
 | **CHECK** — the live game | `rimbridge` · `rimworld-debug-testing` · `rimworld-load-round` · `rimworld-savegame` |
-| **BUILD** — artifacts and art | `rimworld-modding` · `rimworld-deploy` · `rimworld-ideoligion` · `rimworld-quests` · `rimworld-start-prep` · `gravship-layout` · `generating-rimworld-sprites` · `generating-images` · `editing-images` |
+| **BUILD** — artifacts and art | `rimworld-modding` · `rimworld-deploy` · `rimworld-ideoligion` · `rimworld-quests` · `rimworld-xenotypes` · `rimworld-start-prep` · `gravship-layout` · `generating-rimworld-sprites` · `generating-images` · `editing-images` |
 | **DECIDE** — what ships | `rimworld-content-moderation` (the cherrypick method — a keep/cut call is a scope call) |
 | **REP** — shared | `efficient-subagents` · `reading-rimworld-graphics` (art, contact sheets and audits all reach for it), and this README |
 
@@ -42,6 +42,7 @@ it should write directly and say so.
 | `rimworld-savegame` | editing a `.rws`. Rarely the right route. |
 | `rimworld-quests` | `QuestScriptDef` authoring and firing. |
 | `rimworld-ideoligion` | memes, precepts, ideoligion authoring. |
+| `rimworld-xenotypes` | xenotypes, genes, head types, species mods. A XenotypeDef is only a gene list; spawning needs a PawnKindDef, and most failures here are silent. |
 | `rimworld-start-prep` | scenario and starting-state setup. |
 | `gravship-layout` | gravship deck design and export. |
 | `generating-rimworld-sprites` | any PNG destined for a `Textures/` folder. Wraps the two image skills with the game's constraints and an offline validator. |
