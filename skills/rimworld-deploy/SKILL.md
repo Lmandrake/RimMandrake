@@ -1,6 +1,6 @@
 ---
 name: rimworld-deploy
-description: Writing a file is not deploying it — RimWorld loads C:\Program Files (x86)\Steam\steamapps\common\RimWorld\Mods\<ModName>, never this repo, and nothing syncs the two. Covers src/RimMandrake/Utils/deploy_custom_mods.py plan-first then --apply, reading the plan and refusing another seat's files, what a `-` line means and rescuing a hand-edited game copy with --pull, validating with validate_patch.py using BOTH --live and --defs, DEPLOY_HOLD.txt for files undeployed on purpose, why a mod with no About.xml or packageId is not deployable, and why a companion DLL cannot be written while the game runs. Use before testing any patch, def, texture, mod folder or assembly in game, and whenever a change appears not to have taken.
+description: Writing a file is not deploying it — RimWorld loads C:\Program Files (x86)\Steam\steamapps\common\RimWorld\Mods\<ModName>, never this repo, and nothing syncs the two. Covers src/RimMandrake/Utils/deploy_custom_mods.py plan-first then --apply, reading the plan and refusing another seat's files, what a `-` line means and rescuing a hand-edited game copy with --pull, validating with validate_patch.py using BOTH --live and --defs, DEPLOY_HOLD.txt for files undeployed on purpose, why a mod with no About.xml or packageId is not deployable, why a companion DLL cannot be written while the game runs, and how to tell whether a derived artifact is still CURRENT — fingerprint over timestamp, the folder-mtime and capturedUtc traps, the ModsConfig knownExpansions overcount, and empty def-type files that make a --defs check UNMEASURED rather than passed. Use before testing any patch, def, texture, mod folder or assembly in game, and whenever a change appears not to have taken.
 ---
 
 # Deploying to the game
@@ -122,6 +122,39 @@ A DLL the game has loaded **cannot be written while RimWorld runs** — memory-m
 and Windows refuses with `WinError 1224`. The copy is impossible, not merely
 ineffective. Deploy in the gap after the game closes and before it launches, and
 tell CHECK before any shutdown: `skills/rimworld-load-round/SKILL.md` §6.
+
+## 7b. 🔴 Is this artifact CURRENT? Never answer from a timestamp
+
+Half the deploy questions in this project are really one question — *does this
+derived thing still describe what the game loads?* — and reading **age** to answer
+it has now been wrong four separate times in one day. The rule:
+
+> **Trust a fingerprint of the load-set. Never a clock, on any layer:
+> folder mtime, file mtime, or the artifact's own captured timestamp.**
+
+Each of these was believed, acted on, and false:
+
+| the reading | why it lied |
+|---|---|
+| **A folder's mtime** | `DefDump/defs/` read `Aug 14` while every file inside was written `Aug 15`. A dump that **overwrites a fixed set of filenames** creates and deletes nothing, so the directory mtime never moves. Generalises to any tool that rewrites the same names. |
+| **The artifact's own `capturedUtc`** | Fresh in TIME is not fresh in SET. A dump captured 08:10 missed a mod deprecated at 11:58. **Direction matters**: that dump is a *superset* — everything live is described correctly, but it still carries defs from a mod that no longer loads, so an xpath onto *those* validates **clean** and matches **nothing** in game. |
+| **A bare `<li>` count in `ModsConfig.xml`** | Reads 580 against a true 575. The file holds a second list, `knownExpansions`, duplicating the DLC ids. **Scope the count inside `<activeMods>`.** |
+| **`Version.txt`** | Reads `rev590` while every engine-written file reads `rev591`. **The build stamp comes from the RUNNING game**, not from the file that appears to name it. (BUILD, 2026-08-15) |
+
+✅ **What was right the whole time: `refresh.py`'s `STALE` verdict**, because it
+keys on the load-set fingerprint rather than the clock — and it named the one real
+mod while two seats were escalating the wrong thing. **Believe it over your own
+timestamp arithmetic.**
+
+⬜ **Coverage is a third axis, after time and set.** 79 of 529 def-type files in
+the 2026-08-15 dump are **empty** (`AbilityDef` among them), so for those types
+"absent from the dump" says nothing at all about the game. A `--defs` check
+against an empty type is **UNMEASURED, not passed** — give it its own exit code
+and its own word, or it silently becomes a green tick.
+
+📌 Dump location, freshness and known holes are published by the seat that
+measures them: `infrastructure/state/observed/LIVE.md`. **Read it; do not
+re-derive it**, and do not copy its numbers into another doc where they will rot.
 
 ## 8. After deploying
 

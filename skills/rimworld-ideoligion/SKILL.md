@@ -1,6 +1,6 @@
 ---
 name: rimworld-ideoligion
-description: Design, author, validate and judge RimWorld ideoligions. There is no IdeoDef — an Ideo is a runtime object, and the only XML routes are IdeoPresetDef (player start screen, memes only) and the FactionDef ideo block (fixedIdeo/forcedMemes/deityPresets/requiredPreceptsOnly/styles). Covers what memes and precepts actually DO in play versus what only changes a tooltip, the meme exclusionTag and precept conflictingMemes collisions that fail silently, the structure meme deityCount rule, why `visible:false` and not `classic:true` is the do-not-author marker, the offline validator src/RimMandrake/Utils/validate_ideoligion.py, and a scored rubric for judging an existing religion on player impact and technical validity. Use when writing, reviewing or critiquing any ideoligion, meme, precept, ritual, ideo role, deity or faction religion.
+description: Design, author, validate and judge RimWorld ideoligions. There is no IdeoDef — an Ideo is a runtime object, and the only XML routes are IdeoPresetDef (player start screen, memes only) and the FactionDef ideo block (fixedIdeo/forcedMemes/deityPresets/requiredPreceptsOnly/styles). Covers what memes and precepts actually DO in play versus what only changes a tooltip, the meme exclusionTag and precept conflictingMemes collisions that fail silently, the structure meme deityCount rule, why `visible:false` and not `classic:true` is the do-not-author marker, the offline validator src/RimMandrake/Utils/validate_ideoligion.py, why that validator CANNOT read a saved .rid or .xtp (it answers 'no religions found' and checks nothing) and validate_save_artifact.py that can, and a scored rubric for judging an existing religion on player impact and technical validity. Use when writing, reviewing or critiquing any ideoligion, meme, precept, ritual, ideo role, deity or faction religion, and whenever a saved .rid ideoligion or .xtp xenotype must be checked before the irreversible worldgen run.
 ---
 
 # Ideoligions — design, author, validate, judge
@@ -165,6 +165,66 @@ check at all — it is on you, every time.**
 the generator did not substitute, that the deity names appear, that the styles
 resolved. See `references/validation.md` §live for the dev-mode route and what to
 harvest from `Player.log`.
+
+### 4b. 🔴 A SAVED ideo is a different artifact, and the validator above cannot read it
+
+`validate_ideoligion.py` reads **XML you author** — IdeoPresetDef, FactionDef.
+A `.rid` (saved ideoligion) and `.xtp` (saved xenotype) are **Scribe output from
+a running game**: tab-indented, `Class="..."` attributes, `IsNull="True"`
+sentinels. Point the authoring validator at one and it answers
+`no religions found` — **a clean-looking exit that has checked nothing.**
+
+Use the other tool:
+
+```bash
+python3 src/RimMandrake/Utils/validate_save_artifact.py "<file.rid>" "<file.xtp>"
+```
+
+It resolves every def reference against the def dump and exits `0` clean,
+`1` dangling, **`2` UNMEASURED** — never conflate 2 with 0.
+
+**Why this matters more than authoring validation: an ideo BAKES AT WORLD
+CREATION and cannot be retrofitted.** The saved file is what the owner loads at
+the one irreversible moment. Nothing else in this project has that property.
+
+🔴 **THE TRAP, and it is not hypothetical — CHECK hit it on 2026-08-15.**
+Scraping `<def>` elements and checking them all against `PreceptDef` reported
+**71 missing precepts. Every one was false.** A precept `<li>` nests other def
+types inside itself:
+
+```xml
+<li Class="Precept_Ritual">
+  <def>AM_FuneralNoCorpse</def>                            <- PreceptDef
+  <behavior><def>Funeral</def></behavior>                  <- RitualBehaviorDef
+  <outcomeEffect><def>AttendedFuneralNoCorpse</def></...>  <- RitualOutcomeEffectDef
+  <obligationTargetFilter><def>AnyEmptyGrave</def></...>   <- RitualObligationTargetFilterDef
+  <targetFilter><def>SelectedThing</def></targetFilter>    <- RitualTargetFilterDef  (a DIFFERENT type!)
+```
+
+⚠️ `RitualTargetFilterDef` and `RitualObligationTargetFilterDef` are two types
+with near-identical names and overlapping member names. Guessing by name is wrong.
+
+**The rule that makes this safe: a reference is MISSING only if it resolves
+against NO def type at all.** Expected-type knowledge raises a softer
+`TYPE MISMATCH`, never a missing. A wrong guess then costs a note, not a
+fabricated defect.
+
+⬜ **And "absent from the dump" is not "absent from the game."** 79 of the 529
+def-type files in the 2026-08-15 dump are **empty**, `AbilityDef` among them — so
+all 16 ideo-role ability references come back `UNMEASURABLE`, which is a hole in
+the evidence, not a result. The tool prints them as their own class for exactly
+this reason. Never launder one into a pass or a failure.
+
+**These are the non-references** that pass every defName shape test and resolve
+against nothing — treating them as defs is how the tool's own first run produced
+73 false positives: `precepts/li/name` (the display name — "population",
+"trading", "junk"), `labelKey`, `buildingTags/li`, `patternGroupTag`,
+`usedSymbols`, the `modIds`/`modNames` provenance block, `Precept_6309`-style
+runtime handles, and the frequency/gender enums (`MaleUsually`, `Uncommon`, …).
+
+📌 The `<modIds>` block is **provenance, not a dependency list**. `The Salvation.rid`
+carries 585 mod ids of which 11 no longer load; that is expected and harmless on
+its own. It only matters if a *reference* also fails to resolve.
 
 ⚠️ **The silent failure modes, all measured:** an uninstalled defName · an
 unwrapped `MayRequire` · a meme exclusion collision · a precept whose

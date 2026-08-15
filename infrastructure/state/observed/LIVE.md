@@ -41,6 +41,19 @@ Everything here was read out of a running game or off an artifact a running game
 - ⚠️ **The races mod ships 69 xenotypes, not 70.** The 70 written through C37 and its
   result block is off by one. 69 is the measured count, from the deployed defs.
 
+## The def dump's blind spots
+
+- 🔴 **79 of the 529 def-type files in the dump are EMPTY** (`"count":0`), so for those
+  types **"absent from the dump" says nothing about the game.** `AbilityDef` is one of
+  them — zero rows — which is why all 16 ideo-role ability references in
+  `The Salvation.rid` come back UNMEASURABLE rather than missing. Others in the list:
+  `AbilityAIDef`, `CharacterDef`, `FactionEnlistOptionsDef`, `FaceTypeDef`, `PatchDef`,
+  `PawnBioDef`, and 72 more. Full list: rerun the counter in
+  `src/RimMandrake/Utils/validate_save_artifact.py --rebuild-index`.
+- ⇒ **A `--defs` check against an empty def type is UNMEASURED, not passed.** Give it
+  its own word and its own exit code, or it silently reads as a green tick.
+- 450 non-empty types, **79,575 defs**, 62,555 distinct defNames indexed.
+
 ## ModsConfig.xml
 
 - **The active-mod count is 575** (`activeMods`), read 2026-08-15 11:58.
@@ -48,6 +61,23 @@ Everything here was read out of a running game or off an artifact a running game
   second list, `knownExpansions`, holding the 5 DLC ids, and they are duplicates of ids
   already in `activeMods`. Scope the count to inside `<activeMods>…</activeMods>`, or
   take the size of the *set*. A bare `grep -c '<li>'` overcounts by exactly the DLC count.
+
+## Saved ideo / xenotype artifacts
+
+- **`src/Jawa/ideoligion/The Salvation.rid` is CLEAN as of 2026-08-15**: 267 def
+  references, **251 resolve, 0 dangling**, 16 UNMEASURABLE (all `AbilityDef`, the dump
+  blind spot above). It carries **101 precepts** — not the 82 written in earlier notes.
+- **`MandrakeJawa.xtp` is CLEAN**: 36/36 references resolve.
+- Both carry a `<modIds>` provenance block of 585 mods, of which **11 no longer load**.
+  That is **provenance, not a dependency list** — harmless on its own, and it matters
+  only if a reference also fails to resolve. Neither file has one.
+- ⚠️ 19 empty `<li>` entries sit in `The Salvation.rid`'s style-frequency lists whose
+  siblings carry values. Unexplained; not proven harmful. Read on the next live load.
+- The tool: `python3 src/RimMandrake/Utils/validate_save_artifact.py <file>`.
+  `validate_ideoligion.py` CANNOT read these — it answers `no religions found` and
+  checks nothing.
+- 🔴 **A clean run is necessary, not sufficient.** It proves no dangling names. It does
+  NOT prove the ideo loads. Only the live dialog does that.
 
 ## Config files
 
