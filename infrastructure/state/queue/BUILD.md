@@ -42,14 +42,14 @@ row:      infra
 spec:     The `ModsConfig.xml` listed-but-missing trap in code form: `loadset_fingerprint()` compares *listed* against *exists*.
 verify:   a synthetic `ModsConfig.xml` listing a packageId that is not on disk is reported, not silently passed.
 criteria: EMPTY
-state:    ready
+state:    done
 
 ## B22 Teach the patch validator to spot a rule that can never fire
 row:      infra
 spec:     The mirror of O8 and the opposite verdict: reaching `<nomatch>` proves the test matched NOTHING, so an identical-xpath op there can never do anything. Provable WITHOUT `--defs`; today it is only caught as a 0-match ERROR when defs are loaded. `<nomatch>` must stay an ERROR — unlike the `<match>` branch, which `_guarded_by_identical_test()` correctly downgrades to info.
 verify:   a synthetic `<nomatch>` case is flagged with no `--defs`; `DroidsAreMachines.xml` still reports OK (0 errors, 2 warnings).
 criteria: EMPTY
-state:    ready
+state:    done
 
 ## B23 Pre-record three known errors so they don't alarm anyone during worldgen
 row:      10
