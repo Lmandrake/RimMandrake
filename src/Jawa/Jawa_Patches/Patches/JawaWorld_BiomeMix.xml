@@ -137,7 +137,11 @@
           <LavaField><scoreOffset>-4</scoreOffset></LavaField>
           <Scarlands><scoreOffset>-4</scoreOffset></Scarlands>
           <IronScruff_PrimordialGeysers><scoreOffset>-4</scoreOffset></IronScruff_PrimordialGeysers>
-          <RG_BoilingForest><scoreOffset>-4</scoreOffset></RG_BoilingForest>
+          <!-- RG_BoilingForest CUT 2026-08-15 — owner: "WE ARE NOT USING BOILING
+               BIOME." regrowth.botr.boilingforest left the mod list in the
+               585→575 descope, so this scored a def that no longer loads: it
+               validated clean against the dump (which still carries 576 mods)
+               and matched nothing in game. Do not re-add without the mod. -->
           <BMT_CrystalCaverns><scoreOffset>-4</scoreOffset></BMT_CrystalCaverns>
           <BMT_EarthenDepths><scoreOffset>-4</scoreOffset></BMT_EarthenDepths>
           <BMT_FungalForest><scoreOffset>-4</scoreOffset></BMT_FungalForest>
