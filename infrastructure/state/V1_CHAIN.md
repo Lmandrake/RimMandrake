@@ -112,14 +112,11 @@ robe-and-hood lock exists in the repo but was applied to a **donor** kind
 ### 8 · Factions
 `Jawa_IndigenousTribes` is the model of done — `pawnGroupMakers`, `xenotypeSet`,
 `forcedMemes`, `fixedIdeo`, and its three referenced kinds exist. Author the
-other 11–13 against it.
-**Open, and DECIDE owes every one:** the roster says 12 and
-`faction_world_spec.md` says 14 with 8 renamed · no defNames · no
-`pawnGroupMakers` anywhere · starting goodwill has no mechanism and rides
-unproven Faction Customizer persistence · `faction_roster_v2.md:42` is a
-known-wrong line that authorised all 12 goodwill numbers · D1–D6 in
-`faction_stage2_gap_audit.md`, of which D2/D3 are answered in the religions spec
-but never written back · leader title has three live values.
+8 authored factions against it; the 6 reskins are patches (R14).
+
+**One gap survives the rulings below: not one faction has a defName.** Everything
+else that was open — the 12/14 count, the vessel column, goodwill, the leader
+titles, D1–D6 — is ruled in R1–R15 and must not be re-opened from the roster.
 
 ### 8 · Factions — DECIDE's rulings, 2026-08-14
 
