@@ -77,6 +77,26 @@ So the bundle ladder needs `_a`.. `_h` alongside the side suffixes. Without it
 every `Graphic_StackCount` family renders blank — that alone was **373 of 397
 missing item cells**, and it looked exactly like "vanilla art is unreachable".
 
+🔴 **There is a SECOND variant form, and it has no underscore.** `Graphic_Random`
+families — which is most of the plant kingdom — flatten to a BARE capital letter
+appended straight to the stem:
+
+```
+def texPath : Plant/Dandelion
+on disk     : DandelionA · DandelionB · DandelionC
+also        : GrassA · GrassB · AgaveA · AgaveB · SnowyTreeCecropiaA
+```
+
+A ladder that only knows `_a` will miss every one of them. Measured: **172 of 175
+missing plant cells** were `Graphic_Random`, against a ~1% blank rate in every
+other category. Try both forms — bare `A`..`H` and `_a`.. `_h` — before reporting
+a blank.
+
+⇒ **An outlier blank rate for ONE category is a resolver gap, not missing art.**
+Plants sat at 30.8% while weapons, apparel and items sat near 1%. Content does not
+distribute itself that way; unhandled graphic classes do. Compare categories
+against each other before you compare any of them against zero.
+
 ⚠️ A suffix ladder still cannot save you when the STEM differs. Vanilla's
 `Shell_AntigrainWarhead` extracts as `Shell_Antigrain_a`; nothing but a fuzzy
 stem match finds that, and fuzzy matching is what caused the apparel disaster.
@@ -229,6 +249,35 @@ was asked. They have different answers, different files and different fixes.
 settled this after an entire file-based analysis reached the wrong conclusion
 twice. If a bridge is available, that beats any amount of disk archaeology.
 
+## 🪤 Some rows are not content and can never render
+
+**Abstract parent defs have no `defName`** — they carry a `Name=` attribute
+instead, exist only to be inherited from, and declare no art of their own. They
+look exactly like a real def to a naive walker, and they produce the most
+misleading blank there is: a cell that says a thing exists and its art is missing,
+when neither half is true.
+
+Measured in one animal inventory: **50 of 1,239 rows had no `defName`** —
+`AnimalThingBase`, `BasePawn`, `BaseInsect`, `BS_DefaultHumanlike`,
+`VAEWaste_BaseInsect` and 45 more. Two of them carried a `label` inherited from a
+donor (`race-that-the-author-forgot-to-give-a-name`, `mech`) and so read as real
+creatures with names.
+
+⇒ **Filter rows with no `defName` out of any sheet or census before counting
+anything.** They inflate totals, they inflate blank rates, and offering one to a
+reviewer as a keep/cut call wastes their time on something no cut tool can even
+target — Cherry Picker keys on `defName`, so a def without one is unreachable.
+
+## Do not walk the mod tree to build a texture index
+
+On a Windows mount under WSL, walking the workshop tree for `*.png` **timed out at
+120 s, twice.** The tree is tens of thousands of files across hundreds of mods and
+the per-file stat cost dominates.
+
+**Build the index once, persist it, and query the cache.** The extractor already
+writes `bundle_textures/index.csv`; give the loose PNGs the same treatment rather
+than re-walking per question. A diagnosis that cannot finish is not a diagnosis.
+
 ## Reporting
 
 Distinguish these, because they need different responses:
@@ -238,6 +287,7 @@ Distinguish these, because they need different responses:
 | `no_loose_png` | no file matched the texPath | try bundles, then check LoadFolders |
 | `blank_png` | a file matched and is **fully transparent** | often the wrong side variant — try the next suffix |
 | `no_texPath` | the def declares no art | correct; nothing to find |
+| `no_defName` | 🪤 an abstract parent, not content | drop the row entirely |
 
 A fully transparent PNG is not a missing texture, and treating it as one hides a
 resolver bug that a different suffix would fix.

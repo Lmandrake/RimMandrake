@@ -110,6 +110,51 @@ entry is a typo, because a typo and a successful cut look identical from here.
   keep/cut call.
 - **Anything you are unsure of goes on a hold list**, not into a guess.
 
+## After cutting creatures, sweep the products they made
+
+A cut animal leaves its meat, leather, wool, milk and eggs behind as items with no
+source in the world — they still fill menus, stockpile filters and trade lists.
+One pass after 168 creature cuts found **271** such orphans.
+
+Build a `{product -> set of producing animals}` map from `race/meatDef`,
+`race/leatherDef`, `race/woolDef`, `race/milkDef` and the comps
+(`eggFertilizedDef`, `eggUnfertilizedDef`, `milkDef`, `woolDef`, `resourceDef`),
+then cut a product only when **every** producer is cut.
+
+🔴 **Three guards, and each one caught a real false positive:**
+
+- **A plant may make it.** `DevilstrandCloth` looks orphaned when the devil sheep
+  goes, and is harvested from the devilstrand *plant*. Check every
+  `plant/harvestedThingDef` before cutting anything.
+- **A recipe may make it.** Scan `RecipeDef.products` too.
+- **The link may be name-only.** `AA_FlamingoPhoenix` has no EggLayer comp at all,
+  so nothing but the shared stem ties it to its egg. A name-stem pass catches
+  these — but require the stem to be long, strip the mod prefix, and confirm no
+  *surviving* animal shares it, or the pass will cut live content.
+
+## Before deprecating a mod, audit what else it ships
+
+An empty item list is not an empty mod, and "all its animals are cut" answers only
+one question. Check, in this order — it takes a couple of minutes and it is the
+difference between a clean removal and a broken load:
+
+1. **Every def type it defines**, not just the one you were reviewing. A creature
+   mod that also ships items, buildings, sounds, bodies or damage types is doing
+   work you did not audit.
+2. **Its patch xpaths.** This is the real test. If every xpath names the mod's own
+   prefix, or adds its own defs to a shared list, removal is contained. An xpath
+   that reaches into Core or another mod's def is a functional change you would be
+   reverting.
+3. **Whether an assembly loads for the CURRENT game version.** DLLs under old
+   version folders do not load and do not matter.
+4. **Hard `modDependencies` from other mods** — distinct from `loadAfter`, which
+   is harmless. Grep inside the `<modDependencies>` block only.
+
+🪤 **An unprefixed defName is the thing to chase.** `WoolCamel` in an animal mod
+looked like it might make Core's camel shearable — a real functional change to
+vanilla. It turned out to belong to the mod's own camel. Verify; do not assume
+either way.
+
 ## Traps that make a cut do nothing, or break the game
 
 - 🔴 **Cutting a weapon can empty a `weaponTag`, and a pawn kind whose only tag
@@ -125,6 +170,15 @@ entry is a typo, because a typo and a successful cut look identical from here.
   suspiciously round doubles, look for a generator before cutting anything.
 - **A def dump is disk, not runtime.** Mods that mutate defs at load — dedup
   passes especially — make any disk-derived claim about what EXISTS unsafe.
+- 🪤 **Abstract parent defs have no `defName`** and are not content. They inflate
+  every count and cannot be cut — Cherry Picker keys on `defName`. One animal
+  census carried **50** of them, two wearing inherited labels that read as real
+  creatures. Filter them out before presenting anything to a reviewer.
+- **The cut is only proven by the next load.** After a large batch, census
+  `Player.log` for `Could not resolve cross-reference` and group by the missing
+  defName. 1,308 cuts and three mod removals produced **25 errors across 2 defs**
+  — and reading the log is what distinguished the one that was ours from the one
+  that was pre-existing. Guessing which is which from the diff cannot do that.
 
 ## The tools here
 
