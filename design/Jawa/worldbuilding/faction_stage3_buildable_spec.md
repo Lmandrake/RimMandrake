@@ -17,7 +17,7 @@ the roster* or an *engine expression of it*.
 
 ### 0a. ⭐ BTD REMIX is the canon xenotype family
 
-**Three mods ship the same species.** `BTD_Twilek`, `OuterRim_Twilek` and
+**Three mods ship the same species.** `RimMandrakeTwilek`, `OuterRim_Twilek` and
 `guy762_xenotype_twilek` all exist and all are `inheritable`. Mixing families
 gives visually and mechanically inconsistent Twi'leks — two "Wookiees" that are
 different creatures to the engine.
@@ -44,17 +44,17 @@ mostly naming variants that BTD *does* cover:
 
 | looks missing | actually |
 |---|---|
-| `moncal` | `BTD_MonCalamari` ✅ |
-| `nemoidian` | `BTD_Neimoidian` ✅ |
-| `zabrak` | `BTD_Iridonian` ✅ — Zabrak and Iridonian are the same species |
-| `sith`, `massassi` | `BTD_SithK` / `BTD_SithM` / `BTD_SithZ` ✅ — **three castes** |
-| `geonosian_drone` | `BTD_Geonosian` ✅ |
+| `moncal` | `RimMandrakeMonCalamari` ✅ |
+| `nemoidian` | `RimMandrakeNeimoidian` ✅ |
+| `zabrak` | `RimMandrakeIridonian` ✅ — Zabrak and Iridonian are the same species |
+| `sith`, `massassi` | `RimMandrakeSithKissaiPureblood` / `RimMandrakeSithMassassi` / `RimMandrakeSithZ` ✅ — **three castes** |
+| `geonosian_drone` | `RimMandrakeGeonosianVariants` ✅ |
 
 **Genuine gaps, both fine:** `OuterRim_ForceGremlin` — already excluded by the
 roster; and `Lee_xenotype_kage` (Kage, 14 genes) — **the only species with a
 single source anywhere in the stack.** Worth keeping for that reason alone.
 
-⭐ **`BTD_SithK/M/Z` is a gift the roster has not spent.** Three Sith castes —
+⭐ **`RimMandrakeSithKissaiPureblood/M/Z` is a gift the roster has not spent.** Three Sith castes —
 Kissai (priest), Massassi (warrior), Zugurak — let the Galactic Empire's Sith element
 be a *caste system* rather than one "Sith" tag. See §2.
 
@@ -146,12 +146,12 @@ who "push much further" than water-hungry ones. Measured:
 
 | species | temp genes | verdict |
 |---|---|---|
-| `BTD_Kaleesh` | `MinTemp_SmallIncrease`, `MaxTemp_SmallIncrease` | ✅ heat-tolerant |
-| `BTD_Iridonian` (Zabrak) | *none* | neutral |
-| `BTD_Devaronian` | `MinTemp_SmallIncrease` | neutral |
-| `BTD_Bothan` | *none* | neutral |
-| **`BTD_Chiss`** | `MinTemp_LargeDecrease`, **`MaxTemp_SmallDecrease`** | 🔴 **heat-INTOLERANT** |
-| **`BTD_Umbaran`** | `MinTemp_SmallIncrease`, **`MaxTemp_SmallDecrease`** | 🔴 **heat-INTOLERANT** |
+| `RimMandrakeKaleesh` | `MinTemp_SmallIncrease`, `MaxTemp_SmallIncrease` | ✅ heat-tolerant |
+| `RimMandrakeIridonian` (Zabrak) | *none* | neutral |
+| `RimMandrakeDevaronian` | `MinTemp_SmallIncrease` | neutral |
+| `RimMandrakeBothan` | *none* | neutral |
+| **`RimMandrakeChiss`** | `MinTemp_LargeDecrease`, **`MaxTemp_SmallDecrease`** | 🔴 **heat-INTOLERANT** |
+| **`RimMandrakeUmbaran`** | `MinTemp_SmallIncrease`, **`MaxTemp_SmallDecrease`** | 🔴 **heat-INTOLERANT** |
 
 **The mod author is right and the roster is wrong** — and pleasingly so. Chiss
 are from **Csilla, an ice world**; Umbara is the **sunless** world. Both are
@@ -254,9 +254,9 @@ leaderTitle                   "Hutt lord"
 baseTraderKinds               bulk + exotic + weapons + water   ⭐
 caravanTraderKinds            slaver kinds if Ideology active
 ```
-**Races (BTD):** `BTD_Hutt` 3% masters · `BTD_Nikto` ~45% servile infantry ·
-`BTD_Gamorrean` ~20% muscle · `BTD_Weequay`, `BTD_Klatoonian` ~15% ·
-`BTD_Twilek` ~10% (dancers/slaves) · `BTD_Quarren` 5% accountants.
+**Races (BTD):** `RimMandrakeHutt` 3% masters · `RimMandrakeNikto` ~45% servile infantry ·
+`RimMandrakeGamorrean` ~20% muscle · `RimMandrakeWeequay`, `RimMandrakeKlatoonian` ~15% ·
+`RimMandrakeTwilek` ~10% (dancers/slaves) · `RimMandrakeQuarren` 5% accountants.
 **Water = Require (oasis).** `CenterPoint` clustering onto oasis tiles via Faction
 Control; the water they *sell* is the extortion mechanic.
 ⭐ **Endgame hook already in the roster:** the Hutts are the way off-world. Their
@@ -279,10 +279,10 @@ Jawa scavenger clan, and a decision rather than a side effect
 is no goodwill field on `FactionDef`, so `permanentEnemy: true` is the mechanism.
 **Races:** ~78% baseliner human (the roster's *human primacy* is doctrine, so
 this is the one faction where humans dominate **on purpose**) · near-human
-auxiliaries only: `BTD_Chiss` (officers), `BTD_Umbaran`, `BTD_Zeltron`.
-⭐ **Sith caste, using BTD's three:** `BTD_SithK` Kissai as ISB inquisitors ·
-`BTD_SithM` Massassi as shock troops (the roster already notes these are
-Yavin-jungle stock → **wet-tile origin tell**) · `BTD_SithZ` Zugurak rare elites.
+auxiliaries only: `RimMandrakeChiss` (officers), `RimMandrakeUmbaran`, `RimMandrakeZeltron`.
+⭐ **Sith caste, using BTD's three:** `RimMandrakeSithKissaiPureblood` Kissai as ISB inquisitors ·
+`RimMandrakeSithMassassi` Massassi as shock troops (the roster already notes these are
+Yavin-jungle stock → **wet-tile origin tell**) · `RimMandrakeSithZ` Zugurak rare elites.
 **v1 does labels and colour only. Everything else here is v2.**
 
 ### 3. Homestead Defense League — PATCH vanilla `OutlanderCivil`
@@ -293,8 +293,8 @@ canSiege                      false          // farmers, not besiegers
 raidsForbidden                true           // D1: the Homestead does not raid at all
 leaderTitle                   "councilman" (unchanged — already correct)
 ```
-**Races:** human 20% · `BTD_Ithorian` 12% · `BTD_Duros` 10% · `BTD_Rodian` ·
-`BTD_Bith` · `BTD_Iktotchi` (the roster's **only long-range asset** — low thirst
+**Races:** human 20% · `RimMandrakeIthorian` 12% · `RimMandrakeDuros` 10% · `RimMandrakeRodian` ·
+`RimMandrakeBith` · `RimMandrakeIktotchi` (the roster's **only long-range asset** — low thirst
 + precognition; gate these to a dedicated `pawnGroupMaker`).
 **Water = Manufacture.** Vaporators are the destructible objective. This is the
 Tusken casus belli and should be a **hardcoded hostility** to faction 4.
@@ -309,7 +309,7 @@ earliestRaidDays              very low
 raidCommonalityFromPointsCurve  HIGH         ⭐ frequent, close, brief
 settlementGenerationWeight    high (numerous)
 ```
-**Races:** `BTD_Tusken` ~100%, two tiers via pawnkind not species (Dune Sea /
+**Races:** `RimMandrakeTusken` ~100%, two tiers via pawnkind not species (Dune Sea /
 canyon). Near-monocultural by design.
 ⭐ **The water-raid group is the standout mechanic in the whole roster** — a
 `pawnGroupMaker` whose objective is *stealing containers, not killing*. Vanilla
@@ -345,8 +345,8 @@ canSiege                      false          ⭐
 canStageAttacks               false          ⭐ near-useless expeditionary
 settlementGenerationWeight    low (~0.3)     // "small refuges"
 ```
-**Races:** `BTD_Wookiee` 48% · Wookiee-kin (`BTD_Lasat`, `BTD_Togorian`) 25% ·
-`BTD_Cathar` 10% · `BTD_Trandoshan` **excluded** (canon enemies of Wookiees — a
+**Races:** `RimMandrakeWookiee` 48% · Wookiee-kin (`RimMandrakeLasat`, `RimMandrakeTogorian`) 25% ·
+`RimMandrakeCathar` 10% · `RimMandrakeTrandoshan` **excluded** (canon enemies of Wookiees — a
 nice authenticity beat).
 **Water = Require (severe).** Sited to rare wooded/upland/cool tiles via Sensible
 Factions biome weighting. **The standing logistics quest** — the player must
@@ -363,8 +363,8 @@ settlementGenerationWeight    moderate — holds EVERY natural water tile
 baseTraderKinds               water + bulk   ⭐ the cheap neutral supply
 canRequestTraders             true
 ```
-**Races:** `BTD_MonCalamari` 22% · `BTD_Quarren` 23% · `BTD_Selkath` 20% ·
-`BTD_Nautolan` · `BTD_Gungan` · `BTD_Herglic`. **All amphibian/aquatic — this is
+**Races:** `RimMandrakeMonCalamari` 22% · `RimMandrakeQuarren` 23% · `RimMandrakeSelkath` 20% ·
+`RimMandrakeNautolan` · `RimMandrakeGungan` · `RimMandrakeHerglic`. **All amphibian/aquatic — this is
 physiology, not preference.**
 ⭐ **A faction that cannot attack you is a design gift, not a gap.** The Compact is
 pure economy and politics: it sells water to everyone *including the Galactic Empire*,
@@ -379,8 +379,8 @@ canSiege                      true           // industrial, droid-backed
 canStageAttacks               true
 settlementGenerationWeight    moderate; sited to mountains/ore/caves
 ```
-**Races:** `BTD_Geonosian` 76% (queen, aristocrats, warrior + worker drones) ·
-savant caste 8% · `BTD_Bith` 6% engineers · `BTD_Kaminoan` gated to
+**Races:** `RimMandrakeGeonosianVariants` 76% (queen, aristocrats, warrior + worker drones) ·
+savant caste 8% · `RimMandrakeBith` 6% engineers · `RimMandrakeKaminoan` gated to
 wet-adjacent hives only.
 **Droid half: use JDS CIS kinds** — 16 available.
 ⚠️ **JDS's kinds are all `combatPower: 45`, flat**, so a raid of B1s costs the
@@ -400,7 +400,7 @@ settlementGenerationWeight    low (~0.2)     // small, wealthy
 canRequestTraders             true
 baseTraderKinds               exotic + medical + implants
 ```
-**Races:** `BTD_Arkanian` 26% pureblood caste · `BTD_Kaminoan` 20% · brute stock
+**Races:** `RimMandrakeArkanian` 26% pureblood caste · `RimMandrakeKaminoan` 20% · brute stock
 12% — **the engineered underclass**, best expressed with Big-and-Small or Alpha
 Genes stock rather than a SW species.
 ⭐ **The roster gives them "the planet's monsters" (Vanilla Genetics Expanded).**
@@ -420,9 +420,9 @@ canSiege                      true → false    ⭐ small parties, no siege
 `Pirate`, `PirateBoss`, `Drifter`, `Scavenger`, `Thrasher`, 3 grenadiers
 (`_Ion`, `_CryoBan`, `_Destructive`). **This is the richest ready-made kit in the
 stack** and maps almost one-to-one onto "3–10 pawn hunting party".
-**Races:** `BTD_Kaleesh` 15% — **the only dry-capable species in the faction** ·
-`BTD_Iridonian` 12% (Zabrak), `BTD_Bothan`, `BTD_Devaronian` neutral ·
-`BTD_Trandoshan` 12% water-hungry · `BTD_Chiss`, `BTD_Umbaran` **heat-INTOLERANT**.
+**Races:** `RimMandrakeKaleesh` 15% — **the only dry-capable species in the faction** ·
+`RimMandrakeIridonian` 12% (Zabrak), `RimMandrakeBothan`, `RimMandrakeDevaronian` neutral ·
+`RimMandrakeTrandoshan` 12% water-hungry · `RimMandrakeChiss`, `RimMandrakeUmbaran` **heat-INTOLERANT**.
 ⭐ **Water = the water clock**, and it is the best fight-design in the roster: a
 hunter arrives with finite water, so withdrawing into dry tiles converts a fight
 into a resource duel. **Kaleesh push further; everyone else does not** — so the
@@ -438,9 +438,9 @@ canSiege                      false
 raidCommonalityFromPointsCurve  moderate-high
 settlementGenerationWeight    moderate
 ```
-**Races:** deliberately the sector's disposable species — `BTD_Ugnaught`,
-`BTD_Gamorrean`, `BTD_Nikto`, `BTD_Klatoonian`, `BTD_Snivvian`, `BTD_Defel`,
-`BTD_Mimbanese`. **Thematic inversion of the Jawa Trade Moot**: same trade, no
+**Races:** deliberately the sector's disposable species — `RimMandrakeUgnaught`,
+`RimMandrakeGamorrean`, `RimMandrakeNikto`, `RimMandrakeKlatoonian`, `RimMandrakeSnivvian`, `RimMandrakeDefel`,
+`RimMandrakeMimbanese`. **Thematic inversion of the Jawa Trade Moot**: same trade, no
 inheritance.
 **Water = Allow (scavenged)** — reach is capped by their last theft, so a warren
 that has just taken a caravan is briefly dangerous. Expressible as a raid-cooldown

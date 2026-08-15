@@ -1698,9 +1698,9 @@ gene lists rather than taken on report:
 
 | xenotype | temperature genes (BTD) | reading |
 |---|---|---|
-| `BTD_Kaleesh` | `MinTemp_SmallIncrease` + **`MaxTemp_SmallIncrease`** | ✅ genuinely heat-tolerant |
-| `BTD_Chiss` | `MinTemp_LargeDecrease` + **`MaxTemp_SmallDecrease`** | ❌ cold-adapted, heat-INTOLERANT |
-| `BTD_Umbaran` | `MinTemp_SmallIncrease` + **`MaxTemp_SmallDecrease`** | ❌ heat-INTOLERANT |
+| `RimMandrakeKaleesh` | `MinTemp_SmallIncrease` + **`MaxTemp_SmallIncrease`** | ✅ genuinely heat-tolerant |
+| `RimMandrakeChiss` | `MinTemp_LargeDecrease` + **`MaxTemp_SmallDecrease`** | ❌ cold-adapted, heat-INTOLERANT |
+| `RimMandrakeUmbaran` | `MinTemp_SmallIncrease` + **`MaxTemp_SmallDecrease`** | ❌ heat-INTOLERANT |
 
 **Canon agrees with the genes** — Csilla is an ice world and Umbara is sunless,
 so both species being poor in desert heat is correct twice over. Listing them as
@@ -1711,18 +1711,18 @@ remaining three and they are **not merely unverified — they are unsupported**:
 
 | xenotype | temperature genes | reading |
 |---|---|---|
-| `BTD_Iridonian` (Zabrak) | **none** | neutral — no heat advantage |
-| `BTD_Bothan` | **none** | neutral |
-| `BTD_Devaronian` | `MinTemp_SmallIncrease` only | cold-hardy, no heat bound |
+| `RimMandrakeIridonian` (Zabrak) | **none** | neutral — no heat advantage |
+| `RimMandrakeBothan` | **none** | neutral |
+| `RimMandrakeDevaronian` | `MinTemp_SmallIncrease` only | cold-hardy, no heat bound |
 
 **So five of the six names in the original list had no mechanical basis for
 "dry-capable" at all** — two heat-intolerant, three neutral. The water-clock
 doctrine is sound; the species list under it was decoration.
 
 ⚠️ **A seventh, found 2026-08-14 outside the original six: Iktotchi.** The racial
-mixture table below carried it as *Dry-capable*; `BTD_Iktotchi` holds
+mixture table below carried it as *Dry-capable*; `RimMandrakeIktotchi` holds
 `MinTemp_SmallIncrease` **and no Max bound at all** — the same profile as
-`BTD_Devaronian`, which this block already reads as cold-hardy and neutral.
+`RimMandrakeDevaronian`, which this block already reads as cold-hardy and neutral.
 Corrected in the table. ⇒ **`Kaleesh` is the only dry-capable entry in the
 thirteen-row mixture, not merely in the six audited names** — it is the sole
 xenotype in the faction carrying `MaxTemp_SmallIncrease`.
@@ -1955,7 +1955,7 @@ dilute the mirror.
 | **Total** | **100%** | |
 
 > **Availability, checked against the live dump 2026-08-11.** `BTD_Jawa`,
-> `OuterRim_Jawa` and `BTD_Ugnaught` / `guy762_xenotype_ugnaught` all exist.
+> `OuterRim_Jawa` and `RimMandrakeUgnaught` / `guy762_xenotype_ugnaught` all exist.
 > **Ranat does not exist in any installed mod** — substitute Ugnaught or drop the
 > tier rather than authoring a race for 4%.
 

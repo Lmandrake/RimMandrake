@@ -145,7 +145,7 @@ one-gene patch. **Two complete, correctly-gated head chains already exist:**
 Neither is buggy — both carry proper `requiredGenes`. The 512 art was invisible
 to the first audit because it lives in an **AssetBundle** (§2.2).
 
-**Why the bad one wins:** `BTD_Wookiee`, from *[BTD] Xenotype REMIX: Star Wars* —
+**Why the bad one wins:** `RimMandrakeWookiee`, from *[BTD] Xenotype REMIX: Star Wars* —
 the mod adopted specifically to dedupe the SW-Xenotypes / Outer Rim overlap —
 carries `guy762_Head_wookiee`. Its own `XenotypeEquivalencies.xml` lists all
 three Wookiee xenotypes in one `EquivalentGroup`, so it knew both existed and

@@ -645,20 +645,20 @@ Shape, read from the live `Ancients` def:
 ```xml
 <xenotypeSet Inherit="False">
   <xenotypeChances>
-    <li MayRequire="btd.xenotyperemix.starwars"><xenotype>BTD_Nikto</xenotype><chance>0.30</chance></li>
+    <li MayRequire="btd.xenotyperemix.starwars"><xenotype>RimMandrakeNikto</xenotype><chance>0.30</chance></li>
   </xenotypeChances>
 </xenotypeSet>
 ```
 
 | faction | xenotypes, weighted by the dossier's own percentages |
 |---|---|
-| **Hutt Cartel** | `BTD_Nikto` · `BTD_Gamorrean` · `BTD_Rodian` · `BTD_Trandoshan` · `BTD_Aqualish` · `BTD_Twilek` · `BTD_Pyke` · `BTD_Devaronian` |
+| **Hutt Cartel** | `RimMandrakeNikto` · `RimMandrakeGamorrean` · `RimMandrakeRodian` · `RimMandrakeTrandoshan` · `RimMandrakeAqualish` · `RimMandrakeTwilek` · `RimMandrakePyke` · `RimMandrakeDevaronian` |
 | **Free Droid Enclaves** | **EMPTY SET** — 0% biological. `Inherit="False"` with no `xenotypeChances` |
-| **Wildsteam Clan** | `BTD_Wookiee` · **`Yttakin`** · `BTD_Cathar` · `BTD_Ewok` · `BTD_Togruta` · `BTD_Ithorian` |
-| **Deepwater Compact** | `BTD_Quarren` · `BTD_MonCalamari` · `BTD_Selkath` · `BTD_Gungan` · `BTD_Chagrian` · `BTD_Herglic` · `BTD_Duros` |
-| **Ascendant Helix** | `BTD_Arkanian` · `BTD_Kaminoan` · `BTD_Cerean` · `BTD_Bith` · `BTD_Chiss` · `BTD_Rakata` · `BTD_Umbaran` · `BTD_Neimoidian` |
-| **the Junkers** | `BTD_Gamorrean` · `BTD_Weequay` · `BTD_Nikto` · `BTD_Aqualish` · `BTD_Ugnaught` · `BTD_Rodian` · `BTD_Snivvian` · `BTD_Trandoshan` |
-| **Geonosian Foundry Hive** | `BTD_Geonosian` — ⚠️ **the spec previously said `Geonosian`, which does not exist.** Already `Inherit="False"`; only the name changes |
+| **Wildsteam Clan** | `RimMandrakeWookiee` · **`Yttakin`** · `RimMandrakeCathar` · `RimMandrakeEwok` · `RimMandrakeTogruta` · `RimMandrakeIthorian` |
+| **Deepwater Compact** | `RimMandrakeQuarren` · `RimMandrakeMonCalamari` · `RimMandrakeSelkath` · `RimMandrakeGungan` · `RimMandrakeChagrian` · `RimMandrakeHerglic` · `RimMandrakeDuros` |
+| **Ascendant Helix** | `RimMandrakeArkanian` · `RimMandrakeKaminoan` · `RimMandrakeCerean` · `RimMandrakeBith` · `RimMandrakeChiss` · `RimMandrakeRakata` · `RimMandrakeUmbaran` · `RimMandrakeNeimoidian` |
+| **the Junkers** | `RimMandrakeGamorrean` · `RimMandrakeWeequay` · `RimMandrakeNikto` · `RimMandrakeAqualish` · `RimMandrakeUgnaught` · `RimMandrakeRodian` · `RimMandrakeSnivvian` · `RimMandrakeTrandoshan` |
+| **Geonosian Foundry Hive** | `RimMandrakeGeonosianVariants` — ⚠️ **the spec previously said `Geonosian`, which does not exist.** Already `Inherit="False"`; only the name changes |
 
 ⭐ **`Yttakin` is vanilla and is kept deliberately** — the Wildsteam dossier puts
 Wookiee-kin at 25%, and Yttakin is a hairy cold-world xenotype that reads as
@@ -680,3 +680,52 @@ If a `BTD_*` name turns out not to resolve live, the fallback is the
 ---
 
 ⭐ **The planet's HISTORY is in `design/Jawa/worldbuilding/the_forgotten_war.md`** (owner, 2026-08-15): the Forsakens' war, the Forgotten Arsenal as sand-buried self-replicating vault guardians, the three things inside a vault, the one and only mega-structure patch (sacred to the Free Droid Enclaves), and the ruling that **The Utinni is a Forsaken initiator vessel** that was present at the founding of this world.
+
+---
+
+## 🔴 R28 · Every `BTD_*` xenotype name in this repo was BROKEN. Repaired 2026-08-15.
+
+**The Star Wars Races mod renamed its entire xenotype family from `BTD_*` to
+`RimMandrake*`.** Every spec in this repo was still citing the old names — **60
+distinct names, 0 of which resolved**, across `FACTION_SPEC.md`,
+`faction_roster_v2.md`, `faction_stage3_buildable_spec.md`,
+`force_users_build_spec.md`, `graphics_overhaul_protocol.md`,
+`the_forgotten_war.md`, `hydrology_and_fire_ecology.md` and both the BUILD and
+CHECK queues.
+
+**49 had exactly one live counterpart and were renamed mechanically.** Three
+needed judgement and are recorded here rather than guessed:
+
+| old name | resolution |
+|---|---|
+| `BTD_Geonosian` | → **`RimMandrakeGeonosianVariants`**. Renamed, but note the name change is not cosmetic — it is a *variants* def |
+| `BTD_SithK` | → **`RimMandrakeSithKissaiPureblood`** |
+| `BTD_Miraluka` | 🔴 **NO COUNTERPART EXISTS.** The species is gone from the stack. Anything specced around it must be re-specced |
+
+⚠️ **Gravship-mod defs beginning `BTD_` are NOT affected and were left alone** —
+`BTD_GravEngine*`, `BTD_DownedGravship`, `BTD_QuestSiteSubstructure`,
+`BTD_QuestScript_DroidDistressCall`. That prefix still belongs to a different,
+live mod. **Do not "finish the job" on those.**
+
+### 🔴 R28a · `BTD_Jawa` is a REAL DECISION, not a rename — 16 references, unresolved
+
+There are **two live Jawa xenotypes, both labelled "Jawa", both from our own
+`RimMandrake - Star Wars Races`**, and each carries a different half of the
+campaign's canon:
+
+| | `MandrakeJawa` (35 genes) | `RimMandrakeJawa` (24 genes) |
+|---|---|---|
+| **egg-laying** | ⭐ `SEX_Ovipositor` | — |
+| **all-male clan** | — | ⭐ `Outland_AllMale` |
+| **fast growth / rapid aging** | ⭐ `BS_EarlyMaturity`, `VRE_ShortPregnancy` | — |
+| **also carries** | `AG_Stinky`, `Mood_Pessimist`, `AG_SurvivalInstinct_High`, `AG_FrailSkin`, `StrongStomach` | `DarkVision`, `Outland_Blood_Gray`, `Outland_Chest_Fur`, three Aptitude genes, a Jawa head gene |
+| **shared** | body size, slow healing, superclotting, heat tolerance, weak melee, extra pain, bald, beardless, ink-black skin, huge yellow/orange eyes, Skittish | *(same)* |
+
+🔴 **Neither is correct on its own.** `jawa_crew_personas.md` §(b) rules the clan
+is *all-male, homosexual, egg-laying, fast-growing and rapid-aging* — **that is
+split across both defs and complete in neither.**
+
+⇒ **This is `D23`'s job** (build our own xenotype set rather than cherrypicking),
+and it is now the clearest single argument for D23 existing. **Do not repoint the
+16 references until the merge is ruled** — pointing them at either def silently
+picks a half.

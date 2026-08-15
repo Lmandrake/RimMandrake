@@ -295,7 +295,7 @@ result:   2026-08-15 CHECK. ROOT CAUSE FOUND for the wrong-looking pawns.
           from BTD's gene list. BTD's lists are missing head-TYPE genes the other
           donors carried.
           Evidence, read off the donors' own XML on disk:
-            BTD_Rodian             30 genes  head: guy762_Headbone_rodian          (bone only)
+            RimMandrakeRodian             30 genes  head: guy762_Headbone_rodian          (bone only)
             guy762_xenotype_rodian 15 genes  head: guy762_Head_rodian + Headbone   (the snoot)
             OuterRim_Iridonian     head: OuterRim_IridonianHead
             BTD  Iridonian         head: guy762_Headbone_zabrak                    (bone only)

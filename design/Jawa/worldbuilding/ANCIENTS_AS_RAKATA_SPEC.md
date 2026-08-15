@@ -26,7 +26,7 @@ it that way.
 
 ---
 
-## R-A1 · The xenotype is `RimMandrakeRakata`. **`BTD_Rakata` does not exist.**
+## R-A1 · The xenotype is `RimMandrakeRakata`. **`RimMandrakeRakata` does not exist.**
 
 **Measured 2026-08-15 against the live def dump**
 (`C:\Users\Mandrake\AppData\LocalLow\Ludeon Studios\RimWorld by Ludeon Studios\DefDump\defs\`).
@@ -34,7 +34,7 @@ it that way.
 | defName | status |
 |---|---|
 | `RimMandrakeRakata` | ✅ **exists**, label "Rakata", from our own mod **RimMandrake - Star Wars Races** (`mandrake.starwarsraces`), which is ACTIVE in `ModsConfig.xml` |
-| `BTD_Rakata` | 🔴 **DOES NOT EXIST — in any def type, anywhere in the dump.** `grep -r` across every `defs\*.json` returns zero hits. (Control: `RimMandrakeRakata` hits 7 files, so the grep works.) Every `BTD_*` def still in the dump belongs to a gravship mod — `BTD_GravEngine`, `BTD_DownedGravship` — and is unrelated |
+| `RimMandrakeRakata` | 🔴 **DOES NOT EXIST — in any def type, anywhere in the dump.** `grep -r` across every `defs\*.json` returns zero hits. (Control: `RimMandrakeRakata` hits 7 files, so the grep works.) Every `BTD_*` def still in the dump belongs to a gravship mod — `BTD_GravEngine`, `BTD_DownedGravship` — and is unrelated |
 
 The complete set of Rakata-named defs in the live game is: `RimMandrakeRakata`
 (XenotypeDef) · `RimMandrakeRakata_Kind` (PawnKindDef) · `RimMandrake_RakatanHead`
@@ -42,8 +42,8 @@ The complete set of Rakata-named defs in the live game is: `RimMandrakeRakata`
 implanter / ascension / morphosis defs.
 
 🔴 **`FACTION_SPEC.md` R27 therefore carries a broken reference.** Its Ascendant
-Helix row lists `BTD_Rakata` among eight `BTD_*` xenotypes, and
-`the_forgotten_war.md` R-W3 names `BTD_Rakata` as the enemy species. **That name
+Helix row lists `RimMandrakeRakata` among eight `BTD_*` xenotypes, and
+`the_forgotten_war.md` R-W3 names `RimMandrakeRakata` as the enemy species. **That name
 resolves to nothing.** A `xenotypeChances` entry naming a def that does not exist
 is a silent discard — the Helix simply never fields a Rakata and no error says so.
 
@@ -62,7 +62,7 @@ still sitting in a spec is now suspect** and should be checked against the dump
 before anything is built from it. That audit is DECIDE's and is out of scope here.
 
 ⇒ **BUILD writes `RimMandrakeRakata` and nothing else.** If BUILD finds a
-`BTD_Rakata` anywhere while working, it is a bug to report, not a name to use.
+`RimMandrakeRakata` anywhere while working, it is a bug to report, not a name to use.
 
 ## R-A2 · Scope — six pawn kinds, in two tiers
 
@@ -472,7 +472,7 @@ declaring done. That is ~90 seconds and it is not optional.
 8. **The spawn-and-look of the graphics section**, before declaring done.
 
 **BUILD does NOT:** change any label (R-A9), change `combatPower` (R-A8), touch any
-faction field other than `xenotypeSet` (R-A7), or use the name `BTD_Rakata` (R-A1).
+faction field other than `xenotypeSet` (R-A7), or use the name `RimMandrakeRakata` (R-A1).
 
 ## Verify
 

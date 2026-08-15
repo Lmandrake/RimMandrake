@@ -484,9 +484,9 @@ spec:     Found in the 2026-08-15 cold load. `xenotypeChances` is a DICTIONARY-K
           `JawaGeonosianFoundryHive.xml` have zero `<li>` under `xenotypeChances`
           and do NOT throw — that correlation is the proof.
           FIX — rewrite each entry from
-            `<li MayRequire="btd.xenotyperemix.starwars"><xenotype>BTD_Nikto</xenotype><chance>0.300</chance></li>`
+            `<li MayRequire="btd.xenotyperemix.starwars"><xenotype>RimMandrakeNikto</xenotype><chance>0.300</chance></li>`
           to
-            `<BTD_Nikto MayRequire="btd.xenotyperemix.starwars">0.300</BTD_Nikto>`
+            `<RimMandrakeNikto MayRequire="btd.xenotyperemix.starwars">0.300</RimMandrakeNikto>`
           `MayRequire` is an attribute and rides on the keyed element unchanged.
           See `skills/rimworld-modding/SKILL.md` §4 — this is the documented
           most-destructive mistake, and `references/patch-operations.md` §11.
@@ -688,11 +688,11 @@ spec:     `design/Jawa/worldbuilding/ANCIENTS_AS_RAKATA_SPEC.md` is the authorit
           (`the_forgotten_war.md` R-W2 ③ / R-W5). Vanilla's Ancients generate as
           plain humans, so the whole beat lands on a pawn that looks like a pirate.
           This is an APPEARANCE change to PAWNS only.
-          🔴 **R-A1 — the xenotype is `RimMandrakeRakata`, NOT `BTD_Rakata`.**
-          `BTD_Rakata` does not exist in ANY def type anywhere in the live dump —
+          🔴 **R-A1 — the xenotype is `RimMandrakeRakata`, NOT `RimMandrakeRakata`.**
+          `RimMandrakeRakata` does not exist in ANY def type anywhere in the live dump —
           zero grep hits, control `RimMandrakeRakata` hits 7 files. `FACTION_SPEC.md`
           R27 and `the_forgotten_war.md` R-W3 both name it; both are broken
-          references and DECIDE is fixing them. If you see `BTD_Rakata` while
+          references and DECIDE is fixing them. If you see `RimMandrakeRakata` while
           working it is a bug to report, never a name to use.
           **R-A2 — six pawn kinds.** Mandatory: `AncientSoldier` (Core) and
           `AncientSoldier_Leader` (Odyssey). Also in scope, guarded on

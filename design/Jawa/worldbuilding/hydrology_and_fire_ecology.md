@@ -567,7 +567,7 @@ something — **Containment response**.
 2026-08-15.** The weapon is the ancient enemy's **self-replicating flesh**, still
 contained in the breached vaults of `the_forgotten_war.md` R-W3 and escaped into
 these biomes. The enemy is proposed as the **Rakata**, which makes the Ascendant
-Helix — who carry `BTD_Rakata` — students of *their own ancestors' weapon* on the
+Helix — who carry `RimMandrakeRakata` — students of *their own ancestors' weapon* on the
 world it was fired at. **Whether the Helix knows that is still open, and that is
 the question worth keeping unanswered.**
 

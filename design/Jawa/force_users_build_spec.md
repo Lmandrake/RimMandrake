@@ -130,9 +130,9 @@ pass). Every def below was read on disk.
 | `guy762_xenotype_miraluka` | Miraluka | Star Wars Xenotypes | `…\294100\2915192253\1.6\Defs\GeneDefs\XenotypeDefs.xml:941` |
 | `guy762_xenotype_sith` | Sith Pureblood | Star Wars Xenotypes | `…\2915192253\1.6\Defs\GeneDefs\XenotypeDefs.xml:1271` |
 | `guy762_xenotype_yoder` | (Yoda's species) | Star Wars Xenotypes | `…\2915192253\1.6\Defs\GeneDefs\XenotypeDefs.xml:1650` |
-| `BTD_SithK` | Sith Kissai (Pureblood) | [BTD] Xenotype REMIX: Star Wars | `…\294100\3458153185\1.6\Defs\Genes\BTD_Xenotypes.xml:1805` |
-| `BTD_SithM` | Sith Massassi (Pureblood) | [BTD] Xenotype REMIX: Star Wars | `…\3458153185\1.6\Defs\Genes\BTD_Xenotypes.xml:1838` |
-| `BTD_SithZ` | Sith Zugurak (Pureblood) | [BTD] Xenotype REMIX: Star Wars | `…\3458153185\1.6\Defs\Genes\BTD_Xenotypes.xml:1873` |
+| `RimMandrakeSithKissaiPureblood` | Sith Kissai (Pureblood) | [BTD] Xenotype REMIX: Star Wars | `…\294100\3458153185\1.6\Defs\Genes\BTD_Xenotypes.xml:1805` |
+| `RimMandrakeSithMassassi` | Sith Massassi (Pureblood) | [BTD] Xenotype REMIX: Star Wars | `…\3458153185\1.6\Defs\Genes\BTD_Xenotypes.xml:1838` |
+| `RimMandrakeSithZ` | Sith Zugurak (Pureblood) | [BTD] Xenotype REMIX: Star Wars | `…\3458153185\1.6\Defs\Genes\BTD_Xenotypes.xml:1873` |
 
 `design/Jawa/worldbuilding/faction_stage3_buildable_spec.md:56` already flags the
 BTD trio as *"a gift the roster has not spent"* — Kissai as ISB inquisitors,
@@ -323,8 +323,8 @@ carries `OuterRim_ForceSight`), `OuterRim_Miraluka` and `OuterRim_Sith`
 (`…\294100\2980427615\1.6\Defs\GeneDefs\Xenotype_Miraluka.xml` / `Xenotype_Sith.xml`),
 `guy762_xenotype_massassi`, `guy762_xenotype_zabrakDathomiri`.
 
-⚠️ `BTD_SithM` and `BTD_SithZ` carry **no psychic genes at all** — Massassi is a
-pure melee bruiser, Zugurak a crafter caste. Only `BTD_SithK` has
+⚠️ `RimMandrakeSithMassassi` and `RimMandrakeSithZ` carry **no psychic genes at all** — Massassi is a
+pure melee bruiser, Zugurak a crafter caste. Only `RimMandrakeSithKissaiPureblood` has
 `PsychicAbility_Enhanced` + `Turn_Gene_LatentPsychic`, and none of the three has
 `guy762_statgene_force`. Use them for flavour, not for psylink.
 
@@ -339,9 +339,9 @@ Rim's own Sith therefore have **zero** Force content today.
 the tree this build sits in.
 
 **Only one xenotype in the whole active stack has a
-`factionlessGenerationWeight`:** `BTD_Yoder` at `0.001`. Every Sith and Miraluka
+`factionlessGenerationWeight`:** `RimMandrakeYoderForceGremlin` at `0.001`. Every Sith and Miraluka
 xenotype has none, so **none of them spawns naturally anywhere today.** BTD's own
-faction injections for `BTD_SithK/M/Z` are **commented out**
+faction injections for `RimMandrakeSithKissaiPureblood/M/Z` are **commented out**
 (`…\3458153185\1.6\Patches\FactionPatches.xml:60-62`). This is exactly why the
 pawnkind in §3.4 is the necessary piece.
 
@@ -708,7 +708,7 @@ with defs that are all verified present; C is a project, not a task.
 | role | xenotype | why |
 |---|---|---|
 | **Sith** | `guy762_xenotype_sith` | Already carries `guy762_statgene_force` → `PsychicAmplifier` (psylink 1). Also `PsychicAbility_Extreme`, `Aggression_HyperAggressive`, `MeleeDamage_Strong`, `AptitudeRemarkable_Melee`, red skin, bone head, `combatPowerFactor 1.5`. `nameMaker NamerPersonPureblood`. This is a Sith with no authoring at all. |
-| **Sith castes (optional flavour)** | `BTD_SithK` / `BTD_SithM` / `BTD_SithZ` | Kissai priest / Massassi warrior / Zugurak engineer. `BTD_SithK` carries `PsychicAbility_Enhanced` + `Turn_Gene_LatentPsychic`. **No `guy762_statgene_force`, so no psylink** — flavour only unless the psylink is supplied by §3.3. |
+| **Sith castes (optional flavour)** | `RimMandrakeSithKissaiPureblood` / `RimMandrakeSithMassassi` / `RimMandrakeSithZ` | Kissai priest / Massassi warrior / Zugurak engineer. `RimMandrakeSithKissaiPureblood` carries `PsychicAbility_Enhanced` + `Turn_Gene_LatentPsychic`. **No `guy762_statgene_force`, so no psylink** — flavour only unless the psylink is supplied by §3.3. |
 | **Jedi** | `guy762_xenotype_miraluka` | Carries `guy762_statgene_force`, `PsychicAbility_Enhanced`, `Aggression_DeadCalm`, `Turn_Gene_Blindness`, and via the Royalty folder gains `guy762_AbilityGene_forcesight` → the `aiCanUse` blindsight ability. `faction_roster_v2.md:14` already places Miraluka as *"rare Homestead seers (~1%)"*. **This is the single best fit in the stack.** |
 | **Jedi (human option)** | `guy762_xenotype_mirialan` | Green/yellow-skinned, "more sensitive to the force". ⚠️ Its Force gene line is `<li MayRequire="lee.theforce.standalone">Force_Gene_LatentForceUser</li>` — **stripped in our stack**, so a Mirialan here is a cosmetic Jedi with no psylink. Use Miraluka, or add the gene via §3.3. |
 

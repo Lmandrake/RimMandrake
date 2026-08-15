@@ -77,10 +77,10 @@ the wild, on the only planet where it was ever used.
 
 The owner's instruction is *"their ancient enemies' weapons (insert the genetic
 faction's race here)"*. The Ascendant Helix's xenotype set
-(`FACTION_SPEC.md`) is `BTD_Arkanian` · `BTD_Kaminoan` · `BTD_Cerean` ·
-`BTD_Bith` · `BTD_Chiss` · `BTD_Rakata` · `BTD_Umbaran` · `BTD_Neimoidian`.
+(`FACTION_SPEC.md`) is `RimMandrakeArkanian` · `RimMandrakeKaminoan` · `RimMandrakeCerean` ·
+`RimMandrakeBith` · `RimMandrakeChiss` · `RimMandrakeRakata` · `RimMandrakeUmbaran` · `RimMandrakeNeimoidian`.
 
-**`BTD_Rakata` is the right one, and it is not close:**
+**`RimMandrakeRakata` is the right one, and it is not close:**
 
 - They are Star Wars' own great **lost precursor civilisation** — an ancient
   galaxy-spanning empire that fell. The role is already theirs in the source
@@ -387,7 +387,7 @@ what is in that hull.
 
 ## What DECIDE still owes
 
-- **The enemy's identity** — R-W3 proposes `BTD_Rakata`; the owner rules.
+- **The enemy's identity** — R-W3 proposes `RimMandrakeRakata`; the owner rules.
 - **The Rust Cathedral's final name** — R-W4 offers six.
 - **Whether the ② flesh vaults use Anomaly's fleshmass content.** They are the
   obvious fit and Anomaly is at zero (owner, 2026-08-13), which is the same
