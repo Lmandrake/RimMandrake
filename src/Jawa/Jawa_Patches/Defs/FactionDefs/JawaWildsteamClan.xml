@@ -32,7 +32,7 @@
 
   Pawn kinds verified present in the 2026-08-14 dump (585 mods) and mapped to
   their owning mod for `MayRequire`:
-      OuterRim_Wookiee · OuterRim_WookieeTribal  Neronix17.OuterRim.GalacticDiversity
+      RimMandrake_Wookiee · RimMandrake_WookieeTribal      mandrake.starwarsraces
       Bantha                                     Mlie.StarWarsAnimalCollection
       Muffalo                                    vanilla Core, no MayRequire
   ============================================================================
@@ -90,9 +90,8 @@
          ships five vanilla xenotypes (Hussar · Dirtmole · Genie · Neanderthal ·
          Starjack) and `PirateBandBase` ships nine; a child set is APPENDED to
          them, so without this opt-out the faction fields Hussars in a Star Wars
-         campaign. `BTD_` and not `OuterRim_`: three packs ship overlapping
-         xenotypes and BTD Remix DEDUPS AT LOAD, so `BTD_Jawa` survives live
-         while `OuterRim_Jawa` does not exist at runtime.
+         campaign. The species below are this repo's own, copied out of the
+         three colliding packs so none of them has to stay installed.
          ⚠️ The CHANCES are BUILD's, not the spec's — R27 gives species, not
          numbers. They sum to 1.00 so no baseliner generates, with the dossier
          lead species heaviest. Retune freely; nothing depends on them. -->

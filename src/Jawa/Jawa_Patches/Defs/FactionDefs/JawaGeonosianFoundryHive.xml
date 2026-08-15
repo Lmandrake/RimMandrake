@@ -17,12 +17,11 @@
   it as a people.
 
   🔴 `xenotypeSet` IS THE ONLY XML ROUTE to a species-locked faction (D3);
-  `PreferredXenotype` has no XML path. The defName is `BTD_Geonosian` (R27) — the
-  spec first wrote it as bare "Geonosian", which does not exist, and `OuterRim_`
-  is the wrong prefix: three packs ship overlapping xenotypes and BTD Remix
-  DEDUPS AT LOAD, so `BTD_Jawa` survives live while `OuterRim_Jawa` does not
-  exist at runtime. ⚠️ The PAWN KINDS below stay `OuterRim_` — `OuterRim_Geonosian`
-  is BOTH a XenotypeDef and a PawnKindDef, and only the xenotype moves. Inherit="False" is required: `OutlanderFactionBase` supplies five
+  `PreferredXenotype` has no XML path. The xenotype and the pawn kinds are this
+  repo's own, copied out of the three colliding packs. ⚠️ They are separate
+  namespaces and read almost alike: `RimMandrakeGeonosianVariants` is the
+  XenotypeDef, `RimMandrake_Geonosian` the PawnKindDef.
+  Inherit="False" is required: `OutlanderFactionBase` supplies five
   vanilla xenotype chances that would otherwise merge in and seed Hussars and
   Dirtmoles into the hive.
 
@@ -40,8 +39,7 @@
 
   Pawn kinds verified present in the 2026-08-14 dump (585 mods) and mapped to
   their owning mod for `MayRequire`:
-      OuterRim_Geonosian · OuterRim_GeonosianTribal
-                                        Neronix17.OuterRim.GalacticDiversity
+      RimMandrake_Geonosian · RimMandrake_GeonosianTribal  mandrake.starwarsraces
       JDSCIS_*                          M3.Continued.JangoDsoul.StarWars.TSDA
   ============================================================================
 -->
