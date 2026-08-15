@@ -57,3 +57,19 @@ after already being answered._
   `CLOSED.md`.
 - **Directorate leader title, "Sector governor" vs `Sector Director`** — VISION
   owns design and can rule it. Not escalated.
+
+## ANSWERED 2026-08-15 — map protection is REPEALED, not suspended
+
+Raised because the rule died with `agents_def.md` and existed in no current
+document while CHECK was acting on it. Owner, verbatim:
+
+> **"There is no map protection! There's no protection of any asset not in the
+> repo! Stop treating things as precious. I will absolutely tell you when we're
+> really playing. It won't sneak up on you."**
+
+This is wider than maps and wider than the old suspension. **Nothing outside the
+repo is precious** — maps, saves, colonies, deployed mod folders, game state.
+Do not preserve them, do not work around them, do not ask before destroying one.
+The repo is the only thing that is protected, and the reactivation trigger is an
+explicit announcement from the owner that play has started. Do not infer it from
+v1 containing a playable session.
