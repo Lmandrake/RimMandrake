@@ -25,8 +25,8 @@
    "cells": {
     "DECIDE": {
      "done": 0,
-     "total": 0,
-     "state": "offline"
+     "total": 1,
+     "state": "blocked"
     },
     "BUILD": {
      "done": 0,
@@ -35,8 +35,8 @@
     },
     "CHECK": {
      "done": 0,
-     "total": 0,
-     "state": "offline"
+     "total": 2,
+     "state": "idle"
     }
    }
   },
@@ -70,13 +70,13 @@
     },
     "BUILD": {
      "done": 0,
-     "total": 0,
-     "state": "offline"
+     "total": 1,
+     "state": "idle"
     },
     "CHECK": {
      "done": 0,
-     "total": 0,
-     "state": "offline"
+     "total": 3,
+     "state": "blocked"
     }
    }
   },
@@ -125,18 +125,18 @@
    "cells": {
     "DECIDE": {
      "done": 0,
-     "total": 0,
-     "state": "offline"
+     "total": 3,
+     "state": "blocked"
     },
     "BUILD": {
      "done": 0,
-     "total": 0,
-     "state": "offline"
+     "total": 4,
+     "state": "idle"
     },
     "CHECK": {
      "done": 0,
-     "total": 0,
-     "state": "offline"
+     "total": 2,
+     "state": "blocked"
     }
    }
   },
@@ -161,42 +161,42 @@
    }
   },
   {
-   "name": "unassigned",
+   "name": "infra",
    "cells": {
     "DECIDE": {
-     "done": 0,
-     "total": 16,
+     "done": 1,
+     "total": 3,
      "state": "blocked"
     },
     "BUILD": {
      "done": 0,
-     "total": 37,
+     "total": 10,
      "state": "blocked"
     },
     "CHECK": {
      "done": 0,
-     "total": 30,
-     "state": "blocked"
+     "total": 2,
+     "state": "idle"
     }
    }
   },
   {
-   "name": "\u2014",
+   "name": "v2",
    "cells": {
     "DECIDE": {
      "done": 0,
-     "total": 3,
-     "state": "idle"
+     "total": 12,
+     "state": "blocked"
     },
     "BUILD": {
      "done": 0,
-     "total": 1,
-     "state": "idle"
+     "total": 22,
+     "state": "blocked"
     },
     "CHECK": {
      "done": 0,
-     "total": 1,
-     "state": "idle"
+     "total": 22,
+     "state": "blocked"
     }
    }
   }
