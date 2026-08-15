@@ -504,8 +504,13 @@ verify:   PREDICTION before the look: the vehicle reads **"eopie sled"** with a
           side in one screenshot; that comparison is the test.
           HOW IT LIES: the art reaches both defs by texPath override whether or
           not our patch ran, so correct ART is not evidence the patch applied —
-          only the LABEL and the prop's COLOUR are. A grey prop beside a brown
-          vehicle means the prop half no-opped.
+          only the LABEL and the prop's COLOUR are.
+          🔴 **The prediction that stood here was BACKWARDS and is deleted.** It read
+          "a grey prop beside a brown vehicle means the prop half no-opped". The
+          observed failure is the mirror: the PROP is brown and the VEHICLE is the
+          untinted one. **Read the VEHICLE as the suspect half, not the prop** —
+          see `state:` below, and the cause is now named in BUILD's
+          `sled-tint-loses-to-the-vehicle-pattern-4d90ae`.
 criteria: both labels changed, both the same brown, warning text gone.
 state:    COLLECTED 2026-08-15 on the quicktest map. 🔴 **THREE OF FOUR PASS, THE
           COLOUR FAILS** — and it fails the OPPOSITE way round from the prediction.

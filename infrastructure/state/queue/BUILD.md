@@ -1962,3 +1962,47 @@ why:      There is no way to make a pawn swing on command. Measured, not assumed
 scope:    ⛔ I am not designing it. Named here because CHECK found the gap, per POLICY.
           The equip half is already solved and needs nothing:
           `Actions\Equip primary (selected)...\<WeaponDefName>` after `select_pawn`.
+
+## sled-tint-loses-to-the-vehicle-pattern-4d90ae
+row:      2
+from:     C39's colour failure (CHECK, `412f5c3`). Diagnosed offline by BUILD
+          2026-08-15 — CAUSE (b), and the mechanism is named.
+spec:     🔴 **DIAGNOSIS, not a build order. The owner has said to leave
+          `DesertVehicleReskin` exactly as deployed, so NOTHING here is actioned
+          until he says otherwise.**
+          C39 photographed the prop warm BROWN and the vehicle TEAL. CHECK offered
+          two candidates and declined to choose. It is (b) — the tint reaches
+          `AV_DogSled` and is overridden — and the override has a name:
+
+              <graphicData>
+                <shaderType>CutoutComplexPattern</shaderType>
+                <pattern>AV_Pattern_Wood</pattern>      <-- THIS
+              </graphicData>
+
+          in the donor,
+          `…\294100\3028675048\1.6\Defs\VehicleDefs\Tier0\DogSled\DogSled_VehiclePawn.xml`.
+          🔴 **A Vehicle Framework `<pattern>` REPLACES the mask.** Under
+          `CutoutComplexPattern` the RGB regions that decide where colorOne /
+          colorTwo / colorThree land come from the PatternDef's texture
+          (`Vehicles.PatternDef AV_Pattern_Wood`, `path` =
+          `Patterns/WoodGrain/AV_Pattern_Wood`, and it carries **no colours of its
+          own** — it is pure mask), **not** from the `_m.png` we ship beside the art.
+          ⇒ `DogSledTint_Brown.xml`'s central assumption is void for the vehicle.
+          Its header states *"only `<color>` can actually reach a pixel under OUR
+          mask — colorTwo and colorThree have no green/blue region to act on."*
+          Under the wood-grain pattern they have plenty, so all three of our browns
+          land in tiled regions we never designed, and the mix is the teal.
+          WHY THE PROP IS FINE AND THIS IS THE WHOLE MIRROR: `VFEPD_DogSled` is a
+          plain `ThingDef` with a `<color>` and **no pattern**, so our shipped mask
+          governs and the tint lands. Same patch, two rendering paths.
+          THE CANDIDATE FIX (unbuilt, untested): patch `<pattern>` on `AV_DogSled`
+          to VF's solid/default pattern so our two-value mask governs again, rather
+          than touching the colour triple, which is already correct.
+          ⚠️ Verify before building: the `PatternDefs.xml` that defines
+          `AV_Pattern_Wood` lives ONLY under the donor's `1.5/` folder, not `1.6/`.
+          Confirm through `LoadFolders.xml` that 1.5 is loaded for 1.6 before
+          concluding anything about which pattern defs exist at runtime.
+verify:   EMPTY — nothing to verify until the owner reopens the mod.
+criteria: EMPTY
+state:    blocked — owner deferred `DesertVehicleReskin` (B62) and said leave it as
+          deployed. Diagnosis recorded so the next seat does not re-derive it.
