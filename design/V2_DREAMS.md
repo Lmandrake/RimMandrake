@@ -1078,3 +1078,13 @@ character. **Re-scoping it from one character to a CAST is the v2 job.**
 ⚠️ **v1 must not ship a unified ship-voice**, or this becomes a retcon rather than
 a revelation. v1 expresses the nine through the satiation engine only — felt, not
 heard.
+
+## Programmatic worldgen — parked in full, 2026-08-15
+
+Owner: *"WE WILL NOT PROGRAMMATICALLY generate the world, the user will do that
+himself. Stand down all development of tuning the worldgen to function by itself
+correctly for now. That's all v2."*
+
+Everything aimed at making worldgen run correctly on its own goes here: the
+tuning work, the automated-generation harness, and anything downstream of them.
+The owner builds a world by hand and we ship it as a fixed resource.
