@@ -21,14 +21,13 @@ has it. **The deploy is step 3.2, and it is the only thing that makes any of thi
 real.** ⇒ **"verified in the binary" and "verified in the game" are different
 claims, and this table can only ever make the first.**
 
-⚠️ **The `JawaSeaShaper.dll` md5 mismatch this section used to cite as evidence
-(repo `b7730027` vs deployed `82b48e53`) is now EXPECTED and is not a gate** — see
-the struck G1/G2 rows. The general lesson it taught stands; the specific file does
-not ship.
+⚠️ **The md5 mismatch this section used to cite as evidence (repo `b7730027` vs
+deployed `82b48e53`) is now EXPECTED and is not a gate** — see the struck G1/G2
+rows. The general lesson it taught stands; the `[v2]` file it names does not ship.
 
 | # | precondition | owner | why it cannot slip |
 |---|---|---|---|
-| ~~G1~~ | ⛔ **DEAD — the sea left v1.** Owner ruled worldgen MANUAL 2026-08-14; he picks a world he likes by eye. `JawaSeaShaper` and the 5-part sea gate are `[v2]` (`V2_DREAMS.md`), B2/C15/C16 dropped, DECIDE's D-CRIT superseded 2026-08-15 | — | **Do not deploy or tune `JawaSeaShaper.dll`.** The repo/deployed md5 mismatch noted below is expected, not a defect |
+| ~~G1~~ | ⛔ **DEAD — the sea left v1.** Owner ruled worldgen MANUAL 2026-08-14; he picks a world he likes by eye. The sea assembly and the 5-part sea gate are `[v2]` (`V2_DREAMS.md`), B2/C15/C16 dropped, DECIDE's D-CRIT superseded 2026-08-15 | — | Deploy nothing for the sea. The repo/deployed md5 mismatch noted above is expected, not a defect |
 | ~~G2~~ | ⛔ **DEAD with G1** — nothing registers `Jawa_SeaShaping` because nothing runs it | — | Kept as a struck row so nobody re-derives the gate from the mismatch above |
 | **G0** | 🔴 **`TidallyLocked` is SELECTED in Mod Settings** — see §2.A. Ratified 2026-08-15, **not set as of that date** | the owner, before the run | Fails **silently**: `selectedPlanetType` reads `Default`, no config file exists, nothing logs, and the type cannot be changed from the world page. Every ruling R-H0..R-H10 rests on its curve |
 | **G6** | 🔴 **`JawaWorld_BiomeMix.xml` actually applies** — today 28 `is not <li>` errors leave `biomeConfigs: []`, so all 24 abundance offsets fail behind a patch that looks fine | BUILD, **B63** | **Biome scoring runs ONCE, at worldgen.** Same dictionary-keyed `<li>` bug as B56 |
@@ -121,8 +120,8 @@ nobody re-opens it at the screen.
 1. **Announce.** `LIVE BRIDGE TAKEN` — and the owner authorises connecting;
    announcing only informs.
 2. **Shutdown window** — deploy the companion DLL (G3) **with `--gm`**, or it
-   strips `jawa/fire_incident` and `jawa/send_letter` off the game copy. Deploy
-   `JawaSeaShaper` and any def fixes in the same window.
+   strips `jawa/fire_incident` and `jawa/send_letter` off the game copy. Deploy any
+   def fixes in the same window.
 3. **Cold load** (~25–30 min). Harvest the startup log the moment it is up —
    `NEXT_RELOAD.md` §2 — before anything else touches the game.
 4. **World creation page** — planet type, coverage, seed (§2.A).

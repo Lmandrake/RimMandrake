@@ -3,14 +3,15 @@
 ## D-CRIT ⭐ Read before sequencing — worldgen is the owner's, and the sea is v2
 row:      10
 spec:     🔴 SUPERSEDED 2026-08-15 (DECIDE). This item used to say the ocean gated
-          worldgen and that `JawaSeaShaper.dll` had to be deployed and tuned before
+          worldgen and that a sea-shaping assembly had to be deployed and tuned before
           rows 2 and 7 could close. **That is no longer the order.** The owner ruled
           worldgen MANUAL on 2026-08-14: he builds a world he likes, saves it, and we
           ship it as a fixed resource. `V1.md` step 10 and the eight-gate table both
           carry the ruling; B2, C15 and C16 were dropped under it and their text sits
           in `design/V2_DREAMS.md`.
-          ⇒ **The sea-shaping work is `[v2]`. Do not deploy or tune `JawaSeaShaper.dll`,
-          and do not spend a shutdown window on it.** No seat runs campaign worldgen.
+          ⇒ **The sea-shaping work is `[v2]`** — the one canonical statement of that
+          ruling lives in `V1_CHAIN.md` step 6 and is not repeated here. No seat runs
+          campaign worldgen.
           WHAT ACTUALLY STANDS from the old item:
           - Rows 2 and 7 are still ONE event, and it is still the owner's single
             worldgen run. Row 2 needs no build: `WORLDGEN_FACTION_CHECKLIST.md` is
@@ -21,7 +22,7 @@ spec:     🔴 SUPERSEDED 2026-08-15 (DECIDE). This item used to say the ocean g
           - ⚠️ `waterPct 25.0` was one seed; seed `sickle` read 16.74. If the sea is
             ever measured again it is a mode, not a constant — never accept a world
             on a single reading. Kept because it is a measurement, not a plan.
-verify:   no queue item schedules a SeaShaper deploy or a campaign worldgen run.
+verify:   no queue item schedules a sea-shaping deploy or a campaign worldgen run.
 criteria: —
 state:    ready
 
@@ -630,8 +631,8 @@ state:    done — 2026-08-15, both halves. `0459627` + `ac8cee7`.
           instead of three — C37's Rodian snoot is L0 and first, then C40, C41+C39,
           and C38 last because it needs a second `PoisonForest` map. C36's crossref
           sweep moved to §2 where the startup harvest actually collects it. 378/400
-          lines, in budget. ⛔ **Struck from the window: `JawaSeaShaper.dll`** — see
-          D-CRIT, superseded today; B0's line is corrected.
+          lines, in budget. ⛔ **The `[v2]` sea assembly is struck from the window** —
+          see D-CRIT, superseded today; B0's line is corrected.
           HALF 2, the content. **B66** folds D-CHK2 and D-CHK3 into one
           `gen_races_mod.py` regenerate — it must ride THIS window or L0 photographs
           four species that are magenta for a cause already diagnosed. **B67** is the
@@ -828,8 +829,8 @@ state:    done — **RULING: `JawaWorld_BiomeMix.xml` is v1. B63 STANDS. Do not 
           things will be tested against it:
 
           🔴 **THE TEST IS "DOES IT RUN, OR IS IT READ?"**
-          - **STOOD DOWN — machinery that OPERATES the generator.** `JawaSeaShaper` is a
-            `WorldGenStepDef` plus an assembly that measures a world and re-shapes it
+          - **STOOD DOWN — machinery that OPERATES the generator.** The stood-down sea
+            work is a `WorldGenStepDef` plus an assembly that measures a world and re-shapes it
             toward a target, iterating until a gate passes. That is worldgen "functioning
             by itself", and it is exactly what the owner killed.
           - **NOT STOOD DOWN — def data the generator READS.** A `BiomeDef` field is

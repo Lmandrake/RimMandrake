@@ -42,9 +42,6 @@ six live items are `blocked — needs deploy`, not blocked on a question.
 | 5 | Write the three signatures into `EXPECTED_FAILURES` | BUILD **B23** | Must land **before launch** or the load spends attention on errors we already know about |
 | 6 | `python.exe src/RimMandrake/Utils/refresh.py` | B25(b) | 🔴 **NOT a launch gate — DECIDE 2026-08-15.** Moved to §9, after the load. The def dump is armed (step 0) and STARTUP recaptures it, so a dump rebuilt now is superseded ~25 min later. Running it pre-launch costs window and buys a fingerprint that dies at the main menu. **Step 5 is the last thing before launch** |
 
-⛔ **NOT in this window:** `JawaSeaShaper.dll`. The repo/deployed md5 mismatch is
-**expected** — the sea left v1 with the worldgen stand-down (D-CRIT, superseded).
-
 📌 **The window is not the load.** Steps 2 and 3 only make §5 collectable; nothing here
 is finished until the game is up and §5 runs.
 
