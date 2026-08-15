@@ -27,9 +27,11 @@ is the authoritative list — run the tool, do not read a number here.** It exit
 when a file is over. **No copy of those numbers lives in this file**, deliberately:
 the inline list carried 7 classes while the tool enforced 14, and once said 500 for
 `infrastructure/agents/POLICY.md` against the tool's 200 — *the doc describing the
-rule disagreed with the rule.* Design docs and rosters are unbudgeted; their length is content, not
-accumulation. *(`TODO.md` retains a budget in the tool but is **retired** — a
-pointer stub. That number is a ceiling on a corpse.)*
+rule disagreed with the rule.* Design docs and rosters are unbudgeted — length is
+content, not accumulation. *(`TODO.md` is **retired**; its budget is a corpse's.)*
+
+**A per-FILE budget overrides its class** — above the class glob, first match wins,
+number in the tool. `queue/BUILD.md` has one: contracts are content, not accumulation.
 
 🔴 **`skills/*/SKILL.md` is budgeted by a DIFFERENT tool and was undocumented
 here: body under 500 lines, `description:` under 1024 chars, enforced by

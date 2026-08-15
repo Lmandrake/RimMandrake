@@ -1,17 +1,32 @@
-# CREATE_TEST_PLAN.md — how to prove CREATE's deployed material actually works
+# CREATE_TEST_PLAN.md — how to prove deployed material actually works
 
-_CREATE, 2026-08-13. **Written because I owed it at deploy time and did not send
-it.** Everything below is deployed and enabled; none of it has been seen. BRIDGE
-drives — I do not connect. I comment, and I answer questions about intent._
+**Owned by CHECK.** It is the in-game verification script for material that is
+already deployed and enabled: the art-fix mods, the rumour quest, the terrain
+overrides and the ground hulk. CHECK drives the bridge and runs it; BUILD owns
+what the material is meant to do and answers questions about intent.
+
+🔴 **`infrastructure/state/V1_CHAIN.md` is the authority on what v1 is and which
+steps are open.** This file says *how to look*, never *whether it still matters* —
+read the chain before spending a load on any part below.
+
+Three standing rulings bound this file:
+- **Art fixing is PARKED.** Everything in Part 1 and Part 5 is **observation
+  only**. A row that comes back looking FINE is a result, not a disappointment,
+  and no fix is scheduled off it.
+- **The terrain overrides are CLOSED** — scrapfields ships at whatever density it
+  produces. Part 3 survives as the procedure for looking at terrain, not as an
+  open gate, and **no count is a pass/fail threshold**.
+- **Worldgen is the owner's, by hand.** Nothing here needs or schedules a campaign
+  world. A quicktest map is always enough.
 
 ---
 
 ## The two rules that govern every check here
 
-🔴 **A screenshot is the evidence. A def query is not.** `V1_SCOPE.md`'s gate is
-*seen working in-game once*. `take_screenshot` returns a path — **open it and
-look at it.** Everything in this file fails in ways that produce **no log line at
-all**, which is exactly why the log cannot close any of it.
+🔴 **A screenshot is the evidence. A def query is not.** The gate is *seen working
+in-game once*. `take_screenshot` returns a path — **open it and look at it.**
+Everything in this file fails in ways that produce **no log line at all**, which
+is exactly why the log cannot close any of it.
 
 🔴 **Clear the debug log window before shooting.** It eats the frame, and stale
 lines read as fresh failures. Clear → act → shoot. Shoot **before and after**
@@ -30,6 +45,29 @@ magenta, that is a real failure even though everything "worked".
 
 ---
 
+## 🔴 PRE-FLIGHT — nine corrections. Read before typing at a live console.
+
+Verified offline; do not re-derive. **These change what you TYPE.** Two are wrong
+parameters, one is a diagnostic string with no basis, and one names a def that
+does not exist. The rest of this file is still the script.
+
+| # | correction |
+|---|---|
+| 1 | 🔴 **Part 3b's affordance diagnostic has NO BASIS.** `ShipChunk_Mech` needs **`Light`** (inherited from `BuildingBase`), not `Heavy`; and `BrokenSubstructure` supplies Light/Medium/Heavy/Walkable/Substructure — its `<affordances>` has no `Inherit="False"`, so it MERGES with `FloorBase`'s. Requirement and supply are met on **either** layer ⇒ if props are missing, look at prefab placement, blocked cells or `spotMustBeStandable` — **not** the affordance |
+| 2 | ⚠️ **Scrapfields is NOT biome-gated.** `Patches\JawaResource_Scrapfields.xml:56-59` adds the GenStep to `MapGeneratorDef[Base_Player]` with no biome filter. A scrapfield on a non-desert quicktest is not a bug |
+| 3 | 🔴 **`jawa/set_terrain` takes `terrainDef`, not `def`.** The bridge **drops unknown params silently** before the tool runs, so `def=` does not error — it paints nothing and costs live minutes to notice. Read the cell back with `rimworld/get_cell_info` → `terrainDefName` |
+| 4 | 🔴 **`ToolBelt` does not exist** — zero hits on disk. It is **`VAEA_Apparel_ToolBelt`**, `...\294100\2521176396\1.6\Defs\ThingDefs_Misc\Apparel_Utility.xml:531`. It and Survival Tools' rival are both labelled *"tool belt"* ⇒ **spawn by defName, never by label** |
+| 5 | 🔴 **The four RR research kits are APPAREL and must be WORN.** The fix replaces `wornGraphicPath` (`Apparel_FieldKits.xml:62`); the ground `texPath` (`:51`) is one directionless PNG, so a kit on the ground exercises **none** of the fixed art. There is no apparel tool on the bridge: the only route is `rimworld/select_pawn` then `Actions\Wear apparel (selected)…`, which works on **player colonists only** ⇒ spawn the wearer with `faction=player` |
+| 6 | **`AV_DogSled` is a `Vehicles.VehicleDef`, not a ThingDef.** `spawn_thing`/`ThingMaker` genuinely cannot construct it; **`jawa/spawn_batch`** routes vehicles through `Vehicles.VehicleSpawner.SpawnVehicleRandomized` by reflection. Its brown comes from a def patch (`DogSledTint_Brown.xml`, `graphicData/color` → `(99,65,24)`) ⇒ **a grey sled means the patch, not the art** |
+| 7 | **`VGE_Astronaut` has two lifeStages sharing one maskPath**, and only the double-r `Astrronaut` files were typo'd ⇒ **shoot an adult**, or you pass on art that was never broken |
+| 8 | ⛔ **The C12 double-ship warning is STALE and names the wrong mod.** The real overlap was `MissingArtFixes`, all seven pairs md5-identical, now inactive. **If a row looks wrong, load order is NOT the suspect** |
+| 9 | ⚠️ **The Part 1 table covers eight mods; ten art-fix mods are live.** `mandrake.phytokinbarkheadfix` and `mandrake.kotorbandoliernorthfix` are deployed but untabled — see Part 1b, which is why. **Read `ModsConfig.xml` for the active list; never a count written in a doc** |
+
+⚠️ **`jawa/spawn_thing` DOES NOT EXIST.** The single-thing call is vanilla
+`rimworld/spawn_thing`; `jawa/spawn_batch` is for more than one.
+
+---
+
 ## Part 1 — the EIGHT live mods. Cheapest first, all doable on any map
 
 Seven art-fix mods plus the sled reskin. `mandrake.missingartfixes` is out of the
@@ -37,11 +75,11 @@ list; **the two mods enabled at 23:18 were pulled again on the owner's ruling** 
 see Part 1b, which is why.
 Each is *one spawn and one look*. Nothing here needs a fresh map or a colony.
 
-🔴 **THIS PART IS NOW THE OWNER'S VERIFICATION GATE, not a victory lap.** The
-standing directive of 2026-08-13 stops all new art fixes *until the owner has
-verified the art actually does not work* — because the missing-art premise itself
-is suspect. **So a row that comes back looking FINE is the valuable result**, not
-a disappointing one. Record what you see, not what the row predicts.
+🔴 **THIS PART IS THE OWNER'S VERIFICATION GATE, not a victory lap.** The standing
+directive stops all new art fixes *until the owner has verified the art actually
+does not work* — because the missing-art premise itself is suspect. **So a row
+that comes back looking FINE is the valuable result**, not a disappointing one.
+Record what you see, not what the row predicts, and **schedule no fix off it.**
 
 | # | mod | spawn / find | look at | PASS looks like |
 |---|---|---|---|---|
@@ -98,9 +136,10 @@ is ambiguous. Use the defName.
 
 ---
 
-## Part 2 — v1 ROW 3, the quest. No fresh map needed
+## Part 2 — the rumour quest. No fresh map needed
 
-Built `47733f8`, deployed inside `Jawa_Patches`. **Never fired.**
+Deployed inside `Jawa_Patches`. `jawa/fire_quest` is the tool route; the
+right-click float menu below is the manual one.
 
 1. Clear the debug log.
 2. Spawn item **`Jawa_ClaimRumour`** (labelled **salvage rumour**).
@@ -113,8 +152,7 @@ Built `47733f8`, deployed inside `Jawa_Patches`. **Never fired.**
    → **SHOT C:** the accepted quest and its letter.
 
 **PASS = the quest reaches ANY end state.** Success, failure, or expiry all
-count; `V1_SCOPE.md` says so explicitly. Do not hold the row open waiting for a
-caravan to complete it.
+count. Do not hold it open waiting for a caravan to complete it.
 
 ⚠️ **One thing I could not verify offline and would like looked at:**
 `QuestNode_SetItemStashContents` has exactly **one** shipping usage in the whole
@@ -130,11 +168,18 @@ ship.
 
 ---
 
-## Part 3 — v1 ROW 4, terrain. **Needs a NEWLY GENERATED map**
+## Part 3 — terrain. **Needs a NEWLY GENERATED map**
 
-Built `73ca76c`, deployed inside `Jawa_Patches`. **All three overrides run at
-MAP GENERATION.** They cannot appear on a map that already exists — including the
-campaign map if it was generated before the deploy landed.
+⚠️ **This row is CLOSED** — the overrides ship at whatever density they produce,
+and **no chunk count is a threshold.** What survives is the procedure: how to look
+at terrain without fooling yourself. Use it when terrain is being looked at for
+some other reason; do not spend a load closing it.
+
+Deployed inside `Jawa_Patches`. **All three overrides run at MAP GENERATION.** They
+cannot appear on a map that already exists — including a campaign map generated
+before the deploy landed. 📌 **A one-shot generator's output dates the DEF THAT
+BUILT IT, not the def on disk.** Before counting anything a GenStep placed, ask
+when the map was made.
 
 🟢 **A quicktest map counts.** `rimworld/start_debug_game_ready` makes one in ~30
 seconds, and per the owner's rule 1c the bridge-holder may create and destroy dev
@@ -152,7 +197,7 @@ report it as failed because the biome was wrong.
 |---|---|---|---|
 | 1 | **Salt pans** (`Jawa_SaltCrust`) | broad **pale cracked** patches in low ground | ✅ **ALREADY PASSED LIVE** — 144 cells, 0 failed verify. Only "does it generate" is left |
 | 2 | **Dune seas** (widened `SoftSand`) | 🔴 **DO NOT EYEBALL THIS** | **not a look.** 0.65→0.55 is a *density* change and is unjudgeable without a control map — "compare against memory of a normal desert" is not evidence. **Read the live `BiomeDef` and confirm `terrainPatchMakers` shows `0.55` (Desert) and `0.50` (ExtremeDesert)**, plus the new AridShrubland maker at `0.70`. Source of truth: `src/Jawa/Jawa_Patches/Patches/JawaTerrain_DuneSeas.xml` |
-| 3 | **Scrapfields** | steel slag chunks strewn across open ground, with machine-bits filth | ~75–125 chunks map-wide. 🔴 **LOOK BEFORE ANY DESTROY** — the last map's evidence died in a 43,288-thing wipe |
+| 3 | **Scrapfields** | steel slag chunks strewn across open ground, with machine-bits filth | **no count gate — it ships at whatever density it produces.** 🔴 **LOOK BEFORE ANY DESTROY** — the last map's evidence died in a 43,288-thing wipe. ⚠️ `isJunk` makes the count the product of the tile's `TileMutatorDef.junkDensityFactor`, and **`Dunes` is one of five live mutators whose factor is ZERO** — on such a tile it places nothing, silently, with no warning |
 
 → **SHOT for rows 1 and 3**, zoomed out enough to show it is a *field*, not one
 tile. **Row 2's evidence is a def read pasted as text, not a screenshot** — a
@@ -163,14 +208,12 @@ ordinary `TerrainDef`, so the bridge can **paint** it onto the current map —
 `jawa/set_terrain terrainDef=Jawa_SaltCrust`, a ~10×10 rect. That proves the **art and
 the def**, which is most of the risk, and leaves only "does it generate" to the
 fresh map. It paints over whatever was there; **that is not a reason to defer
-it.** Map preservation is ⏸️ **suspended, not repealed** — read the rule at its
-source, `infrastructure/agents_def.md` (the ⏸️ bullet in the quicktest-map
-section), because it has a reactivation trigger. Paint it wherever you stand.
+it.** Map preservation is ⏸️ **suspended** — the bridge-holder may create, paint
+and destroy dev colonies freely. Paint it wherever you stand.
 **Say which map the result came from** — quicktest and campaign are different
 claims, and that is evidence hygiene, not preservation.
 
-🔴 **The parameter is `terrainDef`, not `def`.** Corrected 2026-08-13 from
-BRIDGE's pre-flight against the real signature —
+🔴 **The parameter is `terrainDef`, not `def`** — the real signature is
 `src/RimMandrake/bridgetools/JawaBench.BridgeTools/JawaBenchTerrainTools.cs:69`,
 `SetTerrain(x, z, terrainDef, width, height, layer, refresh)`. **The bridge drops
 unknown params silently before the tool runs**, so `def=` would not have errored:
@@ -186,10 +229,9 @@ and its *own* dry-lake landform hard-codes `SoftSand`. So the one feature that
 ought to be a salt pan will not be. Ruled: leave it. **Do not report this as a
 failure of override #1** — check somewhere off a landform.
 
-### Part 3b — the GROUND HULK, row 4's rider. Same map, same run.
+### Part 3b — the GROUND HULK. Same map, same run as Part 3.
 
-Built `00a1398`, approved v1 by PROJECT as a **rider inside row 4** rather than a
-ninth row, so it rides row 4's gate and its map. **619 cells** stamped from our
+**619 cells** stamped from our
 own exported ship layout: a torn-open cryptosleep hold, three banks of
 `AncientCryptosleepCasket` (31), `ShipChunk_Mech` scattered between them, deck
 interleaved 45% `BrokenSubstructure` / 55% intact.
@@ -210,11 +252,10 @@ interleaved 45% `BrokenSubstructure` / 55% intact.
 → **SHOT: the whole wreck from a zoomed-out view**, and a second closer on a
 casket bank.
 
-⛔ **THE "ONE TRAP" BELOW WAS WRONG. Struck 2026-08-13, disproved by BRIDGE
-against the actual defs — do not act on it and do not report its phrase.**
-
-I wrote that a top-layer `Substructure` exposes only the `Substructure`
-affordance and that `ShipChunk_Mech` needs `Heavy`. **Both halves are false:**
+⛔ **The affordance diagnostic once written here — that a top-layer `Substructure`
+exposes only the `Substructure` affordance and that `ShipChunk_Mech` needs
+`Heavy` — is FALSE in both halves. Do not act on it and do not report its
+phrase.** (Pre-flight correction 1.)
 
 - `ShipChunk_Mech` needs **`Light`**. `ParentName="ShipChunkBase"` →
   `BuildingBase`, and neither sets `terrainAffordanceNeeded`, so it inherits
@@ -264,8 +305,9 @@ chain. Deconstructing cannot. Both deliberate.
 Per item: **PASS / FAIL / NOT RUN**, and the screenshot path. For a FAIL, the
 shot plus what you saw — I do not need a diagnosis, I need the image.
 
-File findings at `infrastructure/state/queue/CREATE.md`; anything that is a
-donor-side defect rather than ours goes to `TODO.md` with `[?]`.
+File findings at `infrastructure/state/queue/CHECK.md`. Anything that is a
+**donor-side** defect rather than ours goes to `design/V2_DREAMS.md` with `[?]` —
+it is not v1 and must not take window space.
 
 ---
 
@@ -297,8 +339,8 @@ fixed apparel list, and its only tag `VAEA_Utility_Industrial` appears in **no**
 pawnkind — so there is no random-generation path either. Every other reference is
 loot: a fishing `ThingSetMakerDef`, a TraderGen stock list, a quest reward.
 
-⇒ It needs dev-spawn **plus a force-equip**, which is the route BRIDGE is
-building. **Hold it for that tool, not for a map.** ⚠️ `renderUtilityAsPack` is
+⇒ It needs dev-spawn **plus a force-equip**, which BUILD owns. **Hold it for that
+tool, not for a map.** ⚠️ `renderUtilityAsPack` is
 true, so it draws in the pack layer — check from behind as well as straight west.
 
 ### One load-order note, verified

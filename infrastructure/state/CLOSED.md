@@ -20,6 +20,21 @@ closure to fit.
 | 2026-08-14 | BRIDGE B-v3 — bridge cannot order a pawn to walk | BUILT AND DEPLOYED as `jawa/order_pawn` (+`targetId`/`pathEndMode`). Live run still owed — carried in the queue, not closed as verified | `bee5da9` |
 | 2026-08-14 | `jawa/damage` refusal fix — 'built, not deployed' | WRONG, it WAS deployed: `strings -a` misses UTF-16LE method-body literals; `strings -a -el` finds the marker in the game copy | `15bbf4a` |
 
+## Drained out of `NEXT_RELOAD.md`, 2026-08-14 (657 → 318 lines)
+
+| date | item | outcome | hash |
+|---|---|---|---|
+| 2026-08-14 | §1c companion deploy — "NEED-DOWN batch" | NOTHING OWED: the game copy measured 26 tools, `get_defs` and `fire_quest` present. Superseded by BUILD B1's 30-tool build | `f4ecb68` |
+| 2026-08-14 | §1d `Jawa_Patches` deploy | LANDED — `--mod Jawa_Patches --apply` → `VERIFIED in sync`, 4 files. `BuzzerApostrophe_Fix.xml` made its pre-worldgen window | `da7118e` |
+| 2026-08-14 | §5b salt pans | PASSED LIVE — 144 cells, 0 failed verify | — |
+| 2026-08-14 | §5c dune seas | CLOSED on the live `get_def` read (Desert 0.55, ExtremeDesert 0.50). It is a density change; a photograph of sand cannot settle it | `9f58702` |
+| 2026-08-14 | §5 / §5a / §5d — the three terrain overrides | CLOSED by owner ruling: scrapfields ships at whatever density it produces. The `ChunkSlagSteel` count is not a gate and no band applies. Procedure kept at `CREATE_TEST_PLAN.md` Part 3 | — |
+| 2026-08-14 | §5e L5's "map size" claim | FALSE — no companion reply carries `mapSize`. `execute_ship_plan.py:54` bounds-probes with `jawa/get_terrain_batch` instead. Claim deleted | — |
+| 2026-08-14 | §5e L6 / L7 — never-run tools | RUN and live-proven: `list_things`, `clear_ui`, `get_defs`, `fire_quest`, and `spawn_batch`'s `VehicleDef` route via `VehicleSpawner` | — |
+| 2026-08-14 | §8b the booked shutdown window | DISSOLVED — S1 `JawaSeaShaper` left v1 with worldgen (`V2_DREAMS.md` B2); S2 `jawa/ideo_of` and S3 `jawa/biome_probe` are inside BUILD B1's 30-tool build | — |
+| 2026-08-14 | The "WORLDGEN IS HELD" scope framing | RETIRED — worldgen is manual and the owner's. The sea-shaping work left v1 entirely | — |
+| 2026-08-14 | DECIDE D21 — rule on `CREATE_TEST_PLAN.md` | KEPT and rewritten as **CHECK's** file: `V1_CHAIN.md` named as authority, routing repointed to `queue/CHECK.md`, and the nine pre-flight corrections recovered from the deleted `AGENT_BRIDGE_state.md` and pasted in | — |
+
 ## Drained out of `TODO_v2.md`, 2026-08-14 (1,172 → 349 lines)
 
 | date | item | outcome | hash |

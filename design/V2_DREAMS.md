@@ -231,7 +231,7 @@ verify:   EMPTY
 criteria: each fix renders in the facing it targets. Judge at DISPLAY size and render the tint — art can be correct at source and broken at render. Observation only.
 
 ## C23 Run `CREATE_TEST_PLAN.md` with its nine pre-flight corrections
-spec:     `D:\Luke\dev\Rimworld\infrastructure\state\CREATE_TEST_PLAN.md` — eight art-fix mods, v1 row 3's `Jawa_ClaimRumour`, row 4's terrain plus the 619-cell ground hulk. Part 3 needs a FRESHLY GENERATED Desert / ExtremeDesert / AridShrubland map; a quicktest counts. Nine pre-flight corrections live in `infrastructure/state/AGENT_BRIDGE_state.md`, DELETED in `edaa1bb` — recover with `git show edaa1bb^:infrastructure/state/AGENT_BRIDGE_state.md` and read them before typing at a live console: two are wrong parameters, one is a diagnostic string with no basis, and `ToolBelt` does not exist under that name. Also: `jawa/spawn_thing` DOES NOT EXIST — the call is vanilla `rimworld/spawn_thing`, or `jawa/spawn_batch` for more than one.
+spec:     `D:\Luke\dev\Rimworld\infrastructure\state\CREATE_TEST_PLAN.md` — eight art-fix mods, v1 row 3's `Jawa_ClaimRumour`, row 4's terrain plus the 619-cell ground hulk. Part 3 needs a FRESHLY GENERATED Desert / ExtremeDesert / AridShrubland map; a quicktest counts. The nine pre-flight corrections are now **inside that file**, in its PRE-FLIGHT table — read them before typing at a live console. The terrain part is closed and art is observation-only; check `V1_CHAIN.md` before spending a load on any of it.
 verify:   EMPTY
 criteria: a screenshot is the evidence, a def query is not — every failure mode in the plan is silent.
 
@@ -751,3 +751,10 @@ verify:   EMPTY
 criteria: EMPTY
 state:    blocked
 
+
+## C24 Retire `mandrake.missingartfixes` — has an order and one dependency
+row:      —
+spec:     Its seven texture pairs are md5-identical to the donors', so it was never a rendering hazard, and it is already inactive. 🔴 **Do not delete it blind: the blast-door brief still lives inside its `Source/`.** Move that out first, then retire the mod. Art fixing is parked, so this is housekeeping, not a fix.
+verify:   the blast-door brief exists at its new home before the mod folder goes.
+criteria: `mandrake.missingartfixes` gone from disk and from `ModsConfig.xml`, with the brief findable somewhere under `design/`.
+state:    ready

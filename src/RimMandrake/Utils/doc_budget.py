@@ -16,6 +16,10 @@ what a document is for:
 
   infrastructure/state/queue/*.md        150   a queue is a list of open work. If it needs 400 lines,
                           the closed items were never removed.
+  queue/BUILD.md    500   the exception, and it is per-file: BUILD's queue carries
+                          ~30 items as full spec/verify/criteria contracts, which
+                          is content, not accumulation. Per-file entries sit ABOVE
+                          their class glob in BUDGETS; first match wins.
   infrastructure/agents/*.md       150   an identity is injected at every session start — but into
                           ONE seat, not five. Was 120 on the stated premise "a tax
                           on all five seats, every time", which is false: that is
@@ -65,6 +69,11 @@ import subprocess
 import sys
 
 BUDGETS = [
+    # 🔴 First match wins, so per-FILE overrides go above their class glob.
+    # queue/BUILD.md holds ~30 items, each a full spec/verify/criteria contract.
+    # 150 is a budget for a list of titles, not for executable contracts, and a
+    # budget that cannot be met gets ignored rather than obeyed.
+    ("infrastructure/state/queue/BUILD.md", 500),
     ("infrastructure/state/queue/*.md", 150),
     ("infrastructure/agents/*.md", 150),   # was 120; premise was wrong, see docstring
     ("CLAUDE.md", 300),
@@ -102,9 +111,12 @@ PROVENANCE = re.compile(
 
 
 def scan():
-    rows, over = [], 0
+    rows, over, seen = [], 0, set()
     for pattern, budget in BUDGETS:
         for path in sorted(glob.glob(pattern)):
+            if path in seen:      # first match wins: a per-file entry beats its class glob
+                continue
+            seen.add(path)
             with open(path, encoding="utf-8", errors="replace") as fh:
                 lines = fh.readlines()
             n = len(lines)
