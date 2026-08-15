@@ -71,8 +71,12 @@ Everything here was read out of a running game or off an artifact a running game
 - Both carry a `<modIds>` provenance block of 585 mods, of which **11 no longer load**.
   That is **provenance, not a dependency list** — harmless on its own, and it matters
   only if a reference also fails to resolve. Neither file has one.
-- ⚠️ 19 empty `<li>` entries sit in `The Salvation.rid`'s style-frequency lists whose
-  siblings carry values. Unexplained; not proven harmful. Read on the next live load.
+- ✅ **The 19 empty `<li>` entries are NORMAL and need no live check** — retracted, I
+  raised them as suspicious and they are not. Vanilla `Technocracy.rid` has the same
+  shape (22 empty in `hairFrequencies`, 11 in `beardFrequencies`): Scribe writes
+  `<li />` for a default-valued entry. Compared directly, game down, 2026-08-15.
+  ⚠️ Also note `hairFrequencies`/`beardFrequencies` carry `<vals>` with **no `<keys>`**
+  in BOTH files — that too is the normal shape, not a lost def reference.
 - The tool: `python3 src/RimMandrake/Utils/validate_save_artifact.py <file>`.
   `validate_ideoligion.py` CANNOT read these — it answers `no religions found` and
   checks nothing.

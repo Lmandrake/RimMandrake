@@ -304,7 +304,12 @@ def report(path, index, meta, as_json=False):
         for t, names in sorted(by_type.items()):
             print(f"        {t}: {', '.join(sorted(set(names)))}")
     if empties:
-        print(f"    ⚠️  {len(empties)} empty <li> in a list whose siblings carry values")
+        # NOT a warning. Vanilla `Technocracy.rid` shows the same shape (22 empty
+        # in hairFrequencies, 11 in beardFrequencies) — Scribe writes `<li />`
+        # for a default-valued entry. Reported as a count only, so nobody
+        # re-investigates it. CHECK confirmed 2026-08-15 by direct comparison.
+        print(f"    ·  {len(empties)} empty <li> (normal Scribe output — vanilla ideos "
+              f"have them too; not a defect)")
     if mod_ids:
         print(f"    provenance: {len(mod_ids)} modIds captured at save time")
         if dropped:
