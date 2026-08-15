@@ -37,6 +37,29 @@ means the board never learns, and 70 items have already been lost that way.
 dropped` with one line saying why.** Deleting it, renumbering it away, or quietly
 retitling it into something else breaks the count and cannot be recovered later.
 
+## 🔴 The bridge is CHECK's. One driver at a time.
+
+Owner, 2026-08-15, after the bridge crashed:
+
+> *"ONLY AGENT CHECK has Bridge-rights normally, no other agent can 'take the
+> bridge' and drive the game. If another agent wants this privilege, they must
+> first send a one-line query to AGENT CHECK to ask if he's using it. If he
+> grants privilege, it becomes the responsibility of the receiving Agent to tell
+> CHECK when they are done as soon as possible. Reason: The Bridge crashed just
+> now because both CHECK and BUILD accessed it at the same time."*
+
+- **CHECK holds bridge rights at all times.** No other seat drives the game.
+- **To borrow it: one line to CHECK asking if they are using it.** Wait for the
+  grant. No grant, no bridge.
+- **Handing it back is the borrower's job, and it is urgent.** Tell CHECK the
+  moment you are done — a borrower who goes quiet has taken the bridge
+  indefinitely.
+- Two seats on the bridge at once **crashes it**. This is not a courtesy.
+
+⚠️ These three messages are a **sanctioned exception** to the two-sentence rule
+under "The queue is the only channel": the ask, the grant and the hand-back are
+live, urgent and one line each. Nothing else about the bridge is.
+
 ## Nothing outside the repo is precious
 
 Owner, 2026-08-15: *"There is no map protection! There's no protection of any asset
