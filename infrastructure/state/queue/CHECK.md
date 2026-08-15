@@ -110,4 +110,11 @@ verify:   `python3 -c "import json;d=json.load(open('infrastructure/state/status
           shows CHECK, a current state, and an `at` you wrote.
 criteria: The board's GAME panel matches the real game across one up→down
           transition, and does not flag STALE while the process is resident.
-state:    ready
+state:    doing
+note:     2026-08-14 CHECK. Restamped: `by CHECK`, `at 1786770877` (was BRIDGE's
+          1786744923), note no longer "BRIDGE idle", and `left` refreshed — the old
+          one claimed "0 pawns" when the map now has Alex (PlayerColony), plus the
+          moved thruster bank and the rewired power net. `verify:` PASSES
+          (`CHECK PLAYABLE 1786770877`). **Not done:** the criteria needs one
+          up→down transition and the game is still up, so the DOWN half is unproven.
+          Stays `doing` until I stamp it down and the panel agrees.
