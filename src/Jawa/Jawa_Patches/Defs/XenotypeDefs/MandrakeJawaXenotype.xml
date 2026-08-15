@@ -42,8 +42,19 @@
     <!-- The player's own clan. It should not turn up as unaffiliated filler or
          as generic raider stock; the indigenous tribes get it through their own
          FactionDef and PawnKindDefs, not through random generation. -->
+    <!-- 0 keeps Jawa out of the random-wanderer pool. The factions that should
+         field them name the xenotype explicitly in their own xenotypeSet, so
+         this costs nothing and stops stray Jawa arriving as event pawns. -->
     <factionlessGenerationWeight>0</factionlessGenerationWeight>
-    <canGenerateAsCombatant>false</canGenerateAsCombatant>
+    <!-- 🔴 WAS `false`, AND THAT WAS A DEFECT. It is not in the owner's .xtp --
+         that file carries only `name` and `inheritable` -- so it was invented
+         when this def was written. `false` bars the xenotype from COMBAT pawn
+         generation, and `Jawa_IndigenousTribes` has a Combat group whose every
+         option (Jawa_Tribal_Scavenger / _Slinger / _Elder) forces MandrakeJawa.
+         A Jawa faction that cannot generate a fighter is a faction that cannot
+         raid. Every vanilla faction xenotype -- Neanderthal, Hussar, Impid --
+         ships `true`. -->
+    <canGenerateAsCombatant>true</canGenerateAsCombatant>
     <combatPowerFactor>0.85</combatPowerFactor>
     <genes>
       <!-- frame and constitution -->
