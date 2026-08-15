@@ -21,11 +21,10 @@ disagree about scope, this file is newer.
 
 ### DECIDE rulings made against those
 
-- **The vessel is vanilla `Empire`.** `WORLDGEN_FACTION_CHECKLIST.md` R3 is
-  ratified and says so; `faction_stage3_buildable_spec.md` says patch
-  `OuterRim_GalacticEmpire` and is older and unratified. Stage 3 is stale on this
-  point and everywhere it repeats the pattern (Homestead, Tribes, Pirates,
-  Ancients — the world spec's vanilla column wins).
+- **The vessel column is ruled and measured — see R9, R14 and R15.**
+  `faction_stage3_buildable_spec.md` is stale wherever it assigns a vessel; the
+  world spec's vanilla column wins **except for `Ancients`, which cannot host a
+  faction at all**.
 
 ## The chain
 
@@ -101,21 +100,21 @@ is not pinned (B25a).
   matters: `guy762.kotorweapons` is the single largest entry in
   `armoury_keeplist.md` at 137 weapons.
 
-### 1 · Tag vocabulary — the artifact that was never written
+### 3 · Equipment types → pawns — the artifact that was never written
 A `PawnKindDef` consumes `weaponTags`, `apparelTags` and a few literal
 `apparelRequired` defNames. **It does not consume a per-item verdict**, which is
 why the 674-weapon keeplist was never the blocker. `pawnkind_roster.md` declined
 to invent tag values on purpose. What is owed: the actual tag strings carried by
 the surviving weapon and apparel defs, read out of the live dump.
 
-### 5 · Religions
+### 6 · Religions
 `faction_religions_spec.md` is the strongest doc in the set — real memes and
 precepts read from the live dump — but its own heading says **the text is the
 product**, and 9 of 11 have no authored player-facing text. Section 12 (Jawa) is
 deliberately empty and stays that way: the player faith ships as
 `src/Jawa/ideoligion/The Salvation.rid`.
 
-### 6 · Pawntypes
+### 7 · Pawntypes
 48 kinds proposed (12 factions × Grunt/Heavy/Specialist/Leader), zero literal
 defNames, `combatPower` unset on all of them. 19 PawnKindDefs ship and none
 match the roster.
@@ -123,7 +122,7 @@ match the roster.
 robe-and-hood lock exists in the repo but was applied to a **donor** kind
 (`OuterRim_Jawa`) and never mirrored onto ours.
 
-### 8 · Factions
+### 9 · Factions
 `Jawa_IndigenousTribes` is the model of done — `pawnGroupMakers`, `xenotypeSet`,
 `forcedMemes`, `fixedIdeo`, and its three referenced kinds exist. Author the
 8 authored factions against it; the 6 reskins are patches (R14).
@@ -132,7 +131,7 @@ robe-and-hood lock exists in the repo but was applied to a **donor** kind
 else that was open — the 12/14 count, the vessel column, goodwill, the leader
 titles, D1–D6 — is ruled in R1–R15 and must not be re-opened from the roster.
 
-### 8 · Factions — DECIDE's rulings, 2026-08-14
+### 9 · Factions — DECIDE's rulings, 2026-08-14
 
 Read out of the live dump's complete `FactionDef` field set (87 defs, captured
 2026-08-14T21:10Z). These are engine facts, not preferences.
@@ -282,7 +281,7 @@ example.
 | ideo | `fixedIdeo` + `ideoName` + `ideoDescription` + `forcedMemes` (+ `deityPresets` where the faith has deities) |
 | optional | `apparelStuffFilter` `backstoryFilters` `xenotypeSet` `raidCommonalityFromPointsCurve` `disallowedRaidStrategies` `styles` |
 
-### 11 · Scenario — the hole
+### 12 · Scenario — the hole
 No document. It is the first thing the player touches: starting pawns, starting
 gear, the ship, the landing.
 
