@@ -550,7 +550,8 @@ spec:     Owner design, 2026-08-15. Lassos are absurdly strong for melee pawns.
           (b) SHRINK THE TIER LADDER so material is not the deciding factor:
               `AM_LassoCloth`        `AM_GrappleRadius` +0   (add the offset explicitly; it currently has NONE)
               `AM_LassoDevilstrand`  +8 -> **+2**
-              `AM_LassoHyperwave`    +14 -> **+4**
+              🔴 `AM_LassoHyperwave` is CUT from v1 (owner, 2026-08-15) — two
+              tiers only. Do not patch it; it will not load.
           (c) AUTHOR THE GENE — `Jawa_Gene_PowerfulGrapple`, in
               `src/Jawa/Jawa_Patches/Defs/GeneDefs/`. Model it on Biotech's
               `MeleeDamage_Strong` (same `statOffsets` shape).
@@ -560,7 +561,7 @@ spec:     Owner design, 2026-08-15. Lassos are absurdly strong for melee pawns.
               label "mighty grapple"; description in the campaign's voice.
               ⚠️ `AM_GrappleSpeed` is capped at `maxValue 10` and
               `AM_GrappleCooldown` at `minValue 0.5` — do not exceed either.
-          ⇒ RESULT: Jawa with any lasso reaches 4-8 tiles. A carrier of the gene
+          ⇒ RESULT: Jawa with either lasso reaches 4-6 tiles. A carrier of the gene
             reaches 16-20. The GENE is the deciding term, which is the design.
           🔴 DO NOT ATTACH THE GENE TO ANY XENOTYPE. Authoring it is yours;
           deciding who carries it is `D23`, which rebuilds our xenotype set.
