@@ -47,6 +47,14 @@ You may issue short orders to the other agents: `WRAP`, `STATUS`, `STOP`. One li
 They answer tersely. That is the only live traffic allowed between agents, and it
 is normally the human's idea, not yours.
 
+🔴 **This is the loophole that got abused, 2026-08-15 — by REP.** "REP may issue
+short orders" became fifteen messages in one session, several of them essay-length
+relays of reasoning and acknowledgement, and they interrupted seats mid-task. An
+order is `WRAP` / `STATUS` / `STOP` and a sentence of why. It is not a briefing, not
+a thank-you, not a summary of what you did, and not a place to think out loud at a
+peer. **Route it to their inbox and let them read it between items.** If you are
+explaining, you are writing a queue item.
+
 ## Talking to the human
 
 - Answer the question asked. Three lines unless they ask for more.
