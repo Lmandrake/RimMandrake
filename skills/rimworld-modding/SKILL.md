@@ -351,9 +351,9 @@ never asking what last read it.
 **The check is one question: _what did the consumer last read, and when?_** The
 process start time IS the def-read time — RimWorld reads defs **once, at launch** —
 so anything under `Mods/` newer than that StartTime is not loaded. **The three
-commands, and two measured cases (a `GenStepDef` and a DLL) both reported done and
-both false, are in `references/traps-mods-and-managers.md` §"A def deployed AFTER
-launch".** Run them before calling anything live.
+commands, and two measured cases (a `GenStepDef` and a DLL) that both reported
+done and were both false, are in `references/traps-mods-and-managers.md`.** Run
+them before calling anything live.
 
 ⚠️ **Map-generation defs need MORE than a restart: they need a map generated after
 it.** Loading a save re-runs no GenStep, so a correct fix is invisible on an old map.
@@ -453,13 +453,10 @@ The way this particular check lies. Four that cost real cycles here:
   claims (§6b), and the mtime against the process StartTime is the evidence.
 - **The instrument cannot see it.** `jawa/get_def` returns `extra: null` for def
   types it does not model, which reads as *the field is absent*. Membership
-  questions go to the def dump, never to the probe.
-  (`traps-tooling.md` → "`jawa/get_def` returns `extra: null` for def types it does
-  not model, and it reads as \"absent\"" · "\"Empty output\" is not a result")
+  questions go to the def dump, never to the probe (as per `traps-tooling.md`).
 - **A map-gen def checked on an old map.** A `GenStepDef` changes nothing until a
   map is *generated after the load*; loading a save re-runs no GenStep, so a
-  correct fix reads as a third failure (§6b; `traps-diagnosis.md` → "The same mod
-  stayed dead through two correct fixes, for three different reasons").
+  correct fix reads as a third failure (§6b; as per `traps-diagnosis.md`).
 
 ### The shape to hand over
 
@@ -499,26 +496,27 @@ This domain's knowledge is almost entirely *earned* — each trap costs a debug
 cycle to find and is then cheap forever. That only compounds if it gets written
 down, so treat capture as part of finishing the task, not as optional polish.
 
-**The live log is `references/traps-*.md`, indexed by `references/traps.md`.**
-Read the **index** at the start of a RimWorld task, then open the one topic file
-that matches what you are about to do — patches, tooling, art, the mod stack, or
-diagnosis. Reading all five is not the intent and costs ~25k tokens.
+**The live log is `references/traps-*.md`.** Open the one topic file that matches
+what you are about to do — patches, tooling, art, the mod stack, or diagnosis.
+Reading all five is not the intent and costs ~25k tokens.
 
 **If you are already running, do not reread — take the delta.** A session that has
-read the index is stale only by what peers appended since. `python3
+read a topic file is stale only by what peers appended since. `python3
 src/RimMandrake/Utils/whats_new.py --seat <SEAT>` prints those added headings in a few lines; a
 full reread buys the same information for ~25k tokens, which is why it gets
 skipped. Run it when the game loads, or any time you want it.
 
-**After any RimWorld task, ask: did anything here surprise me?** If yes, append an
-entry to the matching topic file and add its title to the index in the same commit.
-⚠️ **But most candidate lessons should be REJECTED** — `references/traps.md` carries
-a five-part admission test, and an entry failing any one of them is not a trap.
+**After any RimWorld task, ask: did anything here surprise me?** If yes, append it
+to the matching topic file, short: what it looked like, what was actually true,
+what worked. ⚠️ **Most candidate lessons should be REJECTED** — it goes in only if
+it is specific, non-obvious, RimWorld-bound and still true. General software or
+process advice is not a trap. If it changes what *this file* says to do by
+default, it belongs here instead, and does not get logged at all.
 
-**The entry format, the admission test, the promote-into-this-file rule, the
-forty-entry split threshold and where the canonical copy of a skill lives are all
-in `references/traps.md` → "Capture, rejection, promotion".** Open it before you
-write an entry — kept in one place so the two cannot drift apart.
+🔴 **Never number an entry, and never cite one by number, line or heading.** Say
+"as per the trap file" and stop. Editing an installed skill changes nothing
+durable: edit the copy in the user's project, re-package, and say it has been
+**delivered** rather than saved.
 
 ---
 
@@ -526,7 +524,7 @@ write an entry — kept in one place so the two cannot drift apart.
 
 | File | Read it when |
 |---|---|
-| `references/traps.md` | **First, and append last.** The *index* of earned lessons — routes to five topic files; open the one you need, never all five. **Entry counts live in its "Which file" table and nowhere else** — they were duplicated here and went stale by 24. |
+| `references/traps.md` | **First, and append last.** Routes to the five topic files below and says what qualifies as an entry. Open the one you need, never all five. |
 | ├ `traps-tooling.md` | **If you read only one, read this.** Nearly every entry is a tool that answered a different question than the one asked. |
 | ├ `traps-xml-and-defs.md` | Before writing a patch — these cost a game load, not a rerun. |
 | ├ `traps-mods-and-managers.md` | A mod is absent, dead, or ignoring its files. |
