@@ -437,6 +437,37 @@ def _guarded_by_identical_test(path: str, xp: str,
     return cond_tests.get(path[: -len(suffix)]) == xp
 
 
+def _dead_in_nomatch(path: str, xp: str,
+                     cond_tests: dict[str, str]) -> bool:
+    """
+    The exact mirror of _guarded_by_identical_test(), and the OPPOSITE verdict.
+
+    Reaching <nomatch> PROVES the test xpath matched nothing. So an operation
+    there carrying that same xpath can never match either: it is dead on
+    arrival, and no def dump is needed to know it. That is what makes this
+    worth checking statically -- without --defs the 0-match check does not run
+    at all, so today this shape passes silently.
+
+    ⚠️ Only the FIRST operation in the branch is provably dead. A later
+    sibling CAN legitimately use the test's xpath, because an earlier one may
+    have created the node:
+
+        nomatch: Sequence
+          li[1] Add     xpath=/Defs/X            value=<foo>1</foo>   # creates
+          li[2] Replace xpath=/Defs/X/foo        value=<foo>2</foo>   # now matches
+
+    Contrived, but legal, and flagging it would be a false positive -- which is
+    the one thing a static check must not produce.
+
+    The healthy idiom is the differing xpath: test /Defs/X/foo, and Add
+    /Defs/X. That is add-if-missing and is already covered by its own warning.
+    """
+    for suffix in (" > nomatch", " > nomatch > operations/li[1]"):
+        if path.endswith(suffix):
+            return cond_tests.get(path[: -len(suffix)]) == xp
+    return False
+
+
 def check_structure(root: ET.Element, f: Findings) -> list[tuple[ET.Element, str, str, bool]]:
     """
     Walk every operation, run the static checks, and return the list of
@@ -473,6 +504,15 @@ def check_structure(root: ET.Element, f: Findings) -> list[tuple[ET.Element, str
             elif not xp:
                 f.error(f"{path} ({cls}): <xpath> is empty")
             else:
+                if _dead_in_nomatch(path, xp, cond_tests):
+                    f.error(
+                        f"{path} ({cls}): this xpath is byte-identical to the "
+                        f"enclosing conditional's test, and it is in <nomatch>. "
+                        f"Reaching <nomatch> PROVES the test matched nothing, so "
+                        f"this operation cannot match either - it is dead on "
+                        f"arrival, whatever the defs say. For add-if-missing, "
+                        f"the <nomatch> op must target the PARENT of the tested "
+                        f"node, not the node itself.")
                 to_evaluate.append(
                     (op, path, xp,
                      _guarded_by_identical_test(path, xp, cond_tests)))
