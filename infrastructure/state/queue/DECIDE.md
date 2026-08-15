@@ -1,6 +1,6 @@
 # DECIDE inbox.
 
-## D0 Assign `row:` to the 67 migrated items
+## D0 Give every queue item a chain step so the board can place it
 row:      infra
 spec:     Items in `queue/BUILD.md` and `queue/CHECK.md` migrated without a `row:`
           and land in an `unassigned` bucket. Read each, add `row: <n>` from
@@ -11,7 +11,7 @@ verify:   `python3 src/RimMandrake/Utils/derive_matrix.py` reports 0 unassigned.
 criteria: —
 state:    done
 
-## D-CRIT ⭐ The critical path — read this before sequencing anything
+## D-CRIT ⭐ Read before sequencing — the ocean gates worldgen, which gates two rows
 row:      10
 spec:     ROWS 2 AND 7 ARE ONE CHAIN, NOT TWO PROBLEMS.
           Row 7 (ordinary worldgen) is blocked on the sea: the generator produces
@@ -36,7 +36,7 @@ verify:   —
 criteria: —
 state:    ready
 
-## D1 Fill the empty contracts, highest value first
+## D1 Fill in the items whose spec or test is still blank
 row:      infra
 spec:     32 fields across the migrated items are literally EMPTY because the old
           notes did not say. BUILD and CHECK will bounce every one of them. Work
@@ -45,35 +45,35 @@ verify:   No item in `queue/BUILD.md` has an EMPTY `spec:` or `verify:`.
 criteria: —
 state:    ready
 
-## D2 Owner decision #10 — is a throwaway world permitted
+## D2 Owner: may we generate throwaway worlds purely to measure?
 row:      10
 spec:     `OWNER_DECISIONS.md`. All technical prerequisites are closed; a quicktest already builds a FULL world (119,904 tiles, `waterPct 25.0`, 2 bodies, `previewOnly:false`, 127 ms), so the sea gate and the worldgen click-path can be rehearsed on disposable worlds without opening the once-only Configure Factions screen.
 verify:   EMPTY
 criteria: EMPTY
 state:    blocked
 
-## D4 The desert world generates ~49% ocean — does the planet bend
+## D4 The world is half ocean against a quarter by design — pick a fix
 row:      10
 spec:     Measured on three real saves: 43% / 49% / 55% Ocean. The thirst-world identity exists in our documents and nowhere else. Ocean is an elevation rule written at worldgen step 0, so the rainfall slider cannot remove one tile, and no active mod manages water. Three routes, none needing a new dependency: **WorldEdit 2.0** (already active), a custom `WorldGenStep`, or BiomesKit's unused hooks. `faction_world_spec.md`, last section. This contradicts the Three Waters ruling by ~100x.
 verify:   EMPTY
 criteria: EMPTY
 state:    blocked
 
-## D10 Cut the Predator family — taste call, decided on fiction alone
+## D10 Owner: cut the four Predator factions from the world?
 row:      10
 spec:     Four Yautja factions own **14 settlements** between them — `ABYautjaBadBloodClan` (5), `ABYautjaBerserkClan` (4), `ABYautjaClan` (4), `ABYautjaModderClan` (1) — the single largest non-Star-Wars presence on the map. Two SEPARATE levers, not interchangeable: **the four FACTIONS** can be unticked at worldgen (free, reversible, no mod change, already on `WORLDGEN_FACTION_CHECKLIST.md`); **the XENOTYPE MOD** `[AB] Xenotype: Yautja` (`biotechrace.yautja.alleyballey`, ws `3536839586`) is a separate decision — removing it costs a game-down window and risks `Could not resolve cross-reference`. The mod owns all 14 `Exception getting Verse.Graphic_Multi at :` errors (one malformed `<bodyGraphicData>` at `PawnKinds_BaseAbstract.xml:60`, 7 kinds x 2 lifeStages) but those errors are HARMLESS and waived — do not let them do work they cannot do. If the mod goes, BUILD B24 loses its mid-tier reference (Yautja blade, AP 0.60). Recommendation on file: untick the four factions, keep the mod installed.
 verify:   EMPTY
 criteria: EMPTY
 state:    blocked
 
-## D16 The restructure's unplaced items and the `skills/` stage
+## D16 Seven files have no home in the new layout — decide where
 row:      infra
 spec:     `infrastructure/disposing/RESTRUCTURE_PLAN.md` §3 lists seven unplaced items that need a ruling before stage 4; stage 9 (`skills/`) is owner-gated and may never run. Both block BUILD B35.
 verify:   EMPTY
 criteria: EMPTY
 state:    blocked
 
-## D18 Write the nine missing ideoligion texts
+## D18 Write the text for nine faiths that currently have only a name
 row:      6
 spec:     `design/Jawa/worldbuilding/faction_religions_spec.md`. Entries 1, 2 and
           3 have authored `ideoName` + `ideoDescription` + `deityPresets`.
@@ -92,7 +92,7 @@ verify:   every entry 1-11 has a non-empty `ideoName` and `ideoDescription`, and
 criteria: `jawa/ideo_of` reads the eleven back and they match the spec.
 state:    ready
 
-## D19 The Scenario — there is no design document
+## D19 Design how the campaign starts — no document exists
 row:      12
 spec:     Chain step 12 has no doc anywhere in `design/`. It is the first thing
           the player touches: starting pawns, starting gear, the gravship, the
