@@ -349,3 +349,135 @@ gated on the same Faction Customizer question as CHECK C24.
 - **Ideo text is the deliverable.** `ideoName`, `ideoDescription` and the deity
   name/type pairs are the only strings the engine renders; 9 of 11 entries in
   `faction_religions_spec.md` still have none.
+
+## The pawn layer — measured, and it forces a ruling
+
+**R20 · Donor kinds are FLAT SPECIES kinds. Role differentiation does not exist
+and must be authored.** Measured across 1,766 `PawnKindDef`s in the live dump:
+every Galactic Diversity kind is a single entry per species at `combatPower 40`
+— `OuterRim_Nikto`, `OuterRim_Wookiee`, `OuterRim_Geonosian`, `OuterRim_Quarren`,
+`OuterRim_Arkanian`. There is no Nikto lieutenant, no Wookiee elite, no Quarren
+specialist. Counts by theme:
+
+| theme | kinds | note |
+|---|---|---|
+| Hutt / Nikto / Gamorrean | 5 | **Weequay ZERO** — the dossier's 16% has no kind |
+| droid | 77 | the one rich seam |
+| Wookiee | 2 | |
+| Mon Cal / Quarren | 4 | |
+| Geonosian | 2 | |
+| Arkanian / Kaminoan | 4 | |
+| scavenger / scrapper | 17 | **"junker" ZERO** — generic scavengers from 6 mods |
+
+⇒ **The dossiers' group compositions cannot be built from donors alone.**
+"Lieutenant, 4–8 Nikto levies, 2 Gamorreans" needs three kinds where the dump
+offers one. **The 48 kinds in `pawnkind_roster.md` are therefore REQUIRED, not
+optional** — this is chain step 7 and it is real work.
+
+**⇒ v1 ships factions against FLAT kinds now, and upgrades them when the 48
+land.** A faction referencing `OuterRim_Nikto` five times is undifferentiated but
+correct, spawns, and closes the row. Waiting for 48 pawn kinds before any faction
+exists would put the whole faction layer behind step 7. This is the "everything
+ships THIN" doctrine applied exactly where it was meant to apply.
+
+### 🪤 Three traps the dump settles
+
+1. **`combatPower 99999` is the exclude-from-raid sentinel.** Eight Droid Depot
+   civilian kinds carry it. Legal in `traders` / `carriers` / `guards`; putting
+   one in `options` poisons the group.
+2. **`minTotalPoints` DOES NOT EXIST.** Zero occurrences across 404 group makers.
+   Every one has exactly `kindDef · commonality · maxTotalPoints · options ·
+   traders · carriers · guards`.
+3. **`PawnGenOption` has exactly two keys** — `kind` and `selectionWeight`.
+   Nothing else, across all 3,150 instances.
+
+Legal `kindDef` values: `Combat` · `Settlement` · `Peaceful` · `Trader` ·
+`Miners` · `Hunters` · `Loggers` · `Farmers` · `Settlement_RangedOnly`.
+
+### Namers and icons — the R16/R17 assignments
+
+🔴 **There are ZERO Star Wars faction namers in the whole 585-mod set.** Reuse
+means vanilla namers, which will generate non-Star-Wars settlement names. That is
+a real and visible fiction cost, accepted for v1; bespoke `RulePackDef`s are the
+first `[v2]` item off this spec.
+
+| faction | factionNameMaker | settlementNameMaker | factionIconPath |
+|---|---|---|---|
+| Hutt Cartel | `NamerFactionOutlander` | `NamerSettlementOutlander` | `World/WorldObjects/Expanding/Town` |
+| Free Droid Enclaves | `NamerFactionOutlander` | `NamerSettlementOutlander` | ⭐ `World/RogueDroids` |
+| Wildsteam Clan | `NamerFactionTribal` | `NamerSettlementTribal` | `.../Expanding/VillageSavage` |
+| Deepwater Compact | `NamerFactionOutlander` | `NamerSettlementOutlander` | `.../Expanding/Village` |
+| Geonosian Foundry Hive | `NamerFactionTribal` | `NamerSettlementTribal` | ⭐ `.../Expanding/Insects` |
+| Ascendant Helix | `NamerFactionEmpire` | `NamerSettlementEmpire` | `.../Expanding/Empire` |
+| the Junkers | `NamerFactionSalvagers` | `NamerSettlementPirate` | ⭐⭐ `UI/FactionIcons/JunkersOutpost` |
+| Jawa Trade Moot | `NamerFactionTribal` | `NamerSettlementTribal` | `OuterRim/WorldObjects/MoistureFarmers` |
+
+⚠️ Vanilla ships a typo, `NamerSettlementTribalNeaderthal` (no second "n"). If
+you ever reach for it, copy it exactly.
+
+### `pawnGroupMakers` — kinds that resolve today
+
+Every defName below was verified present in the 2026-08-14 dump. Weights are a
+first pass; the shape is the design.
+
+```
+Jawa_HuttCartel
+  Combat    OuterRim_Nikto 10 · OuterRim_NiktoTribal 6 ·
+            Jawa_Gamorrean_Guard 4 · Jawa_Gamorrean_Enforcer 1
+  Trader    traders: OuterRim_Nikto · guards: Jawa_Gamorrean_Guard 6,
+            Jawa_Gamorrean_Enforcer 2 · carriers: Bantha, Dewback
+  Settlement OuterRim_Nikto 8 · Jawa_Gamorrean_Guard 4 · Jawa_Spawn_Hutt 1
+  🔴 Jawa_Spawn_Hutt appears ONLY here and in Trader guards. Never in Combat.
+
+Jawa_FreeDroidEnclaves
+  Combat    OuterRim_EscapedBattleDroid 8 · OuterRim_BattleDroid 6 ·
+            OuterRim_SuperBattleDroid 3 · OuterRim_CommandoDroid 2 ·
+            OuterRim_MagnaGuardDroid 1 · OuterRim_TacticalDroid 1
+  Trader    traders: OuterRim_ProtocolDroid · guards: OuterRim_KXSecurityDroid
+  Settlement OuterRim_BattleDroid 6 · OuterRim_SuperBattleDroid 2
+  ⚠️ OuterRim_GNKDroid / _MSEDroid / _FX7Droid are cp 99999 — carriers/guards ONLY.
+
+Jawa_WildsteamClan
+  Combat    OuterRim_Wookiee 10 · OuterRim_WookieeTribal 8      -- only 2 exist
+  Trader    traders: OuterRim_Wookiee · carriers: Muffalo, Bantha
+  Settlement OuterRim_WookieeTribal 10 · OuterRim_Wookiee 5
+
+Jawa_DeepwaterCompact
+  Combat    OuterRim_Quarren 10 · OuterRim_MonCalamari 8 ·
+            OuterRim_QuarrenTribal 4
+  Trader    traders: OuterRim_MonCalamari · guards: OuterRim_Quarren
+  Settlement OuterRim_MonCalamari 8 · OuterRim_Quarren 8
+  ⛔ NO Combat group reaches the player - raidsForbidden true. Keep the group
+     anyway for settlement defence.
+
+Jawa_GeonosianFoundryHive
+  Combat    OuterRim_Geonosian 10 · OuterRim_GeonosianTribal 6 ·
+            JDSCIS_B1_Battle_Droid 8 · JDSCIS_B2_Super_Battle_Droid 3 ·
+            JDSCIS_Droideka_Droid 1 · JDSCIS_T1_Tactical_Droid 1
+  Settlement OuterRim_Geonosian 10 · JDSCIS_B1_Battle_Droid 6
+  NO Trader group - canRequestTraders false.
+
+Jawa_AscendantHelix
+  Combat    OuterRim_Arkanian 8 · OuterRim_Kaminoan 4 ·
+            OuterRim_ArkanianTribal 2
+  Trader    traders: OuterRim_Kaminoan · guards: OuterRim_Arkanian
+  Settlement OuterRim_Arkanian 8 · OuterRim_Kaminoan 6
+
+Jawa_Junkers
+  Combat    Jawa_Gamorrean_Guard 10 · Jawa_Gamorrean_Enforcer 3 ·
+            OuterRim_Scavenger 6 · OuterRim_Thrasher 6 ·
+            VFEP_Scrapper 4 · Scavenger 3 · Thrasher 3
+  Settlement Jawa_Gamorrean_Guard 8 · OuterRim_Scavenger 5
+  NO Trader group - canRequestTraders false, they are a loot source.
+  ⭐ Gamorrean-led matches the dossier's 26% Gamorrean composition exactly.
+
+Jawa_IndigenousTribes  (already ships - verify these still resolve)
+  Combat/Trader/Settlement over Jawa_Tribal_Scavenger · _Slinger · _Elder
+  🔴 the shipped groups reference vanilla Combat/Peaceful/Trader kindDefs;
+     confirm the OPTIONS name our kinds and not vanilla ones.
+```
+
+**Not expressible from donors, and deliberately dropped from v1:** Weequay (no
+kind exists), Trandoshan/Rodian/Aqualish/Snivvian role splits, the Junker
+warcasket tiers, the Hutt "proxy" distinction, and every lieutenant/champion/
+specialist rank. All of them return with the 48 authored kinds.
