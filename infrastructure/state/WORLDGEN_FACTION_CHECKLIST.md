@@ -248,7 +248,7 @@ time.
 |---|---|---|---|---|
 | ☐ | **binary star raiders** | `OuterRim_BinaryStarRaiders` | Outer Rim - Core (2919227155) | ordinary row, permanent enemy |
 | ☐ | **Confederacy of Independent Systems** | `JDSCIS_CIS_Faction` | [JDS] Separatist Droid Army (3276499495) | **hidden checkbox**, not a row |
-| ☐ | **Imperial Desert Directorate** *(patched label — the page will NOT say "Galactic Empire")* | `OuterRim_GalacticEmpire` | Outer Rim - Galactic Empire (2919248699) | 🔴 **label is patched, and the patch is superseded scaffolding — see below. Not a blocker either way.** |
+| ☐ | **`OuterRim_GalacticEmpire`** — *expect its own shipped label, NOT "Imperial Desert Directorate"* | `OuterRim_GalacticEmpire` | Outer Rim - Galactic Empire (2919248699) | 🔴 **NOTHING PATCHES IT ANY MORE.** The Galactic Empire moved to vanilla `Empire` (R10, 2026-08-14). Not a blocker either way — untick or keep as you please. |
 | ☐ | **moisture farmers** | `OuterRim_MoistureFarmers` | Outer Rim - Core | ordinary row |
 | ☐ | **rogue droid collective** *("Droid Collective")* | `guy762_KotORFaction_RogueDroids` | Star Wars KotOR Droids (3047371944) | **hidden checkbox**, not a row. 🔴 **quest-critical — antagonist of the KotOR distress call. Never untick.** |
 | ☐ | ⭐ **vanilla `Empire`** — *name will be GENERATED, expect a different string* | `Empire` | **vanilla (Royalty)** | 🔴 **ADDED TO KEEP by VISION R3.** Not on any untick list, so it survives by default — **confirm it anyway, count ≥ 1, and SCREENSHOT the generated name.** |
@@ -385,6 +385,52 @@ still exist; unticking a faction does not delete its def.
 
 ---
 
+
+## SECTION 4b — 🔴 OUR OWN FACTIONS. SET EACH TO AT LEAST 1.
+
+**These did not exist when the rest of this file was written.** They are the
+campaign's authored roster, built and deployed 2026-08-14.
+
+> 🔴 **A faction absent at worldgen CANNOT be added later.** This is the single
+> most expensive mistake available on this page. If one of these reads 0 when you
+> leave, that faction does not exist in your campaign, permanently.
+
+⚠️ **A strict diff against this file's other sections will show these as
+"unexpected". That is the expected outcome** — they postdate the untick list.
+
+### The 8 that appear as NEW rows — set each ≥ 1
+
+| ✔ | expect the label | defName |
+|---|---|---|
+| ☐ | **Hutt Cartel** | `Jawa_HuttCartel` |
+| ☐ | **Free Droid Enclaves** | `Jawa_FreeDroidEnclaves` |
+| ☐ | **Wildsteam Clan** | `Jawa_WildsteamClan` |
+| ☐ | **Deepwater Compact** | `Jawa_DeepwaterCompact` |
+| ☐ | **Geonosian Foundry Hive** | `Jawa_GeonosianFoundryHive` |
+| ☐ | **Ascendant Helix** | `Jawa_AscendantHelix` |
+| ☐ | **the Junkers** | `Jawa_Junkers` |
+| ☐ | **Jawa Trade Moot** | `Jawa_IndigenousTribes` |
+
+All seven authored defs carry `requiredCountAtGameStart 1`, so they *should* be
+forced — but **"should be" is not "was"**, and this run is permanent. Look at each.
+
+### The 5 vanilla rows we RESKINNED — confirm present, do not untick
+
+| ✔ | on the page it will read | defName | is now |
+|---|---|---|---|
+| ☐ | a generated Empire name | `Empire` | **the Galactic Empire** — also in Section 4 |
+| ☐ | an outlander union | `OutlanderCivil` | **Homestead Defense League** |
+| ☐ | a tribe | `TribeCivil` | **Deep Desert Tribes** |
+| ☐ | a pirate band | `Pirate` | **Blackstar Company** |
+| ☐ | *(hidden checkbox)* | `Mechanoid` | **the Forgotten Arsenal** |
+
+🔴 **Unticking any of these five deletes one of our factions.** They look like
+ordinary vanilla rows and they are not any more.
+
+⛔ **The Unbound Hive is NOT here and that is deliberate.** `Insect` stays on the
+Section 2 untick list; the faction was cut for exactly that reason. Do not hunt
+for it.
+
 ## Tally
 
 | | count |
@@ -393,7 +439,8 @@ still exist; unticking a faction does not delete its def.
 | **UNTICK — Section 2, hidden checkboxes** | 8 |
 | **UNTICK — Section 3, not on the page (mod removal only)** | 1 *(`HoraxCult`; `Entities` and `VRE_Archons` listed alongside as cautions, not on the untick list)* |
 | **UNTICK total proposed** | **21** |
-| **KEEP** | **6** |
+| **KEEP — Section 4** | **6** |
+| **SET ≥ 1 — Section 4b, our own** | **13** *(8 new rows + 5 reskinned vanilla rows)* |
 | **NOT FOUND on disk** | **0** |
 
 **Before you leave the page**, screenshot it. It is the only record of what was
