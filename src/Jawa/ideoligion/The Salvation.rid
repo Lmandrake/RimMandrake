@@ -157,7 +157,6 @@
 			<li>temeez.floorlights2</li>
 			<li>aoba.fortress.neolithic</li>
 			<li>m00nl1ght.geologicallandforms</li>
-			<li>zal.giantsnake</li>
 			<li>memegoddess.giddyup</li>
 			<li>lts.geg</li>
 			<li>albion.goexplore</li>
@@ -165,7 +164,6 @@
 			<li>arcjc007.gravshipcrashes</li>
 			<li>arcjc007.gravshipexporter</li>
 			<li>imagitama.rimworldgravshiprangeonmap</li>
-			<li>abrolo.grimstone.beasts</li>
 			<li>arti.shrinez</li>
 			<li>mlie.harvestwhenbutchering</li>
 			<li>ael.tua.helmetsaddtoxresistance</li>
@@ -265,7 +263,6 @@
 			<li>laureeeeeeeeeeeeeeen.shrooms</li>
 			<li>fluxilis.germanquality</li>
 			<li>dawnsglow.qualcolor</li>
-			<li>rah.rvte</li>
 			<li>leo.raidprotectionfee</li>
 			<li>ingendum.raiderswarmcompression</li>
 			<li>zal.randomgrowthchoices</li>
@@ -311,7 +308,6 @@
 			<li>spacemoth.showknowntechprints</li>
 			<li>dark.signs</li>
 			<li>stokes.simplehoodcape</li>
-			<li>guppyfacesarecute.skunks</li>
 			<li>usgiyi.slaveoutfits</li>
 			<li>mlie.slaverebellionsimproved</li>
 			<li>astryl.sleepingbuddies</li>
@@ -360,7 +356,6 @@
 			<li>nephlite.orbitaltradecolumn</li>
 			<li>sirvan.mwretextured</li>
 			<li>sirvan.steelretexture</li>
-			<li>vanillaexpanded.vanillaanimalsexpanded</li>
 			<li>vanillaexpanded.vaewaste</li>
 			<li>vanillaexpanded.vappe</li>
 			<li>vanillaexpanded.vaeaccessories</li>
@@ -405,7 +400,6 @@
 			<li>gabrieel1482.raidvehicleframework</li>
 			<li>ninagoblin.visitsettlements</li>
 			<li>addvans.walktheworld</li>
-			<li>honeybadger.wallmountedturretsversiontwo</li>
 			<li>ogliss.g223.wanderingcaravans</li>
 			<li>addvans.wasdedpawn</li>
 			<li>sl4vp0wer.weareunited</li>
@@ -504,7 +498,6 @@
 			<li>reel.facialanims</li>
 			<li>noxilie.regrow.wmb.advancedbiomes</li>
 			<li>noxilie.regrow.wmb.alphabiomes</li>
-			<li>regrowth.botr.boilingforest</li>
 			<li>mandrake.researchkiteastfix</li>
 			<li>oskarpotocki.vfe.pirates</li>
 			<li>vanillaexpanded.vmemese</li>
@@ -549,7 +542,6 @@
 			<li>farxmai2.vanilladeconstructablevehicles</li>
 			<li>redmattis.optional</li>
 			<li>redmattis.bigsmall</li>
-			<li>redmattis.sapientanimals</li>
 			<li>redmattis.bigweapons</li>
 			<li>avilmask.commonsense</li>
 			<li>mandrake.desertvehiclereskin</li>
@@ -559,11 +551,9 @@
 			<li>leutiankane.mines2patchouterrim</li>
 			<li>neronix17.outerrim.droiddepot</li>
 			<li>neronix17.outerrim.furnitureanddecor</li>
-			<li>neronix17.outerrim.galacticdiversity</li>
 			<li>neronix17.outerrim.galacticempire</li>
 			<li>neronix17.outerrim.rebelalliance</li>
 			<li>jelheb.rusticmealretexture</li>
-			<li>guy762.starwarsxenotypes</li>
 			<li>frozensnowfox.complexjobs</li>
 			<li>dubwise.dubsbreakmod</li>
 			<li>danzinagri.facialanimationcompatabilityproject</li>
@@ -575,15 +565,16 @@
 			<li>co.uk.epicguru.meleeanimation</li>
 			<li>lordfelix.rimcontrol</li>
 			<li>lee.theforce.lightsaber</li>
-			<li>btd.xenotyperemix.starwars</li>
+			<li>mandrake.starwarsraces</li>
 			<li>guy762.mm.kotorcore</li>
 			<li>guy762.kotorweapons</li>
 			<li>als.gravtech</li>
 			<li>als.gravtech.bc</li>
-			<li>halituisamaricanous.gravtechbigcannons</li>
+			<li>HalituisAmaricanous.gravtechbigcannons</li>
 			<li>mandrake.jawa.armoury</li>
 			<li>mandrake.jawaionweapons</li>
 			<li>mandrake.jawa.patches</li>
+			<li>mandrake.jawaplantgrowth</li>
 			<li>guy762.kotordroids</li>
 			<li>btd.gbp.shippack.kotor.vge</li>
 			<li>mandrake.jawaseashaper</li>
@@ -1116,16 +1107,7 @@
 			<li>0</li>
 			<li>0</li>
 			<li>0</li>
-			<li>0</li>
-			<li>0</li>
-			<li>0</li>
-			<li>0</li>
-			<li>0</li>
-			<li>0</li>
-			<li>0</li>
 			<li>730936602</li>
-			<li>0</li>
-			<li>0</li>
 			<li>0</li>
 			<li>0</li>
 			<li>0</li>
@@ -1331,7 +1313,6 @@
 			<li>Floor Lights 2</li>
 			<li>Fortifications - Neolithic</li>
 			<li>Geological Landforms</li>
-			<li>Giant Snake (Continued)</li>
 			<li>Giddy-Up 2 - Continued</li>
 			<li>Glowing eyes genes</li>
 			<li>Go Explore!</li>
@@ -1339,7 +1320,6 @@
 			<li>Gravship Crashes</li>
 			<li>Gravship Exporter</li>
 			<li>Gravship Range On Map</li>
-			<li>Grimstone : Beasts</li>
 			<li>Guaranteed Ancient Dangers</li>
 			<li>Harvest When Butchering</li>
 			<li>High Tech Helmets Give Tox Gas Resistance</li>
@@ -1439,7 +1419,6 @@
 			<li>Psilocap Cultivation</li>
 			<li>Quality Affects HP</li>
 			<li>Quality Colors (Continued)</li>
-			<li>Rah's Vanilla Turrets Expansion</li>
 			<li>Raid Protection Fee</li>
 			<li>Raider Swarm Compression</li>
 			<li>RandomGrowthChoices (Continued)</li>
@@ -1466,7 +1445,7 @@
 			<li>RimTunes</li>
 			<li>Rimwars:Pureblood Xenotype</li>
 			<li>Rimworld Exploration Mode</li>
-			<li>Romance &amp; Intimacy On The Rim</li>
+			<li>Romance &amp;amp; Intimacy On The Rim</li>
 			<li>Roo's Minotaur Xenotype</li>
 			<li>Roofed Scanning 1.6</li>
 			<li>Roots of Rimworld</li>
@@ -1485,7 +1464,6 @@
 			<li>Show Known Techprints</li>
 			<li>Signs and Comments</li>
 			<li>Simple Cape and Hood Retexture</li>
-			<li>Skunks</li>
 			<li>Slave Outfits [1.6]</li>
 			<li>Slave Rebellions Improved (Continued)</li>
 			<li>Sleeping Buddies</li>
@@ -1534,7 +1512,6 @@
 			<li>Utility Columns</li>
 			<li>Van's Retexture : Melee Weapons</li>
 			<li>Van's Retexture : Steel</li>
-			<li>Vanilla Animals Expanded</li>
 			<li>Vanilla Animals Expanded — Waste Animals</li>
 			<li>Vanilla Apparel Expanded</li>
 			<li>Vanilla Apparel Expanded — Accessories</li>
@@ -1579,7 +1556,6 @@
 			<li>VehicleRaid Framework</li>
 			<li>Visit Settlements</li>
 			<li>Walk the World</li>
-			<li>Wall Mounted Turrets Version 2</li>
 			<li>Wandering Caravans</li>
 			<li>WASDed Pawn</li>
 			<li>We Are United</li>
@@ -1678,7 +1654,6 @@
 			<li>Reel's Facial Animation Textures</li>
 			<li>ReGrowth 2 World Map Beautification for Advanced Biomes (Continued)</li>
 			<li>ReGrowth 2 World Map Beautification for Alpha Biomes</li>
-			<li>ReGrowth: Boiling</li>
 			<li>Research Kit East Fix — Research Reinvented (Retextured)</li>
 			<li>Vanilla Factions Expanded - Pirates</li>
 			<li>Vanilla Ideology Expanded - Memes and Structures</li>
@@ -1708,13 +1683,13 @@
 			<li>Way Better Romance</li>
 			<li>[AB] Xenotype: Yautja</li>
 			<li>[GTG]Traders Accept All Junk Gear</li>
-			<li>[GTG]Traders Accept Chunks &amp; Corpses</li>
+			<li>[GTG]Traders Accept Chunks &amp;amp; Corpses</li>
 			<li>ABF: Synstructs Core</li>
 			<li>Achtung!</li>
 			<li>Adjustments for Vanilla Textures Expanded - [NL] Facial Animation</li>
 			<li>Alpha Vehicles - Neolithic</li>
 			<li>Beard Adjustment</li>
-			<li>Big and Small - Genes &amp; More</li>
+			<li>Big and Small - Genes &amp;amp; More</li>
 			<li>Intimacy - Friends n' Lovers</li>
 			<li>LEVIATHANS:SANDWORM</li>
 			<li>Outer Rim - Core</li>
@@ -1723,7 +1698,6 @@
 			<li>VVE - Deconstructable Vehicles Junk</li>
 			<li>Big and Small - Enable All Optional Content</li>
 			<li>Big and Small - Races</li>
-			<li>Big and Small - Sapient Animals</li>
 			<li>Big and Small - Weapons</li>
 			<li>Common Sense</li>
 			<li>Desert Vehicle Reskin — Alpha Vehicles Neolithic</li>
@@ -1732,12 +1706,10 @@
 			<li>LK Mineable Resources Outer Rim</li>
 			<li>LK Mines 2.0 Compatability[Outer Rim Core]</li>
 			<li>Outer Rim - Droid Depot</li>
-			<li>Outer Rim - Furniture &amp; Decor</li>
-			<li>Outer Rim - Galactic Diversity</li>
+			<li>Outer Rim - Furniture &amp;amp; Decor</li>
 			<li>Outer Rim - Galactic Empire</li>
 			<li>Outer Rim - Rebel Alliance</li>
 			<li>Rustic Meal Retexture</li>
-			<li>Star Wars Xenotypes</li>
 			<li>[FSF] Complex Jobs</li>
 			<li>Dubs Break Mod</li>
 			<li>Facial Animation Compatability Project</li>
@@ -1749,7 +1721,7 @@
 			<li>Melee Animation</li>
 			<li>Rim Control</li>
 			<li>Star Wars : The Force - Lightsaber</li>
-			<li>[BTD] Xenotype REMIX: Star Wars</li>
+			<li>RimMandrake - Star Wars Races</li>
 			<li>Star Wars KotOR Resources and Materials</li>
 			<li>Star Wars KotOR Weapons and Armor</li>
 			<li>GravTech</li>
@@ -1758,6 +1730,7 @@
 			<li>Jawa Armoury Rebalance</li>
 			<li>Jawa Ion Weapons (local)</li>
 			<li>Jawa Patches (local)</li>
+			<li>Jawa Plant Growth (local)</li>
 			<li>Star Wars KotOR Droids</li>
 			<li>[BTD] Ship Pack: KotOR Ships VGE</li>
 			<li>Jawa Sea Shaper</li>

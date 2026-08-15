@@ -1808,4 +1808,20 @@ verify:   the three lists are 575 long, index-aligned, in `activeMods` order; th
 criteria: the ideoligion loads with no missing-mod warning AND C42's precept count is
           unchanged by this edit — if precepts change, this item did something it should
           not have.
-state:    ready
+state:    done 2026-08-15 — PROVENANCE ONLY, `ideo` byte-identical (101 precepts,
+          5 memes, unchanged). Three lists rebuilt from live `activeMods` order:
+          **576, not the 575 this spec says** — it was written before
+          `mandrake.jawaplantgrowth` deployed today. Spec also named 2 absent mods;
+          there were **3** (it missed `HalituisAmaricanous.gravtechbigcannons`) and
+          12 dead, not 11.
+          🔑 `modSteamIds` comes from `About.xml` `<steamAppId>`, NOT
+          `PublishedFileId.txt` as the spec says. Measured: that reproduces the
+          file's own 7 non-zero ids exactly; PublishedFileId would have put a
+          number in ~553 rows that RimWorld writes as `0`.
+          🔑 `gameVersion` LEFT at `1.6.4871 rev591` deliberately. Live ModsConfig
+          reads rev590, but rev590 is the stale side — `Version.txt` is stamped at
+          install and every file the engine writes (DefDump manifest, all six
+          saves, this file) reads rev591.
+          ⚠️ 19 empty `<li>` reported by the validator PRE-EXIST and sit in `ideo`,
+          not `meta`. Not introduced here, not fixed here.
+
