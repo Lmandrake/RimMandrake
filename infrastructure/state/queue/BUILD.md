@@ -679,3 +679,126 @@ verify:   Per R-G6, all of it inside a ~90 s quicktest — do NOT wait for a col
 criteria: vegetation reads as obtrusively powerful rather than as a balance
           tweak.
 state:    done
+
+## B61 Make the frozen Ancients look Rakatan
+row:      4
+spec:     `design/Jawa/worldbuilding/ANCIENTS_AS_RAKATA_SPEC.md` is the authority;
+          the load-bearing points, so you need not open it to start:
+          **The owner has ruled the ancient sleepers ARE the Rakata**
+          (`the_forgotten_war.md` R-W2 ③ / R-W5). Vanilla's Ancients generate as
+          plain humans, so the whole beat lands on a pawn that looks like a pirate.
+          This is an APPEARANCE change to PAWNS only.
+          🔴 **R-A1 — the xenotype is `RimMandrakeRakata`, NOT `BTD_Rakata`.**
+          `BTD_Rakata` does not exist in ANY def type anywhere in the live dump —
+          zero grep hits, control `RimMandrakeRakata` hits 7 files. `FACTION_SPEC.md`
+          R27 and `the_forgotten_war.md` R-W3 both name it; both are broken
+          references and DECIDE is fixing them. If you see `BTD_Rakata` while
+          working it is a bug to report, never a name to use.
+          **R-A2 — six pawn kinds.** Mandatory: `AncientSoldier` (Core) and
+          `AncientSoldier_Leader` (Odyssey). Also in scope, guarded on
+          `Ancient urban ruins`: `AncientSoldierBoss`, `AncientSoldierBossN`,
+          `AncientMallGuards`, `AncientSlaughter` — all four carry
+          `defaultFactionDef AncientsHostile`, same faction and same fiction, and
+          two Rakatan pawns beside four human ones reads as a bug. Do NOT touch
+          `ABYautja_Ancient`, `BS_Troll_Simple_Ancient`, `QP_AncientShaman`,
+          `VRE_AncientFungoid` — unrelated content that merely matches the string.
+          **R-A3 — `RimMandrakeRakata` at chance `1.0`, alone, PLUS
+          `useFactionXenotypes false`.** All six are `true` today and the faction
+          fallback is not empty: `Ancients` carries `DV_Avaloi 0.15` and
+          `AncientsHostile` `DV_Avaloi 0.10`, injected by `det.avaloi`. One ancient
+          soldier in ten is already an Avaloi.
+          🔴 **R-A4 — TWO XML TRAPS, BOTH ALREADY SHIPPED BROKEN IN THIS REPO.**
+          (a) `xenotypeChances` is DICTIONARY-KEYED: the element name IS the
+          defName. The `<li><xenotype>…</xenotype><chance>…</chance></li>` shape
+          makes `ParseFloat` throw on null and **the whole Def is discarded** —
+          that is B56, which killed five Jawa FactionDefs. Write
+          `<RimMandrakeRakata MayRequire="mandrake.starwarsraces">1.0</RimMandrakeRakata>`.
+          ⚠️ **`FACTION_SPEC.md` R27's own worked example uses the `<li>` shape and
+          is WRONG — do not copy it.** Vanilla `PawnKinds_Spacer.xml` is the model.
+          (b) 🔴 **`xenotypeSet` INHERITS — a child's list is APPENDED to the
+          parent's, not substituted** (R24a + R27, already shipped broken once).
+          Live proof: `AncientSoldierBoss` is declared `<PawnKindDef Name="AMBossBase">`
+          carrying `Neanderthal 0.03`, and `AncientSoldierBossN` is
+          `ParentName="AMBossBase"` with no set of its own. Patch it without
+          `Inherit="False"` and you ship a pawn that is 97% Rakatan and 3%
+          Neanderthal — no crash, no log line, just SOMETIMES right. Put
+          `Inherit="False"` on **both** `<xenotypeSet>` and `<xenotypeChances>`;
+          it is a harmless no-op where there is no parent.
+          **R-A4 (op shape) — Remove-then-Add, not Add.** `AncientSoldier` and
+          `AncientSoldier_Leader` have NO `<xenotypeSet>` node in source; three
+          others do; and `xylthixlm.races.titan` is already patching
+          `AncientSlaughter` (it resolves live with a `XylTitan 0.025` that is not
+          in the mod's own file). Use a `PatchOperationSequence` per kind:
+          `PatchOperationRemove` on `…/xenotypeSet` with `<success>Always</success>`,
+          then `PatchOperationAdd`. `mandrake.jawa.patches` loads after all of them,
+          so our Remove runs last and wins.
+          **R-A5 — also patch the two faction defs** `Ancients` and
+          `AncientsHostile`, same shape. Catch-all for kinds we did not enumerate,
+          and it removes the Avaloi. Belt-and-braces: if it is dropped the six
+          kinds must still work.
+          **R-A6 — guards, and a guard that "passes" proves nothing.**
+          `MayRequire` takes a packageId (`mandrake.starwarsraces`,
+          `Ludeon.RimWorld.Odyssey`); `PatchOperationFindMod` takes the display
+          name (`Ancient urban ruins`). Standing project fact: FindMod and
+          Conditional BOTH return true on no match, so **"no errors in the log" is
+          NOT a pass** — only the def dump reading back, then a pawn on a map.
+          **R-A7 — NOT a faction change.** `Ancients` is hidden,
+          settlementGenerationWeight 0, canMakeRandomly false and cannot host a
+          faction (FACTION_SPEC R9). ⛔ Do not touch `hidden`,
+          `settlementGenerationWeight`, `canMakeRandomly`, `permanentEnemy` or any
+          relations field. The faction patch touches `xenotypeSet` and nothing else.
+          **R-A8 — appearance only.** These kinds drive ancient danger,
+          cryptosleep caskets and quests. ⛔ Do not alter `combatPower`,
+          `apparelMoney`/`apparelTags`, `weaponMoney`/`weaponTags`,
+          `techHediffs*`, `itemQuality`, traits, backstory filters, `race` or
+          `defaultFactionDef`. **The diff per kind is exactly two things.**
+          ⚠️ DO report one number: the aggregate `statOffsets`/`statFactors`/
+          `capMods` across the 21 genes. `combatPower` is static and will not
+          follow. Report it here; DECIDE rules, you do not change it.
+          **R-A9 — labels stay as they are.** Whether "ancient soldier" becomes
+          something Rakatan is 🟡 the owner's call and would be a SEPARATE item.
+          Ship the no-change default.
+          **R-A10 — one new file**,
+          `src/Jawa/Jawa_Patches/Patches/AncientsAreRakata.xml`. Do not edit an
+          existing patch. Writing it is not deploying it —
+          `deploy_custom_mods.py --mod Jawa_Patches --plan` then `--apply`.
+          ✅ **GRAPHICS ARE ALREADY PROVEN ON DISK — do not re-derive.** All 21
+          genes resolve. The two appearance-bearing ones are real art under our own
+          mod: `RimMandrake_RakatanHead` forces `HeadTypeDef RimMandrake_Rakatan`
+          whose three sides are on disk (`…/Heads/Rakatan/Normal_{south,east,north}.png`,
+          20.5/18.3/17.2 KB), and `RimMandrake_Body_gaunt` maps via
+          `RimMandrake_FurDef_gaunt` to `…/SWX/Pawn/BodyType/Gaunt_{south,east,north}.png`.
+          The three `Outland_Skin_*` genes are `skinColorOverride` — colour only,
+          no texture needed, and that is the healthy state. `Hair_BaldOnly` and
+          `Beard_NoBeardOnly` are tag filters and declare no body art by design.
+          The other 12 are stat/psychic/diet genes and all 12 icons resolve too.
+          ⚠️ `RimMandrake_FurDef_gaunt` has `noGraphic: true` — **do not chase
+          it**; all 30 FurDefs in the stack carry it, including Biotech's own.
+verify:   🔴 A quicktest, ~90 s. Do NOT call a cold load — nothing here needs
+          worldgen. Four tiers, all required.
+          **T1 the def changed.** `refresh.py`, then read back:
+          `AncientSoldier.xenotypeSet.xenotypeChances` == exactly ONE entry,
+          `RimMandrakeRakata` at 1.0 — **not two**; `useFactionXenotypes` false;
+          same for the other five; `Ancients`/`AncientsHostile` no longer list
+          `DV_Avaloi`. 🔴 **`AncientSoldierBossN` is the canary** — it is the one
+          with the Neanderthal-carrying parent. Two entries means the R27 trap bit
+          again.
+          **T2 it generates.** Spawn ≥5 `AncientSoldier` via the bridge. Every one
+          Rakata; none Baseliner, Neanderthal, Hussar or Avaloi. Five, not one — a
+          3% contaminant does not show in a sample of one.
+          **T3 it RENDERS, and this one cannot be skipped.** Look at the pawn with
+          eyes: Rakatan head not a vanilla human head, no pink/blank placeholder,
+          skin one of the three browns/oranges, gaunt silhouette. Screenshot and
+          put the path in this item. A file existing on disk is not this check.
+          **T4 nothing else moved.** Gear roll unchanged, an ancient danger room
+          opens and populates normally, zero `Exception loading def from file
+          AncientsAreRakata.xml` and zero `Could not resolve cross-reference`
+          naming `RimMandrakeRakata`.
+          Validator: `validate_patch.py` on the new file pointed at the mod ROOT,
+          with BOTH `--live` and `--defs`.
+          📌 If T1 is clean but T2/T3 show a non-Rakatan, suspect
+          `bs.xenotypespawncontrol` first — a runtime override leaves the dump
+          looking perfect.
+criteria: the player cracks an ancient cryptosleep casket and what climbs out is
+          visibly not human, and the encounter plays exactly as it did before.
+state:    ready
