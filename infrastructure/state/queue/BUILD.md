@@ -2012,7 +2012,12 @@ state:    🔴 DEAD — not blocked, not deferred. **Owner's ruling 2026-08-15: 
           way it does*, so nobody re-opens it as a bug in six weeks.
           ⛔ Do not chase the tint.
 
-## gand-and-chagrian-missing-artwork-5d2a09
+## ~~gand-and-chagrian-missing-artwork-5d2a09~~ — ⛔ WITHDRAWN, IT IS v2
+🔴 CLOSED 2026-08-15, hours after filing, by the owner's ruling that all 70 races are
+visually good enough for v1 and the remaining art is v2 improvement. **Do not action
+this.** Moved to `design/V2_DREAMS.md` under "Race art polish". Left here struck rather
+than deleted so a reader who saw it filed knows where it went. Original text follows.
+
 raised:   2026-08-15 CHECK, from the owner examining the 70-race grid live on the
           scratch quicktest map.
 finding:  THREE species named across two separate looks, and the pair is NOT the same

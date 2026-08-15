@@ -287,7 +287,21 @@ criteria: 70 of 70 spawn with the right xenotype and a species-appropriate body.
           any of them appear organically. 37 of the 70 are named by no faction and
           `factionlessGenerationWeight` is 0 on all of them, so NONE of this is
           expected to occur in normal play yet. That is the later wiring job.
-state:    doing
+state:    ✅ DONE — CLOSED 2026-08-15 on the owner's ruling.
+result:   **70 of 70 spawned**, each with its forced xenotype, in a 10x7 grid at step 4
+          on cleared sand (origin 60,60) on the scratch quicktest map. Zero spawn
+          failures, zero plain-human fallbacks. The owner examined the grid on screen
+          himself and ruled:
+          🔴 *"I think we can mark all the races as visually good enough for v1, with the
+          remaining missing art for v2 improvement. Let's close out race appearance
+          issues for now."*
+          ⇒ **RACE APPEARANCE IS CLOSED FOR v1.** Do not reopen it for an art defect.
+          The known outstanding cosmetics — missing art on `RimMandrakeGand`,
+          `RimMandrakeChagrian`, `RimMandrakeSelkath`; hair on
+          `RimMandrakeYoderForceGremlin`; the four magenta species — are ALL v2
+          improvements now, not v1 defects, and are parked in `design/V2_DREAMS.md`.
+          ✅ `RimMandrakeOrtolan` came back the other way in the same examination: it
+          WORKS, and the owner pulled it out of v2 into v1 (see V2_DREAMS).
 resume:   🔴 FIRST ACTION NEXT LOAD, and it is one screenshot: the FACIAL ANIMATION fix
           is written but was NOT ACTIVE this session. Process started 07:56:41; the
           config was written 10:10:18, and FA reads its settings only at startup.

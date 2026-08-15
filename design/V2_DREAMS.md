@@ -1264,3 +1264,25 @@ Owner, 2026-08-15, live off the 70-race grid: *"Oops. Yoder has hair... that's a
 `RimMandrakeYoderForceGremlin` renders with hair it should not have. Owner classed it v2
 himself in the same breath, so it is **not** a v1 defect and no v1 item should be opened
 for it. The species spawns and is otherwise fine — this is cosmetic only.
+
+## Race art polish — the whole remainder, parked as one v2 item
+
+Owner, 2026-08-15, after examining all 70 races side by side on the scratch map:
+*"I think we can mark all the races as visually good enough for v1, with the remaining
+missing art for v2 improvement. Let's close out race appearance issues for now."*
+
+**v1 is settled: all 70 races are visually good enough.** Everything below is polish and
+none of it is a v1 defect. Do not open a v1 item for any of it.
+
+| species | what | seen |
+|---|---|---|
+| `RimMandrakeGand` | missing art | both grids |
+| `RimMandrakeChagrian` | missing art | owner's `racetest` grid only |
+| `RimMandrakeSelkath` | missing art | CHECK's 70-race grid only |
+| `RimMandrakeYoderForceGremlin` | has hair it should not | owner, live |
+| the four known magenta species | magenta boxes | recorded at `9d10aec` |
+
+⚠️ Gand aside, the missing-art pair was NOT the same on the two grids. Whoever picks this
+up should check all three rather than trusting either sighting alone.
+⛔ The log will not find these: the harvest's texture-path check reads 0 and fires only
+when EVERY direction is missing, so a partial set is silent. This is an eyes-on job.
