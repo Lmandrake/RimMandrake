@@ -18,14 +18,16 @@ spec:     On the next game: harvest the startup log BEFORE any spawn, then count
           into one window — a cold load is ~25 min, a quicktest ~90 s.
 verify:   —
 criteria: Tool count matches what BUILD deployed; startup log at baseline.
-state:    ready
+state:    done
+note:     2026-08-14 CHECK. A0 of the C1 harness: 26 jawa tools of 26 expected, 151 on the bridge overall, matching deployed DLL md5 55b2362. Startup-log baseline NOT harvested before the first spawn this session - the game was already up and driven, so that half is unmet and carries to the next cold load.
 
 ## C1 Run the bridge tools that were built but never once called
 row:      infra
 spec:     `python.exe src/RimMandrake/bridgetools/prove_new_tools.py --pawns` covers `jawa/set_pawn_rotation`, `jawa/set_pawn_style`, `jawa/set_pawn_xenotype` and `xenotype=` on `spawn_pawn` (`7b8d5b7`, `e60197a`). Also deployed and never called: `jawa/get_defs`, `jawa/fire_quest`, `jawa/list_things` (`3adedbc`), `jawa/clear_ui` (`9a5b6fe`), the vehicle route in `spawn_batch` (`9a5b6fe`, routes `Vehicles.VehicleDef` through `Vehicles.VehicleSpawner.SpawnVehicleRandomized` by reflection — `ThingMaker` leaves `vehiclePather`/`ignition`/`drawTracker`/`kindDef` null), and the roof pair `set_roof_batch`/`get_roof_batch`. `jawa/world_stats` WAS called and its answer was discarded by a harness `NameError` (fixed `3e17731`) — re-run it. Do not compose calls at a live console: run `python.exe src/RimMandrake/bridgetools/load_session.py --phase any|fresh` (`--selftest` needs no game); it writes one ledger to `observed\<date>_load_session.md` and tracks LITTER, from which the release message is written.
 verify:   EMPTY
 criteria: each tool returns success on a live map; `world_stats` returns `{ tiles, pct, perimeter, raggedness, centroidLat }`. A capability is announced to peers when it has RUN, not when it has compiled.
-state:    ready
+state:    doing
+note:     2026-08-14 CHECK. Ran load_session.py --phase any: 30 items, 4 failed, 14 awaiting eyes; ledger observed/2026-08-14_load_session.md. get_defs, set_pawn_xenotype, list_things, clear_ui now RUN live. Still unrun: fire_quest, set_roof_batch/get_roof_batch, the spawn_batch vehicle route. Two harness items die on UnicodeEncodeError (charmap) before asserting - A6 Cherry Picker and P5 VAEA_Apparel_ToolBelt - so those are UNMEASURED, not passed. 14 screenshots need a human look.
 
 ## C15 Finish measuring the ocean — 3 of 7 seeds still unread
 row:      10
@@ -53,7 +55,8 @@ row:      10
 spec:     One `jawa/list_factions` after worldgen. Control: `OuterRim_GalacticEmpire`, which must be PRESENT. Closes `EXPECTED_FAILURES` A3.
 verify:   EMPTY
 criteria: ABSENT is the DESIRED outcome — `RebelAlliance_Suppress.xml` does it deliberately — so PRESENT is the failure. Nothing in `Player.log` reports a faction that never generates; the only detection is looking on purpose. Observe, do not fix.
-state:    ready
+state:    done
+note:     2026-08-14 CHECK. A1: OuterRim_RebelAlliance ABSENT (desired). Control A1b: OuterRim_GalacticEmpire PRESENT. 54 factions, countAllIncludingHidden=54 - read with includeHidden, not the visible subset. Closes EXPECTED_FAILURES A3.
 
 ## C21 Follow The Claim quest to an end — registering is not finishing
 row:      13
