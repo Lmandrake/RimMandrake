@@ -78,7 +78,7 @@
          drops the parent's five vanilla xenotype chances. -->
     <xenotypeSet Inherit="False">
       <xenotypeChances>
-        <RimMandrakeGeonosianVariants MayRequire="Ludeon.RimWorld.Biotech,btd.xenotyperemix.starwars">1.0</RimMandrakeGeonosianVariants>
+        <RimMandrakeGeonosianVariants MayRequire="Ludeon.RimWorld.Biotech,mandrake.starwarsraces">1.0</RimMandrakeGeonosianVariants>
       </xenotypeChances>
     </xenotypeSet>
 
