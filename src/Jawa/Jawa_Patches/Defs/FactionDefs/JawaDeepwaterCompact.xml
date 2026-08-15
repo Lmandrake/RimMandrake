@@ -96,13 +96,13 @@
          lead species heaviest. Retune freely; nothing depends on them. -->
     <xenotypeSet Inherit="False">
       <xenotypeChances>
-        <li MayRequire="btd.xenotyperemix.starwars"><xenotype>BTD_Quarren</xenotype><chance>0.280</chance></li>
-        <li MayRequire="btd.xenotyperemix.starwars"><xenotype>BTD_MonCalamari</xenotype><chance>0.120</chance></li>
-        <li MayRequire="btd.xenotyperemix.starwars"><xenotype>BTD_Selkath</xenotype><chance>0.120</chance></li>
-        <li MayRequire="btd.xenotyperemix.starwars"><xenotype>BTD_Gungan</xenotype><chance>0.120</chance></li>
-        <li MayRequire="btd.xenotyperemix.starwars"><xenotype>BTD_Chagrian</xenotype><chance>0.120</chance></li>
-        <li MayRequire="btd.xenotyperemix.starwars"><xenotype>BTD_Herglic</xenotype><chance>0.120</chance></li>
-        <li MayRequire="btd.xenotyperemix.starwars"><xenotype>BTD_Duros</xenotype><chance>0.120</chance></li>
+        <BTD_Quarren MayRequire="btd.xenotyperemix.starwars">0.280</BTD_Quarren>
+        <BTD_MonCalamari MayRequire="btd.xenotyperemix.starwars">0.120</BTD_MonCalamari>
+        <BTD_Selkath MayRequire="btd.xenotyperemix.starwars">0.120</BTD_Selkath>
+        <BTD_Gungan MayRequire="btd.xenotyperemix.starwars">0.120</BTD_Gungan>
+        <BTD_Chagrian MayRequire="btd.xenotyperemix.starwars">0.120</BTD_Chagrian>
+        <BTD_Herglic MayRequire="btd.xenotyperemix.starwars">0.120</BTD_Herglic>
+        <BTD_Duros MayRequire="btd.xenotyperemix.starwars">0.120</BTD_Duros>
       </xenotypeChances>
     </xenotypeSet>
 

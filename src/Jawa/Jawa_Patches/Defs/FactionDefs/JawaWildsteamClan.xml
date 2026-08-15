@@ -98,12 +98,12 @@
          lead species heaviest. Retune freely; nothing depends on them. -->
     <xenotypeSet Inherit="False">
       <xenotypeChances>
-        <li MayRequire="btd.xenotyperemix.starwars"><xenotype>BTD_Wookiee</xenotype><chance>0.300</chance></li>
-        <li><xenotype>Yttakin</xenotype><chance>0.200</chance></li>
-        <li MayRequire="btd.xenotyperemix.starwars"><xenotype>BTD_Cathar</xenotype><chance>0.125</chance></li>
-        <li MayRequire="btd.xenotyperemix.starwars"><xenotype>BTD_Ewok</xenotype><chance>0.125</chance></li>
-        <li MayRequire="btd.xenotyperemix.starwars"><xenotype>BTD_Togruta</xenotype><chance>0.125</chance></li>
-        <li MayRequire="btd.xenotyperemix.starwars"><xenotype>BTD_Ithorian</xenotype><chance>0.125</chance></li>
+        <BTD_Wookiee MayRequire="btd.xenotyperemix.starwars">0.300</BTD_Wookiee>
+        <Yttakin>0.200</Yttakin>
+        <BTD_Cathar MayRequire="btd.xenotyperemix.starwars">0.125</BTD_Cathar>
+        <BTD_Ewok MayRequire="btd.xenotyperemix.starwars">0.125</BTD_Ewok>
+        <BTD_Togruta MayRequire="btd.xenotyperemix.starwars">0.125</BTD_Togruta>
+        <BTD_Ithorian MayRequire="btd.xenotyperemix.starwars">0.125</BTD_Ithorian>
       </xenotypeChances>
     </xenotypeSet>
 

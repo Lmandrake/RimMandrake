@@ -98,14 +98,14 @@
          lead species heaviest. Retune freely; nothing depends on them. -->
     <xenotypeSet Inherit="False">
       <xenotypeChances>
-        <li MayRequire="btd.xenotyperemix.starwars"><xenotype>BTD_Gamorrean</xenotype><chance>0.300</chance></li>
-        <li MayRequire="btd.xenotyperemix.starwars"><xenotype>BTD_Weequay</xenotype><chance>0.100</chance></li>
-        <li MayRequire="btd.xenotyperemix.starwars"><xenotype>BTD_Nikto</xenotype><chance>0.100</chance></li>
-        <li MayRequire="btd.xenotyperemix.starwars"><xenotype>BTD_Aqualish</xenotype><chance>0.100</chance></li>
-        <li MayRequire="btd.xenotyperemix.starwars"><xenotype>BTD_Ugnaught</xenotype><chance>0.100</chance></li>
-        <li MayRequire="btd.xenotyperemix.starwars"><xenotype>BTD_Rodian</xenotype><chance>0.100</chance></li>
-        <li MayRequire="btd.xenotyperemix.starwars"><xenotype>BTD_Snivvian</xenotype><chance>0.100</chance></li>
-        <li MayRequire="btd.xenotyperemix.starwars"><xenotype>BTD_Trandoshan</xenotype><chance>0.100</chance></li>
+        <BTD_Gamorrean MayRequire="btd.xenotyperemix.starwars">0.300</BTD_Gamorrean>
+        <BTD_Weequay MayRequire="btd.xenotyperemix.starwars">0.100</BTD_Weequay>
+        <BTD_Nikto MayRequire="btd.xenotyperemix.starwars">0.100</BTD_Nikto>
+        <BTD_Aqualish MayRequire="btd.xenotyperemix.starwars">0.100</BTD_Aqualish>
+        <BTD_Ugnaught MayRequire="btd.xenotyperemix.starwars">0.100</BTD_Ugnaught>
+        <BTD_Rodian MayRequire="btd.xenotyperemix.starwars">0.100</BTD_Rodian>
+        <BTD_Snivvian MayRequire="btd.xenotyperemix.starwars">0.100</BTD_Snivvian>
+        <BTD_Trandoshan MayRequire="btd.xenotyperemix.starwars">0.100</BTD_Trandoshan>
       </xenotypeChances>
     </xenotypeSet>
 

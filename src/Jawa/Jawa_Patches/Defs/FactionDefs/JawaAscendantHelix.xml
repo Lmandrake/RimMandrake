@@ -96,14 +96,14 @@
          lead species heaviest. Retune freely; nothing depends on them. -->
     <xenotypeSet Inherit="False">
       <xenotypeChances>
-        <li MayRequire="btd.xenotyperemix.starwars"><xenotype>BTD_Arkanian</xenotype><chance>0.300</chance></li>
-        <li MayRequire="btd.xenotyperemix.starwars"><xenotype>BTD_Kaminoan</xenotype><chance>0.100</chance></li>
-        <li MayRequire="btd.xenotyperemix.starwars"><xenotype>BTD_Cerean</xenotype><chance>0.100</chance></li>
-        <li MayRequire="btd.xenotyperemix.starwars"><xenotype>BTD_Bith</xenotype><chance>0.100</chance></li>
-        <li MayRequire="btd.xenotyperemix.starwars"><xenotype>BTD_Chiss</xenotype><chance>0.100</chance></li>
-        <li MayRequire="btd.xenotyperemix.starwars"><xenotype>BTD_Rakata</xenotype><chance>0.100</chance></li>
-        <li MayRequire="btd.xenotyperemix.starwars"><xenotype>BTD_Umbaran</xenotype><chance>0.100</chance></li>
-        <li MayRequire="btd.xenotyperemix.starwars"><xenotype>BTD_Neimoidian</xenotype><chance>0.100</chance></li>
+        <BTD_Arkanian MayRequire="btd.xenotyperemix.starwars">0.300</BTD_Arkanian>
+        <BTD_Kaminoan MayRequire="btd.xenotyperemix.starwars">0.100</BTD_Kaminoan>
+        <BTD_Cerean MayRequire="btd.xenotyperemix.starwars">0.100</BTD_Cerean>
+        <BTD_Bith MayRequire="btd.xenotyperemix.starwars">0.100</BTD_Bith>
+        <BTD_Chiss MayRequire="btd.xenotyperemix.starwars">0.100</BTD_Chiss>
+        <BTD_Rakata MayRequire="btd.xenotyperemix.starwars">0.100</BTD_Rakata>
+        <BTD_Umbaran MayRequire="btd.xenotyperemix.starwars">0.100</BTD_Umbaran>
+        <BTD_Neimoidian MayRequire="btd.xenotyperemix.starwars">0.100</BTD_Neimoidian>
       </xenotypeChances>
     </xenotypeSet>
 
