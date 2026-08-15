@@ -263,6 +263,17 @@ dozens of phantom missing mods.
    Related: `<knownExpansions>` holds the **five DLCs only** — Core is not in it, which
    is the source of the recurring five-mod arithmetic gap noted in §5 step 7.
 
+3. 🔴 **Never count `<li>` without scoping it to `<activeMods>`.** `<knownExpansions>`
+   holds five ids that are ALSO in `<activeMods>`, so the file has 580 `<li>` elements
+   for 575 active mods — an overcount of exactly the DLC count. And the file is only
+   **12 lines**, so the two obvious greps are wrong in opposite directions: `grep -c`
+   counts matching LINES and returns **6**; `grep -o '<li>' | wc -l` returns **580**.
+   Measured 2026-08-15. **Parse it and read `activeMods`:**
+
+   ```python
+   len(ET.parse(cfg).getroot().find("activeMods"))
+   ```
+
 ---
 
 ## 5. The safe ordering
