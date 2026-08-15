@@ -507,7 +507,9 @@ verify:   PREDICTION before the look: the vehicle reads **"eopie sled"** with a
           only the LABEL and the prop's COLOUR are. A grey prop beside a brown
           vehicle means the prop half no-opped.
 criteria: both labels changed, both the same brown, warning text gone.
-state:    blocked — needs deploy
+state:    ready — DEPLOYED 2026-08-15 (REP). Verified on disk: the game copy holds
+          `Patches/EopieSled_Identity.xml` carrying the "eopie sled (prop)" label.
+          Collectable the moment a map exists.
 
 ## C40 Three Jawa fixes that only a load can prove
 row:      9
