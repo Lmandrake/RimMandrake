@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ============================================================================
+  JawaGeonosianFoundryHive.xml                Jawa_Patches · authored 2026-08-14
+  ============================================================================
+
+  FACTION_SPEC.md section 8. Faction 8 of 14.
+
+  ParentName is `OutlanderFactionBase` (R24), which supplies factionNameMaker,
+  settlementNameMaker, factionIconPath, techLevel Industrial, leaderTitle,
+  allowedArrivalTemperatureRange and a full set of pawnGroupMakers. Everything
+  restated below is either a value the parent does not give at all, or one the
+  dossier contradicts.
+
+  🔴 `humanlikeFaction` IS SET EXPLICITLY AND IS LOAD-BEARING HERE (R3). The hive
+  reads as insectoid and is not one; the flag is what keeps the engine treating
+  it as a people.
+
+  🔴 `xenotypeSet` IS THE ONLY XML ROUTE to a species-locked faction (D3);
+  `PreferredXenotype` has no XML path. The defName is `OuterRim_Geonosian` — the
+  spec writes it as bare "Geonosian" and there is no such xenotype in the
+  585-mod set. Inherit="False" is required: `OutlanderFactionBase` supplies five
+  vanilla xenotype chances that would otherwise merge in and seed Hussars and
+  Dirtmoles into the hive.
+
+  🔴 `colorSpectrum` IS NOT INHERITED. Measured on the shipped abstracts:
+  `OutlanderFactionBase` and `TribeBase` supply NO colorSpectrum — only
+  `PirateBandBase` does. R24's table says otherwise and is wrong on that one
+  field. A faction without it is set on 76 of 87 live defs, so the world map
+  draws it broken. It is set explicitly here and in all six siblings.
+
+  ⛔ NO IDEO BLOCK. R23: `fixedIdeo` / `ideoName` / `ideoDescription` /
+  `forcedMemes` / `deityPresets` land as one uniform pass in B54, for all eleven
+  faiths at once. A faction without them generates an ideo at worldgen and works.
+
+  ⛔ NO TRADER GROUP. `canRequestTraders` is false; the hive does not trade.
+
+  Pawn kinds verified present in the 2026-08-14 dump (585 mods) and mapped to
+  their owning mod for `MayRequire`:
+      OuterRim_Geonosian · OuterRim_GeonosianTribal
+                                        Neronix17.OuterRim.GalacticDiversity
+      JDSCIS_*                          M3.Continued.JangoDsoul.StarWars.TSDA
+  ============================================================================
+-->
+<Defs>
+
+  <FactionDef ParentName="OutlanderFactionBase">
+    <defName>Jawa_GeonosianFoundryHive</defName>
+    <label>Geonosian Foundry Hive</label>
+    <description>A hive mass-producing droids in ancient factories under the rock, ruled by winged aristocrats under one immobile queen.\n\nIt is the only power on the planet that can sustain a siege in deep desert, because it does not need to bring water — it brings a line that never stops walking.</description>
+    <pawnSingular>warrior drone</pawnSingular>
+    <pawnsPlural>warrior drones</pawnsPlural>
+    <leaderTitle>Archduke</leaderTitle>
+    <categoryTag>Outlander</categoryTag>
+    <techLevel>Spacer</techLevel>
+    <!-- R3: explicit, load-bearing. Do not let this fall through to the parent. -->
+    <humanlikeFaction>true</humanlikeFaction>
+    <canMakeRandomly>true</canMakeRandomly>
+    <!-- 5 settlements, mountains, caves and ancient factories. -->
+    <settlementGenerationWeight>0.7</settlementGenerationWeight>
+    <!-- Hostile with high raid reach and sieges, but not a permanent enemy. -->
+    <permanentEnemy>false</permanentEnemy>
+    <naturalEnemy>false</naturalEnemy>
+    <!-- No trade at all. -->
+    <canRequestTraders>false</canRequestTraders>
+
+    <factionNameMaker>NamerFactionTribal</factionNameMaker>
+    <settlementNameMaker>NamerSettlementTribal</settlementNameMaker>
+    <factionIconPath>World/WorldObjects/Expanding/Insects</factionIconPath>
+    <!-- R22: rust. -->
+    <colorSpectrum>
+      <li>(0.65,0.35,0.18)</li>
+      <li>(0.48,0.25,0.12)</li>
+    </colorSpectrum>
+
+    <!-- D3: the only XML route to a species-locked faction. Inherit="False"
+         drops the parent's five vanilla xenotype chances. -->
+    <xenotypeSet Inherit="False">
+      <xenotypeChances>
+        <OuterRim_Geonosian MayRequire="Ludeon.RimWorld.Biotech,Neronix17.OuterRim.GalacticDiversity">1.0</OuterRim_Geonosian>
+      </xenotypeChances>
+    </xenotypeSet>
+
+    <!-- Inherit="False" IS LOAD-BEARING. RimWorld resolves inheritance AFTER
+         patches, and a child `li` list is APPENDED to the parent's, not
+         substituted for it. `OutlanderFactionBase` carries 8 group makers; without
+         this opt-out the faction fields those too and raids arrive as
+         vanilla pawns wearing our name. Vanilla itself writes it 314 times,
+         9 of them on pawnGroupMakers. -->
+    <pawnGroupMakers Inherit="False">
+      <li>
+        <kindDef>Combat</kindDef>
+        <options>
+          <OuterRim_Geonosian MayRequire="Neronix17.OuterRim.GalacticDiversity">10</OuterRim_Geonosian>
+          <OuterRim_GeonosianTribal MayRequire="Neronix17.OuterRim.GalacticDiversity">6</OuterRim_GeonosianTribal>
+          <JDSCIS_B1_Battle_Droid MayRequire="M3.Continued.JangoDsoul.StarWars.TSDA">8</JDSCIS_B1_Battle_Droid>
+          <JDSCIS_B2_Super_Battle_Droid MayRequire="M3.Continued.JangoDsoul.StarWars.TSDA">3</JDSCIS_B2_Super_Battle_Droid>
+          <JDSCIS_Droideka_Droid MayRequire="M3.Continued.JangoDsoul.StarWars.TSDA">1</JDSCIS_Droideka_Droid>
+          <JDSCIS_T1_Tactical_Droid MayRequire="M3.Continued.JangoDsoul.StarWars.TSDA">1</JDSCIS_T1_Tactical_Droid>
+        </options>
+      </li>
+      <li>
+        <kindDef>Settlement</kindDef>
+        <options>
+          <OuterRim_Geonosian MayRequire="Neronix17.OuterRim.GalacticDiversity">10</OuterRim_Geonosian>
+          <JDSCIS_B1_Battle_Droid MayRequire="M3.Continued.JangoDsoul.StarWars.TSDA">6</JDSCIS_B1_Battle_Droid>
+        </options>
+      </li>
+    </pawnGroupMakers>
+  </FactionDef>
+
+</Defs>
