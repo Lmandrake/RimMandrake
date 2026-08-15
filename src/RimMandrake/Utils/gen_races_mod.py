@@ -101,7 +101,7 @@ SOFT_AFTER = [
     "guy762.MM.KotORCore",
     "guy762.starwarsxenotypes",
     "neronix17.outerrim.galacticdiversity",
-    "beeteedubs.xenotyperemix",
+    "btd.xenotyperemix.starwars",
 ]
 
 TEXFIELDS = ("texPath", "graphicPath", "iconPath", "path", "uiIconPath",
@@ -613,8 +613,11 @@ def main():
                   els)
         counts[rel] = len(els)
 
-    n_swx = sum(1 for n in keep if defs[n][0] == "SWX")
-    n_or = len(keep) - n_swx
+    inv = {v: k for k, v in defmap.items()}
+    genes_out = [e.findtext("defName") for e in bytype.get("GeneDef", [])]
+    origins = [defs[inv[d]][0] for d in genes_out if d in inv]
+    n_swx = origins.count("SWX")
+    n_or = origins.count("OR")
     write_about(len(built), n_swx, n_or)
     write_xenotypes(built, defmap)
     write_pawnkinds(built)

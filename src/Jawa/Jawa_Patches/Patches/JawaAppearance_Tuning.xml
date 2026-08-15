@@ -109,12 +109,12 @@
        stock red, add a li for guy762_Eyes_HugeRed here.
        ================================================================== -->
   <Operation Class="PatchOperationConditional">
-    <xpath>/Defs/XenotypeDef[defName="BTD_Jawa"]/genes[not(li[text()="Jawa_Eyes_HugeOrange"])]</xpath>
+    <xpath>/Defs/XenotypeDef[defName="BTD_Jawa"]/genes[not(li[text()="RimMandrake_Jawa_Eyes_HugeOrange"])]</xpath>
     <match Class="PatchOperationAdd">
-      <xpath>/Defs/XenotypeDef[defName="BTD_Jawa"]/genes[not(li[text()="Jawa_Eyes_HugeOrange"])]</xpath>
+      <xpath>/Defs/XenotypeDef[defName="BTD_Jawa"]/genes[not(li[text()="RimMandrake_Jawa_Eyes_HugeOrange"])]</xpath>
       <value>
-        <li>Jawa_Eyes_HugeOrange</li>
-        <li>Jawa_Eyes_HugeAmber</li>
+        <li>RimMandrake_Jawa_Eyes_HugeOrange</li>
+        <li>RimMandrake_Jawa_Eyes_HugeAmber</li>
       </value>
     </match>
   </Operation>
@@ -126,11 +126,11 @@
        excluding Jawa from FA exposed it. See Defs/GeneDefs/JawaHead.xml.
        ================================================================== -->
   <Operation Class="PatchOperationConditional">
-    <xpath>/Defs/XenotypeDef[defName="BTD_Jawa"]/genes[not(li[text()="Jawa_Head_Plain"])]</xpath>
+    <xpath>/Defs/XenotypeDef[defName="BTD_Jawa"]/genes[not(li[text()="RimMandrake_Jawa_Head_Plain"])]</xpath>
     <match Class="PatchOperationAdd">
-      <xpath>/Defs/XenotypeDef[defName="BTD_Jawa"]/genes[not(li[text()="Jawa_Head_Plain"])]</xpath>
+      <xpath>/Defs/XenotypeDef[defName="BTD_Jawa"]/genes[not(li[text()="RimMandrake_Jawa_Head_Plain"])]</xpath>
       <value>
-        <li>Jawa_Head_Plain</li>
+        <li>RimMandrake_Jawa_Head_Plain</li>
       </value>
     </match>
   </Operation>

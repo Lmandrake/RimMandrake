@@ -107,11 +107,11 @@
        2. Put our own skittish gene in its place
        ================================================================== -->
   <Operation Class="PatchOperationConditional">
-    <xpath>/Defs/XenotypeDef[defName="BTD_Jawa"]/genes[not(li[text()="Jawa_Gene_Skittish"])]</xpath>
+    <xpath>/Defs/XenotypeDef[defName="BTD_Jawa"]/genes[not(li[text()="RimMandrake_Jawa_Skittish"])]</xpath>
     <match Class="PatchOperationAdd">
-      <xpath>/Defs/XenotypeDef[defName="BTD_Jawa"]/genes[not(li[text()="Jawa_Gene_Skittish"])]</xpath>
+      <xpath>/Defs/XenotypeDef[defName="BTD_Jawa"]/genes[not(li[text()="RimMandrake_Jawa_Skittish"])]</xpath>
       <value>
-        <li>Jawa_Gene_Skittish</li>
+        <li>RimMandrake_Jawa_Skittish</li>
       </value>
     </match>
   </Operation>
