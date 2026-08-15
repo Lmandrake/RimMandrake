@@ -689,7 +689,41 @@ spec:     `Jawa_Doctrine/Patches/MegafaunaYield.xml`:
 verify:   Either the file is gone, or its guard no longer fails against the live
           list.
 criteria: Harvest shows `MegafaunaYield fix` at baseline.
-state:    ready
+state:    fixed offline + deployed 2026-08-15. **Live half needs the NEXT load** —
+          defs parse only at startup, so the running game still has the old file.
+          🔴 **THE SPEC ABOVE IS WRONG ON ITS CENTRAL FACT and it sent two seats
+          the wrong way. "That mod is not in the 576-mod list" — it IS.**
+          `Dark Ages : Beasts and Monsters` = `Van.Beasts`, active. And an ABSENT
+          mod could not have produced that line at all: `PatchOperationFindMod`
+          returns TRUE when no listed mod is active. **A FindMod that FAILS is
+          proof the mod is PRESENT and something inside its `<match>` broke.**
+          ROOT CAUSE — `DA_Taraal` is `ParentName="DA_BaseTaraal"` and declares no
+          `<statBases>` of its own. Patches run against RAW XML, before
+          inheritance, so the generated
+          `<nomatch><PatchOperationAdd xpath=".../DA_Taraal/statBases">` matched
+          nothing, returned false, and **took the whole enclosing
+          PatchOperationSequence down with it.** It was op 13 of 14, so
+          `DA_SnowTaraal` never got patched either.
+          THE GENERATOR'S BLIND SPOT, which is the reusable part: it decided a def
+          had `statBases` by reading the **resolved** def dump, where an inherited
+          block is indistinguishable from an owned one. Now gated on the def's own
+          node (`ds.of_type("ThingDef") … r.own.find("statBases")`).
+          ⚖️ `DA_Taraal` is SKIPPED, not patched. Adding a `<statBases>` to a child
+          would need the parent-merge rule to be certain, and it is not worth
+          guessing with a live animal's MoveSpeed on the answer. One def keeps
+          vanilla yield; every other def in the file is unaffected.
+          ALSO FIXED, same commit: the generator wrote CRLF under `python.exe` and
+          LF under `python3`, so a regeneration produced a **29,191-line phantom
+          diff**. `newline=""` pins it.
+          REGENERATED: 1,249 ops in 37 mod groups, 0 validator errors. The diff
+          also drops four mods that have left the load set (Vanilla Animals
+          Expanded, Grimstone : Beasts, Giant Snake, ReGrowth: Boiling) — verified
+          absent from `<activeMods>`, so that is the patch catching up, not a
+          regression.
+          📌 For B22: `validate_patch.py` already WARNs on this exact shape
+          ("inner xpath differs from the conditional test") 1,145 times and cannot
+          tell the safe case from the fatal one. With raw-XML defs it could — that
+          is the check that would have caught this before the load.
 
 ## B60 Make every plant on the planet grow freakishly fast
 row:      2
