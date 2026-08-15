@@ -84,6 +84,29 @@
       <li MayRequire="vanillaexpanded.vgeneticse">GR_CarefulGeneticists</li>
     </forcedMemes>
 
+    <!-- R27: `xenotypeSet` is the SECOND inherit trap. `OutlanderFactionBase`
+         ships five vanilla xenotypes (Hussar · Dirtmole · Genie · Neanderthal ·
+         Starjack) and `PirateBandBase` ships nine; a child set is APPENDED to
+         them, so without this opt-out the faction fields Hussars in a Star Wars
+         campaign. `BTD_` and not `OuterRim_`: three packs ship overlapping
+         xenotypes and BTD Remix DEDUPS AT LOAD, so `BTD_Jawa` survives live
+         while `OuterRim_Jawa` does not exist at runtime.
+         ⚠️ The CHANCES are BUILD's, not the spec's — R27 gives species, not
+         numbers. They sum to 1.00 so no baseliner generates, with the dossier
+         lead species heaviest. Retune freely; nothing depends on them. -->
+    <xenotypeSet Inherit="False">
+      <xenotypeChances>
+        <li MayRequire="btd.xenotyperemix.starwars"><xenotype>BTD_Arkanian</xenotype><chance>0.300</chance></li>
+        <li MayRequire="btd.xenotyperemix.starwars"><xenotype>BTD_Kaminoan</xenotype><chance>0.100</chance></li>
+        <li MayRequire="btd.xenotyperemix.starwars"><xenotype>BTD_Cerean</xenotype><chance>0.100</chance></li>
+        <li MayRequire="btd.xenotyperemix.starwars"><xenotype>BTD_Bith</xenotype><chance>0.100</chance></li>
+        <li MayRequire="btd.xenotyperemix.starwars"><xenotype>BTD_Chiss</xenotype><chance>0.100</chance></li>
+        <li MayRequire="btd.xenotyperemix.starwars"><xenotype>BTD_Rakata</xenotype><chance>0.100</chance></li>
+        <li MayRequire="btd.xenotyperemix.starwars"><xenotype>BTD_Umbaran</xenotype><chance>0.100</chance></li>
+        <li MayRequire="btd.xenotyperemix.starwars"><xenotype>BTD_Neimoidian</xenotype><chance>0.100</chance></li>
+      </xenotypeChances>
+    </xenotypeSet>
+
     <!-- Inherit="False" IS LOAD-BEARING. RimWorld resolves inheritance AFTER
          patches, and a child `li` list is APPENDED to the parent's, not
          substituted for it. `OutlanderFactionBase` carries 8 group makers; without

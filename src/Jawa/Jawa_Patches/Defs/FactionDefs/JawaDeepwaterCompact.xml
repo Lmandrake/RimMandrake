@@ -84,6 +84,28 @@
       <li MayRequire="vanillaexpanded.vmemese">VME_Trader</li>
     </forcedMemes>
 
+    <!-- R27: `xenotypeSet` is the SECOND inherit trap. `OutlanderFactionBase`
+         ships five vanilla xenotypes (Hussar · Dirtmole · Genie · Neanderthal ·
+         Starjack) and `PirateBandBase` ships nine; a child set is APPENDED to
+         them, so without this opt-out the faction fields Hussars in a Star Wars
+         campaign. `BTD_` and not `OuterRim_`: three packs ship overlapping
+         xenotypes and BTD Remix DEDUPS AT LOAD, so `BTD_Jawa` survives live
+         while `OuterRim_Jawa` does not exist at runtime.
+         ⚠️ The CHANCES are BUILD's, not the spec's — R27 gives species, not
+         numbers. They sum to 1.00 so no baseliner generates, with the dossier
+         lead species heaviest. Retune freely; nothing depends on them. -->
+    <xenotypeSet Inherit="False">
+      <xenotypeChances>
+        <li MayRequire="btd.xenotyperemix.starwars"><xenotype>BTD_Quarren</xenotype><chance>0.280</chance></li>
+        <li MayRequire="btd.xenotyperemix.starwars"><xenotype>BTD_MonCalamari</xenotype><chance>0.120</chance></li>
+        <li MayRequire="btd.xenotyperemix.starwars"><xenotype>BTD_Selkath</xenotype><chance>0.120</chance></li>
+        <li MayRequire="btd.xenotyperemix.starwars"><xenotype>BTD_Gungan</xenotype><chance>0.120</chance></li>
+        <li MayRequire="btd.xenotyperemix.starwars"><xenotype>BTD_Chagrian</xenotype><chance>0.120</chance></li>
+        <li MayRequire="btd.xenotyperemix.starwars"><xenotype>BTD_Herglic</xenotype><chance>0.120</chance></li>
+        <li MayRequire="btd.xenotyperemix.starwars"><xenotype>BTD_Duros</xenotype><chance>0.120</chance></li>
+      </xenotypeChances>
+    </xenotypeSet>
+
     <!-- Inherit="False" IS LOAD-BEARING. RimWorld resolves inheritance AFTER
          patches, and a child `li` list is APPENDED to the parent's, not
          substituted for it. `OutlanderFactionBase` carries 8 group makers; without

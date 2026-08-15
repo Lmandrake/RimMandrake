@@ -86,6 +86,29 @@
       <li MayRequire="vanillaexpanded.vmemese">VME_Scrapper</li>
     </forcedMemes>
 
+    <!-- R27: `xenotypeSet` is the SECOND inherit trap. `OutlanderFactionBase`
+         ships five vanilla xenotypes (Hussar · Dirtmole · Genie · Neanderthal ·
+         Starjack) and `PirateBandBase` ships nine; a child set is APPENDED to
+         them, so without this opt-out the faction fields Hussars in a Star Wars
+         campaign. `BTD_` and not `OuterRim_`: three packs ship overlapping
+         xenotypes and BTD Remix DEDUPS AT LOAD, so `BTD_Jawa` survives live
+         while `OuterRim_Jawa` does not exist at runtime.
+         ⚠️ The CHANCES are BUILD's, not the spec's — R27 gives species, not
+         numbers. They sum to 1.00 so no baseliner generates, with the dossier
+         lead species heaviest. Retune freely; nothing depends on them. -->
+    <xenotypeSet Inherit="False">
+      <xenotypeChances>
+        <li MayRequire="btd.xenotyperemix.starwars"><xenotype>BTD_Gamorrean</xenotype><chance>0.300</chance></li>
+        <li MayRequire="btd.xenotyperemix.starwars"><xenotype>BTD_Weequay</xenotype><chance>0.100</chance></li>
+        <li MayRequire="btd.xenotyperemix.starwars"><xenotype>BTD_Nikto</xenotype><chance>0.100</chance></li>
+        <li MayRequire="btd.xenotyperemix.starwars"><xenotype>BTD_Aqualish</xenotype><chance>0.100</chance></li>
+        <li MayRequire="btd.xenotyperemix.starwars"><xenotype>BTD_Ugnaught</xenotype><chance>0.100</chance></li>
+        <li MayRequire="btd.xenotyperemix.starwars"><xenotype>BTD_Rodian</xenotype><chance>0.100</chance></li>
+        <li MayRequire="btd.xenotyperemix.starwars"><xenotype>BTD_Snivvian</xenotype><chance>0.100</chance></li>
+        <li MayRequire="btd.xenotyperemix.starwars"><xenotype>BTD_Trandoshan</xenotype><chance>0.100</chance></li>
+      </xenotypeChances>
+    </xenotypeSet>
+
     <!-- Inherit="False" IS LOAD-BEARING. RimWorld resolves inheritance AFTER
          patches, and a child `li` list is APPENDED to the parent's, not
          substituted for it. `PirateBandBase` carries 7 group makers; without
