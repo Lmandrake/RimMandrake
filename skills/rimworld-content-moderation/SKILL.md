@@ -76,6 +76,20 @@ Removing a *mod* is a different act with different risk: a `ModsConfig` change, 
 game-down window, and `Could not resolve cross-reference` if anything referenced
 it. Check dependencies first; usually nothing declares one.
 
+### 🪤 Do not validate Cherry Picker entries against a def dump
+
+Cherry Picker removes defs **at load**, so the def dump is the *post-removal*
+state. **A cut that worked is ABSENT from the dump.**
+
+⇒ Checking config entries against a dump inverts the meaning of the result:
+- **does not resolve** → the cut is already in effect. Correct, not broken.
+- **resolves** → it has NOT taken effect yet. Either it was added since the game
+  started, or it is not working.
+
+So the check is only useful on **newly added** entries, and only to confirm you
+spelled the defName right before the next load. It can never tell you an old
+entry is a typo, because a typo and a successful cut look identical from here.
+
 ## How to run a session
 
 - **Items are the unit. Mods are a consequence.** Never open with "shall we cut
