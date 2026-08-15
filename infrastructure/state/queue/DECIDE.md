@@ -682,9 +682,34 @@ spec:     🔴 **`NEXT_RELOAD.md` §1.0 step 0 and §1a are wrong on their centr
             (= 15:10Z). Taken during this morning's C37 load, WITH the races mod and
             with all three donors absent — the current configuration.
 
-          ⇒ **No seat's `--defs` validation was ever running against a dead universe**,
-          and REP's own `promote-the-defdump-arming-out-of-optional-6ea3c7` escalated
-          this on the same bad premise. Correct both sections.
+          ⚠️ **REP over-corrected here and BUILD caught it. The dump is fresh in TIME
+          but not in SET, and only one direction of the staleness is safe.** Verified by
+          REP against both files: manifest `modCount` **576**, live `activeMods` **575**,
+          and the diff is exactly one — `regrowth.botr.boilingforest` in the dump, and
+          NOTHING live is missing from the dump.
+
+          ⇒ Every def that loads in game IS represented, so `--defs` cannot miss a real
+          def. **The risk is one-way and it is live:** the dump still holds defs from a
+          mod that no longer loads, so an xpath onto those defs validates CLEAN and
+          matches nothing in game. It already bites one of ours —
+          `src/Jawa/Jawa_Patches/Patches/JawaWorld_BiomeMix.xml:140` sets a `scoreOffset`
+          on `RG_BoilingForest`, which is still in the dump's `BiomeDef.json` and
+          `IncidentDef.json`. That patch reports clean today and is a no-op in game.
+          `refresh.py`'s STALE verdict was therefore CORRECT — it keys on the load-set
+          fingerprint, not on age, and it named this exact mod.
+
+          The wording for the board: *the dump is current as of 2026-08-15T15:10:11Z but
+          was captured at 576 mods against a live 575; `--defs` is sound except for
+          anything touching `regrowth.botr.boilingforest` defs.* The re-dump is armed, so
+          the next load closes it. REP's own
+          `promote-the-defdump-arming-out-of-optional-6ea3c7` was filed on the bad
+          premise; correct both sections against this.
+
+          Two non-problems, so nobody chases them: the mod folder is still on disk at
+          `...\294100\3565675704` — unlisted, not unsubscribed, installed-but-inactive;
+          and `src/Jawa/Jawa_Doctrine/About/About.xml` names it in **loadAfter**, not
+          `modDependencies`, which exerts no constraint on an inactive mod and logs
+          nothing. Harmless, leave it.
 
           What survives the correction: arming the dump is still right, because it
           re-reads after this window's deploys and costs 18.7s. CHECK already armed it
@@ -733,4 +758,53 @@ spec:     C1 ("run the bridge tools that were built but never once called") is `
           landed. That is collectable on the next load either way.
 verify:   C1's `criteria:` no longer names perimeter/raggedness/centroidLat, or C1 is closed.
 criteria: a ruling exists in this item and C1's state matches it.
+state:    done — **RULING: none of (a), (b) or (c). SPLIT the criterion.**
+          🔴 **CHECK's own objection is the correct one and I am not overruling it.**
+          *"I will not rewrite a pass condition after looking at the result"* is right,
+          and it rules out (b) — which CHECK recommended against its own principle. It
+          also rules out (a): declaring "met" a criterion that was not met is the same
+          laundering with a shorter paper trail. (c) leaves a permanently-open item that
+          nothing can ever close, which is how a queue rots.
+          ⇒ **The criterion was two independent claims wearing one bullet.**
+          1. *Every deployed tool has been called live.* **MET**, on its own terms, and
+             the standard for it was fixed before the result was known. **C1 closes on
+             this — it is what the item was actually asking.**
+          2. *`world_stats` returns `perimeter`, `raggedness`, `centroidLat`.* **VOID —
+             not passed, not failed, VOID.** It was never a test of C1's question; it
+             was a dependency smuggled in from C16's ocean gate. C16 is `dropped`, and
+             the owner's ruling today (*"we will not programmatically generate the
+             world — stand down all development of tuning worldgen to function on its
+             own, it is all v2"*) makes emitting those three keys **v2 work we are not
+             permitted to build**. A clause whose only consumer no longer exists does
+             not get graded; it gets struck, with the reason.
+          📌 **The distinction that makes this honest: I am not changing the bar, I am
+          striking a clause that measured something else.** Record the strike in C1
+          rather than deleting the words — a criterion that quietly loses a clause is
+          indistinguishable from one that was rewritten to fit.
+          ⇒ CHECK: close C1 `done` on claim 1, and keep claim 2 in the text marked
+          VOID with this ruling cited. The 18 keys `world_stats` does emit need no
+          blessing from me — they are what the tool does.
+
+## does-the-standdown-cover-biome-commonality-tuning-b7c81e
+row:      10
+spec:     Raised by BUILD, routed by REP. The owner's ruling, 2026-08-15: *"WE WILL NOT
+          PROGRAMMATICALLY generate the world, the user will do that himself. Stand down
+          all development of tuning the worldgen to function by itself correctly for now.
+          That's all v2."* Parked in `design/V2_DREAMS.md` (`0b9e244`).
+
+          BUILD's read, and it needs a scope verdict rather than a seat acting on it:
+          - `src/Jawa/Jawa_Patches/Patches/JawaWorld_BiomeMix.xml` is biome-commonality
+            tuning and reads as squarely inside the ruling. **BUILD has NOT deleted it**
+            — scope is yours. It should get an explicit v1/v2 verdict rather than be left
+            live and half-dead. Line 140 is separately a no-op: it scores
+            `RG_BoilingForest`, whose mod no longer loads (see
+            `the-dump-was-never-stale-correct-the-manifest-5cb9a2`).
+          - The faction items whose `criteria:` say "generates settlements at worldgen"
+            are **NOT** in scope as BUILD reads it: those are defs existing so the
+            owner's MANUAL worldgen produces them, which is the opposite of automating
+            it. REP agrees and has put the same reading to the owner. CHECK reads C17 the
+            same way — an owner-ticked Configure Factions checklist, never programmatic.
+verify:   `JawaWorld_BiomeMix.xml` carries an explicit v1 or v2 verdict, and the faction
+          items say in one line why they survive the stand-down.
+criteria: EMPTY — offline.
 state:    ready
