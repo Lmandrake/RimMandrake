@@ -676,10 +676,6 @@ notes:    · **The md5 in B0 is dead.** B0's verify wanted `d7e7c6c1`; `--apply`
             rebuilds at the current commit (`0459627`), so the bytes are
             `f0d4e6e7` and always will differ after any commit. Count + canaries
             are the gate, per B1. Do not read the mismatch as a bad deploy.
-          · **⛔ `JawaSeaShaper.dll` was NOT deployed** (DECIDE 2026-08-15). The
-            bundle ships one file; the deploy folder holds only
-            `JawaBench.BridgeTools.dll`. Its repo/deployed hash mismatch is
-            expected and is not a defect.
           · **RimBridgeServer discovers companions only at startup.** The deploy
             changes nothing until RimWorld restarts — a `list_tools` run against
             a session started before 2026-08-15 12:14 measures the OLD DLL.
