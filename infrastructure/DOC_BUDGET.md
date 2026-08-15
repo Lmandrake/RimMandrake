@@ -11,8 +11,8 @@ quote the snapshot below**; it is dated evidence for the diagnosis, nothing more
 **As measured 2026-08-13:** 271 markdown files, 61,053 lines (~670k tokens if read
 whole), **+5,555 net in one day**; commit bodies 5,137 lines across 177 commits
 (29 each); worst provenance density `design/Jawa/mods/required_mods.md` at 19.7
-marks per 100 lines; longest state file `AGENT_BRIDGE_state.md` at 923 — *since
-fixed, and the per-seat state files have since been retired, so do not go looking
+marks per 100 lines; longest state file was the retired `AGENT_BRIDGE_state.md` at
+923 — *since fixed, and the per-seat state files are gone, so do not go looking
 for that problem there.*
 
 **Nobody broke a rule to produce this.** Every file was individually justified, and
@@ -26,8 +26,8 @@ document nobody is required to shrink.
 is the authoritative list — run the tool, do not read a number here.** It exits 1
 when a file is over. **No copy of those numbers lives in this file**, deliberately:
 the inline list carried 7 classes while the tool enforced 14, and once said 500 for
-`infrastructure/agents/POLICY.md` (then `agents_def.md`) against the tool's 200 — *the doc describing the rule disagreed with
-the rule.* Design docs and rosters are unbudgeted; their length is content, not
+`infrastructure/agents/POLICY.md` against the tool's 200 — *the doc describing the
+rule disagreed with the rule.* Design docs and rosters are unbudgeted; their length is content, not
 accumulation. *(`TODO.md` retains a budget in the tool but is **retired** — a
 pointer stub. That number is a ceiling on a corpse.)*
 

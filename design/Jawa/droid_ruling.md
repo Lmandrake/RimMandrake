@@ -433,7 +433,7 @@ of a claim gaining authority purely by being restated.
 
 ⚠️ **Use `explodeOnKilled`, never `explodeOnDestroyed`.** The latter also fires on
 `DestroyMode.Deconstruct`, which would detonate a machine in the face of the
-colonist salvaging it — see `infrastructure/state/TODO_v2.md` §1.
+colonist salvaging it — see `design/V2_DREAMS.md` §1.
 
 ⚠️ **A damaging blast destroys its own corpse.** Pawns do *not* get the
 leavings-protection shield buildings get (`Thing::Destroy` registers it only

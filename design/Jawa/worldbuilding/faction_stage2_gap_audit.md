@@ -66,8 +66,8 @@ the 88 live defs), `xenotypeSet` (38), `basicMemberKind` (27), `backstoryFilters
 
 ## Readiness — 12 factions, not 10
 
-⚠️ **The roster holds TWELVE factions.** The Stage 2 brief (now `design/V2_DREAMS.md` **B20**) and the retired
-`AGENT_PROJECT_state.md` both said ten. **11. Jawa Trade Moot** (line 1809) and **12. Junker
+⚠️ **The roster holds TWELVE factions.** The Stage 2 brief (now `design/V2_DREAMS.md`
+**B20**) and the retired `AGENT_PROJECT_state.md` both said ten. **11. Jawa Trade Moot** (line 1809) and **12. Junker
 Scrap-Warrens** (line 1932) were added later and several global sections were
 never updated to match — which is the direct cause of defect **D5** below.
 

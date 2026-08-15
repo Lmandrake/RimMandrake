@@ -217,7 +217,8 @@ so the two cannot drift apart.
 ⚠️ **Most candidate lessons should be REJECTED.** `references/traps.md` carries a
 five-part admission test — specific, non-obvious, actionable, domain-bound, still
 true — and an entry failing any one of them is not a trap. General software or
-process wisdom goes to `DOC_BUDGET.md` or `agents_def.md`; a log full of aphorisms
+process wisdom goes to `DOC_BUDGET.md` or `infrastructure/agents/POLICY.md`; a log
+full of aphorisms
 is worse than no log, because the real entries stop being findable.
 
 If an entry would change what this skill tells you to do *by default*, don't leave
