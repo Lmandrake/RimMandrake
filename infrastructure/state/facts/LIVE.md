@@ -1,5 +1,52 @@
 # LIVE — what the running game tells us. CHECK writes. DECIDE and BUILD read.
 
+## 🔴 THE SHIP IS INERT BECAUSE THE GRAV ENGINE WAS NEVER INSPECTED
+
+First real use of `jawa/inspect_string`, 2026-08-15, on the "ship" save. One root
+cause explains every gravship symptom we have been chasing separately:
+
+```
+GravEngine (126,149)     Send a colonist to inspect this.
+                         Power output: 1152 W   Grid excess: 682 W
+                         Connected substructure: 4034 / 4680
+SmallThruster x4         Not functional: Not connected to grav engine
+PilotConsole (129,149)   Not connected to grav engine.
+                         Must be placed within range of a grav engine.
+                         Gravship range: 0
+```
+
+The console is **3 cells from the engine** and still reads "must be placed within
+range". That is not a placement fault — an **uninspected** grav engine is inert, so
+nothing binds to it: not the console, not a single thruster, and `Gravship range`
+stays 0. ⇒ **Before judging any gravship geometry, check that the engine has been
+inspected by a colonist.** Every "not connected" reading upstream of that is a
+symptom, not a cause.
+
+- ⇒ **The thruster bank is VINDICATED as placed.** The four at (166,147/148/150/151)
+  `rot 3` are not faulted for position, rotation or blocked exhaust — the only
+  complaint is the engine link, which every thruster on the ship would share
+  wherever it sat. Their second requirement is **astrofuel**, and the net reads
+  `0 l/d / 0 l` stored, so they would still not fire once the engine is inspected.
+- ⚠️ **D-CHK1 needs re-reading in this light.** A colonist could not path to the
+  console; a colonist is also what the engine needs. Whether these are one problem
+  or two is not yet established.
+
+### What `inspect_string` changes
+
+It answers in one call what geometry could only ever suggest. Every claim above is
+a sentence the game wrote, not an inference. **This is now the first tool to reach
+for on any "is it working" question** — `get_cell_info` returns a className and
+stops. `1196 examined` per call on the full stack, no timeout, no throw.
+
+### ⚠️ Which map is which — the "ship" save is a MIDPOINT
+
+`ship` contains the moved thruster bank (4 at x166 `rot 3`) but **301 conduit and 1
+pawn** — so it predates the power rewire (493 conduit) and the 20-species crew. The
+engine reads `Grid excess: 682 W` while a smelter on the same map reads `0 W`,
+which is the pre-rewire 10-island state showing up as two different PowerNets.
+**Do not read power conclusions off this save**; the rewired map was the disposable
+one and is gone.
+
 ## 🔴 THIS LOAD'S DEF STATE PREDATES B56 — five factions absent BY DESIGN
 
 Process **PID 13644 started 2026-08-15 00:43:34**. The five faction XMLs were
