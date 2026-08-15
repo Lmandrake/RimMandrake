@@ -1,0 +1,245 @@
+{
+  "tier": "ultratech",
+  "sourceMod": {
+    "packageId": "vanillaexpanded.vwel",
+    "workshopId": "1989352844",
+    "gameVersionTree": "1.6"
+  },
+  "discriminator": "weaponTags contains SalvagedLaserGun",
+  "note": "The clan's alone. Nobody else fields this tier. Includes the laser sword (melee) and the tesla gun.",
+  "count": 8,
+  "weapons": [
+    {
+      "defName": "VWEL_LaserSword",
+      "label": "laser sword",
+      "techLevel": "Ultra",
+      "parent": "VWE_LaserSwordBase",
+      "weaponTags": [
+        "UltratechMelee",
+        "LaserGun"
+      ],
+      "marketValue": 2000,
+      "mass": 1.4,
+      "accuracyTouch": null,
+      "accuracyShort": null,
+      "accuracyMedium": null,
+      "accuracyLong": null,
+      "projectile": null,
+      "range": null,
+      "warmupTime": null,
+      "burstShotCount": null,
+      "isMelee": true,
+      "sourceFile": "VWEL_Weapons_Melee_Spacer.xml",
+      "projectileDetail": null
+    },
+    {
+      "defName": "VWEL_Gun_LaserPistol",
+      "label": "laser pistol",
+      "techLevel": "Ultra",
+      "parent": "VWE_BaseLaserGunUltra",
+      "weaponTags": [
+        "SpacerGun",
+        "LaserGun"
+      ],
+      "marketValue": 2000,
+      "mass": 1.2,
+      "accuracyTouch": 0.8,
+      "accuracyShort": 0.72,
+      "accuracyMedium": 0.7,
+      "accuracyLong": 0.56,
+      "projectile": "VWEL_Bullet_LaserPistol",
+      "range": 23.9,
+      "warmupTime": 2,
+      "burstShotCount": 2,
+      "isMelee": false,
+      "sourceFile": "VWEL_Weapons_Ranged_Laser.xml",
+      "projectileDetail": {
+        "defName": "VWEL_Bullet_LaserPistol",
+        "label": "laser pistol shot",
+        "damage": 13,
+        "armorPenetration": 0.66,
+        "speed": 85,
+        "sourceFile": "VWEL_Weapons_Ranged_Laser.xml"
+      }
+    },
+    {
+      "defName": "VWEL_Gun_LaserSMG",
+      "label": "laser SMG",
+      "techLevel": "Ultra",
+      "parent": "VWE_BaseLaserGunUltra",
+      "weaponTags": [
+        "SpacerGun",
+        "LaserGun"
+      ],
+      "marketValue": 2400,
+      "mass": 1.8,
+      "accuracyTouch": 0.8,
+      "accuracyShort": 0.74,
+      "accuracyMedium": 0.7,
+      "accuracyLong": 0.46,
+      "projectile": "VWEL_Bullet_LaserPistol",
+      "range": 23.9,
+      "warmupTime": 2,
+      "burstShotCount": 3,
+      "isMelee": false,
+      "sourceFile": "VWEL_Weapons_Ranged_Laser.xml",
+      "projectileDetail": {
+        "defName": "VWEL_Bullet_LaserPistol",
+        "label": "laser pistol shot",
+        "damage": 13,
+        "armorPenetration": 0.66,
+        "speed": 85,
+        "sourceFile": "VWEL_Weapons_Ranged_Laser.xml"
+      }
+    },
+    {
+      "defName": "VWEL_Gun_LaserRifle",
+      "label": "laser rifle",
+      "techLevel": "Ultra",
+      "parent": "VWE_BaseLaserGunUltra",
+      "weaponTags": [
+        "SpacerGun",
+        "LaserGun"
+      ],
+      "marketValue": 3000,
+      "mass": 2.6,
+      "accuracyTouch": 0.7,
+      "accuracyShort": 0.83,
+      "accuracyMedium": 0.86,
+      "accuracyLong": 0.72,
+      "projectile": "VWEL_Bullet_LaserRifle",
+      "range": 32.9,
+      "warmupTime": 2,
+      "burstShotCount": 2,
+      "isMelee": false,
+      "sourceFile": "VWEL_Weapons_Ranged_Laser.xml",
+      "projectileDetail": {
+        "defName": "VWEL_Bullet_LaserRifle",
+        "label": "laser shot",
+        "damage": 12,
+        "armorPenetration": 0.6,
+        "speed": null,
+        "sourceFile": "VWEL_Weapons_Ranged_Laser.xml"
+      }
+    },
+    {
+      "defName": "VWEL_Gun_LaserShotgun",
+      "label": "laser shotgun",
+      "techLevel": "Ultra",
+      "parent": "VWE_BaseLaserGunUltra",
+      "weaponTags": [
+        "SpacerGun",
+        "LaserGun"
+      ],
+      "marketValue": 3200,
+      "mass": 3,
+      "accuracyTouch": 0.88,
+      "accuracyShort": 0.82,
+      "accuracyMedium": 0.74,
+      "accuracyLong": 0.62,
+      "projectile": "VWEL_Bullet_LaserShotgun",
+      "range": 14.9,
+      "warmupTime": 2.2,
+      "burstShotCount": 4,
+      "isMelee": false,
+      "sourceFile": "VWEL_Weapons_Ranged_Laser.xml",
+      "projectileDetail": {
+        "defName": "VWEL_Bullet_LaserShotgun",
+        "label": "laser scatter shot",
+        "damage": 11,
+        "armorPenetration": 0.56,
+        "speed": null,
+        "sourceFile": "VWEL_Weapons_Ranged_Laser.xml"
+      }
+    },
+    {
+      "defName": "VWEL_Gun_LaserSniperRifle",
+      "label": "laser sniper rifle",
+      "techLevel": "Ultra",
+      "parent": "VWE_BaseLaserGunUltra",
+      "weaponTags": [
+        "SpacerGun",
+        "LaserGun"
+      ],
+      "marketValue": 3600,
+      "mass": 3.8,
+      "accuracyTouch": 0.64,
+      "accuracyShort": 0.85,
+      "accuracyMedium": 0.92,
+      "accuracyLong": 0.9,
+      "projectile": "VWEL_Bullet_LaserSniperRifle",
+      "range": 44.9,
+      "warmupTime": 4.6,
+      "burstShotCount": 1,
+      "isMelee": false,
+      "sourceFile": "VWEL_Weapons_Ranged_Laser.xml",
+      "projectileDetail": {
+        "defName": "VWEL_Bullet_LaserSniperRifle",
+        "label": "precise laser shot",
+        "damage": 48,
+        "armorPenetration": 1,
+        "speed": null,
+        "sourceFile": "VWEL_Weapons_Ranged_Laser.xml"
+      }
+    },
+    {
+      "defName": "VWEL_Gun_LaserMinigun",
+      "label": "laser minigun",
+      "techLevel": "Ultra",
+      "parent": "VWE_BaseLaserGunUltra",
+      "weaponTags": [
+        "SpacerGun",
+        "LaserGun"
+      ],
+      "marketValue": 4500,
+      "mass": 12,
+      "accuracyTouch": 0.54,
+      "accuracyShort": 0.66,
+      "accuracyMedium": 0.74,
+      "accuracyLong": 0.7,
+      "projectile": "VWEL_Bullet_LaserMinigun",
+      "range": 29.9,
+      "warmupTime": 4,
+      "burstShotCount": 8,
+      "isMelee": false,
+      "sourceFile": "VWEL_Weapons_Ranged_Laser.xml",
+      "projectileDetail": {
+        "defName": "VWEL_Bullet_LaserMinigun",
+        "label": "laser minigun shot",
+        "damage": 10,
+        "armorPenetration": 0.32,
+        "speed": null,
+        "sourceFile": "VWEL_Weapons_Ranged_Laser.xml"
+      }
+    },
+    {
+      "defName": "VWEL_Gun_TeslaGun",
+      "label": "tesla gun",
+      "techLevel": "Ultra",
+      "parent": "VWE_BaseLaserGunUltra",
+      "weaponTags": [
+        "LaserGun"
+      ],
+      "marketValue": 3000,
+      "mass": 8,
+      "accuracyTouch": 1,
+      "accuracyShort": 1,
+      "accuracyMedium": 1,
+      "accuracyLong": 0.9,
+      "projectile": "VWEL_Bullet_TeslaGun",
+      "range": 18.9,
+      "warmupTime": 2.4,
+      "burstShotCount": 1,
+      "isMelee": false,
+      "sourceFile": "VWEL_Weapons_Ranged_Laser.xml",
+      "projectileDetail": {
+        "defName": "VWEL_Bullet_TeslaGun",
+        "label": "tesla shot",
+        "damage": 15,
+        "armorPenetration": 0.45,
+        "speed": null,
+        "sourceFile": "VWEL_Weapons_Ranged_Laser.xml"
+      }
+    }
+  ]
+}
