@@ -39,7 +39,7 @@ MEASURED SOURCES, read 2026-08-13:
       x 486/490   mask black ends / art ends  -> 4 columns under-covered
   Animals lead RIGHT going east, so the under-cover sits at the right edge. This
   script clears the whole band rather than stencilling, so it does not care
-  (traps-art.md #44).
+  (as per the trap file).
 
   Generated pair, measured off the committed crop:
       873 x 779, aspect 1.1207
@@ -70,7 +70,7 @@ CANVAS = 512
 # leaving two columns of husky behind the new team, a visible dashed remnant.
 # Found by diffing the output against the source column by column afterwards.
 # At a boundary, sample EVERY column; a stride is how you miss the edge you are
-# looking for. Same shape as the mask under-cover in traps-art.md #44.
+# looking for. Same shape as the mask under-cover, as per the trap file.
 ERASE_LEFT = 258        # clear everything at or right of this column
 HITCH_X = 257           # the kept hitch now ends here; new traces start from it
 HITCH_Y = 263           # centre of that run (y 258-267)

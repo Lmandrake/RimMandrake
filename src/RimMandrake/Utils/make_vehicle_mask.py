@@ -48,7 +48,7 @@ a shipped mask's black region is the animal's **interior fill**, not the animal.
 The 4-6 px pure-black keyline around it is tagged RED, i.e. vehicle, so the black
 region is an inward-eroded copy inset on every edge. Measured across DogSled,
 Chariot and OxCart, nine facings. **Do not use a shipped mask as an erase stencil
-without dilating it first** — see `traps-art.md` #44.
+without dilating it first** — as per the trap file.
 
 HOW THE ANIMAL REGION IS FOUND
 ==============================

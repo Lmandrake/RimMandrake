@@ -285,7 +285,7 @@ IN_GAME = [
 def active_mod_count(path):
     """Count <activeMods> entries. NEVER grep -c '<li>' - <knownExpansions>
     adds exactly 5 and every count in the docs that did this was wrong by 5
-    (trap 45). Returns (count, mtime) or (None, mtime) if it will not parse."""
+    (as per the trap file). Returns (count, mtime) or (None, mtime) if it will not parse."""
     import xml.etree.ElementTree as ET
     mtime = datetime.datetime.fromtimestamp(os.path.getmtime(path))
     try:

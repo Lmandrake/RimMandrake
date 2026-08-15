@@ -92,7 +92,7 @@ HITCH_X = 262           # centre of the single trace at y 254-266
 # and inside the band, 68% of the red-tagged art is near-black keyline.
 #
 # Confirmed across Chariot and OxCart too, nine facings, inset 4-6 px every time
-# (traps-art.md #44). It is not a bug in the mod: tinting a black keyline is
+# (as per the trap file). It is not a bug in the mod: tinting a black keyline is
 # invisible, so the renderer does not care. It only bites a second reader who
 # borrows a RENDERING mask as a SEGMENTATION map.
 #

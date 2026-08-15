@@ -28,7 +28,7 @@ Only Rickshaw and Wheelbarrow are genuinely all-red.
 
 ## 1. The mask is NOT a segmentation map — dilate by 8 px
 
-Full write-up in `skills/rimworld-modding/references/traps-art.md` #44. The
+Full write-up as per the trap file. The
 short version, because it governs every facing below:
 
 **The black region is the animal's interior FILL.** Its 4–6 px pure-black keyline

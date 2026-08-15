@@ -27,7 +27,7 @@ EVERYTHING BELOW IS MEASURED. Sources read 2026-08-13:
   animals' art begins at y 34 while the mask's black region begins at y 38, and
   rows 34-37 are tagged RED. Same cause as everywhere else in this mod -- the
   black region is the animal's interior FILL and its keyline is tagged vehicle
-  (traps-art.md #44). This script does not care, because it clears the whole band
+  (as per the trap file). This script does not care, because it clears the whole band
   rather than stencilling.
 
   Generated pair, measured off the committed crop:
