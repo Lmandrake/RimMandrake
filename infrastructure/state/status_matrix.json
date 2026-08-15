@@ -4,99 +4,99 @@
    "name": "1 Empire reskin",
    "cells": {
     "DECIDE": {
-     "done": 1,
-     "total": 1,
-     "state": "idle"
-    },
-    "BUILD": {
-     "done": 1,
-     "total": 1,
-     "state": "idle"
-    },
-    "CHECK": {
-     "done": 1,
-     "total": 1,
-     "state": "idle"
-    }
-   }
-  },
-  {
-   "name": "2 Faction exclusion",
-   "cells": {
-    "DECIDE": {
-     "done": 1,
-     "total": 1,
-     "state": "idle"
+     "done": 0,
+     "total": 0,
+     "state": "offline"
     },
     "BUILD": {
      "done": 0,
-     "total": 1,
-     "state": "blocked"
+     "total": 0,
+     "state": "offline"
     },
     "CHECK": {
      "done": 0,
-     "total": 1,
-     "state": "blocked"
+     "total": 0,
+     "state": "offline"
     }
    }
   },
   {
-   "name": "3 The Claim quest",
+   "name": "2 Faction exclusion \u2014 untick the fiction-breakers at worldgen",
    "cells": {
     "DECIDE": {
-     "done": 1,
-     "total": 1,
-     "state": "idle"
+     "done": 0,
+     "total": 0,
+     "state": "offline"
     },
     "BUILD": {
-     "done": 1,
-     "total": 1,
-     "state": "idle"
+     "done": 0,
+     "total": 0,
+     "state": "offline"
     },
     "CHECK": {
-     "done": 1,
-     "total": 1,
-     "state": "idle"
+     "done": 0,
+     "total": 0,
+     "state": "offline"
     }
    }
   },
   {
-   "name": "4 Terrain overrides",
+   "name": "3 *The Claim* quest fires and registers",
    "cells": {
     "DECIDE": {
-     "done": 3,
-     "total": 3,
-     "state": "idle"
+     "done": 0,
+     "total": 0,
+     "state": "offline"
     },
     "BUILD": {
-     "done": 3,
-     "total": 3,
-     "state": "idle"
+     "done": 0,
+     "total": 0,
+     "state": "offline"
     },
     "CHECK": {
-     "done": 2,
-     "total": 3,
-     "state": "blocked"
+     "done": 0,
+     "total": 0,
+     "state": "offline"
     }
    }
   },
   {
-   "name": "5 Jawa xenotype",
+   "name": "4 Three terrain overrides visible on the map",
    "cells": {
     "DECIDE": {
-     "done": 1,
-     "total": 1,
-     "state": "idle"
+     "done": 0,
+     "total": 0,
+     "state": "offline"
     },
     "BUILD": {
-     "done": 1,
-     "total": 1,
-     "state": "idle"
+     "done": 0,
+     "total": 0,
+     "state": "offline"
     },
     "CHECK": {
-     "done": 1,
-     "total": 1,
-     "state": "idle"
+     "done": 0,
+     "total": 0,
+     "state": "offline"
+    }
+   }
+  },
+  {
+   "name": "5 Jawa xenotype spawns, and it is the right one of the three",
+   "cells": {
+    "DECIDE": {
+     "done": 0,
+     "total": 0,
+     "state": "offline"
+    },
+    "BUILD": {
+     "done": 0,
+     "total": 0,
+     "state": "offline"
+    },
+    "CHECK": {
+     "done": 0,
+     "total": 0,
+     "state": "offline"
     }
    }
   },
@@ -104,59 +104,79 @@
    "name": "6 Weapons / gear",
    "cells": {
     "DECIDE": {
-     "done": 1,
-     "total": 1,
-     "state": "idle"
+     "done": 0,
+     "total": 0,
+     "state": "offline"
     },
     "BUILD": {
-     "done": 1,
-     "total": 1,
-     "state": "idle"
+     "done": 0,
+     "total": 0,
+     "state": "offline"
     },
     "CHECK": {
-     "done": 1,
-     "total": 1,
-     "state": "idle"
+     "done": 0,
+     "total": 0,
+     "state": "offline"
     }
    }
   },
   {
-   "name": "7 Ordinary worldgen",
+   "name": "7 Ordinary worldgen produces a playable world",
    "cells": {
     "DECIDE": {
-     "done": 1,
-     "total": 1,
-     "state": "idle"
+     "done": 0,
+     "total": 0,
+     "state": "offline"
     },
     "BUILD": {
      "done": 0,
-     "total": 1,
-     "state": "blocked"
+     "total": 0,
+     "state": "offline"
     },
     "CHECK": {
      "done": 0,
-     "total": 1,
-     "state": "blocked"
+     "total": 0,
+     "state": "offline"
     }
    }
   },
   {
-   "name": "8 Gravship",
+   "name": "8 Gravship built and exported",
    "cells": {
     "DECIDE": {
-     "done": 1,
-     "total": 1,
-     "state": "idle"
+     "done": 0,
+     "total": 0,
+     "state": "offline"
     },
     "BUILD": {
-     "done": 1,
-     "total": 1,
-     "state": "idle"
+     "done": 0,
+     "total": 0,
+     "state": "offline"
     },
     "CHECK": {
-     "done": 1,
-     "total": 1,
-     "state": "idle"
+     "done": 0,
+     "total": 0,
+     "state": "offline"
+    }
+   }
+  },
+  {
+   "name": "unassigned",
+   "cells": {
+    "DECIDE": {
+     "done": 0,
+     "total": 16,
+     "state": "blocked"
+    },
+    "BUILD": {
+     "done": 0,
+     "total": 37,
+     "state": "blocked"
+    },
+    "CHECK": {
+     "done": 0,
+     "total": 30,
+     "state": "blocked"
     }
    }
   }

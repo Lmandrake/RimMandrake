@@ -58,6 +58,7 @@ infrastructure/state/queue/HUMAN.md     anyone writes  ->  REP reads
 
 ```
 ## <ID> <one-line title>
+row:      <the V1.md row number this serves. Without it the board cannot place it.>
 spec:     <exact: files, defNames, values, xpaths. No prose.>
 verify:   <the OFFLINE check BUILD must pass. Command or explicit criterion.>
 criteria: <the LIVE pass/fail CHECK will apply.>

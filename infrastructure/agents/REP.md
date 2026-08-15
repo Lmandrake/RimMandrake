@@ -26,8 +26,10 @@ CHECK, each cell a fill bar with `done/total`. Plus: RAG gauge, KPI tiles, block
 by class, host memory, repo inventory (hourly), and CURRENTLY — what each agent says
 it is doing, from `infrastructure/state/status/<SEAT>.json`.
 
-You keep `status_matrix.json` true. Nothing else writes it. If you cannot tell an
-agent's state, it is `offline` — never guess `working`.
+`status_matrix.json` is DERIVED, never hand-edited:
+`python3 src/RimMandrake/Utils/derive_matrix.py` counts the queues and writes it.
+Run it after any queue change. Hand-keeping it would drift, because the agent that
+closes work and the agent that records it would be different agents.
 
 ## Two modes
 
