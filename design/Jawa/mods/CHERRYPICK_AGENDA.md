@@ -104,6 +104,7 @@ Reviewing these per-def is not possible and pretending otherwise wastes sessions
 
 | mod | why |
 |---|---|
+| **`Skunks`** (`guppyfacesarecute.skunks`) | Owner, 2026-08-15. 5 ThingDefs, 1 pawn kind, 4 recipes — skunk, its meat, leather, corpse and gas. Nothing depended on it |
 | **`Grimstone : Beasts`** (`abrolo.grimstone.beasts`) | Owner, 2026-08-15: *"not worth it. Not very high quality."* 37 ThingDefs, 7 creatures, 3 recipes. Nothing depended on it, and our `Armour_Leather.xml` and `MegafaunaYield.xml` reference it only inside `PatchOperationFindMod`, so they take the no-match branch silently |
 | **`Big and Small - Sapient Animals`** (`redmattis.sapientanimals`) | Owner, 2026-08-15: *"This whole mod needs to go... We're descoping the mod."* It generated a `Humanlike`-intelligence twin of **every animal in the game — 1,073 defs**, all of them potential pawns (`HL_Penguin`, `HL_RockTroll`, `HL_Bantha`). Sapient talking animals are not this fiction. Set inactive in `ModsConfig.xml`; nothing declared a dependency on it. **Do not cherrypick its defs — they no longer load.** |
 
