@@ -211,8 +211,13 @@ spec:     `design/Jawa/worldbuilding/FACTION_SPEC.md` section 2 for every field 
           and "pawnGroupMakers" tables for this faction. Model:
           `src/Jawa/Jawa_Patches/Defs/FactionDefs/JawaTribes.xml`.
           Fill EVERY group in the contract — identity · generation · naming · art
-          · hostility · pawns · ideo. A missing `factionNameMaker` or
-          `factionIconPath` is a broken faction screen, not a cosmetic gap.
+          · hostility · pawns. A missing `factionNameMaker`, `factionIconPath`
+          or `colorSpectrum` is a broken faction screen, not a cosmetic gap —
+          `colorSpectrum` values are in the spec's R22 table.
+          ⛔ OMIT the ideo group (R23) unless this faction is the Hutt Cartel,
+          whose text is already authored. It lands in a second pass from D18 and
+          MUST be in before the worldgen click. `basicMemberKind` is OPTIONAL
+          (R21) — do not invent one.
           🪤 `combatPower 99999` kinds are legal in `traders`/`carriers`/`guards`
           and POISON in `options`. `minTotalPoints` does not exist.
           `PawnGenOption` has exactly `kind` and `selectionWeight`.
@@ -228,8 +233,13 @@ spec:     `design/Jawa/worldbuilding/FACTION_SPEC.md` section 5 for every field 
           and "pawnGroupMakers" tables for this faction. Model:
           `src/Jawa/Jawa_Patches/Defs/FactionDefs/JawaTribes.xml`.
           Fill EVERY group in the contract — identity · generation · naming · art
-          · hostility · pawns · ideo. A missing `factionNameMaker` or
-          `factionIconPath` is a broken faction screen, not a cosmetic gap.
+          · hostility · pawns. A missing `factionNameMaker`, `factionIconPath`
+          or `colorSpectrum` is a broken faction screen, not a cosmetic gap —
+          `colorSpectrum` values are in the spec's R22 table.
+          ⛔ OMIT the ideo group (R23) unless this faction is the Hutt Cartel,
+          whose text is already authored. It lands in a second pass from D18 and
+          MUST be in before the worldgen click. `basicMemberKind` is OPTIONAL
+          (R21) — do not invent one.
           🪤 `combatPower 99999` kinds are legal in `traders`/`carriers`/`guards`
           and POISON in `options`. `minTotalPoints` does not exist.
           `PawnGenOption` has exactly `kind` and `selectionWeight`.
@@ -245,8 +255,13 @@ spec:     `design/Jawa/worldbuilding/FACTION_SPEC.md` section 6 for every field 
           and "pawnGroupMakers" tables for this faction. Model:
           `src/Jawa/Jawa_Patches/Defs/FactionDefs/JawaTribes.xml`.
           Fill EVERY group in the contract — identity · generation · naming · art
-          · hostility · pawns · ideo. A missing `factionNameMaker` or
-          `factionIconPath` is a broken faction screen, not a cosmetic gap.
+          · hostility · pawns. A missing `factionNameMaker`, `factionIconPath`
+          or `colorSpectrum` is a broken faction screen, not a cosmetic gap —
+          `colorSpectrum` values are in the spec's R22 table.
+          ⛔ OMIT the ideo group (R23) unless this faction is the Hutt Cartel,
+          whose text is already authored. It lands in a second pass from D18 and
+          MUST be in before the worldgen click. `basicMemberKind` is OPTIONAL
+          (R21) — do not invent one.
           🪤 `combatPower 99999` kinds are legal in `traders`/`carriers`/`guards`
           and POISON in `options`. `minTotalPoints` does not exist.
           `PawnGenOption` has exactly `kind` and `selectionWeight`.
@@ -262,8 +277,13 @@ spec:     `design/Jawa/worldbuilding/FACTION_SPEC.md` section 7 for every field 
           and "pawnGroupMakers" tables for this faction. Model:
           `src/Jawa/Jawa_Patches/Defs/FactionDefs/JawaTribes.xml`.
           Fill EVERY group in the contract — identity · generation · naming · art
-          · hostility · pawns · ideo. A missing `factionNameMaker` or
-          `factionIconPath` is a broken faction screen, not a cosmetic gap.
+          · hostility · pawns. A missing `factionNameMaker`, `factionIconPath`
+          or `colorSpectrum` is a broken faction screen, not a cosmetic gap —
+          `colorSpectrum` values are in the spec's R22 table.
+          ⛔ OMIT the ideo group (R23) unless this faction is the Hutt Cartel,
+          whose text is already authored. It lands in a second pass from D18 and
+          MUST be in before the worldgen click. `basicMemberKind` is OPTIONAL
+          (R21) — do not invent one.
           🪤 `combatPower 99999` kinds are legal in `traders`/`carriers`/`guards`
           and POISON in `options`. `minTotalPoints` does not exist.
           `PawnGenOption` has exactly `kind` and `selectionWeight`.
@@ -279,8 +299,13 @@ spec:     `design/Jawa/worldbuilding/FACTION_SPEC.md` section 8 for every field 
           and "pawnGroupMakers" tables for this faction. Model:
           `src/Jawa/Jawa_Patches/Defs/FactionDefs/JawaTribes.xml`.
           Fill EVERY group in the contract — identity · generation · naming · art
-          · hostility · pawns · ideo. A missing `factionNameMaker` or
-          `factionIconPath` is a broken faction screen, not a cosmetic gap.
+          · hostility · pawns. A missing `factionNameMaker`, `factionIconPath`
+          or `colorSpectrum` is a broken faction screen, not a cosmetic gap —
+          `colorSpectrum` values are in the spec's R22 table.
+          ⛔ OMIT the ideo group (R23) unless this faction is the Hutt Cartel,
+          whose text is already authored. It lands in a second pass from D18 and
+          MUST be in before the worldgen click. `basicMemberKind` is OPTIONAL
+          (R21) — do not invent one.
           🪤 `combatPower 99999` kinds are legal in `traders`/`carriers`/`guards`
           and POISON in `options`. `minTotalPoints` does not exist.
           `PawnGenOption` has exactly `kind` and `selectionWeight`.
@@ -296,8 +321,13 @@ spec:     `design/Jawa/worldbuilding/FACTION_SPEC.md` section 9 for every field 
           and "pawnGroupMakers" tables for this faction. Model:
           `src/Jawa/Jawa_Patches/Defs/FactionDefs/JawaTribes.xml`.
           Fill EVERY group in the contract — identity · generation · naming · art
-          · hostility · pawns · ideo. A missing `factionNameMaker` or
-          `factionIconPath` is a broken faction screen, not a cosmetic gap.
+          · hostility · pawns. A missing `factionNameMaker`, `factionIconPath`
+          or `colorSpectrum` is a broken faction screen, not a cosmetic gap —
+          `colorSpectrum` values are in the spec's R22 table.
+          ⛔ OMIT the ideo group (R23) unless this faction is the Hutt Cartel,
+          whose text is already authored. It lands in a second pass from D18 and
+          MUST be in before the worldgen click. `basicMemberKind` is OPTIONAL
+          (R21) — do not invent one.
           🪤 `combatPower 99999` kinds are legal in `traders`/`carriers`/`guards`
           and POISON in `options`. `minTotalPoints` does not exist.
           `PawnGenOption` has exactly `kind` and `selectionWeight`.
@@ -313,8 +343,13 @@ spec:     `design/Jawa/worldbuilding/FACTION_SPEC.md` section 12 for every field
           and "pawnGroupMakers" tables for this faction. Model:
           `src/Jawa/Jawa_Patches/Defs/FactionDefs/JawaTribes.xml`.
           Fill EVERY group in the contract — identity · generation · naming · art
-          · hostility · pawns · ideo. A missing `factionNameMaker` or
-          `factionIconPath` is a broken faction screen, not a cosmetic gap.
+          · hostility · pawns. A missing `factionNameMaker`, `factionIconPath`
+          or `colorSpectrum` is a broken faction screen, not a cosmetic gap —
+          `colorSpectrum` values are in the spec's R22 table.
+          ⛔ OMIT the ideo group (R23) unless this faction is the Hutt Cartel,
+          whose text is already authored. It lands in a second pass from D18 and
+          MUST be in before the worldgen click. `basicMemberKind` is OPTIONAL
+          (R21) — do not invent one.
           🪤 `combatPower 99999` kinds are legal in `traders`/`carriers`/`guards`
           and POISON in `options`. `minTotalPoints` does not exist.
           `PawnGenOption` has exactly `kind` and `selectionWeight`.

@@ -79,7 +79,7 @@ faction 11, not a template exempt from the rules.**
 | naming | `factionNameMaker` `settlementNameMaker` | **reuse a shipped namer** (R16) |
 | art | `factionIconPath` `colorSpectrum` | **reuse** (R17) |
 | hostility | one of `permanentEnemy` / `naturalEnemy` / `permanentEnemyToEveryoneExcept` / `raidsForbidden` | ⛔ **no goodwill number — the field does not exist** (R1) |
-| pawns | `basicMemberKind` · `pawnGroupMakers` | must reference PawnKindDefs that **already exist** |
+| pawns | `pawnGroupMakers` | must reference PawnKindDefs that **already exist**. `basicMemberKind` is **OPTIONAL** — set on only 30 of 87 live defs and on none of the six vanilla vessels |
 | ideo | `fixedIdeo` `ideoName` `ideoDescription` `forcedMemes` (+ `deityPresets`) | text is the product |
 
 ## Per-faction detail
@@ -481,3 +481,46 @@ Jawa_IndigenousTribes  (already ships - verify these still resolve)
 kind exists), Trandoshan/Rodian/Aqualish/Snivvian role splits, the Junker
 warcasket tiers, the Hutt "proxy" distinction, and every lieutenant/champion/
 specialist rank. All of them return with the 48 authored kinds.
+
+## Three things that would otherwise bounce an item
+
+**R21 · `basicMemberKind` is OPTIONAL. Omit it.** Measured: set on 30 of 87 live
+`FactionDef`s and on **none** of `Empire`, `OutlanderCivil`, `TribeCivil`,
+`Pirate`, `Insect` or `Mechanoid`. The contract over-specified it. Do not invent
+a value; the group makers carry the composition.
+
+**R22 · `colorSpectrum` — literal values, assigned here.** It is set on 76 of 87
+live defs, so a faction without one looks broken on the world map. These are the
+v1 values; they are a design call, not a placeholder, and they read against
+desert terrain.
+
+| faction | colorSpectrum |
+|---|---|
+| Hutt Cartel | `(0.72,0.62,0.25)` `(0.58,0.48,0.18)` — sickly gold |
+| Free Droid Enclaves | `(0.55,0.62,0.70)` `(0.40,0.48,0.58)` — cold steel |
+| Wildsteam Clan | `(0.30,0.45,0.25)` `(0.22,0.34,0.18)` — deep green |
+| Deepwater Compact | `(0.20,0.55,0.58)` `(0.14,0.40,0.45)` — teal |
+| Geonosian Foundry Hive | `(0.65,0.35,0.18)` `(0.48,0.25,0.12)` — rust |
+| Ascendant Helix | `(0.78,0.74,0.85)` `(0.62,0.58,0.72)` — pale violet |
+| the Junkers | `(0.55,0.35,0.20)` `(0.38,0.24,0.14)` — scrap brown |
+| Jawa Trade Moot | `(0.70,0.55,0.30)` `(0.52,0.40,0.20)` — sand, with the ember |
+
+The six reskins keep their vessel's spectrum. Do not patch it.
+
+**R23 · BUILD THE FACTION WITHOUT ITS IDEO BLOCK. The ideo lands second.**
+Chain step 9 formally needs step 6, and **9 of 11 faiths have no
+`ideoDescription`** — so a strict reading blocks every authored faction behind a
+writing task. It does not have to: `fixedIdeo` / `ideoName` / `ideoDescription` /
+`forcedMemes` / `deityPresets` are OPTIONAL fields. A faction shipped without
+them generates an ideo at worldgen and works.
+
+⇒ **Ship the 13 step-9 items now with the ideo group OMITTED**, and add it in one
+pass when D18 delivers the text.
+🔴 **The ideo block MUST land before the worldgen click (chain step 10).** An ideo
+is generated once, at world creation, and a `fixedIdeo` added afterwards does not
+retrofit an existing world. This is the one hard deadline on D18.
+
+⛔ **Exception — the three faiths that already have their text ship WITH it:**
+the Galactic Empire (The Rising Order), the Hutt Cartel (the Reckoning of Debts),
+and the Jawa Trade Moot (The Salvation, already in the shipped def). Those three
+carry authored `deityPresets` and there is no reason to defer them.
