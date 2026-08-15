@@ -1,11 +1,11 @@
 # balance_paradigm.md — why we would change any number in this game
 
 _Started 2026-08-10. The decision framework for normalising, cutting and
-re-skinning the 562-mod stack. Companion to `concept.md` (pillars),
-`desert_world_design.md` (the world), and `observed/2026-08-13/inventory/` (the measured data)._
+re-skinning the 562-mod stack. Companion to `concept.md` (pillars) and
+`desert_world_design.md` (the world)._
 
 **Status:** paradigm, not a work order. Every measured claim below is from
-`observed/2026-08-13/inventory/animals.csv` + the live def dump, 2026-08-10.
+the animals inventory + the live def dump, 2026-08-10.
 
 ---
 
@@ -261,7 +261,7 @@ Families: **glands** (drugs/medical), **hides** (crafting identity), **organs**
 Favour unusual silhouettes, non-Earth colour logic, odd locomotion, and
 behaviours that carry a story (pack ambush, mimicry, symbiosis, burrowing,
 gas-bag flotation). Cut redundant terrestrial fauna that adds a row and no scene
-— the contact sheets in `observed/2026-08-13/inventory/contact_sheets/` are the instrument for
+— contact sheets are the instrument for
 this, and they make whole mods judgeable as a block.
 
 **Largeness and tinyness should both be COMMON.** The default RimWorld world is
@@ -561,7 +561,7 @@ answer that resolves it.
 ## 5. How we will know it worked
 
 The point of having measured the stack is that the paradigm is **falsifiable**.
-All of these are computable from `observed/2026-08-13/inventory/` + the live dump:
+All of these are computable from the animals inventory + the live dump:
 
 | target | now | goal |
 |---|---|---|

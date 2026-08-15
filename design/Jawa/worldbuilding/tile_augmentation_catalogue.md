@@ -73,7 +73,7 @@ free is defenders from the owning faction** — §6.1.
 | `apply_architect_designator` — 13×11 furnished room built | Terrain restore ≠ undo; destroyed plants do not return |
 
 > **Placement is a solved mechanism. Verification of placement is not the gap; *reading
-> world/faction state* is.** That read is `jawa/list_factions`, which `V1_SCOPE.md` already
+> world/faction state* is.** That read is `jawa/list_factions`, which already
 > ranks BRIDGE #1 / V1-CRITICAL and gates on a **shutdown** window.
 
 ---
@@ -259,7 +259,7 @@ from `map.Tile` and handing it to `PawnGenerator`. **A build, not an experiment*
 new C# the entire catalogue needs.
 
 **Who owns finding out.** **CHECK** owns the *live* half and holds the blocking tool:
-`jawa/list_factions`, V1-CRITICAL and **shutdown-gated** (`V1_SCOPE.md`); as per the trap file,
+`jawa/list_factions`, V1-CRITICAL and **shutdown-gated**; as per the trap file,
 **no faction, world or settlement tool** exists among the current 139, so faction data comes from
 `save_game` + a `.rws` grep meanwhile. ⚠️ **Worldgen-time access is a separate question and nobody
 owns it** — it is *not* CHECK's, since the bridge drives a running game and cannot observe a
@@ -358,7 +358,7 @@ a campaign nobody finished building.
   **Nobody owns that hook.** Assign it.
 - **BUILD:** this raises the value of the Space Tower read (V11), because the
   answer covers the *format*, not just the one mod.
-- ⚠️ **Not v1.** `V1_SCOPE.md` ships one quest and three terrain overrides. This
+- ⚠️ **Not v1.** v1 ships one quest and three terrain overrides. This
   is a **v2 content pillar** and is recorded here so it is not re-derived.
 
 ⭐ **The storyline half of this is now written** — the towers are the Empire's

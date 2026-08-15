@@ -1,6 +1,6 @@
 # "The Claim" — the v1 quest, specified
 
-_VISION, 2026-08-13. **This is `V1_SCOPE.md` row 3.** The row reads *"One
+_VISION, 2026-08-13. **This is row 3.** The row reads *"One
 `QuestScriptDef` that fires and resolves. Any premise."* — BUILD owns the build,
 and "any premise" left the one part that is mine unwritten. This is the premise,
 the player-facing text, and the shape. **BUILD picks the nodes; nothing here
@@ -21,7 +21,7 @@ nobody re-proposes them and so the choice does not look timid:
 | Rival clan bounty | faction relations matrix | **v2** |
 
 **"The Claim" needs a world tile, a stash, a timer, and text.** That is all. It is
-the only on-brand premise that is *thin* in the `V1_SCOPE.md` sense, and it is not
+the only on-brand premise that is *thin* in the v1 sense, and it is not
 a placeholder — it is the campaign's thesis compressed into one quest.
 
 ## The premise
@@ -194,7 +194,7 @@ from orbit is the point.** Adopted quests are judged one at a time.
 
 ## What "done" means for row 3
 
-`V1_SCOPE.md`'s gate is **seen working in-game once**. For this row that is:
+The gate is **seen working in-game once**. For this row that is:
 **the quest appears in the quests tab, is acceptable, and reaches an end state** —
 completed or expired, either counts. **It does not have to be balanced, and the
 site does not have to be interesting.** Balance and site design are v2.

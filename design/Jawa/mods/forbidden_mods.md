@@ -1,4 +1,4 @@
-> **LIVE-DATA OVERRIDE:** `observed/2026-08-13/live_mod_inventory.md` (⚙️ generated from the machine — it carries its own capture stamp) is authoritative for mod identity — existence, Workshop IDs, packageIds, versions. This file keeps the reasoning only. "Faction Filter" never existed; the live equivalents are **Sensible Factions** (3531306011) and **Faction Control** (2882785581).
+> "Faction Filter" never existed; the live equivalents are **Sensible Factions** (3531306011) and **Faction Control** (2882785581).
 
 # Forbidden Mods — Gravship Expedition Campaign
 

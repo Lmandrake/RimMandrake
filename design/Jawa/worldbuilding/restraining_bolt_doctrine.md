@@ -100,8 +100,7 @@ or an apparel item.** The shape of that answer decides whether this is twenty
 lines or a project. **Unverified today** — and it is the only thing standing
 between this concept and a build spec.
 
-`[v2]`. The Enclaves are unbuilt (`V1_SCOPE.md` names them explicitly as
-deferred), so this lands with them.
+`[v2]`. The Enclaves are unbuilt and explicitly deferred, so this lands with them.
 
 ---
 

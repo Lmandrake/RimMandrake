@@ -45,9 +45,8 @@ The commit says *how we learned it, what it replaced, and who was wrong*. Git
 already stores that perfectly and nobody pays to read it. **The test: delete the
 sentence. If the doc still tells you what to do, the sentence was provenance.**
 
-**3. A closed item is ONE LINE in `CLOSED.md`, and its body is deleted.** Not
-struck through in place, not kept "so nobody re-files it" — one line with the date
-and hash does that job at 2% of the cost. Count with
+**3. A closed item's body is deleted.** Not struck through in place, not kept "so
+nobody re-files it" — the commit already records it. Count with
 `grep -cE '^#{2,4} ' infrastructure/state/NEXT_RELOAD.md` — never from memory; the
 figure written here was 4x out within a day.
 

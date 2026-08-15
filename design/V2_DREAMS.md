@@ -32,7 +32,7 @@ verify:   `-> VERIFIED in sync`; deployed `JawaScrapfields.xml` carries `minSpac
 criteria: see CHECK C3 — 44–56 chunks in 4–6 clumps on a map generated after this deploy.
 
 ## B4 Armoury patches — HELD on provenance
-spec:     `src/Jawa/Jawa_Armoury/Patches/Armoury_MeleePower.xml` and `Armoury_RangedDamage.xml`. Swept into `81939e1` (subject: genome tooling), never reviewed, no provenance banner. Re-run the generator; generators anchor through `observed/2026-08-13/inventory/patch_ledger.json` and print a banner via `src/RimMandrake/Utils/patch_provenance.py`. Also carries 8 double-match `Replace`s.
+spec:     `src/Jawa/Jawa_Armoury/Patches/Armoury_MeleePower.xml` and `Armoury_RangedDamage.xml`. Swept into `81939e1` (subject: genome tooling), never reviewed, no provenance banner. Re-run the generator; generators anchor provenance and print a banner via `src/RimMandrake/Utils/patch_provenance.py`. Also carries 8 double-match `Replace`s.
 verify:   provenance banner shows no `unknown` anchors — `unknown` means STOP. Scoped `validate_patch.py --defs` clean; the 8 double-match `Replace`s resolved.
 criteria: EMPTY
 
@@ -72,7 +72,7 @@ verify:   the chosen category has non-empty `thingDefStyles` in the live dump; `
 criteria: EMPTY
 
 ## B14 Build the eleven `FactionDef` ideoligion blocks — entries 1 and 2 first
-spec:     `D:\Luke\dev\Rimworld\design\Jawa\worldbuilding\faction_religions_spec.md`. Pattern is the Horax cult, `Data\Anomaly\Defs\FactionDefs\Factions_Misc.xml`: `fixedIdeo` · `ideoName` · `ideoDescription` · `forcedMemes` (structure first, complete set) · `requiredPreceptsOnly` · `deityPresets` · `disallowedPrecepts` · `styles` — NOT the Empire's `requiredMemes` + `structureMemeWeights`. Entry 1 (Galactic Empire — The Rising Order) lands on vanilla `Empire` per `V1_SCOPE.md:84`, replacing that family. Entries 1 (two deities), 2 (one) and 3 (one) need `deityPresets`; the corrected `deityCount` table is at the foot of the spec. Take `ideoName`, `ideoDescription` and every `deityPresets` name/type VERBATIM — they are the only text the engine renders. Never set `hiddenIdeo`. Section 12 (Jawa) is a deliberate empty slot — the owner is building it. Legal vocabulary: `design\Jawa\worldbuilding\data\ideology_palette.md` (136 memes, 685 precepts, 41 styles, 92 ritual patterns). Three engine constraints: charity has no negative precept · `PreferredXenotypes` cannot be aimed at a xenotype from XML · `Apostasy_Abhorrent` hard-conflicts with the `Guilty` meme. Meme ceiling is a COUNT (`MemeCountRangeAbsolute` 1–4 normal memes), not an impact budget — never pass `--impact-budget`.
+spec:     `D:\Luke\dev\Rimworld\design\Jawa\worldbuilding\faction_religions_spec.md`. Pattern is the Horax cult, `Data\Anomaly\Defs\FactionDefs\Factions_Misc.xml`: `fixedIdeo` · `ideoName` · `ideoDescription` · `forcedMemes` (structure first, complete set) · `requiredPreceptsOnly` · `deityPresets` · `disallowedPrecepts` · `styles` — NOT the Empire's `requiredMemes` + `structureMemeWeights`. Entry 1 (Galactic Empire — The Rising Order) lands on vanilla `Empire`, replacing that family. Entries 1 (two deities), 2 (one) and 3 (one) need `deityPresets`; the corrected `deityCount` table is at the foot of the spec. Take `ideoName`, `ideoDescription` and every `deityPresets` name/type VERBATIM — they are the only text the engine renders. Never set `hiddenIdeo`. Section 12 (Jawa) is a deliberate empty slot — the owner is building it. Legal vocabulary: `design\Jawa\worldbuilding\data\ideology_palette.md` (136 memes, 685 precepts, 41 styles, 92 ritual patterns). Three engine constraints: charity has no negative precept · `PreferredXenotypes` cannot be aimed at a xenotype from XML · `Apostasy_Abhorrent` hard-conflicts with the `Guilty` meme. Meme ceiling is a COUNT (`MemeCountRangeAbsolute` 1–4 normal memes), not an impact budget — never pass `--impact-budget`.
 verify:   `python3 src/RimMandrake/Utils/validate_ideoligion.py <xml>` VALID, then eyeball EVERY `<li>` for its `MayRequire` by hand — the validator does NOT check `MayRequire` (`def/needs-mayrequire` is only an INFO), and an unwrapped defName from a disabled mod is a silent no-op. packageIds: `VME_`/`VFEA_` -> `vanillaexpanded.vmemese`, `AM_` -> `sarg.alphamemes`, plus `VQE_`, `GR_`, `llunak.moreprecepts`, the Ludeon DLC ids. VALID is not GOOD — 4 inert precepts still WARN across the set.
 criteria: read the eleven back with `jawa/ideo_of` and diff against the spec.
 
@@ -151,7 +151,7 @@ verify:   EMPTY
 criteria: read the `faction` field in the REPLY, never the one you sent — `IncidentWorker_RaidEnemy::TryResolveRaidFaction` keeps the passed faction only if non-null AND `HostileTo(Faction.OfPlayer)` AND (`!deactivated` OR `parms.forced`); otherwise IL_0059 passes `ldflda IncidentParms::faction` BY REFERENCE into `TryGetRandomFactionForCombatPawnGroupWeighted`, which overwrites it with a random weighted faction and still reports `success:true`. The tool reports `parms.faction` after the worker ran (`JawaBenchTerrainTools.cs:3588`). Then: does the antagonist read as the antagonist on screen.
 
 ## C3 v1 row 4 — the scrapfields count
-spec:     After BUILD B3 deploys, generate a fresh map (a 90 s quicktest counts; `Jawa_ScatterScrapfields` is a `GenStepDef` at order 960 hooking `Base_Player` genSteps, so it is not biome-gated), then take a FULL-MAP `listerThings` count of `ChunkSlagSteel` — no sampling — plus `TileInfo.Mutators` and the map size. NAME THE MAP. A GenStep runs at map generation and never again, so a map's count dates the def that BUILT it. The old "11 measured" was never a measurement: 9 rects of 30x30 = 8,100 cells (~13% of the map) holding 1 chunk each on two maps, extrapolated by /0.13; where the 9 rects sat is recorded nowhere. Full audits: `observed/2026-08-14_O15_scrapfields_offline.md`, `observed/2026-08-14_row4_live.md:97-101`.
+spec:     After BUILD B3 deploys, generate a fresh map (a 90 s quicktest counts; `Jawa_ScatterScrapfields` is a `GenStepDef` at order 960 hooking `Base_Player` genSteps, so it is not biome-gated), then take a FULL-MAP `listerThings` count of `ChunkSlagSteel` — no sampling — plus `TileInfo.Mutators` and the map size. NAME THE MAP. A GenStep runs at map generation and never again, so a map's count dates the def that BUILT it. The old "11 measured" was never a measurement: 9 rects of 30x30 = 8,100 cells (~13% of the map) holding 1 chunk each on two maps, extrapolated by /0.13; where the 9 rects sat is recorded nowhere.
 verify:   EMPTY
 criteria: **44–56 chunks in 4–6 clumps** on a map generated after B3. The 75–125 band was never measured — it omitted `GetPlacementFactor`, the product of `junkDensityFactor` over the tile's mutators, and `Dunes` is one of five live mutators whose factor is **ZERO**. On any older save the verdict is "not measurable here", NEVER "44–56 missed". Look before any destroy — the last map's evidence died in a 43,288-thing wipe.
 
@@ -216,7 +216,7 @@ verify:   EMPTY
 criteria: the deliverable is the CAPABILITY, not the pan — (a) can the bridge detect or be told a landform footprint, (b) set terrain over that region, (c) does it survive save/reload. First live evidence for tile-augmentation-on-approach, which has none (`design/Jawa/worldbuilding/tile_augmentation_catalogue.md`).
 
 ## C20 Re-shoot the twelve art screenshots
-spec:     The 12 `NEEDS EYES` rows in `observed/2026-08-14_load_session.md` are NON-EVIDENCE: the Debug log window covers the CENTRE of the screen, which is exactly where `look()` puts the subject, and in `p5_004.png` and `p13_012.png` the subject is not in frame at all. `jawa/clear_ui` fixes it forward — closes every `Window_Dev`, drops the selection — and `rimbench.core.look()`/`.frame()` call it automatically. Closing the log by hand does not hold: auto-open-on-error.
+spec:     The 12 `NEEDS EYES` rows are NON-EVIDENCE: the Debug log window covers the CENTRE of the screen, which is exactly where `look()` puts the subject, and in `p5_004.png` and `p13_012.png` the subject is not in frame at all. `jawa/clear_ui` fixes it forward — closes every `Window_Dev`, drops the selection — and `rimbench.core.look()`/`.frame()` call it automatically. Closing the log by hand does not hold: auto-open-on-error.
 verify:   EMPTY
 criteria: twelve screenshots with the subject in frame and no dev window over it.
 
@@ -293,7 +293,7 @@ verify:   —
 criteria: —
 
 ## D17 The droid relations NRE — which of three routes (owner decision #12)
-spec:     `src/Jawa/Jawa_Doctrine/Patches/DroidsAreMachines.xml` sets `isOrganic=false` on the KotOR flesh type `ABF_FleshType_Synstruct_Base` => `IsFlesh` false => no `Pawn_RelationsTracker` => HAR NREs on the 2nd and later same-race droid. Worldgen is unaffected on four independent grounds; `guy762_KotORFaction_RogueDroids` RAIDS are broken, and that faction is the KotOR distress call's antagonist and a **v1 KEEP**. Routes: **(1)** drop the KotOR flesh type from our patch — one xpath, no assembly; restores tending on droids; loses vanilla EMP behaviour on them; does NOT affect our ion weapon (its guard moved to `IsMechanoid` on 08-13). **(2)** ~5 lines of Harmony in an assembly we already ship — a build, a deploy and a load; gives Humanlike pawns a relations tracker regardless of `IsFlesh`; keeps both the machine framing and working raids; it is the only route that also covers `current`, the previously-spawned droid, which is where the throw actually happens. **(3)** accept broken droid raids — free; the quest antagonist cannot raid past its first pawn. EXCLUDED: retargeting to vanilla `Mechanoid` — it would make our own ion weapon block them. Full write-up: `observed/2026-08-14_O12_har_pawngen_nre.md`.
+spec:     `src/Jawa/Jawa_Doctrine/Patches/DroidsAreMachines.xml` sets `isOrganic=false` on the KotOR flesh type `ABF_FleshType_Synstruct_Base` => `IsFlesh` false => no `Pawn_RelationsTracker` => HAR NREs on the 2nd and later same-race droid. Worldgen is unaffected on four independent grounds; `guy762_KotORFaction_RogueDroids` RAIDS are broken, and that faction is the KotOR distress call's antagonist and a **v1 KEEP**. Routes: **(1)** drop the KotOR flesh type from our patch — one xpath, no assembly; restores tending on droids; loses vanilla EMP behaviour on them; does NOT affect our ion weapon (its guard moved to `IsMechanoid` on 08-13). **(2)** ~5 lines of Harmony in an assembly we already ship — a build, a deploy and a load; gives Humanlike pawns a relations tracker regardless of `IsFlesh`; keeps both the machine framing and working raids; it is the only route that also covers `current`, the previously-spawned droid, which is where the throw actually happens. **(3)** accept broken droid raids — free; the quest antagonist cannot raid past its first pawn. EXCLUDED: retargeting to vanilla `Mechanoid` — it would make our own ion weapon block them.
 verify:   EMPTY
 criteria: EMPTY
 
@@ -357,8 +357,7 @@ criteria: EMPTY
 **TODO_v2.md** — absorbed whole, 2026-08-14. The file it came from is deleted;
 citations of the form `TODO_v2.md §N` resolve to the numbered sections below.
 
-_Split out of `TODO.md` 2026-08-13 when the v1 line was drawn
-(`D:\Luke\dev\Rimworld\infrastructure\state\V1_SCOPE.md`). Rewritten from 1,172
+_Split out of `TODO.md` 2026-08-13 when the v1 line was drawn. Rewritten from 1,172
 lines of argument into a register 2026-08-14._
 
 **This is a REGISTER, not a workspace.** One compact entry per open v2 item: what it
@@ -368,9 +367,6 @@ lives in `design/`, a skill, or the mod it belongs to — never here.
 
 ⚠️ **Do not work these while v1 is open.** If one blocks a v1 row, say so and it
 moves back. **v2 starts the day v1's gate passes.**
-
-**Closed items are one line in `infrastructure/state/CLOSED.md`, not a struck-through
-block here.** Check there before re-filing anything.
 
 ---
 
@@ -425,7 +421,7 @@ named log string in `NEXT_RELOAD.md`.
 ## 0c. [BUILD] Alpha Neolithic reskin — the four vehicles after the sled
 
 `sarg.alphavehiclesneolithic`. **The dog sled shipped** (eopie pair, `ad3e3c7`
-`2a9a004`; see `CLOSED.md` C3a). **Four vehicles remain**, each 6 files = **24 PNGs**:
+`2a9a004`). **Four vehicles remain**, each 6 files = **24 PNGs**:
 **Chariot** (1 horse) · **War chariot** (2 horses) · **Covered carriage** (2 horses) ·
 **Ox cart** (2 oxen).
 
@@ -459,7 +455,7 @@ from it, never paste it.
 ## 1. Everything detonates — explosions scaled by energy density
 
 **Owner's ask 2026-08-12; accepted, not started, no files written.** Explicitly
-deferred to v2 by `V1_SCOPE.md` — *"the energy-density explosion model — large,
+deferred to v2 — *"the energy-density explosion model — large,
 self-contained, pure v2."*
 
 📄 **The spec now lives at `D:\Luke\dev\Rimworld\design\Jawa\explosion_energy_model.md`**
@@ -652,7 +648,7 @@ screen; `Suppress` is confirmed firing twice with Jawa initiators onto slaves. *
 text of a Suppress entry has never been seen** — every hovered line came back
 `Chitchat`. The prisoner half cannot fire at all.
 
-**Mechanism half is CLOSED** (`CLOSED.md`, 2026-08-12): 14/14 Ideology defs carry our
+**Mechanism half is CLOSED** (2026-08-12): 14/14 Ideology defs carry our
 rules, `Suppress` sits in `logRulesInitiator` gated `INITIATOR_kind==OuterRim_Jawa` /
 `OuterRim_JawaTribal` at `priority=250`, and the `ReduceWill` InteractionDef/
 PrisonerInteractionModeDef disambiguation is clean (24 rules vs 0). Source:
@@ -720,7 +716,7 @@ state:    ready
 
 ## C15 Finish measuring the ocean — 3 of 7 seeds still unread
 row:      10
-spec:     `python.exe src/RimMandrake/bridgetools/sea_seed_sweep.py 4`. Data, method and the near-miss: `observed/2026-08-14_sea_baseline_seeds.md`. ONLY when the owner is not at the keyboard — each iteration is a full RimWorld worldgen, it took loadavg to 22.58, and the owner read it as a hang. Every reading so far is the sea WITHOUT `JawaSeaShaper.dll` — a baseline we have never had, not a result.
+spec:     `python.exe src/RimMandrake/bridgetools/sea_seed_sweep.py 4`. ONLY when the owner is not at the keyboard — each iteration is a full RimWorld worldgen, it took loadavg to 22.58, and the owner read it as a hang. Every reading so far is the sea WITHOUT `JawaSeaShaper.dll` — a baseline we have never had, not a result.
 verify:   EMPTY
 criteria: seeds 5–7 land. What would reverse the S1 rescope (partition, not write): three-or-more bodies in the remaining seeds, or a wide water spread — nothing else. `25.0%` is NOT a constant: three seeds read exactly 25.0 and the fourth read **16.74**, so requirement 1 is a real gate. Do not author S1 until these land.
 state:    ready

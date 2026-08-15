@@ -390,7 +390,7 @@ def i_world_stats(s, cfg):
 def i_dune_seas(s, cfg):
     """v1 row 4, the dune-seas override. NOT an eyeball check.
 
-    V1_SCOPE ruled this closes on a live `terrainPatchMakers` read -- SoftSand's
+    This closes on a live `terrainPatchMakers` read -- SoftSand's
     `min` widened from vanilla 0.65 to 0.55 (Desert) and 0.50 (ExtremeDesert) --
     because a 15% density change is not judgeable by looking at a map.
 
@@ -685,10 +685,10 @@ ITEMS = [
     ("A2", ANY_MAP, "NoPathToPilotConsole predicate", i_pilot_console),
     ("A4", ANY_MAP, "order_pawn walks and returns", i_order_pawn_walk),
     # A3 is NOT the salt-crust paint. That PASSED live already
-    # (queue/CREATE.md:38, V1_SCOPE row 4 "1 of 3 SEEN"), so re-proving the def
+    # (row 4, "1 of 3 SEEN"), so re-proving the def
     # and the art would be spending live time on a closed row. What is still
     # open is DECIDE's B-v1 CAPABILITY question, which is a different thing.
-    # Row 5 was RULED CLOSED by PROJECT (V1_SCOPE.md:608-633) -- BTD_Jawa
+    # Row 5 was RULED CLOSED by PROJECT -- BTD_Jawa
     # survives the BTD dedup and the pawnkind pins were remapped onto it,
     # measured live from Player.log. `i_row5_xenotype` stays in this file
     # because the read is now free and would turn "measured from the log" into

@@ -80,7 +80,6 @@ DOCTRINE = [
     "infrastructure/state/V1.md",
     "infrastructure/state/V1_CHAIN.md",
     "infrastructure/DOC_BUDGET.md",
-    "infrastructure/state/CLOSED.md",
 ]
 
 EMPTY_TREE = "4b825dc642cb6eb9a060e54bf8d69288fbee4904"

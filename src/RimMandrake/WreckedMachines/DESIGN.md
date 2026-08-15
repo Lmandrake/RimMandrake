@@ -91,8 +91,7 @@ haul, and no leavings.** It is furniture in the way a boulder is furniture.
 
 #### ⚠️ Conflict to resolve: the "everything detonates" backlog item
 
-Accepted by the owner 2026-08-12 and queued in
-`file:///D:/Luke/dev/Rimworld/infrastructure/state/TODO.md` §1: a patch giving droids, workbenches and
+Accepted by the owner 2026-08-12: a patch giving droids, workbenches and
 machines turret-style `CompProperties_Explosive` blasts, scaled by **energy
 density**. Taken literally across the stack, **a destroyed machine detonates and
 its wreck is vaporised — which deletes the salvage this mod exists to create.**

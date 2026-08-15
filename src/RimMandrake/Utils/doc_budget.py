@@ -32,9 +32,7 @@ what a document is for:
                           expensive lines in the repo.
   traps-*.md        700   append-only by nature; the index is what stays short.
   NEXT_RELOAD.md    400   a queue for ONE event. Accumulation here is the symptom.
-  CLOSED.md         150   one line per item.
   STRUCTURE.md      300   the manifest.
-  V1_SCOPE.md       300   the scope line and the burn-down.
   OWNER_DECISIONS.md 120  what is waiting on the owner. If it grows past this it
                           is not being drained, which is the whole failure it
                           exists to prevent.
@@ -83,22 +81,12 @@ BUDGETS = [
     # instruction rots" section warns about, inside the file carrying the warning.
     ("infrastructure/DOC_BUDGET.md", 200),
     ("infrastructure/STRUCTURE.md", 300),
-    ("infrastructure/state/V1_SCOPE.md", 300),
-    # Waiting on the owner. Growth past 120 means rows are not being cleared into
-    # CLOSED.md — the exact rot this file was created to stop.
+    # Waiting on the owner. Growth past 120 means rows are not being drained —
+    # the exact rot this file was created to stop.
     ("infrastructure/state/OWNER_DECISIONS.md", 120),
-    ("infrastructure/state/CLOSED.md", 150),              # one line per item; archive the oldest if it fills
     # NEXT_RELOAD.md is a queue for ONE event. It should be harvested and cleared
     # after each load, so accumulation here is the symptom, not the content.
     ("infrastructure/state/NEXT_RELOAD.md", 400),
-    # 🔴 The two biggest state files matched NO glob until 2026-08-13 and were
-    # therefore never measured: TODO.md (965) and TODO_v2.md (1,168) — 3,078
-    # unmeasured lines, MORE than the entire measured excess across every other
-    # file combined. A budget tool that silently omits its largest subject is
-    # reporting on the wrong tier; found by a doc-budget sweep, not by the tool.
-    # Budgets are deliberately generous: these are being retired, not trimmed,
-    # and a budget that fails on day one gets ignored rather than obeyed.
-    ("infrastructure/state/TODO.md", 400),
 ]
 
 # Lines that record HOW WE LEARNED something rather than WHAT IS TRUE. They earn
@@ -161,8 +149,8 @@ def main():
             pass
 
     if over:
-        print(f"\n{over} file(s) over budget. Closed items belong in CLOSED.md as "
-              f"ONE LINE each; provenance belongs in the commit message.")
+        print(f"\n{over} file(s) over budget. Delete the body of anything closed; "
+              f"provenance belongs in the commit message.")
         return 1
     return 0
 

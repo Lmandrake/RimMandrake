@@ -1,14 +1,14 @@
 # mod_config_rulings.md — accept/reject rulings and configuration guidance
 
 _Hand-authored. **This is the reasoning half of the mod inventory.** It was
-carved out of `observed/2026-08-13/live_mod_inventory.md` on 2026-08-13, when
-that file was put under a generator (`src/RimMandrake/Utils/mod_inventory.py`)
+carved out on 2026-08-13, when the identity data was put under a generator
+(`src/RimMandrake/Utils/mod_inventory.py`)
 and could no longer carry hand-written prose — a file stamped "do not
 hand-edit" must not contain judgement calls._
 
 **Identity questions — does a mod exist, its packageId / Workshop ID /
-supported versions — are answered by `observed/2026-08-13/live_mod_inventory.md`,
-which is generated and authoritative. This file holds only the "why".**
+supported versions — are answered by the generated, authoritative mod
+inventory. This file holds only the "why".**
 
 Sections below are verbatim as of the 2026-08-10 third pass, and carry that
 date's judgement; the mod counts they were written against have since moved

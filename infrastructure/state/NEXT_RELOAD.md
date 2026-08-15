@@ -8,7 +8,7 @@ This file exists so a load is never spent on one question._
 is in §7 (cannot be collected) and you do not attempt it.
 
 Assembled by DECIDE from `infrastructure/state/queue/<SEAT>.md`. Harvest and clear
-afterwards — a closed item becomes ONE line in `CLOSED.md`. How to spend a load:
+afterwards — a closed item is deleted. How to spend a load:
 `skills/rimworld-load-round/SKILL.md`. What v1 is:
 `infrastructure/state/V1_CHAIN.md`.
 

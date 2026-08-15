@@ -3,7 +3,7 @@
 
      WHY THIS EXISTS, and it is a load-budget decision before it is a fiction one.
      Jawa_TheClaim is root-selected (rootSelectionWeight 1.0) and therefore fires
-     on the storyteller's own cadence. V1_SCOPE.md's gate is "seen working
+     on the storyteller's own cadence. The gate is "seen working
      in-game ONCE" — and a cold load is ~23-30 minutes, so "wait for the
      storyteller" is the most expensive possible way to clear it. This item makes
      the quest fire ON DEMAND from a dev-spawned object, in seconds, without dev

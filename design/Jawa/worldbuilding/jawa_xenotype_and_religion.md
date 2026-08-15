@@ -31,7 +31,7 @@ _Gravship Expedition campaign (RimWorld 1.6 / Odyssey). "Crashed Factory ship / 
 > the ruling is already built:
 > `D:\Luke\dev\Rimworld\src\Jawa\Jawa_Patches\Patches\JawaXenotype_Repoint.xml`
 > re-points **both** pawnkinds at **`BTD_Jawa`** (+20 °C heat tolerance, against
-> `OuterRim_Jawa`'s +10 °C). `V1_SCOPE.md` gate **W2**.
+> `OuterRim_Jawa`'s +10 °C). Gate **W2**.
 >
 > **Read from the live def dump, 2026-08-14 — `BTD_Jawa` carries 24 genes to
 > `OuterRim_Jawa`'s 8**, and four of them are ours

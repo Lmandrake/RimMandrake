@@ -5,12 +5,12 @@ to read **line by line while driving the bridge**. It is an execution sheet, not
 design. Every number carries the file it was read from; nothing here is
 remembered._
 
-**Row 8 of `D:\Luke\dev\Rimworld\infrastructure\state\V1_SCOPE.md`** — the one
-item that ships DEEP. Gate (`V1_SCOPE.md:40-42`): **seen working in-game once.**
+**Row 8** — the one
+item that ships DEEP. Gate: **seen working in-game once.**
 For this row that means **the hull exists on the map, the grav engine reports it
 connected, and a screenshot shows it** — not "the log is clean".
 
-⚠️ **This runs AFTER worldgen.** `V1_SCOPE.md:280-290`: the anchor moved to
+⚠️ **This runs AFTER worldgen.** The anchor moved to
 worldgen; rows 2 and 7 are one event and come first, and the ship is built on the
 world that event creates.
 
@@ -402,8 +402,7 @@ rb.call("rimworld/screenshot_cell_rect",
          "fileName": "row8_gravship_built"})
 ```
 ✅ **Passes when:** you can see a ship. Save the returned path; **the gate is
-"seen", and a path to the image is what "seen" means in a report**
-(`V1_SCOPE.md:40-42`).
+"seen", and a path to the image is what "seen" means in a report**.
 
 ---
 
@@ -458,7 +457,7 @@ Short, and shorter than it was this morning (see §7).
 5. **Whether the exporter's gizmo can be driven from the bridge.** Step 20.
 
 **Everything else on the old list was answerable from files, and has been
-answered.** That is §7, and it is the lesson `V1_SCOPE.md:140-144` already
+answered.** That is §7, and it is the lesson already
 recorded once: *before booking the scarcest resource we have, check whether the
 question is answerable offline.*
 
@@ -591,7 +590,7 @@ cap as the two that would actually change a decision.
 
 ## 7. ⭐ Two questions this plan was supposed to leave open — both are ANSWERED, offline
 
-`V1_SCOPE.md:145-148` calls the export round trip *"the residual live test"* and
+The export round trip is *"the residual live test"* and
 `NEXT_RELOAD.md:304-321` books five minutes of the session for it. **It does not
 need the game. Gravship Exporter ships its complete C# source**, at
 `C:\Program Files (x86)\Steam\steamapps\workshop\content\294100\3576790938\1.6\Source\`.

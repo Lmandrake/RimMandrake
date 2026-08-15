@@ -57,8 +57,8 @@ change it. This is the single most important number to re-verify.
 
 ## ✅ RE-MEASURED ON 568 MODS, 2026-08-12 — the verdict holds
 
-file:///D:/Luke/dev/Rimworld/observed/2026-08-13/latency_568mod.json (n=200/class, paused,
-same as the baseline, so the comparison is like-for-like).
+Measured n=200/class, paused,
+same as the baseline, so the comparison is like-for-like.
 
 | call | 3-mod median | 568-mod median | 568 p99 | 568 max |
 |---|---|---|---|---|

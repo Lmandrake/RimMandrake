@@ -5,8 +5,8 @@
 belongs in a durable home and the report is spent.
 
 The tier exists because reports accumulate at the repo root, where they look
-exactly like standing documents. A seat reading `STALE_FILE_AUDIT.md` beside
-`STRUCTURE.md` cannot tell from position which one is a rule.
+exactly like standing documents. A seat reading an audit beside `STRUCTURE.md`
+cannot tell from position which one is a rule.
 
 ## What goes here
 
@@ -21,8 +21,8 @@ someone found out on the way to deciding something, it is.
 **No seat may cite a file in `output\` as a rule.** Not as a spec, not as a
 precedent, not as "the doc says".
 
-If a finding matters, **it moves to a real home** — a skill, a queue item,
-`CLOSED.md`, a design doc — and the report keeps only the evidence behind it.
+If a finding matters, **it moves to a real home** — a skill, a queue item, a
+design doc — and the report keeps only the evidence behind it.
 A conclusion that lives only in `output\` has not landed.
 
 ## Lifecycle

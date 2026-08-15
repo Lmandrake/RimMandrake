@@ -57,7 +57,7 @@ nerve and enough Hutt money, buy themselves quiet by making the sky expensive.**
 That is a strategy the campaign does not currently have, and it uses only things
 that already exist: a site, a quest, a raid weight.
 
-⚠️ **Not v1, and not to be started as v1.** `V1_SCOPE.md` ships one quest. This
+⚠️ **Not v1, and not to be started as v1.** v1 ships one quest. This
 is a **v2 storyline pillar** and is written down so it is not re-derived.
 
 ## Variants the owner asked to keep on the register

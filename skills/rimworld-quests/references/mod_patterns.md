@@ -159,7 +159,7 @@ nodes._
 ## 4. Custom Quest Framework, and the mod that proves it works
 
 `HaiLuan.CustomQuestFramework`, ws 2978572782, installed and active (position 104 in
-`observed/2026-08-13/live_mod_inventory.md`).
+the load order).
 
 **It ships zero `QuestScriptDef`s of its own — it is a library plus an in-game editor.**
 Its `QuestEditor_Library.QuestNode_RandomCustomMap` is referenced **15 times** across
@@ -287,10 +287,9 @@ never run.**
 | **What Cherry Picker does to a `QuestScriptDef`**, and that it does nothing to an existing save | `D:\Luke\dev\Rimworld\infrastructure\archive\2026-08-13_mechanoid_removal_study.md:100-180` |
 | **The `questScriptDef`-referenced-by-`IncidentDef` gate** in the cherry-pick builder | `D:\Luke\dev\Rimworld\src\RimMandrake\Utils\cherrypick_build.py:30,166-180,300` |
 | **The grammar-bracket failure with verbatim log trace**, and the guarded-patch rationale | `D:\Luke\dev\Rimworld\src\Jawa\Jawa_Patches\Patches\BTDGravshipQuest_GrammarFix.xml` |
-| **Row 3's gate, and why "blocked on a human" was the wrong conclusion** | `D:\Luke\dev\Rimworld\infrastructure\state\V1_SCOPE.md:372, 435-448` |
+| **Row 3's gate, and why "blocked on a human" was the wrong conclusion** | `D:\Luke\dev\Rimworld\infrastructure\state\V1_CHAIN.md` |
 | **The step-by-step in-game verification script** for rumour → quest (3 screenshots; PASS = any end state) | `D:\Luke\dev\Rimworld\infrastructure\state\CREATE_TEST_PLAN.md:103-118` |
 | `rimworld/right_click_cell` **is measured broken** — reports success, does nothing; why the float-menu route needed replacing | `D:\Luke\dev\Rimworld\skills\rimbridge\references\traps.md` |
-| Which quest mods are **active**, with packageId and workshop id | `D:\Luke\dev\Rimworld\observed\2026-08-13\live_mod_inventory.md:104,241,281,383-385,428` |
 
 ⚠️ **`skills\rimworld-modding\` currently says nothing about quests** — grepped
 `SKILL.md` and all six `references\traps*.md`; the only hits are incidental uses of

@@ -3,8 +3,8 @@
 _Research pass, 2026-08-13. **Read-only.** Nothing was installed, deployed or
 modified to produce this document._
 
-**Scope tag: `[v2]`.** `infrastructure/state/V1_SCOPE.md:304` names *"the Homestead
-Jedi wiring (U4)"* in the list of things v1 explicitly does not contain, and
+**Scope tag: `[v2]`.** v1 explicitly does not contain *"the Homestead
+Jedi wiring (U4)"*, and
 `infrastructure/state/TODO_v2.md:1081` carries U4 as an unowned v2 row. This spec is
 therefore the **plan**, not a licence to build during v1. It exists so that when U4
 is picked up, the author starts from ground truth instead of a guess.

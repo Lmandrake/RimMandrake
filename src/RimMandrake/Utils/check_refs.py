@@ -56,9 +56,6 @@ SKIP_SCAN = ("infrastructure/disposing/", "infrastructure/output/",
 # Redundant while it lives under infrastructure/output/, kept so a move back stays safe.
 SKIP_FILES = {"infrastructure/output/REF_AUDIT.md", "REF_AUDIT.md"}
 
-# Where a commit hash resolves once git itself cannot -- see Audit.ledger().
-LEDGER = "infrastructure/archive/OLD_HISTORY.md"
-
 # Extensions that make a token a path claim rather than prose. Only a bare
 # `*.md` miss is BROKEN: a bare script or asset name is as often a tool living
 # outside this tree (get-pip.py, image_gen.py) as a citation of one inside it.
@@ -357,27 +354,6 @@ class Audit:
                      "not in repo; may live outside it")
 
     # ---- commits --------------------------------------------------------
-    def ledger(self):
-        """Hashes older than the 2026-08-13 history re-init are unknown to git and
-        still resolve -- in `infrastructure/archive/OLD_HISTORY.md`, the ledger the
-        re-init wrote for exactly this reason (the diffs went to
-        `D:\\Luke\\dev\\Rimworld_history.bundle`). Without this the checker calls
-        every pre-re-init citation broken: 759 findings over 687 hashes, 686 of
-        which the ledger answers. A hash in NEITHER git nor the ledger is broken."""
-        if not hasattr(self, "_ledger"):
-            self._ledger = set()
-            try:
-                with open(os.path.join(ROOT, LEDGER), encoding="utf-8",
-                          errors="replace") as fh:
-                    self._ledger = set(re.findall(r"\|\s*`([0-9a-f]{7,40})`\s*\|",
-                                                  fh.read()))
-            except OSError:
-                pass
-        return self._ledger
-
-    def in_ledger(self, sha):
-        return any(l.startswith(sha) or sha.startswith(l) for l in self.ledger())
-
     def is_digest(self, sha):
         """True if this hex token is cited as an md5/sha/agent id somewhere in the
         repo -- including at a citation that carries no cue of its own."""
@@ -394,7 +370,7 @@ class Audit:
         for sha, line in zip(shas, out.strip().split("\n")):
             if "missing" in line or "ambiguous" in line:
                 bad.add(sha)
-        bad -= {s for s in bad if self.in_ledger(s) or self.is_digest(s)}
+        bad -= {s for s in bad if self.is_digest(s)}
         self.checked["commit"] = len(shas)
         for owner, ln, sha in pending:
             if sha in bad:

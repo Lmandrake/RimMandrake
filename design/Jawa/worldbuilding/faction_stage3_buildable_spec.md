@@ -2,7 +2,7 @@
 
 _Written by **PROJECT**, 2026-08-13 overnight, against faction roster Stage 3
 (now `design/V2_DREAMS.md` **B20**).
-Substrate is the 574-mod dump. **This is `[v2]` spec work**: `V1_SCOPE.md` cuts
+Substrate is the 574-mod dump. **This is `[v2]` spec work**: v1 cuts
 build *depth*, not spec, and speccing costs no verification pass. v1 still ships
 one thin Empire reskin._
 
@@ -486,7 +486,7 @@ no new XML defs, no licence exposure, no art.
 
 ## 5. What I did not do
 
-- **No XML written.** This is spec; `V1_SCOPE.md` keeps build thin.
+- **No XML written.** This is spec; v1 keeps build thin.
 - **No roster edits.** `design/Jawa/worldbuilding/faction_roster_v2.md` is WORLD's (rule 9).
 - **No pawnGroupMaker contents authored** — the per-group `options` lists are the
   next layer down and are large. The *sources* are identified per faction above,

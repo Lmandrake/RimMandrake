@@ -145,7 +145,7 @@ says. A screenshot tells you what the player sees — which is the only thing th
 v1 gate ever asked for:
 
 > **"Every v1 item must be seen working in-game once. Not 'the log is clean' —
-> SEEN."** — `V1_SCOPE.md`
+> SEEN."**
 
 **A def query cannot close that gate. A screenshot can.**
 

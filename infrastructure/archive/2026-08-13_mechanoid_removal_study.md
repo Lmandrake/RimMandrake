@@ -343,8 +343,8 @@ given — **the 7-subquest gate is never met, and the Mechhive never unlocks.**
 Ludeon's own comment says 7 was chosen so the chain survives the *Insect* faction being
 disabled. It does not survive this.
 
-**This lands squarely on `V1_SCOPE.md`: "everything ships THIN, except the gravship,
-which ships DEEP."** Blocking the Odyssey gravship endgame is the single most expensive
+**This lands squarely on the scope rule: everything ships THIN, except the gravship,
+which ships DEEP.** Blocking the Odyssey gravship endgame is the single most expensive
 consequence in this document.
 
 Mitigation that costs nothing: cherry-pick the *quests* rather than the mechs, and leave

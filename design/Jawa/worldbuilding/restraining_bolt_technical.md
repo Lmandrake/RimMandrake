@@ -348,8 +348,8 @@ defs × the faction list — and `PawnsFinder.…_OfPlayerFaction` rebuilds its 
 each call. Return 100 on the faction check *before* counting, and the real walk
 happens once per 1000 ticks instead of hundreds of times.
 
-**Dependencies:** the Free Droid Enclaves `FactionDef` (unbuilt — `V1_SCOPE.md`
-defers it), and the bolt hediff. Resolve the latter with
+**Dependencies:** the Free Droid Enclaves `FactionDef` (unbuilt — deferred to v2),
+and the bolt hediff. Resolve the latter with
 `DefDatabase<HediffDef>.GetNamedSilentFail("OuterRim_RestraintBolt")` and return
 100 if null, so the assembly degrades quietly if Droid Depot is ever dropped
 rather than throwing on every recache.

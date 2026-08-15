@@ -267,7 +267,6 @@ python src/RimMandrake/Utils/animal_contact_sheet.py --out observed/2026-08-13/i
 
 Requires **Pillow** (already used by `Savegame_mapview.py`). Runs in ~5s.
 
-Committed output lives in `observed/2026-08-13/inventory/contact_sheets/` — 6 pages, 9.9 MB.
 It is regenerable in seconds, so delete rather than curate it if the repo size
 ever matters.
 
@@ -563,8 +562,7 @@ falls back to the folder name.
 ⚠️ **v1.1 output was wrong by ~7% and should not be reused.** It resolved mod
 folders with a hardcoded `("1.6","1.5","Common","")` list and never read
 `LoadFolders.xml`, so it invented 24 animals the game never loads and missed 61
-it does. v1.2 delegates folder resolution to `rimworld_loadset.py`. Full
-breakdown in `observed/2026-08-13/inventory/README.md`.
+it does. v1.2 delegates folder resolution to `rimworld_loadset.py`.
 
 ### Maintenance — adding a column
 
@@ -585,8 +583,7 @@ Armadillo double-registration reproduces in about a second.
 **1,243 rows / 1,197 distinct defNames** (the 46-row gap is mods redefining each
 other; see the `duplicateDefName` column) across 115 columns. 67 biomes,
 **3,614** attacks, **3,345** life stages, 4,618 (biome, animal) pairs, 1,873
-animal/biome PatchOperations, 3 conflicts. Runs in seconds. Committed output
-lives in `observed/2026-08-13/inventory/`, whose README carries the full v1.3/v1.4 breakdown.
+animal/biome PatchOperations, 3 conflicts. Runs in seconds.
 
 Attacks and life stages grew (from 3,353 and 3,169) because inherited `tools`
 and `lifeStageAges` now resolve. `unresolvedParent` is empty for all 1,243 rows,

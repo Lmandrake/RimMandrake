@@ -985,7 +985,7 @@ namespace JawaBench.BridgeTools
                         // Both keys now work and carry the same value.
                         kindDef = pawn.kindDef?.defName,
                         def = pawn.def?.defName,
-                        // 🔴 V1_SCOPE row 5 could not be closed without this.
+                        // 🔴 v1 row 5 could not be closed without this.
                         // The row turns on WHICH Jawa xenotype a naturally
                         // spawned campaign pawn carries -- three are live at
                         // once and "a Jawa spawned" is not evidence. The only
@@ -1506,7 +1506,7 @@ namespace JawaBench.BridgeTools
                     // 🔴 v1 row 4's dune-seas gate is a BiomeDef read, and until
                     // now this tool could not perform it: `extra` was ThingDef-only,
                     // so a BiomeDef came back as label + description and nothing
-                    // else. V1_SCOPE ruled dune seas "NOT an eyeball check -- it
+                    // else. Dune seas are "NOT an eyeball check -- it
                     // closes on a live terrainPatchMakers read of 0.55/0.50", and
                     // nobody checked that the read was possible. A gate whose
                     // evidence cannot be collected is not a gate.
@@ -4230,7 +4230,7 @@ namespace JawaBench.BridgeTools
         }
 
         // -------------------------------------------------------------------
-        // jawa/list_factions  --  V1-CRITICAL (V1_SCOPE.md, TODO.md 13)
+        // jawa/list_factions  --  V1-CRITICAL
         //
         // WHY THIS EXISTS. There is no way to read the faction list over the
         // bridge at all. rimworld/list_colonists is player-only, jawa/list_pawns

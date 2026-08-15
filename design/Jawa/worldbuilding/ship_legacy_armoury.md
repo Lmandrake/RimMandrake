@@ -40,7 +40,7 @@ schematic they only half understand, with materials the schematic never named.
 
 **The full tier is the moment the ship stops being scrap the clan lives in and
 becomes a thing the clan has recovered.** That is the emotional beat, and it is
-why this belongs to the flagship (`V1_SCOPE.md`: *the gravship ships DEEP*)
+why this belongs to the flagship (*the gravship ships DEEP*)
 rather than to the weapons row.
 
 ## 🔴 The coherence rule — the tiers are not equal, and this is the whole trick

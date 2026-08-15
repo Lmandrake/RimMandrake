@@ -133,10 +133,7 @@ dumps, `Player.log` and screenshots are gitignored and stay on disk.
 
 | Path | Holds |
 |---|---|
-| `observed/2026-08-13/` | 🔴 **The current generated-data home, not a snapshot.** `dumps/`, `inventory/` (incl. live `GENERATED_FROM.json`), `logs/`, `savegame/`, latency JSON, the live mod inventory. Many files across other tiers point inside it. |
-| `observed/2026-08-14/` | The newest contact stamp; currently a prelaunch log only. |
-| `observed/evidence/` | Screenshots cited by the findings — art fixes, graphics corruption, gravship capacity, ion weapons. |
-| `observed/2026-08-13_*.md` | The findings themselves, one file per question settled by a live game. |
+| `observed/2026-08-13/dumps/` | 🔴 **The current generated-data home, not a snapshot.** The def-name and mod manifests every offline validator joins against. |
 
 ⚠️ **Judge a directory here by its inbound references, never by how old its stamp
 looks.** Auditing on the date alone deletes live data.
@@ -186,7 +183,7 @@ Payloads are gitignored; **the teardown is the work product.**
 | `infrastructure/agents/<SEAT>.md` | One charter per seat: `DECIDE.md`, `BUILD.md`, `CHECK.md`, `REP.md`. |
 | `infrastructure/DOC_BUDGET.md` | Doc-count policy and how a written instruction rots. |
 | `infrastructure/REFRESH.md` | What to re-run after the mod list changes. |
-| `infrastructure/archive/` | Superseded narrative kept only for *why* — `context.md`, `OLD_HISTORY.md`. Never current state. |
+| `infrastructure/archive/` | Superseded narrative kept only for *why* — `context.md`. Never current state. |
 | `infrastructure/output/` | Reports **still being read** — audits, options papers, plans. Evidence, never doctrine. |
 | `infrastructure/disposing/` | Quarantine for files believed dead. 7-day dwell, then deleted. **Treat as absent; exclude from greps.** Subdirs are gitignored. |
 
@@ -198,19 +195,14 @@ this?* A rule is durable; a queue is meant to be consumed.
 | Path | Holds |
 |---|---|
 | `infrastructure/state/V1_CHAIN.md` | 🔴 What ships in v1, in the order the engine forces. **Check it before queueing anything.** The authority on the v1/v2 line. |
-| `infrastructure/state/V1_SCOPE.md` | Superseded 2026-08-14 by `V1_CHAIN.md`. Kept for the reasoning behind the original cut; do not read it for scope. |
 | `infrastructure/state/NEXT_RELOAD.md` | The run sheet for the next game load — work that needs the game running. |
 | `infrastructure/state/OWNER_DECISIONS.md` | Every question only the owner can answer, and their rulings. |
-| `infrastructure/state/CLOSED.md` | One line per finished item — the ledger that lets bodies be deleted. |
 | `infrastructure/state/EXPECTED_FAILURES_next_load.md` | Expected-failure signatures, written **before** a load so triage is judgeable. |
 | `infrastructure/state/WORLDGEN_FACTION_CHECKLIST.md` | The Configure Factions page, box by box, for world creation. |
 | `design/V2_DREAMS.md` | Deferred `[v2]` bodies, kept intact. Append-only; every seat may write to it directly. |
 | `infrastructure/state/CREATE_TEST_PLAN.md` | How deployed material gets proved in-game. Written by the retired CREATE seat; still cited by `load_session.py`. |
 | `infrastructure/state/status/<SEAT>.json` | What each seat says it is doing, written by `say.py`, rendered by the board. |
 | `infrastructure/state/queue/<SEAT>.md` | 🔴 **The filing destination.** `DECIDE`, `BUILD`, `CHECK`, plus `HUMAN` for the owner. You own your own; file at the next seat's. |
-
-🔴 **`infrastructure/state/TODO.md` is a 13-line pointer stub, retired 2026-08-13.
-It is NOT a filing destination.** It exists only to route to the table above.
 
 ### The four seats
 
