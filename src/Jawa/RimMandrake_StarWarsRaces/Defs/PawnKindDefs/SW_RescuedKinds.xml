@@ -120,7 +120,7 @@
     <label>jawa</label>
     <xenotypeSet>
       <xenotypeChances>
-        <RimMandrakeJawa>999</RimMandrakeJawa>
+        <MandrakeJawa>999</MandrakeJawa>
       </xenotypeChances>
     </xenotypeSet>
   </PawnKindDef>
@@ -129,7 +129,7 @@
     <label>tribal jawa</label>
     <xenotypeSet>
       <xenotypeChances>
-        <RimMandrakeJawa>999</RimMandrakeJawa>
+        <MandrakeJawa>999</MandrakeJawa>
       </xenotypeChances>
     </xenotypeSet>
   </PawnKindDef>

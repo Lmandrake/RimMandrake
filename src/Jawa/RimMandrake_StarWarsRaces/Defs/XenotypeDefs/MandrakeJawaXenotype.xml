@@ -56,6 +56,10 @@
          ships `true`. -->
     <canGenerateAsCombatant>true</canGenerateAsCombatant>
     <combatPowerFactor>0.85</combatPowerFactor>
+    <!-- Jawa names, not colonist names. The rule pack and its word lists are
+         this mod's, copied from Star Wars Xenotypes and renamed, so this holds
+         with every donor switched off. -->
+    <nameMaker>RimMandrake_KoTOR_NamerJawa</nameMaker>
     <genes>
       <!-- frame and constitution -->
       <li>RimMandrake_BodySizeGene_smaller</li>

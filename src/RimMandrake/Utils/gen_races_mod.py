@@ -88,7 +88,10 @@ RESCUE_KINDS = [
 # discard, so these travel and are renamed with them.
 RESCUE_KIND_PARENTS = {"OuterRimTestColonyPawnKind": PREFIX + "ColonyPawnKind",
                        "OuterRimTestTribalPawnKind": PREFIX + "TribalPawnKind"}
-RESCUE_KIND_FILE = "1.6/Defs/GeneDefs"
+# Owner ruling 2026-08-14: MandrakeJawa is the ONLY active Jawa xenotype. The
+# rescued Jawa kinds roll it, not the BTD-derived RimMandrakeJawa the equivalence
+# table would otherwise hand them.
+RESCUE_XENOTYPE_OVERRIDE = {"OuterRim_Jawa": "MandrakeJawa"}
 
 # Owner ruling 2026-08-15. Miraluka is not built. It was also the only def in
 # the set whose geneClass lived in a donor assembly (OuterRimDiversity.
@@ -711,7 +714,9 @@ def write_rescued_kinds(kinds, tbl, built, texidx):
         # DICTIONARY-KEYED by defName: the xenotype is the ELEMENT NAME.
         for chances in c.iter("xenotypeChances"):
             for k in chances:
-                if k.tag in orname:
+                if k.tag in RESCUE_XENOTYPE_OVERRIDE:
+                    k.tag = RESCUE_XENOTYPE_OVERRIDE[k.tag]
+                elif k.tag in orname:
                     k.tag = orname[k.tag]
                 elif k.tag.startswith("OuterRim_"):
                     missing.append("%s -> xenotype %s" % (dn, k.tag))
@@ -997,12 +1002,15 @@ def verify():
               if sp not in DROP_SPECIES
               and any(c and c in x and x[c]["fields"].get("nameMaker")
                       for c in cand)}
-    xf = os.path.join(OUT, "Defs/XenotypeDefs/RimMandrakeXenotypes.xml")
+    xd = os.path.join(OUT, "Defs/XenotypeDefs")
     named, namers = set(), set()
-    for el in ET.parse(xf).getroot():
-        if el.findtext("nameMaker"):
-            named.add(el.findtext("defName"))
-            namers.add(el.findtext("nameMaker"))
+    for f in sorted(os.listdir(xd)):
+        if not f.endswith(".xml"):
+            continue
+        for el in ET.parse(os.path.join(xd, f)).getroot():
+            if el.findtext("nameMaker"):
+                named.add(el.findtext("defName"))
+                namers.add(el.findtext("nameMaker"))
     lost = sorted(expect - named)
     bad_namers = sorted(n for n in namers if n not in ours)
 
