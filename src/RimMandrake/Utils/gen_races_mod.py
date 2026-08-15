@@ -639,6 +639,101 @@ def main():
     print("== texture paths rewritten %d -> %d png files%s"
           % (len(texhits), n_files, " (dry)" if dry else ""))
     print("== eye-glow override applied: %s" % ok)
+    if not verify():
+        raise SystemExit(1)
+
+
+DEPARTING = {"guy762.starwarsxenotypes",
+             "neronix17.outerrim.galacticdiversity",
+             "btd.xenotyperemix.starwars"}
+PROSE = {"label", "description", "labelShortAdj", "labelNoun", "labelPlural",
+         "title", "jobString", "symbol", "customLabel"}
+
+
+def verify():
+    """The acceptance test, and the only one that answers the question the mod
+    exists for: with the three donors OFF, does everything still resolve?
+
+    validate_patch.py does not answer it -- it checks against the CURRENT load
+    set, where the donors are still installed and every stale reference still
+    resolves. That is exactly the failure this mod is built to prevent, so it
+    has to be checked against the surviving set instead."""
+    owner = {}
+    for fn in os.listdir(DUMP + "/defs"):
+        if not fn.endswith(".json"):
+            continue
+        try:
+            d = json.load(io.open(DUMP + "/defs/" + fn, encoding="utf-8"))
+        except ValueError:
+            continue
+        if not isinstance(d, dict) or "defs" not in d:
+            continue
+        for x in d["defs"]:
+            owner.setdefault(x["defName"], set()).add(
+                (x.get("packageId") or "").lower())
+
+    files = [os.path.join(dp, f) for dp, _, fs in os.walk(OUT + "/Defs")
+             for f in fs if f.endswith(".xml")]
+    ours, refs, parents = set(), {}, set()
+    trees = []
+    for fp in files:
+        r = ET.parse(fp).getroot()
+        trees.append((fp, r))
+        for el in r:
+            if not isinstance(el.tag, str):
+                continue
+            if el.findtext("defName"):
+                ours.add(el.findtext("defName"))
+            if el.get("Name"):
+                ours.add("@" + el.get("Name"))
+    for fp, r in trees:
+        for el in r:
+            if not isinstance(el.tag, str):
+                continue
+            who = el.findtext("defName") or el.get("Name")
+            for sub in [el] + list(el.iter()):
+                if sub.get("ParentName"):
+                    parents.add(sub.get("ParentName"))
+                if sub.tag in PROSE:
+                    continue
+                t = (sub.text or "").strip()
+                if t and re.fullmatch(r"[A-Za-z0-9_.]+", t):
+                    refs.setdefault(t, set()).add(who)
+
+    dead = {t: v for t, v in refs.items()
+            if t not in ours and t in owner and owner[t] <= DEPARTING}
+    ext_parents = sorted(p for p in parents if "@" + p not in ours)
+
+    have = set()
+    for dp, _, fs in os.walk(OUT + "/Textures"):
+        for f in fs:
+            if f.lower().endswith(".png"):
+                have.add(os.path.relpath(os.path.join(dp, f),
+                                         OUT + "/Textures")
+                         .replace("\\", "/")[:-4].lower())
+    dangling = set()
+    for fp in files:
+        for p in re.findall(r">(%s/[^<]+)<" % TEXNS,
+                            io.open(fp, encoding="utf-8").read()):
+            lp = p.lower()
+            if any(lp + s in have for s in SUFFIXES) or \
+                    any(k.startswith(lp + "/") for k in have):
+                continue
+            dangling.add(p)
+
+    print("\n== VERIFY (donors switched OFF)")
+    print("   defs defined here      %d + %d abstracts"
+          % (len([o for o in ours if not o.startswith("@")]),
+             len([o for o in ours if o.startswith("@")])))
+    print("   references that die    %d" % len(dead))
+    for t, v in sorted(dead.items()):
+        print("        %-40s <- %s" % (t, sorted(v)[:3]))
+    print("   dangling texture paths %d" % len(dangling))
+    for p in sorted(dangling)[:10]:
+        print("        %s" % p)
+    print("   ParentName from elsewhere (must be a mod we keep): %s"
+          % ", ".join(ext_parents))
+    return not dead and not dangling
 
 
 def fix_xenotype_icons(texidx, texhits):
