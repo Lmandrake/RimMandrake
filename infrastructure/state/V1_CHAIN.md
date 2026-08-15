@@ -26,9 +26,12 @@ disagree about scope, this file is newer.
    factions and ideos are read once at world creation. This is no longer an
    abstract "before the worldgen click" — it is before a human event we do not
    schedule.
-7. **The item cherrypick (step 1) is deferred to an interactive session with the
-   owner.** Do not block on it. Author against the item set as it stands today
-   and revise if the cherrypick later removes something.
+7. ~~The item cherrypick is deferred to an interactive session.~~ **SUPERSEDED
+   2026-08-15: step 1 is FROZEN AND CLOSED for v1.** Armour, weapons, items,
+   beasts and others are done; the remaining categories return later **if
+   needed** and are not v1 work. ⇒ **The surviving item set is now FIXED**, so
+   "author against today's set and revise later" becomes "author against the
+   frozen set" — there is no later revision to fear.
 8. **The scenario is FIXED, not generated** — fixed map, fixed ship, fixed pawns.
 
 ### DECIDE rulings made against those
@@ -46,7 +49,7 @@ for this order; it is not a preference.
 | # | domain | needs | state |
 |---|---|---|---|
 | 0 | **Mod freeze** | — | ✅ done — **575** active, two files frozen |
-| 1 | **Item cherrypick** | 0 | **interactive sessions with the owner — do not block.** 5 done and LIVE (weapons · apparel · animals · items · buildings, 1,308 keys); 7 categories remain |
+| 1 | **Item cherrypick** | 0 | ✅ **FROZEN AND CLOSED for v1 — owner, 2026-08-15.** Armour, weapons, items, beasts and others done; 1,308 keys live. Remaining categories return later **if needed** |
 | 2 | **Normalize weapons · armour · beasts** | 1 | open — balance pass over what survives |
 | 3 | **Equipment types → pawns** | 2 | open — the tags a `PawnKindDef` actually consumes |
 | 4 | **Xenotypes** | — | enforced in shipped XML (`ea5cfb4`), **not yet proven live** — this process read the broken copies at launch |
@@ -63,9 +66,17 @@ for this order; it is not a preference.
 🔴 **Everything through 9 is upstream of 10, and 10 cannot be redone.** A
 `FactionDef` that does not exist at world creation never gets settlements.
 
-**0 → 1 → 2 → 3 is a single unbroken run and it is the head of all of v1.**
-Nothing in 5–13 can be authored honestly until 3 lands, because every one of them
-either equips a pawn or references something 1 might cut.
+**0 → 1 → 2 → 3 was the head of all of v1. 0 and 1 are now CLOSED**, so the head
+is **2 → 3** and its input no longer moves.
+
+🔑 **That is the point of the freeze, and it is worth stating plainly.** The old
+warning was *"nothing in 5–13 can be authored honestly until 3 lands, because
+every one of them references something 1 might cut."* **Step 1 can no longer cut
+anything.** The risk that made 5–13 dishonest to author is gone — what remains at
+2 and 3 is a balance pass and a tag assignment over a fixed set, not a discovery
+problem. ⇒ `B53`'s 48 pawn kinds were blocked because `weaponTags` and
+`apparelRequired` "are a selection from the surviving item set and cannot be
+invented". **That set exists now.**
 
 ## Per domain
 

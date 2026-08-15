@@ -42,12 +42,11 @@ six live items are `blocked — needs deploy`, not blocked on a question.
 | 5 | Write the three signatures into `EXPECTED_FAILURES` | BUILD **B23** | Must land **before launch** or the load spends attention on errors we already know about |
 | 6 | `python.exe src/RimMandrake/Utils/refresh.py` | B25(b) | **Last.** It reads the list the four steps above just finished changing |
 
-⛔ **NOT in this window:** `JawaSeaShaper.dll`. The repo/deployed md5 mismatch
-(`b7730027` vs `82b48e53`) is **expected** — the sea left v1 with the worldgen
-stand-down. D-CRIT was superseded 2026-08-15 and used to say the opposite.
+⛔ **NOT in this window:** `JawaSeaShaper.dll`. The repo/deployed md5 mismatch is
+**expected** — the sea left v1 with the worldgen stand-down (D-CRIT, superseded).
 
-📌 **The window is not the load.** Steps 2 and 3 make §5's items collectable; they
-do not collect anything. Nothing here is finished until the game is up and §5 runs.
+📌 **The window is not the load.** Steps 2 and 3 only make §5 collectable; nothing here
+is finished until the game is up and §5 runs.
 
 ### 1a. Arm the def dump — worth doing, and it closes one real gap. ✅ done 13:27.
 
@@ -55,8 +54,8 @@ do not collect anything. Nothing here is finished until the game is up and §5 r
 echo all > "/mnt/c/Users/Mandrake/AppData/LocalLow/Ludeon Studios/RimWorld by Ludeon Studios/DefDump/dump_request.txt"
 ```
 
-**Read at STARTUP only** — armed before launch, or not at all. 18.7 s inside the load.
-Do it because this window deploys three mods, and because of the one-way gap below.
+**Read at STARTUP only** — armed before launch or not at all. 18.7 s. Do it because this
+window deploys three mods, and for the one-way gap below.
 
 ⚠️ **The gap is ONE mod and it runs ONE way.** Dump `modCount` 576, live `activeMods`
 575; the diff is `regrowth.botr.boilingforest` in the dump and **nothing** missing from
@@ -97,13 +96,10 @@ the trap.
 After an external edit, RimSort's in-memory view is stale. The whole mitigation is
 one sentence to the owner: *"RimSort is open — hit Refresh."*
 
-⛔ **MECHANOIDS STAY — owner 2026-08-15, reversing what this file said that morning:**
-*"We are keeping the mechanoids. Deprecate any action about turning mechanoids off."*
-B25(c) is dead; do not re-derive the cut from the O-v2 line in any other doc. ⛔ **Per-mech
-ART curation is now CLOSED TOO — owner 2026-08-15 via REP: "no mech art review."** This
-line used to call it a still-open owner question; it is not. `review/mech_register.html`
-needs no eyes and schedules nothing. **The whole mechanoid subject is shut** — neither the
-list nor the art.
+⛔ **THE WHOLE MECHANOID SUBJECT IS SHUT — owner 2026-08-15, both halves.** They STAY
+(reversing this file's morning text), B25(c) is dead, and there is **no mech art review**
+either. `review/mech_register.html` needs no eyes and schedules nothing. Do not re-derive
+the cut from the O-v2 line in any other doc.
 
 Standing change when a list edit is next made: **disable
 `com.yayo.yayoAni.continued`** `[v2]` — the lightsaber flies up-and-behind on draft.
@@ -251,6 +247,7 @@ order and the call, not the whole plan.**
 | # | call | item | why it is worth a line |
 |---|---|---|---|
 | **L0** | `jawa/clear_ui`, then `jawa/spawn_pawn kindDef=Colonist faction=PlayerColony xenotype=RimMandrakeRodian`. **Look at its face. Screenshot it.** | CHECK **C37** | 🔴 **FIRST ACTION ON THE MAP.** Facial Animation's per-xenotype opt-out was rewritten (86 → 156 entries) but FA reads its config **only at startup**, so it has never once been active. **Snoot visible ⇒ the whole art failure closes.** Still a human face ⇒ FA was not the cause and the head-gene findings (10 species with no head-forcer, Rodian forced to a generic Outland reptile head) move back to the top. One pawn, one look. ⚠️ **`faction` is not optional** — omit it and the pawn spawns into the Empire, hostile |
+| **L0b** | Open the ideo screen and **read the precept list**. One screen, no map needed | CHECK **C42** | 🔴 **The 11 ideoligions' 82 precepts have NEVER been measured** — there is no offline route (`validate_ideoligion.py` answers *"no religions found"* on a `.rid`), so *"the ideoligion exists"* currently rests on nobody's measurement. **It bakes at world creation exactly like the factions do.** ⇒ Read it BEFORE anyone reports the faction/ideo row done. Cheap, and the only thing that can settle it |
 | L1 | `rimworld/spawn_thing def=SmallThruster x=45 z=131`, then `jawa/inspect_string` on it — read for `WarningThrusterInside`. ⚠️ **`jawa/spawn_thing` DOES NOT EXIST**; the prefix is vanilla `rimworld/`, or `jawa/spawn_batch` for more than one | BUILD | **Cheapest launch gate we own.** Outdoor-required ⇒ the exported hull needs its stern cut back, a whole deck re-lay. Substructure-free-only ⇒ nothing to change. One paused call decides a large piece of rework. Needs `jawa/inspect_string` (§1.0 step 1) |
 | L2 | `jawa/spawn_pawn kindDef=Jawa_Tribal_Scavenger` **×6**, then one Geonosian Foundry Hive pawn, then read a Jawa's gear and let it socialise | CHECK **C40** | Three deployed-but-unproven fixes in one spawn pass. **Six armed Jawa** (not civilians) · **a Geonosian that is not a baseliner** (empty `xenotypeChances` looks like a content gap, not a dropped node) · **a Jawa wearing `guy762_Robes_jawa` + `guy762_JawaHood` and speaking a Jawa voice line**. 🔴 The gear defs live in a mod we KEPT — their presence in a dump proves nothing; **the pawn wearing them is the only evidence** |
 | L3 | Fire ONE Galactic Empire raid and screenshot it — 🔴 **procedure below the table, do not improvise it** | DECIDE | The biggest open design question DECIDE owns: **before we repair the antagonist, someone must see whether it reads as one.** ~5 min. Needs `jawa/set_faction_relation` (§1.0 step 1) if the Empire is not already hostile |

@@ -351,7 +351,22 @@ verify:   the live Cherry Picker config and
           `deployed/config/v1_freeze/Mod_3521312241_Mod_CherryPicker.xml` agree
           after every batch.
 criteria: the campaign's content reads as one setting rather than 584 mods.
-state:    doing
+state:    done — **OWNER 2026-08-15: CHERRYPICKING IS FROZEN AND THIS ITEM IS CLOSED
+          FOR v1.** *"Armour, weapons, items, beasts and others are done; the rest
+          returns later if needed."*
+          ⇒ **The surviving item set is FIXED.** 1,308 Cherry Picker keys are the
+          answer, and no further category is v1 work. Do not re-open a category, do
+          not file one, and do not treat the seven un-run categories as debt —
+          they are `[v2]` *if needed at all*.
+          🔑 **THE CONSEQUENCE, and it is the largest thing this ruling does:** chain
+          steps 2 and 3 were blocked on this, and `B53`'s 48 pawn kinds were blocked
+          on step 3 because `weaponTags` and `apparelRequired` are "a selection from
+          the surviving item set and cannot be invented". **That set now exists.**
+          B53 is unblocked in principle — see the note filed on it.
+          ⛔ **NO MECH ART REVIEW** — owner, same ruling. The per-mech curation against
+          `design/Jawa/worldbuilding/review/mech_register.html` that B25(c) and
+          `NEXT_RELOAD.md` §1b both left open as "still the owner's question" is
+          **closed, not deferred**. Mechanoids stay and their art is not reviewed.
 measured: 2026-08-15 DECIDE, and **this item's own spec above understates what is
           already done.** The live config and the freeze copy both hold **1,308**
           `<li>` keys and are identical — 1,284 `ThingDef`, 8 `IncidentDef`, 7

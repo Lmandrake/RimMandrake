@@ -32,12 +32,14 @@ not ship.
 | ~~G2~~ | ⛔ **DEAD with G1** — nothing registers `Jawa_SeaShaping` because nothing runs it | — | Kept as a struck row so nobody re-derives the gate from the mismatch above |
 | **G0** | 🔴 **`TidallyLocked` is SELECTED in Mod Settings** — see §2.A. Ratified 2026-08-15, **not set as of that date** | the owner, before the run | Fails **silently**: `selectedPlanetType` reads `Default`, no config file exists, nothing logs, and the type cannot be changed from the world page. Every ruling R-H0..R-H10 rests on its curve |
 | **G6** | 🔴 **`JawaWorld_BiomeMix.xml` actually applies** — today 28 `is not <li>` errors leave `biomeConfigs: []`, so all 24 abundance offsets fail behind a patch that looks fine | BUILD, **B63** | **Biome scoring runs ONCE, at worldgen.** Same dictionary-keyed `<li>` bug as B56 |
-| **G7** | 🔴 **Chain steps 6 and 9 are SHIPPED AND LIVE** — the 11 ideos and the full faction roster (B40–B54) | BUILD | Factions and ideos are read **once**, at world creation, and cannot be retrofitted. With the sea gone, **this is the real gate on rows 2 and 7** |
+| **G7** | 🔴 **Chain steps 6 and 9 are SHIPPED AND LIVE** — the 11 ideos and the full faction roster (B40–B54) | BUILD | Factions and ideos are read **once**, at world creation, and cannot be retrofitted. With the sea gone, **this is the real gate on rows 2 and 7**. Owner 2026-08-15: this work IS v1; factions are near done **bar allowed items and descriptions** — and "allowed items" now has a fixed set to draw from, because the cherrypick froze |
+| **G8** | 🔴 **The 82 precepts have been LOOKED AT** — `NEXT_RELOAD.md` §5 L0b, CHECK C42 | CHECK | **No offline route exists** (`validate_ideoligion.py` answers *"no religions found"* on a `.rid`), so *"the ideoligion exists"* rests on no measurement today. It bakes at creation like the factions. ⛔ **Do not report the ideo row done on the strength of the files existing** |
 | G3 | **The companion DLL carries the shutdown-window tools** — `jawa/get_defs`, `jawa/fire_quest` | CHECK | Companion work needs a **shutdown**, not a startup. Miss it and row 3 waits a full cycle |
 | G4 | ✅ **`isJunk` is RESOLVED — removed from both scatter defs, `de1018b`.** What remains is a **DEPLOY**: the game copy is still 2026-08-13 16:42 with `isJunk` present | BUILD deploys | §2.D. **Decided, not done** — the fix is repo-only until it ships |
 | G5 | **The faction tick-list is to hand** — `WORLDGEN_FACTION_CHECKLIST.md`, ratified, 21 untick / 6 keep | the owner at the screen | The page is seen **once** |
 
-**If any of G1–G5 is open, the run is not ready. Say so rather than launching.**
+**If any LIVE row is open — G0, G3, G4, G5, G6, G7, G8 — the run is not ready. Say so
+rather than launching.** (G1 and G2 are struck; they are dead, not open.)
 
 ---
 

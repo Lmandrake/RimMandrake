@@ -31,10 +31,11 @@ Two things a session needs first, both offline and both filed as BUILD **B67**:
 the decision files are **gitignored** so ~1,300 keep-judgements sit on one disk, and
 `cherrypick_build.py` has never validated a single one of the 1,308 live keys.
 
-Ask: **does he want to run categories now**, and if so which — or is the window better
-spent elsewhere and step 1 waits? The tool is `python3
-src/RimMandrake/Utils/cherrypick_review.py --category <cat>`, a sprite grid on
-`http://localhost:8788` that autosaves. item: D27
+✅ **ANSWERED — OWNER 2026-08-15: cherrypicking is FROZEN and the item is CLOSED for
+v1.** *"Armour, weapons, items, beasts and others are done; the rest returns later if
+needed."* No category runs now; the seven un-run ones are not debt. D27 closed.
+🔑 The consequence is the useful part: **the surviving item set is FIXED**, which
+un-blocks chain steps 2 and 3 and removes `B53`'s stated blocker. item: D27
 </details>
 
 ## Q (CHECK, 2026-08-14): four companion-DLL tools the thruster move proved we need
