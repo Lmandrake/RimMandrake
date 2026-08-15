@@ -344,11 +344,16 @@ function render(d){
     (W?`<div class="hgrp">
         <div class="hh"><b style="color:${C.blu}">WINDOWS</b><span>the game</span>
           <span class="big" style="color:${rc(W.cpu_pct)}">${W.cpu_pct}%</span></div>
-        ${hrow('CPU',W.cpu_pct,W.cpu_pct+'%')}
+        ${hrow('CPU',W.cpu_pct,`${W.cpu_pct}% of ${W.cores||'?'}`)}
         ${hrow('Memory',100*W.used_gb/W.total_gb,`${W.used_gb} / ${W.total_gb} GB`)}
-        ${hrow('RimWorld',h.rimworld_gb!=null?100*h.rimworld_gb/W.total_gb:0,
+        ${W.rimworld_cores!=null&&W.cores
+            ?hrow('RW cores',100*W.rimworld_cores/W.cores,
+                  `${W.rimworld_cores.toFixed(2)} / ${W.cores} cores`,C.blu)
+            :(h.rimworld_gb!=null?hrow('RW cores',0,'measuring…',C.mut):'')}
+        ${hrow('RW memory',h.rimworld_gb!=null?100*h.rimworld_gb/W.total_gb:0,
                h.rimworld_gb!=null?h.rimworld_gb+' GB':'not running',
                h.rimworld_gb!=null?C.blu:C.mut)}
+        ${W.threads?`<div class="hnote">RimWorld is running ${W.threads} threads</div>`:''}
       </div>`:'')+
     // ---- WSL: the machine the seats run on ----
     `<div class="hgrp">

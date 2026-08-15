@@ -108,24 +108,56 @@ def windows():
         return _WIN["v"]
     ps = (r"$p=Get-Process RimWorldWin64 -ErrorAction SilentlyContinue;"
           r"$o=Get-CimInstance Win32_OperatingSystem;"
+          r"$s=Get-CimInstance Win32_ComputerSystem;"
           r"$c=(Get-CimInstance Win32_Processor|Measure-Object -Property LoadPercentage"
           r" -Average).Average;"
-          r"'{0}|{1}|{2}|{3}' -f "
+          r"'{0}|{1}|{2}|{3}|{4}|{5}|{6}' -f "
           r"$(if($p){[math]::Round($p.WorkingSet64/1GB,1)}else{'na'}),"
           r"[math]::Round(($o.TotalVisibleMemorySize-$o.FreePhysicalMemory)/1MB,1),"
-          r"[math]::Round($o.TotalVisibleMemorySize/1MB,1),[int]$c")
+          r"[math]::Round($o.TotalVisibleMemorySize/1MB,1),[int]$c,"
+          r"$(if($p){[math]::Round($p.CPU,2)}else{'na'}),"
+          r"$s.NumberOfLogicalProcessors,"
+          r"$(if($p){$p.Threads.Count}else{'na'})")
     v = {"rimworld_gb": None}
     try:
         raw = subprocess.run(["powershell.exe", "-NoProfile", "-Command", ps],
                              capture_output=True, text=True, timeout=20).stdout
-        rw, used, total, cpu = raw.strip().split("|")
+        # PowerShell formats with the locale's thousands separator, so 1,009.8
+        # arrives for a process that has run 17 minutes. Strip before float().
+        rw, used, total, cpu, cpu_s, cores, threads = [
+            f.strip().replace(",", "") for f in raw.strip().split("|")]
         v = {"rimworld_gb": None if rw == "na" else float(rw),
              "win": {"used_gb": float(used), "total_gb": float(total),
-                     "cpu_pct": int(cpu)}}
+                     "cpu_pct": int(cpu), "cores": int(cores)}}
+        if cpu_s != "na":
+            v["win"]["threads"] = int(threads)
+            v["win"]["rimworld_cores"] = _cores_used(float(cpu_s))
     except Exception:
         pass
     _WIN.update(at=time.time(), v=v)
     return v
+
+
+_RWCPU = {"cpu_s": None, "at": None}
+
+
+def _cores_used(cpu_s):
+    """Cores RimWorld is actually burning, from the change in its CPU time.
+
+    `.CPU` is cumulative processor-seconds, so it only answers "how busy is it
+    NOW" as a rate: seconds of CPU consumed per second of wall clock IS the
+    number of cores in use. One sample tells you nothing, so the first poll
+    returns None and every later one measures against the previous.
+    """
+    now = time.time()
+    prev_s, prev_at = _RWCPU["cpu_s"], _RWCPU["at"]
+    _RWCPU.update(cpu_s=cpu_s, at=now)
+    if prev_s is None or prev_at is None:
+        return None
+    dt, dc = now - prev_at, cpu_s - prev_s
+    if dt <= 0 or dc < 0:            # relaunched: counter reset, not negative work
+        return None
+    return round(dc / dt, 2)
 
 
 PLAYER_LOG = ("/mnt/c/Users/Mandrake/AppData/LocalLow/Ludeon Studios/"
