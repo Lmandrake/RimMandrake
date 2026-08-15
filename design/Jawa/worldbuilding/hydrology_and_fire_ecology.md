@@ -407,23 +407,40 @@ been burning for a very long time*.
 would imply a process with an edge, and this one does not have one. Pits inside
 the burning grassland are older ground that has already been through the cycle.
 
-## 🔴 The hydrocarbon reconciliation is now OWED, not optional
+## 🔴 MANY PATHS TO FUEL — owner's ruling, 2026-08-15
 
-Three separate hydrocarbon sources are now on this planet, and they were each
-ruled for a good reason in a different session:
+Three separate hydrocarbon sources are now on this planet, each ruled in a
+different session for a different reason:
 
-| source | where | ruling |
-|---|---|---|
-| **helixien gas pockets** | volcanic and deep-desert tiles | `desert_world_design.md` §3B(5) |
-| **propane lakes** | deep night, past the terminator | R-H6b |
-| **tar pits** | the Pyrelands margin | R-H9 |
+| source | where | reached by | ruling |
+|---|---|---|---|
+| **helixien gas pockets** | volcanic and deep-desert tiles | holding a hazardous tile | `desert_world_design.md` §3B(5) |
+| **propane lakes** | deep night, past the terminator | a lethal cold expedition | R-H6b |
+| **tar pits** | the Pyrelands margin | working beside the fire | R-H9 |
 
-**Three is one more than the economy can carry without a decision.** Set their
-values ONCE, together, or two of them become pointless and the player learns to
-ignore whichever is worst. They are reached by very different means — a volcanic
-tile, a lethal cold expedition, and a hazard field next to the best farmland on
-the planet — so the honest answer is probably that they differ in *access cost*
-rather than in yield. **DECIDE owes this before chain step 2 balances anything.**
+**The owner's ruling reframes this, and the reframing is important: redundancy is
+the REQUIREMENT, not the problem.** The instinct to collapse three sources into
+one "winner" is ordinary resource-design reflex, and here it is actively wrong.
+
+⇒ **This is a gravship campaign. If fuel has a single source, the ship starves —
+and a starved ship ends the campaign**, because the whole arc is *keep moving*.
+A player cut off from the one fuel path is not facing a setback, they are facing a
+dead save. **Every additional path is insurance against that.**
+
+**So the design question is not "which of the three wins".** It is:
+
+- **All three must stay viable.** None may be balanced into irrelevance, because
+  each is somebody's only option at some point in the campaign.
+- **They should differ in ACCESS COST, not in yield.** A volcanic tile you must
+  hold, a cold expedition you must survive, a hazard field beside the best
+  farmland on the planet — three prices for the same commodity, so the player
+  chooses by circumstance rather than by arithmetic.
+- **Each should be reachable from a different kind of situation** — dug in, on the
+  move, or desperate.
+
+⚠️ **Values still get set once, together** — the reason is now the opposite of what
+it was. Not to pick a winner, but to make sure none of them is accidentally so bad
+that it stops counting as a path.
 
 ## R-H7 · The ocular forests — the mountains have their own horror
 

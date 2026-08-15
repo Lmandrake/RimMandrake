@@ -201,3 +201,43 @@ NO advanced components, NO glitterworld medicine, NO prebuilt turrets
 ## 🔴 The ship is `The Utinni` — owner, 2026-08-15
 
 The hull's original name was **`Kolyska`** ("Cradle"). The Jawa rename it **`The Utinni`** on taking it — the grandest find there could ever be. **The starting save must ship with the new name already applied**; it is not a later patch. `Kolyska` survives only inside the hull, in the Cradle nursery and in the Cradle-Mind, which never accepted the rename. Full ruling in `design/Jawa/worldbuilding/ship_distinctive_features.md`.
+
+---
+
+## 🔴 MANY PATHS TO FUEL, or the ship starves — owner, 2026-08-15
+
+**A structural requirement of this campaign, recorded here because it constrains
+the SCENARIO and not just the resource tables.**
+
+This is a gravship arc: the design assumption is *keep moving, react to what the
+galaxy throws at you*. That makes fuel the one resource whose absence does not
+produce a setback — it produces **a dead save**. A colony that runs out of steel
+rebuilds. A ship that runs out of fuel stops being a ship, and the campaign
+stops with it.
+
+⇒ **Fuel must have MANY independent paths**, and the redundancy is deliberate
+insurance rather than untidy design. The planet currently offers three, ruled
+separately and now confirmed as a set (`hydrology_and_fire_ecology.md`):
+
+- **helixien gas pockets** — volcanic and deep-desert tiles; the price is holding
+  a hazardous tile.
+- **propane lakes** — deep night past the terminator; the price is surviving a
+  cold expedition.
+- **tar pits** — the Pyrelands margin; the price is working beside the fire.
+
+**They differ in ACCESS COST, not in yield.** Three prices for the same
+commodity, so the player chooses by circumstance — dug in, on the move, or
+desperate — rather than by arithmetic.
+
+⚠️ **Consequences for the scenario and the starting save:**
+
+- **The starting stock must not assume a particular path.** The founders begin
+  with fuel, not with a fuel *strategy*.
+- **No quest, faction or event may gate the last remaining path.** Anything that
+  can cut the player off from fuel must leave at least two others standing.
+- 🔴 **Never balance one of the three into irrelevance.** Each is somebody's only
+  option at some point in the campaign. A path that is merely bad has been
+  deleted, whatever the numbers say.
+- **The Pyrelands earn a second reason to exist**: they are the fuel source you
+  can reach *without* leaving the good farmland, which is exactly the kind of
+  bargain the high-risk/high-reward tile should be offering.
