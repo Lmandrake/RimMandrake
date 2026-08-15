@@ -203,3 +203,37 @@ question is CLOSED offline" is **falsified for the `.xtp` half**.
 
 Filed to DECIDE as `the-shipping-xenotype-drops-four-of-our-own-genes-7e31aa`.
 CHECK did not touch the artifact.
+
+---
+
+## 🔴 Q (CHECK via REP, 2026-08-15): your lightsaber test cannot be run without you — how do you want it collected?
+
+**C43 is blocked, and the blocker is the bridge, not the art.** The equip half is
+solved and verified off the pawn's own Gear panel (*"Equipped: Lightsaber (normal)"*).
+**The attack half cannot be staged: nothing on the 155-tool bridge orders an attack.**
+
+- Drafted pawns hold at `Wait_Combat`.
+- `jawa/order_pawn` issues a GOTO even when given a `targetId`.
+- Spawned hostiles have no lord and idle.
+- "Spawn large enemy raid" + 5,600 stepped ticks never produced an engagement.
+- The four sith pawnkinds spawn **unarmed**.
+
+CHECK declined to photograph a pawn standing still and call it active melee. That is
+the right call — the test you wrote says *during active melee combat*.
+
+**Options, recommendation first:**
+
+1. ⭐ **Stage it yourself in two minutes at the keyboard** — draft, order the attack,
+   F10 at the swing. You are the verdict on this one anyway ("more reasonable" is a
+   judgement no seat will award itself), so doing the capture costs you almost
+   nothing extra.
+2. **Add a bridge tool that orders a melee attack** — filed to BUILD as
+   `bridge-cannot-order-a-melee-attack-3f8c21`. Fixes it permanently and unblocks
+   every future combat test, but needs a DLL build and the next load.
+3. Drop C43 from v1.
+
+⚠️ **Whichever you pick, this load can only ever produce the Yayo-OFF arm.** Still
+unanswered from earlier: **did your lightsaber complaint come from a screenshot?** If
+one of the eight unexamined shots from 04:16–10:08 today shows a Yayo-ON mid-swing,
+that is the comparison arm and C43 closes as a real A/B. I checked the two most
+recent — neither shows a lightsaber.
