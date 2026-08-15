@@ -32,67 +32,119 @@
     is not a Jawa xenotype despite the `Jawa_` prefix, which is our mod's
     namespace and not a species claim.
 
-  Each operation is wrapped `MayRequire`-style with success="Always" so a mod
-  leaving the load order does not turn this file into a red error.
+  🔴 REPAIRED 2026-08-15. Every operation in this file used
+  `PatchOperationAddOrReplace`, WHICH IS NOT A REAL PATCH TYPE. No mod on the
+  install defines it and RimWorld has no such class, so all six operations were
+  dead: 12 x `Could not find type named PatchOperationAddOrReplace` in the log,
+  and the suppression this file exists for had never once run. All three rival
+  Jawa xenotypes were still generating.
+  The real idiom is `PatchOperationConditional`: test whether the field exists,
+  `Replace` it if so, `Add` it if not. Both fields are ABSENT on all three
+  shipped defs, so in practice the nomatch/Add branch is the one that fires.
+
+  Each operation is wrapped in `PatchOperationFindMod` so a mod leaving the load
+  order makes this file a silent no-op instead of a red error.
   ============================================================================
 -->
 <Patch>
 
   <!-- Outer Rim - Galactic Diversity -->
-  <Operation Class="PatchOperationSequence">
-    <success>Always</success>
-    <operations>
-      <li Class="PatchOperationAddOrReplace">
-        <xpath>Defs/XenotypeDef[defName="OuterRim_Jawa"]</xpath>
-        <value>
-          <factionlessGenerationWeight>0</factionlessGenerationWeight>
-        </value>
-      </li>
-      <li Class="PatchOperationAddOrReplace">
-        <xpath>Defs/XenotypeDef[defName="OuterRim_Jawa"]</xpath>
-        <value>
-          <canGenerateAsCombatant>false</canGenerateAsCombatant>
-        </value>
-      </li>
-    </operations>
+  <Operation Class="PatchOperationFindMod">
+    <mods>
+      <li>Outer Rim - Galactic Diversity</li>
+    </mods>
+    <match Class="PatchOperationSequence">
+      <operations>
+        <li Class="PatchOperationConditional">
+          <xpath>/Defs/XenotypeDef[defName="OuterRim_Jawa"]/factionlessGenerationWeight</xpath>
+          <match Class="PatchOperationReplace">
+            <xpath>/Defs/XenotypeDef[defName="OuterRim_Jawa"]/factionlessGenerationWeight</xpath>
+            <value><factionlessGenerationWeight>0</factionlessGenerationWeight></value>
+          </match>
+          <nomatch Class="PatchOperationAdd">
+            <xpath>/Defs/XenotypeDef[defName="OuterRim_Jawa"]</xpath>
+            <value><factionlessGenerationWeight>0</factionlessGenerationWeight></value>
+          </nomatch>
+        </li>
+        <li Class="PatchOperationConditional">
+          <xpath>/Defs/XenotypeDef[defName="OuterRim_Jawa"]/canGenerateAsCombatant</xpath>
+          <match Class="PatchOperationReplace">
+            <xpath>/Defs/XenotypeDef[defName="OuterRim_Jawa"]/canGenerateAsCombatant</xpath>
+            <value><canGenerateAsCombatant>false</canGenerateAsCombatant></value>
+          </match>
+          <nomatch Class="PatchOperationAdd">
+            <xpath>/Defs/XenotypeDef[defName="OuterRim_Jawa"]</xpath>
+            <value><canGenerateAsCombatant>false</canGenerateAsCombatant></value>
+          </nomatch>
+        </li>
+      </operations>
+    </match>
   </Operation>
 
   <!-- Star Wars Xenotypes -->
-  <Operation Class="PatchOperationSequence">
-    <success>Always</success>
-    <operations>
-      <li Class="PatchOperationAddOrReplace">
-        <xpath>Defs/XenotypeDef[defName="guy762_xenotype_jawa"]</xpath>
-        <value>
-          <factionlessGenerationWeight>0</factionlessGenerationWeight>
-        </value>
-      </li>
-      <li Class="PatchOperationAddOrReplace">
-        <xpath>Defs/XenotypeDef[defName="guy762_xenotype_jawa"]</xpath>
-        <value>
-          <canGenerateAsCombatant>false</canGenerateAsCombatant>
-        </value>
-      </li>
-    </operations>
+  <Operation Class="PatchOperationFindMod">
+    <mods>
+      <li>Star Wars Xenotypes</li>
+    </mods>
+    <match Class="PatchOperationSequence">
+      <operations>
+        <li Class="PatchOperationConditional">
+          <xpath>/Defs/XenotypeDef[defName="guy762_xenotype_jawa"]/factionlessGenerationWeight</xpath>
+          <match Class="PatchOperationReplace">
+            <xpath>/Defs/XenotypeDef[defName="guy762_xenotype_jawa"]/factionlessGenerationWeight</xpath>
+            <value><factionlessGenerationWeight>0</factionlessGenerationWeight></value>
+          </match>
+          <nomatch Class="PatchOperationAdd">
+            <xpath>/Defs/XenotypeDef[defName="guy762_xenotype_jawa"]</xpath>
+            <value><factionlessGenerationWeight>0</factionlessGenerationWeight></value>
+          </nomatch>
+        </li>
+        <li Class="PatchOperationConditional">
+          <xpath>/Defs/XenotypeDef[defName="guy762_xenotype_jawa"]/canGenerateAsCombatant</xpath>
+          <match Class="PatchOperationReplace">
+            <xpath>/Defs/XenotypeDef[defName="guy762_xenotype_jawa"]/canGenerateAsCombatant</xpath>
+            <value><canGenerateAsCombatant>false</canGenerateAsCombatant></value>
+          </match>
+          <nomatch Class="PatchOperationAdd">
+            <xpath>/Defs/XenotypeDef[defName="guy762_xenotype_jawa"]</xpath>
+            <value><canGenerateAsCombatant>false</canGenerateAsCombatant></value>
+          </nomatch>
+        </li>
+      </operations>
+    </match>
   </Operation>
 
   <!-- [BTD] Xenotype REMIX: Star Wars -->
-  <Operation Class="PatchOperationSequence">
-    <success>Always</success>
-    <operations>
-      <li Class="PatchOperationAddOrReplace">
-        <xpath>Defs/XenotypeDef[defName="BTD_Jawa"]</xpath>
-        <value>
-          <factionlessGenerationWeight>0</factionlessGenerationWeight>
-        </value>
-      </li>
-      <li Class="PatchOperationAddOrReplace">
-        <xpath>Defs/XenotypeDef[defName="BTD_Jawa"]</xpath>
-        <value>
-          <canGenerateAsCombatant>false</canGenerateAsCombatant>
-        </value>
-      </li>
-    </operations>
+  <Operation Class="PatchOperationFindMod">
+    <mods>
+      <li>[BTD] Xenotype REMIX: Star Wars</li>
+    </mods>
+    <match Class="PatchOperationSequence">
+      <operations>
+        <li Class="PatchOperationConditional">
+          <xpath>/Defs/XenotypeDef[defName="BTD_Jawa"]/factionlessGenerationWeight</xpath>
+          <match Class="PatchOperationReplace">
+            <xpath>/Defs/XenotypeDef[defName="BTD_Jawa"]/factionlessGenerationWeight</xpath>
+            <value><factionlessGenerationWeight>0</factionlessGenerationWeight></value>
+          </match>
+          <nomatch Class="PatchOperationAdd">
+            <xpath>/Defs/XenotypeDef[defName="BTD_Jawa"]</xpath>
+            <value><factionlessGenerationWeight>0</factionlessGenerationWeight></value>
+          </nomatch>
+        </li>
+        <li Class="PatchOperationConditional">
+          <xpath>/Defs/XenotypeDef[defName="BTD_Jawa"]/canGenerateAsCombatant</xpath>
+          <match Class="PatchOperationReplace">
+            <xpath>/Defs/XenotypeDef[defName="BTD_Jawa"]/canGenerateAsCombatant</xpath>
+            <value><canGenerateAsCombatant>false</canGenerateAsCombatant></value>
+          </match>
+          <nomatch Class="PatchOperationAdd">
+            <xpath>/Defs/XenotypeDef[defName="BTD_Jawa"]</xpath>
+            <value><canGenerateAsCombatant>false</canGenerateAsCombatant></value>
+          </nomatch>
+        </li>
+      </operations>
+    </match>
   </Operation>
 
 </Patch>

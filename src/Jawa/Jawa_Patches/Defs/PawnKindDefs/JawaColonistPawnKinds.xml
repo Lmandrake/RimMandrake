@@ -91,9 +91,20 @@
     </xenotypeSet>
   </PawnKindDef>
 
+  <!-- `weaponTags` IS REQUIRED HERE and on neither sibling. `TribalChiefBase`
+       supplies `weaponMoney` 500~1000 but NO `weaponTags` — vanilla's concrete
+       `Tribal_ChiefMelee` adds them itself. Inheriting the money with nothing to
+       spend it on is a live config error: "weaponMoney is set but weaponTags is
+       not". `TribalWarriorBase` and `TribalArcherBase` carry both, so the
+       scavenger and the slinger need nothing. Tags copied from
+       `Tribal_ChiefMelee`, which is the kind this one stands in for. -->
   <PawnKindDef ParentName="TribalChiefBase">
     <defName>Jawa_Tribal_Elder</defName>
     <label>Jawa clan elder</label>
+    <weaponTags>
+      <li>NeolithicMeleeAdvanced</li>
+      <li>MedievalMeleeAdvanced</li>
+    </weaponTags>
     <xenotypeSet>
       <xenotypeChances>
         <MandrakeJawa>1.0</MandrakeJawa>
