@@ -910,8 +910,15 @@ prep:     2026-08-15 CHECK, offline, before the load:
             holding. If no saber comes with any kind, say so and mark C43
             **UNCOLLECTABLE this load** — do not photograph an unarmed pawn and
             call it the test.
-state:    🔴 BLOCKED — NOT collectable unattended. Attempted in full 2026-08-15 on the
-          quicktest map and the ATTACK FRAME CANNOT BE STAGED from the bridge.
+state:    ⛔ CLOSED — MOVED TO v2, owner's ruling 2026-08-15: *"move the lightsabre
+          position bug to v2"*. **Not a v1 defect. Do not collect it, do not spend a
+          load on it, do not photograph a swing for v1.** Parked in
+          `design/V2_DREAMS.md`. The measurement below stays as the record of what was
+          tried and why it could not be got, so v2 does not repeat the attempt blind.
+          🔴 There is NOTHING missing from the build — 14 lightsaber ThingDefs are live
+          (BUILD verified against this load's dump) and one equipped and rendered fine
+          on this map. The open question was only ever how the weapon SITS during an
+          attack, and that is now v2's.
 result:   Half of it is SOLVED and half is impossible with today's tool surface.
           ✅ **The equip route is solved.** No `jawa/` tool equips a pawn, but the debug
             action does: select a colonist with `rimworld/select_pawn`, then

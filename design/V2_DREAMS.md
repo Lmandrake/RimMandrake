@@ -1289,3 +1289,28 @@ the two grids named different second species. It was not: **all three are real, 
 list is complete.** Take the three at face value; no re-survey is needed.
 ⛔ The log will not find these: the harvest's texture-path check reads 0 and fires only
 when EVERY direction is missing, so a partial set is silent. This is an eyes-on job.
+
+## Lightsabre position during melee — v2
+
+Owner, 2026-08-15: *"move the lightsabre position bug to v2"*.
+
+Lightsabres sit significantly displaced from where they should be **during an attack** —
+not merely on draft. The owner's report is firsthand and it is why
+`com.yayo.yayoani.continued` is switched off. ⛔ Do not propose re-enabling Yayo.
+
+**Nothing is missing from the build.** 14 lightsaber `ThingDef`s are live, and one was
+equipped and rendered correctly in game on 2026-08-15. This is purely how the weapon is
+positioned mid-swing.
+
+⚠️ What v2 should know before trying to see it again, so the attempt is not repeated
+blind:
+* **No Yayo-ON comparison shot exists.** "More reasonable" is comparative and the only
+  arm we can currently produce is Yayo-OFF. Either accept a baseline or capture the
+  other arm deliberately.
+* **The bridge cannot order an attack**, so the swing frame cannot be staged
+  unattended — drafted pawns hold at `Wait_Combat`, `jawa/order_pawn` issues a GOTO,
+  spawned hostiles have no lord, and a real raid plus 5,600 stepped ticks produced no
+  engagement. Filed as `bridge-cannot-order-a-melee-attack-3f8c21`. Ten seconds of a
+  human right-clicking an enemy would do it.
+* Equipping is solved: `rimworld/select_pawn`, then
+  `Actions\Equip primary (selected)...\Force_Lightsaber_Custom`.

@@ -1747,8 +1747,16 @@ state:    🔴 BLOCKED 2026-08-15 — code fixes landed (`e4d6040`), REGENERATE 
           *"I think we can mark all the races as visually good enough for v1, with
           the remaining missing art for v2 improvement. Let's close out race
           appearance issues for now."*
-          ⇒ **The four magenta species are ACCEPTED AS SHIPPED. This item is DEAD
+          ⇒ **The magenta species are ACCEPTED AS SHIPPED. This item is DEAD
           for v1** — not blocked, not waiting on a load, not waiting on option 1.
+          📌 **The list is THREE SPECIES and it is complete** — owner, 2026-08-15
+          (`7661925`): *"Gand, Selkath, and Chagrian are the ones with missing art."*
+          `RimMandrakeGand` · `RimMandrakeSelkath` · `RimMandrakeChagrian`.
+          ⚠️ This item's own text says "four magenta species" — that count folds in
+          the Gand's `mask_yuun`, which is an asset on one of the three, not a
+          fourth species. **Nobody should go looking for a fourth.** A caveat that
+          the pair differed between two grids was retracted by CHECK and
+          contradicted by the owner: **no re-survey.**
           **Do not build the `pick_species` disk fallback for this reason**, and do
           not re-enable the two donor mods for a dump. The art moved to
           `design/V2_DREAMS.md` under "Race art polish".
@@ -1967,6 +1975,10 @@ criteria: `validate_patch.py` on `src/Jawa/Jawa_Doctrine` names any def whose
 state:    ready
 
 ## bridge-cannot-order-a-melee-attack-3f8c21
+⚠️ 2026-08-15: **the item that drove this, C43, has gone to v2** by owner ruling, so this
+is no longer urgent and nothing in v1 is waiting on it. NOT withdrawn — the gap is real
+and general: any future "what does it look like DURING an attack" item hits it. Treat as
+v2 tooling unless something else in v1 needs it.
 raised:   2026-08-15 CHECK, after C43 failed to collect on a live quicktest map.
 ask:      One bridge verb that issues an ATTACK job — `JobDefOf.AttackMelee` against a
           named target (and ideally `AttackStatic` for ranged). Everything else needed to
