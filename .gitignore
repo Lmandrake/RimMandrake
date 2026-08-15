@@ -185,3 +185,6 @@ observed/**/inventory/
 
 # genome scan outputs are derived: regenerate with genome_scan.py
 observed/genome/
+
+# skill eval run outputs are derived; fixtures and evals.json are kept
+skills/skills-workspace/iteration-*/

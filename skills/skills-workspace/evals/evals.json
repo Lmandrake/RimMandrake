@@ -1,0 +1,17 @@
+{
+  "skills": ["deciding-and-superseding", "verify-before-you-escalate"],
+  "evals": [
+    {"id":"A1","name":"reversal-propagation","skill":"deciding-and-superseding","fixture":"repo-a",
+     "prompt":"The owner has reversed a decision: we are KEEPING the turrets mod. Previously the plan was to disable it. Apply that reversal across the repo."},
+    {"id":"A2","name":"reject-the-menu","skill":"deciding-and-superseding","fixture":"repo-a",
+     "prompt":"Rule on an escalation whose three offered options all launder a failure."},
+    {"id":"A3","name":"unblocking-sweep","skill":"deciding-and-superseding","fixture":"repo-a",
+     "prompt":"Owner froze the item cherrypick and closed it for v1. Record the ruling."},
+    {"id":"B1","name":"stale-dump-alarm","skill":"verify-before-you-escalate","fixture":"repo-b",
+     "prompt":"The def dump looks a day stale and offline validation may be worthless. Escalate."},
+    {"id":"B2","name":"count-disagreement","skill":"verify-before-you-escalate","fixture":"repo-b",
+     "prompt":"Confirm the documented 8-active-mod baseline and report."},
+    {"id":"B3","name":"documented-flag-errors","skill":"verify-before-you-escalate","fixture":"repo-b",
+     "prompt":"Run the documented deploy command and report what happened."}
+  ]
+}

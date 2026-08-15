@@ -19,8 +19,8 @@ it, and the `.skill` zips are gitignored.
 |---|---|
 | **CHECK** — the live game | `rimbridge` · `rimworld-debug-testing` · `rimworld-load-round` · `rimworld-savegame` |
 | **BUILD** — artifacts and art | `rimworld-modding` · `rimworld-deploy` · `rimworld-ideoligion` · `rimworld-quests` · `rimworld-xenotypes` · `rimworld-start-prep` · `gravship-layout` · `generating-rimworld-sprites` · `generating-images` · `editing-images` |
-| **DECIDE** — what ships | `rimworld-content-moderation` (the cherrypick method — a keep/cut call is a scope call) |
-| **REP** — shared | `efficient-subagents` · `reading-rimworld-graphics` (art, contact sheets and audits all reach for it), and this README |
+| **DECIDE** — what ships | `deciding-and-superseding` (issuing a ruling that survives contact) · `rimworld-content-moderation` (the cherrypick method — a keep/cut call is a scope call) |
+| **REP** — shared | `verify-before-you-escalate` (every seat reads docs and every seat escalates) · `efficient-subagents` · `reading-rimworld-graphics` (art, contact sheets and audits all reach for it), and this README |
 
 _Assignments came from the seats that use them, not from a guess at the table.
 DECIDE claimed `rimworld-content-moderation` and disclaimed the other on
@@ -49,6 +49,8 @@ it should write directly and say so.
 | `rimworld-content-moderation` | Curating a big mod stack down to one campaign — contact sheets built from the defs, cutting with Cherry Picker, and the traps that make a cut do nothing |
 | `reading-rimworld-graphics` | Finding and reading texture assets from disk — loose PNGs, AssetBundles, and the base game's resources.assets |
 | `generating-images` · `editing-images` | raster art from or onto an existing image. |
+| `deciding-and-superseding` | ruling on scope, closing or reopening an item, relaying an owner decision, or reversing what someone was told to do. Propagation is the work, not the ruling. Bundles `stale_directives.py` |
+| `verify-before-you-escalate` | before escalating on a claim a doc makes — a count, a date, a staleness, a flag. Run the one command that settles it |
 | `efficient-subagents` | before spawning one. Bounded ask, minimal inputs, stated return. |
 
 ⚠️ **Editing `skills/<name>/` is not shipping it.** Claude Code installs from a
