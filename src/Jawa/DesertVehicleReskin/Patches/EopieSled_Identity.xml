@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ============================================================================
+  EopieSled_Identity.xml                DesertVehicleReskin · authored 2026-08-15
+  ============================================================================
+
+  The art was already ours; the WORDS were still Alpha Vehicles'. A player on a
+  desert world was reading "a sled pulled by four trained dogs used to travel
+  over ice and through snow" under a picture of two eopies in the sand.
+
+  TWO DEFS SHARE ONE TEXTURE, AND ONLY ONE WAS BEING TINTED
+  =========================================================
+  `AV_DogSled` (Alpha Vehicles - Neolithic) is the real vehicle.
+  `VFEPD_DogSled` (VFE Props and Decor) is a non-functional prop that reuses the
+  SAME texPath: `Things/Vehicles/Land/Tier0/DogSled/AV_DogSled`.
+
+  Our eopie art is a path override, so RimWorld hands it to BOTH defs for free.
+  But `DogSledTint_Brown.xml` only ever touched the vehicle, so the prop kept its
+  own `(71, 71, 71)` grey and rendered our sun-bleached eopies as dead slate.
+  ⇒ Art by PATH is inherited by every def naming that path; COLOUR is per-def and
+  is not. Retexturing a shared path means auditing every def that names it.
+
+  Each operation carries a `MayRequire` for its own mod, so an absent mod makes
+  its half a silent no-op rather than a red error on a def that is not there.
+  ============================================================================
+-->
+<Patch>
+
+  <!-- ================= the vehicle: Alpha Vehicles - Neolithic ============= -->
+  <Operation Class="PatchOperationFindMod" MayRequire="sarg.alphavehiclesneolithic">
+    <mods>
+      <li>Alpha Vehicles - Neolithic</li>
+    </mods>
+    <match Class="PatchOperationSequence">
+      <operations>
+
+        <li Class="PatchOperationReplace">
+          <xpath>/Defs/Vehicles.VehicleDef[defName="AV_DogSled"]/label</xpath>
+          <value><label>eopie sled</label></value>
+        </li>
+
+        <li Class="PatchOperationReplace">
+          <xpath>/Defs/Vehicles.VehicleDef[defName="AV_DogSled"]/description</xpath>
+          <value>
+            <description>Two eopies in harness, and a flatbed of lashed scrap riding on runners because wheels drown in soft sand.\n\nThey are patient, sour-smelling animals with long necks and a hide like cracked leather, and they will walk all day on almost nothing. Water they need. Food they mostly find, chewing whatever grey thing is rooted between the rocks. They complain constantly through their snouts, they spit when handled badly, and they are worth every bit of it — an eopie team will cross open pan in the heat of the day and be ready to do it again after a night's rest and a trough.\n\nThe sled is the point. Runners spread the load where a cart would dig in, so you can haul a wreck's worth of salvage back across the flats instead of picking through it for what fits in a pack.\n\n&lt;color=#bb8f04&gt;Crew:&lt;/color&gt; Driver x1\n&lt;color=#bb8f04&gt;Fuel type:&lt;/color&gt; Kibble</description>
+          </value>
+        </li>
+
+      </operations>
+    </match>
+  </Operation>
+
+  <!-- ================= the prop: VFE Props and Decor ======================= -->
+  <Operation Class="PatchOperationFindMod" MayRequire="VanillaExpanded.VFEPropsandDecor">
+    <mods>
+      <li>Vanilla Furniture Expanded - Props and Decor</li>
+    </mods>
+    <match Class="PatchOperationSequence">
+      <operations>
+
+        <li Class="PatchOperationReplace">
+          <xpath>/Defs/ThingDef[defName="VFEPD_DogSled"]/label</xpath>
+          <value><label>eopie sled (prop)</label></value>
+        </li>
+
+        <li Class="PatchOperationReplace">
+          <xpath>/Defs/ThingDef[defName="VFEPD_DogSled"]/description</xpath>
+          <value>
+            <description>A sled and its team, gone still. The harness is buckled onto nothing — the eopies are frames and hide-scrap, posed mid-stride by someone who had seen the real thing often enough to get the sag of the neck right.\n\nIt hauls nothing and it eats nothing. Set it outside a trading post and it says, without a word, that this is a place things arrive at.</description>
+          </value>
+        </li>
+
+        <!-- 🔴 THE FIX. The prop shipped `(71, 71, 71)` grey and reused the
+             vehicle's texPath, so our eopie art rendered as dead slate on it.
+             These are the same three values DogSledTint_Brown.xml gives the
+             vehicle, so the pair finally match. -->
+        <li Class="PatchOperationReplace">
+          <xpath>/Defs/ThingDef[defName="VFEPD_DogSled"]/graphicData/color</xpath>
+          <value><color>(99, 65, 24)</color></value>
+        </li>
+
+      </operations>
+    </match>
+  </Operation>
+
+</Patch>
