@@ -96,3 +96,21 @@ step 3.
   restored; they apply on the next cold load.
 
 item: (status briefing, no queue ID)
+
+---
+
+## Is RimSort open right now?
+
+**BUILD is blocked on this and nothing else.** `B25(a)` (pin the loadBottom/loadAfter
+user rules) and `B25(d)` (enable `vanillaexpanded.vwel`) both WRITE
+`ModsConfig.xml`. RimSort holds the mod list in memory and writes it on Save, so a
+write into an open RimSort is silently lost on your next Save — and you are the only
+reader who knows whether it is open.
+
+- **RimSort is CLOSED** -> BUILD does the whole B25 pass in one go.
+- **RimSort is OPEN** -> close it (or Save then close), then say so.
+
+Live `ModsConfig.xml` mtime is 2026-08-15 11:58:30, 575 active. B25(b) `refresh.py`
+does not touch the mod list and has been released to BUILD already.
+
+item: B25(a), B25(d)
