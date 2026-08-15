@@ -329,29 +329,6 @@ and test coordinate semantics with the **largest** thing you have, never the mos
 common one: 1×1 things read identically under both conventions, so a plan that is
 95% single-cell looks perfect while every large thing places wrong.
 
-### 🔴 God mode is the missing half of map authoring
-
-`rimworld/set_god_mode {"enabled": true}`. Placement becomes instant — real
-things, not blueprints — and three jobs that look impossible from the bridge are
-not:
-
-* **Architect designators do nothing on an empty map.** A designator *queues work
-  for a colonist*; with no colonists it sits forever and `success: true` with
-  `designationCount: 1` is not lying. God mode converts designations to instant
-  effect, and the cell then reads back changed.
-* **Refuelling is a BUTTON on the thing's menu in god mode** (owner, 2026-08-14)
-  — there is no refuel primitive on the bridge.
-* **Things placed by `spawn_batch` arrive factionless**, so a `GravEngine` shows
-  `Claim` disabled and offers **no Launch gizmo**.
-
-⚠️ **Turn it back off when you are done** (`{"enabled": false}`) — otherwise
-everything the owner builds next is free and instant, and they save a map made in
-god mode without knowing. ⚠️ **A cell already carrying a designation refuses a
-second one** (`success: false`); cancel first with the category's `…-cancel`
-designator. 📌 *"The bridge cannot do X"* is often *"X needs a worker and there is
-nobody home"* — ask what the UI would do with the same click before concluding
-the capability is absent.
-
 ### ⏳ Assert after time has run, not at tick 0
 
 A tool-built thing arrives in a state no played thing is ever in: every cached
