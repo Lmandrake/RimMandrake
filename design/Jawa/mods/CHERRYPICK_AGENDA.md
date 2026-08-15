@@ -100,6 +100,12 @@ Reviewing these per-def is not possible and pretending otherwise wastes sessions
   it swept so you can spot-check rather than re-read.
 - Anything you are unsure about goes to a **hold** list rather than a guess.
 
+## Descoped — gone, not a cherrypick target
+
+| mod | why |
+|---|---|
+| **`Big and Small - Sapient Animals`** (`redmattis.sapientanimals`) | Owner, 2026-08-15: *"This whole mod needs to go... We're descoping the mod."* It generated a `Humanlike`-intelligence twin of **every animal in the game — 1,073 defs**, all of them potential pawns (`HL_Penguin`, `HL_RockTroll`, `HL_Bantha`). Sapient talking animals are not this fiction. Set inactive in `ModsConfig.xml`; nothing declared a dependency on it. **Do not cherrypick its defs — they no longer load.** |
+
 ## Holds — decided later, on purpose
 
 | item | why it is held |
@@ -107,6 +113,7 @@ Reviewing these per-def is not possible and pretending otherwise wastes sessions
 | **`[AB] Xenotype: Yautja`** | Owner, 2026-08-15: keep for now, revisit **after `D23`** builds our own xenotype set. Its 432 genes and 9 xenotypes are the cost; 13 melee weapons on a clean AP 0.60 tier are the benefit. Nothing external depends on it, and the `.rid`/`.xtp` references are mod-list stamps, not dependencies |
 | **Megafauna** · **Mythic Ages: Megafauna Bestiary** | The design uses megafauna as the counter to Junker warcaskets. Big desert beasts fit the setting |
 | **Onimods: Electric Torches and Braziers** | Sounds medieval, is lighting. Plausible on a scavenger world |
+| **The eight D&D creatures** | bearded troll · rock troll · dwarven muffton · goldilox · black scribe · pilgrim · imperial redhound (*Dark Ages: Beasts and Monsters*) · griffar (*Grimstone: Beasts*). Owner, 2026-08-15: **hold for an image review** — names are a poor guide. Do them in the same pass as the weapons and clothing contact sheets |
 
 ## Method
 
