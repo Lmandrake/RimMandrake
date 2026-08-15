@@ -270,11 +270,16 @@ the right call — the test you wrote says *during active melee combat*.
 the game."*** ⇒ **Every "the lightsaber is missing" thread is CLOSED. Do not open
 another.**
 
-🔴 **The screenshot hunt below was chasing a phantom and the reasoning was
-backwards.** *"I checked the two most recent — neither shows a lightsaber"* is a
-statement about **two screenshots**, not about the game. Absence from a frame is
-not absence from the build, and it was one step from being written up as a missing
-weapon.
+⚠️ **Scope of that ruling, corrected 2026-08-15 so the record is accurate.** CHECK's
+thread never claimed a lightsaber was missing from the build — it equipped
+`Force_Lightsaber_Custom` on this map and verified it off the pawn's own Gear panel
+("Equipped: Lightsaber (normal)", Customize/Throw gizmos on the command bar). Its
+screenshot question was only ever whether a **Yayo-ON comparison arm** exists for
+the owner's *"more reasonable THAN WHAT"*.
+📌 **The inference worth keeping is general, not a criticism of that thread:** *"I
+checked the two most recent — neither shows a lightsaber"* is a statement about
+**two screenshots**, not about the game. Absence from a frame is not absence from
+the build.
 **Confirmed against this load's own def dump: 14 lightsaber `ThingDef`s are LIVE** —
 `Force_Lightsaber_Custom`, `_Dual`, `_Curved`, `_Crossguard`, `_Shoto`,
 `_Inquisitor`, `_BuildYourOwn`, `_UniqueObi`, `_UniqueAnakin`,
