@@ -1289,7 +1289,23 @@ verify:   OFFLINE, no game:
 criteria: on a desert world every primitive transport in the vehicles menu is
           pulled by something that belongs on it, and nothing in its name,
           description or health tab still says horse, ox or dog.
-state:    ready
+state:    deferred to v2 — owner, 2026-08-15: *"defer adding any additional art to
+          B62 for v2. Leave it just as is and keep deployed."*
+          ⛔ Do NOT touch `src/Jawa/DesertVehicleReskin/`. The eopie sled ships as
+          deployed and stays deployed; `mandrake.desertvehiclereskin` stays in
+          `<activeMods>` at 541.
+          ⇒ **CHECK C41 is not collectable in v1 at all** — it needs 24 PNGs and the
+          mod has 12, all of them the sled. It is not "waiting for a load"; it is
+          waiting for v2. Whoever owns C41 should park it, not re-book it.
+          🔴 **One defect this leaves LIVE and it is not art.** The five
+          `Vehicles.VehicleBuildDef` blueprints were never patched, so the architect
+          menu still reads *"Dog Sled … pulled by four trained dogs … over ice and
+          through snow"* for a vehicle that is now an eopie sled — on a desert
+          world. That is a label-and-description fix on 13 defs, pure XML, no art,
+          and it is the visible half of a mod we are shipping. **Not actioned: the
+          owner said leave it as is, and this seat does not reinterpret that as
+          licence to edit the mod.** Raise it as its own item if it should ship.
+          Parked in `design/V2_DREAMS.md`.
 
 ## B64 Build our own boiling water and boiling rain, then drop ReGrowth: Boiling
 row:      8

@@ -1207,3 +1207,42 @@ exist. Take the set or leave it.
 ⚠️ Note the donor's own typo: one is `<hediffDef>` lowercase, one is `<HediffDef>`. Def
 type names are case-sensitive in RimWorld XML, so the lowercase one is very likely dead
 in the donor too — check before assuming the cloak ever worked as shipped.
+
+## Desert creatures for the other four animal-drawn vehicles (was B62)
+
+Deferred out of v1 by the owner, 2026-08-15: *"defer adding any additional art to
+B62 for v2. Leave it just as is and keep deployed."* The eopie sled (`4f3afc7`)
+shipped and stays; these four did not.
+
+**Scope is exactly four vehicles**, and the test is a def tag, not a look at the
+art: Alpha Vehicles - Neolithic ships 12 vehicles and exactly five carry the stat
+`AV_TractionAnimal` — Chariot, WarChariot, CoveredCarriage, OxCart, DogSled. Those
+five are exactly the five with an animal drawn into the texture. DogSled is done.
+⛔ Do not re-derive the list from "the mask has a black region" — seven of twelve
+have one and five of those have no animal in them.
+
+| vehicle | donor shows | assign | why it is cheap or dear |
+|---|---|---|---|
+| `AV_OxCart` | 2 oxen, yoked abreast | **bantha ×2** | cheapest — horns, hump and broad muzzle are already the silhouette. Repose and recolour, not a redraw |
+| `AV_Chariot` | 1 horse | **dewback ×1** | smallest animal share of the canvas (~28%) |
+| `AV_WarChariot` | 2 horses | **dewback ×2** | reuses the Chariot's body at two instances, darker palette — the two chariots amortise one build |
+| `AV_CoveredCarriage` | 2 horses abreast | **ronto ×2** | dearest — reptilian slab body, long neck, small head is a real body swap |
+
+Donor sprites are all live PawnKindDefs in `Mlie.StarWarsAnimalCollection`
+(ws `3497316713`), but ⚠️ **its art is in an AssetBundle, not loose PNGs** —
+`AssetBundles/Mlie_StarWarsAnimalCollection`, assets `swanimals/<Name>/<Name>_south`.
+There is no `Textures/swanimals/` directory. Extract with
+`skills/reading-rimworld-graphics` before anything can be composited.
+
+**Two facts worth keeping, because both were bought the hard way:**
+
+- 🔴 **THREE defs share each texPath, not two.** The `Vehicles.VehicleBuildDef`
+  blueprint carries its own `<label>` and `<description>` and the sled pass missed
+  it. 13 defs across the five vehicles need label and description.
+- 🔴 **Art reaches every def naming a path; `<color>` is per-def.** If a vehicle's
+  `<color>` changes, its `VFEPD_*` twin must change in the same file or the sled
+  bug reproduces exactly. Default here is to leave all four colour triples alone —
+  the donors are already tan/brown and the art pass alone answers the brief.
+
+⇒ **CHECK C41 rides this, and is therefore v2 too.** It needs 24 PNGs; the mod has
+12, all of them the sled.
