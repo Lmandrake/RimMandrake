@@ -32,10 +32,12 @@ look inhabited.
 | cactus crab | `BMT_CactusCrab` — Biomes! Caverns |
 | mantrap | `AA_Mantrap` |
 | mantrap | `BMT_Creature_Mantrap` — Biomes! Polluted Lands. **A SECOND, different mantrap** — both exist |
+| deermoss | `MA_Deermoss` — Mythic Ages |
 
 Alpha Animals unless noted.
 
-**Maps that contain a body of water may also include the atispec** — `AA_Atispec`.
+**Maps that contain a body of water may also include** the atispec `AA_Atispec` and the
+gomphotaria `Gomphotaria` (Megafauna).
 ⚠️ It ships with a companion life stage, **`AA_LarvalAtispec`**, which must travel
 with it or the adult has no juvenile form.
 
