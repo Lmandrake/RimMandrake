@@ -191,3 +191,12 @@ factions, fewer defs — and its own header says so. Read that header; it usuall
 states the premise that has since died.
 **The tell:** the duplicate's red line looks exactly like a known-harmless error
 class, so it masks itself inside your own expected-failure list.
+
+---
+
+### The dictionary-key trap again, in a `Defs/` file — where the validator's shape check does not reach
+**Symptom:** five authored `FactionDef`s absent from the game, with **nothing in the log naming them**. `validate_patch.py` reported `0 errors` on the mod root **before and after the fix, identically** — it did not regress, it cannot see this.
+**Cause:** `<xenotypeSet><xenotypeChances>` is dictionary-keyed exactly like `baseWeatherCommonalities` two entries above, and the files carried `<li><xenotype>BTD_Nikto</xenotype><chance>0.300</chance></li>`. ParseFloat gets null on the `li` and the whole def is discarded. The shape was copied from a design spec's XML sample that claimed provenance it did not have — "read from the live `Ancients` def" — while a CORRECT keyed counter-example was already sitting in the same folder in `JawaTribes.xml`.
+**Fix:** `<BTD_Nikto MayRequire="btd.xenotyperemix.starwars">0.300</BTD_Nikto>`; `MayRequire` rides the keyed element unchanged. Take a field's SHAPE from a shipped def, never from a spec — **a spec names FIELDS, a def defines SHAPES.**
+**Recurs when:** any file you author under `Defs/`. The biome entry above closed this for `PatchOperation` `<value>` nodes ONLY, by diffing `<value>`'s children against the target's existing children — a def you write outright has no existing node to diff against, so it gets no shape check at all.
+**The tell:** the correlation, not the log. Files WITHOUT the `<li>` loaded; every file WITH one died. When a def vanishes silently, diff it against a sibling that survived.

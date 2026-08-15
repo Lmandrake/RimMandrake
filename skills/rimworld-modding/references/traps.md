@@ -24,7 +24,7 @@ shorts, leave it untouched (→ `skills/rimworld-savegame/SKILL.md`).
 
 | If you are about to… | Read | Entries |
 |---|---|---|
-| write or debug a patch, an xpath, or a def | [`traps-xml-and-defs.md`](traps-xml-and-defs.md) | 18 |
+| write or debug a patch, an xpath, or a def | [`traps-xml-and-defs.md`](traps-xml-and-defs.md) | 19 |
 | trust what a script, grep, census or the def dump just told you | [`traps-tooling.md`](traps-tooling.md) | 39 |
 | call art missing, wrong, or broken | [`traps-art.md`](traps-art.md) | 13 |
 | chase a mod that is absent, dead, or ignoring its files | [`traps-mods-and-managers.md`](traps-mods-and-managers.md) | 13 |
@@ -58,6 +58,7 @@ the one asked.**
 - Building one thing over another is vanilla in 1.6 (`replaceTags`) — and Replace Stuff forbids our case
 - 48. "It is placeable" and "it can be removed" are different claims — and the do-not-place twins are one word apart
 - A `WorldGenStepDef` that is not listed on the layer def is loaded, valid, and never called
+- The dictionary-key trap again, in a `Defs/` file — where the validator's shape check does not reach
 - Vanilla's river step sources its mouths from the BIOME, but paths on ELEVATION
 - `xenotypeChances` is a def-keyed dictionary — the xenotype is the ELEMENT NAME, not a value
 
