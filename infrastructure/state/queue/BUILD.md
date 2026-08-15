@@ -352,7 +352,7 @@ criteria: the faction generates settlements at worldgen and its pawns spawn as
           the named kinds.
 state:    ready
 
-## B44 Rename vanilla mechanoids and insects to fit the setting
+## B44 Rename vanilla mechanoids to fit the setting
 row:      9
 spec:     `design/Jawa/worldbuilding/FACTION_SPEC.md` sections 13 and 14. Two `PatchOperation`s: `label` and
           `description` on `FactionDef[defName="Mechanoid"]` and

@@ -46,9 +46,18 @@ world and buys nothing — and **change the `label`** from "Jawa tribes".
 | 11 | Jawa Trade Moot | `Jawa_IndigenousTribes` | **authored — ALREADY SHIPS** (R19) | The Salvation *(shared with the player)* |
 | 12 | the Junkers | `Jawa_Junkers` | **authored** | no doctrine, only the ladder |
 | 13 | the Forgotten Arsenal | *(patch)* `Mechanoid` | **reskin**, label only — `hidden`, no settlements, no diplomacy | none |
-| 14 | the Unbound Hive | *(patch)* `Insect` | **reskin**, label only | none |
+| ~~14~~ | ~~the Unbound Hive~~ | — | 🔴 **CUT FROM v1** — `WORLDGEN_FACTION_CHECKLIST.md` Section 2 unticks `Insect`. A label on a faction that never generates does nothing. | none |
 
-**6 reskins · 8 authored, of which 1 already ships.** ⇒ **7 new `FactionDef`s.**
+**5 reskins · 8 authored, of which 1 already ships.** ⇒ **7 new `FactionDef`s.**
+
+🔴 **Before assigning ANY vanilla vessel, confirm it is not on
+`WORLDGEN_FACTION_CHECKLIST.md`'s untick lists.** All six were checked
+2026-08-14: `Insect` collided and the Unbound Hive is cut. `Empire`,
+`OutlanderCivil`, `TribeCivil`, `Pirate` and `Mechanoid` are clear —
+`Empire`'s only checkbox is a Section 4 KEEP confirmation.
+⚠️ Unticking `Insect` does NOT remove insect content — map-generated hives and
+infestations remain. The Unbound Hive survives as a thing in the world; it just
+is not a faction.
 
 ## What each kind of faction owes
 
@@ -319,12 +328,11 @@ label / description only. No leader, no settlements, no diplomacy, no ideo.
 Inherits vanilla pawnGroupMakers wholesale. Do not touch anything else.
 ```
 
-### 14 · the Unbound Hive — PATCH vanilla `Insect`, LABEL ONLY
+### ~~14 · the Unbound Hive~~ — CUT FROM v1
 
-```
-label / description only. Same treatment. Named to distinguish it from the
-Geonosian Foundry, which is the authored insectoid faction.
-```
+`Insect` is unticked at worldgen, so there is no faction to dress. The name is
+kept in the fiction for the infestations the map still generates, and the
+Geonosian Foundry Hive remains the campaign's authored insectoid power.
 
 ## Hard-coded relations
 
