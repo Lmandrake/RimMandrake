@@ -2011,3 +2011,21 @@ state:    🔴 DEAD — not blocked, not deferred. **Owner's ruling 2026-08-15: 
           diagnosis is kept only as the explanation of *why what shipped looks the
           way it does*, so nobody re-opens it as a bug in six weeks.
           ⛔ Do not chase the tint.
+
+## gand-and-chagrian-missing-artwork-5d2a09
+raised:   2026-08-15 CHECK, from the owner examining the 70-race grid live on the
+          scratch quicktest map.
+finding:  Owner's words: *"Gand and Chagrian have missing artwork, but most now look
+          good."* Two species render without their art:
+            `RimMandrakeGand`      · `RimMandrakeChagrian`
+          Both SPAWN fine — 70/70 xenotypes spawned in the grid, so this is art only,
+          not a def or genes failure.
+scope:    ⛔ Not triaged and not diagnosed by me — the owner looked, I am recording it.
+          Whether it is a texPath that does not resolve, a missing PNG, or a head/body
+          type with no graphic is BUILD's to find.
+⚠️ do not assume the log will show it:
+          `texture path failures` read **0 = baseline 0** in this load's harvest, and
+          that check fires ONLY when ALL directions are missing — a partial set is
+          silent. A clean log is not evidence against this finding.
+note:     Owner's verdict on the rest of the grid was positive — *"most now look good"* —
+          so this is two exceptions in 70, not a systemic art problem.
