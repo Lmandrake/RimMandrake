@@ -1,7 +1,7 @@
 # Faction engine gap audit — Stage 2
 
 _Written by **PROJECT**, 2026-08-12, against the faction roster Stage 2 work
-(now `infrastructure/state/queue/VISION.md` **V9**). Audits
+(now `design/V2_DREAMS.md` **B20**). Audits
 `D:\Luke\dev\Rimworld\design\Jawa\worldbuilding\faction_roster_v2.md` (2,433 lines,
 12 faction dossiers) against what RimWorld's `FactionDef` actually accepts._
 
@@ -157,8 +157,8 @@ is owned by whoever owns the subject. Filed, not edited.
 
 ### "125 distinct fields" is a schema, not a checklist
 
-`infrastructure/state/queue/VISION.md` **V9** records **88 `FactionDef`s and 125 distinct fields** as the Stage 3
-checklist. Measured against the dump: **all 125 fields are present on all 88
+The Stage 3 checklist was scoped as **88 `FactionDef`s and 125 distinct fields**
+(the item is now `design/V2_DREAMS.md` **B20**). Measured against the dump: **all 125 fields are present on all 88
 defs** — the dump serialises defaults. So 125 is the size of the *schema*, not a
 list of decisions anyone made.
 

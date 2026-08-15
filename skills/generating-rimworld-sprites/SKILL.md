@@ -222,7 +222,7 @@ the consistency at full resolution.
 
 Deploying is a separate claim from writing. The game reads the Steam Mods
 folder, never this repo — run `python src/RimMandrake/Utils/deploy_custom_mods.py` for a plan,
-read it, then `--apply`. Per `agents_def.md`, only deploy your own files.
+read it, then `--apply`. Per `infrastructure/agents/POLICY.md`, only deploy your own files.
 
 ## Validation plan — what you owe whoever holds the game
 

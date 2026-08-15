@@ -14,9 +14,9 @@ date, not a header field. The categorised sections below (§§1–5) were last w
 
 # 0. 📥 THE INBOX — append here the moment you notice something
 
-**Created 2026-08-12 by PROJECT at the owner's request. OPS owns this file and
-maintains it from here** (`design/Jawa/mods/` per `infrastructure/agents/OPS.md`;
-the seat was called WORLD until it was renamed on 2026-08-13).
+**Created 2026-08-12 by PROJECT at the owner's request. BUILD owns this file and
+maintains it from here** (`design/Jawa/mods/` per `infrastructure/agents/BUILD.md`;
+the seat was called WORLD, then OPS, before the seat restructure).
 
 **Why an inbox and not just the categorised lists below:** §§1–5 are a *plan* —
 producing an entry there costs a pass. This is a *capture log*, and it exists for
@@ -56,7 +56,7 @@ might want it sometimes, filter it; only Cherry Pick pure off-theme clutter.
 | mod | packageId | why | noticed |
 |---|---|---|---|
 | ~~**Alpha Vehicles – Neolithic**~~ | `sarg.alphavehiclesneolithic` | ⛔ **WITHDRAWN by the owner, 2026-08-12 — do not drop.** I filed it as off-theme ("a dog sled is a category error, not a reskin problem"). The owner's ruling is the opposite: **reskin it, horses → Banthas**, filed for CREATE in `infrastructure/state/TODO_v2.md` §0c. Recorded rather than deleted because the disagreement is the useful part — I judged the theme gap unbridgeable by art, and that call was not mine to make. | filed 2026-08-12 PROJECT · withdrawn same day |
-| **More Faction Interaction (Continued)** | `mlie.morefactioninteraction` | **10 assemblies and 114 defs of interaction content, and zero faction-*definition* capability** — it buys nothing for the faction work (Stage 1 mod survey; `infrastructure/state/queue/VISION.md` **V9**). Keep only if the interaction content is wanted on its own merits. | 2026-08-12, PROJECT, Stage 1 mod survey |
+| **More Faction Interaction (Continued)** | `mlie.morefactioninteraction` | **10 assemblies and 114 defs of interaction content, and zero faction-*definition* capability** — it buys nothing for the faction work (Stage 1 mod survey; `design/V2_DREAMS.md` **B20**). Keep only if the interaction content is wanted on its own merits. | 2026-08-12, PROJECT, Stage 1 mod survey |
 
 ## §0.A′ — Suppressed instead of culled: **PROVEN**, with a third mechanism
 

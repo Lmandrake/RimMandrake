@@ -1,7 +1,7 @@
 # Faction Stage 3 — the buildable spec
 
 _Written by **PROJECT**, 2026-08-13 overnight, against faction roster Stage 3
-(`infrastructure/state/queue/VISION.md` **V9**).
+(now `design/V2_DREAMS.md` **B20**).
 Substrate is the 574-mod dump. **This is `[v2]` spec work**: `V1_SCOPE.md` cuts
 build *depth*, not spec, and speccing costs no verification pass. v1 still ships
 one thin Empire reskin._
@@ -386,7 +386,7 @@ wet-adjacent hives only.
 ⚠️ **JDS's kinds are all `combatPower: 45`, flat**, so a raid of B1s costs the
 same points as a raid of Droidekas and the difficulty curve is meaningless. **The
 KotOR Rogue Droid kinds are properly spread (35→500).** Either rebalance JDS by
-patch (this is `TODO_v2.md` §4's U2 territory) or prefer KotOR kinds for the
+patch (this is `design/V2_DREAMS.md` §4's U2 territory) or prefer KotOR kinds for the
 hive's droid element.
 **Water = Forbid (arid-adapted)** — very low thirst, droids carry none. Combined
 with a 35–55% droid share this is the **longest-reach hostile faction on the

@@ -967,7 +967,7 @@ in the workshop tree owns `VanillaExpanded.VPsycastsE`.**
 
 Either the ruling was never executed, or VPE was removed and the docs were not
 updated. **This is not mine to resolve** — it is a mod-roster decision, and
-`required_mods.md` is OPS's file (`infrastructure/agents/OPS.md`). It must be
+`required_mods.md` is BUILD's file (`infrastructure/agents/BUILD.md`). It must be
 filed, not silently worked around
 (§6). Adding VPE now is a dependency change to a 570-mod order and a full
 re-verification, at ~23–30 min per cold load; it is not a side effect of building

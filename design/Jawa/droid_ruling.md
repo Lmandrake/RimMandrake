@@ -1,7 +1,7 @@
 # Droid ruling — ion, capture, and what detonates
 
 _Owner's design ask, 2026-08-12, with everything verified against the live install
-and the game assembly. Referenced from `infrastructure/state/TODO_v2.md` §1._
+and the game assembly. Referenced from `design/V2_DREAMS.md` §1._
 
 **Status: research complete and UNBLOCKED, nothing built.** No XML written, no mod changed. This
 doc exists so the build starts from ground truth instead of from a guess.
@@ -141,7 +141,7 @@ that could make a downed chassis resolve as a corpse instead of a prisoner.
 45 KotOR pawnkinds are installed to test with (`KotORDroidGood_*`,
 `KotORDroidBad_*`). ⚠️ **No longer filed anywhere** — `NEXT_RELOAD.md` was
 rebuilt from the queue files and carries neither this item nor the `[WORLD]` tag
-(that seat is now OPS). Refile it in `infrastructure/state/queue/OPS.md` if it
+(that seat is now BUILD). Refile it in `infrastructure/state/queue/BUILD.md` if it
 still matters.
 
 ## Mechanoids are OFF

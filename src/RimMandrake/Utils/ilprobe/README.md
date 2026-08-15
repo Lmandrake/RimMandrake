@@ -62,4 +62,4 @@ survives review, so dump the enum instead of assuming.
 
 Written 2026-08-12 by a research subagent for the "everything detonates" design
 question, and kept because it turned an unanswerable class of question into a
-cheap one. Findings are recorded in `infrastructure/state/TODO_v2.md` §1.
+cheap one. Findings are recorded in `design/V2_DREAMS.md` §1.

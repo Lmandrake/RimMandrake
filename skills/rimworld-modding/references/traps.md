@@ -168,7 +168,7 @@ being findable. Before appending, check every one:
 3. **ACTIONABLE** — says what to DO differently, not what happened.
 4. **DOMAIN-BOUND** — about RimWorld, its modding stack, or this project's tools.
    General software or process wisdom belongs in `DOC_BUDGET.md` or
-   `agents_def.md`, never here.
+   `infrastructure/agents/POLICY.md`, never here.
 5. **STILL TRUE** — if the tool was since fixed, the entry becomes ONE line or goes.
 
 **If it fails one, it is not a trap.** Most rejected candidates fail 1 or 4.

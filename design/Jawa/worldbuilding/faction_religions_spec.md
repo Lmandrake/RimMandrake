@@ -1006,7 +1006,7 @@ describe.
 
 ## 🔴 Filed for other seats
 
-**PROJECT** — `infrastructure/state/queue/PROJECT.md`:
+**DECIDE** — `infrastructure/state/queue/DECIDE.md`:
 - **Gap-audit D3 is mis-specified, not unresolved.** *"Preferred xenotypes:
   Geonosian"* names a route that does not exist: `PreferredXenotypes` has one
   precept and its xenotype is chosen at generation time, not in XML. Retarget the
@@ -1016,7 +1016,7 @@ describe.
 - **Gap-audit D1 has a better fix than picking a number** — `VME_Raiding_Abhorrent`
   on the Homestead and the Compact turns "never vs very low" into doctrine.
 
-**CREATE** — `infrastructure/state/queue/CREATE.md`:
+**BUILD** — `infrastructure/state/queue/BUILD.md`:
 - Eleven `FactionDef` ideo blocks, patterned on the Horax cult. Every defName in
   this file was read from the live dump; the full palette is
   `design/Jawa/worldbuilding/data/ideology_palette.md`.

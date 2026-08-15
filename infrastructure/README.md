@@ -10,7 +10,7 @@ campaign reuse would describe nothing real.
 
 | | |
 |---|---|
-| `infrastructure/` | rules and maps that change slowly — `agents_def.md`, `STRUCTURE.md`, `DOC_BUDGET.md`, `REFRESH.md`, `infrastructure/agents/` |
+| `infrastructure/` | rules and maps that change slowly — `STRUCTURE.md`, `DOC_BUDGET.md`, `REFRESH.md`, `infrastructure/agents/` (`POLICY.md` plus the four seat files) |
 | `infrastructure/state/` | **current** state — the queues, `V1.md`, `V1_CHAIN.md`, `NEXT_RELOAD.md`, `OWNER_DECISIONS.md`, `CLOSED.md`, `status/` |
 
 The line is *would a reader be wrong tomorrow if they trusted this?* A rule is

@@ -1,6 +1,6 @@
 # Explosion energy model — everything detonates, scaled by energy density
 
-_The build spec for `TODO_v2.md` §1. Drained out of that register 2026-08-14 so the
+_The build spec for `design/V2_DREAMS.md` §1. Drained out of that register 2026-08-14 so the
 spec has a home; the register keeps one line. Every claim here is a quoted def or
 an IL read — nothing is inferred from behaviour._
 
