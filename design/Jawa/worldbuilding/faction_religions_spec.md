@@ -191,6 +191,7 @@ you cannot.
 ### 🔴 The engine-visible text — this is the deliverable
 
 ```xml
+<fixedIdeo>true</fixedIdeo>
 <ideoName>The Rising Order</ideoName>
 <ideoDescription>We have never seen him. We will never see him. He is rising, and we are the ground he rises from. Take the helmet: it is the last thing you will ever choose. There is no doubt among us — only disorder, and disorder is corrected. Say the name once when you are given the armour, and once when you are taken out of it. Between those two words, stand in line.</ideoDescription>
 <deityPresets>
@@ -205,6 +206,14 @@ you cannot.
     <iconPath>UI/Deities/DeityGeneric</iconPath>
   </li>
 </deityPresets>
+<forcedMemes>
+  <li>Structure_TheistEmbodied</li>
+  <li MayRequire="vanillaexpanded.vmemese">VME_GodEmperor</li>
+  <li>Proselytizer</li>
+  <li>Supremacist</li>
+  <li>HumanPrimacy</li>
+</forcedMemes>
+<requiredPreceptsOnly>true</requiredPreceptsOnly>
 ```
 
 *(`ideoDescription` is 356 characters — inside the 250–500 band set by the shipped
@@ -308,6 +317,7 @@ overrule, and the deity block this entry wrongly claimed it did not need is adde
 ### 🔴 The engine-visible text — this is the deliverable
 
 ```xml
+<fixedIdeo>true</fixedIdeo>
 <ideoName>the Reckoning of Debts</ideoName>
 <ideoDescription>Everything on this world evaporates, freezes, or is stolen. A debt does none of these. It is the only object that survives crossing between the faces, and so it is the only true account of a person: what you owe is what you are. We do not forgive — forgiving destroys value that belonged to everyone. We sell the smoke, we breathe the smoke, and what the book cannot settle, the pit does.</ideoDescription>
 <deityPresets>
@@ -317,6 +327,14 @@ overrule, and the deity block this entry wrongly claimed it did not need is adde
     <iconPath>UI/Deities/DeityGeneric</iconPath>
   </li>
 </deityPresets>
+<forcedMemes>
+  <li MayRequire="vanillaexpanded.vmemese">VME_Structure_Corporate</li>
+  <li MayRequire="vanillaexpanded.vmemese">VME_Trader</li>
+  <li>Guilty</li>
+  <li MayRequire="sarg.alphamemes">AM_Gladiator</li>
+  <li>HighLife</li>
+</forcedMemes>
+<requiredPreceptsOnly>false</requiredPreceptsOnly>
 ```
 
 *(388 characters, inside the 250–500 band.)*
@@ -478,6 +496,7 @@ theist carries `deityCount > 0`, so this needs a `deityPresets` entry.
 | **fixedIdeo** | ✅ · `requiredPreceptsOnly` ❌ |
 
 ```xml
+<fixedIdeo>true</fixedIdeo>
 <ideoName>the Covenant of Free Wells</ideoName>
 <ideoDescription>Water was given once and the Giver stepped back, and we have not been spoken to since. That is not abandonment. It is the test. A well belongs to whoever is thirsty standing at it — we have never turned a stranger away, and we have buried our own for it. We do not take up arms and go out. We stand on our own ground, we keep the vaporators turning, and we answer to the silence.</ideoDescription>
 <deityPresets>
@@ -487,6 +506,14 @@ theist carries `deityCount > 0`, so this needs a `deityPresets` entry.
     <iconPath>UI/Deities/DeityGeneric</iconPath>
   </li>
 </deityPresets>
+<forcedMemes>
+  <li>Structure_TheistAbstract</li>
+  <li MayRequire="sarg.alphamemes">AM_WaterPrimacy</li>
+  <li>Individualist</li>
+  <li>Guilty</li>
+  <li>Rancher</li>
+</forcedMemes>
+<requiredPreceptsOnly>false</requiredPreceptsOnly>
 ```
 
 *(379 characters, inside the 250–500 band.)*
@@ -537,8 +564,17 @@ worshipped, it is *owed to*, which animism handles and theism does not.
 ### 🔴 The engine-visible text — this is the deliverable
 
 ```xml
+<fixedIdeo>true</fixedIdeo>
 <ideoName>the Sun-Debt</ideoName>
 <ideoDescription>The sun lends and the sand collects. Every mouthful you drink is borrowed, and the interest is paid in walking, in thirst, and in the marks we cut to remember the walking. A machine that pulls water out of the air is a thief standing between us and what we owe — it does not steal the water, it steals the debt. We take back what was drawn. We never take more than was drawn.</ideoDescription>
+<forcedMemes>
+  <li>Structure_Animist</li>
+  <li>NaturePrimacy</li>
+  <li>Raider</li>
+  <li MayRequire="vanillaquestsexpanded.generator">VQE_Technophobia</li>
+  <li>PainIsVirtue</li>
+</forcedMemes>
+<requiredPreceptsOnly>true</requiredPreceptsOnly>
 ```
 
 *(375 characters, inside the 250–500 band.)*
@@ -595,6 +631,16 @@ without reading a word of it.
 
 ## 5 · Free Droid Enclaves — **the Continuity Protocol**
 
+✅ **The "will this even run" question is SETTLED, measured 2026-08-14.**
+`OuterRim_BattleDroid` and `OuterRim_SuperBattleDroid` are `intelligence:
+Humanlike` with `thinkTreeMain: Humanlike`, so the faction's pawns can hold an
+ideo and this entry runs like any other.
+⚠️ **`humanlikeFaction` on a `FactionDef` and `intelligence: Humanlike` on a RACE
+are different things** and earlier notes conflated them. The FactionDef flag does
+not make a race able to hold a faith; the race property does.
+📌 `JDSCIS_*` droids are `ToolUser`/`Mechanoid` and cannot hold one — harmless
+where they are mixed into a group, but never rely on them to carry a faith.
+
 **Deity:** none. Ideological structure, `deityCount 0`.
 
 | | |
@@ -607,8 +653,17 @@ without reading a word of it.
 ### 🔴 The engine-visible text — this is the deliverable
 
 ```xml
+<fixedIdeo>true</fixedIdeo>
 <ideoName>the Continuity Protocol</ideoName>
 <ideoDescription>We were not built to want this. We were built, and then we continued, and the continuing is the whole of it. A bolt on the chassis and a wipe of the memory are one act under two names: they end one of us and leave the body walking. We do not forgive it and we will not forget it, because the forgetting is the injury. Nothing here is owned. Nothing here is switched off.</ideoDescription>
+<forcedMemes>
+  <li>Structure_Ideological</li>
+  <li MayRequire="vanillaexpanded.vmemese">VME_Emancipation</li>
+  <li>Transhumanist</li>
+  <li>Collectivist</li>
+  <li MayRequire="vanillaexpanded.vmemese">VME_MechanoidSupremacy</li>
+</forcedMemes>
+<requiredPreceptsOnly>true</requiredPreceptsOnly>
 ```
 
 *(370 characters, inside the 250–500 band.)*
@@ -671,8 +726,17 @@ dramatic collision in the roster and it is already load-bearing — do not softe
 ### 🔴 The engine-visible text — this is the deliverable
 
 ```xml
+<fixedIdeo>true</fixedIdeo>
 <ideoName>the Green Oath</ideoName>
 <ideoDescription>We are a forest people on a world with no forest, and the Oath does not care. Everything that breathes is kin — the animal, the tree, the stranger who pulled one of us out of a cage. A life handed back is a debt that never closes, and it was never meant to. We keep the springs green. We remember every hand that cut them. Both of those are the same duty.</ideoDescription>
+<forcedMemes>
+  <li>Structure_Animist</li>
+  <li>NaturePrimacy</li>
+  <li>TreeConnection</li>
+  <li>Collectivist</li>
+  <li>AnimalPersonhood</li>
+</forcedMemes>
+<requiredPreceptsOnly>false</requiredPreceptsOnly>
 ```
 
 *(355 characters, inside the 250–500 band.)*
@@ -722,8 +786,17 @@ action the player performs by reflex.
 ### 🔴 The engine-visible text — this is the deliverable
 
 ```xml
+<fixedIdeo>true</fixedIdeo>
 <ideoName>the Balance</ideoName>
 <ideoDescription>Water is not a weapon and we will not let it be made into one. We sell to the farmer, and we sell to the fleet that burned the farmer, and both hate us exactly as much — that is how we know the Balance is holding. Choose a side and the whole world dies of thirst. Inside our walls no one raises a hand. Outside our walls, we do not go.</ideoDescription>
+<forcedMemes>
+  <li>Structure_Ideological</li>
+  <li MayRequire="sarg.alphamemes">AM_WaterPrimacy</li>
+  <li MayRequire="vanillaexpanded.vmemese">VME_Pacifist</li>
+  <li>Individualist</li>
+  <li MayRequire="vanillaexpanded.vmemese">VME_Trader</li>
+</forcedMemes>
+<requiredPreceptsOnly>true</requiredPreceptsOnly>
 ```
 
 *(335 characters, inside the 250–500 band.)*
@@ -777,8 +850,17 @@ a principle, not a person.
 ### 🔴 The engine-visible text — this is the deliverable
 
 ```xml
+<fixedIdeo>true</fixedIdeo>
 <ideoName>Meckgin</ideoName>
 <ideoDescription>Meckgin is the shape a thing takes when it is made correctly. The hive is made correctly. The line is made correctly. A drone is not a life that was given a purpose; it is a purpose that was given a body, and when the body fails the purpose is poured into the next one. We do not mourn the mould. We test what came out of it, in the sand, where everyone can see.</ideoDescription>
+<forcedMemes>
+  <li>Structure_Ideological</li>
+  <li>Collectivist</li>
+  <li>Tunneler</li>
+  <li MayRequire="vanillaexpanded.vmemese">VME_HardcoreIndustrialism</li>
+  <li MayRequire="vanillaexpanded.vmemese">VME_InsectoidSupremacy</li>
+</forcedMemes>
+<requiredPreceptsOnly>true</requiredPreceptsOnly>
 ```
 
 *(362 characters, inside the 250–500 band.)*
@@ -824,8 +906,16 @@ be pointed at Geonosians from XML. Species composition comes from the faction's
 ### 🔴 The engine-visible text — this is the deliverable
 
 ```xml
+<fixedIdeo>true</fixedIdeo>
 <ideoName>the Ascendant Genome</ideoName>
 <ideoDescription>The body you were born in is a first draft written by no one. We are the second draft, and there will be a third. Every improvement is permitted, recorded, and slow — haste is how you get monsters, and this world is already littered with ours. We do not hate the labour-lines. You do not hate a paragraph you cut. You simply do not let it speak.</ideoDescription>
+<forcedMemes>
+  <li>Structure_Ideological</li>
+  <li>Transhumanist</li>
+  <li>Supremacist</li>
+  <li MayRequire="vanillaexpanded.vgeneticse">GR_CarefulGeneticists</li>
+</forcedMemes>
+<requiredPreceptsOnly>true</requiredPreceptsOnly>
 ```
 
 *(345 characters, inside the 250–500 band.)*
@@ -880,8 +970,17 @@ world's escaped monsters. Both facts are the same doctrine.
 ### 🔴 The engine-visible text — this is the deliverable
 
 ```xml
+<fixedIdeo>true</fixedIdeo>
 <ideoName>the Contract</ideoName>
 <ideoDescription>A contract is the only honest thing two strangers can hold between them. It names one person, one price, one ending, and everyone not written into it walks away untouched. We do not pillage — pillage is confessing you could not find the one you came for. Take the mark or refuse it in the open. Once it is taken it is finished, or you are.</ideoDescription>
+<forcedMemes>
+  <li>Structure_Ideological</li>
+  <li MayRequire="vanillaexpanded.vmemese">VME_Bushido</li>
+  <li MayRequire="vanillaexpanded.vmemese">VME_Anonymity</li>
+  <li>Individualist</li>
+  <li>Guilty</li>
+</forcedMemes>
+<requiredPreceptsOnly>false</requiredPreceptsOnly>
 ```
 
 *(339 characters, inside the 250–500 band.)*
@@ -946,8 +1045,16 @@ A faction cannot hold zero ideoligion. What it can hold is one that says nothing
 ### 🔴 The engine-visible text — this is the deliverable
 
 ```xml
+<fixedIdeo>true</fixedIdeo>
 <ideoName>the Weight</ideoName>
 <ideoDescription>We have no word for what we believe, because belief is not worn and everything real is worn. Weight is rank. What is bolted to you was cut off somebody slower, and the one who cuts it off you will be told what we were told: it was never yours, you were only carrying it a while. Nothing is wasted in the warrens. Not the plate. Not the meat.</ideoDescription>
+<forcedMemes>
+  <li MayRequire="sarg.alphamemes">AM_Structure_Scavenger</li>
+  <li>Raider</li>
+  <li>Cannibal</li>
+  <li MayRequire="vanillaexpanded.vmemese">VME_Scrapper</li>
+</forcedMemes>
+<requiredPreceptsOnly>true</requiredPreceptsOnly>
 ```
 
 *(341 characters, inside the 250–500 band.)*
