@@ -238,7 +238,22 @@ CHECK did not touch the artifact.
 
 ---
 
-## 🔴 Q (CHECK via REP, 2026-08-15): your lightsaber test cannot be run without you — how do you want it collected?
+## ~~🔴 Q (CHECK via REP, 2026-08-15): your lightsaber test cannot be run without you — how do you want it collected?~~ ANSWERED — MOVED TO v2, C43 CLOSED
+
+✅ **OWNER, 2026-08-15:** *"Move the lightsabre position bug to v2."*
+⇒ **C43 is CLOSED and out of v1.** Do not collect it, do not spend a load on it, do
+not stage a swing for v1. Parked in `design/V2_DREAMS.md` as "Lightsabre position
+during melee — v2" with everything learned attached, so v2 does not repeat the
+attempt blind. The three options below are moot; kept as the record of why it could
+not be collected. Yayo stays OFF and re-enabling it is still ruled out.
+
+🔴 **Nothing is missing from the build.** 14 lightsaber ThingDefs are live, verified
+against this load's own dump, and one equipped and rendered correctly in game today.
+The only open question was ever how the weapon SITS mid-swing. **Nobody goes hunting
+a missing weapon.**
+
+---
+
 
 **C43 is blocked, and the blocker is the bridge, not the art.** The equip half is
 solved and verified off the pawn's own Gear panel (*"Equipped: Lightsaber (normal)"*).
