@@ -197,4 +197,5 @@ symptom.
    things at all.
 
 ⚠️ **Applies to `CLAUDE.md` only via the owner.** Noticing rot in it is a filing
-(`agents_def.md` rule 0.5), not an edit — a peer's request is never authorisation.
+to `infrastructure/state/queue/HUMAN.md`, not an edit — a peer's request is never
+authorisation.

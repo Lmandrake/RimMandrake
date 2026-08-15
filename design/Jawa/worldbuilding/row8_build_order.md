@@ -38,10 +38,11 @@ unproven dependency in the whole sheet. **Fallback: the owner clicks Export on
 the grav engine — three clicks.** Confirm the export file exists before the
 scratch map is discarded.
 
-🔴 **Map preservation is OFF — it retires D2 and half of D1.** Read the rule at
-its source, `infrastructure/agents_def.md` (the ⏸️ bullet in the quicktest-map
-section): it is **SUSPENDED, not repealed**, and carries a reactivation trigger.
-Quoted here it would freeze; if it comes back, D1/D2 come back with it.
+🔴 **Map preservation is OFF — it retires D2 and half of D1.** Owner ruled it
+**REPEALED** on 2026-08-15, not merely suspended: `infrastructure/agents/POLICY.md`
+§"Nothing outside the repo is precious", with the verbatim ruling in
+`infrastructure/state/OWNER_DECISIONS.md`. The only reactivation trigger is an
+explicit announcement that play has started.
 
 **No map is precious. Build, wipe, rebuild; iterate destructively.** Do not ask
 permission to spawn, destroy or overwrite, and do not defer a test because it
@@ -85,7 +86,7 @@ heavy lifting for a door. **Named for VISION, not invented here.**
 | # | must be true | how you know |
 |---|---|---|
 | P1 | The world has been generated and a colony map is loaded | `jawa/list_pawns` answers instead of `{"success": false, "message": "No current map. Load a game first."}` (`skills/rimbridge/references/traps.md`, timeout entry) |
-| P2 | The owner has given the traffic light | you asked; `agents_def.md` rule 1 — only they see every window |
+| P2 | The owner has given the traffic light | you asked — only they see every window |
 | P3 | `LIVE BRIDGE TAKEN — CREATE, row 8 gravship build` sent to every peer | `CLAUDE.md` §"The Live Bridge"; the RELEASED half is owed at the end whatever happens |
 | P4 | Bigger Gravships' settings still read 34 / 30 / 12 / 85 — ⚠️ but the **85 is not what the game enforces**; the resolved extender def says `maxDistance: 34`. Check the file for drift, do not plan against 85 | read the FILE, not the panel: `C:\Users\Mandrake\AppData\LocalLow\Ludeon Studios\RimWorld by Ludeon Studios\Config\Mod_3522759531_GravshipSizeSettings.xml` — see §2 |
 | P5 | The companion reports **20** `jawa/` tools | step 2 below. Every later check is uninformative until this reads 20 (`skills/rimbridge/SKILL.md:266-275`) |

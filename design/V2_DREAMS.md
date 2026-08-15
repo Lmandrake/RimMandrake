@@ -256,7 +256,7 @@ verify:   EMPTY
 criteria: images for all 25 — unblocks the owner's mech review sheet, which is otherwise complete (axes committed in `data/mech_control_axes.md`).
 
 ## C29 Does `CharityRefused_Beggars` record without a `Charity_*` precept
-spec:     ~2 min. The refusal hook is legal and measured: `CharityRefused_Beggars` fires when beggars leave empty-handed, and arresting them raises `CharityRefused_Beggars_Betrayed` (IL: `AnySignal(beggars.Killed, beggars.Arrested)`). Spec: `D:\Luke\dev\Rimworld\design\Jawa\worldbuilding\precept_the_unearned.md`. A `FactionDef` has no precept field; only a meme's `requireOne` forces one.
+spec:     ~2 min. The refusal hook is legal and measured: `CharityRefused_Beggars` fires when beggars leave empty-handed, and arresting them raises `CharityRefused_Beggars_Betrayed` (IL: `AnySignal(beggars.Killed, beggars.Arrested)`). No spec doc exists — "The Unearned" precept was never written up, so this item carries its own design. A `FactionDef` has no precept field; only a meme's `requireOne` forces one.
 verify:   EMPTY
 criteria: does the event record at all for a colony holding NO `Charity_*` precept. Blocks BUILD.
 

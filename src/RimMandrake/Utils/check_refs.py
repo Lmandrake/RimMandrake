@@ -112,7 +112,8 @@ PLACEHOLDER = re.compile(r"[<>{}*?|%$]")
 # prose about a file that does not exist YET.
 SOFT_CONTEXT = re.compile(
     r"\b(delet|remov|missing|gone|never exist|never been|does not exist|"
-    r"doesn't exist|no longer|retire|stale|supersed|dissolv|renam|fold(ed)? into|"
+    r"doesn't exist|do not exist|don't exist|died with|no longer|"
+    r"retire|stale|supersed|dissolv|renam|fold(ed)? into|"
     r"moved to|was moved|formerly|previously|used to|when this was written|"
     r"absent|dangling|broken|purge|dead|"
     r"propos|candidate|planned|not yet|to be (written|added|built|created)|"
@@ -531,7 +532,12 @@ def scan(audit, repo, rel):
                 continue
             audit.linecite(rel, i, m.group(1), int(m.group(2)))
         for m in PROSE_LINE.finditer(line):
-            names = MDNAME.findall(line[:m.start()])
+            # Same proximity discipline as rule(): "lines 560-571" belongs to the
+            # filename beside it, not to whatever .md was named 700 chars earlier
+            # in the same spec paragraph -- which is how a ModsConfig.xml line
+            # range got audited against a RESTRUCTURE_PLAN.md that is a third the
+            # length.
+            names = MDNAME.findall(line[max(0, m.start() - RULE_NEAR):m.start()])
             if names:
                 audit.linecite(rel, i, names[-1], int(m.group(1)))
 

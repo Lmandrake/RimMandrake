@@ -275,8 +275,8 @@ jawa/set_pawn_rotation   pawnId=<each pawn from §4>   dir=unlock
 stays locked across **every future load**. This is litter that outlives the
 session, and it is invisible until someone wonders why a pawn will not turn.
 
-Then stamp state with `src/RimMandrake/Utils/gamestate.py` **and** broadcast one
-line to the seats, naming **what you left on the map** — spawned pawns, painted
+Then stamp `infrastructure/state/status/game.json` **and** broadcast one line
+with `src/RimMandrake/Utils/say.py`, naming **what you left on the map** — spawned pawns, painted
 terrain, the quicktest map itself. A release that only writes a state file goes
 unnoticed; the owner ruled the broadcast mandatory.
 
