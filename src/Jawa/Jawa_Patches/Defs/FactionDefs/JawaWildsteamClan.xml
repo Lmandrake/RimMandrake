@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ============================================================================
+  JawaWildsteamClan.xml                       Jawa_Patches · authored 2026-08-14
+  ============================================================================
+
+  FACTION_SPEC.md section 6. Faction 6 of 14.
+
+  ParentName is `OutlanderFactionBase` (R24), which supplies factionNameMaker,
+  settlementNameMaker, factionIconPath, techLevel Industrial, leaderTitle,
+  allowedArrivalTemperatureRange and a full set of pawnGroupMakers. Everything
+  restated below is either a value the parent does not give at all, or one the
+  dossier contradicts.
+
+  The namers and the icon are overridden to the tribal set (R17): the clan is an
+  Outlander by category and tech, but the outlander town art reads wrong against
+  a forest people hard-sited to upland springs.
+
+  🔴 `colorSpectrum` IS NOT INHERITED. Measured on the shipped abstracts:
+  `OutlanderFactionBase` and `TribeBase` supply NO colorSpectrum — only
+  `PirateBandBase` does. R24's table says otherwise and is wrong on that one
+  field. A faction without it is set on 76 of 87 live defs, so the world map
+  draws it broken. It is set explicitly here and in all six siblings.
+
+  ⛔ NO IDEO BLOCK. R23: `fixedIdeo` / `ideoName` / `ideoDescription` /
+  `forcedMemes` / `deityPresets` land as one uniform pass in B54, for all eleven
+  faiths at once. A faction without them generates an ideo at worldgen and works.
+
+  🔴 Only two Wookiee kinds exist in the whole 585-mod set (R20). The dossier's
+  melee/animal ratios are carried by weights, not by rank kinds, until the 48
+  authored kinds land.
+
+  Pawn kinds verified present in the 2026-08-14 dump (585 mods) and mapped to
+  their owning mod for `MayRequire`:
+      OuterRim_Wookiee · OuterRim_WookieeTribal  Neronix17.OuterRim.GalacticDiversity
+      Bantha                                     Mlie.StarWarsAnimalCollection
+      Muffalo                                    vanilla Core, no MayRequire
+  ============================================================================
+-->
+<Defs>
+
+  <FactionDef ParentName="OutlanderFactionBase">
+    <defName>Jawa_WildsteamClan</defName>
+    <label>Wildsteam Clan</label>
+    <description>A forest people on the wrong planet, hard-sited to the few cool upland springs and holding a covenant that treats every living thing as kin. Devastating at home and near-useless anywhere else.\n\nThey come down out of the highlands for two reasons only: to trade, and to take somebody's slaves back off them.</description>
+    <pawnSingular>freehold warrior</pawnSingular>
+    <pawnsPlural>freehold warriors</pawnsPlural>
+    <leaderTitle>Elder</leaderTitle>
+    <categoryTag>Outlander</categoryTag>
+    <techLevel>Industrial</techLevel>
+    <canMakeRandomly>true</canMakeRandomly>
+    <!-- 4 settlements, wooded/upland/spring tiles. -->
+    <settlementGenerationWeight>0.6</settlementGenerationWeight>
+    <!-- A friendly ally. -->
+    <permanentEnemy>false</permanentEnemy>
+    <naturalEnemy>false</naturalEnemy>
+    <canRequestTraders>true</canRequestTraders>
+
+    <factionNameMaker>NamerFactionTribal</factionNameMaker>
+    <settlementNameMaker>NamerSettlementTribal</settlementNameMaker>
+    <factionIconPath>World/WorldObjects/Expanding/VillageSavage</factionIconPath>
+    <!-- R22: deep green. -->
+    <colorSpectrum>
+      <li>(0.30,0.45,0.25)</li>
+      <li>(0.22,0.34,0.18)</li>
+    </colorSpectrum>
+
+    <!-- Inherit="False" IS LOAD-BEARING. RimWorld resolves inheritance AFTER
+         patches, and a child `li` list is APPENDED to the parent's, not
+         substituted for it. `OutlanderFactionBase` carries 8 group makers; without
+         this opt-out the faction fields those too and raids arrive as
+         vanilla pawns wearing our name. Vanilla itself writes it 314 times,
+         9 of them on pawnGroupMakers. -->
+    <pawnGroupMakers Inherit="False">
+      <li>
+        <kindDef>Combat</kindDef>
+        <options>
+          <OuterRim_Wookiee MayRequire="Neronix17.OuterRim.GalacticDiversity">10</OuterRim_Wookiee>
+          <OuterRim_WookieeTribal MayRequire="Neronix17.OuterRim.GalacticDiversity">8</OuterRim_WookieeTribal>
+        </options>
+      </li>
+      <li>
+        <kindDef>Trader</kindDef>
+        <traders>
+          <OuterRim_Wookiee MayRequire="Neronix17.OuterRim.GalacticDiversity">1</OuterRim_Wookiee>
+        </traders>
+        <guards>
+          <OuterRim_WookieeTribal MayRequire="Neronix17.OuterRim.GalacticDiversity">6</OuterRim_WookieeTribal>
+          <OuterRim_Wookiee MayRequire="Neronix17.OuterRim.GalacticDiversity">3</OuterRim_Wookiee>
+        </guards>
+        <carriers>
+          <Muffalo>6</Muffalo>
+          <Bantha MayRequire="Mlie.StarWarsAnimalCollection">5</Bantha>
+        </carriers>
+      </li>
+      <li>
+        <kindDef>Settlement</kindDef>
+        <options>
+          <OuterRim_WookieeTribal MayRequire="Neronix17.OuterRim.GalacticDiversity">10</OuterRim_WookieeTribal>
+          <OuterRim_Wookiee MayRequire="Neronix17.OuterRim.GalacticDiversity">5</OuterRim_Wookiee>
+        </options>
+      </li>
+    </pawnGroupMakers>
+  </FactionDef>
+
+</Defs>
