@@ -676,3 +676,7 @@ one or two nodes, not eleven.
 ⚠️ **The BTD-survives-dedup fact is measured for Jawa and generalised here.**
 If a `BTD_*` name turns out not to resolve live, the fallback is the
 `guy762_xenotype_*` prefix, not `OuterRim_*`. CHECK verifies the sets read back.
+
+---
+
+⭐ **The planet's HISTORY is in `design/Jawa/worldbuilding/the_forgotten_war.md`** (owner, 2026-08-15): the Forsakens' war, the Forgotten Arsenal as sand-buried self-replicating vault guardians, the three things inside a vault, the one and only mega-structure patch (sacred to the Free Droid Enclaves), and the ruling that **The Utinni is a Forsaken initiator vessel** that was present at the founding of this world.

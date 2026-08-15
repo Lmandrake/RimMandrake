@@ -643,3 +643,7 @@ find something have told you their entire theology in one word.
 campaign start (`SCENARIO_SPEC.md`, B55) rather than as a later patch. Anything
 that hard-codes a ship name in a def or a quest should use *The Utinni*; only
 Cradle-Mind dialogue uses *Kolyska*.
+
+---
+
+⭐ **The planet's HISTORY is in `design/Jawa/worldbuilding/the_forgotten_war.md`** (owner, 2026-08-15): the Forsakens' war, the Forgotten Arsenal as sand-buried self-replicating vault guardians, the three things inside a vault, the one and only mega-structure patch (sacred to the Free Droid Enclaves), and the ruling that **The Utinni is a Forsaken initiator vessel** that was present at the founding of this world.

@@ -487,3 +487,7 @@ feedstock hauled from the dayside.
 ---
 
 ⭐ **The water cycle, the burning savanna and the terminator poison forest are specced in `design/Jawa/worldbuilding/hydrology_and_fire_ecology.md`** (owner, 2026-08-15). It rules that rain falls ONLY on the unlandable peaks, that condensation on the shade side of the terminator is the planet's second and opposite water mechanism, that the seas are hypersaline and nutrient-overcharged (hence gigantism), and that freakish plant growth plus dry thunderstorms make the savanna a self-sustaining fire.
+
+---
+
+⭐ **The planet's HISTORY is in `design/Jawa/worldbuilding/the_forgotten_war.md`** (owner, 2026-08-15): the Forsakens' war, the Forgotten Arsenal as sand-buried self-replicating vault guardians, the three things inside a vault, the one and only mega-structure patch (sacred to the Free Droid Enclaves), and the ruling that **The Utinni is a Forsaken initiator vessel** that was present at the founding of this world.

@@ -172,3 +172,7 @@ the better scene. The name exists in the world; the explanation does not.
 - **"Secret Compound" becomes "Forsaken compound"**, answering the owner's
   naming instinct with a word the game already uses.
 - **The dark biome is their heartland**, not a random hazard tile.
+
+---
+
+⭐ **The planet's HISTORY is in `design/Jawa/worldbuilding/the_forgotten_war.md`** (owner, 2026-08-15): the Forsakens' war, the Forgotten Arsenal as sand-buried self-replicating vault guardians, the three things inside a vault, the one and only mega-structure patch (sacred to the Free Droid Enclaves), and the ruling that **The Utinni is a Forsaken initiator vessel** that was present at the founding of this world.
