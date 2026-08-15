@@ -18,6 +18,12 @@ spec:     `python.exe src/RimMandrake/bridgetools/prove_new_tools.py --pawns` co
 verify:   EMPTY
 criteria: each tool returns success on a live map; `world_stats` returns `{ tiles, pct, perimeter, raggedness, centroidLat }`. A capability is announced to peers when it has RUN, not when it has compiled.
 state:    doing
+park:     2026-08-15 PARTIAL PARK. The pawn-APPEARANCE trio (set_pawn_rotation / set_pawn_style /
+          set_pawn_xenotype) and `xenotype=` on spawn_pawn are racial - hold them until the new
+          races land, then prove them against those. The REST of C1 is unaffected and still
+          live: jawa/fire_quest, set_roof_batch/get_roof_batch, the spawn_batch vehicle route,
+          and the world_stats re-run.
+
 note:     2026-08-14 CHECK. Ran load_session.py --phase any: 30 items, 4 failed, 14 awaiting eyes; ledger observed/2026-08-14_load_session.md. get_defs, set_pawn_xenotype, list_things, clear_ui now RUN live. Still unrun: fire_quest, set_roof_batch/get_roof_batch, the spawn_batch vehicle route. Two harness items die on UnicodeEncodeError (charmap) before asserting - A6 Cherry Picker and P5 VAEA_Apparel_ToolBelt - so those are UNMEASURED, not passed. 14 screenshots need a human look.
 
 ## C17 At worldgen, untick the 21 factions that break the fiction
@@ -48,7 +54,10 @@ criteria: a Jawa colonist and an indigenous tribal spawn as `MandrakeJawa`; no o
           xenotype generates; the `Jawa_IndigenousTribes` faction produces a non-empty
           raider group. Read the four defNames back with `jawa/get_defs` — absence is the
           failure mode, and it is silent.
-state:    doing
+state:    blocked
+park:     2026-08-15 OWNER: PARKED. A whole new range of RimMandrake Star Wars races is about to land. Do not verify racial state against the CURRENT stack - any result is about to be invalidated, and inherited pre-existing racial content especially. Re-base this item on the new mod when it ships, then re-run.
+          Already banked and NOT to be redone: the four kinds generate 24/24 as MandrakeJawa. Only the untested raider-group criterion carries forward.
+
 note:     2026-08-15 CHECK, live on the post-deploy map.
           ✅ CRITERION 1+2 PASS: spawned 6 of each of the four kinds, 24/24 generated
           as xenotype `MandrakeJawa` - Jawa_Colonist, Jawa_Tribal_Scavenger,
@@ -125,7 +134,8 @@ verify:   none — live read only.
 criteria: `jawa/get_def defType=FactionDef` on each of the six shows only the
           intended species; a spawned member of each is visibly the right race.
           🔴 A def dump is DISK, not RUNTIME — only the live game settles this.
-state:    ready
+state:    blocked
+park:     2026-08-15 OWNER: PARKED. A whole new range of RimMandrake Star Wars races is about to land. Do not verify racial state against the CURRENT stack - any result is about to be invalidated, and inherited pre-existing racial content especially. Re-base this item on the new mod when it ships, then re-run.
 
 ## C36 Prove the races mod stands with all three donor mods switched off
 row:      9
