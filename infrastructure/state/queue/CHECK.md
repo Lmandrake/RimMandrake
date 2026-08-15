@@ -405,3 +405,54 @@ verify:   ITEM     Plant growth is x4.0 wild/crop, x2.5 tree, x0.4 on PoisonFore
                      `wildPlantRegrowDays` is untouched until R-G4 ships.
 criteria: vegetation reads as obtrusively powerful rather than as a balance tweak.
 state:    blocked — needs a shutdown window to deploy, then a live game
+
+## C39 The eopie sled reads and renders as ours, on BOTH defs
+row:      9
+spec:     `4f3afc7`. `DesertVehicleReskin` now renames and rewrites
+          `AV_DogSled` (Alpha Vehicles - Neolithic) and `VFEPD_DogSled` (VFE
+          Props and Decor), and tints the PROP, which was never tinted before.
+          Route: dev-mode spawn each, or find the sled in the vehicles build menu
+          and the prop under Props and Decor. Deploy first; not deployed as of
+          this writing.
+verify:   PREDICTION before the look: the vehicle reads **"eopie sled"** with a
+          description opening "Two eopies in harness", ending in Crew: Driver x1
+          and Fuel type: Kibble, and NO warning paragraph. The prop reads
+          **"eopie sled (prop)"**. 🔴 The one that matters: **the prop and the
+          vehicle are the SAME COLOUR** — warm brown, not grey. Put them side by
+          side in one screenshot; that comparison is the test.
+          HOW IT LIES: the art reaches both defs by texPath override whether or
+          not our patch ran, so correct ART is not evidence the patch applied —
+          only the LABEL and the prop's COLOUR are. A grey prop beside a brown
+          vehicle means the prop half no-opped.
+criteria: both labels changed, both the same brown, warning text gone.
+state:    blocked — needs deploy
+
+## C40 Three Jawa fixes that only a load can prove
+row:      9
+spec:     Deployed but unproven, all needing a fresh load:
+          (a) `291aebf` `MandrakeJawa` `canGenerateAsCombatant` false -> true.
+              It was invented when the def was written and is not in the owner's
+              .xtp. A Jawa faction could not generate a fighter.
+          (b) `6ed888e` `JawaGeonosianFoundryHive` — its xenotype entry was gated
+              on `btd.xenotyperemix.starwars`, which is now OFF, so the node was
+              dropped and the faction's `xenotypeChances` was empty.
+          (c) `5bb9f5c` B58 — starting gear and every JawaVoice rule named
+              `OuterRim_Jawa`, a defName that stopped existing when Galactic
+              Diversity was switched off.
+verify:   PREDICTIONS, each a positive observation:
+          (a) spawn `Jawa_Tribal_Scavenger` ×6 — all six are MandrakeJawa AND
+              are armed fighters, not civilians.
+          (b) spawn a Geonosian Foundry Hive pawn — it is a Geonosian, NOT a
+              plain baseliner. An empty `xenotypeChances` yields baseliners and
+              looks like a content gap rather than a dropped node.
+          (c) a Jawa spawns WEARING the robe and hood (`guy762_Robes_jawa`,
+              `guy762_JawaHood` — both from KotOR Weapons, which stays active),
+              and a Jawa social interaction produces a Jawa voice line rather
+              than a vanilla one.
+          HOW IT LIES: (c)'s gear defs live in a mod we KEPT, so their presence
+          in the dump proves nothing about whether our patch found its target —
+          the pawn wearing them is the only evidence.
+criteria: six armed Jawa; a Geonosian that is not a baseliner; a robed Jawa that
+          speaks in its own voice.
+state:    blocked — needs a load
+
