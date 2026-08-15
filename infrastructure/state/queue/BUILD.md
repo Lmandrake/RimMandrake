@@ -503,7 +503,7 @@ verify:   `python3 skills/rimworld-modding/scripts/validate_patch.py` on each of
           the next Player.log: zero `Exception loading def from file Jawa*.xml`.
 criteria: All 8 Jawa factions resolve live — `jawa/get_def` or the def dump returns a
           FactionDef for each of the five, where today it returns nothing.
-state:    ready
+state:    dropped — Mechanitors are cut from the campaign entirely (owner, 2026-08-15), so the empty `Autopistol` tag has no consumer left. `AM_Scavenger` is Ancient urban ruins' own kind and rides that mod's content.
 
 ## B56 Give the Mechanitor a blaster — the autopistol is gone
 row:      1

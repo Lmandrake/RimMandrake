@@ -100,6 +100,39 @@
 			<li>ThingDef/VWE_Gun_TrenchGun_Unique</li>
 			<li>ThingDef/VWE_SawedOffShotgun</li>
 			<li>ThingDef/VWE_TrenchGun</li>
+			<li>PawnKindDef/Mechanitor</li>
+			<li>PawnKindDef/Mechanitor_Basic</li>
+			<li>ThingDef/Mechlink</li>
+			<li>ThingDef/ControlSublink</li>
+			<li>ThingDef/ControlSublinkHigh</li>
+			<li>ThingDef/RemoteRepairer</li>
+			<li>ThingDef/RemoteShielder</li>
+			<li>ThingDef/BandNode</li>
+			<li>ThingDef/BurnoutMechlinkBooster</li>
+			<li>ThingDef/MechBooster</li>
+			<li>ThingDef/MechGestator</li>
+			<li>ThingDef/LargeMechGestator</li>
+			<li>ThingDef/BasicRecharger</li>
+			<li>ThingDef/StandardRecharger</li>
+			<li>HediffDef/MechlinkImplant</li>
+			<li>HediffDef/BandNode</li>
+			<li>HediffDef/ControlSublinkImplant</li>
+			<li>ThingDef/AM_InfernusMechlinkBooster</li>
+			<li>ThingDef/AM_WarEmpressMechlinkBooster</li>
+			<li>ThingDef/AM_ApoptosisMechlinkBooster</li>
+			<li>ThingDef/AM_BeamcasterBandNode</li>
+			<li>ThingDef/AM_GreaterBandNode</li>
+			<li>ThingDef/AM_GreaterMechBooster</li>
+			<li>ThingDef/AM_GreaterRecharger</li>
+			<li>HediffDef/AM_BeamncasterBandNode</li>
+			<li>HediffDef/AM_VoidlinkBandNode</li>
+			<li>ThingDef/wallcharger</li>
+			<li>ThingDef/largewallcharger</li>
+			<li>ThingDef/ultrawallcharger</li>
+			<li>ThingDef/WallMountedMechBooster</li>
+			<li>ThingDef/VGE_GravshipBasicRecharger</li>
+			<li>ThingDef/VGE_GravshipStandardRecharger</li>
+			<li>ThingDef/AG_TemporaryBandNode</li>
 		</keys>
 	</ModSettings>
 </SettingsBlock>
