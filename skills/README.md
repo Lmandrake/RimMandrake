@@ -55,3 +55,4 @@ it should write directly and say so.
 `.skill` zip and those are gitignored. Rebuild at hand-off:
 `python3 src/RimMandrake/Utils/package_skill.py --all` — read its exit code and the
 named failures, never the directory listing.
+- **`rimworld-scenario-building`** — authoring the campaign start and the game-creation settings around it: ScenarioDefs, `.rsc` files, ScenParts, Custom difficulty fields, storyteller, the Anomaly playstyle, and 🔴 which choices are PERMANENT at world creation.
