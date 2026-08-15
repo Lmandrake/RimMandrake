@@ -40,7 +40,7 @@ deploy`, not blocked on a question.
 | 1 | `python.exe src/RimMandrake/bridgetools/build.py --gm --apply` — or `./src/RimMandrake/Utils/shutdown_deploy.sh` | BUILD **B1**, closes **B0** | An **assembly, solo**. Everything in §3–§6 is a `jawa/*` call, so a wrong companion poisons every result after it. 🔴 `--gm` or `fire_incident` + `send_letter` are stripped and §5's L3 cannot fire at all |
 | 2 | `deploy_custom_mods.py --mod JawaPlantGrowth --plan` then `--apply` | CHECK **C38** | The **second and last assembly**. Deploy it **alone**, not beside #3 — a new DLL in a mixed batch poisons attribution for everything beside it. Then add `mandrake.jawaplantgrowth` to `ModsConfig.xml` **after `brrainz.harmony`** or the Harmony postfix never binds |
 | 3 | `deploy_custom_mods.py --mod DesertVehicleReskin --plan` then `--apply` | CHECK **C39** + **C41** | Pure XML and loose PNGs — no window needed, but do it now so it rides this load. This is an **update**, the mod is already at `C:\Program Files (x86)\Steam\steamapps\common\RimWorld\Mods\DesertVehicleReskin`. 🔴 `mandrake.desertvehiclereskin` must sit **after** `sarg.alphavehiclesneolithic` or the labels change and the art does not |
-| 4 | `ModsConfig.xml` chores in ONE pass | BUILD **B25** | Not gated on this window at all (§1b) — a config file is writable game up or down. Standing changes: **mechanoids OFF**, disable `com.yayo.yayoAni.continued`, pin the six `loadBottom`+`loadAfter` userRules |
+| 4 | `ModsConfig.xml` chores in ONE pass | BUILD **B25** | Not gated on this window at all (§1b) — a config file is writable game up or down. Standing changes: disable `com.yayo.yayoAni.continued`, pin the six `loadBottom`+`loadAfter` userRules. ⛔ **NOT mechanoids** — see §1b |
 | 5 | Write the three signatures into `EXPECTED_FAILURES` | BUILD **B23** | Must land **before launch** or the load spends attention on errors we already know about |
 | 6 | `python.exe src/RimMandrake/Utils/refresh.py` | B25(b) | **Last.** It reads the list the four steps above just finished changing |
 
@@ -62,28 +62,22 @@ echo all > "/mnt/c/Users/Mandrake/AppData/LocalLow/Ludeon Studios/RimWorld by Lu
 **Read at STARTUP only** — armed before launch, or not at all. There is no second
 chance inside the load.
 
-⚠️ **This section used to read "OPTIONAL, gates nothing". That was wrong, and BUILD
-caught it 2026-08-15.** It is true on a load where the mod set has not moved. **This
-load is not one of those.** The live dump at
-`C:\Users\Mandrake\AppData\LocalLow\Ludeon Studios\RimWorld by Ludeon Studios\DefDump\defs\`
-was written **2026-08-14 01:20**, and since then eleven mods left and
-`mandrake.starwarsraces` arrived — 585 → 575, including the three donors whose defs
-half the repo still names. ⇒ **The dump on disk describes a def universe that no
-longer exists.**
+⚠️ **This section read "OPTIONAL, gates nothing" until BUILD caught it 2026-08-15.**
+That is true on a load where the mod set has not moved. **This one is not.** The live
+dump under `...\DefDump\defs\` is from **2026-08-14 01:20**; since then eleven mods
+left and `mandrake.starwarsraces` arrived (585 → 575, including the three donors whose
+defs half the repo still names). ⇒ **It describes a def universe that no longer
+exists.**
 
-What is actually downstream of it, and this is the gate:
+**`validate_patch.py --defs` is only as true as the dump it is handed**, and every
+patch in `Jawa_Armoury` and `Jawa_Patches` validates against it. A patch whose xpath
+now matches nothing reports **clean**, because the def is still in the stale dump —
+and 🔴 **a patch that matches nothing logs nothing at load either**, so neither route
+catches it. `refresh.py` cannot manufacture the dump: its own table prices it at **a
+full game load, ~23 minutes**.
 
-- **`validate_patch.py --defs` is only as true as the dump it is handed.** Every
-  patch in `Jawa_Armoury` and `Jawa_Patches` validates against it. A patch whose
-  xpath now matches nothing reports **clean**, because the def it targets is still
-  in the stale dump — and 🔴 **a patch that matches nothing logs nothing at load
-  either**, so neither route catches it.
-- `refresh.py` cannot manufacture it. Its own table says the live dump costs **A
-  FULL GAME LOAD, ~23 minutes**. Skip the arming and the *next* load pays for it.
-
-📌 **Cost of arming: one `echo`. Cost of not arming: every offline validation until
-the load after this one runs against the wrong mod set.** That is not "gates
-nothing" — it silently gates correctness on everything that consumes a def dump.
+📌 **One `echo` now, or every offline validation until the load after this one runs
+against the wrong mod set.**
 
 ### 1b. `ModsConfig.xml` — BUILD's alone, and NOT gated on this window
 
@@ -103,9 +97,16 @@ the trap.
 After an external edit, RimSort's in-memory view is stale. The whole mitigation is
 one sentence to the owner: *"RimSort is open — hit Refresh."*
 
-Standing changes when a list edit is next made: **mechanoids OFF** (owner's
-ruling), and **disable `com.yayo.yayoAni.continued`** `[v2]` — the lightsaber flies
-up-and-behind on draft and Yayo's is the suspect.
+⛔ **MECHANOIDS STAY. Owner's ruling 2026-08-15, and it REVERSES what this file
+said this morning:** *"We are keeping the mechanoids. Deprecate any action about
+turning mechanoids off."* Do not cut them, do not revive the Cherry Picker removal,
+and do not re-derive the cut from the O-v2 line in any other doc — B25(c) is dead.
+Per-mech ART curation against `design/Jawa/worldbuilding/review/mech_register.html`
+is a separate question and is still the owner's; this kills the wholesale cut only.
+
+Standing change when a list edit is next made: **disable
+`com.yayo.yayoAni.continued`** `[v2]` — the lightsaber flies up-and-behind on draft
+and Yayo's is the suspect.
 
 Then `python.exe src/RimMandrake/Utils/refresh.py` — **Windows** interpreter; WSL's
 `python3` fails on the Windows paths with a bare `cannot read ModsConfig`.

@@ -37,9 +37,18 @@ state:    ready
 ## D10 Owner: cut the four Predator factions from the world?
 row:      10
 spec:     Four Yautja factions own **14 settlements** between them — `ABYautjaBadBloodClan` (5), `ABYautjaBerserkClan` (4), `ABYautjaClan` (4), `ABYautjaModderClan` (1) — the single largest non-Star-Wars presence on the map. Two SEPARATE levers, not interchangeable: **the four FACTIONS** can be unticked at worldgen (free, reversible, no mod change, already on `WORLDGEN_FACTION_CHECKLIST.md`); **the XENOTYPE MOD** `[AB] Xenotype: Yautja` (`biotechrace.yautja.alleyballey`, ws `3536839586`) is a separate decision — removing it costs a game-down window and risks `Could not resolve cross-reference`. The mod owns all 14 `Exception getting Verse.Graphic_Multi at :` errors (one malformed `<bodyGraphicData>` at `PawnKinds_BaseAbstract.xml:60`, 7 kinds x 2 lifeStages) but those errors are HARMLESS and waived — do not let them do work they cannot do. If the mod goes, BUILD B24 loses its mid-tier reference (Yautja blade, AP 0.60). Recommendation on file: untick the four factions, keep the mod installed.
-verify:   EMPTY
-criteria: EMPTY
-state:    blocked
+verify:   the four defNames are on `WORLDGEN_FACTION_CHECKLIST.md`'s untick list, and
+          no queue item proposes removing `biotechrace.yautja.alleyballey`.
+criteria: none — the untick is one box each on the worldgen faction page.
+state:    done — 2026-08-15 **OWNER: untick the four factions, keep the mod installed.**
+          Asked directly and answered directly; the recommendation on file was taken.
+          ⇒ `ABYautjaBadBloodClan`, `ABYautjaBerserkClan`, `ABYautjaClan` and
+          `ABYautjaModderClan` come off at the worldgen screen — free, reversible, no
+          mod change, already on the ratified checklist. **`biotechrace.yautja.alleyballey`
+          STAYS**, so B24 keeps its mid-tier reference (Yautja blade, AP 0.60) and no
+          shutdown window or cross-reference risk is incurred.
+          ⚠️ The mod's 14 `Exception getting Verse.Graphic_Multi at :` errors remain and
+          remain WAIVED. They are not a reason to revisit this.
 
 ## D16 Seven files have no home in the new layout — decide where
 row:      repo
@@ -510,11 +519,27 @@ spec:     🔴 **BLOCKS WORLDGEN. Both fail SILENTLY — a bad world generates w
           keeps study/research/codex alive; and `EXPECTED_FAILURES` S5 expects a
           translation key where the save writes a defName.
           BUILD holds the buildable half as **B63**. (a) is an owner click.
-verify:   a planet-type config file exists naming the tidally locked type; zero
-          `is not <li>` errors from the biome mix; `WORLDGEN_RUN.md` §2.E reads
-          `AmbientHorror`.
+verify:   zero `is not <li>` errors from the biome mix; `WORLDGEN_RUN.md` §2.E reads
+          `AmbientHorror`. (The planet-type half is no longer ours to verify — see below.)
 criteria: the world the owner generates is the world these documents describe.
-state:    ready
+state:    ready — **(a) is ANSWERED and off our plate; (b) is still ours and still open.**
+answered: **(a) PLANET TYPE — OWNER 2026-08-15: `TidallyLocked`, and HE sets it.**
+          Asked directly. His words: *"I will set it, and it's parked until factions
+          and ideos and almost everything else ships."*
+          ⇒ **Do not file this as a BUILD item and do not write a planet-type config
+          file.** It is a click he has taken, deliberately, at the moment he generates.
+          ⇒ It is NOT a blocker on anything today. It becomes live exactly once, and it
+          is now recorded as a precondition on `WORLDGEN_RUN.md` §2.A rather than a
+          queue item — which is the right home, because that file is the run sheet for
+          the event it belongs to.
+          ⚠️ It stays TRUE that a world generated *today* would be a vanilla planet.
+          That is now harmless, because worldgen cannot happen until step 9 ships. It
+          would become harmful the moment anyone books the run without §2.A checked.
+          (b) **The biome mix is still dead** and is unaffected by any of this — 28
+          `XML format error: List item found with name X that is not <li>`, live def
+          reads `biomeConfigs: []`, all 24 abundance offsets failing behind a patch
+          that looks fine. **Biome scoring runs ONCE, at worldgen.** BUILD holds it as
+          B63 and it must land before he sits down.
 
 ## D30 Six rulings the next session must get from the owner
 row:      0
@@ -544,7 +569,21 @@ spec:     Parked 2026-08-15. None block each other; all block something.
 verify:   each of the six is either answered in a design doc or explicitly
           re-parked with a reason.
 criteria: none — offline.
-state:    ready
+state:    ready — **1 of 6 answered 2026-08-15, five still open.**
+answered: **(1) THE PYRELANDS — OWNER: the cut is DELIBERATE and `ZBiome_Grasslands`
+          carries them.** Asked directly, answered directly. Vanilla `Savanna` and
+          `Grasslands` stay cut; the "stormy savanna" does the job of both and already
+          ships `DryThunderstorm` at commonality 2, which is the weather the Pyrelands
+          wanted. **Nothing to build and nothing to reverse** — no Cherry Picker edit,
+          and this is now closed rather than worldgen-critical.
+          ⇒ Fold the ruling into `biome_review_comments.md` §1 so the next reader does
+          not re-open it from the same evidence.
+still open, and (2) and (3) remain worldgen-critical:
+          (2) the three wet biomes — a PLACEMENT ruling, not a patch
+          (3) `Glowforest` as the LIVING half of the nightside glow
+          (4) `BTD_Jawa` → which def (D23's merge, 16 references left unpointed)
+          (5) confirm `RimMandrakeRakata` as the ancient enemy
+          (6) the Rust Cathedral hazards + Enclave goodwill, set TOGETHER
 
 ## stage-the-next-load-and-more-content-4b7e05
 row:      10
