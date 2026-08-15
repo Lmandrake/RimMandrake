@@ -29,20 +29,6 @@ criteria: each tool returns success on a live map; `world_stats` returns `{ tile
 state:    doing
 note:     2026-08-14 CHECK. Ran load_session.py --phase any: 30 items, 4 failed, 14 awaiting eyes; ledger observed/2026-08-14_load_session.md. get_defs, set_pawn_xenotype, list_things, clear_ui now RUN live. Still unrun: fire_quest, set_roof_batch/get_roof_batch, the spawn_batch vehicle route. Two harness items die on UnicodeEncodeError (charmap) before asserting - A6 Cherry Picker and P5 VAEA_Apparel_ToolBelt - so those are UNMEASURED, not passed. 14 screenshots need a human look.
 
-## C15 Finish measuring the ocean — 3 of 7 seeds still unread
-row:      10
-spec:     `python.exe src/RimMandrake/bridgetools/sea_seed_sweep.py 4`. Data, method and the near-miss: `observed/2026-08-14_sea_baseline_seeds.md`. ONLY when the owner is not at the keyboard — each iteration is a full RimWorld worldgen, it took loadavg to 22.58, and the owner read it as a hang. Every reading so far is the sea WITHOUT `JawaSeaShaper.dll` — a baseline we have never had, not a result.
-verify:   EMPTY
-criteria: seeds 5–7 land. What would reverse the S1 rescope (partition, not write): three-or-more bodies in the remaining seeds, or a wide water spread — nothing else. `25.0%` is NOT a constant: three seeds read exactly 25.0 and the fourth read **16.74**, so requirement 1 is a real gate. Do not author S1 until these land.
-state:    ready
-
-## C16 Score the ocean against its spec (two tests need the new build first)
-row:      10
-spec:     Per-requirement table: `D:\Luke\dev\Rimworld\design\Jawa\worldbuilding\worldgen_sea_spec.md`. A quicktest builds a FULL world — 119,904 tiles, `waterPct 25.0`, 2 bodies, `previewOnly:false`, in 127 ms — so the gate rehearses on disposable worlds without ever opening the planet page or the once-only Configure Factions screen.
-verify:   EMPTY
-criteria: do NOT score requirements 3 and 4 until B1's `world_stats` unit fix is deployed — `centroidLat` returns DEGREES against a FRACTIONAL 0.35–0.65 band, and `raggedness` counts tile EDGES where the spec means boundary TILES, up to 36x once squared. A correct world was already nearly rejected on this: 46.6° and 31.8° are 0.518 and 0.353, both inside the band. No candidate world is accepted on a partial pass; a full 5-of-5 pass is collectable (`perimeter`, `centroidLat`, `raggedness` are in the deployed binary — `strings -a -el` returns `{ tiles = {0}, pct = {1}, perimeter = {2}, raggedness = {3}, centroidLat = {4} }`, `JawaBenchTerrainTools.cs:3164-3178`).
-state:    blocked
-
 ## C17 At worldgen, untick the 21 factions that break the fiction
 row:      10
 spec:     `infrastructure/state/WORLDGEN_FACTION_CHECKLIST.md` (`c269c6a`) — 21 untick / 6 keep, ratified, committed and UNSPENT. Executed by unticking factions on vanilla's Configure Factions page DURING the worldgen run; that page is seen ONCE and there is no fixing it afterwards without regenerating the world. Four rulings ride in the file header: R1 dangling refs, R2 Rebel Alliance stays suppressed, R3 vanilla `Empire` is a KEEP, R4 rough-outlander floor. There is no file we can write to suppress a faction — Faction Control's `density` is a CLUMPING RADIUS (`__result = dist < fd.Density;`), not a count, and the English key "setting to 0 disables the faction" is a pre-1.3 leftover. Before calling any missing faction a defect, grep `Jawa_Patches/` for its defName.

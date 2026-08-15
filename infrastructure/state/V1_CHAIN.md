@@ -18,6 +18,21 @@ disagree about scope, this file is newer.
 5. **The head of the chain is four steps, in this order:** freeze the mods →
    cherrypick out unwanted items → normalize weapons / armour / beasts →
    assign equipment types to the pawns.
+6. 🔴 **WORLDGEN IS MANUAL AND IT IS THE OWNER'S.** *"I will manually make a world
+   and save it. Then we will use it as a resource we simply enable. Let's not try
+   to solve automated worldbuilding at this time in v1."*
+   ⇒ **The sea is OUT of v1** — `JawaSeaShaper`, the 5-part sea gate, the seed
+   sweep and the ocean-percentage problem all move to `V2_DREAMS.md`. The owner
+   picks a world he likes by eye.
+   ⇒ **THE DEADLINE INVERTS.** Every `FactionDef` and every ideo block must exist
+   and be DEPLOYED *before the owner sits down to make that world*, because
+   factions and ideos are read once at world creation. This is no longer an
+   abstract "before the worldgen click" — it is before a human event we do not
+   schedule.
+7. **The item cherrypick (step 1) is deferred to an interactive session with the
+   owner.** Do not block on it. Author against the item set as it stands today
+   and revise if the cherrypick later removes something.
+8. **The scenario is FIXED, not generated** — fixed map, fixed ship, fixed pawns.
 
 ### DECIDE rulings made against those
 
@@ -34,7 +49,7 @@ for this order; it is not a preference.
 | # | domain | needs | state |
 |---|---|---|---|
 | 0 | **Mod freeze** | — | open — the gate on everything |
-| 1 | **Item cherrypick** | 0 | open — cut what the campaign does not permit |
+| 1 | **Item cherrypick** | 0 | **deferred — interactive session with the owner. Do not block.** |
 | 2 | **Normalize weapons · armour · beasts** | 1 | open — balance pass over what survives |
 | 3 | **Equipment types → pawns** | 2 | open — the tags a `PawnKindDef` actually consumes |
 | 4 | **Xenotypes** | — | ✅ done — `MandrakeJawa` enforced in shipped XML |
@@ -43,7 +58,7 @@ for this order; it is not a preference.
 | 7 | **Pawntypes** | 3, 4, 5 | 48 proposed, 0 literal defNames. 19 ship, none matching |
 | 8 | **Biomes** | 2 | ✅ ratified (W3) |
 | 9 | **Factions** | 6, 7 | 6 reskins + 8 authored. Only the 8 owe `pawnGroupMakers` |
-| 10 | **Worldmap** | 8, 9, sea | 🔴 IRREVERSIBLE. Held on the sea |
+| 10 | **Worldmap** | 9 | 🔴 **MANUAL — the owner makes and saves it.** Blocked on step 9 shipping first |
 | 11 | **Gravship** | 2 | ✅ built and exported |
 | 12 | **Scenario** | 2, 7, 11 | 🔴 **no design doc exists anywhere** |
 | 13 | **Quests** | 9 | row 3 reopened on resolution |

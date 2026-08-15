@@ -30,13 +30,6 @@ verify:   `D="/mnt/c/Program Files (x86)/Steam/steamapps/common/RimWorld/BridgeT
 criteria: five tools respond live — `jawa/set_faction_relation` (unblocks v1 L3), `jawa/inspect_string` (reads `Thing.GetInspectString()`: `WarningThrusterInside`, `ThrusterBlockedBy`, power, breakdown), `jawa/world_stats` unit fix (`perimeterTiles`, `raggedness` from tiles, `centroidLatNorm`), `jawa/ideo_of`, `jawa/biome_probe`. `TicksGameSafe()` rides along: def reads must work at `programState: Entry` instead of throwing a bare NRE on every tool at the main menu.
 state:    ready
 
-## B2 Install the ocean-shaping mod on its own, so blame stays clear
-row:      10
-spec:     `python3 src/RimMandrake/Utils/deploy_custom_mods.py --mod JawaSeaShaper --apply`. Repo md5 `b7730027a639`; deployed/loaded md5 `82b48e53e668`, mtime 08-13 23:57:29. Game DOWN (loaded and locked). A MOD assembly poisons attribution for anything loaded beside it — do not batch it with a load meant to prove something else.
-verify:   deployed md5 == `b7730027a639`.
-criteria: the arc-distance and elongation work committed in `c3ee8e7` is present in the running game. S1 is rescoped: it PARTITIONS, it does not write the sea — vanilla already produces 1–2 huge masses with no puddles (`bodiesTotal == bodiesOverMinSize`, n=4) and never 3 bodies; a cut adds boundary tiles without adding area.
-state:    ready
-
 ## B8 Correct the gravship doc — its thruster section is wrong and is guiding plans
 row:      infra
 spec:     Correct §11 of `gravship_flight_invariants.md` to the measured facts. The export holds **zero thrusters, zero tanks, zero consoles**. The format has **no roof field**, but roofs are derivable: GravshipExport regenerates them at import by flood-fill (`Patch_Sketch_GetSuggestedRoofCells_Postfix.cs:45-85`) => **4,049 of 4,057 substructure cells roofed, every standable cell indoors**. There is **no stern re-lay**: the cost is ONE `GravshipHull` cell per small thruster (two per large), because `ThrusterBase` is `holdsRoof true` + `fillPercent 1` and seals the room exactly as the wall it replaces. Nine sites at x41–49, z131/132; the aft strip (x,133) is off-deck.

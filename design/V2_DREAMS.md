@@ -709,3 +709,45 @@ never *what it said*. Only the on-screen social log answers the text.
 
 ⚠️ `priority=250` **outbids** Core's pool, it does not replace it — vanilla lines
 coexisting is expected and is evidence neither way.
+
+
+## Retired from v1 — worldgen is manual (owner, 2026-08-14)
+
+The owner makes a world by hand and saves it; we ship it as a fixed
+resource. Everything below existed to shape the sea automatically.
+
+## B2 Install the ocean-shaping mod on its own, so blame stays clear
+row:      10
+spec:     `python3 src/RimMandrake/Utils/deploy_custom_mods.py --mod JawaSeaShaper --apply`. Repo md5 `b7730027a639`; deployed/loaded md5 `82b48e53e668`, mtime 08-13 23:57:29. Game DOWN (loaded and locked). A MOD assembly poisons attribution for anything loaded beside it — do not batch it with a load meant to prove something else.
+verify:   deployed md5 == `b7730027a639`.
+criteria: the arc-distance and elongation work committed in `c3ee8e7` is present in the running game. S1 is rescoped: it PARTITIONS, it does not write the sea — vanilla already produces 1–2 huge masses with no puddles (`bodiesTotal == bodiesOverMinSize`, n=4) and never 3 bodies; a cut adds boundary tiles without adding area.
+state:    ready
+
+## C15 Finish measuring the ocean — 3 of 7 seeds still unread
+row:      10
+spec:     `python.exe src/RimMandrake/bridgetools/sea_seed_sweep.py 4`. Data, method and the near-miss: `observed/2026-08-14_sea_baseline_seeds.md`. ONLY when the owner is not at the keyboard — each iteration is a full RimWorld worldgen, it took loadavg to 22.58, and the owner read it as a hang. Every reading so far is the sea WITHOUT `JawaSeaShaper.dll` — a baseline we have never had, not a result.
+verify:   EMPTY
+criteria: seeds 5–7 land. What would reverse the S1 rescope (partition, not write): three-or-more bodies in the remaining seeds, or a wide water spread — nothing else. `25.0%` is NOT a constant: three seeds read exactly 25.0 and the fourth read **16.74**, so requirement 1 is a real gate. Do not author S1 until these land.
+state:    ready
+
+## C16 Score the ocean against its spec (two tests need the new build first)
+row:      10
+spec:     Per-requirement table: `D:\Luke\dev\Rimworld\design\Jawa\worldbuilding\worldgen_sea_spec.md`. A quicktest builds a FULL world — 119,904 tiles, `waterPct 25.0`, 2 bodies, `previewOnly:false`, in 127 ms — so the gate rehearses on disposable worlds without ever opening the planet page or the once-only Configure Factions screen.
+verify:   EMPTY
+criteria: do NOT score requirements 3 and 4 until B1's `world_stats` unit fix is deployed — `centroidLat` returns DEGREES against a FRACTIONAL 0.35–0.65 band, and `raggedness` counts tile EDGES where the spec means boundary TILES, up to 36x once squared. A correct world was already nearly rejected on this: 46.6° and 31.8° are 0.518 and 0.353, both inside the band. No candidate world is accepted on a partial pass; a full 5-of-5 pass is collectable (`perimeter`, `centroidLat`, `raggedness` are in the deployed binary — `strings -a -el` returns `{ tiles = {0}, pct = {1}, perimeter = {2}, raggedness = {3}, centroidLat = {4} }`, `JawaBenchTerrainTools.cs:3164-3178`).
+state:    blocked
+
+## D2 Owner: may we generate throwaway worlds purely to measure?
+row:      10
+spec:     `OWNER_DECISIONS.md`. All technical prerequisites are closed; a quicktest already builds a FULL world (119,904 tiles, `waterPct 25.0`, 2 bodies, `previewOnly:false`, 127 ms), so the sea gate and the worldgen click-path can be rehearsed on disposable worlds without opening the once-only Configure Factions screen.
+verify:   EMPTY
+criteria: EMPTY
+state:    blocked
+
+## D4 The world is half ocean against a quarter by design — pick a fix
+row:      10
+spec:     Measured on three real saves: 43% / 49% / 55% Ocean. The thirst-world identity exists in our documents and nowhere else. Ocean is an elevation rule written at worldgen step 0, so the rainfall slider cannot remove one tile, and no active mod manages water. Three routes, none needing a new dependency: **WorldEdit 2.0** (already active), a custom `WorldGenStep`, or BiomesKit's unused hooks. `faction_world_spec.md`, last section. This contradicts the Three Waters ruling by ~100x.
+verify:   EMPTY
+criteria: EMPTY
+state:    blocked
+
