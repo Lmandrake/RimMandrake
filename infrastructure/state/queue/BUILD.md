@@ -64,8 +64,16 @@ state:    ready
 
 ## B25 Mod-list chores to do in one pass while the game is closed
 row:      0
-spec:     (a) Pin the 6 `loadBottom`+`loadAfter` userRules — order is correct today but rides a tie-break, not a constraint; `loadBottom` outranks `loadAfter`, keep it only on `rimdefdump`. (b) Run `src/RimMandrake/Utils/refresh.py` (wants the game down). (c) **O-v2 Cherry Picker** — remove mechanoid defs AND the `Mechanoid` faction; answer three things: does the game still load · does `Samael.NPCMechsAndAnimals` survive and keep its ANIMALS half (`Patches/NPC_Mechs.xml`, 13 ops into `Empire`/`Outlander*`/`Pirate*`/`TradersGuild`) · is that mod configurable. Do NOT remove Alpha Mechs (`sarg.alphamechs`). `matathias.ruthlessmechanoids` is NOT a mech mod (it is the gravship pursuer redirect) — leave it on. REPORT, do not resolve: Alpha Mechs hangs off `FactionDef[defName="Mechanoid"]/pawnGroupMakers`, so cutting that faction takes its raids too. (d) **O-v3** — enable `vanillaexpanded.vwel` (ws `1989352844`, installed and inactive) and dump its weapon `ThingDef`s in TWO SEPARATE tiers: `salvaged` (pistol/rifle/shotgun/sniper + `unstable` projectile variants) and `ultratech` (incl. a laser sword and a tesla gun). The split is load-bearing for the design (`design/Jawa/worldbuilding/ship_legacy_armoury.md`).
-verify:   read `ModsConfig.xml`'s mtime before writing — RimSort writes it too, and it moved twice in twenty minutes with the game down.
+spec:     (a) Pin the 6 `loadBottom`+`loadAfter` userRules — order is correct today but rides a tie-break, not a constraint; `loadBottom` outranks `loadAfter`, keep it only on `rimdefdump`. (b) Run `src/RimMandrake/Utils/refresh.py` (wants the game down). (c) ⛔ **DEPRECATED — owner's ruling 2026-08-15: "We are keeping the mechanoids. Deprecate any action about turning mechanoids off."** Do not run it, do not revive it, do not re-derive it from the O-v2 line in any other doc. The former spec (Cherry Picker removal of the mechanoid defs and the `Mechanoid` faction) is dead; the guards it carried are now moot but were: keep Alpha Mechs `sarg.alphamechs`, and `matathias.ruthlessmechanoids` is the gravship pursuer redirect, not a mech mod. Per-mech ART curation against `design/Jawa/worldbuilding/review/mech_register.html` is a SEPARATE question and is still the owner's to make — this ruling kills the wholesale cut, not that review. (d) **O-v3** — enable `vanillaexpanded.vwel` (ws `1989352844`, installed and inactive) and dump its weapon `ThingDef`s in TWO SEPARATE tiers: `salvaged` (pistol/rifle/shotgun/sniper + `unstable` projectile variants) and `ultratech` (incl. a laser sword and a tesla gun). The split is load-bearing for the design (`design/Jawa/worldbuilding/ship_legacy_armoury.md`).
+verify:   ~~read `ModsConfig.xml`'s mtime before writing~~ — RETIRED by the owner
+          2026-08-15 (`0460ee4`, now in CLAUDE.md): *"You NEVER have to ask if
+          RimSort is open. It does not autosave, and I will never save without
+          asking. Nobody blocks on RimSort or game close for config files of any
+          kind."* Write it, game up or down. Assemblies are the only thing that
+          needs the game down, because the OS locks them.
+          Real verify: `ModsConfig.xml` parses, the activeMods count moves by
+          exactly the intended delta, and zero listed-but-missing
+          (`src/RimMandrake/Utils/check_load.py`).
 criteria: the game reaches the main menu with the new list; the two weapon tiers exist as separate dumps.
 state:    ready — (b) DONE 2026-08-15 (`4c2ddf8`): offline artefacts stamped at
           fingerprint `7256c128a43117a5`. Two restructure faults fixed to get

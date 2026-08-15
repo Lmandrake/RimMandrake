@@ -1,5 +1,13 @@
 # Mechanoid removal — offline feasibility study
 
+> ⛔ **SUPERSEDED — DO NOT ACT ON THIS DOCUMENT.**
+> **Owner's ruling, 2026-08-15: "We are keeping the mechanoids. Deprecate any
+> action about turning mechanoids off."** O-v2 is dead and B25(c), the queue item
+> that would have executed it, is deprecated. This study is kept as a record of
+> what was measured, not as a plan. Its *mechanism* findings (what patches what,
+> what Cherry Picker can and cannot reach) remain accurate and may be cited; its
+> recommendations may not be revived.
+
 **Seat:** OPS · **Date:** 2026-08-13 · **Game state:** DOWN (offline study only)
 **Ask:** owner, relayed by VISION as O-v2 — cherry-pick out the mechanoid defs *and*
 the `Mechanoid` faction; answer three questions.

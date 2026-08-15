@@ -771,8 +771,13 @@ source, and it settles the question outright:
 defName != "PColony"`.** Checked against the live dump: `OuterRim_GalacticEmpire`
 (the Imperial Desert Directorate) reads **true / false / true** ⇒ **ELIGIBLE.**
 
-⇒ **Mechanoids can therefore be switched off completely and dropped from
-evaluation.** That is now proven, not hoped.
+⇒ ~~**Mechanoids can therefore be switched off completely and dropped from
+evaluation.**~~ ⛔ **CONCLUSION DEPRECATED — owner, 2026-08-15: "We are keeping
+the mechanoids."** The *finding above it stands and is still useful*: pursuit is
+redirectable to any `ValidFactionDef`, and `OuterRim_GalacticEmpire` is eligible.
+What is dead is the inference that this licenses switching mechanoids off. The
+redirect is now a flavour choice about *who chases the gravship*, not a route to
+removing the Mechanoid faction.
 
 🔎 **Unchecked before locking:** (1) does it double-pursue if the vanilla part is
 left in; (2) how it interacts with **VGE Chapter 1's transpiler patch** on

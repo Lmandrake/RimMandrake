@@ -63,7 +63,7 @@ Genebulb would burst into a shower of pets. **Neither outcome is intended.**
 
 | packageId | name | why | status |
 |---|---|---|---|
-| `Samael.NPCMechsAndAnimals` | Mechs and Animals for NPC Factions | patches `Mech_Militor/Pikeman/Scyther/Mechanitor` into **Empire, OutlanderFactionBase, OutlanderRoughPig, Pirate, PirateWaster, PirateYttakin, TradersGuild** pawn groups. **It is the one mod actually putting mechanoids in ordinary raids**, and unticking the Mechanoid faction does **not** suppress it | ⚠️ **VISION recommendation, not an owner ruling** |
+| ~~`Samael.NPCMechsAndAnimals`~~ | Mechs and Animals for NPC Factions | patches `Mech_Militor/Pikeman/Scyther/Mechanitor` into **Empire, OutlanderFactionBase, OutlanderRoughPig, Pirate, PirateWaster, PirateYttakin, TradersGuild** pawn groups. **It is the one mod actually putting mechanoids in ordinary raids**, and unticking the Mechanoid faction does **not** suppress it | ⛔ **RECOMMENDATION WITHDRAWN — owner, 2026-08-15: "We are keeping the mechanoids."** The mod stays ON. The mechanism note is retained because it is true and explains where raid mechs come from — it is no longer a reason to cut anything |
 
 **Keep ON, explicitly:** `matathias.ruthlessmechanoids` — despite the name it is
 **Ruthless Faction Pursuit**, the gravship pursuer redirect. Owner re-enabled it.
@@ -87,10 +87,12 @@ Genebulb would burst into a shower of pets. **Neither outcome is intended.**
   during worldgen, ratified in `infrastructure/state/WORLDGEN_FACTION_CHECKLIST.md`.
 - **`OuterRim_RebelAlliance`** — already suppressed by our own
   `RebelAlliance_Suppress.xml`. Cherry-picking it as well would be redundant.
-- **Mechanoids out of the RAID roster** — that is a `pawnGroupMakers` patch on
-  `FactionDef[Mechanoid]`, **not** a cherry-pick. Ancient dangers read a
-  different mechanism entirely and must keep their guards
-  (`what_the_machines_are.md`).
+- ~~**Mechanoids out of the RAID roster**~~ — ⛔ **NOT HAPPENING. Owner,
+  2026-08-15: "We are keeping the mechanoids. Deprecate any action about turning
+  mechanoids off."** Retained only so nobody re-derives the plan: it *would* have
+  been a `pawnGroupMakers` patch on `FactionDef[Mechanoid]`, **not** a
+  cherry-pick, and ancient dangers read a different mechanism entirely and must
+  keep their guards (`what_the_machines_are.md`).
 
 ---
 
