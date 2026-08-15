@@ -190,8 +190,8 @@
     },
     "BUILD": {
      "done": 0,
-     "total": 0,
-     "state": "offline"
+     "total": 1,
+     "state": "idle"
     },
     "CHECK": {
      "done": 0,

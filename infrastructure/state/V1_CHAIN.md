@@ -43,7 +43,7 @@ for this order; it is not a preference.
 | 6 | **Religions** | — | 2 of 11 have authored text. §12 is the owner's |
 | 7 | **Pawntypes** | 3, 4, 5 | 48 proposed, 0 literal defNames. 19 ship, none matching |
 | 8 | **Biomes** | 2 | ✅ ratified (W3) |
-| 9 | **Factions** | 6, 7 | 1 of 12–14 ships. **`pawnGroupMakers` is the #1 blocker** |
+| 9 | **Factions** | 6, 7 | 6 reskins + 8 authored. Only the 8 owe `pawnGroupMakers` |
 | 10 | **Worldmap** | 8, 9, sea | 🔴 IRREVERSIBLE. Held on the sea |
 | 11 | **Gravship** | 2 | ✅ built and exported |
 | 12 | **Scenario** | 2, 7, 11 | 🔴 **no design doc exists anywhere** |
@@ -221,6 +221,39 @@ stands.
 - **D5** "ten NPC factions" → **twelve**. Two lines.
 - **D6** → resolved by R12.
 
+**R14 · A reskin inherits its `pawnGroupMakers` and its name maker. Only the
+AUTHORED factions owe them.** Measured across every candidate vessel:
+
+| vessel | settleW | groupMakers | nameMaker |
+|---|---|---|---|
+| `Empire` | 1 | 5 | `NamerFactionEmpire` |
+| `OuterRim_GalacticEmpire` | 0.3 | 12 | **none** |
+| `OutlanderCivil` | 1 | 8 | `NamerFactionOutlander` |
+| `TribeCivil` | 1 | 12 | `NamerFactionTribal` |
+| `Pirate` | 1 | 8 | `NamerFactionPirate` |
+| `OuterRim_RogueDroidColony` | **0** | **0** | none — an empty shell |
+
+⇒ **The "#1 blocker" and "0 of 12 name makers" apply to 8 factions, not 12.**
+The 6 reskins get both free. `OuterRim_RogueDroidColony` brings nothing, so the
+**Free Droid Enclaves is AUTHORED** — now measured, not inferred.
+
+**R15 · The Galactic Empire takes vanilla `Empire` as its vessel AND the Outer
+Rim Imperial pawn kinds as its troops.** Neither document proposed this and it
+is strictly better than either half:
+
+- vanilla `Empire` keeps `settlementGenerationWeight 1` (against 0.3, which is
+  why the Directorate held 1 settlement to the Fallen Dominion's 4) and a working
+  `NamerFactionEmpire`, and it satisfies the ratified checklist R3.
+- its combat kinds are `Empire_Fighter_Cataphract` / `Janissary` / `Champion` —
+  Royalty's medieval imperials, wrong for this campaign.
+- `OuterRim_GalacticEmpire` ships `OuterRim_ImpDeathTrooper`, `ImpISBAgent`,
+  `ImpRangeTrooper`, `ImpStormArty`, `ImpStormIncinerator`, `ImpStormJump`.
+
+⇒ **Patch vanilla `Empire`'s combat `pawnGroupMakers` options to the
+`OuterRim_Imp*` kinds.** Both mods are active, so they resolve. Keep the
+`fixedName` patch — `NamerFactionEmpire` would otherwise generate a random name
+and the world must say *Galactic Empire*.
+
 ### The buildable `FactionDef` contract
 
 Every faction owes all of this. A dossier missing any line is not releasable to
@@ -231,10 +264,10 @@ example.
 |---|---|
 | identity | `defName` `label` `description` `pawnSingular` `pawnsPlural` `leaderTitle` |
 | art | `factionIconPath` `colorSpectrum` `settlementTexturePath` |
-| naming | `factionNameMaker` `settlementNameMaker` — **0 of 12 exist today** |
+| naming | `factionNameMaker` `settlementNameMaker` — **owed by the 8 authored only; reskins inherit (R14)** |
 | generation | `humanlikeFaction` `categoryTag` `techLevel` `settlementGenerationWeight` `maxCountAtGameStart` `canMakeRandomly` |
 | hostility | one of `permanentEnemy` / `naturalEnemy` / `permanentEnemyToEveryoneExcept` / `raidsForbidden` |
-| pawns | `basicMemberKind` · `pawnGroupMakers` with `options` and weights — **the #1 blocker, written nowhere** |
+| pawns | `basicMemberKind` · `pawnGroupMakers` with `options` and weights — **owed by the 8 AUTHORED factions only; the 6 reskins inherit them (R14)** |
 | ideo | `fixedIdeo` + `ideoName` + `ideoDescription` + `forcedMemes` (+ `deityPresets` where the faith has deities) |
 | optional | `apparelStuffFilter` `backstoryFilters` `xenotypeSet` `raidCommonalityFromPointsCurve` `disallowedRaidStrategies` `styles` |
 

@@ -137,3 +137,31 @@ verify:   `MOD_FREEZE.md` exists; every row cites a doc and a line; the row coun
           is stated; re-running the join reproduces the same set.
 criteria: none — offline only. Nothing to see in a live game.
 state:    ready
+
+## B40 Graft the Outer Rim Imperial kinds onto vanilla `Empire`
+row:      9
+spec:     Per `V1_CHAIN.md` R15. Re-point
+          `src/Jawa/Jawa_Patches/Patches/ImperialDesertDirectorate.xml` from
+          `FactionDef[defName="OuterRim_GalacticEmpire"]` to
+          `FactionDef[defName="Empire"]`, and patch that def's COMBAT
+          `pawnGroupMakers` options to the Outer Rim Imperial kinds —
+          `OuterRim_ImpDeathTrooper`, `OuterRim_ImpISBAgent`,
+          `OuterRim_ImpRangeTrooper`, `OuterRim_ImpStormArty`,
+          `OuterRim_ImpStormIncinerator`, `OuterRim_ImpStormJump`. Leave the
+          Trader and Settlement groupMakers alone. Set `leaderTitle` to
+          `Emperor` (R11, replacing `Sector Director`) and add
+          `fixedName` `Galactic Empire` — `NamerFactionEmpire` otherwise
+          generates a random name and the world must say Galactic Empire.
+          Vanilla `Empire` measures `settlementGenerationWeight 1` against
+          `OuterRim_GalacticEmpire`'s 0.3, which is why the Directorate held one
+          settlement to the Fallen Dominion's four.
+          ⚠️ Both mods are active so the kinds resolve, but wrap each `<li>` in
+          the correct `MayRequire` for the Outer Rim packageId — an unwrapped
+          defName from a disabled mod is a silent no-op.
+verify:   `validate_patch.py --defs` scoped to the active list, 0 errors; the
+          xpath matches `Empire` and not `OuterRim_GalacticEmpire`; every
+          `OuterRim_Imp*` defName resolves in the live dump.
+criteria: the Empire raids with stormtroopers, not cataphracts, and the faction
+          reads `Galactic Empire` with an `Emperor`. 🔴 This REDOES v1 row 1,
+          which was closed on a label seen live on the abandoned vessel.
+state:    ready
