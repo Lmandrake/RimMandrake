@@ -99,7 +99,10 @@ either. `review/mech_register.html` needs no eyes and schedules nothing. Do not 
 the cut from the O-v2 line in any other doc.
 
 Standing change when a list edit is next made: **disable
-`com.yayo.yayoAni.continued`** `[v2]` — the lightsaber flies up-and-behind on draft.
+`com.yayo.yayoAni.continued`**. 🔴 **Owner, firsthand, 2026-08-15: Yayo stays out** —
+lightsabres are **significantly displaced from where they should be during attack**,
+not merely the up-and-behind-on-draft artifact this line used to cite unsourced. The
+ruling is the owner's observation, not a `[v2]` deferral.
 
 Then `python.exe src/RimMandrake/Utils/refresh.py` — **Windows** interpreter; WSL's
 `python3` fails on the Windows paths with a bare `cannot read ModsConfig`.
