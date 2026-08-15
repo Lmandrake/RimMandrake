@@ -430,3 +430,25 @@ criteria: `jawa/ideo_of` reads the eleven back and the names and descriptions
           match the spec. 🔴 MUST land before the worldgen click — an ideo is
           generated once at world creation and cannot be retrofitted.
 state:    ready
+
+## B55 Build the campaign start — fixed map, fixed ship, fixed pawns
+row:      12
+spec:     `design/Jawa/worldbuilding/SCENARIO_SPEC.md`. The scenario is a SAVED
+          GAME, not a `ScenarioDef` (R25) — no ScenPart can force named pawns
+          with authored skills, and the owner is already shipping the world as a
+          save. One artifact carries map, ship and crew.
+          Your half, once the owner has made and saved the world:
+          (a) place `design/Jawa/worldbuilding/ship_build/exported/Gravship_v1.xml`
+              on the landing map;
+          (b) 🔴 replay the layout's `terrainDef` cells through
+              `jawa/set_terrain_batch` — floors do NOT come with a mid-game
+              Sketch spawn and nothing errors when they are missing;
+          (c) author the five founders with Character Editor to the exact
+              skills, traits, passions, ages, workDisables and gear in the spec;
+          (d) set the starting stock listed there — salvage-thin, no advanced
+              components, no glitterworld medicine, no turrets.
+verify:   all five pawns are `MandrakeJawa`, carry the robe and hood, and match
+          the spec's skill and trait lines exactly; the deck has its floors.
+criteria: the save loads into a playable colony aboard the ship. This IS chain
+          step 12 and it is the artifact v1 ships.
+state:    blocked

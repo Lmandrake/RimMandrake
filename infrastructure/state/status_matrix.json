@@ -250,8 +250,8 @@
     },
     "BUILD": {
      "done": 0,
-     "total": 0,
-     "state": "offline"
+     "total": 1,
+     "state": "blocked"
     },
     "CHECK": {
      "done": 0,

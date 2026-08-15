@@ -100,8 +100,12 @@ pawnSingular     stormtrooper          pawnsPlural  stormtroopers
 leaderTitle      Emperor                                          (R11)
 fixedName        Galactic Empire       -- REQUIRED: NamerFactionEmpire would
                                           otherwise generate a random name
-permanentEnemy   true                                             (pillar 5)
-techLevel        Spacer                (vessel default, no change)
+permanentEnemy   true    -- OWNER RULED DIRECTLY 2026-08-14, on the record.
+                 🔴 CONSEQUENCE, accepted: vanilla `Empire` is Royalty's quest
+                 faction. Permanently hostile means titles, honour, permits and
+                 the whole Royalty questline go DARK. That is deliberate — this
+                 is the Galactic Empire, not a patron you petition.
+techLevel        Ultra                 (vanilla Empire's actual value - do not change)
 settlementGenerationWeight  0.45       -- 3 surface settlements BY DESIGN;
                                           the other 7-8 are orbital fiction
 pawnGroupMakers  COMBAT groups only -> OuterRim_Imp* kinds        (R15)

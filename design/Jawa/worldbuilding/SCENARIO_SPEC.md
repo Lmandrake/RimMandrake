@@ -1,0 +1,153 @@
+# SCENARIO_SPEC.md — how the campaign starts
+
+DECIDE owns this file. Chain step 12. It had no document at all until now.
+
+**Owner's ruling, 2026-08-14:** *"The pawns emerge upon the broken gravship after
+having brought it to life. We may create a custom map with other broken ships in
+v2, but for v1 it's just a ship on a map ready to go. Fixed pawns. Fixed ship.
+Fixed map."*
+
+## R25 · The scenario is a SAVED GAME, not a `ScenarioDef`
+
+`ScenPart_ConfigPage_ConfigureStartingPawns` sets a pawn **count**. It cannot
+force named pawns with authored skills, traits and backstories — no `ScenarioDef`
+part can. Forcing exact pawns needs either C# or a save.
+
+The owner has already ruled the world is hand-made and shipped as a resource we
+enable. ⇒ **The same save carries the map, the ship and the five founders.** One
+artifact, no new code, and "fixed" means fixed.
+
+**Who does what:**
+
+| step | who |
+|---|---|
+| make the world, pick the tile, save it | **owner** |
+| place the exported gravship on the landing map | BUILD, via the bridge |
+| author the five founders | BUILD, via Character Editor |
+| set starting gear and stock | BUILD |
+| save, and that save IS v1's campaign start | **owner** |
+
+🔴 **Every `FactionDef` and ideo block must be deployed BEFORE the owner makes
+the world.** Both are read once at world creation.
+
+## The opening
+
+The clan has just brought a dead gravship back to life. The campaign begins the
+moment it sets down and the hatch opens — the ship is already the home base, and
+it is already theirs. **What they have not got is the hardware to fly it again:**
+thruster, fuel tank and pilot console are the v1 flight capability made into a
+v2 goal, exactly as the flight ruling has it. The ship is a house that used to be
+a vehicle, and getting it airborne again is the campaign.
+
+## Fixtures
+
+| | |
+|---|---|
+| **map** | the tile the owner picks, on the world he saves. Desert / ExtremeDesert / AridShrubland |
+| **ship** | `design/Jawa/worldbuilding/ship_build/exported/Gravship_v1.xml` — 4,057 substructure cells, 1,053 things, already boardable |
+| **pawns** | the five founders below. No random colonists, no random gear |
+| ⚠️ floors | **terrain does NOT come with a mid-game spawn.** Replay the layout's `terrainDef` cells through `jawa/set_terrain_batch` after placing the ship, or the deck lands bare |
+
+## The five founders
+
+All five: xenotype **`MandrakeJawa`**, apparel locked to the Jawa robe and hood
+(`apparelRequired`), gender male (the clan is all-male by lore). Skill spreads
+follow `jawa_crew_personas.md` §5.6; **traits, passions, ages, work disables and
+gear are decided here.**
+
+### Nekko Vok — "Captain of the Opened Hull" · age 47
+
+The living clock on the succession arc: oldest founder, deliberately near the
+aging threshold, so the clan's harsh covenant will eventually be tested on the
+pawn the player likes most.
+
+```
+Social 9 (Major passion) · Intellectual 5 (Minor) · Crafting 1 · Shooting 1
+traits         Iron-Willed · Fast Walker
+workDisables   Mining
+gear           Jawa robe + hood · ion sidearm · "The First Fusioncutter" (relic)
+```
+⚖️ **Disable Mining, not Violence.** The lore offers either. With five pawns, a
+leader who cannot pick up a rifle in an emergency is a colony-ending liability;
+one who will not dig is merely characterful.
+
+### Tobb Nkik — "Keeper of the Articles" · age 38
+
+```
+Intellectual 9 (Major) · Social 6 (Minor) · Plants 4 · Cooking 4 · Medicine 1
+traits         Ascetic · Slow Learner
+workDisables   Violent
+gear           Jawa robe + hood · no weapon
+```
+⭐ **Plants and Cooking are added here and they are not in the source grid.** The
+five as written have **zero** Cooking and **zero** Plants between them, which on a
+desert world is a starvation start, not a difficulty choice. Giving them to the
+theologian is the lore-positive fix: ration paste is sacred, so the Keeper of the
+Articles is the one who grows and prepares it. **The sacred ration becomes a job.**
+
+### Griz Utinn — "The Hands" · age 34
+
+```
+Crafting 8 (Major) · Construction 6 (Major) · Mining 6 (Minor)
+traits         Industrious · Greedy
+workDisables   Social
+gear           Jawa robe + hood · ion sidearm · toolbelt
+```
+The industrial spine and the protagonist of the droid-theft arc. `Greedy` ties
+haggling-as-devotion to a real mood need and will cost the player a good bedroom.
+
+### Yeku — "First-Hatched" · age 19
+
+```
+Shooting 8 (Major) · Animals 5 (Minor) · Melee 1
+traits         Trigger-Happy · Volatile
+workDisables   Intellectual
+gear           Jawa robe + hood · the crew's one real rifle · pack animal
+```
+Just-turned-adult, so the fast-growth engine is visible on screen from minute
+one. The only violence-capable pawn, and `Volatile` means he will pick fights
+with the Captain — which is the succession arc warming up.
+
+### Wim Ateeka — "The Twice-Kin" · age 31
+
+```
+Medicine 9 (Major) · Intellectual 5 (Minor) · Social 3
+traits         Kind · Wimp
+workDisables   Violent
+gear           Jawa robe + hood · medicine ×15
+```
+Born to another clan, taken as a slave, made kin through the love-gate — the
+living precedent that the mechanic exists before the player ever meets it.
+
+### Why this five plays well
+
+**Covered:** leadership, research, crafting/construction/mining, shooting,
+medicine, and now food. **Deliberately absent:** any second fighter, any artist,
+any second builder. Losing Griz or Yeku genuinely hurts, which is the point.
+
+⚠️ **Two pawns have `Violent` disabled** (Tobb, Wim). That is 2 of 5 unable to
+fight, with Yeku the only real gun and Nekko a poor one. **This is a hard start
+and it is intended** — a scavenger clan is not a war party. If the first live
+session proves it unsurvivable, the cheapest fix is giving Nekko Shooting 4, not
+re-enabling anyone's violence.
+
+## Starting stock
+
+Salvage-flavoured and thin. Steel and components from stripping the ship, not
+from a supply drop.
+
+```
+steel 300 · components 20 · packaged survival meals 25 · medicine 15
+ion sidearm ×2 · one rifle · pack animal ×1
+NO advanced components, NO glitterworld medicine, NO prebuilt turrets
+```
+
+## Open, and deliberately not decided here
+
+- **Egg-laying and the clan's growth engine** ride `Outland_EggLayer`. The
+  founders exist and play regardless; the mechanic layers in when confirmed.
+- **The xenotype-death mourning thought** has no off-the-shelf mod and stays
+  hand-authored `[v2]`.
+- **A sixth founder (cook/hauler)** was the source doc's own fallback if
+  logistics feel thin. Tobb's Cooking is the cheaper answer; revisit only if the
+  playable session says otherwise.
