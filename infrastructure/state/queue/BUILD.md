@@ -899,6 +899,28 @@ spec:     `design/Jawa/worldbuilding/SCENARIO_SETTINGS_SPEC.md` is the authority
             `Gravship_Campaign_Planning_Discussion_2026-08-02.md:1420`. No such
             field exists on `DifficultyDef` and no `Difficulty_*Flee*` keyed
             string exists anywhere; fleeing is decided in code.
+          🔴 **THE PLANET'S NAME CANNOT BE TYPED ANYWHERE.** The owner's NAMES
+          ruling (`SCENARIO_SPEC.md`, `f88b2ac`) makes the planet **`Ash'karr`**
+          ("The Sundered"), the scenario **`Flight of the Utinni`** and the ship
+          **`The Utinni`**. `Page_CreateWorldParams` has NO world-name field —
+          `WorldInfo.name` is generated from Core's `RulePackDef` `NamerWorld` and
+          scribed as `<world><info><name>` (an observed save reads `Al Graffias`).
+          ⇒ Either patch `RulePackDef[defName="NamerWorld"]` **before** the
+          worldgen click, or edit `<world><info><name>` in the finished save.
+          Prefer the patch; it also renames throwaway dev worlds, which is how you
+          know it landed.
+          ⚠️ **The apostrophe, checked rather than assumed:** legal unescaped in
+          XML text and in double-quoted attributes, so `[defName="X"]` xpaths are
+          safe — but 🔴 **never put it in a defName or a translation key**, keep it
+          to `label`/`fixedName`/player-facing text, and **never retype the
+          string**: `’` (U+2019) reads identically and compares unequal. Save
+          filenames derive from the COLONY name, not the world name, so that path
+          is clear today.
+          **`Flight of the Utinni`** is player-facing and lives in the save's
+          embedded `<scenario><name>` — spelled once, identically everywhere.
+          **Put "The Sundered" in `ScenPart_GameStartDialog`**; it is already in
+          the keep list, it is the only part carrying prose, and if it is not in
+          the opening narration the translation never reaches the player.
           REPORT, do not resolve: `SeaIce` is on our blacklist while the Tidally
           Locked mod's own C# rewrites `BiomeWorker_SeaIce.GetScore` to spread it;
           and `Player.log:1080` `[Def Error]: TidallyLocked … Parsed 0.3 as int.`
@@ -910,8 +932,12 @@ verify:   `validate_patch.py` on `JawaWorld_BiomeMix.xml` with `--defs`, 0 error
           alone is NOT a pass — that is exactly the state that hid this bug.
           The settings page reads *tidally locked world*. No `ScenarioDef` and no
           `DifficultyDef` exist under `src/`.
+          Names: `grep -o "<name>Ash.karr</name>" <the .rws>` matches AND the
+          matched byte is `U+0027`, not `U+2019`; `grep -rn "Ash" src/` shows the
+          apostrophe in no defName and no translation key.
 criteria: the generated world is on the tidally locked planet type with the
-          intended biome mix, and the save reads back `AmbientHorror` with the
+          intended biome mix, the world is named `Ash'karr`, the opening dialog
+          says "The Sundered", and the save reads back `AmbientHorror` with the
           anomaly threat fraction at 0.
 state:    ready
 

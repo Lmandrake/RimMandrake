@@ -337,14 +337,66 @@ are the sliders shown when `displayThreatFractionSliders` is true. Under
 is. Setting the pair to 0 and leaving the override at its 0.15 default gives you
 anomaly threats.
 
-## R-S6 · Storyteller: `Randy`
+## 🔴 R-S6 · The names — and the planet's name CANNOT BE TYPED ANYWHERE
+
+`SCENARIO_SPEC.md` "NAMES" (owner, 2026-08-15) rules: the planet is **`Ash'karr`**,
+translated **"The Sundered"**; the scenario is **`Flight of the Utinni`**; the
+ship is **`The Utinni`** and must already carry that name in the starting save.
+This section is only what the settings layer does about them.
+
+🔴 **There is no world-name field on any world-creation screen.**
+`Page_CreateWorldParams.DoWindowContents` draws `WorldSeed`, `PlanetCoverage`,
+the four sliders, `PlanetPollution`, `AdvancedSettings`, `ResetAll`,
+`ResetFactions`, `WorldGenerate` — **and nothing else**. `WorldInfo.name` is
+filled by the generator from the Core `RulePackDef` **`NamerWorld`** and then
+scribed as `<world><info><name>`; the observed save reads `<name>Al Graffias</name>`.
+
+⇒ **`Ash'karr` has to be forced. Two routes, and they are both bucket A:**
+
+| route | when | cost |
+|---|---|---|
+| **Patch `RulePackDef[defName="NamerWorld"]`** so it can only produce `Ash'karr` | must be deployed **before** the click | one patch; also renames every throwaway dev world, which is a feature — it proves the patch landed |
+| **Edit `<world><info><name>` in the finished save** | after | trivial, and it is a legible node in the sense of `rimworld-savegame`. ⚠️ but it is a manual step on the one artifact v1 ships, so it can be forgotten |
+
+**Prefer the patch, keep the save edit as the fallback**, and check the name in
+`jawa/world_stats` or the save before the start is committed.
+
+### The apostrophe — where it actually bites, and where it does not
+
+`Ash'karr` carries `U+0027 APOSTROPHE`. Checked rather than assumed:
+
+- ✅ **XML text content** — legal unescaped. `'` needs no entity in a text node or
+  in a double-quoted attribute.
+- 🔴 **Inside an xpath predicate** — `PatchOperation` xpaths are written
+  `[defName="X"]` with double quotes, so an apostrophe in the **value** is fine.
+  It would break only if someone wrote the predicate with single quotes.
+- 🔴 **In a defName or a translation key** — **never put it there.** Keep the
+  apostrophe in `label`, `fixedName` and player-facing text only; defNames stay
+  ASCII-alphanumeric.
+- ⚠️ **In a derived filename** — RimWorld builds the save filename from the
+  **colony** name, not the world name, so this is not on today's path. It becomes
+  live the moment anything writes a file named after the planet.
+- ⚠️ **Typographic substitution is the real risk** — `’` (U+2019) reads
+  identically and compares unequal. **One spelling, copied, never retyped.**
+
+### `Flight of the Utinni` and "The Sundered"
+
+- The scenario name is **player-facing** and appears in the save's embedded
+  `<scenario><name>`. Since we ship a save and not a `ScenarioDef` (R-S2), it is
+  set by writing that node — one place, spelled once.
+- ⭐ **"The Sundered" reaches the player through `ScenPart_GameStartDialog`**, which
+  is already in R-S2's keep list and costs nothing. It is the only ongoing-ish part
+  that carries prose. **If the translation is not in the opening narration it will
+  not reach the player at all.**
+
+## R-S7 · Storyteller: `Randy`
 
 `StorytellerDef`, 12 live, 11 visible. The defName is **`Randy`** (label "Randy
 Random", Core) — not `RandyRandom`. Ratified in `setup_checklist.md` §1 and
 unchanged. Bucket **C**: changeable later, so it is the cheapest decision on this
 page. ⛔ Do not spend the owner's attention on it at the screen.
 
-## R-S7 · Mod configs — bucket A, but written by the game, not by us
+## R-S8 · Mod configs — bucket A, but written by the game, not by us
 
 ⚠️ `Config\ModsConfig.xml` and per-mod settings files are **written by the game
 and by RimSort**, so they are bucket A only in the sense that they exist before
@@ -365,8 +417,8 @@ it, and all three are read once.
 **Order of the screens, and it starts before the New Colony button:**
 🔴 **Mod settings → Alien Worlds Framework (B4)** → storyteller & difficulty →
 *Anomaly settings…* → world params (coverage, seed, rainfall, temperature,
-population, landmarks, pollution) → *Advanced settings* → Configure Factions →
-generate → landing tile.
+population, landmarks, pollution) → *Advanced settings* (map size, start season)
+→ the Factions tab → generate → landing tile → ideoligion.
 
 | # | the choice | bucket-B evidence | what must be true |
 |---|---|---|---|
@@ -374,18 +426,30 @@ generate → landing tile.
 | B2 | 🔴 **Anomaly playstyle = `AmbientHorror`** | `Dialog_AnomalySettings` is the only vanilla UI that writes `difficulty.AnomalyPlaystyleDef`, and `StorytellerUI.DrawStorytellerSelectionInterface` draws the "Anomaly settings…" button only inside `if (Current.ProgramState == ProgramState.Entry)`. `Page_SelectStorytellerInGame` calls the same method, so the button is simply **absent** once a game exists | **`AmbientHorror`, then drag "Anomaly threats" to 0%** (its own label at 0 is *"No major threats"*). ⛔ NOT `Disabled` — that kills study, research, codex and tome trading. The default on picking the playstyle is 0.15, so **not touching the slider is the failure mode** |
 | B3 | **Permadeath / commitment = OFF** | `permadeathMode` and `permadeathModeUniqueName` are scribed on `Game`; `MustChoosePermadeath` is a storyteller-page validation string and no keyed string exists for changing it later | Ruled OFF (`setup_checklist.md` §1, owner 2026-08-04). OFF is the default — the risk is only an accidental tick |
 | B4 | 🔴 **Planet type = `TidallyLocked`** — ⚠️ **NOT on this page. It is in Mod settings → Alien Worlds Framework** | R-S1. `ferny.Worldbuilder` is inactive so the backend is `Standalone`; the value is scribed per save as `alienWorldsFrameworkPlanetType` and the setting is labelled *"for new worlds"* | 🔴 **Today it reads `Default` and there is no settings file at all.** Set it, screenshot it, reopen the page to confirm. **Do not go to the world page until the settings page says *tidally locked world*** |
-| B5 | **Globe coverage** (`planetCoverage`) | the world is generated once; nothing regenerates it | ⚠️ **The planet type's own description: *"Generating at least 50% of the planet is recommended."*** ⚠️ Against that: `required_mods.md` records a user report that **Faction Territories & Vassalage breaks above ~30% coverage**. 🔴 **These two constraints CONFLICT and the owner must be shown both.** F&T is explicitly cut-on-sight and not load-bearing; the planet type is. ⚠️ Coverage also drives generation time on a 576-mod stack | 
-| B6 | **World seed** (`WorldSeed`) | as above | the owner's. Map Preview (WS 2800857642) shortlists |
-| B7 | **Overall rainfall** — `overallRainfall`, three steps **Low · Normal · High** | keys `PlanetRainfall_Low/_Normal/_High`, `…\Data\Core\…\Keyed\Menus_Main.xml:54-58` | ⚠️ **This slider selects WHICH of our curves applies.** The planet type overrides `OverallRainfallUtility.GetRainfallCurve` **per `OverallRainfall` value** — so a `rainfallCurves` entry written for `Low` does nothing if the owner picks `Normal`. With `rainfallCurves` empty (today) the slider behaves vanilla. **If R-H1 is expressed in XML, DECIDE must also name the step** |
-| B8 | **Overall temperature** — `overallTemperature`, **Low · Normal · High** | `PlanetTemperature_*` | ⚠️ **It sits ON TOP of `avgTempByLatitudeCurve`**, whose live range is +70 → −80 °C. The habitable ring is already narrow (`WORLDGEN_RUN.md` §2.C: ~34–57° of arc); a step off Normal moves it |
-| B9 | **Population** — `overallPopulation`, **Sparse · Normal · Crowded** | `PlanetPopulation_*` | ⚠️ **It sets settlement DENSITY, not which factions exist** — that is B12 and it is a different page. The design wants trader frequency high (`setup_checklist.md` §9), which argues away from Sparse |
-| B10 | **Landmarks** (Odyssey) — `landmarkDensity`, **Sparse · Normal · Crowded** | `PlanetLandmarkDensity_*`, `…\Data\Odyssey\…\Keyed\Menus_Main.xml:5-8` | ⭐ **Not previously on any checklist.** `desert_world_design.md`'s two-tier set-piece model rides native Landmarks generating the tile *type* before anything of ours authors its content. Sparse thins the layer the design assumes |
-| B11 | **Pollution** (Biotech) — `pollution` | key `PlanetPollution`, `…\Data\Biotech\…\Keyed\Menus_Main.xml:22` | ⭐ **It closes the one residual Anomaly auto-spawn.** Under `AmbientHorror`, `GameComponent_Anomaly.TrySpawnHarbingerTrees` bypasses the threat fraction — but `GenStep_HarbingerTrees` sets `pollutionNone 0` / `pollutionLight 0`, so on an unpolluted world the desired count is 0 and the incident refuses. **Low pollution is load-bearing for R-S4, not cosmetic** |
-| B12 | **Factions** | `WORLDGEN_FACTION_CHECKLIST.md`, ratified | 🔴 **A faction absent at world creation can NEVER be added later.** 21 untick / 6 keep / 13 set ≥ 1. Screenshot the page |
-| B13 | **The landing tile** | the map is generated from it | `WORLDGEN_RUN.md` §2.B and §2.C — read the tile's **mutators**, and target by **arc distance from the subsolar point**, never by latitude |
+| B5 | **Globe coverage** — `planetCoverage`, exactly **30% · 50% · 100%** (a fourth 5% entry appears only in dev mode) | `Page_CreateWorldParams.PlanetCoverages = {0.3f, 0.5f, 1.0f}`; serialised as `<planetCoverage>` in `<world><info>` | ⚠️ **With Odyssey the page opens at 50%, not 30%** (`WorldGenerator.DefaultPlanetCoverageOdyssey`). ⚠️ **The planet type's own description: *"Generating at least 50% of the planet is recommended."*** ⚠️ Against that, `required_mods.md` records a user report that **Faction Territories & Vassalage breaks above ~30% coverage**. 🔴 **These two CONFLICT and the owner must be shown both.** F&T is explicitly cut-on-sight and not load-bearing; the planet type is. 100% raises `MessageMaxPlanetCoveragePerformanceWarning` and this is a 576-mod stack |
+| B6 | **World seed** (`WorldSeed`) | `<seedString>` in `<world><info>` | the owner's. Map Preview (WS 2800857642) shortlists |
+| B7 | **Overall rainfall** — `overallRainfall` | `<overallRainfall>` in `<world><info>` | 🔴 **SEVEN stops, not three.** `OverallRainfall` = `AlmostNone · Little · LittleBitLess · Normal · LittleBitMore · High · VeryHigh`; the three tick labels under the slider (`PlanetRainfall_Low/_Normal/_High`) name only stops 1, 4 and 7. ⚠️ **The stop chosen selects WHICH of our curves applies** — the planet type overrides `OverallRainfallUtility.GetRainfallCurve` **per enum value**, so a `rainfallCurves` entry keyed `Little` does nothing if the owner lands on `LittleBitLess`. With `rainfallCurves` empty (today) it behaves vanilla. **If R-H1 goes into XML, DECIDE must name the enum member, not "low"** |
+| B8 | **Overall temperature** — `overallTemperature` | `<overallTemperature>` | 🔴 **SEVEN stops:** `VeryCold · Cold · LittleBitColder · Normal · LittleBitWarmer · Hot · VeryHot`. ⚠️ It sits **on top of** `avgTempByLatitudeCurve`, whose live range is already +70 → −80 °C. The habitable ring is narrow (`WORLDGEN_RUN.md` §2.C, ~34–57° of arc) and one stop moves it |
+| B9 | **Population** — `overallPopulation` | 🔴 **NOT in `WorldInfo.ExposeData`** — a pure generation input, absent from the save | **Seven stops**, same names as rainfall. ⚠️ Settlement DENSITY, not which factions exist (that is B13, a different page). The design wants trader frequency high (`setup_checklist.md` §9), which argues away from the sparse end. 🔴 **Unrecoverable afterwards — the screenshot IS the record** |
+| B10 | **Landmarks** (Odyssey) — `landmarkDensity` | 🔴 **also NOT in `ExposeData`** | **Seven stops:** `Sparse · SlightlyMoreSparse · SlightlySparse · Normal · SlightlyCrowded · SlightlyMoreCrowded · Crowded`. ⭐ **Not previously on any checklist.** `desert_world_design.md`'s two-tier set-piece model rides native Landmarks generating the tile *type* before anything of ours authors its content — the sparse end thins the layer the design assumes. 🔴 Screenshot it |
+| B11 | **Pollution** (Biotech) — `pollution` | `<pollution>`, a **float 0–1**, not an enum. Default `0.05` | ⭐ **It closes the one residual Anomaly auto-spawn.** Under `AmbientHorror`, `GameComponent_Anomaly.TrySpawnHarbingerTrees` bypasses the threat fraction — but `GenStep_HarbingerTrees` sets `pollutionNone 0` / `pollutionLight 0`, so on an unpolluted world the desired count is 0 and the incident refuses. **Low pollution is load-bearing for R-S4, not cosmetic** |
+| B12 | ⭐ **Advanced settings → MAP SIZE and START SEASON** | `<initialMapSize>` is scribed into `<world><info>`; the season is consumed by map generation | 🔴 **Behind the *Advanced settings* button on the world page, and previously OPEN on `setup_checklist.md` §6 with no ruling.** Sizes are exactly **200 · 225 · 250 · 275 · 300 · 325**; `MapSizePerformanceWarning` guards the top. Season is `Undefined(Auto) · Spring · Summer · Fall · Winter · PermanentSummer · PermanentWinter` — ⚠️ on a tidally locked world *PermanentSummer* is the fiction, and `MapWinterWarning` guards a winter start |
+| B13 | **Factions** | `WORLDGEN_FACTION_CHECKLIST.md`, ratified. ⚠️ `<factions IsNull="True" />` in the observed save — the counts do not survive either | 🔴 **A faction absent at world creation can NEVER be added later.** 21 untick / 6 keep / 13 set ≥ 1. Screenshot the page |
+| B14 | **The landing tile** | `<game><info><startingTile>` | `WORLDGEN_RUN.md` §2.B and §2.C — read the tile's **mutators**, and target by **arc distance from the subsolar point**, never by latitude |
+| B15 | **The scenario and the ideoligion** | both serialised into the save verbatim | ⚠️ Listed for completeness. The scenario is R-S2's problem and the ideo is B54's; **both are read once** |
 
 🔴 **Screenshot every one of these screens.** The world is not reproducible from
-any file in this repo, and a cold load is ~25–30 minutes.
+any file in this repo, a cold load is ~25–30 minutes, and **population, landmark
+density and the faction counts are not written to the save at all** — for those
+three the screenshot is the only record that will ever exist.
+
+⚠️ **One counter-signal, so nobody "corrects" B2 later.** `Dialog_AnomalySettings`
+carries the string `CanBeEditedInStorytellerSettings` — *"These can be modified
+during the game"* — and the storyteller page carries
+`CanChangeStorytellerSettingsDuringPlay`. **Both refer to the SLIDERS, not to the
+playstyle**, whose button is drawn inside the `ProgramState.Entry` guard. The
+asymmetry decides it either way: treating the playstyle as permanent costs one
+careful click, and being wrong the other way costs a campaign.
 
 ---
 
@@ -433,7 +497,14 @@ any file in this repo, and a cold load is ~25–30 minutes.
 7. **Strike "disable enemy flee%" wherever it appears** (`setup_checklist.md` §1,
    `concept.md:66`, `Gravship_Campaign_Planning_Discussion_2026-08-02.md:1420`).
    The setting does not exist.
-8. **Report, do not fix:** the `SeaIce` conflict above, and
+8. 🔴 **Force the planet's name (R-S6).** `Ash'karr` cannot be typed at any
+   screen — patch `RulePackDef[defName="NamerWorld"]` before the click, or edit
+   `<world><info><name>` in the finished save. Keep the apostrophe out of every
+   defName and translation key, and never retype the string.
+9. **Put "The Sundered" in `ScenPart_GameStartDialog`** so the translation reaches
+   the player at least once, and spell `Flight of the Utinni` identically in the
+   save's `<scenario><name>` and anywhere else it appears.
+10. **Report, do not fix:** the `SeaIce` conflict above, and
    `Player.log:1080` `[Def Error]: TidallyLocked … Parsed 0.3 as int.`
 
 ## Verify
@@ -464,7 +535,11 @@ grep -o "anomalyPlaystyleDef>[^<]*"            <the .rws>  # want AmbientHorror
 grep -o "overrideAnomalyThreatsFraction>[^<]*" <the .rws>  # want 0
 grep -o "<difficulty>[^<]*"                    <the .rws>  # want Custom
 grep -o "alienWorldsFrameworkPlanetType>[^<]*" <the .rws>  # want TidallyLocked
+grep -o "<name>Ash.karr</name>"                <the .rws>  # the planet, R-S6
 ```
+
+⚠️ **Grep the planet name with `.` where the apostrophe goes**, as above, and then
+look at the byte: a match on `Ash’karr` (U+2019) is a FAIL that reads as a pass.
 
 ⚠️ **The four greps above are DERIVED from field names, not from a save that has
 them.** The six saves on disk are all `Rough` on the vanilla planet, so the
