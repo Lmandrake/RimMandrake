@@ -847,6 +847,30 @@
 			<li>ThingDef/TitanoboaEggUnFertilized</li>
 			<li>ThingDef/WoolCamel</li>
 			<li>ThingDef/WoolMuskox</li>
+			<li>ThingDef/AA_EggFlamingoPhoenixFertilized</li>
+			<li>ThingDef/AEXP_Leather_Lion</li>
+			<li>ThingDef/AEXP_Leather_Platypus</li>
+			<li>ThingDef/AEXP_Leather_Wildebeest</li>
+			<li>ThingDef/BiomesIslands_Leather_Flamingo</li>
+			<li>ThingDef/DA_Leather_SilverMole</li>
+			<li>ThingDef/Fur_Carbuncle</li>
+			<li>ThingDef/Grimstone_Leather_Griffar</li>
+			<li>ThingDef/Leather_AlligatorMan</li>
+			<li>ThingDef/Leather_Armadillo</li>
+			<li>ThingDef/Leather_BlackBear</li>
+			<li>ThingDef/Leather_BlackBearMan</li>
+			<li>ThingDef/Leather_Hippo</li>
+			<li>ThingDef/Leather_Mandrill</li>
+			<li>ThingDef/Leather_MandrillMan</li>
+			<li>ThingDef/Leather_Neanderthal</li>
+			<li>ThingDef/Leather_Penguin</li>
+			<li>ThingDef/Leather_Zebra</li>
+			<li>ThingDef/MA_Leather_Direhorse</li>
+			<li>ThingDef/MA_Leather_Dunbear</li>
+			<li>ThingDef/MA_Leather_Furpotamus</li>
+			<li>ThingDef/MA_Leather_Harpeagle</li>
+			<li>ThingDef/MA_Leather_Scarodon</li>
+			<li>ThingDef/RG_DinosaursHideHeavy</li>
 		</keys>
 	</ModSettings>
 </SettingsBlock>
