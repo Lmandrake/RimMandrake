@@ -12,13 +12,18 @@
        font:14px/1.35 "Segoe UI",system-ui,sans-serif;padding:14px;}
   h1{font-size:19px;margin:0;letter-spacing:.14em;font-weight:700}
   .sub{color:var(--mut);font-size:12px}
-  .panel{background:var(--panel);border:1px solid var(--line);border-radius:8px;padding:12px}
+  .panel{background:var(--panel);border:1px solid var(--line);border-radius:8px;padding:12px;
+         min-width:0;overflow:hidden}
   .ttl{font-size:11px;letter-spacing:.16em;color:var(--mut);margin:0 0 9px;font-weight:700}
   .grid{display:grid;gap:12px}
-  .top{grid-template-columns:1fr auto;align-items:center;margin-bottom:12px}
-  .kpis{grid-template-columns:repeat(5,1fr);margin-bottom:12px}
-  .main{grid-template-columns:1fr 340px}
-  .low{grid-template-columns:1fr 1fr 1fr;margin-top:12px}
+  /* minmax(0,1fr), never a bare 1fr. A grid track's default min-width is
+     min-content, so one long unbroken item line pushes its column wider than
+     the track and the panel runs off the right edge instead of clipping. */
+  .top{grid-template-columns:minmax(0,1fr) auto;align-items:center;margin-bottom:12px}
+  .kpis{grid-template-columns:repeat(5,minmax(0,1fr));margin-bottom:12px}
+  .main{grid-template-columns:minmax(0,1fr) 340px}
+  .low{grid-template-columns:repeat(3,minmax(0,1fr));margin-top:12px}
+  .grid > *{min-width:0}
   .kpi .v{font-size:30px;font-weight:700;line-height:1.05;font-variant-numeric:tabular-nums}
   .kpi .l{font-size:11px;color:var(--mut);letter-spacing:.1em;margin-top:3px}
   table{width:100%;border-collapse:collapse;font-variant-numeric:tabular-nums}
@@ -35,7 +40,10 @@
   .seat{display:flex;align-items:center;gap:8px;padding:7px 0;border-top:1px solid var(--line)}
   .seat:first-of-type{border-top:0}
   .seat .n{width:62px;font-weight:700;font-size:12px;letter-spacing:.06em}
-  .seat .i{color:var(--mut);font-size:12px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+  /* flex:1 with min-width:0 — a flex item also defaults to min-content, so
+     without it the ellipsis never triggers and the line just runs on. */
+  .seat .i{color:var(--mut);font-size:12px;overflow:hidden;text-overflow:ellipsis;
+           white-space:nowrap;flex:1;min-width:0}
   .blk{display:flex;align-items:center;gap:9px;padding:6px 0}
   .blk .c{font-size:20px;font-weight:700;width:34px;text-align:right;font-variant-numeric:tabular-nums}
   .blk .t{font-size:12px}
@@ -56,8 +64,14 @@
   .cur{padding:8px 0;border-top:1px solid var(--line)}
   .cur:first-child{border-top:0}
   .cur .h{font-size:11px;font-weight:700;letter-spacing:.08em;display:flex;align-items:center;gap:7px}
-  .cur .w{font-size:12.5px;margin:3px 0 0 16px}
-  .cur .y{font-size:11.5px;color:var(--mut);margin:2px 0 0 16px;font-style:italic}
+  /* GAME's note and `left` are free text a seat wrote — they hold coordinates,
+     md5s and paths that a browser will not break on its own. */
+  .cur .w{font-size:12.5px;margin:3px 0 0 16px;overflow-wrap:anywhere}
+  .cur .y{font-size:11.5px;color:var(--mut);margin:2px 0 0 16px;font-style:italic;
+          overflow-wrap:anywhere}
+  .cur .h{flex-wrap:wrap}
+  .mem .r{gap:8px}
+  .mem .r span:last-child{white-space:nowrap}
 </style>
 
 <div class="grid top">
