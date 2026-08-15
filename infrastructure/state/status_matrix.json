@@ -292,17 +292,29 @@
    "cells": {
     "DECIDE": {
      "done": 0,
-     "total": 0,
-     "state": "offline",
+     "total": 1,
+     "state": "idle",
      "mix": {
       "closed": 0,
       "done": 0,
       "doing": 0,
       "blocked": 0,
-      "ready": 0
+      "ready": 1
      }
     },
     "BUILD": {
+     "done": 0,
+     "total": 2,
+     "state": "blocked",
+     "mix": {
+      "closed": 0,
+      "done": 0,
+      "doing": 0,
+      "blocked": 1,
+      "ready": 1
+     }
+    },
+    "CHECK": {
      "done": 0,
      "total": 1,
      "state": "blocked",
@@ -311,18 +323,6 @@
       "done": 0,
       "doing": 0,
       "blocked": 1,
-      "ready": 0
-     }
-    },
-    "CHECK": {
-     "done": 0,
-     "total": 1,
-     "state": "working",
-     "mix": {
-      "closed": 0,
-      "done": 0,
-      "doing": 1,
-      "blocked": 0,
       "ready": 0
      }
     }
@@ -398,13 +398,13 @@
     },
     "CHECK": {
      "done": 1,
-     "total": 3,
-     "state": "idle",
+     "total": 4,
+     "state": "blocked",
      "mix": {
       "closed": 1,
       "done": 0,
       "doing": 0,
-      "blocked": 0,
+      "blocked": 1,
       "ready": 2
      }
     }
@@ -616,6 +616,47 @@
    }
   },
   {
+   "name": "infra",
+   "cells": {
+    "DECIDE": {
+     "done": 1,
+     "total": 1,
+     "state": "idle",
+     "mix": {
+      "closed": 1,
+      "done": 0,
+      "doing": 0,
+      "blocked": 0,
+      "ready": 0
+     }
+    },
+    "BUILD": {
+     "done": 6,
+     "total": 7,
+     "state": "idle",
+     "mix": {
+      "closed": 6,
+      "done": 0,
+      "doing": 0,
+      "blocked": 0,
+      "ready": 1
+     }
+    },
+    "CHECK": {
+     "done": 1,
+     "total": 1,
+     "state": "idle",
+     "mix": {
+      "closed": 1,
+      "done": 0,
+      "doing": 0,
+      "blocked": 0,
+      "ready": 0
+     }
+    }
+   }
+  },
+  {
    "name": "repo",
    "cells": {
     "DECIDE": {
@@ -778,47 +819,6 @@
      }
     }
    }
-  },
-  {
-   "name": "infra",
-   "cells": {
-    "DECIDE": {
-     "done": 1,
-     "total": 1,
-     "state": "idle",
-     "mix": {
-      "closed": 1,
-      "done": 0,
-      "doing": 0,
-      "blocked": 0,
-      "ready": 0
-     }
-    },
-    "BUILD": {
-     "done": 6,
-     "total": 6,
-     "state": "idle",
-     "mix": {
-      "closed": 6,
-      "done": 0,
-      "doing": 0,
-      "blocked": 0,
-      "ready": 0
-     }
-    },
-    "CHECK": {
-     "done": 1,
-     "total": 1,
-     "state": "idle",
-     "mix": {
-      "closed": 1,
-      "done": 0,
-      "doing": 0,
-      "blocked": 0,
-      "ready": 0
-     }
-    }
-   }
   }
  ],
  "blockers": {
@@ -826,7 +826,11 @@
   "classes": [
    {
     "label": "unexplained",
-    "count": 7
+    "count": 9
+   },
+   {
+    "label": "waiting on the pawn kinds to spawn with our xenotypes (`D23`",
+    "count": 1
    }
   ]
  },
@@ -843,7 +847,7 @@
   ],
   "per_day": 12.5,
   "closed": 25,
-  "remaining": 35,
+  "remaining": 39,
   "eta_days": 3
  }
 }

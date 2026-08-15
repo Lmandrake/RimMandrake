@@ -576,3 +576,49 @@ verify:   `validate_patch.py --defs` 0 errors; the three lassos read the new
 criteria: a Jawa wearing a lasso pulls a pawn ~4 tiles; a gene-carrier pulls one
           from ~16. Both readable from the pawn's stat panel.
 state:    ready
+
+## B58 🔴 `OuterRim_Jawa` no longer exists — our patches still target it
+row:      7
+spec:     Found in the 2026-08-15 08:12 load harvest. Switching the three donor
+          mods off and `mandrake.starwarsraces` on RENAMED the Jawa pawn kinds and
+          xenotypes. The old names survive nowhere as defs — only as dangling
+          references inside `InteractionDef.json`.
+          LIVE NAMES, from the 08:09:57 def dump at 576 mods:
+            PawnKindDef  `RimMandrake_Jawa` · `RimMandrake_JawaTribal` ·
+                         `RimMandrakeJawa_Kind`
+            XenotypeDef  `RimMandrakeJawa` · `MandrakeJawa`
+          GONE: `OuterRim_Jawa`, `OuterRim_JawaTribal`.
+          WHAT ACTUALLY FAILED THIS LOAD (Player.log :804-:807):
+            `PatchOperationAdd(xpath="/Defs/PawnKindDef[defName="OuterRim_Jawa"]")`
+            — Failed to find a node with the given xpath, then the enclosing
+            `PatchOperationConditional(.../apparelRequired)` errored in `<nomatch>`.
+            Source: `Jawa_Patches/Patches/SpeciesStartingGear_Tuning.xml`.
+          ⇒ **Jawa starting-gear tuning did not apply.** That feeds chain step 12,
+          the campaign start.
+          Files naming the dead defName, all needing the audit:
+          `Jawa_Patches/Patches/SpeciesStartingGear_Tuning.xml` ·
+          `Jawa_Patches/Patches/JawaXenotype_Repoint.xml` ·
+          `Jawa_Patches/Defs/FactionDefs/JawaJunkers.xml` · and 10 files under
+          `JawaVoice/Patches/` (interactions, insults, romance, prisoners, etc).
+          ⚠️ JawaVoice's ops still report at baseline 2, so check whether its
+          references are guarded or silently doing nothing — a no-op logs nothing.
+verify:   `grep -rl OuterRim_Jawa src/Jawa/` returns only prose/About files, and
+          `validate_patch.py --defnames <the 08-15 dump>` reports 0 errors on the
+          three Jawa_Patches files.
+criteria: Next load's harvest shows `Jawa_Patches ops` back at baseline 0, and a
+          spawned Jawa carries the tuned starting gear.
+state:    ready
+
+## B59 The MegafaunaYield fix did not apply — its FindMod guard missed
+row:      infra
+spec:     `Jawa_Doctrine/Patches/MegafaunaYield.xml`:
+          `PatchOperationFindMod(Dark Ages : Beasts and Monsters) failed`
+          (Player.log :796-:802, 2026-08-15 load). That mod is not in the 576-mod
+          list, so the yield fix is inert. Decide whether the mod is meant to be
+          absent — in which case the patch should be retired or its guard made
+          silent — or whether it was dropped by mistake and should come back.
+          Harvest calls this "THE must-confirm", so it has been believed to work.
+verify:   Either the file is gone, or its guard no longer fails against the live
+          list.
+criteria: Harvest shows `MegafaunaYield fix` at baseline.
+state:    ready
