@@ -222,14 +222,14 @@
     },
     "BUILD": {
      "done": 0,
-     "total": 0,
-     "state": "offline",
+     "total": 1,
+     "state": "idle",
      "mix": {
       "closed": 0,
       "done": 0,
       "doing": 0,
       "blocked": 0,
-      "ready": 0
+      "ready": 1
      }
     },
     "CHECK": {
@@ -398,14 +398,14 @@
     },
     "CHECK": {
      "done": 1,
-     "total": 2,
+     "total": 3,
      "state": "idle",
      "mix": {
       "closed": 1,
       "done": 0,
       "doing": 0,
       "blocked": 0,
-      "ready": 1
+      "ready": 2
      }
     }
    }
@@ -843,7 +843,7 @@
   ],
   "per_day": 12.5,
   "closed": 25,
-  "remaining": 33,
+  "remaining": 35,
   "eta_days": 3
  }
 }

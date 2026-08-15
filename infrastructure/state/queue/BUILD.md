@@ -529,3 +529,49 @@ verify:   `validate_patch.py --defs` 0 errors; `guy762_bpistol` carries
 criteria: a Mechanitor event spawns its pawn holding a blaster pistol, not
           empty-handed.
 state:    ready
+
+## B57 The lasso becomes a strength gene, not a weapon anyone can pick up
+row:      5
+spec:     Owner design, 2026-08-15. Lassos are absurdly strong for melee pawns.
+          Gate them by WHO IS WEARING one, not by who may equip one — RimWorld
+          has no xenotype restriction for apparel (the whole vocabulary across
+          886 apparel defs is `gender`, `developmentalStageFilter`,
+          `slaveApparel`, `mechanitorApparel`; there is no `requiredGene`).
+          THE SHAPE: a Jawa can pull someone a few tiles — a RESCUE tool, mostly
+          for yanking a friend out of danger. A Wookiee can pull someone from far
+          away, into a pummelling. Same item, different wearer.
+          The lassos are apparel from `Melee Animation` — waist slot, layer
+          `AM_Hip`, tag `Lasso`, `equipmentType` None — so they cost no weapon
+          slot. That is part of why they are strong.
+
+          (a) LOWER THE BASELINE. `StatDef[defName="AM_GrappleRadius"]`
+              `defaultBaseValue` **10 -> 4**. Four tiles is a rescue pull.
+              Leave `minValue 1`.
+          (b) SHRINK THE TIER LADDER so material is not the deciding factor:
+              `AM_LassoCloth`        `AM_GrappleRadius` +0   (add the offset explicitly; it currently has NONE)
+              `AM_LassoDevilstrand`  +8 -> **+2**
+              `AM_LassoHyperwave`    +14 -> **+4**
+          (c) AUTHOR THE GENE — `Jawa_Gene_PowerfulGrapple`, in
+              `src/Jawa/Jawa_Patches/Defs/GeneDefs/`. Model it on Biotech's
+              `MeleeDamage_Strong` (same `statOffsets` shape).
+                  statOffsets: AM_GrappleRadius +12
+                               AM_GrappleSpeed  +0.5
+                               AM_GrappleCooldown -8
+              label "mighty grapple"; description in the campaign's voice.
+              ⚠️ `AM_GrappleSpeed` is capped at `maxValue 10` and
+              `AM_GrappleCooldown` at `minValue 0.5` — do not exceed either.
+          ⇒ RESULT: Jawa with any lasso reaches 4-8 tiles. A carrier of the gene
+            reaches 16-20. The GENE is the deciding term, which is the design.
+          🔴 DO NOT ATTACH THE GENE TO ANY XENOTYPE. Authoring it is yours;
+          deciding who carries it is `D23`, which rebuilds our xenotype set.
+          Default intent on record: Wookiee and Wookiee-kin (Yttakin) certainly;
+          other large, strong races are the owner's call.
+          ⚠️ Wrap every op touching a `Melee Animation` or Biotech def in the
+          correct `MayRequire` — an unwrapped defName from a disabled mod is a
+          silent no-op.
+verify:   `validate_patch.py --defs` 0 errors; the three lassos read the new
+          offsets in the live dump; `Jawa_Gene_PowerfulGrapple` resolves and its
+          three stat offsets are present.
+criteria: a Jawa wearing a lasso pulls a pawn ~4 tiles; a gene-carrier pulls one
+          from ~16. Both readable from the pawn's stat panel.
+state:    ready
