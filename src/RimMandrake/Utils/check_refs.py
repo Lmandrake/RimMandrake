@@ -16,7 +16,8 @@ WHAT IS CHECKED, over tracked *.md (minus .git, infrastructure/disposing/, infra
 vendor/mod_sources/):
 
   paths    repo-relative, bare basenames, Windows absolute, legacy file:///
-  commits  7-40 hex in backticks, via git cat-file
+  commits  7-40 hex in backticks, via git cat-file -- minus md5/sha/agent-id
+           tokens, which are measurements, not citations (see DIGEST_CUE)
   lines    foo.md:123 and "line 123" -- target file must have that many lines
   rules    "rule 6b", "§3a" -- the number must appear in the file named nearby
   skills   skills/<name>/ must be a real directory
@@ -89,6 +90,14 @@ WIN_ABS = re.compile(r"\b([A-Za-z]:[\\/][^\s`\"'<>\])|]+)")
 BARE_PATH = re.compile(r"(?<![\w/`.])([A-Za-z0-9_.\-]+(?:/[A-Za-z0-9_.\-]+)+"
                        r"\.(?:" + "|".join(sorted(EXTS)) + r"))\b")
 HASH = re.compile(r"`([0-9a-f]{7,40})`")
+# A hex token in backticks is not always a commit. `md5 \`b7730027\`` is a DLL
+# checksum and `Agent \`abe113a7\`` is an agent id; neither will ever resolve in
+# git, and "fixing" them means deleting a true measurement. A cue word right
+# before the token marks the token as a digest, and DIGESTS then exempts that
+# hash everywhere -- because the same md5 gets cited again a line later as a
+# bare `deployed \`82b48e53\`` with the cue on the previous line.
+DIGEST_CUE = re.compile(
+    r"(?:md5|sha-?(?:1|256|512)?|checksum|digest|agent)\W{0,24}$", re.I)
 LINECITE = re.compile(r"([A-Za-z0-9_.\-]+(?:/[A-Za-z0-9_.\-]+)*"
                       r"\.(?:md|py|xml|cs|json|sh|txt)):(\d+)(?:-(\d+))?")
 PROSE_LINE = re.compile(r"\blines?\s+(\d+)\b", re.I)
@@ -216,6 +225,7 @@ class Audit:
         self.seen = set()
         self.checked = {}           # kind -> how many claims were resolvable
         self.skipped = {}           # why -> how many were not even addressable
+        self.digests = set()        # hex tokens cued as md5/sha/agent-id, not commits
 
     def tally(self, kind):
         self.checked[kind] = self.checked.get(kind, 0) + 1
@@ -358,6 +368,11 @@ class Audit:
     def in_ledger(self, sha):
         return any(l.startswith(sha) or sha.startswith(l) for l in self.ledger())
 
+    def is_digest(self, sha):
+        """True if this hex token is cited as an md5/sha/agent id somewhere in the
+        repo -- including at a citation that carries no cue of its own."""
+        return any(d.startswith(sha) or sha.startswith(d) for d in self.digests)
+
     def commits(self, pending):
         if not pending:
             return
@@ -369,7 +384,7 @@ class Audit:
         for sha, line in zip(shas, out.strip().split("\n")):
             if "missing" in line or "ambiguous" in line:
                 bad.add(sha)
-        bad -= {s for s in bad if self.in_ledger(s)}
+        bad -= {s for s in bad if self.in_ledger(s) or self.is_digest(s)}
         self.checked["commit"] = len(shas)
         for owner, ln, sha in pending:
             if sha in bad:
@@ -491,6 +506,9 @@ def scan(audit, repo, rel):
             if not re.search(r"[0-9]", s) or not re.search(r"[a-f]", s):
                 continue        # workshop IDs are decimal; "defaced" has no digit
             if len(s) > 12 and len(s) != 40:
+                continue
+            if DIGEST_CUE.search(line[:m.start()]):
+                audit.digests.add(s)
                 continue
             pending_hashes.append((rel, i, s))
 
