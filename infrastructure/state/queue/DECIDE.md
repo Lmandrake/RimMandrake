@@ -849,3 +849,39 @@ state:    done — **RULING: `JawaWorld_BiomeMix.xml` is v1. B63 STANDS. Do not 
           📌 The general form, for the next time this is asked: **the stand-down is about
           who DRIVES, not about what the world is made of.** Anything that takes the wheel
           is v2. Anything that is scenery the owner drives past is v1.
+
+## b66-species-catalogue-lost-its-donor-dump-1d9e73
+row:      10
+spec:     Escalated by BUILD (`e4d6040`, `f6bed75`), routed by REP. **B66's premise —
+          "one file, one re-run, one redeploy" — is false, and the way it is false was
+          nearly expensive.**
+
+          BUILD fixed three code defects including one not in the spec: a `KeyError:
+          'GS_Primitive'` that stopped the generator dead, because `main` looked genes up
+          in the dump with a bare `g[n]` and the donors' genes left the dump when the
+          donors left the mod list.
+
+          🔴 **The crash was the only thing protecting us.** With it fixed the run got
+          further and hit the real defect: `pick_species` reads species from the DUMP and
+          has **no on-disk fallback**, so with the donors switched off it builds **57
+          species where the mod ships 69** — Herglic, Defel, Ithorian, KelDor, Mirialan,
+          Rakata, SithMassassi and more. A partial run had already overwritten six def
+          files at 57 species before BUILD caught it, over a mod **live at slot 562**.
+          Reverted; HEAD is 69, tree clean. BUILD added `_guard_species_regression`,
+          which refuses to write a smaller catalogue and prints the repair. ⛔ **Do not
+          weaken that guard to get a build out.**
+
+          **Your call, two routes:**
+          1. **Give `pick_species` the same on-disk fallback `_gene_exists` already has.**
+             Offline, no load, and it permanently removes the donor dependency this mod
+             exists to break. **BUILD's recommendation, and REP's.**
+          2. Re-enable the two donors, take a dump with them active, regenerate, switch
+             them off. Costs a full load and restores the dependency we are trying to end.
+
+          Until this is chosen, the four magenta species stay magenta — Gand, Selkath,
+          female Chagrian, Jawa mask. That is the outcome D-CHK2 existed to avoid; BUILD
+          judged it better than shipping a mod twelve species short, and REP agrees.
+verify:   the generator produces 69 species with the donors inactive, and
+          `_guard_species_regression` is still in place and still refuses a shrink.
+criteria: 69 species present live with the donors off, and the four magenta cases render.
+state:    ready
