@@ -217,3 +217,7 @@ invented: it matters only when water becomes a tracked good, which is v2.
 
 **Nothing above blocks v1.** These are corrections to a v2 authoring surface,
 made now because the ruling was fresh and the contradictions were cheap to see.
+
+---
+
+⭐ **The water cycle, the burning savanna and the terminator poison forest are specced in `design/Jawa/worldbuilding/hydrology_and_fire_ecology.md`** (owner, 2026-08-15). It rules that rain falls ONLY on the unlandable peaks, that condensation on the shade side of the terminator is the planet's second and opposite water mechanism, that the seas are hypersaline and nutrient-overcharged (hence gigantism), and that freakish plant growth plus dry thunderstorms make the savanna a self-sustaining fire.

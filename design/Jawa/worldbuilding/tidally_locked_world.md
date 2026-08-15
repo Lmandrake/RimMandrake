@@ -483,3 +483,7 @@ feedstock hauled from the dayside.
   are all furred and cold-adapted. **The species that cannot use the dayside are
   the ones who could live in the dark**, which is a trade the player can actually
   make: recruit the wrong-for-here people to hold the place you hide in.
+
+---
+
+⭐ **The water cycle, the burning savanna and the terminator poison forest are specced in `design/Jawa/worldbuilding/hydrology_and_fire_ecology.md`** (owner, 2026-08-15). It rules that rain falls ONLY on the unlandable peaks, that condensation on the shade side of the terminator is the planet's second and opposite water mechanism, that the seas are hypersaline and nutrient-overcharged (hence gigantism), and that freakish plant growth plus dry thunderstorms make the savanna a self-sustaining fire.

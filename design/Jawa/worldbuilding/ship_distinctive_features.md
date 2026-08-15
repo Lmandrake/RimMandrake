@@ -208,8 +208,9 @@ _Brainstormed alongside the accepted eight; kept here so we don't lose them. Not
   fraction of goods is ritually offered to the totem.
 - **Droid mausoleum** — a niche of powered-down droid chassis stood upright like statues
   (fits Tobb the droid-mourner persona).
-- **The Cradle nursery** — one intentionally soft, warm, well-lit room (the ship is named
-  "Kolyska" = Cradle), jarring against the salvage grime — an emotional anchor.
+- **The Cradle nursery** — one intentionally soft, warm, well-lit room, jarring against the
+  salvage grime — an emotional anchor. It is named for the hull's ORIGINAL name, *Kolyska*
+  ("Cradle"); see "The ship's two names" below.
 - **Trophy wall of scavenged tech** — mounted broken weapons/parts they can't use but won't
   scrap: a museum of things-not-understood.
 - **Phantom production events** — a long-dead assembler briefly whirs to life on its own;
@@ -607,3 +608,38 @@ formal ADOPTED in `required_mods.md`.
 
 _Adopted so far from this line of work:_ **Signs and Comments Continued** + **Graffiti Mod
 Continued** (required_mods.md §(7), user 2026-08-07).
+
+
+---
+
+## 🔴 The ship's two names — owner's ruling, 2026-08-15
+
+**The hull was `Kolyska` — "Cradle". The Jawa rename it `The Utinni` the moment
+they take it, and that is the name the campaign uses.**
+
+`Utinni!` is licensed Jawa vocabulary and its range is broader than any one gloss:
+an exclamation of **discovery, triumph and rallying**, the cry raised when salvage
+or prey is found (`jawa_dialogue_source_audit.md`). So naming the ship *The
+Utinni* is not a cute reference. It is the clan declaring that this hull is **the
+grandest find there could ever be** — the salvage that ends the argument about
+what salvage is for. A people who name a ship after the noise they make when they
+find something have told you their entire theology in one word.
+
+**Both names stay in play, and the friction between them is the point:**
+
+- **The player's ship is `The Utinni`.** Every player-facing string — the save,
+  the gravship, quests, faction dialogue.
+- **`Kolyska` survives INSIDE the hull.** The Cradle nursery is named for it. So
+  is the **Cradle-Mind**, the ship AI that Ohm is believed to possess
+  (`jawa_xenotype_and_religion.md` §2.0b) — and which was patterned off a Jawa
+  mind and inherited that cosmology whole.
+- ⭐ **The machine never accepted the rename.** The Cradle-Mind still calls the
+  ship *Kolyska*, and calls itself the Cradle. It is the only voice aboard that
+  does. That single detail does more characterisation than a paragraph would: the
+  ship remembers being someone else's, the crew do not care, and the god in the
+  wiring is quietly grieving a name nobody else uses.
+
+⚠️ **Build note.** The rename must be in the STARTING SAVE, so it lands with the
+campaign start (`SCENARIO_SPEC.md`, B55) rather than as a later patch. Anything
+that hard-codes a ship name in a def or a quest should use *The Utinni*; only
+Cradle-Mind dialogue uses *Kolyska*.

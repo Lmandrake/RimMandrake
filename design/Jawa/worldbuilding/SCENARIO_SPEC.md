@@ -195,3 +195,9 @@ NO advanced components, NO glitterworld medicine, NO prebuilt turrets
   hand-authored `[v2]`.
 - ✅ **The sixth founder question is CLOSED** — the owner took the sixth founder
   over diluting Tobb. Sekki Vosh is specced above.
+
+---
+
+## 🔴 The ship is `The Utinni` — owner, 2026-08-15
+
+The hull's original name was **`Kolyska`** ("Cradle"). The Jawa rename it **`The Utinni`** on taking it — the grandest find there could ever be. **The starting save must ship with the new name already applied**; it is not a later patch. `Kolyska` survives only inside the hull, in the Cradle nursery and in the Cradle-Mind, which never accepted the rename. Full ruling in `design/Jawa/worldbuilding/ship_distinctive_features.md`.

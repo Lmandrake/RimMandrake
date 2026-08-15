@@ -65,3 +65,7 @@ a balance problem, it is a continuity error.
 will be missed, and a creature merely *called* frost may not be cold-adapted.
 Re-derive from `statBases` comfort temperatures during step 2 rather than trusting
 this list to be complete.
+
+---
+
+⭐ **The water cycle, the burning savanna and the terminator poison forest are specced in `design/Jawa/worldbuilding/hydrology_and_fire_ecology.md`** (owner, 2026-08-15). It rules that rain falls ONLY on the unlandable peaks, that condensation on the shade side of the terminator is the planet's second and opposite water mechanism, that the seas are hypersaline and nutrient-overcharged (hence gigantism), and that freakish plant growth plus dry thunderstorms make the savanna a self-sustaining fire.
