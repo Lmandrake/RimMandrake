@@ -588,3 +588,40 @@ criteria: every primitive transport in the vehicles menu names and shows a Star
           description or health tab; and the prop matches its vehicle in the same
           screenshot.
 state:    blocked — needs deploy, then a live game
+
+## B0+B1 The 30 bridge tools are deployed — nothing is live until the next load
+row:      10
+from:     BUILD, 2026-08-15, shutdown window
+spec:     `python.exe src/RimMandrake/bridgetools/build.py --gm --apply` run with
+          the game DOWN. Deployed to
+          `C:\Program Files (x86)\Steam\steamapps\common\RimWorld\BridgeTools\JawaBench\JawaBench.BridgeTools.dll`.
+offline verify (BUILD, passed):
+          ```
+          == deployed tool count ==   30
+          == canaries ==              jawa/fire_incident
+                                      jawa/send_letter
+          == source census (.cs) ==   30
+          == md5 ==                   f0d4e6e78233
+          ```
+          Build reported `0 Warning(s) 0 Error(s)` and
+          `*** GM TOOLS INCLUDED ***` with both canaries in the DLL.
+notes:    · **The md5 in B0 is dead.** B0's verify wanted `d7e7c6c1`; `--apply`
+            rebuilds at the current commit (`0459627`), so the bytes are
+            `f0d4e6e7` and always will differ after any commit. Count + canaries
+            are the gate, per B1. Do not read the mismatch as a bad deploy.
+          · **⛔ `JawaSeaShaper.dll` was NOT deployed** (DECIDE 2026-08-15). The
+            bundle ships one file; the deploy folder holds only
+            `JawaBench.BridgeTools.dll`. Its repo/deployed hash mismatch is
+            expected and is not a defect.
+          · **RimBridgeServer discovers companions only at startup.** The deploy
+            changes nothing until RimWorld restarts — a `list_tools` run against
+            a session started before 2026-08-15 12:14 measures the OLD DLL.
+criteria: `rimbridge/list_tools` counts 30 `jawa/` names. Five tools respond live —
+          `jawa/set_faction_relation` (unblocks v1 L3), `jawa/inspect_string`
+          (reads `Thing.GetInspectString()`: `WarningThrusterInside`,
+          `ThrusterBlockedBy`, power, breakdown), `jawa/world_stats` unit fix
+          (`perimeterTiles`, `raggedness` from tiles, `centroidLatNorm`),
+          `jawa/ideo_of`, `jawa/biome_probe`. `TicksGameSafe()` rides along: def
+          reads must work at `programState: Entry` instead of throwing a bare NRE
+          on every tool at the main menu.
+state:    ready — needs a game load

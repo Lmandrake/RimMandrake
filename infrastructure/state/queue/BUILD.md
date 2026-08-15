@@ -22,14 +22,17 @@ spec:     `src/RimMandrake/bridgetools/artifacts/BridgeTools/JawaBench/JawaBench
 verify:   md5 of the deployed DLL equals `d7e7c6c1`, and `fire_incident` +
           `send_letter` are present in the deployed bytes (`strings -a -el`).
 criteria: `rimbridge/list_tools` counts 30 `jawa/` names.
-state:    ready
+state:    done — deployed 2026-08-15 by B1's build; see CHECK.md. md5 is
+          `f0d4e6e7`, NOT `d7e7c6c1`: `--apply` rebuilds at the current commit,
+          so this verify's md5 clause is unsatisfiable by design. B1 supersedes
+          it — gate on the count and the two canaries.
 
 ## B1 Build and install the bridge tools — without --gm, two tools vanish
 row:      10
 spec:     `cd /mnt/d/Luke/dev/Rimworld; python.exe src/RimMandrake/bridgetools/build.py --gm --apply`. Game must be DOWN — the DLL is locked while it runs and the write fails `OSError 22` (the refusal is safe, it cannot truncate). Without `--gm` the build STRIPS `jawa/fire_incident` and `jawa/send_letter` off the game copy (30 tools -> 28). One-command form: `./src/RimMandrake/Utils/shutdown_deploy.sh [--yes]` runs S8 -> S1 -> S9 in order and refuses while RimWorld is running.
 verify:   `D="/mnt/c/Program Files (x86)/Steam/steamapps/common/RimWorld/BridgeTools/JawaBench/JawaBench.BridgeTools.dll"`; `md5sum "$D"` expect `d7e7c6c1...`; `strings -a "$D" | grep -oE 'jawa/[a-z_]+' | sort -u | wc -l` expect **30**; both `--gm` canaries `jawa/fire_incident` and `jawa/send_letter` present. `--apply` REBUILDS before deploying, so a rebuild legitimately produces different bytes — gate on the canaries and the count, not on the md5. Census expectation derives from `.cs` ONLY: `grep -rhoE '"jawa/[a-z_]+"' --include='*.cs' src/RimMandrake/bridgetools/` (without the include it returns one too many — `prove_new_tools.py:112` has `[Tool("jawa/x")]` inside a comment). `strings -a` proves a NAME only; use `strings -a -el` to prove a method-body message shipped (UTF-16LE in the `#US` heap).
 criteria: five tools respond live — `jawa/set_faction_relation` (unblocks v1 L3), `jawa/inspect_string` (reads `Thing.GetInspectString()`: `WarningThrusterInside`, `ThrusterBlockedBy`, power, breakdown), `jawa/world_stats` unit fix (`perimeterTiles`, `raggedness` from tiles, `centroidLatNorm`), `jawa/ideo_of`, `jawa/biome_probe`. `TicksGameSafe()` rides along: def reads must work at `programState: Entry` instead of throwing a bare NRE on every tool at the main menu.
-state:    ready
+state:    done — offline verify passed 2026-08-15; criteria are live and belong to CHECK.
 
 ## B8 Correct the gravship doc — its thruster section is wrong and is guiding plans
 row:      repo
