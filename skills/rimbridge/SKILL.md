@@ -90,6 +90,38 @@ added and one was already there. Read the leaf out of
 `references/capability-matrix.md`, which prints every call fully qualified.
 Guessing `jawa/` is wrong about 84% of the time by count.
 
+
+### Census the companion before you trust any `jawa/` call
+
+⏳ **The companion is 26 tools and NINE of them have never run in a live game** —
+the roof pair, the pawn-appearance three in `references/map-authoring.md`, and `jawa/get_defs`,
+`jawa/fire_quest`, `jawa/list_things` and `jawa/clear_ui` (all deployed
+2026-08-14 in the shutdown window, game copy md5 `55b2362`). They compile; nothing more is claimed. `jawa/list_factions` and
+`jawa/order_pawn` **drove live 2026-08-14** and are no longer on this list;
+`jawa/world_stats` was called and its answer was thrown away by a harness bug, so
+it is unproven for a different reason. Companions register only at RimBridgeServer
+startup. **First call of the next session: count the `jawa/` tools the bridge
+reports — 26 means the current deploy took, 24 means the build before
+`list_things`/`clear_ui`, 22 means before `get_defs`/`fire_quest`, 21 means before
+`world_stats`, 7 means an older companion, 0 means the bundle did not load.** Every
+other check is uninformative until that reads 26. 🔴 **The deploy must use
+`--gm`**, or the game copy loses `jawa/fire_incident` and `jawa/send_letter` and
+the census reads 24.
+
+⚠️ **Three documents disagreed about this number on 2026-08-13** — 17 in
+`EXPECTED_FAILURES_next_load.md`, 20 in `NEXT_RELOAD.md`, 21 here — and the
+number moved again to **22** the same night, and to **26** on 2026-08-14.
+**Measure it, do not quote it** — `load_session.py` now derives the gate from
+`EXPECTED_TOOLS` and `prove_new_tools.py` reads it out of the deployed DLL, so
+neither carries a literal to go stale.
+A census gate that three files answer differently is worse than no gate, so
+check the DLL rather than any of the three:
+`strings -a "<gamedir>\BridgeTools\JawaBench\JawaBench.BridgeTools.dll" | grep -o "jawa/[a-z_]*" | sort -u | wc -l`.
+🔴 **That command proves a tool NAME only.** Tool names are attribute blobs and
+are UTF-8; a method-body MESSAGE is UTF-16LE and needs `strings -a -el`, or it
+reports ABSENT on a string that is present.
+Deciding strings per tool: `src/RimMandrake/bridgetools/prove_new_tools.py`.
+
 ---
 
 ## 2. The one law
@@ -167,6 +199,8 @@ Full evidence in `references/capability-matrix.md`.
 | clear ground | `jawa/destroy_batch`, or paint a terrain the plant cannot grow on (§5) |
 | advance time | `step_game_ticks` (exact) or `play_for` (wall-clock) |
 | see it | `take_screenshot` → absolute path you can read back |
+
+🔴 **`jawa/clear_ui` before every screenshot** — see §5.
 
 ### Spawn-with-material recipe
 
@@ -258,225 +292,26 @@ wrong; only the combination was.
 
 ## 5. Map authoring
 
-**Structure printing works today.** A 13×11 furnished room took 21 calls and
-~40 seconds: wall rects, a floor rect, a door, 4 beds, an end table, a dining
-table with chairs, 2 lamps, a plant pot.
+Building structures, painting terrain, batching spawns, clearing ground, staging
+a pawn for a photograph, and the full table of the companion's `jawa/` tools:
+**`references/map-authoring.md`**. Read it before your first
+`apply_architect_designator`, `jawa/set_terrain*` or `jawa/spawn_batch` call —
+four of the things in it are one-way doors:
 
-```python
-put(WALL,  X,   Z,   W,   1)      # rectangles, not cells
-put(FLOOR, X+1, Z+1, W-2, H-2)    # interior
-put(DOOR,  X+6, Z)
-```
+* **god mode** — an Architect designator queues work for a colonist, so on a map
+  with nobody home it returns `success: true` and builds nothing.
+* **foundation → terrain → things** — `SetFoundation` is refused, silently at the
+  write, on any cell that already carries a floor. There is no retrofit and no
+  inspection afterwards can see it.
+* **multi-cell things spawn CENTRED** on the cell you name.
+* **laying a floor and painting terrain both destroy the plants under them**, and
+  `restore()` puts the TerrainDef back but not the plants.
 
-Three things make it a real generator:
-
-* `apply_architect_designator` takes **`width`/`height`**.
-* **`dryRun: true`** validates without mutating. **Use it** — two workbenches
-  failed because they were given corners with no clearance.
-* **`flood_fill_cells` with a `designatorId`** is a *site finder*: every cell
-  where that building legally fits, honouring footprint, anchor, walkability
-  and pawn reachability.
-* 🔑 **A `designatorId` is a UI path, not a defName** — `architect-designator:
-  floors:build-concrete`, not `Floor_Concrete`. **Resolve it at runtime** by
-  matching the trailing segment (`find_designator` in
-  `src/RimMandrake/Utils/bridge_latency.py`); `list_architect_designators` needs
-  a `categoryId` from `list_architect_categories` and returns dropdown parents
-  beside leaves. **Never hardcode one** — ids carrying a positional index
-  (`…-tutortagnotset-3`) renumber as mods add architect entries, so a path
-  captured on the 3-mod tier is not safe at 568.
-
-### 🔑 God mode is the other half of authoring — turn it on, then off
-
-An Architect designator **queues work for a colonist**. On an authored or wiped
-map there is nobody home, so `apply_architect_designator` returns `success: true`,
-sets `designationCount: 1`, and changes nothing — the call is not lying, it did
-designate. `rimworld/set_god_mode {"enabled": true}` converts designators to
-instant effect and adds the fill/refuel button to refuelable things (there is no
-refuel primitive on the bridge; in god mode it is a **button on the thing's
-menu**). It also matters for `spawn_batch`, which places buildings **factionless**
-— a `GravEngine` then shows `Claim` disabled and offers no Launch gizmo.
-
-⚠️ **Turn it back off** (`{"enabled": false}`): left on, everything the owner
-builds next is free and instant, and they save a god-mode map without knowing.
-⚠️ **A cell that already carries a designation refuses a second one**
-(`success: false`) — cancel first with the category's `…-cancel` designator.
-
-📌 Before concluding "the bridge cannot do X", ask what the UI would do with the
-same click: the answer is often "X needs a worker and there is nobody home".
-
-### 🔴 The build order is foundation → terrain → things, and it is the only one
-
-`SetFoundation` is **refused on any cell that already carries a floor, silently
-at the write** — `jawa/set_terrain_batch layer='foundation'` reported
-`cellsChanged: 16` with `cellsFailedVerify: 12` on the 12 cells that had a floor.
-Controlled three ways: bare ground 25/0/25 hold; `MetalTile` first
-25/**25 failedVerify**/0; foundation then floor 25/0/25, surviving the floor.
-**There is no retrofit** — a floor is a one-way door, recoverable only by
-demolish-and-rebuild and undetectable by inspection afterwards. Only the
-read-back catches it.
-
-⚠️ **Affordance does not gate spawning.** `GravshipHull` declares
-`terrainAffordanceNeeded=Substructure` and spawns happily on bare ground, because
-`jawa/spawn_batch` routes through `GenSpawn`, which checks no affordance —
-affordance constrains the *designator*. A substructure-less ship is buildable and
-**not a gravship**, which is worse, because everything looks right.
-
-### 🔑 Multi-cell things spawn CENTRED on the cell you name
-
-`GenAdj.OccupiedRect` computes `minX = loc.x - (w-1)/2`, so `GravEngine:172,172`
-— a 3×3 — occupies x/z **171–173**. Emit **centres** in any `Def:x,z` op grammar,
-and test coordinate semantics with the **largest** thing you have, never the most
-common one: 1×1 things read identically under both conventions, so a plan that is
-95% single-cell looks perfect while every large thing places wrong.
-
-### ⏳ Assert after time has run, not at tick 0
-
-A tool-built thing arrives in a state no played thing is ever in: every cached
-comp value is cold and several refresh only on their own tick. A `ChemfuelTank`
-filled by hand on a **paused** map still failed the launch check for "not enough
-fuel" — the thrusters had not registered it. `ticksGame: 1` on every read-back is
-the tell that you are asserting before the game has had a chance to disagree.
-**Do not treat a refusal on a paused, just-built object as a defect** — run time
-briefly and re-read.
-
-### 🔑 Laying a floor destroys what is under it
-
-The most useful discovery for map authoring. A floor rectangle wipes grass,
-bushes and plants inside it. This is the **indirect destruction primitive** —
-there is no working direct one.
-
-### ✅ Natural terrain IS painted — by our companion, not by the bridge
-
-RimWorld's own `Set terrain (rect)` and `Clear area (rect)` still return
-`success: true` and do nothing; they are drag tools and the bridge cannot drag.
-**Do not call them.** The working route is the `JawaBench.BridgeTools` companion:
-
-**Authoring — the terrain and object primitives**
-
-| tool | use |
-|---|---|
-| `jawa/set_terrain` | one cell or one rect. `layer` = `top` \| `under`, `refresh` defaults true |
-| `jawa/set_terrain_batch` | **many rects in one call** — this is the one a generator uses |
-| `jawa/get_terrain_batch` | **read many cells in one call**, answering in the same ops grammar `set_terrain_batch` accepts — so a capture replays straight back as a restore |
-| `jawa/spawn_batch` | **many things in one call**. Routes filth through `FilthMaker` (which declines cells whose terrain refuses filth) and everything else through `GenSpawn` |
-| `jawa/destroy_batch` | **the first working direct destruction primitive.** Filter by category — `Plant`, `Item`, `Filth`, `Building`, `All`. **Never destroys pawns**, whatever you pass |
-| `jawa/set_plants` | plant vegetation at a chosen growth stage; a refused cell reports why |
-| `jawa/refresh_rect` | dirty the map mesh over a rect **without painting**. Paint many rects with `refresh=false`, then dirty the region once |
-
-**Inspection — the things the stock bridge cannot answer**
-
-| tool | use |
-|---|---|
-| `jawa/list_pawns` | every pawn on the map — **hostiles and animals too**, not just colonists. `rimworld/list_colonists` and `ResolvePawn` are player-side only |
-| `jawa/clear_ui` | 🔴 **call this before EVERY screenshot.** The Debug log window covers the centre of the screen — exactly where `jump_camera_to_cell` puts the subject — so a shot taken without it photographs the log, not the map. All twelve art screenshots of the 2026-08-14 session were lost to this and had to be re-shot. Closing the log by hand does not hold: auto-open-on-error reopens it. `rimbench.core.look()` calls it automatically |
-| `jawa/list_things` | **the ThingID of a non-pawn** — the id `jawa/damage thingId=`, `jawa/order_pawn targetId=` and the destroy tools all demand and nothing else could produce. Filter by `defName` (comma list), `rect` or `group`. 🔴 **A zero is a filter result, not an empty map**: read `scanned` beside it, and `countMatched` beside `countReturned`. Before this, the only source of a ThingID was a human clicking the object, and the `NoPathToPilotConsole` v1 gate was SKIPPED on 2026-08-14 for exactly that |
-| `jawa/get_def` | a def **as the game resolved it**, after patches and parent inheritance: `statBases`, comps with class names, and the mod that supplied it. The offline dump serialises none of that and has produced two wrong conclusions. 🔴 **Any question of the form "does this def have X" is a LIVE question** — a mod restamps defs at load and nothing about that is visible in the XML: `GravEngine` carries `CompProperties_Power` / `CompPowerPlantGravEngine` that `Buildings_Gravship.xml` does not show, so "none of these need power" was wrong off a clean grep. Use the disk for structure and names only. ⚠️ The reader is **blind to properties and privates** — `Scalars()` enumerates `Public \| Instance` **fields** only, so `BiomeDef`'s `wildAnimals`, `pollutionWildAnimals` and `diseases` (private) and `AllWildAnimals` (property) are invisible, and a requested field comes back `"(no such field)"` whether it is misspelled or merely unreachable. Check the instrument can SEE a field (`meta.py <Type>` in `ilprobe`) before calling a conclusion "judged from def fields" |
-| `jawa/drain_log` | recent log messages. `effects.logs` structurally cannot see anything logged **during `step_game_ticks`** |
-| `jawa/damage` | graduated damage to **anything, including hostiles**, via `Thing.TakeDamage`. The debug menu's `Apply damage...` is inert and player-side only. ⚠️ **`amount` is a request, not a result** — a single instance is capped by the body part it hits plus armour, so `amount=400` landed as `totalDamageDealt: 32.0` and the pawn lived. Read the delivered quantity back, and for cleanup loop until `dead`/`destroyed` with exhausted attempts as a loud failure |
-| `jawa/spawn_pawn` | a pawn **in a chosen faction** — `player` \| `hostile` \| `none` \| a FactionDef. The debug menu always spawns player-side, which is how a "hostile" test ends up standing in your colony. `xenotype` forces a XenotypeDef **at generation time** via `PawnGenerationRequest.ForcedXenotype`, which `PawnGenerator` checks first and returns on, so it beats the kind's and the faction's own rolls. ⚠️ **Never pass `"hostile"`** — it resolves by `FirstOrDefault` and lands on Insect/Hive, where a humanlike pawn throws inside `PawnGenerator.GeneratePawn` (*"Humanlike pawn X was added to non-humanlike faction hive"*) and looks like an intermittent unrelated failure. Name the FactionDef |
-| `jawa/list_factions` | every faction on the world, hidden ones included. Read `countAllIncludingHidden`, **never** `countReturned` — `includeHidden` defaults false and the visible subset read 34 against a true 54 |
-
-**Staging a pawn for a look — art, apparel and xenotype audits**
-
-| tool | use |
-|---|---|
-| `jawa/set_pawn_rotation` | turn pawns to a named facing and **freeze them there** with `debugRotLocked`. A bare rotation write does not survive: the rotation tracker re-faces every pawn each tick from its job and drafted state. `dir='unlock'` releases. 🔴 **Always unlock when done** — `debugRotLocked` is written by `Thing.ExposeData`, so a pawn left locked stays locked across a save and load |
-| `jawa/set_pawn_style` | hair, hair colour, beard, face and body tattoo, head type, body type, fur, skin colour. Every field optional; all defNames resolve **before** anything is written, so a typo changes nothing. Calls `Notify_StyleItemChanged()`, which is what rebuilds the graphics — without it the change is correct in the save and stale on screen |
-| `jawa/set_pawn_xenotype` | convert spawned pawns to a XenotypeDef in place — what the vanilla dev "Set xenotype" action does, which is `pawn.genes?.SetXenotype(def)` and nothing else. ⚠️ It clears **xenogenes only**: an inheritable xenotype's genes land as endogenes and survive a later conversion, so pass `clearEndogenes` when converting a pawn that already has one. Jawa xenotypes on this stack: `BTD_Jawa` (the one our patches target), `OuterRim_Jawa`, `guy762_xenotype_jawa` |
-
-⚠️ **All three refuse rather than pretend when the DLC is absent** — tattoos need
-Ideology and xenotypes need Biotech, and RimWorld's own setters *return silently*
-in both cases. A rotation applied to a **downed or sleeping** pawn is likewise a
-perfect no-op: the renderer calls `LayingFacing()` for any non-standing posture
-and ignores `Rotation` entirely, so the tool reports `visible: false` and you
-photograph nothing.
-
-**🔴 GM — these let the world act on the PLAYER**
-
-| tool | use |
-|---|---|
-| `jawa/fire_incident` | fire a storyteller incident: raid, trader, flare, infestation. **`dryRun: true` asks whether it CAN fire without firing it — use that first** |
-| `jawa/send_letter` | write to the notification pane, with an optional camera target. The only way to narrate into the game rather than into a chat window |
-
-⚠️ **Everything else on this bridge changes only what the caller named. These two
-do not.** The owner ruled on 2026-08-12 that they ship, and they are gated behind
-a compile-time flag so the ruling is reversible in one shutdown window —
-`src/RimMandrake/bridgetools/build.py` **without** `--gm` compiles them out, and the build refuses
-to continue if the artifact disagrees with the flag. Never fire an incident on a
-colony that matters without saying so first.
-
-⏳ **The companion is 26 tools and NINE of them have never run in a live game** —
-the roof pair, the pawn-appearance three above, and `jawa/get_defs`,
-`jawa/fire_quest`, `jawa/list_things` and `jawa/clear_ui` (all deployed
-2026-08-14 in the shutdown window, game copy md5 `55b2362`). They compile; nothing more is claimed. `jawa/list_factions` and
-`jawa/order_pawn` **drove live 2026-08-14** and are no longer on this list;
-`jawa/world_stats` was called and its answer was thrown away by a harness bug, so
-it is unproven for a different reason. Companions register only at RimBridgeServer
-startup. **First call of the next session: count the `jawa/` tools the bridge
-reports — 26 means the current deploy took, 24 means the build before
-`list_things`/`clear_ui`, 22 means before `get_defs`/`fire_quest`, 21 means before
-`world_stats`, 7 means an older companion, 0 means the bundle did not load.** Every
-other check is uninformative until that reads 26. 🔴 **The deploy must use
-`--gm`**, or the game copy loses `jawa/fire_incident` and `jawa/send_letter` and
-the census reads 24.
-
-⚠️ **Three documents disagreed about this number on 2026-08-13** — 17 in
-`EXPECTED_FAILURES_next_load.md`, 20 in `NEXT_RELOAD.md`, 21 here — and the
-number moved again to **22** the same night, and to **26** on 2026-08-14.
-**Measure it, do not quote it** — `load_session.py` now derives the gate from
-`EXPECTED_TOOLS` and `prove_new_tools.py` reads it out of the deployed DLL, so
-neither carries a literal to go stale.
-A census gate that three files answer differently is worse than no gate, so
-check the DLL rather than any of the three:
-`strings -a "<gamedir>\BridgeTools\JawaBench\JawaBench.BridgeTools.dll" | grep -o "jawa/[a-z_]*" | sort -u | wc -l`.
-🔴 **That command proves a tool NAME only.** Tool names are attribute blobs and
-are UTF-8; a method-body MESSAGE is UTF-16LE and needs `strings -a -el`, or it
-reports ABSENT on a string that is present.
-Deciding strings per tool: `src/RimMandrake/bridgetools/prove_new_tools.py`.
-
-The write tools read every cell back off the terrain grid before answering, so
-`cellsFailedVerify` is real evidence rather than the usual `success: true`.
-
-**Go through `src/RimMandrake/Utils/rimbench/terrain.py`, not the raw tools.** `TerrainPainter`
-probes which route the running game supports, decomposes a cell map to rects
-once, chunks against the companion's compiled-in guards (`MAX_OPS` 4096,
-`MAX_CELLS` 70,000), and captures originals so a formation can undo itself. The
-whole pipeline is proven offline — `python3 src/RimMandrake/Utils/rimbench/selftest.py`, no game
-needed, under a second.
-
-```python
-tp = TerrainPainter(s)
-tp.capture(cellmap)        # 1 call/cell — skip on a scratch map
-tp.paint_map(cellmap)      # a 400-cell crater: 115 rects, ONE call
-tp.restore()
-```
-
-**Call count is the only cost that matters.** A 6×6 rect is 15 ms; the same 411
-cells as a dithered crater were 103 separate calls and 5.15 s. Batching a
-formation is the whole reason the companion exists — never loop `set_terrain`
-per cell.
-
-### 🔑 Terrain choice is vegetation control
-
-Painting **does** destroy plants — but only where the plant cannot grow on the
-new terrain. Measured live on grass, dandelion and chokevine:
-
-| new terrain | plants |
-|---|---|
-| Sand, PackedDirt, WaterShallow, `<stone>_Rough` | **destroyed** |
-| **Gravel** | **survive** |
-| the cell's own existing terrain | no-op, nothing dies |
-
-So a "gravel crater bowl" fills with healthy grass and looks absurd. Choose
-terrain for what it does to the vegetation as well as for its colour. This
-replaces flooring as the way to clear ground.
-
-### ⚠️ Restoring terrain is NOT undoing the paint
-
-`capture()`/`restore()` puts the **TerrainDef** back — verified over 2,601 cells,
-0 wrong — and leaves the ground bare, because the plants the paint destroyed do
-not come back. Say "terrain is exactly restorable", never "the paint is
-reversible". On a colony that matters, **the save is the undo.**
+Go there too when: a build reported success and nothing is there · you need a
+ThingID · you need to damage, spawn or list a hostile · you need a pawn posed,
+dressed, restyled or re-xenotyped for a shot · you are about to take a screenshot
+(🔴 `jawa/clear_ui` first, always — the debug log window sits exactly where
+`jump_camera_to_cell` puts your subject, and it cost twelve shots on 2026-08-14).
 
 ---
 
@@ -514,98 +349,35 @@ Two standing rules, both learned painfully:
 
 ---
 
-## 8. Speed — measured, and it changes the design
+## 8. Speed
 
 **Cost tracks CALL COUNT, not cell count.** That one sentence is the whole
-performance model, and everything below follows from it.
+performance model. Batch anything you do per-cell, or design around ~20
+unbatched calls per second — `jawa/set_terrain_batch` did in **1** call and
+14.0 ms what 421 per-cell calls took 7.0 s to do.
 
-| operation | measured |
-|---|---|
-| `rimbridge/ping` | 0.3 ms — does not touch the main thread |
-| any main-thread call | **4–17 ms**, varying run to run — see the warning below |
-| `save_game` (13.9 MB) | 0.5 s |
-
-A call in a tight sequence costs ~50 ms, three frames — not the 16.7 ms an
-isolated call costs. So the number that matters is how many calls you make:
-
-| a 421-cell dithered crater | calls | time |
-|---|---|---|
-| one cell at a time | 421 | ~7.0 s |
-| one call per rect | 124 | 1,611 ms |
-| **`jawa/set_terrain_batch`** | **1** | **14.0 ms** |
-| capture, one `get_cell_info` per cell | 421 | 6,086 ms |
-| **`jawa/get_terrain_batch`** | **1** | **17.5 ms** |
-
-Measured 2026-08-12 on a live 250×250 map. A whole `formations.crater()` — 977
-ground cells plus 100 scattered objects — is **0.52 s**, of which the terrain is
-a single hop.
-
-**Consequence:** each time you batch one layer, the cost moves to the next.
-Terrain stopped dominating and object spawning took over — a crater became one
-terrain call and ~100 `spawn_thing` calls. `jawa/spawn_batch` closes that too.
-Measured against a stub, per formation:
-
-| formation | per-call companion | batched |
-|---|---|---|
-| crater | 199 calls | **2** |
-| cavern | 49 calls | **1** |
-| geyser field | 67 calls | **2** |
-
-Batch anything you do per-cell, or design around ~20 unbatched calls per second.
-`src/RimMandrake/Utils/rimbench/selftest.py` asserts these call counts, so a refactor that
-reintroduces a per-cell loop fails a test rather than just running 100× slower.
-
-⚠️ The old "0.002 s per call" figure in this file was measured on **3 mods,
-paused**, and did not survive the full stack. Treat any timing note as carrying
-the tier it was measured on.
-
-⚠️ **There is no 60 Hz frame gate, and a single latency number is not quotable.**
-Every main-thread class once measured 16.7 ms at 568 mods and was written down as
-a hard one-frame floor; two later runs on **one map** read `get_game_info` 5.673
-then 4.358 and `jawa/set_terrain` 21.017 then 13.648. 4.4 ms reads cannot come
-from a 16.67 ms tick, so the gate is refuted; the cause of the spread is unknown
-and every mechanism offered has been withdrawn (pawn count went **up** while
-latency went **down**). Mod tier is not the axis — three runs at 573 on one map
-disagree by 35%. **Record the workload and `ticksGame` beside every benchmark,
-and quote a range with its conditions or quote nothing.**
+⚠️ **A single latency number is not quotable.** The 16.7 ms one-frame floor was
+refuted and the cause of the spread is unknown. Record the workload and
+`ticksGame` beside every benchmark, and quote a range with its conditions or
+quote nothing.
 
 **Consequence:** prefer live bridge work over save-editing. Bridge changes are
-also **reversible** — the player reloads if they dislike the result — where a
-save-edit permanently changes state.
+reversible — the player reloads if they dislike the result — where a save-edit
+permanently changes state.
 
-Full reasoning, tradeoffs and the test order:
-`design/RimMandrake/map_authoring_decision.md`.
+The measured tables — per-operation timings, the 421-cell crater at 421 vs 124 vs
+1 call, per-formation call counts, and why an old timing note does not transfer
+across mod tiers — are in **`references/performance.md`**. Read it before you
+optimise anything, before you quote a timing, and when a loop is slower than you
+expected.
 
-## 9. Extending the bridge — companion DLLs are a first-class path
 
-RimBridgeServer 2.x loads mod-authored `[Tool]` methods from `BridgeTools`
-folders. This is documented and supported, not a hack:
+## 9. Extending the bridge
 
-* `vendor/mod_sources/RimBridgeServer-main/skills/rimbridge-companion-tools/SKILL.md`
-* `vendor/mod_sources/RimBridgeServer-main/skills/rimbridge-companion-tools/references/companion-dll-guide.md` (243 lines: csproj, load model,
-  authoring pattern, validation checklist)
-
-**This stopped being a proposal.** The three methods sketched here originally —
-`set_terrain`, `destroy_at`, `damage` — became the 14 tools in §5; `destroy_at`
-generalised into `jawa/destroy_batch`, because call count turned out to be the
-only cost that matters (§8). Source and build:
-
-```
-src/RimMandrake/bridgetools/JawaBench.BridgeTools/JawaBenchTerrainTools.cs   all 14 [Tool] methods
-src/RimMandrake/bridgetools/build.py                                        build + verify + deploy
-```
-
-The pattern that made them cheap to add: **compile against the running game's own
-assemblies** (`Assembly-CSharp.dll` from the install, `RimBridgeServer.Sdk.dll`
-from the workshop copy). The compiler then verifies every API you guessed at —
-`FilthMaker.TryMakeFilth`, `ThingMaker.MakeThing`, `GenSpawn.Spawn`,
-`thingGrid.ThingsListAtFast` were all confirmed that way, and **a compiler is a
-better checker than IL archaeology.**
-
-`IRimBridgeContext` also exposes `ctx.Tools.CallAsync` for composing existing
-tools, `ctx.Game.StepTicksAsync/RunUntilAsync`, and `RimBridgeEvidenceManifest`
-— a built-in screenshot-plus-assertion result format that is RimBench already
-designed for us.
-
-Gotcha the guide flags: `ExcludeAssets="runtime"` so the companion never bundles
-`RimBridgeServer.Sdk.dll`; the host resolves it.
+When the bridge cannot do something, **adding a `[Tool]` method to a companion
+DLL is a documented, supported path, not a hack** — it is where every `jawa/`
+tool came from. **`references/extending.md`** has the source and build paths, the
+compile-against-the-running-game's-own-assemblies pattern that makes a guessed
+API a compiler error instead of a live failure, `IRimBridgeContext`'s composition
+surface, and the `ExcludeAssets="runtime"` gotcha. Read it before you conclude
+"the bridge cannot do X".
