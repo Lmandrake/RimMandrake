@@ -770,3 +770,59 @@ crude scrap-built *blasters* keeping Makeshift's unreliable random-burst verb,
 which is what made the tier feel scavenged rather than merely weak. Art for it
 already exists: the cut mods' own frames plus the pipe-and-tape VWE silhouettes
 noted in `design/Jawa/mods/repurposed_graphics.md`.
+
+---
+
+## The Cantina Kitchen — Star Wars food is ANIMAL food
+
+**Owner, 2026-08-15.** A whole mod of its own, and one of the better ideas on
+this list.
+
+**The observation it rests on:** Star Wars food is never abstract. It is a tank
+of live things behind the bar. Somebody is always harvesting eggs out of an
+aquarium full of semi-sentient trapped creatures and shaking them into a
+cocktail, or tipping a squealing lizard down their throat whole. The cantina
+scene sells the galaxy as *inhabited* precisely because its menu is made of other
+inhabitants. That queasiness is the flavour, and it is completely absent from
+RimWorld's food, which is nutrient paste and "fine meal".
+
+**The build:** take the gourmet cooking mods already in the stack and repoint
+their RECIPES — swap generic ingredients for animal products from real Star Wars
+species. The mechanics are already written; only the inputs and the names change.
+
+```
+vanillaexpanded.vcooke        Vanilla Cooking Expanded
+vanillaexpanded.vcookestews   Vanilla Cooking Expanded - Stews
+vanillaexpanded.vbrewe        Vanilla Brewing Expanded
+```
+
+⭐ **The art problem is already solved.** `Star Wars Animal Collection` ships
+**160 creatures with textures** — bantha, dewback, blurrg, gorg, kwi, peko-peko,
+scavrats, pufferpig, aiwha, beldon, blixus, bogwing. That is a menu, an
+ingredient list and a bestiary of things to keep in a tank, all drawn already.
+Nothing here needs new art to prototype; it needs new `RecipeDef`s and new
+`ThingDef` products.
+
+**Threads worth pulling when this gets built:**
+
+- **Live storage as a building.** An aquarium or holding tank that keeps the
+  ingredient alive until use — the fiction is that freshness means *still
+  moving*. RimWorld has no live-food container; this is the mechanically novel
+  part and probably the mod's spine.
+- **Eggs as the cocktail base.** Gorg eggs, kwi eggs, whatever lays. Brewing
+  Expanded already has the drink chain to hang them on.
+- **Whole-creature dishes** you eat live, with a mood consequence that depends
+  on the ideoligion — reverent, indifferent, or horrified. The same dish reading
+  three different ways by faith is the sort of thing Ideology does well and
+  almost nobody uses.
+- **The Jawa angle.** A scavenger clan does not keep aquariums; it eats what it
+  finds. So the cantina kitchen is something the player ENCOUNTERS in Hutt and
+  Deepwater settlements and has to decide about, rather than something they
+  start with. That makes it a trade good and a moral texture rather than a tech
+  tree.
+- **The Deepwater Compact are the obvious supplier** — they already hold every
+  oasis, marsh, river and coast on the map, and they already sell to everyone.
+
+⚠️ Squarely `[v2]`. v1's food is Sekki Vosh and a cook stove, and that is
+enough. Recorded now because the art audit made the ingredient list visible and
+it would be a shame to rediscover it later.
