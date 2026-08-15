@@ -5,24 +5,22 @@ description: Author, patch, validate and debug RimWorld mods — XML PatchOperat
 
 # RimWorld modding
 
-RimWorld's modding surface punishes guessing more than almost anything else you
-will work on. Patches fail *silently*, XML comments have a syntax rule most
-people don't know, and a single bad Def entry can kill three unrelated mods at
-startup with an error that names none of them. Almost every hour lost in this
-domain is lost to writing something plausible instead of reading something real.
+Patches fail *silently*, XML comments have a syntax rule most people don't know,
+and a single bad Def entry can kill three unrelated mods at startup with an error
+that names none of them. Almost every hour lost here is lost to writing something
+plausible instead of reading something real.
 
-So the whole method is: **find the ground truth on disk, write the smallest
-change that survives a mod being absent, prove it before shipping, and record
-what you learned.**
+The method: **find the ground truth on disk, write the smallest change that
+survives a mod being absent, prove it before shipping, and record what you
+learned.**
 
 ---
 
 ## 1. Read the real file first. Always.
 
-Before writing a single line of a patch, open the def you are patching and the
-def you are patching *around*. Not the wiki's version of it, not what a doc in
-the project says it was last month — the actual XML in the actual mod folder
-that is actually loaded right now.
+Before writing a line of a patch, open the def you are patching and the def you
+are patching *around* — the actual XML in the actual mod folder that is loaded
+right now, not the wiki's version and not what a project doc said last month.
 
 ```bash
 # where the defs live
@@ -55,41 +53,23 @@ instead of re-doing the search.
 
 ## 2. The game restart is the scarce resource
 
-On a large modded stack a cold load takes **many minutes** — twenty to thirty is
-normal past ~500 mods, because every mod's XML is parsed and the texture atlases
-are rebuilt. Ask the user what theirs costs and treat that number as the budget
-you are spending. It reframes the whole workflow: the goal is not "try it and
-see", it is **arrive at the restart already confident, and learn as much as
-possible from the one you spend.**
+A cold load is **23–30 minutes** past ~500 mods — every mod's XML is parsed and
+the texture atlases are rebuilt. **Arrive at the restart already confident.**
 
-Three habits follow.
+- **Verify everything verifiable offline first.** A restart confirms a
+  prediction; it does not conduct an experiment.
+- **Batch by ambiguity, not by count.** Anything whose effects are
+  distinguishable rides along; a new C# assembly goes solo.
+- **Harvest the whole log**, not just your change.
+- **Never say "restart and see".** Propose a load when the queue justifies it,
+  say what the batch contains, and name in advance the log strings that will
+  decide each item.
+- **Three failed hypotheses deep, stop bisecting and build a MINIMAL load** — the
+  ~20 mods that can possibly be involved, one load, answering *does this work at
+  all in isolation?*
 
-**When you are three failed hypotheses deep, stop bisecting downward and build a
-MINIMAL load instead.** Cutting to the ~20 mods that can possibly be involved
-costs **one** load and answers a better question: *does the feature work at all
-in isolation?* **`references/minimal-load.md`** has why it beats bisecting, how to
-derive the set rather than guess it, and the two traps inside the reduced set —
-read it the moment you notice you are *generating* hypotheses rather than
-*testing* a theory.
-
-**Verify everything verifiable offline, first.** A restart should be confirming a
-prediction, not conducting an experiment.
-
-**Batch by risk, not by count.** The rule is about *ambiguity*, not quantity:
-batch anything whose effects are distinguishable, keep a new C# assembly solo.
-
-**Harvest the whole log, not just your change.** You paid for a full load; a single
-yes/no answer is a poor return on it.
-
-**`references/spending-a-load.md` has all three in full — what "verifiable
-offline" actually covers, which changes are safe to ride along and which must go
-solo, and the running "next restart" queue that makes harvesting cheap.** Open it
-when you are planning a load, not every session.
-
-The corollary for how you talk to the user: **do not casually suggest "restart
-and see".** Each one costs them real time. Propose a restart when the queue
-justifies it, say what the batch contains, and state in advance the specific log
-strings that will decide each item.
+`references/spending-a-load.md` (planning a load) and `references/minimal-load.md`
+(deriving the reduced set) have these in full.
 
 ---
 
@@ -142,10 +122,8 @@ red error at every launch and trains the user to ignore red errors.
 </Operation>
 ```
 
-The test xpath and the inner xpath should be **identical** unless you have a
-stated reason. If they differ, you are testing for one thing and modifying
-another, which is exactly how a patch ends up doing something you didn't intend
-in a stack you can't reproduce.
+Keep the test xpath and the inner xpath **identical** unless you have a stated
+reason: differing ones test for one thing and modify another.
 
 ### The things that bite everyone
 
@@ -168,7 +146,7 @@ errors. `validate_patch.py` diffs a `<value>`'s children against the live node, 
 it catches this in `Patches/` — it **cannot** catch it in a `Defs/` file you author
 outright, which has no existing node to diff against. When a def vanishes
 silently, diff it against a sibling in the same folder that survived. (Why:
-`references/patch-operations.md` §11.)
+`references/patch-operations.md`.)
 
 **Match the def's XML ELEMENT NAME, not `ThingDef`.** The loader reads the element
 name as the C# type, so `/Defs/ThingDef[…]` misses all 51 of VFE Pirates'
@@ -221,7 +199,7 @@ whole mod list, and "the mod is installed" tells you nothing about which of its
 defs exist. **When a reference goes missing while its owning mod is plainly
 present, read that mod's `LoadFolders.xml` before concluding anything**; the
 syntax and the real Vanilla-Animals-Expanded/Odyssey case are in
-`references/patch-operations.md` §9.
+`references/patch-operations.md`.
 
 ### Which operation
 
@@ -240,8 +218,7 @@ when an xpath won't match, or before using any operation above beyond `Add`,
 ## 5. Validate before you deploy
 
 Run the bundled validator on any patch file before it goes near the Mods folder.
-It catches the silent failures — the ones that cost a full game restart to
-discover, which in a large stack is several minutes each time.
+It catches the silent failures, which otherwise cost a full game restart to find.
 
 ```bash
 python3 scripts/validate_patch.py path/to/Patch.xml \
@@ -252,28 +229,25 @@ python3 scripts/validate_patch.py path/to/Patch.xml \
 The valuable check is the last one: it **runs each xpath against the real Defs on
 disk and reports how many nodes it hits**. Zero hits means the patch would silently
 do nothing; more hits than expected means a `Remove` is about to take out more than
-you think. (Its other five checks: `references/patch-operations.md` §10.)
+you think. (Its other five checks are in `references/patch-operations.md`.)
 
 A patch that validates clean can still be wrong about *intent*, so also confirm
 in-game: load, then check the dev console (or `Player.log`) for the patch's own
 name. Silence is success.
 
-### Two things it cannot see — know these before trusting a result
+### Two things it cannot see
 
 It reads defs **unpatched**, so a node another mod creates at runtime is invisible
-and **0 matches can be the correct answer**; and it validates `Patches/` only —
-**it does not check `Defs/` at all**, so a hand-authored Def with a field that
-moved between versions sails straight through. **`references/patch-operations.md`
-§10** has both in full, with the WeatherDef that shipped a renamed field. Read it
-before you either trust or disbelieve a validator result.
+and **0 matches can be the correct answer**; and it checks field names in no file,
+so a hand-authored Def with a field that moved between versions sails straight
+through. Both are in `references/patch-operations.md`, with the WeatherDef that
+shipped a renamed field.
 
 ---
 
 ## 5b. Load order is a constraint you must ASSERT, not a preference
 
 If your mod patches other mods' defs, it must load after every one of them.
-That sounds obvious and is where more time was lost in this project than
-anywhere else.
 
 **`ParentName` resolves only against `Abstract="True"` defs declared with a
 `Name=` attribute — never against a `defName`.** Core's EMP damage def uses
@@ -344,16 +318,12 @@ patches must be enabled LAST in load order, and the restart that follows.
 
 ## 6b. 🔴 Inspect the CONSUMER, not the artifact
 
-**A file being correct on disk says nothing about what the game is running.** Every
-"it is done" that turned out to be false was reported after reading the artifact and
-never asking what last read it.
-
-**The check is one question: _what did the consumer last read, and when?_** The
-process start time IS the def-read time — RimWorld reads defs **once, at launch** —
-so anything under `Mods/` newer than that StartTime is not loaded. **The three
-commands, and two measured cases (a `GenStepDef` and a DLL) that both reported
-done and were both false, are in `references/traps-mods-and-managers.md`.** Run
-them before calling anything live.
+**Ask what the consumer last read, and when.** The process start time IS the
+def-read time — RimWorld reads defs **once, at launch** — so anything under
+`Mods/` newer than that StartTime is not loaded. **The three commands, and two
+measured cases (a `GenStepDef` and a DLL) that both reported done and were both
+false, are in `references/traps-mods-and-managers.md`.** Run them before calling
+anything live.
 
 ⚠️ **Map-generation defs need MORE than a restart: they need a map generated after
 it.** Loading a save re-runs no GenStep, so a correct fix is invisible on an old map.
@@ -418,32 +388,24 @@ ends with a validation plan **in the same commit**. Not on request: a cold load
 costs 23–30 minutes (§2), and without a plan the person holding the game invents
 one, and theirs will not carry your prediction.
 
-**1. The observable — what a player SEES when it works.**
-🔴 **A positive observation, never "no error".** "No `Patch operation … failed`
-line" is an absence, and §7 item 4 says absences are the cheapest thing in that
-file. Name the thing on screen: the animal on the wildlife tab, `MoveSpeed` at
-4.6 in the stat readout, the recipe in the bill list.
+🔴 **Name a positive observation, never "no error".** "No `Patch operation …
+failed` line" is an absence, and §7 ranks absences last. Name the thing on
+screen: the animal on the wildlife tab, `MoveSpeed` at 4.6 in the stat readout.
 
-**2. The route — the exact call, click path or spawn that produces it.**
-The defName, the dev-mode spawner path, the bridge call with its arguments. ⚠️
-**If the route needs a tool that does not exist yet, say so and file it as
-blocked on the tool** — do not queue it for a load it cannot survive.
+**Give the exact route** — defName, dev-mode spawner path, bridge call with its
+arguments. ⚠️ If the route needs a tool that does not exist yet, file it as
+*blocked on the tool*; do not queue it for a load it cannot survive.
 
-**3. The prediction — written BEFORE the look.**
-A number or a specific string: *two* `wildBiomes` children, not "fewer". This is
-the field that turns a look into evidence; without it you rationalise the panel.
+**Write the prediction BEFORE the look**, as a number or a string: *two*
+`wildBiomes` children, not "fewer". Without it you rationalise the panel.
 
-**4. The threshold — what CLOSES it, and what is explicitly out of scope.**
-⭐ **Usually one observation, not a battery.** Name the minutia you are choosing
-not to chase — the icon, the translation key, the second biome.
+**Close on one observation, and name the minutia you are not chasing** — the
+icon, the translation key, the second biome.
 
-**5. Batch or solo.**
-§2's batch-by-risk rule, stated as a field. A validated pure-XML patch with named
-log strings rides along; **a new assembly goes solo**, because if the load comes
-up wrong nobody can separate the DLL from the three def changes beside it.
+**Say batch or solo** (§2). A new assembly goes solo: if the load comes up wrong
+nobody can separate the DLL from the three def changes beside it.
 
-**6. What a FALSE PASS looks like.**
-The way this particular check lies. Four that cost real cycles here:
+**Say how this check LIES.** Four false passes that cost real cycles here:
 - **The conditional never ran.** A `PatchOperationConditional` in a mod that loads
   *before* the mod it patches matches nothing, no-ops, and **prints no log line at
   all** — so "clean log" and "patch applied" are indistinguishable. Load order
@@ -470,9 +432,8 @@ RIDE     batch | solo (<why, if solo>)
 LIES     <how this check produces a false pass>
 ```
 
-Seven lines. If it does not fit, the item is really two items.
-
-Worked, for a `PatchOperationRemove` against a spawn table:
+Seven lines. If it does not fit, the item is really two items. Worked, for a
+`PatchOperationRemove` against a spawn table:
 
 ```
 ITEM     Armadillo dropped from Desert spawns (Jawa_Patches/Biomes.xml)
@@ -492,19 +453,13 @@ LIES     Remove deletes EVERY match (§4), so "Desert is gone" is also what a
 
 ## 9. Keep this skill learning
 
-This domain's knowledge is almost entirely *earned* — each trap costs a debug
-cycle to find and is then cheap forever. That only compounds if it gets written
-down, so treat capture as part of finishing the task, not as optional polish.
-
 **The live log is `references/traps-*.md`.** Open the one topic file that matches
 what you are about to do — patches, tooling, art, the mod stack, or diagnosis.
 Reading all five is not the intent and costs ~25k tokens.
 
-**If you are already running, do not reread — take the delta.** A session that has
-read a topic file is stale only by what peers appended since. `python3
-src/RimMandrake/Utils/whats_new.py --seat <SEAT>` prints those added headings in a few lines; a
-full reread buys the same information for ~25k tokens, which is why it gets
-skipped. Run it when the game loads, or any time you want it.
+**If you are already running, do not reread — take the delta.** `python3
+src/RimMandrake/Utils/whats_new.py --seat <SEAT>` prints what peers appended, in a
+few lines instead of ~25k tokens. Run it when the game loads.
 
 **After any RimWorld task, ask: did anything here surprise me?** If yes, append it
 to the matching topic file, short: what it looked like, what was actually true,
