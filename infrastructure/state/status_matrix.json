@@ -5,14 +5,14 @@
    "cells": {
     "DECIDE": {
      "done": 3,
-     "total": 4,
+     "total": 5,
      "state": "idle",
      "mix": {
       "closed": 3,
       "done": 0,
       "doing": 0,
       "blocked": 0,
-      "ready": 1
+      "ready": 2
      }
     },
     "BUILD": {
@@ -98,27 +98,27 @@
      }
     },
     "BUILD": {
-     "done": 0,
-     "total": 0,
-     "state": "offline",
+     "done": 1,
+     "total": 2,
+     "state": "idle",
      "mix": {
-      "closed": 0,
+      "closed": 1,
       "done": 0,
       "doing": 0,
       "blocked": 0,
-      "ready": 0
+      "ready": 1
      }
     },
     "CHECK": {
      "done": 0,
-     "total": 0,
-     "state": "offline",
+     "total": 2,
+     "state": "idle",
      "mix": {
       "closed": 0,
       "done": 0,
       "doing": 0,
       "blocked": 0,
-      "ready": 0
+      "ready": 2
      }
     }
    }
@@ -181,14 +181,14 @@
     },
     "BUILD": {
      "done": 0,
-     "total": 0,
-     "state": "offline",
+     "total": 1,
+     "state": "idle",
      "mix": {
       "closed": 0,
       "done": 0,
       "doing": 0,
       "blocked": 0,
-      "ready": 0
+      "ready": 1
      }
     },
     "CHECK": {
@@ -345,14 +345,14 @@
     },
     "BUILD": {
      "done": 0,
-     "total": 0,
-     "state": "offline",
+     "total": 1,
+     "state": "idle",
      "mix": {
       "closed": 0,
       "done": 0,
       "doing": 0,
       "blocked": 0,
-      "ready": 0
+      "ready": 1
      }
     },
     "CHECK": {
@@ -398,14 +398,14 @@
     },
     "CHECK": {
      "done": 1,
-     "total": 4,
+     "total": 6,
      "state": "blocked",
      "mix": {
       "closed": 1,
       "done": 0,
-      "doing": 0,
+      "doing": 1,
       "blocked": 1,
-      "ready": 2
+      "ready": 3
      }
     }
    }
@@ -415,14 +415,14 @@
    "cells": {
     "DECIDE": {
      "done": 0,
-     "total": 2,
+     "total": 3,
      "state": "blocked",
      "mix": {
       "closed": 0,
       "done": 0,
       "doing": 0,
       "blocked": 1,
-      "ready": 1
+      "ready": 2
      }
     },
     "BUILD": {
@@ -496,27 +496,27 @@
    "name": "12 Scenario",
    "cells": {
     "DECIDE": {
-     "done": 0,
+     "done": 1,
      "total": 2,
      "state": "idle",
      "mix": {
-      "closed": 0,
+      "closed": 1,
       "done": 0,
       "doing": 0,
       "blocked": 0,
-      "ready": 2
+      "ready": 1
      }
     },
     "BUILD": {
      "done": 0,
-     "total": 1,
+     "total": 2,
      "state": "blocked",
      "mix": {
       "closed": 0,
       "done": 0,
       "doing": 0,
       "blocked": 1,
-      "ready": 0
+      "ready": 1
      }
     },
     "CHECK": {
@@ -743,14 +743,14 @@
    "cells": {
     "DECIDE": {
      "done": 0,
-     "total": 1,
+     "total": 3,
      "state": "idle",
      "mix": {
       "closed": 0,
       "done": 0,
       "doing": 0,
       "blocked": 0,
-      "ready": 1
+      "ready": 3
      }
     },
     "BUILD": {
@@ -829,7 +829,23 @@
     "count": 9
    },
    {
+    "label": "needs deploy",
+    "count": 1
+   },
+   {
+    "label": "needs a load",
+    "count": 1
+   },
+   {
     "label": "waiting on the pawn kinds to spawn with our xenotypes (`D23`",
+    "count": 1
+   },
+   {
+    "label": "needs a shutdown window to deploy, then a live game",
+    "count": 1
+   },
+   {
+    "label": "needs deploy, then a live game",
     "count": 1
    }
   ]
@@ -842,12 +858,12 @@
    },
    {
     "d": "2026-08-15",
-    "n": 7
+    "n": 9
    }
   ],
-  "per_day": 12.5,
-  "closed": 25,
-  "remaining": 39,
-  "eta_days": 3
+  "per_day": 13.5,
+  "closed": 27,
+  "remaining": 50,
+  "eta_days": 4
  }
 }
