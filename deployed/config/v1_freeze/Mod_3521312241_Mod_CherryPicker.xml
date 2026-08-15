@@ -133,6 +133,40 @@
 			<li>ThingDef/VGE_GravshipBasicRecharger</li>
 			<li>ThingDef/VGE_GravshipStandardRecharger</li>
 			<li>ThingDef/AG_TemporaryBandNode</li>
+			<li>ThingDef/VAE_Apparel_CasualTShirt</li>
+			<li>ThingDef/VAE_Apparel_Hoodie</li>
+			<li>ThingDef/VAE_Apparel_ShirtandTie</li>
+			<li>ThingDef/VAE_Apparel_SuitJacket</li>
+			<li>ThingDef/VAE_Headgear_Fedora</li>
+			<li>ThingDef/VAE_Apparel_Overalls</li>
+			<li>ThingDef/VAE_Apparel_Jeans</li>
+			<li>ThingDef/VAE_Apparel_ChefsUniform</li>
+			<li>ThingDef/VAE_Apparel_MilitaryJacket</li>
+			<li>ThingDef/VAE_Apparel_MilitaryUniform</li>
+			<li>ThingDef/VAE_Apparel_BuildersJacket</li>
+			<li>ThingDef/VAE_Apparel_DoctorScrubs</li>
+			<li>ThingDef/VAE_Apparel_LabCoat</li>
+			<li>ThingDef/VAE_Apparel_TankTop</li>
+			<li>ThingDef/VAE_Apparel_SheriffShirt</li>
+			<li>ThingDef/VAE_Apparel_Blouse</li>
+			<li>ThingDef/VAE_Apparel_Apron</li>
+			<li>ThingDef/VAE_Headgear_Scarf</li>
+			<li>ThingDef/VAE_Headgear_Beret</li>
+			<li>ThingDef/VAE_Headgear_Hardhat</li>
+			<li>ThingDef/VAE_Headgear_SurgicalMask</li>
+			<li>ThingDef/VAE_Headgear_BaseballCap</li>
+			<li>ThingDef/VAE_Headgear_Sunglasses</li>
+			<li>ThingDef/VAE_Headgear_ChefsToque</li>
+			<li>ThingDef/AM_AScompFD</li>
+			<li>ThingDef/AM_MK4aConcealed</li>
+			<li>ThingDef/AM_MK4aDefensive</li>
+			<li>ThingDef/AM_CompFlakSuit</li>
+			<li>ThingDef/AM_FullyEnclosedHelmet</li>
+			<li>ThingDef/AM_NightVisionHelmet</li>
+			<li>ThingDef/AM_CataphractHelmetFashion</li>
+			<li>ThingDef/AM_CataphractHelmetSlaughter</li>
+			<li>ThingDef/AM_ClosedOxygenCylinder</li>
+			<li>ThingDef/AM_BulletproofMask</li>
 		</keys>
 	</ModSettings>
 </SettingsBlock>

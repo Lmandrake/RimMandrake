@@ -23,6 +23,16 @@ races in order to get the gear from their mod. That's a bad assumption. We can
 always rename things."* Fiction of a race or faction says nothing about whether
 its gear is wanted.
 
+## 🔴 ITEMS are the unit. Mods are a CONSEQUENCE.
+
+**Owner, 2026-08-15:** *"Don't offer me mods. We will decide on mods AFTER seeing
+if we get rid of everything from a mod, reducing its value too far."*
+
+⇒ **Never propose a whole-mod removal as a cherrypick decision.** Cut items. Then,
+once a mod has lost most of what we wanted from it, ask whether it still earns its
+slot — that is a separate, later question with its own risks (`ModsConfig`, a
+game-down window, cross-reference errors).
+
 ## The three kinds of row
 
 Not every category can be reviewed the same way. The honest split:
@@ -46,7 +56,10 @@ Not every category can be reviewed the same way. The honest split:
 
 | ✔ | # | category | size | the unit we decide in | why this order |
 |---|---|---|---|---|---|
-| ☐ | 1 | **The fantasy / medieval block** | 8 mods, ~446 things | by mod | Dark Ages, dungeon and monster content. Nothing in it renames into Star Wars — the clearest "we know we won't need it" case |
+| ✅ | 1 | **Conventional firearms** | 74 cut | by item | AKs, Makarovs, service rifles, vanilla Core's 11 |
+| ✅ | — | **The mechanitor system** | 33 cut | by item | Player mech control. Ancient variants KEPT as ruins scenery |
+| ✅ | — | **Contemporary clothing + ruins apparel** | 34 cut | by item | Hoodies, jeans, lab coats; bulletproof masks and flak suits |
+| ☐ | 1b | **Creatures that spawn on our biomes** | ~2,387 total | by item | Fiction-visible on the map. The next round |
 | ☐ | 2 | **Weapons** | **845** | by mod first (60), then by tier | The hardest and the most load-bearing — pawn types cannot be equipped until it lands |
 | ☐ | 3 | **Armour / apparel** | **886** | by mod, then by layer | No list exists at all today. Same blocker as weapons |
 | ☐ | 4 | **Creatures / beasts** | **2,387** | by mod and by theme | Fiction-visible on the map. Your dinosaur review sits here |
