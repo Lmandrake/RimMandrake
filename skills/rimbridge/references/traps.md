@@ -1,6 +1,6 @@
 # RimBridge traps
 
-Symptom, cause, fix, **recurs when**. Every entry cost a real cycle. Promote into
+Quick append log. Symptom, cause, fix, **recurs when**. Append and move on — no index, no numbering, no line anchors. Cite it as "as per the trap file". Every entry cost a real cycle. Promote into
 `SKILL.md` anything that should change default behaviour, and delete it from here
 when you do. Admission test and entry format:
 `skills/rimworld-modding/references/traps.md`.
@@ -13,37 +13,6 @@ your first mutation, whatever else you skip.
 
 ---
 
-## Contents
-
-Skim this, open what matches your task — do not read them all.
-
-- [`debugToolChanged: false` means nothing](#debugtoolchanged-false-means-nothing)
-- [A screenshot taken while paused can be the previous frame](#a-screenshot-taken-while-paused-can-be-the-previous-frame)
-- [`ThingMaker.MakeThing` builds a wreck for any def whose framework wires it elsewhere](#thingmakermakething-builds-a-wreck-for-any-def-whose-framework-wires-it-elsewhere)
-- [The optimisation that made the number better made the picture wrong](#the-optimisation-that-made-the-number-better-made-the-picture-wrong)
-- [A field missing from the def dump is not proof the patch failed](#a-field-missing-from-the-def-dump-is-not-proof-the-patch-failed)
-- [Verifying a compiled-out tool: attribute names are UTF-8 blobs, not UTF-16 literals](#verifying-a-compiled-out-tool-attribute-names-are-utf-8-blobs-not-utf-16-literals)
-- [The companion DLL changes on every commit, by anyone, with no source change](#the-companion-dll-changes-on-every-commit-by-anyone-with-no-source-change)
-- [`token=NO` during a load is the game still loading, not the WSL bug](#tokenno-during-a-load-is-the-game-still-loading-not-the-wsl-bug)
-- [You cannot photograph a stale mesh — moving the camera repaints it](#you-cannot-photograph-a-stale-mesh--moving-the-camera-repaints-it)
-- [`jawa/list_pawns` returns `kind`, not `kindDef`](#jawalist_pawns-returns-kind-not-kinddef)
-- [Fixed in the companion — one line each](#fixed-in-the-companion--one-line-each)
-- [An armed architect designator swallows every later click, and nothing on the bridge disarms it](#an-armed-architect-designator-swallows-every-later-click-and-nothing-on-the-bridge-disarms-it)
-- [Zooming below the engine's floor renders the whole map FLAT RED — and it looks exactly like catastrophic texture corruption](#-zooming-below-the-engines-floor-renders-the-whole-map-flat-red--and-it-looks-exactly-like-catastrophic-texture-corruption) 🔴
-- [`take_screenshot` names files by the SECOND, so a burst silently collapses to one file](#take_screenshot-names-files-by-the-second-so-a-burst-silently-collapses-to-one-file)
-- [A jammed UI does NOT block the companion route](#a-jammed-ui-does-not-block-the-companion-route)
-- [`python.exe` vs `python3` is a PER-SCRIPT choice, and the rule you carry points the wrong way half the time](#-pythonexe-vs-python3-is-a-per-script-choice-and-the-rule-you-carry-points-the-wrong-way-half-the-time) 🔴
-- [`?.` guards the RESULT, not the CALL — the whole companion is dead at a main menu](#--guards-the-result-not-the-call--the-whole-companion-is-dead-at-a-main-menu) 🔴
-- [A parameter you PASS is not a parameter that SURVIVES — the raid faction is rewritten by ref](#-a-parameter-you-pass-is-not-a-parameter-that-survives--the-raid-faction-is-rewritten-by-ref) 🔴
-- [A tool built to break a conflation can INHERIT that conflation from the API it reads](#-a-tool-built-to-break-a-conflation-can-inherit-that-conflation-from-the-api-it-reads) 🔴
-- [A gate that greps "the source tree" greps the prose about it too](#a-gate-that-greps-the-source-tree-greps-the-prose-about-it-too)
-- [`search_debug_actions` walks the whole tree and FROZE the game — twice](#-search_debug_actions-walks-the-whole-tree-and-froze-the-game--twice) 🔴
-- [Identify a thing by its accompanying signature, not by its own defName](#identify-a-thing-by-its-accompanying-signature-not-by-its-own-defname)
-- [An instrument can be blind to the exact branch that fails](#-an-instrument-can-be-blind-to-the-exact-branch-that-fails) 🔴
-- [The denominator is the population that EXERCISED the rule](#-the-denominator-is-the-population-that-exercised-the-rule) 🔴
-- [Client-call gotchas that cost real minutes — the exact spellings](#client-call-gotchas-that-cost-real-minutes--the-exact-spellings)
-
----
 
 ## `debugToolChanged: false` means nothing
 **Symptom:** `effects.debugToolChanged: false` read as proof that `execute_debug_action` had done nothing; a confident bug report was filed against the mod for an unimplemented code path.
