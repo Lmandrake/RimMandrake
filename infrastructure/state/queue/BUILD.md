@@ -1444,7 +1444,9 @@ verify:   POLICY.md states the naming rule; `derive_matrix.py` still resolves a
           paste the output showing both kinds resolving; and a grep of both queue
           files finds no duplicate name.
 criteria: EMPTY — offline, no game needed.
-state:    ready
+state:    done — `derive_matrix.py`'s `CLOSES_RE` was `[A-Z][A-Z0-9-]*` and would
+          have silently ignored every named trailer; widened to accept both. Rule
+          in POLICY.md, echoed in DECIDE.md and BUILD.md.
 
 
 ## mod-list-shows-descoped-removals-9c4e12

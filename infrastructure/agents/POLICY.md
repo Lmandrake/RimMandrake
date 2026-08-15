@@ -22,13 +22,14 @@ lives on one disk and four seats share this tree.
 
 Rejected push → `git pull --rebase`, never `--force`. Commit explicit paths.
 
-**That commit carries a trailer naming the item:**
+**That commit carries a trailer naming the item, verbatim:**
 
 ```
-Closes: B12
+Closes: queue-ids-become-names-7f3a2c
 ```
 
-One per item, own line, at the end of the message. This is the only durable record
+One per item, own line, at the end of the message. Copy the name exactly as filed —
+a legacy item closes under its number (`Closes: B58`), never a renamed form. This is the only durable record
 that the work happened — the item itself is about to leave the queue, and
 `derive_matrix.py` reads the trailer back out of git to count progress. No trailer
 means the board never learns, and 70 items have already been lost that way.
@@ -172,13 +173,24 @@ infrastructure/state/queue/HUMAN.md     anyone writes  ->  REP reads
 ### Item format — the contract is structural
 
 ```
-## <ID> <one-line title>
+## <name> <one-line title>
 row:      <the V1.md row number this serves. Without it the board cannot place it.>
 spec:     <exact: files, defNames, values, xpaths. No prose.>
 verify:   <the OFFLINE check BUILD must pass. Command or explicit criterion.>
 criteria: <the LIVE pass/fail CHECK will apply.>
 state:    ready | doing | done | blocked | dropped
 ```
+
+**`<name>` is a unique kebab-case NAME, never a number.** Four seats append to these
+files with no locking, so a number that is free when you read it is taken by the time
+you write, and the blind write drops a peer's item silently.
+
+- **It says what the work is.** Transparent enough that the name alone identifies the
+  item. No opaque labels, no initials, no hashes standing alone.
+- **It ends in a short random suffix** to guarantee uniqueness:
+  `queue-ids-become-names-7f3a2c`.
+- **Items already filed under a number keep it.** They close under the ID they were
+  filed with. Never rename one.
 
 **A blocked item names WHY, after an em-dash:**
 

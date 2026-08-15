@@ -21,12 +21,16 @@ table. You read any skill; you repair only the ones you use.
 Turn a v1 bullet into an item BUILD can execute without asking you anything.
 
 ```
-## <ID> <title>
+## <name> <title>
 spec:     exact files, defNames, values, xpaths. No prose. No "something like".
 verify:   the offline check that proves it. A command, or an explicit criterion.
 criteria: what CHECK will look for in the live game. Pass/fail.
 state:    ready
 ```
+
+**`<name>` is a unique kebab-case name that says what the work is, plus a short
+random suffix — `queue-ids-become-names-7f3a2c`. Never a number.** POLICY.md has the
+rule; you file more items than anyone, so you hit the collision first.
 
 **An item without all three fields is not ready and BUILD will bounce it.** Writing
 `verify:` is your work, not BUILD's — you know what "correct" means; they know how

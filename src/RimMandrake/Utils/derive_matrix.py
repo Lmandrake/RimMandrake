@@ -84,7 +84,8 @@ def rownames():
 
 
 LEDGER = "closed_ledger.json"
-CLOSES_RE = re.compile(r"^Closes:\s*([A-Z][A-Z0-9-]*)\s*$", re.M)
+# Item IDs are kebab-case names now; legacy items still close under their number.
+CLOSES_RE = re.compile(r"^Closes:\s*([A-Za-z][A-Za-z0-9._-]*)\s*$", re.M)
 
 
 def git(*args):
