@@ -70,7 +70,7 @@ row:      infra
 spec:     Already dropped from `ModsConfig.xml`; all 7 textures are md5-identical to the per-donor successors and the blocking dependency is cleared. Remove the deployed copy under `C:\Program Files (x86)\Steam\steamapps\common\RimWorld\Mods\` and the repo folder.
 verify:   neither path exists.
 criteria: EMPTY
-state:    ready
+state:    done
 
 ## B27 Repackage the skills — editing the folder does not ship them
 row:      infra
