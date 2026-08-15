@@ -83,6 +83,31 @@ removed, 4,544 rock floors repainted, 597 stray substructure cells removed,
 - ⚠️ **The ship still has no power SOURCE for its VFE factory block** beyond the
   engine itself, and no `LargeThruster`, `SignalJammer` or shield.
 
+### Pawn spawning — 2026-08-14, 20 species placed in the ship
+
+- 🔴 **`jawa/spawn_pawn` defaults `faction` to `hostile`.** Pass it explicitly. Twenty
+  unrequested hostiles inside a sealed hull is one omitted parameter away.
+- 🔴 **`spawn_pawn` reports `Spawned 1/1 <kind>` while generating something else.**
+  4 of 20 (`Jawa_Spawn_Muun`, `Jawa_Gamorrean_Guard`, `OuterRim_Bothan`,
+  `OuterRim_Cerean`) arrived as `kindDef Colonist` / `xenotype Baseliner`. The message
+  echoes the REQUESTED name, so it is not evidence. **Read `kindDef` and `xenotype`
+  back off `jawa/list_pawns`.** All four defs resolve fine under `jawa/get_defs`, so
+  this is a generation-path fallback, not a missing def.
+- 🔑 **`OuterRim_*` and `Jawa_Spawn_*` "species" are `race: Human` + a `BTD_*`
+  XENOTYPE**, not separate races. Species identity lives in `xenotype`; a census that
+  reads `def` alone reports 16 humans. True separate races on this stack:
+  `ABAlien_Yautja`, `guy762_DroidRace_*`, `Dryad_*`, animals.
+- ✅ **`jawa/set_pawn_xenotype` fixes it in place** — converted the 4 Baseliners to
+  `BTD_Muun`/`BTD_Gamorrean`/`BTD_Bothan`/`BTD_Cerean`, read back correct. `kindDef`
+  stays `Colonist`; only the xenotype changes, which is what renders.
+- 🔑 **Roster of pawn kinds without `search_debug_actions`:** walk
+  `list_debug_action_children` on `Actions\Spawn Pawn...` — **1,723 kinds**, one
+  bounded level, ~1 s on the full stack. `jawa/get_defs` CANNOT enumerate (it needs
+  explicit `DefType/defName` pairs) but is the right read-only resolve check.
+- **C1 progress:** `jawa/get_defs`, `jawa/set_pawn_xenotype`, `jawa/list_things`,
+  `jawa/clear_ui` have now RUN live. Still never called: `jawa/fire_quest`, the roof
+  pair, the `spawn_batch` vehicle route, and `world_stats` needs its re-run.
+
 ### 🔴 Power — the 300 conduits were wired to NOTHING. Rewired 2026-08-14
 
 **Before:** 310 transmitter cells in **10 disconnected islands**; the engine's own net
