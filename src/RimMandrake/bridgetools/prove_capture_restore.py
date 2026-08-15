@@ -1,4 +1,4 @@
-"""prove_capture_restore.py - one run that answers the whole BRIDGE reload queue.
+"""prove_capture_restore.py - one run that answers the whole CHECK reload queue.
 
 WHAT THIS IS FOR
 ================

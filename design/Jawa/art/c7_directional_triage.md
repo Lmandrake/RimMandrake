@@ -2,7 +2,7 @@
 
 _CREATE, 2026-08-13. Triage and preparation only; **no art was built in this pass.**
 Every row below was re-verified against disk today, against the donor's own def and
-its own pixels. Queue item: `infrastructure/state/queue/CREATE.md` §C7, tagged `[v2]`._
+its own pixels. Queue item: C7, tagged `[v2]`._
 
 ---
 

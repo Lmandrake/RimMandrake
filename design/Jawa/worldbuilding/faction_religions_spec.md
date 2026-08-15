@@ -2,7 +2,7 @@
 
 _VISION, 2026-08-14. **These are decisions, not recommendations.** The fiction
 lives in `D:\Luke\dev\Rimworld\design\Jawa\worldbuilding\faction_religions.md`;
-this file is what CREATE authors from. Every defName below was read out of the
+this file is what BUILD authors from. Every defName below was read out of the
 **live def dump** (`<LocalLow>\DefDump\`, captured 2026-08-14) — not from a
 workshop folder, not from memory. The full legal vocabulary is
 `D:\Luke\dev\Rimworld\design\Jawa\worldbuilding\data\ideology_palette.md`._
@@ -106,7 +106,7 @@ to gap-audit defect **D3**: the roster's *"Preferred xenotypes: Geonosian"* is
 **not authorable through a `FactionDef` precept list**. Species composition has to
 come from `PawnKindDef` xenotype chances, which is where faction 8's is already
 set. **D3 is not a roster contradiction to resolve — it is a line specifying an
-impossible route.** Filed for PROJECT below.
+impossible route.** Filed for DECIDE below.
 
 **4. Four precepts are the engine's own fallback set and must never be
 hand-authored** — `Cannibalism_Classic`, `Execution_Classic`, `OrganUse_Classic`,

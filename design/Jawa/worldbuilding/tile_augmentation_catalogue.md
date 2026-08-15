@@ -110,7 +110,7 @@ free is defenders from the owning faction** — §6.1.
 | E1 | **Ancient quarry** — retune existing landmark for desert | vanilla whitelist covers deserts | 0.20 → retune | **ships already** — `LandmarkDef AncientQuarry` | none | LM | **v1** — `commonality` patch |
 | E2 | **Ancient warehouse / stockpile** | as E1 | 0.20 → retune | **ships already** — `AncientWarehouse`, `GenStep AncientStockpile` | none | LM | **v1** — `commonality` patch |
 | E3 | **Ancient garrison** — vanilla, mech-defended | as E1 | 0.20 → retune | **ships already** — `LandmarkDef AncientGarrison` | ancient mechs | LM | **v1** — ⚠️ **already generating today, unaudited** |
-| E4 | **Ancient launch site** `↩3E-bis#10-adjacent` | as E1 | 0.10 | **ships already** — `AncientLaunchSite` | none | LM | **v2** — arc-critical dressing; VISION owns the hook |
+| E4 | **Ancient launch site** `↩3E-bis#10-adjacent` | as E1 | 0.10 | **ships already** — `AncientLaunchSite` | none | LM | **v2** — arc-critical dressing; DECIDE owns the hook |
 | F1 | **Sarlacc pit** | `Sandy`/`DryGround`/`Dunes` | 0.10 | **ships already** — `sw_Sarlacc`, `sw_SarlaccLair` | the sarlacc | LM | **v1** — ✅ already live; verify it and tick the gate |
 | F2 | **Dead sarlacc** — a carcass to strip | as F1 | 0.05 | **ships already** — `sw_DeadSarlacc`, `sw_DeadSarlaccCave` | none | LM | **v1** — as F1 |
 | F3 | **Tar-seep pumping rig** `↩3E §3E-TP` | `AB_TarPits` | 0.08 | `AB_Tar` terrain + `AncientDrillPlatform`, `AncientExcavator` | none | LM | **v1** — defs ship; `AncientDrillPlatform` wants `NaturalRock` (`terrainValidationAllowed`) |
@@ -258,20 +258,20 @@ faction defenders.** Split into three questions that have been conflated:
 from `map.Tile` and handing it to `PawnGenerator`. **A build, not an experiment** — and the *only*
 new C# the entire catalogue needs.
 
-**Who owns finding out.** **BRIDGE** owns the *live* half and holds the blocking tool:
+**Who owns finding out.** **CHECK** owns the *live* half and holds the blocking tool:
 `jawa/list_factions`, V1-CRITICAL and **shutdown-gated** (`V1_SCOPE.md`); `traps.md:208` confirms
 **no faction, world or settlement tool** exists among the current 139, so faction data comes from
 `save_game` + a `.rws` grep meanwhile. ⚠️ **Worldgen-time access is a separate question and nobody
-owns it** — it is *not* BRIDGE's, since the bridge drives a running game and cannot observe a
+owns it** — it is *not* CHECK's, since the bridge drives a running game and cannot observe a
 `GenStep`. Assign it explicitly.
 
 ### 6.2 Secondary
 
 | # | question | owner |
 |---|---|---|
-| a | What do `AncientGarrison` / `AncientQuarry` / `AncientWarehouse` / `AncientChemfuelRefinery` **already produce** on the desert world at vanilla `commonality 0.2`? Free information; may satisfy "every tile deserves something" unaided | BRIDGE — one live sighting |
-| b | Does `Functional Vanilla Expanded Props` actually make the VFEPD refinery/tank props *produce*? A5's word "functional" rests on it | CREATE — offline read |
-| c | Does placing running industry violate the anti-exponential pillar? A *found, working* refinery is closer to a faucet than a ruin is | VISION — `enrichment_agents.md:33-39` |
+| a | What do `AncientGarrison` / `AncientQuarry` / `AncientWarehouse` / `AncientChemfuelRefinery` **already produce** on the desert world at vanilla `commonality 0.2`? Free information; may satisfy "every tile deserves something" unaided | CHECK — one live sighting |
+| b | Does `Functional Vanilla Expanded Props` actually make the VFEPD refinery/tank props *produce*? A5's word "functional" rests on it | BUILD — offline read |
+| c | Does placing running industry violate the anti-exponential pillar? A *found, working* refinery is closer to a faucet than a ruin is | DECIDE — `enrichment_agents.md:33-39` |
 | d | 60+ `VEE_*` landmarks from Vanilla Landmarks Expanded are live and unaudited against the desert palette | `[?]` |
 
 ---
@@ -351,12 +351,12 @@ a campaign nobody finished building.
 
 ## 7.5 Consequences for other seats — filed, not assigned
 
-- **BRIDGE's augmentation surface is bigger than the world map.** A site Map is
+- **CHECK's augmentation surface is bigger than the world map.** A site Map is
   an ordinary `Map` once generated, so the live bridge can dress it on arrival.
   ⚠️ **The hook is different**: world tiles are edited whenever; a site map does
   not exist until the player lands, so the trigger is map-generation/arrival.
   **Nobody owns that hook.** Assign it.
-- **CREATE:** this raises the value of the Space Tower read (V11), because the
+- **BUILD:** this raises the value of the Space Tower read (V11), because the
   answer covers the *format*, not just the one mod.
 - ⚠️ **Not v1.** `V1_SCOPE.md` ships one quest and three terrain overrides. This
   is a **v2 content pillar** and is recorded here so it is not re-derived.
@@ -415,7 +415,7 @@ interesting than "they live where it is cooler."
 
 ⚠️ **Feasibility looks good and I have not checked it properly:** **Megafauna is
 already active** in the stack and was noted as contributing nothing to the crags.
-**It is the obvious donor** — CREATE surveys what it ships before anything is
+**It is the obvious donor** — BUILD surveys what it ships before anything is
 authored.
 
 ## 8.2 Poison briar and thorn fields — *the jungle*
@@ -466,7 +466,7 @@ liquid pool would not survive the heat.
 
 ## 8.5 Feasibility — what exists, and what does not
 
-⚠️ **Recorded as design, not as buildable. CREATE owns the survey.**
+⚠️ **Recorded as design, not as buildable. BUILD owns the survey.**
 
 | concept | what may already exist |
 |---|---|

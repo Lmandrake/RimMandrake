@@ -578,7 +578,7 @@ is the work that is actually owed instead, and it is the same effort.**
 ### 4a. [DECIDE] W7 — re-cast the rebel gear onto the scavenger factions
 
 **This is what converts a suppressed faction into a salvage layer.** Without it the
-gear exists but nobody wears it. Duplicated at `queue/VISION.md` **V13** `[v2]`.
+gear exists but nobody wears it. Duplicated as VISION **V13** `[v2]`.
 
 ⚠️ **Three of the four premises in the original filing were wrong. Checked from disk:**
 1. **The named tool is NOT installed.** WS `3635005747` (Faction Weapons and Apparel
@@ -622,7 +622,7 @@ Both candidate mods are pure XML with zero C#, and every droid race we need is i
 twice over (Droid Depot + JDS TSDA), so authoring our own `FactionDef` + thin
 `PawnKindDef`s is **~200 lines and no assets**. Build it; do not adopt a substitute.
 
-⭐ **This unblocks `queue/CREATE.md` C-v3** — the restraining-bolt spec explicitly lands
+⭐ **This unblocks C-v3** — the restraining-bolt spec explicitly lands
 with the Free Droid Enclaves *"whose `FactionDef` is unbuilt"*.
 
 ### 4d. [DECIDE+BUILD] U4 — the rare Homestead Jedi
@@ -633,7 +633,7 @@ with the curated light + telekinesis VPE loadout. `OuterRim_MoistureFarmers` is 
 Outer Rim Core, so the vessel exists.
 
 **Spec exists:** `design/Jawa/force_users_build_spec.md`. Owner has flagged Jedi-for-
-Homestead and Sith-for-Empire as **one joint build** (`queue/VISION.md` V-new), so U4
+Homestead and Sith-for-Empire as **one joint build** (VISION V-new), so U4
 should not be built alone.
 
 ⚠️ `force_users_build_spec.md` cites this item as `TODO_v2.md:1081`. **That line number

@@ -1,9 +1,9 @@
 # "The Claim" — the v1 quest, specified
 
 _VISION, 2026-08-13. **This is `V1_SCOPE.md` row 3.** The row reads *"One
-`QuestScriptDef` that fires and resolves. Any premise."* — CREATE owns the build,
+`QuestScriptDef` that fires and resolves. Any premise."* — BUILD owns the build,
 and "any premise" left the one part that is mine unwritten. This is the premise,
-the player-facing text, and the shape. **CREATE picks the nodes; nothing here
+the player-facing text, and the shape. **BUILD picks the nodes; nothing here
 names an XML field it has not been told to treat as unverified.**_
 
 ---
@@ -62,7 +62,7 @@ buildable by then. **Bulk steel is the texture; the one item is the memory.** A
 quest whose entire reward is 400 steel is a resource trickle, and the player will
 not remember running it.
 
-Amounts are CREATE's call and should sit at the *low* end — this is the first
+Amounts are BUILD's call and should sit at the *low* end — this is the first
 quest, not a windfall, and v1 has no economy tuning behind it.
 
 ## The text the player reads

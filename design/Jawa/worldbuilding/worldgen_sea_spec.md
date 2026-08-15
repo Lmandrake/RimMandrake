@@ -1,6 +1,6 @@
 # The sea step — build spec
 
-_VISION, 2026-08-13. **v1, per PROJECT.** VISION specs, CREATE builds. Kill
+_VISION, 2026-08-13. **v1, per PROJECT.** DECIDE specs, BUILD builds. Kill
 condition: not demonstrably shaping a world within one working day → regenerate
 with the sea as it comes and shaping becomes v2._
 
@@ -257,7 +257,7 @@ Rivers 200, and nothing at all between 5 and 150. A 145-wide gap.
 ### 4. The timing question is already settled — BUILD IT
 
 **PROJECT has ruled: worldgen is HELD until the sea is solved.** The step is
-upstream of row 7 and inherits its priority. **CREATE is not waiting on anyone.**
+upstream of row 7 and inherits its priority. **BUILD is not waiting on anyone.**
 
 
 ---

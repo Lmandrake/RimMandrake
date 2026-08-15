@@ -26,7 +26,7 @@ SHEET_SHA256 to make the test pass, without doing that, converts a deliberate
 conversation back into the silent divergence the pin exists to prevent -- and it
 must be updated in the SAME commit as the regenerated json.
 
-`src/RimMandrake/Utils/rimbench/` is BRIDGE's; coordinate rather than editing it alone.
+`src/RimMandrake/Utils/rimbench/` is CHECK's; coordinate rather than editing it alone.
 
 What PASS 2 adds on top of the skeleton (Factory_lore.md §1.1/§3/§4.1):
   1. MACHINE rects placed at global tile coords (origin + pod-local from the fit-check).

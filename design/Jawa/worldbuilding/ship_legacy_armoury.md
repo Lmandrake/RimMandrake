@@ -76,7 +76,7 @@ other factions' pawn groups.
 - ⚠️ **The `laser sword`.** It is a melee energy weapon already on disk, and
   `design/Jawa/force_users_build_spec.md` is a Jedi/Sith build the owner flagged
   as a joint job — while `lee.theforce.lightsaber` is active in `ModsConfig.xml`
-  and **not installed** (filed at OPS). **Do not casually make the laser sword a
+  and **not installed** (filed at BUILD). **Do not casually make the laser sword a
   lightsaber.** If Force users get a distinct weapon, a common laser sword
   cheapens it; if they do not, this is the cheapest possible route. **Decide
   when the Force spec is decided, not before.**

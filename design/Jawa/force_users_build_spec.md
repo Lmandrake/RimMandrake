@@ -1062,12 +1062,12 @@ of these needs the game running, so they belong in `TODO.md`.
    `LoadFolders.xml` has its `_NO_ForceLightsabers` fallback commented out for
    `v1.6`, so nothing substitutes. Either resubscribe the mod or uncomment
    nothing — the fix is upstream, not ours.
-2. **`[OPS]` `VanillaExpanded.VPsycastsE` is not installed, and
+2. **`[BUILD]` `VanillaExpanded.VPsycastsE` is not installed, and
    `required_mods.md:620-642` still calls it "the sole Force substrate".** Two
    more docs depend on the same assumption:
    `faction_roster_v2.md:229-231` and `TODO_v2.md:1081` (U4). The VPE defName
    shopping list at `required_mods.md:638-642` currently names defs that are not
-   in the game. OPS owns `required_mods.md`; this needs a roster decision
+   in the game. BUILD owns `required_mods.md`; this needs a roster decision
    (install VPE, or restate the Force design against what we run), not a doc edit
    by a research pass.
 3. **`[v2]` U4's premise is now cheaper than it was written.** `TODO_v2.md:1081`

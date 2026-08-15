@@ -149,7 +149,7 @@ than dangerous.** Those 1,144 are direct object references resolved before
 afterwards need not remove the surgery from a pawn's recipe list. **It is kept
 because the downside is "does nothing", not "breaks" — but if a ghoul infusion is
 still offered in game, that is why, and the fix is an XML patch stripping it from
-`ThingDef/Human`'s `recipes`, which is CREATE's to author.**
+`ThingDef/Human`'s `recipes`, which is BUILD's to author.**
 
 ---
 

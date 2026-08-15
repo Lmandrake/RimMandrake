@@ -1,4 +1,4 @@
-# CREATE — the authoring layer, field by field
+# BUILD — the authoring layer, field by field
 
 Companion to `SKILL.md` §3. Everything below is read out of a real def, the live
 def dump (585 active mods, captured 2026-08-14T08:20:26Z, game 1.6.4871 rev591) or

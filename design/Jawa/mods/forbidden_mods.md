@@ -180,7 +180,7 @@ authoritative while the game runs, and an edit made mid-session is not going to
 be clobbered at exit — it is going to be ignored until the next start.** The
 thing that *does* silently rewrite it is RimSort; read the mtime before writing.
 _(Last of six copies of this claim; the three skills files were fixed in
-`a43b610`, this one was missed because the mod list is OPS's exclusively.)_
+`a43b610`, this one was missed because the mod list is BUILD's exclusively.)_
 
 ## Competing gravship overhauls — Mini Gravships forbidden (2026-08-02)
 

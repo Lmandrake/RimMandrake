@@ -430,7 +430,7 @@ list `biomeConfigs[x].scoreOffset` implements.**_
 - ⚠️ **`PoisonForest` is rare and HELD FOR JUDGEMENT.** The owner wants to stand in
   it before ruling. **One look, next live session.**
 
-⇒ **W3 is unblocked. CREATE owns the def work: one `PatchOperationAdd` on
+⇒ **W3 is unblocked. BUILD owns the def work: one `PatchOperationAdd` on
 `TidallyLocked` carrying the 29-entry blacklist and these offsets.**
 
 ---

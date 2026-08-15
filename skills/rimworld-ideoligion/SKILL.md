@@ -10,7 +10,7 @@ description: Design, author, validate and judge RimWorld ideoligions. There is n
 | I want to… | Go to | Reference |
 |---|---|---|
 | **DESIGN** — invent a religion that changes how a campaign plays | §2 | `references/design.md` |
-| **CREATE** — write the XML | §3 | `references/authoring.md` |
+| **BUILD** — write the XML | §3 | `references/authoring.md` |
 | **TEST** — prove it built as specified | §4 | `references/validation.md` |
 | **EVALUATE** — judge someone else's religion | §5 | `references/rubric.md` |
 
@@ -91,7 +91,7 @@ Derivation: `references/authoring.md` §meme budget.
 
 ---
 
-## 3. CREATE — the authoring layer
+## 3. BUILD — the authoring layer
 
 Full field reference, skeletons and `MayRequire` discipline:
 `references/authoring.md`.

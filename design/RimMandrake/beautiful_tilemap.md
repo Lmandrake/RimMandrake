@@ -1,6 +1,6 @@
 # Beautiful_Tilemap — concept spec
 
-**Status: `[v2]` concept. Nothing built.** Stashed for CREATE to evaluate; per
+**Status: `[v2]` concept. Nothing built.** Stashed for BUILD to evaluate; per
 `V1_SCOPE.md` this must not become v1 without an owner ruling. **Tags:**
 `CONCEPT` = the owner's idea as given · `VERIFIED` = measured against files in
 this repo · `ANALYSIS` = added critique, decided by nobody yet.

@@ -371,7 +371,7 @@ def build(grid, elements):
                 # same rule as an unresolved machine label. Surfaced 2026-08-13
                 # the moment heatsinks stopped being dropped: 2 of the 8 collide,
                 # with Mincer and Neutro Synth. That is a build-sheet defect, not
-                # an emitter one, so it is CREATE's to resolve.
+                # an emitter one, so it is BUILD's to resolve.
                 conflicts.append({"type": t, "at": list(at),
                                   "insideMachine": footprint[tuple(at)],
                                   "rect": rect})

@@ -19,7 +19,7 @@ verdict this session.** Owner's rulings unless marked as a recommendation._
 
 ⇒ 🔴 **For every creature below, the target is its `PawnKindDef`, not its race
 `ThingDef`.** The race defNames are given because they are what the design
-documents name; **CREATE must resolve each to its PawnKindDef(s) before
+documents name; **BUILD must resolve each to its PawnKindDef(s) before
 picking.** Several entities have more than one kind.
 
 ---

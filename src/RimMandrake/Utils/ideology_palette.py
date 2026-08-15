@@ -11,7 +11,7 @@ source is what the running game built.
     python3 src/RimMandrake/Utils/ideology_palette.py
 
 Output: design/Jawa/worldbuilding/data/ideology_palette.md (committed -- it is
-the reference CREATE authors against, and regenerating it needs the game's dump).
+the reference BUILD authors against, and regenerating it needs the game's dump).
 """
 
 from __future__ import annotations
