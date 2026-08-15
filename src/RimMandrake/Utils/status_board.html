@@ -1,0 +1,231 @@
+<!doctype html>
+<meta charset="utf-8">
+<title>RIMWORLD v1 — STATUS</title>
+<style>
+  :root{
+    --bg:#0b0f14; --panel:#131a22; --panel2:#0f151c; --line:#243040;
+    --tx:#e6edf3; --mut:#7d8899;
+    --grn:#3fb950; --amb:#d29922; --red:#f85149; --blu:#58a6ff; --vio:#bc8cff;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--bg);color:var(--tx);
+       font:14px/1.35 "Segoe UI",system-ui,sans-serif;padding:14px;}
+  h1{font-size:19px;margin:0;letter-spacing:.14em;font-weight:700}
+  .sub{color:var(--mut);font-size:12px}
+  .panel{background:var(--panel);border:1px solid var(--line);border-radius:8px;padding:12px}
+  .ttl{font-size:11px;letter-spacing:.16em;color:var(--mut);margin:0 0 9px;font-weight:700}
+  .grid{display:grid;gap:12px}
+  .top{grid-template-columns:1fr auto;align-items:center;margin-bottom:12px}
+  .kpis{grid-template-columns:repeat(5,1fr);margin-bottom:12px}
+  .main{grid-template-columns:1fr 340px}
+  .low{grid-template-columns:1fr 1fr 1fr;margin-top:12px}
+  .kpi .v{font-size:30px;font-weight:700;line-height:1.05;font-variant-numeric:tabular-nums}
+  .kpi .l{font-size:11px;color:var(--mut);letter-spacing:.1em;margin-top:3px}
+  table{width:100%;border-collapse:collapse;font-variant-numeric:tabular-nums}
+  th{font-size:10px;letter-spacing:.13em;color:var(--mut);text-align:left;
+     padding:0 8px 7px;font-weight:700}
+  td{padding:5px 8px;border-top:1px solid var(--line);vertical-align:middle}
+  td.name{white-space:nowrap;font-weight:600}
+  .bar{position:relative;height:19px;border-radius:4px;background:#0a0e13;
+       border:1px solid var(--line);overflow:hidden;min-width:96px}
+  .bar i{position:absolute;inset:0 auto 0 0;display:block;border-radius:3px 0 0 3px}
+  .bar b{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;
+         font-size:11px;font-weight:700;text-shadow:0 1px 2px #000}
+  .dot{width:9px;height:9px;border-radius:50%;display:inline-block;margin-right:7px}
+  .seat{display:flex;align-items:center;gap:8px;padding:7px 0;border-top:1px solid var(--line)}
+  .seat:first-of-type{border-top:0}
+  .seat .n{width:62px;font-weight:700;font-size:12px;letter-spacing:.06em}
+  .seat .i{color:var(--mut);font-size:12px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+  .blk{display:flex;align-items:center;gap:9px;padding:6px 0}
+  .blk .c{font-size:20px;font-weight:700;width:34px;text-align:right;font-variant-numeric:tabular-nums}
+  .blk .t{font-size:12px}
+  .blk .s{flex:1;height:8px;background:#0a0e13;border:1px solid var(--line);border-radius:4px;overflow:hidden}
+  .blk .s i{display:block;height:100%}
+  .mem{margin:9px 0}
+  .mem .r{display:flex;justify-content:space-between;font-size:11px;color:var(--mut);margin-bottom:3px}
+  .mem .b{height:9px;background:#0a0e13;border:1px solid var(--line);border-radius:5px;overflow:hidden}
+  .mem .b i{display:block;height:100%}
+  #summary{font-size:12.5px;line-height:1.5;color:#c9d4e0}
+  #summary b{color:var(--tx)}
+  .stale{color:var(--red);font-weight:700}
+  .inv{display:flex;align-items:center;gap:8px;padding:3px 0;font-size:12px}
+  .inv .l{width:104px;color:var(--mut);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .inv .s{flex:1;height:11px;background:#0a0e13;border:1px solid var(--line);border-radius:3px;overflow:hidden}
+  .inv .s i{display:block;height:100%}
+  .inv .v{width:58px;text-align:right;font-variant-numeric:tabular-nums;font-weight:600}
+  .cur{padding:8px 0;border-top:1px solid var(--line)}
+  .cur:first-child{border-top:0}
+  .cur .h{font-size:11px;font-weight:700;letter-spacing:.08em;display:flex;align-items:center;gap:7px}
+  .cur .w{font-size:12.5px;margin:3px 0 0 16px}
+  .cur .y{font-size:11.5px;color:var(--mut);margin:2px 0 0 16px;font-style:italic}
+</style>
+
+<div class="grid top">
+  <div>
+    <h1>RIMWORLD &nbsp;v1</h1>
+    <div class="sub" id="clock">—</div>
+  </div>
+  <svg width="188" height="96" viewBox="0 0 188 96" id="gauge"></svg>
+</div>
+
+<div class="grid kpis" id="kpis"></div>
+
+<div class="grid main">
+  <div class="panel">
+    <p class="ttl">V1 ROWS — DECIDE → BUILD → CHECK</p>
+    <table><thead><tr>
+      <th style="width:1%">ROW</th><th>DECIDE</th><th>BUILD</th><th>CHECK</th><th style="width:1%">ROW TOTAL</th>
+    </tr></thead><tbody id="rows"></tbody></table>
+  </div>
+
+  <div class="grid" style="grid-template-rows:auto auto auto;align-content:start">
+    <div class="panel">
+      <p class="ttl">AGENTS</p><div id="seats"></div>
+    </div>
+    <div class="panel">
+      <p class="ttl">HOST</p><div id="host"></div>
+    </div>
+  </div>
+</div>
+
+<div class="grid low">
+  <div class="panel"><p class="ttl">BLOCKERS</p><div id="blockers"></div></div>
+  <div class="panel" style="grid-column:span 2"><p class="ttl">WHERE IT STANDS</p><div id="summary"></div></div>
+</div>
+
+<div class="grid low">
+  <div class="panel"><p class="ttl">INVENTORY — DATA VOLUME</p><div id="invmb"></div></div>
+  <div class="panel"><p class="ttl">INVENTORY — COUNT</p><div id="invn"></div></div>
+  <div class="panel"><p class="ttl">CURRENTLY</p><div id="current"></div></div>
+</div>
+
+<script>
+const C={grn:'#3fb950',amb:'#d29922',red:'#f85149',blu:'#58a6ff',vio:'#bc8cff',mut:'#7d8899'};
+const SEATC={DECIDE:C.vio,BUILD:C.grn,CHECK:C.blu,REP:C.amb};
+const el=id=>document.getElementById(id);
+
+// Progress colour is a judgement, not decoration: red under a third, amber under
+// two thirds, green above. Same thresholds everywhere on the page.
+const pc=p=>p>=67?C.grn:p>=34?C.amb:C.red;
+const pct=(d,t)=>t?Math.round(100*d/t):0;
+
+function bar(d,t,col){
+  const p=pct(d,t);
+  return `<div class="bar"><i style="width:${p}%;background:${col||pc(p)};opacity:.85"></i>`+
+         `<b>${d}/${t}</b></div>`;
+}
+
+function gauge(p){
+  // Half-donut RAG. Sweeps left-to-right; the needle is the only moving part so
+  // a glance from across the room reads it.
+  const R=74,cx=94,cy=88,a=Math.PI*(1-p/100);
+  const arc=(f,t,c)=>{const x1=cx+R*Math.cos(Math.PI*(1-f/100)),y1=cy-R*Math.sin(Math.PI*(1-f/100)),
+    x2=cx+R*Math.cos(Math.PI*(1-t/100)),y2=cy-R*Math.sin(Math.PI*(1-t/100));
+    return `<path d="M${x1} ${y1} A${R} ${R} 0 0 1 ${x2} ${y2}" stroke="${c}" stroke-width="13" fill="none"/>`;};
+  return arc(0,34,C.red)+arc(34,67,C.amb)+arc(67,100,C.grn)+
+    `<line x1="${cx}" y1="${cy}" x2="${cx+(R-19)*Math.cos(a)}" y2="${cy-(R-19)*Math.sin(a)}"
+       stroke="#fff" stroke-width="3" stroke-linecap="round"/>`+
+    `<circle cx="${cx}" cy="${cy}" r="5" fill="#fff"/>`+
+    `<text x="${cx}" y="${cy-22}" fill="${pc(p)}" font-size="27" font-weight="700"
+       text-anchor="middle" font-family="Segoe UI">${p}%</text>`;
+}
+
+function memRow(label,used,total,warnAt){
+  const p=total?Math.round(100*used/total):0;
+  const col=p>=(warnAt||85)?C.red:p>=70?C.amb:C.grn;
+  return `<div class="mem"><div class="r"><span>${label}</span>
+    <span>${used} / ${total} GB</span></div>
+    <div class="b"><i style="width:${p}%;background:${col}"></i></div></div>`;
+}
+
+function render(d){
+  const o=d.overall;
+  el('gauge').innerHTML=gauge(o.pct);
+  const ago=Math.max(0,Math.floor(Date.now()/1000)-d.ts);
+  el('clock').innerHTML='updated '+ago+'s ago'+(ago>20?' <span class="stale">— STALE</span>':'');
+
+  const rows=d.rows||[];
+  const rowDone=r=>Object.values(r.cells||{}).reduce((a,c)=>a+(c.done||0),0);
+  const rowTot =r=>Object.values(r.cells||{}).reduce((a,c)=>a+(c.total||0),0);
+  const complete=rows.filter(r=>rowTot(r)&&rowDone(r)===rowTot(r)).length;
+  const blocked=(d.blockers.classes||[]).reduce((a,c)=>a+c.count,0);
+  const live=Object.values(d.agents||{}).filter(a=>a.state==='busy').length;
+
+  el('kpis').innerHTML=[
+    ['ITEMS DONE',`${o.done}/${o.total}`,pc(o.pct)],
+    ['ROWS COMPLETE',`${complete}/${rows.length}`,pc(pct(complete,rows.length))],
+    ['BLOCKED',blocked,blocked?C.red:C.grn],
+    ['AGENTS LIVE',`${live}/4`,live?C.grn:C.mut],
+    ['RIMWORLD',d.host.rimworld_gb!=null?d.host.rimworld_gb+' GB':'down',
+      d.host.rimworld_gb!=null?C.blu:C.mut],
+  ].map(([l,v,c])=>`<div class="panel kpi"><div class="v" style="color:${c}">${v}</div>
+     <div class="l">${l}</div></div>`).join('');
+
+  el('rows').innerHTML=rows.map(r=>{
+    const c=r.cells||{}, g=k=>c[k]||{done:0,total:0};
+    return `<tr><td class="name">${r.name}</td>`+
+      ['DECIDE','BUILD','CHECK'].map(k=>`<td>${bar(g(k).done,g(k).total,
+         g(k).state==='blocked'?C.red:null)}</td>`).join('')+
+      `<td>${bar(rowDone(r),rowTot(r))}</td></tr>`;
+  }).join('');
+
+  el('seats').innerHTML=['DECIDE','BUILD','CHECK','REP'].map(s=>{
+    const a=(d.agents||{})[s]||{state:'offline'};
+    const col={busy:C.grn,idle:C.blu,waiting:C.amb,blocked:C.red}[a.state]||C.mut;
+    return `<div class="seat"><span class="dot" style="background:${col}"></span>
+      <span class="n" style="color:${SEATC[s]}">${s}</span>
+      <span class="i">${a.item||'<i style="opacity:.5">'+a.state+'</i>'}</span></div>`;
+  }).join('');
+
+  const h=d.host||{};
+  el('host').innerHTML=
+    (h.wsl?memRow('WSL memory',h.wsl.used_gb,h.wsl.total_gb):'')+
+    (h.swap&&h.swap.total_gb?memRow('Swap',h.swap.used_gb,h.swap.total_gb,60):'')+
+    (h.agents?`<div class="mem"><div class="r"><span>Agent processes</span>
+       <span>${h.agents.count} · ${h.agents.rss_gb} GB</span></div></div>`:'');
+
+  const cls=d.blockers.classes||[];
+  const mx=Math.max(1,...cls.map(c=>c.count));
+  el('blockers').innerHTML=cls.length?cls.map(c=>
+    `<div class="blk"><span class="c" style="color:${c.count?C.red:C.mut}">${c.count}</span>
+     <span class="s"><i style="width:${100*c.count/mx}%;background:${c.count?C.red:C.mut}"></i></span>
+     <span class="t">${c.label}</span></div>`).join('')
+    :'<div class="sub">nothing blocked</div>';
+
+  // Inventory — two axes. Palette is categorical, not semantic: these are not
+  // good or bad, so reusing the red/amber/green scale would lie.
+  const CAT=['#58a6ff','#bc8cff','#3fb950','#d29922','#f778ba','#39c5cf','#ff9f6b','#8b949e'];
+  const invBars=(items,key,fmt)=>{
+    const mx=Math.max(1,...items.map(i=>i[key]));
+    return items.map((i,n)=>`<div class="inv"><span class="l">${i.label}</span>
+      <span class="s"><i style="width:${100*i[key]/mx}%;background:${CAT[n%CAT.length]}"></i></span>
+      <span class="v">${fmt(i[key])}</span></div>`).join('');
+  };
+  const inv=d.inventory||{volume:[],counts:[]};
+  el('invmb').innerHTML=invBars(inv.volume,'mb',v=>v>=1024?(v/1024).toFixed(1)+' GB':v+' MB');
+  el('invn').innerHTML=invBars(inv.counts,'n',v=>v.toLocaleString());
+
+  // What each agent says it is doing. Written by `board.py say "<what>" --why "<why>"`.
+  // An agent with no line renders the gap rather than hiding it.
+  el('current').innerHTML=['DECIDE','BUILD','CHECK','REP'].map(s=>{
+    const a=(d.agents||{})[s]||{state:'offline'};
+    const col={busy:C.grn,idle:C.blu,waiting:C.amb,blocked:C.red}[a.state]||C.mut;
+    return `<div class="cur"><div class="h"><span class="dot" style="background:${col};margin:0"></span>
+      <span style="color:${SEATC[s]}">${s}</span></div>`+
+      (a.item?`<div class="w">${a.item}</div>`+(a.why?`<div class="y">${a.why}</div>`:'')
+            :`<div class="w" style="color:${C.mut};opacity:.6">— no line set (${a.state})</div>`)+
+      `</div>`;
+  }).join('');
+
+  const worst=cls.filter(c=>c.count).sort((a,b)=>b.count-a.count)[0];
+  el('summary').innerHTML=
+    `<b>${o.done} of ${o.total}</b> v1 items done (${o.pct}%), <b>${complete} of ${rows.length}</b> rows fully closed. `+
+    (blocked?`<b style="color:${C.red}">${blocked} blocked</b>, most on <b>${worst.label}</b>. `:'Nothing blocked. ')+
+    (live?`${live} agent${live>1?'s':''} working. `:'No agent is working. ')+
+    (d.host.rimworld_gb!=null?`RimWorld is up (${d.host.rimworld_gb} GB).`:'RimWorld is down — CHECK items cannot run.');
+}
+
+const tick=()=>fetch('/data',{cache:'no-store'}).then(r=>r.json()).then(render)
+  .catch(e=>el('clock').innerHTML='<span class="stale">server unreachable</span>');
+tick(); setInterval(tick,3000);
+</script>
