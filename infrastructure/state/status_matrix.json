@@ -65,8 +65,8 @@
    "cells": {
     "DECIDE": {
      "done": 0,
-     "total": 0,
-     "state": "offline"
+     "total": 1,
+     "state": "idle"
     },
     "BUILD": {
      "done": 0,
@@ -177,6 +177,26 @@
      "done": 0,
      "total": 30,
      "state": "blocked"
+    }
+   }
+  },
+  {
+   "name": "\u2014",
+   "cells": {
+    "DECIDE": {
+     "done": 0,
+     "total": 3,
+     "state": "idle"
+    },
+    "BUILD": {
+     "done": 0,
+     "total": 1,
+     "state": "idle"
+    },
+    "CHECK": {
+     "done": 0,
+     "total": 1,
+     "state": "idle"
     }
    }
   }

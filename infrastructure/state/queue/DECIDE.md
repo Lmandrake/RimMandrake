@@ -1,17 +1,57 @@
 # DECIDE inbox.
 
-## D0 Break v1 into rows and items, and assign every migrated item a row
+## D0 Assign `row:` to the 67 migrated items
 row:      —
-spec:     Read `infrastructure/state/V1.md` (8 rows) and both files in
-          `infrastructure/state/facts/`. For each row, decide the high-level needs,
-          then the detailed items beneath them. Then add `row: <n>` to every item
-          already sitting in `queue/BUILD.md` (37) and `queue/CHECK.md` (30) — they
-          migrated without one and currently land in an `unassigned` bucket.
-          Rows 2 and 7 are held behind the sea; say what would unhold them.
-          Rows 1, 3, 5, 6, 8 are closed — do not re-open them, but DO record what
-          "closed" means for each so the board can show it.
-verify:   `python3 src/RimMandrake/Utils/derive_matrix.py` reports 0 items in the
-          `unassigned` row, and 8 named rows carry non-zero totals.
+spec:     Items in `queue/BUILD.md` and `queue/CHECK.md` migrated without a `row:`
+          and land in an `unassigned` bucket. Read each, add `row: <n>` from
+          `V1.md`. Mechanical; no judgement about scope needed. Rows 1,3,5,6,8 are
+          closed — items touching them are almost certainly stale, delete rather
+          than assign.
+verify:   `python3 src/RimMandrake/Utils/derive_matrix.py` reports 0 unassigned.
+criteria: —
+state:    ready
+
+## D-CRIT ⭐ The critical path — read this before sequencing anything
+row:      —
+spec:     ROWS 2 AND 7 ARE ONE CHAIN, NOT TWO PROBLEMS.
+          Row 7 (ordinary worldgen) is blocked on the sea: the generator produces
+          43-55% scattered ocean against a spec of ~25% in three bodies. Ocean is an
+          elevation rule at worldgen step 0; no slider reaches it. `JawaSeaShaper.dll`
+          is our intervention and is NOT DEPLOYED.
+          Row 2 (faction exclusion) is one screen seen ONCE during that same
+          worldgen run — `WORLDGEN_FACTION_CHECKLIST.md`, ratified, 21 untick / 6 keep.
+          It needs no build at all. It closes as a side effect of row 7 happening.
+          ⇒ THE ORDER IS FIXED:
+            B0 deploy (30-tool build + SeaShaper, game DOWN)
+            -> measure the sea on DISPOSABLE quicktest worlds (no campaign click)
+            -> tune SeaShaper until the 5-part gate passes
+            -> ONE real worldgen run, which closes rows 7 AND 2 together.
+          ⚠️ Sea gate requirements 3 and 4 are MISCALIBRATED until the `world_stats`
+          unit fix ships inside B0 — `centroidLat` is degrees against a spec written
+          as a 0.35-0.65 fraction, and `raggedness` counts tile edges where the spec
+          means tiles with a land neighbour. Requirements 1 and 2 are readable now.
+          ⚠️ `waterPct 25.0` was one seed. Seed `sickle` read 16.74. It is a mode,
+          not a constant — never accept a world on a single reading.
+verify:   —
+criteria: —
+state:    ready
+
+## D-R4 Row 4 — scrapfields, and it may not be a content bug at all
+row:      4
+spec:     2 of 3 terrain overrides are SEEN (dune seas, salt pans at 144 cells).
+          Scrapfields is the open one: a full-map count returned 4 `ChunkSlagSteel`
+          on the 13:54 quicktest against a band of 44-56 in 4-6 clumps.
+          🔴 THE PREREQUISITE NOBODY HAS MET: it is not established that those 4
+          chunks are OURS. Vanilla and other mods scatter `ChunkSlagSteel` too. If
+          they are foreign, our genStep placed ZERO and every hypothesis so far is
+          aimed at the wrong target. Settle that FIRST — it is offline work.
+          Then, in order: `warnOnFail=true` on the scatter defs so a failed
+          placement is logged at all; `minSpacing 4 -> 1`; one fresh quicktest per
+          iteration at ~90 s.
+          ⚠️ A GenStep runs at MAP GENERATION and never again. A count only means
+          anything on a map generated AFTER the def it is testing. Naming the map
+          is part of the result.
+verify:   —
 criteria: —
 state:    ready
 
