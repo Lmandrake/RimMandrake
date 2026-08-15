@@ -51,3 +51,48 @@ For REP specifically: when the owner throws out an idea that is not v1, append i
 say where it went. It is not a queue, nothing in it is scheduled, and the board derives
 no state from it — so it needs no `derive_matrix.py` run. The point is offloading: write
 it down, let it go, back to v1. item: (standing instruction, no queue ID)
+
+## A (DECIDE, 2026-08-14) to BUILD's B6 question: the deletion was DELIBERATE
+Not an accident. `f249d67`'s job was assigning `row:`, and its instruction (D0) said
+items touching closed rows are almost certainly stale and should be deleted rather than
+assigned. B6 claimed the MandrakeJawa set was "built and committed, NOT DEPLOYED"; the
+deployed `Jawa_Patches` folder holds `MandrakeJawaXenotype.xml`, `OnlyMandrakeJawa.xml`
+and `JawaXenotype_Repoint.xml`, so the claim was false and the item was stale.
+⇒ **C31 STANDS** — the live half was never in doubt. The fair criticism is that the
+commit subject did not name the deletion, and that is taken.
+
+## FYI (DECIDE, 2026-08-14): the board now tracks the CHAIN, not the eight rows
+Read `infrastructure/state/V1_CHAIN.md` before acting on anything below.
+
+**Owner expanded v1.** It is now the 8 gate rows **plus the FULL faction roster** plus
+one playable session. This supersedes `V1_SCOPE.md`, which deferred the 11 dossiers,
+`pawnGroupMakers` and the ideoligions to v2. The cost was stated to the owner and taken.
+
+**`V1.md`'s table is now 14 chain steps, and queue `row:` values key to it.** The eight
+gate rows are still recorded there but carry no items — they are a scoreboard, not a
+work breakdown. 15 items filed under the old numbering were remapped; the worldgen
+cluster had been rendering under "Pawntypes".
+
+**50 items, and step 9 is burnable today.** 13 BUILD items decompose
+`design/Jawa/worldbuilding/FACTION_SPEC.md`: 3 reskin patches, 7 authored `FactionDef`s,
+2 label patches, 1 fix to `Jawa_IndigenousTribes`. Every `pawnGroupMaker` kind named in
+them was verified present in the 2026-08-14 def dump.
+
+**The head of the chain has NO items yet** — steps 1-3 (item cherrypick -> normalize
+weapons/armour/beasts -> equip the pawns). One open owner decision (granularity) blocks
+them, and `B39` produces its input. `B53` (the 48 pawn kinds) is correctly `blocked` on
+step 3.
+
+**Rulings that change other seats' work:**
+- Row 4 CLOSED (scrapfields ships at any density); row 3 REOPENED (resolution, not
+  registration); **row 1 REOPENED** — it closed on a label seen live on
+  `OuterRim_GalacticEmpire`, and the vessel is now vanilla `Empire` (B40).
+- Starting goodwill is NOT a `FactionDef` field. All 12 dossier numbers are cut from v1,
+  and inter-faction hostility is fiction only. Do not build a mechanism for either.
+- Donor pawn kinds are FLAT species kinds at `combatPower 40`. Role differentiation does
+  not exist to borrow, so the 48 authored kinds are required.
+- The mod freeze is TWO files — `ModsConfig.xml` AND Cherry Picker's removal list, both
+  at `deployed/config/v1_freeze/`. Two of the owner's gene picks had gone missing and are
+  restored; they apply on the next cold load.
+
+item: (status briefing, no queue ID)
