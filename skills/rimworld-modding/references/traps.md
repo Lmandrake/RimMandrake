@@ -18,16 +18,14 @@ confidently — and answered a different question than the one asked.**
 
 ## Appending
 
-At the end of a task, if something surprised you, append it to the matching file.
-Keep it short: what it looked like, what was actually true, what worked.
+At the end of a task, if something surprised you, append it to the matching file:
+what it looked like, what was actually true, what worked. Keep it to a few lines.
 
 **It goes in only if it is specific, non-obvious and RimWorld-bound** — an error
 string, a flag, an xpath, a defName, a number — **and still true today.** General
-software or process advice is not a trap and does not belong here; that is what
-made this log unusable once already.
-
-If it would change what `SKILL.md` tells you to do by default, put it in
-`SKILL.md` instead and do not log it. If `SKILL.md` already says it, do not log it.
+software or process advice is not a trap; that is what made this log unusable
+once already. If it would change what `SKILL.md` tells you to do by default, put
+it in `SKILL.md` instead and do not log it here.
 
 **Never number an entry, and never cite one by number, line or heading.** Say
 "as per the trap file" and stop.

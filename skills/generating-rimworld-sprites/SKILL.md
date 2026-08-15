@@ -36,6 +36,33 @@ Typical RimWorld sprites fail both ends:
 *aspect*, then downscale with `pnglib.resize_rgba`, which premultiplies alpha
 and so avoids the dark halo that plain averaging produces on a cutout.
 
+## First ask whether this is a COLOUR job — those need no pixels at all
+
+Separate the ask into **colour** (free, and scale-proof, because it is the mean)
+and **silhouette** (dents, tears, holes — the only part that needs drawing).
+
+The default `Cutout` shader multiplies `graphicData/color` over the whole sprite,
+so a mask is **not** required to tint a building. Measured over the live `DefDump`:
+of **945** buildable defs in ship-relevant categories, 501 are plain `Cutout` and
+only 36 carry a `CutoutComplex`-family shader — yet **944 of 945 accept a colour
+with no new art**. Ludeon relies on it: `AncientFortifiedWall` `(127,135,127)` and
+`OrbitalAncientFortifiedWall` `(132,140,140)` are two defs over one atlas, neither
+masked. The opt-out proves the default — exactly two shipped buildings set
+`<ignoreThingDrawColor>true</ignoreThingDrawColor>` (`GrayDoor`,
+`AncientBlastDoor`), and a `<color>` patch on those two silently does nothing.
+
+⚠️ **`<color>` MULTIPLIES, so it can only ever darken.** Solve it rather than
+guessing: `color = 255 * target / source_mean`; if that clips past 255 the source
+is too dark to reach the target and no value exists. `GravshipStructuralBeam_Atlas`
+means `(54,53,54)`, so a mid-brown is unreachable, while a wash with max channel
+255 — e.g. `(255,150,96)` — bleeds the cold grey out at the same luminance.
+**Aging is free; brightening is not.**
+
+Ask "does the def declare a mask?" only when you need **two independently
+paintable regions**. And read the shader and `texPath` from the **live def dump,
+not the shipped XML** — Vanilla Gravship Expanded retextures the vanilla gravship
+set, so a plan written off Odyssey's XML targets art the game is not drawing.
+
 ## Workflow
 
 Copy this checklist and work down it:
@@ -168,7 +195,16 @@ Earned on this project's pilot; both rules are now non-negotiable.
    own size, because conforming scales the whole drawing back into the original
    canvas. Measured cost on the first attempt: **14% of body size**.
 
-Phrase both positively in the prompt — "every fitting terminates flush against
+3. **A soft curve collapses into a hard wall.** A muzzle drawn correctly on a
+   1934 px master, with 22 px of clear margin inside a 512 canvas, rendered at
+   ~104 px as a vertical face with a square top corner — which at the front of a
+   head reads as *cut off*. Nothing was missing and every offline check passed.
+   Redraw the feature as a continuous taper **so that it survives the
+   downsample**: the master gets blunter and more exaggerated so the sprite gets
+   better. Then confirm the bbox is unchanged — it staying at (8,168,490,293)
+   across the fix is what proves nothing else moved.
+
+Phrase all three positively in the prompt — "every fitting terminates flush against
 the hull", never "no cables sticking out". See
 `../generating-images/references/prompting.md`.
 
@@ -267,23 +303,22 @@ Seven lines. If it does not fit, the item is really two items.
 
 ### How sprite checks lie
 
-Four earned ones — trap numbers are in
-`skills/rimworld-modding/references/traps-art.md`:
+Four earned ones — full cases as per the trap file:
 
-- **The bare-path fallback drew instead of your file (trap 46).**
+- **The bare-path fallback drew instead of your file.**
   `Graphic_Multi.Init` calls `ContentFinder.Get(req.path)` — the path *without*
   any `_north`/`_east` suffix — before it errors. A suffix-less PNG at the base
   path silently satisfies a directional request, so a mis-deployed `_south`
   renders as a pass. Name the facing you looked at.
-- **Correct at source, broken at render (trap 45).** Canvas right, alpha real,
+- **Correct at source, broken at render.** Canvas right, alpha real,
   bbox inside the footprint, and the muzzle still read as "cut off" because a
   soft curve collapsed into a hard vertical wall at ~104 px. Predict what the
   shape does at **display** size, not at generation size.
-- **A missing direction is not a defect (trap 37).** `visibleFacing` lets a def
+- **A missing direction is not a defect.** `visibleFacing` lets a def
   ship three facings deliberately — a back attachment has no south. Read the
   def's own declaration before calling a facing broken, or you will file a
   commission the engine would never have drawn.
-- **The review image is not the rendered image (trap 45 companion, trap 48).**
+- **The review image is not the rendered image.**
   A raw PNG on a contact sheet is not what the game draws: `<color>` tints it,
   and a `HairDef`/apparel override is only drawn when that style is **selected**
   — a pawnkind spawn rolls its own style, so the look passes or fails at random.
@@ -298,7 +333,7 @@ ROUTE    spawn JawaWreckedSmelter on clear ground, rotate to south, default zoom
 PREDICT  the notch reads as ~15% of sprite width at 104 px; outline still fills one 1x1 tile
 CLOSE    one screenshot at default zoom showing the notch — NOT chasing: rust hue, E/W facings
 RIDE     batch
-LIES     bare-path fallback (trap 46) — a failed _south deploy draws WreckedSmelter.png and looks fine
+LIES     bare-path fallback — a failed _south deploy draws WreckedSmelter.png and looks fine
 ```
 
 ## Reference

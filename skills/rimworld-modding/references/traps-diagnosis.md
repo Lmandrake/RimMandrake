@@ -4,7 +4,7 @@ Log triage, error counts, and calls into a running game.
 
 **Read this one before trusting a diagnosis** — especially before repeating a claim about the engine that you did not verify yourself.
 
-Entry format, admission test and the append rule: `references/traps.md`.
+What goes in, and what does not: `references/traps.md`.
 
 ---
 
@@ -24,14 +24,6 @@ Entry format, admission test and the append rule: `references/traps.md`.
 
 ---
 
-### A failed post-long-event action costs only itself — the queue continues
-**Symptom:** `Could not execute post-long-event action` was rated near-top severity for a full day, on the folklore belief that one throw abandons the rest of RimWorld's post-load queue for every mod. The log line *sounds* fatal.
-**Cause:** the IL says otherwise — FAT header with an EH section, a typed `catch(System.Exception)` over an **18-byte** try containing a single `Action::Invoke`, and a handler whose `leave` targets the **loop increment**. It is `for (…) { try { list[i](); } catch { Log.Error(…); } }`. One failed action costs one action.
-**Fix:** severity is per-action. Retracted across all five files that restated it, and a correction owed on the upstream bug report that cited it.
-**Recurs when:** any claim about **engine behaviour** rather than an observed log string — it will be used to predict things you have not observed, so re-derive it from the IL, the decompiled source or an authoritative citation before it justifies a mod removal or an outward-facing report.
-
----
-
 ### The same mod stayed dead through two correct fixes, for three different reasons
 **Symptom:** `Error in static constructor of ChooseWildAnimalSpawns.Main` on three consecutive loads, always thrown from `BiomeDef.CommonalityOfAnimal`, and twice running with the *identical* `ArgumentNullException: Value cannot be null. Parameter name: key` at the identical frame.
 **Cause:** three unrelated bugs converging on one line, `cachedAnimalCommonalities.Add(key, value)`. Load 1: `ArgumentException` duplicate key — `Armadillo` registered from both directions. Load 2: `ArgumentNullException` because the **BiomeDef** was null (our own `<li>` bug). Load 3: same exception because the **PawnKindDef** was null — five unresolved `BiomeAnimalRecord` entries injected by a compat patch guarded on the mod rather than the def.
@@ -40,23 +32,11 @@ Entry format, admission test and the append rule: `references/traps.md`.
 
 ---
 
-### A correct general principle applied to the WRONG SET — and the leading question that launders it
-**Symptom:** a seat reviewed a 24-key removal list, recognised Anomaly creature defs in it, and withdrew nine of them on the grounds that *"deleting defs destroys the reskin donor library the owner said to keep."* **The principle is true. The list did not contain a single donor.** The owner had already separated keeps from rejects, and **the two sets never intersected** — the nine keys were verdicts the owner had personally given, and they were spent. ⚠️ **The compounding failure was worse than the edit: the finding was taken to the owner as a question built on the false premise, the owner answered the question as asked, and the answer was then written into `V1_SCOPE.md` as doctrine marked "do not re-propose."**
-**Cause:** ⭐ **the reasoning survives review, which is precisely what makes it dangerous.** Nobody rejects "do not delete your donor assets" — it is correct, it is well argued, and it was reached from evidence. What was never checked is **what the argument was pointed at.** The mechanism had been verified in detail (how Cherry Picker's PawnKindDef branch differs from its ThingDef branch, read from decompiled IL); **the premise — that these particular defs were donors — had not been checked at all.** A true statement about a set you have not enumerated is not a finding, it is a guess wearing a proof.
-**Fix:** two checks, both cheap.
-1. 🔴 **Does the removal list INTERSECT the keep list?** Enumerate both and compare. Two minutes. If the answer is "no", the donor argument does not apply and the objection evaporates.
-2. 🔴 **Before escalating a finding to the owner, verify the PREMISE, not just the mechanism.** *"I confirmed how the tool works"* is not the same as *"I confirmed what it is aimed at."* **A leading question is worse than a wrong edit**, because the owner's answer converts your error into their ruling — and a ruling gets written down, propagated to other seats, and marked settled.
-**Recurs when:** any review that reasons from a category rather than from the list — "these are all X, and we must not remove X." ⚠️ **The tell is a *category noun* doing the work in your own sentence** ("the donor library", "the vanilla defs", "the quest content") where a specific enumeration should be. **Generalises to** every escalation: state the principle, then name the members it applies to. If you cannot name them, you have not finished checking.
-
----
-
-### A sampled extrapolation entered the record as a measured count — and then drifted
-**Symptom:** a queue carried *"scrapfields: **11 measured** against a fully-derived 75-125"* as an open engine defect for a day, and the derivation was re-verified twice against IL to explain the gap. **There was no measurement of 11.** The source (`observed/2026-08-14_row4_live.md:97-101`) is 9 rects of 30x30 = 8,100 cells, ~13% of the map, holding **one** `ChunkSlagSteel` — extrapolated by /0.13 to *"~7 map-wide"*. The number then drifted from ~7 to 11 in the retelling, and nobody could tell, because by then it read like a count.
-**Cause:** two failures, and the second is the one that cost the day. (1) **Where the 9 sample rects sat was never recorded**, so the uniform-coverage assumption the division rests on is not merely unverified — it is **permanently unverifiable**, and 1 chunk in a sample is equally consistent with 7 map-wide and with 90. (2) ⭐ **An estimate that loses its error bars is indistinguishable from a measurement**, and it gets defended like one: every hour spent hardening the *derivation* of 75-125 raised confidence in the gap, when the gap's other side was a single observed object.
-**Fix:** ⭐ **before deriving a defect from a shortfall, ask what the number is a count OF.** A count is over the whole population, or it is labelled an **estimate** and carries its coverage, its sample locations and its n. `1` is not a rate. And prefer the instrument that cannot sample: a full-map `listerThings` count exists and costs one call — it was never run.
-**Recurs when:** any measurement taken through a sampling instrument — screenshot rects, a grep over one harvested log, a spot-check of N of M mods, a partial def dump. ⚠️ **The tell is a suspiciously round divisor in the provenance** (`/0.13`, `x8`, "so about"). **Generalises to** every number that survives into a second document: carry the n and the coverage with it, or the next reader — including you, tomorrow — will reason from it as a fact. **Distinct from** *an absent input read as an empty one*: here the instrument DID see something real. The defect is that it saw 13% of the map and the record forgot to say so.
-
----
+### An extrapolation from a sampled instrument is not a count
+**Symptom:** a queue carried *"scrapfields: **11 measured** against a fully-derived 75-125"* as an open engine defect for a day. There was no measurement of 11: the source is 9 rects of 30x30 = 8,100 cells, ~13% of the map, holding **one** `ChunkSlagSteel`, divided by 0.13 to "~7 map-wide" and then drifting to 11 in the retelling.
+**Cause:** where the 9 sample rects sat was never recorded, so the uniform-coverage assumption the division rests on is permanently unverifiable — 1 chunk in that sample is equally consistent with 7 map-wide and with 90.
+**Fix:** prefer the instrument that cannot sample. A full-map `jawa/list_things` count exists and costs **one call**; it was never run. Where a number really is sampled, label it an estimate and carry its coverage, its sample locations and its n.
+**Recurs when:** screenshot rects, a grep over one harvested log, a spot-check of N of M mods, a partial def dump. ⚠️ The tell is a suspiciously round divisor in the provenance — `/0.13`, `x8`, "so about".
 
 ### A one-shot generator's output dates the DEF THAT BUILT THE MAP, not the def on disk
 **Symptom:** v1 row 4 was about to be closed or failed on a full-map `ChunkSlagSteel` count against a band of **44–56**, derived from `Jawa_ScatterScrapfields` as it stands in the repo today. The map the count would have run on was generated **before** that def reached the game copy. A near-zero result was queued to be read as *"the fix did not work"*; the fix was never in the map.

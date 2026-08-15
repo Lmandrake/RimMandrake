@@ -186,9 +186,6 @@ Three corollaries:
 
 ### Quick reference — what each operation takes
 
-_Moved here from `SKILL.md` §4 on 2026-08-12: it is a lookup table, and lookup
-tables are what this file is for. `SKILL.md` keeps the one-line list of names._
-
 | Class | Does | Needs |
 |---|---|---|
 | `PatchOperationAdd` | insert as **child** of target | `xpath`, `value`, opt. `order` |
@@ -317,10 +314,6 @@ it when missing:
 
 ## 9. `LoadFolders.xml` — why a mod's def set depends on the whole mod list
 
-*(Moved from `SKILL.md` §4 on 2026-08-14. The rule stayed in the skill —
-`MayRequire` and `PatchOperationFindMod` check the MOD, not the DEF. This is the
-mechanism behind it.)*
-
 The reason that trap is so common is that **a mod can ship different defs
 depending on what else is loaded**, via `LoadFolders.xml`:
 
@@ -343,8 +336,7 @@ concluding anything** — the def may be in a folder your configuration excludes
 
 ## 10. `validate_patch.py` — the full check list, and two things it cannot see
 
-*(Moved from `SKILL.md` §5 on 2026-08-14. Read before you trust — or disbelieve —
-a validator result.)*
+Read this before you trust — or disbelieve — a validator result.
 
 It checks: the file parses; no comment contains `--`; every `Operation` has a
 `Class`; ops are conditional-wrapped; the conditional test xpath matches the
@@ -362,6 +354,26 @@ are patching something a compat patch added, **0 matches is the expected
 result** — and it also tells you the fix now depends on load order, because you
 must apply after whoever creates the node.
 
+### Bucket the warnings before you triage them — the total is not a backlog
+
+A scoped sweep of `src/Jawa` returns `0 error(s), 1608 warning(s)`. That total sums
+four categories that are not commensurable, and bucketing it takes one `grep -c` per
+class:
+
+| class | distinguishing phrase | verdict |
+|---|---|---|
+| the add-if-missing idiom | `inner xpath differs from the conditional test` | **structural** — how the pattern is spelled; the validator's own message calls it intentional |
+| a node another mod creates at runtime | `matches 0 nodes` on a compat target | **structural** — a load-order statement, not an error |
+| xpath matches more nodes than intended | `matches N nodes` | the only class that can be a defect |
+| `iconPath` with no loose file | texture warning | **undecidable offline** — vanilla art is inside Unity bundles |
+
+Of the 1,608, **1,536 were the first class** (1,206 from one file) and zero were
+defects. Classes 1 and 2 recur at the same magnitude on every run, so a stable
+four-digit total means the number is dominated by structure, not by your changes.
+**Report the buckets with a verdict each, never the total** — and write down that the
+structural classes were checked, or the next reader re-derives it from the same
+warnings and reaches the same non-conclusion.
+
 **It only validates `Patches/`. It does not check `Defs/` at all.** A hand-written
 Def with a field that moved between versions sails straight through. That is
 exactly how `<exposedThought>` shipped in one of our own WeatherDefs when 1.6 had
@@ -373,9 +385,8 @@ own files.
 
 ## 11. Why an `<li>` in a dictionary-keyed field destroys the parent def
 
-*(Moved from `SKILL.md` §4 on 2026-08-14. The rule stayed there — match the shape
-of the children already in the node. This is the failure mechanism and its log
-signature, which you need only once you are staring at the wreckage.)*
+The rule is in `SKILL.md` §4 — match the shape of the children already in the
+node. This is the failure mechanism and its log signature.
 
 Getting this backwards is the most destructive mistake in the skill, because
 it does not fail quietly. Add `<li>` into a dictionary-keyed field and the engine

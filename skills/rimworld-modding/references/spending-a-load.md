@@ -1,9 +1,7 @@
 # spending-a-load.md — the three habits, in full
 
-Moved out of `SKILL.md` §2 on 2026-08-14 to keep the skill body under its 500-line
-budget. The **headlines** stayed in the skill, because those are the decisions you
-need in working memory. This file is the reasoning behind each one — open it when
-you are actually planning a load: deciding what can ride along in a batch, or
+The headlines are in `SKILL.md` §2. This is the reasoning behind each — open it
+when you are actually planning a load: deciding what can ride along in a batch, or
 deciding what to harvest once the game is up.
 
 ## Verify everything verifiable offline, first

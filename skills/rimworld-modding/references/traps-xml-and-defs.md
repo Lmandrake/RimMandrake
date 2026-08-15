@@ -4,23 +4,7 @@ The authoring surface itself — xpath, `PatchOperation*`, inheritance, `ParentN
 
 **Read this one before writing a patch.** These are the traps that cost a game load rather than a rerun, because a bad patch fails *silently* and you find out 25 minutes later.
 
-Entry format, admission test and the append rule: `references/traps.md`.
-
----
-
-### ParentName must name an ABSTRACT def — `validate_patch.py` checks this since 2026-08-13
-**Symptom:** `XML error: Could not find parent node named "EMP" for node "DamageDef"`, once per load. The whole DamageDef is **discarded**, so the weapon's `damageDef` and its stun hediff both reference nothing.
-**Cause:** the def said `ParentName="EMP"`, and `EMP` is a **concrete** def (`<defName>EMP</defName>`). `ParentName` resolves only against defs declared with a `Name=` attribute, i.e. `Abstract="True"` templates. Core's own EMP uses `ParentName="StunBase"`, where `StunBase` is `<DamageDef Name="StunBase" Abstract="True">`.
-**Fix:** `ParentName="StunBase"` — copy the parent the *vanilla equivalent* uses, not the vanilla def's own name. Before shipping any `Defs/` file, resolve every outward-pointing name (`ParentName`, `Class=`, `workerClass`, `thingClass`, `graphicClass`) against the live load set: `ParentName` against abstract defs, class names against loaded assemblies.
-**Recurs when:** anything under `Defs/`. ✅ **Closed as a blind spot 2026-08-13:** `validate_patch.py` now dispatches on the root element and resolves every `ParentName` against `Name=` attributes across the whole load set, erroring when it resolves to nothing. It also checks `Class=` attributes and `texPath` existence. It still does **not** check field names, types or value ranges, and an internal defName cross-reference audit still never touches the GAME's abstract-def namespace.
-
----
-
-### An `<li>` written into a dictionary-keyed field deleted seven biomes
-**Symptom:** ~950 × `Could not resolve cross-reference: No RimWorld.BiomeDef named Desert/AridShrubland/ExtremeDesert/ZBiome_Badlands/… found to give to AnimalBiomeRecord`, plus `Failed to find RimWorld.BiomeDef named Desert. There are 59 defs of this type loaded.` The only honest evidence for the cause was seven quiet lines: `Could not resolve cross-reference: No Verse.WeatherDef named li found to give to RimWorld.WeatherCommonalityRecord`, one per patched biome.
-**Cause:** the patch added weather in list form, `<li><weather>SW_Sandstorm</weather><commonality>8</commonality></li>`, but `<baseWeatherCommonalities>` is dictionary-keyed: `<Clear>18</Clear>`. The engine read the element name `li` as the WeatherDef name, failed, and discarded the entire BiomeDef, nulling everything downstream that referenced those biomes.
-**Fix:** `<SW_Sandstorm>8</SW_Sandstorm>` — the shape is set by the field's C# type, so it is identical in every mod. `validate_patch.py` now compares a `<value>`'s children against the live node's existing children. Validate *every* file in the mod folder before deploying, not just the one you changed: the blast radius is the mod.
-**Recurs when:** any Add or Replace whose `<value>` targets a dictionary-keyed field — a shape error there is destructive, not inert; every other patch mistake merely fails to apply.
+What goes in, and what does not: `references/traps.md`.
 
 ---
 
@@ -32,12 +16,6 @@ Entry format, admission test and the append rule: `references/traps.md`.
 
 ---
 
-### A field silently moved off its class in 1.6, and eight races carried the stale version
-**Symptom:** `XML error: <wildness> doesn't correspond to any field in type RaceProperties`, eight times, from one mod.
-**Cause:** the field moved in 1.6. The mod was carrying pre-1.6 defs. The value is dropped and the def loads anyway, so the races existed but with wrong behaviour rather than none.
-**Fix:** the mod was abandoned; it was removed. Where a mod is worth keeping, a `PatchOperationRemove` on the stale node silences the error, and the real behaviour has to be re-established wherever the field went.
-**Recurs when:** `doesn't correspond to any field` — that is a **version drift** report, not a typo report; it means the mod predates the game, and the count is a severity signal (eight instances = eight defs quietly wrong).
-
 ---
 
 ### `Inherit="False"` makes a correct patch a silent no-op
@@ -45,6 +23,8 @@ Entry format, admission test and the append rule: `references/traps.md`.
 **Cause:** another mod injected a whole replacement list onto each concrete def: `<li Class="PatchOperationAdd"><xpath>Defs/ThingDef[defName="Force_Lightsaber_Curved"]</xpath><value><tools Inherit="False">…</tools></value></li>`. `Inherit="False"` discards the parent's list outright, so our operation edited a node nothing inherits from any more. The child's tool *labels* also changed (`point` → `tip`), so a re-aimed xpath built from the base's labels would have matched nothing either.
 **Fix:** offline inheritance resolution cannot see this — the injection happens at *patch* time. Compare the **live** tool labels against the ones the declarer wrote; where they differ, aim at the concrete `defName` instead of the base.
 **Recurs when:** partial success across a def family — that is the signature. Read the other mod's `Patches/` folder, including `AdditionalMods/` and `LoadFolders.xml`-gated directories, not just its `Defs/`.
+
+---
 
 ---
 
@@ -56,43 +36,15 @@ Entry format, admission test and the append rule: `references/traps.md`.
 
 ---
 
-### "PatchOperationFindMod(X) failed" does not mean mod X is missing
-**Symptom:** `[Jawa Doctrine Patches] Patch operation Verse.PatchOperationFindMod(Asimov) failed`, and nothing applied — while `Asimov` (`neronix17.asimov`) was active and its `About.xml` `<name>` matched character for character.
-**Cause:** `PatchOperationFindMod` returns the **inner** result (`if (flag) { if (match != null) return match.Apply(xml); }`) while `ToString()` prints the outer FindMod, so an inner failure is reported under the wrapper's name. When the mod is genuinely absent and there is no `nomatch` it returns **true** — a missing mod is silent, and only a broken inner op ever logs. The real fault: the inner `PatchOperationReplace` targeted `FleshTypeDef/isOrganic`, and no FleshTypeDef declares `isOrganic` in XML at all — it is a C# field default (`public bool isOrganic = true`).
-**Fix:** `PatchOperationConditional` — replace when the node exists, add when it does not. Reach for it by default: tools with no `armorPenetration` were skipped by Replace, leathers that already had `statFactors` were duplicated by Add, flesh types with no `isOrganic` gave Replace nothing to find.
-**Recurs when:** any wrapper op (`FindMod`, `Sequence`, `Conditional`) in a patch error — the printed name is the container, not the failure. And any field left at its C# default has no node for `Replace` to reach.
-
 ---
 
-### A def's XML element name IS its C# class — `VFEPirates.WarcasketDef` is invisible to `/Defs/ThingDef` yet lives in `ThingDef.json`
-**Symptom:** `Armour_Ratings.xml` targets `/Defs/ThingDef[...]` and silently misses **every warcasket**, the single biggest armour outlier in the stack. Separately, two audits contradicted each other: "warcaskets are `VFEPirates.WarcasketDef`, not ThingDefs" versus "`VFEP_Warcasket_Hazard` is right there in `ThingDef.json`".
-**Cause:** both are true. RimWorld's loader reads the **element name as the C# type**, so the XML must be matched as `<VFEPirates.WarcasketDef>` and `/Defs/ThingDef[…]` matches nothing — but that class **subclasses `ThingDef`**, so at runtime it lives in `DefDatabase<ThingDef>`, the dump files it under `ThingDef.json`, and there is **no** `WarcasketDef.json`. `…/2723801948/1.6/Defs/ThingDefs_Misc/Apparel_Various.xml` holds 30 `<VFEPirates.WarcasketDef>` and 4 `<ThingDef>` in one file; every piece *including the helmet* has a `<costList>` and no `<recipeMaker>`, so there is no crafting recipe to patch or remove.
-**Fix:** `/Defs/VFEPirates.WarcasketDef[…]`. Use `/Defs/*[defName="X"]` only when the class is what varies — it hits *every* class with that defName, and `ReduceWill` is both an `InteractionDef` and a `PrisonerInteractionModeDef`.
-**Recurs when:** any tool keyed on the XML element name — `gen_armour_patch.py`'s `ds.of_type("ThingDef")` skipped all 51 warcasket pieces and reported success. Absence from a dump file named after a def type is not absence from the load; look for the *base* type's file.
-
----
-
-### 34. One failed op silently kills every op after it in the same sequence
-**Symptom:** `Verse.PatchOperationAdd(xpath="/Defs/ThingDef[defName="DA_Taraal"]/statBases"): Failed to find a node with the given xpath`, then `Verse.PatchOperationConditional(xpath=…/statBases/MeatAmount): Error in <nomatch>`, `Verse.PatchOperationSequence: Error in the operation at position=25`, `Verse.PatchOperationFindMod(Dark Ages : Beasts and Monsters): Error in <match>`. That block held **32** operations, so positions 26–32 never ran and the log says nothing about them.
-**Cause:** `DA_Taraal` has no `<statBases>` of its own — it inherits from `<ThingDef Name="DA_BaseTaraal" Abstract="True">` — and **`ParentName` inheritance is resolved AFTER patches run**, so patches see raw XML where the node is absent. Then `PatchOperationSequence` aborts at the first failure instead of log-and-continue; sibling `PatchOperationFindMod` blocks are unaffected, so the blast radius is exactly "the rest of this sequence".
-**Fix:** guard on the container, not the leaf — nest a `PatchOperationConditional` on `…/statBases` whose `<nomatch>` Adds the whole element (`<value><statBases><MeatAmount>350</MeatAmount></statBases></value>`) to `/Defs/ThingDef[defName="DA_Taraal"]`, with the leaf conditional inside `<match>`. Then count the ops in the enclosing sequence: everything after the failure is *untested*, not *fine*.
-**Recurs when:** a `<nomatch>` that adds a *child* — it silently assumes the parent exists, which is false on any def that inherits via `ParentName`. The live def dump will not tell you either: it shows post-resolution state and this project's dumper does not serialise `statBases` at all.
-
----
-
-### 35. Retargeting a gene family is two files, and the old family must stay
+### Retargeting a gene family is two files, and the old family must stay
 **Symptom:** swapping the six `Eyes_<colour>_Feline` genes on `BTD_Hutt` for the `Eyes_<colour>_Reptile` ones looks like a six-line find-and-replace in `HuttEyes_Slitted.xml`.
 **Cause:** two patches cooperate. `HuttEyes_RestoreRenderNodes.xml` puts back the `renderNodeProperties` that [LFS] Genes Expanded strips whenever Facial Animation is installed. The live dump shows them **present** on `Eyes_*_Feline` only because our own restore file put them there, and **stripped** on `Eyes_*_Reptile` — so retargeting the assigning file alone hands the xenotype six genes that draw nothing, i.e. Hutts with no eyes. Separately, editing a `XenotypeDef` never rewrites existing pawns: the save held 24 Feline eye genes on already-spawned Hutts plus one on an unrelated pawn, so deleting the old family blinds them on load.
 **Fix:** restore **both** families and let the xenotype roll only the new one. Every op is guarded `[not(renderNodeProperties)]`, so the unused half costs nothing on a save with none of those pawns.
 **Recurs when:** any xenotype, backstory or gene-roster change — `grep` the `.rws` for the old defNames, and re-read the *unpatched* sibling def, because a repaired state is evidence about your patch, not about the mod.
 
 ---
-
-### 36. The comp you are designing a patch around may not exist
-**Symptom:** `grep -rln "CompProperties_ShieldBelt" "…/RimWorld/Data"` returns **zero hits** on 1.6 with all DLCs included, while a patch was being scoped around exactly that comp.
-**Cause:** `Apparel_ShieldBelt` is a plain `<thingClass>Apparel</thingClass>` and the whole mechanic runs off two stats in `Core/Defs/ThingDefs_Misc/Apparel_Belts.xml`: `<EnergyShieldRechargeRate>0.13</EnergyShieldRechargeRate>` and `<EnergyShieldEnergyMax>1.1</EnergyShieldEnergyMax>`. Any apparel with a non-zero `EnergyShieldEnergyMax` *is* a shield; the break event appears in no def at all and is reachable only by Harmony.
-**Fix:** prove the comp exists first — `grep -rln "CompProperties_<Name>" "…/RimWorld/Data"`. Zero hits means stat-driven or hard-coded in the `thingClass`, which changes the work from one XML patch into a patch plus an assembly — and a new C# assembly rides a game load alone while a validated XML patch batches.
-**Recurs when:** scoping any mechanic assumed to have an XML surface; find the XML/C# boundary during scoping, not during authoring.
 
 ---
 
@@ -104,6 +56,8 @@ Entry format, admission test and the append rule: `references/traps.md`.
 
 ---
 
+---
+
 ### Building one thing over another is vanilla in 1.6 (`replaceTags`) — and Replace Stuff forbids our case
 **Symptom:** the repair ladder's whole loop is "build the working machine over the wreck", and `DESIGN.md` named **Replace Stuff - Continued** (WS 3526354009, installed) as the compatibility target for it. Nobody had opened the mod.
 **Cause:** two things. Its shipped `Source/` shows `NewThingFrame.cs:75` `CanReplace` returning false when `!oldDef.building?.deconstructible`, and `CanReplaceNewThingOverOldThing.cs:17` is a Harmony **postfix** on `GenConstruct.CanReplace` forcing `__result = false` when either side is a non-deconstructible attackable building — overriding cases vanilla would allow. Our wreck was `deconstructible=false` by design. Separately, **1.6 added `replaceTags`, a top-level `ThingDef` field** (sibling of `<building>`, not inside it): Core gives `Stool` `<replaceTags><li>Chair</li></replaceTags>` so it and `DiningChair` build over one another with no mod and no C#.
@@ -112,11 +66,15 @@ Entry format, admission test and the append rule: `references/traps.md`.
 
 ---
 
-### 48. "It is placeable" and "it can be removed" are different claims — and the do-not-place twins are one word apart
+---
+
+### "It is placeable" and "it can be removed" are different claims — and the do-not-place twins are one word apart
 **Symptom:** planning a salvageable ground-hulk from RimWorld's shipped ruins kit, the obvious picks were the thematically perfect ones — `AncientGravEngine`, `AncientGravReactor`, `AncientTerraformer`, the three 7×7 `Ancient*Vent`s, and BTD's four purpose-made *damaged gravship engines*. **Every one of them refuses deconstruction.** A colonist simply will not take the job; the only removal route is explosives. Eight of them were in my first draft of a "place these" list.
 **Cause:** two abstract parents that look identical from a texture folder (`Data/Core/Defs/ThingDefs_Buildings/Buildings_Ancient_Outdoors.xml:4-28`). `AncientBuildingBase` sets `alwaysDeconstructible true`; `NonDeconstructibleAncientBuildingBase` sets `deconstructible false`. Across the active stack **73 defs** are on the second parent. The sharpest instance: **`AncientCryptosleepPod` cannot be deconstructed, while `AncientCryptosleepCasket` is the richest salvage in the whole kit (Steel 180 + Uranium 5).** Same art family, one word apart in the defName.
 **Fix:** before designing any economy around shipped props, read `building.deconstructible` from the **live merged dump**, not the XML — mods patch it, and *Vanilla Vehicles Expanded* has already rewritten the entire Core vehicle-wreck set's `costList` in this install. Then apply the second test, which is the one that actually bites: **deconstructible ≠ yields anything.** Of 181 Core+DLC ruins defs, 167 deconstruct, but only **55 have a `costList`**; 33 have `killedLeavings` only, and **89 return nothing either way.** Actual yield is `costList × resourcesFractionWhenDeconstructed` (default 0.5), and `resourcesFractionWhenDeconstructed` is itself patchable — *Salvage Rubble* ships `0.00025` over a `Steel 1000` list to make a huge pile yield a trickle.
 **Generalises to:** every "reuse the shipped assets" plan. Placement, removal, and yield are three independent properties and a def can pass any one while failing the others. Two companions found the same day: **a `TerrainDef` can never yield anything on removal** — terrain has no deconstruct-for-resources route at all, so a salvage economy cannot live in a floor no matter what its `costList` says; and for gravships, **`IsSubstructure` reads `HasTag("Substructure")`, NOT the affordance list** — `BTD_QuestSiteSubstructure` grants the `Substructure` *affordance* while omitting the *tag*, so things build on it but it does not connect or count toward capacity. Reading the affordance instead of the tag inverts the answer.
+
+---
 
 ---
 
@@ -128,11 +86,15 @@ Entry format, admission test and the append rule: `references/traps.md`.
 
 ---
 
+---
+
 ### Vanilla's river step sources its mouths from the BIOME, but paths on ELEVATION
 **Symptom:** a worldgen step raises or lowers tile elevation before the river step and the rivers come out wrong — either starting inland at nothing, or ignoring a new coastline entirely.
 **Cause:** the two halves read different fields. `WorldGenStep_Rivers.GetCoastalWaterTiles` selects river MOUTHS by `PrimaryBiome == BiomeDefOf.Ocean` with a non-Ocean neighbour. The pathing then uses `GetImpliedElevation(tile)` = `elevation + {Hilliness 2→15, 3→250, 4→500, 5→1000}` and terminates on `WaterCovered`, i.e. `elevation <= 0`. So a tile raised out of the sea without a biome change keeps its stale `Ocean` label and stays a river mouth on dry land; and a tile lowered without an `Ocean` label is water that no river will ever aim at.
 **Fix:** write `elevation` and `PrimaryBiome` **together, both directions**, in any step that moves the coastline. Nothing re-runs biome selection after `WorldGenStep_Tiles` at order 5.
 **Recurs when:** editing tiles between order 5 and order 200. Also note `hilliness` contributes up to **+1000** to implied elevation — far more than a typical elevation delta — so adjusting elevation alone can be swamped, and `AccumulateFlow` reads only `rainfall` and `temperature`, so flow volume does not follow a coastline change unless those move too.
+
+---
 
 ---
 
@@ -144,8 +106,10 @@ Entry format, admission test and the append rule: `references/traps.md`.
 ```
 `<OuterRim_Jawa>999</OuterRim_Jawa>` means *this xenotype, this weight*. **There is no `<li>` and no text node naming the xenotype**, so every instinctive xpath — at a `<li>`, at a value, at a `defName` attribute — targets something that does not exist.
 **Fix:** replace the whole `xenotypeChances` node. Guard with `PatchOperationConditional` testing the child element (`.../xenotypeChances/OuterRim_Jawa`) and `PatchOperationReplace` the parent; the inner/outer xpath mismatch is intentional and the validator's warning about it is expected here.
-**Recurs when:** any def field RimWorld serialises as `Dictionary<Def, T>` — the def becomes a tag name. `xenotypeChances` is the one that bites, but the shape is general: **if a block's children are named after defs rather than being `<li>`, the key is the tag and you must replace the container.** ⚠️ Compounding trap in this exact case: `OuterRim_Jawa` exists as BOTH a `XenotypeDef` and a `PawnKindDef` in the same file — the `xenotypeSet` lives on the pawn kind, so patching the xenotype changes nothing.
-**Generalises to:** worldgen-read fields more broadly. `xenotypeSet` is read at PAWN GENERATION, so a patch that lands after a world exists never fixes that world's colonists — it is a pre-worldgen gate, not a tuning patch, and it fails by producing quietly wrong pawns rather than an error.
+**Recurs when:** any def field RimWorld serialises as `Dictionary<Def, T>` — the def becomes a tag name. `xenotypeChances` is the one that bites, but the shape is general: **if a block's children are named after defs rather than being `<li>`, the key is the tag and you must replace the container.** ⚠️ `OuterRim_Jawa` exists as BOTH a `XenotypeDef` and a `PawnKindDef` in the same file — the `xenotypeSet` lives on the pawn kind, so patching the xenotype changes nothing.
+**Timing:** `xenotypeSet` is read at PAWN GENERATION, so a patch that lands after a world exists never fixes that world's colonists. It is a pre-worldgen gate, not a tuning patch, and it fails by producing quietly wrong pawns rather than an error.
+
+---
 
 ### `isJunk` on a scatterer lets a world-tile mutator silently multiply its count to ZERO
 **Symptom:** a `GenStep_ScatterThings` with `countPer10kCellsRange 12~20` that should place 75–125 things on a 250×250 map, placing far fewer or none, with no warning — a count of 0 never enters the placement loop, so it cannot emit `could not find cell to generate at`.
@@ -154,49 +118,3 @@ Entry format, admission test and the append rule: `references/traps.md`.
 **Recurs when:** any `GenStep_Scatterer` subclass with `isJunk` — including `GenStep_ScatterGroupPrefabs`, whose `Generate` is a bare `base.Generate` call and inherits the factor unchanged.
 
 ---
-
-### The same defName can exist as two different def TYPES
-
-**Symptom:** a prefix migration or bulk rename validates clean, deploys clean,
-logs nothing — and the faction generates no pawns.
-**Cause:** defNames are unique *within* a def type, not across types.
-`OuterRim_Geonosian` is both a `XenotypeDef` and a `PawnKindDef`. A file-wide
-string replace aimed at the xenotype also rewrote three `pawnGroupMakers`
-entries, pointing them at a name that exists only as a xenotype. An unresolvable
-`kind` in a group maker is **discarded at load with nothing in the log**.
-**Fix:** migrate by NODE, never by string. Name the xpath or the parent element
-you are changing — `<xenotypeChances>` here — and leave every other occurrence
-alone. Two def types sharing a name are two different objects.
-**Recurs when:** a mod family ships parallel `XenotypeDef` / `PawnKindDef` /
-`ThingDef` sets under one naming scheme, which is the norm for race packs.
-**The tell:** count the references before and after. A xenotype swap should touch
-one or two nodes. If it touched eleven, it crossed a type boundary.
-
----
-
-### The layer you are about to build may already half-exist
-
-**Symptom:** a clean, validated, correctly-authored def layer that duplicates or
-contradicts an earlier partial implementation nobody mentioned. Two patches add
-the same node; the second `PatchOperationRemove` matches nothing and logs red;
-two factions preach the same religion.
-**Cause:** a task phrased as "add X to the eleven Y" reads as greenfield. An
-earlier pass that covered five of the eleven is invisible unless you look.
-**Fix:** before building a layer, grep the mod folder for an existing
-implementation of it — one call, at the start. Search for the FIELD you are about
-to write (`fixedIdeo`, `pawnGroupMakers`, `apparelRequired`), not for the feature
-name, because the old file will not be named after the feature.
-**Recurs when:** the earlier pass was written against a smaller world — fewer
-factions, fewer defs — and its own header says so. Read that header; it usually
-states the premise that has since died.
-**The tell:** the duplicate's red line looks exactly like a known-harmless error
-class, so it masks itself inside your own expected-failure list.
-
----
-
-### The dictionary-key trap again, in a `Defs/` file — where the validator's shape check does not reach
-**Symptom:** five authored `FactionDef`s absent from the game, with **nothing in the log naming them**. `validate_patch.py` reported `0 errors` on the mod root **before and after the fix, identically** — it did not regress, it cannot see this.
-**Cause:** `<xenotypeSet><xenotypeChances>` is dictionary-keyed exactly like `baseWeatherCommonalities` two entries above, and the files carried `<li><xenotype>BTD_Nikto</xenotype><chance>0.300</chance></li>`. ParseFloat gets null on the `li` and the whole def is discarded. The shape was copied from a design spec's XML sample that claimed provenance it did not have — "read from the live `Ancients` def" — while a CORRECT keyed counter-example was already sitting in the same folder in `JawaTribes.xml`.
-**Fix:** `<BTD_Nikto MayRequire="btd.xenotyperemix.starwars">0.300</BTD_Nikto>`; `MayRequire` rides the keyed element unchanged. Take a field's SHAPE from a shipped def, never from a spec — **a spec names FIELDS, a def defines SHAPES.**
-**Recurs when:** any file you author under `Defs/`. The biome entry above closed this for `PatchOperation` `<value>` nodes ONLY, by diffing `<value>`'s children against the target's existing children — a def you write outright has no existing node to diff against, so it gets no shape check at all.
-**The tell:** the correlation, not the log. Files WITHOUT the `<li>` loaded; every file WITH one died. When a def vanishes silently, diff it against a sibling that survived.

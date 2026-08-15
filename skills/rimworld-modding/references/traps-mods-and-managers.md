@@ -4,7 +4,7 @@ Load order, mod managers, Steam, assemblies, and mod-list state.
 
 **Read this one when a mod is absent, dead, or not behaving like the files say it should.**
 
-Entry format, admission test and the append rule: `references/traps.md`.
+What goes in, and what does not: `references/traps.md`.
 
 ---
 
@@ -64,17 +64,6 @@ Entry format, admission test and the append rule: `references/traps.md`.
 
 ---
 
-### Mod-list state on disk is not authoritative while the game is running
-**Symptom:** packageIds still present in `ModsConfig.xml` and mod folders still present under `294100/` after the owner had removed and unsubscribed them, reported repeatedly as "the removal didn't land". Both readings were accurate; both conclusions were wrong.
-**Cause:** ~~RimWorld holds its active mod list **in memory** while running and rewrites `ModsConfig.xml` on exit~~ — ❌ **the rewrite-on-exit half is FALSE, corrected 2026-08-13.** RimWorld does **not** write `ModsConfig.xml` when it closes. Measured: at game exit (`Player.log` last write **10:04:55**) the config's mtime was **10:01** — *older* than the exit; and the file changed again at **16:41:39 with no game running at all**. The only writers are a seat, or the owner via RimSort. So a mid-session edit is **not** overwritten at close, and there is no "shutdown window" to miss. ✅ **The Steam half STANDS and is the real reason disk lags reality:** Steam will not remove an unsubscribed mod's folder while the game has files open in it, so a folder present during a live session proves nothing about subscription state.
-**Fix:** establish whether the game is running before making any claim. `Player.log`'s mtime versus `ModsConfig.xml`'s is the cheap tell — if the log is older than the config, a re-sort happened after the load and the running game does not match the file. Report what the timestamps imply; do not assert a state. **That same comparison is what disproved the rewrite-on-exit claim**, so it earns its keep twice.
-
-🔴 **The hazard that IS real runs the other way — a concurrent-writer collision, and it is not rare.** Measured 2026-08-13: `ModsConfig.xml` moved **twice in twenty minutes** with the game down (22,328 B → 22,406 B, two mods added, load order changed from index 291) because the owner was reordering in RimSort. **Read the file's mtime immediately before you write it, and do not write blind.** A seat that writes over an in-progress re-sort destroys ordering work, and neither RimSort nor git will warn either party.
-⛔ **Does NOT extend to RimSort.** RimSort does not save on exit — it writes only when the owner explicitly clicks Save. Editing `ModsConfig.xml` while RimSort is open is safe, and "close RimSort first" is **never** a precondition for anything. The real hazard runs the other way and is small: after an external edit RimSort's in-memory view is stale, so a later Save would write the old list back. Mitigation is one sentence — *"RimSort is open, hit Refresh"*.
-**Recurs when:** any file a running process owns — config written on exit, a mod-settings file that rewrites only when its settings window closes, a live def dump describing the mod set at capture time rather than now.
-
----
-
 ### Three mods shipped the base game's own assemblies, and one shipped all of it
 **Symptom:** Interaction Bubbles never drew a bubble and its shift-click settings never opened, while its toggle icon rendered fine. No exception, no log line, nothing to bisect — and a 23-minute load wasted on two dead-end hypotheses. Dubs Performance Analyzer had already printed the cause: `[Analyzer] Mod Tribal Furniture has packaged the base-game Rimworld assemblies`.
 **Cause:** `Xercaine.Tribal.Furniture` (WS 3671245310) shipped **26 DLLs in `Assemblies/`, of which exactly one — `TribalFurniture.dll`, 25 KB — was the mod**; the rest were the game and Unity runtime, including a byte-identical `Assembly-CSharp.dll` (15,777,280 bytes). RimWorld loads *every* DLL in a mod's `Assemblies` folder via `Verse.ModAssemblyHandler::ReloadAll` → `System.Reflection.Assembly::LoadFrom`, which returns the **already-loaded** assembly of the same identity (Mono has no separate load contexts and dedupes by identity, mono/mono#8149). The analyzer keys its map by `Assembly` object, so the warning firing is itself proof no second copy loaded. The real costs: all of vanilla RimWorld is attributed to a furniture mod in every type→mod map (analyzer, exception attribution, Harmony patch-owner reporting), `AssemblyIsUsable` runs `GetTypes()` over a 15.7 MB image at load, and 22.7 MB downloads for a 25 KB payload.
@@ -83,7 +72,7 @@ Entry format, admission test and the append rule: `references/traps.md`.
 
 ---
 
-### 38. A dead mod that the dead-mod grep cannot see
+### A dead mod that the dead-mod grep cannot see
 **Symptom:** `RimAI Core` was silently doing nothing while the two standing triage greps — `static constructor` and `TypeInitializationException` — were both **0**. What was actually in the log: `ReflectionTypeLoadException getting types in assembly RimAI.Core` / ``Could not resolve type with token 0100006a from typeref (expected class 'RimAI.Framework.Contracts.Result`1' in assembly 'RimAI.Framework.Contracts')``, plus three discarded defs — `Exception loading def from file … Could not find type named RimAI.Core.…CompProperties_AiServerBuffs`.
 **Cause:** `RimAI.Framework.Contracts.dll` ships in the *Framework* mod, which loaded at 279 — **after** Core at 278. RimWorld loads mod assemblies in load order, so Core's typerefs could not resolve. Core's `About.xml` declares `modDependencies` on the framework and **no `loadAfter`**: `modDependency` does not imply load order, here with an assembly rather than a def.
 **Fix:** put the dependency first in **both** places — RimSort `userRules.json` (User Rules; Community Rules vanish silently) *and* `ModsConfig.xml`. Add `ReflectionTypeLoadException` and `Could not resolve type with token` to the dead-mod greps: a cctor that never runs because its type never loaded produces neither standing string.

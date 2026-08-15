@@ -1,9 +1,7 @@
 # Building a minimal load to corner a bug
 
-_Split out of `SKILL.md` §2 on 2026-08-12. The **trigger** stayed in the skill
-body — three failed hypotheses deep, stop bisecting downward — because that is
-the decision you need in working memory. This is the **procedure**, which you
-only need once you have decided to run it._
+_The **trigger** is in `SKILL.md` §2 — three failed hypotheses deep, stop
+bisecting downward. This is the **procedure**, once you have decided to run it._
 
 ## Why minimise rather than keep bisecting
 
@@ -48,17 +46,10 @@ the newest with `ls -t … | head -1` instead.
   See `SKILL.md` §5b, and write `loadAfter` rules so the manager stops undoing
   you.
 
-## The case that produced this
+## When to reach for it
 
-A speech-bubble mod drew nothing across a 567-mod stack. Four theories were
-tested and disproved over a **day**: a prefix on the bubble mod's own Add
-method; another mod patching the fog grid; a camera mod distorting the altitude
-cull; and a mod shipping a duplicate copy of the base game assembly.
-
-Cutting to 25 mods took minutes, and the bubbles worked immediately.
-
-**The minimisation should have come after the second failure, not the fourth.**
-That is the whole lesson: the cost of minimising is roughly one load, so it
-becomes the cheapest option far earlier than it feels like it should — at the
-point where you notice you are *generating* hypotheses rather than *testing* a
-theory.
+**After the second failed hypothesis, not the fourth.** A speech-bubble mod drew
+nothing across a 567-mod stack; four theories were tested and disproved over a
+**day**, and cutting to 25 mods took minutes and worked immediately. Minimising
+costs roughly one load, so it becomes the cheapest option at the point where you
+notice you are *generating* hypotheses rather than *testing* a theory.

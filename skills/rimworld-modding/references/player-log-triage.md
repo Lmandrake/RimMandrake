@@ -1,8 +1,6 @@
 # player-log-triage.md — reading a RimWorld `Player.log`
 
-Moved out of `SKILL.md` §7 on 2026-08-14 to keep the skill body under its
-500-line budget. Nothing here changed; open this file whenever you are actually
-reading a log, rather than carrying it in context every session.
+Open this whenever you are actually reading a log.
 
 `%USERPROFILE%\AppData\LocalLow\Ludeon Studios\RimWorld by Ludeon Studios\Player.log`
 
@@ -54,6 +52,12 @@ position in the file:
    ("using undefined sound"). Do not spend time here.
 
 Two behaviours worth keeping:
+
+**Key a triage rule on a failure SIGNATURE, never on a mod's name.** A grep for
+`RimAI` flagged it RED with 5 hits on a load where it was healthy — the hits were
+`SettingsManager: Initialized successfully` and `All Parts Boot OK`. "Zero hits =
+healthy" only holds for mods that are silent when working, which most are not.
+Match `RimAI\.Core.*Exception|assembly RimAI` instead.
 
 **Maintain a triage list of errors judged safe**, with the exact log string, the
 owning mod, the root cause, and *why* it's harmless. If you can't fill all four,
