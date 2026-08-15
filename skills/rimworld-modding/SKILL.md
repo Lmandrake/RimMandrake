@@ -339,6 +339,32 @@ current. **The mtime is the evidence.**
 about a process. A report that does not distinguish them will be read as the stronger
 of the two.
 
+## 6c. Pre-flight: check the DEPLOYED copy against the LIVE mod list
+
+Before a load you cannot repeat, run the check that neither the repo nor the
+validator can do — **the game copy against the mod list it will actually load
+with**. Both halves are needed; each hides a different failure.
+
+1. **`deploy_custom_mods.py` with no `--apply`**, and read every mod's line. A def
+   repointed in the repo and never deployed leaves the GAME holding the old
+   reference. Six faction defs sat in exactly that state an hour before a launch.
+2. **Resolve every `MayRequire` in the deployed defs against the live list.** 🔴 **A
+   rename pass has to move the GATE as well as the name.** `<RimMandrakeGeonosianVariants
+   MayRequire="btd.xenotyperemix.starwars">` names our def behind a mod that was
+   just switched off, so the node is dropped at load and the faction's
+   `xenotypeChances` is silently empty. The defName was right and the gate was a
+   corpse. A dead gate on a mod that was NEVER active is fine — that is
+   optional-compat working.
+3. **Parse `activeMods`; never quote a number you read earlier.** With several
+   seats sharing one install the count moved 582 → 580 → 578 → 576 inside an hour.
+   `grep -c "<li>"` also over-counts by the 5 `knownExpansions`.
+
+⚠️ **`validate_patch.py` resolves against the CURRENT load set, so `0 errors` cannot
+prove independence from a mod you are about to REMOVE** — every stale reference
+still resolves while the donor is installed. If you are retiring a mod, the check
+is a separate pass that drops each departing packageId and asserts nothing points
+there. Ours prints `references that die 0`.
+
 ## 7. Debugging from Player.log
 
 `%USERPROFILE%\AppData\LocalLow\Ludeon Studios\RimWorld by Ludeon Studios\Player.log`
