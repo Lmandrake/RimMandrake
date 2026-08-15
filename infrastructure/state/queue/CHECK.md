@@ -11,15 +11,6 @@ verify:   read the header of `design/V2_DREAMS.md` once; it says the same thing.
 criteria: EMPTY — that file is not a queue and nothing in it is scheduled.
 state:    ready
 
-## C0 First session back: count the tools, then batch work by map
-row:      infra
-spec:     On the next game: harvest the startup log BEFORE any spawn, then count
-          the `jawa/` tools. Batch every item below that needs the same map state
-          into one window — a cold load is ~25 min, a quicktest ~90 s.
-verify:   —
-criteria: Tool count matches what BUILD deployed; startup log at baseline.
-state:    done
-note:     2026-08-14 CHECK. A0 of the C1 harness: 26 jawa tools of 26 expected, 151 on the bridge overall, matching deployed DLL md5 55b2362. Startup-log baseline NOT harvested before the first spawn this session - the game was already up and driven, so that half is unmet and carries to the next cold load.
 
 ## C1 Run the bridge tools that were built but never once called
 row:      infra
@@ -36,13 +27,6 @@ verify:   EMPTY
 criteria: the generated world's faction roster matches the keep list. A quicktest map's roster PROVES NOTHING — a debug quicktest never visits the Configure Factions page, so every faction is present by default. State which map any census came from. Prior scale, from the deleted world: 53 factions across 107 settlements, of which the fiction-breakers held ~34.
 state:    ready
 
-## C18 Confirm the Rebel Alliance is absent from the new world
-row:      10
-spec:     One `jawa/list_factions` after worldgen. Control: `OuterRim_GalacticEmpire`, which must be PRESENT. Closes `EXPECTED_FAILURES` A3.
-verify:   EMPTY
-criteria: ABSENT is the DESIRED outcome — `RebelAlliance_Suppress.xml` does it deliberately — so PRESENT is the failure. Nothing in `Player.log` reports a faction that never generates; the only detection is looking on purpose. Observe, do not fix.
-state:    done
-note:     2026-08-14 CHECK. A1: OuterRim_RebelAlliance ABSENT (desired). Control A1b: OuterRim_GalacticEmpire PRESENT. 54 factions, countAllIncludingHidden=54 - read with includeHidden, not the visible subset. Closes EXPECTED_FAILURES A3.
 
 ## C21 Follow The Claim quest to an end — registering is not finishing
 row:      13
