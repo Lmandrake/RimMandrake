@@ -1,0 +1,422 @@
+[
+ {
+  "xeno": "BTD_Abednedo",
+  "id": "Human46710",
+  "x": 14,
+  "z": 14
+ },
+ {
+  "xeno": "BTD_Anzati",
+  "id": "Human339",
+  "x": 18,
+  "z": 14
+ },
+ {
+  "xeno": "BTD_Aqualish",
+  "id": "Human46716",
+  "x": 22,
+  "z": 14
+ },
+ {
+  "xeno": "BTD_Arkanian",
+  "id": "Human353",
+  "x": 26,
+  "z": 14
+ },
+ {
+  "xeno": "BTD_Bith",
+  "id": "Human46723",
+  "x": 30,
+  "z": 14
+ },
+ {
+  "xeno": "BTD_Bothan",
+  "id": "Human46727",
+  "x": 34,
+  "z": 14
+ },
+ {
+  "xeno": "BTD_Cathar",
+  "id": "Human46731",
+  "x": 38,
+  "z": 14
+ },
+ {
+  "xeno": "BTD_Cerean",
+  "id": "Human46735",
+  "x": 42,
+  "z": 14
+ },
+ {
+  "xeno": "BTD_ChadraFan",
+  "id": "Human46739",
+  "x": 46,
+  "z": 14
+ },
+ {
+  "xeno": "BTD_Chagrian",
+  "id": "Human46742",
+  "x": 50,
+  "z": 14
+ },
+ {
+  "xeno": "BTD_Chiss",
+  "id": "Human46746",
+  "x": 14,
+  "z": 18
+ },
+ {
+  "xeno": "BTD_Dathomirian",
+  "id": "Human328",
+  "x": 18,
+  "z": 18
+ },
+ {
+  "xeno": "BTD_Defel",
+  "id": "Human46753",
+  "x": 22,
+  "z": 18
+ },
+ {
+  "xeno": "BTD_Devaronian",
+  "id": "Human46756",
+  "x": 26,
+  "z": 18
+ },
+ {
+  "xeno": "BTD_Duros",
+  "id": "Human46760",
+  "x": 30,
+  "z": 18
+ },
+ {
+  "xeno": "BTD_Echani",
+  "id": "Human46764",
+  "x": 34,
+  "z": 18
+ },
+ {
+  "xeno": "BTD_Ewok",
+  "id": "Human46769",
+  "x": 38,
+  "z": 18
+ },
+ {
+  "xeno": "BTD_Falleen",
+  "id": "Human46772",
+  "x": 42,
+  "z": 18
+ },
+ {
+  "xeno": "BTD_Feeorin",
+  "id": "Human46776",
+  "x": 46,
+  "z": 18
+ },
+ {
+  "xeno": "BTD_Gamorrean",
+  "id": "Human46780",
+  "x": 50,
+  "z": 18
+ },
+ {
+  "xeno": "BTD_Gand",
+  "id": "Human46783",
+  "x": 14,
+  "z": 22
+ },
+ {
+  "xeno": "BTD_Geonosian",
+  "id": "Human46787",
+  "x": 18,
+  "z": 22
+ },
+ {
+  "xeno": "BTD_Gungan",
+  "id": "Human46792",
+  "x": 22,
+  "z": 22
+ },
+ {
+  "xeno": "BTD_Herglic",
+  "id": "Human46795",
+  "x": 26,
+  "z": 22
+ },
+ {
+  "xeno": "BTD_Hutt",
+  "id": "Human46799",
+  "x": 30,
+  "z": 22
+ },
+ {
+  "xeno": "BTD_Iktotchi",
+  "id": "Human46802",
+  "x": 34,
+  "z": 22
+ },
+ {
+  "xeno": "BTD_Iridonian",
+  "id": "Human46805",
+  "x": 38,
+  "z": 22
+ },
+ {
+  "xeno": "BTD_Ithorian",
+  "id": "Human46809",
+  "x": 42,
+  "z": 22
+ },
+ {
+  "xeno": "BTD_Jawa",
+  "id": "Human46812",
+  "x": 46,
+  "z": 22
+ },
+ {
+  "xeno": "BTD_Kaleesh",
+  "id": "Human46815",
+  "x": 50,
+  "z": 22
+ },
+ {
+  "xeno": "BTD_Kaminoan",
+  "id": "Human46818",
+  "x": 14,
+  "z": 26
+ },
+ {
+  "xeno": "BTD_KelDor",
+  "id": "Human46822",
+  "x": 18,
+  "z": 26
+ },
+ {
+  "xeno": "BTD_Klatoonian",
+  "id": "Human46826",
+  "x": 22,
+  "z": 26
+ },
+ {
+  "xeno": "BTD_Kubaz",
+  "id": "Human46829",
+  "x": 26,
+  "z": 26
+ },
+ {
+  "xeno": "BTD_Lasat",
+  "id": "Human46833",
+  "x": 30,
+  "z": 26
+ },
+ {
+  "xeno": "BTD_Mimbanese",
+  "id": "Human46837",
+  "x": 34,
+  "z": 26
+ },
+ {
+  "xeno": "BTD_Miraluka",
+  "id": "Human46840",
+  "x": 38,
+  "z": 26
+ },
+ {
+  "xeno": "BTD_Mirialan",
+  "id": "Human46844",
+  "x": 42,
+  "z": 26
+ },
+ {
+  "xeno": "BTD_MonCalamari",
+  "id": "Human46848",
+  "x": 46,
+  "z": 26
+ },
+ {
+  "xeno": "BTD_Muun",
+  "id": "Human46852",
+  "x": 50,
+  "z": 26
+ },
+ {
+  "xeno": "BTD_Nagai",
+  "id": "Human46856",
+  "x": 14,
+  "z": 30
+ },
+ {
+  "xeno": "BTD_Nautolan",
+  "id": "Human46860",
+  "x": 18,
+  "z": 30
+ },
+ {
+  "xeno": "BTD_Neimoidian",
+  "id": "Human46864",
+  "x": 22,
+  "z": 30
+ },
+ {
+  "xeno": "BTD_Nelvaanian",
+  "id": "Human46868",
+  "x": 26,
+  "z": 30
+ },
+ {
+  "xeno": "BTD_Nikto",
+  "id": "Human46872",
+  "x": 30,
+  "z": 30
+ },
+ {
+  "xeno": "BTD_Ortolan",
+  "id": "Human46875",
+  "x": 34,
+  "z": 30
+ },
+ {
+  "xeno": "BTD_Pantoran",
+  "id": "Human46879",
+  "x": 38,
+  "z": 30
+ },
+ {
+  "xeno": "BTD_Pyke",
+  "id": "Human46883",
+  "x": 42,
+  "z": 30
+ },
+ {
+  "xeno": "BTD_Quarren",
+  "id": "Human46887",
+  "x": 46,
+  "z": 30
+ },
+ {
+  "xeno": "BTD_Rakata",
+  "id": "Human46891",
+  "x": 50,
+  "z": 30
+ },
+ {
+  "xeno": "BTD_Rodian",
+  "id": "Human46894",
+  "x": 14,
+  "z": 34
+ },
+ {
+  "xeno": "BTD_Selkath",
+  "id": "Human46897",
+  "x": 18,
+  "z": 34
+ },
+ {
+  "xeno": "BTD_SithK",
+  "id": "Human46901",
+  "x": 22,
+  "z": 34
+ },
+ {
+  "xeno": "BTD_SithM",
+  "id": "Human46904",
+  "x": 26,
+  "z": 34
+ },
+ {
+  "xeno": "BTD_SithZ",
+  "id": "Human46908",
+  "x": 30,
+  "z": 34
+ },
+ {
+  "xeno": "BTD_Snivvian",
+  "id": "Human46911",
+  "x": 34,
+  "z": 34
+ },
+ {
+  "xeno": "BTD_Sullustan",
+  "id": "Human46915",
+  "x": 38,
+  "z": 34
+ },
+ {
+  "xeno": "BTD_Taung",
+  "id": "Human46919",
+  "x": 42,
+  "z": 34
+ },
+ {
+  "xeno": "BTD_Togorian",
+  "id": "Human46923",
+  "x": 46,
+  "z": 34
+ },
+ {
+  "xeno": "BTD_Togruta",
+  "id": "Human46927",
+  "x": 50,
+  "z": 34
+ },
+ {
+  "xeno": "BTD_Trandoshan",
+  "id": "Human46944",
+  "x": 14,
+  "z": 38
+ },
+ {
+  "xeno": "BTD_Tusken",
+  "id": "Human46950",
+  "x": 18,
+  "z": 38
+ },
+ {
+  "xeno": "BTD_Twilek",
+  "id": "Human46956",
+  "x": 22,
+  "z": 38
+ },
+ {
+  "xeno": "BTD_Ugnaught",
+  "id": "Human46962",
+  "x": 26,
+  "z": 38
+ },
+ {
+  "xeno": "BTD_Umbaran",
+  "id": "Human46969",
+  "x": 30,
+  "z": 38
+ },
+ {
+  "xeno": "BTD_Weequay",
+  "id": "Human46976",
+  "x": 34,
+  "z": 38
+ },
+ {
+  "xeno": "BTD_Wookiee",
+  "id": "Human46983",
+  "x": 38,
+  "z": 38
+ },
+ {
+  "xeno": "BTD_Yoder",
+  "id": "Human46993",
+  "x": 42,
+  "z": 38
+ },
+ {
+  "xeno": "BTD_Zeltron",
+  "id": "Human47001",
+  "x": 46,
+  "z": 38
+ },
+ {
+  "xeno": "BTD_Zygerrian",
+  "id": "Human47008",
+  "x": 50,
+  "z": 38
+ }
+]
