@@ -37,6 +37,18 @@ means the board never learns, and 70 items have already been lost that way.
 dropped` with one line saying why.** Deleting it, renumbering it away, or quietly
 retitling it into something else breaks the count and cannot be recovered later.
 
+## Nothing outside the repo is precious
+
+Owner, 2026-08-15: *"There is no map protection! There's no protection of any asset
+not in the repo! Stop treating things as precious. I will absolutely tell you when
+we're really playing. It won't sneak up on you."*
+
+Maps, saves, colonies, deployed mod folders, live game state — destroy them freely
+and do not ask. **Do not infer that play has started** from v1 containing a playable
+session; the trigger is an explicit announcement, and you will get one.
+
+The repo is the protected thing. That is what commit-and-push is for.
+
 ## Writing
 
 - Do not keep provenance. Git holds it.
