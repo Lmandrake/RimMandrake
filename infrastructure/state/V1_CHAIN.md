@@ -49,7 +49,7 @@ for this order; it is not a preference.
 | 1 | **Item cherrypick** | 0 | **deferred — interactive session with the owner. Do not block.** |
 | 2 | **Normalize weapons · armour · beasts** | 1 | open — balance pass over what survives |
 | 3 | **Equipment types → pawns** | 2 | open — the tags a `PawnKindDef` actually consumes |
-| 4 | **Xenotypes** | — | 🔴 **NOT done** — `OnlyMandrakeJawa.xml` used a non-existent op type, so the suppression was inert and the three rivals still generate. BUILD repairing |
+| 4 | **Xenotypes** | — | enforced in shipped XML (`ea5cfb4`), **not yet proven live** — this process read the broken copies at launch |
 | 5 | **Droids** | 0, 4 | taxonomy ruled; pawn track unbuilt; NRE route open |
 | 6 | **Religions** | — | ✅ text written and DEPLOYED for all 11. §12 is the owner's |
 | 7 | **Pawntypes** | 3, 4, 5 | 48 proposed, 0 literal defNames. 19 ship, none matching |
