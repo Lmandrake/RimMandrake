@@ -1120,3 +1120,36 @@ but each lost something the donor thought was part of that species.
 
 ⚠️ **Do not fold these two together again.** One needs an owner ruling about the setting;
 the other is twenty lines in a path filter.
+
+## Regenerate the races from scratch — all genes, text and art, authored as ours
+
+Owner, 2026-08-15, filed to v2 explicitly. **Not v1. Nothing here is scheduled.**
+
+Today `mandrake.starwarsraces` is a **migration**: the generator composes each species
+from the three donors' XML and copies their PNGs. Every species is therefore only as
+good as the donor it was lifted from, and the whole of today's trouble is downstream of
+that — genes that resolve nowhere, head-type genes one donor carried and another did
+not, art the copier never fetched because a path field was not on its rewrite list,
+and a catalogue that shrinks when the donors are switched off.
+
+**This item is the other option: stop migrating and author the set.** A full
+regeneration of the races **based on what is already there** — the current roster and
+its species as the design input, not a blank page.
+
+In scope when it is taken:
+- **Genes** — authored per species rather than unioned from donors, so a species owns
+  its traits and nothing is inherited by accident. The 4 stripped genes come back as a
+  deliberate yes or no.
+- **Text** — labels, descriptions and the 48 RulePackDefs / name word-lists, written for
+  this campaign's voice rather than inherited from three unrelated mods.
+- **Graphics** — heads, head attachments, gene icons and backgrounds generated as one
+  consistent set, which is the only real fix for the magenta boxes and the
+  generic-reptile-head class of defect rather than patching paths one at a time.
+
+⇒ **The prize is ending the donor dependency completely.** `gen_races_mod.py` exists to
+free us from BTD, SWX and Outer Rim, but it still reads them every run — so the mod
+cannot be rebuilt without them installed. An authored set can.
+
+⚠️ **This is large.** 69 species, 114 genes, 104 head types, 713 textures at today's
+count. It is a v2 project, not a v2 chore, and it should not be started as a fix for any
+single v1 defect. See also the stripped-genes item above, which it would subsume.
