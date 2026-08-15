@@ -1645,3 +1645,23 @@ verify:   `deploy_custom_mods.py --mod <name> --plan` read before every `--apply
 criteria: CHECK accepts all four items without bouncing one for an empty field, and the
           next load attributes each result to exactly one deploy.
 state:    ready
+
+## cut-the-boiling-biome-reference-4e2b90
+row:      10
+spec:     🔴 **Owner, 2026-08-15: "WE ARE NOT USING BOILING BIOME."** That closes the
+          question CHECK flagged and BUILD parked. Remove the `RG_BoilingForest` entry at
+          `src/Jawa/Jawa_Patches/Patches/JawaWorld_BiomeMix.xml:140`
+          (`<RG_BoilingForest><scoreOffset>-4</scoreOffset></RG_BoilingForest>`). It is
+          the only BOTR reference left in `Jawa_Patches`, its mod
+          (`regrowth.botr.boilingforest`) no longer loads, and it is a no-op in game that
+          validates clean because the def is still in the 576-mod dump.
+          Do NOT go further on the strength of this: `src/Jawa/Jawa_Doctrine/About/About.xml`
+          names the mod in **loadAfter**, not `modDependencies`, which exerts no
+          constraint on an inactive mod and logs nothing — leave it. The mod folder stays
+          on disk, unlisted not unsubscribed.
+verify:   `grep -rn "RG_BoilingForest\|BoilingWater\|regrowth.botr.boilingforest" src/Jawa/`
+          returns only the harmless `loadAfter` line in `Jawa_Doctrine/About/About.xml`;
+          `validate_patch.py` on `JawaWorld_BiomeMix.xml` still reports OK.
+criteria: no `Could not resolve cross-reference` naming an `RG_` biome at the next load,
+          and the biome mix behaves as authored with the entry gone.
+state:    ready
