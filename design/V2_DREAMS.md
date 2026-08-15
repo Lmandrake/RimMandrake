@@ -1186,3 +1186,24 @@ it is still unmeasured today. Restoring Herglic means diagnosing that first.
 This is also the item the full-regeneration entry below would subsume: if the races are
 ever authored rather than migrated, these six come back as authored species and none of
 the above matters.
+
+### Restoring the Defel cloak needs four defs, not one
+
+Measured 2026-08-15 while re-testing the strip ruling.
+`guy762_AbilityGene_cloak` does not travel alone — its donor file
+`SWX/1.5/AdditionalMods/KotORWeapons/Defs/AbilityDefs_defelcloaking.xml` declares **four**
+defs that work as a set:
+
+| def type | defName |
+|---|---|
+| `GeneDef` | `guy762_AbilityGene_cloak` |
+| `AbilityDef` | `guy762_StealthDeactivate_defel` |
+| `hediffDef` | `guy762_GeneAbility_defelcloak` |
+| `HediffDef` | `guy762_StealthField_defel` |
+
+⇒ Migrating the gene alone would produce a gene that grants an ability that does not
+exist. Take the set or leave it.
+
+⚠️ Note the donor's own typo: one is `<hediffDef>` lowercase, one is `<HediffDef>`. Def
+type names are case-sensitive in RimWorld XML, so the lowercase one is very likely dead
+in the donor too — check before assuming the cloak ever worked as shipped.

@@ -1000,6 +1000,20 @@ state:    done — **RULING: NEITHER ROUTE. Both are aimed at a defect that is n
           finding and keeps — `Common`/`Common_Old` demonstrably hold content D-CHK2
           needed — but it belongs to the later investigation. **Do not do it inside B66.**
 
+          ✅ **RE-TESTED 2026-08-15 against CHECK's empty-dump warning, and it HOLDS.**
+          CHECK found **79 of the 529 def-type files in the dump are EMPTY** — for those
+          types, "absent from the dump" is UNMEASURED, not absent, so any ruling resting
+          on absence needed re-testing. This one did, and it survives:
+          - `GeneDef.json` is **16,600,229 bytes** — richly populated, NOT one of the 79.
+            All four genes return **0 hits** in it. Their absence is a real measurement.
+          - 🔑 `AbilityDef.json` **IS** empty (44 bytes), and `guy762_AbilityGene_cloak`
+            lives on disk in a file named `AbilityDefs_defelcloaking.xml` — which looks
+            exactly like the trap. It is not: the def is declared `<GeneDef>`, so it is
+            checked against the populated `GeneDef.json`. **The filename is misleading and
+            the def type is what counts.**
+          ⇒ The strip list is unchanged. Recorded because a ruling that was re-tested and
+          held is worth more than one that was never questioned.
+
           📌 **What "investigate later" needs, so file it now rather than re-deriving it:**
           the four genes above, what each did, and which mod would supply it. Parked in
           `design/V2_DREAMS.md`. **BUILD: emit the strip list as generator OUTPUT** — a
