@@ -1051,3 +1051,30 @@ the slider's six frequency labels (`Dialog_AnomalySettings.FrequencyLabels`, thr
 decompile of `Assembly-CSharp.dll` (`AnomalyPlaystyleDef`, `GameComponent_Anomaly`,
 `Difficulty`, `StorytellerComp`, `StorytellerUI`, `Dialog_AnomalySettings`,
 `IncidentWorker`, `QuestNode_Root_MonolithMigration`).*
+
+### 🔴 The ship's NINE VOICES — `[v2]`, gated on in-game LLM generation
+
+**Owner, 2026-08-15: all in-game LLM generation is v2.** This entry exists so the
+v1 lore ruling does not quietly imply v1 dialogue work.
+
+`the_forgotten_war.md` **R-W6** rules that the Jawa pantheon runs as nine
+competing personas inside the ship, with **no integrating self** — no "and yet I
+am me". `llm_voice_preauthoring.md` currently assumes a single Cradle-Mind
+character. **Re-scoping it from one character to a CAST is the v2 job.**
+
+**What v2 inherits, already decided and not to be re-litigated:**
+
+- **No narrator.** A conversation with the ship is a conversation with **whoever
+  answered**. Ask twice, a different god may take it, and neither will remember —
+  or accept — that the other spoke.
+- **No fragment says "my other selves."** They speak as rivals, or do not
+  acknowledge each other at all.
+- **The ship never describes itself.** Only the crew describe it.
+- **The tenth strand — the Cradle's own initiator purpose — may not be a
+  character at all.** Whether it can be addressed is open, and "no" is the more
+  frightening answer.
+- **The Rakatan kinship is below the tenants**, so no fragment can explain it.
+
+⚠️ **v1 must not ship a unified ship-voice**, or this becomes a retcon rather than
+a revelation. v1 expresses the nine through the satiation engine only — felt, not
+heard.

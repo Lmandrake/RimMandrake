@@ -335,11 +335,36 @@ this character:**
 the same question twice and a different god may take it — and neither will
 remember, or accept, that the other spoke.
 
-🔴 **`llm_voice_preauthoring.md` is affected** — it currently assumes the crew
-believe **Ohm** possesses the Cradle-Mind. That belief stays exactly right *as a
-crew belief*, and is now visibly incomplete: they have correctly identified one
-tenant and mistaken it for the landlord. **The voice work must be re-scoped from
-one character to a cast.** DECIDE owes that revision.
+### 🔴 v1 HAS NO TALKING SHIP — owner, 2026-08-15
+
+**All in-game LLM generation is `[v2]`.** So `llm_voice_preauthoring.md`'s
+re-scoping — one character becoming a cast of nine — **is a v2 job and is not
+owed for v1.** Recorded in `V2_DREAMS.md`.
+
+⚠️ **This does not weaken R-W6. It disciplines it.** The nine tenants must be
+**FELT, not HEARD**, and everything needed to do that already exists:
+
+| v1 expresses the pantheon through | already built? |
+|---|---|
+| the **nine satiation tracks** and four pressure-clocks | ✅ `divine_satiation_engine.md` |
+| boons and banes landing as events | ✅ same engine |
+| **which god is ascendant**, shown in the colony's luck rather than stated | ✅ same engine |
+| pre-authored letter and event text, attributed to a fragment | ✍️ authored, not generated — in scope |
+
+⇒ **The player should be able to infer that something is living in the ship
+without a single line of dialogue.** A colony that keeps having *Zizzik's* kind of
+week is being told. That is the v1 deliverable, and it is a stronger one than
+conversation would be — **an inferred presence is more unsettling than a talkative
+one.**
+
+**The "no integrating self" rule still binds every pre-authored line.** Nothing in
+v1 may write a unified ship-voice, because doing so would make the v2 cast a
+retcon instead of a revelation.
+
+**And the crew's belief stays exactly right as a crew belief:** they hold that
+**Ohm** possesses the Cradle-Mind. They have correctly identified one tenant and
+mistaken it for the landlord — which is a thing v1 can say freely, because it is
+the *Jawa* speaking, not the ship.
 
 ### ⭐ The kinship it cannot explain
 
