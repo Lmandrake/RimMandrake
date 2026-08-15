@@ -59,7 +59,8 @@ spec:     Chain step 12 has no doc anywhere in `design/`. It is the first thing
 verify:   a design doc exists naming the scenario mechanism (ScenarioDef vs a
           shipped save), the starting pawns, and the starting gear.
 criteria: the campaign starts as designed rather than as a vanilla crashlanding.
-state:    ready
+state:    done — SCENARIO_SPEC.md now names the mechanism (a saved game, R25), all
+          six founders and the starting stock. That is the verify condition met.
 
 ## D-CHK1 The pilot console is UNREACHABLE — v1's NoPathToPilotConsole gate FAILS live
 row:      unassigned
@@ -434,4 +435,65 @@ spec:     Filed by CHECK 2026-08-15 from the live log, 7,726 lines, process 07:5
 verify:   after a regenerate + redeploy + load: `grep -c "initial resistance range is
           undefined" Player.log` returns 0.
 criteria: BUILD's fix in the generator, not a hand-edit of 69 defs.
+state:    ready
+
+## D29 Ash'karr's world is not safe to generate yet — two silent blockers
+row:      10
+spec:     🔴 **BLOCKS WORLDGEN. Both fail SILENTLY — a bad world generates with no
+          error line, and step 10 is irreversible.** Found 2026-08-15 by the
+          scenario-settings sweep and verified by DECIDE directly.
+          (a) **The planet type has never been selected.** `7f.alienworlds` and
+              `7f.alienworlds.tidallylocked` are ACTIVE, but **no planet-type
+              config file exists anywhere in `Config\`** and `selectedPlanetType`
+              still reads `Default`. `ferny.Worldbuilder` is not active, so the
+              selector is a radio list in MOD SETTINGS, not a button on the world
+              page. A world made today is an ordinary vanilla planet — no tidal
+              lock, no `avgTempByLatitudeCurve`, no rainfall curve, no biome
+              blacklist. **Every ruling R-H0..R-H10 assumes that curve.**
+          (b) **The biome mix is dead.** `JawaWorld_BiomeMix.xml` writes
+              `biomeConfigs` in dictionary-keyed shorthand; the log carries **28**
+              `XML format error: List item found with name X that is not <li>`
+              (confirmed: `ExtremeDesert`, `Desert`) and the live def reads
+              `biomeConfigs: []`. The blacklist half works, so all 24 abundance
+              offsets fail behind a patch that looks fine. **This is B56's bug
+              again**, and biome scoring runs ONCE, at worldgen.
+          Also recorded wrong and owed a fix: `WORLDGEN_RUN.md` §2.E says the
+          Anomaly playstyle is `Disabled` — it must be **`AmbientHorror`**, which
+          keeps study/research/codex alive; and `EXPECTED_FAILURES` S5 expects a
+          translation key where the save writes a defName.
+          BUILD holds the buildable half as **B63**. (a) is an owner click.
+verify:   a planet-type config file exists naming the tidally locked type; zero
+          `is not <li>` errors from the biome mix; `WORLDGEN_RUN.md` §2.E reads
+          `AmbientHorror`.
+criteria: the world the owner generates is the world these documents describe.
+state:    ready
+
+## D30 Six rulings the next session must get from the owner
+row:      0
+spec:     Parked 2026-08-15. None block each other; all block something.
+          **Worldgen-critical, answer before step 10:**
+          (1) **What carries the Pyrelands?** Vanilla `Savanna` and `Grasslands`
+              are cut and `ZBiome_Grasslands` ("stormy savanna") is kept. If
+              deliberate this is ideal — it already carries `DryThunderstorm` at
+              commonality 2. If not, the cut must be reversed.
+              (`biome_review_comments.md` §1)
+          (2) **The three wet biomes** — `AB_FeraliskInfestedJungle`,
+              `AB_MiasmicMangrove`, `COMIGO_GreaterSwamp_Tropical` — are fine as
+              R-H1's narrow flood margin and wrong as regions. Needs a placement
+              ruling, not a patch.
+          (3) **`Glowforest` as the LIVING half of the nightside glow?** R-H6c
+              left alive-vs-mineral open; taking it gives that band two textures.
+          **Not worldgen-critical:**
+          (4) **`BTD_Jawa` → which def?** Two live Jawa xenotypes, each holding a
+              different half of the clan's canon (`FACTION_SPEC.md` R28a). 16
+              references left deliberately unpointed. This is `D23`'s merge.
+          (5) **Confirm `RimMandrakeRakata` as the ancient enemy** — DECIDE
+              proposed it (`the_forgotten_war.md` R-W3); the owner names it.
+          (6) **The Rust Cathedral's hazards and the Enclave goodwill cost must be
+              set TOGETHER** (`the_forgotten_war.md` R-W4), and R-H10's biome
+              temperature edits REOPEN chain step 8, which is ratified — that
+              needs a ruling rather than a patch.
+verify:   each of the six is either answered in a design doc or explicitly
+          re-parked with a reason.
+criteria: none — offline.
 state:    ready
