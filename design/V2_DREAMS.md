@@ -957,3 +957,97 @@ a hazard into an *economy*, and it gives the campaign a reward that is
 crafting input, or a faction-tier trade good), and whether the pits regenerate
 them. ⚠️ Do not make them farmable — a wondrous thing you can grind is not
 wondrous.
+
+---
+
+### Anomaly playstyle — measured, 2026-08-15
+
+**The question.** The campaign ruled Anomaly content to ZERO with the DLC left
+enabled, so its assets stay available. Two v2 designs (the sarlacc built from
+`PitGate`/`Undercave`/fleshmass, and the flesh vaults of
+`design/Jawa/worldbuilding/the_forgotten_war.md` R-W2/R-W3) need Anomaly
+*mechanics*, not just its art. Does the game have a "present but dormant" mode —
+content real and reachable on purpose, nothing spawning by itself?
+
+**Yes. It is `AmbientHorror` with the threat-frequency slider at 0%.**
+
+**The def type is `AnomalyPlaystyleDef`** (`RimWorld.AnomalyPlaystyleDef`,
+`ludeon.rimworld.anomaly`). There are exactly **three** defs, all in
+`C:\Program Files (x86)\Steam\steamapps\common\RimWorld\Data\Anomaly\Defs\AnomalyPlaystyles\AnomalyPlaystyles.xml`:
+
+| defName | label | `generateMonolith` | `enableAnomalyContent` | `overrideThreatFraction` | `displayThreatFractionSliders` | `displayStudyFactorSlider` | `alwaysShowCodex` |
+|---|---|---|---|---|---|---|---|
+| `Standard` | standard with monolith | **true** | true | false | true | true | false |
+| `AmbientHorror` | ambient horror | **false** | **true** | **true** | false | true | **true** |
+| `Disabled` | anomaly incidents disabled | false | **false** | false | false | false | false |
+
+**Why `AmbientHorror` is the one.**
+
+- **Nothing auto-spawns.** `GameComponent_Anomaly.AnomalyThreatFractionNow`
+  returns `difficulty.overrideAnomalyThreatsFraction` outright when
+  `overrideThreatFraction` is set. That feeds `Storyteller.AnomalyIncidentChanceNow`,
+  which `StorytellerComp` uses as a plain `Rand.Chance` before it will draw from the
+  anomaly incident pool at all. **At 0 the storyteller never looks at that pool.**
+  The slider runs 0–1 and the game's own label for 0 is **"No major threats"**
+  (keyed `AnomalyFrequency_None`). Default when you pick the playstyle is 0.15.
+- **No monolith, ever.** `generateMonolith:false` makes `GenStep_Monolith.GenerateMonolith`
+  and `ScenPart_MonolithGeneration.PostMapGenerate` both early-return, and
+  `QuestNode_Root_MonolithMigration.TestRunInt` returns false — so the "Strange
+  signal" quest that would otherwise deliver a replacement monolith cannot fire either.
+- **The content stays fully alive.** `enableAnomalyContent` stays true, so
+  `AnomalyStudyEnabled` is true (it returns true *because* there is no monolith),
+  `ResearchManager.Notify_MonolithLevelChanged` force-reveals the anomaly research tab
+  at game start, the entity codex is shown from turn one (`alwaysShowCodex`), and
+  traders still stock tomes. Bioferrite, containment and the fleshmass tech line are
+  all researchable.
+- **And the gate our designs would trip on is off.** `IncidentWorker.CanFireNow`
+  applies `minAnomalyThreatLevel` **only** `&& Find.Anomaly.GenerateMonolith`. With no
+  monolith that check is skipped entirely, so `PitGate` and `FleshmassHeart` (both
+  `minAnomalyThreatLevel 2`) can be fired deliberately — dev mode, a forced incident, or
+  an authored quest — with no monolith progression to unlock first. **This is what
+  unblocks the sarlacc and the flesh vaults.**
+
+**The other two are wrong, and for different reasons.**
+
+- `Disabled` zeroes the threat fraction *and* kills the mechanics: study, the anomaly
+  research tab, the codex and tome trading all switch off with `enableAnomalyContent`.
+  The art survives; nothing you could build a sarlacc out of does.
+- `Standard` with both fractions dragged to 0 is the closest runner-up and still worse:
+  the void monolith physically spawns on the starting map, and the `minAnomalyThreatLevel`
+  gates stay live at tier 0, so an authored pit gate would need the monolith advanced first.
+
+**Residual auto-spawn under `AmbientHorror`: one, and it is off on our world.**
+`GameComponent_Anomaly.TrySpawnHarbingerTrees` queues `HarbingerTreeSpawn` directly on a
+timer, bypassing the fraction. It is pollution-gated —
+`GenStep_HarbingerTrees` sets `pollutionNone 0` and `pollutionLight 0` — so on an
+unpolluted desert map the desired count is 0 and `IncidentWorker_SpecialTreeSpawn.CanFireNowSub`
+refuses. Worth one grep after the first load, not worth a redesign.
+
+**🔴 Locked at world creation — this is a decision with a deadline.**
+`Dialog_AnomalySettings` is the only vanilla UI that writes `difficulty.AnomalyPlaystyleDef`,
+and `StorytellerUI.DrawStorytellerSelectionInterface` only draws the "Anomaly settings..."
+button that opens it inside `if (Current.ProgramState == ProgramState.Entry)`. The mid-game
+page (`Page_SelectStorytellerInGame`) calls the same method, so the button is simply absent
+once a game exists. **Pick the playstyle on the storyteller page or do not get it.**
+
+What *is* changeable afterwards is the **threat-frequency slider**
+(`overrideAnomalyThreatsFraction`) — but `StorytellerUI` draws the anomaly slider block only
+when `difficulty.isCustom`. **So choose `AmbientHorror` AND Custom difficulty at creation**;
+Custom is what keeps the dial adjustable later, and it lets us start at 0 and open the tap by
+hand if v2 ever wants ambient dread. The value is serialised as `<anomalyPlaystyleDef>` in the
+save, so a save edit or a Harmony poke could change it after the fact — that is a repair, not a plan.
+
+⚠️ **One scenario trap:** `Scenario.standardAnomalyPlaystyleOnly` greys out everything but
+`Standard`. Only the Anomaly DLC's own scenario sets it
+(`...\Data\Anomaly\Defs\Scenarios\Scenarios.xml`). Our scenario must not.
+
+📌 **Correction to an older note.** `infrastructure/state/EXPECTED_FAILURES_next_load.md`
+S5 records `AnomalyFrequency_None` / `_VeryRare` / `_Rare` / `_Balanced` / `_Intense` /
+`_Overwhelming` as the playstyle **defNames**. They are not. They are translation keys for
+the slider's six frequency labels (`Dialog_AnomalySettings.FrequencyLabels`, thresholds
+0 / 0.05 / 0.2 / 0.5 / 0.75 / 1). The save will read `AmbientHorror`, never `AnomalyFrequency_None`.
+
+*Evidence: live def dump `AnomalyPlaystyleDef.json`, the shipped Anomaly XML, and a full
+decompile of `Assembly-CSharp.dll` (`AnomalyPlaystyleDef`, `GameComponent_Anomaly`,
+`Difficulty`, `StorytellerComp`, `StorytellerUI`, `Dialog_AnomalySettings`,
+`IncidentWorker`, `QuestNode_Root_MonolithMigration`).*
