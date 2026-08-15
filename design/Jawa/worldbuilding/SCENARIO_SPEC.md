@@ -30,6 +30,24 @@ artifact, no new code, and "fixed" means fixed.
 🔴 **Every `FactionDef` and ideo block must be deployed BEFORE the owner makes
 the world.** Both are read once at world creation.
 
+## 🔴 The save goes IN THE REPO, or it does not exist
+
+**Owner's ruling, 2026-08-15:** *"There is no map protection! There's no
+protection of any asset not in the repo! Stop treating things as precious."*
+
+⇒ **The campaign-start save is the one artifact v1 actually ships, so it is
+committed.** Anything left only in
+`C:\Users\Mandrake\AppData\LocalLow\Ludeon Studios\RimWorld by Ludeon Studios\Saves`
+is disposable by definition and will be treated that way.
+
+Measured 2026-08-15: saves run **~30 MB**. That clears the repo's ~50 MB per-file
+rule and GitHub's 100 MB hard reject, so this is viable — but git stores each
+binary revision whole. **Commit the finished start, not every iteration.** This
+history was already re-initialised once to shed a 278 MB `.git`.
+
+⛔ **Do not build a backup or preservation mechanism for anything outside the
+repo, and do not infer that play has begun.** The owner will say when it has.
+
 ## The opening
 
 The clan has just brought a dead gravship back to life. The campaign begins the
