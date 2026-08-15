@@ -109,7 +109,13 @@
       </xenotypeChances>
     </xenotypeSet>
 
-    <pawnGroupMakers>
+    <!-- Inherit="False" IS LOAD-BEARING. RimWorld resolves inheritance AFTER
+         patches, and a child `li` list is APPENDED to the parent's, not
+         substituted for it. `TribeBase` carries 12 group makers; without
+         this opt-out the faction fields those too and raids arrive as
+         vanilla pawns wearing our name. Vanilla itself writes it 314 times,
+         9 of them on pawnGroupMakers. -->
+    <pawnGroupMakers Inherit="False">
       <li>
         <kindDef>Combat</kindDef>
         <options>

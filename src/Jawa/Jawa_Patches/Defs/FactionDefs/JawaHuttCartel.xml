@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ============================================================================
+  JawaHuttCartel.xml                          Jawa_Patches · authored 2026-08-14
+  ============================================================================
+
+  FACTION_SPEC.md section 2. Faction 2 of 14.
+
+  ParentName is `OutlanderFactionBase` (R24), which supplies factionNameMaker,
+  settlementNameMaker, factionIconPath, techLevel Industrial, leaderTitle,
+  allowedArrivalTemperatureRange and a full set of pawnGroupMakers. Everything
+  restated below is either a value the parent does not give at all, or one the
+  dossier contradicts.
+
+  🔴 `colorSpectrum` IS NOT INHERITED. Measured on the shipped abstracts:
+  `OutlanderFactionBase` and `TribeBase` supply NO colorSpectrum — only
+  `PirateBandBase` does. R24's table says otherwise and is wrong on that one
+  field. A faction without it is set on 76 of 87 live defs, so the world map
+  draws it broken. It is set explicitly here and in all six siblings.
+
+  ⛔ NO IDEO BLOCK. R23: `fixedIdeo` / `ideoName` / `ideoDescription` /
+  `forcedMemes` / `deityPresets` land as one uniform pass in B54, for all eleven
+  faiths at once. A faction without them generates an ideo at worldgen and works.
+
+  🔴 `Jawa_Spawn_Hutt` APPEARS IN Settlement AND Trader guards ONLY, NEVER in a
+  Combat group. A Hutt does not go on raids; it is met at home or on a caravan.
+
+  Pawn kinds verified present in the 2026-08-14 dump (585 mods) and mapped to
+  their owning mod for `MayRequire`:
+      OuterRim_Nikto · OuterRim_NiktoTribal   Neronix17.OuterRim.GalacticDiversity
+      Bantha · Dewback                        Mlie.StarWarsAnimalCollection
+      Jawa_Gamorrean_* · Jawa_Spawn_Hutt      OURS, this same mod - no MayRequire
+  ============================================================================
+-->
+<Defs>
+
+  <FactionDef ParentName="OutlanderFactionBase">
+    <defName>Jawa_HuttCartel</defName>
+    <label>Hutt Cartel</label>
+    <description>Wealthy, decentralised and entirely transactional. The Cartel owns the oases and sells water at whatever the buyer can be made to pay, and it holds the only non-Imperial orbital node on the planet — the door off-world, and the reason everyone keeps taking its calls.\n\nIt is hostile the way a creditor is hostile. Nothing about it is personal, and everything about it is negotiable.</description>
+    <pawnSingular>Cartel enforcer</pawnSingular>
+    <pawnsPlural>Cartel enforcers</pawnsPlural>
+    <leaderTitle>Lord</leaderTitle>
+    <categoryTag>Outlander</categoryTag>
+    <techLevel>Industrial</techLevel>
+    <humanlikeFaction>true</humanlikeFaction>
+    <canMakeRandomly>true</canMakeRandomly>
+    <maxCountAtGameStart>1</maxCountAtGameStart>
+    <!-- 8 settlements, all oasis tiles. -->
+    <settlementGenerationWeight>1.15</settlementGenerationWeight>
+    <!-- Hostile but negotiable: neither flag is set true. -->
+    <permanentEnemy>false</permanentEnemy>
+    <naturalEnemy>false</naturalEnemy>
+    <canRequestTraders>true</canRequestTraders>
+
+    <factionNameMaker>NamerFactionOutlander</factionNameMaker>
+    <settlementNameMaker>NamerSettlementOutlander</settlementNameMaker>
+    <factionIconPath>World/WorldObjects/Expanding/Town</factionIconPath>
+    <!-- R22: sickly gold. -->
+    <colorSpectrum>
+      <li>(0.72,0.62,0.25)</li>
+      <li>(0.58,0.48,0.18)</li>
+    </colorSpectrum>
+
+    <!-- Inherit="False" IS LOAD-BEARING. RimWorld resolves inheritance AFTER
+         patches, and a child `li` list is APPENDED to the parent's, not
+         substituted for it. `OutlanderFactionBase` carries 8 group makers; without
+         this opt-out the faction fields those too and raids arrive as
+         vanilla pawns wearing our name. Vanilla itself writes it 314 times,
+         9 of them on pawnGroupMakers. -->
+    <pawnGroupMakers Inherit="False">
+      <li>
+        <kindDef>Combat</kindDef>
+        <options>
+          <OuterRim_Nikto MayRequire="Neronix17.OuterRim.GalacticDiversity">10</OuterRim_Nikto>
+          <OuterRim_NiktoTribal MayRequire="Neronix17.OuterRim.GalacticDiversity">6</OuterRim_NiktoTribal>
+          <Jawa_Gamorrean_Guard>4</Jawa_Gamorrean_Guard>
+          <Jawa_Gamorrean_Enforcer>1</Jawa_Gamorrean_Enforcer>
+        </options>
+      </li>
+      <li>
+        <kindDef>Trader</kindDef>
+        <traders>
+          <OuterRim_Nikto MayRequire="Neronix17.OuterRim.GalacticDiversity">1</OuterRim_Nikto>
+        </traders>
+        <guards>
+          <Jawa_Gamorrean_Guard>6</Jawa_Gamorrean_Guard>
+          <Jawa_Gamorrean_Enforcer>2</Jawa_Gamorrean_Enforcer>
+          <Jawa_Spawn_Hutt>1</Jawa_Spawn_Hutt>
+        </guards>
+        <carriers>
+          <Bantha MayRequire="Mlie.StarWarsAnimalCollection">6</Bantha>
+          <Dewback MayRequire="Mlie.StarWarsAnimalCollection">5</Dewback>
+        </carriers>
+      </li>
+      <li>
+        <kindDef>Settlement</kindDef>
+        <options>
+          <OuterRim_Nikto MayRequire="Neronix17.OuterRim.GalacticDiversity">8</OuterRim_Nikto>
+          <Jawa_Gamorrean_Guard>4</Jawa_Gamorrean_Guard>
+          <Jawa_Spawn_Hutt>1</Jawa_Spawn_Hutt>
+        </options>
+      </li>
+    </pawnGroupMakers>
+  </FactionDef>
+
+</Defs>
