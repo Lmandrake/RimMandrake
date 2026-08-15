@@ -118,3 +118,12 @@ What goes in, and what does not: `references/traps.md`.
 **Recurs when:** any `GenStep_Scatterer` subclass with `isJunk` — including `GenStep_ScatterGroupPrefabs`, whose `Generate` is a bare `base.Generate` call and inherits the factor unchanged.
 
 ---
+
+### Copying defs out of a mod: `Name=` is a SECOND global namespace, and the check has to be against the mod set that SURVIVES
+**Symptom:** a standalone mod built by copying another mod's defs validates clean, loads clean and renders perfectly — right up until the donor is switched off, which was the entire point of building it. Then heads, eyes and icons vanish with no error naming the copy.
+**Cause:** three separate leaks, and a clean `validate_patch.py` cannot see any of them, because it resolves against the CURRENT load set where the donor is still installed and every stale reference still works.
+1. **`ParentName` resolves a `Name=` attribute, never a defName**, and `Name=` is global across all mods. Leave a copied abstract with the donor's `Name` and it collides while the donor is present and disappears with it. A concrete def can carry BOTH `defName` and `Name=`, so a rename pass keyed only on `defName` misses it.
+2. **A def can be reached only through an inherited one.** A closure that walks defs, then resolves abstracts in a second pass, will mark the abstract's references seen without expanding them — and the defs THOSE reach never enter the set. One queue, defs and abstracts together, or the set is quietly short.
+3. **A grep for the donor's prefix only works if the rename STRIPS it.** `guy762_X` -> `RimMandrake_guy762_X` keeps the substring and the grep can never come back clean.
+**Fix:** build the check the validator cannot: take the def dump, drop every def whose only owner is a departing packageId, and assert no reference in the new mod lands in that set. Do the same for texture paths against the files actually copied. Both must be zero.
+**Recurs when:** any "own it outright so the donor can be removed" job — xenotype packs, retexture rescues, fork-a-mod. ⚠️ Also check `Class=` on modExtensions: a cosmetic extension can be compiled into the departing mod's own assembly (`EyeOffsetSouth.dll` ships inside Star Wars Xenotypes), and that is a C# dependency no XML grep will show you.
