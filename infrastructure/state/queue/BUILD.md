@@ -16,8 +16,9 @@ row:      10
 spec:     `src/RimMandrake/bridgetools/artifacts/BridgeTools/JawaBench/JawaBench.BridgeTools.dll`,
           md5 `d7e7c6c1`, 30 `jawa/` tools. **`--gm` REQUIRED** or `fire_incident`
           and `send_letter` are stripped off the game copy. Game must be DOWN.
-          Deploy `JawaSeaShaper.dll` SOLO in the same window — repo `b7730027`
-          vs deployed `82b48e53` — it cannot be written while RimWorld runs.
+          ⛔ **DECIDE 2026-08-15: do NOT deploy `JawaSeaShaper.dll` in this window.**
+          The sea left v1 when worldgen became manual (D-CRIT, superseded; B2 dropped).
+          The repo/deployed hash mismatch is expected and is not a defect to fix.
 verify:   md5 of the deployed DLL equals `d7e7c6c1`, and `fire_incident` +
           `send_letter` are present in the deployed bytes (`strings -a -el`).
 criteria: `rimbridge/list_tools` counts 30 `jawa/` names.

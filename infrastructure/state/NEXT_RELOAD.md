@@ -27,6 +27,31 @@ until the owner personally verifies art is broken. Art *observation* is welcome 
 Everything in this section is inert or refused while RimWorld runs. If the game is
 already up, skip to §2.
 
+### 1.0 🔴 THIS WINDOW — the deploy manifest, in order. Opened 2026-08-15.
+
+Assembled by DECIDE against the owner's broadcast *"game is down, stage the next
+load and prepare additional content"*. **Everything below §5 is uninterpretable
+until this section is finished** — five of the six live items are `blocked — needs
+deploy`, not blocked on a question.
+
+| # | deploy | item | why this order |
+|---|---|---|---|
+| 1 | `python.exe src/RimMandrake/bridgetools/build.py --gm --apply` — or `./src/RimMandrake/Utils/shutdown_deploy.sh` | BUILD **B1**, closes **B0** | An **assembly, solo**. Everything in §3–§6 is a `jawa/*` call, so a wrong companion poisons every result after it. 🔴 `--gm` or `fire_incident` + `send_letter` are stripped and §5's L3 cannot fire at all |
+| 2 | `deploy_custom_mods.py --mod JawaPlantGrowth --plan` then `--apply` | CHECK **C38** | The **second and last assembly**. Deploy it **alone**, not beside #3 — a new DLL in a mixed batch poisons attribution for everything beside it. Then add `mandrake.jawaplantgrowth` to `ModsConfig.xml` **after `brrainz.harmony`** or the Harmony postfix never binds |
+| 3 | `deploy_custom_mods.py --mod DesertVehicleReskin --plan` then `--apply` | CHECK **C39** + **C41** | Pure XML and loose PNGs — no window needed, but do it now so it rides this load. This is an **update**, the mod is already at `C:\Program Files (x86)\Steam\steamapps\common\RimWorld\Mods\DesertVehicleReskin`. 🔴 `mandrake.desertvehiclereskin` must sit **after** `sarg.alphavehiclesneolithic` or the labels change and the art does not |
+| 4 | `ModsConfig.xml` chores in ONE pass | BUILD **B25** | Read its mtime first (§1b). Standing changes: **mechanoids OFF**, disable `com.yayo.yayoAni.continued`, pin the six `loadBottom`+`loadAfter` userRules |
+| 5 | Write the three signatures into `EXPECTED_FAILURES` | BUILD **B23** | Must land **before launch** or the load spends attention on errors we already know about |
+| 6 | `python.exe src/RimMandrake/Utils/refresh.py` | B25(b) | **Last.** It reads the list the four steps above just finished changing |
+
+⛔ **NOT in this window, and this is a change:** `JawaSeaShaper.dll`. The repo copy
+(`b7730027`) and the deployed copy (`82b48e53`) differ and that is **expected** —
+the sea left v1 when the owner ruled worldgen manual on 2026-08-14. See D-CRIT in
+`infrastructure/state/queue/DECIDE.md`, which was superseded today and used to say
+the opposite. Do not spend the window on it.
+
+📌 **The window is not the load.** Steps 2 and 3 make §5's items collectable; they
+do not collect anything. Nothing here is finished until the game is up and §5 runs.
+
 ### 1a. Arm the def dump — OPTIONAL, gates nothing
 
 ```bash
@@ -92,6 +117,18 @@ faction leaders and fails silently. **The moment anyone calls `jawa/spawn_pawn`,
 that cluster becomes unattributable again and the question cannot be answered.**
 
 Harvest first. Then spawn.
+
+**Two things settle in that first harvest and nowhere else:**
+
+- 🔴 **CHECK C36 — the donors-off configuration.** `btd.xenotyperemix.starwars`,
+  `guy762.starwarsxenotypes` and `neronix17.outerrim.galacticdiversity` are OFF and
+  `mandrake.starwarsraces` stands alone. **Pass = the log carries no `Could not
+  resolve cross-reference` naming a `guy762_`, `OuterRim_` or `BTD_` def, and no
+  `Could not find type named`.** `harvest_log.py --show crossref` reads the actual
+  lines. ⚠️ 70/70 species already spawn with the right xenotype — that half is
+  **banked, do not redo it**. Only the crossref sweep is open.
+- **The `[JawaPlantGrowth]` startup line** (§5 L6 step 1). It is emitted once, at
+  startup, and it is the only positive evidence that assembly bound at all.
 
 ---
 
@@ -181,11 +218,34 @@ rimworld/start_debug_game_ready       -> a fresh map in ~30 s
 ⚠️ That call **exceeds the 30 s timeout and succeeds anyway** — do not retry, or
 you get a second map. Reconnect and poll `list_pawns`.
 
-| # | call | seat | why it is worth a line |
+🔴 **Read the rows in order.** L0 is one screenshot and it decides whether a large
+body of art work closes or reopens; L1–L4 need `jawa/*` tools that only ship in
+§1.0 step 1. **Detail lives in the queue item named in each row — this table is the
+order and the call, not the whole plan.**
+
+| # | call | item | why it is worth a line |
 |---|---|---|---|
-| L1 | **`rimworld/spawn_thing def=SmallThruster x=45 z=131`**, then `jawa/inspect_string` on it — read for `WarningThrusterInside`. ⚠️ **`jawa/spawn_thing` DOES NOT EXIST**; the prefix is vanilla `rimworld/`, or `jawa/spawn_batch` for more than one | BUILD | **Cheapest launch gate we own.** Outdoor-required ⇒ the exported hull needs its stern cut back, a whole deck re-lay. Substructure-free-only ⇒ nothing to change. One paused call decides a large piece of rework. **Blocked until `jawa/inspect_string` deploys (BUILD B1)** |
-| L3 | Fire ONE Galactic Empire raid and screenshot it — 🔴 **procedure below the table, do not improvise it** | DECIDE | The biggest open design question DECIDE owns: **before we repair the antagonist, someone must see whether it reads as one.** ~5 min. Needs `jawa/set_faction_relation` (BUILD B1) if the Empire is not already hostile |
+| **L0** | `jawa/clear_ui`, then `jawa/spawn_pawn kindDef=Colonist faction=PlayerColony xenotype=RimMandrakeRodian`. **Look at its face. Screenshot it.** | CHECK **C37** | 🔴 **FIRST ACTION ON THE MAP.** Facial Animation's per-xenotype opt-out was rewritten (86 → 156 entries) but FA reads its config **only at startup**, so it has never once been active. **Snoot visible ⇒ the whole art failure closes.** Still a human face ⇒ FA was not the cause and the head-gene findings (10 species with no head-forcer, Rodian forced to a generic Outland reptile head) move back to the top. One pawn, one look. ⚠️ **`faction` is not optional** — omit it and the pawn spawns into the Empire, hostile |
+| L1 | `rimworld/spawn_thing def=SmallThruster x=45 z=131`, then `jawa/inspect_string` on it — read for `WarningThrusterInside`. ⚠️ **`jawa/spawn_thing` DOES NOT EXIST**; the prefix is vanilla `rimworld/`, or `jawa/spawn_batch` for more than one | BUILD | **Cheapest launch gate we own.** Outdoor-required ⇒ the exported hull needs its stern cut back, a whole deck re-lay. Substructure-free-only ⇒ nothing to change. One paused call decides a large piece of rework. Needs `jawa/inspect_string` (§1.0 step 1) |
+| L2 | `jawa/spawn_pawn kindDef=Jawa_Tribal_Scavenger` **×6**, then one Geonosian Foundry Hive pawn, then read a Jawa's gear and let it socialise | CHECK **C40** | Three deployed-but-unproven fixes in one spawn pass. **Six armed Jawa** (not civilians) · **a Geonosian that is not a baseliner** (empty `xenotypeChances` looks like a content gap, not a dropped node) · **a Jawa wearing `guy762_Robes_jawa` + `guy762_JawaHood` and speaking a Jawa voice line**. 🔴 The gear defs live in a mod we KEPT — their presence in a dump proves nothing; **the pawn wearing them is the only evidence** |
+| L3 | Fire ONE Galactic Empire raid and screenshot it — 🔴 **procedure below the table, do not improvise it** | DECIDE | The biggest open design question DECIDE owns: **before we repair the antagonist, someone must see whether it reads as one.** ~5 min. Needs `jawa/set_faction_relation` (§1.0 step 1) if the Empire is not already hostile |
 | L4 | Spawn `KotORDroidGood_3C` **twice** — the 2nd must NRE | BUILD | 30 s, any map. The whole causal chain (`isOrganic=false` ⇒ no `Pawn_RelationsTracker` ⇒ HAR NRE on the 2nd same-def pawn) rests on this. **If the 2nd does not throw, the chain is wrong and the item re-opens.** An owner decision is queued behind it |
+| L5 | **Architect ▸ Vehicles** — read the five Tier-0 land blueprint labels. Then spawn `AV_OxCart`, `AV_Chariot`, `AV_CoveredCarriage`, `AV_WarChariot`; rotate each north/south/east; **Architect ▸ Props and Decor** for the `VFEPD_*` twins | CHECK **C41** + **C39** | Reads verbatim `dewback cart` · `ronto wagon` · `bantha dray` · `dewback war cart` · `eopie sled`; `Chariot`/`Ox cart`/`Dog Sled` appear **zero** times. 🔑 **A Vehicle Framework vehicle spawns as a PAWN** — `jawa/list_things` returns nothing at the cell, use `jawa/list_pawns`. 🔴 **The art reaches every def by texPath override whether or not a patch ran** — only the LABEL and the per-def COLOUR are evidence. The **architect menu is the tell**, because the blueprint is a third def the sled pass never touched. ⛔ Do not check west (auto-mirrored from east) |
+
+#### 🌱 L6 — plant growth. **A SECOND MAP, and it is the point.** CHECK **C38**
+
+Do this last: it needs its own quicktest, and then **a second one on `PoisonForest`**.
+A biome branch cannot be tested by walking across the first map.
+
+1. **Startup log first** — `[JawaPlantGrowth] scaling <N> plant defs (default x4, tree x2.5), <M> exempt, 1 terminator biome(s) at x0.4.` 🔴 **This line is the only positive evidence the assembly ran.** Absent ⇒ the answer is *"not deployed / not in ModsConfig"*, **not** *"no effect"*, and nothing below it means anything.
+2. Map 1 (temperate/arid): spawn `Plant_Corn` and `Plant_TreeOak` side by side on fertile soil, read growth %, run one in-game day, read again. **The corn must be roughly 4× the oak's growth percentage** (~36% vs ~8%). Near 1× ⇒ the tree band is not firing.
+3. Same map: spawn `Plant_TreeAnima` — it must read ~4% after that day, **not** ~10%. That is the exemption.
+4. **Map 2, generated fresh on `PoisonForest`** (Advanced Biomes): same two plants, same day. 🔴 **The corn gains ~10%, LESS than map 1 and less than vanilla's ~8.8% would be an increase over.** Slower, not faster. **This is the check most likely to be skipped and the only one that proves the biome branch runs at all.**
+
+⚠️ A 0% reading is not evidence — the postfix returns early on `__result <= 0`
+(night, out of temperature band, unlit). **Read growth in daylight, in season.**
+⛔ Not in scope: wild-plant REPOPULATION. `wildPlantRegrowDays` is R-G4, it did not
+ship, and a burnt PoisonForest staying bare proves nothing about this patch.
 
 #### 🔴 L3's procedure — IL-confirmed. Follow it verbatim.
 
