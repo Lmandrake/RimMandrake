@@ -344,6 +344,24 @@
 			<li>ThingDef/VWE_Gun_MakeshiftShotgun</li>
 			<li>ThingDef/VWE_Gun_MakeshiftLMG</li>
 			<li>ThingDef/VWE_Gun_MakeshiftRevolver</li>
+			<li>ThingDef/HMC_Wall_Emp_Turret</li>
+			<li>ThingDef/HMC_Wall_Emp_Turret_Ship</li>
+			<li>ThingDef/HMC_Wall_FireShotgun_Turret</li>
+			<li>ThingDef/HMC_Wall_Foam_Turret</li>
+			<li>ThingDef/HMC_Wall_LightMachinegun_Turret</li>
+			<li>ThingDef/HMC_Wall_MachineCannon_Turret_Ship</li>
+			<li>ThingDef/HMC_Wall_Minigun_Turret</li>
+			<li>ThingDef/HMC_Wall_Minigun_Turret_Ship</li>
+			<li>ThingDef/HMC_Wall_Rocket_Turret</li>
+			<li>ThingDef/HMC_Wall_Emp_Turret_Top</li>
+			<li>ThingDef/HMC_Wall_Emp_Turret_Top_Ship</li>
+			<li>ThingDef/HMC_Wall_FireShotgun_Turret_Top</li>
+			<li>ThingDef/HMC_Gun_TurretFoam</li>
+			<li>ThingDef/HMC_Wall_LightMachinegun_Turret_Top</li>
+			<li>ThingDef/HMC_Wall_MachineCannon_Turret_Top_Ship</li>
+			<li>ThingDef/HMC_Wall_Minigun_Turret_Top</li>
+			<li>ThingDef/HMC_Wall_Minigun_Turret_Top_Ship</li>
+			<li>ThingDef/HMC_Wall_Rocket_Turret_Top</li>
 		</keys>
 	</ModSettings>
 </SettingsBlock>
