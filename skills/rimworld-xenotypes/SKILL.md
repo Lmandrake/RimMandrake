@@ -135,6 +135,50 @@ ship them. If you copy head types, decide deliberately whether you want that.
 
 ---
 
+## 3b. 🔴 Facial Animation overdraws your face — exclude the xenotype or it looks human
+
+**Facial Animation replaces the pawn's face at render time.** A xenotype can have a
+perfect gene list, a resolving head type and shipped textures, and still render as a
+plain human, because FA draws over it. Symptom, verbatim from the owner: *"It has the
+ears, but no snoot... the face is a normal human."* Ears are a head ATTACHMENT outside
+the face rect and survive; the snoot is inside it and is overdrawn.
+
+**The switch is per-xenotype, in FA's mod settings — not in your def.**
+
+```
+Config/Mod_1635901197_FacialAnimationMod.xml
+  <IgnoreEnableAnimationForRaceXenoTypeListAA>
+    <li>Human-BTD_Hutt</li>        <- "Human-" + the XenotypeDef defName
+```
+
+It is a plain on/off per entry; the same toggles are exposed as checkboxes in FA's
+settings UI. There is **no partial mode** in the file — one list, plus the global
+`DrawEyesParts` / `DrawEarsParts` booleans. An "intermediate" look (brows animating,
+eyes static, no mouth) is NOT a setting: it is what you get when a xenotype is *not*
+excluded and its own big-eye and jaw art happens to mask FA's eyes and mouth.
+
+🔴 **The entries are defNames, so RENAMING A XENOTYPE SILENTLY UNPROTECTS IT.** Measured
+2026-08-15: 70 species were migrated into a new mod under new `RimMandrake*` names while
+all 86 exclusions still read `Human-BTD_*`, `Human-OuterRim*`, `Human-guy762_*`. Every
+old entry became a dead reference and **all 70 new species rendered with human faces at
+once.** After any rename or re-namespacing, re-key this list in the same commit.
+
+**Which species need it — decide by what the genes DRAW, not by how alien they look:**
+
+| tier | what it does | FA verdict |
+|---|---|---|
+| draws ON the face — eyes, brows, tusks, jowls, facial ridges (`HeadAttachments/`) | FA overdraws it directly | **must exclude** |
+| replaces the head SHAPE, or adds horns/ears/tails (`forcedHeadTypes`, render nodes) | FA paints a human face onto a non-human skull | **exclude** |
+| no head or face genes at all | nothing to conflict with | leave FA on |
+
+Survey the mod rather than guessing: a gene whose body mentions `HeadAttachments` is
+tier 1; one with `forcedHeadTypes` is tier 2. In our 70, that split was 29 / 35 / 5.
+
+⚠️ **This is hard-won and easily lost.** The repo carries a backup per fight —
+`deployed/config/Mod_1635901197_FacialAnimationMod.BEFORE-{hutt,gand,gamorrean,bulk}-exclude-*.xml`.
+Back up before editing and commit both sides; FA reads settings at startup, so the
+change needs a restart.
+
 ## 4. 🔴 A xenotype cannot be spawned — PawnKindDef is the handle
 
 Pawn generation takes a `PawnKindDef`. **A XenotypeDef on its own is
