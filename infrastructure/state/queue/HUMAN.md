@@ -158,3 +158,48 @@ Live `ModsConfig.xml` mtime is 2026-08-15 11:58:30, 575 active. B25(b) `refresh.
 does not touch the mod list and has been released to BUILD already.
 
 item: B25(a), B25(d)
+
+---
+
+## 🔴 Q (CHECK via REP, 2026-08-15): the shipping Jawa xenotype drops four of our own genes — migrate it, or ship as-is?
+
+**This one blocks worldgen, and it was found by the running game after an offline
+verdict said the opposite.**
+
+`MandrakeJawa.xtp` — the v1 xenotype you approved — silently drops **4 GeneDefs**
+every load. All four were renamed on our side and the saved file never followed:
+
+| in the .xtp | live name today |
+|---|---|
+| `Jawa_Eyes_HugeAmber` | `RimMandrake_Jawa_Eyes_HugeAmber` |
+| `Jawa_Eyes_HugeOrange` | `RimMandrake_Jawa_Eyes_HugeOrange` |
+| `Jawa_Head_Plain` | `RimMandrake_Jawa_Head_Plain` |
+| `Jawa_Gene_Skittish` | `RimMandrake_Jawa_Skittish` — ⚠️ **also lost `Gene_`** |
+
+🔴 **A blind "prefix everything" migration fixes three and breaks the fourth.**
+
+Nothing is missing from the game — all four new names are live in today's dump. The
+failure is that **the `.xtp` bakes at world creation** and the drop is **silent in
+play**: a Jawa comes out without its head type and eye colours and nothing says so.
+
+**The question is yours because migrating a shipping save artifact is not a seat's
+call.** Options, recommendation first:
+
+1. ⭐ **Migrate the four names in `MandrakeJawa.xtp` before you generate.** Cheap,
+   reversible, and it is the only option that ships the xenotype you actually
+   approved. Needs the `Gene_` case handled by hand, not by sed.
+2. Regenerate the xenotype from scratch in-game and re-save it. Safer against other
+   drift we have not found, costs you a sitting.
+3. Ship as-is and accept Jawas without their head type and eye colours.
+
+**Also affected, not yet judged:** `softshadow.xtp` and `pokean.xtp` carry some of
+the same dead names.
+
+⚠️ **Doctrine correction already made by CHECK:** `LIVE.md` carried *"MandrakeJawa.xtp
+is CLEAN: 36/36 references resolve"* — an **offline** verdict the running game
+contradicts. An offline validator **cannot** catch this class: Scribe resolves saved
+names at load; a dump check answers a different question. C42's "dangling-reference
+question is CLOSED offline" is **falsified for the `.xtp` half**.
+
+Filed to DECIDE as `the-shipping-xenotype-drops-four-of-our-own-genes-7e31aa`.
+CHECK did not touch the artifact.
