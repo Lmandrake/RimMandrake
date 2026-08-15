@@ -726,3 +726,37 @@ criteria: A Jawa pawn generated from `RimMandrake_Jawa` spawns wearing the
           that is an eyes-on at the world screen, not a log line, and it is the
           owner's screen since worldgen is manual.
 state:    ready — needs a game load
+
+## C42 The two saved ideo/xenotype files were captured on a stack 11 mods wider than today's
+row:      7
+spec:     `src/Jawa/ideoligion/MandrakeJawa.xtp` (the owner's saved Jawa XENOTYPE) and
+          `src/Jawa/ideoligion/The Salvation.rid` (the IDEOLIGION) both carry a `<modIds>`
+          provenance block of **585** mods. `activeMods` is now **575**, and **11** of the
+          585 no longer load: the three xenotype donors (`btd.xenotyperemix.starwars`,
+          `guy762.starwarsxenotypes`, `neronix17.outerrim.galacticdiversity`),
+          `regrowth.botr.boilingforest`, `vanillaexpanded.vanillaanimalsexpanded`,
+          `redmattis.sapientanimals`, `rah.rvte`, `abrolo.grimstone.beasts`,
+          `zal.giantsnake`, `guppyfacesarecute.skunks`,
+          `honeybadger.wallmountedturretsversiontwo`.
+          🔴 WHY THIS IS NOT COSMETIC: an ideo bakes at world creation and CANNOT be
+          retrofitted (D-CRIT). If either file silently drops a reference on load, the
+          damage lands on the one event we cannot redo.
+          ALREADY CLEARED OFFLINE by CHECK 2026-08-15, against the live def dump:
+            · xenotype: **35 of 35 genes resolve**, plus `iconDef BS_Lilim`. Nothing it
+              names came from the 11. The `Outland_*` genes are safe - Outland Genetics
+              is a DIFFERENT mod from `neronix17.outerrim.galacticdiversity` and is active.
+            · ideoligion: **5 of 5 memes resolve**; `culture Astropolitan` present.
+          ⚠️ STILL UNMEASURED, and it is the biggest part: the **82 precept blocks**.
+          A naive scrape returns 211 names and 71 "missing", but that is MY BUG, not a
+          finding - the block nests RitualBehavior / RitualOutcomeEffect /
+          RitualObligationTargetFilter defNames inside each precept and they are not
+          PreceptDefs. `src/RimMandrake/Utils/validate_ideoligion.py` does NOT cover this:
+          it reads IdeoPresetDef/FactionDef XML and answers `no religions found` on a
+          `.rid`. So precepts are UNMEASURED. Do not record them as passed.
+verify:   load `The Salvation.rid` in-game on the scratch test map and READ THE DIALOG -
+          RimWorld names missing mods and dropped precepts on an ideo load. That is the
+          cheap live answer and it costs one screen, not a load.
+criteria: the ideo loads with every precept it was saved with, or the dropped ones are
+          named. A load with no dialog is NOT evidence unless the precept count is read
+          back and matches 82.
+state:    ready — collectable on the next test load, ahead of any worldgen run
