@@ -21,7 +21,7 @@ Profiles do all of it, before the shell even starts.
 
 WHAT IT WRITES
 ==============
-Five profiles named `AGENT BRIDGE` … `AGENT PROJECT`, each with
+Four profiles named `AGENT DECIDE` … `AGENT REP`, each with
 
   * a colour scheme cloned from Campbell with the seat's foreground,
   * `tabColor`, so the tab strip is colour-coded,
@@ -116,11 +116,10 @@ LAUNCH = ("/mnt/d/Luke/dev/Rimworld/src/RimMandrake/Utils/claude_bounded.sh "
 
 # Hue-distinct and legible on Campbell's near-black background.
 SEATS = {
-    "BRIDGE":  ("#4EC9E0", "cyan   — instruments, telemetry"),
-    "OPS":     ("#E5A03C", "amber  — alarms, diagnostics"),
-    "CREATE":  ("#7BC96F", "green  — making things"),
-    "VISION":  ("#C08CE0", "violet — design"),
-    "PROJECT": ("#9CB3D0", "slate  — documents"),
+    "DECIDE": ("#C08CE0", "violet — scope and spec"),
+    "BUILD":  ("#7BC96F", "green  — artifacts and offline verification"),
+    "CHECK":  ("#4EC9E0", "cyan   — the live game and the bridge"),
+    "REP":    ("#E5A03C", "amber  — the human's interface"),
 }
 
 # Campbell, Windows Terminal's default scheme. Only `foreground` and

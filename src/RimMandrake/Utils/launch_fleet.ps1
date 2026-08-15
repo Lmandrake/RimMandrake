@@ -1,9 +1,12 @@
 <#
-launch_fleet.ps1 — open the five agent seats, each Windows Terminal window placed.
+launch_fleet.ps1 — open the four agent seats, each Windows Terminal window placed,
+plus the status board.
 
-    UL  AGENT CREATE        UR  AGENT BRIDGE
-    LL  AGENT PROJECT       LR  AGENT OPS
-                 centre, on top: AGENT VISION
+    UL  AGENT DECIDE        UR  AGENT CHECK
+    LL  AGENT BUILD         LR  AGENT REP
+
+Work flows UL -> LL -> UR (decide, build, check) and REP sits with the human.
+The status board is a floating tkinter window, launched last so it lands on top.
 
 WHY THE WINDOWS ARE MOVED RATHER THAN SIZED AT LAUNCH
 =====================================================
@@ -45,10 +48,11 @@ Normally invoked by the Desktop shortcut written by install_fleet_shortcut.py.
 param(
     [double]$CentreFrac = 0.5,
     [int]$Gap = 0,
-    [string[]]$Seats = @('CREATE', 'BRIDGE', 'PROJECT', 'OPS', 'VISION'),
+    [string[]]$Seats = @('DECIDE', 'CHECK', 'BUILD', 'REP'),
     [int]$TimeoutSec = 30,
     [switch]$Test,
-    [switch]$CloseTest
+    [switch]$CloseTest,
+    [switch]$NoBoard
 )
 
 $ErrorActionPreference = 'Stop'
@@ -127,17 +131,12 @@ $W = $work.R - $work.L; $H = $work.B - $work.T
 
 $halfW = [int](($W - $Gap) / 2); $halfH = [int](($H - $Gap) / 2)
 $rightX = $X + $W - $halfW;      $lowerY = $Y + $H - $halfH
-$cw = [int]($W * $CentreFrac);   $ch = [int]($H * $CentreFrac)
 
-# Seat -> rect. VISION is last so it lands on top of the four it overlaps.
 $place = [ordered]@{
-    CREATE  = @($X,      $Y,      $halfW, $halfH)
-    BRIDGE  = @($rightX, $Y,      $halfW, $halfH)
-    PROJECT = @($X,      $lowerY, $halfW, $halfH)
-    OPS     = @($rightX, $lowerY, $halfW, $halfH)
-    # Parenthesised deliberately: in PowerShell `,` binds TIGHTER than `+`, so
-    # `$X + 1, $Y` parses as `$X + (1, $Y)` — int plus array, which throws.
-    VISION  = @(($X + [int](($W - $cw) / 2)), ($Y + [int](($H - $ch) / 2)), $cw, $ch)
+    DECIDE = @($X,      $Y,      $halfW, $halfH)
+    CHECK  = @($rightX, $Y,      $halfW, $halfH)
+    BUILD  = @($X,      $lowerY, $halfW, $halfH)
+    REP    = @($rightX, $lowerY, $halfW, $halfH)
 }
 
 $wt = "$env:LOCALAPPDATA\Microsoft\WindowsApps\wt.exe"
@@ -188,8 +187,17 @@ foreach ($seat in $Seats) {
                                   $r[2] + $b.L + $b.R, $r[3] + $b.T + $b.B, $true)
 }
 
-# Leave the focus where the owner starts: the centre seat if it was opened.
-$focus = if ($Seats -contains 'VISION') { 'VISION' } else { $Seats[-1] }
+# The board: REP owns it, so it opens with the fleet. Launched after the seats
+# so it lands on top of them. -NoBoard skips it.
+if (-not $NoBoard) {
+    Start-Process -FilePath 'wsl.exe' -ArgumentList @(
+        '-d', 'Ubuntu', '--', 'bash', '-lc',
+        '"exec python3 src/RimMandrake/Utils/status_board.py"'
+    ) -WindowStyle Hidden | Out-Null
+}
+
+# Leave the focus where the owner starts: REP, the seat that talks to them.
+$focus = if ($Seats -contains 'REP') { 'REP' } else { $Seats[-1] }
 $last = if ($Test) { "AGENT $focus [test]" } else { "AGENT $focus" }
 $f = [Fleet]::WindowsTitled($last)
 if ($f) { [void][Fleet]::SetForegroundWindow(@($f)[0]) }
