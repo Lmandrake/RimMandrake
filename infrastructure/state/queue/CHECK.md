@@ -784,8 +784,11 @@ result:   2026-08-15 CHECK. THE OFFLINE HALF IS ANSWERED, and the precepts are C
           ⬜ 16 references stay UNMEASURABLE, all `AbilityDef`, because **79 of the 529
             def-type files in the dump are EMPTY** — AbilityDef has zero rows. That is a
             hole in the evidence, not a result, and it is NOT recorded as a pass.
-          ⚠️ 19 empty `<li>` in the style-frequency lists whose siblings carry values.
-            Unexplained. Not proven harmful. Look on the live load.
+          ✅ RETRACTED same day: the 19 empty `<li>` in the style-frequency lists are
+            NORMAL. Vanilla `Technocracy.rid` has the same shape (22 and 11) — Scribe
+            writes `<li />` for a default-valued entry, and `hairFrequencies` carrying
+            `<vals>` with no `<keys>` is also normal. I raised it as suspicious; it is
+            not. ⛔ Do NOT spend a live load on it.
 criteria: ⇒ NARROWED, and the narrowing is honest: the dangling-reference question is
           CLOSED offline. What remains is only what disk cannot answer — does the ideo
           LOAD with all 101 precepts, and do the 16 AbilityDefs resolve in the engine.
