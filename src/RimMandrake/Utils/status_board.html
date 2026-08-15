@@ -94,7 +94,7 @@
 </div>
 
 <div class="grid low">
-  <div class="panel"><p class="ttl">INVENTORY — DATA VOLUME</p><div id="invmb"></div></div>
+  <div class="panel"><p class="ttl">INVENTORY — DATA VOLUME <span id="invage" style="float:right;font-weight:400"></span></p><div id="invmb"></div></div>
   <div class="panel"><p class="ttl">INVENTORY — COUNT</p><div id="invn"></div></div>
   <div class="panel"><p class="ttl">CURRENTLY</p><div id="current"></div></div>
 </div>
@@ -204,6 +204,12 @@ function render(d){
   const inv=d.inventory||{volume:[],counts:[]};
   el('invmb').innerHTML=invBars(inv.volume,'mb',v=>v>=1024?(v/1024).toFixed(1)+' GB':v+' MB');
   el('invn').innerHTML=invBars(inv.counts,'n',v=>v.toLocaleString());
+  // Scanned hourly, so say when — an inventory that looks live but is 50
+  // minutes old would be read as current.
+  if(inv.scanned_at){
+    const m=Math.floor((Date.now()/1000-inv.scanned_at)/60);
+    el('invage').textContent='scanned '+(m<1?'just now':m+'m ago');
+  }
 
   // What each agent says it is doing. Written by `board.py say "<what>" --why "<why>"`.
   // An agent with no line renders the gap rather than hiding it.

@@ -100,6 +100,9 @@ def agents():
     return st
 
 
+# The census walks ~3k files. It changes on the scale of a work session, not a
+# poll, so it is cached for an hour and the page shows how old it is.
+INV_TTL = 3600
 _INV = {"at": 0, "v": None}
 
 
@@ -110,7 +113,7 @@ def inventory():
     weight is, count says where the work is. A 46 MB DLL and 230 patch files
     are both 'a lot' and neither number substitutes for the other.
     """
-    if _INV["v"] and time.time() - _INV["at"] < 60:
+    if _INV["v"] and time.time() - _INV["at"] < INV_TTL:
         return _INV["v"]
     vol = {}
     cnt = {}
@@ -167,6 +170,7 @@ def inventory():
                           key=lambda d: -d["mb"]),
          "counts": sorted(({"label": k, "n": n} for k, n in things),
                           key=lambda d: -d["n"])}
+    v["scanned_at"] = int(time.time())
     _INV.update(at=time.time(), v=v)
     return v
 
@@ -217,7 +221,10 @@ def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--port", type=int, default=8787)
     ap.add_argument("--once", action="store_true")
+    ap.add_argument("--inv-ttl", type=int, default=INV_TTL,
+                    help="seconds between repo censuses (default 3600)")
     a = ap.parse_args()
+    globals()["INV_TTL"] = a.inv_ttl
     if a.once:
         print(json.dumps(snapshot(), indent=1))
         return 0
