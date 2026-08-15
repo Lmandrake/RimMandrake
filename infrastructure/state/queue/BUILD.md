@@ -556,7 +556,16 @@ verify:   `python3 skills/rimworld-modding/scripts/validate_patch.py` on each of
           the next Player.log: zero `Exception loading def from file Jawa*.xml`.
 criteria: All 8 Jawa factions resolve live — `jawa/get_def` or the def dump returns a
           FactionDef for each of the five, where today it returns nothing.
-state:    fixed offline `fe6b460`, awaiting the live half.
+state:    DONE 2026-08-15 — both halves. CHECK collected the live half off this
+          load (575 mods, 1.6.4871 rev591): **zero** `Exception loading def from
+          file Jawa*.xml`, and **8/8** faction defNames resolve via
+          `jawa/get_def defType=FactionDef`. The log's only two def-load exceptions
+          are third-party (`ElectricTorches_DarkAgesCrypts_Thoughts.xml`) and are
+          the already-known baseline.
+          ⛔ **SCOPED, and do not let it close wider than its evidence:** this is a
+          QUICKTEST map. It proves the five FactionDefs LOAD. It says nothing about
+          which factions a generated world contains — that is C17's roster check and
+          it needs the real worldgen run. See the note below on required counts.
           🔴 **This state line previously read "dropped — Mechanitors are cut…",
           which is B65's ruling written into B56's slot.** It is not B56's. Anyone
           reading it concluded the five dead factions were abandoned; they were
@@ -1908,3 +1917,31 @@ state:    done 2026-08-15 — PROVENANCE ONLY, `ideo` byte-identical (101 precep
           ⚠️ 19 empty `<li>` reported by the validator PRE-EXIST and sit in `ideo`,
           not `meta`. Not introduced here, not fixed here.
 
+
+## nomatch-add-assumes-a-container-that-may-be-inherited-7b1e4c
+row:      tooling
+spec:     The sequel to B22, and a different case from it. B22 catches a `<nomatch>`
+          whose xpath is IDENTICAL to the test — provably dead, no `--defs` needed.
+          This is the case where the `<nomatch>` `PatchOperationAdd` targets the
+          **parent container** of the test xpath, which is the legitimate
+          add-if-missing idiom and therefore only a WARN today:
+            test:  /Defs/ThingDef[defName="X"]/statBases/MeatAmount
+            inner: /Defs/ThingDef[defName="X"]/statBases
+          🔴 It is fatal exactly when the def **inherits** that container instead of
+          declaring it. Patches run on RAW XML, so the Add matches nothing, returns
+          false, and `PatchOperationSequence` stops — every op after it in the block
+          silently never runs. Cost us `DA_Taraal` + `DA_SnowTaraal` and one load's
+          worth of wrong diagnosis (B59).
+          THE CHECK: with defs loaded from RAW XML (not a resolved dump, which
+          cannot tell inherited from owned), resolve the inner xpath's container
+          against the def's OWN node. Absent ⇒ ERROR, not WARN.
+          ⚠️ **This warning currently fires 1,145 times on one file.** A warning that
+          fires a thousand times is not a warning — whatever shape the fix takes, it
+          has to end with the fatal cases distinguishable from the safe ones, or the
+          signal stays buried exactly where it was buried this time.
+verify:   a synthetic def that inherits `<statBases>` is flagged ERROR with raw-XML
+          defs; a def that declares its own stays at WARN or better; the count on
+          `Jawa_Doctrine/Patches/MegafaunaYield.xml` drops from 1,145.
+criteria: `validate_patch.py` on `src/Jawa/Jawa_Doctrine` names any def whose
+          add-if-missing container is inherited, and names no def whose is owned.
+state:    ready

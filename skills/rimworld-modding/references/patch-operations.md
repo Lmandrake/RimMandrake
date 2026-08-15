@@ -250,6 +250,23 @@ Prefer `Conditional` on the node itself when you can. `FindMod` tells you a mod
 is present; `Conditional` tells you the thing you're about to edit is present,
 which is the fact you actually depend on.
 
+🔴 **Return semantics, and they read backwards from every instinct:**
+
+| situation | returns | logs |
+|---|---|---|
+| none of `<mods>` active | **true** | **nothing** |
+| a mod is active, `<match>` succeeds | true | nothing |
+| a mod is active, `<match>` fails | **false** | `Patch operation Verse.PatchOperationFindMod(<Name>) failed` |
+
+⇒ **A `FindMod` that FAILS is proof the mod is PRESENT and something inside its
+`<match>` broke.** It can never mean the mod is missing. The error prints the
+outer wrapper's `ToString()` while the return value came from an inner op, so the
+name in the message is the guard, not the defect — read the inner operations.
+
+⚠️ **`<mods>` matches the About.xml `<name>`, not the `packageId`** — and
+`<activeMods>` in `ModsConfig.xml` lists `packageId`. Checking the wrong one is
+how "that mod isn't installed" gets asserted about a mod that is.
+
 **`PatchOperationTest`** — obsolete. Use `Conditional`.
 
 ---
