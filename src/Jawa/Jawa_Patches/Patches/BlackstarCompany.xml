@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ============================================================================
+  BlackstarCompany.xml                    Jawa_Patches · authored 2026-08-14
+  ============================================================================
+
+  Builds FACTION_SPEC.md section 10, "Blackstar Company ; PATCH vanilla
+  `Pirate`". A reskin, not a new def.
+
+  READ FROM THE SHIPPED DEF, 2026-08-14 ; not inferred:
+  C:\Program Files (x86)\Steam\steamapps\common\RimWorld\Data\Core\Defs\
+    FactionDefs\Factions_Misc.xml
+
+      Name                        PirateBandBase   (it is its own abstract root)
+      ParentName                  FactionBase
+      label                       pirate gang
+      pawnSingular / pawnsPlural  pirate / pirates
+      leaderTitle                 boss
+      settlementGenerationWeight  1
+      permanentEnemy              true             PRESENT on the def itself
+      factionNameMaker            NamerFactionPirate
+      techLevel                   Spacer
+      pawnGroupMakers             6 Combat groups + 1 Settlement
+
+  ⭐ Unlike `OutlanderCivil` and `TribeCivil`, this def carries every field the
+  spec touches ON ITSELF ; `FactionBase` supplies only the loot curve and a
+  message string. So all six operations are `Replace`, and none of them is an
+  `Add`.
+
+  🔴 `permanentEnemy` STAYS true. R12 amends pillar 5 rather than patching this
+  false, because the vanilla raid economy is built on the pirate faction being
+  permanently hostile and turning it off guts it. The dossier's "No" is fiction,
+  not an engine instruction. No operation touches the field.
+
+  ⛔ `pawnGroupMakers`, `factionNameMaker`, `settlementNameMaker` and the raid
+  curves are untouched. They are inherited or shipped and already balanced;
+  R15's group surgery is the Empire's alone.
+
+  ⚠️ The ideo layer (`fixedIdeo` / `ideoName` "the Contract", deliberately with
+  NO Raider meme) is NOT in this file. It lands in `FactionReligions.xml` in its
+  own pass, the same way the Empire's did.
+
+  SAFETY
+  ======
+  Everything sits inside a conditional on the def existing, so the file is a
+  silent no-op rather than a wall of red if the vessel ever moves. Every
+  defName written here is vanilla Core, so no `MayRequire` is owed.
+  ============================================================================
+-->
+<Patch>
+
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/FactionDef[defName="Pirate"]</xpath>
+    <match Class="PatchOperationSequence">
+      <operations>
+
+        <!-- "pirate gang" -> the campaign name. -->
+        <li Class="PatchOperationReplace">
+          <xpath>/Defs/FactionDef[defName="Pirate"]/label</xpath>
+          <value><label>Blackstar Company</label></value>
+        </li>
+
+        <li Class="PatchOperationReplace">
+          <xpath>/Defs/FactionDef[defName="Pirate"]/description</xpath>
+          <value>
+            <description>Not a faction so much as one dangerous person with a name who is coming for you.\n\nIndependent hunters bound by a professional code, taking contracts rather than pillaging. The distinction matters to them. It will not matter to you when they arrive.</description>
+          </value>
+        </li>
+
+        <li Class="PatchOperationReplace">
+          <xpath>/Defs/FactionDef[defName="Pirate"]/pawnSingular</xpath>
+          <value><pawnSingular>hunter</pawnSingular></value>
+        </li>
+
+        <li Class="PatchOperationReplace">
+          <xpath>/Defs/FactionDef[defName="Pirate"]/pawnsPlural</xpath>
+          <value><pawnsPlural>hunters</pawnsPlural></value>
+        </li>
+
+        <!-- "boss" -> Captain. -->
+        <li Class="PatchOperationReplace">
+          <xpath>/Defs/FactionDef[defName="Pirate"]/leaderTitle</xpath>
+          <value><leaderTitle>Captain</leaderTitle></value>
+        </li>
+
+        <!-- 1 -> 0.6. Four settlements. -->
+        <li Class="PatchOperationReplace">
+          <xpath>/Defs/FactionDef[defName="Pirate"]/settlementGenerationWeight</xpath>
+          <value><settlementGenerationWeight>0.6</settlementGenerationWeight></value>
+        </li>
+
+      </operations>
+    </match>
+  </Operation>
+
+</Patch>
