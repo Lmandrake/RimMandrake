@@ -203,7 +203,9 @@ function render(d){
   };
   const inv=d.inventory||{volume:[],counts:[]};
   el('invmb').innerHTML=invBars(inv.volume,'mb',v=>v>=1024?(v/1024).toFixed(1)+' GB':v+' MB');
-  el('invn').innerHTML=invBars(inv.counts,'n',v=>v.toLocaleString());
+  el('invn').innerHTML=invBars(inv.counts,'n',v=>v.toLocaleString())+
+    (inv.excluded?`<div class="sub" style="margin-top:8px;font-size:10.5px">
+      authored only — excludes ${inv.excluded.join(', ')}</div>`:'');
   // Scanned hourly, so say when — an inventory that looks live but is 50
   // minutes old would be read as current.
   if(inv.scanned_at){

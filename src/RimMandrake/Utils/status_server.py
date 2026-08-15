@@ -103,6 +103,12 @@ def agents():
 # The census walks ~3k files. It changes on the scale of a work session, not a
 # poll, so it is cached for an hour and the page shows how old it is.
 INV_TTL = 3600
+
+# Counted: what we authored. Excluded: everything we merely downloaded, harvested
+# or generated. `research/` holds other people's hand-authored maps and `observed/`
+# holds harvested savegames — 400+ MB between them, none of it ours.
+EXCLUDE = (".git", "vendor", "research", "observed", "deployed", "disposing",
+           "obj", "bin", "__pycache__", "node_modules", "artifacts")
 _INV = {"at": 0, "v": None}
 
 
@@ -124,9 +130,7 @@ def inventory():
 
     mods = defs = patches = about = tex = 0
     for dirpath, dirnames, files in os.walk(ROOT):
-        dirnames[:] = [d for d in dirnames
-                       if d not in (".git", "vendor", "obj", "bin", "__pycache__",
-                                    "node_modules", "deployed")]
+        dirnames[:] = [d for d in dirnames if d not in EXCLUDE]
         rel = os.path.relpath(dirpath, ROOT)
         for f in files:
             fp = os.path.join(dirpath, f)
@@ -171,6 +175,8 @@ def inventory():
          "counts": sorted(({"label": k, "n": n} for k, n in things),
                           key=lambda d: -d["n"])}
     v["scanned_at"] = int(time.time())
+    v["excluded"] = [d for d in EXCLUDE if d not in
+                     (".git", "obj", "bin", "__pycache__", "node_modules")]
     _INV.update(at=time.time(), v=v)
     return v
 
