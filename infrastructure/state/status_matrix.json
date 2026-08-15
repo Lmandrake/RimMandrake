@@ -1,7 +1,27 @@
 {
  "rows": [
   {
-   "name": "1 Empire reskin",
+   "name": "0 Mod freeze",
+   "cells": {
+    "DECIDE": {
+     "done": 0,
+     "total": 0,
+     "state": "offline"
+    },
+    "BUILD": {
+     "done": 0,
+     "total": 1,
+     "state": "idle"
+    },
+    "CHECK": {
+     "done": 0,
+     "total": 0,
+     "state": "offline"
+    }
+   }
+  },
+  {
+   "name": "1 Item cherrypick",
    "cells": {
     "DECIDE": {
      "done": 0,
@@ -21,12 +41,12 @@
    }
   },
   {
-   "name": "2 Faction exclusion \u2014 untick the fiction-breakers at worldgen",
+   "name": "2 Normalize weapons \u00b7 armour \u00b7 beasts",
    "cells": {
     "DECIDE": {
      "done": 0,
-     "total": 1,
-     "state": "blocked"
+     "total": 0,
+     "state": "offline"
     },
     "BUILD": {
      "done": 0,
@@ -35,13 +55,113 @@
     },
     "CHECK": {
      "done": 0,
-     "total": 2,
+     "total": 0,
+     "state": "offline"
+    }
+   }
+  },
+  {
+   "name": "3 Equipment types to pawns",
+   "cells": {
+    "DECIDE": {
+     "done": 0,
+     "total": 0,
+     "state": "offline"
+    },
+    "BUILD": {
+     "done": 0,
+     "total": 0,
+     "state": "offline"
+    },
+    "CHECK": {
+     "done": 0,
+     "total": 0,
+     "state": "offline"
+    }
+   }
+  },
+  {
+   "name": "4 Xenotypes",
+   "cells": {
+    "DECIDE": {
+     "done": 0,
+     "total": 0,
+     "state": "offline"
+    },
+    "BUILD": {
+     "done": 0,
+     "total": 0,
+     "state": "offline"
+    },
+    "CHECK": {
+     "done": 0,
+     "total": 0,
+     "state": "offline"
+    }
+   }
+  },
+  {
+   "name": "5 Droids",
+   "cells": {
+    "DECIDE": {
+     "done": 0,
+     "total": 0,
+     "state": "offline"
+    },
+    "BUILD": {
+     "done": 0,
+     "total": 0,
+     "state": "offline"
+    },
+    "CHECK": {
+     "done": 0,
+     "total": 0,
+     "state": "offline"
+    }
+   }
+  },
+  {
+   "name": "6 Religions",
+   "cells": {
+    "DECIDE": {
+     "done": 0,
+     "total": 1,
+     "state": "idle"
+    },
+    "BUILD": {
+     "done": 0,
+     "total": 0,
+     "state": "offline"
+    },
+    "CHECK": {
+     "done": 0,
+     "total": 0,
+     "state": "offline"
+    }
+   }
+  },
+  {
+   "name": "7 Pawntypes",
+   "cells": {
+    "DECIDE": {
+     "done": 0,
+     "total": 0,
+     "state": "offline"
+    },
+    "BUILD": {
+     "done": 0,
+     "total": 1,
+     "state": "blocked"
+    },
+    "CHECK": {
+     "done": 0,
+     "total": 1,
      "state": "idle"
     }
    }
   },
   {
-   "name": "3 *The Claim* quest fires **and resolves**",
+   "name": "8 Biomes",
    "cells": {
     "DECIDE": {
      "done": 0,
@@ -52,80 +172,40 @@
      "done": 0,
      "total": 0,
      "state": "offline"
+    },
+    "CHECK": {
+     "done": 0,
+     "total": 0,
+     "state": "offline"
+    }
+   }
+  },
+  {
+   "name": "9 Factions",
+   "cells": {
+    "DECIDE": {
+     "done": 0,
+     "total": 0,
+     "state": "offline"
+    },
+    "BUILD": {
+     "done": 0,
+     "total": 13,
+     "state": "idle"
     },
     "CHECK": {
      "done": 0,
      "total": 1,
-     "state": "blocked"
+     "state": "idle"
     }
    }
   },
   {
-   "name": "4 Three terrain overrides visible on the map",
+   "name": "10 Worldmap",
    "cells": {
     "DECIDE": {
      "done": 0,
-     "total": 0,
-     "state": "offline"
-    },
-    "BUILD": {
-     "done": 0,
-     "total": 0,
-     "state": "offline"
-    },
-    "CHECK": {
-     "done": 0,
-     "total": 0,
-     "state": "offline"
-    }
-   }
-  },
-  {
-   "name": "5 Jawa xenotype spawns, and it is the right one of the three",
-   "cells": {
-    "DECIDE": {
-     "done": 0,
-     "total": 0,
-     "state": "offline"
-    },
-    "BUILD": {
-     "done": 0,
-     "total": 0,
-     "state": "offline"
-    },
-    "CHECK": {
-     "done": 0,
-     "total": 0,
-     "state": "offline"
-    }
-   }
-  },
-  {
-   "name": "6 Weapons / gear",
-   "cells": {
-    "DECIDE": {
-     "done": 0,
-     "total": 0,
-     "state": "offline"
-    },
-    "BUILD": {
-     "done": 0,
-     "total": 0,
-     "state": "offline"
-    },
-    "CHECK": {
-     "done": 0,
-     "total": 0,
-     "state": "offline"
-    }
-   }
-  },
-  {
-   "name": "7 Ordinary worldgen produces a playable world",
-   "cells": {
-    "DECIDE": {
-     "done": 0,
-     "total": 3,
+     "total": 4,
      "state": "blocked"
     },
     "BUILD": {
@@ -135,13 +215,13 @@
     },
     "CHECK": {
      "done": 0,
-     "total": 2,
+     "total": 4,
      "state": "blocked"
     }
    }
   },
   {
-   "name": "8 Gravship built and exported",
+   "name": "11 Gravship",
    "cells": {
     "DECIDE": {
      "done": 0,
@@ -161,27 +241,27 @@
    }
   },
   {
-   "name": "0",
+   "name": "12 Scenario",
    "cells": {
     "DECIDE": {
+     "done": 0,
+     "total": 1,
+     "state": "idle"
+    },
+    "BUILD": {
      "done": 0,
      "total": 0,
      "state": "offline"
     },
-    "BUILD": {
-     "done": 0,
-     "total": 1,
-     "state": "idle"
-    },
     "CHECK": {
      "done": 0,
-     "total": 1,
-     "state": "idle"
+     "total": 0,
+     "state": "offline"
     }
    }
   },
   {
-   "name": "9",
+   "name": "13 Quests",
    "cells": {
     "DECIDE": {
      "done": 0,
@@ -190,13 +270,13 @@
     },
     "BUILD": {
      "done": 0,
-     "total": 1,
-     "state": "idle"
+     "total": 0,
+     "state": "offline"
     },
     "CHECK": {
      "done": 0,
      "total": 1,
-     "state": "idle"
+     "state": "blocked"
     }
    }
   },
@@ -215,27 +295,7 @@
     },
     "CHECK": {
      "done": 0,
-     "total": 3,
-     "state": "idle"
-    }
-   }
-  },
-  {
-   "name": "\u2014",
-   "cells": {
-    "DECIDE": {
-     "done": 0,
-     "total": 0,
-     "state": "offline"
-    },
-    "BUILD": {
-     "done": 0,
-     "total": 0,
-     "state": "offline"
-    },
-    "CHECK": {
-     "done": 0,
-     "total": 1,
+     "total": 4,
      "state": "idle"
     }
    }

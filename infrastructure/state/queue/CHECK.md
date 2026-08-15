@@ -28,42 +28,42 @@ criteria: each tool returns success on a live map; `world_stats` returns `{ tile
 state:    ready
 
 ## C15 Finish the sea seed sweep — 4 of 7
-row:      7
+row:      10
 spec:     `python.exe src/RimMandrake/bridgetools/sea_seed_sweep.py 4`. Data, method and the near-miss: `observed/2026-08-14_sea_baseline_seeds.md`. ONLY when the owner is not at the keyboard — each iteration is a full RimWorld worldgen, it took loadavg to 22.58, and the owner read it as a hang. Every reading so far is the sea WITHOUT `JawaSeaShaper.dll` — a baseline we have never had, not a result.
 verify:   EMPTY
 criteria: seeds 5–7 land. What would reverse the S1 rescope (partition, not write): three-or-more bodies in the remaining seeds, or a wide water spread — nothing else. `25.0%` is NOT a constant: three seeds read exactly 25.0 and the fourth read **16.74**, so requirement 1 is a real gate. Do not author S1 until these land.
 state:    ready
 
 ## C16 Score the sea gate — requirements 3 and 4 are miscalibrated until B1 ships
-row:      7
+row:      10
 spec:     Per-requirement table: `D:\Luke\dev\Rimworld\design\Jawa\worldbuilding\worldgen_sea_spec.md`. A quicktest builds a FULL world — 119,904 tiles, `waterPct 25.0`, 2 bodies, `previewOnly:false`, in 127 ms — so the gate rehearses on disposable worlds without ever opening the planet page or the once-only Configure Factions screen.
 verify:   EMPTY
 criteria: do NOT score requirements 3 and 4 until B1's `world_stats` unit fix is deployed — `centroidLat` returns DEGREES against a FRACTIONAL 0.35–0.65 band, and `raggedness` counts tile EDGES where the spec means boundary TILES, up to 36x once squared. A correct world was already nearly rejected on this: 46.6° and 31.8° are 0.518 and 0.353, both inside the band. No candidate world is accepted on a partial pass; a full 5-of-5 pass is collectable (`perimeter`, `centroidLat`, `raggedness` are in the deployed binary — `strings -a -el` returns `{ tiles = {0}, pct = {1}, perimeter = {2}, raggedness = {3}, centroidLat = {4} }`, `JawaBenchTerrainTools.cs:3164-3178`).
 state:    blocked
 
 ## C17 Worldgen — spend the ratified faction cut
-row:      2
+row:      10
 spec:     `infrastructure/state/WORLDGEN_FACTION_CHECKLIST.md` (`c269c6a`) — 21 untick / 6 keep, ratified, committed and UNSPENT. Executed by unticking factions on vanilla's Configure Factions page DURING the worldgen run; that page is seen ONCE and there is no fixing it afterwards without regenerating the world. Four rulings ride in the file header: R1 dangling refs, R2 Rebel Alliance stays suppressed, R3 vanilla `Empire` is a KEEP, R4 rough-outlander floor. There is no file we can write to suppress a faction — Faction Control's `density` is a CLUMPING RADIUS (`__result = dist < fd.Density;`), not a count, and the English key "setting to 0 disables the faction" is a pre-1.3 leftover. Before calling any missing faction a defect, grep `Jawa_Patches/` for its defName.
 verify:   EMPTY
 criteria: the generated world's faction roster matches the keep list. A quicktest map's roster PROVES NOTHING — a debug quicktest never visits the Configure Factions page, so every faction is present by default. State which map any census came from. Prior scale, from the deleted world: 53 factions across 107 settlements, of which the fiction-breakers held ~34.
 state:    ready
 
 ## C18 `OuterRim_RebelAlliance` must be ABSENT at the next worldgen
-row:      2
+row:      10
 spec:     One `jawa/list_factions` after worldgen. Control: `OuterRim_GalacticEmpire`, which must be PRESENT. Closes `EXPECTED_FAILURES` A3.
 verify:   EMPTY
 criteria: ABSENT is the DESIRED outcome — `RebelAlliance_Suppress.xml` does it deliberately — so PRESENT is the failure. Nothing in `Player.log` reports a faction that never generates; the only detection is looking on purpose. Observe, do not fix.
 state:    ready
 
 ## C21 v1 row 3 — the rumour route, and does the quest RESOLVE
-row:      3
+row:      13
 spec:     Spawn `Jawa_ClaimRumour` (`Jawa_ClaimRumour.xml:89-91` hands out `Jawa_TheClaim`, `rootMinPoints 0`), read it, and follow the quest to resolution. The quest already REGISTERS via `jawa/fire_quest questDef=Jawa_TheClaim points=800` — id 0, "The Claim", `State=NotYetAccepted`, `questCountAfter 1`, challengeRating 1, expiry 256,099 ticks, every field read back off `Find.QuestManager` after the call. The in-world-item route needs `rimworld/right_click_cell`, which is measured broken.
 verify:   EMPTY
 criteria: the quest fires from the rumour and RESOLVES — registration is not resolution.
 state:    blocked
 
 ## C31 The four Jawa PawnKindDefs resolve and generate
-row:      —
+row:      7
 spec:     From BUILD B6. `Jawa_Colonist`, `Jawa_Tribal_Scavenger`, `Jawa_Tribal_Slinger`,
           `Jawa_Tribal_Elder` shipped with `ParentName` pointing at vanilla DEFNAMES
           (`Colonist`, `Tribal_Berserker`, `Tribal_Archer`, `Tribal_ChiefMelee`), none of
@@ -98,7 +98,7 @@ criteria: `jawa/get_def defType=FactionDef defName=Jawa_IndigenousTribes` return
 state:    ready
 
 ## C34 You hold the bridge and the game-state stamp, at all times
-row:      0
+row:      infra
 spec:     Owner ruling 2026-08-14. `infrastructure/agents/CHECK.md` updated: the
           Live Bridge is yours with no window in which another seat holds it, and
           `infrastructure/state/status/game.json` is yours to keep true. Stamp it

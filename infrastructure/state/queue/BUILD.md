@@ -12,7 +12,7 @@ criteria: EMPTY — that file is not a queue and nothing in it is scheduled.
 state:    ready
 
 ## B0 Deploy the 30-tool companion at the next down game
-row:      7
+row:      10
 spec:     `src/RimMandrake/bridgetools/artifacts/BridgeTools/JawaBench/JawaBench.BridgeTools.dll`,
           md5 `d7e7c6c1`, 30 `jawa/` tools. **`--gm` REQUIRED** or `fire_incident`
           and `send_letter` are stripped off the game copy. Game must be DOWN.
@@ -24,14 +24,14 @@ criteria: `rimbridge/list_tools` counts 30 `jawa/` names.
 state:    ready
 
 ## B1 BridgeTools 30-tool build and deploy — `--gm` is REQUIRED
-row:      7
+row:      10
 spec:     `cd /mnt/d/Luke/dev/Rimworld; python.exe src/RimMandrake/bridgetools/build.py --gm --apply`. Game must be DOWN — the DLL is locked while it runs and the write fails `OSError 22` (the refusal is safe, it cannot truncate). Without `--gm` the build STRIPS `jawa/fire_incident` and `jawa/send_letter` off the game copy (30 tools -> 28). One-command form: `./src/RimMandrake/Utils/shutdown_deploy.sh [--yes]` runs S8 -> S1 -> S9 in order and refuses while RimWorld is running.
 verify:   `D="/mnt/c/Program Files (x86)/Steam/steamapps/common/RimWorld/BridgeTools/JawaBench/JawaBench.BridgeTools.dll"`; `md5sum "$D"` expect `d7e7c6c1...`; `strings -a "$D" | grep -oE 'jawa/[a-z_]+' | sort -u | wc -l` expect **30**; both `--gm` canaries `jawa/fire_incident` and `jawa/send_letter` present. `--apply` REBUILDS before deploying, so a rebuild legitimately produces different bytes — gate on the canaries and the count, not on the md5. Census expectation derives from `.cs` ONLY: `grep -rhoE '"jawa/[a-z_]+"' --include='*.cs' src/RimMandrake/bridgetools/` (without the include it returns one too many — `prove_new_tools.py:112` has `[Tool("jawa/x")]` inside a comment). `strings -a` proves a NAME only; use `strings -a -el` to prove a method-body message shipped (UTF-16LE in the `#US` heap).
 criteria: five tools respond live — `jawa/set_faction_relation` (unblocks v1 L3), `jawa/inspect_string` (reads `Thing.GetInspectString()`: `WarningThrusterInside`, `ThrusterBlockedBy`, power, breakdown), `jawa/world_stats` unit fix (`perimeterTiles`, `raggedness` from tiles, `centroidLatNorm`), `jawa/ideo_of`, `jawa/biome_probe`. `TicksGameSafe()` rides along: def reads must work at `programState: Entry` instead of throwing a bare NRE on every tool at the main menu.
 state:    ready
 
 ## B2 JawaSeaShaper.dll deploy — SOLO, its own load
-row:      7
+row:      10
 spec:     `python3 src/RimMandrake/Utils/deploy_custom_mods.py --mod JawaSeaShaper --apply`. Repo md5 `b7730027a639`; deployed/loaded md5 `82b48e53e668`, mtime 08-13 23:57:29. Game DOWN (loaded and locked). A MOD assembly poisons attribution for anything loaded beside it — do not batch it with a load meant to prove something else.
 verify:   deployed md5 == `b7730027a639`.
 criteria: the arc-distance and elongation work committed in `c3ee8e7` is present in the running game. S1 is rescoped: it PARTITIONS, it does not write the sea — vanilla already produces 1–2 huge masses with no puddles (`bodiesTotal == bodiesOverMinSize`, n=4) and never 3 bodies; a cut adds boundary tiles without adding area.
@@ -59,7 +59,7 @@ criteria: EMPTY
 state:    ready
 
 ## B23 Write the three expected-failure signatures before the worldgen session
-row:      7
+row:      10
 spec:     Write the expected-failure signatures into `EXPECTED_FAILURES` BEFORE the worldgen load. A duplicate costs nothing; a missed one costs a load.
 verify:   the signatures exist in `EXPECTED_FAILURES` before launch.
 criteria: EMPTY
@@ -165,3 +165,211 @@ criteria: the Empire raids with stormtroopers, not cataphracts, and the faction
           reads `Galactic Empire` with an `Emperor`. 🔴 This REDOES v1 row 1,
           which was closed on a label seen live on the abandoned vessel.
 state:    ready
+
+## B41 Homestead Defense League — reskin `OutlanderCivil`
+row:      9
+spec:     `design/Jawa/worldbuilding/FACTION_SPEC.md` section 3. A `PatchOperation` on
+          `FactionDef[defName="OutlanderCivil"]`, NOT a new def. Patch only the fields
+          that section lists. ⛔ Do NOT touch `pawnGroupMakers`, `factionNameMaker`
+          or the raid curves — they are inherited and already balanced.
+          raidsForbidden true is the mechanism (R2), NOT a precept. Weight 1.9.
+verify:   `python3 src/RimMandrake/Utils/validate_patch.py <path> --defs` scoped to the active list, 0 errors; the xpath matches `OutlanderCivil` and nothing else; every `<li>` naming
+          a def from another mod carries the correct `MayRequire`.
+criteria: the faction reads as Homestead Defense League in the world faction list, with the
+          leaderTitle from the spec.
+state:    ready
+
+## B42 Deep Desert Tribes — reskin `TribeCivil`
+row:      9
+spec:     `design/Jawa/worldbuilding/FACTION_SPEC.md` section 4. A `PatchOperation` on
+          `FactionDef[defName="TribeCivil"]`, NOT a new def. Patch only the fields
+          that section lists. ⛔ Do NOT touch `pawnGroupMakers`, `factionNameMaker`
+          or the raid curves — they are inherited and already balanced.
+          ADD one Combat group: the water raid - fast, light, targets containers, disengages once loaded. Vanilla has no equivalent and it is the faction's signature.
+verify:   `python3 src/RimMandrake/Utils/validate_patch.py <path> --defs` scoped to the active list, 0 errors; the xpath matches `TribeCivil` and nothing else; every `<li>` naming
+          a def from another mod carries the correct `MayRequire`.
+criteria: the faction reads as Deep Desert Tribes in the world faction list, with the
+          leaderTitle from the spec.
+state:    ready
+
+## B43 Blackstar Company — reskin `Pirate`
+row:      9
+spec:     `design/Jawa/worldbuilding/FACTION_SPEC.md` section 10. A `PatchOperation` on
+          `FactionDef[defName="Pirate"]`, NOT a new def. Patch only the fields
+          that section lists. ⛔ Do NOT touch `pawnGroupMakers`, `factionNameMaker`
+          or the raid curves — they are inherited and already balanced.
+          KEEP permanentEnemy true - the vessel default. The dossier says No; R12 amends pillar 5 instead, because patching it false guts the vanilla raid economy.
+verify:   `python3 src/RimMandrake/Utils/validate_patch.py <path> --defs` scoped to the active list, 0 errors; the xpath matches `Pirate` and nothing else; every `<li>` naming
+          a def from another mod carries the correct `MayRequire`.
+criteria: the faction reads as Blackstar Company in the world faction list, with the
+          leaderTitle from the spec.
+state:    ready
+
+## B45 Hutt Cartel — authored `FactionDef` `Jawa_HuttCartel`
+row:      9
+spec:     `design/Jawa/worldbuilding/FACTION_SPEC.md` section 2 for every field value, plus its "Namers and icons"
+          and "pawnGroupMakers" tables for this faction. Model:
+          `src/Jawa/Jawa_Patches/Defs/FactionDefs/JawaTribes.xml`.
+          Fill EVERY group in the contract — identity · generation · naming · art
+          · hostility · pawns · ideo. A missing `factionNameMaker` or
+          `factionIconPath` is a broken faction screen, not a cosmetic gap.
+          🪤 `combatPower 99999` kinds are legal in `traders`/`carriers`/`guards`
+          and POISON in `options`. `minTotalPoints` does not exist.
+          `PawnGenOption` has exactly `kind` and `selectionWeight`.
+verify:   `python3 src/RimMandrake/Utils/validate_patch.py <path> --defs` scoped to the active list, 0 errors; every `kind` named in a `pawnGroupMaker` resolves in the live def
+          dump; `factionNameMaker` and `factionIconPath` are non-null.
+criteria: the faction generates settlements at worldgen and its pawns spawn as
+          the named kinds.
+state:    ready
+
+## B46 Free Droid Enclaves — authored `FactionDef` `Jawa_FreeDroidEnclaves`
+row:      9
+spec:     `design/Jawa/worldbuilding/FACTION_SPEC.md` section 5 for every field value, plus its "Namers and icons"
+          and "pawnGroupMakers" tables for this faction. Model:
+          `src/Jawa/Jawa_Patches/Defs/FactionDefs/JawaTribes.xml`.
+          Fill EVERY group in the contract — identity · generation · naming · art
+          · hostility · pawns · ideo. A missing `factionNameMaker` or
+          `factionIconPath` is a broken faction screen, not a cosmetic gap.
+          🪤 `combatPower 99999` kinds are legal in `traders`/`carriers`/`guards`
+          and POISON in `options`. `minTotalPoints` does not exist.
+          `PawnGenOption` has exactly `kind` and `selectionWeight`.
+verify:   `python3 src/RimMandrake/Utils/validate_patch.py <path> --defs` scoped to the active list, 0 errors; every `kind` named in a `pawnGroupMaker` resolves in the live def
+          dump; `factionNameMaker` and `factionIconPath` are non-null.
+criteria: the faction generates settlements at worldgen and its pawns spawn as
+          the named kinds.
+state:    ready
+
+## B47 Wildsteam Clan — authored `FactionDef` `Jawa_WildsteamClan`
+row:      9
+spec:     `design/Jawa/worldbuilding/FACTION_SPEC.md` section 6 for every field value, plus its "Namers and icons"
+          and "pawnGroupMakers" tables for this faction. Model:
+          `src/Jawa/Jawa_Patches/Defs/FactionDefs/JawaTribes.xml`.
+          Fill EVERY group in the contract — identity · generation · naming · art
+          · hostility · pawns · ideo. A missing `factionNameMaker` or
+          `factionIconPath` is a broken faction screen, not a cosmetic gap.
+          🪤 `combatPower 99999` kinds are legal in `traders`/`carriers`/`guards`
+          and POISON in `options`. `minTotalPoints` does not exist.
+          `PawnGenOption` has exactly `kind` and `selectionWeight`.
+verify:   `python3 src/RimMandrake/Utils/validate_patch.py <path> --defs` scoped to the active list, 0 errors; every `kind` named in a `pawnGroupMaker` resolves in the live def
+          dump; `factionNameMaker` and `factionIconPath` are non-null.
+criteria: the faction generates settlements at worldgen and its pawns spawn as
+          the named kinds.
+state:    ready
+
+## B48 Deepwater Compact — authored `FactionDef` `Jawa_DeepwaterCompact`
+row:      9
+spec:     `design/Jawa/worldbuilding/FACTION_SPEC.md` section 7 for every field value, plus its "Namers and icons"
+          and "pawnGroupMakers" tables for this faction. Model:
+          `src/Jawa/Jawa_Patches/Defs/FactionDefs/JawaTribes.xml`.
+          Fill EVERY group in the contract — identity · generation · naming · art
+          · hostility · pawns · ideo. A missing `factionNameMaker` or
+          `factionIconPath` is a broken faction screen, not a cosmetic gap.
+          🪤 `combatPower 99999` kinds are legal in `traders`/`carriers`/`guards`
+          and POISON in `options`. `minTotalPoints` does not exist.
+          `PawnGenOption` has exactly `kind` and `selectionWeight`.
+verify:   `python3 src/RimMandrake/Utils/validate_patch.py <path> --defs` scoped to the active list, 0 errors; every `kind` named in a `pawnGroupMaker` resolves in the live def
+          dump; `factionNameMaker` and `factionIconPath` are non-null.
+criteria: the faction generates settlements at worldgen and its pawns spawn as
+          the named kinds.
+state:    ready
+
+## B49 Geonosian Foundry Hive — authored `FactionDef` `Jawa_GeonosianFoundryHive`
+row:      9
+spec:     `design/Jawa/worldbuilding/FACTION_SPEC.md` section 8 for every field value, plus its "Namers and icons"
+          and "pawnGroupMakers" tables for this faction. Model:
+          `src/Jawa/Jawa_Patches/Defs/FactionDefs/JawaTribes.xml`.
+          Fill EVERY group in the contract — identity · generation · naming · art
+          · hostility · pawns · ideo. A missing `factionNameMaker` or
+          `factionIconPath` is a broken faction screen, not a cosmetic gap.
+          🪤 `combatPower 99999` kinds are legal in `traders`/`carriers`/`guards`
+          and POISON in `options`. `minTotalPoints` does not exist.
+          `PawnGenOption` has exactly `kind` and `selectionWeight`.
+verify:   `python3 src/RimMandrake/Utils/validate_patch.py <path> --defs` scoped to the active list, 0 errors; every `kind` named in a `pawnGroupMaker` resolves in the live def
+          dump; `factionNameMaker` and `factionIconPath` are non-null.
+criteria: the faction generates settlements at worldgen and its pawns spawn as
+          the named kinds.
+state:    ready
+
+## B50 Ascendant Helix — authored `FactionDef` `Jawa_AscendantHelix`
+row:      9
+spec:     `design/Jawa/worldbuilding/FACTION_SPEC.md` section 9 for every field value, plus its "Namers and icons"
+          and "pawnGroupMakers" tables for this faction. Model:
+          `src/Jawa/Jawa_Patches/Defs/FactionDefs/JawaTribes.xml`.
+          Fill EVERY group in the contract — identity · generation · naming · art
+          · hostility · pawns · ideo. A missing `factionNameMaker` or
+          `factionIconPath` is a broken faction screen, not a cosmetic gap.
+          🪤 `combatPower 99999` kinds are legal in `traders`/`carriers`/`guards`
+          and POISON in `options`. `minTotalPoints` does not exist.
+          `PawnGenOption` has exactly `kind` and `selectionWeight`.
+verify:   `python3 src/RimMandrake/Utils/validate_patch.py <path> --defs` scoped to the active list, 0 errors; every `kind` named in a `pawnGroupMaker` resolves in the live def
+          dump; `factionNameMaker` and `factionIconPath` are non-null.
+criteria: the faction generates settlements at worldgen and its pawns spawn as
+          the named kinds.
+state:    ready
+
+## B51 the Junkers — authored `FactionDef` `Jawa_Junkers`
+row:      9
+spec:     `design/Jawa/worldbuilding/FACTION_SPEC.md` section 12 for every field value, plus its "Namers and icons"
+          and "pawnGroupMakers" tables for this faction. Model:
+          `src/Jawa/Jawa_Patches/Defs/FactionDefs/JawaTribes.xml`.
+          Fill EVERY group in the contract — identity · generation · naming · art
+          · hostility · pawns · ideo. A missing `factionNameMaker` or
+          `factionIconPath` is a broken faction screen, not a cosmetic gap.
+          🪤 `combatPower 99999` kinds are legal in `traders`/`carriers`/`guards`
+          and POISON in `options`. `minTotalPoints` does not exist.
+          `PawnGenOption` has exactly `kind` and `selectionWeight`.
+verify:   `python3 src/RimMandrake/Utils/validate_patch.py <path> --defs` scoped to the active list, 0 errors; every `kind` named in a `pawnGroupMaker` resolves in the live def
+          dump; `factionNameMaker` and `factionIconPath` are non-null.
+criteria: the faction generates settlements at worldgen and its pawns spawn as
+          the named kinds.
+state:    ready
+
+## B44 the Forgotten Arsenal and the Unbound Hive — label patches only
+row:      9
+spec:     `design/Jawa/worldbuilding/FACTION_SPEC.md` sections 13 and 14. Two `PatchOperation`s: `label` and
+          `description` on `FactionDef[defName="Mechanoid"]` and
+          `FactionDef[defName="Insect"]`. NOTHING ELSE.
+          🔴 `hidden true` and `settlementGenerationWeight 0` on `Mechanoid` are
+          CORRECT and stay — the Forgotten Arsenal is "a what, not a who".
+          Both inherit their `pawnGroupMakers` wholesale.
+verify:   `python3 src/RimMandrake/Utils/validate_patch.py <path> --defs` scoped to the active list, 0 errors; the diff touches exactly two fields per def.
+criteria: the two factions read by their campaign names wherever they appear.
+state:    ready
+
+## B52 Fix `Jawa_IndigenousTribes` to the contract
+row:      9
+spec:     `src/Jawa/Jawa_Patches/Defs/FactionDefs/JawaTribes.xml`, per `design/Jawa/worldbuilding/FACTION_SPEC.md`
+          section 11. Change `label` "Jawa tribes" -> **"Jawa Trade Moot"** (R8
+          retired the old name; R19 keeps the defName because it is deployed).
+          ADD the six missing contract fields: `humanlikeFaction`,
+          `factionNameMaker` `NamerFactionTribal`, `settlementNameMaker`
+          `NamerSettlementTribal`, `factionIconPath`
+          `OuterRim/WorldObjects/MoistureFarmers`, `colorSpectrum`,
+          `basicMemberKind`.
+          🔴 Its shipped `pawnGroupMakers` reference vanilla `Combat`/`Peaceful`/
+          `Trader` kindDefs — confirm the OPTIONS name `Jawa_Tribal_Scavenger`,
+          `_Slinger`, `_Elder` and not vanilla kinds. If they name vanilla kinds,
+          our three tribal pawn kinds have never spawned.
+verify:   `python3 src/RimMandrake/Utils/validate_patch.py <path> --defs` scoped to the active list, 0 errors; all six fields present and non-null; the three Jawa_Tribal_* kinds
+          appear in the group options.
+criteria: Jawa Trade Moot settlements generate and spawn our tribal kinds.
+state:    ready
+
+## B53 The 48 PawnKindDefs
+row:      7
+spec:     `design/Jawa/worldbuilding/pawnkind_roster.md` — 48 kinds, 12 factions
+          x Grunt/Heavy/Specialist/Leader, naming `Jawa_<Faction>_<Role>`.
+          🔴 REQUIRED, not optional (R20): every donor kind is a flat species
+          kind at `combatPower 40` — `OuterRim_Nikto`, `OuterRim_Wookiee`,
+          `OuterRim_Geonosian`. There is no lieutenant, elite or specialist to
+          borrow, so the dossiers' group compositions cannot be expressed
+          without these.
+          BLOCKED ON CHAIN STEP 3: `weaponTags` and `apparelRequired` are a
+          selection from the surviving item set and cannot be invented. The
+          roster says so itself and declined to guess them.
+          `combatPower` is unset on all 48 and must be assigned.
+verify:   `validate_patch.py --defs` 0 errors; every `weaponTags` string appears
+          on at least one live weapon def; every `apparelRequired` defName
+          resolves.
+criteria: each faction's raids field the intended roles, not one flat kind.
+state:    blocked

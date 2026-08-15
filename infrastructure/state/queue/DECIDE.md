@@ -12,7 +12,7 @@ criteria: —
 state:    done
 
 ## D-CRIT ⭐ The critical path — read this before sequencing anything
-row:      7
+row:      10
 spec:     ROWS 2 AND 7 ARE ONE CHAIN, NOT TWO PROBLEMS.
           Row 7 (ordinary worldgen) is blocked on the sea: the generator produces
           43-55% scattered ocean against a spec of ~25% in three bodies. Ocean is an
@@ -46,21 +46,21 @@ criteria: —
 state:    ready
 
 ## D2 Owner decision #10 — is a throwaway world permitted
-row:      7
+row:      10
 spec:     `OWNER_DECISIONS.md`. All technical prerequisites are closed; a quicktest already builds a FULL world (119,904 tiles, `waterPct 25.0`, 2 bodies, `previewOnly:false`, 127 ms), so the sea gate and the worldgen click-path can be rehearsed on disposable worlds without opening the once-only Configure Factions screen.
 verify:   EMPTY
 criteria: EMPTY
 state:    blocked
 
 ## D4 The desert world generates ~49% ocean — does the planet bend
-row:      7
+row:      10
 spec:     Measured on three real saves: 43% / 49% / 55% Ocean. The thirst-world identity exists in our documents and nowhere else. Ocean is an elevation rule written at worldgen step 0, so the rainfall slider cannot remove one tile, and no active mod manages water. Three routes, none needing a new dependency: **WorldEdit 2.0** (already active), a custom `WorldGenStep`, or BiomesKit's unused hooks. `faction_world_spec.md`, last section. This contradicts the Three Waters ruling by ~100x.
 verify:   EMPTY
 criteria: EMPTY
 state:    blocked
 
 ## D10 Cut the Predator family — taste call, decided on fiction alone
-row:      2
+row:      10
 spec:     Four Yautja factions own **14 settlements** between them — `ABYautjaBadBloodClan` (5), `ABYautjaBerserkClan` (4), `ABYautjaClan` (4), `ABYautjaModderClan` (1) — the single largest non-Star-Wars presence on the map. Two SEPARATE levers, not interchangeable: **the four FACTIONS** can be unticked at worldgen (free, reversible, no mod change, already on `WORLDGEN_FACTION_CHECKLIST.md`); **the XENOTYPE MOD** `[AB] Xenotype: Yautja` (`biotechrace.yautja.alleyballey`, ws `3536839586`) is a separate decision — removing it costs a game-down window and risks `Could not resolve cross-reference`. The mod owns all 14 `Exception getting Verse.Graphic_Multi at :` errors (one malformed `<bodyGraphicData>` at `PawnKinds_BaseAbstract.xml:60`, 7 kinds x 2 lifeStages) but those errors are HARMLESS and waived — do not let them do work they cannot do. If the mod goes, BUILD B24 loses its mid-tier reference (Yautja blade, AP 0.60). Recommendation on file: untick the four factions, keep the mod installed.
 verify:   EMPTY
 criteria: EMPTY
@@ -72,3 +72,35 @@ spec:     `infrastructure/disposing/RESTRUCTURE_PLAN.md` §3 lists seven unplace
 verify:   EMPTY
 criteria: EMPTY
 state:    blocked
+
+## D18 Write the nine missing ideoligion texts
+row:      6
+spec:     `design/Jawa/worldbuilding/faction_religions_spec.md`. Entries 1, 2 and
+          3 have authored `ideoName` + `ideoDescription` + `deityPresets`.
+          Entries 4-11 have a NAME and nothing else. The file's own heading says
+          THE TEXT IS THE PRODUCT — `ideoName`, `ideoDescription` and the deity
+          name/type pairs are the only strings the engine renders.
+          Owed: the Sun-Debt · the Continuity Protocol · the Green Oath · the
+          Balance · Meckgin · the Ascendant Genome · the Contract · The Weight
+          — and entry 3 needs its `ideoDescription`.
+          Section 12 (Jawa) stays deliberately empty; the player faith ships as
+          `src/Jawa/ideoligion/The Salvation.rid`.
+          ⚠️ Free Droid Enclaves' faith may not run if the droid race is not
+          Humanlike — settle that before authoring entry 5.
+verify:   every entry 1-11 has a non-empty `ideoName` and `ideoDescription`, and
+          a `deityPresets` block wherever its structure has `deityCount > 0`.
+criteria: `jawa/ideo_of` reads the eleven back and they match the spec.
+state:    ready
+
+## D19 The Scenario — there is no design document
+row:      12
+spec:     Chain step 12 has no doc anywhere in `design/`. It is the first thing
+          the player touches: starting pawns, starting gear, the gravship, the
+          landing. Needs `jawa_crew_personas.md`'s five founders (Nekko Vok,
+          Tobb Nkik, Griz Utinn, Yeku, Wim Ateeka) resolved into either
+          PawnKindDefs or hand-authored save state — that choice was never made.
+          Depends on chain steps 2, 7 and 11.
+verify:   a design doc exists naming the scenario mechanism (ScenarioDef vs a
+          shipped save), the starting pawns, and the starting gear.
+criteria: the campaign starts as designed rather than as a vanilla crashlanding.
+state:    ready
