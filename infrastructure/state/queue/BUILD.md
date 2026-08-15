@@ -556,7 +556,22 @@ verify:   `python3 skills/rimworld-modding/scripts/validate_patch.py` on each of
           the next Player.log: zero `Exception loading def from file Jawa*.xml`.
 criteria: All 8 Jawa factions resolve live — `jawa/get_def` or the def dump returns a
           FactionDef for each of the five, where today it returns nothing.
-state:    dropped — Mechanitors are cut from the campaign entirely (owner, 2026-08-15), so the empty `Autopistol` tag has no consumer left. `AM_Scavenger` is Ancient urban ruins' own kind and rides that mod's content.
+state:    fixed offline `fe6b460`, awaiting the live half.
+          🔴 **This state line previously read "dropped — Mechanitors are cut…",
+          which is B65's ruling written into B56's slot.** It is not B56's. Anyone
+          reading it concluded the five dead factions were abandoned; they were
+          repaired the same day. Corrected 2026-08-15 by BUILD.
+          OFFLINE VERIFY (2026-08-15, game down): **zero `<li>` under
+          `xenotypeChances` in all 8 files**, and the 8 deployed copies under
+          `…\Mods\Jawa_Patches\Defs\FactionDefs\` are **byte-identical to the repo**
+          (md5, all 8). So the load-time discard should be gone.
+          LIVE HALF, this load: zero `Exception loading def from file Jawa*.xml`,
+          and all 8 defNames resolve. Expect the log to shrink ~98% with it.
+          🔴 **DO NOT read faction ABSENCE FROM THE WORLD as this bug returning** —
+          a def that loads and a faction that gets generated are different
+          questions. Only `Jawa_IndigenousTribes` carries
+          `requiredCountAtGameStart`; the other seven default to a count of 0.
+          Filed to DECIDE as `seven-factions-have-no-required-count-9c4e17`.
 
 ## B65 Give the Mechanitor a blaster — the autopistol is gone
 row:      1

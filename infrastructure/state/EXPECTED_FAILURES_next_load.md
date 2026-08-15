@@ -449,10 +449,19 @@ expected outcome, not a defect.**
 | The Galactic Empire · Homestead Defense League · Deep Desert Tribes · Blackstar Company · the Forgotten Arsenal | reskinned vanilla vessels |
 
 🔴 **These must be SET TO AT LEAST 1 at the screen, or the campaign's own factions
-do not exist in the world.** Seven are authored defs with
-`requiredCountAtGameStart 1`, so they should be forced; the reskins ride their
-vessel's existing count. **A faction absent here cannot be added later — the world
-is generated once.**
+do not exist in the world.**
+
+🔴 **CORRECTED 2026-08-15 by BUILD, still before this block's load. The previous
+sentence here was FALSE and it was dangerous.** It read: *"Seven are authored defs
+with `requiredCountAtGameStart 1`, so they should be forced."* **They are not.**
+Measured on disk, game down: **only `Jawa_IndigenousTribes` carries
+`requiredCountAtGameStart`** (1, max 2). The other seven have `canMakeRandomly
+true` and **no required count at all**, so they arrive at the screen defaulting to
+**0** and nothing forces them. The reskins ride their vessel's existing count.
+⇒ **Every one of the seven must be ticked up BY HAND, or the world simply will not
+contain them.** Filed as `seven-factions-have-no-required-count-9c4e17` in
+`queue/DECIDE.md`. **A faction absent here cannot be added later — the world is
+generated once.**
 
 ⚠️ **The Unbound Hive is NOT in this list on purpose.** It was cut 2026-08-14
 because its vessel, vanilla `Insect`, is an untick row in §2 of the checklist.
@@ -656,6 +665,61 @@ startup**. **Any `--defs` verdict quoted from the OLD dump is void.**
 
 ---
 
+## T6 — the eight authored factions. 🔴 **The owner asked for this test by name.**
+
+**Two questions that look like one and are not.** Answer them in this order and do
+not let the second contaminate the first.
+
+### T6a — do the defs LOAD? (this is the one that closes B56)
+
+Five of the eight were being **discarded at load** on 2026-08-15: `xenotypeChances`
+is a **dictionary-keyed** field and they used the `<li>` list shape, so
+`XenotypeChance.LoadDataFromXmlCustom` hit `ParseFloat(null)` and RimWorld threw the
+whole `FactionDef` away. Fixed offline in `fe6b460`.
+
+**Verified on disk before this launch, game down:** zero `<li>` under
+`xenotypeChances` in all 8 files, and the 8 deployed copies under
+`C:\Program Files (x86)\Steam\steamapps\common\RimWorld\Mods\Jawa_Patches\Defs\FactionDefs\`
+are **byte-identical to the repo** (md5, all 8). So the fix is genuinely in the
+game copy, not just in `src/`.
+
+```bash
+grep -nE "Exception loading def from file Jawa.*\.xml|XenotypeChance\.LoadDataFromXmlCustom|ParseAndReturnDef_RimWorld_FactionDef" "$LOG"
+```
+Want **zero lines**. Then all eight resolve — `jawa/get_def` or the refreshed dump:
+
+`Jawa_IndigenousTribes` · `Jawa_HuttCartel` · `Jawa_Junkers` ·
+`Jawa_DeepwaterCompact` · `Jawa_GeonosianFoundryHive` · `Jawa_WildsteamClan` ·
+`Jawa_AscendantHelix` · `Jawa_FreeDroidEnclaves`
+
+📌 **Free side-effect worth measuring:** the five discards were costing ~19,613
+`Possible Matches` lines EACH — about 98,000 of the previous load's 99,700 lines,
+~8 MB to C: with a per-line flush. **A log that is suddenly ~2% of its old size is
+corroboration that T6a passed.** A log still near 100k lines means it did not.
+
+### T6b — do the factions get GENERATED into the world? ⚠️ **Expect NO for seven**
+
+🔴 **This is the trap, and it will read exactly like the bug coming back.** A def
+that loads and a faction that exists in a world are different questions. Measured on
+disk: **only `Jawa_IndigenousTribes` has `requiredCountAtGameStart`** (1, max 2).
+The other seven are `canMakeRandomly true` with **no required count**, so a
+quicktest world — which nobody hand-configures — will very likely contain **none of
+them**.
+
+| `jawa/list_factions` on the quicktest shows | ruling |
+|---|---|
+| `Jawa_IndigenousTribes` present | ✅ expected |
+| the other seven absent | ✅ **EXPECTED, NOT A DEFECT.** Record it and move on |
+| the other seven absent **AND** T6a's grep is non-empty | 🔴 the load bug is back — that combination, not absence alone |
+| any of the seven **present** | ✅ also fine — `canMakeRandomly` can roll them in |
+
+⛔ **Do not "fix" anything on the strength of T6b.** Whether the seven should carry
+`requiredCountAtGameStart` is a scope call, filed as
+`seven-factions-have-no-required-count-9c4e17` in `queue/DECIDE.md`. It matters at
+**worldgen**, which is not this load.
+
+---
+
 ## §3 execution order
 
 1. **Startup log FIRST**, before any bridge call that mutates anything —
@@ -693,4 +757,8 @@ result from the log.**
 | T4 | `JDSCIS_` misses — record which, then IGNORE | | |
 | T4 | 🔴 zero crossrefs naming `Jawa_Tribal_*` / `Jawa_Colonist` | | |
 | T5 | zero `com.yayo` / `yayoAni` lines | | |
+| T6a | zero `Exception loading def from file Jawa*.xml` | | |
+| T6a | all 8 Jawa faction defNames resolve (list which, if any, do not) | | |
+| T6a | log line count — record it; ~2% of the previous ~99,700 corroborates | | |
+| T6b | `jawa/list_factions` — which of the 8 the quicktest world actually holds | | |
 | T5 | zero `Could not load reference to` (nothing was loaded from a save) | | |
