@@ -802,3 +802,258 @@ verify:   🔴 A quicktest, ~90 s. Do NOT call a cold load — nothing here need
 criteria: the player cracks an ancient cryptosleep casket and what climbs out is
           visibly not human, and the encounter plays exactly as it did before.
 state:    ready
+
+## B62 Put desert creatures in the other four animal-drawn vehicles
+row:      2
+spec:     Generalise the eopie sled (`4f3afc7`) to every remaining animal-drawn
+          vehicle. Owner: *"do the same thing you just did to the dog sled across
+          all the primitive transports that currently show horses, cows, and other
+          terrestrial animals. Feel free to pick other Star Wars appropriate desert
+          creatures as needed."* All work lands in the existing mod
+          `src/Jawa/DesertVehicleReskin/` (`mandrake.desertvehiclereskin`).
+          🔵 **OFFLINE. Needs no game to author.** Deploying it needs a window plus
+          a look — C41.
+
+          ### The scope is exactly four vehicles, and the test is a def tag
+          Alpha Vehicles - Neolithic (ws `3028675048`, `sarg.alphavehiclesneolithic`)
+          ships 12 vehicles. Exactly five carry the stat value `AV_TractionAnimal`
+          — Chariot, WarChariot, CoveredCarriage, OxCart, DogSled — and those five
+          are exactly the five with an animal drawn into the texture. DogSled is
+          done. ⛔ Do NOT identify them by "the mask has a black region": seven of
+          twelve have one and five of those have no animal (Balloon's is its
+          envelope, Hwacha's the rocket bundle, OutriggerCanoe's hull and sail,
+          Palanquin's canopy, RowBoat's oars). Hwacha, Palanquin, Rickshaw and
+          Wheelbarrow are human-powered; Balloon is Air; RowBoat and OutriggerCanoe
+          are Sea. Nothing outside the four is in scope.
+
+          ### 🔴 THE TEXPATH TABLE — THREE defs share each path, not two
+          The sled taught us that art by PATH reaches every def naming that path
+          while COLOUR is per-def. The sled fix found two defs. **There are three.**
+          `Vehicles.VehicleBuildDef` — the architect-menu blueprint — carries its
+          OWN `<label>` and `<description>` and was never patched on the sled, so
+          the build menu still reads "Dog Sled … pulled by four trained dogs …
+          over ice and through snow". Fix that here too.
+
+          | texPath (all under `Things/Vehicles/Land/Tier0/`) | def type | defName | owning mod | `<color>` |
+          |---|---|---|---|---|
+          | `Chariot/AV_Chariot` | Vehicles.VehicleDef | `AV_Chariot` | sarg.alphavehiclesneolithic | (192,146,94) |
+          | | Vehicles.VehicleBuildDef | `AV_Chariot_Blueprint` | sarg.alphavehiclesneolithic | none |
+          | | ThingDef | `VFEPD_Chariot` | VanillaExpanded.VFEPropsandDecor | (192,146,94) |
+          | `CoveredCarriage/AV_CoveredCarriage` | Vehicles.VehicleDef | `AV_CoveredCarriage` | sarg… | (80,63,32) |
+          | | Vehicles.VehicleBuildDef | `AV_CoveredCarriage_Blueprint` | sarg… | none |
+          | | ThingDef | `VFEPD_CoveredCarriage` | VFEPropsandDecor | (80,63,32) |
+          | `OxCart/AV_OxCart` | Vehicles.VehicleDef | `AV_OxCart` | sarg… | (58,41,10) |
+          | | Vehicles.VehicleBuildDef | `AV_OxCart_Blueprint` | sarg… | none |
+          | | ThingDef | `VFEPD_OxCart` | VFEPropsandDecor | (58,41,10) |
+          | `WarChariot/AV_WarChariot` | Vehicles.VehicleDef | `AV_WarChariot` | sarg… | (192,146,94) |
+          | | Vehicles.VehicleBuildDef | `AV_WarChariot_Blueprint` | sarg… | none |
+          | | ThingDef | `VFEPD_WarChariot` | VFEPropsandDecor | (192,146,94) |
+          | `DogSled/AV_DogSled` | Vehicles.VehicleBuildDef | `AV_DogSled_Blueprint` | sarg… | none — **the gap the sled left** |
+
+          ⇒ **13 defs. All 13 need a label and a description.**
+          🔴 **No colour patch is needed for any of the four — the vehicle and its
+          VFEPD twin already carry identical `<color>`.** The sled diverged only
+          because WE repainted the vehicle and not the prop. So the rule that
+          matters: **if you change a vehicle's `<color>`, you MUST change its
+          `VFEPD_*` twin in the same file, or you reproduce the sled bug exactly.**
+          The donor colours are already tan/brown and the art pass alone answers
+          the brief — **default: leave all four `<color>` triples alone.**
+          ⚠️ The VFEPD props declare only `<color>`; no `colorTwo`/`colorThree`. With
+          a two-value mask only `<color>` reaches a pixel, so the pair still match.
+          ⚠️ `VehicleBuildDef` has no `<color>` and no `<shaderType>` at all, so the
+          under-construction building renders the raw PNG untinted. Pre-existing,
+          not ours; out of scope.
+          ⚠️ The VFEPD props exist only while AV Neolithic is active — they live in
+          `…/2102143149/1.6/Mods/AlphaVehiclesNeolithic/` behind an
+          `IfModActive="sarg.alphavehiclesneolithic"` LoadFolders gate.
+
+          ### Creature assignment
+          All four creatures below are **real, active PawnKindDefs** in
+          `Mlie.StarWarsAnimalCollection` (ws `3497316713`), so every one has a live
+          in-game sprite to work from. ⚠️ **Its art is in an AssetBundle, not loose
+          PNGs** — `…/3497316713/AssetBundles/Mlie_StarWarsAnimalCollection`, assets
+          named `swanimals/<Name>/<Name>_south`. Extract with
+          `skills/reading-rimworld-graphics`; there is no `Textures/swanimals/` dir.
+
+          | vehicle | donor art shows | assign | why | art cost |
+          |---|---|---|---|---|
+          | `AV_OxCart` | **2 oxen**, yoked abreast, horned, humped, white/grey | **BANTHA ×2** (`Bantha`, `swanimals/Bantha/BanthaW_south`) | Tatooine's heavy hauler and the clans' measure of wealth; a barrel dray is what a bantha is for | **CHEAPEST — repose, not redraw.** Horns, hump and broad muzzle already in the silhouette; recolour to matted brown and curl the horns back |
+          | `AV_Chariot` | **1 horse**, chocolate, dead ahead of the pole | **DEWBACK ×1** (`Dewback`, `swanimals/Dewback/Dewback_south`) | light fast cart that needs hard ground; the dewback is the one desert beast that runs | cheap — smallest animal share (28%), south symmetric to 2 px |
+          | `AV_WarChariot` | **2 horses**, black/charcoal | **DEWBACK ×2** | Tusken and sandtrooper war mount; a bow platform behind a pair is the Tatooine raid image | **reuses the Chariot's dewback body** at two instances in a darker palette — the two chariots amortise one animal build |
+          | `AV_CoveredCarriage` | **2 horses**, chestnut, abreast | **RONTO ×2** (`Ronto`, `swanimals/Ronto/Ronto_south`) | the Mos Eisley draft beast; a loaded covered wagon behind a ronto pair is the most on-the-nose cargo image on the planet | most work — reptilian slab body, long neck, small head is a real body swap |
+          | `AV_DogSled` | done | eopie | — | — |
+
+          ⛔ **Eopie is spent — do not reassign it.** `Blurrg` also exists locally
+          (`swanimals/Blurrg/Blurrg_south`) and is the documented substitute if any
+          assignment above is rejected.
+
+          ### Labels and descriptions — 13 defs
+          In-character prose first, then the donor's own game facts in the donor's
+          `<color=#bb8f04>` markup. **Blueprint gets the vehicle's description
+          verbatim** (the donor does the same). **Prop gets a "gone still" rewrite**
+          and the label suffix ` (prop)`, per `EopieSled_Identity.xml`.
+          ⛔ **Do not change `fuelType`.** All four are `Hay`; the `Fuel type:` line
+          must keep matching the def or the description lies.
+
+          | def | label |
+          |---|---|
+          | `AV_Chariot`, `AV_Chariot_Blueprint` | `dewback cart` |
+          | `VFEPD_Chariot` | `dewback cart (prop)` |
+          | `AV_CoveredCarriage`, `AV_CoveredCarriage_Blueprint` | `ronto wagon` |
+          | `VFEPD_CoveredCarriage` | `ronto wagon (prop)` |
+          | `AV_OxCart`, `AV_OxCart_Blueprint` | `bantha dray` |
+          | `VFEPD_OxCart` | `bantha dray (prop)` |
+          | `AV_WarChariot`, `AV_WarChariot_Blueprint` | `dewback war cart` |
+          | `VFEPD_WarChariot` | `dewback war cart (prop)` |
+          | `AV_DogSled_Blueprint` | `eopie sled` |
+
+          Descriptions, ready to paste (`\n` literal, `&lt;` escaped, as the donor
+          writes them):
+
+          **`AV_Chariot`** — A light two-wheeled cart and one dewback in the shafts.
+          The lizard does the work; the cart is a standing box, a wheel either side
+          and a pole.\n\nA dewback will run. Not far, and not at midday, but it will
+          run, which no bantha does. It is placid, incurious, and stubborn about
+          exactly one thing — being asked to walk on soft sand. Keep to hardpan and
+          salt flat and it is the fastest thing on the pan that burns no fuel. Off
+          the packed ground the wheels sink, the dewback plants itself, and it will
+          not be argued with.\n\nCrew: Driver x1 · Fuel type: Hay
+
+          **`AV_CoveredCarriage`** — Two rontos in harness and a box wagon under a
+          canvas hood, slung on leather strapping so the passengers arrive able to
+          stand.\n\nA ronto is a grey slab of an animal with a small head at the end
+          of a long neck and no opinion about anything. They spook — a droid
+          stepping out at the wrong moment will put one through a market stall — but
+          in open country nothing is steadier, and a pair will carry a loaded wagon
+          and three people between settlements without stopping to be
+          admired.\n\nCrew: Driver x1, Passenger x3 · Fuel type: Hay
+
+          **`AV_OxCart`** — A flatbed dray stacked with casks, and two banthas in the
+          yoke.\n\nBanthas are the reason anything heavy moves on this world. Hide
+          matted into rope, horns that spiral back over the skull and are used for
+          shoving rather than goring, and a complete indifference to heat. A pair
+          will drag across open sand a load that would bury a wheeled cart anywhere
+          else. The clans count their wealth in them.\n\nThey want water, and a great
+          deal of it. Everything else they find themselves.\n\nCrew: Driver x1 ·
+          Fuel type: Hay
+
+          **`AV_WarChariot`** — An armoured fighting car on a wide axle, two dewbacks
+          in the traces, and a bowman standing where the floor is
+          reinforced.\n\nThe driver's whole job is the reins and the ground ahead;
+          the archer's is everything else. It works because a dewback holds a
+          straight line under noise that would turn a bantha, and because a moving
+          platform at the edge of bow range is a problem an infantry line cannot
+          easily solve.\n\nCrew: Driver x1, Archer x1 · Fuel type: Hay
+
+          ⚠️ Drop the donor's warning and offroad-scolding paragraphs; the offroad
+          fact is folded into the prose above where it earns its place.
+
+          ### Patch mechanics — carry all four from the sled
+          1. **Art overrides by PATH.** Ship a PNG at the donor's own texPath inside
+             `src/Jawa/DesertVehicleReskin/Textures/` and it wins. Needs
+             `_south` `_north` `_east` **and** the `_southm` `_northm` `_eastm`
+             masks. ⚠️ The donor's suffix convention is `AV_OxCart_southm`, the `m`
+             appended to the facing, never `_south_m`.
+          2. **One `PatchOperationFindMod` per owning mod**, each with
+             `MayRequire` — `sarg.alphavehiclesneolithic` for the VehicleDef and
+             VehicleBuildDef, `VanillaExpanded.VFEPropsandDecor` for the ThingDef —
+             so an absent mod is a silent no-op, not a red error.
+          3. xpath roots are the literal element names:
+             `/Defs/Vehicles.VehicleDef[defName="AV_OxCart"]/label`,
+             `/Defs/Vehicles.VehicleBuildDef[defName="AV_OxCart_Blueprint"]/label`,
+             `/Defs/ThingDef[defName="VFEPD_OxCart"]/label`.
+          4. Suggested files, one per vehicle beside the existing two:
+             `Patches/DewbackCart_Identity.xml`, `RontoWagon_Identity.xml`,
+             `BanthaDray_Identity.xml`, `DewbackWarCart_Identity.xml`, and the
+             one-operation `Patches/EopieSledBlueprint_Identity.xml`.
+
+          ### Health-tab component labels — the second half nobody sees coming
+          The defs carry animal-named damage components. The health tab will say
+          "Left Ox" over a picture of a bantha. `<label>` only:
+          `AV_OxCart` `LeftOx`→`Left Bantha`, `RightOx`→`Right Bantha` ·
+          `AV_Chariot` `Horse`→`Dewback` ·
+          `AV_CoveredCarriage` `LeftHorse`→`Left Ronto`, `RightHorse`→`Right Ronto` ·
+          `AV_WarChariot` `LeftHorse`→`Left Dewback`, `RightHorse`→`Right Dewback` ·
+          `AV_DogSled` `FrontLeftDog`/`FrontRightDog`/`RearLeftDog`/`RearRightDog`
+          → `Front Left Eopie` etc.
+          xpath: `/Defs/Vehicles.VehicleDef[defName="AV_OxCart"]/components/li[key="LeftOx"]/label`
+          ⛔ **Never touch `<key>`** — it is the runtime identifier and is referenced
+          by `hitbox`, `tags`, `categories` and by saved games.
+          ⛔ Leave `fleshType` (`AV_WoodenAndOxVehicle` …) and the impact SoundDefs
+          alone; they are defNames, invisible to the player, and renaming them is a
+          cross-reference risk for zero gain.
+
+          ### The art work — 24 PNGs, and the measurements are already done
+          4 vehicles × 3 facings × (art + mask) = **24 files, all 512×512**.
+          🔵 **Do not author `_west`** — Vehicles.Graphic_Vehicle auto-mirrors east.
+          🔵 **`src/Jawa/DesertVehicleReskin/Source/GEOMETRY.md` already holds the
+          measured build sheet for all four** — animal bounding boxes per facing,
+          inter-animal gaps, hitch bands, mask insets. Read it before touching a
+          pixel; re-measuring is the expensive part and it is already paid for.
+          The load-bearing lines from it:
+          - **The mask is not a segmentation map.** The black region is the animal's
+            interior fill; its 4–6 px keyline is tagged RED. **Dilate black outward
+            by 8 px**, and **filter connected components ≥600 px first** or
+            CoveredCarriage's black-tagged wheel rims get erased with the horses.
+          - **Three facings have NO isolated hitch band** and must use the dilated
+            stencil rather than the cheap "erase past the hitch" route:
+            🔴 `Chariot/north` (pole painted over the animal's back),
+            🔴 `CoveredCarriage/north` (canvas abuts the horses at y 198),
+            🔴 `WarChariot/north` (car front abuts animal black at y 276).
+          - **OxCart north/south ox halves are exact mirrors (10,514 px each)** — the
+            cheapest single conversion in the set. `OxCart/east` is the odd one: the
+            two oxen stack front-to-back and their silhouettes MERGE.
+          - **Chariot's three black bboxes overstate the animal** — a 4–17 px rein is
+            tagged black and trails 77 cols across the cart. Filter rows by black
+            count ≥18 px.
+          - **WarChariot's `AV_ArcherTurret.png`** is a separate 128×128 Cutout layer,
+            never tinted, rotatable at radius ~59.8 px; on **north** the swept disc
+            reaches ~23 px into the animal region over x 196–316.
+          - **Keep every row outside the animal band pixel-identical.** Driver
+            draw-offsets are hard-coded per vehicle; move the cart body on the canvas
+            and the driver sprite floats.
+
+          **The build scripts do NOT generalise as code; the METHOD does.**
+          `Source/build_eopie_sled_{south,north,east}.py` are 200–275 lines of
+          constants measured off one vehicle. Copy the template per vehicle per
+          facing — 12 scripts — reusing verbatim: (a) copy rows outside the animal
+          band; (b) erase by dilated component-filtered mask; (c) composite a
+          generated animal pair; (d) re-draw the traces onto measured attachment
+          fractions; (e) **emit a strictly two-value mask — RED over vehicle and
+          rigging, BLACK over the animal** — which is what keeps the beast immune to
+          the def's `<color>`. Reuse `Source/preview_tint.py` and
+          `Source/review_sheet.py` unchanged.
+          New animal art goes through `skills/generating-rimworld-sprites`
+          (`scripts/conform_sprite.py`, `scripts/validate_sprite.py`) with the same
+          two-reference recipe the eopie used: the extracted bundle sprite for the
+          creature and palette, and the donor's own cropped team for the overhead
+          projection, harness language and line weight. Commit the generated animal
+          to `Source/art/` so the build is reproducible without the image model.
+          🔴 Neither donor's pixels are ever composited into an output — reference
+          only. Nothing of theirs is redistributed.
+
+          ### Finally
+          Update `src/Jawa/DesertVehicleReskin/About/About.xml` — its description
+          still says "no defs are touched, no patches are applied" (already false
+          since `4f3afc7`) and "seven of the donor's vehicles are untouched".
+          Keep `loadAfter sarg.alphavehiclesneolithic`: these are loose PNGs at the
+          same path and RimWorld resolves loose-vs-loose by load order, so loading
+          before the donor makes every texture in this mod invisible.
+verify:   OFFLINE, no game:
+          (a) `python3 skills/rimworld-modding/scripts/validate_patch.py` over each
+              new file in `src/Jawa/DesertVehicleReskin/Patches/` with BOTH `--live`
+              and `--defs`; every xpath resolves to exactly the count expected —
+              **13 label hits and 13 description hits across the five files**, not
+              12 and not 14.
+          (b) `python3 skills/generating-rimworld-sprites/scripts/validate_sprite.py`
+              passes on all 24 PNGs: 512×512, real alpha, subject inside the donor's
+              own footprint.
+          (c) Per PNG pair, a script assertion: every row of the art OUTSIDE the
+              animal bbox recorded in `GEOMETRY.md` is byte-identical to the donor's,
+              and the emitted mask contains exactly two colour values.
+          (d) `grep -c` in the finished patch files returns **0** for the strings
+              `Horse`, `Ox`, `Dog` outside of `<key>` elements.
+criteria: on a desert world every primitive transport in the vehicles menu is
+          pulled by something that belongs on it, and nothing in its name,
+          description or health tab still says horse, ox or dog.
+state:    ready
