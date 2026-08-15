@@ -27,7 +27,7 @@ import sys
 
 WS = "/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100"
 GAME = "/mnt/c/Program Files (x86)/Steam/steamapps/common/RimWorld"
-XENO = "src/Jawa/Jawa_Patches/Defs/XenotypeDefs/RimMandrakeXenotypes.xml"
+XENO = "src/Jawa/RimMandrake_StarWarsRaces/Defs/XenotypeDefs/RimMandrakeXenotypes.xml"
 OUT = "design/Jawa/worldbuilding/review/xenotype_art_selector.html"
 CACHE = "/tmp/claude-1000/-mnt-d-Luke-dev-Rimworld/texture_index.json"
 # Bundle-extracted art. Biotech and several packs ship ZERO loose PNGs -- every
