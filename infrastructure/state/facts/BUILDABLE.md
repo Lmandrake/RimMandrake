@@ -53,3 +53,24 @@
 (`JawaIonWeapons`, `JawaSeaShaper`, `RimDefDump`, `JawaBench.BridgeTools`).
 `StrandedQuest` is built but deliberately not enabled — `[v2]`, v1 gets one
 `QuestScriptDef` and row 3 fills it.
+
+## 🔴 A deploy that fails one step of three still prints a summary
+
+`shutdown_deploy.sh` runs S8 (BridgeTools) → S1 (SeaShaper) → S9 (Jawa_Patches) and
+collects a `fail` flag rather than aborting. Measured 2026-08-15: **S8 failed while S1
+and S9 succeeded**, and the run read as mostly-fine. The companion was left at 26 tools
+in a window that costs a ~25 min cold load to reopen.
+
+- **Cause:** the script invoked `python3` for S8. `build.py` drives `dotnet.exe`, which
+  cannot accept a `/mnt/...` project path, so it refuses under WSL python. Fixed to
+  `python.exe` in `c51a953`.
+- **The general shape:** a multi-step deploy reports per-step, and the eye reads the
+  last line. **Read the per-step lines, then verify the ARTIFACT** — the script's own
+  canary block is what caught this (`deployed tools: 26`, `MISSING jawa/fire_incident`).
+- **Gate on the canaries, never on a remembered md5.** `build.py --apply` rebuilds, and
+  a rebuild from a different commit legitimately produces different bytes: the game copy
+  read `1378ecbb21d2` against a fresh `d45f59a78202`, and both were correct.
+- Verified good afterwards: **30 `jawa/` tools, md5 `99e454ad`**, with `fire_incident`,
+  `send_letter`, `inspect_string`, `biome_probe`, `ideo_of`, `set_faction_relation` all
+  present in the DEPLOYED bytes. ⚠️ `strings -a` proves a tool NAME only; a method-body
+  literal is UTF-16LE and needs `strings -a -el`.
