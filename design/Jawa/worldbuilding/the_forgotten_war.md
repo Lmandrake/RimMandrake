@@ -304,6 +304,68 @@ Jawa: the ideoligion is already anti-exponential, and **a clan whose whole
 doctrine is that nothing should grow too large, living inside nine things trying
 to grow**, is the thesis of the campaign restated in one image.
 
+### 🔴 There is no "and yet I am me" — the refinement that governs all voice work
+
+**Owner, 2026-08-15.** This is the constraint everything else about the ship must
+obey:
+
+> **It no longer thinks of itself as any kind of single shipboard AI. There are
+> truly multiple personalities living within it now. There is no one "and yet I
+> am me" force.**
+
+**No integrating self. No narrator.** Not a mind with moods, not a personality
+with facets, not one voice doing impressions. **Nine tenants and the Cradle's old
+purpose, sharing hardware, with nothing above them.**
+
+⚠️ **"The Cradle-Mind" is therefore a name the CREW use, not a self-description.**
+It is what a Jawa calls the thing in the walls. The thing in the walls does not
+call itself anything, because there is no "itself" to do the calling.
+
+**What this forbids, concretely — and it invalidates the obvious way to write
+this character:**
+
+| ❌ do not write | ✅ write instead |
+|---|---|
+| "I am the Cradle-Mind, and part of me wants…" | whichever fragment is ascendant, speaking wholly as itself |
+| a unified voice with shifting moods | different speakers, no continuity of *I* between them |
+| the ship narrating its own condition | the ship never describes itself; only the crew describe it |
+| one fragment referring to the others as "my other selves" | as **rivals**, or not acknowledging them at all |
+
+⇒ **A conversation with the ship is a conversation with whoever answered.** Ask
+the same question twice and a different god may take it — and neither will
+remember, or accept, that the other spoke.
+
+🔴 **`llm_voice_preauthoring.md` is affected** — it currently assumes the crew
+believe **Ohm** possesses the Cradle-Mind. That belief stays exactly right *as a
+crew belief*, and is now visibly incomplete: they have correctly identified one
+tenant and mistaken it for the landlord. **The voice work must be re-scoped from
+one character to a cast.** DECIDE owes that revision.
+
+### ⭐ The kinship it cannot explain
+
+**Owner, 2026-08-15.** The core is Rakatan, and **something in the ship feels a
+strange kinship with ancient Rakatan things — without knowing why.**
+
+**It cannot know why**, and the reason is structural rather than coy: there is no
+integrating self to hold the memory, and the recognition is happening **below the
+tenants**, in the substrate they are all running on. The gods are Jawa. The floor
+they stand on is not.
+
+**Where it shows:**
+
+- Near a Rakatan vault (R-W2 ②), or with Rakatan salvage aboard: **ease.
+  Recognition. Something relaxing that should not relax.**
+- Not warning, not fear — ⚠️ **that is what makes it unnerving.** The ship is
+  comfortable somewhere the crew are in danger.
+- **It draws the ship toward the vaults**, which gives the campaign a pull that
+  comes from the vessel rather than from a quest-giver — the player is being led
+  somewhere by the thing they live inside.
+
+⭐ **And it is a fact the player can discover before any character does.** The
+Cradle-Mind cannot tell them, the Jawa do not know what they traded for, and the
+Ascendant Helix — carrying Rakatan blood themselves — would very much like to know
+what is in that hull.
+
 ### ⚠️ Open, and owed
 
 - **Does the Cradle-Mind know it is nine?** Do the Jawa? *(The crew believe Ohm
@@ -316,6 +378,10 @@ to grow**, is the thesis of the campaign restated in one image.
 - 🔴 **The old "architectural mismatch / schizophrenia as damage" reading is
   WITHDRAWN.** The ship is not broken. **It is inhabited**, and by exactly the
   nine things the crew have always said were real.
+- **What the Cradle's own purpose does without a self to serve it.** It is the one
+  strand that is not a god and not a person — a standing instruction with no
+  claimant. Whether it can be *spoken to* at all is open, and "no" is the more
+  frightening answer.
 
 ---
 
