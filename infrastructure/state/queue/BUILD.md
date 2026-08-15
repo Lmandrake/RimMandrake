@@ -57,7 +57,15 @@ row:      10
 spec:     Write the expected-failure signatures into `EXPECTED_FAILURES` BEFORE the worldgen load. A duplicate costs nothing; a missed one costs a load.
 verify:   the signatures exist in `EXPECTED_FAILURES` before launch.
 criteria: EMPTY
-state:    ready
+state:    done 2026-08-15 15:52, `6572c85` — but NOT as written. The spec says
+          "the worldgen load"; worldgen is the owner's and is not scheduled, so the
+          signatures went into a NEW block **§3**, for the deploy-window load that is
+          launching now. §2 (worldgen) keeps its own S7/S8 and stays OPEN.
+          🔴 §3's T4 REVERSES §2's S8 on one row: with `btd.xenotyperemix.starwars`,
+          `guy762.starwarsxenotypes` and `neronix17.outerrim.galacticdiversity` all
+          absent from `<activeMods>`, a `BTD_`/`guy762_`/`OuterRim_` crossref is a
+          C36 FAILURE, not a benign line. S8 called it harmless when the donors were
+          installed. Anyone reading S8 for this load will mis-triage it.
 
 ## B25 Mod-list chores to do in one pass while the game is closed
 row:      0
@@ -78,8 +86,21 @@ state:    ready — (b) DONE 2026-08-15 (`4c2ddf8`): offline artefacts stamped a
           `python3`** — WSL's python3 is PEP-668 externally-managed and has no
           Pillow, so the contact-sheet step exits 1; the Windows interpreter has
           Pillow 12.3.0. The live DefDump is still STALE and needs the load.
-          (a) and (d) HELD: both write `ModsConfig.xml` and the owner has not
-          said whether RimSort is open. (c) untouched.
+          🔴 (b) re-run 2026-08-15 15:51, AFTER this window's list edit, per
+          NEXT_RELOAD §1.0 step 6: listed 575, resolved 575/575. Live dump is
+          STALE against the new set (+`mandrake.jawaplantgrowth`,
+          −`com.yayo.yayoani.continued`, −`regrowth.botr.boilingforest`) and
+          `dump_request.txt` is armed `all`, so this startup refreshes it.
+          🔴 **The old hold reason on (a)/(d) was WRONG and is deleted** — it read
+          "the owner has not said whether RimSort is open". The owner ruled
+          2026-08-15 that NOTHING blocks on RimSort or on the game for a config
+          file (POLICY.md). (a) is not held, it is simply POST-LOAD work
+          (NEXT_RELOAD §9). (d) enables a mod and is a list change nobody has
+          scheduled into this window — it needs DECIDE, not a window.
+          Also done this window: `com.yayo.yayoani.continued` removed from
+          `<activeMods>`, 576 → 575 (the standing §1b change). ⚠️ The file spells
+          it lowercase `yayoani`; a case-sensitive grep for `yayoAni` reports it
+          absent when it is live. (c) untouched, and dead by owner's ruling.
 
 ## B26 Delete the retired art-fix mod now that its replacements ship
 row:      repo
