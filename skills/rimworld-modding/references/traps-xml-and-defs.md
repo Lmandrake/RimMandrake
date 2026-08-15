@@ -152,3 +152,22 @@ Entry format, admission test and the append rule: `references/traps.md`.
 **Cause:** `GenStep_Scatterer::CalculateFinalCount` is `CountFromPer10kCells(...) × GetPlacementFactor(map)`, and when `isJunk` is true `GetPlacementFactor` returns the PRODUCT of `TileMutatorDef::junkDensityFactor` over every mutator on the map's world tile. Of 337 mutators, five are **0** — `Dunes`, `Iceberg`, `VEE_DetachedIceberg`, `VEE_IceAndFire`, `VEE_QuicksandDunes` — and `Junkyard` is 15. The product is therefore 0, 1, or a power of 15; there is no gentle fraction.
 **Fix:** predict the count as `range × area/10000 × junkDensityFactor product`, not the first two terms. Drop `isJunk` if the content must appear on dune or ice tiles, knowing it also stops keeping junk off the player start.
 **Recurs when:** any `GenStep_Scatterer` subclass with `isJunk` — including `GenStep_ScatterGroupPrefabs`, whose `Generate` is a bare `base.Generate` call and inherits the factor unchanged.
+
+---
+
+### The same defName can exist as two different def TYPES
+
+**Symptom:** a prefix migration or bulk rename validates clean, deploys clean,
+logs nothing — and the faction generates no pawns.
+**Cause:** defNames are unique *within* a def type, not across types.
+`OuterRim_Geonosian` is both a `XenotypeDef` and a `PawnKindDef`. A file-wide
+string replace aimed at the xenotype also rewrote three `pawnGroupMakers`
+entries, pointing them at a name that exists only as a xenotype. An unresolvable
+`kind` in a group maker is **discarded at load with nothing in the log**.
+**Fix:** migrate by NODE, never by string. Name the xpath or the parent element
+you are changing — `<xenotypeChances>` here — and leave every other occurrence
+alone. Two def types sharing a name are two different objects.
+**Recurs when:** a mod family ships parallel `XenotypeDef` / `PawnKindDef` /
+`ThingDef` sets under one naming scheme, which is the norm for race packs.
+**The tell:** count the references before and after. A xenotype swap should touch
+one or two nodes. If it touched eleven, it crossed a type boundary.

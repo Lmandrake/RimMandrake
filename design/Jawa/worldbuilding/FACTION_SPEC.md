@@ -664,6 +664,15 @@ Shape, read from the live `Ancients` def:
 Wookiee-kin at 25%, and Yttakin is a hairy cold-world xenotype that reads as
 Wookiee-adjacent. It is the one vanilla xenotype that earns its place.
 
+🪤 **A `BTD_`/`OuterRim_` migration is NOT a string replace.** `OuterRim_Geonosian`
+is BOTH a `XenotypeDef` AND a `PawnKindDef`. Only the node inside
+`<xenotypeChances>` moves to `BTD_`; every `pawnGroupMakers` entry KEEPS
+`OuterRim_`, because the pawn kinds are Galactic Diversity's and BTD's dedup does
+not touch them. A file-wide rename rewrites the group makers to a defName that
+exists only as a xenotype — **a silent discard at load, and the faction generates
+no pawns at all.** The tell is the reference count: a xenotype swap should touch
+one or two nodes, not eleven.
+
 ⚠️ **The BTD-survives-dedup fact is measured for Jawa and generalised here.**
 If a `BTD_*` name turns out not to resolve live, the fallback is the
 `guy762_xenotype_*` prefix, not `OuterRim_*`. CHECK verifies the sets read back.
