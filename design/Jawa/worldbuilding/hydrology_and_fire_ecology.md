@@ -30,6 +30,47 @@ machinery that makes that true.
 
 ---
 
+## R-H0 · The mountains are VOLCANIC, and there are many of them
+
+**Owner's ruling, 2026-08-15, and it is causally first — everything below depends
+on it.** The mountain ranges are highly volcanic. **That is why they exist.**
+
+This answers a question the water cycle would otherwise beg. A dead world erodes
+flat, and a flat world has no cold high ground, and no cold high ground means no
+water anywhere. **Active volcanism is what keeps building peaks faster than this
+climate can tear them down** — so the planet keeps its condensers, and therefore
+keeps its water, and therefore keeps its life. The hydrology in R-H1 is downstream
+of a geology that has not finished.
+
+**And there should be MANY ranges, dotted with volcanoes.** Not one spine. The
+deep desert is monotonous by design and monotony is the enemy of a world you have
+to cross — ranges break it up, give the map a skyline, and put a reason to
+navigate into every direction of travel.
+
+**What volcanism pays for, beyond the peaks themselves:**
+
+- 🔴 **It explains the nutrient load.** R-H2's overcharged seas need a mineral
+  source, and "flash floods off raw volcanic rock" is exactly that source — fresh,
+  unweathered, mineral-rich stone, delivered all at once. Volcanic soil is the
+  most fertile on Earth for the same reason. **The gigantism traces back to the
+  volcanoes.**
+- **It explains the fires having somewhere to start** other than lightning alone.
+- **It puts geothermal on the map** as a real, sited resource rather than a
+  building you unlock — and gives `Primordial Geysers` a job on this world.
+- **It fits what is already adopted.** `desert_world_design.md` §3B(5) already
+  places **helixien gas pockets** on volcanic and deep-desert tiles, and §3B(6)
+  puts Star Wars ore deposits on rocky tiles. Both now have a planetary reason
+  rather than a placement rule.
+- **It is a hazard tier the roster lacks.** Volcanic tiles are the one terrain
+  that is dangerous without being *empty* — the opposite failure mode from deep
+  desert.
+
+⚠️ **Worldgen consequence, and step 10 is manual.** The owner makes and saves the
+world by hand, so this is guidance at the world screen rather than XML: **choose a
+world with abundant mountain, and reject a generation that comes out flat.** A
+flat world silently invalidates R-H1, R-H2 and the entire water economy, and there
+is no patch for it afterwards.
+
 ## R-H1 · The water cycle: it rains ONLY on the high peaks
 
 **Owner's ruling, 2026-08-15.** There is no ordinary precipitation on this world.
