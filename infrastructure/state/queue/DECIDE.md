@@ -261,10 +261,20 @@ spec:     B56 killed five FactionDefs for a day. Root cause is not the XML — B
           child shape against the same field in a shipped def: `<li>` list vs keyed
           element) or whether its output is re-worded so a clean run stops reading as
           "this will load".
+          **3. `check_refs.py` has the opposite failure and it BLOCKS a gate.** A
+          queue item that names its own deliverable — B39's `design/Jawa/mods/MOD_FREEZE.md`,
+          D23's `design/Jawa/worldbuilding/XENOTYPE_SPEC.md` — cites a path that is
+          correct and does not exist YET. check_refs calls that BROKEN, so B36's
+          `verify:` ("check_refs clean") can never pass while any item is open. It
+          also just rose 8 → 9 when `beb5036` filed another such item, i.e. filing
+          work makes the gate worse. Decide the idiom: an explicit marker on a
+          not-yet-written deliverable, an exemption for paths inside `queue/`, or
+          drop the clean-run requirement from B36. The code change lands on BUILD;
+          the idiom is yours.
           This is DECIDE's because `design/` and `skills/` are yours; the XML was
           BUILD's and is already closed.
-verify:   R27 no longer shows an unverified sample; and either the validator flags a
-          keyed field given `<li>` children, or its banner says plainly that a clean
-          result does not predict loading.
+verify:   R27 no longer shows an unverified sample; the validator either flags a
+          keyed field given `<li>` children or stops implying a clean run predicts
+          loading; and `check_refs.py --all` can reach 0 BROKEN with items open.
 criteria: none — offline.
 state:    ready
