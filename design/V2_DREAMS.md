@@ -924,3 +924,36 @@ scavengers, and the sarlacc is the single most recognisable thing that lives in
 Tatooine's sand. It is also thematically exact — a pit that swallows and digests
 slowly is the perfect opposite of a clan whose whole identity is *finding things
 and taking them away*.
+
+### 🔴 Addendum — the sarlacc REGIONS and the pearls (owner, 2026-08-15)
+
+**The fiction is now canon; the implementation is still `[v2]`.** Stated plainly
+because the two halves arrived in the same session and must not be conflated:
+
+- ✅ **CANON FOR v1's WORLD.** There are **regions of the desert known for
+  gigantic sarlacc pits.** Not a random event — *places*, known by reputation, the
+  way a real desert has a named quarter nobody crosses. The owner is building the
+  world by hand, so these regions can simply exist on the map from day one, and
+  naming them costs nothing.
+- ⛔ **STILL v2.** The rebrand of `PitGate` / `Undercave` / the fleshmass content,
+  and the mechanical encounter. v1 attempts none of it, and Anomaly stays at zero.
+
+⇒ **So v1 can ship the geography and the reputation without the monster.** A
+region everyone warns you about, that does nothing yet, is not a broken promise —
+it is foreshadowing, and it costs one label.
+
+⭐ **THE PEARLS.** Sarlacc pits yield **wondrous pearls**, and they are a **major
+quest reward** — the top of the reward table, not a trade good.
+
+**Why this is the best idea in the whole sarlacc entry:** it converts the pit from
+a hazard into an *economy*, and it gives the campaign a reward that is
+- **sited** — it comes from a known place the player must travel to,
+- **earned by risk rather than by grind**, which is the campaign's whole thesis,
+- and **perfectly Jawa** — the clan's identity is finding things and taking them
+  away, and a pearl pulled out of a thing that swallows is the purest possible
+  expression of that.
+
+**Owed before building:** what a pearl *is* mechanically (a quest reward item, a
+crafting input, or a faction-tier trade good), and whether the pits regenerate
+them. ⚠️ Do not make them farmable — a wondrous thing you can grind is not
+wondrous.

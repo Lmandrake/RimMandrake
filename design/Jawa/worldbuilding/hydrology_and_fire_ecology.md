@@ -316,7 +316,8 @@ border:
 | the seam itself | **poison forest** (R-H2b) | stunted, persistent, toxin-concentrating |
 | deeper | **mycotic jungle** | fungal, lightless, feeding on what the seam drops |
 | deeper still, in **patches only** | **gelatinous superorganism** | the end state — not plants any more |
-| **well past** it, in the deep cold | **propane lakes** (R-H6b) | not life at all — the exhaust, condensed |
+| **well past** it, in the deep cold | **propane lakes** (R-H6b) · **crystalline caverns** · **glowing landscapes** (R-H6c) | not life at all — the exhaust, condensed; and the last light on the planet |
+| **the end of the world** | **the forsaken crags** (R-H6d) | total darkness. A different chemistry, and it does not want us |
 
 **What unifies them is decomposition, not darkness.** Each of these biomes speaks
 of decay, of limited-but-available moisture, and of **extremely rapid
@@ -441,6 +442,75 @@ dead save. **Every additional path is insurance against that.**
 ⚠️ **Values still get set once, together** — the reason is now the opposite of what
 it was. Not to pick a winner, but to make sure none of them is accidentally so bad
 that it stops counting as a path.
+
+## R-H6c · Crystalline caverns, and landscapes that make their own light
+
+**Owner's ruling, 2026-08-15.** Out on the dark side, past the fungal biomes and
+alongside the propane lakes, are **crystalline caverns** — and with them
+**glowing landscapes that generate their own meagre light in the eternal night.**
+
+**Meagre is the operative word.** This is not a lit place. It is a place with
+*enough* light to move by and no more, which is a far stranger thing to walk into
+than either full dark or full day. Everything the player sees out here, they see
+because the ground is doing it.
+
+⇒ **This is the last light on the planet**, and its position in the sequence is
+what gives it meaning: it comes *after* the decay biomes and *before* the dark.
+The glow is the final thing that pushes back, and past it nothing does.
+
+**Two payoffs worth protecting:**
+
+- **The crystal is a reason to come out here** that is not fuel. The propane lakes
+  give the deep night an industrial purpose; the caverns give it a *prospecting*
+  one, and those attract different play.
+- **Bioluminescence and mineral glow read completely differently.** If the glow is
+  alive it belongs to the decay gradient; if it is mineral it belongs to the
+  crags. Deciding which is worth doing deliberately — DECIDE owes it, and either
+  answer is good.
+
+## R-H6d · The forsaken crags — the conjugate of the deep desert
+
+**Owner's ruling, 2026-08-15.** Past the last glow, **total and utter darkness
+descends**: the forsaken crags. `AB_RockyCrags` (Alpha Biomes), which already
+carries a **hard-coded 0.34 sun-glow multiplier and can never roll clear weather**
+(`tidally_locked_world.md` §2).
+
+🔴 **They are the exact conjugate of the deep desert**, and stating it that way is
+the design:
+
+| | **deep desert** — dayside terminus | **forsaken crags** — nightside terminus |
+|---|---|---|
+| what kills you | **absence.** No water, no shade, nothing there | **presence.** Something is there and it is hostile |
+| the danger | emptiness | occupancy |
+| the fear | you will run out | you are not alone, and you are not welcome |
+
+**And the crags are oddly FULL of life** — built on an **entirely different
+chemistry than ours**, and deeply hostile to our presence. Two consequences, both
+ruled:
+
+- 🔴 **Most creatures go manhunter on arrival onto the map.** Not provoked.
+  Arrived.
+- 🔴 **Nothing here is edible.** Not the animals, not the plants. Alien
+  biochemistry is not food; it is at best inert and at worst poison.
+
+⭐ **There is a vanilla field that delivers BOTH halves at once:
+`BiomeDef.wildAnimalScariaChance`.** Scaria makes animals manhunt and makes their
+corpses unusable — so one number produces "everything attacks you and you cannot
+eat what you kill." Drive it high and the crags behave as ruled without a line of
+C#. **Verify the exact behaviour before relying on it**, but this is the lever.
+
+⇒ **The crags are therefore the one biome where the campaign's core loop fails.**
+Everywhere else a Jawa can scavenge, hunt or trade. Here the food chain is not
+merely poor, it is *not addressed to us*. That is what makes it the end of the
+world rather than just a bad tile.
+
+⚠️ **A temptation to leave alone.** The crags' description already says an ancient
+race partly terraformed this world and left — the Forsakens — and R-H8 says the
+strange biomes carry an ancient bioweapon's genetics. **Do not weld those two
+together yet.** The crags read best as chemistry that was ALWAYS here and was
+never ours; the terminator biomes read best as something that was *done* to
+ordinary life. Two different alien facts are richer than one explained one, and
+R-H8 already rules that the bioweapon's author stays unknown.
 
 ## R-H7 · The ocular forests — the mountains have their own horror
 
