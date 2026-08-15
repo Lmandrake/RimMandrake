@@ -68,6 +68,21 @@ import sys
 import time
 import traceback
 
+# 🔴 Windows console defaults to cp1252, and a def label with a non-cp1252
+# character (VAEA/RR apparel, Cherry Picker's removal list) raises
+# UnicodeEncodeError *inside the print*, AFTER the tool call succeeded but
+# BEFORE the item asserts. The item is then reported ERROR and counted as a
+# failure, when in truth it was never measured. Measured 2026-08-14: A6 and P5
+# both died this way, and the same bug class silently hid a spawn failure
+# earlier the same day. An unreadable result must never look like a failed one.
+# errors="replace" so a stray glyph degrades to '?' instead of killing a run
+# that cost a 25-minute cold load.
+for _s in (sys.stdout, sys.stderr):
+    try:
+        _s.reconfigure(encoding="utf-8", errors="replace")
+    except Exception:
+        pass
+
 _ROOT = os.path.dirname(os.path.dirname(os.path.dirname(
     os.path.dirname(os.path.abspath(__file__)))))
 sys.path.insert(0, os.path.join(_ROOT, "src", "RimMandrake", "Utils"))
