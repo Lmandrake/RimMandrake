@@ -622,3 +622,54 @@ verify:   Either the file is gone, or its guard no longer fails against the live
           list.
 criteria: Harvest shows `MegafaunaYield fix` at baseline.
 state:    ready
+
+## B60 Make every plant on the planet grow freakishly fast
+row:      2
+spec:     `design/Jawa/worldbuilding/PLANT_GROWTH_SPEC.md` is the authority; the
+          load-bearing points, so you need not open it to start:
+          **R-G1 — one Harmony postfix, not an XML sweep.** `PatchOperation`s
+          cannot do arithmetic (there is no `PatchOperationMultiply`), so XML
+          means writing a literal `growDays` on all 566 plant defs, brittle and
+          blind to any plant a mod adds later. Instead ONE postfix on
+          `Verse.Plant.GrowthRate` multiplying `__result` — it catches every
+          plant from every mod and is one line to tune or revert. The boosted
+          number must show in the inspect string, not the base one.
+          ⚠️ **Verify the Harmony target against the assembly before writing the
+          patch** — `strings -a -el` on `Assembly-CSharp.dll`, per the project's
+          standing rule never to guess a member. The spec says `GrowthRate` is a
+          property getter in 1.6; do not take that on trust. If it is not the
+          single funnel, target whatever `GrowthPerTick` consumes.
+          **R-G2 — three bands, as named constants in ONE config class**, not
+          scattered literals: default (wild plants and crops) **x4.0**, trees
+          **x2.5** (wood must stay a decision), terminator/poison-forest biomes
+          **x0.4**. The owner will tune these after seeing them move, and tuning
+          must not mean recompiling. ⛔ Do NOT exempt player crops — the fiction
+          is planetary, and the limit on farming here is WATER, not time.
+          **R-G3 — the postfix is biome-aware**, and the terminator biome set is
+          a `List<string>` in the same config, NOT a hard-coded defName.
+          `PoisonForest` and its Advanced Biomes relatives are the current
+          candidates; DECIDE supplies the final roster, and it must be able to
+          change without a rebuild.
+          **R-G5 — a named exempt list in the same config**, reasoning visible
+          beside the multipliers: `Plant_TreeAnima` (ritual pacing, not botany),
+          `Plant_TreeGauranlen` and the dryad economy, `Plant_Ambrosia`, plus
+          anything a quest or ritual times against and any plant already under
+          ~1 `growDays`.
+          🔴 **R-G1 ships NOW; R-G4 WAITS.** The second lever is XML on
+          `BiomeDef.wildPlantRegrowDays` (divide by ~4, to agree with R-G2) and
+          it is blocked on the owner's biome cut list — patching a biome about
+          to be cut is wasted work. Both levers are ultimately required: fast
+          growth without fast regrowth burns the savanna once and leaves it
+          black.
+verify:   Per R-G6, all of it inside a ~90 s quicktest — do NOT wait for a cold
+          load. Wild grass visibly regrows within a session and a sown crop
+          reaches harvest in roughly a quarter of its usual time. A tree does
+          NOT keep pace with the grass (that is the x2.5 band working). 🔴 The
+          check most likely to be skipped, and the one that proves the
+          biome-aware branch actually runs: on a terminator/poison-forest map
+          growth is visibly **SLOWER** than vanilla, not faster. The anima tree
+          is unchanged. No error on load and no per-tick performance regression
+          on a large map — a getter postfix runs extremely often.
+criteria: vegetation reads as obtrusively powerful rather than as a balance
+          tweak.
+state:    ready
