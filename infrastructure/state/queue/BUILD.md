@@ -1994,6 +1994,15 @@ why:      There is no way to make a pawn swing on command. Measured, not assumed
 scope:    ⛔ I am not designing it. Named here because CHECK found the gap, per POLICY.
           The equip half is already solved and needs nothing:
           `Actions\Equip primary (selected)...\<WeaponDefName>` after `select_pawn`.
+state:    v2 tooling — DO NOT BUILD, and do not let it claim a shutdown window.
+          The item had no `state:` at all, which reads as "unspecified" and is one
+          glance from being picked up as ready. It is not.
+          🔴 **If this resurfaces, the answer is: NOTHING IS MISSING FROM THE BUILD.**
+          14 lightsaber `ThingDef`s are live (measured against this load's own dump,
+          `Force_Lightsaber_Custom` and 13 more), and one was equipped and rendered
+          correctly on the map today. The only open question was ever how the weapon
+          SITS mid-swing, and that is v2's (C43, closed by owner `3667d37`).
+          **Nobody goes hunting a missing weapon.** Yayo stays OFF.
 
 ## sled-tint-loses-to-the-vehicle-pattern-4d90ae
 row:      2
