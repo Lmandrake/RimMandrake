@@ -109,6 +109,9 @@ observed/**/logs/
 observed/**/DefDump/
 observed/**/defs/
 observed/**/Defs/
+# Extracted sprite caches, wherever they land — re-extractable from the game's
+# own assets. The genome scan's was 351 MB / 14k PNGs; see the genome block below.
+observed/**/art_cache/
 # Bridge latency probes and screenshots.
 observed/**/latency_*.json
 observed/**/screenshots/
