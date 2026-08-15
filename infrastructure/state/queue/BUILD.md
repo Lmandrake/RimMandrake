@@ -376,15 +376,20 @@ row:      9
 spec:     `src/Jawa/Jawa_Patches/Defs/FactionDefs/JawaTribes.xml`, per `design/Jawa/worldbuilding/FACTION_SPEC.md`
           section 11. Change `label` "Jawa tribes" -> **"Jawa Trade Moot"** (R8
           retired the old name; R19 keeps the defName because it is deployed).
-          ADD the six missing contract fields: `humanlikeFaction`,
+          Change `ParentName` `FactionBase` -> `TribeBase` (R24): the bare
+          abstract supplies NONE of the naming or art fields and `TribeBase`
+          supplies six of them.
+          ADD what `TribeBase` still does not give: `humanlikeFaction`,
           `factionNameMaker` `NamerFactionTribal`, `settlementNameMaker`
           `NamerSettlementTribal`, `factionIconPath`
-          `OuterRim/WorldObjects/MoistureFarmers`, `colorSpectrum`,
-          `basicMemberKind`.
-          🔴 Its shipped `pawnGroupMakers` reference vanilla `Combat`/`Peaceful`/
-          `Trader` kindDefs — confirm the OPTIONS name `Jawa_Tribal_Scavenger`,
-          `_Slinger`, `_Elder` and not vanilla kinds. If they name vanilla kinds,
-          our three tribal pawn kinds have never spawned.
+          `OuterRim/WorldObjects/MoistureFarmers`, `colorSpectrum` — and
+          `basicMemberKind` is OPTIONAL (R21), so five fields, not six.
+          ✅ SETTLED by BUILD: the group makers were always correct —
+          `Combat`/`Peaceful`/`Trader` are `kindDef` (a `PawnGroupKindDef`) and
+          the options always named our kinds. The three tribal kinds had never
+          spawned for a different reason: all four pawn kinds named vanilla
+          DEFNAMES as `ParentName` and were silently discarded at load. Fixed in
+          `c06e89e`; CHECK C31 proves it on the next cold load.
 verify:   `python3 src/RimMandrake/Utils/validate_patch.py <path> --defs` scoped to the active list, 0 errors; all six fields present and non-null; the three Jawa_Tribal_* kinds
           appear in the group options.
 criteria: Jawa Trade Moot settlements generate and spawn our tribal kinds.

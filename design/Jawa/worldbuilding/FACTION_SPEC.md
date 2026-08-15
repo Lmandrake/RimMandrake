@@ -524,3 +524,39 @@ retrofit an existing world. This is the one hard deadline on D18.
 the Galactic Empire (The Rising Order), the Hutt Cartel (the Reckoning of Debts),
 and the Jawa Trade Moot (The Salvation, already in the shipped def). Those three
 carry authored `deityPresets` and there is no reason to defer them.
+
+## R24 · Inherit from the RIGHT abstract — it hands you the art and the namers
+
+**`ParentName` resolves a `Name=` attribute, never a defName.** A parent that does
+not exist is a **silent discard at load** — the def is dropped with no red error.
+BUILD hit this on the four Jawa pawn kinds (`c06e89e`): all four named vanilla
+DEFNAMES as parents, all four were discarded, and every group maker in the faction
+silently emptied. **`validate_patch.py` is the only thing that catches it offline.**
+
+Measured in `Core/Defs/FactionDefs/`:
+
+| abstract | supplies |
+|---|---|
+| `FactionBase` | ✅ real `Name=` abstract — but **NONE** of the naming, art or colour fields |
+| `OutlanderFactionBase` | 5 of them |
+| `TribeBase` | 6 of them |
+| `PirateBandBase` | pirate namers and art |
+
+⇒ **Do not inherit bare `FactionBase`.** Take the closest abstract and let it hand
+you `factionNameMaker`, `settlementNameMaker`, `factionIconPath` and
+`colorSpectrum` — that is a better answer than R16/R17's "pick one and copy it",
+and it supersedes them wherever an abstract already provides the field.
+
+| faction | ParentName | override |
+|---|---|---|
+| Hutt Cartel | `OutlanderFactionBase` | techLevel Industrial |
+| Free Droid Enclaves | `OutlanderFactionBase` | techLevel Spacer, `humanlikeFaction` |
+| Wildsteam Clan | `OutlanderFactionBase` | icon/colour per R17 — the green reads wrong on an outlander icon |
+| Deepwater Compact | `OutlanderFactionBase` | `raidsForbidden` |
+| Geonosian Foundry Hive | `OutlanderFactionBase` | techLevel Spacer, `humanlikeFaction`, `canRequestTraders false` |
+| Ascendant Helix | `OutlanderFactionBase` | techLevel Spacer |
+| the Junkers | `PirateBandBase` | 🔴 **`permanentEnemy false` MUST be restated** — the pirate abstract sets it true and R12 says the Junkers are not a permanent enemy |
+| Jawa Trade Moot | `TribeBase` *(already `FactionBase`)* | Neolithic already correct |
+
+⚠️ **An inherited field is not a set field.** Read the abstract before assuming a
+value arrived; where the dossier contradicts the parent, restate it explicitly.
