@@ -44,66 +44,42 @@ deploy`, not blocked on a question.
 | 5 | Write the three signatures into `EXPECTED_FAILURES` | BUILD **B23** | Must land **before launch** or the load spends attention on errors we already know about |
 | 6 | `python.exe src/RimMandrake/Utils/refresh.py` | B25(b) | **Last.** It reads the list the four steps above just finished changing |
 
-⛔ **NOT in this window, and this is a change:** `JawaSeaShaper.dll`. The repo copy
-(`b7730027`) and the deployed copy (`82b48e53`) differ and that is **expected** —
-the sea left v1 when the owner ruled worldgen manual on 2026-08-14. See D-CRIT in
-`infrastructure/state/queue/DECIDE.md`, which was superseded today and used to say
-the opposite. Do not spend the window on it.
+⛔ **NOT in this window:** `JawaSeaShaper.dll`. The repo/deployed md5 mismatch
+(`b7730027` vs `82b48e53`) is **expected** — the sea left v1 with the worldgen
+stand-down. D-CRIT was superseded 2026-08-15 and used to say the opposite.
 
 📌 **The window is not the load.** Steps 2 and 3 make §5's items collectable; they
 do not collect anything. Nothing here is finished until the game is up and §5 runs.
 
-### 1a. Arm the def dump — worth doing, gates nothing. ✅ done 13:27.
+### 1a. Arm the def dump — worth doing, and it closes one real gap. ✅ done 13:27.
 
 ```bash
 echo all > "/mnt/c/Users/Mandrake/AppData/LocalLow/Ludeon Studios/RimWorld by Ludeon Studios/DefDump/dump_request.txt"
 ```
 
 **Read at STARTUP only** — armed before launch, or not at all. 18.7 s inside the load.
-**Do it because this window deploys three mods** and you want the dump to describe the
-stack *after* those land, not before. That is the whole reason; it is not urgent.
+Do it because this window deploys three mods, and because of the one-way gap below.
 
-🔴 **THE TRAP, and it cost two escalations on 2026-08-15 — mine and REP's.**
-This section briefly read *"NOT optional, the dump is from 2026-08-14 01:20, it
-describes a def universe that no longer exists."* **Every word of that was wrong.**
-The dump was taken **today**, during the C37 load:
+⚠️ **The gap is ONE mod and it runs ONE way.** Dump `modCount` 576, live `activeMods`
+575; the diff is `regrowth.botr.boilingforest` in the dump and **nothing** missing from
+it. So nothing that loads is unseen by `--defs` — but the dump still carries defs from
+a mod that no longer loads, and an xpath onto *those* validates **clean** while matching
+**nothing** in game. Live instance: `JawaWorld_BiomeMix.xml:140` scores
+`RG_BoilingForest`. Re-arming closes it.
 
-```
-manifest.json   capturedUtc 2026-08-15T15:10:11Z   mode all   576 mods
-defs/*.json     every file stamped 08-15 08:10
-```
-
-⇒ It already contains `mandrake.starwarsraces` and lacks all three donors, so
-`validate_patch.py --defs` has been checking the **current** def universe all along.
-
-⚠️ **One mod out, and only in one direction (BUILD, 2026-08-15).** The manifest says
-**576**; live `activeMods` is **575**. Diffed:
-
-```
-in dump, not live:  regrowth.botr.boilingforest
-in live, not dump:  (none)
-```
-
-**Nothing that loads is missing from the dump** — that is why `--defs` is sound, and
-it is the accurate reason. The residual is one-way: the dump still carries defs from
-a mod that no longer loads, so an xpath onto *those* validates **clean** and matches
-**nothing** in game. Known live instance: `RG_BoilingForest` sits in the dump's
-`BiomeDef.json` and `IncidentDef.json`, and
-`src/Jawa/Jawa_Patches/Patches/JawaWorld_BiomeMix.xml:140` sets a `scoreOffset` on
-it — a no-op today that validates clean. Re-arming the dump closes this.
-
-📌 Both escalations came from reading *age*. The verdict that was right the whole
-time was `refresh.py`'s, because it keys on the **load-set fingerprint**, not the
-clock — and it named `regrowth.botr.boilingforest` specifically. Trust the
-fingerprint over any timestamp, folder or manifest.
-
-📌 **A directory's mtime is not its contents' mtime.** `defs/` still reads
-`Aug 14 01:20` because the dump **overwrites files in place** — no entries created or
-deleted, so the directory never changes. **Read the manifest's `capturedUtc`, never
-the folder.** Any tool that rewrites a fixed set of filenames leaves a frozen
-directory mtime behind, and reading that as staleness invents a crisis.
-⇒ **Dump location and freshness are published by the seat that measures them:
-`infrastructure/state/observed/LIVE.md`. Read that, do not re-derive it here.**
+🔴 **Two escalations on 2026-08-15 — mine and REP's — were both wrong, both from
+reading AGE.** This section briefly claimed the dump was from 2026-08-14 and described
+a dead def universe. It was captured **that same day** (`capturedUtc
+2026-08-15T15:10:11Z`, mode `all`), with `mandrake.starwarsraces` present and all three
+donors gone.
+- `defs/` reads `Aug 14 01:20` because the dump **overwrites files in place** — no
+  entries created or deleted, so the **directory mtime never moves.** It is not the
+  contents' mtime. Any tool that rewrites a fixed set of filenames leaves one behind.
+- **The verdict that was right throughout was `refresh.py`'s**, because it keys on the
+  **load-set fingerprint**, not the clock — and it named the one real mod.
+⇒ **Trust the fingerprint over any timestamp — folder, file or manifest.** Dump
+location and freshness are published by the seat that measures them:
+`infrastructure/state/observed/LIVE.md`. Read that; do not re-derive it here.
 
 ### 1b. `ModsConfig.xml` — BUILD's alone, and NOT gated on this window
 
