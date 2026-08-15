@@ -378,7 +378,7 @@ def main():
                 "file, injected automatically from the role recorded by "
                 "src/RimMandrake/Utils/set_agent_window.sh. It is authoritative about your scope, "
                 "what you decline, and how you communicate. Follow it alongside "
-                "CLAUDE.md and agents_def.md.\n\n" + identity
+                "CLAUDE.md and infrastructure/agents/POLICY.md.\n\n" + identity
             )
         if delta:
             parts.append(
