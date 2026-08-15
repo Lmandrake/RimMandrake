@@ -14,7 +14,7 @@ force named pawns with authored skills, traits and backstories — no `ScenarioD
 part can. Forcing exact pawns needs either C# or a save.
 
 The owner has already ruled the world is hand-made and shipped as a resource we
-enable. ⇒ **The same save carries the map, the ship and the five founders.** One
+enable. ⇒ **The same save carries the map, the ship and the six founders.** One
 artifact, no new code, and "fixed" means fixed.
 
 **Who does what:**
@@ -23,7 +23,7 @@ artifact, no new code, and "fixed" means fixed.
 |---|---|
 | make the world, pick the tile, save it | **owner** |
 | place the exported gravship on the landing map | BUILD, via the bridge |
-| author the five founders | BUILD, via Character Editor |
+| author the six founders | BUILD, via Character Editor |
 | set starting gear and stock | BUILD |
 | save, and that save IS v1's campaign start | **owner** |
 
@@ -67,7 +67,7 @@ traits         Iron-Willed · Fast Walker
 workDisables   Mining
 gear           Jawa robe + hood · ion sidearm · "The First Fusioncutter" (relic)
 ```
-⚖️ **Disable Mining, not Violence.** The lore offers either. With five pawns, a
+⚖️ **Disable Mining, not Violence.** The lore offers either. With so few pawns, a
 leader who cannot pick up a rifle in an emergency is a colony-ending liability;
 one who will not dig is merely characterful.
 
