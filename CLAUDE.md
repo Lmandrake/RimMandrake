@@ -45,7 +45,7 @@ infrastructure/state/   queues, V1.md, facts/        see POLICY.md
 
 ```
 python3 src/RimMandrake/Utils/status_server.py     the board -> http://localhost:8787
-python3 src/RimMandrake/Utils/deploy_custom_mods.py --mod <name> --plan
+python3 src/RimMandrake/Utils/deploy_custom_mods.py --mod <name>    dry run; --apply writes
 python3 src/RimMandrake/Utils/refresh.py           rebuild the offline def dump
 python3 skills/rimworld-modding/scripts/validate_patch.py <path> --defs ...
 ./src/RimMandrake/Utils/show.sh <path>             open it in Explorer
