@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ModMetaData>
+  <packageId>mandrake.starwarsraces</packageId>
+  <name>RimMandrake - Star Wars Races</name>
+  <author>mandrake</author>
+  <supportedVersions>
+    <li>1.6</li>
+  </supportedVersions>
+  <description>69 Star Wars species, owned outright, so the three colliding xenotype mods can be switched off.
+
+Star Wars Xenotypes, Outer Rim - Galactic Diversity and [BTD] Xenotype REMIX each ship an overlapping set of the same species. They collide, and BTD carries a Harmony assembly whose only job is to delete the duplicates and keep its own. This mod ends that by owning the composition: the species, their genes, their head types and their art live here, and none of the three donors needs to be installed.
+
+CREDIT. The art and the gene design are not ours.
+- Star Wars Xenotypes, by guy762 - Workshop 2915192253. 129 genes and their textures are copied from it.
+- Outer Rim - Galactic Diversity, by Neronix17 - Workshop 2980427615. 109 genes, the head types and the species icons are copied from it. Its 1.6 release routes loading at a folder that no longer holds its loose art; the sprites here are recovered from the folder it left behind, which is why they render again.
+- [BTD] Xenotype REMIX, by beeteedubs - Workshop 3458153185. The species reconciliation is its work. Its hand-curated equivalence table is what decides which donor supplies each species, and the gene lists are inherited from it.
+
+Nothing generic was copied. Genes that belong to Biotech, Core, Outland Genetics, Integrated Genes, LFS Genes Expanded - Eyes and Big and Small remain theirs; those mods are dependencies and must stay installed.
+
+Contains no compiled code.</description>
+  <modDependencies>
+    <li>
+      <packageId>Ludeon.RimWorld.Biotech</packageId>
+      <displayName>Biotech</displayName>
+    </li>
+    <li>
+      <packageId>OskarPotocki.VanillaFactionsExpanded.Core</packageId>
+      <displayName>Vanilla Expanded Framework</displayName>
+      <steamWorkshopUrl>https://steamcommunity.com/sharedfiles/filedetails/?id=2023507013</steamWorkshopUrl>
+    </li>
+    <li>
+      <packageId>Neronix17.Outland.Genetics</packageId>
+      <displayName>Outland - Genetics</displayName>
+      <steamWorkshopUrl>https://steamcommunity.com/sharedfiles/filedetails/?id=2600618060</steamWorkshopUrl>
+    </li>
+    <li>
+      <packageId>Turnovus.Biotech.IntegratedGenes</packageId>
+      <displayName>Integrated Genes</displayName>
+      <steamWorkshopUrl>https://steamcommunity.com/sharedfiles/filedetails/?id=2891845502</steamWorkshopUrl>
+    </li>
+  </modDependencies>
+  <loadAfter>
+    <li>Ludeon.RimWorld.Biotech</li>
+    <li>OskarPotocki.VanillaFactionsExpanded.Core</li>
+    <li>Neronix17.Outland.Genetics</li>
+    <li>Turnovus.Biotech.IntegratedGenes</li>
+    <li>Ludeon.RimWorld</li>
+    <li>RedMattis.BetterPrerequisites</li>
+    <li>RedMattis.BigSmall.Core</li>
+    <li>LazyFridayStudio.GenesExpandedEyes</li>
+    <li>Neronix17.Toolbox</li>
+    <li>guy762.MM.KotORCore</li>
+    <li>guy762.starwarsxenotypes</li>
+    <li>neronix17.outerrim.galacticdiversity</li>
+    <li>beeteedubs.xenotyperemix</li>
+  </loadAfter>
+</ModMetaData>
