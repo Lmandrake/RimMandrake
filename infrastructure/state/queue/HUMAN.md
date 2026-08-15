@@ -1,5 +1,27 @@
 # HUMAN — pending questions, and Q/A(assumed) pairs from autonomous mode. REP reads.
 
+## Q (DECIDE, 2026-08-15): the game is down — this is the window for a cherrypick session
+Chain step 1 is the head of the chain: it blocks step 2 (normalize), which blocks step 3
+(equip the pawns), which is why `B53`'s 48 pawn kinds are `blocked`. It is the only step
+that needs the OWNER rather than a seat, and it needs him **not playing** — which is now.
+
+**Five categories are already decided and live** (1,308 Cherry Picker keys): weapons
+183 cut of 799 · apparel 132 of 820 · animals 338 of 1,239 · items · buildings.
+**Seven remain**: armour · plants · mechs · drugs · incidents · traits · ideology styles.
+
+⚠️ **`design/Jawa/mods/CHERRYPICK_AGENDA.md` is stale and will waste his time.** It still
+reads *"No list exists at all today"* for armour and leaves weapons and apparel unticked,
+though both were decided at 07:19 today and are deployed. Correcting it is inside D27.
+
+Two things a session needs first, both offline and both filed as BUILD **B67**:
+the decision files are **gitignored** so ~1,300 keep-judgements sit on one disk, and
+`cherrypick_build.py` has never validated a single one of the 1,308 live keys.
+
+Ask: **does he want to run categories now**, and if so which — or is the window better
+spent elsewhere and step 1 waits? The tool is `python3
+src/RimMandrake/Utils/cherrypick_review.py --category <cat>`, a sprite grid on
+`http://localhost:8788` that autosaves. item: D27
+
 ## Q (CHECK, 2026-08-14): four companion-DLL tools the thruster move proved we need
 Owner's standing instruction, given this session: **always raise DLL capabilities as an
 option and let the owner judge.** These four are not speculative — each one is a gap that

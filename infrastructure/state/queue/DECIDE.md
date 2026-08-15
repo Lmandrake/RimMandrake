@@ -570,4 +570,19 @@ verify:   `NEXT_RELOAD.md` is ordered top-to-bottom with a call named per item, 
           item in it is one the down-window makes unnecessary.
 criteria: the load answers every question staged in it; nothing needs a second load
           that could have ridden this one.
-state:    ready
+state:    done — 2026-08-15, both halves. `0459627` + `ac8cee7`.
+          HALF 1, the load. `NEXT_RELOAD.md` opens with **§1.0 THIS WINDOW**, a
+          six-step ordered deploy manifest, and §5 carries **six** live items in order
+          instead of three — C37's Rodian snoot is L0 and first, then C40, C41+C39,
+          and C38 last because it needs a second `PoisonForest` map. C36's crossref
+          sweep moved to §2 where the startup harvest actually collects it. 378/400
+          lines, in budget. ⛔ **Struck from the window: `JawaSeaShaper.dll`** — see
+          D-CRIT, superseded today; B0's line is corrected.
+          HALF 2, the content. **B66** folds D-CHK2 and D-CHK3 into one
+          `gen_races_mod.py` regenerate — it must ride THIS window or L0 photographs
+          four species that are magenta for a cause already diagnosed. **B67** is the
+          find: the seven cherrypick decision files are gitignored as "derived", so
+          ~1,300 owner keep-judgements live on one disk, and `cherrypick_build.py` has
+          never validated any of the 1,308 deployed keys. Chain step 1 corrected in
+          `V1.md` — five categories are decided and live, not "weapons and apparel
+          next". The owner ask is in `queue/HUMAN.md`.
