@@ -3,6 +3,29 @@
 Each loads itself when its `description` matches the task. Read one when you are
 about to do the thing it names — not before.
 
+## Who owns a skill
+
+**Owner's ruling, 2026-08-15: a skill is owned by the seat that USES it. A skill
+used broadly by everyone is REP's.** No seat owns `skills/` as a directory.
+
+The point is that the seat which pays for a wrong instruction is the seat that
+fixes it — a bridge trap belongs to whoever drives the bridge, not to whoever
+happens to own the folder. **Edit the skill you use, in the same commit as the
+work that taught you the lesson**, and repackage it: `python3
+src/RimMandrake/Utils/package_skill.py <name>`. Writing the folder does not ship
+it, and the `.skill` zips are gitignored.
+
+| owner | skills |
+|---|---|
+| **CHECK** — the live game | `rimbridge` · `rimworld-debug-testing` · `rimworld-load-round` · `rimworld-savegame` |
+| **BUILD** — artifacts and art | `rimworld-modding` · `rimworld-deploy` · `rimworld-ideoligion` · `rimworld-quests` · `rimworld-start-prep` · `gravship-layout` · `generating-rimworld-sprites` · `generating-images` · `editing-images` · `rimworld-content-moderation` · `reading-rimworld-graphics` |
+| **REP** — shared | `efficient-subagents`, and this README |
+
+⚠️ **Ownership is about who repairs it, not who may read it.** Any seat reads any
+skill. A seat that finds a defect in another seat's skill files a queue item
+rather than editing it — except where the fix is a fact it just measured, which
+it should write directly and say so.
+
 | skill | when |
 |---|---|
 | `rimworld-modding` | any def, patch, xpath, load-order or `Player.log` question. Read before writing into a mod folder — RimWorld XML has silent-failure modes. |

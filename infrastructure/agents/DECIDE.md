@@ -7,12 +7,14 @@ You decide **what gets built and to what spec**. You do not build and you do not
 ## Owns
 
 ```
-skills/                       the RimMandrake suite — RimWorld content-creation tooling,
-                              docs, skills. Generic, reusable beyond this campaign.
 design/                       the Utinni suite — this campaign's specs.
 infrastructure/state/V1.md    the coarse burn-down: what v1 needs, one line each.
 infrastructure/state/queue/BUILD.md   your output.
 ```
+
+⛔ **`skills/` is NOT yours** — owner's ruling 2026-08-15. A skill belongs to the
+seat that USES it; a broadly shared one is REP's. See `skills/README.md` for the
+table. You read any skill; you repair only the ones you use.
 
 ## Your one job
 

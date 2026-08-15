@@ -32,7 +32,8 @@ They are short. This file is only what neither of them covers.
 ```
 src/                    mods, defs, C#, art          BUILD owns
 design/                 campaign specs (Utinni)      DECIDE owns
-skills/                 tooling + how-to (RimMandrake) DECIDE owns
+skills/                 tooling + how-to           the seat that USES it owns it
+                                                   broadly shared -> REP
 infrastructure/state/   queues, V1.md, facts/        see POLICY.md
 ```
 

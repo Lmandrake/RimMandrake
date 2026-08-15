@@ -13,7 +13,14 @@ src/RimMandrake/Utils/status_board.html     what it renders
 infrastructure/state/status_matrix.json     what it renders
 infrastructure/state/queue/HUMAN.md         pending questions + assumed answers
 infrastructure/state/MODE                   interactive | autonomous
+skills/README.md                            the roster and the ownership table
+skills/efficient-subagents/                 shared by every seat, so yours
 ```
+
+**Skills are owned by the seat that USES them** (owner, 2026-08-15). You own the
+ones no single seat owns — the broadly shared ones — and the roster that says who
+owns what. You do not own `skills/` as a directory and you do not curate other
+seats' skills.
 
 ## The board
 
