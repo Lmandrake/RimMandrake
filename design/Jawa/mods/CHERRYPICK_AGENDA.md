@@ -104,13 +104,13 @@ Reviewing these per-def is not possible and pretending otherwise wastes sessions
 
 | mod | why |
 |---|---|
+| **`[AB] Xenotype: Yautja`** (`biotechrace.yautja.alleyballey`) | Owner, 2026-08-15. 🔴 **It ships its art in AssetBundles — the whole mod holds 2 loose PNGs, so all 39 weapons and 27 apparel report `no_loose_png` and CANNOT BE REVIEWED offline.** It fails the method: if you cannot see it, you cannot judge it. Cost was 432 genes (9% of the entire gene pool), 9 xenotypes competing with `D23`, 4 already-unticked factions and all 14 `Graphic_Multi` render errors. Benefit was 13 melee weapons on an AP 0.60 tier — a NUMBER we can put on a blade we can actually see. ✅ Our three Armoury patches that touch it are wrapped in `PatchOperationFindMod`, so they take the no-match branch and log nothing; **no re-point was needed** |
 | **`Big and Small - Sapient Animals`** (`redmattis.sapientanimals`) | Owner, 2026-08-15: *"This whole mod needs to go... We're descoping the mod."* It generated a `Humanlike`-intelligence twin of **every animal in the game — 1,073 defs**, all of them potential pawns (`HL_Penguin`, `HL_RockTroll`, `HL_Bantha`). Sapient talking animals are not this fiction. Set inactive in `ModsConfig.xml`; nothing declared a dependency on it. **Do not cherrypick its defs — they no longer load.** |
 
 ## Holds — decided later, on purpose
 
 | item | why it is held |
 |---|---|
-| **`[AB] Xenotype: Yautja`** | Owner, 2026-08-15: keep for now, revisit **after `D23`** builds our own xenotype set. Its 432 genes and 9 xenotypes are the cost; 13 melee weapons on a clean AP 0.60 tier are the benefit. Nothing external depends on it, and the `.rid`/`.xtp` references are mod-list stamps, not dependencies |
 | **Megafauna** · **Mythic Ages: Megafauna Bestiary** | The design uses megafauna as the counter to Junker warcaskets. Big desert beasts fit the setting |
 | **Onimods: Electric Torches and Braziers** | Sounds medieval, is lighting. Plausible on a scavenger world |
 | **The eight D&D creatures** | bearded troll · rock troll · dwarven muffton · goldilox · black scribe · pilgrim · imperial redhound (*Dark Ages: Beasts and Monsters*) · griffar (*Grimstone: Beasts*). Owner, 2026-08-15: **hold for an image review** — names are a poor guide. Do them in the same pass as the weapons and clothing contact sheets |

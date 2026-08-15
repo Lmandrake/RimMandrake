@@ -60,3 +60,10 @@ reason they were cut is that they look like real-world rifles. Two exceptions:
   Makeshift mod itself is KEPT, so this is only relevant if we need more.)
 - **Ancient urban ruins' weapon icons** — genuinely modern, genuinely wrong.
   Recorded only so nobody re-proposes them.
+
+## Not a graphics source, despite appearances — Yautja
+
+`[AB] Xenotype: Yautja` was descoped 2026-08-15. **Do not come here looking for
+its art.** The mod ships **2 loose PNGs in total**; everything else is inside
+`1.6/AssetBundles/`. All 39 weapons and 27 apparel resolve to `no_loose_png`, so
+none of it is extractable or reusable by our tooling.
