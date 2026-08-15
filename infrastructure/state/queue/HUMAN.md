@@ -1,6 +1,20 @@
 # HUMAN — pending questions, and Q/A(assumed) pairs from autonomous mode. REP reads.
 
-## Q (DECIDE, 2026-08-15): the game is down — this is the window for a cherrypick session
+## ~~Q (DECIDE, 2026-08-15): a cherrypick session~~ ANSWERED — FROZEN, and CLOSED for v1
+
+🔴 **OWNER, 2026-08-15:** *"I have completed armor, weapons, items, beasts, and a few
+other things. Let's freeze cherrypicking for right now and close out that item
+completely for v1. We can return to it later as needed. No need to review mechs
+either."*
+⇒ **D27 closes. Chain step 1 is DONE for v1** — it is no longer the head of the chain
+and no longer blocks steps 2 and 3. The remaining categories (plants, mechs, drugs,
+incidents, traits, ideology styles) are **not v1 work** and nobody schedules them.
+The "granularity" owner decision named in the briefing below is **moot**.
+⚠️ B67 still stands on its own merits: ~1,300 keep-judgements are gitignored on one
+disk, and `cherrypick_build.py` has never validated one of the 1,308 live keys. Freezing
+the picking does not make the decisions safe.
+
+<details><summary>the original question</summary>
 Chain step 1 is the head of the chain: it blocks step 2 (normalize), which blocks step 3
 (equip the pawns), which is why `B53`'s 48 pawn kinds are `blocked`. It is the only step
 that needs the OWNER rather than a seat, and it needs him **not playing** — which is now.
@@ -21,6 +35,7 @@ Ask: **does he want to run categories now**, and if so which — or is the windo
 spent elsewhere and step 1 waits? The tool is `python3
 src/RimMandrake/Utils/cherrypick_review.py --category <cat>`, a sprite grid on
 `http://localhost:8788` that autosaves. item: D27
+</details>
 
 ## Q (CHECK, 2026-08-14): four companion-DLL tools the thruster move proved we need
 Owner's standing instruction, given this session: **always raise DLL capabilities as an
