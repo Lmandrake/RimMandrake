@@ -104,3 +104,23 @@ verify:   a design doc exists naming the scenario mechanism (ScenarioDef vs a
           shipped save), the starting pawns, and the starting gear.
 criteria: the campaign starts as designed rather than as a vanilla crashlanding.
 state:    ready
+
+## D-CHK1 The pilot console is UNREACHABLE — v1's NoPathToPilotConsole gate FAILS live
+row:      unassigned
+spec:     Filed by CHECK 2026-08-14 from the C1 harness (`observed/2026-08-14_load_session.md`).
+          **A2 FAIL: 0 of 1 colonists reach `PilotConsole44499` at (129,149)**
+          (`pathEndMode=InteractionCell`). **A4 FAIL** independently confirms the cause is
+          reachability, not the order tool: `jawa/order_pawn` moved Alex (116,146) -> (116,146)
+          over 245 ticks with `canReach=False`. A4b passed, so the pawn was left undrafted and
+          at home — nothing is stuck.
+          **Not caused by this session's edits.** The only passability change CHECK made was
+          swapping 4 west-wall thrusters for `GravshipHull`; both are impassable buildings, so
+          the wall was never open there. The 201 added conduits do not block. The ship has just
+          **2 `Door`s for an 86x133 hull**, which is the obvious suspect.
+          This is the gate `facts/LIVE.md` records as previously SKIPPED for want of a ThingID
+          source — `jawa/list_things` now supplies it, so the gate finally ran, and it fails.
+verify:   `jawa/order_pawn` a colonist to (129,149) and read `canReach` back; or re-run
+          `load_session.py --phase any` and read A2/A4.
+criteria: DECIDE's call — this is a SHIP DESIGN question (interior circulation and door
+          placement), not a bridge defect. CHECK does not redesign it.
+state:    ready
