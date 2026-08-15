@@ -320,6 +320,24 @@
 			<li>ThingDef/GR_Chickenwolf</li>
 			<li>ThingDef/GR_Dogman</li>
 			<li>ThingDef/GR_Lizardman</li>
+			<li>ThingDef/GR_Muffalobear</li>
+			<li>ThingDef/GR_Molehorse</li>
+			<li>ThingDef/GR_Muffalocat</li>
+			<li>ThingDef/GR_Muffalochicken</li>
+			<li>ThingDef/GR_Muffalowolf</li>
+			<li>ThingDef/GR_ParagonChicken</li>
+			<li>ThingDef/GR_ParagonFeline</li>
+			<li>ThingDef/GR_ParagonHorse</li>
+			<li>ThingDef/GR_ParagonHumanoid</li>
+			<li>ThingDef/GR_Turkeyman</li>
+			<li>ThingDef/GR_Wolfbeaver</li>
+			<li>ThingDef/GR_Wolfbear</li>
+			<li>ThingDef/GR_Wolfalope</li>
+			<li>ThingDef/GR_Wolfcat</li>
+			<li>ThingDef/GR_Wolfchicken</li>
+			<li>ThingDef/GR_Wolffalo</li>
+			<li>ThingDef/GR_Wolfsnake</li>
+			<li>ThingDef/GR_WoolyWolf</li>
 		</keys>
 	</ModSettings>
 </SettingsBlock>
