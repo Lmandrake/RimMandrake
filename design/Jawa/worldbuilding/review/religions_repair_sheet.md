@@ -14,6 +14,11 @@ python3 /mnt/d/Luke/dev/Rimworld/src/RimMandrake/Utils/validate_ideoligion.py --
    dump 2026-08-14T08:20:26Z, game 1.6.4871 rev591
 ```
 
+⚠️ **The block above is verbatim validator output and is left exactly as it ran.**
+Its `585 active mods` is a historical stamp: the list is **575** since 2026-08-15
+and that dump is stale, so the meme/precept/style counts may have moved. Re-run
+the validator against the fresh dump before treating any count here as current.
+
 Every claim below was re-read out of
 `C:\Users\Mandrake\AppData\LocalLow\Ludeon Studios\RimWorld by Ludeon Studios\DefDump\defs\`
 (`MemeDef.json`, `PreceptDef.json`, `StyleCategoryDef.json`) today. Vocabulary
@@ -217,8 +222,21 @@ gated behind eight memes of which seven are illegal here.
 
 **3a. `OuterRim_DroidPrimacy`** — confirmed absent from `MemeDef.json` and from
 `ideology_palette.md`. No installed def contains `OuterRim` or `Droid`. The spec's own
-`MayRequire` table (line 86) maps the prefix to `neronix17.outerrim.droiddepot`, which
-is **not in the 585 active mods**. Naming it is the silent no-op the skill warns about.
+`MayRequire` table (line 86) maps the prefix to `neronix17.outerrim.droiddepot`.
+
+🔴 **Corrected 2026-08-15 (BUILD) — the verdict stands, the reason was wrong.**
+The old text said that mod is *"not in the 585 active mods"*. It **is** active,
+at slot **547 of 575**, and it **does** ship the def:
+`.../294100/3096501398/1.6/Mods/Ideology/Defs/MemeDefs/Meme_DroidSupremacy.xml`
+declares `<defName>OuterRim_DroidPrimacy</defName>`.
+It is still unusable, for a different reason: **that subtree is never loaded.**
+`LoadFolders.xml` maps `v1.6` to `/`, `Common` and `1.6`, and RimWorld reads defs
+only from `<loadedFolder>/Defs/`. The mod's live def root is `1.6/Defs/`;
+`1.6/Mods/Ideology/Defs/` is a parallel folder no entry names, so nothing in it
+reaches the DefDatabase.
+⇒ **Naming it is still the silent no-op** — but installing or enabling anything
+will not fix it, and neither will a fresh def dump. Only a `LoadFolders` entry or
+a relocation into `1.6/Defs/` would, and that means editing someone else's mod.
 
 | # | replacement | dump check | cost |
 |---|---|---|---|

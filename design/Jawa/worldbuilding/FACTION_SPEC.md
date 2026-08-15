@@ -408,7 +408,11 @@ Legal `kindDef` values: `Combat` · `Settlement` · `Peaceful` · `Trader` ·
 
 ### Namers and icons — the R16/R17 assignments
 
-🔴 **There are ZERO Star Wars faction namers in the whole 585-mod set.** Reuse
+🔴 **There are ZERO Star Wars faction namers in the whole mod set.** ⚠️ Measured
+against the **585**-mod set; the list is now **575** and `mandrake.starwarsraces`
+arrived after this census, so **re-run it against the fresh dump before relying
+on the zero** — a new mod can only add namers, which is the direction that would
+falsify this. Reuse
 means vanilla namers, which will generate non-Star-Wars settlement names. That is
 a real and visible fiction cost, accepted for v1; bespoke `RulePackDef`s are the
 first `[v2]` item off this spec.

@@ -150,7 +150,7 @@ a **stale companion DLL**: rebuild and redeploy with the game closed
 
 ## 🔴 `search_debug_actions` walks the whole tree and FROZE the game — twice
 **Symptom:** two `rimworld/search_debug_actions` calls each hung past a 120 s client timeout; the owner reported *"game appears frozen"*, then *"game is back"*. The answers eventually arrived and were worthless — six matches for "goodwill", all one `QuestPart` test entry.
-**Cause:** it *"searches the full RimWorld debug-action tree globally by path, label, category and source metadata"* — with 585 mods that tree is enormous, and `limit` caps the RESULT, not the WALK. This is the same enumeration livelock `SKILL.md` §4 forbids, arriving through a tool whose name sounds like a cheap lookup.
+**Cause:** it *"searches the full RimWorld debug-action tree globally by path, label, category and source metadata"* — with ~575 mods that tree is enormous, and `limit` caps the RESULT, not the WALK. This is the same enumeration livelock `SKILL.md` §4 forbids, arriving through a tool whose name sounds like a cheap lookup.
 **Fix:** do not use it to answer *"does a debug action for X exist"*. Decide that from the engine instead — `ilprobe` on the type that would own the action — or accept the gap and build a companion tool. If it must be run, expect a stall and never fire a second one while the first is outstanding.
 **Recurs when:** any global search tool on this bridge. ⚠️ **Generalises: `limit` bounds the answer, not the work.** A parameter that looks like a cost control is often only a truncation control, and the difference is invisible until the game stops rendering. Cost a real freeze 2026-08-14, on a seat that had this trap in its own file.
 

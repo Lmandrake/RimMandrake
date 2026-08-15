@@ -5,7 +5,7 @@ the freeze is **two files, not one**.
 
 | file | what it fixes |
 |---|---|
-| `ModsConfig.xml` | which mods load — 585 active, 564 workshop · 15 local · 6 Core+DLC |
+| `ModsConfig.xml` | which mods load — **575 active, 553 workshop · 16 local · 6 Core+DLC**, zero listed-but-missing (measured 2026-08-15) |
 | `Mod_3521312241_Mod_CherryPicker.xml` | which defs are removed at load — 24 keys |
 
 **The mod list alone does not define the def universe.** Cherry Picker runs at
@@ -40,11 +40,16 @@ load-bearing for our own pipeline.
 |---|---|---|
 | 3 | Better Stacktraces | act 5's gate is "no red errors" — traces are wanted exactly then |
 | 11 | Cherry Picker | load-bearing: it *is* the item-cherrypick mechanism |
-| 94 / 431 | Character Editor + retexture | the authoring route for the five founder pawns |
-| 251 | Slower Pawn Tick Rate | performance |
-| 566 | Dubs Performance Analyzer | profiling a ~25 min cold load |
-| 569 | Performance Optimizer | performance |
-| 585 | RimDefDump | ours — produces the offline def dump the whole pipeline reads |
+| 94 / 425 | Character Editor + retexture | the authoring route for the five founder pawns |
+| 249 | Slower Pawn Tick Rate | performance |
+| 556 | Dubs Performance Analyzer | profiling a ~25 min cold load |
+| 559 | Performance Optimizer | performance |
+| 575 | RimDefDump | ours — produces the offline def dump the whole pipeline reads |
+
+⚠️ **These are 1-based slots and they MOVE.** Every number here shifted when the
+list went 585 → 575, because eleven mods were removed from positions above them.
+Re-read them from `ModsConfig.xml`; never cite a slot from memory or from this
+table without checking. Measured 2026-08-15.
 
 They are recorded as tooling so the distinction survives; the list is content
 plus these seven, deliberately.

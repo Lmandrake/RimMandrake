@@ -50,7 +50,7 @@ Not every category can be reviewed the same way. The honest split:
 | ✅ | **Factions** | 21 untick / 6 keep, ratified, plus our own 13. Spent at the world screen |
 | ✅ | **Biomes** | 29 removals + 4 keeps, via `PlanetTypeDef.biomeBlacklist`, not Cherry Picker |
 | ✅ | **Anomaly content** | your 9 creature/object picks + 2 genes — the live 24 keys |
-| ✅ | **Mod list** | 585 frozen, two files, `deployed/config/v1_freeze/` |
+| ✅ | **Mod list** | **575** frozen, two files, `deployed/config/v1_freeze/` (was 585; 585 − 11 + 1 = 575, reconciled in `V1_CHAIN.md`) |
 
 ## PASS — the real work, in the order I recommend
 

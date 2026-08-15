@@ -129,8 +129,11 @@ state:    ready
 ## B39 List every place a design doc disagrees with the frozen mod list
 row:      0
 spec:     The frozen baseline is measured and in `V1_CHAIN.md` §0: `activeMods`
-          585, loaded 585, zero listed-but-missing, zero loaded-but-unlisted.
-          Do NOT re-audit 585 mods. Emit ONE table of DIVERGENCES only, joining
+          **575**, loaded 575, zero listed-but-missing, zero loaded-but-unlisted
+          (553 workshop · 16 local · 6 Core+DLC, re-measured 2026-08-15).
+          ⚠️ This spec said **585** until 2026-08-15; that number is dead —
+          585 − 11 + 1 = 575, every one attributable to a commit in `V1_CHAIN.md`.
+          Do NOT re-audit 575 mods. Emit ONE table of DIVERGENCES only, joining
           the live `activeMods` list from
           `C:\Users\Mandrake\AppData\LocalLow\Ludeon Studios\RimWorld by Ludeon Studios\Config\ModsConfig.xml`
           against every verdict in `design/Jawa/mods/forbidden_mods.md`,

@@ -5,6 +5,14 @@ def dump (585 active mods, captured 2026-08-14T08:20:26Z, game 1.6.4871 rev591) 
 `Assembly-CSharp.dll` metadata. Anything I could not verify is marked
 **UNVERIFIED** and says why.
 
+⚠️ **That dump is STALE and the 585 is a historical stamp, not the live count.**
+The mod set moved to **575** on 2026-08-15 (585 − 11 + 1; `V1_CHAIN.md` has the
+per-commit table), and three of the departed are Star Wars xenotype donors whose
+defs this file may still name. The counts and rosters below were true of the
+585-mod dump and are **left unrewritten on purpose** — they record what was
+measured, and silently swapping in 575 would assert a re-run that never happened.
+Re-derive against the next dump before treating any census here as current.
+
 🔴 **Nothing here creates a religion.** `SKILL.md` §1 stands: there is no
 `IdeoDef`. Every field below either *replaces* the generator's output for one
 faction or *narrows* what it may roll. The `Ideo` object still comes into

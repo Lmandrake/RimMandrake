@@ -17,7 +17,7 @@ PART B: [B1 before you write](#b1-before-you-write-it) · [B2 stakes and consequ
 
 **[V]** The folder name is **convention only** — def loading recurses anywhere under `Defs/`. Royalty nests three levels; workshop mods here use `Defs/QuestScriptDef/` (singular) and arbitrary paths and load fine. Several `<QuestScriptDef>` per file is normal, and a `RulePackDef` inside a `QuestScriptDefs` folder loads fine too.
 
-**[V]** With 585 mods active this install resolves **243** `QuestScriptDef`s. The dump at `C:\Users\Mandrake\AppData\LocalLow\Ludeon Studios\RimWorld by Ludeon Studios\DefDump\defs\QuestScriptDef.json` (1.49 MB, fully-resolved values including the whole `root` graph) **is the best quest reference on this machine** — post-patch and version-correct, unlike any web page.
+**[V]** With 585 mods active this install resolved **243** `QuestScriptDef`s. ⚠️ Measured on the 2026-08-14 dump; the list is **575** since 2026-08-15, so re-count before quoting the 243. The dump at `C:\Users\Mandrake\AppData\LocalLow\Ludeon Studios\RimWorld by Ludeon Studios\DefDump\defs\QuestScriptDef.json` (1.49 MB, fully-resolved values including the whole `root` graph) **is the best quest reference on this machine** — post-patch and version-correct, unlike any web page.
 
 ## A2. The generation pipeline
 
