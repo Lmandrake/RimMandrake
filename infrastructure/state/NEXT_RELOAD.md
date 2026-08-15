@@ -97,16 +97,13 @@ the trap.
 After an external edit, RimSort's in-memory view is stale. The whole mitigation is
 one sentence to the owner: *"RimSort is open — hit Refresh."*
 
-⛔ **MECHANOIDS STAY. Owner's ruling 2026-08-15, and it REVERSES what this file
-said this morning:** *"We are keeping the mechanoids. Deprecate any action about
-turning mechanoids off."* Do not cut them, do not revive the Cherry Picker removal,
-and do not re-derive the cut from the O-v2 line in any other doc — B25(c) is dead.
-Per-mech ART curation against `design/Jawa/worldbuilding/review/mech_register.html`
-is a separate question and is still the owner's; this kills the wholesale cut only.
+⛔ **MECHANOIDS STAY — owner 2026-08-15, reversing what this file said that morning:**
+*"We are keeping the mechanoids. Deprecate any action about turning mechanoids off."*
+B25(c) is dead; do not re-derive the cut from the O-v2 line in any other doc. Per-mech
+ART curation (`review/mech_register.html`) is a separate, still-open owner question.
 
 Standing change when a list edit is next made: **disable
-`com.yayo.yayoAni.continued`** `[v2]` — the lightsaber flies up-and-behind on draft
-and Yayo's is the suspect.
+`com.yayo.yayoAni.continued`** `[v2]` — the lightsaber flies up-and-behind on draft.
 
 Then `python.exe src/RimMandrake/Utils/refresh.py` — **Windows** interpreter; WSL's
 `python3` fails on the Windows paths with a bare `cannot read ModsConfig`.
