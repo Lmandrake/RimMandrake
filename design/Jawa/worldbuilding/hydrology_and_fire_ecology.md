@@ -316,6 +316,7 @@ border:
 | the seam itself | **poison forest** (R-H2b) | stunted, persistent, toxin-concentrating |
 | deeper | **mycotic jungle** | fungal, lightless, feeding on what the seam drops |
 | deeper still, in **patches only** | **gelatinous superorganism** | the end state — not plants any more |
+| **well past** it, in the deep cold | **propane lakes** (R-H6b) | not life at all — the exhaust, condensed |
 
 **What unifies them is decomposition, not darkness.** Each of these biomes speaks
 of decay, of limited-but-available moisture, and of **extremely rapid
@@ -331,6 +332,48 @@ strange; a continuous belt of it would read as terrain rather than as a horror.
 the same trace condensation that feeds the poison forest, thinning as the air
 gives up the last of it — which is why the gradient *fades spatially* instead of
 ending. Nothing here is fed by a river.
+
+## R-H6b · The propane lakes are the nightside's CONDENSER — a third water cycle
+
+**Owner's ruling, 2026-08-15.** The propane lakes sit **well past the terminator,
+deep in the eternal night**, where the temperature drops precipitously.
+
+**They are the decay gradient's exhaust, condensed.** The fungal biomes of R-H6
+break matter down extremely fast and anaerobically, and what that produces is
+**volatile hydrocarbons** — outgassed continuously, drifting into the dark
+because there is nowhere else for them to go. Out there it is cold enough that
+they stop being gas.
+
+⇒ **This planet has THREE condensers, and that is the whole of its chemistry:**
+
+| where | what condenses | what it makes |
+|---|---|---|
+| **the high peaks** (R-H1) | water, violently | floods, rivers, the hypersaline seas — and gigantism |
+| **the terminator seam** (R-H2b) | water, as a trace | the stunted poison forest |
+| **the deep night** (R-H6b) | **hydrocarbons** | the propane lakes |
+
+**It is also physically honest**, which is why it is worth keeping exactly as
+stated: propane liquefies around −42 °C, and the active planet curve already runs
+to **−70 °C at latitude 1.3 and −80 °C in deep night**
+(`tidally_locked_world.md`). The lakes do not need special pleading. **The world
+is simply cold enough**, and the fungal biomes upwind are simply productive
+enough.
+
+🔴 **And it makes the nightside the Pyrelands' mirror.** The savanna is
+high-risk/high-reward because it is fertile and it burns. The propane lakes are
+high-risk/high-reward because they are **a fuel field the size of a sea** in a
+place that will kill an unprepared expedition through temperature alone. Two
+opposite poles of the same design, at opposite ends of the same world — one where
+the danger is fire, one where the fuel *is* the danger.
+
+⚠️ **Standing next to a lake of liquid propane with an ignition source is a story
+that tells itself.** Do not over-author it; the player will find it.
+
+⚠️ **Reconcile with the existing chemfuel and helixien economy before building.**
+`desert_world_design.md` §3B(5) already sites helixien gas pockets on volcanic and
+deep-desert tiles. Two hydrocarbon sources is fine — they are at opposite ends of
+the planet and reached by different means — but the *value* of each has to be set
+once, together, or one of them becomes pointless.
 
 ## R-H7 · The ocular forests — the mountains have their own horror
 
