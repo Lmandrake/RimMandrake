@@ -1,7 +1,7 @@
 # BUILD inbox.
 
 ## B-V2 Park any v2 idea in design/V2_DREAMS.md yourself — no permission needed
-row:      infra
+row:      doctrine
 spec:     Any idea for new content that is not v1 is appended to the END of
           `design/V2_DREAMS.md`. You have a standing right to append there directly:
           no permission, no routing through DECIDE, no queue item asking for it, no
@@ -31,21 +31,21 @@ criteria: five tools respond live — `jawa/set_faction_relation` (unblocks v1 L
 state:    ready
 
 ## B8 Correct the gravship doc — its thruster section is wrong and is guiding plans
-row:      infra
+row:      repo
 spec:     Correct §11 of `gravship_flight_invariants.md` to the measured facts. The export holds **zero thrusters, zero tanks, zero consoles**. The format has **no roof field**, but roofs are derivable: GravshipExport regenerates them at import by flood-fill (`Patch_Sketch_GetSuggestedRoofCells_Postfix.cs:45-85`) => **4,049 of 4,057 substructure cells roofed, every standable cell indoors**. There is **no stern re-lay**: the cost is ONE `GravshipHull` cell per small thruster (two per large), because `ThrusterBase` is `holdsRoof true` + `fillPercent 1` and seals the room exactly as the wall it replaces. Nine sites at x41–49, z131/132; the aft strip (x,133) is off-deck.
 verify:   §11 states those measurements and marks the roof map as DERIVED (the mod's own algorithm re-run), not observed.
 criteria: EMPTY
 state:    done
 
 ## B21 Make our mod checker notice a mod that is listed but not installed
-row:      infra
+row:      tooling
 spec:     The `ModsConfig.xml` listed-but-missing trap in code form: `loadset_fingerprint()` compares *listed* against *exists*.
 verify:   a synthetic `ModsConfig.xml` listing a packageId that is not on disk is reported, not silently passed.
 criteria: EMPTY
 state:    done
 
 ## B22 Teach the patch validator to spot a rule that can never fire
-row:      infra
+row:      tooling
 spec:     The mirror of O8 and the opposite verdict: reaching `<nomatch>` proves the test matched NOTHING, so an identical-xpath op there can never do anything. Provable WITHOUT `--defs`; today it is only caught as a 0-match ERROR when defs are loaded. `<nomatch>` must stay an ERROR — unlike the `<match>` branch, which `_guarded_by_identical_test()` correctly downgrades to info.
 verify:   a synthetic `<nomatch>` case is flagged with no `--defs`; `DroidsAreMachines.xml` still reports OK (0 errors, 2 warnings).
 criteria: EMPTY
@@ -59,49 +59,49 @@ criteria: EMPTY
 state:    ready
 
 ## B25 Mod-list chores to do in one pass while the game is closed
-row:      infra
+row:      0
 spec:     (a) Pin the 6 `loadBottom`+`loadAfter` userRules — order is correct today but rides a tie-break, not a constraint; `loadBottom` outranks `loadAfter`, keep it only on `rimdefdump`. (b) Run `src/RimMandrake/Utils/refresh.py` (wants the game down). (c) **O-v2 Cherry Picker** — remove mechanoid defs AND the `Mechanoid` faction; answer three things: does the game still load · does `Samael.NPCMechsAndAnimals` survive and keep its ANIMALS half (`Patches/NPC_Mechs.xml`, 13 ops into `Empire`/`Outlander*`/`Pirate*`/`TradersGuild`) · is that mod configurable. Do NOT remove Alpha Mechs (`sarg.alphamechs`). `matathias.ruthlessmechanoids` is NOT a mech mod (it is the gravship pursuer redirect) — leave it on. REPORT, do not resolve: Alpha Mechs hangs off `FactionDef[defName="Mechanoid"]/pawnGroupMakers`, so cutting that faction takes its raids too. (d) **O-v3** — enable `vanillaexpanded.vwel` (ws `1989352844`, installed and inactive) and dump its weapon `ThingDef`s in TWO SEPARATE tiers: `salvaged` (pistol/rifle/shotgun/sniper + `unstable` projectile variants) and `ultratech` (incl. a laser sword and a tesla gun). The split is load-bearing for the design (`design/Jawa/worldbuilding/ship_legacy_armoury.md`).
 verify:   read `ModsConfig.xml`'s mtime before writing — RimSort writes it too, and it moved twice in twenty minutes with the game down.
 criteria: the game reaches the main menu with the new list; the two weapon tiers exist as separate dumps.
 state:    ready
 
 ## B26 Delete the retired art-fix mod now that its replacements ship
-row:      infra
+row:      repo
 spec:     Already dropped from `ModsConfig.xml`; all 7 textures are md5-identical to the per-donor successors and the blocking dependency is cleared. Remove the deployed copy under `C:\Program Files (x86)\Steam\steamapps\common\RimWorld\Mods\` and the repo folder.
 verify:   neither path exists.
 criteria: EMPTY
 state:    done
 
 ## B27 Repackage the skills — editing the folder does not ship them
-row:      infra
+row:      tooling
 spec:     `python3 src/RimMandrake/Utils/package_skill.py --all`. Editing `skills/<name>/` is not shipping it — Claude Code installs from a `.skill` zip and those are gitignored, so a fresh clone has none. `skills/rimworld-quests.skill` (65 KB) is one that exists only on disk.
 verify:   read the EXIT CODE and the named failure list, never the directory listing — a failure leaves its own zip stale beside fresh ones.
 criteria: EMPTY
 state:    done
 
 ## B34 Fix a wrong mod ID cited across the design docs
-row:      infra
+row:      repo
 spec:     WS `3530586159` is cited as adopted in several design docs but is NOT installed — a grep of all 1246 workshop `About.xml` files matches only the original `2896845138`, which is active and supplies every `GarryFlowers_` def in use.
 verify:   grep of the design docs returns no `3530586159`.
 criteria: EMPTY
 state:    done
 
 ## B35 Move the repo to the agreed folder layout, one stage per commit
-row:      infra
+row:      repo
 spec:     `infrastructure/disposing/RESTRUCTURE_PLAN.md` — ten stages, ONE commit each, lowest-risk first. Stage 9 (`skills/`) is owner-gated and may never run. §3's seven unplaced items need a ruling before stage 4.
 verify:   run `src/RimMandrake/Utils/check_refs.py` and `src/RimMandrake/Utils/doc_budget.py` after EVERY stage; §8 names the check that proves a stage landed whole.
 criteria: EMPTY
 state:    blocked
 
 ## B36 Rename the mods and tool namespace — 35 files and the load order
-row:      infra
+row:      repo
 spec:     `infrastructure/disposing/RESTRUCTURE_PLAN.md` §7. `JawaBench.BridgeTools` -> `RimMandrake.Bridge` (14 tracked files, 4 identities including the deploy folder). The `jawa/<tool>` namespace: 35 tracked files at once, canonically 17 `[Tool]` attributes in `src/RimMandrake/bridgetools/JawaBench.BridgeTools/JawaBenchTerrainTools.cs`, 3 of the 35 being generated JSON. The five `Jawa*` mod folders. All five packageIds ARE active in `ModsConfig.xml` (lines 560–571 of 575) => a load-order edit at a specific slot plus a RimSort rules edit, not a `sed`.
 verify:   `check_refs.py` clean; `ModsConfig.xml` slots preserved.
 criteria: the game loads with the renamed mods at the same load positions.
 state:    blocked
 
 ## B37 Two docs cite files that no longer exist — find or retire the evidence
-row:      infra
+row:      repo
 spec:     (1) The prisoner `interactionMode` finding in `TODO_v2.md` — the save it rested on is gone (`acc3261`) and the file was compacted from 1,144+ lines to 350, so its line citation points at nothing. Find it BY TEXT, mark it measured-and-unreproducible, do not delete it. (2) `save_authoring_pipeline.md:141` and `rimworld_file_lore.md` anchor the whole `.rws` teardown to `~/GDrive/Personal/Rimworld/observed/2026-08-13_pre-restructure/savegame/03_Gravtasm__starting_save.rws`; `~/GDrive` does not exist in this WSL at all — the directory is absent, not the file. Establish whether that path is Windows-side, another machine, or dead, then correct it or mark the teardown as a record whose source artifact is unavailable. Do not delete the lore.
 verify:   neither file cites a path that does not resolve.
 criteria: EMPTY

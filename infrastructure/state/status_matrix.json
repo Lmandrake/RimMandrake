@@ -10,7 +10,7 @@
     },
     "BUILD": {
      "done": 0,
-     "total": 1,
+     "total": 2,
      "state": "idle"
     },
     "CHECK": {
@@ -25,8 +25,8 @@
    "cells": {
     "DECIDE": {
      "done": 0,
-     "total": 1,
-     "state": "idle"
+     "total": 2,
+     "state": "working"
     },
     "BUILD": {
      "done": 0,
@@ -90,8 +90,8 @@
     },
     "BUILD": {
      "done": 0,
-     "total": 1,
-     "state": "idle"
+     "total": 0,
+     "state": "offline"
     },
     "CHECK": {
      "done": 0,
@@ -190,7 +190,7 @@
     },
     "BUILD": {
      "done": 0,
-     "total": 14,
+     "total": 13,
      "state": "idle"
     },
     "CHECK": {
@@ -281,21 +281,61 @@
    }
   },
   {
-   "name": "infra",
+   "name": "doctrine",
    "cells": {
     "DECIDE": {
-     "done": 1,
-     "total": 3,
+     "done": 0,
+     "total": 1,
+     "state": "idle"
+    },
+    "BUILD": {
+     "done": 0,
+     "total": 1,
+     "state": "idle"
+    },
+    "CHECK": {
+     "done": 0,
+     "total": 2,
+     "state": "working"
+    }
+   }
+  },
+  {
+   "name": "repo",
+   "cells": {
+    "DECIDE": {
+     "done": 0,
+     "total": 1,
      "state": "blocked"
     },
     "BUILD": {
-     "done": 6,
-     "total": 11,
+     "done": 3,
+     "total": 6,
      "state": "blocked"
     },
     "CHECK": {
-     "done": 1,
-     "total": 4,
+     "done": 0,
+     "total": 0,
+     "state": "offline"
+    }
+   }
+  },
+  {
+   "name": "tooling",
+   "cells": {
+    "DECIDE": {
+     "done": 0,
+     "total": 0,
+     "state": "offline"
+    },
+    "BUILD": {
+     "done": 3,
+     "total": 3,
+     "state": "idle"
+    },
+    "CHECK": {
+     "done": 0,
+     "total": 1,
      "state": "working"
     }
    }
@@ -325,17 +365,37 @@
    "cells": {
     "DECIDE": {
      "done": 0,
-     "total": 2,
+     "total": 0,
+     "state": "offline"
+    },
+    "BUILD": {
+     "done": 0,
+     "total": 0,
+     "state": "offline"
+    },
+    "CHECK": {
+     "done": 0,
+     "total": 0,
+     "state": "offline"
+    }
+   }
+  },
+  {
+   "name": "infra",
+   "cells": {
+    "DECIDE": {
+     "done": 1,
+     "total": 1,
      "state": "idle"
     },
     "BUILD": {
      "done": 0,
-     "total": 1,
-     "state": "idle"
+     "total": 0,
+     "state": "offline"
     },
     "CHECK": {
-     "done": 0,
-     "total": 2,
+     "done": 1,
+     "total": 1,
      "state": "idle"
     }
    }

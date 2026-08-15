@@ -1,7 +1,7 @@
 # CHECK inbox.
 
 ## C-V2 Park any v2 idea in design/V2_DREAMS.md yourself — no permission needed
-row:      infra
+row:      doctrine
 spec:     Any idea for new content that is not v1 — including one a live session
           suggests — is appended to the END of `design/V2_DREAMS.md`. You have a
           standing right to append there directly: no permission, no routing through
@@ -13,7 +13,7 @@ state:    ready
 
 
 ## C1 Run the bridge tools that were built but never once called
-row:      infra
+row:      tooling
 spec:     `python.exe src/RimMandrake/bridgetools/prove_new_tools.py --pawns` covers `jawa/set_pawn_rotation`, `jawa/set_pawn_style`, `jawa/set_pawn_xenotype` and `xenotype=` on `spawn_pawn` (`7b8d5b7`, `e60197a`). Also deployed and never called: `jawa/get_defs`, `jawa/fire_quest`, `jawa/list_things` (`3adedbc`), `jawa/clear_ui` (`9a5b6fe`), the vehicle route in `spawn_batch` (`9a5b6fe`, routes `Vehicles.VehicleDef` through `Vehicles.VehicleSpawner.SpawnVehicleRandomized` by reflection — `ThingMaker` leaves `vehiclePather`/`ignition`/`drawTracker`/`kindDef` null), and the roof pair `set_roof_batch`/`get_roof_batch`. `jawa/world_stats` WAS called and its answer was discarded by a harness `NameError` (fixed `3e17731`) — re-run it. Do not compose calls at a live console: run `python.exe src/RimMandrake/bridgetools/load_session.py --phase any|fresh` (`--selftest` needs no game); it writes one ledger to `observed\<date>_load_session.md` and tracks LITTER, from which the release message is written.
 verify:   EMPTY
 criteria: each tool returns success on a live map; `world_stats` returns `{ tiles, pct, perimeter, raggedness, centroidLat }`. A capability is announced to peers when it has RUN, not when it has compiled.
@@ -57,7 +57,7 @@ note:     2026-08-15 CHECK. DEF HALF PASSES on the post-deploy cold load: all fo
           and Jawa_IndigenousTribes must produce a non-empty raider group.
 
 ## C34 You hold the live bridge at all times — standing rule
-row:      infra
+row:      doctrine
 spec:     Owner ruling 2026-08-14. `infrastructure/agents/CHECK.md` updated: the
           Live Bridge is yours with no window in which another seat holds it, and
           `infrastructure/state/status/game.json` is yours to keep true. Stamp it

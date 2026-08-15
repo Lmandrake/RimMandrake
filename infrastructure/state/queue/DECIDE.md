@@ -26,7 +26,7 @@ criteria: —
 state:    ready
 
 ## D1 Fill in the items whose spec or test is still blank
-row:      infra
+row:      doctrine
 spec:     32 fields across the migrated items are literally EMPTY because the old
           notes did not say. BUILD and CHECK will bounce every one of them. Work
           down by value, not by ID order. Start with the items blocking rows 4 and 2.
@@ -42,7 +42,7 @@ criteria: EMPTY
 state:    blocked
 
 ## D16 Seven files have no home in the new layout — decide where
-row:      infra
+row:      repo
 spec:     `infrastructure/disposing/RESTRUCTURE_PLAN.md` §3 lists seven unplaced items that need a ruling before stage 4; stage 9 (`skills/`) is owner-gated and may never run. Both block BUILD B35.
 verify:   EMPTY
 criteria: EMPTY
@@ -304,3 +304,22 @@ verify:   `AA_Eyeling` is not in the Cherry Picker cut list; the rename patch
 criteria: the clan starts with the pet, and it reads as belonging to this
           campaign rather than to Alpha Animals.
 state:    ready
+
+## D27 Run the cherrypick with the owner, category by category
+row:      1
+spec:     `design/Jawa/mods/CHERRYPICK_AGENDA.md` is the running agenda and
+          records what is done, held and descoped. Method is settled: build a
+          contact sheet from the defs, present clusters with the principle first,
+          attribute every row to its mod, and cut only what the owner names.
+          Creatures are DONE — six sheets, 336 Cherry Picker keys, plus Sapient
+          Animals descoped (1,073 defs). Weapons and apparel sheets are built.
+          Remaining categories in `CHERRYPICK_AGENDA.md`: weapons · armour ·
+          items · buildings · plants · mechs · drugs · incidents · traits ·
+          ideology styles.
+          ⚠️ Cuts are inert until the next game start, and a cut that worked is
+          ABSENT from the def dump — never validate old entries against it.
+verify:   the live Cherry Picker config and
+          `deployed/config/v1_freeze/Mod_3521312241_Mod_CherryPicker.xml` agree
+          after every batch.
+criteria: the campaign's content reads as one setting rather than 584 mods.
+state:    doing

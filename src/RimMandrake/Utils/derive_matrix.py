@@ -11,7 +11,8 @@ records it are different agents. Deriving removes the second agent.
 
 Item fields read:
     row:    the V1.md row number this serves. Missing -> "unassigned".
-    state:  done | ready | doing | blocked  (anything else counts as open)
+    state:  done | ready | doing | blocked | dropped
+            dropped items are resolved, not outstanding, and are not counted.
 Cell state is: blocked if any item is blocked, working if any is doing,
 idle if any remain, done if none remain.
 
@@ -193,7 +194,8 @@ def main():
     for key in order:
         cells = {}
         for col in COLS:
-            its = grid.get(key, {}).get(col, [])
+            its = [i for i in grid.get(key, {}).get(col, [])
+                   if not str(i.get("state","")).startswith("dropped")]
             was = shut.get(key, {}).get(col, 0)
             done = sum(1 for i in its if i.get("state") == "done") + was
             st = ("blocked" if any(i.get("state") == "blocked" for i in its)
