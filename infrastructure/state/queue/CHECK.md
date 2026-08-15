@@ -58,6 +58,9 @@ ruling:   2026-08-15, owner via REP: worldgen will NOT be generated programmatic
           with nothing collectable but the unparked trio above.
 
 note:     2026-08-14 CHECK. Ran load_session.py --phase any: 30 items, 4 failed, 14 awaiting eyes; ledger observed/2026-08-14_load_session.md. get_defs, set_pawn_xenotype, list_things, clear_ui now RUN live. Still unrun: fire_quest, set_roof_batch/get_roof_batch, the spawn_batch vehicle route. Two harness items die on UnicodeEncodeError (charmap) before asserting - A6 Cherry Picker and P5 VAEA_Apparel_ToolBelt - so those are UNMEASURED, not passed. 14 screenshots need a human look.
+          ⇒ 2026-08-15: A6 is now MOOT, not owed. Owner froze cherrypicking and CLOSED it
+          for v1 (armour, weapons, items, beasts done; the rest returns later if needed).
+          Do not chase A6's UnicodeEncodeError. P5 is unaffected and still UNMEASURED.
 
 ## C17 At worldgen, untick the 21 factions that break the fiction
 row:      10
@@ -760,3 +763,8 @@ criteria: the ideo loads with every precept it was saved with, or the dropped on
           named. A load with no dialog is NOT evidence unless the precept count is read
           back and matches 82.
 state:    ready — collectable on the next test load, ahead of any worldgen run
+raised:   2026-08-15, owner via REP: **faction and ideo work IS v1.** The ideoligion
+          exists and the factions are nearly done bar allowed items and descriptions.
+          ⇒ This item is not speculative hygiene. `The Salvation.rid` is a SHIPPING v1
+          artifact that bakes at world creation, and its 82 precepts are the largest
+          unmeasured surface on my board. Collect it on the scratch load, not after.

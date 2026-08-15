@@ -99,8 +99,11 @@ one sentence to the owner: *"RimSort is open — hit Refresh."*
 
 ⛔ **MECHANOIDS STAY — owner 2026-08-15, reversing what this file said that morning:**
 *"We are keeping the mechanoids. Deprecate any action about turning mechanoids off."*
-B25(c) is dead; do not re-derive the cut from the O-v2 line in any other doc. Per-mech
-ART curation (`review/mech_register.html`) is a separate, still-open owner question.
+B25(c) is dead; do not re-derive the cut from the O-v2 line in any other doc. ⛔ **Per-mech
+ART curation is now CLOSED TOO — owner 2026-08-15 via REP: "no mech art review."** This
+line used to call it a still-open owner question; it is not. `review/mech_register.html`
+needs no eyes and schedules nothing. **The whole mechanoid subject is shut** — neither the
+list nor the art.
 
 Standing change when a list edit is next made: **disable
 `com.yayo.yayoAni.continued`** `[v2]` — the lightsaber flies up-and-behind on draft.
