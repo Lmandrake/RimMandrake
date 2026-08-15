@@ -102,6 +102,9 @@ def main():
     ap.add_argument("--clear-margin", type=int, default=2,
                     help="Extra cells cleared around the footprint.")
     ap.add_argument("--no-clear", action="store_true")
+    ap.add_argument("--wipe-map", action="store_true",
+                    help="Strip the WHOLE map first: roofs, rock, plants, items, "
+                         "buildings, filth, and every pawn. Leaves bare ground.")
     ap.add_argument("--terrain-only", action="store_true",
                     help="Lay foundation and terrain, spawn nothing. Repair pass "
                          "for a run whose floors came out short.")
@@ -155,6 +158,58 @@ def main():
             print(f"   {d:36s} stuff={s or '-':8s} rot={r}  x{len(cells)}")
         print("dry run - nothing sent")
         return
+
+    # ---- 0. optional whole-map wipe -----------------------------------
+    # Order here is its own small trap: ROOFS FIRST. Destroying the rock
+    # that holds a mountain roof does not remove the roof — it leaves a
+    # floating overhead that still blocks light, weather and drop pods, and
+    # nothing about the map's appearance says so.
+    if args.wipe_map:
+        BAND = 25  # rows per call; the whole map in one op string is a livelock risk
+        print(f"wipe: stripping roofs over {size}x{size}...")
+        cleared = 0
+        for z0 in range(0, size, BAND):
+            h = min(BAND, size - z0)
+            r = call("jawa/set_roof_batch",
+                     {"ops": f"None:0,{z0},{size},{h}", "refresh": False}, timeout=300)
+            cleared += r.get("cellsChanged", 0)
+        print(f"wipe: roofs removed from {cleared} cell(s)")
+
+        print("wipe: destroying rock, plants, items, buildings, filth...")
+        destroyed = 0
+        for z0 in range(0, size, BAND):
+            h = min(BAND, size - z0)
+            r = call("jawa/destroy_batch",
+                     {"rects": f"0,{z0},{size},{h}", "categories": "All"}, timeout=300)
+            destroyed += r.get("destroyed", 0) or 0
+        print(f"wipe: destroyed {destroyed} thing(s)")
+
+        # 🔴 destroy_batch NEVER destroys pawns, by design — killing a
+        # colonist by fat-fingering a rect is not something it will make
+        # possible. So pawns need an explicit, deliberate pass, which is
+        # exactly the friction that guard exists to create.
+        pawns = call("jawa/list_pawns", {}, timeout=180)
+        ids = [p.get("id") for p in (pawns.get("pawns") or []) if p.get("id")]
+        print(f"wipe: {len(ids)} pawn(s) to remove")
+        killed = 0
+        for pid in ids:
+            # ⚠️ `damageDef`, NOT `damage` — an unknown parameter name is
+            # dropped silently before the tool runs, so the wrong spelling
+            # reports success and does nothing. And `allowColonists` is a
+            # deliberate safety rail that must be switched off on purpose.
+            r = call("jawa/damage",
+                     {"thingId": pid, "damageDef": "Bomb", "amount": 9999,
+                      "allowColonists": True}, timeout=120)
+            if r.get("success"):
+                killed += 1
+        print(f"wipe: {killed}/{len(ids)} pawn(s) removed")
+        # Corpses are Items; sweep once more so the map is genuinely bare.
+        for z0 in range(0, size, BAND):
+            h = min(BAND, size - z0)
+            call("jawa/destroy_batch",
+                 {"rects": f"0,{z0},{size},{h}", "categories": "All"}, timeout=300)
+        left = call("jawa/list_pawns", {}, timeout=180)
+        print(f"wipe: read-back -> {left.get('message')}")
 
     # ---- 1. clear -----------------------------------------------------
     # 🔴 Buildings and items are cleared; PAWNS ARE NOT — 'All' would be a
