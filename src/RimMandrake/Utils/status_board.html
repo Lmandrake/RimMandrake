@@ -153,11 +153,20 @@ function gameState(d){
   const s=(g.state||'').toUpperCase();
   const age=g.at?(Date.now()/1000-g.at):null;
   const dead  = s&&s!=='DOWN'&&!up;                       // claims up, no process
-  const timedOut = s==='LOADING'&&up&&age!=null&&age>LOADING_TTL;
+  // The log is the witness. If it says this launch finished loading, a LOADING
+  // stamp is simply out of date and the board says UP rather than repeating it.
+  const doneByLog = g.load_done===true && up;
+  const overdue = s==='LOADING'&&up&&age!=null&&age>LOADING_TTL;
+  const timedOut = s==='LOADING'&&up&&(doneByLog||overdue);
   const stale = dead||timedOut;
-  const label = dead?'STALE':timedOut?'LOADING?':(s||(up?'UP':'DOWN'));
-  const col=stale?C.red:!up?C.mut:s==='PLAYABLE'?C.grn:s?C.amb:C.blu;
-  return {g,up,s,stale,dead,timedOut,age,label,col};
+  const label = dead?'STALE'
+              : (s==='LOADING'&&doneByLog)?'UP'
+              : overdue?'LOADING?'
+              : (s||(up?'UP':'DOWN'));
+  const col=dead?C.red:!up?C.mut
+           :(s==='LOADING'&&doneByLog)?C.grn
+           :overdue?C.red:s==='PLAYABLE'?C.grn:s?C.amb:C.blu;
+  return {g,up,s,stale,dead,timedOut,doneByLog,overdue,age,label,col};
 }
 const agoStr=t=>{
   if(!t) return '';
@@ -281,7 +290,11 @@ function render(d){
      </div>`+
     (gm.dead?`<div class="w" style="color:${C.red}">claims ${gm.s} but no RimWorld
         process is resident — the claim is stale, deploys are NOT blocked.</div>`:'')+
-    (gm.timedOut?`<div class="w" style="color:${C.red}">still says LOADING after
+    (gm.doneByLog&&gm.s==='LOADING'?`<div class="w" style="color:${C.amb}">Player.log says
+        this launch finished loading, so the game is UP. ${gm.g.by||'A seat'} left the
+        stamp at LOADING ${Math.round(gm.age/60)} min ago — the log is the witness here,
+        not the stamp.</div>`:'')+
+    (gm.overdue&&!gm.doneByLog?`<div class="w" style="color:${C.red}">still says LOADING after
         ${Math.round(gm.age/60)} min. A cold load is ~25–30. The process is alive, so
         the load finished and CHECK has not restamped — do not trust this state.</div>`:'')+
     (d.host.rimworld_gb!=null?`<div class="w">process resident, ${d.host.rimworld_gb} GB</div>`:'')+
@@ -377,9 +390,9 @@ function render(d){
     `${up} of 4 seats up, ${live} working. `+
     (gm.dead?`<b style="color:${C.red}">Game state is stale</b> — ${gm.g.by||'a seat'} left it
         at ${gm.s} but the process is gone.`
-     :gm.timedOut?`<b style="color:${C.red}">Game state is stale</b> — still says LOADING
-        after ${Math.round(gm.age/60)} min, but RimWorld is running (${d.host.rimworld_gb} GB),
-        so the load finished and ${gm.g.by||'a seat'} has not restamped.`
+     :gm.timedOut?`RimWorld is <b>UP</b> (${d.host.rimworld_gb} GB) — the log says this
+        launch finished loading, though ${gm.g.by||'a seat'} left the stamp at LOADING
+        ${Math.round(gm.age/60)} min ago.`
      :gm.up?`RimWorld is <b>${gm.s||'up'}</b> (${d.host.rimworld_gb} GB)${gm.g.by?', held by '+gm.g.by:''}.`
      :'RimWorld is down — CHECK items cannot run.');
 }

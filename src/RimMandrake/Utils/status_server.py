@@ -70,6 +70,41 @@ def host():
     return out
 
 
+PLAYER_LOG = ("/mnt/c/Users/Mandrake/AppData/LocalLow/Ludeon Studios/"
+              "RimWorld by Ludeon Studios/Player.log")
+LOAD_DONE_CUE = "Startup conditions satisfied"
+_LOG = {"key": None, "done": None}
+
+
+def load_finished():
+    """Has THIS launch got past loading? Read from the game's own log.
+
+    A seat has to remember to restamp `game.json`; the log does not. One stamp
+    sat at LOADING for 77 minutes after the game had reached the menu, so the
+    board now checks rather than trusts. RimWorld truncates Player.log at each
+    launch (the previous one moves to Player-prev.log), so a marker in the
+    current file belongs to the current process.
+
+    Cached on (size, mtime): an idle game writes nothing, so this is one stat
+    per poll and a scan only when the log actually moves.
+    """
+    try:
+        stt = os.stat(PLAYER_LOG)
+    except OSError:
+        return None                       # no log readable — say nothing
+    key = (stt.st_size, int(stt.st_mtime))
+    if _LOG["key"] == key:
+        return _LOG["done"]
+    done = None
+    try:
+        with open(PLAYER_LOG, "r", errors="ignore") as fh:
+            done = any(LOAD_DONE_CUE in ln for ln in fh)
+    except OSError:
+        return None
+    _LOG.update(key=key, done=done)
+    return done
+
+
 def agents():
     """Liveness from Claude Code's own session list — the supported surface."""
     st = {s: {"state": "offline", "item": ""} for s in SEATS}
@@ -216,7 +251,7 @@ def snapshot():
         # Declared game state, which is NOT the same fact as host()'s RSS reading:
         # one is what a seat claims, the other is whether the process exists. The
         # page reconciles them, because the disagreement is the interesting case.
-        "game": jload("status/game.json", {}),
+        "game": dict(jload("status/game.json", {}), load_done=load_finished()),
         "host": host(),
         "agents": agents(),
         "inventory": inventory(),
