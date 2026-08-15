@@ -90,7 +90,7 @@ spec:     `design/Jawa/worldbuilding/faction_religions_spec.md`. Entries 1, 2 an
 verify:   every entry 1-11 has a non-empty `ideoName` and `ideoDescription`, and
           a `deityPresets` block wherever its structure has `deityCount > 0`.
 criteria: `jawa/ideo_of` reads the eleven back and they match the spec.
-state:    ready
+state:    done
 
 ## D19 Design how the campaign starts — no document exists
 row:      12

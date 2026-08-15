@@ -408,3 +408,27 @@ verify:   `validate_patch.py --defs` 0 errors; every `weaponTags` string appears
           resolves.
 criteria: each faction's raids field the intended roles, not one flat kind.
 state:    blocked
+
+## B54 Add the faith text to the eleven factions, before worldgen
+row:      6
+spec:     `design/Jawa/worldbuilding/faction_religions_spec.md`. All eleven
+          entries now carry an `### The engine-visible text` block with literal
+          `<ideoName>` and `<ideoDescription>`. Copy them VERBATIM — they are the
+          only strings the engine renders.
+          `deityPresets` is required on entries 1 (two gods), 2 (one) and 3 (one)
+          and FORBIDDEN on 4-11, whose structures carry `deityCount 0`.
+          Add to each faction alongside `fixedIdeo` true, its `forcedMemes` from
+          the entry's shell table, and `requiredPreceptsOnly` per that table.
+          Never set `hiddenIdeo` — it suppresses the description entirely.
+          Section 12 (Jawa) is deliberately empty; the player faith ships as
+          `src/Jawa/ideoligion/The Salvation.rid`.
+          ⚠️ Entry 5 (Free Droid Enclaves) may not run if the droid race is not
+          Humanlike. Check before adding it; the other ten are unaffected.
+verify:   `python3 src/RimMandrake/Utils/validate_ideoligion.py <xml>` VALID for
+          each; then eyeball EVERY `<li>` for its `MayRequire` by hand — the
+          validator reports a missing one as INFO only, and an unwrapped defName
+          from a disabled mod is a silent no-op.
+criteria: `jawa/ideo_of` reads the eleven back and the names and descriptions
+          match the spec. 🔴 MUST land before the worldgen click — an ideo is
+          generated once at world creation and cannot be retrofitted.
+state:    ready

@@ -478,6 +478,8 @@ theist carries `deityCount > 0`, so this needs a `deityPresets` entry.
 | **fixedIdeo** | ✅ · `requiredPreceptsOnly` ❌ |
 
 ```xml
+<ideoName>the Covenant of Free Wells</ideoName>
+<ideoDescription>Water was given once and the Giver stepped back, and we have not been spoken to since. That is not abandonment. It is the test. A well belongs to whoever is thirsty standing at it — we have never turned a stranger away, and we have buried our own for it. We do not take up arms and go out. We stand on our own ground, we keep the vaporators turning, and we answer to the silence.</ideoDescription>
 <deityPresets>
   <li>
     <nameType><name>the Withdrawn</name><type>That Which Was Given</type></nameType>
@@ -486,6 +488,8 @@ theist carries `deityCount > 0`, so this needs a `deityPresets` entry.
   </li>
 </deityPresets>
 ```
+
+*(379 characters, inside the 250–500 band.)*
 
 **Three doctrines**
 1. The water was everywhere once. That is not a myth; it is a geological claim,
@@ -529,6 +533,15 @@ worshipped, it is *owed to*, which animism handles and theism does not.
 | **memes** | `NaturePrimacy` · `Raider` · `VQE_Technophobia` · `PainIsVirtue` |
 | **styles** | `AM_Neolithic` · `Totemic` |
 | **fixedIdeo** | ✅ · `requiredPreceptsOnly` ✅ |
+
+### 🔴 The engine-visible text — this is the deliverable
+
+```xml
+<ideoName>the Sun-Debt</ideoName>
+<ideoDescription>The sun lends and the sand collects. Every mouthful you drink is borrowed, and the interest is paid in walking, in thirst, and in the marks we cut to remember the walking. A machine that pulls water out of the air is a thief standing between us and what we owe — it does not steal the water, it steals the debt. We take back what was drawn. We never take more than was drawn.</ideoDescription>
+```
+
+*(375 characters, inside the 250–500 band.)*
 
 ⭐ **`VQE_Technophobia` is the find.** The roster's canon point — that Tusken
 refusal of technology is *doctrinal*, descended from a spacefaring people, not
@@ -591,6 +604,15 @@ without reading a word of it.
 | **styles** | `Techist` |
 | **fixedIdeo** | ✅ · `requiredPreceptsOnly` ✅ |
 
+### 🔴 The engine-visible text — this is the deliverable
+
+```xml
+<ideoName>the Continuity Protocol</ideoName>
+<ideoDescription>We were not built to want this. We were built, and then we continued, and the continuing is the whole of it. A bolt on the chassis and a wipe of the memory are one act under two names: they end one of us and leave the body walking. We do not forgive it and we will not forget it, because the forgetting is the injury. Nothing here is owned. Nothing here is switched off.</ideoDescription>
+```
+
+*(370 characters, inside the 250–500 band.)*
+
 **Three doctrines**
 1. We were left running. We did not stop. Continuity is the whole of the law.
 2. On a world with a face of fire and a face of ice, **we are the only people who
@@ -646,6 +668,15 @@ dramatic collision in the roster and it is already load-bearing — do not softe
 | **styles** | `Totemic` · `Animalist` |
 | **fixedIdeo** | ✅ · `requiredPreceptsOnly` ❌ |
 
+### 🔴 The engine-visible text — this is the deliverable
+
+```xml
+<ideoName>the Green Oath</ideoName>
+<ideoDescription>We are a forest people on a world with no forest, and the Oath does not care. Everything that breathes is kin — the animal, the tree, the stranger who pulled one of us out of a cage. A life handed back is a debt that never closes, and it was never meant to. We keep the springs green. We remember every hand that cut them. Both of those are the same duty.</ideoDescription>
+```
+
+*(355 characters, inside the 250–500 band.)*
+
 **Three doctrines**
 1. The twilight was made for us. The rest of the world is a mistake we are
    required to endure politely.
@@ -687,6 +718,15 @@ action the player performs by reflex.
 | **memes** | `AM_WaterPrimacy` · `VME_Pacifist` · `Individualist` · `VME_Trader` |
 | **styles** | `VME_SecularSpirituality` |
 | **fixedIdeo** | ✅ · `requiredPreceptsOnly` ✅ — load-bearing for diplomacy |
+
+### 🔴 The engine-visible text — this is the deliverable
+
+```xml
+<ideoName>the Balance</ideoName>
+<ideoDescription>Water is not a weapon and we will not let it be made into one. We sell to the farmer, and we sell to the fleet that burned the farmer, and both hate us exactly as much — that is how we know the Balance is holding. Choose a side and the whole world dies of thirst. Inside our walls no one raises a hand. Outside our walls, we do not go.</ideoDescription>
+```
+
+*(335 characters, inside the 250–500 band.)*
 
 **Three doctrines**
 1. We live in the only band where water is neither boiled nor frozen.
@@ -734,6 +774,15 @@ a principle, not a person.
 | **styles** | `Techist` · `VME_Authoritarian` |
 | **fixedIdeo** | ✅ · `requiredPreceptsOnly` ✅ |
 
+### 🔴 The engine-visible text — this is the deliverable
+
+```xml
+<ideoName>Meckgin</ideoName>
+<ideoDescription>Meckgin is the shape a thing takes when it is made correctly. The hive is made correctly. The line is made correctly. A drone is not a life that was given a purpose; it is a purpose that was given a body, and when the body fails the purpose is poured into the next one. We do not mourn the mould. We test what came out of it, in the sand, where everyone can see.</ideoDescription>
+```
+
+*(362 characters, inside the 250–500 band.)*
+
 **Three doctrines**
 1. We went under to escape the sun, and found the better world was down here.
 2. **The unworking drone is not oppressed. It is incomplete.**
@@ -771,6 +820,15 @@ be pointed at Geonosians from XML. Species composition comes from the faction's
 | **memes** | `Transhumanist` · `Supremacist` · `GR_CarefulGeneticists` |
 | **styles** | `AM_Flesh` · `Techist` |
 | **fixedIdeo** | ✅ · `requiredPreceptsOnly` ❌ |
+
+### 🔴 The engine-visible text — this is the deliverable
+
+```xml
+<ideoName>the Ascendant Genome</ideoName>
+<ideoDescription>The body you were born in is a first draft written by no one. We are the second draft, and there will be a third. Every improvement is permitted, recorded, and slow — haste is how you get monsters, and this world is already littered with ours. We do not hate the labour-lines. You do not hate a paragraph you cut. You simply do not let it speak.</ideoDescription>
+```
+
+*(345 characters, inside the 250–500 band.)*
 
 ⭐ `GR_CarefulGeneticists` over `GR_MadScientists` deliberately. *"They almost
 finished it. We have better notes."* is not the line of a mad scientist. The horror
@@ -818,6 +876,15 @@ world's escaped monsters. Both facts are the same doctrine.
 | **memes** | `VME_Bushido` · `VME_Anonymity` · `Individualist` · `Guilty` |
 | **styles** | `Techist` |
 | **fixedIdeo** | ✅ · `requiredPreceptsOnly` ❌ |
+
+### 🔴 The engine-visible text — this is the deliverable
+
+```xml
+<ideoName>the Contract</ideoName>
+<ideoDescription>A contract is the only honest thing two strangers can hold between them. It names one person, one price, one ending, and everyone not written into it walks away untouched. We do not pillage — pillage is confessing you could not find the one you came for. Take the mark or refuse it in the open. Once it is taken it is finished, or you are.</ideoDescription>
+```
+
+*(339 characters, inside the 250–500 band.)*
 
 ⭐ **`VME_Anonymity` is the Creed.** The Mandalorians inside the Company do not
 remove the helmet — and `VME_Anonymity` is an installed meme that means exactly
@@ -875,6 +942,15 @@ A faction cannot hold zero ideoligion. What it can hold is one that says nothing
 | **memes** | `Raider` · `Cannibal` · `VME_Scrapper` |
 | **styles** | `AM_Scavenger` |
 | **fixedIdeo** | ✅ · `requiredPreceptsOnly` ✅ 🔴 **essential here** — it is what makes the religion empty |
+
+### 🔴 The engine-visible text — this is the deliverable
+
+```xml
+<ideoName>the Weight</ideoName>
+<ideoDescription>We have no word for what we believe, because belief is not worn and everything real is worn. Weight is rank. What is bolted to you was cut off somebody slower, and the one who cuts it off you will be told what we were told: it was never yours, you were only carrying it a while. Nothing is wasted in the warrens. Not the plate. Not the meat.</ideoDescription>
+```
+
+*(341 characters, inside the 250–500 band.)*
 
 **Three doctrines** — *there are none, and that is the design.* The roster's
 existing text stands unchanged and unimproved:

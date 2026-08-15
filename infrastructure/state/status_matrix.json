@@ -124,14 +124,14 @@
    "name": "6 Religions",
    "cells": {
     "DECIDE": {
-     "done": 0,
+     "done": 1,
      "total": 1,
      "state": "idle"
     },
     "BUILD": {
      "done": 0,
-     "total": 0,
-     "state": "offline"
+     "total": 1,
+     "state": "idle"
     },
     "CHECK": {
      "done": 0,
