@@ -861,3 +861,66 @@ happen at all.
 ⇒ **Decide it at the world screen, not in v2:** leave `GiantAnt_Faction` at 1 if
 this idea is wanted, and accept that ants exist in v1 as unbuilt background;
 or untick it and accept that v2 giant ants mean a fresh campaign.
+
+---
+
+## ⭐ THE SARLACC — rebrand Anomaly's pit gate. `[v2]`, and it is CONFIRMED buildable
+
+**Owner, 2026-08-15.** The suspicion was right, and the defs are better than the
+memory of them. 🔴 **v1 does NOT attempt this** — not the rebrand, not the
+enabling. Recorded now because it is critical for v2 and because the evidence is
+in hand today.
+
+**What was measured, from the def dump:**
+
+| def | type | what it says |
+|---|---|---|
+| `PitGate` | ThingDef + IncidentDef (Anomaly) | *"A massive, foreboding hole that connects the surface with a dark network of underground caves. It is possible to climb down into the caverns below."* |
+| `PitGateExit` | ThingDef | the way back up |
+| `Undercave` | **MapGeneratorDef and BiomeDef** | the place you arrive |
+| `FleshmassHeart` | ThingDef + IncidentDef | *"It will keep growing until it consumes everything. The heart grows fleshmass spitters."* |
+
+**And the Undercave's own generation steps settle it** — `Fleshbulbs`,
+**`Fleshmass`**, `FleshSacks`, `Dreadmeld`. **The fleshy walls are not flavour
+text; they are a gen step.**
+
+⇒ **A pit that opens in the desert, that you climb down into, whose walls are
+living flesh, with something at the bottom that grows until it consumes
+everything.** That is the Great Pit of Carkoon with the serial numbers still on.
+The rebrand is `label` and `description` work over art that already exists and a
+mechanic that already ships — the cheapest large win in the register.
+
+**The mapping, for whoever picks this up:**
+
+- `PitGate` → **the sarlacc pit**. The desert opening.
+- `Undercave` → **the gullet**. Descending is being swallowed.
+- `Fleshmass` / `FleshSacks` / `Fleshbulbs` → the creature's interior.
+- `FleshmassHeart` or `Dreadmeld` → **the sarlacc itself**. The heart's shipped
+  description — grows until it consumes everything — is already the myth.
+
+⚠️ **Two things NOT established, and they must be checked before building:**
+
+1. **Whether `FleshmassHeart` actually spawns inside the Undercave.** It is a
+   separate IncidentDef and the Undercave's gen steps list `Dreadmeld`, not the
+   heart. The heart may be surface content. **Do not design around the heart
+   being at the bottom of the pit until someone has looked.**
+2. **How a pit gate is triggered**, and whether it can be sited deliberately —
+   a sarlacc that appears at random is a monster, a sarlacc that lives in a known
+   place is a *landmark*, and the landmark is worth far more.
+
+🔴 **The blocker is a standing owner ruling, not a technical one.** Anomaly's
+content is set to **ZERO** (owner, 2026-08-13) with the DLC left enabled so its
+assets remain available. A sarlacc needs pit gates actually occurring, so v2 must
+either raise Anomaly activity narrowly for this one incident, or author the
+encounter itself.
+
+⭐ **A possible route that avoids reopening Anomaly:** `CQF_Undercave` — **Custom
+Quest Framework ships its own Undercave BiomeDef.** If CQF can place a map of its
+own, the sarlacc could be an authored quest destination rather than a random
+anomaly event, which also solves (2) above by making it a *place*.
+
+**Why it is worth the trouble:** the campaign is set on a desert world of Jawa
+scavengers, and the sarlacc is the single most recognisable thing that lives in
+Tatooine's sand. It is also thematically exact — a pit that swallows and digests
+slowly is the perfect opposite of a clan whose whole identity is *finding things
+and taking them away*.
