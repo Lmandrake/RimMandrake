@@ -292,6 +292,34 @@
 			<li>ThingDef/AEXP_CatSphynx</li>
 			<li>ThingDef/Cat</li>
 			<li>ThingDef/Cat_Scimitar</li>
+			<li>ThingDef/AEXP_RedPanda</li>
+			<li>ThingDef/AEXP_Rottweiler</li>
+			<li>ThingDef/AEXP_Shih-Tzu</li>
+			<li>ThingDef/AEXP_Tapir</li>
+			<li>ThingDef/AEXP_WelshTerrier</li>
+			<li>ThingDef/AEXP_WildGoose</li>
+			<li>ThingDef/AEXP_Wildebeest</li>
+			<li>ThingDef/VAEWaste_Pestigator</li>
+			<li>ThingDef/VAEWaste_Toxafox</li>
+			<li>ThingDef/VAEWaste_Toxbear</li>
+			<li>ThingDef/VAEWaste_Toxlion</li>
+			<li>ThingDef/VAEWaste_Toxscorpion</li>
+			<li>ThingDef/VAEWaste_Wasteboar</li>
+			<li>ThingDef/VAEWaste_Wastedeer</li>
+			<li>ThingDef/VAEWaste_Wasteffalo</li>
+			<li>ThingDef/GR_Bearchicken</li>
+			<li>ThingDef/GR_Bearwolf</li>
+			<li>ThingDef/GR_Beaverwolf</li>
+			<li>ThingDef/GR_Boomnotherium</li>
+			<li>ThingDef/GR_Catman</li>
+			<li>ThingDef/GR_Catwolf</li>
+			<li>ThingDef/GR_Chickenbear</li>
+			<li>ThingDef/GR_Chickencat</li>
+			<li>ThingDef/GR_Chickenffalo</li>
+			<li>ThingDef/GR_Chickenlodon</li>
+			<li>ThingDef/GR_Chickenwolf</li>
+			<li>ThingDef/GR_Dogman</li>
+			<li>ThingDef/GR_Lizardman</li>
 		</keys>
 	</ModSettings>
 </SettingsBlock>
