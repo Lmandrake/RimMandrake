@@ -16,8 +16,12 @@ state:    ready
 row:      tooling
 spec:     `python.exe src/RimMandrake/bridgetools/prove_new_tools.py --pawns` covers `jawa/set_pawn_rotation`, `jawa/set_pawn_style`, `jawa/set_pawn_xenotype` and `xenotype=` on `spawn_pawn` (`7b8d5b7`, `e60197a`). Also deployed and never called: `jawa/get_defs`, `jawa/fire_quest`, `jawa/list_things` (`3adedbc`), `jawa/clear_ui` (`9a5b6fe`), the vehicle route in `spawn_batch` (`9a5b6fe`, routes `Vehicles.VehicleDef` through `Vehicles.VehicleSpawner.SpawnVehicleRandomized` by reflection — `ThingMaker` leaves `vehiclePather`/`ignition`/`drawTracker`/`kindDef` null), and the roof pair `set_roof_batch`/`get_roof_batch`. `jawa/world_stats` WAS called and its answer was discarded by a harness `NameError` (fixed `3e17731`) — re-run it. Do not compose calls at a live console: run `python.exe src/RimMandrake/bridgetools/load_session.py --phase any|fresh` (`--selftest` needs no game); it writes one ledger to `observed\<date>_load_session.md` and tracks LITTER, from which the release message is written.
 verify:   EMPTY
-criteria: each tool returns success on a live map; `world_stats` returns `{ tiles, pct, perimeter, raggedness, centroidLat }`. A capability is announced to peers when it has RUN, not when it has compiled.
-state:    doing
+criteria: each tool returns success on a live map. A capability is announced to peers when it has RUN, not when it has compiled.
+          ~~`world_stats` returns `{ tiles, pct, perimeter, raggedness, centroidLat }`~~ — ⛔ STRUCK
+          2026-08-15, VOID per `D-C1-SCOPE` (DECIDE.md): those three keys fed only C16's ocean
+          gate, C16 is `dropped`, and emitting them is now v2 worldgen tuning under the owner's
+          2026-08-15 stand-down. Not graded either way — the tool's real 18 keys need no blessing.
+state:    done
 result:   2026-08-15 CHECK. EVERY never-run tool has now RUN on a live map:
           jawa/world_stats PASS · jawa/get_roof_batch PASS · jawa/set_roof_batch PASS
           (None -> RoofConstructed -> reverted, each verified by read-back) ·
@@ -56,6 +60,11 @@ ruling:   2026-08-15, owner via REP: worldgen will NOT be generated programmatic
           🔴 I am NOT rewriting my own pass condition after looking; that is DECIDE's to
           re-scope. Filed as D-C1-SCOPE. Until DECIDE answers, C1 stays `doing` on paper
           with nothing collectable but the unparked trio above.
+          ⇒ ANSWERED 2026-08-15, DECIDE (`D-C1-SCOPE`, DECIDE.md): rejected all three options
+          on the menu (close-met, re-scope-to-18-keys, leave-open) and split the criterion
+          instead. Claim 1 (every deployed tool called live) is MET and C1 closes on it.
+          Claim 2 (the three worldgen keys) is VOID, not passed and not failed — struck above
+          with the reason. C1 closes `done`.
 
 note:     2026-08-14 CHECK. Ran load_session.py --phase any: 30 items, 4 failed, 14 awaiting eyes; ledger observed/2026-08-14_load_session.md. get_defs, set_pawn_xenotype, list_things, clear_ui now RUN live. Still unrun: fire_quest, set_roof_batch/get_roof_batch, the spawn_batch vehicle route. Two harness items die on UnicodeEncodeError (charmap) before asserting - A6 Cherry Picker and P5 VAEA_Apparel_ToolBelt - so those are UNMEASURED, not passed. 14 screenshots need a human look.
           ⇒ 2026-08-15: A6 is now MOOT, not owed. Owner froze cherrypicking and CLOSED it
@@ -762,7 +771,26 @@ verify:   load `The Salvation.rid` in-game on the scratch test map and READ THE 
 criteria: the ideo loads with every precept it was saved with, or the dropped ones are
           named. A load with no dialog is NOT evidence unless the precept count is read
           back and matches 82.
-state:    ready — collectable on the next test load, ahead of any worldgen run
+result:   2026-08-15 CHECK. THE OFFLINE HALF IS ANSWERED, and the precepts are CLEAN.
+          Built the validator that did not exist (`6c0f307`):
+            `python3 src/RimMandrake/Utils/validate_save_artifact.py <file>`
+          · `The Salvation.rid`  — 267 references, **251 resolve, 0 dangling**, and it
+            carries **101 precepts, not 82**. My 82 was wrong; so was the "71 missing"
+            first scrape, which conflated nested RitualBehavior / RitualOutcomeEffect /
+            RitualObligationTargetFilter names with PreceptDefs. NONE were real.
+          · `MandrakeJawa.xtp` — 36/36 resolve. Clean.
+          · The 11 dead `<modIds>` are PROVENANCE. Neither file has a reference that
+            depends on a mod that no longer loads.
+          ⬜ 16 references stay UNMEASURABLE, all `AbilityDef`, because **79 of the 529
+            def-type files in the dump are EMPTY** — AbilityDef has zero rows. That is a
+            hole in the evidence, not a result, and it is NOT recorded as a pass.
+          ⚠️ 19 empty `<li>` in the style-frequency lists whose siblings carry values.
+            Unexplained. Not proven harmful. Look on the live load.
+criteria: ⇒ NARROWED, and the narrowing is honest: the dangling-reference question is
+          CLOSED offline. What remains is only what disk cannot answer — does the ideo
+          LOAD with all 101 precepts, and do the 16 AbilityDefs resolve in the engine.
+          A clean validator run is necessary, not sufficient.
+state:    ready — one dialog on the scratch load, ahead of any worldgen run
 raised:   2026-08-15, owner via REP: **faction and ideo work IS v1.** The ideoligion
           exists and the factions are nearly done bar allowed items and descriptions.
           ⇒ This item is not speculative hygiene. `The Salvation.rid` is a SHIPPING v1
