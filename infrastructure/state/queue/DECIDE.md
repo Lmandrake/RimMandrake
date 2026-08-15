@@ -884,7 +884,61 @@ spec:     Escalated by BUILD (`e4d6040`, `f6bed75`), routed by REP. **B66's prem
 verify:   the generator produces 69 species with the donors inactive, and
           `_guard_species_regression` is still in place and still refuses a shrink.
 criteria: 69 species present live with the donors off, and the four magenta cases render.
-state:    ready
+state:    done — **RULING: NEITHER ROUTE. Both are aimed at a defect that is not there.**
+          🔴 **Measured at `e4d6040`, clean tree, by calling the analysis functions only
+          (never `main`, which writes).** The escalation's premise does not survive it.
+
+          `pick_species` **already has the disk fallback.** `index_donors()` indexes
+          **513** donor defs off disk and the species resolve from it fine. The 57/65
+          split is real; the stated cause is not. What it actually skips:
+
+          | species | reason |
+          |---|---|
+          | Miraluka | dropped by owner ruling — **correct, not a defect** |
+          | Ithorian · KelDor · Mirialan | gene `Force_Gene_LatentForceUser` does not resolve |
+          | Rakata | gene `OuterRim_ForceInsensitive` does not resolve |
+          | SithMassassi | gene `OuterRim_ForceAdept` does not resolve |
+          | Defel | gene `guy762_AbilityGene_cloak` does not resolve |
+          | Herglic | "source carries no genes" — **separate cause, NOT measured. Do not assume.** |
+
+          ⇒ Roster is **65, not 69** — a third number, and the 69 in B66 and in this
+          item is itself unverified. **Establish what the mod actually ships before
+          treating any count as a target.**
+
+          🔴 **ROUTE 2 IS REFUTED, and this is the load it saves.** I walked all three
+          donor trees for the four named genes. The three Force genes are **in none of
+          them** — not BTD, not SWX, not Outer Rim. They belong to a mod that is not a
+          donor. ⇒ Re-enabling the donors and re-dumping **cannot** surface them, so a
+          full load buys nothing for 5 of the 7. Do not spend it.
+          🔑 `guy762_AbilityGene_cloak` IS on disk, at
+          `SWX/1.5/AdditionalMods/KotORWeapons/Defs/AbilityDefs_defelcloaking.xml` — a
+          path `donor_xml_files` **deliberately skips** (`AdditionalMods`, and `1.5`).
+          So Defel is recoverable offline, in `donor_xml_files`, **not** in `pick_species`.
+
+          ⇒ **BUILD, do this instead:**
+          1. **Skipping the 5 Force-gene species is CORRECT behaviour and stays.** A gene
+             that resolves nowhere would ship a dangling reference. The generator refusing
+             is the guard working twice.
+          2. Widen `donor_xml_files` to **INDEX** `AdditionalMods` (and check `Common` /
+             `Common_Old`, which D-CHK2 already proved hold real content). ⛔ **Indexing
+             is not copying** — the skip list exists to stop us copying conditional
+             folders, and that reason still stands for the copier.
+          3. Measure Herglic. One species, one cause, currently unknown.
+          4. Re-derive the true roster count and put it in the item.
+          ⛔ **Do not weaken `_guard_species_regression`.** Agreed, and it reads correctly
+          — it runs before any `write_xml`.
+
+          📌 **The design question underneath, and it is mine: those five species want
+          FORCE-SENSITIVITY genes we do not have.** This is a Jawa scavenger campaign on
+          a desert world; latent Force users are not content I would add on purpose. ⇒
+          **Ruling: strip the missing Force genes from those five species and build them
+          without.** They are species, not Jedi. If that lands them clean, the roster
+          recovers 5 of 7 with no load and no new mod. **Do not add a Force mod to satisfy
+          a gene reference** — that is a dependency the campaign never asked for.
+
+          ⚠️ **B66's "one file, one re-run, one redeploy" was mine and it was wrong.**
+          BUILD was right to stop. The four magenta species stay magenta meanwhile, and
+          that remains the better trade.
 
 ## a-paired-manifest-row-hides-a-missing-artifact-c58f24
 row:      doctrine
