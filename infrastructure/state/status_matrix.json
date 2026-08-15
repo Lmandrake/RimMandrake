@@ -403,9 +403,9 @@
      "mix": {
       "closed": 1,
       "done": 0,
-      "doing": 1,
+      "doing": 0,
       "blocked": 1,
-      "ready": 3
+      "ready": 4
      }
     }
    }
@@ -579,14 +579,14 @@
    "cells": {
     "DECIDE": {
      "done": 0,
-     "total": 3,
+     "total": 4,
      "state": "idle",
      "mix": {
       "closed": 0,
       "done": 0,
       "doing": 0,
       "blocked": 0,
-      "ready": 3
+      "ready": 4
      }
     },
     "BUILD": {
@@ -743,26 +743,26 @@
    "cells": {
     "DECIDE": {
      "done": 0,
-     "total": 4,
+     "total": 5,
      "state": "idle",
      "mix": {
       "closed": 0,
       "done": 0,
       "doing": 0,
       "blocked": 0,
-      "ready": 4
+      "ready": 5
      }
     },
     "BUILD": {
      "done": 0,
-     "total": 1,
+     "total": 2,
      "state": "idle",
      "mix": {
       "closed": 0,
       "done": 0,
       "doing": 0,
       "blocked": 0,
-      "ready": 1
+      "ready": 2
      }
     },
     "CHECK": {
@@ -882,10 +882,6 @@
     "count": 1
    },
    {
-    "label": "owner deferred `DesertVehicleReskin` (B62) and said leave it as",
-    "count": 1
-   },
-   {
     "label": "B62 IS UNBUILT, so there is nothing to deploy",
     "count": 1
    }
@@ -904,7 +900,7 @@
   ],
   "per_day": 14.5,
   "closed": 29,
-  "remaining": 75,
+  "remaining": 78,
   "eta_days": 5
  }
 }
