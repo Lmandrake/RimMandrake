@@ -148,4 +148,15 @@ criteria: With the three donors off, the log carries no `Could not resolve
           bald vanilla human. The Jawa (`MandrakeJawa`) must still roll three
           glowing eye colours, all three now from
           `RimMandrakeSW/Jawa/jawaeyes_glow`.
+          NAMES AND PAWN KINDS ARE NOW IN SCOPE FOR THIS SAME LOAD. The mod owns
+          48 RulePackDefs and their word lists under
+          `Languages/English/Strings/RimMandrakeSWNames/`, and 50 of the 69
+          species carry a `nameMaker`; check a spawned Twi'lek, Wookiee and Jawa
+          get species names rather than vanilla ones. It also owns 16 Galactic
+          Diversity pawn kinds as `RimMandrake_<Species>` / `_<Species>Tribal`,
+          which every Jawa_Patches FactionDef now fields instead of the
+          `OuterRim_` originals, so a raid or trade caravan from Wildsteam Clan,
+          Deepwater Compact, Ascendant Helix, Hutt Cartel, Junkers or Geonosian
+          Foundry Hive must arrive as the right species and not as an empty
+          group.
 state:    ready
