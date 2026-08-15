@@ -60,6 +60,25 @@ The repo is the protected thing. That is what commit-and-push is for.
 - A lesson goes into the relevant skill, or a new skill. Never into a log of lessons.
 - System improvement happens when the human asks for it. It is not a background duty.
 
+### The trap file — cite it one way, and only one way
+
+Owner, 2026-08-15: *"That trap protocol sounds way too onerous. That's supposed to
+just be a quick append file to record highly likely useful specific lessons for the
+future. It was ABUSED by the last build to store generic advice and a bunch of crap.
+It should be kept short and efficient. NO numeric indices are tolerable or enigmatic
+links into it. That's creating havoc. Just say 'as per the trap file' and leave it
+at that."*
+
+- ✅ **The citation is `as per the trap file`.** Nothing else.
+- ❌ **No numeric index** — no `#44`, no `trap 45`, no numbered entries.
+- ❌ **No line anchor or heading link** — no `traps-xml-and-defs.md:52`. `check_refs.py`
+  validates that shape, so it breaks the moment any line above it moves. That is the
+  havoc.
+- **It is a quick append log**, not an archive or a ledger: specific, non-obvious,
+  RimWorld-bound lessons only. General engineering wisdom is the abuse named above.
+- **Appending is one edit.** No index to update, no count column to keep, no
+  admission ceremony. If capture costs more than the lesson, the lesson is lost.
+
 ## Subagents
 
 `skills/efficient-subagents/SKILL.md`. Two hard rules here because they cost the most:
