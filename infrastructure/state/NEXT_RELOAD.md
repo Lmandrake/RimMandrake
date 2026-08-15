@@ -36,6 +36,7 @@ deploy`, not blocked on a question.
 
 | # | deploy | item | why this order |
 |---|---|---|---|
+| **0** | `echo all > ".../DefDump/dump_request.txt"` — §1a | — | 🔴 **One `echo`, and it is not optional this load.** Read at STARTUP only. The dump on disk is from **2026-08-14 01:20**, before eleven mods left and `mandrake.starwarsraces` arrived, so every `validate_patch.py --defs` run against `Jawa_Armoury` and `Jawa_Patches` is currently checked against a def universe that no longer exists. Miss it and the next load pays 23 minutes for it |
 | 1 | `python.exe src/RimMandrake/bridgetools/build.py --gm --apply` — or `./src/RimMandrake/Utils/shutdown_deploy.sh` | BUILD **B1**, closes **B0** | An **assembly, solo**. Everything in §3–§6 is a `jawa/*` call, so a wrong companion poisons every result after it. 🔴 `--gm` or `fire_incident` + `send_letter` are stripped and §5's L3 cannot fire at all |
 | 2 | `deploy_custom_mods.py --mod JawaPlantGrowth --plan` then `--apply` | CHECK **C38** | The **second and last assembly**. Deploy it **alone**, not beside #3 — a new DLL in a mixed batch poisons attribution for everything beside it. Then add `mandrake.jawaplantgrowth` to `ModsConfig.xml` **after `brrainz.harmony`** or the Harmony postfix never binds |
 | 3 | `deploy_custom_mods.py --mod DesertVehicleReskin --plan` then `--apply` | CHECK **C39** + **C41** | Pure XML and loose PNGs — no window needed, but do it now so it rides this load. This is an **update**, the mod is already at `C:\Program Files (x86)\Steam\steamapps\common\RimWorld\Mods\DesertVehicleReskin`. 🔴 `mandrake.desertvehiclereskin` must sit **after** `sarg.alphavehiclesneolithic` or the labels change and the art does not |
@@ -52,14 +53,37 @@ the opposite. Do not spend the window on it.
 📌 **The window is not the load.** Steps 2 and 3 make §5's items collectable; they
 do not collect anything. Nothing here is finished until the game is up and §5 runs.
 
-### 1a. Arm the def dump — OPTIONAL, gates nothing
+### 1a. 🔴 Arm the def dump — NOT optional on THIS load. Do it now.
 
 ```bash
 echo all > "/mnt/c/Users/Mandrake/AppData/LocalLow/Ludeon Studios/RimWorld by Ludeon Studios/DefDump/dump_request.txt"
 ```
 
-**Read at STARTUP only**, so it is armed before launch or not at all. It clears the
-offline dump's staleness and blocks nothing.
+**Read at STARTUP only** — armed before launch, or not at all. There is no second
+chance inside the load.
+
+⚠️ **This section used to read "OPTIONAL, gates nothing". That was wrong, and BUILD
+caught it 2026-08-15.** It is true on a load where the mod set has not moved. **This
+load is not one of those.** The live dump at
+`C:\Users\Mandrake\AppData\LocalLow\Ludeon Studios\RimWorld by Ludeon Studios\DefDump\defs\`
+was written **2026-08-14 01:20**, and since then eleven mods left and
+`mandrake.starwarsraces` arrived — 585 → 575, including the three donors whose defs
+half the repo still names. ⇒ **The dump on disk describes a def universe that no
+longer exists.**
+
+What is actually downstream of it, and this is the gate:
+
+- **`validate_patch.py --defs` is only as true as the dump it is handed.** Every
+  patch in `Jawa_Armoury` and `Jawa_Patches` validates against it. A patch whose
+  xpath now matches nothing reports **clean**, because the def it targets is still
+  in the stale dump — and 🔴 **a patch that matches nothing logs nothing at load
+  either**, so neither route catches it.
+- `refresh.py` cannot manufacture it. Its own table says the live dump costs **A
+  FULL GAME LOAD, ~23 minutes**. Skip the arming and the *next* load pays for it.
+
+📌 **Cost of arming: one `echo`. Cost of not arming: every offline validation until
+the load after this one runs against the wrong mod set.** That is not "gates
+nothing" — it silently gates correctness on everything that consumes a def dump.
 
 ### 1b. `ModsConfig.xml` — BUILD's alone
 
@@ -94,11 +118,9 @@ Then `python.exe src/RimMandrake/Utils/refresh.py` — **Windows** interpreter; 
 | **deploying after launch** | RimWorld reads defs **once, at startup**. A def written after the process started is invisible to it while looking perfectly deployed on disk. Check with `find "<Steam>/Mods" -newermt "<process StartTime>"` before believing any no-show |
 | **a new assembly in a mixed batch** | poisons attribution for everything beside it. Deploy an assembly **solo**. ⚠️ The write fails `OSError 22` while the game runs — loaded and locked; the refusal is safe, it cannot truncate |
 
-📐 **If the window gets tight, rank by what the window does to the item's VALUE,
-not by severity.** Ships first: value is *destroyed* by the event this window
-precedes. Drops first: value is *already being collected* and the change would
-merely improve it — a severe bug whose fix is already live is not a claim on a
-scarce window.
+📐 **If the window gets tight, §1.0's order IS the ranking** — it is sorted by what
+the window destroys, not by severity. A severe bug whose fix is already live is not
+a claim on a scarce window.
 
 ---
 

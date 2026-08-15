@@ -45,8 +45,8 @@ for this order; it is not a preference.
 
 | # | domain | needs | state |
 |---|---|---|---|
-| 0 | **Mod freeze** | — | ✅ done — 584 active, two files frozen |
-| 1 | **Item cherrypick** | 0 | **deferred — interactive session with the owner. Do not block.** |
+| 0 | **Mod freeze** | — | ✅ done — **575** active, two files frozen |
+| 1 | **Item cherrypick** | 0 | **interactive sessions with the owner — do not block.** 5 done and LIVE (weapons · apparel · animals · items · buildings, 1,308 keys); 7 categories remain |
 | 2 | **Normalize weapons · armour · beasts** | 1 | open — balance pass over what survives |
 | 3 | **Equipment types → pawns** | 2 | open — the tags a `PawnKindDef` actually consumes |
 | 4 | **Xenotypes** | — | enforced in shipped XML (`ea5cfb4`), **not yet proven live** — this process read the broken copies at launch |
@@ -74,20 +74,44 @@ Cutting a mod deletes defs and takes its tags with it, so every downstream
 decision made first is invalidated. Prefer reversible suppression (ModsConfig,
 zeroing generation weights, clearing `designationCategory`) over def culls.
 
-**THE FROZEN BASELINE — measured 2026-08-14, and there is no drift.**
+**THE FROZEN BASELINE — 575, re-measured 2026-08-15.**
 
 ```
-activeMods in ModsConfig.xml   585
-loaded by the game             585
-listed but not installed         0
-loaded but not listed            0
-sources        564 workshop · 15 local · 6 Core+DLC
+activeMods in live ModsConfig.xml    575
+activeMods in the freeze copy        575   (identical, order included)
+listed but not installed               0
 ```
 
-⇒ **These 585 ARE the frozen set — owner's ruling, 2026-08-14.** A mod ships
-unless it is explicitly cut. The freeze is not an audit of 585 mods; it is a
-reconciliation of the decision docs against this list, and only the divergences
-need a ruling.
+⇒ **These 575 ARE the frozen set.** The owner's 2026-08-14 ruling stands
+unchanged — a mod ships unless it is explicitly cut, and the freeze is a
+reconciliation of the decision docs against this list, not an audit of 575 mods.
+
+⚠️ **The number moved and this file said 585.** Raised by BUILD 2026-08-15 and
+reconciled by DECIDE against
+`deployed/config/ModsConfig.585-merged-after-rimsort-2026-08-14.xml`. It is
+**585 − 11 + 1 = 575**, exact, with every one of the twelve attributable to a
+commit. No unexplained drift:
+
+| removed | why | commit |
+|---|---|---|
+| `vanillaexpanded.vanillaanimalsexpanded` · `zal.giantsnake` | deprecated | `5ff8528` |
+| `guppyfacesarecute.skunks` | owner's call | `b4e1f73` |
+| `abrolo.grimstone.beasts` | quality, owner's call | `65510e6` |
+| `redmattis.sapientanimals` | descoped, 1,073 humanlike animal pawns | `984676d` |
+| `regrowth.botr.boilingforest` | cosmetic parts, we author our own (B64) | `59b98f8` |
+| `rah.rvte` · `honeybadger.wallmountedturretsversiontwo` | the 172-weapon ruling pass | `36b1157` |
+| `btd.xenotyperemix.starwars` · `guy762.starwarsxenotypes` · `neronix17.outerrim.galacticdiversity` | the three donors `mandrake.starwarsraces` replaces | C36/C37 |
+
+| added | why |
+|---|---|
+| `mandrake.starwarsraces` | the standalone races mod that replaces those three |
+
+🔴 **The first six are the ones the descope docs record; the last five are not.**
+`rah.rvte` and WMT2 left inside a weapons-ruling commit, and the three donors left
+as a side effect of a mod swap — so anyone reconciling against
+`CHERRYPICK_AGENDA.md` alone finds six of eleven and reads the rest as drift.
+**Cut a mod in a commit whose subject does not say so and it becomes unattributable
+in a week.** Name the mod in the subject.
 
 🔴 **The freeze is TWO files, not one.** Cherry Picker runs at load order 11 and
 deletes defs the mod list still contains, so `ModsConfig.xml` alone leaves half
