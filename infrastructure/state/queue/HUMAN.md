@@ -183,6 +183,20 @@ new names — `RimMandrake_Jawa_Eyes_HugeAmber`, `RimMandrake_Jawa_Eyes_HugeOran
 names are ABSENT. `validate_save_artifact.py`: **36/36 references resolve, zero
 dangling.** Option 1 shipped, with the `Gene_` case correct.
 
+🔴 **STATUS IS "FIX DEPLOYED, UNVERIFIED" — not done. CHECK is right to hold it open
+and the reason is not pedantry.** Everything above is **DISK** evidence, and disk
+evidence is exactly what got this wrong the first time: `LIVE.md`'s retracted claim
+*"MandrakeJawa.xtp is CLEAN: 36/36 references resolve"* came from **this same
+validator**, and the running engine contradicted it. The game running now loaded the
+OLD file at startup, so **this session cannot witness the fix in either direction.**
+**CLOSING CONDITION, and it costs nothing:** the next load's startup log carries
+**ZERO** `Could not load reference to Verse.GeneDef named Jawa_*`. Today's carried 12
+GeneDef lines, 4 of them ours. CHECK reads it with `harvest_log.py --show scribe` and
+closes it then (`0279750`).
+📌 The general rule, worth more than this item: **an offline validator answers "is
+the file I pointed at self-consistent". It cannot answer "is the file the game reads
+correct" — and for a `.xtp` those were two different files for a whole day.**
+
 ⚠️ **STILL OPEN, and it is not ours to fix unasked:** `softshadow.xtp` in the same
 folder carries two dead names — `Jawa_Gene_Skittish` and `Jawa_Head_Plain` — and
 will silently drop those genes at world creation exactly as MandrakeJawa would

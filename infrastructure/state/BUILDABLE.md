@@ -57,3 +57,9 @@ it does not belong here.
   `c57f347` and stale in the game for a day, dropping four genes.*
 - **An offline validator cannot catch a stale `.xtp`.** It validates the file you
   point it at; the game reads a different copy. Check the deployed one.
+- 🔴 **An offline validator answers "is this file self-consistent", never "is the file
+  the game reads correct".** `validate_save_artifact.py` returned **36/36 resolve** on
+  `MandrakeJawa.xtp` twice — once on a file the running engine was contradicting, once
+  on a freshly deployed one it had not yet read. Same output, opposite meanings. A
+  deploy is **FIX DEPLOYED, UNVERIFIED** until a startup log shows zero
+  `Could not load reference to`. *2026-08-15.*
