@@ -49,6 +49,22 @@ criteria: a Jawa colonist and an indigenous tribal spawn as `MandrakeJawa`; no o
           raider group. Read the four defNames back with `jawa/get_defs` — absence is the
           failure mode, and it is silent.
 state:    doing
+note:     2026-08-15 CHECK, live on the post-deploy map.
+          ✅ CRITERION 1+2 PASS: spawned 6 of each of the four kinds, 24/24 generated
+          as xenotype `MandrakeJawa` - Jawa_Colonist, Jawa_Tribal_Scavenger,
+          Jawa_Tribal_Slinger, Jawa_Tribal_Elder. The c06e89e repoint works end to end;
+          defs resolve AND generate.
+          ⚠️ CRITERION "no other Jawa xenotype generates" is NOT SETTLED, and my earlier
+          claim that it was "unmet by construction" is withdrawn. Facts: the six
+          OnlyMandrakeJawa.xml patch ops DO die at load (PatchOperationAddOrReplace is
+          not a real type, 12 log lines) - but the intended end state may hold anyway.
+          On this load `OuterRim_Jawa` and `guy762_xenotype_jawa` DO NOT EXIST, and
+          `BTD_Jawa` already reads factionlessGenerationWeight 0.0 / canGenerateAsCombatant
+          False. The read does not discriminate: `MandrakeJawa`, which MUST generate,
+          reads the same 0.0/False. ⇒ needs a generation-based test, not a field read.
+          ⏳ CRITERION "Jawa_IndigenousTribes produces a non-empty raider group" untested -
+          needs a raid fired at a live colony, which is an owner call.
+
 note:     2026-08-15 CHECK. DEF HALF PASSES on the post-deploy cold load: all four
           resolve via jawa/get_defs at the MAIN MENU, before any map existed -
           Jawa_Colonist, Jawa_Tribal_Scavenger, Jawa_Tribal_Slinger, Jawa_Tribal_Elder,
