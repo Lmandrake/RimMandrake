@@ -35,7 +35,13 @@ fail=0
 # md5 d7e7c6c1 / 30 tools, but a rebuild legitimately produces different bytes.
 # => Do NOT gate on that md5 afterwards. Gate on the CANARIES, checked below.
 echo; echo "=== S8  BridgeTools (--gm) ==="
-python3 src/RimMandrake/bridgetools/build.py --gm --apply || { echo "S8 FAILED"; fail=1; }
+# 🔴 python.exe, NOT python3. build.py drives dotnet.exe, which cannot accept a
+# /mnt/... project path, and build.py refuses under WSL python3 with that message.
+# Measured 2026-08-15: this line ran, printed the refusal, and S8 FAILED while S1
+# and S9 went on to succeed — so the run reported partial success and left the
+# companion at 26 tools. A shutdown window is ~25 min of game load; do not spend
+# one on this again.
+PYTHONUTF8=1 python.exe src/RimMandrake/bridgetools/build.py --gm --apply || { echo "S8 FAILED"; fail=1; }
 
 # --- S1 -----------------------------------------------------------------------
 echo; echo "=== S1  JawaSeaShaper.dll (SOLO) ==="
