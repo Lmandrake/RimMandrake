@@ -1205,6 +1205,26 @@ criteria: —
 state:    open — needs DECIDE
 
 ## the-shipping-xenotype-drops-four-of-our-own-genes-7e31aa
+🔧 **FIXED ON DISK 2026-08-15 by BUILD — NOT YET CONFIRMED LIVE.** The repo copy had been
+correct since `c57f347` (the rename commit); only the game copy under `Xenotypes\` was
+stale. So it was never an artifact migration — it was a file that had never been
+deployed. Backed up to `MandrakeJawa.xtp.bak-2026-08-15`, copied, md5 equal,
+`validate_save_artifact.py` reports 36/36 resolve and zero dangling.
+🔴 **THAT IS DISK EVIDENCE, AND DISK EVIDENCE IS WHAT GOT THIS WRONG THE FIRST TIME.**
+The superseded claim in LIVE.md was ALSO "36/36 references resolve" from an offline
+validator, and the running game contradicted it. The engine is the only witness that
+counts here, and the game now running loaded the OLD file at startup, so this session
+CANNOT confirm the fix.
+⇒ **CLOSING CONDITION, and it costs nothing to collect:** the NEXT load's startup log
+carries **zero** `Could not load reference to Verse.GeneDef named Jawa_*` lines. Today's
+load carried 12 GeneDef lines, of which 4 were ours. `harvest_log.py --show scribe`
+reads them. Until that reads clean, this stays OPEN as *fix deployed, unverified*.
+⚠️ **NOT actioned and still live: `softshadow.xtp` carries two dead names** —
+`Jawa_Gene_Skittish` and `Jawa_Head_Plain` — and will drop those genes silently at world
+creation exactly as `MandrakeJawa.xtp` would have. Not in our repo and not what the owner
+named, so BUILD correctly left it. Someone must decide whether it matters before worldgen.
+`pokean.xtp` is clean.
+
 raised:   2026-08-15 CHECK, from the live startup log of the 575-mod load.
 finding:  `MandrakeJawa.xtp` — the shipping v1 xenotype — **silently drops 4 of our own
           GeneDefs every time it loads.** RimWorld logged 17 Scribe `Could not load
