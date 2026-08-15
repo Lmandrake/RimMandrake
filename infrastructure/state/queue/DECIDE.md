@@ -1160,3 +1160,39 @@ spec:     🔴 **A scope call only DECIDE can make, and worldgen is the last cha
 verify:   —
 criteria: —
 state:    open — needs DECIDE
+
+## the-shipping-xenotype-drops-four-of-our-own-genes-7e31aa
+raised:   2026-08-15 CHECK, from the live startup log of the 575-mod load.
+finding:  `MandrakeJawa.xtp` — the shipping v1 xenotype — **silently drops 4 of our own
+          GeneDefs every time it loads.** RimWorld logged 17 Scribe `Could not load
+          reference to` lines at startup; 4 are ours:
+            `Jawa_Eyes_HugeAmber`  → live def is `RimMandrake_Jawa_Eyes_HugeAmber`
+            `Jawa_Eyes_HugeOrange` → live def is `RimMandrake_Jawa_Eyes_HugeOrange`
+            `Jawa_Head_Plain`      → live def is `RimMandrake_Jawa_Head_Plain`
+            `Jawa_Gene_Skittish`   → live def is `RimMandrake_Jawa_Skittish`
+          🔴 The last one is NOT a straight prefix — `Gene_` was dropped as well, so a
+          blind "add RimMandrake_ to everything" migration fixes three and breaks the
+          fourth differently.
+          **Nothing is missing from the game.** All four new names are present in today's
+          fresh 575-mod dump. The defs were renamed and the SAVED FILE was never migrated.
+          Three further dead genes are `guy762_*` and are EXPECTED — that donor is
+          deliberately off for C36. Five more are `RG_*` ThingDefs inside LWM Deep
+          Storage's own settings, benign B-BOIL collateral.
+why it changes the design, not just the code:
+          The .xtp **bakes at world creation**. Whatever it drops is lost in the world the
+          owner is about to generate, and the drop is SILENT in play — a Jawa comes out
+          without its head type and eye colours and nothing says so.
+          ⚠️ `softshadow.xtp` and `pokean.xtp` carry some of the same dead names.
+🔴 this invalidates a recorded fact:
+          `LIVE.md` said "`MandrakeJawa.xtp` is CLEAN: 36/36 references resolve." That was
+          an OFFLINE verdict and the running game contradicts it. Corrected in LIVE.md.
+          **An offline validator cannot catch this class at all** — Scribe resolves saved
+          names at load time, and a def-dump check answers a different question. C42's
+          "the dangling-reference question is CLOSED offline" is falsified for the .xtp.
+decision needed:
+          Migrate the four names in the saved .xtp before the worldgen run, or accept the
+          drops. NOT MINE TO CHOOSE and not mine to author — I am not editing a shipping
+          save artifact on my own authority. ⛔ Blocking on the real worldgen run: it bakes.
+evidence: Player.log 2026-08-15 16:1x, 575 mods, build 1.6.4871 rev591, dump captured
+          2026-08-15T23:12:54Z — same stack as the running game, so not a stale-dump
+          artifact. Def loader crossref was CLEAN at baseline 25; this is Scribe only.

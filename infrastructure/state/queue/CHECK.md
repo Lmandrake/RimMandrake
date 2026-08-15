@@ -791,7 +791,23 @@ criteria: ⇒ NARROWED, and the narrowing is honest: the dangling-reference ques
           CLOSED offline. What remains is only what disk cannot answer — does the ideo
           LOAD with all 101 precepts, and do the 16 AbilityDefs resolve in the engine.
           A clean validator run is necessary, not sufficient.
-state:    ready — one dialog on the scratch load, ahead of any worldgen run
+state:    HALF COLLECTED 2026-08-15, and the offline half is FALSIFIED.
+result:   🔴 The `.xtp` half is ANSWERED and it is a FAIL. The startup log of this
+          575-mod load carries 17 Scribe `Could not load reference to` lines, and
+          `MandrakeJawa.xtp` drops **4 of our own GeneDefs** — `Jawa_Eyes_HugeAmber`,
+          `Jawa_Eyes_HugeOrange`, `Jawa_Head_Plain`, `Jawa_Gene_Skittish` — every one a
+          def that was RENAMED (`RimMandrake_`-prefixed; `Skittish` also lost `Gene_`)
+          with the saved file never migrated. All four new names are live in today's
+          dump, so nothing is missing from the game. 3 more dead genes are `guy762_*`
+          and EXPECTED (donor off for C36); 5 are `RG_*` in LWM Deep Storage's own
+          settings, benign B-BOIL collateral.
+          ⇒ **"The dangling-reference question is CLOSED offline" was WRONG.** An offline
+          validator cannot see this class: Scribe resolves saved names at load, a dump
+          check answers something else. LIVE.md's "36/36 resolve" corrected.
+          ⇒ Filed to DECIDE as `the-shipping-xenotype-drops-four-of-our-own-genes-7e31aa`.
+          I do not edit a shipping save artifact on my own authority.
+          STILL OPEN: the `.rid` half — does `The Salvation` load with all 101 precepts.
+          That needs the dialog and is unchanged by the above.
 raised:   2026-08-15, owner via REP: **faction and ideo work IS v1.** The ideoligion
           exists and the factions are nearly done bar allowed items and descriptions.
           ⇒ This item is not speculative hygiene. `The Salvation.rid` is a SHIPPING v1

@@ -76,7 +76,25 @@ Everything here was read out of a running game or off an artifact a running game
 - **`src/Jawa/ideoligion/The Salvation.rid` is CLEAN as of 2026-08-15**: 267 def
   references, **251 resolve, 0 dangling**, 16 UNMEASURABLE (all `AbilityDef`, the dump
   blind spot above). It carries **101 precepts** — not the 82 written in earlier notes.
-- **`MandrakeJawa.xtp` is CLEAN**: 36/36 references resolve.
+- 🔴 **`MandrakeJawa.xtp` is NOT clean — the live game says so, 2026-08-15 CHECK.**
+  The earlier "36/36 references resolve" was an OFFLINE verdict and it is WRONG on the
+  running stack. At startup RimWorld logged **17 `Could not load reference to`** lines
+  (Scribe, not the def loader — different system, and the def-loader crossref count was
+  clean at baseline 25). Of them, **7 distinct GeneDefs die out of the saved xenotypes**:
+  · **4 are OURS and the cause is a RENAME that the .xtp never followed** —
+    `Jawa_Eyes_HugeAmber` → `RimMandrake_Jawa_Eyes_HugeAmber`,
+    `Jawa_Eyes_HugeOrange` → `RimMandrake_Jawa_Eyes_HugeOrange`,
+    `Jawa_Head_Plain` → `RimMandrake_Jawa_Head_Plain`, and
+    `Jawa_Gene_Skittish` → **`RimMandrake_Jawa_Skittish`** (NOT a straight prefix; `Gene_`
+    was dropped too). All four new names ARE present in today's 4,306-GeneDef dump, so
+    nothing is missing from the game — the SAVED FILE holds pre-rename names.
+  · **3 are `guy762_*`** (`_Furskin_shortfur`, `_BodySizeGene_smaller`, `_Eyes_HugeYellow`)
+    and are expected: `guy762.starwarsxenotypes` is deliberately OFF for the C36 run.
+  The other 5 dead refs are `RG_*` ThingDefs (Owlbeast, boilberries) inside **LWM Deep
+  Storage's own settings**, benign collateral of the B-BOIL cut — not our artifact.
+  ⚠️ `softshadow.xtp` and `pokean.xtp` carry some of the same dead names.
+  ⇒ **An offline validator run against the def dump did NOT catch this, and cannot.**
+  Scribe resolves saved names at load; a dump check answers a different question.
 - ⚠️ `The Salvation.rid`'s provenance was REPOINTED at the live set in `a9b2509` — it now
   carries 576 modIds matching `activeMods` exactly, both directions, with none stale.
   Re-validated after that rewrite: references unchanged, still zero dangling.
