@@ -8,8 +8,9 @@ The browser renders it, not WSLg, so text is crisp at any DPI. That is the whole
 reason this is a page and not a Tk window.
 
 Data:
-    infrastructure/state/status_matrix.json   rows, per-cell done/total/state
-    infrastructure/state/blockers.json        what is stopping work, by class
+    infrastructure/state/status_matrix.json   rows, per-cell state mix,
+                                              blocker classes, velocity
+    infrastructure/state/status/game.json     is the game up, and in what state
     live                                       host memory, agent liveness
 """
 import argparse
@@ -200,7 +201,11 @@ def snapshot():
         "rows": rows,
         "overall": {"done": don, "total": tot,
                     "pct": round(100.0 * don / tot) if tot else 0},
-        "blockers": jload("blockers.json", {"classes": []}),
+        # Blockers and velocity ride in the matrix now — derive_matrix.py counts
+        # them off the items themselves. The hand-kept blockers.json that used to
+        # sit here had drifted to 12 against 7 real blocked items.
+        "blockers": m.get("blockers", {"classes": [], "on_human": 0}),
+        "velocity": m.get("velocity", {}),
         # Declared game state, which is NOT the same fact as host()'s RSS reading:
         # one is what a seat claims, the other is whether the process exists. The
         # page reconciles them, because the disagreement is the interesting case.

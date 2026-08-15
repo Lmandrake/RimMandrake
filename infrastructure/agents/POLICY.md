@@ -136,6 +136,20 @@ criteria: <the LIVE pass/fail CHECK will apply.>
 state:    ready | doing | done | blocked | dropped
 ```
 
+**A blocked item names WHY, after an em-dash:**
+
+```
+state:    blocked — needs a human answer
+state:    blocked — needs a live game
+state:    blocked — needs a shutdown window
+```
+
+The reason is free text and the board groups by it verbatim. **One phrase is
+reserved: `human`.** Anything whose reason contains it counts into the board's
+ON YOU tile, which is the only number on the board the owner alone can move —
+so do not use the word loosely. A blocked item with no reason renders as
+`unexplained`, which is honest and is meant to look like the omission it is.
+
 - **BUILD refuses an item with an empty `spec:` or `verify:`.** Move it to `blocked`,
   write one line saying which field is missing, stop.
 - **CHECK refuses an item with empty `criteria:`.** Same.

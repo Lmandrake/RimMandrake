@@ -4,19 +4,40 @@
    "name": "0 Mod freeze",
    "cells": {
     "DECIDE": {
-     "done": 0,
+     "done": 3,
      "total": 4,
-     "state": "idle"
+     "state": "idle",
+     "mix": {
+      "closed": 3,
+      "done": 0,
+      "doing": 0,
+      "blocked": 0,
+      "ready": 1
+     }
     },
     "BUILD": {
      "done": 0,
      "total": 2,
-     "state": "idle"
+     "state": "idle",
+     "mix": {
+      "closed": 0,
+      "done": 0,
+      "doing": 0,
+      "blocked": 0,
+      "ready": 2
+     }
     },
     "CHECK": {
      "done": 0,
      "total": 0,
-     "state": "offline"
+     "state": "offline",
+     "mix": {
+      "closed": 0,
+      "done": 0,
+      "doing": 0,
+      "blocked": 0,
+      "ready": 0
+     }
     }
    }
   },
@@ -26,17 +47,38 @@
     "DECIDE": {
      "done": 0,
      "total": 2,
-     "state": "working"
+     "state": "working",
+     "mix": {
+      "closed": 0,
+      "done": 0,
+      "doing": 1,
+      "blocked": 0,
+      "ready": 1
+     }
     },
     "BUILD": {
      "done": 0,
-     "total": 1,
-     "state": "idle"
+     "total": 0,
+     "state": "offline",
+     "mix": {
+      "closed": 0,
+      "done": 0,
+      "doing": 0,
+      "blocked": 0,
+      "ready": 0
+     }
     },
     "CHECK": {
      "done": 0,
      "total": 0,
-     "state": "offline"
+     "state": "offline",
+     "mix": {
+      "closed": 0,
+      "done": 0,
+      "doing": 0,
+      "blocked": 0,
+      "ready": 0
+     }
     }
    }
   },
@@ -46,17 +88,38 @@
     "DECIDE": {
      "done": 0,
      "total": 0,
-     "state": "offline"
+     "state": "offline",
+     "mix": {
+      "closed": 0,
+      "done": 0,
+      "doing": 0,
+      "blocked": 0,
+      "ready": 0
+     }
     },
     "BUILD": {
      "done": 0,
      "total": 0,
-     "state": "offline"
+     "state": "offline",
+     "mix": {
+      "closed": 0,
+      "done": 0,
+      "doing": 0,
+      "blocked": 0,
+      "ready": 0
+     }
     },
     "CHECK": {
      "done": 0,
      "total": 0,
-     "state": "offline"
+     "state": "offline",
+     "mix": {
+      "closed": 0,
+      "done": 0,
+      "doing": 0,
+      "blocked": 0,
+      "ready": 0
+     }
     }
    }
   },
@@ -66,17 +129,38 @@
     "DECIDE": {
      "done": 0,
      "total": 0,
-     "state": "offline"
+     "state": "offline",
+     "mix": {
+      "closed": 0,
+      "done": 0,
+      "doing": 0,
+      "blocked": 0,
+      "ready": 0
+     }
     },
     "BUILD": {
      "done": 0,
      "total": 0,
-     "state": "offline"
+     "state": "offline",
+     "mix": {
+      "closed": 0,
+      "done": 0,
+      "doing": 0,
+      "blocked": 0,
+      "ready": 0
+     }
     },
     "CHECK": {
      "done": 0,
      "total": 0,
-     "state": "offline"
+     "state": "offline",
+     "mix": {
+      "closed": 0,
+      "done": 0,
+      "doing": 0,
+      "blocked": 0,
+      "ready": 0
+     }
     }
    }
   },
@@ -86,17 +170,38 @@
     "DECIDE": {
      "done": 0,
      "total": 0,
-     "state": "offline"
+     "state": "offline",
+     "mix": {
+      "closed": 0,
+      "done": 0,
+      "doing": 0,
+      "blocked": 0,
+      "ready": 0
+     }
     },
     "BUILD": {
      "done": 0,
      "total": 0,
-     "state": "offline"
+     "state": "offline",
+     "mix": {
+      "closed": 0,
+      "done": 0,
+      "doing": 0,
+      "blocked": 0,
+      "ready": 0
+     }
     },
     "CHECK": {
      "done": 0,
      "total": 0,
-     "state": "offline"
+     "state": "offline",
+     "mix": {
+      "closed": 0,
+      "done": 0,
+      "doing": 0,
+      "blocked": 0,
+      "ready": 0
+     }
     }
    }
   },
@@ -106,17 +211,38 @@
     "DECIDE": {
      "done": 0,
      "total": 0,
-     "state": "offline"
+     "state": "offline",
+     "mix": {
+      "closed": 0,
+      "done": 0,
+      "doing": 0,
+      "blocked": 0,
+      "ready": 0
+     }
     },
     "BUILD": {
      "done": 0,
      "total": 0,
-     "state": "offline"
+     "state": "offline",
+     "mix": {
+      "closed": 0,
+      "done": 0,
+      "doing": 0,
+      "blocked": 0,
+      "ready": 0
+     }
     },
     "CHECK": {
      "done": 0,
      "total": 0,
-     "state": "offline"
+     "state": "offline",
+     "mix": {
+      "closed": 0,
+      "done": 0,
+      "doing": 0,
+      "blocked": 0,
+      "ready": 0
+     }
     }
    }
   },
@@ -126,17 +252,38 @@
     "DECIDE": {
      "done": 1,
      "total": 1,
-     "state": "idle"
+     "state": "idle",
+     "mix": {
+      "closed": 1,
+      "done": 0,
+      "doing": 0,
+      "blocked": 0,
+      "ready": 0
+     }
     },
     "BUILD": {
-     "done": 0,
+     "done": 1,
      "total": 1,
-     "state": "idle"
+     "state": "idle",
+     "mix": {
+      "closed": 1,
+      "done": 0,
+      "doing": 0,
+      "blocked": 0,
+      "ready": 0
+     }
     },
     "CHECK": {
      "done": 0,
      "total": 0,
-     "state": "offline"
+     "state": "offline",
+     "mix": {
+      "closed": 0,
+      "done": 0,
+      "doing": 0,
+      "blocked": 0,
+      "ready": 0
+     }
     }
    }
   },
@@ -146,17 +293,38 @@
     "DECIDE": {
      "done": 0,
      "total": 0,
-     "state": "offline"
+     "state": "offline",
+     "mix": {
+      "closed": 0,
+      "done": 0,
+      "doing": 0,
+      "blocked": 0,
+      "ready": 0
+     }
     },
     "BUILD": {
      "done": 0,
      "total": 1,
-     "state": "blocked"
+     "state": "blocked",
+     "mix": {
+      "closed": 0,
+      "done": 0,
+      "doing": 0,
+      "blocked": 1,
+      "ready": 0
+     }
     },
     "CHECK": {
      "done": 0,
      "total": 1,
-     "state": "working"
+     "state": "working",
+     "mix": {
+      "closed": 0,
+      "done": 0,
+      "doing": 1,
+      "blocked": 0,
+      "ready": 0
+     }
     }
    }
   },
@@ -166,17 +334,38 @@
     "DECIDE": {
      "done": 0,
      "total": 0,
-     "state": "offline"
+     "state": "offline",
+     "mix": {
+      "closed": 0,
+      "done": 0,
+      "doing": 0,
+      "blocked": 0,
+      "ready": 0
+     }
     },
     "BUILD": {
      "done": 0,
      "total": 0,
-     "state": "offline"
+     "state": "offline",
+     "mix": {
+      "closed": 0,
+      "done": 0,
+      "doing": 0,
+      "blocked": 0,
+      "ready": 0
+     }
     },
     "CHECK": {
      "done": 0,
      "total": 0,
-     "state": "offline"
+     "state": "offline",
+     "mix": {
+      "closed": 0,
+      "done": 0,
+      "doing": 0,
+      "blocked": 0,
+      "ready": 0
+     }
     }
    }
   },
@@ -186,17 +375,38 @@
     "DECIDE": {
      "done": 0,
      "total": 1,
-     "state": "idle"
+     "state": "idle",
+     "mix": {
+      "closed": 0,
+      "done": 0,
+      "doing": 0,
+      "blocked": 0,
+      "ready": 1
+     }
     },
     "BUILD": {
-     "done": 0,
-     "total": 13,
-     "state": "idle"
+     "done": 9,
+     "total": 14,
+     "state": "idle",
+     "mix": {
+      "closed": 9,
+      "done": 0,
+      "doing": 0,
+      "blocked": 0,
+      "ready": 5
+     }
     },
     "CHECK": {
      "done": 1,
      "total": 2,
-     "state": "idle"
+     "state": "idle",
+     "mix": {
+      "closed": 1,
+      "done": 0,
+      "doing": 0,
+      "blocked": 0,
+      "ready": 1
+     }
     }
    }
   },
@@ -206,17 +416,38 @@
     "DECIDE": {
      "done": 0,
      "total": 2,
-     "state": "blocked"
+     "state": "blocked",
+     "mix": {
+      "closed": 0,
+      "done": 0,
+      "doing": 0,
+      "blocked": 1,
+      "ready": 1
+     }
     },
     "BUILD": {
-     "done": 0,
+     "done": 1,
      "total": 3,
-     "state": "idle"
+     "state": "idle",
+     "mix": {
+      "closed": 1,
+      "done": 0,
+      "doing": 0,
+      "blocked": 0,
+      "ready": 2
+     }
     },
     "CHECK": {
      "done": 1,
      "total": 2,
-     "state": "idle"
+     "state": "idle",
+     "mix": {
+      "closed": 1,
+      "done": 0,
+      "doing": 0,
+      "blocked": 0,
+      "ready": 1
+     }
     }
    }
   },
@@ -226,17 +457,38 @@
     "DECIDE": {
      "done": 0,
      "total": 0,
-     "state": "offline"
+     "state": "offline",
+     "mix": {
+      "closed": 0,
+      "done": 0,
+      "doing": 0,
+      "blocked": 0,
+      "ready": 0
+     }
     },
     "BUILD": {
      "done": 0,
      "total": 0,
-     "state": "offline"
+     "state": "offline",
+     "mix": {
+      "closed": 0,
+      "done": 0,
+      "doing": 0,
+      "blocked": 0,
+      "ready": 0
+     }
     },
     "CHECK": {
      "done": 0,
      "total": 0,
-     "state": "offline"
+     "state": "offline",
+     "mix": {
+      "closed": 0,
+      "done": 0,
+      "doing": 0,
+      "blocked": 0,
+      "ready": 0
+     }
     }
    }
   },
@@ -246,17 +498,38 @@
     "DECIDE": {
      "done": 0,
      "total": 2,
-     "state": "idle"
+     "state": "idle",
+     "mix": {
+      "closed": 0,
+      "done": 0,
+      "doing": 0,
+      "blocked": 0,
+      "ready": 2
+     }
     },
     "BUILD": {
      "done": 0,
      "total": 1,
-     "state": "blocked"
+     "state": "blocked",
+     "mix": {
+      "closed": 0,
+      "done": 0,
+      "doing": 0,
+      "blocked": 1,
+      "ready": 0
+     }
     },
     "CHECK": {
      "done": 0,
      "total": 0,
-     "state": "offline"
+     "state": "offline",
+     "mix": {
+      "closed": 0,
+      "done": 0,
+      "doing": 0,
+      "blocked": 0,
+      "ready": 0
+     }
     }
    }
   },
@@ -266,17 +539,38 @@
     "DECIDE": {
      "done": 0,
      "total": 0,
-     "state": "offline"
+     "state": "offline",
+     "mix": {
+      "closed": 0,
+      "done": 0,
+      "doing": 0,
+      "blocked": 0,
+      "ready": 0
+     }
     },
     "BUILD": {
      "done": 0,
      "total": 0,
-     "state": "offline"
+     "state": "offline",
+     "mix": {
+      "closed": 0,
+      "done": 0,
+      "doing": 0,
+      "blocked": 0,
+      "ready": 0
+     }
     },
     "CHECK": {
      "done": 0,
      "total": 1,
-     "state": "blocked"
+     "state": "blocked",
+     "mix": {
+      "closed": 0,
+      "done": 0,
+      "doing": 0,
+      "blocked": 1,
+      "ready": 0
+     }
     }
    }
   },
@@ -286,17 +580,38 @@
     "DECIDE": {
      "done": 0,
      "total": 1,
-     "state": "idle"
+     "state": "idle",
+     "mix": {
+      "closed": 0,
+      "done": 0,
+      "doing": 0,
+      "blocked": 0,
+      "ready": 1
+     }
     },
     "BUILD": {
      "done": 0,
      "total": 1,
-     "state": "idle"
+     "state": "idle",
+     "mix": {
+      "closed": 0,
+      "done": 0,
+      "doing": 0,
+      "blocked": 0,
+      "ready": 1
+     }
     },
     "CHECK": {
      "done": 0,
      "total": 2,
-     "state": "working"
+     "state": "working",
+     "mix": {
+      "closed": 0,
+      "done": 0,
+      "doing": 1,
+      "blocked": 0,
+      "ready": 1
+     }
     }
    }
   },
@@ -306,17 +621,38 @@
     "DECIDE": {
      "done": 0,
      "total": 1,
-     "state": "blocked"
+     "state": "blocked",
+     "mix": {
+      "closed": 0,
+      "done": 0,
+      "doing": 0,
+      "blocked": 1,
+      "ready": 0
+     }
     },
     "BUILD": {
-     "done": 3,
-     "total": 6,
-     "state": "blocked"
+     "done": 0,
+     "total": 3,
+     "state": "blocked",
+     "mix": {
+      "closed": 0,
+      "done": 0,
+      "doing": 0,
+      "blocked": 2,
+      "ready": 1
+     }
     },
     "CHECK": {
      "done": 0,
      "total": 0,
-     "state": "offline"
+     "state": "offline",
+     "mix": {
+      "closed": 0,
+      "done": 0,
+      "doing": 0,
+      "blocked": 0,
+      "ready": 0
+     }
     }
    }
   },
@@ -326,17 +662,38 @@
     "DECIDE": {
      "done": 0,
      "total": 0,
-     "state": "offline"
+     "state": "offline",
+     "mix": {
+      "closed": 0,
+      "done": 0,
+      "doing": 0,
+      "blocked": 0,
+      "ready": 0
+     }
     },
     "BUILD": {
-     "done": 3,
-     "total": 3,
-     "state": "idle"
+     "done": 0,
+     "total": 0,
+     "state": "offline",
+     "mix": {
+      "closed": 0,
+      "done": 0,
+      "doing": 0,
+      "blocked": 0,
+      "ready": 0
+     }
     },
     "CHECK": {
      "done": 0,
      "total": 1,
-     "state": "working"
+     "state": "working",
+     "mix": {
+      "closed": 0,
+      "done": 0,
+      "doing": 1,
+      "blocked": 0,
+      "ready": 0
+     }
     }
    }
   },
@@ -346,17 +703,38 @@
     "DECIDE": {
      "done": 0,
      "total": 1,
-     "state": "idle"
+     "state": "idle",
+     "mix": {
+      "closed": 0,
+      "done": 0,
+      "doing": 0,
+      "blocked": 0,
+      "ready": 1
+     }
     },
     "BUILD": {
      "done": 0,
      "total": 0,
-     "state": "offline"
+     "state": "offline",
+     "mix": {
+      "closed": 0,
+      "done": 0,
+      "doing": 0,
+      "blocked": 0,
+      "ready": 0
+     }
     },
     "CHECK": {
      "done": 0,
      "total": 0,
-     "state": "offline"
+     "state": "offline",
+     "mix": {
+      "closed": 0,
+      "done": 0,
+      "doing": 0,
+      "blocked": 0,
+      "ready": 0
+     }
     }
    }
   },
@@ -366,17 +744,38 @@
     "DECIDE": {
      "done": 0,
      "total": 0,
-     "state": "offline"
+     "state": "offline",
+     "mix": {
+      "closed": 0,
+      "done": 0,
+      "doing": 0,
+      "blocked": 0,
+      "ready": 0
+     }
     },
     "BUILD": {
      "done": 0,
      "total": 0,
-     "state": "offline"
+     "state": "offline",
+     "mix": {
+      "closed": 0,
+      "done": 0,
+      "doing": 0,
+      "blocked": 0,
+      "ready": 0
+     }
     },
     "CHECK": {
      "done": 0,
      "total": 0,
-     "state": "offline"
+     "state": "offline",
+     "mix": {
+      "closed": 0,
+      "done": 0,
+      "doing": 0,
+      "blocked": 0,
+      "ready": 0
+     }
     }
    }
   },
@@ -386,19 +785,65 @@
     "DECIDE": {
      "done": 1,
      "total": 1,
-     "state": "idle"
+     "state": "idle",
+     "mix": {
+      "closed": 1,
+      "done": 0,
+      "doing": 0,
+      "blocked": 0,
+      "ready": 0
+     }
     },
     "BUILD": {
-     "done": 0,
-     "total": 0,
-     "state": "offline"
+     "done": 6,
+     "total": 6,
+     "state": "idle",
+     "mix": {
+      "closed": 6,
+      "done": 0,
+      "doing": 0,
+      "blocked": 0,
+      "ready": 0
+     }
     },
     "CHECK": {
      "done": 1,
      "total": 1,
-     "state": "idle"
+     "state": "idle",
+     "mix": {
+      "closed": 1,
+      "done": 0,
+      "doing": 0,
+      "blocked": 0,
+      "ready": 0
+     }
     }
    }
   }
- ]
+ ],
+ "blockers": {
+  "on_human": 0,
+  "classes": [
+   {
+    "label": "unexplained",
+    "count": 7
+   }
+  ]
+ },
+ "velocity": {
+  "days": [
+   {
+    "d": "2026-08-14",
+    "n": 18
+   },
+   {
+    "d": "2026-08-15",
+    "n": 7
+   }
+  ],
+  "per_day": 12.5,
+  "closed": 25,
+  "remaining": 33,
+  "eta_days": 3
+ }
 }

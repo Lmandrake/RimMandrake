@@ -136,20 +136,21 @@ def closed_items():
     except (OSError, ValueError):
         cache = {"head": None, "items": {}}
 
-    log = git("log", "--format=%H%x1f%B%x1e")
+    log = git("log", "--format=%H%x1f%cI%x1f%B%x1e")
     if log is None:
         return cache.get("items", {}), []
     items, unresolved = dict(cache.get("items", {})), []
     for rec in log.split("\x1e"):
-        if "\x1f" not in rec:
+        if rec.count("\x1f") < 2:
             continue
-        sha, body = rec.strip().split("\x1f", 1)
+        sha, when, body = rec.strip().split("\x1f", 2)
         for item_id in CLOSES_RE.findall(body):
             if item_id in items:
                 continue
             found = resolve_closed(item_id, sha)
             if found:
-                items[item_id] = {"row": found[0], "col": found[1], "sha": sha[:7]}
+                items[item_id] = {"row": found[0], "col": found[1],
+                                  "sha": sha[:7], "at": when[:10]}
             else:
                 unresolved.append((item_id, sha[:7]))
 
@@ -163,6 +164,77 @@ def closed_items():
     return items, unresolved
 
 
+HUMAN_CUE = "human"          # `state: blocked — needs a human answer`
+
+
+def blockers(grid):
+    """Blocker classes counted from the items themselves, never hand-kept.
+
+    A blocked item may name its reason after an em-dash:
+        state:    blocked — needs a human answer
+    The reason is free text; only "human" is reserved, because "blocked on the
+    owner" is the one count nobody but the owner can move and it earns its own
+    tile. Everything else is grouped by the reason verbatim.
+
+    The hand-kept blockers.json this replaces had drifted to 12 against 7 real
+    blocked items — which is the whole argument for deriving it.
+    """
+    classes, on_human = {}, 0
+    for cols in grid.values():
+        for its in cols.values():
+            for it in its:
+                raw = str(it.get("state", ""))
+                if not raw.startswith("blocked"):
+                    continue
+                reason = raw.split("—", 1)[1].strip() if "—" in raw else \
+                         raw.split("-", 1)[1].strip() if "-" in raw else ""
+                if not reason:
+                    reason = "unexplained"
+                if HUMAN_CUE in reason.lower():
+                    on_human += 1
+                classes[reason] = classes.get(reason, 0) + 1
+    return {"on_human": on_human,
+            "classes": [{"label": k, "count": v}
+                        for k, v in sorted(classes.items(),
+                                           key=lambda kv: -kv[1])]}
+
+
+def velocity(closed, remaining):
+    """Items closed per day, and a projection, from the RESOLVED closures.
+
+    Derived from the same dict the closed count uses, so the two cannot
+    disagree — counting raw trailers instead gave 25 against a banked 11,
+    because a trailer naming an item that no longer resolves is not a closure.
+    """
+    by_day = {}
+    for meta in closed.values():
+        d = meta.get("at")
+        if d:
+            by_day[d] = by_day.get(d, 0) + 1
+    if not by_day:
+        return {"days": [], "per_day": 0.0, "closed": 0, "eta_days": None}
+    span = sorted(by_day)
+    total = sum(by_day.values())
+    # Span in days, inclusive, so a single busy day does not read as infinite.
+    try:
+        import datetime as _dt
+        d0 = _dt.date.fromisoformat(span[0])
+        d1 = _dt.date.fromisoformat(span[-1])
+        elapsed = max(1, (d1 - d0).days + 1)
+    except Exception:
+        elapsed = max(1, len(span))
+    rate = total / elapsed
+    # Projection is deliberately naive and labelled as such on the board: it
+    # assumes today's rate and a fixed scope, and v1's scope has already moved
+    # once. It is a trend line, not a delivery date.
+    eta = int(round(remaining / rate)) if rate and remaining else None
+    return {"days": [{"d": d, "n": by_day[d]} for d in span],
+            "per_day": round(rate, 2),
+            "closed": total,
+            "remaining": remaining,
+            "eta_days": eta}
+
+
 def main():
     names = rownames()
     grid = {}
@@ -173,12 +245,16 @@ def main():
 
     # Closed work, from the commit trailers. An item still filed AND closed is
     # counted once — the trailer wins, because it is the durable record.
+    # The TRAILER WINS. A seat that closed an item and left the body in the
+    # file must not have it counted as open work — 14 of 25 were in exactly
+    # that state, which is why this is a skip on the filed item, not on the
+    # trailer. Filed bodies with a trailer are dropped from `grid` below.
     closed, unresolved = closed_items()
-    open_ids = {i["id"] for c in grid.values() for its in c.values() for i in its}
+    for cols in grid.values():
+        for col, its in cols.items():
+            cols[col] = [i for i in its if i["id"] not in closed]
     shut = {}
     for item_id, meta in closed.items():
-        if item_id in open_ids:
-            continue
         key = (meta.get("row") or "").strip() or "unassigned"
         shut.setdefault(key, {c: 0 for c in COLS})
         if meta.get("col") in COLS:
@@ -202,12 +278,27 @@ def main():
                   else "working" if any(i.get("state") == "doing" for i in its)
                   else "offline" if not its and not was
                   else "idle")
-            cells[col] = {"done": done, "total": len(its) + was, "state": st}
+            # Composition, not just a ratio: the bar is drawn as segments, so
+            # the four open states have to survive to the renderer.
+            mix = {"closed": was,
+                   "done": sum(1 for i in its if i.get("state") == "done"),
+                   "doing": sum(1 for i in its if i.get("state") == "doing"),
+                   "blocked": sum(1 for i in its if i.get("state") == "blocked"),
+                   "ready": sum(1 for i in its
+                                if i.get("state") not in
+                                ("done", "doing", "blocked"))}
+            cells[col] = {"done": done, "total": len(its) + was,
+                          "state": st, "mix": mix}
         rows.append({"name": names.get(key, key), "cells": cells})
 
     out = os.path.join(STATE, "status_matrix.json")
+    tot_all = sum(c["total"] for r in rows for c in r["cells"].values())
+    don_all = sum(c["done"] for r in rows for c in r["cells"].values())
+    payload = {"rows": rows,
+               "blockers": blockers(grid),
+               "velocity": velocity(closed, tot_all - don_all)}
     with open(out + ".tmp", "w") as fh:
-        json.dump({"rows": rows}, fh, indent=1)
+        json.dump(payload, fh, indent=1)
     os.replace(out + ".tmp", out)
     tot = sum(c["total"] for r in rows for c in r["cells"].values())
     don = sum(c["done"] for r in rows for c in r["cells"].values())

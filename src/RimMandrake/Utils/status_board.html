@@ -20,7 +20,7 @@
      min-content, so one long unbroken item line pushes its column wider than
      the track and the panel runs off the right edge instead of clipping. */
   .top{grid-template-columns:minmax(0,1fr) auto;align-items:center;margin-bottom:12px}
-  .kpis{grid-template-columns:repeat(5,minmax(0,1fr));margin-bottom:12px}
+  .kpis{grid-template-columns:repeat(6,minmax(0,1fr));margin-bottom:12px}
   .main{grid-template-columns:minmax(0,1fr) 340px}
   .low{grid-template-columns:repeat(3,minmax(0,1fr));margin-top:12px}
   .grid > *{min-width:0}
@@ -34,6 +34,18 @@
   .bar{position:relative;height:19px;border-radius:4px;background:#0a0e13;
        border:1px solid var(--line);overflow:hidden;min-width:96px}
   .bar i{position:absolute;inset:0 auto 0 0;display:block;border-radius:3px 0 0 3px}
+  .bar .segs{position:absolute;inset:0;display:flex}
+  .bar .segs span{display:block;height:100%}
+  .bar.empty{background:transparent;border-style:dashed;border-color:#1b2431}
+  .bar.empty b{color:#495666;text-shadow:none;font-weight:400}
+  tr.empty td.name{color:#5a6673;font-weight:400}
+  /* The tally gets a reserved column and the bar is capped to what is left,
+     or a 100%-width bar clips its own number off the end of the cell. */
+  .barwrap{display:flex;align-items:center;gap:8px;min-width:96px}
+  .barwrap .bar{min-width:14px;flex:0 0 auto;max-width:calc(100% - 46px)}
+  .barwrap .tally{position:static;display:block;font-size:11px;font-weight:700;
+                  color:var(--mut);text-shadow:none;flex:0 0 auto;width:38px;
+                  text-align:right;font-variant-numeric:tabular-nums}
   .bar b{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;
          font-size:11px;font-weight:700;text-shadow:0 1px 2px #000}
   .dot{width:9px;height:9px;border-radius:50%;display:inline-block;margin-right:7px}
@@ -107,7 +119,8 @@
 
 <div class="grid low">
   <div class="panel"><p class="ttl">BLOCKERS</p><div id="blockers"></div></div>
-  <div class="panel" style="grid-column:span 2"><p class="ttl">WHERE IT STANDS</p><div id="summary"></div></div>
+  <div class="panel"><p class="ttl">VELOCITY <span id="veta" style="float:right;font-weight:400"></span></p><div id="velocity"></div></div>
+  <div class="panel"><p class="ttl">WHERE IT STANDS</p><div id="summary"></div></div>
 </div>
 
 <div class="grid low">
@@ -143,6 +156,28 @@ const agoStr=t=>{
   return m<1?'just now':m<60?Math.floor(m)+'m ago':(m/60).toFixed(1)+'h ago';
 };
 const pct=(d,t)=>t?Math.round(100*d/t):0;
+
+// Segmented bar: every open state gets its own band, sized by its share of the
+// cell. Colour here means STATE and nothing else — seat hue lives on the column
+// header, because BUILD's green against "done" green made the grid unreadable.
+const SEG=[['closed',C.grn],['done',C.grn],['doing',C.blu],['blocked',C.red],['ready','#3e4c5e']];
+// TWO proportions at once, and both matter:
+//   the bar's LENGTH is the cell's share of the biggest cell on the board — so
+//     14 items is visibly more than 1, which a full-width bar cannot show;
+//   the SEGMENTS divide that length by state.
+// Scale is shared across the whole grid, never per-row, or rows stop comparing.
+function stack(mix,t,mx){
+  if(!t) return `<div class="bar empty"><b>—</b></div>`;
+  const segs=SEG.filter(([k])=>mix&&mix[k])
+    .map(([k,c])=>`<span style="width:${100*mix[k]/t}%;background:${c}" title="${mix[k]} ${k}"></span>`)
+    .join('');
+  const done=(mix.closed||0)+(mix.done||0);
+  // Floor of 16% so a single item is still a readable chip, not a sliver.
+  const w=Math.max(16,100*t/(mx||1));
+  return `<div class="barwrap"><div class="bar" style="width:${w}%">`
+       + `<div class="segs">${segs}</div></div>`
+       + `<b class="tally">${done}/${t}</b></div>`;
+}
 
 function bar(d,t,col){
   const p=pct(d,t);
@@ -187,21 +222,32 @@ function render(d){
   const live=Object.values(d.agents||{}).filter(a=>a.state==='busy').length;
   const gm=gameState(d);
 
+  const onYou=(d.blockers||{}).on_human||0;
   el('kpis').innerHTML=[
     ['ITEMS DONE',`${o.done}/${o.total}`,pc(o.pct)],
     ['ROWS COMPLETE',`${complete}/${rows.length}`,pc(pct(complete,rows.length))],
-    ['BLOCKED',blocked,blocked?C.red:C.grn],
+    ['ON YOU',onYou,onYou?C.red:C.grn],
+    ['BLOCKED',blocked,blocked?C.amb:C.grn],
     ['AGENTS LIVE',`${live}/4`,live?C.grn:C.mut],
     ['RIMWORLD',gm.label,gm.col],
   ].map(([l,v,c])=>`<div class="panel kpi"><div class="v" style="color:${c}">${v}</div>
      <div class="l">${l}</div></div>`).join('');
 
+  // One scale for the three seat columns, a separate one for the row total —
+  // a total is a sum of three cells and would otherwise dwarf every cell beside it.
+  const cellMax=Math.max(1,...rows.flatMap(r=>['DECIDE','BUILD','CHECK']
+    .map(k=>((r.cells||{})[k]||{}).total||0)));
+  const rowMax=Math.max(1,...rows.map(rowTot));
   el('rows').innerHTML=rows.map(r=>{
-    const c=r.cells||{}, g=k=>c[k]||{done:0,total:0};
-    return `<tr><td class="name">${r.name}</td>`+
-      ['DECIDE','BUILD','CHECK'].map(k=>`<td>${bar(g(k).done,g(k).total,
-         g(k).state==='blocked'?C.red:null)}</td>`).join('')+
-      `<td>${bar(rowDone(r),rowTot(r))}</td></tr>`;
+    const c=r.cells||{}, g=k=>c[k]||{done:0,total:0,mix:{}};
+    const roll={};
+    ['DECIDE','BUILD','CHECK'].forEach(k=>{
+      const m=g(k).mix||{};
+      for(const s in m) roll[s]=(roll[s]||0)+m[s];
+    });
+    return `<tr${rowTot(r)?'':' class="empty"'}><td class="name">${r.name}</td>`+
+      ['DECIDE','BUILD','CHECK'].map(k=>`<td>${stack(g(k).mix,g(k).total,cellMax)}</td>`).join('')+
+      `<td>${stack(roll,rowTot(r),rowMax)}</td></tr>`;
   }).join('');
 
   el('seats').innerHTML=['DECIDE','BUILD','CHECK','REP'].map(s=>{
@@ -237,6 +283,26 @@ function render(d){
     (h.swap&&h.swap.total_gb?memRow('Swap',h.swap.used_gb,h.swap.total_gb,60):'')+
     (h.agents?`<div class="mem"><div class="r"><span>Agent processes</span>
        <span>${h.agents.count} · ${h.agents.rss_gb} GB</span></div></div>`:'');
+
+  // Velocity — closed-per-day from the Closes: trailers' own commit dates, so
+  // it can never disagree with the closed count above. The projection assumes a
+  // fixed scope, and v1's scope has already moved once; it is labelled a trend.
+  const V=d.velocity||{}, days=V.days||[];
+  if(days.length){
+    const mx=Math.max(1,...days.map(x=>x.n)), W=100/days.length;
+    el('velocity').innerHTML=
+      `<div style="display:flex;align-items:flex-end;gap:2px;height:52px">`+
+      days.map(x=>`<div title="${x.d}: ${x.n}" style="flex:1;height:${Math.max(4,100*x.n/mx)}%;
+         background:${C.grn};opacity:.85;border-radius:2px 2px 0 0"></div>`).join('')+
+      `</div>`+
+      `<div class="mem"><div class="r"><span>${V.closed} closed over ${days.length} day(s)</span>
+         <span style="color:var(--tx)">${V.per_day}/day</span></div></div>`;
+    el('veta').textContent = V.eta_days!=null
+      ? `${V.remaining} left · ~${V.eta_days}d at this rate` : `${V.remaining||0} left`;
+  } else {
+    el('velocity').innerHTML='<div class="sub">no closures recorded yet</div>';
+    el('veta').textContent='';
+  }
 
   const cls=d.blockers.classes||[];
   const mx=Math.max(1,...cls.map(c=>c.count));
