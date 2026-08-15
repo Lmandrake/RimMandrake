@@ -155,7 +155,20 @@ spec:     `infrastructure/state/CREATE_TEST_PLAN.md`, 20,435 B. Written by the
 verify:   Either the file carries a current-authority header and an owning seat,
           or it is gone and its 8 referencing files no longer cite it.
 criteria: none — offline.
-state:    ready
+state:    done — 2026-08-15. **RULING: it KEEPS, unchanged, and it is CHECK's file.**
+          The two defects this item describes were already fixed by `8abb5d1` before
+          the item was read: it cites `V1_CHAIN.md` at line 8 and **never mentions
+          `V1_SCOPE.md`** (zero hits), and `:267` points at `Terrain_Floors.xml`, not
+          a deleted queue — the filing instruction is at `:308` and names
+          `queue/CHECK.md`, which exists. Every path in the file resolves.
+          It is load-bearing at six sites, `NEXT_RELOAD.md:322` and
+          `src/RimMandrake/bridgetools/load_session.py:548,700,704` among them.
+          **Part 5 is the only record in the repo of which SINGLE facing is broken
+          per parked art-fix mod** — Cerean mane SOUTH, Saurid frill NORTH (the
+          donor's `CenterFrill8_north-.png` trailing-hyphen typo), ToolBelt WEST
+          (753 B against 16,945 B east). Disk-verified, non-obvious, expensive to
+          re-derive. Deleting it would also cost the 9 pre-flight corrections and
+          the false-pass checklist. No rewrite is owed.
 
 ## D22 Prune NEXT_RELOAD.md — 657 lines against a 400 budget
 row:      0
@@ -171,7 +184,13 @@ spec:     `infrastructure/state/NEXT_RELOAD.md`. Over budget per
 verify:   `doc_budget.py` reports NEXT_RELOAD.md ok, or DOC_BUDGET.md records why
           its budget was raised.
 criteria: none — offline.
-state:    ready
+state:    done — 2026-08-15. The 657-line premise was already stale; the file was
+          pruned to 318 before this item was read. `doc_budget.py` now reports
+          **378 / 400 ok**, and that is AFTER today's rewrite added §1.0 and six
+          live items. All three dangling queue refs (`queue/OPS.md`,
+          `queue/BRIDGE.md`, `queue/CREATE.md`) are gone. The budget stands as
+          written; it did not need raising. ⚠️ The one live ref out of this file is
+          `CREATE_TEST_PLAN.md` Part 5 at §7 — that is D21's ruling, not this one.
 
 ## D2 Owner: may we generate throwaway worlds purely to measure?
 row:      v2
@@ -324,6 +343,35 @@ verify:   the live Cherry Picker config and
           after every batch.
 criteria: the campaign's content reads as one setting rather than 584 mods.
 state:    doing
+measured: 2026-08-15 DECIDE, and **this item's own spec above understates what is
+          already done.** The live config and the freeze copy both hold **1,308**
+          `<li>` keys and are identical — 1,284 `ThingDef`, 8 `IncidentDef`, 7
+          `PawnKindDef`, 2 `RecipeDef`, 2 `GeneDef`. Five categories are decided and
+          LIVE, not "next":
+            weapons    799 defs   616 keep / **183 cut**
+            apparel    820 defs   688 keep / **132 cut**
+            animals  1,239 defs   901 keep / **338 cut**
+            items · buildings · biomes — decision files exist and are non-empty
+          Records: `observed/inventory/decisions_<category>.json`, written by
+          `src/RimMandrake/Utils/cherrypick_review.py` (HTTP review page, autosaves).
+          Sheets: `observed/inventory/sheets_weapons/`, `sheets_apparel/`.
+          🔴 **TWO DEFECTS FOUND WHILE MEASURING, both routed to BUILD as B67:**
+          1. `observed/inventory/` is **gitignored** (`.gitignore:181`, comment
+             "Derived: regenerated in seconds"). That comment is TRUE of the 678 MB
+             of contact sheets and **FALSE of the seven decision files** — those are
+             ~1,300 owner keep/cut judgements and no machine regenerates them.
+             The **cuts** survive in the committed freeze XML; the **keeps** exist
+             nowhere else, so losing the folder makes "kept deliberately"
+             indistinguishable from "never reviewed" across five categories.
+          2. `cherrypick_build.py` validates a hand-authored `KEYS` list of ~24
+             entries (Anomaly + GravTech) and **nothing reads the decision files**.
+             The deployed 1,308 keys were written past the validator that exists to
+             check them, so no key in the live cut list has been checked against the
+             def dump. `--defs` validation for step 1 is currently a no-op.
+          ⇒ `V1.md` step 1 corrected. `design/Jawa/mods/CHERRYPICK_AGENDA.md` still
+          reads "No list exists at all today" for armour and leaves weapons and
+          apparel unticked; it is the agenda for the owner session and correcting it
+          is part of this item, not a separate one.
 
 ## D28 Second pass on the xenotypes, once they are actually spawning
 row:      7

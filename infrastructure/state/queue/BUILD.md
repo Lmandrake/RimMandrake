@@ -1452,3 +1452,142 @@ verify:   `ModsConfig.xml` live and freeze still identical after your pass; the 
 criteria: the next load throws no unexpected `Could not resolve cross-reference` that
           traces to one of the six removed mods.
 state:    ready
+
+## B66 🔴 Two generator defects, one regenerate — RIDE THIS WINDOW or lose a load
+row:      9
+spec:     Routed by DECIDE 2026-08-15 from CHECK's live findings D-CHK2 and D-CHK3.
+          **Both are one file, one re-run and one redeploy**, so they are ONE item —
+          do not split them and pay the deploy twice.
+          File: `src/RimMandrake/Utils/gen_races_mod.py`.
+          Mod:  `src/Jawa/RimMandrake_StarWarsRaces` (`mandrake.starwarsraces`).
+          ⏱️ **Pure XML + loose PNGs, no assembly.** It needs no shutdown window of
+          its own, but it MUST be regenerated and redeployed before the game relaunches
+          or `NEXT_RELOAD.md` §5 L0 photographs four species that are magenta for a
+          reason we already know, and the next load re-asks a question answered today.
+
+          (a) **THE PATH-REWRITE LIST IS INCOMPLETE — 19 defs, 27 dead paths.**
+          `TEXFIELDS` at `gen_races_mod.py:148` and `TEXCONTAINERS` at `:151` are the
+          whole list, and four families are missing from it:
+            · `texPathFemale`                    — add to `TEXFIELDS`
+            · `backgroundPathEndogenes`          — add to `TEXFIELDS`
+            · `backgroundPathXenogenes`          — add to `TEXFIELDS`
+            · `<Male>` / `<Female>` **inside** a `BigAndSmall.PawnExtension` `headPaths`
+              — NOT a flat field; `TEXCONTAINERS` handles `<li>` children only, so this
+              needs the container walk to descend into named children too
+          Plus one hand path outside the generator:
+            · `Pawn/HeadAttachments/gand/mask_yuun` in
+              `src/Jawa/RimMandrake_StarWarsRaces/Defs/Misc/SW_Support.xml`
+          🔑 **The texture copier is driven from the SAME list** (`copy_textures`,
+          `:597`, fed by `texhits` from `rewrite`, `:478`). A field it does not rewrite
+          is a texture it never copied — so three of these need the ART copied as well,
+          not just the path fixed:
+          | path | art state | action |
+          |---|---|---|
+          | `Pawn/HeadType/gand/gand`, selkath heads | 6 files PRESENT | rewrite path only |
+          | `OuterRim/Genes/Headbone/ChagrianF` | NOT copied | rewrite **and** copy |
+          | `Pawn/HeadAttachments/gand/mask_yuun` | NOT copied | rewrite **and** copy |
+          | `YellowEyes_Female` | NOT copied | rewrite **and** copy |
+          | `OuterRim/GeneIcons/*BG` | NOT copied | rewrite **and** copy |
+          The donors still hold every file — e.g.
+          `2980427615/Common_Old/Textures/OuterRim/Genes/Headbone/ChagrianF_east.png`,
+          `2915192253/Textures/Pawn/HeadAttachments/gand/mask_yuun_east.png`. Nothing
+          is lost, only unmigrated.
+
+          (b) **69 PawnKindDefs are missing `initialResistanceRange`.**
+          `write_pawnkinds` (`:821`) emits each kind with `ParentName="BasePlayerPawnKind"`,
+          which does not supply it, so every load throws
+          `Config error in RimMandrake<Species>_Kind: initial resistance range is
+          undefined for humanlike pawn kind.` — **69 lines, three quarters of the whole
+          stack's 93 config errors.** Not only noise: it is what a prisoner's recruitment
+          resistance rolls from, so the capture path is unset for all 70 species.
+          Fix: one `ET.SubElement(e, "initialResistanceRange").text = "10~20"` beside the
+          existing `apparelMoney` line at `:831`. `10~20` is vanilla's humanlike value —
+          use it; this is not a balance decision and must not become one.
+          ⚠️ **Check `write_rescued_kinds` (`:769`) too.** It emits the 16 Galactic
+          Diversity `RimMandrake_<Species>` kinds. The error text names `_Kind`, so those
+          16 are probably clean — confirm rather than assume, and fix if not.
+verify:   OFFLINE, all three before deploying:
+          1. `python3 src/RimMandrake/Utils/gen_races_mod.py` re-derives the mod and
+             prints `references that die 0` / `dangling texture paths 0`.
+          2. No def field in the regenerated mod holds a path beginning `Pawn/`,
+             `OuterRim/`, `UI/` or `Genes/` **without** the `RimMandrakeSW/` prefix:
+             `grep -rhoE '>(Pawn|OuterRim|UI|Genes)/[^<]*<' src/Jawa/RimMandrake_StarWarsRaces/Defs/`
+             returns nothing.
+          3. Every path the generator now rewrites has a PNG behind it in
+             `src/Jawa/RimMandrake_StarWarsRaces/Textures/` — the file count rises from
+             713. A rewritten path with no art is the SAME magenta box wearing a new name.
+          Then `deploy_custom_mods.py --mod RimMandrake_StarWarsRaces --plan`, read the
+          plan, then `--apply`.
+criteria: LIVE, on the load this window precedes — folded into `NEXT_RELOAD.md` §5 L0:
+          · `grep -c "Failed to find any textures at" Player.log` returns **0**.
+            🔴 That is the string. `Could not load UnityEngine.Texture2D` returns zero
+            hits and is the wrong grep.
+          · `grep -c "initial resistance range is undefined" Player.log` returns **0**.
+          · A **female** `RimMandrakeChagrian`, a `RimMandrakeGand`, a `RimMandrakeSelkath`
+            and the Gand's `mask_yuun` all render a head rather than a magenta box.
+            ⚠️ **Gendered fields make this look intermittent** — male Chagrians already
+            render because their `texPaths` WERE rewritten. **Do not test one sex and
+            call a species clean.**
+state:    ready
+
+## B67 🔴 ~1,300 owner cherrypick judgements exist on one disk, ignored by git
+row:      1
+spec:     Routed by DECIDE 2026-08-15 from measuring D27. **Offline, no game, and it
+          should be the first thing done in this window because it is pure loss risk.**
+
+          (a) **COMMIT THE DECISION RECORD.** `.gitignore:181` ignores
+          `observed/inventory/` wholesale under the comment *"Derived: regenerated in
+          seconds by animal_inventory.py / *_contact_sheet.py"*. That is true of the
+          678 MB of contact-sheet PNGs and CSVs and **false of seven files**:
+            `observed/inventory/decisions_animals.json`    (1,239 defs, 338 cut)
+            `observed/inventory/decisions_weapons.json`    (  799 defs, 183 cut)
+            `observed/inventory/decisions_apparel.json`    (  820 defs, 132 cut)
+            `observed/inventory/decisions_items.json`
+            `observed/inventory/decisions_buildings.json`
+            `observed/inventory/decisions_biomes.json`
+            `observed/inventory/decisions_plants.json`
+          **160 KB in total.** They are the owner's keep/cut calls, made by hand
+          through `cherrypick_review.py`. No machine regenerates them — that is
+          exactly the CLAUDE.md test for what must be committed.
+          🔑 **The cuts are already durable; the KEEPS are not.**
+          `deployed/config/v1_freeze/Mod_3521312241_Mod_CherryPicker.xml` is tracked
+          (`6efe834`) and holds all 1,308 cut keys. It records nothing about what was
+          examined and kept. Lose this folder and no one can tell "the owner looked at
+          this and kept it" from "nobody has reviewed this yet" across five categories
+          — which means the whole cherrypick gets re-run.
+          FIX: a negation line, **not** un-ignoring the folder. Keep the 678 MB out.
+            ```
+            observed/inventory/
+            !observed/inventory/decisions_*.json
+            ```
+          Then commit the seven files by explicit path and push. Correct the stale
+          comment above line 181 while you are in there — it is what made this
+          invisible.
+
+          (b) **`cherrypick_build.py` DOES NOT READ THEM.** It validates a
+          hand-authored `KEYS` list of ~24 entries (Anomaly + GravTech) against the
+          live def dump and writes the settings file. The deployed config holds
+          **1,308** keys. ⇒ 1,284 of them were written past the validator that exists
+          to check them, so **no key in the live cut list has ever been checked
+          against a def dump**. A cut whose key is misspelled is silently inert, and
+          the def dump cannot see it either — a cut that WORKED is absent from the
+          dump, so "not in the dump" is not evidence of anything.
+          FIX: `cherrypick_build.py` reads `observed/inventory/decisions_*.json`,
+          unions their `cut` lists with the hand-authored `KEYS`, validates every key
+          against the def dump, and writes the settings file. Report unresolvable keys
+          by name; do not drop them silently.
+          ⛔ **Do not change what is currently cut.** This is a validation pass over a
+          list the owner already ratified — if the validator disagrees with a key,
+          REPORT it, and it goes to `queue/HUMAN.md`. Silently correcting an owner's
+          content decision is not yours or mine.
+verify:   (a) `git check-ignore -v observed/inventory/decisions_weapons.json` returns
+          nothing; `git ls-files observed/inventory/` lists exactly the seven JSONs and
+          no PNG; `du -ch` on what you committed is under 200 KB.
+          (b) `python3 src/RimMandrake/Utils/cherrypick_build.py` regenerates a settings
+          file whose `<li>` count is **1,308** and which is byte-identical to
+          `deployed/config/v1_freeze/Mod_3521312241_Mod_CherryPicker.xml`. 🔴 **Any
+          other count is a defect in the new code, not a correction to the list** —
+          the freeze copy and the live config already agree at 1,308 and are the
+          reference, not the output.
+criteria: none — offline. Nothing here touches the game and nothing waits on a load.
+state:    ready
