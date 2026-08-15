@@ -758,3 +758,12 @@ spec:     Its seven texture pairs are md5-identical to the donors', so it was ne
 verify:   the blast-door brief exists at its new home before the mod folder goes.
 criteria: `mandrake.missingartfixes` gone from disk and from `ModsConfig.xml`, with the brief findable somewhere under `design/`.
 state:    ready
+
+## The Tusken water raid, as a behaviour
+
+The Deep Desert Tribes' signature is a raid that targets water containers and
+disengages once loaded. v1 ships the COMPOSITION only — a light, fast, chiefless
+party. The behaviour needs a custom `RaidStrategyDef` with a C# worker class:
+measured 2026-08-14, all 18 live `RaidStrategyDef`s are attack, breach, siege or
+mod-specific, and none steals and leaves. Vanilla's `LordJob` layer is where the
+steal-and-withdraw behaviour would have to be built.

@@ -555,9 +555,35 @@ Measured in `Core/Defs/FactionDefs/`:
 | `PirateBandBase` | pirate namers and art |
 
 ⇒ **Do not inherit bare `FactionBase`.** Take the closest abstract and let it hand
-you `factionNameMaker`, `settlementNameMaker`, `factionIconPath` and
-`colorSpectrum` — that is a better answer than R16/R17's "pick one and copy it",
-and it supersedes them wherever an abstract already provides the field.
+you `factionNameMaker`, `settlementNameMaker`, `factionIconPath`, `techLevel`,
+`leaderTitle` and `settlementGenerationWeight`.
+
+🔴 **`colorSpectrum` is NOT among them.** Measured on the shipped defs: neither
+`OutlanderFactionBase` nor `TribeBase` carries one; only `PirateBandBase` does.
+**Every authored faction sets `colorSpectrum` explicitly from R22's table.**
+
+## 🔴 R24a · A CHILD LIST IS APPENDED TO THE PARENT'S, NOT SUBSTITUTED FOR IT
+
+**This is the single most dangerous thing in this spec.** Inheritance resolves
+**after** patches, and a child's `<li>` list does not replace the parent's — it is
+**appended** to it.
+
+⇒ An authored faction on `OutlanderFactionBase` silently inherits that abstract's
+**8 `pawnGroupMakers` on top of its own**, and fields vanilla outlanders under our
+name. `PirateBandBase` adds 7. `TribeBase` adds 12.
+
+```xml
+<pawnGroupMakers Inherit="False">
+```
+Vanilla writes `Inherit="False"` 314 times, 9 of them on this exact field.
+
+⚠️ **Changing a parent to gain fields also inherits its LISTS.** This bit B52:
+moving the Jawa Trade Moot from `FactionBase` to `TribeBase` was right for the
+art, but `FactionBase` has no group makers and `TribeBase` has twelve.
+
+✅ **The five reskins are unaffected** — they are patches on concrete defs, not
+children of an abstract. And B42 *wants* the append: the spec says the Deep Desert
+Tribes inherit `TribeCivil`'s twelve groups and ADD one.
 
 | faction | ParentName | override |
 |---|---|---|
@@ -572,3 +598,21 @@ and it supersedes them wherever an abstract already provides the field.
 
 ⚠️ **An inherited field is not a set field.** Read the abstract before assuming a
 value arrived; where the dossier contradicts the parent, restate it explicitly.
+
+## R26 · The Tusken water raid — composition is v1, BEHAVIOUR is v2
+
+BUILD's numbers are ACCEPTED as v1: `commonality 30`, `maxTotalPoints 800`,
+options `Tribal_Hunter 10` / `Tribal_Archer 8` / `Tribal_Warrior 4`, chiefs and
+heavies deliberately excluded. A light, fast, leaderless party reads as a raid
+for water rather than a war party, and that carries most of the fiction.
+
+🔴 **"Targets containers, disengages once loaded" cannot be built in v1.**
+A `pawnGroupMaker` describes WHO arrives, never what they do. Measured: all 18
+live `RaidStrategyDef`s are attack, breach, siege or mod-specific variants —
+**none steals and leaves.** Expressing it needs a custom `RaidStrategyDef` with a
+C# worker class. ⇒ `[v2]`, and it goes in `V2_DREAMS.md` rather than sitting in
+the spec as an unbuildable sentence.
+
+📌 **The general rule, because it will recur:** a dossier's signature mechanic is
+often a BEHAVIOUR, and `FactionDef` expresses composition. Before promising one,
+name the def that carries the behaviour. If you cannot, it is v2.

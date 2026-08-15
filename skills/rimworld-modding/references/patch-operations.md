@@ -149,13 +149,36 @@ Most operations act on **every** node the xpath selects. This is a feature for
 </ThingDef>
 ```
 
-Inheritance is resolved **before** patches run, so by patch time the child def
-already carries the parent's fields — you can patch `Muffalo/race/baseBodySize`
-even though the literal text of the Muffalo def never mentions it. Two corollaries:
+🔴 **Inheritance is resolved AFTER patches run.** Patches operate on the literal
+XML as declared, so you cannot patch a field the child does not itself contain —
+`Muffalo/race/baseBodySize` is only patchable if the Muffalo def literally writes
+it. Aim at the parent, or at the concrete def where the field is declared.
 
+🔴 **A child's `<li>` list is APPENDED to the parent's, not substituted for it.**
+This is the trap that costs a game load, because nothing errors. A def declaring
+one `<comps><li>` under a parent with three ends up with **four**. A `FactionDef`
+declaring its own `pawnGroupMakers` under `OutlanderFactionBase` also inherits
+that abstract's eight — and fields vanilla outlanders under your faction's name.
+
+The opt-out is per-field, on the child's element:
+
+```xml
+<pawnGroupMakers Inherit="False">
+```
+
+Vanilla writes `Inherit="False"` **314 times**, 9 of them on `pawnGroupMakers`
+alone. If you did not write it, you appended.
+
+Three corollaries:
+
+- **Changing a parent to gain fields also inherits its lists.** Re-parenting to
+  pick up art or namers silently drags the parent's group makers, comps and
+  filters along with them.
 - Patching the abstract parent hits every descendant at once, including ones
   from mods you didn't consider. Powerful and easy to overreach with.
-- `Inherit="False"` on a child element blocks inheritance for that field only.
+- Sometimes the append is what you want — inheriting a vanilla faction's twelve
+  group makers and adding a thirteenth is a legitimate, cheap design. Decide
+  which you want; do not discover it.
 
 ---
 
