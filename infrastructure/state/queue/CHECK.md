@@ -105,3 +105,22 @@ spec:     —
 verify:   —
 criteria: —
 state:    dropped — Worldgen is manual and the sea left v1. Full text in `design/V2_DREAMS.md`.
+
+## C35 Confirm the faction xenotype sets read back as Star Wars species
+row:      9
+spec:     Per `FACTION_SPEC.md` R27. Six factions had `xenotypeSet` INHERITED
+          from their vanilla abstract before the fix — `OutlanderFactionBase`
+          ships five vanilla xenotypes, `PirateBandBase` nine. On the next live
+          game, read each faction back and confirm no member generates as
+          Hussar, Dirtmole, Genie, Neanderthal, Starjack, Waster, Pigskin or
+          Impid.
+          ⚠️ Also verify the `BTD_` prefix actually resolves. Three packs ship
+          overlapping xenotypes and BTD Remix dedups at LOAD, so a disk-derived
+          name is not proof. `BTD_Jawa` surviving while `OuterRim_Jawa` does not
+          is the measured precedent this rests on; if a `BTD_*` name is missing,
+          the fallback is `guy762_xenotype_*`, never `OuterRim_*`.
+verify:   none — live read only.
+criteria: `jawa/get_def defType=FactionDef` on each of the six shows only the
+          intended species; a spawned member of each is visibly the right race.
+          🔴 A def dump is DISK, not RUNTIME — only the live game settles this.
+state:    ready

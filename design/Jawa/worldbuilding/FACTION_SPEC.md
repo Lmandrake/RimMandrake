@@ -616,3 +616,54 @@ the spec as an unbuildable sentence.
 📌 **The general rule, because it will recur:** a dossier's signature mechanic is
 often a BEHAVIOUR, and `FactionDef` expresses composition. Before promising one,
 name the def that carries the behaviour. If you cannot, it is v2.
+
+## 🔴 R27 · `xenotypeSet` IS THE SECOND INHERIT TRAP — and it shipped
+
+Same append rule as R24a, and it is live in what has already been deployed.
+`OutlanderFactionBase` carries a `xenotypeSet` of **five vanilla xenotypes**
+(Hussar · Dirtmole · Genie · Neanderthal · Starjack); `PirateBandBase` carries
+**nine**. ⇒ Hutt enforcers, Deepwater wardens, Wildsteam warriors, Helix curators
+and Junker raiders can all currently generate as **Hussars and Neanderthals** in a
+Star Wars campaign.
+
+`TribeBase` has none, so the Jawa Trade Moot is safe by luck. The Geonosian hive
+is safe on purpose — it already declares `Inherit="False"`.
+
+**⇒ ALL SIX get `<xenotypeSet Inherit="False">` with an explicit set.** The
+`Inherit="False"` is the fix and it is certain; the species lists below come from
+each dossier's own composition table.
+
+**Use the `BTD_` prefix.** Three packs ship overlapping xenotypes —
+`btd.xenotyperemix.starwars` (70), `guy762.starwarsxenotypes` (58),
+`neronix17.outerrim.galacticdiversity` (44). **BTD Remix dedups at load and BTD_
+is what survives**: measured live, `BTD_Jawa` survived and `OuterRim_Jawa` does
+not exist at runtime. Wrap every `<li>` with
+`MayRequire="btd.xenotyperemix.starwars"`.
+
+Shape, read from the live `Ancients` def:
+
+```xml
+<xenotypeSet Inherit="False">
+  <xenotypeChances>
+    <li MayRequire="btd.xenotyperemix.starwars"><xenotype>BTD_Nikto</xenotype><chance>0.30</chance></li>
+  </xenotypeChances>
+</xenotypeSet>
+```
+
+| faction | xenotypes, weighted by the dossier's own percentages |
+|---|---|
+| **Hutt Cartel** | `BTD_Nikto` · `BTD_Gamorrean` · `BTD_Rodian` · `BTD_Trandoshan` · `BTD_Aqualish` · `BTD_Twilek` · `BTD_Pyke` · `BTD_Devaronian` |
+| **Free Droid Enclaves** | **EMPTY SET** — 0% biological. `Inherit="False"` with no `xenotypeChances` |
+| **Wildsteam Clan** | `BTD_Wookiee` · **`Yttakin`** · `BTD_Cathar` · `BTD_Ewok` · `BTD_Togruta` · `BTD_Ithorian` |
+| **Deepwater Compact** | `BTD_Quarren` · `BTD_MonCalamari` · `BTD_Selkath` · `BTD_Gungan` · `BTD_Chagrian` · `BTD_Herglic` · `BTD_Duros` |
+| **Ascendant Helix** | `BTD_Arkanian` · `BTD_Kaminoan` · `BTD_Cerean` · `BTD_Bith` · `BTD_Chiss` · `BTD_Rakata` · `BTD_Umbaran` · `BTD_Neimoidian` |
+| **the Junkers** | `BTD_Gamorrean` · `BTD_Weequay` · `BTD_Nikto` · `BTD_Aqualish` · `BTD_Ugnaught` · `BTD_Rodian` · `BTD_Snivvian` · `BTD_Trandoshan` |
+| **Geonosian Foundry Hive** | `BTD_Geonosian` — ⚠️ **the spec previously said `Geonosian`, which does not exist.** Already `Inherit="False"`; only the name changes |
+
+⭐ **`Yttakin` is vanilla and is kept deliberately** — the Wildsteam dossier puts
+Wookiee-kin at 25%, and Yttakin is a hairy cold-world xenotype that reads as
+Wookiee-adjacent. It is the one vanilla xenotype that earns its place.
+
+⚠️ **The BTD-survives-dedup fact is measured for Jawa and generalised here.**
+If a `BTD_*` name turns out not to resolve live, the fallback is the
+`guy762_xenotype_*` prefix, not `OuterRim_*`. CHECK verifies the sets read back.

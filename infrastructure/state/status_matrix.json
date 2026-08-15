@@ -195,7 +195,7 @@
     },
     "CHECK": {
      "done": 0,
-     "total": 1,
+     "total": 2,
      "state": "idle"
     }
    }
@@ -289,7 +289,7 @@
      "state": "blocked"
     },
     "BUILD": {
-     "done": 0,
+     "done": 1,
      "total": 11,
      "state": "blocked"
     },
