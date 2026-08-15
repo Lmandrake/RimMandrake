@@ -45,19 +45,19 @@ for this order; it is not a preference.
 
 | # | domain | needs | state |
 |---|---|---|---|
-| 0 | **Mod freeze** | — | open — the gate on everything |
+| 0 | **Mod freeze** | — | ✅ done — 584 active, two files frozen |
 | 1 | **Item cherrypick** | 0 | **deferred — interactive session with the owner. Do not block.** |
 | 2 | **Normalize weapons · armour · beasts** | 1 | open — balance pass over what survives |
 | 3 | **Equipment types → pawns** | 2 | open — the tags a `PawnKindDef` actually consumes |
-| 4 | **Xenotypes** | — | ✅ done — `MandrakeJawa` enforced in shipped XML |
+| 4 | **Xenotypes** | — | 🔴 **NOT done** — `OnlyMandrakeJawa.xml` used a non-existent op type, so the suppression was inert and the three rivals still generate. BUILD repairing |
 | 5 | **Droids** | 0, 4 | taxonomy ruled; pawn track unbuilt; NRE route open |
-| 6 | **Religions** | — | 2 of 11 have authored text. §12 is the owner's |
+| 6 | **Religions** | — | ✅ text written and DEPLOYED for all 11. §12 is the owner's |
 | 7 | **Pawntypes** | 3, 4, 5 | 48 proposed, 0 literal defNames. 19 ship, none matching |
 | 8 | **Biomes** | 2 | ✅ ratified (W3) |
-| 9 | **Factions** | 6, 7 | 6 reskins + 8 authored. Only the 8 owe `pawnGroupMakers` |
+| 9 | **Factions** | 6, 7 | ✅ 5 reskins + 8 authored, all BUILT AND DEPLOYED |
 | 10 | **Worldmap** | 9 | 🔴 **MANUAL — the owner makes and saves it.** Blocked on step 9 shipping first |
 | 11 | **Gravship** | 2 | ✅ built and exported |
-| 12 | **Scenario** | 2, 7, 11 | 🔴 **no design doc exists anywhere** |
+| 12 | **Scenario** | 2, 7, 11 | specced — `SCENARIO_SPEC.md`. Waits on the owner's world |
 | 13 | **Quests** | 9 | row 3 reopened on resolution |
 
 🔴 **Everything through 9 is upstream of 10, and 10 cannot be redone.** A
@@ -123,9 +123,8 @@ to invent tag values on purpose. What is owed: the actual tag strings carried by
 the surviving weapon and apparel defs, read out of the live dump.
 
 ### 6 · Religions
-`faction_religions_spec.md` is the strongest doc in the set — real memes and
-precepts read from the live dump — but its own heading says **the text is the
-product**, and 9 of 11 have no authored player-facing text. Section 12 (Jawa) is
+✅ **All eleven carry `ideoName`, `ideoDescription`, `forcedMemes` and
+`requiredPreceptsOnly` as literal XML, and are deployed.** Section 12 (Jawa) is
 deliberately empty and stays that way: the player faith ships as
 `src/Jawa/ideoligion/The Salvation.rid`.
 
