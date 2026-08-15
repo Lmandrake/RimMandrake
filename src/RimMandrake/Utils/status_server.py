@@ -140,7 +140,13 @@ def inventory():
                 continue
             e = f.rsplit(".", 1)[-1].lower() if "." in f else ""
             if e in ("png", "jpg", "jpeg", "dds", "bmp", "psd"):
-                add("graphics", n); tex += 1
+                # Shipping art and reference art are not the same asset. A
+                # 3 MB biome screenshot for review is not a texture the game
+                # loads, and summing them hides how much art actually ships.
+                if rel.startswith("src"):
+                    add("game textures", n); tex += 1
+                else:
+                    add("reference art", n)
             elif e == "dll":
                 add("assemblies", n)
             elif e == "cs":
@@ -163,7 +169,8 @@ def inventory():
         ("mods", about),
         ("def files", defs),
         ("patch files", patches),
-        ("textures", tex),
+        ("game textures", tex),
+        ("reference images", cnt.get("reference art", 0)),
         ("C# files", cnt.get("C# source", 0)),
         ("tools/scripts", cnt.get("tools/scripts", 0)),
         ("skill docs", cnt.get("skills", 0)),
