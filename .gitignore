@@ -173,3 +173,6 @@ observed/*_patch_sweep_scoped.txt
 infrastructure/state/status/
 # derive_matrix.py rebuilds it from the Closes: trailers in git log.
 infrastructure/state/closed_ledger.json
+
+# Derived: regenerated in seconds by animal_inventory.py / *_contact_sheet.py
+observed/inventory/
