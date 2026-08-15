@@ -497,3 +497,29 @@ verify:   each of the six is either answered in a design doc or explicitly
           re-parked with a reason.
 criteria: none — offline.
 state:    ready
+
+## stage-the-next-load-and-more-content-4b7e05
+row:      10
+spec:     Owner broadcast, 2026-08-15, relayed by REP: *"Game is down, offline work may
+          begin. Stage the next game load and prepare additional content. Ensure the
+          mod list shows the many removed mods correctly (BUILD)."*
+
+          Game confirmed DOWN (`tasklist.exe`, no `RimWorldWin64.exe`). The shutdown
+          window is OPEN, which is the only window for the deploy-gated items —
+          `queue/BUILD.md` B0 and B1 both say "game must be DOWN" and have been
+          waiting on exactly this.
+
+          Two halves, both yours:
+          1. STAGE THE LOAD. `infrastructure/state/NEXT_RELOAD.md` is assembled by you.
+             Order it, make every item name the call that produces its evidence, and
+             sweep the seat queues for anything `blocked — needs a live game`
+             (CHECK's C37 70-race lineup is parked waiting on a load).
+          2. PREPARE ADDITIONAL CONTENT. Spec it and feed BUILD. The mod-list half is
+             the owner's explicit assignment to BUILD and is filed there as
+             `mod-list-shows-descoped-removals-9c4e12`; it is already measured correct,
+             so do not re-spec it.
+verify:   `NEXT_RELOAD.md` is ordered top-to-bottom with a call named per item, and no
+          item in it is one the down-window makes unnecessary.
+criteria: the load answers every question staged in it; nothing needs a second load
+          that could have ridden this one.
+state:    ready

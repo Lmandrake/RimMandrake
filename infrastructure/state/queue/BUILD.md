@@ -1411,3 +1411,40 @@ verify:   POLICY.md states the naming rule; `derive_matrix.py` still resolves a
 criteria: EMPTY — offline, no game needed.
 state:    ready
 
+
+## mod-list-shows-descoped-removals-9c4e12
+row:      10
+spec:     Owner broadcast, 2026-08-15: *"Game is down, offline work may begin. Stage
+          the next game load and prepare additional content. Ensure the mod list shows
+          the many removed mods correctly (BUILD)."* Relayed by REP with the state
+          measured at relay time, so you do not re-measure the settled half:
+
+          ALREADY CORRECT — live `ModsConfig.xml` (mtime 2026-08-15 11:58:30, 575
+          active) and `deployed/config/v1_freeze/ModsConfig.xml` are IDENTICAL,
+          including order, and 0 listed packageIds are missing from disk. All six
+          Descoped rows of `design/Jawa/mods/CHERRYPICK_AGENDA.md` are absent from
+          both: `VanillaExpanded.VanillaAnimalsExpanded`, `zal.giantsnake`,
+          `regrowth.botr.boilingforest`, `guppyfacesarecute.skunks`,
+          `abrolo.grimstone.beasts`, `redmattis.sapientanimals`.
+
+          WHAT IS NOT DONE, and is this item:
+          1. Those six mods are still installed and still Steam-subscribed, so a
+             RimSort re-sort or a Steam action re-adds them with no warning. Decide
+             and record whether they are unsubscribed or left on disk inactive.
+          2. Their defs are gone but references to them are not. Pre-record the
+             `Could not resolve cross-reference` signatures the next load will throw
+             into `infrastructure/state/EXPECTED_FAILURES_next_load.md` BEFORE launch —
+             a missed one costs a load, a duplicate costs nothing.
+          3. `RG_BoilingForest` and the six `BoilingWater*` terrains are named by
+             B64 as replaced by our own authoring; confirm nothing still points at
+             the dead defNames.
+          🔴 Game is DOWN and confirmed down (`tasklist.exe`, no `RimWorldWin64.exe`),
+          so this is the window. But `ModsConfig.xml` was written at 11:58 today and
+          REP has asked the owner whether RimSort is open — read its mtime again
+          immediately before any write, per NEXT_RELOAD §1b.
+verify:   `ModsConfig.xml` live and freeze still identical after your pass; the six
+          packageIds absent from both; every signature you expect from the removals
+          present in `EXPECTED_FAILURES_next_load.md` before the load is called.
+criteria: the next load throws no unexpected `Could not resolve cross-reference` that
+          traces to one of the six removed mods.
+state:    ready
