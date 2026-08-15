@@ -443,7 +443,6 @@ gravship is an *unprecedented* situation for them, and the opening tier has to
 make that legible by being genuinely meagre.
 
 **Craftable from the start, at their own workstations:**
-- **Makeshift weapons** — pipe guns, improvised kinetics (the VWE Makeshift tier).
 - **Some melee** — blades and tools pressed into service.
 - **Basic ion weaponry.** This is the Jawa *signature*, and it is doing three
   jobs at once: it is the one thing they can build themselves, it is the weapon

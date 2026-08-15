@@ -338,6 +338,12 @@
 			<li>ThingDef/GR_Wolffalo</li>
 			<li>ThingDef/GR_Wolfsnake</li>
 			<li>ThingDef/GR_WoolyWolf</li>
+			<li>ThingDef/VWE_Gun_MakeshiftPistol</li>
+			<li>ThingDef/VWE_Gun_MakeshiftSMG</li>
+			<li>ThingDef/VWE_Gun_MakeshiftRifle</li>
+			<li>ThingDef/VWE_Gun_MakeshiftShotgun</li>
+			<li>ThingDef/VWE_Gun_MakeshiftLMG</li>
+			<li>ThingDef/VWE_Gun_MakeshiftRevolver</li>
 		</keys>
 	</ModSettings>
 </SettingsBlock>

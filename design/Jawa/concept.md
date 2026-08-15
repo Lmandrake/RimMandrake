@@ -59,7 +59,8 @@ Answers pointing toward broad optionality / self-sufficiency → restrict or exc
 - **Progression gate:** Configurable Techprints makes factory/gravtech research **quest-only**.
 - **Theme layer:** Outer Rim (factions/species incl. `OuterRim_Jawa` xenotype), Nomad Scavenger
   look, Star Wars Xenotypes, Fully Functional Lightsabers (**quest-earned only, craft disabled**),
-  VWE-Makeshift (junk scavenger weapons). Empire = fused vanilla Royalty + Outer Rim Galactic
+  VWE-Makeshift is installed but its weapons are **deprecated for v1** (bullet guns; v1's weapons
+  are blasters). Empire = fused vanilla Royalty + Outer Rim Galactic
   Empire, and is the **pursuing antagonist** (as a live hostile faction).
 - **Enemy interest:** CAI-5000 (smarter AI) + Reinforced Mechanoids 2 + qualitative rosters;
   Custom difficulty tuned "fewer, heavier, smarter." No raid-point inflation, no player mech ladder.

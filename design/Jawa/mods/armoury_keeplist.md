@@ -55,12 +55,6 @@ Star Wars Animal Collection (10) · Mythic Ages: Megafauna (17) · Biomes! Caver
 prepared-ground answer a poor colony has to rich infantry. This is a keep-and-
 *expand* category, not a keep-as-is one.
 
-### Scavenger tier — 5
-
-**Vanilla Weapons Expanded — Makeshift** (5). Pipe guns and improvised trash.
-Cut on the "no Earth guns" rule, kept on the Jawa rule: this is what you build
-from a wrecked speeder, and it is the visual bottom of the ladder.
-
 ---
 
 ## OUT — and why
@@ -74,7 +68,8 @@ from a wrecked speeder, and it is the visual bottom of the ladder.
 | **Destiny Exotic Weapons** | 9 | strong art, wrong universe |
 | **Dungeon Pack** | 10 | fantasy (Thor hammer) |
 | **Vanilla Brewing Expanded** | 6 | joke melee |
-| **Metal Pipe / ModularWeapons 2** | 7 | redundant with the Makeshift tier |
+| **Vanilla Weapons Expanded — Makeshift** (+ Makeshift: Re-Examined) | 6 | **deprecated for v1** — crude or not, they are bullet guns, and v1's weapons are blasters. Cut via Cherry Picker 2026-08-15. The scavenger-built idea survives; the kinetics do not |
+| **Metal Pipe / ModularWeapons 2** | 7 | conventional kinetics, same rule as Makeshift |
 | **Biotech / Odyssey / Royalty** | ~30 | case-by-case; Royalty persona melee may be worth **reskinning** rather than cutting |
 | **Big and Small — Weapons** | 14 | keep only if oversized xenotypes stay |
 

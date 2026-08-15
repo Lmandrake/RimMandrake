@@ -57,7 +57,8 @@ reason they were cut is that they look like real-world rifles. Two exceptions:
 
 - **`Vanilla Weapons Expanded` makeshift-adjacent frames** — crude pipe-and-tape
   silhouettes read as scavenger-built regardless of the original name. (The
-  Makeshift mod itself is KEPT, so this is only relevant if we need more.)
+  Makeshift weapons are themselves deprecated for v1, so this art is available
+  too — reskin fodder for a salvage-built *blaster*, not for another pipe gun.)
 - **Ancient urban ruins' weapon icons** — genuinely modern, genuinely wrong.
   Recorded only so nobody re-proposes them.
 

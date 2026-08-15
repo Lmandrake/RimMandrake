@@ -203,9 +203,9 @@ decided-but-verify-in-game. A **DECIDED** line records the choice + where it's a
   arms-race vector). DECIDED. [ ] Cherry-Pick the saber craft recipe to enforce.
 - [~] **Droid Depot self-limited:** DroidBrain treated as rare/salvage-gated + built droids
   draft-locked out of work queue (no droid economy). DECIDED.
-- [~] **Weapons:** keep vanilla low-tech + Outer Rim mid/high flavor + VWE-Makeshift junk tier; do
-  NOT amputate vanilla weapons (§19.5 audit GREEN — SW guns are charge-tier reskins, not power
-  creep). DECIDED.
+- [~] **Weapons:** Outer Rim mid/high flavor over a vanilla low-tech floor; do NOT amputate vanilla
+  weapons (§19.5 audit GREEN — SW guns are charge-tier reskins, not power creep). **The VWE-Makeshift
+  junk tier is deprecated for v1** — bullet guns, and v1's weapons are blasters. DECIDED.
 - [~] **No-durability-loss** via No Durability (WS 3260461453); recycling via VFE-Factory's
   Automated Smelter (no standalone recycler). DECIDED.
 

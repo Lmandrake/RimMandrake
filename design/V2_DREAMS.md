@@ -758,3 +758,15 @@ party. The behaviour needs a custom `RaidStrategyDef` with a C# worker class:
 measured 2026-08-14, all 18 live `RaidStrategyDef`s are attack, breach, siege or
 mod-specific, and none steals and leaves. Vanilla's `LordJob` layer is where the
 steal-and-withdraw behaviour would have to be built.
+
+## A salvage-built weapon tier, as blasters
+
+The VWE-Makeshift weapons (5 guns, plus Makeshift: Re-Examined's revolver) were
+cut for v1 on 2026-08-15 — not for balance, which they passed trivially, but
+because they are bullet guns and this campaign's weapons are blasters. The idea
+underneath them is still good: a Jawa clan that cobbles a working weapon out of
+a wrecked speeder is exactly the fiction. v2 route is a reskin, not a re-adopt —
+crude scrap-built *blasters* keeping Makeshift's unreliable random-burst verb,
+which is what made the tier feel scavenged rather than merely weak. Art for it
+already exists: the cut mods' own frames plus the pipe-and-tape VWE silhouettes
+noted in `design/Jawa/mods/repurposed_graphics.md`.
