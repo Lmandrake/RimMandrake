@@ -14,6 +14,14 @@
 **The three exceptions — verify first, these only:**
 worldgen click · `deploy_custom_mods.py --apply` · force-push.
 
+## Push after every completed item
+
+**Commit and `git push` the moment an item reaches `done`. With prejudice.** Not at
+the end of the session, not batched with the next item. Committed-but-unpushed work
+lives on one disk and four seats share this tree.
+
+Rejected push → `git pull --rebase`, never `--force`. Commit explicit paths.
+
 ## Writing
 
 - Do not keep provenance. Git holds it.
