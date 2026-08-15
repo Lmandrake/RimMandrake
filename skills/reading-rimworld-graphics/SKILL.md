@@ -111,11 +111,32 @@ Scale to expect: ~23,000 textures across ~67 sources, a few hundred MB.
 
 ### Matching a bundle texture to a def
 
-**Bundle objects have a NAME, not a path.** The def says
-`Things/Equipment/Ranged/Yautja_Needlegun`; the object is `Yautja_Needlegun`.
+🔴 **`m_Name` IS NOT UNIQUE INSIDE A BUNDLE, and RimWorld texPaths routinely end
+in a generic word.** These two facts together destroy data and then hide it.
 
-⇒ **Match the last path segment against `m_Name`**, applying the same suffix
-ladder.
+Measured in one real stack: **60 textures named `Apparel`**, 27 named `Head`.
+One mod alone shipped 42 called `Apparel`, because apparel texPaths carry their
+identity in the DIRECTORY:
+
+```
+OuterRim/Apparel/Stormtrooper/DeathCuirass/Apparel
+OuterRim/Apparel/ImperialArmy/Cuirass/Apparel
+OuterRim/Apparel/ImperialUniform/ISBAgent/Apparel
+```
+
+Two consequences, and both bit:
+
+- **Never write extracted textures as `<source>/<m_Name>.png`.** That silently
+  overwrote 41 of 42 garments — the data never reached disk at all. Preserve the
+  object's **container path**, and where none exists, disambiguate collisions
+  rather than letting one win.
+- **Never match on the last path segment alone.** Compare texPath against the
+  container path **from the right-hand end**, requiring as many segments to agree
+  as are available, so `DeathCuirass/Apparel` beats `ISBAgent/Apparel`.
+
+⇒ **Match by trailing path segments, and prefer the def's own mod before any
+other source.** The own-mod rule alone would have caught this: every wrong render
+came from a different mod's file.
 
 🔴 **Names collide across sources.** `TorchLamp` exists in several mods, and so
 do generic relative paths like `Things/Item/Equipment/Tool/Axe`. A global
@@ -144,6 +165,15 @@ one before it, because the junk match is often the biggest file.
 ⚠️ **Then look at the sheet before you hand it over.** These three survived
 filename inspection and died instantly on sight. Render a montage and read it;
 you are checking art, so check it with your eyes.
+
+🔴 **A blank-rate metric cannot detect a wrong picture.** "Blanks fell from 30%
+to 2.6%" measures whether *a* texture appeared, not whether it was *the right*
+one — and a wrong render looks like a success in every count you have. Forty-two
+different garments all showing one white tunic scored perfectly.
+
+**Verify IDENTITY, not coverage:** take several defs that should look different,
+and assert they resolve to **different files, each under their own mod**. That
+check takes seconds and is the only one that catches a collision.
 
 ## 🔴 An icon is not the thing's appearance — check which one you were asked about
 
