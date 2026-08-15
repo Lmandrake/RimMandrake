@@ -1159,15 +1159,20 @@ cannot be rebuilt without them installed. An authored set can.
 count. It is a v2 project, not a v2 chore, and it should not be started as a fix for any
 single v1 defect. See also the stripped-genes item above, which it would subsume.
 
-## ⭐ The Ortolan — HIGH PRIORITY for v2. And five other species deferred with it.
+## ~~⭐ The Ortolan~~ — ✅ ORTOLAN IS BACK IN v1, CONFIRMED IN GAME 2026-08-15. Five others still deferred.
 
 Owner, 2026-08-15: *"Herglic is now v2. So are Anzati, Muun, Sithz, Togorian. **The
 Ortolan we sorely want them**, but for now they are also in v2. Mark the Ortolan as a
 high priority for v2."*
 
-**The Ortolan is the one to bring back first.** It is deferred for want of time, not
-because it is wanted less — the owner said so in the same breath as deferring it. When
-v2 opens, this is the first species to restore, not one of six equals.
+🔴 **SUPERSEDED FOR THE ORTOLAN, 2026-08-15.** Owner, live, looking at the 70-race grid
+on the scratch map: *"We have a working Ortolan! Make that as done for now and confirmed,
+not v2 after all."* ⇒ **`RimMandrakeOrtolan` is v1, DONE and CONFIRMED.** It spawned in
+the 70/70 grid and the owner examined it on screen. Do not restore it — it is already
+here. Strike it from any v2 species list.
+
+**The other five below remain deferred**, and among them the ordering note no longer
+applies since its subject has left the list.
 
 | species | xenotype defName | pawn kind |
 |---|---|---|
@@ -1251,3 +1256,11 @@ There is no `Textures/swanimals/` directory. Extract with
 
 ⇒ **CHECK C41 rides this, and is therefore v2 too.** It needs 24 PNGs; the mod has
 12, all of them the sled.
+
+## Yoder the Force Gremlin has hair — v2 fix
+
+Owner, 2026-08-15, live off the 70-race grid: *"Oops. Yoder has hair... that's a v2 fix."*
+
+`RimMandrakeYoderForceGremlin` renders with hair it should not have. Owner classed it v2
+himself in the same breath, so it is **not** a v1 defect and no v1 item should be opened
+for it. The species spawns and is otherwise fine — this is cosmetic only.
