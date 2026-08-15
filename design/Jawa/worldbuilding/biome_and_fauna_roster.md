@@ -431,7 +431,7 @@ reasons, which is what the owner asked for.
 
 ⚠️ **All of this changes WORLDGEN, so it only affects a world generated
 afterwards.** It cannot be validated on the current save, and it is not a
-v1-blocking item — `V1_SCOPE.md` gives VISION one authored faction, Faction
+v1-blocking item — v1 now carries the FULL faction roster (`V1_CHAIN.md`), Faction
 Control suppression, three terrain overrides, and the Jawa xenotype. **This
 document is v2 unless the owner pulls it forward**, and the reason to write it
 now is that it was the largest un-done piece of world design, not that it is

@@ -1,5 +1,12 @@
 # V1_SCOPE.md — what ships in the alpha, and what waits
 
+> 🔴 **SUPERSEDED ON SCOPE by `infrastructure/state/V1_CHAIN.md` (owner, 2026-08-14).**
+> **v1 is now the 8 rows + the FULL faction roster + one playable session.** Every
+> statement in this file that defers factions, `pawnGroupMakers`, memes or
+> ideoligions to v2 is DEAD. All thirteen factions and all eleven faiths are BUILT
+> AND DEPLOYED. This file remains correct on everything else; read `V1_CHAIN.md`
+> for the v1/v2 line.
+
 > 🔴 **SUPERSEDED 2026-08-14 by `infrastructure/state/V1_CHAIN.md`. Do not use this
 > file to decide the v1/v2 line.** The owner expanded v1 to the 8 gate rows **plus
 > the full faction roster plus one playable session**: the 11 dossiers,
@@ -84,7 +91,7 @@ critical path, not beside it.** Batch anything that genuinely needs a load.
 
 | system | v1 bar (thin) | deferred to v2 |
 |---|---|---|
-| **Factions — authored** | 🔴 **CONTRADICTED — DO NOT BUILD FROM THIS CELL.** It reads *"the Imperial Desert Directorate, on `OuterRim_GalacticEmpire` as vessel"*. **`WORLDGEN_FACTION_CHECKLIST.md:41-48` supersedes it and is RATIFIED:** vanilla **`Empire`** is the Galactic Empire under Palpatine, the campaign's one permanent enemy, and *"the Fallen Dominion and the two-Empire split are **STRUCK**"*; `:279-282` demotes `OuterRim_GalacticEmpire` to *"no longer the antagonist the design hangs on"*. ⚠️ **Row 1 is marked CLOSED against the demoted vessel.** → **VISION rules on whether row 1 still delivers v1's one authored faction. PROJECT does not resolve a design question.** | The other 11 dossiers. `pawnGroupMakers`, memes, ideoligions, the relations matrix. |
+| **Factions — authored** | 🔴 **CONTRADICTED — DO NOT BUILD FROM THIS CELL.** It reads *"the Imperial Desert Directorate, on `OuterRim_GalacticEmpire` as vessel"*. **`WORLDGEN_FACTION_CHECKLIST.md:41-48` supersedes it and is RATIFIED:** vanilla **`Empire`** is the Galactic Empire under Palpatine, the campaign's one permanent enemy, and *"the Fallen Dominion and the two-Empire split are **STRUCK**"*; `:279-282` demotes `OuterRim_GalacticEmpire` to *"no longer the antagonist the design hangs on"*. ⚠️ **Row 1 is marked CLOSED against the demoted vessel.** → ✅ **RESOLVED: the vessel is vanilla `Empire` (R10) and row 1 was rebuilt onto it.** | 🔴 **NOTHING. All 13 factions, their `pawnGroupMakers`, memes and ideoligions are v1 and are DEPLOYED.** |
 | **Factions — subtractive** | **Untick the fiction-breakers on vanilla's Configure Factions page during the worldgen run.** Not config — Faction Control has no suppression field. List proposed by OPS, ratified by VISION. | Per-faction density tuning, biome weighting, `CenterPoint` clustering. |
 | **Quests** | **One** `QuestScriptDef` that fires and resolves. Any premise. | Quest chains, faction-linked arcs, the Hutt extortion loop. |
 | **Resources / terrain** | **Three** terrain or resource overrides that are visible on the map. | The full resource-terrain matrix, biome palette, water doctrine. |
@@ -592,7 +599,6 @@ rather than replaces — reachable only during a worldgen run.
 
 Named so nobody re-proposes them:
 
-- The 11 unbuilt faction dossiers, and all of Stage 3 / Stage 4 authoring
 - The **energy-density explosion model** (`design/V2_DREAMS.md` §1) — large, self-contained, pure v2
 - **Water and thirst doctrine** — the declared master resource, zero implementation, v2
 - The **two-Empire aristocracy design** beyond a label reskin

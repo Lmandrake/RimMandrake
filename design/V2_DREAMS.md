@@ -101,11 +101,6 @@ spec:     JDS droids do not explode — they are force-killed on downing and the
 verify:   the stated mechanism matches the defs.
 criteria: EMPTY
 
-## B20 Faction roster Stages 3 and 4 `[v2]`
-spec:     The other 11 dossiers, `pawnGroupMakers`, memes, ideoligions, the relations matrix, and the licensing gate. Stages 1 and 2 are closed.
-verify:   EMPTY
-criteria: EMPTY
-
 ## B24 Armoury mid-tier reference `[v2]`
 spec:     Echani Foil (AP **1.33**) vs Excellent durasteel heavy armour (Sharp **1.05**) -> effective armour **zero**; the lightsaber got only **27.5** through the same suit. Add a Yautja blade (AP **0.60**) to land a tier between them. If the Yautja mod is cut, re-anchor on another mid-tier weapon.
 verify:   the three AP values read out of the live def dump.

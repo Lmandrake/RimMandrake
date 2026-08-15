@@ -10,7 +10,7 @@ specified as a gap audit, not an authoring pass** — nothing here proposes a va
 
 **V1_SCOPE.md line 57 defers almost all of it to v2.** v1 is **one** authored
 faction — the Galactic Empire, *label-level reskin only* (name, leader
-title, colour). Explicitly v2: **the other 11 dossiers, `pawnGroupMakers`, memes,
+title, colour). 🔴 **NO LONGER v2 — all of it is v1 and DEPLOYED: the 11 dossiers, `pawnGroupMakers`, memes,
 ideoligions, the relations matrix.**
 
 🔴 **v1's faction row is NOT done — the patch is on the wrong vessel.**
