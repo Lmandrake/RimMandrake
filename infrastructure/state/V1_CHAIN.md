@@ -102,6 +102,123 @@ known-wrong line that authorised all 12 goodwill numbers · D1–D6 in
 `faction_stage2_gap_audit.md`, of which D2/D3 are answered in the religions spec
 but never written back · leader title has three live values.
 
+### 8 · Factions — DECIDE's rulings, 2026-08-14
+
+Read out of the live dump's complete `FactionDef` field set (87 defs, captured
+2026-08-14T21:10Z). These are engine facts, not preferences.
+
+**R1 · Starting goodwill is not authorable. The 12 numbers are cut from v1.**
+There is **no goodwill field on `FactionDef`.** The entire relation vocabulary is
+`permanentEnemy` · `naturalEnemy` · `mustStartOneEnemy` ·
+`permanentEnemyToEveryoneExcept` · `permanentEnemyToEveryoneExceptPlayer` ·
+`hostileToFactionlessHumanlikes`. ⇒ `faction_roster_v2.md:42` is wrong and every
+number it authorised is unbuildable. v1 expresses hostility through those six and
+nothing else. Graded goodwill is `[v2]` and gated on Faction Customizer
+persistence (CHECK C24).
+
+**R2 · The Homestead's "never raids" is `raidsForbidden`, not a precept.**
+The field exists. Use it. `VME_Raiding_Abhorrent` may stay as flavour but is not
+the mechanism, and the roster's "never raid (Rw 0)" vs "Very low" contradiction
+resolves to `raidsForbidden: true`.
+
+**R3 · `humanlikeFaction` must be set explicitly on every faction.** It exists
+and it is load-bearing for Geonosian and the Free Droid Enclaves, both of which
+the audit flagged and no dossier mentions.
+
+**R4 · `leaderTitle` is a real field**, so the three live leader titles are a
+naming choice, not a mechanism problem.
+
+**R5 · The vessel swap has a first-class field — `replacesFaction`.** Prefer it
+to a label patch wherever we are truly replacing a vanilla faction rather than
+dressing one.
+
+**R6 · Unproven foundation.** `Jawa_IndigenousTribes` is absent from the live
+dump because the game launched at 01:03:26 and the def deployed at 01:13 — the
+running process never read it. Disk is correct, repo and deployed are
+md5-identical. **It has still never been loaded, and it is the template for the
+other 11–13.** It goes on the next cold load's verification list before anyone
+authors against it.
+
+**R7 · 12 versus 14 was never a conflict — both counts are right.**
+The roster counts *dossiers* (12). `faction_world_spec.md` counts *factions on the
+map* (14): the same 12, plus the Forgotten Arsenal and the Unbound Hive, which
+are label reskins of vanilla `Mechanoid` and `Insect`. Both are described as
+having no leader, no settlements and no diplomacy, so they inherit vanilla's
+`pawnGroupMakers` wholesale. ⇒ **They cost two label patches, not two dossiers.**
+Authoring load stays at 12.
+
+**R8 · `faction_world_spec.md`'s names are canon.** Its rename table at `:110-123`
+stands, and the roster's own dossier headings already use 6 of the 8. Fix the
+roster's stale species table (Aquifer / Bounty / Wookiee). Zero design cost.
+
+**R9 · The vessel column, measured against the live dump — 6 of 7 work.**
+
+| faction | vessel | verdict |
+|---|---|---|
+| Galactic Empire | `Empire` | ✅ `hidden false`, settles |
+| Homestead Defense League | `OutlanderCivil` | ✅ |
+| Deep Desert Tribes | `TribeCivil` | ✅ |
+| Blackstar Company | `Pirate` | ✅ — but see R12 |
+| Forgotten Arsenal | `Mechanoid` | ✅ `hidden true`, no settlements — which is the intent |
+| Unbound Hive | `Insect` | ✅ |
+| **Ascendant Helix** | `Ancients` | 🔴 **IMPOSSIBLE** |
+
+🔴 **`Ancients` is `hidden: true`, `settlementGenerationWeight: 0`,
+`maxCountAtGameStart: 0`, `canMakeRandomly: false`.** It cannot settle, cannot
+appear in the faction list and cannot be diplomatic. The spec's own fallback
+takes effect: **the Ascendant Helix is authored from scratch.** Authored count
+goes 7 → 8. Do not book a feasibility check; it is answered.
+
+**R10 · The shipped Empire patch is on the wrong vessel.**
+`Jawa_Patches/Patches/ImperialDesertDirectorate.xml` targets
+`OuterRim_GalacticEmpire`, a mod def. R9 and `WORLDGEN_FACTION_CHECKLIST` R3 both
+put the Galactic Empire on vanilla `Empire`. ⇒ **Re-point the patch.**
+⚠️ **Consequence: v1 row 1 was closed on a label seen live on a vessel we are
+abandoning. It has to be redone.** Cheap, but it is not already done.
+
+**R11 · Leader titles — one faction had three, and the spec already killed two.**
+**Galactic Empire → `Emperor`** (canon, spec `:85`, roster `:584`; "Sector
+governor" is explicitly retired). **Ascendant Helix → `Director`** — the spec
+`:106-108` strikes "Sector Director" from the Empire and gives the word to the
+Helix. The shipped patch's `Sector Director` dies with R10 anyway. Update the
+roster's ritual text at `:610` and `:612`, which still uses it.
+
+**R12 · Pillar 5 is amended: "one permanent enemy among the AUTHORED factions."**
+Vanilla `Pirate` ships `permanentEnemy: true` and Blackstar Company reskins it.
+Patching that false would gut the vanilla raid economy for no gain. ⇒ Blackstar
+keeps it, the Galactic Empire is the authored permanent enemy, and the two are
+not in conflict. **The Junkers still lose theirs** (they are authored) — BUILD B9
+stands.
+
+**R13 · The six stage-2 defects, disposed.**
+- **D1** Homestead raid frequency → `raidsForbidden: true` per R2. "Very low" is struck.
+- **D2** Homestead structure either/or → `Structure_TheistAbstract`, deity *the
+  Withdrawn*. This also differentiates it from the Deepwater Compact, which is
+  secular — the 24% Jaccard complaint is answered by the split, not by a cut.
+- **D3** Geonosian → there is **no XML route to `PreferredXenotype`**. Retarget to
+  the `xenotypeSet` field on the `FactionDef` (it exists) plus `PawnKindDef`
+  xenotype chances. The precept ambition is dropped.
+- **D4** Delete the stale dry-capable rows. **Kaleesh only.**
+- **D5** "ten NPC factions" → **twelve**. Two lines.
+- **D6** → resolved by R12.
+
+### The buildable `FactionDef` contract
+
+Every faction owes all of this. A dossier missing any line is not releasable to
+BUILD. `src/Jawa/Jawa_Patches/Defs/FactionDefs/JawaTribes.xml` is the worked
+example.
+
+| group | fields |
+|---|---|
+| identity | `defName` `label` `description` `pawnSingular` `pawnsPlural` `leaderTitle` |
+| art | `factionIconPath` `colorSpectrum` `settlementTexturePath` |
+| naming | `factionNameMaker` `settlementNameMaker` — **0 of 12 exist today** |
+| generation | `humanlikeFaction` `categoryTag` `techLevel` `settlementGenerationWeight` `maxCountAtGameStart` `canMakeRandomly` |
+| hostility | one of `permanentEnemy` / `naturalEnemy` / `permanentEnemyToEveryoneExcept` / `raidsForbidden` |
+| pawns | `basicMemberKind` · `pawnGroupMakers` with `options` and weights — **the #1 blocker, written nowhere** |
+| ideo | `fixedIdeo` + `ideoName` + `ideoDescription` + `forcedMemes` (+ `deityPresets` where the faith has deities) |
+| optional | `apparelStuffFilter` `backstoryFilters` `xenotypeSet` `raidCommonalityFromPointsCurve` `disallowedRaidStrategies` `styles` |
+
 ### 11 · Scenario — the hole
 No document. It is the first thing the player touches: starting pawns, starting
 gear, the ship, the landing.
