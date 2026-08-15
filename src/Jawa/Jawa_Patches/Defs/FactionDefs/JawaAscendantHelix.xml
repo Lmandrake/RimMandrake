@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ============================================================================
+  JawaAscendantHelix.xml                      Jawa_Patches · authored 2026-08-14
+  ============================================================================
+
+  FACTION_SPEC.md section 9. Faction 9 of 14.
+
+  ParentName is `OutlanderFactionBase` (R24), which supplies factionNameMaker,
+  settlementNameMaker, factionIconPath, techLevel Industrial, leaderTitle,
+  allowedArrivalTemperatureRange and a full set of pawnGroupMakers. Everything
+  restated below is either a value the parent does not give at all, or one the
+  dossier contradicts.
+
+  🔴 AUTHORED, NOT A RESKIN (R9). `Ancients` looks like the obvious vessel and
+  cannot host a faction: it is hidden, settlementGenerationWeight 0 and
+  canMakeRandomly false.
+
+  The namers and the icon are the Empire set (R16/R17) — the Helix is small,
+  rich and formal, and the empire art is the only thing in the set that reads
+  that way. `leaderTitle` Director belongs here and not to the Empire (R11).
+
+  🔴 `colorSpectrum` IS NOT INHERITED. Measured on the shipped abstracts:
+  `OutlanderFactionBase` and `TribeBase` supply NO colorSpectrum — only
+  `PirateBandBase` does. R24's table says otherwise and is wrong on that one
+  field. A faction without it is set on 76 of 87 live defs, so the world map
+  draws it broken. It is set explicitly here and in all six siblings.
+
+  ⛔ NO IDEO BLOCK. R23: `fixedIdeo` / `ideoName` / `ideoDescription` /
+  `forcedMemes` / `deityPresets` land as one uniform pass in B54, for all eleven
+  faiths at once. A faction without them generates an ideo at worldgen and works.
+
+  Pawn kinds verified present in the 2026-08-14 dump (585 mods) and mapped to
+  their owning mod for `MayRequire`:
+      OuterRim_Arkanian · OuterRim_ArkanianTribal · OuterRim_Kaminoan
+                                        Neronix17.OuterRim.GalacticDiversity
+  ============================================================================
+-->
+<Defs>
+
+  <FactionDef ParentName="OutlanderFactionBase">
+    <defName>Jawa_AscendantHelix</defName>
+    <label>Ascendant Helix</label>
+    <description>A small, obscenely wealthy gene-cult that believes the body is a rough draft and the species is a project — and despises the manufactured underclass it made itself.\n\nIt does not raid. It retrieves. What it comes for is usually a person, and it has already decided which one.</description>
+    <pawnSingular>curator</pawnSingular>
+    <pawnsPlural>curators</pawnsPlural>
+    <leaderTitle>Director</leaderTitle>
+    <categoryTag>Outlander</categoryTag>
+    <techLevel>Spacer</techLevel>
+    <canMakeRandomly>true</canMakeRandomly>
+    <!-- 3 settlements, isolated and secure. -->
+    <settlementGenerationWeight>0.45</settlementGenerationWeight>
+    <!-- Neutral. Retrieval operations, not raids. -->
+    <permanentEnemy>false</permanentEnemy>
+    <naturalEnemy>false</naturalEnemy>
+    <canRequestTraders>true</canRequestTraders>
+
+    <factionNameMaker>NamerFactionEmpire</factionNameMaker>
+    <settlementNameMaker>NamerSettlementEmpire</settlementNameMaker>
+    <factionIconPath>World/WorldObjects/Expanding/Empire</factionIconPath>
+    <!-- R22: pale violet. -->
+    <colorSpectrum>
+      <li>(0.78,0.74,0.85)</li>
+      <li>(0.62,0.58,0.72)</li>
+    </colorSpectrum>
+
+    <!-- Inherit="False" IS LOAD-BEARING. RimWorld resolves inheritance AFTER
+         patches, and a child `li` list is APPENDED to the parent's, not
+         substituted for it. `OutlanderFactionBase` carries 8 group makers; without
+         this opt-out the faction fields those too and raids arrive as
+         vanilla pawns wearing our name. Vanilla itself writes it 314 times,
+         9 of them on pawnGroupMakers. -->
+    <pawnGroupMakers Inherit="False">
+      <li>
+        <kindDef>Combat</kindDef>
+        <options>
+          <OuterRim_Arkanian MayRequire="Neronix17.OuterRim.GalacticDiversity">8</OuterRim_Arkanian>
+          <OuterRim_Kaminoan MayRequire="Neronix17.OuterRim.GalacticDiversity">4</OuterRim_Kaminoan>
+          <OuterRim_ArkanianTribal MayRequire="Neronix17.OuterRim.GalacticDiversity">2</OuterRim_ArkanianTribal>
+        </options>
+      </li>
+      <li>
+        <kindDef>Trader</kindDef>
+        <traders>
+          <OuterRim_Kaminoan MayRequire="Neronix17.OuterRim.GalacticDiversity">1</OuterRim_Kaminoan>
+        </traders>
+        <guards>
+          <OuterRim_Arkanian MayRequire="Neronix17.OuterRim.GalacticDiversity">6</OuterRim_Arkanian>
+        </guards>
+        <carriers>
+          <Muffalo>6</Muffalo>
+        </carriers>
+      </li>
+      <li>
+        <kindDef>Settlement</kindDef>
+        <options>
+          <OuterRim_Arkanian MayRequire="Neronix17.OuterRim.GalacticDiversity">8</OuterRim_Arkanian>
+          <OuterRim_Kaminoan MayRequire="Neronix17.OuterRim.GalacticDiversity">6</OuterRim_Kaminoan>
+        </options>
+      </li>
+    </pawnGroupMakers>
+  </FactionDef>
+
+</Defs>
