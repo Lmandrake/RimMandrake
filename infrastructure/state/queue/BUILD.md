@@ -1195,3 +1195,145 @@ criteria: on a desert world every primitive transport in the vehicles menu is
           pulled by something that belongs on it, and nothing in its name,
           description or health tab still says horse, ox or dog.
 state:    ready
+
+## B63 Build our own boiling water and boiling rain, then drop ReGrowth: Boiling
+row:      8
+spec:     Full spec: `design/Jawa/mods/REGROWTH_BOILING_LIFT_SPEC.md`. Read it —
+          the load-bearing points, inline:
+
+          **DECIDE ruled route (b): AUTHOR OUR OWN, drop the donor mod.** Not
+          route (a) reference-the-donor. The reason it is not close: **every C#
+          class the effects need survives the drop.** The burn payload is
+          `VEF.Weathers.WeatherEffectsExtension` — Vanilla Expanded Framework,
+          ACTIVE — not a ReGrowth class. The steam splashes are
+          `ReGrowthCore.WeatherExtension_FogMotes` / `WeatherOverlay_FogMotes`
+          and the beach terrain is `RG_HotSpringSand`, all in **ReGrowth: Core**,
+          which stays ACTIVE for Biomes! Polluted Lands and Comigo's Greater
+          Swamps. So dropping `regrowth.botr.boilingforest` costs us **no class,
+          no texture and no terrain we want**. Route (a) would have dragged 41
+          defs to reach 10, including 14 unwanted plants (three of them SOWABLE,
+          so they appear in the growing-zone selector whether or not the cut
+          biome ever generates) — ~17 more Cherry Picker entries on top of 1308.
+          🔴 Licensing did NOT enter the decision: this is a private playthrough,
+          nothing is published.
+
+          🔴 **The donor's boiling water terrain does NOTHING.** Measured off the
+          live def dump, not the XML: the six `BoilingWater*` defs differ from
+          vanilla water in exactly three fields — `glowColor (2,154,229)`,
+          `glowRadius 2`, and a label reading "**spectral**". Identical
+          `pathCost`, identical `extinguishesFire`, `traversedThought SoakingWet`,
+          `burnDamage 0`, and the **same vanilla texture** (`Terrain/Surfaces/
+          WaterShallowRamp`). No hediff, no damage, no heat, no pathing cost.
+          🔴 And in OUR stack it is strictly WORSE than vanilla water: it lacks
+          the `dbh_water` tag (Dubs Bad Hygiene ACTIVE — **not a drinking source**)
+          and lacks `Biomes_PlantControl`. Painting rivers with it would quietly
+          break drinking water on a world whose design is that water is currency.
+          ⭐ The levers that make hot water hot are vanilla: `TerrainDef.burnDamage`
+          + `burnIntervalTicks`, bracketed by Odyssey's `HotSpring` (0/0) and
+          `LavaShallow` (3/120). No C# needed.
+
+          **The weather burn is real but tiny.** Present in the live def via a
+          `ModSettingsFramework.PatchOperationModOption` (resolves because
+          `0ModSettingsFramework.dll` ships inside ReGrowth Core): `Burn`
+          0.1–0.5, every 300–600 ticks, to **10%** of pawns, flesh only, outdoors
+          only, `killsPlants false`. That is ~4 damage per pawn per game day — a
+          scratch. Our defs triple the damage and raise
+          `percentOfPawnsToDealDamage` to 0.35.
+          🔴 And `commonalityRainfallFactor` bottoms out at `(0, 0)`, reaching 1
+          only at rainfall 1300 — **as-shipped these weathers would never roll on
+          any Sekkoth tile.** Re-anchor near `(0,1)`/`(500,1)` or the whole
+          feature silently does nothing.
+
+          **What to build**, all in `src/Jawa/Jawa_Patches` (it has `Defs/` and
+          `Patches/` and loads LAST in ModsConfig, after every biome mod):
+          (1) `Defs/TerrainDefs/Terrain_ScaldWater.xml` — six `Jawa_ScaldWater*`
+              defs (Shallow/Deep/MovingShallow/MovingChestDeep/OceanShallow/
+              OceanDeep). Keep the donor's cyan `glowColor (2,154,229)` +
+              `glowRadius 2`; add `burnDamage 1`/`burnIntervalTicks 300` shallow
+              and moving, `2`/`240` deep and chest-deep; `traversedThought
+              HotSpring`; `avoidWander true`; 🔴 **carry the `dbh_water` tag on
+              all six**; keep `extinguishesFire true`; `Saltwater` + `Ocean` tag
+              on the two ocean defs.
+          (2) `Defs/WeatherDefs/Weather_Scald.xml` — THREE weathers only:
+              `Jawa_ScaldDrizzle`, `Jawa_ScaldRain`, `Jawa_ScaldFog`. All
+              `isBad true`. Payload = one `VEF.Weathers.WeatherEffectsExtension`
+              + `VEF.Weathers.WeatherOverlay_Effects`, plus the two ReGrowth Core
+              fog-mote classes guarded `MayRequire="regrowth.botr.core"`.
+          (3) `Patches/Biomes_ScaldWater.xml` — assign the scald terrains via
+              `waterShallowTerrain` / `waterDeepTerrain` /
+              `waterMovingShallowTerrain` / `waterMovingChestDeepTerrain` to:
+              `IronScruff_PrimordialGeysers`, `Volcano`, `LavaField`,
+              `AB_PyroclasticConflagration` (all six slots each), and
+              `ZBiome_DesertOasis` + `COMIGO_GreaterSwamp_Tropical` (shallow and
+              deep only — the standing pool steams, the through-river is already
+              cooling). Lowland `Desert`/`ExtremeDesert`/`ZBiome_Badlands`/
+              `ZBiome_Grasslands` stay ORDINARY water: per R-H1/R-H7 the water is
+              potable again by the time it reaches the desert rivers, and keeping
+              the effect rare is what makes it read.
+              ⚠️ `PatchOperationAdd` where the biome has no such field,
+              `PatchOperationReplace` where it does — four of the six already set
+              some of these and the wrong operation fails SILENTLY.
+          (4) `Patches/Biomes_ScaldWeather.xml` — scald weather to the only two
+              rain-canon places on the planet (R-H1: rain falls only at the
+              greatest altitudes): `AB_OcularForest` (drizzle 6 / rain 8 / fog 4 —
+              R-H7's near-perpetual high-valley rain), `IronScruff_PrimordialGeysers`
+              (4/3/3), `Volcano` (2/2/1). Each operation must ALSO remove the
+              vanilla `Rain` / `RainyThunderstorm` / `FoggyRain` / `TorrentialRain`
+              / `Blizzard` entries it replaces. **Nothing else gets any.**
+          (5) Remove `regrowth.botr.boilingforest` from ModsConfig via
+              `skills/rimworld-start-prep`. 🔴 **Do NOT remove
+              `regrowth.botr.core`** — this build depends on it and so do two
+              other active mods.
+          (6) Deploy `Jawa_Patches` with `deploy_custom_mods.py --plan` first.
+
+          🔴 **TWO TRAPS, both of which look right and are wrong:**
+          (a) **DO NOT touch `AB_OcularForest`'s water terrain.** It already
+              overrides all four slots with Alpha Biomes' `GU_RedWater*`, which IS
+              R-H7's red-flowing water verbatim. Overwriting it deletes the
+              best-fitting terrain we own. Ocular forest gets WEATHER only.
+          (b) **The donor's thunderstorm is NOT lifted.**
+              `RG_BoilingRainyThunderstorm` has `rainRate 1` and its own
+              description says the rain puts the fires out. R-H4's Pyrelands need
+              DRY thunderstorms — a wet one in `ZBiome_Grasslands` would
+              extinguish the standing burn the whole savanna design rests on.
+              Vanilla `DryThunderstorm` (`rainRate 0`) already exists and
+              `ZBiome_Grasslands` already carries it at commonality 2; raising
+              that number is a separate item. Write no thunderstorm here.
+
+          **NOT lifted** and why: the 14 plants (`RG_Plant_TreeBoilingBirch`,
+          `RG_Plant_BoilingTreePine`, `RG_Plant_SpikedBoilingTreePine` — the
+          coniferous and deciduous trees the owner does not want — plus the
+          grasses/moss/bush/brambles/berry/cushion/flowers/edaku); the 3 items and
+          the leaf filth; `RG_Owlbeast` and its corpse/meat/eggs/sounds (already
+          cut); the `RG_BoilingForest` BiomeDef (cut by owner's ruling — nothing
+          here revives it); the `RG_BoilingSettings` category and its two sliders.
+          `RG_HotSpringSand` is not lifted because it does not need to be — it
+          lives in ReGrowth Core; reference it by name for `lakeBeachTerrain` /
+          `riverbankTerrain` on the geyser and volcano tiles.
+
+          ⚠️ Nothing here touches `ZBiome_Grasslands`. R-H4's dry-thunderstorm
+          raise and R-H1's global rain-stripping are separate owed items — do not
+          fold them in.
+verify:   OFFLINE, no game load:
+          (a) `python3 skills/rimworld-modding/scripts/validate_patch.py` over BOTH
+              new patch files with BOTH `--live` and `--defs`. Exact counts:
+              **24 terrain hits** (6 biomes x 4 fields) and **3 biomes** in the
+              weather file. Not 23, not 25. A patch that matches nothing logs
+              nothing.
+          (b) `grep -c dbh_water Terrain_ScaldWater.xml` returns **6**.
+          (c) `grep -c Thunderstorm Weather_Scald.xml` returns **0**, and
+              `rainRate` is > 0 in all three weathers.
+          (d) `grep "RG_"` across everything BUILD writes returns only the three
+              permitted references: `regrowth.botr.core` in a `MayRequire`, and
+              `RG_HotSpringSand` in the beach/riverbank fields.
+          (e) After the next load: `python3 src/RimMandrake/Utils/refresh.py`, then
+              confirm the nine `Jawa_Scald*` defs resolve WITH their burn fields,
+              and that `AB_OcularForest.waterShallowTerrain` still reads
+              **`GU_RedWaterShallow`**.
+criteria: a pawn who wades a river in the geyser fields or on a volcano gets
+          burned and knows why; a pawn caught in the open in an ocular-forest
+          valley runs for cover; every other tile on the planet is as dry as R-H1
+          says it is; the Pyrelands still burn because no wet storm was ever added
+          to them; and `regrowth.botr.boilingforest` is gone from the mod list with
+          no red error at load.
+state:    ready
