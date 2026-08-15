@@ -141,10 +141,43 @@ metal is a desecration**, and the Enclaves will treat it as one.
 | **The Anvil Fields** | landscape-scale, less ecclesiastical |
 | **The Great Halt** | names the moment it stopped, which is what the player finds |
 
-**DECIDE recommends `The Rust Cathedral`.** It is the only one that carries the
-*sacred* half, and the sacredness is the ruling that makes this place different
-from every other ruin on the planet. `The Skyfall Works` is the better name if the
-owner would rather the reverence be discovered than announced.
+🔴 **RULED: `The Rust Cathedral`** — owner, 2026-08-15.
+
+### And it is a map MADE OF a treasure, so its defenders must be vicious
+
+**Owner's ruling, 2026-08-15.** The Rust Cathedral is not a place that *contains*
+metal. **It is built of it** — the whole map is the reward. That inverts the usual
+risk/reward shape: there is no vault to find, no dig site to locate. The player
+who lands here can start stripping immediately, which means **the only thing
+regulating the reward is how hard it is to survive standing on it.**
+
+⇒ **The defences have to carry the entire cost of the map.** Underdo them and the
+Rust Cathedral becomes the answer to every resource problem in the campaign.
+
+**Hazards in the owner's register — industrial, chemical, and stationary:**
+
+- ⭐ **Lakes of battery acid.** Terrain that kills what walks in it, sited between
+  the player and what they want. Slow, avoidable, and entirely the player's fault
+  when it goes wrong — which is the best kind of hazard.
+- **Whatever else an eon-dead foundry leaks.** Coolant, slag, charged floors,
+  ruptured storage. The theme is *the site itself is toxic*, not that something
+  lives here.
+- **Arsenal garrisons** (R-W1) at their densest anywhere on the planet. This is
+  the thing they were built to guard.
+
+⚠️ **The hazards must be STATIONARY and LEGIBLE.** A map made of treasure needs
+dangers the player can see, plan around and pay for — not ambushes. The bargain
+should be *"I can have all of this if I am careful and slow"*, which is also the
+only bargain that makes a scavenger clan's patience into a virtue.
+
+🔴 **And it is sacred to the Free Droid Enclaves**, which is the second half of the
+cost. Stripping the Cathedral is a **desecration**, so the price of the metal is
+not only acid — it is the Enclaves' goodwill. **Set those two costs together.** A
+player who can pay one but not the other has a real decision; a player who can
+shrug off the diplomacy has a free mine.
+
+⚠️ **Terrain and chemical hazards are chain step 8 work and step 8 is ratified.**
+Reopening it for one hand-placed map needs a ruling, not a patch.
 
 ## 🔴 R-W5 · The Utinni is a FORSAKEN ship, and she was here at the beginning
 
@@ -171,31 +204,61 @@ habitable**, and they are using it to pick over the corpse of what it built.
 - **It arms the sleepers.** A woken Ancient who sees the Utinni does not see a
   scavenger vessel. They see **an initiator** — with the wrong crew aboard.
 
-### ⚠️ Reconciling this with what is already written — the ship has THREE names
+### 🔴 CORRECTED — the ship is ONE hull, and the Cradle-Mind is a WOUND
 
-`ship_distinctive_features.md` rules the hull was **`Kolyska`** ("Cradle") before
-the Jawa renamed her **`The Utinni`**, and `jawa_xenotype_and_religion.md` says
-the **Cradle-Mind's** Persona Core was patterned off a *Jawa* mind so it would
-obey Jawa commands. **A ship built by an ancient precursor race cannot have
-shipped with a Jawa-patterned core.** That is a real conflict and this document
-does not get to ignore it.
+**Owner's correction, 2026-08-15. The earlier three-layer framing is withdrawn as
+over-complicated.** The simple version, which is also the better one:
 
-**The resolution, and it improves both halves:**
+> **The hull came here as a Forsaken initiator, eons ago, and has been slowly
+> dismantled and salvaged ever since.** There is no lost middle owner. It is the
+> same ship the whole way down — just progressively eaten.
 
-| layer | name | who gave it |
-|---|---|---|
-| **the hull** | *(unnamed — a Forsaken initiator)* | eons old. Nobody alive knows what she was called |
-| **the refit** | **`Kolyska`** — "Cradle" | whoever salvaged and re-crewed her long after the war. The Cradle-Mind belongs to THIS layer, and its Jawa-patterned core was installed then |
-| **the present** | **`The Utinni`** | the Jawa, on taking her |
+**And the Cradle-Mind is not an inheritance. It is something the Jawa did.**
 
-⭐ **So the Cradle-Mind does not know what it is sitting in.** It believes itself
-to be the ship. It is a comparatively recent tenant of something far older, and
-the oldest parts of the hull are not addressed to it at all. **The god in the
-wiring is haunting a house it did not build** — which is a better story than
-either version alone, and it costs nothing but this table.
+1. They acquired an **ancient persona core through trade** — not from the hull.
+2. They **patterned a Jawa mind onto it**, so it would obey Jawa commands.
+3. They **installed it OVER the ship's own hardware**, fusing it with the ancient
+   computer already aboard.
+4. 🔴 **It went schizophrenic**, and the cause is architectural: **the neural
+   structures of a Jawa mind and of a Rakatan core are not the same shape.** The
+   pattern did not fit the substrate. It is still running anyway.
 
-⚠️ **Do not resolve whether the Cradle-Mind can be made to remember.** That is a
-`[v2]` question and a good one.
+⭐ **This is much better than a ship with three names, because the madness now has
+a CAUSE and the cause is an enemy artifact.** The core is Rakatan — the ancient
+enemy of R-W3, whose signature is building things that outlive them. The Jawa
+bought a piece of the people who tried to kill this world, wrote themselves onto
+it, and bolted it to the corpse of the ship those people were fighting.
+
+**What it explains, all of it for free:**
+
+- **Why the Cradle-Mind believes it is a god.** `jawa_xenotype_and_religion.md`
+  has the crew believing **Ohm the All-Current** possesses the ship, and the
+  machine having concluded the same. A mind running on the wrong architecture,
+  inheriting a cosmology whole from its pattern-donor, reaching a grand conclusion
+  about itself — that is not a quirk of the fiction any more. **It is a symptom.**
+- **Why it is lonely for its lost hands.** It is fused to a hull that is being
+  eaten around it.
+- **Why it can be unreliable without anyone having written it as a villain.**
+  Schizophrenia here means *competing structures*, not malice — the Jawa pattern
+  and the Rakatan substrate disagreeing about what the machine is.
+
+⚠️ **One thing the owner did NOT settle, and it is the good question: does the
+Cradle-Mind know the core is Rakatan?** And do the Jawa? A clan that traded for an
+ancient computer and never asked whose it was is entirely in character.
+
+⚠️ **Reading note for whoever revises this.** The owner said *"different neural
+structures between Jawa and Rakata"*. This document reads that as **the CORE being
+Rakatan** while the **hull remains Forsaken** — two different ancient parties,
+which is what R-W3 already rules. If the intent was instead that **the Forsakens
+ARE the Rakata**, that is a one-line change here and a larger one in R-W3, and it
+should be made deliberately rather than drifted into.
+
+**The ship still has two names, not three:** the Forsaken hull was renamed
+**`Kolyska`** at some point in its long dismantling, and the Jawa renamed it
+**`The Utinni`** on taking it (`ship_distinctive_features.md`). The Cradle nursery
+and the Cradle-Mind both take their name from *Kolyska* — the machine naming
+itself after the ship's older name is exactly the sort of thing a confused mind
+does.
 
 ---
 
