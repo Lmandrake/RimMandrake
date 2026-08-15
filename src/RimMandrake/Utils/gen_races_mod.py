@@ -10,10 +10,17 @@ donors OFF, every species still resolves and renders -- so every def and every
 texture they reach is either copied into our namespace or belongs to a mod we
 declare a dependency on.
 
-WHAT IS COPIED           Star Wars Xenotypes + Outer Rim Galactic Diversity only.
+WHAT IS COPIED           Star Wars Xenotypes + Outer Rim Galactic Diversity only:
+                         genes, head types, textures, the name-maker rule packs
+                         AND the word lists they read, and the sixteen Galactic
+                         Diversity species pawn kinds our factions field.
 WHAT IS DEPENDED ON      Biotech, Core, VEF, Outland Genetics, Integrated Genes,
                          LFS Eyes, Big and Small. Their genes are generic and stay
                          where they are.
+
+Also repoints src/Jawa/Jawa_Patches at the copies: verify() fails if any def
+there still reaches a departing mod, including through a ParentName, which is a
+silent discard rather than an error.
 
 Re-runnable. Reads the live def dump for the species table and the donor mods'
 own XML on disk for the def bodies, so the copies are the authors' text rather
@@ -571,6 +578,10 @@ CREDIT. The art and the gene design are not ours.
 - Star Wars Xenotypes, by guy762 - Workshop 2915192253. {SWX} genes and their textures are copied from it.
 - Outer Rim - Galactic Diversity, by Neronix17 - Workshop 2980427615. {OR} genes, the head types and the species icons are copied from it. Its 1.6 release routes loading at a folder that no longer holds its loose art; the sprites here are recovered from the folder it left behind, which is why they render again.
 - [BTD] Xenotype REMIX, by beeteedubs - Workshop 3458153185. The species reconciliation is its work. Its hand-curated equivalence table is what decides which donor supplies each species, and the gene lists are inherited from it.
+
+Species NAMES come with them. 48 name-generating rule packs and the word lists they read are copied too - a rule pack without its Languages/English/Strings word lists resolves and produces nothing - so a Twi'lek is still named like a Twi'lek with every donor off. Four namers that Star Wars Xenotypes had commented out are wired back up here; they were disabled to avoid overriding forced names on another mod's hero pawnkinds, which reference that mod's xenotypes and not ours.
+
+Outer Rim's sixteen species pawn kinds are copied as well, with both of their abstract parents, because a faction that fields them directly loses those raids and caravans outright when that mod leaves.
 
 The MandrakeJawa xenotype and its four genes - skittish, hooded face, and the orange and amber big-eye colours with their glow sprite - are authored here rather than copied, and live in this mod because the Jawa are a species like any other.
 
