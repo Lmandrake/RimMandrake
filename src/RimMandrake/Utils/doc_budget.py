@@ -30,7 +30,6 @@ what a document is for:
                           it is not a handoff, it is an archive.
   CLAUDE.md         300   auto-loaded into EVERY session of every seat. The most
                           expensive lines in the repo.
-  agents_def.md     200   shared rules.
   traps-*.md        700   append-only by nature; the index is what stays short.
   NEXT_RELOAD.md    400   a queue for ONE event. Accumulation here is the symptom.
   CLOSED.md         150   one line per item.

@@ -16,8 +16,9 @@ A cold load costs **~23–30 minutes** and one game is shared by five seats. A d
 quicktest colony costs **~30 seconds** and belongs to nobody.
 
 > 🔴 **"Blocked on a map" is almost never real.** Owner's ruling,
-> `agents_def.md` rule 1c: **whoever holds the bridge may create and destroy dev
-> colonies at will.** No permission, no queue entry, no waiting for worldgen.
+> `infrastructure/agents/POLICY.md` §"Nothing outside the repo is precious":
+> **whoever holds the bridge may create and destroy dev colonies at will.** No
+> permission, no queue entry, no waiting for worldgen.
 
 **This skill is why that ruling exists.** On 2026-08-13 four seats sat idle
 waiting for the owner to generate a world, holding tests that needed *a* map and

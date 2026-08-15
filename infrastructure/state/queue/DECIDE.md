@@ -83,8 +83,28 @@ state:    ready
 
 ## D20 You inherit every sign-off the retired seats held
 row:      0
-spec:     Owner ruling 2026-08-14: VISION's and PROJECT's ratification authority
-          passes to DECIDE. Live docs still gate on a seat that cannot sign:
+spec:     🔴 **The authoritative retired-seat mapping, owner 2026-08-15. Use this
+          verbatim; earlier looser wording sent CREATE/OPS to CHECK and all of
+          PROJECT to DECIDE, and both are wrong:**
+
+              VISION  -> DECIDE
+              PROJECT -> DECIDE, EXCEPT some small elements which go to REP
+              CREATE  -> BUILD
+              OPS     -> BUILD
+              BRIDGE  -> CHECK
+
+          The PROJECT split, since it is the only one that needs judgement: REP is
+          the human's interface and owns the status board,
+          `infrastructure/state/status_matrix.json`,
+          `infrastructure/state/queue/HUMAN.md` and `infrastructure/state/MODE`.
+          PROJECT was "technical writer + IA, MVP seat". So a PROJECT
+          responsibility about REPORTING TO THE HUMAN, the board, or status
+          presentation goes to REP; a PROJECT responsibility about scope,
+          sequencing, specs or document architecture goes to DECIDE. Where a
+          PROJECT reference is ambiguous, file it in `queue/HUMAN.md` rather than
+          guessing.
+
+          Live docs still gate on a seat that cannot sign:
           `infrastructure/state/WORLDGEN_FACTION_CHECKLIST.md` :3, :124, :126, :169,
           :230, :379 ("If VISION has not signed off, do not execute the untick
           list"); `infrastructure/state/EXPECTED_FAILURES_next_load.md` :163, :248,
@@ -155,21 +175,23 @@ spec:     `infrastructure/agents_def.md` was dissolved into `POLICY.md` (deleted
           `git show edaa1bb^:infrastructure/agents_def.md`.
           ✅ **Map protection is REPEALED — owner 2026-08-15, do not re-home it.**
           Recorded in `OWNER_DECISIONS.md` and `POLICY.md`: nothing outside the
-          repo is precious. Two live docs still order a reader to read the old
-          rule at a source that is gone — strike those citations:
-          `design/Jawa/worldbuilding/row8_build_order.md` :41-43 and
-          `infrastructure/state/CREATE_TEST_PLAN.md` :165-168.
-          Four rules remain to re-home or repeal: rule 1 taking the bridge is announced
-          (`row8_build_order.md:88-89`); rule 1b live means a map exists
-          (`wait_for_live.py:6`, citation already dropped, substance kept);
-          rule 1c whoever holds the bridge may create and destroy dev colonies at
-          will (`skills/rimworld-debug-testing/SKILL.md:19`); rule 0.5 never ignore
-          a problem, especially one that is not yours (`infrastructure/DOC_BUDGET.md:198`,
-          named PROJECT as the drainer of `[?]` filings — needs a seat as well as a path).
+          repo is precious. Both docs that ordered a reader to the dead source are
+          already struck (`row8_build_order.md`, `CREATE_TEST_PLAN.md`).
+          ✅ **Every dangling citation is repointed** — no live doc now sends a
+          reader to the deleted `agents_def.md`. Only the rules are unhomed:
+          rule 1, taking the bridge is announced — probably dead, CHECK holds the
+          bridge at all times per C34, so confirm and repeal; rule 1b, live means a
+          map exists — substance kept in `wait_for_live.py`; rule 1c, the bridge
+          holder may create and destroy dev colonies at will — now cited to
+          `POLICY.md` §"Nothing outside the repo is precious", which is a superset,
+          confirm that is the home; rule 0.5, never ignore a problem, especially one
+          that is not yours — `DOC_BUDGET.md` now files to `queue/HUMAN.md`, i.e.
+          REP, since reporting-to-the-human is the half of PROJECT that went to REP
+          (D20); the rule itself still needs writing into `POLICY.md`.
           Anything about the live game lands on CHECK, per the 2026-08-14 ruling.
 verify:   Each of the five is either written into `POLICY.md`/`CHECK.md` or recorded
-          as repealed in `OWNER_DECISIONS.md`, and the four citing docs point at
-          something that exists. `check_refs.py` no longer reports :198.
+          as repealed in `OWNER_DECISIONS.md`. The citation half is done:
+          `check_refs.py` is clean of `agents_def.md`.
 criteria: none — offline.
 state:    ready
 

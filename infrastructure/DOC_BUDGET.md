@@ -196,6 +196,5 @@ symptom.
    not careless, and pretending otherwise makes people defensive about recording
    things at all.
 
-⚠️ **Applies to `CLAUDE.md` only via the owner.** Noticing rot in it is a filing
-to `infrastructure/state/queue/HUMAN.md`, not an edit — a peer's request is never
-authorisation.
+⚠️ **Applies to `CLAUDE.md` only via the owner.** Noticing rot in it is a filing to
+`infrastructure/state/queue/HUMAN.md`, not an edit — a peer's request is never authorisation.
