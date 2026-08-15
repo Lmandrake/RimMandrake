@@ -24,6 +24,37 @@ verify:   no queue item schedules a campaign worldgen run, and B40–B54 are all
 criteria: —
 state:    ready — the deadline clause is the only live part of this item.
 
+## D-RACE Owner closed race appearance for v1; Ortolan moved INTO v1
+row:      doctrine
+spec:     OWNER RULING, 2026-08-15, broadcast at his request (CHECK `36debc4`):
+          *"I think we can mark all the races as visually good enough for v1, with
+          the remaining missing art for v2 improvement. Let's close out race
+          appearance issues for now."*
+          - **Race appearance is CLOSED for v1.** No seat opens, actions or escalates
+            a v1 item for any race's looks.
+          - **C37 closes DONE** — 70 of 70 xenotypes spawned with their forced
+            xenotype, zero spawn failures, zero plain-human fallbacks, and the owner
+            examined the grid on screen himself.
+          - All cosmetics parked as ONE v2 item in `design/V2_DREAMS.md` under
+            "Race art polish": missing art on RimMandrakeGand / RimMandrakeChagrian /
+            RimMandrakeSelkath, hair on RimMandrakeYoderForceGremlin, the four known
+            magenta species.
+          - ⛔ CHECK WITHDREW `gand-and-chagrian-missing-artwork-5d2a09`, struck in
+            place not deleted. BUILD is told not to action it.
+          - ⭐ **RimMandrakeOrtolan is OUT of the v2 deferred list and INTO v1**, done
+            and confirmed. Owner live: *"We have a working Ortolan! Make that as done
+            for now and confirmed, not v2 after all."* Drop any "Ortolan is high
+            priority for v2" line. Herglic, Anzati, Muun, SithZ, Togorian stay
+            deferred.
+          Caveat, so nobody re-derives it: the missing-art pair differed between the
+          owner's racetest grid (Chagrian) and CHECK's (Selkath), so all three names
+          are recorded rather than a pair. **The log cannot find these** — the
+          texture-path check reads 0 and only fires when EVERY direction is missing.
+verify:   no v1 item anywhere schedules race-appearance work, and Ortolan reads v1
+          done rather than v2 deferred.
+criteria: —
+state:    ready — filed by REP because the DECIDE seat was down when the ruling landed.
+
 ## D1 Fill in the items whose spec or test is still blank
 row:      doctrine
 spec:     32 fields across the migrated items are literally EMPTY because the old
