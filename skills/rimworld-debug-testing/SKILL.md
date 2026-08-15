@@ -393,3 +393,26 @@ Every numbered trap here cost a real debug cycle. If you find another, add it wi
 its evidence — and if you find one of these is wrong, say so loudly rather than
 softening it. Two of the rulings that produced §5 were mine and were confidently
 wrong for an hour.
+
+### 🔴 Never CHOOSE between mods by reading a def dump
+
+A dump shows the post-load, post-dedup world. If one of the mods you are choosing
+between deletes the others at load, they are **already gone from the dump** and your
+preference list silently collapses to one option.
+
+Measured 2026-08-15. `gen_races_mod.py` declared "source preference BTD, then SWX,
+then Outer Rim" and picked with `next((c for c in cand if c in x))`, where `x` was the
+live dump. BTD deletes the SWX and Outer Rim duplicates at load, so those candidates
+were never in `x`; the fallback could not fire, and all 70 species were built from
+BTD's gene lists. BTD's lists carry the head*bone* genes but not the head*type* genes
+the other donors had — so `guy762_Head_rodian` was dropped and Rodians shipped with a
+generic scale head. The build was correct about everything it could see, and blind to
+two thirds of its own input.
+
+⇒ **To compare mods, read their XML on disk. Use the dump only for what the game
+finally built.** The same failure hides behind any "best available source" rule.
+
+⚠️ And a headless COUNT will not find the worst version of this: a species whose only
+head-forcing gene is a GENERIC one (`Outland_ScaleSkin`) has a head type, resolves
+clean, and still renders as the wrong creature. Ask the running game for
+`forcedHeadTypes` per gene and check WHICH head it forces, not whether one exists.
