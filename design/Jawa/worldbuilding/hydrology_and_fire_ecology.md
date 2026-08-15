@@ -369,11 +369,61 @@ the danger is fire, one where the fuel *is* the danger.
 ⚠️ **Standing next to a lake of liquid propane with an ignition source is a story
 that tells itself.** Do not over-author it; the player will find it.
 
-⚠️ **Reconcile with the existing chemfuel and helixien economy before building.**
-`desert_world_design.md` §3B(5) already sites helixien gas pockets on volcanic and
-deep-desert tiles. Two hydrocarbon sources is fine — they are at opposite ends of
-the planet and reached by different means — but the *value* of each has to be set
-once, together, or one of them becomes pointless.
+⚠️ **See "The hydrocarbon reconciliation" below** — the tar pits of R-H9 made this
+a three-way problem rather than a two-way one.
+
+## R-H9 · The tar pits are what the Pyrelands leave behind
+
+**Owner's ruling, 2026-08-15.** The tar pits lie **past the Pyrelands, where the
+desert finally takes over** — and are **interspersed with them** at the margin
+rather than starting at a clean border.
+
+**The mechanism, and it is the best thing about them:** the burning savanna
+produces ash without end. The rivers of R-H1 flood it, frequently and violently.
+Over eons that churn — ash, water, ash, water — compresses and transforms into
+**gooey, thick, biologically rich tar.**
+
+⇒ 🔴 **The Pyrelands manufacture their own margin.** The fire is not just a hazard
+the player survives; given geological time it is a *process with a product*, and
+the tar pits are the receipt. Nothing else on this world so plainly says *this has
+been burning for a very long time*.
+
+**Three things fall out of that, all free:**
+
+- **Tar preserves.** A tar pit is a trap that keeps what it catches, and on a
+  planet whose animals grow very large (R-H2) what it has caught is **enormous**.
+  Bones, whole carcasses, and — the part that matters to this campaign — **things
+  that are not bones.** A scavenger clan digging intact machinery out of tar is
+  the single most on-theme activity available to a Jawa, and it needs no mechanic
+  we do not already have.
+- **It is a slow hazard, not a fast one.** Deep desert kills by absence and the
+  Pyrelands kill by fire; tar kills by holding onto you. That is a third failure
+  mode, and the roster is short of hazards that are dangerous without being empty.
+- **"Biologically rich" is a resource claim**, and it should be honoured — this is
+  organic matter concentrated over geological time, not sludge.
+
+⚠️ **Placement note: interspersed, not banded.** The owner said past the savanna
+*or* interspersed with it, and interspersed is the stronger read — a hard border
+would imply a process with an edge, and this one does not have one. Pits inside
+the burning grassland are older ground that has already been through the cycle.
+
+## 🔴 The hydrocarbon reconciliation is now OWED, not optional
+
+Three separate hydrocarbon sources are now on this planet, and they were each
+ruled for a good reason in a different session:
+
+| source | where | ruling |
+|---|---|---|
+| **helixien gas pockets** | volcanic and deep-desert tiles | `desert_world_design.md` §3B(5) |
+| **propane lakes** | deep night, past the terminator | R-H6b |
+| **tar pits** | the Pyrelands margin | R-H9 |
+
+**Three is one more than the economy can carry without a decision.** Set their
+values ONCE, together, or two of them become pointless and the player learns to
+ignore whichever is worst. They are reached by very different means — a volcanic
+tile, a lethal cold expedition, and a hazard field next to the best farmland on
+the planet — so the honest answer is probably that they differ in *access cost*
+rather than in yield. **DECIDE owes this before chain step 2 balances anything.**
 
 ## R-H7 · The ocular forests — the mountains have their own horror
 
