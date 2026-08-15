@@ -586,3 +586,42 @@ state:    done — 2026-08-15, both halves. `0459627` + `ac8cee7`.
           never validated any of the 1,308 deployed keys. Chain step 1 corrected in
           `V1.md` — five categories are decided and live, not "weapons and apparel
           next". The owner ask is in `queue/HUMAN.md`.
+
+## frozen-mod-count-is-ten-short-2d1f8b
+row:      10
+spec:     Reported by BUILD from `refresh.py` (fingerprint `7256c128a43117a5`), relayed
+          by REP. Three numbers for one set and they disagree:
+
+          | source | count |
+          |---|---|
+          | live `ModsConfig.xml` (mtime 2026-08-15 11:58:30), and `deployed/config/v1_freeze/ModsConfig.xml`, identical incl. order | **575** |
+          | live DefDump, when it was taken | 576 |
+          | `infrastructure/state/V1_CHAIN.md:80-88` — "**These 585 ARE the frozen set** — owner's ruling, 2026-08-14" | **585** |
+
+          575 resolved, 0 listed-but-missing, so the live pair is internally consistent
+          and is the true state. The six Descoped rows of
+          `design/Jawa/mods/CHERRYPICK_AGENDA.md` account for six of the ten;
+          `regrowth.botr.boilingforest` is the one that left since the DefDump. **Four
+          are unaccounted for.**
+
+          This is yours because §0 of `V1_CHAIN.md` is a ruling, not a measurement, and
+          only you can restate it. `585` also appears in `infrastructure/state/V1.md`,
+          `design/Jawa/mods/required_mods.md`, `design/Jawa/mods/CHERRYPICK_AGENDA.md`
+          and `design/Jawa/worldbuilding/FACTION_SPEC.md` — some of those are prose about
+          the ruling and follow it.
+verify:   the four unattributed removals are named, and every doc that states the frozen
+          count states the same number.
+criteria: EMPTY — offline.
+state:    ready
+
+## promote-the-defdump-arming-out-of-optional-6ea3c7
+row:      10
+spec:     `NEXT_RELOAD.md:58` (§1a) arms the DefDump and is labelled "**OPTIONAL, gates
+          nothing**". BUILD reports it does gate something: the live dump is STALE, only
+          a game load refreshes it, and `Jawa_Armoury/Patches` is downstream of it and
+          stays stale until it lands. Read at STARTUP only, so it is armed before launch
+          or not at all — and a missed arming costs a whole load.
+verify:   §1a no longer says it gates nothing, and names what goes stale without it.
+criteria: the post-load dump is current and `Jawa_Armoury/Patches` can be regenerated
+          from it without a second load.
+state:    ready
