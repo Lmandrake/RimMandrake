@@ -46,10 +46,17 @@ spec:     OWNER RULING, 2026-08-15, broadcast at his request (CHECK `36debc4`):
             for now and confirmed, not v2 after all."* Drop any "Ortolan is high
             priority for v2" line. Herglic, Anzati, Muun, SithZ, Togorian stay
             deferred.
-          Caveat, so nobody re-derives it: the missing-art pair differed between the
-          owner's racetest grid (Chagrian) and CHECK's (Selkath), so all three names
-          are recorded rather than a pair. **The log cannot find these** — the
-          texture-path check reads 0 and only fires when EVERY direction is missing.
+          🔴 OWNER, 2026-08-15, later the same session (CHECK `7661925`): *"The
+          missing art races are consistent: Gand, Selkath, and Chagrian are the ones
+          with missing art. Log that as a v2 fix."* ⇒ **All three are real and the
+          list is COMPLETE.** No re-survey. Take the three at face value.
+          ⛔ An earlier caveat here said the pair differed between the owner's
+          racetest grid and CHECK's and that one sighting might be a misread. CHECK
+          has RETRACTED it and the owner has contradicted it. Deleted rather than
+          left standing — a stale line above its own correction still gets read first.
+          Still true, and the reason this was hard to see: **the log cannot find this
+          class** — the texture-path check reads 0 and only fires when EVERY
+          direction is missing.
 verify:   no v1 item anywhere schedules race-appearance work, and Ortolan reads v1
           done rather than v2 deferred.
 criteria: —
