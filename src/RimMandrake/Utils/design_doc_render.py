@@ -7,7 +7,7 @@ two that exist today with no arguments:
     python3 src/RimMandrake/Utils/design_doc_render.py
 Or render any other doc:
     python3 src/RimMandrake/Utils/design_doc_render.py SRC.md OUT.html \\
-        --title "Name" --eyebrow "VISION - context" --standfirst "one sentence" \\
+        --title "Name" --eyebrow "DECIDE - context" --standfirst "one sentence" \\
         --stat "11|religions specified|ok"
 
 Deliberately dependency-free (no `markdown` module on this box). Handles only
@@ -448,11 +448,11 @@ PRESETS = [
         out="design/Jawa/worldbuilding/review/faction_religions_spec.html",
         title="Eleven Religions",
         heading="Eleven religions, <em>buildable</em>",
-        eyebrow="VISION · design/Jawa/worldbuilding <span>·</span> the encoding layer"
+        eyebrow="DECIDE · design/Jawa/worldbuilding <span>·</span> the encoding layer"
         " <span>·</span> 2026-08-14",
         standfirst="Every NPC faction on the desert world gets an ideoligion whether we"
         " author one or not. These are the eleven we author — decisions, not"
-        " recommendations, and the file CREATE builds the <code>FactionDef</code>"
+        " recommendations, and the file BUILD builds the <code>FactionDef</code>"
         " blocks from.",
         stats=[
             ("11", "religions specified", "ok"),

@@ -4,7 +4,7 @@
 # Written by OPS 2026-08-14 at wrap, when the game was STILL UP and the window never
 # opened. Everything below was staged and verified that day; nothing was shipped.
 #
-#   S8  BridgeTools companion   (BRIDGE's, --gm REQUIRED, rides free)
+#   S8  BridgeTools companion   (CHECK's, --gm REQUIRED, rides free)
 #   S1  JawaSeaShaper.dll       (mod assembly, SOLO load)
 #   S9  Jawa_Patches            (scrapfields minSpacing 4->1, 8a7a5ee — the v1 row 4 fix)
 #

@@ -4,9 +4,8 @@
 Writes a Desktop shortcut that runs `launch_fleet.ps1`, which opens one Windows
 Terminal window per seat and places each in its quadrant:
 
-    UL  AGENT CREATE        UR  AGENT BRIDGE
-    LL  AGENT PROJECT       LR  AGENT OPS
-                 centre, on top: AGENT VISION
+    UL  AGENT DECIDE        UR  AGENT CHECK
+    LL  AGENT BUILD         LR  AGENT REP
 
 All launch behaviour lives in the .ps1 — the profiles it names are the ones
 `install_wt_seat_profiles.py` writes, which already carry the colour, tab title,
@@ -17,7 +16,7 @@ WHY A .lnk AND NOT A .bat
 =========================
 A batch file goes through cmd and flashes a console window on every click. The
 shortcut runs `powershell.exe` directly with `-WindowStyle Hidden`, so the only
-windows that appear are the five seats.
+windows that appear are the four seats.
 
 The Explorer properties dialog caps the Target field at 260 characters, but the
 .lnk format does not and WScript.Shell writes the field directly — which is why
@@ -29,7 +28,7 @@ USAGE
     python3 src/RimMandrake/Utils/install_fleet_shortcut.py --apply    # write the .lnk
 
 The shortcut is also the thing to pin: right-click it -> Pin to Start / Taskbar.
-Tune the layout in `launch_fleet.ps1` (`-CentreFrac`, `-Gap`), not here.
+Tune the layout in `launch_fleet.ps1` (`-Gap`), not here.
 """
 import argparse
 import os
@@ -81,10 +80,10 @@ def main():
         "$s.Arguments = '%s';"
         "$s.WorkingDirectory = '%s';"
         # The icon is Windows Terminal's, not PowerShell's: what the shortcut
-        # opens is five terminals, and the icon is how it is found on a busy
+        # opens is four terminals, and the icon is how it is found on a busy
         # Desktop.
         "$s.IconLocation = '%s,0';"
-        "$s.Description = 'Open all five RimWorld agent seats, tiled';"
+        "$s.Description = 'Open all four RimWorld agent seats, tiled';"
         "$s.Save()"
     ) % (lnk, PS, arguments.replace("'", "''"), REPO_WIN, WT)
 

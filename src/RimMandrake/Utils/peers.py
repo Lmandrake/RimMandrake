@@ -79,7 +79,7 @@ def seat_of(repo, session_id):
             title = fh.read().strip().splitlines()[0]
     except (OSError, IndexError):
         return ""
-    # Stored as "AGENT OPS"; the seat is the last token.
+    # Stored as "AGENT BUILD"; the seat is the last token.
     parts = title.split()
     return parts[-1].upper() if parts else ""
 
@@ -107,13 +107,14 @@ def main():
 
     for s in rows:
         s["_seat"] = seat_of(repo, s.get("sessionId"))
-    # Seat first, so the five seats read in a stable order and an undeclared
+    # Seat first, so the seats read in a stable order and an undeclared
     # session sorts to the bottom where it is conspicuous.
     rows.sort(key=lambda s: (s.get("_seat") or "~", s.get("name") or ""))
 
     mismatched = False
     # 🔴 The name is QUOTED and the column is wide enough for the longest seat
-    # name. It used to be a bare "%-12s", and 'AGENT BRIDGE' is exactly 12 chars
+    # name (`AGENT DECIDE`, 12 chars). It used to be a bare "%-12s", and the
+    # then-longest name 'AGENT BRIDGE' is exactly 12 chars
     # — so the field consumed its own padding and the PID ran onto the end of the
     # name: `AGENT BRIDGE 932`. A seat read that as the address and the send
     # bounced. Only `AGENT OPS` (9 chars) ever rendered correctly, which is why

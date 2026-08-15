@@ -3,11 +3,11 @@
 
 WHY THIS EXISTS
 ===============
-`agents_def.md` rule 1b: **live means a map exists, measured by BRIDGE** — never
-inferred from a splash screen and never from how long it has been. BRIDGE is the
-only seat that can take that measurement, and other seats' work keys off the
-call: OPS's savegame deletion only sticks inside the running-game window, and
-that window opens on BRIDGE's signal.
+**Live means a map exists, measured by CHECK** — never inferred from a splash
+screen and never from how long it has been. CHECK is the only seat that can take
+that measurement, and other seats' work keys off the call: a savegame deletion
+only sticks inside the running-game window, and that window opens on CHECK's
+signal.
 
 So the cost of noticing late is real, and "check every few minutes" is exactly
 how late happens. This blocks instead.

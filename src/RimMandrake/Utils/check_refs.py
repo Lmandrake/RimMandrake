@@ -3,7 +3,7 @@
 
 Documents here cite each other constantly, and nothing verified the citations. In
 one day: STRUCTURE.md pointed at a state file that does not exist, TODO.md cited a
-worked example that never existed, infrastructure/state/queue/OPS.md cited line numbers in a file that
+worked example that never existed, a seat's queue file cited line numbers in a file that
 had shrunk by 400 lines, and a rule number moved to another file. All four are
 mechanical checks. Same argument as src/RimMandrake/Utils/doc_budget.py: mechanical beats
 disciplined.
@@ -397,7 +397,7 @@ class Audit:
     # ---- rules ----------------------------------------------------------
     def rule(self, owner, ln, num, line, pos, soft=False):
         """Attribution decides confidence. A filename immediately LEFT of the rule
-        number is the citation ("agents_def.md rule 9"); one to the right is a
+        number is the citation ("POLICY.md rule 9"); one to the right is a
         table cell or the next clause, so a miss there is only UNVERIFIED."""
         left = MDNAME.findall(line[max(0, pos - RULE_NEAR):pos])
         right = MDNAME.findall(line[pos:pos + RULE_NEAR])

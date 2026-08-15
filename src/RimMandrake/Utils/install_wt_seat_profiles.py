@@ -14,7 +14,7 @@ Two things escapes could never do anyway:
     query goes to Claude Code's stdin, not to a script's, so "match this window"
     is unavailable by construction. `OSC 50` is also an xterm extension Windows
     Terminal does not implement.
-  * **Tab colour.** The tab strip is what the owner actually scans with five
+  * **Tab colour.** The tab strip is what the owner actually scans with four
     seats open, and no escape sequence addresses it.
 
 Profiles do all of it, before the shell even starts.
@@ -84,7 +84,7 @@ DISTRO = "Ubuntu"
 
 # How the owner launches Claude Code. There is no `claude` alias in ~/.zshrc —
 # checked — so this is the bare binary plus the flag they always pass. Change it
-# HERE if the launch line ever changes; five profiles read it.
+# HERE if the launch line ever changes; four profiles read it.
 #
 # ⭐ `--name` IS WHAT MAKES A SEAT ADDRESSABLE. It is not decoration and it is not
 # a duplicate of `tabTitle`. Measured 2026-08-13, three live seats at once: the

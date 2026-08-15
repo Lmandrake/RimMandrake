@@ -20,7 +20,7 @@ the binary (version 2.1.229, not assumed): the `SessionStart` and
 `UserPromptSubmit` hook-output schemas each carry a `sessionTitle` field,
 described in the binary as "Set the session title". No other event has it.
 
-So the agent runs ONE command — `src/RimMandrake/Utils/set_agent_window.sh CREATE` — and both
+So the agent runs ONE command — `src/RimMandrake/Utils/set_agent_window.sh BUILD` — and both
 namespaces are named: the window by the OSC escape, the conversation by this
 hook reading what that script recorded.
 
@@ -151,7 +151,7 @@ def role_dir():
 
 
 def seat_of(title):
-    """The seat named by a recorded title like "AGENT OPS", or None.
+    """The seat named by a recorded title like "AGENT BUILD", or None.
 
     The seat is the last whitespace-separated token, so a future title format
     that adds a detail suffix simply stops matching and injects nothing.
@@ -271,7 +271,7 @@ def read_locks():
 def read_identity(title, sid):
     """Return the seat's identity file, or None. Never raises.
 
-    `title` is what set_agent_window.sh recorded, e.g. "AGENT OPS".
+    `title` is what set_agent_window.sh recorded, e.g. "AGENT BUILD".
     """
     seat = seat_of(title)
     if not seat:

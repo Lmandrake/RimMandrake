@@ -38,7 +38,7 @@
 # 11:26:41.
 #
 # ── Usage ─────────────────────────────────────────────────────────────────────
-#   ./claude_bounded.sh --dangerously-skip-permissions --name 'AGENT PROJECT'
+#   ./claude_bounded.sh --dangerously-skip-permissions --name 'AGENT DECIDE'
 #   MEM_MAX=16G ./claude_bounded.sh ...        # override for a known-heavy seat
 #
 # All arguments are passed through to `claude` untouched.

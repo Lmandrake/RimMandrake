@@ -34,11 +34,10 @@ system actually renders it.
 USAGE
 =====
     powershell -NoProfile -ExecutionPolicy Bypass -File launch_fleet.ps1
-    ... -CentreFrac 0.4      # AGENT VISION's share of the work area (default 0.5)
     ... -Gap 8               # pixels between tiles (default 0, flush)
-    ... -Seats BRIDGE,OPS    # open a subset, in the same places
-    ... -Test                # same five windows, running `cmd` instead of a seat,
-                             # so the layout can be tuned without starting five
+    ... -Seats DECIDE,BUILD  # open a subset, in the same places
+    ... -Test                # same four windows, running `cmd` instead of a seat,
+                             # so the layout can be tuned without starting four
                              # Claude sessions. They are titled `AGENT X [test]`.
     ... -CloseTest           # close every test tile; live seats are untouched,
                              # because the marker is what it matches on.
@@ -46,7 +45,6 @@ USAGE
 Normally invoked by the Desktop shortcut written by install_fleet_shortcut.py.
 #>
 param(
-    [double]$CentreFrac = 0.5,
     [int]$Gap = 0,
     [string[]]$Seats = @('DECIDE', 'CHECK', 'BUILD', 'REP'),
     [int]$TimeoutSec = 30,
@@ -90,7 +88,7 @@ public class Fleet {
     [DllImport("user32.dll")] public static extern IntPtr SendMessageW(IntPtr h, uint msg, IntPtr w, IntPtr l);
 
     // Closes ONLY windows whose title ends with the test marker. A live seat is
-    // titled `AGENT OPS`; a test tile is `AGENT OPS [test]`. Never widen this.
+    // titled `AGENT BUILD`; a test tile is `AGENT BUILD [test]`. Never widen this.
     public static int CloseTests(string marker) {
         List<IntPtr> hits = new List<IntPtr>();
         EnumWindows(delegate(IntPtr h, IntPtr l) {
@@ -162,7 +160,7 @@ foreach ($seat in $Seats) {
     # `new` and `-1` both mean "a new window"; only those two do.
     #
     # Quoted by hand: Windows PowerShell joins -ArgumentList with spaces and adds
-    # no quoting of its own, so a bare `AGENT CREATE` would reach wt as two args.
+    # no quoting of its own, so a bare `AGENT DECIDE` would reach wt as two args.
     $q = '"' + $title + '"'
     # `/k rem`, not a bare `cmd.exe`: MEASURED 2026-08-14, a bare cmd under wt
     # exits within a second or two and takes the window with it, so only the
