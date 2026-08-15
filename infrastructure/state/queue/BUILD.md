@@ -427,7 +427,20 @@ verify:   `validate_patch.py --defs` 0 errors; every `weaponTags` string appears
           on at least one live weapon def; every `apparelRequired` defName
           resolves.
 criteria: each faction's raids field the intended roles, not one flat kind.
-state:    blocked
+state:    blocked — **but the reason changed 2026-08-15 and the hard blocker is GONE.**
+unblock:  🔴 **OWNER FROZE THE CHERRYPICK AND CLOSED CHAIN STEP 1.** The stated blocker
+          above — *"`weaponTags` and `apparelRequired` are a selection from the surviving
+          item set and cannot be invented"* — **no longer holds. That set is now FIXED**
+          (1,308 Cherry Picker keys; armour, weapons, items and beasts all done) and
+          nothing further will cut from it. There is no longer a risk that authoring
+          these 48 kinds today is invalidated by a later category pass.
+          ⇒ What remains is chain step 2/3 work over a frozen set — a balance pass and a
+          tag assignment — **not a discovery problem**. `combatPower` is still unset on
+          all 48 and still must be assigned; that was always ours, not the cherrypick's.
+          ⚠️ **I am not flipping this to `ready` myself**: step 3's artifact (which tags a
+          `PawnKindDef` actually consumes) is still unwritten, and BUILD bounces items
+          whose spec would have to be guessed. **DECIDE owes step 3's spec, then this
+          goes ready.** Filed so nobody re-derives the old blocker and re-parks it.
 
 ## B54 Add the faith text to the eleven factions, before worldgen
 row:      6
@@ -1450,9 +1463,12 @@ spec:     Owner broadcast, 2026-08-15: *"Game is down, offline work may begin. S
           `abrolo.grimstone.beasts`, `redmattis.sapientanimals`.
 
           WHAT IS NOT DONE, and is this item:
-          1. Those six mods are still installed and still Steam-subscribed, so a
-             RimSort re-sort or a Steam action re-adds them with no warning. Decide
-             and record whether they are unsubscribed or left on disk inactive.
+          1. ✅ **ANSWERED — OWNER 2026-08-15: they stay INACTIVE BUT SUBSCRIBED, and
+             this half is CLOSED.** Do not unsubscribe them and do not file an item to.
+             ⚠️ The hazard the line below described is real and is now ACCEPTED, not
+             fixed: a RimSort re-sort or a Steam action can re-add them with no warning.
+             ⇒ The mitigation is the freeze copy, not unsubscribing — `ModsConfig.xml`
+             and the freeze must stay identical, which item 2's verify already checks.
           2. Their defs are gone but references to them are not. Pre-record the
              `Could not resolve cross-reference` signatures the next load will throw
              into `infrastructure/state/EXPECTED_FAILURES_next_load.md` BEFORE launch —
@@ -1748,4 +1764,46 @@ verify:   `grep -rn "RG_BoilingForest\|BoilingWater\|regrowth.botr.boilingforest
           `validate_patch.py` on `JawaWorld_BiomeMix.xml` still reports OK.
 criteria: no `Could not resolve cross-reference` naming an `RG_` biome at the next load,
           and the biome mix behaves as authored with the entry gone.
+state:    ready
+
+## repoint-salvation-rid-provenance-at-the-live-set-7d3c11
+row:      10
+spec:     🔴 **Owner asked for this directly, 2026-08-15: "Can you modify Salvation.rid to
+          match our current mod configuration?"** Routed by REP with the diff already
+          measured, so no rediscovery.
+
+          `src/Jawa/ideoligion/The Salvation.rid` is `<savedideo>` with two blocks. Only
+          `meta` changes. `ideo` — 5 memes, **101 precept entries**, culture, style — is
+          NOT touched by this item.
+
+          `meta` holds three PARALLEL 585-entry lists that must stay index-aligned:
+          `modIds`, `modSteamIds` (7 of 585 non-zero; the rest are `0`), `modNames`.
+          Measured against live `ModsConfig.xml` (575 active):
+          - **11 in the file that no longer load:** `zal.giantsnake`,
+            `abrolo.grimstone.beasts`, `rah.rvte`, `guppyfacesarecute.skunks`,
+            `vanillaexpanded.vanillaanimalsexpanded`,
+            `honeybadger.wallmountedturretsversiontwo`, `regrowth.botr.boilingforest`,
+            `redmattis.sapientanimals`, `neronix17.outerrim.galacticdiversity`,
+            `guy762.starwarsxenotypes`, `btd.xenotyperemix.starwars`
+          - **2 live mods absent from it:** `mandrake.starwarsraces`,
+            `mandrake.jawaplantgrowth` (deployed today)
+          - **Order does not match either**, so rebuild the lists from `activeMods` order
+            rather than patching entries in place. Names and steam ids come from each
+            mod's `About/About.xml` + `About/PublishedFileId.txt`; a local mod has no
+            PublishedFileId and takes `0`, which is why 578 of them are `0`.
+          Also `meta/gameVersion` is `1.6.4871 rev591`; live `ModsConfig` reads rev590.
+          Say which you wrote and why.
+
+          ⚠️ **State plainly in the commit that this is PROVENANCE ONLY.** The block is
+          what drives RimWorld's "made with mods you do not have" warning. Rewriting it
+          silences that warning without touching a single precept — and under C42 the 82
+          precepts are UNMEASURED, so that warning is currently the only signal we have
+          that something in this artifact is stale. It is not a fix and must not be
+          recorded as one.
+verify:   the three lists are 575 long, index-aligned, in `activeMods` order; the file
+          still parses as XML; `ideo` is byte-identical to `b206272` apart from nothing —
+          diff it and prove only `meta` moved.
+criteria: the ideoligion loads with no missing-mod warning AND C42's precept count is
+          unchanged by this edit — if precepts change, this item did something it should
+          not have.
 state:    ready
