@@ -53,21 +53,79 @@ def host():
     except Exception:
         pass
     try:
-        ps = subprocess.run(["ps", "-eo", "rss,comm"], capture_output=True,
+        # Count THIS project's agents only. A bare `ps | grep claude` also
+        # catches the owner's sessions in other repos, which is how the panel
+        # read 5 processes beside a SEATS UP of 4/4 — the fifth was a Hestia
+        # session. The working directory is what distinguishes them.
+        ps = subprocess.run(["ps", "-eo", "pid,rss,comm"], capture_output=True,
                             text=True, timeout=10).stdout.splitlines()[1:]
-        rss = sum(int(l.split()[0]) for l in ps if "claude" in l.lower())
-        n = sum(1 for l in ps if "claude" in l.lower())
-        out["agents"] = {"count": n, "rss_gb": round(rss / 1048576.0, 2)}
+        rss = n = other = 0
+        here = os.path.realpath(ROOT)
+        for line in ps:
+            parts = line.split(None, 2)
+            if len(parts) < 3 or "claude" not in parts[2].lower():
+                continue
+            try:
+                cwd = os.path.realpath("/proc/%s/cwd" % parts[0])
+            except OSError:
+                continue
+            if cwd == here or cwd.startswith(here + os.sep):
+                rss += int(parts[1])
+                n += 1
+            else:
+                other += 1
+        out["agents"] = {"count": n, "rss_gb": round(rss / 1048576.0, 2),
+                         "elsewhere": other}
     except Exception:
         pass
+    # WSL CPU. This is the number that actually tracks how hard the seats are
+    # working — WSL *memory* barely moves, because four agents are ~0.4 GB each
+    # against a 35 GB ceiling, and RimWorld is not in WSL at all.
     try:
-        tl = subprocess.run(["tasklist.exe"], capture_output=True, text=True,
-                            timeout=20).stdout
-        m = re.search(r"RimWorldWin64\.exe\s+\d+\s+\S+\s+\d+\s+([\d,]+) K", tl)
-        out["rimworld_gb"] = round(int(m.group(1).replace(",", "")) / 1048576.0, 1) if m else None
+        one, five, fifteen = open("/proc/loadavg").read().split()[:3]
+        cores = os.cpu_count() or 1
+        out["wsl_cpu"] = {"load1": float(one), "load5": float(five),
+                          "load15": float(fifteen), "cores": cores,
+                          "pct": round(100.0 * float(one) / cores)}
     except Exception:
-        out["rimworld_gb"] = None
+        pass
+    out.update(windows())
     return out
+
+
+_WIN = {"at": 0, "v": {}}
+WIN_TTL = 6          # seconds; one PowerShell call is ~1s and the poll is 3s
+
+
+def windows():
+    """The Windows side, in one call: RimWorld's memory, host RAM, host CPU.
+
+    RimWorld runs on Windows, not in WSL, so the machine that matters for the
+    game is invisible to /proc. Cached briefly because PowerShell start-up costs
+    about a second and the board polls every three.
+    """
+    if _WIN["v"] and time.time() - _WIN["at"] < WIN_TTL:
+        return _WIN["v"]
+    ps = (r"$p=Get-Process RimWorldWin64 -ErrorAction SilentlyContinue;"
+          r"$o=Get-CimInstance Win32_OperatingSystem;"
+          r"$c=(Get-CimInstance Win32_Processor|Measure-Object -Property LoadPercentage"
+          r" -Average).Average;"
+          r"'{0}|{1}|{2}|{3}' -f "
+          r"$(if($p){[math]::Round($p.WorkingSet64/1GB,1)}else{'na'}),"
+          r"[math]::Round(($o.TotalVisibleMemorySize-$o.FreePhysicalMemory)/1MB,1),"
+          r"[math]::Round($o.TotalVisibleMemorySize/1MB,1),[int]$c")
+    v = {"rimworld_gb": None}
+    try:
+        raw = subprocess.run(["powershell.exe", "-NoProfile", "-Command", ps],
+                             capture_output=True, text=True, timeout=20).stdout
+        rw, used, total, cpu = raw.strip().split("|")
+        v = {"rimworld_gb": None if rw == "na" else float(rw),
+             "win": {"used_gb": float(used), "total_gb": float(total),
+                     "cpu_pct": int(cpu)}}
+    except Exception:
+        pass
+    _WIN.update(at=time.time(), v=v)
+    return v
 
 
 PLAYER_LOG = ("/mnt/c/Users/Mandrake/AppData/LocalLow/Ludeon Studios/"

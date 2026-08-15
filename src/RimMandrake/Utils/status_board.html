@@ -66,6 +66,24 @@
   .mem .r{display:flex;justify-content:space-between;font-size:11px;color:var(--mut);margin-bottom:3px}
   .mem .b{height:9px;background:#0a0e13;border:1px solid var(--line);border-radius:5px;overflow:hidden}
   .mem .b i{display:block;height:100%}
+  /* HOST is two machines, not one. The seats live in WSL; RimWorld lives on
+     Windows. Reading them as a single pool is what made WSL memory look broken
+     — it is 7% and static because the game is not in it. */
+  .hgrp{margin-top:2px}
+  .hgrp + .hgrp{margin-top:14px;padding-top:12px;border-top:1px solid var(--line)}
+  .hgrp .hh{display:flex;align-items:baseline;gap:8px;margin-bottom:9px}
+  .hgrp .hh b{font-size:10px;letter-spacing:.15em;font-weight:700}
+  .hgrp .hh span{font-size:10.5px;color:var(--mut)}
+  .hgrp .hh .big{margin-left:auto;font-size:15px;font-weight:700;
+                 font-variant-numeric:tabular-nums;letter-spacing:0}
+  .hrow{display:flex;align-items:center;gap:9px;padding:3px 0;font-size:11px}
+  .hrow .l{width:74px;color:var(--mut);white-space:nowrap}
+  .hrow .s{flex:1;min-width:0;height:9px;background:#0a0e13;border:1px solid var(--line);
+           border-radius:5px;overflow:hidden}
+  .hrow .s i{display:block;height:100%;border-radius:4px 0 0 4px}
+  .hrow .v{width:92px;text-align:right;font-variant-numeric:tabular-nums;
+           color:#c3cede;white-space:nowrap}
+  .hnote{font-size:10.5px;color:var(--mut);margin-top:7px;font-style:italic}
   #summary{font-size:12.5px;line-height:1.5;color:#c9d4e0}
   #summary b{color:var(--tx)}
   .stale{color:var(--red);font-weight:700}
@@ -313,11 +331,39 @@ function render(d){
     `</div>`;
 
   const h=d.host||{};
+  // Same thresholds as everywhere else, but inverted: for a resource, HIGH is bad.
+  const rc=p=>p>=85?C.red:p>=65?C.amb:C.grn;
+  const hrow=(label,pct,value,col)=>`<div class="hrow"><span class="l">${label}</span>
+      <span class="s"><i style="width:${Math.min(100,Math.max(2,pct))}%;
+        background:${col||rc(pct)}"></i></span>
+      <span class="v">${value}</span></div>`;
+
+  const W=h.win, wc=h.wsl_cpu;
   el('host').innerHTML=
-    (h.wsl?memRow('WSL memory',h.wsl.used_gb,h.wsl.total_gb):'')+
-    (h.swap&&h.swap.total_gb?memRow('Swap',h.swap.used_gb,h.swap.total_gb,60):'')+
-    (h.agents?`<div class="mem"><div class="r"><span>Agent processes</span>
-       <span>${h.agents.count} · ${h.agents.rss_gb} GB</span></div></div>`:'');
+    // ---- Windows: the machine RimWorld runs on ----
+    (W?`<div class="hgrp">
+        <div class="hh"><b style="color:${C.blu}">WINDOWS</b><span>the game</span>
+          <span class="big" style="color:${rc(W.cpu_pct)}">${W.cpu_pct}%</span></div>
+        ${hrow('CPU',W.cpu_pct,W.cpu_pct+'%')}
+        ${hrow('Memory',100*W.used_gb/W.total_gb,`${W.used_gb} / ${W.total_gb} GB`)}
+        ${hrow('RimWorld',h.rimworld_gb!=null?100*h.rimworld_gb/W.total_gb:0,
+               h.rimworld_gb!=null?h.rimworld_gb+' GB':'not running',
+               h.rimworld_gb!=null?C.blu:C.mut)}
+      </div>`:'')+
+    // ---- WSL: the machine the seats run on ----
+    `<div class="hgrp">
+      <div class="hh"><b style="color:${C.amb}">WSL</b><span>the seats</span>
+        ${wc?`<span class="big" style="color:${rc(wc.pct)}">${wc.pct}%</span>`:''}</div>
+      ${wc?hrow('CPU load',wc.pct,`${wc.load1.toFixed(2)} / ${wc.cores} cores`):''}
+      ${h.wsl?hrow('Memory',100*h.wsl.used_gb/h.wsl.total_gb,
+                   `${h.wsl.used_gb} / ${h.wsl.total_gb} GB`):''}
+      ${h.swap&&h.swap.total_gb?hrow('Swap',100*h.swap.used_gb/h.swap.total_gb,
+                   `${h.swap.used_gb} / ${h.swap.total_gb} GB`):''}
+      ${h.agents?hrow('Agents',100*h.agents.rss_gb/(h.wsl?h.wsl.total_gb:1),
+                   `${h.agents.count} · ${h.agents.rss_gb} GB`,C.vio):''}
+      ${h.agents&&h.agents.elsewhere?`<div class="hnote">+${h.agents.elsewhere}
+         claude session${h.agents.elsewhere>1?'s':''} in another repo, not counted</div>`:''}
+    </div>`;
 
   // Velocity — closed-per-day from the Closes: trailers' own commit dates, so
   // it can never disagree with the closed count above. The projection assumes a
