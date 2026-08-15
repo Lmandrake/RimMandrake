@@ -1945,3 +1945,20 @@ verify:   a synthetic def that inherits `<statBases>` is flagged ERROR with raw-
 criteria: `validate_patch.py` on `src/Jawa/Jawa_Doctrine` names any def whose
           add-if-missing container is inherited, and names no def whose is owned.
 state:    ready
+
+## bridge-cannot-order-a-melee-attack-3f8c21
+raised:   2026-08-15 CHECK, after C43 failed to collect on a live quicktest map.
+ask:      One bridge verb that issues an ATTACK job — `JobDefOf.AttackMelee` against a
+          named target (and ideally `AttackStatic` for ranged). Everything else needed to
+          stage a combat observation already exists; this is the only missing piece.
+why:      There is no way to make a pawn swing on command. Measured, not assumed:
+          · a DRAFTED colonist holds at `Wait_Combat` indefinitely;
+          · `jawa/order_pawn` issues a GOTO whether given `targetId` or the enemy's cell;
+          · pawns from `jawa/spawn_pawn` carry **no lord**, so hostiles idle forever;
+          · `Actions\Spawn large enemy raid` + 5,600 stepped ticks never produced an
+            engagement at the drafted pawn.
+          So any item whose criterion is "what does X look like DURING an attack" is
+          uncollectable unattended today — C43 is the first, and it will not be the last.
+scope:    ⛔ I am not designing it. Named here because CHECK found the gap, per POLICY.
+          The equip half is already solved and needs nothing:
+          `Actions\Equip primary (selected)...\<WeaponDefName>` after `select_pawn`.

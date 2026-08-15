@@ -866,7 +866,39 @@ prep:     2026-08-15 CHECK, offline, before the load:
             holding. If no saber comes with any kind, say so and mark C43
             **UNCOLLECTABLE this load** — do not photograph an unarmed pawn and
             call it the test.
-state:    ready — collectable unattended IF the equip route resolves, verdict deferred
-          to the owner. 🔴 REP 2026-08-15 checked the two most recent owner
-          screenshots: neither shows a lightsaber. Assume NO comparison arm exists
-          and report a baseline unless the owner names one.
+state:    🔴 BLOCKED — NOT collectable unattended. Attempted in full 2026-08-15 on the
+          quicktest map and the ATTACK FRAME CANNOT BE STAGED from the bridge.
+result:   Half of it is SOLVED and half is impossible with today's tool surface.
+          ✅ **The equip route is solved.** No `jawa/` tool equips a pawn, but the debug
+            action does: select a colonist with `rimworld/select_pawn`, then
+            `Actions\Equip primary (selected)...\Force_Lightsaber_Custom` — the leaf
+            exists for all 8 saber variants (808 leaves under that node). VERIFIED
+            INDEPENDENTLY, not off the call's own success: the pawn's Gear panel reads
+            **"Equipped: Lightsaber (normal)"** and the lightsaber gizmos ("Customize
+            Lightsaber", "Throw lightsaber") appear on the command bar.
+          ⛔ **The pawnkind route is a dead end.** `Jawa_Spawn_SithK`, `Jawa_Spawn_SithM`,
+            `RimMandrakeSithMassassi_Kind` and `RimMandrakeSithKissaiPureblood_Kind` all
+            spawn **UNARMED** — read off a screenshot, and Melee 0.00 in the panel.
+          🔴 **THE BLOCKER: nothing in the 155-tool surface orders an ATTACK.**
+            · a DRAFTED pawn holds at `Wait_Combat` and never swings;
+            · `jawa/order_pawn` issues a GOTO — with `targetId` or with the enemy's own
+              cell — never an attack job;
+            · pawns spawned by `jawa/spawn_pawn` have **no lord**, so hostiles just idle;
+            · even `Actions\Spawn large enemy raid` + **5,600 stepped ticks** (~1.5
+              in-game hours) never brought a raider adjacent to the drafted colonist.
+            Melee DID occur on the map (corpses, blood, a dead spawned sith), so the
+            mechanism works — it cannot be AIMED, and an unattended run cannot wait for
+            an accident it cannot detect.
+          ⛔ `Actions\Play Animation...` does NOT help: 208 leaves, **zero** `AM_` ones.
+            Melee Animation's 33 `AM_Duel_*`/`AM_Execution_*` AnimDefs exist in the dump
+            but are not exposed to that menu — they fire from real melee jobs only.
+          ⇒ WHAT WOULD UNBLOCK IT, and it is not mine to author: either the owner at the
+            keyboard for ten seconds (right-click an enemy with a drafted sabre pawn), or
+            a bridge verb that issues `JobDefOf.AttackMelee`. Filed to BUILD as a request,
+            not designed here.
+          ⇒ NOT reported as a result. I am not photographing a pawn standing still and
+            calling it "active melee combat" — that is the exact question the owner asked
+            and it is the half I could not get.
+          🔴 REP 2026-08-15 checked the two most recent owner screenshots: neither shows a
+          lightsaber. NO comparison arm exists, so even a captured swing would have been a
+          baseline, not the A/B the wording implies.
