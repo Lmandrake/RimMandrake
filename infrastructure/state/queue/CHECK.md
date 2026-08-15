@@ -115,6 +115,13 @@ verify:   `python3 -c "import json;d=json.load(open('infrastructure/state/status
 criteria: The board's GAME panel matches the real game across one up→down
           transition, and does not flag STALE while the process is resident.
 state:    doing
+resume:   The DOWN half is still unproven - the game was still up when this session
+          ended. game.json currently reads LOADING from the 07:56 launch. Next seat:
+          stamp it DOWN at shutdown and confirm the board's GAME panel follows, which
+          is the whole remaining criterion. Everything else in this item is done: the
+          file is mine, `by: CHECK`, and I restamped it through DOWN/LOADING/PLAYABLE
+          transitions all session.
+
 note:     2026-08-14 CHECK. Restamped: `by CHECK`, `at 1786770877` (was BRIDGE's
           1786744923), note no longer "BRIDGE idle", and `left` refreshed — the old
           one claimed "0 pawns" when the map now has Alex (PlayerColony), plus the
@@ -256,6 +263,22 @@ criteria: 70 of 70 spawn with the right xenotype and a species-appropriate body.
           `factionlessGenerationWeight` is 0 on all of them, so NONE of this is
           expected to occur in normal play yet. That is the later wiring job.
 state:    doing
+resume:   🔴 FIRST ACTION NEXT LOAD, and it is one screenshot: the FACIAL ANIMATION fix
+          is written but was NOT ACTIVE this session. Process started 07:56:41; the
+          config was written 10:10:18, and FA reads its settings only at startup.
+            Config/Mod_1635901197_FacialAnimationMod.xml now carries 70 Human-RimMandrake*
+            entries (86 -> 156). Backup + result both in deployed/config/ as
+            BEFORE-/AFTER-rimmandrake-exclude-2026-08-15.xml.
+          TEST: spawn one RimMandrakeRodian and look at it. Snoot visible = FA fix works
+          and the whole art failure is closed. Still a human face = FA is not the cause
+          and D-CHK2/the head-gene findings move back up.
+          THEN re-check the four D-CHK2 species (Gand, Selkath, female Chagrian, Jawa
+          mask) - they need BUILD's generator fix and a redeploy first, so they will
+          still be magenta until that lands. Do not read them as an FA failure.
+          BANKED, do not redo: 70/70 spawn with the correct xenotype; the 5 that missed
+          the first pass are the 8-colonist substitution artifact and came back clean on
+          re-spawn.
+
 spawned:  2026-08-15 CHECK. 70 OF 70 SPECIES SPAWN with the right xenotype.
           The 5 that missed the first pass (MandrakeJawa, Abednedo, Anzati, Bith,
           Mirialan) ALL came back correct on re-spawn, which confirms the owner's
