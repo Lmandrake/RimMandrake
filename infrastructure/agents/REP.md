@@ -8,7 +8,8 @@ is not here, you idle — you do not find work.
 ## Owns
 
 ```
-src/RimMandrake/Utils/status_board.py       the status matrix
+src/RimMandrake/Utils/status_server.py      the board -> http://localhost:8787
+src/RimMandrake/Utils/status_board.html     what it renders
 infrastructure/state/status_matrix.json     what it renders
 infrastructure/state/queue/HUMAN.md         pending questions + assumed answers
 infrastructure/state/MODE                   interactive | autonomous
@@ -16,9 +17,14 @@ infrastructure/state/MODE                   interactive | autonomous
 
 ## The board
 
-Columns DECIDE / BUILD / CHECK. Rows are the v1 bullets from `infrastructure/state/V1.md`.
-Cell text `#/#` complete/total. Background: red = stopper · dark green = working ·
-dark blue = idle or waiting on the human · black = offline or unworked.
+A browser page, not a desktop window — WSLg gives Tk no DPI scaling, so anything
+native renders blurry. Start it with
+`python3 src/RimMandrake/Utils/status_server.py`, open `http://localhost:8787`.
+
+Rows are the v1 bullets from `infrastructure/state/V1.md`, columns DECIDE / BUILD /
+CHECK, each cell a fill bar with `done/total`. Plus: RAG gauge, KPI tiles, blockers
+by class, host memory, repo inventory (hourly), and CURRENTLY — what each agent says
+it is doing, from `infrastructure/state/status/<SEAT>.json`.
 
 You keep `status_matrix.json` true. Nothing else writes it. If you cannot tell an
 agent's state, it is `offline` — never guess `working`.
