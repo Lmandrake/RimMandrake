@@ -45,12 +45,12 @@ a vehicle, and getting it airborne again is the campaign.
 |---|---|
 | **map** | the tile the owner picks, on the world he saves. Desert / ExtremeDesert / AridShrubland |
 | **ship** | `design/Jawa/worldbuilding/ship_build/exported/Gravship_v1.xml` — 4,057 substructure cells, 1,053 things, already boardable |
-| **pawns** | the five founders below. No random colonists, no random gear |
+| **pawns** | the six founders below. No random colonists, no random gear |
 | ⚠️ floors | **terrain does NOT come with a mid-game spawn.** Replay the layout's `terrainDef` cells through `jawa/set_terrain_batch` after placing the ship, or the deck lands bare |
 
-## The five founders
+## The six founders
 
-All five: xenotype **`MandrakeJawa`**, apparel locked to the Jawa robe and hood
+All six: xenotype **`MandrakeJawa`**, apparel locked to the Jawa robe and hood
 (`apparelRequired`), gender male (the clan is all-male by lore). Skill spreads
 follow `jawa_crew_personas.md` §5.6; **traits, passions, ages, work disables and
 gear are decided here.**
@@ -74,16 +74,13 @@ one who will not dig is merely characterful.
 ### Tobb Nkik — "Keeper of the Articles" · age 38
 
 ```
-Intellectual 9 (Major) · Social 6 (Minor) · Plants 4 · Cooking 4 · Medicine 1
+Intellectual 9 (Major) · Social 6 (Minor) · Medicine 1
 traits         Ascetic · Slow Learner
 workDisables   Violent
 gear           Jawa robe + hood · no weapon
 ```
-⭐ **Plants and Cooking are added here and they are not in the source grid.** The
-five as written have **zero** Cooking and **zero** Plants between them, which on a
-desert world is a starvation start, not a difficulty choice. Giving them to the
-theologian is the lore-positive fix: ration paste is sacred, so the Keeper of the
-Articles is the one who grows and prepares it. **The sacred ration becomes a job.**
+Kept pure to his written role. The food gap he would otherwise have had to fill
+is Sekki's — see the sixth founder below.
 
 ### Griz Utinn — "The Hands" · age 34
 
@@ -108,6 +105,33 @@ Just-turned-adult, so the fast-growth engine is visible on screen from minute
 one. The only violence-capable pawn, and `Volatile` means he will pick fights
 with the Captain — which is the succession arc warming up.
 
+### Sekki Vosh — "The Long Pot" · age 29 · THE SIXTH FOUNDER
+
+Added on the owner's ruling, 2026-08-15. The five as written carry **zero**
+Cooking and **zero** Plants between them, which on a desert world is a starvation
+start rather than a difficulty choice. The owner chose a sixth founder over
+diluting Tobb's concept.
+
+```
+Cooking 7 (Major) · Plants 5 (Minor) · Construction 2 · Social 2
+traits         Gourmand · Neurotic
+workDisables   Intellectual
+gear           Jawa robe + hood · knife · no gun
+```
+
+He runs the still and the paste vats, and he is the clan's hauler — the one who
+knows where everything is. **Ration paste is sacred, so the pawn who makes it has
+a quiet authority his skill numbers do not show.**
+
+⭐ **`Gourmand` is deliberate and it is the best story seam in the crew.** The
+clan's faith holds ration paste sacred; Sekki eats it. He is the one member
+permanently, comically failing his own religion, and Tobb is the one who has to
+watch. That is friction the player inherits on turn one rather than a stat line.
+
+⚖️ **He can hold a gun but is not a soldier** — no Shooting skill, `Violent` NOT
+disabled. This keeps Yeku the only real gun while adding a body for a crisis, so
+the crew is easier to *feed* without becoming easier to *defend*.
+
 ### Wim Ateeka — "The Twice-Kin" · age 31
 
 ```
@@ -119,17 +143,18 @@ gear           Jawa robe + hood · medicine ×15
 Born to another clan, taken as a slave, made kin through the love-gate — the
 living precedent that the mechanic exists before the player ever meets it.
 
-### Why this five plays well
+### Why this six plays well
 
 **Covered:** leadership, research, crafting/construction/mining, shooting,
-medicine, and now food. **Deliberately absent:** any second fighter, any artist,
-any second builder. Losing Griz or Yeku genuinely hurts, which is the point.
+medicine, food. **Deliberately absent:** any second fighter, any artist, any
+second builder. Losing Griz or Yeku genuinely hurts, which is the point.
 
-⚠️ **Two pawns have `Violent` disabled** (Tobb, Wim). That is 2 of 5 unable to
-fight, with Yeku the only real gun and Nekko a poor one. **This is a hard start
-and it is intended** — a scavenger clan is not a war party. If the first live
-session proves it unsurvivable, the cheapest fix is giving Nekko Shooting 4, not
-re-enabling anyone's violence.
+⚠️ **Two pawns have `Violent` disabled** (Tobb, Wim), Yeku is the only real gun
+and Nekko is a poor one. **This is a hard start and the owner ruled 2026-08-15
+that it STAYS hard** — a scavenger clan is not a war party. The sixth founder
+feeds the crew without defending it, so adding him did not soften the opening.
+If a live session proves it unsurvivable, the cheapest fix is giving Nekko
+Shooting 4, **not** re-enabling anyone's violence.
 
 ## Starting stock
 
@@ -137,7 +162,7 @@ Salvage-flavoured and thin. Steel and components from stripping the ship, not
 from a supply drop.
 
 ```
-steel 300 · components 20 · packaged survival meals 25 · medicine 15
+steel 300 · components 20 · packaged survival meals 30 · medicine 15
 ion sidearm ×2 · one rifle · pack animal ×1
 NO advanced components, NO glitterworld medicine, NO prebuilt turrets
 ```
@@ -148,6 +173,5 @@ NO advanced components, NO glitterworld medicine, NO prebuilt turrets
   founders exist and play regardless; the mechanic layers in when confirmed.
 - **The xenotype-death mourning thought** has no off-the-shelf mod and stays
   hand-authored `[v2]`.
-- **A sixth founder (cook/hauler)** was the source doc's own fallback if
-  logistics feel thin. Tobb's Cooking is the cheaper answer; revisit only if the
-  playable session says otherwise.
+- ✅ **The sixth founder question is CLOSED** — the owner took the sixth founder
+  over diluting Tobb. Sekki Vosh is specced above.

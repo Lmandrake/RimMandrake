@@ -443,11 +443,11 @@ spec:     `design/Jawa/worldbuilding/SCENARIO_SPEC.md`. The scenario is a SAVED
           (b) 🔴 replay the layout's `terrainDef` cells through
               `jawa/set_terrain_batch` — floors do NOT come with a mid-game
               Sketch spawn and nothing errors when they are missing;
-          (c) author the five founders with Character Editor to the exact
+          (c) author the SIX founders with Character Editor to the exact
               skills, traits, passions, ages, workDisables and gear in the spec;
           (d) set the starting stock listed there — salvage-thin, no advanced
               components, no glitterworld medicine, no turrets.
-verify:   all five pawns are `MandrakeJawa`, carry the robe and hood, and match
+verify:   all six pawns are `MandrakeJawa`, carry the robe and hood, and match
           the spec's skill and trait lines exactly; the deck has its floors.
 criteria: the save loads into a playable colony aboard the ship. This IS chain
           step 12 and it is the artifact v1 ships.
