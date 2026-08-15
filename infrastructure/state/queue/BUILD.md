@@ -803,6 +803,118 @@ criteria: the player cracks an ancient cryptosleep casket and what climbs out is
           visibly not human, and the encounter plays exactly as it did before.
 state:    ready
 
+## B63 Two settings would silently give us the wrong planet — fix before worldgen
+row:      12
+spec:     `design/Jawa/worldbuilding/SCENARIO_SETTINGS_SPEC.md` is the authority.
+          It sorts EVERY game-creation setting into three buckets and the split is
+          the point: **(A) authored as FILES** — yours, fixable on a reload;
+          **(B) 🔴 CLICKED AT WORLD CREATION and permanent** — the owner's, and
+          getting one wrong costs a new campaign plus a ~25-30 min cold load;
+          **(C) changeable in an existing save** — note and move on. Put the
+          bucket letter on anything you quote from it.
+
+          🔴 **TWO BLOCKERS, both bucket A, both with a bucket B deadline.
+          Measured 2026-08-15. Neither is theoretical.**
+
+          (1) **THE PLANET TYPE IS NOT SELECTED AND THERE IS NO BUTTON FOR IT ON
+          THE WORLD PAGE.** `ferny.Worldbuilder` is NOT in `<activeMods>`, so the
+          Alien Worlds Framework runs its `Standalone` backend and the planet-type
+          selector is a radio list in **Mod settings**, not a world preset on the
+          generation page (DLL string `Planet type for new worlds:`).
+          `AlienWorldsSettings.selectedPlanetType` defaults to `"Default"` and
+          **no `Mod_3626210061_*.xml` exists anywhere in
+          `C:\Users\Mandrake\AppData\LocalLow\Ludeon Studios\RimWorld by Ludeon Studios\Config\`**
+          (all 85 entries listed, zero matches). ⇒ **A world generated today is
+          the ordinary vanilla planet** — no tidal lock, no
+          `avgTempByLatitudeCurve`, no `biomeBlacklist` — and it generates without
+          one error line. The safe route is the owner setting it in the mod
+          settings window and screenshotting it; a pre-written settings file is
+          allowed but its FILENAME IS DERIVED, so it only counts once the settings
+          page reads it back.
+
+          (2) **THE BIOME MIX IS DEAD.**
+          `src/Jawa/Jawa_Patches/Patches/JawaWorld_BiomeMix.xml` writes
+          `biomeConfigs` in the dictionary-keyed shorthand
+          (`<Desert><scoreOffset>12</scoreOffset></Desert>`). `Player.log`
+          lines 1052-1079 of the 11:03 load carry 28 copies of
+          `XML format error: List item found with name <X> that is not <li>, and
+          which does not have a custom XML loader method, in <biomeConfigs>`.
+          The live def reads `biomeConfigs: []` while `biomeBlacklist` holds all
+          29 entries — **the blacklist works, all 24 abundance/rarity offsets do
+          nothing.** The field is `Dictionary<string, BiomeConfig>` (framework
+          source, `…\294100\3626210061\Source\PlanetTypeDef.cs`) with no custom
+          loader, so it needs
+          `<li><key>Desert</key><value><scoreOffset>12</scoreOffset></value></li>`
+          — the shape vanilla uses for `AnimationDef.keyframeParts`.
+          🪤 **This is B56 in reverse**: there the `<li>` shape was wrong on a
+          keyed field, here the keyed shape is wrong on a real dictionary. Read
+          the declared type; never pattern-match off another def.
+          ⛔ **KEEP `<biomes>` EMPTY.** `scoreOffset` is applied in
+          `PlanetTypeManager.GetBiomeScorePostfix` and only tests
+          `ContainsKey` — the `<biomes>` membership check guards
+          `defFields`/`texture`/`workerClass` only. Expect up to 24 harmless
+          `contains key X, which isn't present in <biomes>. Skipping.` warnings
+          after the fix and do NOT silence them by populating `<biomes>`, which
+          would exclude `Space`, `Orbit`, `Underground` and every pocket map.
+          🔴 Biome scoring runs once, in `WorldGenStep_Terrain`. Chain step 8 is
+          recorded done and ratified; its scoring half has never run.
+
+          **THE ANOMALY RULING, and it is world-creation-permanent.** The
+          playstyle is `AnomalyPlaystyleDef` — exactly three defs, `Standard` ·
+          `AmbientHorror` · `Disabled`. **`AmbientHorror` with the threat slider
+          at 0%** keeps study, the anomaly research tab, the codex and tome
+          trading alive while nothing auto-spawns, and skips the
+          `minAnomalyThreatLevel` gate so `PitGate`/`FleshmassHeart` can still be
+          fired deliberately. `Disabled` — which `WORLDGEN_RUN.md` §2.E still
+          records — kills all of that.
+          🔴 **It is settable ONLY at world creation**: the "Anomaly settings…"
+          button is drawn inside a `ProgramState.Entry` guard and is simply absent
+          in an existing save. The threat slider afterwards needs CUSTOM
+          difficulty. ⇒ **Custom difficulty is MANDATORY, not a preference** —
+          `overrideAnomalyThreatsFraction` is not a `DifficultyDef` field at all
+          (absent from all 10 live defs) and lives only on the runtime
+          `Difficulty` object, in the save's `<customDifficulty>`.
+          ⛔ **Author NO `DifficultyDef` and NO `ScenarioDef`.** Patching
+          `Custom` is pointless (vanilla's own comment: values "aren't used when
+          Custom is selected"), a new preset has `isCustom false` and loses the
+          slider, and `Scenario.standardAnomalyPlaystyleOnly` on any scenario we
+          ship would grey out everything but `Standard`.
+          A save embeds its whole scenario and does not reference the ScenarioDef,
+          so ongoing ScenParts (`PermanentGameCondition`, `StatFactor`,
+          `DisableIncident`, `DisableQuest`, `CreateIncident`) go into the save's
+          `<parts>` — and `Rule_Disallow*` needs its `<rules>` entry too.
+
+          **DOC CORRECTIONS YOU OWN:**
+          - `infrastructure/state/EXPECTED_FAILURES_next_load.md` S5 records
+            `AnomalyFrequency_None/_VeryRare/_Rare/_Balanced/_Intense/_Overwhelming`
+            as playstyle **defNames**. 🔴 They are TRANSLATION KEYS —
+            `…\Data\Anomaly\Languages\English\Keyed\Misc_Gameplay.xml:499-504`,
+            the frequency slider's labels. S5's pass condition is unsatisfiable as
+            written. Expect `AmbientHorror`, plus a second grep for
+            `overrideAnomalyThreatsFraction` = 0.
+          - `infrastructure/state/WORLDGEN_RUN.md` §2.E → `AmbientHorror` + 0.
+            Its §2.A also assumes the planet type is chosen at the page; it is not.
+          - Strike "disable enemy flee%" from `setup_checklist.md` §1,
+            `concept.md:66` and
+            `Gravship_Campaign_Planning_Discussion_2026-08-02.md:1420`. No such
+            field exists on `DifficultyDef` and no `Difficulty_*Flee*` keyed
+            string exists anywhere; fleeing is decided in code.
+          REPORT, do not resolve: `SeaIce` is on our blacklist while the Tidally
+          Locked mod's own C# rewrites `BiomeWorker_SeaIce.GetScore` to spread it;
+          and `Player.log:1080` `[Def Error]: TidallyLocked … Parsed 0.3 as int.`
+verify:   `validate_patch.py` on `JawaWorld_BiomeMix.xml` with `--defs`, 0 errors.
+          After the next load: `grep -c "not <li>.*biomeConfigs" <Player.log>`
+          returns **0** where today it returns 28; then `refresh.py` and the live
+          `PlanetTypeDef.json` entry for `TidallyLocked` reads **24**
+          `biomeConfigs` entries AND 29 `biomeBlacklist` entries. 🔴 The blacklist
+          alone is NOT a pass — that is exactly the state that hid this bug.
+          The settings page reads *tidally locked world*. No `ScenarioDef` and no
+          `DifficultyDef` exist under `src/`.
+criteria: the generated world is on the tidally locked planet type with the
+          intended biome mix, and the save reads back `AmbientHorror` with the
+          anomaly threat fraction at 0.
+state:    ready
+
 ## B62 Put desert creatures in the other four animal-drawn vehicles
 row:      2
 spec:     Generalise the eopie sled (`4f3afc7`) to every remaining animal-drawn
