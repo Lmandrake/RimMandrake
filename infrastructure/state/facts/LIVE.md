@@ -42,7 +42,7 @@ removed, 4,544 rock floors repainted, 597 stray substructure cells removed,
 | `GravEngine` | **(126,149)** | the export contained NO engine; its header records `gravEngineX/Z 45,92` and that maps exactly here, at the centre of the ship's only 5×5 `CarpetMarine` block |
 | `PilotConsole` | **(129,149)** | |
 | `ChemfuelTank` | **(126,151)** | owner filled it by hand in god mode |
-| `SmallThruster` ×4 | **(108,59) (113,101) (86,145) (101,187)** | WEST hull line, `rot 1` so the exhaust strip faces west into open ground |
+| `SmallThruster` ×4 | **(166,147) (166,148) (166,150) (166,151)** | moved 2026-08-14 on the owner's ruling. EAST transom, `rot 3` (West) — the ship now flies **west**. Was the west hull line at `rot 1` (flew east), scattered over 128 tiles of flank |
 | `PowerConduit` | 300 total | 184 from the export + **116 routed by BFS** to every component |
 
 - 🔴 **The grav engine IS the ship's power plant.** Live def:
@@ -55,8 +55,30 @@ removed, 4,544 rock floors repainted, 597 stray substructure cells removed,
   it. Flyability and `NoPathToPilotConsole` are both untestable on a pawnless map.
 - ⏳ **"Not enough fuel" on a paused fresh build is a tick-0 artefact**, not a
   defect — the thrusters have not ticked. Let time run, then re-read.
-- ⚠️ **UNVERIFIED:** the west thrusters render with a **red diagonal overlay**,
-  which usually means blocked or non-functional. Nothing on the bridge can read an
-  inspect string until `jawa/inspect_string` deploys (S8). Visual suspicion only.
+- ✅ **RESOLVED — the red diagonal overlay is NOT a placement fault.** A/B, 2026-08-14:
+  a control thruster spawned in the *exact* known-good config the owner says flew the
+  ship east (west hull line, `rot 1`, at (86,149)) renders with the **same** red slash
+  and purple bars as the new east bank. The overlay does not discriminate between a
+  working and a suspect thruster, so it is a ship-wide condition (unfuelled/unticked,
+  see the tick-0 bullet above) — **never read it as evidence about placement.**
+  The still-missing thing is a real status read: `jawa/inspect_string` (S8).
+- 🔑 **A thruster's exhaust strip runs OPPOSITE its facing**, and the thruster
+  **replaces a hull-wall segment** rather than standing behind one. Measured, not
+  inferred: all 4 original thrusters were the **westmost cell of their row** at
+  `rot 1`, each in a gap in the west wall with 5 empty cells beyond. Mirror for
+  `rot 3`: outer cell on the east wall, lane running east. The in-game ▶ arrow
+  points along the exhaust, i.e. away from travel — a west-flying ship shows ▶ east.
+- 🔑 **`Position` is the LOW-x cell at `rot 1` but the HIGH-x cell at `rot 3`.**
+  A 1×2 thruster spawned at x=166 `rot 3` occupies **165–166**; at x=108 `rot 1` it
+  occupies 108–109. Read `cellRect` off `rimworld/get_map_target_info` (needs the
+  **`Thing_` prefix**) rather than assuming — a guess here mounts the bank one cell
+  inboard and buries the exhaust lane in substructure.
+- 🔑 **The hull's east wall has a 9-cell flat transom at x=166, z145–153, centred on
+  z=149 — the GravEngine's own row.** It is the only long flat facet on the ship and
+  is plainly the designed engine mount. Flat-facet profile of the east wall is
+  reproducible with `jawa/list_things defName=GravshipHull` + per-row max-x.
+- 🔴 **`apply_architect_designator` `dryRun` is NOT a placement validator under god
+  mode.** It returned `ok=true` for 25/25 cells including a cell **already occupied by
+  a thruster**. Do not use it to confirm anything; it answers "did the call run".
 - ⚠️ **The ship still has no power SOURCE for its VFE factory block** beyond the
   engine itself, and no `LargeThruster`, `SignalJammer` or shield.
