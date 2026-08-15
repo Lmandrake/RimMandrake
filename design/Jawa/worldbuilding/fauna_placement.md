@@ -30,8 +30,10 @@ look inhabited.
 | wildpawn | `AA_Wildpawn` |
 | wildpod | `AA_Wildpod` |
 | cactus crab | `BMT_CactusCrab` — Biomes! Caverns |
+| mantrap | `AA_Mantrap` |
+| mantrap | `BMT_Creature_Mantrap` — Biomes! Polluted Lands. **A SECOND, different mantrap** — both exist |
 
-All but the cactus crab are Alpha Animals.
+Alpha Animals unless noted.
 
 **Maps that contain a body of water may also include the atispec** — `AA_Atispec`.
 ⚠️ It ships with a companion life stage, **`AA_LarvalAtispec`**, which must travel

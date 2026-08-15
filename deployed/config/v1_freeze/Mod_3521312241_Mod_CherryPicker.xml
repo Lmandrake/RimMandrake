@@ -189,6 +189,26 @@
 			<li>ThingDef/AA_DevilSheep</li>
 			<li>ThingDef/AA_FlamingoPhoenix</li>
 			<li>ThingDef/BMT_GlarralPenguin</li>
+			<li>ThingDef/BiomesIslands_Flamingo</li>
+			<li>ThingDef/Flamingo</li>
+			<li>ThingDef/AEXP_Beaver</li>
+			<li>ThingDef/Alphabeaver</li>
+			<li>ThingDef/Cassowary</li>
+			<li>ThingDef/Cobra</li>
+			<li>ThingDef/Emu</li>
+			<li>ThingDef/Gazelle</li>
+			<li>ThingDef/Ostrich</li>
+			<li>ThingDef/Tortoise</li>
+			<li>ThingDef/YorkshireTerrier</li>
+			<li>ThingDef/AA_PhoenixOwlcat</li>
+			<li>ThingDef/Grimstone_Griffar</li>
+			<li>ThingDef/WhiteViper</li>
+			<li>ThingDef/GiantSnake</li>
+			<li>ThingDef/ERN_Chocobo</li>
+			<li>ThingDef/ERN_Carbuncle</li>
+			<li>ThingDef/ERN_BigCarbuncle</li>
+			<li>ThingDef/TYR_KangarooRat</li>
+			<li>ThingDef/TYR_Mouse</li>
 		</keys>
 	</ModSettings>
 </SettingsBlock>
