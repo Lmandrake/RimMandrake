@@ -797,3 +797,35 @@ raised:   2026-08-15, owner via REP: **faction and ideo work IS v1.** The ideoli
           ⇒ This item is not speculative hygiene. `The Salvation.rid` is a SHIPPING v1
           artifact that bakes at world creation, and its 82 precepts are the largest
           unmeasured surface on my board. Collect it on the scratch load, not after.
+
+## C43 Lightsabres in active melee — the observation is collectable, the VERDICT is not mine
+
+row:      —
+spec:     Owner, via REP, 2026-08-15: **"Do the lightsabres look more reasonable
+          during active melee combat?"** Eyes-on observation, not a fix — art fixing
+          is stopped, observation rows are not. `com.yayo.yayoani.continued` is OFF
+          this load deliberately; the owner's reason is firsthand and confirmed
+          (lightsabres significantly displaced from where they should be during
+          attack, not merely on draft). ⛔ Do NOT propose re-enabling Yayo.
+verify:   Stage it through the bridge, do not wait for combat to happen:
+          `jawa/spawn_pawn` two hostile pawns adjacent, equip a lightsaber
+          (`lee.theforce.lightsaber` is active), `jawa/order_pawn` to attack, and
+          capture at the swing. Screenshot IS available — the base RimBridgeServer
+          carries `ScreenshotTaker`/`TakeScreenshot`; the exact tool name comes off
+          `rimbridge/list_tools` at CALL #1, and it is NOT a `jawa/` tool (the 30
+          companion tools hold no screenshot).
+          🔴 Capture the SWING, not the idle draft. A paused pawn holding a
+          lightsaber is the state the owner already says is fine; the complaint is
+          the attack frame. Pause mid-melee or capture repeatedly through it.
+criteria: ⛔ **NOT MINE TO SET, and this load cannot close it.** Two reasons, both real:
+          1. "More reasonable" is a judgement, not a pass condition. An observer who
+             picks the criterion after looking has tested nothing (POLICY). The owner
+             sets it, or it stays open.
+          2. **The A/B has only one arm.** "More reasonable" is comparative and Yayo
+             is OFF, so this load can produce the Yayo-off frame and nothing else.
+             Re-enabling Yayo to get the other arm is ruled out by the owner. Unless
+             a Yayo-ON lightsabre-mid-swing capture already exists, this is a BASELINE,
+             not a comparison — and must be reported as one.
+          ⇒ What I deliver: the Yayo-off swing frames, captured and handed over. The
+          verdict is the owner's, made off the images, after the load.
+state:    ready — collectable unattended, verdict deferred to the owner
