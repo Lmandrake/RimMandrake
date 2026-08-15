@@ -134,12 +134,19 @@ zero connections render almost identically to 300 conduits and full coverage.
   work needs. The comp fields stop at `transmitsPower / idlePowerDraw / shortCircuitInRain
   / showPowerNeededIfOff / alwaysDisplayAsUsingPower`. **Ship power BUDGET is currently
   unmeasurable from the bridge**; only topology is. Wants `inspect_string` (S8).
-- ⚠️ **The power overlay is NOT a connection oracle.** A/B: a `VFEFactory_Heatsink`
-  spawned in open desert with **no conduit on the map near it** renders with **no power
-  icon at all**, while wired machines on the ship show yellow bolts and magenta dots. So
-  icon-presence does not mean "unpowered" — those marks are machine art / VFE facility
-  status. **Read the graph, not the pixels.** The overlay is only good for *seeing* where
-  conduit runs, which is what it was turned on for.
+- ⚠️ **The yellow bolt overlay is UNRESOLVED — do not cite it either way.** Two
+  observations that do not yet reconcile, both measured 2026-08-14:
+  1. A `VFEFactory_Heatsink` in open desert with **no conduit anywhere near it** renders
+     with **no power icon at all**.
+  2. The harness's blast doors at (106,120)/(112,120)/(118,120) **do** render the bolt —
+     and (112,120) has a `PowerConduit` in its own cell.
+  Faction is NOT the discriminator: all of them are `faction=None`. If reading 2 is the
+  honest one, the bolt is a real "unpowered" mark and the ship's net is **connected but
+  not SUPPLYING** — which would fit the engine being the only generator. **An earlier
+  version of this line claimed the overlay was uninformative; that was one control
+  over-generalised, and it is withdrawn.** Settle it with `jawa/inspect_string` (S8),
+  not with more screenshots. Until then the CONNECTIVITY claim above stands on the graph,
+  and SUPPLY remains unmeasured.
 - The overlay is toggled by selecting a power designator —
   `rimworld/select_architect_designator architect-designator:power:build-powerconduit`.
   ⚠️ `jawa/clear_ui` does not clear it, but call `clear_ui` **before** selecting, or the
