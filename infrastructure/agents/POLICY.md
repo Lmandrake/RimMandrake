@@ -127,16 +127,6 @@ state:    ready | doing | done | blocked | dropped
   `design/V2_DREAMS.md`. **Every seat may append to it directly, at any time** — no
   permission, no routing through DECIDE, no format. Append at the end and move on.
 
-## Upstream facts — read these instead of asking
-
-```
-infrastructure/state/facts/BUILDABLE.md   BUILD publishes: what the game/mods can do,
-                                          limits found offline, what we already own
-infrastructure/state/facts/LIVE.md        CHECK publishes: def dump location + date,
-                                          save/config shapes, live parameter ranges
-```
-Append one line per fact. If a fact is superseded, replace the line.
-
 ## Modes
 
 `infrastructure/state/MODE` contains one word.
