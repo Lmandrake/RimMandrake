@@ -104,6 +104,8 @@ Reviewing these per-def is not possible and pretending otherwise wastes sessions
 
 | mod | why |
 |---|---|
+| **`Vanilla Animals Expanded`** (`VanillaExpanded.VanillaAnimalsExpanded`) | Owner, 2026-08-15. 50 of its 51 animals cut in review; audited for non-animal content and there is none. Its 19 other ThingDefs are its own eggs, leathers, wool and the beaver dam; its sounds, bodies, damage types and maneuvers all serve `AEXP_` animals; its six patches touch only `AEXP_` defs plus biome and trader lists it adds itself to. The gila monster was the sole survivor and goes with it. No mod declares a dependency |
+| **`Giant Snake (Continued)`** (`zal.giantsnake`) | Owner, 2026-08-15. Both its animals cut in review; nothing else in the mod. No mod declares a dependency |
 | **`Skunks`** (`guppyfacesarecute.skunks`) | Owner, 2026-08-15. 5 ThingDefs, 1 pawn kind, 4 recipes — skunk, its meat, leather, corpse and gas. Nothing depended on it |
 | **`Grimstone : Beasts`** (`abrolo.grimstone.beasts`) | Owner, 2026-08-15: *"not worth it. Not very high quality."* 37 ThingDefs, 7 creatures, 3 recipes. Nothing depended on it, and our `Armour_Leather.xml` and `MegafaunaYield.xml` reference it only inside `PatchOperationFindMod`, so they take the no-match branch silently |
 | **`Big and Small - Sapient Animals`** (`redmattis.sapientanimals`) | Owner, 2026-08-15: *"This whole mod needs to go... We're descoping the mod."* It generated a `Humanlike`-intelligence twin of **every animal in the game — 1,073 defs**, all of them potential pawns (`HL_Penguin`, `HL_RockTroll`, `HL_Bantha`). Sapient talking animals are not this fiction. Set inactive in `ModsConfig.xml`; nothing declared a dependency on it. **Do not cherrypick its defs — they no longer load.** |
