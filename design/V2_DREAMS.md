@@ -1274,15 +1274,18 @@ missing art for v2 improvement. Let's close out race appearance issues for now."
 **v1 is settled: all 70 races are visually good enough.** Everything below is polish and
 none of it is a v1 defect. Do not open a v1 item for any of it.
 
-| species | what | seen |
-|---|---|---|
-| `RimMandrakeGand` | missing art | both grids |
-| `RimMandrakeChagrian` | missing art | owner's `racetest` grid only |
-| `RimMandrakeSelkath` | missing art | CHECK's 70-race grid only |
-| `RimMandrakeYoderForceGremlin` | has hair it should not | owner, live |
-| the four known magenta species | magenta boxes | recorded at `9d10aec` |
+| species | what |
+|---|---|
+| `RimMandrakeGand` | missing art |
+| `RimMandrakeSelkath` | missing art |
+| `RimMandrakeChagrian` | missing art |
+| `RimMandrakeYoderForceGremlin` | has hair it should not |
+| the four known magenta species | magenta boxes, recorded at `9d10aec` |
 
-⚠️ Gand aside, the missing-art pair was NOT the same on the two grids. Whoever picks this
-up should check all three rather than trusting either sighting alone.
+✅ **The missing-art three are CONFIRMED and CONSISTENT** — owner, 2026-08-15:
+*"The missing art races are consistent: Gand, Selkath, and Chagrian are the ones with
+missing art."* An earlier note here wondered whether one of them was a misread, because
+the two grids named different second species. It was not: **all three are real, and the
+list is complete.** Take the three at face value; no re-survey is needed.
 ⛔ The log will not find these: the harvest's texture-path check reads 0 and fires only
 when EVERY direction is missing, so a partial set is silent. This is an eyes-on job.
