@@ -278,3 +278,29 @@ verify:   R27 no longer shows an unverified sample; the validator either flags a
           loading; and `check_refs.py --all` can reach 0 BROKEN with items open.
 criteria: none — offline.
 state:    ready
+
+## D26 The Eyeling becomes the Jawa clan's pet — v1
+row:      12
+spec:     Owner, 2026-08-15, from the animal contact sheet: *"AA_Eyeling MUST be
+          made into a star-wars-style pet for the starting Jawa clan to keep!"*
+          `AA_Eyeling` (Alpha Animals). This is a v1 CONCEPT, not `[v2]`.
+          Owed by DECIDE, in this order:
+          (a) a name and one line of fiction that makes it read Star Wars rather
+              than Alpha Animals — the sprite stays, the identity changes. A
+              rename is a `PatchOperationReplace` on `label` plus `description`;
+              art is untouched, so this costs nothing to try.
+          (b) whether it is bonded to a NAMED founder or unowned in the starting
+              save. `SCENARIO_SPEC.md` gives Yeku `Animals 5` and a pack animal —
+              if the Eyeling is his, that slot is already there.
+          (c) trainability and whether it fights. Read its shipped
+              `race/trainability` and `wildness` first; do not invent them.
+          (d) where it appears in the wild, into
+              `design/Jawa/worldbuilding/fauna_placement.md` — a clan pet the
+              player can never find a second one of is a dead end.
+          ⚠️ It must be in the STARTING SAVE, so it lands with `B55` (the campaign
+          start) and therefore before the owner's world is finished.
+verify:   `AA_Eyeling` is not in the Cherry Picker cut list; the rename patch
+          validates; the name and fiction are written into `SCENARIO_SPEC.md`.
+criteria: the clan starts with the pet, and it reads as belonging to this
+          campaign rather than to Alpha Animals.
+state:    ready
