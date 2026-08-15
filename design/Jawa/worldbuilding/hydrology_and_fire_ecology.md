@@ -512,6 +512,77 @@ never ours; the terminator biomes read best as something that was *done* to
 ordinary life. Two different alien facts are richer than one explained one, and
 R-H8 already rules that the bioweapon's author stays unknown.
 
+## 🔴 R-H10 · The nightside is AS COLD AS THE DAYSIDE IS HOT — canon, 2026-08-15
+
+**Owner's ruling.** Every nightside biome has its temperature range **plummeted**,
+to the same magnitude on the cold side that the dayside runs on the hot side. The
+world is symmetric about the terminator, and both ends are lethal.
+
+⭐ **The active planet curve already agrees**, which is why this is a ruling about
+*biomes* rather than about the planet. `Alien Worlds - Tidally Locked` maps
+temperature onto latitude: **+70 °C at the subsolar point, +14 °C at the
+terminator, −70 °C at latitude 1.3, −80 °C in deep night**
+(`tidally_locked_world.md`). The curve is correct. **What is wrong is the biomes** —
+they are imported from mods that assumed an ordinary planet, and they carry
+ordinary temperate assumptions with them.
+
+### What must change
+
+- 🔴 **Every nightside biome gets its temperature forced down.** `BiomeDef` exposes
+  **`constantOutdoorTemperature`**, which overrides the latitude curve outright —
+  that is the blunt lever, and for a biome that must *never* be survivable it is
+  the right one. Where a range is wanted instead, the biome must at minimum stop
+  contradicting the curve.
+- 🔴 **Every creature placed on the nightside is re-tuned to ENJOY frigid
+  temperatures** — `comfyTempMin` / `comfyTempMax` pushed down together, not just
+  `insulationCold` raised. **A creature that merely tolerates cold is not a
+  nightside creature; it is a dayside creature that is coping.**
+- 🔴 **And that makes them die on the dayside.** A nightside animal taken across
+  the terminator suffers heatstroke and perishes, **unless carried in a deeply
+  refrigerated chamber.** This is not a flavour claim — `comfyTempMax` is what
+  RimWorld already enforces.
+
+### ⇒ Three consequences, and they are all good
+
+**① The ship must be excellently heated, and that is a real cost.** Crossing to
+the nightside stops being a travel decision and becomes an *engineering* one:
+power, heaters, insulation, and the fuel to run them — on a vessel whose fuel
+economy is already the campaign's spine (`SCENARIO_SPEC.md`, many paths to fuel).
+**The propane lakes are on the nightside**, so the ship must survive the cold to
+reach the thing that keeps it warm. That circularity is excellent and should not
+be smoothed away.
+
+**② The terminator becomes a hard biological barrier, in BOTH directions.**
+Dayside life dies of cold out there; nightside life dies of heat back here.
+Nothing walks across. ⭐ **That is why the poison forest and the decay gradient are
+so strange** — they are what evolved in the only band where anything can live at
+all, and they are cut off from both worlds.
+
+**③ Nightside biology becomes untransportable, which makes it valuable.** You
+cannot simply bring a nightside creature home and farm it. Refrigerated transport
+becomes a *goal* rather than a convenience, and anything successfully moved is
+genuinely rare. **A live nightside animal in a Hutt's menagerie says something
+about the Hutt** without a line of dialogue.
+
+⚠️ **This is antithetical to almost every race in the game and to all desert
+life, and that is intended.** The nightside is not a region with a climate
+penalty. **It is somewhere nothing from this world belongs**, and the crags
+(R-H6d) are its extreme — where the life that IS there runs on a chemistry that
+was never ours.
+
+### What this forces on work already done
+
+🔴 **`fauna_placement.md`'s cold-creature list was built from NAMES**, and that
+file already warns that a cold-adapted creature with a warm name would be missed.
+**This ruling makes re-deriving it mandatory**: the nightside roster must be
+selected and re-tuned from **`statBases` comfort temperatures**, not from labels.
+A creature called "frostling" that ships a +20 °C comfort band is a dayside animal
+wearing a costume.
+
+⚠️ **Both halves are chain step 2** (normalize beasts) **and step 8** (biomes), and
+step 8 is ratified. The biome temperature edits reopen it — that needs a ruling,
+not a patch.
+
 ## R-H7 · The ocular forests — the mountains have their own horror
 
 **Owner's ruling, 2026-08-15.** High on the mountains, in the valleys where R-H1's

@@ -69,3 +69,27 @@ this list to be complete.
 ---
 
 ⭐ **The water cycle, the burning savanna and the terminator poison forest are specced in `design/Jawa/worldbuilding/hydrology_and_fire_ecology.md`** (owner, 2026-08-15). It rules that rain falls ONLY on the unlandable peaks, that condensation on the shade side of the terminator is the planet's second and opposite water mechanism, that the seas are hypersaline and nutrient-overcharged (hence gigantism), and that freakish plant growth plus dry thunderstorms make the savanna a self-sustaining fire.
+
+---
+
+## 🔴 CANON, 2026-08-15 — the cold list is now a REQUIREMENT, not a placement note
+
+Owner's ruling (`hydrology_and_fire_ecology.md` **R-H10**): the nightside is as
+cold as the dayside is hot, and **every creature placed there must be re-tuned to
+ENJOY frigid temperatures** — `comfyTempMin` and `comfyTempMax` pushed down
+together, not merely `insulationCold` raised.
+
+⇒ **A nightside creature therefore DIES on the dayside** — heatstroke, enforced by
+`comfyTempMax` — unless moved in a deeply refrigerated chamber. Nightside biology
+is untransportable by default, and that is deliberate.
+
+🔴 **The 18-creature cold list above was derived from NAMES and must be
+re-derived.** This file already warned that a cold-adapted creature with a warm
+name would be missed; that warning is now binding. **Select and tune the nightside
+roster from `statBases` comfort temperatures.** A creature called "frostling" that
+ships a +20 °C comfort band is a dayside animal wearing a costume.
+
+⚠️ And the barrier runs both ways: **dayside creatures die on the nightside too.**
+Nothing walks across the terminator. That is why the poison forest and the decay
+gradient are so strange — they are what evolved in the only band where anything
+can live at all.
