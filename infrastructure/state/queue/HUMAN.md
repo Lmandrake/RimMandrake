@@ -161,6 +161,36 @@ item: B25(a), B25(d)
 
 ---
 
+## ✅ ANSWERED + DONE (owner, 2026-08-15): the shipping Jawa xenotype drops four of our own genes
+
+**OWNER'S RULING: fix it, #1 priority.** Done by BUILD the same hour, and it turned
+out to need no risky edit at all.
+
+🔴 **The question's framing was wrong, and the wrong half was being guarded.** It
+asked whether to migrate a shipping save artifact — the dangerous-sounding option.
+In fact **the repo copy was already correct** and had been since `c57f347`, the
+commit that did the rename. **Only the GAME copy was stale**, at
+`C:\Users\Mandrake\AppData\LocalLow\Ludeon Studios\RimWorld by Ludeon Studios\Xenotypes\MandrakeJawa.xtp`,
+mtime 2026-08-14 15:52. So this was never "migrate an artifact"; it was **a file
+that was never deployed** — the project's oldest failure mode, in a folder nobody
+thinks of as a deploy target because it is not `Mods/`.
+
+**What was done:** game copy backed up to `MandrakeJawa.xtp.bak-2026-08-15`, repo
+copy written over it, md5 verified equal (`d5795edf…`).
+**Evidence, against the dump refreshed at THIS load (62,515 defNames):** all four
+new names — `RimMandrake_Jawa_Eyes_HugeAmber`, `RimMandrake_Jawa_Eyes_HugeOrange`,
+`RimMandrake_Jawa_Head_Plain`, `RimMandrake_Jawa_Skittish` — are LIVE; all four old
+names are ABSENT. `validate_save_artifact.py`: **36/36 references resolve, zero
+dangling.** Option 1 shipped, with the `Gene_` case correct.
+
+⚠️ **STILL OPEN, and it is not ours to fix unasked:** `softshadow.xtp` in the same
+folder carries two dead names — `Jawa_Gene_Skittish` and `Jawa_Head_Plain` — and
+will silently drop those genes at world creation exactly as MandrakeJawa would
+have. It is not in our repo. The fix is the same two renames and takes a minute;
+say the word. (`pokean.xtp` is clean — checked.)
+
+<details><summary>the question as originally filed</summary>
+
 ## 🔴 Q (CHECK via REP, 2026-08-15): the shipping Jawa xenotype drops four of our own genes — migrate it, or ship as-is?
 
 **This one blocks worldgen, and it was found by the running game after an offline
@@ -203,6 +233,8 @@ question is CLOSED offline" is **falsified for the `.xtp` half**.
 
 Filed to DECIDE as `the-shipping-xenotype-drops-four-of-our-own-genes-7e31aa`.
 CHECK did not touch the artifact.
+
+</details>
 
 ---
 

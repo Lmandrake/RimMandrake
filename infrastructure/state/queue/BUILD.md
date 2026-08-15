@@ -2004,5 +2004,10 @@ spec:     🔴 **DIAGNOSIS, not a build order. The owner has said to leave
           concluding anything about which pattern defs exist at runtime.
 verify:   EMPTY — nothing to verify until the owner reopens the mod.
 criteria: EMPTY
-state:    blocked — owner deferred `DesertVehicleReskin` (B62) and said leave it as
-          deployed. Diagnosis recorded so the next seat does not re-derive it.
+state:    🔴 DEAD — not blocked, not deferred. **Owner's ruling 2026-08-15: "Accept
+          the dog sled as-is. No further testing."** C39 CLOSED (`fddb832`).
+          ⇒ **The teal vehicle is the SHIPPED LOOK, not a defect.** Nothing above is
+          work waiting for a window; the "candidate fix" is not to be built. The
+          diagnosis is kept only as the explanation of *why what shipped looks the
+          way it does*, so nobody re-opens it as a bug in six weeks.
+          ⛔ Do not chase the tint.
