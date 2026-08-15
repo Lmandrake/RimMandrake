@@ -1196,7 +1196,7 @@ criteria: on a desert world every primitive transport in the vehicles menu is
           description or health tab still says horse, ox or dog.
 state:    ready
 
-## B63 Build our own boiling water and boiling rain, then drop ReGrowth: Boiling
+## B64 Build our own boiling water and boiling rain, then drop ReGrowth: Boiling
 row:      8
 spec:     Full spec: `design/Jawa/mods/REGROWTH_BOILING_LIFT_SPEC.md`. Read it —
           the load-bearing points, inline:
