@@ -7,9 +7,6 @@ disagree about scope, this file is newer.
 ## Owner's rulings, 2026-08-14
 
 1. **v1 = the 8 rows + the FULL faction roster + one playable session.**
-   ⚠️ This **supersedes `V1_SCOPE.md`**, which defers the 11 dossiers,
-   `pawnGroupMakers` and the ideoligions to v2. They are v1. The cost was stated
-   and accepted.
 2. **Row 4 is closed.** Scrapfields ships at whatever density it produces; the
    count is `[v2]`.
 3. **Row 3 is reopened.** Registration is not resolution — the quest must reach
@@ -317,6 +314,4 @@ Anything found in act 5 that is not one of these four is `[v2]`.
 
 ## What this file supersedes
 
-`V1_SCOPE.md` on the v1/v2 line for factions, pawnGroupMakers and ideoligions.
-`faction_stage3_buildable_spec.md` on the vessel column. Both remain correct on
-everything else and are not deleted.
+`faction_stage3_buildable_spec.md` on the vessel column.
