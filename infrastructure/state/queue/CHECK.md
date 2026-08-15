@@ -447,7 +447,31 @@ verify:   ITEM     Plant growth is x4.0 wild/crop, x2.5 tree, x0.4 on PoisonFore
                      stays bare proves nothing about this patch;
                      `wildPlantRegrowDays` is untouched until R-G4 ships.
 criteria: vegetation reads as obtrusively powerful rather than as a balance tweak.
-state:    blocked — needs a shutdown window to deploy, then a live game
+state:    ready — needs a live game. **DEPLOYED 2026-08-15 by BUILD, solo**, in the
+          shutdown window. The `⚠️ NOT DEPLOYED` paragraph in the spec above is now
+          spent; leave it for the reason it names.
+          ```
+          deploy_custom_mods.py --mod JawaPlantGrowth --apply
+            + About/About.xml
+            + Assemblies/JawaPlantGrowth.dll
+            + Defs/JawaPlantGrowthSettings.xml
+            -> VERIFIED in sync          repo md5 == deployed md5 e7b5c2790b07
+          ```
+          `mandrake.jawaplantgrowth` added to `ModsConfig.xml` at **slot 572 of
+          576**, immediately after `mandrake.jawa.patches` — Harmony is slot 2, so
+          the after-Harmony constraint holds by 570 slots. Pinned as a `loadAfter`
+          User Rule on `brrainz.harmony` so it is a constraint, not a tie-break.
+          Offline proof the assembly implements the spec — the startup line CHECK
+          keys on is really in the DLL (`strings -a -el`, UTF-16 `#US` heap):
+          `[JawaPlantGrowth] scaling {0} plant defs (default x{1}, tree x{2}), {3}
+          exempt, {4} terminator biome(s) at x{5}.`
+          ⚠️ `check_load.py` reports ❌ and that is CORRECT, not a defect — it
+          flags STALE because the dump (captured 15:10:11Z) predates this edit.
+          Its two rows are both expected: `mandrake.jawaplantgrowth` requested and
+          not yet loaded (deployed after the dump), and
+          `regrowth.botr.boilingforest` loaded but not requested (the known
+          one-way gap). The armed dump closes both at next startup. **Do not
+          re-run it as evidence until after the load.**
 
 ## C39 The eopie sled reads and renders as ours, on BOTH defs
 row:      9
