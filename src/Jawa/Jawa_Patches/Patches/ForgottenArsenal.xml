@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ============================================================================
+  ForgottenArsenal.xml      Jawa_Patches · authored 2026-08-14
+  ============================================================================
+
+  Builds FACTION_SPEC.md section 13: the Forgotten Arsenal, a label-only reskin
+  of vanilla `Mechanoid`.
+
+  🔴 THE UNBOUND HIVE WAS CUT FROM THIS FILE, 2026-08-14. It reskinned vanilla
+  `Insect`, and `Insect` is on an UNTICK row of
+  `infrastructure/state/WORLDGEN_FACTION_CHECKLIST.md` section 2 — the owner
+  turns it off at the world screen, so a label patch on it can never be seen.
+  DECIDE cut the faction; the roster went 14 -> 13. `Mechanoid` is on no untick
+  row, so this half is unaffected.
+  ⇒ Before reskinning ANY vanilla faction, confirm its vessel is absent from
+  that checklist's untick sections. This is the second thing that list has
+  caught.
+
+  READ FROM THE SHIPPED DEF, 2026-08-14 ; not inferred:
+  C:\Program Files (x86)\Steam\steamapps\common\RimWorld\Data\Core\Defs\
+    FactionDefs\Factions_Hidden.xml
+
+      Mechanoid   ParentName FactionBase · label "mechanoid hive" ·
+                  hidden true · permanentEnemy true · techLevel Ultra ·
+                  factionNameMaker NamerFactionMechanoid ·
+                  6 Combat pawnGroupMakers · NO settlementGenerationWeight node
+
+  It carries `label` and `description` on the def itself, so both are `Replace`,
+  never `Add`.
+
+  🔴 LABEL AND DESCRIPTION ONLY, ON PURPOSE.
+  `hidden true` is CORRECT and stays: the Forgotten Arsenal is a what, not a
+  who. It has no leader, no settlements and no diplomacy, and it never needed a
+  `settlementGenerationWeight` node because it has none to begin with.
+
+  ⛔ It inherits its `pawnGroupMakers` wholesale. Alpha Mechs and several other
+  mods patch `Mechanoid`'s group makers directly, and every mechanoid raid on
+  the map comes through them. Nothing here goes near that list.
+
+  ⚠️ It takes no ideo. Section 13 says "none".
+
+  SAFETY
+  ======
+  The op sits inside a conditional on the def existing, so a missing or
+  renamed vessel silences it instead of logging red. Every defName written here
+  is vanilla Core, so no `MayRequire` is owed.
+  ============================================================================
+-->
+<Patch>
+
+  <!-- 13 · the Forgotten Arsenal -->
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/FactionDef[defName="Mechanoid"]</xpath>
+    <match Class="PatchOperationSequence">
+      <operations>
+
+        <li Class="PatchOperationReplace">
+          <xpath>/Defs/FactionDef[defName="Mechanoid"]/label</xpath>
+          <value><label>the Forgotten Arsenal</label></value>
+        </li>
+
+        <li Class="PatchOperationReplace">
+          <xpath>/Defs/FactionDef[defName="Mechanoid"]/description</xpath>
+          <value>
+            <description>Not a polity. A standing order that outlived the people who gave it, and the machines that are still carrying it out.\n\nThey wake in buried structures, under drift and under salt, and they resume. Nobody negotiates with the Arsenal because there is nothing there to negotiate with.</description>
+          </value>
+        </li>
+
+      </operations>
+    </match>
+  </Operation>
+
+</Patch>
