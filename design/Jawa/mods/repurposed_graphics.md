@@ -13,10 +13,17 @@ switched off nobody remembers it existed.
 salvage — read this before commissioning anything. Reusing a shipped texture is
 free; generating one is not.
 
-⚠️ **Licensing is unresolved and matters here.** Reusing another mod's texture in
-our own def is redistribution. Fine while we never publish; check the donor's
-licence before anything ships publicly. Several mods in this stack carry no
-licence file at all, which defaults to all-rights-reserved.
+✅ **Licensing is SETTLED and is not a consideration — owner, 2026-08-15.** This is
+a **private playthrough**; nothing is published. **Do not weight licences in any
+reuse decision, and do not spend effort reading licence files.** Reuse another
+mod's textures, def values or whole defs freely, and choose between "reference
+their mod" and "author our own" on engineering grounds only — dependency risk,
+control over names and values, and how much cherrypick work the unwanted
+remainder costs.
+
+⚠️ The single carve-out, and it is not a licence question: **if this ever ships
+publicly, that decision revisits everything reused here.** Recorded so a future
+reader knows the reasoning was "private", not "permitted".
 
 ---
 
