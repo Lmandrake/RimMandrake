@@ -35,9 +35,33 @@
 -->
 <Defs>
 
-  <FactionDef ParentName="FactionBase">
+  <!-- ParentName is `TribeBase`, not `FactionBase`. R24: `FactionBase` is a real
+       abstract so it RESOLVES, but it supplies none of the naming, art or colour
+       fields, and a faction missing those is a broken faction screen rather than
+       a cosmetic gap. `TribeBase` hands over six. The five below are the ones it
+       still does not give, or gives with the wrong value. `basicMemberKind` is
+       optional (R21 — set on 30 of 87 live defs, on none of the vanilla vessels)
+       and is deliberately not invented here.
+
+       ⚠️ The namers duplicate what `TribeBase` already supplies. That is on
+       purpose: an inherited field is not a set field, and restating them means a
+       future change of parent cannot silently strip the faction's names. -->
+  <FactionDef ParentName="TribeBase">
     <defName>Jawa_IndigenousTribes</defName>
-    <label>Jawa tribes</label>
+    <label>Jawa Trade Moot</label>
+    <humanlikeFaction>true</humanlikeFaction>
+    <factionNameMaker>NamerFactionTribal</factionNameMaker>
+    <settlementNameMaker>NamerSettlementTribal</settlementNameMaker>
+    <!-- Outer Rim's own moisture-farmer world icon; verified on disk at
+         workshop/294100/2919227155/Common_Old/Textures/OuterRim/WorldObjects/
+         MoistureFarmers.png. `TribeBase` would otherwise give the generic
+         Village. -->
+    <factionIconPath>OuterRim/WorldObjects/MoistureFarmers</factionIconPath>
+    <!-- R22: sand, with the ember. -->
+    <colorSpectrum>
+      <li>(0.70,0.55,0.30)</li>
+      <li>(0.52,0.40,0.20)</li>
+    </colorSpectrum>
     <description>Clans of the deep sand who never took a ship. They keep the same nine gods and the same ledger as the crew of the Kolyska, and they will trade with anyone who does not look down at them for long. What they cannot buy they scavenge; what they cannot scavenge they remember the location of, and sell.</description>
     <pawnSingular>Jawa</pawnSingular>
     <pawnsPlural>Jawa</pawnsPlural>
