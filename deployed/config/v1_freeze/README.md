@@ -51,9 +51,9 @@ plus these seven, deliberately.
 
 ## Not covered by this freeze
 
-- **624 mods are installed but inactive** and have never been swept for something
-  switched off during debugging that we actually want. `StrandedQuest` is off on
-  purpose, which proves the inactive set carries decisions as well as accidents.
+- **The 624 installed-but-inactive mods are out of scope** (owner, 2026-08-14).
+  Not to be swept. They stay available as a research reference — "does a mod
+  already do X" — but nothing in them is v1 work.
 - **Load ORDER is not pinned.** Six `loadBottom` + `loadAfter` userRules are
   correct today but ride a tie-break rather than a constraint (BUILD B25a).
 - `ModsConfig.xml` is also written by RimSort. If it moves, diff it against this

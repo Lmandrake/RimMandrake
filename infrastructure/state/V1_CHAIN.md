@@ -87,8 +87,11 @@ had gone missing from the live Cherry Picker config and are restored (24 keys).
 Better Stacktraces · Cherry Picker · Character Editor + retexture · Slower Pawn
 Tick Rate · Dubs Performance Analyzer · Performance Optimizer · RimDefDump.
 
-**Not covered:** the 624 installed-but-inactive mods are unswept, and load ORDER
-is not pinned (B25a).
+**The 624 installed-but-inactive mods are OUT OF SCOPE** — owner's ruling,
+2026-08-14. Do not sweep them and do not file an item to. They remain available
+as a RESEARCH reference — "does a mod already do X" is a fair question to answer
+against them — but nothing in them is v1 work.
+**Load ORDER is not pinned** (B25a); that one is still open.
 
 **Two claimed contradictions, both settled:**
 - `lee.theforce.lightsaber` "active but not installed" is **false** — it is
