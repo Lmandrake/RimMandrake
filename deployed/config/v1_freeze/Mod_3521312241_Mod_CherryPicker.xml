@@ -188,6 +188,7 @@
 			<li>ThingDef/AA_CrystallineCaracal</li>
 			<li>ThingDef/AA_DevilSheep</li>
 			<li>ThingDef/AA_FlamingoPhoenix</li>
+			<li>ThingDef/BMT_GlarralPenguin</li>
 		</keys>
 	</ModSettings>
 </SettingsBlock>
