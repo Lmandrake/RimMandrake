@@ -61,9 +61,14 @@ reason they were cut is that they look like real-world rifles. Two exceptions:
 - **Ancient urban ruins' weapon icons** — genuinely modern, genuinely wrong.
   Recorded only so nobody re-proposes them.
 
-## Not a graphics source, despite appearances — Yautja
+## AssetBundle art IS reachable — the earlier note here was wrong
 
-`[AB] Xenotype: Yautja` was descoped 2026-08-15. **Do not come here looking for
-its art.** The mod ships **2 loose PNGs in total**; everything else is inside
-`1.6/AssetBundles/`. All 39 weapons and 27 apparel resolve to `no_loose_png`, so
-none of it is extractable or reusable by our tooling.
+`[AB] Xenotype: Yautja` ships 2 loose PNGs and a 33.7 MB AssetBundle holding
+**2,732 textures**. An earlier entry called that unreachable. It is not:
+`src/RimMandrake/Utils/extract_bundle_textures.py` pulls every `Texture2D` out
+with UnityPy, and 23,095 textures across 67 sources now sit in
+`observed/inventory/bundle_textures/`.
+
+⇒ **Bundled art is a graphics source like any other.** That includes vanilla —
+Core's art is not even in a bundle, it is in `RimWorldWin64_Data\resources.assets`,
+and the extractor reads that too.
