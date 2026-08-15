@@ -16,6 +16,7 @@ about to do the thing it names — not before.
 | `rimworld-start-prep` | scenario and starting-state setup. |
 | `gravship-layout` | gravship deck design and export. |
 | `generating-rimworld-sprites` | any PNG destined for a `Textures/` folder. Wraps the two image skills with the game's constraints and an offline validator. |
+| `rimworld-content-moderation` | Curating a big mod stack down to one campaign — contact sheets built from the defs, cutting with Cherry Picker, and the traps that make a cut do nothing |
 | `generating-images` · `editing-images` | raster art from or onto an existing image. |
 | `efficient-subagents` | before spawning one. Bounded ask, minimal inputs, stated return. |
 
