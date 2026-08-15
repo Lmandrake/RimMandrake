@@ -107,3 +107,17 @@ note:     2026-08-14 CHECK. Restamped: `by CHECK`, `at 1786770877` (was BRIDGE's
           (`CHECK PLAYABLE 1786770877`). **Not done:** the criteria needs one
           up→down transition and the game is still up, so the DOWN half is unproven.
           Stays `doing` until I stamp it down and the panel agrees.
+
+## C15 Finish measuring the ocean — 3 of 7 seeds still unread
+row:      v2
+spec:     —
+verify:   —
+criteria: —
+state:    dropped — Worldgen is manual and the sea left v1. Full text in `design/V2_DREAMS.md`.
+
+## C16 Score the ocean against its spec
+row:      v2
+spec:     —
+verify:   —
+criteria: —
+state:    dropped — Worldgen is manual and the sea left v1. Full text in `design/V2_DREAMS.md`.

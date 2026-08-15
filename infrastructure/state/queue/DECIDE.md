@@ -1,16 +1,5 @@
 # DECIDE inbox.
 
-## D0 Give every queue item a chain step so the board can place it
-row:      infra
-spec:     Items in `queue/BUILD.md` and `queue/CHECK.md` migrated without a `row:`
-          and land in an `unassigned` bucket. Read each, add `row: <n>` from
-          `V1.md`. Mechanical; no judgement about scope needed. Rows 1,3,5,6,8 are
-          closed — items touching them are almost certainly stale, delete rather
-          than assign.
-verify:   `python3 src/RimMandrake/Utils/derive_matrix.py` reports 0 unassigned.
-criteria: —
-state:    done
-
 ## D-CRIT ⭐ Read before sequencing — the ocean gates worldgen, which gates two rows
 row:      10
 spec:     ROWS 2 AND 7 ARE ONE CHAIN, NOT TWO PROBLEMS.
@@ -58,25 +47,6 @@ spec:     `infrastructure/disposing/RESTRUCTURE_PLAN.md` §3 lists seven unplace
 verify:   EMPTY
 criteria: EMPTY
 state:    blocked
-
-## D18 Write the text for nine faiths that currently have only a name
-row:      6
-spec:     `design/Jawa/worldbuilding/faction_religions_spec.md`. Entries 1, 2 and
-          3 have authored `ideoName` + `ideoDescription` + `deityPresets`.
-          Entries 4-11 have a NAME and nothing else. The file's own heading says
-          THE TEXT IS THE PRODUCT — `ideoName`, `ideoDescription` and the deity
-          name/type pairs are the only strings the engine renders.
-          Owed: the Sun-Debt · the Continuity Protocol · the Green Oath · the
-          Balance · Meckgin · the Ascendant Genome · the Contract · The Weight
-          — and entry 3 needs its `ideoDescription`.
-          Section 12 (Jawa) stays deliberately empty; the player faith ships as
-          `src/Jawa/ideoligion/The Salvation.rid`.
-          ⚠️ Free Droid Enclaves' faith may not run if the droid race is not
-          Humanlike — settle that before authoring entry 5.
-verify:   every entry 1-11 has a non-empty `ideoName` and `ideoDescription`, and
-          a `deityPresets` block wherever its structure has `deityCount > 0`.
-criteria: `jawa/ideo_of` reads the eleven back and they match the spec.
-state:    done
 
 ## D19 Design how the campaign starts — no document exists
 row:      12
@@ -161,3 +131,17 @@ verify:   `doc_budget.py` reports NEXT_RELOAD.md ok, or DOC_BUDGET.md records wh
           its budget was raised.
 criteria: none — offline.
 state:    ready
+
+## D2 Owner: may we generate throwaway worlds purely to measure?
+row:      v2
+spec:     —
+verify:   —
+criteria: —
+state:    dropped — Answered — the owner makes and saves the world by hand, so nothing needs measuring.
+
+## D4 The world is half ocean against a quarter by design — pick a fix
+row:      v2
+spec:     —
+verify:   —
+criteria: —
+state:    dropped — Worldgen is manual; the owner picks a world he likes by eye. Full text in `design/V2_DREAMS.md`.

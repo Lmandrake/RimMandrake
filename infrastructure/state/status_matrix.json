@@ -90,8 +90,8 @@
     },
     "BUILD": {
      "done": 0,
-     "total": 0,
-     "state": "offline"
+     "total": 1,
+     "state": "idle"
     },
     "CHECK": {
      "done": 0,
@@ -124,9 +124,9 @@
    "name": "6 Religions",
    "cells": {
     "DECIDE": {
-     "done": 1,
-     "total": 1,
-     "state": "idle"
+     "done": 0,
+     "total": 0,
+     "state": "offline"
     },
     "BUILD": {
      "done": 0,
@@ -284,8 +284,8 @@
    "name": "infra",
    "cells": {
     "DECIDE": {
-     "done": 1,
-     "total": 3,
+     "done": 0,
+     "total": 2,
      "state": "blocked"
     },
     "BUILD": {
@@ -317,6 +317,26 @@
      "done": 0,
      "total": 0,
      "state": "offline"
+    }
+   }
+  },
+  {
+   "name": "v2",
+   "cells": {
+    "DECIDE": {
+     "done": 0,
+     "total": 2,
+     "state": "idle"
+    },
+    "BUILD": {
+     "done": 0,
+     "total": 1,
+     "state": "idle"
+    },
+    "CHECK": {
+     "done": 0,
+     "total": 2,
+     "state": "idle"
     }
    }
   }

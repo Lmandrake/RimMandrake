@@ -452,3 +452,17 @@ verify:   all five pawns are `MandrakeJawa`, carry the robe and hood, and match
 criteria: the save loads into a playable colony aboard the ship. This IS chain
           step 12 and it is the artifact v1 ships.
 state:    blocked
+
+## B2 Install the ocean-shaping mod on its own, so blame stays clear
+row:      v2
+spec:     —
+verify:   —
+criteria: —
+state:    dropped — Worldgen is manual (owner, 2026-08-14) and the sea left v1. Full text in `design/V2_DREAMS.md`.
+
+## B6 Deploy the MandrakeJawa xenotype and indigenous-tribe set
+row:      4
+spec:     —
+verify:   —
+criteria: —
+state:    dropped — The item claimed the set was undeployed; it was already deployed and verified. Live half carried by CHECK C31.
