@@ -94,7 +94,7 @@ more dungeons.** Volume is not the goal here (see
 | piece | state |
 |---|---|
 | the tower dungeon | **installed, one ModsConfig line** — `HaiLuan.SpaceTower`, dependency already active at load 108 |
-| a readable quest-giving item | **CREATE is building it** (`ST_TowerMap` pattern: `CompProperties_Usable` + `UseEffectGiveQuest`, all Core classes) |
+| a readable quest-giving item | **BUILD is building it** (`ST_TowerMap` pattern: `CompProperties_Usable` + `UseEffectGiveQuest`, all Core classes) |
 | the Hutt Cartel | faction 1 in the roster, `[v2]` for authoring |
 | the Galactic Empire | owner's ruling 2026-08-13 — the ship's pursuer, `pawnGroupMakers` unbuilt |
 | Imperial Heat gauge | **M4, not built — and this pillar no longer waits on it** |

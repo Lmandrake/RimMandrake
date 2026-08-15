@@ -687,7 +687,7 @@ ITEMS = [
     # A3 is NOT the salt-crust paint. That PASSED live already
     # (queue/CREATE.md:38, V1_SCOPE row 4 "1 of 3 SEEN"), so re-proving the def
     # and the art would be spending live time on a closed row. What is still
-    # open is VISION's B-v1 CAPABILITY question, which is a different thing.
+    # open is DECIDE's B-v1 CAPABILITY question, which is a different thing.
     # Row 5 was RULED CLOSED by PROJECT (V1_SCOPE.md:608-633) -- BTD_Jawa
     # survives the BTD dedup and the pawnkind pins were remapped onto it,
     # measured live from Player.log. `i_row5_xenotype` stays in this file

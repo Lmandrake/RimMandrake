@@ -1,7 +1,7 @@
 # The pawn-kind roster — 48 kinds, and what each one carries
 
 _VISION, 2026-08-14. **The buildable half of `faction_equipment_guidance.md`.**
-CREATE builds from this; nothing here should require a decision from them._
+BUILD builds from this; nothing here should require a decision from them._
 
 ---
 
@@ -23,7 +23,7 @@ gear.** Species never appear in a kind's name.
 | **Leader** | ~3%, capped 1 | carries the canon title |
 
 ⚠️ **`weaponTags` are given as CLASSES, not strings.** I will not invent tag
-values — **CREATE resolves each class to the actual tags our weapon mods use**,
+values — **BUILD resolves each class to the actual tags our weapon mods use**,
 and that survey is part of the build.
 
 ---
@@ -160,7 +160,7 @@ carry came off something else.**
 `Insect`) field vanilla kinds. **We rename the factions and cherry-pick the
 roster; we author no pawn kinds for either.**
 
-## What CREATE resolves, and it is the only open work
+## What BUILD resolves, and it is the only open work
 
 1. **`weaponTags` → real tag strings.** Requires a survey of what our weapon mods
    actually tag. **The classes above are the design; the strings are the build.**
