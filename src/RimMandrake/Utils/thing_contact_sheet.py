@@ -129,7 +129,8 @@ from def_inventory import build, txt, D_CONFIG, D_WORKSHOP, D_LOCAL, D_DATA  # n
 # measured traps (LoadFolders content dirs, the suffix ladder, never-raise sprite
 # decoding), and two copies would drift.
 from animal_contact_sheet import (  # noqa: E402
-    build_texture_index, resolve_texture, load_sprite, fit_sprite,
+    build_texture_index, resolve_texture, load_bundle_index,
+    DEFAULT_BUNDLE_DIR, load_sprite, fit_sprite,
     checker_tile, earth_tile, ground_shadow,
     load_font, text_w, fit_text, mod_color, write_csv,
     BG_PAGE, BG_HEADER, BG_CAPTION, FG_TITLE, FG_SUB, FG_NAME, FG_MOD, GRID,
@@ -285,7 +286,8 @@ def build_dir_index(tex_index):
     return dirs
 
 
-def resolve_thing_texture(tex_path, graphic_class, tex_index, dir_index):
+def resolve_thing_texture(tex_path, graphic_class, tex_index, dir_index,
+                          bundle_index=None):
     """
     (absolute file, how it was found) for a ThingDef's texPath, or (None, None).
 
@@ -317,11 +319,18 @@ def resolve_thing_texture(tex_path, graphic_class, tex_index, dir_index):
     hit, how = resolve_texture(tex_path, tex_index)
     if hit:
         return hit, how
-    return by_dir()
+    hit, how = by_dir()
+    if hit:
+        return hit, how
+    # Last: the AssetBundle cache, matched on the LAST segment of texPath
+    # against the object's m_Name. Reported as `<bundle...>`. Tried after the
+    # directory fallback because a loose variant of the right thing beats an
+    # exact-named texture from a mod that merely shares the name.
+    return resolve_texture(tex_path, {}, bundle_index)
 
 
 # ------------------------------------------------------------------ planning
-def plan_cells(rows, tex_index, dir_index):
+def plan_cells(rows, tex_index, dir_index, bundle_index=None):
     """
     Split the rows into (placed, missing). This is the ONLY function that had to
     change to generalise off animals — everything else on the path is imported.
@@ -346,11 +355,16 @@ def plan_cells(rows, tex_index, dir_index):
             missing.append(dict(row, reason=reason))
             continue
         path, how = resolve_thing_texture(tex, row.get("graphicClass"),
-                                          tex_index, dir_index)
+                                          tex_index, dir_index, bundle_index)
         if not path:
+            # Reason literal deliberately unchanged — the owner's review page and
+            # its recorded decisions filter on it. It now means "no loose PNG
+            # *and* no bundled texture of that name".
             missing.append(dict(row, reason="no_loose_png"))
             continue
-        placed.append(dict(row, textureFile=path, texSuffix=how))
+        placed.append(dict(row, textureFile=path, texSuffix=how,
+                           texSource="bundle" if how.startswith("<bundle")
+                                     else "loose"))
     return placed, missing
 
 
@@ -456,14 +470,18 @@ def render_page(cells, page_no, page_count, category, args, fonts, tile, stamp):
 INDEX_COLS = ["page", "row", "col", "srcRow", "defName", "label", "modName",
               "packageId", "loadOrder", "duplicateDefName", "thingCategory",
               "graphicClass", "texPath", "texSuffix", "textureFile",
-              "imageW", "imageH", "sourceFile", "renderError"]
+              "imageW", "imageH", "sourceFile", "renderError",
+              # APPENDED, never inserted: the owner is mid-review against a
+              # fixed column order. loose | bundle — which store this cell's
+              # sprite came out of.
+              "texSource"]
 
 MISSING_COLS = ["srcRow", "defName", "label", "modName", "packageId", "loadOrder",
                 "duplicateDefName", "reason", "thingCategory", "graphicClass",
                 "texPath", "sourceFile"]
 
 
-def run_category(ds, category, tex_index, dir_index, a):
+def run_category(ds, category, tex_index, dir_index, a, bundle_index=None):
     """One category end to end: rows -> plan -> sheets + two CSVs. Returns stats."""
     out_dir = os.path.join(a.out, "sheets_%s" % category)
     os.makedirs(out_dir, exist_ok=True)
@@ -471,7 +489,7 @@ def run_category(ds, category, tex_index, dir_index, a):
     rows = collect_rows(ds, category)
     if a.limit:
         rows = rows[:a.limit]
-    placed, missing = plan_cells(rows, tex_index, dir_index)
+    placed, missing = plan_cells(rows, tex_index, dir_index, bundle_index)
 
     per_page = a.cols * a.rows
     pages = (len(placed) + per_page - 1) // per_page if placed else 0
@@ -562,6 +580,10 @@ def main(argv=None):
     ap.add_argument("--max-upscale", type=float, default=2.0)
     ap.add_argument("--limit", type=int, default=0, help="stop after N defs (smoke test)")
     ap.add_argument("--no-image", action="store_true", help="CSVs only")
+    ap.add_argument("--bundles", default=DEFAULT_BUNDLE_DIR,
+                    help="extract_bundle_textures.py cache dir")
+    ap.add_argument("--no-bundles", action="store_true",
+                    help="loose PNGs only — the pre-bundle baseline")
     a = ap.parse_args(argv)
 
     t0 = time.perf_counter()
@@ -578,8 +600,14 @@ def main(argv=None):
     print("textures: %d loose PNGs in %d Textures/ roots -> %d distinct paths, "
           "%d dirs" % (n_png, n_texdirs, len(tex_index), len(dir_index)))
 
+    bundle_index, n_bundle = ({}, 0) if a.no_bundles else load_bundle_index(a.bundles)
+    print("bundles: %d extracted textures -> %d distinct names%s"
+          % (n_bundle, len(bundle_index),
+             "" if n_bundle else "  (run extract_bundle_textures.py under python.exe)"))
+
     cats = CATEGORIES if a.category == "all" else (a.category,)
-    stats = [run_category(ds, c, tex_index, dir_index, a) for c in cats]
+    stats = [run_category(ds, c, tex_index, dir_index, a, bundle_index)
+             for c in cats]
 
     print("\n%-11s %7s %7s %6s %8s %8s %8s"
           % ("category", "defs", "placed", "pages", "missing", "blank%", "MB"))

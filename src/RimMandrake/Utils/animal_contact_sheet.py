@@ -177,6 +177,20 @@ DEFAULT_CSV = os.path.normpath(os.path.join(
 # picture" beats "we have none".
 TEX_SUFFIXES = ("_south", "", "_east", "_north", "_side")
 
+# The same ladder for the AssetBundle cache, plus `_m` LAST. `_m` is the mask
+# companion of a texture (Yautja_Needlegun / Yautja_Needlegun_m): a flat
+# colour-key silhouette, not the art. It is a genuinely worse preview than the
+# real thing, so it may only win when nothing else exists — and when it does,
+# the suffix is recorded in the index CSV as `<bundle:_m>` so the reviewer knows
+# they are looking at a mask.
+BUNDLE_SUFFIXES = ("_south", "", "_east", "_north", "_side", "_m")
+
+# Where extract_bundle_textures.py writes its cache. Same repo-relative
+# derivation as DEFAULT_CSV so the tools work from any cwd.
+DEFAULT_BUNDLE_DIR = os.path.normpath(os.path.join(
+    os.path.dirname(os.path.abspath(__file__)), "..", "..", "..",
+    "observed", "inventory", "bundle_textures"))
+
 # ------------------------------------------------------------------ palette
 BG_PAGE = (26, 27, 31)          # page paper: darker than any cell, so the gaps
                                 # between cells read as separators for free
@@ -296,8 +310,52 @@ def build_texture_index(mods):
     return index, files_seen, dirs_seen
 
 
-def resolve_texture(tex_path, index):
-    """(absolute file, suffix used) for a def's texPath, or (None, None)."""
+def load_bundle_index(bundle_dir=None):
+    """
+    {lowercased m_Name -> absolute PNG} over the AssetBundle texture cache
+    written by extract_bundle_textures.py. Returns ({}, 0) if there is no cache.
+
+    🔴 KEYED ON THE NAME, NOT ON A PATH, and that is forced by the format: a
+    Unity bundle object carries only `m_Name` ("Yautja_Needlegun"); the def asks
+    for "Things/Equipment/Ranged/Yautja_Needlegun". Nothing in the bundle maps
+    one to the other, so the last segment of texPath is all we can match on.
+
+    The consequence to keep in mind: two mods CAN ship the same name, and this
+    index keeps one of them (last in index.csv order wins). That is a real but
+    small risk — a wrong sprite in a preview sheet — and it is strictly better
+    than the blank cell it replaces. The index CSV keeps every row if a caller
+    ever needs to disambiguate by sourceKey.
+
+    ~30% of every category came back `no_loose_png` before this existed. The
+    art was never missing; the base game's expansions and a growing number of
+    mods ship it compiled into bundles that no directory walk can see.
+    """
+    bundle_dir = bundle_dir or DEFAULT_BUNDLE_DIR
+    idx_path = os.path.join(bundle_dir, "index.csv")
+    if not os.path.isfile(idx_path):
+        return {}, 0
+    index = {}
+    n = 0
+    with open(idx_path, newline="", encoding="utf-8") as fh:
+        for row in csv.DictReader(fh):
+            name = (row.get("m_Name") or "").strip()
+            rel = (row.get("file") or "").strip()
+            if not name or not rel:
+                continue
+            n += 1
+            index[name.lower()] = os.path.join(bundle_dir, *rel.split("/"))
+    return index, n
+
+
+def resolve_texture(tex_path, index, bundle_index=None):
+    """(absolute file, suffix used) for a def's texPath, or (None, None).
+
+    The loose ladder first — a loose PNG is what the game itself prefers, and it
+    is the exact asset at the exact path. Only when that misses do we consult the
+    extracted AssetBundle cache, and the match there is BY NAME, not by path (see
+    load_bundle_index). A bundle hit is reported as `<bundle...>` so a reviewer
+    reading the index CSV can tell the two apart at a glance.
+    """
     if not tex_path:
         return None, None
     base = tex_path.replace("\\", "/").strip("/").lower()
@@ -305,6 +363,12 @@ def resolve_texture(tex_path, index):
         hit = index.get(base + suf + ".png")
         if hit:
             return hit, (suf or "<bare>")
+    if bundle_index:
+        name = base.rpartition("/")[2]
+        for suf in BUNDLE_SUFFIXES:
+            hit = bundle_index.get(name + suf)
+            if hit:
+                return hit, ("<bundle%s>" % (":" + suf if suf else ""))
     return None, None
 
 
@@ -377,7 +441,7 @@ def read_animals_csv(path):
 
 
 # ------------------------------------------------------------------ planning
-def plan_cells(rows, by_race, tex_index):
+def plan_cells(rows, by_race, tex_index, bundle_index=None):
     """
     Walk animals.csv in order and split it into (placed, missing).
 
@@ -421,11 +485,17 @@ def plan_cells(rows, by_race, tex_index):
         if not kind["texPath"]:
             missing.append(dict(common, reason="no_texPath", detail=""))
             continue
-        path, suf = resolve_texture(kind["texPath"], tex_index)
+        path, suf = resolve_texture(kind["texPath"], tex_index, bundle_index)
         if not path:
+            # Reason string deliberately unchanged: the owner's review page and
+            # its 172 recorded decisions filter on this exact literal. It now
+            # means "no loose PNG *and* no bundled texture" — a strictly rarer
+            # and more interesting case than it was.
             missing.append(dict(common, reason="no_loose_png", detail=""))
             continue
-        placed.append(dict(common, textureFile=path, texSuffix=suf))
+        placed.append(dict(common, textureFile=path, texSuffix=suf,
+                           texSource="bundle" if suf.startswith("<bundle")
+                                     else "loose"))
     return placed, missing
 
 
@@ -716,7 +786,11 @@ INDEX_COLS = ["page", "row", "col", "csvRow", "defName", "label", "modName",
               "packageId", "loadOrder", "duplicateDefName", "pawnKindDefName",
               "pawnKindMod", "pawnKindCount", "lifeStageIndex", "lifeStageCount",
               "texPath", "texSuffix", "textureFile", "imageW", "imageH",
-              "renderError"]
+              "renderError",
+              # APPENDED, never inserted: the owner reviews these CSVs against a
+              # fixed column order. loose | bundle — which store the sprite in
+              # this cell came out of.
+              "texSource"]
 
 MISSING_COLS = ["csvRow", "defName", "label", "modName", "packageId", "loadOrder",
                 "reason", "texPath", "pawnKindDefName", "pawnKindCount",
@@ -760,6 +834,10 @@ def main(argv=None):
                     help="draw placeholder cells for animals with no sprite")
     ap.add_argument("--limit", type=int, default=0, help="stop after N csv rows (smoke test)")
     ap.add_argument("--no-image", action="store_true", help="CSVs only, write no PNGs")
+    ap.add_argument("--bundles", default=DEFAULT_BUNDLE_DIR,
+                    help="extract_bundle_textures.py cache dir")
+    ap.add_argument("--no-bundles", action="store_true",
+                    help="loose PNGs only — the pre-bundle baseline")
     a = ap.parse_args(argv)
 
     t0 = time.perf_counter()
@@ -783,8 +861,13 @@ def main(argv=None):
     print("textures: %d loose PNGs in %d Textures/ roots -> %d distinct paths"
           % (n_png, n_texdirs, len(tex_index)))
 
+    bundle_index, n_bundle = ({}, 0) if a.no_bundles else load_bundle_index(a.bundles)
+    print("bundles: %d extracted textures -> %d distinct names%s"
+          % (n_bundle, len(bundle_index),
+             "" if n_bundle else "  (run extract_bundle_textures.py under python.exe)"))
+
     by_race = build_pawnkind_map(ds)
-    placed, missing = plan_cells(rows, by_race, tex_index)
+    placed, missing = plan_cells(rows, by_race, tex_index, bundle_index)
     print("animals.csv rows: %d   resolvable sprites: %d   missing: %d"
           % (len(rows), len(placed), len(missing)))
 
