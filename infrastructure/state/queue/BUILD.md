@@ -2015,11 +2015,19 @@ state:    🔴 DEAD — not blocked, not deferred. **Owner's ruling 2026-08-15: 
 ## gand-and-chagrian-missing-artwork-5d2a09
 raised:   2026-08-15 CHECK, from the owner examining the 70-race grid live on the
           scratch quicktest map.
-finding:  Owner's words: *"Gand and Chagrian have missing artwork, but most now look
-          good."* Two species render without their art:
-            `RimMandrakeGand`      · `RimMandrakeChagrian`
-          Both SPAWN fine — 70/70 xenotypes spawned in the grid, so this is art only,
-          not a def or genes failure.
+finding:  THREE species named across two separate looks, and the pair is NOT the same
+          both times — record all three, do not collapse them:
+            `RimMandrakeGand`      — named BOTH times. The solid one.
+            `RimMandrakeChagrian`  — named on the owner's OWN earlier grid (the one he
+                                     saved as `racetest`), NOT on mine.
+            `RimMandrakeSelkath`   — named on MY 70-race grid, NOT on his.
+          Owner's words, in order: *"Gand and Chagrian have missing artwork, but most now
+          look good."* then, on the new grid: *"Gand and Selkath show missing art in your
+          new grid."*
+          ⚠️ Two grids, two different second names. Either the fault is not deterministic
+          per species, or one of the two was a misread at a glance — **check all three**,
+          and do not assume Chagrian is clean because the second look did not name it.
+          All SPAWN fine — 70/70 xenotypes spawned, so this is art only, not defs or genes.
 scope:    ⛔ Not triaged and not diagnosed by me — the owner looked, I am recording it.
           Whether it is a texPath that does not resolve, a missing PNG, or a head/body
           type with no graphic is BUILD's to find.
