@@ -188,3 +188,68 @@ Collected 2026-08-13; each one cost a seat time before it was written down.
 - **An UNDRAFTED pawn does not hold a move order** — it walks off to its own AI job, so a reachability measurement reads as failure. Draft for the measurement (`draft: true`), undraft only when you want the pawn to take a work job at the destination.
 - 🔴 **A FactionDef's defName is not its filename.** `JawaAscendantHelix.xml` contains `<defName>Jawa_AscendantHelix</defName>`. Querying the filename returns `found=false`, which reads exactly like the def being absent — and on 2026-08-15 that manufactured a false "five factions are still broken" finding that was reported to another seat. Read the defName out of `<defName>`. A control def in the same call does NOT catch this unless the control is misspelt the same way.
 - 🔴 **`Actions\T: Destroy` with `thingId` can kill something you did not name.** Measured 2026-08-15: 77 pawns targeted by explicit `Thing_<id>`, **78 died** — the one survivor I had deliberately excluded by name was destroyed too, and 3 of the 77 calls reported `success: false`. Cause not established; suspect an unresolvable `thingId` falling back to the current selection or the cursor cell. **Never fire a long batch of destroy calls and check the total only at the end** — re-read the survivor set every ~10 and abort on the first unexpected loss. Losing one wrong pawn is invisible in an aggregate count.
+
+## Five traps from the 2026-08-15 unattended collection run
+
+### 🔴 `set_camera_zoom` takes `rootSize` (a NUMBER), not `zoom` (a string)
+`{"zoom": "Close"}` returns `success: true` and does **nothing** — the unknown
+parameter name is dropped before the tool runs, exactly as the one law says. Every
+screenshot in that session came out at max zoom while the calls all reported success,
+and `get_camera_state` kept answering `zoomRange: "Closest"`.
+Correct: `{"rootSize": 14.0}`. Roughly: 8–11 is nose-to-the-ground, **14 frames two
+things six cells apart**, 60 is the far limit.
+**Generalises to:** when a call succeeds and the picture does not change, read the
+tool's own `inputSchema` off `list_tools` before doing anything else. Do not trust a
+parameter name you inferred from a sibling tool.
+
+### 🔴 A modal dialog FREEZES the rendered frame and corrupts its colours
+While `Verse.Dialog_NodeTree` (a trade/comms offer) was open, `take_screenshot`
+returned a **stale frame in wild false colour** — pure red ground, cyan water,
+magenta pawns — with the clock frozen, while the UI layer on top drew correctly.
+It is not a GPU fault and not a mod: `ticksGame` advanced exactly 60 on a stepped
+call, so the SIM was alive and only the render was stuck.
+🔑 `jawa/clear_ui` does **NOT** close it — it reports `closedCount: 0` and lists the
+dialog in `remaining`. Use `rimworld/close_window {"windowType": "Dialog_NodeTree"}`,
+which closes it cleanly; the very next screenshot renders correctly.
+**Generalises to:** before believing anything you see in a screenshot, check
+`clear_ui`'s `remaining` list. A window it cannot close can silently invalidate every
+image you take, and false colour is easy to misread as an art or shader defect.
+
+### ⚠️ Nothing on the bridge orders an ATTACK
+No verb issues `JobDefOf.AttackMelee`. A drafted colonist holds at `Wait_Combat`
+forever; `jawa/order_pawn` issues a GOTO whether given `targetId` or the enemy's own
+cell; pawns from `jawa/spawn_pawn` have **no lord** so hostiles idle; and
+`Actions\Spawn large enemy raid` plus 5,600 stepped ticks never produced an engagement
+at the drafted pawn. Any "what does it look like DURING an attack" item is therefore
+uncollectable unattended today.
+Equipping, by contrast, is solved: `rimworld/select_pawn`, then
+`Actions\Equip primary (selected)...\<WeaponDefName>` (808 leaves).
+⛔ `Actions\Play Animation...` does not substitute — 208 leaves, **zero** `AM_` ones.
+Melee Animation's 33 `AM_Duel_*`/`AM_Execution_*` AnimDefs are in the def dump but are
+not exposed to that menu; they fire from real melee jobs only.
+
+### ⚠️ `jawa/list_pawns` cannot tell you what a pawn is HOLDING
+There is no equipment/weapon field — the record is id, kind, xenotype, position,
+health, flags. `rimworld/get_selected_pawn_inventory_state` reads INVENTORY, not the
+equipped primary. The cheapest reliable read of a primary weapon is a **screenshot of
+the Gear panel** ("Equipped: Lightsaber (normal)"), which is also independent evidence
+rather than the equip call's own `success`.
+
+### ⚠️ `jawa/inspect_string` takes `thingIds`, and a JSON LIST throws
+Singular `thingId` is dropped and the tool answers *"Give thingIds, defName, or
+rect"*. Passing `thingIds` as a JSON array throws
+`System.InvalidCastException: Object must implement IConvertible`. Pass a
+**comma-separated string**.
+
+### 🔑 Two things that worked first time, worth reaching for
+* `rimworld/screenshot_cell_rect {x, z, width, height, paddingCells}` frames and crops
+  to a cell rect — better than aiming the camera by hand. It writes
+  `<name>__cell_rect.png`, not `<name>.png`.
+* `rimworld/start_debug_game_ready {"readiness": "playable", "pauseIfNeeded": true}`
+  took a quicktest colony from the main menu to paused-and-drivable in **118 s**, and
+  returns the whole readiness ladder so there is nothing to poll yourself.
+
+### ⚠️ From WSL, `python.exe` dies on non-ASCII output
+`UnicodeEncodeError: 'charmap' codec` on a tool message containing an em-dash — the
+call had already SUCCEEDED, so this destroys the report, not the work. Open every
+bridge script with `sys.stdout.reconfigure(encoding="utf-8", errors="replace")`.
