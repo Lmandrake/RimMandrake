@@ -31,6 +31,17 @@ worldgen click · `deploy_custom_mods.py --apply` · force-push.
 - **Never** spawn duplicate subagents to make a result "more reliable by replication."
 - **Never** spawn one for work you could do in a single tool call.
 
+## Say what you are doing
+
+When you change task:
+
+```
+python3 src/RimMandrake/Utils/say.py "<what>" --why "<why it matters>"
+```
+
+One line. It feeds the board's CURRENTLY panel, which is how the human sees the
+fleet without reading four terminals. An entry with no `--why` renders as a gap.
+
 ## The queue is the only channel
 
 No live messaging between agents. An agent writes to the *next* agent's inbox and
