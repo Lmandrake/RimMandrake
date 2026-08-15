@@ -554,9 +554,6 @@ launch, game DOWN**, by BUILD. Closes queue item **B23** for this block.
 | **D4** | `ModsConfig.xml` | `<activeMods>` **575**, down from 576: `com.yayo.yayoani.continued` removed this window (BUILD, 15:47). All three xenotype donors — `btd.xenotyperemix.starwars`, `guy762.starwarsxenotypes`, `neronix17.outerrim.galacticdiversity` — **absent**; `mandrake.starwarsraces` (562) stands alone |
 | **D5** | def dump | armed at 13:27 via `dump_request.txt` = `all`; re-read happens at **this** startup, after D1–D4 |
 
-⛔ **`JawaSeaShaper.dll` repo/deployed md5 mismatch is EXPECTED and is not a
-signature.** The sea left v1 with the worldgen stand-down.
-
 ---
 
 ## T1 — the companion bundle loaded and is the build we measured
