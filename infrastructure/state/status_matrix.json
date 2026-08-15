@@ -5,8 +5,8 @@
    "cells": {
     "DECIDE": {
      "done": 0,
-     "total": 0,
-     "state": "offline"
+     "total": 3,
+     "state": "idle"
     },
     "BUILD": {
      "done": 0,

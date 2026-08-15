@@ -110,3 +110,54 @@ verify:   `jawa/order_pawn` a colonist to (129,149) and read `canReach` back; or
 criteria: DECIDE's call — this is a SHIP DESIGN question (interior circulation and door
           placement), not a bridge defect. CHECK does not redesign it.
 state:    ready
+
+## D20 You inherit every sign-off the retired seats held
+row:      0
+spec:     Owner ruling 2026-08-14: VISION's and PROJECT's ratification authority
+          passes to DECIDE. Live docs still gate on a seat that cannot sign:
+          `infrastructure/state/WORLDGEN_FACTION_CHECKLIST.md` :3, :124, :126, :169,
+          :230, :379 ("If VISION has not signed off, do not execute the untick
+          list"); `infrastructure/state/EXPECTED_FAILURES_next_load.md` :163, :248,
+          :307, :324; `infrastructure/state/WORLDGEN_RUN.md` :29, :30, :32, :53,
+          :63, :69, :72 (owner column assigns steps to CREATE/BRIDGE/OPS);
+          `design/V2_DREAMS.md` :386-397, :401, :430, :509, :543, :618, :633, :650
+          (routing table headed [PROJECT], [CREATE], [WORLD/OPS], [VISION]).
+          Past-tense attributions are history — leave them. Rewrite only the
+          conditions and owner columns that must be actionable by a live seat.
+verify:   `grep -rn "VISION\|PROJECT\|OPS\|CREATE\|BRIDGE" ` over those four files
+          returns only past-tense provenance, no unassignable gate or owner cell.
+criteria: none — offline.
+state:    ready
+
+## D21 Rule on CREATE_TEST_PLAN.md: still useful, rewrite, or retire
+row:      0
+spec:     `infrastructure/state/CREATE_TEST_PLAN.md`, 20,435 B. Written by the
+          retired CREATE seat about BRIDGE driving; cites `V1_SCOPE.md`'s gate as
+          authority, which `V1_CHAIN.md` superseded. NOT orphaned — `:267` tells
+          readers to file at the deleted `queue/CREATE.md`, live code
+          `src/RimMandrake/bridgetools/load_session.py` references it, and
+          `design/V2_DREAMS.md` C23 says to run it with nine pre-flight
+          corrections that lived in the deleted `AGENT_BRIDGE_state.md`
+          (recover: `git show edaa1bb^:infrastructure/state/AGENT_BRIDGE_state.md`).
+          Owner's call 2026-08-14: DECIDE reviews whether it is still useful and
+          whether it needs rewriting. If it survives, it is CHECK's file.
+verify:   Either the file carries a current-authority header and an owning seat,
+          or it is gone and its 8 referencing files no longer cite it.
+criteria: none — offline.
+state:    ready
+
+## D22 Prune NEXT_RELOAD.md — 657 lines against a 400 budget
+row:      0
+spec:     `infrastructure/state/NEXT_RELOAD.md`. Over budget per
+          `python3 src/RimMandrake/Utils/doc_budget.py`. At least one claim is
+          already contradicted by `src/RimMandrake/bridgetools/execute_ship_plan.py:54`.
+          Three dangling refs at :161, :228, :652 point at deleted queues
+          (`queue/OPS.md:127`, `queue/BRIDGE.md`, `queue/CREATE.md` C11).
+          Pruning means deciding what still matters for the next load, which is a
+          scope call — owner assigned it here 2026-08-14 rather than to a cleanup
+          pass. Raising the budget instead is a legitimate outcome; say so if it is
+          the answer.
+verify:   `doc_budget.py` reports NEXT_RELOAD.md ok, or DOC_BUDGET.md records why
+          its budget was raised.
+criteria: none — offline.
+state:    ready

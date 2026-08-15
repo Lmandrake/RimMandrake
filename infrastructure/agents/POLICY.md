@@ -14,13 +14,28 @@
 **The three exceptions — verify first, these only:**
 worldgen click · `deploy_custom_mods.py --apply` · force-push.
 
-## Push after every completed item
+## Push after every completed item, and name what you closed
 
 **Commit and `git push` the moment an item reaches `done`. With prejudice.** Not at
 the end of the session, not batched with the next item. Committed-but-unpushed work
 lives on one disk and four seats share this tree.
 
 Rejected push → `git pull --rebase`, never `--force`. Commit explicit paths.
+
+**That commit carries a trailer naming the item:**
+
+```
+Closes: B12
+```
+
+One per item, own line, at the end of the message. This is the only durable record
+that the work happened — the item itself is about to leave the queue, and
+`derive_matrix.py` reads the trailer back out of git to count progress. No trailer
+means the board never learns, and 70 items have already been lost that way.
+
+**An item leaves a queue exactly two ways: closed with a trailer, or `state:
+dropped` with one line saying why.** Deleting it, renumbering it away, or quietly
+retitling it into something else breaks the count and cannot be recovered later.
 
 ## Writing
 
@@ -70,7 +85,7 @@ row:      <the V1.md row number this serves. Without it the board cannot place i
 spec:     <exact: files, defNames, values, xpaths. No prose.>
 verify:   <the OFFLINE check BUILD must pass. Command or explicit criterion.>
 criteria: <the LIVE pass/fail CHECK will apply.>
-state:    ready | doing | done | blocked
+state:    ready | doing | done | blocked | dropped
 ```
 
 - **BUILD refuses an item with an empty `spec:` or `verify:`.** Move it to `blocked`,

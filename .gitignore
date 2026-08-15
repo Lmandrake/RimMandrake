@@ -171,3 +171,5 @@ observed/*_patch_sweep_scoped.txt
 # Per-seat liveness stamps written by src/RimMandrake/Utils/say.py. Cache:
 # PID-scoped, regenerated on every tool call, meaningless in another session.
 infrastructure/state/status/
+# derive_matrix.py rebuilds it from the Closes: trailers in git log.
+infrastructure/state/closed_ledger.json
