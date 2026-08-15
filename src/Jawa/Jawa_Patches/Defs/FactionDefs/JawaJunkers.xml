@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ============================================================================
+  JawaJunkers.xml                             Jawa_Patches · authored 2026-08-14
+  ============================================================================
+
+  FACTION_SPEC.md section 12. Faction 12 of 14.
+
+  ParentName is `PirateBandBase` (R24), which supplies the pirate art, namers,
+  raid loot maker, arrival temperature range and a full set of pawnGroupMakers.
+  It is the only one of the seven authored factions that does not inherit
+  `OutlanderFactionBase`.
+
+  🔴 `permanentEnemy` MUST BE RESTATED FALSE. `PirateBandBase` sets it TRUE, and
+  R12 rules the Junkers bribable: hostile on sight, but they can be bought. An
+  inherited field is not a set field, and leaving this one out silently makes
+  them unnegotiable forever.
+
+  🔴 `colorSpectrum` is inherited from `PirateBandBase` — pirate pink — and is
+  overridden here to R22's scrap brown.
+
+  ⛔ NO IDEO BLOCK. R23: `fixedIdeo` / `ideoName` / `ideoDescription` /
+  `forcedMemes` / `deityPresets` land as one uniform pass in B54, for all eleven
+  faiths at once. A faction without them generates an ideo at worldgen and works.
+
+  ⛔ NO TRADER GROUP. `canRequestTraders` is false. The Junkers are a loot
+  source, not a market.
+
+  Pawn kinds verified present in the 2026-08-14 dump (585 mods) and mapped to
+  their owning mod for `MayRequire`:
+      OuterRim_Scavenger · OuterRim_Thrasher    Neronix17.OuterRim.Core
+      VFEP_Scrapper                             OskarPotocki.VFE.Pirates
+      Scavenger · Thrasher                      vanilla Core, no MayRequire
+      Jawa_Gamorrean_*                          OURS, this same mod, no MayRequire
+  ============================================================================
+-->
+<Defs>
+
+  <FactionDef ParentName="PirateBandBase">
+    <defName>Jawa_Junkers</defName>
+    <label>the Junkers</label>
+    <description>The bottom of the scrap heap, given weapons and a grudge. Scavengers who arrive second and kill whoever arrived first, welded into warcaskets cut off other people's bodies.\n\nThere is no doctrine down there, only the ladder. Which means there is always somebody who would rather be paid than climb it.</description>
+    <pawnSingular>Junker</pawnSingular>
+    <pawnsPlural>Junkers</pawnsPlural>
+    <leaderTitle>Scraplord</leaderTitle>
+    <categoryTag>Pirate</categoryTag>
+    <techLevel>Industrial</techLevel>
+    <canMakeRandomly>true</canMakeRandomly>
+    <!-- 8 settlements, wreck fields and tailings. -->
+    <settlementGenerationWeight>1.15</settlementGenerationWeight>
+    <!-- 🔴 RESTATED. PirateBandBase sets this true; R12 says bribable. -->
+    <permanentEnemy>false</permanentEnemy>
+    <naturalEnemy>false</naturalEnemy>
+    <!-- No caravans. A loot source, not a market. -->
+    <canRequestTraders>false</canRequestTraders>
+
+    <factionNameMaker>NamerFactionSalvagers</factionNameMaker>
+    <settlementNameMaker>NamerSettlementPirate</settlementNameMaker>
+    <factionIconPath>UI/FactionIcons/JunkersOutpost</factionIconPath>
+    <!-- The icon ships in Vanilla Factions Expanded - Pirates
+         (oskarpotocki.vfe.pirates), which is active. A texture path has no
+         MayRequire; if that mod ever leaves the list the icon goes pink. -->
+    <!-- R22: scrap brown. Overrides the inherited pirate spectrum. -->
+    <colorSpectrum>
+      <li>(0.55,0.35,0.20)</li>
+      <li>(0.38,0.24,0.14)</li>
+    </colorSpectrum>
+
+    <!-- Inherit="False" IS LOAD-BEARING. RimWorld resolves inheritance AFTER
+         patches, and a child `li` list is APPENDED to the parent's, not
+         substituted for it. `PirateBandBase` carries 7 group makers; without
+         this opt-out the faction fields those too and raids arrive as
+         vanilla pawns wearing our name. Vanilla itself writes it 314 times,
+         9 of them on pawnGroupMakers. -->
+    <pawnGroupMakers Inherit="False">
+      <li>
+        <kindDef>Combat</kindDef>
+        <options>
+          <Jawa_Gamorrean_Guard>10</Jawa_Gamorrean_Guard>
+          <Jawa_Gamorrean_Enforcer>3</Jawa_Gamorrean_Enforcer>
+          <OuterRim_Scavenger MayRequire="Neronix17.OuterRim.Core">6</OuterRim_Scavenger>
+          <OuterRim_Thrasher MayRequire="Neronix17.OuterRim.Core">6</OuterRim_Thrasher>
+          <VFEP_Scrapper MayRequire="OskarPotocki.VFE.Pirates">4</VFEP_Scrapper>
+          <Scavenger>3</Scavenger>
+          <Thrasher>3</Thrasher>
+        </options>
+      </li>
+      <li>
+        <kindDef>Settlement</kindDef>
+        <options>
+          <Jawa_Gamorrean_Guard>8</Jawa_Gamorrean_Guard>
+          <OuterRim_Scavenger MayRequire="Neronix17.OuterRim.Core">5</OuterRim_Scavenger>
+        </options>
+      </li>
+    </pawnGroupMakers>
+  </FactionDef>
+
+</Defs>
