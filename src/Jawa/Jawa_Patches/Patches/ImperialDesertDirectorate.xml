@@ -1,127 +1,164 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ============================================================================
-  ImperialDesertDirectorate.xml          Jawa_Patches · authored 2026-08-13
+  ImperialDesertDirectorate.xml          Jawa_Patches · re-pointed 2026-08-14
   ============================================================================
 
-  V1 ROW: "Factions — authored: ONE, the Imperial Desert Directorate, on
-  OuterRim_GalacticEmpire as vessel. Label-level reskin only — name, leader
-  title, colour." (V1_SCOPE.md, owner-ratified.)
+  Builds FACTION_SPEC.md section 1, "Galactic Empire - PATCH vanilla `Empire`",
+  under V1_CHAIN R15 and R11.
 
-  Dossier: worldbuilding/faction_roster_v2.md §2. The Directorate is the
-  sector occupier: vertical power, nearly all of it orbital, two or three
-  surface seats clustered near the large spaceport.
+  🔴 THE VESSEL CHANGED. This file used to reskin `OuterRim_GalacticEmpire`
+  into the "Imperial Desert Directorate". It now patches VANILLA `Empire`
+  (Royalty), and the faction is the Galactic Empire. R15's reason is
+  `settlementGenerationWeight`: vanilla `Empire` sits at 1 against the Outer Rim
+  def's 0.3, which is why the Directorate held one settlement while the Fallen
+  Dominion held four. The occupier has to outweigh the locals to read as one.
 
-  READ FROM THE SHIPPED DEF 2026-08-13, game down, not inferred:
-  C:\Program Files (x86)\Steam\steamapps\workshop\content\294100\
-    2919248699\1.6\Defs\FactionDefs\FactionDefs.xml     (Outer Rim - Core)
+  READ FROM THE SHIPPED DEF, game up, 2026-08-14 — not inferred:
+  C:\Program Files (x86)\Steam\steamapps\common\RimWorld\Data\Royalty\Defs\
+    FactionDefs\Faction_Empire.xml
 
-      label           Galactic Empire
-      fixedName       Galactic Empire        <- see below, this is the trap
-      leaderTitle     Grand Admiral
-      pawnsPlural     Imperial Troopers
-      colorSpectrum   RGB(255, 255, 255)     <- single entry
-      permanentEnemy  false                  <- NOT ours to change, see below
+      ParentName                  FactionBase
+      label                       shattered empire
+      pawnSingular / pawnsPlural  imperial / imperials
+      leaderTitle                 high stellarch
+      factionNameMaker            NamerFactionEmpire
+      settlementGenerationWeight  1
+      techLevel                   Ultra
+      fixedName                   ABSENT      -> Add, not Replace
+      permanentEnemy              ABSENT      -> Add, not Replace
+      pawnGroupMakers             [1] Trader · [2] Combat commonality 100 ·
+                                  [3] Combat commonality 10 · [4] Settlement
 
-  ⚠️ WHY `fixedName` IS PATCHED AND NOT JUST `label`
-  ==================================================
-  `label` is the def's display label; `fixedName` is the name the world object
-  actually carries. This def sets BOTH to "Galactic Empire". Patch only `label`
-  and the faction still introduces itself as the Galactic Empire everywhere it
-  matters — the world map, the comms console, the faction list. The v1 gate is
-  "the faction is SEEN on the world map", so `fixedName` is the field the gate
-  actually reads. Missing it would produce a reskin that passes a file diff and
-  fails the gate.
+  ⚠️ `fixedName` IS AN ADD. Vanilla `Empire` has no `fixedName` node at all;
+  it names itself through `NamerFactionEmpire`, which generates a random name.
+  A `Replace` here would match nothing and log a red error. The spec REQUIRES
+  the world to say "Galactic Empire", so the node has to be created.
 
-  ⚠️ COLOUR: CHOSEN, NOT SPECIFIED — trivially changeable
-  =======================================================
-  The dossier gives no colour. Shipped is pure white, which is canonical
-  Imperial but reads poorly as a world-map marker on a PALE DESERT planet —
-  white on near-white. Chosen instead: a cold steel grey, RGB(74, 84, 96).
-  Still unmistakably Imperial next to the ochres and rusts of the local
-  factions, and legible against sand. One value to change if the owner
-  disagrees; nothing else depends on it.
+  ⚠️ Do NOT patch `factionNameMaker` away. `fixedName` overrides it for the
+  faction itself, and the namer is still what names the faction's SETTLEMENTS.
 
-  ⛔ DELIBERATELY NOT TOUCHED — these are OUT of the v1 row
-  ========================================================
-  Everything mechanical. No goodwill, no settlement counts, no pawnGroupMakers,
-  no memes, no techLevel. The scope is label-level and the reason is that the
-  scarce resource is verification passes, not authoring.
+  ⚠️ techLevel is left alone. The spec's "Spacer (vessel default)" mis-reads the
+  vessel — it actually ships `Ultra` — but the instruction is "no change", so
+  no change is what this file makes.
 
-  ⚠️ One genuine discrepancy found while reading, filed NOT fixed:
-  the shipped def has `permanentEnemy false`, while the dossier's faction
-  settings table says **Permanent enemy: Yes**. That is a mechanical field and
-  therefore v2. Recorded in TODO.md so the next author does not "discover" it
-  and quietly change it inside a label-only patch.
+  ⛔ COMBAT GROUPS ONLY. `pawnGroupMakers/li[kindDef="Combat"]` is TWO nodes on
+  this def, so each op carries a positional predicate on the filtered set. The
+  Trader and Settlement groups are untouched by design: they carry the
+  Royalty trade and settlement pawns, which are not part of R15.
+
+  The elite kinds (`OuterRim_ImpDeathTrooper`, `OuterRim_ImpISBAgent`,
+  `OuterRim_ImpRangeTrooper`, all combatPower 200) are confined to the RARE
+  combat group, mirroring vanilla's own split where the commonality-10 group is
+  the one carrying the heavier option list. The line troops
+  (`OuterRim_ImpStormArty`, `_Incinerator`, `_Jump`, all combatPower 80) appear
+  in both. None of the six carries the 99999 exclude-from-raid sentinel;
+  checked, they are 200/200/200/80/80/80.
 
   SAFETY
   ======
-  Every op is wrapped in PatchOperationFindMod, so the whole file is a silent
-  no-op if Outer Rim - Core is ever removed. Each individual op is a
-  PatchOperationReplace on a node READ FROM DISK above, so none of them is
-  guessing at a field that might not exist.
+  Everything is inside a conditional on the Empire def existing, so the file is
+  a silent no-op without Royalty rather than a wall of red. The group-maker ops
+  additionally sit inside a `PatchOperationFindMod` for Outer Rim - Galactic
+  Empire, and every Imperial defName also carries `MayRequire`, because an
+  unwrapped defName from a disabled mod is a silent no-op that reads as success.
   ============================================================================
 -->
 <Patch>
 
-  <Operation Class="PatchOperationFindMod">
-    <mods>
-      <li>Outer Rim - Core</li>
-    </mods>
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/FactionDef[defName="Empire"]</xpath>
     <match Class="PatchOperationSequence">
       <operations>
 
-        <!-- The display label. -->
+        <!-- "shattered empire" -> the occupier's own name. -->
         <li Class="PatchOperationReplace">
-          <xpath>/Defs/FactionDef[defName="OuterRim_GalacticEmpire"]/label</xpath>
-          <value><label>Imperial Desert Directorate</label></value>
+          <xpath>/Defs/FactionDef[defName="Empire"]/label</xpath>
+          <value><label>The Galactic Empire</label></value>
         </li>
 
-        <!-- The name the world object carries. THE ONE THE v1 GATE READS. -->
-        <li Class="PatchOperationReplace">
-          <xpath>/Defs/FactionDef[defName="OuterRim_GalacticEmpire"]/fixedName</xpath>
-          <value><fixedName>Imperial Desert Directorate</fixedName></value>
+        <!-- REQUIRED. Absent on the vessel; NamerFactionEmpire would otherwise
+             generate a random name and the world must say Galactic Empire. -->
+        <li Class="PatchOperationAdd">
+          <xpath>/Defs/FactionDef[defName="Empire"]</xpath>
+          <value><fixedName>Galactic Empire</fixedName></value>
         </li>
 
-        <!--
-          Grand Admiral -> Sector Director. The dossier's surface seats are the
-          "Sector Directorate seat ... the local aristocracy, the face the
-          orbital timer reports to". A Grand Admiral commands a fleet; a Sector
-          Director administers an occupied world, which is the thing the player
-          actually meets.
-        -->
+        <!-- high stellarch -> Emperor (R11). -->
         <li Class="PatchOperationReplace">
-          <xpath>/Defs/FactionDef[defName="OuterRim_GalacticEmpire"]/leaderTitle</xpath>
-          <value><leaderTitle>Sector Director</leaderTitle></value>
+          <xpath>/Defs/FactionDef[defName="Empire"]/leaderTitle</xpath>
+          <value><leaderTitle>Emperor</leaderTitle></value>
         </li>
 
-        <!-- "Imperial Troopers" -> the Directorate's own term. -->
         <li Class="PatchOperationReplace">
-          <xpath>/Defs/FactionDef[defName="OuterRim_GalacticEmpire"]/pawnsPlural</xpath>
-          <value><pawnsPlural>Directorate troopers</pawnsPlural></value>
+          <xpath>/Defs/FactionDef[defName="Empire"]/pawnSingular</xpath>
+          <value><pawnSingular>stormtrooper</pawnSingular></value>
         </li>
 
-        <!--
-          Description rewritten to the campaign's own fiction: the occupier is
-          VERTICAL. This is the sentence that tells a new reader why there are
-          only two or three Imperial tiles on a map the Empire supposedly owns.
-        -->
         <li Class="PatchOperationReplace">
-          <xpath>/Defs/FactionDef[defName="OuterRim_GalacticEmpire"]/description</xpath>
+          <xpath>/Defs/FactionDef[defName="Empire"]/pawnsPlural</xpath>
+          <value><pawnsPlural>stormtroopers</pawnsPlural></value>
+        </li>
+
+        <li Class="PatchOperationReplace">
+          <xpath>/Defs/FactionDef[defName="Empire"]/description</xpath>
           <value>
-            <description>The Sector Directorate is the Imperial administration of this world, and it governs from orbit. Its power is vertical: a garrison ring overhead, a shipyard, an orbital timer that reports to nobody the surface ever sees — and, on the ground, only two or three fortified seats clustered near the large spaceport, where the local aristocracy keeps up the forms of empire in the heat.\n\nThe Directorate does not settle where the water is. It settles on roads, on passes, and on whatever the ancients left standing, and it ships in the rest. That is what makes it an occupier rather than a neighbour: it can be anywhere, and it is beholden to nothing on the surface except its own convoys.</description>
+            <description>The occupier, and the only permanent enemy. Not hateful — procedural. Standardised infantry moved by drop-pod, security droids that were requisitioned rather than chosen, the rare Sith attached to nothing anyone can name, and a reach that is mostly orbital.\n\nIt does not want this world. It wants what leaves this world on schedule.</description>
           </value>
         </li>
 
-        <!-- Canonical Imperial white -> steel grey, legible on desert. -->
+        <!-- Pillar 5: the Galactic Empire alone is the permanent enemy.
+             ABSENT on the vessel, so this is an Add. -->
+        <li Class="PatchOperationAdd">
+          <xpath>/Defs/FactionDef[defName="Empire"]</xpath>
+          <value><permanentEnemy>true</permanentEnemy></value>
+        </li>
+
+        <!-- 1 -> 0.45. Three surface settlements by design; the other seven or
+             eight are orbital fiction the map never has to draw. -->
         <li Class="PatchOperationReplace">
-          <xpath>/Defs/FactionDef[defName="OuterRim_GalacticEmpire"]/colorSpectrum</xpath>
-          <value>
-            <colorSpectrum>
-              <li>RGB(74, 84, 96)</li>
-              <li>RGB(108, 118, 128)</li>
-            </colorSpectrum>
-          </value>
+          <xpath>/Defs/FactionDef[defName="Empire"]/settlementGenerationWeight</xpath>
+          <value><settlementGenerationWeight>0.45</settlementGenerationWeight></value>
+        </li>
+
+        <!-- R15: stormtroopers, not cataphracts. Combat groups only. -->
+        <li Class="PatchOperationFindMod">
+          <mods>
+            <li>Outer Rim - Galactic Empire</li>
+          </mods>
+          <match Class="PatchOperationSequence">
+            <operations>
+
+              <!-- The common raid (vanilla commonality 100). Line troops only. -->
+              <li Class="PatchOperationReplace">
+                <xpath>/Defs/FactionDef[defName="Empire"]/pawnGroupMakers/li[kindDef="Combat"][1]/options</xpath>
+                <value>
+                  <options>
+                    <OuterRim_ImpStormArty MayRequire="Neronix17.OuterRim.GalacticEmpire">5</OuterRim_ImpStormArty>
+                    <OuterRim_ImpStormIncinerator MayRequire="Neronix17.OuterRim.GalacticEmpire">3.5</OuterRim_ImpStormIncinerator>
+                    <OuterRim_ImpStormJump MayRequire="Neronix17.OuterRim.GalacticEmpire">2</OuterRim_ImpStormJump>
+                  </options>
+                </value>
+              </li>
+
+              <!-- The rare raid (vanilla commonality 10). Line troops plus the
+                   three 200-power specialists. -->
+              <li Class="PatchOperationReplace">
+                <xpath>/Defs/FactionDef[defName="Empire"]/pawnGroupMakers/li[kindDef="Combat"][2]/options</xpath>
+                <value>
+                  <options>
+                    <OuterRim_ImpStormArty MayRequire="Neronix17.OuterRim.GalacticEmpire">5</OuterRim_ImpStormArty>
+                    <OuterRim_ImpStormIncinerator MayRequire="Neronix17.OuterRim.GalacticEmpire">3.5</OuterRim_ImpStormIncinerator>
+                    <OuterRim_ImpStormJump MayRequire="Neronix17.OuterRim.GalacticEmpire">2</OuterRim_ImpStormJump>
+                    <OuterRim_ImpRangeTrooper MayRequire="Neronix17.OuterRim.GalacticEmpire">2</OuterRim_ImpRangeTrooper>
+                    <OuterRim_ImpDeathTrooper MayRequire="Neronix17.OuterRim.GalacticEmpire">1.5</OuterRim_ImpDeathTrooper>
+                    <OuterRim_ImpISBAgent MayRequire="Neronix17.OuterRim.GalacticEmpire">1</OuterRim_ImpISBAgent>
+                  </options>
+                </value>
+              </li>
+
+            </operations>
+          </match>
         </li>
 
       </operations>
