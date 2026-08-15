@@ -803,6 +803,33 @@ criteria: the player cracks an ancient cryptosleep casket and what climbs out is
           visibly not human, and the encounter plays exactly as it did before.
 state:    ready
 
+<!-- PARKED FINDING from BUILD, 2026-08-15, on the biomeConfigs half of this item.
+     Investigated to here and stopped at WRAP; this is where to resume.
+
+     SYMPTOM (DECIDE measured): src/Jawa/Jawa_Patches/Patches/JawaWorld_BiomeMix.xml
+     is rejected at load with 28 XML format errors, so all 24 biome scoreOffsets
+     do nothing.
+
+     FIRST HYPOTHESIS, and it is probably WRONG: our file writes biomeConfigs
+     dictionary-keyed, `<ExtremeDesert><scoreOffset>12</scoreOffset></ExtremeDesert>`,
+     and RimWorld list fields need `<li>` entries. That is the exact inverse of
+     the xenotypeChances trap, so it was the obvious suspect.
+
+     WHAT THE EVIDENCE ACTUALLY SAYS: no other mod in the 576-mod set writes a
+     <biomeConfigs> element at all, so there is no worked example to copy. And
+     `strings -a` over the owning assembly
+     (workshop/294100/3631364335/Assemblies/AlienWorlds.TidallyLocked.dll)
+     finds `PlanetTypeDef` but NEITHER `biomeConfigs` NOR `scoreOffset`.
+     Field names live in the #Strings heap and should be visible there.
+     ⇒ The stronger hypothesis is that THE FIELD DOES NOT EXIST on this def in
+     this version - in which case no amount of reshaping the XML will help and
+     the offsets need a different mechanism entirely.
+
+     NEXT STEP, cheapest first: decompile or ilspy that DLL and read PlanetTypeDef's
+     real fields. Do NOT reshape the XML until the field is confirmed to exist -
+     that would be fixing the spelling of a word the parser never wanted.
+     Note `strings -a` proves a NAME only; a UTF-16 method body needs `-a -el`. -->
+
 ## B63 Two settings would silently give us the wrong planet — fix before worldgen
 row:      12
 spec:     `design/Jawa/worldbuilding/SCENARIO_SETTINGS_SPEC.md` is the authority.
