@@ -372,6 +372,11 @@ python.exe src/RimMandrake/Utils/harvest_log.py --show crossref  # read the actu
 python.exe src/RimMandrake/Utils/refresh.py                      # rebuild the offline dump
 ```
 
+📌 **This `refresh.py` is a RE-run, not the first.** BUILD ran it at 15:51 after the
+list edit and it resolved 575/575. Run it again anyway: the armed DefDump recaptures
+at startup, so the artefacts stamped at 15:51 describe the stack as it was *before*
+this load's dump landed.
+
 Exit code 1 means something is above baseline. Procedure:
 `skills/rimworld-load-round/SKILL.md` §8.
 

@@ -707,6 +707,11 @@ coexisting is expected and is evidence neither way.
 The owner makes a world by hand and saves it; we ship it as a fixed
 resource. Everything below existed to shape the sea automatically.
 
+⚠️ **Carried down from D-CRIT when that item closed, because it is a measurement and
+not a plan:** `waterPct 25.0` was ONE seed; seed `sickle` read 16.74. If the sea is
+ever measured again it is a **mode, not a constant** — never accept a world on a
+single reading.
+
 ## B2 Install the ocean-shaping mod on its own, so blame stays clear
 row:      10
 spec:     `python3 src/RimMandrake/Utils/deploy_custom_mods.py --mod JawaSeaShaper --apply`. Repo md5 `b7730027a639`; deployed/loaded md5 `82b48e53e668`, mtime 08-13 23:57:29. Game DOWN (loaded and locked). A MOD assembly poisons attribution for anything loaded beside it — do not batch it with a load meant to prove something else.

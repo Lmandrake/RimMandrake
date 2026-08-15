@@ -1,30 +1,28 @@
 # DECIDE inbox.
 
-## D-CRIT ⭐ Read before sequencing — worldgen is the owner's, and the sea is v2
+## D-CRIT ⭐ Read before sequencing — the worldgen deadline
 row:      10
-spec:     🔴 SUPERSEDED 2026-08-15 (DECIDE). This item used to say the ocean gated
-          worldgen and that a sea-shaping assembly had to be deployed and tuned before
-          rows 2 and 7 could close. **That is no longer the order.** The owner ruled
-          worldgen MANUAL on 2026-08-14: he builds a world he likes, saves it, and we
-          ship it as a fixed resource. `V1.md` step 10 and the eight-gate table both
-          carry the ruling; B2, C15 and C16 were dropped under it and their text sits
-          in `design/V2_DREAMS.md`.
-          ⇒ **The sea-shaping work is `[v2]`** — the one canonical statement of that
-          ruling lives in `V1_CHAIN.md` step 6 and is not repeated here. No seat runs
-          campaign worldgen.
-          WHAT ACTUALLY STANDS from the old item:
-          - Rows 2 and 7 are still ONE event, and it is still the owner's single
-            worldgen run. Row 2 needs no build: `WORLDGEN_FACTION_CHECKLIST.md` is
-            ratified (21 untick / 6 keep) and is one screen he ticks during that run.
-          - ⇒ **Chain steps 6 and 9 must be SHIPPED AND LIVE BEFORE he generates.**
-            Factions and ideos are read once at world creation and cannot be
-            retrofitted. That is B40–B54, and it is now the real gate on row 7.
-          - ⚠️ `waterPct 25.0` was one seed; seed `sickle` read 16.74. If the sea is
-            ever measured again it is a mode, not a constant — never accept a world
-            on a single reading. Kept because it is a measurement, not a plan.
-verify:   no queue item schedules a sea-shaping deploy or a campaign worldgen run.
+spec:     🔴 SUPERSEDED 2026-08-15 and now reduced to its ONE live clause. The old
+          item said the ocean gated worldgen and that an assembly had to ship before
+          rows 2 and 7 could close. Both halves are dead: the owner ruled worldgen
+          MANUAL on 2026-08-14, and the sea left v1. **Those two rulings are stated
+          once each, in `V1_CHAIN.md` step 6. Do not re-derive either from here, and
+          do not restate them anywhere else.**
+          WHAT STANDS, and it is a real gate:
+          - Rows 2 and 7 are ONE event — the owner's single worldgen run. Row 2 needs
+            no build: `WORLDGEN_FACTION_CHECKLIST.md` is ratified (21 untick / 6 keep)
+            and is one screen he ticks during that run.
+          - ⇒ **Chain steps 6 and 9 must be SHIPPED AND LIVE BEFORE he sits down to
+            generate.** Factions and ideos are read once at world creation and cannot
+            be retrofitted. That is **B40–B54**, and it is the real gate on row 7.
+            It is not scheduled by us — it is a human event we do not control, so the
+            work is late the moment he decides to start.
+          The `waterPct` seed-variance measurement moved to `design/V2_DREAMS.md`
+          under "Retired from v1" — it was a measurement, not a plan.
+verify:   no queue item schedules a campaign worldgen run, and B40–B54 are all live
+          before anyone tells the owner the world is ready to make.
 criteria: —
-state:    ready
+state:    ready — the deadline clause is the only live part of this item.
 
 ## D1 Fill in the items whose spec or test is still blank
 row:      doctrine
