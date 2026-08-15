@@ -62,6 +62,61 @@
       <li>(0.58,0.48,0.18)</li>
     </colorSpectrum>
 
+    <!--
+      ================================================================
+      THE RECKONING OF DEBTS — faction_religions_spec.md entry 2 (B54)
+      ================================================================
+      `ideoName` and `ideoDescription` verbatim from the spec; they are the only
+      strings the engine renders.
+
+      ⛔ `hiddenIdeo` MUST STAY UNSET — it suppresses the description entirely.
+
+      `requiredPreceptsOnly` is deliberately FALSE here, unlike the Empire's.
+      The doctrine is not the whole point for the Cartel, so the generator is
+      left room to add colour and the faction reads as a people rather than a
+      clause.
+
+      `VME_Structure_Corporate` has deityCount 1-1, so EXACTLY ONE deityPreset.
+      Structure meme goes FIRST in `forcedMemes`.
+
+      `disallowedPrecepts` blacklists the other six Execution precepts so the
+      issue's default cannot win — no meme in this set carries an Execution
+      group, so without the blacklist the faction would land on
+      `Execution_HorribleIfInnocent`, the exact opposite of the doctrine.
+      ⚠️ Whether the generator then takes the weight-0 survivor or leaves the
+      issue empty is UNVERIFIED offline; it needs a live read.
+    -->
+    <fixedIdeo>true</fixedIdeo>
+    <requiredPreceptsOnly>false</requiredPreceptsOnly>
+    <ideoName>the Reckoning of Debts</ideoName>
+    <ideoDescription>Everything is owed. The water you drank this morning, the air in the dome, the years your mother did not work — all of it is on the ledger, and the ledger does not forgive, because forgiveness is a rounding error and we do not round. Pay, and you are family. Do not pay, and you are inventory. There is no third column.</ideoDescription>
+    <forcedMemes>
+      <li MayRequire="vanillaexpanded.vmemese">VME_Structure_Corporate</li>
+      <li MayRequire="vanillaexpanded.vmemese">VME_Trader</li>
+      <li MayRequire="Ludeon.RimWorld.Ideology">Guilty</li>
+      <li MayRequire="sarg.alphamemes">AM_Gladiator</li>
+      <li MayRequire="Ludeon.RimWorld.Ideology">HighLife</li>
+    </forcedMemes>
+    <styles>
+      <li MayRequire="vanillaexpanded.vmemese">VME_Corporate</li>
+      <li MayRequire="vanillaexpanded.vmemese">VME_Hedonist</li>
+    </styles>
+    <deityPresets>
+      <li>
+        <nameType><name>the Ledger</name><type>That Which Does Not Forgive</type></nameType>
+        <gender>None</gender>
+        <iconPath>UI/Deities/DeityGeneric</iconPath>
+      </li>
+    </deityPresets>
+    <disallowedPrecepts>
+      <li MayRequire="Ludeon.RimWorld.Ideology">Execution_Abhorrent</li>
+      <li MayRequire="Ludeon.RimWorld.Ideology">Execution_Horrible</li>
+      <li MayRequire="Ludeon.RimWorld.Ideology">Execution_HorribleIfInnocent</li>
+      <li MayRequire="Ludeon.RimWorld.Ideology">Execution_DontCare</li>
+      <li MayRequire="Ludeon.RimWorld.Ideology">Execution_RespectedIfGuilty</li>
+      <li MayRequire="Ludeon.RimWorld.Ideology">Execution_Classic</li>
+    </disallowedPrecepts>
+
     <!-- Inherit="False" IS LOAD-BEARING. RimWorld resolves inheritance AFTER
          patches, and a child `li` list is APPENDED to the parent's, not
          substituted for it. `OutlanderFactionBase` carries 8 group makers; without

@@ -121,6 +121,68 @@
           <value><settlementGenerationWeight>0.45</settlementGenerationWeight></value>
         </li>
 
+        <!--
+          ================================================================
+          THE RISING ORDER — faction_religions_spec.md entry 1 (B54)
+          ================================================================
+          Authored, not constrained. Vanilla `Empire` ships `requiredMemes` +
+          `structureMemeWeights`, which STEER a generated religion; both are
+          removed here because `fixedIdeo` means "do not generate", which makes
+          them dead weight that only invites a later contradiction.
+
+          `ideoName` and `ideoDescription` are copied VERBATIM from the spec —
+          they are the only strings the engine renders, and the Empire's
+          contempt for the player's faith now lives in that description and
+          nowhere else, because every precept that could have carried it
+          measured unreachable.
+
+          ⛔ `hiddenIdeo` MUST STAY UNSET. Setting it suppresses the description
+          entirely, which is the whole deliverable.
+
+          `Structure_TheistEmbodied` has deityCount 2-4, so `deityPresets` is
+          mandatory and two are given. Four normal memes is exactly the
+          `MemeCountRangeAbsolute` ceiling — the ceiling is a COUNT, never an
+          impact budget. Structure meme goes FIRST in `forcedMemes`.
+        -->
+        <li Class="PatchOperationRemove">
+          <xpath>/Defs/FactionDef[defName="Empire"]/requiredMemes</xpath>
+        </li>
+        <li Class="PatchOperationRemove">
+          <xpath>/Defs/FactionDef[defName="Empire"]/structureMemeWeights</xpath>
+        </li>
+        <li Class="PatchOperationAdd">
+          <xpath>/Defs/FactionDef[defName="Empire"]</xpath>
+          <value>
+            <fixedIdeo>true</fixedIdeo>
+            <requiredPreceptsOnly>true</requiredPreceptsOnly>
+            <ideoName>The Rising Order</ideoName>
+            <ideoDescription>We have never seen him. We will never see him. He is rising, and we are the ground he rises from. Take the helmet: it is the last thing you will ever choose. There is no doubt among us — only disorder, and disorder is corrected. Say the name once when you are given the armour, and once when you are taken out of it. Between those two words, stand in line.</ideoDescription>
+            <forcedMemes>
+              <li MayRequire="Ludeon.RimWorld.Ideology">Structure_TheistEmbodied</li>
+              <li MayRequire="vanillaexpanded.vmemese">VME_GodEmperor</li>
+              <li MayRequire="Ludeon.RimWorld.Ideology">Proselytizer</li>
+              <li MayRequire="Ludeon.RimWorld.Ideology">Supremacist</li>
+              <li MayRequire="Ludeon.RimWorld.Ideology">HumanPrimacy</li>
+            </forcedMemes>
+            <styles>
+              <li MayRequire="vanillaexpanded.vmemese">VME_Authoritarian</li>
+              <li MayRequire="Ludeon.RimWorld.Ideology">Techist</li>
+            </styles>
+            <deityPresets>
+              <li>
+                <nameType><name>Palpatine</name><type>He Who Is Rising</type></nameType>
+                <gender>Male</gender>
+                <iconPath>UI/Deities/DeityGeneric</iconPath>
+              </li>
+              <li>
+                <nameType><name>the Line</name><type>That Which Has No Face</type></nameType>
+                <gender>None</gender>
+                <iconPath>UI/Deities/DeityGeneric</iconPath>
+              </li>
+            </deityPresets>
+          </value>
+        </li>
+
         <!-- R15: stormtroopers, not cataphracts. Combat groups only. -->
         <li Class="PatchOperationFindMod">
           <mods>
