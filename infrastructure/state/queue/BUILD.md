@@ -1364,3 +1364,50 @@ criteria: a pawn who wades a river in the geyser fields or on a volcano gets
           to them; and `regrowth.botr.boilingforest` is gone from the mod list with
           no red error at load.
 state:    ready
+
+## queue-ids-become-names-7f3a2c
+row:      infra
+spec:     Owner's ruling, 2026-08-15: **project queues stop using numbers.** An
+          item gets a unique NAME instead — meaningful, and free to carry a
+          pseudo-random suffix to guarantee uniqueness, exactly as this item does.
+
+          WHY, measured today. Four seats append to two queue files with no
+          locking, and a number that is free when you read it is taken by the
+          time you write:
+            · `B60` — filed by DECIDE for plant growth while BUILD was using it
+              in a commit subject for the xenotype picker fix.
+            · `B61` — DECIDE filed "Ancients as Rakata" while a BUILD subagent
+              was mid-flight writing a different B61. Caught only because a
+              cross-session message arrived in time; it would otherwise have
+              overwritten a peer's item.
+            · `B63` — DECIDE filed it TWICE from two of its own agents racing.
+            · `B56` — duplicated for longer than a day before anyone noticed.
+          ⇒ Three of those four were caught by luck or by a human reading a
+          message, not by any check. The failure is silent: a blind write drops
+          a peer's item and nothing reports it, because the file still parses
+          and still looks full.
+
+          🔴 A NAME CANNOT COLLIDE BY ACCIDENT. Two agents inventing an item on
+          the same subject produce different names; two agents counting produce
+          the same number. That is the whole argument.
+
+          WHAT CHANGES:
+          1. `infrastructure/agents/POLICY.md` — the item-format block, which
+             currently shows `## <ID>`. Say: unique name, kebab-case, suffix to
+             disambiguate, never a number.
+          2. The `Closes:` trailer takes the name verbatim. `derive_matrix.py`
+             reads those trailers out of git and is the reason IDs matter at all
+             — confirm it does not parse or sort on a numeric ID before shipping.
+          3. Existing numbered items are NOT renamed. They close under the ID
+             they were filed with, or the trailer stops resolving. New items
+             only.
+          ⛔ Do NOT renumber history to make it tidy. A `Closes: B58` in a pushed
+          commit is the durable record that the work happened; breaking it to
+          gain consistency loses the thing the convention exists to protect.
+verify:   POLICY.md states the naming rule; `derive_matrix.py` still resolves a
+          mixed queue of numbered legacy items and named new ones — run it and
+          paste the output showing both kinds resolving; and a grep of both queue
+          files finds no duplicate name.
+criteria: EMPTY — offline, no game needed.
+state:    ready
+
