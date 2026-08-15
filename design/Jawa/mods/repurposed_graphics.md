@@ -84,3 +84,29 @@ subjects are desert-correct and we may want the *creature*, drawn our own way.
 | **`AEXP_GilaMonster`** | The one animal that survived review, cut only because it was the last tenant of a whole mod. A venomous desert lizard is squarely on-world; if we ever want a small dayside predator, this is the reference |
 | **`AEXP_Camel`** | Cut in review, but a desert world without a pack animal is worth a second thought. Recorded so the question can be re-asked deliberately rather than by accident |
 | **`AEXP_BeaverDam`** | A buildable animal structure. The mechanic — a creature that alters terrain — has no equivalent left in the stack |
+
+## Giant Snake — cut stands, but the STAT BLOCK is the asset, 2026-08-15
+
+**Owner's ruling: leave it cut.** The art is flat clip-art — thick black outline,
+primary green and yellow, cartoon fangs — and it would read as pasted in from
+another game.
+
+Recorded because the *creature* is not the problem. `zal.giantsnake` shipped two
+of the most lethal animals measured in the whole stack:
+
+| | body | health | combat power | best DPS |
+|---|---|---|---|---|
+| giant snake · white viper | 4.0 | 6.5 · 7.5 | 150 | **21.2** |
+| thrumbo, for scale | 4.0 | 8.0 | 500 | 11.5 |
+
+Elephant-sized, tougher than a rhino, roughly twice a thrumbo's damage per second
+off a 35-power toxic bite, `manhunterOnDamageChance` 100, and it already listed
+`Desert` and `AridShrubland` among its biomes.
+
+⇒ **If v1 ever wants a massive dayside ambush predator, build it on a surviving
+body rather than restoring this mod** — the design (huge, venomous, always turns
+manhunter, hunts prey up to body size 4.3) is the part worth copying.
+
+🔴 **And do not copy its `combatPower` of 150.** A thrumbo costs 500 at half the
+damage output. Anything that builds manhunter packs by points would price these
+like muffalo and send a swarm.
