@@ -336,10 +336,30 @@ on defName alone silently keeps whichever was walked last.
 ## In this repo
 
 ```
-src/Jawa/RimMandrake_StarWarsRaces/     69 xenotypes, 114 genes, 104 head types
-src/RimMandrake/Utils/gen_races_mod.py  builds that mod from the donor stack
-src/RimMandrake/Utils/refresh.py        rebuilds the offline def dump (disk state)
+src/Jawa/RimMandrake_StarWarsRaces/       69 xenotypes, 114 genes, 104 head types
+src/RimMandrake/Utils/gen_races_mod.py    builds that mod from the donor stack
+src/RimMandrake/Utils/refresh.py          rebuilds the offline def dump (disk state)
 ```
+
+**Survey tooling that predates this skill — reach for it before writing your own.**
+It is the reason a xenotype question usually needs no new script:
+
+```
+src/RimMandrake/Utils/genome_scan.py         every XenotypeDef + GeneDef in the ACTIVE list -> JSON
+src/RimMandrake/Utils/genome_matrix_build.py the genome register: every candidate xenotype, aligned by gene
+src/RimMandrake/Utils/genome_art_cache.py    gene and xenotype icons OUT of AssetBundles (needs ~/.venvs/rimart/bin/python)
+design/Jawa/worldbuilding/review/genome_register.html   the rendered result, art inlined
+```
+
+⚠️ `genome_art_cache.py` is the answer to "the icon does not exist on disk" —
+vanilla ships gene art inside Unity bundles, so a `find` sweep reports most of
+Biotech's genes as art-less. It is not; you are looking in the wrong place. Full
+treatment in `reading-rimworld-graphics`.
+
+⇒ **These existed for a day before this skill did, and the knowledge in them was
+invisible** — it lived in scripts and one generated HTML page, so the next person
+to touch a xenotype re-derived it by hand. That is the failure this file exists
+to prevent: if you learn something here, write it HERE, not only into a script.
 
 Deploying it is `rimworld-deploy`; looking at the art is
 `reading-rimworld-graphics`; spawning to check is `rimbridge`.
