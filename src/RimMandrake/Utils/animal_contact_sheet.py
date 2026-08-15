@@ -185,6 +185,13 @@ TEX_SUFFIXES = ("_south", "", "_east", "_north", "_side")
 # they are looking at a mask.
 BUNDLE_SUFFIXES = ("_south", "", "_east", "_north", "_side", "_m")
 
+# `Graphic_StackCount` and `Graphic_Random` name a DIRECTORY, and the game picks
+# a variant from inside it. On the loose filesystem we can list that directory;
+# inside a bundle the names are flat, so the variants appear as siblings with a
+# letter suffix — vanilla's shells extract as `Shell_Firefoam_a/_b/_c` and there
+# is no `Shell_Firefoam` at all. Without this the whole family renders blank.
+BUNDLE_VARIANT_SUFFIXES = tuple("_" + c for c in "abcdefgh")
+
 # Where extract_bundle_textures.py writes its cache. Same repo-relative
 # derivation as DEFAULT_CSV so the tools work from any cwd.
 DEFAULT_BUNDLE_DIR = os.path.normpath(os.path.join(
@@ -452,7 +459,7 @@ def resolve_texture(tex_path, index, bundle_index=None, own_pkg=None):
         own = norm_pkg(own_pkg)
         blind = not getattr(bundle_index, "has_paths", False)
         best = None
-        for i, suf in enumerate(BUNDLE_SUFFIXES):
+        for i, suf in enumerate(BUNDLE_SUFFIXES + BUNDLE_VARIANT_SUFFIXES):
             for src, have_dirs, path in bundle_index.get(stem + suf, ()):
                 is_own = 1 if (own and src == own) else 0
                 score = trailing_score(want_dirs, have_dirs)

@@ -61,8 +61,26 @@ Try the bare name and each suffix. `_m` appears on mod art that ships a mask.
 | `Graphic_Random`, `Graphic_StackCount` | 🔴 **texPath names a DIRECTORY** |
 
 For the directory forms the suffix ladder can never hit, because there is no
-single file to find. List the folder and show one variant, marked as one of N.
-Some defs are only reachable this way — 54 weapon cells in one real audit.
+single file to find. **On the loose filesystem, list the folder** and show one
+variant, marked as one of N. Some defs are only reachable this way — 54 weapon
+cells in one real audit.
+
+🔴 **Inside a bundle there is no folder to list.** The variants are flattened to
+siblings with a LETTER suffix, and the bare name does not exist at all:
+
+```
+def texPath : Things/Item/Resource/Shell/Shell_Firefoam
+in bundle   : Shell_Firefoam_a · Shell_Firefoam_b · Shell_Firefoam_c
+```
+
+So the bundle ladder needs `_a`.. `_h` alongside the side suffixes. Without it
+every `Graphic_StackCount` family renders blank — that alone was **373 of 397
+missing item cells**, and it looked exactly like "vanilla art is unreachable".
+
+⚠️ A suffix ladder still cannot save you when the STEM differs. Vanilla's
+`Shell_AntigrainWarhead` extracts as `Shell_Antigrain_a`; nothing but a fuzzy
+stem match finds that, and fuzzy matching is what caused the apparel disaster.
+Leave those few blank and say so.
 
 ## Which content folders a mod actually loads
 
