@@ -661,6 +661,12 @@ spec:     `design/Jawa/worldbuilding/PLANT_GROWTH_SPEC.md` is the authority; the
           to be cut is wasted work. Both levers are ultimately required: fast
           growth without fast regrowth burns the savanna once and leaves it
           black.
+          SHIPPED: `src/Jawa/JawaPlantGrowth/` (`mandrake.jawaplantgrowth`).
+          R-G1 only; R-G4 still blocked on the biome cut list.
+          🔴 NOT DEPLOYED — RimWorld was running and the DLL cannot be written to
+          a locked game folder. Needs `deploy_custom_mods.py --mod JawaPlantGrowth
+          --apply` in a shutdown window plus a ModsConfig entry AFTER
+          `brrainz.harmony`. Live half is CHECK C38.
 verify:   Per R-G6, all of it inside a ~90 s quicktest — do NOT wait for a cold
           load. Wild grass visibly regrows within a session and a sown crop
           reaches harvest in roughly a quarter of its usual time. A tree does
@@ -672,4 +678,4 @@ verify:   Per R-G6, all of it inside a ~90 s quicktest — do NOT wait for a col
           on a large map — a getter postfix runs extremely often.
 criteria: vegetation reads as obtrusively powerful rather than as a balance
           tweak.
-state:    ready
+state:    done

@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ModMetaData>
+  <name>Jawa Plant Growth (local)</name>
+  <packageId>mandrake.jawaplantgrowth</packageId>
+  <author>mandrake</author>
+  <supportedVersions>
+    <li>1.6</li>
+  </supportedVersions>
+  <description>Planetary fast growth. One Harmony postfix on Verse.Plant.GrowthRate multiplies the composite growth rate of every plant from every mod, so nothing has to be enumerated and any plant a mod adds later is caught automatically.
+
+Three bands, biome-aware:
+- wild plants and crops x4.0
+- trees x2.5 (wood stays a decision)
+- plants on a terminator / poison-forest biome x0.4 (the one place on this world where growth has stalled)
+
+Every number, the terminator biome roster and the exempt plant list live in Defs/JawaPlantGrowthSettings.xml and are read at startup, so tuning does not need a rebuild. The compiled defaults in JawaPlantGrowth.PlantGrowthConfig are used only if that def is missing.
+
+Exempt plants are untouched in every biome: the anima tree and the Gauranlen tree (their slowness is ritual and dryad pacing, not botany), ambrosia (deliberately scarce), and any plant whose growDays is already under 1 day.
+
+The postfix scales the COMPOSITE GrowthRate rather than a single GrowthRateFactor_*, so environmental penalties (light, temperature, fertility, drought) still apply and the terminator case genuinely comes out slower than vanilla.
+
+Load after Harmony. It is silent when it works: verify from the inspect string on a plant, which reads the boosted rate because it is computed from the same getter.</description>
+  <modDependencies>
+    <li>
+      <packageId>Ludeon.RimWorld</packageId>
+      <displayName>RimWorld</displayName>
+    </li>
+    <li>
+      <packageId>brrainz.harmony</packageId>
+      <displayName>Harmony</displayName>
+      <steamWorkshopUrl>https://steamcommunity.com/sharedfiles/filedetails/?id=2009463077</steamWorkshopUrl>
+    </li>
+  </modDependencies>
+  <loadAfter>
+    <li>brrainz.harmony</li>
+    <li>Ludeon.RimWorld</li>
+  </loadAfter>
+</ModMetaData>

@@ -284,3 +284,85 @@ result:   2026-08-15 CHECK. ROOT CAUSE FOUND for the wrong-looking pawns.
           Baseliners with 4 of the 5 absent species sitting in the first 6 spawn slots.
           A species missing from ONE spawn pass is not evidence. Re-spawn after the
           quota fills before naming any species as failing to generate.
+
+## C38 VALIDATION PLAN — planetary fast growth, and the terminator case that proves it
+row:      2
+spec:     Ships `mandrake.jawaplantgrowth` (`src/Jawa/JawaPlantGrowth/`), a NEW
+          assembly: one Harmony postfix on the `Plant.GrowthRate` **getter**
+          multiplying `__result`. Three bands, biome-aware, in that order:
+          terminator biome -> x0.4, else tree -> x2.5, else -> x4.0.
+          🔴 It scales the COMPOSITE `GrowthRate`, not a `GrowthRateFactor_*`, so
+          light/temperature/fertility/drought penalties still apply and the
+          terminator case genuinely lands BELOW vanilla.
+          Every number, the terminator biome roster and the exempt list are in
+          `src/Jawa/JawaPlantGrowth/Defs/JawaPlantGrowthSettings.xml` and are read
+          at startup — retuning is an XML edit and a restart, never a rebuild.
+          Terminator roster today: `PoisonForest` only (Advanced Biomes
+          (Continued), `mlie.advancedbiomes`, active). Exempt in EVERY biome:
+          `Plant_TreeAnima`, `Plant_TreeGauranlen`, `Plant_Ambrosia`, and any plant
+          whose `growDays` is under 1.0.
+          ⛔ Player crops are NOT exempt, by spec. The limit on farming here is
+          WATER, not time.
+          R-G4 (`BiomeDef.wildPlantRegrowDays`) is NOT in this drop — it is blocked
+          on the owner's biome cut list. Wild plants will grow fast but will NOT
+          repopulate a burnt map any faster yet. Do not read that as a failure.
+          ⚠️ NOT DEPLOYED. RimWorld was running, so the DLL could not be written to
+          `C:\Program Files (x86)\Steam\steamapps\common\RimWorld\Mods`. It needs
+          `deploy_custom_mods.py --mod JawaPlantGrowth --apply` in a shutdown
+          window, and `mandrake.jawaplantgrowth` added to ModsConfig AFTER
+          `brrainz.harmony`, before this can be checked at all.
+
+verify:   ITEM     Plant growth is x4.0 wild/crop, x2.5 tree, x0.4 on PoisonForest
+          SEE      The plant inspect pane's growth-rate readout (it is computed
+                   from the same getter we patch, so it shows the boosted number),
+                   plus the one-line startup message
+                   `[JawaPlantGrowth] scaling <N> plant defs (default x4, tree
+                   x2.5), <M> exempt, 1 terminator biome(s) at x0.4.`
+          ROUTE    Quicktest map (~90 s, per R-G6 — do NOT spend a cold load).
+                   1. Temperate/arid quicktest. Spawn `Plant_Corn` and
+                      `Plant_TreeOak` side by side on fertile soil, note growth %
+                      on each, run 1 in-game day, read both again.
+                   2. NEW quicktest on `PoisonForest` (Advanced Biomes). Same two
+                      plants, same day. This is a SECOND map — a biome branch
+                      cannot be tested by walking across the first one.
+                   3. Spawn `Plant_TreeAnima` on map 1 and read its rate.
+          PREDICT  Written before the look, as ratios against the same plant on the
+                   same map with the mod off — but the cheap in-run form is the
+                   ratio BETWEEN plants, which needs no vanilla baseline:
+                   - corn `growDays` 11.3 -> reaches harvest in ~2.8 days
+                   - oak `growDays` 30 -> ~12 days, so after one day the corn is
+                     ~36% grown and the oak ~8%. **The corn must be roughly 4x the
+                     oak's growth percentage.** Anything near 1x means the tree
+                     band is not firing.
+                   - 🔴 On PoisonForest the corn gains ~10% in that same day —
+                     LESS than the ~36% on map 1 and less than the ~8.8% vanilla
+                     would give. Slower, not faster. This is the check most likely
+                     to be skipped and the only one that proves the biome branch
+                     runs at all.
+                   - `Plant_TreeAnima` growth % after one day matches an unpatched
+                     anima tree: ~4% (25 growDays), NOT 10%.
+          CLOSE    All four numbers land in band on ONE pass — NOT chasing: the
+                   exact percentages (fertility, light and temperature move them),
+                   wild-plant REPOPULATION rate (that is R-G4 and it did not ship),
+                   or the Gauranlen/ambrosia exemptions (same mechanism as anima).
+          RIDE     🔴 solo. A new assembly. If the load comes up wrong, nothing
+                   separates the DLL from anything shipped beside it.
+          LIES     Four ways this produces a false pass:
+                   - **The postfix never bound.** `GrowthRate` is a PROPERTY; a
+                     Harmony patch that misses its target throws at PatchAll, but a
+                     mod that failed to LOAD is silent. The startup message above
+                     is the only positive evidence the assembly ran — if it is
+                     absent, everything below it is meaningless and the answer is
+                     "not deployed / not in ModsConfig", not "no effect".
+                   - **The plant was dormant.** The postfix returns early on
+                     `__result <= 0` (night, out of temperature band, unlit). A
+                     0% reading is not evidence of anything. Read growth in
+                     daylight, in season.
+                   - **Reading ONE map.** x4 and x0.4 look identical if you only
+                     ever see one biome — both are just "a number". The
+                     terminator claim needs the second map, generated fresh.
+                   - **Confusing growth with regrowth.** A burnt PoisonForest that
+                     stays bare proves nothing about this patch;
+                     `wildPlantRegrowDays` is untouched until R-G4 ships.
+criteria: vegetation reads as obtrusively powerful rather than as a balance tweak.
+state:    blocked — needs a shutdown window to deploy, then a live game

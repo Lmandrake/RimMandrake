@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+
+  <!--
+    Every tunable for planetary fast growth. Read once at startup; edit and restart,
+    no rebuild. If this file is deleted the compiled defaults in
+    Source/PlantGrowthConfig.cs are used instead, and they are the same numbers.
+  -->
+  <JawaPlantGrowth.PlantGrowthSettingsDef>
+    <defName>JawaPlantGrowth_Settings</defName>
+
+    <!-- Wild plants AND player crops. Corn's 11.3 growDays becomes ~2.8.
+         Crops are deliberately NOT exempt: on this world the limit on farming is
+         WATER, not time, so fast crops sharpen the water economy. -->
+    <defaultMultiplier>4.0</defaultMultiplier>
+
+    <!-- Trees are a wood economy, not scenery. At x4 lumber stops being a decision. -->
+    <treeMultiplier>2.5</treeMultiplier>
+
+    <!-- The poison forest on the shade side of the terminator is STUNTED. Below 1.0
+         on purpose: this is the one place on the planet where growth has stalled. -->
+    <terminatorMultiplier>0.4</terminatorMultiplier>
+
+    <!-- A plant already faster than this gains nothing from multiplying, so it is
+         left alone. -->
+    <minGrowDaysToBoost>1.0</minGrowDaysToBoost>
+
+    <!-- The terminator roster. DECIDE supplies the final list after the owner's
+         biome review; PoisonForest (Advanced Biomes (Continued)) is the only
+         confirmed member today. A name that is not loaded logs a warning and is
+         skipped, so listing candidates from mods you may cut is safe. -->
+    <terminatorBiomes>
+      <li>PoisonForest</li>
+    </terminatorBiomes>
+
+    <!-- Untouched in every biome. Their slowness is a mechanic, not a growth rate. -->
+    <exemptPlants>
+      <li>Plant_TreeAnima</li>      <!-- ritual pacing, not botany -->
+      <li>Plant_TreeGauranlen</li>  <!-- the dryad economy times against it -->
+      <li>Plant_Ambrosia</li>       <!-- a deliberately scarce drug source -->
+    </exemptPlants>
+
+  </JawaPlantGrowth.PlantGrowthSettingsDef>
+
+</Defs>
