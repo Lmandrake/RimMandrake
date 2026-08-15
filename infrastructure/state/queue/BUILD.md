@@ -84,7 +84,7 @@ row:      infra
 spec:     WS `3530586159` is cited as adopted in several design docs but is NOT installed — a grep of all 1246 workshop `About.xml` files matches only the original `2896845138`, which is active and supplies every `GarryFlowers_` def in use.
 verify:   grep of the design docs returns no `3530586159`.
 criteria: EMPTY
-state:    ready
+state:    done
 
 ## B35 Move the repo to the agreed folder layout, one stage per commit
 row:      infra
