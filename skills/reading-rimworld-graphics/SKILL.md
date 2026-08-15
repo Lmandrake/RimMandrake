@@ -125,6 +125,50 @@ like a correct render and is wrong.
 **Prefer a texture from the def's own mod; fall back cross-source only when there
 is no local match.** Record which source won, so a suspicious cell can be traced.
 
+🔴 **Never match a def or species name as a SUBSTRING of a filename.** A short
+name thrown at a 77,000-file index matches everywhere and the results look
+plausible enough to ship:
+
+| wanted | matched | because |
+|---|---|---|
+| `Hutt` | `CrashedThemisShuttle.png` | s-**hutt**-le |
+| `Gand` | `Big and Small Framework.png` | -**and**- |
+| `Herglic` | `heads/herglic/herglic_south.png` | art *of* the species, not its icon |
+
+Two constraints together fix it, and neither is sufficient alone: **the PATH must
+be the right kind of location** (an icon tree, not a heads or gene tree), **and
+the name must match the identifying SEGMENT** — strip the known prefix, compare
+whole. Highest-resolution-wins is a good tiebreak *after* that and a disastrous
+one before it, because the junk match is often the biggest file.
+
+⚠️ **Then look at the sheet before you hand it over.** These three survived
+filename inspection and died instantly on sight. Render a montage and read it;
+you are checking art, so check it with your eyes.
+
+## 🔴 An icon is not the thing's appearance — check which one you were asked about
+
+**The costliest error available here, because every intermediate step looks
+right.** A def's `iconPath` is a UI symbol. What the thing LOOKS like in game is
+often assembled from somewhere else entirely, and the two are unrelated:
+
+| def | `iconPath` gives you | the appearance comes from |
+|---|---|---|
+| `XenotypeDef` | a symbol in the xenotype panel | its **genes** — head, ears, skin, eyes, fur, each with its own textures |
+| `FactionDef` | the world-map marker | pawn kinds and their apparel |
+| `ThingDef` | usually the real thing | `graphicData`, which may differ per stuff or per rotation |
+
+⇒ A xenotype with **no icon at all renders perfectly**, because none of its
+appearance was ever in the icon. Reporting "no art" for such a species is not a
+small overstatement; it invites someone to delete content that was never broken.
+
+**Before auditing art, say out loud which question you are answering** — *does
+this have a UI icon* or *does this render* — and check that it is the one that
+was asked. They have different answers, different files and different fixes.
+
+**The cheapest disambiguation is to spawn one and look.** A single spawned pawn
+settled this after an entire file-based analysis reached the wrong conclusion
+twice. If a bridge is available, that beats any amount of disk archaeology.
+
 ## Reporting
 
 Distinguish these, because they need different responses:
