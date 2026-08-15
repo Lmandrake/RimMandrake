@@ -88,3 +88,14 @@ described how to do it, and nothing now needs them.
 
 ⚠️ **Kept in `output/` deliberately:** `STALE_FILE_AUDIT.md` (§E is owner decision
 #7, still open) and `REF_AUDIT.md` (18 broken refs still live).
+
+## Quarantined 2026-08-14 — the restructure left these behind (dwell to 2026-08-21)
+
+- `BOARD.md` — render output of `board.py`, deleted in `47743fa`. Nothing regenerates
+  or reads it. Superseded by `status_matrix.json` + `status_server.py`.
+- `V1_CHECKLIST.md` — PROJECT's ordering doc, built from the five retired queues.
+  Zero inbound references. Asserts `V1_SCOPE.md` wins the v1/v2 line, which
+  `V1_CHAIN.md` reverses.
+- `status.py` — parses `V1_SCOPE.md` for a burn-down table. Unreferenced by any
+  doctrine but still executable, so running it reports the pre-expansion scope.
+  Live path is `derive_matrix.py` → `V1.md` → `status_matrix.json`.

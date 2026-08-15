@@ -1,12 +1,15 @@
 # V1_SCOPE.md — what ships in the alpha, and what waits
 
-_Owner's scope decision, 2026-08-13. **PROJECT holds the MVP seat**: PROJECT sets
-the v1/v2 line, the other four own execution. Appeals go to the owner, not to
-PROJECT._
+> 🔴 **SUPERSEDED 2026-08-14 by `infrastructure/state/V1_CHAIN.md`. Do not use this
+> file to decide the v1/v2 line.** The owner expanded v1 to the 8 gate rows **plus
+> the full faction roster plus one playable session**: the 11 dossiers,
+> `pawnGroupMakers` and the ideoligions that this file defers to v2 **are v1**. The
+> seat that set the line here, PROJECT, no longer exists — the seats are DECIDE,
+> BUILD, CHECK, REP. Kept for the reasoning behind the original cut; every scope
+> claim in it is stale.
 
-**Read this before adding anything to a seat queue or `NEXT_RELOAD.md`.** If an item
-is not v1 by the rule below, tag it `[v2]` and move on. *(`TODO.md` is a retired
-pointer stub — work is filed at `infrastructure/state/queue/<SEAT>.md`.)*
+_Owner's scope decision, 2026-08-13. PROJECT held the MVP seat: PROJECT set
+the v1/v2 line, the other four owned execution._
 
 ---
 

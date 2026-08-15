@@ -197,8 +197,9 @@ this?* A rule is durable; a queue is meant to be consumed.
 
 | Path | Holds |
 |---|---|
-| `infrastructure/state/V1_SCOPE.md` | 🔴 What ships in v1 and what waits. **Check it before queueing anything**; not v1 → tag `[v2]`. PROJECT sets the line. |
-| `infrastructure/state/NEXT_RELOAD.md` | The run sheet for the next game load — work that needs the game running. PROJECT assembles it from the five queues. |
+| `infrastructure/state/V1_CHAIN.md` | 🔴 What ships in v1, in the order the engine forces. **Check it before queueing anything.** The authority on the v1/v2 line. |
+| `infrastructure/state/V1_SCOPE.md` | Superseded 2026-08-14 by `V1_CHAIN.md`. Kept for the reasoning behind the original cut; do not read it for scope. |
+| `infrastructure/state/NEXT_RELOAD.md` | The run sheet for the next game load — work that needs the game running. |
 | `infrastructure/state/OWNER_DECISIONS.md` | Every question only the owner can answer, and their rulings. |
 | `infrastructure/state/CLOSED.md` | One line per finished item — the ledger that lets bodies be deleted. |
 | `infrastructure/state/EXPECTED_FAILURES_next_load.md` | Expected-failure signatures, written **before** a load so triage is judgeable. |
