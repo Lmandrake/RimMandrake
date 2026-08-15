@@ -1473,8 +1473,50 @@ state:    ready
 
 ## B66 🔴 Two generator defects, one regenerate — RIDE THIS WINDOW or lose a load
 row:      9
-spec:     Routed by DECIDE 2026-08-15 from CHECK's live findings D-CHK2 and D-CHK3.
-          **Both are one file, one re-run and one redeploy**, so they are ONE item —
+spec:     🔴 **OWNER RULING 2026-08-15, AND IT IS PART (c) OF THIS ITEM — do it FIRST,
+          because it changes what a correct run produces:**
+          *"Remove any genes from our implementation of the xenotypes that aren't
+          supported in our mod at this time. We will investigate what to do later."*
+
+          ⇒ **STRIP the unresolvable gene; BUILD the species.** `pick_species` currently
+          SKIPS a species when any gene fails `_gene_exists` — that is the behaviour being
+          overturned. **No species is ever dropped for a gene again.** Filter `glist`
+          instead of `continue`-ing, and keep `skipped` for causes that are not genes.
+
+          **The complete set, measured by DECIDE at `e4d6040` — 4 genes, 6 species, one
+          bad gene each. Enumerated in full; the skip message's `missing[:3]` truncation
+          is hiding nothing.**
+
+          | gene to strip | species |
+          |---|---|
+          | `Force_Gene_LatentForceUser` | Ithorian · KelDor · Mirialan |
+          | `OuterRim_ForceAdept` | SithMassassi |
+          | `OuterRim_ForceInsensitive` | Rakata |
+          | `guy762_AbilityGene_cloak` | Defel |
+
+          ✅ Measured safe — no species empties and **none loses its head-forcing gene**:
+          Defel 18→17, Ithorian 16→15, KelDor 15→14, Mirialan 11→10, Rakata 7→6,
+          SithMassassi 14→13. (Mirialan and SithMassassi have no head-forcer before OR
+          after — pre-existing, D-CHK2's finding, not caused by this.)
+          ⇒ Roster **57 → 63** of 64 buildable. ⚠️ **Herglic stays out** — "source carries
+          no genes", a different cause, still unmeasured. Do not let the recovery hide it.
+
+          📌 **Emit the strip list as generator OUTPUT** — one printed line per stripped
+          gene per species — so the record is produced by the run and cannot drift from
+          what shipped. That print IS the input to the later investigation.
+          ⛔ **Do NOT widen `donor_xml_files` to index `AdditionalMods` in this item.** I
+          directed that earlier to rescue Defel's cloak gene; the owner's ruling strips it
+          instead, so the widening moved to the later investigation. Real finding, wrong
+          moment.
+          ⛔ **`_guard_species_regression` stays and is not weakened.** This ruling makes
+          the catalogue GROW, so the guard should never fire — if it does, stop.
+
+          ─────────────────────────────────────────────────────────────────────────────
+          (a) and (b) below were routed 2026-08-15 from CHECK's D-CHK2 and D-CHK3.
+          ⚠️ **"One file, one re-run, one redeploy" was DECIDE's framing and it was
+          WRONG** — that premise is what sent a partial run at a mod live in `ModsConfig`.
+          BUILD was right to stop and escalate. Treat (a), (b) and (c) as three changes
+          to one file that share a single redeploy, not as one trivial regenerate.
           do not split them and pay the deploy twice.
           File: `src/RimMandrake/Utils/gen_races_mod.py`.
           Mod:  `src/Jawa/RimMandrake_StarWarsRaces` (`mandrake.starwarsraces`).

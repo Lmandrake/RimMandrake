@@ -1088,3 +1088,35 @@ correctly for now. That's all v2."*
 Everything aimed at making worldgen run correctly on its own goes here: the
 tuning work, the automated-generation harness, and anything downstream of them.
 The owner builds a world by hand and we ship it as a fixed resource.
+
+## The four genes we stripped out of the xenotypes — what were they for?
+
+Owner, 2026-08-15: *"Remove any genes from our implementation of the xenotypes that
+aren't supported in our mod at this time. We will investigate what to do later."*
+This is that "later". Nothing here is scheduled.
+
+`mandrake.starwarsraces` ships six species with a gene removed, because the gene
+resolves in **neither** the live def dump **nor** any of the three donors' XML on disk.
+Stripping was measured safe — no species empties, none loses its head-forcing gene —
+but each lost something the donor thought was part of that species.
+
+| gene | species | what it plausibly did | where it might come from |
+|---|---|---|---|
+| `Force_Gene_LatentForceUser` | Ithorian · KelDor · Mirialan | Force sensitivity | Not in BTD, SWX or Outer Rim — walked all three. Belongs to a Force mod we do not run |
+| `OuterRim_ForceAdept` | SithMassassi | Force sensitivity, stronger | same |
+| `OuterRim_ForceInsensitive` | Rakata | explicit Force *immunity* — arguably the Rakata's defining trait in canon | same |
+| `guy762_AbilityGene_cloak` | Defel | active cloaking, the Defel's whole identity | **On disk**: `SWX/1.5/AdditionalMods/KotORWeapons/Defs/AbilityDefs_defelcloaking.xml` |
+
+**Two different problems wearing one label.**
+- **The three Force genes are a CONTENT question, and the current answer is no.** This is
+  a Jawa scavenger campaign on a desert world; adding a Force mod to satisfy a gene
+  reference is a dependency the campaign never asked for. Reopening this means deciding
+  the Force is in the setting at all — that is a big call, not a gene fix.
+- **`guy762_AbilityGene_cloak` is a TOOLING question and is cheap.** The gene exists; the
+  generator cannot see it because `donor_xml_files` skips `AdditionalMods` and `1.5`.
+  Widening it to **index** those folders (never to copy them — the skip list protects the
+  copier for good reason) would recover it. `Common` and `Common_Old` are worth the same
+  look; D-CHK2 proved they hold real art the migration needed.
+
+⚠️ **Do not fold these two together again.** One needs an owner ruling about the setting;
+the other is twenty lines in a path filter.

@@ -940,6 +940,57 @@ state:    done — **RULING: NEITHER ROUTE. Both are aimed at a defect that is n
           BUILD was right to stop. The four magenta species stay magenta meanwhile, and
           that remains the better trade.
 
+          ━━━ 🔴 **OWNER RULING 2026-08-15 — SUPERSEDES THE ABOVE AND GENERALISES IT** ━━━
+          *"Remove any genes from our implementation of the xenotypes that aren't
+          supported in our mod at this time. We will investigate what to do later."*
+          ⇒ Not just the Force genes, and not just these six species: **ANY gene that
+          does not resolve is stripped, and the species is BUILT WITHOUT IT.** Skipping
+          a species because one gene is missing is no longer correct behaviour — it is
+          the behaviour being overturned. **A species is never dropped for a gene again.**
+
+          **Measured 2026-08-15 at `e4d6040`, the complete set — 4 genes, 6 species,
+          exactly one bad gene each. Nothing is hidden behind the skip message's
+          `missing[:3]` truncation; I enumerated the full lists.**
+
+          | gene to strip | species |
+          |---|---|
+          | `Force_Gene_LatentForceUser` | Ithorian · KelDor · Mirialan |
+          | `OuterRim_ForceAdept` | SithMassassi |
+          | `OuterRim_ForceInsensitive` | Rakata |
+          | `guy762_AbilityGene_cloak` | Defel |
+
+          ✅ **Stripping is SAFE, and I measured that rather than assuming it** — the
+          failure mode would be a species reduced to a bald human:
+
+          ```
+          Defel        18 -> 17 genes   head-forcer 1 -> 1
+          Ithorian     16 -> 15         1 -> 1
+          KelDor       15 -> 14         1 -> 1
+          Mirialan     11 -> 10         0 -> 0   (pre-existing, D-CHK2's class)
+          Rakata        7 ->  6         1 -> 1
+          SithMassassi 14 -> 13         0 -> 0   (pre-existing)
+          ```
+          **No species empties, and not one loses its head-forcing gene.** Mirialan and
+          SithMassassi had none before the strip either — that is D-CHK2's separate
+          finding and this ruling neither causes nor fixes it.
+
+          ⇒ Roster recovers **57 → 63** of the 64 buildable (65 less Miraluka's owner
+          drop). **Herglic stays out** on "source carries no genes", a different and
+          still-unmeasured cause. Do not let the recovery hide it.
+
+          ⇒ ⛔ **DEMOTED BY THIS RULING: widening `donor_xml_files` to index
+          `AdditionalMods`.** I directed it an hour ago to rescue Defel's cloak gene from
+          `SWX/1.5/AdditionalMods/KotORWeapons/`. Under the owner's ruling that gene is
+          **stripped, not rescued**, so the widening is no longer B66 work. It is a real
+          finding and keeps — `Common`/`Common_Old` demonstrably hold content D-CHK2
+          needed — but it belongs to the later investigation. **Do not do it inside B66.**
+
+          📌 **What "investigate later" needs, so file it now rather than re-deriving it:**
+          the four genes above, what each did, and which mod would supply it. Parked in
+          `design/V2_DREAMS.md`. **BUILD: emit the strip list as generator OUTPUT** — a
+          printed line per stripped gene — so the record is produced by the run and never
+          drifts from what shipped.
+
 ## a-paired-manifest-row-hides-a-missing-artifact-c58f24
 row:      doctrine
 spec:     From CHECK (`8adf65a`), routed by REP. C41 was paired with C39 in TWO places —
