@@ -7,14 +7,14 @@
   WHY
   ===
   Star Wars Xenotypes ships exactly two "huge" (Jawa-style) eye genes:
-      guy762_Eyes_HugeYellow   tex Pawn/HeadAttachments/bigeyes/jawaeyes_yellow
+      RimMandrake_Eyes_HugeYellow   tex Pawn/HeadAttachments/bigeyes/jawaeyes_yellow
       guy762_Eyes_HugeRed      tex Pawn/HeadAttachments/bigeyes/jawaeyes_red
   Two colours is thin for a whole colony of Jawa. These add orange and amber so
   the founding crew can be told apart at a glance.
 
   HOW
   ===
-  Cloned from guy762_Eyes_HugeYellow verbatim (Star Wars Xenotypes,
+  Cloned from RimMandrake_Eyes_HugeYellow verbatim (Star Wars Xenotypes,
   1.6/Defs/GeneDefs/GeneDefs_Eyes.xml) and re-tinted with <color> rather than
   new art, so they keep the exact huge-glowing-eye silhouette that reads as a
   Jawa. Everything else is byte-identical to the donor: anchorTag, side,
@@ -33,7 +33,7 @@
   Two changes, both needed. Jawa eyes are supposed to be two lights in the dark,
   not orange paint.
 
-  1. NEW TEXTURE. Textures/JawaEyes/jawaeyes_glow.png, generated from the donor
+  1. NEW TEXTURE. Textures/RimMandrakeSW/Jawa/jawaeyes_glow.png, generated from the donor
      by pushing the core toward white and darkening the rim to 62%. Because the
      gene tints by MULTIPLY, a white core resolves to the full saturated tint
      colour while the rim resolves darker, so the falloff reads as emission.
@@ -48,9 +48,9 @@
      ⚠️ SETTLED 2026-08-11, commit 263e539. ALL THREE JAWA EYE GENES USE
      MoteGlow. DO NOT RE-SPREAD THEM ACROSS SHADERS.
 
-         Jawa_Eyes_HugeOrange   MoteGlow
-         Jawa_Eyes_HugeAmber    MoteGlow
-         guy762_Eyes_HugeYellow MoteGlow   (set in Patches/JawaEyeGlow_Stock.xml)
+         RimMandrake_Jawa_Eyes_HugeOrange   MoteGlow
+         RimMandrake_Jawa_Eyes_HugeAmber    MoteGlow
+         RimMandrake_Eyes_HugeYellow MoteGlow   (set in Patches/JawaEyeGlow_Stock.xml)
 
      These genes DID once carry three different shaders, so one load could score
      them side by side. That load happened. MoteGlowPulseLow renders too dim to
@@ -96,7 +96,7 @@
 <Defs>
 
   <GeneDef ParentName="GeneEyeColor">
-    <defName>Jawa_Eyes_HugeOrange</defName>
+    <defName>RimMandrake_Jawa_Eyes_HugeOrange</defName>
     <label>orange huge eyes</label>
     <labelShortAdj>big-eyed</labelShortAdj>
     <description>Carriers of this gene have huge orange eyes that catch the light in the dark.</description>
@@ -104,7 +104,7 @@
     <displayOrderInCategory>1775</displayOrderInCategory>
     <renderNodeProperties>
       <li Class="PawnRenderNodeProperties_Eye">
-        <texPath>JawaEyes/jawaeyes_glow</texPath>
+        <texPath>RimMandrakeSW/Jawa/jawaeyes_glow</texPath>
         <shaderTypeDef>MoteGlow</shaderTypeDef>
         <color>(255, 130, 20)</color>
         <anchorTag>RightEye</anchorTag>
@@ -120,7 +120,7 @@
         </drawData>
       </li>
       <li Class="PawnRenderNodeProperties_Eye">
-        <texPath>JawaEyes/jawaeyes_glow</texPath>
+        <texPath>RimMandrakeSW/Jawa/jawaeyes_glow</texPath>
         <shaderTypeDef>MoteGlow</shaderTypeDef>
         <color>(255, 130, 20)</color>
         <anchorTag>LeftEye</anchorTag>
@@ -143,7 +143,7 @@
   </GeneDef>
 
   <GeneDef ParentName="GeneEyeColor">
-    <defName>Jawa_Eyes_HugeAmber</defName>
+    <defName>RimMandrake_Jawa_Eyes_HugeAmber</defName>
     <label>amber huge eyes</label>
     <labelShortAdj>big-eyed</labelShortAdj>
     <description>Carriers of this gene have huge amber eyes, deep and slow to blink.</description>
@@ -151,7 +151,7 @@
     <displayOrderInCategory>1776</displayOrderInCategory>
     <renderNodeProperties>
       <li Class="PawnRenderNodeProperties_Eye">
-        <texPath>JawaEyes/jawaeyes_glow</texPath>
+        <texPath>RimMandrakeSW/Jawa/jawaeyes_glow</texPath>
         <shaderTypeDef>MoteGlow</shaderTypeDef>
         <color>(255, 191, 0)</color>
         <anchorTag>RightEye</anchorTag>
@@ -167,7 +167,7 @@
         </drawData>
       </li>
       <li Class="PawnRenderNodeProperties_Eye">
-        <texPath>JawaEyes/jawaeyes_glow</texPath>
+        <texPath>RimMandrakeSW/Jawa/jawaeyes_glow</texPath>
         <shaderTypeDef>MoteGlow</shaderTypeDef>
         <color>(255, 191, 0)</color>
         <anchorTag>LeftEye</anchorTag>

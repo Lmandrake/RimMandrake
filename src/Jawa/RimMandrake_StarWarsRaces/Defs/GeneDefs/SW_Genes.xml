@@ -944,11 +944,11 @@
     <displayOrderInCategory>1774</displayOrderInCategory>
     <renderNodeProperties>
       <li Class="PawnRenderNodeProperties_Eye">
-        <texPath>RimMandrakeSW/SWX/Pawn/HeadAttachments/bigeyes/jawaeyes_yellow</texPath>
+        <texPath>RimMandrakeSW/Jawa/jawaeyes_glow</texPath>
         <anchorTag>RightEye</anchorTag>
         <rotDrawMode>Fresh, Rotting</rotDrawMode>
         <parentTagDef>Head</parentTagDef>
-        <drawSize>0.2</drawSize>
+        <drawSize>0.16</drawSize>
         <side>Right</side>
         <drawData>
           <defaultData>
@@ -956,13 +956,14 @@
             <offset>(0, 0, -0.25)</offset>
           </defaultData>
         </drawData>
+        <shaderTypeDef>MoteGlow</shaderTypeDef>
       </li>
       <li Class="PawnRenderNodeProperties_Eye">
-        <texPath>RimMandrakeSW/SWX/Pawn/HeadAttachments/bigeyes/jawaeyes_yellow</texPath>
+        <texPath>RimMandrakeSW/Jawa/jawaeyes_glow</texPath>
         <anchorTag>LeftEye</anchorTag>
         <rotDrawMode>Fresh, Rotting</rotDrawMode>
         <parentTagDef>Head</parentTagDef>
-        <drawSize>0.2</drawSize>
+        <drawSize>0.16</drawSize>
         <side>Left</side>
         <drawData>
           <defaultData>
@@ -974,6 +975,7 @@
             <flip>false</flip>
           </dataWest>
         </drawData>
+        <shaderTypeDef>MoteGlow</shaderTypeDef>
       </li>
     </renderNodeProperties>
   </GeneDef>

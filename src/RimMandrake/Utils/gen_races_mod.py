@@ -388,6 +388,29 @@ def rewrite(el, defmap, absmap, texidx, home, texhits):
     return el
 
 
+def apply_overrides(bytype, texhits):
+    """Edits we own that used to be PatchOperations against a donor def. Now
+    that the def IS ours the patch has nowhere to apply, so the change is made
+    at the source.
+
+    The Jawa xenotype rolls between three big-eye colours. Two are authored here
+    with the glow sprite; the third is the copied donor gene, whose flat art
+    would make one roll in three look painted on rather than lit.
+    """
+    for e in bytype.get("GeneDef", []):
+        if e.findtext("defName") != PREFIX + "Eyes_HugeYellow":
+            continue
+        for li in e.findall("renderNodeProperties/li"):
+            li.find("texPath").text = TEXNS + "/Jawa/jawaeyes_glow"
+            if li.find("shaderTypeDef") is None:
+                ET.SubElement(li, "shaderTypeDef").text = "MoteGlow"
+            ds = li.find("drawSize")
+            if ds is not None:
+                ds.text = "0.16"
+        return True
+    return False
+
+
 def copy_textures(texhits, texidx, dry=False):
     """Every directional variant, not just the base name -- a body or head that
     ships only `_south` here renders from nothing in three of four facings."""
@@ -445,6 +468,8 @@ CREDIT. The art and the gene design are not ours.
 - Star Wars Xenotypes, by guy762 - Workshop 2915192253. {SWX} genes and their textures are copied from it.
 - Outer Rim - Galactic Diversity, by Neronix17 - Workshop 2980427615. {OR} genes, the head types and the species icons are copied from it. Its 1.6 release routes loading at a folder that no longer holds its loose art; the sprites here are recovered from the folder it left behind, which is why they render again.
 - [BTD] Xenotype REMIX, by beeteedubs - Workshop 3458153185. The species reconciliation is its work. Its hand-curated equivalence table is what decides which donor supplies each species, and the gene lists are inherited from it.
+
+The MandrakeJawa xenotype and its four genes - skittish, hooded face, and the orange and amber big-eye colours with their glow sprite - are authored here rather than copied, and live in this mod because the Jawa are a species like any other.
 
 Nothing generic was copied. Genes that belong to Biotech, Core, Outland Genetics, Integrated Genes, LFS Genes Expanded - Eyes and Big and Small remain theirs; those mods are dependencies and must stay installed.
 
@@ -574,6 +599,8 @@ def main():
         c.set("Abstract", "True")
         bytype.setdefault(c.tag, []).append(c)
 
+    ok = apply_overrides(bytype, texhits)
+
     FILEMAP = {"GeneDef": "Defs/GeneDefs/SW_Genes.xml",
                "HeadTypeDef": "Defs/HeadTypeDefs/SW_HeadTypes.xml",
                "GeneCategoryDef": "Defs/Misc/SW_Categories.xml",
@@ -620,6 +647,7 @@ def main():
         print("     %-40s %d defs" % (rel, n))
     print("== texture paths rewritten %d -> %d png files%s"
           % (len(texhits), n_files, " (dry)" if dry else ""))
+    print("== eye-glow override applied: %s" % ok)
 
 
 def fix_xenotype_icons(texidx, texhits):

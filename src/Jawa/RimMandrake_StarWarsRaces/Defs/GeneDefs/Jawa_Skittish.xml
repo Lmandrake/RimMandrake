@@ -55,7 +55,7 @@
 <Defs>
 
   <GeneDef>
-    <defName>Jawa_Gene_Skittish</defName>
+    <defName>RimMandrake_Jawa_Skittish</defName>
     <label>skittish</label>
     <labelShortAdj>skittish</labelShortAdj>
     <description>Carriers of this gene have an overactive fight-or-flight response. Loud noises, blood and violence rattle them badly, and they feel dread far more keenly than others do — but they stay on their feet. A skittish Jawa does not stand and trade fire; it finds cover, finds numbers, and finds a better angle.</description>

@@ -58,7 +58,7 @@
     <combatPowerFactor>0.85</combatPowerFactor>
     <genes>
       <!-- frame and constitution -->
-      <li>guy762_BodySizeGene_smaller</li>
+      <li>RimMandrake_BodySizeGene_smaller</li>
       <li>StrongStomach</li>
       <li>AG_UnderdevelopedTeeth</li>
       <li>AG_SurvivalInstinct_High</li>
@@ -71,7 +71,7 @@
       <li>MinTemp_SmallIncrease</li>
       <li>MaxTemp_LargeIncrease</li>
       <li>MeleeDamage_Weak</li>
-      <li>Jawa_Gene_Skittish</li>
+      <li>RimMandrake_Jawa_Skittish</li>
       <li>Pain_Extra</li>
       <!-- reproduction: egg-laying, early maturity, short gestation -->
       <li>BS_EarlyMaturity</li>
@@ -82,11 +82,11 @@
       <li>Beard_NoBeardOnly</li>
       <li>Body_Standard</li>
       <li>Skin_InkBlack</li>
-      <li>guy762_Eyes_HugeYellow</li>
-      <li>Jawa_Eyes_HugeOrange</li>
-      <li>Jawa_Eyes_HugeAmber</li>
+      <li>RimMandrake_Eyes_HugeYellow</li>
+      <li>RimMandrake_Jawa_Eyes_HugeOrange</li>
+      <li>RimMandrake_Jawa_Eyes_HugeAmber</li>
       <li>Outland_Blood_Gray</li>
-      <li>Jawa_Head_Plain</li>
+      <li>RimMandrake_Jawa_Head_Plain</li>
       <!-- the ones that carry the fiction -->
       <li>DarkVision</li>
       <li>Outland_FamiliarScent</li>
