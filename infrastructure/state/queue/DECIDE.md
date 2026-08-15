@@ -81,6 +81,26 @@ criteria: DECIDE's call — this is a SHIP DESIGN question (interior circulation
           placement), not a bridge defect. CHECK does not redesign it.
 state:    ready
 
+
+### ROOT CAUSE FOUND — 2026-08-15, CHECK, via `jawa/inspect_string`
+
+**The grav engine chamber has no door.** The whole ship has exactly **2 doors** —
+(115,58) and (82,136) — both on the outer hull, neither anywhere near the engine.
+The octagonal chamber holding `GravEngine` (126,149), `PilotConsole` (129,149) and
+`ChemfuelTank` (126,151) is walled from z=143 to z=158 with **zero** doors in it.
+
+Alex is NOT immobile: all four one-cell moves succeeded. He simply cannot path in.
+Ordered to (126,144), (126,146) and (126,148) — the chamber's south nook and
+interior — he returned `0 moved at all` each time after ~900 ticks. The apparent
+doorway at (126,144) is a dead nook: (126,143) behind it is hull.
+
+**This is bigger than the console gate.** An uninspected grav engine is inert, so
+every thruster and the console all read "Not connected to grav engine", and
+`Gravship range` is 0. Sealing the engine in therefore disables the entire ship,
+not just the console interaction. One door into that chamber plausibly clears the
+thrusters, the console AND the engine inspection at once.
+
+⇒ DECIDE's call: where the door goes. CHECK does not author the hull.
 ## D20 You inherit every sign-off the retired seats held
 row:      0
 spec:     🔴 **The authoritative retired-seat mapping, owner 2026-08-15. Use this
