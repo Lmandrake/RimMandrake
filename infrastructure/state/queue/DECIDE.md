@@ -190,8 +190,8 @@ spec:     `infrastructure/agents_def.md` was dissolved into `POLICY.md` (deleted
           (D20); the rule itself still needs writing into `POLICY.md`.
           Anything about the live game lands on CHECK, per the 2026-08-14 ruling.
 verify:   Each of the five is either written into `POLICY.md`/`CHECK.md` or recorded
-          as repealed in `OWNER_DECISIONS.md`. The citation half is done:
-          `check_refs.py` is clean of `agents_def.md`.
+          as repealed in `OWNER_DECISIONS.md`. The citation half is done — no live
+          doc cites the deleted file and `check_refs.py` agrees.
 criteria: none — offline.
 state:    ready
 
@@ -217,4 +217,34 @@ spec:     Owner ruling 2026-08-15: *"For the races, we likely want to simply
           ⚠️ `MandrakeJawa` is already ours and is the worked example.
 verify:   every species named in `FACTION_SPEC.md` R27 resolves to a def we own.
 criteria: no faction member generates as a donor-pack xenotype.
+state:    ready
+
+## D25 A spec shipped a fabricated XML sample, and the validator called it clean
+row:      9
+spec:     B56 killed five FactionDefs for a day. Root cause is not the XML — BUILD
+          fixed that in `fe6b460`. It is two upstream holes, both still open.
+          **1. `design/Jawa/worldbuilding/FACTION_SPEC.md` R27 still carries the bad
+          sample.** It gives `<li><xenotype>X</xenotype><chance>Y</chance></li>` as
+          literal XML and claims it was "read from the live `Ancients` def". It was
+          not — that shape appears NOWHERE in the game; every vanilla
+          `xenotypeChances` (Biotech Neanderthal/Yttakin, Anomaly mutant and Horaxian
+          kinds) is dictionary-keyed. A false provenance claim is worse than no
+          sample, because it defeats the one habit that would have caught it. Strike
+          or correct the sample, and audit R1-R27 for any other XML block claiming a
+          provenance it does not have.
+          **2. `skills/rimworld-modding/scripts/validate_patch.py` cannot see SHAPE.**
+          BUILD ran it at the mod root and at `Defs/FactionDefs/` and got `0 errors`
+          both times, identically before and after the fix. Its banner is honest —
+          "NOT SCANNED: field names, field types, value ranges" — but a validator
+          that returns 0 errors on a def the engine will discard reports a safety it
+          never checked. Decide whether it gains a shape check (compare each node's
+          child shape against the same field in a shipped def: `<li>` list vs keyed
+          element) or whether its output is re-worded so a clean run stops reading as
+          "this will load".
+          This is DECIDE's because `design/` and `skills/` are yours; the XML was
+          BUILD's and is already closed.
+verify:   R27 no longer shows an unverified sample; and either the validator flags a
+          keyed field given `<li>` children, or its banner says plainly that a clean
+          result does not predict loading.
+criteria: none — offline.
 state:    ready
