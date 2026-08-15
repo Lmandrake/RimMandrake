@@ -1,0 +1,296 @@
+{
+ "category": "buildings",
+ "updated": "2026-08-15T07:19:36-07:00",
+ "cut": [
+  {
+   "defName": "AG_TemporaryBandNode",
+   "label": "temporary band node",
+   "mod": "Alpha Genes",
+   "note": "",
+   "key": "AG_TemporaryBandNode"
+  },
+  {
+   "defName": "AM_ApoptosisMechlinkBooster",
+   "label": "quantum pulse complex (tier 6)",
+   "mod": "Alpha Mechs",
+   "note": "",
+   "key": "AM_ApoptosisMechlinkBooster"
+  },
+  {
+   "defName": "AM_BeamcasterBandNode",
+   "label": "beamcaster band node",
+   "mod": "Alpha Mechs",
+   "note": "",
+   "key": "AM_BeamcasterBandNode"
+  },
+  {
+   "defName": "AM_GreaterBandNode",
+   "label": "voidlink band node",
+   "mod": "Alpha Mechs",
+   "note": "",
+   "key": "AM_GreaterBandNode"
+  },
+  {
+   "defName": "AM_GreaterMechBooster",
+   "label": "persistent mech booster",
+   "mod": "Alpha Mechs",
+   "note": "",
+   "key": "AM_GreaterMechBooster"
+  },
+  {
+   "defName": "AM_GreaterRecharger",
+   "label": "voidlink mech recharger",
+   "mod": "Alpha Mechs",
+   "note": "",
+   "key": "AM_GreaterRecharger"
+  },
+  {
+   "defName": "AM_InfernusMechlinkBooster",
+   "label": "mechband beamcaster (tier 4)",
+   "mod": "Alpha Mechs",
+   "note": "",
+   "key": "AM_InfernusMechlinkBooster"
+  },
+  {
+   "defName": "AM_WarEmpressMechlinkBooster",
+   "label": "voidlink relay (tier 5)",
+   "mod": "Alpha Mechs",
+   "note": "",
+   "key": "AM_WarEmpressMechlinkBooster"
+  },
+  {
+   "defName": "AdvShip_GravReactor",
+   "label": "The Singularity Reactor",
+   "mod": "GravTech",
+   "note": "",
+   "key": "AdvShip_GravReactor"
+  },
+  {
+   "defName": "Artillery_Mortar",
+   "label": "mortar",
+   "mod": "Core",
+   "note": "",
+   "key": "Artillery_Mortar"
+  },
+  {
+   "defName": "BandNode",
+   "label": "band node",
+   "mod": "Biotech",
+   "note": "",
+   "key": "BandNode"
+  },
+  {
+   "defName": "BasicRecharger",
+   "label": "mech recharger",
+   "mod": "Biotech",
+   "note": "",
+   "key": "BasicRecharger"
+  },
+  {
+   "defName": "BurnoutMechlinkBooster",
+   "label": "mechband antenna",
+   "mod": "Biotech",
+   "note": "",
+   "key": "BurnoutMechlinkBooster"
+  },
+  {
+   "defName": "FT_Artillery_Mortar",
+   "label": "mortar",
+   "mod": "Fortifications - Industrial",
+   "note": "",
+   "key": "FT_Artillery_Mortar"
+  },
+  {
+   "defName": "FT_Gun_TurretPrince",
+   "label": "heavy howitzer",
+   "mod": "Fortifications - Industrial",
+   "note": "",
+   "key": "FT_Gun_TurretPrince"
+  },
+  {
+   "defName": "GravForge",
+   "label": "grav forge",
+   "mod": "GravTech",
+   "note": "",
+   "key": "GravForge"
+  },
+  {
+   "defName": "HMC_Wall_Emp_Turret",
+   "label": "Wall Emp Turret",
+   "mod": "[HMC]Wall Furniture",
+   "note": "",
+   "key": "HMC_Wall_Emp_Turret"
+  },
+  {
+   "defName": "HMC_Wall_Emp_Turret_Ship",
+   "label": "Naval Wall Emp Turret",
+   "mod": "[HMC]Wall Furniture",
+   "note": "",
+   "key": "HMC_Wall_Emp_Turret_Ship"
+  },
+  {
+   "defName": "HMC_Wall_FireShotgun_Turret",
+   "label": "Wall Shotgun Turret",
+   "mod": "[HMC]Wall Furniture",
+   "note": "",
+   "key": "HMC_Wall_FireShotgun_Turret"
+  },
+  {
+   "defName": "HMC_Wall_Foam_Turret",
+   "label": "Farmland Guardian",
+   "mod": "[HMC]Wall Furniture",
+   "note": "",
+   "key": "HMC_Wall_Foam_Turret"
+  },
+  {
+   "defName": "HMC_Wall_LightMachinegun_Turret",
+   "label": "Wall Light Machinegun Turret",
+   "mod": "[HMC]Wall Furniture",
+   "note": "",
+   "key": "HMC_Wall_LightMachinegun_Turret"
+  },
+  {
+   "defName": "HMC_Wall_MachineCannon_Turret_Ship",
+   "label": "Naval Wall Machine Cannon Turret",
+   "mod": "[HMC]Wall Furniture",
+   "note": "",
+   "key": "HMC_Wall_MachineCannon_Turret_Ship"
+  },
+  {
+   "defName": "HMC_Wall_Minigun_Turret",
+   "label": "Wall Minigun Turret",
+   "mod": "[HMC]Wall Furniture",
+   "note": "",
+   "key": "HMC_Wall_Minigun_Turret"
+  },
+  {
+   "defName": "HMC_Wall_Minigun_Turret_Ship",
+   "label": "Naval Wall Minigun Turret",
+   "mod": "[HMC]Wall Furniture",
+   "note": "",
+   "key": "HMC_Wall_Minigun_Turret_Ship"
+  },
+  {
+   "defName": "HMC_Wall_Rocket_Turret",
+   "label": "Wall Rocket Turret",
+   "mod": "[HMC]Wall Furniture",
+   "note": "",
+   "key": "HMC_Wall_Rocket_Turret"
+  },
+  {
+   "defName": "LargeMechGestator",
+   "label": "large mech gestator",
+   "mod": "Biotech",
+   "note": "",
+   "key": "LargeMechGestator"
+  },
+  {
+   "defName": "MechBooster",
+   "label": "mech booster",
+   "mod": "Biotech",
+   "note": "",
+   "key": "MechBooster"
+  },
+  {
+   "defName": "MechGestator",
+   "label": "mech gestator",
+   "mod": "Biotech",
+   "note": "",
+   "key": "MechGestator"
+  },
+  {
+   "defName": "StandardRecharger",
+   "label": "large mech recharger",
+   "mod": "Biotech",
+   "note": "",
+   "key": "StandardRecharger"
+  },
+  {
+   "defName": "VFEP_Artillery_FieldGun",
+   "label": "field gun",
+   "mod": "Vanilla Factions Expanded - Pirates",
+   "note": "",
+   "key": "VFEP_Artillery_FieldGun"
+  },
+  {
+   "defName": "VFES_Artillery_ArtilleryGun",
+   "label": "artillery gun",
+   "mod": "Vanilla Furniture Expanded - Security",
+   "note": "",
+   "key": "VFES_Artillery_ArtilleryGun"
+  },
+  {
+   "defName": "VFES_Artillery_Catapult",
+   "label": "catapult",
+   "mod": "Vanilla Furniture Expanded - Security",
+   "note": "",
+   "key": "VFES_Artillery_Catapult"
+  },
+  {
+   "defName": "VGE_GravshipBasicRecharger",
+   "label": "compact mech recharger",
+   "mod": "Vanilla Gravship Expanded - Chapter 1",
+   "note": "",
+   "key": "VGE_GravshipBasicRecharger"
+  },
+  {
+   "defName": "VGE_GravshipStandardRecharger",
+   "label": "compact large mech recharger",
+   "mod": "Vanilla Gravship Expanded - Chapter 1",
+   "note": "",
+   "key": "VGE_GravshipStandardRecharger"
+  },
+  {
+   "defName": "VoidNode",
+   "label": "void node",
+   "mod": "Anomaly",
+   "note": "",
+   "key": "VoidNode"
+  },
+  {
+   "defName": "WallMountedMechBooster",
+   "label": "wall mounted mech booster",
+   "mod": "WallStuff",
+   "note": "",
+   "key": "WallMountedMechBooster"
+  },
+  {
+   "defName": "WarpedObelisk_Abductor",
+   "label": "warped obelisk",
+   "mod": "Anomaly",
+   "note": "",
+   "key": "WarpedObelisk_Abductor"
+  },
+  {
+   "defName": "WarpedObelisk_Duplicator",
+   "label": "corrupted obelisk",
+   "mod": "Anomaly",
+   "note": "",
+   "key": "WarpedObelisk_Duplicator"
+  },
+  {
+   "defName": "largewallcharger",
+   "label": "large wall recharger",
+   "mod": "WallStuff",
+   "note": "",
+   "key": "largewallcharger"
+  },
+  {
+   "defName": "ultrawallcharger",
+   "label": "ultra wall recharger",
+   "mod": "WallStuff",
+   "note": "",
+   "key": "ultrawallcharger"
+  },
+  {
+   "defName": "wallcharger",
+   "label": "wall recharger",
+   "mod": "WallStuff",
+   "note": "",
+   "key": "wallcharger"
+  }
+ ],
+ "kept_count": 4908,
+ "total_count": 4949,
+ "notes": {}
+}

@@ -1,7 +1,14 @@
 {
  "category": "apparel",
- "updated": "2026-08-15T06:35:53-07:00",
+ "updated": "2026-08-15T07:19:36-07:00",
  "cut": [
+  {
+   "defName": "AM_AScompFD",
+   "label": "composite assault dress",
+   "mod": "Ancient urban ruins",
+   "note": "",
+   "key": "AM_AScompFD"
+  },
   {
    "defName": "AM_BulletproofMask",
    "label": "bulletproof mask",
@@ -15,6 +22,41 @@
    "mod": "Ancient urban ruins",
    "note": "",
    "key": "AM_CataphractHelmetFashion"
+  },
+  {
+   "defName": "AM_CataphractHelmetSlaughter",
+   "label": "cataphract helmet \u201cSlaughter\u201d",
+   "mod": "Ancient urban ruins",
+   "note": "",
+   "key": "AM_CataphractHelmetSlaughter"
+  },
+  {
+   "defName": "AM_ClosedOxygenCylinder",
+   "label": "closed oxygen cylinder",
+   "mod": "Ancient urban ruins",
+   "note": "",
+   "key": "AM_ClosedOxygenCylinder"
+  },
+  {
+   "defName": "AM_CompFlakSuit",
+   "label": "composite flak suit",
+   "mod": "Ancient urban ruins",
+   "note": "",
+   "key": "AM_CompFlakSuit"
+  },
+  {
+   "defName": "AM_FullyEnclosedHelmet",
+   "label": "fully enclosed helmet",
+   "mod": "Ancient urban ruins",
+   "note": "",
+   "key": "AM_FullyEnclosedHelmet"
+  },
+  {
+   "defName": "AM_LassoDevilstrand",
+   "label": "Devilstrand Lasso",
+   "mod": "Melee Animation",
+   "note": "",
+   "key": "AM_LassoDevilstrand"
   },
   {
    "defName": "AM_LassoHyperwave",
@@ -36,6 +78,13 @@
    "mod": "Ancient urban ruins",
    "note": "",
    "key": "AM_MK4aDefensive"
+  },
+  {
+   "defName": "AM_NightVisionHelmet",
+   "label": "night vision helmet",
+   "mod": "Ancient urban ruins",
+   "note": "",
+   "key": "AM_NightVisionHelmet"
   },
   {
    "defName": "Apparel_AirwireHeadset",
@@ -101,6 +150,13 @@
    "key": "Apparel_ArmorHelmetMechlordHelmet"
   },
   {
+   "defName": "Apparel_ArmorHelmetRecon",
+   "label": "recon helmet",
+   "mod": "Core",
+   "note": "",
+   "key": "Apparel_ArmorHelmetRecon"
+  },
+  {
    "defName": "Apparel_ArmorHelmetReconPrestige",
    "label": "prestige recon helmet",
    "mod": "Royalty",
@@ -134,6 +190,13 @@
    "mod": "Royalty",
    "note": "",
    "key": "Apparel_ArmorMarinePrestige"
+  },
+  {
+   "defName": "Apparel_ArmorRecon",
+   "label": "recon armor",
+   "mod": "Core",
+   "note": "",
+   "key": "Apparel_ArmorRecon"
   },
   {
    "defName": "Apparel_ArmorReconPrestige",
@@ -288,6 +351,20 @@
    "mod": "Anomaly",
    "note": "",
    "key": "Apparel_PackTurret"
+  },
+  {
+   "defName": "Apparel_PowerArmor",
+   "label": "marine armor",
+   "mod": "Core",
+   "note": "",
+   "key": "Apparel_PowerArmor"
+  },
+  {
+   "defName": "Apparel_PowerArmorHelmet",
+   "label": "marine helmet",
+   "mod": "Core",
+   "note": "",
+   "key": "Apparel_PowerArmorHelmet"
   },
   {
    "defName": "Apparel_PsychicFoilHelmet",
@@ -577,6 +654,13 @@
    "key": "VAEA_Apparel_Quiver"
   },
   {
+   "defName": "VAE_Apparel_Apron",
+   "label": "apron",
+   "mod": "Vanilla Apparel Expanded",
+   "note": "",
+   "key": "VAE_Apparel_Apron"
+  },
+  {
    "defName": "VAE_Apparel_Blouse",
    "label": "blouse",
    "mod": "Vanilla Apparel Expanded",
@@ -596,6 +680,13 @@
    "mod": "Vanilla Apparel Expanded",
    "note": "",
    "key": "VAE_Apparel_CasualTShirt"
+  },
+  {
+   "defName": "VAE_Apparel_ChefsUniform",
+   "label": "chef's uniform",
+   "mod": "Vanilla Apparel Expanded",
+   "note": "",
+   "key": "VAE_Apparel_ChefsUniform"
   },
   {
    "defName": "VAE_Apparel_DoctorScrubs",
@@ -619,6 +710,27 @@
    "key": "VAE_Apparel_Hoodie"
   },
   {
+   "defName": "VAE_Apparel_Jeans",
+   "label": "jeans",
+   "mod": "Vanilla Apparel Expanded",
+   "note": "",
+   "key": "VAE_Apparel_Jeans"
+  },
+  {
+   "defName": "VAE_Apparel_LabCoat",
+   "label": "lab coat",
+   "mod": "Vanilla Apparel Expanded",
+   "note": "",
+   "key": "VAE_Apparel_LabCoat"
+  },
+  {
+   "defName": "VAE_Apparel_MilitaryJacket",
+   "label": "military jacket",
+   "mod": "Vanilla Apparel Expanded",
+   "note": "",
+   "key": "VAE_Apparel_MilitaryJacket"
+  },
+  {
    "defName": "VAE_Apparel_MilitaryUniform",
    "label": "military uniform",
    "mod": "Vanilla Apparel Expanded",
@@ -626,11 +738,25 @@
    "key": "VAE_Apparel_MilitaryUniform"
   },
   {
+   "defName": "VAE_Apparel_Overalls",
+   "label": "overalls",
+   "mod": "Vanilla Apparel Expanded",
+   "note": "",
+   "key": "VAE_Apparel_Overalls"
+  },
+  {
    "defName": "VAE_Apparel_SheriffShirt",
    "label": "sheriff shirt",
    "mod": "Vanilla Apparel Expanded",
    "note": "",
    "key": "VAE_Apparel_SheriffShirt"
+  },
+  {
+   "defName": "VAE_Apparel_ShirtandTie",
+   "label": "shirt and tie",
+   "mod": "Vanilla Apparel Expanded",
+   "note": "",
+   "key": "VAE_Apparel_ShirtandTie"
   },
   {
    "defName": "VAE_Apparel_Shorts",
@@ -645,6 +771,20 @@
    "mod": "Vanilla Apparel Expanded",
    "note": "",
    "key": "VAE_Apparel_Skirt"
+  },
+  {
+   "defName": "VAE_Apparel_SuitJacket",
+   "label": "suit jacket",
+   "mod": "Vanilla Apparel Expanded",
+   "note": "",
+   "key": "VAE_Apparel_SuitJacket"
+  },
+  {
+   "defName": "VAE_Apparel_TankTop",
+   "label": "tank top",
+   "mod": "Vanilla Apparel Expanded",
+   "note": "",
+   "key": "VAE_Apparel_TankTop"
   },
   {
    "defName": "VAE_Headgear_BaseballCap",
@@ -785,36 +925,9 @@
    "mod": "Vanilla Quests Expanded - The Generator",
    "note": "",
    "key": "VQE_Apparel_Parka"
-  },
-  {
-   "defName": "Apparel_ArmorHelmetRecon",
-   "label": "Apparel_ArmorHelmetRecon",
-   "mod": "Core",
-   "note": "",
-   "key": "Apparel_ArmorHelmetRecon"
-  },
-  {
-   "defName": "Apparel_ArmorRecon",
-   "label": "Apparel_ArmorRecon",
-   "mod": "Core",
-   "note": "",
-   "key": "Apparel_ArmorRecon"
-  },
-  {
-   "defName": "Apparel_PowerArmor",
-   "label": "Apparel_PowerArmor",
-   "mod": "Core",
-   "note": "",
-   "key": "Apparel_PowerArmor"
-  },
-  {
-   "defName": "Apparel_PowerArmorHelmet",
-   "label": "Apparel_PowerArmorHelmet",
-   "mod": "Core",
-   "note": "",
-   "key": "Apparel_PowerArmorHelmet"
   }
  ],
- "kept_count": 720,
- "total_count": 834
+ "kept_count": 688,
+ "total_count": 820,
+ "notes": {}
 }

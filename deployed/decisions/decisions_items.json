@@ -1,7 +1,119 @@
 {
  "category": "items",
- "updated": "2026-08-15T07:08:54-07:00",
+ "updated": "2026-08-15T07:19:36-07:00",
  "cut": [
+  {
+   "defName": "AA_EggFlamingoPhoenixFertilized",
+   "label": "flamingo phoenix egg (fert.)",
+   "mod": "Alpha Animals",
+   "note": "",
+   "key": "AA_EggFlamingoPhoenixFertilized"
+  },
+  {
+   "defName": "AEXP_EggAnacondaFertilized",
+   "label": "anaconda egg (fert.)",
+   "mod": "Vanilla Animals Expanded",
+   "note": "",
+   "key": "AEXP_EggAnacondaFertilized"
+  },
+  {
+   "defName": "AEXP_EggAnacondaUnfertilized",
+   "label": "anaconda egg (unfert.)",
+   "mod": "Vanilla Animals Expanded",
+   "note": "",
+   "key": "AEXP_EggAnacondaUnfertilized"
+  },
+  {
+   "defName": "AEXP_EggCrocodileFertilized",
+   "label": "crocodile egg (fert.)",
+   "mod": "Vanilla Animals Expanded",
+   "note": "",
+   "key": "AEXP_EggCrocodileFertilized"
+  },
+  {
+   "defName": "AEXP_EggCrocodileUnfertilized",
+   "label": "crocodile egg (unfert.)",
+   "mod": "Vanilla Animals Expanded",
+   "note": "",
+   "key": "AEXP_EggCrocodileUnfertilized"
+  },
+  {
+   "defName": "AEXP_EggDesertTortoiseFertilized",
+   "label": "desert tortoise egg (fert.)",
+   "mod": "Vanilla Animals Expanded",
+   "note": "",
+   "key": "AEXP_EggDesertTortoiseFertilized"
+  },
+  {
+   "defName": "AEXP_EggDesertTortoiseUnfertilized",
+   "label": "desert tortoise egg (unfert.)",
+   "mod": "Vanilla Animals Expanded",
+   "note": "",
+   "key": "AEXP_EggDesertTortoiseUnfertilized"
+  },
+  {
+   "defName": "AEXP_EggPlatypusFertilized",
+   "label": "platypus egg (fert.)",
+   "mod": "Vanilla Animals Expanded",
+   "note": "",
+   "key": "AEXP_EggPlatypusFertilized"
+  },
+  {
+   "defName": "AEXP_EggPlatypusUnfertilized",
+   "label": "platypus egg (unfert.)",
+   "mod": "Vanilla Animals Expanded",
+   "note": "",
+   "key": "AEXP_EggPlatypusUnfertilized"
+  },
+  {
+   "defName": "AEXP_EggRattlesnakeFertilized",
+   "label": "rattlesnake egg (fert.)",
+   "mod": "Vanilla Animals Expanded",
+   "note": "",
+   "key": "AEXP_EggRattlesnakeFertilized"
+  },
+  {
+   "defName": "AEXP_EggRattlesnakeUnfertilized",
+   "label": "rattlesnake egg (unfert.)",
+   "mod": "Vanilla Animals Expanded",
+   "note": "",
+   "key": "AEXP_EggRattlesnakeUnfertilized"
+  },
+  {
+   "defName": "AEXP_EggWildGooseFertilized",
+   "label": "wild goose egg (fert.)",
+   "mod": "Vanilla Animals Expanded",
+   "note": "",
+   "key": "AEXP_EggWildGooseFertilized"
+  },
+  {
+   "defName": "AEXP_EggWildGooseUnfertilized",
+   "label": "wild goose egg (unfert.)",
+   "mod": "Vanilla Animals Expanded",
+   "note": "",
+   "key": "AEXP_EggWildGooseUnfertilized"
+  },
+  {
+   "defName": "AEXP_Leather_Lion",
+   "label": "lion pelt",
+   "mod": "Vanilla Animals Expanded",
+   "note": "",
+   "key": "AEXP_Leather_Lion"
+  },
+  {
+   "defName": "AEXP_Leather_Platypus",
+   "label": "platypus leather",
+   "mod": "Vanilla Animals Expanded",
+   "note": "",
+   "key": "AEXP_Leather_Platypus"
+  },
+  {
+   "defName": "AEXP_Leather_Wildebeest",
+   "label": "wildebeest pelt",
+   "mod": "Vanilla Animals Expanded",
+   "note": "",
+   "key": "AEXP_Leather_Wildebeest"
+  },
   {
    "defName": "AM_AI2A",
    "label": "AI2A",
@@ -143,6 +255,20 @@
    "key": "AM_TapeMeasure"
   },
   {
+   "defName": "BMT_EggGlarralPenguinFertilized",
+   "label": "glarral penguin egg (fert.)",
+   "mod": "Biomes! Caverns",
+   "note": "",
+   "key": "BMT_EggGlarralPenguinFertilized"
+  },
+  {
+   "defName": "BMT_EggGlarralPenguinUnfertilized",
+   "label": "glarral penguin egg (unfert.)",
+   "mod": "Biomes! Caverns",
+   "note": "",
+   "key": "BMT_EggGlarralPenguinUnfertilized"
+  },
+  {
    "defName": "BS_GiantMinigun_Unique",
    "label": "Unique Warmech Machinegun",
    "mod": "Big and Small - Weapons",
@@ -169,6 +295,510 @@
    "mod": "Big and Small - Weapons",
    "note": "",
    "key": "BS_JotunRocketLauncher_Unique"
+  },
+  {
+   "defName": "BiomesIslands_EggFlamingoFertilized",
+   "label": "rose flamingo egg (fert.)",
+   "mod": "Biomes! Core",
+   "note": "",
+   "key": "BiomesIslands_EggFlamingoFertilized"
+  },
+  {
+   "defName": "BiomesIslands_EggFlamingoUnfertilized",
+   "label": "rose flamingo egg (unfert.)",
+   "mod": "Biomes! Core",
+   "note": "",
+   "key": "BiomesIslands_EggFlamingoUnfertilized"
+  },
+  {
+   "defName": "BiomesIslands_Leather_Flamingo",
+   "label": "flamingo leather",
+   "mod": "Biomes! Core",
+   "note": "",
+   "key": "BiomesIslands_Leather_Flamingo"
+  },
+  {
+   "defName": "ControlSublink",
+   "label": "control sublink (standard)",
+   "mod": "Biotech",
+   "note": "",
+   "key": "ControlSublink"
+  },
+  {
+   "defName": "ControlSublinkHigh",
+   "label": "control sublink (high)",
+   "mod": "Biotech",
+   "note": "",
+   "key": "ControlSublinkHigh"
+  },
+  {
+   "defName": "DA_Leather_SilverMole",
+   "label": "silverfur",
+   "mod": "Dark Ages : Beasts and Monsters",
+   "note": "",
+   "key": "DA_Leather_SilverMole"
+  },
+  {
+   "defName": "ERN_EggChocoboUnfertilized",
+   "label": "chocobo egg (unfert.)",
+   "mod": "Erin's Final Fantasy Animals",
+   "note": "",
+   "key": "ERN_EggChocoboUnfertilized"
+  },
+  {
+   "defName": "EggAlligatorFertilized",
+   "label": "alligator egg (fert.)",
+   "mod": "Odyssey",
+   "note": "",
+   "key": "EggAlligatorFertilized"
+  },
+  {
+   "defName": "EggAlligatorUnfertilized",
+   "label": "alligator egg (unfert.)",
+   "mod": "Odyssey",
+   "note": "",
+   "key": "EggAlligatorUnfertilized"
+  },
+  {
+   "defName": "EggArcticOwlcatFertilized",
+   "label": "arctic owlcat egg (fert.)",
+   "mod": "Dark Ages : Beasts and Monsters",
+   "note": "",
+   "key": "EggArcticOwlcatFertilized"
+  },
+  {
+   "defName": "EggArcticOwlcatUnfertilized",
+   "label": "arctic owlcat egg (unfert.)",
+   "mod": "Dark Ages : Beasts and Monsters",
+   "note": "",
+   "key": "EggArcticOwlcatUnfertilized"
+  },
+  {
+   "defName": "EggCassowaryFertilized",
+   "label": "cassowary egg (fert.)",
+   "mod": "Core",
+   "note": "",
+   "key": "EggCassowaryFertilized"
+  },
+  {
+   "defName": "EggCassowaryUnfertilized",
+   "label": "cassowary egg (unfert.)",
+   "mod": "Core",
+   "note": "",
+   "key": "EggCassowaryUnfertilized"
+  },
+  {
+   "defName": "EggChocoboFertilized",
+   "label": "chocobo egg (fert.)",
+   "mod": "Erin's Final Fantasy Animals",
+   "note": "",
+   "key": "EggChocoboFertilized"
+  },
+  {
+   "defName": "EggCobraFertilized",
+   "label": "cobra egg (fert.)",
+   "mod": "Core",
+   "note": "",
+   "key": "EggCobraFertilized"
+  },
+  {
+   "defName": "EggCobraUnfertilized",
+   "label": "cobra egg (unfert.)",
+   "mod": "Core",
+   "note": "",
+   "key": "EggCobraUnfertilized"
+  },
+  {
+   "defName": "EggEmuFertilized",
+   "label": "emu egg (fert.)",
+   "mod": "Core",
+   "note": "",
+   "key": "EggEmuFertilized"
+  },
+  {
+   "defName": "EggEmuUnfertilized",
+   "label": "emu egg (unfert.)",
+   "mod": "Core",
+   "note": "",
+   "key": "EggEmuUnfertilized"
+  },
+  {
+   "defName": "EggFlamingoFertilized",
+   "label": "flamingo egg (fert.)",
+   "mod": "Odyssey",
+   "note": "",
+   "key": "EggFlamingoFertilized"
+  },
+  {
+   "defName": "EggFlamingoUnfertilized",
+   "label": "flamingo egg (unfert.)",
+   "mod": "Odyssey",
+   "note": "",
+   "key": "EggFlamingoUnfertilized"
+  },
+  {
+   "defName": "EggGiantSnakeFertilized",
+   "label": "giant snake egg (fert.)",
+   "mod": "Giant Snake (Continued)",
+   "note": "",
+   "key": "EggGiantSnakeFertilized"
+  },
+  {
+   "defName": "EggGiantSnakeUnfertilized",
+   "label": "giant snake egg (unfert.)",
+   "mod": "Giant Snake (Continued)",
+   "note": "",
+   "key": "EggGiantSnakeUnfertilized"
+  },
+  {
+   "defName": "EggGigantophisFertilized",
+   "label": "gigantophis egg (fert.)",
+   "mod": "Megafauna",
+   "note": "",
+   "key": "EggGigantophisFertilized"
+  },
+  {
+   "defName": "EggMegalaniaFertilized",
+   "label": "megalania egg (fert.)",
+   "mod": "Megafauna",
+   "note": "",
+   "key": "EggMegalaniaFertilized"
+  },
+  {
+   "defName": "EggMegalochelysFertilized",
+   "label": "megalochelys egg (fert.)",
+   "mod": "Megafauna",
+   "note": "",
+   "key": "EggMegalochelysFertilized"
+  },
+  {
+   "defName": "EggOstrichFertilized",
+   "label": "ostrich egg (fert.)",
+   "mod": "Core",
+   "note": "",
+   "key": "EggOstrichFertilized"
+  },
+  {
+   "defName": "EggOstrichUnfertilized",
+   "label": "ostrich egg (unfert.)",
+   "mod": "Core",
+   "note": "",
+   "key": "EggOstrichUnfertilized"
+  },
+  {
+   "defName": "EggOwlcatFertilized",
+   "label": "forest owlcat egg (fert.)",
+   "mod": "Dark Ages : Beasts and Monsters",
+   "note": "",
+   "key": "EggOwlcatFertilized"
+  },
+  {
+   "defName": "EggOwlcatUnfertilized",
+   "label": "forest owlcat egg (unfert.)",
+   "mod": "Dark Ages : Beasts and Monsters",
+   "note": "",
+   "key": "EggOwlcatUnfertilized"
+  },
+  {
+   "defName": "EggPalaeeudyptesFertilized",
+   "label": "palaeeudyptes egg (fert.)",
+   "mod": "Megafauna",
+   "note": "",
+   "key": "EggPalaeeudyptesFertilized"
+  },
+  {
+   "defName": "EggPenguinFertilized",
+   "label": "penguin egg (fert.)",
+   "mod": "Odyssey",
+   "note": "",
+   "key": "EggPenguinFertilized"
+  },
+  {
+   "defName": "EggPenguinUnFertilized",
+   "label": "penguin egg (unfert.)",
+   "mod": "Beasts of the Rim (Continued)",
+   "note": "",
+   "key": "EggPenguinUnFertilized"
+  },
+  {
+   "defName": "EggPurussaurusFertilized",
+   "label": "purussaurus egg (fert.)",
+   "mod": "Megafauna",
+   "note": "",
+   "key": "EggPurussaurusFertilized"
+  },
+  {
+   "defName": "EggQuinkanaFertilized",
+   "label": "quinkana egg (fert.)",
+   "mod": "Megafauna",
+   "note": "",
+   "key": "EggQuinkanaFertilized"
+  },
+  {
+   "defName": "EggTitanoboaFertilized",
+   "label": "titanoboa egg (fert.)",
+   "mod": "Megafauna",
+   "note": "",
+   "key": "EggTitanoboaFertilized"
+  },
+  {
+   "defName": "EggTortoiseFertilized",
+   "label": "tortoise egg (fert.)",
+   "mod": "Core",
+   "note": "",
+   "key": "EggTortoiseFertilized"
+  },
+  {
+   "defName": "EggTortoiseUnfertilized",
+   "label": "tortoise egg (unfert.)",
+   "mod": "Core",
+   "note": "",
+   "key": "EggTortoiseUnfertilized"
+  },
+  {
+   "defName": "EggWhiteViperFertilized",
+   "label": "white viper egg (fert.)",
+   "mod": "Giant Snake (Continued)",
+   "note": "",
+   "key": "EggWhiteViperFertilized"
+  },
+  {
+   "defName": "EggWhiteViperUnfertilized",
+   "label": "white viper egg (unfert.)",
+   "mod": "Giant Snake (Continued)",
+   "note": "",
+   "key": "EggWhiteViperUnfertilized"
+  },
+  {
+   "defName": "Fur_Carbuncle",
+   "label": "carbuncle fur",
+   "mod": "Erin's Final Fantasy Animals",
+   "note": "",
+   "key": "Fur_Carbuncle"
+  },
+  {
+   "defName": "GR_BearChickenEggFertilized",
+   "label": "bearchicken egg (fert.)",
+   "mod": "Vanilla Genetics Expanded",
+   "note": "",
+   "key": "GR_BearChickenEggFertilized"
+  },
+  {
+   "defName": "GR_BearChickenEggUnfertilized",
+   "label": "bearchicken egg (unfert.)",
+   "mod": "Vanilla Genetics Expanded",
+   "note": "",
+   "key": "GR_BearChickenEggUnfertilized"
+  },
+  {
+   "defName": "GR_Castoreum",
+   "label": "beaverwolf castoreum",
+   "mod": "Vanilla Genetics Expanded",
+   "note": "",
+   "key": "GR_Castoreum"
+  },
+  {
+   "defName": "GR_ChickenbearEggFertilized",
+   "label": "chickenbear egg (fert.)",
+   "mod": "Vanilla Genetics Expanded",
+   "note": "",
+   "key": "GR_ChickenbearEggFertilized"
+  },
+  {
+   "defName": "GR_ChickenbearEggUnfertilized",
+   "label": "chickenbear egg (unfert.)",
+   "mod": "Vanilla Genetics Expanded",
+   "note": "",
+   "key": "GR_ChickenbearEggUnfertilized"
+  },
+  {
+   "defName": "GR_Chickenbearfeathers",
+   "label": "chickenbear feathers",
+   "mod": "Vanilla Genetics Expanded",
+   "note": "",
+   "key": "GR_Chickenbearfeathers"
+  },
+  {
+   "defName": "GR_ChickencatEggFertilized",
+   "label": "chickencat egg (fert.)",
+   "mod": "Vanilla Genetics Expanded",
+   "note": "",
+   "key": "GR_ChickencatEggFertilized"
+  },
+  {
+   "defName": "GR_ChickencatEggUnfertilized",
+   "label": "chickencat egg (unfert.)",
+   "mod": "Vanilla Genetics Expanded",
+   "note": "",
+   "key": "GR_ChickencatEggUnfertilized"
+  },
+  {
+   "defName": "GR_ChickenffaloEggFertilized",
+   "label": "chickenffalo egg (fert.)",
+   "mod": "Vanilla Genetics Expanded",
+   "note": "",
+   "key": "GR_ChickenffaloEggFertilized"
+  },
+  {
+   "defName": "GR_ChickenffaloEggUnfertilized",
+   "label": "chickenffalo egg (unfert.)",
+   "mod": "Vanilla Genetics Expanded",
+   "note": "",
+   "key": "GR_ChickenffaloEggUnfertilized"
+  },
+  {
+   "defName": "GR_ChickenffaloMilk",
+   "label": "chickenffalo milk",
+   "mod": "Vanilla Genetics Expanded",
+   "note": "",
+   "key": "GR_ChickenffaloMilk"
+  },
+  {
+   "defName": "GR_ChickenlodonEggFertilized",
+   "label": "chickenlodon egg (fert.)",
+   "mod": "Vanilla Genetics Expanded",
+   "note": "",
+   "key": "GR_ChickenlodonEggFertilized"
+  },
+  {
+   "defName": "GR_ChickenlodonEggUnfertilized",
+   "label": "chickenlodon egg (unfert.)",
+   "mod": "Vanilla Genetics Expanded",
+   "note": "",
+   "key": "GR_ChickenlodonEggUnfertilized"
+  },
+  {
+   "defName": "GR_ChickenwolfEggFertilized",
+   "label": "chickenwolf egg (fert.)",
+   "mod": "Vanilla Genetics Expanded",
+   "note": "",
+   "key": "GR_ChickenwolfEggFertilized"
+  },
+  {
+   "defName": "GR_ChickenwolfEggUnfertilized",
+   "label": "chickenwolf egg (unfert.)",
+   "mod": "Vanilla Genetics Expanded",
+   "note": "",
+   "key": "GR_ChickenwolfEggUnfertilized"
+  },
+  {
+   "defName": "GR_MuffalobearMilk",
+   "label": "muffalobear milk",
+   "mod": "Vanilla Genetics Expanded",
+   "note": "",
+   "key": "GR_MuffalobearMilk"
+  },
+  {
+   "defName": "GR_MuffalochickenMilk",
+   "label": "muffalochicken milk",
+   "mod": "Vanilla Genetics Expanded",
+   "note": "",
+   "key": "GR_MuffalochickenMilk"
+  },
+  {
+   "defName": "GR_ParagonChickenEggFertilized",
+   "label": "avian paragon egg (fert.)",
+   "mod": "Vanilla Genetics Expanded",
+   "note": "",
+   "key": "GR_ParagonChickenEggFertilized"
+  },
+  {
+   "defName": "GR_ParagonChickenEggUnfertilized",
+   "label": "avian paragon egg (unfert.)",
+   "mod": "Vanilla Genetics Expanded",
+   "note": "",
+   "key": "GR_ParagonChickenEggUnfertilized"
+  },
+  {
+   "defName": "GR_TurkeymanEggFertilized",
+   "label": "turkeyman egg (fert.)",
+   "mod": "Vanilla Genetics Expanded",
+   "note": "",
+   "key": "GR_TurkeymanEggFertilized"
+  },
+  {
+   "defName": "GR_TurkeymanEggUnfertilized",
+   "label": "turkeyman egg (unfert.)",
+   "mod": "Vanilla Genetics Expanded",
+   "note": "",
+   "key": "GR_TurkeymanEggUnfertilized"
+  },
+  {
+   "defName": "GR_WolfchickenEggFertilized",
+   "label": "wolfchicken egg (fert.)",
+   "mod": "Vanilla Genetics Expanded",
+   "note": "",
+   "key": "GR_WolfchickenEggFertilized"
+  },
+  {
+   "defName": "GR_WolfchickenEggUnfertilized",
+   "label": "wolfchicken egg (unfert.)",
+   "mod": "Vanilla Genetics Expanded",
+   "note": "",
+   "key": "GR_WolfchickenEggUnfertilized"
+  },
+  {
+   "defName": "GR_WolffaloMilk",
+   "label": "hairy milk",
+   "mod": "Vanilla Genetics Expanded",
+   "note": "",
+   "key": "GR_WolffaloMilk"
+  },
+  {
+   "defName": "GigantophisEggFertilized",
+   "label": "Gigantophis egg (fert.)",
+   "mod": "Jurassic Rimworld - Dinosaurs Only (Continued)",
+   "note": "",
+   "key": "GigantophisEggFertilized"
+  },
+  {
+   "defName": "GigantophisEggUnFertilized",
+   "label": "Gigantophis egg (unfert.)",
+   "mod": "Jurassic Rimworld - Dinosaurs Only (Continued)",
+   "note": "",
+   "key": "GigantophisEggUnFertilized"
+  },
+  {
+   "defName": "GoldenCube",
+   "label": "golden cube",
+   "mod": "Anomaly",
+   "note": "",
+   "key": "GoldenCube"
+  },
+  {
+   "defName": "Grimstone_EmperorVulture_EggFertilized",
+   "label": "emperor vulture egg (fert.)",
+   "mod": "Grimstone : Beasts",
+   "note": "",
+   "key": "Grimstone_EmperorVulture_EggFertilized"
+  },
+  {
+   "defName": "Grimstone_EmperorVulture_EggUnfertilized",
+   "label": "emperor vulture egg (unfert.)",
+   "mod": "Grimstone : Beasts",
+   "note": "",
+   "key": "Grimstone_EmperorVulture_EggUnfertilized"
+  },
+  {
+   "defName": "Grimstone_Griffar_EggFertilized",
+   "label": "griffar egg (fert.)",
+   "mod": "Grimstone : Beasts",
+   "note": "",
+   "key": "Grimstone_Griffar_EggFertilized"
+  },
+  {
+   "defName": "Grimstone_Griffar_EggUnfertilized",
+   "label": "griffar egg (unfert.)",
+   "mod": "Grimstone : Beasts",
+   "note": "",
+   "key": "Grimstone_Griffar_EggUnfertilized"
+  },
+  {
+   "defName": "Grimstone_Leather_Griffar",
+   "label": "griffar leather",
+   "mod": "Grimstone : Beasts",
+   "note": "",
+   "key": "Grimstone_Leather_Griffar"
   },
   {
    "defName": "IronScruff_LeatherGerm",
@@ -864,6 +1494,13 @@
    "key": "Isekai_VillainsMask"
   },
   {
+   "defName": "JosephoartigasiaWool",
+   "label": "josephoartigasia wool",
+   "mod": "Megafauna",
+   "note": "",
+   "key": "JosephoartigasiaWool"
+  },
+  {
    "defName": "LEGO_GiantRockExcavator_Accomplish",
    "label": "LEGO giant rock excavator",
    "mod": "Ancient urban ruins",
@@ -899,6 +1536,188 @@
    "key": "LEGO_Palace_Accomplish"
   },
   {
+   "defName": "Leather_AlligatorMan",
+   "label": "alligatorman skin",
+   "mod": "Beasts of the Rim (Continued)",
+   "note": "",
+   "key": "Leather_AlligatorMan"
+  },
+  {
+   "defName": "Leather_Armadillo",
+   "label": "armadillo leather",
+   "mod": "Odyssey",
+   "note": "",
+   "key": "Leather_Armadillo"
+  },
+  {
+   "defName": "Leather_BlackBear",
+   "label": "black bear leather",
+   "mod": "Beasts of the Rim (Continued)",
+   "note": "",
+   "key": "Leather_BlackBear"
+  },
+  {
+   "defName": "Leather_BlackBearMan",
+   "label": "black bear man leather",
+   "mod": "Beasts of the Rim (Continued)",
+   "note": "",
+   "key": "Leather_BlackBearMan"
+  },
+  {
+   "defName": "Leather_Hippo",
+   "label": "hippo leather",
+   "mod": "Odyssey",
+   "note": "",
+   "key": "Leather_Hippo"
+  },
+  {
+   "defName": "Leather_Mandrill",
+   "label": "mandrill leather",
+   "mod": "Beasts of the Rim (Continued)",
+   "note": "",
+   "key": "Leather_Mandrill"
+  },
+  {
+   "defName": "Leather_MandrillMan",
+   "label": "mandrill man leather",
+   "mod": "Beasts of the Rim (Continued)",
+   "note": "",
+   "key": "Leather_MandrillMan"
+  },
+  {
+   "defName": "Leather_Neanderthal",
+   "label": "neanderthal leather",
+   "mod": "Beasts of the Rim (Continued)",
+   "note": "",
+   "key": "Leather_Neanderthal"
+  },
+  {
+   "defName": "Leather_Penguin",
+   "label": "penguin leather",
+   "mod": "Beasts of the Rim (Continued)",
+   "note": "",
+   "key": "Leather_Penguin"
+  },
+  {
+   "defName": "Leather_Zebra",
+   "label": "zebra leather",
+   "mod": "Beasts of the Rim (Continued)",
+   "note": "",
+   "key": "Leather_Zebra"
+  },
+  {
+   "defName": "MA_DirehorseWool",
+   "label": "direhorse wool",
+   "mod": "Mythic Ages: Megafauna Bestiary",
+   "note": "",
+   "key": "MA_DirehorseWool"
+  },
+  {
+   "defName": "MA_DunbearMeat",
+   "label": "dunbear meat",
+   "mod": "Mythic Ages: Megafauna Bestiary",
+   "note": "",
+   "key": "MA_DunbearMeat"
+  },
+  {
+   "defName": "MA_HarpeagleEggFertilized",
+   "label": "harpeagle egg (fert.)",
+   "mod": "Mythic Ages: Megafauna Bestiary",
+   "note": "",
+   "key": "MA_HarpeagleEggFertilized"
+  },
+  {
+   "defName": "MA_HarpeagleEggUnfertilized",
+   "label": "harpeagle egg (unfert.)",
+   "mod": "Mythic Ages: Megafauna Bestiary",
+   "note": "",
+   "key": "MA_HarpeagleEggUnfertilized"
+  },
+  {
+   "defName": "MA_HarpeagleFeather",
+   "label": "Harpeagle Oily Feather",
+   "mod": "Mythic Ages: Megafauna Bestiary",
+   "note": "",
+   "key": "MA_HarpeagleFeather"
+  },
+  {
+   "defName": "MA_HippoMeat",
+   "label": "furpotamus meat",
+   "mod": "Mythic Ages: Megafauna Bestiary",
+   "note": "",
+   "key": "MA_HippoMeat"
+  },
+  {
+   "defName": "MA_HorseBeef",
+   "label": "horse beef",
+   "mod": "Mythic Ages: Megafauna Bestiary",
+   "note": "",
+   "key": "MA_HorseBeef"
+  },
+  {
+   "defName": "MA_Leather_Direhorse",
+   "label": "direhorse hide",
+   "mod": "Mythic Ages: Megafauna Bestiary",
+   "note": "",
+   "key": "MA_Leather_Direhorse"
+  },
+  {
+   "defName": "MA_Leather_Dunbear",
+   "label": "dunbear hide",
+   "mod": "Mythic Ages: Megafauna Bestiary",
+   "note": "",
+   "key": "MA_Leather_Dunbear"
+  },
+  {
+   "defName": "MA_Leather_Furpotamus",
+   "label": "furpotamus leather",
+   "mod": "Mythic Ages: Megafauna Bestiary",
+   "note": "",
+   "key": "MA_Leather_Furpotamus"
+  },
+  {
+   "defName": "MA_Leather_Harpeagle",
+   "label": "Harpeagle leather",
+   "mod": "Mythic Ages: Megafauna Bestiary",
+   "note": "",
+   "key": "MA_Leather_Harpeagle"
+  },
+  {
+   "defName": "MA_Leather_Scarodon",
+   "label": "scarodon hide",
+   "mod": "Mythic Ages: Megafauna Bestiary",
+   "note": "",
+   "key": "MA_Leather_Scarodon"
+  },
+  {
+   "defName": "MA_ScarodonMeat",
+   "label": "scarodon meat",
+   "mod": "Mythic Ages: Megafauna Bestiary",
+   "note": "",
+   "key": "MA_ScarodonMeat"
+  },
+  {
+   "defName": "MammothWool",
+   "label": "mammoth wool",
+   "mod": "Megafauna",
+   "note": "",
+   "key": "MammothWool"
+  },
+  {
+   "defName": "Mechlink",
+   "label": "mechlink",
+   "mod": "Biotech",
+   "note": "",
+   "key": "Mechlink"
+  },
+  {
+   "defName": "RG_DinosaursHideHeavy",
+   "label": "heavy dinosaurs hide",
+   "mod": "ReGrowth 2",
+   "note": "",
+   "key": "RG_DinosaursHideHeavy"
+  },
+  {
    "defName": "RG_EggOwlbeastFertilized",
    "label": "owlbeast(fert.)",
    "mod": "ReGrowth: Boiling",
@@ -913,6 +1732,62 @@
    "key": "RG_EggOwlbeastUnfertilized"
   },
   {
+   "defName": "RG_EggWoollyStegosaurusFertilized",
+   "label": "woolly stegosaurus(fert.)",
+   "mod": "ReGrowth 2",
+   "note": "",
+   "key": "RG_EggWoollyStegosaurusFertilized"
+  },
+  {
+   "defName": "RG_EggWoollyStegosaurusUnfertilized",
+   "label": "woolly stegosaurus(unfert.)",
+   "mod": "ReGrowth 2",
+   "note": "",
+   "key": "RG_EggWoollyStegosaurusUnfertilized"
+  },
+  {
+   "defName": "RG_WoolStegosaurus",
+   "label": "woolly stegosaurus wool",
+   "mod": "ReGrowth 2",
+   "note": "",
+   "key": "RG_WoolStegosaurus"
+  },
+  {
+   "defName": "RemoteRepairer",
+   "label": "remote repairer",
+   "mod": "Biotech",
+   "note": "",
+   "key": "RemoteRepairer"
+  },
+  {
+   "defName": "RemoteShielder",
+   "label": "remote shielder",
+   "mod": "Biotech",
+   "note": "",
+   "key": "RemoteShielder"
+  },
+  {
+   "defName": "RevenantSpine",
+   "label": "revenant spine",
+   "mod": "Anomaly",
+   "note": "",
+   "key": "RevenantSpine"
+  },
+  {
+   "defName": "TitanoboaEggFertilized",
+   "label": "Titanoboa egg (fert.)",
+   "mod": "Jurassic Rimworld - Dinosaurs Only (Continued)",
+   "note": "",
+   "key": "TitanoboaEggFertilized"
+  },
+  {
+   "defName": "TitanoboaEggUnFertilized",
+   "label": "Titanoboa egg (unfert.)",
+   "mod": "Jurassic Rimworld - Dinosaurs Only (Continued)",
+   "note": "",
+   "key": "TitanoboaEggUnFertilized"
+  },
+  {
    "defName": "UnfinishedLEGO",
    "label": "unfinished Lego",
    "mod": "Ancient urban ruins",
@@ -925,8 +1800,23 @@
    "mod": "Mythic Ages: Megafauna Bestiary",
    "note": "",
    "key": "Unfinished_VerdantBow"
+  },
+  {
+   "defName": "WoolCamel",
+   "label": "camel wool",
+   "mod": "Vanilla Animals Expanded",
+   "note": "",
+   "key": "WoolCamel"
+  },
+  {
+   "defName": "WoolMuskox",
+   "label": "muskox wool",
+   "mod": "Odyssey",
+   "note": "",
+   "key": "WoolMuskox"
   }
  ],
- "kept_count": 2607,
- "total_count": 2739
+ "kept_count": 2477,
+ "total_count": 2736,
+ "notes": {}
 }

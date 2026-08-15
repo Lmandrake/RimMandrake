@@ -1,6 +1,6 @@
 {
  "category": "weapons",
- "updated": "2026-08-15T04:12:14-07:00",
+ "updated": "2026-08-15T07:19:36-07:00",
  "cut": [
   {
    "defName": "AM_ADAR",
@@ -137,7 +137,7 @@
   },
   {
    "defName": "AM_MK18M",
-   "label": "Mjölnir sniper rifle",
+   "label": "Mj\u00f6lnir sniper rifle",
    "mod": "Ancient urban ruins",
    "note": "",
    "key": "AM_MK18M"
@@ -374,6 +374,13 @@
    "key": "DP_RocketNoEquip"
   },
   {
+   "defName": "ElephantTusk",
+   "label": "elephant tusk",
+   "mod": "Core",
+   "note": "",
+   "key": "ElephantTusk"
+  },
+  {
    "defName": "FT_Artillery_Mortar",
    "label": "mortar",
    "mod": "Fortifications - Industrial",
@@ -402,6 +409,13 @@
    "key": "FT_Gun_QuadMG"
   },
   {
+   "defName": "FT_Gun_Recoilless",
+   "label": "recoilless cannon",
+   "mod": "Fortifications - Industrial",
+   "note": "",
+   "key": "FT_Gun_Recoilless"
+  },
+  {
    "defName": "FT_Gun_TurretAA",
    "label": "anti air cannon",
    "mod": "Fortifications - Industrial",
@@ -416,11 +430,39 @@
    "key": "FT_Gun_TurretAT"
   },
   {
+   "defName": "FT_Gun_TurretEmpero",
+   "label": "field cannon",
+   "mod": "Fortifications - Industrial",
+   "note": "",
+   "key": "FT_Gun_TurretEmpero"
+  },
+  {
+   "defName": "FT_Gun_TurretHexMortar",
+   "label": "multi-barrel mortar",
+   "mod": "Fortifications - Industrial",
+   "note": "",
+   "key": "FT_Gun_TurretHexMortar"
+  },
+  {
    "defName": "FT_Gun_TurretPrince",
    "label": "heavy howitzer",
    "mod": "Fortifications - Industrial",
    "note": "",
    "key": "FT_Gun_TurretPrince"
+  },
+  {
+   "defName": "FT_Gun_TurretQuadAA",
+   "label": "quad anti air cannon",
+   "mod": "Fortifications - Industrial",
+   "note": "",
+   "key": "FT_Gun_TurretQuadAA"
+  },
+  {
+   "defName": "Flamebow",
+   "label": "flamebow",
+   "mod": "Biotech",
+   "note": "",
+   "key": "Flamebow"
   },
   {
    "defName": "Gun_AncientArmoredTurret",
@@ -458,13 +500,6 @@
    "key": "Gun_Autopistol"
   },
   {
-   "defName": "Gun_BlastCharge",
-   "label": "rocket complex",
-   "mod": "Rah's Vanilla Turrets Expansion",
-   "note": "",
-   "key": "Gun_BlastCharge"
-  },
-  {
    "defName": "Gun_BoltActionRifle",
    "label": "bolt-action rifle",
    "mod": "Core",
@@ -493,11 +528,11 @@
    "key": "Gun_ChainShotgun_Unique"
   },
   {
-   "defName": "Gun_GunComplex",
-   "label": "gun complex gun",
-   "mod": "Rah's Vanilla Turrets Expansion",
+   "defName": "Gun_DeadColumn",
+   "label": "deadlife capsule",
+   "mod": "Utility Columns",
    "note": "",
-   "key": "Gun_GunComplex"
+   "key": "Gun_DeadColumn"
   },
   {
    "defName": "Gun_HeavySMG",
@@ -526,6 +561,13 @@
    "mod": "Odyssey",
    "note": "",
    "key": "Gun_HellcatRifle_Unique"
+  },
+  {
+   "defName": "Gun_Incinerator",
+   "label": "incinerator",
+   "mod": "Anomaly",
+   "note": "",
+   "key": "Gun_Incinerator"
   },
   {
    "defName": "Gun_LMG",
@@ -605,13 +647,6 @@
    "key": "Gun_Revolver_Unique"
   },
   {
-   "defName": "Gun_RocketComplex",
-   "label": "rocket complex",
-   "mod": "Rah's Vanilla Turrets Expansion",
-   "note": "",
-   "key": "Gun_RocketComplex"
-  },
-  {
    "defName": "Gun_Scattergun",
    "label": "scattergun",
    "mod": "Odyssey",
@@ -633,20 +668,6 @@
    "key": "Gun_SniperRifle_Unique"
   },
   {
-   "defName": "Gun_TurretPrecision",
-   "label": "precision turret gun",
-   "mod": "Rah's Vanilla Turrets Expansion",
-   "note": "",
-   "key": "Gun_TurretPrecision"
-  },
-  {
-   "defName": "Gun_TurretPrecisionManned",
-   "label": "manned precision turret gun",
-   "mod": "Rah's Vanilla Turrets Expansion",
-   "note": "",
-   "key": "Gun_TurretPrecisionManned"
-  },
-  {
    "defName": "Gun_TurretSniper",
    "label": "uranium slug cannon",
    "mod": "Core",
@@ -661,11 +682,25 @@
    "key": "HBX_Rapier"
   },
   {
-   "defName": "HMC_Gun_Foam",
-   "label": "",
-   "mod": "",
-   "note": "test note",
-   "key": "HMC_Gun_Foam"
+   "defName": "HMC_Gun_TurretFoam",
+   "label": "Foam emitter",
+   "mod": "[HMC]Wall Furniture",
+   "note": "",
+   "key": "HMC_Gun_TurretFoam"
+  },
+  {
+   "defName": "HMC_Wall_Emp_Turret_Top",
+   "label": "Emp Turret",
+   "mod": "[HMC]Wall Furniture",
+   "note": "wall turret, not a weapon",
+   "key": "HMC_Wall_Emp_Turret_Top"
+  },
+  {
+   "defName": "HMC_Wall_Emp_Turret_Top_Ship",
+   "label": "Naval Emp Turret",
+   "mod": "[HMC]Wall Furniture",
+   "note": "",
+   "key": "HMC_Wall_Emp_Turret_Top_Ship"
   },
   {
    "defName": "HMC_Wall_FireShotgun_Turret_Top",
@@ -680,6 +715,34 @@
    "mod": "[HMC]Wall Furniture",
    "note": "",
    "key": "HMC_Wall_LightMachinegun_Turret_Top"
+  },
+  {
+   "defName": "HMC_Wall_MachineCannon_Turret_Top_Ship",
+   "label": "Machine Cannon Turret",
+   "mod": "[HMC]Wall Furniture",
+   "note": "",
+   "key": "HMC_Wall_MachineCannon_Turret_Top_Ship"
+  },
+  {
+   "defName": "HMC_Wall_Minigun_Turret_Top",
+   "label": "Minigun Turret",
+   "mod": "[HMC]Wall Furniture",
+   "note": "",
+   "key": "HMC_Wall_Minigun_Turret_Top"
+  },
+  {
+   "defName": "HMC_Wall_Minigun_Turret_Top_Ship",
+   "label": "Naval Minigun Turret",
+   "mod": "[HMC]Wall Furniture",
+   "note": "",
+   "key": "HMC_Wall_Minigun_Turret_Top_Ship"
+  },
+  {
+   "defName": "HMC_Wall_Rocket_Turret_Top",
+   "label": "Rocket Turret",
+   "mod": "[HMC]Wall Furniture",
+   "note": "",
+   "key": "HMC_Wall_Rocket_Turret_Top"
   },
   {
    "defName": "MA_VerdantBow",
@@ -708,6 +771,13 @@
    "mod": "ModularWeapons 2",
    "note": "",
    "key": "MW2_HuntingRifle"
+  },
+  {
+   "defName": "MastodonTusk",
+   "label": "mastodon tusk",
+   "mod": "Odyssey",
+   "note": "",
+   "key": "MastodonTusk"
   },
   {
    "defName": "MeleeWeapon_Axe",
@@ -983,6 +1053,13 @@
    "key": "VWE_Gun_CombatHandgun_Unique"
   },
   {
+   "defName": "VWE_Gun_Flamethrower",
+   "label": "flamethrower",
+   "mod": "Vanilla Weapons Expanded",
+   "note": "",
+   "key": "VWE_Gun_Flamethrower"
+  },
+  {
    "defName": "VWE_Gun_GrenadeLauncher",
    "label": "grenade launcher",
    "mod": "Vanilla Weapons Expanded",
@@ -1044,6 +1121,48 @@
    "mod": "Vanilla Weapons Expanded",
    "note": "",
    "key": "VWE_Gun_LightSMG_Unique"
+  },
+  {
+   "defName": "VWE_Gun_MakeshiftLMG",
+   "label": "makeshift LMG",
+   "mod": "Vanilla Weapons Expanded - Makeshift",
+   "note": "",
+   "key": "VWE_Gun_MakeshiftLMG"
+  },
+  {
+   "defName": "VWE_Gun_MakeshiftPistol",
+   "label": "makeshift pistol",
+   "mod": "Vanilla Weapons Expanded - Makeshift",
+   "note": "",
+   "key": "VWE_Gun_MakeshiftPistol"
+  },
+  {
+   "defName": "VWE_Gun_MakeshiftRevolver",
+   "label": "makeshift revolver",
+   "mod": "Makeshift: Re-Examined",
+   "note": "",
+   "key": "VWE_Gun_MakeshiftRevolver"
+  },
+  {
+   "defName": "VWE_Gun_MakeshiftRifle",
+   "label": "makeshift rifle",
+   "mod": "Vanilla Weapons Expanded - Makeshift",
+   "note": "",
+   "key": "VWE_Gun_MakeshiftRifle"
+  },
+  {
+   "defName": "VWE_Gun_MakeshiftSMG",
+   "label": "makeshift SMG",
+   "mod": "Vanilla Weapons Expanded - Makeshift",
+   "note": "",
+   "key": "VWE_Gun_MakeshiftSMG"
+  },
+  {
+   "defName": "VWE_Gun_MakeshiftShotgun",
+   "label": "makeshift shotgun",
+   "mod": "Vanilla Weapons Expanded - Makeshift",
+   "note": "",
+   "key": "VWE_Gun_MakeshiftShotgun"
   },
   {
    "defName": "VWE_Gun_MarksmanRifle",
@@ -1116,6 +1235,13 @@
    "key": "VWE_Gun_TrenchGun_Unique"
   },
   {
+   "defName": "VWE_MeleeWeapon_Axe",
+   "label": "hatchet",
+   "mod": "Vanilla Weapons Expanded",
+   "note": "",
+   "key": "VWE_MeleeWeapon_Axe"
+  },
+  {
    "defName": "VWE_SawedOffShotgun",
    "label": "sawn-off shotgun",
    "mod": "Vanilla Weapons Expanded",
@@ -1144,55 +1270,6 @@
    "key": "VWE_TrenchGun"
   },
   {
-   "defName": "Wall_ChargeMinigun_Turret_Gun",
-   "label": "Wall Charge Minigun Turret Gun",
-   "mod": "Wall Mounted Turrets Version 2",
-   "note": "",
-   "key": "Wall_ChargeMinigun_Turret_Gun"
-  },
-  {
-   "defName": "Wall_Charge_Shotgun_Turret_Gun",
-   "label": "Wall Charge Shotgun Turret",
-   "mod": "Wall Mounted Turrets Version 2",
-   "note": "",
-   "key": "Wall_Charge_Shotgun_Turret_Gun"
-  },
-  {
-   "defName": "Wall_Charge_Sniper_Turret_Gun",
-   "label": "Wall Sniper Turret Gun",
-   "mod": "Wall Mounted Turrets Version 2",
-   "note": "",
-   "key": "Wall_Charge_Sniper_Turret_Gun"
-  },
-  {
-   "defName": "Wall_Mini_Turret_Gun",
-   "label": "Wall Mini Turret Gun",
-   "mod": "Wall Mounted Turrets Version 2",
-   "note": "",
-   "key": "Wall_Mini_Turret_Gun"
-  },
-  {
-   "defName": "Wall_Minigun_Turret_Gun",
-   "label": "Wall Mini Turret Gun",
-   "mod": "Wall Mounted Turrets Version 2",
-   "note": "",
-   "key": "Wall_Minigun_Turret_Gun"
-  },
-  {
-   "defName": "Wall_Shotgun_Turret_Gun",
-   "label": "Wall Shotgun Turret Gun",
-   "mod": "Wall Mounted Turrets Version 2",
-   "note": "",
-   "key": "Wall_Shotgun_Turret_Gun"
-  },
-  {
-   "defName": "Wall_Sniper_Turret_Gun",
-   "label": "Wall Sniper Turret Gun",
-   "mod": "Wall Mounted Turrets Version 2",
-   "note": "",
-   "key": "Wall_Sniper_Turret_Gun"
-  },
-  {
    "defName": "m_Khvostov_7G0X",
    "label": "khvostov 7G-0X",
    "mod": "Destiny Exotic Weapons",
@@ -1207,8 +1284,8 @@
    "key": "m_RatKing"
   }
  ],
- "kept_count": 657,
- "total_count": 829,
+ "kept_count": 616,
+ "total_count": 799,
  "notes": {
   "HMC_Wall_Emp_Turret_Top": "wall turret, not a weapon"
  }
