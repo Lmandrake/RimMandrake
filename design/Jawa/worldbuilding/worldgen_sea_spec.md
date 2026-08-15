@@ -148,7 +148,7 @@ raggedness deliberately and against the grain of every blob-growth algorithm.
 tiles: every one must come out with `elevation > 0` **and** a land biome. The
 surface is smaller, not absent.
 
-🔴 **Two cautions, both BRIDGE's, and the second is the one that bites:**
+🔴 **Two cautions, both CHECK's, and the second is the one that bites:**
 1. **n = 4. This is a direction, not a distribution.** The sweep stopped early —
    loadavg 22.58 with the owner playing on the same disk. It resumes on a free
    machine. **Do not author S1 until the rest lands**; do plan it as a partitioner.

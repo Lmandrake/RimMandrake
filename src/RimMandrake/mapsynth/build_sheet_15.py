@@ -20,7 +20,7 @@ asserts it in its selftest, because regenerating this sheet moves five machines
 -- Conveyor Oven, Cannery, Autoloom, Neutro Synth, Medicine Granulator -- and
 silently changes their rotation flags.
 
-**If you regenerate and BRIDGE's selftest goes red, that is the guard working.**
+**If you regenerate and CHECK's selftest goes red, that is the guard working.**
 Re-verify the five non-square machines against the deck plan first. Updating
 SHEET_SHA256 to make the test pass, without doing that, converts a deliberate
 conversation back into the silent divergence the pin exists to prevent -- and it

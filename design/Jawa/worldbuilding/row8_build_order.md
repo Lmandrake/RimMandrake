@@ -466,7 +466,7 @@ question is answerable offline.*
 
 ## 6. 🔴 Not buildable as written — every gap is a decision someone should make deliberately
 
-CREATE's standing question is *does this exist as a real thing the game can load,
+BUILD's standing question is *does this exist as a real thing the game can load,
 and is the spec complete enough to build from without guessing?* Here it is not,
 in four different ways. **None of these block the 21 steps above** — the plan
 builds what it builds — but a reader of the design will not recognise what lands.

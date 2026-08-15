@@ -372,7 +372,7 @@ game**: three Jawa xenotypes, the extender's phantom 500, and Engines Unlimited'
 ## 11. 🔴 THE FLIGHT RULING — CREATE, 2026-08-14. Ships UNBUILT, and that is the design.
 
 `V1_SCOPE.md` handed VISION and CREATE one question: *is flight v1-adjacent or
-v2?* VISION is down; this is CREATE's half, measured offline, and it is
+v2?* VISION is down; this is BUILD's half, measured offline, and it is
 answerable without the game.
 
 **Ruling: the flight CAPABILITY is v1. The flight HARDWARE is not, and must not
