@@ -89,6 +89,42 @@
           <value><settlementGenerationWeight>0.6</settlementGenerationWeight></value>
         </li>
 
+        <!--
+          ================================================================
+          faction_religions_spec.md entry 10 (B54)
+          ================================================================
+          `ideoName` and `ideoDescription` verbatim; they are the only strings
+          the engine renders. ⛔ `hiddenIdeo` MUST STAY UNSET or the
+          description is never shown. Structure meme goes FIRST in
+          `forcedMemes`.
+
+          `Pirate` ships `requiredMemes` + `structureMemeWeights`, which STEER a
+          generated religion. `fixedIdeo` means do not generate, so both are
+          dead weight and are removed.
+        -->
+        <li Class="PatchOperationRemove">
+          <xpath>/Defs/FactionDef[defName="Pirate"]/requiredMemes</xpath>
+        </li>
+        <li Class="PatchOperationRemove">
+          <xpath>/Defs/FactionDef[defName="Pirate"]/structureMemeWeights</xpath>
+        </li>
+        <li Class="PatchOperationAdd">
+          <xpath>/Defs/FactionDef[defName="Pirate"]</xpath>
+          <value>
+            <fixedIdeo>true</fixedIdeo>
+            <requiredPreceptsOnly>false</requiredPreceptsOnly>
+            <ideoName>the Contract</ideoName>
+            <ideoDescription>A contract is the only honest thing two strangers can hold between them. It names one person, one price, one ending, and everyone not written into it walks away untouched. We do not pillage — pillage is confessing you could not find the one you came for. Take the mark or refuse it in the open. Once it is taken it is finished, or you are.</ideoDescription>
+            <forcedMemes>
+              <li>Structure_Ideological</li>
+              <li MayRequire="vanillaexpanded.vmemese">VME_Bushido</li>
+              <li MayRequire="vanillaexpanded.vmemese">VME_Anonymity</li>
+              <li>Individualist</li>
+              <li>Guilty</li>
+            </forcedMemes>
+          </value>
+        </li>
+
       </operations>
     </match>
   </Operation>

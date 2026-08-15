@@ -100,6 +100,46 @@
           <value><settlementGenerationWeight>1.9</settlementGenerationWeight></value>
         </li>
 
+        <!--
+          ================================================================
+          faction_religions_spec.md entry 3 (B54)
+          ================================================================
+          `ideoName` and `ideoDescription` verbatim; they are the only strings
+          the engine renders. ⛔ `hiddenIdeo` MUST STAY UNSET or the
+          description is never shown. Structure meme goes FIRST in
+          `forcedMemes`.
+
+          `OutlanderCivil` ships `classicIdeo true`. It is removed: an authored
+          `fixedIdeo` is not the classic single-ideo mode, and vanilla's only
+          `fixedIdeo` def (HoraxCult) carries neither that nor `disallowedMemes`.
+        -->
+        <li Class="PatchOperationRemove">
+          <xpath>/Defs/FactionDef[defName="OutlanderCivil"]/classicIdeo</xpath>
+        </li>
+        <li Class="PatchOperationAdd">
+          <xpath>/Defs/FactionDef[defName="OutlanderCivil"]</xpath>
+          <value>
+            <fixedIdeo>true</fixedIdeo>
+            <requiredPreceptsOnly>false</requiredPreceptsOnly>
+            <ideoName>the Covenant of Free Wells</ideoName>
+            <ideoDescription>Water was given once and the Giver stepped back, and we have not been spoken to since. That is not abandonment. It is the test. A well belongs to whoever is thirsty standing at it — we have never turned a stranger away, and we have buried our own for it. We do not take up arms and go out. We stand on our own ground, we keep the vaporators turning, and we answer to the silence.</ideoDescription>
+            <forcedMemes>
+              <li>Structure_TheistAbstract</li>
+              <li MayRequire="sarg.alphamemes">AM_WaterPrimacy</li>
+              <li>Individualist</li>
+              <li>Guilty</li>
+              <li>Rancher</li>
+            </forcedMemes>
+            <deityPresets>
+              <li>
+                <nameType><name>the Withdrawn</name><type>That Which Was Given</type></nameType>
+                <gender>None</gender>
+                <iconPath>UI/Deities/DeityGeneric</iconPath>
+              </li>
+            </deityPresets>
+          </value>
+        </li>
+
       </operations>
     </match>
   </Operation>

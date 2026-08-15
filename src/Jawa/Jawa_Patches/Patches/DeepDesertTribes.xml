@@ -134,6 +134,40 @@
           </value>
         </li>
 
+        <!--
+          ================================================================
+          faction_religions_spec.md entry 4 (B54)
+          ================================================================
+          `ideoName` and `ideoDescription` verbatim; they are the only strings
+          the engine renders. ⛔ `hiddenIdeo` MUST STAY UNSET or the
+          description is never shown. Structure meme goes FIRST in
+          `forcedMemes`.
+
+          🔴 `TribeCivil` ships `disallowedMemes` = Supremacist · PainIsVirtue ·
+          Nudism · Raider · Blindsight — and this faith FORCES both `Raider` and
+          `PainIsVirtue`. Forcing a meme the same def disallows is a direct
+          contradiction, so the node is removed rather than edited.
+        -->
+        <li Class="PatchOperationRemove">
+          <xpath>/Defs/FactionDef[defName="TribeCivil"]/disallowedMemes</xpath>
+        </li>
+        <li Class="PatchOperationAdd">
+          <xpath>/Defs/FactionDef[defName="TribeCivil"]</xpath>
+          <value>
+            <fixedIdeo>true</fixedIdeo>
+            <requiredPreceptsOnly>true</requiredPreceptsOnly>
+            <ideoName>the Sun-Debt</ideoName>
+            <ideoDescription>The sun lends and the sand collects. Every mouthful you drink is borrowed, and the interest is paid in walking, in thirst, and in the marks we cut to remember the walking. A machine that pulls water out of the air is a thief standing between us and what we owe — it does not steal the water, it steals the debt. We take back what was drawn. We never take more than was drawn.</ideoDescription>
+            <forcedMemes>
+              <li>Structure_Animist</li>
+              <li>NaturePrimacy</li>
+              <li>Raider</li>
+              <li MayRequire="vanillaquestsexpanded.generator">VQE_Technophobia</li>
+              <li>PainIsVirtue</li>
+            </forcedMemes>
+          </value>
+        </li>
+
       </operations>
     </match>
   </Operation>
