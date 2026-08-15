@@ -126,10 +126,13 @@ OuterRim/Apparel/ImperialUniform/ISBAgent/Apparel
 
 Two consequences, and both bit:
 
-- **Never write extracted textures as `<source>/<m_Name>.png`.** That silently
-  overwrote 41 of 42 garments — the data never reached disk at all. Preserve the
-  object's **container path**, and where none exists, disambiguate collisions
-  rather than letting one win.
+- **Never write extracted textures as `<source>/<m_Name>.png`.** Disambiguating
+  on disk (`Apparel~2.png` … `Apparel~42.png`) keeps the bytes, and that is worth
+  doing, but it does **not** save you: the filename no longer says which garment
+  it is, so the index is still name-keyed and 41 of the 42 are unreachable.
+  Preserve the object's **container path** — `obj.container` on the ObjectReader,
+  NOT on the parsed Texture2D, where it is absent — and carry it in the index as
+  its own column. Where none exists, fall back to `m_Name` and disambiguate.
 - **Never match on the last path segment alone.** Compare texPath against the
   container path **from the right-hand end**, requiring as many segments to agree
   as are available, so `DeathCuirass/Apparel` beats `ISBAgent/Apparel`.
@@ -145,6 +148,15 @@ like a correct render and is wrong.
 
 **Prefer a texture from the def's own mod; fall back cross-source only when there
 is no local match.** Record which source won, so a suspicious cell can be traced.
+
+⚠️ **`resources.assets` has no container paths — every AssetBundle does.**
+Measured: 522/522 on Royalty, 697/697 on one mod bundle, **0/3,469** on the game
+player's own file. So the base game is the one source you can only match by name,
+and a cross-source fallback that demands an agreeing path segment will blank
+every modded def that points at Core art (a modded `PoisonDeer` reusing
+`Things/Pawn/Animal/Deer/DeerMale`). Let a **pathless** candidate through as the
+last resort, ranked below every path match — it costs nothing, because Core ships
+no texture called `Apparel` or `Head`.
 
 🔴 **Never match a def or species name as a SUBSTRING of a filename.** A short
 name thrown at a 77,000-file index matches everywhere and the results look

@@ -21,20 +21,41 @@ one. Relative paths work from the repo root:
 
     python.exe src/RimMandrake/Utils/extract_bundle_textures.py
 
-THE MATCH IS BY NAME, NOT BY PATH
-=================================
-A bundle object carries `m_Name` ("Yautja_Needlegun") and nothing that maps back
-to the def's `texPath` ("Things/Equipment/Ranged/Yautja_Needlegun"). So the
-cache is keyed on the NAME, and the resolver in animal_contact_sheet.py matches
-the LAST segment of texPath against it. Two different mods can therefore collide
-on a name; collisions are disambiguated on disk (`name~2.png`) and the index
-keeps every row, so a caller that cares can pick by sourceKey.
+THE MATCH IS BY CONTAINER PATH, NOT BY NAME
+===========================================
+`m_Name` is NOT unique inside a bundle, and not nearly. Measured across the live
+load set: 60 textures are called `Apparel`, 27 `Head`; the Outer Rim Galactic
+Empire bundle alone ships 42 called `Apparel`, because RimWorld apparel art is
+`<Mod>/Textures/OuterRim/Apparel/<Set>/<Piece>/Apparel.png` — the piece is the
+DIRECTORY and the file is always literally `Apparel`. Matching a def's texPath
+on its last segment therefore made every Imperial garment resolve to the same
+sprite, and (index.csv being sorted by name) usually one from a different mod.
+
+UnityPy 1.25 does expose the missing half: `obj.container` on a Texture2D reads
+back the bundle's own asset path,
+
+    assets/data/neronix17.outerrim.galacticempire/textures/
+        outerrim/apparel/imperialarmy/cuirass/apparel_fat_east.png
+
+which is `texPath` plus a suffix, lowercased, under a boilerplate
+`assets/data/<something>/` prefix. That is enough to match by PATH. It is
+present for every AssetBundle; it is NOT present in the game player's own
+`resources.assets` (all 3,469 Core textures come back with `container=None`),
+so the m_Name fallback stays, and for Core it is safe because the resolver
+prefers a texture from the def's own mod.
 
 OUTPUT
 ======
-    observed/inventory/bundle_textures/<sourceKey>/<m_Name>.png
-    observed/inventory/bundle_textures/index.csv       sourceKey,m_Name,file,width,height
+    observed/inventory/bundle_textures/<sourceKey>/<container path>.png
+    observed/inventory/bundle_textures/index.csv
+        sourceKey,m_Name,container,file,width,height
     observed/inventory/bundle_textures/manifest.json   per-bundle mtime/size + rows
+
+The on-disk layout mirrors the container path (minus the `assets/data/<x>/`
+prefix, purely to stay under Windows' 260-char path limit) so that two textures
+called `Apparel` land in different directories instead of racing for one name.
+`container` is the column the resolver matches on; `m_Name` is kept because it
+is all a `resources.assets` object has.
 
 INCREMENTAL
 ===========
@@ -48,6 +69,7 @@ derived artifact: regenerate it, never commit it.
 
 import argparse
 import csv
+import hashlib
 import json
 import os
 import sys
@@ -57,7 +79,11 @@ sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 from game_paths import MODS_CONFIG, WORKSHOP, LOCAL_MODS, GAME_DATA  # noqa: E402
 from rimworld_loadset import build_load_set  # noqa: E402
 
-VERSION = "1.0"
+VERSION = "2.0"
+
+# Manifest row format. v1 rows are (m_Name, file, w, h) and carry no container,
+# so a v1 record is treated as stale and its bundle re-extracted.
+ROW_FMT = 2
 
 REPO_ROOT = os.path.normpath(os.path.join(
     os.path.dirname(os.path.abspath(__file__)), "..", "..", ".."))
@@ -65,7 +91,12 @@ DEFAULT_OUT = os.path.join(REPO_ROOT, "observed", "inventory", "bundle_textures"
 
 INDEX_NAME = "index.csv"
 MANIFEST_NAME = "manifest.json"
-INDEX_COLS = ["sourceKey", "m_Name", "file", "width", "height"]
+INDEX_COLS = ["sourceKey", "m_Name", "container", "file", "width", "height"]
+
+# Longest absolute path we will write. Windows refuses at 260 unless long paths
+# are enabled machine-wide, and a container path can be deep; anything over this
+# is flattened to <m_Name>__<hash>.png instead of being silently lost.
+MAX_ABS_PATH = 230
 
 # Files that sit next to a bundle and are not one.
 SKIP_EXT = (".manifest", ".meta", ".json", ".txt", ".md", ".xml", ".dll")
@@ -230,15 +261,62 @@ def discover_sources(config, workshop, local, data, quiet=False, inactive=False)
 
 
 # ------------------------------------------------------------------ extraction
+def container_of(obj):
+    """
+    The bundle-internal asset path of one object, or "".
+
+    UnityPy 1.25 hangs this off the ObjectReader (`obj.container`), sourced from
+    the serialized file's container map — NOT off the parsed Texture2D, where
+    `container` and `assetPath` are both absent. Verified on this build: 697/697
+    on an Outer Rim bundle, 522/522 on Royalty, 0/3469 on `resources.assets`.
+    """
+    try:
+        return (getattr(obj, "container", None) or "").replace("\\", "/").strip("/")
+    except Exception:
+        return ""
+
+
+def rel_for(container, name):
+    """
+    Repo-relative-ish file path (no extension) for one texture, from its
+    container path, falling back to `m_Name` when there is none.
+
+    Two deliberate edits to the container path:
+
+      * the trailing `.png` / `.psd` Unity kept is dropped, because the def's
+        texPath is extension-less and the resolver compares the two.
+      * a leading `assets/data/<x>/` is dropped. It is boilerplate — every
+        RimWorld bundle has it, and `<x>` is the packageId for a mod but the
+        expansion name for Royalty/Biotech, so it carries nothing the sourceKey
+        does not. Dropping it buys ~40 characters against Windows' path limit.
+    """
+    p = (container or "").strip("/")
+    if p:
+        stem, dot, ext = p.rpartition(".")
+        if dot and stem and "/" not in ext and len(ext) <= 5:
+            p = stem
+        segs = [sanitize(s) for s in p.split("/") if s not in ("", ".", "..")]
+        if segs and segs[0].lower() == "assets":
+            segs = segs[1:]
+            if len(segs) >= 2 and segs[0].lower() == "data":
+                segs = segs[2:]
+        segs = [s for s in segs if s]
+        if segs:
+            return "/".join(segs)
+    return sanitize(name) or "texture"
+
+
 def extract_bundle(path, out_dir, taken):
     """
-    [(m_Name, filename, w, h)] for every Texture2D in one bundle.
+    [(m_Name, container, relfile, w, h)] for every Texture2D in one bundle.
 
-    `taken` is the set of filenames already written for this sourceKey, so two
-    objects with the same m_Name (common: a bundle carries both a texture and
-    its atlas entry) do not overwrite each other. NEVER raises on one bad
-    object: a bundle is thousands of objects and one undecodable sprite must
-    cost one row, not the run.
+    `taken` is the set of relative paths already written for this sourceKey. Two
+    objects can still land on one path — a bundle carrying both a texture and
+    its atlas entry, or two containerless objects sharing an m_Name — and they
+    are disambiguated (`name~2.png`), never overwritten. Nothing is dropped.
+
+    NEVER raises on one bad object: a bundle is thousands of objects and one
+    undecodable sprite must cost one row, not the run.
     """
     import UnityPy
 
@@ -248,9 +326,10 @@ def extract_bundle(path, out_dir, taken):
         if obj.type.name != "Texture2D":
             continue
         try:
+            container = container_of(obj)
             data = obj.read()
             name = getattr(data, "m_Name", "") or getattr(data, "name", "")
-            if not name:
+            if not name and not container:
                 continue
             img = data.image
             if img is None:
@@ -258,14 +337,24 @@ def extract_bundle(path, out_dir, taken):
             w, h = img.size
             if w <= 0 or h <= 0:
                 continue
-            fn = sanitize(name) + ".png"
+            rel = rel_for(container, name)
+            # Long-path guard: flatten rather than lose the texture.
+            if len(os.path.join(out_dir, rel)) + 4 > MAX_ABS_PATH:
+                rel = "%s__%s" % (sanitize(name) or "texture",
+                                  hashlib.md5(container.encode("utf-8",
+                                                               "replace")).hexdigest()[:8])
+            fn = rel + ".png"
             n = 1
             while fn.lower() in taken:
                 n += 1
-                fn = "%s~%d.png" % (sanitize(name), n)
+                fn = "%s~%d.png" % (rel, n)
             taken.add(fn.lower())
-            img.save(os.path.join(out_dir, fn))
-            rows.append((name, fn, w, h))
+            dest = os.path.join(out_dir, *fn.split("/"))
+            d = os.path.dirname(dest)
+            if d:
+                os.makedirs(d, exist_ok=True)
+            img.save(dest)
+            rows.append((name, container, fn, w, h))
         except Exception:
             continue
     return rows
@@ -298,9 +387,9 @@ def write_index(out_dir, man):
     rows = []
     for rec in man.values():
         key = rec["sourceKey"]
-        for name, fn, w, h in rec.get("rows", []):
-            rows.append([key, name, "%s/%s" % (key, fn), w, h])
-    rows.sort(key=lambda r: (r[0].lower(), r[1].lower()))
+        for name, container, fn, w, h in rec.get("rows", []):
+            rows.append([key, name, container, "%s/%s" % (key, fn), w, h])
+    rows.sort(key=lambda r: (r[0].lower(), r[3].lower()))
     with open(os.path.join(out_dir, INDEX_NAME), "w", newline="",
               encoding="utf-8") as fh:
         w = csv.writer(fh)
@@ -363,16 +452,17 @@ def main(argv=None):
                 continue
             rec = man.get(p)
             fresh = (rec and not a.force
+                     and rec.get("fmt") == ROW_FMT
                      and rec.get("size") == st.st_size
                      and int(rec.get("mtime", -1)) == int(st.st_mtime))
             if fresh:
-                for _, fn, _, _ in rec.get("rows", []):
+                for _, _, fn, _, _ in rec.get("rows", []):
                     taken.add(fn.lower())
                 n_tex += len(rec.get("rows", []))
                 continue
             os.makedirs(src_dir, exist_ok=True)
             rows = extract_bundle(p, src_dir, taken)
-            man[p] = {"sourceKey": key, "size": st.st_size,
+            man[p] = {"sourceKey": key, "size": st.st_size, "fmt": ROW_FMT,
                       "mtime": int(st.st_mtime), "rows": rows}
             n_tex += len(rows)
             n_new += len(rows)

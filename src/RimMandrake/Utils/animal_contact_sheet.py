@@ -310,51 +310,134 @@ def build_texture_index(mods):
     return index, files_seen, dirs_seen
 
 
+class BundleIndex(dict):
+    """
+    The bundle multimap, plus one fact about the cache as a whole: does it carry
+    container paths? A dict subclass rather than a sentinel key so `len()` still
+    counts names and callers that only iterate keep working.
+    """
+    has_paths = False
+
+
+def norm_pkg(pid):
+    """
+    packageId as the bundle cache spells it.
+
+    One alias and only one: the cache attributes the game player's own
+    `resources.assets` to `ludeon.rimworld.core` (the folder is `Data/Core/`),
+    while every Core def's packageId is `ludeon.rimworld`. Without this the
+    whole base game loses the own-mod preference below.
+    """
+    p = (pid or "").strip().lower()
+    return "ludeon.rimworld" if p == "ludeon.rimworld.core" else p
+
+
+def _container_segs(container, name):
+    """
+    Lowercased, extension-less path segments for one cached texture.
+
+    `container` is the bundle-internal asset path
+    (`assets/data/<x>/textures/outerrim/apparel/imperialarmy/cuirass/apparel.png`);
+    the boilerplate head is dropped so what remains ends with the def's texPath.
+    A row with no container (every `resources.assets` object) degenerates to a
+    single segment, its m_Name — matchable by name, never by path.
+    """
+    p = (container or "").replace("\\", "/").strip("/").lower()
+    if not p:
+        return (name.lower(),) if name else ()
+    stem, dot, ext = p.rpartition(".")
+    if dot and stem and "/" not in ext and len(ext) <= 5:
+        p = stem
+    segs = [s for s in p.split("/") if s not in ("", ".", "..")]
+    if segs and segs[0] == "assets":
+        segs = segs[1:]
+        if len(segs) >= 2 and segs[0] == "data":
+            segs = segs[2:]
+    return tuple(segs) if segs else ((name.lower(),) if name else ())
+
+
 def load_bundle_index(bundle_dir=None):
     """
-    {lowercased m_Name -> absolute PNG} over the AssetBundle texture cache
-    written by extract_bundle_textures.py. Returns ({}, 0) if there is no cache.
+    {last path segment -> [(sourceKey, parent segments, absolute PNG), ...]} over
+    the AssetBundle texture cache. Returns ({}, 0) if there is no cache.
 
-    🔴 KEYED ON THE NAME, NOT ON A PATH, and that is forced by the format: a
-    Unity bundle object carries only `m_Name` ("Yautja_Needlegun"); the def asks
-    for "Things/Equipment/Ranged/Yautja_Needlegun". Nothing in the bundle maps
-    one to the other, so the last segment of texPath is all we can match on.
+    🔴 THIS IS A MULTIMAP AND IT HAS TO BE. The previous version was
+    `{m_Name -> one file}`, which silently threw away every collision — and
+    m_Name collides constantly, because RimWorld apparel art is named for its
+    DIRECTORY: `OuterRim/Apparel/ImperialArmy/Cuirass/Apparel`,
+    `.../Stormtrooper/DeathCuirass/Apparel`, `.../ImperialUniform/ISBAgent/Apparel`.
+    60 cached textures are called `Apparel`, 42 of them in one mod. Last row in
+    index.csv won, so every Imperial garment on the apparel sheet rendered the
+    same sprite, from `rimeffectrenegade.core`. Keep every row; let
+    resolve_texture pick by path and by owning mod.
 
-    The consequence to keep in mind: two mods CAN ship the same name, and this
-    index keeps one of them (last in index.csv order wins). That is a real but
-    small risk — a wrong sprite in a preview sheet — and it is strictly better
-    than the blank cell it replaces. The index CSV keeps every row if a caller
-    ever needs to disambiguate by sourceKey.
-
-    ~30% of every category came back `no_loose_png` before this existed. The
-    art was never missing; the base game's expansions and a growing number of
-    mods ship it compiled into bundles that no directory walk can see.
+    ~30% of every category came back `no_loose_png` before this cache existed.
+    The art was never missing; the base game's expansions and a growing number
+    of mods ship it compiled into bundles that no directory walk can see.
     """
     bundle_dir = bundle_dir or DEFAULT_BUNDLE_DIR
     idx_path = os.path.join(bundle_dir, "index.csv")
     if not os.path.isfile(idx_path):
-        return {}, 0
-    index = {}
+        return BundleIndex(), 0
+    index = BundleIndex()
     n = 0
     with open(idx_path, newline="", encoding="utf-8") as fh:
         for row in csv.DictReader(fh):
             name = (row.get("m_Name") or "").strip()
             rel = (row.get("file") or "").strip()
-            if not name or not rel:
+            if not rel:
+                continue
+            segs = _container_segs(row.get("container") or "", name)
+            if not segs:
                 continue
             n += 1
-            index[name.lower()] = os.path.join(bundle_dir, *rel.split("/"))
+            index.setdefault(segs[-1], []).append(
+                (norm_pkg(row.get("sourceKey") or ""), segs[:-1],
+                 os.path.join(bundle_dir, *rel.split("/"))))
+    # Does this cache carry container paths at all? Answered once here rather
+    # than rescanned per def.
+    index.has_paths = any(d for cands in index.values() for _, d, _ in cands)
     return index, n
 
 
-def resolve_texture(tex_path, index, bundle_index=None):
+def trailing_score(want_dirs, have_dirs):
+    """
+    How well a cached texture's directories agree with the def's texPath, judged
+    from the RIGHT-HAND END over as many segments as both sides have.
+
+    Returns the number of agreeing segments, or -1 the moment one disagrees.
+    `.../deathcuirass` vs `.../isbagent` disagrees on the first comparison and is
+    out; a cached path that simply runs deeper (`textures/outerrim/apparel/...`
+    against a texPath of `outerrim/apparel/...`) agrees on all four and wins.
+    Zero means "nothing to compare" — a containerless row, or a bare texPath.
+    """
+    n = min(len(want_dirs), len(have_dirs))
+    for j in range(1, n + 1):
+        if want_dirs[-j] != have_dirs[-j]:
+            return -1
+    return n
+
+
+def resolve_texture(tex_path, index, bundle_index=None, own_pkg=None):
     """(absolute file, suffix used) for a def's texPath, or (None, None).
 
     The loose ladder first — a loose PNG is what the game itself prefers, and it
     is the exact asset at the exact path. Only when that misses do we consult the
-    extracted AssetBundle cache, and the match there is BY NAME, not by path (see
-    load_bundle_index). A bundle hit is reported as `<bundle...>` so a reviewer
-    reading the index CSV can tell the two apart at a glance.
+    extracted AssetBundle cache, where candidates are ranked:
+
+      1. 🔴 a texture from the def's OWN mod beats every texture from any other,
+         whatever their paths. This alone would have prevented the wrong-sprite
+         bug: `rimeffectrenegade.core/Apparel.png` could never have been shown
+         for a `neronix17.outerrim.galacticempire` def.
+      2. then by how many trailing texPath segments agree (trailing_score), so
+         `.../DeathCuirass/Apparel` beats `.../ISBAgent/Apparel`.
+      3. then by suffix order (_south first, the `_m` mask last).
+
+    A texture from ANOTHER mod must earn its place with at least one agreeing
+    directory segment — a bare name match across mods is exactly the collision
+    that caused the bug and is refused. (Unless the cache predates the container
+    column, in which case there is nothing to judge on and the old permissive
+    behaviour stands.)
     """
     if not tex_path:
         return None, None
@@ -364,11 +447,29 @@ def resolve_texture(tex_path, index, bundle_index=None):
         if hit:
             return hit, (suf or "<bare>")
     if bundle_index:
-        name = base.rpartition("/")[2]
-        for suf in BUNDLE_SUFFIXES:
-            hit = bundle_index.get(name + suf)
-            if hit:
-                return hit, ("<bundle%s>" % (":" + suf if suf else ""))
+        parts = base.split("/")
+        stem, want_dirs = parts[-1], tuple(parts[:-1])
+        own = norm_pkg(own_pkg)
+        blind = not getattr(bundle_index, "has_paths", False)
+        best = None
+        for i, suf in enumerate(BUNDLE_SUFFIXES):
+            for src, have_dirs, path in bundle_index.get(stem + suf, ()):
+                is_own = 1 if (own and src == own) else 0
+                score = trailing_score(want_dirs, have_dirs)
+                # Cross-source needs a reason. Either the paths agree, or the
+                # candidate has NO path to judge — which in practice means one
+                # source, `ludeon.rimworld.core`, whose 3,465 `resources.assets`
+                # textures carry no container. That last resort is what lets a
+                # modded PoisonDeer point at Core's `Things/Pawn/Animal/Deer/
+                # DeerMale` and still get a picture. It cannot revive the
+                # apparel bug: Core ships no texture called `Apparel` or `Head`.
+                if not is_own and not blind and score <= 0 and have_dirs:
+                    continue
+                rank = (is_own, score, -i)
+                if best is None or rank > best[0]:
+                    best = (rank, path, suf)
+        if best:
+            return best[1], ("<bundle%s>" % (":" + best[2] if best[2] else ""))
     return None, None
 
 
@@ -398,6 +499,9 @@ def build_pawnkind_map(ds):
         tex = txt(stages[-1], "bodyGraphicData/texPath") if stages else ""
         by_race[race].append({
             "defName": rec.defName, "modName": rec.modName,
+            # The PawnKindDef's own mod, not the race's: it is the mod whose
+            # bundle ships this texPath, and resolve_texture ranks on that.
+            "packageId": rec.packageId,
             "stageCount": len(stages), "stageIndex": (len(stages) - 1) if stages else -1,
             "texPath": tex,
         })
@@ -485,7 +589,9 @@ def plan_cells(rows, by_race, tex_index, bundle_index=None):
         if not kind["texPath"]:
             missing.append(dict(common, reason="no_texPath", detail=""))
             continue
-        path, suf = resolve_texture(kind["texPath"], tex_index, bundle_index)
+        path, suf = resolve_texture(kind["texPath"], tex_index, bundle_index,
+                                    own_pkg=kind.get("packageId")
+                                            or base["packageId"])
         if not path:
             # Reason string deliberately unchanged: the owner's review page and
             # its 172 recorded decisions filter on this exact literal. It now

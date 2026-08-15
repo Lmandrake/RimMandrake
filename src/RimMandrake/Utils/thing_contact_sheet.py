@@ -287,7 +287,7 @@ def build_dir_index(tex_index):
 
 
 def resolve_thing_texture(tex_path, graphic_class, tex_index, dir_index,
-                          bundle_index=None):
+                          bundle_index=None, own_pkg=None):
     """
     (absolute file, how it was found) for a ThingDef's texPath, or (None, None).
 
@@ -322,11 +322,15 @@ def resolve_thing_texture(tex_path, graphic_class, tex_index, dir_index,
     hit, how = by_dir()
     if hit:
         return hit, how
-    # Last: the AssetBundle cache, matched on the LAST segment of texPath
-    # against the object's m_Name. Reported as `<bundle...>`. Tried after the
-    # directory fallback because a loose variant of the right thing beats an
-    # exact-named texture from a mod that merely shares the name.
-    return resolve_texture(tex_path, {}, bundle_index)
+    # Last: the AssetBundle cache, matched on the TRAILING SEGMENTS of texPath
+    # against the object's container path, own mod first. Reported as
+    # `<bundle...>`. Tried after the directory fallback because a loose variant
+    # of the right thing beats a bundled texture that merely matches on path.
+    #
+    # 🔴 own_pkg is load-bearing for apparel: every piece in a set is
+    # `.../<Set>/<Piece>/Apparel`, so 42 Outer Rim garments share one m_Name and
+    # a name-only match handed them all the same sprite from another mod.
+    return resolve_texture(tex_path, {}, bundle_index, own_pkg=own_pkg)
 
 
 # ------------------------------------------------------------------ planning
@@ -355,7 +359,8 @@ def plan_cells(rows, tex_index, dir_index, bundle_index=None):
             missing.append(dict(row, reason=reason))
             continue
         path, how = resolve_thing_texture(tex, row.get("graphicClass"),
-                                          tex_index, dir_index, bundle_index)
+                                          tex_index, dir_index, bundle_index,
+                                          own_pkg=row.get("packageId"))
         if not path:
             # Reason literal deliberately unchanged — the owner's review page and
             # its recorded decisions filter on it. It now means "no loose PNG
