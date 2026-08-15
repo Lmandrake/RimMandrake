@@ -1153,3 +1153,36 @@ cannot be rebuilt without them installed. An authored set can.
 ⚠️ **This is large.** 69 species, 114 genes, 104 head types, 713 textures at today's
 count. It is a v2 project, not a v2 chore, and it should not be started as a fix for any
 single v1 defect. See also the stripped-genes item above, which it would subsume.
+
+## ⭐ The Ortolan — HIGH PRIORITY for v2. And five other species deferred with it.
+
+Owner, 2026-08-15: *"Herglic is now v2. So are Anzati, Muun, Sithz, Togorian. **The
+Ortolan we sorely want them**, but for now they are also in v2. Mark the Ortolan as a
+high priority for v2."*
+
+**The Ortolan is the one to bring back first.** It is deferred for want of time, not
+because it is wanted less — the owner said so in the same breath as deferring it. When
+v2 opens, this is the first species to restore, not one of six equals.
+
+| species | xenotype defName | pawn kind |
+|---|---|---|
+| ⭐ **Ortolan** | `RimMandrakeOrtolan` | `RimMandrakeOrtolan_Kind` |
+| Herglic | `RimMandrakeHerglic` | `RimMandrakeHerglic_Kind` |
+| Anzati | `RimMandrakeAnzati` | `RimMandrakeAnzati_Kind` |
+| Muun | `RimMandrakeMuun` | `RimMandrakeMuun_Kind` |
+| Sithz | `RimMandrakeSithZ` | `RimMandrakeSithZ_Kind` |
+| Togorian | `RimMandrakeTogorian` | `RimMandrakeTogorian_Kind` |
+
+⚠️ **`Sithz` is `SithZ` in the def — capital Z**, and it is NOT
+`RimMandrakeSithMassassi` or `RimMandrakeSithKissaiPureblood`. Those two are different
+species and they stayed in v1.
+
+**What restoring them will need, so the next reader does not re-derive it:** only
+Herglic sits in the generator's 65-species roster; the other five ship from a different
+write path, so they were never a single mechanism to begin with. Herglic additionally
+failed its own build with *"source carries no genes"* — a cause nobody has measured, and
+it is still unmeasured today. Restoring Herglic means diagnosing that first.
+
+This is also the item the full-regeneration entry below would subsume: if the races are
+ever authored rather than migrated, these six come back as authored species and none of
+the above matters.
