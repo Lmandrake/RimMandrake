@@ -413,3 +413,25 @@ verify:   grep the log for `Failed to find any textures at` after the next load;
           `Pawn/`, `OuterRim/`, `UI/` or `Genes/` without the `RimMandrakeSW/` prefix.
 criteria: DECIDE routes; the fix is BUILD's in gen_races_mod.py, then a re-run and redeploy.
 state:    ready
+
+## D-CHK3 All 69 RimMandrake pawn kinds log a config error at every load
+row:      unassigned
+spec:     Filed by CHECK 2026-08-15 from the live log, 7,726 lines, process 07:56:41.
+
+          `Config error in RimMandrake<Species>_Kind: initial resistance range is
+          undefined for humanlike pawn kind.` — **69 of them, one per species.** They
+          are 69 of the log's 93 config errors, i.e. three quarters of all config noise
+          on this stack is ours.
+
+          `initialResistanceRange` is what a prisoner's recruitment resistance is rolled
+          from. Undefined on a humanlike kind means every captured pawn of these species
+          starts from an unset value — so this is not only log noise, it is the prisoner
+          and recruitment path for all 70 species.
+
+          Vanilla humanlike kinds set it (e.g. `<initialResistanceRange>10~20</...>`).
+          The generator emits the kinds without it. One line per kind in
+          `gen_races_mod.py`'s PawnKindDef writer fixes all 69.
+verify:   after a regenerate + redeploy + load: `grep -c "initial resistance range is
+          undefined" Player.log` returns 0.
+criteria: BUILD's fix in the generator, not a hand-edit of 69 defs.
+state:    ready
