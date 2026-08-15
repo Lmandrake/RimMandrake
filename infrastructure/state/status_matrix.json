@@ -1,0 +1,44 @@
+{
+  "rows": [
+    {
+      "name": "Worldgen + sea",
+      "cells": {
+        "DECIDE": {"done": 3, "total": 4, "state": "working"},
+        "BUILD":  {"done": 0, "total": 2, "state": "blocked"},
+        "CHECK":  {"done": 0, "total": 1, "state": "offline"}
+      }
+    },
+    {
+      "name": "Gravship (DEEP)",
+      "cells": {
+        "DECIDE": {"done": 6, "total": 6, "state": "idle"},
+        "BUILD":  {"done": 4, "total": 9, "state": "working"},
+        "CHECK":  {"done": 1, "total": 5, "state": "working"}
+      }
+    },
+    {
+      "name": "Jawa clan + pawns",
+      "cells": {
+        "DECIDE": {"done": 2, "total": 3, "state": "idle"},
+        "BUILD":  {"done": 1, "total": 4, "state": "working"},
+        "CHECK":  {"done": 0, "total": 2, "state": "offline"}
+      }
+    },
+    {
+      "name": "Scavenger economy",
+      "cells": {
+        "DECIDE": {"done": 1, "total": 5, "state": "blocked"},
+        "BUILD":  {"done": 0, "total": 3, "state": "offline"},
+        "CHECK":  {"done": 0, "total": 2, "state": "offline"}
+      }
+    },
+    {
+      "name": "Art + sprites",
+      "cells": {
+        "DECIDE": {"done": 4, "total": 4, "state": "idle"},
+        "BUILD":  {"done": 7, "total": 12, "state": "working"},
+        "CHECK":  {"done": 5, "total": 12, "state": "idle"}
+      }
+    }
+  ]
+}
