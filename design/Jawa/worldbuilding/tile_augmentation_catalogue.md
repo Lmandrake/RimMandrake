@@ -67,7 +67,7 @@ free is defenders from the owning faction** — §6.1.
 
 | proven | not proven / absent |
 |---|---|
-| `jawa/set_terrain_batch` — 421 cells, 14 ms, `failedVerify=0` | **No faction, world or settlement read tool exists** (`traps.md:208`) |
+| `jawa/set_terrain_batch` — 421 cells, 14 ms, `failedVerify=0` | **No faction, world or settlement read tool exists** (as per the trap file) |
 | `jawa/spawn_batch`, `spawn_thing` + `Set Stuff` / `Set Quality` | `spawn_thing` cannot set stuff in one call |
 | `jawa/spawn_pawn` **into a named FactionDef** — `{"kindDef":…,"faction":"OuterRim_BinaryStarRaiders"}` ✅ | ⚠️ never pass `"hostile"` — resolves to Insect/Hive and throws on humanlikes |
 | `apply_architect_designator` — 13×11 furnished room built | Terrain restore ≠ undo; destroyed plants do not return |
@@ -259,7 +259,7 @@ from `map.Tile` and handing it to `PawnGenerator`. **A build, not an experiment*
 new C# the entire catalogue needs.
 
 **Who owns finding out.** **CHECK** owns the *live* half and holds the blocking tool:
-`jawa/list_factions`, V1-CRITICAL and **shutdown-gated** (`V1_SCOPE.md`); `traps.md:208` confirms
+`jawa/list_factions`, V1-CRITICAL and **shutdown-gated** (`V1_SCOPE.md`); as per the trap file,
 **no faction, world or settlement tool** exists among the current 139, so faction data comes from
 `save_game` + a `.rws` grep meanwhile. ⚠️ **Worldgen-time access is a separate question and nobody
 owns it** — it is *not* CHECK's, since the bridge drives a running game and cannot observe a

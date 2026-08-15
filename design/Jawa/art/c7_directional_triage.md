@@ -40,8 +40,8 @@ at `activeMods` positions **556–564**; `guy762.mm.kotorcore` is at **573**, i.
 
 ## 🔴 Two corrections to C7's own method — read before triaging art again
 
-C7 says its entries "were already checked against trap #37", i.e. against the def's
-`graphicClass` and `visibleFacing`. I re-verified every row anyway, and the check
+C7 says its entries were already checked against the missing-direction trap (as per
+the trap file), i.e. against the def's `graphicClass` and `visibleFacing`. I re-verified every row anyway, and the check
 as stated is **not sufficient**. Two engine facts, both read out of
 `Assembly-CSharp.dll` with `src/RimMandrake/Utils/ilprobe/il.py` this session
 rather than taken from memory:

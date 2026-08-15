@@ -154,8 +154,8 @@ DreadnaughtWallA  <color>(176,110,67)</color>   <colorTwo>(191,168,126)</colorTw
 
 Rendered offline by `design/Jawa/art/preview_gravship_rust.py` — the same method as
 `src/Jawa/DesertVehicleReskin/Source/preview_tint.py`, with a **true-in-game-size strip on
-every panel** at both max zoom (64 px/cell) and play zoom (~22 px/cell), per
-`traps-art.md #45`.
+every panel** at both max zoom (64 px/cell) and play zoom (~22 px/cell), as per
+the trap file.
 
 | sheet | shows |
 |---|---|
@@ -453,7 +453,7 @@ offline at all. The generated file therefore gives:
    mods) and which are packed;
 2. a **free footprint proxy** — smallest on-screen dimension is `min(size) x 22 px` at play
    zoom. Below ~44 px the silhouette carries the entire read and interior detail is wasted
-   (`traps-art.md #45`). **1x1 props must be placed in clusters, never singly**: one 22 px
+   (as per the trap file). **1x1 props must be placed in clusters, never singly**: one 22 px
    prop is noise, nine are a debris field;
 3. the list of props **>= 3 cells on the short side**, which are the ones that can carry a
    wreck on their own.
@@ -667,8 +667,8 @@ have to draw four edge cases for, and it cannot carry a one-off symbol at all.
 
 ## 4. Wear and age — what actually reads at RimWorld's sprite scale
 
-The trap this section exists to avoid is `traps-art.md #45`: art correct at source and
-broken at render. A muzzle drawn perfectly at 1934 px collapsed into a flat wall at the
+The trap this section exists to avoid, as per the trap file, is art correct at source
+and broken at render. A muzzle drawn perfectly at 1934 px collapsed into a flat wall at the
 104 px it drew at. **Everything below is stated in terms of the pixels the thing actually
 occupies**, which the preview script now prints on every sheet.
 
@@ -861,7 +861,7 @@ These are places where I would be inventing lore if I proceeded, so I have stopp
 - `BrokenSubstructure` read from source: `C:\Program Files (x86)\Steam\steamapps\workshop\content\294100\3578515873\1.6\Defs\Terrain\Terrain_Foundation.xml` lines 4-35 (`Arcjc007.GravshipCrashes`, ACTIVE).
 - Fiction followed, not invented: `D:\Luke\dev\Rimworld\design\Jawa\worldbuilding\jawa_xenotype_and_religion.md` §2.0b/§2.0c/§2.0d, `D:\Luke\dev\Rimworld\design\Jawa\worldbuilding\ship_distinctive_features.md` §1/§3/§4/§5/§6/§7.
 - Method precedent: `D:\Luke\dev\Rimworld\src\Jawa\DesertVehicleReskin\Source\preview_tint.py` and `...\Patches\DogSledTint_Brown.xml`.
-- Scale discipline: `D:\Luke\dev\Rimworld\skills\rimworld-modding\references\traps-art.md` #45.
+- Scale discipline: as per the trap file (`D:\Luke\dev\Rimworld\skills\rimworld-modding\references\traps-art.md`).
 
 **Values caveat, per CLAUDE.md:** the dump is authoritative for *structure* (does this def
 declare a shader, a colour, a stuff category). Where a specific RGB matters, it has been

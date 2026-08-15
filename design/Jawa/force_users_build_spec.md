@@ -996,7 +996,7 @@ Specific things **not** to copy even as patterns:
 
 ### 🟠 R3 — Abstract-parent inheritance is load-order dependent
 
-`skills/rimworld-modding/references/traps-xml-and-defs.md:52` records the cost:
+As per the trap file, the cost is on record:
 a child `PawnKindDef` whose parent's mod loads *later* does not inherit, and the
 result is `Config error … no race`, `has no combatPower`, then
 `NullReferenceException` inside `PawnKindDef.ConfigErrors` and cascading nulls in
@@ -1028,7 +1028,7 @@ not against the XML.
 
 ### 🟡 R7 — Adding a xenotype changes existing saves incompletely
 
-`traps-xml-and-defs.md:85-87`: editing a `XenotypeDef` never rewrites pawns
+As per the trap file: editing a `XenotypeDef` never rewrites pawns
 already in the save. If a forked xenotype is introduced later, `grep` the `.rws`
 for the old defNames using `<def>NAME</def>` — a bare grep returns 1 on a world
 that does not contain the thing, because of the defName registry.

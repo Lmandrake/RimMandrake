@@ -134,8 +134,8 @@ the six"* — the verified result recorded in `1bcd3b0` / `4c48aee`. The racial
 table 40 lines below still labels **Zabrak, Bothan, Devaronian, Chiss and
 Umbaran** as *"Dry-capable"*, and the gene table at `:1648-1649` explicitly marks
 Chiss and Umbaran **heat-INTOLERANT**. **The correction was written into the prose
-and the data table it corrected was left stale** — same shape as trap 45, in a
-different file. Anyone authoring from the table gets the wrong answer.
+and the data table it corrected was left stale** — the same shape as a failure
+already recorded, as per the trap file, in a different file. Anyone authoring from the table gets the wrong answer.
 
 **D5 — "ten NPC factions". ✅ DISPOSED → twelve.** Global system 9's purpose note
 and the species-coverage section both say twelve, and the Jawa Trade Moot is named

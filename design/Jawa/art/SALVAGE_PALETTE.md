@@ -468,7 +468,7 @@ This is where the salvage economy gets tuned. Sorted by defName; `Graphic_Random
 - **679** usable wreck defs have a loose PNG on disk (workshop mods) and CAN be rendered offline.
 - **297** are packed and cannot. For those the routes are a Unity bundle extraction, or an in-game screenshot over the live bridge — which is cheap and needs no reload.
 
-**Free proxy in the meantime: footprint.** A prop's smallest on-screen dimension at ordinary play zoom is `min(size) x 22 px`. Below ~44 px the silhouette is carrying the entire read and interior detail is wasted (see `traps-art.md #45`). Usable defs at or below that threshold:
+**Free proxy in the meantime: footprint.** A prop's smallest on-screen dimension at ordinary play zoom is `min(size) x 22 px`. Below ~44 px the silhouette is carrying the entire read and interior detail is wasted (as per the trap file). Usable defs at or below that threshold:
 
 - **784 of 976** usable defs are 1x1 or 2x wide, i.e. **44 px or less** on screen. Place these in CLUSTERS, never singly — one 22 px prop is noise, nine are a debris field.
 

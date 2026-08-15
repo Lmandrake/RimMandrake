@@ -295,7 +295,7 @@ chain. Deconstructing cannot. Both deliberate.
 - **A facing checked without the pawn actually facing that way** — the engine
   falls back silently, so you may be looking at `_south` and calling it `_north`.
 - **Art judged at 100 % zoom.** The east sled muzzle passed every offline check
-  and was still wrong at play scale; that is trap #45. **Judge at the zoom you
+  and was still wrong at play scale, as per the trap file. **Judge at the zoom you
   play at.**
 
 ---

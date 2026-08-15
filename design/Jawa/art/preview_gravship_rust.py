@@ -199,8 +199,8 @@ def build_sheet(out_path, title, notes, panels, big=384):
     sheet_w = pad + n * (col_w + pad)
     # The true-size strip is clamped to the panel width. A 32-cell hull overlay is
     # 2048 px at max zoom — bigger than anything this sheet can show — and that
-    # itself is the point: hull overlays are never downsampled, so trap #45 (art
-    # correct at source, broken at render) cannot bite them. A 1-cell wall at
+    # itself is the point: hull overlays are never downsampled, so the art-correct-
+    # at-source, broken-at-render trap (as per the trap file) cannot bite them. A 1-cell wall at
     # 64 px from a 640 px source is downsampled 10x and absolutely can.
     strip_h = min(int(PX_PER_CELL_MAX * max(p["cells"] for p in panels)), big) + 46
     sheet_h = head + capt + big + pad + strip_h + 60
@@ -404,7 +404,7 @@ def decal_sheet():
          "decal's alpha 160 a DARK paint on a rusted deck vanishes.",
          "Paint the sigil LIGHT — bone, limestone, sand. That is the opposite of the hull "
          "palette, and it is what makes the glyph read at all.",
-         "Scale warning (traps-art #45): a 512 px sigil draws at 3 cells = 192 px. Draw the "
+         "Scale warning, as per the trap file: a 512 px sigil draws at 3 cells = 192 px. Draw the "
          "glyph BOLD; fine line-work will not survive."],
         panels)
 

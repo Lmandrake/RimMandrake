@@ -262,8 +262,8 @@ def write_md(rows):
              "is cheap and needs no reload.\n" % (len(onwoff), len(packed)))
     L.append("**Free proxy in the meantime: footprint.** A prop's smallest on-screen dimension "
              "at ordinary play zoom is `min(size) x 22 px`. Below ~44 px the silhouette is "
-             "carrying the entire read and interior detail is wasted (see "
-             "`traps-art.md #45`). Usable defs at or below that threshold:\n")
+             "carrying the entire read and interior detail is wasted (as per "
+             "the trap file). Usable defs at or below that threshold:\n")
     tiny = sorted([r for r in rows if r["verdict"].startswith("USABLE") and r["minPx"] <= 44],
                   key=lambda r: (r["minPx"], r["defName"]))
     L.append("- **%d of %d** usable defs are 1x1 or 2x wide, i.e. **%d px or less** on screen. "

@@ -265,7 +265,7 @@ rb.call("jawa/set_terrain_batch",
 ✅ **Passes when:** `cellsChanged == 25`, `cellsFailedVerify == 0`.
 🔴 **`cellsFailedVerify > 0` here means a floor is present and `SetFoundation` is
 refusing — silently, at the write.** Measured 25/0/25 on bare ground against
-**0/25** with `MetalTile` laid first (`traps.md:225-229`). **Do not proceed to
+**0/25** with `MetalTile` laid first (as per the trap file). **Do not proceed to
 step 11 until this reads 0.** `cellsChanged` is true and useless on its own.
 🔴 `layer must be 'top' or 'under'` here = stale companion → back to step 2.
 
@@ -302,7 +302,7 @@ an exact hull-shaped cover — do not paint the bounding box instead, it sands
 
 🔴 **The order below is the only order that works: foundation → floors → things.**
 A floor is a one-way door — substructure cannot be retrofitted, and the refusal is
-silent (`traps.md:225-229`).
+silent (as per the trap file).
 
 **Step 11 — foundation. ONE call, 4,057 cells, 132 rects.**
 ```python
@@ -392,7 +392,7 @@ rb.call("rimworld/take_screenshot", {})                     # the inspect pane
 🔴 **This is the real test of the whole design.** `GravshipHull` spawns happily on
 bare ground because `GenSpawn` checks no affordance — **a substructure-less ship
 is buildable and is not a gravship, which is worse because everything looks
-right** (`traps.md:229`). Red substructure here with everything else green means
+right** (as per the trap file). Red substructure here with everything else green means
 the settings check at step 4 lied, or the cap (§2) is the constraint that bound.
 
 **Step 19 — the photograph. This is the gate's evidence.**
