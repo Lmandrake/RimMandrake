@@ -819,6 +819,47 @@
      }
     }
    }
+  },
+  {
+   "name": "\u2014",
+   "cells": {
+    "DECIDE": {
+     "done": 0,
+     "total": 1,
+     "state": "idle",
+     "mix": {
+      "closed": 0,
+      "done": 0,
+      "doing": 0,
+      "blocked": 0,
+      "ready": 1
+     }
+    },
+    "BUILD": {
+     "done": 0,
+     "total": 0,
+     "state": "offline",
+     "mix": {
+      "closed": 0,
+      "done": 0,
+      "doing": 0,
+      "blocked": 0,
+      "ready": 0
+     }
+    },
+    "CHECK": {
+     "done": 0,
+     "total": 1,
+     "state": "idle",
+     "mix": {
+      "closed": 0,
+      "done": 0,
+      "doing": 0,
+      "blocked": 0,
+      "ready": 1
+     }
+    }
+   }
   }
  ],
  "blockers": {
@@ -827,10 +868,6 @@
    {
     "label": "unexplained",
     "count": 7
-   },
-   {
-    "label": "needs deploy",
-    "count": 1
    },
    {
     "label": "needs a load",
@@ -863,7 +900,7 @@
   ],
   "per_day": 14.5,
   "closed": 29,
-  "remaining": 69,
+  "remaining": 71,
   "eta_days": 5
  }
 }
