@@ -828,4 +828,29 @@ criteria: ⛔ **NOT MINE TO SET, and this load cannot close it.** Two reasons, b
              not a comparison — and must be reported as one.
           ⇒ What I deliver: the Yayo-off swing frames, captured and handed over. The
           verdict is the owner's, made off the images, after the load.
-state:    ready — collectable unattended, verdict deferred to the owner
+prep:     2026-08-15 CHECK, offline, before the load:
+          · **Weapon defNames are known, do not guess.** `Force_Lightsaber_Custom`
+            (plain), `Force_Lightsaber_Dual`, `Force_Lightsaber_Curved`,
+            `Force_Lightsaber_Crossguard`, `Force_Lightsaber_Shoto`,
+            `Force_Lightsaber_Inquisitor`, plus uniques `Force_Lightsaber_UniqueObi`
+            and `Force_Lightsaber_UniqueAnakin`. Capture the PLAIN one first; add a
+            distinctive silhouette (Dual or Crossguard) only if the first is unclear.
+          · 🔴 **THE EQUIP ROUTE IS UNRESOLVED and it is the risk on this item.**
+            `jawa/spawn_pawn` takes kindDef/x/z/faction/count/xenotype — there is
+            **no weapon parameter**, and none of the 30 companion tools equips a
+            pawn. So the saber must arrive on the pawn's back via its PawnKindDef.
+          · ⚠️ **The dump cannot answer which kind carries one.** `PawnKindDef.json`
+            holds 1706 kinds and `weaponTags` is populated on **ZERO** of them — the
+            field is not exported at all. Absent from the dump is not absent from the
+            game; this is a blind spot, not a finding.
+          ⇒ RUNTIME PROBE, 2 calls, before staging anything: `jawa/spawn_pawn`
+            kindDef=`Jawa_Spawn_SithK` (alternates: `Jawa_Spawn_SithM`,
+            `RimMandrakeSithMassassi_Kind`, `RimMandrakeSithKissaiPureblood_Kind`),
+            then `jawa/list_pawns` / `jawa/inspect_string` to READ BACK what it is
+            holding. If no saber comes with any kind, say so and mark C43
+            **UNCOLLECTABLE this load** — do not photograph an unarmed pawn and
+            call it the test.
+state:    ready — collectable unattended IF the equip route resolves, verdict deferred
+          to the owner. 🔴 REP 2026-08-15 checked the two most recent owner
+          screenshots: neither shows a lightsaber. Assume NO comparison arm exists
+          and report a baseline unless the owner names one.
