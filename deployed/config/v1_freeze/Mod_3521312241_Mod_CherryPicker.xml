@@ -167,6 +167,24 @@
 			<li>ThingDef/AM_CataphractHelmetSlaughter</li>
 			<li>ThingDef/AM_ClosedOxygenCylinder</li>
 			<li>ThingDef/AM_BulletproofMask</li>
+			<li>ThingDef/Armadillo</li>
+			<li>ThingDef/BlackBear</li>
+			<li>ThingDef/Mandrill</li>
+			<li>ThingDef/Penguin</li>
+			<li>ThingDef/Zebra</li>
+			<li>ThingDef/AEXP_Zebra</li>
+			<li>ThingDef/AEXP_BlackBear</li>
+			<li>ThingDef/AEXP_Mandrill</li>
+			<li>ThingDef/DA_ForestOwlcat</li>
+			<li>ThingDef/DA_ArcticOwlcat</li>
+			<li>ThingDef/DA_SilverMole</li>
+			<li>ThingDef/Grimstone_EmperorVulture</li>
+			<li>ThingDef/Grimstone_NorthernLynx</li>
+			<li>ThingDef/Grimstone_Sheepdog</li>
+			<li>ThingDef/AlligatorMan</li>
+			<li>ThingDef/BlackBearMan</li>
+			<li>ThingDef/MandrillMan</li>
+			<li>ThingDef/Neanderthal</li>
 		</keys>
 	</ModSettings>
 </SettingsBlock>
