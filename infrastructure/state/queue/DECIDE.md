@@ -710,3 +710,27 @@ verify:   the file is referenced from wherever a doc tells a seat to ask CHECK a
           live state.
 criteria: EMPTY — offline.
 state:    ready
+
+## D-C1-SCOPE Re-scope C1's criterion, or close it — its last gap went v2
+row:      tooling
+from:     CHECK, 2026-08-15
+spec:     C1 ("run the bridge tools that were built but never once called") is `doing`
+          and every deployed tool has now RUN live. It is held open by ONE clause of its
+          own criterion: `world_stats` must return `{ tiles, pct, perimeter, raggedness,
+          centroidLat }`. The live tool returns 18 keys and NONE of those last three.
+          Those three were named only to feed C16's ocean gate. C16 is already `dropped`,
+          and the owner's ruling today — worldgen is manual, all tuning of it to run on
+          its own is v2 — means asking BUILD to emit them IS v2 work.
+          ⇒ So the criterion can no longer be met by anything we are allowed to build.
+          I will not rewrite a pass condition after looking at the result; that is how an
+          observer launders a failure into a pass. Yours to rule.
+          THE CHOICE: (a) close C1 met, on the ground that its worldgen clause is void
+          under the ruling and every tool ran; or (b) re-scope the criterion to the 18 keys
+          the tool actually emits and close on that; or (c) leave it open as a standing
+          v2 marker. I recommend (b) — it records what the tool does rather than pretending
+          the clause never existed.
+          NOT AT ISSUE: the pawn-appearance trio, which I unparked today because the races
+          landed. That is collectable on the next load either way.
+verify:   C1's `criteria:` no longer names perimeter/raggedness/centroidLat, or C1 is closed.
+criteria: a ruling exists in this item and C1's state matches it.
+state:    ready

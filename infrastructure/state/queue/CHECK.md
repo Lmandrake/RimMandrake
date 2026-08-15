@@ -43,6 +43,19 @@ park:     2026-08-15 PARTIAL PARK. The pawn-APPEARANCE trio (set_pawn_rotation /
           races land, then prove them against those. The REST of C1 is unaffected and still
           live: jawa/fire_quest, set_roof_batch/get_roof_batch, the spawn_batch vehicle route,
           and the world_stats re-run.
+          ⇒ UNPARKED 2026-08-15: the races LANDED and 69/69 spawn with the right xenotype
+          (C37). The trio is collectable on the next load. Prove it against a RimMandrake
+          xenotype, not a vanilla one.
+
+ruling:   2026-08-15, owner via REP: worldgen will NOT be generated programmatically and all
+          tuning of it to run on its own is v2. ⇒ THE ONE THING HOLDING C1 OPEN IS NOW v2.
+          Every deployed tool has run; the sole unmet criterion is world_stats missing
+          perimeter/raggedness/centroidLat, and those three keys were named ONLY to feed
+          C16's ocean gate - which is already `dropped`. Asking BUILD to emit them IS
+          worldgen tuning, so it should not be asked.
+          🔴 I am NOT rewriting my own pass condition after looking; that is DECIDE's to
+          re-scope. Filed as D-C1-SCOPE. Until DECIDE answers, C1 stays `doing` on paper
+          with nothing collectable but the unparked trio above.
 
 note:     2026-08-14 CHECK. Ran load_session.py --phase any: 30 items, 4 failed, 14 awaiting eyes; ledger observed/2026-08-14_load_session.md. get_defs, set_pawn_xenotype, list_things, clear_ui now RUN live. Still unrun: fire_quest, set_roof_batch/get_roof_batch, the spawn_batch vehicle route. Two harness items die on UnicodeEncodeError (charmap) before asserting - A6 Cherry Picker and P5 VAEA_Apparel_ToolBelt - so those are UNMEASURED, not passed. 14 screenshots need a human look.
 
