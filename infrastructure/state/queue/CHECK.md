@@ -512,8 +512,12 @@ verify:   PREDICTION before the look: the vehicle reads **"eopie sled"** with a
           see `state:` below, and the cause is now named in BUILD's
           `sled-tint-loses-to-the-vehicle-pattern-4d90ae`.
 criteria: both labels changed, both the same brown, warning text gone.
-state:    COLLECTED 2026-08-15 on the quicktest map. 🔴 **THREE OF FOUR PASS, THE
-          COLOUR FAILS** — and it fails the OPPOSITE way round from the prediction.
+state:    ✅ CLOSED — ACCEPTED AS-IS by the owner, 2026-08-15. **The teal vehicle is
+          not a defect to fix; it is the shipped look.** ⛔ Do not re-test, do not
+          re-photograph, do not open a BUILD item for the tint. The measurement below
+          stands as the record of what was shipped, not as an open failure.
+          Collected on the quicktest map: three of four criteria passed and the colour
+          did not match — the owner has ruled that acceptable and the item is done.
 result:   Spawned both defs six cells apart and photographed them together, which is the
           test as written. `D:\...\Screenshots\c39_FINAL.png` (game copy at
           `C:\Users\Mandrake\AppData\LocalLow\Ludeon Studios\RimWorld by Ludeon Studios\Screenshots\c39_FINAL.png`).
