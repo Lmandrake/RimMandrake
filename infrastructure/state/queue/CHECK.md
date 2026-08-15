@@ -170,3 +170,70 @@ criteria: With the three donors off, the log carries no `Could not resolve
           Foundry Hive must arrive as the right species and not as an empty
           group.
 state:    ready
+
+## C37 VALIDATION PLAN — can we spawn all 70 RimMandrake races?
+row:      9
+spec:     The owner is NOT playing this load. The whole test is: open debug mode
+          and spawn one of every `RimMandrake*` xenotype. Wiring them into
+          factions and worldgen is a later job; do not test that here.
+
+          WHAT SHIPPED, and it is a first load for all of it:
+          `mandrake.starwarsraces` (866 files) — 70 XenotypeDefs, 87 PawnKindDefs,
+          114 genes, 104 head types, 48 RulePackDefs, 140 name word-lists,
+          713 textures. 🔴 The three donor mods it replaces are SWITCHED OFF:
+          `btd.xenotyperemix.starwars`, `guy762.starwarsxenotypes`,
+          `neronix17.outerrim.galacticdiversity`. activeMods 578.
+
+          THE ROUTE, exact. Either works; the bridge one is cheaper:
+            bridge:  `jawa/spawn_pawn` kindDef=`Colonist` x=<X> z=<Z>
+                     faction=`PlayerColony` xenotype=`RimMandrake<Species>`
+                     ⚠️ OMITTING `faction` SPAWNS INTO **Empire, HOSTILE** —
+                     and Empire is now a permanent enemy. Always pass it.
+            dev:     Debug actions -> `Actions\Spawn Pawn...\<PawnKindDef>`,
+                     using the 69 `RimMandrake<Species>_Kind` defs, which exist
+                     for exactly this and take the xenotype with them.
+          The 70 defNames are in
+          `src/Jawa/RimMandrake_StarWarsRaces/Defs/XenotypeDefs/RimMandrakeXenotypes.xml`
+          (plus `MandrakeJawa`). `lineup.json` in the repo root has a working grid
+          layout from a previous run.
+
+verify:   🔴 PREDICTION, written before the look: **70 of 70 spawn, and each pawn
+          renders as its species rather than a bare human.** Positive observations,
+          not absences:
+          1. the pawn EXISTS and its xenotype reads back as the one requested
+             (`jawa/list_pawns`, or click it and read the Bio tab);
+          2. it does not look like a baseliner — the species-specific part is on
+             screen: Ithorian hammerhead, Chagrian lethorns, Trandoshan scales,
+             Gungan eyestalks, Lasat ears and yellow eyes;
+          3. it has a NAME from its own namer, not a vanilla human name. 51 of the
+             70 carry one — the other 19 correctly fall through to vanilla, so a
+             vanilla name is only a failure on one of the 51.
+          Screenshot the grid. `jawa/clear_ui` FIRST or the debug window sits on
+          the subject.
+
+          HOW THIS CHECK LIES — four ways, all seen this week:
+          - **A dangling gene degrades quietly.** A species missing one gene still
+            spawns and still looks broadly right; only the specific feature is
+            gone. So check the FEATURE named above, not merely that a pawn appeared.
+          - **A missing head type falls back to a human head** with the rest of the
+            genes still applied — the pawn looks odd rather than absent, and reads
+            as art we should improve rather than a broken reference.
+          - **Deployed is not live.** All of this was written to the game folder
+            while the previous process was running. If the process did not restart
+            after 07:35, it is testing the OLD content. Compare the Mods folder
+            mtime against the process StartTime before believing any result.
+          - **The def dump is disk, not runtime.** `RimMandrake*` present in a dump
+            does not mean present in the process — a mod's Harmony patch can delete
+            defs at load, which is exactly what BTD was doing to these species
+            until today.
+
+criteria: 70 of 70 spawn with the right xenotype and a species-appropriate body.
+          A species that spawns as a plain human is a FAILURE — name it. A species
+          that fails to spawn at all is a worse failure — name it and quote the
+          log line. Report the failures by defName; do not summarise as a count.
+          NOT IN SCOPE, deliberately: faction generation, worldgen, raids, whether
+          any of them appear organically. 37 of the 70 are named by no faction and
+          `factionlessGenerationWeight` is 0 on all of them, so NONE of this is
+          expected to occur in normal play yet. That is the later wiring job.
+state:    ready
+
