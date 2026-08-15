@@ -8,6 +8,6 @@ bodies were drained to the destinations below (owner decision #5).
 | to file or take work | `infrastructure/state/queue/<SEAT>.md` — `BRIDGE`, `CREATE`, `OPS`, `PROJECT`, `VISION` |
 | what is already finished, one line each | `infrastructure/state/CLOSED.md` |
 | what the owner has ruled | `infrastructure/state/OWNER_DECISIONS.md` |
-| a deferred `[v2]` body, kept intact | `infrastructure/state/TODO_v2.md` |
+| a deferred `[v2]` body, kept intact | `design/V2_DREAMS.md` — append-only, never a queue |
 | work that needs the game running | `infrastructure/state/NEXT_RELOAD.md` |
 | what is in scope for v1 at all | `infrastructure/state/V1_SCOPE.md` |

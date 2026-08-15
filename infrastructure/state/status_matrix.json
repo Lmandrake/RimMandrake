@@ -41,7 +41,7 @@
    }
   },
   {
-   "name": "3 *The Claim* quest fires and registers",
+   "name": "3 *The Claim* quest fires **and resolves**",
    "cells": {
     "DECIDE": {
      "done": 0,
@@ -55,8 +55,8 @@
     },
     "CHECK": {
      "done": 0,
-     "total": 0,
-     "state": "offline"
+     "total": 1,
+     "state": "blocked"
     }
    }
   },
@@ -65,18 +65,18 @@
    "cells": {
     "DECIDE": {
      "done": 0,
-     "total": 1,
-     "state": "idle"
+     "total": 0,
+     "state": "offline"
     },
     "BUILD": {
      "done": 0,
-     "total": 1,
-     "state": "idle"
+     "total": 0,
+     "state": "offline"
     },
     "CHECK": {
      "done": 0,
-     "total": 3,
-     "state": "blocked"
+     "total": 0,
+     "state": "offline"
     }
    }
   },
@@ -181,22 +181,22 @@
    }
   },
   {
-   "name": "v2",
+   "name": "\u2014",
    "cells": {
     "DECIDE": {
      "done": 0,
-     "total": 12,
-     "state": "blocked"
+     "total": 0,
+     "state": "offline"
     },
     "BUILD": {
      "done": 0,
-     "total": 22,
-     "state": "blocked"
+     "total": 0,
+     "state": "offline"
     },
     "CHECK": {
      "done": 0,
-     "total": 22,
-     "state": "blocked"
+     "total": 1,
+     "state": "idle"
     }
    }
   }

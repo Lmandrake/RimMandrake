@@ -69,6 +69,7 @@ state:    ready | doing | done | blocked
   write one line saying which field is missing, stop.
 - **CHECK refuses an item with empty `criteria:`.** Same.
 - The refusing agent does not fix it. It bounces and moves to its next item.
+- **v2 work is not queued.** It is appended to `design/V2_DREAMS.md` and left there.
 
 ## Upstream facts — read these instead of asking
 
