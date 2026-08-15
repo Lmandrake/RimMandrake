@@ -12,6 +12,10 @@ They are short. This file is only what neither of them covers.
 - **`ModsConfig.xml` is the live mod list**, at
   `C:\Users\Mandrake\AppData\LocalLow\Ludeon Studios\RimWorld by Ludeon Studios\Config\ModsConfig.xml`.
   Read it for the active count; never a number written in a doc.
+- **No config file waits for anything.** Owner, 2026-08-15: *"You NEVER have to ask
+  if RimSort is open. It does not autosave, and I will never save without asking.
+  Nobody blocks on RimSort or game close for config files of any kind."* Write it,
+  game up or down. Only **assemblies** need the game down, because the OS locks them.
 - **Never guess a defName, field, or namespace.** Read the def, the `About.xml`, or
   `strings -a -el` the assembly. Plain `strings` misses UTF-16 method bodies.
 - **A patch that matches nothing logs nothing.** `PatchOperationConditional` and

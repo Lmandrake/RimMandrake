@@ -191,12 +191,13 @@ Three consequences worth having:
   "shutdown window" to race, and nothing to protect your edit from.
 - **The only writers of that file are a seat, or the owner via RimSort.** If it moved,
   one of those did it.
-- 🔴 **The real hazard is a concurrent-writer collision, and it is not rare.** Measured
-  the same day: the file moved **twice in twenty minutes** with the game down (22,328 →
-  22,406 bytes, two mods added, order changed from index 291) because the owner was
-  re-sorting in RimSort. **Read the mtime immediately before you write, and never write
-  blind** — overwriting an in-progress re-sort destroys ordering work, and neither
-  RimSort nor git will warn either party.
+- 🔴 **Do not block on RimSort, and never ask whether it is open. Owner's ruling,
+  2026-08-15:** *"You NEVER have to ask if RimSort is open. It does not autosave, and I
+  will never save without asking. Nobody blocks on RimSort or game close for config
+  files of any kind."* RimSort writes only on a Save the owner will announce, so the
+  concurrent-writer collision this section used to warn about cannot happen unasked.
+  Write the file. After you do, its view is stale — say *"RimSort is open, hit
+  Refresh"* and move on.
 
 **While the game is up, disk state is not authoritative** — the list lives in memory
 and the folders are held open. Establish whether the game is running before making any

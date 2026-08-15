@@ -297,9 +297,12 @@ trap entry. RimSort saves only when the owner clicks Save; **"close RimSort firs
 is never a precondition.** The real hazard is the reverse and it is live: after an
 external edit RimSort's in-memory view is stale, so a later Save writes the OLD
 list back. Mitigation is one sentence — *"RimSort is open, hit Refresh"*.
-🔴 **And read `ModsConfig.xml`'s mtime immediately before writing it.** It moved
-twice in twenty minutes on 2026-08-13 while the owner re-sorted. Writing blind
-destroys their ordering silently.
+🔴 **Do not block on it either. Owner's ruling, 2026-08-15:** *"You NEVER have to
+ask if RimSort is open. It does not autosave, and I will never save without asking.
+Nobody blocks on RimSort or game close for config files of any kind."* No mtime
+check, no window, no question — `ModsConfig.xml`, load order and user rules are
+writable game up or down. Only **assemblies** wait, and only because the OS locks
+them while the game runs.
 
 ---
 

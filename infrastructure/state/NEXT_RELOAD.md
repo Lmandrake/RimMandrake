@@ -40,7 +40,7 @@ deploy`, not blocked on a question.
 | 1 | `python.exe src/RimMandrake/bridgetools/build.py --gm --apply` — or `./src/RimMandrake/Utils/shutdown_deploy.sh` | BUILD **B1**, closes **B0** | An **assembly, solo**. Everything in §3–§6 is a `jawa/*` call, so a wrong companion poisons every result after it. 🔴 `--gm` or `fire_incident` + `send_letter` are stripped and §5's L3 cannot fire at all |
 | 2 | `deploy_custom_mods.py --mod JawaPlantGrowth --plan` then `--apply` | CHECK **C38** | The **second and last assembly**. Deploy it **alone**, not beside #3 — a new DLL in a mixed batch poisons attribution for everything beside it. Then add `mandrake.jawaplantgrowth` to `ModsConfig.xml` **after `brrainz.harmony`** or the Harmony postfix never binds |
 | 3 | `deploy_custom_mods.py --mod DesertVehicleReskin --plan` then `--apply` | CHECK **C39** + **C41** | Pure XML and loose PNGs — no window needed, but do it now so it rides this load. This is an **update**, the mod is already at `C:\Program Files (x86)\Steam\steamapps\common\RimWorld\Mods\DesertVehicleReskin`. 🔴 `mandrake.desertvehiclereskin` must sit **after** `sarg.alphavehiclesneolithic` or the labels change and the art does not |
-| 4 | `ModsConfig.xml` chores in ONE pass | BUILD **B25** | Read its mtime first (§1b). Standing changes: **mechanoids OFF**, disable `com.yayo.yayoAni.continued`, pin the six `loadBottom`+`loadAfter` userRules |
+| 4 | `ModsConfig.xml` chores in ONE pass | BUILD **B25** | Not gated on this window at all (§1b) — a config file is writable game up or down. Standing changes: **mechanoids OFF**, disable `com.yayo.yayoAni.continued`, pin the six `loadBottom`+`loadAfter` userRules |
 | 5 | Write the three signatures into `EXPECTED_FAILURES` | BUILD **B23** | Must land **before launch** or the load spends attention on errors we already know about |
 | 6 | `python.exe src/RimMandrake/Utils/refresh.py` | B25(b) | **Last.** It reads the list the four steps above just finished changing |
 
@@ -85,21 +85,23 @@ What is actually downstream of it, and this is the gate:
 the load after this one runs against the wrong mod set.** That is not "gates
 nothing" — it silently gates correctness on everything that consumes a def dump.
 
-### 1b. `ModsConfig.xml` — BUILD's alone
+### 1b. `ModsConfig.xml` — BUILD's alone, and NOT gated on this window
 
-**RimWorld does not rewrite it on exit** — measured twice. Only we and the owner
-(in RimSort) write it, so there is no window to miss.
+🔴 **Owner's ruling, 2026-08-15: nothing blocks on RimSort, or on the game being
+closed, for a config file of any kind. Never ask whether RimSort is open.** It does
+not autosave, and the owner will not click Save without asking first. So there is no
+collision to race, no mtime to read first, and no window to wait for. Write it.
 
-🔴 **The hazard is a LIVE collision.** The owner reorders in RimSort with the game
-down; a seat writing over that clobbers the ordering and neither party is warned.
-
-> **Do not write `ModsConfig.xml` unless you have just read its mtime.** Announce
-> mod-list edits like a bridge take. If in doubt, ask the owner whether RimSort is
-> open — they are the only reader who knows.
+**RimWorld does not rewrite it on exit** either — measured twice. This section is in
+§1 for ordering convenience only; a config edit is legal at any moment, game up or
+down. The down-window is for **assemblies**, which the OS locks while the game runs.
 
 A mod-list change takes effect **only at startup**. Editing while the game runs is
 inert, not destructive — reading the running game as evidence the edit "failed" is
 the trap.
+
+After an external edit, RimSort's in-memory view is stale. The whole mitigation is
+one sentence to the owner: *"RimSort is open — hit Refresh."*
 
 Standing changes when a list edit is next made: **mechanoids OFF** (owner's
 ruling), and **disable `com.yayo.yayoAni.continued`** `[v2]` — the lightsaber flies

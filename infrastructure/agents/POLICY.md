@@ -65,6 +65,22 @@ the game** — that costs 25–30 minutes and fixes nothing.
 under "The queue is the only channel": the ask, the grant and the hand-back are
 live, urgent and one line each. Nothing else about the bridge is.
 
+## Never block on RimSort, or on the game, for a config file
+
+Owner, 2026-08-15: *"You NEVER have to ask if RimSort is open. It does not autosave,
+and I will never save without asking. Nobody blocks on RimSort or game close for
+config files of any kind. It's not how the system works."*
+
+- **Never ask whether RimSort is open.** It writes only on a Save the owner announces
+  first, so there is no collision to race and no mtime to read before writing.
+- **`ModsConfig.xml`, load order and user rules are writable at any moment** — game
+  up or down, RimSort open or shut. Do not hold an item for a window.
+- **Assemblies are the only exception, and it is an OS file lock, not a policy.** A
+  DLL cannot be written while RimWorld holds it open. That is all the down-window
+  covers.
+- After you edit, RimSort's view is stale. One sentence to the owner — *"RimSort is
+  open, hit Refresh"* — and move on.
+
 ## Nothing outside the repo is precious
 
 Owner, 2026-08-15: *"There is no map protection! There's no protection of any asset

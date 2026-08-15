@@ -121,9 +121,15 @@ item: (status briefing, no queue ID)
 
 ---
 
-## Is RimSort open right now?
+## ~~Is RimSort open right now?~~ ANSWERED — the question was never valid
 
-**BUILD is blocked on this and nothing else.** `B25(a)` (pin the loadBottom/loadAfter
+🔴 **Owner's ruling, 2026-08-15: never ask this again.** *"You NEVER have to ask if
+RimSort is open. It does not autosave, and I will never save without asking. Nobody
+blocks on RimSort or game close for config files of any kind."* Written into
+`POLICY.md`, `CLAUDE.md`, `NEXT_RELOAD.md` §1b and the three skills that said
+otherwise. BUILD unblocked; B25 proceeds.
+
+~~**BUILD is blocked on this and nothing else.**~~ `B25(a)` (pin the loadBottom/loadAfter
 user rules) and `B25(d)` (enable `vanillaexpanded.vwel`) both WRITE
 `ModsConfig.xml`. RimSort holds the mod list in memory and writes it on Save, so a
 write into an open RimSort is silently lost on your next Save — and you are the only

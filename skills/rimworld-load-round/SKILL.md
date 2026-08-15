@@ -86,9 +86,15 @@ the list still describes the *previous* state.
 running, or compare `Player.log`'s mtime to `ModsConfig.xml`'s, and say what each
 timestamp implies.
 
-**RimSort being open blocks nothing** — it writes only when the owner clicks Save,
-so never ask for it to be closed. The one hazard is the reverse: after an external
-edit its view is stale, so say "RimSort is open — hit Refresh".
+🔴 **No config file waits for anything. Owner's ruling, 2026-08-15:** *"You NEVER
+have to ask if RimSort is open. It does not autosave, and I will never save without
+asking. Nobody blocks on RimSort or game close for config files of any kind."*
+`ModsConfig.xml`, load order and user rules are writable at any moment, game up or
+down, RimSort open or shut — **never ask, never hold an item for a window.** The
+down-window exists for **assemblies**, which the OS locks while the game runs; that
+is a file lock, not a policy, and it is the only thing it covers. The one hazard is
+the reverse of the old one: after an external edit RimSort's view is stale, so say
+"RimSort is open — hit Refresh".
 
 ## 5. Do I need a load at all? `src/RimMandrake/Utils/refresh.py` answers exactly that
 
