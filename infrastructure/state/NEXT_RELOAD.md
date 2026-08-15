@@ -29,10 +29,8 @@ already up, skip to §2.
 
 ### 1.0 🔴 THIS WINDOW — the deploy manifest, in order. Opened 2026-08-15.
 
-Assembled by DECIDE against the owner's broadcast *"game is down, stage the next
-load and prepare additional content"*. **Everything below §5 is uninterpretable
-until this section is finished** — five of the six live items are `blocked — needs
-deploy`, not blocked on a question.
+**Everything in §5 is uninterpretable until this section is finished** — five of the
+six live items are `blocked — needs deploy`, not blocked on a question.
 
 | # | deploy | item | why this order |
 |---|---|---|---|
