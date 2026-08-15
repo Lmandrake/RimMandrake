@@ -1,0 +1,806 @@
+{
+ "category": "apparel",
+ "updated": "2026-08-15T06:35:53-07:00",
+ "cut": [
+  {
+   "defName": "AM_BulletproofMask",
+   "label": "bulletproof mask",
+   "mod": "Ancient urban ruins",
+   "note": "",
+   "key": "AM_BulletproofMask"
+  },
+  {
+   "defName": "AM_CataphractHelmetFashion",
+   "label": "cataphract helmet “Fashion”",
+   "mod": "Ancient urban ruins",
+   "note": "",
+   "key": "AM_CataphractHelmetFashion"
+  },
+  {
+   "defName": "AM_LassoCloth",
+   "label": "Lasso",
+   "mod": "Melee Animation",
+   "note": "",
+   "key": "AM_LassoCloth"
+  },
+  {
+   "defName": "AM_LassoDevilstrand",
+   "label": "Devilstrand Lasso",
+   "mod": "Melee Animation",
+   "note": "",
+   "key": "AM_LassoDevilstrand"
+  },
+  {
+   "defName": "AM_LassoHyperwave",
+   "label": "Hyperweave Lasso",
+   "mod": "Melee Animation",
+   "note": "",
+   "key": "AM_LassoHyperwave"
+  },
+  {
+   "defName": "AM_MK4aConcealed",
+   "label": "armored concealed rig",
+   "mod": "Ancient urban ruins",
+   "note": "",
+   "key": "AM_MK4aConcealed"
+  },
+  {
+   "defName": "AM_MK4aDefensive",
+   "label": "armored defensive rig",
+   "mod": "Ancient urban ruins",
+   "note": "",
+   "key": "AM_MK4aDefensive"
+  },
+  {
+   "defName": "Apparel_AirwireHeadset",
+   "label": "airwire headset",
+   "mod": "Biotech",
+   "note": "",
+   "key": "Apparel_AirwireHeadset"
+  },
+  {
+   "defName": "Apparel_ArchoShuttle",
+   "label": "archotech shuttle creator",
+   "mod": "Rimsential - Spaceports (Continued)",
+   "note": "",
+   "key": "Apparel_ArchoShuttle"
+  },
+  {
+   "defName": "Apparel_ArmorCataphract",
+   "label": "cataphract armor",
+   "mod": "Royalty",
+   "note": "",
+   "key": "Apparel_ArmorCataphract"
+  },
+  {
+   "defName": "Apparel_ArmorCataphractPhoenix",
+   "label": "phoenix armor",
+   "mod": "Royalty",
+   "note": "",
+   "key": "Apparel_ArmorCataphractPhoenix"
+  },
+  {
+   "defName": "Apparel_ArmorCataphractPrestige",
+   "label": "prestige cataphract armor",
+   "mod": "Royalty",
+   "note": "",
+   "key": "Apparel_ArmorCataphractPrestige"
+  },
+  {
+   "defName": "Apparel_ArmorHelmetCataphract",
+   "label": "cataphract helmet",
+   "mod": "Royalty",
+   "note": "",
+   "key": "Apparel_ArmorHelmetCataphract"
+  },
+  {
+   "defName": "Apparel_ArmorHelmetCataphractPrestige",
+   "label": "prestige cataphract helmet",
+   "mod": "Royalty",
+   "note": "",
+   "key": "Apparel_ArmorHelmetCataphractPrestige"
+  },
+  {
+   "defName": "Apparel_ArmorHelmetMechCommander",
+   "label": "mechcommander helmet",
+   "mod": "Biotech",
+   "note": "",
+   "key": "Apparel_ArmorHelmetMechCommander"
+  },
+  {
+   "defName": "Apparel_ArmorHelmetMechlordHelmet",
+   "label": "mechlord helmet",
+   "mod": "Biotech",
+   "note": "",
+   "key": "Apparel_ArmorHelmetMechlordHelmet"
+  },
+  {
+   "defName": "Apparel_ArmorHelmetReconPrestige",
+   "label": "prestige recon helmet",
+   "mod": "Royalty",
+   "note": "",
+   "key": "Apparel_ArmorHelmetReconPrestige"
+  },
+  {
+   "defName": "Apparel_ArmorLocust",
+   "label": "locust armor",
+   "mod": "Royalty",
+   "note": "",
+   "key": "Apparel_ArmorLocust"
+  },
+  {
+   "defName": "Apparel_ArmorMarineGrenadier",
+   "label": "grenadier armor",
+   "mod": "Royalty",
+   "note": "",
+   "key": "Apparel_ArmorMarineGrenadier"
+  },
+  {
+   "defName": "Apparel_ArmorMarineHelmetPrestige",
+   "label": "prestige marine helmet",
+   "mod": "Royalty",
+   "note": "",
+   "key": "Apparel_ArmorMarineHelmetPrestige"
+  },
+  {
+   "defName": "Apparel_ArmorMarinePrestige",
+   "label": "prestige marine armor",
+   "mod": "Royalty",
+   "note": "",
+   "key": "Apparel_ArmorMarinePrestige"
+  },
+  {
+   "defName": "Apparel_ArmorReconPrestige",
+   "label": "prestige recon armor",
+   "mod": "Royalty",
+   "note": "",
+   "key": "Apparel_ArmorReconPrestige"
+  },
+  {
+   "defName": "Apparel_ArrayHeadset",
+   "label": "array headset",
+   "mod": "Biotech",
+   "note": "",
+   "key": "Apparel_ArrayHeadset"
+  },
+  {
+   "defName": "Apparel_Bandolier",
+   "label": "heavy bandolier",
+   "mod": "Biotech",
+   "note": "",
+   "key": "Apparel_Bandolier"
+  },
+  {
+   "defName": "Apparel_BiomutationLance",
+   "label": "biomutation lance",
+   "mod": "Anomaly",
+   "note": "",
+   "key": "Apparel_BiomutationLance"
+  },
+  {
+   "defName": "Apparel_BowlerHat",
+   "label": "bowler hat",
+   "mod": "Core",
+   "note": "",
+   "key": "Apparel_BowlerHat"
+  },
+  {
+   "defName": "Apparel_Burka",
+   "label": "burka",
+   "mod": "Ideology",
+   "note": "",
+   "key": "Apparel_Burka"
+  },
+  {
+   "defName": "Apparel_ClothMask",
+   "label": "face mask",
+   "mod": "Core",
+   "note": "",
+   "key": "Apparel_ClothMask"
+  },
+  {
+   "defName": "Apparel_CollarShirt",
+   "label": "button-down shirt",
+   "mod": "Core",
+   "note": "",
+   "key": "Apparel_CollarShirt"
+  },
+  {
+   "defName": "Apparel_Corset",
+   "label": "corset",
+   "mod": "Royalty",
+   "note": "",
+   "key": "Apparel_Corset"
+  },
+  {
+   "defName": "Apparel_DeadlifePack",
+   "label": "deadlife pack",
+   "mod": "Anomaly",
+   "note": "",
+   "key": "Apparel_DeadlifePack"
+  },
+  {
+   "defName": "Apparel_DisruptorFlarePack",
+   "label": "disruptor flare pack",
+   "mod": "Anomaly",
+   "note": "",
+   "key": "Apparel_DisruptorFlarePack"
+  },
+  {
+   "defName": "Apparel_Flophat",
+   "label": "flophat",
+   "mod": "Ideology",
+   "note": "",
+   "key": "Apparel_Flophat"
+  },
+  {
+   "defName": "Apparel_GasMask",
+   "label": "gas mask",
+   "mod": "Biotech",
+   "note": "",
+   "key": "Apparel_GasMask"
+  },
+  {
+   "defName": "Apparel_HatLadies",
+   "label": "ladies hat",
+   "mod": "Royalty",
+   "note": "",
+   "key": "Apparel_HatLadies"
+  },
+  {
+   "defName": "Apparel_HatTop",
+   "label": "top hat",
+   "mod": "Royalty",
+   "note": "",
+   "key": "Apparel_HatTop"
+  },
+  {
+   "defName": "Apparel_LabCoat",
+   "label": "lab coat",
+   "mod": "Anomaly",
+   "note": "",
+   "key": "Apparel_LabCoat"
+  },
+  {
+   "defName": "Apparel_MechlordSuit",
+   "label": "mechlord suit",
+   "mod": "Biotech",
+   "note": "",
+   "key": "Apparel_MechlordSuit"
+  },
+  {
+   "defName": "Apparel_PackBandwidth",
+   "label": "bandwidth pack",
+   "mod": "Biotech",
+   "note": "",
+   "key": "Apparel_PackBandwidth"
+  },
+  {
+   "defName": "Apparel_PackControl",
+   "label": "control pack",
+   "mod": "Biotech",
+   "note": "",
+   "key": "Apparel_PackControl"
+  },
+  {
+   "defName": "Apparel_PackJump",
+   "label": "jump pack",
+   "mod": "Royalty",
+   "note": "",
+   "key": "Apparel_PackJump"
+  },
+  {
+   "defName": "Apparel_PackTox",
+   "label": "tox pack",
+   "mod": "Biotech",
+   "note": "",
+   "key": "Apparel_PackTox"
+  },
+  {
+   "defName": "Apparel_PackTurret",
+   "label": "turret pack",
+   "mod": "Anomaly",
+   "note": "",
+   "key": "Apparel_PackTurret"
+  },
+  {
+   "defName": "Apparel_PsychicFoilHelmet",
+   "label": "psychic foil helmet",
+   "mod": "Core",
+   "note": "",
+   "key": "Apparel_PsychicFoilHelmet"
+  },
+  {
+   "defName": "Apparel_PsychicInsanityLance",
+   "label": "psychic insanity lance",
+   "mod": "Core",
+   "note": "",
+   "key": "Apparel_PsychicInsanityLance"
+  },
+  {
+   "defName": "Apparel_PsychicShockLance",
+   "label": "psychic shock lance",
+   "mod": "Core",
+   "note": "",
+   "key": "Apparel_PsychicShockLance"
+  },
+  {
+   "defName": "Apparel_Robe",
+   "label": "robe",
+   "mod": "Core",
+   "note": "",
+   "key": "Apparel_Robe"
+  },
+  {
+   "defName": "Apparel_SOU_Bonnet",
+   "label": "bonnet",
+   "mod": "Slave Outfits [1.6]",
+   "note": "",
+   "key": "Apparel_SOU_Bonnet"
+  },
+  {
+   "defName": "Apparel_SOU_VicHM",
+   "label": "housemaid uniform",
+   "mod": "Slave Outfits [1.6]",
+   "note": "",
+   "key": "Apparel_SOU_VicHM"
+  },
+  {
+   "defName": "Apparel_SOU_VicScullery",
+   "label": "scullery maid uniform",
+   "mod": "Slave Outfits [1.6]",
+   "note": "",
+   "key": "Apparel_SOU_VicScullery"
+  },
+  {
+   "defName": "Apparel_Sash",
+   "label": "sash",
+   "mod": "Biotech",
+   "note": "",
+   "key": "Apparel_Sash"
+  },
+  {
+   "defName": "Apparel_ShardPsychicInsanityLance",
+   "label": "shard insanity lance",
+   "mod": "Anomaly",
+   "note": "",
+   "key": "Apparel_ShardPsychicInsanityLance"
+  },
+  {
+   "defName": "Apparel_ShardPsychicShockLance",
+   "label": "shard shock lance",
+   "mod": "Anomaly",
+   "note": "",
+   "key": "Apparel_ShardPsychicShockLance"
+  },
+  {
+   "defName": "Apparel_SimpleHelmetMedic",
+   "label": "medic helmet",
+   "mod": "MiningCo. Spaceship (Continued)",
+   "note": "",
+   "key": "Apparel_SimpleHelmetMedic"
+  },
+  {
+   "defName": "Apparel_Slicecap",
+   "label": "slicecap",
+   "mod": "Ideology",
+   "note": "",
+   "key": "Apparel_Slicecap"
+  },
+  {
+   "defName": "Apparel_Tailcap",
+   "label": "tailcap",
+   "mod": "Ideology",
+   "note": "",
+   "key": "Apparel_Tailcap"
+  },
+  {
+   "defName": "Apparel_TribalA",
+   "label": "tribalwear",
+   "mod": "Core",
+   "note": "",
+   "key": "Apparel_TribalA"
+  },
+  {
+   "defName": "Apparel_VisageMask",
+   "label": "visage mask",
+   "mod": "Ideology",
+   "note": "",
+   "key": "Apparel_VisageMask"
+  },
+  {
+   "defName": "BMT_Apparel_DinoHatCarni",
+   "label": "dino hat carni",
+   "mod": "Biomes! Fossils",
+   "note": "",
+   "key": "BMT_Apparel_DinoHatCarni"
+  },
+  {
+   "defName": "BMT_Apparel_DinoHatHerbi",
+   "label": "dino hat herbi",
+   "mod": "Biomes! Fossils",
+   "note": "",
+   "key": "BMT_Apparel_DinoHatHerbi"
+  },
+  {
+   "defName": "BMT_Apparel_DinoHatMascot",
+   "label": "dino hat mascot",
+   "mod": "Biomes! Fossils",
+   "note": "",
+   "key": "BMT_Apparel_DinoHatMascot"
+  },
+  {
+   "defName": "BMT_Apparel_MascotOutfit",
+   "label": "dino mascot",
+   "mod": "Biomes! Fossils",
+   "note": "",
+   "key": "BMT_Apparel_MascotOutfit"
+  },
+  {
+   "defName": "BS_Nisse_Cap",
+   "label": "nisse cap",
+   "mod": "Big and Small - Races",
+   "note": "",
+   "key": "BS_Nisse_Cap"
+  },
+  {
+   "defName": "DP_EtherealBelt",
+   "label": "Ethereal Belt",
+   "mod": "Dungeon Pack (Continued)",
+   "note": "",
+   "key": "DP_EtherealBelt"
+  },
+  {
+   "defName": "DP_EtherealCloak",
+   "label": "Ethereal Cloak",
+   "mod": "Dungeon Pack (Continued)",
+   "note": "",
+   "key": "DP_EtherealCloak"
+  },
+  {
+   "defName": "DP_FireCultRobe",
+   "label": "Fire Cloak",
+   "mod": "Dungeon Pack (Continued)",
+   "note": "",
+   "key": "DP_FireCultRobe"
+  },
+  {
+   "defName": "DP_GlitchedRing",
+   "label": "Glitched Belt",
+   "mod": "Dungeon Pack (Continued)",
+   "note": "",
+   "key": "DP_GlitchedRing"
+  },
+  {
+   "defName": "DP_InsanityLanceUnequip",
+   "label": "psychic insanity lance",
+   "mod": "Dungeon Pack (Continued)",
+   "note": "",
+   "key": "DP_InsanityLanceUnequip"
+  },
+  {
+   "defName": "DP_MechSignalArtifact",
+   "label": "Mech Signaller",
+   "mod": "Dungeon Pack (Continued)",
+   "note": "",
+   "key": "DP_MechSignalArtifact"
+  },
+  {
+   "defName": "DP_NinjaRobe",
+   "label": "Ninja Garment",
+   "mod": "Dungeon Pack (Continued)",
+   "note": "",
+   "key": "DP_NinjaRobe"
+  },
+  {
+   "defName": "DP_OrbOfMadness",
+   "label": "Orb of Madness",
+   "mod": "Dungeon Pack (Continued)",
+   "note": "",
+   "key": "DP_OrbOfMadness"
+  },
+  {
+   "defName": "DP_ShroudOfMadness",
+   "label": "Madness Cloak",
+   "mod": "Dungeon Pack (Continued)",
+   "note": "",
+   "key": "DP_ShroudOfMadness"
+  },
+  {
+   "defName": "HumanSkinSuit",
+   "label": "human skin suit",
+   "mod": "Torment Master",
+   "note": "",
+   "key": "HumanSkinSuit"
+  },
+  {
+   "defName": "LargeBackpackMC",
+   "label": "Dark Large Backpack",
+   "mod": "Mercer's Backpacks (Continued)",
+   "note": "",
+   "key": "LargeBackpackMC"
+  },
+  {
+   "defName": "OuterRim_StormtrooperCuirass_Pride",
+   "label": "stormtrooper cuirass (pride)",
+   "mod": "Outer Rim - Galactic Empire",
+   "note": "",
+   "key": "OuterRim_StormtrooperCuirass_Pride"
+  },
+  {
+   "defName": "OuterRim_StormtrooperHelmet_Pride",
+   "label": "stormtrooper helmet (pride)",
+   "mod": "Outer Rim - Galactic Empire",
+   "note": "",
+   "key": "OuterRim_StormtrooperHelmet_Pride"
+  },
+  {
+   "defName": "OuterRim_StormtrooperPauldrons_Pride",
+   "label": "stormtrooper pauldrons (pride)",
+   "mod": "Outer Rim - Galactic Empire",
+   "note": "",
+   "key": "OuterRim_StormtrooperPauldrons_Pride"
+  },
+  {
+   "defName": "SGC_Apparel_CommandTower",
+   "label": "Command Tower",
+   "mod": "More Utility Packs (Continued)",
+   "note": "",
+   "key": "SGC_Apparel_CommandTower"
+  },
+  {
+   "defName": "SmallBackpackMC",
+   "label": "Dark Small Backpack",
+   "mod": "Mercer's Backpacks (Continued)",
+   "note": "",
+   "key": "SmallBackpackMC"
+  },
+  {
+   "defName": "TempuraOnesie",
+   "label": "tempura onesie",
+   "mod": "Torment Master",
+   "note": "",
+   "key": "TempuraOnesie"
+  },
+  {
+   "defName": "TornadoGenerator",
+   "label": "tornado generator",
+   "mod": "Core",
+   "note": "",
+   "key": "TornadoGenerator"
+  },
+  {
+   "defName": "VAEA_Apparel_Backpack",
+   "label": "backpack",
+   "mod": "Vanilla Apparel Expanded — Accessories",
+   "note": "",
+   "key": "VAEA_Apparel_Backpack"
+  },
+  {
+   "defName": "VAEA_Apparel_BattleBanner",
+   "label": "battle banner",
+   "mod": "Vanilla Apparel Expanded — Accessories",
+   "note": "",
+   "key": "VAEA_Apparel_BattleBanner"
+  },
+  {
+   "defName": "VAEA_Apparel_Quiver",
+   "label": "quiver",
+   "mod": "Vanilla Apparel Expanded — Accessories",
+   "note": "",
+   "key": "VAEA_Apparel_Quiver"
+  },
+  {
+   "defName": "VAE_Apparel_Blouse",
+   "label": "blouse",
+   "mod": "Vanilla Apparel Expanded",
+   "note": "",
+   "key": "VAE_Apparel_Blouse"
+  },
+  {
+   "defName": "VAE_Apparel_BuildersJacket",
+   "label": "builder's jacket",
+   "mod": "Vanilla Apparel Expanded",
+   "note": "",
+   "key": "VAE_Apparel_BuildersJacket"
+  },
+  {
+   "defName": "VAE_Apparel_CasualTShirt",
+   "label": "casual T-shirt",
+   "mod": "Vanilla Apparel Expanded",
+   "note": "",
+   "key": "VAE_Apparel_CasualTShirt"
+  },
+  {
+   "defName": "VAE_Apparel_DoctorScrubs",
+   "label": "doctor scrubs",
+   "mod": "Vanilla Apparel Expanded",
+   "note": "",
+   "key": "VAE_Apparel_DoctorScrubs"
+  },
+  {
+   "defName": "VAE_Apparel_FleeceShirt",
+   "label": "fleece shirt",
+   "mod": "Vanilla Apparel Expanded",
+   "note": "",
+   "key": "VAE_Apparel_FleeceShirt"
+  },
+  {
+   "defName": "VAE_Apparel_Hoodie",
+   "label": "hoodie",
+   "mod": "Vanilla Apparel Expanded",
+   "note": "",
+   "key": "VAE_Apparel_Hoodie"
+  },
+  {
+   "defName": "VAE_Apparel_MilitaryUniform",
+   "label": "military uniform",
+   "mod": "Vanilla Apparel Expanded",
+   "note": "",
+   "key": "VAE_Apparel_MilitaryUniform"
+  },
+  {
+   "defName": "VAE_Apparel_SheriffShirt",
+   "label": "sheriff shirt",
+   "mod": "Vanilla Apparel Expanded",
+   "note": "",
+   "key": "VAE_Apparel_SheriffShirt"
+  },
+  {
+   "defName": "VAE_Apparel_Shorts",
+   "label": "shorts",
+   "mod": "Vanilla Apparel Expanded",
+   "note": "",
+   "key": "VAE_Apparel_Shorts"
+  },
+  {
+   "defName": "VAE_Apparel_Skirt",
+   "label": "skirt",
+   "mod": "Vanilla Apparel Expanded",
+   "note": "",
+   "key": "VAE_Apparel_Skirt"
+  },
+  {
+   "defName": "VAE_Headgear_BaseballCap",
+   "label": "baseball cap",
+   "mod": "Vanilla Apparel Expanded",
+   "note": "",
+   "key": "VAE_Headgear_BaseballCap"
+  },
+  {
+   "defName": "VAE_Headgear_Beret",
+   "label": "military beret",
+   "mod": "Vanilla Apparel Expanded",
+   "note": "",
+   "key": "VAE_Headgear_Beret"
+  },
+  {
+   "defName": "VAE_Headgear_ChefsToque",
+   "label": "chef's toque",
+   "mod": "Vanilla Apparel Expanded",
+   "note": "",
+   "key": "VAE_Headgear_ChefsToque"
+  },
+  {
+   "defName": "VAE_Headgear_Fedora",
+   "label": "fedora",
+   "mod": "Vanilla Apparel Expanded",
+   "note": "",
+   "key": "VAE_Headgear_Fedora"
+  },
+  {
+   "defName": "VAE_Headgear_Glasses",
+   "label": "glasses",
+   "mod": "Vanilla Apparel Expanded",
+   "note": "",
+   "key": "VAE_Headgear_Glasses"
+  },
+  {
+   "defName": "VAE_Headgear_Hardhat",
+   "label": "hardhat",
+   "mod": "Vanilla Apparel Expanded",
+   "note": "",
+   "key": "VAE_Headgear_Hardhat"
+  },
+  {
+   "defName": "VAE_Headgear_Scarf",
+   "label": "scarf",
+   "mod": "Vanilla Apparel Expanded",
+   "note": "",
+   "key": "VAE_Headgear_Scarf"
+  },
+  {
+   "defName": "VAE_Headgear_Sunglasses",
+   "label": "sunglasses",
+   "mod": "Vanilla Apparel Expanded",
+   "note": "",
+   "key": "VAE_Headgear_Sunglasses"
+  },
+  {
+   "defName": "VAE_Headgear_SurgicalMask",
+   "label": "surgical mask",
+   "mod": "Vanilla Apparel Expanded",
+   "note": "",
+   "key": "VAE_Headgear_SurgicalMask"
+  },
+  {
+   "defName": "VFEP_Apparel_Privateer",
+   "label": "privateer armor",
+   "mod": "Vanilla Factions Expanded - Pirates",
+   "note": "",
+   "key": "VFEP_Apparel_Privateer"
+  },
+  {
+   "defName": "VFEP_Apparel_Rumsuit",
+   "label": "rumsuit",
+   "mod": "Vanilla Factions Expanded - Pirates",
+   "note": "",
+   "key": "VFEP_Apparel_Rumsuit"
+  },
+  {
+   "defName": "VGE_Apparel_VacsuitHelmet_Prestige",
+   "label": "prestige vacsuit helmet",
+   "mod": "Vanilla Gravship Expanded - Chapter 1",
+   "note": "",
+   "key": "VGE_Apparel_VacsuitHelmet_Prestige"
+  },
+  {
+   "defName": "VGE_Apparel_Vacsuit_Prestige",
+   "label": "prestige vacsuit",
+   "mod": "Vanilla Gravship Expanded - Chapter 1",
+   "note": "",
+   "key": "VGE_Apparel_Vacsuit_Prestige"
+  },
+  {
+   "defName": "VIEHAR_Apparel_Beads",
+   "label": "beads",
+   "mod": "Vanilla Ideology Expanded - Hats and Rags",
+   "note": "",
+   "key": "VIEHAR_Apparel_Beads"
+  },
+  {
+   "defName": "VIEHAR_Apparel_Fez",
+   "label": "fez",
+   "mod": "Vanilla Ideology Expanded - Hats and Rags",
+   "note": "",
+   "key": "VIEHAR_Apparel_Fez"
+  },
+  {
+   "defName": "VIEHAR_Apparel_HorseMask",
+   "label": "horse mask",
+   "mod": "Vanilla Ideology Expanded - Hats and Rags",
+   "note": "",
+   "key": "VIEHAR_Apparel_HorseMask"
+  },
+  {
+   "defName": "VIEHAR_Apparel_MilitaryCap",
+   "label": "military cap",
+   "mod": "Vanilla Ideology Expanded - Hats and Rags",
+   "note": "",
+   "key": "VIEHAR_Apparel_MilitaryCap"
+  },
+  {
+   "defName": "VIEHAR_Apparel_Rags",
+   "label": "rags",
+   "mod": "Vanilla Ideology Expanded - Hats and Rags",
+   "note": "",
+   "key": "VIEHAR_Apparel_Rags"
+  },
+  {
+   "defName": "VQEA_Apparel_PatientGown",
+   "label": "patient gown",
+   "mod": "Vanilla Quests Expanded - Ancients",
+   "note": "",
+   "key": "VQEA_Apparel_PatientGown"
+  },
+  {
+   "defName": "VQE_Apparel_Parka",
+   "label": "ancient tight parka",
+   "mod": "Vanilla Quests Expanded - The Generator",
+   "note": "",
+   "key": "VQE_Apparel_Parka"
+  }
+ ],
+ "kept_count": 720,
+ "total_count": 834
+}
