@@ -265,36 +265,27 @@ def closure(seeds, defs, absts):
     """Everything donor-owned that the seed defs can reach, plus the abstract
     parents they inherit from. A ParentName that resolves to nothing is a SILENT
     discard, so an abstract that is used must travel with the def."""
-    seen, abstract, queue = set(), set(), list(seeds)
+    seen, abstract = set(), set()
+    queue = [("d", n) for n in seeds]
     while queue:
-        n = queue.pop()
-        if n in seen or n not in defs:
-            continue
-        seen.add(n)
-        _, el = defs[n]
-        pn = el.get("ParentName")
-        if pn and pn in absts and pn not in abstract:
-            abstract.add(pn)
-            queue.append("@" + pn)
-        for sub in el.iter():
+        kind, n = queue.pop()
+        if kind == "d":
+            if n in seen or n not in defs:
+                continue
+            seen.add(n)
+            el = defs[n][1]
+        else:
+            if n in abstract or n not in absts:
+                continue
+            abstract.add(n)
+            el = absts[n][1]
+        for sub in [el] + list(el.iter()):
+            pn = sub.get("ParentName")
+            if pn and pn in absts:
+                queue.append(("a", pn))
             t = (sub.text or "").strip()
             if t and re.fullmatch(r"[A-Za-z0-9_.]+", t) and t in defs:
-                queue.append(t)
-    changed = True
-    while changed:
-        changed = False
-        for a in list(abstract):
-            _, el = absts[a]
-            pn = el.get("ParentName")
-            if pn and pn in absts and pn not in abstract:
-                abstract.add(pn)
-                changed = True
-            for sub in el.iter():
-                t = (sub.text or "").strip()
-                if t and re.fullmatch(r"[A-Za-z0-9_.]+", t) and t in defs \
-                        and t not in seen:
-                    seen.add(t)
-                    changed = True
+                queue.append(("d", t))
     return seen, abstract
 
 

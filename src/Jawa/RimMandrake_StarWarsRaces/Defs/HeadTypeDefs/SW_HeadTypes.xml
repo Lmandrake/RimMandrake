@@ -253,6 +253,21 @@
       <li>RimMandrake_Head_hutt</li>
     </requiredGenes>
   </HeadTypeDef>
+  <HeadTypeDef ParentName="RimMandrake_FiveheadBase">
+    <defName>RimMandrake_Female_FiveheadNormal</defName>
+    <graphicPath>RimMandrakeSW/SWX/Pawn/HeadType/duros/Female_Fivehead_Normal</graphicPath>
+    <gender>Female</gender>
+  </HeadTypeDef>
+  <HeadTypeDef ParentName="RimMandrake_FiveheadBase">
+    <defName>RimMandrake_Female_FiveheadPointy</defName>
+    <graphicPath>RimMandrakeSW/SWX/Pawn/HeadType/duros/Female_Fivehead_Pointy</graphicPath>
+    <gender>Female</gender>
+  </HeadTypeDef>
+  <HeadTypeDef ParentName="RimMandrake_FiveheadBase">
+    <defName>RimMandrake_Female_FiveheadWide</defName>
+    <graphicPath>RimMandrakeSW/SWX/Pawn/HeadType/duros/Female_Fivehead_Wide</graphicPath>
+    <gender>Female</gender>
+  </HeadTypeDef>
   <HeadTypeDef ParentName="RimMandrake_HeavyBoneBase">
     <defName>RimMandrake_Female_HeavyBoneNormal</defName>
     <graphicPath>RimMandrakeSW/SWX/Pawn/HeadType/Sov_sith/Female_Bone_Normal</graphicPath>
@@ -455,6 +470,21 @@
     <requiredGenes Inherit="False">
       <li>RimMandrake_Head_hutt</li>
     </requiredGenes>
+  </HeadTypeDef>
+  <HeadTypeDef ParentName="RimMandrake_FiveheadBase">
+    <defName>RimMandrake_Male_FiveheadNormal</defName>
+    <graphicPath>RimMandrakeSW/SWX/Pawn/HeadType/duros/Male_Fivehead_Normal</graphicPath>
+    <gender>Male</gender>
+  </HeadTypeDef>
+  <HeadTypeDef ParentName="RimMandrake_FiveheadBase">
+    <defName>RimMandrake_Male_FiveheadPointy</defName>
+    <graphicPath>RimMandrakeSW/SWX/Pawn/HeadType/duros/Male_Fivehead_Pointy</graphicPath>
+    <gender>Male</gender>
+  </HeadTypeDef>
+  <HeadTypeDef ParentName="RimMandrake_FiveheadBase">
+    <defName>RimMandrake_Male_FiveheadWide</defName>
+    <graphicPath>RimMandrakeSW/SWX/Pawn/HeadType/duros/Male_Fivehead_Wide</graphicPath>
+    <gender>Male</gender>
   </HeadTypeDef>
   <HeadTypeDef ParentName="RimMandrake_HeavyBoneBase">
     <defName>RimMandrake_Male_HeavyBoneNormal</defName>

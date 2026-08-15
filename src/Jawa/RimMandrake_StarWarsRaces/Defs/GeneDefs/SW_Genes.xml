@@ -1633,12 +1633,12 @@
     <displayCategory>RimMandrake_SWparts_Category</displayCategory>
     <iconPath>RimMandrakeSW/SWX/UI/Icons/Genes/Gene_Fivehead</iconPath>
     <forcedHeadTypes>
-      <li>Male_FiveheadNormal</li>
-      <li>Male_FiveheadPointy</li>
-      <li>Male_FiveheadWide</li>
-      <li>Female_FiveheadNormal</li>
-      <li>Female_FiveheadPointy</li>
-      <li>Female_FiveheadWide</li>
+      <li>RimMandrake_Male_FiveheadNormal</li>
+      <li>RimMandrake_Male_FiveheadPointy</li>
+      <li>RimMandrake_Male_FiveheadWide</li>
+      <li>RimMandrake_Female_FiveheadNormal</li>
+      <li>RimMandrake_Female_FiveheadPointy</li>
+      <li>RimMandrake_Female_FiveheadWide</li>
     </forcedHeadTypes>
   </GeneDef>
   <GeneDef ParentName="GeneJawBase">
