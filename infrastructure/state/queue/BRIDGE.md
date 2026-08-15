@@ -15,6 +15,50 @@ authored offline by OPS/CREATE and all of it verifies in ONE session.
 
 ## Open
 
+### ⭐ S9 — ADD `RemoveFoundation` TO `set_terrain_batch`. Owner asked, 2026-08-14.
+**The bridge cannot remove substructure at all, and the failure is SILENT.**
+Measured live: `set_terrain_batch layer=top` over a Substructure cell reports
+`1 cell(s) changed` and reads back `before: "Substructure", after: "Substructure"`
+— a textbook silent no-op. `layer=foundation` to `Soil` fails the same way
+(`SetFoundation` refuses a non-foundation terrain: *"Tried to set foundation
+terrain to a type which is not a foundation"*).
+
+**The engine method exists and is public** (ilprobe on `Verse.TerrainGrid`):
+```
+public void RemoveFoundation(IntVec3 c, bool doLeavings)
+public bool CanRemoveFoundationAt(IntVec3 c)
+```
+⇒ add a removal path to `layer=foundation` — the literal `None`/`Clear`, matching
+what `set_roof_batch` already accepts — gated on `CanRemoveFoundationAt`, and
+**assert on `FoundationAt()` reading back null**, never on the call returning.
+⚠️ `doLeavings` decides whether it drops steel; default it to **false** for map
+authoring, and expose it.
+
+**Why it matters beyond tidiness:** substructure is what every gravship building
+stands on, so *place* is a one-way door today. A layout tool that cannot unpaint
+its own foundation cannot iterate.
+
+### 🟢 THE INTERIM ROUTE, PROVEN LIVE — Architect + god mode
+Until S9 ships, substructure IS removable through the Architect, and the sequence
+is not obvious:
+```
+rimworld/set_god_mode {"enabled": true}                    # 🔴 WITHOUT THIS IT ONLY DESIGNATES
+rimworld/apply_architect_designator
+    designatorId "architect-designator:odyssey:highlight-designator-tutortagnotset-3"
+    ("Remove substructure", from list_architect_designators on
+     categoryId "architect-category:odyssey")
+```
+🔴 **God mode is the whole trick.** With it off, `apply` returns `success: true`,
+sets `designationCount: 1`, and **changes no terrain** — it queues work for a
+colonist, and a wiped map has none. With it on, the cell reads back `Soil`
+immediately.
+⚠️ **A cell that already carries a designation REFUSES a second one** (`success:
+false`). Cancel first — `…:highlight-designator-cancel` — then re-apply.
+⚠️ `Designator_RemoveFloor` will NOT do it: it gates on
+`CanRemoveTopLayerAt`. The subclass `Designator_RemoveFoundation` is the one.
+📌 `apply_architect_designator` takes a **rect** (`width`/`height`), which is how
+it dodges the drag-tool problem that makes RimWorld's own tools unreachable.
+
 ### 🔴🔴 S8 — RUN THIS FIRST IN THE NEXT DOWN-WINDOW. COPY IT; DO NOT RECONSTRUCT IT.
 **Five BRIDGE tools are built, pushed and UNDEPLOYED. They are the whole window.**
 The game must be **DOWN** — the DLL is locked while it runs and the write fails
