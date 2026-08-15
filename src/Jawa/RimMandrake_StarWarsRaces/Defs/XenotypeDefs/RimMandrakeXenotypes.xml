@@ -9,6 +9,9 @@
   One XenotypeDef per species. Gene lists are inherited from the best
   available donor so a pawn looks exactly as it did before; every gene that
   came from a departing mod has been rewritten to our copy of it.
+  
+  nameMaker points at our copy of the donor RulePackDef, whose word lists
+  ship under Languages/English/Strings.
   ============================================================================
 -->
 <Defs>
@@ -88,6 +91,7 @@
     <inheritable>true</inheritable>
     <canGenerateAsCombatant>true</canGenerateAsCombatant>
     <factionlessGenerationWeight>0</factionlessGenerationWeight>
+    <nameMaker>RimMandrake_KoTOR_NamerAqualish</nameMaker>
     <genes>
       <li>RimMandrake_butchergene_insectmeat</li>
       <li>Aggression_HyperAggressive</li>
@@ -115,6 +119,8 @@
     <inheritable>true</inheritable>
     <canGenerateAsCombatant>true</canGenerateAsCombatant>
     <factionlessGenerationWeight>0</factionlessGenerationWeight>
+    <nameMaker>RimMandrake_KoTOR_NamerArkanian</nameMaker>
+    <nameMakerFemale>RimMandrake_KoTOR_NamerArkanian</nameMakerFemale>
     <genes>
       <li>ArchiteMetabolism</li>
       <li>Turn_Gene_Certain</li>
@@ -146,6 +152,7 @@
     <inheritable>true</inheritable>
     <canGenerateAsCombatant>true</canGenerateAsCombatant>
     <factionlessGenerationWeight>0</factionlessGenerationWeight>
+    <nameMaker>RimMandrake_KoTOR_NamerBith</nameMaker>
     <genes>
       <li>Immunity_Weak</li>
       <li>Hair_BaldOnly</li>
@@ -167,6 +174,7 @@
     <inheritable>true</inheritable>
     <canGenerateAsCombatant>true</canGenerateAsCombatant>
     <factionlessGenerationWeight>0</factionlessGenerationWeight>
+    <nameMaker>RimMandrake_KoTOR_NamerBothan</nameMaker>
     <genes>
       <li>RimMandrake_statgene_metabolismcheat</li>
       <li>RimMandrake_BodySizeGene_small</li>
@@ -198,6 +206,7 @@
     <inheritable>true</inheritable>
     <canGenerateAsCombatant>true</canGenerateAsCombatant>
     <factionlessGenerationWeight>0</factionlessGenerationWeight>
+    <nameMaker>RimMandrake_KoTOR_NamerCathar</nameMaker>
     <genes>
       <li>RimMandrake_statgene_predator</li>
       <li>MoveSpeed_Quick</li>
@@ -253,6 +262,7 @@
     <canGenerateAsCombatant>true</canGenerateAsCombatant>
     <factionlessGenerationWeight>0</factionlessGenerationWeight>
     <combatPowerFactor>0.6000000238418579</combatPowerFactor>
+    <nameMaker>RimMandrake_KoTOR_NamerChadraFan</nameMaker>
     <genes>
       <li>RimMandrake_Nose_SmallPig</li>
       <li>RimMandrake_BodySizeGene_smaller</li>
@@ -325,6 +335,8 @@
     <inheritable>true</inheritable>
     <canGenerateAsCombatant>true</canGenerateAsCombatant>
     <factionlessGenerationWeight>0</factionlessGenerationWeight>
+    <nameMaker>RimMandrake_ChissNameGenerator</nameMaker>
+    <chanceToUseNameMaker>999</chanceToUseNameMaker>
     <genes>
       <li>PsychicAbility_Deaf</li>
       <li>MinTemp_LargeDecrease</li>
@@ -350,6 +362,7 @@
     <inheritable>true</inheritable>
     <canGenerateAsCombatant>true</canGenerateAsCombatant>
     <factionlessGenerationWeight>0</factionlessGenerationWeight>
+    <nameMaker>RimMandrake_NamerPersonPureblood</nameMaker>
     <genes>
       <li>Turn_Gene_LatentPsychic</li>
       <li>Turn_Gene_MeditationNeed</li>
@@ -416,6 +429,7 @@
     <inheritable>true</inheritable>
     <canGenerateAsCombatant>true</canGenerateAsCombatant>
     <factionlessGenerationWeight>0</factionlessGenerationWeight>
+    <nameMaker>RimMandrake_KoTOR_NamerDevaronian</nameMaker>
     <genes>
       <li>Mood_Pessimist</li>
       <li>MinTemp_SmallIncrease</li>
@@ -447,6 +461,7 @@
     <inheritable>true</inheritable>
     <canGenerateAsCombatant>true</canGenerateAsCombatant>
     <factionlessGenerationWeight>0</factionlessGenerationWeight>
+    <nameMaker>RimMandrake_KoTOR_NamerDuros</nameMaker>
     <genes>
       <li>RimMandrake_butchergene_lizardskin</li>
       <li>MinTemp_SmallIncrease</li>
@@ -475,6 +490,7 @@
     <canGenerateAsCombatant>true</canGenerateAsCombatant>
     <factionlessGenerationWeight>0</factionlessGenerationWeight>
     <combatPowerFactor>0.6000000238418579</combatPowerFactor>
+    <nameMaker>RimMandrake_KoTOR_NamerEchani</nameMaker>
     <genes>
       <li>Turn_Gene_MeditationNeed</li>
       <li>MeleeDamage_Strong</li>
@@ -504,6 +520,7 @@
     <inheritable>true</inheritable>
     <canGenerateAsCombatant>true</canGenerateAsCombatant>
     <factionlessGenerationWeight>0</factionlessGenerationWeight>
+    <nameMaker>RimMandrake_KoTOR_NamerEwok</nameMaker>
     <genes>
       <li>RimMandrake_Eyes_Big</li>
       <li>RimMandrake_statgene_predator</li>
@@ -547,6 +564,7 @@
     <inheritable>true</inheritable>
     <canGenerateAsCombatant>true</canGenerateAsCombatant>
     <factionlessGenerationWeight>0</factionlessGenerationWeight>
+    <nameMaker>RimMandrake_KoTOR_NamerFalleen</nameMaker>
     <genes>
       <li>RimMandrake_FacialRidges_bumpy</li>
       <li>RimMandrake_statgene_metabolismcheat</li>
@@ -587,6 +605,8 @@
     <inheritable>true</inheritable>
     <canGenerateAsCombatant>true</canGenerateAsCombatant>
     <factionlessGenerationWeight>0</factionlessGenerationWeight>
+    <nameMaker>RimMandrake_KoTOR_NamerFeeorin</nameMaker>
+    <chanceToUseNameMaker>0</chanceToUseNameMaker>
     <genes>
       <li>DiseaseFree</li>
       <li>TotalHealing</li>
@@ -623,6 +643,8 @@
     <inheritable>true</inheritable>
     <canGenerateAsCombatant>true</canGenerateAsCombatant>
     <factionlessGenerationWeight>0</factionlessGenerationWeight>
+    <nameMaker>RimMandrake_KoTOR_NamerGamorrean</nameMaker>
+    <chanceToUseNameMaker>0</chanceToUseNameMaker>
     <genes>
       <li>RimMandrake_Face_jowls</li>
       <li>RimMandrake_Face_tusks</li>
@@ -662,6 +684,7 @@
     <inheritable>true</inheritable>
     <canGenerateAsCombatant>true</canGenerateAsCombatant>
     <factionlessGenerationWeight>0</factionlessGenerationWeight>
+    <nameMaker>RimMandrake_KoTOR_NamerGand</nameMaker>
     <genes>
       <li>RimMandrake_butchergene_insectmeat</li>
       <li>RimMandrake_Head_gand</li>
@@ -783,6 +806,8 @@
     <inheritable>true</inheritable>
     <canGenerateAsCombatant>true</canGenerateAsCombatant>
     <factionlessGenerationWeight>0</factionlessGenerationWeight>
+    <nameMaker>RimMandrake_KoTOR_NamerHutt</nameMaker>
+    <chanceToUseNameMaker>0</chanceToUseNameMaker>
     <genes>
       <li>RimMandrake_Head_hutt</li>
       <li>RimMandrake_Tail_hutt</li>
@@ -854,6 +879,7 @@
     <inheritable>true</inheritable>
     <canGenerateAsCombatant>true</canGenerateAsCombatant>
     <factionlessGenerationWeight>0</factionlessGenerationWeight>
+    <nameMaker>RimMandrake_KoTOR_NamerIridonian</nameMaker>
     <genes>
       <li>RimMandrake_FacialRidges_iridonian</li>
       <li>RimMandrake_Headbone_zabrak</li>
@@ -876,6 +902,7 @@
     <inheritable>true</inheritable>
     <canGenerateAsCombatant>true</canGenerateAsCombatant>
     <factionlessGenerationWeight>0</factionlessGenerationWeight>
+    <nameMaker>RimMandrake_KoTOR_NamerSullustan</nameMaker>
     <genes>
       <li>RimMandrake_BodySizeGene_big</li>
       <li>MoveSpeed_Slow</li>
@@ -906,6 +933,7 @@
     <inheritable>true</inheritable>
     <canGenerateAsCombatant>false</canGenerateAsCombatant>
     <factionlessGenerationWeight>0</factionlessGenerationWeight>
+    <nameMaker>RimMandrake_KoTOR_NamerJawa</nameMaker>
     <genes>
       <li>RimMandrake_BodySizeGene_smaller</li>
       <li>WoundHealing_Slow</li>
@@ -941,6 +969,7 @@
     <inheritable>true</inheritable>
     <canGenerateAsCombatant>true</canGenerateAsCombatant>
     <factionlessGenerationWeight>0</factionlessGenerationWeight>
+    <nameMaker>RimMandrake_KoTOR_NamerNagai</nameMaker>
     <genes>
       <li>RimMandrake_statgene_predator</li>
       <li>RimMandrake_HeadAttachment_kaleeshmask</li>
@@ -1009,6 +1038,7 @@
     <inheritable>true</inheritable>
     <canGenerateAsCombatant>true</canGenerateAsCombatant>
     <factionlessGenerationWeight>0</factionlessGenerationWeight>
+    <nameMaker>RimMandrake_KoTOR_NamerDuros</nameMaker>
     <genes>
       <li>RimMandrake_Ears_weirdflap</li>
       <li>RimMandrake_FacialRidges_bumpy</li>
@@ -1039,6 +1069,7 @@
     <canGenerateAsCombatant>true</canGenerateAsCombatant>
     <factionlessGenerationWeight>0</factionlessGenerationWeight>
     <combatPowerFactor>1.2000000476837158</combatPowerFactor>
+    <nameMaker>RimMandrake_KoTOR_NamerKlatoonian</nameMaker>
     <genes>
       <li>RimMandrake_FacialRidges_bumpy</li>
       <li>RimMandrake_statgene_compliant</li>
@@ -1073,6 +1104,7 @@
     <inheritable>true</inheritable>
     <canGenerateAsCombatant>true</canGenerateAsCombatant>
     <factionlessGenerationWeight>0</factionlessGenerationWeight>
+    <nameMaker>RimMandrake_KoTOR_NamerKubaz</nameMaker>
     <genes>
       <li>RimMandrake_butchergene_insectmeat</li>
       <li>RimMandrake_Head_kubaz</li>
@@ -1104,6 +1136,7 @@
     <canGenerateAsCombatant>true</canGenerateAsCombatant>
     <factionlessGenerationWeight>0</factionlessGenerationWeight>
     <combatPowerFactor>1.399999976158142</combatPowerFactor>
+    <nameMaker>RimMandrake_KoTOR_NamerLasat</nameMaker>
     <genes>
       <li>RimMandrake_FacialRidges_bumpy</li>
       <li>RimMandrake_AbilityGene_JumpLegs</li>
@@ -1139,6 +1172,7 @@
     <inheritable>true</inheritable>
     <canGenerateAsCombatant>true</canGenerateAsCombatant>
     <factionlessGenerationWeight>0</factionlessGenerationWeight>
+    <nameMaker>RimMandrake_KoTOR_NamerMimbanese</nameMaker>
     <genes>
       <li>RimMandrake_FacialRidges_bumpy</li>
       <li>RimMandrake_FacialRidges_broad</li>
@@ -1169,6 +1203,7 @@
     <inheritable>true</inheritable>
     <canGenerateAsCombatant>true</canGenerateAsCombatant>
     <factionlessGenerationWeight>0</factionlessGenerationWeight>
+    <nameMaker>RimMandrake_KoTOR_NamerMirialan</nameMaker>
     <genes>
       <li>RimMandrake_statgene_PsyHarmonize</li>
       <li>Turn_Gene_Certain</li>
@@ -1205,6 +1240,7 @@
     <inheritable>true</inheritable>
     <canGenerateAsCombatant>true</canGenerateAsCombatant>
     <factionlessGenerationWeight>0</factionlessGenerationWeight>
+    <nameMaker>RimMandrake_KoTOR_NamerQuarren</nameMaker>
     <genes>
       <li>MinTemp_SmallIncrease</li>
       <li>MaxTemp_SmallDecrease</li>
@@ -1262,6 +1298,7 @@
     <inheritable>true</inheritable>
     <canGenerateAsCombatant>true</canGenerateAsCombatant>
     <factionlessGenerationWeight>0</factionlessGenerationWeight>
+    <nameMaker>RimMandrake_KoTOR_NamerNagai</nameMaker>
     <genes>
       <li>RimMandrake_Body_gaunt</li>
       <li>RimMandrake_BodySizeGene_big</li>
@@ -1287,6 +1324,7 @@
     <inheritable>true</inheritable>
     <canGenerateAsCombatant>true</canGenerateAsCombatant>
     <factionlessGenerationWeight>0</factionlessGenerationWeight>
+    <nameMaker>RimMandrake_KoTOR_NamerNautolan</nameMaker>
     <genes>
       <li>RimMandrake_Headbone_nautolan</li>
       <li>RimMandrake_Eyes_Big</li>
@@ -1321,6 +1359,7 @@
     <inheritable>true</inheritable>
     <canGenerateAsCombatant>true</canGenerateAsCombatant>
     <factionlessGenerationWeight>0</factionlessGenerationWeight>
+    <nameMaker>RimMandrake_KoTOR_NamerNeimoidian</nameMaker>
     <genes>
       <li>RimMandrake_butchergene_lizardskin</li>
       <li>MinTemp_SmallIncrease</li>
@@ -1355,6 +1394,7 @@
     <inheritable>true</inheritable>
     <canGenerateAsCombatant>true</canGenerateAsCombatant>
     <factionlessGenerationWeight>0</factionlessGenerationWeight>
+    <nameMaker>RimMandrake_KoTOR_NamerNelvaanian</nameMaker>
     <genes>
       <li>RimMandrake_Eyes_Big</li>
       <li>RimMandrake_statgene_predator</li>
@@ -1383,6 +1423,7 @@
     <inheritable>true</inheritable>
     <canGenerateAsCombatant>true</canGenerateAsCombatant>
     <factionlessGenerationWeight>0</factionlessGenerationWeight>
+    <nameMaker>RimMandrake_KoTOR_NamerNikto</nameMaker>
     <genes>
       <li>RimMandrake_butchergene_lizardskin</li>
       <li>Immunity_Weak</li>
@@ -1444,6 +1485,7 @@
     <inheritable>true</inheritable>
     <canGenerateAsCombatant>true</canGenerateAsCombatant>
     <factionlessGenerationWeight>0</factionlessGenerationWeight>
+    <nameMaker>RimMandrake_KoTOR_NamerPantoran</nameMaker>
     <genes>
       <li>Immunity_Weak</li>
       <li>MinTemp_LargeDecrease</li>
@@ -1501,6 +1543,7 @@
     <inheritable>true</inheritable>
     <canGenerateAsCombatant>true</canGenerateAsCombatant>
     <factionlessGenerationWeight>0</factionlessGenerationWeight>
+    <nameMaker>RimMandrake_KoTOR_NamerQuarren</nameMaker>
     <genes>
       <li>RimMandrake_AbilityGene_inkspray</li>
       <li>MaxTemp_SmallIncrease</li>
@@ -1557,6 +1600,7 @@
     <inheritable>true</inheritable>
     <canGenerateAsCombatant>true</canGenerateAsCombatant>
     <factionlessGenerationWeight>0</factionlessGenerationWeight>
+    <nameMaker>RimMandrake_KoTOR_NamerRodian</nameMaker>
     <genes>
       <li>RimMandrake_Headbone_rodian</li>
       <li>RimMandrake_Eyes_Big</li>
@@ -1627,6 +1671,7 @@
     <inheritable>true</inheritable>
     <canGenerateAsCombatant>true</canGenerateAsCombatant>
     <factionlessGenerationWeight>0</factionlessGenerationWeight>
+    <nameMaker>RimMandrake_NamerPersonPureblood</nameMaker>
     <genes>
       <li>RimMandrake_Beard_chintendril</li>
       <li>PsychicAbility_Enhanced</li>
@@ -1722,6 +1767,7 @@
     <inheritable>true</inheritable>
     <canGenerateAsCombatant>true</canGenerateAsCombatant>
     <factionlessGenerationWeight>0</factionlessGenerationWeight>
+    <nameMaker>RimMandrake_KoTOR_NamerSnivvian</nameMaker>
     <genes>
       <li>RimMandrake_Face_tusks</li>
       <li>RimMandrake_BodySizeGene_small</li>
@@ -1750,6 +1796,7 @@
     <inheritable>true</inheritable>
     <canGenerateAsCombatant>true</canGenerateAsCombatant>
     <factionlessGenerationWeight>0</factionlessGenerationWeight>
+    <nameMaker>RimMandrake_KoTOR_NamerSullustan</nameMaker>
     <genes>
       <li>RimMandrake_Eyes_Big</li>
       <li>RimMandrake_BodySizeGene_small</li>
@@ -1852,6 +1899,7 @@
     <inheritable>true</inheritable>
     <canGenerateAsCombatant>true</canGenerateAsCombatant>
     <factionlessGenerationWeight>0</factionlessGenerationWeight>
+    <nameMaker>RimMandrake_KoTOR_NamerTogruta</nameMaker>
     <genes>
       <li>Turn_Gene_Certain</li>
       <li>Outland_LowFertility</li>
@@ -1887,6 +1935,7 @@
     <inheritable>true</inheritable>
     <canGenerateAsCombatant>true</canGenerateAsCombatant>
     <factionlessGenerationWeight>0</factionlessGenerationWeight>
+    <nameMaker>RimMandrake_KoTOR_NamerTrandoshan</nameMaker>
     <genes>
       <li>BS_Fast_TotalHealing</li>
       <li>RimMandrake_BodyAttachment_falleen</li>
@@ -1921,6 +1970,7 @@ Note: The appearance of Tuskens under their wrappings is not absolutely confirme
     <inheritable>true</inheritable>
     <canGenerateAsCombatant>true</canGenerateAsCombatant>
     <factionlessGenerationWeight>0</factionlessGenerationWeight>
+    <nameMaker>RimMandrake_NamerPersonSandP</nameMaker>
     <genes>
       <li>RimMandrake_FacialRidges_bumpy</li>
       <li>RimMandrake_Body_gaunt</li>
@@ -1952,6 +2002,7 @@ Note: The appearance of Tuskens under their wrappings is not absolutely confirme
     <inheritable>true</inheritable>
     <canGenerateAsCombatant>true</canGenerateAsCombatant>
     <factionlessGenerationWeight>0</factionlessGenerationWeight>
+    <nameMaker>RimMandrake_KoTOR_NamerTwilek</nameMaker>
     <genes>
       <li>Turn_Gene_Uncertain</li>
       <li>Turn_Gene_AgressionSubmissive</li>
@@ -1994,6 +2045,7 @@ Note: The appearance of Tuskens under their wrappings is not absolutely confirme
     <inheritable>true</inheritable>
     <canGenerateAsCombatant>true</canGenerateAsCombatant>
     <factionlessGenerationWeight>0</factionlessGenerationWeight>
+    <nameMaker>RimMandrake_KoTOR_NamerDevaronian</nameMaker>
     <genes>
       <li>RimMandrake_statgene_compliant</li>
       <li>RimMandrake_Beard_Chops</li>
@@ -2026,6 +2078,7 @@ Note: The appearance of Tuskens under their wrappings is not absolutely confirme
     <inheritable>true</inheritable>
     <canGenerateAsCombatant>true</canGenerateAsCombatant>
     <factionlessGenerationWeight>0</factionlessGenerationWeight>
+    <nameMaker>RimMandrake_KoTOR_NamerUmbaran</nameMaker>
     <genes>
       <li>RimMandrake_Body_gaunt</li>
       <li>Turn_Gene_SlowNeuralHeat</li>
@@ -2050,6 +2103,7 @@ Note: The appearance of Tuskens under their wrappings is not absolutely confirme
     <canGenerateAsCombatant>true</canGenerateAsCombatant>
     <factionlessGenerationWeight>0</factionlessGenerationWeight>
     <combatPowerFactor>1.2000000476837158</combatPowerFactor>
+    <nameMaker>RimMandrake_KoTOR_NamerWeequay</nameMaker>
     <genes>
       <li>RimMandrake_FacialRidges_bumpy</li>
       <li>RimMandrake_Beard_chinspines</li>
@@ -2087,6 +2141,7 @@ Note: The appearance of Tuskens under their wrappings is not absolutely confirme
     <inheritable>true</inheritable>
     <canGenerateAsCombatant>true</canGenerateAsCombatant>
     <factionlessGenerationWeight>0</factionlessGenerationWeight>
+    <nameMaker>RimMandrake_KoTOR_NamerWookiee</nameMaker>
     <genes>
       <li>RimMandrake_BodySizeGene_big</li>
       <li>RimMandrake_lifespan_quad</li>
@@ -2123,6 +2178,7 @@ Note: The appearance of Tuskens under their wrappings is not absolutely confirme
     <inheritable>true</inheritable>
     <canGenerateAsCombatant>true</canGenerateAsCombatant>
     <factionlessGenerationWeight>0</factionlessGenerationWeight>
+    <nameMaker>RimMandrake_KoTOR_NamerYoder</nameMaker>
     <genes>
       <li>DiseaseFree</li>
       <li>RimMandrake_statgene_PsyHarmonize</li>
@@ -2158,6 +2214,7 @@ Note: The appearance of Tuskens under their wrappings is not absolutely confirme
     <inheritable>true</inheritable>
     <canGenerateAsCombatant>true</canGenerateAsCombatant>
     <factionlessGenerationWeight>0</factionlessGenerationWeight>
+    <nameMaker>RimMandrake_KoTOR_NamerZeltron</nameMaker>
     <genes>
       <li>RimMandrake_statgene_PsyHarmonize</li>
       <li>PsychicBonding</li>
@@ -2187,6 +2244,7 @@ Note: The appearance of Tuskens under their wrappings is not absolutely confirme
     <inheritable>true</inheritable>
     <canGenerateAsCombatant>true</canGenerateAsCombatant>
     <factionlessGenerationWeight>0</factionlessGenerationWeight>
+    <nameMaker>RimMandrake_KoTOR_NamerZygerrian</nameMaker>
     <genes>
       <li>RimMandrake_Ears_BigCat</li>
       <li>RimMandrake_Beard_chinspines</li>

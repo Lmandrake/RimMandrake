@@ -57,7 +57,38 @@ DONOR_PIDS = {d["packageId"] for d in DONORS.values()}
 
 PREFIX = "RimMandrake_"
 TEXNS = "RimMandrakeSW"          # our texture path namespace
+STRNS = "RimMandrakeSWNames"     # our Languages/English/Strings namespace
 SPECIES_PREFIX = "RimMandrake"   # xenotype defNames: RimMandrakeTwilek
+
+# A RulePackDef's Rule_File entries name a plain text word list under some
+# active mod's `Languages/<lang>/Strings`. Copying the RulePackDef without the
+# word lists gives a namer that resolves and produces nothing.
+LANG = {
+    "SWX": WS + "/2915192253/Languages/English/Strings",
+    "OR": WS + "/2980427615/1.6/Mods/ChissXenotype/Languages/English/Strings",
+}
+
+# Free-text blocks inside a RulePackDef. A bare word in one is grammar, not a
+# def reference and not a texture path, and renaming it corrupts the grammar.
+RAWTEXT_TAGS = ("rulesStrings", "rulesFiles", "keyword")
+
+# Outer Rim - Galactic Diversity pawn kinds our FactionDefs field directly.
+# Only Galactic Diversity's: the Droid Depot, Galactic Empire, Core, Separatist
+# Droid Army and VFE Pirates kinds our factions also name belong to mods that
+# stay installed.
+RESCUE_KINDS = [
+    "OuterRim_Aqualish", "OuterRim_Arkanian", "OuterRim_ArkanianTribal",
+    "OuterRim_Geonosian", "OuterRim_GeonosianTribal", "OuterRim_Herglic",
+    "OuterRim_Jawa", "OuterRim_JawaTribal", "OuterRim_Kaminoan",
+    "OuterRim_MonCalamari", "OuterRim_Nikto", "OuterRim_NiktoTribal",
+    "OuterRim_Quarren", "OuterRim_QuarrenTribal", "OuterRim_Wookiee",
+    "OuterRim_WookieeTribal",
+]
+# Their two abstract parents. A ParentName that resolves to nothing is a SILENT
+# discard, so these travel and are renamed with them.
+RESCUE_KIND_PARENTS = {"OuterRimTestColonyPawnKind": PREFIX + "ColonyPawnKind",
+                       "OuterRimTestTribalPawnKind": PREFIX + "TribalPawnKind"}
+RESCUE_KIND_FILE = "1.6/Defs/GeneDefs"
 
 # Owner ruling 2026-08-15. Miraluka is not built. It was also the only def in
 # the set whose geneClass lived in a donor assembly (OuterRimDiversity.
@@ -178,8 +209,12 @@ def donor_xml_files(root):
 
 
 def index_donors():
-    """defName -> (donorTag, element); Name= -> (donorTag, element)."""
-    defs, absts = {}, {}
+    """defName -> (donorTag, element); Name= -> (donorTag, element).
+
+    PawnKindDefs are held apart. Outer Rim names a xenotype and a pawn kind the
+    same thing (`OuterRim_Wookiee` is both), and a single defName-keyed index
+    silently keeps whichever file was walked last."""
+    defs, absts, kinds = {}, {}, {}
     for tag, cfg in DONORS.items():
         for fp in donor_xml_files(cfg["root"]):
             try:
@@ -192,11 +227,42 @@ def index_donors():
                 if not isinstance(el.tag, str):
                     continue
                 dn = el.findtext("defName")
+                if el.tag == "PawnKindDef":
+                    if dn:
+                        kinds[dn] = (tag, el)
+                    if el.get("Name"):
+                        kinds["@" + el.get("Name")] = (tag, el)
+                    continue
                 if dn:
                     defs[dn] = (tag, el)
                 if el.get("Name"):
                     absts[el.get("Name")] = (tag, el)
-    return defs, absts
+    return defs, absts, kinds
+
+
+def index_strings():
+    """donorTag -> {relative path without .txt (lowercased) -> abs file}."""
+    idx = {}
+    for tag, root in LANG.items():
+        m = {}
+        for dp, dn, fn in os.walk(root):
+            for f in fn:
+                if f.lower().endswith(".txt"):
+                    rel = os.path.relpath(os.path.join(dp, f), root)
+                    m[rel.replace("\\", "/")[:-4].lower()] = \
+                        os.path.join(dp, f)
+        idx[tag] = m
+    return idx
+
+
+def rawtext_ids(el):
+    """ids of every node inside a RulePackDef's free-text blocks."""
+    out = set()
+    for parent in el.iter():
+        if parent.tag in RAWTEXT_TAGS:
+            for d in parent.iter():
+                out.add(id(d))
+    return out
 
 
 def index_textures():
@@ -279,10 +345,13 @@ def closure(seeds, defs, absts):
                 continue
             abstract.add(n)
             el = absts[n][1]
+        raw = rawtext_ids(el)
         for sub in [el] + list(el.iter()):
             pn = sub.get("ParentName")
             if pn and pn in absts:
                 queue.append(("a", pn))
+            if id(sub) in raw:
+                continue
             t = (sub.text or "").strip()
             if t and re.fullmatch(r"[A-Za-z0-9_.]+", t) and t in defs:
                 queue.append(("d", t))
@@ -323,7 +392,8 @@ def resolve_tex(path, texidx, home):
     return None
 
 
-def rewrite(el, defmap, absmap, texidx, home, texhits):
+def rewrite(el, defmap, absmap, texidx, home, texhits,
+            stridx=None, strhits=None):
     """Rename every reference in place. A reference left pointing at a donor
     name still resolves TODAY and breaks silently the moment the donor is
     switched off, which is the entire point of this mod."""
@@ -332,6 +402,25 @@ def rewrite(el, defmap, absmap, texidx, home, texhits):
             cls = child.get("Class")
             if cls in DROP_EXT_CLASSES:
                 parent.remove(child)
+    raw = rawtext_ids(el)
+    # Rule_File word lists. Claimed here, before the texture pass, because
+    # `path` is also a texture field name and the two must not be confused.
+    rulefiles = set()
+    if stridx is not None:
+        for li in el.iter("li"):
+            if li.get("Class") != "Rule_File":
+                continue
+            p = li.find("path")
+            if p is None or not (p.text or "").strip():
+                continue
+            rulefiles.add(id(p))
+            rel = p.text.strip()
+            tag = home if rel.lower() in stridx.get(home, {}) else next(
+                (t for t in stridx if rel.lower() in stridx[t]), None)
+            if tag is None:
+                continue
+            strhits.add((tag, rel))
+            p.text = "%s/%s/%s" % (STRNS, tag, rel)
     nm = el.get("Name")
     if nm in absmap:
         el.set("Name", absmap[nm])
@@ -343,6 +432,8 @@ def rewrite(el, defmap, absmap, texidx, home, texhits):
             sub.set("ParentName", absmap[pn])
         elif pn in defmap:
             sub.set("ParentName", defmap[pn])
+        if id(sub) in raw:
+            continue
         if sub.tag in defmap:
             sub.tag = defmap[sub.tag]
         t = (sub.text or "").strip()
@@ -371,12 +462,30 @@ def rewrite(el, defmap, absmap, texidx, home, texhits):
             node.text = "%s/%s/%s" % (TEXNS, tag, p)
             texhits.add((tag, p))
     for sub in [el] + list(el.iter()):
+        if id(sub) in rulefiles or id(sub) in raw:
+            continue
         if sub.tag in TEXFIELDS:
             do_path(sub)
         elif sub.tag in TEXCONTAINERS:
             for c in sub:
                 do_path(c)
     return el
+
+
+def copy_strings(strhits, stridx):
+    """Always copied, even under --no-textures: a few hundred KB of word lists
+    is not what that flag exists to skip, and verify() checks them."""
+    n = 0
+    for tag, rel in sorted(strhits):
+        src = stridx[tag].get(rel.lower())
+        if not src:
+            continue
+        dst = os.path.join(OUT, "Languages/English/Strings", STRNS, tag,
+                           rel + ".txt")
+        n += 1
+        os.makedirs(os.path.dirname(dst), exist_ok=True)
+        shutil.copyfile(src, dst)
+    return n
 
 
 def apply_overrides(bytype, texhits):
@@ -496,8 +605,36 @@ def header(title, body):
             + body.split("\n") + [RULE])
 
 
-def write_xenotypes(built, defmap):
+def namemaker_for(b, x, tbl, defmap):
+    """(nameMaker, nameMakerFemale, chance) for one species, already renamed.
+
+    First choice is whatever the donors put on this species, taken from any of
+    the three candidate xenotypes -- the source we build the gene list from does
+    not always carry the namer. Second choice is the namer whose name IS the
+    species, which recovers the ones the donors left commented out: guy762
+    disabled Twi'lek, Cathar, Echani and Miraluka because their namers fought
+    the forced names on KotOR Weapons & Armor's hero pawnkinds. Those hero kinds
+    reference guy762's xenotypes, not ours, so the conflict does not reach here
+    and a Twi'lek gets a Twi'lek name."""
+    for cand in tbl.get(b["species"], ()):
+        if not cand or cand not in x:
+            continue
+        f = x[cand]["fields"]
+        if f.get("nameMaker"):
+            return (defmap.get(f["nameMaker"], f["nameMaker"]),
+                    defmap.get(f.get("nameMakerFemale"),
+                               f.get("nameMakerFemale")),
+                    f.get("chanceToUseNameMaker"))
+    bare = re.sub(r"[^A-Za-z0-9]", "", b["species"]).lower()
+    for donor, ours in defmap.items():
+        if donor.lower() == "kotor_namer" + bare:
+            return ours, None, None
+    return None, None, None
+
+
+def write_xenotypes(built, defmap, x, tbl):
     els = []
+    unnamed = []
     for b in built:
         f = b["f"]
         e = ET.Element("XenotypeDef")
@@ -516,6 +653,15 @@ def write_xenotypes(built, defmap):
         cpf = f.get("combatPowerFactor")
         if cpf and cpf != 1:
             ET.SubElement(e, "combatPowerFactor").text = str(cpf)
+        nm, nmf, chance = namemaker_for(b, x, tbl, defmap)
+        if nm:
+            ET.SubElement(e, "nameMaker").text = nm
+            if nmf:
+                ET.SubElement(e, "nameMakerFemale").text = nmf
+            if chance is not None and chance != 1:
+                ET.SubElement(e, "chanceToUseNameMaker").text = str(chance)
+        else:
+            unnamed.append(b["species"])
         gl = ET.SubElement(e, "genes")
         for gn in b["genes"]:
             ET.SubElement(gl, "li").text = \
@@ -526,8 +672,61 @@ def write_xenotypes(built, defmap):
                      "One XenotypeDef per species. Gene lists are inherited from "
                      "the best\navailable donor so a pawn looks exactly as it did "
                      "before; every gene that\ncame from a departing mod has been "
-                     "rewritten to our copy of it."),
+                     "rewritten to our copy of it.\n\nnameMaker points at our copy "
+                     "of the donor RulePackDef, whose word lists\nship under "
+                     "Languages/English/Strings."),
               els)
+    return unnamed
+
+
+def write_rescued_kinds(kinds, tbl, built, texidx):
+    """The Outer Rim - Galactic Diversity pawn kinds our FactionDefs field.
+
+    Copied rather than depended on because Galactic Diversity is one of the
+    three mods this whole exercise switches off. Their `xenotypeChances` keys
+    are repointed at our species; the two abstract parents travel with them."""
+    orname = {}
+    for b in built:
+        for cand in tbl.get(b["species"], ()):
+            if cand:
+                orname[cand] = clean_name(b["species"])
+    els, missing = [], []
+    for name, new in sorted(RESCUE_KIND_PARENTS.items()):
+        if "@" + name not in kinds:
+            missing.append(name)
+            continue
+        c = ET.fromstring(ET.tostring(kinds["@" + name][1]))
+        c.set("Name", new)
+        c.set("Abstract", "True")
+        els.append(c)
+    for dn in RESCUE_KINDS:
+        if dn not in kinds:
+            missing.append(dn)
+            continue
+        c = ET.fromstring(ET.tostring(kinds[dn][1]))
+        c.find("defName").text = PREFIX + dn.split("_", 1)[1]
+        pn = c.get("ParentName")
+        if pn in RESCUE_KIND_PARENTS:
+            c.set("ParentName", RESCUE_KIND_PARENTS[pn])
+        # DICTIONARY-KEYED by defName: the xenotype is the ELEMENT NAME.
+        for chances in c.iter("xenotypeChances"):
+            for k in chances:
+                if k.tag in orname:
+                    k.tag = orname[k.tag]
+                elif k.tag.startswith("OuterRim_"):
+                    missing.append("%s -> xenotype %s" % (dn, k.tag))
+        els.append(c)
+    if missing:
+        raise SystemExit("rescued pawn kinds unresolved: %s" % missing)
+    write_xml(os.path.join(OUT, "Defs/PawnKindDefs/SW_RescuedKinds.xml"),
+              header("SW_RescuedKinds.xml",
+                     "Outer Rim Galactic Diversity's own species pawn kinds, "
+                     "copied and renamed\nbecause our FactionDefs field them "
+                     "directly and that mod is switched off.\nBoth abstract "
+                     "parents travel with them: a ParentName that resolves to\n"
+                     "nothing discards the child silently."),
+              els)
+    return els
 
 
 def write_pawnkinds(built):
@@ -559,16 +758,24 @@ def write_pawnkinds(built):
 def main():
     dry = "--no-textures" in sys.argv
     x, g = load_dump()
-    defs, absts = index_donors()
+    defs, absts, kinds = index_donors()
     texidx = index_textures()
-    print("donor defs indexed %d, abstracts %d, textures %d/%d"
-          % (len(defs), len(absts),
-             len(texidx["SWX"]), len(texidx["OR"])), file=sys.stderr)
+    stridx = index_strings()
+    print("donor defs indexed %d, abstracts %d, kinds %d, textures %d/%d, "
+          "word lists %d/%d"
+          % (len(defs), len(absts), len(kinds),
+             len(texidx["SWX"]), len(texidx["OR"]),
+             len(stridx["SWX"]), len(stridx["OR"])), file=sys.stderr)
 
     built, skipped = pick_species(x, g)
+    tbl = species_table(x)
     used = sorted({n for b in built for n in b["genes"]})
     seeds = [n for n in used
              if g[n].get("packageId") in DONOR_PIDS]
+    # Every donor RulePackDef, not only the ones a xenotype currently names.
+    # Owner's ruling: start from theirs. `include` is followed by the closure,
+    # so a namer that delegates to another namer brings it along.
+    seeds += [n for n, (t, el) in defs.items() if el.tag == "RulePackDef"]
     # forcedHeadTypes are reached through the genes, but seed them explicitly so
     # a head type that only a dropped species used never enters the closure.
     keep, abstract = closure(seeds, defs, absts)
@@ -576,23 +783,24 @@ def main():
     defmap = rename_map(keep)
     absmap = rename_map(abstract)
 
-    texhits = set()
+    texhits, strhits = set(), set()
     bytype = {}
     for n in sorted(keep):
         tag, el = defs[n]
         c = rewrite(ET.fromstring(ET.tostring(el)), defmap, absmap, texidx,
-                    tag, texhits)
+                    tag, texhits, stridx, strhits)
         bytype.setdefault(c.tag, []).append(c)
     for a in sorted(abstract):
         tag, el = absts[a]
         c = rewrite(ET.fromstring(ET.tostring(el)), defmap, absmap, texidx,
-                    tag, texhits)
+                    tag, texhits, stridx, strhits)
         c.set("Abstract", "True")
         bytype.setdefault(c.tag, []).append(c)
 
     ok = apply_overrides(bytype, texhits)
 
     FILEMAP = {"GeneDef": "Defs/GeneDefs/SW_Genes.xml",
+               "RulePackDef": "Defs/RulePackDefs/SW_NameMakers.xml",
                "HeadTypeDef": "Defs/HeadTypeDefs/SW_HeadTypes.xml",
                "GeneCategoryDef": "Defs/Misc/SW_Categories.xml",
                "StyleItemCategoryDef": "Defs/Misc/SW_Categories.xml",
@@ -619,13 +827,15 @@ def main():
     n_swx = origins.count("SWX")
     n_or = origins.count("OR")
     write_about(len(built), n_swx, n_or)
-    write_xenotypes(built, defmap)
+    unnamed = write_xenotypes(built, defmap, x, tbl)
     write_pawnkinds(built)
+    rescued = write_rescued_kinds(kinds, tbl, built, texidx)
 
     # xenotype icons live on the xenotype defs, which are ours, not copies --
     # rewrite them the same way.
     fix_xenotype_icons(texidx, texhits)
     n_files = copy_textures(texhits, texidx, dry)
+    n_str = copy_strings(strhits, stridx)
 
     print("\n== species built %d  skipped %d" % (len(built), len(skipped)))
     for s, why in skipped:
@@ -641,7 +851,11 @@ def main():
         print("     %-40s %d defs" % (rel, n))
     print("== texture paths rewritten %d -> %d png files%s"
           % (len(texhits), n_files, " (dry)" if dry else ""))
+    print("== word lists %d -> %d txt files" % (len(strhits), n_str))
+    print("== rescued Galactic Diversity pawn kinds %d" % len(rescued))
     print("== eye-glow override applied: %s" % ok)
+    print("== species with no name maker %d%s"
+          % (len(unnamed), (": " + ", ".join(unnamed)) if unnamed else ""))
     if not verify():
         raise SystemExit(1)
 
@@ -650,7 +864,51 @@ DEPARTING = {"guy762.starwarsxenotypes",
              "neronix17.outerrim.galacticdiversity",
              "btd.xenotyperemix.starwars"}
 PROSE = {"label", "description", "labelShortAdj", "labelNoun", "labelPlural",
-         "title", "jobString", "symbol", "customLabel"}
+         "title", "jobString", "symbol", "customLabel",
+         # a PatchOperation xpath names a def in a mod it EDITS. Every such
+         # operation here is Conditional or FindMod guarded, so the mod leaving
+         # makes it a no-op, not a dead reference.
+         "xpath", "keyword"}
+PATCHES = os.path.join(REPO, "src/Jawa/Jawa_Patches")
+
+
+def scan_defs(root):
+    """(defined names, referenced name -> definers). `@X` is a Name= attribute,
+    which is a second and separate global namespace."""
+    trees = []
+    for dp, _, fs in os.walk(root):
+        for f in fs:
+            if f.endswith(".xml"):
+                try:
+                    trees.append((os.path.join(dp, f),
+                                  ET.parse(os.path.join(dp, f)).getroot()))
+                except ET.ParseError:
+                    pass
+    ours, refs, parents = set(), {}, set()
+    for fp, r in trees:
+        for el in r.iter():
+            if not isinstance(el.tag, str):
+                continue
+            if el.findtext("defName"):
+                ours.add(el.findtext("defName"))
+            if el.get("Name"):
+                ours.add("@" + el.get("Name"))
+    for fp, r in trees:
+        for el in r:
+            if not isinstance(el.tag, str):
+                continue
+            who = el.findtext("defName") or el.get("Name") or \
+                os.path.basename(fp)
+            raw = rawtext_ids(el)
+            for sub in [el] + list(el.iter()):
+                if sub.get("ParentName"):
+                    parents.add(sub.get("ParentName"))
+                if sub.tag in PROSE or id(sub) in raw:
+                    continue
+                for t in ((sub.text or "").strip(), sub.tag):
+                    if t and re.fullmatch(r"[A-Za-z0-9_.]+", t):
+                        refs.setdefault(t, set()).add(who)
+    return ours, refs, parents, trees
 
 
 def verify():
@@ -675,37 +933,25 @@ def verify():
             owner.setdefault(x["defName"], set()).add(
                 (x.get("packageId") or "").lower())
 
-    files = [os.path.join(dp, f) for dp, _, fs in os.walk(OUT + "/Defs")
-             for f in fs if f.endswith(".xml")]
-    ours, refs, parents = set(), {}, set()
-    trees = []
-    for fp in files:
-        r = ET.parse(fp).getroot()
-        trees.append((fp, r))
-        for el in r:
-            if not isinstance(el.tag, str):
-                continue
-            if el.findtext("defName"):
-                ours.add(el.findtext("defName"))
-            if el.get("Name"):
-                ours.add("@" + el.get("Name"))
-    for fp, r in trees:
-        for el in r:
-            if not isinstance(el.tag, str):
-                continue
-            who = el.findtext("defName") or el.get("Name")
-            for sub in [el] + list(el.iter()):
-                if sub.get("ParentName"):
-                    parents.add(sub.get("ParentName"))
-                if sub.tag in PROSE:
-                    continue
-                t = (sub.text or "").strip()
-                if t and re.fullmatch(r"[A-Za-z0-9_.]+", t):
-                    refs.setdefault(t, set()).add(who)
+    ours, refs, parents, trees = scan_defs(OUT + "/Defs")
+    files = [fp for fp, _ in trees]
+    pours, prefs, pparents, _ = scan_defs(PATCHES)
+    known = ours | pours
 
     dead = {t: v for t, v in refs.items()
             if t not in ours and t in owner and owner[t] <= DEPARTING}
+    pdead = {t: v for t, v in prefs.items()
+             if t not in known and t in owner and owner[t] <= DEPARTING}
+    dead.update({t: {"Jawa_Patches/" + w for w in v}
+                 for t, v in pdead.items()})
     ext_parents = sorted(p for p in parents if "@" + p not in ours)
+    # A ParentName names a Name= attribute, which never appears in the def dump
+    # -- so the dump cannot say who owns one. The donors' own XML can. A patch
+    # inheriting from a departing abstract is a SILENT discard, not an error.
+    _, dabs, dkinds = index_donors()
+    donor_names = set(dabs) | {k[1:] for k in dkinds if k.startswith("@")}
+    dead_parents = sorted(p for p in pparents
+                          if "@" + p not in known and p in donor_names)
 
     have = set()
     for dp, _, fs in os.walk(OUT + "/Textures"):
@@ -724,6 +970,39 @@ def verify():
                 continue
             dangling.add(p)
 
+    # Rule_File word lists. A namer whose word list is absent produces a blank
+    # name, which is not an error and is invisible until a pawn is generated.
+    words = set()
+    for dp, _, fs in os.walk(OUT + "/Languages"):
+        for f in fs:
+            if f.lower().endswith(".txt"):
+                words.add(os.path.relpath(os.path.join(dp, f),
+                                          OUT + "/Languages/English/Strings")
+                          .replace("\\", "/")[:-4].lower())
+    dangling_words = set()
+    for fp in files:
+        for p in re.findall(r"<path>(%s/[^<]+)</path>" % STRNS,
+                            io.open(fp, encoding="utf-8").read()):
+            if p.lower() not in words:
+                dangling_words.add(p)
+
+    # Every species the donors NAMED must still be named. Species the donors
+    # never named fall through to vanilla name generation, exactly as they do
+    # today with the donors installed; that is not a regression and not a fail.
+    x, _ = load_dump()
+    expect = {clean_name(sp) for sp, cand in species_table(x).items()
+              if sp not in DROP_SPECIES
+              and any(c and c in x and x[c]["fields"].get("nameMaker")
+                      for c in cand)}
+    xf = os.path.join(OUT, "Defs/XenotypeDefs/RimMandrakeXenotypes.xml")
+    named, namers = set(), set()
+    for el in ET.parse(xf).getroot():
+        if el.findtext("nameMaker"):
+            named.add(el.findtext("defName"))
+            namers.add(el.findtext("nameMaker"))
+    lost = sorted(expect - named)
+    bad_namers = sorted(n for n in namers if n not in ours)
+
     print("\n== VERIFY (donors switched OFF)")
     print("   defs defined here      %d + %d abstracts"
           % (len([o for o in ours if not o.startswith("@")]),
@@ -734,9 +1013,20 @@ def verify():
     print("   dangling texture paths %d" % len(dangling))
     for p in sorted(dangling)[:10]:
         print("        %s" % p)
+    print("   dangling word lists    %d" % len(dangling_words))
+    for p in sorted(dangling_words)[:10]:
+        print("        %s" % p)
+    print("   species named          %d (donors named %d)"
+          % (len(named), len(expect)))
+    print("   species that lost a name %d %s" % (len(lost), ", ".join(lost)))
+    print("   namers that do not resolve %d %s"
+          % (len(bad_namers), ", ".join(bad_namers[:10])))
+    print("   ParentName from a departing mod (silent discard) %d %s"
+          % (len(dead_parents), ", ".join(dead_parents)))
     print("   ParentName from elsewhere (must be a mod we keep): %s"
           % ", ".join(ext_parents))
-    return not dead and not dangling
+    return not (dead or dangling or dangling_words or lost or bad_namers
+                or dead_parents)
 
 
 def fix_xenotype_icons(texidx, texhits):
