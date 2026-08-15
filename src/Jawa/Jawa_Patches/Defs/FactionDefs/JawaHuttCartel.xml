@@ -129,14 +129,14 @@
          lead species heaviest. Retune freely; nothing depends on them. -->
     <xenotypeSet Inherit="False">
       <xenotypeChances>
-        <BTD_Nikto MayRequire="btd.xenotyperemix.starwars">0.300</BTD_Nikto>
-        <BTD_Gamorrean MayRequire="btd.xenotyperemix.starwars">0.100</BTD_Gamorrean>
-        <BTD_Rodian MayRequire="btd.xenotyperemix.starwars">0.100</BTD_Rodian>
-        <BTD_Trandoshan MayRequire="btd.xenotyperemix.starwars">0.100</BTD_Trandoshan>
-        <BTD_Aqualish MayRequire="btd.xenotyperemix.starwars">0.100</BTD_Aqualish>
-        <BTD_Twilek MayRequire="btd.xenotyperemix.starwars">0.100</BTD_Twilek>
-        <BTD_Pyke MayRequire="btd.xenotyperemix.starwars">0.100</BTD_Pyke>
-        <BTD_Devaronian MayRequire="btd.xenotyperemix.starwars">0.100</BTD_Devaronian>
+        <RimMandrakeNikto MayRequire="mandrake.starwarsraces">0.300</RimMandrakeNikto>
+        <RimMandrakeGamorrean MayRequire="mandrake.starwarsraces">0.100</RimMandrakeGamorrean>
+        <RimMandrakeRodian MayRequire="mandrake.starwarsraces">0.100</RimMandrakeRodian>
+        <RimMandrakeTrandoshan MayRequire="mandrake.starwarsraces">0.100</RimMandrakeTrandoshan>
+        <RimMandrakeAqualish MayRequire="mandrake.starwarsraces">0.100</RimMandrakeAqualish>
+        <RimMandrakeTwilek MayRequire="mandrake.starwarsraces">0.100</RimMandrakeTwilek>
+        <RimMandrakePyke MayRequire="mandrake.starwarsraces">0.100</RimMandrakePyke>
+        <RimMandrakeDevaronian MayRequire="mandrake.starwarsraces">0.100</RimMandrakeDevaronian>
       </xenotypeChances>
     </xenotypeSet>
 
@@ -150,8 +150,8 @@
       <li>
         <kindDef>Combat</kindDef>
         <options>
-          <OuterRim_Nikto MayRequire="Neronix17.OuterRim.GalacticDiversity">10</OuterRim_Nikto>
-          <OuterRim_NiktoTribal MayRequire="Neronix17.OuterRim.GalacticDiversity">6</OuterRim_NiktoTribal>
+          <RimMandrake_Nikto MayRequire="mandrake.starwarsraces">10</RimMandrake_Nikto>
+          <RimMandrake_NiktoTribal MayRequire="mandrake.starwarsraces">6</RimMandrake_NiktoTribal>
           <Jawa_Gamorrean_Guard>4</Jawa_Gamorrean_Guard>
           <Jawa_Gamorrean_Enforcer>1</Jawa_Gamorrean_Enforcer>
         </options>
@@ -159,7 +159,7 @@
       <li>
         <kindDef>Trader</kindDef>
         <traders>
-          <OuterRim_Nikto MayRequire="Neronix17.OuterRim.GalacticDiversity">1</OuterRim_Nikto>
+          <RimMandrake_Nikto MayRequire="mandrake.starwarsraces">1</RimMandrake_Nikto>
         </traders>
         <guards>
           <Jawa_Gamorrean_Guard>6</Jawa_Gamorrean_Guard>
@@ -174,7 +174,7 @@
       <li>
         <kindDef>Settlement</kindDef>
         <options>
-          <OuterRim_Nikto MayRequire="Neronix17.OuterRim.GalacticDiversity">8</OuterRim_Nikto>
+          <RimMandrake_Nikto MayRequire="mandrake.starwarsraces">8</RimMandrake_Nikto>
           <Jawa_Gamorrean_Guard>4</Jawa_Gamorrean_Guard>
           <Jawa_Spawn_Hutt>1</Jawa_Spawn_Hutt>
         </options>

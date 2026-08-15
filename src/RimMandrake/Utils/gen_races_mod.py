@@ -869,7 +869,10 @@ PROSE = {"label", "description", "labelShortAdj", "labelNoun", "labelPlural",
          # operation here is Conditional or FindMod guarded, so the mod leaving
          # makes it a no-op, not a dead reference.
          "xpath", "keyword"}
-PATCHES = os.path.join(REPO, "src/Jawa/Jawa_Patches")
+# Only the DEFS. A PatchOperation naming a donor def is guarded by
+# PatchOperationConditional or PatchOperationFindMod and becomes a no-op when
+# that mod leaves; a def is not.
+PATCHES = os.path.join(REPO, "src/Jawa/Jawa_Patches/Defs")
 
 
 def scan_defs(root):

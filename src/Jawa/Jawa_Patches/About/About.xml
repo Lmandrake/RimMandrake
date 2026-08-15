@@ -57,6 +57,7 @@ Currently contains:
        the workshop tree for the defName this mod actually patches. Nothing here
        is inferred from a mod's name. -->
   <loadAfter>
+    <li>mandrake.starwarsraces</li>                         <!-- RimMandrake* species, name makers and rescued pawn kinds -->
     <li>Neronix17.OuterRim.Core</li>
     <li>Neronix17.OuterRim.GalacticEmpire</li>              <!-- OuterRim_GalacticEmpire      ImperialDesertDirectorate.xml -->
     <li>Neronix17.OuterRim.RebelAlliance</li>               <!-- OuterRim_RebelAlliance       RebelAlliance_Suppress.xml -->

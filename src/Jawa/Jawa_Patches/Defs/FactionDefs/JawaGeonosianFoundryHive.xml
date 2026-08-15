@@ -80,7 +80,7 @@
          drops the parent's five vanilla xenotype chances. -->
     <xenotypeSet Inherit="False">
       <xenotypeChances>
-        <BTD_Geonosian MayRequire="Ludeon.RimWorld.Biotech,btd.xenotyperemix.starwars">1.0</BTD_Geonosian>
+        <RimMandrakeGeonosianVariants MayRequire="Ludeon.RimWorld.Biotech,btd.xenotyperemix.starwars">1.0</RimMandrakeGeonosianVariants>
       </xenotypeChances>
     </xenotypeSet>
 
@@ -115,8 +115,8 @@
       <li>
         <kindDef>Combat</kindDef>
         <options>
-          <OuterRim_Geonosian MayRequire="Neronix17.OuterRim.GalacticDiversity">10</OuterRim_Geonosian>
-          <OuterRim_GeonosianTribal MayRequire="Neronix17.OuterRim.GalacticDiversity">6</OuterRim_GeonosianTribal>
+          <RimMandrake_Geonosian MayRequire="mandrake.starwarsraces">10</RimMandrake_Geonosian>
+          <RimMandrake_GeonosianTribal MayRequire="mandrake.starwarsraces">6</RimMandrake_GeonosianTribal>
           <JDSCIS_B1_Battle_Droid MayRequire="M3.Continued.JangoDsoul.StarWars.TSDA">8</JDSCIS_B1_Battle_Droid>
           <JDSCIS_B2_Super_Battle_Droid MayRequire="M3.Continued.JangoDsoul.StarWars.TSDA">3</JDSCIS_B2_Super_Battle_Droid>
           <JDSCIS_Droideka_Droid MayRequire="M3.Continued.JangoDsoul.StarWars.TSDA">1</JDSCIS_Droideka_Droid>
@@ -126,7 +126,7 @@
       <li>
         <kindDef>Settlement</kindDef>
         <options>
-          <OuterRim_Geonosian MayRequire="Neronix17.OuterRim.GalacticDiversity">10</OuterRim_Geonosian>
+          <RimMandrake_Geonosian MayRequire="mandrake.starwarsraces">10</RimMandrake_Geonosian>
           <JDSCIS_B1_Battle_Droid MayRequire="M3.Continued.JangoDsoul.StarWars.TSDA">6</JDSCIS_B1_Battle_Droid>
         </options>
       </li>

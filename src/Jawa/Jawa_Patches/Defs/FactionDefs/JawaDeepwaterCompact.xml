@@ -96,13 +96,13 @@
          lead species heaviest. Retune freely; nothing depends on them. -->
     <xenotypeSet Inherit="False">
       <xenotypeChances>
-        <BTD_Quarren MayRequire="btd.xenotyperemix.starwars">0.280</BTD_Quarren>
-        <BTD_MonCalamari MayRequire="btd.xenotyperemix.starwars">0.120</BTD_MonCalamari>
-        <BTD_Selkath MayRequire="btd.xenotyperemix.starwars">0.120</BTD_Selkath>
-        <BTD_Gungan MayRequire="btd.xenotyperemix.starwars">0.120</BTD_Gungan>
-        <BTD_Chagrian MayRequire="btd.xenotyperemix.starwars">0.120</BTD_Chagrian>
-        <BTD_Herglic MayRequire="btd.xenotyperemix.starwars">0.120</BTD_Herglic>
-        <BTD_Duros MayRequire="btd.xenotyperemix.starwars">0.120</BTD_Duros>
+        <RimMandrakeQuarren MayRequire="mandrake.starwarsraces">0.280</RimMandrakeQuarren>
+        <RimMandrakeMonCalamari MayRequire="mandrake.starwarsraces">0.120</RimMandrakeMonCalamari>
+        <RimMandrakeSelkath MayRequire="mandrake.starwarsraces">0.120</RimMandrakeSelkath>
+        <RimMandrakeGungan MayRequire="mandrake.starwarsraces">0.120</RimMandrakeGungan>
+        <RimMandrakeChagrian MayRequire="mandrake.starwarsraces">0.120</RimMandrakeChagrian>
+        <RimMandrakeHerglic MayRequire="mandrake.starwarsraces">0.120</RimMandrakeHerglic>
+        <RimMandrakeDuros MayRequire="mandrake.starwarsraces">0.120</RimMandrakeDuros>
       </xenotypeChances>
     </xenotypeSet>
 
@@ -117,18 +117,18 @@
         <!-- Never reaches the player: raidsForbidden. This is settlement defence. -->
         <kindDef>Combat</kindDef>
         <options>
-          <OuterRim_Quarren MayRequire="Neronix17.OuterRim.GalacticDiversity">10</OuterRim_Quarren>
-          <OuterRim_MonCalamari MayRequire="Neronix17.OuterRim.GalacticDiversity">8</OuterRim_MonCalamari>
-          <OuterRim_QuarrenTribal MayRequire="Neronix17.OuterRim.GalacticDiversity">4</OuterRim_QuarrenTribal>
+          <RimMandrake_Quarren MayRequire="mandrake.starwarsraces">10</RimMandrake_Quarren>
+          <RimMandrake_MonCalamari MayRequire="mandrake.starwarsraces">8</RimMandrake_MonCalamari>
+          <RimMandrake_QuarrenTribal MayRequire="mandrake.starwarsraces">4</RimMandrake_QuarrenTribal>
         </options>
       </li>
       <li>
         <kindDef>Trader</kindDef>
         <traders>
-          <OuterRim_MonCalamari MayRequire="Neronix17.OuterRim.GalacticDiversity">1</OuterRim_MonCalamari>
+          <RimMandrake_MonCalamari MayRequire="mandrake.starwarsraces">1</RimMandrake_MonCalamari>
         </traders>
         <guards>
-          <OuterRim_Quarren MayRequire="Neronix17.OuterRim.GalacticDiversity">6</OuterRim_Quarren>
+          <RimMandrake_Quarren MayRequire="mandrake.starwarsraces">6</RimMandrake_Quarren>
         </guards>
         <carriers>
           <Muffalo>6</Muffalo>
@@ -137,8 +137,8 @@
       <li>
         <kindDef>Settlement</kindDef>
         <options>
-          <OuterRim_MonCalamari MayRequire="Neronix17.OuterRim.GalacticDiversity">8</OuterRim_MonCalamari>
-          <OuterRim_Quarren MayRequire="Neronix17.OuterRim.GalacticDiversity">8</OuterRim_Quarren>
+          <RimMandrake_MonCalamari MayRequire="mandrake.starwarsraces">8</RimMandrake_MonCalamari>
+          <RimMandrake_Quarren MayRequire="mandrake.starwarsraces">8</RimMandrake_Quarren>
         </options>
       </li>
     </pawnGroupMakers>

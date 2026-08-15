@@ -96,14 +96,14 @@
          lead species heaviest. Retune freely; nothing depends on them. -->
     <xenotypeSet Inherit="False">
       <xenotypeChances>
-        <BTD_Arkanian MayRequire="btd.xenotyperemix.starwars">0.300</BTD_Arkanian>
-        <BTD_Kaminoan MayRequire="btd.xenotyperemix.starwars">0.100</BTD_Kaminoan>
-        <BTD_Cerean MayRequire="btd.xenotyperemix.starwars">0.100</BTD_Cerean>
-        <BTD_Bith MayRequire="btd.xenotyperemix.starwars">0.100</BTD_Bith>
-        <BTD_Chiss MayRequire="btd.xenotyperemix.starwars">0.100</BTD_Chiss>
-        <BTD_Rakata MayRequire="btd.xenotyperemix.starwars">0.100</BTD_Rakata>
-        <BTD_Umbaran MayRequire="btd.xenotyperemix.starwars">0.100</BTD_Umbaran>
-        <BTD_Neimoidian MayRequire="btd.xenotyperemix.starwars">0.100</BTD_Neimoidian>
+        <RimMandrakeArkanian MayRequire="mandrake.starwarsraces">0.300</RimMandrakeArkanian>
+        <RimMandrakeKaminoan MayRequire="mandrake.starwarsraces">0.100</RimMandrakeKaminoan>
+        <RimMandrakeCerean MayRequire="mandrake.starwarsraces">0.100</RimMandrakeCerean>
+        <RimMandrakeBith MayRequire="mandrake.starwarsraces">0.100</RimMandrakeBith>
+        <RimMandrakeChiss MayRequire="mandrake.starwarsraces">0.100</RimMandrakeChiss>
+        <RimMandrakeRakata MayRequire="mandrake.starwarsraces">0.100</RimMandrakeRakata>
+        <RimMandrakeUmbaran MayRequire="mandrake.starwarsraces">0.100</RimMandrakeUmbaran>
+        <RimMandrakeNeimoidian MayRequire="mandrake.starwarsraces">0.100</RimMandrakeNeimoidian>
       </xenotypeChances>
     </xenotypeSet>
 
@@ -117,18 +117,18 @@
       <li>
         <kindDef>Combat</kindDef>
         <options>
-          <OuterRim_Arkanian MayRequire="Neronix17.OuterRim.GalacticDiversity">8</OuterRim_Arkanian>
-          <OuterRim_Kaminoan MayRequire="Neronix17.OuterRim.GalacticDiversity">4</OuterRim_Kaminoan>
-          <OuterRim_ArkanianTribal MayRequire="Neronix17.OuterRim.GalacticDiversity">2</OuterRim_ArkanianTribal>
+          <RimMandrake_Arkanian MayRequire="mandrake.starwarsraces">8</RimMandrake_Arkanian>
+          <RimMandrake_Kaminoan MayRequire="mandrake.starwarsraces">4</RimMandrake_Kaminoan>
+          <RimMandrake_ArkanianTribal MayRequire="mandrake.starwarsraces">2</RimMandrake_ArkanianTribal>
         </options>
       </li>
       <li>
         <kindDef>Trader</kindDef>
         <traders>
-          <OuterRim_Kaminoan MayRequire="Neronix17.OuterRim.GalacticDiversity">1</OuterRim_Kaminoan>
+          <RimMandrake_Kaminoan MayRequire="mandrake.starwarsraces">1</RimMandrake_Kaminoan>
         </traders>
         <guards>
-          <OuterRim_Arkanian MayRequire="Neronix17.OuterRim.GalacticDiversity">6</OuterRim_Arkanian>
+          <RimMandrake_Arkanian MayRequire="mandrake.starwarsraces">6</RimMandrake_Arkanian>
         </guards>
         <carriers>
           <Muffalo>6</Muffalo>
@@ -137,8 +137,8 @@
       <li>
         <kindDef>Settlement</kindDef>
         <options>
-          <OuterRim_Arkanian MayRequire="Neronix17.OuterRim.GalacticDiversity">8</OuterRim_Arkanian>
-          <OuterRim_Kaminoan MayRequire="Neronix17.OuterRim.GalacticDiversity">6</OuterRim_Kaminoan>
+          <RimMandrake_Arkanian MayRequire="mandrake.starwarsraces">8</RimMandrake_Arkanian>
+          <RimMandrake_Kaminoan MayRequire="mandrake.starwarsraces">6</RimMandrake_Kaminoan>
         </options>
       </li>
     </pawnGroupMakers>

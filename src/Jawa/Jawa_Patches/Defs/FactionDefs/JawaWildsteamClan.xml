@@ -98,12 +98,12 @@
          lead species heaviest. Retune freely; nothing depends on them. -->
     <xenotypeSet Inherit="False">
       <xenotypeChances>
-        <BTD_Wookiee MayRequire="btd.xenotyperemix.starwars">0.300</BTD_Wookiee>
+        <RimMandrakeWookiee MayRequire="mandrake.starwarsraces">0.300</RimMandrakeWookiee>
         <Yttakin>0.200</Yttakin>
-        <BTD_Cathar MayRequire="btd.xenotyperemix.starwars">0.125</BTD_Cathar>
-        <BTD_Ewok MayRequire="btd.xenotyperemix.starwars">0.125</BTD_Ewok>
-        <BTD_Togruta MayRequire="btd.xenotyperemix.starwars">0.125</BTD_Togruta>
-        <BTD_Ithorian MayRequire="btd.xenotyperemix.starwars">0.125</BTD_Ithorian>
+        <RimMandrakeCathar MayRequire="mandrake.starwarsraces">0.125</RimMandrakeCathar>
+        <RimMandrakeEwok MayRequire="mandrake.starwarsraces">0.125</RimMandrakeEwok>
+        <RimMandrakeTogruta MayRequire="mandrake.starwarsraces">0.125</RimMandrakeTogruta>
+        <RimMandrakeIthorian MayRequire="mandrake.starwarsraces">0.125</RimMandrakeIthorian>
       </xenotypeChances>
     </xenotypeSet>
 
@@ -117,18 +117,18 @@
       <li>
         <kindDef>Combat</kindDef>
         <options>
-          <OuterRim_Wookiee MayRequire="Neronix17.OuterRim.GalacticDiversity">10</OuterRim_Wookiee>
-          <OuterRim_WookieeTribal MayRequire="Neronix17.OuterRim.GalacticDiversity">8</OuterRim_WookieeTribal>
+          <RimMandrake_Wookiee MayRequire="mandrake.starwarsraces">10</RimMandrake_Wookiee>
+          <RimMandrake_WookieeTribal MayRequire="mandrake.starwarsraces">8</RimMandrake_WookieeTribal>
         </options>
       </li>
       <li>
         <kindDef>Trader</kindDef>
         <traders>
-          <OuterRim_Wookiee MayRequire="Neronix17.OuterRim.GalacticDiversity">1</OuterRim_Wookiee>
+          <RimMandrake_Wookiee MayRequire="mandrake.starwarsraces">1</RimMandrake_Wookiee>
         </traders>
         <guards>
-          <OuterRim_WookieeTribal MayRequire="Neronix17.OuterRim.GalacticDiversity">6</OuterRim_WookieeTribal>
-          <OuterRim_Wookiee MayRequire="Neronix17.OuterRim.GalacticDiversity">3</OuterRim_Wookiee>
+          <RimMandrake_WookieeTribal MayRequire="mandrake.starwarsraces">6</RimMandrake_WookieeTribal>
+          <RimMandrake_Wookiee MayRequire="mandrake.starwarsraces">3</RimMandrake_Wookiee>
         </guards>
         <carriers>
           <Muffalo>6</Muffalo>
@@ -138,8 +138,8 @@
       <li>
         <kindDef>Settlement</kindDef>
         <options>
-          <OuterRim_WookieeTribal MayRequire="Neronix17.OuterRim.GalacticDiversity">10</OuterRim_WookieeTribal>
-          <OuterRim_Wookiee MayRequire="Neronix17.OuterRim.GalacticDiversity">5</OuterRim_Wookiee>
+          <RimMandrake_WookieeTribal MayRequire="mandrake.starwarsraces">10</RimMandrake_WookieeTribal>
+          <RimMandrake_Wookiee MayRequire="mandrake.starwarsraces">5</RimMandrake_Wookiee>
         </options>
       </li>
     </pawnGroupMakers>

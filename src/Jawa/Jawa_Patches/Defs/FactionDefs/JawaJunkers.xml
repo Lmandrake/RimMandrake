@@ -98,14 +98,14 @@
          lead species heaviest. Retune freely; nothing depends on them. -->
     <xenotypeSet Inherit="False">
       <xenotypeChances>
-        <BTD_Gamorrean MayRequire="btd.xenotyperemix.starwars">0.300</BTD_Gamorrean>
-        <BTD_Weequay MayRequire="btd.xenotyperemix.starwars">0.100</BTD_Weequay>
-        <BTD_Nikto MayRequire="btd.xenotyperemix.starwars">0.100</BTD_Nikto>
-        <BTD_Aqualish MayRequire="btd.xenotyperemix.starwars">0.100</BTD_Aqualish>
-        <BTD_Ugnaught MayRequire="btd.xenotyperemix.starwars">0.100</BTD_Ugnaught>
-        <BTD_Rodian MayRequire="btd.xenotyperemix.starwars">0.100</BTD_Rodian>
-        <BTD_Snivvian MayRequire="btd.xenotyperemix.starwars">0.100</BTD_Snivvian>
-        <BTD_Trandoshan MayRequire="btd.xenotyperemix.starwars">0.100</BTD_Trandoshan>
+        <RimMandrakeGamorrean MayRequire="mandrake.starwarsraces">0.300</RimMandrakeGamorrean>
+        <RimMandrakeWeequay MayRequire="mandrake.starwarsraces">0.100</RimMandrakeWeequay>
+        <RimMandrakeNikto MayRequire="mandrake.starwarsraces">0.100</RimMandrakeNikto>
+        <RimMandrakeAqualish MayRequire="mandrake.starwarsraces">0.100</RimMandrakeAqualish>
+        <RimMandrakeUgnaught MayRequire="mandrake.starwarsraces">0.100</RimMandrakeUgnaught>
+        <RimMandrakeRodian MayRequire="mandrake.starwarsraces">0.100</RimMandrakeRodian>
+        <RimMandrakeSnivvian MayRequire="mandrake.starwarsraces">0.100</RimMandrakeSnivvian>
+        <RimMandrakeTrandoshan MayRequire="mandrake.starwarsraces">0.100</RimMandrakeTrandoshan>
       </xenotypeChances>
     </xenotypeSet>
 
