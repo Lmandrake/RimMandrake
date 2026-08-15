@@ -25,9 +25,9 @@ rewritten against them, and the shape of the whole design changed with it.
 
 | | |
 |---|---|
-| ✅ **Fourteen NPC factions exist**, plus the player's Jawa expedition | two more than before — the machines and the hive are now named factions, not anonymous survivors |
-| 🔴 **SEVEN of them are reskins of VANILLA factions**, not authored from scratch | Empire · Outlanders · Tribes · Pirates · Ancients · Mechanoids · Insects |
-| ✅ **Seven are authored by us** | Hutt Cartel · Free Droid Enclaves · Wildsteam Clan · Deepwater Compact · Geonosian Foundry Hive · Jawa Trade Moot · the Junkers |
+| ✅ **Fourteen NPC factions exist**, plus the player's Jawa expedition | but **only twelve carry dossiers** — the machines and the hive are label reskins with no leader, no settlements and no diplomacy. **Two label patches, not two designs** |
+| 🔴 **SIX of them are reskins of VANILLA factions**, not authored from scratch | `Empire` · `OutlanderCivil` · `TribeCivil` · `Pirate` · `Mechanoid` · `Insect` |
+| ✅ **Eight are authored by us** | Hutt Cartel · Free Droid Enclaves · Wildsteam Clan · Deepwater Compact · Geonosian Foundry Hive · **Ascendant Helix** · Jawa Trade Moot · the Junkers |
 | ✅ **Every faction has a NAMED LEADER** | the world has people in it, not offices |
 | ✅ **The world is BIG and sparse** — ~72 settlements across a large planet | |
 | ✅ **Interesting tiles cluster** — around living settlements, and around dead ones | |
@@ -48,23 +48,36 @@ because it is not deleted — **it is wearing our names.**
 
 ## 2. The fourteen factions
 
-| # | Faction | Leader | rides on | Settlements | Goodwill | Perm. enemy |
+| # | Faction | Leader | rides on | Settlements | ~~Goodwill~~ *(cut)* | Perm. enemy |
 |---|---|---|---|---:|---:|---|
 | 1 | **Hutt Cartel** | **Gorga the Immense** *(Hutt)* | authored | 8 | −35 | No |
 | 2 | ⭐ **The Galactic Empire** | 🔴 **Emperor Palpatine** | **vanilla `Empire`** | **3 surface** *(+~7 orbital)* | −100 | 🔴 **Yes** |
-| 3 | **Homestead Defense League** | **Taren Voss** *(Human)* | **vanilla Outlanders**, beefed up | 13 | +25 | No |
-| 4 | **Deep Desert Tribes** | **Torr'gan** *(Tusken)* | **vanilla Tribes**, beefed up | 9 | −80 | No |
+| 3 | **Homestead Defense League** | **Taren Voss** *(Human)* | **vanilla `OutlanderCivil`**, beefed up | 13 | +25 | No |
+| 4 | **Deep Desert Tribes** | **Torr'gan** *(Tusken)* | **vanilla `TribeCivil`**, beefed up | 9 | −80 | No |
 | 5 | **Free Droid Enclaves** | **R-41 Rell** | authored | 3 | 0 | No |
 | 6 | **Wildsteam Clan** | **Rroowaak** *(Wookiee)* | authored | 4 | +35 | No |
 | 7 | **Deepwater Compact** | **Neris Cal** *(Mon Calamari)* | authored | 5 | +10 | No |
 | 8 | **Geonosian Foundry Hive** | **Korrik the Shaper** *(Geonosian)* | authored | 5 | −100 | No |
-| 9 | **Ascendant Helix** | **Director Ko Saiyan** *(Kaminoan)* | **vanilla `Ancients`** *if possible* | 3 | 0 | No |
-| 10 | **Blackstar Company** | **Jaxen Marr** *(Mandalorian)* | **vanilla Pirates**, beefed up | 4 | −10 | No |
+| 9 | **Ascendant Helix** | **Director Ko Saiyan** *(Kaminoan)* | 🔴 **AUTHORED** — `Ancients` is impossible | 3 | 0 | No |
+| 10 | **Blackstar Company** | **Jaxen Marr** *(Mandalorian)* | **vanilla `Pirate`**, beefed up | 4 | −10 | No |
 | 11 | **Jawa Trade Moot** | **Kiknik the Wealthy** *("leads")* | authored | 7 | **+40, capped +74** | No |
 | 12 | **the Junkers** | **Tarn Vox the Brutal** | authored | 8 | −90 | No — bribable |
 | 13 | ⭐ **the Forgotten Arsenal** | — *(no leader; it is not a polity)* | **vanilla `Mechanoid`** | none | — | — |
 | 14 | ⭐ **the Unbound Hive** | — *(no leader)* | **vanilla `Insect`** | none | — | — |
 | — | **Jawa Gravship Expedition** *(player)* | the clan chief | — | — | — | — |
+
+⚠️ **The Goodwill column is CUT FROM V1.** There is no goodwill field on
+`FactionDef`; v1 hostility is `permanentEnemy` · `naturalEnemy` ·
+`mustStartOneEnemy` · `permanentEnemyToEveryoneExcept` ·
+`permanentEnemyToEveryoneExceptPlayer` · `hostileToFactionlessHumanlikes` ·
+`raidsForbidden`. The numbers are `[v2]` intent, gated on CHECK C24.
+
+⭐ **Fourteen on the map, twelve dossiers — the two counts do not conflict.**
+`faction_roster_v2.md` counts dossiers; this table counts factions on the map.
+**The Forgotten Arsenal** and **the Unbound Hive** have no leader, no settlements
+and no diplomacy, so they inherit vanilla `Mechanoid` and `Insect`
+`pawnGroupMakers` wholesale. **They cost two label patches, not two dossiers.**
+Authoring load stays at twelve.
 
 ⭐ **The Forgotten Arsenal is the best name in the list**, because it says what
 `what_the_machines_are.md` ruled: **not an army, an armoury nobody came back
@@ -137,19 +150,18 @@ follow:
 
 ## 3. What each reskin costs, and what it earns
 
-**Seven vanilla factions are kept and reskinned. Each is kept because something we
+**Six vanilla factions are kept and reskinned. Each is kept because something we
 cannot practically change is wired to it — the wiring does not care what the label
 says.**
 
 | our faction | vanilla def | what the wiring buys us |
 |---|---|---|
-| **The Galactic Empire** | `Empire` | Royalty's titles, permits, gear tiers and quest surface |
-| **Homestead Defense League** | Outlanders | the trade and caravan economy the whole game assumes |
-| **Deep Desert Tribes** | Tribes | tribal incidents, neolithic pawn kinds, the raid tier below the Empire |
-| **Blackstar Company** | Pirates | the default hostile-raid backbone |
-| **Ascendant Helix** | `Ancients` | ancient danger rooms and the orbital tower garrisons ⚠️ *"if possible" — needs a feasibility check* |
-| **the Forgotten Arsenal** | `Mechanoid` | ancient dangers, clusters, and the `Gravcore_Mechhive` endgame chain |
-| **the Unbound Hive** | `Insect` | infestations, VFE Insectoid genelines, Alpha hives, Anomaly's relations |
+| **The Galactic Empire** | vanilla `Empire` | Royalty's titles, permits, gear tiers and quest surface. 🔴 **Not `OuterRim_GalacticEmpire`** — the shipped patch targets that mod def and must be re-pointed |
+| **Homestead Defense League** | vanilla `OutlanderCivil` | the trade and caravan economy the whole game assumes |
+| **Deep Desert Tribes** | vanilla `TribeCivil` | tribal incidents, neolithic pawn kinds, the raid tier below the Empire |
+| **Blackstar Company** | vanilla `Pirate` | the default hostile-raid backbone — and it ships `permanentEnemy: true`, which it keeps |
+| **the Forgotten Arsenal** | vanilla `Mechanoid` | ancient dangers, clusters, and the `Gravcore_Mechhive` endgame chain |
+| **the Unbound Hive** | vanilla `Insect` | infestations, VFE Insectoid genelines, Alpha hives, Anomaly's relations |
 
 **Still kept without a rename:**
 
@@ -158,11 +170,12 @@ says.**
 | **`guy762_KotORFaction_RogueDroids`** | antagonist of the KotOR droid distress call — already Star Wars |
 | **`Entities`, `HoraxCult`** *(Anomaly)* | not removable at world creation at all. ⚠️ Their problem is **tone, not label** — see the Anomaly register |
 
-🔴 **The one open feasibility question: can `Ascendant Helix` really ride
-`Ancients`?** The Ancients are the sealed-complex people and their pawn kinds are
-cryptosleep-era humans, which is a poor fit for a Kaminoan gene-cult. **If it does
-not work, the Helix is authored from scratch and `Ancients` keeps a neutral
-name** — that is the fallback and it costs nothing.
+✅ **CLOSED — the Ascendant Helix cannot ride `Ancients`, and is AUTHORED.**
+Measured against the live def dump 2026-08-14: `Ancients` is `hidden: true`,
+`settlementGenerationWeight: 0`, `maxCountAtGameStart: 0`, `canMakeRandomly:
+false`. **It cannot settle, cannot appear in the faction list and cannot be
+diplomatic.** The fallback is now the plan — the Helix is authored from scratch
+and `Ancients` keeps its vanilla name. Authored count is eight.
 
 ---
 
@@ -204,14 +217,14 @@ a hundred equivalent options and no geography. **Three Waters gives them three
 destinations, three journeys and three sets of neighbours** — and a crossing
 between them that is the desert doing its job.
 
-⭐ **And the jungle defends the water better than any faction could.** The Aquifer
-League's monopoly stops being a claim they enforce with warriors and becomes a
+⭐ **And the jungle defends the water better than any faction could.** The Deepwater
+Compact's monopoly stops being a claim they enforce with warriors and becomes a
 fact of the terrain: getting to the water means going through feralisks and spore
 fields. **A faction whose power rests on geography is far more convincing than one
 whose power rests on a goodwill number.**
 
-**Consequence for the faction map:** the four cold-margin factions — Aquifer
-League, Wildsteam Clan, Ascendant Helix, Free Droid Enclaves — are **not spread
+**Consequence for the faction map:** the four cold-margin factions — Deepwater Compact,
+Wildsteam Clan, Ascendant Helix, Free Droid Enclaves — are **not spread
 thinly across a polar band. They are concentrated in and around the Three
 Waters**, and therefore in each other's company. The poles are crowded and
 contested; the equator is empty and lethal. That is a much stronger world than an
@@ -294,7 +307,7 @@ whole DLC subsystem and it should be a decision, not a side effect.
 
 ⚠️ **Thirst is differential and it is set by species, not faction.** Jawa, Tusken,
 Desert alien, Geonosian, Nikto, Kaleesh and Iktotchi drink **less**; droids drink
-**nothing**; the Aquifer and Wookiee species lists drink **more**. That single
+**nothing**; the Deepwater and Wildsteam species lists drink **more**. That single
 table decides how far every faction can operate.
 
 ---

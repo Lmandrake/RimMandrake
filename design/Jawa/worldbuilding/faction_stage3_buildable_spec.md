@@ -115,7 +115,7 @@ stat**, and none of it has been built:
 | Wookiees "carry more water", severe requirement | multiplier **> 1** — thirst *faster*, the correct direction for a rainforest species on a desert world |
 | Geonosian drones "very low thirst" | ~0.3 |
 | battle droids "carry none" | ⚠️ **reduction is PROVEN (`BionicBladder −0.5`); zero is NOT.** `minValue: 0` is a *declared range*, not observed behaviour — nothing proves the consumer does not clamp or special-case 0. **Prefer `DBHThirst.Exemptions` / `onlyIfCausedByGene` for droids**, which removes the need rather than zeroing the rate. Measure before promising. |
-| "dry-capable" bounty hunters (Kaleesh, Zabrak, Chiss, Umbaran, Devaronian, Bothan) | 0.6–0.8 |
+| "dry-capable" bounty hunters — **`Kaleesh` only**; Zabrak, Bothan and Devaronian are neutral, Chiss and Umbaran heat-INTOLERANT | 0.6–0.8 for Kaleesh, 1.0 for the rest |
 | "water-hungry" (Trandoshan) | 1.2–1.5 |
 
 ⚠️ **No gene modifies thirst directly** — of 4,844 `GeneDef`s only 6 mention
@@ -171,41 +171,52 @@ role**, which also makes them meaningfully special rather than one of six.
 > unexpressible.
 
 **This is the "unlike most RimWorld settings" mechanic.** In a normal playthrough
-every faction raids you the same way and differs only in tech level and goodwill.
+every faction raids you the same way and differs only in tech level.
 Here, *how far a faction can reach* is a physiological fact about its species, and
 the map's water is the constraint. A Wookiee ally is devastating at home and
 cannot be brought along. A Tusken raid is frequent, close and cannot siege. An
-Deepwater Compact warden cannot reach you at all — so the League is a *supplier and a
+Deepwater Compact warden cannot reach you at all — so the Compact is a *supplier and a
 customer*, never a threat. **Three factions, three genuinely different games.**
 
 ---
 
-## 1. Vessel assignments — the Stage 2 blocker, resolved
+## 1. Vessel assignments — MEASURED, 2026-08-14
 
-**Stage 2's headline gap: `grep -c defName` on the roster = 0, so no faction had a
-vessel.** Assigned here. `PATCH` = adopt a live def; `AUTHOR` = our own
-`FactionDef`; both are licence-clean (patching Outer Rim is fine, **copying their
-defs is a derivative** — CC BY-NC-ND).
+🔴 **The vessels are VANILLA defs.** Reassigned against the live def dump, because
+the vanilla defs are what the trade, raid and quest economies are wired to.
+`PATCH` = adopt a live def; `AUTHOR` = our own `FactionDef`. Both are licence-clean
+(patching Outer Rim is fine, **copying their defs is a derivative** — CC BY-NC-ND).
 
-| # | roster faction | vessel | route | pawnkinds available |
+| # | roster faction | vessel | route | pawnkinds |
 |---|---|---|---|---|
 | 1 | Hutt Cartel | — | **AUTHOR** | uses Gamorrean/Nikto kinds; see §1a |
-| 2 | **the Galactic Empire** | `OuterRim_GalacticEmpire` | **PATCH** ⭐ | **24**, incl. `OuterRim_ImpStormtrooper_Desert` |
-| 3 | Homestead Defense League | `OuterRim_MoistureFarmers` | **PATCH** ⭐ | 4 (`TownSettler/Guard/Councilman/Trader`) |
-| 4 | Deep Desert Tribes | — | **AUTHOR** | none — needs authored kinds |
-| 5 | Free Droid Enclaves | `OuterRim_RogueDroidColony` | **PATCH** (U3) | 1 (`OuterRim_EscapedBattleDroid`) — needs more |
+| 2 | **the Galactic Empire** | 🔴 **vanilla `Empire`** | **PATCH** ⭐ | Royalty's Empire kinds |
+| 3 | Homestead Defense League | **vanilla `OutlanderCivil`** | **PATCH** ⭐ | vanilla outlander kinds |
+| 4 | Deep Desert Tribes | **vanilla `TribeCivil`** | **PATCH** ⭐ | vanilla tribal kinds |
+| 5 | Free Droid Enclaves | — | **AUTHOR** (U3) | `OuterRim_EscapedBattleDroid` is a *source*, not a vessel |
 | 6 | Wildsteam Clan | — | **AUTHOR** | none |
 | 7 | Deepwater Compact | — | **AUTHOR** | none |
 | 8 | Geonosian Foundry Hive | — | **AUTHOR** | JDS droids usable as the droid half |
-| 9 | Arkanian–Kaminoan Consortium | — | **AUTHOR** | none |
-| 10 | Blackstar Company | `OuterRim_BinaryStarRaiders` | **PATCH** ⭐ | **13** merc/pirate kinds |
-| 11 | Jawa Jawa Trade Moot | player faction | separate | — |
+| 9 | **Ascendant Helix** | 🔴 **none — AUTHOR** | **AUTHOR** | `Ancients` is `hidden: true`, `settlementGenerationWeight: 0`, `maxCountAtGameStart: 0`, `canMakeRandomly: false` — it cannot settle, appear in the faction list, or be diplomatic |
+| 10 | Blackstar Company | **vanilla `Pirate`** | **PATCH** ⭐ | vanilla pirate/mercenary kinds; ships `permanentEnemy: true` and keeps it |
+| 11 | Jawa Trade Moot | — | **AUTHOR** | — |
 | 12 | the Junkers | — | **AUTHOR** | scavenges others' kinds |
 
-**Four factions have real vessels with real pawnkinds** (2, 3, 5, 10). Those are
-the cheap ones and should be built first.
+🔴 **The shipped Empire patch is on the wrong vessel.**
+`src/Jawa/Jawa_Patches/Patches/ImperialDesertDirectorate.xml` targets
+`OuterRim_GalacticEmpire`, a mod def. **Re-point it at vanilla `Empire`.** v1 row 1
+was closed on a label seen live on a vessel we are abandoning, so it has to be
+redone — cheap, but not already done.
 
-### 1a. ⚠️ A collision the roster does not know about
+**Four factions ride vanilla vessels** (2, 3, 4, 10) and are the cheap ones.
+**Eight are authored** (1, 5, 6, 7, 8, 9, 11, 12).
+
+### 1a. ⚠️ A collision the roster does not know about — RESOLVED by the vessel table
+
+**Blackstar Company rides vanilla `Pirate`, so `OuterRim_BinaryStarRaiders` is not
+contested.** It stays available as *bought* Hutt muscle, which is what our
+`Jawa_Patches/Defs/PawnKindDefs/GamorreanPawnKinds.xml` already uses it for. The
+record of why the two claims collided is kept below.
 
 **`OuterRim_BinaryStarRaiders` is wanted twice.** Our own
 `Jawa_Patches/Defs/PawnKindDefs/GamorreanPawnKinds.xml` already points two
@@ -252,20 +263,20 @@ Control; the water they *sell* is the extortion mechanic.
 settlements must therefore survive to endgame — do **not** make them permanently
 hostile.
 
-### 2. the Galactic Empire — PATCH `OuterRim_GalacticEmpire` ⭐ v1 ROW
+### 2. the Galactic Empire — PATCH vanilla `Empire` ⭐ v1 ROW
 ```
 label                         "the Galactic Empire"
-leaderTitle                   "Moff"            // was "Grand Admiral"
+leaderTitle                   "Emperor"          // canon; "Sector governor"/"Sector Director" are retired
 description                   rewrite
 colorSpectrum                 Imperial grey/black
-permanentEnemy                false → keep false   // see below
+permanentEnemy                true             // the permanent enemy among the authored factions
 techLevel                     Ultra (unchanged)
 ```
-⚠️ **The roster calls the Galactic Empire "the only permanent enemy". The live def
-has `permanentEnemy: false`.** Setting it true removes every quest, trade and
-truce hook and makes the faction one-note. **Recommendation: leave `false` and
-express hostility through a very negative starting goodwill** (Faction Customizer,
-§4) — hostile in practice, still able to generate content.
+🔴 **The Empire is the permanent enemy, and the price is accepted.** A permanently
+hostile Empire deletes Royalty's title/permit/honour progression — correct for a
+Jawa scavenger clan, and a decision rather than a side effect
+(`faction_world_spec.md` §5). **Hostility cannot be expressed as goodwill:** there
+is no goodwill field on `FactionDef`, so `permanentEnemy: true` is the mechanism.
 **Races:** ~78% baseliner human (the roster's *human primacy* is doctrine, so
 this is the one faction where humans dominate **on purpose**) · near-human
 auxiliaries only: `BTD_Chiss` (officers), `BTD_Umbaran`, `BTD_Zeltron`.
@@ -274,12 +285,12 @@ auxiliaries only: `BTD_Chiss` (officers), `BTD_Umbaran`, `BTD_Zeltron`.
 Yavin-jungle stock → **wet-tile origin tell**) · `BTD_SithZ` Zugurak rare elites.
 **v1 does labels and colour only. Everything else here is v2.**
 
-### 3. Homestead Defense League — PATCH `OuterRim_MoistureFarmers`
+### 3. Homestead Defense League — PATCH vanilla `OutlanderCivil`
 ```
 techLevel                     Ultra (unchanged)
 settlementGenerationWeight    1 (unchanged, highest count — "most numerous")
 canSiege                      false          // farmers, not besiegers
-raidsForbidden                false          // but low commonality
+raidsForbidden                true           // D1: the Homestead does not raid at all
 leaderTitle                   "councilman" (unchanged — already correct)
 ```
 **Races:** human 20% · `BTD_Ithorian` 12% · `BTD_Duros` 10% · `BTD_Rodian` ·
@@ -288,7 +299,7 @@ leaderTitle                   "councilman" (unchanged — already correct)
 **Water = Manufacture.** Vaporators are the destructible objective. This is the
 Tusken casus belli and should be a **hardcoded hostility** to faction 4.
 
-### 4. Deep Desert Tribes — AUTHOR
+### 4. Deep Desert Tribes — PATCH vanilla `TribeCivil`
 ```
 techLevel                     Industrial     // roster: firearms+electricity, gear-gated by pawnkind
 permanentEnemy                false          // adoption quest chain exists
@@ -307,7 +318,7 @@ has no "steal and leave" raid strategy, so this needs either a
 the one roster mechanic that may not be reachable in pure XML.** Verify before
 promising it.
 
-### 5. Free Droid Enclaves — PATCH `OuterRim_RogueDroidColony` (closes U3)
+### 5. Free Droid Enclaves — AUTHOR (closes U3). `OuterRim_RogueDroidColony` is a pawnkind source, not the vessel
 ```
 settlementGenerationWeight    0 → 0.3        // currently never placed
 requiredCountAtGameStart      0 → 3          // roster wants 3 settlements
@@ -355,10 +366,10 @@ canRequestTraders             true
 **Races:** `BTD_MonCalamari` 22% · `BTD_Quarren` 23% · `BTD_Selkath` 20% ·
 `BTD_Nautolan` · `BTD_Gungan` · `BTD_Herglic`. **All amphibian/aquatic — this is
 physiology, not preference.**
-⭐ **A faction that cannot attack you is a design gift, not a gap.** The League is
+⭐ **A faction that cannot attack you is a design gift, not a gap.** The Compact is
 pure economy and politics: it sells water to everyone *including the Galactic Empire*,
 so Imperial water convoys are an attack surface the player can exploit without
-ever fighting the League itself.
+ever fighting the Compact itself.
 
 ### 8. Geonosian Foundry Hive — AUTHOR
 ```
@@ -381,7 +392,7 @@ hive's droid element.
 with a 35–55% droid share this is the **longest-reach hostile faction on the
 map**, which is a good reason for it to be uncommon.
 
-### 9. Ascendant Helix — AUTHOR
+### 9. Ascendant Helix — AUTHOR. 🔴 `Ancients` is impossible: `hidden: true`, `settlementGenerationWeight: 0`, `maxCountAtGameStart: 0`, `canMakeRandomly: false`
 ```
 techLevel                     Spacer/Ultra
 permanentEnemy                false
@@ -393,14 +404,14 @@ baseTraderKinds               exotic + medical + implants
 12% — **the engineered underclass**, best expressed with Big-and-Small or Alpha
 Genes stock rather than a SW species.
 ⭐ **The roster gives them "the planet's monsters" (Vanilla Genetics Expanded).**
-That makes the Consortium the source of every spliced creature — a *supplier of
+That makes the Helix the source of every spliced creature — a *supplier of
 threats* rather than a threat, which is a third distinct faction role.
 
-### 10. Blackstar Company — PATCH `OuterRim_BinaryStarRaiders`
+### 10. Blackstar Company — PATCH vanilla `Pirate`
 ```
 label                         "Blackstar Company"
 leaderTitle                   "boss" → "guildmaster"
-permanentEnemy                true (already)  // keep — hunts are the content
+permanentEnemy                true (vanilla `Pirate` ships it)  // keep — patching it false would gut the vanilla raid economy
 settlementGenerationWeight    1 → low (~0.2)  ⭐ "few settlements"
 maxCountAtGameStart           1 (already)
 canSiege                      true → false    ⭐ small parties, no siege
@@ -409,13 +420,14 @@ canSiege                      true → false    ⭐ small parties, no siege
 `Pirate`, `PirateBoss`, `Drifter`, `Scavenger`, `Thrasher`, 3 grenadiers
 (`_Ion`, `_CryoBan`, `_Destructive`). **This is the richest ready-made kit in the
 stack** and maps almost one-to-one onto "3–10 pawn hunting party".
-**Races:** `BTD_Kaleesh` 15% dry-capable · `BTD_Iridonian` 12% (Zabrak) ·
-`BTD_Trandoshan` 12% water-hungry · `BTD_Chiss`, `BTD_Umbaran`, `BTD_Devaronian`,
-`BTD_Bothan` dry-capable.
+**Races:** `BTD_Kaleesh` 15% — **the only dry-capable species in the faction** ·
+`BTD_Iridonian` 12% (Zabrak), `BTD_Bothan`, `BTD_Devaronian` neutral ·
+`BTD_Trandoshan` 12% water-hungry · `BTD_Chiss`, `BTD_Umbaran` **heat-INTOLERANT**.
 ⭐ **Water = the water clock**, and it is the best fight-design in the roster: a
 hunter arrives with finite water, so withdrawing into dry tiles converts a fight
-into a resource duel. Dry-capable species push further — **so the species of the
-hunter tells the player how long they have.** That is legible, diegetic difficulty.
+into a resource duel. **Kaleesh push further; everyone else does not** — so the
+species of the hunter tells the player how long they have. That is legible,
+diegetic difficulty.
 
 ### 12. the Junkers — AUTHOR
 ```
@@ -440,35 +452,34 @@ interaction (Faction Raid Cooldown is live at load 146).
 
 | order | faction | why |
 |---|---|---|
-| **1** | **the Galactic Empire** | v1 row; vessel + 24 kinds exist; labels only |
-| **2** | Blackstar Company | vessel + 13 kinds exist; field edits only |
-| **3** | Homestead Defense League | vessel + 4 kinds; field edits only |
-| **4** | Free Droid Enclaves | vessel exists, **needs authored pawnGroupMakers** (U3) |
-| 5–9 | Deepwater Compact, Wookiee, Geonosian, Hutt, Junkers | full authoring |
-| last | Tusken | full authoring **+** the water-raid strategy risk |
+| **1** | **the Galactic Empire** | v1 row; vanilla `Empire` + Royalty kinds exist; labels only ⚠️ **the shipped patch points at the wrong def and must be re-pointed** |
+| **2** | Blackstar Company | vanilla `Pirate` + kinds exist; field edits only |
+| **3** | Homestead Defense League | vanilla `OutlanderCivil` + kinds exist; field edits only |
+| **4** | Deep Desert Tribes | vanilla `TribeCivil` + kinds exist; field edits only |
+| 5–11 | Free Droid Enclaves, Deepwater Compact, Wildsteam, Geonosian, Hutt, **Ascendant Helix**, Junkers | full authoring |
+| last | Jawa Trade Moot | full authoring **+** the water-raid strategy risk |
 
-**Three of the four cheap ones are field edits against defs we already load** —
+**All four cheap ones are field edits against vanilla defs we already load** —
 no new XML defs, no licence exposure, no art.
 
 ---
 
 ## 4. Open questions for the owner — deliberately not decided
 
-1. **Binary Star: Bounty Hunters or Hutt muscle?** (§1a) I recommend Bounty
-   Hunters; the Gamorrean patch survives either way.
-2. **Galactic Empire `permanentEnemy`** — roster says "only permanent enemy", live def
-   says `false`. I recommend keeping `false` + very negative goodwill, so the
-   faction can still generate quests and trade. **Setting it `true` makes them
-   one-note.**
-3. **Goodwill persistence is still unproven** (`infrastructure/state/queue/OPS.md` **O4**) — Faction Customizer
-   has `set_BaseGoodWill`, but whether it persists across worlds is untested. Every
-   starting-goodwill number in the roster rides on this.
+1. ✅ **Binary Star is settled** (§1a) — Blackstar rides vanilla `Pirate`, so
+   `OuterRim_BinaryStarRaiders` stays available as bought Hutt muscle.
+2. ✅ **Galactic Empire `permanentEnemy: true`** — settled. It is the permanent
+   enemy among the authored factions, and the Royalty progression it costs is a
+   priced decision (`faction_world_spec.md` §5).
+3. ✅ **Goodwill is not a route at all** — there is no goodwill field on
+   `FactionDef`, so every starting-goodwill number is cut from v1. Faction
+   Customizer's persistence (CHECK C24) gates `[v2]` graded goodwill only.
 4. **The Tusken water-raid group may not be pure XML** (§4). Verify before
    promising it; it is the roster's most novel mechanic and its most technically
    uncertain.
 5. **Species monopoly** — should each faction get *exclusive* species? Currently
-   Nikto appear in both Hutt and Junker rosters, Trandoshan in Bounty Hunters and
-   (excluded) Wookiee. Exclusivity would sharpen identity; overlap is more
+   Nikto appear in both Hutt and Junker rosters, Trandoshan in Blackstar Company
+   and (excluded) Wildsteam Clan. Exclusivity would sharpen identity; overlap is more
    realistic. **I have kept the roster's overlaps.**
 
 ---

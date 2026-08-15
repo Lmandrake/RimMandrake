@@ -13,25 +13,25 @@ faction — the Galactic Empire, *label-level reskin only* (name, leader
 title, colour). Explicitly v2: **the other 11 dossiers, `pawnGroupMakers`, memes,
 ideoligions, the relations matrix.**
 
-**And v1's faction row is already built.** `src/Jawa/Jawa_Patches/Patches/ImperialDesertDirectorate.xml`
-(`27a3cfe`) sets `label`, `fixedName`, `leaderTitle` and `colorSpectrum`
-(`RGB(74,84,96)` / `RGB(108,118,128)`), and the repo copy is **byte-identical to
-the deployed game copy**. Its only open item is the scope gate itself — *seen
-working in-game once*.
+🔴 **v1's faction row is NOT done — the patch is on the wrong vessel.**
+`src/Jawa/Jawa_Patches/Patches/ImperialDesertDirectorate.xml` (`27a3cfe`) sets
+`label`, `fixedName`, `leaderTitle` and `colorSpectrum` (`RGB(74,84,96)` /
+`RGB(108,118,128)`) on **`OuterRim_GalacticEmpire`**, a mod def. The Galactic
+Empire's vessel is **vanilla `Empire`** (R10). **Re-point the patch**, set
+`leaderTitle` to `Emperor` (R11), and re-run the in-game sighting gate.
 
 So this audit's product is a **v2 backlog**, plus **one v1-relevant discrepancy**
 (below). It should not pull time away from the v1 burn-down.
 
 ---
 
-## The one v1-relevant finding
+## The one v1-relevant finding — DISPOSED
 
-⚠️ **The shipped patch and the roster disagree on the leader title.** The roster
-says **"Sector governor"** (`faction_roster_v2.md:571`); the deployed patch says
-**`<leaderTitle>Sector Director</leaderTitle>`**. Both are defensible; they are not
-the same string, and the patch is what players see. **Decide which is canon and
-make the other match** — the roster is the spec, so the cheap fix is to correct
-whichever is wrong rather than let the pair drift.
+✅ **The leader title is `Emperor`.** *(R11.)* "Sector governor" and "Sector
+Director" are both retired from the Empire; **`Director` belongs to the Ascendant
+Helix**. The shipped patch says `Sector Director` and is wrong — and it dies with
+R10 anyway, since it targets `OuterRim_GalacticEmpire` and the Empire's vessel is
+vanilla `Empire`. **Re-point the patch and set `leaderTitle` to `Emperor`.**
 
 ---
 
@@ -81,7 +81,7 @@ never updated to match — which is the direct cause of defect **D5** below.
 | 6 | Wildsteam Clan | ❌ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ❌ | 6/8 |
 | 7 | Deepwater Compact | ❌ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ❌ | 6/8 |
 | 8 | Geonosian Foundry Hive | ❌ | ✅ | ✅ | ✅ | ❌ | ✅ | ✅ | ❌ | 5/8 |
-| 9 | Arkanian–Kaminoan Consortium | ❌ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ❌ | 6/8 |
+| 9 | Ascendant Helix | ❌ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ❌ | 6/8 |
 | 10 | Blackstar Company | ❌ | ✅ | ✅ | ✅ | ⚠️ | ✅ | ✅ | ❌ | 6/8 |
 | 11 | Jawa Trade Moot | ❌ | ✅ | ✅ | ✅ | ✅ | ❌ | ✅ | ❌ | 5/8 |
 | 12 | the Junkers | ❌ | ⚠️ | ⚠️ | ✅ | ✅ | ❌ | ✅ | ❌ | 5/8 |
@@ -96,36 +96,40 @@ never updated to match — which is the direct cause of defect **D5** below.
   outlander names. **v2**, but it is a twelve-faction gap that no queue names.
 - **A (identity/display) is fully decided for none.** Factions 1–3 have a leader
   title; nothing else in the group is set anywhere.
-- **`humanlikeFaction` appears 0 times in the roster.** Harmless for the ten
-  humanlike factions, load-bearing for **8 Geonosian** (insectoid hive) and
-  **5 Free Droid** (droids).
+- **`humanlikeFaction` must be set explicitly on every faction** *(R3)*. It appears
+  0 times in the roster today. Harmless-looking for the ten humanlike factions and
+  **load-bearing for 8 Geonosian** (insectoid hive) and **5 Free Droid** (droids).
 
 ---
 
-## Verified defects — all six confirmed at source
+## Verified defects — all six confirmed at source, all six DISPOSED
+
+**DECIDE's rulings, 2026-08-14 (R13).** Each outcome below is settled and written
+into `faction_roster_v2.md`; nothing here is open.
 
 Each was read at the cited line before being written here. The subagents that
 found them also produced five findings that did **not** survive checking; those
 are listed after, so nobody re-finds them.
 
-**D1 — Homestead raid frequency contradicts Global system 9.** `:300` reads
-*"Homestead / Aquifer / Wookiee never raid (Rw 0)"*; `:675` reads
-*"Raid frequency | Very low"*. Non-zero vs never. Whoever authors the def must pick.
+**D1 — Homestead raid frequency. ✅ DISPOSED → `raidsForbidden: true`.** The field
+exists; "Very low" is struck. `VME_Raiding_Abhorrent` may stay as flavour but is
+not the mechanism.
 
-**D2 — Homestead ideology structure is an unresolved either/or.** `:712` reads
-*"Structure: Abstract theist or ideological"* — literally both. Blocks
-`deityPresets`, which exists only on the theist branch.
+**D2 — Homestead ideology structure. ✅ DISPOSED → `Structure_TheistAbstract`,
+deity *the Withdrawn*.** The theist branch is taken, so `deityPresets` is
+unblocked. This also separates the Covenant from the secular Deepwater Compact —
+the 24% Jaccard overlap is answered by the split, not by a cut.
 
-**D3 — Geonosian species has no implementation decision.** `:1403` sets
-*"Preferred xenotypes: Geonosian"*, a precept that must bind to a defined
-**xenotype**, while Global system 3 (`:183`) sources Geonosian from the separate
-**race inventory**. Xenotype and race-mod species are different objects; the
-roster never picks. Blocks group E. Compare `5 Free Droid`, which *does* flag its
-equivalent question at `:1009` **and rules a fallback** — that is the pattern
-D3 should follow.
+**D3 — Geonosian species. ✅ DISPOSED → `xenotypeSet` + `PawnKindDef` xenotype
+chances.** **There is no XML route to `PreferredXenotype`**, so the precept
+ambition is dropped. Geonosian dominance is carried by the `xenotypeSet` field on
+the `FactionDef` (which exists) plus per-`PawnKindDef` xenotype chances. Group E
+is unblocked.
 
-**D4 — the Bounty Hunter racial table still contradicts a correction already
-landed above it.** `:1655` states *"`Kaleesh` is the ONLY dry-capable species of
+**D4 — the Blackstar Company racial table. ✅ DISPOSED → the stale dry-capable
+rows are gone; `Kaleesh` only.** The roster's mixture table now reads *Neutral* /
+*Heat-intolerant* against the genes, and `faction_stage3_buildable_spec.md` §0b
+and §2.10 were corrected to match. The finding as originally written: `:1655` states *"`Kaleesh` is the ONLY dry-capable species of
 the six"* — the verified result recorded in `1bcd3b0` / `4c48aee`. The racial
 table 40 lines below still labels **Zabrak, Bothan, Devaronian, Chiss and
 Umbaran** as *"Dry-capable"*, and the gene table at `:1648-1649` explicitly marks
@@ -133,14 +137,22 @@ Chiss and Umbaran **heat-INTOLERANT**. **The correction was written into the pro
 and the data table it corrected was left stale** — same shape as trap 45, in a
 different file. Anyone authoring from the table gets the wrong answer.
 
-**D5 — the roster denies the existence of a faction it contains.** `:2330` reads
+**D5 — "ten NPC factions". ✅ DISPOSED → twelve.** Global system 9's purpose note
+and the species-coverage section both say twelve, and the Jawa Trade Moot is named
+as the one NPC faction that generates Jawa. The finding as originally written:
+`:2330` reads
 *"no NPC faction generates Jawa members"* and `:2353` reads *"Every installed race
 is used at least once across the **ten** NPC factions, except Jawa, which is
 reserved for the player"* — while **11. Jawa Trade Moot** (`:1809`) is an NPC
 faction whose roster is 78% + 12% Jawa. The species-coverage section was never
 updated when factions 11–12 were added; note it still says **ten**.
 
-**D6 — a second permanent enemy contradicts design pillar 5.** `:105` reads
+**D6 — a second permanent enemy. ✅ DISPOSED by R12 → pillar 5 is amended to "one
+permanent enemy among the AUTHORED factions".** Vanilla `Pirate` ships
+`permanentEnemy: true` and Blackstar Company reskins it; patching that false would
+gut the vanilla raid economy for no gain, so Blackstar keeps it. **The Galactic
+Empire is the authored permanent enemy, and the Junkers lose theirs** — hostile on
+sight, bribable, not permanent. The finding as originally written: `:105` reads
 *"One permanent enemy only. The Galactic Empire. Everything else can
 eventually be negotiated with, so the mid-game always has a wedge."* The Junkers
 are `Permanent enemy | Yes` (`:1992`) and *"Permanently hostile faction; no trade"*
@@ -157,7 +169,7 @@ Recorded so they are not re-found:
 2. **Kaminoan absent from the Geonosian weight table** — Global system 4 (`:209`)
    blesses race override at pawn-kind level. Its enumerated list is incomplete, not
    contradictory.
-3. **Aquifer charge rifle** — mitigated in-document by the officers-and-relic-gear
+3. **Deepwater Compact charge rifle** — mitigated in-document by the officers-and-relic-gear
    exception at `:1222`.
 4. **Hutt ↔ Free Droid "transactional" vs the endgame wildcard** — a starting
    relation versus a player-driven branch outcome (`:915`). Not a data conflict.
@@ -171,13 +183,13 @@ Recorded so they are not re-found:
 
 ## What this changes
 
-- **Nothing for v1.** The one authored faction is built, deployed and byte-identical
-  in the game copy; it waits on the in-game sighting gate, not on this audit.
-- **D4 and D5 are cheap and should be fixed regardless of v1/v2** — both are stale
-  data that will mislead whoever authors from it, and neither needs a game load.
-- **D6 needs the owner**, because it is a design pillar, not a value.
-- **D1, D2, D3 are v2 authoring blockers** — file against the v2 faction work, not
-  the v1 burn-down.
+- 🔴 **v1's faction row has to be redone.** `ImperialDesertDirectorate.xml` targets
+  `OuterRim_GalacticEmpire`; the Galactic Empire's vessel is **vanilla `Empire`**
+  (R10). The patch was closed on a label seen live on a vessel we are abandoning.
+- **D1–D6 are all disposed** and written into `faction_roster_v2.md`. None of them
+  needs a game load and none is waiting on the owner.
+- **The remaining v2 blocker is `pawnGroupMakers`**, written nowhere for any
+  faction, plus H (naming), which is 0/12.
 
 **Method note worth keeping:** four subagents produced 11 candidate contradictions;
 **6 survived verification against the source lines and 5 did not.** The fan-out is

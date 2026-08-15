@@ -32,6 +32,12 @@ Twelve NPC factions for a hot, arid, water-scarce RimWorld with an active **Thir
 system**. The **Jawa gravship expedition is the player faction** and is not counted
 among the twelve.
 
+**Fourteen factions stand on the map; twelve carry dossiers.** The other two —
+**the Forgotten Arsenal** (vanilla `Mechanoid`) and **the Unbound Hive** (vanilla
+`Insect`) — have no leader, no settlements and no diplomacy, and inherit vanilla's
+`pawnGroupMakers` wholesale. They cost **two label patches, not two dossiers**
+(`faction_world_spec.md` §2). Authoring load is twelve, and the two counts agree.
+
 > Factions **11 (Jawa Trade Moot)** and **12 (the Junkers)** were added
 > 2026-08-11 and sit at the end of the body, with their diplomacy in a
 > "Relations additions" block rather than folded into Global system 1 yet.
@@ -41,23 +47,22 @@ Everything here is expressible through RimWorld 1.6 definitions, DLC systems, fa
 
 - `FactionDef` technology level, permanence of hostility, traders, pawn groups, settlement generation
 
-  ⚠️ **`FactionDef` does NOT express goodwill, and this line used to say it did.**
-  Corrected 2026-08-12 after PROJECT found it; verified across **all 88 live
+  ⚠️ **`FactionDef` does NOT express goodwill.** Verified across **all 88 live
   `FactionDef`s and all 125 distinct fields — zero hits** for goodwill in any
-  form. What the engine actually gives is *booleans about hostility*, not a
-  signed integer: `permanentEnemy`, `naturalEnemy`, `mustStartOneEnemy`,
+  form. What the engine gives is *booleans about hostility*, not a signed
+  integer: `permanentEnemy`, `naturalEnemy`, `mustStartOneEnemy`,
   `permanentEnemyToEveryoneExcept`, `permanentEnemyToEveryoneExceptPlayer`,
-  `hostileToFactionlessHumanlikes`.
+  `hostileToFactionlessHumanlikes`, `raidsForbidden`.
 
-  **It matters more than one word because it is upstream of twelve decisions.**
-  This sentence is what authorised every dossier below to specify a
-  "starting goodwill −35"-style number. Goodwill is a *runtime relation between
-  two factions*, not a def field.
+  🔴 **Every "starting goodwill" number in this document is CUT FROM V1.** There is
+  no field to write them into, so they are unbuildable. **v1 expresses hostility
+  through those seven booleans and nothing else**, and each dossier's number is
+  struck in place below so nobody authors from it.
 
-  **But a mechanism DOES exist — it is just at a third layer.** The candidate is
-  **Faction Customizer** (`azravos.factioncustomizer`, load order **145**),
-  verified from its assembly rather than its config, because a `Mod_*.xml`
-  records only what has been *changed*, never what a mod *supports*:
+  **Graded goodwill is `[v2]` and gated.** The only candidate mechanism is
+  **Faction Customizer** (`azravos.factioncustomizer`, load order **145**), read
+  from its assembly rather than its config, because a `Mod_*.xml` records only what
+  has been *changed*, never what a mod *supports*:
 
   ```
   FactionCustomizer.dll   baseGoodwill · naturalGoodwillOffset
@@ -71,18 +76,11 @@ Everything here is expressible through RimWorld 1.6 definitions, DLC systems, fa
   for *Random Goodwill*, which is not installed) and **Sensible Factions**
   (biome only).
 
-  ⏳ **The open question that decides the twelve numbers: does Faction
-  Customizer PERSIST?** Its editor is a `Dialog_` acting on live world state,
-  but the assembly carries `ModSettings` + `ExposeData`, so it may survive
-  across worlds. Unproven.
-
-  - persists as mod settings → the 12 numbers are authorable, **keep them**
-  - world/save state only → each is a manual click per world roll, and twelve
-    precise values become a liability in a reproducible authored campaign;
-    **collapse them to the engine's coarse hostility booleans instead**
-
-  ⇒ **Until that is settled, do not add a thirteenth goodwill number.** Same
-  shape as U1, now against a named candidate rather than nothing.
+  ⏳ **Whether Faction Customizer PERSISTS across worlds is unproven — CHECK C24.**
+  Its editor is a `Dialog_` acting on live world state, but the assembly carries
+  `ModSettings` + `ExposeData`, so it may survive across worlds. Until C24 answers,
+  graded goodwill is not authorable at all. ⇒ **Do not put a goodwill number in any
+  dossier.**
 - weighted xenotype/race distributions
 - custom `PawnKindDef` roles with forced race/xenotype assignment
 - Ideology memes, precepts, roles, apparel requirements, styles, rituals
@@ -102,7 +100,7 @@ Removed **Force Gremlin** and disabled WIP species remain excluded.
 2. **Water is the strategic axis.** Every faction has a water doctrine that determines where it settles, how far its warriors can operate, and whether it can besiege.
 3. **Only warriors are visible.** All water, caste, and equipment rules are written against the combat pawn kinds RimWorld actually spawns.
 4. **Hierarchy lives in pawn kinds, not xenotype percentages.** Diverse factions mostly carry no preferred-xenotype precept; rank is encoded through pawn-kind eligibility, gear, skills, and raid-point cost.
-5. **One permanent enemy only.** The Galactic Empire. Everything else can eventually be negotiated with, so the mid-game always has a wedge.
+5. **One permanent enemy among the AUTHORED factions.** The Galactic Empire. Everything else we author can eventually be negotiated with, so the mid-game always has a wedge. **Blackstar Company is a deliberate exception, not a second decision:** it reskins vanilla `Pirate`, which ships `permanentEnemy: true`, and patching that false would gut the vanilla raid economy for no gain — so it keeps the flag. **The Junkers, being authored, lose theirs:** hostile on sight and bribable, not permanent.
 
 ---
 
@@ -123,7 +121,7 @@ Set through NPC-vs-NPC goodwill in the faction/world editor. These are lore-deri
 | Geonosian Hive ↔ Free Droid Enclaves | Cold / no trade | Enclave chassis are escaped Foundry product |
 | Hutt Cartel ↔ Free Droid Enclaves | Transactional | The Droid Gotra historically served as Hutt muscle |
 | Wildsteam Clan ↔ Free Droid Enclaves | Positive | Shared absolute anti-slavery precept |
-| Ascendant Helix ↔ Deepwater Compact | Positive (trade dependency) | Consortium buys bulk water for growth vats and biosculpters |
+| Ascendant Helix ↔ Deepwater Compact | Positive (trade dependency) | Helix buys bulk water for growth vats and biosculpters |
 | Deepwater Compact ↔ all others | Neutral-positive by doctrine | Enforced neutrality backed by a water monopoly |
 
 ---
@@ -146,8 +144,8 @@ Four states. Each governs settlement siting **and** the operational range of tha
 | Deepwater Compact | **Require** (absolute) | Holds every water tile; cannot meaningfully raid |
 | Wildsteam Clan | **Require** (severe) | Devastating on home defence, near-useless expeditionary |
 | Hutt Cartel | **Require** (oasis-anchored) | Every compound sits on a fiercely held oasis tile |
-| Outer-Rim Homestead | **Manufacture** | Vaporators: stores water, has no source |
-| Ascendant Helix | **Allow** (high consumption) | Buys bulk water from the League |
+| Homestead Defense League | **Manufacture** | Vaporators: stores water, has no source |
+| Ascendant Helix | **Allow** (high consumption) | Buys bulk water from the Deepwater Compact |
 | the Galactic Empire | **Allow** (supplied) | Can settle anywhere; convoys are an attack surface |
 | Blackstar Company | **Allow** (water clock) | Hunt teams carry a finite supply — range is the fight |
 | Geonosian Foundry Hive | **Forbid** (arid-adapted) | Only faction that can sustain a deep-desert siege |
@@ -156,7 +154,7 @@ Four states. Each governs settlement siting **and** the operational range of tha
 
 ### Resulting world shape
 
-Water tiles belong to the friendly-to-neutral band (League, Wookiee uplands, Hutt oases). Dry tiles belong to the hostile band (Tusken, Geonosian, supplied Imperial, denial-holding droids). The player's expansion is a fork: **settle wet and be crowded by factions you can negotiate with, or settle dry and be open but permanently hunted.**
+Water tiles belong to the friendly-to-neutral band (Deepwater Compact, Wildsteam uplands, Hutt oases). Dry tiles belong to the hostile band (Tusken, Geonosian, supplied Imperial, denial-holding droids). The player's expansion is a fork: **settle wet and be crowded by factions you can negotiate with, or settle dry and be open but permanently hunted.**
 
 ### Low-water species tier
 
@@ -226,7 +224,7 @@ Faction-wide percentages govern ordinary generation. Race is overridden at the p
 - Geonosian aristocrats, queens, and drones
 - all droid chassis
 - faction leaders
-- Consortium prototypes and labour-line workers
+- Helix prototypes and labour-line workers
 
 ## Global system 5 — Jedi and Sith
 
@@ -264,7 +262,7 @@ Counts are world-generation targets. Generate, inspect, then correct with a fact
 - **rare:** Wildsteam Clan, Blackstar Company
 - **very rare:** Droid Enclaves, Ascendant Helix
 
-The Enclaves and Consortium have suppressed raid generation, so both route their player contact through **incident and quest generators** rather than settlement assaults.
+The Enclaves and Helix have suppressed raid generation, so both route their player contact through **incident and quest generators** rather than settlement assaults.
 
 ## Global system 8 — Equipment-quality discipline
 
@@ -276,16 +274,16 @@ Separate equipment tags or pawn-kind restrictions per faction:
 - **Hutt:** broad industrial with rare elite spacer items
 - **Droids:** integrated chassis-specific weapons
 - **Wookiee:** strong melee, bowcasters, limited armour
-- **Aquifer:** disciplined industrial rifles, EMP, Gungan shield belts
+- **Deepwater Compact:** disciplined industrial rifles, EMP, Gungan shield belts
 - **Geonosian:** sonic weapons plus mass-produced droids
-- **Consortium:** expensive security equipment, few combatants
-- **Bounty:** high quality, small numbers, mixed specialist weapons
+- **Helix:** expensive security equipment, few combatants
+- **Blackstar Company:** high quality, small numbers, mixed specialist weapons
 
 ---
 
 ## Global system 9 — Contact-frequency parameters (INITIAL ESTIMATES, 2026-08-07)
 
-> **Purpose & status.** These are **first-pass estimates so play can start**, not tuned values — the intent (per the casting decision) is to differentiate the ten by **frequency + contact-mode, not by deletion**. Every number here is an explicit knob meant to be re-examined after the first play sessions; adjust freely. Frequency is deliberately kept **separate from severity**: a faction's *danger* comes from pawn-group composition (§19.5 / `faction_authoring_mechanism.md`), NOT from these frequencies. A high raid weight can still be a weak-but-annoying harasser (Tuskens) and a low one can be lethal (Empire sieges).
+> **Purpose & status.** These are **first-pass estimates so play can start**, not tuned values — the intent (per the casting decision) is to differentiate the twelve by **frequency + contact-mode, not by deletion**. Every number here is an explicit knob meant to be re-examined after the first play sessions; adjust freely. Frequency is deliberately kept **separate from severity**: a faction's *danger* comes from pawn-group composition (§19.5 / `faction_authoring_mechanism.md`), NOT from these frequencies. A high raid weight can still be a weak-but-annoying harasser (Tuskens) and a low one can be lethal (Empire sieges).
 
 **The four knobs (each defined so it maps to a real 1.6 lever):**
 
@@ -294,7 +292,9 @@ Separate equipment tags or pawn-kind restrictions per faction:
 - **Trade weight (Tw, 0–10)** — relative frequency of trade caravans/visitors arriving AND usefulness as a caravan destination. *[Inference]* from N × goodwill × whether they hold something you need (water, medicine). Real lever: visitor/trade-caravan incident weight, proportional to settlements + goodwill.
 - **Quest weight (Qw, 0–10)** — relative share of this faction's contact routed through **CQF / quest / incident generators** rather than settlement assaults. *[Inference]* highest for the reclusive/allied factions that route contact through quests. Real lever: CQF quest hooks + vanilla quest generation.
 
-| Faction | Goodwill | N | Rw | Tw | Qw | Dominant contact mode |
+⚠️ **The Goodwill column is CUT FROM V1** — there is no goodwill field on `FactionDef` (see Purpose). It is kept as `[v2]` intent only; v1 hostility is the booleans. **N / Rw / Tw / Qw are unaffected.** The table predates factions **11. Jawa Trade Moot** and **12. the Junkers**, whose contact parameters live in their own settings tables.
+
+| Faction | ~~Goodwill~~ *(cut)* | N | Rw | Tw | Qw | Dominant contact mode |
 |---|---:|---:|---:|---:|---:|---|
 | **the Galactic Empire** *(spine)* | −100 perm | 10 | **9** | 0 | 4 | Siege + staged assault; **escalates across the 3 acts** |
 | **Deep Desert Tribes** | −80 | 9 | **7** | 0 | 1 | Frequent raid *harassment* — short, weak, no siege |
@@ -307,7 +307,7 @@ Separate equipment tags or pawn-kind restrictions per faction:
 | **Wildsteam Clan** | +35 | 4 | 0 | 3 | 5 | Small formidable ally; quest-routed |
 | **Free Droid Enclaves** | 0 | 3 | 1 | 2 | **8** | Quest-routed almost entirely; raids suppressed |
 
-**Reading the raid pool.** Non-zero Rw values sum to **≈37**, so the intended hostile-contact split is roughly: Empire **~24%**, Tusken **~19%**, Geonosian **~19%**, Hutt **~16%**, Bounty **~16%**, Enclaves/Consortium **~3% each**. Homestead / Aquifer / Wookiee never raid (Rw 0). *[Assumption]* the 0–10 scale maps ~linearly onto storyteller draw; if the storyteller ignores weights and just uses proximity, fall back to tuning via settlement count + Faction Raid Cooldown.
+**Reading the raid pool.** Non-zero Rw values sum to **≈37**, so the intended hostile-contact split is roughly: Empire **~24%**, Tusken **~19%**, Geonosian **~19%**, Hutt **~16%**, Blackstar **~16%**, Enclaves/Helix **~3% each**. Homestead Defense League / Deepwater Compact / Wildsteam Clan never raid (Rw 0) — and for the Homestead that is `raidsForbidden: true`, not a low weight. *[Assumption]* the 0–10 scale maps ~linearly onto storyteller draw; if the storyteller ignores weights and just uses proximity, fall back to tuning via settlement count + Faction Raid Cooldown.
 
 **Two dynamic hooks (not static frequencies):** (i) the **Empire escalates** — same Rw, heavier pawn-group composition act-over-act, plus the Imperial Heat gauge; (ii) **Blackstar Company Rw is Heat-scaled** — quiet until the player gets "hot," then their hunts spike. Both are the pursuit spine's teeth and are authored as curves/hooks, not as a fixed per-year number.
 
@@ -315,9 +315,39 @@ Separate equipment tags or pawn-kind restrictions per faction:
 
 ---
 
+## Global system 10 — Vessel assignments
+
+**Every faction is either a PATCH onto a live vanilla `FactionDef` or AUTHORED from
+scratch.** Measured against the live def dump, 2026-08-14.
+
+| faction | vessel | verdict |
+|---|---|---|
+| the Galactic Empire | **vanilla `Empire`** | ✅ `hidden false`, settles |
+| Homestead Defense League | **vanilla `OutlanderCivil`** | ✅ |
+| Deep Desert Tribes | **vanilla `TribeCivil`** | ✅ |
+| Blackstar Company | **vanilla `Pirate`** | ✅ — ships `permanentEnemy: true` and keeps it (pillar 5) |
+| the Forgotten Arsenal | **vanilla `Mechanoid`** | ✅ `hidden true`, no settlements — which is the intent |
+| the Unbound Hive | **vanilla `Insect`** | ✅ |
+| **Ascendant Helix** | ~~`Ancients`~~ | 🔴 **IMPOSSIBLE → AUTHORED** |
+
+🔴 **`Ancients` is `hidden: true`, `settlementGenerationWeight: 0`,
+`maxCountAtGameStart: 0`, `canMakeRandomly: false`.** It cannot settle, cannot
+appear in the faction list and cannot be diplomatic. **The Ascendant Helix is
+authored from scratch.** Nothing is owed here — it is measured, not estimated.
+
+**Authored from scratch — eight:** Hutt Cartel · Free Droid Enclaves · Wildsteam
+Clan · Deepwater Compact · Geonosian Foundry Hive · **Ascendant Helix** · Jawa
+Trade Moot · the Junkers.
+
+🔴 **The shipped Empire patch is on the wrong vessel.**
+`src/Jawa/Jawa_Patches/Patches/ImperialDesertDirectorate.xml` targets
+`OuterRim_GalacticEmpire`, a mod def. **Re-point it at vanilla `Empire`.**
+
+---
+
 ## Strategic balance
 
-| Faction | Initial stance | Permanent hostile? | Settlements | Tech level | Water state | Strategic weight |
+| Faction | ~~Initial stance~~ *(goodwill — cut from v1)* | Permanent hostile? | Settlements | Tech level | Water state | Strategic weight |
 |---|---:|---:|---:|---|---|---|
 | Hutt Cartel | −35 | No | 8 | Industrial | Require (oasis) | Major regional power |
 | the Galactic Empire | −100 | **Yes** | 10 † | Spacer | Allow (supplied) | Dominant military occupier |
@@ -337,8 +367,8 @@ Separate equipment tags or pawn-kind restrictions per faction:
 > looked like a contradiction with this table for six days. It is not one — the
 > two numbers describe different layers, and neither doc said so.
 >
-> **The split:** **2–3 surface**, clustered near the large spaceport as the Sector
-> Galactic Empire seat (the local aristocracy — the face the orbital timer reports to);
+> **The split:** **2–3 surface**, clustered near the large spaceport as the
+> Empire's planetary seat (the face the orbital timer reports to);
 > the remaining **~7–8 orbital**. Ten total, two or three *reachable*.
 >
 > ⚠️ **Consequence for worldgen, and it is the reason this matters:** the
@@ -390,7 +420,8 @@ Every Cartel settlement sits on or immediately beside an oasis tile, and that ti
 | Parameter | Setting |
 |---|---|
 | Tech level | Industrial |
-| Starting goodwill | −35 |
+| Vessel | **AUTHORED** — no vanilla vessel |
+| ~~Starting goodwill~~ | ~~−35~~ **CUT FROM V1** — `FactionDef` has no goodwill field. |
 | Permanent enemy | No |
 | Target settlements | 8 |
 | Settlement distribution | Oasis tiles, trade routes, roads, warm lowlands |
@@ -530,7 +561,8 @@ The Galactic Empire does not site on hydrology. It settles on roads, strategic p
 | Parameter | Setting |
 |---|---|
 | Tech level | Spacer |
-| Starting goodwill | −100 |
+| Vessel | 🔴 **vanilla `Empire`** — measured: `hidden false`, settles. **NOT `OuterRim_GalacticEmpire`.** The shipped patch `src/Jawa/Jawa_Patches/Patches/ImperialDesertDirectorate.xml` targets that mod def and must be re-pointed |
+| ~~Starting goodwill~~ | ~~−100~~ **CUT FROM V1** — `FactionDef` has no goodwill field. Hostility is `permanentEnemy: true`. |
 | Permanent enemy | **Yes** |
 | Target settlements | **3** (surface). The **10** in the strategic-balance table is the fiction total across both layers — see the † note there. ~7–8 Imperial holdings are **orbital** and are not world tiles. |
 | Settlement distribution | The 2–3 surface seats cluster near the **large spaceport** (the Empire's planetary seat). Otherwise: roads, strategic passes, ancient installations, central lowlands. ⚠️ The clustering **mechanism is unestablished** — see `infrastructure/state/TODO_v2.md` U1; degrade gracefully to "2–3 surface settlements somewhere" if it cannot be forced. |
@@ -607,9 +639,9 @@ The Doctrine teaches that the galaxy trends toward entropy and that only one ord
 
 ### Rituals and observances
 
-- **Rite of Compliance (conversion ritual).** The Proselytizer meme + Proselytizing: Frequent already drive vanilla conversion rituals; reflavour the vanilla conversion ceremony as a compliance rite led by the Sector Director. *Mechanical encoding: vanilla Ideology conversion ritual — buildable as-is.*
+- **Rite of Compliance (conversion ritual).** The Proselytizer meme + Proselytizing: Frequent already drive vanilla conversion rituals; reflavour the vanilla conversion ceremony as a compliance rite led by the Emperor's local officers. *Mechanical encoding: vanilla Ideology conversion ritual — buildable as-is.*
 - **The Correction (public execution).** Execution: Required is expressed as a public spectacle rather than a quiet killing. *Mechanical encoding: vanilla execution precept + the vanilla execution ritual; buildable as-is.*
-- **Director's Address (speech).** The Sector Director uses the vanilla Leader role's speech abilities to reinforce loyalty and diversity-of-thought bigotry. *Mechanical encoding: vanilla Leader role speech — buildable as-is.*
+- **The Emperor's Address (speech).** The Emperor uses the vanilla Leader role's speech abilities to reinforce loyalty and diversity-of-thought bigotry. *Mechanical encoding: vanilla Leader role speech — buildable as-is.*
 - **Style:** Techist + Morbid styles carry the reading into architecture and apparel (sharp, uniform, trophy-adjacent). *Mechanical encoding: vanilla Ideology styles — buildable as-is.*
 
 Every observance above is pure vanilla Ideology; the Empire needs no mod beyond the DLC to run this belief system exactly as written.
@@ -671,22 +703,23 @@ The planet's most numerous and least centralised faction. Each settlement is a s
 
 ## Water doctrine — **Manufacture**
 
-The Compact requires potable water but is excluded from natural sources — the League holds those and the Cartel holds the oases. Homesteads therefore sit on marginal dry tiles and pull moisture from the air.
+The Homestead requires potable water but is excluded from natural sources — the Deepwater Compact holds those and the Cartel holds the oases. Homesteads therefore sit on marginal dry tiles and pull moisture from the air.
 
 - Settlements **store** water but have no source. Vaporator arrays are the thing worth destroying, not the thing worth capturing.
 - This is the Tusken casus belli and the reason Homestead–Tusken hostility is hardcoded.
-- **Iktotchi wardens are the Compact's only long-range asset.** Low thirst rate plus precognition makes them the outriders who patrol between vaporator arrays and give early warning of Tusken water raids.
+- **Iktotchi wardens are the Homestead's only long-range asset.** Low thirst rate plus precognition makes them the outriders who patrol between vaporator arrays and give early warning of Tusken water raids.
 
 ## Faction settings
 
 | Parameter | Setting |
 |---|---|
 | Tech level | Industrial |
-| Starting goodwill | +25 |
+| Vessel | **vanilla `OutlanderCivil`** — PATCH |
+| ~~Starting goodwill~~ | ~~+25~~ **CUT FROM V1** — `FactionDef` has no goodwill field. Hostility is `raidsForbidden: true`. |
 | Permanent enemy | No |
 | Target settlements | 13 |
 | Settlement distribution | Marginal farmland, roads, hills, scattered dry flats |
-| Raid frequency | Very low |
+| Raid frequency | **None — `raidsForbidden: true`.** The Homestead does not raid at all; `VME_Raiding_Abhorrent` may ride along as flavour but is not the mechanism |
 | Caravan frequency | Medium |
 | Trader types | Bulk goods, food, livestock, basic weapons |
 | Base wealth | Low |
@@ -723,7 +756,8 @@ The Compact requires potable water but is excluded from natural sources — the 
 
 ## Belief system: **The Covenant of Free Wells**
 
-- **Structure:** Abstract theist or ideological
+- **Structure:** **Abstract theist** — `Structure_TheistAbstract`
+- **Deity:** **the Withdrawn** — the god who stopped answering, which is what the Guilty meme is about. It is also what separates the Covenant from the Deepwater Compact's Compact of Shared Water, which is secular
 - **Memes:** Individualist, Guilty
 - **Styles:** Rustic, Totemic
 - **Preferred xenotypes:** None
@@ -746,7 +780,7 @@ The Compact requires potable water but is excluded from natural sources — the 
 | Raiding | Not respected |
 | Physical love | Free |
 
-The Covenant is the faith of people who wrung a living from dead sand and never forgot how close they came to dying of thirst. Its two memes do quiet, specific work. Individualist encodes the homesteader ethic — every family holds its own well, answers for its own patch, and owes no lord; there is no central hierarchy, only an elected keeper who arbitrates water disputes. Guilty encodes the frontier's hard memory: the Compact believes that survival was bought at someone's expense (claims jumped, wells that ran dry while a neighbour's held, the ones who didn't make it), and so charity is Important and slavery is Abhorrent as acts of atonement rather than abstract virtue. This is a faith of penance and mutual aid, not conquest — which is exactly why it reads as the moral opposite of the Empire and the Hutts on the relations matrix.
+The Covenant is the faith of people who wrung a living from dead sand and never forgot how close they came to dying of thirst. Its two memes do quiet, specific work. Individualist encodes the homesteader ethic — every family holds its own well, answers for its own patch, and owes no lord; there is no central hierarchy, only an elected keeper who arbitrates water disputes. Guilty encodes the frontier's hard memory: the Homestead believes that survival was bought at someone's expense (claims jumped, wells that ran dry while a neighbour's held, the ones who didn't make it), and so charity is Important and slavery is Abhorrent as acts of atonement rather than abstract virtue. This is a faith of penance and mutual aid, not conquest — which is exactly why it reads as the moral opposite of the Empire and the Hutts on the relations matrix.
 
 ### Rituals and observances
 
@@ -755,7 +789,7 @@ The Covenant is the faith of people who wrung a living from dead sand and never 
 - **Acts of Atonement (charity).** Charity: Important is expressed as expected almsgiving to travellers and the poor — a live vanilla precept that generates mood around generosity. *Mechanical encoding: vanilla charity precept; buildable as-is.*
 - **Style:** Rustic + Totemic keep the aesthetic humble and hand-made (no spacer chrome). *Mechanical encoding: vanilla styles; buildable as-is.*
 
-Pure vanilla Ideology throughout — the Compact runs on the DLC alone.
+Pure vanilla Ideology throughout — the Homestead runs on the DLC alone.
 
 ## Technology and economy
 
@@ -813,7 +847,8 @@ Tuskens never site on a water tile. Camps are canyons, caves, and deep dune sea.
 | Parameter | Setting |
 |---|---|
 | Tech level | Industrial, gear-restricted |
-| Starting goodwill | −80 |
+| Vessel | **vanilla `TribeCivil`** — PATCH |
+| ~~Starting goodwill~~ | ~~−80~~ **CUT FROM V1** — `FactionDef` has no goodwill field. |
 | Permanent enemy | No |
 | Target settlements | 9 |
 | Settlement distribution | Deep desert, canyons, caves, isolated ridges — **never water tiles** |
@@ -946,7 +981,8 @@ The Enclaves settle *on* water tiles deliberately and crack them for hydrogen fu
 | Parameter | Setting |
 |---|---|
 | Tech level | Spacer |
-| Starting goodwill | 0 |
+| Vessel | **AUTHORED** — no vanilla vessel |
+| ~~Starting goodwill~~ | ~~0~~ **CUT FROM V1** — `FactionDef` has no goodwill field. |
 | Permanent enemy | No |
 | Target settlements | 3 |
 | Settlement distribution | **Water tiles**, remote ruins, abandoned industrial sites |
@@ -1088,7 +1124,8 @@ Large, high-mass, fur-bearing, rainforest-evolved fighters on a desert world. Wo
 | Parameter | Setting |
 |---|---|
 | Tech level | Industrial |
-| Starting goodwill | +35 |
+| Vessel | **AUTHORED** — no vanilla vessel |
+| ~~Starting goodwill~~ | ~~+35~~ **CUT FROM V1** — `FactionDef` has no goodwill field. |
 | Permanent enemy | No |
 | Target settlements | 4 |
 | Settlement distribution | Rare wooded biomes, mountains, cool uplands, upland springs |
@@ -1206,23 +1243,24 @@ All observances are vanilla Ideology (the animalist/tree-connection precept fami
 
 ## Mechanical identity
 
-The coalition holding the planet's water. Amphibian and aquatic species running disciplined rifle lines, EMP weapons, medics, and static defences. **The League does not raid** — its warriors physically cannot operate away from water. Its power is entirely economic and diplomatic.
+The coalition holding the planet's water. Amphibian and aquatic species running disciplined rifle lines, EMP weapons, medics, and static defences. **The Compact does not raid** — its warriors physically cannot operate away from water. Its power is entirely economic and diplomatic.
 
 ## Water doctrine — **Require (absolute)**
 
 Every combat pawn kind is amphibian or aquatic-evolved. This is physiology, not preference.
 
-- The League **holds every natural water tile on the map**.
+- The Compact **holds every natural water tile on the map**.
 - Wardens dehydrate before they can reach anyone, so raid generation is effectively disabled. This mechanically enforces the neutrality doctrine without needing an ideological workaround.
-- **The League sells water to everyone, including the Galactic Empire.** Attacking Imperial water convoys costs the player League goodwill. This is the intended central diplomatic dilemma of the game.
-- League purification and EMP specialists are the standing counter to Free Droid runoff contamination.
+- **The Compact sells water to everyone, including the Galactic Empire.** Attacking Imperial water convoys costs the player Compact goodwill. This is the intended central diplomatic dilemma of the game.
+- Compact purification and EMP specialists are the standing counter to Free Droid runoff contamination.
 
 ## Faction settings
 
 | Parameter | Setting |
 |---|---|
 | Tech level | Industrial |
-| Starting goodwill | +10 |
+| Vessel | **AUTHORED** — no vanilla vessel |
+| ~~Starting goodwill~~ | ~~+10~~ **CUT FROM V1** — `FactionDef` has no goodwill field. |
 | Permanent enemy | No |
 | Target settlements | 5 |
 | Settlement distribution | **All oases, marshes, rivers, lakes, and coastal tiles** |
@@ -1252,10 +1290,10 @@ Every combat pawn kind is amphibian or aquatic-evolved. This is physiology, not 
 
 ### Forced pawn-kind assignments
 
-- **Aquifer Engineer:** Mon Calamari, Duros, or Quarren.
-- **Water Warden:** Selkath or Chagrian. Selkath variants carry a **natural toxic melee attack** from retractile claws — culturally forbidden to use, and therefore a sign the League considers the situation extreme.
+- **Compact Engineer:** Mon Calamari, Duros, or Quarren.
+- **Water Warden:** Selkath or Chagrian. Selkath variants carry a **natural toxic melee attack** from retractile claws — culturally forbidden to use, and therefore a sign the Compact considers the situation extreme.
 - **Gungan Skirmisher:** Gungan only; **personal energy shield → shield belt as standard issue**, not an upgrade.
-- **League Heavy:** Herglic, Aqualish, or Chagrian.
+- **Compact Heavy:** Herglic, Aqualish, or Chagrian.
 - **EMP Specialist:** Mon Calamari, Quarren, or Duros.
 - **Purification Team:** noncombat quest pawn kind sent to contested or contaminated sources.
 
@@ -1274,8 +1312,8 @@ Two species from one homeworld with genuine political friction. Encoded as tiers
 
 | Issue | Setting |
 |---|---|
-| **Violence within a League settlement** | **Abhorrent — the defining precept** |
-| **Neutrality** | **Required — the League supplies all sides** |
+| **Violence within a Compact settlement** | **Abhorrent — the defining precept** |
+| **Neutrality** | **Required — the Compact supplies all sides** |
 | Charity | Worthwhile |
 | Slavery | Abhorrent |
 | Execution | Respected if guilty |
@@ -1290,11 +1328,11 @@ Two species from one homeworld with genuine political friction. Encoded as tiers
 | Raiding | Not respected |
 | Corpses | Ugly |
 
-Modelled on the Selkath doctrine of brutally enforced neutrality backed by a monopoly on a substance the whole galaxy needed. Here the monopoly is literal water rather than kolto. The two memes are almost administrative: Collectivist makes the League a body rather than a market, and Loyalist makes the custodian's word — and the neutrality it enforces — non-negotiable. The genuinely distinctive doctrine lives in the two custom precepts (Violence within a League settlement: Abhorrent; Neutrality: Required), which together produce a faction that will sell to everyone and side with no one, and will treat a fight on its own ground as sacrilege.
+Modelled on the Selkath doctrine of brutally enforced neutrality backed by a monopoly on a substance the whole galaxy needed. Here the monopoly is literal water rather than kolto. The two memes are almost administrative: Collectivist makes the Compact a body rather than a market, and Loyalist makes the custodian's word — and the neutrality it enforces — non-negotiable. The genuinely distinctive doctrine lives in the two custom precepts (Violence within a Compact settlement: Abhorrent; Neutrality: Required), which together produce a faction that will sell to everyone and side with no one, and will treat a fight on its own ground as sacrilege.
 
 ### Rituals and observances
 
-- **The Accord of the Wells (custodian's council).** The First custodian (vanilla Leader role) presides over the ritual renewal of neutrality pacts — the League reaffirming that it supplies all sides. *Mechanical encoding: vanilla Leader role + a reflavoured gathering; buildable as-is.*
+- **The Accord of the Wells (custodian's council).** The First custodian (vanilla Leader role) presides over the ritual renewal of neutrality pacts — the Compact reaffirming that it supplies all sides. *Mechanical encoding: vanilla Leader role + a reflavoured gathering; buildable as-is.*
 - **The Sharing (charity/water-gift observance).** Charity: Worthwhile is expressed as the ceremonial gift of water to a party in need, reinforcing the supply-to-all doctrine. *Mechanical encoding: vanilla charity precept + gathering; buildable as-is.*
 - **The two defining precepts.** "Violence within a settlement: Abhorrent" maps cleanly onto vanilla's social-fight / no-violence precept family; "Neutrality: Required" has **no direct vanilla precept** and is best carried as faction behaviour (permanent-neutral, trades with all, never allies) plus RP rather than an in-engine precept. *Mechanical encoding: violence clause = vanilla precept; neutrality clause = faction settings + RP.*
 - **Style:** Techist + Totemic — clean infrastructure married to ritual reverence for the cistern. *Mechanical encoding: vanilla styles; buildable as-is.*
@@ -1312,7 +1350,7 @@ Modelled on the Selkath doctrine of brutally enforced neutrality backed by a mon
 
 ## Typical equipment
 
-**League rifleman** — assault rifle, bolt-action rifle, heavy SMG; flak vest, duster, simple helmet; normal.
+**Compact rifleman** — assault rifle, bolt-action rifle, heavy SMG; flak vest, duster, simple helmet; normal.
 
 **Water warden** — chain shotgun, assault rifle, longsword; full flak or recon armour; shield belt on melee variants; Selkath variants have toxic claws.
 
@@ -1320,14 +1358,14 @@ Modelled on the Selkath doctrine of brutally enforced neutrality backed by a mon
 
 **EMP specialist** — EMP grenades plus autopistol, or EMP launcher; flak vest and helmet; one per 6–10 ranged defenders.
 
-**League heavy** — LMG, minigun, chain shotgun; marine armour or excellent flak; low-shield pack; Herglic, Chagrian, or Aqualish.
+**Compact heavy** — LMG, minigun, chain shotgun; marine armour or excellent flak; low-shield pack; Herglic, Chagrian, or Aqualish.
 
 **Custodian** — charge rifle or excellent assault rifle; recon armour; smokepop or low-shield pack.
 
 ## Pawn-group patterns
 
 - **Water caravan:** bulk water, medicine, 6–12 guards — trades with every faction including the Empire
-- **Reservoir patrol:** riflemen, EMP specialist, water warden; never leaves League tiles
+- **Reservoir patrol:** riflemen, EMP specialist, water warden; never leaves Compact tiles
 - **Settlement defence:** turret-supported firing line with heavies
 - **Purification expedition:** quest group sent to a contaminated source, requiring escort
 
@@ -1360,7 +1398,8 @@ Geonosis is arid rock and hives are subterranean. Drones take moisture from food
 | Parameter | Setting |
 |---|---|
 | Tech level | Spacer |
-| Starting goodwill | −100 |
+| Vessel | **AUTHORED** — no vanilla vessel |
+| ~~Starting goodwill~~ | ~~−100~~ **CUT FROM V1** — `FactionDef` has no goodwill field. |
 | Permanent enemy | **No** |
 | Target settlements | 5 |
 | Settlement distribution | Mountains, caves, ore-rich deserts, ancient factories |
@@ -1414,7 +1453,7 @@ Geonosian drones fight with sonic blasters, which **cannot be deflected by light
 - **Structure:** Ideological
 - **Memes:** Collectivist, Supremacist, Raider, Hive primacy (Human primacy reflavoured)
 - **Styles:** Techist, Spikecore, Morbid
-- **Preferred xenotypes:** Geonosian
+- **Preferred xenotypes:** none at the precept level. **There is no XML route to `PreferredXenotype`**, so the precept ambition is dropped: Geonosian dominance is carried by the `xenotypeSet` field on the `FactionDef` (which exists) plus per-`PawnKindDef` xenotype chances
 - **Primary role:** Archduke — **Archduke Korrik the Shaper**
 - **Specialists:** Production specialist, shooting specialist
 
@@ -1494,11 +1533,11 @@ Captives are held for the arena rather than imprisoned, which reinforces aristoc
 
 A small, wealthy, technically advanced faction built on genetics, medicine, implants, growth vats, and engineered security organisms — sustained by an underclass it created itself. Neutral rather than friendly: profitable to trade with, dangerous to antagonise, difficult to raid.
 
-**The Consortium owns the planet's monsters.** The freakish spliced creatures from Vanilla Genetics Expanded (the ~120 `GR_` hybrids kept as bestiary content — Thrumbo-crosses, the `GR_Paragon` apex line, `GR_FleshMonstrosity`, boom/canine/feline/muffalo chimeras, etc.) are **its escaped and abandoned experiments**, and the ruined `GR_AbandonedLab` / `GR_BiomechanicalLab` sites scattered around the world are **its derelict facilities** — earlier splicing stations that were overrun by their own stock or written off. This is the diegetic origin for content that otherwise arrives ownerless: the hybrids are not random wildlife, they are the Consortium's mistakes still roaming, and the lab ruins are where you go to loot what it left behind. It reinforces the faction's core irony — a power that despises and cannot fully control its own creations. See `required_mods.md` (VGE Cherry-Pick, ~line 339) and `forbidden_mods.md` (the `GR_HybridRaid` / lab-site spawn paths) for the mechanical hooks.
+**The Helix owns the planet's monsters.** The freakish spliced creatures from Vanilla Genetics Expanded (the ~120 `GR_` hybrids kept as bestiary content — Thrumbo-crosses, the `GR_Paragon` apex line, `GR_FleshMonstrosity`, boom/canine/feline/muffalo chimeras, etc.) are **its escaped and abandoned experiments**, and the ruined `GR_AbandonedLab` / `GR_BiomechanicalLab` sites scattered around the world are **its derelict facilities** — earlier splicing stations that were overrun by their own stock or written off. This is the diegetic origin for content that otherwise arrives ownerless: the hybrids are not random wildlife, they are the Helix's mistakes still roaming, and the lab ruins are where you go to loot what it left behind. It reinforces the faction's core irony — a power that despises and cannot fully control its own creations. See `required_mods.md` (VGE Cherry-Pick, ~line 339) and `forbidden_mods.md` (the `GR_HybridRaid` / lab-site spawn paths) for the mechanical hooks.
 
 ## Water doctrine — **Allow (high consumption)**
 
-Closed-loop recyclers make the Consortium siting-indifferent, but growth vats and biosculpters are industrially water-hungry. It therefore **buys bulk water from the Deepwater Compact** — a supply relationship the player can broker, tax, or sever.
+Closed-loop recyclers make the Helix siting-indifferent, but growth vats and biosculpters are industrially water-hungry. It therefore **buys bulk water from the Deepwater Compact** — a supply relationship the player can broker, tax, or sever.
 
 - Sites on isolated highlands and secure research locations regardless of hydrology.
 - Labour-line pawns are water-rationed. Escaped ones arriving at the player's colony arrive dehydrated.
@@ -1508,7 +1547,8 @@ Closed-loop recyclers make the Consortium siting-indifferent, but growth vats an
 | Parameter | Setting |
 |---|---|
 | Tech level | Spacer |
-| Starting goodwill | 0 |
+| Vessel | **AUTHORED.** `Ancients` is impossible — it is `hidden: true`, `settlementGenerationWeight: 0`, `maxCountAtGameStart: 0`, `canMakeRandomly: false`, so it cannot settle, cannot appear in the faction list and cannot be diplomatic |
+| ~~Starting goodwill~~ | ~~0~~ **CUT FROM V1** — `FactionDef` has no goodwill field. |
 | Permanent enemy | No |
 | Target settlements | 3 |
 | Settlement distribution | Isolated highlands, cold deserts, secure research sites |
@@ -1541,12 +1581,12 @@ Closed-loop recyclers make the Consortium siting-indifferent, but growth vats an
 
 ### The labour-line
 
-Arkanian geneticists engineered a lesser lineage to serve their pureblood masters — bred as living experiments and labourers, never recognised as true Arkanians, shunned, short-lived, and periodically purged. In this roster that lineage is represented by **Brute stock (Neanderthal)**, reflavoured faction-side as the Consortium's labour-line. It is deliberately the same base used for heavy labour in the Hutt and Geonosian factions, because it is the same idea: a body bred to work.
+Arkanian geneticists engineered a lesser lineage to serve their pureblood masters — bred as living experiments and labourers, never recognised as true Arkanians, shunned, short-lived, and periodically purged. In this roster that lineage is represented by **Brute stock (Neanderthal)**, reflavoured faction-side as the Helix's labour-line. It is deliberately the same base used for heavy labour in the Hutt and Geonosian factions, because it is the same idea: a body bred to work.
 
-This makes the faction's Supremacist and preferred-xenotype precepts **internally aimed**: the Consortium despises its own workforce. Two mechanics follow:
+This makes the faction's Supremacist and preferred-xenotype precepts **internally aimed**: the Helix despises its own workforce. Two mechanics follow:
 
 - **Escaped labour-line pawns** generate as recruitable refugee incidents at the player's colony, arriving dehydrated and in poor health.
-- **Retrieval raids** are the Consortium's only offensive pawn group — sent to reclaim escaped property. This gives a neutral, hard-to-raid faction a personal reason to attack the player.
+- **Retrieval raids** are the Helix's only offensive pawn group — sent to reclaim escaped property. This gives a neutral, hard-to-raid faction a personal reason to attack the player.
 
 ### Forced pawn-kind assignments
 
@@ -1586,7 +1626,7 @@ This makes the faction's Supremacist and preferred-xenotype precepts **internall
 | Proselytizing | Occasional |
 | Apostasy | Horrible |
 
-The Ascendant Genome is the belief that the body is a rough draft and the species a project — that a sufficiently advanced lineage has the right, and the duty, to edit itself toward perfection. Transhumanist + Supremacist + Collectivist + Proselytizer read as a ladder: transhumanism supplies the goal (the engineered ideal), supremacy ranks everyone against it, collectivism subordinates the individual to the program, and proselytising markets the result. The cruel twist the faction is built on (see Mechanical identity and the labour-line) is that the supremacy points *inward*: the Consortium despises its own manufactured underclass most of all, because the labour-line is the visible proof of how far the unperfected still are from the ideal. Its preferred-xenotype precept (Arkanian, Kaminoan) is therefore not solidarity but a caste boundary — the curators venerate their own line and hold the vat-born workers, and the escaped hybrids, in contempt. Biosculpting: Accelerated, Age reversal: Demanded, and Growth vats: Preferred are the rituals of self-editing made into law.
+The Ascendant Genome is the belief that the body is a rough draft and the species a project — that a sufficiently advanced lineage has the right, and the duty, to edit itself toward perfection. Transhumanist + Supremacist + Collectivist + Proselytizer read as a ladder: transhumanism supplies the goal (the engineered ideal), supremacy ranks everyone against it, collectivism subordinates the individual to the program, and proselytising markets the result. The cruel twist the faction is built on (see Mechanical identity and the labour-line) is that the supremacy points *inward*: the Helix despises its own manufactured underclass most of all, because the labour-line is the visible proof of how far the unperfected still are from the ideal. Its preferred-xenotype precept (Arkanian, Kaminoan) is therefore not solidarity but a caste boundary — the curators venerate their own line and hold the vat-born workers, and the escaped hybrids, in contempt. Biosculpting: Accelerated, Age reversal: Demanded, and Growth vats: Preferred are the rituals of self-editing made into law.
 
 ### Rituals and observances
 
@@ -1604,7 +1644,7 @@ Every observance runs on vanilla Ideology transhumanist mechanics; no mod beyond
 - sterile hospital infrastructure, cryptosleep and containment rooms
 - recon/marine armour for security; charge rifles, charge lances, EMP weapons
 - utility and combat mechs
-- **bulk water purchase and recycling plant** — the League supply dependency
+- **bulk water purchase and recycling plant** — the Compact supply dependency
 - genepacks, xenogerms, medicine, glitterworld medicine, organs and implants
 - advanced components, plasteel, gold, embryos, growth-vat supplies
 - sterile labs and secure vaults; no large food or textile economy
@@ -1641,7 +1681,7 @@ Every observance runs on vanilla Ideology transhumanist mechanics; no mod beyond
 
 ## Mechanical identity
 
-A loose association of highly capable independent hunters bound by a professional code. Few settlements, small groups, broad species diversity, high weapon quality, exceptional combat skill. **Quest-first, raid-last** — the Compact generates hunts, not sieges.
+A loose association of highly capable independent hunters bound by a professional code. Few settlements, small groups, broad species diversity, high weapon quality, exceptional combat skill. **Quest-first, raid-last** — the Company generates hunts, not sieges.
 
 ## Water doctrine — **Allow (water clock)**
 
@@ -1698,7 +1738,8 @@ those instead. That choice is open — see `faction_stage3_buildable_spec.md`.
 | Parameter | Setting |
 |---|---|
 | Tech level | Industrial |
-| Starting goodwill | −10 |
+| Vessel | **vanilla `Pirate`** — PATCH. It ships `permanentEnemy: true` and **keeps it**; see pillar 5 |
+| ~~Starting goodwill~~ | ~~−10~~ **CUT FROM V1** — `FactionDef` has no goodwill field. Hostility rides vanilla `Pirate`'s own `permanentEnemy: true`. |
 | Permanent enemy | No |
 | Target settlements | 4 |
 | Settlement distribution | Trade hubs, ruins, road junctions, rough outposts |
@@ -1734,7 +1775,7 @@ those instead. That choice is open — see `faction_stage3_buildable_spec.md`.
 
 ### Forced pawn-kind assignments
 
-- **Compact Hunter:** any listed race; high Shooting or Melee.
+- **Blackstar Hunter:** any listed race; high Shooting or Melee.
 - **Tracker:** Trandoshan, Bothan, Togruta, Iktotchi, or Cathar.
 - **Marksman:** Rodian, Chiss, Duros, or Bothan.
 - **Breacher:** Zabrak, Devaronian, or Kaleesh.
@@ -1759,7 +1800,7 @@ A Trandoshan who is captured and released, or who breaks off a hunt because of t
 
 | Issue | Setting |
 |---|---|
-| **Killing a Compact member in good standing** | **Abhorrent** |
+| **Killing a Company member in good standing** | **Abhorrent** |
 | **Stealing another hunter's mark** | **Abhorrent** |
 | **Questioning a delivered contract** | **Prohibited** |
 | Slavery | Acceptable |
@@ -1774,9 +1815,9 @@ A Trandoshan who is captured and released, or who breaks off a hunt because of t
 | Corpses | Don't care |
 | Organ use | Acceptable |
 | Physical love | Free |
-| Raiding | **Not a meme** — the Compact takes contracts, it does not pillage |
+| Raiding | **Not a meme** — the Company takes contracts, it does not pillage |
 
-The Code exists to keep hunters from fighting each other so contracts actually complete. Hunters rank in classes by skill and reputation and take work as bounty pucks from Guild hubs. The meme stack is unusually restrained by design: Individualist (the hunter answers to the contract, not a lord), Loyalist (but the Code itself is inviolable), and Guilty (a delivered contract is a debt discharged; a broken one is a stain). Note the deliberate absence — there is **no Raider meme**, because the Compact takes work, it does not pillage; that single omission is what separates the guild from the Hutts and the hive on the relations matrix.
+The Code exists to keep hunters from fighting each other so contracts actually complete. Hunters rank in classes by skill and reputation and take work as bounty pucks from Guild hubs. The meme stack is unusually restrained by design: Individualist (the hunter answers to the contract, not a lord), Loyalist (but the Code itself is inviolable), and Guilty (a delivered contract is a debt discharged; a broken one is a stain). Note the deliberate absence — there is **no Raider meme**, because the Company takes work, it does not pillage; that single omission is what separates the guild from the Hutts and the hive on the relations matrix.
 
 ### Rituals and observances
 
@@ -1862,14 +1903,16 @@ should be legible in dialogue and quest text rather than stated as a number:
    the Cartel is hunting becomes a target. **They will help, and they will not be
    seen helping.**
 
-Mechanically: cap goodwill at **+75, never allied**. Any player action that
-raises Cartel hostility should *lower* Jawa Trade Moot goodwill — the single most
+Mechanically **`[v2]`** — there is no goodwill field to cap in v1, so the ceiling
+lives in dialogue and quest text alone. Any player action that raises Cartel
+hostility should *read* as lowering Jawa Trade Moot standing — the single most
 characterful relation in the roster, and the one that makes the Hutts feel like
-weather rather than an enemy.
+weather rather than an enemy. The cap becomes a real number only if CHECK C24
+proves Faction Customizer persists.
 
 ## Water doctrine — **Manufacture (crawler stills)**
 
-Not the Tusken taboo and not the League's monopoly. Jawa Trade Moot clans carry their
+Not the Tusken taboo and not the Compact's monopoly. Jawa Trade Moot clans carry their
 water with them: condensers on the crawler spine, buried cisterns at fixed points
 on the circuit.
 
@@ -1884,8 +1927,9 @@ on the circuit.
 | Parameter | Setting |
 |---|---|
 | Tech level | Industrial, heavily gear-restricted (salvage-grade only) |
-| Starting goodwill | **+40** |
-| Goodwill ceiling | **+75 — cannot ally** (enforced, not incidental) |
+| Vessel | **AUTHORED** — no vanilla vessel |
+| ~~Starting goodwill~~ | ~~**+40**~~ **CUT FROM V1** — `FactionDef` has no goodwill field. |
+| ~~Goodwill ceiling~~ | ~~**+75 — cannot ally**~~ **CUT FROM V1** — there is nothing to cap. The ceiling is fiction carried by dialogue and quest text until CHECK C24 proves Faction Customizer persists |
 | Permanent enemy | No |
 | Target settlements | 7 |
 | Settlement distribution | Canyon fortresses and crawler circuit nodes; never open water |
@@ -2010,7 +2054,8 @@ Junkers manufacture nothing. They carry looted water and they raid for more.
 | Parameter | Setting |
 |---|---|
 | Tech level | Industrial, degraded — nothing works properly and it shows |
-| Starting goodwill | **−90** |
+| Vessel | **AUTHORED** — no vanilla vessel |
+| ~~Starting goodwill~~ | ~~**−90**~~ **CUT FROM V1** — `FactionDef` has no goodwill field. Hostile on sight and bribable, **not** permanent. |
 | Permanent enemy | **No** — owner's ruling 2026-08-13; hostile-but-bribable |
 | Target settlements | 8 |
 | Settlement distribution | Wreck fields, tailings, ruins — the tiles nobody claimed |
@@ -2325,7 +2370,7 @@ new factions arrive with their diplomacy attached rather than as orphans.
 |---|---|---|
 | **Jawa Trade Moot ↔ Junkers** | **Hostile (hardcoded)** | The Long Circuit versus The Weight; claim-jumping is the Junkers' entire method |
 | **Jawa Trade Moot ↔ Hutt Cartel** | Appeasing / tributary | Small, pays, tolerated. The fear that caps player goodwill |
-| **Jawa Trade Moot ↔ player** | Friendly, **capped at **+74**, never allied _(was +75 — off by one: Ally fires at ≥75, VISION 2026-08-13)_** | Kinship, salvage rivalry, and Cartel retaliation — see faction 11 |
+| **Jawa Trade Moot ↔ player** | Friendly, **never allied** — the cap is fiction in v1 (there is no goodwill field); as `[v2]` it is **+74**, because Ally fires at ≥75 | Kinship, salvage rivalry, and Cartel retaliation — see faction 11 |
 | **Jawa Trade Moot ↔ Tusken Clans** | Cold, non-hostile | Both desert-native and water-poor; they avoid each other's circuits |
 | **Junkers ↔ Hutt Cartel** | Transactional (talent pipeline) | Cartel buys the strongest Junkers out of the warrens; elite Gamorreans become bodyguards |
 | **Junkers ↔ everyone else** | Hostile, not permanent | Hostile on sight and no standing trade — but goodwill CAN be bought back with scrap tribute. Pillar 5 holds: the Galactic Empire is the only permanent enemy |
@@ -2363,10 +2408,10 @@ production at all, range set by the last thing they stole.
 2. Correct settlement counts and **water-tile placement** with a faction/world editor. The Deepwater Compact must hold the natural water; the Cartel must hold the oases; the Enclaves must sit on contaminated sources; Tuskens and Geonosians must be dry-sited.
 3. Apply the NPC-vs-NPC relations matrix.
 4. Verify equipment tags per faction so no two factions draw from one unrestricted pool.
-5. Confirm forced pawn-kind race overrides for Hutts, Gamorreans, stormtroopers, Sith, Geonosian castes, droid chassis, Consortium labour-line, and faction leaders.
+5. Confirm forced pawn-kind race overrides for Hutts, Gamorreans, stormtroopers, Sith, Geonosian castes, droid chassis, Helix labour-line, and faction leaders.
 6. Confirm raid generation is suppressed for the Deepwater Compact and Free Droid Enclaves, and that both have working incident/quest hooks.
 7. Confirm Jedi generate factionless.
-8. **Belief systems (low priority — NPC religion rarely surfaces in play).** Each faction's "Belief system" block now carries a **Rituals and observances** list with a *Mechanical encoding* note per line. Almost everything is pure vanilla Ideology (memes, precepts, styles, Leader/Moral-guide roles, and reflavoured vanilla rituals — no mod beyond the DLC). After the 2026-08-06 meme/precept catalog check, only **two** items remain not-guaranteed-vanilla; a third (the Geonosian arena) resolved in vanilla's favour: (a) the **Geonosian gladiatorial ritual** — ✅ *resolved*: the vanilla + Ideology-DLC wiki lists a base-game **"Gladiator Duels"** ritual (same scoring class as Funerals/Blinding/Scarification), so *The Games* is most likely a reflavoured vanilla ritual with no mod dependency; residual is only to confirm in-game which meme/structure unlocks it, with the plain execution ritual as guaranteed fallback; (b) the **Free Droid "memory erasure is abhorrent" precept** and whether the droid race is Humanlike enough to hold an ideoligion at all — else the Continuity Protocol runs as GM/narrative faith; (c) the **Aquifer "Neutrality: Required" precept** — carried as faction behaviour + RP, not a vanilla precept. None of these blocks a faction; each has a buildable vanilla fallback.
+8. **Belief systems (low priority — NPC religion rarely surfaces in play).** Each faction's "Belief system" block now carries a **Rituals and observances** list with a *Mechanical encoding* note per line. Almost everything is pure vanilla Ideology (memes, precepts, styles, Leader/Moral-guide roles, and reflavoured vanilla rituals — no mod beyond the DLC). After the 2026-08-06 meme/precept catalog check, only **two** items remain not-guaranteed-vanilla; a third (the Geonosian arena) resolved in vanilla's favour: (a) the **Geonosian gladiatorial ritual** — ✅ *resolved*: the vanilla + Ideology-DLC wiki lists a base-game **"Gladiator Duels"** ritual (same scoring class as Funerals/Blinding/Scarification), so *The Games* is most likely a reflavoured vanilla ritual with no mod dependency; residual is only to confirm in-game which meme/structure unlocks it, with the plain execution ritual as guaranteed fallback; (b) the **Free Droid "memory erasure is abhorrent" precept** and whether the droid race is Humanlike enough to hold an ideoligion at all — else the Continuity Protocol runs as GM/narrative faith; (c) the **Deepwater Compact "Neutrality: Required" precept** — carried as faction behaviour + RP, not a vanilla precept. None of these blocks a faction; each has a buildable vanilla fallback.
 
 ## Species coverage
 
@@ -2377,52 +2422,52 @@ Every installed race is used at least once across the twelve NPC factions. **Jaw
 | Race | Appears in |
 |---|---|
 | Abednedo | Homestead |
-| Aqualish | Hutt, Aquifer |
-| Arkanian | Imperial, Consortium |
-| Bith | Homestead, Geonosian, Consortium |
-| Bothan | Bounty |
-| Cathar | Wookiee, Bounty |
-| Cerean | Homestead, Consortium |
-| Chagrian | Aquifer |
-| Chiss | Imperial, Consortium, Bounty |
+| Aqualish | Hutt, Deepwater |
+| Arkanian | Imperial, Helix |
+| Bith | Homestead, Geonosian, Helix |
+| Bothan | Blackstar |
+| Cathar | Wildsteam, Blackstar |
+| Cerean | Homestead, Helix |
+| Chagrian | Deepwater |
+| Chiss | Imperial, Helix, Blackstar |
 | Dathomirian | Imperial (Sith escort only) |
-| Devaronian | Hutt, Bounty |
-| Duros | Homestead, Aquifer, Bounty |
-| Ewok | Wookiee |
+| Devaronian | Hutt, Blackstar |
+| Duros | Homestead, Deepwater, Blackstar |
+| Ewok | Wildsteam |
 | Geonosian | Geonosian; Imperial prisoner pool |
-| Gungan | Aquifer |
-| Herglic | Hutt, Aquifer |
-| Iktotchi | Homestead, Bounty |
-| Iridonian (Zabrak) | Imperial, Bounty |
-| Ithorian | Homestead, Wookiee, Aquifer |
-| Kaleesh | Bounty |
-| Kaminoan | Geonosian (gated), Consortium |
+| Gungan | Deepwater |
+| Herglic | Hutt, Deepwater |
+| Iktotchi | Homestead, Blackstar |
+| Iridonian (Zabrak) | Imperial, Blackstar |
+| Ithorian | Homestead, Wildsteam, Deepwater |
+| Kaleesh | Blackstar |
+| Kaminoan | Geonosian (gated), Helix |
 | Massassi | Imperial (Sith escort only) |
-| Miraluka | Homestead, Consortium; Imperial prisoner pool; factionless Jedi |
+| Miraluka | Homestead, Helix; Imperial prisoner pool; factionless Jedi |
 | Mirialan | Homestead; factionless Jedi |
-| Mon Calamari | Aquifer; Imperial prisoner pool |
-| Neimoidian | Consortium |
-| Nikto | Hutt (Vontor caste), Tusken |
+| Mon Calamari | Deepwater; Imperial prisoner pool |
+| Neimoidian | Helix |
+| Nikto | Hutt (Vontor caste), Deep Desert |
 | Pantoran | Homestead |
 | Pyke | Hutt, Geonosian |
-| Quarren | Aquifer |
-| Rakata | Imperial (quest only), Geonosian, Consortium |
-| Rodian | Hutt, Bounty |
-| Selkath | Aquifer |
+| Quarren | Deepwater |
+| Rakata | Imperial (quest only), Geonosian, Helix |
+| Rodian | Hutt, Blackstar |
+| Selkath | Deepwater |
 | Sith | Imperial (pawn kind only) |
 | Sullustan | Homestead |
-| Togruta | Homestead, Wookiee, Bounty; factionless Jedi |
-| Trandoshan | Hutt, Bounty |
-| Tusken | Tusken Clans; **player-adjacent only** |
+| Togruta | Homestead, Wildsteam, Blackstar; factionless Jedi |
+| Trandoshan | Hutt, Blackstar |
+| Tusken | Deep Desert Tribes; **player-adjacent only** |
 | Twi'lek | Hutt, Homestead |
-| Umbaran | Imperial, Consortium, Bounty |
+| Umbaran | Imperial, Helix, Blackstar |
 | Wookiee | Wildsteam Clan; Imperial prisoner pool |
-| Zeltron | Hutt, Bounty |
+| Zeltron | Hutt, Blackstar |
 | Gamorrean (Pigskin) | Hutt |
-| Wookiee-kin (Yttakin) | Wookiee |
-| Savant caste (Genie) | Imperial, Geonosian, Consortium |
-| Brute stock (Neanderthal) | Tusken, Geonosian, Consortium labour-line |
-| Desert alien (Impid) | Tusken |
+| Wookiee-kin (Yttakin) | Wildsteam |
+| Savant caste (Genie) | Imperial, Geonosian, Helix |
+| Brute stock (Neanderthal) | Deep Desert, Geonosian, Helix labour-line |
+| Desert alien (Impid) | Deep Desert |
 | Baseliner human (Humanity) | Imperial, Homestead, Hutt |
 
 Forbidden and disabled races remain unused: Force Gremlin, Chadra-Fan, Echani, Feeorin, Ishi Tib, Thyrsian.
@@ -2436,13 +2481,13 @@ The roster above is the *mechanical* spec (relations, water doctrine, pawn kinds
 ### Emotional register (voice/tone — feeds each FactionDef `description` + namer + colorSpectrum)
 - **Empire** — cold, inexorable, overwhelming-from-above. Not hateful, *procedural*: you are a logistics problem they are closing out. Hard Imperial grey/white; formal military namer.
 - **Hutts** — oily, transactional, amused by your desperation. Comedy-adjacent (fits the Jawa levity layer) but with teeth. Warm sickly-gold; namer full of honorifics + shell-company suffixes.
-- **Bounty Hunters** — individual, competent, personal. Where the Empire is faceless ranks, a bounty hunter is *one dangerous person with a name who is coming for you*. The faction that makes the pursuit feel intimate.
+- **Blackstar Company** — individual, competent, personal. Where the Empire is faceless ranks, a bounty hunter is *one dangerous person with a name who is coming for you*. The faction that makes the pursuit feel intimate.
 - **Jawa (player)** — comedic, greedy, communal, resourceful-underdog. The heart of the campaign's levity layer (SpeakUp trade-babble). You root for them *because* they're outmatched.
 
 ### Named-leader persona sketches (draft targets for the Backstory Constructor plan, context.md §521)
 - **Empire — the Moff-analog:** an orbital governor who never lands. High Shooting/Social/Intellectual; lore = the officer personally assigned your file. A *name on the Heat gauge*, rarely a body on the map until Act III. (Sits naturally on the Royalty-noble side of the fused Empire.)
 - **Hutts — 1-3 named kingpins:** low Movement (they don't fight, they sit), extreme Social/Trade, disabled Violence; lore = runs the base, owns your bounty. Draft 2-3 so they can be *rivals*.
-- **Bounty Hunters — the guild-master:** the most-feared hunter, held for Act III at the blockade. Extreme Shooting or Melee, a signature gimmick, lore = has never lost a mark. Beating him is a personal climax nested in the corridor run. (Plus a *small stable of recurring named hunters* — each defeated-but-survived hunter can return with a grudge; highest flavor-per-effort move in the cast.)
+- **Blackstar Company — the guild-master:** the most-feared hunter, held for Act III at the blockade. Extreme Shooting or Melee, a signature gimmick, lore = has never lost a mark. Beating him is a personal climax nested in the corridor run. (Plus a *small stable of recurring named hunters* — each defeated-but-survived hunter can return with a grudge; highest flavor-per-effort move in the cast.)
 - **Jawa — the clan chief:** high Social/Crafting, disabled Intellectual (they *tinker*, don't *research* — reinforces the no-research-ladder pillar); lore = keeper of the crashed Factory ship. The player's anchor character.
 
 ### Rejected alternative on record — "rival Hutt lords" (why the roster chose a single Confederacy)
@@ -2455,13 +2500,13 @@ The dossiers proposed **1-3 mutually-rival individual Hutt lords** you could "pl
 - **Trophy loot** — defeating a named hunter drops their signature weapon as a *unique, non-craftable* trophy (flavor, not an arsenal ladder). You end the run carrying the guns of the hunters who failed to catch you.
 
 ### Cast-diff vectors + loot signatures (the "no two factions swap unnoticed" forcing function)
-| Axis | Empire | Hutts | Bounty Hunters | Jawa |
+| Axis | Empire | Hutts | Blackstar Company | Jawa |
 |---|---|---|---|---|
 | **Vector** | vertical (orbit/sky) | horizontal (markets) | personal (tracks *you*) | subterranean (salvage/caverns) |
 | **Relation to Heat** | *is* the timer | *raises* it (trade) | *spawned by* it | *manages* it (go dark, salvage) |
 | **Loot signature** | charge gear + unusable Force artifact | silver, slaves, exotic stock | unique trophy weapons | droid brains, scrap |
 
-**Keeping Hutt underlings distinct from the Bounty Hunters faction:** Hutt factions field Trandoshan/Rodian *trackers* as rank-and-file, which risks blurring into the Bounty Hunters. Clean division — Hutt underlings are *disposable crew tied to a place* (defend the base, spawn in his raids, die anonymous); Bounty Hunters are *named free agents tied to you* (arrive alone via the board, persistent identities, trophy weapons). Same species, different faction + narrative weight — deliberate contrast, not a collision.
+**Keeping Hutt underlings distinct from the Blackstar Company faction:** Hutt factions field Trandoshan/Rodian *trackers* as rank-and-file, which risks blurring into the Blackstar Company. Clean division — Hutt underlings are *disposable crew tied to a place* (defend the base, spawn in his raids, die anonymous); Blackstar Company are *named free agents tied to you* (arrive alone via the board, persistent identities, trophy weapons). Same species, different faction + narrative weight — deliberate contrast, not a collision.
 
 ## RimWorld reference
 
