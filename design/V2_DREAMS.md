@@ -213,7 +213,7 @@ criteria: (45,131) reads ACTIVE with no warning; the control reads `WarningThrus
 ## C14 The sealed-room thruster test (CREATE's L8)
 spec:     Sealed roofed room with a thruster inside -> predict INACTIVE. Thruster in the wall line with open sky aft -> predict ACTIVE.
 verify:   EMPTY
-criteria: send CREATE the RAW `jawa/inspect_string` lines, not a verdict — the whole roof derivation hangs off which sentence fires.
+criteria: send BUILD the RAW `jawa/inspect_string` lines, not a verdict — the whole roof derivation hangs off which sentence fires.
 
 ## C19 Live terrain edit — put the salt back in the dry lake bed
 spec:     Geological Landforms hard-codes `SoftSand` on its dry-lake landform and the mod-side fix means editing a serialised NodeCanvas, so fix it LIVE on arrival. Target defName, verified: `Jawa_SaltCrust`, `src/Jawa/Jawa_Patches/Defs/TerrainDefs/JawaSaltCrust.xml:100`. Bound by BOTH a rect AND a source-terrain match, never terrain alone — a map-wide SoftSand->salt repaint erases the desert. Same session as worldgen, after rows 2 and 7. Not a blocker.
@@ -263,7 +263,7 @@ criteria: images for all 25 — unblocks the owner's mech review sheet, which is
 ## C29 Does `CharityRefused_Beggars` record without a `Charity_*` precept
 spec:     ~2 min. The refusal hook is legal and measured: `CharityRefused_Beggars` fires when beggars leave empty-handed, and arresting them raises `CharityRefused_Beggars_Betrayed` (IL: `AnySignal(beggars.Killed, beggars.Arrested)`). Spec: `D:\Luke\dev\Rimworld\design\Jawa\worldbuilding\precept_the_unearned.md`. A `FactionDef` has no precept field; only a meme's `requireOne` forces one.
 verify:   EMPTY
-criteria: does the event record at all for a colony holding NO `Charity_*` precept. Blocks CREATE.
+criteria: does the event record at all for a colony holding NO `Charity_*` precept. Blocks BUILD.
 
 ## C30 RimTunes tagging session `[v2]`
 spec:     RimTunes has replaced the vanilla music system, dynamic mode is on (`enableDMS: True`), and `Config/RimTunes/` is EMPTY — it is scoring the game right now with nothing of ours in it. Answer two questions FIRST, both of which change how everything gets tagged: (1) what are the `Events` tags — the category exists in the language keys but the names are in neither the files nor the assembly; icons include `explosion.png` and `dove.png`; (2) do time-range tags mean clock time or position within a song — the dialog says "Play only during this part of the song" while the tag description says "Plays between {range}". Then confirm `SW_Sandstorm` and `SW_DrySandstorm` appear as weather tags (the assembly has `CreateBiomeTags` and `CreateWeatherTags`) — if they do we can score our own weather with no XML at all. Then tag: 102 songs auto-discovered; vanilla's 6 desert-appropriate relax tracks -> Require the desert biomes; the ~6 usable `Tense` tracks -> Require `Tense` (only 11 of 102 are tense and 5 of those are Caverns tracks locked to the fungal forest, so the real combat pool on a desert map is about six). Then back up `Config/RimTunes/` and `Config/Mod_3399705740_RimTunesMod.xml` to `deployed/config/` — hand tagging is otherwise unrecoverable. Context: `design/RimMandrake/music_protocol.md`.
@@ -383,22 +383,22 @@ block here.** Check there before re-filing anything.
 
 | § | item | owner | blocked by | v1 close unblocks? |
 |---|---|---|---|---|
-| **0b** | Do enemies actually USE vehicles in raids? Three mods live or die on it | PROJECT | owner must identify "mother (HK Tank)" | no — offline-answerable today |
-| **0c** | Alpha Neolithic reskin — the **4 vehicles after the sled** | CREATE | nothing | yes (CREATE is v1-committed) |
+| **0b** | Do enemies actually USE vehicles in raids? Three mods live or die on it | DECIDE | owner must identify "mother (HK Tank)" | no — offline-answerable today |
+| **0c** | Alpha Neolithic reskin — the **4 vehicles after the sled** | BUILD | nothing | yes (BUILD is v1-committed) |
 | **1** | Everything detonates — energy-density explosion model | unowned | nothing | yes |
-| **3a** | Traps entry for the `-main`-branch `supportedVersions` trap | WORLD/OPS | nothing | no — 15 minutes, do it anytime |
-| **3b** | W3 — re-scope `outer_rim_cherrypick_list.md` against the 1.6-native module | WORLD | nothing | yes |
-| **3c** | W4 — can Royalty noble pawnkinds take varied alien races? | WORLD | nothing | no — offline from the def dump |
-| **3d** | Four `INSPIRATION ONLY (1.4/1.5)` bullets the retraction missed | OPS | nothing | no |
-| **4a** | W7 — re-cast rebel gear onto the scavenger factions | WORLD | "Junker Scrap-Warrens" has no defName | **no — needs the game up** |
-| **4b** | U2 — balance-audit the live JDS droid weapons | WORLD | nothing | yes |
-| **4c** | U3 — build the **Free Droid Enclaves** `FactionDef` | CREATE | worldgen (faction #5 in the spec) | yes — and it unblocks C-v3 |
-| **4d** | U4 — the rare Homestead Jedi `pawnGroupMaker` | VISION+CREATE | joint Sith/Jedi build (VISION V-new) | yes |
-| **5** | V2 Ideology lines — does the Jawaese actually reach Suppress/ReduceWill? | VISION | 🛑 owner STOP WORK | yes — and it needs the game up |
+| **3a** | Traps entry for the `-main`-branch `supportedVersions` trap | DECIDE/BUILD | nothing | no — 15 minutes, do it anytime |
+| **3b** | W3 — re-scope `outer_rim_cherrypick_list.md` against the 1.6-native module | DECIDE | nothing | yes |
+| **3c** | W4 — can Royalty noble pawnkinds take varied alien races? | DECIDE | nothing | no — offline from the def dump |
+| **3d** | Four `INSPIRATION ONLY (1.4/1.5)` bullets the retraction missed | BUILD | nothing | no |
+| **4a** | W7 — re-cast rebel gear onto the scavenger factions | DECIDE | "Junker Scrap-Warrens" has no defName | **no — needs the game up** |
+| **4b** | U2 — balance-audit the live JDS droid weapons | DECIDE | nothing | yes |
+| **4c** | U3 — build the **Free Droid Enclaves** `FactionDef` | BUILD | worldgen (faction #5 in the spec) | yes — and it unblocks C-v3 |
+| **4d** | U4 — the rare Homestead Jedi `pawnGroupMaker` | DECIDE+BUILD | joint Sith/Jedi build (VISION V-new) | yes |
+| **5** | V2 Ideology lines — does the Jawaese actually reach Suppress/ReduceWill? | DECIDE | 🛑 owner STOP WORK | yes — and it needs the game up |
 
 ---
 
-## 0b. [PROJECT] Do enemies actually USE vehicles against us?
+## 0b. [DECIDE] Do enemies actually USE vehicles against us?
 
 **Owner's ask, 2026-08-12:** _"The point here is to be able to have enemies use these
 against us in raids. If they can't or won't, then these three mods should be
@@ -427,7 +427,7 @@ named log string in `NEXT_RELOAD.md`.
 
 ---
 
-## 0c. [CREATE] Alpha Neolithic reskin — the four vehicles after the sled
+## 0c. [BUILD] Alpha Neolithic reskin — the four vehicles after the sled
 
 `sarg.alphavehiclesneolithic`. **The dog sled shipped** (eopie pair, `ad3e3c7`
 `2a9a004`; see `CLOSED.md` C3a). **Four vehicles remain**, each 6 files = **24 PNGs**:
@@ -506,7 +506,7 @@ assembly (solo-load waived by the owner). Full entry: `required_mods.md:604`.
 ⚠️ **Do NOT also load "Star Wars – Factions (Continued)" (WS 3544900066)** — it ships
 its own Galactic Empire and would collide.
 
-### 3a. [WORLD/OPS] File the branch trap — it has caught two independent passes
+### 3a. [DECIDE/BUILD] File the branch trap — it has caught two independent passes
 
 **The lesson is not written down anywhere.** `skills/rimworld-modding/references/`
 has no entry for it, and it cost six days plus a re-derivation by a second census.
@@ -521,7 +521,7 @@ has no entry for it, and it cost six days plus a re-derivation by a second censu
 the truth. All nine `vendor/mod_sources/Outer-Rim-*-main` extracts are stale-branch
 pulls — **delete or clearly mark them**, or a third pass reaches the same wrong answer.
 
-### 3b. [WORLD] W3 — re-scope the cherry-pick list
+### 3b. [DECIDE] W3 — re-scope the cherry-pick list
 
 `design/Jawa/mods/outer_rim_cherrypick_list.md` (91 lines) is a hand-port plan whose
 stated top priority is *"Empire trooper ladder + blasters + apparel + training hediffs"*.
@@ -533,14 +533,14 @@ the Empire's Sith-elite donor; that lift is still wanted.
 SRC-verified defName list in that doc is still accurate. Nothing has gone stale; the
 question is only *port vs load*.
 
-### 3c. [WORLD] W4 — the feasibility check the docs already owe
+### 3c. [DECIDE] W4 — the feasibility check the docs already owe
 
 `cherry_picker_killlist.md:82` and `required_mods.md:687` both flag it unanswered: can
 Royalty noble pawnkinds be given varied alien races, or do their generation rules block
 it? **Answerable offline from the live def dump.** Fallback already written down — let
 varied races appear naturally rather than guaranteeing them.
 
-### 3d. [OPS] Four stale `INSPIRATION ONLY (1.4/1.5)` bullets the retraction missed
+### 3d. [BUILD] Four stale `INSPIRATION ONLY (1.4/1.5)` bullets the retraction missed
 
 The 2026-08-12 retraction in `required_mods.md` fixed the table, the Galactic Empire
 bullet and (later) Rebel Alliance. **It did not fix `:605`–`:608`** — Galactic
@@ -580,7 +580,7 @@ exist live in `[JDS] StarWars - Armory`: `OuterRim_E5Blaster`→`JDSA_E-5_Blaste
 player would see two E-5 blasters in a stack already carrying 674 weapons. **U2 below
 is the work that is actually owed instead, and it is the same effort.**
 
-### 4a. [WORLD] W7 — re-cast the rebel gear onto the scavenger factions
+### 4a. [DECIDE] W7 — re-cast the rebel gear onto the scavenger factions
 
 **This is what converts a suppressed faction into a salvage layer.** Without it the
 gear exists but nobody wears it. Duplicated at `queue/VISION.md` **V13** `[v2]`.
@@ -606,7 +606,7 @@ the PawnKindDef, matched against ThingDef tags and wealth-gated by the engine. P
 in `Jawa_Patches` today, no tool and no UI session — appropriate if W7 only ever meant
 *"Homestead pawns can carry an A280"*.
 
-### 4b. [WORLD] U2 — balance-audit the live JDS droid weapons
+### 4b. [DECIDE] U2 — balance-audit the live JDS droid weapons
 
 Two smell wrong on sight and need checking against `setting_physics.md`:
 `JDSA_E-5S_Sniper_Rifle` fires a **4-round burst** (snipers should not burst) and
@@ -615,7 +615,7 @@ makes Separatist droids feel limp at exactly the range the fiction wants them da
 Both are one-line `PatchOperationReplace` fixes in a mod we already load, on content the
 player will actually meet.
 
-### 4c. [CREATE] U3 — the droid faction we DO want is not in either mod
+### 4c. [BUILD] U3 — the droid faction we DO want is not in either mod
 
 `faction_world_spec.md` §6 lists **Free Droid Enclaves** as faction 5 —
 100% droid chassis, 0% biological — a *territorial* threat holding specific tiles,
@@ -630,7 +630,7 @@ twice over (Droid Depot + JDS TSDA), so authoring our own `FactionDef` + thin
 ⭐ **This unblocks `queue/CREATE.md` C-v3** — the restraining-bolt spec explicitly lands
 with the Free Droid Enclaves *"whose `FactionDef` is unbuilt"*.
 
-### 4d. [VISION+CREATE] U4 — the rare Homestead Jedi
+### 4d. [DECIDE+BUILD] U4 — the rare Homestead Jedi
 
 `required_mods.md:596` permits it and `desert_world_design.md` §3B(7) supplies the why.
 Unbuilt: the low-weight `pawnGroupMaker` entry on the Moisture-Farmer / Homestead faction
@@ -647,7 +647,7 @@ is dead as of this rewrite** — the item is §4d/U4. Three citations to repair,
 
 ---
 
-## 5. [VISION] V2 Ideology lines — do the Jawaese lines reach Suppress/ReduceWill?
+## 5. [DECIDE] V2 Ideology lines — do the Jawaese lines reach Suppress/ReduceWill?
 
 > 🛑 **STOP WORK.** Owner, 2026-08-13: *"Deepening this is a v2 item. Let's get stuff
 > working that's a blocker to play first."*

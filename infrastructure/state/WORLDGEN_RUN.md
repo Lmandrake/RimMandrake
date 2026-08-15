@@ -25,11 +25,11 @@ different claims, and this table can only ever make the first.**
 
 | # | precondition | owner | why it cannot slip |
 |---|---|---|---|
-| G1 | ✅ **READY IN THE REPO — `c3ee8e7`, on origin. NOT LIVE.** The sea step places on the right predicate — `effectiveLat = Acos(Cos(lon·Deg2Rad)·Cos(lat·Deg2Rad))·Rad2Deg`, banding on arc distance from the subsolar point, **not latitude** | CREATE | Verified by `strings -a -el` on the built DLL: `aspect {5:F1}` and `mean arc {7:F0} deg` present, the old `mean |lat|` literal **absent**. ⚠️ **Deploys SOLO** — a new assembly poisons attribution for everything beside it — and **cannot be written while RimWorld runs** (`OSError 22` on the locked file; the refusal is safe, it cannot truncate) |
-| G2 | **`Jawa_SeaShaping` is registered** in `PlanetLayerDef[defName="Surface"]/worldGenSteps` | CREATE | ⚠️ **A `WorldGenStepDef` absent from the layer loads, validates and NEVER RUNS, with no log line.** Registration is silent both ways |
-| G3 | **The companion DLL carries the shutdown-window tools** — `jawa/get_defs`, `jawa/fire_quest` | BRIDGE | Companion work needs a **shutdown**, not a startup. Miss it and row 3 waits a full cycle |
-| G4 | ✅ **`isJunk` is RESOLVED — removed from both scatter defs, `de1018b`.** What remains is a **DEPLOY**: the game copy is still 2026-08-13 16:42 with `isJunk` present | CREATE decided · OPS deploys | §2.D. **Decided, not done** — the fix is repo-only until it ships |
-| G5 | **The faction tick-list is to hand** — `WORLDGEN_FACTION_CHECKLIST.md`, ratified, 21 untick / 6 keep | OPS at the screen | The page is seen **once** |
+| G1 | ✅ **READY IN THE REPO — `c3ee8e7`, on origin. NOT LIVE.** The sea step places on the right predicate — `effectiveLat = Acos(Cos(lon·Deg2Rad)·Cos(lat·Deg2Rad))·Rad2Deg`, banding on arc distance from the subsolar point, **not latitude** | BUILD | Verified by `strings -a -el` on the built DLL: `aspect {5:F1}` and `mean arc {7:F0} deg` present, the old `mean |lat|` literal **absent**. ⚠️ **Deploys SOLO** — a new assembly poisons attribution for everything beside it — and **cannot be written while RimWorld runs** (`OSError 22` on the locked file; the refusal is safe, it cannot truncate) |
+| G2 | **`Jawa_SeaShaping` is registered** in `PlanetLayerDef[defName="Surface"]/worldGenSteps` | BUILD | ⚠️ **A `WorldGenStepDef` absent from the layer loads, validates and NEVER RUNS, with no log line.** Registration is silent both ways |
+| G3 | **The companion DLL carries the shutdown-window tools** — `jawa/get_defs`, `jawa/fire_quest` | CHECK | Companion work needs a **shutdown**, not a startup. Miss it and row 3 waits a full cycle |
+| G4 | ✅ **`isJunk` is RESOLVED — removed from both scatter defs, `de1018b`.** What remains is a **DEPLOY**: the game copy is still 2026-08-13 16:42 with `isJunk` present | BUILD deploys | §2.D. **Decided, not done** — the fix is repo-only until it ships |
+| G5 | **The faction tick-list is to hand** — `WORLDGEN_FACTION_CHECKLIST.md`, ratified, 21 untick / 6 keep | the owner at the screen | The page is seen **once** |
 
 **If any of G1–G5 is open, the run is not ready. Say so rather than launching.**
 
@@ -50,7 +50,7 @@ coverage or a seed here is overriding a decision the owner has explicitly kept.
 **No ratified value exists.** `TidallyLocked` is the intended planet type — the
 whole temperature design rests on its curve, and `JawaWorld_BiomeMix.xml` patches
 that def **by defName**. **Confirm the type is actually selectable at the page and
-selected.** Coverage and seed are open. → **owner + VISION.**
+selected.** Coverage and seed are open. → **the owner.**
 
 ### B. 🔴 THE LANDING TILE — now load-bearing, and it was not before
 **Pick the tile against its MUTATORS, not only its biome.** Of 337 `TileMutatorDef`s
@@ -60,13 +60,13 @@ in the 01:20 def dump, five carry `junkDensityFactor` **0**: `Dunes`, `Iceberg`,
 ⇒ **On a `Dunes` tile our scrapfields and our ground hulk both place NOTHING,
 silently, with no warning** — a scavenger clan with its scrap switched off by the
 terrain it lives on. **Read the candidate tile's mutators before committing.**
-→ **owner picks; OPS reads the mutators.**
+→ **the owner picks; BUILD reads the mutators.**
 
 ### C. Temperature target for the landing site
 The habitable ring is **~34–57° of arc from (lon 0, lat 0)** — +30 °C at 33.7°,
 +15 °C at 44.3°, 0 °C at 57.3°. ⚠️ **Latitude alone cannot express this:**
 lat 45 / lon 0 is warm; **lat 45 / lon 120 is ≈ −62 °C.** Same latitude, opposite
-worlds. → **VISION's fiction call, on arc distance.**
+worlds. → **the owner's fiction call, on arc distance.**
 
 ### D. ✅ `isJunk` — DECIDED: dropped from both defs, `de1018b`. Not open.
 CREATE removed it after OPS IL-confirmed that `GenStep_ScatterGroupPrefabs :

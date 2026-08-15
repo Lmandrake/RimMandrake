@@ -160,7 +160,7 @@ first timestamped line `[17:31:34]` at 644, 8,700 lines, mtime 21:10.
   passed; the gates that actually decide A1 and A3 were skipped. That is the
   recurring shape — *a clean log read as a result.*
 - ⚠️ **`CLOSED.md:11` and `:12` cite `7bd8b60` and `fad8bab`, and neither hash
-  resolves in this working tree.** Not mine to fix — **filed for PROJECT**, who
+  resolves in this working tree.** Not mine to fix — **filed for DECIDE**, who
   owns `CLOSED.md`. Both are the sole citation for a closed v1 claim.
 
 ---
@@ -245,7 +245,7 @@ m=re.search(r'ALL_TOOLS\s*=\s*\[(.*?)\]',s,re.S);print(len(re.findall(r'"[^"]+"'
 
 ⚠️ **If the two commands above disagree with each other, STOP** — the gate script's
 `ALL_TOOLS` (`prove_new_tools.py:92-103`) is stale and will fail a correct deploy.
-That is BRIDGE's file; it must be regenerated in the same commit that ships a new
+That is CHECK's file; it must be regenerated in the same commit that ships a new
 tool. **Gates compare measurements to measurements, never to prose.**
 
 Cheaper second positive: `rimbridge/get_bridge_status` →

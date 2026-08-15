@@ -121,9 +121,9 @@ Predator clans, and the horror/bug factions that have no SW reading. Work down t
 list at the screen, tick the boxes, and **record what you actually saw** in the
 `observed` column — the page is the ground truth, this file is a prediction.
 
-> 🔴 **This is a PROPOSAL from OPS. VISION ratifies it.** OPS is player zero here,
+> 🔴 **This is a PROPOSAL from OPS. DECIDE ratifies it.** OPS is player zero here,
 > not the designer. Nothing below is authority to change the design; it is evidence
-> in, decision out. If VISION has not signed off, do not execute the untick list —
+> in, decision out. If DECIDE has not signed off, do not execute the untick list —
 > generate with it in hand and ask.
 
 **⭐ The direction this list serves (owner, 2026-08-13): we build our own factions.
@@ -376,7 +376,7 @@ were. Record what you see.
   active** (absent from `ModsConfig.xml`; no `Force_*` FactionDef in the 573-mod dump).
   The reference is `MayRequire`-guarded and inert today. **It stops being inert the
   day that mod is enabled**, which the current Jedi/Sith build spec contemplates.
-  Flag for VISION alongside the Section 5 contradiction.
+  Flag for DECIDE alongside the Section 5 contradiction.
 
 **Additive only, no action:** ReGrowth 2 (2260097569) patches both `OuterRim_GalacticEmpire`
 and `OuterRim_RebelAlliance` biome/settlement data, and three mods patch `HoraxCult`
