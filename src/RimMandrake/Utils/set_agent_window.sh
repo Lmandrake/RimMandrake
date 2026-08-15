@@ -10,8 +10,8 @@
 #   * a window opened without a seat profile (plain Ubuntu tab, ssh, another box)
 #   * a seat CHANGING role mid-session — the role file it writes beats AGENT_SEAT
 #
-#   ./src/RimMandrake/Utils/set_agent_window.sh OPS
-#   ./src/RimMandrake/Utils/set_agent_window.sh OPS "log harvest"    # optional detail suffix
+#   ./src/RimMandrake/Utils/set_agent_window.sh CHECK
+#   ./src/RimMandrake/Utils/set_agent_window.sh CHECK "log harvest"    # optional detail suffix
 #   ./src/RimMandrake/Utils/set_agent_window.sh --preview            # show every seat's colour
 #   ./src/RimMandrake/Utils/set_agent_window.sh --reset-colour       # undo colours, keep names
 #
@@ -38,7 +38,7 @@
 # this test, because all three had CORRECT role files and none of the three was
 # addressable:
 #
-#   .claude/session_roles/<sid>     AGENT OPS · AGENT CREATE · AGENT PROJECT
+#   .claude/session_roles/<sid>     AGENT DECIDE · AGENT BUILD · AGENT CHECK · AGENT REP
 #   ~/.claude/sessions/<pid>.json   "name": "rimworld-1b" / "-64" / "-b8",
 #                                   "nameSource": "derived"   (all three)
 #
@@ -49,7 +49,7 @@
 # the agent-name setter. There is no path between the two.
 #
 # WHY THE EARLIER "CORRECTION" LOOKED TRUE: it cited one session whose name did
-# read `AGENT PROJECT`. That is consistent — a name set by `/rename` or `--name`
+# read `AGENT DECIDE`. That is consistent — a name set by `/rename` or `--name`
 # persists and looks identical afterwards. One session observed AFTER the fact
 # cannot distinguish which mechanism named it, and no control was run.
 #
@@ -75,24 +75,25 @@
 set -euo pipefail
 
 # --- the seat table: the single source of truth --------------------------
-# Colour is the seat's identity in the one place the owner sees all five at
+# Colour is the seat's identity in the one place the owner sees all four at
 # once. Chosen to stay legible on a dark background and to be distinguishable
 # from each other by hue, not just by lightness.
+# Kept identical to the table in install_wt_seat_profiles.py — the terminal tint
+# and the Windows Terminal profile are the same identity seen twice.
 seat_colour() {
     case "$1" in
-        BRIDGE)  printf '#4EC9E0' ;;   # cyan     — instruments, telemetry
-        OPS)     printf '#E5A03C' ;;   # amber    — alarms, diagnostics
-        CREATE)  printf '#7BC96F' ;;   # green    — making things
-        VISION)  printf '#C08CE0' ;;   # violet   — design
-        PROJECT) printf '#9CB3D0' ;;   # slate    — documents
+        DECIDE) printf '#C08CE0' ;;   # violet — scope and spec
+        BUILD)  printf '#7BC96F' ;;   # green  — artifacts and offline verification
+        CHECK)  printf '#4EC9E0' ;;   # cyan   — the live game and the bridge
+        REP)    printf '#E5A03C' ;;   # amber  — the human's interface
     esac
 }
-SEATS="BRIDGE OPS CREATE VISION PROJECT"
+SEATS="DECIDE BUILD CHECK REP"
 
 usage() {
-    echo "usage: $0 {BRIDGE|OPS|CREATE|VISION|PROJECT} [detail]" >&2
+    echo "usage: $0 {DECIDE|BUILD|CHECK|REP} [detail]" >&2
     echo "       $0 --preview | --reset-colour" >&2
-    echo "  identities: infrastructure/agents/<SEAT>.md   shared rules: agents_def.md" >&2
+    echo "  identities: infrastructure/agents/<SEAT>.md   shared rules: infrastructure/agents/POLICY.md" >&2
 }
 
 # --- colour --------------------------------------------------------------
@@ -112,7 +113,7 @@ apply_colour() {
 
 case "${1:-}" in
     --preview)
-        echo "Seat colours — if these five lines are not tinted, this terminal"
+        echo "Seat colours — if these four lines are not tinted, this terminal"
         echo "ignores OSC 10 and per-seat colour is unavailable here."
         for s in $SEATS; do
             c="$(seat_colour "$s")"
@@ -135,12 +136,12 @@ ROLE="${1:-}"
 DETAIL="${2:-}"
 
 case "$ROLE" in
-    BRIDGE|OPS|CREATE|VISION|PROJECT) ;;
-    WORLD)
-        echo "WORLD was renamed to OPS on 2026-08-13." >&2
-        echo "  The name pointed at design/Jawa/worldbuilding/, which now belongs to VISION." >&2
-        echo "  What this seat does is keep the live mod stack working." >&2
-        echo "  Run: $0 OPS" >&2
+    DECIDE|BUILD|CHECK|REP) ;;
+    BRIDGE|OPS|CREATE|VISION|PROJECT|WORLD)
+        echo "$ROLE was retired on 2026-08-14. The seats are DECIDE, BUILD, CHECK, REP." >&2
+        echo "  BRIDGE/CREATE -> CHECK (the live game) or BUILD (artifacts)" >&2
+        echo "  VISION/PROJECT -> DECIDE (scope and spec)" >&2
+        echo "  OPS -> BUILD, or CHECK for anything touching a running game" >&2
         exit 2
         ;;
     *)
@@ -155,7 +156,7 @@ printf '\033]0;%s\007' "$TITLE"        # OSC 0 = icon name + window title
 
 # --- colour, unless suppressed -------------------------------------------
 # ⚠️ MEASURED 2026-08-13: Windows Terminal IGNORES OSC 10. The owner ran
-# `--preview` and all five lines rendered in the default colour. The escape is
+# `--preview` and all four lines rendered in the default colour. The escape is
 # kept because it costs nothing and works on xterm/VTE/kitty/iTerm2 — but on
 # this setup the working route is a per-seat Windows Terminal PROFILE, which
 # also colours the tab strip and cannot be done from inside the shell at all:

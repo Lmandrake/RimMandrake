@@ -16,12 +16,12 @@ is all a decision to go read it needs.
 
 INTERFACE
 =========
-    python3 src/RimMandrake/Utils/whats_new.py --seat OPS                    # since OPS last synced
-    python3 src/RimMandrake/Utils/whats_new.py --seat OPS --mark             # print, then record HEAD
-    python3 src/RimMandrake/Utils/whats_new.py --seat OPS --no-mark          # peek without advancing
-    python3 src/RimMandrake/Utils/whats_new.py --seat OPS --again            # re-show the last delta
+    python3 src/RimMandrake/Utils/whats_new.py --seat CHECK                    # since OPS last synced
+    python3 src/RimMandrake/Utils/whats_new.py --seat CHECK --mark             # print, then record HEAD
+    python3 src/RimMandrake/Utils/whats_new.py --seat CHECK --no-mark          # peek without advancing
+    python3 src/RimMandrake/Utils/whats_new.py --seat CHECK --again            # re-show the last delta
     python3 src/RimMandrake/Utils/whats_new.py --all                         # every seat's staleness
-    python3 src/RimMandrake/Utils/whats_new.py --seat OPS --since <git-ref>  # override the marker
+    python3 src/RimMandrake/Utils/whats_new.py --seat CHECK --since <git-ref>  # override the marker
 
 SYNC MARKER
 ===========
@@ -38,7 +38,7 @@ seat that never runs --mark still gets a sane answer forever.
 Markers are per-seat PRECISELY SO THAT one seat reading a change does not consume
 it for the other four. The failure this design avoids is the shared "news file"
 that the first reader empties, leaving the other seats to find out from the
-damage. Five readers, five bookmarks, one set of documents.
+damage. Four readers, four bookmarks, one set of documents.
 
 MARKER ADVANCE
 ==============
@@ -55,7 +55,7 @@ morning of 2026-08-13, so this is not hypothetical.
     compacted between seeing the delta and acting on it.
   * An "up to date" run does NOT advance — there is nothing to consume, and a
     no-op advance would overwrite `.sync.prev` and destroy the escape hatch.
-  * `--all` NEVER advances anyone. It is PROJECT observing other seats, not
+  * `--all` NEVER advances anyone. It is REP observing other seats, not
     those seats reading anything.
 
 EXIT CODE
@@ -73,12 +73,12 @@ import sys
 # `:(glob)` is required for `**` and to stop `*` crossing a `/`.
 DOCTRINE = [
     "CLAUDE.md",
-    "infrastructure/agents_def.md",
     ":(glob)infrastructure/agents/*.md",
     ":(glob)infrastructure/state/queue/*.md",
     ":(glob)skills/**/SKILL.md",
     ":(glob)skills/**/references/traps*.md",
-    "infrastructure/state/V1_SCOPE.md",
+    "infrastructure/state/V1.md",
+    "infrastructure/state/V1_CHAIN.md",
     "infrastructure/DOC_BUDGET.md",
     "infrastructure/state/CLOSED.md",
 ]
@@ -302,6 +302,9 @@ def commit_subjects(since):
     return out.splitlines() if out else []
 
 
+NOT_SEATS = {"POLICY", "HUMAN"}          # shared rules, and REP's inbox from everyone
+
+
 def known_seats():
     """Seats are whatever has an identity file — the roster is the directory."""
     seats = set()
@@ -310,7 +313,7 @@ def known_seats():
         try:
             for name in os.listdir(os.path.join(repo_root(), d)):
                 stem = name[:-3] if name.endswith(".md") else None
-                if stem and SEAT_RE.fullmatch(stem):
+                if stem and SEAT_RE.fullmatch(stem) and stem not in NOT_SEATS:
                     seats.add(stem)
         except OSError:
             pass
@@ -422,9 +425,9 @@ def main(argv=None):
         prog="whats_new.py",
         description="Print the doctrine delta a seat has not seen yet.",
     )
-    ap.add_argument("--seat", help="seat name, e.g. OPS")
+    ap.add_argument("--seat", help="seat name, e.g. CHECK")
     ap.add_argument("--all", action="store_true",
-                    help="every seat's staleness (for PROJECT); advances nobody")
+                    help="every seat's staleness (for REP); advances nobody")
 
     advance = ap.add_mutually_exclusive_group()
     advance.add_argument("--mark", action="store_true",
@@ -455,6 +458,15 @@ def main(argv=None):
     seat = args.seat.strip().upper()
     if not SEAT_RE.fullmatch(seat):
         print(f"whats_new: '{args.seat}' is not a seat name", file=sys.stderr)
+        return 0
+
+    # Shape is not existence. --mark is the default, so a retired seat name
+    # reaching this point writes it a fresh marker and the ghost comes back:
+    # resuming any of the old session-role files used to do exactly that.
+    roster = known_seats()
+    if roster and seat not in roster:
+        print(f"whats_new: '{seat}' is not a current seat ({', '.join(roster)})",
+              file=sys.stderr)
         return 0
 
     head = resolve("HEAD")

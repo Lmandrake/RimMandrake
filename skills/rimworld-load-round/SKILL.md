@@ -165,7 +165,7 @@ Not "takes effect next restart" — the file cannot be written at all.
 So an assembly change is gated on a **shutdown**, not a startup: it lands in the
 gap between the game closing and the next launch.
 
-> **Whoever calls a shutdown tells BRIDGE BEFORE the game closes.** Miss the window
+> **Whoever calls a shutdown tells CHECK BEFORE the game closes.** Miss the window
 > and the work waits a full cycle.
 
 Treat "the repo artifact is ahead of the deployed copy" as the normal mid-session
@@ -209,5 +209,5 @@ anything surprising to the matching `traps-*.md`.
 
 Decision strings written with baselines (§2) · nothing in the batch making another
 item unattributable (§3) · `refresh.py` run (§5) · anything needing the shutdown
-window handled and BRIDGE told (§6) · the old `Player.log` copied out (§6) ·
+window handled and CHECK told (§6) · the old `Player.log` copied out (§6) ·
 everything **deployed**, not merely written (`skills/rimworld-deploy/SKILL.md`).

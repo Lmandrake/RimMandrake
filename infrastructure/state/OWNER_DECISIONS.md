@@ -50,8 +50,8 @@ after already being answered._
 - **A hook guarding `git commit` without a pathspec** — described as needing the
   owner because it is config. **Already built and live:**
   `.claude/hooks/block_blanket_git_stage.py` blocks the naked-commit form. What
-  remains is confirming the guard matches the intent, which is PROJECT's, not
-  yours (`infrastructure/state/queue/PROJECT.md` P2).
+  remains is confirming the guard matches the intent, which is DECIDE's, not
+  yours (`infrastructure/state/queue/DECIDE.md`).
 - **Where the seat identity files live** — answered by `infrastructure/agents/` existing.
 - **The mines, the Warcasket retune, `MissingArtFixes`** — all ruled; see
   `CLOSED.md`.

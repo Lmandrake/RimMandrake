@@ -121,7 +121,7 @@ mod with its reason and put the decision in the owner's path. Minimum viable fol
 A DLL the game has loaded **cannot be written while RimWorld runs** — memory-mapped,
 and Windows refuses with `WinError 1224`. The copy is impossible, not merely
 ineffective. Deploy in the gap after the game closes and before it launches, and
-tell BRIDGE before any shutdown: `skills/rimworld-load-round/SKILL.md` §6.
+tell CHECK before any shutdown: `skills/rimworld-load-round/SKILL.md` §6.
 
 ## 8. After deploying
 

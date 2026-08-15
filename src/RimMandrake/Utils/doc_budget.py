@@ -67,9 +67,8 @@ import sys
 BUDGETS = [
     ("infrastructure/state/queue/*.md", 150),
     ("infrastructure/agents/*.md", 150),   # was 120; premise was wrong, see docstring
-    ("infrastructure/state/AGENT_*_state.md", 150),
     ("CLAUDE.md", 300),
-    ("infrastructure/agents_def.md", 200),          # was 500; dissolved to 158, budget dropped
+    ("infrastructure/state/V1_CHAIN.md", 400),
     ("skills/*/references/traps*.md", 700),
     # ⚠️ The governing files are governed too. DOC_BUDGET.md sets these rules and
     # sat outside them until 2026-08-13 — the self-exemption its own "a written
@@ -92,7 +91,6 @@ BUDGETS = [
     # Budgets are deliberately generous: these are being retired, not trimmed,
     # and a budget that fails on day one gets ignored rather than obeyed.
     ("infrastructure/state/TODO.md", 400),
-    ("infrastructure/state/TODO_v2.md", 600),
 ]
 
 # Lines that record HOW WE LEARNED something rather than WHAT IS TRUE. They earn

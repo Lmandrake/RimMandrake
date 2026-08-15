@@ -317,8 +317,8 @@ The only ideo signal anywhere in the tool surface is `factionHasIdeo` — a bare
 bool, and it appears **only on the failure row of `jawa/spawn_pawn`** (same file,
 `:1791`).
 
-⏳ **`jawa/ideo_of` is requested from BRIDGE and does not exist**
-(`/mnt/d/Luke/dev/Rimworld/infrastructure/state/queue/VISION.md:500`). Until it
+⏳ **`jawa/ideo_of` is requested from CHECK and does not exist**
+(`/mnt/d/Luke/dev/Rimworld/infrastructure/state/queue/CHECK.md`). Until it
 lands, "the game built the ideoligion I specified" is read off a screenshot of
 4a, by eye — it cannot be diffed. **Say "unverified", not "verified", when the
 only evidence is a clean log.**

@@ -239,8 +239,8 @@ produce the structure with no floors. Fix is already in our hands: replay the
 layout's `terrainDef` cells through `jawa/set_terrain_batch` after the spawn.
 `gravship_layout.py` can emit those ops straight from the file.
 
-That is a BRIDGE job, queued as **B-v2** in
-`infrastructure/state/queue/BRIDGE.md`. Until it exists, a layout can only enter
+That is a CHECK job, queued as **B-v2** in
+`infrastructure/state/queue/CHECK.md`. Until it exists, a layout can only enter
 the game at world creation.
 
 ### Fields this project has never seen populated

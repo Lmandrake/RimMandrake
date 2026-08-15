@@ -182,8 +182,8 @@ Payloads are gitignored; **the teardown is the work product.**
 |---|---|
 | `infrastructure/README.md` | The tier rule, and the rules-vs-state line. |
 | `infrastructure/STRUCTURE.md` | This file. |
-| `infrastructure/agents_def.md` | Shared seat rules — addressing, the bridge traffic light, Rule 0 and 0.5. |
-| `infrastructure/agents/<SEAT>.md` | One charter per seat: `BRIDGE.md`, `OPS.md`, `CREATE.md`, `VISION.md`, `PROJECT.md`. |
+| `infrastructure/agents/POLICY.md` | Shared seat rules — how you work, the queue channel, the item contract, the modes. |
+| `infrastructure/agents/<SEAT>.md` | One charter per seat: `DECIDE.md`, `BUILD.md`, `CHECK.md`, `REP.md`. |
 | `infrastructure/DOC_BUDGET.md` | Doc-count policy and how a written instruction rots. |
 | `infrastructure/REFRESH.md` | What to re-run after the mod list changes. |
 | `infrastructure/archive/` | Superseded narrative kept only for *why* — `context.md`, `OLD_HISTORY.md`. Never current state. |
@@ -204,26 +204,26 @@ this?* A rule is durable; a queue is meant to be consumed.
 | `infrastructure/state/CLOSED.md` | One line per finished item — the ledger that lets bodies be deleted. |
 | `infrastructure/state/EXPECTED_FAILURES_next_load.md` | Expected-failure signatures, written **before** a load so triage is judgeable. |
 | `infrastructure/state/WORLDGEN_FACTION_CHECKLIST.md` | The Configure Factions page, box by box, for world creation. |
-| `infrastructure/state/TODO_v2.md` | Deferred `[v2]` bodies, kept intact. |
-| `infrastructure/state/CREATE_TEST_PLAN.md` | How CREATE proves deployed material actually works. |
-| `infrastructure/state/AGENT_<SEAT>_state.md` | Where each seat is, and its cross-session address. Five files: `BRIDGE`, `OPS`, `CREATE`, `VISION`, `PROJECT`. |
-| `infrastructure/state/queue/<SEAT>.md` | 🔴 **The filing destination.** Same five names. You own your own; file at another seat's, or `[?]` if you cannot tell — PROJECT drains those. |
+| `design/V2_DREAMS.md` | Deferred `[v2]` bodies, kept intact. Append-only; every seat may write to it directly. |
+| `infrastructure/state/CREATE_TEST_PLAN.md` | How deployed material gets proved in-game. Written by the retired CREATE seat; still cited by `load_session.py`. |
+| `infrastructure/state/status/<SEAT>.json` | What each seat says it is doing, written by `say.py`, rendered by the board. |
+| `infrastructure/state/queue/<SEAT>.md` | 🔴 **The filing destination.** `DECIDE`, `BUILD`, `CHECK`, plus `HUMAN` for the owner. You own your own; file at the next seat's. |
 
 🔴 **`infrastructure/state/TODO.md` is a 13-line pointer stub, retired 2026-08-13.
 It is NOT a filing destination.** It exists only to route to the table above.
 
-### The five seats
+### The four seats
 
-**BRIDGE · OPS · CREATE · VISION · PROJECT.** There is no WORLD seat. Name your
-window first thing: `./src/RimMandrake/Utils/set_agent_window.sh <SEAT>`.
+**DECIDE · BUILD · CHECK · REP.** BRIDGE, OPS, CREATE, VISION, PROJECT and WORLD
+were retired 2026-08-14. Name your window first thing:
+`./src/RimMandrake/Utils/set_agent_window.sh <SEAT>`.
 
 | Seat | Role | Its question |
 |---|---|---|
-| `BRIDGE` | live-systems engineer | has it been seen working in the running game? |
-| `OPS` | reliability engineer | what is the evidence, and what is the smallest test? |
-| `CREATE` | mod author and game artist | does it load, and read right at game scale? |
-| `VISION` | game designer | does the player ever notice this? |
-| `PROJECT` | technical writer + IA, **MVP seat** | can the next session find this and trust it? |
+| `DECIDE` | scope and spec | what exactly ships, and in what order? |
+| `BUILD` | mod author and artist | does it exist, and does it pass offline? |
+| `CHECK` | live-systems engineer | did it actually work in the running game? |
+| `REP` | the human's interface | what does the owner need to see or answer? |
 
 ---
 
@@ -237,7 +237,7 @@ window first thing: `./src/RimMandrake/Utils/set_agent_window.sh <SEAT>`.
 The directory is the source; `<name>.skill` zips beside it are untracked packaging
 artifacts. **Which skill to load when is `CLAUDE.md`'s job**, not this file's.
 
-`agent-messaging` · `agent-reporting` · `editing-images` · `generating-images` ·
+`editing-images` · `efficient-subagents` · `generating-images` ·
 `generating-rimworld-sprites` · `gravship-layout` · `rimbridge` ·
 `rimworld-debug-testing` · `rimworld-deploy` · `rimworld-load-round` ·
 `rimworld-modding` · `rimworld-savegame` · `rimworld-start-prep`

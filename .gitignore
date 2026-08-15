@@ -168,6 +168,6 @@ observed/resource_watch/
 # product is the *_findings.md beside it. 1.7 MB on 2026-08-14.
 observed/*_patch_sweep_scoped.txt
 
-# Per-seat liveness stamps written by the stamp_seat_status hook. Cache:
+# Per-seat liveness stamps written by src/RimMandrake/Utils/say.py. Cache:
 # PID-scoped, regenerated on every tool call, meaningless in another session.
 infrastructure/state/status/
