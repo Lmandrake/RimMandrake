@@ -247,6 +247,11 @@ class Audit:
             return
         if tok.startswith(("~", "/", "./", "../")) or "…" in tok or "..." in tok:
             return              # home-relative, posix-absolute or elided: not ours
+        # Repo-relative paths get written in the project's native Windows style
+        # too -- `skills\rimworld-deploy\SKILL.md` is a real file. Without this
+        # the whole token became a "basename" that matched nothing.
+        if "\\" in tok and not re.match(r"^[A-Za-z]:[\\/]", tok):
+            tok = tok.replace("\\", "/")
         base = os.path.basename(tok.rstrip("/"))
         if base.startswith("."):
             return              # ".md", ".gitignore" -- an extension, not a file
@@ -264,10 +269,14 @@ class Audit:
             # blind spot on exactly the format the project had just standardised
             # on. A checker that silently stops covering a convention change is
             # worse than no checker, because the clean run is believed.
-            m_cite = re.match(r"^(.*?):(\d+)(?:-\d+)?$", raw)
+            # A citation may name several spans at once -- `foo.py:30,166-180,300`
+            # is one file and four places in it. Matching only `:12` or `:12-20`
+            # left the commas glued to the path and stat-ed a file that was there.
+            m_cite = re.match(r"^(.*?):(\d+(?:-\d+)?(?:\s*,\s*\d+(?:-\d+)?)*)$", raw)
             cite_line = None
             if m_cite and not re.match(r"^[A-Za-z]:[\\/]?$", m_cite.group(1)):
-                raw, cite_line = m_cite.group(1), int(m_cite.group(2))
+                raw = m_cite.group(1)
+                cite_line = max(int(n) for n in re.findall(r"\d+", m_cite.group(2)))
             posix = win_to_posix(raw)
             if not posix:
                 return
@@ -513,6 +522,13 @@ def scan(audit, repo, rel):
             pending_hashes.append((rel, i, s))
 
         for m in LINECITE.finditer(line):
+            # `$D\Odyssey\...\Script_SpaceSites.xml:182` is a game-side file. The
+            # regex cannot cross a backslash, so it grabs the basename alone and
+            # then basename-matches a same-named file in vendor/ that has nothing
+            # to do with it. A backslash immediately left of the match means the
+            # path branch already owns this token.
+            if m.start() and line[m.start() - 1] == "\\":
+                continue
             audit.linecite(rel, i, m.group(1), int(m.group(2)))
         for m in PROSE_LINE.finditer(line):
             names = MDNAME.findall(line[:m.start()])
