@@ -67,7 +67,14 @@ row:      0
 spec:     (a) Pin the 6 `loadBottom`+`loadAfter` userRules — order is correct today but rides a tie-break, not a constraint; `loadBottom` outranks `loadAfter`, keep it only on `rimdefdump`. (b) Run `src/RimMandrake/Utils/refresh.py` (wants the game down). (c) **O-v2 Cherry Picker** — remove mechanoid defs AND the `Mechanoid` faction; answer three things: does the game still load · does `Samael.NPCMechsAndAnimals` survive and keep its ANIMALS half (`Patches/NPC_Mechs.xml`, 13 ops into `Empire`/`Outlander*`/`Pirate*`/`TradersGuild`) · is that mod configurable. Do NOT remove Alpha Mechs (`sarg.alphamechs`). `matathias.ruthlessmechanoids` is NOT a mech mod (it is the gravship pursuer redirect) — leave it on. REPORT, do not resolve: Alpha Mechs hangs off `FactionDef[defName="Mechanoid"]/pawnGroupMakers`, so cutting that faction takes its raids too. (d) **O-v3** — enable `vanillaexpanded.vwel` (ws `1989352844`, installed and inactive) and dump its weapon `ThingDef`s in TWO SEPARATE tiers: `salvaged` (pistol/rifle/shotgun/sniper + `unstable` projectile variants) and `ultratech` (incl. a laser sword and a tesla gun). The split is load-bearing for the design (`design/Jawa/worldbuilding/ship_legacy_armoury.md`).
 verify:   read `ModsConfig.xml`'s mtime before writing — RimSort writes it too, and it moved twice in twenty minutes with the game down.
 criteria: the game reaches the main menu with the new list; the two weapon tiers exist as separate dumps.
-state:    ready
+state:    ready — (b) DONE 2026-08-15 (`4c2ddf8`): offline artefacts stamped at
+          fingerprint `7256c128a43117a5`. Two restructure faults fixed to get
+          there; see the commit. 🔴 **Run `refresh.py` under `python.exe`, not
+          `python3`** — WSL's python3 is PEP-668 externally-managed and has no
+          Pillow, so the contact-sheet step exits 1; the Windows interpreter has
+          Pillow 12.3.0. The live DefDump is still STALE and needs the load.
+          (a) and (d) HELD: both write `ModsConfig.xml` and the owner has not
+          said whether RimSort is open. (c) untouched.
 
 ## B26 Delete the retired art-fix mod now that its replacements ship
 row:      repo
