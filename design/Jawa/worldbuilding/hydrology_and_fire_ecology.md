@@ -279,30 +279,35 @@ and that at least one faction will end up worshipping.
 
 *(Superseded by the ruling above. Kept so the shortlist is not re-derived.)*
 
-### The planet
+### 🔴 The planet is `Ash'karr` — "The Sundered". OWNER'S RULING, 2026-08-15
 
-| name | why |
+**`Ash'karr`**, and in translation **"The Sundered."**
+
+⭐ **It fuses the two strongest candidates from the shortlist** — `Ashkarr`, which
+said what the world is without being English, and `Sundering`, which named the
+tidal lock itself. The apostrophe does real work: it marks the name as a
+*transliteration* of something older, so the world has a name in its own tongue
+and a meaning in ours.
+
+**And the meaning is load-bearing rather than decorative.** *The Sundered* names
+the one fact every other ruling descends from: a world split about its terminator
+into a scorched day and a frozen night (**R-H10**), with a single narrow band of
+twilight where anything lives at all. It reads as three different claims at once,
+and all three are true:
+
+| read it as | and it means |
 |---|---|
-| **Kholvast** | hard consonants, vast in the mouth. Reads industrial and Imperial |
-| **Ashkarr** | says what it is, twice over, without being English |
-| **Vessara** | softer, older — sounds like a name the planet had before anyone burned it |
-| **Sekkoth** | dry, hissing; pairs well with Jawa phonetics |
-| **Thal Ain** | two-part names read as *inhabited*. "The Ain" as a shortening |
-| **Morrovar** | sombre; the *mor-* root does a lot of work |
-| **Ilmarra** | vowel-rich, Outer Rim standard — the sort of name a trade lane uses |
-| **Kravass** | brutal and short, like the tile roster it names |
-| **Ojhad** | reads as a local name rather than a survey designation |
-| **Sundering** *(or* **Sunder** *)* | the only English option; names the tidal lock itself — a world split in three |
+| **the world that was split** | the tidal lock — day, terminator, night |
+| **the world that was broken** | the Forsakens' failed terraforming (`the_forgotten_war.md`) |
+| **the people who were sundered** | the war that ended them, and the sleepers still fighting it |
 
-**Recommendation: `Sekkoth`** — it is pronounceable, it is not English, it shares
-its phonetics with the Jawa naming already in `jawa_crew_personas.md` (Sekki
-Vosh, Yeku, Nkik), and it sounds like somewhere people live rather than somewhere
-a probe once visited.
+⇒ **A name that is simultaneously geography, history and elegy.** Nothing else on
+the shortlist did more than one of those.
 
-⚠️ Both recommendations are DECIDE's opinion, not rulings. The owner names the
-world.
+*(The shortlist it was chosen from is kept below so it is not re-derived:
+Kholvast · Ashkarr · Vessara · Sekkoth · Thal Ain · Morrovar · Ilmarra ·
+Kravass · Ojhad · Sundering.)*
 
----
 
 ## R-H6 · The nightside is a DECAY GRADIENT, not a biome
 

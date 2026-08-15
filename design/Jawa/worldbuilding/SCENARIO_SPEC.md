@@ -241,3 +241,37 @@ desperate — rather than by arithmetic.
 - **The Pyrelands earn a second reason to exist**: they are the fuel source you
   can reach *without* leaving the good farmland, which is exactly the kind of
   bargain the high-risk/high-reward tile should be offering.
+
+---
+
+## 🔴 NAMES — ruled by the owner, 2026-08-15
+
+| the thing | its name |
+|---|---|
+| **the planet** | **`Ash'karr`** — translated, **"The Sundered"** |
+| **the scenario** | **`Flight of the Utinni`** |
+| **the ship** | **`The Utinni`** (was `Kolyska`, "Cradle" — see `ship_distinctive_features.md`) |
+| **the burning savanna** | **`The Pyrelands`** |
+| **the one mega-structure** | **`The Rust Cathedral`** |
+
+⭐ **`Flight of the Utinni` is the right title because it is a pun that is also a
+thesis.** *Flight* is the gravship — and it is also fleeing, which is the campaign:
+keep moving, react, never hold. And **`Utinni!` is the cry raised when salvage is
+found**, so the scenario's name says *the discovery is the escape* — that a
+scavenger clan's greatest find and its way out are the same object.
+
+⚠️ **Build notes, because names are load-bearing in more places than people
+expect:**
+
+- **The scenario name is player-facing text** and appears in the scenario list,
+  the save, and the game's own UI. Set it once, in the scenario, and do not let a
+  quest or letter spell it differently.
+- **The ship must already be named `The Utinni` in the STARTING SAVE**, not
+  renamed later.
+- **`Ash'karr` carries an apostrophe.** Check it survives every place a name is
+  written — XML, translation keys, save data, and any filename derived from it.
+  An apostrophe is the character most likely to be silently stripped or to break a
+  string.
+- **The translation "The Sundered" should appear in player-facing text at least
+  once**, or the meaning never reaches the player. `GameStartDialog` is the
+  obvious place — it is the opening narration and costs nothing.

@@ -491,3 +491,7 @@ feedstock hauled from the dayside.
 ---
 
 ⭐ **The planet's HISTORY is in `design/Jawa/worldbuilding/the_forgotten_war.md`** (owner, 2026-08-15): the Forsakens' war, the Forgotten Arsenal as sand-buried self-replicating vault guardians, the three things inside a vault, the one and only mega-structure patch (sacred to the Free Droid Enclaves), and the ruling that **The Utinni is a Forsaken initiator vessel** that was present at the founding of this world.
+
+---
+
+🔴 **THE PLANET IS `Ash'karr` — "The Sundered". Owner, 2026-08-15.** The name is geography, history and elegy at once: the world split about its terminator, the world the Forsakens broke, and the people the war sundered. Full ruling in `design/Jawa/worldbuilding/hydrology_and_fire_ecology.md`.
