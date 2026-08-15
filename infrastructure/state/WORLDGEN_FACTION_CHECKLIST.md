@@ -197,7 +197,7 @@ could not be reached from here — for these eight, they can).
 | ✔ | in-game label | defName | mod | observed on page? |
 |---|---|---|---|---|
 | ☐ | **black hive** | `AA_BlackHive` | Alpha Animals (1541721856) | |
-| ☐ | **giant ant colony** *(shows as "They!")* | `GiantAnt_Faction` | They! (Giant Ants) (3620253282) | |
+| ☐ | **giant ant colony** *(shows as "They!")* | `GiantAnt_Faction` | They! (Giant Ants) (3620253282) | 🔴 **OWNER WANTS THESE IN v2** — dangerous deep-desert colonies (`design/V2_DREAMS.md`). A faction absent at world creation can NEVER be added later, so unticking it here means v2 ants need a new campaign. **Leave at 1 if the idea is wanted.** |
 | ☐ | **insect geneline** *(shows as "Sorne Geneline")* | `Insect` | **Core (vanilla)** | |
 | ☐ | **lost** | `BS_ZombieFaction` | Big and Small - Framework (2925432336) | |
 | ☐ | **pustule hornets** | `BMT_PustuleHornets` | Biomes! Polluted Lands (3390196656) | |

@@ -826,3 +826,38 @@ Nothing here needs new art to prototype; it needs new `RecipeDef`s and new
 ⚠️ Squarely `[v2]`. v1's food is Sekki Vosh and a cook stove, and that is
 enough. Recorded now because the art audit made the ingredient list visible and
 it would be a shame to rediscover it later.
+
+---
+
+## "They!" — giant ant colonies in the deep desert
+
+**Owner, 2026-08-15.** Giant ants get colonies out in the sand, and they are
+**very dangerous** — a hazard of the deep desert rather than a raid that comes to
+you. You go out there and something is already living in it.
+
+The fiction is free: `They! (Giant Ants)` is a 1954 monster-movie reference, and
+giant ants in a desert is exactly where that film put them. On a thirst world
+they read as a natural hazard, not a mod import.
+
+**What ships today:** `sapiently.theyatomicmonsters` — 7 ThingDefs, 2 PawnKindDefs,
+1 FactionDef (`GiantAnt_Faction`). Small, so the v2 work is mostly tuning and
+placement rather than authoring.
+
+**Threads worth pulling:**
+- Settlement density and placement — deep desert and extreme desert only, away
+  from the habitable ring, so they are something you travel INTO.
+- Raid pressure tuned DOWN and defence tuned UP. The design is a nest you
+  regret poking, not an enemy that visits.
+- They are the natural counterpart to the Geonosian Foundry Hive: one insectoid
+  power that is civilised and industrial, one that is simply fauna with numbers.
+- Their tunnels are a reason to own the ion weapons and the vibroblades.
+
+🔴 **THIS IS NOT A FREE v2 DECISION — IT HAS A v1 DEADLINE.**
+`GiantAnt_Faction` sits on `WORLDGEN_FACTION_CHECKLIST.md` **Section 2**, marked
+untick / drive to 0. **A faction absent at world creation can never be added
+later.** If it is unticked at v1's worldgen, this dream needs a NEW WORLD to
+happen at all.
+
+⇒ **Decide it at the world screen, not in v2:** leave `GiantAnt_Faction` at 1 if
+this idea is wanted, and accept that ants exist in v1 as unbuilt background;
+or untick it and accept that v2 giant ants mean a fresh campaign.
