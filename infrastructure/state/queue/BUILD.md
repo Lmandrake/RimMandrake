@@ -32,7 +32,7 @@ row:      4
 spec:     `python3 src/RimMandrake/Utils/deploy_custom_mods.py --mod Jawa_Patches --apply`. Ships `Jawa_Patches/Defs/MapGeneration/JawaScrapfields.xml` with `minSpacing` 4 -> 1 (`8a7a5ee`), plus `JawaGroundHulk.xml`. Root cause: `minSpacing` equalled the engine's hardcoded `ClusterRadius` of 4, so each cluster self-exhausted after ~4 chunks, `TryFindScatterCell` returned an invalid cell and `GenStep_Scatterer::Generate` `ret`s inside its loop, discarding ~46 of 50 chunks. Both are map-generation defs: they need a cold load AND a map generated after it. Never run `--apply` bare.
 verify:   `-> VERIFIED in sync`; deployed `JawaScrapfields.xml` carries `minSpacing 1`. `--mod Jawa_Patches` also re-verifies every other file in that mod.
 criteria: see CHECK C3 — 44–56 chunks in 4–6 clumps on a map generated after this deploy.
-state:    ready
+state:    done
 
 ## B4 Armoury patches — HELD on provenance
 row:      v2

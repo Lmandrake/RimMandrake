@@ -34,6 +34,15 @@
 - `refresh.py` rebuilds the offline def dump. `package_skill.py --all` rebuilds skill
   zips — read its exit code, not the directory listing.
 
+- **Cherry Picker's removal list is a plain offline-editable file**, not a UI-only
+  setting: `C:\Users\Mandrake\AppData\LocalLow\Ludeon Studios\RimWorld by Ludeon Studios\Config\Mod_3521312241_Mod_CherryPicker.xml`,
+  one `<li>DefType/defName</li>` per entry under `<keys>`. It is NOT in the repo, so an
+  edit is unversioned, and the running game rewrites the file when the settings window
+  closes — edit it with the game DOWN or lose it.
+- **`ParentName` resolves a def's `Name=` attribute, never a defName.** A ParentName that
+  resolves to nothing DISCARDS the def at load and logs nothing. `validate_patch.py`
+  catches it; a cold load does not.
+
 ## Ours, deployed
 
 20 mod folders, 15 active in `ModsConfig.xml`, 4 assemblies

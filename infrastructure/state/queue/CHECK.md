@@ -219,3 +219,26 @@ spec:     RimTunes has replaced the vanilla music system, dynamic mode is on (`e
 verify:   EMPTY
 criteria: both questions answered from the live dialog; the two weather tags present or absent.
 state:    ready
+
+## C31 The four Jawa PawnKindDefs resolve and generate
+row:      —
+spec:     From BUILD B6. `Jawa_Colonist`, `Jawa_Tribal_Scavenger`, `Jawa_Tribal_Slinger`,
+          `Jawa_Tribal_Elder` shipped with `ParentName` pointing at vanilla DEFNAMES
+          (`Colonist`, `Tribal_Berserker`, `Tribal_Archer`, `Tribal_ChiefMelee`), none of
+          which carry a `Name=`. All four were discarded at load with nothing in the log,
+          taking every `pawnGroupMakers` entry in `JawaTribes.xml` with them. Repointed to
+          `BasePlayerPawnKind` (Colonist's own body restated inline), `TribalWarriorBase`,
+          `TribalArcherBase`, `TribalChiefBase` — `c06e89e`, deployed, needs a COLD LOAD.
+criteria: a Jawa colonist and an indigenous tribal spawn as `MandrakeJawa`; no other Jawa
+          xenotype generates; the `Jawa_IndigenousTribes` faction produces a non-empty
+          raider group. Read the four defNames back with `jawa/get_defs` — absence is the
+          failure mode, and it is silent.
+state:    ready
+
+## C32 Scrapfields `minSpacing 1` is deployed
+row:      4
+spec:     From BUILD B3. Deployed `JawaScrapfields.xml` carries `minSpacing 1`;
+          `Jawa_Patches` reports `-> VERIFIED in sync` (46 files). Both are map-generation
+          defs: they need a cold load AND a map generated after it.
+criteria: folded into C3 — 44–56 chunks in 4–6 clumps on a map generated after this deploy.
+state:    ready
