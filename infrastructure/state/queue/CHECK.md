@@ -235,5 +235,52 @@ criteria: 70 of 70 spawn with the right xenotype and a species-appropriate body.
           any of them appear organically. 37 of the 70 are named by no faction and
           `factionlessGenerationWeight` is 0 on all of them, so NONE of this is
           expected to occur in normal play yet. That is the later wiring job.
-state:    ready
+state:    doing
+result:   2026-08-15 CHECK. ROOT CAUSE FOUND for the wrong-looking pawns.
 
+          WHAT PASSES (measured, not assumed):
+          - Gate 1: process started 07:56:41, AFTER ModsConfig 07:47:12. Valid load.
+          - 70 of 70 XenotypeDefs resolve IN THE RUNNING PROCESS. No BTD-style
+            runtime deletion. The donors-off configuration works.
+          - 33 of 33 genes the offline scan could not see resolve live.
+          - 112 RimMandrake_* genes referenced, 113 defined. Zero dangling.
+          - Zero species depend on a gene from a switched-off mod.
+          - 65 of 70 species spawned on the map first try.
+
+          🔴 ROOT CAUSE OF THE ART FAILURES — gen_races_mod.py read the WRONG SOURCE.
+          Its docstring says "Source preference BTD, then SWX, then Outer Rim", and it
+          picks with `src = next((c for c in cand if c and c in x))` where `x` is the
+          LIVE DEF DUMP. That dump was taken with BTD ACTIVE, and BTD's whole job is
+          deleting the SWX and Outer Rim duplicates. So the alternatives were already
+          gone from `x`: the fallback could never fire, and EVERY species was composed
+          from BTD's gene list. BTD's lists are missing head-TYPE genes the other
+          donors carried.
+          Evidence, read off the donors' own XML on disk:
+            BTD_Rodian             30 genes  head: guy762_Headbone_rodian          (bone only)
+            guy762_xenotype_rodian 15 genes  head: guy762_Head_rodian + Headbone   (the snoot)
+            OuterRim_Iridonian     head: OuterRim_IridonianHead
+            BTD  Iridonian         head: guy762_Headbone_zabrak                    (bone only)
+
+          🔴 IMPACT A — 10 of 69 have NO head-forcing gene at all, so they render with a
+          plain human head. Asked the RUNNING game for forcedHeadTypes on all 414 genes
+          our xenotypes reference; 41 force a head. The 10 without:
+            RimMandrakeAnzati, RimMandrakeArkanian, RimMandrakeChagrian,
+            RimMandrakeDevaronian, RimMandrakeEchani, RimMandrakeFalleen,
+            RimMandrakeIridonian, RimMandrakeKaleesh, RimMandrakeYoderForceGremlin,
+            RimMandrakeZeltron
+          🔴 IMPACT B — WORSE, because it looks deliberate. RimMandrakeRodian DOES force
+          a head, but the forcing gene is `Outland_ScaleSkin` -> head type
+          `Outland_ScaleSkin` (Things/Pawn/Humanlike/Heads/Scaleskin/Normal): a GENERIC
+          reptile head from Outland Genetics, not a Rodian one. Owner's words: "where's
+          their snoot". Any species whose only head-forcer is a generic donor gene is in
+          this class and a headless-count alone will not find it.
+
+          RULED OUT, so nobody re-checks them: textures (Hutt's Male/Female_FatHead PNGs
+          all present at the exact path the def names, 713 deployed); missing defs;
+          dangling genes; and the three switched-off donors taking anything with them.
+
+          ⚠️ NOT a defect: early spawns are substituted with plain colonists until the
+          8-colonist quota is met - owner's warning, and the map showed exactly 8
+          Baseliners with 4 of the 5 absent species sitting in the first 6 spawn slots.
+          A species missing from ONE spawn pass is not evidence. Re-spawn after the
+          quota fills before naming any species as failing to generate.
