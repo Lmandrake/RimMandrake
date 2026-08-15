@@ -317,6 +317,11 @@ and not a chosen number.
 ## 9. Open questions — settle in code before the validator ships
 
 1. Thruster `MustBeOutside`: an outdoor-room check, or only exclusion-zone-clear?
+   ⚠️ **Still open at the engine level, but NO LONGER EXPENSIVE — see §11.** Either
+   answer costs one `GravshipHull` cell per small thruster, because `ThrusterBase`
+   is `holdsRoof true` + `fillPercent 1` and seals the room exactly as the wall it
+   replaces. This used to be written up as deciding whether the exported hull
+   needed a stern re-lay. It does not.
 2. Does the engine need all 9 footprint tiles on substructure, or just overlap?
 3. Substructure connectivity: orthogonal only, or 8-way?
 4. Over-cap: which tiles get dropped, in what order?
@@ -413,22 +418,46 @@ thruster's 10 tiles of reach. ⚠️ Therefore `BG_chemFuelTankSize 1140.61` in 
 settings file **targets a comp VGE deleted** — unverified whether it lands on
 anything. Do not quote it.
 
-### 🔴 The one thing that has a DEADLINE, and it is not flight
+### 🔴 CORRECTED 2026-08-15 — the old branch pair was wrong BOTH WAYS
 
-Open question **§9.1 — does a thruster's exclusion run have to be OUTDOOR, or
-merely substructure-free?** — is no longer academic, because the answer decides
-whether the *already exported* hull is wrong.
+This subsection used to pose open question **§9.1** — *must a thruster's exclusion
+run be OUTDOOR, or merely substructure-free?* — as a live question with two
+branches, and to call it the one flight question worth spending a live minute on.
+**Both branches were wrong, and the question does not need a live minute.**
 
-- Substructure-free: **fine.** Stern columns x41–49 stop at z=132, so a thruster at
-  z131–132 throws its 5-cell run into z133–137, entirely off the deck. Zone `S` is
-  90 cells with **77 free**. Nothing to change.
-- Must be outdoor: zone `S` sits **inside the hull line**, and the fix is cutting
-  the stern hull back — a **re-lay of the deck**, not a placement.
+**What the export actually holds:** zero thrusters, zero tanks, zero consoles.
+That part was right and stands.
 
-⇒ **This is the only flight question worth spending a live minute on**, and it is
-one dev-mode placement at the stern: place a `SmallThruster` at x45 z131 and read
-whether it reports `WarningThrusterInside`. **Ask it while the hull is still cheap
-to change.** Everything else in this section is settled and can wait for the player.
+**The format has NO roof field.** Roofs are not stored and were never exported.
+🔴 **They are DERIVED — regenerated at import by the mod's own algorithm**,
+`Patch_Sketch_GetSuggestedRoofCells_Postfix.cs:45-85`: a flood-fill from every
+non-roof-holding cell, discarding any region that touches the hull's edge and
+roofing everything that does not. Re-running that algorithm over the exported
+hull yields **4,049 of 4,057 substructure cells roofed — every standable cell
+indoors.**
+
+⚠️ **That figure is DERIVED, not OBSERVED.** It is the mod's own code re-run
+offline, not a roof map read out of a running game. It is exactly as right as the
+algorithm is, and no righter. Do not quote it as a live measurement.
+
+⇒ **Why the old "substructure-free: fine, nothing to change" branch was wrong.**
+Every standable cell being indoors means OUTDOOR is not satisfiable anywhere on
+this deck by doing nothing. "Nothing to change" could never have been the answer.
+
+⇒ **Why the old "must be outdoor: re-lay the stern" branch was wrong, and this is
+the expensive error.** There is **NO stern re-lay**. `ThrusterBase` is
+`holdsRoof true` · `fillPercent 1` · `passability Impassable` — read from
+`Data\Odyssey\Defs\ThingDefs_Buildings\Buildings_Gravship.xml` — so a thruster
+**seals the room exactly as the wall it replaces did**. The cost is
+**ONE `GravshipHull` cell per small thruster, two per large.** You swap a wall
+cell for a thruster and the enclosure is unchanged.
+
+**Nine sites exist at x41–49, z131/132.** The aft strip at (x,133) is off-deck.
+
+⇒ **The hull is NOT wrong, and it was never at risk.** Nothing about Phase 4 is
+blocked, and no deck change is owed now. What this section previously called a
+deadline was an artefact of believing roofs were absent because the file has no
+field for them.
 
 ### Not determinable offline — do not let these be quoted as known
 

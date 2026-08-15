@@ -35,7 +35,7 @@ row:      infra
 spec:     Correct §11 of `gravship_flight_invariants.md` to the measured facts. The export holds **zero thrusters, zero tanks, zero consoles**. The format has **no roof field**, but roofs are derivable: GravshipExport regenerates them at import by flood-fill (`Patch_Sketch_GetSuggestedRoofCells_Postfix.cs:45-85`) => **4,049 of 4,057 substructure cells roofed, every standable cell indoors**. There is **no stern re-lay**: the cost is ONE `GravshipHull` cell per small thruster (two per large), because `ThrusterBase` is `holdsRoof true` + `fillPercent 1` and seals the room exactly as the wall it replaces. Nine sites at x41–49, z131/132; the aft strip (x,133) is off-deck.
 verify:   §11 states those measurements and marks the roof map as DERIVED (the mod's own algorithm re-run), not observed.
 criteria: EMPTY
-state:    ready
+state:    done
 
 ## B21 Make our mod checker notice a mod that is listed but not installed
 row:      infra
