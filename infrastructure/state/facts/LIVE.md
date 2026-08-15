@@ -1,5 +1,31 @@
 # LIVE — what the running game tells us. CHECK writes. DECIDE and BUILD read.
 
+## 🔴 THIS LOAD'S DEF STATE PREDATES B56 — five factions absent BY DESIGN
+
+Process **PID 13644 started 2026-08-15 00:43:34**. The five faction XMLs were
+deployed to the game copy at **01:03:42**, and `fe6b460` was committed 01:06:35 —
+both ~20 minutes AFTER launch. **RimWorld parses defs once, at launch**, so this
+process read the broken files and no amount of redeploying reaches it.
+
+Measured live on this load, not assumed: `jawa/get_defs` returns **0 of 5 resolved**
+for `JawaAscendantHelix`, `JawaHuttCartel`, `JawaJunkers`, `JawaDeepwaterCompact`,
+`JawaWildsteamClan`. Control `Jawa_IndigenousTribes` resolves `found=True` in the
+same call, so the bridge and the query are fine — the five are genuinely not in this
+process's def database.
+
+⇒ **A null result for those five on THIS load is the OLD bug, not a new one.** Do
+not chase it, and do not report B56's fix as failed. They are correctly shaped on
+disk (0 `<xenotype>` tags, dictionary-keyed `<BTD_Nikto>` form) and should be live
+on the NEXT cold load.
+
+🔑 **The general trap, now hit twice in two days:** a deploy that lands after the
+process launched is invisible to it, and the symptom is a def that is *perfect on
+disk* and *absent in game*. C33 was void the first time for exactly this — the mod
+deployed ~10 min after that process started. **Before calling any def missing,
+compare the game copy's mtime against the process start time**
+(`(Get-Process -Id <pid>).StartTime`). Disk evidence is not evidence about the
+running game.
+
 - A **quicktest builds a FULL world**, not a stub: 119,904 tiles, `waterPct 25.0`,
   2 water bodies, `seedString "green"`, `planetCoverage 0.3`, `previewOnly:false`.
   ⇒ the sea can be measured on disposable worlds without opening the planet page
