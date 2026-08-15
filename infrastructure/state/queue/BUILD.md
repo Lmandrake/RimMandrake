@@ -77,7 +77,7 @@ row:      infra
 spec:     `python3 src/RimMandrake/Utils/package_skill.py --all`. Editing `skills/<name>/` is not shipping it — Claude Code installs from a `.skill` zip and those are gitignored, so a fresh clone has none. `skills/rimworld-quests.skill` (65 KB) is one that exists only on disk.
 verify:   read the EXIT CODE and the named failure list, never the directory listing — a failure leaves its own zip stale beside fresh ones.
 criteria: EMPTY
-state:    ready
+state:    done
 
 ## B34 Fix a wrong mod ID cited across the design docs
 row:      infra
