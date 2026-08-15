@@ -37,6 +37,13 @@ log still exists.
 |---|---|---|---|
 | **§1** | three-assemblies batch, reload of the (now deleted) campaign — quicktest map | started **2026-08-13 17:30:59**, harvested 18:11, game up to ~21:10 | ✅ **CLOSED 2026-08-13** — Results filled, incl. two rows honestly marked NOT COLLECTED |
 | **§2** | 🔴 **NEW WORLD GENERATION** — v1 rows 2 + 7 in one irreversible run, plus Anomaly-to-zero | written **2026-08-13**, game DOWN. **Load not yet run.** | ⬜ **OPEN** — signatures written, Results blank |
+| **§3** | the **2026-08-15 deploy-window load** — two assemblies + one XML/PNG mod + a mod-list change, on a **quicktest** map. ⛔ **not worldgen** | written **2026-08-15 ~15:50**, game DOWN, before launch | ⬜ **OPEN** — signatures written, Results blank |
+
+🔴 **§2 and §3 are both open and they are DIFFERENT EVENTS. Do not fill §2's Results
+from this load's log.** §2 is the irreversible worldgen run, which is the owner's and
+is not scheduled. This load runs against **§3** only. §2's S1–S8 are not re-booked
+here; where §3 needs the same check it restates it, and **§3's T4 REVERSES one of
+§2's S8 rows** — read T4, do not carry S8 forward.
 
 ---
 
@@ -528,3 +535,165 @@ reconstruct a result from the log.**
 | S8 | `PatchOperationRemove` failures — record which, then IGNORE | | |
 | S8 | `BTD_*` xenotype misses — record WHICH names | | |
 | S8 | 🔴 zero cross-reference errors naming `Jawa_Tribal_*` / `Jawa_Colonist` | | |
+
+---
+
+# §3 — LOAD 2026-08-15, the deploy window. ⬜ OPEN
+
+**Event:** the load following the 2026-08-15 deploy window (`NEXT_RELOAD.md` §1.0).
+A **quicktest** session, not a save load and **not worldgen**. Written **before
+launch, game DOWN**, by BUILD. Closes queue item **B23** for this block.
+
+## §3 deploy state — verified on disk, game down, 15:47
+
+| # | artifact | state entering this load |
+|---|---|---|
+| **D1** | `JawaBench.BridgeTools` companion — `C:\Program Files (x86)\Steam\steamapps\common\RimWorld\BridgeTools\JawaBench\JawaBench.BridgeTools.dll` | deployed; md5 `f0d4e6e7…` matches the repo artifact (REP, this window). **Built with `--gm`** is the claim under test — without it `jawa/fire_incident` and `jawa/send_letter` are stripped and §5's L3 cannot fire at all |
+| **D2** | `JawaPlantGrowth.dll` — `…\Mods\JawaPlantGrowth\Assemblies\JawaPlantGrowth.dll`, 8,704 B, mtime 2026-08-15 10:31 | 🔴 **an assembly that has NEVER been loaded.** `mandrake.jawaplantgrowth` sits at index **571**, after `brrainz.harmony` (index 1) — the Harmony postfix can bind |
+| **D3** | `DesertVehicleReskin` — `…\Mods\DesertVehicleReskin` | XML + loose PNGs, an **update** to an installed mod. `mandrake.desertvehiclereskin` at **541**, after `sarg.alphavehiclesneolithic` (**528**) |
+| **D4** | `ModsConfig.xml` | `<activeMods>` **575**, down from 576: `com.yayo.yayoani.continued` removed this window (BUILD, 15:47). All three xenotype donors — `btd.xenotyperemix.starwars`, `guy762.starwarsxenotypes`, `neronix17.outerrim.galacticdiversity` — **absent**; `mandrake.starwarsraces` (562) stands alone |
+| **D5** | def dump | armed at 13:27 via `dump_request.txt` = `all`; re-read happens at **this** startup, after D1–D4 |
+
+⛔ **`JawaSeaShaper.dll` repo/deployed md5 mismatch is EXPECTED and is not a
+signature.** The sea left v1 with the worldgen stand-down.
+
+---
+
+## T1 — the companion bundle loaded and is the build we measured
+
+**Gate is a derived number, never a literal.** Derive first, then census:
+
+```bash
+grep -rhoE --include='*.cs' '"jawa/[a-z_]+"' src/RimMandrake/bridgetools/ | sort -u | wc -l
+```
+🔴 `--include='*.cs'` is load-bearing — without it a commented `[Tool("jawa/…")]`
+in `prove_new_tools.py:112` inflates the count by one and fails a correct build.
+Then `rimbridge/list_tools` and count the `jawa/*` names.
+
+| observed | verdict |
+|---|---|
+| = derived count | ✅ pass, built **with `--gm`** |
+| = derived count **− 2** | 🔴 built **without `--gm`** — `fire_incident` and `send_letter` stripped. **L3 is uncollectable; do not report it as a failure of the Empire** |
+| anything else | ⛔ **STOP.** The deployed companion is not the one measured; every `jawa/*` result this load is evidence of nothing |
+
+Log negative — strings VERIFIED in the `#US` heap of `RimBridgeServer.dll` (§1):
+
+```bash
+grep -nE "\[RimBridge\] (Failed to (load|scan|inspect|prepare|register)|Loader exception|Skipping companion|Could not resolve global BridgeTools|Ignoring companion-local SDK|STARTUP_INIT_FAILURE|Failed to start server)|Companion references RimBridgeServer\.Sdk" "$LOG"
+```
+Want **zero lines**.
+
+---
+
+## T2 — `JawaPlantGrowth` bound at all. **First load of this assembly.**
+
+Strings below are VERIFIED in the `#US` heap of the **deployed**
+`JawaPlantGrowth.dll` (`strings -a -el`, 15:49) — not guessed from the source.
+
+```bash
+grep -nE "\[JawaPlantGrowth\]" "$LOG"
+```
+
+| line | meaning |
+|---|---|
+| `[JawaPlantGrowth] scaling <N> plant defs (default x4, tree x2.5), <M> exempt, <K> terminator biome(s) at x0.4.` | ✅ **the only positive evidence the assembly ran.** Record N, M and K verbatim |
+| `[JawaPlantGrowth] failed to build the growth tables, leaving growth vanilla: <ex>` | 🔴 **real defect.** The mod loaded and gave up; growth is vanilla. Capture the exception |
+| `[JawaPlantGrowth] terminator biome '<name>'` | informational — record which biome it resolved |
+| **nothing at all** | 🔴 the answer is **"not deployed / not in ModsConfig"**, **NOT** "no effect". Everything under §5 L6 is then uninterpretable and must be marked NOT COLLECTED, not FAILED |
+
+⚠️ **A silent Harmony failure has no string of its own.** If the startup line is
+present but growth reads vanilla in L6, that is a *patch* failure, not a *load*
+failure, and the two must not be written up as one.
+
+---
+
+## T3 — `DesertVehicleReskin` — 🚫 **NO LOG EVIDENCE IS POSSIBLE**
+
+Filed so nobody greps for it. Pure XML + loose PNGs: a texPath override reaches
+every def whether or not a patch ran, and `Failed to find any textures at` fires
+only when **every** direction of a `Graphic_Multi` is missing. **It settles on the
+Architect menu and the labels (§5 L5) or it does not settle.** A clean log is not
+a pass here.
+
+🔴 **B62 is UNBUILT.** Only `eopie sled` can pass this load. Seeing `Ox cart`,
+`Chariot`, `Covered carriage`, `War chariot` is the **expected pre-B62 baseline**,
+not a failure, and must not be written up as one.
+
+---
+
+## T4 — EXPECTED AND HARMLESS. Do not stop for these. 🔴 **T4 REVERSES §2's S8**
+
+| signature | verdict for **this** load |
+|---|---|
+| `[Jawa Patches] Patch operation Verse.PatchOperationRemove failed` naming `requiredMemes`, `structureMemeWeights`, `classicIdeo` or `disallowedMemes` | ✅ **harmless, unchanged from S8.** We remove six generation-steering nodes an authored `fixedIdeo` makes dead. If another mod removed one first our Remove matches nothing and logs red — the desired end state, node absent, is already true. The line means the job was done twice, not undone |
+| `Could not resolve cross-reference: No Verse.PawnKindDef named JDSCIS_*` | ✅ **harmless, unchanged from S8.** The Geonosian hive mixes Separatist droid kinds from a mod that may be off; they are `MayRequire`-wrapped and the group simply fields fewer kinds. Source: `src/Jawa/Jawa_Patches/Defs/FactionDefs/JawaGeonosianFoundryHive.xml` |
+| `Could not resolve cross-reference: No Verse.XenotypeDef named BTD_*` (also `guy762_*`, `OuterRim_*`) | 🔴 **NO LONGER HARMLESS — this is the reversal.** S8 called these benign because the donor packs were installed and BTD Remix dedup'd at load. **All three donors are OFF in D4.** Under the donors-off configuration this exact grep IS check **C36**, and a hit is a **C36 FAILURE**: a def in `mandrake.starwarsraces` or `Jawa_Patches` still points at a donor that no longer loads. **Record every name.** `Jawa_Patches` carries `BTD_` references in at least five files (`JawaJunkers.xml`, `AlienSpawnEnablers.xml`, `GamorreanXenotype.xml`, …) — those are the suspects |
+
+🔴 **The failure that is NOT harmless and shares the crossref shape:** any
+cross-reference naming `Jawa_Tribal_Scavenger`, `Jawa_Tribal_Slinger`,
+`Jawa_Tribal_Elder` or `Jawa_Colonist`. Those are OURS; they were silently
+discarded once (`c06e89e`) and a recurrence means the ParentName fix regressed.
+**Worth stopping for.**
+
+```bash
+grep -nE "Patch operation Verse\.PatchOperationRemove failed|Could not resolve cross-reference.*(BTD_|guy762_|OuterRim_)|No Verse\.PawnKindDef named (JDSCIS_|Jawa_)|Could not find type named" "$LOG"
+```
+
+---
+
+## T5 — the mod-list change (D4), and the one gap it does NOT close
+
+`com.yayo.yayoani.continued` is gone from `<activeMods>`. Expected: **zero**
+`com.yayo` / `yayoAni` lines, and the lightsaber no longer flies up-and-behind on
+draft (observation, §5, not a gate).
+
+⚠️ **Nothing is loaded from a save this load**, so `Could not load reference to`
+(Scribe, a dead name held in a SAVE) must not appear at all. If it does, someone
+loaded a save and this block does not describe that event.
+
+📌 **`RG_BoilingForest` gap:** the *pre-load* dump held defs from
+`regrowth.botr.boilingforest`, which no longer loads — an xpath onto those
+validates clean and matches nothing in game (live instance:
+`JawaWorld_BiomeMix.xml:140`). D5 re-arms the dump, which closes it **at this
+startup**. **Any `--defs` verdict quoted from the OLD dump is void.**
+
+---
+
+## §3 execution order
+
+1. **Startup log FIRST**, before any bridge call that mutates anything —
+   `python.exe src/RimMandrake/Utils/harvest_log.py`. The open
+   `GeneratePawnRelations` NRE cluster becomes unattributable the moment anyone
+   calls `jawa/spawn_pawn`.
+2. **T2** and **T4** off that same first harvest — both are startup-time.
+3. **T1**, the census. Nothing `jawa/*` below it is interpretable until it passes.
+4. Then `NEXT_RELOAD.md` §5 in its own order — **L0 first**, it is one screenshot
+   and it decides a large body of art work.
+5. **T3** at §5 L5, on the Architect menu. There is nothing to grep.
+
+🔴 **Anything unrun stays UNVERIFIED. An unrun check is not a pass** — §1 closed
+with two live gates never run, and that is the line that exists to prevent it.
+
+---
+
+## §3 RESULTS — fill in AFTER the load, from the log while it still exists
+
+⬜ **Blank as of 2026-08-15 15:50, game down. This load has NOT yet run.**
+🔴 **If you are reading this table blank after the load happened, the load was spent
+without closing it — say so and mark the rows NOT COLLECTED. Do not reconstruct a
+result from the log.**
+
+| # | check | evidence collected? | result |
+|---|---|---|---|
+| T1 | derived `jawa/*` count (record it) vs observed census (record it) | | |
+| T1 | `--gm` verdict: full count, count−2, or STOP | | |
+| T1 | `[RimBridge]` failure grep = 0 | | |
+| T2 | `[JawaPlantGrowth] scaling …` present — record N / M / K | | |
+| T2 | `failed to build the growth tables` absent | | |
+| T3 | 🚫 no log evidence exists — settled at §5 L5 or not at all | n/a | |
+| T4 | `PatchOperationRemove` failures — record which, then IGNORE | | |
+| T4 | 🔴 `BTD_` / `guy762_` / `OuterRim_` crossrefs = **0** (this is C36) — record every name | | |
+| T4 | `JDSCIS_` misses — record which, then IGNORE | | |
+| T4 | 🔴 zero crossrefs naming `Jawa_Tribal_*` / `Jawa_Colonist` | | |
+| T5 | zero `com.yayo` / `yayoAni` lines | | |
+| T5 | zero `Could not load reference to` (nothing was loaded from a save) | | |
