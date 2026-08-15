@@ -40,13 +40,42 @@ is merely late. This has already cost real time, so it is the first thing here:
 - **Do NOT retry** — the connection is desynced, not idle.
 - **Do NOT re-issue** — you get a *second* map.
 - **Open a fresh connection**, then poll `jawa/list_pawns` until it stops
-  returning *"No current map"*.
+  returning *"No current map"* — two polls, ~30–45 s. ⏱️ Measured **78.5 s** on
+  the 580-mod stack, so plan for well over a minute and poll rather than guessing
+  a sleep.
+
+⚠️ **It needs `rimworld/go_to_main_menu` first** if a game is already loaded —
+from inside a running colony it will not start a fresh one.
+
+🔴 **And it DISCARDS the current map without further warning** — that is how it
+gets you a clean one. Anything another seat left on the old map is gone.
+**Announce before calling it, and check nobody is mid-audit.**
 
 Then it is an ordinary map: spawn, build, paint terrain, set time, screenshot.
 
 **Destroy it by starting another, or by leaving it.** It is scratch. Nothing about
 a quicktest is precious and nothing about it needs cleaning up — the only cost of
 a stale one is confusing yourself about which map a result came from (§3).
+
+### 🔴 Reversible, cheap and unobtrusive are three different properties
+
+A quicktest is **reversible**. It is not free, and it is not invisible. Each
+`start_debug_game_ready` is a full RimWorld **world** generation: a
+`sea_seed_sweep.py` loop of seven took `/proc/loadavg` to **22.58** (RAM fine —
+CPU and 9p-mount contention on the disk RimWorld streams assets from), and the
+owner reported the game *"stuck on Generating Map…"*, then *"running badly"*.
+Nothing was stuck. **From the keyboard, an agent-driven worldgen and a hang are
+the same event** — there is no *"an agent is doing this"* indicator anywhere on
+RimWorld's loading screen.
+
+**Announce anything that occupies the game's own UI to the OWNER before it
+starts, and report when it ends.** Announcing to peer seats does not count — they
+cannot see it and do not care, while the owner can see it and has no way to
+identify it. Prefer to run world or map generation when nobody is at the
+keyboard, and check `/proc/loadavg` before and during: over ~10 on this box means
+somebody's frames are being eaten. Applies to any loop over
+`start_debug_game_ready`, `load_game`, `go_to_main_menu` or long `save_game`
+calls.
 
 ## 2. What a quicktest proves, and what it cannot
 

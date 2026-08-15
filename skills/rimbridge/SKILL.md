@@ -48,6 +48,47 @@ with RimBridge(host, port, token) as rb:
 
 In heredocs prefer `chr(92)` over `"\\"` — one escaping layer fewer to get wrong.
 
+### Before the first call
+
+🔴 **From WSL run `python.exe`, never `python3`.** RimBridge binds **Windows
+loopback** and WSL2 is a separate network namespace, so `python3` gets
+`ConnectionRefusedError` and an empty token — no route, not a timeout. The choice
+is **per script, not per project**: talks to the bridge → `python.exe`; reads
+`/mnt/c` paths → `python3` (Windows Python cannot resolve `/mnt/c`). A script
+doing both must resolve its roots per platform, and no interpreter saves it. When
+a run disagrees with a peer's run of the same file, suspect the interpreter
+before the data.
+
+🔴 **Turn on Options → Run in background before any unattended run.** RimWorld
+ships `<runInBackground>False</runInBackground>`; unfocused it stops running its
+main loop — measured 0.5% of one core against 79% — so every game-touching call
+times out at 30 s while `rimbridge/ping` answers in 0.5 ms. Set it **in the
+game's menu**: `Prefs.xml` is rewritten from memory on exit, so a disk edit while
+the game runs is discarded. `src/RimMandrake/Utils/game_focus.py` has a
+`preflight()`. An **all-null** `get_bridge_status` — `version` included, which
+cannot depend on game state — is this, not "no map is loaded".
+
+⏳ **The bridge answering is NOT the game being reactive.** Owner's measurement,
+2026-08-14: the game becomes drivable about **forty seconds** after the bridge
+first responds, and every readiness flag we have describes the earlier event.
+Read-only calls are fine inside that window; **hold mutations.**
+`load_session.py --settle` waits it out and records the wait. Do not optimise it
+away because a run once worked without it.
+
+⚠️ **A timeout is fatal to the CONNECTION, not to the call.** The late response
+sits in the socket buffer and the next request reads it as its own reply
+(`unexpected response id '<guid>'`), so later numbers are quietly wrong rather
+than absent. Drop the socket, open a fresh `RimBridge`, and **poll the
+post-condition** — never retry on the same connection, and never re-issue a call
+whose idempotence you have not established.
+
+🔑 **Never type a namespace prefix you did not just read.** `jawa/` records
+**which assembly registered the tool**, not what it does — `jawa/spawn_batch` and
+`rimworld/spawn_thing` are the same verb in different namespaces, because one was
+added and one was already there. Read the leaf out of
+`references/capability-matrix.md`, which prints every call fully qualified.
+Guessing `jawa/` is wrong about 84% of the time by count.
+
 ---
 
 ## 2. The one law
@@ -65,6 +106,44 @@ mutation against an independent channel**, cheapest first:
 3. **`save_game` then parse the `.rws`** — exact hediff severities and body
    parts; the only way to measure damage. `save_game` **ignores your
    `fileName`** and writes `rimbridge_save_<timestamp>.rws`.
+
+🔑 **The envelope's `Success` is not the tool's `success`.** `"Status": 2,
+"Success": true` on the operation envelope sits directly above `"success": false`
+and a refusal message in the payload — a tool that correctly refuses is a
+successful *operation*. **Assert on the PAYLOAD field**
+(`resp.get("success") is True`); grepping raw output for `Success` matches the
+wrong one.
+
+🔑 **An unknown parameter NAME is dropped before the tool runs**, so a wrong name
+is indistinguishable from an omitted one and the call reports success — the
+handler cannot see that you passed anything at all. `jawa/damage` given
+`targetId` instead of `thingId` damaged nothing and very nearly closed a working
+ion weapon as broken. **When a call succeeds and nothing happens, suspect the
+parameter name before suspecting the game.**
+
+⚠️ **`get_cell_info` does not list pawns.** A pawn spawned on a cell leaves that
+cell's `things: []`, which reads exactly like the documented no-op failure. Check
+pawns with `jawa/list_pawns`, `list_colonists` or a save parse instead.
+
+🔴 **The law's blind spot: a correct number can answer the wrong question.**
+`jawa/order_pawn` once returned `canReach: true` from a real
+`ReachabilityUtility.CanReach` call that ran and answered honestly — against a
+**cell** with `PathEndMode.OnCell`, where the game's own launch gate passes the
+**thing** with `PathEndMode.InteractionCell`. Two verdicts wearing one field
+name, and `true` looks identical either way. So:
+
+* When a tool answers a question the GAME also asks, **read the engine's own call
+  and reproduce its arguments exactly** — not an equivalent-looking one.
+* Before committing any prediction, **name the exact call and the exact field
+  that will carry the answer**, and confirm that field exists **in the tool
+  surface**, not merely in the source. A predicate nothing returns fails
+  silently: a call that answers nothing looks like a condition that did not fire.
+* Where no engine call exists to copy, score a **null baseline**. A number with
+  no baseline cannot tell "my method worked" from "anything would have scored
+  that".
+* ⭐ **Prefer testing the MECHANISM synthetically over testing your artifact** —
+  a sealed room built from nothing on a throwaway map tests the rule every
+  derived claim rests on, and needs no save, no deck and no import.
 
 ---
 
@@ -196,8 +275,72 @@ Three things make it a real generator:
 * **`flood_fill_cells` with a `designatorId`** is a *site finder*: every cell
   where that building legally fits, honouring footprint, anchor, walkability
   and pawn reachability.
+* 🔑 **A `designatorId` is a UI path, not a defName** — `architect-designator:
+  floors:build-concrete`, not `Floor_Concrete`. **Resolve it at runtime** by
+  matching the trailing segment (`find_designator` in
+  `src/RimMandrake/Utils/bridge_latency.py`); `list_architect_designators` needs
+  a `categoryId` from `list_architect_categories` and returns dropdown parents
+  beside leaves. **Never hardcode one** — ids carrying a positional index
+  (`…-tutortagnotset-3`) renumber as mods add architect entries, so a path
+  captured on the 3-mod tier is not safe at 568.
 
-**God mode makes placement instant** — real things, not blueprints.
+### 🔴 The build order is foundation → terrain → things, and it is the only one
+
+`SetFoundation` is **refused on any cell that already carries a floor, silently
+at the write** — `jawa/set_terrain_batch layer='foundation'` reported
+`cellsChanged: 16` with `cellsFailedVerify: 12` on the 12 cells that had a floor.
+Controlled three ways: bare ground 25/0/25 hold; `MetalTile` first
+25/**25 failedVerify**/0; foundation then floor 25/0/25, surviving the floor.
+**There is no retrofit** — a floor is a one-way door, recoverable only by
+demolish-and-rebuild and undetectable by inspection afterwards. Only the
+read-back catches it.
+
+⚠️ **Affordance does not gate spawning.** `GravshipHull` declares
+`terrainAffordanceNeeded=Substructure` and spawns happily on bare ground, because
+`jawa/spawn_batch` routes through `GenSpawn`, which checks no affordance —
+affordance constrains the *designator*. A substructure-less ship is buildable and
+**not a gravship**, which is worse, because everything looks right.
+
+### 🔑 Multi-cell things spawn CENTRED on the cell you name
+
+`GenAdj.OccupiedRect` computes `minX = loc.x - (w-1)/2`, so `GravEngine:172,172`
+— a 3×3 — occupies x/z **171–173**. Emit **centres** in any `Def:x,z` op grammar,
+and test coordinate semantics with the **largest** thing you have, never the most
+common one: 1×1 things read identically under both conventions, so a plan that is
+95% single-cell looks perfect while every large thing places wrong.
+
+### 🔴 God mode is the missing half of map authoring
+
+`rimworld/set_god_mode {"enabled": true}`. Placement becomes instant — real
+things, not blueprints — and three jobs that look impossible from the bridge are
+not:
+
+* **Architect designators do nothing on an empty map.** A designator *queues work
+  for a colonist*; with no colonists it sits forever and `success: true` with
+  `designationCount: 1` is not lying. God mode converts designations to instant
+  effect, and the cell then reads back changed.
+* **Refuelling is a BUTTON on the thing's menu in god mode** (owner, 2026-08-14)
+  — there is no refuel primitive on the bridge.
+* **Things placed by `spawn_batch` arrive factionless**, so a `GravEngine` shows
+  `Claim` disabled and offers **no Launch gizmo**.
+
+⚠️ **Turn it back off when you are done** (`{"enabled": false}`) — otherwise
+everything the owner builds next is free and instant, and they save a map made in
+god mode without knowing. ⚠️ **A cell already carrying a designation refuses a
+second one** (`success: false`); cancel first with the category's `…-cancel`
+designator. 📌 *"The bridge cannot do X"* is often *"X needs a worker and there is
+nobody home"* — ask what the UI would do with the same click before concluding
+the capability is absent.
+
+### ⏳ Assert after time has run, not at tick 0
+
+A tool-built thing arrives in a state no played thing is ever in: every cached
+comp value is cold and several refresh only on their own tick. A `ChemfuelTank`
+filled by hand on a **paused** map still failed the launch check for "not enough
+fuel" — the thrusters had not registered it. `ticksGame: 1` on every read-back is
+the tell that you are asserting before the game has had a chance to disagree.
+**Do not treat a refusal on a paused, just-built object as a defect** — run time
+briefly and re-read.
 
 ### 🔑 Laying a floor destroys what is under it
 
@@ -230,10 +373,10 @@ RimWorld's own `Set terrain (rect)` and `Clear area (rect)` still return
 | `jawa/list_pawns` | every pawn on the map — **hostiles and animals too**, not just colonists. `rimworld/list_colonists` and `ResolvePawn` are player-side only |
 | `jawa/clear_ui` | 🔴 **call this before EVERY screenshot.** The Debug log window covers the centre of the screen — exactly where `jump_camera_to_cell` puts the subject — so a shot taken without it photographs the log, not the map. All twelve art screenshots of the 2026-08-14 session were lost to this and had to be re-shot. Closing the log by hand does not hold: auto-open-on-error reopens it. `rimbench.core.look()` calls it automatically |
 | `jawa/list_things` | **the ThingID of a non-pawn** — the id `jawa/damage thingId=`, `jawa/order_pawn targetId=` and the destroy tools all demand and nothing else could produce. Filter by `defName` (comma list), `rect` or `group`. 🔴 **A zero is a filter result, not an empty map**: read `scanned` beside it, and `countMatched` beside `countReturned`. Before this, the only source of a ThingID was a human clicking the object, and the `NoPathToPilotConsole` v1 gate was SKIPPED on 2026-08-14 for exactly that |
-| `jawa/get_def` | a def **as the game resolved it**, after patches and parent inheritance: `statBases`, comps with class names, and the mod that supplied it. The offline dump serialises none of that and has produced two wrong conclusions |
+| `jawa/get_def` | a def **as the game resolved it**, after patches and parent inheritance: `statBases`, comps with class names, and the mod that supplied it. The offline dump serialises none of that and has produced two wrong conclusions. 🔴 **Any question of the form "does this def have X" is a LIVE question** — a mod restamps defs at load and nothing about that is visible in the XML: `GravEngine` carries `CompProperties_Power` / `CompPowerPlantGravEngine` that `Buildings_Gravship.xml` does not show, so "none of these need power" was wrong off a clean grep. Use the disk for structure and names only. ⚠️ The reader is **blind to properties and privates** — `Scalars()` enumerates `Public \| Instance` **fields** only, so `BiomeDef`'s `wildAnimals`, `pollutionWildAnimals` and `diseases` (private) and `AllWildAnimals` (property) are invisible, and a requested field comes back `"(no such field)"` whether it is misspelled or merely unreachable. Check the instrument can SEE a field (`meta.py <Type>` in `ilprobe`) before calling a conclusion "judged from def fields" |
 | `jawa/drain_log` | recent log messages. `effects.logs` structurally cannot see anything logged **during `step_game_ticks`** |
-| `jawa/damage` | graduated damage to **anything, including hostiles**, via `Thing.TakeDamage`. The debug menu's `Apply damage...` is inert and player-side only |
-| `jawa/spawn_pawn` | a pawn **in a chosen faction** — `player` \| `hostile` \| `none` \| a FactionDef. The debug menu always spawns player-side, which is how a "hostile" test ends up standing in your colony. `xenotype` forces a XenotypeDef **at generation time** via `PawnGenerationRequest.ForcedXenotype`, which `PawnGenerator` checks first and returns on, so it beats the kind's and the faction's own rolls |
+| `jawa/damage` | graduated damage to **anything, including hostiles**, via `Thing.TakeDamage`. The debug menu's `Apply damage...` is inert and player-side only. ⚠️ **`amount` is a request, not a result** — a single instance is capped by the body part it hits plus armour, so `amount=400` landed as `totalDamageDealt: 32.0` and the pawn lived. Read the delivered quantity back, and for cleanup loop until `dead`/`destroyed` with exhausted attempts as a loud failure |
+| `jawa/spawn_pawn` | a pawn **in a chosen faction** — `player` \| `hostile` \| `none` \| a FactionDef. The debug menu always spawns player-side, which is how a "hostile" test ends up standing in your colony. `xenotype` forces a XenotypeDef **at generation time** via `PawnGenerationRequest.ForcedXenotype`, which `PawnGenerator` checks first and returns on, so it beats the kind's and the faction's own rolls. ⚠️ **Never pass `"hostile"`** — it resolves by `FirstOrDefault` and lands on Insect/Hive, where a humanlike pawn throws inside `PawnGenerator.GeneratePawn` (*"Humanlike pawn X was added to non-humanlike faction hive"*) and looks like an intermittent unrelated failure. Name the FactionDef |
 | `jawa/list_factions` | every faction on the world, hidden ones included. Read `countAllIncludingHidden`, **never** `countReturned` — `includeHidden` defaults false and the visible subset read 34 against a true 54 |
 
 **Staging a pawn for a look — art, apparel and xenotype audits**
@@ -382,7 +525,7 @@ performance model, and everything below follows from it.
 | operation | measured |
 |---|---|
 | `rimbridge/ping` | 0.3 ms — does not touch the main thread |
-| any main-thread call | **~16.7 ms**, one 60 Hz frame. This is the floor |
+| any main-thread call | **4–17 ms**, varying run to run — see the warning below |
 | `save_game` (13.9 MB) | 0.5 s |
 
 A call in a tight sequence costs ~50 ms, three frames — not the 16.7 ms an
@@ -418,6 +561,16 @@ reintroduces a per-cell loop fails a test rather than just running 100× slower.
 ⚠️ The old "0.002 s per call" figure in this file was measured on **3 mods,
 paused**, and did not survive the full stack. Treat any timing note as carrying
 the tier it was measured on.
+
+⚠️ **There is no 60 Hz frame gate, and a single latency number is not quotable.**
+Every main-thread class once measured 16.7 ms at 568 mods and was written down as
+a hard one-frame floor; two later runs on **one map** read `get_game_info` 5.673
+then 4.358 and `jawa/set_terrain` 21.017 then 13.648. 4.4 ms reads cannot come
+from a 16.67 ms tick, so the gate is refuted; the cause of the spread is unknown
+and every mechanism offered has been withdrawn (pawn count went **up** while
+latency went **down**). Mod tier is not the axis — three runs at 573 on one map
+disagree by 35%. **Record the workload and `ticksGame` beside every benchmark,
+and quote a range with its conditions or quote nothing.**
 
 **Consequence:** prefer live bridge work over save-editing. Bridge changes are
 also **reversible** — the player reloads if they dislike the result — where a
