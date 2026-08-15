@@ -466,3 +466,33 @@ spec:     —
 verify:   —
 criteria: —
 state:    dropped — The item claimed the set was undeployed; it was already deployed and verified. Live half carried by CHECK C31.
+
+## B56 🔴 Five authored Jawa FactionDefs are DEAD — `<li>` in a dictionary-keyed field
+row:      9
+spec:     Found in the 2026-08-15 cold load. `xenotypeChances` is a DICTIONARY-KEYED
+          field: the element name IS the xenotype defName. Five files use the `<li>`
+          list shape instead, so `XenotypeChance.LoadDataFromXmlCustom` calls
+          `ParseFloat` on a null string and the **entire FactionDef is discarded**.
+          Log: `Exception loading def from file <X>.xml:
+          System.ArgumentNullException: Value cannot be null. Parameter name: s`,
+          stack `Single.Parse -> ParseHelper.ParseFloat ->
+          XenotypeChance.LoadDataFromXmlCustom -> ParseAndReturnDef_RimWorld_FactionDef`.
+          Affected, in `src/Jawa/Jawa_Patches/Defs/FactionDefs/` (li-entry counts):
+          `JawaAscendantHelix.xml` 8 · `JawaHuttCartel.xml` 8 · `JawaJunkers.xml` 8 ·
+          `JawaDeepwaterCompact.xml` 7 · `JawaWildsteamClan.xml` 6.
+          `JawaTribes.xml`, `JawaFreeDroidEnclaves.xml` and
+          `JawaGeonosianFoundryHive.xml` have zero `<li>` under `xenotypeChances`
+          and do NOT throw — that correlation is the proof.
+          FIX — rewrite each entry from
+            `<li MayRequire="btd.xenotyperemix.starwars"><xenotype>BTD_Nikto</xenotype><chance>0.300</chance></li>`
+          to
+            `<BTD_Nikto MayRequire="btd.xenotyperemix.starwars">0.300</BTD_Nikto>`
+          `MayRequire` is an attribute and rides on the keyed element unchanged.
+          See `skills/rimworld-modding/SKILL.md` §4 — this is the documented
+          most-destructive mistake, and `references/patch-operations.md` §11.
+verify:   `python3 skills/rimworld-modding/scripts/validate_patch.py` on each of the
+          five, pointed at the mod ROOT so it scans `Defs/`. Then re-deploy and grep
+          the next Player.log: zero `Exception loading def from file Jawa*.xml`.
+criteria: All 8 Jawa factions resolve live — `jawa/get_def` or the def dump returns a
+          FactionDef for each of the five, where today it returns nothing.
+state:    ready
