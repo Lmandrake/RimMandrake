@@ -1,0 +1,141 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ============================================================================
+  DeepDesertTribes.xml                    Jawa_Patches · authored 2026-08-14
+  ============================================================================
+
+  Builds FACTION_SPEC.md section 4, "Deep Desert Tribes ; PATCH vanilla
+  `TribeCivil`". A reskin, not a new def, plus the ONE group maker the spec
+  explicitly orders added.
+
+  READ FROM THE SHIPPED DEF, 2026-08-14 ; not inferred:
+  C:\Program Files (x86)\Steam\steamapps\common\RimWorld\Data\Core\Defs\
+    FactionDefs\Factions_Misc.xml
+
+      ParentName                  TribeBase
+      OWN nodes                   defName · label · description · colorSpectrum ·
+                                  disallowedMemes · maxConfigurableAtWorldCreation ·
+                                  configurationListOrderPriority
+      label                       gentle tribe
+
+  🔴 EVERYTHING ELSE IS ON THE ABSTRACT PARENT, NOT ON THIS DEF.
+  `TribeBase` carries `pawnSingular`, `pawnsPlural`, `leaderTitle`,
+  `settlementGenerationWeight` and all twelve `pawnGroupMakers`.
+  PatchOperations run BEFORE def inheritance is resolved, so `TribeCivil` has
+  none of those nodes at patch time and a `Replace` on any of them matches ZERO
+  and logs red. They are `Add`s onto the child. The child's own node wins at
+  inheritance, so the override reaches `TribeCivil` ALONE ; patching `TribeBase`
+  would also hit TribeRough, TribeSavage and every modded descendant.
+
+      pawnSingular / pawnsPlural  parent      ->  Add
+      leaderTitle                 parent      ->  Add
+      settlementGenerationWeight  parent (1)  ->  Add
+      label / description         own nodes   ->  Replace
+      permanentEnemy              ABSENT in the whole chain, so already false
+
+  ⚠️ The spec's `permanentEnemy false` is the vessel's default and the reskin
+  contract writes that field "only where it differs from the vessel's default".
+  `TribeBase` and `TribeCivil` both omit it, and `TribeSavageBase` is a
+  DIFFERENT parent. So nothing is written; the field is already false.
+
+  ⛔ `factionNameMaker` and the raid curves are untouched.
+
+  THE WATER RAID  (the one sanctioned group addition)
+  ==================================================
+  Vanilla lists twelve group makers on `TribeBase` and the child inherits them.
+  RimWorld's inheritance MERGES `li` lists: the child's items are APPENDED to
+  the parent's unless the node carries `Inherit="False"`. Verified against
+  vanilla's own defs, e.g. `HoldingPlatform` adds one `<comps>` li to
+  `HoldingPlatformBase`'s three and ends up with four, while
+  `Horaxian_Gunner` has to write `Inherit="False"` on `weaponTags` precisely
+  because appending is the default.
+
+  ⇒ Adding a `<pawnGroupMakers>` node holding ONE `li` gives `TribeCivil`
+  thirteen groups, not one. The twelve inherited ones are not touched and no
+  commonality is rewritten.
+
+  ⚠️ "Targets containers, disengages once loaded" is a RAID STRATEGY and an
+  arrival mode, and a `pawnGroupMaker` expresses NEITHER. What a group maker
+  can express is composition and size, so the signature is carried by those:
+  `maxTotalPoints` 800 caps it to a light party (vanilla precedent, the
+  Drifter group at 1000), and the options are the three FAST, LIGHT tribal
+  kinds only. No `Tribal_HeavyArcher`, no `Tribal_Breacher`, no chiefs ; a
+  breacher is the exact opposite of a group that leaves once it has the water.
+  Commonality 30 against the parent's 100/60/60/5.
+
+  Every kind here is vanilla Core and was checked present in the 2026-08-14
+  dump, so no `MayRequire` is owed and none carries the 99999 exclude sentinel.
+
+  SAFETY
+  ======
+  Everything sits inside a conditional on the def existing, so the file is a
+  silent no-op rather than a wall of red if the vessel ever moves.
+  ============================================================================
+-->
+<Patch>
+
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/FactionDef[defName="TribeCivil"]</xpath>
+    <match Class="PatchOperationSequence">
+      <operations>
+
+        <!-- "gentle tribe" -> the campaign name. -->
+        <li Class="PatchOperationReplace">
+          <xpath>/Defs/FactionDef[defName="TribeCivil"]/label</xpath>
+          <value><label>Deep Desert Tribes</label></value>
+        </li>
+
+        <li Class="PatchOperationReplace">
+          <xpath>/Defs/FactionDef[defName="TribeCivil"]/description</xpath>
+          <value>
+            <description>Territorial clans of the deep sand and the canyon country, for whom water is sacred and moisture farming is sacrilege — a theft from the world, committed in the open, every hour of every day.\n\nThey arrive fast, hit hard, and are gone.</description>
+          </value>
+        </li>
+
+        <!-- Inherited from TribeBase. Add, not Replace. -->
+        <li Class="PatchOperationAdd">
+          <xpath>/Defs/FactionDef[defName="TribeCivil"]</xpath>
+          <value><pawnSingular>Tusken raider</pawnSingular></value>
+        </li>
+
+        <li Class="PatchOperationAdd">
+          <xpath>/Defs/FactionDef[defName="TribeCivil"]</xpath>
+          <value><pawnsPlural>Tusken raiders</pawnsPlural></value>
+        </li>
+
+        <!-- "chief" on the parent -> War Chief. -->
+        <li Class="PatchOperationAdd">
+          <xpath>/Defs/FactionDef[defName="TribeCivil"]</xpath>
+          <value><leaderTitle>War Chief</leaderTitle></value>
+        </li>
+
+        <!-- 1 on the parent -> 1.3. Nine settlements, deep desert and canyons. -->
+        <li Class="PatchOperationAdd">
+          <xpath>/Defs/FactionDef[defName="TribeCivil"]</xpath>
+          <value><settlementGenerationWeight>1.3</settlementGenerationWeight></value>
+        </li>
+
+        <!-- The water raid. Appended to TribeBase's twelve, not replacing them. -->
+        <li Class="PatchOperationAdd">
+          <xpath>/Defs/FactionDef[defName="TribeCivil"]</xpath>
+          <value>
+            <pawnGroupMakers>
+              <li>
+                <kindDef>Combat</kindDef>
+                <commonality>30</commonality>
+                <maxTotalPoints>800</maxTotalPoints>
+                <options>
+                  <Tribal_Hunter>10</Tribal_Hunter>
+                  <Tribal_Archer>8</Tribal_Archer>
+                  <Tribal_Warrior>4</Tribal_Warrior>
+                </options>
+              </li>
+            </pawnGroupMakers>
+          </value>
+        </li>
+
+      </operations>
+    </match>
+  </Operation>
+
+</Patch>
