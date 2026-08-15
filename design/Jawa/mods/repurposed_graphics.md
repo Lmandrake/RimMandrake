@@ -73,3 +73,14 @@ with UnityPy, and 23,095 textures across 67 sources now sit in
 ⇒ **Bundled art is a graphics source like any other.** That includes vanilla —
 Core's art is not even in a bundle, it is in `RimWorldWin64_Data\resources.assets`,
 and the extractor reads that too.
+
+## From the Vanilla Animals Expanded removal, 2026-08-15
+
+The mod is gone, so this art is no longer loadable — it is recorded because the
+subjects are desert-correct and we may want the *creature*, drawn our own way.
+
+| what | why it is worth remembering |
+|---|---|
+| **`AEXP_GilaMonster`** | The one animal that survived review, cut only because it was the last tenant of a whole mod. A venomous desert lizard is squarely on-world; if we ever want a small dayside predator, this is the reference |
+| **`AEXP_Camel`** | Cut in review, but a desert world without a pack animal is worth a second thought. Recorded so the question can be re-asked deliberately rather than by accident |
+| **`AEXP_BeaverDam`** | A buildable animal structure. The mechanic — a creature that alters terrain — has no equivalent left in the stack |
