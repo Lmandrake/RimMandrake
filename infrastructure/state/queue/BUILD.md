@@ -173,7 +173,7 @@ spec:     `design/Jawa/worldbuilding/FACTION_SPEC.md` section 3. A `PatchOperati
           that section lists. ⛔ Do NOT touch `pawnGroupMakers`, `factionNameMaker`
           or the raid curves — they are inherited and already balanced.
           raidsForbidden true is the mechanism (R2), NOT a precept. Weight 1.9.
-verify:   `python3 src/RimMandrake/Utils/validate_patch.py <path> --defs` scoped to the active list, 0 errors; the xpath matches `OutlanderCivil` and nothing else; every `<li>` naming
+verify:   `python3 skills/rimworld-modding/scripts/validate_patch.py <path> --defs` scoped to the active list, 0 errors; the xpath matches `OutlanderCivil` and nothing else; every `<li>` naming
           a def from another mod carries the correct `MayRequire`.
 criteria: the faction reads as Homestead Defense League in the world faction list, with the
           leaderTitle from the spec.
@@ -186,7 +186,7 @@ spec:     `design/Jawa/worldbuilding/FACTION_SPEC.md` section 4. A `PatchOperati
           that section lists. ⛔ Do NOT touch `pawnGroupMakers`, `factionNameMaker`
           or the raid curves — they are inherited and already balanced.
           ADD one Combat group: the water raid - fast, light, targets containers, disengages once loaded. Vanilla has no equivalent and it is the faction's signature.
-verify:   `python3 src/RimMandrake/Utils/validate_patch.py <path> --defs` scoped to the active list, 0 errors; the xpath matches `TribeCivil` and nothing else; every `<li>` naming
+verify:   `python3 skills/rimworld-modding/scripts/validate_patch.py <path> --defs` scoped to the active list, 0 errors; the xpath matches `TribeCivil` and nothing else; every `<li>` naming
           a def from another mod carries the correct `MayRequire`.
 criteria: the faction reads as Deep Desert Tribes in the world faction list, with the
           leaderTitle from the spec.
@@ -199,7 +199,7 @@ spec:     `design/Jawa/worldbuilding/FACTION_SPEC.md` section 10. A `PatchOperat
           that section lists. ⛔ Do NOT touch `pawnGroupMakers`, `factionNameMaker`
           or the raid curves — they are inherited and already balanced.
           KEEP permanentEnemy true - the vessel default. The dossier says No; R12 amends pillar 5 instead, because patching it false guts the vanilla raid economy.
-verify:   `python3 src/RimMandrake/Utils/validate_patch.py <path> --defs` scoped to the active list, 0 errors; the xpath matches `Pirate` and nothing else; every `<li>` naming
+verify:   `python3 skills/rimworld-modding/scripts/validate_patch.py <path> --defs` scoped to the active list, 0 errors; the xpath matches `Pirate` and nothing else; every `<li>` naming
           a def from another mod carries the correct `MayRequire`.
 criteria: the faction reads as Blackstar Company in the world faction list, with the
           leaderTitle from the spec.
@@ -221,7 +221,7 @@ spec:     `design/Jawa/worldbuilding/FACTION_SPEC.md` section 2 for every field 
           🪤 `combatPower 99999` kinds are legal in `traders`/`carriers`/`guards`
           and POISON in `options`. `minTotalPoints` does not exist.
           `PawnGenOption` has exactly `kind` and `selectionWeight`.
-verify:   `python3 src/RimMandrake/Utils/validate_patch.py <path> --defs` scoped to the active list, 0 errors; every `kind` named in a `pawnGroupMaker` resolves in the live def
+verify:   `python3 skills/rimworld-modding/scripts/validate_patch.py <path> --defs` scoped to the active list, 0 errors; every `kind` named in a `pawnGroupMaker` resolves in the live def
           dump; `factionNameMaker` and `factionIconPath` are non-null.
 criteria: the faction generates settlements at worldgen and its pawns spawn as
           the named kinds.
@@ -243,7 +243,7 @@ spec:     `design/Jawa/worldbuilding/FACTION_SPEC.md` section 5 for every field 
           🪤 `combatPower 99999` kinds are legal in `traders`/`carriers`/`guards`
           and POISON in `options`. `minTotalPoints` does not exist.
           `PawnGenOption` has exactly `kind` and `selectionWeight`.
-verify:   `python3 src/RimMandrake/Utils/validate_patch.py <path> --defs` scoped to the active list, 0 errors; every `kind` named in a `pawnGroupMaker` resolves in the live def
+verify:   `python3 skills/rimworld-modding/scripts/validate_patch.py <path> --defs` scoped to the active list, 0 errors; every `kind` named in a `pawnGroupMaker` resolves in the live def
           dump; `factionNameMaker` and `factionIconPath` are non-null.
 criteria: the faction generates settlements at worldgen and its pawns spawn as
           the named kinds.
@@ -265,7 +265,7 @@ spec:     `design/Jawa/worldbuilding/FACTION_SPEC.md` section 6 for every field 
           🪤 `combatPower 99999` kinds are legal in `traders`/`carriers`/`guards`
           and POISON in `options`. `minTotalPoints` does not exist.
           `PawnGenOption` has exactly `kind` and `selectionWeight`.
-verify:   `python3 src/RimMandrake/Utils/validate_patch.py <path> --defs` scoped to the active list, 0 errors; every `kind` named in a `pawnGroupMaker` resolves in the live def
+verify:   `python3 skills/rimworld-modding/scripts/validate_patch.py <path> --defs` scoped to the active list, 0 errors; every `kind` named in a `pawnGroupMaker` resolves in the live def
           dump; `factionNameMaker` and `factionIconPath` are non-null.
 criteria: the faction generates settlements at worldgen and its pawns spawn as
           the named kinds.
@@ -287,7 +287,7 @@ spec:     `design/Jawa/worldbuilding/FACTION_SPEC.md` section 7 for every field 
           🪤 `combatPower 99999` kinds are legal in `traders`/`carriers`/`guards`
           and POISON in `options`. `minTotalPoints` does not exist.
           `PawnGenOption` has exactly `kind` and `selectionWeight`.
-verify:   `python3 src/RimMandrake/Utils/validate_patch.py <path> --defs` scoped to the active list, 0 errors; every `kind` named in a `pawnGroupMaker` resolves in the live def
+verify:   `python3 skills/rimworld-modding/scripts/validate_patch.py <path> --defs` scoped to the active list, 0 errors; every `kind` named in a `pawnGroupMaker` resolves in the live def
           dump; `factionNameMaker` and `factionIconPath` are non-null.
 criteria: the faction generates settlements at worldgen and its pawns spawn as
           the named kinds.
@@ -309,7 +309,7 @@ spec:     `design/Jawa/worldbuilding/FACTION_SPEC.md` section 8 for every field 
           🪤 `combatPower 99999` kinds are legal in `traders`/`carriers`/`guards`
           and POISON in `options`. `minTotalPoints` does not exist.
           `PawnGenOption` has exactly `kind` and `selectionWeight`.
-verify:   `python3 src/RimMandrake/Utils/validate_patch.py <path> --defs` scoped to the active list, 0 errors; every `kind` named in a `pawnGroupMaker` resolves in the live def
+verify:   `python3 skills/rimworld-modding/scripts/validate_patch.py <path> --defs` scoped to the active list, 0 errors; every `kind` named in a `pawnGroupMaker` resolves in the live def
           dump; `factionNameMaker` and `factionIconPath` are non-null.
 criteria: the faction generates settlements at worldgen and its pawns spawn as
           the named kinds.
@@ -331,7 +331,7 @@ spec:     `design/Jawa/worldbuilding/FACTION_SPEC.md` section 9 for every field 
           🪤 `combatPower 99999` kinds are legal in `traders`/`carriers`/`guards`
           and POISON in `options`. `minTotalPoints` does not exist.
           `PawnGenOption` has exactly `kind` and `selectionWeight`.
-verify:   `python3 src/RimMandrake/Utils/validate_patch.py <path> --defs` scoped to the active list, 0 errors; every `kind` named in a `pawnGroupMaker` resolves in the live def
+verify:   `python3 skills/rimworld-modding/scripts/validate_patch.py <path> --defs` scoped to the active list, 0 errors; every `kind` named in a `pawnGroupMaker` resolves in the live def
           dump; `factionNameMaker` and `factionIconPath` are non-null.
 criteria: the faction generates settlements at worldgen and its pawns spawn as
           the named kinds.
@@ -353,7 +353,7 @@ spec:     `design/Jawa/worldbuilding/FACTION_SPEC.md` section 12 for every field
           🪤 `combatPower 99999` kinds are legal in `traders`/`carriers`/`guards`
           and POISON in `options`. `minTotalPoints` does not exist.
           `PawnGenOption` has exactly `kind` and `selectionWeight`.
-verify:   `python3 src/RimMandrake/Utils/validate_patch.py <path> --defs` scoped to the active list, 0 errors; every `kind` named in a `pawnGroupMaker` resolves in the live def
+verify:   `python3 skills/rimworld-modding/scripts/validate_patch.py <path> --defs` scoped to the active list, 0 errors; every `kind` named in a `pawnGroupMaker` resolves in the live def
           dump; `factionNameMaker` and `factionIconPath` are non-null.
 criteria: the faction generates settlements at worldgen and its pawns spawn as
           the named kinds.
@@ -367,7 +367,7 @@ spec:     `design/Jawa/worldbuilding/FACTION_SPEC.md` sections 13 and 14. Two `P
           🔴 `hidden true` and `settlementGenerationWeight 0` on `Mechanoid` are
           CORRECT and stay — the Forgotten Arsenal is "a what, not a who".
           Both inherit their `pawnGroupMakers` wholesale.
-verify:   `python3 src/RimMandrake/Utils/validate_patch.py <path> --defs` scoped to the active list, 0 errors; the diff touches exactly two fields per def.
+verify:   `python3 skills/rimworld-modding/scripts/validate_patch.py <path> --defs` scoped to the active list, 0 errors; the diff touches exactly two fields per def.
 criteria: the two factions read by their campaign names wherever they appear.
 state:    ready
 
@@ -390,7 +390,7 @@ spec:     `src/Jawa/Jawa_Patches/Defs/FactionDefs/JawaTribes.xml`, per `design/J
           spawned for a different reason: all four pawn kinds named vanilla
           DEFNAMES as `ParentName` and were silently discarded at load. Fixed in
           `c06e89e`; CHECK C31 proves it on the next cold load.
-verify:   `python3 src/RimMandrake/Utils/validate_patch.py <path> --defs` scoped to the active list, 0 errors; all six fields present and non-null; the three Jawa_Tribal_* kinds
+verify:   `python3 skills/rimworld-modding/scripts/validate_patch.py <path> --defs` scoped to the active list, 0 errors; all six fields present and non-null; the three Jawa_Tribal_* kinds
           appear in the group options.
 criteria: Jawa Trade Moot settlements generate and spawn our tribal kinds.
 state:    ready

@@ -192,7 +192,7 @@ foreach ($seat in $Seats) {
 if (-not $NoBoard) {
     Start-Process -FilePath 'wsl.exe' -ArgumentList @(
         '-d', 'Ubuntu', '--', 'bash', '-lc',
-        '"exec python3 src/RimMandrake/Utils/status_board.py"'
+        '"exec python3 src/RimMandrake/Utils/status_server.py"'
     ) -WindowStyle Hidden | Out-Null
 }
 
