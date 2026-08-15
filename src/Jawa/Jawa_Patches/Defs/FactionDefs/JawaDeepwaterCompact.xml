@@ -63,6 +63,27 @@
       <li>(0.14,0.40,0.45)</li>
     </colorSpectrum>
 
+    <!--
+      ================================================================
+      faction_religions_spec.md entry 7 (B54)
+      ================================================================
+      `ideoName` and `ideoDescription` are verbatim from the spec; they are
+      the only strings the engine renders. Structure meme goes FIRST in
+      `forcedMemes`. ⛔ `hiddenIdeo` MUST STAY UNSET — setting it suppresses
+      the description entirely, which is the whole deliverable.
+    -->
+    <fixedIdeo>true</fixedIdeo>
+    <requiredPreceptsOnly>true</requiredPreceptsOnly>
+    <ideoName>the Balance</ideoName>
+    <ideoDescription>Water is not a weapon and we will not let it be made into one. We sell to the farmer, and we sell to the fleet that burned the farmer, and both hate us exactly as much — that is how we know the Balance is holding. Choose a side and the whole world dies of thirst. Inside our walls no one raises a hand. Outside our walls, we do not go.</ideoDescription>
+    <forcedMemes>
+      <li>Structure_Ideological</li>
+      <li MayRequire="sarg.alphamemes">AM_WaterPrimacy</li>
+      <li MayRequire="vanillaexpanded.vmemese">VME_Pacifist</li>
+      <li>Individualist</li>
+      <li MayRequire="vanillaexpanded.vmemese">VME_Trader</li>
+    </forcedMemes>
+
     <!-- Inherit="False" IS LOAD-BEARING. RimWorld resolves inheritance AFTER
          patches, and a child `li` list is APPENDED to the parent's, not
          substituted for it. `OutlanderFactionBase` carries 8 group makers; without

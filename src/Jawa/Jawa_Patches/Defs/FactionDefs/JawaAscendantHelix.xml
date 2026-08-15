@@ -64,6 +64,26 @@
       <li>(0.62,0.58,0.72)</li>
     </colorSpectrum>
 
+    <!--
+      ================================================================
+      faction_religions_spec.md entry 9 (B54)
+      ================================================================
+      `ideoName` and `ideoDescription` are verbatim from the spec; they are
+      the only strings the engine renders. Structure meme goes FIRST in
+      `forcedMemes`. ⛔ `hiddenIdeo` MUST STAY UNSET — setting it suppresses
+      the description entirely, which is the whole deliverable.
+    -->
+    <fixedIdeo>true</fixedIdeo>
+    <requiredPreceptsOnly>true</requiredPreceptsOnly>
+    <ideoName>the Ascendant Genome</ideoName>
+    <ideoDescription>The body you were born in is a first draft written by no one. We are the second draft, and there will be a third. Every improvement is permitted, recorded, and slow — haste is how you get monsters, and this world is already littered with ours. We do not hate the labour-lines. You do not hate a paragraph you cut. You simply do not let it speak.</ideoDescription>
+    <forcedMemes>
+      <li>Structure_Ideological</li>
+      <li>Transhumanist</li>
+      <li>Supremacist</li>
+      <li MayRequire="vanillaexpanded.vgeneticse">GR_CarefulGeneticists</li>
+    </forcedMemes>
+
     <!-- Inherit="False" IS LOAD-BEARING. RimWorld resolves inheritance AFTER
          patches, and a child `li` list is APPENDED to the parent's, not
          substituted for it. `OutlanderFactionBase` carries 8 group makers; without

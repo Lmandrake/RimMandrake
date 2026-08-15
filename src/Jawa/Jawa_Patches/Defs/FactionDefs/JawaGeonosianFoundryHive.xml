@@ -81,6 +81,27 @@
       </xenotypeChances>
     </xenotypeSet>
 
+    <!--
+      ================================================================
+      faction_religions_spec.md entry 8 (B54)
+      ================================================================
+      `ideoName` and `ideoDescription` are verbatim from the spec; they are
+      the only strings the engine renders. Structure meme goes FIRST in
+      `forcedMemes`. ⛔ `hiddenIdeo` MUST STAY UNSET — setting it suppresses
+      the description entirely, which is the whole deliverable.
+    -->
+    <fixedIdeo>true</fixedIdeo>
+    <requiredPreceptsOnly>true</requiredPreceptsOnly>
+    <ideoName>Meckgin</ideoName>
+    <ideoDescription>Meckgin is the shape a thing takes when it is made correctly. The hive is made correctly. The line is made correctly. A drone is not a life that was given a purpose; it is a purpose that was given a body, and when the body fails the purpose is poured into the next one. We do not mourn the mould. We test what came out of it, in the sand, where everyone can see.</ideoDescription>
+    <forcedMemes>
+      <li>Structure_Ideological</li>
+      <li>Collectivist</li>
+      <li>Tunneler</li>
+      <li MayRequire="vanillaexpanded.vmemese">VME_HardcoreIndustrialism</li>
+      <li MayRequire="vanillaexpanded.vmemese">VME_InsectoidSupremacy</li>
+    </forcedMemes>
+
     <!-- Inherit="False" IS LOAD-BEARING. RimWorld resolves inheritance AFTER
          patches, and a child `li` list is APPENDED to the parent's, not
          substituted for it. `OutlanderFactionBase` carries 8 group makers; without

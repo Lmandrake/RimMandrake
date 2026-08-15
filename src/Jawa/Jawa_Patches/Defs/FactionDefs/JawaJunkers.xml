@@ -66,6 +66,26 @@
       <li>(0.38,0.24,0.14)</li>
     </colorSpectrum>
 
+    <!--
+      ================================================================
+      faction_religions_spec.md entry 11 (B54)
+      ================================================================
+      `ideoName` and `ideoDescription` are verbatim from the spec; they are
+      the only strings the engine renders. Structure meme goes FIRST in
+      `forcedMemes`. ⛔ `hiddenIdeo` MUST STAY UNSET — setting it suppresses
+      the description entirely, which is the whole deliverable.
+    -->
+    <fixedIdeo>true</fixedIdeo>
+    <requiredPreceptsOnly>true</requiredPreceptsOnly>
+    <ideoName>the Weight</ideoName>
+    <ideoDescription>We have no word for what we believe, because belief is not worn and everything real is worn. Weight is rank. What is bolted to you was cut off somebody slower, and the one who cuts it off you will be told what we were told: it was never yours, you were only carrying it a while. Nothing is wasted in the warrens. Not the plate. Not the meat.</ideoDescription>
+    <forcedMemes>
+      <li MayRequire="sarg.alphamemes">AM_Structure_Scavenger</li>
+      <li>Raider</li>
+      <li>Cannibal</li>
+      <li MayRequire="vanillaexpanded.vmemese">VME_Scrapper</li>
+    </forcedMemes>
+
     <!-- Inherit="False" IS LOAD-BEARING. RimWorld resolves inheritance AFTER
          patches, and a child `li` list is APPENDED to the parent's, not
          substituted for it. `PirateBandBase` carries 7 group makers; without

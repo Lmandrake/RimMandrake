@@ -65,6 +65,27 @@
       <li>(0.22,0.34,0.18)</li>
     </colorSpectrum>
 
+    <!--
+      ================================================================
+      faction_religions_spec.md entry 6 (B54)
+      ================================================================
+      `ideoName` and `ideoDescription` are verbatim from the spec; they are
+      the only strings the engine renders. Structure meme goes FIRST in
+      `forcedMemes`. ⛔ `hiddenIdeo` MUST STAY UNSET — setting it suppresses
+      the description entirely, which is the whole deliverable.
+    -->
+    <fixedIdeo>true</fixedIdeo>
+    <requiredPreceptsOnly>false</requiredPreceptsOnly>
+    <ideoName>the Green Oath</ideoName>
+    <ideoDescription>We are a forest people on a world with no forest, and the Oath does not care. Everything that breathes is kin — the animal, the tree, the stranger who pulled one of us out of a cage. A life handed back is a debt that never closes, and it was never meant to. We keep the springs green. We remember every hand that cut them. Both of those are the same duty.</ideoDescription>
+    <forcedMemes>
+      <li>Structure_Animist</li>
+      <li>NaturePrimacy</li>
+      <li>TreeConnection</li>
+      <li>Collectivist</li>
+      <li>AnimalPersonhood</li>
+    </forcedMemes>
+
     <!-- Inherit="False" IS LOAD-BEARING. RimWorld resolves inheritance AFTER
          patches, and a child `li` list is APPENDED to the parent's, not
          substituted for it. `OutlanderFactionBase` carries 8 group makers; without
