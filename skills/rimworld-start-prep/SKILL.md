@@ -309,8 +309,56 @@ depends on the previous one having actually landed on disk.
    **5 `knownExpansions`**, and that five-mod gap has been mistaken for a real
    discrepancy before. **Print the number; never quote a remembered one** — the
    literals that used to sit here went 12 mods stale.
-8. **Then, and only then, spend the load** — hand off to
+8. 🔴 **OFFER THE MOD-STATE SYNC — this is the last thing before launch.** See §5a.
+9. **Then, and only then, spend the load** — hand off to
    `skills/rimworld-load-round/SKILL.md`.
+
+---
+
+## 5a. The mod-state sync — offer it, do not run it unasked
+
+Three files each keep their own copy of *"which mods, which build"*, and nothing
+keeps them in step:
+
+| file | what it records |
+|---|---|
+| `Config/ModsConfig.xml` `<version>` | the build the list was written for |
+| `Config/LastPlayedVersion.txt` | the build the game last ran as |
+| `Saves/*.rws` `<meta>` | `gameVersion` **and the full mod list** |
+
+When the saves disagree with the live list, RimWorld raises the mod-mismatch
+dialog — the long "these were added / removed" wall. Whenever the divergence is
+one **we** caused on purpose (a deploy, a descope, a list edit), that dialog is
+noise to the human, and worse than noise to tooling: every check that joins a
+save against the live set reports a difference that is expected and already
+understood, which teaches everyone to skim past the real ones.
+
+```bash
+python3 skills/rimworld-start-prep/scripts/sync_mod_state.py            # plan
+python3 skills/rimworld-start-prep/scripts/sync_mod_state.py --apply    # write
+```
+
+Dry-run by default — running it bare **is** the plan. There is no `--plan` flag.
+
+**Ask the owner before running it with `--apply`.** It is a one-line question at
+the point in §5 where the list has stopped moving: *"the saves record N mods and
+the live list has M — sync them so the mismatch dialog stays quiet?"* It is their
+call, because silencing that dialog is a judgement about whether the difference
+is understood.
+
+⛔ **Never `--apply` to make an UNEXPLAINED mismatch go away.** The dialog is the
+only cheap warning that a save and the mod list have parted company. Silence it
+when you already know why they differ; investigate when you do not. And it does
+not repair anything — if a removed mod supplied defs the save references, you get
+`Could not load reference to <def>` from Scribe instead, and no list edit fixes
+that (`skills/rimworld-savegame`).
+
+🔴 **The build stamp comes from the RUNNING GAME, not `Version.txt`.** Measured
+2026-08-15: `Version.txt` read `1.6.4871 rev590` while the DefDump manifest and
+all six saves — every file the engine itself writes — read `rev591`. `Version.txt`
+ships with the install and does not track the runtime rev. The tool prefers the
+runtime stamp and **refuses** to write a lower rev over a higher one, because
+doing so manufactures the very mismatch it is meant to remove.
 
 **Announce it if you are not the only seat.** Five seats share one working tree and one
 game install. A re-sort in progress is exactly the thing another seat's blind write
