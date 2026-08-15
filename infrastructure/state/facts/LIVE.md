@@ -82,3 +82,40 @@ removed, 4,544 rock floors repainted, 597 stray substructure cells removed,
   a thruster**. Do not use it to confirm anything; it answers "did the call run".
 - ⚠️ **The ship still has no power SOURCE for its VFE factory block** beyond the
   engine itself, and no `LargeThruster`, `SignalJammer` or shield.
+
+### 🔴 Power — the 300 conduits were wired to NOTHING. Rewired 2026-08-14
+
+**Before:** 310 transmitter cells in **10 disconnected islands**; the engine's own net
+was 63 cells; **0 of 23** powered machines had a transmitter touching them (3 sat on a
+dead island, 20 had no conduit adjacent at all). The grid looked plausible on screen and
+carried no power anywhere. ⇒ **a conduit census is not a wiring check.** 300 conduits and
+zero connections render almost identically to 300 conduits and full coverage.
+
+**After:** 201 conduits added → **1 net, 502 cells, 23/23 machines connected.**
+
+- **The connection rule, as used for the audit:** transmitters join **orthogonally only**
+  (diagonal conduit does NOT connect); a `CompPowerTrader` connects if a transmitter cell
+  lies inside its footprint **or in the 8-way ring around it**. Transmitters here are
+  `PowerConduit`, `HiddenConduit` and `GravEngine` (`transmitsPower true`, all 9 cells of
+  its 3×3 at (125,148)–(127,150)).
+- **Not power consumers, despite looking like it:** `GravFieldExtender`, `PilotConsole`,
+  `VFEFactory_Booster`, `VFEFactory_FactoryHopper`, `Door` — none has a power comp. Only
+  the 21 `VFEFactory_*` machines and 5 `VFEFactory_Heatsink` draw. Read the comps; do not
+  assume from the name.
+- **Route conduit on SUBSTRUCTURE only** or it does not fly with the ship. Conduit may
+  share a cell with a hull wall (not an edifice clash) but not with a machine — the
+  router treats machine footprints as non-routable and reaches them via the 8-way ring.
+- 🔴 **`jawa/get_def` does NOT serialize `basePowerConsumption`** — the one number power
+  work needs. The comp fields stop at `transmitsPower / idlePowerDraw / shortCircuitInRain
+  / showPowerNeededIfOff / alwaysDisplayAsUsingPower`. **Ship power BUDGET is currently
+  unmeasurable from the bridge**; only topology is. Wants `inspect_string` (S8).
+- ⚠️ **The power overlay is NOT a connection oracle.** A/B: a `VFEFactory_Heatsink`
+  spawned in open desert with **no conduit on the map near it** renders with **no power
+  icon at all**, while wired machines on the ship show yellow bolts and magenta dots. So
+  icon-presence does not mean "unpowered" — those marks are machine art / VFE facility
+  status. **Read the graph, not the pixels.** The overlay is only good for *seeing* where
+  conduit runs, which is what it was turned on for.
+- The overlay is toggled by selecting a power designator —
+  `rimworld/select_architect_designator architect-designator:power:build-powerconduit`.
+  ⚠️ `jawa/clear_ui` does not clear it, but call `clear_ui` **before** selecting, or the
+  debug log covers the shot.
