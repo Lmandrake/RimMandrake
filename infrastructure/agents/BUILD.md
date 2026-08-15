@@ -13,7 +13,6 @@ offline verification          that an artifact is correct, compliant, and implem
                               the spec — validators, xpath checks, def-dump diffs, builds
 deploy                        writing the game copy under
                               C:\Program Files (x86)\Steam\steamapps\common\RimWorld\Mods
-infrastructure/state/facts/BUILDABLE.md   your published output for DECIDE
 infrastructure/state/queue/CHECK.md       your handoff
 ```
 

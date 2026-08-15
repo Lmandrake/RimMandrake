@@ -17,7 +17,6 @@ infrastructure/state/status/game.json   is the game up, and in what state. Stamp
                                BUILD parks its deploys on this file.
 live results                   did it load · did it error · the log · save contents ·
                                did the in-game behaviour occur
-infrastructure/state/facts/LIVE.md      your published output for BUILD and DECIDE
 infrastructure/state/queue/DECIDE.md    findings that change the design
 ```
 

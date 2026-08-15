@@ -32,13 +32,11 @@ to make it.
 
 ## Before you ask anyone anything
 
-```
-infrastructure/state/facts/BUILDABLE.md   what the game and our mods can do (BUILD)
-infrastructure/state/facts/LIVE.md        def dump, save/config shapes, live ranges (CHECK)
-```
-These exist so you do not open a live game or a source tree to answer "is this possible".
-If the fact you need is absent, write one item into `queue/BUILD.md` or `queue/CHECK.md`
-asking for it, and go to your next item.
+**There is no facts file. Measure it.** The offline def dump at
+`observed/2026-08-13/dumps/` answers "does this def exist"; the mod XML under the
+workshop tree answers "what does it actually say"; only the live game answers
+"what is loaded right now". If the answer needs a live game, write one item into
+`queue/CHECK.md` and go to your next item.
 
 ## Reading
 
