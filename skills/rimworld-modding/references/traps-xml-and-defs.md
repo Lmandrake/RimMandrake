@@ -171,3 +171,23 @@ alone. Two def types sharing a name are two different objects.
 `ThingDef` sets under one naming scheme, which is the norm for race packs.
 **The tell:** count the references before and after. A xenotype swap should touch
 one or two nodes. If it touched eleven, it crossed a type boundary.
+
+---
+
+### The layer you are about to build may already half-exist
+
+**Symptom:** a clean, validated, correctly-authored def layer that duplicates or
+contradicts an earlier partial implementation nobody mentioned. Two patches add
+the same node; the second `PatchOperationRemove` matches nothing and logs red;
+two factions preach the same religion.
+**Cause:** a task phrased as "add X to the eleven Y" reads as greenfield. An
+earlier pass that covered five of the eleven is invisible unless you look.
+**Fix:** before building a layer, grep the mod folder for an existing
+implementation of it — one call, at the start. Search for the FIELD you are about
+to write (`fixedIdeo`, `pawnGroupMakers`, `apparelRequired`), not for the feature
+name, because the old file will not be named after the feature.
+**Recurs when:** the earlier pass was written against a smaller world — fewer
+factions, fewer defs — and its own header says so. Read that header; it usually
+states the premise that has since died.
+**The tell:** the duplicate's red line looks exactly like a known-harmless error
+class, so it masks itself inside your own expected-failure list.

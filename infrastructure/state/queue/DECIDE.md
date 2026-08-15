@@ -178,3 +178,27 @@ verify:   Each of the five is either written into `POLICY.md`/`CHECK.md` or reco
           something that exists. `check_refs.py` no longer reports :198.
 criteria: none — offline.
 state:    ready
+
+## D23 Build our own xenotype set instead of cherrypicking three packs
+row:      1
+spec:     Owner ruling 2026-08-15: *"For the races, we likely want to simply
+          create our own out of the amalgam of whatever's there so we're in total
+          control."*
+          ⇒ Xenotypes are NOT a cherrypick row. Three packs ship overlapping
+          Star Wars species — `btd.xenotyperemix.starwars` (70),
+          `guy762.starwarsxenotypes` (58),
+          `neronix17.outerrim.galacticdiversity` (44) — and BTD Remix dedups at
+          LOAD, so which survives is not fully under our control. That is the
+          problem this ruling solves.
+          Owed: a `design/Jawa/worldbuilding/XENOTYPE_SPEC.md` naming the species
+          the campaign contains, each as OUR OWN `XenotypeDef` assembled from the
+          genes those packs already ship, with the donors' versions stood down by
+          zeroed generation weight rather than deleted (the pattern already used
+          for the three Jawa xenotypes in `OnlyMandrakeJawa.xml`).
+          ⚠️ Scope check before designing: `FACTION_SPEC.md` R27 currently names
+          31 `BTD_*` xenotypes across seven factions. Our own set must cover at
+          least those, or R27 gets rewritten to match a smaller set.
+          ⚠️ `MandrakeJawa` is already ours and is the worked example.
+verify:   every species named in `FACTION_SPEC.md` R27 resolves to a def we own.
+criteria: no faction member generates as a donor-pack xenotype.
+state:    ready

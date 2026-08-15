@@ -119,14 +119,16 @@ workDisables   Intellectual
 gear           Jawa robe + hood · knife · no gun
 ```
 
-He runs the still and the paste vats, and he is the clan's hauler — the one who
-knows where everything is. **Ration paste is sacred, so the pawn who makes it has
-a quiet authority his skill numbers do not show.**
+He runs the still and the kitchen, and he is the clan's hauler — the one who
+knows where everything is.
 
-⭐ **`Gourmand` is deliberate and it is the best story seam in the crew.** The
-clan's faith holds ration paste sacred; Sekki eats it. He is the one member
-permanently, comically failing his own religion, and Tobb is the one who has to
-watch. That is friction the player inherits on turn one rather than a stat line.
+⭐ **`Gourmand` is deliberate, and it fits the faith rather than fighting it.**
+The approved ideoligion ships **`NutrientPasteEating_Disgusting`**: Jawas prize
+delicacies and merely *tolerate* paste because of the world they live on. So the
+cook is not a servant of an austerity — he is the reason the clan does not have
+to eat the thing it despises, and the one member whose appetites most openly
+express what everyone else quietly wants. When food quality drops, Sekki is the
+first to say so.
 
 ⚖️ **He can hold a gun but is not a soldier** — no Shooting skill, `Violent` NOT
 disabled. This keeps Yeku the only real gun while adding a body for a crisis, so
