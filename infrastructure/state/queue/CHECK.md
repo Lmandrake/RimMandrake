@@ -48,27 +48,13 @@ criteria: a Jawa colonist and an indigenous tribal spawn as `MandrakeJawa`; no o
           xenotype generates; the `Jawa_IndigenousTribes` faction produces a non-empty
           raider group. Read the four defNames back with `jawa/get_defs` — absence is the
           failure mode, and it is silent.
-state:    ready
-
-## C33 Confirm our only faction actually loads into the game
-row:      9
-spec:     Our ONE shipped `FactionDef` is absent from the live def dump
-          (2026-08-14T21:10Z, 87 FactionDefs). Not a defect: the game launched
-          01:03:26 and `JawaTribes.xml` deployed 01:13, so the running process
-          never read it. Repo and deployed copies are md5-identical
-          (`720989cdbee5b7fb430278e1c5145bf5`), `ParentName="FactionBase"`,
-          `mandrake.jawa.patches` is active. It has simply never been loaded.
-          On the next cold load, before anything else mutates the game: confirm
-          `Jawa_IndigenousTribes` is in the def database and its three referenced
-          pawn kinds (`Jawa_Tribal_Scavenger`, `Jawa_Tribal_Slinger`,
-          `Jawa_Tribal_Elder`) resolve.
-verify:   none — this is a live read only.
-criteria: `jawa/get_def defType=FactionDef defName=Jawa_IndigenousTribes` returns
-          the def, and its `pawnGroupMakers` options resolve to real kinds.
-          🔴 It is the TEMPLATE for the other 11-13 factions. If it does not
-          load, every dossier authored against it is authored against nothing —
-          so this runs BEFORE the faction build, not after.
-state:    ready
+state:    doing
+note:     2026-08-15 CHECK. DEF HALF PASSES on the post-deploy cold load: all four
+          resolve via jawa/get_defs at the MAIN MENU, before any map existed -
+          Jawa_Colonist, Jawa_Tribal_Scavenger, Jawa_Tribal_Slinger, Jawa_Tribal_Elder,
+          all race=Human. The repoint in c06e89e took. REMAINING (needs a map): they
+          must actually GENERATE as MandrakeJawa, no other Jawa xenotype may generate,
+          and Jawa_IndigenousTribes must produce a non-empty raider group.
 
 ## C34 You hold the live bridge at all times — standing rule
 row:      infra
