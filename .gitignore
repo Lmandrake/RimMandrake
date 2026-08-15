@@ -178,7 +178,10 @@ infrastructure/state/status/
 infrastructure/state/closed_ledger.json
 
 # Derived: regenerated in seconds by animal_inventory.py / *_contact_sheet.py
+# Both paths: the restructure moved this under observed/<stamp>/ and the bare
+# rule stopped matching, leaving 21 MB of sheets staged as untracked.
 observed/inventory/
+observed/**/inventory/
 
 # genome scan outputs are derived: regenerate with genome_scan.py
 observed/genome/
