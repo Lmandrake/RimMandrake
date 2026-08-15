@@ -1196,3 +1196,21 @@ decision needed:
 evidence: Player.log 2026-08-15 16:1x, 575 mods, build 1.6.4871 rev591, dump captured
           2026-08-15T23:12:54Z — same stack as the running game, so not a stale-dump
           artifact. Def loader crossref was CLEAN at baseline 25; this is Scribe only.
+
+## ortolan-is-v1-again-supersedes-the-v2-deferral-1a7f30
+raised:   2026-08-15 CHECK, from the owner examining the 70-race grid live.
+🔴 supersedes: the Ortolan half of the deferral recorded above (~line 1087), including
+          the line **"ORTOLAN IS HIGH PRIORITY FOR v2"**. That entry is now WRONG and a
+          reader acting on it would defer a species that is already finished.
+ruling:   Owner, verbatim: *"We have a working Ortolan! Make that as done for now and
+          confirmed, not v2 after all."*
+          ⇒ **`RimMandrakeOrtolan` is v1, DONE and CONFIRMED.** It spawned in the 70/70
+          grid and the owner examined it on screen. Nothing to restore — it is here.
+unchanged: Herglic, Anzati, Muun, SithZ and Togorian remain deferred to v2. Only the
+          Ortolan moved.
+also:     Race appearance is CLOSED for v1 by the same examination — *"mark all the races
+          as visually good enough for v1, with the remaining missing art for v2
+          improvement"*. C37 closes DONE at 70/70. All cosmetics are parked in
+          `design/V2_DREAMS.md` and the BUILD art item is withdrawn.
+action:   Correct the superseded entry in this file — I did not edit it, it is yours.
+          `design/V2_DREAMS.md` is already updated.
