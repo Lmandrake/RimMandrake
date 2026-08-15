@@ -1,4 +1,29 @@
-# DECIDE queue — open design and scope questions.
+# DECIDE inbox.
+
+## D0 Break v1 into rows and items, and assign every migrated item a row
+row:      —
+spec:     Read `infrastructure/state/V1.md` (8 rows) and both files in
+          `infrastructure/state/facts/`. For each row, decide the high-level needs,
+          then the detailed items beneath them. Then add `row: <n>` to every item
+          already sitting in `queue/BUILD.md` (37) and `queue/CHECK.md` (30) — they
+          migrated without one and currently land in an `unassigned` bucket.
+          Rows 2 and 7 are held behind the sea; say what would unhold them.
+          Rows 1, 3, 5, 6, 8 are closed — do not re-open them, but DO record what
+          "closed" means for each so the board can show it.
+verify:   `python3 src/RimMandrake/Utils/derive_matrix.py` reports 0 items in the
+          `unassigned` row, and 8 named rows carry non-zero totals.
+criteria: —
+state:    ready
+
+## D1 Fill the empty contracts, highest value first
+row:      —
+spec:     32 fields across the migrated items are literally EMPTY because the old
+          notes did not say. BUILD and CHECK will bounce every one of them. Work
+          down by value, not by ID order. Start with the items blocking rows 4 and 2.
+verify:   No item in `queue/BUILD.md` has an EMPTY `spec:` or `verify:`.
+criteria: —
+state:    ready
+
 
 ## D1 The droid relations NRE — which of three routes (owner decision #12)
 spec:     `src/Jawa/Jawa_Doctrine/Patches/DroidsAreMachines.xml` sets `isOrganic=false` on the KotOR flesh type `ABF_FleshType_Synstruct_Base` => `IsFlesh` false => no `Pawn_RelationsTracker` => HAR NREs on the 2nd and later same-race droid. Worldgen is unaffected on four independent grounds; `guy762_KotORFaction_RogueDroids` RAIDS are broken, and that faction is the KotOR distress call's antagonist and a **v1 KEEP**. Routes: **(1)** drop the KotOR flesh type from our patch — one xpath, no assembly; restores tending on droids; loses vanilla EMP behaviour on them; does NOT affect our ion weapon (its guard moved to `IsMechanoid` on 08-13). **(2)** ~5 lines of Harmony in an assembly we already ship — a build, a deploy and a load; gives Humanlike pawns a relations tracker regardless of `IsFlesh`; keeps both the machine framing and working raids; it is the only route that also covers `current`, the previously-spawned droid, which is where the throw actually happens. **(3)** accept broken droid raids — free; the quest antagonist cannot raid past its first pawn. EXCLUDED: retargeting to vanilla `Mechanoid` — it would make our own ion weapon block them. Full write-up: `observed/2026-08-14_O12_har_pawngen_nre.md`.

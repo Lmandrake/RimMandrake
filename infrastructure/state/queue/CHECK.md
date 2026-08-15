@@ -1,4 +1,14 @@
-# CHECK queue — needs a running game or the bridge.
+# CHECK inbox.
+
+## C0 First live session: prove the tool surface, then batch by map
+row:      —
+spec:     On the next game: harvest the startup log BEFORE any spawn, then count
+          the `jawa/` tools. Batch every item below that needs the same map state
+          into one window — a cold load is ~25 min, a quicktest ~90 s.
+verify:   —
+criteria: Tool count matches what BUILD deployed; startup log at baseline.
+state:    ready
+
 
 ## C1 Drive the built-but-never-run bridge tools
 spec:     `python.exe src/RimMandrake/bridgetools/prove_new_tools.py --pawns` covers `jawa/set_pawn_rotation`, `jawa/set_pawn_style`, `jawa/set_pawn_xenotype` and `xenotype=` on `spawn_pawn` (`7b8d5b7`, `e60197a`). Also deployed and never called: `jawa/get_defs`, `jawa/fire_quest`, `jawa/list_things` (`3adedbc`), `jawa/clear_ui` (`9a5b6fe`), the vehicle route in `spawn_batch` (`9a5b6fe`, routes `Vehicles.VehicleDef` through `Vehicles.VehicleSpawner.SpawnVehicleRandomized` by reflection — `ThingMaker` leaves `vehiclePather`/`ignition`/`drawTracker`/`kindDef` null), and the roof pair `set_roof_batch`/`get_roof_batch`. `jawa/world_stats` WAS called and its answer was discarded by a harness `NameError` (fixed `3e17731`) — re-run it. Do not compose calls at a live console: run `python.exe src/RimMandrake/bridgetools/load_session.py --phase any|fresh` (`--selftest` needs no game); it writes one ledger to `observed\<date>_load_session.md` and tracks LITTER, from which the release message is written.

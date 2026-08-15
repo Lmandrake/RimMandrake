@@ -1,4 +1,17 @@
-# BUILD queue — artifacts, defs, XML, C#, DLLs, deploys.
+# BUILD inbox.
+
+## B0 Deploy the 30-tool companion at the next down game
+row:      —
+spec:     `src/RimMandrake/bridgetools/artifacts/BridgeTools/JawaBench/JawaBench.BridgeTools.dll`,
+          md5 `d7e7c6c1`, 30 `jawa/` tools. **`--gm` REQUIRED** or `fire_incident`
+          and `send_letter` are stripped off the game copy. Game must be DOWN.
+          Deploy `JawaSeaShaper.dll` SOLO in the same window — repo `b7730027`
+          vs deployed `82b48e53` — it cannot be written while RimWorld runs.
+verify:   md5 of the deployed DLL equals `d7e7c6c1`, and `fire_incident` +
+          `send_letter` are present in the deployed bytes (`strings -a -el`).
+criteria: `rimbridge/list_tools` counts 30 `jawa/` names.
+state:    ready
+
 
 ## B1 BridgeTools 30-tool build and deploy — `--gm` is REQUIRED
 spec:     `cd /mnt/d/Luke/dev/Rimworld; python.exe src/RimMandrake/bridgetools/build.py --gm --apply`. Game must be DOWN — the DLL is locked while it runs and the write fails `OSError 22` (the refusal is safe, it cannot truncate). Without `--gm` the build STRIPS `jawa/fire_incident` and `jawa/send_letter` off the game copy (30 tools -> 28). One-command form: `./src/RimMandrake/Utils/shutdown_deploy.sh [--yes]` runs S8 -> S1 -> S9 in order and refuses while RimWorld is running.
