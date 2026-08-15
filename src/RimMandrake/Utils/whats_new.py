@@ -16,7 +16,7 @@ is all a decision to go read it needs.
 
 INTERFACE
 =========
-    python3 src/RimMandrake/Utils/whats_new.py --seat CHECK                    # since OPS last synced
+    python3 src/RimMandrake/Utils/whats_new.py --seat CHECK                    # since CHECK last synced
     python3 src/RimMandrake/Utils/whats_new.py --seat CHECK --mark             # print, then record HEAD
     python3 src/RimMandrake/Utils/whats_new.py --seat CHECK --no-mark          # peek without advancing
     python3 src/RimMandrake/Utils/whats_new.py --seat CHECK --again            # re-show the last delta
