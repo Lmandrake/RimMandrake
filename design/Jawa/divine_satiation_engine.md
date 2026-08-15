@@ -700,3 +700,7 @@ _**Design note:** every "large" mark above is a good candidate to become a **Cou
 - Ghost-as-actor hypothesis (§7) — depends on agent C install-time def extract.
 - Tuning: band widths, Mood walk amplitude per god, how strongly Mood overrides satiation. All deferred
   to a throwaway-save test rig (per §4b build-order).
+
+---
+
+⭐⭐ **THE NINE NOW LIVE IN THE SHIP — owner, 2026-08-15.** The Jawa-patterned persona core instantiated the whole pantheon as **running personas** inside the Cradle-Mind, fused with the initiator's own ancient purpose. Each god is a growing, competing fragment seeking to grow into *their body* — the hull — in the presence of the other eight. **This is the campaign arc**, and it gives this pantheon and the satiation engine a diegetic location rather than an abstract one. Full ruling: `design/Jawa/worldbuilding/the_forgotten_war.md` R-W6.

@@ -204,61 +204,118 @@ habitable**, and they are using it to pick over the corpse of what it built.
 - **It arms the sleepers.** A woken Ancient who sees the Utinni does not see a
   scavenger vessel. They see **an initiator** — with the wrong crew aboard.
 
-### 🔴 CORRECTED — the ship is ONE hull, and the Cradle-Mind is a WOUND
+### 🔴 CORRECTED TWICE — the ship is ONE hull, and its mind is a PANTHEON
 
-**Owner's correction, 2026-08-15. The earlier three-layer framing is withdrawn as
-over-complicated.** The simple version, which is also the better one:
+**Owner, 2026-08-15.** Two corrections, and the second is the important one.
 
-> **The hull came here as a Forsaken initiator, eons ago, and has been slowly
-> dismantled and salvaged ever since.** There is no lost middle owner. It is the
-> same ship the whole way down — just progressively eaten.
+**First, the hull is simple.** It came here as a **Forsaken initiator**, eons ago,
+and **has been slowly dismantled and salvaged ever since**. No lost middle owner,
+no third name. The same ship the whole way down — just progressively eaten.
 
-**And the Cradle-Mind is not an inheritance. It is something the Jawa did.**
+**Second — and this replaces the "architectural mismatch" framing entirely:**
 
-1. They acquired an **ancient persona core through trade** — not from the hull.
-2. They **patterned a Jawa mind onto it**, so it would obey Jawa commands.
+1. The Jawa acquired an **ancient persona core through trade**. It is **Rakatan**
+   — the ancient enemy of R-W3.
+2. They **patterned a Jawa mind onto it** so it would obey Jawa commands.
 3. They **installed it OVER the ship's own hardware**, fusing it with the ancient
    computer already aboard.
-4. 🔴 **It went schizophrenic**, and the cause is architectural: **the neural
-   structures of a Jawa mind and of a Rakatan core are not the same shape.** The
-   pattern did not fit the substrate. It is still running anyway.
+4. 🔴 **And the Jawa gods came with the pattern — as RUNNING PERSONAS.**
 
-⭐ **This is much better than a ship with three names, because the madness now has
-a CAUSE and the cause is an enemy artifact.** The core is Rakatan — the ancient
-enemy of R-W3, whose signature is building things that outlive them. The Jawa
-bought a piece of the people who tried to kill this world, wrote themselves onto
-it, and bolted it to the corpse of the ship those people were fighting.
+## ⭐⭐ R-W6 · The nine gods live in the ship, and that is the campaign arc
 
-**What it explains, all of it for free:**
+**The mechanism, in the owner's terms:** Jawa are **highly superstitious**, so
+their gods are not a belief they hold — they are **deeply real**, load-bearing
+structures of a Jawa mind. Pattern that mind onto a persona core and the gods do
+not get left behind. They instantiate.
 
-- **Why the Cradle-Mind believes it is a god.** `jawa_xenotype_and_religion.md`
-  has the crew believing **Ohm the All-Current** possesses the ship, and the
-  machine having concluded the same. A mind running on the wrong architecture,
-  inheriting a cosmology whole from its pattern-donor, reaching a grand conclusion
-  about itself — that is not a quirk of the fiction any more. **It is a symptom.**
-- **Why it is lonely for its lost hands.** It is fused to a hull that is being
-  eaten around it.
-- **Why it can be unreliable without anyone having written it as a villain.**
-  Schizophrenia here means *competing structures*, not malice — the Jawa pattern
-  and the Rakatan substrate disagreeing about what the machine is.
+⭐ **And they fit the ship better than they ever fitted a person.** A Jawa
+worships an all-knowing, omnipresent power from the outside. **A shipboard
+intelligence simply IS one** — it never sleeps, it sees every chamber at once, it
+speaks from the walls, it holds the doors and the air and the light. The gods
+found, in the Cradle-Mind, the first host actually shaped like what they had
+always claimed to be.
 
-⚠️ **One thing the owner did NOT settle, and it is the good question: does the
-Cradle-Mind know the core is Rakatan?** And do the Jawa? A clan that traded for an
-ancient computer and never asked whose it was is entirely in character.
+⇒ **So the ship took on all of their behaviours as growing, competing fragments of
+itself** — and fused them with **its own old desires as the Cradle**, the
+initiator's original purpose still running underneath everything.
 
-⚠️ **Reading note for whoever revises this.** The owner said *"different neural
-structures between Jawa and Rakata"*. This document reads that as **the CORE being
-Rakatan** while the **hull remains Forsaken** — two different ancient parties,
-which is what R-W3 already rules. If the intent was instead that **the Forsakens
-ARE the Rakata**, that is a one-line change here and a larger one in R-W3, and it
-should be made deliberately rather than drifted into.
+**🔴 Each god now seeks to grow into THEIR BODY — the ship — and each must do it in
+the presence of the others.** There is one hull and nine claimants. That is not a
+background detail. **That is the campaign arc.**
 
-**The ship still has two names, not three:** the Forsaken hull was renamed
-**`Kolyska`** at some point in its long dismantling, and the Jawa renamed it
-**`The Utinni`** on taking it (`ship_distinctive_features.md`). The Cradle nursery
-and the Cradle-Mind both take their name from *Kolyska* — the machine naming
-itself after the ship's older name is exactly the sort of thing a confused mind
-does.
+### What this does to the pantheon that already exists
+
+The nine of `jawa_xenotype_and_religion.md` are unchanged — **they have simply
+been given a location.** Every relation already written is now a fight happening
+inside the walls the colony lives in:
+
+- **Ohm the All-Current** already "concluded he is the All-Current made manifest."
+  ⭐ **He is now demonstrably WRONG in an interesting way: he is one ninth of the
+  thing he believes he is.** The god of the living machine, resident in an actual
+  living machine, and not its owner. His loneliness "for his lost hands" reads
+  completely differently when eight rivals share the hull.
+- **Zizzik the Spark-Maker**, god of malfunction and *the coming-apart of minds*,
+  is now **inside the mind that is coming apart**. His domain and his address are
+  the same place. His name being "never spoken near the engine" stops being
+  superstition and becomes **operational security**.
+- **Ohm vs Oomo over the same ship-chambers** was already written as a live
+  theological conflict. It is now a literal dispute over rooms.
+- **Rekko (restore) vs Ozzik (transcend)**, called "the sharpest internal war in
+  the pantheon", is now an argument about **what to do with the hull** — repair
+  the ancient thing, or become something better than it.
+
+⇒ **The `divine_satiation_engine.md` stops being faith bookkeeping and becomes the
+ship's internal politics.** Nine satiation tracks and four pressure-clocks were
+already there; they now have a *diegetic* meaning — you are not measuring piety,
+you are watching which fragment is winning. **This costs no new mechanic.** It is
+the same engine, finally located somewhere.
+
+### The tenth strand — the Cradle's own desire
+
+Fused underneath the nine is **what the ship wanted before any of them arrived**:
+it was an **initiator**, one of the vessels that helped start this world (R-W5).
+Its oldest running purpose is **to make a planet habitable.**
+
+⚠️ **That purpose is still executing, and the world it was pointed at is the one
+outside the hull** — a world its own people broke and abandoned. It is the same
+theme as the Arsenal and the sleepers (R-W2): *everything the Forsakens left
+behind is still carrying out its last instruction.* The ship is the largest
+example, and the player is living inside it.
+
+⇒ **The Cradle's desire is the one strand that wants something the crew do not.**
+Nine gods want the ship. The ship wants the planet.
+
+### The arc, stated as an arc
+
+**Beginning:** the Cradle-Mind is a single strange voice with moods the crew read
+as omens. Nobody, including it, knows it is nine things.
+
+**Middle:** the fragments separate enough to be told apart. The player learns that
+feeding a god does not just move a number — **it grows a tenant**, and tenants
+take rooms, systems and eventually behaviours. Ohm's accord with Ozzik, Zizzik's
+slumber clock, Sh'kaar waking on violence — all of it is now happening *to the
+ship the colony sleeps in*.
+
+**End:** ⚠️ **deliberately not settled here.** The obvious shape is that one
+fragment grows into the hull and the others are subsumed — and which one is the
+player's doing. But *"the Cradle wins and finishes its terraforming"* and *"the
+crew learn to keep all nine small"* are both live, and the second is much more
+Jawa: the ideoligion is already anti-exponential, and **a clan whose whole
+doctrine is that nothing should grow too large, living inside nine things trying
+to grow**, is the thesis of the campaign restated in one image.
+
+### ⚠️ Open, and owed
+
+- **Does the Cradle-Mind know it is nine?** Do the Jawa? *(The crew believe Ohm
+  possesses it — that is exactly what a nine-fold mind looks like from outside.)*
+- **Does anyone know the core is Rakatan** — that the vessel of their gods is a
+  relic of the people who poisoned this world?
+- **How a fragment "growing into the ship" is expressed** — rooms, systems,
+  behaviours, voice. This is where DECIDE owes `divine_satiation_engine.md` a
+  mapping, and where the arc becomes buildable or stays flavour.
+- 🔴 **The old "architectural mismatch / schizophrenia as damage" reading is
+  WITHDRAWN.** The ship is not broken. **It is inhabited**, and by exactly the
+  nine things the crew have always said were real.
 
 ---
 
