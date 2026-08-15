@@ -1536,6 +1536,8 @@ verify:   OFFLINE, all three before deploying:
              713. A rewritten path with no art is the SAME magenta box wearing a new name.
           Then bare `deploy_custom_mods.py --mod RimMandrake_StarWarsRaces`, read the
           plan, then `--apply`.
+          🔴 **STOP — the "one re-run" this item is built on is not possible today.
+          See the state line. Do not run the generator expecting output.**
 criteria: LIVE, on the load this window precedes — folded into `NEXT_RELOAD.md` §5 L0:
           · `grep -c "Failed to find any textures at" Player.log` returns **0**.
             🔴 That is the string. `Could not load UnityEngine.Texture2D` returns zero
@@ -1546,7 +1548,47 @@ criteria: LIVE, on the load this window precedes — folded into `NEXT_RELOAD.md
             ⚠️ **Gendered fields make this look intermittent** — male Chagrians already
             render because their `texPaths` WERE rewritten. **Do not test one sex and
             call a species clean.**
-state:    ready
+state:    🔴 BLOCKED 2026-08-15 — code fixes landed (`e4d6040`), REGENERATE REFUSED.
+          The item's premise — *"one file, one re-run and one redeploy"* — is false
+          today, and the reason is worth more than the item.
+
+          DONE in `e4d6040`, all three code fixes, none deployed:
+          · (a) `texPathFemale`, `backgroundPathEndogenes`, `backgroundPathXenogenes`
+            added to `TEXFIELDS`; `headPaths` and `texturePaths` to `TEXCONTAINERS`.
+            The spec said `mask_yuun` needed a HAND edit "outside the generator" —
+            it does not: `SW_Support.xml` IS generated (`gen_races_mod.py:899` is
+            its default target), so `texturePaths` covers it. The spec also warned
+            `TEXCONTAINERS` handles `<li>` only; it does not — the walk takes every
+            child, which is exactly why `headPaths`' `<Male>`/`<Female>` work.
+          · (b) `initialResistanceRange` `10~20` added to `write_pawnkinds`.
+            `write_rescued_kinds` NOT changed — unverified, because the run that
+            would confirm it cannot complete.
+          · (c) NOT IN THE SPEC: `_is_donor_gene` fixes a `KeyError: 'GS_Primitive'`
+            that stopped the generator DEAD. `main` looked genes up in the dump with
+            a bare `g[n]`; the donors' genes left the dump when the donors left the
+            list.
+
+          🔴 WHY IT IS BLOCKED, and this is the finding: `pick_species` reads its
+          species from the DUMP and — unlike `_gene_exists`, whose docstring
+          anticipates exactly this — has **no on-disk fallback**. With the donors
+          switched off it builds **57 species where the mod ships 69**, losing
+          Herglic, Defel, Ithorian, KelDor, Mirialan, Rakata, SithMassassi and
+          others. **The `KeyError` was the only thing preventing that from being
+          written and deployed over a mod live at slot 562.** Fixing the crash
+          removed the accident, so `_guard_species_regression` now refuses to write
+          a smaller catalogue. A partial run DID overwrite six def files at 57
+          species before the guard existed; reverted, and HEAD is 69.
+
+          TO UNBLOCK, pick one — both are DECIDE's call, not mine:
+          1. Give `pick_species` the disk fallback `_gene_exists` already has.
+             Offline, no load, and it removes the donor dependency permanently —
+             which is the whole point of this mod. **Recommended.**
+          2. Re-enable `guy762.starwarsxenotypes` + `neronix17.outerrim.galacticdiversity`,
+             take a dump with them active, regenerate, switch them off again.
+             Costs a load and restores the dependency this mod exists to break.
+
+          ⚠️ Until then the four magenta species STAY magenta. That is now a known,
+          explained state — CHECK should record it, not re-investigate it.
 
 ## B67 🔴 ~1,300 owner cherrypick judgements exist on one disk, ignored by git
 row:      1
