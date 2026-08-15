@@ -104,6 +104,42 @@ a validator that only checks the console's own footprint will pass this.
   the engine.** Research alone does not unlock it. This bites dev-spawned engines
   hardest — which is exactly how a tool-built ship arrives.
 
+### 🔴 THE ENGINE IS THE SHIP'S POWER PLANT — wire the components to it
+**Owner's correction, 2026-08-14, and the LIVE def confirms it exactly.**
+`jawa/get_def GravEngine` returns a comp the **disk def does not show**:
+
+```
+CompProperties_Power   compClass = CompPowerPlantGravEngine
+                       transmitsPower = true
+                       idlePowerDraw  = -1.0        (negative draw = GENERATION)
+```
+
+⇒ **the grav engine both generates power and transmits it**, so a gravship needs
+no separate generator — but its components **do** need to be on a conduit network
+reaching the engine. Conduit is not decoration on a ship; it is how the engine's
+output gets anywhere.
+
+🔴 **This entry exists because BRIDGE got it backwards and said so out loud.** I
+grepped `Buildings_Gravship.xml` **on disk**, found no `CompProperties_Power` on
+`GravEngine`, `PilotConsole`, `ChemfuelTank` or `SmallThruster`, and reported that
+none of them needed power and that conduit "would have been ~200 pointless cells".
+**The live def has the comp; the disk def does not.** That is Rule Zero of this
+very file — *the live `jawa/get_def` wins for everything* — violated by the seat
+that wrote it. **A mod restamping a def at load is invisible to any amount of XML
+grepping**, and the failure is silent because the disk answer is perfectly
+well-formed.
+
+### ⏳ "Not enough fuel" on a freshly authored ship is a TIMING artefact
+**Owner's observation, 2026-08-14.** A `ChemfuelTank` filled on a **paused** map
+still reads *"no fuel"* at the launch check, because **no ticks have passed for
+the thrusters to register it.** Let time run briefly and it clears.
+⇒ **Do not treat a launch refusal on a paused, just-built ship as a defect.**
+Unpause for a moment, then re-read. 📌 Generalises past fuel: a tool-built ship
+arrives in a state no *played* ship is ever in — every comp's cached state is
+cold, and several only refresh on their own tick. **Assert after time has run,
+not at tick 0.** ⚠️ `ticksGame 1` on every read-back in an authoring session is
+the tell.
+
 ## 4. Substructure
 
 - Occupies the **foundation layer** — above natural terrain, below floors, **the

@@ -70,6 +70,8 @@ Skim this, open what matches your task — do not read them all.
 - [An automated job that drives the UI is invisible AS A JOB](#-an-automated-job-that-drives-the-ui-is-invisible-as-a-job) 🔴
 - [A run of identical readings is the easiest thing to mistake for a law](#a-run-of-identical-readings-is-the-easiest-thing-to-mistake-for-a-law)
 - [GOD MODE is the missing half of map authoring — designators, refuelling, instant build](#-god-mode-is-the-missing-half-of-map-authoring--designators-refuelling-instant-build) 🔴
+- [A def read off DISK can be missing a comp the live def has](#-a-def-read-off-disk-can-be-missing-a-comp-the-live-def-has--and-the-disk-answer-looks-fine) 🔴
+- [A freshly authored build is at tick 0 and several comps have not run yet](#-a-freshly-authored-build-is-at-tick-0-and-several-comps-have-not-run-yet)
 
 ---
 
@@ -459,6 +461,18 @@ a **stale companion DLL**: rebuild and redeploy with the game closed
 **Cause:** an Architect designator *queues work for a colonist*. On an authored or wiped map there are no colonists, so the designation sits forever and the call is not lying — it did designate. God mode converts designators to instant effect, and adds the fill/refuel button to refuelable things.
 **Fix:** `rimworld/set_god_mode {"enabled": true}` before designator work; the cell then reads back changed immediately. **The owner's note, 2026-08-14: refuelling is a BUTTON on the thing's menu in god mode** — that is the route until a `jawa/refuel` exists. ⚠️ **Turn it back off afterwards** (`{"enabled": false}`): leaving it on means everything the owner builds next is free and instant, and they save a map made in god mode without knowing.
 **Recurs when:** any authoring on a map with no pawns. ⚠️ Two sharp corners: **a cell that already carries a designation REFUSES a second one** (`success: false`) — cancel first with the category's `…-cancel` designator; and `apply_architect_designator` takes a **rect** (`width`/`height`), which is how it sidesteps the drag-tool problem that makes RimWorld's own tools unreachable. 📌 Generalises: **"the bridge cannot do X" is often "X needs a worker and there is nobody home."** Ask what the UI would do with the same click before concluding the capability is absent.
+
+## 🔴 A def read off DISK can be missing a comp the live def has — and the disk answer looks fine
+**Symptom:** grepping `Data/Odyssey/Defs/ThingDefs_Buildings/Buildings_Gravship.xml` for `CompProperties_Power` on `GravEngine`, `PilotConsole`, `ChemfuelTank` and `SmallThruster` returned **nothing**, so I told the owner none of them needed power and that running conduit "would have been ~200 pointless cells". **Wrong.** `jawa/get_def GravEngine` on the running game returns `CompProperties_Power`, `compClass: CompPowerPlantGravEngine`, `transmitsPower: true`, `idlePowerDraw: -1.0` — **the engine is the ship's power plant**, and components genuinely do need a conduit path to it.
+**Cause:** a mod restamps the def at load. Nothing about that is visible in the XML, and the disk answer is not malformed — it is a complete, well-formed, *earlier* version of the truth. There is no error to notice.
+**Fix:** for any question of the form *"does this def have X"*, read it **live** — `jawa/get_def` / `jawa/get_defs`. Use the disk only for structure and names. This is Rule Zero of `design/Jawa/worldbuilding/gravship_flight_invariants.md`, written by this seat and then broken by it.
+**Recurs when:** any modset with C# that touches defs at startup — implied-def generation, dedup, restamping. ⚠️ **Absence in a grep is the weakest evidence there is**: it cannot distinguish *"not there"* from *"not there yet"* from *"you searched the wrong copy"*. Same family as *an absent reading is not a clean reading*.
+
+## ⏳ A freshly authored build is at tick 0 and several comps have not run yet
+**Symptom:** a `ChemfuelTank` filled by hand on a **paused** map still failed the launch check with *"not enough fuel"*.
+**Cause:** no ticks had passed, so the thrusters had not registered the fuel. Nothing was wrong with the ship.
+**Fix:** let time run briefly, then re-read. **Do not treat a refusal on a paused, just-built object as a defect.**
+**Recurs when:** any bridge-authored map. 📌 Generalises: **a tool-built ship arrives in a state no played ship is ever in** — every cached comp value is cold, and several only refresh on their own tick. `ticksGame: 1` on every read-back is the tell that you are asserting before the game has had a chance to disagree. **Assert after time has run, not at tick 0.**
 
 ## Client-call gotchas that cost real minutes — the exact spellings
 Collected 2026-08-13; each one cost a seat time before it was written down.
