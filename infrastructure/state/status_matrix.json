@@ -161,6 +161,46 @@
    }
   },
   {
+   "name": "0",
+   "cells": {
+    "DECIDE": {
+     "done": 0,
+     "total": 0,
+     "state": "offline"
+    },
+    "BUILD": {
+     "done": 0,
+     "total": 1,
+     "state": "idle"
+    },
+    "CHECK": {
+     "done": 0,
+     "total": 0,
+     "state": "offline"
+    }
+   }
+  },
+  {
+   "name": "9",
+   "cells": {
+    "DECIDE": {
+     "done": 0,
+     "total": 0,
+     "state": "offline"
+    },
+    "BUILD": {
+     "done": 0,
+     "total": 0,
+     "state": "offline"
+    },
+    "CHECK": {
+     "done": 0,
+     "total": 1,
+     "state": "idle"
+    }
+   }
+  },
+  {
    "name": "infra",
    "cells": {
     "DECIDE": {
@@ -170,12 +210,12 @@
     },
     "BUILD": {
      "done": 0,
-     "total": 10,
+     "total": 11,
      "state": "blocked"
     },
     "CHECK": {
      "done": 0,
-     "total": 2,
+     "total": 3,
      "state": "idle"
     }
    }

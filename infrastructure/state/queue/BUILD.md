@@ -113,3 +113,27 @@ spec:     (1) The prisoner `interactionMode` finding in `TODO_v2.md` — the sav
 verify:   neither file cites a path that does not resolve.
 criteria: EMPTY
 state:    ready
+
+## B39 The mod freeze — reconcile the decision docs against the live 585
+row:      0
+spec:     The frozen baseline is measured and in `V1_CHAIN.md` §0: `activeMods`
+          585, loaded 585, zero listed-but-missing, zero loaded-but-unlisted.
+          Do NOT re-audit 585 mods. Emit ONE table of DIVERGENCES only, joining
+          the live `activeMods` list from
+          `C:\Users\Mandrake\AppData\LocalLow\Ludeon Studios\RimWorld by Ludeon Studios\Config\ModsConfig.xml`
+          against every verdict in `design/Jawa/mods/forbidden_mods.md`,
+          `required_mods.md`, `cherry_picker_killlist.md` and `armoury_keeplist.md`.
+          Columns: `packageId | mod name | doc verdict | which doc + line | live
+          state (active / installed-inactive / absent)`. A row appears ONLY where
+          a doc verdict disagrees with the live state.
+          Two divergences are already ruled and must appear resolved, not open:
+          KotOR is KEPT (`required_mods.md`'s DECLINE is stale), and
+          `lee.theforce.lightsaber` is active and loaded (`cherrypick_inbox.md`'s
+          "not installed" is stale).
+          Write it to `design/Jawa/mods/MOD_FREEZE.md`. Do not change
+          `ModsConfig.xml` — this item decides nothing, it surfaces the list
+          DECIDE rules on.
+verify:   `MOD_FREEZE.md` exists; every row cites a doc and a line; the row count
+          is stated; re-running the join reproduces the same set.
+criteria: none — offline only. Nothing to see in a live game.
+state:    ready

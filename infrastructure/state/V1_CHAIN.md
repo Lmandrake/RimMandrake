@@ -58,15 +58,34 @@ either equips a pawn or references something 1 might cut.
 
 ## Per domain
 
-### 0 · Mod freeze — reversible, ~60 rows, do it first
+### 0 · Mod freeze — reversible, do it first
 Cutting a mod deletes defs and takes its tags with it, so every downstream
 decision made first is invalidated. Prefer reversible suppression (ModsConfig,
 zeroing generation weights, clearing `designationCategory`) over def culls.
-🔴 **Two live contradictions to resolve here, not later:** `required_mods.md`
-rules DECLINE on KotOR for the lean stack while `armoury_keeplist.md` makes it
-the single largest keep (137 weapons) and `mod_config_rulings.md` treats it as
-present; and `lee.theforce.lightsaber` is **active in `ModsConfig.xml` but not
-installed**.
+
+**THE FROZEN BASELINE — measured 2026-08-14, and there is no drift.**
+
+```
+activeMods in ModsConfig.xml   585
+loaded by the game             585
+listed but not installed         0
+loaded but not listed            0
+sources        564 workshop · 15 local · 6 Core+DLC
+```
+
+⇒ **These 585 ARE the frozen set.** A mod ships unless it is explicitly cut.
+The freeze is not an audit of 585 mods; it is a reconciliation of the three
+decision docs against this list, and only the divergences need a ruling.
+
+**Two claimed contradictions, both settled:**
+- `lee.theforce.lightsaber` "active but not installed" is **false** — it is
+  active and loaded ("Star Wars : The Force - Lightsaber"). The note in
+  `cherrypick_inbox.md` is stale.
+- KotOR is **fully present** — `guy762.mm.kotorcore`, `guy762.kotorweapons`,
+  `guy762.kotordroids`, `btd.gbp.shippack.kotor.vge`. ⇒ **KotOR is KEPT**, and
+  `required_mods.md`'s "DECLINE for the lean stack" is the stale side. This
+  matters: `guy762.kotorweapons` is the single largest entry in
+  `armoury_keeplist.md` at 137 weapons.
 
 ### 1 · Tag vocabulary — the artifact that was never written
 A `PawnKindDef` consumes `weaponTags`, `apparelTags` and a few literal
