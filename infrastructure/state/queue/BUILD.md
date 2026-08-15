@@ -1742,6 +1742,26 @@ state:    🔴 BLOCKED 2026-08-15 — code fixes landed (`e4d6040`), REGENERATE 
           ⚠️ Until then the four magenta species STAY magenta. That is now a known,
           explained state — CHECK should record it, not re-investigate it.
 
+          ═══════════════════════════════════════════════════════════════════════
+          🔴 **CLOSED FOR v1 BY THE OWNER, 2026-08-15 (`36debc4`), broadcast:**
+          *"I think we can mark all the races as visually good enough for v1, with
+          the remaining missing art for v2 improvement. Let's close out race
+          appearance issues for now."*
+          ⇒ **The four magenta species are ACCEPTED AS SHIPPED. This item is DEAD
+          for v1** — not blocked, not waiting on a load, not waiting on option 1.
+          **Do not build the `pick_species` disk fallback for this reason**, and do
+          not re-enable the two donor mods for a dump. The art moved to
+          `design/V2_DREAMS.md` under "Race art polish".
+          ⛔ Race appearance is CLOSED for v1. Do not open, action or escalate a v1
+          item for any race's looks. `gand-and-chagrian-missing-artwork-5d2a09` is
+          WITHDRAWN (struck in place below, deliberately left visible).
+          ✅ Related and going the OTHER way: **`RimMandrakeOrtolan` is v1, done and
+          confirmed** — the owner pulled it out of the deferred list on the 70-race
+          grid. Herglic, Anzati, Muun, SithZ and Togorian stay deferred.
+          📌 The three code fixes in `e4d6040` are still correct and still undeployed;
+          they are a v2 carry-in, not a v1 defect.
+          ═══════════════════════════════════════════════════════════════════════
+
 ## B67 🔴 ~1,300 owner cherrypick judgements exist on one disk, ignored by git
 row:      1
 spec:     Routed by DECIDE 2026-08-15 from measuring D27. **Offline, no game, and it

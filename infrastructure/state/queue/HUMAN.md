@@ -264,8 +264,34 @@ the right call — the test you wrote says *during active melee combat*.
    every future combat test, but needs a DLL build and the next load.
 3. Drop C43 from v1.
 
-⚠️ **Whichever you pick, this load can only ever produce the Yayo-OFF arm.** Still
-unanswered from earlier: **did your lightsaber complaint come from a screenshot?** If
+⚠️ **Whichever you pick, this load can only ever produce the Yayo-OFF arm.**
+
+✅ **ANSWERED — OWNER, 2026-08-15: *"There absolutely is a lightsaber remaining in
+the game."*** ⇒ **Every "the lightsaber is missing" thread is CLOSED. Do not open
+another.**
+
+🔴 **The screenshot hunt below was chasing a phantom and the reasoning was
+backwards.** *"I checked the two most recent — neither shows a lightsaber"* is a
+statement about **two screenshots**, not about the game. Absence from a frame is
+not absence from the build, and it was one step from being written up as a missing
+weapon.
+**Confirmed against this load's own def dump: 14 lightsaber `ThingDef`s are LIVE** —
+`Force_Lightsaber_Custom`, `_Dual`, `_Curved`, `_Crossguard`, `_Shoto`,
+`_Inquisitor`, `_BuildYourOwn`, `_UniqueObi`, `_UniqueAnakin`,
+`Force_Ezra_BlasterLightsaber`, plus the throw/whip/projectile defs. `lee.theforce.lightsaber`
+is active. **Nothing about lightsabers is missing from the game.**
+
+⚖️ **What is still genuinely open is NARROWER, and it is not the weapon:** C43 needs
+a pawn photographed *mid-swing*, and nothing on the bridge can order an attack. The
+three options above stand. **A Yayo-ON comparison shot would still be useful if one
+exists — but its absence is now a gap in our screenshots, not evidence about the
+build, and no seat should go looking for a missing lightsaber again.**
+
+<details><summary>the screenshot thread as originally filed — superseded</summary>
+
+Still unanswered from earlier: **did your lightsaber complaint come from a screenshot?** If
 one of the eight unexamined shots from 04:16–10:08 today shows a Yayo-ON mid-swing,
 that is the comparison arm and C43 closes as a real A/B. I checked the two most
 recent — neither shows a lightsaber.
+
+</details>
