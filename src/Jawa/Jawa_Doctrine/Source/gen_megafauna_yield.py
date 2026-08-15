@@ -180,13 +180,18 @@ for d in iter_live_defs(os.path.join(D_DUMP, "defs", "ThingDef.json")):
     # inventing a constant. It does flatten deliberate outliers -- the woolly
     # mammoth's hand-authored 500 wool is the extreme -- so the biggest movers
     # are printed at the end for review.
-    for c in (f.get("comps") or []):
-        if not isinstance(c, dict):
-            continue
-        if isinstance(c.get("milkAmount"), (int, float)) and c["milkAmount"] > 0:
-            harvest["milk"].append((bs, dn, mod, c["milkAmount"]))
-        if isinstance(c.get("woolAmount"), (int, float)) and c["woolAmount"] > 0:
-            harvest["fur"].append((bs, dn, mod, c["woolAmount"]))
+    # A def may carry the same field on MORE THAN ONE comp -- MA_Harpeagle has
+    # two woolAmount comps, Ling_Cockroach two milkAmount. Record each comp's
+    # 1-based ordinal among the ones carrying that field, and how many there
+    # are, so the emitter can aim a positional predicate at exactly one node.
+    # Without it every op for that def gets the same xpath and writes to ALL
+    # of them, which the patch validator reports as a double-match Replace.
+    comps = [c for c in (f.get("comps") or []) if isinstance(c, dict)]
+    for kind, (field, _expo) in HARVEST_SPEC.items():
+        bearing = [c for c in comps
+                   if isinstance(c.get(field), (int, float)) and c[field] > 0]
+        for ordinal, c in enumerate(bearing, 1):
+            harvest[kind].append((bs, dn, mod, c[field], ordinal, len(bearing)))
 
 # --- emit milk and fur, anchored on the median animal ----------------------
 movers = []
@@ -194,15 +199,18 @@ for kind, (field, expo) in sorted(HARVEST_SPEC.items()):
     items = harvest[kind]
     if not items:
         continue
-    ratios = sorted(amt / (bs ** expo) for bs, _dn, _m, amt in items)
+    ratios = sorted(amt / (bs ** expo) for bs, _dn, _m, amt, _o, _t in items)
     unit = ratios[len(ratios) // 2]          # median; robust to the outliers
     print("  %-5s: %3d animals, exponent %.0f, median unit %.2f"
           % (kind, len(items), expo, unit))
-    for bs, dn, mod, old in items:
+    for bs, dn, mod, old, ordinal, total in items:
         new = unit * (bs ** expo)
         if abs(new - old) < 0.5:
             continue                          # already right; do not churn
-        parent = ('/Defs/ThingDef[defName="%s"]/comps/li[%s]' % (dn, field))
+        # li[field][n] is "the nth li that has a field child", not "the nth li".
+        # Only emitted when the def carries the field twice or more.
+        nth = "[%d]" % ordinal if total > 1 else ""
+        parent = ('/Defs/ThingDef[defName="%s"]/comps/li[%s]%s' % (dn, field, nth))
         ops[mod].append(
             "        <!-- %s %s: bodySize %.2f, %.0f -> %.0f -->"
             % (cesc(dn), field, bs, old, new) + NL +
