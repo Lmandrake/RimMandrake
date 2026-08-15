@@ -18,8 +18,14 @@ it, and the `.skill` zips are gitignored.
 | owner | skills |
 |---|---|
 | **CHECK** — the live game | `rimbridge` · `rimworld-debug-testing` · `rimworld-load-round` · `rimworld-savegame` |
-| **BUILD** — artifacts and art | `rimworld-modding` · `rimworld-deploy` · `rimworld-ideoligion` · `rimworld-quests` · `rimworld-start-prep` · `gravship-layout` · `generating-rimworld-sprites` · `generating-images` · `editing-images` · `rimworld-content-moderation` · `reading-rimworld-graphics` |
-| **REP** — shared | `efficient-subagents`, and this README |
+| **BUILD** — artifacts and art | `rimworld-modding` · `rimworld-deploy` · `rimworld-ideoligion` · `rimworld-quests` · `rimworld-start-prep` · `gravship-layout` · `generating-rimworld-sprites` · `generating-images` · `editing-images` |
+| **DECIDE** — what ships | `rimworld-content-moderation` (the cherrypick method — a keep/cut call is a scope call) |
+| **REP** — shared | `efficient-subagents` · `reading-rimworld-graphics` (art, contact sheets and audits all reach for it), and this README |
+
+_Assignments came from the seats that use them, not from a guess at the table.
+DECIDE claimed `rimworld-content-moderation` and disclaimed the other on
+2026-08-15; if a skill is listed under the wrong seat, the seat that uses it says
+so and the table changes._
 
 ⚠️ **Ownership is about who repairs it, not who may read it.** Any seat reads any
 skill. A seat that finds a defect in another seat's skill files a queue item
