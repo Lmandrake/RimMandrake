@@ -53,6 +53,13 @@ Everything here was read out of a running game or off an artifact a running game
 - ⇒ **A `--defs` check against an empty def type is UNMEASURED, not passed.** Give it
   its own word and its own exit code, or it silently reads as a green tick.
 - 450 non-empty types, **79,575 defs**, 62,555 distinct defNames indexed.
+- 🔴 **A NON-EMPTY type can still be missing a FIELD.** `PawnKindDef.json` holds all
+  1706 kinds, but `weaponTags` is populated on **ZERO** of them — the field is simply
+  not exported. So "which pawnkind spawns carrying weapon X" is **not answerable from
+  the dump** and must be probed live (spawn the kind, read its equipment back with
+  `jawa/list_pawns` / `jawa/inspect_string`). Counting rows in a def type does NOT tell
+  you the fields inside those rows are complete; check the field, not the type.
+  Found 2026-08-15 CHECK while staging C43.
 
 ## ModsConfig.xml
 
