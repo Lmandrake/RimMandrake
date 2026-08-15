@@ -490,6 +490,14 @@ spec:     Found in the 2026-08-15 cold load. `xenotypeChances` is a DICTIONARY-K
           `MayRequire` is an attribute and rides on the keyed element unchanged.
           See `skills/rimworld-modding/SKILL.md` §4 — this is the documented
           most-destructive mistake, and `references/patch-operations.md` §11.
+          INTRODUCED BY `16f838b` (2026-08-14 23:52, "R27: the seven factions field
+          their own species, not Hussars"). The 23:11 load before it shows zero Jawa
+          faction exceptions.
+          ⚠️ IT ALSO COSTS LOAD TIME. `ordpus.logafterdeferror` dumps ~19,613
+          "Possible Matches" lines per unattributable error: 5 × 19,613 ≈ 98,000 of
+          this load's 99,700 lines and ~8 MB written to C: with per-line flush.
+          Previous load: 34 Possible Matches, 15,280 lines. Fixing the five defs
+          removes ~98% of the log volume as well as restoring the factions.
 verify:   `python3 skills/rimworld-modding/scripts/validate_patch.py` on each of the
           five, pointed at the mod ROOT so it scans `Defs/`. Then re-deploy and grep
           the next Player.log: zero `Exception loading def from file Jawa*.xml`.
