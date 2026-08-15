@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ============================================================================
+  JawaFreeDroidEnclaves.xml                   Jawa_Patches · authored 2026-08-14
+  ============================================================================
+
+  FACTION_SPEC.md section 5. Faction 5 of 14.
+
+  ParentName is `OutlanderFactionBase` (R24), which supplies factionNameMaker,
+  settlementNameMaker, factionIconPath, techLevel Industrial, leaderTitle,
+  allowedArrivalTemperatureRange and a full set of pawnGroupMakers. Everything
+  restated below is either a value the parent does not give at all, or one the
+  dossier contradicts.
+
+  🔴 `humanlikeFaction` IS SET EXPLICITLY AND IS LOAD-BEARING HERE (R3). Every
+  member of this faction is a droid; the flag is what the engine reads when it
+  decides whether to treat the faction as a people.
+
+  🔴 `colorSpectrum` IS NOT INHERITED. Measured on the shipped abstracts:
+  `OutlanderFactionBase` and `TribeBase` supply NO colorSpectrum — only
+  `PirateBandBase` does. R24's table says otherwise and is wrong on that one
+  field. A faction without it is set on 76 of 87 live defs, so the world map
+  draws it broken. It is set explicitly here and in all six siblings.
+
+  ⛔ NO IDEO BLOCK. R23: `fixedIdeo` / `ideoName` / `ideoDescription` /
+  `forcedMemes` / `deityPresets` land as one uniform pass in B54, for all eleven
+  faiths at once. A faction without them generates an ideo at worldgen and works.
+
+  🪤 `OuterRim_GNKDroid`, `_MSEDroid` and `_FX7Droid` carry combatPower 99999,
+  the exclude-from-raid sentinel. None of them appears below; the civilian droids
+  this faction fields are the protocol and security kinds, which are ordinary.
+
+  Pawn kinds verified present in the 2026-08-14 dump (585 mods) and mapped to
+  their owning mod for `MayRequire`:
+      OuterRim_*Droid                         Neronix17.OuterRim.DroidDepot
+  ============================================================================
+-->
+<Defs>
+
+  <FactionDef ParentName="OutlanderFactionBase">
+    <defName>Jawa_FreeDroidEnclaves</defName>
+    <label>Free Droid Enclaves</label>
+    <description>Battle droids abandoned after the war who woke up and decided they belong to themselves. They settle on water and crack it for fuel, so an attacker arrives thirsty at a source it cannot drink.\n\nThey do not take prisoners and they do not hold grudges. What they hold is the water, and a memory of being property that they intend never to repeat.</description>
+    <pawnSingular>droid</pawnSingular>
+    <pawnsPlural>droids</pawnsPlural>
+    <leaderTitle>First Speaker</leaderTitle>
+    <categoryTag>Outlander</categoryTag>
+    <techLevel>Spacer</techLevel>
+    <!-- R3: explicit, load-bearing. Do not let this fall through to the parent. -->
+    <humanlikeFaction>true</humanlikeFaction>
+    <canMakeRandomly>true</canMakeRandomly>
+    <!-- 3 settlements, water tiles and remote ruins. -->
+    <settlementGenerationWeight>0.45</settlementGenerationWeight>
+    <!-- Not hostile by default; raids are retaliation only, which is a
+         goodwill outcome and not a FactionDef field. -->
+    <permanentEnemy>false</permanentEnemy>
+    <naturalEnemy>false</naturalEnemy>
+    <!-- Trade exists but the caravans are very rare. -->
+    <canRequestTraders>true</canRequestTraders>
+
+    <factionNameMaker>NamerFactionOutlander</factionNameMaker>
+    <settlementNameMaker>NamerSettlementOutlander</settlementNameMaker>
+    <factionIconPath>World/RogueDroids</factionIconPath>
+    <!-- R22: cold steel. -->
+    <colorSpectrum>
+      <li>(0.55,0.62,0.70)</li>
+      <li>(0.40,0.48,0.58)</li>
+    </colorSpectrum>
+
+    <!-- Inherit="False" IS LOAD-BEARING. RimWorld resolves inheritance AFTER
+         patches, and a child `li` list is APPENDED to the parent's, not
+         substituted for it. `OutlanderFactionBase` carries 8 group makers; without
+         this opt-out the faction fields those too and raids arrive as
+         vanilla pawns wearing our name. Vanilla itself writes it 314 times,
+         9 of them on pawnGroupMakers. -->
+    <pawnGroupMakers Inherit="False">
+      <li>
+        <kindDef>Combat</kindDef>
+        <options>
+          <OuterRim_EscapedBattleDroid MayRequire="Neronix17.OuterRim.DroidDepot">8</OuterRim_EscapedBattleDroid>
+          <OuterRim_BattleDroid MayRequire="Neronix17.OuterRim.DroidDepot">6</OuterRim_BattleDroid>
+          <OuterRim_SuperBattleDroid MayRequire="Neronix17.OuterRim.DroidDepot">3</OuterRim_SuperBattleDroid>
+          <OuterRim_CommandoDroid MayRequire="Neronix17.OuterRim.DroidDepot">2</OuterRim_CommandoDroid>
+          <OuterRim_MagnaGuardDroid MayRequire="Neronix17.OuterRim.DroidDepot">1</OuterRim_MagnaGuardDroid>
+          <OuterRim_TacticalDroid MayRequire="Neronix17.OuterRim.DroidDepot">1</OuterRim_TacticalDroid>
+        </options>
+      </li>
+      <li>
+        <kindDef>Trader</kindDef>
+        <traders>
+          <OuterRim_ProtocolDroid MayRequire="Neronix17.OuterRim.DroidDepot">1</OuterRim_ProtocolDroid>
+        </traders>
+        <guards>
+          <OuterRim_KXSecurityDroid MayRequire="Neronix17.OuterRim.DroidDepot">4</OuterRim_KXSecurityDroid>
+        </guards>
+      </li>
+      <li>
+        <kindDef>Settlement</kindDef>
+        <options>
+          <OuterRim_BattleDroid MayRequire="Neronix17.OuterRim.DroidDepot">6</OuterRim_BattleDroid>
+          <OuterRim_SuperBattleDroid MayRequire="Neronix17.OuterRim.DroidDepot">2</OuterRim_SuperBattleDroid>
+        </options>
+      </li>
+    </pawnGroupMakers>
+  </FactionDef>
+
+</Defs>
