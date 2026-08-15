@@ -62,6 +62,32 @@ with RimBridge(host, port, token, timeout=120) as rb:
             spawn_fail.append((xt, str(e)[:80]))
         if (n+1) % 20 == 0: print("   ...%d/%d" % (n+1, len(present)))
 
+    # ---- DRAFT everyone, before any time passes -------------------------
+    # Owner's instruction 2026-08-15: draft them all before advancing time so
+    # they hold the grid instead of wandering off to their own AI jobs. An
+    # UNDRAFTED pawn does not hold position, which is what scattered the last
+    # lineup across the whole map.
+    # 🔴 unpause=False on every call - jawa/order_pawn UNPAUSES by default.
+    pawns = rb.call("jawa/list_pawns", {}).get("pawns") or []
+    fresh = [p for p in pawns if p.get("id") not in before]
+    print("\n== drafting %d in place ==" % len(fresh))
+    undrafted = []
+    for i, p in enumerate(fresh):
+        try:
+            rb.call("jawa/order_pawn", {"pawnId": p.get("id"),
+                                        "x": p.get("x"), "z": p.get("z"),
+                                        "draft": True, "undraftAfter": False,
+                                        "unpause": False, "waitTicks": 1})
+        except Exception as e:
+            undrafted.append((p.get("id"), str(e)[:60]))
+        if (i+1) % 20 == 0: print("   ...%d/%d" % (i+1, len(fresh)))
+    # verify the pause actually held
+    g1 = rb.call("rimworld/get_game_info", {}); time.sleep(2)
+    g2 = rb.call("rimworld/get_game_info", {})
+    print("   time still stopped: %s (ticks %s)" % (g1.get("ticksGame") == g2.get("ticksGame"),
+                                                    g2.get("ticksGame")))
+    if undrafted: print("   ⚠️ draft call failed for: %s" % undrafted)
+
     # ---- read back ------------------------------------------------------
     pawns = rb.call("jawa/list_pawns", {}).get("pawns") or []
     new = [p for p in pawns if p.get("id") not in before]
