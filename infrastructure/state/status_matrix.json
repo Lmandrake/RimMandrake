@@ -47,25 +47,25 @@
     "DECIDE": {
      "done": 0,
      "total": 2,
-     "state": "working",
-     "mix": {
-      "closed": 0,
-      "done": 0,
-      "doing": 1,
-      "blocked": 0,
-      "ready": 1
-     }
-    },
-    "BUILD": {
-     "done": 0,
-     "total": 0,
-     "state": "offline",
+     "state": "idle",
      "mix": {
       "closed": 0,
       "done": 0,
       "doing": 0,
       "blocked": 0,
-      "ready": 0
+      "ready": 2
+     }
+    },
+    "BUILD": {
+     "done": 0,
+     "total": 2,
+     "state": "idle",
+     "mix": {
+      "closed": 0,
+      "done": 0,
+      "doing": 0,
+      "blocked": 0,
+      "ready": 2
      }
     },
     "CHECK": {
@@ -152,14 +152,14 @@
     },
     "CHECK": {
      "done": 0,
-     "total": 0,
-     "state": "offline",
+     "total": 1,
+     "state": "idle",
      "mix": {
       "closed": 0,
       "done": 0,
       "doing": 0,
       "blocked": 0,
-      "ready": 0
+      "ready": 1
      }
     }
    }
@@ -305,6 +305,18 @@
     "BUILD": {
      "done": 0,
      "total": 2,
+     "state": "idle",
+     "mix": {
+      "closed": 0,
+      "done": 0,
+      "doing": 0,
+      "blocked": 0,
+      "ready": 2
+     }
+    },
+    "CHECK": {
+     "done": 0,
+     "total": 2,
      "state": "blocked",
      "mix": {
       "closed": 0,
@@ -312,18 +324,6 @@
       "doing": 0,
       "blocked": 1,
       "ready": 1
-     }
-    },
-    "CHECK": {
-     "done": 0,
-     "total": 1,
-     "state": "blocked",
-     "mix": {
-      "closed": 0,
-      "done": 0,
-      "doing": 0,
-      "blocked": 1,
-      "ready": 0
      }
     }
    }
@@ -374,26 +374,26 @@
    "cells": {
     "DECIDE": {
      "done": 0,
-     "total": 1,
+     "total": 2,
      "state": "idle",
      "mix": {
       "closed": 0,
       "done": 0,
       "doing": 0,
       "blocked": 0,
-      "ready": 1
+      "ready": 2
      }
     },
     "BUILD": {
      "done": 9,
-     "total": 14,
+     "total": 15,
      "state": "idle",
      "mix": {
       "closed": 9,
       "done": 0,
       "doing": 0,
       "blocked": 0,
-      "ready": 5
+      "ready": 6
      }
     },
     "CHECK": {
@@ -415,17 +415,29 @@
    "cells": {
     "DECIDE": {
      "done": 0,
-     "total": 3,
-     "state": "blocked",
+     "total": 10,
+     "state": "idle",
      "mix": {
       "closed": 0,
       "done": 0,
       "doing": 0,
-      "blocked": 1,
-      "ready": 2
+      "blocked": 0,
+      "ready": 10
      }
     },
     "BUILD": {
+     "done": 1,
+     "total": 7,
+     "state": "idle",
+     "mix": {
+      "closed": 1,
+      "done": 0,
+      "doing": 0,
+      "blocked": 0,
+      "ready": 6
+     }
+    },
+    "CHECK": {
      "done": 1,
      "total": 3,
      "state": "idle",
@@ -435,18 +447,6 @@
       "doing": 0,
       "blocked": 0,
       "ready": 2
-     }
-    },
-    "CHECK": {
-     "done": 1,
-     "total": 2,
-     "state": "idle",
-     "mix": {
-      "closed": 1,
-      "done": 0,
-      "doing": 0,
-      "blocked": 0,
-      "ready": 1
      }
     }
    }
@@ -579,14 +579,14 @@
    "cells": {
     "DECIDE": {
      "done": 0,
-     "total": 1,
+     "total": 3,
      "state": "idle",
      "mix": {
       "closed": 0,
       "done": 0,
       "doing": 0,
       "blocked": 0,
-      "ready": 1
+      "ready": 3
      }
     },
     "BUILD": {
@@ -631,11 +631,11 @@
      }
     },
     "BUILD": {
-     "done": 6,
-     "total": 7,
+     "done": 7,
+     "total": 8,
      "state": "idle",
      "mix": {
-      "closed": 6,
+      "closed": 7,
       "done": 0,
       "doing": 0,
       "blocked": 0,
@@ -702,14 +702,14 @@
    "cells": {
     "DECIDE": {
      "done": 0,
-     "total": 0,
-     "state": "offline",
+     "total": 1,
+     "state": "idle",
      "mix": {
       "closed": 0,
       "done": 0,
       "doing": 0,
       "blocked": 0,
-      "ready": 0
+      "ready": 1
      }
     },
     "BUILD": {
@@ -725,13 +725,13 @@
      }
     },
     "CHECK": {
-     "done": 0,
+     "done": 1,
      "total": 1,
-     "state": "working",
+     "state": "idle",
      "mix": {
       "closed": 0,
-      "done": 0,
-      "doing": 1,
+      "done": 1,
+      "doing": 0,
       "blocked": 0,
       "ready": 0
      }
@@ -826,7 +826,7 @@
   "classes": [
    {
     "label": "unexplained",
-    "count": 9
+    "count": 7
    },
    {
     "label": "needs deploy",
@@ -841,11 +841,11 @@
     "count": 1
    },
    {
-    "label": "needs a shutdown window to deploy, then a live game",
+    "label": "**but the reason changed 2026-08-15 and the hard blocker is GONE.**",
     "count": 1
    },
    {
-    "label": "needs deploy, then a live game",
+    "label": "B62 IS UNBUILT, so there is nothing to deploy",
     "count": 1
    }
   ]
@@ -858,12 +858,12 @@
    },
    {
     "d": "2026-08-15",
-    "n": 9
+    "n": 10
    }
   ],
-  "per_day": 13.5,
-  "closed": 27,
-  "remaining": 50,
-  "eta_days": 4
+  "per_day": 14.0,
+  "closed": 28,
+  "remaining": 70,
+  "eta_days": 5
  }
 }
