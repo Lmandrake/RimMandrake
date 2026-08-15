@@ -145,3 +145,36 @@ spec:     —
 verify:   —
 criteria: —
 state:    dropped — Worldgen is manual; the owner picks a world he likes by eye. Full text in `design/V2_DREAMS.md`.
+
+## D23 Five rules died with `agents_def.md` — re-home them or repeal them
+row:      0
+spec:     `infrastructure/agents_def.md` was dissolved into `POLICY.md` (deleted at
+          `edaa1bb`), but five numbered rules did not make the crossing and four
+          live docs still cite them. `POLICY.md` has no rule numbers, so a citation
+          cannot simply be repointed. Recover the source with
+          `git show edaa1bb^:infrastructure/agents_def.md`.
+          🔴 **Rule most worth reading first — map protection, an owner ruling that
+          is SUSPENDED, not repealed** (agents_def.md :92-96, verbatim):
+          *"NO AGENT SHOULD TRY TO PRESERVE MAP CONTENTS OR CAMPAIGN INTEGRITY AT
+          THIS TIME… YOU WILL BE INFORMED WHEN WE GET TO THAT PHASE."* Test
+          destructively until the owner announces play has started; that
+          announcement is the reactivation trigger. Still say which map a result
+          came from. It exists in NO current doc — grepped `infrastructure/`,
+          `design/`, `CLAUDE.md`, `skills/`. Two live docs order a reader to read it
+          at a source that is gone: `design/Jawa/worldbuilding/row8_build_order.md`
+          :41-43 and `infrastructure/state/CREATE_TEST_PLAN.md` :165-168.
+          ⚠️ v1 now includes one playable session, so the reactivation trigger is
+          close. Ask the owner whether it has fired before re-homing it as suspended.
+          The other four: rule 1 taking the bridge is announced
+          (`row8_build_order.md:88-89`); rule 1b live means a map exists
+          (`wait_for_live.py:6`, citation already dropped, substance kept);
+          rule 1c whoever holds the bridge may create and destroy dev colonies at
+          will (`skills/rimworld-debug-testing/SKILL.md:19`); rule 0.5 never ignore
+          a problem, especially one that is not yours (`infrastructure/DOC_BUDGET.md:198`,
+          named PROJECT as the drainer of `[?]` filings — needs a seat as well as a path).
+          Anything about the live game lands on CHECK, per the 2026-08-14 ruling.
+verify:   Each of the five is either written into `POLICY.md`/`CHECK.md` or recorded
+          as repealed in `OWNER_DECISIONS.md`, and the four citing docs point at
+          something that exists. `check_refs.py` no longer reports :198.
+criteria: none — offline.
+state:    ready

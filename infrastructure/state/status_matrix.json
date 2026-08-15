@@ -5,7 +5,7 @@
    "cells": {
     "DECIDE": {
      "done": 0,
-     "total": 3,
+     "total": 4,
      "state": "idle"
     },
     "BUILD": {
@@ -124,9 +124,9 @@
    "name": "6 Religions",
    "cells": {
     "DECIDE": {
-     "done": 0,
-     "total": 0,
-     "state": "offline"
+     "done": 1,
+     "total": 1,
+     "state": "idle"
     },
     "BUILD": {
      "done": 0,
@@ -284,8 +284,8 @@
    "name": "infra",
    "cells": {
     "DECIDE": {
-     "done": 0,
-     "total": 2,
+     "done": 1,
+     "total": 3,
      "state": "blocked"
     },
     "BUILD": {
