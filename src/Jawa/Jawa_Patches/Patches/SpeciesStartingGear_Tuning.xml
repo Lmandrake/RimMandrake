@@ -102,9 +102,9 @@
        1. Jawa: hood and robes, nothing else
        ================================================================== -->
   <Operation Class="PatchOperationConditional">
-    <xpath>/Defs/PawnKindDef[defName="OuterRim_Jawa"]/apparelRequired</xpath>
+    <xpath>/Defs/PawnKindDef[defName="RimMandrake_Jawa"]/apparelRequired</xpath>
     <nomatch Class="PatchOperationAdd">
-      <xpath>/Defs/PawnKindDef[defName="OuterRim_Jawa"]</xpath>
+      <xpath>/Defs/PawnKindDef[defName="RimMandrake_Jawa"]</xpath>
       <value>
         <apparelRequired>
           <li>guy762_Robes_jawa</li>

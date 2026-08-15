@@ -17,7 +17,7 @@ MECHANISM (verified against SpeakUp source, see jawaese.py header):
 
 IDENTITY GATE (dual, per the xenotype-not-a-condition finding):
     colonists:  INITIATOR_faction==PlayerColony / PlayerTribe
-    NPC jawas:  INITIATOR_kind==OuterRim_Jawa / OuterRim_JawaTribal
+    NPC jawas:  INITIATOR_kind==RimMandrake_Jawa / OuterRim_JawaTribal
   Emitted as separate gated entries so a flip to a trait-based gate later is a
   one-line change (GATES below).
 
@@ -46,8 +46,8 @@ OUT = os.path.join(os.path.dirname(os.path.abspath(__file__)), "..",
 GATES = [
     "INITIATOR_faction==PlayerColony",
     "INITIATOR_faction==PlayerTribe",
-    "INITIATOR_kind==OuterRim_Jawa",
-    "INITIATOR_kind==OuterRim_JawaTribal",
+    "INITIATOR_kind==RimMandrake_Jawa",
+    "INITIATOR_kind==RimMandrake_JawaTribal",
 ]
 
 # Canon-anchor situation map: defName -> CANON key (jawaese.CANON).

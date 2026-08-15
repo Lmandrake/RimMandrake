@@ -14,8 +14,8 @@ import lines_insults as v5
 
 CONDS = ["INITIATOR_faction==PlayerColony",
          "INITIATOR_faction==PlayerTribe",
-         "INITIATOR_kind==OuterRim_Jawa",
-         "INITIATOR_kind==OuterRim_JawaTribal"]
+         "INITIATOR_kind==RimMandrake_Jawa",
+         "INITIATOR_kind==RimMandrake_JawaTribal"]
 
 
 def esc(t):

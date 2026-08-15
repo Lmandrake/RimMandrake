@@ -7,8 +7,8 @@
       <value>
           <li>r_logentry(INITIATOR_faction==PlayerColony,priority=250)->Shah soob soou. (What, friend?)</li>
           <li>r_logentry(INITIATOR_faction==PlayerTribe,priority=250)->Shah soob soou. (What, friend?)</li>
-          <li>r_logentry(INITIATOR_kind==OuterRim_Jawa,priority=250)->Shah soob soou. (What, friend?)</li>
-          <li>r_logentry(INITIATOR_kind==OuterRim_JawaTribal,priority=250)->Shah soob soou. (What, friend?)</li>
+          <li>r_logentry(INITIATOR_kind==RimMandrake_Jawa,priority=250)->Shah soob soou. (What, friend?)</li>
+          <li>r_logentry(INITIATOR_kind==RimMandrake_JawaTribal,priority=250)->Shah soob soou. (What, friend?)</li>
       </value>
     </match>
   </Operation>
@@ -19,8 +19,8 @@
       <value>
           <li>r_logentry(INITIATOR_faction==PlayerColony,priority=250)->Bamet nasan maare. (This tastes a little funny!)</li>
           <li>r_logentry(INITIATOR_faction==PlayerTribe,priority=250)->Bamet nasan maare. (This tastes a little funny!)</li>
-          <li>r_logentry(INITIATOR_kind==OuterRim_Jawa,priority=250)->Bamet nasan maare. (This tastes a little funny!)</li>
-          <li>r_logentry(INITIATOR_kind==OuterRim_JawaTribal,priority=250)->Bamet nasan maare. (This tastes a little funny!)</li>
+          <li>r_logentry(INITIATOR_kind==RimMandrake_Jawa,priority=250)->Bamet nasan maare. (This tastes a little funny!)</li>
+          <li>r_logentry(INITIATOR_kind==RimMandrake_JawaTribal,priority=250)->Bamet nasan maare. (This tastes a little funny!)</li>
       </value>
     </match>
   </Operation>
@@ -31,8 +31,8 @@
       <value>
           <li>r_logentry(INITIATOR_faction==PlayerColony,priority=250)->Hoohmee moobtaa moobtau. (Why, friend?)</li>
           <li>r_logentry(INITIATOR_faction==PlayerTribe,priority=250)->Hoohmee moobtaa moobtau. (Why, friend?)</li>
-          <li>r_logentry(INITIATOR_kind==OuterRim_Jawa,priority=250)->Hoohmee moobtaa moobtau. (Why, friend?)</li>
-          <li>r_logentry(INITIATOR_kind==OuterRim_JawaTribal,priority=250)->Hoohmee moobtaa moobtau. (Why, friend?)</li>
+          <li>r_logentry(INITIATOR_kind==RimMandrake_Jawa,priority=250)->Hoohmee moobtaa moobtau. (Why, friend?)</li>
+          <li>r_logentry(INITIATOR_kind==RimMandrake_JawaTribal,priority=250)->Hoohmee moobtaa moobtau. (Why, friend?)</li>
       </value>
     </match>
   </Operation>
@@ -43,8 +43,8 @@
       <value>
           <li>r_logentry(INITIATOR_faction==PlayerColony,priority=250)->Waa m'itlaah toonboh loon! (They always take things literally!)</li>
           <li>r_logentry(INITIATOR_faction==PlayerTribe,priority=250)->Waa m'itlaah toonboh loon! (They always take things literally!)</li>
-          <li>r_logentry(INITIATOR_kind==OuterRim_Jawa,priority=250)->Waa m'itlaah toonboh loon! (They always take things literally!)</li>
-          <li>r_logentry(INITIATOR_kind==OuterRim_JawaTribal,priority=250)->Waa m'itlaah toonboh loon! (They always take things literally!)</li>
+          <li>r_logentry(INITIATOR_kind==RimMandrake_Jawa,priority=250)->Waa m'itlaah toonboh loon! (They always take things literally!)</li>
+          <li>r_logentry(INITIATOR_kind==RimMandrake_JawaTribal,priority=250)->Waa m'itlaah toonboh loon! (They always take things literally!)</li>
       </value>
     </match>
   </Operation>
@@ -55,8 +55,8 @@
       <value>
           <li>r_logentry(INITIATOR_faction==PlayerColony,priority=250)->Ri robmut robmut w'onmon w'onmon... (No, what about?)</li>
           <li>r_logentry(INITIATOR_faction==PlayerTribe,priority=250)->Ri robmut robmut w'onmon w'onmon... (No, what about?)</li>
-          <li>r_logentry(INITIATOR_kind==OuterRim_Jawa,priority=250)->Ri robmut robmut w'onmon w'onmon... (No, what about?)</li>
-          <li>r_logentry(INITIATOR_kind==OuterRim_JawaTribal,priority=250)->Ri robmut robmut w'onmon w'onmon... (No, what about?)</li>
+          <li>r_logentry(INITIATOR_kind==RimMandrake_Jawa,priority=250)->Ri robmut robmut w'onmon w'onmon... (No, what about?)</li>
+          <li>r_logentry(INITIATOR_kind==RimMandrake_JawaTribal,priority=250)->Ri robmut robmut w'onmon w'onmon... (No, what about?)</li>
       </value>
     </match>
   </Operation>
@@ -67,8 +67,8 @@
       <value>
           <li>r_logentry(INITIATOR_faction==PlayerColony,priority=250)->Tob tou b'uh? (He'll stop at nothing to avoid them!)</li>
           <li>r_logentry(INITIATOR_faction==PlayerTribe,priority=250)->Tob tou b'uh? (He'll stop at nothing to avoid them!)</li>
-          <li>r_logentry(INITIATOR_kind==OuterRim_Jawa,priority=250)->Tob tou b'uh? (He'll stop at nothing to avoid them!)</li>
-          <li>r_logentry(INITIATOR_kind==OuterRim_JawaTribal,priority=250)->Tob tou b'uh? (He'll stop at nothing to avoid them!)</li>
+          <li>r_logentry(INITIATOR_kind==RimMandrake_Jawa,priority=250)->Tob tou b'uh? (He'll stop at nothing to avoid them!)</li>
+          <li>r_logentry(INITIATOR_kind==RimMandrake_JawaTribal,priority=250)->Tob tou b'uh? (He'll stop at nothing to avoid them!)</li>
       </value>
     </match>
   </Operation>
@@ -79,8 +79,8 @@
       <value>
           <li>r_logentry(INITIATOR_faction==PlayerColony,priority=250)->Sheet kiwon. (Why wouldn't they?)</li>
           <li>r_logentry(INITIATOR_faction==PlayerTribe,priority=250)->Sheet kiwon. (Why wouldn't they?)</li>
-          <li>r_logentry(INITIATOR_kind==OuterRim_Jawa,priority=250)->Sheet kiwon. (Why wouldn't they?)</li>
-          <li>r_logentry(INITIATOR_kind==OuterRim_JawaTribal,priority=250)->Sheet kiwon. (Why wouldn't they?)</li>
+          <li>r_logentry(INITIATOR_kind==RimMandrake_Jawa,priority=250)->Sheet kiwon. (Why wouldn't they?)</li>
+          <li>r_logentry(INITIATOR_kind==RimMandrake_JawaTribal,priority=250)->Sheet kiwon. (Why wouldn't they?)</li>
       </value>
     </match>
   </Operation>
@@ -91,8 +91,8 @@
       <value>
           <li>r_logentry(INITIATOR_faction==PlayerColony,priority=250)->Raa n'yaa hotgu hotga w'itne goonho... (Because they make up everything!)</li>
           <li>r_logentry(INITIATOR_faction==PlayerTribe,priority=250)->Raa n'yaa hotgu hotga w'itne goonho... (Because they make up everything!)</li>
-          <li>r_logentry(INITIATOR_kind==OuterRim_Jawa,priority=250)->Raa n'yaa hotgu hotga w'itne goonho... (Because they make up everything!)</li>
-          <li>r_logentry(INITIATOR_kind==OuterRim_JawaTribal,priority=250)->Raa n'yaa hotgu hotga w'itne goonho... (Because they make up everything!)</li>
+          <li>r_logentry(INITIATOR_kind==RimMandrake_Jawa,priority=250)->Raa n'yaa hotgu hotga w'itne goonho... (Because they make up everything!)</li>
+          <li>r_logentry(INITIATOR_kind==RimMandrake_JawaTribal,priority=250)->Raa n'yaa hotgu hotga w'itne goonho... (Because they make up everything!)</li>
       </value>
     </match>
   </Operation>
@@ -103,8 +103,8 @@
       <value>
           <li>r_logentry(INITIATOR_faction==PlayerColony,priority=250)->Soo soo t'eshoo. (Rich? How, friend? That job can't have paid well...)</li>
           <li>r_logentry(INITIATOR_faction==PlayerTribe,priority=250)->Soo soo t'eshoo. (Rich? How, friend? That job can't have paid well...)</li>
-          <li>r_logentry(INITIATOR_kind==OuterRim_Jawa,priority=250)->Soo soo t'eshoo. (Rich? How, friend? That job can't have paid well...)</li>
-          <li>r_logentry(INITIATOR_kind==OuterRim_JawaTribal,priority=250)->Soo soo t'eshoo. (Rich? How, friend? That job can't have paid well...)</li>
+          <li>r_logentry(INITIATOR_kind==RimMandrake_Jawa,priority=250)->Soo soo t'eshoo. (Rich? How, friend? That job can't have paid well...)</li>
+          <li>r_logentry(INITIATOR_kind==RimMandrake_JawaTribal,priority=250)->Soo soo t'eshoo. (Rich? How, friend? That job can't have paid well...)</li>
       </value>
     </match>
   </Operation>
@@ -115,8 +115,8 @@
       <value>
           <li>r_logentry(INITIATOR_faction==PlayerColony,priority=250)->S'hoon loot loot mob! (No, but the tips were enormous!)</li>
           <li>r_logentry(INITIATOR_faction==PlayerTribe,priority=250)->S'hoon loot loot mob! (No, but the tips were enormous!)</li>
-          <li>r_logentry(INITIATOR_kind==OuterRim_Jawa,priority=250)->S'hoon loot loot mob! (No, but the tips were enormous!)</li>
-          <li>r_logentry(INITIATOR_kind==OuterRim_JawaTribal,priority=250)->S'hoon loot loot mob! (No, but the tips were enormous!)</li>
+          <li>r_logentry(INITIATOR_kind==RimMandrake_Jawa,priority=250)->S'hoon loot loot mob! (No, but the tips were enormous!)</li>
+          <li>r_logentry(INITIATOR_kind==RimMandrake_JawaTribal,priority=250)->S'hoon loot loot mob! (No, but the tips were enormous!)</li>
       </value>
     </match>
   </Operation>
@@ -127,8 +127,8 @@
       <value>
           <li>r_logentry(INITIATOR_faction==PlayerColony,priority=250)->Zobo n'yahob h'oh zoh. (What is it, friend?)</li>
           <li>r_logentry(INITIATOR_faction==PlayerTribe,priority=250)->Zobo n'yahob h'oh zoh. (What is it, friend?)</li>
-          <li>r_logentry(INITIATOR_kind==OuterRim_Jawa,priority=250)->Zobo n'yahob h'oh zoh. (What is it, friend?)</li>
-          <li>r_logentry(INITIATOR_kind==OuterRim_JawaTribal,priority=250)->Zobo n'yahob h'oh zoh. (What is it, friend?)</li>
+          <li>r_logentry(INITIATOR_kind==RimMandrake_Jawa,priority=250)->Zobo n'yahob h'oh zoh. (What is it, friend?)</li>
+          <li>r_logentry(INITIATOR_kind==RimMandrake_JawaTribal,priority=250)->Zobo n'yahob h'oh zoh. (What is it, friend?)</li>
       </value>
     </match>
   </Operation>
@@ -139,8 +139,8 @@
       <value>
           <li>r_logentry(INITIATOR_faction==PlayerColony,priority=250)->Haamu haama n'yu t'eb. (A nervous wreck!)</li>
           <li>r_logentry(INITIATOR_faction==PlayerTribe,priority=250)->Haamu haama n'yu t'eb. (A nervous wreck!)</li>
-          <li>r_logentry(INITIATOR_kind==OuterRim_Jawa,priority=250)->Haamu haama n'yu t'eb. (A nervous wreck!)</li>
-          <li>r_logentry(INITIATOR_kind==OuterRim_JawaTribal,priority=250)->Haamu haama n'yu t'eb. (A nervous wreck!)</li>
+          <li>r_logentry(INITIATOR_kind==RimMandrake_Jawa,priority=250)->Haamu haama n'yu t'eb. (A nervous wreck!)</li>
+          <li>r_logentry(INITIATOR_kind==RimMandrake_JawaTribal,priority=250)->Haamu haama n'yu t'eb. (A nervous wreck!)</li>
       </value>
     </match>
   </Operation>
@@ -151,8 +151,8 @@
       <value>
           <li>r_logentry(INITIATOR_faction==PlayerColony,priority=250)->Noogab lab nya s'hokat? (No, friend — what happened to them?)</li>
           <li>r_logentry(INITIATOR_faction==PlayerTribe,priority=250)->Noogab lab nya s'hokat? (No, friend — what happened to them?)</li>
-          <li>r_logentry(INITIATOR_kind==OuterRim_Jawa,priority=250)->Noogab lab nya s'hokat? (No, friend — what happened to them?)</li>
-          <li>r_logentry(INITIATOR_kind==OuterRim_JawaTribal,priority=250)->Noogab lab nya s'hokat? (No, friend — what happened to them?)</li>
+          <li>r_logentry(INITIATOR_kind==RimMandrake_Jawa,priority=250)->Noogab lab nya s'hokat? (No, friend — what happened to them?)</li>
+          <li>r_logentry(INITIATOR_kind==RimMandrake_JawaTribal,priority=250)->Noogab lab nya s'hokat? (No, friend — what happened to them?)</li>
       </value>
     </match>
   </Operation>
@@ -163,8 +163,8 @@
       <value>
           <li>r_logentry(INITIATOR_faction==PlayerColony,priority=250)->Hob m'oot mitab shoonoob? (They each got six months!)</li>
           <li>r_logentry(INITIATOR_faction==PlayerTribe,priority=250)->Hob m'oot mitab shoonoob? (They each got six months!)</li>
-          <li>r_logentry(INITIATOR_kind==OuterRim_Jawa,priority=250)->Hob m'oot mitab shoonoob? (They each got six months!)</li>
-          <li>r_logentry(INITIATOR_kind==OuterRim_JawaTribal,priority=250)->Hob m'oot mitab shoonoob? (They each got six months!)</li>
+          <li>r_logentry(INITIATOR_kind==RimMandrake_Jawa,priority=250)->Hob m'oot mitab shoonoob? (They each got six months!)</li>
+          <li>r_logentry(INITIATOR_kind==RimMandrake_JawaTribal,priority=250)->Hob m'oot mitab shoonoob? (They each got six months!)</li>
       </value>
     </match>
   </Operation>
@@ -175,8 +175,8 @@
       <value>
           <li>r_logentry(INITIATOR_faction==PlayerColony,priority=250)->Hoohmee moobtaa moobtau. (Why, friend?)</li>
           <li>r_logentry(INITIATOR_faction==PlayerTribe,priority=250)->Hoohmee moobtaa moobtau. (Why, friend?)</li>
-          <li>r_logentry(INITIATOR_kind==OuterRim_Jawa,priority=250)->Hoohmee moobtaa moobtau. (Why, friend?)</li>
-          <li>r_logentry(INITIATOR_kind==OuterRim_JawaTribal,priority=250)->Hoohmee moobtaa moobtau. (Why, friend?)</li>
+          <li>r_logentry(INITIATOR_kind==RimMandrake_Jawa,priority=250)->Hoohmee moobtaa moobtau. (Why, friend?)</li>
+          <li>r_logentry(INITIATOR_kind==RimMandrake_JawaTribal,priority=250)->Hoohmee moobtaa moobtau. (Why, friend?)</li>
       </value>
     </match>
   </Operation>
@@ -187,8 +187,8 @@
       <value>
           <li>r_logentry(INITIATOR_faction==PlayerColony,priority=250)->T'ot l'obshoh boo hoonraah. (In case needed to draw blood.)</li>
           <li>r_logentry(INITIATOR_faction==PlayerTribe,priority=250)->T'ot l'obshoh boo hoonraah. (In case needed to draw blood.)</li>
-          <li>r_logentry(INITIATOR_kind==OuterRim_Jawa,priority=250)->T'ot l'obshoh boo hoonraah. (In case needed to draw blood.)</li>
-          <li>r_logentry(INITIATOR_kind==OuterRim_JawaTribal,priority=250)->T'ot l'obshoh boo hoonraah. (In case needed to draw blood.)</li>
+          <li>r_logentry(INITIATOR_kind==RimMandrake_Jawa,priority=250)->T'ot l'obshoh boo hoonraah. (In case needed to draw blood.)</li>
+          <li>r_logentry(INITIATOR_kind==RimMandrake_JawaTribal,priority=250)->T'ot l'obshoh boo hoonraah. (In case needed to draw blood.)</li>
       </value>
     </match>
   </Operation>
@@ -199,8 +199,8 @@
       <value>
           <li>r_logentry(INITIATOR_faction==PlayerColony,priority=250)->Nyonee bu laa zoo! (Yes, friend. Go ahead!)</li>
           <li>r_logentry(INITIATOR_faction==PlayerTribe,priority=250)->Nyonee bu laa zoo! (Yes, friend. Go ahead!)</li>
-          <li>r_logentry(INITIATOR_kind==OuterRim_Jawa,priority=250)->Nyonee bu laa zoo! (Yes, friend. Go ahead!)</li>
-          <li>r_logentry(INITIATOR_kind==OuterRim_JawaTribal,priority=250)->Nyonee bu laa zoo! (Yes, friend. Go ahead!)</li>
+          <li>r_logentry(INITIATOR_kind==RimMandrake_Jawa,priority=250)->Nyonee bu laa zoo! (Yes, friend. Go ahead!)</li>
+          <li>r_logentry(INITIATOR_kind==RimMandrake_JawaTribal,priority=250)->Nyonee bu laa zoo! (Yes, friend. Go ahead!)</li>
       </value>
     </match>
   </Operation>
@@ -211,8 +211,8 @@
       <value>
           <li>r_logentry(INITIATOR_faction==PlayerColony,priority=250)->Lonnoot nyobmot nyobmot keen she shu... (Oh never mind — I'm still working on that one!)</li>
           <li>r_logentry(INITIATOR_faction==PlayerTribe,priority=250)->Lonnoot nyobmot nyobmot keen she shu... (Oh never mind — I'm still working on that one!)</li>
-          <li>r_logentry(INITIATOR_kind==OuterRim_Jawa,priority=250)->Lonnoot nyobmot nyobmot keen she shu... (Oh never mind — I'm still working on that one!)</li>
-          <li>r_logentry(INITIATOR_kind==OuterRim_JawaTribal,priority=250)->Lonnoot nyobmot nyobmot keen she shu... (Oh never mind — I'm still working on that one!)</li>
+          <li>r_logentry(INITIATOR_kind==RimMandrake_Jawa,priority=250)->Lonnoot nyobmot nyobmot keen she shu... (Oh never mind — I'm still working on that one!)</li>
+          <li>r_logentry(INITIATOR_kind==RimMandrake_JawaTribal,priority=250)->Lonnoot nyobmot nyobmot keen she shu... (Oh never mind — I'm still working on that one!)</li>
       </value>
     </match>
   </Operation>
@@ -223,8 +223,8 @@
       <value>
           <li>r_logentry(INITIATOR_faction==PlayerColony,priority=250)->Hoohmee moobtaa moobtau. (Why, friend?)</li>
           <li>r_logentry(INITIATOR_faction==PlayerTribe,priority=250)->Hoohmee moobtaa moobtau. (Why, friend?)</li>
-          <li>r_logentry(INITIATOR_kind==OuterRim_Jawa,priority=250)->Hoohmee moobtaa moobtau. (Why, friend?)</li>
-          <li>r_logentry(INITIATOR_kind==OuterRim_JawaTribal,priority=250)->Hoohmee moobtaa moobtau. (Why, friend?)</li>
+          <li>r_logentry(INITIATOR_kind==RimMandrake_Jawa,priority=250)->Hoohmee moobtaa moobtau. (Why, friend?)</li>
+          <li>r_logentry(INITIATOR_kind==RimMandrake_JawaTribal,priority=250)->Hoohmee moobtaa moobtau. (Why, friend?)</li>
       </value>
     </match>
   </Operation>
@@ -235,8 +235,8 @@
       <value>
           <li>r_logentry(INITIATOR_faction==PlayerColony,priority=250)->Looblooh b'aanyo n'ubo n'yihboo? (Because nothing gets under their skin!)</li>
           <li>r_logentry(INITIATOR_faction==PlayerTribe,priority=250)->Looblooh b'aanyo n'ubo n'yihboo? (Because nothing gets under their skin!)</li>
-          <li>r_logentry(INITIATOR_kind==OuterRim_Jawa,priority=250)->Looblooh b'aanyo n'ubo n'yihboo? (Because nothing gets under their skin!)</li>
-          <li>r_logentry(INITIATOR_kind==OuterRim_JawaTribal,priority=250)->Looblooh b'aanyo n'ubo n'yihboo? (Because nothing gets under their skin!)</li>
+          <li>r_logentry(INITIATOR_kind==RimMandrake_Jawa,priority=250)->Looblooh b'aanyo n'ubo n'yihboo? (Because nothing gets under their skin!)</li>
+          <li>r_logentry(INITIATOR_kind==RimMandrake_JawaTribal,priority=250)->Looblooh b'aanyo n'ubo n'yihboo? (Because nothing gets under their skin!)</li>
       </value>
     </match>
   </Operation>
@@ -247,8 +247,8 @@
       <value>
           <li>r_logentry(INITIATOR_faction==PlayerColony,priority=250)->Hoohmee moobtaa moobtau. (Why, friend?)</li>
           <li>r_logentry(INITIATOR_faction==PlayerTribe,priority=250)->Hoohmee moobtaa moobtau. (Why, friend?)</li>
-          <li>r_logentry(INITIATOR_kind==OuterRim_Jawa,priority=250)->Hoohmee moobtaa moobtau. (Why, friend?)</li>
-          <li>r_logentry(INITIATOR_kind==OuterRim_JawaTribal,priority=250)->Hoohmee moobtaa moobtau. (Why, friend?)</li>
+          <li>r_logentry(INITIATOR_kind==RimMandrake_Jawa,priority=250)->Hoohmee moobtaa moobtau. (Why, friend?)</li>
+          <li>r_logentry(INITIATOR_kind==RimMandrake_JawaTribal,priority=250)->Hoohmee moobtaa moobtau. (Why, friend?)</li>
       </value>
     </match>
   </Operation>
@@ -259,8 +259,8 @@
       <value>
           <li>r_logentry(INITIATOR_faction==PlayerColony,priority=250)->Noh nob. (Because it was always spotted!)</li>
           <li>r_logentry(INITIATOR_faction==PlayerTribe,priority=250)->Noh nob. (Because it was always spotted!)</li>
-          <li>r_logentry(INITIATOR_kind==OuterRim_Jawa,priority=250)->Noh nob. (Because it was always spotted!)</li>
-          <li>r_logentry(INITIATOR_kind==OuterRim_JawaTribal,priority=250)->Noh nob. (Because it was always spotted!)</li>
+          <li>r_logentry(INITIATOR_kind==RimMandrake_Jawa,priority=250)->Noh nob. (Because it was always spotted!)</li>
+          <li>r_logentry(INITIATOR_kind==RimMandrake_JawaTribal,priority=250)->Noh nob. (Because it was always spotted!)</li>
       </value>
     </match>
   </Operation>
@@ -271,8 +271,8 @@
       <value>
           <li>r_logentry(INITIATOR_faction==PlayerColony,priority=250)->Hoohmee moobtaa moobtau. (Why, friend?)</li>
           <li>r_logentry(INITIATOR_faction==PlayerTribe,priority=250)->Hoohmee moobtaa moobtau. (Why, friend?)</li>
-          <li>r_logentry(INITIATOR_kind==OuterRim_Jawa,priority=250)->Hoohmee moobtaa moobtau. (Why, friend?)</li>
-          <li>r_logentry(INITIATOR_kind==OuterRim_JawaTribal,priority=250)->Hoohmee moobtaa moobtau. (Why, friend?)</li>
+          <li>r_logentry(INITIATOR_kind==RimMandrake_Jawa,priority=250)->Hoohmee moobtaa moobtau. (Why, friend?)</li>
+          <li>r_logentry(INITIATOR_kind==RimMandrake_JawaTribal,priority=250)->Hoohmee moobtaa moobtau. (Why, friend?)</li>
       </value>
     </match>
   </Operation>
@@ -283,8 +283,8 @@
       <value>
           <li>r_logentry(INITIATOR_faction==PlayerColony,priority=250)->Wobkah ta. (It's pointless!)</li>
           <li>r_logentry(INITIATOR_faction==PlayerTribe,priority=250)->Wobkah ta. (It's pointless!)</li>
-          <li>r_logentry(INITIATOR_kind==OuterRim_Jawa,priority=250)->Wobkah ta. (It's pointless!)</li>
-          <li>r_logentry(INITIATOR_kind==OuterRim_JawaTribal,priority=250)->Wobkah ta. (It's pointless!)</li>
+          <li>r_logentry(INITIATOR_kind==RimMandrake_Jawa,priority=250)->Wobkah ta. (It's pointless!)</li>
+          <li>r_logentry(INITIATOR_kind==RimMandrake_JawaTribal,priority=250)->Wobkah ta. (It's pointless!)</li>
       </value>
     </match>
   </Operation>
@@ -295,8 +295,8 @@
       <value>
           <li>r_logentry(INITIATOR_faction==PlayerColony,priority=250)->Tashet bin nyonteen naanen tan? (Hmmm... I don't know, friend. What do you call it?)</li>
           <li>r_logentry(INITIATOR_faction==PlayerTribe,priority=250)->Tashet bin nyonteen naanen tan? (Hmmm... I don't know, friend. What do you call it?)</li>
-          <li>r_logentry(INITIATOR_kind==OuterRim_Jawa,priority=250)->Tashet bin nyonteen naanen tan? (Hmmm... I don't know, friend. What do you call it?)</li>
-          <li>r_logentry(INITIATOR_kind==OuterRim_JawaTribal,priority=250)->Tashet bin nyonteen naanen tan? (Hmmm... I don't know, friend. What do you call it?)</li>
+          <li>r_logentry(INITIATOR_kind==RimMandrake_Jawa,priority=250)->Tashet bin nyonteen naanen tan? (Hmmm... I don't know, friend. What do you call it?)</li>
+          <li>r_logentry(INITIATOR_kind==RimMandrake_JawaTribal,priority=250)->Tashet bin nyonteen naanen tan? (Hmmm... I don't know, friend. What do you call it?)</li>
       </value>
     </match>
   </Operation>
@@ -307,8 +307,8 @@
       <value>
           <li>r_logentry(INITIATOR_faction==PlayerColony,priority=250)->Raa ri. (Ground beef!)</li>
           <li>r_logentry(INITIATOR_faction==PlayerTribe,priority=250)->Raa ri. (Ground beef!)</li>
-          <li>r_logentry(INITIATOR_kind==OuterRim_Jawa,priority=250)->Raa ri. (Ground beef!)</li>
-          <li>r_logentry(INITIATOR_kind==OuterRim_JawaTribal,priority=250)->Raa ri. (Ground beef!)</li>
+          <li>r_logentry(INITIATOR_kind==RimMandrake_Jawa,priority=250)->Raa ri. (Ground beef!)</li>
+          <li>r_logentry(INITIATOR_kind==RimMandrake_JawaTribal,priority=250)->Raa ri. (Ground beef!)</li>
       </value>
     </match>
   </Operation>
@@ -319,8 +319,8 @@
       <value>
           <li>r_logentry(INITIATOR_faction==PlayerColony,priority=250)->B'asoo g'oozi lab to... (Hmmm... I don't know, friend. What do they call each other?)</li>
           <li>r_logentry(INITIATOR_faction==PlayerTribe,priority=250)->B'asoo g'oozi lab to... (Hmmm... I don't know, friend. What do they call each other?)</li>
-          <li>r_logentry(INITIATOR_kind==OuterRim_Jawa,priority=250)->B'asoo g'oozi lab to... (Hmmm... I don't know, friend. What do they call each other?)</li>
-          <li>r_logentry(INITIATOR_kind==OuterRim_JawaTribal,priority=250)->B'asoo g'oozi lab to... (Hmmm... I don't know, friend. What do they call each other?)</li>
+          <li>r_logentry(INITIATOR_kind==RimMandrake_Jawa,priority=250)->B'asoo g'oozi lab to... (Hmmm... I don't know, friend. What do they call each other?)</li>
+          <li>r_logentry(INITIATOR_kind==RimMandrake_JawaTribal,priority=250)->B'asoo g'oozi lab to... (Hmmm... I don't know, friend. What do they call each other?)</li>
       </value>
     </match>
   </Operation>
@@ -331,8 +331,8 @@
       <value>
           <li>r_logentry(INITIATOR_faction==PlayerColony,priority=250)->S'han boon. (Thrumb-bros!)</li>
           <li>r_logentry(INITIATOR_faction==PlayerTribe,priority=250)->S'han boon. (Thrumb-bros!)</li>
-          <li>r_logentry(INITIATOR_kind==OuterRim_Jawa,priority=250)->S'han boon. (Thrumb-bros!)</li>
-          <li>r_logentry(INITIATOR_kind==OuterRim_JawaTribal,priority=250)->S'han boon. (Thrumb-bros!)</li>
+          <li>r_logentry(INITIATOR_kind==RimMandrake_Jawa,priority=250)->S'han boon. (Thrumb-bros!)</li>
+          <li>r_logentry(INITIATOR_kind==RimMandrake_JawaTribal,priority=250)->S'han boon. (Thrumb-bros!)</li>
       </value>
     </match>
   </Operation>
@@ -343,8 +343,8 @@
       <value>
           <li>r_logentry(INITIATOR_faction==PlayerColony,priority=250)->Moobmot tahroh s'araan zu. (And what did the doctor say?)</li>
           <li>r_logentry(INITIATOR_faction==PlayerTribe,priority=250)->Moobmot tahroh s'araan zu. (And what did the doctor say?)</li>
-          <li>r_logentry(INITIATOR_kind==OuterRim_Jawa,priority=250)->Moobmot tahroh s'araan zu. (And what did the doctor say?)</li>
-          <li>r_logentry(INITIATOR_kind==OuterRim_JawaTribal,priority=250)->Moobmot tahroh s'araan zu. (And what did the doctor say?)</li>
+          <li>r_logentry(INITIATOR_kind==RimMandrake_Jawa,priority=250)->Moobmot tahroh s'araan zu. (And what did the doctor say?)</li>
+          <li>r_logentry(INITIATOR_kind==RimMandrake_JawaTribal,priority=250)->Moobmot tahroh s'araan zu. (And what did the doctor say?)</li>
       </value>
     </match>
   </Operation>
@@ -355,8 +355,8 @@
       <value>
           <li>r_logentry(INITIATOR_faction==PlayerColony,priority=250)->Nin rooshaan wisha wisha ni loh. (Don't go to those places, then!)</li>
           <li>r_logentry(INITIATOR_faction==PlayerTribe,priority=250)->Nin rooshaan wisha wisha ni loh. (Don't go to those places, then!)</li>
-          <li>r_logentry(INITIATOR_kind==OuterRim_Jawa,priority=250)->Nin rooshaan wisha wisha ni loh. (Don't go to those places, then!)</li>
-          <li>r_logentry(INITIATOR_kind==OuterRim_JawaTribal,priority=250)->Nin rooshaan wisha wisha ni loh. (Don't go to those places, then!)</li>
+          <li>r_logentry(INITIATOR_kind==RimMandrake_Jawa,priority=250)->Nin rooshaan wisha wisha ni loh. (Don't go to those places, then!)</li>
+          <li>r_logentry(INITIATOR_kind==RimMandrake_JawaTribal,priority=250)->Nin rooshaan wisha wisha ni loh. (Don't go to those places, then!)</li>
       </value>
     </match>
   </Operation>
@@ -367,8 +367,8 @@
       <value>
           <li>r_logentry(INITIATOR_faction==PlayerColony,priority=250)->Leegi bih h'uhwooh. (No, how was it?)</li>
           <li>r_logentry(INITIATOR_faction==PlayerTribe,priority=250)->Leegi bih h'uhwooh. (No, how was it?)</li>
-          <li>r_logentry(INITIATOR_kind==OuterRim_Jawa,priority=250)->Leegi bih h'uhwooh. (No, how was it?)</li>
-          <li>r_logentry(INITIATOR_kind==OuterRim_JawaTribal,priority=250)->Leegi bih h'uhwooh. (No, how was it?)</li>
+          <li>r_logentry(INITIATOR_kind==RimMandrake_Jawa,priority=250)->Leegi bih h'uhwooh. (No, how was it?)</li>
+          <li>r_logentry(INITIATOR_kind==RimMandrake_JawaTribal,priority=250)->Leegi bih h'uhwooh. (No, how was it?)</li>
       </value>
     </match>
   </Operation>
@@ -379,8 +379,8 @@
       <value>
           <li>r_logentry(INITIATOR_faction==PlayerColony,priority=250)->Nyaah nyan shoo nehe. (The entire audience was stunned!)</li>
           <li>r_logentry(INITIATOR_faction==PlayerTribe,priority=250)->Nyaah nyan shoo nehe. (The entire audience was stunned!)</li>
-          <li>r_logentry(INITIATOR_kind==OuterRim_Jawa,priority=250)->Nyaah nyan shoo nehe. (The entire audience was stunned!)</li>
-          <li>r_logentry(INITIATOR_kind==OuterRim_JawaTribal,priority=250)->Nyaah nyan shoo nehe. (The entire audience was stunned!)</li>
+          <li>r_logentry(INITIATOR_kind==RimMandrake_Jawa,priority=250)->Nyaah nyan shoo nehe. (The entire audience was stunned!)</li>
+          <li>r_logentry(INITIATOR_kind==RimMandrake_JawaTribal,priority=250)->Nyaah nyan shoo nehe. (The entire audience was stunned!)</li>
       </value>
     </match>
   </Operation>
@@ -391,12 +391,12 @@
       <value>
           <li>r_logentry(INITIATOR_faction==PlayerColony,priority=250)->Zeebwa moon shisu taa. (I already knew this joke...)</li>
           <li>r_logentry(INITIATOR_faction==PlayerTribe,priority=250)->Zeebwa moon shisu taa. (I already knew this joke...)</li>
-          <li>r_logentry(INITIATOR_kind==OuterRim_Jawa,priority=250)->Zeebwa moon shisu taa. (I already knew this joke...)</li>
-          <li>r_logentry(INITIATOR_kind==OuterRim_JawaTribal,priority=250)->Zeebwa moon shisu taa. (I already knew this joke...)</li>
+          <li>r_logentry(INITIATOR_kind==RimMandrake_Jawa,priority=250)->Zeebwa moon shisu taa. (I already knew this joke...)</li>
+          <li>r_logentry(INITIATOR_kind==RimMandrake_JawaTribal,priority=250)->Zeebwa moon shisu taa. (I already knew this joke...)</li>
           <li>r_logentry(INITIATOR_faction==PlayerColony,priority=250)->Shaan w'ooh! (Mmm... not very funny...)</li>
           <li>r_logentry(INITIATOR_faction==PlayerTribe,priority=250)->Shaan w'ooh! (Mmm... not very funny...)</li>
-          <li>r_logentry(INITIATOR_kind==OuterRim_Jawa,priority=250)->Shaan w'ooh! (Mmm... not very funny...)</li>
-          <li>r_logentry(INITIATOR_kind==OuterRim_JawaTribal,priority=250)->Shaan w'ooh! (Mmm... not very funny...)</li>
+          <li>r_logentry(INITIATOR_kind==RimMandrake_Jawa,priority=250)->Shaan w'ooh! (Mmm... not very funny...)</li>
+          <li>r_logentry(INITIATOR_kind==RimMandrake_JawaTribal,priority=250)->Shaan w'ooh! (Mmm... not very funny...)</li>
       </value>
     </match>
   </Operation>

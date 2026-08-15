@@ -32,8 +32,8 @@ import sys
 CONDS = [
     "INITIATOR_faction==PlayerColony",
     "INITIATOR_faction==PlayerTribe",
-    "INITIATOR_kind==OuterRim_Jawa",
-    "INITIATOR_kind==OuterRim_JawaTribal",
+    "INITIATOR_kind==RimMandrake_Jawa",
+    "INITIATOR_kind==RimMandrake_JawaTribal",
 ]
 
 # Only <li> rule lines. Never the comment header, which mentions the condition
@@ -48,7 +48,7 @@ def expand(path):
     with io.open(path, encoding="utf-8") as fh:
         lines = fh.read().split("\n")
 
-    already = sum(1 for ln in lines if "INITIATOR_kind==OuterRim_Jawa" in ln)
+    already = sum(1 for ln in lines if "INITIATOR_kind==RimMandrake_Jawa" in ln)
     if already:
         sys.stderr.write(
             "refusing: %s already contains %d expanded line(s).\n"
