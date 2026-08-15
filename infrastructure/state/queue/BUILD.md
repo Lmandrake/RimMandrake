@@ -504,3 +504,28 @@ verify:   `python3 skills/rimworld-modding/scripts/validate_patch.py` on each of
 criteria: All 8 Jawa factions resolve live — `jawa/get_def` or the def dump returns a
           FactionDef for each of the five, where today it returns nothing.
 state:    ready
+
+## B56 Give the Mechanitor a blaster — the autopistol is gone
+row:      1
+spec:     Chain step 1 cut 74 conventional firearms into Cherry Picker, including
+          Core's `Gun_Autopistol`. That empties the vanilla `Autopistol` weapon
+          tag, and three pawn kinds ask for it: `Mechanitor` and
+          `Mechanitor_Basic` (Biotech) and `AM_Scavenger` (Ancient urban ruins).
+          **A pawn kind whose only weapon tag resolves to nothing spawns
+          unarmed**, silently.
+          Fix: `PatchOperationAdd` the tag `Autopistol` onto
+          `ThingDef[defName="guy762_bpistol"]`'s `weaponTags` — KotOR's generic
+          blaster pistol, already the weak-tier sidearm. Wrap the op in
+          `MayRequire="guy762.kotorweapons"`.
+          ⇒ Mechanitors arrive carrying a blaster pistol, which is better fiction
+          than an autopistol was.
+          ⚠️ Four other tags were emptied — `AM`, `AMGuns`, `AMHP`, `PKM` — but
+          all belong to Ancient urban ruins' own kinds (`AncientSoldierBoss`,
+          `AncientSoldierBossN`, `AncientMallGuards`). Those spawn only inside
+          that mod's own content. Report if you see them unarmed; do not fix
+          pre-emptively.
+verify:   `validate_patch.py --defs` 0 errors; `guy762_bpistol` carries
+          `Autopistol` in the live dump; no other def claims that tag.
+criteria: a Mechanitor event spawns its pawn holding a blaster pistol, not
+          empty-handed.
+state:    ready

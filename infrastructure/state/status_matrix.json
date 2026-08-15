@@ -30,8 +30,8 @@
     },
     "BUILD": {
      "done": 0,
-     "total": 0,
-     "state": "offline"
+     "total": 1,
+     "state": "idle"
     },
     "CHECK": {
      "done": 0,
@@ -289,7 +289,7 @@
      "state": "blocked"
     },
     "BUILD": {
-     "done": 5,
+     "done": 6,
      "total": 11,
      "state": "blocked"
     },
