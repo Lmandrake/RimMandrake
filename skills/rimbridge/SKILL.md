@@ -16,8 +16,9 @@ table of contents. **Read that, not the whole file**, and open only what matches
 your task. The entries marked 🔴 have each destroyed something real; read those
 whatever else you skip.
 
-⚠️ **If you are about to unpause, spawn a hostile, or enumerate tools, read those
-three entries first — they are the ones that have destroyed things.**
+⚠️ **If you are about to unpause or spawn a hostile, read §4b first; if you are
+about to enumerate debug actions, read §4. Those are the ones that have destroyed
+things** — a colony and a 568-mod game respectively.
 
 ---
 
@@ -283,6 +284,25 @@ Three things make it a real generator:
   beside leaves. **Never hardcode one** — ids carrying a positional index
   (`…-tutortagnotset-3`) renumber as mods add architect entries, so a path
   captured on the 3-mod tier is not safe at 568.
+
+### 🔑 God mode is the other half of authoring — turn it on, then off
+
+An Architect designator **queues work for a colonist**. On an authored or wiped
+map there is nobody home, so `apply_architect_designator` returns `success: true`,
+sets `designationCount: 1`, and changes nothing — the call is not lying, it did
+designate. `rimworld/set_god_mode {"enabled": true}` converts designators to
+instant effect and adds the fill/refuel button to refuelable things (there is no
+refuel primitive on the bridge; in god mode it is a **button on the thing's
+menu**). It also matters for `spawn_batch`, which places buildings **factionless**
+— a `GravEngine` then shows `Claim` disabled and offers no Launch gizmo.
+
+⚠️ **Turn it back off** (`{"enabled": false}`): left on, everything the owner
+builds next is free and instant, and they save a god-mode map without knowing.
+⚠️ **A cell that already carries a designation refuses a second one**
+(`success: false`) — cancel first with the category's `…-cancel` designator.
+
+📌 Before concluding "the bridge cannot do X", ask what the UI would do with the
+same click: the answer is often "X needs a worker and there is nobody home".
 
 ### 🔴 The build order is foundation → terrain → things, and it is the only one
 
