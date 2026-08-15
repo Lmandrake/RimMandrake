@@ -269,6 +269,13 @@ resume:   🔴 FIRST ACTION NEXT LOAD, and it is one screenshot: the FACIAL ANIM
             Config/Mod_1635901197_FacialAnimationMod.xml now carries 70 Human-RimMandrake*
             entries (86 -> 156). Backup + result both in deployed/config/ as
             BEFORE-/AFTER-rimmandrake-exclude-2026-08-15.xml.
+          OWNER CONFIRMED 2026-08-15, game down: the FA disfigurement was seen on MANY
+          of the races, not one. Retest on the next load; no redeploy is owed for FA.
+          COVERAGE VERIFIED by CHECK against the deployed config, game down: 156 entries,
+          69 Human-RimMandrake*, and the mod ships 69 XenotypeDefs - `comm` of the two
+          lists is EMPTY both ways. Zero species left unprotected. ⚠️ The count is 69,
+          not 70; "70" in this item and its result block is off by one and the 69 is the
+          measured number. Nothing to fix, nothing to redeploy - it goes live at startup.
           TEST: spawn one RimMandrakeRodian and look at it. Snoot visible = FA fix works
           and the whole art failure is closed. Still a human face = FA is not the cause
           and D-CHK2/the head-gene findings move back up.
