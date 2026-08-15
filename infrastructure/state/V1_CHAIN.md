@@ -73,9 +73,23 @@ loaded but not listed            0
 sources        564 workshop · 15 local · 6 Core+DLC
 ```
 
-⇒ **These 585 ARE the frozen set.** A mod ships unless it is explicitly cut.
-The freeze is not an audit of 585 mods; it is a reconciliation of the three
-decision docs against this list, and only the divergences need a ruling.
+⇒ **These 585 ARE the frozen set — owner's ruling, 2026-08-14.** A mod ships
+unless it is explicitly cut. The freeze is not an audit of 585 mods; it is a
+reconciliation of the decision docs against this list, and only the divergences
+need a ruling.
+
+🔴 **The freeze is TWO files, not one.** Cherry Picker runs at load order 11 and
+deletes defs the mod list still contains, so `ModsConfig.xml` alone leaves half
+the def universe undefined. Both are frozen at
+`deployed/config/v1_freeze/` — see its README. Two of the owner's gene picks
+had gone missing from the live Cherry Picker config and are restored (24 keys).
+
+**Seven tooling mods stay in**, deliberately, and are recorded as tooling:
+Better Stacktraces · Cherry Picker · Character Editor + retexture · Slower Pawn
+Tick Rate · Dubs Performance Analyzer · Performance Optimizer · RimDefDump.
+
+**Not covered:** the 624 installed-but-inactive mods are unswept, and load ORDER
+is not pinned (B25a).
 
 **Two claimed contradictions, both settled:**
 - `lee.theforce.lightsaber` "active but not installed" is **false** — it is

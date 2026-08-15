@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<SettingsBlock>
+	<ModSettings Class="CherryPicker.ModSettings_CherryPicker">
+		<keys>
+			<li>IncidentDef/ShamblerAssault</li>
+			<li>IncidentDef/ShamblerSwarm</li>
+			<li>IncidentDef/SmallShamblerSwarm</li>
+			<li>IncidentDef/ShamblerSwarmAnimals</li>
+			<li>PawnKindDef/ShamblerSoldier</li>
+			<li>PawnKindDef/ShamblerSwarmer</li>
+			<li>PawnKindDef/Ghoul</li>
+			<li>RecipeDef/GhoulInfusion</li>
+			<li>IncidentDef/GhoulAttack</li>
+			<li>PawnKindDef/Metalhorror</li>
+			<li>IncidentDef/CreepJoinerJoin_Metalhorror</li>
+			<li>PawnKindDef/Trispike</li>
+			<li>ThingDef/GoldenCube</li>
+			<li>ThingDef/WarpedObelisk_Duplicator</li>
+			<li>IncidentDef/WarpedObelisk_Duplicator</li>
+			<li>ThingDef/WarpedObelisk_Abductor</li>
+			<li>IncidentDef/WarpedObelisk_Abductor</li>
+			<li>ThingDef/RevenantSpine</li>
+			<li>ThingDef/VoidNode</li>
+			<li>ThingDef/GravForge</li>
+			<li>RecipeDef/Make_GravcoreGF</li>
+			<li>ThingDef/AdvShip_GravReactor</li>
+			<li>GeneDef/AG_MeatBurst</li>
+			<li>GeneDef/Turn_Gene_FleshbeastBurster</li>
+		</keys>
+	</ModSettings>
+</SettingsBlock>
