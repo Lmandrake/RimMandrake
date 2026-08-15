@@ -7,6 +7,22 @@ cherrypick sessions; tick a row when its pass is finished.
 entries, and **every entry is reversible by editing one file**. Nothing here is
 destructive, so we can be decisive and correct later.
 
+## 🔴 The principle — owner, 2026-08-15
+
+> *"We're doing a trimming pass right now to get rid of things we KNOW we won't
+> need. Easy cuts, obvious cuts, so that we're working with smaller item sets and
+> closing in on a playable game. But it still needs human verification."*
+
+⇒ **Obvious cuts only, and every batch is verified by the owner.** The point is to
+shrink the working set before the hard passes (weapons, armour), not to make fine
+judgements now.
+
+⛔ **A rejected principle, recorded so it is not re-proposed:** *"we cut the
+faction, so cut its gear too."* **Wrong.** The owner: *"we often accept silly
+races in order to get the gear from their mod. That's a bad assumption. We can
+always rename things."* Fiction of a race or faction says nothing about whether
+its gear is wanted.
+
 ## The three kinds of row
 
 Not every category can be reviewed the same way. The honest split:
@@ -30,7 +46,7 @@ Not every category can be reviewed the same way. The honest split:
 
 | ✔ | # | category | size | the unit we decide in | why this order |
 |---|---|---|---|---|---|
-| ☐ | 1 | **Already-cut factions' gear** | ~70 items | by mod | Easiest possible start. We removed the faction; its gear still circulates in trade and loot |
+| ☐ | 1 | **The fantasy / medieval block** | 8 mods, ~446 things | by mod | Dark Ages, dungeon and monster content. Nothing in it renames into Star Wars — the clearest "we know we won't need it" case |
 | ☐ | 2 | **Weapons** | **845** | by mod first (60), then by tier | The hardest and the most load-bearing — pawn types cannot be equipped until it lands |
 | ☐ | 3 | **Armour / apparel** | **886** | by mod, then by layer | No list exists at all today. Same blocker as weapons |
 | ☐ | 4 | **Creatures / beasts** | **2,387** | by mod and by theme | Fiction-visible on the map. Your dinosaur review sits here |
@@ -70,3 +86,18 @@ Reviewing these per-def is not possible and pretending otherwise wastes sessions
 - A principle you accept once is applied to everything it covers, and I list what
   it swept so you can spot-check rather than re-read.
 - Anything you are unsure about goes to a **hold** list rather than a guess.
+
+## Holds — decided later, on purpose
+
+| item | why it is held |
+|---|---|
+| **`[AB] Xenotype: Yautja`** | Owner, 2026-08-15: keep for now, revisit **after `D23`** builds our own xenotype set. Its 432 genes and 9 xenotypes are the cost; 13 melee weapons on a clean AP 0.60 tier are the benefit. Nothing external depends on it, and the `.rid`/`.xtp` references are mod-list stamps, not dependencies |
+| **Megafauna** · **Mythic Ages: Megafauna Bestiary** | The design uses megafauna as the counter to Junker warcaskets. Big desert beasts fit the setting |
+| **Onimods: Electric Torches and Braziers** | Sounds medieval, is lighting. Plausible on a scavenger world |
+
+## Method
+
+**Whole-mod removals go through `ModsConfig`**, not Cherry Picker — 446 def-by-def
+entries would be absurd. Reversible by re-ticking, but needs a game-down window
+and carries `Could not resolve cross-reference` risk.
+**Cherry Picker is for surgical cuts inside mods we keep.**
