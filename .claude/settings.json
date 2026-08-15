@@ -12,6 +12,12 @@
             "command": "python3 \"${CLAUDE_PROJECT_DIR:-.}/.claude/hooks/block_blanket_git_stage.py\" 2>/dev/null || true",
             "timeout": 10,
             "statusMessage": "Checking git staging scope"
+          },
+          {
+            "type": "command",
+            "command": "python3 \"${CLAUDE_PROJECT_DIR:-.}/.claude/hooks/warn_unclosed_queue_item.py\" 2>/dev/null || true",
+            "timeout": 10,
+            "statusMessage": "Checking for a Closes: trailer"
           }
         ]
       }
