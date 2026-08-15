@@ -323,3 +323,46 @@ verify:   the live Cherry Picker config and
           after every batch.
 criteria: the campaign's content reads as one setting rather than 584 mods.
 state:    doing
+
+## D28 Second pass on the xenotypes, once they are actually spawning
+row:      7
+spec:     Owner, 2026-08-15. **Gated: do not start until every pawn kind spawns
+          using our own xenotypes** — that is chain step 4 landing and step 7
+          consuming it (`D23`, and the `PawnKindDef` work that follows). The
+          reason for the gate is that a genome is only judgeable once you can see
+          what it produces; revising one on paper first is guesswork that gets
+          redone.
+          Once the gate opens, five passes over the set:
+          (a) **Revise the genomes.** The first cut was assembled to make pawns
+              exist at all. Now they exist, so the question changes to whether
+              each gene earns its place and whether the metabolic and complexity
+              costs are ones we chose rather than inherited.
+          (b) **Audit the sizes.** Body size is where amalgamated races go wrong
+              most visibly — a Wookiee that reads as a tall human, a Jawa that
+              reads as a child rather than a small adult. Check it against what
+              actually renders, not against the field value.
+          (c) **Massively improve the text.** Labels, descriptions and gene
+              descriptions carry the setting more than any other field, and
+              inherited donor-mod prose is the loudest way a stack of 500 mods
+              announces itself. This is the largest of the five and the one most
+              likely to be underestimated.
+          (d) **Pick the graphical-improvement candidates.** Not all of them —
+              name the few where better art would change how the campaign reads,
+              and hand those to `generating-rimworld-sprites`. Read
+              `design/Jawa/mods/repurposed_graphics.md` before commissioning
+              anything.
+          (e) **Cherrypick out the rest.** A xenotype that is fine but not part of
+              THIS campaign gets cut here.
+          ⚠️ **(e) is a Utinni cut, not a RimMandrake deletion.** The split is the
+          point: `design/` decides what this campaign contains, and cutting a
+          xenotype from the Utinni campaign must not remove it from the toolkit
+          or from the def set other campaigns could draw on. Cut via Cherry
+          Picker, which is per-config and reversible — never by deleting defs.
+verify:   every surviving xenotype has authored text rather than donor-mod prose;
+          sizes checked against a rendered pawn; the cut list is in Cherry Picker
+          and `deployed/config/v1_freeze/`; the graphics candidates are named in a
+          BUILD item rather than left as an intention.
+criteria: the roster reads as one authored set of species, and nothing in it is
+          there merely because a donor mod shipped it.
+state:    blocked — waiting on the pawn kinds to spawn with our xenotypes (`D23`
+          and chain step 7).
