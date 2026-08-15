@@ -30,11 +30,36 @@
 <Defs>
 
   <!-- The player's starting stock and anything the game generates as "one of
-       ours". Derived from the vanilla Colonist so it inherits the normal
-       apparel/weapon money and skill spread; only the xenotype is imposed. -->
-  <PawnKindDef ParentName="Colonist">
+       ours".
+
+       ⚠️ `ParentName` names a def's `Name=` ATTRIBUTE, never its defName. Vanilla
+       `Colonist` carries no `Name=`, so it cannot be inherited from — the only
+       named ancestor is `BasePlayerPawnKind`, which holds the race/willpower/
+       gear-quality half and NOT the apparel money, tags or faction. Those are
+       restated here verbatim from Core `PawnKinds_Player.xml`. A ParentName that
+       resolves to nothing does not warn: the def is DISCARDED at load. -->
+  <PawnKindDef ParentName="BasePlayerPawnKind">
     <defName>Jawa_Colonist</defName>
     <label>Jawa scavenger</label>
+    <defaultFactionDef>PlayerColony</defaultFactionDef>
+    <chemicalAddictionChance>0.06</chemicalAddictionChance>
+    <apparelTags>
+      <li>IndustrialBasic</li>
+    </apparelTags>
+    <apparelAllowHeadgearChance>0</apparelAllowHeadgearChance>
+    <apparelMoney>350~600</apparelMoney>
+    <backstoryCryptosleepCommonality>1</backstoryCryptosleepCommonality>
+    <techHediffsChance>0.03</techHediffsChance>
+    <techHediffsMoney>50~800</techHediffsMoney>
+    <techHediffsTags>
+      <li>Poor</li>
+      <li>Simple</li>
+      <li>ImplantEmpireCommon</li>
+    </techHediffsTags>
+    <techHediffsDisallowTags>
+      <li>PainCauser</li>
+    </techHediffsDisallowTags>
+    <initialResistanceRange>13~21</initialResistanceRange>
     <xenotypeSet>
       <xenotypeChances>
         <MandrakeJawa>1.0</MandrakeJawa>
@@ -43,8 +68,10 @@
   </PawnKindDef>
 
   <!-- The indigenous tribes' rank and file. Tribal parent, not Colonist, so
-       they arrive with neolithic-appropriate gear rather than colony kit. -->
-  <PawnKindDef ParentName="Tribal_Berserker">
+       they arrive with neolithic-appropriate gear rather than colony kit.
+       `TribalWarriorBase` is Core's `Tribal_Warrior` — the tribal melee line.
+       `Tribal_Berserker` sits beside it with no `Name=` and cannot be a parent. -->
+  <PawnKindDef ParentName="TribalWarriorBase">
     <defName>Jawa_Tribal_Scavenger</defName>
     <label>Jawa scrounger</label>
     <xenotypeSet>
@@ -54,7 +81,7 @@
     </xenotypeSet>
   </PawnKindDef>
 
-  <PawnKindDef ParentName="Tribal_Archer">
+  <PawnKindDef ParentName="TribalArcherBase">
     <defName>Jawa_Tribal_Slinger</defName>
     <label>Jawa slinger</label>
     <xenotypeSet>
@@ -64,7 +91,7 @@
     </xenotypeSet>
   </PawnKindDef>
 
-  <PawnKindDef ParentName="Tribal_ChiefMelee">
+  <PawnKindDef ParentName="TribalChiefBase">
     <defName>Jawa_Tribal_Elder</defName>
     <label>Jawa clan elder</label>
     <xenotypeSet>
