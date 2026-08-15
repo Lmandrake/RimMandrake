@@ -401,7 +401,7 @@ for (const [mod, list] of groups) {
     if (!c.img) tags.push('<span class="tag nos">' + esc(c.missing) + '</span>');
     d.innerHTML =
       '<div class="thumb">' + (c.img
-        ? '<img loading="lazy" src="/img/' + D.category + '/' + c.i + '" alt="">'
+        ? '<img loading="lazy" src="/img/' + D.category + '/k/' + encodeURIComponent(c.key) + '" alt="">'
         : '<div class="nosprite">NO SPRITE</div>') + '</div>' +
       '<div class="lbl">' + esc(c.label) + '</div>' +
       '<div class="dn">' + esc(c.defName || c.key) + '</div>' +
@@ -575,6 +575,29 @@ class Handler(BaseHTTPRequestHandler):
                               {"Cache-Control": "no-store"})
         if path.startswith("/img/"):
             parts = path.split("/")
+            # /img/<cat>/k/<key> — keyed by the cell's stable key, so a
+            # regeneration that reorders cells cannot serve a cached image
+            # against the wrong item. The index form below is legacy.
+            if len(parts) == 5 and parts[3] == "k":
+                name = parts[2]
+                if name not in CATEGORIES:
+                    return self._err(404, "bad image path")
+                cat = category(name)
+                key = urllib.parse.unquote(parts[4])
+                fp = None
+                for c, f in zip(cat.cells, cat.files):
+                    if c.get("key") == key:
+                        fp = f
+                        break
+                if not fp:
+                    return self._err(404, "no sprite")
+                try:
+                    data = Path(fp).read_bytes()
+                except OSError as exc:
+                    return self._err(404, f"unreadable: {exc}")
+                ctype = mimetypes.guess_type(fp)[0] or "application/octet-stream"
+                return self._send(200, data, ctype,
+                                  {"Cache-Control": "no-cache"})
             if len(parts) != 4:
                 return self._err(404, "bad image path")
             name, idx = parts[2], parts[3]
@@ -591,7 +614,7 @@ class Handler(BaseHTTPRequestHandler):
                 return self._err(404, f"unreadable: {exc}")
             ctype = mimetypes.guess_type(fp)[0] or "application/octet-stream"
             return self._send(200, data, ctype,
-                              {"Cache-Control": "public, max-age=86400"})
+                              {"Cache-Control": "no-cache"})
         if path.startswith("/decisions/"):
             name = posixpath.basename(path)
             if name not in CATEGORIES:
