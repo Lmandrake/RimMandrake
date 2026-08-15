@@ -201,6 +201,10 @@ def snapshot():
         "overall": {"done": don, "total": tot,
                     "pct": round(100.0 * don / tot) if tot else 0},
         "blockers": jload("blockers.json", {"classes": []}),
+        # Declared game state, which is NOT the same fact as host()'s RSS reading:
+        # one is what a seat claims, the other is whether the process exists. The
+        # page reconciles them, because the disagreement is the interesting case.
+        "game": jload("status/game.json", {}),
         "host": host(),
         "agents": agents(),
         "inventory": inventory(),

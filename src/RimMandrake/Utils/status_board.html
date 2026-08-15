@@ -83,6 +83,9 @@
       <p class="ttl">AGENTS</p><div id="seats"></div>
     </div>
     <div class="panel">
+      <p class="ttl">GAME</p><div id="game"></div>
+    </div>
+    <div class="panel">
       <p class="ttl">HOST</p><div id="host"></div>
     </div>
   </div>
@@ -107,6 +110,24 @@ const el=id=>document.getElementById(id);
 // Progress colour is a judgement, not decoration: red under a third, amber under
 // two thirds, green above. Same thresholds everywhere on the page.
 const pc=p=>p>=67?C.grn:p>=34?C.amb:C.red;
+
+// Two independent facts about RimWorld: `declared` is what a seat wrote into
+// status/game.json, `up` is whether the process is actually resident. Trust
+// neither over the other — when they disagree the claim is stale, and a stale
+// PLAYABLE is what makes BUILD park deploys it could have run.
+function gameState(d){
+  const g=d.game||{}, up=(d.host||{}).rimworld_gb!=null;
+  const s=(g.state||'').toUpperCase();
+  const stale=s&&s!=='DOWN'&&!up;
+  const label=stale?'STALE':(s||(up?'UP':'DOWN'));
+  const col=stale?C.red:!up?C.mut:s==='PLAYABLE'?C.grn:s?C.amb:C.blu;
+  return {g,up,s,stale,label,col};
+}
+const agoStr=t=>{
+  if(!t) return '';
+  const m=Math.floor(Date.now()/1000-t)/60;
+  return m<1?'just now':m<60?Math.floor(m)+'m ago':(m/60).toFixed(1)+'h ago';
+};
 const pct=(d,t)=>t?Math.round(100*d/t):0;
 
 function bar(d,t,col){
@@ -150,14 +171,14 @@ function render(d){
   const complete=rows.filter(r=>rowTot(r)&&rowDone(r)===rowTot(r)).length;
   const blocked=(d.blockers.classes||[]).reduce((a,c)=>a+c.count,0);
   const live=Object.values(d.agents||{}).filter(a=>a.state==='busy').length;
+  const gm=gameState(d);
 
   el('kpis').innerHTML=[
     ['ITEMS DONE',`${o.done}/${o.total}`,pc(o.pct)],
     ['ROWS COMPLETE',`${complete}/${rows.length}`,pc(pct(complete,rows.length))],
     ['BLOCKED',blocked,blocked?C.red:C.grn],
     ['AGENTS LIVE',`${live}/4`,live?C.grn:C.mut],
-    ['RIMWORLD',d.host.rimworld_gb!=null?d.host.rimworld_gb+' GB':'down',
-      d.host.rimworld_gb!=null?C.blu:C.mut],
+    ['RIMWORLD',gm.label,gm.col],
   ].map(([l,v,c])=>`<div class="panel kpi"><div class="v" style="color:${c}">${v}</div>
      <div class="l">${l}</div></div>`).join('');
 
@@ -176,6 +197,25 @@ function render(d){
       <span class="n" style="color:${SEATC[s]}">${s}</span>
       <span class="i">${a.item||'<i style="opacity:.5">'+a.state+'</i>'}</span></div>`;
   }).join('');
+
+  const gg=gm.g;
+  el('game').innerHTML=
+    `<div class="cur"><div class="h">
+       <span class="dot" style="background:${gm.col};margin:0"></span>
+       <span style="color:${gm.col};font-weight:700">${gm.label}</span>
+       ${gg.by?`<span class="i" style="margin-left:8px">held by ${gg.by}</span>`:''}
+       ${gg.at?`<span class="i" style="margin-left:8px;opacity:.7">${agoStr(gg.at)}</span>`:''}
+     </div>`+
+    (gm.stale?`<div class="w" style="color:${C.red}">claims ${gm.s} but no RimWorld
+        process is resident — the claim is stale, deploys are NOT blocked.</div>`:'')+
+    (d.host.rimworld_gb!=null?`<div class="w">process resident, ${d.host.rimworld_gb} GB</div>`:'')+
+    (gg.note?`<div class="y">${gg.note}</div>`:'')+
+    (gg.left?`<div class="y">left on map: ${gg.left}</div>`:'')+
+    (gg.lease&&Object.keys(gg.lease).length
+      ?`<div class="y">lease: ${Object.entries(gg.lease).map(([k,v])=>k+'='+v).join(', ')}</div>`:'')+
+    (!gg.state?`<div class="w" style="color:${C.mut};opacity:.6">
+        — no seat has declared game state</div>`:'')+
+    `</div>`;
 
   const h=d.host||{};
   el('host').innerHTML=
@@ -230,7 +270,10 @@ function render(d){
     `<b>${o.done} of ${o.total}</b> v1 items done (${o.pct}%), <b>${complete} of ${rows.length}</b> rows fully closed. `+
     (blocked?`<b style="color:${C.red}">${blocked} blocked</b>, most on <b>${worst.label}</b>. `:'Nothing blocked. ')+
     (live?`${live} agent${live>1?'s':''} working. `:'No agent is working. ')+
-    (d.host.rimworld_gb!=null?`RimWorld is up (${d.host.rimworld_gb} GB).`:'RimWorld is down — CHECK items cannot run.');
+    (gm.stale?`<b style="color:${C.red}">Game state is stale</b> — ${gm.g.by||'a seat'} left it
+        at ${gm.s} but the process is gone.`
+     :gm.up?`RimWorld is <b>${gm.s||'up'}</b> (${d.host.rimworld_gb} GB)${gm.g.by?', held by '+gm.g.by:''}.`
+     :'RimWorld is down — CHECK items cannot run.');
 }
 
 const tick=()=>fetch('/data',{cache:'no-store'}).then(r=>r.json()).then(render)
