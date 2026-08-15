@@ -56,7 +56,9 @@ Everything here was read out of a running game or off an artifact a running game
 
 ## ModsConfig.xml
 
-- **The active-mod count is 575** (`activeMods`), read 2026-08-15 11:58.
+- **The active-mod count is 576** (`activeMods`), read 2026-08-15 13:43. It was 575 at
+  11:58 — a seat added one during this shutdown window. ⚠️ **This number moves; read the
+  file, never this line.** It is here to show the counting method, not to be quoted.
 - ⚠️ **Counting `<li>` across the whole file gives 580 and is WRONG.** The file has a
   second list, `knownExpansions`, holding the 5 DLC ids, and they are duplicates of ids
   already in `activeMods`. Scope the count to inside `<activeMods>…</activeMods>`, or
@@ -68,9 +70,12 @@ Everything here was read out of a running game or off an artifact a running game
   references, **251 resolve, 0 dangling**, 16 UNMEASURABLE (all `AbilityDef`, the dump
   blind spot above). It carries **101 precepts** — not the 82 written in earlier notes.
 - **`MandrakeJawa.xtp` is CLEAN**: 36/36 references resolve.
-- Both carry a `<modIds>` provenance block of 585 mods, of which **11 no longer load**.
-  That is **provenance, not a dependency list** — harmless on its own, and it matters
-  only if a reference also fails to resolve. Neither file has one.
+- ⚠️ `The Salvation.rid`'s provenance was REPOINTED at the live set in `a9b2509` — it now
+  carries 576 modIds matching `activeMods` exactly, both directions, with none stale.
+  Re-validated after that rewrite: references unchanged, still zero dangling.
+  `MandrakeJawa.xtp` still carries the ORIGINAL 585 with 11 no longer active. That is
+  **provenance, not a dependency list** — harmless, and it matters only if a reference
+  also fails to resolve. Neither file has one.
 - ✅ **The 19 empty `<li>` entries are NORMAL and need no live check** — retracted, I
   raised them as suspicious and they are not. Vanilla `Technocracy.rid` has the same
   shape (22 empty in `hairFrequencies`, 11 in `beardFrequencies`): Scribe writes
