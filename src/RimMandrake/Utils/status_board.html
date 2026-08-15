@@ -159,11 +159,14 @@ function gameState(d){
   const overdue = s==='LOADING'&&up&&age!=null&&age>LOADING_TTL;
   const timedOut = s==='LOADING'&&up&&(doneByLog||overdue);
   const stale = dead||timedOut;
-  const label = dead?'STALE'
+  // The tile answers one question — is the game up? — so a dead process reads
+  // DOWN, not STALE. The stamp being wrong is a footnote in the panel, not the
+  // headline: STALE told you a seat had slipped, which is not what you asked.
+  const label = dead?'DOWN'
               : (s==='LOADING'&&doneByLog)?'UP'
               : overdue?'LOADING?'
               : (s||(up?'UP':'DOWN'));
-  const col=dead?C.red:!up?C.mut
+  const col=!up?C.mut
            :(s==='LOADING'&&doneByLog)?C.grn
            :overdue?C.red:s==='PLAYABLE'?C.grn:s?C.amb:C.blu;
   return {g,up,s,stale,dead,timedOut,doneByLog,overdue,age,label,col};
@@ -288,8 +291,11 @@ function render(d){
        ${gg.by?`<span class="i" style="margin-left:8px">held by ${gg.by}</span>`:''}
        ${gg.at?`<span class="i" style="margin-left:8px;opacity:.7">${agoStr(gg.at)}</span>`:''}
      </div>`+
-    (gm.dead?`<div class="w" style="color:${C.red}">claims ${gm.s} but no RimWorld
-        process is resident — the claim is stale, deploys are NOT blocked.</div>`:'')+
+    // Fires whenever the process is absent, not only when the stamp is wrong —
+    // the window matters most when the game is correctly and deliberately down.
+    (!gm.up?`<div class="w" style="color:${C.grn}">⬛ SHUTDOWN WINDOW OPEN — companion
+        DLLs, mod-list and load-order changes can only land now.${gm.dead?
+        ` <span style="color:${C.mut}">(stamp still says ${gm.s}.)</span>`:''}</div>`:'')+
     (gm.doneByLog&&gm.s==='LOADING'?`<div class="w" style="color:${C.amb}">Player.log says
         this launch finished loading, so the game is UP. ${gm.g.by||'A seat'} left the
         stamp at LOADING ${Math.round(gm.age/60)} min ago — the log is the witness here,
@@ -388,8 +394,8 @@ function render(d){
     `<b>${o.done} of ${o.total}</b> v1 items done (${o.pct}%), <b>${complete} of ${rows.length}</b> rows fully closed. `+
     (blocked?`<b style="color:${C.red}">${blocked} blocked</b>, most on <b>${worst.label}</b>. `:'Nothing blocked. ')+
     `${up} of 4 seats up, ${live} working. `+
-    (gm.dead?`<b style="color:${C.red}">Game state is stale</b> — ${gm.g.by||'a seat'} left it
-        at ${gm.s} but the process is gone.`
+    (!gm.up?`<b style="color:${C.grn}">RimWorld is DOWN — the shutdown window is open.</b>
+        DLL, mod-list and load-order changes land now or wait for the next one.`
      :gm.timedOut?`RimWorld is <b>UP</b> (${d.host.rimworld_gb} GB) — the log says this
         launch finished loading, though ${gm.g.by||'a seat'} left the stamp at LOADING
         ${Math.round(gm.age/60)} min ago.`
