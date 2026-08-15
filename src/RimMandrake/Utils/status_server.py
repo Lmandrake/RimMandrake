@@ -82,6 +82,10 @@ def agents():
             name = (r.get("name") or "").upper()
             if not name.startswith("AGENT "):
                 continue
+            # Other repos' sessions show up in this list too. A seat is only
+            # this project's seat if its cwd is this project.
+            if r.get("cwd") and os.path.realpath(r["cwd"]) != os.path.realpath(ROOT):
+                continue
             seat = name[6:].strip()
             if seat not in st:
                 continue
@@ -96,6 +100,9 @@ def agents():
                 d = json.load(fh)
             st[s]["item"] = d.get("item", "")
             st[s]["why"] = d.get("why", "")
+            # How old the seat's own line is. Without it a ten-hour-old CURRENTLY
+            # entry reads exactly like one written a minute ago.
+            st[s]["said_at"] = d.get("updated")
         except Exception:
             pass
     return st

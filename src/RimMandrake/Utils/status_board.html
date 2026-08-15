@@ -39,13 +39,14 @@
   .bar.empty{background:transparent;border-style:dashed;border-color:#1b2431}
   .bar.empty b{color:#495666;text-shadow:none;font-weight:400}
   tr.empty td.name{color:#5a6673;font-weight:400}
-  /* The tally gets a reserved column and the bar is capped to what is left,
-     or a 100%-width bar clips its own number off the end of the cell. */
-  .barwrap{display:flex;align-items:center;gap:8px;min-width:96px}
-  .barwrap .bar{min-width:14px;flex:0 0 auto;max-width:calc(100% - 46px)}
-  .barwrap .tally{position:static;display:block;font-size:11px;font-weight:700;
-                  color:var(--mut);text-shadow:none;flex:0 0 auto;width:38px;
-                  text-align:right;font-variant-numeric:tabular-nums}
+  /* The tally sits INSIDE its bar, centred. Trailing it outside put every
+     number at a different x, which reads as scattered rather than as a column. */
+  .barwrap{display:flex;align-items:center;min-width:96px}
+  .barwrap .bar{min-width:52px;flex:0 0 auto}
+  .barwrap .tally{position:absolute;inset:0;display:flex;align-items:center;
+                  justify-content:center;font-size:11px;font-weight:700;
+                  color:#f2f6fa;text-shadow:0 1px 2px rgba(0,0,0,.85);
+                  font-variant-numeric:tabular-nums;pointer-events:none}
   .bar b{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;
          font-size:11px;font-weight:700;text-shadow:0 1px 2px #000}
   .dot{width:9px;height:9px;border-radius:50%;display:inline-block;margin-right:7px}
@@ -142,13 +143,21 @@ const pc=p=>p>=67?C.grn:p>=34?C.amb:C.red;
 // status/game.json, `up` is whether the process is actually resident. Trust
 // neither over the other — when they disagree the claim is stale, and a stale
 // PLAYABLE is what makes BUILD park deploys it could have run.
+// A cold load is ~25-30 min, so a LOADING claim older than 35 is no longer
+// describing anything — the load either finished or died, and either way the
+// stamp is not evidence. Measured 2026-08-15: LOADING sat 73 minutes after the
+// game had actually reached the menu.
+const LOADING_TTL = 35*60;
 function gameState(d){
   const g=d.game||{}, up=(d.host||{}).rimworld_gb!=null;
   const s=(g.state||'').toUpperCase();
-  const stale=s&&s!=='DOWN'&&!up;
-  const label=stale?'STALE':(s||(up?'UP':'DOWN'));
+  const age=g.at?(Date.now()/1000-g.at):null;
+  const dead  = s&&s!=='DOWN'&&!up;                       // claims up, no process
+  const timedOut = s==='LOADING'&&up&&age!=null&&age>LOADING_TTL;
+  const stale = dead||timedOut;
+  const label = dead?'STALE':timedOut?'LOADING?':(s||(up?'UP':'DOWN'));
   const col=stale?C.red:!up?C.mut:s==='PLAYABLE'?C.grn:s?C.amb:C.blu;
-  return {g,up,s,stale,label,col};
+  return {g,up,s,stale,dead,timedOut,age,label,col};
 }
 const agoStr=t=>{
   if(!t) return '';
@@ -175,8 +184,8 @@ function stack(mix,t,mx){
   // Floor of 16% so a single item is still a readable chip, not a sliver.
   const w=Math.max(16,100*t/(mx||1));
   return `<div class="barwrap"><div class="bar" style="width:${w}%">`
-       + `<div class="segs">${segs}</div></div>`
-       + `<b class="tally">${done}/${t}</b></div>`;
+       + `<div class="segs">${segs}</div>`
+       + `<b class="tally">${done}/${t}</b></div></div>`;
 }
 
 function bar(d,t,col){
@@ -219,6 +228,10 @@ function render(d){
   const rowTot =r=>Object.values(r.cells||{}).reduce((a,c)=>a+(c.total||0),0);
   const complete=rows.filter(r=>rowTot(r)&&rowDone(r)===rowTot(r)).length;
   const blocked=(d.blockers.classes||[]).reduce((a,c)=>a+c.count,0);
+  // "Up" means the seat has a session at all. Counting only `busy` reported 1
+  // of 4 while all four were open — an idle seat between items is present, not
+  // absent, and that is the question this tile answers.
+  const up  =Object.values(d.agents||{}).filter(a=>a.state!=='offline').length;
   const live=Object.values(d.agents||{}).filter(a=>a.state==='busy').length;
   const gm=gameState(d);
 
@@ -228,7 +241,7 @@ function render(d){
     ['ROWS COMPLETE',`${complete}/${rows.length}`,pc(pct(complete,rows.length))],
     ['ON YOU',onYou,onYou?C.red:C.grn],
     ['BLOCKED',blocked,blocked?C.amb:C.grn],
-    ['AGENTS LIVE',`${live}/4`,live?C.grn:C.mut],
+    ['SEATS UP',`${up}/4`,up===4?C.grn:up?C.amb:C.mut],
     ['RIMWORLD',gm.label,gm.col],
   ].map(([l,v,c])=>`<div class="panel kpi"><div class="v" style="color:${c}">${v}</div>
      <div class="l">${l}</div></div>`).join('');
@@ -266,8 +279,11 @@ function render(d){
        ${gg.by?`<span class="i" style="margin-left:8px">held by ${gg.by}</span>`:''}
        ${gg.at?`<span class="i" style="margin-left:8px;opacity:.7">${agoStr(gg.at)}</span>`:''}
      </div>`+
-    (gm.stale?`<div class="w" style="color:${C.red}">claims ${gm.s} but no RimWorld
+    (gm.dead?`<div class="w" style="color:${C.red}">claims ${gm.s} but no RimWorld
         process is resident — the claim is stale, deploys are NOT blocked.</div>`:'')+
+    (gm.timedOut?`<div class="w" style="color:${C.red}">still says LOADING after
+        ${Math.round(gm.age/60)} min. A cold load is ~25–30. The process is alive, so
+        the load finished and CHECK has not restamped — do not trust this state.</div>`:'')+
     (d.host.rimworld_gb!=null?`<div class="w">process resident, ${d.host.rimworld_gb} GB</div>`:'')+
     (gg.note?`<div class="y">${gg.note}</div>`:'')+
     (gg.left?`<div class="y">left on map: ${gg.left}</div>`:'')+
@@ -335,11 +351,20 @@ function render(d){
 
   // What each agent says it is doing. Written by `board.py say "<what>" --why "<why>"`.
   // An agent with no line renders the gap rather than hiding it.
+  // A seat's line is only worth reading if it is recent. Past 45 minutes it is
+  // dimmed and dated; four seats were showing lines up to ten hours old with
+  // nothing on screen to say so.
+  const SAID_STALE=45*60;
   el('current').innerHTML=['DECIDE','BUILD','CHECK','REP'].map(s=>{
     const a=(d.agents||{})[s]||{state:'offline'};
     const col={busy:C.grn,idle:C.blu,waiting:C.amb,blocked:C.red}[a.state]||C.mut;
-    return `<div class="cur"><div class="h"><span class="dot" style="background:${col};margin:0"></span>
-      <span style="color:${SEATC[s]}">${s}</span></div>`+
+    const age=a.said_at?(Date.now()/1000-a.said_at):null;
+    const old=age!=null&&age>SAID_STALE;
+    return `<div class="cur"${old?' style="opacity:.55"':''}>
+      <div class="h"><span class="dot" style="background:${col};margin:0"></span>
+      <span style="color:${SEATC[s]}">${s}</span>
+      ${a.said_at?`<span style="margin-left:auto;font-weight:400;color:${old?C.amb:C.mut}">
+         said ${agoStr(a.said_at)}</span>`:''}</div>`+
       (a.item?`<div class="w">${a.item}</div>`+(a.why?`<div class="y">${a.why}</div>`:'')
             :`<div class="w" style="color:${C.mut};opacity:.6">— no line set (${a.state})</div>`)+
       `</div>`;
@@ -349,9 +374,12 @@ function render(d){
   el('summary').innerHTML=
     `<b>${o.done} of ${o.total}</b> v1 items done (${o.pct}%), <b>${complete} of ${rows.length}</b> rows fully closed. `+
     (blocked?`<b style="color:${C.red}">${blocked} blocked</b>, most on <b>${worst.label}</b>. `:'Nothing blocked. ')+
-    (live?`${live} agent${live>1?'s':''} working. `:'No agent is working. ')+
-    (gm.stale?`<b style="color:${C.red}">Game state is stale</b> — ${gm.g.by||'a seat'} left it
+    `${up} of 4 seats up, ${live} working. `+
+    (gm.dead?`<b style="color:${C.red}">Game state is stale</b> — ${gm.g.by||'a seat'} left it
         at ${gm.s} but the process is gone.`
+     :gm.timedOut?`<b style="color:${C.red}">Game state is stale</b> — still says LOADING
+        after ${Math.round(gm.age/60)} min, but RimWorld is running (${d.host.rimworld_gb} GB),
+        so the load finished and ${gm.g.by||'a seat'} has not restamped.`
      :gm.up?`RimWorld is <b>${gm.s||'up'}</b> (${d.host.rimworld_gb} GB)${gm.g.by?', held by '+gm.g.by:''}.`
      :'RimWorld is down — CHECK items cannot run.');
 }
