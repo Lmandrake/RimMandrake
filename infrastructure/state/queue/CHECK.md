@@ -18,6 +18,26 @@ spec:     `python.exe src/RimMandrake/bridgetools/prove_new_tools.py --pawns` co
 verify:   EMPTY
 criteria: each tool returns success on a live map; `world_stats` returns `{ tiles, pct, perimeter, raggedness, centroidLat }`. A capability is announced to peers when it has RUN, not when it has compiled.
 state:    doing
+result:   2026-08-15 CHECK. EVERY never-run tool has now RUN on a live map:
+          jawa/world_stats PASS · jawa/get_roof_batch PASS · jawa/set_roof_batch PASS
+          (None -> RoofConstructed -> reverted, each verified by read-back) ·
+          jawa/fire_quest PASS (Jawa_TheClaim registered as quest 0, State=NotYetAccepted,
+          800 points) · the spawn_batch VEHICLE route PASS · plus get_defs,
+          set_pawn_xenotype, list_things, clear_ui and inspect_string earlier.
+          🔑 set_roof_batch takes `ops` ("RoofConstructed:x,z,w,h"), NOT rects+roof.
+          Passing rects+roof returns "ops is required" - a clean refusal, not a silent
+          no-op, and get_roof_batch's own `ops` output feeds straight back in as the undo.
+          🔑 A VEHICLE spawned by spawn_batch arrives as a PAWN. jawa/list_things saw
+          NOTHING at the cell; jawa/list_pawns shows AV_DogSled_PawnKind at (72,72).
+          Checking list_things alone would have read as a silent failure.
+          🔴 CRITERION NOT MET, so this stays open: world_stats does NOT return
+          { tiles, pct, perimeter, raggedness, centroidLat }. Live keys are
+          tilesTotal, waterTiles, waterPct, landPct, coastalTiles, bodiesOverMinSize,
+          bodiesTotal, minBodySize, largestBodyPct, bodies, bodiesListed, biomes,
+          previewOnly, seedString, planetCoverage, overallRainfall, overallTemperature.
+          NO perimeter, NO raggedness, NO centroidLat. C16's gate needs those three and
+          cannot be scored until the deployed tool emits them - BUILD's to answer.
+
 park:     2026-08-15 PARTIAL PARK. The pawn-APPEARANCE trio (set_pawn_rotation / set_pawn_style /
           set_pawn_xenotype) and `xenotype=` on spawn_pawn are racial - hold them until the new
           races land, then prove them against those. The REST of C1 is unaffected and still
@@ -236,6 +256,25 @@ criteria: 70 of 70 spawn with the right xenotype and a species-appropriate body.
           `factionlessGenerationWeight` is 0 on all of them, so NONE of this is
           expected to occur in normal play yet. That is the later wiring job.
 state:    doing
+spawned:  2026-08-15 CHECK. 70 OF 70 SPECIES SPAWN with the right xenotype.
+          The 5 that missed the first pass (MandrakeJawa, Abednedo, Anzati, Bith,
+          Mirialan) ALL came back correct on re-spawn, which confirms the owner's
+          early-game substitution artifact rather than any mod defect: RimWorld
+          substitutes plain colonists until the 8-colonist quota is met, and the map
+          showed exactly 8 Baseliners with 4 of the 5 in the first 6 spawn slots.
+          ⇒ NEVER name a species as failing to generate from ONE spawn pass.
+          🔴 THE ART FAILURE IS FACIAL ANIMATION, not the gene migration. FA overdraws
+          the face; its per-xenotype opt-out is keyed by defName and every one of the 86
+          entries still read Human-BTD_* / Human-OuterRim* / Human-guy762_*, so all 70
+          renamed species were unprotected at once. Fixed: 70 Human-RimMandrake* entries
+          added (86 -> 156), both sides committed under deployed/config/. NEEDS A RESTART.
+          Full mechanism written into skills/rimworld-xenotypes SKILL.md 3b.
+          ⚠️ My earlier head-gene diagnosis is DEMOTED to secondary: the Rodian snoot
+          ships and is wired (HeadAttachments/rodian) - FA was covering it. Still true
+          separately: 5 species have no head or face genes at all (Arkanian, Chiss,
+          Echani, Kaleesh, Zeltron) and Rodian's only head-TYPE forcer is the generic
+          Outland_ScaleSkin. Re-judge both AFTER the FA fix is live.
+
 result:   2026-08-15 CHECK. ROOT CAUSE FOUND for the wrong-looking pawns.
 
           WHAT PASSES (measured, not assumed):
