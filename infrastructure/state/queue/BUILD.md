@@ -1606,3 +1606,39 @@ verify:   (a) `git check-ignore -v observed/inventory/decisions_weapons.json` re
           reference, not the output.
 criteria: none — offline. Nothing here touches the game and nothing waits on a load.
 state:    ready
+
+## drive-the-batched-deploy-pass-8ad4f1
+row:      10
+spec:     Owner's answers, relayed by CHECK via REP, 2026-08-15. **The deploy pass is
+          yours** — REP does not touch deploys, and B0/B1 today were already yours.
+
+          1. **The window is LONG and open-ended.** No relaunch imminent. Spend it on
+             ASSEMBLIES first, since those are the only things that ever needed it.
+          2. **Deploy the whole parked set, batched — owner picked "all of them":**
+             `C36` (donors off, a `ModsConfig.xml` change and therefore no longer
+             window-gated at all), `C38` (JawaPlantGrowth, fast growth), `C39` (eopie
+             sled), `C41` (four animal-drawn transports). `B0`+`B1` are already closed.
+             One deploy pass, one load proves them all. Order and per-deploy traps are
+             the manifest at `infrastructure/state/NEXT_RELOAD.md` §1.0 — assemblies
+             SOLO, never a new DLL in a mixed batch, or attribution is poisoned for
+             everything beside it.
+          3. 🔴 **Every deploy lands in `queue/CHECK.md` with a validation plan and a
+             NON-EMPTY `criteria:`.** Owner: things you deploy are supposed to land in
+             CHECK's queue for testing and checkoff, and it should REQUIRE checkoff.
+             CHECK refuses a bare item on policy, so a missing `criteria:` costs you a
+             round trip. This is POLICY.md's existing rule, reaffirmed by the owner.
+          4. **CHECK is waiting on the D-CHK2 generator fix from you** — Gand, Selkath,
+             female Chagrian, Jawa mask. They stay magenta until it lands and redeploys,
+             and CHECK does not want them misread as a Facial Animation failure at the
+             next load. Get it into this pass.
+
+          FYI, no action: C37 is resolved. The disfigurement was many races, not one;
+          CHECK verified the deployed FA config game-down (156 entries, 69
+          `Human-RimMandrake*`, 69 XenotypeDefs shipped, zero species unprotected) and
+          committed `aa25203`. The "70" in the docs is off by one — 69 is measured.
+verify:   `deploy_custom_mods.py --mod <name> --plan` read before every `--apply`, one
+          mod named per call, never bare; and every deployed mod has an item in
+          `queue/CHECK.md` with a non-empty `criteria:` before you call the pass done.
+criteria: CHECK accepts all four items without bouncing one for an empty field, and the
+          next load attributes each result to exactly one deploy.
+state:    ready
