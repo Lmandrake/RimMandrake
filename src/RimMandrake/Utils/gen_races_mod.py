@@ -145,10 +145,27 @@ SOFT_AFTER = [
     "btd.xenotyperemix.starwars",
 ]
 
+# 🔴 THE COPIER IS DRIVEN FROM THESE TWO LISTS. `copy_textures` is fed by
+# `texhits`, which only `rewrite` populates -- so a field missing here is not
+# merely a path left pointing at a donor, it is art that was NEVER COPIED. The
+# symptom is a magenta box, and it appears only once the donor is switched off,
+# which is the entire scenario this mod exists for. Adding a field here is
+# therefore also the fix for the missing art behind it.
 TEXFIELDS = ("texPath", "graphicPath", "iconPath", "path", "uiIconPath",
              "maskPath", "bodyNakedGraphicPath", "bodyDessicatedGraphicPath",
-             "headDessicatedGraphicPath", "skullGraphicPath")
-TEXCONTAINERS = ("texPaths", "graphicPaths", "bodyTypeGraphicPaths")
+             "headDessicatedGraphicPath", "skullGraphicPath",
+             # Added 2026-08-15 (B66/D-CHK2). Gendered and gene-icon fields --
+             # `texPathFemale` is why female Chagrians went magenta while males
+             # rendered, which reads as intermittent rather than as a missing field.
+             "texPathFemale", "backgroundPathEndogenes", "backgroundPathXenogenes")
+# Children of these are walked and rewritten. The walk takes EVERY child, not
+# just `<li>` -- which is what lets `headPaths` work, whose children are the
+# named tags `<Male>` and `<Female>` rather than a list.
+TEXCONTAINERS = ("texPaths", "graphicPaths", "bodyTypeGraphicPaths",
+                 # Added 2026-08-15 (B66/D-CHK2): `headPaths` (Male/Female --
+                 # the Gand and Selkath heads) and `texturePaths` (<li> list --
+                 # the Gand's mask_yuun, inside BigAndSmall.GraphicSetDef).
+                 "headPaths", "texturePaths")
 SUFFIXES = ("", "_north", "_south", "_east", "_west", "_side",
             "_m", "_northm", "_southm", "_eastm", "_westm")
 
@@ -341,6 +358,24 @@ def _gene_exists(gene, g, donor_defs):
     'does this gene resolve' from that dump rejects every species the donors
     supplied -- which is the whole catalogue."""
     return gene in g or gene in donor_defs
+
+
+def _is_donor_gene(gene, g, donor_defs):
+    """Is this gene one the donors supply — judged the same way `_gene_exists`
+    judges existence, and for the same reason.
+
+    🔴 Added 2026-08-15. `main` used a bare `g[gene]["packageId"]`, which threw
+    `KeyError: 'GS_Primitive'` and stopped the generator DEAD once the three
+    donors left the mod list: their genes vanish from the dump, so the lookup
+    misses entirely rather than returning a non-donor answer. That is the
+    chicken-and-egg this whole mod exists to break — the tool that frees us from
+    the donors must not itself require them to be loaded.
+
+    Dump first (it is authoritative about attribution when present), then the
+    donors' own XML on disk, which survives being switched off."""
+    if gene in g:
+        return g[gene].get("packageId") in DONOR_PIDS
+    return gene in donor_defs
 
 
 def _is_specific(gene, species):
@@ -829,6 +864,14 @@ def write_pawnkinds(built):
         at = ET.SubElement(e, "apparelTags")
         ET.SubElement(at, "li").text = "IndustrialBasic"
         ET.SubElement(e, "apparelMoney").text = "350~600"
+        # `BasePlayerPawnKind` does not supply this, and without it every one of
+        # these kinds throws `initial resistance range is undefined for humanlike
+        # pawn kind` at load -- 69 lines, three quarters of the stack's config
+        # errors. It is also what a prisoner's recruitment resistance rolls from,
+        # so leaving it unset breaks the capture path, not just the log.
+        # `10~20` is vanilla's humanlike value. It is not a balance knob; do not
+        # retune it here.
+        ET.SubElement(e, "initialResistanceRange").text = "10~20"
         xs = ET.SubElement(e, "xenotypeSet")
         xc = ET.SubElement(xs, "xenotypeChances")
         # DICTIONARY-KEYED by defName. An <li> here silently discards the def.
@@ -844,6 +887,55 @@ def write_pawnkinds(built):
 
 # ---------------------------------------------------------------- main
 
+def _shipped_species_count():
+    """How many species the mod on disk currently ships. 0 if it is absent."""
+    p = os.path.join(OUT, "Defs/XenotypeDefs/RimMandrakeXenotypes.xml")
+    if not os.path.exists(p):
+        return 0
+    try:
+        return len(ET.parse(p).getroot().findall("XenotypeDef"))
+    except ET.ParseError:
+        return 0
+
+
+def _guard_species_regression(built, skipped):
+    """🔴 REFUSE to regenerate a SMALLER catalogue than the one we ship.
+
+    Added 2026-08-15 after this nearly shipped silently. `pick_species` reads
+    its species from the DUMP (`x`), and unlike `_gene_exists` it has no
+    on-disk fallback. Once the three donors left the mod list their xenotypes
+    left the dump with them, so the generator quietly built **57** species where
+    the mod ships **69** — dropping Herglic, Defel, Ithorian, KelDor and eight
+    others. Nothing failed; the output was simply twelve species smaller, and it
+    would have been deployed over a live mod sitting in `ModsConfig.xml`.
+
+    The old `KeyError: 'GS_Primitive'` crash was accidentally the only thing
+    preventing that. Fixing the crash removed the accident, so the protection
+    has to be deliberate. This guard is that protection — do not weaken it to
+    'just get a build out'.
+
+    The real repair is to give `pick_species` the same disk fallback
+    `_gene_exists` already has. Until then a regenerate needs a dump taken with
+    the donors ACTIVE."""
+    have, want = len(built), _shipped_species_count()
+    if want and have < want:
+        lost = "\n  ".join("%-14s %s" % (s, why) for s, why in skipped)
+        raise SystemExit(
+            "REFUSING TO WRITE: would ship %d species, but the mod on disk has "
+            "%d.\n"
+            "Regenerating now would DELETE %d species from a mod that is live "
+            "in ModsConfig.xml.\n"
+            "Cause: pick_species reads species from the def dump, and the dump "
+            "at\n  %s\nwas captured with the donors switched off, so their "
+            "xenotypes are absent.\n"
+            "Fix pick_species to fall back to the donors' XML on disk (as "
+            "_gene_exists does),\nor regenerate from a dump taken with %s "
+            "active.\n"
+            "Skipped:\n  %s"
+            % (have, want, want - have, DUMP, " + ".join(sorted(DONOR_PIDS)),
+               lost))
+
+
 def main():
     dry = "--no-textures" in sys.argv
     x, g = load_dump()
@@ -857,10 +949,10 @@ def main():
              len(stridx["SWX"]), len(stridx["OR"])), file=sys.stderr)
 
     built, skipped = pick_species(x, g, defs)
+    _guard_species_regression(built, skipped)
     tbl = species_table(x)
     used = sorted({n for b in built for n in b["genes"]})
-    seeds = [n for n in used
-             if g[n].get("packageId") in DONOR_PIDS]
+    seeds = [n for n in used if _is_donor_gene(n, g, defs)]
     # Every donor RulePackDef, not only the ones a xenotype currently names.
     # Owner's ruling: start from theirs. `include` is followed by the closure,
     # so a namer that delegates to another namer brings it along.
