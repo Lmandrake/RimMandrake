@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ============================================================================
+  JawaDeepwaterCompact.xml                    Jawa_Patches · authored 2026-08-14
+  ============================================================================
+
+  FACTION_SPEC.md section 7. Faction 7 of 14.
+
+  ParentName is `OutlanderFactionBase` (R24), which supplies factionNameMaker,
+  settlementNameMaker, factionIconPath, techLevel Industrial, leaderTitle,
+  allowedArrivalTemperatureRange and a full set of pawnGroupMakers. Everything
+  restated below is either a value the parent does not give at all, or one the
+  dossier contradicts.
+
+  🔴 `raidsForbidden` IS THE FACTION. Wardens dehydrate away from water, so this
+  faction never reaches the player as a raid. The Combat group below is KEPT
+  ANYWAY: it is what defends the settlement when the player attacks it, and
+  deleting it would leave an undefended base.
+
+  🔴 `colorSpectrum` IS NOT INHERITED. Measured on the shipped abstracts:
+  `OutlanderFactionBase` and `TribeBase` supply NO colorSpectrum — only
+  `PirateBandBase` does. R24's table says otherwise and is wrong on that one
+  field. A faction without it is set on 76 of 87 live defs, so the world map
+  draws it broken. It is set explicitly here and in all six siblings.
+
+  ⛔ NO IDEO BLOCK. R23: `fixedIdeo` / `ideoName` / `ideoDescription` /
+  `forcedMemes` / `deityPresets` land as one uniform pass in B54, for all eleven
+  faiths at once. A faction without them generates an ideo at worldgen and works.
+
+  Pawn kinds verified present in the 2026-08-14 dump (585 mods) and mapped to
+  their owning mod for `MayRequire`:
+      OuterRim_Quarren · OuterRim_QuarrenTribal · OuterRim_MonCalamari
+                                              Neronix17.OuterRim.GalacticDiversity
+  ============================================================================
+-->
+<Defs>
+
+  <FactionDef ParentName="OutlanderFactionBase">
+    <defName>Jawa_DeepwaterCompact</defName>
+    <label>Deepwater Compact</label>
+    <description>The amphibian peoples who live in the deep water and sell it to everyone, including the Empire that is hunting you. Their neutrality is a monopoly with teeth.\n\nTheir wardens cannot follow you inland, and both of you know it. Everything the Compact wants from the desert, it buys.</description>
+    <pawnSingular>water warden</pawnSingular>
+    <pawnsPlural>water wardens</pawnsPlural>
+    <leaderTitle>High Warden</leaderTitle>
+    <categoryTag>Outlander</categoryTag>
+    <techLevel>Industrial</techLevel>
+    <canMakeRandomly>true</canMakeRandomly>
+    <!-- 5 settlements, every oasis and coast. -->
+    <settlementGenerationWeight>0.7</settlementGenerationWeight>
+    <permanentEnemy>false</permanentEnemy>
+    <naturalEnemy>false</naturalEnemy>
+    <!-- The water caravan trades with EVERY faction, the Empire included. -->
+    <canRequestTraders>true</canRequestTraders>
+    <!-- Wardens dehydrate off-water. They never arrive as a raid. -->
+    <raidsForbidden>true</raidsForbidden>
+
+    <factionNameMaker>NamerFactionOutlander</factionNameMaker>
+    <settlementNameMaker>NamerSettlementOutlander</settlementNameMaker>
+    <factionIconPath>World/WorldObjects/Expanding/Village</factionIconPath>
+    <!-- R22: teal. -->
+    <colorSpectrum>
+      <li>(0.20,0.55,0.58)</li>
+      <li>(0.14,0.40,0.45)</li>
+    </colorSpectrum>
+
+    <!-- Inherit="False" IS LOAD-BEARING. RimWorld resolves inheritance AFTER
+         patches, and a child `li` list is APPENDED to the parent's, not
+         substituted for it. `OutlanderFactionBase` carries 8 group makers; without
+         this opt-out the faction fields those too and raids arrive as
+         vanilla pawns wearing our name. Vanilla itself writes it 314 times,
+         9 of them on pawnGroupMakers. -->
+    <pawnGroupMakers Inherit="False">
+      <li>
+        <!-- Never reaches the player: raidsForbidden. This is settlement defence. -->
+        <kindDef>Combat</kindDef>
+        <options>
+          <OuterRim_Quarren MayRequire="Neronix17.OuterRim.GalacticDiversity">10</OuterRim_Quarren>
+          <OuterRim_MonCalamari MayRequire="Neronix17.OuterRim.GalacticDiversity">8</OuterRim_MonCalamari>
+          <OuterRim_QuarrenTribal MayRequire="Neronix17.OuterRim.GalacticDiversity">4</OuterRim_QuarrenTribal>
+        </options>
+      </li>
+      <li>
+        <kindDef>Trader</kindDef>
+        <traders>
+          <OuterRim_MonCalamari MayRequire="Neronix17.OuterRim.GalacticDiversity">1</OuterRim_MonCalamari>
+        </traders>
+        <guards>
+          <OuterRim_Quarren MayRequire="Neronix17.OuterRim.GalacticDiversity">6</OuterRim_Quarren>
+        </guards>
+        <carriers>
+          <Muffalo>6</Muffalo>
+        </carriers>
+      </li>
+      <li>
+        <kindDef>Settlement</kindDef>
+        <options>
+          <OuterRim_MonCalamari MayRequire="Neronix17.OuterRim.GalacticDiversity">8</OuterRim_MonCalamari>
+          <OuterRim_Quarren MayRequire="Neronix17.OuterRim.GalacticDiversity">8</OuterRim_Quarren>
+        </options>
+      </li>
+    </pawnGroupMakers>
+  </FactionDef>
+
+</Defs>
