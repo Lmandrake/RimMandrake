@@ -12,19 +12,23 @@ Self-test against a real transcript, no Claude Code required:
 
 WHERE THE NUMBER COMES FROM
 ===========================
-Claude Code does not hand the status line a "context used" figure, but it does
-hand it `transcript_path`, and the transcript records the API's own accounting
-for every assistant turn. The context in play at that turn is
+Claude Code hands the status line a `context_window` block on stdin —
+`used_percentage`, `context_window_size` and a `current_usage` breakdown. That is
+authoritative and costs nothing, so it is the primary source.
+
+The transcript fallback below exists only for the gap: `used_percentage` is null
+until the session's first API response. It derives the same figure as
 
     input_tokens + cache_creation_input_tokens + cache_read_input_tokens
 
-Almost all of it is cache_read on a long session — 583k of 584k when this was
-written — which is why summing only `input_tokens` reads as a near-empty window
-and is the easy mistake here.
+from the LAST assistant turn. Two traps if you ever touch it: cache_read is ~99%
+of the total on a long session, so summing `input_tokens` alone reads as a nearly
+empty window; and each turn's figure is already cumulative, so adding turns up
+multiplies the answer by the turn count.
 
-Read the LAST assistant message with a usage block, not the sum of all of them:
-each turn's figure is already cumulative for the window, so adding them up
-multiplies the answer by the number of turns.
+⚠️ The status line runs on every turn with a 300 ms debounce. Keep it cheap —
+the fallback tails the file rather than reading it, and only runs when the
+native field is missing.
 
 WHAT IT CANNOT SHOW
 ===================
@@ -114,19 +118,32 @@ def main():
     name = model.get("display_name") or model_id or "claude"
     seat = os.environ.get("AGENT_SEAT") or ""
 
-    used = context_used(ev.get("transcript_path"))
-    win = window_for(model_id, name)
+    cw = ev.get("context_window") or {}
+    win = cw.get("context_window_size") or window_for(model_id, name)
+    used = cw.get("total_input_tokens")
+    pct = cw.get("used_percentage")
+    if used is None:                       # null until the first API response
+        used = context_used(ev.get("transcript_path"))
+    if pct is None and used is not None and win:
+        pct = 100.0 * used / win
 
     parts = []
     if seat:
         parts.append("\033[1m%s\033[0m" % seat)
-    if used is None:
-        parts.append("%s  context —" % name)
+    if pct is None:
+        parts.append("%s  \033[2mcontext —\033[0m" % name)
     else:
-        frac = min(1.0, used / float(win))
-        parts.append("%s%s\033[0m %s/%s \033[2m(%d%% used, %s left)\033[0m" % (
-            colour(frac), bar(frac), human(used), human(win),
-            round(100 * frac), human(max(0, win - used))))
+        frac = min(1.0, pct / 100.0)
+        left = "%s left" % human(max(0, win - used)) if used is not None else \
+               "%d%% left" % round(100 - pct)
+        parts.append("%s%s\033[0m %s \033[2m%s\033[0m" % (
+            colour(frac), bar(frac),
+            "%s/%s" % (human(used), human(win)) if used is not None
+            else "%d%%" % round(pct),
+            left))
+    cost = (ev.get("cost") or {}).get("total_cost_usd")
+    if isinstance(cost, (int, float)) and cost > 0:
+        parts.append("\033[2m$%.2f\033[0m" % cost)
     print("  ".join(parts))
     return 0
 

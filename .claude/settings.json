@@ -2,6 +2,11 @@
   "env": {
     "CLAUDE_CODE_DISABLE_TERMINAL_TITLE": "1"
   },
+  "statusLine": {
+    "type": "command",
+    "command": "python3 \"${CLAUDE_PROJECT_DIR:-.}/src/RimMandrake/Utils/statusline.py\"",
+    "padding": 1
+  },
   "hooks": {
     "PreToolUse": [
       {
