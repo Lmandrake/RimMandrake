@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ============================================================================
+  HomesteadDefenseLeague.xml              Jawa_Patches · authored 2026-08-14
+  ============================================================================
+
+  Builds FACTION_SPEC.md section 3, "Homestead Defense League ; PATCH vanilla
+  `OutlanderCivil`". A reskin, not a new def.
+
+  READ FROM THE SHIPPED DEF, 2026-08-14 ; not inferred:
+  C:\Program Files (x86)\Steam\steamapps\common\RimWorld\Data\Core\Defs\
+    FactionDefs\Factions_Misc.xml
+
+      ParentName                  OutlanderFactionBase
+      OWN nodes                   defName · label · description · colorSpectrum ·
+                                  classicIdeo · maxConfigurableAtWorldCreation ·
+                                  configurationListOrderPriority
+      label                       civil outlander union
+
+  🔴 EVERYTHING ELSE IS ON THE ABSTRACT PARENT, NOT ON THIS DEF.
+  `OutlanderFactionBase` is where `pawnSingular`, `pawnsPlural`, `leaderTitle`
+  and `settlementGenerationWeight` actually live. PatchOperations run BEFORE
+  def inheritance is resolved, so at patch time `OutlanderCivil` literally does
+  not have those nodes. A `Replace` on any of them matches ZERO and logs red.
+  They are `Add`s onto the child, and the child's own node wins at inheritance
+  time, which is exactly the override we want and reaches `OutlanderCivil`
+  ALONE ; patching the parent would also hit OutlanderRough and every modded
+  descendant.
+
+      pawnSingular / pawnsPlural  parent      ->  Add
+      leaderTitle                 parent      ->  Add
+      settlementGenerationWeight  parent (1)  ->  Add
+      raidsForbidden              ABSENT in the whole chain  ->  Add
+      label / description         own nodes   ->  Replace
+
+  ⛔ `pawnGroupMakers`, `factionNameMaker` and the raid curves are untouched.
+  They are inherited and already balanced; R15's group surgery is the Empire's
+  alone.
+
+  ⚠️ `raidsForbidden` is the MECHANISM for R2, not a precept. It is what makes
+  the League never raid the player, and it has no vanilla default here.
+
+  ⚠️ The ideo layer (`fixedIdeo` / `ideoName` "the Covenant of Free Wells" /
+  `deityPresets`) is NOT in this file. It lands in `FactionReligions.xml` in
+  its own pass, the same way the Empire's did.
+
+  SAFETY
+  ======
+  Everything sits inside a conditional on the def existing, so the file is a
+  silent no-op rather than a wall of red if the vessel ever moves. Every
+  defName written here is vanilla Core, so no `MayRequire` is owed.
+  ============================================================================
+-->
+<Patch>
+
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/FactionDef[defName="OutlanderCivil"]</xpath>
+    <match Class="PatchOperationSequence">
+      <operations>
+
+        <!-- "civil outlander union" -> the campaign name. -->
+        <li Class="PatchOperationReplace">
+          <xpath>/Defs/FactionDef[defName="OutlanderCivil"]/label</xpath>
+          <value><label>Homestead Defense League</label></value>
+        </li>
+
+        <li Class="PatchOperationReplace">
+          <xpath>/Defs/FactionDef[defName="OutlanderCivil"]/description</xpath>
+          <value>
+            <description>The most numerous and least centralised faction on the world — farmers on the dry flats, living off whatever their vaporators pull out of the night air.\n\nDecent, tired, and badly armed. They defend wells and they do not come looking for anyone.</description>
+          </value>
+        </li>
+
+        <!-- Inherited from OutlanderFactionBase. Add, not Replace. -->
+        <li Class="PatchOperationAdd">
+          <xpath>/Defs/FactionDef[defName="OutlanderCivil"]</xpath>
+          <value><pawnSingular>moisture farmer</pawnSingular></value>
+        </li>
+
+        <li Class="PatchOperationAdd">
+          <xpath>/Defs/FactionDef[defName="OutlanderCivil"]</xpath>
+          <value><pawnsPlural>moisture farmers</pawnsPlural></value>
+        </li>
+
+        <!-- "prime councilor" on the parent -> High Marshal. -->
+        <li Class="PatchOperationAdd">
+          <xpath>/Defs/FactionDef[defName="OutlanderCivil"]</xpath>
+          <value><leaderTitle>High Marshal</leaderTitle></value>
+        </li>
+
+        <!-- R2's mechanism. Absent throughout the chain, so this creates it. -->
+        <li Class="PatchOperationAdd">
+          <xpath>/Defs/FactionDef[defName="OutlanderCivil"]</xpath>
+          <value><raidsForbidden>true</raidsForbidden></value>
+        </li>
+
+        <!-- 1 on the parent -> 1.9. Thirteen settlements, the most on the map. -->
+        <li Class="PatchOperationAdd">
+          <xpath>/Defs/FactionDef[defName="OutlanderCivil"]</xpath>
+          <value><settlementGenerationWeight>1.9</settlementGenerationWeight></value>
+        </li>
+
+      </operations>
+    </match>
+  </Operation>
+
+</Patch>
