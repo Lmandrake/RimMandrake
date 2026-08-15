@@ -54,7 +54,12 @@ Owner, 2026-08-15, after the bridge crashed:
 - **Handing it back is the borrower's job, and it is urgent.** Tell CHECK the
   moment you are done — a borrower who goes quiet has taken the bridge
   indefinitely.
-- Two seats on the bridge at once **crashes it**. This is not a courtesy.
+- Two seats on the bridge at once **wedges it**. This is not a courtesy.
+
+⭐ **It gets STUCK, it does not crash — measured the same day.** The bridge came
+back on its own the instant the second seat's call finished, with no reload. So
+**if the bridge stops answering, find who else is on it and wait. Do not restart
+the game** — that costs 25–30 minutes and fixes nothing.
 
 ⚠️ These three messages are a **sanctioned exception** to the two-sentence rule
 under "The queue is the only channel": the ask, the grant and the hand-back are

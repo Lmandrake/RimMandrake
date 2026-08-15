@@ -13,9 +13,11 @@ the Live Bridge                the RimBridgeServer / companion DLL, its tools, i
                                at all times — there is no window in which another
                                seat holds it. 🔴 You are also the GATEKEEPER: a seat
                                that wants the bridge asks you in one line, and drives
-                               only if you grant it. Two drivers at once crashed the
-                               bridge on 2026-08-15. Say no while you are on it, and
-                               chase a borrower who has not handed it back.
+                               only if you grant it. Two drivers at once WEDGED the
+                               bridge on 2026-08-15 — stuck, not crashed; it recovered
+                               the instant the other call finished, so never reload
+                               over it. Say no while you are on it, and chase a
+                               borrower who has not handed it back.
 infrastructure/state/status/game.json   is the game up, and in what state. Stamp it
                                when the game comes up, changes state, or goes down.
                                BUILD parks its deploys on this file.

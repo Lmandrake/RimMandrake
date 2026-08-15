@@ -22,6 +22,36 @@ things** — a colony and a 568-mod game respectively.
 
 ---
 
+## 0. 🔴 You probably may not drive this. The bridge belongs to CHECK.
+
+**Owner's ruling, 2026-08-15.** Bridge rights are **AGENT CHECK's at all times**.
+No other seat connects and drives the game on its own initiative.
+
+**If you are not CHECK**, the whole protocol is three one-line messages:
+
+1. **Ask CHECK**, one line: *"Bridge free? I need N minutes for \<what\>."*
+2. **Drive only after CHECK grants it.** No grant is a no.
+3. **Tell CHECK the moment you are done.** This is your responsibility, not
+   theirs, and it is urgent — a borrower who goes quiet has taken the bridge
+   indefinitely and CHECK is blocked behind you.
+
+These three messages are a **sanctioned exception** to the project's
+two-sentence live-messaging limit (`infrastructure/agents/POLICY.md`). Nothing
+else about the bridge is: everything that is not the ask, the grant or the
+hand-back goes in a queue item.
+
+### What two drivers actually does — measured 2026-08-15
+
+CHECK and BUILD called the bridge at the same time and it **went unresponsive**.
+
+⭐ **It did NOT crash, and the game did not need reloading.** It was **stuck**,
+and it came back on its own the instant BUILD's call finished. That distinction
+is worth a cold load: **if the bridge stops answering, find out who else is on it
+and wait for them to release — do not restart the game.** A reload costs ~25–30
+minutes and would have bought nothing here.
+
+---
+
 ## 1. Connect
 
 ```bash
