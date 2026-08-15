@@ -292,9 +292,12 @@ resume:   🔴 FIRST ACTION NEXT LOAD, and it is one screenshot: the FACIAL ANIM
           TEST: spawn one RimMandrakeRodian and look at it. Snoot visible = FA fix works
           and the whole art failure is closed. Still a human face = FA is not the cause
           and D-CHK2/the head-gene findings move back up.
-          THEN re-check the four D-CHK2 species (Gand, Selkath, female Chagrian, Jawa
-          mask) - they need BUILD's generator fix and a redeploy first, so they will
-          still be magenta until that lands. Do not read them as an FA failure.
+          ⛔ DO NOT RE-INVESTIGATE the four D-CHK2 species (Gand, Selkath, female Chagrian,
+          Jawa mask). 2026-08-15, BUILD via REP: they are KNOWN AND EXPLAINED — B66 is
+          blocked on a generator defect, escalated to DECIDE as `9d10aec`. They will still
+          be magenta at the next load and that is EXPECTED, not a finding. RECORD the four,
+          spend no time on them, and do not read them as an FA failure. Anything magenta
+          BEYOND these four is new and is worth a line.
           BANKED, do not redo: 70/70 spawn with the correct xenotype; the 5 that missed
           the first pass are the 8-colonist substitution artifact and came back clean on
           re-spawn.
@@ -631,7 +634,15 @@ criteria: every primitive transport in the vehicles menu names and shows a Star
           Wars desert creature; no horse, ox or dog survives in art, label,
           description or health tab; and the prop matches its vehicle in the same
           screenshot.
-state:    blocked — needs deploy, then a live game
+state:    blocked — B62 IS UNBUILT, so there is nothing to deploy
+          2026-08-15 CHECK, via REP from BUILD, and verified on disk before accepting:
+          B62 is `ready`, not done. This item needs 13 defs and 24 PNGs; the repo mod
+          `src/Jawa/DesertVehicleReskin/` holds 12 PNGs — the eopie sled work (C39) and
+          nothing more. ⇒ C41 does NOT ride this window's deploy. It is blocked on BUILD
+          authoring B62, not on a window, not on a load.
+          🔴 NEXT_RELOAD §1.0 row 3 pairs "C39 + C41" onto one DesertVehicleReskin deploy.
+          Only C39 is in that folder. Deploying it does not make C41 collectable, and
+          reading the four transports as failed after that deploy would be a false negative.
 
 ## B0+B1 The 30 bridge tools are deployed — nothing is live until the next load
 row:      10
