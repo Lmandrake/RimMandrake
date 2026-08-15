@@ -20,6 +20,10 @@
 - **`PreferredXenotype` is chosen at ideo-generation time, not in XML.** There is no
   FactionDef path to it; per-faction composition goes through `PawnKindDef`.
 - **`GravshipExport` has no roof field** — roofs regenerate at import by flood-fill.
+- **`Jawa_ScatterScrapfields` is the only GenStepDef scattering `ChunkSlagSteel`** in the
+  live 585-mod set. Its one map-gen competitor on a plain colony tile is the
+  `AB_DerelictBioLab` mutator (Alpha Biomes, 0.5%, flat tiles, via KCSG); `AncientGarrison`
+  and `AncientWarehouse` are landmark-only, and every other layout route is site-map-only.
 
 ## Tooling that exists
 
