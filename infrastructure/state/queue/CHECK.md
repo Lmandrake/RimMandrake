@@ -507,9 +507,30 @@ verify:   PREDICTION before the look: the vehicle reads **"eopie sled"** with a
           only the LABEL and the prop's COLOUR are. A grey prop beside a brown
           vehicle means the prop half no-opped.
 criteria: both labels changed, both the same brown, warning text gone.
-state:    ready — DEPLOYED 2026-08-15 (REP). Verified on disk: the game copy holds
-          `Patches/EopieSled_Identity.xml` carrying the "eopie sled (prop)" label.
-          Collectable the moment a map exists.
+state:    COLLECTED 2026-08-15 on the quicktest map. 🔴 **THREE OF FOUR PASS, THE
+          COLOUR FAILS** — and it fails the OPPOSITE way round from the prediction.
+result:   Spawned both defs six cells apart and photographed them together, which is the
+          test as written. `D:\...\Screenshots\c39_FINAL.png` (game copy at
+          `C:\Users\Mandrake\AppData\LocalLow\Ludeon Studios\RimWorld by Ludeon Studios\Screenshots\c39_FINAL.png`).
+          ✅ LABELS — `AV_DogSled` reads **"eopie sled"**, `VFEPD_DogSled` reads
+             **"eopie sled (prop)"**. Both changed.
+          ✅ DESCRIPTION — the vehicle opens "Two eopies in harness" and closes
+             `Crew: Driver x1` / `Fuel type: Kibble`, exactly as predicted.
+          ✅ WARNING TEXT — GONE. Neither description carries one (regex-checked over
+             the full 908- and 426-char strings, not eyeballed).
+          🔴 COLOUR — **THEY ARE NOT THE SAME COLOUR.** The PROP is warm brown; the
+             **VEHICLE is TEAL/BLUE-GREY**. The eopie teams themselves render identically
+             and correctly on both.
+          ⚠️ Note the inversion: the verify block predicted "a grey prop beside a brown
+             vehicle means the prop half no-opped". The observed failure is the MIRROR of
+             that — the prop half WORKED and the VEHICLE is the untinted one. Anyone
+             reading the old prediction will look at the wrong half.
+          ⇒ TWO CANDIDATE CAUSES, and I am not choosing between them — that is BUILD's:
+             (a) the tint patch does not reach `AV_DogSled`; or
+             (b) it reaches it and is OVERRIDDEN — Vehicle Framework vehicles carry their
+                 own paint/colorOne, which would win over a texture tint. Different fix in
+                 each case, so test which before patching.
+          ⛔ Do NOT re-photograph to confirm: the shot is unambiguous at rootSize 14.
 
 ## C40 Three Jawa fixes that only a load can prove
 row:      9
