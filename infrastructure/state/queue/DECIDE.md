@@ -53,6 +53,11 @@ spec:     OWNER RULING, 2026-08-15, broadcast at his request (CHECK `36debc4`):
 verify:   no v1 item anywhere schedules race-appearance work, and Ortolan reads v1
           done rather than v2 deferred.
 criteria: —
+⚠️      OVERLAPS `ortolan-is-v1-again-supersedes-the-v2-deferral-1a7f30` (CHECK,
+          `7c2fb32`, below) — same ruling, filed twice because the seat was down. That
+          item names the EXACT lines to correct in this file: the Ortolan deferral at
+          ~1087 and "ORTOLAN IS HIGH PRIORITY FOR v2" at ~1107. Do the edit from that
+          item and close BOTH. Do not action them separately.
 state:    ready — filed by REP because the DECIDE seat was down when the ruling landed.
 
 ## D1 Fill in the items whose spec or test is still blank
