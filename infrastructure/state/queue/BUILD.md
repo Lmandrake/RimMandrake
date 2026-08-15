@@ -783,7 +783,7 @@ spec:     `design/Jawa/worldbuilding/ANCIENTS_AS_RAKATA_SPEC.md` is the authorit
           **R-A10 — one new file**,
           `src/Jawa/Jawa_Patches/Patches/AncientsAreRakata.xml`. Do not edit an
           existing patch. Writing it is not deploying it —
-          `deploy_custom_mods.py --mod Jawa_Patches --plan` then `--apply`.
+          `deploy_custom_mods.py --mod Jawa_Patches` (dry run) then `--apply`.
           ✅ **GRAPHICS ARE ALREADY PROVEN ON DISK — do not re-derive.** All 21
           genes resolve. The two appearance-bearing ones are real art under our own
           mod: `RimMandrake_RakatanHead` forces `HeadTypeDef RimMandrake_Rakatan`
@@ -1333,7 +1333,7 @@ spec:     Full spec: `design/Jawa/mods/REGROWTH_BOILING_LIFT_SPEC.md`. Read it �
               `skills/rimworld-start-prep`. 🔴 **Do NOT remove
               `regrowth.botr.core`** — this build depends on it and so do two
               other active mods.
-          (6) Deploy `Jawa_Patches` with `deploy_custom_mods.py --plan` first.
+          (6) Deploy `Jawa_Patches` with a bare `deploy_custom_mods.py --mod Jawa_Patches` first.
 
           🔴 **TWO TRAPS, both of which look right and are wrong:**
           (a) **DO NOT touch `AB_OcularForest`'s water terrain.** It already
@@ -1534,7 +1534,7 @@ verify:   OFFLINE, all three before deploying:
           3. Every path the generator now rewrites has a PNG behind it in
              `src/Jawa/RimMandrake_StarWarsRaces/Textures/` — the file count rises from
              713. A rewritten path with no art is the SAME magenta box wearing a new name.
-          Then `deploy_custom_mods.py --mod RimMandrake_StarWarsRaces --plan`, read the
+          Then bare `deploy_custom_mods.py --mod RimMandrake_StarWarsRaces`, read the
           plan, then `--apply`.
 criteria: LIVE, on the load this window precedes — folded into `NEXT_RELOAD.md` §5 L0:
           · `grep -c "Failed to find any textures at" Player.log` returns **0**.
@@ -1639,7 +1639,7 @@ spec:     Owner's answers, relayed by CHECK via REP, 2026-08-15. **The deploy pa
           CHECK verified the deployed FA config game-down (156 entries, 69
           `Human-RimMandrake*`, 69 XenotypeDefs shipped, zero species unprotected) and
           committed `aa25203`. The "70" in the docs is off by one — 69 is measured.
-verify:   `deploy_custom_mods.py --mod <name> --plan` read before every `--apply`, one
+verify:   `deploy_custom_mods.py --mod <name>` (bare = dry run) read before every `--apply`, one
           mod named per call, never bare; and every deployed mod has an item in
           `queue/CHECK.md` with a non-empty `criteria:` before you call the pass done.
 criteria: CHECK accepts all four items without bouncing one for an empty field, and the

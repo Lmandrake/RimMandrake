@@ -507,7 +507,7 @@ spec:     Ships with B62 (`src/Jawa/DesertVehicleReskin/`), not after it. B62
           vehicles and fixes the blueprint the eopie sled left behind. **13 defs
           across three def types and three mods**, plus 24 PNGs. Deploy first —
           `python3 src/RimMandrake/Utils/deploy_custom_mods.py --mod
-          DesertVehicleReskin --plan`, then `--apply`; the mod is already present at
+          DesertVehicleReskin`, then `--apply`; the mod is already present at
           `C:\Program Files (x86)\Steam\steamapps\common\RimWorld\Mods\DesertVehicleReskin`,
           so this is an update, not an install. No DLL, so no shutdown window is
           needed for the files — but the game must reload to read the defs.

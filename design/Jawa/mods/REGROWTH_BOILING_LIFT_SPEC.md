@@ -364,7 +364,7 @@ let a wet storm anywhere near the Pyrelands.
    Biomes! Polluted Lands and Comigo's Greater Swamps. Route it through
    `skills/rimworld-start-prep`; a mod-list edit while the game runs is thrown away.
 6. Deploy `Jawa_Patches` with `src/RimMandrake/Utils/deploy_custom_mods.py`
-   `--plan` first. **The repo copy is not what the game loads.**
+   a bare dry run first. **The repo copy is not what the game loads.**
 
 ⚠️ **Nothing here touches `ZBiome_Grasslands`.** R-H4's dry-thunderstorm raise and
 R-H1's global rain-stripping are separate, already-owed items. Do not fold them in.

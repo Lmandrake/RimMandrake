@@ -379,7 +379,7 @@ if the owner changes the ruling.
 
 🔴 **Writing it is not deploying it.** The game reads
 `C:\Program Files (x86)\Steam\steamapps\common\RimWorld\Mods\Jawa_Patches`. Run
-`python3 src/RimMandrake/Utils/deploy_custom_mods.py --mod Jawa_Patches --plan`,
+`python3 src/RimMandrake/Utils/deploy_custom_mods.py --mod Jawa_Patches`,
 read the plan, then `--apply`. Per the `rimworld-deploy` skill, refuse any file in
 that plan that is not yours.
 
