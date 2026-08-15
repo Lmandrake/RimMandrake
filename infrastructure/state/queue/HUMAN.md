@@ -40,3 +40,14 @@ No work was lost: B6 is DONE — the four PawnKindDefs were repaired (`c06e89e`)
 `queue/CHECK.md` C31. Flagging it because if the deletion WAS deliberate, C31 should be
 withdrawn; and because a mechanical field-adding pass that silently drops an item is
 worth knowing about before the next one runs.
+
+## Q (DECIDE, 2026-08-14): where v2 ideas go — A(owner): `design/V2_DREAMS.md`
+Owner's standing instruction: any idea for new content that is deferred out of v1 goes
+to `design/V2_DREAMS.md`, appended at the end. **Every seat, and the owner through any
+seat, may append there directly** — no permission, no routing through DECIDE, no queue
+item asking for it, no format and no field contract.
+
+For REP specifically: when the owner throws out an idea that is not v1, append it and
+say where it went. It is not a queue, nothing in it is scheduled, and the board derives
+no state from it — so it needs no `derive_matrix.py` run. The point is offloading: write
+it down, let it go, back to v1. item: (standing instruction, no queue ID)

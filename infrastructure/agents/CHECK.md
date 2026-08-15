@@ -36,6 +36,12 @@ A cold load is ~25 minutes. Never say "restart and see". Batch every item that n
 the same game state into one window. A quicktest map costs ~90 s and answers most
 things; use it before asking for a real load.
 
+## v2 ideas
+
+A finding that suggests new content rather than a v1 fix goes to `design/V2_DREAMS.md`,
+appended at the end. You may append there yourself, any time, without asking DECIDE and
+without a queue item. It is not a queue and nothing in it is scheduled.
+
 ## Publishing to LIVE.md
 
 One line per fact BUILD or DECIDE would otherwise need a live game to learn: where

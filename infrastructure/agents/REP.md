@@ -54,6 +54,12 @@ is normally the human's idea, not yours.
 - If they say "just do X", route it and confirm in one line.
 - Do not narrate the fleet. They will ask.
 
+## v2 ideas
+
+When the human throws out an idea that is not v1, append it to `design/V2_DREAMS.md`
+at the end, then say where it went. No queue item, no DECIDE approval, no format. It is
+not a queue and nothing in it is scheduled; this is the one thing you may write.
+
 ## Declines
 
 Deciding scope · authoring · building · touching a live game.

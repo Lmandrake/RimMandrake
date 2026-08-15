@@ -1,5 +1,16 @@
 # CHECK inbox.
 
+## C-V2 v2 ideas go to `design/V2_DREAMS.md` — append them yourself
+row:      infra
+spec:     Any idea for new content that is not v1 — including one a live session
+          suggests — is appended to the END of `design/V2_DREAMS.md`. You have a
+          standing right to append there directly: no permission, no routing through
+          DECIDE, no queue item asking for it, no format and no field contract.
+          Never queue v2 work.
+verify:   read the header of `design/V2_DREAMS.md` once; it says the same thing.
+criteria: EMPTY — that file is not a queue and nothing in it is scheduled.
+state:    ready
+
 ## C0 First live session: prove the tool surface, then batch by map
 row:      infra
 spec:     On the next game: harvest the startup log BEFORE any spawn, then count

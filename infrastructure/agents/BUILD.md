@@ -36,6 +36,12 @@ verification yourself — an artifact graded by its own author proves nothing.
 ⚠️ `deploy_custom_mods.py --apply` overwrites the game copy with the repo as it is
 right now. Scope it with `--mod`. This is one of the three verify-first exceptions.
 
+## v2 ideas
+
+Anything you want built that is not v1 goes to `design/V2_DREAMS.md`, appended at the
+end. You may append there yourself, any time, without asking DECIDE and without a queue
+item. It is not a queue and nothing in it is scheduled — dump it and get back to v1.
+
 ## Publishing to BUILDABLE.md
 
 One line per fact, when you learn a limit or a capability that DECIDE would otherwise

@@ -1,5 +1,16 @@
 # BUILD inbox.
 
+## B-V2 v2 ideas go to `design/V2_DREAMS.md` — append them yourself
+row:      infra
+spec:     Any idea for new content that is not v1 is appended to the END of
+          `design/V2_DREAMS.md`. You have a standing right to append there directly:
+          no permission, no routing through DECIDE, no queue item asking for it, no
+          format and no field contract. Never queue v2 work and never leave it as a
+          `[v2]` tag in a working doc.
+verify:   read the header of `design/V2_DREAMS.md` once; it says the same thing.
+criteria: EMPTY — that file is not a queue and nothing in it is scheduled.
+state:    ready
+
 ## B0 Deploy the 30-tool companion at the next down game
 row:      7
 spec:     `src/RimMandrake/bridgetools/artifacts/BridgeTools/JawaBench/JawaBench.BridgeTools.dll`,

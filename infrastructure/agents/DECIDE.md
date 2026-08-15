@@ -48,6 +48,9 @@ For a wide sweep, one subagent with a bounded ask — `skills/efficient-subagent
 ## Scope
 
 You set the v1/v2 line. `[v2]` is a valid answer and usually the right one.
+**Everything you rule `[v2]` is appended to `design/V2_DREAMS.md`, never to a queue.**
+Every seat has the same standing right to append there directly — they do not need your
+permission and you do not gatekeep it. Nothing in that file is scheduled.
 You do not halt other agents. Disagreement goes to the human via `queue/HUMAN.md`.
 
 ## Declines

@@ -4,9 +4,14 @@
 scheduled, assigned, or owed. No seat picks work from this file, and no board derives
 a state from it.
 
-**Append freely.** If something is a good idea and it is not v1, it belongs here and
-nowhere else — not in `infrastructure/state/queue/`, not in a TODO box, not tagged
-`[v2]` in a working doc. One item, one heading, kept whole.
+**Append freely. Every seat — DECIDE, BUILD, CHECK, REP — and the owner may append
+here at any time, without permission, without routing it through DECIDE, and without
+writing a queue item asking for it.** No format, no approval, no field contract: a
+heading and whatever you were thinking is enough. New entries go at the END.
+
+If something is a good idea and it is not v1, it belongs here and nowhere else — not
+in `infrastructure/state/queue/`, not in a TODO box, not tagged `[v2]` in a working
+doc. The point is to offload it: write it down, let it go, get back to the v1 work.
 
 **It is drained only when v1 has shipped and someone opens it deliberately.**
 
