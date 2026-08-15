@@ -32,9 +32,8 @@ WS="C:/Program Files (x86)/Steam/steamapps/workshop/content/294100"
 grep -rl 'defName>Armadillo<' "$RW/Data" "$WS" --include=*.xml
 ```
 
-This costs thirty seconds and it is the difference between a patch that works
-and a patch that no-ops forever without telling you. Three specific reasons it
-matters more here than elsewhere:
+This costs thirty seconds. Three specific reasons it matters more here than
+elsewhere:
 
 - **A failed PatchOperation is a no-op, not an error you'll notice.** It prints
   one line into a log with thousands of lines. Nothing breaks. The patch just
@@ -43,8 +42,10 @@ matters more here than elsewhere:
   in Core may not be the `Armadillo` that wins. Last loaded def with a given
   `defName` replaces earlier ones entirely.
 - **Fields move between versions.** `<wildness>` was valid on `RaceProperties`
-  and isn't in 1.6. Mods carrying stale fields log a config error and drop the
-  value. Wiki pages and old forum posts lag the game by a version or more.
+  and isn't in 1.6. Read `XML error: <field> doesn't correspond to any field in
+  type X` as a **version-drift** report, not a typo: the mod predates the game,
+  the value is dropped, the def loads anyway, and the instance count is the
+  severity (eight of them = eight races quietly wrong). Wikis lag by a version.
 
 When you find the ground truth, **quote its file path and the exact snippet in a
 comment at the top of the patch**, with a date. Future-you re-reads that comment
@@ -113,6 +114,13 @@ what must be PLACED, run live only what must CHANGE.** If a value never varies
 during a playthrough, it belongs in tier b, full stop. Reaching for C# because
 XML feels weak is the single most common overbuild in this domain.
 
+⚠️ **Prove a comp exists before scoping tier b around it:** `grep -rln
+"CompProperties_<Name>" "$RW/Data"`. Zero hits means the mechanic is stat-driven
+or hard-coded in the `thingClass` — there is no `CompProperties_ShieldBelt` in
+1.6; `Apparel_ShieldBelt` is plain `Apparel` and the shield is entirely
+`EnergyShieldEnergyMax` + `EnergyShieldRechargeRate`. Zero hits moves the job to
+tier c, which rides a game load alone instead of batching.
+
 ---
 
 ## 4. Writing an XML patch
@@ -139,20 +147,45 @@ stated reason. If they differ, you are testing for one thing and modifying
 another, which is exactly how a patch ends up doing something you didn't intend
 in a stack you can't reproduce.
 
-### The four things that bite everyone
+### The things that bite everyone
 
-**Match the shape of the children already in the node.** RimWorld has two child
-shapes and they are not interchangeable. Plain lists use `<li>`. Dictionary-keyed
-fields use the *def name as the element name* — `<wildBiomes><Desert>0.3</Desert>`,
+**Take a field's SHAPE from a shipped def, never from a spec or a sample** — a
+spec names FIELDS, a def defines SHAPES. RimWorld has two child shapes and they
+are not interchangeable: plain lists use `<li>`; dictionary-keyed fields use the
+*def name as the element name* — `<wildBiomes><Desert>0.3</Desert>`,
 `<statBases><MoveSpeed>4.6</MoveSpeed>`,
-`<baseWeatherCommonalities><Clear>18</Clear>`. Which one a field uses is a
-property of its C# type, so it is identical across every mod, and the only way to
-know is to look at what is in the node already.
+`<baseWeatherCommonalities><Clear>18</Clear>`,
+`<xenotypeChances><BTD_Nikto MayRequire="btd.xenotyperemix.starwars">0.3</BTD_Nikto>`
+— never `<li><xenotype>`. `MayRequire` rides the keyed element unchanged. Which
+shape a field uses is a property of its C# type, so it is identical in every mod.
 
 Getting this backwards is the most destructive mistake in this document: an `<li>`
 in a dictionary-keyed field makes the engine **discard the entire parent def** — one
-that was working before you touched it. (Why, and the log signature it leaves:
+that was working before you touched it — and **no log line names the def.** The
+tell is the quiet `Could not resolve cross-reference: No Verse.WeatherDef named
+li found`, one per patched node, buried under ~950 downstream cross-reference
+errors. `validate_patch.py` diffs a `<value>`'s children against the live node, so
+it catches this in `Patches/` — it **cannot** catch it in a `Defs/` file you author
+outright, which has no existing node to diff against. When a def vanishes
+silently, diff it against a sibling in the same folder that survived. (Why:
 `references/patch-operations.md` §11.)
+
+**Match the def's XML ELEMENT NAME, not `ThingDef`.** The loader reads the element
+name as the C# type, so `/Defs/ThingDef[…]` misses all 51 of VFE Pirates'
+`<VFEPirates.WarcasketDef>` pieces — write `/Defs/VFEPirates.WarcasketDef[…]`.
+Such a def still lives in `DefDatabase<ThingDef>` and dumps to `ThingDef.json`, so
+**only the mod's XML tells you the element name; the def dump never will.**
+`/Defs/*[defName="X"]` hits *every* class with that name — `ReduceWill` is both an
+`InteractionDef` and a `PrisonerInteractionModeDef` — so use it only when the
+class is what varies.
+
+**Patches run BEFORE `ParentName` inheritance resolves**, so a patch sees raw XML:
+`DA_Taraal`'s `<statBases>`, which it only inherits from `DA_BaseTaraal`, is
+simply absent and an `Add` into it fails. Guard on the container, not the leaf — a
+`Conditional` on `…/statBases` whose `<nomatch>` adds the whole element. And
+because `Sequence` aborts at its first failure, every op after that one is
+*untested*, not fine: in one 32-op block, positions 26–32 never ran and the log
+said nothing about them.
 
 **`PatchOperationRemove` deletes every match, not the first one.** There is no
 "remove one". If a def lists `<TropicalSwamp>` twice and you write the bare
@@ -166,6 +199,13 @@ comment. Separator lines made of dashes and arrows written as `->` are the usual
 culprits. Use `===` for rules and `→` or `to` for arrows. Never do a
 find-and-replace of `->` across the file either: it corrupts every `-->`
 terminator into `-=>`.
+
+**Migrate by NODE, never by string.** defNames are unique within a def *type*, not
+across types: `OuterRim_Geonosian` is both a `XenotypeDef` and a `PawnKindDef`, and
+a file-wide rename of the xenotype also rewrote three `pawnGroupMakers` entries —
+an unresolvable `kind` there is **discarded at load with nothing in the log.** Name
+the xpath or parent element you are changing, then count references before and
+after: a xenotype swap touches one or two nodes, not eleven.
 
 **`MayRequire` and `PatchOperationFindMod` check the mod, not the def.**
 `MayRequire="VanillaExpanded.VWE"` passes as long as VWE is installed — even if
@@ -234,6 +274,16 @@ before you either trust or disbelieve a validator result.
 If your mod patches other mods' defs, it must load after every one of them.
 That sounds obvious and is where more time was lost in this project than
 anywhere else.
+
+**`ParentName` resolves only against `Abstract="True"` defs declared with a
+`Name=` attribute — never against a `defName`.** Core's EMP damage def uses
+`ParentName="StunBase"` (`<DamageDef Name="StunBase" Abstract="True">`), not
+`ParentName="EMP"`; naming a concrete def gives `XML error: Could not find parent
+node named "EMP"` and the def is **discarded** whole. So resolve every
+outward-pointing name against the live load set before shipping a `Defs/` file:
+`ParentName` against `Name=` attributes, and `Class=`/`workerClass`/`thingClass`/
+`graphicClass` against loaded assemblies. `validate_patch.py` does both since
+2026-08-13; it still checks no field names, types or value ranges.
 
 **`ParentName` inheritance is load-order dependent.** A def whose `ParentName`
 names an abstract def in a mod that loads *later* does not inherit — at all.
@@ -307,6 +357,9 @@ launch".** Run them before calling anything live.
 
 ⚠️ **Map-generation defs need MORE than a restart: they need a map generated after
 it.** Loading a save re-runs no GenStep, so a correct fix is invisible on an old map.
+The same holds one layer up: `xenotypeSet` is read at **pawn generation**, so a
+patch landing after a world exists never fixes that world's colonists — and it
+lives on the `PawnKindDef`, not on the `XenotypeDef` of the same name.
 
 ⚠️ **The bridge cannot answer this for you** — `jawa/get_def` returns the def that was
 *loaded* and does not expose most fields, so a successful read is not proof the def is
@@ -326,6 +379,13 @@ static-constructor / `TypeInitializationException` / `ReflectionTypeLoadExceptio
 exactly that one action; the queue continues) → `Could not resolve cross-reference`
 (benign **or** fatal — it depends entirely on the `wanter`) →
 `Patch operation … failed` (a no-op) → translation and sound errors (cosmetic).
+
+⚠️ **The op named in a patch error is the WRAPPER, not the failure.**
+`PatchOperationFindMod(Asimov) failed` was a broken *inner* `Replace`, not a
+missing Asimov: `FindMod` returns the inner result while `ToString()` prints the
+outer, and a genuinely absent mod returns **true** and logs nothing at all. Read
+the inner op — and note that a field sitting at its C# default (`isOrganic`) has
+no node for `Replace` to find, which is why `Conditional` is the safe default.
 
 **`references/player-log-triage.md` has each rung in full: the greps, the IL-level
 evidence for what each error actually costs, the two shapes of cross-reference
