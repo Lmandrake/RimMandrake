@@ -172,6 +172,13 @@ v1 **rows 2 and 7**, which `V1_SCOPE.md` establishes are **one irreversible even
 plus the owner's **Anomaly-to-zero** ruling ticked on the same screens.
 **Written 2026-08-13, game DOWN, before the load.**
 
+🔴 **AMENDED 2026-08-14, still before the load (B23).** Between the writing and
+now, the entire faction and ideoligion layer was built and deployed: **eleven
+FactionDefs and eleven authored ideos**, plus five vanilla reskins. That is a
+material change to what this run will show, so three signatures below were WRONG
+as written and are corrected, and S7/S8 are new. **Editing is legal here and only
+here — this block's load has still never run, so no log exists to fit a story to.**
+
 🔴 **§1's signatures do NOT carry over wholesale.** They were written against a
 campaign reload. Everything below is scoped to *this* event; §1's A2 and A3 log
 greps are re-run only as free regression checks (S6), and their live gates are not
@@ -352,7 +359,8 @@ Evidence: eyes on the page plus `rimworld/take_screenshot`.
 
 | check | pass | fail |
 |---|---|---|
-| `OuterRim_GalacticEmpire` renders as **"Imperial Desert Directorate"** | the `Jawa_Patches` label patch is live — this is the string the deployed `Patches\ImperialDesertDirectorate.xml` actually writes (`label`, `fixedName`; `leaderTitle` = "Sector Director") | reads **"Galactic Empire"** → the patch did not land; check `C:\Program Files (x86)\Steam\steamapps\common\RimWorld\Mods\Jawa_Patches`. ⚠️ **Record it and carry on — do NOT abort worldgen.** VISION ruled this faction superseded scaffolding; the real gate is vanilla `Empire` present with count ≥ 1 |
+| 🔴 **CORRECTED B23.** Vanilla **`Empire`** renders as **"The Galactic Empire"** with an **Emperor** | R15/R11 landed. The Empire moved onto the VANILLA Royalty vessel; `label` "The Galactic Empire", `fixedName` "Galactic Empire", `leaderTitle` "Emperor" | reads **"shattered empire"** with a **"high stellarch"** → `ImperialDesertDirectorate.xml` did not land. Record and carry on; do NOT abort |
+| ⚠️ **`OuterRim_GalacticEmpire` now reads "Galactic Empire" and THAT IS CORRECT** | **This block used to demand "Imperial Desert Directorate" here, and that is now the FAILING string.** B40 re-pointed the file off this def onto vanilla `Empire`; nothing patches `OuterRim_GalacticEmpire` any more, so it shows its own shipped label. **Do not read this as a deploy miss and do not regenerate.** | reads "Imperial Desert Directorate" → an OLD `Jawa_Patches` is deployed; the current one has not landed |
 | `OuterRim_RebelAlliance` is **ABSENT** from the page | `RebelAlliance_Suppress.xml` set `maxConfigurableAtWorldCreation` to 0 — **absence is the DESIRED outcome, not a defect** | **present and settable** → the patch did not land; file it. **Present but locked at 0** → harmless, worth a line. **Do not revert the patch at the screen.** |
 
 **Also record, as an observation with no pass/fail:** vanilla `Empire`'s name is
@@ -420,6 +428,56 @@ considered and cut rather than written:
 
 ---
 
+## S7 — the eleven new factions exist and are settable 🔴 NEW, B23
+
+**Nothing in §2 as first written knew these existed.** Built and deployed
+2026-08-14; `WORLDGEN_FACTION_CHECKLIST.md` predates them and does NOT list them,
+so a strict checklist diff will show eleven "unexpected" entries. **That is the
+expected outcome, not a defect.**
+
+| must appear on the Configure Factions page | vessel |
+|---|---|
+| Hutt Cartel · Free Droid Enclaves · Wildsteam Clan · Deepwater Compact · Geonosian Foundry Hive · Ascendant Helix · the Junkers | AUTHORED (`Jawa_*`) |
+| Jawa Trade Moot | authored, was "Jawa tribes" |
+| The Galactic Empire · Homestead Defense League · Deep Desert Tribes · Blackstar Company · the Forgotten Arsenal | reskinned vanilla vessels |
+
+🔴 **These must be SET TO AT LEAST 1 at the screen, or the campaign's own factions
+do not exist in the world.** Seven are authored defs with
+`requiredCountAtGameStart 1`, so they should be forced; the reskins ride their
+vessel's existing count. **A faction absent here cannot be added later — the world
+is generated once.**
+
+⚠️ **The Unbound Hive is NOT in this list on purpose.** It was cut 2026-08-14
+because its vessel, vanilla `Insect`, is an untick row in §2 of the checklist.
+
+**Evidence:** `jawa/list_factions` after the world exists — the same call as S3 —
+plus a screenshot of the page before the click.
+
+---
+
+## S8 — EXPECTED AND HARMLESS. Do not regenerate for these. 🔴 NEW, B23
+
+**This is the section B23 exists for.** Each of these is a red line that is a
+correct outcome. Verbatim shapes confirmed in `Assembly-CSharp.dll`.
+
+| signature | why it is harmless |
+|---|---|
+| `[Jawa Patches] Patch operation Verse.PatchOperationRemove failed` naming `requiredMemes`, `structureMemeWeights`, `classicIdeo` or `disallowedMemes` | We remove six generation-steering nodes that an authored `fixedIdeo` makes dead. **If another mod removed one first, our Remove matches nothing and logs red — but the desired end state, node absent, is already true.** The log line is the only symptom and it means the job is done twice, not undone. |
+| `Could not resolve cross-reference: No Verse.XenotypeDef named BTD_<species> found` | R27 puts 31 `BTD_*` xenotypes on seven factions. Three packs ship overlapping species and **BTD Remix dedups at load**; the fact that `BTD_` is the survivor is measured for Jawa and GENERALISED to the rest. A miss degrades one species in one faction — it does not break the faction or the world. **Record WHICH name; the fallback is `guy762_xenotype_*`, never `OuterRim_*`.** |
+| `Could not resolve cross-reference: No Verse.PawnKindDef named JDSCIS_*` | The Geonosian hive mixes Separatist droid kinds from a mod that may be off. They are `MayRequire`-wrapped; the group simply fields fewer kinds. |
+
+⚠️ **The failure that is NOT harmless and shares the shape:** a cross-reference
+error naming `Jawa_Tribal_Scavenger`, `Jawa_Tribal_Slinger`, `Jawa_Tribal_Elder`
+or `Jawa_Colonist`. Those are OURS; they were silently discarded once already
+(`c06e89e`) and a recurrence means the ParentName fix regressed. **That one is
+worth stopping for.**
+
+```bash
+grep -nE "Patch operation Verse\.PatchOperationRemove failed|No Verse\.XenotypeDef named BTD_|No Verse\.PawnKindDef named (JDSCIS_|Jawa_)" "$LOG"
+```
+
+---
+
 ## §2 execution order
 
 **Before the irreversible click:**
@@ -465,3 +523,8 @@ reconstruct a result from the log.**
 | S4 | `OuterRim_RebelAlliance` absent from the page | | |
 | S5 | `.rws` `anomalyPlaystyleDef` = `AnomalyFrequency_None` | | |
 | S6 | A2 / A3 log greps unchanged | | |
+| S7 | eleven campaign factions present on the page, each set ≥ 1 | | |
+| S7 | `jawa/list_factions` returns all eleven after worldgen | | |
+| S8 | `PatchOperationRemove` failures — record which, then IGNORE | | |
+| S8 | `BTD_*` xenotype misses — record WHICH names | | |
+| S8 | 🔴 zero cross-reference errors naming `Jawa_Tribal_*` / `Jawa_Colonist` | | |
