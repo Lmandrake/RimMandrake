@@ -605,7 +605,15 @@ verify:   `validate_patch.py --defs` 0 errors; `guy762_bpistol` carries
           `Autopistol` in the live dump; no other def claims that tag.
 criteria: a Mechanitor event spawns its pawn holding a blaster pistol, not
           empty-handed.
-state:    ready
+state:    🔴 DROPPED — **the mechanitor system was CUT from the campaign entirely**
+          (owner, 2026-08-15, `beb5036`). The empty `Autopistol` tag has no consumer
+          left: `Mechanitor` and `Mechanitor_Basic` cannot occur. `AM_Scavenger` is
+          Ancient urban ruins' own kind and rides that mod's content — report it if
+          it spawns unarmed, do not pre-emptively patch for it.
+          ⚠️ **Provenance of this line, because it was nearly lost:** this ruling had
+          been written into **B56's** state slot by mistake and was deleted when BUILD
+          corrected B56 on 2026-08-15. It survived only in `beb5036`'s commit
+          subject. Restored here, where it belongs.
 
 ## B57 The lasso becomes a strength gene, not a weapon anyone can pick up
 row:      5
