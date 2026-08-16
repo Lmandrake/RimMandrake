@@ -17,7 +17,7 @@ it, and the `.skill` zips are gitignored.
 
 | owner | skills |
 |---|---|
-| **CHECK** — the live game | `rimbridge` · `rimworld-debug-testing` · `rimworld-load-round` · `rimworld-savegame` |
+| **CHECK** — the live game | `rimbridge` · `rimworld-world-editing` · `rimworld-debug-testing` · `rimworld-load-round` · `rimworld-savegame` |
 | **BUILD** — artifacts and art | `rimworld-modding` · `rimworld-deploy` · `rimworld-ideoligion` · `rimworld-quests` · `rimworld-xenotypes` · `rimworld-start-prep` · `gravship-layout` · `generating-rimworld-sprites` · `generating-images` · `editing-images` |
 | **DECIDE** — what ships | `deciding-and-superseding` (issuing a ruling that survives contact) · `rimworld-content-moderation` (the cherrypick method — a keep/cut call is a scope call) |
 | **REP** — shared | `verify-before-you-escalate` (every seat reads docs and every seat escalates) · `efficient-subagents` · `reading-rimworld-graphics` (art, contact sheets and audits all reach for it), and this README |
@@ -39,6 +39,7 @@ it should write directly and say so.
 | `rimworld-load-round` | calling or queueing a game load. How to spend 25 minutes. |
 | `rimbridge` | driving a live game — spawn, build, screenshot, measure. |
 | `rimworld-debug-testing` | reproducing a defect in-game without a full campaign. |
+| `rimworld-world-editing` | the WORLD screen — biomes, landmarks, auditing a generated faction roster before committing to a landing site. Different rules from the map screen. |
 | `rimworld-savegame` | editing a `.rws`. Rarely the right route. |
 | `rimworld-quests` | `QuestScriptDef` authoring and firing. |
 | `rimworld-ideoligion` | memes, precepts, ideoligion authoring. |
