@@ -1119,7 +1119,12 @@ state:    ready
 
 ## six-species-move-to-v2-owner-2026-08-15
 row:      9
-spec:     🔴 **OWNER RULING 2026-08-15. Six species leave v1 for v2.**
+spec:     🔴 **OWNER RULING 2026-08-15. Six species left v1 for v2 — then FIVE, not six.**
+          ⭐ **SUPERSEDED IN PART, same day: the ORTOLAN CAME BACK INTO v1.** Owner,
+          verbatim: *"We have a working Ortolan! Make that as done for now and confirmed,
+          not v2 after all."* It spawned in the 70/70 grid and he examined it on screen.
+          `RimMandrakeOrtolan` is **v1, DONE and CONFIRMED** — nothing to restore, nothing
+          to schedule. Herglic, Anzati, Muun, SithZ and Togorian are unaffected.
           *"Herglic is now v2. So are Anzati, Muun, Sithz, Togorian. The Ortolan we
           sorely want them, but for now they are also in v2. Mark the Ortolan as a
           high priority for v2."*
@@ -1133,16 +1138,18 @@ spec:     🔴 **OWNER RULING 2026-08-15. Six species leave v1 for v2.**
           | Muun | `RimMandrakeMuun` | `RimMandrakeMuun_Kind` |
           | **Sithz** | `RimMandrakeSithZ` | `RimMandrakeSithZ_Kind` |
           | Togorian | `RimMandrakeTogorian` | `RimMandrakeTogorian_Kind` |
-          | Ortolan ⭐ | `RimMandrakeOrtolan` | `RimMandrakeOrtolan_Kind` |
+          | ~~Ortolan~~ ✅ **v1** | `RimMandrakeOrtolan` | `RimMandrakeOrtolan_Kind` |
 
           ⚠️ **`Sithz` is spelled `SithZ` in the def — capital Z.** It is the one name
           here that does not match the owner's spelling, and a lowercase `z` silently
           matches nothing. ⚠️ Do not confuse it with `RimMandrakeSithMassassi` or
           `RimMandrakeSithKissaiPureblood`, which are DIFFERENT species and **stay in v1**.
 
-          ⭐ **ORTOLAN IS HIGH PRIORITY FOR v2** — owner's words, *"we sorely want them"*.
-          It is deferred for want of time, not wanted less. Recorded at the top of the v2
-          entry so it is not read as an equal member of a list of six.
+          ~~⭐ **ORTOLAN IS HIGH PRIORITY FOR v2**~~ — ⛔ **STRUCK 2026-08-15. WRONG, and a
+          reader acting on it would defer a species that is already finished and in v1.**
+          Superseded by the ruling at the head of this item. Closes both
+          `ortolan-is-v1-again-supersedes-the-v2-deferral-1a7f30` and `D-RACE`'s
+          cross-reference — the correction is made ONCE, here.
 
           🔑 **MEASURED, and it changes what BUILD has to do:** only **Herglic** is in the
           generator's 65-species roster. The other five are **NOT** — they ship from some
