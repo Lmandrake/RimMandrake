@@ -1476,3 +1476,34 @@ a parking space for it. Two readings survive that:
   let the owner fix it by hand. That is "more manual curation", his own alternative, and
   it contradicts nothing.
 ⇒ Record both. Build neither until he picks.
+
+## v2 concept: no rain on this planet, except something violent in the high mountains
+
+Owner, 2026-08-16: *"banning rainfall on any biome except those that occur in high
+mountain areas where instead it is torrential, boiling, red, or otherwise violent and
+bizarre, otherwise we have to add mutators everywhere to enact this (v1 approach)."*
+
+Rain should not exist on a Tatooine-grade world. The one exception is altitude, and what
+falls there should not read as weather — **torrential, boiling, red, bizarre**. Rare,
+altitude-locked, and frightening.
+
+**Why this cannot be done with mutators.** v1's only tool is hanging a mutator on every
+dry tile and another on every violent one — thousands of placements to state one
+planetary rule, and all of it lost on regeneration. The rule belongs in the biome and
+weather defs.
+
+**What is already established**, so the eventual spec starts from fact: rainfall is a
+per-tile array of raw **mm/year**, writable offline and verified (`worldmap.py`; a test
+world spanned 233–2584 mm). **Biome selection keys off rainfall**, so zeroing it changes
+which biomes can exist — the real lever and the real risk. Altitude is computable from
+`tileElevation` and `tileHilliness`, so "high mountain" needs no hand-drawing. The
+tidally-locked mod rewrites temperature but **not** rainfall, so there is no conflict.
+`VEE_FertileRains` already occurs 124 times and would have to be out-ranked.
+
+Open questions the spec must answer: zero or a low floor (zero may make biomes
+ungenerable); WeatherDef vs GameCondition vs biome property (a mutator is the shape we
+are rejecting); what "boiling" and "red" do mechanically rather than cosmetically;
+whether the Jawa economy still gets its plant cover; and whether the wet band is
+**visible from orbit**, or the rule never reaches the player.
+
+Queue pointer: `infrastructure/state/queue/CREATE.md` → `CR-V2-RAIN`.
