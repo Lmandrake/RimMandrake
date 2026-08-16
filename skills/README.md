@@ -39,6 +39,7 @@ it should write directly and say so.
 | `rimworld-load-round` | calling or queueing a game load. How to spend 25 minutes. |
 | `rimbridge` | driving a live game — spawn, build, screenshot, measure. |
 | `rimworld-debug-testing` | reproducing a defect in-game without a full campaign. |
+| `review-sheets` | building an interactive sheet so the owner curates hundreds of elements by disagreeing, not by answering questions. |
 | `rimworld-world-editing` | the WORLD screen — biomes, landmarks, auditing a generated faction roster before committing to a landing site. Different rules from the map screen. |
 | `rimworld-savegame` | editing a `.rws`. Rarely the right route. |
 | `rimworld-quests` | `QuestScriptDef` authoring and firing. |
