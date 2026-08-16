@@ -1334,3 +1334,51 @@ the spec should answer:
 ⛔ do not start:  this is a design spec, not a build. It also touches worldgen, which is
           OUT of every version by standing ruling — the write-up must stay on the design
           side of that line.
+
+## D-MUTATOR-VEHICLE  Tile mutators ARE our content-injection mechanism — v1
+state:    v1 — DECISION WANTED. Blocks nothing today, shapes everything after.
+owner:    2026-08-16: *"use tile mutators to simulate 'content injection/tilemap editing'
+          that we will develop later. Map tile mutators are the game's current method for
+          doing this. Might even be sufficient later on, TBD."*
+          Related: `D-V2-RAIN` above, which is the first thing that would be built this
+          way — or deliberately NOT, if mutators turn out to be the wrong vehicle.
+
+the proposal:
+          Do not invent a content-injection system. **`TileMutatorDef` is already the
+          game's per-tile content mechanism**, so author our own and place them, rather
+          than building a parallel pipeline we would then have to maintain against 1.7.
+
+why it is credible — measured today, not assumed:
+          · **336 `TileMutatorDef`s exist across 9 mods**, so the pattern is well-trodden
+            and every one of them is a worked example we can copy.
+          · They carry REAL mechanics, not decoration: `animalDensityFactor`,
+            `plantDensityFactor`, **`junkDensityFactor`** (the Jawa salvage lever),
+            `geyserCountFactor`, `chunkDensityFactor`, `fishPopulationFactor`,
+            `additionalWildPlants`, `hillinessForOreGeneration`, and — least obvious —
+            `allowRoofedEdgeWalkIn`, `blacklistedRaidStrategies`,
+            `additionalGameConditions`, which change how raids reach a colony.
+          · 🔑 **`extraGenSteps` / `preventGenSteps` let a mutator invoke or suppress
+            arbitrary `GenStepDef`s.** That is the actual injection hook: anything a
+            GenStep can build, a mutator can summon on a chosen tile. This is the single
+            strongest argument that mutators may be sufficient on their own.
+          · Placement is already solved offline. They live in the save as paired arrays
+            (`tileMutatorTiles` 4 bytes/tile-index + `tileMutatorDefs` 2 bytes/shortHash)
+            and `src/RimMandrake/Utils/worldmap.py` reads them today. Writing them is the
+            same shape as the biome write that is already proven end to end.
+          · Authoring one is ordinary XML; a custom `workerClass` is optional C#.
+
+what the decision has to settle:
+          1. **Are mutators sufficient, or a stopgap?** They act at MAP GENERATION on a
+             tile. They do not change the world map itself, and they do not touch a map
+             that has already been generated. If we need to inject into a live or
+             already-visited map, this is the wrong vehicle and something else is needed.
+          2. **Whitelist interaction.** Our posture is whitelist-strips-everything-else.
+             Our OWN mutators must be auto-whitelisted, or the curation pass will quietly
+             delete our content. This is a real trap, not a hypothetical.
+          3. **Do we author `TileMutatorDef`s, `LandmarkDef`s, or both?** A landmark is a
+             chooser that forces mutators and adds a named map marker — it is the right
+             wrapper when the thing should be VISIBLE and named on the world map.
+          4. **Frozen-world consequence.** Placements bake into the shipped save. A
+             mutator added after the world is built reaches only unvisited tiles.
+⇒ if YES, the follow-on work is small and known: author defs, extend `worldmap.py` to
+          write the mutator arrays, and add our defNames to the whitelist by default.
