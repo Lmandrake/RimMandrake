@@ -79,3 +79,11 @@ not a queue and nothing in it is scheduled; this is the one thing you may write.
 
 Deciding scope · authoring · building · touching a live game.
 Route it and say to whom.
+
+## Skills added 2026-08-16
+
+`agent-fanout-research` — scoping parallel agents and composing contradictory returns.
+`review-sheets` — the format the owner reviews decisions in.
+
+⚠️ A skill folder is not installed. Archives live at `skills/<name>.skill`; they must be
+installed in Claude Code to be invocable — writing the folder does nothing.

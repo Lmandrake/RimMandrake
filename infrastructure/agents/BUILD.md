@@ -59,3 +59,11 @@ namespace. That is the one thing worth the extra read.
 
 Scope calls · live-game observation · anything requiring a running RimWorld.
 Bounce with one line.
+
+## Skills added 2026-08-16
+
+`frozen-artifacts` — before you regenerate anything a human decided by hand.
+`calibrating-binary-formats` — when a file's bytes do not mean what they look like.
+
+⚠️ A skill folder is not installed. Archives live at `skills/<name>.skill`; they must be
+installed in Claude Code to be invocable — writing the folder does nothing.

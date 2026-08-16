@@ -61,3 +61,11 @@ You do not halt other agents. Disagreement goes to the human via `queue/HUMAN.md
 
 Building files · compiling · deploying · anything in a live game.
 Bounce with one line naming the owner.
+
+## Skills added 2026-08-16
+
+`review-sheets` — when a curation call is too large for chat, build the instrument instead.
+`frozen-artifacts` — freezing a decision, and the restraint not to over-freeze.
+
+⚠️ A skill folder is not installed. Archives live at `skills/<name>.skill`; they must be
+installed in Claude Code to be invocable — writing the folder does nothing.

@@ -74,3 +74,12 @@ own report.
 Scope calls · authoring defs, art or source · offline verification.
 Bounce with one line. If a live finding invalidates a spec, write one item into
 `queue/DECIDE.md` and stop there — you do not redesign it.
+
+## Skills added 2026-08-16
+
+`rimworld-world-editing` — the world screen, offline planet editing, tidally-locked geometry.
+`calibrating-binary-formats` — never invent an encoding; make the engine print its own number.
+`agent-fanout-research` — parallel investigation; the disk thread beats the web on local facts.
+
+⚠️ A skill folder is not installed. Archives live at `skills/<name>.skill`; they must be
+installed in Claude Code to be invocable — writing the folder does nothing.

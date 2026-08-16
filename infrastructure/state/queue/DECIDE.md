@@ -1382,3 +1382,27 @@ what the decision has to settle:
              mutator added after the world is built reaches only unvisited tiles.
 ⇒ if YES, the follow-on work is small and known: author defs, extend `worldmap.py` to
           write the mutator arrays, and add our defNames to the whitelist by default.
+
+## D-TODO-WORLDMAP-ART  Compare GRiNDTerra vs World Map Enhanced by LOOKING
+state:    TODO — a taste call, and only the owner's eyes settle it.
+why it is open:
+          Researched 2026-08-16: **nobody has ever compared them.** GRiNDTerra (3546956014)
+          has 8 comments, none about appearance, 1,687 subs. World Map Enhanced
+          (3599967849) has 26,504 subs — but that is age and the author's name, not a
+          beauty verdict. No reddit thread, no showcase, no side-by-side exists.
+the facts that do NOT need taste:
+          · 🔴 They CONFLICT — both ship a PNG at the same literal path
+            (`World/Biomes/Desert`). RimWorld resolves per file, later mod wins per file,
+            so running both silently mixes two artists across one planet. **Never both.**
+          · WME covers our whole stack **including Advanced Biomes**, which GRiNDTerra
+            does NOT — those tiles would fall back to flat vanilla art. Inconsistent art
+            across one planet is worse than uniformly plainer art.
+          · WME is pure art (229 PNGs, no defs, no DLL, nothing enters a save) and needs
+            no dependencies. GRiNDTerra needs **Odyssey + Biotech + VEF**, which every
+            recipient of our shipped savegame would also need.
+⇒ current call: KEEP World Map Enhanced. To judge for real: subscribe GRiNDTerra,
+          DISABLE WME, look at our own planet once, decide.
+⭐ FREE WIN, unrelated to the comparison and worth doing now: ReGrowth 2's setting
+          `RG_WorldmapTextures` repoints **Tundra and AridShrubland** to its own art,
+          overriding WME. On a desert planet AridShrubland is a main tile. **Turn that
+          ReGrowth setting OFF and WME's arid art appears.**
