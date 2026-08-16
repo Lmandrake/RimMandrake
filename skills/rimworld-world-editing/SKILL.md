@@ -261,6 +261,35 @@ d = math.degrees(math.acos(math.cos(math.radians(lon)) * math.cos(math.radians(l
 # d  <  40  scorched   |  40..57 liveable  |  57..90 cold  |  >90 night side
 ```
 
+### 🔴 How you SELECT it — two backends, auto-detected
+
+`AlienWorldsFramework.cs` picks its UI at `[StaticConstructorOnStartup]`:
+
+* **If `ferny.Worldbuilder` is ACTIVE** — the framework writes a Worldbuilder preset
+  folder at runtime and you choose *"tidally locked world"* on **Worldbuilder's world
+  preset screen**. The mod-settings radio buttons are **disabled** in this mode.
+  (This is almost certainly what created the empty `…\Worldbuilder\` folder on this
+  machine — the framework expecting a companion that is switched off.)
+* **If Worldbuilder is INACTIVE — our current state** — choose it at
+  **Mod Settings → "Alien Worlds Framework" → "Planet type for new worlds"**, a radio
+  button, **before you create the world**.
+
+⛔ It is **not** a dropdown on the Create World page and **not** a scenario setting. If
+you are looking for it at worldgen you will not find it. Framework + Harmony are hard
+`modDependencies`.
+
+### ⚠️ It applies NO biome restriction — this is the trap
+
+The mod leaves the framework's `<biomes>` and `<biomeConfigs>` **empty**, and
+`PlanetTypeManager.cs` treats an empty list as "no restriction". So **vanilla BiomeWorkers
+run unchanged against the rewritten temperature field** — which produces jungle and
+savanna at ~64 °C on the day side. That is the top complaint on its Workshop page, and it
+is a real problem for any world meant to read as a desert.
+
+⇒ The temperature model is excellent and the biome placement is not curated. If we want a
+desert planet we constrain biomes ourselves — `Mlie.ChooseBiomeCommonality` (ACTIVE) is
+the blunt lever, and per-tile repainting from `jawa/world_tile_export` is the precise one.
+
 ### What else the mod changes, from the patches
 
 * **`SunPositionPatch`** pins `dayOfYear = 0`, `dayPercent = 0.5` — the sun never moves.
@@ -285,6 +314,12 @@ d = math.degrees(math.acos(math.cos(math.radians(lon)) * math.cos(math.radians(l
 Its own description: *"Generating at least 50% of the planet is recommended."* That is an
 independent confirmation of the **0.5 coverage** choice — and it is not arbitrary: below
 that you clip away the latitude range that gives the liveable ring its land area.
+
+⚠️ **Known issues.** `Realistic Planets` also rewrites `WorldGenStep_Terrain`
+temperature and would collide — not installed here, keep it that way. The author's own
+TODO warns the 15° sun-tilt correction may drift after ~half an in-game year. Caravan
+travel is untouched (no patch). Solar panels run permanently on the day side and never on
+the night side, because sun *glow* is permanent even though `sunlightFactor` is 1.0.
 
 ⚠️ **It defines NO biomes of its own.** `Defs/` holds one `PlanetTypeDef` and nothing
 else. Biome placement is still vanilla + whatever biome mods are loaded, re-scored
