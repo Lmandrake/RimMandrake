@@ -402,8 +402,11 @@ spec:     `design/Jawa/worldbuilding/FACTION_SPEC.md` sections 13 and 14. Two `P
           Both inherit their `pawnGroupMakers` wholesale.
 verify:   `python3 skills/rimworld-modding/scripts/validate_patch.py <path> --defs` scoped to the active list, 0 errors; the diff touches exactly two fields per def.
 criteria: the two factions read by their campaign names wherever they appear.
-state:    ready
-
+state:    🔵 v2 — **owner, 2026-08-15: keep mechanoid and insect as they are for
+          now; looking into changing them is v2.** Not a defect, not deferred work
+          with a deadline — the current labels ship. This also retires the open
+          question of whether a faction's name serialises at worldgen: it does not
+          need answering, because nothing is being renamed before the world is made.
 ## B52 Fix our one existing faction — wrong name, six fields missing
 row:      9
 spec:     `src/Jawa/Jawa_Patches/Defs/FactionDefs/JawaTribes.xml`, per `design/Jawa/worldbuilding/FACTION_SPEC.md`
@@ -1836,7 +1839,25 @@ verify:   (a) `git check-ignore -v observed/inventory/decisions_weapons.json` re
           the freeze copy and the live config already agree at 1,308 and are the
           reference, not the output.
 criteria: none — offline. Nothing here touches the game and nothing waits on a load.
-state:    ready
+state:    (a) 🔴 **DONE, and the item's premise was mostly WRONG — `9a35956`.**
+          **Six of the seven files were ALREADY TRACKED**, at `deployed/decisions/`,
+          committed in `6efe834` and **byte-identical** to the ignored copies under
+          `observed/inventory/` (md5, all six). So ~1,300 judgements were never on one
+          disk; that framing came from checking `.gitignore` and never checking
+          `git ls-files` for a second, already-tracked home.
+          **The real gap was ONE file**: `decisions_biomes.json`, 2,910 bytes, 30 cuts
+          of 66 biomes, with no counterpart in `deployed/decisions/`. Now committed
+          there, matching the existing convention.
+          📌 No `.gitignore` negation was added: `observed/inventory/` is the working
+          copy and `deployed/decisions/` is the durable record. Un-ignoring would have
+          created a second tracked copy of the same bytes and re-exposed the 678 MB of
+          sheets the rule exists to keep out.
+          The record now committed: animals 338 cut of 1,239 · items 259 of 2,736 ·
+          weapons 183 of 799 · apparel 132 of 820 · buildings 41 of 4,949 ·
+          biomes 30 of 66 · plants 0 of 566.
+          (b) STILL OPEN and unaffected — `cherrypick_build.py` has never validated one
+          of the 1,308 live keys against a def dump. That is the half that can still
+          bite: a misspelled cut key is silently inert and the dump cannot see it.
 
 ## drive-the-batched-deploy-pass-8ad4f1
 row:      10
