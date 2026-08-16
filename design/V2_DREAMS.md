@@ -1506,4 +1506,4 @@ are rejecting); what "boiling" and "red" do mechanically rather than cosmeticall
 whether the Jawa economy still gets its plant cover; and whether the wet band is
 **visible from orbit**, or the rule never reaches the player.
 
-Queue pointer: `infrastructure/state/queue/CREATE.md` → `CR-V2-RAIN`.
+Queue pointer: `infrastructure/state/queue/DECIDE.md` → `D-V2-RAIN`.
