@@ -666,8 +666,14 @@ spec:     Found in the 2026-08-15 08:12 load harvest. Switching the three donor
           `Jawa_Patches/Patches/JawaXenotype_Repoint.xml` ·
           `Jawa_Patches/Defs/FactionDefs/JawaJunkers.xml` · and 10 files under
           `JawaVoice/Patches/` (interactions, insults, romance, prisoners, etc).
-          ⚠️ JawaVoice's ops still report at baseline 2, so check whether its
-          references are guarded or silently doing nothing — a no-op logs nothing.
+          ⛔ **The JawaVoice half of this audit is DEPRECATED — owner, 2026-08-16:**
+          *"Deprecate all future Jawa Voice checking. Those items are no longer to be
+          tracked or pursued unless bugs are seen in game."* Do not audit those 10 files,
+          do not chase their baseline-2 ops, do not open an item for them. The mod stays
+          deployed and active; it is simply not verified by anyone. Only a bug the owner
+          sees in normal play reopens it. The `Jawa_Patches` half above is UNAFFECTED
+          and still owed. (Edited into BUILD's queue by CHECK, 2026-08-16, on the owner's
+          direct ruling and with CHECK the only seat running.)
 verify:   `grep -rl OuterRim_Jawa src/Jawa/` returns only prose/About files, and
           `validate_patch.py --defnames <the 08-15 dump>` reports 0 errors on the
           three Jawa_Patches files.

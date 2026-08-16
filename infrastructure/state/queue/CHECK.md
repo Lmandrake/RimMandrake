@@ -625,8 +625,13 @@ verify:   PREDICTIONS, each a positive observation:
           HOW IT LIES: (c)'s gear defs live in a mod we KEPT, so their presence
           in the dump proves nothing about whether our patch found its target —
           the pawn wearing them is the only evidence.
-criteria: six armed Jawa; a Geonosian that is not a baseliner; a robed Jawa that
-          speaks in its own voice.
+criteria: six armed Jawa; a Geonosian that is not a baseliner; a robed Jawa ~~that
+          speaks in its own voice~~.
+          ⛔ **THE VOICE CLAUSE IS STRUCK — owner, 2026-08-16.** *"Deprecate all future
+          Jawa Voice checking. Those items are no longer to be tracked or pursued unless
+          bugs are seen in game."* Not passed and not failed: **not graded**. C40 is
+          scored on the armed-Jawa and Geonosian clauses and on the APPAREL half of (c)
+          alone. The robe and hood still count; the voice line does not.
 state:    🔴 COLLECTED 2026-08-15 — **(b) PASSES, (a) AND (c) FAIL.** Still v1.
 result:   Collected live on the quicktest map. Evidence is the SAVE, not a screenshot.
           ✅ **(b) PASSES.** 4/4 pawns spawned into `Jawa_GeonosianFoundryHive` come out
@@ -652,12 +657,19 @@ result:   Collected live on the quicktest map. Evidence is the SAVE, not a scree
              XENOTYPE's body graphic, not apparel. Only the save settles it.
              The JawaVoice half of (c) is UNTESTED: it needs unpaused play, and SpeakUp
              does not fire at TPS 0.
+          ⛔ **DEPRECATED 2026-08-16, owner. Do not chase this and do not re-open it.**
+             Jawa Voice is no longer verified by anybody: no queue item, no load-round
+             slot, no prediction owed. The ONLY route back in is a bug seen in normal
+             play — a wrong or missing line the owner notices himself. Nobody goes
+             looking. ⚠️ It is deprecated as a CHECK subject, not deleted as content:
+             the mod stays deployed and active.
           🔑 2026-08-16 CHECK, game-down deploy window: **the JawaVoice patches were never
              in the game folder.** All 10 `Patches/JawaVoice_*.xml` read as drift against
              the deployed copy though the repo tree was clean at `5bb9f5c` (B58 itself).
-             Deployed now. ⇒ the voice half of (c) was not failing, it was UNTESTABLE, and
-             this is its first load with the rules present. Says nothing about the apparel
-             half, which lives in a mod that was already in sync.
+             Deployed now. ⇒ the voice half of (c) was not failing, it was UNTESTABLE.
+             Kept because it explains why the rules were absent, NOT as a reason to test
+             them — the deprecation above outranks it. Says nothing about the apparel
+             half, which lives in a mod that was already in sync and is still graded.
           📌 Bonus, and it contradicts C31: `Jawa_Tribal_Scavenger` is **NOT** discarded
              at load. It spawned 6/6 every time. C31's premise needs re-checking before
              anyone works it in v2.
