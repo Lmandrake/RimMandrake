@@ -205,6 +205,7 @@ This file is the map. The parts that earned their own page:
 
 | read this | when |
 |---|---|
+| `references/generating-a-world.md` | a world is about to be GENERATED — the settings no offline edit can undo, the measured tile-count anchors, why Worldbuilder overwrites My Little Planet's Scale slider and the one-line fix, and how to verify a generated world entirely from its `.rws` |
 | `references/savegame-editing.md` | you are about to READ or WRITE the planet in a `.rws` — the proven edit loop, what can be moved (settlements, landmarks, landforms, territories), and the calibrated scalar encodings with the technique that produced them |
 | `references/debug-surface.md` | you need a debug action — the 139 in-game actions vs the NRE at the world screen, and why a mod setting read at INITIALISATION silently does nothing |
 | `references/tidally-locked.md` | the planet is tidally locked — the substellar point, where the terminator actually is in lat/lon, the liveable ring, and how to select the planet type |
