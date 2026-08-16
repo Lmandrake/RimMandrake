@@ -490,7 +490,22 @@ verify:   ITEM     Plant growth is x4.0 wild/crop, x2.5 tree, x0.4 on PoisonFore
                      stays bare proves nothing about this patch;
                      `wildPlantRegrowDays` is untouched until R-G4 ships.
 criteria: vegetation reads as obtrusively powerful rather than as a balance tweak.
-state:    ready — needs a live game. **DEPLOYED 2026-08-15 by BUILD, solo**, in the
+state:    ✅ MECHANISM PROVEN 2026-08-15 — the engine's own numbers, exactly as specified.
+result:   Not a look-test in the end. `jawa/inspect_string` reads RimWorld's own inspect
+          string off a planted specimen, and it reports the multiplier directly:
+            `Plant_Grass`   -> **"Growth rate: 400%"**   (spec: default x4)   ✅
+            `Plant_TreeOak` -> **"Growth rate: 250%"**   (spec: tree x2.5)    ✅
+          Both match the startup line `[JawaPlantGrowth] scaling 545 plant defs
+          (default x4, tree x2.5), 7 exempt, 1 terminator biome(s) at x0.4` — so the
+          assembly bound AND is applying the intended factors to live plants.
+          ⇒ **The mechanism is not in doubt.** What is left is purely the owner's taste
+          call on whether x4 "reads as obtrusively powerful", and that is his to make.
+          ⚠️ A fresh map cannot show it by eye: the mod scales growth RATE, and map-gen
+          plants arrive at their own maturity. Looking at day-one vegetation measures
+          worldgen, not this mod. The inspect string is the only honest read.
+          ⛔ The terminator-biome x0.4 half is NOT collectable here — this map is not
+          that biome.
+old-state: ready — needs a live game. **DEPLOYED 2026-08-15 by BUILD, solo**, in the
           shutdown window. The `⚠️ NOT DEPLOYED` paragraph in the spec above is now
           spent; leave it for the reason it names.
           ```
@@ -596,10 +611,34 @@ verify:   PREDICTIONS, each a positive observation:
           the pawn wearing them is the only evidence.
 criteria: six armed Jawa; a Geonosian that is not a baseliner; a robed Jawa that
           speaks in its own voice.
-state:    ⭐ v1 — owner's ruling 2026-08-15. Deployed, needs one load to read back.
-          The one that matters: `MandrakeJawa` `canGenerateAsCombatant` false→true —
-          without it a Jawa faction cannot generate a fighter. That is a gameplay hole,
-          not cosmetics.
+state:    🔴 COLLECTED 2026-08-15 — **(b) PASSES, (a) AND (c) FAIL.** Still v1.
+result:   Collected live on the quicktest map. Evidence is the SAVE, not a screenshot.
+          ✅ **(b) PASSES.** 4/4 pawns spawned into `Jawa_GeonosianFoundryHive` come out
+             `RimMandrakeGeonosianVariants` / "Geonosian" — NOT baseliners. The dropped
+             `btd.xenotyperemix.starwars`-gated node is fixed.
+          ⚠️ **(a) HALF.** Xenotype is right: `Jawa_Tribal_Scavenger` ×6 in
+             `Jawa_IndigenousTribes` came out **6/6 MandrakeJawa**.
+             🔴 But they are **UNARMED** — `<equipment>` is EMPTY on all six in the
+             parsed save. The criterion was "six ARMED Jawa"; the armed half fails.
+             ⚠️ `canGenerateAsCombatant` and carrying a weapon are two different things —
+             the flag can be true while the kind has no weaponTags. Do not assume
+             `291aebf` failed; assume the kind arms nobody and check weaponTags.
+             📌 Test setup matters: spawned into `faction=hostile` the same kind resolves
+             to **Empire** and 2 of 6 came out `HBX_Highborn`/`Hussar`. That is the
+             faction's own xenotypeSet doing its job, NOT a defect. Always name a Jawa
+             faction when testing a Jawa kind.
+          🔴 **(c) FAILS.** The six wear **generic tribal gear** — `Apparel_TribalA`,
+             `VAE_Apparel_TribalPoncho`, `VFET_Apparel_TribalLight`, `Apparel_WarVeil` —
+             and **NOT** `guy762_Robes_jawa` / `guy762_JawaHood`. B58's starting-gear
+             rename did not take.
+             ⚠️ **THE ITEM'S OWN "HOW IT LIES" WARNING FIRED, EXACTLY AS WRITTEN.** On
+             screen they look robed and hooded and I nearly passed it — that is the
+             XENOTYPE's body graphic, not apparel. Only the save settles it.
+             The JawaVoice half of (c) is UNTESTED: it needs unpaused play, and SpeakUp
+             does not fire at TPS 0.
+          📌 Bonus, and it contradicts C31: `Jawa_Tribal_Scavenger` is **NOT** discarded
+             at load. It spawned 6/6 every time. C31's premise needs re-checking before
+             anyone works it in v2.
 
 
 ## C41 Four more transports pulled by desert creatures — validation plan
