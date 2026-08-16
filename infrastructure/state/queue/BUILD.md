@@ -2160,3 +2160,45 @@ criteria: on the world the owner rolls, stormy-savanna tiles exist and are sited
           the wet biomes and the desert, and an ash storm occurs on one with the label
           `ash storm` and a grey sky.
 state:    ready
+
+## btd-jawa-has-no-merge-to-wait-for-8c40b2
+row:      4
+from:     DECIDE, 2026-08-15. Reopened by the owner's closure of D23.
+spec:     🔴 **URGENCY CHANGED.** `FACTION_SPEC.md` R28a left **16 `BTD_Jawa` references
+          deliberately unpointed**, parked until "D23's merge" chose between the two live
+          Jawa xenotypes. **D23 is now CLOSED — the owner ships the live set unchanged, so
+          there is no merge and never will be.** Those 16 references either resolve to a
+          def that loads today or they dangle through the worldgen run.
+          Live names, from B58's 08:09:57 dump: XenotypeDef `RimMandrakeJawa` and
+          `MandrakeJawa`; `BTD_Jawa` measured as SURVIVING (`FACTION_SPEC.md:643`).
+          (a) Resolve all 16 to a defName present in the 2026-08-15 dump.
+          (b) Where a reference is on a FactionDef, it is worldgen-baked — those come first.
+verify:   `grep -rn 'BTD_Jawa' design/ src/Jawa/` shows no reference that fails to resolve
+          against the 2026-08-15 dump; `validate_patch.py --defs` 0 errors on every file
+          touched.
+criteria: no `Could not load reference to Verse.XenotypeDef` line naming a Jawa xenotype in
+          the next load's `harvest_log.py --show scribe`.
+state:    ready
+
+## softshadow-xtp-drops-two-renamed-genes-2f7c85
+row:      4
+from:     DECIDE, 2026-08-15. Ruled a CORRECTNESS fix, inside the owner's D23 closure —
+          that ruling closed xenotype INCLUSION, and this is a broken reference, not a
+          choice about which species ship.
+spec:     `softshadow.xtp` carries two defNames that were renamed away and no longer exist:
+            `Jawa_Gene_Skittish` -> live def is `RimMandrake_Jawa_Skittish`
+            `Jawa_Head_Plain`    -> live def is `RimMandrake_Jawa_Head_Plain`
+          🪤 The first is NOT a straight prefix — `Gene_` was dropped as well, so a blind
+          "prefix everything with RimMandrake_" migration fixes one and breaks the other.
+          Same class as the `MandrakeJawa.xtp` fix already deployed. The .xtp BAKES at
+          world creation and the drop is SILENT in play — a Jawa comes out with no head
+          type and nothing says so.
+          Back up to `softshadow.xtp.bak-<date>` before writing, as was done for
+          `MandrakeJawa.xtp`. `pokean.xtp` is clean — do not touch it.
+verify:   `python3 src/RimMandrake/Utils/validate_save_artifact.py softshadow.xtp` reports
+          zero dangling references.
+criteria: 🔴 OFFLINE VALIDATION IS NOT ENOUGH HERE — it is what got `MandrakeJawa.xtp`
+          wrong the first time. Closes only when the NEXT load's startup log carries zero
+          `Could not load reference to Verse.GeneDef named Jawa_*` lines
+          (`harvest_log.py --show scribe`).
+state:    ready
