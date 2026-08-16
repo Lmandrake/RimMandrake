@@ -673,7 +673,34 @@ verify:   `grep -rl OuterRim_Jawa src/Jawa/` returns only prose/About files, and
           three Jawa_Patches files.
 criteria: Next load's harvest shows `Jawa_Patches ops` back at baseline 0, and a
           spawned Jawa carries the tuned starting gear.
-state:    ready — 🔴 **SEQUENCING RULING (DECIDE, 2026-08-15): this gates the faction
+state:    ready — ⚠️ **PARKED MID-INVESTIGATION 2026-08-15, owner ended the study to
+          save tokens for live play. Findings below are measured, not guesses; the
+          workshop-wide half was never finished.**
+          🔴 **C40(c) is NOT this item.** `Jawa_Tribal_Scavenger` is
+          `ParentName="TribalWarriorBase"` and declares ONLY defName, label and
+          xenotypeSet — no `apparelRequired`, no `apparelTags`, no `weaponTags`. So it
+          inherits vanilla's tribal kit (`apparelRequired Apparel_WarVeil`,
+          `apparelMoney 200~300`), which is exactly the generic gear CHECK saw. **B58's
+          rename could never have fixed it** — B58 targets Outer Rim's own
+          `OuterRim_Jawa`, a different def. The scavenger simply never had gear of its
+          own. Fix is to author the gear on our kind, not to repair a patch.
+          🔴 **C40(a), the unarmed half — LIKELY ROOT CAUSE, one check short of proven.**
+          `TribalWarriorBase` asks for `weaponTags: NeolithicMeleeDecent`. In Core,
+          **exactly one** weapon carries that tag — `MeleeWeapon_Ikwa` — and it is in
+          our **CUT** list (`decisions_weapons.json`). An emptied weapon tag spawns
+          pawns bare-handed: the same failure mode as B65's `Autopistol`.
+          ⛔ **NOT PROVEN:** whether a mod supplies another `NeolithicMeleeDecent`
+          weapon. The workshop-wide grep timed out twice at 2 and 4 minutes and was
+          never completed. **Do not act on this as fact until that scan runs.**
+          ⚠️ **If it holds, the blast radius is far wider than the Jawa** — every
+          pawnkind inheriting `TribalWarriorBase` is affected, which includes vanilla
+          tribal warriors and the Deep Desert Tribes reskin.
+          🔴 **`weaponTags` IS INVISIBLE ON EVERY OFFLINE CHANNEL** — measured: absent
+          from all 1,706 PawnKindDefs in the dump, absent from ALL ThingDefs in the
+          dump (0 defs carry the field), and not returned by `jawa/get_def`. **Raw XML
+          is the only source.** Two read paths hiding the same field is not evidence
+          the field is empty. (Extends CHECK's `92fa468`, which had the PawnKindDef
+          half; the ThingDef half is new.)
           build.** `Jawa_Patches/Defs/FactionDefs/JawaJunkers.xml` names the dead
           `OuterRim_Jawa`, so **B51 cannot pass its own verify until this lands**. Do
           B58 BEFORE B45–B52.
