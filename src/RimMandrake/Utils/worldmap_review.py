@@ -40,6 +40,14 @@ How the counts are read - the two traps, both already paid for:
      mutator rather than failing, so a wrong table gives a plausible lie.
      `unresolved` is printed on every run; non-zero means stop.
 
+🟢 THE SHEET SHIPS PRE-FILLED - 2026-08-16. Deciding 449 rows from a blank page
+is a different job from disagreeing with 449 already-made calls, and the second
+is the one worth the owner's time. `worldmap_elements.prefill.json` holds a
+state and a "where it belongs" note for every def; it is baked into the page and
+seeded into localStorage only when localStorage is EMPTY, so his own edits are
+never clobbered. "reset to pre-filled" is the deliberate way back. Export a
+reviewed sheet over that JSON and the next regeneration ships HIS calls instead.
+
 The two arrays are parallel: defs[i] is a 2-byte shortHash, tiles[i] is a 4-byte
 tile id, so one mutator on one tile is one entry. Landmarks are not in a blob at
 all - they are the plain <landmarks> keys/values dict, read as text.
@@ -60,6 +68,13 @@ from pathlib import Path
 REPO = Path(__file__).resolve().parents[3]
 OUT_DIR = REPO / "design" / "Jawa" / "worldbuilding" / "review"
 OUT_HTML = OUT_DIR / "worldmap_elements.html"
+
+# 🔑 The sheet ships PRE-FILLED. Every def already carries a keep/cut call and a
+# "where it belongs" note, so the owner REVIEWS rather than deciding 449 rows
+# from scratch. The prefill is baked into the page as the default state and is
+# only applied when localStorage is EMPTY - his own choices are never clobbered.
+# Regenerate the prefill with src/RimMandrake/Utils/worldmap_prefill.py.
+PREFILL_JSON = OUT_DIR / "worldmap_elements.prefill.json"
 
 LOWLOW = Path("/mnt/c/Users/Mandrake/AppData/LocalLow/Ludeon Studios/RimWorld by Ludeon Studios")
 DEFDUMP = LOWLOW / "DefDump" / "defs"
@@ -286,6 +301,13 @@ label.chk{display:inline-flex;gap:4px;align-items:center;color:var(--dim);
 .score .in{color:var(--keep);font-weight:700}
 .score .out{color:var(--rej);font-weight:700}
 
+/* ---- the prefill banner: the sheet arrives already decided ---- */
+.prefill{display:flex;flex-wrap:wrap;gap:10px;align-items:center;
+  background:#14251c;border:1px solid #2f6b47;border-left:4px solid var(--keep);
+  border-radius:3px;padding:5px 9px;margin:0 0 6px}
+.prefill .big{font-weight:700;color:var(--keep);letter-spacing:.02em}
+.prefill .why{color:#8fb69d;font-size:11.5px}
+
 main{padding:0 12px 60px}
 
 /* ---- mod group ---- */
@@ -372,6 +394,15 @@ main{padding:0 12px 60px}
     <span class="score" id="score"></span>
   </div>
 
+  <div class="prefill" id="prefillbar">
+    <span class="big">This sheet arrived PRE-FILLED.</span>
+    <span class="why">Every row already has a call and a note saying <i>where it belongs</i> on the
+      Jawa desert world &mdash; you are <b>reviewing</b>, not deciding 449 rows from scratch.
+      Change anything you disagree with; your edits save over the prefill.</span>
+    <span class="spacer" style="flex:1"></span>
+    <button id="reprefill">reset to pre-filled</button>
+  </div>
+
   <div class="bar">
     <input type="search" id="q" placeholder="search label, defName, description, mod…">
     <select id="fmod"><option value="">all mods</option></select>
@@ -430,10 +461,19 @@ const DATA = __DATA__;
 const STATS = __STATS__;
 const LSKEY = "__LSKEY__";
 
+/* 🔑 PREFILL is the baked-in default: {defName:{state,note}} for every def,
+   already decided against the Jawa desert-world brief. It seeds the sheet ONLY
+   when localStorage is empty, so re-opening after the owner has made his own
+   choices never clobbers them. "reset to pre-filled" is the deliberate way back. */
+const PREFILL = __PREFILL__;
+const clonePrefill = () => JSON.parse(JSON.stringify(PREFILL));
+
 /* ---------- state ---------- */
 let S = {};
 try { S = JSON.parse(localStorage.getItem(LSKEY) || "{}") || {}; } catch(e) { S = {}; }
 const save = () => { try { localStorage.setItem(LSKEY, JSON.stringify(S)); } catch(e){} };
+let seeded = false;
+if(!Object.keys(S).length){ S = clonePrefill(); seeded = true; save(); }
 const get  = d => S[d] || {state:"", note:""};
 function set(d, patch){
   const cur = get(d), next = Object.assign({}, cur, patch);
@@ -678,14 +718,29 @@ document.getElementById("imp").onclick = () => {
     });
   }
   save();
+  repaint();
+  msg.innerHTML = '<span class="ok">Imported ' + Object.keys(S).length + ' items.</span>';
+};
+
+function repaint(){
   document.querySelectorAll(".row").forEach(row => {
     const s = get(row.dataset.d);
     row.classList.remove("keep","rej"); if(s.state) row.classList.add(s.state);
     const nt = row.querySelector(".note"); nt.value = s.note || ""; nt.classList.toggle("has", !!s.note);
   });
   filter();
-  msg.innerHTML = '<span class="ok">Imported ' + Object.keys(S).length + ' items.</span>';
+}
+
+/* ---------- back to the prefill ----------
+   The only thing that overwrites the owner's own decisions, and it asks first. */
+document.getElementById("reprefill").onclick = () => {
+  if(!confirm("Throw away every decision in this browser and go back to the "
+            + "pre-filled defaults?\n\nExport first if you want to keep them.")) return;
+  S = clonePrefill(); save(); repaint();
 };
+document.getElementById("prefillbar").querySelector(".why").insertAdjacentHTML("beforeend",
+  seeded ? ' <b class="ok">Loaded the prefill just now.</b>'
+         : ' <b class="warn">Showing your saved decisions from this browser.</b>');
 
 filter();
 
@@ -699,13 +754,52 @@ fitHeader(); addEventListener("resize", fitHeader);
 """
 
 
-def render(rows, stats) -> str:
+def load_prefill(path: Path) -> dict:
+    """The baked-in defaults, as the browser's own {defName:{state,note}} map.
+
+    Accepts the sheet's export shape (`whitelisted` / `rejected` / `notes`) so
+    the owner can export a reviewed sheet straight back over this file and have
+    the next regeneration ship HIS calls as the new default. An absent file is
+    not an error - the sheet then simply opens blank, as it used to.
+    """
+    if not path.exists():
+        return {}
+    obj = json.loads(path.read_text(encoding="utf-8"))
+    out: dict = {}
+
+    def mark(d, state="", note=""):
+        cur = out.setdefault(d, {"state": "", "note": ""})
+        if state:
+            cur["state"] = state
+        if note:
+            cur["note"] = note
+
+    if isinstance(obj.get("whitelisted"), list):
+        for d in obj["whitelisted"]:
+            mark(d, "keep")
+        for d in obj.get("rejected") or []:
+            mark(d, "rej")
+        for d, t in (obj.get("notes") or {}).items():
+            mark(d, "", t)
+    else:                                       # a bare {defName: {...}} map
+        for d, v in obj.items():
+            if not isinstance(v, dict):
+                continue
+            st = {"keep": "keep", "whitelisted": "keep",
+                  "rej": "rej", "rejected": "rej"}.get(v.get("state"), "")
+            mark(d, st, v.get("note") or "")
+    return {d: v for d, v in out.items() if v["state"] or v["note"]}
+
+
+def render(rows, stats, prefill: dict | None = None) -> str:
     slim = [{"defName": r["defName"], "label": r["label"], "type": r["type"],
              "mod": r["mod"], "desc": r["desc"], "meta": r["meta"],
              "n": r["n"], "tiles": r["tiles"]} for r in rows]
     html = HTML
     html = html.replace("__DATA__", json.dumps(slim, ensure_ascii=False, separators=(",", ":")))
     html = html.replace("__STATS__", json.dumps(stats, ensure_ascii=False))
+    html = html.replace("__PREFILL__", json.dumps(prefill or {}, ensure_ascii=False,
+                                                  separators=(",", ":")))
     html = html.replace("__LSKEY__", "jawa.worldmap.decisions.v1")
     return html
 
@@ -715,15 +809,21 @@ def main():
     ap.add_argument("--save", help="the .rws to count against (default: newest)")
     ap.add_argument("--dump", default=str(DEFDUMP), help="def dump defs/ dir")
     ap.add_argument("--out", default=str(OUT_HTML))
+    ap.add_argument("--prefill", default=str(PREFILL_JSON),
+                    help="decisions baked in as the page's default state")
+    ap.add_argument("--no-prefill", action="store_true",
+                    help="ship a blank sheet, the pre-2026-08-16 behaviour")
     a = ap.parse_args()
 
     dump = Path(a.dump)
     save = Path(a.save) if a.save else newest_save(SAVES)
     rows, stats = build_rows(dump, save)
 
+    prefill = {} if a.no_prefill else load_prefill(Path(a.prefill))
+
     out = Path(a.out)
     out.parent.mkdir(parents=True, exist_ok=True)
-    out.write_text(render(rows, stats), encoding="utf-8")
+    out.write_text(render(rows, stats, prefill), encoding="utf-8")
 
     used = sum(1 for r in rows if r["n"] > 0)
     per_mod = collections.Counter(r["mod"] for r in rows)
@@ -742,6 +842,13 @@ def main():
         u = sum(1 for r in rows if r["mod"] == m and r["n"] > 0)
         print("   %-42s %4d defs  %4d used" % (m, c, u))
     print("posture       WHITELIST - default is EXCLUDE; undecided means stripped")
+    if prefill:
+        pk = sum(1 for v in prefill.values() if v["state"] == "keep")
+        pr = sum(1 for v in prefill.values() if v["state"] == "rej")
+        print("prefill       %d rows baked in (%d keep, %d NO, %d left open) from %s"
+              % (len(prefill), pk, pr, len(prefill) - pk - pr, Path(a.prefill).name))
+    else:
+        print("prefill       none - the sheet opens blank")
     print("wrote         %s  (%.0f KB)" % (out, out.stat().st_size / 1024))
 
 
