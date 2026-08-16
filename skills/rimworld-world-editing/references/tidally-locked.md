@@ -75,6 +75,33 @@ d = math.degrees(math.acos(math.cos(math.radians(lon)) * math.cos(math.radians(l
 you are looking for it at worldgen you will not find it. Framework + Harmony are hard
 `modDependencies`.
 
+### 🔑 "Planet type: Rimworld" in the planet editor is CORRECT — do not regenerate over it
+
+Worldbuilder's editor header reads **`Planet type: Rimworld`** even with the tidally locked
+preset loaded. **That is the mod author's own cosmetic string, not a failure.** Measured
+2026-08-16 off the files:
+
+* `Defs/PlanetTypes.xml` sets `<planetType>Rimworld</planetType>` explicitly — a
+  Worldbuilder flavour class (Rimworld / Glitterworld / Urbworld), and `PlanetTypeDef.cs`
+  documents the field as *"worldbuilder-specific // defaults to `<label>`"*.
+* `WorldbuilderCompat.Refresh()` copies it straight into the generated
+  `…\3626210061\Worldbuilder\TidallyLocked\Preset.xml` as `<planetType>Rimworld</planetType>`.
+
+⇒ **The field that actually drives the planet is `<name>TidallyLocked</name>`.**
+`PlanetTypeManager.Current` reads Worldbuilder's `CurrentlyLoadedPreset.name` and looks it
+up in `DefDatabase<PlanetTypeDef>`. The tell that you have the right preset is its **label,
+"tidally locked world"**, and the description about the sun never setting — never the
+header.
+
+🔴 **`Current` has two silent fallbacks, both of which generate a vanilla planet:**
+`null` preset → `"Default"`, and a preset whose `name` is not an AWF def → `"Unknown"`.
+So **loading your own saved/custom preset silently drops the tidal lock.** Load the
+shipped `TidallyLocked` one.
+
+✅ **The only positive proof is post-generation and it is offline:** the save carries
+`<alienWorldsFrameworkPlanetType>` in `<world>`, directly above `<info>`. It must read
+`TidallyLocked`; `Default` means the world is vanilla.
+
 ### ⚠️ It applies NO biome restriction — this is the trap
 
 The mod leaves the framework's `<biomes>` and `<biomeConfigs>` **empty**, and
