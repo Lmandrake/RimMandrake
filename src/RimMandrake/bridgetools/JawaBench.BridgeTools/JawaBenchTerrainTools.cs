@@ -32,7 +32,10 @@
 
 using System;
 using System.Collections.Generic;
+using System.Globalization;
+using System.IO;
 using System.Linq;
+using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using LudeonTK;
@@ -3234,6 +3237,241 @@ namespace JawaBench.BridgeTools
             }, cancellationToken).ConfigureAwait(false);
         }
 
+        // ---- jawa/world_tile_export -----------------------------------------
+        // WHY THIS EXISTS. A savegame can be edited offline -- the world's tile
+        // records are plain XML in the .rws -- but that editing is BLIND,
+        // because the save stores tiles as a flat list in index order and
+        // stores no coordinate for any of them. Latitude and longitude are
+        // DERIVED at load time from the geodesic subdivision (PlanetLayer
+        // rebuilds the mesh, GetTileCenter -> LongLatOf), so "make the band
+        // between 20N and 35N drier" is unanswerable from the file alone. Tile
+        // 41,207 is a number, not a place.
+        //
+        // This is the missing key. Run it once against the live world and every
+        // subsequent offline edit becomes geographic: join on tile index and
+        // the save's anonymous rows acquire coordinates, biome and climate.
+        //
+        // 🔴 THE TABLE IS WRITTEN TO A FILE AND DELIBERATELY NOT RETURNED. A
+        // full-coverage planet is ~119,904 surface tiles; nine columns of that
+        // is several MB of JSON, and the bridge would have to carry all of it
+        // into a context window to be thrown away. The result here is a
+        // SUMMARY -- count, path, bytes, lat/long extents -- and the data is on
+        // disk where the Python side already reads.
+        //
+        // Names read from Assembly-CSharp with ilprobe, not recalled:
+        //   WorldGrid.get_TilesCount -> surface.TilesCount   (IL: ldfld surface)
+        //   WorldGrid.get_Item(int)  -> surface[i]           (IL: ldfld surface)
+        //     ⇒ the int-indexed grid IS the surface layer. 1.6/Odyssey adds
+        //       orbit and other PlanetLayers, but they are reached through
+        //       grid.PlanetLayers or a PlanetTile carrying a layerId, never
+        //       through grid[int]. So iterating 0..TilesCount is already
+        //       surface-only and needs no filter -- which is worth stating,
+        //       because it looks like an omission.
+        //   WorldGrid.LongLatOf(PlanetTile) -> Vector2(longitude, latitude)
+        //   PlanetTile.op_Implicit(int) -> new PlanetTile(id) with layerId 0
+        //   Tile.elevation / .temperature / .rainfall / .hilliness /
+        //     .swampiness / .PrimaryBiome
+        [Tool(
+            "jawa/world_tile_export",
+            Description =
+                "Dump a per-tile table of the whole SURFACE layer to a file — index, " +
+                "latitude, longitude, biome, elevation, temperature, rainfall, hilliness, " +
+                "swampiness. This is the key that makes OFFLINE savegame world editing " +
+                "geographic: the .rws stores tiles in index order with no coordinates, " +
+                "because lat/long are derived from the geodesic subdivision at load time " +
+                "and never serialised. Export once, join on tile index, and every row in " +
+                "the save has a place. Read-only: it touches nothing and is safe on a " +
+                "campaign world. Works at the world-creation screen with no map loaded.",
+            ResultDescription =
+                "A SUMMARY ONLY — the table itself is on disk, never in the response, " +
+                "because a full-coverage planet is ~119,904 rows. Returns tilesTotal, the " +
+                "absolute path written, bytesWritten, the min/max latitude and longitude " +
+                "actually observed, the column list, and the world's seedString and " +
+                "planetCoverage so the file can be tied back to the world that produced " +
+                "it. ⚠️ Tile indices are only meaningful against the world of that seed AND " +
+                "that coverage — a table from another world is not merely stale, it is " +
+                "wrong tile-for-tile.")]
+        public static async Task<object> WorldTileExport(
+            IRimBridgeContext ctx,
+            CancellationToken cancellationToken,
+            [ToolParameter(Description =
+                "Output file. Omit for the default, which is the game's save-data " +
+                "DefDump folder — the same folder RimDefDump writes to and refresh.py " +
+                "already reads — under a name carrying the world seed, e.g. " +
+                "'world_tiles_<seed>.csv'. A bare filename is resolved into that same " +
+                "folder; an absolute path is used as given, and its directory is created " +
+                "if missing.",
+                DefaultValue = null)]
+            string path = null,
+            [ToolParameter(Description =
+                "'csv' (default) — one header row then one row per tile, the form a " +
+                "spreadsheet or pandas reads without argument. 'json' — an object with a " +
+                "provenance block, a `columns` list and a `rows` array of arrays; chosen " +
+                "over an array-of-objects because repeating nine key names 119,904 times " +
+                "roughly triples the file for nothing.",
+                DefaultValue = "csv")]
+            string format = "csv")
+        {
+            var fmt = (format ?? "csv").Trim().ToLowerInvariant();
+            if (fmt != "csv" && fmt != "json")
+                return Fail($"format must be 'csv' or 'json', got '{format}'.");
+
+            // PHASE 1 — read the grid, on the main thread and nowhere else.
+            // Only the READ is in here. Formatting 119,904 rows and pushing them
+            // at a disk is the expensive half, it touches no game state, and
+            // doing it inside InvokeAsync would stall the simulation and the
+            // renderer for the whole write. So the tiles come out as a plain
+            // array of value structs and the main thread is released.
+            var gathered = await ctx.MainThread.InvokeAsync<object>(() =>
+            {
+                // Same fallback as jawa/world_stats, for the same reason: the
+                // moment a world is worth exporting is often the world-creation
+                // screen, before any commit, while Find.World is still null.
+                // WorldGenerator.GenerateWorld sets Current.CreatingWorld and
+                // reads the grid back through Find during generation, so a
+                // world being previewed is readable here.
+                var world = Find.World ?? Current.CreatingWorld;
+                if (world == null)
+                    return Fail("No world. This reads the PLANET, so it needs a world " +
+                                "either loaded or being created — the main menu alone is " +
+                                "not enough. Open the world-creation screen and generate " +
+                                "one, then call again.");
+                var grid = world.grid;
+                if (grid == null) return Fail("World has no grid.");
+
+                var n = grid.TilesCount;
+                if (n <= 0) return Fail($"World grid reports {n} tiles.");
+
+                var rows = new TileRow[n];
+                for (var i = 0; i < n; i++)
+                {
+                    if ((i & 1023) == 0) cancellationToken.ThrowIfCancellationRequested();
+                    var t = grid[i];
+                    // A null tile is emitted as a row rather than skipped. The
+                    // whole value of this file is that its row N is the save's
+                    // tile N; a gap would silently shift every row after it.
+                    if (t == null)
+                    {
+                        rows[i] = new TileRow { Biome = "(null)" };
+                        continue;
+                    }
+                    // Vector2 is (x = longitude, y = latitude). Named on the way
+                    // out because the order is the reverse of how it is spoken.
+                    var ll = grid.LongLatOf(i);
+                    rows[i] = new TileRow
+                    {
+                        Longitude = ll.x,
+                        Latitude = ll.y,
+                        Biome = t.PrimaryBiome?.defName ?? "(null)",
+                        Elevation = t.elevation,
+                        Temperature = t.temperature,
+                        Rainfall = t.rainfall,
+                        Hilliness = t.hilliness.ToString(),
+                        Swampiness = t.swampiness
+                    };
+                }
+
+                var info = world.info;
+                return new TileHarvest
+                {
+                    Rows = rows,
+                    Previewing = Find.World == null,
+                    SeedString = info?.seedString,
+                    PlanetCoverage = info?.planetCoverage ?? -1f
+                };
+            }, cancellationToken).ConfigureAwait(false);
+
+            // Fail() passes straight through: it is the only other thing phase 1
+            // can return, and re-wrapping it would lose its message.
+            if (!(gathered is TileHarvest harvest)) return gathered;
+
+            // PHASE 2 — resolve the path, format, write. No game state below.
+            var root = Path.Combine(GenFilePaths.SaveDataFolderPath, "DefDump");
+            string outPath;
+            try
+            {
+                if (string.IsNullOrWhiteSpace(path))
+                {
+                    // The seed rides in the FILENAME rather than in a comment
+                    // line, because a `#` header would break every naive CSV
+                    // reader and the provenance is the one thing that must not
+                    // be strippable. A table joined against the wrong world is
+                    // wrong tile-for-tile and looks perfectly plausible.
+                    var seed = SanitiseForFileName(harvest.SeedString);
+                    outPath = Path.Combine(root, $"world_tiles_{seed}.{fmt}");
+                }
+                else
+                {
+                    outPath = Path.IsPathRooted(path) ? path : Path.Combine(root, path);
+                }
+                var dir = Path.GetDirectoryName(outPath);
+                if (!string.IsNullOrEmpty(dir)) Directory.CreateDirectory(dir);
+            }
+            catch (Exception ex)
+            {
+                return Fail($"Could not resolve output path: {ex.Message}",
+                            new { path, root });
+            }
+
+            var latMin = double.MaxValue;
+            var latMax = double.MinValue;
+            var lonMin = double.MaxValue;
+            var lonMax = double.MinValue;
+            foreach (var r in harvest.Rows)
+            {
+                if (r.Latitude < latMin) latMin = r.Latitude;
+                if (r.Latitude > latMax) latMax = r.Latitude;
+                if (r.Longitude < lonMin) lonMin = r.Longitude;
+                if (r.Longitude > lonMax) lonMax = r.Longitude;
+            }
+
+            try
+            {
+                // No BOM and a generous buffer, matching RimDefDump's writer:
+                // the Python side reads these with plain utf-8, and this file is
+                // in the same size class as the def dumps.
+                using (var sw = new StreamWriter(outPath, false, new UTF8Encoding(false), 1 << 20))
+                {
+                    if (fmt == "csv") WriteTileCsv(sw, harvest, cancellationToken);
+                    else WriteTileJson(sw, harvest, cancellationToken);
+                }
+            }
+            catch (Exception ex)
+            {
+                return Fail($"Write failed: {ex.Message}", new { path = outPath });
+            }
+
+            long bytes;
+            try { bytes = new FileInfo(outPath).Length; }
+            catch { bytes = -1; }
+
+            return new
+            {
+                success = true,
+                message =
+                    $"Wrote {harvest.Rows.Length} surface tiles ({fmt}) to {outPath}" +
+                    (harvest.Previewing
+                        ? " — from a world being PREVIEWED at the creation screen, not a "
+                          + "loaded one. Tile indices hold only if this world is the one kept."
+                        : "."),
+                tilesTotal = harvest.Rows.Length,
+                path = outPath,
+                bytesWritten = bytes,
+                format = fmt,
+                columns = TileColumns,
+                latMin = Math.Round(latMin, 4),
+                latMax = Math.Round(latMax, 4),
+                longMin = Math.Round(lonMin, 4),
+                longMax = Math.Round(lonMax, 4),
+                // Which world this table is ABOUT. Tile indices are derived from
+                // the subdivision, so seed AND coverage together are what make
+                // them mean anything.
+                previewOnly = harvest.Previewing,
+                seedString = harvest.SeedString,
+                planetCoverage = harvest.PlanetCoverage
+            };
+        }
+
         // ---- jawa/get_defs ---------------------------------------------------
         // WHY THIS EXISTS, and it is a pattern not an itch.
         // On 2026-08-13/14 FIVE separate v1 gates turned out to have no
@@ -5589,6 +5827,179 @@ namespace JawaBench.BridgeTools
             // both are emitted, because the gate's band is a fraction and
             // shipping only degrees made a passing world read as a failure.
             public double CentroidLat;
+        }
+
+        // ---- jawa/world_tile_export internals --------------------------------
+        // The column order, in ONE place. It is written into the CSV header, into
+        // the JSON `columns` list and returned in the tool result, and the whole
+        // point of the file is that a consumer can trust the join — three
+        // hand-kept copies of the same list is exactly how that stops being true.
+        private static readonly string[] TileColumns =
+        {
+            "tile", "lat", "long", "biome", "elevation",
+            "temperature", "rainfall", "hilliness", "swampiness"
+        };
+
+        // One surface tile, flattened. A struct in a flat array rather than a
+        // list of objects: a full-coverage planet is ~119,904 of these, and this
+        // array is built on the MAIN THREAD, where every allocation is a tick the
+        // simulation does not get.
+        private struct TileRow
+        {
+            public float Longitude;
+            public float Latitude;
+            public string Biome;
+            public float Elevation;
+            public float Temperature;
+            public float Rainfall;
+            public string Hilliness;
+            public float Swampiness;
+        }
+
+        // What phase 1 hands to phase 2: the tiles plus the provenance that makes
+        // their indices mean something.
+        private sealed class TileHarvest
+        {
+            public TileRow[] Rows;
+            public bool Previewing;
+            public string SeedString;
+            public float PlanetCoverage;
+        }
+
+        // 🔴 InvariantCulture on every number, without exception. RimWorld runs
+        // under the OS locale, and on a comma-decimal machine "0.35" is written
+        // "0,35" — which does not merely look odd in a CSV, it shifts every
+        // column after it by one and the file still parses. This is the single
+        // most likely way this export could be silently wrong.
+        private static string F(float v, string fmt) =>
+            v.ToString(fmt, CultureInfo.InvariantCulture);
+
+        // 4 decimals is ~11 m at the equator on a 100%-coverage planet, well
+        // under a tile; the climate fields carry 4 too because rainfall runs to
+        // thousands and temperature to one decimal in game.
+        private const string LatLongFormat = "0.####";
+        private const string ValueFormat = "0.####";
+
+        private static void WriteTileCsv(
+            TextWriter sw, TileHarvest harvest, CancellationToken cancellationToken)
+        {
+            sw.Write(string.Join(",", TileColumns));
+            sw.Write('\n');
+            var rows = harvest.Rows;
+            for (var i = 0; i < rows.Length; i++)
+            {
+                if ((i & 4095) == 0) cancellationToken.ThrowIfCancellationRequested();
+                var r = rows[i];
+                sw.Write(i.ToString(CultureInfo.InvariantCulture));
+                sw.Write(','); sw.Write(F(r.Latitude, LatLongFormat));
+                sw.Write(','); sw.Write(F(r.Longitude, LatLongFormat));
+                sw.Write(','); sw.Write(Csv(r.Biome));
+                sw.Write(','); sw.Write(F(r.Elevation, ValueFormat));
+                sw.Write(','); sw.Write(F(r.Temperature, ValueFormat));
+                sw.Write(','); sw.Write(F(r.Rainfall, ValueFormat));
+                sw.Write(','); sw.Write(Csv(r.Hilliness));
+                sw.Write(','); sw.Write(F(r.Swampiness, ValueFormat));
+                // '\n' not Environment.NewLine: this file is read on the WSL
+                // side by Python, and CRLF would ride into the last column of
+                // every row unless the reader is told about it.
+                sw.Write('\n');
+            }
+        }
+
+        // A defName is an XML identifier and cannot contain a comma, so this
+        // never fires on vanilla data. It exists because a modded biome defName
+        // is not vanilla data, and a single stray comma would shift a column in
+        // one row out of 119,904 — the hardest kind of corruption to notice.
+        private static string Csv(string s)
+        {
+            if (string.IsNullOrEmpty(s)) return "";
+            if (s.IndexOf(',') < 0 && s.IndexOf('"') < 0 && s.IndexOf('\n') < 0) return s;
+            return "\"" + s.Replace("\"", "\"\"") + "\"";
+        }
+
+        private static void WriteTileJson(
+            TextWriter sw, TileHarvest harvest, CancellationToken cancellationToken)
+        {
+            // Provenance FIRST, so a `head` on a multi-MB file answers "which
+            // world is this?" without reading the rest.
+            sw.Write("{\"capturedUtc\":\"");
+            sw.Write(DateTime.UtcNow.ToString("yyyy-MM-ddTHH:mm:ssZ", CultureInfo.InvariantCulture));
+            sw.Write("\",\"seedString\":");
+            sw.Write(Jstr(harvest.SeedString));
+            sw.Write(",\"planetCoverage\":");
+            sw.Write(F(harvest.PlanetCoverage, "0.####"));
+            sw.Write(",\"previewOnly\":");
+            sw.Write(harvest.Previewing ? "true" : "false");
+            sw.Write(",\"layer\":\"surface\",\"tilesTotal\":");
+            sw.Write(harvest.Rows.Length.ToString(CultureInfo.InvariantCulture));
+            sw.Write(",\"columns\":[");
+            for (var c = 0; c < TileColumns.Length; c++)
+            {
+                if (c > 0) sw.Write(',');
+                sw.Write(Jstr(TileColumns[c]));
+            }
+            // Rows as ARRAYS, not objects. Nine repeated key names per tile is
+            // roughly triple the file for information already in `columns`.
+            sw.Write("],\"rows\":[");
+            var rows = harvest.Rows;
+            for (var i = 0; i < rows.Length; i++)
+            {
+                if ((i & 4095) == 0) cancellationToken.ThrowIfCancellationRequested();
+                var r = rows[i];
+                if (i > 0) sw.Write(',');
+                sw.Write('[');
+                sw.Write(i.ToString(CultureInfo.InvariantCulture));
+                sw.Write(','); sw.Write(F(r.Latitude, LatLongFormat));
+                sw.Write(','); sw.Write(F(r.Longitude, LatLongFormat));
+                sw.Write(','); sw.Write(Jstr(r.Biome));
+                sw.Write(','); sw.Write(F(r.Elevation, ValueFormat));
+                sw.Write(','); sw.Write(F(r.Temperature, ValueFormat));
+                sw.Write(','); sw.Write(F(r.Rainfall, ValueFormat));
+                sw.Write(','); sw.Write(Jstr(r.Hilliness));
+                sw.Write(','); sw.Write(F(r.Swampiness, ValueFormat));
+                sw.Write(']');
+            }
+            sw.Write("]}");
+        }
+
+        // Minimal JSON string writer. Hand-rolled because this assembly has no
+        // JSON dependency and pulling one in for eight short identifier fields
+        // would be the larger risk.
+        private static string Jstr(string s)
+        {
+            if (s == null) return "null";
+            var sb = new StringBuilder(s.Length + 2);
+            sb.Append('"');
+            foreach (var ch in s)
+            {
+                if (ch == '"' || ch == '\\') { sb.Append('\\').Append(ch); }
+                else if (ch == '\n') sb.Append("\\n");
+                else if (ch == '\r') sb.Append("\\r");
+                else if (ch == '\t') sb.Append("\\t");
+                else if (ch < ' ') sb.Append("\\u").Append(((int)ch).ToString("x4"));
+                else sb.Append(ch);
+            }
+            sb.Append('"');
+            return sb.ToString();
+        }
+
+        // A seed is arbitrary player-typed text and lands in a FILENAME here, so
+        // it is filtered rather than trusted. Anything not [A-Za-z0-9._-] becomes
+        // '_', and an empty or absent seed becomes "unseeded" rather than a file
+        // called "world_tiles_.csv".
+        private static string SanitiseForFileName(string seed)
+        {
+            if (string.IsNullOrWhiteSpace(seed)) return "unseeded";
+            var sb = new StringBuilder(seed.Length);
+            foreach (var ch in seed)
+            {
+                var ok = (ch >= 'a' && ch <= 'z') || (ch >= 'A' && ch <= 'Z')
+                         || (ch >= '0' && ch <= '9') || ch == '.' || ch == '_' || ch == '-';
+                sb.Append(ok ? ch : '_');
+            }
+            // Long seeds are legal; a 260-char Windows path is not.
+            var s = sb.ToString();
+            return s.Length > 48 ? s.Substring(0, 48) : s;
         }
 
         // ---- Vehicle Framework, reached by reflection -------------------------
