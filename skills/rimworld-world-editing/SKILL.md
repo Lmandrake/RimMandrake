@@ -536,3 +536,31 @@ per-tile territory array and no territory blob anywhere in the save.**
 and the territory moves with them, for free. Nothing to edit, nothing to keep in sync.
 That makes settlement placement the single highest-leverage edit available: it moves the
 political map as well as the object.
+
+---
+
+## 12. 🔴 Curation posture: WHITELIST — owner's ruling, 2026-08-15
+
+**Default is EXCLUDE.** No tile mutator and no landmark appears on our planet unless it
+has been explicitly whitelisted. "Not yet reviewed" therefore means **stripped**, not
+"pending" — a half-finished review yields a bare planet, never a polluted one.
+
+**Why, in one line:** a whitelist stays correct when a mod updates and adds new content;
+a blacklist silently lets the new content in. With **336 `TileMutatorDef`s across 9 mods**
+plus **113 `LandmarkDef`s**, that is the difference between a planet that stays curated
+and one that drifts every time the Workshop updates.
+
+⛔ **We are NOT using Cherry Picker for this.** Owner's ruling: *"we won't use Cherrypicker
+here, but simply clean the map."* Mutators and landmarks are stored **in the save**, so
+the decision is applied as a **world edit** — strip everything unwhitelisted out of
+`tileMutatorDefs` / the landmarks dict. That is strictly better than removing the def:
+Alpha Biomes keeps contributing its biomes, plants and animals while its
+`AB_DessertTrees` (yes, dessert — they are candy trees) never appear on our world.
+
+⇒ Any export from the review sheet MUST carry its posture explicitly
+(`{"posture": "whitelist", "whitelisted": [...] }`) so a consuming tool can never
+misread a sparse file as "strip only these few".
+
+📌 Scale check for whoever runs the strip: **Vanilla Landmarks Expanded 144 mutators ·
+Odyssey 82 · Alpha Biomes 48 · Geological Landforms 44**, and the same four dominate the
+landmark list. Review by MOD, not alphabetically.
