@@ -88,6 +88,15 @@ A whitelist and a blacklist are the same UI and opposite meanings.
 * **Always show link state and last-write time.** He must never wonder if his work is safe.
 * Keep export/clipboard/textarea as the fallback, and say honestly when the API is absent
   (Firefox) rather than pretending.
+* 🔴 **A whole-file auto-writer DELETES keys it does not know about.** Measured: the
+  sheet auto-saves by rewriting the entire JSON, and the file had meanwhile gained
+  `frozen` / `frozenOn` / `frozenBy` / `frozenMeaning` from a different commit. The first
+  keystroke would have silently erased the freeze marker. ⇒ **Read the existing file,
+  carry unknown top-level keys through verbatim, and re-emit them.** Never assume your
+  page is the only author of its own file.
+* ✅ **Verify byte identity before trusting the writer.** Simulate the write and diff it
+  against what is on disk — the first auto-write should produce a ZERO-line `git diff`.
+  Anything else means the format drifted and every future diff is noise.
 * 🔴 **Guard against a truncating write.** If in-memory state has implausibly few decided
   rows, REFUSE and say so. An auto-writer that empties the human's file over a transient
   bug is worse than the clumsy manual flow it replaced.
