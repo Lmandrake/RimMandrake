@@ -464,3 +464,48 @@ print("uniq   %d  keep %d  rej %d  undecided %d"
       % (len(seen), len(whitelisted), len(rejected), len(seen)-len(whitelisted)-len(rejected)))
 print("occurs %d  keep %d  rej %d  undecided %d" % (len(occ), ok, orj, len(occ)-ok-orj))
 print("wrote", OUT)
+
+# ---------------------------------------------------------------------------
+# 🔴 THE CONTESTED CALLS. Each of these is defensible both ways, so the note is
+# prefixed with a warning marker and the sheet's "⚠ flagged for review" filter
+# pulls exactly this set. Reviewing these ~20 rows is worth more than skimming
+# the other 430.
+# ---------------------------------------------------------------------------
+FLAGGED = {
+    # a world rule that was INVENTED, not given: volcanism here is extinct.
+    "LavaLake":        "volcanism ruled EXTINCT - flip if you want a Mustafar region",
+    "LavaFlow":        "volcanism ruled EXTINCT - flip if you want a Mustafar region",
+    "LavaCaves":       "volcanism ruled EXTINCT - flip if you want a Mustafar region",
+    "LavaCrater":      "volcanism ruled EXTINCT - flip if you want a Mustafar region",
+    "VEE_Volcano":     "volcanism ruled EXTINCT - flip if you want a Mustafar region",
+    "AB_MagmaVents":   "volcanism ruled EXTINCT - flip if you want a Mustafar region",
+    "AB_MagmaticQuagmire": "volcanism ruled EXTINCT - flip if you want a Mustafar region",
+    # rule vs fiction pull apart
+    "WildAlderaanPlants": "cut as temperate, but it IS Star Wars flora - imported ornamentals?",
+    "VEE_DomesticatedEscapees": "feral stock by dead moisture farms is a good beat, but reads Earth",
+    "VEE_NobleSteeds":  "feral stock by dead moisture farms is a good beat, but reads Earth",
+    "AB_BumbledroneNests": "cut as cutesy, yet Geonosians make insect nests entirely apt",
+    "AB_DerelictResort": "kept only by reframing it as a derelict Hutt pleasure resort",
+    "VEE_RotstinkVents": "kept as badlands sulfur; description leans gross",
+    "VEE_SulfuricLake":  "kept as badlands sulfur; description leans gross",
+    "VEE_SulfuricRiver": "kept as badlands sulfur; description leans gross",
+    "Marshy":            "split from Muddy - the wet/dry line on a desert world is thin",
+    "Muddy":             "kept as oasis margin; the wet/dry line on a desert world is thin",
+    "AB_AncientGreyPallVent": "kept as Imperial exhaust while death-pall/blood-rain were cut as occult",
+    "AB_HealingSprings": "mystical unless read as a mineral spa",
+}
+
+
+def apply_flags(decisions):
+    """Prefix the contested notes so the sheet can filter to exactly them."""
+    n = 0
+    for name, why in FLAGGED.items():
+        d = decisions.get(name)
+        if not d:
+            continue
+        note = d.get("note", "")
+        if note.startswith("\u26a0") or note.startswith("UNSURE"):
+            continue
+        d["note"] = "\u26a0 %s | %s" % (why, note) if note else "\u26a0 %s" % why
+        n += 1
+    return n

@@ -402,6 +402,17 @@ main{padding:0 12px 60px}
     <span class="spacer" style="flex:1"></span>
     <button id="reprefill">reset to pre-filled</button>
   </div>
+  <div class="prefill" id="rulesbar" style="border-color:#5a4a2a;background:#221d14">
+    <span class="big" style="color:#d8a657">RULES THE CALLS WERE MADE AGAINST</span>
+    <span class="why">Serious, lived-in Outer Rim desert world; Jawa salvage clan fleeing the Empire.
+      <b>Slapstick is scoped to the Jawas themselves</b> (scrap, junk, hoarding, sandcrawler life) &mdash;
+      whimsy that is not Jawa-flavoured is out. The world has oceans (~17%), has Geonosians as a
+      faction, and may be tidally locked, so <b>night-side ice content is KEPT</b>.
+      &#9888; <b>One rule was invented and is not yours:</b> this planet&rsquo;s volcanism is treated as
+      <b>EXTINCT</b> &mdash; active lava is cut, while basalt, obsidian, black sand and resurgent
+      calderas are kept. Flip the lava set if you want a Mustafar region.
+      Use the <b>&#9888; flagged for review</b> filter to see only the contested calls.</span>
+  </div>
 
   <div class="bar">
     <input type="search" id="q" placeholder="search label, defName, description, mod…">
@@ -417,6 +428,7 @@ main{padding:0 12px 60px}
       <option value="keep">whitelisted (&rarr; kept)</option>
       <option value="rej">deliberate NO (&rarr; stripped)</option>
       <option value="noted">has a note</option>
+      <option value="flagged">&#9888; flagged for review</option>
     </select>
     <label class="chk"><input type="checkbox" id="fused"> occurs in world &gt; 0</label>
     <span class="sep"></span>
@@ -586,7 +598,9 @@ function filter(){
       if(term && !row.dataset.s.includes(term)) ok = false;
       if(m && row.dataset.mod !== m) ok = false;
       if(t && row.dataset.type !== t) ok = false;
-      if(st === "noted" ? !noted : st && s !== st) ok = false;
+      const flagged = /^(\u26a0|UNSURE)/.test(row.querySelector(".note").value.trim());
+      if(st === "flagged") { if(!flagged) ok = false; }
+      else if(st === "noted" ? !noted : st && s !== st) ok = false;
       if(used && +row.dataset.n === 0) ok = false;
       row.classList.toggle("hide", !ok);
       if(ok) shown++;
