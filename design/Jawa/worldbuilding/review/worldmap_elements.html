@@ -69,6 +69,12 @@ main{padding:0 12px 60px}
 .modhead{display:flex;gap:8px;align-items:center;padding:6px 8px;
   background:var(--panel2);border-bottom:1px solid var(--line);
   position:sticky;top:var(--hh,96px);z-index:20}
+/* 🔴 A sticky mod header sits ON TOP of its own rows. In a group with only one or
+   two entries - Biome Transitions and Map Designer have exactly ONE def each - the
+   header covered the only row, so it could not be read, selected or typed into.
+   Sticking is only useful while a group is taller than the header, so switch it off
+   for short groups. `.mod.short` is set by the generator on any group with <= 3 rows. */
+.mod.short > .modhead{position:static;top:auto}
 .modhead .name{font-size:14px;font-weight:700;letter-spacing:.01em}
 .modhead .cnt{color:var(--dim);font-size:12px}
 .modhead .cnt b{color:var(--fg)}
@@ -286,7 +292,8 @@ const main = document.getElementById("main");
 main.innerHTML = mods.map(m => {
   const rs = byMod.get(m);
   const used = rs.filter(r => r.n > 0).length;
-  return `<section class="mod" data-mod="${esc(m)}">
+  // short groups must NOT stick their header - it would cover their only row
+  return `<section class="mod${rs.length <= 3 ? " short" : ""}" data-mod="${esc(m)}">
     <div class="modhead">
       <span class="caret" data-act="fold">▾</span>
       <span class="name">${esc(m)}</span>
