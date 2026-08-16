@@ -53,10 +53,69 @@ rivers, coasts and anomaly patches are the islands of purpose.
 - ⚠️ A biome edit alone leaves the old climate behind. Set temperature and rainfall with it,
   with per-tile jitter, or it renders as a paint-bucket blob.
 
-## Open — the current axis
+## Name — RATIFIED
 
-**Axis 1: biome layout, temperature, rainfall.** Questions in play, answers land here.
+**`Ash'karr the Sundered`.** Owner, 2026-08-16. Written into the save's `<world><info><name>`.
 
-## Name
+## Axis 1 — RULED, 2026-08-16
 
-- TBD this session. Currently the save carries the default `Crashlanded`.
+### Nightside — ~50% of land, and it is a DESTINATION
+
+- **Almost precisely 50%** of land is nightside. Not a wasteland to pad the map.
+- **It gets its own internal geography** — outer twilight fringe, deep dark, antistellar core.
+  It is a campaign exploration path, certainly.
+- ⭐ **It takes the place of space/asteroids in this playthrough**, because orbit is heavily
+  Empire-held. That is its structural role.
+- 🔑 **You CAN stay and farm it** — as a difficult **end-game** goal, once the ship is very
+  heavily equipped with heaters, weapons and survival gear. It is gated by preparation,
+  not forbidden.
+- Imperial pursuit lapses there in v1. *(v2 concept: pursuit reaches the nightside but far
+  slower — possibly as a radius from the central Imperial holdings. Parked in
+  `worldgen_interactive_build_concepts.md`.)*
+
+### Temperature — a precipitous cliff, not a gradient
+
+- **Substellar point ≈ +80 °C** — deliberately beyond normal RimWorld ranges.
+- **Still sweltering right up to the dayside edge of the terminator**, because hot winds
+  circulate the extreme heat outward. The dayside does not cool off gently.
+- 🔴 **The drop across the actual terminator is precipitous** — very hot to very cold over
+  a short arc. This cliff is the signature of the planet and must survive the repaint.
+- **Nightside bottoms out at −80 °C** at the antistellar point.
+- Chemistry thresholds that matter for later content:
+  **propane** liquid −188…−42 · **ammonia** liquid −78…−33 · **ethane** liquid −183…−87.
+- The **antipodal (coldest) point** carries **solid ammonia ice and solid CO₂**.
+- ✅ **All other atmospheric gases stay gaseous across the whole frozen range** — the
+  nightside is **breathable**. No vac suits. Insulation only. This is a deliberate scope cut.
+
+### Water — four distinct systems
+
+1. **Two near-terminator seas**, one per twilight zone, spanning both sides and nurturing
+   abundant life. ⚠️ **NOT the full circumference** — long stretches of the terminator carry
+   no sea at all, though small lakes and oases are possible there.
+2. **One significant DAYSIDE ocean**, and it is the surprise: **not at the substellar point
+   but ~35° from it**, in a punishingly hot region. **Fed and maintained by the planet's
+   largest mountain range and volcanoes and their river system** — that is why it survives
+   where it has no business existing.
+3. **Frozen seas on the nightside** — deadlocked as **mineral ice**, no longer part of the
+   water cycle at all.
+4. The nightside instead runs a **methane / propane / ammonia chemistry cycle**.
+
+### Rainfall — almost nowhere
+
+- **Rain falls ONLY at the tops of dayside mountains**, at high altitude, in violent forms,
+  in the few strange biomes that live up there.
+- **The dayside terrains never rain. Ever.**
+- **The terminator gets no rain either** — moisture arrives as **fog that descends at night
+  and lifts in the morning, leaving dew**.
+- **The nightside: no rain and no water snow.** Temperature collapses too fast and the air
+  is too dry.
+- **But ammonia, propane and ethane may fall there as rain or snow.**
+
+### Engineering consequences to carry into the repaint
+
+- Rainfall drives biome scoring and plant growth, so near-zero dayside rainfall is doing
+  double duty — it must be set, not left at Normal's ~950 mm median.
+- The terminator cliff is only a few tiles wide at 21,872 tiles. **Measure how many tiles
+  span 80°→100° arc before designing anything that needs room there.**
+- Fog/dew, ammonia precipitation, mineral-ice mining and the chemistry cycle have no vanilla
+  representation. Parked as build concepts; the repaint must not depend on them.

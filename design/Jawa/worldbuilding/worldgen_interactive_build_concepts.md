@@ -10,4 +10,30 @@ here.
 
 ## Axis 1 — biome layout, temperature, rainfall
 
-_(empty; fills as we talk)_
+Owner, 2026-08-16, with the standing instruction that everything discussed in these
+sessions be recorded here for DESIGN to pick up later.
+
+- **v2 — Imperial pursuit onto the nightside.** In v1 the hunt simply lapses there. In v2
+  the Empire should still be able to follow, just take far longer — possibly modelled as a
+  **radius from the central Imperial holdings on the planet**, so the deep dark is safer
+  than the fringe. Needs a mechanism; none exists.
+- **The nightside as the endgame frontier.** It stands in for space and asteroids, which
+  are Empire-held in this campaign. Staying and farming there is meant to be **achievable
+  but gated on a very heavily equipped ship** — heaters, weapons, survival gear. Whether
+  that gate is real (equipment checks, temperature mechanics) or diegetic needs deciding.
+- **Nightside chemistry cycle.** Methane / propane / ammonia replace water entirely. Needs
+  thing defs, weather and probably a resource: propane liquid −188…−42 °C, ammonia
+  −78…−33, ethane −183…−87. The antistellar core carries solid ammonia ice and solid CO₂.
+- **Ammonia / propane / ethane precipitation** as rain and snow on the nightside — new
+  WeatherDefs. Water snow and rain must never occur there.
+- **Strange lake formations, mined for fuel.** The nightside's frozen chemistry lakes as a
+  located, minable resource — an Exotic axis for those tiles.
+- **Mineral ice.** The nightside's frozen seas are deadlocked ice outside the water cycle;
+  if they are to be mined or drilled, that is content.
+- **Fog and dew at the terminator.** The terminator's only moisture. No vanilla weather
+  represents fog that descends at night and lifts by morning — and on a tidally locked
+  world there is no night to hang it on, so this needs its own mechanism.
+- **Violent high-altitude mountain rain on the dayside** — the planet's only true rainfall,
+  in the strange biomes at the peaks. Probably a weather restriction plus biome placement.
+- **Breathable everywhere** is a deliberate scope CUT, recorded so nobody adds vac suits:
+  all other atmospheric gases stay gaseous across the frozen range. Insulation only.
