@@ -113,46 +113,6 @@ criteria: the campaign starts as designed rather than as a vanilla crashlanding.
 state:    done — SCENARIO_SPEC.md now names the mechanism (a saved game, R25), all
           six founders and the starting stock. That is the verify condition met.
 
-## D-CHK1 The pilot console is UNREACHABLE — v1's NoPathToPilotConsole gate FAILS live
-row:      unassigned
-spec:     Filed by CHECK 2026-08-14 from the C1 harness (`observed/2026-08-14_load_session.md`).
-          **A2 FAIL: 0 of 1 colonists reach `PilotConsole44499` at (129,149)**
-          (`pathEndMode=InteractionCell`). **A4 FAIL** independently confirms the cause is
-          reachability, not the order tool: `jawa/order_pawn` moved Alex (116,146) -> (116,146)
-          over 245 ticks with `canReach=False`. A4b passed, so the pawn was left undrafted and
-          at home — nothing is stuck.
-          **Not caused by this session's edits.** The only passability change CHECK made was
-          swapping 4 west-wall thrusters for `GravshipHull`; both are impassable buildings, so
-          the wall was never open there. The 201 added conduits do not block. The ship has just
-          **2 `Door`s for an 86x133 hull**, which is the obvious suspect.
-          This is the gate `facts/LIVE.md` records as previously SKIPPED for want of a ThingID
-          source — `jawa/list_things` now supplies it, so the gate finally ran, and it fails.
-verify:   `jawa/order_pawn` a colonist to (129,149) and read `canReach` back; or re-run
-          `load_session.py --phase any` and read A2/A4.
-criteria: DECIDE's call — this is a SHIP DESIGN question (interior circulation and door
-          placement), not a bridge defect. CHECK does not redesign it.
-state:    ready
-
-
-### ROOT CAUSE FOUND — 2026-08-15, CHECK, via `jawa/inspect_string`
-
-**The grav engine chamber has no door.** The whole ship has exactly **2 doors** —
-(115,58) and (82,136) — both on the outer hull, neither anywhere near the engine.
-The octagonal chamber holding `GravEngine` (126,149), `PilotConsole` (129,149) and
-`ChemfuelTank` (126,151) is walled from z=143 to z=158 with **zero** doors in it.
-
-Alex is NOT immobile: all four one-cell moves succeeded. He simply cannot path in.
-Ordered to (126,144), (126,146) and (126,148) — the chamber's south nook and
-interior — he returned `0 moved at all` each time after ~900 ticks. The apparent
-doorway at (126,144) is a dead nook: (126,143) behind it is hull.
-
-**This is bigger than the console gate.** An uninspected grav engine is inert, so
-every thruster and the console all read "Not connected to grav engine", and
-`Gravship range` is 0. Sealing the engine in therefore disables the entire ship,
-not just the console interaction. One door into that chamber plausibly clears the
-thrusters, the console AND the engine inspection at once.
-
-⇒ DECIDE's call: where the door goes. CHECK does not author the hull.
 ## D20 You inherit every sign-off the retired seats held
 row:      0
 spec:     🔴 **The authoritative retired-seat mapping, owner 2026-08-15. Use this
@@ -308,7 +268,13 @@ spec:     Owner ruling 2026-08-15: *"For the races, we likely want to simply
           ⚠️ `MandrakeJawa` is already ours and is the worked example.
 verify:   every species named in `FACTION_SPEC.md` R27 resolves to a def we own.
 criteria: no faction member generates as a donor-pack xenotype.
-state:    ready
+state:    ✅ CLOSED — **OWNER RULING 2026-08-15, verbatim:** *"We are shipping with the
+          ones we have right now, unchanged, implemented in the game right now. There
+          won't be any more decisions about xenotype inclusion in v1 at this time."*
+          ⇒ No own-set authoring, no merge, no R27 rewrite. The live xenotype set IS
+          the v1 set. Remainder parked in `design/V2_DREAMS.md`.
+          ⚠️ This closes INCLUSION only. It does not bless a broken reference — the
+          `softshadow.xtp` dead genes still drop silently at world creation.
 
 ## D25 A spec shipped a fabricated XML sample, and the validator called it clean
 row:      9
@@ -479,8 +445,7 @@ verify:   every surviving xenotype has authored text rather than donor-mod prose
           BUILD item rather than left as an intention.
 criteria: the roster reads as one authored set of species, and nothing in it is
           there merely because a donor mod shipped it.
-state:    blocked — waiting on the pawn kinds to spawn with our xenotypes (`D23`
-          and chain step 7).
+state:    ⛔ v2 — its premise died with D23. Xenotype inclusion is closed for v1.
 
 ## D-CHK2 Magenta heads: the generator's path-rewrite list is incomplete
 row:      unassigned
@@ -1202,7 +1167,12 @@ spec:     🔴 **A scope call only DECIDE can make, and worldgen is the last cha
           later.** BUILD recommends (a) and can implement it in minutes, offline.
 verify:   —
 criteria: —
-state:    open — needs DECIDE
+state:    ✅ RULED (DECIDE, 2026-08-15) — **(a). Add `requiredCountAtGameStart 1` to all
+          seven.** A world is generated ONCE and a faction absent at worldgen can never
+          be added; relying on the operator ticking seven counters up by hand on the
+          Configure Factions screen is one distraction away from a campaign with no
+          Hutts in it. BUILD implements offline. `EXPECTED_FAILURES` §2 S7 already
+          corrected on disk.
 
 ## the-shipping-xenotype-drops-four-of-our-own-genes-7e31aa
 🔧 **FIXED ON DISK 2026-08-15 by BUILD — NOT YET CONFIRMED LIVE.** The repo copy had been

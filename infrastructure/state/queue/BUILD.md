@@ -445,20 +445,12 @@ verify:   `validate_patch.py --defs` 0 errors; every `weaponTags` string appears
           on at least one live weapon def; every `apparelRequired` defName
           resolves.
 criteria: each faction's raids field the intended roles, not one flat kind.
-state:    blocked — **but the reason changed 2026-08-15 and the hard blocker is GONE.**
-unblock:  🔴 **OWNER FROZE THE CHERRYPICK AND CLOSED CHAIN STEP 1.** The stated blocker
-          above — *"`weaponTags` and `apparelRequired` are a selection from the surviving
-          item set and cannot be invented"* — **no longer holds. That set is now FIXED**
-          (1,308 Cherry Picker keys; armour, weapons, items and beasts all done) and
-          nothing further will cut from it. There is no longer a risk that authoring
-          these 48 kinds today is invalidated by a later category pass.
-          ⇒ What remains is chain step 2/3 work over a frozen set — a balance pass and a
-          tag assignment — **not a discovery problem**. `combatPower` is still unset on
-          all 48 and still must be assigned; that was always ours, not the cherrypick's.
-          ⚠️ **I am not flipping this to `ready` myself**: step 3's artifact (which tags a
-          `PawnKindDef` actually consumes) is still unwritten, and BUILD bounces items
-          whose spec would have to be guessed. **DECIDE owes step 3's spec, then this
-          goes ready.** Filed so nobody re-derives the old blocker and re-parks it.
+state:    ready — ⭐ **OWNER RULING 2026-08-15: v1, but SEQUENCED AFTER WORLDGEN.**
+          Measured, not assumed: `FACTION_SPEC.md` cites ZERO `Jawa_<Faction>_<Role>`
+          kinds — every `pawnGroupMaker` names a donor kind — so B45–B51 do not depend
+          on this and it does not bake at world creation. Build it once the factions
+          are live and the owner has generated his world. Chain step 3 still supplies
+          `weaponTags`/`apparelRequired`.
 
 ## B54 Add the faith text to the eleven factions, before worldgen
 row:      6
@@ -692,7 +684,10 @@ verify:   `grep -rl OuterRim_Jawa src/Jawa/` returns only prose/About files, and
           three Jawa_Patches files.
 criteria: Next load's harvest shows `Jawa_Patches ops` back at baseline 0, and a
           spawned Jawa carries the tuned starting gear.
-state:    ready
+state:    ready — 🔴 **SEQUENCING RULING (DECIDE, 2026-08-15): this gates the faction
+          build.** `Jawa_Patches/Defs/FactionDefs/JawaJunkers.xml` names the dead
+          `OuterRim_Jawa`, so **B51 cannot pass its own verify until this lands**. Do
+          B58 BEFORE B45–B52.
 
 ## B59 The MegafaunaYield fix did not apply — its FindMod guard missed
 row:      infra
@@ -1498,7 +1493,10 @@ criteria: a pawn who wades a river in the geyser fields or on a volcano gets
           says it is; the Pyrelands still burn because no wet storm was ever added
           to them; and `regrowth.botr.boilingforest` is gone from the mod list with
           no red error at load.
-state:    ready
+state:    ⛔ v2 — **OWNER RULING 2026-08-15.** We are not using the boiling biome, and
+          chain step 8 is ratified; building our own boiling water/rain would reopen it.
+          Parked in `design/V2_DREAMS.md`. Only `cut-the-boiling-biome-reference-4e2b90`
+          survives, and it is a doc cut.
 
 ## queue-ids-become-names-7f3a2c
 row:      infra

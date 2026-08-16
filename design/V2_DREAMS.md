@@ -1332,3 +1332,18 @@ None is abandoned; none is scheduled.
 — seen once, unfixable after), C40 (three deployed Jawa fixes, incl. the
 `canGenerateAsCombatant` flag without which a Jawa faction cannot field a fighter), and
 C38 (fast plant growth, which the owner is ruling on directly).
+
+## Boiling water and boiling rain as our own content (was B64)
+Owner, 2026-08-15: we are not using the boiling biome. Building our own boiling
+water/rain and dropping ReGrowth: Boiling would reopen chain step 8, which is
+ratified. Spec survives at `design/Jawa/mods/REGROWTH_BOILING_LIFT_SPEC.md`.
+
+## Our own XenotypeDef set (was D23)
+Owner, 2026-08-15: *"We are shipping with the ones we have right now, unchanged."*
+v1 ships on the donor packs as they load today. The v2 ambition is unchanged —
+own `XenotypeDef`s assembled from donor genes, donors stood down by zeroed
+generation weight, so BTD Remix's load-time dedup stops deciding which version of
+a species survives. `FACTION_SPEC.md` R27's 31 `BTD_*` names are the scope.
+
+## Second pass on the xenotypes (was D28)
+Gated on the above. Nothing to do until v1's set is replaced.
