@@ -456,9 +456,10 @@ main{padding:0 12px 60px}
       <b>Slapstick is scoped to the Jawas themselves</b> (scrap, junk, hoarding, sandcrawler life) &mdash;
       whimsy that is not Jawa-flavoured is out. The world has oceans (~17%), has Geonosians as a
       faction, and may be tidally locked, so <b>night-side ice content is KEPT</b>.
-      &#9888; <b>One rule was invented and is not yours:</b> this planet&rsquo;s volcanism is treated as
-      <b>EXTINCT</b> &mdash; active lava is cut, while basalt, obsidian, black sand and resurgent
-      calderas are kept. Flip the lava set if you want a Mustafar region.
+      &#128293; <b>VOLCANISM IS ACTIVE</b> (owner, 2026-08-16): with no plate tectonics the mantle
+      plumes never migrate, so hotspots build <b>sustained volcanic provinces</b>. Lava lakes, flows,
+      lava caves, magma vents and volcanoes are all <b>KEPT</b>. Only three &ldquo;vent&rdquo; defs stay
+      out, and for theme rather than geology &mdash; blood rain, death pall and deadlife are occult.
       Use the <b>&#9888; flagged for review</b> filter to see only the contested calls.</span>
   </div>
 

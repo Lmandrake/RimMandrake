@@ -19,6 +19,9 @@ The brief the calls were made against:
   Jawa-flavoured is not. The world has oceans (~17% water), has Geonosians as a
   faction, and may be tidally locked - permanent day side, night side, and a
   habitable terminator ring, which is why night-side ice content is KEPT.
+  🔴 VOLCANISM IS ACTIVE (owner, 2026-08-16): no plate tectonics means mantle
+  plumes never migrate, so hotspots build sustained volcanic provinces. Lava,
+  magma and volcano content is KEPT. Only the occult "vent" content stays out.
 
 🔴 Posture is WHITELIST: reject and undecided both strip. `rej` here means "I
 looked and the answer is no"; the handful of genuinely open calls are left
@@ -74,12 +77,12 @@ D = {
 "AB_DigestiveSurface":      (R, "living digestive ground - fantasy"),
 "AB_EdibleAirborneMicrofungi": (R, "airborne edible spores - wrong climate"),
 "AB_GelatinousMemoryEcho":  (R, "living memory lattice - fantasy"),
-"AB_GeothermalHotspots":    (K, "old volcanic uplands - colony power sites"),
+"AB_GeothermalHotspots":    (K, "hotspot uplands - colony power sites"),
 "AB_GiantFossils":          (K, "deep desert - krayt dragon bones in the sand"),
 "AB_HealingSprings":        (U, "UNSURE: curative spring reads mystical - keep only if reskinned as a mineral spa"),
 "AB_LocustPlagues":         (K, "terminator farm belt - swarms strip the crops"),
-"AB_MagmaVents":            (R, "active volcanism - this world's is extinct"),
-"AB_MagmaticQuagmire":      (R, "molten landscape - no active volcanism here"),
+"AB_MagmaVents":            (K, "hotspot volcanism - fixed plumes, no plate drift"),
+"AB_MagmaticQuagmire":      (K, "hotspot volcanism - molten ground near the plumes"),
 "AB_MoldyEnvironment":      (R, "fungal humidity - wrong climate"),
 "AB_MutagenicSprings":      (R, "ocular mutagen - body-horror fantasy"),
 "AB_OversaturatedSoil":     (K, "oasis floors - the only rich soil on the planet"),
@@ -112,7 +115,7 @@ D = {
 "GL_Archipelago":    (K, "offshore island chains"),
 "GL_Atoll":          (K, "ring reefs offshore"),
 "GL_Badlands":       (K, "canyon country - eroded badlands"),
-"GL_Caldera":        (K, "extinct caldera in the highlands"),
+"GL_Caldera":        (K, "caldera in the volcanic highlands"),
 "GL_Canyon":         (K, "canyon country - sandcrawler routes"),
 "GL_CaveEntrance":   (K, "cave mouths in the mesa walls"),
 "GL_Cirque":         (K, "night side - glacially carved bowls"),
@@ -223,11 +226,11 @@ D = {
 "LakeWithIsland":        (K, "rare - terminator ring lakes"),
 "LakeWithIslands":       (K, "rare - terminator ring lakes"),
 "Lakeshore":             (K, "lake shores in the terminator ring"),
-"LavaCaves":             (R, "active lava - this world's volcanism is extinct"),
-"LavaCrater":            (R, "active lava - volcanism here is extinct"),
-"LavaFlow":              (R, "active lava - volcanism here is extinct"),
-"LavaLake":              (R, "active lava - volcanism here is extinct"),
-"ObsidianDeposits":      (K, "old volcanic country - obsidian to trade"),
+"LavaCaves":             (K, "hotspot volcanism - lava tubes; the one hive-free cave"),
+"LavaCrater":            (K, "hotspot volcanism - standing lava lake"),
+"LavaFlow":              (K, "hotspot volcanism - active flows off the shield"),
+"LavaLake":              (K, "hotspot volcanism - standing lava lake"),
+"ObsidianDeposits":      (K, "volcanic country - obsidian to trade"),
 "Peninsula":             (K, "coastal headland"),
 "Plateau":               (K, "mesa tops"),
 "Pollution_Increased":   (K, "Imperial industry and mine tailings"),
@@ -358,7 +361,7 @@ D = {
 "VEE_ContaminatedRiver":    (K, "river poisoned downstream of Imperial works"),
 "VEE_CoralReef":            (K, "offshore reefs"),
 "VEE_CradleOfLife":         (R, "overgrowth landmark - wrong world"),
-"VEE_CraterLake":           (K, "extinct caldera holding rare open water"),
+"VEE_CraterLake":           (K, "caldera lake - rare open water"),
 "VEE_DeepSnow":             (K, "night side - compacted snow"),
 "VEE_DetachedIceberg":      (K, "night-side seas"),
 "VEE_DriftwoodShore":       (K, "coast - bleached timber and wreckage to scavenge"),
@@ -379,7 +382,7 @@ D = {
 "VEE_LoneIsland":           (K, "offshore island"),
 "VEE_LoneIslandWithLake":   (K, "offshore island with an inner lake"),
 "VEE_LoneIslandWithMountain": (K, "offshore island with a peak"),
-"VEE_LushLavaFields":       (R, "lush lava fields - too green, volcanism extinct"),
+"VEE_LushLavaFields":       (K, "hotspot volcanism - warm ground; watch it does not read too green"),
 "VEE_Moor":                 (R, "peat moor - temperate bog"),
 "VEE_MoorFlora":            (R, "moor plants - temperate bog"),
 "VEE_Mossy":                (R, "moss needs constant damp"),
@@ -391,7 +394,7 @@ D = {
 "VEE_RedDesert":            (K, "the red sand desert - a whole region of it"),
 "VEE_RedDesertPlants":      (K, "the red sand desert - cacti of the red sands"),
 "VEE_RelictDelta":          (K, "fossil delta - a river that died long ago"),
-"VEE_ResurgentCaldera":     (K, "extinct caldera in the highlands"),
+"VEE_ResurgentCaldera":     (K, "resurgent caldera - the plume is still alive"),
 "VEE_RisingWaters":         (K, "flat tidal coast - the sea walks inland"),
 "VEE_RockRidge":            (K, "rock ridge across the flats"),
 "VEE_SaltPlains":           (K, "salt flats - the bed of a dried inland sea"),
@@ -402,9 +405,9 @@ D = {
 "VEE_ToxicCrater":          (K, "impact crater turned toxic pool - Imperial dump"),
 "VEE_TropicalBeach":        (R, "tropical beach - lush, wrong climate"),
 "VEE_TropicalBeachFlora":   (R, "palms and cocoa - tropical lushness"),
-"VEE_VolcanicSandDesert":   (K, "black sand desert - long-dead volcanism"),
-"VEE_VolcanicSandDesertFlora": (K, "black sand desert - cacti of the volcanic sands"),
-"VEE_Volcano":              (R, "active volcano - this world's volcanism is extinct"),
+"VEE_VolcanicSandDesert":   (K, "black sand desert downwind of the plumes"),
+"VEE_VolcanicSandDesertFlora": (K, "cacti of the black volcanic sands"),
+"VEE_Volcano":              (K, "hotspot volcanism - a fixed plume builds a real cone"),
 "VEE_WastelandFauna":       (K, "the badlands - wasteland animals"),
 "VEE_WindBlownPlateau":     (K, "high plateau under a screaming wind"),
 }
@@ -472,14 +475,14 @@ print("wrote", OUT)
 # the other 430.
 # ---------------------------------------------------------------------------
 FLAGGED = {
-    # a world rule that was INVENTED, not given: volcanism here is extinct.
-    "LavaLake":        "volcanism ruled EXTINCT - flip if you want a Mustafar region",
-    "LavaFlow":        "volcanism ruled EXTINCT - flip if you want a Mustafar region",
-    "LavaCaves":       "volcanism ruled EXTINCT - flip if you want a Mustafar region",
-    "LavaCrater":      "volcanism ruled EXTINCT - flip if you want a Mustafar region",
-    "VEE_Volcano":     "volcanism ruled EXTINCT - flip if you want a Mustafar region",
-    "AB_MagmaVents":   "volcanism ruled EXTINCT - flip if you want a Mustafar region",
-    "AB_MagmaticQuagmire": "volcanism ruled EXTINCT - flip if you want a Mustafar region",
+    # 🔴 SETTLED BY THE OWNER 2026-08-16, and it overturned our invented rule:
+    # "The planet has PLENTY of volcanism due to hot spots no longer moving without
+    # plate tectonics." A tidally locked world has no plate drift, so mantle plumes
+    # stay put and build sustained volcanic provinces. All lava content is now KEPT.
+    # These three stay REJECTED for a different reason - they are occult, not volcanic:
+    "AB_AncientBloodRainVent": "occult, not volcanic - kept out on theme, not on geology",
+    "AB_AncientDeathPallVent": "occult, not volcanic - kept out on theme, not on geology",
+    "VEE_DeadlifeVents":       "Anomaly necromancy, not volcanic - flip if you want it",
     # rule vs fiction pull apart
     "WildAlderaanPlants": "cut as temperate, but it IS Star Wars flora - imported ornamentals?",
     "VEE_DomesticatedEscapees": "feral stock by dead moisture farms is a good beat, but reads Earth",
