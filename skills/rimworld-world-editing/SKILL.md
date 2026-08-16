@@ -355,7 +355,7 @@ load-savegame-then-god-mode workflow over editing at world creation.
 `Repair stale Lord/world-pawn ownership`
 
 **From mods:** `Set biome (mod)...` / `Set landmark (mod)...` / `Clear Landmark (mod)`
-(`Hali.ModifyLandingTile`) · **`Toggle Reveal World`** (`TheLastBulletBender.RWExploration`)
+(`Hali.ModifyLandingTile`) · ~~`Toggle Reveal World`~~ (Exploration Mode — **REMOVED 2026-08-15**)
 · `Get Map Information` / `Generate Custom Map Data` / `Get Custom Map Data Information`
 (map-preview/landform family — attribution not verified) · `World noise visualizer` ·
 `Run Map Generator...` · `Generate Map With Caves` · `Regenerate Current Map Stepped`
@@ -364,8 +364,7 @@ load-savegame-then-god-mode workflow over editing at world creation.
 
 **Targetless — callable right now, no mouse:**
 `Retroactively Add Landmarks To World` · `Regenerate Map Features` · `Regen WorldGrid` ·
-`Regen WorldReachability` · `RegenerateFactionLeaders` · `Toggle Reveal World` ·
-`World noise visualizer`
+`Regen WorldReachability` · `RegenerateFactionLeaders` · `World noise visualizer`
 
 **Still blocked — `T:`-prefixed world tools and the leaves under `Set biome...` /
 `Set landmark...` arm a cursor and read `GenWorld.MouseTile`.** `execute_debug_action`
@@ -381,6 +380,12 @@ first.**
 
 ## 9. ⚠️ A mod setting that gates on INITIALISATION will silently do nothing
 
+⛔ **The mod this was learned on is GONE.** `TheLastBulletBender.RWExploration`
+(Rimworld Exploration Mode) was **removed from the mod list 2026-08-15 by owner ruling**
+— its fog wrecked the world-map view, and the planet must read as a world seen from
+space. **Do not re-enable it and do not reach for `Actions\Toggle Reveal World`; neither
+exists any more.** The lesson below is general and outlives the mod.
+
 Owner toggled **Disable Fog-of-War** in Rimworld Exploration Mode's settings and the map
 stayed fogged. The setting was correct; it simply could not take effect.
 
@@ -393,8 +398,9 @@ drawing.
 
 **Two fixes, one of them free:**
 * reload the save — the layers rebuild and read the new flag; or
-* ⭐ `execute_debug_action("Actions\\Toggle Reveal World")` — **instant, no reload**, and
-  verified live: the whole planet rendered immediately.
+* ⭐ a debug action that resets the thing directly, if the mod ships one. The removed
+  Exploration Mode had `Actions\\Toggle Reveal World`, which fixed it in ONE call where a
+  reload would have cost a whole load. **Always look for that action before reloading.**
 
 **Generalises to:** when a mod setting "does nothing", check whether it is read at
 initialisation before calling it broken. Look for `Initialize`/`FromSave` in the
