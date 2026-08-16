@@ -652,6 +652,12 @@ result:   Collected live on the quicktest map. Evidence is the SAVE, not a scree
              XENOTYPE's body graphic, not apparel. Only the save settles it.
              The JawaVoice half of (c) is UNTESTED: it needs unpaused play, and SpeakUp
              does not fire at TPS 0.
+          🔑 2026-08-16 CHECK, game-down deploy window: **the JawaVoice patches were never
+             in the game folder.** All 10 `Patches/JawaVoice_*.xml` read as drift against
+             the deployed copy though the repo tree was clean at `5bb9f5c` (B58 itself).
+             Deployed now. ⇒ the voice half of (c) was not failing, it was UNTESTABLE, and
+             this is its first load with the rules present. Says nothing about the apparel
+             half, which lives in a mod that was already in sync.
           📌 Bonus, and it contradicts C31: `Jawa_Tribal_Scavenger` is **NOT** discarded
              at load. It spawned 6/6 every time. C31's premise needs re-checking before
              anyone works it in v2.
