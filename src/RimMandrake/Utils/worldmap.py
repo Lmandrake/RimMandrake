@@ -49,6 +49,34 @@ SCALARS = {
 # which of them are def references, and against which def type
 HASHED = {"tileBiome": "BiomeDef"}
 
+# 🔑 ENCODINGS, calibrated against the running engine 2026-08-15.
+# Every array is little-endian UNSIGNED; the physical value comes out of a
+# bias/scale, which is why a naive read gives nonsense like "ocean elevation 7842".
+#
+#   temperature   (raw - 3000) / 10  -> degrees C     ✅ VERIFIED
+#         Colony tile 1318 read raw 3067; the game's own `Outputs\Temperature Data`
+#         printed "Tile avg: 6.7C"; (3067-3000)/10 = 6.70 exactly. Biome means then
+#         land where they should: Tundra -1.1, BorealForest 0.4, TemperateForest 6.1.
+#   rainfall      raw                -> mm/year       ✅ no transform
+#         Land spans 233..2584, mean 1197 - already mm. 40 is hyper-arid desert.
+#   elevation     raw - 8192         -> metres        ⚠️ STRONGLY SUPPORTED, not proven
+#         Every ocean tile is the SAME constant 7842 -> -350 m, and land starts at
+#         exactly 8193 -> 1 m. A bias of 8192 is the only value that puts sea level
+#         on the boundary. Confirm against an engine reading before trusting it.
+#   pollution     raw / 65535        -> 0..1 fraction ⚠️ HYPOTHESIS (only 0 and 3277
+#         observed; 3277/65535 = 0.05)
+#   hilliness     raw                -> enum byte     (0..5)
+#   swampiness    raw                -> 0..1 fraction ⚠️ unconfirmed scale
+#   feature       raw                -> index into world/features, 0xFFFF = none
+#
+# ⛔ Do NOT write a scalar whose encoding is marked unconfirmed. Writing biome is
+# safe; writing temperature is safe; the rest deserve a calibration first.
+DECODE = {
+    "tileTemperature": (lambda v: (v - 3000) / 10.0, lambda c: int(round(c * 10)) + 3000),
+    "tileRainfall":    (lambda v: float(v),          lambda mm: int(round(mm))),
+    "tileElevation":   (lambda v: float(v - 8192),   lambda m: int(round(m)) + 8192),
+}
+
 DEFAULT_DUMP = ("/mnt/c/Users/Mandrake/AppData/LocalLow/Ludeon Studios/"
                 "RimWorld by Ludeon Studios/DefDump/defs")
 
@@ -154,6 +182,22 @@ class WorldGrid(object):
         for t in tile_ids:
             arr[t] = h
         return len(tile_ids)
+
+    # -- typed access, using the calibrated encodings above ---------------
+    def get(self, name, tile_id):
+        """Physical value for one tile - degrees C, mm, metres - not the raw short."""
+        raw = self.arrays[name][tile_id]
+        return DECODE[name][0](raw) if name in DECODE else raw
+
+    def set(self, name, tile_ids, value):
+        """Set a PHYSICAL value (degrees C, mm, metres). Encodes for you."""
+        if name not in DECODE:
+            raise KeyError("%r has no calibrated encoding - use set_scalar() and "
+                           "know what you are doing" % name)
+        enc = DECODE[name][1](value)
+        for t in tile_ids:
+            self.arrays[name][t] = enc
+        return {"array": name, "tiles": len(tile_ids), "value": value, "raw": enc}
 
     def set_scalar(self, name, tile_ids, value):
         if name not in self.arrays:
