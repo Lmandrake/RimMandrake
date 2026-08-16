@@ -1314,3 +1314,21 @@ blind:
   human right-clicking an enemy would do it.
 * Equipping is solved: `rimworld/select_pawn`, then
   `Actions\Equip primary (selected)...\Force_Lightsaber_Custom`.
+
+## Five CHECK items deferred to v2 — owner's close-out, 2026-08-15
+
+The owner walked the whole CHECK queue and ruled item by item. These five leave v1.
+None is abandoned; none is scheduled.
+
+| item | what it is | why it can wait |
+|---|---|---|
+| **C42 (.rid half)** | Does `The Salvation.rid` load with all **101 precepts**? | ⚠️ **This one bakes at world creation** — the generated world keeps whatever the file loads with, and dropped precepts are silent. The owner deferred it knowing that. The `.xtp` half is separate and still tracked in DECIDE. |
+| **C21** | Follow The Claim quest from rumour to actual **resolution** | Registration already works; only end-to-end resolution is unproven, and that needs real playtime rather than a bridge test. |
+| **C35** | Do the six factions' `xenotypeSet`s read back as Star Wars species, not the vanilla ones inherited from the abstract parent? | The fix is deployed and C37 forced 70/70 xenotypes correctly, so this is confirmation, not discovery. If it HAS failed, faction members spawn as vanilla xenotypes. |
+| **C41** | Four more animal-drawn transports | Nothing to test — **B62 is unbuilt**: 12 PNGs on disk against 24 needed, and its 13 defs are absent. Pure content addition. |
+| **C31** | Four Jawa pawn kinds (`Jawa_Colonist`, `Jawa_Tribal_Scavenger`, `_Slinger`, `_Elder`) | They are **silently discarded at load** on a bad `ParentName`, so those four types do not exist in game. Blocked on BUILD's fix and deferred with it. |
+
+**What stayed in v1**, for contrast: C17 (untick the fiction-breaking factions at worldgen
+— seen once, unfixable after), C40 (three deployed Jawa fixes, incl. the
+`canGenerateAsCombatant` flag without which a Jawa faction cannot field a fighter), and
+C38 (fast plant growth, which the owner is ruling on directly).

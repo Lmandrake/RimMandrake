@@ -76,7 +76,11 @@ row:      10
 spec:     `infrastructure/state/WORLDGEN_FACTION_CHECKLIST.md` (`c269c6a`) — 21 untick / 6 keep, ratified, committed and UNSPENT. Executed by unticking factions on vanilla's Configure Factions page DURING the worldgen run; that page is seen ONCE and there is no fixing it afterwards without regenerating the world. Four rulings ride in the file header: R1 dangling refs, R2 Rebel Alliance stays suppressed, R3 vanilla `Empire` is a KEEP, R4 rough-outlander floor. There is no file we can write to suppress a faction — Faction Control's `density` is a CLUMPING RADIUS (`__result = dist < fd.Density;`), not a count, and the English key "setting to 0 disables the faction" is a pre-1.3 leftover. Before calling any missing faction a defect, grep `Jawa_Patches/` for its defName.
 verify:   EMPTY
 criteria: the generated world's faction roster matches the keep list. A quicktest map's roster PROVES NOTHING — a debug quicktest never visits the Configure Factions page, so every faction is present by default. State which map any census came from. Prior scale, from the deleted world: 53 factions across 107 settlements, of which the fiction-breakers held ~34.
-state:    ready
+state:    ⭐ v1, CONFIRMED 2026-08-15 by the owner. One of only three items left in v1.
+          🔴 Seen ONCE at the Configure Factions page and unfixable afterwards without
+          regenerating. ⚠️ Only `Jawa_IndigenousTribes` carries `requiredCountAtGameStart`
+          — the other seven default to 0, so a world generated without hand-ticking them
+          contains NONE of them (BUILD, `seven-factions-have-no-required-count-9c4e17`).
 
 
 ## C21 Follow The Claim quest to an end — registering is not finishing
@@ -84,7 +88,8 @@ row:      13
 spec:     Spawn `Jawa_ClaimRumour` (`Jawa_ClaimRumour.xml:89-91` hands out `Jawa_TheClaim`, `rootMinPoints 0`), read it, and follow the quest to resolution. The quest already REGISTERS via `jawa/fire_quest questDef=Jawa_TheClaim points=800` — id 0, "The Claim", `State=NotYetAccepted`, `questCountAfter 1`, challengeRating 1, expiry 256,099 ticks, every field read back off `Find.QuestManager` after the call. The in-world-item route needs `rimworld/right_click_cell`, which is measured broken.
 verify:   EMPTY
 criteria: the quest fires from the rumour and RESOLVES — registration is not resolution.
-state:    blocked
+state:    ⛔ v2 — owner's ruling 2026-08-15. Registration already works; only end-to-end
+          resolution is unproven, and that needs real playtime, not a bridge test.
 
 ## C31 Confirm our four Jawa pawn types actually spawn
 row:      7
@@ -99,7 +104,9 @@ criteria: a Jawa colonist and an indigenous tribal spawn as `MandrakeJawa`; no o
           xenotype generates; the `Jawa_IndigenousTribes` faction produces a non-empty
           raider group. Read the four defNames back with `jawa/get_defs` — absence is the
           failure mode, and it is silent.
-state:    blocked
+state:    ⛔ v2 — owner's ruling 2026-08-15. Four Jawa pawn kinds are silently discarded
+          at load on a bad `ParentName`, so those four types do not exist in game.
+          Blocked on BUILD's fix and deferred with it.
 park:     2026-08-15 OWNER: PARKED. A whole new range of RimMandrake Star Wars races is about to land. Do not verify racial state against the CURRENT stack - any result is about to be invalidated, and inherited pre-existing racial content especially. Re-base this item on the new mod when it ships, then re-run.
           Already banked and NOT to be redone: the four kinds generate 24/24 as MandrakeJawa. Only the untested raider-group criterion carries forward.
 
@@ -186,7 +193,9 @@ verify:   none — live read only.
 criteria: `jawa/get_def defType=FactionDef` on each of the six shows only the
           intended species; a spawned member of each is visibly the right race.
           🔴 A def dump is DISK, not RUNTIME — only the live game settles this.
-state:    blocked
+state:    ⛔ v2 — owner's ruling 2026-08-15. The fix is deployed and the indirect
+          evidence is good (C37 forced 70/70 xenotypes correctly), so this is
+          confirmation rather than discovery.
 park:     2026-08-15 OWNER: PARKED. A whole new range of RimMandrake Star Wars races is about to land. Do not verify racial state against the CURRENT stack - any result is about to be invalidated, and inherited pre-existing racial content especially. Re-base this item on the new mod when it ships, then re-run.
 
 ## C36 Prove the races mod stands with all three donor mods switched off
@@ -221,7 +230,12 @@ criteria: With the three donors off, the log carries no `Could not resolve
           Deepwater Compact, Ascendant Helix, Hutt Cartel, Junkers or Geonosian
           Foundry Hive must arrive as the right species and not as an empty
           group.
-state:    ready
+state:    ✅ DONE — PASSED 2026-08-15, owner approved the close. With the three donors
+          off, `mandrake.starwarsraces` stands alone: def-loader cross-references clean
+          at baseline 25 with **ZERO** lines naming `guy762_`, `OuterRim_` or `BTD_`, and
+          the only 2 `Could not find type named` are Onimods torches, unrelated.
+          ⚠️ Scribe-side is different and expected: 3 `guy762_*` genes die in the saved
+          xenotypes because that donor is deliberately off. Not a C36 failure.
 
 ## C37 VALIDATION PLAN — can we spawn all 70 RimMandrake races?
 row:      9
@@ -582,7 +596,10 @@ verify:   PREDICTIONS, each a positive observation:
           the pawn wearing them is the only evidence.
 criteria: six armed Jawa; a Geonosian that is not a baseliner; a robed Jawa that
           speaks in its own voice.
-state:    blocked — needs a load
+state:    ⭐ v1 — owner's ruling 2026-08-15. Deployed, needs one load to read back.
+          The one that matters: `MandrakeJawa` `canGenerateAsCombatant` false→true —
+          without it a Jawa faction cannot generate a fighter. That is a gameplay hole,
+          not cosmetics.
 
 
 ## C41 Four more transports pulled by desert creatures — validation plan
@@ -692,15 +709,8 @@ criteria: every primitive transport in the vehicles menu names and shows a Star
           Wars desert creature; no horse, ox or dog survives in art, label,
           description or health tab; and the prop matches its vehicle in the same
           screenshot.
-state:    blocked — B62 IS UNBUILT, so there is nothing to deploy
-          2026-08-15 CHECK, via REP from BUILD, and verified on disk before accepting:
-          B62 is `ready`, not done. This item needs 13 defs and 24 PNGs; the repo mod
-          `src/Jawa/DesertVehicleReskin/` holds 12 PNGs — the eopie sled work (C39) and
-          nothing more. ⇒ C41 does NOT ride this window's deploy. It is blocked on BUILD
-          authoring B62, not on a window, not on a load.
-          🔴 NEXT_RELOAD §1.0 row 3 pairs "C39 + C41" onto one DesertVehicleReskin deploy.
-          Only C39 is in that folder. Deploying it does not make C41 collectable, and
-          reading the four transports as failed after that deploy would be a false negative.
+state:    ⛔ v2 — owner's ruling 2026-08-15. Nothing to test: B62 is UNBUILT (12 PNGs on
+          disk, 24 needed; its 13 defs absent). Pure content addition.
 
 ## B0+B1 The 30 bridge tools are deployed — nothing is live until the next load
 row:      10
@@ -733,7 +743,10 @@ criteria: `rimbridge/list_tools` counts 30 `jawa/` names. Five tools respond liv
           `jawa/ideo_of`, `jawa/biome_probe`. `TicksGameSafe()` rides along: def
           reads must work at `programState: Entry` instead of throwing a bare NRE
           on every tool at the main menu.
-state:    ready — needs a game load
+state:    ✅ DONE — CLOSED 2026-08-15 on evidence collected this session, owner approved.
+          `tools/list` on the live bridge returned **155 tools, 30 of them `jawa/`** —
+          the census criterion, met. `fire_incident` and `send_letter` both present, so
+          the `--gm` build deployed correctly.
 
 ## B-BOIL Jawa_Patches deployed — the boiling cut, and a dead pawnkind that was never shipped
 row:      3
@@ -779,7 +792,9 @@ criteria: A Jawa pawn generated from `RimMandrake_Jawa` spawns wearing the
           biome list offered to the owner contains **no** boiling-forest entry —
           that is an eyes-on at the world screen, not a log line, and it is the
           owner's screen since worldgen is manual.
-state:    ready — needs a game load
+state:    ✅ DONE — CLOSED 2026-08-15 on evidence collected this session, owner approved.
+          This load's harvest read **Jawa_Patches ops = 0 failed, at baseline**, and
+          **zero** `Exception loading def from file Jawa*.xml` across the whole log.
 
 ## C42 The two saved ideo/xenotype files were captured on a stack 11 mods wider than today's
 row:      7
@@ -835,7 +850,11 @@ criteria: ⇒ NARROWED, and the narrowing is honest: the dangling-reference ques
           CLOSED offline. What remains is only what disk cannot answer — does the ideo
           LOAD with all 101 precepts, and do the 16 AbilityDefs resolve in the engine.
           A clean validator run is necessary, not sufficient.
-state:    HALF COLLECTED 2026-08-15, and the offline half is FALSIFIED.
+state:    ⛔ v2 — owner's ruling 2026-08-15. The .rid half (does The Salvation load
+          with all 101 precepts) is NOT collected and will NOT be collected for v1.
+          ⚠️ It bakes at world creation, so the generated world keeps whatever the file
+          loads with; the owner made that call knowing it. The .xtp half is separate and
+          still tracked in DECIDE (deployed, unverified).
 result:   🔴 The `.xtp` half is ANSWERED and it is a FAIL. The startup log of this
           575-mod load carries 17 Scribe `Could not load reference to` lines, and
           `MandrakeJawa.xtp` drops **4 of our own GeneDefs** — `Jawa_Eyes_HugeAmber`,
