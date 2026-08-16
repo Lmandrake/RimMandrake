@@ -108,8 +108,12 @@ every map's `<mapInfo><parent>WorldObject_156</parent>`, `game/info/startingTile
 ID counter points at objects that no longer exist.
 
 ⚠️ Runner-up obstacle: **tile-indexed mod state lives OUTSIDE `<world>`.**
-`RimworldExploration.VisibilityManager` alone holds **14.2 MB** of per-tile data under
+`RimworldExploration.VisibilityManager` alone held **14.2 MB** of per-tile data under
 `game/components`. A transplant that changed the tile count would silently desync it.
+⛔ **That mod (`TheLastBulletBender.RWExploration`) was REMOVED from the mod list
+2026-08-15 by owner ruling** — its fog wrecked the world-map view, and the planet has to
+read as a world seen from space. The 14.2 MB figure stays here as the measured example of
+how per-tile mod state scales with world size.
 
 ⇒ **A whole-world transplant is only safe between saves that already share the same
 faction/ideo/pawn roster — i.e. saves of the same campaign, where it is a no-op.**
