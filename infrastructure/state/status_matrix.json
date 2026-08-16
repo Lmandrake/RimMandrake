@@ -317,13 +317,13 @@
     "CHECK": {
      "done": 0,
      "total": 2,
-     "state": "blocked",
+     "state": "idle",
      "mix": {
       "closed": 0,
       "done": 0,
       "doing": 0,
-      "blocked": 1,
-      "ready": 1
+      "blocked": 0,
+      "ready": 2
      }
     }
    }
@@ -399,13 +399,13 @@
     "CHECK": {
      "done": 1,
      "total": 6,
-     "state": "blocked",
+     "state": "idle",
      "mix": {
       "closed": 1,
       "done": 0,
       "doing": 0,
-      "blocked": 1,
-      "ready": 4
+      "blocked": 0,
+      "ready": 5
      }
     }
    }
@@ -563,13 +563,13 @@
     "CHECK": {
      "done": 0,
      "total": 1,
-     "state": "blocked",
+     "state": "idle",
      "mix": {
       "closed": 0,
       "done": 0,
       "doing": 0,
-      "blocked": 1,
-      "ready": 0
+      "blocked": 0,
+      "ready": 1
      }
     }
    }
@@ -743,14 +743,14 @@
    "cells": {
     "DECIDE": {
      "done": 0,
-     "total": 5,
+     "total": 4,
      "state": "idle",
      "mix": {
       "closed": 0,
       "done": 0,
       "doing": 0,
       "blocked": 0,
-      "ready": 5
+      "ready": 4
      }
     },
     "BUILD": {
@@ -867,23 +867,7 @@
   "classes": [
    {
     "label": "unexplained",
-    "count": 7
-   },
-   {
-    "label": "needs a load",
-    "count": 1
-   },
-   {
-    "label": "waiting on the pawn kinds to spawn with our xenotypes (`D23`",
-    "count": 1
-   },
-   {
-    "label": "**but the reason changed 2026-08-15 and the hard blocker is GONE.**",
-    "count": 1
-   },
-   {
-    "label": "B62 IS UNBUILT, so there is nothing to deploy",
-    "count": 1
+    "count": 4
    }
   ]
  },
@@ -900,7 +884,7 @@
   ],
   "per_day": 14.5,
   "closed": 29,
-  "remaining": 78,
+  "remaining": 77,
   "eta_days": 5
  }
 }
