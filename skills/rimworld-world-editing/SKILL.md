@@ -403,3 +403,64 @@ a debug action over a reload; a reload here costs a load, the action cost one ca
 
 📌 Also useful: the in-game world **tile inspector prints lat/long directly**
 (`39.40°N 4.97°E`). Free cross-check against `jawa/world_tile_export` once it deploys.
+
+---
+
+## 10. ⭐ PROVEN: editing the planet offline in a savegame
+
+**2026-08-15, end to end, verified by the engine.** `src/RimMandrake/Utils/worldmap.py`.
+
+```python
+from worldmap import WorldGrid
+g = WorldGrid(save_path)                       # decodes the SurfaceLayer
+targets = [i for i, n in enumerate(g.biome_names()) if n == "BorealForest"]
+g.set_biome(targets, "ExtremeDesert")
+g.set_scalar("tileRainfall", targets, 40)
+g.write(out_path)
+```
+
+Then `rimworld/load_game_ready` and read it back with `jawa/world_stats`:
+
+```
+before   BorealForest 1193   ExtremeDesert  -
+after    BorealForest    -   ExtremeDesert 1193
+```
+
+**The engine reported the change.** Not the tool's own success flag — the running game's
+biome histogram. That is the whole verification loop, and it costs one call.
+
+### What the tool does
+
+Decodes eight parallel arrays off `savegame/game/world/grid/layers` →
+`<li Class="SurfaceLayer">`: `tileBiome`, `tileElevation`, `tileTemperature`,
+`tileRainfall`, `tileFeature`, `tilePollution` (2 bytes each) and `tileHilliness`,
+`tileSwampiness` (1 byte each). Round-trip with no edit is **byte-identical** —
+`--selftest` asserts it.
+
+### 🔴 Traps this tool exists to avoid
+
+* **Find the SURFACE layer, not the first match.** The two `OrbitLayer`s carry the
+  **same element names**. A naive `find("tileBiomeDeflate")` can land on an orbit stub
+  and edit 488 tiles while reporting success.
+* **The shortHash table must come from a dump of the SAME mod set.** A hash decoded
+  against a different set resolves to a *different biome* rather than failing.
+  `WorldGrid.unresolved()` returns hashes with no def — **non-empty means stop.**
+* **Splice high offset → low**, or every edit after the first lands in the wrong place.
+* Roads, rivers and mutators are **graphs, not arrays** — deliberately untouched.
+
+### ⚠️ What a biome edit does NOT do
+
+* **It does not regenerate an existing local map.** The colony map was generated from the
+  old tile and stays exactly as it was. Biome edits affect tiles not yet visited, world
+  rendering, and anything computed from tile data — not ground already made.
+* **It edits one field.** A forest turned desert keeps its old rivers, hilliness and
+  elevation unless you set those too — which is why `set_scalar` exists.
+* Anything standing on a tile stays there. **Mask against `worldObjects` before
+  repainting**, or a settlement ends up in the sea.
+
+### 🔑 The wrong-parameter trap bit again, here
+
+`rimworld/load_game_ready` takes **`saveName`**, not `fileName`. Passing `fileName`
+silently dropped it and the call tried to load a *different, non-existent* save. Read the
+schema off `list_tools` before every unfamiliar call — this is the third time in one
+session that an invented parameter name cost a round trip.
