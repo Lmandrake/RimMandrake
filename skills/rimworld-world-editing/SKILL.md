@@ -464,3 +464,69 @@ Decodes eight parallel arrays off `savegame/game/world/grid/layers` →
 silently dropped it and the call tried to load a *different, non-existent* save. Read the
 schema off `list_tools` before every unfamiliar call — this is the third time in one
 session that an invented parameter name cost a round trip.
+
+---
+
+## 11. ⭐ What can be moved offline — all four answered, 2026-08-15
+
+Verified by the strongest available test: RimWorld **loaded the edited save and re-saved
+it itself**, and every edit survived that round-trip.
+
+```
+settlement 0   tile 3671 -> 1898   ✅ persisted, name and faction intact
+landmark       tile 2516 -> 15     ✅ persisted
+landmark 3142  VEE_MeteorCrater -> Oasis   ✅ persisted
+```
+
+### 1. Settlements — ✅ TRIVIAL
+
+```xml
+<li Class="Settlement">
+  <def>Settlement</def>
+  <tile>95988,0</tile>   ← change this, nothing else
+  <ID>0</ID><faction>Faction_0</faction><nameInt>…</nameInt>
+</li>
+```
+`WorldObjects.move_settlement(id, new_tile)`. **ID, faction and name are untouched**, so
+nothing that references the object breaks. This is why moving things *inside* one save is
+safe while transplanting a world *between* saves is not.
+⚠️ Mask the destination against ocean and against other settlements' tiles first.
+
+### 2. Landmarks — ✅ EASY, two operations
+
+Stored as a parallel keys/values dict, keys `"tile,layer"`:
+```xml
+<keys><li>2516,0</li>…</keys>
+<values><li><def>HotSprings</def><name>Green Seal Hot Springs</name></li>…</values>
+```
+`move_landmark(old_tile, new_tile)` edits the key; `retype_landmark(tile, defName)` edits
+the def. **113 LandmarkDefs are available** (same list the debug menu offers).
+⚠️ Runtime `AddLandmark()` also rolls `LandmarkDef.mutatorChances`. Editing the XML does
+**not** — the landmark changes and its terrain features do not follow. Set the mutators
+too if you want them.
+
+### 3. Geological landforms — ⚠️ TWO SEPARATE SYSTEMS, do not confuse them
+
+* **Vanilla tile mutators** — `tileMutatorTilesDeflate` (4 bytes/entry, tile index) paired
+  with `tileMutatorDefsDeflate` (2 bytes, `TileMutatorDef` shortHash). Planet-wide;
+  6,648 entries on a 3,787-tile world, so tiles carry several each. This is where
+  rivers/caves/coasts/landmark features live in 1.6.
+* **`GeologicalLandforms.LandformData`** — the MOD's own store, a `tileData` dict of
+  tile → `{topology, topologyDirection, landforms[], biomeVariants}`, plus a
+  `biomeTransitionsDeflate` blob. 🔑 **It is populated LAZILY, per tile visited** — one
+  entry on this save. So there is nothing planet-wide to edit, and writing an entry for an
+  unvisited tile pre-empts a decision the mod would otherwise make at map generation.
+
+⇒ Edit vanilla mutators for planet-wide work; leave `LandformData` alone unless you are
+deliberately pinning one tile's local map.
+
+### 4. Faction territories — ✅ FREE, because they are NOT STORED
+
+`FactionTerritories.GameComponent_FactionTerritories` holds only scan bookkeeping —
+`nextMapIncursionTickByKey`, `processedMapEntryKeys`, tick counters. **There is no
+per-tile territory array and no territory blob anywhere in the save.**
+
+⇒ **Territory is derived from settlement positions at draw time.** Move the settlements
+and the territory moves with them, for free. Nothing to edit, nothing to keep in sync.
+That makes settlement placement the single highest-leverage edit available: it moves the
+political map as well as the object.
