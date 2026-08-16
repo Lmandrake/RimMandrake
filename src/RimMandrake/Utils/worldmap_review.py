@@ -11,9 +11,21 @@ owner needs one surface on which to say keep / cut / where it goes.
     ->  design/Jawa/worldbuilding/review/worldmap_elements.html
 
 Same shape as the other review sheets under design/Jawa/worldbuilding/review/,
-but STATIC - no server. Decisions live in the browser's localStorage and come
-back out through the export button, because the sheet has to survive being
-opened from Explorer with nothing running behind it.
+but STATIC - no server. Decisions live in the browser's localStorage, because the
+sheet has to survive being opened from Explorer with nothing running behind it.
+
+🟢 THE SHEET WRITES ITSELF INTO THE REPO - 2026-08-16, owner: the old
+export-then-download-then-hand-it-over loop was "deeply clumsy". In Chrome or
+Edge, "link to file…" opens showSaveFilePicker once, he points it at
+worldmap_elements.prefill.json, and every click and keystroke after that is
+written straight into that file, debounced 1s. The FileSystemFileHandle is kept
+in IndexedDB so the link survives reloads; Chrome still drops the WRITE
+permission on tab close, so the sheet shows a loud "reconnect" button rather than
+failing quietly. Firefox and Safari have no such API - they say so plainly and
+keep the export/copy/download dialog, which is unchanged and still the fallback.
+🔴 The browser writes JSON.stringify(p, null, 2), which is byte-identical to this
+file's json.dumps(indent=2, ensure_ascii=False), so load_prefill() reads its own
+output back and `git diff` stays a readable line diff.
 
 🔴 THE POSTURE IS WHITELIST - owner, 2026-08-15. Default is EXCLUDE: nothing is
 on our planet unless it has been explicitly whitelisted, so "undecided" means
@@ -422,6 +434,31 @@ main{padding:0 12px 60px}
 .note:focus{border-color:var(--accent);outline:none}
 .note.has{border-color:#4a5a3a;background:#1b2019}
 
+/* ---- the file link: auto-save straight into the repo file ----
+   The "not linked" state has to be LOUD. If the link is not live his typing is
+   going nowhere but localStorage, and localStorage is not the deliverable. */
+#fsbar{display:flex;flex-wrap:wrap;gap:10px;align-items:center;
+  padding:7px 10px;border-radius:4px;margin:0 0 6px;font-size:12px;
+  border:1px solid var(--line);background:#15181d}
+#fsbar.linked{border-color:#3f6b4a;background:#141d16}
+#fsbar.unlinked{border-color:#a3402f;background:#2a1512}
+#fsbar.stale{border-color:#8a6a24;background:#241d10}
+#fsbar .dot{width:10px;height:10px;border-radius:50%;flex:0 0 auto;background:#7a828e}
+#fsbar.linked   .dot{background:#5fd08a;box-shadow:0 0 6px #5fd08a}
+#fsbar.unlinked .dot{background:#ff6a4d;box-shadow:0 0 7px #ff6a4d;
+  animation:fspulse 1.4s ease-in-out infinite}
+#fsbar.stale    .dot{background:#e0b341}
+@keyframes fspulse{0%,100%{opacity:1}50%{opacity:.25}}
+#fsbar .lead{font-weight:700;letter-spacing:.02em}
+#fsbar.linked   .lead{color:var(--keep)}
+#fsbar.unlinked .lead{color:#ff8f79}
+#fsbar.stale    .lead{color:#e0b341}
+#fsbar .det{color:#98a1ae}
+#fsbar .path{font-family:"Cascadia Mono",Consolas,monospace;color:#8fb69d}
+#fsbar button{font:inherit}
+#fsbar button.cta{border-color:#4a7d58;background:#1d2b21;color:#bfe8cd;font-weight:700}
+#fsbar button.cta:hover{background:#254032}
+
 /* ---- export ---- */
 #exp{position:fixed;inset:0;background:rgba(8,9,11,.82);z-index:60;
   display:none;padding:32px}
@@ -467,6 +504,17 @@ main{padding:0 12px 60px}
       lava caves, magma vents and volcanoes are all <b>KEPT</b>. Only three &ldquo;vent&rdquo; defs stay
       out, and for theme rather than geology &mdash; blood rain, death pall and deadlife are occult.
       Use the <b>&#9888; flagged for review</b> filter to see only the contested calls.</span>
+  </div>
+
+  <div id="fsbar" class="unlinked">
+    <span class="dot"></span>
+    <span class="lead" id="fslead">checking&hellip;</span>
+    <span class="det" id="fsdet"></span>
+    <span class="spacer" style="flex:1"></span>
+    <button id="fslink" class="cta">link to file&hellip;</button>
+    <button id="fsreconnect" class="cta" style="display:none">reconnect</button>
+    <button id="fssave" style="display:none">save now</button>
+    <button id="fsunlink" style="display:none">unlink</button>
   </div>
 
   <div class="bar">
@@ -523,7 +571,9 @@ main{padding:0 12px 60px}
   <div class="hint"><b>Posture: whitelist.</b> <code>whitelisted</code> is the complete list of what may exist on the
     planet; everything else in <code>universe</code> is stripped, whether rejected on purpose or never looked at.
     <code>notes</code> carries the free text. Decisions autosave in this browser under <code>__LSKEY__</code>;
-    paste an export back in and hit import to restore them.</div>
+    paste an export back in and hit import to restore them.
+    <b>This dialog is the fallback.</b> If the bar at the top says LINKED, this exact JSON is already
+    being written to <code>worldmap_elements.prefill.json</code> on every change and you need none of it.</div>
 </div></div>
 
 <script>
@@ -540,10 +590,180 @@ const LSKEY = "__LSKEY__";
 const PREFILL = __PREFILL__;
 const clonePrefill = () => JSON.parse(JSON.stringify(PREFILL));
 
+/* 🔴 Every top-level key the prefill file carries that payload() does NOT build
+   itself - today `frozen`, `frozenOn`, `frozenBy`, `frozenMeaning`, the owner's
+   own marker saying this whitelist is final and must not be regenerated over.
+   Auto-save rewrites the WHOLE file, so without this they would be deleted by
+   the first keystroke and nobody would notice. They are re-emitted last, in
+   their original order, so the bytes still match. */
+const PREFILL_EXTRA = __PREFILL_EXTRA__;
+
+/* ---------- link to the repo file ----------
+   🔑 The point of this block: the owner picks worldmap_elements.prefill.json ONCE,
+   and from then on every click and every keystroke lands in that file on disk by
+   itself. No export dialog, no download, no copy-paste, no telling anyone.
+
+   Three things make it work:
+     · showSaveFilePicker() hands back a FileSystemFileHandle - a real, writable
+       reference to a file outside the sandbox. Chromium only.
+     · IndexedDB is the ONLY store that can hold that handle across a reload
+       (localStorage stringifies it to "[object Object]" and loses it). Hence the
+       tiny IDB wrapper below, for exactly one key.
+     · Chrome drops the write permission when the tab closes, so on reload the
+       handle comes back in state "prompt" and CANNOT be re-granted without a
+       user gesture. That is why there is a visible "reconnect" button instead of
+       a silent retry - a silent retry is guaranteed to fail and to look fine.
+
+   🔴 The written bytes must match what worldmap_review.py reads back:
+   JSON.stringify(p, null, 2) is byte-identical to Python's
+   json.dumps(obj, indent=2, ensure_ascii=False) - same 2-space indent, same
+   ", " / ": " separators, same raw (unescaped) non-ASCII, no trailing newline.
+   Do not "tidy" either side without re-checking the other. */
+const FS_SUPPORTED = typeof window.showSaveFilePicker === "function";
+const FS_TARGET    = "worldmap_elements.prefill.json";
+const FS_DEBOUNCE  = 1000;     // he types notes per keystroke; do not thrash the disk
+/* 🔴 THE GUARD. This file is the owner's work. The one unacceptable failure is
+   writing an empty or half-built decisions object over a good file - which is
+   exactly what a race at load time, a botched import or a cleared localStorage
+   would produce. Below this many DECIDED rows (whitelisted + rejected) we refuse
+   the write outright and say so, loudly, in the status line. */
+const FS_MIN_DECIDED = 50;
+
+let fsHandle = null, fsBooted = false, fsTimer = 0, fsWriting = false,
+    fsPending = false, fsNeedsGesture = false, fsErr = "", fsLastWrite = null,
+    fsLastCount = 0;
+
+/* --- IndexedDB, one key, no ceremony --- */
+const IDB_NAME = "jawa.worldmap.review", IDB_STORE = "handles", IDB_KEY = "prefill";
+function idbOpen(){
+  return new Promise((res, rej) => {
+    const r = indexedDB.open(IDB_NAME, 1);
+    r.onupgradeneeded = () => { const db = r.result;
+      if(!db.objectStoreNames.contains(IDB_STORE)) db.createObjectStore(IDB_STORE); };
+    r.onsuccess = () => res(r.result);
+    r.onerror   = () => rej(r.error);
+  });
+}
+function idbTx(mode, fn){
+  return idbOpen().then(db => new Promise((res, rej) => {
+    const tx = db.transaction(IDB_STORE, mode), rq = fn(tx.objectStore(IDB_STORE));
+    tx.oncomplete = () => res(rq ? rq.result : undefined);
+    tx.onerror    = () => rej(tx.error);
+    tx.onabort    = () => rej(tx.error);
+  }));
+}
+const idbGetHandle = ()  => idbTx("readonly",  st => st.get(IDB_KEY)).catch(() => null);
+const idbPutHandle = (h) => idbTx("readwrite", st => st.put(h, IDB_KEY)).catch(() => null);
+const idbDelHandle = ()  => idbTx("readwrite", st => st.delete(IDB_KEY)).catch(() => null);
+
+async function fsPerm(handle, request){
+  if(!handle || !handle.queryPermission) return "granted";
+  const opts = {mode: "readwrite"};
+  let p = await handle.queryPermission(opts);
+  if(p !== "granted" && request) p = await handle.requestPermission(opts);
+  return p;
+}
+
+const fsClock = d => d.toLocaleTimeString([], {hour:"2-digit", minute:"2-digit", second:"2-digit"});
+
+function fsStatus(){
+  const bar  = document.getElementById("fsbar");
+  if(!bar) return;
+  const lead = document.getElementById("fslead"), det = document.getElementById("fsdet");
+  const show = (id, on) => { const e = document.getElementById(id);
+                             if(e) e.style.display = on ? "" : "none"; };
+  bar.classList.remove("linked", "unlinked", "stale");
+
+  if(!FS_SUPPORTED){
+    bar.classList.add("unlinked");
+    lead.textContent = "NOT LINKED — this browser cannot write to disk at all";
+    det.innerHTML = "The <b>File System Access API</b> does not exist in Firefox or Safari, "
+      + "so auto-save to <span class=\"path\">" + FS_TARGET + "</span> is genuinely impossible "
+      + "here — there is nothing to switch on. Use <b>export decisions</b> → copy / download "
+      + "as before, or reopen this same page in <b>Chrome or Edge</b> to link it. "
+      + "Your decisions are still autosaved inside this browser.";
+    ["fslink","fsreconnect","fssave","fsunlink"].forEach(i => show(i, false));
+    return;
+  }
+  if(!fsHandle){
+    bar.classList.add("unlinked");
+    lead.textContent = "NOT LINKED — nothing is reaching the repo";
+    det.innerHTML = "Your decisions live only in this browser. Click <b>link to file…</b> once "
+      + "and pick <span class=\"path\">" + FS_TARGET + "</span>; after that every change writes "
+      + "itself to disk.";
+    show("fslink", true); show("fsreconnect", false); show("fssave", false); show("fsunlink", false);
+    return;
+  }
+  const name = fsHandle.name || FS_TARGET;
+  show("fslink", false); show("fsunlink", true);
+  if(fsNeedsGesture){
+    bar.classList.add("stale");
+    lead.textContent = "LINKED but NOT WRITING — Chrome needs one click";
+    det.innerHTML = "The link to <span class=\"path\">" + name + "</span> survived the reload, but "
+      + "Chrome drops write permission when the tab closes and will only re-grant it from a "
+      + "click. Hit <b>reconnect</b> — nothing is being saved to disk until you do.";
+    show("fsreconnect", true); show("fssave", false);
+    return;
+  }
+  show("fsreconnect", false); show("fssave", true);
+  if(fsErr){
+    bar.classList.add("unlinked");
+    lead.textContent = "LINKED but the last write FAILED";
+    det.innerHTML = "<b>" + esc(fsErr) + "</b> &nbsp;·&nbsp; target <span class=\"path\">"
+      + esc(name) + "</span>"
+      + (fsLastWrite ? " · last good write " + fsClock(fsLastWrite) : " · nothing written yet this session");
+    return;
+  }
+  bar.classList.add("linked");
+  lead.textContent = fsWriting ? "LINKED — writing…" : fsPending ? "LINKED — saving…" : "LINKED";
+  det.innerHTML = "Auto-saving to <span class=\"path\">" + esc(name) + "</span>"
+    + (fsLastWrite
+        ? " &nbsp;·&nbsp; last written <b>" + fsClock(fsLastWrite) + "</b> ("
+          + fsLastCount + " whitelisted)"
+        : " &nbsp;·&nbsp; not written yet this session");
+}
+
+async function fsWrite(){
+  if(!fsHandle || fsWriting) return false;
+  const p = payload();
+  const decided = p.whitelisted.length + p.rejected.length;
+  if(decided < FS_MIN_DECIDED){
+    fsErr = "REFUSED to write — only " + decided + " decided rows in memory (needs at least "
+          + FS_MIN_DECIDED + "). That would have truncated your file, so nothing was written.";
+    fsStatus(); return false;
+  }
+  if(await fsPerm(fsHandle, false) !== "granted"){
+    fsNeedsGesture = true; fsErr = ""; fsStatus(); return false;
+  }
+  fsWriting = true; fsStatus();
+  try{
+    const w = await fsHandle.createWritable();      // opens truncated
+    await w.write(JSON.stringify(p, null, 2));      // == json.dumps(indent=2, ensure_ascii=False)
+    await w.close();
+    fsLastWrite = new Date(); fsLastCount = p.whitelistedCount; fsErr = ""; fsNeedsGesture = false;
+  } catch(e){
+    fsErr = "write failed — " + ((e && e.message) || e);
+  }
+  fsWriting = false; fsStatus();
+  return !fsErr;
+}
+
+/* Called from save(), i.e. from every click, bulk action and keystroke. */
+function fsTouch(){
+  if(!fsBooted || !fsHandle || fsNeedsGesture) return;
+  clearTimeout(fsTimer);
+  fsPending = true; fsStatus();
+  fsTimer = setTimeout(() => { fsPending = false; fsWrite(); }, FS_DEBOUNCE);
+}
+function fsFlush(){ if(fsPending){ clearTimeout(fsTimer); fsPending = false; fsWrite(); } }
+
 /* ---------- state ---------- */
 let S = {};
 try { S = JSON.parse(localStorage.getItem(LSKEY) || "{}") || {}; } catch(e) { S = {}; }
-const save = () => { try { localStorage.setItem(LSKEY, JSON.stringify(S)); } catch(e){} };
+const save = () => {
+  try { localStorage.setItem(LSKEY, JSON.stringify(S)); } catch(e){}
+  fsTouch();
+};
 let seeded = false, seededCount = 0, ownCount = 0;
 (function mergePrefill(){
   const P = clonePrefill();
@@ -749,7 +969,7 @@ function payload(){
                           note: s.note || "", label: d.label, mod: d.mod,
                           type: d.type, occurrences: d.n};
   });
-  return {
+  return Object.assign({
     posture: "whitelist",
     meaning: "ONLY defNames in `whitelisted` may exist on the planet. " +
              "Everything else in `universe` is stripped, whether it was " +
@@ -760,7 +980,7 @@ function payload(){
     strippedCount: DATA.length - whitelisted.length,
     whitelisted, rejected, notes, items,
     universe: DATA.map(d => d.defName)
-  };
+  }, PREFILL_EXTRA);
 }
 const expEl = document.getElementById("exp"), ta = document.getElementById("expta"),
       msg = document.getElementById("expmsg");
@@ -841,6 +1061,47 @@ document.getElementById("prefillbar").querySelector(".why").insertAdjacentHTML("
       + (ownCount ? ', and kept your ' + ownCount + ' existing decisions untouched.' : '.') + '</b>'
     : ' <b class="warn">Every row already carries your own saved decision \u2014 nothing to fill in.</b>');
 
+/* ---------- wire the file link ---------- */
+document.getElementById("fslink").onclick = async () => {
+  let h;
+  try{
+    h = await window.showSaveFilePicker({
+      suggestedName: FS_TARGET,
+      types: [{description: "Decisions JSON", accept: {"application/json": [".json"]}}]
+    });
+  } catch(e){ return; }                       // he cancelled the picker - not an error
+  fsHandle = h; fsNeedsGesture = false; fsErr = "";
+  await idbPutHandle(h);
+  await fsWrite();
+};
+document.getElementById("fsreconnect").onclick = async () => {
+  if(!fsHandle) return;
+  if(await fsPerm(fsHandle, true) === "granted"){ fsNeedsGesture = false; fsErr = ""; await fsWrite(); }
+  else { fsNeedsGesture = true; fsStatus(); }
+};
+document.getElementById("fssave").onclick = () => { clearTimeout(fsTimer); fsPending = false; fsWrite(); };
+document.getElementById("fsunlink").onclick = async () => {
+  clearTimeout(fsTimer); fsPending = false;
+  fsHandle = null; fsNeedsGesture = false; fsErr = ""; fsLastWrite = null;
+  await idbDelHandle(); fsStatus();
+};
+
+/* Re-acquire the handle from IndexedDB. It comes back in state "prompt" after a
+   reload; requestPermission() from here would be rejected for want of a user
+   gesture, so we only ASK for the click and let fsStatus shout about it. */
+(async function fsInit(){
+  if(FS_SUPPORTED){
+    fsHandle = await idbGetHandle();
+    if(fsHandle) fsNeedsGesture = (await fsPerm(fsHandle, false) !== "granted");
+  }
+  fsBooted = true;
+  fsStatus();
+})();
+
+/* Do not let a debounced write die with the tab. */
+document.addEventListener("visibilitychange", () => { if(document.hidden) fsFlush(); });
+addEventListener("beforeunload", e => { if(fsPending){ fsFlush(); e.preventDefault(); e.returnValue = ""; } });
+
 filter();
 
 /* The mod headers stick UNDER the page header, whose height depends on how the
@@ -890,7 +1151,33 @@ def load_prefill(path: Path) -> dict:
     return {d: v for d, v in out.items() if v["state"] or v["note"]}
 
 
-def render(rows, stats, prefill: dict | None = None) -> str:
+# The keys the sheet's own payload() rebuilds from scratch on every write.
+# Anything else in the prefill file is the owner's, and must survive a write.
+PAYLOAD_KEYS = {"posture", "meaning", "world", "universeSize", "whitelistedCount",
+                "strippedCount", "whitelisted", "rejected", "notes", "items", "universe"}
+
+
+def load_prefill_extra(path: Path) -> dict:
+    """Top-level keys of the prefill file that payload() does NOT produce.
+
+    🔴 Auto-save from the browser rewrites the WHOLE file. The freeze marker the
+    owner added (`frozen`, `frozenOn`, `frozenBy`, `frozenMeaning`) is not part
+    of the sheet's own payload, so without carrying it through the page the first
+    keystroke after linking would delete it silently. Order is preserved so the
+    written bytes still match json.dumps(indent=2, ensure_ascii=False).
+    """
+    if not path.exists():
+        return {}
+    try:
+        obj = json.loads(path.read_text(encoding="utf-8"))
+    except (OSError, ValueError):
+        return {}
+    if not isinstance(obj, dict):
+        return {}
+    return {k: v for k, v in obj.items() if k not in PAYLOAD_KEYS}
+
+
+def render(rows, stats, prefill: dict | None = None, extra: dict | None = None) -> str:
     slim = [{"defName": r["defName"], "label": r["label"], "type": r["type"],
              "mod": r["mod"], "desc": r["desc"], "meta": r["meta"],
              "effect": r.get("effect", ""),
@@ -900,6 +1187,8 @@ def render(rows, stats, prefill: dict | None = None) -> str:
     html = html.replace("__STATS__", json.dumps(stats, ensure_ascii=False))
     html = html.replace("__PREFILL__", json.dumps(prefill or {}, ensure_ascii=False,
                                                   separators=(",", ":")))
+    html = html.replace("__PREFILL_EXTRA__", json.dumps(extra or {}, ensure_ascii=False,
+                                                        separators=(",", ":")))
     html = html.replace("__LSKEY__", "jawa.worldmap.decisions.v1")
     return html
 
@@ -920,10 +1209,11 @@ def main():
     rows, stats = build_rows(dump, save)
 
     prefill = {} if a.no_prefill else load_prefill(Path(a.prefill))
+    extra = {} if a.no_prefill else load_prefill_extra(Path(a.prefill))
 
     out = Path(a.out)
     out.parent.mkdir(parents=True, exist_ok=True)
-    out.write_text(render(rows, stats, prefill), encoding="utf-8")
+    out.write_text(render(rows, stats, prefill, extra), encoding="utf-8")
 
     used = sum(1 for r in rows if r["n"] > 0)
     per_mod = collections.Counter(r["mod"] for r in rows)
