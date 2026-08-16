@@ -60,6 +60,12 @@ Everything here was read out of a running game or off an artifact a running game
   `jawa/list_pawns` / `jawa/inspect_string`). Counting rows in a def type does NOT tell
   you the fields inside those rows are complete; check the field, not the type.
   Found 2026-08-15 CHECK while staging C43.
+- 🔴 **`weaponTags` is invisible on BOTH channels — dump AND live bridge.** Confirmed
+  2026-08-15: `jawa/get_def defType=PawnKindDef` returns no `weaponTags` key either, on
+  `Jawa_Tribal_Scavenger`, `Jawa_Tribal_Slinger` or `Jawa_Colonist`. So "does this kind
+  arm its pawns" is answerable **only by spawning one and reading `<equipment>` out of a
+  saved `.rws`** — which is how C40(a)'s unarmed-Jawa failure was actually caught.
+  ⇒ Two independent read paths hiding the same field is not evidence the field is empty.
 
 ## ModsConfig.xml
 
