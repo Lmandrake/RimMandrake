@@ -1347,3 +1347,47 @@ a species survives. `FACTION_SPEC.md` R27's 31 `BTD_*` names are the scope.
 
 ## Second pass on the xenotypes (was D28)
 Gated on the above. Nothing to do until v1's set is replaced.
+
+## Moons and moonlight
+Owner, 2026-08-15, parked on arrival — *"Decide on Moons and moonlight in the game,
+though that might make it hard for tidal locking."* Unresolved tension: the campaign
+planet is tidally locked (`7f.alienworlds.tidallylocked`), and a moon's light cycle
+may not compose with a fixed day/night hemisphere. Not v1, not scheduled.
+
+## The 2026-08-15 v2 triage — nine items moved out of v1 in one pass
+
+Owner's ruling, walking the BUILD queue item by item. **The test applied was "does
+worldgen close the door on this?"** — everything below is read live from defs on
+every load, so it can be added to an existing campaign later and will simply start
+working. Nothing here is refused; it is sequenced.
+
+| item | what it is | why it was safe to move |
+|---|---|---|
+| **B61** | The frozen Ancients look Rakatan | Appearance is def-driven; changes on any reload |
+| **B64** | Author our own boiling water and rain, drop ReGrowth: Boiling | The boiling biome is already ruled out of the campaign, so nothing in v1 consumes it |
+| **B57** | The lasso becomes a strength gene, not a pickup weapon | Balance, reversible at any time |
+| **B39** | Every place a design doc disagrees with the frozen mod list | Doc hygiene, zero world effect |
+| **B37** | Two docs cite evidence files that no longer exist | Doc hygiene, zero world effect |
+| **nomatch-add…-7b1e4c** | Validator: flag an add-if-missing `<nomatch>` whose container is only INHERITED | Would catch this class prospectively; the one instance we had is already fixed |
+| **B35** | Move the repo to the agreed folder layout | Housekeeping, disruptive mid-flight |
+| **B36** | Rename the mods and tool namespace, 35 files | ⚠️ Touches LOAD ORDER — not worth disturbing before a once-only worldgen |
+| **B44** | Rename vanilla mechanoid and insect factions | Owner: *"Keep mechanoid and insect for now, looking into changing them is v2."* |
+
+**Also v2, ruled the same day:**
+
+- **B67(b)** — teach `cherrypick_build.py` to validate the 1,308 live Cherry Picker
+  keys against a def dump. 🔴 **Carry this risk knowingly:** a misspelled cut key is
+  silently inert, and the dump cannot detect it — *a cut that worked is absent from
+  the dump, so absence proves nothing.* Cherrypicking is frozen so no new bad keys
+  can appear; an existing one just means that thing was never really cut.
+- **The four companion-DLL bridge tools** — `jawa/inspect_string`,
+  `jawa/gravship_status`, `jawa/set_thing_rotation`, `jawa/can_place`. Deferred, not
+  refused; each is a measured gap. No shutdown window is held for them.
+- **`bridge-cannot-order-a-melee-attack-3f8c21`** — nothing on the bridge can order an
+  attack, so any "what does it look like DURING an attack" item is uncollectable
+  unattended. C43 left v1, so nothing waits on it.
+
+⭐ **Stayed in v1: B53**, the 48 pawn kinds. It is technically deferrable — pawn kinds
+resolve at raid time, not at worldgen — but flat, samey raids are most of what a first
+session shows. **Sequenced AFTER worldgen**, since `FACTION_SPEC.md` names zero
+`Jawa_<Faction>_<Role>` kinds and nothing bakes.

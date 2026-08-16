@@ -128,21 +128,23 @@ row:      repo
 spec:     `infrastructure/disposing/RESTRUCTURE_PLAN.md` — ten stages, ONE commit each, lowest-risk first. Stage 9 (`skills/`) is owner-gated and may never run. §3's seven unplaced items need a ruling before stage 4.
 verify:   run `src/RimMandrake/Utils/check_refs.py` and `src/RimMandrake/Utils/doc_budget.py` after EVERY stage; §8 names the check that proves a stage landed whole.
 criteria: EMPTY
-state:    blocked
+state:    🔵 v2 — owner's ruling 2026-08-15, in the v2 triage pass. Repo restructure. Housekeeping, and disruptive to run
+          mid-flight.
 
 ## B36 Rename the mods and tool namespace — 35 files and the load order
 row:      repo
 spec:     `infrastructure/disposing/RESTRUCTURE_PLAN.md` §7. `JawaBench.BridgeTools` -> `RimMandrake.Bridge` (14 tracked files, 4 identities including the deploy folder). The `jawa/<tool>` namespace: 35 tracked files at once, canonically 17 `[Tool]` attributes in `src/RimMandrake/bridgetools/JawaBench.BridgeTools/JawaBenchTerrainTools.cs`, 3 of the 35 being generated JSON. The five `Jawa*` mod folders. All five packageIds ARE active in `ModsConfig.xml` (lines 560–571 of 575) => a load-order edit at a specific slot plus a RimSort rules edit, not a `sed`.
 verify:   `check_refs.py` clean; `ModsConfig.xml` slots preserved.
 criteria: the game loads with the renamed mods at the same load positions.
-state:    blocked
+state:    🔵 v2 — owner's ruling 2026-08-15, in the v2 triage pass. Namespace rename across 35 files. ⚠️ It touches LOAD ORDER,
+          which is the one thing not worth disturbing before a once-only worldgen.
 
 ## B37 Two docs cite files that no longer exist — find or retire the evidence
 row:      repo
 spec:     (1) The prisoner `interactionMode` finding in `TODO_v2.md` — the save it rested on is gone (`acc3261`) and the file was compacted from 1,144+ lines to 350, so its line citation points at nothing. Find it BY TEXT, mark it measured-and-unreproducible, do not delete it. (2) `save_authoring_pipeline.md:141` and `rimworld_file_lore.md` anchor the whole `.rws` teardown to `~/GDrive/Personal/Rimworld/observed/2026-08-13_pre-restructure/savegame/03_Gravtasm__starting_save.rws`; `~/GDrive` does not exist in this WSL at all — the directory is absent, not the file. Establish whether that path is Windows-side, another machine, or dead, then correct it or mark the teardown as a record whose source artifact is unavailable. Do not delete the lore.
 verify:   neither file cites a path that does not resolve.
 criteria: EMPTY
-state:    ready
+state:    🔵 v2 — owner's ruling 2026-08-15, in the v2 triage pass. Two stale doc citations. Zero effect on the world.
 
 ## B39 List every place a design doc disagrees with the frozen mod list
 row:      0
@@ -169,7 +171,7 @@ spec:     The frozen baseline is measured and in `V1_CHAIN.md` §0: `activeMods`
 verify:   `MOD_FREEZE.md` exists; every row cites a doc and a line; the row count
           is stated; re-running the join reproduces the same set.
 criteria: none — offline only. Nothing to see in a live game.
-state:    ready
+state:    🔵 v2 — owner's ruling 2026-08-15, in the v2 triage pass. Doc-vs-mod-list hygiene. Zero effect on the world.
 
 ## B40 Give the Empire stormtroopers instead of medieval knights
 row:      9
@@ -655,7 +657,8 @@ verify:   `validate_patch.py --defs` 0 errors; the three lassos read the new
           three stat offsets are present.
 criteria: a Jawa wearing a lasso pulls a pawn ~4 tiles; a gene-carrier pulls one
           from ~16. Both readable from the pawn's stat panel.
-state:    ready
+state:    🔵 v2 — owner's ruling 2026-08-15, in the v2 triage pass. Balance change, reversible at any time. The apparel-vs-gene
+          finding in the spec stays valid whenever it is picked up.
 
 ## B58 🔴 `OuterRim_Jawa` no longer exists — our patches still target it
 row:      7
@@ -918,7 +921,8 @@ verify:   🔴 A quicktest, ~90 s. Do NOT call a cold load — nothing here need
           looking perfect.
 criteria: the player cracks an ancient cryptosleep casket and what climbs out is
           visibly not human, and the encounter plays exactly as it did before.
-state:    ready
+state:    🔵 v2 — owner's ruling 2026-08-15, in the v2 triage pass. Ancient-sleeper appearance is def-driven and
+          changes on any reload. Nothing about it bakes at world creation.
 
 <!-- PARKED FINDING from BUILD, 2026-08-15, on the biomeConfigs half of this item.
      Investigated to here and stopped at WRAP; this is where to resume.
@@ -1496,7 +1500,8 @@ criteria: a pawn who wades a river in the geyser fields or on a volcano gets
           says it is; the Pyrelands still burn because no wet storm was ever added
           to them; and `regrowth.botr.boilingforest` is gone from the mod list with
           no red error at load.
-state:    ⛔ v2 — **OWNER RULING 2026-08-15.** We are not using the boiling biome, and
+state:    🔵 v2 — owner's ruling 2026-08-15, in the v2 triage pass. The boiling biome is already ruled out of the
+          campaign, so nothing in v1 consumes this. Route (b) brief stands for v2.
           chain step 8 is ratified; building our own boiling water/rain would reopen it.
           Parked in `design/V2_DREAMS.md`. Only `cut-the-boiling-biome-reference-4e2b90`
           survives, and it is a doc cut.
@@ -1855,9 +1860,14 @@ state:    (a) 🔴 **DONE, and the item's premise was mostly WRONG — `9a35956`
           The record now committed: animals 338 cut of 1,239 · items 259 of 2,736 ·
           weapons 183 of 799 · apparel 132 of 820 · buildings 41 of 4,949 ·
           biomes 30 of 66 · plants 0 of 566.
-          (b) STILL OPEN and unaffected — `cherrypick_build.py` has never validated one
-          of the 1,308 live keys against a def dump. That is the half that can still
-          bite: a misspelled cut key is silently inert and the dump cannot see it.
+          (b) 🔵 **v2 — owner's ruling 2026-08-15.** `cherrypick_build.py` has never
+          validated one of the 1,308 live keys against a def dump, and that stays true
+          for v1. ⚠️ **Carry the risk forward honestly:** a misspelled cut key is
+          silently inert, and the def dump cannot detect it either — a cut that WORKED
+          is absent from the dump, so absence is evidence of nothing. Cherrypicking is
+          frozen, so no NEW bad keys can appear; any existing one simply means that
+          thing was never actually cut. Nobody should read the live cut list as
+          verified.
 
 ## drive-the-batched-deploy-pass-8ad4f1
 row:      10
@@ -1999,7 +2009,9 @@ verify:   a synthetic def that inherits `<statBases>` is flagged ERROR with raw-
           `Jawa_Doctrine/Patches/MegafaunaYield.xml` drops from 1,145.
 criteria: `validate_patch.py` on `src/Jawa/Jawa_Doctrine` names any def whose
           add-if-missing container is inherited, and names no def whose is owned.
-state:    ready
+state:    🔵 v2 — owner's ruling 2026-08-15, in the v2 triage pass. Validator tooling. It would have caught the
+          MegafaunaYield bug prospectively; it cannot catch a past one, and that bug
+          is already fixed and deployed.
 
 ## bridge-cannot-order-a-melee-attack-3f8c21
 ⚠️ 2026-08-15: **the item that drove this, C43, has gone to v2** by owner ruling, so this
