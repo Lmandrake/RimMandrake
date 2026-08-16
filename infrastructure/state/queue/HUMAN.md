@@ -38,7 +38,12 @@ needed."* No category runs now; the seven un-run ones are not debt. D27 closed.
 un-blocks chain steps 2 and 3 and removes `B53`'s stated blocker. item: D27
 </details>
 
-## Q (CHECK, 2026-08-14): four companion-DLL tools the thruster move proved we need
+## ~~Q (CHECK, 2026-08-14): four companion-DLL tools the thruster move proved we need~~ ANSWERED — ALL FOUR TO v2
+
+✅ **OWNER, 2026-08-15: push all four to v2.** `inspect_string`, `gravship_status`,
+`set_thing_rotation`, `can_place`. **Deferred, not refused** — the gaps are real and
+measured, but nothing in v1 waits on them now that C43 has left v1. No DLL build, no
+shutdown window held for them. The ranked case below stands as the v2 brief.
 Owner's standing instruction, given this session: **always raise DLL capabilities as an
 option and let the owner judge.** These four are not speculative — each one is a gap that
 cost real calls or left a claim unverifiable while relocating the thruster bank.
@@ -197,11 +202,16 @@ closes it then (`0279750`).
 the file I pointed at self-consistent". It cannot answer "is the file the game reads
 correct" — and for a `.xtp` those were two different files for a whole day.**
 
-⚠️ **STILL OPEN, and it is not ours to fix unasked:** `softshadow.xtp` in the same
+~~⚠️ **STILL OPEN, and it is not ours to fix unasked:** `softshadow.xtp` in the same
 folder carries two dead names — `Jawa_Gene_Skittish` and `Jawa_Head_Plain` — and
 will silently drop those genes at world creation exactly as MandrakeJawa would
 have. It is not in our repo. The fix is the same two renames and takes a minute;
-say the word. (`pokean.xtp` is clean — checked.)
+say the word. (`pokean.xtp` is clean — checked.)~~
+✅ **RESOLVED — OWNER 2026-08-15: *"Kill softshadow, it was a mistake."*** File
+DELETED from the Xenotypes folder by REP. No fix needed, no item, no decision left.
+Confirmed before deleting: 22 genes, two of them the dead names. Surviving `.xtp`
+files: `MandrakeJawa` (clean, verified), `pokean` (clean), `Dark Glutton`,
+`Dark Troll`, `mimic`.
 
 <details><summary>the question as originally filed</summary>
 
