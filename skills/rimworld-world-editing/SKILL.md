@@ -648,3 +648,26 @@ ideally a little per-tile jitter — not just `tileBiome`.
   what makes the planet read as flat political hexes. Switch OFF Faction Territories mode
   before judging how the world looks.
 - ⛔ **My Little Planet (installed) is 1.5 max, not 1.6.** Leave it off.
+
+---
+
+## 15. ✅ FROZEN: the world-map element whitelist — owner, 2026-08-16
+
+`design/Jawa/worldbuilding/review/worldmap_elements.prefill.json` now holds the
+**shipping curation decisions** and carries `"frozen": true`.
+
+```
+296 whitelisted   52 rejected   2 left undecided   332 notes
+```
+
+⚠️ **The 2 undecided are STRIPPED, deliberately** — `VEE_Cactus_Barrel` and
+`VEE_Cactus_Beavertail`, both occurring 0 times in the current world. Under whitelist
+posture, undecided means excluded; the owner froze with them open, so that is the call.
+
+🔴 **`worldmap_prefill.py` now REFUSES to run.** It would regenerate CHECK's original
+guesses over the owner's work. It requires
+`--i-know-this-overwrites-the-owners-decisions` to proceed. `worldmap_review.py` is
+unaffected — regenerating the SHEET is safe and reads the frozen file.
+
+⇒ The whitelist is now an input to the world build, not an open question. Anything not in
+those 296 gets stripped from the planet when the strip pass runs.

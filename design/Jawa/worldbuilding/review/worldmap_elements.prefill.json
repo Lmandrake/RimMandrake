@@ -3,8 +3,8 @@
   "meaning": "ONLY defNames in `whitelisted` may exist on the planet. Everything else in `universe` is stripped, whether it was rejected on purpose or never looked at.",
   "world": "worldedit_feat.rws",
   "universeSize": 449,
-  "whitelistedCount": 384,
-  "strippedCount": 65,
+  "whitelistedCount": 386,
+  "strippedCount": 63,
   "whitelisted": [
     "AB_ExtremeTemperatureFluctuations",
     "AB_AmbientRadiation",
@@ -12,7 +12,9 @@
     "AB_BumbledroneNests",
     "AB_AncientGreyPallVent",
     "AB_AncientBloodRainVent",
+    "AB_LuminescentTrees",
     "AB_DiminutiveRegion",
+    "AB_FleshTrees",
     "AB_NarrowRegion",
     "AB_DerelictArchonexus",
     "AB_OcularTransformation",
@@ -396,9 +398,7 @@
     "AB_AncientFreezingVent",
     "AB_ExplodingAnimals",
     "AB_TechnoTrees",
-    "AB_LuminescentTrees",
     "AB_DessertTrees",
-    "AB_FleshTrees",
     "AB_GoldenTrees",
     "AB_PetalStorms",
     "AB_SymbioticNutrients",
@@ -470,7 +470,7 @@
     "AB_LuminescentTrees": "night side near terminator",
     "AB_DiminutiveRegion": "tight canyon pockets - cramped 100x100 sites",
     "AB_DessertTrees": "candy trees - owner named these out",
-    "AB_FleshTrees": "flesh trees - body-horror fantasy",
+    "AB_FleshTrees": "Mountanous regions",
     "AB_NarrowRegion": "slot canyons and ravine corridors",
     "AB_DerelictArchonexus": "strange night-side ruins to explore (quest end perhaps?)",
     "AB_GoldenTrees": "golden cube trees - pure whimsy",
@@ -872,7 +872,7 @@
       "occurrences": 26
     },
     "AB_LuminescentTrees": {
-      "state": "rejected",
+      "state": "whitelisted",
       "note": "night side near terminator",
       "label": "luminescent trees",
       "mod": "Alpha Biomes",
@@ -896,8 +896,8 @@
       "occurrences": 20
     },
     "AB_FleshTrees": {
-      "state": "rejected",
-      "note": "flesh trees - body-horror fantasy",
+      "state": "whitelisted",
+      "note": "Mountanous regions",
       "label": "flesh trees",
       "mod": "Alpha Biomes",
       "type": "mutator",
@@ -4042,5 +4042,9 @@
     "VEE_Volcano",
     "VEE_WastelandFauna",
     "VEE_WindBlownPlateau"
-  ]
+  ],
+  "frozen": true,
+  "frozenOn": "2026-08-16",
+  "frozenBy": "owner",
+  "frozenMeaning": "FROZEN by the owner 2026-08-16. These are the shipping curation decisions for world-map elements. Do NOT regenerate the pre-fill over this file - worldmap_prefill.py would overwrite the owner's calls with CHECK's guesses. Posture is WHITELIST: the 2 rows left undecided are STRIPPED, deliberately."
 }

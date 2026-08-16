@@ -1,5 +1,16 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
+# 🔴 FROZEN 2026-08-16. The owner has finished selecting world-map elements and his
+# decisions live in design/Jawa/worldbuilding/review/worldmap_elements.prefill.json
+# (296 keep / 52 NO / 2 deliberately left to be stripped).
+# THIS SCRIPT WOULD OVERWRITE THEM WITH CHECK'S ORIGINAL GUESSES. It now refuses to
+# run unless you pass --i-know-this-overwrites-the-owners-decisions.
+import sys as _sys
+if "--i-know-this-overwrites-the-owners-decisions" not in _sys.argv:
+    _p = "design/Jawa/worldbuilding/review/worldmap_elements.prefill.json"
+    print("REFUSING: %s is FROZEN (owner, 2026-08-16)." % _p)
+    print("Re-run with --i-know-this-overwrites-the-owners-decisions to replace his calls.")
+    raise SystemExit(1)
 """Pre-fill the world-map curation decisions for the Jawa desert planet.
 
     python3 src/RimMandrake/Utils/worldmap_prefill.py
