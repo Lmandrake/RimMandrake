@@ -20,7 +20,7 @@ it, and the `.skill` zips are gitignored.
 | **CHECK** — the live game | `rimbridge` · `rimworld-world-editing` · `rimworld-debug-testing` · `rimworld-load-round` · `rimworld-savegame` |
 | **BUILD** — artifacts and art | `rimworld-modding` · `rimworld-deploy` · `rimworld-ideoligion` · `rimworld-quests` · `rimworld-xenotypes` · `rimworld-start-prep` · `gravship-layout` · `generating-rimworld-sprites` · `generating-images` · `editing-images` |
 | **DECIDE** — what ships | `deciding-and-superseding` (issuing a ruling that survives contact) · `rimworld-content-moderation` (the cherrypick method — a keep/cut call is a scope call) |
-| **REP** — shared | `verify-before-you-escalate` (every seat reads docs and every seat escalates) · `efficient-subagents` · `reading-rimworld-graphics` (art, contact sheets and audits all reach for it), and this README |
+| **REP** — shared | `verify-before-you-escalate` (every seat reads docs and every seat escalates) · `efficient-subagents` · `agent-fanout-research` · `calibrating-binary-formats` · `frozen-artifacts` · `reading-rimworld-graphics` (art, contact sheets and audits all reach for it), and this README |
 
 _Assignments came from the seats that use them, not from a guess at the table.
 DECIDE claimed `rimworld-content-moderation` and disclaimed the other on
@@ -54,6 +54,9 @@ it should write directly and say so.
 | `deciding-and-superseding` | ruling on scope, closing or reopening an item, relaying an owner decision, or reversing what someone was told to do. Propagation is the work, not the ruling. Bundles `stale_directives.py` |
 | `verify-before-you-escalate` | before escalating on a claim a doc makes — a count, a date, a staleness, a flag. Run the one command that settles it |
 | `efficient-subagents` | before spawning one. Bounded ask, minimal inputs, stated return. |
+| `agent-fanout-research` | launching several agents at once on different evidence domains, and composing returns that contradict. The disk thread beats the web thread on any fact about this machine. |
+| `calibrating-binary-formats` | an opaque blob, packed array or savegame reads as nonsense numbers. Make the producing app print its own value instead of guessing at float16. |
+| `frozen-artifacts` | a file holding a human's decisions, and a generator that would silently rewrite it. Mostly about WHEN NOT to freeze — unfreezing must stay one obvious step. |
 
 ⚠️ **Editing `skills/<name>/` is not shipping it.** Claude Code installs from a
 `.skill` zip and those are gitignored. Rebuild at hand-off:
