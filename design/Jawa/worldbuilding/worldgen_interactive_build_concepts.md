@@ -37,3 +37,13 @@ sessions be recorded here for DESIGN to pick up later.
   in the strange biomes at the peaks. Probably a weather restriction plus biome placement.
 - **Breathable everywhere** is a deliberate scope CUT, recorded so nobody adds vac suits:
   all other atmospheric gases stay gaseous across the frozen range. Insulation only.
+- **TOOLING, not content: `worldmap.py` cannot write tile mutators.** Its docstring lumps
+  them with roads and rivers as untouchable, but they are arrays — `tileMutatorTilesDeflate`
+  (4 bytes, tile index) paired with `tileMutatorDefsDeflate` (2 bytes, shortHash). Painting
+  `WindyMutator` for the high-wind belts needs that pair implemented. Small job, blocks the
+  wind half of Axis 1.
+- **The Rust Cathedral at the substellar centre** — already ruled as the one mega-structure
+  (`the_forgotten_war.md`, 2026-08-15). Now sited: the Rakatan terraforming works, irregular
+  but one solid mass, surviving at higher elevation where sand never buried it. The map
+  content itself — acid lakes, charged floors, foundry leavings, its defenders — is that
+  doc's job, not the repaint's.

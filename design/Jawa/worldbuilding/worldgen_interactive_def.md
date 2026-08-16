@@ -150,6 +150,34 @@ positions need `jawa/world_tile_export`. The zero rows are not blurred.
   into the nightside as the only early-plausible beachhead on the frontier; and the
   **dayside ocean's shore** being survivable at 35° arc despite the heat.
 
+### The named regions — RATIFIED, 2026-08-16
+
+| region | what it is | where |
+|---|---|---|
+| **the Nightspill** | the **cold tongue** — night spilling sunward. Lets travel push closer to the substellar core than the arc should allow | reaches inward across the terminator, dayside |
+| **the Sunreach** | the **warm gulf** — sun reaching into the dark. The only early-plausible beachhead on the nightside frontier | reaches outward past 90°, nightside |
+| **the Rust Cathedral** | the mechanoid-intrusion landscape. **Already ruled 2026-08-15** (`the_forgotten_war.md`): the one mega-structure, a map **made of** metal rather than containing it, defended viciously, acid lakes | ⭐ **the substellar centre** |
+
+⭐ **The Rust Cathedral is WHY the substellar centre is flat and baked.** The ancient
+Rakatans began their great terraforming works there — the machinery that was once making
+this world come alive. **Irregular in outline but ONE SOLID MASS**, and it survives at
+**higher elevation**, where the sand never buried it. That single placement ties the
+Forsaken back-story, the mechanoid biome, the Empire's seat at the dead centre and the
+planet's flattest, deadest ground into one object.
+
+### Wind — atmospheric energy is a first-class feature here
+
+- The temperature gradients on this planet are extreme, so **there is far more atmospheric
+  energy than a normal world**. Wind is a consequence of the physics, not decoration.
+- 🔴 **High winds on the EDGES of the Nightspill and the Sunreach**, where hot and cold
+  masses meet, and **near tall mountains**.
+- 🔴 **Air is almost totally dead** in two places: **the nightside**, and **the substellar
+  centre**, where everything is so flat and so baked that nothing moves.
+- ✅ **Both are paintable today.** Vanilla Core ships **`WindyMutator`**; high winds are that
+  mutator, and dead air is simply its absence. No new content needed.
+  ⚠️ Mutators live in `tileMutatorTilesDeflate` / `tileMutatorDefsDeflate` — arrays, so
+  writable in principle, but `worldmap.py` does not implement them yet.
+
 ### Engineering consequences to carry into the repaint
 
 - Rainfall drives biome scoring and plant growth, so near-zero dayside rainfall is doing
