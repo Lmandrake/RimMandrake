@@ -181,14 +181,14 @@
     },
     "BUILD": {
      "done": 0,
-     "total": 1,
+     "total": 3,
      "state": "idle",
      "mix": {
       "closed": 0,
       "done": 0,
       "doing": 0,
       "blocked": 0,
-      "ready": 1
+      "ready": 3
      }
     },
     "CHECK": {
@@ -427,14 +427,14 @@
     },
     "BUILD": {
      "done": 2,
-     "total": 7,
+     "total": 8,
      "state": "idle",
      "mix": {
       "closed": 2,
       "done": 0,
       "doing": 0,
       "blocked": 0,
-      "ready": 5
+      "ready": 6
      }
     },
     "CHECK": {
@@ -662,25 +662,25 @@
     "DECIDE": {
      "done": 0,
      "total": 1,
-     "state": "blocked",
+     "state": "idle",
      "mix": {
       "closed": 0,
       "done": 0,
       "doing": 0,
-      "blocked": 1,
-      "ready": 0
+      "blocked": 0,
+      "ready": 1
      }
     },
     "BUILD": {
      "done": 0,
      "total": 3,
-     "state": "blocked",
+     "state": "idle",
      "mix": {
       "closed": 0,
       "done": 0,
       "doing": 0,
-      "blocked": 2,
-      "ready": 1
+      "blocked": 0,
+      "ready": 3
      }
     },
     "CHECK": {
@@ -867,7 +867,7 @@
   "classes": [
    {
     "label": "unexplained",
-    "count": 4
+    "count": 1
    }
   ]
  },
@@ -884,7 +884,7 @@
   ],
   "per_day": 14.5,
   "closed": 29,
-  "remaining": 77,
-  "eta_days": 5
+  "remaining": 80,
+  "eta_days": 6
  }
 }
