@@ -65,7 +65,7 @@ criteria: —
           item names the EXACT lines to correct in this file: the Ortolan deferral at
           ~1087 and "ORTOLAN IS HIGH PRIORITY FOR v2" at ~1107. Do the edit from that
           item and close BOTH. Do not action them separately.
-state:    ready — filed by REP because the DECIDE seat was down when the ruling landed.
+state:    ✅ CLOSED — owner ruling, filed. Race appearance is closed for v1.
 
 ## D1 Fill in the items whose spec or test is still blank
 row:      doctrine
@@ -74,7 +74,8 @@ spec:     32 fields across the migrated items are literally EMPTY because the ol
           down by value, not by ID order. Start with the items blocking rows 4 and 2.
 verify:   No item in `queue/BUILD.md` has an EMPTY `spec:` or `verify:`.
 criteria: —
-state:    ready
+state:    ⛔ v2 — **OWNER RULING 2026-08-15, blanket triage.** Produces no content and does not
+          reach the frozen world. Parked, not lost.
 
 ## D10 Owner: cut the four Predator factions from the world?
 row:      10
@@ -97,7 +98,8 @@ row:      repo
 spec:     `infrastructure/disposing/RESTRUCTURE_PLAN.md` §3 lists seven unplaced items that need a ruling before stage 4; stage 9 (`skills/`) is owner-gated and may never run. Both block BUILD B35.
 verify:   EMPTY
 criteria: EMPTY
-state:    blocked
+state:    ⛔ v2 — **OWNER RULING 2026-08-15, blanket triage.** Produces no content and does not
+          reach the frozen world. Parked, not lost.
 
 ## D19 Design how the campaign starts — no document exists
 row:      12
@@ -149,7 +151,8 @@ spec:     🔴 **The authoritative retired-seat mapping, owner 2026-08-15. Use t
 verify:   `grep -rn "VISION\|PROJECT\|OPS\|CREATE\|BRIDGE" ` over those four files
           returns only past-tense provenance, no unassignable gate or owner cell.
 criteria: none — offline.
-state:    ready
+state:    ⛔ v2 — **OWNER RULING 2026-08-15, blanket triage.** Produces no content and does not
+          reach the frozen world. Parked, not lost.
 
 ## D21 Rule on CREATE_TEST_PLAN.md: still useful, rewrite, or retire
 row:      0
@@ -244,7 +247,8 @@ verify:   Each of the five is either written into `POLICY.md`/`CHECK.md` or reco
           as repealed in `OWNER_DECISIONS.md`. The citation half is done — no live
           doc cites the deleted file and `check_refs.py` agrees.
 criteria: none — offline.
-state:    ready
+state:    ⛔ v2 — **OWNER RULING 2026-08-15, blanket triage.** Produces no content and does not
+          reach the frozen world. Parked, not lost.
 
 ## D23 Build our own xenotype set instead of cherrypicking three packs
 row:      1
@@ -314,7 +318,8 @@ verify:   R27 no longer shows an unverified sample; the validator either flags a
           keyed field given `<li>` children or stops implying a clean run predicts
           loading; and `check_refs.py --all` can reach 0 BROKEN with items open.
 criteria: none — offline.
-state:    ready
+state:    ⛔ v2 — **OWNER RULING 2026-08-15, blanket triage.** Produces no content and does not
+          reach the frozen world. Parked, not lost.
 
 ## D26 The Eyeling becomes the Jawa clan's pet — v1
 row:      12
@@ -492,7 +497,8 @@ verify:   grep the log for `Failed to find any textures at` after the next load;
           lines is the pass. Offline: no def field should hold a path starting
           `Pawn/`, `OuterRim/`, `UI/` or `Genes/` without the `RimMandrakeSW/` prefix.
 criteria: DECIDE routes; the fix is BUILD's in gen_races_mod.py, then a re-run and redeploy.
-state:    ready
+state:    ⛔ v2 — **OWNER RULING 2026-08-15, blanket triage.** Produces no content and does not
+          reach the frozen world. Parked, not lost.
 
 ## D-CHK3 All 69 RimMandrake pawn kinds log a config error at every load
 row:      unassigned
@@ -514,7 +520,8 @@ spec:     Filed by CHECK 2026-08-15 from the live log, 7,726 lines, process 07:5
 verify:   after a regenerate + redeploy + load: `grep -c "initial resistance range is
           undefined" Player.log` returns 0.
 criteria: BUILD's fix in the generator, not a hand-edit of 69 defs.
-state:    ready
+state:    ⛔ v2 — **OWNER RULING 2026-08-15, blanket triage.** Produces no content and does not
+          reach the frozen world. Parked, not lost.
 
 ## D29 Ash'karr's world is not safe to generate yet — two silent blockers
 row:      10
@@ -603,6 +610,14 @@ state:    ✅ 4 of 6 CLOSED 2026-08-15 by the owner. (5) and (6) remain.
               All three sit at `RARE -4` today. No work.
           (3) **GLOWFOREST → isolated pockets of glowing life in an otherwise utterly
               black nightside.** ⛔ **NO ITEM. Not ours.** See the standing ruling below.
+          (5) **ANCIENT ENEMY → ⛔ DEFERRED TO v2.** The owner declined to name
+              `RimMandrakeRakata`. B61 parks; the frozen Ancients ship vanilla.
+          (6) **R-H10's biome TEMPERATURE edits → ⛔ DEAD, no item.** They tune what the
+              world contains, and chain step 8 is ratified. The OTHER half — the Rust
+              Cathedral's hazards and the Enclave goodwill cost, which must be set
+              TOGETHER — is STILL OWED and is the last thing genuinely outstanding
+              before the owner builds his world: `startingGoodwill` bakes into the save
+              he freezes, and there is no regenerate behind it. DECIDE brings a proposal.
           (4) `BTD_Jawa`'s 16 unpointed references — reopened by D23's closure, see
               `btd-jawa-has-no-merge-to-wait-for-8c40b2`.
 🔴 STANDING RULING (owner, 2026-08-15, verbatim): *"The user will make the world,
@@ -681,7 +696,8 @@ spec:     Reported by BUILD from `refresh.py` (fingerprint `7256c128a43117a5`), 
 verify:   the four unattributed removals are named, and every doc that states the frozen
           count states the same number.
 criteria: EMPTY — offline.
-state:    ready
+state:    ⛔ v2 — **OWNER RULING 2026-08-15, blanket triage.** Produces no content and does not
+          reach the frozen world. Parked, not lost.
 
 ## promote-the-defdump-arming-out-of-optional-6ea3c7
 row:      10
@@ -693,7 +709,8 @@ spec:     `NEXT_RELOAD.md:58` (§1a) arms the DefDump and is labelled "**OPTIONA
 verify:   §1a no longer says it gates nothing, and names what goes stale without it.
 criteria: the post-load dump is current and `Jawa_Armoury/Patches` can be regenerated
           from it without a second load.
-state:    ready
+state:    ⛔ v2 — **OWNER RULING 2026-08-15, blanket triage.** Produces no content and does not
+          reach the frozen world. Parked, not lost.
 
 ## the-dump-was-never-stale-correct-the-manifest-5cb9a2
 row:      10
@@ -751,7 +768,8 @@ spec:     🔴 **`NEXT_RELOAD.md` §1.0 step 0 and §1a are wrong on their centr
 verify:   §1.0 step 0 and §1a state the manifest date and the manifest as the source;
           neither claims the dump predates the mod-set change.
 criteria: EMPTY — offline.
-state:    ready
+state:    ⛔ v2 — **OWNER RULING 2026-08-15, blanket triage.** Produces no content and does not
+          reach the frozen world. Parked, not lost.
 
 ## point-seats-at-checks-live-file-3f70d1
 row:      doctrine
@@ -764,7 +782,8 @@ spec:     CHECK has started `infrastructure/state/observed/LIVE.md` — what is 
 verify:   the file is referenced from wherever a doc tells a seat to ask CHECK about
           live state.
 criteria: EMPTY — offline.
-state:    ready
+state:    ⛔ v2 — **OWNER RULING 2026-08-15, blanket triage.** Produces no content and does not
+          reach the frozen world. Parked, not lost.
 
 ## D-C1-SCOPE Re-scope C1's criterion, or close it — its last gap went v2
 row:      tooling
@@ -1059,7 +1078,8 @@ spec:     From CHECK (`8adf65a`), routed by REP. C41 was paired with C39 in TWO 
           pairing.
 verify:   no row in `NEXT_RELOAD.md` names two items without naming an artifact for each.
 criteria: EMPTY — offline.
-state:    ready
+state:    ⛔ v2 — **OWNER RULING 2026-08-15, blanket triage.** Produces no content and does not
+          reach the frozen world. Parked, not lost.
 
 ## sequence-the-ideoligion-check-before-the-faction-work-e3f1a7
 row:      10
@@ -1139,7 +1159,7 @@ verify:   none of the six defNames appears in the deployed mod; `_guard_species_
           is still present and still refuses an unlisted shrink; the shipped xenotype count
           drops by exactly 6.
 criteria: the six do not generate, and no `Could not resolve cross-reference` names them.
-state:    ready
+state:    ✅ CLOSED — owner ruling, filed.
 
 ## seven-factions-have-no-required-count-9c4e17
 row:      —

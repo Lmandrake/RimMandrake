@@ -80,27 +80,8 @@ verify:   ~~read `ModsConfig.xml`'s mtime before writing~~ — RETIRED by the ow
           exactly the intended delta, and zero listed-but-missing
           (`src/RimMandrake/Utils/check_load.py`).
 criteria: the game reaches the main menu with the new list; the two weapon tiers exist as separate dumps.
-state:    ready — (b) DONE 2026-08-15 (`4c2ddf8`): offline artefacts stamped at
-          fingerprint `7256c128a43117a5`. Two restructure faults fixed to get
-          there; see the commit. 🔴 **Run `refresh.py` under `python.exe`, not
-          `python3`** — WSL's python3 is PEP-668 externally-managed and has no
-          Pillow, so the contact-sheet step exits 1; the Windows interpreter has
-          Pillow 12.3.0. The live DefDump is still STALE and needs the load.
-          🔴 (b) re-run 2026-08-15 15:51, AFTER this window's list edit, per
-          NEXT_RELOAD §1.0 step 6: listed 575, resolved 575/575. Live dump is
-          STALE against the new set (+`mandrake.jawaplantgrowth`,
-          −`com.yayo.yayoani.continued`, −`regrowth.botr.boilingforest`) and
-          `dump_request.txt` is armed `all`, so this startup refreshes it.
-          🔴 **The old hold reason on (a)/(d) was WRONG and is deleted** — it read
-          "the owner has not said whether RimSort is open". The owner ruled
-          2026-08-15 that NOTHING blocks on RimSort or on the game for a config
-          file (POLICY.md). (a) is not held, it is simply POST-LOAD work
-          (NEXT_RELOAD §9). (d) enables a mod and is a list change nobody has
-          scheduled into this window — it needs DECIDE, not a window.
-          Also done this window: `com.yayo.yayoani.continued` removed from
-          `<activeMods>`, 576 → 575 (the standing §1b change). ⚠️ The file spells
-          it lowercase `yayoani`; a case-sensitive grep for `yayoAni` reports it
-          absent when it is live. (c) untouched, and dead by owner's ruling.
+state:    ⛔ v2 — **OWNER RULING 2026-08-15, blanket triage.** Produces no content and does not
+          reach the frozen world. Parked, not lost.
 
 ## B26 Delete the retired art-fix mod now that its replacements ship
 row:      repo
@@ -128,23 +109,24 @@ row:      repo
 spec:     `infrastructure/disposing/RESTRUCTURE_PLAN.md` — ten stages, ONE commit each, lowest-risk first. Stage 9 (`skills/`) is owner-gated and may never run. §3's seven unplaced items need a ruling before stage 4.
 verify:   run `src/RimMandrake/Utils/check_refs.py` and `src/RimMandrake/Utils/doc_budget.py` after EVERY stage; §8 names the check that proves a stage landed whole.
 criteria: EMPTY
-state:    🔵 v2 — owner's ruling 2026-08-15, in the v2 triage pass. Repo restructure. Housekeeping, and disruptive to run
-          mid-flight.
+state:    ⛔ v2 — **OWNER RULING 2026-08-15, blanket triage.** Produces no content and does not
+          reach the frozen world. Parked, not lost.
 
 ## B36 Rename the mods and tool namespace — 35 files and the load order
 row:      repo
 spec:     `infrastructure/disposing/RESTRUCTURE_PLAN.md` §7. `JawaBench.BridgeTools` -> `RimMandrake.Bridge` (14 tracked files, 4 identities including the deploy folder). The `jawa/<tool>` namespace: 35 tracked files at once, canonically 17 `[Tool]` attributes in `src/RimMandrake/bridgetools/JawaBench.BridgeTools/JawaBenchTerrainTools.cs`, 3 of the 35 being generated JSON. The five `Jawa*` mod folders. All five packageIds ARE active in `ModsConfig.xml` (lines 560–571 of 575) => a load-order edit at a specific slot plus a RimSort rules edit, not a `sed`.
 verify:   `check_refs.py` clean; `ModsConfig.xml` slots preserved.
 criteria: the game loads with the renamed mods at the same load positions.
-state:    🔵 v2 — owner's ruling 2026-08-15, in the v2 triage pass. Namespace rename across 35 files. ⚠️ It touches LOAD ORDER,
-          which is the one thing not worth disturbing before a once-only worldgen.
+state:    ⛔ v2 — **OWNER RULING 2026-08-15, blanket triage.** Produces no content and does not
+          reach the frozen world. Parked, not lost.
 
 ## B37 Two docs cite files that no longer exist — find or retire the evidence
 row:      repo
 spec:     (1) The prisoner `interactionMode` finding in `TODO_v2.md` — the save it rested on is gone (`acc3261`) and the file was compacted from 1,144+ lines to 350, so its line citation points at nothing. Find it BY TEXT, mark it measured-and-unreproducible, do not delete it. (2) `save_authoring_pipeline.md:141` and `rimworld_file_lore.md` anchor the whole `.rws` teardown to `~/GDrive/Personal/Rimworld/observed/2026-08-13_pre-restructure/savegame/03_Gravtasm__starting_save.rws`; `~/GDrive` does not exist in this WSL at all — the directory is absent, not the file. Establish whether that path is Windows-side, another machine, or dead, then correct it or mark the teardown as a record whose source artifact is unavailable. Do not delete the lore.
 verify:   neither file cites a path that does not resolve.
 criteria: EMPTY
-state:    🔵 v2 — owner's ruling 2026-08-15, in the v2 triage pass. Two stale doc citations. Zero effect on the world.
+state:    ⛔ v2 — **OWNER RULING 2026-08-15, blanket triage.** Produces no content and does not
+          reach the frozen world. Parked, not lost.
 
 ## B39 List every place a design doc disagrees with the frozen mod list
 row:      0
@@ -171,7 +153,8 @@ spec:     The frozen baseline is measured and in `V1_CHAIN.md` §0: `activeMods`
 verify:   `MOD_FREEZE.md` exists; every row cites a doc and a line; the row count
           is stated; re-running the join reproduces the same set.
 criteria: none — offline only. Nothing to see in a live game.
-state:    🔵 v2 — owner's ruling 2026-08-15, in the v2 triage pass. Doc-vs-mod-list hygiene. Zero effect on the world.
+state:    ⛔ v2 — **OWNER RULING 2026-08-15, blanket triage.** Produces no content and does not
+          reach the frozen world. Parked, not lost.
 
 ## B40 Give the Empire stormtroopers instead of medieval knights
 row:      9
@@ -921,8 +904,9 @@ verify:   🔴 A quicktest, ~90 s. Do NOT call a cold load — nothing here need
           looking perfect.
 criteria: the player cracks an ancient cryptosleep casket and what climbs out is
           visibly not human, and the encounter plays exactly as it did before.
-state:    🔵 v2 — owner's ruling 2026-08-15, in the v2 triage pass. Ancient-sleeper appearance is def-driven and
-          changes on any reload. Nothing about it bakes at world creation.
+state:    ⛔ v2 — **OWNER RULING 2026-08-15:** the ancient enemy is NOT named for v1.
+          D30 (5) deferred, so the Rakata premise this item rests on is unconfirmed.
+          The frozen Ancients ship vanilla in the world he builds.
 
 <!-- PARKED FINDING from BUILD, 2026-08-15, on the biomeConfigs half of this item.
      Investigated to here and stopped at WRAP; this is where to resume.
@@ -1593,7 +1577,8 @@ verify:   `ModsConfig.xml` live and freeze still identical after your pass; the 
           present in `EXPECTED_FAILURES_next_load.md` before the load is called.
 criteria: the next load throws no unexpected `Could not resolve cross-reference` that
           traces to one of the six removed mods.
-state:    ready
+state:    ⛔ v2 — **OWNER RULING 2026-08-15, blanket triage.** Produces no content and does not
+          reach the frozen world. Parked, not lost.
 
 ## B66 🔴 Two generator defects, one regenerate — RIDE THIS WINDOW or lose a load
 row:      9
@@ -1714,9 +1699,8 @@ criteria: LIVE, on the load this window precedes — folded into `NEXT_RELOAD.md
             ⚠️ **Gendered fields make this look intermittent** — male Chagrians already
             render because their `texPaths` WERE rewritten. **Do not test one sex and
             call a species clean.**
-state:    🔴 BLOCKED 2026-08-15 — code fixes landed (`e4d6040`), REGENERATE REFUSED.
-          The item's premise — *"one file, one re-run and one redeploy"* — is false
-          today, and the reason is worth more than the item.
+state:    ⛔ v2 — **OWNER RULING 2026-08-15, blanket triage.** Produces no content and does not
+          reach the frozen world. Parked, not lost.
 
           DONE in `e4d6040`, all three code fixes, none deployed:
           · (a) `texPathFemale`, `backgroundPathEndogenes`, `backgroundPathXenogenes`
@@ -1844,30 +1828,9 @@ verify:   (a) `git check-ignore -v observed/inventory/decisions_weapons.json` re
           the freeze copy and the live config already agree at 1,308 and are the
           reference, not the output.
 criteria: none — offline. Nothing here touches the game and nothing waits on a load.
-state:    (a) 🔴 **DONE, and the item's premise was mostly WRONG — `9a35956`.**
-          **Six of the seven files were ALREADY TRACKED**, at `deployed/decisions/`,
-          committed in `6efe834` and **byte-identical** to the ignored copies under
-          `observed/inventory/` (md5, all six). So ~1,300 judgements were never on one
-          disk; that framing came from checking `.gitignore` and never checking
-          `git ls-files` for a second, already-tracked home.
-          **The real gap was ONE file**: `decisions_biomes.json`, 2,910 bytes, 30 cuts
-          of 66 biomes, with no counterpart in `deployed/decisions/`. Now committed
-          there, matching the existing convention.
-          📌 No `.gitignore` negation was added: `observed/inventory/` is the working
-          copy and `deployed/decisions/` is the durable record. Un-ignoring would have
-          created a second tracked copy of the same bytes and re-exposed the 678 MB of
-          sheets the rule exists to keep out.
-          The record now committed: animals 338 cut of 1,239 · items 259 of 2,736 ·
-          weapons 183 of 799 · apparel 132 of 820 · buildings 41 of 4,949 ·
-          biomes 30 of 66 · plants 0 of 566.
-          (b) 🔵 **v2 — owner's ruling 2026-08-15.** `cherrypick_build.py` has never
-          validated one of the 1,308 live keys against a def dump, and that stays true
-          for v1. ⚠️ **Carry the risk forward honestly:** a misspelled cut key is
-          silently inert, and the def dump cannot detect it either — a cut that WORKED
-          is absent from the dump, so absence is evidence of nothing. Cherrypicking is
-          frozen, so no NEW bad keys can appear; any existing one simply means that
-          thing was never actually cut. Nobody should read the live cut list as
-          verified.
+state:    🔴 **DO IT NOW — OWNER, 2026-08-15. Ahead of the worldgen critical path.**
+          *"Do it now — not a scope call."* ~1,300 owner judgements on one disk with no
+          version control is data-loss exposure, not v1/v2 scope. Offline, no game.
 
 ## drive-the-batched-deploy-pass-8ad4f1
 row:      10
@@ -2009,9 +1972,8 @@ verify:   a synthetic def that inherits `<statBases>` is flagged ERROR with raw-
           `Jawa_Doctrine/Patches/MegafaunaYield.xml` drops from 1,145.
 criteria: `validate_patch.py` on `src/Jawa/Jawa_Doctrine` names any def whose
           add-if-missing container is inherited, and names no def whose is owned.
-state:    🔵 v2 — owner's ruling 2026-08-15, in the v2 triage pass. Validator tooling. It would have caught the
-          MegafaunaYield bug prospectively; it cannot catch a past one, and that bug
-          is already fixed and deployed.
+state:    ⛔ v2 — **OWNER RULING 2026-08-15, blanket triage.** Produces no content and does not
+          reach the frozen world. Parked, not lost.
 
 ## bridge-cannot-order-a-melee-attack-3f8c21
 ⚠️ 2026-08-15: **the item that drove this, C43, has gone to v2** by owner ruling, so this

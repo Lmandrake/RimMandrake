@@ -730,6 +730,12 @@ coexisting is expected and is evidence neither way.
 
 
 ## Retired from v1 — worldgen is manual (owner, 2026-08-14)
+🔴 **DEAD, NOT PARKED — OWNER RULING 2026-08-15.** *"True worldgen is OUT of any
+version, even v2."* Players receive a savegame holding one fixed, hand-made world;
+they never generate anything. **v2 is not a parking space for worldgen** — the
+entries below are recorded as history, not as future work. What survives is the
+owner building that world by hand, once, and the design documents guiding him.
+
 
 The owner makes a world by hand and saves it; we ship it as a fixed
 resource. Everything below existed to shape the sea automatically.
@@ -1111,7 +1117,13 @@ character. **Re-scoping it from one character to a CAST is the v2 job.**
 a revelation. v1 expresses the nine through the satiation engine only — felt, not
 heard.
 
-## Programmatic worldgen — parked in full, 2026-08-15
+## Programmatic worldgen — ⛔ DEAD, 2026-08-15 (was: parked in full)
+🔴 **DEAD, NOT PARKED — OWNER RULING 2026-08-15.** *"True worldgen is OUT of any
+version, even v2."* Players receive a savegame holding one fixed, hand-made world;
+they never generate anything. **v2 is not a parking space for worldgen** — the
+entries below are recorded as history, not as future work. What survives is the
+owner building that world by hand, once, and the design documents guiding him.
+
 
 Owner: *"WE WILL NOT PROGRAMMATICALLY generate the world, the user will do that
 himself. Stand down all development of tuning the worldgen to function by itself
