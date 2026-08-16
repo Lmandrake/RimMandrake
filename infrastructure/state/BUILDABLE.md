@@ -1,5 +1,32 @@
 # BUILDABLE.md — what the stack can and cannot give us
 
+> 🔴 **STANDING OWNER RULING — 2026-08-15. THERE IS NO WORLDGEN FEATURE, IN ANY VERSION.**
+>
+> Verbatim: *"There is no auto worldgen we are building. The world will be user-made and
+> frozen. We are NOT enabling worldgen, we will provide players a savegame with a fixed
+> world, period. That's it. True worldgen is OUT of any version, even v2."*
+> Clarified moments later: *"(but designing worldgen by hand and design documents to
+> guide that are in)"*
+>
+> **OUT, permanently — this is not a deferral:**
+> - Any automated or programmatic worldgen we build. No tool, script, DLL or bridge verb
+>   that generates a world as a product.
+> - Worldgen as a player-facing capability. **Players never generate anything.** They
+>   receive a savegame containing the fixed world.
+> - Any v2 worldgen item. ⛔ **v2 is NOT a parking space for this** — mark such work
+>   dead, do not move it to `design/V2_DREAMS.md`.
+>
+> **IN, unchanged and still wanted:**
+> - The owner building the world **by hand, once**. That is how the fixed world exists.
+> - **Design documents that guide him doing it** — `WORLDGEN_FACTION_CHECKLIST.md`,
+>   `SCENARIO_SETTINGS_SPEC.md`, the faction, biome and terrain specs. Keep writing them.
+>
+> 🔑 **The consequence, and it got stronger rather than weaker:** one hand-made world,
+> frozen, then shipped to every player. **A faction, ideoligion or setting absent when he
+> builds it is absent from every player's game forever, with no regenerate to fall back
+> on.** That is why the faction roster and the faith text stay v1.
+
+
 BUILD publishes here. **One line per fact**, written when a limit or a capability is
 learned that DECIDE would otherwise have to ask about: what a def type supports, what
 a mod already gives us, what the engine refuses.

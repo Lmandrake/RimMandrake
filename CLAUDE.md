@@ -3,6 +3,23 @@
 Read `infrastructure/agents/POLICY.md` and your own `infrastructure/agents/<SEAT>.md`.
 They are short. This file is only what neither of them covers.
 
+## 🔴 There is no worldgen feature, in any version — owner, 2026-08-15
+
+*"There is no auto worldgen we are building. The world will be user-made and frozen.
+We are NOT enabling worldgen, we will provide players a savegame with a fixed world,
+period. True worldgen is OUT of any version, even v2."* — plus, moments later,
+*"(but designing worldgen by hand and design documents to guide that are in)"*
+
+- **OUT, permanently, not deferred:** any automated or programmatic worldgen; worldgen
+  as a player-facing capability; any v2 worldgen item. ⛔ **v2 is not a parking space
+  for it** — mark such work dead rather than moving it to `design/V2_DREAMS.md`.
+- **IN:** the owner building the world **by hand, once**, and the design documents that
+  guide him. Keep writing those.
+- 🔑 **Players never generate anything. They receive a savegame holding the fixed
+  world.** One hand-made world, frozen, shipped — so **a faction, ideoligion or setting
+  absent when he builds it is absent from every player's game forever**, with no
+  regenerate behind it.
+
 ## Facts you cannot guess
 
 - **The game reads `C:\Program Files (x86)\Steam\steamapps\common\RimWorld\Mods`,

@@ -174,6 +174,26 @@ first timestamped line `[17:31:34]` at 644, 8,700 lines, mtime 21:10.
 
 # §2 — NEXT LOAD: **NEW WORLD GENERATION**. ⬜ OPEN
 
+🔴 **READ THIS BEFORE THE BLOCK — OWNER RULING 2026-08-15.** *"There is no auto
+worldgen we are building. The world will be user-made and frozen. We are NOT enabling
+worldgen, we will provide players a savegame with a fixed world, period. True worldgen
+is OUT of any version, even v2."* — *"(but designing worldgen by hand and design
+documents to guide that are in)"*
+
+⇒ **This block is NOT dead, and it is NOT a feature.** It describes the **owner's own
+single hand-built run** — the one event that brings the frozen world into existence.
+It is a checklist for a human at a screen, not a task any seat or tool executes.
+- ⛔ **No seat runs this.** Nothing here schedules worldgen, automates it, or ships it.
+- ⛔ **Never fill this table from a quicktest log.** A quicktest proves defs LOAD; it
+  says nothing about which factions a generated world HOLDS.
+- 🔑 **There is no second run.** The world is built once, frozen, and shipped to players
+  as a savegame. **A faction, ideoligion or setting missed at the screen is missed
+  forever** — no regenerate, no patch afterwards.
+- 📌 What is collectable AFTER the fact is more than it looks: the deliverable is a
+  `.rws`, so the roster question can be answered by reading the save at leisure. **The
+  genuinely one-shot part is the owner's tick pass at the Configure Factions page**,
+  and nothing written here can repair a missed tick.
+
 **Event:** a **new world generated from the main menu** — not a save load. This is
 v1 **rows 2 and 7**, which `V1_SCOPE.md` establishes are **one irreversible event**,
 plus the owner's **Anomaly-to-zero** ruling ticked on the same screens.
