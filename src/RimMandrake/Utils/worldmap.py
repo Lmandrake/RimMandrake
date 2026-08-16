@@ -317,3 +317,46 @@ class WorldObjects(object):
         with open(out_path, "w", encoding="utf-8", errors="surrogateescape") as fh:
             fh.write(self.text)
         return out_path
+
+    # -- world FEATURES: the named regions drawn across the planet ---------
+    # <li><def>Island</def><name>Caxigo Island</name>
+    #     <drawCenter>(x, y, z)</drawCenter>          position on the globe
+    #     <maxDrawSizeInTiles>2.4</maxDrawSizeInTiles> label size
+    #     <layer>PlanetLayer_0</layer></li>
+    # Which TILES belong to a feature is the separate `tileFeature` array in
+    # WorldGrid (2 bytes/tile, index into this list, 0xFFFF = none).
+    def _features_span(self):
+        a = self.text.find("<features>")
+        return a, self.text.find("</features>", a)
+
+    def features(self):
+        lo, hi = self._features_span()
+        out = []
+        for i, m in enumerate(re.finditer(r"<li>(.*?)</li>", self.text[lo:hi], re.S)):
+            blk = m.group(1)
+            g = lambda tag: (re.search(r"<%s>(.*?)</%s>" % (tag, tag), blk, re.S) or [None, None])[1]
+            out.append({
+                "index": i, "def": g("def"), "name": g("name"),
+                "drawCenter": g("drawCenter"), "size": g("maxDrawSizeInTiles"),
+                "span": (lo + m.start(1), lo + m.end(1)),
+            })
+        return out
+
+    def rename_feature(self, index, new_name):
+        """Rename a region. Pure cosmetics in the save, but it is what the player
+        reads across the world map, so it is how a planet gets its voice."""
+        f = self.features()[index]
+        a, b = f["span"]
+        blk = re.sub(r"<name>.*?</name>", "<name>%s</name>" % new_name,
+                     self.text[a:b], count=1, flags=re.S)
+        self.text = self.text[:a] + blk + self.text[b:]
+        return {"index": index, "was": f["name"], "now": new_name}
+
+    def resize_feature(self, index, size):
+        f = self.features()[index]
+        a, b = f["span"]
+        blk = re.sub(r"<maxDrawSizeInTiles>.*?</maxDrawSizeInTiles>",
+                     "<maxDrawSizeInTiles>%s</maxDrawSizeInTiles>" % size,
+                     self.text[a:b], count=1, flags=re.S)
+        self.text = self.text[:a] + blk + self.text[b:]
+        return {"index": index, "size": size}
