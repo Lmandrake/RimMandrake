@@ -1,0 +1,185 @@
+# Editing the planet offline in a savegame
+
+## 10. ⭐ PROVEN: editing the planet offline in a savegame
+
+**2026-08-15, end to end, verified by the engine.** `src/RimMandrake/Utils/worldmap.py`.
+
+```python
+from worldmap import WorldGrid
+g = WorldGrid(save_path)                       # decodes the SurfaceLayer
+targets = [i for i, n in enumerate(g.biome_names()) if n == "BorealForest"]
+g.set_biome(targets, "ExtremeDesert")
+g.set_scalar("tileRainfall", targets, 40)
+g.write(out_path)
+```
+
+Then `rimworld/load_game_ready` and read it back with `jawa/world_stats`:
+
+```
+before   BorealForest 1193   ExtremeDesert  -
+after    BorealForest    -   ExtremeDesert 1193
+```
+
+**The engine reported the change.** Not the tool's own success flag — the running game's
+biome histogram. That is the whole verification loop, and it costs one call.
+
+### What the tool does
+
+Decodes eight parallel arrays off `savegame/game/world/grid/layers` →
+`<li Class="SurfaceLayer">`: `tileBiome`, `tileElevation`, `tileTemperature`,
+`tileRainfall`, `tileFeature`, `tilePollution` (2 bytes each) and `tileHilliness`,
+`tileSwampiness` (1 byte each). Round-trip with no edit is **byte-identical** —
+`--selftest` asserts it.
+
+### 🔴 Traps this tool exists to avoid
+
+* **Find the SURFACE layer, not the first match.** The two `OrbitLayer`s carry the
+  **same element names**. A naive `find("tileBiomeDeflate")` can land on an orbit stub
+  and edit 488 tiles while reporting success.
+* **The shortHash table must come from a dump of the SAME mod set.** A hash decoded
+  against a different set resolves to a *different biome* rather than failing.
+  `WorldGrid.unresolved()` returns hashes with no def — **non-empty means stop.**
+* **Splice high offset → low**, or every edit after the first lands in the wrong place.
+* Roads, rivers and mutators are **graphs, not arrays** — deliberately untouched.
+
+### ⚠️ What a biome edit does NOT do
+
+* **It does not regenerate an existing local map.** The colony map was generated from the
+  old tile and stays exactly as it was. Biome edits affect tiles not yet visited, world
+  rendering, and anything computed from tile data — not ground already made.
+* **It edits one field.** A forest turned desert keeps its old rivers, hilliness and
+  elevation unless you set those too — which is why `set_scalar` exists.
+* Anything standing on a tile stays there. **Mask against `worldObjects` before
+  repainting**, or a settlement ends up in the sea.
+
+### 🔑 The wrong-parameter trap bit again, here
+
+`rimworld/load_game_ready` takes **`saveName`**, not `fileName`. Passing `fileName`
+silently dropped it and the call tried to load a *different, non-existent* save. Read the
+schema off `list_tools` before every unfamiliar call — this is the third time in one
+session that an invented parameter name cost a round trip.
+
+---
+
+## 11. ⭐ What can be moved offline — all four answered, 2026-08-15
+
+Verified by the strongest available test: RimWorld **loaded the edited save and re-saved
+it itself**, and every edit survived that round-trip.
+
+```
+settlement 0   tile 3671 -> 1898   ✅ persisted, name and faction intact
+landmark       tile 2516 -> 15     ✅ persisted
+landmark 3142  VEE_MeteorCrater -> Oasis   ✅ persisted
+```
+
+### 1. Settlements — ✅ TRIVIAL
+
+```xml
+<li Class="Settlement">
+  <def>Settlement</def>
+  <tile>95988,0</tile>   ← change this, nothing else
+  <ID>0</ID><faction>Faction_0</faction><nameInt>…</nameInt>
+</li>
+```
+`WorldObjects.move_settlement(id, new_tile)`. **ID, faction and name are untouched**, so
+nothing that references the object breaks. This is why moving things *inside* one save is
+safe while transplanting a world *between* saves is not.
+⚠️ Mask the destination against ocean and against other settlements' tiles first.
+
+### 2. Landmarks — ✅ EASY, two operations
+
+Stored as a parallel keys/values dict, keys `"tile,layer"`:
+```xml
+<keys><li>2516,0</li>…</keys>
+<values><li><def>HotSprings</def><name>Green Seal Hot Springs</name></li>…</values>
+```
+`move_landmark(old_tile, new_tile)` edits the key; `retype_landmark(tile, defName)` edits
+the def. **113 LandmarkDefs are available** (same list the debug menu offers).
+⚠️ Runtime `AddLandmark()` also rolls `LandmarkDef.mutatorChances`. Editing the XML does
+**not** — the landmark changes and its terrain features do not follow. Set the mutators
+too if you want them.
+
+### 3. Geological landforms — ⚠️ TWO SEPARATE SYSTEMS, do not confuse them
+
+* **Vanilla tile mutators** — `tileMutatorTilesDeflate` (4 bytes/entry, tile index) paired
+  with `tileMutatorDefsDeflate` (2 bytes, `TileMutatorDef` shortHash). Planet-wide;
+  6,648 entries on a 3,787-tile world, so tiles carry several each. This is where
+  rivers/caves/coasts/landmark features live in 1.6.
+* **`GeologicalLandforms.LandformData`** — the MOD's own store, a `tileData` dict of
+  tile → `{topology, topologyDirection, landforms[], biomeVariants}`, plus a
+  `biomeTransitionsDeflate` blob. 🔑 **It is populated LAZILY, per tile visited** — one
+  entry on this save. So there is nothing planet-wide to edit, and writing an entry for an
+  unvisited tile pre-empts a decision the mod would otherwise make at map generation.
+
+⇒ Edit vanilla mutators for planet-wide work; leave `LandformData` alone unless you are
+deliberately pinning one tile's local map.
+
+### 4. Faction territories — ✅ FREE, because they are NOT STORED
+
+`FactionTerritories.GameComponent_FactionTerritories` holds only scan bookkeeping —
+`nextMapIncursionTickByKey`, `processedMapEntryKeys`, tick counters. **There is no
+per-tile territory array and no territory blob anywhere in the save.**
+
+⇒ **Territory is derived from settlement positions at draw time.** Move the settlements
+and the territory moves with them, for free. Nothing to edit, nothing to keep in sync.
+That makes settlement placement the single highest-leverage edit available: it moves the
+political map as well as the object.
+
+---
+
+## 13. 🔑 The scalar encodings — and how to calibrate one without guessing
+
+Every per-tile array is little-endian **unsigned**; the physical value comes out of a
+bias/scale. Read one raw and it looks like nonsense — *"ocean elevation 7842"* — which is
+how a whole afternoon gets spent on float16 theories that were never right.
+
+| array | decode | status |
+|---|---|---|
+| `tileTemperature` | **`(raw - 3000) / 10`** → °C | ✅ **VERIFIED against the engine** |
+| `tileRainfall` | **`raw`** → mm/year, no transform | ✅ land spans 233–2584 |
+| `tileElevation` | **`raw - 8192`** → metres | ⚠️ strongly supported, not proven |
+| `tilePollution` | `raw / 65535` → 0..1 | ⚠️ hypothesis |
+| `tileHilliness` | `raw` → enum 0..5 | |
+| `tileSwampiness` | `raw` → 0..1 | ⚠️ scale unconfirmed |
+| `tileFeature` | index into `world/features`, `0xFFFF` = none | |
+
+`worldmap.py` exposes `get(array, tile)` / `set(array, tiles, value)` in **physical
+units** and **refuses to write** any array whose encoding is unconfirmed.
+
+### ⭐ THE TECHNIQUE — ask the engine for its own number
+
+You do not need a new tool, a DLL deploy, or a screenshot to calibrate a decode. **The
+game will print its own values through a debug Output**, and the bridge returns them in
+`effects.logs`:
+
+```python
+r = rb.call("rimworld/execute_debug_action", {"path": "Outputs\\Temperature Data"})
+[l["message"] for l in r["effects"]["logs"]]      # -> "Tile avg: 6.7°C"
+```
+
+Then match against the raw bytes for that tile:
+```
+colony tile 1318, raw 3067  ->  (3067 - 3000) / 10 = 6.70   ← the engine said 6.7
+```
+One call, one exact answer. **Get the tile id from `game/info/startingTile` in the save**
+— that is the colony's tile, and it is the one tile you can always name.
+
+**Generalises to:** before inventing an encoding, look for a debug Output that already
+prints the value. `Outputs` has **261 entries** in game — `Temperature Data`, `Biomes`,
+`Terrains`, `World Gen Steps`. Sanity-check the result across biomes afterwards
+(Tundra −1.1 °C, BorealForest 0.4, TemperateForest 6.1 — if those don't order correctly,
+the decode is still wrong).
+
+### ⚠️ Why a repaint looks fake — the flood-fill trap
+
+Setting 1,193 contiguous tiles to one biome **with identical scalars** renders as an
+obvious paint-bucket blob. Real worldgen varies rainfall, elevation and temperature tile
+by tile, and the world-map art keys off that variation.
+
+Worse, editing biome ALONE leaves the old climate behind: those tiles became
+`ExtremeDesert` while keeping boreal temperatures, i.e. **a freezing desert at 52°N**.
+
+⇒ **A believable biome conversion sets the climate too** — temperature, rainfall, and
+ideally a little per-tile jitter — not just `tileBiome`.
+
+---
