@@ -2122,3 +2122,41 @@ scope:    ⛔ Not triaged and not diagnosed by me — the owner looked, I am rec
           silent. A clean log is not evidence against this finding.
 note:     Owner's verdict on the rest of the grid was positive — *"most now look good"* —
           so this is two exceptions in 70, not a systemic art problem.
+
+## pyrelands-off-the-blacklist-and-ash-storms-5d2e71
+row:      10
+from:     DECIDE, 2026-08-15, on the owner's D30 (1) ruling.
+spec:     Two edits. ENABLING ONLY — do not add a `scoreOffset` for this biome and do
+          not tune how much of it appears; that is the owner's at the map screen.
+          (a) `src/Jawa/Jawa_Patches/Patches/JawaWorld_BiomeMix.xml` — DELETE the line
+              `<li>ZBiome_Grasslands</li>` from `<biomeBlacklist>`. Leave `<li>Savanna</li>`
+              and `<li>Grasslands</li>` blacklisted; only the ZBiome one carries the
+              Pyrelands. Add NO `<biomeConfigs>` entry for it — neutral, it competes on
+              its own allowed range, which is what "barrier between the wet biomes and
+              the dry desert" means.
+          (b) Ash storms over the Pyrelands. `AB_VolcanicAsh` ALREADY LOADS (Alpha
+              Biomes, confirmed in the 585 dump): grey sky (0.6,0.6,0.6),
+              `WeatherOverlay_Fog`, `accuracyMultiplier 0.7`, `favorability Bad`,
+              `weatherThought AB_VolcanicAshThought`. No new weather is authored.
+                - PatchOperationAdd on
+                  `/Defs/BiomeDef[defName="ZBiome_Grasslands"]/weatherCommonalities`,
+                  value `<li><weather>AB_VolcanicAsh</weather><commonality>3</commonality></li>`
+                  (`DryThunderstorm` sits at 2 there, so this reads as the dominant
+                  storm without erasing it).
+                - PatchOperationReplace `WeatherDef[defName="AB_VolcanicAsh"]/label`
+                  -> `ash storm`, and `/description` -> text with no volcano in it.
+                  ⚠️ The relabel is GLOBAL; `AB_PyroclasticConflagration` also uses this
+                  weather and is RARE. "ash storm" reads correctly there too. Accepted.
+          🪤 `weatherCommonalities` is a LIST of `WeatherCommonalityRecord`, so the
+          `<li><weather>..</weather><commonality>..</commonality></li>` form above is
+          mandatory. It is NOT the dictionary shorthand that killed `biomeConfigs` in
+          D29(b) and the FactionDefs in B56 — do not copy that pattern here.
+          ⏳ ORDER: this rides on top of B63/D29(b). Until the `is not <li>` bug is
+          fixed, `biomeConfigs` reads `[]` and every offset in that file is inert.
+verify:   `grep -c 'ZBiome_Grasslands' <the biomeBlacklist block>` returns 0;
+          `python3 skills/rimworld-modding/scripts/validate_patch.py <both files> --defs`
+          scoped to the active list, 0 errors; the added weather node uses `<li><weather>`.
+criteria: on the world the owner rolls, stormy-savanna tiles exist and are sited between
+          the wet biomes and the desert, and an ash storm occurs on one with the label
+          `ash storm` and a grey sky.
+state:    ready

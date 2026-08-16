@@ -591,21 +591,29 @@ spec:     Parked 2026-08-15. None block each other; all block something.
 verify:   each of the six is either answered in a design doc or explicitly
           re-parked with a reason.
 criteria: none — offline.
-state:    ready — **1 of 6 answered 2026-08-15, five still open.**
-answered: **(1) THE PYRELANDS — OWNER: the cut is DELIBERATE and `ZBiome_Grasslands`
-          carries them.** Asked directly, answered directly. Vanilla `Savanna` and
-          `Grasslands` stay cut; the "stormy savanna" does the job of both and already
-          ships `DryThunderstorm` at commonality 2, which is the weather the Pyrelands
-          wanted. **Nothing to build and nothing to reverse** — no Cherry Picker edit,
-          and this is now closed rather than worldgen-critical.
-          ⇒ Fold the ruling into `biome_review_comments.md` §1 so the next reader does
-          not re-open it from the same evidence.
-still open, and (2) and (3) remain worldgen-critical:
-          (2) the three wet biomes — a PLACEMENT ruling, not a patch
-          (3) `Glowforest` as the LIVING half of the nightside glow
-          (4) `BTD_Jawa` → which def (D23's merge, 16 references left unpointed)
-          (5) confirm `RimMandrakeRakata` as the ancient enemy
-          (6) the Rust Cathedral hazards + Enclave goodwill, set TOGETHER
+state:    ✅ 4 of 6 CLOSED 2026-08-15 by the owner. (5) and (6) remain.
+          (1) **PYRELANDS → `ZBiome_Grasslands`, and it must come OFF the blacklist.**
+              🔴 The question's premise was FALSE ON DISK. `biome_review_comments.md` §1
+              says stormy savanna is "kept"; `JawaWorld_BiomeMix.xml` blacklists all
+              THREE — `Savanna`, `Grasslands` AND `ZBiome_Grasslands`. Blacklist is a
+              hard predicate; no score can rescue it. Owner: it *"forms the barrier
+              between the very wet biomes and the dry desert"*, plus **ash storms**.
+              ⇒ BUILD item `pyrelands-off-the-blacklist-and-ash-storms-5d2e71`.
+          (2) **WET BIOMES → narrow flood margin. ALREADY IMPLEMENTED, ratified.**
+              All three sit at `RARE -4` today. No work.
+          (3) **GLOWFOREST → isolated pockets of glowing life in an otherwise utterly
+              black nightside.** ⛔ **NO ITEM. Not ours.** See the standing ruling below.
+          (4) `BTD_Jawa`'s 16 unpointed references — reopened by D23's closure, see
+              `btd-jawa-has-no-merge-to-wait-for-8c40b2`.
+🔴 STANDING RULING (owner, 2026-08-15, verbatim): *"The user will make the world,
+          don't worry about it. Manual worldgen, remember? No auto worldgen items
+          please!"* ⇒ **We do not file items that TUNE what the world contains** —
+          commonality, tier, latitude band, how much of a biome appears. He rolls seeds
+          and picks one he likes by eye. We file only what is ENABLING: a blacklisted
+          biome can never appear in ANY seed, and a def that fails to load is not a
+          choice he can make. Everything else is his at the map screen.
+          (This is the same ruling that killed D2, D4, C15 and C16. It was re-derived
+          and re-violated on 2026-08-15; recorded here so it stops happening.)
 
 ## stage-the-next-load-and-more-content-4b7e05
 row:      10
