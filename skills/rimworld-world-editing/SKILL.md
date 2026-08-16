@@ -564,3 +564,87 @@ misread a sparse file as "strip only these few".
 📌 Scale check for whoever runs the strip: **Vanilla Landmarks Expanded 144 mutators ·
 Odyssey 82 · Alpha Biomes 48 · Geological Landforms 44**, and the same four dominate the
 landmark list. Review by MOD, not alphabetically.
+
+---
+
+## 13. 🔑 The scalar encodings — and how to calibrate one without guessing
+
+Every per-tile array is little-endian **unsigned**; the physical value comes out of a
+bias/scale. Read one raw and it looks like nonsense — *"ocean elevation 7842"* — which is
+how a whole afternoon gets spent on float16 theories that were never right.
+
+| array | decode | status |
+|---|---|---|
+| `tileTemperature` | **`(raw - 3000) / 10`** → °C | ✅ **VERIFIED against the engine** |
+| `tileRainfall` | **`raw`** → mm/year, no transform | ✅ land spans 233–2584 |
+| `tileElevation` | **`raw - 8192`** → metres | ⚠️ strongly supported, not proven |
+| `tilePollution` | `raw / 65535` → 0..1 | ⚠️ hypothesis |
+| `tileHilliness` | `raw` → enum 0..5 | |
+| `tileSwampiness` | `raw` → 0..1 | ⚠️ scale unconfirmed |
+| `tileFeature` | index into `world/features`, `0xFFFF` = none | |
+
+`worldmap.py` exposes `get(array, tile)` / `set(array, tiles, value)` in **physical
+units** and **refuses to write** any array whose encoding is unconfirmed.
+
+### ⭐ THE TECHNIQUE — ask the engine for its own number
+
+You do not need a new tool, a DLL deploy, or a screenshot to calibrate a decode. **The
+game will print its own values through a debug Output**, and the bridge returns them in
+`effects.logs`:
+
+```python
+r = rb.call("rimworld/execute_debug_action", {"path": "Outputs\\Temperature Data"})
+[l["message"] for l in r["effects"]["logs"]]      # -> "Tile avg: 6.7°C"
+```
+
+Then match against the raw bytes for that tile:
+```
+colony tile 1318, raw 3067  ->  (3067 - 3000) / 10 = 6.70   ← the engine said 6.7
+```
+One call, one exact answer. **Get the tile id from `game/info/startingTile` in the save**
+— that is the colony's tile, and it is the one tile you can always name.
+
+**Generalises to:** before inventing an encoding, look for a debug Output that already
+prints the value. `Outputs` has **261 entries** in game — `Temperature Data`, `Biomes`,
+`Terrains`, `World Gen Steps`. Sanity-check the result across biomes afterwards
+(Tundra −1.1 °C, BorealForest 0.4, TemperateForest 6.1 — if those don't order correctly,
+the decode is still wrong).
+
+### ⚠️ Why a repaint looks fake — the flood-fill trap
+
+Setting 1,193 contiguous tiles to one biome **with identical scalars** renders as an
+obvious paint-bucket blob. Real worldgen varies rainfall, elevation and temperature tile
+by tile, and the world-map art keys off that variation.
+
+Worse, editing biome ALONE leaves the old climate behind: those tiles became
+`ExtremeDesert` while keeping boreal temperatures, i.e. **a freezing desert at 52°N**.
+
+⇒ **A believable biome conversion sets the climate too** — temperature, rainfall, and
+ideally a little per-tile jitter — not just `tileBiome`.
+
+---
+
+## 14. Making the planet LOOK right (researched 2026-08-15)
+
+- 🔑 **There is no separate "WMB core".** World-map beautification for VANILLA biomes is
+  built into **ReGrowth 2** (`ReGrowth.BOTR.Core`), which we already run — its
+  `Textures/WorldMaterials/BiomesKit/` carries `Desert`, `ExtremeDesert`,
+  `AridShrubland`. Nothing to add.
+- ⛔ **Do NOT install World Map Beautification Project (Continued)** (`zal.wmbp`).
+  ReGrowth 2's `About.xml` lists it under `incompatibleWith`, and WMBP's own page says it
+  is unnecessary alongside ReGrowth. It also adds forests and hills — wrong for a desert
+  planet.
+- ✅ **Free coverage we are missing:** `noxilie.regrow.wmb.morevanillabiomes` is INSTALLED
+  but INACTIVE while `zylle.MoreVanillaBiomes` is ACTIVE.
+- The three worth adding for an orbital look: **RW - Planet Atmosphere** (3272330410,
+  atmospheric-scattering shader — the actual "from space" effect), **World Map Enhanced
+  (Continued)** (3599967849, repaints the ground texture ReGrowth's sprites sit on; load
+  AFTER all biome mods), **Smart Odyssey** (3522762411, lowers landmark/mutator
+  commonality — the only real declutter lever).
+- ⚠️ **No mod hides world-map icons.** Vanilla 1.6 has its own world-object and
+  landform-text toggles — use those. Our clutter comes from **Vanilla Landmarks Expanded**
+  (+59 landmarks, cannot be disabled per its FAQ) and **MutatorWorldIcons**.
+- ⚠️ **Map Mode Framework does not hide anything** — it only recolours hexes, and it is
+  what makes the planet read as flat political hexes. Switch OFF Faction Territories mode
+  before judging how the world looks.
+- ⛔ **My Little Planet (installed) is 1.5 max, not 1.6.** Leave it off.
