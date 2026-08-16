@@ -65,6 +65,9 @@ import sys
 import zlib
 from pathlib import Path
 
+sys.path.insert(0, str(Path(__file__).resolve().parent))
+import worldmap_effects as wme        # noqa: E402  the EFFECT sentences
+
 REPO = Path(__file__).resolve().parents[3]
 OUT_DIR = REPO / "design" / "Jawa" / "worldbuilding" / "review"
 OUT_HTML = OUT_DIR / "worldmap_elements.html"
@@ -87,7 +90,11 @@ DEF_TYPES = ("TileMutatorDef", "LandmarkDef")
 # defs
 # --------------------------------------------------------------------------
 def load_defs(def_type: str, dump_dir: Path):
-    """Every def of one type, with the fields worth deciding on pulled up flat."""
+    """Every def of one type, with the fields worth deciding on pulled up flat.
+
+    `fields` is kept on the record because the EFFECT line is composed from it
+    (see worldmap_effects.py); render() drops it again before it reaches the page.
+    """
     path = dump_dir / (def_type + ".json")
     with open(path, encoding="utf-8") as fh:
         data = json.load(fh)
@@ -106,9 +113,36 @@ def load_defs(def_type: str, dump_dir: Path):
             "hash": d.get("shortHash"),
             "desc": (f.get("description") or "").strip(),
             "meta": _meta(def_type, f),
+            "fields": f,
         }
         out.append(rec)
     return out
+
+
+def attach_effects(rows):
+    """🔑 The "what this ACTUALLY DOES" line, one sentence per def.
+
+    The owner's complaint, 2026-08-16: *"'headwater' for a river... so what? I can
+    see where that is on the map... what does it mean if it has this particular
+    mutator?"* A label says what a thing IS; nothing on the sheet said what
+    CHANGES when you land on it. This does.
+
+    🔴 A leading "~" means the sentence is inferred from the def NAME, because
+    that def has no mechanical fields and a generic worker. Everything without
+    one rests on a real field value, an unambiguous workerClass, or the def's own
+    stated mechanic. Do not silently strip the marker.
+    """
+    labels = {r["defName"]: r["label"] for r in rows if r["type"] == "mutator"}
+    effects = {}
+    for r in rows:
+        if r["type"] == "mutator":
+            effects[r["defName"]] = wme.mutator_effect(r["defName"], r["fields"])
+    for r in rows:
+        if r["type"] == "mutator":
+            r["effect"] = effects[r["defName"]]
+        else:
+            r["effect"] = wme.landmark_effect(r["fields"], labels, effects)
+    return rows
 
 
 def _meta(def_type: str, f: dict) -> str:
@@ -238,6 +272,8 @@ def build_rows(dump_dir: Path, save_path: Path):
     stats["unresolvedMutatorHashes"] = unresolved
     stats["landmarksNotInDump"] = missing_lm
 
+    attach_effects(rows)
+
     rows.sort(key=lambda r: (r["mod"].lower(), -r["n"], r["label"].lower()))
     return rows, stats
 
@@ -356,6 +392,18 @@ main{padding:0 12px 60px}
   overflow:hidden}
 .main .meta{color:var(--dimmer);font-size:11px}
 
+/* ---- the EFFECT line: what this ACTUALLY DOES ----
+   Secondary to the label, but brighter than the flavour description, because
+   it is the line that decides keep/cut. Never confusable with the owner's own
+   NOTE field, which is a bordered input over in its own column. */
+.main .eff{color:#c3cbd6;font-size:11.5px;margin:1px 0 1px;
+  padding-left:7px;border-left:2px solid var(--accent)}
+.main .eff.guess{color:#9aa2ae;border-left-color:#5a4a2a;font-style:italic}
+.main .eff .tag{display:inline-block;font-size:9px;font-style:normal;
+  letter-spacing:.06em;text-transform:uppercase;color:#161616;
+  background:#8a7040;border-radius:2px;padding:0 3px;margin-right:5px;
+  vertical-align:1px}
+
 .modcell{color:var(--accent);font-size:11.5px;font-weight:600;
   overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 
@@ -429,6 +477,7 @@ main{padding:0 12px 60px}
       <option value="rej">deliberate NO (&rarr; stripped)</option>
       <option value="noted">has a note</option>
       <option value="flagged">&#9888; flagged for review</option>
+      <option value="guess">effect line is a GUESS (~)</option>
     </select>
     <label class="chk"><input type="checkbox" id="fused"> occurs in world &gt; 0</label>
     <span class="sep"></span>
@@ -439,7 +488,9 @@ main{padding:0 12px 60px}
 
   <div class="bar">
     <span class="hint">click a row to <b>whitelist</b> · click again to mark a <b>deliberate NO</b> · third click clears · or use the ✓ ✗ buttons.
-      ✗ and blank both get stripped — ✗ only records that you looked.</span>
+      ✗ and blank both get stripped — ✗ only records that you looked.
+      <b style="color:var(--accent)">The gold-barred line is what the def ACTUALLY DOES in play</b> — read from its real fields;
+      an italic <b>GUESS</b> tag means the def has no mechanical fields and the sentence was inferred from its name.</span>
     <span class="spacer"></span>
     <button id="collapse">collapse all</button>
     <button id="expand">expand all</button>
@@ -532,19 +583,29 @@ main.innerHTML = mods.map(m => {
   </section>`;
 }).join("");
 
+/* 🔴 A leading "~" on an effect means INFERRED FROM THE NAME - the def has no
+   mechanical fields and a generic worker, so the sentence is a hypothesis, not
+   a reading. It is rendered dimmer, italic and tagged GUESS so it can never be
+   mistaken for a field-backed statement. */
 function rowHTML(r){
   const st = get(r.defName);
   const body = r.desc ? `<div class="desc" title="${esc(r.desc)}">${esc(r.desc)}</div>` : "";
   const meta = r.meta ? `<div class="meta">${esc(r.meta)}</div>` : "";
+  const guess = /^~\s*/.test(r.effect || "");
+  const eff = r.effect
+    ? `<div class="eff${guess?" guess":""}" title="what this actually does">` +
+      (guess ? `<span class="tag">guess</span>` : "") +
+      esc((r.effect||"").replace(/^~\s*/,"")) + `</div>`
+    : "";
   return `<div class="row ${st.state}" data-d="${esc(r.defName)}" data-n="${r.n}"
-      data-mod="${esc(r.mod)}" data-type="${r.type}"
-      data-s="${esc((r.label+" "+r.defName+" "+r.desc+" "+r.mod+" "+r.meta).toLowerCase())}">
+      data-mod="${esc(r.mod)}" data-type="${r.type}" data-guess="${guess?1:0}"
+      data-s="${esc((r.label+" "+r.defName+" "+r.desc+" "+r.mod+" "+r.meta+" "+(r.effect||"")).toLowerCase())}">
     <button class="btn-s b-k" data-act="keep" title="whitelist — keep on our planet">✓</button>
     <button class="btn-s b-r" data-act="rej"  title="reject — not on our planet">✗</button>
     <span class="ty ${r.type}">${r.type==="mutator"?"mut":"lmk"}</span>
     <div class="main">
       <div><span class="lbl">${esc(r.label)}</span><span class="dn mono">${esc(r.defName)}</span></div>
-      ${body}${meta}
+      ${eff}${body}${meta}
     </div>
     <div class="modcell">${esc(r.mod)}</div>
     <div class="n ${r.n?"":"zero"}">${r.n}${r.tiles && r.tiles!==r.n?`<span class="t">${r.tiles} tiles</span>`:""}</div>
@@ -613,6 +674,7 @@ function filter(){
       if(t && row.dataset.type !== t) ok = false;
       const flagged = /^(\u26a0|UNSURE)/.test(row.querySelector(".note").value.trim());
       if(st === "flagged") { if(!flagged) ok = false; }
+      else if(st === "guess") { if(row.dataset.guess !== "1") ok = false; }
       else if(st === "noted" ? !noted : st && s !== st) ok = false;
       if(used && +row.dataset.n === 0) ok = false;
       row.classList.toggle("hide", !ok);
@@ -823,6 +885,7 @@ def load_prefill(path: Path) -> dict:
 def render(rows, stats, prefill: dict | None = None) -> str:
     slim = [{"defName": r["defName"], "label": r["label"], "type": r["type"],
              "mod": r["mod"], "desc": r["desc"], "meta": r["meta"],
+             "effect": r.get("effect", ""),
              "n": r["n"], "tiles": r["tiles"]} for r in rows]
     html = HTML
     html = html.replace("__DATA__", json.dumps(slim, ensure_ascii=False, separators=(",", ":")))
