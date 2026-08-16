@@ -51,7 +51,14 @@ landmark list. Review by MOD, not alphabetically.
 - ⚠️ **Map Mode Framework does not hide anything** — it only recolours hexes, and it is
   what makes the planet read as flat political hexes. Switch OFF Faction Territories mode
   before judging how the world looks.
-- ⛔ **My Little Planet (installed) is 1.5 max, not 1.6.** Leave it off.
+- ✅ **My Little Planet (`Oblitus.MyLittlePlanet`, workshop 1117406550) SUPPORTS 1.6 and is
+  ACTIVE.** Its `About.xml` lists 1.6 and it ships a `1.6/Assemblies` folder — an earlier
+  note here read "1.5 max, leave it off" and was wrong by 2026-08-16, corrected against the
+  files. **It is the only lever on tile count**: `TileSize.cs` transpiles the Create World
+  page next to `PlanetCoverageTip` and adds a slider writing
+  `PlanetLayerSettingsDefOf.Surface.settings.subdivisions`, range **6–10** (10 = vanilla
+  default). Each step down is roughly **÷4 tiles**. Measured anchor: subdivisions 10 at
+  coverage 0.05 = **3,787 tiles**.
 
 ---
 

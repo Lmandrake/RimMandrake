@@ -59,14 +59,17 @@ d = math.degrees(math.acos(math.cos(math.radians(lon)) * math.cos(math.radians(l
 
 `AlienWorldsFramework.cs` picks its UI at `[StaticConstructorOnStartup]`:
 
-* **If `ferny.Worldbuilder` is ACTIVE** — the framework writes a Worldbuilder preset
-  folder at runtime and you choose *"tidally locked world"* on **Worldbuilder's world
-  preset screen**. The mod-settings radio buttons are **disabled** in this mode.
-  (This is almost certainly what created the empty `…\Worldbuilder\` folder on this
-  machine — the framework expecting a companion that is switched off.)
-* **If Worldbuilder is INACTIVE — our current state** — choose it at
+* **If `ferny.Worldbuilder` is ACTIVE — OUR STATE as of 2026-08-16** — the framework
+  writes a Worldbuilder preset folder at runtime and you choose *"tidally locked world"*
+  on **Worldbuilder's world preset screen**. The mod-settings radio buttons are
+  **disabled** in this mode.
+  🔴 **DO NOT PRESS "BACK" on Worldbuilder's tidally-locked worldgen screen — owner,
+  2026-08-16: it produces a STUCK STATE.** There is no recovery documented; assume the
+  process has to be killed and the ~25 min load re-spent. Go forward or stop, never back.
+* **If Worldbuilder is INACTIVE** — choose it at
   **Mod Settings → "Alien Worlds Framework" → "Planet type for new worlds"**, a radio
-  button, **before you create the world**.
+  button, **before you create the world**. ⚠️ This was our state until 2026-08-15 and
+  several docs still describe it as current. Check `ModsConfig.xml` before believing them.
 
 ⛔ It is **not** a dropdown on the Create World page and **not** a scenario setting. If
 you are looking for it at worldgen you will not find it. Framework + Harmony are hard
