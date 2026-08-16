@@ -207,3 +207,113 @@ if __name__ == "__main__":
         p = [a for a in sys.argv[1:] if not a.startswith("--")]
         sys.exit(0 if _selftest(p[0]) else 1)
     print(__doc__)
+
+
+# ---------------------------------------------------------------------------
+# World OBJECTS and LANDMARKS live in plain XML, not in the deflate blobs.
+# They are edited as text. Both are safe because we only ever change a TILE
+# INDEX or a DEF NAME - never a loadID, never a Faction_N reference. That is
+# the whole reason moving things inside one save is safe while transplanting a
+# world between saves is not.
+# ---------------------------------------------------------------------------
+
+_SETTLEMENT_RE = re.compile(
+    r'(<li Class="Settlement">.*?</li>)', re.S)
+
+
+class WorldObjects(object):
+    """Settlements and landmarks in one save, addressed by tile."""
+
+    def __init__(self, save_path):
+        self.save_path = save_path
+        with open(save_path, encoding="utf-8", errors="surrogateescape") as fh:
+            self.text = fh.read()
+
+    # -- settlements ------------------------------------------------------
+    def settlements(self):
+        out = []
+        for m in _SETTLEMENT_RE.finditer(self.text):
+            blk = m.group(1)
+            tile = re.search(r"<tile>(-?\d+),(\d+)</tile>", blk)
+            name = re.search(r"<nameInt>(.*?)</nameInt>", blk, re.S)
+            fac = re.search(r"<faction>(.*?)</faction>", blk)
+            ident = re.search(r"<ID>(\d+)</ID>", blk)
+            if not tile:
+                continue
+            out.append({
+                "id": int(ident.group(1)) if ident else None,
+                "tile": int(tile.group(1)),
+                "layer": int(tile.group(2)),
+                "name": name.group(1) if name else None,
+                "faction": fac.group(1) if fac else None,
+                "span": m.span(1),
+            })
+        return out
+
+    def move_settlement(self, settlement_id, new_tile):
+        """Retarget one settlement. Only <tile> changes - ID, faction and name
+        are untouched, so nothing that references this object breaks."""
+        for s in self.settlements():
+            if s["id"] != settlement_id:
+                continue
+            a, b = s["span"]
+            blk = self.text[a:b]
+            new = re.sub(r"<tile>-?\d+,\d+</tile>",
+                         "<tile>%d,%d</tile>" % (new_tile, s["layer"]), blk, count=1)
+            self.text = self.text[:a] + new + self.text[b:]
+            return {"id": settlement_id, "from": s["tile"], "to": new_tile}
+        raise KeyError("no settlement with ID %r" % settlement_id)
+
+    # -- landmarks --------------------------------------------------------
+    def _landmark_spans(self):
+        lo = self.text.find("<landmarks>")
+        lo = self.text.find("<landmarks>", lo + 1)   # the inner dict
+        hi = self.text.find("</landmarks>", lo)
+        ks = self.text.find("<keys>", lo), self.text.find("</keys>", lo)
+        vs = self.text.find("<values>", lo), self.text.find("</values>", lo)
+        return lo, hi, ks, vs
+
+    def landmarks(self):
+        lo, hi, ks, vs = self._landmark_spans()
+        keys = re.findall(r"<li>(-?\d+),(\d+)</li>", self.text[ks[0]:ks[1]])
+        vals = re.findall(r"<li>\s*<def>(.*?)</def>\s*<name>(.*?)</name>\s*</li>",
+                          self.text[vs[0]:vs[1]], re.S)
+        return [{"tile": int(t), "layer": int(l), "def": d, "name": n}
+                for (t, l), (d, n) in zip(keys, vals)]
+
+    def move_landmark(self, old_tile, new_tile):
+        lo, hi, ks, vs = self._landmark_spans()
+        seg = self.text[ks[0]:ks[1]]
+        if "<li>%d," % old_tile not in seg:
+            raise KeyError("no landmark on tile %d" % old_tile)
+        seg2 = re.sub(r"<li>%d,(\d+)</li>" % old_tile,
+                      lambda m: "<li>%d,%s</li>" % (new_tile, m.group(1)), seg, count=1)
+        self.text = self.text[:ks[0]] + seg2 + self.text[ks[1]:]
+        return {"from": old_tile, "to": new_tile}
+
+    def retype_landmark(self, tile, new_defname):
+        """Change WHAT a landmark is, in place. ⚠️ The runtime AddLandmark() also
+        rolls LandmarkDef.mutatorChances; editing the def here does NOT, so the
+        landmark changes and its terrain features do not follow."""
+        marks = self.landmarks()
+        idx = next((i for i, m in enumerate(marks) if m["tile"] == tile), None)
+        if idx is None:
+            raise KeyError("no landmark on tile %d" % tile)
+        lo, hi, ks, vs = self._landmark_spans()
+        seg = self.text[vs[0]:vs[1]]
+        n = -1
+
+        def sub(m):
+            nonlocal n
+            n += 1
+            return m.group(0) if n != idx else m.group(0).replace(
+                "<def>%s</def>" % marks[idx]["def"], "<def>%s</def>" % new_defname, 1)
+
+        seg2 = re.sub(r"<li>\s*<def>.*?</def>\s*<name>.*?</name>\s*</li>", sub, seg, flags=re.S)
+        self.text = self.text[:vs[0]] + seg2 + self.text[vs[1]:]
+        return {"tile": tile, "was": marks[idx]["def"], "now": new_defname}
+
+    def write(self, out_path):
+        with open(out_path, "w", encoding="utf-8", errors="surrogateescape") as fh:
+            fh.write(self.text)
+        return out_path
