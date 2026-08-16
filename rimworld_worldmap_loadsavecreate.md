@@ -204,6 +204,60 @@ hard dependency of the save.
 
 ---
 
+## 3b. ⭐⭐ WorldEdit 2.0 — a full planet editor, and it is ALREADY ACTIVE
+
+`FunkyShit.Mods.WorldEdit.alpha` · workshop **3590928058** ·
+`...\steamapps\workshop\content\294100\3590928058` · **ACTIVE in `ModsConfig.xml` right now.**
+
+🔴 **This corrects an earlier conclusion in this document.** The web search found the OLD
+WorldEdit (1750390635), which is genuinely abandoned for 1.6 and redirects users
+elsewhere. **That is not what is installed.** WorldEdit **2.0** is a separate, current
+mod, it is already enabled, and it is the most capable world editor on this machine.
+
+Turned on by an **"Enable editor"** checkbox on the world-creation page, after which it
+runs **live on the world screen**; each editor is an `ImmediateWindow` on its own
+rebindable hotkey. Seven editors, read from its `Languages\English\Keyed` strings:
+
+| editor | what it changes |
+|---|---|
+| **Tiles** | per-tile **biome, hilliness, temperature, elevation, rainfall, swampiness**, caves on/off, natural rock types — with a **RADIUS BRUSH** and mass ops **`SetToAllMap`** / **`SetToAllBiome`**. Layer-refresh buttons bake the change into the render. |
+| **Rivers** | place river sources from ocean/lake tiles, choose type, delete-mode, wipe all |
+| **Roads** | paint road types, delete-mode, wipe all |
+| **Factions** | create/delete factions, pick FactionDef, name, leader, defeated flag, **assign an Ideology**, edit relations — applied immediately |
+| **Settlements** | add / drag-to-move / delete, choose faction and SettlementDef |
+| **World objects** | sites with site parts and comps (timeout, item stash, defeat-all-enemies reward), abandoned settlements, escape ships, peace talks |
+| **World features** | create/name/rotate/resize the "Great Desert"-style map labels |
+| **Templates** | save the finished planet as a **`WorldTemplateDef`** with forced storyteller, scenario and pre-made starting pawns — loadable from "Load Game" |
+
+⭐ **The radius brush and `SetToAllBiome` are precisely the "don't click one tile at a
+time" capability that was asked for**, and they need no new code from us.
+
+⭐ **`WorldTemplateDef` is a second, independent world-distribution format** — a Def,
+therefore ordinary mod content, therefore shippable inside our mod exactly like a
+Worldbuilder preset.
+
+⚠️ Untested by us: whether templates survive a def-set change (same shortHash question as
+§5), and how it interacts with Worldbuilder if both are enabled. **Do not enable both and
+edit the same world until that is tested.**
+
+### Also installed and relevant
+
+- **`Hali.ModifyLandingTile`** — Modify Tiles at Game Start, **ACTIVE**. This is the mod
+  supplying the `Set biome (mod)...` / `Set landmark (mod)...` / `Clear Landmark (mod)`
+  entries we found in the live debug menu. Single-tile, mouse-targeted.
+- **`Oblitus.MyLittlePlanet`** — INACTIVE. The only way to change world size / tile count.
+  Note `WorldPreset` carries a `myLittlePlanetSubcount` field, so Worldbuilder expects it.
+- ⚠️ **`7f.alienworlds` (Alien Worlds Framework) is ACTIVE and states it is "fully
+  integrated with Worldbuilder"** — which is inactive. The active planet-type framework is
+  running without its intended companion. That is also what created the empty
+  `Worldbuilder\` folder we found.
+- **Prepare Landing (Continued)**, **Map Preview**, **Map Mode Framework**,
+  **Choose Biome Commonality**, **Faction Control**, **Map Designer**,
+  **Geological Landforms** — all ACTIVE, none of them planet editors: they filter,
+  preview, overlay, or tune generation parameters.
+
+---
+
 ## 4. What else is out there (web research, sourced)
 
 | thing | what it really does | verdict |
@@ -211,7 +265,7 @@ hard dependency of the save.
 | **Vanilla** | no world-only file; `<world>` lives in the `.rws`. Multi-colony (up to 5) is *within one save*. [wiki](https://rimworldwiki.com/wiki/Save_file) | no export |
 | **Worldbuilder** 3522102833 | as §3. Repo pushed 2026-08-11, actively maintained. [repo](https://github.com/fernyrepos/Worldbuilder) | ⭐ best |
 | **World Presets** 3336572355 | saves a *startup* world (factions, settlements, ideologies) to `WorldPresets\`. **Cannot save mid-game**; DLC mismatch hangs. | fallback |
-| **WorldEdit / 2.0** | tile+river+road+faction editor, "world templates". Original 1750390635 **marked outdated for 1.6** and its page now redirects to Worldbuilder + Map Designer + Map Preview. | superseded |
+| **WorldEdit 2.0** `FunkyShit.Mods.WorldEdit.alpha` | ⭐ **ACTIVE ON THIS MACHINE** — see §3b. The *old* WorldEdit (1750390635) is the outdated one; 2.0 (3590928058) is a different, current mod. | ⭐ already ours |
 | **Map Designer** `zylle.mapdesigner` | **local colony map only** — not world tiles. | not relevant |
 | **Prepare Landing** | read-only tile filter/highlight. Changes nothing. | not an editor |
 | **Geological Landforms** | local map-gen driven by world-tile properties; ~14 of 43 landforms auto-disable under Odyssey. | not an editor |
@@ -308,7 +362,11 @@ desert-derived rivers, hilliness and ore. To be consistent you must also set
 
 ## 7. The three routes, and what each costs
 
-**A. Worldbuilder preset shipped inside our own mod — recommended.**
+**A0. Use WorldEdit 2.0 to AUTHOR — it is already active and needs nothing.**
+Radius brush, `SetToAllBiome`, rivers, roads, factions, settlements. This is the editing
+tool; the question of which *format* we ship in is separate and answered by A or B.
+
+**A. Worldbuilder preset shipped inside our own mod — recommended for DISTRIBUTION.**
 Author the world by hand once, save it as a preset, drop the folder into our mod, and
 optionally force it with `ScenPart_StartInWorld`. Players get it on a world-select screen.
 *Cost:* Worldbuilder becomes a permanent hard dependency; presets are shortHash-bound so
@@ -334,5 +392,10 @@ as the artifact (§5).
   def set, or silently mis-decodes. The code shows no remapping layer — **assume it does
   not remap** until tested.
 - Whether `Persistent RimWorlds` works on 1.6. Unconfirmed.
+- **Whether WorldEdit 2.0's `WorldTemplateDef` or Worldbuilder's preset is the better
+  shipping format.** Both are mod content; neither has been round-tripped here. Test both
+  before committing.
+- **Whether WorldEdit 2.0 and Worldbuilder conflict.** Both hook world creation and both
+  claim to persist world state. Untested.
 - Whether a preset round-trips our 575-mod stack at all. Untested — nobody has run
   Worldbuilder on this machine; its data folder is still empty.
