@@ -44,7 +44,7 @@ How the counts are read - the two traps, both already paid for:
 is a different job from disagreeing with 449 already-made calls, and the second
 is the one worth the owner's time. `worldmap_elements.prefill.json` holds a
 state and a "where it belongs" note for every def; it is baked into the page and
-seeded into localStorage only when localStorage is EMPTY, so his own edits are
+MERGED into localStorage per def - untouched rows take the prefill, his own edits are
 never clobbered. "reset to pre-filled" is the deliberate way back. Export a
 reviewed sheet over that JSON and the next regeneration ships HIS calls instead.
 
@@ -474,9 +474,11 @@ const STATS = __STATS__;
 const LSKEY = "__LSKEY__";
 
 /* 🔑 PREFILL is the baked-in default: {defName:{state,note}} for every def,
-   already decided against the Jawa desert-world brief. It seeds the sheet ONLY
-   when localStorage is empty, so re-opening after the owner has made his own
-   choices never clobbers them. "reset to pre-filled" is the deliberate way back. */
+   already decided against the Jawa desert-world brief.
+   🔴 It MERGES, it does not all-or-nothing. An earlier build seeded the prefill only
+   when localStorage was completely empty — so a single earlier click suppressed all
+   350 pre-filled rows and the sheet looked empty. Now every def the owner has NOT
+   touched takes the prefill, and every def he HAS touched is left exactly alone. */
 const PREFILL = __PREFILL__;
 const clonePrefill = () => JSON.parse(JSON.stringify(PREFILL));
 
@@ -484,8 +486,19 @@ const clonePrefill = () => JSON.parse(JSON.stringify(PREFILL));
 let S = {};
 try { S = JSON.parse(localStorage.getItem(LSKEY) || "{}") || {}; } catch(e) { S = {}; }
 const save = () => { try { localStorage.setItem(LSKEY, JSON.stringify(S)); } catch(e){} };
-let seeded = false;
-if(!Object.keys(S).length){ S = clonePrefill(); seeded = true; save(); }
+let seeded = false, seededCount = 0, ownCount = 0;
+(function mergePrefill(){
+  const P = clonePrefill();
+  ownCount = Object.keys(S).length;
+  for(const d in P){
+    const mine = S[d];
+    // "touched" means he actually chose something - a bare {} does not count
+    if(mine && (mine.state || mine.note)) continue;
+    S[d] = P[d]; seededCount++;
+  }
+  seeded = seededCount > 0;
+  if(seeded) save();
+})();
 const get  = d => S[d] || {state:"", note:""};
 function set(d, patch){
   const cur = get(d), next = Object.assign({}, cur, patch);
@@ -753,8 +766,10 @@ document.getElementById("reprefill").onclick = () => {
   S = clonePrefill(); save(); repaint();
 };
 document.getElementById("prefillbar").querySelector(".why").insertAdjacentHTML("beforeend",
-  seeded ? ' <b class="ok">Loaded the prefill just now.</b>'
-         : ' <b class="warn">Showing your saved decisions from this browser.</b>');
+  seeded
+    ? ' <b class="ok">Filled in ' + seededCount + ' rows from the prefill just now'
+      + (ownCount ? ', and kept your ' + ownCount + ' existing decisions untouched.' : '.') + '</b>'
+    : ' <b class="warn">Every row already carries your own saved decision \u2014 nothing to fill in.</b>');
 
 filter();
 
