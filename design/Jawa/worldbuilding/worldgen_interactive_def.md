@@ -111,6 +111,45 @@ rivers, coasts and anomaly patches are the islands of purpose.
   is too dry.
 - **But ammonia, propane and ethane may fall there as rain or snow.**
 
+### 🔴 sub7 is THE save — and sub8 was disqualified by absence, not by taste
+
+Measured by inverting Alien Worlds' temperature curve to arc distance, both saves:
+
+| arc from substellar | sub7 (cov 1.0) | sub8 (cov 0.5) |
+|---|---|---|
+| substellar core <40° | 523 | 1,291 |
+| liveable ring 40–57° | 2,477 (1,791 land) | 7,907 |
+| terminator 80–100° | 3,549 (3,094 land) | 6,011 |
+| deep dark 100–120° | **3,301** | **0** |
+| antistellar core >120° | **6,136** | **0** |
+
+**Coverage 0.5 amputates the far side.** sub8 holds nothing past ~100° arc — no deep dark,
+no antistellar core, no chemistry lakes, no endgame frontier. ⇒ **coverage 1.0 is not a
+preference on this planet, it is a requirement**, and the tile budget must come out of
+subdivisions alone.
+
+⭐ sub7 already lands on the 50% ruling unaided: everything past 90° is ~11,200 tiles, 51%.
+The nightside proportion needs no repaint.
+
+⚠️ Band edges are blurred — this inverts temperature, it does not read true lat/lon. Exact
+positions need `jawa/world_tile_export`. The zero rows are not blurred.
+
+### Asymmetry is ALLOWED — owner, 2026-08-16
+
+> *"It's also ok to make that temperature alteration not be 100% symmetric around the
+> terminator, we can have regions of differing temperature ranges because of invisible
+> climatic variation beyond the game's view. Do as the story needs."*
+
+- Temperature need **not** be a clean function of arc distance. Regional pockets, tongues
+  and gulfs are legitimate, justified as circulation the player never sees.
+- ⭐ It has a physical reason already in the fiction: the **hot winds that circulate heat
+  outward** are a superrotating flow, so heat piles up on one flank. **One twilight band
+  runs hotter than the other**, and that is principled rather than arbitrary.
+- Licence this unlocks, to be spent deliberately rather than as noise: a **cold tongue**
+  reaching sunward that lets travel go further in than it should; a **warm gulf** reaching
+  into the nightside as the only early-plausible beachhead on the frontier; and the
+  **dayside ocean's shore** being survivable at 35° arc despite the heat.
+
 ### Engineering consequences to carry into the repaint
 
 - Rainfall drives biome scoring and plant growth, so near-zero dayside rainfall is doing
