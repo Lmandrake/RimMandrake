@@ -1430,3 +1430,49 @@ working. Nothing here is refused; it is sequenced.
 resolve at raid time, not at worldgen — but flat, samey raids are most of what a first
 session shows. **Sequenced AFTER worldgen**, since `FACTION_SPEC.md` names zero
 `Jawa_<Faction>_<Role>` kinds and nothing bakes.
+
+## v2 concept: Star Wars domestic animals as map mutators
+
+Owner, 2026-08-16: *"Create map mutators that feature Star Wars domestic animals rather
+than cows, chickens, rats."*
+
+The gap is already measured. `VEE_DomesticatedEscapees` and `VEE_NobleSteeds` occur **75
+times each** in a generated world and put chickens, pigs and horses on an Outer Rim
+planet. They were the closest calls in the whitelist review — the *beat* is excellent
+(feral stock gone wild around dead moisture farms) and only the species are wrong.
+
+⇒ Author our own `TileMutatorDef`s on the same shape, with `additionalWildPlants`'
+animal equivalent pointed at **eopie, bantha, dewback, ronto, happabore**. We already
+ship the eopie (`AV_DogSled` reskin, C39) and `mlie.starwarsanimalcollection` is active
+with 11 mutators of its own, 4 of which already occur — so the species exist; what is
+missing is the mutator that PLACES them as domestic escapees.
+
+Worth pairing with a landmark: an abandoned moisture farm with its herd still on the
+tile. That is a Jawa salvage hook, a food source and a story in one map.
+
+## v2 concept: iteratable map generation against validator criteria
+
+Owner, 2026-08-16: *"Iteratable mapgen to satisfy validator-style criteria as specified
+in all of these mutators and world defs... or just more manual curation of course."*
+
+The criteria already exist and are machine-readable. Every `TileMutatorDef` carries
+`minHilliness`/`maxHilliness`, `averageTemperatureRange`, `pollutionRange`,
+`coastSidesRange`, `canSpawnOnRiver`/`OnRoad`/`OnLandmark`, plus density factors and
+`preventGenSteps`. That is a constraint system nobody is checking against.
+
+The loop: **generate → score the result against the constraints we care about →
+adjust → repeat**, the same shape as the validators already in this repo
+(`validate_patch.py`, `validate_ideoligion.py`, `validate_save_artifact.py`). Scoring
+is cheap offline: `worldmap.py` reads every tile's biome, elevation, temperature,
+rainfall and hilliness, so "does this planet actually have a habitable ring 40-57° from
+the substellar point" is a function, not an opinion.
+
+🔴 **Scope note, and it needs the owner's word before anyone builds it.** Automated
+**WORLDgen** is OUT of every version by his own standing ruling, and v2 is explicitly not
+a parking space for it. Two readings survive that:
+- **LOCAL map generation** (the 250x250 colony map) is not covered by the worldgen ban at
+  all, and is where mutators actually express themselves. Safe.
+- **A validator with no generator** — score the hand-built world, report what fails, and
+  let the owner fix it by hand. That is "more manual curation", his own alternative, and
+  it contradicts nothing.
+⇒ Record both. Build neither until he picks.
