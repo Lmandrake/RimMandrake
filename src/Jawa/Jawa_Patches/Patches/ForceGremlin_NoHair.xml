@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- The Yoder force gremlin grows no hair and no beard.
+
+     Hair_BaldOnly and Beard_NoBeardOnly are VANILLA Biotech genes - Hair_BaldOnly
+     whitelists the "Bald" hair tag, Beard_NoBeardOnly the beardless one - so this
+     needs no new content.
+
+     Safe to Add: <genes> is declared directly on the XenotypeDef, not inherited, and
+     an add-if-missing aimed at an inherited container is the trap that silently
+     kills a patch. The gremlin's existing Hair_DarkBrown is a hair COLOUR gene
+     (exclusionTag HairColor), so it does not collide with a hair STYLE gene.
+-->
+<Patch>
+  <Operation Class="PatchOperationAdd">
+    <xpath>/Defs/XenotypeDef[defName="RimMandrakeYoderForceGremlin"]/genes</xpath>
+    <value>
+      <li>Hair_BaldOnly</li>
+      <li>Beard_NoBeardOnly</li>
+    </value>
+  </Operation>
+</Patch>
