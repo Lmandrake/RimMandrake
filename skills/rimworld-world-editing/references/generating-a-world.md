@@ -52,21 +52,27 @@ from these four worlds and both weaker than a measurement:
 | 10 | 0.05 | 3,787 | the old throwaway |
 | 10 | 0.50 | 295,732 | unauthorable by hand |
 | **8** | 0.50 | **32,968** | |
-| 7 | 0.50 | ~11,000 | extrapolated |
+| 7 | 0.50 | 10,797 | measured |
+| **7** | **1.00** | **21,872** | ⭐ the world we shipped |
 
 * **One subdivision step ≈ ÷3**, not ÷4 as the ×4-per-step icosphere intuition suggests.
 * **Coverage scales tile count ~quadratically** (0.05→0.50 is 10× coverage and 78× tiles).
 
-## 3. ⚠️ What planet coverage clips is NOT understood — do not reason from latitude
+## 3. ⚠️ What planet coverage clips — partly measured now, still not modelled
 
 A 0.05-coverage vanilla world spans only **−7.2 … +22.1 °C** and contains tundra and
 alpine meadow: a narrow band, but not the equatorial slice a simple latitude-band model
 predicts, and not a polar one either. **No model here survived contact with the data.**
 
-⇒ On a tidally locked planet the substellar point is at (lon 0, lat 0), so a coverage
-cut could remove the hot core and the liveable ring with it. That is almost certainly
-what the mod author's *"generate at least 50% of the planet is recommended"* is
-protecting. **Keep coverage ≥0.5 and take tile count out of subdivisions instead.**
+🔴 **MEASURED 2026-08-17: coverage 0.5 amputates the NIGHT SIDE.** A tidally locked world
+at coverage 0.5 bottoms out at **−38.5 °C**; the same geometry at coverage **1.0** reaches
+**−105.7 °C**, the antistellar point. So half coverage silently deletes the deep dark, the
+antistellar core, the chemistry lakes — everything past ~100° of arc. Two worlds were
+disqualified on exactly this.
+⇒ **On a tidally locked planet, coverage 1.0 is a REQUIREMENT, not a preference.** Take
+tile count out of subdivisions alone. The mechanism is still unmodelled — a 0.05-coverage
+vanilla world is a mid-latitude band, not the equatorial slice any simple model predicts —
+but the consequence is now measured and is not a matter of taste.
 
 ## 4. Verifying a generated world — entirely offline, no bridge, no load
 
@@ -106,7 +112,9 @@ biome, temperature, rainfall, elevation, hilliness, swampiness, feature. A wet d
   button, re-editable until Generate — a real improvement on vanilla's one-shot page.
 * **pollution** — `tilePollution`'s encoding is a hypothesis and `worldmap.py` refuses to
   write arrays nobody has proven.
-* **roads and rivers** — graphs, not arrays, deliberately untouched by our tooling.
+* ~~roads and rivers — graphs~~ 🔴 **WRONG, corrected 2026-08-16: they are ARRAYS and are
+  editable** — see `savegame-editing.md`. They still matter at generation because we do not
+  *author* them, only prune what a repaint stranded.
 * **the mod list** — biome shortHashes resolve against whatever set is loaded, so a
   changed mod list silently re-points a decoded biome rather than failing.
 

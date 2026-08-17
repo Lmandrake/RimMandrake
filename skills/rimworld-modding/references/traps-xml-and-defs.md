@@ -144,3 +144,21 @@ What goes in, and what does not: `references/traps.md`.
 **Cause:** `PatchOperationFindMod` returns **true** when none of its listed mods are active — an absent mod logs **nothing at all**. So the failure cannot mean absence. It means the mod IS active, its `<match>` ran, and something **inside** returned false. `ToString()` prints the outer wrapper while the return value comes from the inner op, which is why the error names the guard and not the defect.
 **Fix:** read the inner operations. Confirm the mod's activity independently — `<name>` in its `About.xml` is what `FindMod` matches on, and the `packageId` is what `<activeMods>` lists, so check the right one for the question you are asking.
 **Recurs when:** any patch error naming a wrapper — `FindMod`, `Sequence`, `Conditional`. **The op named in a patch error is the wrapper, not the failure.** `SKILL.md` carries this rule already; it was still misread, so the corollary is worth stating in the positive: *the failure is proof of presence.*
+
+### 🔴 A regex over RimWorld XML must allow for ATTRIBUTES and SELF-CLOSING tags
+
+Four wrong conclusions in one session, all the same bug, all reported to the owner as
+findings before they were caught:
+
+* `<pawnGroupMakers>` did not match `<pawnGroupMakers Inherit="False">`, so a faction that
+  fields droids correctly was reported as **broken and fielding humans**.
+* `<xenotypeSet[^>]*>(.*?)</xenotypeSet>` did not match `<xenotypeSet Inherit="False" />`,
+  so a faction with a deliberately EMPTY set was reported as **inheriting vanilla Hussars**.
+* The same self-closing form made a write silently do nothing while
+  `"<xenotypeSet" in text` was still true — the "success" was a no-op.
+* `<(\w+)>([\d.]+)</\1>` missed `<RimMandrakeNikto MayRequire="…">0.300</…>`, so eight
+  well-wired factions were reported as declaring **no xenotypes at all**.
+
+⇒ Write `<tag(\s[^>]*)?>` and handle `<tag ... />` as a separate case, or use a real XML
+parser. And when a def "has nothing", **print the raw block before believing it** — the
+def was fine every single time; the pattern was not.
