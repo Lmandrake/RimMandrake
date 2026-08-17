@@ -47,3 +47,17 @@ sessions be recorded here for DESIGN to pick up later.
   but one solid mass, surviving at higher elevation where sand never buried it. The map
   content itself — acid lakes, charged floors, foundry leavings, its defenders — is that
   doc's job, not the repaint's.
+
+## Axis 2 — elevation and the spine
+
+- **v2 — cryovolcanism on the nightside.** Explicitly not in v1: the dark half has no active
+  volcanism now, but ice volcanism is wanted later. Owner, 2026-08-16.
+- **Orbital war as surface history.** The nightside's craters are not only impacts — it was
+  fought over from orbit. Whether that produces findable wreck sites, a landmark type, or
+  stays back-story is undecided.
+- **Trenches, canyons and chemical deltas.** Carved deep by flowing non-water chemistry.
+  Vanilla elevation plus hilliness cannot express a canyon; whether Odyssey tile mutators
+  can, or whether this needs its own landform content, is unresolved.
+- **The Rust Cathedral is losing to the sand.** The intrusion is being progressively buried.
+  If that burial is to be visible as partial coverage rather than a hard biome edge, it may
+  want a transitional treatment the biome array alone cannot give.

@@ -178,6 +178,56 @@ planet's flattest, deadest ground into one object.
   ⚠️ Mutators live in `tileMutatorTilesDeflate` / `tileMutatorDefsDeflate` — arrays, so
   writable in principle, but `worldmap.py` does not implement them yet.
 
+## Axis 2 — elevation and the spine. RULED, 2026-08-16
+
+### The named waters
+
+| name | what |
+|---|---|
+| **The Scald** | the dayside ocean at ~35° arc. ⭐ **A degraded ancient impact crater**, with its own crater-rim mountains |
+| **the Twilight Sea** | one near-terminator body |
+| **the Gray Sea** | the other |
+
+### The two ranges, and what they are for
+
+- The Scald's **crater mountains join a larger VOLCANIC range** that **cradles one half of
+  the subsolar horrific desert**.
+- 🔴 **The bulk of BOTH ranges lies between the deepest desert and the water.** That is the
+  load-bearing geometry: the mountains stand between the furnace and the sea, which is why
+  the sea survives and why its far side is a rain shadow.
+- These peaks are the **only place it rains on the planet** — so the strange high-altitude
+  biomes live here and nowhere else.
+
+### The substellar plateau
+
+- ⭐ **The whole subsolar region is a PLATEAU — flat AND high.** Extremely flat *within* the
+  plateau, and raised above everything around it.
+- Its surface is **part ExtremeDesert, part the mechanoid-intrusion remnant**.
+- 🔑 **The read: the desert sands are trying to enter and cover the intrusion, and have
+  partially succeeded.** The Rust Cathedral is being buried, slowly, and losing.
+- ✅ Paintable exactly as described: **elevation and hilliness are separate arrays**, so
+  "high but flat" is high `tileElevation` with `tileHilliness` at its floor.
+
+### The nightside surface
+
+- **Vast flat ice and rounded hills** — old, not geologically young, **no longer making
+  mountains**.
+- A surface that has survived **countless impact craters and orbital war**, then been carved
+  by **strange flowing chemical processes** into **trenches, canyons and deltas cut deep,
+  Grand-Canyon fashion**.
+
+### 🔴 The governing idea: Ash'karr is an OLD world
+
+| | DAYSIDE | NIGHTSIDE |
+|---|---|---|
+| building | **active volcanism, still raising ranges** | none. *(cryovolcanism is a v2 idea)* |
+| erosion | sand, violent winds, mountain rain — wearing structures down and **burying much of the planet in thick sand** | very little wind; **very active liquid cycles, but not water** |
+| net | contested: built and destroyed at once | **much smoother and worn down** |
+
+⇒ Relief is not uniform noise. The lit half is young rock under a sand blanket; the dark half
+is an ancient, softened, deeply incised surface. **The planet's history is legible in its
+elevation**, which is the cheapest storytelling available to us.
+
 ### Engineering consequences to carry into the repaint
 
 - Rainfall drives biome scoring and plant growth, so near-zero dayside rainfall is doing
