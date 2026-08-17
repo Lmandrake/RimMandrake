@@ -420,3 +420,28 @@ nightside and the worn dayside flanks are exactly where extinct volcanism belong
   within each. Not paint-bucket, not noise.
 - **First draft: EVERYTHING AT ONCE**, then iterate. Paint the full planet — climate, biomes,
   regions, settlements — and review it by loading the world.
+
+## ✅ TRUE COORDINATES — exported 2026-08-16, the blur is gone
+
+`jawa/world_tile_export` ran for the first time and wrote **`world/world_tiles_lada.csv`** —
+21,872 rows: `tile, lat, long, biome, elevation, temperature, rainfall, hilliness, swampiness`.
+Full sphere: lat −88.8…88.8, long −180…180. **Committed, because regenerating it costs a
+cold load.** From here the entire repaint is offline; the bridge is not needed again.
+
+**The arc formula is CONFIRMED against the engine's own numbers:**
+`d = acos(cos(long)·cos(lat))`, **correlation(arc, temperature) = −0.968**.
+
+| arc | tiles | land | mean °C | published curve |
+|---|---|---|---|---|
+| 0–20° | 642 | 482 | **+55.9** | +70 at 0° |
+| 20–40° | 1,938 | 1,423 | +33.2 | |
+| **40–57° liveable ring** | **2,414** | **1,738** | **+9.0** | +21 at 40°, 0 at 57° |
+| 57–80° | 4,018 | 2,917 | −14.1 | |
+| **80–100° terminator** | **3,848** | **3,314** | **−38.9** | −37 at 90° ✅ |
+| 100–120° deep dark | 3,534 | 2,527 | −63.2 | −70 at 120° |
+| 120–150° | 4,032 | 2,969 | −77.3 | |
+| 150–181° antistellar | 1,446 | 1,036 | −79.9 | −80 at 180° ✅ |
+
+⭐ **Nightside (arc > 90°) = 10,828 tiles = 49.5%.** The owner's "almost precisely 50%" ruling
+is met by the world as generated, with nothing to repaint. *(My earlier temperature-inversion
+estimate said 51%; the true figure is 49.5%. That table is superseded by this one.)*
