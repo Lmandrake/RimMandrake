@@ -401,3 +401,22 @@ on `VEE_Volcano`: *"volcanism ruled EXTINCT — flip if you want a Mustafar regi
 and the geyser elements are all **whitelisted already**; only the note's reasoning is stale.
 📌 `VEE_VolcanicSandDesert` ("black sand desert, long-dead volcanism") still fits — the
 nightside and the worn dayside flanks are exactly where extinct volcanism belongs.
+
+## Axis 5 — paint order and execution. RULED, 2026-08-16
+
+- 🔴 **ANCHOR: The Scald first.** Place the impact-crater sea, then its rim mountains, then
+  the volcanic range joining them, then the Empire's capital on its shore. Everything else on
+  the planet is positioned relative to it.
+- 🔴 **The superrotating wind runs toward the GRAY SEA.** This is now committed and it
+  cascades:
+  - **The Salt exists because the wind put it there** — heat piles on the Gray flank, driving
+    the evaporation and the killing salinity. Its death has a cause.
+  - **The Twilight Sea stays cool, calm and defensible** — which is why it is the Compact's
+    stronghold, and why the **Dew Belt** (fog, farms) runs from the terminator near *it*.
+  - ⇒ **Hot flank = salt and lawlessness. Cool flank = fog and farming.** The two terminators
+    are opposites for one reason.
+  - **The Fall Line lies downwind of the plateau**, on the Gray flank.
+- **Jitter: MODERATE** — regions stay readable as regions, but borders fray and scalars wander
+  within each. Not paint-bucket, not noise.
+- **First draft: EVERYTHING AT ONCE**, then iterate. Paint the full planet — climate, biomes,
+  regions, settlements — and review it by loading the world.
