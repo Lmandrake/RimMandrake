@@ -249,3 +249,60 @@ we can paint on the worldmap biomes themselves. That's ok with us."*
 
 ⇒ **A feature with no worldmap encoding is not a gap.** It is simply a local-scale feature,
 and the repaint neither owes it anything nor waits for it.
+
+## Axis 3 — who sits where. RULED, 2026-08-16
+
+### The Galactic Empire — three settlements, each for a reason
+
+1. ⭐ **The capital.** On the **edge of the crater sea (The Scald)**, at the edge of the deep
+   desert but **shielded from it by the mountains**, **along a river**. Deliberately **the
+   ideal spot on the planet** — every advantage any colony could want. That is *why* they
+   are there, and it is the capital of the world now.
+2. **Overlooking the Hutt holdings** — the **spice mines, salvage yards and sarlacc grounds**
+   strung **along the river that feeds the Twilight Sea**.
+3. **Overlooking the abandoned silicax oxalate mines** and their ruins, on the **far side of
+   the deep desert**.
+   🔑 **This is the Jawa origin story.** The company sank a century into those mines and
+   finally pulled out when the rebellion came. **The Jawa swarmed over the holdings and took
+   the sandcrawlers**, among much else — and that theft is the founding wealth that makes
+   the Jawa a faction at all today.
+
+### The Deepwater Compact — all the water, but not all of it freely
+
+- They hold **every body of water on the planet**.
+- **The Scald is badly oppressed by the Empire** — theirs on paper, policed in practice.
+- **The Twilight Sea is their stronghold**: curated, defended, protected.
+- **The Gray Sea is dying and too saline to be worth much** ⇒ terrible, wild and lawless.
+
+### The nightside — all three at once
+
+Ruled true together: **uninhabited ruin and monster country**, **outcast holdouts sheltering
+in the Sunreach**, and ⭐ **something old still awake out in the deep dark**.
+
+### Settlement pattern — clusters and vast empty spans
+
+- **Mostly tight clusters with enormous emptiness between**, but the clusters are **not only
+  the seas**: also **the rivers**, and **the old industrial holdings**.
+- Smaller mountain clusters that generate only enough for **a tiny lake, or just an oasis**.
+- ⭐ **Emergent springs and oases with no explanation at all.** It is a living world.
+- **Many of these alien races are far hardier than humanity and settle deeper** than a human
+  colony could — the independent droids especially.
+
+### Named: the Trade Socket
+
+The **independent droids' primary trading outpost with the rest of the planet**.
+**Unpoisoned** — unlike their volcanic-spring homes — and **sited on a road**.
+They sell, **sparingly**: volcanic and mountain materials, fresh ore, the **water the
+mountains produce**, and their own technological and repair understanding.
+
+### Solar fields
+
+**Vast solar collection fields near many of the large settlements**, powering super-dense
+Star Wars industrial technology. ⭐ And **rusted, broken versions of the same fields** out at
+the abandoned industrial mining areas — the same technology, a century apart.
+
+### ⚠️ Roads are not editable
+
+Roads are graphs, deliberately untouched by our tooling. **"Near a road" is a siting
+constraint on us, not an edit** — the Trade Socket and anything else road-dependent must be
+placed where the generator already put roads.
