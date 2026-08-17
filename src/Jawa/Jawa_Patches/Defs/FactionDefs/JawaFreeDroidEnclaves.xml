@@ -91,7 +91,11 @@
     <!-- R27. EMPTY ON PURPOSE, not an oversight: the dossier is 0% biological.
          `Inherit="False"` with no `xenotypeChances` strips the five vanilla
          xenotypes `OutlanderFactionBase` would otherwise append. -->
-    <xenotypeSet Inherit="False" />
+    <xenotypeSet Inherit="False">
+      <xenotypeChances>
+        <RimMandrakeUgnaught MayRequire="mandrake.starwarsraces">1.000</RimMandrakeUgnaught>
+      </xenotypeChances>
+    </xenotypeSet>
 
     <!-- Inherit="False" IS LOAD-BEARING. RimWorld resolves inheritance AFTER
          patches, and a child `li` list is APPENDED to the parent's, not

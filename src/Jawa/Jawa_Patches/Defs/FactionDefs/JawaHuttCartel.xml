@@ -128,14 +128,27 @@
          lead species heaviest. Retune freely; nothing depends on them. -->
     <xenotypeSet Inherit="False">
       <xenotypeChances>
-        <RimMandrakeNikto MayRequire="mandrake.starwarsraces">0.300</RimMandrakeNikto>
-        <RimMandrakeGamorrean MayRequire="mandrake.starwarsraces">0.100</RimMandrakeGamorrean>
-        <RimMandrakeRodian MayRequire="mandrake.starwarsraces">0.100</RimMandrakeRodian>
-        <RimMandrakeTrandoshan MayRequire="mandrake.starwarsraces">0.100</RimMandrakeTrandoshan>
-        <RimMandrakeAqualish MayRequire="mandrake.starwarsraces">0.100</RimMandrakeAqualish>
-        <RimMandrakeTwilek MayRequire="mandrake.starwarsraces">0.100</RimMandrakeTwilek>
-        <RimMandrakePyke MayRequire="mandrake.starwarsraces">0.100</RimMandrakePyke>
-        <RimMandrakeDevaronian MayRequire="mandrake.starwarsraces">0.100</RimMandrakeDevaronian>
+        <RimMandrakeHutt MayRequire="mandrake.starwarsraces">0.145</RimMandrakeHutt>
+        <RimMandrakeKlatoonian MayRequire="mandrake.starwarsraces">0.145</RimMandrakeKlatoonian>
+        <RimMandrakeNikto MayRequire="mandrake.starwarsraces">0.145</RimMandrakeNikto>
+        <RimMandrakeAqualish MayRequire="mandrake.starwarsraces">0.048</RimMandrakeAqualish>
+        <RimMandrakeDevaronian MayRequire="mandrake.starwarsraces">0.048</RimMandrakeDevaronian>
+        <RimMandrakeFalleen MayRequire="mandrake.starwarsraces">0.048</RimMandrakeFalleen>
+        <RimMandrakeGamorrean MayRequire="mandrake.starwarsraces">0.048</RimMandrakeGamorrean>
+        <RimMandrakePyke MayRequire="mandrake.starwarsraces">0.048</RimMandrakePyke>
+        <RimMandrakeRodian MayRequire="mandrake.starwarsraces">0.048</RimMandrakeRodian>
+        <RimMandrakeTrandoshan MayRequire="mandrake.starwarsraces">0.048</RimMandrakeTrandoshan>
+        <RimMandrakeTwilek MayRequire="mandrake.starwarsraces">0.048</RimMandrakeTwilek>
+        <RimMandrakeZeltron MayRequire="mandrake.starwarsraces">0.048</RimMandrakeZeltron>
+        <Baseliner>0.014</Baseliner>
+        <RimMandrakeBothan MayRequire="mandrake.starwarsraces">0.014</RimMandrakeBothan>
+        <RimMandrakeFeeorin MayRequire="mandrake.starwarsraces">0.014</RimMandrakeFeeorin>
+        <MandrakeJawa MayRequire="mandrake.starwarsraces">0.014</MandrakeJawa>
+        <RimMandrakeKubaz MayRequire="mandrake.starwarsraces">0.014</RimMandrakeKubaz>
+        <RimMandrakeMuun MayRequire="mandrake.starwarsraces">0.014</RimMandrakeMuun>
+        <RimMandrakeOrtolan MayRequire="mandrake.starwarsraces">0.014</RimMandrakeOrtolan>
+        <RimMandrakeUgnaught MayRequire="mandrake.starwarsraces">0.014</RimMandrakeUgnaught>
+        <RimMandrakeZygerrian MayRequire="mandrake.starwarsraces">0.014</RimMandrakeZygerrian>
       </xenotypeChances>
     </xenotypeSet>
 

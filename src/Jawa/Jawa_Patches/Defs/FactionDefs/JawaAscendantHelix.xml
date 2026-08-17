@@ -95,14 +95,21 @@
          lead species heaviest. Retune freely; nothing depends on them. -->
     <xenotypeSet Inherit="False">
       <xenotypeChances>
-        <RimMandrakeArkanian MayRequire="mandrake.starwarsraces">0.300</RimMandrakeArkanian>
-        <RimMandrakeKaminoan MayRequire="mandrake.starwarsraces">0.100</RimMandrakeKaminoan>
-        <RimMandrakeCerean MayRequire="mandrake.starwarsraces">0.100</RimMandrakeCerean>
-        <RimMandrakeBith MayRequire="mandrake.starwarsraces">0.100</RimMandrakeBith>
-        <RimMandrakeChiss MayRequire="mandrake.starwarsraces">0.100</RimMandrakeChiss>
-        <RimMandrakeRakata MayRequire="mandrake.starwarsraces">0.100</RimMandrakeRakata>
-        <RimMandrakeUmbaran MayRequire="mandrake.starwarsraces">0.100</RimMandrakeUmbaran>
-        <RimMandrakeNeimoidian MayRequire="mandrake.starwarsraces">0.100</RimMandrakeNeimoidian>
+        <RimMandrakeArkanian MayRequire="mandrake.starwarsraces">0.248</RimMandrakeArkanian>
+        <Baseliner>0.083</Baseliner>
+        <RimMandrakeBith MayRequire="mandrake.starwarsraces">0.083</RimMandrakeBith>
+        <RimMandrakeCerean MayRequire="mandrake.starwarsraces">0.083</RimMandrakeCerean>
+        <RimMandrakeKaminoan MayRequire="mandrake.starwarsraces">0.083</RimMandrakeKaminoan>
+        <RimMandrakeMuun MayRequire="mandrake.starwarsraces">0.083</RimMandrakeMuun>
+        <RimMandrakeNeimoidian MayRequire="mandrake.starwarsraces">0.083</RimMandrakeNeimoidian>
+        <RimMandrakeUmbaran MayRequire="mandrake.starwarsraces">0.083</RimMandrakeUmbaran>
+        <RimMandrakeIktotchi MayRequire="mandrake.starwarsraces">0.025</RimMandrakeIktotchi>
+        <RimMandrakeKelDor MayRequire="mandrake.starwarsraces">0.025</RimMandrakeKelDor>
+        <RimMandrakeKubaz MayRequire="mandrake.starwarsraces">0.025</RimMandrakeKubaz>
+        <RimMandrakeRakata MayRequire="mandrake.starwarsraces">0.025</RimMandrakeRakata>
+        <RimMandrakeSithKissaiPureblood MayRequire="mandrake.starwarsraces">0.025</RimMandrakeSithKissaiPureblood>
+        <RimMandrakeSithMassassi MayRequire="mandrake.starwarsraces">0.025</RimMandrakeSithMassassi>
+        <RimMandrakeSithZ MayRequire="mandrake.starwarsraces">0.025</RimMandrakeSithZ>
       </xenotypeChances>
     </xenotypeSet>
 

@@ -97,12 +97,14 @@
          lead species heaviest. Retune freely; nothing depends on them. -->
     <xenotypeSet Inherit="False">
       <xenotypeChances>
-        <RimMandrakeWookiee MayRequire="mandrake.starwarsraces">0.300</RimMandrakeWookiee>
-        <Yttakin>0.200</Yttakin>
-        <RimMandrakeCathar MayRequire="mandrake.starwarsraces">0.125</RimMandrakeCathar>
-        <RimMandrakeEwok MayRequire="mandrake.starwarsraces">0.125</RimMandrakeEwok>
-        <RimMandrakeTogruta MayRequire="mandrake.starwarsraces">0.125</RimMandrakeTogruta>
-        <RimMandrakeIthorian MayRequire="mandrake.starwarsraces">0.125</RimMandrakeIthorian>
+        <RimMandrakeLasat MayRequire="mandrake.starwarsraces">0.283</RimMandrakeLasat>
+        <RimMandrakeWookiee MayRequire="mandrake.starwarsraces">0.283</RimMandrakeWookiee>
+        <RimMandrakeEwok MayRequire="mandrake.starwarsraces">0.094</RimMandrakeEwok>
+        <RimMandrakeIthorian MayRequire="mandrake.starwarsraces">0.094</RimMandrakeIthorian>
+        <RimMandrakeTogorian MayRequire="mandrake.starwarsraces">0.094</RimMandrakeTogorian>
+        <RimMandrakeTogruta MayRequire="mandrake.starwarsraces">0.094</RimMandrakeTogruta>
+        <Baseliner>0.028</Baseliner>
+        <RimMandrakeCathar MayRequire="mandrake.starwarsraces">0.028</RimMandrakeCathar>
       </xenotypeChances>
     </xenotypeSet>
 

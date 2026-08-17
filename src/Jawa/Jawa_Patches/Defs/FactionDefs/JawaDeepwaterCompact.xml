@@ -95,13 +95,17 @@
          lead species heaviest. Retune freely; nothing depends on them. -->
     <xenotypeSet Inherit="False">
       <xenotypeChances>
-        <RimMandrakeQuarren MayRequire="mandrake.starwarsraces">0.280</RimMandrakeQuarren>
-        <RimMandrakeMonCalamari MayRequire="mandrake.starwarsraces">0.120</RimMandrakeMonCalamari>
-        <RimMandrakeSelkath MayRequire="mandrake.starwarsraces">0.120</RimMandrakeSelkath>
-        <RimMandrakeGungan MayRequire="mandrake.starwarsraces">0.120</RimMandrakeGungan>
-        <RimMandrakeChagrian MayRequire="mandrake.starwarsraces">0.120</RimMandrakeChagrian>
-        <RimMandrakeHerglic MayRequire="mandrake.starwarsraces">0.120</RimMandrakeHerglic>
-        <RimMandrakeDuros MayRequire="mandrake.starwarsraces">0.120</RimMandrakeDuros>
+        <RimMandrakeMonCalamari MayRequire="mandrake.starwarsraces">0.222</RimMandrakeMonCalamari>
+        <RimMandrakeNautolan MayRequire="mandrake.starwarsraces">0.222</RimMandrakeNautolan>
+        <RimMandrakeQuarren MayRequire="mandrake.starwarsraces">0.222</RimMandrakeQuarren>
+        <RimMandrakeChagrian MayRequire="mandrake.starwarsraces">0.074</RimMandrakeChagrian>
+        <RimMandrakeHerglic MayRequire="mandrake.starwarsraces">0.074</RimMandrakeHerglic>
+        <RimMandrakeSelkath MayRequire="mandrake.starwarsraces">0.074</RimMandrakeSelkath>
+        <Baseliner>0.022</Baseliner>
+        <RimMandrakeBith MayRequire="mandrake.starwarsraces">0.022</RimMandrakeBith>
+        <RimMandrakeBothan MayRequire="mandrake.starwarsraces">0.022</RimMandrakeBothan>
+        <RimMandrakeDuros MayRequire="mandrake.starwarsraces">0.022</RimMandrakeDuros>
+        <RimMandrakeGungan MayRequire="mandrake.starwarsraces">0.022</RimMandrakeGungan>
       </xenotypeChances>
     </xenotypeSet>
 

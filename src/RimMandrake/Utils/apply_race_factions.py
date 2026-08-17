@@ -78,7 +78,12 @@ def main():
             if fac not in per:
                 continue
             new = block(fac)
-            if "<xenotypeSet" in s:
+            # ⚠️ handle BOTH forms. A self-closing <xenotypeSet Inherit="False" /> has no
+            # closing tag, so a paired-tag regex matches nothing while `"<xenotypeSet" in s`
+            # is still true - the write then silently does nothing. Cost four hours today.
+            if re.search(r"<xenotypeSet[^>]*/>", s):
+                s = re.sub(r"[ \t]*<xenotypeSet[^>]*/>", new, s, count=1)
+            elif re.search(r"<xenotypeSet[^>]*>.*?</xenotypeSet>", s, re.S):
                 s = re.sub(r"[ \t]*<xenotypeSet[^>]*>.*?</xenotypeSet>", new, s, count=1, flags=re.S)
             else:
                 s = s.replace("</FactionDef>", new + "\n  </FactionDef>", 1)

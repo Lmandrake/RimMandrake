@@ -103,9 +103,9 @@
     <!-- Every member is a Jawa. Without this the faction generates baseliners
          wearing tribal gear, which is the failure mode that makes a custom
          faction feel like a reskin. -->
-    <xenotypeSet>
+    <xenotypeSet Inherit="False">
       <xenotypeChances>
-        <MandrakeJawa>1.0</MandrakeJawa>
+        <MandrakeJawa MayRequire="mandrake.starwarsraces">1.000</MandrakeJawa>
       </xenotypeChances>
     </xenotypeSet>
 
