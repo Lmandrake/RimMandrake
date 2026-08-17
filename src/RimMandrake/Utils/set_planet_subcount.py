@@ -31,10 +31,26 @@ FIELD = "myLittlePlanetSubcount"
 # their minimum. Enum spellings MEASURED: rainfall/temperature/axialTilt/landmarkDensity
 # from a real save; OverallPopulation is Low/Normal/High, read off the game's own
 # PlanetPopulation_* translation keys - an earlier guess of "Much" was WRONG.
+
+# 🔑 THE FACTION LIST. WorldGenerationData.ResetFactionCounts() fills factionCounts by
+# repeating each ConfigurableFaction's defName startingCountAtWorldCreation times - so a
+# preset carrying an explicit list pre-sets exactly which factions the world generates.
+# ⚠️ Scribed under the element name "factionCountsStrings", NOT "factionCounts".
+# Mechanoid and Insect are hidden factions: they are not configurable and arrive anyway.
+FACTIONS_WANTED = [
+    ("Empire", 3), ("OutlanderCivil", 4), ("TribeCivil", 3), ("Pirate", 2),
+    ("Jawa_IndigenousTribes", 3), ("Jawa_HuttCartel", 2), ("Jawa_Junkers", 2),
+    ("Jawa_WildsteamClan", 2), ("Jawa_DeepwaterCompact", 2), ("Jawa_AscendantHelix", 1),
+    ("Jawa_FreeDroidEnclaves", 2), ("Jawa_GeonosianFoundryHive", 1),
+]
+FACTION_XML = ("    <factionCountsStrings>\n"
+               + "".join("      <li>%s</li>\n" % d for d, n in FACTIONS_WANTED for _ in range(n))
+               + "    </factionCountsStrings>\n")
+
 GENDATA = """  <saveGenerationParameters>True</saveGenerationParameters>
   <disableExtraBiomes>False</disableExtraBiomes>
   <generationData>
-    <planetCoverage>1</planetCoverage>
+__FACTIONS__    <planetCoverage>1</planetCoverage>
     <rainfall>Normal</rainfall>
     <temperature>Normal</temperature>
     <population>High</population>
@@ -68,8 +84,8 @@ def main():
 
     # pre-set the sliders too, so coverage cannot be got wrong by hand again
     if "<generationData>" not in xml:
-        xml = xml.replace("  <biomes", GENDATA + "  <biomes")
-        pre = "coverage 1.0, population High"
+        xml = xml.replace("  <biomes", GENDATA.replace("__FACTIONS__", FACTION_XML) + "  <biomes")
+        pre = "coverage 1.0, population High, %d faction slots across %d factions" % (sum(n for _, n in FACTIONS_WANTED), len(FACTIONS_WANTED))
     else:
         pre = "already present"
 
