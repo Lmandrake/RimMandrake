@@ -306,3 +306,39 @@ the abandoned industrial mining areas — the same technology, a century apart.
 Roads are graphs, deliberately untouched by our tooling. **"Near a road" is a siting
 constraint on us, not an edit** — the Trade Socket and anything else road-dependent must be
 placed where the generator already put roads.
+
+### The named centres — CANON, 2026-08-16
+
+**The Fall Line** ⭐ — a dayside belt **downwind of the plateau**, where the superrotating
+winds drag re-entering debris down. The orbital war never stopped falling.
+*Abundant:* fresh wreckage, **renewably** — the one salvage source that does not deplete.
+*Denies:* everything else. *Exotic:* intact orbital tech. *Threat:* it is still falling, and
+the Empire claims salvage rights it cannot enforce.
+
+**The Dew Belt** — a **broad, canyon-like region of LOW elevation** running from the
+terminator near the **Twilight Sea**, abutting one flank of the **Nightspill**.
+🔑 **Two cooling mechanisms stack here**: the cold intrusion, and the elevation drop. Together
+they pull temperature down out of the blistering surrounds **and let the rich fog form far
+farther sunward than it has any right to.**
+Well settled by the **moisture farmers** — their crops, their animals. Little industry, metal
+or defence, but **many trading settlements** supplying the remote farmers who fill their
+territory.
+
+**The Salt** — the Gray Sea's retreating shore and its evaporite flats.
+*Abundant:* salts and chemicals. *Denies:* food, water, law. *Exotic:* rare evaporite
+reagents. *Threat:* lawlessness, and a coastline that walks away from your buildings.
+
+**The Gusting** — the high-wind margins where hot and cold masses collide, on the flanks of
+the **Nightspill** and the **Sunreach**.
+*Abundant:* wind power, absurd amounts. *Denies:* structural peace. *Exotic:* the fastest
+crossing between climate bands. *Threat:* the wind itself.
+⚠️ It runs alongside the Dew Belt — **the farmers live one ridge from the most violent air on
+the planet.**
+
+**The Fuel Works** — a ⭐ **Junker stronghold** in the **Sunreach**, cutting fuel from the
+chemistry lakes.
+*Abundant:* propane and ammonia fuel. *Denies:* food, warmth, water. *Exotic:* cryogenic
+reagents. *Threat:* the cold, and the Junkers.
+
+_Proposed, not yet ruled: **the Listening Floor** (a Rakatan array still transmitting, on the
+plateau's edge) and **the Crawler Graveyard** (where the stolen sandcrawlers go to die)._
