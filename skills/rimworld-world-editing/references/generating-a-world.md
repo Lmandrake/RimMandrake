@@ -199,3 +199,56 @@ the export came from.
 * ⚠️ **Settlement assignment must be ORDERED BY PRIORITY**, because a world may generate
   fewer settlements than the plan wants and the last entries simply starve. Four factions
   came out with zero settlements that way, two of them story-critical.
+
+## 9. 🔴 `Pirate` IS `PirateBandBase` — and that is why a reskinned pirate faction vanishes
+
+Vanilla ships:
+
+```xml
+<FactionDef Name="PirateBandBase" ParentName="FactionBase">
+  <defName>Pirate</defName>
+  <label>pirate gang</label>
+  <requiredCountAtGameStart>1</requiredCountAtGameStart>
+  <permanentEnemy>true</permanentEnemy>
+```
+
+One def doing two jobs: a **concrete faction** and the **named parent template** every other
+pirate faction inherits from.
+
+⚠️ **In the faction panel it reads "pirate gang", not your campaign name** — so a human
+whittling an 80-entry list down to fourteen deletes it, twice in a row, while carefully
+keeping everything that looks like theirs. `requiredCountAtGameStart 1` does NOT save it: a
+faction deleted at the panel stays deleted, and it is then absent from the world forever.
+
+⇒ **Two defences, and the first is the one that works:**
+1. **Patch the `label` so the panel shows the campaign name**, and confirm the patch reaches
+   the panel before generating. A reskin nobody can recognise is a reskin nobody keeps.
+2. Put it on a written tick-list with the other vanilla vessels — `Empire`,
+   `OutlanderCivil`, `TribeCivil`, `Pirate` — flagged as *"these four wear vanilla names"*.
+
+🔑 **And beware the inheritance:** because `Pirate` carries `Name="PirateBandBase"`, anything
+patched onto it is inherited by its children — ours included (`Jawa_Junkers` has
+`ParentName="PirateBandBase"`). Patch the child's own fields, never the shared parent's,
+unless you intend every pirate faction in the stack to change.
+
+## 10. The pipeline, as it finally stands
+
+Proven on three worlds, all offline after a single coordinate export:
+
+```
+world/WORLDMAP_source.rws            pristine, never written
+  -> paint_ashkarr.py                climate, biome, relief, pollution
+  -> populate_ashkarr.py             settlements + sites -> our factions, named, placed
+  -> name_ashkarr_regions.py         37 feature slots re-cut to our regions
+  -> name_ashkarr_factions.py        every faction renamed
+  -> clean_ashkarr_hydrology.py      strip roads/rivers the repaint stranded
+  -> world/WORLDMAP_gen.rws          + deployed to the game's Saves folder
+```
+
+Then verify by LOADING it and reading `jawa/world_stats` — the engine's own histogram, not
+the tool's success flag. Final run: 21,872 tiles, −79.4…+80.8 °C, water 6.9%, 2,550 polluted
+tiles, 28 named regions, 37 settlements across 11 factions, **zero non-ours owning anything**,
+zero world objects in water, zero unresolved biome hashes.
+
+⚠️ **Re-run the world-object water mask after EVERY paint.** Landmarks sit where the source
+put them, and a repaint that moves the sea drowns some — 3 the first time, 2 the second.
