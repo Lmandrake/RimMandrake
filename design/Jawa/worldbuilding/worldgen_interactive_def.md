@@ -635,3 +635,39 @@ not empty — they are whatever was there before, and they are still live.**
 - `minLabelConnectedTiles` **7 → 14** — suppresses the small foreign territory labels.
 - 📌 `includeWaterTiles` was **already False**, so territory is not supposed to cover
   ocean; anything still drawn over water is stale render state, not new claims.
+
+## Race → faction assignment — sheet built 2026-08-17
+
+`design/Jawa/worldbuilding/review/race_faction_assignment.html` — 70 xenotypes, 12
+factions plus "(no faction)", every row pre-filled with a proposed home. **14 contested**,
+**6 moved** off their current faction, **2 deliberately unassigned**.
+
+### What the audit found first
+
+- **6 of 8 Jawa factions are already well wired** — `Inherit="False"`, chances summing to
+  exactly 1.00, `MayRequire` guards, coherent rosters (Deepwater is entirely aquatic;
+  Ascendant Helix is the geneticists).
+- 🔴 **`Jawa_FreeDroidEnclaves` has `Inherit="True"` and ZERO xenotypes** — it inherits
+  `OutlanderFactionBase`'s vanilla set, so a droid faction fields Hussars and Dirtmoles.
+- ⚠️ **`Jawa_IndigenousTribes` also has `Inherit="True"`** — MandrakeJawa at 1.00 dominates
+  in practice (C40 measured 6/6) but vanilla tribals are appended, so it is a latent leak.
+- **37 of 69 species were fielded by nobody.** Two absurdities: **the Hutt Cartel
+  contained no Hutts**, and **no faction fielded Tuskens** though the ratified fiction puts
+  them in the near-desert.
+- **The four vanilla reskins carry no `xenotypeChances` at all**, so Empire, the Homestead,
+  the Deep Desert Tribes and Blackstar field vanilla xenohumans today. Any assignment to
+  them is new content and needs a `Baseliner` share or they become 100% alien.
+
+### 🔴 RULED, owner 2026-08-17: MandrakeJawa is canon
+
+There are **two** Jawa xenotypes in the races mod — `MandrakeJawa` (in its own
+`MandrakeJawaXenotype.xml`) and `RimMandrakeJawa` (24 genes, donor-generated).
+**`MandrakeJawa` is the one the owner built in game and exported as the `.xtp`, and it is
+canon.** `RimMandrakeJawa` is **CUT**. Never field both.
+
+### ⏱ Not worldgen-gated
+
+`xenotypeChances` is read when a faction's pawns are GENERATED, not when the world is
+created. ⇒ the world can be generated now and the racial wiring fixed afterwards; it takes
+effect for every pawn made after the next startup. **A restart is needed for the def edit,
+but it does not block the worldgen run.**
