@@ -476,3 +476,59 @@ estimate said 51%; the true figure is 49.5%. That table is superseded by this on
   no ID or faction reference moved. **Any future repaint must redo this step.**
 - 📌 The engine counts 1,849 water tiles against the 1,170 `Ocean`+`SeaIce` painted — it also
   classes the propane lakes, tar pits and oases as water. Not a defect; do not chase it.
+
+## Second pass — 2026-08-16, owner's review notes actioned
+
+**Pipeline is now two idempotent scripts, source → dest, no game needed:**
+`world/WORLDMAP_source.rws` (pristine, never written) → `paint_ashkarr.py` →
+`populate_ashkarr.py` → `world/WORLDMAP_gen.rws` → the game's Saves folder.
+🔑 The source copy is what makes the paint **idempotent** — the temperature remap
+normalises the generated field's endpoints, so running it over its own output would
+compress the range twice.
+
+### 🔴 The magenta tiles — SOLVED, and it was ours
+
+`AB_TarPits` rendered as missing-texture magenta. **Not a mod defect.** ReGrowth's
+BiomesKit pack ships world-map textures per biome per hilliness, and three biomes
+carry a `Forest/` set with **no `Hills/` set at all**: `AB_TarPits`,
+`AB_IdyllicMeadows`, `AB_MiasmicMangrove`. The painter had given terminator tiles
+hilliness 3, so BiomesKit looked for `AB_TarPits/Hills/LargeHills.png` and found
+nothing. ⇒ **`FLAT_ONLY` in the painter clamps those biomes to hilliness ≤ 1.**
+**Generalises: before painting any biome onto hilly ground, check its worldmap
+texture set covers that hilliness.**
+
+### The seas are fields now, not rectangles
+
+Each sea is a **scalar field thresholded at zero** — distance from a centre, with its
+radius modulated by 3–4 sinusoid harmonics in bearing and arc. That yields bays,
+headlands, peninsulas and offshore islands instead of a strip following the
+terminator. The Salt is defined as the Gray Sea's own coastal margin (`-0.5 < f ≤ 0`),
+so it hugs whatever shape the sea took.
+
+### Pollution — CALIBRATED, no longer a hypothesis
+
+The pristine world's own `tilePollution` max is **exactly 65535** with **5% of tiles
+non-zero**, matching its `pollution 0.05` generator setting. ⇒ `raw / 65535 → 0..1`
+is confirmed. Painted: Rust Cathedral 0.55–0.95 · scorch ring 0.30–0.70 · Fall Line
+0.08–0.35 · volcanic range 0.05–0.22 · The Salt 0.04–0.14, plus the dirty biomes
+(PoisonForest, TarPits, HorrorWastes, Scarlands). **Ancient machinery leaks; nothing
+else on this planet does.**
+
+### Settlements — 66, all ours
+
+Every settlement **converted** to a ratified faction, moved to a tile that faction
+would hold, and renamed. ⛔ **Converted, never deleted** — removing a faction object
+would tear the save's reference graph. Counts: Moisture Farmers 9 (Dew Belt) ·
+Deepwater Compact 8 (Twilight shore) · Indigenous Tribes 7 · Hutt Cartel 6 (Twilight
+shore) · Free Droid Enclaves 6 incl. **the Trade Socket** · Wildsteam 5 · Junkers 5
+incl. **the Fuel Works** (Sunreach) · Rogue Droids 4 incl. **the Hopeless Call**
+(deep dark) · Empire 3 incl. **Sunspire**, the capital on the Scald shore ·
+Ascendant Helix 3 · Geonosian Foundry Hive 3 · CIS 3 · Binary Star Raiders 3 ·
+OuterRim Galactic Empire 1.
+
+### Region names — renamed BY TYPE ONLY
+
+37 world features renamed off their generated fantasy names. ⚠️ **No geographic claim
+is made.** A feature's `<drawCenter>` could not be decoded into lat/long — the
+candidate mapping put `MountainRange` centres at −350 m, the sea floor — so names are
+chosen by feature TYPE, not by where they sit. **Decoding `drawCenter` is open work.**

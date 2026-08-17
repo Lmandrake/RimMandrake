@@ -24,10 +24,11 @@ import random
 import sys
 
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
-from worldmap import WorldGrid, DECODE
+from worldmap import WorldGrid, WorldObjects, DECODE
 
 REPO = os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))))
-SAVE = os.path.join(REPO, "world", "WORLDMAP_gen.rws")
+SRC = os.path.join(REPO, "world", "WORLDMAP_source.rws")
+DEST = os.path.join(REPO, "world", "WORLDMAP_gen.rws")
 TILES = os.path.join(REPO, "world", "world_tiles_lada.csv")
 GAME_SAVES = ("/mnt/c/Users/Mandrake/AppData/LocalLow/Ludeon Studios/"
               "RimWorld by Ludeon Studios/Saves")
@@ -51,6 +52,38 @@ def lobe(arc, bear, arc0, bear0, arc_r, bear_r):
     return max(0.0, 1.0 - d * d)
 
 
+def sphere_dist(arc1, bear1, arc2, bear2):
+    """Angular distance between two points given as (arc from substellar, bearing)."""
+    a1, a2 = math.radians(arc1), math.radians(arc2)
+    return math.degrees(math.acos(max(-1.0, min(1.0,
+        math.cos(a1) * math.cos(a2)
+        + math.sin(a1) * math.sin(a2) * math.cos(math.radians(bear1 - bear2))))))
+
+
+def wobble(x, terms):
+    """Sum of sinusoids - what stops a coastline looking like a rectangle."""
+    return sum(a * math.sin(k * math.radians(x) + ph) for a, k, ph in terms)
+
+
+# Each sea is a SCALAR FIELD thresholded at zero, not a bearing window. The
+# harmonics give bays, peninsulas, headlands and the odd offshore island.
+TWILIGHT = dict(arc=91.0, bear=170.0, r=20.0,
+                bt=[(0.26, 3, 0.7), (0.17, 5, 2.4), (0.11, 7, 4.1), (0.07, 11, 1.2)],
+                at=[(0.30, 2, 1.9), (0.18, 4, 0.3)])
+GRAY = dict(arc=92.0, bear=8.0, r=14.0,
+            bt=[(0.30, 3, 2.2), (0.18, 6, 0.9), (0.12, 9, 3.3)],
+            at=[(0.26, 3, 0.6), (0.16, 5, 2.8)])
+SCALD_S = dict(arc=35.0, bear=185.0, r=9.5,
+               bt=[(0.16, 4, 1.4), (0.10, 7, 3.0)], at=[(0.10, 3, 2.1)])
+
+
+def sea_field(arc, bear, s):
+    """> 0 inside the water, 1.0 at the centre, 0 exactly on the coast."""
+    d = sphere_dist(arc, bear, s["arc"], s["bear"])
+    r = s["r"] * (1.0 + wobble(bear, s["bt"]) + wobble(arc * 3.0, s["at"]))
+    return 1.0 - d / max(2.0, r)
+
+
 def load_geometry():
     rows = {}
     for r in csv.DictReader(open(TILES)):
@@ -72,15 +105,16 @@ CATHEDRAL_ARC = 11.0                                    # the Rust Cathedral mas
 
 def region_of(t, arc, bear, elev, n1, n2):
     """n1/n2 are per-tile noise in -1..1, used to fray every border."""
-    scald = math.degrees(math.acos(max(-1.0, min(1.0, math.cos(math.radians(arc))
-            * math.cos(math.radians(SCALD_ARC))
-            + math.sin(math.radians(arc)) * math.sin(math.radians(SCALD_ARC))
-            * math.cos(math.radians(bear - SCALD_BEAR))))))
-
-    if scald < SCALD_R + 1.6 * n1:
+    if sea_field(arc, bear, SCALD_S) > 0.0:
         return "scald_sea"
-    if scald < RIM_R + 2.0 * n1:
+    if sphere_dist(arc, bear, SCALD_S["arc"], SCALD_S["bear"]) < SCALD_S["r"] + 4.2 + 1.5 * n1:
         return "scald_rim"
+    ft = sea_field(arc, bear, TWILIGHT)
+    fg = sea_field(arc, bear, GRAY)
+    if ft > 0.0:
+        return "twilight_sea"
+    if fg > 0.0:
+        return "gray_sea"
 
     # the volcanic range cradling the western half of the subsolar desert,
     # joining the Scald rim: bulk lies BETWEEN the deep desert and the water.
@@ -103,14 +137,9 @@ def region_of(t, arc, bear, elev, n1, n2):
     if 52.0 < arc < 92.0 and angdiff(bear, 178.0) < 21.0 + 6 * n1:
         return "dew_belt"
 
-    # the two terminator seas, deliberately NOT the full circumference
-    if 84.0 < arc < 99.0:
-        if angdiff(bear, 168.0) < 26.0 + 6 * n1:
-            return "twilight_sea"
-        if angdiff(bear, 8.0) < 20.0 + 6 * n2:
-            return "gray_sea"
-        if angdiff(bear, 35.0) < 16.0:
-            return "the_salt"          # evaporite flats downwind of the Gray
+    # The Salt - evaporite flats hugging the Gray Sea's own coast, downwind
+    if -0.5 < fg <= 0.0 and angdiff(bear, 18.0) < 36.0:
+        return "the_salt"
     if 78.0 < arc < 103.0:
         return "terminator"
 
@@ -170,7 +199,26 @@ WEIGHT = {
 }
 WATER = {"scald_sea", "twilight_sea", "gray_sea", "frozen_sea"}
 
+# 🔴 These ship ONLY a Forest/ worldmap texture set in ReGrowth's BiomesKit pack -
+# no Hills/. Give one of them hilliness above flat and BiomesKit finds no material
+# and the tile renders MAGENTA. Measured 2026-08-16 off the texture folders.
+FLAT_ONLY = {"AB_TarPits", "AB_IdyllicMeadows", "AB_MiasmicMangrove"}
+
 # elevation metres (base, jitter) and hilliness enum per region
+# pollution 0..1. Ancient machinery leaks; nothing else on this planet does.
+# CALIBRATED: the pristine world's own max is exactly 65535 and its 5% non-zero
+# fraction matches its `pollution 0.05` generator setting.
+POLL_FULL = 65535.0
+POLLUTION = {
+    "cathedral":      (0.55, 0.95),
+    "scorch_ring":    (0.30, 0.70),
+    "fall_line":      (0.08, 0.35),
+    "volcanic_range": (0.05, 0.22),
+    "the_salt":       (0.04, 0.14),
+}
+DIRTY_BIOMES = {"PoisonForest": (0.15, 0.45), "AB_TarPits": (0.20, 0.55),
+                "HorrorWastes": (0.10, 0.40), "Scarlands": (0.25, 0.60)}
+
 RELIEF = {
     "plateau":        (1450, 90, 1),
     "cathedral":      (1520, 70, 1),
@@ -197,7 +245,7 @@ RELIEF = {
 def main():
     dry = "--dry" in sys.argv
     geo = load_geometry()
-    g = WorldGrid(SAVE)
+    g = WorldGrid(SRC)
     n = len(g.biome_names())
     assert n == len(geo), "tile count mismatch: save %d, csv %d" % (n, len(geo))
 
@@ -208,10 +256,19 @@ def main():
     r_arr = g.arrays["tileRainfall"]
     e_arr = g.arrays["tileElevation"]
     h_arr = g.arrays["tileHilliness"]
+    p_arr = g.arrays["tilePollution"]
     b_arr = g.arrays["tileBiome"]
     hash_by_biome = g.hash_by_biome
 
     # generated extremes, so the remap hits the owner's ruled endpoints exactly
+    occupied = set()
+    wo = WorldObjects(SRC)
+    for st in wo.settlements():
+        occupied.add(int(str(st.get("tile")).split(",")[0]))
+    for k in wo.landmarks():
+        tv = k.get("tile") if isinstance(k, dict) else k
+        occupied.add(int(str(tv).split(",")[0]))
+
     temps0 = [g.get("tileTemperature", t) for t in range(n)]
     hot0, cold0 = max(temps0), min(temps0)
 
@@ -269,7 +326,13 @@ def main():
             hh = max(1, hill - 1)               # worn smooth at the antistellar core
         if elev > 2200:
             hh = 5
-        h_arr[t] = max(0, min(5, hh + (1 if random.random() < 0.18 else 0)))
+        hh = max(0, min(5, hh + (1 if random.random() < 0.18 else 0)))
+        if pick in FLAT_ONLY:
+            hh = min(hh, 1)
+        h_arr[t] = hh
+
+        lo_hi = POLLUTION.get(reg) or DIRTY_BIOMES.get(pick)
+        p_arr[t] = int(round(random.uniform(*lo_hi) * POLL_FULL)) if lo_hi else 0
 
     print("region                tiles")
     for k in sorted(counts, key=lambda x: -counts[x]):
@@ -284,11 +347,11 @@ def main():
     if dry:
         print("\n--dry: nothing written")
         return
-    g.write(SAVE)
-    print("\nwrote", SAVE)
+    g.write(DEST)
+    print("\nwrote", DEST)
     for name in ("WORLDMAP_gen.rws",):
         dest = os.path.join(GAME_SAVES, name)
-        with open(SAVE, "rb") as a, open(dest, "wb") as b:
+        with open(DEST, "rb") as a, open(dest, "wb") as b:
             b.write(a.read())
         print("deployed", dest)
 
