@@ -351,3 +351,53 @@ the point, not an obstacle to be balanced.
 ⛔ **The Crawler Graveyard is DROPPED** — owner, 2026-08-16: the Jawa would salvage anything
 long before abandoning it. 🔑 Keep the reasoning, it characterises them: **nothing Jawa-owned
 is ever abandoned intact.** There are no Jawa ruins.
+
+## Axis 4 — biome assignment. RULED, 2026-08-16
+
+Palette is **65 installed BiomeDefs**, not the 19 that happened to generate.
+⛔ Never paint the non-surface ones onto the planet: `Space`, `Orbit`, `Undercave`,
+`CQF_Undercave`, `Underground`, `AM_UndergroundSpace`, `MetalHell`, `Labyrinth`,
+`AG_PocketPlane`, `AG_NereidPocketPlane`, `VQEA_AncientComplex`.
+
+### The nightside — one biome, many contents
+
+- 🔴 **`AB_RockyCrags` DOMINATES the whole dark half** — everything past the nightward
+  terminator transition, all the way to the umbra. It is the default; it is "everything else"
+  out there.
+- ⭐ **Variety comes from the CONTENTS of the tile, not the biome** — weather, the strange
+  liquid lakes, mutators. This is the scale doctrine applied: the nightside's diversity lives
+  at local-map scale.
+- **`Glowforest` dwells mostly between the crags and the dark terminator region** — the band
+  where lightless growth still finds a margin.
+
+### The substellar plateau
+
+`ExtremeDesert` plateau · one irregular solid mass of **`AB_MechanoidIntrusion`** (the Rust
+Cathedral) · ⭐ **a ring of `Scarlands` around it** — ground the works themselves scorched,
+neither sand nor machine, giving the Cathedral a halo and a buffer.
+
+### The Dew Belt
+
+**Still very arid** — `AridShrubland` and `Desert`. ⚠️ **The oases are TILE MUTATORS, not
+biomes.** The trough's gift is fog and cool air, not wet ground; the water is pinpoint.
+
+### Exotic biome placement — all four sets kept, each with a rule
+
+| biome | where, and only there |
+|---|---|
+| **`AB_OcularForest`** | ⭐ **ONLY at the tops of mountains**, in tiny patches. It answers *"what if I COULD land my ship on solid mountain terrain — it would be like THIS."* |
+| `PoisonForest` · `HorrorWastes` · `AB_MycoticJungle` · `BMT_FungalForest` · `AB_GelatinousSuperorganism` | **the terminator region** — none of them do well with sunlight. *(PoisonForest may be dropped after we see it in play; look first.)* |
+| `AB_TarPits` | **adjacent to densely vegetated regions near rivers** |
+| `AB_GallatrossGraveyard` | part of the **Pyreland set** |
+| `AB_FeraliskInfestedJungle` | **only** in the dense vegetation along rivers |
+| `Scarlands` | **wherever heavy industry has been active** — the abandoned mine areas, the ship salvage ground near the Hutts, and around the mechanoid incursion formation |
+
+### ⚠️ One frozen note is superseded
+
+`worldmap_elements.prefill.json` (FROZEN 2026-08-16, 386 whitelisted / 61 rejected) carries
+on `VEE_Volcano`: *"volcanism ruled EXTINCT — flip if you want a Mustafar region."*
+**Axis 2 supersedes it: dayside volcanism is ACTIVE and still raising ranges.**
+✅ No harm done — `VEE_Volcano`, `LavaCrater`, `LavaFlow`, `LavaLake`, `VEE_VolcanicRichSoil`
+and the geyser elements are all **whitelisted already**; only the note's reasoning is stale.
+📌 `VEE_VolcanicSandDesert` ("black sand desert, long-dead volcanism") still fits — the
+nightside and the worn dayside flanks are exactly where extinct volcanism belongs.
