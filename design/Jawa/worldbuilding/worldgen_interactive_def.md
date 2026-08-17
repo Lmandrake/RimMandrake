@@ -445,3 +445,34 @@ cold load.** From here the entire repaint is offline; the bridge is not needed a
 ⭐ **Nightside (arc > 90°) = 10,828 tiles = 49.5%.** The owner's "almost precisely 50%" ruling
 is met by the world as generated, with nothing to repaint. *(My earlier temperature-inversion
 estimate said 51%; the true figure is 49.5%. That table is superseded by this one.)*
+
+## ✅ FIRST DRAFT PAINTED AND LOADED — 2026-08-16
+
+`src/RimMandrake/Utils/paint_ashkarr.py` — every region is a predicate over
+`(arc, bearing, elevation)`, deterministic, re-runnable, `--dry` to preview.
+**The engine loaded the result and its own `jawa/world_stats` reports the painted world.**
+
+| region | tiles | | region | tiles |
+|---|---|---|---|---|
+| crags | 5,708 | | fall_line | 479 |
+| terminator | 3,778 | | volcanic_range | 468 |
+| outer_dayside | 2,985 | | propane_core | 445 |
+| liveable_ring | 2,077 | | gray_sea | 296 |
+| glow_band | 1,794 | | plateau | 285 |
+| deep_desert | 1,181 | | twilight_sea | 240 |
+| dew_belt | 847 | | scorch_ring / the_salt / scald_rim | 181 / 179 / 166 |
+| frozen_sea | 511 | | cathedral / scald_sea | 129 / 123 |
+
+- **Temperature −81.2 … +80.6 °C** — the ruled endpoints, hit by remapping the generated
+  field's ends rather than replacing it, so the engine's own variation survives as jitter.
+- **Rainfall by arc band:** 0–20° **55 mm** · 20–40° 177 (the range's peaks — the only rain on
+  the planet, up to 1,500 mm) · 40–58° **51** · 58–80° **66** · 80–100° **219** (fog and dew)
+  · nightside **38–55**. The dayside effectively never rains, as ruled.
+- **25 biomes, zero unresolved hashes.** `AB_RockyCrags` 31% owns the dark; the arid core
+  (AridShrubland/Desert/ExtremeDesert/Wasteland) is 45%; **`AB_OcularForest` is 19 tiles**,
+  peaks only.
+- ⚠️ **The world-object mask was the real trap** — 5 settlements and landmarks stood in newly
+  painted water. Fixed by converting **their tiles to land**, never by moving the objects, so
+  no ID or faction reference moved. **Any future repaint must redo this step.**
+- 📌 The engine counts 1,849 water tiles against the 1,170 `Ocean`+`SeaIce` painted — it also
+  classes the propane lakes, tar pits and oases as water. Not a defect; do not chase it.
