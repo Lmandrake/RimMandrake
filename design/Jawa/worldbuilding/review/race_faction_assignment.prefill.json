@@ -7,7 +7,7 @@
    "OutlanderCivil": "A"
   },
   "RimMandrakeAnzati": {
-   "Pirate": "A"
+   "Pirate": "S"
   },
   "RimMandrakeAqualish": {
    "Jawa_HuttCartel": "S",
@@ -19,48 +19,53 @@
   "Baseliner": {
    "Empire": "A",
    "OutlanderCivil": "A",
-   "TribeCivil": "A",
-   "Pirate": "A",
-   "Jawa_HuttCartel": "S",
    "Jawa_Junkers": "S",
    "Jawa_AscendantHelix": "S",
    "Jawa_DeepwaterCompact": "R",
    "Jawa_WildsteamClan": "R",
-   "Jawa_IndigenousTribes": "R"
+   "TribeCivil": "R",
+   "Pirate": "S",
+   "Jawa_HuttCartel": "R"
   },
   "RimMandrakeBith": {
-   "Jawa_AscendantHelix": "S"
+   "Jawa_AscendantHelix": "S",
+   "Jawa_DeepwaterCompact": "R"
   },
   "RimMandrakeBothan": {
-   "OutlanderCivil": "A"
+   "OutlanderCivil": "S",
+   "Jawa_HuttCartel": "R",
+   "Jawa_DeepwaterCompact": "R"
   },
   "RimMandrakeCathar": {
-   "Jawa_WildsteamClan": "S"
+   "Jawa_WildsteamClan": "R",
+   "Pirate": "R"
   },
   "RimMandrakeCerean": {
    "Jawa_AscendantHelix": "S"
   },
   "RimMandrakeChadraFan": {
-   "Jawa_Junkers": "A"
+   "Jawa_Junkers": "A",
+   "Empire": "R",
+   "OutlanderCivil": "R"
   },
   "RimMandrakeChagrian": {
    "Jawa_DeepwaterCompact": "S"
   },
   "RimMandrakeChiss": {
-   "Jawa_AscendantHelix": "S",
    "Empire": "S"
   },
-  "RimMandrakeDathomirian": {
-   "Jawa_AscendantHelix": "A"
-  },
+  "RimMandrakeDathomirian": {},
   "RimMandrakeDefel": {
-   "Pirate": "A"
+   "Pirate": "S"
   },
   "RimMandrakeDevaronian": {
    "Jawa_HuttCartel": "S"
   },
   "RimMandrakeDuros": {
-   "Jawa_DeepwaterCompact": "S"
+   "OutlanderCivil": "R",
+   "Pirate": "R",
+   "Jawa_Junkers": "R",
+   "Jawa_DeepwaterCompact": "R"
   },
   "RimMandrakeEchani": {
    "Empire": "A"
@@ -69,10 +74,11 @@
    "Jawa_WildsteamClan": "S"
   },
   "RimMandrakeFalleen": {
-   "Jawa_HuttCartel": "A"
+   "Jawa_HuttCartel": "S"
   },
   "RimMandrakeFeeorin": {
-   "Jawa_Junkers": "A"
+   "Jawa_Junkers": "A",
+   "Jawa_HuttCartel": "R"
   },
   "RimMandrakeGamorrean": {
    "Jawa_HuttCartel": "S",
@@ -85,7 +91,7 @@
    "Jawa_GeonosianFoundryHive": "A"
   },
   "RimMandrakeGungan": {
-   "Jawa_DeepwaterCompact": "S"
+   "Jawa_DeepwaterCompact": "R"
   },
   "RimMandrakeHerglic": {
    "Jawa_DeepwaterCompact": "S"
@@ -94,50 +100,58 @@
    "Jawa_HuttCartel": "A"
   },
   "RimMandrakeIktotchi": {
-   "Jawa_AscendantHelix": "A"
+   "Jawa_AscendantHelix": "R"
   },
   "RimMandrakeIridonian": {
-   "TribeCivil": "A"
+   "TribeCivil": "R"
   },
   "RimMandrakeIthorian": {
-   "Jawa_WildsteamClan": "S"
+   "Jawa_WildsteamClan": "S",
+   "OutlanderCivil": "A"
   },
   "MandrakeJawa": {
-   "Jawa_IndigenousTribes": "A"
+   "Jawa_IndigenousTribes": "A",
+   "Jawa_HuttCartel": "R"
   },
   "RimMandrakeJawa": {},
   "RimMandrakeKaleesh": {
-   "TribeCivil": "A"
+   "TribeCivil": "R"
   },
   "RimMandrakeKaminoan": {
    "Jawa_AscendantHelix": "S"
   },
   "RimMandrakeKelDor": {
-   "Jawa_AscendantHelix": "A"
+   "Jawa_AscendantHelix": "R",
+   "OutlanderCivil": "R"
   },
   "RimMandrakeKlatoonian": {
    "Jawa_HuttCartel": "A"
   },
   "RimMandrakeKubaz": {
-   "Jawa_HuttCartel": "A"
+   "Jawa_HuttCartel": "R",
+   "Jawa_Junkers": "R",
+   "Jawa_AscendantHelix": "R"
   },
   "RimMandrakeLasat": {
-   "Jawa_WildsteamClan": "A"
+   "Jawa_WildsteamClan": "A",
+   "TribeCivil": "R"
   },
   "RimMandrakeMimbanese": {
-   "TribeCivil": "A"
+   "TribeCivil": "R"
   },
   "RimMandrakeMirialan": {
    "OutlanderCivil": "A"
   },
   "RimMandrakeMonCalamari": {
-   "Jawa_DeepwaterCompact": "S"
+   "Jawa_DeepwaterCompact": "A"
   },
   "RimMandrakeMuun": {
-   "Jawa_AscendantHelix": "A"
+   "Jawa_AscendantHelix": "S",
+   "Jawa_HuttCartel": "R"
   },
   "RimMandrakeNagai": {
-   "Pirate": "A"
+   "Pirate": "A",
+   "TribeCivil": "R"
   },
   "RimMandrakeNautolan": {
    "Jawa_DeepwaterCompact": "A"
@@ -146,57 +160,65 @@
    "Jawa_AscendantHelix": "S"
   },
   "RimMandrakeNelvaanian": {
-   "TribeCivil": "A"
+   "TribeCivil": "R"
   },
   "RimMandrakeNikto": {
    "Jawa_HuttCartel": "A",
    "Jawa_Junkers": "S"
   },
   "RimMandrakeOrtolan": {
-   "Jawa_HuttCartel": "A"
+   "Jawa_HuttCartel": "R",
+   "OutlanderCivil": "R"
   },
   "RimMandrakePantoran": {
-   "OutlanderCivil": "A"
+   "OutlanderCivil": "A",
+   "Jawa_Junkers": "R"
   },
   "RimMandrakePyke": {
-   "Jawa_HuttCartel": "S"
+   "Jawa_HuttCartel": "S",
+   "Pirate": "R"
   },
   "RimMandrakeQuarren": {
    "Jawa_DeepwaterCompact": "A"
   },
   "RimMandrakeRakata": {
-   "Jawa_AscendantHelix": "S"
+   "Jawa_AscendantHelix": "R"
   },
   "RimMandrakeRodian": {
    "Jawa_HuttCartel": "S",
-   "Jawa_Junkers": "S"
+   "Jawa_Junkers": "S",
+   "Pirate": "R"
   },
   "RimMandrakeSelkath": {
    "Jawa_DeepwaterCompact": "S"
   },
   "RimMandrakeSithKissaiPureblood": {
-   "Jawa_AscendantHelix": "A"
+   "Jawa_AscendantHelix": "R"
   },
   "RimMandrakeSithMassassi": {
-   "Jawa_AscendantHelix": "A"
+   "Jawa_AscendantHelix": "R"
   },
   "RimMandrakeSithZ": {
-   "Jawa_AscendantHelix": "A"
+   "Jawa_AscendantHelix": "R"
   },
   "RimMandrakeSnivvian": {
    "Jawa_Junkers": "S"
   },
   "RimMandrakeSullustan": {
-   "OutlanderCivil": "A"
+   "OutlanderCivil": "S"
   },
   "RimMandrakeTaung": {
-   "TribeCivil": "A"
+   "Pirate": "R",
+   "TribeCivil": "R"
   },
   "RimMandrakeTogorian": {
-   "Jawa_WildsteamClan": "A"
+   "Jawa_WildsteamClan": "S",
+   "Pirate": "R",
+   "TribeCivil": "R"
   },
   "RimMandrakeTogruta": {
-   "Jawa_WildsteamClan": "S"
+   "Jawa_WildsteamClan": "S",
+   "OutlanderCivil": "S"
   },
   "RimMandrakeTrandoshan": {
    "Jawa_HuttCartel": "S",
@@ -206,11 +228,16 @@
    "TribeCivil": "A"
   },
   "RimMandrakeTwilek": {
-   "Jawa_HuttCartel": "S"
+   "Jawa_HuttCartel": "S",
+   "Jawa_Junkers": "R",
+   "Pirate": "R",
+   "OutlanderCivil": "R"
   },
   "RimMandrakeUgnaught": {
    "Jawa_Junkers": "S",
-   "Jawa_FreeDroidEnclaves": "S"
+   "Jawa_FreeDroidEnclaves": "S",
+   "OutlanderCivil": "R",
+   "Jawa_HuttCartel": "R"
   },
   "RimMandrakeUmbaran": {
    "Jawa_AscendantHelix": "S"
@@ -223,11 +250,14 @@
   },
   "RimMandrakeYoderForceGremlin": {},
   "RimMandrakeZeltron": {
-   "Jawa_HuttCartel": "A"
+   "Jawa_HuttCartel": "S"
   },
   "RimMandrakeZygerrian": {
-   "Pirate": "A"
+   "Pirate": "A",
+   "Jawa_HuttCartel": "R",
+   "Jawa_Junkers": "R"
   }
  },
- "notes": {}
+ "notes": {},
+ "placedCount": 115
 }
