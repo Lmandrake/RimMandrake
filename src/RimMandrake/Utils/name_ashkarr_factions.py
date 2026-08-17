@@ -24,20 +24,21 @@ GAME = ("/mnt/c/Users/Mandrake/AppData/LocalLow/Ludeon Studios/"
 
 # our 14, from the ratified keep list
 OURS = {
+    # the ratified 14 - FACTION_SPEC.md "The 14 factions". Labels are the spec's.
     "Empire":                          "The Galactic Empire",
-    "OuterRim_GalacticEmpire":         "Imperial Garrison Command",
-    "Jawa_DeepwaterCompact":           "The Deepwater Compact",
-    "Jawa_HuttCartel":                 "The Hutt Cartel",
-    "Jawa_WildsteamClan":              "The Wildsteam Clan",
-    "Jawa_IndigenousTribes":           "The Dune Tribes",
-    "Jawa_FreeDroidEnclaves":          "The Free Droid Enclaves",
-    "Jawa_Junkers":                    "The Junkers",
-    "Jawa_AscendantHelix":             "The Ascendant Helix",
-    "Jawa_GeonosianFoundryHive":       "The Geonosian Foundry Hive",
-    "OuterRim_MoistureFarmers":        "The Moisture Farmers",
-    "OuterRim_BinaryStarRaiders":      "The Binary Star Raiders",
-    "JDSCIS_CIS_Faction":              "The Confederacy",
-    "guy762_KotORFaction_RogueDroids": "The Rust Choir",
+    "OutlanderCivil":                  "Homestead Defense League",
+    "TribeCivil":                      "Deep Desert Tribes",
+    "Pirate":                          "Blackstar Company",
+    "Jawa_HuttCartel":                 "Hutt Cartel",
+    "Jawa_FreeDroidEnclaves":          "Free Droid Enclaves",
+    "Jawa_WildsteamClan":              "Wildsteam Clan",
+    "Jawa_DeepwaterCompact":           "Deepwater Compact",
+    "Jawa_GeonosianFoundryHive":       "Geonosian Foundry Hive",
+    "Jawa_AscendantHelix":             "Ascendant Helix",
+    "Jawa_IndigenousTribes":           "Jawa Trade Moot",
+    "Jawa_Junkers":                    "the Junkers",
+    "Mechanoid":                       "the Forgotten Arsenal",
+    "Insect":                          "the Unbound Hive",
 }
 
 # everything else, named so nothing on screen breaks the setting

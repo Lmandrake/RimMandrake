@@ -49,45 +49,30 @@ OURS = [
 
 # how many settlements each faction gets, and where it wants them
 PLAN = [
-    # (defName, count, region predicate key, name list)
+    # ⚠️ ORDER IS PRIORITY. Settlements are assigned to plan entries in order, so if the
+    # world generated fewer settlements than the plan wants, the LAST entries starve.
+    # The small, story-critical factions go FIRST for that reason - on 2026-08-17 the
+    # Geonosians and the Ascendant Helix ended up with zero because they were last.
+    # 🔴 Every one of our 12 settlement-holding factions must appear here, or populate
+    # converts its settlements away and the faction vanishes from the map.
     ("Empire", 1, "capital", ["Sunspire"]),
+    ("Jawa_GeonosianFoundryHive", 1, "ore_seams", ["The Unfinished Work"]),
+    ("Jawa_GeonosianFoundryHive", 1, "plateau", ["The Godmouth"]),
+    ("Jawa_FreeDroidEnclaves", 1, "plateau", ["No Master"]),
+    ("Jawa_AscendantHelix", 2, "ring", ["Helix Landing", "The Coil"]),
+    ("Pirate", 2, "fall_line", ["Blackstar Field", "The Contract Camp"]),
     ("Empire", 2, "imperial", ["Ashgarrison", "Oxalate Watch"]),
-    ("Jawa_DeepwaterCompact", 8, "twilight_shore",
-     ["Butora", "Deepwater Hold", "Coldquay", "Fogmoor", "The Wharves", "Saltless",
-      "Greenhaven", "Tidewatch", "Anchor Deep"]),
-    ("Jawa_HuttCartel", 6, "twilight_shore",
-     ["Spicehead", "Sarlacc Ground", "Itunt", "The Yards", "Bellyrock", "Slaver's Rest"]),
-    ("Jawa_WildsteamClan", 5, "terminator",
-     ["Rego", "Steamreach", "Marrowmarsh", "The Wet Dark", "Bogholt", "Fenrun"]),
-    ("OuterRim_MoistureFarmers", 9, "dew_belt",
-     ["Dewhome", "Condenser Flats", "Thiussia", "Vaporhead", "Bell Cistern",
-      "Dryrun", "The Trellis", "Mistcatch", "Farside Wells", "Hollowdew", "Stillmarket"]),
-    ("Jawa_FreeDroidEnclaves", 4, "volcanic",
-     ["The Trade Socket", "Arlor", "Solder Deep", "Vent Nine", "Cold Solder",
-      "The Repair Yard", "Springhouse"]),
-    # RULED 2026-08-17: the freed droids also fled to the plateau, to be away from
-    # organics. Formally allied with the hive there; they trade and ignore each other.
-    ("Jawa_FreeDroidEnclaves", 2, "plateau", ["No Master", "The Far Refuge"]),
-    ("Jawa_Junkers", 5, "sunreach",
-     ["The Fuel Works", "The Gray Fleet", "Cryohaul", "Ammonia Landing",
-      "The Crooks", "Sump"]),
-    ("Jawa_IndigenousTribes", 7, "ring",
-     ["Barno", "The Black Ram", "Duneward", "Stone Moot", "Farwater", "Redscarp",
-      "The Long Camp", "Ashfoot"]),
-    ("Jawa_AscendantHelix", 3, "ring",
-     ["The Shattered Empire", "Helix Landing", "Ascendant Reach", "The Coil"]),
-    # RULED 2026-08-17: TWO outposts. 1) the ore seams the company bought them for and
-    # abandoned - the queen would not leave. 2) the plateau, worshipping the Founder
-    # machinery and trying to commune with its AI. Names provisional, mine not the owner's.
-    ("Jawa_GeonosianFoundryHive", 2, "ore_seams", ["The Unfinished Work", "Seam Nine"]),
-    ("Jawa_GeonosianFoundryHive", 2, "plateau", ["The Godmouth", "Communion"]),
-    ("guy762_KotORFaction_RogueDroids", 4, "deep_dark",
-     ["The Hopeless Call", "Rust Choir", "Null Station", "The Listening Dark"]),
-    ("JDSCIS_CIS_Faction", 3, "dayside",
-     ["Separatist Landing", "Foundry Remnant", "The Cold Line"]),
-    ("OuterRim_BinaryStarRaiders", 3, "fall_line",
-     ["Wreckfall", "The Debris Camp", "Binary Roost"]),
-    ("OuterRim_GalacticEmpire", 1, "imperial", ["Garrison Tertius"]),
+    ("Jawa_IndigenousTribes", 3, "ring", ["Barno", "The Long Camp", "Ashfoot"]),
+    ("TribeCivil", 4, "ring", ["Duneward", "Stone Moot", "Redscarp", "The Dry Moot"]),
+    ("OutlanderCivil", 5, "dew_belt",
+     ["Dewhome", "Condenser Flats", "Bell Cistern", "Mistcatch", "Stillmarket"]),
+    ("Jawa_DeepwaterCompact", 5, "twilight_shore",
+     ["Butora", "Deepwater Hold", "Coldquay", "Tidewatch", "Anchor Deep"]),
+    ("Jawa_HuttCartel", 4, "twilight_shore",
+     ["Spicehead", "Sarlacc Ground", "Itunt", "The Yards"]),
+    ("Jawa_WildsteamClan", 3, "terminator", ["Rego", "Steamreach", "Marrowmarsh"]),
+    ("Jawa_Junkers", 3, "sunreach", ["The Fuel Works", "Cryohaul", "Ammonia Landing"]),
+    ("Jawa_FreeDroidEnclaves", 3, "volcanic", ["The Trade Socket", "Arlor", "Vent Nine"]),
 ]
 
 FEATURE_NAMES = {
