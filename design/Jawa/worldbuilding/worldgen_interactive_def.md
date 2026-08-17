@@ -236,3 +236,16 @@ elevation**, which is the cheapest storytelling available to us.
   span 80°→100° arc before designing anything that needs room there.**
 - Fog/dew, ammonia precipitation, mineral-ice mining and the chemistry cycle have no vanilla
   representation. Parked as build concepts; the repaint must not depend on them.
+
+## Scale doctrine — RULED, 2026-08-16
+
+**Two scales, and a concept is allowed to live at either.** Owner: *"Some of these concepts
+will live only as tile mutators and live in the tilemaps, others will be at a coarser scale
+we can paint on the worldmap biomes themselves. That's ok with us."*
+
+- **Worldmap scale** — biome, temperature, rainfall, elevation, hilliness: the coarse strokes.
+- **Local-map scale** — tile mutators and map generation: canyons, trenches, chemical deltas,
+  the sand creeping over the Rust Cathedral. These need no worldmap representation at all.
+
+⇒ **A feature with no worldmap encoding is not a gap.** It is simply a local-scale feature,
+and the repaint neither owes it anything nor waits for it.
