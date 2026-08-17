@@ -23,6 +23,32 @@ PRESET = ("/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/"
           "3626210061/Worldbuilder/TidallyLocked/Preset.xml")
 FIELD = "myLittlePlanetSubcount"
 
+# Worldbuilder's Page_CreateWorldParams_Reset_Patch reads these off the preset and
+# pushes them into the page, so the preset can PRE-SET the sliders. It only does so
+# when saveGenerationParameters is true AND generationData is present.
+# ⚠️ Write EVERY field the patch reads. A present-but-empty generationData Scribes the
+# missing ones to enum 0, which would silently set rainfall/temperature/population to
+# their minimum. Enum spellings MEASURED: rainfall/temperature/axialTilt/landmarkDensity
+# from a real save; OverallPopulation is Low/Normal/High, read off the game's own
+# PlanetPopulation_* translation keys - an earlier guess of "Much" was WRONG.
+GENDATA = """  <saveGenerationParameters>True</saveGenerationParameters>
+  <disableExtraBiomes>False</disableExtraBiomes>
+  <generationData>
+    <planetCoverage>1</planetCoverage>
+    <rainfall>Normal</rainfall>
+    <temperature>Normal</temperature>
+    <population>High</population>
+    <pollution>0.05</pollution>
+    <riverDensity>1</riverDensity>
+    <ancientRoadDensity>1</ancientRoadDensity>
+    <settlementRoadDensity>1</settlementRoadDensity>
+    <mountainDensity>1</mountainDensity>
+    <seaLevel>1</seaLevel>
+    <axialTilt>Normal</axialTilt>
+    <landmarkDensity>Normal</landmarkDensity>
+  </generationData>
+"""
+
 
 def main():
     subcount = int(sys.argv[1]) if len(sys.argv) > 1 else 8
@@ -40,9 +66,18 @@ def main():
     else:
         xml = xml.replace("  <biomes", line + "  <biomes")
 
+    # pre-set the sliders too, so coverage cannot be got wrong by hand again
+    if "<generationData>" not in xml:
+        xml = xml.replace("  <biomes", GENDATA + "  <biomes")
+        pre = "coverage 1.0, population High"
+    else:
+        pre = "already present"
+
     with open(PRESET, "w", encoding="utf-8") as fh:
         fh.write(xml)
-    print("%s = %d in %s" % (FIELD, subcount, PRESET))
+    print("%s = %d  |  pre-set: %s" % (FIELD, subcount, pre))
+    print("  -> %s" % PRESET)
+    print("  RELOAD the preset in game; Worldbuilder caches the parsed object.")
 
 
 if __name__ == "__main__":
