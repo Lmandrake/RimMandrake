@@ -193,3 +193,28 @@ Worse, editing biome ALONE leaves the old climate behind: those tiles became
 ideally a little per-tile jitter — not just `tileBiome`.
 
 ---
+
+## ⛔ Deleting a faction from a save DOES NOT WORK — measured 2026-08-16
+
+36 unwanted factions were removed from `allFactions`, every relation entry naming them
+dropped, owner references repointed, faction-keyed dictionaries pruned key-and-value
+together, and the last singletons (`parentFaction`, `bountyFaction`) redirected — down
+to **one** residual reference in a 21,872-tile save. It still loaded broken:
+
+```
+Could not do PostLoadInit on RimWorld.FactionManager: NullReferenceException
+Could not resolve reference to Faction_16 … VanillaTradingExpanded.TradingManager
+                                            /banksByFaction/keys
+Error while generating pawn. Rethrowing. NullReferenceException
+```
+
+🔑 **Why it cannot be finished by sweeping:** every mod may keep its own faction-keyed
+dictionary (Vanilla Trading Expanded's `banksByFaction`, a raid-cooldown mod's
+`factionDataDict`), and pawn relations, memories and starting-pawn lists reach further
+than the faction list does. A general regex sweep cannot know them all, and the ones it
+misses are exactly the ones that NRE.
+
+⇒ **A faction is removed at the Configure Factions page during worldgen, or not at all.**
+Converting what a faction OWNS is safe and effective; deleting the faction is not.
+📌 Work on a COPY and read `Player.log` — `load_game_ready` returned `success: true` on
+the broken save. **The load succeeding is not the save being sound.**
