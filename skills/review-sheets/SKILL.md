@@ -142,3 +142,30 @@ When the human says he is done:
 * Ask for the **posture** before generating (whitelist vs blacklist changes everything).
 * Ask for a **ruling on invented rules** — do not bury them.
 * Do NOT ask for the 400 routine calls. That is the whole point.
+
+## 10. 🔴 Prove the sheet actually wrote before you consume its file
+
+Measured 2026-08-17, and it nearly deployed an agent's guesses as the owner's decisions.
+
+The owner filled in a 71-row matrix, said "assignments are complete", and asked for it to be
+committed. The decisions file on disk was **byte-identical to the generated pre-fill**: the
+File System Access link had never been established, so every choice was sitting in
+`localStorage` and the file had never been touched. Committing it would have recorded the
+agent's own guesses under the owner's name, and the applier would then have written them
+into the game.
+
+**Three cheap checks, in order of strength:**
+
+1. ⭐ **Have the page stamp a key only IT writes** — `placedCount`, `savedAt`, anything — and
+   make the consumer **refuse to run** if that key is absent. A pre-fill generator must
+   never emit it. This is the only check that cannot be fooled.
+2. `git diff` the decisions file. No diff after a review session means no review landed.
+3. Compare the decision count against the pre-fill's. Identical totals are suspicious.
+
+⚠️ **"The owner said they finished" is not evidence that the file changed.** They finished;
+the plumbing did not. Say so plainly and hand back the recovery — the work is still in
+`localStorage`, so *"reopen the sheet, click copy JSON or link the file"* recovers it in
+seconds, and it is destroyed only by clearing browsing data.
+
+⇒ Build the guard into the tool, not the conversation: a consumer that cannot tell the
+human's decisions from its own suggestions will eventually ship the wrong ones silently.
