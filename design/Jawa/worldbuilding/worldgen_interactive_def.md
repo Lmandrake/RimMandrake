@@ -560,3 +560,26 @@ Sunreach on the Gray one.
 
 Large regions are cut into four tracts by bearing quadrant — Gray / North / Twilight /
 South — so a 5,000-tile crag field is not one label stretched across a hemisphere.
+
+### Faction names, label crowding, and one bridge gap — 2026-08-16
+
+- **All 55 faction names rewritten.** "Thiussia Compact" and "Hive of Ko'coclak" were
+  FACTION names, not settlement names, and Faction Territories mode draws them across
+  the planet — so they were the most-read text on the map. Our 14 keepers now carry
+  their real names (**The Galactic Empire**, **The Deepwater Compact**, **The Hutt
+  Cartel**, **The Dune Tribes**, **The Moisture Farmers**, **The Rust Choir**…); the
+  other 41 keep existing — deleting a faction tears the reference graph — but are named
+  to belong on this planet.
+- **Label size is now vanilla-calibrated**: `0.44·√tiles`, capped 19.2, because the
+  pristine world's own features run 2.4–19.2 at up to ~1,950 tiles. The first attempt
+  used 2·√tiles and every label hit the cap, so they were all maximum size and collided.
+- **Crowding rule:** labels are accepted **by CANON PRIORITY, then size**, and any whose
+  centre falls within 11° of an accepted one is dropped. Sorting by size alone crowded
+  out **The Scald** and **The Rust Cathedral** in favour of generic tracts — the places
+  the world exists for. 28 of 37 slots now carry a name; the dropped ones (The Anvil,
+  The Ashteeth, The Scorch) are nested inside larger named regions anyway.
+- ⛔ **BRIDGE GAP: the world view cannot be opened from a loaded map.** `load_game_ready`
+  lands in the colony map, `open_main_tab` NREs on the World tab (it has no window type),
+  and both click tools refuse it — *"Main-tab targets are descriptive only."* ⇒ **CHECK
+  cannot screenshot the world map by itself once a game is loaded.** Visual review of
+  world-map work needs a human to press World, or a new companion verb.

@@ -137,7 +137,43 @@ def main():
     blocks = re.findall(r"<li>.*?</li>", text[i:j], re.S)
     slots = len(blocks)
 
-    ordered = sorted(members.items(), key=lambda kv: -len(kv[1]))
+    def centre_of(mem):
+        vs = []
+        for t in mem:
+            la, lo = math.radians(geo[t][0]), math.radians(geo[t][1])
+            vs.append((math.cos(la) * math.cos(lo), math.cos(la) * math.sin(lo), math.sin(la)))
+        cx = sum(v[0] for v in vs) / len(vs)
+        cy = sum(v[1] for v in vs) / len(vs)
+        cz = sum(v[2] for v in vs) / len(vs)
+        m = math.sqrt(cx * cx + cy * cy + cz * cz) or 1.0
+        return cx / m, cy / m, cz / m
+
+    # 🔴 Labels that sit too close pile on top of each other on the globe. Accept
+    # biggest-first and drop any region whose centre is within MIN_SEP of one already
+    # accepted - its tiles simply carry no feature, which is what 40% of the pristine
+    # world's tiles do anyway.
+    # 🔴 Priority, NOT size. Sorting by tile count let generic tracts crowd out
+    # The Scald and the Rust Cathedral - the places the world exists for.
+    CANON = ["The Scald", "The Rust Cathedral", "The Anvil", "The Scald Spine",
+             "The Ashteeth", "The Scorch", "The Twilight Sea", "The Gray Sea",
+             "The Dew Belt", "The Fall Line", "The Salt", "The Nightspill",
+             "The Sunreach", "The Umbra", "The Ammonia Flats", "The Dead Ice"]
+    MIN_SEP = 11.0
+    rank = {nm: i for i, nm in enumerate(CANON)}
+    cand = sorted(members.items(),
+                  key=lambda kv: (rank.get(kv[0], 999), -len(kv[1])))
+    ordered, centres, dropped = [], [], []
+    for name, mem in cand:
+        c = centre_of(mem)
+        far = all(math.degrees(math.acos(max(-1.0, min(1.0,
+                  c[0] * o[0] + c[1] * o[1] + c[2] * o[2])))) >= MIN_SEP for o in centres)
+        if far:
+            ordered.append((name, mem))
+            centres.append(c)
+        else:
+            dropped.append(name)
+    if dropped:
+        print("labels dropped for crowding: %s" % ", ".join(dropped))
     if len(ordered) > slots:
         print("!! %d regions but only %d feature slots - dropping the smallest %d"
               % (len(ordered), slots, len(ordered) - slots))
@@ -160,7 +196,8 @@ def main():
         gx, gy, gz = cx * 0 + cy * 100, cz * 100, -cx * 100
         clat = math.degrees(math.asin(cz))
         clon = math.degrees(math.atan2(cy, cx))
-        size = max(2.4, min(24.0, 2.0 * math.sqrt(len(mem))))
+        # vanilla scaling: its own features run 2.4..19.2 at up to ~1950 tiles
+        size = max(2.4, min(19.2, 0.44 * math.sqrt(len(mem))))
         blk = blocks[k]
         blk = re.sub(r"<def>\w+</def>", "<def>%s</def>" % DEF_FOR.get(name, "AridShrubland"), blk, count=1)
         blk = re.sub(r"<name>[^<]*</name>", "<name>%s</name>" % name, blk, count=1)
