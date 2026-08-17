@@ -1406,3 +1406,30 @@ the facts that do NOT need taste:
           `RG_WorldmapTextures` repoints **Tundra and AridShrubland** to its own art,
           overriding WME. On a desert planet AridShrubland is a main tile. **Turn that
           ReGrowth setting OFF and WME's arid art appears.**
+
+## building-cherrypicker-three-state-walkthrough-4e91c7
+row:      tooling
+spec:     The owner wants to be walked through a BUILDING cherrypick, choosing per
+          building between **three** states, not two:
+            1. **active (buildable)** — stays, player can build it
+            2. **active (NOT player-buildable)** — the def stays live so it can spawn on
+               maps, in ruins and on enemy sites, but leaves the player's build menu
+            3. **inactive / disabled** — cut outright
+          🔑 State 2 is the interesting one and today's data cannot express it:
+          `deployed/decisions/decisions_buildings.json` is a flat `cut` list of ~40
+          entries (mech gestators, band nodes, rechargers, boosters, mortars, wall
+          turrets, warped obelisks, GravForge, the Singularity Reactor). Two-state.
+          ⭐ State 2 is exactly the shape the forbidden-mods audit already uses: VFE
+          Insectoids 2's enemy siege turrets are KEPT precisely because they carry no
+          `designationCategory`, so they spawn enemy-side and never reach the build
+          menu. So the mechanism is "strip designationCategory", not "delete the def",
+          and that distinction is what the sheet must capture.
+          ⚠️ The VFE-Insectoids 2 strip ruled in `design/Jawa/mods/forbidden_mods.md`
+          (3 research + 30 buildables + 5 pherocore recipes) has NEVER been applied —
+          it is the natural first payload for this sheet.
+          No buildings review sheet exists; nine other registers do
+          (`design/Jawa/worldbuilding/review/`). `skills/review-sheets` covers building
+          one, including pre-filling the decisions so the owner only disagrees.
+verify:   EMPTY
+criteria: EMPTY
+state:    ready
