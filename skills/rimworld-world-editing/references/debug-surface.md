@@ -83,3 +83,31 @@ a debug action over a reload; a reload here costs a load, the action cost one ca
 (`39.40°N 4.97°E`). Free cross-check against `jawa/world_tile_export` once it deploys.
 
 ---
+
+## ⛔ You cannot reach the WORLD VIEW from a loaded map — measured 2026-08-16
+
+Once `rimworld/load_game_ready` puts you on a colony map, **nothing in the bridge can
+switch to the planet view.** Every route was tried:
+
+| route | result |
+|---|---|
+| `open_main_tab` `mainTabId: "World"` | ❌ **NullReferenceException** |
+| `open_main_tab` `mainTabId: "main-tab:World"` | ❌ same NRE |
+| `click_ui_target` on `main-tab:World` | ❌ *"is not a UI element target"* |
+| `click_screen_target` on it | ❌ *"Main-tab targets are descriptive only"* |
+| `open_window_by_type` `MainTabWindow_World` / `WorldInterface` | ❌ no such Window type |
+
+🔑 **The NRE is the diagnosis, not a bug to route around.** RimWorld's World button is a
+`MainButtonDef` whose **`TabWindow` is null** — it toggles the world camera instead of
+opening a window — so a generic open-the-tab call dereferences null. There is no window
+to open and no clickable target, because the bottom bar is drawn immediate-mode.
+
+⚠️ **There is no arbitrary-screen-coordinate click anywhere in the bridge.** `click_cell`
+is map-space, the other two take target ids.
+
+⇒ **CHECK cannot self-review any world-map change once a game is loaded.** A screenshot
+taken here shows the colony, not the planet. Either a human presses World, or the
+companion gains a verb — `MainButtonWorker_ToggleWorld.Activate()` /
+`CameraJump.TryShowWorld()` is the call — which needs a game-down window to deploy.
+📌 Loading a save at the **main menu** still reaches `Page_SelectStartingSite`, where the
+world IS on screen; it is only the map-loaded state that traps you.
