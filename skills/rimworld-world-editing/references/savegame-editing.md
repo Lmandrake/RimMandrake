@@ -40,7 +40,17 @@ Decodes eight parallel arrays off `savegame/game/world/grid/layers` →
   against a different set resolves to a *different biome* rather than failing.
   `WorldGrid.unresolved()` returns hashes with no def — **non-empty means stop.**
 * **Splice high offset → low**, or every edit after the first lands in the wrong place.
-* Roads, rivers and mutators are **graphs, not arrays** — deliberately untouched.
+* 🔴 **CORRECTED 2026-08-16: roads and rivers are NOT graphs — they are arrays, and
+  they are editable.** Each is three parallel per-entry arrays in the SurfaceLayer:
+  `tile{Road,River}OriginsDeflate` (4 bytes, tile index) · `…AdjacencyDeflate`
+  (1 byte, neighbour slot) · `…DefDeflate` (2 bytes, shortHash). Plus
+  `tileRiverDistancesDeflate` at 1 byte per TILE. Dropping an entry ends the road or
+  river at that tile, which is what a coast does anyway; nothing dangles because
+  nothing is added. `src/RimMandrake/Utils/clean_ashkarr_hydrology.py` does it.
+  ⚠️ A repaint that moves the sea WILL strand them — 41 of 607 road tiles and 38 of
+  237 river tiles ended up under new ocean on Ash'karr, and 95 rivers ran across a
+  frozen nightside that has no liquid water.
+* Tile mutators are a separate pair and are still untouched by `worldmap.py`.
 
 ### ⚠️ What a biome edit does NOT do
 
