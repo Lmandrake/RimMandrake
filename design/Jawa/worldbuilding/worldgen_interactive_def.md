@@ -675,3 +675,35 @@ canon.** `RimMandrakeJawa` is **CUT**. Never field both.
 created. ⇒ the world can be generated now and the racial wiring fixed afterwards; it takes
 effect for every pawn made after the next startup. **A restart is needed for the def edit,
 but it does not block the worldgen run.**
+
+## ✅ ASH'KARR IS BUILT — 2026-08-17, seed `viscera`
+
+`world/WORLDMAP_gen.rws`, verified by loading it and reading the engine's own numbers.
+
+| | |
+|---|---|
+| geometry | TidallyLocked · subdivisions 7 · **coverage 1.0** · **21,872 tiles** |
+| climate | **−79.4 … +80.8 °C** · water 6.9% · 2,550 polluted tiles |
+| biomes | `AB_RockyCrags` 6,526 (30%) · AridShrubland 5,290 · Desert 1,647 · Wasteland 1,213 · ExtremeDesert 971 · zero unresolved hashes |
+| regions | **28 named** — The Scald, The Rust Cathedral, The Scald Spine, The Twilight Sea, The Gray Sea, The Dew Belt, The Fall Line, The Salt, The Nightspill, The Sunreach, The Umbra … |
+| people | **37 settlements across 11 factions, every one ours** |
+| integrity | 0 world objects in water · 0 non-ours owning anything · roads and rivers pruned of everything the repaint stranded |
+
+Settlements: Homestead 5 · Deepwater Compact 5 · Deep Desert Tribes 4 · Hutt Cartel 4 ·
+Empire 3 · Free Droid Enclaves 3 · Jawa Trade Moot 3 · Wildsteam 3 · Junkers 3 ·
+Geonosian Foundry Hive 2 · Ascendant Helix 2.
+
+### 🔴 THE ONE OUTSTANDING GAP: Blackstar Company is absent
+
+`Pirate` did not generate, for the third world running. **Cause identified:** vanilla's def
+is `<FactionDef Name="PirateBandBase">` with `<defName>Pirate</defName>` and
+`<label>pirate gang</label>` — so in the faction panel it reads as a *stray*, not as one of
+ours, and gets deleted during the whittling pass. `requiredCountAtGameStart 1` does not
+save it.
+
+⇒ **Fix before the next generation:** confirm `Jawa_Patches/Patches/BlackstarCompany.xml`
+relabels it to **Blackstar Company** *in the panel*. The patch exists and throws no error,
+but nobody has verified the panel shows the new label — if it still says "pirate gang", that
+is why it keeps being deleted, and the label patch needs to land earlier.
+📌 Everything else in the ratified 14 is present. The world is usable as it stands; Blackstar
+is a missing antagonist, not a broken world.
