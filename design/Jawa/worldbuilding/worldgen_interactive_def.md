@@ -603,3 +603,14 @@ script owns the labels. **Run order is paint → populate → regions → factio
 That is the shipped behaviour, not a defect — zoom in and the rest appear.
 📌 To judge the *terrain*, switch the map mode OFF Faction Territories. The pastel hex
 wash is an overlay from Map Mode Framework, not the world.
+
+### 🔴 The doubled labels — unused feature slots were still drawing
+
+Two region names printed on top of each other at the Fall Line. Cause: the regions
+script writes into the 37 existing feature slots, and **the slots it does not use kept
+the PREVIOUS run's name and drawCenter — and the game draws them.** So every earlier
+naming pass left ghosts behind that piled onto the new labels.
+
+⇒ Unused slots are now **blanked**: empty `<name>` and `maxDrawSizeInTiles 0.0001`.
+**Generalises: when you rewrite a fixed-size table in a save, the entries you skip are
+not empty — they are whatever was there before, and they are still live.**

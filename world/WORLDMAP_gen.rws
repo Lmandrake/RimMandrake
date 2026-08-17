@@ -195973,73 +195973,73 @@ aA7g44X/mIxBZOna6/Mms0mlquJVR8ml23f9Pw==
 					<li>
 						<def>AridShrubland</def>
 						<uniqueID>28</uniqueID>
-						<name>The Gray Marches</name>
+						<name></name>
 						<drawCenter>(86.087597, -50.879317, 0.469818)</drawCenter>
-						<maxDrawSizeInTiles>9.0000</maxDrawSizeInTiles>
+						<maxDrawSizeInTiles>0.0001</maxDrawSizeInTiles>
 						<layer>PlanetLayer_0</layer>
 					</li>
 					<li>
 						<def>AridShrubland</def>
 						<uniqueID>29</uniqueID>
-						<name>The Anvil</name>
+						<name></name>
 						<drawCenter>(0.471821, -0.536346, -99.997449)</drawCenter>
-						<maxDrawSizeInTiles>9.0000</maxDrawSizeInTiles>
+						<maxDrawSizeInTiles>0.0001</maxDrawSizeInTiles>
 						<layer>PlanetLayer_0</layer>
 					</li>
 					<li>
 						<def>AridShrubland</def>
 						<uniqueID>30</uniqueID>
-						<name>The Gray Ring</name>
+						<name></name>
 						<drawCenter>(69.322707, 0.000000, -72.071924)</drawCenter>
-						<maxDrawSizeInTiles>9.0000</maxDrawSizeInTiles>
+						<maxDrawSizeInTiles>0.0001</maxDrawSizeInTiles>
 						<layer>PlanetLayer_0</layer>
 					</li>
 					<li>
 						<def>MountainRange</def>
 						<uniqueID>31</uniqueID>
-						<name>The Forge Ridge</name>
+						<name></name>
 						<drawCenter>(-42.435802, -6.576352, -90.310322)</drawCenter>
-						<maxDrawSizeInTiles>9.0000</maxDrawSizeInTiles>
+						<maxDrawSizeInTiles>0.0001</maxDrawSizeInTiles>
 						<layer>PlanetLayer_0</layer>
 					</li>
 					<li>
 						<def>AridShrubland</def>
 						<uniqueID>32</uniqueID>
-						<name>The Scorch</name>
+						<name></name>
 						<drawCenter>(-3.697341, -1.772788, -99.915899)</drawCenter>
-						<maxDrawSizeInTiles>9.0000</maxDrawSizeInTiles>
+						<maxDrawSizeInTiles>0.0001</maxDrawSizeInTiles>
 						<layer>PlanetLayer_0</layer>
 					</li>
 					<li>
 						<def>Ocean</def>
 						<uniqueID>33</uniqueID>
-						<name>The Scald</name>
+						<name></name>
 						<drawCenter>(-57.578680, -6.128784, -81.529955)</drawCenter>
-						<maxDrawSizeInTiles>9.0000</maxDrawSizeInTiles>
+						<maxDrawSizeInTiles>0.0001</maxDrawSizeInTiles>
 						<layer>PlanetLayer_0</layer>
 					</li>
 					<li>
 						<def>AridShrubland</def>
 						<uniqueID>34</uniqueID>
-						<name>The Twilight Marches</name>
+						<name></name>
 						<drawCenter>(-80.047140, 59.791303, -4.177973)</drawCenter>
-						<maxDrawSizeInTiles>9.0000</maxDrawSizeInTiles>
+						<maxDrawSizeInTiles>0.0001</maxDrawSizeInTiles>
 						<layer>PlanetLayer_0</layer>
 					</li>
 					<li>
 						<def>MountainRange</def>
 						<uniqueID>35</uniqueID>
-						<name>Cinderwall</name>
+						<name></name>
 						<drawCenter>(-30.101104, -2.431999, -95.331049)</drawCenter>
-						<maxDrawSizeInTiles>9.0000</maxDrawSizeInTiles>
+						<maxDrawSizeInTiles>0.0001</maxDrawSizeInTiles>
 						<layer>PlanetLayer_0</layer>
 					</li>
 					<li>
 						<def>MountainRange</def>
 						<uniqueID>36</uniqueID>
-						<name>The Broken Teeth</name>
+						<name></name>
 						<drawCenter>(4.848198, 3.928730, -99.805110)</drawCenter>
-						<maxDrawSizeInTiles>9.0000</maxDrawSizeInTiles>
+						<maxDrawSizeInTiles>0.0001</maxDrawSizeInTiles>
 						<layer>PlanetLayer_0</layer>
 					</li>
 				</features>

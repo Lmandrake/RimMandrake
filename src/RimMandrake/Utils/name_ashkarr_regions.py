@@ -211,8 +211,16 @@ def main():
             tf[t] = k
         print("%-22s %6d  %7.1f %8.1f" % (name, len(mem), clat, clon))
 
+    # 🔴 Unused slots MUST be blanked. Left as they were, they keep the previous
+    # run's name AND drawCenter and the game still draws them - which is what put
+    # two labels on top of each other at the Fall Line on 2026-08-16.
     for k in range(len(ordered), slots):
-        new_blocks.append(blocks[k])
+        blk = blocks[k]
+        blk = re.sub(r"<name>[^<]*</name>", "<name></name>", blk, count=1)
+        blk = re.sub(r"<maxDrawSizeInTiles>[^<]*</maxDrawSizeInTiles>",
+                     "<maxDrawSizeInTiles>0.0001</maxDrawSizeInTiles>", blk, count=1)
+        new_blocks.append(blk)
+    print("blanked %d unused feature slots" % (slots - len(ordered)))
 
     seg = text[i:j]
     for old, new in zip(blocks, new_blocks):
