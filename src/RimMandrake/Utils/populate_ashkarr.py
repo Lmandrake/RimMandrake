@@ -62,9 +62,12 @@ PLAN = [
     ("OuterRim_MoistureFarmers", 9, "dew_belt",
      ["Dewhome", "Condenser Flats", "Thiussia", "Vaporhead", "Bell Cistern",
       "Dryrun", "The Trellis", "Mistcatch", "Farside Wells", "Hollowdew", "Stillmarket"]),
-    ("Jawa_FreeDroidEnclaves", 6, "volcanic",
+    ("Jawa_FreeDroidEnclaves", 4, "volcanic",
      ["The Trade Socket", "Arlor", "Solder Deep", "Vent Nine", "Cold Solder",
       "The Repair Yard", "Springhouse"]),
+    # RULED 2026-08-17: the freed droids also fled to the plateau, to be away from
+    # organics. Formally allied with the hive there; they trade and ignore each other.
+    ("Jawa_FreeDroidEnclaves", 2, "plateau", ["No Master", "The Far Refuge"]),
     ("Jawa_Junkers", 5, "sunreach",
      ["The Fuel Works", "The Gray Fleet", "Cryohaul", "Ammonia Landing",
       "The Crooks", "Sump"]),
@@ -73,8 +76,11 @@ PLAN = [
       "The Long Camp", "Ashfoot"]),
     ("Jawa_AscendantHelix", 3, "ring",
      ["The Shattered Empire", "Helix Landing", "Ascendant Reach", "The Coil"]),
-    ("Jawa_GeonosianFoundryHive", 3, "volcanic",
-     ["The Black Ape Zato", "Foundry Hive", "Chitin Works"]),
+    # RULED 2026-08-17: TWO outposts. 1) the ore seams the company bought them for and
+    # abandoned - the queen would not leave. 2) the plateau, worshipping the Founder
+    # machinery and trying to commune with its AI. Names provisional, mine not the owner's.
+    ("Jawa_GeonosianFoundryHive", 2, "ore_seams", ["The Unfinished Work", "Seam Nine"]),
+    ("Jawa_GeonosianFoundryHive", 2, "plateau", ["The Godmouth", "Communion"]),
     ("guy762_KotORFaction_RogueDroids", 4, "deep_dark",
      ["The Hopeless Call", "Rust Choir", "Null Station", "The Listening Dark"]),
     ("JDSCIS_CIS_Faction", 3, "dayside",
@@ -150,6 +156,12 @@ def main():
                 ok = 80 < arc < 103
             elif key == "dew_belt":
                 ok = 52 < arc < 92 and angdiff(bear, 178) < 24
+            elif key == "ore_seams":
+                # the collapsed silicax oxalate holdings, far side of the deep desert
+                ok = 40 < arc < 64 and angdiff(bear, 350) < 26 and b in ("Wasteland","ZBiome_Badlands","Desert","AridShrubland","Scarlands")
+            elif key == "plateau":
+                # the substellar plateau, beside the Rust Cathedral - hottest ground there is
+                ok = arc < 22 and b in ("ExtremeDesert","Scarlands","AB_MechanoidIntrusion")
             elif key == "volcanic":
                 ok = 18 < arc < 40 and angdiff(bear, 185) < 70
             elif key == "sunreach":
