@@ -263,9 +263,13 @@ and the repaint neither owes it anything nor waits for it.
 3. **Overlooking the abandoned silicax oxalate mines** and their ruins, on the **far side of
    the deep desert**.
    🔑 **This is the Jawa origin story.** The company sank a century into those mines and
-   finally pulled out when the rebellion came. **The Jawa swarmed over the holdings and took
-   the sandcrawlers**, among much else — and that theft is the founding wealth that makes
-   the Jawa a faction at all today.
+   finally pulled out when the rebellion came. **The Jawa CLANS swarmed over the holdings and
+   took the SANDCRAWLERS** — the founding wealth that makes the Jawa a faction at all.
+   ⚠️ **CORRECTED 2026-08-17: that is not where the player's ship comes from.** The player
+   faction steals **the ship** from a **Hutt vehicle salvage yard**, much later. Two thefts,
+   two places, two generations — do not merge them.
+   ⭐ Also here: **the Geonosian Foundry Hive's first outpost**, the indentured workforce the
+   same company bought and abandoned. Its queen would not leave. See `FACTION_SPEC.md`.
 
 ### The Deepwater Compact — all the water, but not all of it freely
 

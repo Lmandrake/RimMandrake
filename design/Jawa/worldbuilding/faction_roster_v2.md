@@ -118,7 +118,7 @@ Set through NPC-vs-NPC goodwill in the faction/world editor. These are lore-deri
 | Blackstar Company ↔ Wildsteam Clan | Hostile | Same |
 | Tusken Clans ↔ Homestead Defense League | Hostile (hardcoded) | Tuskens hold water as sacred and moisture farming as sacrilege |
 | Tusken Clans ↔ Hutt Cartel | Hostile | Pyke spice convoys cross Tusken territory |
-| Geonosian Hive ↔ Free Droid Enclaves | Cold / no trade | Enclave chassis are escaped Foundry product |
+| Geonosian Hive ↔ Free Droid Enclaves | 🔴 **FORMALLY ALLIED, with trade** — superseded 2026-08-17, owner (was "Cold / no trade") | Both fled the same collapsed company site and both ended up on the substellar plateau; the hive has no interest in enslaving droids, so they trade and otherwise ignore each other. See FACTION_SPEC.md |
 | Hutt Cartel ↔ Free Droid Enclaves | Transactional | The Droid Gotra historically served as Hutt muscle |
 | Wildsteam Clan ↔ Free Droid Enclaves | Positive | Shared absolute anti-slavery precept |
 | Ascendant Helix ↔ Deepwater Compact | Positive (trade dependency) | Helix buys bulk water for growth vats and biosculpters |
