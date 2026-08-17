@@ -112,3 +112,82 @@ biome, temperature, rainfall, elevation, hilliness, swampiness, feature. A wet d
 
 ⭐ **Pick the seed on coastline and rivers, not on biomes.** Biomes are free to change;
 the land/sea outline and the river graph are not.
+
+## 6. 🔑 Pre-setting the whole Create World page from the Worldbuilder preset
+
+`Page_CreateWorldParams_Reset_Patch` reads the loaded preset's `generationData` and pushes
+it straight into the page — but only when `saveGenerationParameters` is **true**. So the
+preset can pre-set every slider and the faction list, and the human only has to look:
+
+```xml
+<myLittlePlanetSubcount>7</myLittlePlanetSubcount>
+<saveGenerationParameters>True</saveGenerationParameters>
+<disableExtraBiomes>False</disableExtraBiomes>
+<generationData>
+  <factionCountsStrings><li>Empire</li>…</factionCountsStrings>
+  <planetCoverage>1</planetCoverage>
+  <rainfall>Normal</rainfall><temperature>Normal</temperature>
+  <population>High</population>
+  <pollution>0.05</pollution><riverDensity>1</riverDensity>
+  <ancientRoadDensity>1</ancientRoadDensity><settlementRoadDensity>1</settlementRoadDensity>
+  <mountainDensity>1</mountainDensity><seaLevel>1</seaLevel>
+  <axialTilt>Normal</axialTilt><landmarkDensity>Normal</landmarkDensity>
+</generationData>
+```
+
+🔴 **Write EVERY field the patch reads, not just the one you want.** A present-but-partial
+`generationData` Scribes the missing fields to **enum 0**, which silently sets rainfall,
+temperature and population to their MINIMUM while looking like you only changed coverage.
+🔑 The list element is **`factionCountsStrings`**, not `factionCounts` — that is the Scribe
+label, and the intuitive name does nothing.
+⚠️ `OverallPopulation` is **Low / Normal / High** in 1.6, read off the game's own
+`PlanetPopulation_*` translation keys. A remembered `Much` is wrong and Scribes to garbage.
+⚠️ `AlienWorldsFramework.Refresh()` **deletes and rewrites the whole preset folder at every
+startup**, so the setter must run AFTER the game is up — it caught us four times in one
+day. `src/RimMandrake/Utils/set_planet_subcount.py` writes all of the above; poll for the
+wipe and re-run rather than trusting your memory.
+
+## 7. 🔴 The field that controls WHICH FACTIONS a world generates
+
+**`startingCountAtWorldCreation`**, not `maxConfigurableAtWorldCreation`.
+
+`WorldGenerationData.ResetFactionCounts()` builds the default list by walking
+`FactionGenerator.ConfigurableFactions` and appending each defName
+**`startingCountAtWorldCreation` times**. `maxConfigurableAtWorldCreation` is only a *cap*
+on what a human may configure — patching it to 0 changes nothing about the default list,
+which is why a slate built on it left every unwanted faction on the page and cost two
+worlds' worth of manual clicking.
+
+⚠️ **Generate the target list from the ACTIVE mod set, and regenerate it after any mod-list
+change.** A patch aimed at a def whose mod was dropped throws — 12 red errors per load
+after Yautja was unsubscribed. Vanilla FactionDefs that must stay configurable are the
+hidden/system ones (Ancients, Entities, HoraxCult, the generic hostiles, wild men, beggars,
+quest crews) and every `*Player*` def.
+
+🔴 **A faction absent at worldgen is absent forever.** Deleting one from a save does not
+work (see `savegame-editing.md`) and adding one is worse. The four easiest to lose are the
+vanilla vessels a Star Wars roster reskins — `Empire`, `OutlanderCivil`, `TribeCivil`,
+`Pirate` — because they do not look like campaign factions in the list. `Pirate` was lost
+exactly this way.
+
+## 8. ⭐ PROVEN: the tile grid is deterministic, so a painted world is PORTABLE
+
+Measured 2026-08-17. Two worlds, **different seeds**, same subdivisions (7) and coverage
+(1.0), both 21,872 tiles. Feeding the **first** world's exported coordinates against the
+**second** world's temperatures gives **correlation −0.9598**, against −0.968 for the world
+the export came from.
+
+⇒ **tile index → lat/long depends only on (subdivisions, coverage), never on the seed.**
+
+* A coordinate export from `jawa/world_tile_export` **transfers to any world of the same
+  geometry** — export once, reuse forever, no bridge needed for later worlds.
+* ⭐ Therefore **regenerating is cheap**: a hand-painted planet can be reproduced on a fresh
+  world by re-running the paint pipeline, so a wrong faction roster or a bad seed is no
+  longer a catastrophe. Design the pipeline to be coordinate-driven, never index-driven,
+  and this property is free.
+* Pipeline order that works: **paint → populate → regions → factions → hydrology**.
+  ⚠️ Later stages undo earlier ones if they overlap — a feature-renaming step left in the
+  populate stage silently reverted 10 region names written by the regions stage.
+* ⚠️ **Settlement assignment must be ORDERED BY PRIORITY**, because a world may generate
+  fewer settlements than the plan wants and the last entries simply starve. Four factions
+  came out with zero settlements that way, two of them story-critical.
