@@ -194366,7 +194366,7 @@ aA7g44X/mIxBZOna6/Mms0mlquJVR8ml23f9Pw==
 						<tile>9108,0</tile>
 						<ID>65</ID>
 						<tickDelta>11</tickDelta>
-						<faction>Faction_44</faction>
+						<faction>Faction_9</faction>
 						<questTags IsNull="True" />
 						<core IsNull="True" />
 						<parts>
@@ -194390,7 +194390,7 @@ aA7g44X/mIxBZOna6/Mms0mlquJVR8ml23f9Pw==
 						<tile>6297,0</tile>
 						<ID>66</ID>
 						<tickDelta>4</tickDelta>
-						<faction>Faction_44</faction>
+						<faction>Faction_39</faction>
 						<questTags IsNull="True" />
 						<core IsNull="True" />
 						<parts>
@@ -194414,7 +194414,7 @@ aA7g44X/mIxBZOna6/Mms0mlquJVR8ml23f9Pw==
 						<tile>6307,0</tile>
 						<ID>67</ID>
 						<tickDelta>2</tickDelta>
-						<faction>Faction_44</faction>
+						<faction>Faction_8</faction>
 						<questTags IsNull="True" />
 						<core IsNull="True" />
 						<parts>
@@ -194438,7 +194438,7 @@ aA7g44X/mIxBZOna6/Mms0mlquJVR8ml23f9Pw==
 						<tile>11225,0</tile>
 						<ID>68</ID>
 						<tickDelta>11</tickDelta>
-						<faction>Faction_44</faction>
+						<faction>Faction_10</faction>
 						<questTags IsNull="True" />
 						<core IsNull="True" />
 						<parts>
@@ -194462,7 +194462,7 @@ aA7g44X/mIxBZOna6/Mms0mlquJVR8ml23f9Pw==
 						<tile>12466,0</tile>
 						<ID>69</ID>
 						<tickDelta>7</tickDelta>
-						<faction>Faction_44</faction>
+						<faction>Faction_18</faction>
 						<questTags IsNull="True" />
 						<core IsNull="True" />
 						<parts>
@@ -194486,7 +194486,7 @@ aA7g44X/mIxBZOna6/Mms0mlquJVR8ml23f9Pw==
 						<tile>12473,0</tile>
 						<ID>70</ID>
 						<tickDelta>2</tickDelta>
-						<faction>Faction_44</faction>
+						<faction>Faction_43</faction>
 						<questTags IsNull="True" />
 						<core IsNull="True" />
 						<parts>
@@ -194510,7 +194510,7 @@ aA7g44X/mIxBZOna6/Mms0mlquJVR8ml23f9Pw==
 						<tile>12475,0</tile>
 						<ID>71</ID>
 						<tickDelta>13</tickDelta>
-						<faction>Faction_44</faction>
+						<faction>Faction_9</faction>
 						<questTags IsNull="True" />
 						<core IsNull="True" />
 						<parts>
@@ -194534,7 +194534,7 @@ aA7g44X/mIxBZOna6/Mms0mlquJVR8ml23f9Pw==
 						<tile>20469,0</tile>
 						<ID>72</ID>
 						<tickDelta>3</tickDelta>
-						<faction>Faction_44</faction>
+						<faction>Faction_39</faction>
 						<questTags IsNull="True" />
 						<core IsNull="True" />
 						<parts>
@@ -194557,7 +194557,7 @@ aA7g44X/mIxBZOna6/Mms0mlquJVR8ml23f9Pw==
 						<def>BI_InfestationWorldObject</def>
 						<tile>6703,0</tile>
 						<ID>73</ID>
-						<faction>Faction_44</faction>
+						<faction>Faction_8</faction>
 						<questTags IsNull="True" />
 						<core IsNull="True" />
 						<parts>
@@ -194581,7 +194581,7 @@ aA7g44X/mIxBZOna6/Mms0mlquJVR8ml23f9Pw==
 						<tile>11157,0</tile>
 						<ID>74</ID>
 						<tickDelta>13</tickDelta>
-						<faction>Faction_44</faction>
+						<faction>Faction_10</faction>
 						<questTags IsNull="True" />
 						<core IsNull="True" />
 						<parts>
@@ -194605,7 +194605,7 @@ aA7g44X/mIxBZOna6/Mms0mlquJVR8ml23f9Pw==
 						<tile>9749,0</tile>
 						<ID>75</ID>
 						<tickDelta>10</tickDelta>
-						<faction>Faction_44</faction>
+						<faction>Faction_18</faction>
 						<questTags IsNull="True" />
 						<core IsNull="True" />
 						<parts>
@@ -194629,7 +194629,7 @@ aA7g44X/mIxBZOna6/Mms0mlquJVR8ml23f9Pw==
 						<tile>17236,0</tile>
 						<ID>76</ID>
 						<tickDelta>9</tickDelta>
-						<faction>Faction_44</faction>
+						<faction>Faction_43</faction>
 						<questTags IsNull="True" />
 						<core IsNull="True" />
 						<parts>
@@ -194653,7 +194653,7 @@ aA7g44X/mIxBZOna6/Mms0mlquJVR8ml23f9Pw==
 						<tile>7677,0</tile>
 						<ID>77</ID>
 						<tickDelta>4</tickDelta>
-						<faction>Faction_44</faction>
+						<faction>Faction_9</faction>
 						<questTags IsNull="True" />
 						<core IsNull="True" />
 						<parts>
@@ -194677,7 +194677,7 @@ aA7g44X/mIxBZOna6/Mms0mlquJVR8ml23f9Pw==
 						<tile>669,0</tile>
 						<ID>78</ID>
 						<tickDelta>4</tickDelta>
-						<faction>Faction_44</faction>
+						<faction>Faction_39</faction>
 						<questTags IsNull="True" />
 						<core IsNull="True" />
 						<parts>
@@ -194701,7 +194701,7 @@ aA7g44X/mIxBZOna6/Mms0mlquJVR8ml23f9Pw==
 						<tile>20568,0</tile>
 						<ID>79</ID>
 						<tickDelta>14</tickDelta>
-						<faction>Faction_44</faction>
+						<faction>Faction_8</faction>
 						<questTags IsNull="True" />
 						<core IsNull="True" />
 						<parts>
@@ -194724,7 +194724,7 @@ aA7g44X/mIxBZOna6/Mms0mlquJVR8ml23f9Pw==
 						<def>BI_InfestationWorldObject</def>
 						<tile>20553,0</tile>
 						<ID>80</ID>
-						<faction>Faction_44</faction>
+						<faction>Faction_10</faction>
 						<questTags IsNull="True" />
 						<core IsNull="True" />
 						<parts>
@@ -194748,7 +194748,7 @@ aA7g44X/mIxBZOna6/Mms0mlquJVR8ml23f9Pw==
 						<tile>13008,0</tile>
 						<ID>81</ID>
 						<tickDelta>12</tickDelta>
-						<faction>Faction_44</faction>
+						<faction>Faction_18</faction>
 						<questTags IsNull="True" />
 						<core IsNull="True" />
 						<parts>
@@ -194772,7 +194772,7 @@ aA7g44X/mIxBZOna6/Mms0mlquJVR8ml23f9Pw==
 						<tile>20563,0</tile>
 						<ID>82</ID>
 						<tickDelta>6</tickDelta>
-						<faction>Faction_44</faction>
+						<faction>Faction_43</faction>
 						<questTags IsNull="True" />
 						<core IsNull="True" />
 						<parts>
@@ -194796,7 +194796,7 @@ aA7g44X/mIxBZOna6/Mms0mlquJVR8ml23f9Pw==
 						<tile>12828,0</tile>
 						<ID>83</ID>
 						<tickDelta>3</tickDelta>
-						<faction>Faction_44</faction>
+						<faction>Faction_9</faction>
 						<questTags IsNull="True" />
 						<core IsNull="True" />
 						<parts>
@@ -194820,7 +194820,7 @@ aA7g44X/mIxBZOna6/Mms0mlquJVR8ml23f9Pw==
 						<tile>11307,0</tile>
 						<ID>84</ID>
 						<tickDelta>6</tickDelta>
-						<faction>Faction_44</faction>
+						<faction>Faction_39</faction>
 						<questTags IsNull="True" />
 						<core IsNull="True" />
 						<parts>
@@ -195997,7 +195997,7 @@ aA7g44X/mIxBZOna6/Mms0mlquJVR8ml23f9Pw==
 					<li>
 						<def>MountainRange</def>
 						<uniqueID>31</uniqueID>
-						<name>The Ashteeth</name>
+						<name>The Forge Ridge</name>
 						<drawCenter>(-42.435802, -6.576352, -90.310322)</drawCenter>
 						<maxDrawSizeInTiles>9.0000</maxDrawSizeInTiles>
 						<layer>PlanetLayer_0</layer>
@@ -196029,7 +196029,7 @@ aA7g44X/mIxBZOna6/Mms0mlquJVR8ml23f9Pw==
 					<li>
 						<def>MountainRange</def>
 						<uniqueID>35</uniqueID>
-						<name>The Scald Spine</name>
+						<name>Cinderwall</name>
 						<drawCenter>(-30.101104, -2.431999, -95.331049)</drawCenter>
 						<maxDrawSizeInTiles>9.0000</maxDrawSizeInTiles>
 						<layer>PlanetLayer_0</layer>
@@ -196037,7 +196037,7 @@ aA7g44X/mIxBZOna6/Mms0mlquJVR8ml23f9Pw==
 					<li>
 						<def>MountainRange</def>
 						<uniqueID>36</uniqueID>
-						<name>The Rust Cathedral</name>
+						<name>The Broken Teeth</name>
 						<drawCenter>(4.848198, 3.928730, -99.805110)</drawCenter>
 						<maxDrawSizeInTiles>9.0000</maxDrawSizeInTiles>
 						<layer>PlanetLayer_0</layer>

@@ -583,3 +583,23 @@ South — so a 5,000-tile crag field is not one label stretched across a hemisph
   and both click tools refuse it — *"Main-tab targets are descriptive only."* ⇒ **CHECK
   cannot screenshot the world map by itself once a game is loaded.** Visual review of
   world-map work needs a human to press World, or a new companion verb.
+
+### The foreign banners — it was the Sites, not the settlements
+
+All 66 settlements were already ours, but **20 `Site` world objects still carried
+foreign factions**, and the Faction Territories overlay draws a coloured claim and a
+name for **any faction owning ANY world object** — so a dozen foreign banners sat on
+the planet with no settlement behind them. Sites are now reassigned across the Dune
+Tribes, Junkers, Hutt Cartel, Wildsteam, Binary Star Raiders and the Confederacy.
+
+✅ **Measured after: exactly 14 factions own anything on Ash'karr, and all 14 are ours.**
+
+⚠️ **Pipeline conflict, caught and removed:** `populate_ashkarr.py` also renamed world
+features by type, which silently **undid** `name_ashkarr_regions.py` — it reverted 10
+region names to generic type names on this run. That step is deleted; the regions
+script owns the labels. **Run order is paint → populate → regions → factions.**
+
+📌 Region labels are vanilla-scaled now, so at full-globe zoom only the largest draw.
+That is the shipped behaviour, not a defect — zoom in and the rest appear.
+📌 To judge the *terrain*, switch the map mode OFF Faction Territories. The pastel hex
+wash is an overlay from Map Mode Framework, not the world.

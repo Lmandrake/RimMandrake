@@ -212,23 +212,32 @@ def main():
     out.append(text[prev:])
     text = "".join(out)
 
-    # ---- feature names, BY TYPE ONLY
-    pools = {k: list(v) for k, v in FEATURE_NAMES.items()}
+    # ---- Sites carry factions too, and the Faction Territories overlay draws a
+    # coloured claim plus a name for every faction that owns ANY world object. Left
+    # alone, 20 quest sites put a dozen foreign banners across the planet.
+    site_facs = [idx_of[f] for f in ("Jawa_IndigenousTribes", "Jawa_Junkers",
+                                     "Jawa_HuttCartel", "Jawa_WildsteamClan",
+                                     "OuterRim_BinaryStarRaiders", "JDSCIS_CIS_Faction")
+                 if f in idx_of]
+    sites = 0
+
+    def resite(mo):
+        nonlocal sites
+        blk = mo.group(0)
+        if "<faction>" not in blk:
+            return blk
+        f = site_facs[sites % len(site_facs)]
+        sites += 1
+        return re.sub(r"<faction>Faction_\d+</faction>",
+                      "<faction>Faction_%d</faction>" % f, blk, count=1)
+
+    text = re.sub(r'<li Class="Site">.*?</li>', resite, text, flags=re.S)
+    print("sites reassigned to our factions: %d" % sites)
+
+    # ⛔ Feature renaming lived here and is GONE. name_ashkarr_regions.py owns the
+    # region labels now, and running both undid its work - this step renamed 10
+    # regions back to generic type names on 2026-08-16.
     renamed = 0
-
-    def rename(mo):
-        nonlocal renamed
-        dfn, rest, old = mo.group(1), mo.group(2), mo.group(3)
-        if dfn in pools and pools[dfn]:
-            renamed += 1
-            return "<def>%s</def>%s<name>%s</name>" % (dfn, rest, pools[dfn].pop(0))
-        return mo.group(0)
-
-    i = text.find("<features>")
-    j = text.find("</features>", i + 10)
-    seg = re.sub(r"<def>(\w+)</def>(\s*(?:<uniqueID>\d+</uniqueID>\s*)?)<name>([^<]*)</name>",
-                 rename, text[i:j])
-    text = text[:i] + seg + text[j:]
 
     print("settlements rewritten: %d   features renamed: %d" % (moved, renamed))
     by = {}
