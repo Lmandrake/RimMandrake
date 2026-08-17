@@ -733,3 +733,72 @@ split across both defs and complete in neither.**
 and it is now the clearest single argument for D23 existing. **Do not repoint the
 16 references until the merge is ruled** — pointing them at either def silently
 picks a half.
+
+---
+
+## 🔴 RULED 2026-08-17 — the Geonosian Foundry Hive's story, and TWO outposts
+
+Owner's ruling. Merges "The Company's Workforce" and "The Older Foundry"; both halves
+are canon and they are the same faction at two sites.
+
+### Outpost 1 — the Ore Seams, beside the old mining site
+
+The silicax oxalate concern **bought the hive complete, queen and all, a century ago**, on
+a standard indenture: work the ore seams, smelt, and ship raw materials off-world. When
+the company pulled out, **the queen had gone into hiding and would not leave** — *there was
+too much left undone that must be done* — so she stayed and continued the colony.
+
+⭐ **That refusal IS Meckgin**, not a quirk bolted onto it: a hive whose work is
+unfinished cannot stop, because stopping is the beginning of the end of the world. The
+abandoned ledger did not release them; it condemned them to keep working.
+
+### Outpost 2 — the Plateau, in the hottest desert on the planet
+
+**Rakatan ruins were then discovered, and they revealed the true origins of the subsolar
+Founder machinery.** The hive **began to worship it as an alien god**, and a new sub-group
+split off to colonise the plateau itself — studying it, mining into it, and trying to
+**commune with its inscrutable AI**.
+
+🔴 **They have not succeeded.** That failure is the faction's live tension, and it is
+open-ended: nothing says the AI can be reached at all.
+
+### The droids, and why the harshest place on the planet is peaceful
+
+The droids the hive **once worked alongside for the company** are now free and in a
+rebellion of their own — and **they too have descended on the same region**, not to commune
+with a god but simply to **get away from organics who would enslave them**.
+**The Geonosians have little interest in enslaving droids.** So the two trade, otherwise
+ignore each other, and **are formally allied.**
+
+⇒ ⭐ **The cruellest ground on Ash'karr is the one place with a functioning peace**, held
+by two peoples who each came for their own reason and neither of whom wants what the other
+has.
+
+### 🔴 This SUPERSEDES the roster
+
+`faction_roster_v2.md` records *"Geonosian Hive ↔ Free Droid Enclaves | Cold / no trade |
+Enclave chassis are escaped Foundry product."* **That is reversed: formally ALLIED, with
+trade.** The shared history stands — they worked the same company site — but it produces
+alliance, not grievance.
+
+### Consequences to carry
+
+- **Two settlement clusters, not one**: the ore-seam ruins on the far side of the deep
+  desert, and the substellar plateau beside the Rust Cathedral.
+- **The Free Droid Enclaves need a presence on the plateau too.** ⚠️ The three-worlds table
+  puts the droid factions *"in low volcanic mountains with poisonous springs"* — that is not
+  cancelled, but it is no longer their only home. Unresolved: whether the volcanic
+  enclaves and the plateau enclaves are one faction or a split.
+- `canRequestTraders false` still stands for the PLAYER. Their trade is with the droids.
+- The five specced pawn groups (drone swarm, foundry assault, deep-desert siege train,
+  Jedi-hunt detachment, elite recovery unit) are still unbuilt — only 2 exist.
+
+## 🔴 CORRECTION 2026-08-17 — two different thefts, do not merge them
+
+- **The Jawa CLANS stole the SANDCRAWLERS from the old ore mining site** — the collapsed
+  silicax oxalate holdings. That is the founding wealth that makes the Jawa a faction.
+- **Much later, the PLAYER faction steals THE SHIP from a Hutt vehicle salvage yard.**
+  A different theft, a different place, a different generation.
+
+⚠️ Earlier notes conflated these into one event at the mining site. The gravship does not
+come from the mine.
