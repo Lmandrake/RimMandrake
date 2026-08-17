@@ -532,3 +532,31 @@ OuterRim Galactic Empire 1.
 is made.** A feature's `<drawCenter>` could not be decoded into lat/long — the
 candidate mapping put `MountainRange` centres at −350 m, the sea floor — so names are
 chosen by feature TYPE, not by where they sit. **Decoding `drawCenter` is open work.**
+
+### ✅ Region names now sit ON their regions — the drawCenter convention, recovered
+
+The floating territory labels are fixed, and the earlier "no geographic claim" caveat
+is **withdrawn**. Two measurements did it:
+
+1. **`tileFeature` is the exact tile → feature membership** (2 bytes/tile, `0xFFFF` =
+   none). Nothing needs inferring from where a label happens to be drawn.
+2. 🔑 **The `drawCenter` convention**, recovered by comparing every stored centre
+   against the centroid of that feature's own member tiles:
+
+   ```
+   drawCenter = ( cosLat·sinLon,  sinLat,  −cosLat·cosLon ) × 100
+   ```
+
+   Game **x = east, y = north, z = NEGATIVE cosLat·cosLon**. The earlier failed guess
+   used `long = atan2(x, z)` and missed that negation — which is exactly why it put
+   MountainRange centres at −350 m and why the guess was thrown away rather than used.
+
+`src/RimMandrake/Utils/name_ashkarr_regions.py` re-cuts all 37 feature slots to our
+regions, names them, writes a centre that is the true centroid of each region's tiles,
+and scales `maxDrawSizeInTiles` by √(tile count). Verified by the centres themselves:
+**The Scald lands at lat −3.5 / long −35.2 = 35.3° arc** (designed: 35°), **The Anvil
+at 0.4° arc**, **The Umbra at 180°**, the Nightspill on the Twilight flank and the
+Sunreach on the Gray one.
+
+Large regions are cut into four tracts by bearing quadrant — Gray / North / Twilight /
+South — so a 5,000-tile crag field is not one label stretched across a hemisphere.
