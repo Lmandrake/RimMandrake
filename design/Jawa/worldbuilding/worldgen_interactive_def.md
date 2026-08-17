@@ -342,3 +342,12 @@ reagents. *Threat:* the cold, and the Junkers.
 
 _Proposed, not yet ruled: **the Listening Floor** (a Rakatan array still transmitting, on the
 plateau's edge) and **the Crawler Graveyard** (where the stolen sandcrawlers go to die)._
+
+**The Hopeless Call** ⭐ — a Rakatan array **out on the NIGHTSIDE**, forever repeating an
+ancient code nobody understands any more. Sited where **nobody wants to bother with it even
+if they have advanced starships, because it simply is not worth it.** Its inaccessibility is
+the point, not an obstacle to be balanced.
+
+⛔ **The Crawler Graveyard is DROPPED** — owner, 2026-08-16: the Jawa would salvage anything
+long before abandoning it. 🔑 Keep the reasoning, it characterises them: **nothing Jawa-owned
+is ever abandoned intact.** There are no Jawa ruins.
