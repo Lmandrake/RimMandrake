@@ -614,3 +614,24 @@ naming pass left ghosts behind that piled onto the new labels.
 ⇒ Unused slots are now **blanked**: empty `<name>` and `maxDrawSizeInTiles 0.0001`.
 **Generalises: when you rewrite a fixed-size table in a save, the entries you skip are
 not empty — they are whatever was there before, and they are still live.**
+
+### Can the bridge remove a faction? NO — measured, not assumed
+
+- `Outputs\All Factions To Remove` (the engine's own list) returns **"0 factions found."**
+  RimWorld will not garbage-collect any of them.
+- The whole faction debug surface is `Execute raid with faction` · `RegenerateFactionLeaders`
+  · `T: Set Faction` · `Set Faction Rect` · `Kill Faction Leader` · `Set Faction Relations`
+  · `T: Make Faction Leader`. **None removes a faction.**
+- Live state agrees with the file: **12 visible factions hold all 66 settlements, all ours**
+  — but **31 zero-settlement factions are still VISIBLE**, and visibility is what draws a
+  name and a territory. Owning nothing does not remove a faction from the map.
+
+⇒ **Removing them is a worldgen-time act** (the ratified `WORLDGEN_FACTION_CHECKLIST.md`,
+21 untick / 6 keep) **or a surgical save edit.** The bridge cannot do it.
+
+**Live mitigations applied via mod settings** (`jaeger972.factionterritories`, read back):
+- `defaultToFactionTerritoriesMapMode` **True → False** — the world no longer opens as
+  political hexes; you see the planet.
+- `minLabelConnectedTiles` **7 → 14** — suppresses the small foreign territory labels.
+- 📌 `includeWaterTiles` was **already False**, so territory is not supposed to cover
+  ocean; anything still drawn over water is stale render state, not new claims.
