@@ -1045,3 +1045,55 @@ result:   Half of it is SOLVED and half is impossible with today's tool surface.
           🔴 REP 2026-08-15 checked the two most recent owner screenshots: neither shows a
           lightsaber. NO comparison arm exists, so even a captured swing would have been a
           baseline, not the A/B the wording implies.
+
+## ashkarr-map-quality-second-pass-8c31f7
+row:      2
+spec:     Ash'karr is BUILT and committed (`world/WORLDMAP_gen.rws`, seed `pumpkin`,
+          21,872 tiles, 12 factions all ours). This item is the owner's review list
+          from 2026-08-17, in HIS order. Everything below is diagnosed, not guessed.
+
+          🔑 THE TOOL THAT MAKES ALL OF IT POSSIBLE: `src/RimMandrake/Utils/world_graph.py`
+          builds the tile adjacency graph (cached `world/world_graph.npz`, verified by
+          the 12-pentagon test). Before it existed the painter could only make per-tile
+          decisions, which is why the map looked like confetti. `world_shape.py` has
+          despeckle / components / coastal / grow / roughen on top of it.
+
+          THE PIPELINE, all offline, ~5 min:
+            source -> paint_ashkarr -> populate_ashkarr -> name_ashkarr_regions
+                   -> name_ashkarr_factions -> clean_ashkarr_hydrology
+                   -> redo the world-object water mask -> load and read jawa/world_stats
+
+          REMAINING WORK, owner's order:
+          1. ORDERING. Seas FIRST, then rivers, then the terrain that depends on rivers.
+             Today rivers are inherited from worldgen and merely pruned. Author them:
+             walk downhill neighbour-to-neighbour from mountain clusters to a sea, write
+             the river arrays (they ARE arrays - see savegame-editing.md).
+          2. LUSH TERRAIN ONLY ON RIVERS. Jungle/dense vegetation placed after rivers
+             exist, on river tiles only. AB_TarPits adjacent to those. AB_FeraliskInfested
+             Jungle only there.
+          3. MUTATORS. 5,233 `Coast` of which 4,831 are on non-water tiles and 2,116 deep
+             inland; 4 `VEE_CoralReef` incl. one at arc 177 on the nightside. They were
+             placed for the ORIGINAL sea layout and the repaint moved the water. Editable:
+             tileMutatorTilesDeflate (4B tile) + tileMutatorDefsDeflate (2B shortHash),
+             38,877 entries, hashes resolve against DefDump/defs/TileMutatorDef.json.
+             Recompute Coast from real adjacency; strip marine mutators inland. The
+             ice-and-fire desert inside the extreme desert is almost certainly this too.
+          4. ROADS. Currently fragmented because clean_ashkarr_hydrology removes segments
+             in water and nothing reconnects them - that is an ERROR, not decay. Lay roads
+             LAST, as shortest paths over the graph between actual settlements. Plus a
+             specific one: the Fuel Works -> the propane lakes, along the cold swirl where
+             it reaches nearest the twilight.
+          5. SHAPES. The Scald Spine is a perfect circle - use world_shape.roughen(). Only
+             the crater itself may be round. No geometric shapes anywhere else.
+          6. PLACEMENT. Ascendant Helix sited by DENSITY OF BIOLOGICAL HORROR around it
+             (ocular forest, horror wastes) - that is what they came to study. At least
+             TWO Deepwater Compact settlements on The Scald despite the Empire.
+          7. HORROR WASTES lore is ruled (build_concepts, 2026-08-17): scattered small
+             holdings in the rotting Twilight, RETREATING not spreading.
+          8. SANITY PASS. The owner's words: evaluate "how sane is this planet?", not
+             "did the script run". Check: stranded coasts, biomes without their climate,
+             rivers that reach no sea, single-tile islands, settlements unreachable by road,
+             lush terrain off-river.
+verify:   EMPTY
+criteria: the owner looks at the planet and does not immediately name a defect.
+state:    ready
