@@ -57,21 +57,22 @@ def temperature(arc, elev):
 
 
 def wind_field(V, deflect=SUPERROTATION):
-    """Unit tangent vector per tile: ANTISUNWARD, deflected toward the Gray flank.
+    """Unit tangent vector per tile: SUNWARD, deflected toward the Gray flank.
 
-    🔴 The first cut blew sunward, converging on the substellar point. That gives a
-    permanent substellar rainstorm - the wettest place on the planet would be the
-    Rust Cathedral, which is a scorched machine desert. It also piled all the
-    moisture on one tile (rain max 112x the p90).
+    🔴 OWNER'S RULING, 2026-08-17, overriding two wrong turns of mine.
+    "We had moist air pulling along the desert from the terminator, being pushed up
+    the mountains until they violently rain. Thus mountain ranges cause violent
+    rivers on their side that faces the terminator."
 
-    This is a COLD TRAP world. Water evaporates on the hot dayside, is carried
-    antisunward, and freezes out permanently on the nightside; the liveable band is
-    the terminator, where that ice meets enough warmth to melt. Every named feature
-    the owner already wrote - the Dew Belt, the glow forests, the propane lakes, the
-    frozen sea at the antistellar point - is a cold trap's geography. So the surface
-    wind blows AWAY from the star, and the rain falls where the air cools.
+    I had reversed this, because a sunward wind made the substellar plateau the
+    wettest place on the planet and that contradicts the fiction. The ruling fixes
+    that contradiction properly instead of by turning the wind around: the RANGES
+    wring the air out on their terminator-facing flanks, so everything sunward of
+    them sits in permanent rain shadow. The scorched plateau is the SHADOW, and it
+    only exists if the wind blows across it. So precipitation here is driven by
+    orographic lift first and temperature second, not the other way round.
     """
-    S = np.array([-1.0, 0.0, 0.0])
+    S = np.array([1.0, 0.0, 0.0])
     t = S[None, :] - (V @ S)[:, None] * V             # project onto tangent plane
     n = np.linalg.norm(t, axis=1, keepdims=True)
     t = np.where(n > 1e-9, t / np.maximum(n, 1e-9), 0.0)
@@ -118,7 +119,7 @@ def climate(V, nb, elev, water, arc):
     # Cold air holds less water, so the terminator and the nightside wring it out -
     # which is exactly why the Dew Belt and the glow forests are where they are.
     cold = np.clip((18.0 - T) / 60.0, 0.0, 1.0)
-    base = 0.012 + 0.085 * cold ** 1.6
+    base = 0.008 + 0.030 * cold ** 1.6      # background drizzle only
 
     # orographic lift: rising ground along the wind precipitates hard, and the far
     # side of the same ridge gets the shadow because the air arrives already dry.
@@ -131,8 +132,9 @@ def climate(V, nb, elev, water, arc):
         if f.sum() > 1e-9:
             gain = (elev[ns] - elev[i]) / np.maximum(nn * 6371.0, 1.0)   # m per km
             up[i] = max(0.0, float((f * gain).sum() / f.sum()))
-    oro = np.clip(up / 12.0, 0.0, 1.0)
-    pfrac = np.clip(base + 0.55 * oro, 0.0, 0.92)
+    # violent: a range facing the wind dumps most of what crosses it, in one band.
+    oro = np.clip(up / 7.0, 0.0, 1.0) ** 0.8
+    pfrac = np.clip(base + 0.88 * oro, 0.0, 0.96)
     pfrac[~has_out] = 1.0          # a stagnation point rains out; it does not hoard
 
     M = np.zeros(n)
@@ -155,26 +157,31 @@ def fill_depressions(elev, water, nb):
     accident. Measured 735 pits before this runs."""
     n = len(elev)
     filled = elev.astype(np.float64).copy()
+    order = np.full(n, np.iinfo(np.int32).max, dtype=np.int64)
     done = np.zeros(n, dtype=bool)
+    seq = 0
     h = []
     for i in np.flatnonzero(water):
         done[i] = True
+        order[i] = 0
         for j in nb[i]:
             if not water[j] and not done[j]:
                 done[j] = True
                 heapq.heappush(h, (float(filled[j]), int(j)))
     while h:
         e, i = heapq.heappop(h)
+        seq += 1
+        order[i] = seq
         if filled[i] < e:
             filled[i] = e
         for j in nb[i]:
             if not done[j]:
                 done[j] = True
-                heapq.heappush(h, (max(float(filled[j]), e + 0.01), int(j)))
-    return filled
+                heapq.heappush(h, (max(float(filled[j]), e + 0.001), int(j)))
+    return filled, order
 
 
-def route(filled, elev, water, nb, rain, T):
+def route(filled, elev, water, nb, rain, T, order):
     """Steepest descent + accumulation, with the water budget spent on the way.
 
     🔑 This is where the owner's ruling lives in code. Every tile a river crosses
@@ -188,9 +195,10 @@ def route(filled, elev, water, nb, rain, T):
     for i in range(n):
         if water[i]:
             continue
-        ns = nb[i]
-        j = ns[int(np.argmin(filled[ns]))]
-        if filled[j] <= filled[i]:
+        ns = np.asarray(nb[i])
+        key = filled[ns] * 1e6 + np.minimum(order[ns], 2 ** 40) * 1e-3
+        j = int(ns[int(np.argmin(key))])
+        if filled[j] < filled[i] or (filled[j] <= filled[i] and order[j] < order[i]):
             recv[i] = j
 
     # per-tile loss: hot, dry ground drinks a river. Cold ground barely touches it.
@@ -198,7 +206,11 @@ def route(filled, elev, water, nb, rain, T):
     dry = np.clip(1.4 - rain, 0.0, 1.4)
     loss = 0.55 + 9.0 * heat * dry
 
-    flow = rain.copy()
+    # 🔑 Owner's ruling: rivers on the DAYSIDE only. What falls on frozen ground
+    # stays there, so it never enters the flow at all - the nightside is dry on the
+    # map because it is locked, not because nothing falls on it.
+    melt = np.clip((T + 12.0) / 22.0, 0.0, 1.0)
+    flow = rain * melt
     order = np.argsort(-filled)
     playa = np.zeros(n, dtype=bool)
     for i in order:
@@ -314,11 +326,11 @@ def main():
     print("rainfall (1.0 == p90 land tile): p10 %.3f  p50 %.3f  p75 %.3f  p90 %.3f"
           "  p99 %.2f  max %.2f" % (q[0], q[1], q[2], q[3], q[4], rain.max()))
 
-    filled = fill_depressions(elev, water, nb)
+    filled, order = fill_depressions(elev, water, nb)
     print("depressions filled: %d tiles raised, by up to %.0f m"
           % ((filled > elev + 0.5).sum(), (filled - elev).max()))
 
-    flow, recv, playa = route(filled, elev, water, nb, rain, T)
+    flow, recv, playa = route(filled, elev, water, nb, rain, T, order)
     lake = np.zeros(len(elev), dtype=bool)
     g = grade(flow, water)
     bad = audit(flow, g, recv, water, playa, lake, nb)
