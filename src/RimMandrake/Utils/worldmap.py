@@ -59,18 +59,25 @@ HASHED = {"tileBiome": "BiomeDef"}
 #         land where they should: Tundra -1.1, BorealForest 0.4, TemperateForest 6.1.
 #   rainfall      raw                -> mm/year       ✅ no transform
 #         Land spans 233..2584, mean 1197 - already mm. 40 is hyper-arid desert.
-#   elevation     raw - 8192         -> metres        ⚠️ STRONGLY SUPPORTED, not proven
-#         Every ocean tile is the SAME constant 7842 -> -350 m, and land starts at
-#         exactly 8193 -> 1 m. A bias of 8192 is the only value that puts sea level
-#         on the boundary. Confirm against an engine reading before trusting it.
+#   elevation     raw - 8192         -> metres        ✅ VERIFIED 2026-08-18
+#         Was "strongly supported, not proven". Now proven: jawa/world_tile_export
+#         dumped the ENGINE's own elevation for all 21,872 tiles and (raw - live) is
+#         the constant 8192 on every single one - min 8192.0, max 8192.0.
 #   pollution     raw / 65535        -> 0..1 fraction ⚠️ HYPOTHESIS (only 0 and 3277
-#         observed; 3277/65535 = 0.05)
+#         observed; 3277/65535 = 0.05). Still unproven - world_tile_export does not
+#         carry pollution, so the 2026-08-18 calibration could not reach it.
 #   hilliness     raw                -> enum byte     (0..5)
 #   swampiness    raw                -> 0..1 fraction ⚠️ unconfirmed scale
 #   feature       raw                -> index into world/features, 0xFFFF = none
 #
-# ⛔ Do NOT write a scalar whose encoding is marked unconfirmed. Writing biome is
-# safe; writing temperature is safe; the rest deserve a calibration first.
+# ⛔ Do NOT write a scalar whose encoding is marked unconfirmed. Biome, temperature,
+# rainfall, elevation and swampiness are all now VERIFIED against the live engine via
+# jawa/world_tile_export; pollution alone is still a hypothesis.
+#
+# 🔑 THE CALIBRATION RECIPE, for the next unknown field: jawa/world_tile_export dumps
+# the ENGINE's own value per tile to CSV; read the raw array out of the same save and
+# regress one against the other. It settled three encodings in one call and needed no
+# game restart. Never guess a scale that a running game will simply tell you.
 DECODE = {
     "tileTemperature": (lambda v: (v - 3000) / 10.0, lambda c: int(round(c * 10)) + 3000),
     "tileRainfall":    (lambda v: float(v),          lambda mm: int(round(mm))),
