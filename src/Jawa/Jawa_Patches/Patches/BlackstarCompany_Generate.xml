@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Blackstar Company must actually GENERATE.
+
+     Measured 2026-08-17, after `Pirate` failed to appear in three worlds running:
+     the vanilla def carries ONLY <requiredCountAtGameStart>1</requiredCountAtGameStart>.
+     It has no startingCountAtWorldCreation and no maxConfigurableAtWorldCreation, so
+     WorldGenerationData.ResetFactionCounts() - which builds the default faction list by
+     repeating each ConfigurableFaction's defName startingCountAtWorldCreation times -
+     appends it ZERO times. It never enters the list the planet editor drives, and
+     nothing puts it back.
+
+     OutlanderCivil and TribeCivil, which generate every time, both carry
+     maxConfigurableAtWorldCreation 9999 and a configurationListOrderPriority. This gives
+     Pirate the same treatment.
+
+     ⚠️ NOT the label. BlackstarCompany.xml already relabels it and that patch is
+     verified live - the def reads "Blackstar Company" in the running game, so it was
+     never being deleted for looking like a stray.
+-->
+<Patch>
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/FactionDef[defName="Pirate"]/startingCountAtWorldCreation</xpath>
+    <match Class="PatchOperationReplace">
+      <xpath>/Defs/FactionDef[defName="Pirate"]/startingCountAtWorldCreation</xpath>
+      <value><startingCountAtWorldCreation>2</startingCountAtWorldCreation></value>
+    </match>
+    <nomatch Class="PatchOperationAdd">
+      <xpath>/Defs/FactionDef[defName="Pirate"]</xpath>
+      <value><startingCountAtWorldCreation>2</startingCountAtWorldCreation></value>
+    </nomatch>
+  </Operation>
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/FactionDef[defName="Pirate"]/maxConfigurableAtWorldCreation</xpath>
+    <match Class="PatchOperationReplace">
+      <xpath>/Defs/FactionDef[defName="Pirate"]/maxConfigurableAtWorldCreation</xpath>
+      <value><maxConfigurableAtWorldCreation>9999</maxConfigurableAtWorldCreation></value>
+    </match>
+    <nomatch Class="PatchOperationAdd">
+      <xpath>/Defs/FactionDef[defName="Pirate"]</xpath>
+      <value><maxConfigurableAtWorldCreation>9999</maxConfigurableAtWorldCreation></value>
+    </nomatch>
+  </Operation>
+</Patch>

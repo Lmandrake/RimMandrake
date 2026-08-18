@@ -61,3 +61,17 @@ sessions be recorded here for DESIGN to pick up later.
 - **The Rust Cathedral is losing to the sand.** The intrusion is being progressively buried.
   If that burial is to be visible as partial coverage rather than a hard biome edge, it may
   want a transitional treatment the biome array alone cannot give.
+
+## Horror Wastes — lore, owner 2026-08-17
+
+Areas where an active bioweapon is **still going on**. They leave behind no natural life:
+only scarred, dangerous, weaponised biocells forming themselves into **hostile organs of
+destruction**, slowly degrading into pointlessness.
+
+⭐ No longer able to adapt to the temperature extremes, they have been **forced back by the
+hostility of the world** to a smattering of scattered holdings in the **rotting Twilight** —
+of what was once a much more lush and beautiful world.
+
+⇒ Placement consequence: Horror Wastes belong in the **terminator band**, in scattered small
+holdings rather than a contiguous region, and they should read as **retreating**, not
+spreading. They are also one of the biological horrors the **Ascendant Helix** came to study.

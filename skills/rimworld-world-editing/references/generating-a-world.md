@@ -215,10 +215,23 @@ Vanilla ships:
 One def doing two jobs: a **concrete faction** and the **named parent template** every other
 pirate faction inherits from.
 
-⚠️ **In the faction panel it reads "pirate gang", not your campaign name** — so a human
-whittling an 80-entry list down to fourteen deletes it, twice in a row, while carefully
-keeping everything that looks like theirs. `requiredCountAtGameStart 1` does NOT save it: a
-faction deleted at the panel stays deleted, and it is then absent from the world forever.
+🔴 **CORRECTED 2026-08-17. My first explanation — that it reads "pirate gang" in the panel
+and gets deleted as a stray — was WRONG.** The live def reads **"Blackstar Company"**; the
+reskin patch works. Checked with `jawa/get_def` rather than assumed, after asserting the
+opposite.
+
+⭐ **The real cause:** `Pirate` carries **only** `requiredCountAtGameStart 1`. It has no
+`startingCountAtWorldCreation` and no `maxConfigurableAtWorldCreation`, so
+`ResetFactionCounts()` appends it **zero** times and it never enters the configurable list
+the planet editor and the preset drive. `OutlanderCivil` and `TribeCivil`, which generate
+every time, both carry `maxConfigurableAtWorldCreation 9999` plus a
+`configurationListOrderPriority`.
+
+⇒ **Fix: give the def the fields it lacks** — `Jawa_Patches/Patches/BlackstarCompany_Generate.xml`
+adds `startingCountAtWorldCreation 2` and `maxConfigurableAtWorldCreation 9999`.
+🔑 **Generalises: `requiredCountAtGameStart` alone does NOT put a faction on the page.** Any
+vanilla faction you intend to reskin should be checked for these two fields before you rely
+on it appearing at all.
 
 ⇒ **Two defences, and the first is the one that works:**
 1. **Patch the `label` so the panel shows the campaign name**, and confirm the patch reaches
