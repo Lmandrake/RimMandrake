@@ -26,6 +26,7 @@ import base64
 import os
 import re
 import shutil
+import struct
 import sys
 import zlib
 
@@ -33,7 +34,16 @@ import numpy as np
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 sys.path.insert(0, HERE)
+import world_graph
 from worldmap import WorldGrid, WorldObjects, DECODE
+
+MUTATOR_DUMP = ("/mnt/c/Users/Mandrake/AppData/LocalLow/Ludeon Studios/"
+                "RimWorld by Ludeon Studios/DefDump/defs/TileMutatorDef.json")
+# a mutator that only makes sense with water or a river next to it
+SEA_WORDS = ("coast", "reef", "tide", "beach", "island", "sea", "shore", "atoll",
+             "lagoon", "mangrove", "kelp")
+RIVER_WORDS = ("river", "delta", "estuary", "oxbow", "waterfall", "confluence",
+               "ford", "rapids")
 
 REPO = os.path.dirname(os.path.dirname(os.path.dirname(HERE)))
 SRC = os.path.join(REPO, "world", "WORLDMAP_source.rws")
@@ -83,6 +93,89 @@ def strip_links(text):
     return out, removed
 
 
+def fix_mutators(text, water, hill, nb):
+    """Recompute the water-linked tile mutators against the NEW coastline.
+
+    The shipped world carried 5,423 `Coast` mutators placed for the ORIGINAL sea
+    layout; the repaint moved the water and nothing moved them. Same for the reef
+    and tide mutators, and for every river mutator on a planet that now has no
+    rivers at all. Names are matched by word, so a mod adding its own coast mutator
+    is caught without being listed here.
+    """
+    import json
+    h2n = {}
+    for d in json.load(open(MUTATOR_DUMP))["defs"]:
+        if "shortHash" in d:
+            h2n[int(d["shortHash"])] = d["defName"]
+
+    j = text.find('Class="SurfaceLayer"')
+
+    def grab(tag):
+        m = re.search(r"<%s>([^<]*)</%s>" % (tag, tag), text[j:j + 900000])
+        raw = (zlib.decompress(base64.b64decode(m.group(1)), -15)
+               if m and m.group(1).strip() else b"")
+        return m, raw
+
+    mt, traw = grab("tileMutatorTilesDeflate")
+    md, draw = grab("tileMutatorDefsDeflate")
+    if not traw:
+        return text, {}
+    cnt = len(traw) // 4
+    tiles = list(struct.unpack("<%dI" % cnt, traw[:cnt * 4]))
+    hashes = list(struct.unpack("<%dH" % cnt, draw[:cnt * 2]))
+
+    coastal = np.zeros(len(water), dtype=bool)
+    for i in np.flatnonzero(water):
+        for k in nb[i]:
+            coastal[k] = True
+    coastal &= ~water
+
+    coast_hash = None
+    keep_t, keep_h = [], []
+    stat = {"coast_dropped": 0, "coast_kept": 0, "coast_added": 0,
+            "marine_inland_dropped": 0, "river_dropped": 0, "mountain_dropped": 0}
+    for t, h in zip(tiles, hashes):
+        nm = h2n.get(h, "")
+        low = nm.lower()
+        if t >= len(water):
+            continue
+        if nm == "Coast":
+            coast_hash = h
+            if coastal[t]:
+                stat["coast_kept"] += 1
+            else:
+                stat["coast_dropped"] += 1
+                continue
+        elif any(w in low for w in RIVER_WORDS):
+            stat["river_dropped"] += 1
+            continue
+        elif any(w in low for w in SEA_WORDS):
+            if not (coastal[t] or water[t]):
+                stat["marine_inland_dropped"] += 1
+                continue
+        elif nm == "Mountain" and hill[t] < 4:
+            stat["mountain_dropped"] += 1
+            continue
+        keep_t.append(t)
+        keep_h.append(h)
+
+    if coast_hash is not None:
+        have = {t for t, h in zip(keep_t, keep_h) if h == coast_hash}
+        for t in np.flatnonzero(coastal):
+            if int(t) not in have:
+                keep_t.append(int(t))
+                keep_h.append(coast_hash)
+                stat["coast_added"] += 1
+
+    for m, raw, tag in ((mt, struct.pack("<%dI" % len(keep_t), *keep_t), "Tiles"),
+                        (md, struct.pack("<%dH" % len(keep_h), *keep_h), "Defs")):
+        name = "tileMutator%sDeflate" % tag
+        text = text.replace(m.group(0), "<%s>%s</%s>"
+                            % (name, enc_deflate(raw), name), 1)
+    stat["entries"] = "%d -> %d" % (cnt, len(keep_t))
+    return text, stat
+
+
 def main():
     dry = "--dry" in sys.argv
     r = np.load(os.path.join(REPO, "world", "relief.npz"))
@@ -113,7 +206,16 @@ def main():
     rn_arr = g.arrays["tileRainfall"]
     h_arr = g.arrays["tileHilliness"]
     p_arr = g.arrays["tilePollution"]
+    sw_arr = g.arrays["tileSwampiness"]
     hb = g.hash_by_biome
+
+    # 🔴 swampiness was INHERITED and never rewritten: the live game was reporting
+    # "Desert ... swampiness=28%". Encoding verified 2026-08-18 as raw/255.
+    riv = bi["riparian"]
+    swamp = np.where(water, 0.0,
+                     np.where(riv == 0, 0.45, np.where(riv <= 2, 0.20, 0.0)))
+    swamp = np.minimum(swamp + 0.30 * np.clip(H - 0.85, 0, 1) / 0.15, 0.85)
+    swamp[water] = 0.0
 
     elev = np.clip(elev, -350.0, 5000.0)
     mm = rainfall_mm(H, water)
@@ -125,12 +227,15 @@ def main():
         t_arr[t] = enc_t(float(np.clip(T[t], -95.0, 92.0)))
         rn_arr[t] = enc_r(float(mm[t]))
         h_arr[t] = int(hill[t])
+        sw_arr[t] = int(round(float(swamp[t]) * 255.0))
         lo_hi = POLLUTED.get(nm)
         p_arr[t] = int(round(rng.uniform(*lo_hi) * POLL_FULL)) if lo_hi else 0
 
     print("wrote %d tiles: %d biomes, elevation %.0f..%.0f m, temp %.0f..%.0f C, "
           "rain %.0f..%.0f mm" % (n, len(set(map(str, name))), elev.min(), elev.max(),
                                   T.min(), T.max(), mm.min(), mm.max()))
+    print("swampiness: %d tiles wet (was inherited on 7,825 incl. deserts)"
+          % int((swamp > 0).sum()))
 
     if dry:
         print("--dry: nothing written")
@@ -141,6 +246,9 @@ def main():
     text, removed = strip_links(text)
     print("stripped inherited links: %s (they belong to a planet that no longer "
           "exists)" % (removed or "none found"))
+    nb, _, _, _ = world_graph.load()
+    text, mstat = fix_mutators(text, water, hill, nb)
+    print("mutators:", mstat)
     open(DEST, "w", encoding="utf-8").write(text)
 
     # settlements: the repaint moved the land under them. Put each on a sited tile,

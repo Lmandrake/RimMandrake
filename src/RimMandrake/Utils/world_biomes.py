@@ -184,6 +184,15 @@ def classify(T, H, elev, arc, riv, grade, water, slope):
     return out
 
 
+def blotches(V, seed, scale, cut):
+    """A coherent 0..1 field for scattering things in CLUMPS rather than per tile."""
+    f = wr.sphere_noise(V, np.random.default_rng(seed),
+                        octaves=[(scale, 1.0), (scale * 2.1, 0.55),
+                                 (scale * 4.3, 0.3)], waves=20)
+    f = (f - f.min()) / max(f.max() - f.min(), 1e-9)
+    return f > cut
+
+
 def overrides(name, arc, bear, elev, T, H, water, riv, rng, awarp):
     """Story, not climate. Kept small and kept SEPARATE, so it is obvious which
     tiles were argued for and which ones the physics produced."""
@@ -212,10 +221,11 @@ def overrides(name, arc, bear, elev, T, H, water, riv, rng, awarp):
     name[m] = "AB_PropaneLakes"
     # the Horror Wastes: scattered SMALL holdings in the rotting twilight, and
     # retreating - so a handful of blots, never a belt. (build_concepts 2026-08-17)
-    m = (~water) & (T > -20.0) & (T < 12.0) & (H > 0.50) & (pick > 0.965)
+    # small holdings, RETREATING - so clumps of a few tiles, never a belt
+    m = (~water) & (T > -20.0) & (T < 12.0) & (H > 0.50) & blotches(VEC, 71, 26.0, 0.90)
     name[m] = "HorrorWastes"
     # tar pits: they sit beside the water in the rotting band, not on their own
-    m = (~water) & (riv <= 2) & (T > -18.0) & (T < 26.0) & (pick > 0.90)
+    m = (~water) & (riv <= 2) & (T > -18.0) & (T < 26.0) & blotches(VEC, 33, 19.0, 0.86)
     name[m] = "AB_TarPits"
     return name
 
@@ -335,8 +345,9 @@ def main():
 
     name = classify(T, H, elev, arc, riv, grade, water, slope)
     awarp = wr.sphere_noise(VEC, np.random.default_rng(909),
-                            octaves=[(4.0, 1.0), (9.0, 0.5), (19.0, 0.28)], waves=24)
-    awarp = 2.8 * awarp / max(np.abs(awarp).max(), 1e-9)
+                            octaves=[(3.0, 1.0), (6.5, 0.72), (13.0, 0.46),
+                                     (27.0, 0.26), (55.0, 0.14)], waves=28)
+    awarp = 6.4 * awarp / max(np.abs(awarp).max(), 1e-9)
     name = overrides(name, arc, bear, elev, T, H, water, riv, rng, awarp)
 
     keys = sorted(COLOUR)

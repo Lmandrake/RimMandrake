@@ -45,7 +45,11 @@ SUPERROTATION = 32.0          # degrees the surface wind is deflected toward Gra
 ADVECT_STEPS = 220            # one tile per step; the planet is ~120 tiles across
 
 # A river is a river when it carries this much of the planet's mean tile rainfall.
-CREEK, RIVER, HUGE = 18.0, 70.0, 260.0
+# 🔑 CREEK had been inflated to 90 to control how many tiles drew as rivers - which
+# conflated "is this visible" with "is this a stream". Measured: 8,220 tiles lose all
+# their flow, and the largest of them carries 33. Every one of the owner's dying
+# desert streams was there the whole time, sitting under the threshold.
+CREEK, RIVER, HUGE = 30.0, 620.0, 3200.0
 TRUNK = RIVER                 # at or above this, ending on land is a DEFECT
 
 
@@ -204,7 +208,7 @@ def route(filled, elev, water, nb, rain, T, order):
     # per-tile loss: hot, dry ground drinks a river. Cold ground barely touches it.
     heat = np.clip((T - 5.0) / 70.0, 0.0, 1.0)
     dry = np.clip(1.4 - rain, 0.0, 1.4)
-    loss = 0.55 + 9.0 * heat * dry
+    loss = 0.55 + 34.0 * heat * dry
 
     # 🔑 Owner's ruling: rivers on the DAYSIDE only. What falls on frozen ground
     # stays there, so it never enters the flow at all - the nightside is dry on the
@@ -218,7 +222,7 @@ def route(filled, elev, water, nb, rain, T, order):
             continue
         out = flow[i] - loss[i]
         if out <= 0.0:
-            if flow[i] > CREEK:
+            if flow[i] > CREEK * 0.5:
                 playa[i] = True          # the river ends here, in salt
             flow[i] = max(flow[i], 0.0)
             continue
@@ -252,6 +256,31 @@ def grade(flow, water):
     g[(flow >= RIVER) & ~water] = 2
     g[(flow >= HUGE) & ~water] = 3
     return g
+
+
+def systems(flow, g, recv, water, playa, lake, elev, nb):
+    """Trace each river to its mouth and classify it. This is the owner's spec turned
+    into a measurement: majors must reach an ocean, minors may end in a lake or salt."""
+    heads = [int(i) for i in np.flatnonzero(g > 0)]
+    mouths = {}
+    for i in heads:
+        t, seen = i, 0
+        while t >= 0 and seen < 400:
+            nxt = int(recv[t])
+            if nxt < 0 or water[nxt] or lake[nxt] or playa[t]:
+                break
+            t, seen = nxt, seen + 1
+        mouths.setdefault(t, []).append(i)
+    out = []
+    for term, members in mouths.items():
+        peak = max(flow[m] for m in members)
+        nxt = int(recv[term])
+        kind = ("ocean" if (nxt >= 0 and water[nxt]) else
+                "lake" if lake[term] else
+                "salt" if playa[term] else "land")
+        out.append((peak, len(members), kind, term))
+    out.sort(reverse=True)
+    return out
 
 
 def audit(flow, g, recv, water, playa, lake, nb):
@@ -331,9 +360,29 @@ def main():
           % ((filled > elev + 0.5).sum(), (filled - elev).max()))
 
     flow, recv, playa = route(filled, elev, water, nb, rain, T, order)
+    # a river that dies in a CLOSED BASIN leaves standing water; one that dies on a
+    # slope leaves salt. Same terminus, different ground - so the ground decides.
     lake = np.zeros(len(elev), dtype=bool)
+    pond = (filled - elev) > 95.0
+    for i in np.flatnonzero(playa):
+        if pond[i]:
+            lake[i] = True
+            for j in nb[i]:
+                if pond[j] and not water[j]:
+                    lake[j] = True
+    playa = playa & ~lake
     g = grade(flow, water)
     bad = audit(flow, g, recv, water, playa, lake, nb)
+
+    sysroll = systems(flow, g, recv, water, playa, lake, elev, nb)
+    majors = [x for x in sysroll if x[2] == "ocean" and x[0] >= RIVER]
+    minors = [x for x in sysroll if x[2] in ("lake", "salt")]
+    print("river systems: %d | MAJOR to an ocean %d (owner asks >=3) | "
+          "ending in lake/salt %d (owner asks >=3)"
+          % (len(sysroll), len(majors), len(minors)))
+    for peak, n_, kind, term in sysroll[:8]:
+        print("    peak flow %8.0f  %4d tiles  -> %s" % (peak, n_, kind))
+    print("lake tiles %d, salt-pan tiles %d" % (int(lake.sum()), int(playa.sum())))
 
     np.savez_compressed(OUT_NPZ, temp=T.astype(np.float32),
                         rain=rain.astype(np.float32), flow=flow.astype(np.float32),

@@ -113,6 +113,15 @@ RIDGES = [
          anchors=[(26.0, 352.0), (34.0, 357.0), (43.0, 2.0),
                   (52.0, 6.0), (61.0, 9.0)]),
 
+    # The Dew Horn - the massif on the Twilight flank whose seaward face catches the
+    # wind first. Its rivers run down into the Twilight Sea.
+    dict(name="dew_horn", kind="line", amp=1850, sigma=4.6,
+         anchors=[(58.0, 148.0), (64.0, 162.0), (67.0, 178.0), (63.0, 196.0),
+                  (57.0, 210.0)]),
+    # The Ashfall Range - the same on the Gray flank, shedding into the Gray Sea.
+    dict(name="ashfall_range", kind="line", amp=1700, sigma=4.2,
+         anchors=[(56.0, 338.0), (63.0, 352.0), (66.0, 8.0), (61.0, 24.0)]),
+
     # The Twilight Crags / Gray Crags - the nightside rim highlands, a broken chain
     # around the terminator rather than a smooth belt.
     dict(name="twilight_crags", kind="line", amp=900, sigma=5.0,
@@ -138,10 +147,18 @@ BASINS = [
     dict(name="twilight_sea", centre=(91.0, 170.0), radius=19.5, amp=-980, flat=True),
     dict(name="gray_sea", centre=(92.0, 8.0), radius=13.6, amp=-980, flat=True),
     # The antistellar cold trap: the frozen sea and the propane lakes sit in it.
-    dict(name="antistellar_trap", centre=(171.0, 44.0), radius=31.0, amp=-1150, flat=True),
+    dict(name="antistellar_trap", centre=(158.0, 62.0), radius=19.5, amp=-1150,
+         flat=True, warp=3.4),
 ]
 
 TROUGHS = [
+    dict(name="the_salt", amp=-430, sigma=8.0,
+         anchors=[(34.0, 288.0), (42.0, 296.0), (52.0, 304.0),
+                  (62.0, 312.0), (71.0, 320.0)]),
+    # a second one on the far flank, so a dying river is a feature of the planet
+    # rather than one accident in one place
+    dict(name="ember_sink", amp=-380, sigma=7.0,
+         anchors=[(36.0, 96.0), (46.0, 88.0), (57.0, 80.0), (68.0, 74.0)]),
     # The Dew Belt - a low rift running sunward from the Twilight terminator. It is
     # a TROUGH, which is why moisture collects there; being low is the cause.
     dict(name="dew_belt", amp=-255, sigma=7.5,
@@ -195,7 +212,8 @@ def build(verbose=True):
 
     for d in DOMES + BASINS:
         c = to_vec(*d["centre"])
-        r = (ang(V, c)[:, 0] + warp * (0.45 if d["flat"] else 0.9)) / d["radius"]
+        r = (ang(V, c)[:, 0]
+             + warp * d.get("warp", 0.45 if d["flat"] else 0.9)) / d["radius"]
         if d["flat"]:
             f = np.clip(1.0 - r ** 4, 0.0, 1.0)          # flat top / flat floor
         else:

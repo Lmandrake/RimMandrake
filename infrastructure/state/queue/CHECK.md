@@ -1162,3 +1162,28 @@ Three owner answers, 2026-08-17:
    fix magenta, by removing the BiomesKitControl extensions entirely - i.e. it deletes
    every hill/forest/mountain sprite from the world map. It is a sledgehammer; the
    one-line FLAT_ONLY fix is the right tool.
+
+🔑 RIVER/ROAD ADJACENCY - HOW FAR IT IS SOLVED, 2026-08-18. Read this before trying again.
+   FORMAT: three parallel arrays; each entry is (origin tile uint32, adjacency byte,
+   def shortHash uint16). Origins are SORTED ASCENDING and REPEAT - a tile carries one
+   entry per link, so a through-tile appears twice.
+   ✅ PROVED: the adjacency byte indexes an ANGULAR neighbour ordering. Evidence, and
+   it is decisive: over the 67 river tiles and 163 road tiles that carry exactly two
+   links, the slot DIFFERENCE is only ever 2 or 3 - never 0, 1, 4 or 5. A river passing
+   through a tile bends 120 or 180 degrees and never doubles back at 60. Only an
+   angular ordering makes a slot difference encode a turn angle. River 58.2% straight,
+   road 67.5%, against 33.3% for a uniform distribution.
+   ✅ PROVED: the rotation offset is PER-TILE, not global. Rivers and roads score their
+   best on DIFFERENT (winding, rotation) pairs, and no pair beats ~0.27 reciprocity.
+   ⛔ REFUTED, do not repeat: scoring candidate orderings by "is the implied target
+   also a river tile". 27% of river origins have NO river neighbour, so the test tops
+   out near chance whatever the mapping. It cost two rounds.
+   ⛔ Distance-order and ID-order were both tried. Neither is it.
+   ⇒ WHAT IS STILL NEEDED: one number per tile - which neighbour is slot 0, plus the
+   winding. 21,872 of them. Only the engine has it. The route is a companion [Tool]
+   that dumps Find.WorldGrid.GetTileNeighbors order per tile, which needs the game DOWN
+   to deploy because the OS locks the assembly. `Outputs\Adjacent Distance Between
+   Layer Tiles` exists as a debug action and RAN, but its output went to a window, not
+   to Player.log or jawa/drain_log - if it prints per-tile distances IN neighbour order
+   those distances are a fingerprint that recovers the permutation without any new code.
+   Try reading it via rimworld/get_ui_state before building the DLL.
