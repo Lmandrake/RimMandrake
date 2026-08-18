@@ -218,3 +218,41 @@ misses are exactly the ones that NRE.
 Converting what a faction OWNS is safe and effective; deleting the faction is not.
 📌 Work on a COPY and read `Player.log` — `load_game_ready` returned `success: true` on
 the broken save. **The load succeeding is not the save being sound.**
+
+## ⭐ SWAPPING a faction's def WORKS — and it is the way in for a faction worldgen refuses
+
+Measured 2026-08-17, after three worlds generated without `Pirate`.
+
+**The problem:** `Pirate` is `permanentEnemy`, and the planet editor does not offer permanent
+enemies in its configurable list. No amount of patching put it there — and the patch that
+tried made things worse (below). Meanwhile the world had generated **two** `Jawa_Junkers`.
+
+**The fix:** convert one into the other, in the save.
+`src/RimMandrake/Utils/swap_faction_def.py --from Jawa_Junkers --to Pirate --nth 2
+--name "Blackstar Company" --hostile --apply`
+
+🔑 **Only the `<def>` string changes.** Every loadID, every settlement's `<faction>` pointer,
+every relation entry and every world pawn still points at the same `Faction_N`, so the
+reference graph is untouched. That is why this succeeds where DELETING a faction fails
+completely: deletion has to chase every reference and still NREs; a swap touches one string.
+✅ Verified end to end: the engine reported 12 factions with settlements including
+**Blackstar Company**, after a load.
+
+⚠️ **Pass `--hostile` when swapping into a `permanentEnemy`.** The def's traits (pawn kinds,
+xenotypes, permanentEnemy) apply from the next load, but the STORED goodwill does not
+re-derive — without it you get a permanently-hostile faction sitting at neutral.
+📌 Do the swap on the SOURCE before re-running a paint pipeline, so settlement placement
+assigns to the new faction properly.
+
+## 🔴 `Pirate` IS `PirateBandBase` — never patch a def that is also a parent
+
+Vanilla's pirate def carries `Name="PirateBandBase"`, so it is simultaneously a concrete
+faction and the template every other pirate faction inherits, **ours included**
+(`Jawa_Junkers` has `ParentName="PirateBandBase"`).
+
+Adding `startingCountAtWorldCreation 2` to it to make Blackstar generate **did not work and
+produced a second Junkers**, because the child inherited the field. The hazard had already
+been written down in this skill an hour earlier and was walked into anyway.
+
+⇒ **Before patching any vanilla def, grep for `ParentName="<its Name>"`.** If anything
+inherits from it, patch the children's own fields or find another route entirely.
