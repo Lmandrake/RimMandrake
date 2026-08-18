@@ -1138,3 +1138,27 @@ Three owner answers, 2026-08-17:
    more (Nightspill, Gray Marches, South Marches, one on the nightside ice). Audit every
    biome x hilliness against the BiomesKit texture folders OFFLINE. This was catchable
    without a load and was not caught.
+
+🔴 MAGENTA — SETTLED 2026-08-17, and my first two diagnoses were both wrong.
+   CAUSE: `ZBiome_DesertOasis`, used in `dew_belt` (52 < arc < 92 around bearing 178 -
+   exactly the twilight band where every magenta patch sits). It has a Forest/ texture
+   set and NO Hills/ folder, and it was simply absent from `FLAT_ONLY`. The clamp at
+   paint_ashkarr.py:334 was working the whole time; `hh + (1 if random() < 0.18)`
+   promotes ~18% of its tiles off flat, and those are the patches. FIXED.
+   ⛔ REFUTED, do not re-raise: "missing _Snowy variants cause it". The snow suffix
+   fires ONLY from per-biome `*SnowyBelow` temperature fields on
+   ReGrowthCore.BiomesKitControl, and Alpha Biomes / More Vanilla Biomes / Advanced
+   Biomes declare NONE - so their _SemiSnowy/_Snowy/_VerySnowy art is dead weight and
+   can never be requested. Proof by correlation: RG_BoilingForest sets zero snow
+   fields, ships zero snow art, and has never gone magenta.
+   🔑 There is no Mountains/ folder anywhere - Mountains and Impassable live INSIDE
+   Hills/. The Hills-vs-Mountains split I worried about does not exist.
+   LATENT, not live: ExtremeDesert declares mountainsSnowyBelow -5 and ships only
+   _SemiSnowy; Scarlands declares mountainsFullySnowyBelow -21 and ships no
+   _FullySnowy. Both are dayside-hot on Ash'karr today. Recorded as COLD_FLAT.
+   MOD SETTING: ReGrowth 2 -> General -> "Enable world map beautification"
+   (`RG_WorldMapBeautificationProject`, default True, never toggled here - its store
+   `Config/ModSettingsFrameworkMod_Settings.xml` does not exist). Turning it OFF does
+   fix magenta, by removing the BiomesKitControl extensions entirely - i.e. it deletes
+   every hill/forest/mountain sprite from the world map. It is a sledgehammer; the
+   one-line FLAT_ONLY fix is the right tool.

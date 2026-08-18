@@ -145,7 +145,12 @@ TROUGHS = [
     # The Dew Belt - a low rift running sunward from the Twilight terminator. It is
     # a TROUGH, which is why moisture collects there; being low is the cause.
     dict(name="dew_belt", amp=-255, sigma=7.5,
-         anchors=[(52.0, 176.0), (64.0, 178.0), (76.0, 179.0), (89.0, 180.0)]),
+         anchors=[(38.0, 184.0), (45.0, 181.0), (52.0, 178.0),
+                  (64.0, 178.0), (76.0, 179.0), (89.0, 180.0)]),
+    # the pass through the Scald Spine that the Dew Belt drains through. A crater rim
+    # with no breach is a wall, and a wall makes the sea inside it unreachable.
+    dict(name="scald_gate", amp=-1250, sigma=3.0,
+         anchors=[(49.0, 180.0), (44.0, 182.0), (39.0, 184.0)]),
 ]
 
 # multi-octave noise on the sphere: sum of plane waves in random directions.
@@ -154,7 +159,7 @@ TROUGHS = [
 # tile spacing - so the field had NO energy at tile scale and rendered as blurred
 # paint. Terrain must be rough at the scale you look at it. Amplitude falls as 1/f
 # (pink), which is what real topography measures.
-NOISE_OCTAVES = [(2.2, 240.0), (4.5, 175.0), (9.0, 128.0), (18.0, 90.0),
+NOISE_OCTAVES = [(2.2, 105.0), (4.5, 95.0), (9.0, 110.0), (18.0, 90.0),
                  (36.0, 62.0), (72.0, 43.0), (144.0, 29.0), (288.0, 19.0)]
 NOISE_WAVES = 32
 LAND_BASE = 300.0        # continental freeboard: noise alone must not dig a sea
@@ -303,6 +308,49 @@ def ramp(v):
 
 
 RENDER_ARC = 112.0        # past the terminator, so a sea on it is not cut in half
+DISC_CACHE = os.path.join(REPO, "world", "discmap_%d.npz")
+
+
+def disc_maps(V, size=520, pad=14):
+    """The pixel -> tile index map for both hemispheres, cached.
+
+    Split out so every later stage - rivers, rainfall, biomes - draws onto exactly
+    the same projection without recomputing the nearest-tile search, which is the
+    slow part of making a picture.
+    """
+    path = DISC_CACHE % size
+    if os.path.exists(path):
+        z = np.load(path)
+        return (int(z["W"]), int(z["H"]),
+                [(int(z["x0_%d" % k]), int(z["y0_%d" % k]),
+                  z["inside_%d" % k], z["near_%d" % k]) for k in (0, 1)])
+    W, H, R = size * 2 + pad * 3, size + pad * 2, size / 2.0
+    out, store = [], {"W": W, "H": H}
+    for k, sign in enumerate((1.0, -1.0)):
+        ys, xs = np.mgrid[0:size, 0:size]
+        dx, dy = (xs - R + 0.5) / R, (ys - R + 0.5) / R
+        rr = np.hypot(dx, dy)
+        inside = rr <= 1.0
+        a = rr[inside] * RENDER_ARC
+        b = np.degrees(np.arctan2(dy[inside], sign * dx[inside])) % 360.0
+        if sign < 0:
+            a = 180.0 - a
+        P = to_vec(a, b)
+        near = np.zeros(len(P), dtype=np.int32)
+        for t in range(0, len(P), 4096):
+            near[t:t + 4096] = np.argmax(P[t:t + 4096] @ V.T, axis=1)
+        x0 = pad + k * (size + pad)
+        out.append((x0, pad, inside, near))
+        store["x0_%d" % k], store["y0_%d" % k] = x0, pad
+        store["inside_%d" % k], store["near_%d" % k] = inside, near
+    np.savez_compressed(path, **store)
+    return W, H, out
+
+
+def blank(W, H):
+    img = np.zeros((H, W, 3), dtype=np.uint8)
+    img[:, :] = (10, 10, 14)
+    return img
 
 
 def render(elev, water, V, nb, size=520, pad=14):
@@ -320,33 +368,16 @@ def render(elev, water, V, nb, size=520, pad=14):
     # and at 190 m/unit the plains rendered as flat paint.
     shade = np.clip((elev - mean_nb) / 62.0, -1.0, 1.0)
 
-    W = size * 2 + pad * 3
-    img = np.zeros((size + pad * 2, W, 3), dtype=np.uint8)
-    img[:, :] = (10, 10, 14)
-    R = size / 2.0
-    for half, (cx, sign) in enumerate([(pad + R, 1.0), (pad * 2 + size + R, -1.0)]):
-        ys, xs = np.mgrid[0:size, 0:size]
-        dx = (xs - R + 0.5) / R
-        dy = (ys - R + 0.5) / R
-        rr = np.hypot(dx, dy)
-        inside = rr <= 1.0
-        a = rr[inside] * RENDER_ARC                # arc; the terminator is inside the rim
-        b = np.degrees(np.arctan2(dy[inside], sign * dx[inside])) % 360.0
-        if sign < 0:
-            a = 180.0 - a
-        P = to_vec(a, b)
-        near = np.zeros(len(P), dtype=np.int64)
-        for s in range(0, len(P), 4096):
-            near[s:s + 4096] = np.argmax(P[s:s + 4096] @ V.T, axis=1)
+    W, H, discs = disc_maps(V, size, pad)
+    img = blank(W, H)
+    for x0, y0, inside, near in discs:
         c = col(elev[near]).astype(np.int16)
-        sh = shade[near]
-        c = np.clip(c + (sh * 30).astype(np.int16)[:, None], 0, 255)
+        c = np.clip(c + (shade[near] * 30).astype(np.int16)[:, None], 0, 255)
         c[water[near]] = col(elev[near][water[near]])   # no fake relief on water
         tile = np.zeros((size, size, 3), dtype=np.uint8)
         tile[:, :] = (10, 10, 14)
         tile[inside] = c.astype(np.uint8)
-        x0 = int(cx - R)
-        img[pad:pad + size, x0:x0 + size] = tile
+        img[y0:y0 + size, x0:x0 + size] = tile
     return img
 
 

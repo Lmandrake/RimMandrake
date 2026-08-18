@@ -201,8 +201,25 @@ WATER = {"scald_sea", "twilight_sea", "gray_sea", "frozen_sea"}
 
 # 🔴 These ship ONLY a Forest/ worldmap texture set in ReGrowth's BiomesKit pack -
 # no Hills/. Give one of them hilliness above flat and BiomesKit finds no material
-# and the tile renders MAGENTA. Measured 2026-08-16 off the texture folders.
-FLAT_ONLY = {"AB_TarPits", "AB_IdyllicMeadows", "AB_MiasmicMangrove"}
+# and the tile renders MAGENTA. Measured 2026-08-16, re-measured 2026-08-17.
+#
+# ⭐ ZBiome_DesertOasis was the one MISSING, and it is what turned the twilight band
+# magenta in the 2026-08-17 screenshots: it is in `dew_belt` (52 < arc < 92 around
+# bearing 178 - exactly where the magenta is), it has no Hills/ folder at all, and
+# the `hh + (1 if random() < 0.18)` roughening below promotes ~18% of its tiles off
+# flat. The clamp was working; this biome simply was not in the list.
+# I first blamed missing SNOW variants. That is REFUTED: the snow suffix only fires
+# from per-biome `*SnowyBelow` temperature fields, and Alpha Biomes / More Vanilla
+# Biomes / Advanced Biomes set none, so their _Snowy art is dead weight.
+FLAT_ONLY = {"AB_TarPits", "AB_IdyllicMeadows", "AB_MiasmicMangrove",
+             "ZBiome_DesertOasis"}
+# Whole flat-only set if the biome pool ever widens: + ZBiome_CoastalDunes,
+# ZBiome_Iceberg_NoBeach, ZBiome_Sandbar_NoBeach.
+#
+# Two of ReGrowth's OWN biomes declare snow thresholds and ship no art for them.
+# Both are dayside-hot here, so they are latent rather than live - but they are real.
+COLD_FLAT = {"ExtremeDesert": -5.0,      # mountainsSnowyBelow -5, only _SemiSnowy shipped
+             "Scarlands": -21.0}         # mountainsFullySnowyBelow -21, no _FullySnowy
 
 # elevation metres (base, jitter) and hilliness enum per region
 # pollution 0..1. Ancient machinery leaks; nothing else on this planet does.
