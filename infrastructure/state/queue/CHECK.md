@@ -1097,3 +1097,44 @@ spec:     Ash'karr is BUILT and committed (`world/WORLDMAP_gen.rws`, seed `pumpk
 verify:   EMPTY
 criteria: the owner looks at the planet and does not immediately name a defect.
 state:    ready
+
+owner ruling 2026-08-17, evening, after looking at 8 screenshots of the built world:
+
+🔴 THE DIAGNOSIS, mine, accepted: the painter builds independent per-tile fields in
+   PARALLEL and smooths the result. A planet is a CAUSAL CHAIN - elevation -> sea level
+   -> drainage -> moisture -> vegetation -> settlement -> roads - and each stage must
+   READ the one before it. Consequences visible on screen:
+   * `RELIEF` is a per-region constant + jitter, so two neighbours differ by coin flip.
+     There is no slope, so "downhill" is UNDEFINED and rivers are underivable.
+   * The painter writes NO river. Every river on the planet is a fossil of VANILLA's
+     elevation field, truncated by clean_ashkarr_hydrology where it met my new water.
+     That is why they start in flat sand and end in open desert.
+   * Lush terrain is off-water because biome = region_of(arc, bearing, elev). Water is
+     not an input to that function.
+   * Anything defined by a RADIUS renders as a CIRCLE - the Scald disc, the Spine
+     annulus, the Rust Cathedral bullseye. roughen() papers over it; the real fix is
+     that a range must be a CONTOUR of a field, not the definition of a region.
+   * "specks 2326 -> 237" was the wrong metric. It measures texture, not sense.
+
+ORDER, ruled: 1 elevation field over the graph (plates + distance-to-boundary uplift +
+   multi-octave noise) · 2 sea level = threshold on it · 3 rivers = priority-flood fill
+   + steepest-descent routing + flow accumulation, graded into Creek/River/HugeRiver,
+   arrays written by us · 4 rainfall field advected from seas + terminator ice, with
+   orographic shadow · 5 biome = Whittaker f(temp, rainfall, elev), NOT a region
+   predicate · 6 riparian pass, dilate rivers 1-2 and upgrade vegetation · 7 anisotropic
+   blob growth along isotherms · 8 roads LAST, cost-weighted over the graph between real
+   settlements · 9 offline sanity linter that must PASS before the owner ever looks.
+
+Three owner answers, 2026-08-17:
+   RIVER MOUTHS: BOTH. High-accumulation trunks MUST reach a sea; low-accumulation
+     rivers MAY die in playas / salt pans. So "reaches no sea" is a defect only above
+     the trunk threshold - the linter must know which.
+   GREEN RIBBON: NILE-STYLE. A 1-2 tile lush band follows EVERY river wherever it goes,
+     including through ExtremeDesert at the substellar point.
+   REPAINT SCOPE: FULL REPAINT from the pristine source. Nothing in the current
+     WORLDMAP_gen.rws is preserved; populate / name / faction passes re-run after.
+
+🔴 MAGENTA: FLAT_ONLY in paint_ashkarr.py lists 3 biomes and the screenshots show many
+   more (Nightspill, Gray Marches, South Marches, one on the nightside ice). Audit every
+   biome x hilliness against the BiomesKit texture folders OFFLINE. This was catchable
+   without a load and was not caught.
