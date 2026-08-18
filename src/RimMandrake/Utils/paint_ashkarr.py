@@ -273,17 +273,21 @@ def main():
     hot0, cold0 = max(temps0), min(temps0)
 
     counts = {}
+    tile_region = [None] * n
     for t in range(n):
         arc, bear = geo[t]
         n1 = random.uniform(-1, 1)
         n2 = random.uniform(-1, 1)
         reg = region_of(t, arc, bear, g.get("tileElevation", t), n1, n2)
         counts[reg] = counts.get(reg, 0) + 1
+        tile_region[t] = reg
 
         # ---- biome
+        # 🔑 Per-tile weighted picks are what made the map look like confetti. Paint
+        # the region's DOMINANT biome here; the secondaries are grown as blobs in the
+        # blobify pass below, which preserves the same proportions with organic shapes.
         opts = BIOME[reg]
-        w = WEIGHT.get(reg)
-        pick = random.choices(opts, weights=w)[0] if w else opts[0]
+        pick = opts[0]
         # Ocular forest lives ONLY on mountain tops, in tiny patches
         base_elev, jit, hill = RELIEF[reg]
         elev = base_elev + (random.uniform(-1, 1) * jit if jit else 0)
@@ -333,6 +337,58 @@ def main():
 
         lo_hi = POLLUTION.get(reg) or DIRTY_BIOMES.get(pick)
         p_arr[t] = int(round(random.uniform(*lo_hi) * POLL_FULL)) if lo_hi else 0
+
+    # ---------------------------------------------------------------- blobify
+    # Re-introduce each region's secondary biomes as GROWN BLOBS at the same overall
+    # share the old per-tile weights produced. Region-growing over the adjacency graph
+    # gives filaments and lobes; a weighted per-tile roll gives confetti.
+    import world_shape as ws
+    nb, _la, _lo, _v = ws.graph()
+    biomes = [None] * n
+    for t in range(n):
+        biomes[t] = None
+    names = g.biome_names()
+    by_region = {}
+    for t in range(n):
+        by_region.setdefault(tile_region[t], []).append(t)
+
+    blobbed = 0
+    for reg, tiles_in in by_region.items():
+        opts, w = BIOME[reg], WEIGHT.get(reg)
+        if not w or len(opts) < 2:
+            continue
+        total = float(sum(w))
+        pool = set(tiles_in)
+        for k in range(1, len(opts)):
+            want = int(round(len(tiles_in) * w[k] / total))
+            if want <= 0:
+                continue
+            placed = 0
+            guard = 0
+            while placed < want and guard < 400:
+                guard += 1
+                free = [t for t in pool if names[t] == opts[0]]
+                if not free:
+                    break
+                seed = random.choice(free)
+                size = max(3, min(want - placed, int(random.gauss(14, 7))))
+                claimed = ws.grow(nb, [seed], size,
+                                  lambda u: u in pool and names[u] == opts[0])
+                got = [u for u in claimed if claimed[u] == seed]
+                for u in got:
+                    names[u] = opts[k]
+                    pool.discard(u)
+                placed += len(got)
+                blobbed += len(got)
+
+    # a light despeckle catches stragglers without dissolving the blobs we just grew
+    names, moved = ws.despeckle(names, nb, min_size=3,
+                                protect=("Ocean", "SeaIce", "AB_MechanoidIntrusion",
+                                         "AB_OcularForest", "ZBiome_DesertOasis"))
+    for t in range(n):
+        b_arr[t] = g.hash_by_biome[names[t]]
+    print("blobify: %d tiles grown into blobs | despeckle moved %d" % (blobbed, moved))
+    ws.report(names, nb, "biomes")
 
     print("region                tiles")
     for k in sorted(counts, key=lambda x: -counts[x]):
