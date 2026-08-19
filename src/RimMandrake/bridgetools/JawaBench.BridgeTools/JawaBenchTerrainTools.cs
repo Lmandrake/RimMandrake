@@ -6103,6 +6103,91 @@ namespace JawaBench.BridgeTools
         // Guard the OWNER, not the result, in one place so it cannot be got
         // wrong per-tool. `&&` short-circuits, so `Find.TickManager` is only
         // touched once `Current.Game` is known non-null.
+
+        // ------------------------------------------------------------------
+        // jawa/world_neighbors - the one number offline world editing cannot get.
+        //
+        // WHY: rivers and roads in the save are (origin tile, ADJACENCY SLOT, def),
+        // and the slot indexes RimWorld's own neighbour list for that tile. Offline
+        // I proved two things about it and could get no further:
+        //   * the ordering is ANGULAR - over every tile carrying two links, the slot
+        //     difference is only ever 2 or 3, never 0/1/4/5, so a river bends 120 or
+        //     180 degrees and never doubles back. Only an angular order does that.
+        //   * the rotation is PER TILE - rivers and roads pick different global
+        //     offsets, and solving it from the engine's own links gives zero unique
+        //     solutions because every constrained case is symmetric.
+        // So the ordering has to come from the engine. This dumps it, once, for
+        // every tile. The answer is a property of the GRID (subdivisions + coverage),
+        // not of a particular world, so one dump serves every world of that shape.
+        [Tool(
+            "jawa/world_neighbors",
+            Description =
+                "Dump RimWorld's OWN neighbour ordering for every world tile to a CSV: " +
+                "one row per tile, the neighbour tile IDs in the exact order " +
+                "WorldGrid returns them. This is the key that lets an offline editor " +
+                "AUTHOR rivers and roads instead of only deleting them, because their " +
+                "save format stores a link as an index into this ordering.",
+            ResultDescription =
+                "Returns success, path, tiles, and the neighbour counts seen - a geodesic " +
+                "sphere must show exactly 12 tiles with 5 neighbours and the rest with 6, " +
+                "which is a self-check on the dump.")]
+        public static async Task<object> WorldNeighbors(
+            IRimBridgeContext ctx,
+            CancellationToken cancellationToken,
+            [ToolParameter(Description =
+                "Output CSV path. Absolute path recommended; its directory is created.")]
+            string path = null)
+        {
+            return await ctx.MainThread.InvokeAsync(() =>
+            {
+                if (Find.World == null || Find.WorldGrid == null)
+                    return Fail("No world is loaded. Load or generate a world first.");
+
+                var grid = Find.WorldGrid;
+                int count = grid.TilesCount;
+                var outPath = string.IsNullOrEmpty(path)
+                    ? Path.Combine(GenFilePaths.SaveDataFolderPath, "world_neighbors.csv")
+                    : path;
+                var dir = Path.GetDirectoryName(outPath);
+                if (!string.IsNullOrEmpty(dir) && !Directory.Exists(dir))
+                    Directory.CreateDirectory(dir);
+
+                var sb = new StringBuilder();
+                sb.Append("tile,n0,n1,n2,n3,n4,n5\n");
+                // 1.6 replaced the bare int tile id with RimWorld.Planet.PlanetTile
+                // (the world is layered now - surface, orbit - so a tile carries its
+                // layer). The compiler caught this; nothing here was guessed.
+                var buf = new List<RimWorld.Planet.PlanetTile>();
+                var degrees = new Dictionary<int, int>();
+                for (int i = 0; i < count; i++)
+                {
+                    buf.Clear();
+                    grid.GetTileNeighbors(i, buf);
+                    int d = buf.Count;
+                    degrees[d] = degrees.TryGetValue(d, out var had) ? had + 1 : 1;
+                    sb.Append(i.ToString(CultureInfo.InvariantCulture));
+                    for (int k = 0; k < 6; k++)
+                    {
+                        sb.Append(',');
+                        sb.Append((k < d ? buf[k].tileId : -1).ToString(CultureInfo.InvariantCulture));
+                    }
+                    sb.Append('\n');
+                }
+                File.WriteAllText(outPath, sb.ToString());
+
+                return (object)new
+                {
+                    success = true,
+                    path = outPath,
+                    tiles = count,
+                    degrees = degrees.OrderBy(kv => kv.Key)
+                                     .Select(kv => new { neighbours = kv.Key, tiles = kv.Value })
+                                     .ToList(),
+                    ticksGame = TicksGameSafe(),
+                };
+            });
+        }
+
         private static int TicksGameSafe() =>
             Current.Game != null && Find.TickManager != null
                 ? Find.TickManager.TicksGame
