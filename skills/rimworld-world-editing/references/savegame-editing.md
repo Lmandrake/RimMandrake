@@ -256,3 +256,36 @@ been written down in this skill an hour earlier and was walked into anyway.
 
 ⇒ **Before patching any vanilla def, grep for `ParentName="<its Name>"`.** If anything
 inherits from it, patch the children's own fields or find another route entirely.
+
+## 🔑 RIVER AND ROAD LINKS — FULLY DECODED, 2026-08-18 (was: "cannot be authored")
+
+Three parallel arrays per kind, inside the SurfaceLayer:
+
+    tile<Kind>OriginsDeflate    4 B/entry  origin tile index, SORTED ASCENDING
+    tile<Kind>AdjacencyDeflate  1 B/entry  neighbour slot, 0..5
+    tile<Kind>DefDeflate        2 B/entry  RiverDef / RoadDef shortHash
+
+**An entry is one undirected EDGE, stored exactly ONCE, owned by the LOWER-INDEX tile.**
+The adjacency byte is that tile's index of its partner in `WorldGrid.GetTileNeighbors`
+order. Verified on a freshly generated world:
+
+* origin index < target index in **1.000** of 208 river and 440 road entries.
+* reciprocity is **exactly 0.000** — no edge is ever recorded from both ends. Zero, not
+  low: that is what proved one-way storage rather than a bad decode.
+* slot `s` maps to `neighbours[s]` and nothing else — `neighbours[s]` scores 0.298 on
+  "target is also an origin" while `neighbours[s±1]` score 0.024. A 12x separation.
+
+**Getting the ordering:** `jawa/world_neighbors` (companion, added 2026-08-18) dumps
+`GetTileNeighbors` order for every tile to CSV. It is a property of the GRID
+(subdivisions + coverage), not of a world, so one dump serves every world of that shape.
+The dump self-checks: exactly 12 tiles with 5 neighbours, the rest with 6. The ordering
+is ANGULAR — measured median bearing step 60.0 deg, 100% of steps within 40..80.
+
+⛔ **Do NOT try to recover the ordering offline.** It is angular but its rotation is
+PER TILE. Costed a full session: scoring every rotation/winding of distance-order,
+angular-order and id-order all top out near chance, and solving it from the engine's own
+links yields ZERO unique solutions because every constrained case is symmetric.
+
+⚠️ A through-tile has TWO entries whose slots differ by 2 or 3 — never 0, 1, 4 or 5. A
+river bends 120 or 180 degrees through a tile and never doubles back. Use that as a
+validity check on anything you write.
