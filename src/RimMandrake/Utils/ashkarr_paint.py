@@ -42,7 +42,7 @@ import worldgeom
 from worldmap import WorldGrid, WorldObjects, DECODE, load_hash_table, DEFAULT_DUMP
 
 TILES = 21872            # the engine's own grid at subdivisions 7; geometry only
-BUNDLE = os.path.join(REPO, "world", "ashkarr")
+BUNDLE = os.path.join(REPO, "world", "ASHKARR_WORLDMAP")
 
 # 🔴 THE SAVEGAME IS NOT INVOLVED. Owner, 2026-08-18: "Please don't write to the
 # savegame file anymore" and "DO NOT use the rivers, roads, and settlements in the
@@ -138,7 +138,7 @@ def fill_depressions(elev, nbl, sea):
     return out
 
 
-def flow(elev, nbl, rain, sea):
+def flow(elev, nbl, rain, sea, evap=None):
     """Steepest-descent routing plus accumulation. Returns (downstream, accum).
 
     Ties on a filled flat are broken by the FILLED elevation, which is strictly
@@ -157,8 +157,14 @@ def flow(elev, nbl, rain, sea):
     acc = rain.astype(np.float64).copy()
     for t in np.argsort(-elev):
         d = down[t]
-        if d >= 0:
-            acc[d] += acc[t]
+        if d < 0:
+            continue
+        # 🔑 A DESERT RIVER LOSES WATER AS IT GOES. Without this every stream that
+        # starts anywhere arrives somewhere, and the map fills with rivers that no
+        # climate could feed. With it, a branch that leaves the wet ground dies -
+        # which is what a salt pan IS.
+        carry = acc[t] if evap is None else max(0.0, acc[t] - evap[t])
+        acc[d] += carry
     return down, acc
 
 
@@ -363,7 +369,7 @@ def build():
         elev += amp * np.exp(-(d / (halfw * (1.0 + 0.3 * warp_b))) ** 2)
     # the Scald floor is lifted bodily so the lake can perch: the crater is high
     # ground with a hole in it, not a pit in the lowlands
-    elev[basin_of == 0] += 1250.0
+    elev[basin_of == 0] += 150.0
 
     print("=== 2. sea level ===")
     # 🔴 Owner 2026-08-18: "There's WAY too much water, so reduce that to a third."
@@ -409,7 +415,7 @@ def build():
     # draining in - the crater is a pump, not a sink.
     d_scald_pt = point_dist(V, 35, 185)
     scald_plume = np.exp(-((d_scald_pt - 15.0) / 11.0) ** 2)
-    moist = np.exp(-((arc - 96.0) / 40.0) ** 2) + 1.35 * scald_plume
+    moist = 0.42 * np.exp(-((arc - 96.0) / 34.0) ** 2) + 1.9 * scald_plume
     lift = np.zeros(n)
     for t in range(n):
         if arc[t] > NIGHT_ARC + 14:
@@ -421,16 +427,25 @@ def build():
         lift[t] = best
     dayside = np.clip((NIGHT_ARC + 12.0 - arc) / 24.0, 0, 1)
     rain_src = np.clip((0.35 + 3.6 * np.clip(lift, 0, 6.0)) * moist * dayside
-                       + 1.9 * scald_plume, 0.02, None)
+                       + 2.6 * scald_plume, 0.02, None)
 
     # ⭐ THE LAKE IS A SOURCE. Every drop the Scald's catchment collects leaves through
     # the one notch, so the outflow carries the whole crater - the largest river on
     # Ash'karr starts at a lake 1.1 km above the desert it crosses.
+    # evaporation per tile: brutal in the deep waste, mild in the crater basin and on
+    # the seam. This is what kills a branch in open desert.
+    evap = (240.0 * np.clip(1.0 - moist / 1.2, 0.05, 1.0)
+            * np.clip((110.0 - arc) / 60.0, 0.25, 1.6))
+    evap[d_scald_pt < 26] *= 0.30
     scald_water = sea & (sea_id == 0)
-    rain_src[scald_water] += 34.0
+    # 🔴 Owner 2026-08-19: the Scald's river must be MASSIVE and the driving river
+    # system of the world. The lake's catchment is the whole crater plus its own
+    # surface, and all of it leaves through one notch.
+    rain_src[scald_water] += 260.0
     for cycle in range(4):
         filled = fill_depressions(elev, nbl, sink)
-        down, acc = flow(filled, nbl, rain_src, sink)
+        filled = np.where((filled - elev) > 70.0, elev, filled)
+        down, acc = flow(filled, nbl, rain_src, sink, evap)
         cut = 44.0 * np.log1p(acc) * np.clip(elev / 900.0, 0.15, 3.0)
         erodible = ~sea
         elev[erodible] = np.clip(elev[erodible] - cut[erodible], 12.0, 3800.0)
@@ -445,6 +460,33 @@ def build():
     need = np.where(d_scald_pt < 46.0, 60.0, need)   # the Scald basin is wet
     chan = (acc > need) & (~sea) & (arc < NIGHT_ARC + 8)
     print("    channel tiles %d" % chan.sum())
+
+    # 🔴 Owner: "each branch ending in dead salt plains or tiny hyper saline pools."
+    # A terminus is a channel tile whose downstream neighbour is NOT a channel and NOT
+    # the sea - the river simply stops being a river there.
+    terminus = np.zeros(n, bool)
+    for t in np.nonzero(chan)[0]:
+        d = down[t]
+        if d < 0 or (not chan[d] and not sink[d]) or acc[t] <= evap[t]:
+            terminus[t] = True
+    saltpan = np.zeros(n, bool)
+    pool = np.zeros(n, bool)
+    for t in np.nonzero(terminus)[0]:
+        front = {int(t)}
+        saltpan[t] = True
+        for step in range(3 if acc[t] > 400 else 2):
+            nxt = set()
+            for x in front:
+                for u in nbl[x]:
+                    if sea[u] or saltpan[u] or elev[u] > elev[t] + 90:
+                        continue
+                    saltpan[u] = True
+                    nxt.add(u)
+            front = nxt
+        if acc[t] > 700:                 # a big branch leaves standing brine behind
+            pool[t] = True
+    print("    termini %d, salt plain %d tiles, hypersaline pools %d"
+          % (terminus.sum(), saltpan.sum(), pool.sum()))
 
     mouths = [int(t) for t in np.nonzero(chan)[0]
               if down[t] >= 0 and sink[down[t]] and acc[t] > 90]
@@ -464,8 +506,11 @@ def build():
     print("    mouths %d, delta tiles %d" % (len(mouths), delta.sum()))
 
     print("=== 4. biomes ===")
-    riparian = bfs_dist(np.nonzero(chan)[0], nbl, n, cap=9)
-    bigriver = bfs_dist(np.nonzero(chan & (acc > 1400))[0], nbl, n, cap=9)
+    riparian = bfs_dist(np.nonzero(chan)[0], nbl, n, cap=12)
+    # 🔑 THE BANDS SCALE WITH THE RIVER. A creek gets one tile of green; the
+    # Scald's trunk gets a corridor. Flat bands ate the vast desert.
+    midriver = bfs_dist(np.nonzero(chan & (acc > 900))[0], nbl, n, cap=12)
+    bigriver = bfs_dist(np.nonzero(chan & (acc > 5000))[0], nbl, n, cap=14)
     near_sea = bfs_dist(np.nonzero(sea)[0], nbl, n, cap=9)
     d_gray = point_dist(V, 92, 8)
     d_twi = point_dist(V, 91, 170)
@@ -496,6 +541,10 @@ def build():
             if a > 150 and p2 > 1.75:
                 B[t] = "Glowforest" if p > 0.3 else "BMT_CrystalCaverns"
         # ---- the water margin
+        elif pool[t]:
+            B[t] = "Lake"                     # a tiny hypersaline pool
+        elif saltpan[t] and r > 1:
+            B[t] = "Wasteland" if p > -0.5 else "ZBiome_Badlands"   # dead salt plain
         elif delta[t]:
             B[t] = ("AB_MiasmicMangrove" if p2 > -0.2 else
                     "COMIGO_GreaterSwamp_Tropical" if p > 0.8 else "Wasteland")
@@ -504,16 +553,23 @@ def build():
             # rivers. The meridian gets mycoid and poison forest instead - so the two
             # kinds of green mean different things and you can tell where you are by
             # what is growing.
-            if d_scald_pt[t] < 48:
-                B[t] = ("COMIGO_GreaterSwamp_Tropical" if p2 > 1.1
-                        else "AB_FeraliskInfestedJungle")
-            elif a > 74:
-                B[t] = "AB_MycoticJungle" if p > 0 else "PoisonForest"
-            else:
-                B[t] = "ZBiome_DesertOasis"
-        elif r <= 2 and bigriver[t] <= 2:
-            B[t] = ("AB_FeraliskInfestedJungle" if d_scald_pt[t] < 40
-                    else "PoisonForest" if a > 74 else "ZBiome_DesertOasis")
+            # ⭐ THE RIPARIAN ZONATION, ruled by the owner 2026-08-19:
+            #   on the river   VICIOUS JUNGLE
+            #   bracketing it  lesser jungle and marsh
+            #   then           the PYRELANDS (stormy savanna)
+            #   then           desert
+            # Meridian rivers substitute mycoid and poison forest for the jungle, so
+            # the two greens still mean different things.
+            B[t] = ("AB_MycoticJungle" if a > 82 and p > -0.4 else
+                    "PoisonForest" if a > 82 else "AB_FeraliskInfestedJungle")
+        elif r <= 2 or midriver[t] <= 2:
+            B[t] = ("AB_MiasmicMangrove" if p2 > 1.1 else
+                    "COMIGO_GreaterSwamp_Tropical" if p2 > 0.5 and a < 78 else
+                    "PoisonForest" if a > 86 else "ZBiome_DesertOasis")
+        elif a < 80 and (midriver[t] <= 4 or bigriver[t] <= 7):
+            B[t] = "ZBiome_Grasslands"        # the Pyrelands bracket the green
+            if p2 > 1.45:
+                B[t] = "AB_TarPits"
         # ---- the terminator, arc 78..108: the rot, and the gelatinous
         elif a > 78:
             B[t] = "AridShrubland" if p > -0.2 else "Wasteland"
@@ -530,10 +586,6 @@ def build():
             B[t] = ("ZBiome_DesertOasis" if p2 > 1.2 else
                     "AridShrubland" if p > -0.3 else "Desert")
         # ---- the Pyrelands: stormy savanna, burning, tar pits interspersed
-        elif off_gray[t] < 62 and 50 < a < 86 and (p + 0.5 * lobe[t]) > -0.25:
-            B[t] = "ZBiome_Grasslands"
-            if p2 > 1.3:
-                B[t] = "AB_TarPits"
         # ---- the dayside waste
         elif a < 20:
             B[t] = "ExtremeDesert"
@@ -707,7 +759,7 @@ def write_bundle(w):
         for a, b, g in edges:
             wr.writerow(["road", a, b, "StoneRoad" if g == 1 else "DirtRoad"])
 
-    meta = {"planet": "Ash'karr", "tiles": n, "substellar": [0.0, 0.0],
+    meta = {"planet": "Ash'karr — The Sundered", "tiles": n, "substellar": [0.0, 0.0],
             "water_pct": round(100.0 * float(w["sea"].sum()) / n, 2),
             "regions": [r[0] for r in w["regions"]],
             "factions": sorted({x["faction"] for x in placed}),

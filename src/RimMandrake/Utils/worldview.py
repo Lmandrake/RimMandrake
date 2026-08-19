@@ -707,6 +707,52 @@ class BundlePlanet(object):
         return PlanetView.link_components(self, links)
 
 
+# 🔴 Owner 2026-08-19: "Please use icon shape + color to identify factions cleanly."
+# Colour alone fails at 4 px on a 2400 px map and fails again for anyone who reads
+# colour poorly. Shape carries the identity; colour reinforces it.
+FACTION_MARKS = [
+    ("circle", "#ffd45e"), ("square", "#ff7a4d"), ("triangle", "#5fe08f"),
+    ("diamond", "#7fb6ff"), ("star", "#ff6fd0"), ("hex", "#c3ff6e"),
+    ("cross", "#ffffff"), ("down", "#ff5e5e"), ("plus", "#b58bff"),
+    ("bowtie", "#5ee0e0"), ("pent", "#ffb347"), ("ring", "#9fe8c8"),
+]
+
+
+def marker(shape, x, y, r, fill, stroke="#0d0f14", sw=1.2, extra=""):
+    """One faction icon. Every shape is drawn to the same visual weight."""
+    a = 'fill="%s" stroke="%s" stroke-width="%.2f"%s' % (fill, stroke, sw, extra)
+    if shape == "circle":
+        return '<circle cx="%.1f" cy="%.1f" r="%.1f" %s/>' % (x, y, r, a)
+    if shape == "ring":
+        return ('<circle cx="%.1f" cy="%.1f" r="%.1f" fill="none" stroke="%s" '
+                'stroke-width="%.1f"/>' % (x, y, r, fill, sw * 2.2))
+    if shape == "square":
+        return '<rect x="%.1f" y="%.1f" width="%.1f" height="%.1f" %s/>' % (
+            x - r * .88, y - r * .88, r * 1.76, r * 1.76, a)
+    pts = {
+        "triangle": [(0, -1.15), (1.0, .72), (-1.0, .72)],
+        "down":     [(0, 1.15), (1.0, -.72), (-1.0, -.72)],
+        "diamond":  [(0, -1.25), (1.05, 0), (0, 1.25), (-1.05, 0)],
+        "bowtie":   [(-1.1, -1.0), (1.1, -1.0), (-1.1, 1.0), (1.1, 1.0)],
+        "cross":    [(-.38, -1.1), (.38, -1.1), (.38, -.38), (1.1, -.38),
+                     (1.1, .38), (.38, .38), (.38, 1.1), (-.38, 1.1),
+                     (-.38, .38), (-1.1, .38), (-1.1, -.38), (-.38, -.38)],
+    }
+    if shape == "plus":
+        pts["plus"] = pts["cross"]
+    if shape in ("hex", "pent", "star"):
+        k = {"hex": 6, "pent": 5, "star": 5}[shape]
+        out = []
+        for i in range(k * (2 if shape == "star" else 1)):
+            ang = math.pi * 2 * i / (k * (2 if shape == "star" else 1)) - math.pi / 2
+            rad = 1.15 if (shape != "star" or i % 2 == 0) else 0.5
+            out.append((math.cos(ang) * rad, math.sin(ang) * rad))
+        pts[shape] = out
+    q = pts.get(shape) or pts["triangle"]
+    return '<polygon points="%s" %s/>' % (
+        " ".join("%.1f,%.1f" % (x + dx * r, y + dy * r) for dx, dy in q), a)
+
+
 def hillshade(pv):
     """Per-tile shading from the local elevation gradient, sun from the north-west.
 
@@ -877,8 +923,6 @@ def draw_panel(svg, pv, proj, y0, layer, show, tooltips, corners, shade):
                     % (xy[0][0], xy[0][1] - 11 * sc, 13 * sc, mark, 2.0 * sc, txt))
 
     if "settlements" in show and pv.settlements:
-        pal = ["#ffd45e", "#ff8a5e", "#6ee0a0", "#8ab6ff", "#ff7bd0", "#c3ff6e",
-               "#ffffff", "#ff5e5e", "#9d7bff", "#5ee0e0", "#ffb347", "#7fffd4"]
         # the dots always draw; the NAMES declutter, because 72 holdings crowd the
         # terminator band into an unreadable smear
         placed_px = []
@@ -890,10 +934,12 @@ def draw_panel(svg, pv, proj, y0, layer, show, tooltips, corners, shade):
             if not vis:
                 continue
             f = pv.factions.get(st["faction"], {})
-            svg.add('<circle cx="%.1f" cy="%.1f" r="%.1f" fill="%s" stroke="#101014" '
-                    'stroke-width="%.1f"><title>%s · %s</title></circle>'
-                    % (xy[0][0], xy[0][1], 4.0 * sc, pal[f.get("index", 0) % len(pal)],
-                       1.2 * sc, esc(st["name"]), esc(f.get("name") or st["faction"])))
+            shape, col = FACTION_MARKS[f.get("index", 0) % len(FACTION_MARKS)]
+            svg.add(marker(shape, xy[0][0], xy[0][1], 5.0 * sc, col, sw=1.3 * sc,
+                           extra=""). replace("/>", "><title>%s — %s</title></%s>"
+                    % (esc(st["name"]), esc(f.get("name") or st["faction"]),
+                       "circle" if shape in ("circle", "ring") else
+                       "rect" if shape == "square" else "polygon"), 1))
             if "labels" in show:
                 px, py = float(xy[0][0]), float(xy[0][1])
                 if any(abs(px - a) < 62 * sc and abs(py - b) < 13 * sc
@@ -957,7 +1003,7 @@ def render(pv, layer="biome", projection="equirect", width=2400, center=(0.0, 0.
     main = worldgeom.make_projection(projection, width, center)
     second = (worldgeom.Mollweide(width, center[1])
               if sheet and projection == "equirect" else None)
-    legend_h = 300 if not getattr(pv, 'settlements', None) else 470
+    legend_h = 300 if not getattr(pv, 'settlements', None) else 520
     total = main.h + legend_h + (second.h + 30 if second else 0)
     svg = SVG(main.w, total)
 
@@ -998,38 +1044,54 @@ def render(pv, layer="biome", projection="equirect", width=2400, center=(0.0, 0.
             last = x
             svg.add('<text x="%.0f" y="%d" font-size="13" text-anchor="middle" '
                     'opacity="0.8">%g</text>' % (x, y0 + 124, a))
-    # ⭐ WHO LIVES WHERE. Owner: "Make a legend of the Factions and their
-    # settlements." Colours match the dots on the map.
+    # ⭐ WHO LIVES WHERE, as an actual legend box. Owner 2026-08-19: "The legend
+    # needs text too, as in an actual legend box like you have for biomes."
     if getattr(pv, "settlements", None):
-        pal = ["#ffd45e", "#ff8a5e", "#6ee0a0", "#8ab6ff", "#ff7bd0", "#c3ff6e",
-               "#ffffff", "#ff5e5e", "#9d7bff", "#5ee0e0", "#ffb347", "#7fffd4"]
         by = defaultdict(list)
         for st in pv.settlements:
             by[st["faction"]].append(st["name"])
         order = sorted(by, key=lambda k: -len(by[k]))
-        x, y = 900, y0 + 74
-        for k in order:
+        bx, bw = 880, main.w - 900
+        svg.add('<rect x="%d" y="%d" width="%d" height="%d" fill="#161a22" '
+                'stroke="#39415a" stroke-width="1.5" rx="4"/>'
+                % (bx, y0 + 60, bw, legend_h - 74))
+        svg.add('<text x="%d" y="%d" font-size="15" font-weight="bold" '
+                'letter-spacing="1.5" fill="#c8d2e8">FACTIONS AND THEIR '
+                'SETTLEMENTS</text>' % (bx + 14, y0 + 82))
+        x, y = bx + 16, y0 + 108
+        colw = (bw - 32) // 2
+        for j, k in enumerate(order):
             f = pv.factions.get(k, {})
-            col = pal[f.get("index", 0) % len(pal)]
-            svg.add('<circle cx="%d" cy="%d" r="6" fill="%s" stroke="#101014"/>'
-                    % (x + 6, y - 5, col))
-            svg.add('<text x="%d" y="%d" font-size="14" font-weight="bold">%s '
-                    '<tspan opacity="0.55" font-weight="normal">(%d)</tspan></text>'
-                    % (x + 18, y, esc(f.get("name", k)), len(by[k])))
+            shape, col = FACTION_MARKS[f.get("index", 0) % len(FACTION_MARKS)]
+            svg.add(marker(shape, x + 9, y - 5, 7.5, col, sw=1.2))
+            svg.add('<text x="%d" y="%d" font-size="15" font-weight="bold" '
+                    'fill="#f0f4ff">%s <tspan font-weight="normal" opacity="0.6">'
+                    '(%d)</tspan></text>' % (x + 24, y, esc(f.get("name", k)), len(by[k])))
             line, lines = "", []
             for nm in by[k]:
-                if len(line) + len(nm) > 62:
+                if len(line) + len(nm) > 54:
                     lines.append(line)
                     line = ""
-                line += (", " if line else "") + nm
+                line += (" · " if line else "") + nm
             lines.append(line)
             for ln in lines:
-                y += 15
-                svg.add('<text x="%d" y="%d" font-size="12" opacity="0.62">%s</text>'
-                        % (x + 18, y, esc(ln)))
+                y += 17
+                svg.add('<text x="%d" y="%d" font-size="13" fill="#aeb8cc">%s</text>'
+                        % (x + 24, y, esc(ln)))
             y += 20
-            if y > y0 + legend_h - 30:
-                x, y = x + 470, y0 + 74
+            if y > y0 + legend_h - 46 and x < bx + colw:
+                x, y = bx + 16 + colw, y0 + 108
+
+        # and a key for everything that is not a settlement
+        kx = 14
+        ky = y0 + legend_h - 26
+        svg.add('<text x="%d" y="%d" font-size="13" fill="#aeb8cc">KEY&#160;&#160;'
+                '<tspan fill="#57c8ff">river</tspan> &#160;'
+                '<tspan fill="#b0a08a">road</tspan> &#160;'
+                '<tspan fill="#ffffff">terminator (arc 90)</tspan> &#160;'
+                '<tspan fill="#8e8d85">Wasteland = dead salt plain</tspan> &#160;'
+                '<tspan fill="#2f7fb5">Lake = hypersaline pool / the Scald</tspan> &#160;'
+                'outlined hexes = mountainous</text>' % (kx, ky))
 
     svg.add("</g>")
 
