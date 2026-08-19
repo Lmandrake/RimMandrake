@@ -103,8 +103,16 @@ The Ammonia Flats · The Salt Gate (the deltas).
    🔴 Filling every depression guarantees every tile a path to the sea and makes dying
    rivers impossible; that bug produced **zero** salt pans.
 5. ⭐ **Every branch ends in a dead salt plain, or a tiny hypersaline pool** if it was
-   big when it died. Currently **100 termini, 524 tiles of salt plain**.
-6. **Dayside only.** Nothing feeds the nightside; there, water is locked as ice.
+   big when it died.
+6. 🔴 **RIVERS DO NOT CONNECT THE BASINS** — owner, 2026-08-19: *"The rivers shouldn't
+   connect the basins, they should peter out into salt flats."* Two things enforce it:
+   evaporation is set high enough (base **900**/tile in the waste, **×0.16** inside the
+   Scald basin) to kill even the 32,000-unit trunk before it reaches a sea, and **no
+   river link is ever written into a basin** — a reach that would arrive at one is a
+   terminus instead. The Twilight Sea, the Grey Sea and the Scald are therefore
+   hydrologically **separate**; nothing flows between them.
+   Currently **235 termini, ~1,120 tiles of dead salt plain, 3 hypersaline pools**.
+7. **Dayside only.** Nothing feeds the nightside; there, water is locked as ice.
 
 ## 5. Vegetation zonation — owner, 2026-08-19
 
@@ -121,8 +129,29 @@ The Ammonia Flats · The Salt Gate (the deltas).
 
 🔑 **The bands scale with the river.** A creek gets one tile of green; the Scald's trunk
 gets a corridor. Flat bands ate the vast desert the owner asked to keep.
+🔴 **The Pyrelands are a narrow bracket, not a belt** — owner, 2026-08-19: *"Too much
+grassland. Make the grassland into more desert, and make more extreme desert."* Gated to
+**arc < 74** and to within **2 tiles of a mid river or 4 of a trunk**. `ZBiome_Grasslands`
+went 6.3% → **2.0%** and `ExtremeDesert` 5.4% → **13.4%**.
 🔑 **Terrestrial foliage belongs to the Scald**; the meridian gets mycoid and poison
 forest. Two greens that mean different things.
+
+## 5b. The waste is the default state
+
+The dayside is desert unless a river pays for something else:
+
+| arc | biome |
+|---|---|
+| < 30 | `ExtremeDesert`, unbroken |
+| 30–56 | `ExtremeDesert`, `Desert` only where the noise field is high |
+| 56–78 | `Desert`, with `ZBiome_Badlands` on the broken ground and `ExtremeDesert` returning in the flattest parts |
+| > 78 | `Desert`, with `AridShrubland` only where it is genuinely damp |
+
+Current census, for comparison when this is rebuilt: `AB_RockyCrags` 26.3 ·
+`ExtremeDesert` 13.4 · `AridShrubland` 9.0 · `Wasteland` 7.8 (the salt plains) ·
+`Desert` 7.7 · `AB_FeraliskInfestedJungle` 6.9 · `Ocean` 6.7 · `AB_MycoticJungle` 4.8 ·
+`PoisonForest` 3.0 · `AB_PropaneLakes` 2.5 · `ZBiome_DesertOasis` 2.1 ·
+`ZBiome_Grasslands` 2.0 · `ZBiome_Badlands` 1.9 · `Lake` 1.4.
 
 ## 6. Other biome placement
 

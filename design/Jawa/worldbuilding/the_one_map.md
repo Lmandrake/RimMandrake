@@ -1,5 +1,10 @@
 # THE ONE MAP — Ash'karr, hand-authored once
 
+> 🔑 **The world's CONTENT now lives in
+> [`ASHKARR_WORLD_DEFINITION.md`](ASHKARR_WORLD_DEFINITION.md)** — coordinates,
+> gazetteer, hydrology, zonation, factions. This file keeps only the DOCTRINE: why
+> there is no generator, what "realistic" means here, and the reference images.
+
 **🔴 Owner's ruling, 2026-08-18:**
 
 > *"We aren't trying to make random generators that produce alternative planet maps…

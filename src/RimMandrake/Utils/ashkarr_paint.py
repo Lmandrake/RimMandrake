@@ -434,9 +434,13 @@ def build():
     # Ash'karr starts at a lake 1.1 km above the desert it crosses.
     # evaporation per tile: brutal in the deep waste, mild in the crater basin and on
     # the seam. This is what kills a branch in open desert.
-    evap = (240.0 * np.clip(1.0 - moist / 1.2, 0.05, 1.0)
+    # 🔴 Owner 2026-08-19: "The rivers shouldn't connect the basins, they should peter
+    # out into salt flats." So evaporation is set high enough to kill even the Scald's
+    # 32,000-unit trunk before it can reach the Twilight or the Grey Sea. The crater
+    # basin itself keeps a low loss, which is why its own valleys stay green.
+    evap = (900.0 * np.clip(1.0 - moist / 1.2, 0.05, 1.0)
             * np.clip((110.0 - arc) / 60.0, 0.25, 1.6))
-    evap[d_scald_pt < 26] *= 0.30
+    evap[d_scald_pt < 22] *= 0.16
     scald_water = sea & (sea_id == 0)
     # 🔴 Owner 2026-08-19: the Scald's river must be MASSIVE and the driving river
     # system of the world. The lake's catchment is the whole crater plus its own
@@ -467,7 +471,10 @@ def build():
     terminus = np.zeros(n, bool)
     for t in np.nonzero(chan)[0]:
         d = down[t]
-        if d < 0 or (not chan[d] and not sink[d]) or acc[t] <= evap[t]:
+        # 🔴 reaching a sea counts as a terminus too: the owner ruled that rivers do
+        # not connect the basins, so the last reach dies on the flat instead of
+        # emptying into one.
+        if d < 0 or not chan[d] or sink[d] or acc[t] <= evap[t]:
             terminus[t] = True
     saltpan = np.zeros(n, bool)
     pool = np.zeros(n, bool)
@@ -488,8 +495,8 @@ def build():
     print("    termini %d, salt plain %d tiles, hypersaline pools %d"
           % (terminus.sum(), saltpan.sum(), pool.sum()))
 
-    mouths = [int(t) for t in np.nonzero(chan)[0]
-              if down[t] >= 0 and sink[down[t]] and acc[t] > 90]
+    # a big river that dies leaves a marsh fan before the salt takes over
+    mouths = [int(t) for t in np.nonzero(terminus)[0] if acc[t] > 600]
     delta = np.zeros(n, bool)
     for m in mouths:
         front, reach = {m}, (4 if acc[m] > 700 else 3)
@@ -566,7 +573,7 @@ def build():
             B[t] = ("AB_MiasmicMangrove" if p2 > 1.1 else
                     "COMIGO_GreaterSwamp_Tropical" if p2 > 0.5 and a < 78 else
                     "PoisonForest" if a > 86 else "ZBiome_DesertOasis")
-        elif a < 80 and (midriver[t] <= 4 or bigriver[t] <= 7):
+        elif a < 74 and (midriver[t] <= 2 or bigriver[t] <= 4):
             B[t] = "ZBiome_Grasslands"        # the Pyrelands bracket the green
             if p2 > 1.45:
                 B[t] = "AB_TarPits"
@@ -587,14 +594,18 @@ def build():
                     "AridShrubland" if p > -0.3 else "Desert")
         # ---- the Pyrelands: stormy savanna, burning, tar pits interspersed
         # ---- the dayside waste
-        elif a < 20:
+        # 🔴 Owner 2026-08-19: "Make the grassland into more desert, and make more
+        # extreme desert." The waste is the planet's default state; green is the
+        # exception and has to be paid for by a river.
+        elif a < 30:
             B[t] = "ExtremeDesert"
-        elif a < 44:
-            B[t] = "ExtremeDesert" if p < 0.55 else "Desert"
-        elif a < 72:
-            B[t] = "Desert" if p < 0.95 else "ZBiome_Badlands"
+        elif a < 56:
+            B[t] = "ExtremeDesert" if p < 0.85 else "Desert"
+        elif a < 78:
+            B[t] = ("ZBiome_Badlands" if p > 1.15 else
+                    "ExtremeDesert" if p < -0.55 else "Desert")
         else:
-            B[t] = "AridShrubland" if p > 0.2 - 0.5 * lobe2[t] else "Desert"
+            B[t] = "AridShrubland" if p > 0.65 - 0.5 * lobe2[t] else "Desert"
         if B[t] in ("Desert", "AridShrubland") and e > 1500 and p2 > 0.4:
             B[t] = "ZBiome_Badlands"
         # ⭐ `worldgen_interactive_def.md`: "ONLY at the tops of mountains, in tiny
