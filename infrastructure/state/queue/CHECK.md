@@ -1187,3 +1187,14 @@ Three owner answers, 2026-08-17:
    to Player.log or jawa/drain_log - if it prints per-tile distances IN neighbour order
    those distances are a fingerprint that recovers the permutation without any new code.
    Try reading it via rimworld/get_ui_state before building the DLL.
+
+## dll-capability-roster-and-cull-a41c02
+row:      tooling
+spec:     Owner, 2026-08-18, for the next token refresh. Produce the FULL roster of
+          RimWorld functionality we could implement as companion [Tool] methods in
+          JawaBench.BridgeTools - not what is built, what is POSSIBLE - then have the
+          owner select down from it for the next version of the DLL.
+          The roster is the deliverable; the cull is the owner's, not ours.
+verify:   EMPTY
+criteria: EMPTY - owner sets the pass condition when he picks from the roster.
+state:    ready
