@@ -41,14 +41,17 @@ sys.path.insert(0, HERE)
 import worldgeom
 from worldmap import WorldGrid, WorldObjects, DECODE, load_hash_table, DEFAULT_DUMP
 
-SRC = os.path.join(REPO, "world", "WORLDMAP_sub7b_source.rws")
+TILES = 21872            # the engine's own grid at subdivisions 7; geometry only
 BUNDLE = os.path.join(REPO, "world", "ashkarr")
 
-# 🔴 THE SAVEGAME IS NO LONGER A TARGET. Owner, 2026-08-18: "Please don't write to
-# the savegame file anymore, we're just not going to do that anymore." The map is now
-# a DATA BUNDLE - four files under world/ashkarr_* - and the renders are pictures of
-# it. Nothing here opens a .rws for writing. The source save is still READ, once, for
-# the tile geometry and the biome shortHash table, and never modified.
+# 🔴 THE SAVEGAME IS NOT INVOLVED. Owner, 2026-08-18: "Please don't write to the
+# savegame file anymore" and "DO NOT use the rivers, roads, and settlements in the
+# current savegame. YOU decide where they go by the lore."
+# So this file does not open a .rws at all - not to read and not to write. The only
+# thing taken from the engine is the TILE GEOMETRY (world/world_tiles_sub7b.csv and
+# world/world_neighbors_sub7b.csv, dumped from a live game), because tile positions
+# exist nowhere else. Every biome, elevation, river, road and settlement below is
+# derived here from the design docs.
 SEED = 20260818          # frozen. Changing it is building a different planet - don't.
 
 # ---------------------------------------------------------------------------
@@ -242,11 +245,19 @@ RIDGES = [
     ("The South Crags", [(118, 250), (127, 272), (131, 300), (124, 322)], 760, 4.0),
 ]
 # ---- basins. Sea level is a threshold on the field, so a coast is a consequence.
+# ⭐ Each basin carries a WATER LEVEL, and the Scald's is high.
+# 🔴 Owner: "some rivers really should be emitted out of the Scald... it was supposed
+# to be a major source of water." A lake below sea level cannot emit anything - water
+# runs into it and stops. So the Scald is a PERCHED crater lake: its surface stands at
+# +1150 m, 1.1 km above the desert outside its wall, and it SPILLS through the one
+# notch in the Spine. That is what makes it the head of the planet's largest river
+# instead of its drain.
 BASINS = [
-    ("The Scald",       (35, 185), 10.5, -1700),   # ⭐ the one shape ruled ROUND: a crater
-    ("The Twilight Sea", (91, 170), 22.0, -1650),  # moldy, on the terminator
-    ("The Gray Sea",    (92, 8),   16.5, -1550),   # salt-encrusted, shrinking
-    ("The Umbra Trap",  (158, 62), 19.5, -1150),   # no ocean: ammonia flats sit in it
+    # name, (arc, bear), radius, floor amp, water level m, is it a sink
+    ("The Scald",       (35, 185), 10.5, -1500, None,   False),   # level = auto
+    ("The Twilight Sea", (91, 170), 22.0, -1650,    0.0, True),
+    ("The Gray Sea",    (92, 8),   16.5, -1550,    0.0, True),
+    ("The Umbra Trap",  (158, 62), 19.5, -1150,  -900.0, False),   # ammonia, not water
 ]
 TROUGHS = [
     ("The Salt",     [(34, 288), (42, 296), (52, 304), (62, 312), (71, 320)], -430, 5.0),
@@ -292,9 +303,8 @@ def point_dist(V, arc, bear):
 
 def build():
     rng = np.random.default_rng(SEED)
-    grid = WorldGrid(SRC)
-    geo = worldgeom.Geometry(grid.tiles)
-    n, V = grid.tiles, geo.vec
+    geo = worldgeom.Geometry(TILES)
+    n, V = TILES, geo.vec
     nbl = [geo.neighbours(t) for t in range(n)]
     arc, bear = ab_of(geo.lat, geo.lon)
     th = arc
@@ -339,34 +349,51 @@ def build():
     ridge_dist["The Scald Spine"] = np.abs(ds - 15.5)
 
     basin_mask = np.zeros(n, bool)
-    for name, (a, b), r, amp in BASINS:
+    basin_of = np.full(n, -1, np.int8)
+    for i, (name, (a, b), r, amp, level, sink) in enumerate(BASINS):
         d = point_dist(V, a, b)
         rr = r * (1.0 + 0.30 * warp_a + 0.16 * warp_b)     # torn, not a disc
         prof = np.clip(1.0 - (d / np.clip(rr, 2, 60)) ** 2, 0, 1)
         elev += amp * prof
-        basin_mask |= d < rr * 1.25
+        inside = d < rr * 1.25
+        basin_mask |= inside
+        basin_of[inside & (basin_of < 0)] = i
     for name, anchors, amp, halfw in TROUGHS:
         d = path_dist(V, anchors)
         elev += amp * np.exp(-(d / (halfw * (1.0 + 0.3 * warp_b))) ** 2)
+    # the Scald floor is lifted bodily so the lake can perch: the crater is high
+    # ground with a hole in it, not a pit in the lowlands
+    elev[basin_of == 0] += 1250.0
 
     print("=== 2. sea level ===")
     # 🔴 Owner 2026-08-18: "There's WAY too much water, so reduce that to a third."
     # 25.8% -> ~8.6%. Water is elevation<0 AND inside an authored basin, so the
     # planet cannot grow seas nobody named.
-    sea = (elev < 0) & basin_mask
     keep = np.zeros(n, bool)
     sea_id = np.full(n, -1, np.int8)
-    for i, (name, (a, b), r, amp) in enumerate(BASINS):
-        if name == "The Umbra Trap":
-            continue                     # ammonia, not ocean - it holds no water
-        m = sea & (point_dist(V, a, b) < r * 2.0)
+    sink = np.zeros(n, bool)
+    levels = {}
+    for i, (name, (a, b), r, amp, level, is_sink) in enumerate(BASINS):
+        if level is None:
+            # fill the crater to 68% of its own depth: a real lake with a real shore,
+            # and a rim still standing above it everywhere but the notch
+            core = elev[(basin_of == i)]
+            level = float(np.percentile(core, 68))
+        levels[i] = level
+        if level < -100:
+            continue                     # the Umbra Trap holds ammonia, not water
+        m = (basin_of == i) & (elev < level)
         if not m.any():
             continue
-        comp = components(m, nbl)[0]
+        comp = components(m, nbl)[0]     # one body per basin; splinters are dry
         keep[comp] = True
         sea_id[comp] = i
+        if is_sink:
+            sink[comp] = True
     sea = keep
-    elev[sea] = np.minimum(elev[sea], -25.0)
+    for i in levels:
+        m = sea & (sea_id == i)
+        elev[m] = levels[i] - 30.0
     elev[~sea] = np.clip(elev[~sea], 12.0, 3800.0)
 
     print("=== 3. hydrology ===")
@@ -396,20 +423,31 @@ def build():
     rain_src = np.clip((0.35 + 3.6 * np.clip(lift, 0, 6.0)) * moist * dayside
                        + 1.9 * scald_plume, 0.02, None)
 
+    # ⭐ THE LAKE IS A SOURCE. Every drop the Scald's catchment collects leaves through
+    # the one notch, so the outflow carries the whole crater - the largest river on
+    # Ash'karr starts at a lake 1.1 km above the desert it crosses.
+    scald_water = sea & (sea_id == 0)
+    rain_src[scald_water] += 34.0
     for cycle in range(4):
-        filled = fill_depressions(elev, nbl, sea)
-        down, acc = flow(filled, nbl, rain_src, sea)
+        filled = fill_depressions(elev, nbl, sink)
+        down, acc = flow(filled, nbl, rain_src, sink)
         cut = 44.0 * np.log1p(acc) * np.clip(elev / 900.0, 0.15, 3.0)
-        elev[~sea] = np.clip(elev[~sea] - cut[~sea], 12.0, 3800.0)
-    filled = fill_depressions(elev, nbl, sea)
-    down, acc = flow(filled, nbl, rain_src, sea)
+        erodible = ~sea
+        elev[erodible] = np.clip(elev[erodible] - cut[erodible], 12.0, 3800.0)
+    filled = fill_depressions(elev, nbl, sink)
+    down, acc = flow(filled, nbl, rain_src, sink)
+    outs = [acc[u] for t in np.nonzero(scald_water)[0] for u in nbl[t]
+            if not scald_water[u]]
+    print("    Scald: lake %d tiles at %.0f m, outflow trunk carries %.0f"
+          % (scald_water.sum(), elev[scald_water].mean() if scald_water.any() else 0,
+             max(outs) if outs else 0))
     need = 60.0 + 520.0 * np.clip((70.0 - arc) / 50.0, 0, 1) ** 1.6
     need = np.where(d_scald_pt < 46.0, 60.0, need)   # the Scald basin is wet
-    chan = (acc > need) & (~sea) & (arc < NIGHT_ARC)
+    chan = (acc > need) & (~sea) & (arc < NIGHT_ARC + 8)
     print("    channel tiles %d" % chan.sum())
 
     mouths = [int(t) for t in np.nonzero(chan)[0]
-              if down[t] >= 0 and sea[down[t]] and acc[t] > 90]
+              if down[t] >= 0 and sink[down[t]] and acc[t] > 90]
     delta = np.zeros(n, bool)
     for m in mouths:
         front, reach = {m}, (4 if acc[m] > 700 else 3)
@@ -441,7 +479,7 @@ def build():
         a, e, r = thb[t], elev[t], riparian[t]
         p, p2 = patchy[t], patchy2[t]
         if sea[t]:
-            B[t] = "Ocean"
+            B[t] = "Lake" if sea_id[t] == 0 else "Ocean"
             continue
         # ---- the dark, one mass with lobes inside it
         if a > 108 + 16.0 * lobe[t]:
@@ -538,13 +576,13 @@ def build():
     B = despeckle(B, nbl, minsize=7)
     for t in range(n):
         if sea[t]:
-            B[t] = "Ocean"
-        elif B[t] == "Ocean":
+            B[t] = "Lake" if sea_id[t] == 0 else "Ocean"
+        elif B[t] in ("Ocean", "Lake"):
             B[t] = "ZBiome_Badlands"
 
     # ---- the gazetteer, as world features -----------------------------------
     regions = []
-    for i, (name, (a, b), r, amp) in enumerate(BASINS):
+    for i, (name, (a, b), r, amp, level, is_sink) in enumerate(BASINS):
         if name == "The Umbra Trap":
             regions.append(("The Ammonia Flats", "waste",
                             np.nonzero((d_umbra < 22) & ~sea)[0]))
@@ -578,8 +616,9 @@ def build():
     regions.append(("The Salt Gate", "waste", np.nonzero(delta)[0]))
     regions = [(nm, kd, tl) for nm, kd, tl in regions if len(tl) >= 6]
 
-    return dict(regions=regions, grid=grid, geo=geo, n=n, V=V, th=arc, arc=arc,
+    return dict(regions=regions, geo=geo, n=n, V=V, th=arc, arc=arc,
                 d_scald=d_scald_pt, d_twilight=d_twi, d_gray=d_gray, thb=thb,
+                sink=sink,
                 bear=bear, elev=elev, sea=sea, sea_id=sea_id, chan=chan, acc=acc,
                 down=down, biome=B, rain_src=rain_src, riparian=riparian,
                 delta=delta, nbl=nbl, seas=BASINS, massifs=RIDGES, filled=filled)

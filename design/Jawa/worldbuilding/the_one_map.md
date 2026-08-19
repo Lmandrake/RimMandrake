@@ -123,6 +123,44 @@ nightside must never become farmable. ⛔ No gelatinous-superorganism band — p
 | **The Rust Cathedral** — `AB_MechanoidIntrusion`, at the direct substellar point, continually at war. Keep it, and keep the Rust Flats beside it. | — |
 | **The map must SHOW the terminator**, must carry a **Mollweide panel beneath the rectangular map and legend**, must use a palette that separates by eye, and **must show mountain ranges** — *"critically"*. | — |
 
+## ⭐ THE SCALD IS A PERCHED LAKE, AND IT SPILLS
+
+Owner, 2026-08-18: *"some rivers really should be emitted out of the Scald… it was
+supposed to be a major source of water and the dominant region of terrestrial-type
+foliage along its rivers. The meridian stuff was supposed to be more mycoid-type and
+poison forest."*
+
+🔴 **A lake below sea level cannot emit anything** — water runs in and stops, and the
+first attempt made exactly that mistake. So the Scald is a **crater lake perched at
+~2500 m**, its floor lifted bodily above the desert outside its wall, and it **spills
+through the one notch in the Spine**. The outflow leaves carrying ~5000 units of
+accumulated flow — the largest river on Ash'karr starts at a lake a mile above the
+ground it crosses.
+
+Consequences, all now enforced in the paint:
+- The Scald's rivers carry **terrestrial** foliage: `AB_FeraliskInfestedJungle` and
+  `COMIGO_GreaterSwamp_Tropical`, the only true jungle on the planet.
+- **The meridian gets the other green**: `AB_MycoticJungle` and `PoisonForest`. Two
+  kinds of green that mean different things, so vegetation tells you where you are.
+- Rivers in the Scald basin are exempt from the deep-desert flow threshold — the basin
+  is genuinely wet and its streams do not have to be trunks to survive.
+- `AB_OcularForest` sits only on peaks above 2350 m that are **river sources** —
+  *"ONLY at the tops of mountains, in tiny patches"* (`worldgen_interactive_def.md`),
+  *"configured to bleed small rivers outward"* (`desert_world_design.md`). ⚠️ The
+  phrase *"active bioweaponry"* is NOT in the record; spores and red toxic streams are.
+
+## 🔴 The savegame is not read and not written
+
+Owner, 2026-08-18: *"Please don't write to the savegame file anymore"* and *"DO NOT use
+the rivers, roads, and settlements in the current savegame. YOU decide where they go by
+the lore."*
+
+`ashkarr_paint.py` **does not open a `.rws` at all.** The only thing taken from the
+engine is tile GEOMETRY — `world/world_tiles_sub7b.csv` and
+`world/world_neighbors_sub7b.csv`, dumped from a live game, because tile positions
+exist nowhere else. Every biome, elevation, river, road and settlement is derived from
+the design docs. `ashkarr_write.py` is retired and refuses if called.
+
 ## 🔑 Where the map actually lives
 
 Three different things, and only one of them is the map:
