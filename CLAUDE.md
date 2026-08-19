@@ -20,6 +20,26 @@ period. True worldgen is OUT of any version, even v2."* — plus, moments later,
   absent when he builds it is absent from every player's game forever**, with no
   regenerate behind it.
 
+### 🔴 ONE MAP, NOT A GENERATOR — owner, 2026-08-18
+
+*"We aren't trying to make random generators that produce alternative planet maps…
+that's way out of scope and produces unacceptably unreal solutions. I just want ONE
+planetary map that is as realistic as possible, following the guidelines I told you
+from design and discussion."*
+
+- ⛔ **Do not build, extend or tune anything that produces ALTERNATIVE planets.** No
+  seed sweeps, no "try N variants and pick one", no parameters exposed so a different
+  world could be rolled. A knob that can produce a second planet is out of scope even
+  if we only ever turn it once.
+- ✅ **Author THE map.** Direct, one-off edits to the one world are the whole job, and
+  they are judged by **realism first** — does it read as a photograph of a real
+  planet — then by whether it follows `design/Jawa/worldbuilding/`.
+- 🔑 **Iterate by LOOKING.** `worldview.py` renders the save; change, render, look,
+  change again. A number that says the world is fine while the picture shows compass
+  circles is the number being wrong.
+- The visual target and the reference photographs are
+  `design/Jawa/worldbuilding/the_one_map.md`.
+
 ## Facts you cannot guess
 
 - **The game reads `C:\Program Files (x86)\Steam\steamapps\common\RimWorld\Mods`,
