@@ -506,19 +506,36 @@ def print_report(r):
 # ==========================================================================
 # 5. the picture
 # ==========================================================================
+# 🔴 READABILITY IS THE POINT. Owner, 2026-08-18: "I'm having a very hard time
+# reading this colorbar uniquely, there's too much of similar by-eye coloration."
+# So the palette is chosen for SEPARATION first and mimicry second: the deserts are a
+# pale-to-tan ramp, but everything else is pulled to a hue no desert occupies.
 BIOME_COLOR = {
-    "Ocean": "#20496e", "Lake": "#2b6ea3", "SeaIce": "#bcd3de",
-    "IceSheet": "#e6eef2", "Tundra": "#8f9a86", "GlacialPlain": "#cfe0e6",
-    "BorealForest": "#3f6b46", "TemperateForest": "#4a7c3a", "TropicalRainforest": "#1f6b32",
-    "TemperateSwamp": "#4e6b39", "TropicalSwamp": "#3d6b3a", "ColdBog": "#5c6f5c",
-    "Wetland": "#4c7a5e", "Grasslands": "#7d9b4e", "AridShrubland": "#a89a5c",
-    "Desert": "#c8ab6a", "ExtremeDesert": "#ded0a0", "Wasteland": "#8c7f6b",
-    "LavaField": "#5d3320", "Volcano": "#6b3a2a", "Scarlands": "#8f5a4a",
-    "PoisonForest": "#5b7a4a", "Glowforest": "#4a7a72", "Undercave": "#3a3540",
-    "Underground": "#2f2b34", "Labyrinth": "#4a3f55", "MetalHell": "#6a2530",
-    "Space": "#0a0a12", "Orbit": "#0a0a12",
+    # --- water
+    "Ocean": "#1b3f66", "Lake": "#2f7fb5", "SeaIce": "#cfe4ee",
+    # --- the dayside waste: a light ramp, cream -> tan -> olive
+    "ExtremeDesert": "#f4e6bd", "Desert": "#dcbc74", "AridShrubland": "#b4a049",
+    "ZBiome_Badlands": "#b0603a", "Wasteland": "#8e8d85",
+    "AB_GallatrossGraveyard": "#d8c58a",
+    # --- the Pyrelands
+    "ZBiome_Grasslands": "#9dbb35", "Savanna": "#8faa30",
+    # --- green, only on water
+    "AB_FeraliskInfestedJungle": "#12703a", "ZBiome_DesertOasis": "#59cd8c",
+    "AB_MiasmicMangrove": "#1f6b60", "COMIGO_GreaterSwamp_Tropical": "#2f8f70",
+    # --- fire, one province
+    "AB_PyroclasticConflagration": "#f4762a", "LavaField": "#d6431a",
+    "Volcano": "#8c2a14", "Scarlands": "#bb2f4c", "AB_TarPits": "#211c1f",
+    # --- the terminator's rot
+    "PoisonForest": "#5d7a26", "AB_GelatinousSuperorganism": "#e04fb0",
+    "HorrorWastes": "#7c0f31", "AB_MycoticJungle": "#a558da",
+    "BMT_FungalForest": "#6a4fd8", "AB_OcularForest": "#7a2b93",
+    # --- the dark
+    "AB_RockyCrags": "#3a3a52", "AB_PropaneLakes": "#1f7d8c",
+    "Glowforest": "#3fe0c2", "BMT_CrystalCaverns": "#a6dcff",
+    "BMT_EarthenDepths": "#4a3a2a",
+    # --- one-offs
+    "AB_MechanoidIntrusion": "#9a9ab8", "IronScruff_PrimordialGeysers": "#46cfe0",
 }
-BIOME_COLOR["Savanna"] = "#a59a52"
 
 RAMPS = {
     "elevation": [(-500, "#0d1f3d"), (-1, "#3a6ea8"), (0, "#7fb3d8"), (1, "#d8c89a"),
@@ -600,28 +617,71 @@ def tile_value(pv, layer, t):
             }[layer]
 
 
-def render(pv, layer="biome", projection="equirect", width=2400, center=(0.0, 0.0),
-           tooltips=True, show=("rivers", "roads", "settlements", "coast", "labels"),
-           out_path=None):
+def hillshade(pv):
+    """Per-tile shading from the local elevation gradient, sun from the north-west.
+
+    🔴 Owner: "We need to see mountain ranges too, critically." A flat biome fill
+    cannot show a range - two Desert tiles 2 km apart in height look identical. This
+    multiplies every fill by the slope, so the ranges read THROUGH the biome colour
+    instead of needing their own layer."""
+    g, n = pv.geom, pv.n
+    sh = np.ones(n)
+    east = np.zeros((n, 3))
+    for t in range(n):
+        c = g.vec[t]
+        up = np.array([0.0, 1.0, 0.0])
+        e = np.cross(up, c)
+        e = e / (np.linalg.norm(e) + 1e-12)
+        nn = np.cross(c, e)
+        gx = gy = 0.0
+        for u in g.neighbours(t):
+            d = g.vec[u] - c
+            dh = pv.elev[u] - pv.elev[t]
+            gx += float(d.dot(e)) * dh
+            gy += float(d.dot(nn)) * dh
+        # light from the upper left, and a touch of ambient so nothing goes black
+        lam = (-0.62 * gx + 0.62 * gy) / 380.0
+        sh[t] = 1.0 + np.clip(lam, -0.62, 0.62)
+    return sh
+
+
+def shade_hex(col, k):
+    r, g, b = _hex(col)
+    return "#%02x%02x%02x" % (min(255, max(0, int(r * k))),
+                              min(255, max(0, int(g * k))),
+                              min(255, max(0, int(b * k))))
+
+
+def _small_circle(sub_lat, sub_lon, arc_deg, steps=361):
+    """Unit vectors on the circle `arc_deg` from a point. arc 90 IS the terminator."""
+    a, b = math.radians(sub_lat), math.radians(sub_lon)
+    c = np.array([math.cos(a) * math.cos(b), math.sin(a), math.cos(a) * math.sin(b)])
+    up = np.array([0.0, 1.0, 0.0])
+    e = np.cross(up, c)
+    e = e / (np.linalg.norm(e) + 1e-12)
+    nn = np.cross(c, e)
+    th = math.radians(arc_deg)
+    out = []
+    for k in range(steps):
+        p = math.radians(k * 360.0 / (steps - 1))
+        out.append(c * math.cos(th) + (e * math.cos(p) + nn * math.sin(p)) * math.sin(th))
+    return np.array(out)
+
+
+def draw_panel(svg, pv, proj, y0, layer, show, tooltips, corners, shade):
+    """One map into one band of the sheet."""
     g = pv.geom
-    proj = worldgeom.make_projection(projection, width, center)
-    legend_h = 260
-    svg = SVG(proj.w, proj.h + legend_h)
-    corners = g.all_corners()
-
-    def poly(t):
-        xy, vis = proj.project(corners[t], ref=g.vec[t])
-        return (xy, vis)
-
-    # -- tiles -----------------------------------------------------------
-    svg.add('<g id="tiles" shape-rendering="crispEdges">')
+    svg.add('<g transform="translate(0,%d)">' % y0)
+    svg.add('<g shape-rendering="crispEdges">')
     merged = defaultdict(list)
     for t in range(pv.n):
-        xy, vis = poly(t)
+        xy, vis = proj.project(corners[t], ref=g.vec[t])
         if not vis:
             continue
         v = tile_value(pv, layer, t)
         col = biome_color(v) if layer == "biome" else ramp_color(RAMPS[layer], float(v))
+        if shade is not None:
+            col = shade_hex(col, shade[t])
         d = "M" + " ".join("%.1f %.1f" % (x, y) for x, y in xy) + "Z"
         for dx in proj.wrap_copies(xy):
             d += " M" + " ".join("%.1f %.1f" % (x + dx, y) for x, y in xy) + "Z"
@@ -638,8 +698,9 @@ def render(pv, layer="biome", projection="equirect", width=2400, center=(0.0, 0.
         svg.add('<path d="%s" fill="%s"/>' % (" ".join(ds), col))
     svg.add("</g>")
 
+    sc = proj.w / 2400.0
+
     def seg(a, b, ref):
-        """One tile-centre to tile-centre segment, wrapped like the hexes."""
         xy, vis = proj.project(np.stack([g.vec[a], g.vec[b]]), ref=ref)
         if not vis or abs(xy[0][0] - xy[1][0]) > proj.w * 0.5:
             return []
@@ -649,7 +710,21 @@ def render(pv, layer="biome", projection="equirect", width=2400, center=(0.0, 0.
                        % (xy[0][0] + dx, xy[0][1], xy[1][0] + dx, xy[1][1]))
         return out
 
-    # -- coastline -------------------------------------------------------
+    # ⭐ THE RANGES, drawn as themselves. Owner: "We need to see mountain ranges
+    # too, critically." Hillshade alone is not enough at this tile size, so every
+    # Mountainous / Impassable tile also gets an outline.
+    if "mountains" in show:
+        d = []
+        for t in range(pv.n):
+            if pv.hilly[t] < 4:
+                continue
+            xy, vis = proj.project(corners[t], ref=g.vec[t])
+            if not vis or (xy[:, 0].max() - xy[:, 0].min()) > proj.w * 0.4:
+                continue
+            d.append("M" + " ".join("%.1f %.1f" % (x, y) for x, y in xy) + "Z")
+        svg.add('<path d="%s" fill="none" stroke="#2a1c10" stroke-width="%.1f" '
+                'opacity="0.55"/>' % (" ".join(d), 1.6 * sc))
+
     if "coast" in show:
         d = []
         for t, k in pv.coast_edges():
@@ -659,127 +734,182 @@ def render(pv, layer="biome", projection="equirect", width=2400, center=(0.0, 0.
             if not vis or abs(xy[0][0] - xy[1][0]) > proj.w * 0.5:
                 continue
             d.append("M%.1f %.1f L%.1f %.1f" % (xy[0][0], xy[0][1], xy[1][0], xy[1][1]))
-        svg.add('<g id="coast"><path d="%s" stroke="#0a1520" stroke-width="1.1" '
-                'fill="none" opacity="0.8"/></g>' % " ".join(d))
+        svg.add('<path d="%s" stroke="#0a1520" stroke-width="%.1f" fill="none" '
+                'opacity="0.85"/>' % (" ".join(d), 1.1 * sc))
 
-    # -- roads then rivers (rivers on top; they are the rarer signal) ------
     if "roads" in show and pv.roads:
-        svg.add('<g id="roads" fill="none" stroke-linecap="round">')
-        by_def = defaultdict(list)
+        by = defaultdict(list)
         for o, t, dn, _ in pv.roads:
-            by_def[dn].extend(seg(o, t, g.vec[o]))
-        for dn, ds in by_def.items():
+            by[dn].extend(seg(o, t, g.vec[o]))
+        for dn, ds in by.items():
             col, wd, dash = ROAD_STYLE.get(dn, ("#a08a6a", 1.5, None))
-            sc = proj.w / 2400.0
-            svg.add('<path d="%s" stroke="%s" stroke-width="%.2f"%s><title>%s</title></path>'
+            svg.add('<path d="%s" stroke="%s" stroke-width="%.2f" fill="none"%s/>'
                     % (" ".join(ds), col, wd * sc,
-                       ' stroke-dasharray="%s"' % dash if dash else "", esc(dn)))
-        svg.add("</g>")
+                       ' stroke-dasharray="%s"' % dash if dash else ""))
     if "rivers" in show and pv.rivers:
-        svg.add('<g id="rivers" fill="none" stroke-linecap="round">')
-        by_def = defaultdict(list)
+        by = defaultdict(list)
         for o, t, dn, _ in pv.rivers:
-            by_def[dn].extend(seg(o, t, g.vec[o]))
-        for dn, ds in by_def.items():
-            sc = proj.w / 2400.0
-            svg.add('<path d="%s" stroke="#4fa3d8" stroke-width="%.2f" opacity="0.95">'
-                    '<title>%s</title></path>'
-                    % (" ".join(ds), RIVER_WIDTH.get(dn, 1.5) * sc, esc(dn)))
-        svg.add("</g>")
+            by[dn].extend(seg(o, t, g.vec[o]))
+        for dn, ds in by.items():
+            svg.add('<path d="%s" stroke="#57c8ff" stroke-width="%.2f" fill="none" '
+                    'opacity="0.95"/>' % (" ".join(ds), RIVER_WIDTH.get(dn, 1.5) * sc))
 
-    # -- settlements ------------------------------------------------------
+    # ⭐ THE TERMINATOR. Owner: "I need to see where the terminator is on this map."
+    if "grid" in show:
+        for arc, style, lab in ((90, None, "TERMINATOR"),):
+            pts = _small_circle(0, 0, arc)
+            xy, _ = proj.project(pts)
+            d, run = [], []
+            for k in range(len(xy)):
+                if run and abs(xy[k][0] - run[-1][0]) > proj.w * 0.45:
+                    d.append("M" + " L".join("%.1f %.1f" % (a, b) for a, b in run))
+                    run = []
+                run.append(xy[k])
+            if run:
+                d.append("M" + " L".join("%.1f %.1f" % (a, b) for a, b in run))
+            svg.add('<path d="%s" fill="none" stroke="#ffffff" stroke-width="%.1f" '
+                    'opacity="%.2f"%s/>'
+                    % (" ".join(d), (2.4 if arc == 90 else 1.2) * sc,
+                       0.85 if arc == 90 else 0.35,
+                       ' stroke-dasharray="%s"' % style if style else ""))
+        for lat, lon, mark, txt in ((0, 0, "#ffd45e", "SUBSTELLAR"),
+                                    (0, 180, "#7fb0ff", "ANTISTELLAR")):
+            a, b = math.radians(lat), math.radians(lon)
+            v = np.array([math.cos(a) * math.cos(b), math.sin(a), math.cos(a) * math.sin(b)])
+            xy, vis = proj.project(v[None, :], ref=v)
+            if not vis:
+                continue
+            svg.add('<circle cx="%.1f" cy="%.1f" r="%.1f" fill="none" stroke="%s" '
+                    'stroke-width="%.1f"/>' % (xy[0][0], xy[0][1], 7 * sc, mark, 2.2 * sc))
+            svg.add('<text x="%.1f" y="%.1f" font-size="%.1f" fill="%s" '
+                    'text-anchor="middle" font-family="DejaVu Sans, sans-serif" '
+                    'stroke="#000" stroke-width="%.1f" paint-order="stroke">%s</text>'
+                    % (xy[0][0], xy[0][1] - 11 * sc, 13 * sc, mark, 2.0 * sc, txt))
+
     if "settlements" in show and pv.settlements:
         pal = ["#ffd45e", "#ff8a5e", "#6ee0a0", "#8ab6ff", "#ff7bd0", "#c3ff6e",
                "#ffffff", "#ff5e5e", "#9d7bff", "#5ee0e0"]
-        svg.add('<g id="settlements" font-family="DejaVu Sans, sans-serif">')
-        sc = proj.w / 2400.0
-        for s in pv.settlements:
-            t = s["tile"]
+        for st in pv.settlements:
+            t = st["tile"]
             if t >= pv.n:
                 continue
             xy, vis = proj.project(g.vec[t][None, :], ref=g.vec[t])
             if not vis:
                 continue
-            x, y = xy[0]
-            f = pv.factions.get(s["faction"], {})
-            col = pal[f.get("index", 0) % len(pal)]
+            f = pv.factions.get(st["faction"], {})
             svg.add('<circle cx="%.1f" cy="%.1f" r="%.1f" fill="%s" stroke="#101014" '
-                    'stroke-width="%.1f"><title>%s · %s · tile %d · %s</title></circle>'
-                    % (x, y, 4.0 * sc, col, 1.2 * sc, esc(s["name"]),
-                       esc(f.get("name") or s["faction"]), t, esc(pv.biome[t])))
+                    'stroke-width="%.1f"><title>%s · %s</title></circle>'
+                    % (xy[0][0], xy[0][1], 4.0 * sc, pal[f.get("index", 0) % len(pal)],
+                       1.2 * sc, esc(st["name"]), esc(f.get("name") or st["faction"])))
             if "labels" in show:
                 svg.add('<text x="%.1f" y="%.1f" font-size="%.1f" fill="#f0f0f0" '
-                        'stroke="#101014" stroke-width="%.1f" paint-order="stroke">%s</text>'
-                        % (x + 6 * sc, y - 5 * sc, 13 * sc, 2.5 * sc, esc(s["name"] or "")))
-        st = pv.info.get("startingTile")
-        if st is not None and st < pv.n:
-            xy, vis = proj.project(g.vec[st][None, :], ref=g.vec[st])
+                        'font-family="DejaVu Sans, sans-serif" stroke="#101014" '
+                        'stroke-width="%.1f" paint-order="stroke">%s</text>'
+                        % (xy[0][0] + 6 * sc, xy[0][1] - 5 * sc, 13 * sc, 2.5 * sc,
+                           esc(st["name"] or "")))
+        stt = pv.info.get("startingTile")
+        if stt is not None and stt < pv.n:
+            xy, vis = proj.project(g.vec[stt][None, :], ref=g.vec[stt])
             if vis:
                 svg.add('<circle cx="%.1f" cy="%.1f" r="%.1f" fill="none" '
-                        'stroke="#ff3b3b" stroke-width="%.1f"><title>starting tile %d'
-                        '</title></circle>' % (xy[0][0], xy[0][1], 9 * sc, 2.2 * sc, st))
-        svg.add("</g>")
+                        'stroke="#ff3b3b" stroke-width="%.1f"/>'
+                        % (xy[0][0], xy[0][1], 9 * sc, 2.2 * sc))
 
-    # -- region labels ----------------------------------------------------
     if "labels" in show and pv.features:
-        sc = proj.w / 2400.0
-        svg.add('<g id="regions" font-family="DejaVu Sans, sans-serif" '
-                'fill="#e8e0c8" opacity="0.75" text-anchor="middle">')
+        svg.add('<g font-family="DejaVu Sans, sans-serif" fill="#f2ead2" '
+                'opacity="0.88" text-anchor="middle">')
+        # 🔴 Labels crowd. The rule the project already settled: keep the earlier
+        # (higher priority) label and drop anything within MIN_SEP of it - sorting by
+        # tile count instead lets generic tracts crowd out the Scald.
+        MIN_SEP = 11.0
+        drawn = []
         for f in pv.features:
             idx = np.where(pv.feature_idx == f["index"])[0]
             if len(idx) < 8:
                 continue
             v = g.vec[idx].mean(axis=0)
             v = v / np.linalg.norm(v)
+            if any(math.degrees(math.acos(max(-1.0, min(1.0, float(v.dot(d)))))) < MIN_SEP
+                   for d in drawn):
+                continue
+            drawn.append(v)
             xy, vis = proj.project(v[None, :], ref=v)
             if not vis:
                 continue
-            size = max(11.0, min(30.0, 6.0 * math.sqrt(len(idx)))) * sc
+            size = max(11.0, min(28.0, 5.6 * math.sqrt(len(idx)))) * sc
             svg.add('<text x="%.1f" y="%.1f" font-size="%.1f" font-style="italic" '
                     'stroke="#101014" stroke-width="%.1f" paint-order="stroke">%s</text>'
-                    % (xy[0][0], xy[0][1], size, 2.0 * sc, esc(f["name"] or f["def"])))
+                    % (xy[0][0], xy[0][1], size, 2.2 * sc, esc(f["name"] or f["def"])))
         svg.add("</g>")
+    svg.add("</g>")
 
-    # -- legend -----------------------------------------------------------
-    y0 = proj.h + 8
-    svg.add('<g id="legend" font-family="DejaVu Sans, sans-serif" fill="#e8e8e8">')
+
+def render(pv, layer="biome", projection="equirect", width=2400, center=(0.0, 0.0),
+           tooltips=True, show=("rivers", "roads", "settlements", "coast", "labels",
+                                "grid", "mountains"),
+           out_path=None, sheet=True, relief=True):
+    """The review sheet: rectangular map on top, legend, equal-area map beneath.
+
+    Owner, 2026-08-18: "I think I might need a Mollweide map beneath the rectangular
+    depiction & legend to better visualize." The rectangular map is the one you can
+    point at; the Mollweide is the one whose AREAS are true."""
+    g = pv.geom
+    corners = g.all_corners()
+    shade = hillshade(pv) if relief else None
+    main = worldgeom.make_projection(projection, width, center)
+    second = (worldgeom.Mollweide(width, center[1])
+              if sheet and projection == "equirect" else None)
+    legend_h = 300
+    total = main.h + legend_h + (second.h + 30 if second else 0)
+    svg = SVG(main.w, total)
+
+    draw_panel(svg, pv, main, 0, layer, set(show), tooltips, corners, shade)
+    y0 = main.h
+
+    svg.add('<g font-family="DejaVu Sans, sans-serif" fill="#e8e8e8">')
     svg.add('<rect x="0" y="%d" width="%d" height="%d" fill="#101218"/>'
-            % (proj.h, proj.w, legend_h))
-    svg.add('<text x="14" y="%d" font-size="22" font-weight="bold">%s — %s, %s</text>'
-            % (y0 + 22, esc(pv.info.get("name") or os.path.basename(pv.path)),
-               esc(layer), esc(projection)))
-    svg.add('<text x="14" y="%d" font-size="14" opacity="0.8">%d tiles · seed %s · '
-            '%d settlements · %d river edges · %d road edges · %.1f%% water</text>'
-            % (y0 + 44, pv.n, esc(pv.info.get("seedString")), len(pv.settlements),
-               len(pv.rivers), len(pv.roads),
+            % (y0, main.w, legend_h))
+    svg.add('<text x="14" y="%d" font-size="23" font-weight="bold">%s — %s</text>'
+            % (y0 + 26, esc(pv.info.get("name") or os.path.basename(pv.path)), esc(layer)))
+    svg.add('<text x="14" y="%d" font-size="14" opacity="0.85">%d tiles · %d settlements'
+            ' · %d river edges · %d road edges · %.1f%% water · substellar (0,0), '
+            'terminator = the solid white circle</text>'
+            % (y0 + 48, pv.n, len(pv.settlements), len(pv.rivers), len(pv.roads),
                100.0 * float(pv.is_water.sum()) / pv.n))
     if layer == "biome":
-        cen = Counter(pv.biome).most_common(30)
+        cen = Counter(pv.biome).most_common(35)
         for i, (b, c) in enumerate(cen):
-            col, row = i // 5, i % 5
-            x, y = 14 + col * 400, y0 + 70 + row * 26
-            svg.add('<rect x="%d" y="%d" width="18" height="18" fill="%s" '
+            col, row = i // 7, i % 7
+            x, y = 14 + col * 400, y0 + 72 + row * 27
+            svg.add('<rect x="%d" y="%d" width="20" height="20" fill="%s" '
                     'stroke="#000"/>' % (x, y, biome_color(b)))
             svg.add('<text x="%d" y="%d" font-size="14">%s  <tspan opacity="0.6">%d '
                     '(%.1f%%)</tspan></text>'
-                    % (x + 24, y + 14, esc(b), c, 100.0 * c / pv.n))
+                    % (x + 26, y + 15, esc(b), c, 100.0 * c / pv.n))
     else:
         stops = RAMPS[layer]
         lo, hi = stops[0][0], stops[-1][0]
         for i in range(360):
             v = lo + (hi - lo) * i / 359.0
             svg.add('<rect x="%d" y="%d" width="2" height="26" fill="%s"/>'
-                    % (14 + i * 2, y0 + 74, ramp_color(stops, v)))
+                    % (14 + i * 2, y0 + 80, ramp_color(stops, v)))
         last = -1e9
         for a, _ in stops:
             x = 14 + 720 * (a - lo) / (hi - lo)
-            if x - last < 34:          # ramps have crowded stops at the low end
+            if x - last < 34:
                 continue
             last = x
             svg.add('<text x="%.0f" y="%d" font-size="13" text-anchor="middle" '
-                    'opacity="0.8">%g</text>' % (x, y0 + 118, a))
+                    'opacity="0.8">%g</text>' % (x, y0 + 124, a))
     svg.add("</g>")
+
+    if second:
+        svg.add('<rect x="0" y="%d" width="%d" height="%d" fill="#0b0d12"/>'
+                % (y0 + legend_h, main.w, second.h + 30))
+        draw_panel(svg, pv, second, y0 + legend_h + 15, layer, set(show) - {"labels"},
+                   False, corners, shade)
     return svg.write(out_path)
+
 
 
 CHROME = ["/mnt/c/Program Files/Google/Chrome/Application/chrome.exe",
@@ -818,7 +948,9 @@ def main():
     ap.add_argument("--layer", default="biome",
                     choices=["biome", "elevation", "temperature", "rainfall",
                              "swampiness", "hilliness", "pollution"])
-    ap.add_argument("--projection", default="equirect", choices=["equirect", "ortho"])
+    ap.add_argument("--projection", default="equirect", choices=["equirect", "ortho", "mollweide"])
+    ap.add_argument("--no-sheet", action="store_true", help="one map only, no Mollweide panel")
+    ap.add_argument("--no-relief", action="store_true", help="flat fills, no hillshade")
     ap.add_argument("--center", default="0,0", help="lat,lon for --projection ortho")
     ap.add_argument("--width", type=int, default=2400)
     ap.add_argument("--no-tooltips", action="store_true",
@@ -864,12 +996,12 @@ def main():
     print("\nreport  %s" % jpath)
 
     if not a.report_only:
-        show = {"rivers", "roads", "settlements", "coast", "labels"}
+        show = {"rivers", "roads", "settlements", "coast", "labels", "grid", "mountains"}
         show -= {s.strip() for s in a.hide.split(",") if s.strip()}
         lat, lon = (float(x) for x in a.center.split(","))
         svg = os.path.join(a.out, "%s.%s.%s.svg" % (stem, a.layer, a.projection))
         render(pv, a.layer, a.projection, a.width, (lat, lon),
-               not a.no_tooltips, show, svg)
+               not a.no_tooltips, show, svg, not a.no_sheet, not a.no_relief)
         print("map     %s  (%.1f MB)" % (svg, os.path.getsize(svg) / 1e6))
         if a.png:
             png = rasterise(svg, a.width)

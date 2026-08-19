@@ -268,9 +268,35 @@ def write(w, out_path, regions=(), dump=DEFAULT_DUMP):
     text, moved, drowned = move_objects(text, w)
     with open(out_path, "w", encoding="utf-8", errors="surrogateescape") as fh:
         fh.write(text)
+    export_table(w, os.path.join(os.path.dirname(out_path), "ashkarr_tiles.csv"))
     print("wrote %s\n   %d river links, %d road links, settlements moved %d, "
           "landmarks drowned %d" % (out_path, nriv, nrd, moved, drowned))
     return out_path
+
+
+def export_table(w, path):
+    """🔑 WHERE THE MAP LIVES. The savegame is a build output and is gitignored; the
+    PNG and SVG are pictures of it. This CSV is the map's contents in a form a human
+    can read, grep and diff, one row per tile, and it is what gets committed."""
+    import csv as _csv
+    g = w["geo"]
+    temp = temperature_curve(w["th"], w["elev"])
+    with open(path, "w", newline="", encoding="utf-8") as fh:
+        wr = _csv.writer(fh)
+        wr.writerow(["tile", "lat", "lon", "arc", "bearing", "elev_m", "temp_c",
+                     "biome", "water", "river_flow", "region"])
+        reg = {}
+        for name, kind, tiles in w.get("regions", []):
+            for t in tiles:
+                reg.setdefault(int(t), name)
+        for t in range(w["n"]):
+            wr.writerow([t, round(float(g.lat[t]), 4), round(float(g.lon[t]), 4),
+                         round(float(w["arc"][t]), 2), round(float(w["bear"][t]), 2),
+                         int(round(w["elev"][t])), round(float(temp[t]), 1),
+                         w["biome"][t], int(bool(w["sea"][t])),
+                         int(w["acc"][t]) if w["chan"][t] else 0,
+                         reg.get(t, "")])
+    return path
 
 
 def bfs_river_distance(w):

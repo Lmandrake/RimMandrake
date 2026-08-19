@@ -212,163 +212,199 @@ def despeckle(labels, nbl, minsize=4):
 
 
 # ===========================================================================
-# 3. ASH'KARR ITSELF. Everything below is a decision, not a parameter.
+# 3. ASH'KARR ITSELF - the gazetteer, in the project's own coordinates.
+#
+# 🔑 arc  = degrees from the substellar point (lat 0, long 0)
+#    bear = degrees around it; 0 -> the GRAY flank (downwind), 180 -> TWILIGHT.
+# Identical convention to world_relief.py and paint_ashkarr.py. DO NOT DIVERGE.
+# Every position below is the owner's, recovered from those files - the fiction
+# already fixes where the Scald and the Fall Line are, so they are an input.
 # ===========================================================================
+SUB = (0.0, 0.0)
+
+# ---- ranges. A ridge is a LINE, so it inherits the line's shape. ------------
+RIDGES = [
+    # name, anchors [(arc, bear)...], crest height m, half-width deg
+    ("The Scald Spine", None, 1450, 3.2),          # ring - built separately, notched
+    ("The Ashteeth",  [(21.5, 116), (23.5, 142), (24.5, 168), (24, 203),
+                       (22, 230), (19.5, 254)], 1450, 4.0),   # cradles the Scald
+    ("The Fall Line", [(26, 352), (34, 357), (43, 2), (52, 6), (61, 9)], 780, 3.4),
+    ("The Dew Horn",  [(58, 148), (64, 162), (67, 178), (63, 196), (57, 210)], 1850, 4.6),
+    ("The Ashfall Range", [(56, 338), (63, 352), (66, 8), (61, 24)], 1700, 4.4),
+    ("The Twilight Crags", [(104, 210), (110, 186), (108, 160), (114, 134)], 900, 4.0),
+    ("The Gray Crags", [(106, 340), (112, 12), (109, 42), (116, 68)], 820, 4.0),
+    ("The South Crags", [(118, 250), (127, 272), (131, 300), (124, 322)], 760, 4.0),
+]
+# ---- basins. Sea level is a threshold on the field, so a coast is a consequence.
+BASINS = [
+    ("The Scald",       (35, 185), 10.5, -1700),   # ⭐ the one shape ruled ROUND: a crater
+    ("The Twilight Sea", (91, 170), 22.0, -1650),  # moldy, on the terminator
+    ("The Gray Sea",    (92, 8),   16.5, -1550),   # salt-encrusted, shrinking
+    ("The Umbra Trap",  (158, 62), 19.5, -1150),   # no ocean: ammonia flats sit in it
+]
+TROUGHS = [
+    ("The Salt",     [(34, 288), (42, 296), (52, 304), (62, 312), (71, 320)], -430, 5.0),
+    ("The Ember Sink", [(36, 96), (46, 88), (57, 80), (68, 74)], -380, 4.6),
+    ("The Dew Belt", [(38, 184), (45, 181), (52, 178), (64, 178), (76, 179),
+                      (89, 180)], -255, 6.0),
+    ("scald_gate",   [(49, 180), (44, 182), (39, 184)], -1250, 3.0),  # the crater breach
+]
+NIGHT_ARC = 100.0        # past this, liquid water does not exist on this planet
+
+
+def ab_vec(arc, bear):
+    """(arc, bearing) -> unit vector in worldgeom's frame (y is the polar axis)."""
+    a, b = np.radians(np.atleast_1d(arc)), np.radians(np.atleast_1d(bear))
+    lat = np.arcsin(np.sin(a) * np.sin(b))
+    lon = np.arctan2(np.sin(a) * np.cos(b), np.cos(a))
+    return np.stack([np.cos(lat) * np.cos(lon), np.sin(lat),
+                     np.cos(lat) * np.sin(lon)], axis=1)
+
+
+def ab_of(lat_deg, lon_deg):
+    lat, lon = np.radians(lat_deg), np.radians(lon_deg)
+    arc = np.degrees(np.arccos(np.clip(np.cos(lon) * np.cos(lat), -1, 1)))
+    bear = np.degrees(np.arctan2(np.sin(lat), np.cos(lat) * np.sin(lon))) % 360.0
+    return arc, bear
+
+
+def path_dist(V, anchors, samples=40):
+    pts = []
+    for (a0, b0), (a1, b1) in zip(anchors[:-1], anchors[1:]):
+        v0, v1 = ab_vec(a0, b0)[0], ab_vec(a1, b1)[0]
+        for t in np.linspace(0, 1, samples, endpoint=False):
+            v = v0 * (1 - t) + v1 * t
+            pts.append(v / np.linalg.norm(v))
+    pts.append(ab_vec(anchors[-1][0], anchors[-1][1])[0])
+    return np.degrees(np.arccos(np.clip(V.dot(np.array(pts).T).max(axis=1), -1, 1)))
+
+
+def point_dist(V, arc, bear):
+    c = ab_vec(arc, bear)[0]
+    return np.degrees(np.arccos(np.clip(V.dot(c), -1, 1)))
+
+
 def build():
     rng = np.random.default_rng(SEED)
     grid = WorldGrid(SRC)
     geo = worldgeom.Geometry(grid.tiles)
     n, V = grid.tiles, geo.vec
     nbl = [geo.neighbours(t) for t in range(n)]
+    arc, bear = ab_of(geo.lat, geo.lon)
+    th = arc
 
-    # theta: degrees from the substellar point at (0,0). THE planetary coordinate.
-    sub = np.array([1.0, 0.0, 0.0])
-    th = np.degrees(np.arccos(np.clip(V.dot(sub), -1, 1)))
-    # bearing around the substellar point, so features can be placed "on the SE limb"
-    bearing = np.degrees(np.arctan2(V[:, 1], V[:, 2]))
-
-    # 🔑 THE ANTI-CIRCLE. Every round thing on the old map came from thresholding a
-    # RADIAL quantity - distance from a centre, or angle from the substellar point.
-    # So the coordinate itself is warped before anything is thresholded against it,
-    # and every hand-placed mass is warped the same way. Nothing on this planet is
-    # allowed to be a function of a clean radius.
     warp_a = fbm(V, rng, freq0=4.2, octaves=4)
     warp_b = fbm(V, rng, freq0=8.5, octaves=4)
     warp_c = fbm(V, rng, freq0=15.0, octaves=3)
-    lobe = fbm(V, rng, freq0=2.2, octaves=3)     # continent-scale lobes
+    lobe = fbm(V, rng, freq0=2.2, octaves=3)
     lobe2 = fbm(V, rng, freq0=3.6, octaves=3)
-    thb = th + 7.0 * warp_a + 3.0 * warp_b + 1.2 * warp_c   # warped "angle from noon"
+    patchy = fbm(V, rng, freq0=7.0, octaves=4)
+    patchy2 = fbm(V, rng, freq0=11.0, octaves=3)
+    grain = fbm(V, rng, freq0=16.0, octaves=4)
+    # the warped angle: every zone edge is tested against THIS, never against arc,
+    # so no band can close a circle round the planet
+    thb = arc + 7.0 * warp_a + 3.0 * warp_b + 1.2 * warp_c
 
-    def irregular(field, k=0.35, amp=0.55):
-        """Threshold a hand-placed mass through the warp, so it lands as a torn
-        patch rather than a disc.
+    print("=== 1. relief from the authored gazetteer ===")
+    cont = fbm(V, rng, freq0=1.5, octaves=7)
+    detail = fbm(V, rng, freq0=6.0, octaves=5)
+    ranges_n = ridged(V, rng, freq0=2.6, octaves=6)
 
-        🔴 MULTIPLICATIVE, deliberately. An ADDITIVE warp leaks: warp_a is unit
-        variance everywhere, so `blob + 0.22*warp` painted the Shipyards over 6.7% of
-        the planet instead of one cluster. Multiplying keeps a mass strictly inside
-        its own cap and only tears its edge."""
-        w = 1.0 + amp * warp_a + 0.5 * amp * warp_b + 0.25 * amp * warp_c
-        return (field * np.clip(w, 0.0, 2.4)) > k
+    elev = 300.0 + 420.0 * cont + 190.0 * detail + 55.0 * grain
+    # the substellar plateau: FLAT on top - quartic falloff, not a dome
+    anvil = np.clip(1.0 - point_dist(V, 0, 0) / 23.0, 0, 1) ** 4
+    elev += 1150.0 * anvil
+    elev += 300.0 * np.clip(1.0 - point_dist(V, 180, 0) / 95.0, 0, 1) ** 2   # old crust
 
-    print("=== 1. relief ===")
-    cont = fbm(V, rng, freq0=1.5, octaves=7)              # continental swell
-    detail = fbm(V, rng, freq0=6.0, octaves=5)            # dissection
-    grain = fbm(V, rng, freq0=16.0, octaves=4)            # meander grain
-    ranges = ridged(V, rng, freq0=2.6, octaves=6)         # MANY ranges, not one spine
+    ridge_dist = {}
+    for name, anchors, amp, halfw in RIDGES:
+        if anchors is None:
+            continue
+        d = path_dist(V, anchors)
+        ridge_dist[name] = d
+        prof = np.exp(-(d / (halfw * (1.0 + 0.35 * warp_a))) ** 2)
+        elev += amp * prof * (0.55 + 0.65 * np.clip(ranges_n, 0, 1.8))
+    # ⭐ The Scald Spine is a RING with a NOTCH. A sealed wall cannot drain or be
+    # crossed; the notch is where the Dew Belt gets into the crater.
+    ds = point_dist(V, 35, 185)
+    ring = np.exp(-((ds - 15.5) / 3.2) ** 2)
+    notch = 1.0 - 0.55 * np.clip(np.cos(np.radians(3 * (bear - 185) + 0.9 * 57.3)), 0, 1)
+    elev += 2050.0 * ring * notch * (0.7 + 0.6 * np.clip(ranges_n, 0, 1.6))
+    ridge_dist["The Scald Spine"] = np.abs(ds - 15.5)
 
-    # The Anvil: the substellar plateau. High, dead flat, the rain shadow.
-    anvil = blob(V, 0, 0, 46, falloff=1.4)
+    basin_mask = np.zeros(n, bool)
+    for name, (a, b), r, amp in BASINS:
+        d = point_dist(V, a, b)
+        rr = r * (1.0 + 0.30 * warp_a + 0.16 * warp_b)     # torn, not a disc
+        prof = np.clip(1.0 - (d / np.clip(rr, 2, 60)) ** 2, 0, 1)
+        elev += amp * prof
+        basin_mask |= d < rr * 1.25
+    for name, anchors, amp, halfw in TROUGHS:
+        d = path_dist(V, anchors)
+        elev += amp * np.exp(-(d / (halfw * (1.0 + 0.3 * warp_b))) ** 2)
 
-    # Hand-placed massifs. Named, and sited so the big rivers have somewhere to be
-    # born NEAR the seas - the docs want rivers short and mountain-fed.
-    MASSIFS = [
-        # (name,           lat,  lon, radius, height)
-        # 🔑 Sited so that the water works. Rain condenses at ALTITUDE, and only on
-        # the day side, so a massif on the night face feeds nothing and a sea with no
-        # massif upwind of it gets no rivers. The first draft put the biggest peaks
-        # in the dark and Sarr'khet came out with no inflow at all.
-        ("Kadresh Spine",   42,  -48,  30, 3300),   # ⭐ the Sarr'khet watershed
-        ("Thal Ridge",     -28,  -40,  26, 2900),   # ⭐ its southern half
-        ("Ubrekk Massif",  -42,   88,  26, 3000),   # ⭐ the Ma'kel watershed
-        ("Sorrow Teeth",    28,  100,  22, 2600),   # east limb, northern
-        ("Vaal Horns",       8,   36,  16, 1700),   # inner dayside, isolated, dry
-        ("The Gray Wall",   58,  150,  20, 1300),   # night-facing, feeds nothing
-        ("Kesh Knuckles",  -56,  -16,  17, 1900),   # southern dayside, isolated
-    ]
-    daylit = np.clip((150.0 - th) / 90.0, 0.30, 1.0)
-    elev = (900.0 * cont + 260.0 * detail
-            + 620.0 * np.clip(ranges, 0, None) * daylit
-            + 700.0 * anvil + 62.0 * grain)
-    for name, la, lo, rad, hgt in MASSIFS:
-        b = blob(V, la, lo, rad, falloff=1.7)
-        elev += hgt * b * (0.55 + 0.75 * np.clip(ranges, 0, 1.6))   # crested, not domed
-
-    print("=== 2. the three seas ===")
-    # 🔴 Owner: ~25% water (accept 22-28%), EXACTLY three connected bodies, elongated
-    # and torn, near the terminator but NOT a ring, and one out on the night side.
-    # Each is built from a great-circle SPINE, so it comes out long instead of round.
-    # 🔴 Owner: near the terminator but NOT a ring. So the two big ones are
-    # deliberately UNLIKE each other - Sarr'khet is northern and sits inside the
-    # terminator on the day side, Ma'kel Reach is southern and sits outside it on the
-    # dark side. Neither runs pole to pole, and they do not mirror.
-    SEAS = [
-        ("Sarr'khet", [(58, -98), (36, -84), (14, -74), (-8, -64), (-24, -50)], 17.4),
-        ("Ma'kel Reach", [(-64, 104), (-46, 88), (-24, 86), (-6, 96), (10, 106)], 16.4),
-        ("The Black Mirror", [(52, 150), (34, 166), (16, -177)], 14.4),
-    ]
-    coast_big = fbm(V, rng, freq0=3.0, octaves=4)
-    coast_mid = fbm(V, rng, freq0=7.5, octaves=4)
-    coast_fine = fbm(V, rng, freq0=16.0, octaves=3)
-    sea = np.zeros(n, bool)
-    sea_id = np.full(n, -1, np.int8)
-    for i, (name, spine, width) in enumerate(SEAS):
-        d = arc_dist(V, spine)
-        # ⭐ the COASTLINE is the noise, not the distance. Three scales: lobes and
-        # gulfs, headlands, then a per-tile bite. A smooth threshold is a disc.
-        w = (width * (1.0 + 0.62 * coast_big) + 7.0 * coast_mid + 3.4 * coast_fine)
-        m = d < np.clip(w, 1.0, 44.0)
-        sea |= m
-        sea_id[m & (sea_id < 0)] = i
-    # 🔴 EXACTLY three bodies. Noise that tears a coastline also throws islands of
-    # water clear of it; anything not one of the three biggest is dry land.
+    print("=== 2. sea level ===")
+    # 🔴 Owner 2026-08-18: "There's WAY too much water, so reduce that to a third."
+    # 25.8% -> ~8.6%. Water is elevation<0 AND inside an authored basin, so the
+    # planet cannot grow seas nobody named.
+    sea = (elev < 0) & basin_mask
     keep = np.zeros(n, bool)
-    for i in range(len(SEAS)):
-        m = sea_id == i
+    sea_id = np.full(n, -1, np.int8)
+    for i, (name, (a, b), r, amp) in enumerate(BASINS):
+        if name == "The Umbra Trap":
+            continue                     # ammonia, not ocean - it holds no water
+        m = sea & (point_dist(V, a, b) < r * 2.0)
         if not m.any():
             continue
-        comps = components(m, nbl)
-        keep[comps[0]] = True          # the body itself; its splinters are islands
-    sea_id[~keep] = -1
+        comp = components(m, nbl)[0]
+        keep[comp] = True
+        sea_id[comp] = i
     sea = keep
+    elev[sea] = np.minimum(elev[sea], -25.0)
+    elev[~sea] = np.clip(elev[~sea], 12.0, 3800.0)
 
     print("=== 3. hydrology ===")
-    # Rain condenses at ALTITUDE and at the terminator seam, and NEVER on the night
-    # side, where it is locked as ice. Owner's ruling, 2026-08-17.
-    seam = np.exp(-((th - 86.0) / 44.0) ** 2)
-    alt = np.clip((elev - 1100.0) / 1800.0, 0, 1.6)
-    seaward = np.clip(1.0 - bfs_dist(np.nonzero(sea)[0], nbl, n, cap=40) / 26.0, 0, 1)
-    dayside = np.clip((112.0 - th) / 26.0, 0, 1)
-    rain_src = (7.0 * alt ** 1.5 * (0.25 + 1.0 * seam) + 1.5 * seam * seaward
-                + 0.10 * seaward) * dayside
-    rain_src = np.clip(rain_src, 0.02, None)
+    # Owner's ruling 2026-08-17: moist air is dragged off the terminator toward the
+    # sun and wrung out climbing the ranges, so a range rains on its TERMINATOR-FACING
+    # flank and the substellar plateau is the rain shadow.
+    moist = np.exp(-((arc - 96.0) / 40.0) ** 2)          # the source is the seam
+    lift = np.zeros(n)
+    for t in range(n):
+        if arc[t] > NIGHT_ARC + 14:
+            continue
+        best = 0.0
+        for u in nbl[t]:
+            if arc[u] > arc[t]:                        # u is further from the sun
+                best = max(best, (elev[t] - elev[u]) / 260.0)
+        lift[t] = best
+    dayside = np.clip((NIGHT_ARC + 12.0 - arc) / 24.0, 0, 1)
+    rain_src = np.clip((0.35 + 3.6 * np.clip(lift, 0, 6.0)) * moist * dayside, 0.02, None)
 
-    elev[sea] = -40.0 - 300.0 * np.clip(-coast_big[sea], 0, 1.4)
-    elev[~sea] = np.clip(elev[~sea], 12.0, 3550.0)
     for cycle in range(4):
         filled = fill_depressions(elev, nbl, sea)
         down, acc = flow(filled, nbl, rain_src, sea)
-        cut = 46.0 * np.log1p(acc) * np.clip(elev / 900.0, 0.15, 3.0)
-        elev[~sea] = np.clip(elev[~sea] - cut[~sea], 12.0, 3550.0)
-        print("    erosion pass %d: max cut %.0f m, channels>%d = %d"
-              % (cycle + 1, cut.max(), 105, int((acc > 105).sum())))
+        cut = 44.0 * np.log1p(acc) * np.clip(elev / 900.0, 0.15, 3.0)
+        elev[~sea] = np.clip(elev[~sea] - cut[~sea], 12.0, 3800.0)
     filled = fill_depressions(elev, nbl, sea)
     down, acc = flow(filled, nbl, rain_src, sea)
-
-    # channels: enough accumulated flow, on the dayside, and not in the dead centre
-    need = 105.0 + 620.0 * np.clip((72.0 - th) / 50.0, 0, 1) ** 1.6
-    chan = (acc > need) & (~sea) & (th < 118.0)
+    need = 60.0 + 520.0 * np.clip((70.0 - arc) / 50.0, 0, 1) ** 1.6
+    chan = (acc > need) & (~sea) & (arc < NIGHT_ARC)
     print("    channel tiles %d" % chan.sum())
 
-    # deltas: where a big channel meets the sea, the last few tiles fan out and go salt
-    # 🔑 "fan out into salty deltas" - the mouth is not a point. Every trunk that
-    # reaches the sea spreads a fan two to three tiles deep along the shore, biased
-    # to LOW ground, which is where an alluvial fan actually goes.
     mouths = [int(t) for t in np.nonzero(chan)[0]
               if down[t] >= 0 and sea[down[t]] and acc[t] > 90]
     delta = np.zeros(n, bool)
     for m in mouths:
-        reach = 4 if acc[m] > 700 else 3
-        front = {m}
+        front, reach = {m}, (4 if acc[m] > 700 else 3)
         delta[m] = True
         for _ in range(reach):
             nxt = set()
             for t in front:
                 for u in nbl[t]:
-                    if sea[u] or delta[u]:
+                    if sea[u] or delta[u] or elev[u] > elev[m] + 190:
                         continue
-                    if elev[u] < elev[m] + 190 and th[u] < 128:
-                        delta[u] = True
-                        nxt.add(u)
+                    delta[u] = True
+                    nxt.add(u)
             front = nxt
     print("    mouths %d, delta tiles %d" % (len(mouths), delta.sum()))
 
@@ -376,8 +412,12 @@ def build():
     riparian = bfs_dist(np.nonzero(chan)[0], nbl, n, cap=9)
     bigriver = bfs_dist(np.nonzero(chan & (acc > 1400))[0], nbl, n, cap=9)
     near_sea = bfs_dist(np.nonzero(sea)[0], nbl, n, cap=9)
-    patchy = fbm(V, rng, freq0=7.0, octaves=4)
-    patchy2 = fbm(V, rng, freq0=11.0, octaves=3)
+    d_gray = point_dist(V, 92, 8)
+    d_twi = point_dist(V, 91, 170)
+    d_scald = point_dist(V, 35, 185)
+    d_umbra = point_dist(V, 158, 62)
+    bear_off = lambda b0: np.abs((bear - b0 + 180) % 360 - 180)
+    off_gray, off_twi = bear_off(0.0), bear_off(180.0)
 
     B = ["Desert"] * n
     for t in range(n):
@@ -386,141 +426,136 @@ def build():
         if sea[t]:
             B[t] = "Ocean"
             continue
-        # ---- NIGHT SIDE. 🔴 REBUILT: it was three concentric shells and read as a
-        # set of rings round the whole planet. Now the dark is ONE mass - the
-        # forsaken crags - and everything else is a lobe or a patch inside it, gated
-        # on a continent-scale field so no zone ever closes a circle.
+        # ---- the dark, one mass with lobes inside it
         if a > 108 + 16.0 * lobe[t]:
             B[t] = "AB_RockyCrags"
             gate = lobe[t] + 0.55 * lobe2[t]
             if a < 138 and gate > 0.35 and p > -0.6:
-                B[t] = "PoisonForest"            # the Ash Verge: three lobes, not a band
+                B[t] = "PoisonForest"
             elif 124 < a < 162 and gate < -0.45 and p2 > -0.4:
-                B[t] = "AB_MycoticJungle"        # the Long Dark's fungal quarter
-                if p2 > 1.1:
-                    B[t] = "BMT_FungalForest"
+                B[t] = "BMT_FungalForest" if p2 > 1.1 else "AB_MycoticJungle"
             if p2 > 1.5 and gate > 0.9:
-                B[t] = "HorrorWastes"            # patches only, and rare
-            if near_sea[t] < 3 and a > 130:
-                B[t] = "AB_PropaneLakes"         # hydrocarbon shore of the Black Mirror
+                B[t] = "HorrorWastes"
+            if d_umbra[t] < 22 and p > -0.8:
+                B[t] = "AB_PropaneLakes"          # The Ammonia Flats
             if a > 150 and p2 > 1.75:
                 B[t] = "Glowforest" if p > 0.3 else "BMT_CrystalCaverns"
-            if a > 145 and p < -1.5 and p2 < -0.9:
-                B[t] = "BMT_EarthenDepths"
-        # ---- THE WATER MARGIN: narrow, fierce, and only here
+        # ---- the water margin
         elif delta[t]:
-            # the salt delta: mangrove in the wet channels, swamp in the pools, and
-            # bare evaporite where the fan has already died
             B[t] = ("AB_MiasmicMangrove" if p2 > -0.2 else
                     "COMIGO_GreaterSwamp_Tropical" if p > 0.8 else "Wasteland")
         elif r <= 1:
-            # 🔑 owner: "coat the rivers in jungles". This is the ONLY green on the
-            # planet: a hard line one tile wide, two on a trunk, and nothing beyond.
             B[t] = "AB_FeraliskInfestedJungle"
         elif r <= 2 and bigriver[t] <= 2:
             B[t] = "ZBiome_DesertOasis"
-        elif near_sea[t] <= 2:
-            B[t] = "AridShrubland" if a > 66 + 10 * lobe[t] else "ZBiome_Badlands"
-        # ---- THE DAYSIDE
-        elif a < 26:
+        # ---- the terminator, arc 78..108: the rot, and the gelatinous
+        elif a > 78:
+            B[t] = "AridShrubland" if p > -0.2 else "Wasteland"
+            if p2 > 0.95 and p > 0.2:
+                B[t] = "PoisonForest"
+            # 🔴 owner 2026-08-18: "Gelatinous Superorganism should definitely be on
+            # the terminator." Patches, never a band.
+            if 84 < a < 104 and p2 > 1.25 and lobe2[t] > 0.1:
+                B[t] = "AB_GelatinousSuperorganism"
+            if near_sea[t] <= 2 and p2 > 0.5:
+                B[t] = "AB_TarPits"
+        # ---- the Dew Belt: the wet trough running sunward off the Twilight seam
+        elif off_twi[t] < 24 and 44 < a < 92:
+            B[t] = ("ZBiome_DesertOasis" if p2 > 1.2 else
+                    "AridShrubland" if p > -0.3 else "Desert")
+        # ---- the Pyrelands: stormy savanna, burning, tar pits interspersed
+        elif off_gray[t] < 62 and 50 < a < 86 and (p + 0.5 * lobe[t]) > -0.25:
+            B[t] = "ZBiome_Grasslands"
+            if p2 > 1.3:
+                B[t] = "AB_TarPits"
+        # ---- the dayside waste
+        elif a < 20:
             B[t] = "ExtremeDesert"
-        elif a < 52:
+        elif a < 44:
             B[t] = "ExtremeDesert" if p < 0.55 else "Desert"
-        elif a < 84 + 9 * lobe[t]:
-            B[t] = "Desert" if p < 0.9 else "ZBiome_Badlands"
+        elif a < 72:
+            B[t] = "Desert" if p < 0.95 else "ZBiome_Badlands"
         else:
             B[t] = "AridShrubland" if p > 0.2 - 0.5 * lobe2[t] else "Desert"
-        # dissected highland reads as badlands wherever it is steep
         if B[t] in ("Desert", "AridShrubland") and e > 1500 and p2 > 0.4:
             B[t] = "ZBiome_Badlands"
-        # ocular forest: on the peaks, at the river heads, bleeding streams outward
-        if e > 2300 and a < 118 and acc[t] > 12 and p2 > 0.2:
-            B[t] = "AB_OcularForest"
+        if e > 2400 and arc[t] < 118 and acc[t] > 12 and p2 > 0.9:
+            B[t] = "AB_OcularForest"     # only on mountain tops, tiny patches
 
-    # ---- ONE volcanic region: the Hellrim, packed, on the south-east limb.
-    # ⭐ ONE volcanic province, and it is a RIFT, not a crater: built off a spine so
-    # it comes out long, and every internal band is torn by its own noise so the
-    # province does not read as concentric rings.
-    hd = arc_dist(V, [(-16, 30), (-32, 44), (-48, 62)])
-    hell = np.clip(1.0 - hd / 17.0, 0, 1) ** 1.25
-    hf = hell * np.clip(1.0 + 0.55 * warp_a + 0.30 * warp_b, 0, 2.2)
-    for t in np.nonzero(hf > 0.14)[0]:
-        if sea[t] or th[t] > 112:
+    # ---- THE STORY OVERRIDES, in the owner's own coordinates -----------------
+    for t in range(n):
+        if sea[t]:
             continue
-        v = hf[t]
-        if v > 0.80 + 0.10 * patchy2[t]:
-            B[t] = "AB_PyroclasticConflagration"
-        elif v > 0.58 + 0.14 * warp_c[t]:
-            B[t] = "LavaField" if patchy2[t] > 0.1 else "Volcano"
-        elif v > 0.36 + 0.16 * warp_b[t]:
-            B[t] = "Scarlands" if patchy2[t] > 0.5 else "AB_TarPits"
-        elif v > 0.20 and patchy2[t] > 0.9:
-            B[t] = "AB_TarPits"
-
-    # ---- ONE hand-seeded cluster: the Shipyards.
-    ship = blob(V, 20, -34, 11, falloff=1.0)
-    for t in np.nonzero(irregular(ship, 0.34, 0.60))[0]:
-        if not sea[t]:
+        a = arc[t] + 3.6 * warp_a[t] + 2.2 * warp_b[t] + 1.4 * warp_c[t]
+        # The Rust Cathedral: mechanoids at the substellar point, permanently at war.
+        # 🔴 tested against the WARPED arc - against raw arc it is a disc inside a ring.
+        if a < 12.5 and bear_off(40.0)[t] < 118 and (patchy[t] + 0.5 * warp_a[t]) > -1.1:
             B[t] = "AB_MechanoidIntrusion"
-    # ---- the droid ground and the graveyard, as masses not specks
-    wd = arc_dist(V, [(4, -26), (-10, -14), (-26, -6)])
-    waste = np.clip(1.0 - wd / 15.0, 0, 1) ** 1.2
-    for t in np.nonzero(irregular(waste, 0.34, 0.62))[0]:
-        if not sea[t] and B[t] in ("Desert", "ExtremeDesert", "ZBiome_Badlands"):
-            B[t] = "Wasteland"
-    grave = blob(V, 46, 18, 10, falloff=1.2)
-    for t in np.nonzero(irregular(grave, 0.45, 0.50))[0]:
-        if not sea[t] and th[t] < 100:
-            B[t] = "AB_GallatrossGraveyard"
-    geys = blob(V, -20, 128, 8, falloff=1.2)
-    for t in np.nonzero(irregular(geys, 0.50, 0.45))[0]:
-        if not sea[t]:
-            B[t] = "IronScruff_PrimordialGeysers"
+        elif 12.5 <= a < 17.0 and (patchy2[t] + 0.6 * lobe[t]) > -0.85:
+            B[t] = "Scarlands"                       # The Scorch, broken into arcs
+        # the Scald rim: volcanics on the ring, high ground only
+        elif 10.0 < d_scald[t] < 22.0 and elev[t] > 1150:
+            q = patchy2[t] + 0.5 * warp_b[t]
+            B[t] = ("Volcano" if q > 0.9 else "LavaField" if q > 0.25
+                    else "AB_PyroclasticConflagration" if q > -0.4 else "ZBiome_Badlands")
+        # The Salt: evaporite hugging the Gray Sea's downwind coast
+        elif d_gray[t] < 26 and bear_off(18.0)[t] < 36 and near_sea[t] < 7:
+            B[t] = "Wasteland" if patchy[t] > -0.4 else "ZBiome_Badlands"
 
     B = despeckle(B, nbl, minsize=7)
-    # 🔴 Sea spec req 5: water tile <=> elevation <= 0 AND a water biome. Despeckle
-    # works on labels alone and will happily drown a two-tile island, so the two
-    # representations are forced back into agreement here, elevation winning.
     for t in range(n):
         if sea[t]:
             B[t] = "Ocean"
         elif B[t] == "Ocean":
             B[t] = "ZBiome_Badlands"
 
-    # ---- Ash'karr names itself. The old painter left the planet labelled with the
-    # vanilla source world's regions (Josephine's Pride Mountains, Isle Ballerrei...).
+    # ---- the gazetteer, as world features -----------------------------------
     regions = []
-    for i, (name, spine, width) in enumerate(SEAS):
-        regions.append((name, "sea", np.nonzero(sea_id == i)[0]))
-    regions.append(("The Anvil", "waste", np.nonzero((thb < 27) & ~sea)[0]))
-    for name, la, lo, rad, hgt in MASSIFS:
-        b = blob(V, la, lo, rad, falloff=1.7)
-        regions.append((name, "massif", np.nonzero((b > 0.40) & ~sea)[0]))
-    regions.append(("The Hellrim", "waste",
-                    np.nonzero((hf > 0.30) & ~sea)[0]))
-    regions.append(("The Shipyards", "waste", np.nonzero(irregular(ship, 0.34, 0.60) & ~sea)[0]))
-    regions.append(("The Rust Flats", "waste", np.nonzero(irregular(waste, 0.34, 0.62) & ~sea)[0]))
-    regions.append(("The Gallatross Boneyard", "waste", np.nonzero(irregular(grave, 0.45, 0.50))[0]))
-    regions.append(("The Ash Verge", "waste",
-                    np.nonzero((thb > 108) & (thb <= 138) & ~sea & (lobe > 0.0))[0]))
-    regions.append(("The Long Dark", "waste",
-                    np.nonzero((thb > 124) & (thb <= 162) & ~sea & (lobe < 0.0))[0]))
-    regions.append(("The Forsaken Crags", "waste",
-                    np.nonzero((thb > 152) & ~sea)[0]))
+    for i, (name, (a, b), r, amp) in enumerate(BASINS):
+        if name == "The Umbra Trap":
+            regions.append(("The Ammonia Flats", "waste",
+                            np.nonzero((d_umbra < 22) & ~sea)[0]))
+        else:
+            regions.append((name, "sea", np.nonzero(sea_id == i)[0]))
+    regions.append(("The Rust Cathedral", "waste",
+                    np.nonzero([x == "AB_MechanoidIntrusion" for x in B])[0]))
+    regions.append(("The Scorch", "waste",
+                    np.nonzero([x == "Scarlands" for x in B])[0]))
+    regions.append(("The Anvil", "waste", np.nonzero((arc < 20) & ~sea)[0]))
+    regions.append(("The Dune Sea", "waste",
+                    np.nonzero((arc >= 20) & (arc < 40) & ~sea)[0]))
+    for name, anchors, amp, halfw in RIDGES:
+        d = ridge_dist.get(name)
+        if d is None:
+            continue
+        regions.append((name, "massif", np.nonzero((d < halfw * 1.5) & ~sea)[0]))
+    regions.append(("The Dew Belt", "waste",
+                    np.nonzero((off_twi < 24) & (arc > 40) & (arc < 92) & ~sea)[0]))
+    regions.append(("The Fall Line Barrens", "waste",
+                    np.nonzero((off_gray < 20) & (arc > 26) & (arc < 62) & ~sea)[0]))
+    regions.append(("The Salt", "waste",
+                    np.nonzero((d_gray < 26) & (bear_off(18.0) < 36) & ~sea)[0]))
+    regions.append(("The Pyrelands", "waste",
+                    np.nonzero([x == "ZBiome_Grasslands" for x in B])[0]))
+    regions.append(("The Sunreach", "waste",
+                    np.nonzero((arc > 96) & (arc < 124) & (off_gray < 55) & ~sea)[0]))
+    regions.append(("The Nightspill", "waste",
+                    np.nonzero((arc > 96) & (arc < 124) & (off_twi < 55) & ~sea)[0]))
+    regions.append(("The Umbra", "waste", np.nonzero((arc > 152) & ~sea)[0]))
     regions.append(("The Salt Gate", "waste", np.nonzero(delta)[0]))
     regions = [(nm, kd, tl) for nm, kd, tl in regions if len(tl) >= 6]
 
-    return dict(regions=regions, grid=grid, geo=geo, n=n, V=V, th=th, elev=elev, sea=sea, sea_id=sea_id,
-                chan=chan, acc=acc, down=down, biome=B, rain_src=rain_src,
-                riparian=riparian, delta=delta, nbl=nbl, seas=SEAS, massifs=MASSIFS,
-                filled=filled)
+    return dict(regions=regions, grid=grid, geo=geo, n=n, V=V, th=arc, arc=arc,
+                bear=bear, elev=elev, sea=sea, sea_id=sea_id, chan=chan, acc=acc,
+                down=down, biome=B, rain_src=rain_src, riparian=riparian,
+                delta=delta, nbl=nbl, seas=BASINS, massifs=RIDGES, filled=filled)
 
 
 def report(w):
     n, nbl, sea = w["n"], w["nbl"], w["sea"]
     comps = components(sea, nbl)
     print("\n--- ACCEPTANCE ---")
-    print("water      %d tiles = %.1f%%   (owner: 22-28%%)"
+    print("water      %d tiles = %.1f%%   (owner 2026-08-18: about 8.6%%)"
           % (sea.sum(), 100.0 * sea.sum() / n))
     print("bodies     %d  sizes %s   (owner: exactly 3)"
           % (len(comps), [len(c) for c in comps[:6]]))

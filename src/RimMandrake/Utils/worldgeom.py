@@ -202,7 +202,49 @@ class Ortho(object):
         return []
 
 
+class Mollweide(object):
+    """Equal-AREA whole planet. The rectangular map exaggerates the polar and
+    antistellar ground badly; on Mollweide a region's area on the page is its area on
+    the globe, which is the only honest way to judge how much of the planet a biome
+    actually covers."""
+    name = "mollweide"
+
+    def __init__(self, width=2400, center_lon=0.0):
+        self.w = width
+        self.h = width // 2
+        self.clon = center_lon
+        self.R = width / (4.0 * math.sqrt(2.0))
+
+    @staticmethod
+    def _aux(phi):
+        """Solve 2t + sin 2t = pi sin(phi) for t. Newton, from t = phi."""
+        t = np.array(phi, dtype=float)
+        for _ in range(12):
+            f = 2 * t + np.sin(2 * t) - math.pi * np.sin(phi)
+            d = 2 + 2 * np.cos(2 * t)
+            d = np.where(np.abs(d) < 1e-9, 1e-9, d)
+            t = t - f / d
+        return t
+
+    def project(self, verts, ref=None):
+        lat = np.arcsin(np.clip(verts[:, 1], -1, 1))
+        lon = np.degrees(np.arctan2(verts[:, 2], verts[:, 0])) - self.clon
+        lon = (lon + 180.0) % 360.0 - 180.0
+        if ref is not None:
+            rl = (math.degrees(math.atan2(ref[2], ref[0])) - self.clon + 180.0) % 360.0 - 180.0
+            lon = rl + ((lon - rl + 180.0) % 360.0 - 180.0)
+        t = self._aux(lat)
+        x = self.w / 2 + (2.0 * math.sqrt(2.0) / math.pi) * self.R * np.radians(lon) * np.cos(t)
+        y = self.h / 2 - math.sqrt(2.0) * self.R * np.sin(t)
+        return np.stack([x, y], axis=1), True
+
+    def wrap_copies(self, xy):
+        return []          # the ellipse has no seam to duplicate across
+
+
 def make_projection(kind, width, center):
+    if kind == "mollweide":
+        return Mollweide(width, center[1])
     if kind == "ortho":
         return Ortho(width, center[0], center[1])
     if kind == "equirect":
