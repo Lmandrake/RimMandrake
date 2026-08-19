@@ -595,3 +595,21 @@ vanilla `Armadillo` *and* `Penguin`, then re-registers Armadillo via
 `wildBiomes` into biomes Core already lists it in — this is what kills Choose
 Wild Animal Spawns at startup), plus `TropicalSwamp × Titan`, where the Titans
 mod registers the same biome twice inside its own file.
+
+## worldview.py — read a savegame and portray its planet
+
+```
+python3 src/RimMandrake/Utils/worldview.py world/WORLDMAP_ashkarr.rws --png
+    --layer biome|elevation|temperature|rainfall|swampiness|hilliness|pollution
+    --projection equirect|ortho  --center LAT,LON  --tile N  --report-only
+```
+Read-only. Writes `world/view/<save>.<layer>.<proj>.svg` (every hex hoverable for its
+tile id, biome, elevation, temp, rainfall), the same characterisation as
+`<save>.report.json`, and a prose summary to stdout: hex-grid check, biome census,
+water bodies and landmasses, rivers and roads as networks, settlements per faction
+with the tile they stand on. `--png` rasterises through headless Chrome.
+
+`worldgeom.py` holds the planet's geometry — tile centres, hex corners, the engine's
+own neighbour ORDER (which is the river/road adjacency slot), and the two
+projections. `--selftest` proves 12 pentagons, shared hex corners to 1e-16, and a
+60 deg turn between neighbour slots.
