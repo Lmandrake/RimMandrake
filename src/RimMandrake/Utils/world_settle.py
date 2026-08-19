@@ -254,15 +254,19 @@ def network(sites, cost, nb, shortcut_gain=2.4, shortcut_reach=1.9):
         adj[a].append(b)
         adj[b].append(a)
 
-    tiles = {}
-    for a, b in used + extra:
-        for t in path(tabs[a][1], a, b):
-            tiles[t] = max(tiles.get(t, 1), 1)
-    # a road carrying more of the network is a bigger road
-    for a, b in used:
-        for t in path(tabs[a][1], a, b):
-            tiles[t] = 2
-    return tiles, used, extra
+    tiles, edges = {}, {}
+    def lay(a, b, klass):
+        seq = path(tabs[a][1], a, b)
+        for t in seq:
+            tiles[t] = max(tiles.get(t, klass), klass)
+        for u, v in zip(seq[:-1], seq[1:]):
+            key = (min(u, v), max(u, v))
+            edges[key] = max(edges.get(key, klass), klass)
+    for a, b in extra:
+        lay(a, b, 1)
+    for a, b in used:          # a road carrying more of the network is a bigger road
+        lay(a, b, 2)
+    return tiles, used, extra, edges
 
 
 def audit(sites, tiles, cost, nb, water, grade):
@@ -326,6 +330,7 @@ def main():
     V = np.asarray(V, dtype=np.float64)
 
     slope = np.array([np.abs(elev[x] - elev[i]).max() for i, x in enumerate(nb)])
+    water = water | np.array([str(nm) in ("Ocean", "SeaIce") for nm in name])
     hab = habitability(T, Hu, riv, hill, name, water, elev)
     zmask = zones(r["arc"], r["bear"], elev, slope, name, water, nb)
     sites, by_zone = site(hab, nb, zmask)
@@ -336,13 +341,16 @@ def main():
     print("  %d of %d are within reach of a river" % (on_river, len(sites)))
 
     cost = travel_cost(elev, hill, name, water, grade, nb)
-    tiles, used, extra = network(sites, cost, nb)
+    tiles, used, extra, edges = network(sites, cost, nb)
     print("network: %d trunk links, %d shortcuts" % (len(used), len(extra)))
     bad = audit(sites, tiles, cost, nb, water, grade)
+    print("road edges: %d" % len(edges))
 
     np.savez_compressed(OUT_NPZ, sites=np.array(sites),
                         road_tiles=np.array(sorted(tiles)),
                         road_class=np.array([tiles[t] for t in sorted(tiles)]),
+                        road_edges=np.array([[a, b, k] for (a, b), k
+                                             in sorted(edges.items())], dtype=np.int64),
                         habitability=hab.astype(np.float32))
     print("wrote", OUT_NPZ)
     wr.write_png(OUT_PNG, render(name, sites, tiles, water, elev, V, nb))

@@ -8,7 +8,7 @@ Consumes the four offline stages and nothing else:
     world/biomes.npz   biome, hilliness
     world/settle.npz   settlement sites, roads
 
-⚠️ RIVERS AND ROADS ARE NOT WRITTEN, and this is deliberate. They are not per-tile
+✅ RIVERS AND ROADS ARE WRITTEN, as of 2026-08-18. They are not per-tile
 arrays: each entry is (origin tile, ADJACENCY SLOT, def), and the slot indexes
 RimWorld's own neighbour ordering for that tile. I tried to recover that ordering
 offline by scoring every rotation and winding of my own neighbour list against the
@@ -46,10 +46,12 @@ RIVER_WORDS = ("river", "delta", "estuary", "oxbow", "waterfall", "confluence",
                "ford", "rapids")
 
 REPO = os.path.dirname(os.path.dirname(os.path.dirname(HERE)))
-SRC = os.path.join(REPO, "world", "WORLDMAP_source.rws")
-DEST = os.path.join(REPO, "world", "WORLDMAP_gen.rws")
+SRC = os.path.join(REPO, "world", "WORLDMAP_sub7b_source.rws")
+# 🔴 NEVER write over the world the owner is using. A bad write then costs a
+# file they can delete instead of a cold load. Learned 2026-08-18.
+DEST = os.path.join(REPO, "world", "WORLDMAP_ashkarr.rws")
 GAME = ("/mnt/c/Users/Mandrake/AppData/LocalLow/Ludeon Studios/"
-        "RimWorld by Ludeon Studios/Saves/WORLDMAP_gen.rws")
+        "RimWorld by Ludeon Studios/Saves/WORLDMAP_ashkarr.rws")
 
 # pollution 0..1 -> raw. Calibrated in paint_ashkarr: the pristine world's own max is
 # exactly 65535 and its 5% non-zero fraction matches its `pollution 0.05` setting.
@@ -71,6 +73,64 @@ def rainfall_mm(H, water):
     mm = 18.0 + 1750.0 * np.clip(H, 0, 1) ** 3
     mm[water] = 90.0
     return mm
+
+
+NEIGHBOURS = os.path.join(REPO, "world", "world_neighbors_sub7b.csv")
+RIVER_DEF = {1: 8778, 2: 44073, 3: 21820}      # Creek / River / HugeRiver shortHash
+ROAD_DEF = {1: 36088, 2: 42996}                # DirtPath / DirtRoad
+
+
+def load_neighbours():
+    """The engine's OWN neighbour ordering, from jawa/world_neighbors."""
+    out = {}
+    with open(NEIGHBOURS) as fh:
+        for r in __import__("csv").DictReader(fh):
+            out[int(r["tile"])] = [int(r["n%d" % k]) for k in range(6)
+                                   if int(r["n%d" % k]) >= 0]
+    return out
+
+
+def pack_links(edges, ordering):
+    """(tileA, tileB, defHash) -> the three parallel arrays.
+
+    🔑 THE FORMAT, decoded 2026-08-18 and verified on a generated world: one entry per
+    undirected EDGE, stored ONCE, owned by the LOWER-INDEX tile, adjacency = that
+    tile's index of its partner in GetTileNeighbors order. Origin < target held in
+    1.000 of 648 engine-written entries, and reciprocity was exactly 0.000.
+    """
+    rows, skipped = [], 0
+    for a, b, dh in edges:
+        lo, hi = (a, b) if a < b else (b, a)
+        nb = ordering.get(lo)
+        if not nb or hi not in nb:
+            skipped += 1              # not actually adjacent in the ENGINE's grid
+            continue
+        rows.append((lo, nb.index(hi), dh))
+    rows.sort(key=lambda r: (r[0], r[1]))          # origins ascending, as the engine writes
+    seen, uniq = set(), []
+    for lo, slot, dh in rows:
+        if (lo, slot) in seen:
+            continue                  # an edge written twice would draw twice
+        seen.add((lo, slot))
+        uniq.append((lo, slot, dh))
+    org = struct.pack("<%dI" % len(uniq), *[r[0] for r in uniq])
+    adj = bytes(r[1] for r in uniq)
+    dfs = struct.pack("<%dH" % len(uniq), *[r[2] for r in uniq])
+    return org, adj, dfs, len(uniq), skipped
+
+
+def write_links(text, kind, edges, ordering):
+    org, adj, dfs, n, skipped = pack_links(edges, ordering)
+    j = text.find('Class="SurfaceLayer"')
+    for raw, tag in ((org, "Origins"), (adj, "Adjacency"), (dfs, "Def")):
+        name = "tile%s%sDeflate" % (kind, tag)
+        m = re.search(r"<%s>([^<]*)</%s>" % (name, name), text[j:j + 900000])
+        if not m:
+            continue
+        text = text.replace(m.group(0), "<%s>%s</%s>"
+                            % (name, enc_deflate(raw), name), 1)
+        j = text.find('Class="SurfaceLayer"')
+    return text, n, skipped
 
 
 def strip_links(text):
@@ -244,8 +304,22 @@ def main():
 
     text = open(DEST, encoding="utf-8").read()
     text, removed = strip_links(text)
-    print("stripped inherited links: %s (they belong to a planet that no longer "
-          "exists)" % (removed or "none found"))
+    print("stripped inherited links: %s" % (removed or "none found"))
+
+    ordering = load_neighbours()
+    hy2 = np.load(os.path.join(REPO, "world", "hydro.npz"))
+    grade, recv = hy2["grade"], hy2["recv"]
+    redges = []
+    for i in range(n):
+        if grade[i] > 0 and recv[i] >= 0:
+            redges.append((int(i), int(recv[i]), RIVER_DEF[int(grade[i])]))
+    text, nriv, sk1 = write_links(text, "River", redges, ordering)
+
+    rd = se["road_edges"]
+    dedges = [(int(a), int(b), ROAD_DEF[int(k)]) for a, b, k in rd]
+    text, nrd, sk2 = write_links(text, "Road", dedges, ordering)
+    print("WROTE %d river links (%d skipped as non-adjacent), %d road links (%d skipped)"
+          % (nriv, sk1, nrd, sk2))
     nb, _, _, _ = world_graph.load()
     text, mstat = fix_mutators(text, water, hill, nb)
     print("mutators:", mstat)
@@ -265,7 +339,7 @@ def main():
     if "--no-deploy" not in sys.argv:
         shutil.copy2(DEST, GAME)
         print("deployed ->", GAME)
-    print("\n⚠️ NO RIVERS AND NO ROADS in this build - see the module docstring.")
+
 
 
 if __name__ == "__main__":
