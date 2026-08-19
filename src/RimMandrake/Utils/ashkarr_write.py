@@ -1,6 +1,12 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
-"""ashkarr_write.py - splice the hand-authored planet into the savegame.
+"""ashkarr_write.py - RETIRED 2026-08-18. Do not use.
+
+🔴 Owner: "Please don't write to the savegame file anymore, we are just not going to do
+that anymore." The map is a data bundle now (world/ashkarr_*); this module is kept only
+for the encodings it documents, and write() refuses.
+
+Originally: splice the hand-authored planet into the savegame.
 
 Companion to `ashkarr_paint.py`; it holds no design decisions, only the encodings.
 It writes to a NEW file and never touches the source, so every iteration is
@@ -219,6 +225,7 @@ def move_objects(text, w):
 
 # --------------------------------------------------------------------------
 def write(w, out_path, regions=(), dump=DEFAULT_DUMP):
+    raise SystemExit("ashkarr_write is RETIRED - the owner ruled 2026-08-18 that\nnothing writes to a savegame any more. The map is world/ashkarr_*.")
     grid, n, nbl = w["grid"], w["n"], w["nbl"]
     text = grid.text
     _, bhash = load_hash_table("BiomeDef", dump)

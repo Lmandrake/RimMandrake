@@ -42,7 +42,13 @@ import worldgeom
 from worldmap import WorldGrid, WorldObjects, DECODE, load_hash_table, DEFAULT_DUMP
 
 SRC = os.path.join(REPO, "world", "WORLDMAP_sub7b_source.rws")
-OUT = os.path.join(REPO, "world", "WORLDMAP_ashkarr_v2.rws")
+BUNDLE = os.path.join(REPO, "world", "ashkarr")
+
+# 🔴 THE SAVEGAME IS NO LONGER A TARGET. Owner, 2026-08-18: "Please don't write to
+# the savegame file anymore, we're just not going to do that anymore." The map is now
+# a DATA BUNDLE - four files under world/ashkarr_* - and the renders are pictures of
+# it. Nothing here opens a .rws for writing. The source save is still READ, once, for
+# the tile geometry and the biome shortHash table, and never modified.
 SEED = 20260818          # frozen. Changing it is building a different planet - don't.
 
 # ---------------------------------------------------------------------------
@@ -367,7 +373,16 @@ def build():
     # Owner's ruling 2026-08-17: moist air is dragged off the terminator toward the
     # sun and wrung out climbing the ranges, so a range rains on its TERMINATOR-FACING
     # flank and the substellar plateau is the rain shadow.
-    moist = np.exp(-((arc - 96.0) / 40.0) ** 2)          # the source is the seam
+    # 🔴 Owner, 2026-08-18: "some rivers really should be emitted out of the Scald...
+    # it was supposed to be a major source of water and the dominant region of
+    # terrestrial-type foliage along its rivers."
+    # The mechanism: the Scald is a hot lake in the hottest place on the planet, so it
+    # evaporates hard; the vapour has nowhere to go but up the Spine that rings it, and
+    # rains out on the ring. Rivers therefore radiate OUT over the Spine as well as
+    # draining in - the crater is a pump, not a sink.
+    d_scald_pt = point_dist(V, 35, 185)
+    scald_plume = np.exp(-((d_scald_pt - 15.0) / 11.0) ** 2)
+    moist = np.exp(-((arc - 96.0) / 40.0) ** 2) + 1.35 * scald_plume
     lift = np.zeros(n)
     for t in range(n):
         if arc[t] > NIGHT_ARC + 14:
@@ -378,7 +393,8 @@ def build():
                 best = max(best, (elev[t] - elev[u]) / 260.0)
         lift[t] = best
     dayside = np.clip((NIGHT_ARC + 12.0 - arc) / 24.0, 0, 1)
-    rain_src = np.clip((0.35 + 3.6 * np.clip(lift, 0, 6.0)) * moist * dayside, 0.02, None)
+    rain_src = np.clip((0.35 + 3.6 * np.clip(lift, 0, 6.0)) * moist * dayside
+                       + 1.9 * scald_plume, 0.02, None)
 
     for cycle in range(4):
         filled = fill_depressions(elev, nbl, sea)
@@ -388,6 +404,7 @@ def build():
     filled = fill_depressions(elev, nbl, sea)
     down, acc = flow(filled, nbl, rain_src, sea)
     need = 60.0 + 520.0 * np.clip((70.0 - arc) / 50.0, 0, 1) ** 1.6
+    need = np.where(d_scald_pt < 46.0, 60.0, need)   # the Scald basin is wet
     chan = (acc > need) & (~sea) & (arc < NIGHT_ARC)
     print("    channel tiles %d" % chan.sum())
 
@@ -414,7 +431,7 @@ def build():
     near_sea = bfs_dist(np.nonzero(sea)[0], nbl, n, cap=9)
     d_gray = point_dist(V, 92, 8)
     d_twi = point_dist(V, 91, 170)
-    d_scald = point_dist(V, 35, 185)
+    d_scald = d_scald_pt
     d_umbra = point_dist(V, 158, 62)
     bear_off = lambda b0: np.abs((bear - b0 + 180) % 360 - 180)
     off_gray, off_twi = bear_off(0.0), bear_off(180.0)
@@ -445,9 +462,20 @@ def build():
             B[t] = ("AB_MiasmicMangrove" if p2 > -0.2 else
                     "COMIGO_GreaterSwamp_Tropical" if p > 0.8 else "Wasteland")
         elif r <= 1:
-            B[t] = "AB_FeraliskInfestedJungle"
+            # 🔑 owner 2026-08-18: the TERRESTRIAL foliage belongs to the Scald and its
+            # rivers. The meridian gets mycoid and poison forest instead - so the two
+            # kinds of green mean different things and you can tell where you are by
+            # what is growing.
+            if d_scald_pt[t] < 48:
+                B[t] = ("COMIGO_GreaterSwamp_Tropical" if p2 > 1.1
+                        else "AB_FeraliskInfestedJungle")
+            elif a > 74:
+                B[t] = "AB_MycoticJungle" if p > 0 else "PoisonForest"
+            else:
+                B[t] = "ZBiome_DesertOasis"
         elif r <= 2 and bigriver[t] <= 2:
-            B[t] = "ZBiome_DesertOasis"
+            B[t] = ("AB_FeraliskInfestedJungle" if d_scald_pt[t] < 40
+                    else "PoisonForest" if a > 74 else "ZBiome_DesertOasis")
         # ---- the terminator, arc 78..108: the rot, and the gelatinous
         elif a > 78:
             B[t] = "AridShrubland" if p > -0.2 else "Wasteland"
@@ -479,8 +507,13 @@ def build():
             B[t] = "AridShrubland" if p > 0.2 - 0.5 * lobe2[t] else "Desert"
         if B[t] in ("Desert", "AridShrubland") and e > 1500 and p2 > 0.4:
             B[t] = "ZBiome_Badlands"
-        if e > 2400 and arc[t] < 118 and acc[t] > 12 and p2 > 0.9:
-            B[t] = "AB_OcularForest"     # only on mountain tops, tiny patches
+        # ⭐ `worldgen_interactive_def.md`: "ONLY at the tops of mountains, in tiny
+        # patches"; `desert_world_design.md`: "always placed on or adjacent to
+        # Mountainous terrain, and configured to BLEED small rivers outward - the
+        # eye-biome as a strange highland spring feeding the lowlands." So it sits on
+        # the peaks that are river SOURCES, and the streams leave it carrying spores.
+        if e > 2350 and arc[t] < 124 and acc[t] > 8 and p2 > 0.75:
+            B[t] = "AB_OcularForest"
 
     # ---- THE STORY OVERRIDES, in the owner's own coordinates -----------------
     for t in range(n):
@@ -546,9 +579,104 @@ def build():
     regions = [(nm, kd, tl) for nm, kd, tl in regions if len(tl) >= 6]
 
     return dict(regions=regions, grid=grid, geo=geo, n=n, V=V, th=arc, arc=arc,
+                d_scald=d_scald_pt, d_twilight=d_twi, d_gray=d_gray, thb=thb,
                 bear=bear, elev=elev, sea=sea, sea_id=sea_id, chan=chan, acc=acc,
                 down=down, biome=B, rain_src=rain_src, riparian=riparian,
                 delta=delta, nbl=nbl, seas=BASINS, massifs=RIDGES, filled=filled)
+
+
+def temperature_curve(th, elev):
+    """Owner's ruled endpoints: +70 C at the substellar point, +14 C at the
+    terminator, -80 C in deep night, minus an altitude lapse of 5.5 C/km."""
+    return np.interp(th, [0, 30, 60, 90, 120, 150, 180],
+                     [70.0, 58.0, 38.0, 14.0, -22.0, -58.0, -80.0]) \
+        - np.clip(elev, 0, None) / 1000.0 * 5.5
+
+
+# the ratified faction labels (name_ashkarr_factions.py), and the slot each one
+# occupies in the source save's faction list
+FACTION_LABEL = {
+    "Empire": "The Galactic Empire", "OutlanderCivil": "Homestead Defense League",
+    "TribeCivil": "Deep Desert Tribes", "AM_EnemyPirate": "Blackstar Company",
+    "Jawa_HuttCartel": "Hutt Cartel", "Jawa_FreeDroidEnclaves": "Free Droid Enclaves",
+    "Jawa_WildsteamClan": "Wildsteam Clan", "Jawa_DeepwaterCompact": "Deepwater Compact",
+    "Jawa_GeonosianFoundryHive": "Geonosian Foundry Hive",
+    "Jawa_AscendantHelix": "Ascendant Helix", "Jawa_IndigenousTribes": "Jawa Trade Moot",
+    "Jawa_Junkers": "the Junkers", "Mechanoid": "the Forgotten Arsenal",
+}
+
+
+def write_bundle(w):
+    """⭐ THE MAP, as data. Four files, all committed, all readable without RimWorld."""
+    import csv as _csv
+    import json as _json
+    import ashkarr_settle
+
+    site = ashkarr_settle.Site(w)
+    plan = ashkarr_settle.PLAN(site)
+    sites = ashkarr_settle.place(w, plan)
+    placed = [x for x in sites if x["tile"] is not None]
+    starved = [x for x in sites if x["tile"] is None]
+    edges, links = ashkarr_settle.roads(w, sites, {"StoneRoad": 1, "DirtRoad": 2})
+    print("settlements %d placed, %d starved   roads %d links, %d tiles"
+          % (len(placed), len(starved), links, len(edges)))
+    for x in starved:
+        print("   🔴 STARVED  %-30s %s" % (x["name"], x["why"]))
+
+    geo, n = w["geo"], w["n"]
+    temp = temperature_curve(w["arc"], w["elev"])
+    rain = np.clip(18.0 + 1650.0 * np.clip(w["rain_src"] / 2.6, 0, 1) ** 2.2, 12, 4800)
+    rain[w["sea"]] = 90
+    reg = {}
+    for name, kind, tiles in w["regions"]:
+        for t in tiles:
+            reg.setdefault(int(t), name)
+
+    with open(BUNDLE + "_tiles.csv", "w", newline="", encoding="utf-8") as fh:
+        wr = _csv.writer(fh)
+        wr.writerow(["tile", "lat", "lon", "arc", "bearing", "elev_m", "temp_c",
+                     "rain_mm", "biome", "water", "river_flow", "region"])
+        for t in range(n):
+            wr.writerow([t, round(float(geo.lat[t]), 4), round(float(geo.lon[t]), 4),
+                         round(float(w["arc"][t]), 2), round(float(w["bear"][t]), 2),
+                         int(round(w["elev"][t])), round(float(temp[t]), 1),
+                         int(round(rain[t])), w["biome"][t], int(bool(w["sea"][t])),
+                         int(w["acc"][t]) if w["chan"][t] else 0, reg.get(t, "")])
+
+    with open(BUNDLE + "_settlements.csv", "w", newline="", encoding="utf-8") as fh:
+        wr = _csv.writer(fh)
+        wr.writerow(["id", "faction_def", "faction", "name", "tile", "lat", "lon",
+                     "arc", "biome", "why"])
+        for i, x in enumerate(placed):
+            t = x["tile"]
+            wr.writerow([i, x["faction"], FACTION_LABEL.get(x["faction"], x["faction"]),
+                         x["name"], t, round(float(geo.lat[t]), 3),
+                         round(float(geo.lon[t]), 3), round(float(w["arc"][t]), 1),
+                         w["biome"][t], x["why"]])
+
+    with open(BUNDLE + "_links.csv", "w", newline="", encoding="utf-8") as fh:
+        wr = _csv.writer(fh)
+        wr.writerow(["kind", "a", "b", "def"])
+        for t in np.nonzero(w["chan"])[0]:
+            d = w["down"][t]
+            if d < 0 or not (w["chan"][d] or w["sea"][d]):
+                continue
+            a = w["acc"][t]
+            wr.writerow(["river", int(t), int(d),
+                         "HugeRiver" if a > 3000 else "LargeRiver" if a > 1200
+                         else "River" if a > 300 else "Creek"])
+        for a, b, g in edges:
+            wr.writerow(["road", a, b, "StoneRoad" if g == 1 else "DirtRoad"])
+
+    meta = {"planet": "Ash'karr", "tiles": n, "substellar": [0.0, 0.0],
+            "water_pct": round(100.0 * float(w["sea"].sum()) / n, 2),
+            "regions": [r[0] for r in w["regions"]],
+            "factions": sorted({x["faction"] for x in placed}),
+            "faction_labels": FACTION_LABEL,
+            "settlements": len(placed), "starved": [x["name"] for x in starved]}
+    with open(BUNDLE + "_meta.json", "w", encoding="utf-8") as fh:
+        _json.dump(meta, fh, indent=1, ensure_ascii=False)
+    print("bundle -> %s_{tiles,settlements,links,meta}.*" % BUNDLE)
 
 
 def report(w):
@@ -580,6 +708,4 @@ def report(w):
 if __name__ == "__main__":
     w = build()
     report(w)
-    if "--write" in sys.argv:
-        import ashkarr_write
-        ashkarr_write.write(w, OUT, w["regions"])
+    write_bundle(w)

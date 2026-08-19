@@ -617,6 +617,96 @@ def tile_value(pv, layer, t):
             }[layer]
 
 
+class BundlePlanet(object):
+    """The planet read from the DATA BUNDLE rather than from a savegame.
+
+    🔴 Owner, 2026-08-18: nothing writes to a .rws any more, so the renderer must be
+    able to draw the map from `world/ashkarr_*.csv` alone. Same surface as
+    PlanetView, so every layer, projection and legend works unchanged."""
+
+    def __init__(self, stem):
+        import csv as _csv
+        import json as _json
+        rows = list(_csv.DictReader(open(stem + "_tiles.csv", encoding="utf-8")))
+        self.n = len(rows)
+        self.path = stem + "_tiles.csv"
+        self.geom = worldgeom.Geometry(self.n)
+        g = self.geom
+        self.biome = [r["biome"] for r in rows]
+        self.elev = np.array([float(r["elev_m"]) for r in rows])
+        self.temp = np.array([float(r["temp_c"]) for r in rows])
+        self.rain = np.array([float(r["rain_mm"]) for r in rows])
+        self.arc = np.array([float(r["arc"]) for r in rows])
+        self.is_water = np.array([r["water"] == "1" for r in rows])
+        self.swamp = np.zeros(self.n)
+        self.grid = type("G", (), {"arrays": {"tilePollution": [0] * self.n}})()
+        # hilliness from local relief, same rule the writer used
+        self.hilly = np.ones(self.n, np.uint8)
+        for t in range(self.n):
+            if self.is_water[t]:
+                continue
+            vals = [self.elev[t]] + [self.elev[u] for u in g.neighbours(t)]
+            rel = max(vals) - min(vals)
+            self.hilly[t] = (5 if rel > 1150 and self.elev[t] > 2400 else
+                             4 if rel > 780 else 3 if rel > 430 else
+                             2 if rel > 190 else 1)
+        names, idx = [], {}
+        self.feature_idx = np.full(self.n, 0xFFFF, np.uint16)
+        for t, r in enumerate(rows):
+            nm = r["region"]
+            if not nm:
+                continue
+            if nm not in idx:
+                idx[nm] = len(names)
+                names.append(nm)
+            self.feature_idx[t] = idx[nm]
+        self.features = [{"index": i, "name": nm, "def": "Region"}
+                         for i, nm in enumerate(names)]
+        meta = _json.load(open(stem + "_meta.json", encoding="utf-8"))
+        self.meta = meta
+        self.info = {"name": meta.get("planet"), "seedString": "hand-authored",
+                     "startingTile": None, "gameVersion": None, "mods": None,
+                     "subdivisions": None, "planetCoverage": None,
+                     "overallRainfall": None, "overallTemperature": None,
+                     "radius": None, "pollution": None}
+        self.settlements, self.factions = [], {}
+        for r in _csv.DictReader(open(stem + "_settlements.csv", encoding="utf-8")):
+            key = r["faction_def"]
+            if key not in self.factions:
+                self.factions[key] = {"name": r["faction"], "def": key,
+                                      "index": len(self.factions)}
+            self.settlements.append({"id": int(r["id"]), "tile": int(r["tile"]),
+                                     "name": r["name"], "faction": key,
+                                     "why": r["why"]})
+        self.rivers, self.roads = [], []
+        for r in _csv.DictReader(open(stem + "_links.csv", encoding="utf-8")):
+            (self.rivers if r["kind"] == "river" else self.roads).append(
+                (int(r["a"]), int(r["b"]), r["def"], 0))
+        self.landmarks, self.unresolved = [], []
+        self.water_biome_set = {"Ocean", "Lake", "SeaIce"}
+        self.rivers_broken = self.roads_broken = []
+        self.river_dist = None
+        self.other_objects = {}
+
+    def feature_name(self, i):
+        return None if i == 0xFFFF or i >= len(self.features) else self.features[i]["name"]
+
+    def coast_edges(self):
+        out = []
+        for t in range(self.n):
+            ns = self.geom.neighbours(t)
+            for k, u in enumerate(ns):
+                if u > t and self.is_water[t] != self.is_water[u]:
+                    out.append((t, k))
+        return out
+
+    def components(self, mask):
+        return PlanetView.components(self, mask)
+
+    def link_components(self, links):
+        return PlanetView.link_components(self, links)
+
+
 def hillshade(pv):
     """Per-tile shading from the local elevation gradient, sun from the north-west.
 
@@ -788,7 +878,10 @@ def draw_panel(svg, pv, proj, y0, layer, show, tooltips, corners, shade):
 
     if "settlements" in show and pv.settlements:
         pal = ["#ffd45e", "#ff8a5e", "#6ee0a0", "#8ab6ff", "#ff7bd0", "#c3ff6e",
-               "#ffffff", "#ff5e5e", "#9d7bff", "#5ee0e0"]
+               "#ffffff", "#ff5e5e", "#9d7bff", "#5ee0e0", "#ffb347", "#7fffd4"]
+        # the dots always draw; the NAMES declutter, because 72 holdings crowd the
+        # terminator band into an unreadable smear
+        placed_px = []
         for st in pv.settlements:
             t = st["tile"]
             if t >= pv.n:
@@ -802,10 +895,15 @@ def draw_panel(svg, pv, proj, y0, layer, show, tooltips, corners, shade):
                     % (xy[0][0], xy[0][1], 4.0 * sc, pal[f.get("index", 0) % len(pal)],
                        1.2 * sc, esc(st["name"]), esc(f.get("name") or st["faction"])))
             if "labels" in show:
+                px, py = float(xy[0][0]), float(xy[0][1])
+                if any(abs(px - a) < 62 * sc and abs(py - b) < 13 * sc
+                       for a, b in placed_px):
+                    continue
+                placed_px.append((px, py))
                 svg.add('<text x="%.1f" y="%.1f" font-size="%.1f" fill="#f0f0f0" '
                         'font-family="DejaVu Sans, sans-serif" stroke="#101014" '
                         'stroke-width="%.1f" paint-order="stroke">%s</text>'
-                        % (xy[0][0] + 6 * sc, xy[0][1] - 5 * sc, 13 * sc, 2.5 * sc,
+                        % (px + 6 * sc, py - 5 * sc, 13 * sc, 2.5 * sc,
                            esc(st["name"] or "")))
         stt = pv.info.get("startingTile")
         if stt is not None and stt < pv.n:
@@ -859,7 +957,7 @@ def render(pv, layer="biome", projection="equirect", width=2400, center=(0.0, 0.
     main = worldgeom.make_projection(projection, width, center)
     second = (worldgeom.Mollweide(width, center[1])
               if sheet and projection == "equirect" else None)
-    legend_h = 300
+    legend_h = 300 if not getattr(pv, 'settlements', None) else 470
     total = main.h + legend_h + (second.h + 30 if second else 0)
     svg = SVG(main.w, total)
 
@@ -877,15 +975,14 @@ def render(pv, layer="biome", projection="equirect", width=2400, center=(0.0, 0.
             % (y0 + 48, pv.n, len(pv.settlements), len(pv.rivers), len(pv.roads),
                100.0 * float(pv.is_water.sum()) / pv.n))
     if layer == "biome":
-        cen = Counter(pv.biome).most_common(35)
+        cen = Counter(pv.biome).most_common(30)
         for i, (b, c) in enumerate(cen):
-            col, row = i // 7, i % 7
-            x, y = 14 + col * 400, y0 + 72 + row * 27
+            col, row = i // 10, i % 10
+            x, y = 14 + col * 290, y0 + 72 + row * 27
             svg.add('<rect x="%d" y="%d" width="20" height="20" fill="%s" '
                     'stroke="#000"/>' % (x, y, biome_color(b)))
-            svg.add('<text x="%d" y="%d" font-size="14">%s  <tspan opacity="0.6">%d '
-                    '(%.1f%%)</tspan></text>'
-                    % (x + 26, y + 15, esc(b), c, 100.0 * c / pv.n))
+            svg.add('<text x="%d" y="%d" font-size="13">%s  <tspan opacity="0.6">%.1f%%'
+                    '</tspan></text>' % (x + 26, y + 15, esc(b), 100.0 * c / pv.n))
     else:
         stops = RAMPS[layer]
         lo, hi = stops[0][0], stops[-1][0]
@@ -901,6 +998,39 @@ def render(pv, layer="biome", projection="equirect", width=2400, center=(0.0, 0.
             last = x
             svg.add('<text x="%.0f" y="%d" font-size="13" text-anchor="middle" '
                     'opacity="0.8">%g</text>' % (x, y0 + 124, a))
+    # ⭐ WHO LIVES WHERE. Owner: "Make a legend of the Factions and their
+    # settlements." Colours match the dots on the map.
+    if getattr(pv, "settlements", None):
+        pal = ["#ffd45e", "#ff8a5e", "#6ee0a0", "#8ab6ff", "#ff7bd0", "#c3ff6e",
+               "#ffffff", "#ff5e5e", "#9d7bff", "#5ee0e0", "#ffb347", "#7fffd4"]
+        by = defaultdict(list)
+        for st in pv.settlements:
+            by[st["faction"]].append(st["name"])
+        order = sorted(by, key=lambda k: -len(by[k]))
+        x, y = 900, y0 + 74
+        for k in order:
+            f = pv.factions.get(k, {})
+            col = pal[f.get("index", 0) % len(pal)]
+            svg.add('<circle cx="%d" cy="%d" r="6" fill="%s" stroke="#101014"/>'
+                    % (x + 6, y - 5, col))
+            svg.add('<text x="%d" y="%d" font-size="14" font-weight="bold">%s '
+                    '<tspan opacity="0.55" font-weight="normal">(%d)</tspan></text>'
+                    % (x + 18, y, esc(f.get("name", k)), len(by[k])))
+            line, lines = "", []
+            for nm in by[k]:
+                if len(line) + len(nm) > 62:
+                    lines.append(line)
+                    line = ""
+                line += (", " if line else "") + nm
+            lines.append(line)
+            for ln in lines:
+                y += 15
+                svg.add('<text x="%d" y="%d" font-size="12" opacity="0.62">%s</text>'
+                        % (x + 18, y, esc(ln)))
+            y += 20
+            if y > y0 + legend_h - 30:
+                x, y = x + 470, y0 + 74
+
     svg.add("</g>")
 
     if second:
@@ -942,7 +1072,7 @@ def rasterise(svg_path, width=None):
 # ==========================================================================
 def main():
     ap = argparse.ArgumentParser(description="Portray the planet inside a RimWorld save.")
-    ap.add_argument("save")
+    ap.add_argument("save", help="a .rws savegame, or a bundle stem like world/ashkarr")
     ap.add_argument("--out", default=os.path.join(REPO, "world", "view"))
     ap.add_argument("--dump", default=DEFAULT_DUMP, help="def dump for the SAME mod set")
     ap.add_argument("--layer", default="biome",
@@ -967,7 +1097,10 @@ def main():
     ap.add_argument("--quiet", action="store_true")
     a = ap.parse_args()
 
-    pv = PlanetView(a.save, a.dump, a.water_biome, a.not_water_biome)
+    if a.save.endswith(".rws"):
+        pv = PlanetView(a.save, a.dump, a.water_biome, a.not_water_biome)
+    else:
+        pv = BundlePlanet(a.save)
     rep = characterise(pv)
     if not a.quiet:
         print_report(rep)
@@ -989,7 +1122,7 @@ def main():
               % next((s["name"] for s in pv.settlements if s["tile"] == t), None))
 
     os.makedirs(a.out, exist_ok=True)
-    stem = os.path.splitext(os.path.basename(a.save))[0]
+    stem = os.path.splitext(os.path.basename(a.save))[0] or "ashkarr"
     jpath = os.path.join(a.out, "%s.report.json" % stem)
     with open(jpath, "w", encoding="utf-8") as fh:
         json.dump(rep, fh, indent=1, ensure_ascii=False)
