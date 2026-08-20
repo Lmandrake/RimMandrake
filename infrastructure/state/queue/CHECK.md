@@ -1274,3 +1274,58 @@ criteria: on the NEXT load, `Player.log` carries NO `mod settings data for 35213
           IncidentDef in place rather than deleting them, so check the trade/craft/spawn
           lists, not the def database.
 state:    ready
+
+## worldmap-import-is-pinned-to-mlp-subcount-7-4c9e1a
+row:      —  ⚠️ URGENT, read before the importer DLL is finished
+spec:     Two facts about the LIVE mod stack are load-bearing for any DLL that stamps
+          `world/ASHKARR_WORLDMAP_tiles.csv` into a world, and neither is written down
+          anywhere else. Both measured 2026-08-19 off the installed mods.
+
+          1. 🔴 **THE TILE IDs ARE NOT VANILLA.** `My Little Planet` (`1117406550`,
+             ACTIVE) Harmony-patches `Page_CreateWorldParams.DoWindowContents` to write
+             `subdivisions` on `PlanetLayerSettingsDef`, and the Alien Worlds
+             `TidallyLocked` preset on disk sets `<myLittlePlanetSubcount>7</...>` with
+             `planetCoverage 1`. That is what produces 21,872 tiles — matching the CSV
+             exactly. ⇒ **If MLP is deactivated, reordered out of effect, or the
+             subcount is anything but 7, EVERY tile ID in the CSV shifts and the import
+             silently paints the wrong planet.** The importer must ASSERT
+             `grid.TilesCount == 21872` and refuse, loudly, otherwise.
+          2. 🔴 **`<order>` will not save you from Geological Landforms.**
+             (`2773943594`, ACTIVE) Harmony-patches `WorldGenStep_Terrain` itself —
+             `Patch_RimWorld_WorldGenStep_Terrain`, `WorldGenStep_Landforms`,
+             `WorldTileInfoHook` in `1.6/Lunar/Components/GeologicalLandforms.dll`.
+             `<order>` sorts our step only against other *defs*, never against a Harmony
+             patch on a step. Four other mods also register their own WorldGenStepDefs:
+             BiomesKit Continued (`3333951497`), Vanilla Expanded Framework
+             (`2023507013`, `KCSG.WorldGenStep_SpawnWorldObjects`), Fortified Features
+             Framework (`3498575851`), GravTide (`3779600989`).
+             ⇒ A **total-stamp** step must run LAST, after every one of them.
+          3. `JawaSeaShaper` already sits in
+             `C:\Program Files (x86)\Steam\steamapps\common\RimWorld\Mods\JawaSeaShaper\`
+             and is active — the WorldGenStepDef + `PatchOperationConditional`
+             registration pattern is proven end-to-end on this machine. Copy it, do not
+             reinvent it.
+verify:   offline, before any load: `grep -c . world/ASHKARR_WORLDMAP_tiles.csv` is
+          21873 (header + 21872), and the `myLittlePlanetSubcount` in the preset is 7.
+criteria: on the load that first runs the importer, `Player.log` shows the step running
+          AFTER the Geological Landforms patch, and a spot-check of five tile IDs drawn
+          from the CSV has the biome the CSV says. 🔑 Then LOOK at the world map and
+          compare it against `world/view/ASHKARR_WORLDMAP.biome.equirect.png`. Every
+          defect that has mattered in this work passed its numeric check while the
+          picture was obviously wrong.
+state:    ready
+
+## alien-worlds-preset-is-edited-inside-a-steam-folder-8d40f3
+row:      —
+spec:     `C:\Program Files (x86)\Steam\steamapps\workshop\content\294100\3626210061\Worldbuilder\TidallyLocked\Preset.xml`
+          has been hand-edited on this machine (mtime 18:54 against 18:45 for its
+          sibling assets) and now carries our eight `Jawa_*` faction counts,
+          `planetCoverage 1` and `saveGenerationParameters True`. It holds generation
+          PARAMETERS only — no per-tile data — so it does not deliver the map. But it is
+          real authored work sitting in a directory **Steam owns and will silently
+          revert on any update to that mod.**
+verify:   `ls -l` the file against its siblings; confirm the `Jawa_*` faction entries
+          are present.
+criteria: the faction roster and coverage settings live somewhere in the repo, and the
+          workshop copy is reproducible from it rather than being the only copy.
+state:    ready
