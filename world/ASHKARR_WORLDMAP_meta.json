@@ -62,5 +62,18 @@
   "Mechanoid": "the Forgotten Arsenal"
  },
  "settlements": 72,
- "starved": []
+ "starved": [],
+ "startingTile": 2476,
+ "start": {
+  "tile": 2476,
+  "name": "The Setdown",
+  "lat": -1.0282,
+  "lon": 56.8669,
+  "arc": 56.9,
+  "bearing": 358.8,
+  "biome": "ExtremeDesert",
+  "elev_m": 276,
+  "temp_c": 38.6,
+  "rain_mm": 18
+ }
 }

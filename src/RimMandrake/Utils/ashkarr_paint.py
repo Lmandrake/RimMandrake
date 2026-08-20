@@ -21,6 +21,17 @@ What it fixes, all five visible in the first worldview.py render of the old pain
 compass-circle seas · comb-toothed rivers · rectangular roads · concentric biome
 rings · inherited vanilla region names.
 """
+import os as _os
+import sys as _sys
+
+if _os.environ.get("PYTHONHASHSEED") != "0":
+    # 🔴 THE MAP IS FROZEN, and Python unfreezes it by default. String-hash
+    # randomisation reorders any set/dict of names, and several passes here are
+    # order-dependent. Pinning it is not a parameter: it has exactly one legal
+    # value, and the alternative is a different planet every run.
+    _os.execve(_sys.executable, [_sys.executable] + _sys.argv,
+               dict(_os.environ, PYTHONHASHSEED="0"))
+
 import base64
 import csv
 import heapq
@@ -53,6 +64,34 @@ BUNDLE = os.path.join(REPO, "world", "ASHKARR_WORLDMAP")
 # exist nowhere else. Every biome, elevation, river, road and settlement below is
 # derived here from the design docs.
 SEED = 20260818          # frozen. Changing it is building a different planet - don't.
+
+# ---------------------------------------------------------------------------
+# ⭐ THE PLAYER'S HOME. Sited 2026-08-19; the docs had only "the habitable ring
+# is ~34-57 degrees of arc" and left it open. This is the whole decision:
+#
+#   THE SETDOWN, in the Fall Line Barrens, on the GRAY (downwind) flank -
+#   arc 56.9, bearing 358.8, ExtremeDesert, 276 m, 38.6 C, 18 mm of rain,
+#   and the nearest standing water is 26 degrees away.
+#
+# Why here and nowhere else:
+#   - It is the OUTER EDGE of the habitable ring, so everything the clan needs
+#     lies OUTWARD toward the terminator and everything that will kill them lies
+#     sunward. The campaign has a direction built into the ground.
+#   - The Jawa Trade Moot's anchor, The Ore Moot - the mine the sandcrawlers were
+#     stolen from - is 5.3 deg away. Kin are one caravan out, not zero.
+#   - The Junkers' worked-out mining fields (The Claim Jump 10.4, Tailings End
+#     12.1, The Slagfield 15.1) are the second ring. The gravship needs a
+#     thruster, a fuel tank and a pilot console; that is where they come from.
+#   - The Empire's Ashgarrison is 16.2 deg away - close enough to be a presence,
+#     far enough not to be a garrison next door.
+#   - ExtremeDesert with no river, no oasis and no coast within 26 deg. Water is
+#     the campaign's pressure, not a resource on the map, exactly as the water
+#     doctrine has it. It is also the harshest ground a colony can actually hold.
+#   - The Fall Line is the range that wrecks fall along; the clan lives in its
+#     barrens. That is where a dead gravship was found and woken.
+# Resolved by LAT/LON, not by tile number, so it survives a geometry rebuild.
+HOME_LATLON = (-1.0282, 56.8669)
+HOME_NAME = "The Setdown"
 
 # ---------------------------------------------------------------------------
 # 1. spherical noise. Sums of plane waves over the sphere: smooth, band-limited,
@@ -209,7 +248,11 @@ def despeckle(labels, nbl, minsize=4):
     """Dissolve patches smaller than minsize into whatever surrounds them. Single-tile
     specks are the tell of a per-tile dice roll; real geography comes in masses."""
     lab = list(labels)
-    for name in set(lab):
+    # 🔴 sorted(), not set(). Dissolving speck A changes what B's specks see, so the
+    # ORDER of the biome names decides the outcome - and a bare set of strings
+    # iterates differently in every Python process. That alone made three rebuilds
+    # of this "frozen" map produce three different planets (2026-08-19).
+    for name in sorted(set(lab)):
         mask = np.array([x == name for x in lab])
         for comp in components(mask, nbl):
             if len(comp) >= minsize:
@@ -220,7 +263,8 @@ def despeckle(labels, nbl, minsize=4):
                     if lab[u] != name:
                         ring[lab[u]] += 1
             if ring:
-                win = ring.most_common(1)[0][0]
+                # ties break on the NAME, never on insertion order.
+                win = min(ring.items(), key=lambda kv: (-kv[1], kv[0]))[0]
                 for t in comp:
                     lab[t] = win
     return lab
@@ -734,6 +778,18 @@ def write_bundle(w):
         for t in tiles:
             reg.setdefault(int(t), name)
 
+    # ⭐ The player's home, resolved from the authored lat/lon (see HOME_LATLON).
+    hla, hlo = math.radians(HOME_LATLON[0]), math.radians(HOME_LATLON[1])
+    hv = np.array([math.cos(hla) * math.cos(hlo), math.sin(hla),      # y is the pole,
+                   math.cos(hla) * math.sin(hlo)])                    # per worldgeom
+    home = int(np.argmax(geo.vec @ hv))
+    if w["biome"][home] != "ExtremeDesert" or w["sea"][home]:
+        raise SystemExit("🔴 THE SETDOWN moved: tile %d is now %s. The home site is a "
+                         "decision, not an output - re-site it deliberately."
+                         % (home, w["biome"][home]))
+    print("home       t%d %s  %s %dm  arc %.1f"
+          % (home, HOME_NAME, w["biome"][home], round(w["elev"][home]), w["arc"][home]))
+
     with open(BUNDLE + "_tiles.csv", "w", newline="", encoding="utf-8") as fh:
         wr = _csv.writer(fh)
         wr.writerow(["tile", "lat", "lon", "arc", "bearing", "elev_m", "temp_c",
@@ -775,7 +831,16 @@ def write_bundle(w):
             "regions": [r[0] for r in w["regions"]],
             "factions": sorted({x["faction"] for x in placed}),
             "faction_labels": FACTION_LABEL,
-            "settlements": len(placed), "starved": [x["name"] for x in starved]}
+            "settlements": len(placed), "starved": [x["name"] for x in starved],
+            "startingTile": home, "start": {"tile": home, "name": HOME_NAME,
+                                            "lat": round(float(geo.lat[home]), 4),
+                                            "lon": round(float(geo.lon[home]), 4),
+                                            "arc": round(float(w["arc"][home]), 1),
+                                            "bearing": round(float(w["bear"][home]), 1),
+                                            "biome": w["biome"][home],
+                                            "elev_m": int(round(w["elev"][home])),
+                                            "temp_c": round(float(temp[home]), 1),
+                                            "rain_mm": int(round(rain[home]))}}
     with open(BUNDLE + "_meta.json", "w", encoding="utf-8") as fh:
         _json.dump(meta, fh, indent=1, ensure_ascii=False)
     print("bundle -> %s_{tiles,settlements,links,meta}.*" % BUNDLE)

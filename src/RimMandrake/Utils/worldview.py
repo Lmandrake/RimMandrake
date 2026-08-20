@@ -665,7 +665,8 @@ class BundlePlanet(object):
         meta = _json.load(open(stem + "_meta.json", encoding="utf-8"))
         self.meta = meta
         self.info = {"name": meta.get("planet"), "seedString": "hand-authored",
-                     "startingTile": None, "gameVersion": None, "mods": None,
+                     "startingTile": meta.get("startingTile"),
+                     "gameVersion": None, "mods": None,
                      "subdivisions": None, "planetCoverage": None,
                      "overallRainfall": None, "overallTemperature": None,
                      "radius": None, "pollution": None}
