@@ -16,15 +16,15 @@
      }
     },
     "BUILD": {
-     "done": 0,
+     "done": 2,
      "total": 2,
      "state": "idle",
      "mix": {
-      "closed": 0,
+      "closed": 2,
       "done": 0,
       "doing": 0,
       "blocked": 0,
-      "ready": 2
+      "ready": 0
      }
     },
     "CHECK": {
@@ -57,15 +57,15 @@
      }
     },
     "BUILD": {
-     "done": 1,
+     "done": 2,
      "total": 4,
      "state": "idle",
      "mix": {
-      "closed": 1,
+      "closed": 2,
       "done": 0,
       "doing": 0,
       "blocked": 0,
-      "ready": 3
+      "ready": 2
      }
     },
     "CHECK": {
@@ -1998,12 +1998,12 @@
    },
    {
     "d": "2026-08-20",
-    "n": 30
+    "n": 33
    }
   ],
-  "per_day": 15.29,
-  "closed": 107,
-  "remaining": 48,
+  "per_day": 15.71,
+  "closed": 110,
+  "remaining": 45,
   "eta_days": 3
  }
 }
