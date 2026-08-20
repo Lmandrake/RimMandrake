@@ -126,6 +126,22 @@ touched, because the file is the owner's approved artifact.
 `AM_Structure_Scavenger` (structure) · `Trader` · `VME_Scrapper` · `VME_Trader` ·
 `VME_Nomad` — 4 normal memes, at the cap.
 
-The cap is a **slider, not a constant**: Vanilla Memes Expanded and Alpha Memes
-both patch `MemeCountRangeAbsolute`, both run on defaults (no settings file
-exists for either), and the slider goes to 8. Raising it to 5 costs no reload.
+🔴 **CORRECTED 2026-08-20 — this used to say "a slider, not a constant", which
+read as though the cap were already above 4. It is not.**
+
+The cap is vanilla's `IdeoFoundation.MemeCountRangeAbsolute = IntRange(1, 4)` — a
+`public static IntRange` set in `.cctor` (IL_0000–0007). **Four normal memes; the
+structure meme is outside the count** (`TryAccept` IL_0053/0092 counts
+`MemeCategory.Normal` only).
+
+Vanilla Memes Expanded and Alpha Memes each Harmony-postfix
+`Dialog_ChooseMemes.get_MemeCountRangeAbsolute` to `IntRange(1, memeAmount)`, a **mod
+setting whose default is 4** and whose slider runs 4–8. **Neither mod has a settings
+file on disk, so 4 is what is in force right now.** Raising the slider applies
+immediately with no reload (the postfix reads the static every call).
+
+⭐ **The part that actually matters for our build:** `MemeCountRangeAbsolute` is read
+by **`Dialog_ChooseMemes` and nothing else** in the assembly. It governs the in-game
+meme *chooser*. **A `FactionDef` `fixedIdeo` with `forcedMemes` is never checked
+against it** — NPC generation uses `MemeCountRangeNPCInitial = IntRange(1, 3)`. So the
+four-meme roster above is not at a hard engine cap on the route we actually ship.

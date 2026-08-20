@@ -52,6 +52,10 @@ this sheet and it is called out per-faction where it bites.
 **3. The meme cap is a COUNT, not an impact sum.** `MemeCountRangeAbsolute = IntRange(1,4)`
 normal memes; the structure meme is outside it. Impact totals are a display label
 only. So "add a meme" is free until you hold four normal memes, and impossible after.
+✅ **Confirmed against the assembly 2026-08-20** (`IdeoFoundation::.cctor` IL_0000–0007);
+`ideoligion/APPROVED.md` said otherwise and has been corrected. ⚠️ **But the cap is read
+only by `Dialog_ChooseMemes`** — a `FactionDef` `fixedIdeo`/`forcedMemes` is never checked
+against it, and NPC generation uses `MemeCountRangeNPCInitial = IntRange(1,3)` instead.
 
 **4. A multi-option `requireOne` group is a dice roll.** 63 of 314 installed groups
 hold 2+ options and the generator picks. Naming the option you want in the spec does
