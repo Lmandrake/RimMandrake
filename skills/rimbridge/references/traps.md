@@ -335,3 +335,24 @@ came back with a full character card — Bio/Inventory/Health tabs — covering 
 `devWindows` covers `Window_Dev` descendants and `clearSelection` covers the bottom-left
 pane; the info card is neither. **`{"all": true}` closes it.** Read back the pixels, not
 the deselect count.
+
+## `rimworld/load_game_ready` is NOT a readiness poll
+
+CHECK, 2026-08-20, and it cost two dead waits totalling ~10 minutes. The name reads as
+"is the game ready after a load"; it is not. It takes a **`saveName`** and answers whether
+**that save exists and can be loaded** — a PREcondition check, not a POSTcondition. Called
+with no argument it invents a default name, fails to find it, and returns
+`success: false, "Save 'rimbridge_save_<timestamp>' does not exist."` forever. A polling
+loop written around it never exits, while the game sat fully loaded the whole time.
+
+**To wait out a load, poll `rimworld/get_game_info` for `status == "game_loaded"`** and a
+`ticksGame` that answers. That is the postcondition.
+
+## `rimworld/save_game` DOES honour a filename — under `saveName`
+
+Same session, and it corrects a line that stood in the skill for months. `{"saveName":
+"rt_probe"}` wrote `rt_probe.rws`. The old note said the tool "ignores your `fileName`":
+it does, because `fileName` is not a parameter it has, and **an unknown parameter name is
+dropped before the tool runs** — the documented failure mode, mistaken for a tool quirk.
+Generalises: before recording "tool X ignores argument Y", check Y is spelled the way the
+schema spells it.
