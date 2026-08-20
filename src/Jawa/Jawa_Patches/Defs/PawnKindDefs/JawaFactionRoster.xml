@@ -166,10 +166,10 @@ silent; the weapon tags above are the opposite and fail in silence. Check both.
     <label>Lord Gorga the Immense</label>
     <race>Human</race>
     <defaultFactionDef>Jawa_HuttCartel</defaultFactionDef>
-    <combatPower>311</combatPower>
+    <combatPower>932</combatPower>
     <isFighter>true</isFighter>
     <useFactionXenotypes>true</useFactionXenotypes>
-    <weaponMoney>2500~3000</weaponMoney>
+    <weaponMoney>13000~15600</weaponMoney>
     <apparelMoney>2000~2400</apparelMoney>
     <initialResistanceRange>20~30</initialResistanceRange>
     <initialWillRange>4~7</initialWillRange>
@@ -271,6 +271,7 @@ silent; the weapon tags above are the opposite and fail in silence. Check both.
     <weaponTags>
       <li>ORTuskenMelee</li>
       <li>ORMeleeBlunt</li>
+      <li>NeolithicMeleeAdvanced</li>
     </weaponTags>
     <maxApparelQuality>Normal</maxApparelQuality>
   </PawnKindDef>
@@ -299,10 +300,10 @@ silent; the weapon tags above are the opposite and fail in silence. Check both.
     <label>Tusken marksman</label>
     <race>Human</race>
     <defaultFactionDef>TribeCivil</defaultFactionDef>
-    <combatPower>64</combatPower>
+    <combatPower>148</combatPower>
     <isFighter>true</isFighter>
     <useFactionXenotypes>true</useFactionXenotypes>
-    <weaponMoney>300~360</weaponMoney>
+    <weaponMoney>2000~2400</weaponMoney>
     <apparelMoney>200~240</apparelMoney>
     <initialResistanceRange>14~22</initialResistanceRange>
     <initialWillRange>2~5</initialWillRange>
@@ -398,10 +399,10 @@ silent; the weapon tags above are the opposite and fail in silence. Check both.
     <label>Wildsteam hunter</label>
     <race>Human</race>
     <defaultFactionDef>Jawa_WildsteamClan</defaultFactionDef>
-    <combatPower>51</combatPower>
+    <combatPower>101</combatPower>
     <isFighter>true</isFighter>
     <useFactionXenotypes>true</useFactionXenotypes>
-    <weaponMoney>200~240</weaponMoney>
+    <weaponMoney>1300~1560</weaponMoney>
     <apparelMoney>150~180</apparelMoney>
     <initialResistanceRange>8~14</initialResistanceRange>
     <initialWillRange>1~3</initialWillRange>
@@ -416,10 +417,10 @@ silent; the weapon tags above are the opposite and fail in silence. Check both.
     <label>pod-warden</label>
     <race>Human</race>
     <defaultFactionDef>Jawa_WildsteamClan</defaultFactionDef>
-    <combatPower>72</combatPower>
+    <combatPower>98</combatPower>
     <isFighter>true</isFighter>
     <useFactionXenotypes>true</useFactionXenotypes>
-    <weaponMoney>400~480</weaponMoney>
+    <weaponMoney>900~1080</weaponMoney>
     <apparelMoney>200~240</apparelMoney>
     <initialResistanceRange>12~18</initialResistanceRange>
     <initialWillRange>2~4</initialWillRange>
@@ -454,10 +455,10 @@ silent; the weapon tags above are the opposite and fail in silence. Check both.
     <label>Elder Rroowaak</label>
     <race>Human</race>
     <defaultFactionDef>Jawa_WildsteamClan</defaultFactionDef>
-    <combatPower>116</combatPower>
+    <combatPower>193</combatPower>
     <isFighter>true</isFighter>
     <useFactionXenotypes>true</useFactionXenotypes>
-    <weaponMoney>800~960</weaponMoney>
+    <weaponMoney>2100~2520</weaponMoney>
     <apparelMoney>400~480</apparelMoney>
     <initialResistanceRange>20~30</initialResistanceRange>
     <initialWillRange>4~7</initialWillRange>
@@ -677,15 +678,16 @@ silent; the weapon tags above are the opposite and fail in silence. Check both.
     <label>Director Ko Saiyan</label>
     <race>Human</race>
     <defaultFactionDef>Jawa_AscendantHelix</defaultFactionDef>
-    <combatPower>282</combatPower>
+    <combatPower>890</combatPower>
     <isFighter>true</isFighter>
     <useFactionXenotypes>true</useFactionXenotypes>
-    <weaponMoney>2200~2640</weaponMoney>
+    <weaponMoney>12500~15000</weaponMoney>
     <apparelMoney>1800~2160</apparelMoney>
     <initialResistanceRange>20~30</initialResistanceRange>
     <initialWillRange>4~7</initialWillRange>
     <weaponTags>
       <li>KotORRanged_legendary</li>
+      <li>KotORRanged_rare</li>
     </weaponTags>
     <itemQuality>Masterwork</itemQuality>
   </PawnKindDef>
@@ -771,16 +773,17 @@ silent; the weapon tags above are the opposite and fail in silence. Check both.
     <label>Jawa scavenger</label>
     <race>Human</race>
     <defaultFactionDef>Jawa_IndigenousTribes</defaultFactionDef>
-    <combatPower>45</combatPower>
+    <combatPower>51</combatPower>
     <isFighter>true</isFighter>
     <useFactionXenotypes>true</useFactionXenotypes>
-    <weaponMoney>120~144</weaponMoney>
+    <weaponMoney>250~300</weaponMoney>
     <apparelMoney>100~120</apparelMoney>
     <initialResistanceRange>8~14</initialResistanceRange>
     <initialWillRange>1~3</initialWillRange>
     <weaponTags>
+      <li>KotORRanged_ion</li>
+      <li>SaV_jawaheavy</li>
       <li>Jawa_IonWeaponLight</li>
-      <li>Jawa_IonWeapon</li>
     </weaponTags>
     <apparelRequired>
       <li>guy762_Robes_jawa</li>
@@ -793,14 +796,15 @@ silent; the weapon tags above are the opposite and fail in silence. Check both.
     <label>crawler guard</label>
     <race>Human</race>
     <defaultFactionDef>Jawa_IndigenousTribes</defaultFactionDef>
-    <combatPower>57</combatPower>
+    <combatPower>71</combatPower>
     <isFighter>true</isFighter>
     <useFactionXenotypes>true</useFactionXenotypes>
-    <weaponMoney>200~240</weaponMoney>
+    <weaponMoney>450~540</weaponMoney>
     <apparelMoney>130~156</apparelMoney>
     <initialResistanceRange>12~18</initialResistanceRange>
     <initialWillRange>2~4</initialWillRange>
     <weaponTags>
+      <li>KotORRanged_ion</li>
       <li>Jawa_IonWeapon</li>
       <li>KotORRanged_weak</li>
     </weaponTags>
@@ -833,14 +837,15 @@ silent; the weapon tags above are the opposite and fail in silence. Check both.
     <label>First Bargainer Kiknik the Wealthy</label>
     <race>Human</race>
     <defaultFactionDef>Jawa_IndigenousTribes</defaultFactionDef>
-    <combatPower>87</combatPower>
+    <combatPower>113</combatPower>
     <isFighter>true</isFighter>
     <useFactionXenotypes>true</useFactionXenotypes>
-    <weaponMoney>450~540</weaponMoney>
+    <weaponMoney>900~1080</weaponMoney>
     <apparelMoney>250~300</apparelMoney>
     <initialResistanceRange>20~30</initialResistanceRange>
     <initialWillRange>4~7</initialWillRange>
     <weaponTags>
+      <li>KotORRanged_ion</li>
       <li>Jawa_IonWeapon</li>
     </weaponTags>
     <apparelRequired>

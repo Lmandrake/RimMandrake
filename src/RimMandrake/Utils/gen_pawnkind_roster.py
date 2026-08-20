@@ -46,6 +46,13 @@ FACTIONS = {
     "Junkers":    "Jawa_Junkers",
 }
 
+# 🔴 weaponMoney IS A CEILING, AND A CEILING BELOW THE CHEAPEST WEAPON IN THE POOL ARMS
+# NOBODY. RimWorld picks from the tag pool filtered by value <= weaponMoney, so a kind
+# whose pool starts at 1,250 and whose money is 200 is as unarmed as one with no tags at
+# all - and just as silent about it. Measured 2026-08-20: five kinds were in that state,
+# including the Jawa scavenger, whose ion weapons all cost 800+ against a budget of 120.
+# ⇒ Every number below has been checked against the CHEAPEST member of its own pool.
+# Re-check with the affordability pass whenever a tag or a price changes.
 # (faction, role, label, weaponMoney, apparelMoney, quality, [weaponTags], [apparelRequired])
 # quality: ("force",) | ("max", Q) | ("min", Q) | ("item", Q) | None
 R = [
@@ -57,16 +64,16 @@ R = [
  ("Hutt","Grunt","Cartel enforcer",200,250,None,["KotORRanged_weak","SWKotORWeaponCategoryTag_pistol"],[]),
  ("Hutt","Heavy","Cartel bodyguard",550,400,None,["KotORRanged_mid","SWKotORWeaponCategoryTag_heavyranged"],[]),
  ("Hutt","Specialist","Cartel factor",800,600,None,["KotORRanged_mid","SWKotORWeaponCategoryTag_pistol"],[]),
- ("Hutt","Leader","Lord Gorga the Immense",2500,2000,("item","Masterwork"),["KotORRanged_legendary","KotORRanged_rare"],[]),
+ ("Hutt","Leader","Lord Gorga the Immense",13000,2000,("item","Masterwork"),["KotORRanged_legendary","KotORRanged_rare"],[]),
 
  ("Homestead","Grunt","homestead militia",130,180,("max","Good"),["SimpleGun","KotORRanged_weak"],[]),
  ("Homestead","Heavy","well-guard",300,250,("max","Good"),["AssaultRifle","KotORRanged_mid"],[]),
  ("Homestead","Specialist","water warden",450,300,("max","Good"),["SniperRifle","ORSniper"],[]),
  ("Homestead","Leader","High Marshal Taren Voss",700,500,("max","Excellent"),["ORPistol","SWKotORWeaponCategoryTag_pistol"],[]),
 
- ("DeepDesert","Grunt","Tusken raider",90,100,("max","Normal"),["ORTuskenMelee","ORMeleeBlunt"],[]),
+ ("DeepDesert","Grunt","Tusken raider",90,100,("max","Normal"),["ORTuskenMelee","ORMeleeBlunt","NeolithicMeleeAdvanced"],[]),
  ("DeepDesert","Heavy","Tusken brute",200,150,("max","Normal"),["ORMeleeBlunt","NeolithicMeleeAdvanced"],[]),
- ("DeepDesert","Specialist","Tusken marksman",300,200,("max","Normal"),["SaV_tusken"],[]),
+ ("DeepDesert","Specialist","Tusken marksman",2000,200,("max","Normal"),["SaV_tusken"],[]),
  ("DeepDesert","Leader","War Chief Torr'gan",500,350,("max","Good"),["ORTuskenMelee","NeolithicMeleeAdvanced"],[]),
 
  ("Droid","Grunt","labour droid",0,0,None,["ORDroidWeapon"],[]),
@@ -74,10 +81,10 @@ R = [
  ("Droid","Specialist","medical droid",0,0,None,[],[]),
  ("Droid","Leader","First Speaker R-41 Rell",0,0,None,[],[]),
 
- ("Wildsteam","Grunt","Wildsteam hunter",200,150,("min","Good"),["KotORBowcaster"],[]),
- ("Wildsteam","Heavy","pod-warden",400,200,("min","Good"),["KotORBowcaster","SWKotORWeaponCategoryTag_heavyranged"],[]),
+ ("Wildsteam","Grunt","Wildsteam hunter",1300,150,("min","Good"),["KotORBowcaster"],[]),
+ ("Wildsteam","Heavy","pod-warden",900,200,("min","Good"),["KotORBowcaster","SWKotORWeaponCategoryTag_heavyranged"],[]),
  ("Wildsteam","Specialist","beast-handler",500,250,("min","Good"),["ORMeleeSharp","ORVibroweapon"],[]),
- ("Wildsteam","Leader","Elder Rroowaak",800,400,("min","Excellent"),["KotORBowcaster"],[]),
+ ("Wildsteam","Leader","Elder Rroowaak",2100,400,("min","Excellent"),["KotORBowcaster"],[]),
 
  ("Deepwater","Grunt","shore guard",300,400,("min","Good"),["KotORRanged_mid","SWKotORWeaponCategoryTag_rifle"],[]),
  ("Deepwater","Heavy","pressure trooper",600,550,("min","Good"),["SWKotORWeaponCategoryTag_heavyranged","KotORRanged_strong"],[]),
@@ -92,17 +99,17 @@ R = [
  ("Helix","Grunt","retrieval agent",600,700,("min","Excellent"),["SWKotORWeaponCategoryTag_pistol","KotORRanged_strong"],[]),
  ("Helix","Heavy","brute-stock labourer",1100,900,("min","Excellent"),["SWKotORWeaponCategoryTag_heavyranged","KotORRanged_strong"],[]),
  ("Helix","Specialist","Helix curator",1400,1100,("min","Excellent"),["KotORRanged_rare","ORSniper"],[]),
- ("Helix","Leader","Director Ko Saiyan",2200,1800,("item","Masterwork"),["KotORRanged_legendary"],[]),
+ ("Helix","Leader","Director Ko Saiyan",12500,1800,("item","Masterwork"),["KotORRanged_legendary","KotORRanged_rare"],[]),
 
  ("Blackstar","Grunt","hired gun",400,350,None,["SWKotORWeaponCategoryTag_rifle","SimpleGun"],[]),
  ("Blackstar","Heavy","Mandalorian",700,500,None,["SWKotORWeaponCategoryTag_heavyranged","KotORRanged_strong"],["guy762_MandoArmor_battle","guy762_MandoHelmet_supercom"]),
  ("Blackstar","Specialist","Blackstar hunter",1100,800,None,["ORSniper","KotORRanged_rare"],[]),
  ("Blackstar","Leader","Captain Jaxen Marr",1800,1500,None,["KotORRanged_legendary","ORPistol"],[]),
 
- ("TradeMoot","Grunt","Jawa scavenger",120,100,("max","Poor"),["Jawa_IonWeaponLight","Jawa_IonWeapon"],["guy762_Robes_jawa"]),
- ("TradeMoot","Heavy","crawler guard",200,130,("max","Normal"),["Jawa_IonWeapon","KotORRanged_weak"],["guy762_Robes_jawa"]),
+ ("TradeMoot","Grunt","Jawa scavenger",250,100,("max","Poor"),["KotORRanged_ion","SaV_jawaheavy","Jawa_IonWeaponLight"],["guy762_Robes_jawa"]),
+ ("TradeMoot","Heavy","crawler guard",450,130,("max","Normal"),["KotORRanged_ion","Jawa_IonWeapon","KotORRanged_weak"],["guy762_Robes_jawa"]),
  ("TradeMoot","Specialist","Scrap-Singer",300,160,("max","Normal"),[],["guy762_Robes_jawa"]),
- ("TradeMoot","Leader","First Bargainer Kiknik the Wealthy",450,250,("max","Good"),["Jawa_IonWeapon"],["guy762_Robes_jawa"]),
+ ("TradeMoot","Leader","First Bargainer Kiknik the Wealthy",900,250,("max","Good"),["KotORRanged_ion","Jawa_IonWeapon"],["guy762_Robes_jawa"]),
 
  ("Junkers","Grunt","Junker scrapper",60,400,("max","Awful"),["ORMeleeBlunt","NeolithicMeleeBasic"],[]),
  ("Junkers","Heavy","warcasket Junker",140,700,None,["SimpleGun","KotORRanged_weak"],[]),
