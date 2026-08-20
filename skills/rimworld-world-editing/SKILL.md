@@ -150,8 +150,11 @@ documented, supported path; see `skills/rimbridge/references/extending.md` §9.
 Until that exists, **tile-by-tile world editing is a human clicking, and the
 bridge cannot help.**
 
-The other route, when the world is already saved: edit the world data in the
-`.rws` offline — see `skills/rimworld-savegame`. That is post-hoc, not interactive.
+~~The other route, when the world is already saved: edit the world data in the
+`.rws` offline.~~ ⛔ DELETED 2026-08-19 — savegame writing is out; the map reaches the
+game over the live bridge (ASHKARR_WORLD_DEFINITION.md §12). The `.rws` planet arrays are
+still fully READABLE — `skills/rimworld-savegame` and `references/savegame-editing.md` —
+but nothing writes them back.
 
 ---
 
@@ -206,7 +209,7 @@ This file is the map. The parts that earned their own page:
 | read this | when |
 |---|---|
 | `references/generating-a-world.md` | a world is about to be GENERATED — the settings no offline edit can undo, the measured tile-count anchors, why Worldbuilder overwrites My Little Planet's Scale slider and the one-line fix, and how to verify a generated world entirely from its `.rws` |
-| `references/savegame-editing.md` | you are about to READ or WRITE the planet in a `.rws` — the proven edit loop, what can be moved (settlements, landmarks, landforms, territories), and the calibrated scalar encodings with the technique that produced them |
+| `references/savegame-editing.md` | you are about to READ the planet in a `.rws` — the array layouts, what each field means, and the calibrated scalar encodings with the technique that produced them. ⛔ Its WRITE half is tombstoned: savegame writing was deleted 2026-08-19 |
 | `references/debug-surface.md` | you need a debug action — the 139 in-game actions vs the NRE at the world screen, and why a mod setting read at INITIALISATION silently does nothing |
 | `references/tidally-locked.md` | the planet is tidally locked — the substellar point, where the terminator actually is in lat/lon, the liveable ring, and how to select the planet type |
 | `references/curation-and-looks.md` | curating what appears on the planet (WHITELIST posture, the frozen element list) or making it look right (which beautification mods, and which are hard-incompatible) |

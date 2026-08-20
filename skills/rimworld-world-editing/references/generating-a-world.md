@@ -189,13 +189,17 @@ the export came from.
 
 * A coordinate export from `jawa/world_tile_export` **transfers to any world of the same
   geometry** — export once, reuse forever, no bridge needed for later worlds.
-* ⭐ Therefore **regenerating is cheap**: a hand-painted planet can be reproduced on a fresh
-  world by re-running the paint pipeline, so a wrong faction roster or a bad seed is no
-  longer a catastrophe. Design the pipeline to be coordinate-driven, never index-driven,
-  and this property is free.
-* Pipeline order that works: **paint → populate → regions → factions → hydrology**.
-  ⚠️ Later stages undo earlier ones if they overlap — a feature-renaming step left in the
-  populate stage silently reverted 10 region names written by the regions stage.
+* ~~⭐ Therefore **regenerating is cheap**: a hand-painted planet can be reproduced on a
+  fresh world by re-running the paint pipeline~~ ⛔ DELETED 2026-08-19 — savegame writing is
+  out; the map reaches the game over the live bridge (ASHKARR_WORLD_DEFINITION.md §12).
+  The geometry fact above **stands**: a coordinate export is portable across seeds, and the
+  offline painter (`ashkarr_paint.py`) still consumes it. What is gone is the save-writing
+  half. Design anything coordinate-driven, never index-driven, and this property is free.
+* ~~Pipeline order that works: **paint → populate → regions → factions → hydrology**.~~
+  ⛔ DELETED 2026-08-19 — every stage after `paint` was a `.rws` writer and no longer exists.
+  ⚠️ The lesson survives the tools: **later stages undo earlier ones if they overlap** — a
+  feature-renaming step left in the populate stage silently reverted 10 region names written
+  by the regions stage. Applies to bridge writes as much as it did to file writes.
 * ⚠️ **Settlement assignment must be ORDERED BY PRIORITY**, because a world may generate
   fewer settlements than the plan wants and the last entries simply starve. Four factions
   came out with zero settlements that way, two of them story-critical.
@@ -244,21 +248,27 @@ patched onto it is inherited by its children — ours included (`Jawa_Junkers` h
 `ParentName="PirateBandBase"`). Patch the child's own fields, never the shared parent's,
 unless you intend every pirate faction in the stack to change.
 
-## 10. The pipeline, as it finally stands
+## 10. ⛔ The old save-writing pipeline — DELETED 2026-08-19
 
-Proven on three worlds, all offline after a single coordinate export:
+~~world/WORLDMAP_source.rws -> paint_ashkarr.py -> populate_ashkarr.py ->
+name_ashkarr_regions.py -> name_ashkarr_factions.py -> clean_ashkarr_hydrology.py ->
+world/WORLDMAP_gen.rws, deployed to the game's Saves folder~~
 
-```
-world/WORLDMAP_source.rws            pristine, never written
-  -> paint_ashkarr.py                climate, biome, relief, pollution
-  -> populate_ashkarr.py             settlements + sites -> our factions, named, placed
-  -> name_ashkarr_regions.py         37 feature slots re-cut to our regions
-  -> name_ashkarr_factions.py        every faction renamed
-  -> clean_ashkarr_hydrology.py      strip roads/rivers the repaint stranded
-  -> world/WORLDMAP_gen.rws          + deployed to the game's Saves folder
-```
+⛔ DELETED 2026-08-19 — savegame writing is out; the map reaches the game over the live
+bridge (ASHKARR_WORLD_DEFINITION.md §12). All five scripts are gone from the repo and
+`worldmap.py`'s two `write()` methods now raise. **Do not attempt to rebuild this route** —
+it was written into a `.rws` twice and produced a dead load both times (owner, 2026-08-18).
 
-Then verify by LOADING it and reading `jawa/world_stats` — the engine's own histogram, not
+🔑 **What survives is the front half**, and it is still the job: the offline painter
+(`ashkarr_paint.py`, `ashkarr_settle.py`, `world_relief.py`, `world_hydro.py`,
+`world_biomes.py`, `world_settle.py`, `world_graph.py`, `world_shape.py`, `worldgeom.py`)
+computes the planet, and `worldview.py` renders it. Reading a `.rws` is untouched.
+
+⚠️ **The numbers below were measured by loading a save this pipeline wrote, and can no
+longer be reproduced by any tool in the repo.** They are kept as a record of what a
+finished planet looked like, not as a check anyone can re-run:
+
+Verified at the time by LOADING it and reading `jawa/world_stats` — the engine's own histogram, not
 the tool's success flag. Final run: 21,872 tiles, −79.4…+80.8 °C, water 6.9%, 2,550 polluted
 tiles, 28 named regions, 37 settlements across 11 factions, **zero non-ours owning anything**,
 zero world objects in water, zero unresolved biome hashes.

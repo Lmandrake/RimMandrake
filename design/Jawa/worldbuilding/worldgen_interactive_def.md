@@ -3,6 +3,19 @@
 Live working doc for the hand-built, frozen planet. Bullets only. Decisions land here
 as they are made; new-content ideas go to `worldgen_interactive_build_concepts.md`.
 
+> ⛔ **SAVEGAME WRITING IS OUT — 2026-08-19.** Everything below dated 2026-08-16/17
+> describes a pipeline that wrote a painted planet into a `.rws`. **That route is dead**:
+> it produced a dead load twice (owner, 2026-08-18) and its nine scripts —
+> `apply_world.py`, `paint_ashkarr.py`, `populate_ashkarr.py`, `clean_ashkarr_hydrology.py`,
+> `name_ashkarr_regions.py`, `name_ashkarr_factions.py`, `strip_ashkarr_factions.py`,
+> `ashkarr_write.py`, `swap_faction_def.py` — were **deleted 2026-08-19**.
+> **The map reaches the game over the live bridge** (`ASHKARR_WORLD_DEFINITION.md` §12).
+> 🔑 The DESIGN rulings in this file (geometry, the three worlds, the four axes, the named
+> regions, the wind, the scale doctrine, the faction placement) are **unaffected and still
+> canon**; the current painter is `src/RimMandrake/Utils/ashkarr_paint.py` and the current
+> map is `world/ashkarr_tiles.csv`. **Read this file for its rulings and its measurements,
+> never for a command to run.**
+
 ## The geometry — FIXED, measured off the save
 
 - `WORLDMAP_gen.rws`, seed `lada`, **subdivisions 7, coverage 1.0, 21,872 tiles**.
@@ -452,8 +465,12 @@ estimate said 51%; the true figure is 49.5%. That table is superseded by this on
 
 ## ✅ FIRST DRAFT PAINTED AND LOADED — 2026-08-16
 
-`src/RimMandrake/Utils/paint_ashkarr.py` — every region is a predicate over
-`(arc, bearing, elevation)`, deterministic, re-runnable, `--dry` to preview.
+~~`src/RimMandrake/Utils/paint_ashkarr.py` — every region is a predicate over
+`(arc, bearing, elevation)`, deterministic, re-runnable, `--dry` to preview.~~
+⛔ DELETED 2026-08-19 — savegame writing is out; the map reaches the game over the live
+bridge (`ASHKARR_WORLD_DEFINITION.md` §12). 🔑 **The technique survives in its successor**:
+`src/RimMandrake/Utils/ashkarr_paint.py` is still every region as a predicate over
+`(arc, bearing, elevation)`, deterministic and one-planet — it just writes a CSV, not a save.
 **The engine loaded the result and its own `jawa/world_stats` reports the painted world.**
 
 | region | tiles | | region | tiles |
@@ -483,12 +500,16 @@ estimate said 51%; the true figure is 49.5%. That table is superseded by this on
 
 ## Second pass — 2026-08-16, owner's review notes actioned
 
-**Pipeline is now two idempotent scripts, source → dest, no game needed:**
+~~**Pipeline is now two idempotent scripts, source → dest, no game needed:**
 `world/WORLDMAP_source.rws` (pristine, never written) → `paint_ashkarr.py` →
-`populate_ashkarr.py` → `world/WORLDMAP_gen.rws` → the game's Saves folder.
-🔑 The source copy is what makes the paint **idempotent** — the temperature remap
-normalises the generated field's endpoints, so running it over its own output would
-compress the range twice.
+`populate_ashkarr.py` → `world/WORLDMAP_gen.rws` → the game's Saves folder.~~
+⛔ DELETED 2026-08-19 — savegame writing is out; the map reaches the game over the live
+bridge (`ASHKARR_WORLD_DEFINITION.md` §12). Both scripts are gone and there is no
+`.rws` output any more.
+🔑 **The reason it needed a pristine source is still worth knowing**, and it generalises to
+any non-idempotent paint: the temperature remap normalised the *generated* field's
+endpoints, so running it over its own output compressed the range twice. `ashkarr_paint.py`
+sidesteps this entirely — it derives temperature from arc, never from a prior field.
 
 ### 🔴 The magenta tiles — SOLVED, and it was ours
 
@@ -555,9 +576,16 @@ is **withdrawn**. Two measurements did it:
    used `long = atan2(x, z)` and missed that negation — which is exactly why it put
    MountainRange centres at −350 m and why the guess was thrown away rather than used.
 
-`src/RimMandrake/Utils/name_ashkarr_regions.py` re-cuts all 37 feature slots to our
+~~`src/RimMandrake/Utils/name_ashkarr_regions.py` re-cuts all 37 feature slots to our
 regions, names them, writes a centre that is the true centroid of each region's tiles,
-and scales `maxDrawSizeInTiles` by √(tile count). Verified by the centres themselves:
+and scales `maxDrawSizeInTiles` by √(tile count).~~ ⛔ DELETED 2026-08-19 — savegame
+writing is out; the map reaches the game over the live bridge
+(`ASHKARR_WORLD_DEFINITION.md` §12).
+🔑 **The `drawCenter` formula above and the recipe here are the deliverable, not the
+script** — the bridge importer must do exactly this: centroid of the member tiles,
+`maxDrawSizeInTiles` scaled by √(tile count). See `ASHKARR_WORLD_DEFINITION.md` §12.5.
+⚠️ The centre check below was measured by running the deleted script and re-loading the
+save; it is a 2026-08-16 result, not something reproducible today:
 **The Scald lands at lat −3.5 / long −35.2 = 35.3° arc** (designed: 35°), **The Anvil
 at 0.4° arc**, **The Umbra at 180°**, the Nightspill on the Twilight flank and the
 Sunreach on the Gray one.
@@ -600,8 +628,14 @@ Tribes, Junkers, Hutt Cartel, Wildsteam, Binary Star Raiders and the Confederacy
 
 ⚠️ **Pipeline conflict, caught and removed:** `populate_ashkarr.py` also renamed world
 features by type, which silently **undid** `name_ashkarr_regions.py` — it reverted 10
-region names to generic type names on this run. That step is deleted; the regions
-script owns the labels. **Run order is paint → populate → regions → factions.**
+region names to generic type names on this run.
+~~That step is deleted; the regions script owns the labels. **Run order is paint →
+populate → regions → factions.**~~ ⛔ DELETED 2026-08-19 — all four scripts are gone;
+savegame writing is out and the map reaches the game over the live bridge
+(`ASHKARR_WORLD_DEFINITION.md` §12).
+🔑 **The lesson outlives the pipeline and applies to the bridge importer:** exactly ONE
+stage may own a field. Two stages that both touch feature names will silently fight, and
+the later one wins without telling you.
 
 📌 Region labels are vanilla-scaled now, so at full-globe zoom only the largest draw.
 That is the shipped behaviour, not a defect — zoom in and the rest appear.

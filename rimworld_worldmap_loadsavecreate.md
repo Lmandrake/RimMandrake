@@ -11,6 +11,15 @@ established. Nothing here is repeated from documentation without a check.
 
 ---
 
+> ⛔ **SUPERSEDED IN PART, 2026-08-19 — savegame WRITING is out.** This research (2026-08-15)
+> is still the best account of what a world IS, how the 18 arrays encode, and why a
+> `<world>` transplant fails. But the owner has since ruled that **the map reaches the game
+> over the LIVE BRIDGE**, not through any file or worldgen hook
+> (`design/Jawa/worldbuilding/ASHKARR_WORLD_DEFINITION.md` §12). §6 below — the companion
+> tool that writes tiles into a live world — is the route we took. **Route C in §7 is dead.**
+> Nine save-writing scripts were deleted on 2026-08-19 and `worldmap.py`'s `write()` raises.
+> Reading a `.rws` is untouched, as is `rimbench/savemap.py` for LOCAL map grids.
+
 ## 0. The one-paragraph answer
 
 **A world is not a file — it is a section inside a `.rws`, and vanilla gives you no way
@@ -380,10 +389,16 @@ the mod list must be pinned; do not add it mid-game.
 literally the world we played. *Cost:* players must reproduce the exact mod set, and any
 removal risks dangling world references. This is the current plan and it still works.
 
-**C. Offline terrain repaint (ours to build).** The 18 tile arrays are pure value data
-and safely rewritable with `savemap.py`'s existing codec. *Cost:* it edits terrain only —
-not factions, settlements, ideos or the ID graph — so it is a touch-up tool, not a
-transplant tool.
+~~**C. Offline terrain repaint (ours to build).** The 18 tile arrays are pure value data
+and safely rewritable with `savemap.py`'s existing codec.~~
+⛔ DELETED 2026-08-19 — savegame writing is out; the map reaches the game over the live
+bridge (`design/Jawa/worldbuilding/ASHKARR_WORLD_DEFINITION.md` §12). It was built, it was
+tried twice, and it produced a dead load both times (owner, 2026-08-18); the scripts are
+gone. 🔑 **The premise that failed:** "pure value data, safely rewritable" was true of the
+BYTES and false of the SAVE — a `.rws` is a reference graph, and a repaint that is
+byte-correct still loads dead. ⚠️ `savemap.py` is unaffected and stays: it does LOCAL map
+grids, not the planet, refuses to overwrite its source, and passes `fogGrid` through
+untouched.
 
 **Not viable:** lifting `<world>` from one save into another (§2), and treating the seed
 as the artifact (§5).

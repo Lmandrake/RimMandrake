@@ -1050,7 +1050,13 @@ result:   Half of it is SOLVED and half is impossible with today's tool surface.
 
 ## ashkarr-map-quality-second-pass-8c31f7
 row:      2
-spec:     Ash'karr is BUILT and committed (`world/WORLDMAP_gen.rws`, seed `pumpkin`,
+spec:     ⛔ 2026-08-19 — SAVEGAME WRITING IS OUT. Every "run X" in this item names a
+          script that has been DELETED; the map reaches the game over the live bridge
+          (design/Jawa/worldbuilding/ASHKARR_WORLD_DEFINITION.md §12). The DIAGNOSES and
+          the owner's ORDER below are still the work; the tooling named is not. The
+          current painter is `src/RimMandrake/Utils/ashkarr_paint.py` -> a CSV.
+
+          Ash'karr is BUILT and committed (`world/WORLDMAP_gen.rws`, seed `pumpkin`,
           21,872 tiles, 12 factions all ours). This item is the owner's review list
           from 2026-08-17, in HIS order. Everything below is diagnosed, not guessed.
 
@@ -1060,10 +1066,15 @@ spec:     Ash'karr is BUILT and committed (`world/WORLDMAP_gen.rws`, seed `pumpk
           decisions, which is why the map looked like confetti. `world_shape.py` has
           despeckle / components / coastal / grow / roughen on top of it.
 
-          THE PIPELINE, all offline, ~5 min:
+          THE PIPELINE (⛔ DELETED 2026-08-19 - savegame writing is out; the map reaches
+          the game over the live bridge, ASHKARR_WORLD_DEFINITION.md §12. All five scripts
+          are gone and `worldmap.py`'s write() now raises. Kept only so the old stage names
+          in the notes below can be read):
             source -> paint_ashkarr -> populate_ashkarr -> name_ashkarr_regions
                    -> name_ashkarr_factions -> clean_ashkarr_hydrology
                    -> redo the world-object water mask -> load and read jawa/world_stats
+          ⚠️ HOLE: no replacement exists yet for the populate / name-regions / name-factions
+          / hydrology-prune stages. They must be re-specified as bridge importer work.
 
           REMAINING WORK, owner's order:
           1. ORDERING. Seas FIRST, then rivers, then the terrain that depends on rivers.
@@ -1080,8 +1091,9 @@ spec:     Ash'karr is BUILT and committed (`world/WORLDMAP_gen.rws`, seed `pumpk
              38,877 entries, hashes resolve against DefDump/defs/TileMutatorDef.json.
              Recompute Coast from real adjacency; strip marine mutators inland. The
              ice-and-fire desert inside the extreme desert is almost certainly this too.
-          4. ROADS. Currently fragmented because clean_ashkarr_hydrology removes segments
-             in water and nothing reconnects them - that is an ERROR, not decay. Lay roads
+          4. ROADS. Fragmented in the OLD save because clean_ashkarr_hydrology (⛔ deleted
+             2026-08-19) removed segments in water and nothing reconnected them - that was
+             an ERROR, not decay. Lay roads
              LAST, as shortest paths over the graph between actual settlements. Plus a
              specific one: the Fuel Works -> the propane lakes, along the cold swirl where
              it reaches nearest the twilight.
@@ -1108,9 +1120,10 @@ owner ruling 2026-08-17, evening, after looking at 8 screenshots of the built wo
    READ the one before it. Consequences visible on screen:
    * `RELIEF` is a per-region constant + jitter, so two neighbours differ by coin flip.
      There is no slope, so "downhill" is UNDEFINED and rivers are underivable.
-   * The painter writes NO river. Every river on the planet is a fossil of VANILLA's
-     elevation field, truncated by clean_ashkarr_hydrology where it met my new water.
-     That is why they start in flat sand and end in open desert.
+   * The painter writes NO river. Every river on the OLD planet was a fossil of VANILLA's
+     elevation field, truncated by clean_ashkarr_hydrology (⛔ deleted 2026-08-19) where it
+     met the new water. That is why they started in flat sand and ended in open desert.
+     🔑 The fix is unchanged and is now the bridge importer's job: author rivers ourselves.
    * Lush terrain is off-water because biome = region_of(arc, bearing, elev). Water is
      not an input to that function.
    * Anything defined by a RADIUS renders as a CIRCLE - the Scald disc, the Spine
@@ -1133,10 +1146,13 @@ Three owner answers, 2026-08-17:
      the trunk threshold - the linter must know which.
    GREEN RIBBON: NILE-STYLE. A 1-2 tile lush band follows EVERY river wherever it goes,
      including through ExtremeDesert at the substellar point.
-   REPAINT SCOPE: FULL REPAINT from the pristine source. Nothing in the current
-     WORLDMAP_gen.rws is preserved; populate / name / faction passes re-run after.
+   REPAINT SCOPE: FULL REPAINT. ⛔ "from the pristine source ... passes re-run after"
+     is DELETED 2026-08-19 - savegame writing is out and no source .rws is read or
+     written. The RULING stands: nothing from the old world is preserved; the planet is
+     derived end to end and delivered over the live bridge.
 
-🔴 MAGENTA: FLAT_ONLY in paint_ashkarr.py lists 3 biomes and the screenshots show many
+🔴 MAGENTA: FLAT_ONLY in paint_ashkarr.py (⛔ deleted 2026-08-19; the successor is
+   `ashkarr_paint.py`) lists 3 biomes and the screenshots show many
    more (Nightspill, Gray Marches, South Marches, one on the nightside ice). Audit every
    biome x hilliness against the BiomesKit texture folders OFFLINE. This was catchable
    without a load and was not caught.
@@ -1145,7 +1161,9 @@ Three owner answers, 2026-08-17:
    CAUSE: `ZBiome_DesertOasis`, used in `dew_belt` (52 < arc < 92 around bearing 178 -
    exactly the twilight band where every magenta patch sits). It has a Forest/ texture
    set and NO Hills/ folder, and it was simply absent from `FLAT_ONLY`. The clamp at
-   paint_ashkarr.py:334 was working the whole time; `hh + (1 if random() < 0.18)`
+   paint_ashkarr.py:334 was working the whole time (⛔ that file is deleted, so the line
+   reference is unresolvable; the clamp logic moved to `ashkarr_paint.py`);
+   `hh + (1 if random() < 0.18)`
    promotes ~18% of its tiles off flat, and those are the patches. FIXED.
    ⛔ REFUTED, do not re-raise: "missing _Snowy variants cause it". The snow suffix
    fires ONLY from per-biome `*SnowyBelow` temperature fields on

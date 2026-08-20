@@ -1486,8 +1486,11 @@ what:     `ASHKARR_WORLD_DEFINITION.md` §12.6 flags four things as inference or
           Two more, unasked but load-bearing:
 
           **5. `Tile.pollution` is a `float`.** The `/65535` dispute between
-          `worldmap.py` and `apply_world.py` is a save-format question only; the
+          `worldmap.py` and `apply_world.py` was a save-format question only; the
           in-game route writes a float and the scale question disappears.
+          (⛔ `apply_world.py` DELETED 2026-08-19 — savegame writing is out; the map
+          reaches the game over the live bridge, ASHKARR_WORLD_DEFINITION.md §12. There
+          is no longer a second side to the dispute.)
 
           **6. Settlement placement — CONFIRMED, and the def is not the one §12.6
           expects.** `WorldGenStep_Factions` → `FactionGenerator`, lines 41–48:

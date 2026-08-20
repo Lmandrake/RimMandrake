@@ -33,7 +33,9 @@ arc   = degrees from the substellar point.  0 = noon · 90 = terminator · 180 =
 bear  = degrees around it.  0 = the GRAY flank (downwind) · 180 = the TWILIGHT flank
 ```
 
-Same convention as `world_relief.py` and `paint_ashkarr.py`. **Do not diverge.**
+Same convention as `world_relief.py` and `ashkarr_paint.py`. **Do not diverge.**
+(It was also `paint_ashkarr.py`'s convention; ⛔ that script was DELETED 2026-08-19 —
+savegame writing is out. The convention is unchanged.)
 Any spec written in "normalised latitude" means normalised **arc**.
 
 Grid: **21872 tiles**, the engine's own geodesic grid at subdivisions 7. Self-checks:
@@ -482,7 +484,8 @@ than discovered:
    `.rainfall`, `.hilliness`, `.swampiness`, `.pollution` — never the raw
    `tileBiome[]`-style arrays. Confirmed off the assembly: `Tile.pollution` is a
    **`float`**, so the old `/65535` scale dispute between `worldmap.py` and
-   `apply_world.py` does not arise on this route.
+   `apply_world.py` does not arise on this route. (⛔ `apply_world.py` was DELETED
+   2026-08-19 — savegame writing is out; the dispute is now moot on both sides.)
 5. 🔴 **`WaterCovered` is `elevation <= 0`, and there is no sea-level setting.** Write
    elevation and biome **together, in both directions**, or you get an `Ocean` tile that
    behaves like ground.
@@ -564,8 +567,9 @@ That is why §12.3 rules Features as ours to overwrite. The exact API is in §12
 `tileFeature` (it is the **uniqueID**, and moot anyway: `Tile.feature` is a
 `WorldFeature` object reference at runtime), settlement placement (§12.5), and the
 pollution scale (`Tile.pollution` is a **`float`**; the `/65535` disagreement between
-`worldmap.py` and `apply_world.py` is a save-format question that this route never
-asks). Decompile with `ilspycmd -p`; the bodies that matter are
+`worldmap.py` and the deleted `apply_world.py` was a save-format question that this route
+never asks — ⛔ `apply_world.py` was DELETED 2026-08-19 and there is no save-write side
+left to disagree with). Decompile with `ilspycmd -p`; the bodies that matter are
 `RimWorld.Planet/WorldGrid.cs` lines 390–511, `RimWorld.Planet/SurfaceTile.cs`,
 `RimWorld.Planet/Tile.cs`, `RimWorld/FactionGenerator.cs` lines 41–48 and
 `RimWorld/FeatureWorker.cs` line 30.

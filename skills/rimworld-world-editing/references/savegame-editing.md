@@ -1,6 +1,32 @@
-# Editing the planet offline in a savegame
+# Reading the planet out of a savegame — and the encodings behind it
 
-## 10. ⭐ PROVEN: editing the planet offline in a savegame
+# ⛔ SAVEGAME WRITING IS OUT — 2026-08-19
+
+**Nothing in this repo writes a painted world into a `.rws`.** It was tried twice and
+produced a dead load both times (owner, 2026-08-18); on 2026-08-19 the owner ordered the
+broken and dangerous writers deleted. **The map reaches the game over the LIVE BRIDGE**
+(`ASHKARR_WORLD_DEFINITION.md` §12), never through a file.
+
+Concretely, in this file:
+* `worldmap.py`'s **decoders are alive and are the point** — every encoding below is still
+  readable and is still how we read a world.
+* Both `worldmap.py` `write()` methods **now raise**. The in-memory mutators
+  (`set_biome`, `set_scalar`, `move_settlement`, `move_landmark`, `retype_landmark`) still
+  exist as decode/round-trip machinery, but **nothing can persist them to a save.**
+* The pipeline scripts that used to persist them — `apply_world.py`, `paint_ashkarr.py`,
+  `populate_ashkarr.py`, `clean_ashkarr_hydrology.py`, `name_ashkarr_regions.py`,
+  `name_ashkarr_factions.py`, `strip_ashkarr_factions.py`, `ashkarr_write.py`,
+  `swap_faction_def.py` — **were deleted 2026-08-19 and are not coming back.**
+* 🔑 **The one save writer that stays is `src/RimMandrake/Utils/rimbench/savemap.py`** —
+  local map grids, not the planet. It refuses to overwrite its source and passes `fogGrid`
+  through untouched.
+
+**Everything below is kept for its FACTS — the array layouts, the encodings, the traps.
+Read them; do not rebuild a writer from them.**
+
+---
+
+## 10. ⭐ PROVEN: the planet arrays decode, and an edit reaches the engine
 
 **2026-08-15, end to end, verified by the engine.** `src/RimMandrake/Utils/worldmap.py`.
 
@@ -10,10 +36,13 @@ g = WorldGrid(save_path)                       # decodes the SurfaceLayer
 targets = [i for i, n in enumerate(g.biome_names()) if n == "BorealForest"]
 g.set_biome(targets, "ExtremeDesert")
 g.set_scalar("tileRainfall", targets, 40)
-g.write(out_path)
+# g.write(out_path)   ⛔ DELETED 2026-08-19 — savegame writing is out; the map reaches the
+#                       game over the live bridge (ASHKARR_WORLD_DEFINITION.md §12).
+#                       This method now raises. The read/decode half above still works.
 ```
 
-Then `rimworld/load_game_ready` and read it back with `jawa/world_stats`:
+The verification below was performed **in 2026-08-15, while the writer existed**. It is a
+record of what the decode proved, not a loop anyone can re-run today:
 
 ```
 before   BorealForest 1193   ExtremeDesert  -
@@ -46,7 +75,10 @@ Decodes eight parallel arrays off `savegame/game/world/grid/layers` →
   (1 byte, neighbour slot) · `…DefDeflate` (2 bytes, shortHash). Plus
   `tileRiverDistancesDeflate` at 1 byte per TILE. Dropping an entry ends the road or
   river at that tile, which is what a coast does anyway; nothing dangles because
-  nothing is added. `src/RimMandrake/Utils/clean_ashkarr_hydrology.py` does it.
+  nothing is added. ~~`src/RimMandrake/Utils/clean_ashkarr_hydrology.py` does it.~~
+  ⛔ DELETED 2026-08-19 — savegame writing is out; the map reaches the game over the live
+  bridge (ASHKARR_WORLD_DEFINITION.md §12). **The array layout above stays true** and is
+  still how these are READ; only the pruning tool is gone.
   ⚠️ A repaint that moves the sea WILL strand them — 41 of 607 road tiles and 38 of
   237 river tiles ended up under new ocean on Ash'karr, and 95 rivers ran across a
   frozen nightside that has no liquid water.
@@ -91,7 +123,8 @@ landmark 3142  VEE_MeteorCrater -> Oasis   ✅ persisted
   <ID>0</ID><faction>Faction_0</faction><nameInt>…</nameInt>
 </li>
 ```
-`WorldObjects.move_settlement(id, new_tile)`. **ID, faction and name are untouched**, so
+`WorldObjects.move_settlement(id, new_tile)` mutates in memory; ⛔ **it can no longer be
+saved** — `WorldObjects.write()` raises as of 2026-08-19. **ID, faction and name are untouched**, so
 nothing that references the object breaks. This is why moving things *inside* one save is
 safe while transplanting a world *between* saves is not.
 ⚠️ Mask the destination against ocean and against other settlements' tiles first.
@@ -227,9 +260,13 @@ Measured 2026-08-17, after three worlds generated without `Pirate`.
 enemies in its configurable list. No amount of patching put it there — and the patch that
 tried made things worse (below). Meanwhile the world had generated **two** `Jawa_Junkers`.
 
-**The fix:** convert one into the other, in the save.
-`src/RimMandrake/Utils/swap_faction_def.py --from Jawa_Junkers --to Pirate --nth 2
---name "Blackstar Company" --hostile --apply`
+**The fix at the time:** convert one into the other, in the save.
+~~`src/RimMandrake/Utils/swap_faction_def.py --from Jawa_Junkers --to Pirate --nth 2
+--name "Blackstar Company" --hostile --apply`~~
+⛔ DELETED 2026-08-19 — savegame writing is out; the map reaches the game over the live
+bridge (ASHKARR_WORLD_DEFINITION.md §12). The script was an unverified save writer and is
+gone. ⚠️ **The measurement below was only ever reachable by running it**, so treat the
+"verified end to end" line as a 2026-08-17 historical result, not a repeatable check.
 
 🔑 **Only the `<def>` string changes.** Every loadID, every settlement's `<faction>` pointer,
 every relation entry and every world pawn still points at the same `Faction_N`, so the
@@ -241,8 +278,12 @@ completely: deletion has to chase every reference and still NREs; a swap touches
 ⚠️ **Pass `--hostile` when swapping into a `permanentEnemy`.** The def's traits (pawn kinds,
 xenotypes, permanentEnemy) apply from the next load, but the STORED goodwill does not
 re-derive — without it you get a permanently-hostile faction sitting at neutral.
-📌 Do the swap on the SOURCE before re-running a paint pipeline, so settlement placement
-assigns to the new faction properly.
+~~📌 Do the swap on the SOURCE before re-running a paint pipeline~~ ⛔ DELETED
+2026-08-19 — there is no paint pipeline that writes a save any more.
+🔑 **The transferable fact:** a faction that worldgen refuses is fixed by REDIRECTING an
+existing faction, not by adding or deleting one — one string versus a whole reference
+graph. If that is ever wanted again it must be done at the Configure Factions page, or
+over the live bridge.
 
 ## 🔴 `Pirate` IS `PirateBandBase` — never patch a def that is also a parent
 
