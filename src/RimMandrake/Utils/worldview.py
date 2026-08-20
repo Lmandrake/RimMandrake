@@ -929,10 +929,16 @@ def draw_panel(svg, pv, proj, y0, layer, show, tooltips, corners, shade):
                     'stroke="#000" stroke-width="%.1f" paint-order="stroke">%s</text>'
                     % (xy[0][0], xy[0][1] - 11 * sc, 13 * sc, mark, 2.0 * sc, txt))
 
+    # 🔑 ONE box list for every label on the map. Settlement names and region names
+    # used to declutter against their own kind only, so "The Ashfall Range" printed
+    # straight through "The Claim Jump". Settlements claim their box first because
+    # they are point data; the region names come last and can dodge, having a ladder
+    # of offsets to dodge with.
+    label_boxes = []
+
     if "settlements" in show and pv.settlements:
         # the dots always draw; the NAMES declutter, because 72 holdings crowd the
         # terminator band into an unreadable smear
-        placed_px = []
         for st in pv.settlements:
             t = st["tile"]
             if t >= pv.n:
@@ -949,15 +955,18 @@ def draw_panel(svg, pv, proj, y0, layer, show, tooltips, corners, shade):
                        "rect" if shape == "square" else "polygon"), 1))
             if "labels" in show:
                 px, py = float(xy[0][0]), float(xy[0][1])
-                if any(abs(px - a) < 62 * sc and abs(py - b) < 13 * sc
-                       for a, b in placed_px):
+                name = st["name"] or ""
+                tx, ty, size = px + 6 * sc, py - 5 * sc, 13 * sc
+                box = (tx - 2 * sc, ty - 0.80 * size,
+                       tx + 0.52 * size * len(name) + 2 * sc, ty + 0.28 * size)
+                if any(box[0] < q[2] and q[0] < box[2]
+                       and box[1] < q[3] and q[1] < box[3] for q in label_boxes):
                     continue
-                placed_px.append((px, py))
+                label_boxes.append(box)
                 svg.add('<text x="%.1f" y="%.1f" font-size="%.1f" fill="#f0f0f0" '
                         'font-family="DejaVu Sans, sans-serif" stroke="#101014" '
                         'stroke-width="%.1f" paint-order="stroke">%s</text>'
-                        % (px + 6 * sc, py - 5 * sc, 13 * sc, 2.5 * sc,
-                           esc(st["name"] or "")))
+                        % (tx, ty, size, 2.5 * sc, esc(name)))
         stt = pv.info.get("startingTile")
         if stt is not None and stt < pv.n:
             xy, vis = proj.project(g.vec[stt][None, :], ref=g.vec[stt])
@@ -977,7 +986,7 @@ def draw_panel(svg, pv, proj, y0, layer, show, tooltips, corners, shade):
         # short ladder of vertical offsets before giving a name up entirely.
         MIN_SEP = 6.0
         drawn = []
-        placed = []      # (x0, y0, x1, y1) pixel boxes already taken
+        placed = label_boxes      # shared with the settlement names above
         for f in pv.features:
             idx = np.where(pv.feature_idx == f["index"])[0]
             if len(idx) < 8:

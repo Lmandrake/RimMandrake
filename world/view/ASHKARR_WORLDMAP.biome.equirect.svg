@@ -669,7 +669,6 @@
 <polygon points="995.3,1121.3 1000.3,1112.0 990.3,1112.0" fill="#ff5e5e" stroke="#0d0f14" stroke-width="1.30"><title>Wellsong — Hutt Cartel</title></polygon>
 <text x="1001.3" y="1110.6" font-size="13.0" fill="#f0f0f0" font-family="DejaVu Sans, sans-serif" stroke="#101014" stroke-width="2.5" paint-order="stroke">Wellsong</text>
 <polygon points="1513.3,1100.0 1518.3,1090.7 1508.3,1090.7" fill="#ff5e5e" stroke="#0d0f14" stroke-width="1.30"><title>The Tollgate — Hutt Cartel</title></polygon>
-<text x="1519.3" y="1089.3" font-size="13.0" fill="#f0f0f0" font-family="DejaVu Sans, sans-serif" stroke="#101014" stroke-width="2.5" paint-order="stroke">The Tollgate</text>
 <polygon points="1239.8,1122.1 1244.8,1112.8 1234.8,1112.8" fill="#ff5e5e" stroke="#0d0f14" stroke-width="1.30"><title>Bantha Cross — Hutt Cartel</title></polygon>
 <text x="1245.8" y="1111.4" font-size="13.0" fill="#f0f0f0" font-family="DejaVu Sans, sans-serif" stroke="#101014" stroke-width="2.5" paint-order="stroke">Bantha Cross</text>
 <polygon points="1650.7,970.9 1655.7,961.6 1645.7,961.6" fill="#ff5e5e" stroke="#0d0f14" stroke-width="1.30"><title>Greasepalm — Hutt Cartel</title></polygon>
@@ -731,7 +730,6 @@
 <circle cx="754.6" cy="359.9" r="5.0" fill="none" stroke="#9fe8c8" stroke-width="2.9"><title>Stillmarket — Homestead Defense League</title></circle>
 <text x="760.6" y="354.9" font-size="13.0" fill="#f0f0f0" font-family="DejaVu Sans, sans-serif" stroke="#101014" stroke-width="2.5" paint-order="stroke">Stillmarket</text>
 <circle cx="1774.7" cy="641.5" r="5.0" fill="none" stroke="#9fe8c8" stroke-width="2.9"><title>Rainshadow — Homestead Defense League</title></circle>
-<text x="1780.7" y="636.5" font-size="13.0" fill="#f0f0f0" font-family="DejaVu Sans, sans-serif" stroke="#101014" stroke-width="2.5" paint-order="stroke">Rainshadow</text>
 <circle cx="1779.0" cy="390.6" r="5.0" fill="none" stroke="#9fe8c8" stroke-width="2.9"><title>Vaporfall — Homestead Defense League</title></circle>
 <text x="1785.0" y="385.6" font-size="13.0" fill="#f0f0f0" font-family="DejaVu Sans, sans-serif" stroke="#101014" stroke-width="2.5" paint-order="stroke">Vaporfall</text>
 <circle cx="1780.0" cy="420.4" r="5.0" fill="none" stroke="#9fe8c8" stroke-width="2.9"><title>Longfurrow — Homestead Defense League</title></circle>
@@ -750,25 +748,22 @@
 <g font-family="DejaVu Sans, sans-serif" fill="#f2ead2" opacity="0.88" text-anchor="middle">
 <text x="2331.8" y="466.3" font-size="28.0" font-style="italic" stroke="#101014" stroke-width="2.2" paint-order="stroke">The Ammonia Flats</text>
 <text x="1227.2" y="602.0" font-size="28.0" font-style="italic" stroke="#101014" stroke-width="2.2" paint-order="stroke">The Dune Sea</text>
-<text x="1603.4" y="601.4" font-size="28.0" font-style="italic" stroke="#101014" stroke-width="2.2" paint-order="stroke">The Ashfall Range</text>
-<text x="1973.6" y="671.7" font-size="28.0" font-style="italic" stroke="#101014" stroke-width="2.2" paint-order="stroke">The Sunreach</text>
+<text x="1973.6" y="706.7" font-size="28.0" font-style="italic" stroke="#101014" stroke-width="2.2" paint-order="stroke">The Sunreach</text>
 <text x="709.9" y="647.2" font-size="28.0" font-style="italic" stroke="#101014" stroke-width="2.2" paint-order="stroke">The Dew Belt</text>
 <text x="425.7" y="657.5" font-size="28.0" font-style="italic" stroke="#101014" stroke-width="2.2" paint-order="stroke">The Nightspill</text>
 <text x="593.2" y="482.1" font-size="28.0" font-style="italic" stroke="#101014" stroke-width="2.2" paint-order="stroke">The Twilight Sea</text>
 <text x="26.1" y="652.0" font-size="28.0" font-style="italic" stroke="#101014" stroke-width="2.2" paint-order="stroke">The Umbra</text>
 <text x="2287.2" y="929.1" font-size="28.0" font-style="italic" stroke="#101014" stroke-width="2.2" paint-order="stroke">The South Crags</text>
-<text x="1242.9" y="544.6" font-size="28.0" font-style="italic" stroke="#101014" stroke-width="2.2" paint-order="stroke">The Scorch</text>
-<text x="1796.7" y="548.3" font-size="28.0" font-style="italic" stroke="#101014" stroke-width="2.2" paint-order="stroke">The Gray Sea</text>
+<text x="1242.9" y="439.6" font-size="28.0" font-style="italic" stroke="#101014" stroke-width="2.2" paint-order="stroke">The Scorch</text>
 <text x="1246.1" y="379.5" font-size="28.0" font-style="italic" stroke="#101014" stroke-width="2.2" paint-order="stroke">The Salt Gate</text>
-<text x="1970.4" y="456.0" font-size="28.0" font-style="italic" stroke="#101014" stroke-width="2.2" paint-order="stroke">The Gray Crags</text>
+<text x="1970.4" y="491.0" font-size="28.0" font-style="italic" stroke="#101014" stroke-width="2.2" paint-order="stroke">The Gray Crags</text>
 <text x="1073.4" y="636.4" font-size="28.0" font-style="italic" stroke="#101014" stroke-width="2.2" paint-order="stroke">The Pyrelands</text>
-<text x="1517.3" y="567.3" font-size="28.0" font-style="italic" stroke="#101014" stroke-width="2.2" paint-order="stroke">The Fall Line Barrens</text>
-<text x="798.6" y="602.7" font-size="28.0" font-style="italic" stroke="#101014" stroke-width="2.2" paint-order="stroke">The Dew Horn</text>
-<text x="887.6" y="558.9" font-size="28.0" font-style="italic" stroke="#101014" stroke-width="2.2" paint-order="stroke">The Scald Spine</text>
-<text x="963.4" y="605.1" font-size="28.0" font-style="italic" stroke="#101014" stroke-width="2.2" paint-order="stroke">The Scald</text>
+<text x="1517.3" y="672.3" font-size="28.0" font-style="italic" stroke="#101014" stroke-width="2.2" paint-order="stroke">The Fall Line Barrens</text>
+<text x="798.6" y="707.7" font-size="28.0" font-style="italic" stroke="#101014" stroke-width="2.2" paint-order="stroke">The Dew Horn</text>
+<text x="963.4" y="570.1" font-size="28.0" font-style="italic" stroke="#101014" stroke-width="2.2" paint-order="stroke">The Scald</text>
 <text x="453.9" y="564.6" font-size="28.0" font-style="italic" stroke="#101014" stroke-width="2.2" paint-order="stroke">The Twilight Crags</text>
 <text x="1549.8" y="533.2" font-size="28.0" font-style="italic" stroke="#101014" stroke-width="2.2" paint-order="stroke">The Fall Line</text>
-<text x="1173.5" y="699.0" font-size="28.0" font-style="italic" stroke="#101014" stroke-width="2.2" paint-order="stroke">The Anvil</text>
+<text x="1173.5" y="734.0" font-size="28.0" font-style="italic" stroke="#101014" stroke-width="2.2" paint-order="stroke">The Anvil</text>
 </g>
 </g>
 <g font-family="DejaVu Sans, sans-serif" fill="#e8e8e8">
