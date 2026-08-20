@@ -494,7 +494,7 @@ used them this way. Do.
 | **Ascendant Helix** | *the Ascendant Genome* | improvement as doctrine | `Transhumanist` and `BodyMastery` country. Also: who gets left behind by it |
 | **Blackstar Company** | *the Contract* | predatory, but **contractual** — that is the whole joke | professionals. Paperwork before violence |
 | **Jawa Trade Moot** | *The Salvation* — shared with the player | communal, clannish, sharp trade, ⭐ **thieving as a virtue** | our own people from outside. Kin, rivals and customers at once |
-| **the Junkers** | ⭐ **"no doctrine, only the ladder"** | the only faction with no faith at all — pure hierarchy | position is everything and there is nothing above it. Who is climbing, who has stopped, who is being stepped on |
+| **the Junkers** | ⭐ **`the Weight`** | ⚠️ **CORRECTED 2026-08-20.** This table first read *"no doctrine, only the ladder"* from `FACTION_SPEC.md:47` — that is the **characterisation**, not the name. The shipped def carries `<ideoName>the Weight</ideoName>` and a full description: *"We have no word for what we believe, because belief is not worn and everything real is worn. Weight is rank. What is bolted to you was cut off somebody slower… **Nothing is wasted in the warrens. Not the plate. Not the meat.**"* | 🔑 **Read the DEF, not the roster table.** Position is everything, weight IS rank, and the last line licenses far more than a ladder does |
 | **Galactic Empire** | *The Rising Order* | hierarchy as virtue | the banality. Clerks, not villains |
 
 🔑 **The test for any character:** *would this person be a different person in the faction
