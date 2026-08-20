@@ -522,7 +522,27 @@ spec:     TOOLS: `build_batch` · `build_check` · `wipe_cell` · `set_thing_pro
 verify:   build a small structure, read back def/stuff/faction/quality/HP, screenshot.
 criteria: a building placed through the tool is read back correct AND visible, and its
           HitPoints are what was asked for rather than the PostMake roll.
-state:    ready
+state:    ✅ DONE — PASSED 2026-08-19. Every clause.
+result:   SHIPPED: `build_batch` · `build_check` · `designate_batch` (add/remove/query).
+          ✅ A COMPLETE 9x7 STEEL ROOM built over the bridge in two calls - 28 walls and a
+             door, then a bed, table and standing lamp, then 35 roof cells with
+             `cellsFailedVerify: 0`. `observed/w3/m2_building.png`.
+          ✅ **THE HITPOINTS ORDERING IS PROVEN.** Asked for 175, read back **175/300 on
+             every wall** rather than the `startingHpRange` roll. `ThingMaker.MakeThing`
+             calls `PostMake` which randomises HP, so writing them before the spawn is
+             silently lost - the tool writes them after, and this is the measurement that
+             shows it matters.
+          ✅ `build_check` returns the engine's OWN `AcceptanceReport` - 9/9 acceptable with
+             per-cell reason and occupants, so a refusal explains itself instead of
+             surfacing as a failed spawn.
+          ✅ DESIGNATIONS WITH NO CURSOR: 16 Mine added; **re-adding the same rect returned
+             `added: 0, alreadyPresent: 16`** rather than logging 16 red errors, which is
+             the double-add guard doing its job; query listed them; remove took it to 0.
+          📌 CONFIRMED BY BUILDING IT: **walls create no roof.** The room was open sky until
+             `set_roof_batch` ran. Anything that builds a structure must roof it separately.
+state_note: `Frame.CompleteConstruction` and `Blueprint.TryReplaceWithSolidThing` were
+          deliberately LEFT OUT - both hard-require a non-null worker Pawn and NRE without
+          one. They need a `worker_pawn_id` parameter and belong in their own item.
 
 ## M3 Prefab capture and replay — copy/paste regions of map
 row:      bridge-12

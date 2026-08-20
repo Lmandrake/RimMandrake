@@ -609,5 +609,331 @@ namespace JawaBench.BridgeTools
             });
         }
 
+
+        // ================================================================
+        //  M2 - BUILDINGS. The path Designator_Build itself takes under god
+        //  mode: ThingMaker.MakeThing -> SetFactionDirect -> GenSpawn.Spawn.
+        //
+        //  ⛔ Do NOT drive Designator_Build: placingRot is protected and it
+        //     reads Find.CurrentMap plus tutor/sound/fleck state.
+        //  ⚠️ MakeThing already calls PostMake, which RANDOMISES HitPoints from
+        //     def.startingHpRange - set HitPoints AFTER or buildings spawn damaged.
+        //  ⚠️ Walls create NO roof. A built room is open sky until roofed.
+        // ================================================================
+
+        private static bool TryRot(string s, out Rot4 rot)
+        {
+            rot = Rot4.North;
+            if (string.IsNullOrEmpty(s)) return true;
+            s = s.Trim();
+            int n;
+            if (int.TryParse(s, out n)) { rot = new Rot4(((n % 4) + 4) % 4); return true; }
+            switch (s.ToLowerInvariant())
+            {
+                case "north": case "n": rot = Rot4.North; return true;
+                case "east": case "e": rot = Rot4.East; return true;
+                case "south": case "s": rot = Rot4.South; return true;
+                case "west": case "w": rot = Rot4.West; return true;
+            }
+            return false;
+        }
+
+        [Tool(
+            "jawa/build_batch",
+            Description =
+                "Place finished buildings instantly - the god-mode path Designator_Build " +
+                "takes: ThingMaker.MakeThing(def, stuff) then GenSpawn.Spawn. " +
+                "ops format 'ThingDef:x,z[,rot]' separated by ';', e.g. " +
+                "'Wall:10,20,0;Wall:11,20;Door:12,20,1'. rot is 0=N 1=E 2=S 3=W or a name. " +
+                "stuff, faction, quality and hitPoints apply to every op in the call. " +
+                "⚠️ HitPoints are set AFTER MakeThing on purpose - MakeThing calls PostMake " +
+                "which randomises them from startingHpRange, so writing them first is lost. " +
+                "⚠️ WALLS CREATE NO ROOF; roof separately with jawa/set_roof_batch. " +
+                "Call jawa/map_commit after a batch.",
+            ResultDescription = "success, placed, failed[], and a read-back of each spawned thing.")]
+        public static async Task<object> BuildBatch(
+            IRimBridgeContext ctx,
+            CancellationToken cancellationToken,
+            [ToolParameter(Description = "'ThingDef:x,z[,rot]' ops separated by ';'.")] string ops = null,
+            [ToolParameter(Description = "Stuff ThingDef, e.g. WoodLog, Steel, Granite.")] string stuff = null,
+            [ToolParameter(Description = "Faction defName to own the buildings. Empty = no faction.")] string faction = null,
+            [ToolParameter(Description = "Awful|Poor|Normal|Good|Excellent|Masterwork|Legendary.")] string quality = null,
+            [ToolParameter(Description = "Hit points. -1 leaves the PostMake roll.")] int hitPoints = -1,
+            [ToolParameter(Description = "Wipe whatever occupies the cell first. Default true.")] bool wipeExisting = true,
+            [ToolParameter(Description = "Read back at most this many things. Default 8.")] int readBack = 8)
+        {
+            return await ctx.MainThread.InvokeAsync(() =>
+            {
+                string err; var map = MapOrNull(out err);
+                if (map == null) return Fail(err);
+                if (string.IsNullOrEmpty(ops)) return Fail("Give ops as 'ThingDef:x,z[,rot]' separated by ';'.");
+
+                ThingDef stuffDef = null;
+                if (!string.IsNullOrEmpty(stuff))
+                {
+                    stuffDef = DefDatabase<ThingDef>.GetNamedSilentFail(stuff.Trim());
+                    if (stuffDef == null) return Fail("No stuff ThingDef '" + stuff + "'.", DefSuggestions<ThingDef>(stuff));
+                }
+
+                Faction fac = null;
+                if (!string.IsNullOrEmpty(faction))
+                {
+                    var fd = DefDatabase<FactionDef>.GetNamedSilentFail(faction.Trim());
+                    if (fd == null) return Fail("No FactionDef '" + faction + "'.", DefSuggestions<FactionDef>(faction));
+                    fac = Find.FactionManager.FirstFactionOfDef(fd);
+                    if (fac == null) return Fail("FactionDef '" + faction + "' exists but no such faction was generated in this world.");
+                }
+
+                QualityCategory q = QualityCategory.Normal; bool setQ = false;
+                if (!string.IsNullOrEmpty(quality))
+                {
+                    try { q = (QualityCategory)Enum.Parse(typeof(QualityCategory), quality.Trim(), true); setQ = true; }
+                    catch { return Fail("Bad quality '" + quality + "'. Awful|Poor|Normal|Good|Excellent|Masterwork|Legendary."); }
+                }
+
+                int placed = 0; var failures = new List<object>(); var spawnedThings = new List<Thing>();
+
+                foreach (var raw in ops.Split(new[] { ';', '\n' }, StringSplitOptions.RemoveEmptyEntries))
+                {
+                    var op = raw.Trim(); if (op.Length == 0) continue;
+                    int colon = op.IndexOf(':');
+                    if (colon <= 0) { failures.Add(new { op, why = "expected 'ThingDef:x,z[,rot]'" }); continue; }
+                    var dn = op.Substring(0, colon).Trim();
+                    var bits = op.Substring(colon + 1).Split(',');
+                    int x, z;
+                    if (bits.Length < 2 || !int.TryParse(bits[0].Trim(), out x) || !int.TryParse(bits[1].Trim(), out z))
+                    { failures.Add(new { op, why = "bad coordinates" }); continue; }
+                    Rot4 rot;
+                    if (!TryRot(bits.Length > 2 ? bits[2] : null, out rot))
+                    { failures.Add(new { op, why = "bad rot" }); continue; }
+
+                    var td = DefDatabase<ThingDef>.GetNamedSilentFail(dn);
+                    if (td == null) { failures.Add(new { op, why = "no ThingDef '" + dn + "'" }); continue; }
+
+                    var c = new IntVec3(x, 0, z);
+                    if (!c.InBounds(map)) { failures.Add(new { op, why = "cell out of bounds" }); continue; }
+
+                    var useStuff = stuffDef;
+                    if (td.MadeFromStuff && useStuff == null)
+                        useStuff = GenStuff.DefaultStuffFor(td);
+                    if (!td.MadeFromStuff) useStuff = null;
+
+                    try
+                    {
+                        if (wipeExisting) GenSpawn.WipeExistingThings(c, rot, td, map, DestroyMode.Vanish);
+
+                        var t = ThingMaker.MakeThing(td, useStuff);
+                        if (fac != null) t.SetFactionDirect(fac);
+                        if (setQ)
+                        {
+                            var cq = t.TryGetComp<CompQuality>();
+                            if (cq != null) cq.SetQuality(q, ArtGenerationContext.Outsider);
+                        }
+                        var spawned = GenSpawn.Spawn(t, c, map, rot);
+
+                        // AFTER MakeThing/PostMake, or the startingHpRange roll wins.
+                        if (hitPoints >= 0 && spawned != null && spawned.def.useHitPoints)
+                            spawned.HitPoints = Mathf.Clamp(hitPoints, 1, spawned.MaxHitPoints);
+
+                        // Some defs (wind turbines) do their side effects only here.
+                        if (td.PlaceWorkers != null)
+                            foreach (var pw in td.PlaceWorkers)
+                                try { pw.PostPlace(map, td, c, rot); } catch { }
+
+                        if (spawned != null) { placed++; spawnedThings.Add(spawned); }
+                        else failures.Add(new { op, why = "GenSpawn.Spawn returned null" });
+                    }
+                    catch (Exception e) { failures.Add(new { op, why = e.GetType().Name + ": " + e.Message }); }
+                }
+
+                var back = new List<object>();
+                foreach (var t in spawnedThings)
+                {
+                    if (back.Count >= Math.Max(0, readBack)) break;
+                    var cq = t.TryGetComp<CompQuality>();
+                    QualityCategory qq;
+                    back.Add(new
+                    {
+                        def = t.def.defName,
+                        stuff = t.Stuff != null ? t.Stuff.defName : null,
+                        x = t.Position.x, z = t.Position.z,
+                        rot = t.Rotation.AsInt,
+                        faction = t.Faction != null ? t.Faction.def.defName : null,
+                        hitPoints = t.def.useHitPoints ? (object)t.HitPoints : null,
+                        maxHitPoints = t.def.useHitPoints ? (object)t.MaxHitPoints : null,
+                        quality = (cq != null && t.TryGetQuality(out qq)) ? qq.ToString() : null,
+                    });
+                }
+
+                return (object)new
+                {
+                    success = true,
+                    placed, failedCount = failures.Count, failed = failures,
+                    note = "Walls create NO roof - roof separately. Run jawa/map_commit after the batch.",
+                    things = back,
+                    ticksGame = TicksGameSafe(),
+                };
+            });
+        }
+
+        [Tool(
+            "jawa/build_check",
+            Description =
+                "Pre-flight a building placement WITHOUT placing it. Returns the engine's own " +
+                "AcceptanceReport from GenConstruct.CanPlaceBlueprintAt plus " +
+                "GenSpawn.CanSpawnAt, so you get the real reason ('needs even ground', " +
+                "'would block interaction spot') instead of discovering it as a failed spawn. " +
+                "Read-only.",
+            ResultDescription = "success, cells[] each with canPlace, reason, canSpawn, occupants[].")]
+        public static async Task<object> BuildCheck(
+            IRimBridgeContext ctx,
+            CancellationToken cancellationToken,
+            [ToolParameter(Description = "ThingDef to test.")] string def = null,
+            [ToolParameter(Description = "Rect 'x,z,w,h' of cells to test.")] string rect = null,
+            [ToolParameter(Description = "Stuff ThingDef.")] string stuff = null,
+            [ToolParameter(Description = "Rotation 0-3 or name.")] string rot = null,
+            [ToolParameter(Description = "Test as god mode. Default false.")] bool godMode = false,
+            [ToolParameter(Description = "Max cells. Default 50.")] int limit = 50)
+        {
+            return await ctx.MainThread.InvokeAsync(() =>
+            {
+                string err; var map = MapOrNull(out err);
+                if (map == null) return Fail(err);
+                if (string.IsNullOrEmpty(def)) return Fail("Give a ThingDef.");
+                var td = DefDatabase<ThingDef>.GetNamedSilentFail(def.Trim());
+                if (td == null) return Fail("No ThingDef '" + def + "'.", DefSuggestions<ThingDef>(def));
+                CellRect r;
+                if (!TryRect(rect, map, out r, out err)) return Fail(err);
+                Rot4 rr;
+                if (!TryRot(rot, out rr)) return Fail("Bad rot '" + rot + "'.");
+
+                ThingDef sd = null;
+                if (!string.IsNullOrEmpty(stuff)) sd = DefDatabase<ThingDef>.GetNamedSilentFail(stuff.Trim());
+                if (td.MadeFromStuff && sd == null) sd = GenStuff.DefaultStuffFor(td);
+
+                var cells = new List<object>(); int ok = 0;
+                foreach (var c in r)
+                {
+                    if (cells.Count >= Math.Max(1, limit)) break;
+                    string reason = null; bool canPlace = false, canSpawn = false;
+                    try
+                    {
+                        var rep = GenConstruct.CanPlaceBlueprintAt(td, c, rr, map, godMode, null, null, sd);
+                        canPlace = rep.Accepted;
+                        reason = rep.Accepted ? null : rep.Reason;
+                    }
+                    catch (Exception e) { reason = e.GetType().Name + ": " + e.Message; }
+                    try { canSpawn = GenSpawn.CanSpawnAt(td, c, map, rr); } catch { }
+
+                    var occ = map.thingGrid.ThingsListAtFast(c).Select(t => t.def.defName).Distinct().ToList();
+                    if (canPlace) ok++;
+                    cells.Add(new { x = c.x, z = c.z, canPlace, reason, canSpawn, occupants = occ });
+                }
+                return (object)new
+                {
+                    success = true, def = td.defName, stuff = sd != null ? sd.defName : null,
+                    acceptableCells = ok, tested = cells.Count, godMode, cells,
+                    ticksGame = TicksGameSafe(),
+                };
+            });
+        }
+
+        [Tool(
+            "jawa/designate_batch",
+            Description =
+                "Add or remove Designations directly - Mine, Deconstruct, HarvestPlant, " +
+                "CutPlant, Haul, SmoothWall, SmoothFloor, Plan, Hunt, Tame, Slaughter, " +
+                "Flick, Strip and the rest - with no cursor and no drag tool. " +
+                "action='add' | 'remove' | 'query'. Cell designations take a rect; thing " +
+                "designations resolve against whatever occupies each cell. " +
+                "⚠️ AddDesignation logs a red error on double-add, so this queries first.",
+            ResultDescription = "success, added, removed, existing[], and the designation list.")]
+        public static async Task<object> DesignateBatch(
+            IRimBridgeContext ctx,
+            CancellationToken cancellationToken,
+            [ToolParameter(Description = "'add' | 'remove' | 'query'.")] string action = "add",
+            [ToolParameter(Description = "DesignationDef name, e.g. Mine, Deconstruct, HarvestPlant.")] string designation = null,
+            [ToolParameter(Description = "Rect 'x,z,w,h'.")] string rect = null,
+            [ToolParameter(Description = "Target things in the cell rather than the cell itself. Default auto.")] bool onThings = false,
+            [ToolParameter(Description = "Max rows returned. Default 40.")] int limit = 40)
+        {
+            return await ctx.MainThread.InvokeAsync(() =>
+            {
+                string err; var map = MapOrNull(out err);
+                if (map == null) return Fail(err);
+                string A = (action ?? "").Trim().ToLowerInvariant();
+                var dm = map.designationManager;
+
+                DesignationDef dd = null;
+                if (!string.IsNullOrEmpty(designation))
+                {
+                    dd = DefDatabase<DesignationDef>.GetNamedSilentFail(designation.Trim());
+                    if (dd == null) return Fail("No DesignationDef '" + designation + "'.", DefSuggestions<DesignationDef>(designation));
+                }
+
+                if (A == "query")
+                {
+                    var rows = new List<object>();
+                    foreach (var d in dm.AllDesignations)
+                    {
+                        if (dd != null && d.def != dd) continue;
+                        if (rows.Count >= Math.Max(1, limit)) break;
+                        rows.Add(new
+                        {
+                            def = d.def.defName,
+                            x = d.target.Cell.x, z = d.target.Cell.z,
+                            thing = d.target.HasThing ? d.target.Thing.def.defName : null,
+                        });
+                    }
+                    return (object)new { success = true, action = "query", total = dm.AllDesignations.Count(), returned = rows.Count, designations = rows, ticksGame = TicksGameSafe() };
+                }
+
+                if (dd == null) return Fail("Give a DesignationDef for add/remove.");
+                CellRect r;
+                if (!TryRect(rect, map, out r, out err)) return Fail(err);
+
+                int added = 0, removed = 0, already = 0;
+                var problems = new List<object>();
+
+                foreach (var c in r)
+                {
+                    try
+                    {
+                        if (onThings)
+                        {
+                            foreach (var t in map.thingGrid.ThingsListAtFast(c).ToList())
+                            {
+                                if (A == "add")
+                                {
+                                    if (dm.DesignationOn(t, dd) != null) { already++; continue; }
+                                    dm.AddDesignation(new Designation(t, dd)); added++;
+                                }
+                                else { var ex = dm.DesignationOn(t, dd); if (ex != null) { dm.RemoveDesignation(ex); removed++; } }
+                            }
+                        }
+                        else
+                        {
+                            if (A == "add")
+                            {
+                                if (dm.DesignationAt(c, dd) != null) { already++; continue; }
+                                dm.AddDesignation(new Designation(c, dd)); added++;
+                            }
+                            else if (dm.DesignationAt(c, dd) != null) { dm.TryRemoveDesignation(c, dd); removed++; }
+                        }
+                    }
+                    catch (Exception e) { if (problems.Count < 15) problems.Add(new { x = c.x, z = c.z, why = e.GetType().Name + ": " + e.Message }); }
+                }
+
+                return (object)new
+                {
+                    success = true, action = A, designation = dd.defName,
+                    added, removed, alreadyPresent = already,
+                    onThings, problems,
+                    totalNow = dm.AllDesignations.Count(),
+                    ticksGame = TicksGameSafe(),
+                };
+            });
+        }
+
     }
 }
