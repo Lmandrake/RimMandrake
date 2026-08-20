@@ -1288,6 +1288,15 @@ spec:     🔑 **THE WHOLE POINT: three Inhabited items need `save → quit to d
                `Create place at current tile` · `Stuff roster (3 pawns)` · `Report roster`
              🔴 **KEEP THE REPORT OUTPUT. It is the baseline and it cannot be recovered
              after the quit.** Write it to a file, not to a chat window.
+             ✅ **HANDLED IN CODE, 2026-08-20 pre-load — you do not have to copy anything.**
+             You were right and the harness was wrong: `Report roster` wrote only to
+             `Player.log`, which the launcher ROTATES at every launch, so the baseline
+             would have been destroyed by the very quit this plan depends on. Both report
+             actions now APPEND to
+             `C:\Users\Mandrake\AppData\LocalLow\Ludeon Studios\RimWorld by Ludeon Studios\InhabitedReports\roster_reports.txt`
+             and log one line naming that path. The file is append-only and outside the
+             game's data, so load 1's baseline and load 2's comparison end up in the same
+             file, stamped with real time, game tick and day. Just run the action twice.
           5. **SAVE.** Then quit to desktop.
 
           ── LOAD 2 ────────────────────────────────────────────────────────────

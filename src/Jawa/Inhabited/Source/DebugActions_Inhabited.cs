@@ -152,7 +152,7 @@ namespace Inhabited
             {
                 sb.AppendLine("  " + Describe(held[i]));
             }
-            Log.Message(sb.ToString().TrimEndNewlines());
+            InhabitedReport.Write("ROSTER REPORT  " + place.LabelCap, sb.ToString().TrimEndNewlines());
         }
 
         [DebugAction(Cat, "Report displaced pool", allowedGameStates = AllowedGameStates.Playing)]
@@ -172,7 +172,7 @@ namespace Inhabited
                               + "  reason=" + pool.ReasonFor(p)
                               + "  from=" + (pool.OriginFor(p) ?? "-"));
             }
-            Log.Message(sb.ToString().TrimEndNewlines());
+            InhabitedReport.Write("DISPLACED POOL", sb.ToString().TrimEndNewlines());
         }
 
         [DebugAction(Cat, "Absorb roster into pool", allowedGameStates = AllowedGameStates.Playing)]
