@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ============================================================================
+  Ikee_Rename.xml                           Jawa_Patches - new file 2026-08-20
+  ============================================================================
+
+  The eyeling becomes the IKEE. Owner's ruling 2026-08-15: "AA_Eyeling MUST be
+  made into a star-wars-style pet for the starting Jawa clan to keep!"
+  Design is settled in SCENARIO_SPEC.md, section "The ikee".
+
+  The name is from the canon Jawaese "Ikee ikee!" - the cry a Jawa gives on
+  spotting something worth taking. It pairs with the ship: the Utinni is named
+  for the find, the ikee for the looking.
+
+  🔴 RENAME AND PLACE ONLY. THE ART IS UNTOUCHED and so is every stat. The
+  animal was checked field by field and is already right for this campaign -
+  ComfyTemperatureMax 60 is built for the dune sea, foodType
+  OmnivoreRoughAnimal needs no crops on a clan forbidden from sowing, and
+  trainability Intermediate is what makes it a pet. ⛔ Do not touch wildness,
+  baseBodySize, foodType, trainability or any stat. The IDENTITY changes; the
+  animal does not.
+
+  ============================================================================
+  🔴 THE ITEM'S XML WARNING IS BACKWARDS, exactly as it was for the ash storms
+  ============================================================================
+  The queue item says:
+
+      🪤 `wildAnimals` is a LIST of
+         <li><animal>X</animal><commonality>N</commonality></li>
+         - NOT the dictionary shorthand.
+
+  Read `BiomeAnimalRecord` instead:
+
+      public void LoadDataFromXmlCustom(XmlNode xmlRoot)
+      {
+          DirectXmlCrossRefLoader.RegisterObjectWantsCrossRef(this, "animal", xmlRoot);
+          commonality = ParseHelper.FromString<float>(xmlRoot.FirstChild.Value);
+      }
+
+  It takes the NODE NAME as the animal and the node's TEXT as the commonality,
+  so `<AA_Eyeling>N</AA_Eyeling>` is the only form that loads. The `<li>` form
+  the item calls mandatory would take FirstChild of an element and misparse.
+  This is the SAME class as WeatherCommonalityRecord, and the same warning was
+  wrong there too - both were written from the biomeConfigs/FactionDef lesson,
+  which is a real trap but a DIFFERENT one. ⇒ Check the record class; do not
+  generalise from another field's shape.
+
+  ⚠️ AND `wildAnimals` TAKES A PawnKindDef, NOT THE ThingDef. Races_Eyeling.xml
+  declares AA_Eyeling TWICE - a ThingDef and a PawnKindDef sharing the defName,
+  which is what the item flagged and it was right to. The biome entries below
+  resolve to the PAWNKIND.
+
+  ⚠️ VERSION FOLDER: the item cites the mod's 1.5 copy. Alpha Animals ships 1.5
+  AND 1.6 and the 1.6 one is what loads. Both were read; the fields agree.
+
+  ============================================================================
+  PLACEMENT - three biomes, and the exclusions are deliberate
+  ============================================================================
+    Wasteland          1.2   main range
+    ExtremeDesert      0.5   sparse
+    ZBiome_DesertOasis 0.8   uncommon
+
+  🔴 NOT THE NIGHTSIDE. The shipped ComfyTemperatureRange is 0 to 60 C, so an
+  ikee freezes there. Not in Ocean or Lake, not in the wet biomes.
+  ============================================================================
+-->
+<Patch>
+
+  <Operation Class="PatchOperationFindMod">
+    <mods>
+      <li>Alpha Animals</li>
+    </mods>
+    <match Class="PatchOperationSequence">
+      <operations>
+
+        <!-- The ThingDef: what the player reads on the animal itself. -->
+        <li Class="PatchOperationReplace">
+          <xpath>Defs/ThingDef[defName="AA_Eyeling"]/label</xpath>
+          <value><label>ikee</label></value>
+        </li>
+
+        <!-- The PawnKindDef shares the defName and also ships label "eyeling".
+             Renaming only the ThingDef would leave the old name showing wherever
+             the kind's label is used. -->
+        <li Class="PatchOperationReplace">
+          <xpath>Defs/PawnKindDef[defName="AA_Eyeling"]/label</xpath>
+          <value><label>ikee</label></value>
+        </li>
+
+        <li Class="PatchOperationReplace">
+          <xpath>Defs/ThingDef[defName="AA_Eyeling"]/description</xpath>
+          <value>
+            <description>A single great eye walking on soft tentacles, warm to the touch and blind to nothing. The clans keep them because an ikee sees the glint of buried metal long before a Jawa does - and because a people known across the desert by their own glowing eyes cannot help but read one as a good omen. It eats what the waste offers.</description>
+          </value>
+        </li>
+
+        <li Class="PatchOperationAdd">
+          <xpath>Defs/BiomeDef[defName="Wasteland"]/wildAnimals</xpath>
+          <value><AA_Eyeling>1.2</AA_Eyeling></value>
+        </li>
+
+        <li Class="PatchOperationAdd">
+          <xpath>Defs/BiomeDef[defName="ExtremeDesert"]/wildAnimals</xpath>
+          <value><AA_Eyeling>0.5</AA_Eyeling></value>
+        </li>
+
+        <li Class="PatchOperationAdd">
+          <xpath>Defs/BiomeDef[defName="ZBiome_DesertOasis"]/wildAnimals</xpath>
+          <value><AA_Eyeling>0.8</AA_Eyeling></value>
+        </li>
+
+      </operations>
+    </match>
+  </Operation>
+
+</Patch>
