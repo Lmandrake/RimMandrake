@@ -5,21 +5,23 @@ focused research probe; keep them assembly-free and dependency-light.
 
 | Tool | Reads | Emits |
 |---|---|---|
-| `Savegame_mapview.py` | in-play map grids (terrain/roof/things) | PNG preview + legend JSON |
-| `Savegame_detailed_items.py` | every item + its flavor/narrative text | items MD report + items JSON |
-| `Savegame_ideoligions.py` | every ideoligion (religion) + full flavor | ideoligions MD report + JSON |
-| `mapkit.py` | — (shared library) | terrain palette + `GameMap` model + renderer |
-| `map_agent.py` | a `GameMap` | LLM briefing (coarse grid + regions), edit primitives, guardrail metrics |
-| `loop_run.py` | an LLM-authored plan JSON | executes plan → before/after render + report + metric deltas |
-| `map_loop_agent.py` | a base `GameMap` | **automated** perceive→propose→execute→re-judge loop (needs an LLM endpoint) |
-| `Map_synth.py` | — | synthesizes plausible player-style base maps into `player_maps/` under the cwd (`--out`; not committed) |
 | **`animal_inventory.py`** | **every active mod's `Defs/` + `Patches/`** | **6 CSVs: full animal roster, attacks, life stages, biome map, conflicts, patch watch** |
 | `rimworld_loadset.py` | `ModsConfig.xml` + each mod's `LoadFolders.xml` | — (shared library) the folders the game *actually* loads |
 | **`def_inventory.py`** | **every active mod's `Defs/`, all 495 def types** | — (shared library) + per-type JSON: the resolved def set |
-| **`animal_live_diff.py`** | **`animals.csv` + a live DefDump** | **`divergence.csv` — what the patches actually did** |
 | **`animal_contact_sheet.py`** | **`animals.csv` + every mod's `Textures/`** | **paginated sprite sheets + index CSV + missing CSV** |
 | **`deploy_custom_mods.py`** | **`src/Jawa/` + `src/RimMandrake/` + RimWorld's `Mods/`** | **pushes our authored mods into the game — the repo copy is NOT what the game loads; see `src/README.md`** |
 | **`mod_inventory.py`** | **`DefDump/manifest.json` (runtime) + `ModsConfig.xml` + every `About/About.xml`** | **`observed/2026-08-13/live_mod_inventory.md` — active load order + inactive pool, the authority on mod identity** |
+
+## Retired 2026-08-20
+
+`Savegame_mapview.py` · `Savegame_detailed_items.py` · `Savegame_ideoligions.py` ·
+`mapkit.py` · `map_agent.py` · `loop_run.py` · `map_loop_agent.py` · `Map_synth.py`
+— moved to `infrastructure/disposing/code_2026-08-20/` and
+pending deletion. Nothing in `disposing/` may be cited, run or copied from; treat
+them as absent. Their **findings** are kept below under RETIRED headings; the
+commands that invoked them are gone on purpose.
+
+---
 
 **Offline vs live.** Everything above reads files. Its counterpart is
 `src/RimMandrake/RimDefDump`, a small C# mod that dumps the def database from inside
@@ -29,7 +31,12 @@ runtime"*. Neither replaces the other — the value is in diffing them.
 
 ---
 
-## Map improver — LLM-in-the-loop architecture (the current design)
+## Map improver — LLM-in-the-loop architecture  ⛔ RETIRED 2026-08-20
+
+**The tools are gone** (`mapkit.py`, `map_agent.py`, `loop_run.py`,
+`map_loop_agent.py`, `Map_synth.py` → `infrastructure/disposing/code_2026-08-20/`).
+The design principle, the lesson and the measured worked example are kept because
+they are findings; the module manual was dropped with the code.
 
 **The point:** creatively "improve" a player map's terrain — more realistic
 geography, more tactical interest, and exotic set-pieces (abandoned mine,
@@ -53,38 +60,6 @@ map — the output looked "ridiculous and unjustified." **The lesson, not the
 file, is what mattered:** heuristics that never look at the map cannot justify
 where they put things. Moving the judgment to the LLM fixes that.
 
-### The three modules
-
-- **`mapkit.py`** — shared foundation: `TERRAIN` palette (name→rgb+props from
-  the verified `design/Jawa/worldbuilding/biome_terrain_palette.md`), the `GameMap` semantic grid
-  (cells hold terrain *names*, not live-save shortHashes — the hash problem is
-  deliberately out of scope for this practice), `render`/`render_pair`.
-- **`map_agent.py`** — the toolbox (no judgment):
-  1. **Perception** — `perceive(gm)` → coordinate-labeled coarse ASCII grid +
-     connected-region segmentation (family, area, bbox, centroid, terrain mix,
-     edges) + histogram; `briefing_text()` formats it for a prompt. The LLM also
-     views the PNG with vision.
-  2. **Primitives** — `terrain_gradient`, `fractalize_edge` (coherent coastline
-     meander, not per-cell noise), `scatter` (coherent patches), `path`, `blob`,
-     `ring`, `rect`, `hill`, `carve_chamber` (carves only through solid rock so
-     caves stay enclosed), `paint_cells` (freehand), `smooth`. Dispatched by name
-     via `apply_edit(gm, op, **kwargs)`.
-  3. **Metrics** — `metric_transition_coherence`, `metric_fragmentation`,
-     `metric_family_diversity`. Objective guardrails only.
-- **`loop_run.py`** — runs ONE hand-authored plan (the manual/live mode we use
-  in-session, since no LLM endpoint is reachable here). Applies edits, renders
-  before/after, writes a report pairing every edit with the LLM's region
-  judgment + rationale and showing metric deltas so the next iteration is
-  informed.
-- **`map_loop_agent.py`** — the **automated** harness: perceive → LLM proposes a
-  plan → execute → re-perceive → LLM re-judges → convergence check → repeat.
-  The LLM call is a pluggable seam (`caller`/`LLM_CALLER`) with a stub that
-  raises `LLMNotConfigured`. **Scaffolded, not self-driving in this sandbox** —
-  no LLM API host is allowlisted here. Every seam *around* the API call is real
-  and was exercised with a fake caller; wire `call_llm(messages)->str` to run it
-  live. A `converged()` guard can override the LLM's own "stop" verdict if a
-  guardrail regressed.
-
 ### Worked example (coastal_mesa, driven live in-session)
 Three iterations, each catching a real regression:
 `v1` introduced a straight mud wall (diversity metric flagged 0.92→0.68) →
@@ -98,7 +73,11 @@ outputs at `src/RimMandrake/mapsynth/coastal_mesa*_loop_*`.
 
 ---
 
-## Savegame_ideoligions.py — .rws ideoligion (religion) reader
+## Savegame_ideoligions.py — .rws ideoligion reader  ⛔ RETIRED 2026-08-20
+
+Tool retired to `infrastructure/disposing/code_2026-08-20/`; **no successor** —
+nothing in the repo re-reads ideoligions out of a `.rws`. The save-format findings
+below stand.
 
 **Goal:** read every IDEOLIGION defined in a save and surface its full flavor —
 name / adjective / member-name, leader titles, the generated origin-myth
@@ -106,24 +85,6 @@ description, memes, deities, roles, rituals (with their expected-desc blurbs),
 relics, sacred buildings/weapons, virtues, issue positions, culture and style —
 plus how many pawns follow each faith. Third companion to the map + items
 probes.
-
-### Run
-```bash
-python3 Savegame_ideoligions.py <path-to.rws> [--out DIR] [--max-desc N]
-```
-Pure standard library (ElementTree) — **no Pillow needed.**
-
-Example:
-```bash
-python3 Savegame_ideoligions.py observed/2026-08-13/savegame/03_Gravtasm__starting_save.rws
-```
-
-### Outputs (next to the save, basename = save stem)
-- `<stem>_ideoligions.md` — readable report: a roster table (religion / members
-  called / culture / memes / follower count) followed by one detailed section
-  per religion.
-- `<stem>_ideoligions.json` — full machine-readable dump of every ideo.
-- console — the roster summary.
 
 ### What it reads (verified against 03_Gravtasm__starting_save.rws, 1.6.4633)
 Ideoligions live fully-expanded (not just a def reference) under
@@ -158,32 +119,16 @@ full origin-myth descriptions captured verbatim.
 
 ---
 
-## Savegame_detailed_items.py — .rws item & flavor-text reader
+## Savegame_detailed_items.py — .rws item & flavor-text reader  ⛔ RETIRED 2026-08-20
+
+Tool retired to `infrastructure/disposing/code_2026-08-20/`; **no successor** —
+nothing in the repo re-reads items or narrative text out of a `.rws`. The
+save-format findings below stand.
 
 **Goal:** read every ITEM currently in a savegame and surface the
 human-interesting flavor — unique names, art tales, quality, material, condition
 — plus the free narrative TEXT (scenario intro, letters, messages,
 quest/backstory descriptions). Companion to the map-preview probe.
-
-### Run
-```bash
-python3 Savegame_detailed_items.py <path-to.rws> [--out DIR] \
-        [--min-quality Good] [--max-text 4000]
-```
-Pure standard library (ElementTree) — **no Pillow needed.**
-
-Example:
-```bash
-python3 Savegame_detailed_items.py observed/2026-08-13/savegame/03_Gravtasm__starting_save.rws
-```
-
-### Outputs (next to the save, basename = save stem)
-- `<stem>_items.md` — readable report: summary, uniquely-titled items table
-  (with wielder), high-quality items, quality/material breakdowns, top types,
-  and all narrative text blocks.
-- `<stem>_items.json` — full machine-readable inventory (every item + fields),
-  plus `named_items` and `narrative`.
-- console — short summary + the uniquely-titled items and who holds them.
 
 ### What it reads (verified against 03_Gravtasm__starting_save.rws, 1.6.4633)
 An **item** is any XML element with BOTH a `<def>` and an `<id>` child (weapons,
@@ -212,30 +157,19 @@ items; 30 narrative blocks including the debt-scenario intro.
 
 ---
 
-## Savegame_mapview.py — .rws map preview (research probe)
+## Savegame_mapview.py — .rws map preview  ⛔ RETIRED 2026-08-20
+
+Tool retired to `infrastructure/disposing/code_2026-08-20/`. **Successor for the
+grid decode: `src/RimMandrake/Utils/rimbench/savemap.py`**, which reads *and*
+writes `terrain`/`under`/`foundation`/`roof`/`snow` and takes its shortHash table
+from a def dump instead of guessing — it has no PNG renderer, so the *preview
+image* capability is retired with no successor. Doctrine:
+`skills/rimworld-savegame/SKILL.md`.
 
 **Goal:** confirm we can *read and understand* the in-play map inside a RimWorld
 1.6 savegame, and render a quick visual preview from it. Feeds the save-based
 world-authoring pipeline (`design/RimMandrake/save_authoring_pipeline.md`,
 `design/RimMandrake/rimworld_file_lore.md`).
-
-### Run
-```bash
-python3 Savegame_mapview.py <path-to.rws> [--out DIR] [--scale N] [--no-image]
-```
-Requires **Pillow** (`pip install Pillow --break-system-packages`).
-
-Example (the reference save):
-```bash
-python3 Savegame_mapview.py observed/2026-08-13/savegame/03_Gravtasm__starting_save.rws --scale 4
-```
-
-### Outputs (next to the save, basename = save stem)
-- `<stem>_preview.png` — terrain (one color per distinct terrain), translucent
-  roof overlay, red dots for pawns.
-- `<stem>_legend.json` — map size, terrain shortHash legend + cell counts,
-  roof stats, thing-type counts, pawn positions.
-- console — human-readable summary.
 
 ### What it decodes (verified against 03_Gravtasm__starting_save.rws, 1.6.4633)
 Map `<size>` under `<maps>` → `(W, 1, H)` (here 225×225 = 50,625 cells), then the
@@ -265,7 +199,7 @@ mods are obvious at a glance — the keep / cut / re-skin decision.
 python src/RimMandrake/Utils/animal_contact_sheet.py --out observed/2026-08-13/inventory/contact_sheets
 ```
 
-Requires **Pillow** (already used by `Savegame_mapview.py`). Runs in ~5s.
+Requires **Pillow**. Runs in ~5s.
 
 It is regenerable in seconds, so delete rather than curate it if the repo size
 ever matters.
@@ -411,14 +345,17 @@ Contested `(defType, defName)` keys stack-wide: **375**. See
 
 ## animal_live_diff.py — offline vs live  (v1.0, 2026-08-10)
 
+⚠️ **Quarantined 2026-08-20 and restored the same day.** The cleanup audit read
+"never run against a real dump" as *spent*; it means the opposite — the tool is
+**pending its first run**, not finished with. Nothing else joins `animals.csv` to a
+live DefDump, so retiring it would have deleted the layer, not a leftover. ⚠️ It was
+never run against a real dump (see the closing note), so the join it describes is
+designed and
+self-tested, not measured.
+
 **The point:** `animal_inventory.py` knows *where to patch*; `RimDefDump` knows
 *what resulted*. This is the join, and the join is the deliverable — it turns
 "I think this xpath hits the right thing" into a verified statement.
-
-```bash
-python src/RimMandrake/Utils/animal_live_diff.py --live "%USERPROFILE%\AppData\LocalLow\Ludeon Studios\RimWorld by Ludeon Studios\DefDump" --out .\out
-python src/RimMandrake/Utils/animal_live_diff.py --selftest      # no game load needed
-```
 
 It retires three documented limitations of the offline scan at once:
 

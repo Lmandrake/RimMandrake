@@ -37,7 +37,10 @@ _Purpose: a **self-teaching reference** so that any future session can successfu
   - Xenotype referenced by **mod defName**; `<customXenotypeDatabase>` is EMPTY when the xenotype is a mod def (ideal — our Jawa is a mod def, not a save-embedded custom xenotype).
 - **`<meta>`** — lists `<modIds>` + `<modSteamIds>` + `<modNames>`. A save will complain / degrade if loaded against a different mod set. Keep the mod list in sync.
 
-### 2a. ITEMS & their flavor — VERIFIED ✅ (2026-08-05, Gravtasm save, `src/RimMandrake/Utils/Savegame_detailed_items.py`)
+### 2a. ITEMS & their flavor — VERIFIED ✅ (2026-08-05, Gravtasm save)
+*Derived with `Savegame_detailed_items.py`, **retired 2026-08-20** to
+`infrastructure/disposing/code_2026-08-20/` — do not run it. No successor reads
+items or narrative text out of a `.rws`; the findings below stand on their own.*
 An **item/Thing** is any XML element with BOTH a `<def>` and an `<id>` direct child (weapons, apparel, chunks, plants, filth, buildings, pawns…). **A `.rws` parses cleanly with `xml.etree.ElementTree` — full 14MB file in ~0.4s**; prefer ElementTree over regex for READING so each flavor field stays bound to its own item (regex is fine only for quick counts). Gravtasm: 14,752 items / 166 defs (plant 7027, filth 4992, chunk 1667, building 466, apparel 166, pawn 42, weapon 26…). Per-item flavor children (all optional, present only when the item has them):
   - `<title>` = **unique/legendary item NAME** (e.g. *Ash Raven*, *The Vulture*, *Suffering*, *Torment* — named weapons on the crew). Rare; 4 in Gravtasm, each on a pawn.
   - `<quality>` = Awful/Poor/Normal/Good/Excellent/Masterwork/Legendary (Gravtasm: 227 quality items, incl. 1 Masterwork FFF_RegalSuit on the captain).
@@ -47,7 +50,10 @@ An **item/Thing** is any XML element with BOTH a `<def>` and an `<id>` direct ch
   - **Held items** are linked to their owner by walking up to the nearest enclosing pawn `<name>` node (first/nick/last).
 - **Narrative / story TEXT** lives in `<text>` (letters, messages, archived comms — e.g. `ScenPart_GameStartDialog` debt intro, `StandardLetter`, `Message`) and `<description>` (scenario summary, quest text, ideo/backstory prose). Both are legible free text, safe to read; the source-class is the enclosing `<li Class="…">`. Gravtasm: 30 narrative blocks.
 
-### 2c. IDEOLIGIONS (religions) — VERIFIED ✅ (2026-08-05, Gravtasm save, `src/RimMandrake/Utils/Savegame_ideoligions.py`)
+### 2c. IDEOLIGIONS (religions) — VERIFIED ✅ (2026-08-05, Gravtasm save)
+*Derived with `Savegame_ideoligions.py`, **retired 2026-08-20** to
+`infrastructure/disposing/code_2026-08-20/` — do not run it. No successor reads
+ideoligions out of a `.rws`; the findings below stand on their own.*
 Ideoligions live **fully-expanded inside the save** under `<game><ideoManager><ideos><li>` — each `<li>` is one complete religion (not merely a def reference), so the `.rws` is a **self-contained authoritative source** for the campaign's faiths. Legible, **safe-to-READ** node (same tier as scenario / pawn-story text). Gravtasm: **14 ideoligions.** Per-ideo children:
   - `<name>` / `<adjective>` / `<memberName>` (e.g. *Techno-Fidelism* / *fidelist* / *Fidelor*), `<leaderTitleMale>`/`<leaderTitleFemale>` (e.g. "Archic Boss").
   - `<description>` = the procedurally-**generated origin myth**, stored as **full readable prose** — ⚠️ unlike item `taleRef` seeds and terrain shortHashes, **no live-game regeneration needed** (e.g. The Cult's Hiseunos/Vana-Metric myth is verbatim in the save, complete with `<color=#…>` deity-name markup).
@@ -56,17 +62,28 @@ Ideoligions live **fully-expanded inside the save** under `<game><ideoManager><i
   - `<foundation Class="IdeoFoundation_Deity">` → `<def>`, `<place>` (sacred place name), `<deities>` (each `<li>` = `<name>`/`<type>`/`<gender>`; often empty for deity-less ideos).
   - `<precepts>` = big list of `<li Class="Precept_*">`. Classes seen: `Precept_RoleSingle`/`Precept_RoleMulti` (roles → `<name>`+`<def>`, `restrictToSupremeGender`), `Precept_Ritual` (name + `ritualExpectedDesc` flavor blurb + `sourcePattern`), `Precept_Building` (sacred buildings), `Precept_Relic`, `Precept_Weapon`, `Precept_RitualSeat`, `Precept_GravshipLaunch`, `IdeologyVirtues.Precept_Virtue`, and **Class-less `<li>`** = an **issue position** (stance on slavery/execution/body-mod/etc.; `<def>`+human `<name>`). Gravtasm ideo[0]: 92 precepts = 56 issue positions + 19 rituals + 3 roles-single + 2 roles-multi + 3 buildings + 2 relics + …
   - `<id>` = the ideo's load id. **Pawn membership:** a pawn points at its faith via `<ideo>Ideo_<id></ideo>`; tally those for a follower/prominence count (Gravtasm: Rules of Acquisition 8, Techno-Fidelism 6, …). NOT a full faction↔ideo map (no simple faction-ideo node in this save).
-  - **Tool:** `src/RimMandrake/Utils/Savegame_ideoligions.py` → `<stem>_ideoligions.md` (roster table + per-religion section) + `.json`.
+  - ⛔ **Tool retired 2026-08-20** (`Savegame_ideoligions.py`). It emitted a roster
+    table + per-religion section as `<stem>_ideoligions.md` + `.json`. No successor.
 
 ### Fragile regions (do NOT hand-edit casually) ❓/🔎
 - The **map thing list + cell/region/pathing data** — every Thing has a unique load ID and cross-references (jobs, reservations, rooms). Injecting or deleting nodes here by hand risks dangling references. This is the **Tier 2b live-map enrichment** frontier — treat via engine/mod-assisted spawning first, raw injection only with heavy backup+reload discipline and small increments.
 
-### 2b. In-play MAP grids — VERIFIED ✅ (2026-08-05, Gravtasm 1.6.4633 save, `src/RimMandrake/Utils/Savegame_mapview.py`)
+### 2b. In-play MAP grids — VERIFIED ✅ (2026-08-05, Gravtasm 1.6.4633 save)
+*Derived with `Savegame_mapview.py`, **retired 2026-08-20** to
+`infrastructure/disposing/code_2026-08-20/` — do not run it. **Successor:**
+`src/RimMandrake/Utils/rimbench/savemap.py`, which decodes (and writes) the
+terrain / under / foundation / roof / snow grids with a shortHash table taken from
+a matching def dump. It has no PNG renderer — the preview image is retired with no
+successor. Doctrine: `skills/rimworld-savegame/SKILL.md`.*
 The map is a single block under `<maps><li>`: `<uniqueID>`, `<generatorDef>Base_Player`, `<mapInfo><size>(225, 1, 225)</size><parent>WorldObject_134</parent>`. So map size = **(W, 1, H)**, W·H cells (here 225×225 = 50,625). READING these is safe (parse-only); WRITING them stays in the fragile region.
 - **The grid codec, the sibling grids, the shortHash→defName rule and the `<def>/<id>/<pos>` thing layout are in `skills/rimworld-savegame/SKILL.md` §3–6.** Do not restate them here.
 - Gravtasm specifics: ~2.1% roofed; 14,384 things over 72 distinct defs — desert-diagnostic (SaguaroCactus/PincushionCactus/Agave/TreeDrago/ChunkSandstone) plus `GravshipHull`×48, `Wall`×394, 1 Human pawn.
 - **Present as map children:** `pollutionGrid`, `gasGrid`. **Absent** in this save: `elevationGrid`, `fertilityGrid`.
-- **Tool:** `src/RimMandrake/Utils/Savegame_mapview.py` renders terrain+roof+pawns to a PNG and emits a legend JSON. First successful map-preview probe (2026-08-05) — proves we can read/understand the in-play map, not just the scenario/pawn nodes.
+- ⛔ **Tool retired 2026-08-20** (`Savegame_mapview.py`). It rendered terrain+roof+pawns
+  to a PNG with a legend JSON — the first successful map-preview probe (2026-08-05),
+  which is what proved we can read and understand the in-play map, not just the
+  scenario/pawn nodes. Grid reading now lives in
+  `src/RimMandrake/Utils/rimbench/savemap.py`; the PNG preview has no successor.
 
 ---
 
@@ -129,7 +146,9 @@ Save structure landmarks: `<game><scenario>`, `ScenPart_ConfigureStartingPawns`,
 - 🔎 How Odyssey gravtech research defNames are spelled (for the techprint gate + the "no defName ending in a digit" Configurable-Techprints limit).
 - ✅ **PARTLY RESOLVED (2026-08-05): raw `.rws` map GRID structure is now decoded** (terrain
   `topGridDeflate`, roof `roofsDeflate` = base64 raw-DEFLATE→LE uint16 shortHashes; things =
-  `<def>/<id>/<pos>(x,0,z)`). See §2b + `src/RimMandrake/Utils/Savegame_mapview.py`. READING is safe/proven;
+  `<def>/<id>/<pos>(x,0,z)`). See §2b; the decoder is now
+  `src/RimMandrake/Utils/rimbench/savemap.py` (`Savegame_mapview.py` retired
+  2026-08-20). READING is safe/proven;
   the remaining unknown is the fine cross-reference graph (jobs/reservations/rooms) for safe
   WRITING — still LOW priority since RimBridge is the preferred live-map WRITE route.
 - ✅ **RESOLVED 2026-08-12 — shortHash→defName does NOT need the load order or the live game.**

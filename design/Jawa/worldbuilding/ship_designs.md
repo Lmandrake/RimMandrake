@@ -22,8 +22,10 @@ choice; `ship_deck_plan.md` owns the repair-progression / heat doctrine the chos
 > The other fourteen silhouettes are retained below as the record of the exploration that led here.
 
 > **Verifier:** `src/RimMandrake/mapsynth/ship_designs.py` + `build_designs.py` (regenerates + re-checks all
-> fifteen). **Renderers:** `src/RimMandrake/mapsynth/render_designs.py` (8-panel grid of the early set) +
-> `render_single.py <name>` (any one design on its own large panel).
+> fifteen). **Renderer:** `src/RimMandrake/mapsynth/render_single.py <name>` (any one design
+> on its own large panel). *(`render_designs.py` builds the 8-panel grid of the early
+> set — briefly quarantined 2026-08-20, restored because it is the only thing that can
+> rebuild `runs/ship_designs_comparison.png`.)*
 
 ---
 
@@ -556,8 +558,8 @@ land, re-validate #15 against the real numbers before any authoring.
   `d_falcon_halo_hollow` #15, plus the `_embed_pod` rim-sinking helper), the 14-region `REQUIRED`
   check, runs verify + tally, writes grids (`design_*.npy`), placements (`design_*_place.json`), and
   `designs_report.json`.
-- `src/RimMandrake/mapsynth/render_designs.py` — composites the black 8-panel comparison sheet with legend +
-  per-panel coverage halos and stats. Outputs `ship_designs_comparison.png`.
+- `src/RimMandrake/mapsynth/render_designs.py` — composites the black 8-panel comparison sheet with
+  legend + per-panel coverage halos and stats, into `runs/ship_designs_comparison.png`.
 - `src/RimMandrake/mapsynth/render_single.py <name>` — renders ONE design as a large standalone sheet with ~3×
   fonts + bigger tiles (built after "text too small" feedback). Outputs `design_<name>_large.png`.
   The chosen hull renders via `render_single.py 15_falcon_halo_hollow`.
@@ -566,5 +568,5 @@ land, re-validate #15 against the real numbers before any authoring.
 - `src/RimMandrake/mapsynth/runs/design_15_falcon_halo_hollow_large.png` — the **CHOSEN** hull rendered large & readable.
   (`design_9_derelict_halo_large.png` and `design_14_falcon_halo_large.png` are kept for reference.)
 
-To regenerate everything: `cd player_maps && python3 build_designs.py && python3 render_designs.py &&
-python3 render_single.py 15_falcon_halo_hollow`.
+To regenerate: `cd player_maps && python3 build_designs.py && python3 render_single.py
+15_falcon_halo_hollow`; add `python3 render_designs.py` for the 8-panel comparison sheet.

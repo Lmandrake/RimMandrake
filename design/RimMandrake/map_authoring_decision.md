@@ -81,8 +81,8 @@ unpause): if it rises to ~29 ms at 34 FPS the cost is the render frame, and
 uncapping the frame rate would lower it; if it stays at 16.66 ms it is a fixed
 60 Hz dispatcher tick and no frame-rate change will help.
 
-**Attempted 2026-08-12 with `src/RimMandrake/Utils/frame_lock_probe.py`, and it did not settle
-it.** Latency was flat across all five zoom levels (16.62 / 16.80 / 16.75 /
+**Attempted 2026-08-12 with `frame_lock_probe.py` (retired 2026-08-20), and it did not
+settle it.** Latency was flat across all five zoom levels (16.62 / 16.80 / 16.75 /
 16.78 / 16.91 ms, spread 0.29 ms) — but the FPS counter read **60 at every
 level**. Zoom does not move the frame rate on this map; vsync pins it. The
 independent variable never varied, so flat medians say nothing. Reporting it as
@@ -123,7 +123,8 @@ the driver, and no replacement mechanism has been established. A plausible
 untested candidate is time since map generation — run 1 was `ticksGame` ~5,
 straight out of the generator; run 2 was 1109.
 
-⇒ **`frame_lock_probe.py`'s question is answered well enough to close.** It stays
+⇒ **`frame_lock_probe.py`'s question is answered well enough to close.** The probe was
+retired 2026-08-20 to `infrastructure/disposing/code_2026-08-20/`; the question stays
 parked, and the batch API means a formation stops paying any floor ~100 times, so
 the remaining uncertainty is not worth a driver change.
 

@@ -1,8 +1,9 @@
 # biome_review_comments.md — DECIDE's read of the owner's biome cuts
 
-DECIDE, 2026-08-15. The owner reviewed all 66 `BiomeDef`s via
-`src/RimMandrake/Utils/biome_review.py` and cut **30**, leaving **36**. Decisions
-live in `observed/inventory/decisions_biomes.json`, keyed by defName.
+DECIDE, 2026-08-15. The owner reviewed all 66 `BiomeDef`s via `biome_review.py`
+(retired 2026-08-20, the review being finished) and cut **30**, leaving **36**.
+Decisions live in `observed/inventory/decisions_biomes.json`, keyed by defName —
+that file, not the tool, is the record.
 
 **Headline: every biome the lore needs survived.** Poison forest, mycotic jungle,
 gelatinous superorganism, propane lakes, ocular forest, forsaken crags

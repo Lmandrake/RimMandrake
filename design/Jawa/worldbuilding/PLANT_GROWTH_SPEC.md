@@ -96,9 +96,10 @@ that burns once and stays black — the fire ecology needs the fuel to come back
   XML, because it is a small number of literal values on ~66 defs rather than
   arithmetic over hundreds.
 - **Target: divide by ~4**, matching R-G2's default so the two levers agree.
-- ⚠️ **Wait for the biome cut list.** The owner is reviewing all 66 biomes now
-  (`src/RimMandrake/Utils/biome_review.py`); patching a biome we are about to cut
-  is wasted work and a wasted diff. **R-G1 can ship immediately; R-G4 waits.**
+- ⚠️ **Wait for the biome cut list.** *(The review completed 2026-08-15 and its tool
+  `biome_review.py` was retired 2026-08-20 — the cut list is
+  `observed/inventory/decisions_biomes.json`, 30 cut of 66.)* Patching a biome we are
+  about to cut is wasted work and a wasted diff. **R-G1 can ship immediately; R-G4 waits.**
 
 ## R-G5 · Exemptions to check before shipping
 

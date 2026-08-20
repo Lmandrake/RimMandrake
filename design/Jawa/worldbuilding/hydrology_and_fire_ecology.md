@@ -236,9 +236,10 @@ that is the whole point of a gravship on this world.
 Stated so the design does not stay prose. None of this is scheduled here.
 
 - **Strip ordinary rain from the weather tables** of every biome except the peaks
-  and the river margin. `BiomeDef/baseWeatherCommonalities` — see the review sheet
-  from `src/RimMandrake/Utils/biome_review.py` for the current values, which show
-  the top three weathers per biome.
+  and the river margin. `BiomeDef/baseWeatherCommonalities` — read the current
+  values off `BiomeDef` in the offline def dump (`src/RimMandrake/Utils/refresh.py`).
+  ⚠️ The `biome_review.py` sheet that used to show the top three weathers per biome
+  was retired 2026-08-20 and served its page live, so no saved copy exists.
 - **Raise dry-thunderstorm commonality hard in the savanna**, and raise it further
   in whatever "burnt" variant we end up with.
 - **Fast plant growth is a global multiplier**, not a per-plant edit — one lever,

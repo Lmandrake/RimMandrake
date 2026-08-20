@@ -44,8 +44,8 @@ A full ship — factory ~650 + living ~650 + systems ~250 + carbonite ~60, +15% 
 only if it lies within a connection *radius*: the grav engine reaches **19 tiles**, each of up to 6
 field extenders reaches **16 tiles**, and every extender must itself sit inside the already-connected
 field (a chain rule). So a design can pass the 2,000-tile capacity check and still fail to fly because
-distant tiles are out of radius. **Verified geometrically (2026-08-06, `src/RimMandrake/mapsynth/verify_coverage.py`
-+ `geom_check.py`):** with the engine mounted mid-keel and all 6 extenders chained along the spine, the
+distant tiles are out of radius. **Verified geometrically (2026-08-06, by `verify_coverage.py` + `geom_check.py`, both
+retired 2026-08-20 — the live coverage verifier is `src/RimMandrake/mapsynth/ship_designs.py`):** with the engine mounted mid-keel and all 6 extenders chained along the spine, the
 1,732-tile layout is **100% covered (0 tiles out of radius)**, chain rule satisfied, and the farthest
 tile is **15.81 tiles** from its nearest node — just inside the 16-tile extender limit. Consequences
 baked back into the design:
