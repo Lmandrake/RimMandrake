@@ -553,7 +553,40 @@ spec:     🔴 **BLOCKS WORLDGEN. Both fail SILENTLY — a bad world generates w
 verify:   zero `is not <li>` errors from the biome mix; `WORLDGEN_RUN.md` §2.E reads
           `AmbientHorror`. (The planet-type half is no longer ours to verify — see below.)
 criteria: the world the owner generates is the world these documents describe.
-state:    ready — **(a) is ANSWERED and off our plate; (b) is still ours and still open.**
+state:    ✅ CLOSED 2026-08-19 — (a) is the owner's click and is recorded on the run
+          sheet; (b) is RULED below and demoted out of the worldgen gate.
+🔴 RULING (DECIDE, 2026-08-19): **THE BIOME MIX NO LONGER GATES WORLDGEN.**
+          The 2026-08-15 ruling that saved this file (`does-the-standdown-cover-biome-
+          commonality-tuning-b7c81e`) rested on one sentence: *"there is no biome-
+          abundance control at the world screen, so if the mix is dead he gets vanilla
+          abundances."* **The live-bridge ruling of 2026-08-19 inverts it.** We assign
+          the biome of all 21,872 tiles by hand and stamp them into the live world.
+          MEASURED, not assumed:
+          · `world/ASHKARR_WORLDMAP_tiles.csv` — 21,872 rows, ids 0–21871 contiguous,
+            **zero blank biome cells**. `world/live_tiles_check.csv` reads back 21,872.
+          · `BiomeDef.Worker.GetScore` has **exactly one caller** in 1.6 —
+            `WorldGenStep_Terrain.BiomeFrom`, reached only from `WorldGenerator`. Both
+            the blacklist and the 24 `scoreOffset`s are Harmony hooks on that one method
+            (`PlanetTypeManager.cs:96-125`). Nothing at runtime re-scores a biome.
+          · The blacklist is already contradicted by our own map: the authored CSV paints
+            **422 `ZBiome_Grasslands`** and **53 `AB_GelatinousSuperorganism`** tiles,
+            and both are blacklisted. A blacklisted biome cannot appear post-stamp
+            unless we paint it — and we do.
+          ⇒ **What survives, and it is second-order:** the mix still shapes the VANILLA
+          substrate that Landmarks (650), Mutators (700), AncientSites (300) and
+          AncientRoads (400) roll against *before* we stamp. A desert-shaped substrate
+          yields fewer illegal placements. That is insurance, not a gate — and it is
+          dominated by the cheaper fix §12.3 already names: clear and re-roll them after
+          the stamp. ⛔ **Nothing waits on the biome mix. It does not appear on the
+          worldgen run sheet. Do not restore it as a blocker.**
+          ⇒ B63(2) demoted in `queue/BUILD.md`; `pyrelands-off-the-blacklist-and-ash-
+          storms-5d2e71` half-voided there. **B63(1), the planet type, is UNAFFECTED and
+          is now the more critical of the two** — the `TidallyLocked` choice is scribed
+          into the world as `alienWorldsFrameworkPlanetType` and re-applies from the SAVE
+          on every load, so it cannot be changed after the fact.
+          ⚠️ NOT changed by this ruling: `WORLDGEN_RUN.md` §2.E must still read
+          `AmbientHorror`, and `EXPECTED_FAILURES` S5 still expects the wrong string.
+          Those two are the live remainder of this item and are recorded on the run sheet.
 answered: **(a) PLANET TYPE — OWNER 2026-08-15: `TidallyLocked`, and HE sets it.**
           Asked directly. His words: *"I will set it, and it's parked until factions
           and ideos and almost everything else ships."*

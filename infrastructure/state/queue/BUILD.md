@@ -1106,7 +1106,27 @@ criteria: the generated world is on the tidally locked planet type with the
           intended biome mix, the world is named `Ash'karr`, the opening dialog
           says "The Sundered", and the save reads back `AmbientHorror` with the
           anomaly threat fraction at 0.
-state:    ready
+state:    ready — ⚠️ **HALF OF THIS ITEM WAS DEMOTED 2026-08-19. Read before working it.**
+🔴 DECIDE RULING 2026-08-19 (`queue/DECIDE.md`, D29):
+          **(1) THE PLANET TYPE STILL BLOCKS, and harder than this item says.** Read off
+          the mod's own source: `TidallyLocked` is not a worldgen curve pack — it Harmony-
+          patches `GenCelestial.CelestialSunGlow`, `SunPositionUnmodified` and
+          `CalculateOutdoorTemperatureAtTile`, so the sun is frozen, daylight is a
+          function of LONGITUDE and daily temperature variation is suppressed **during
+          play**. The choice is scribed into the world as `alienWorldsFrameworkPlanetType`
+          and `PostSaveLoadHook` re-applies it from the SAVE on every load. ⇒ it cannot be
+          set, unset or corrected after the world exists. It is the owner's click, on
+          `WORLDGEN_RUN.md` §2.A, and it is the single most irreversible one in v1.
+          **(2) THE BIOME MIX NO LONGER GATES ANYTHING. Do not treat it as a blocker.**
+          Every one of the 21,872 tiles' biomes is authored and stamped over the bridge,
+          and `BiomeDef.Worker.GetScore` — the only place either the blacklist or the 24
+          `scoreOffset`s act — is called from `WorldGenStep_Terrain` alone. We overwrite
+          100% of its output. The `verify:` below ("the live def must read 24
+          `biomeConfigs` entries") is no longer a pass condition for anything the player
+          sees. **Fix the `<li>` shorthand only if it is free**; it is worth a few minutes
+          purely as insurance on the vanilla substrate that Landmarks (650) and Mutators
+          (700) roll against before the stamp. ⛔ Nothing waits on it. It does not go on
+          the worldgen run sheet.
 
 ## B62 Put desert creatures in the other four animal-drawn vehicles
 row:      2
@@ -2168,7 +2188,24 @@ verify:   `grep -c 'ZBiome_Grasslands' <the biomeBlacklist block>` returns 0;
 criteria: on the world the owner rolls, stormy-savanna tiles exist and are sited between
           the wet biomes and the desert, and an ash storm occurs on one with the label
           `ash storm` and a grey sky.
-state:    ready
+state:    ready — ⭐ **HALF (a) IS VOID; HALF (b) STANDS AND IS NOW MORE CERTAIN.**
+🔴 DECIDE RULING 2026-08-19 (`queue/DECIDE.md`, D29):
+          **(a) DELETE THE BLACKLIST LINE — VOID. Not passed, not failed, void.** Its
+          whole purpose was *"a blacklisted biome can never appear in ANY seed"*. Under
+          the live-bridge route we paint biomes ourselves, and the authored map already
+          places **422 `ZBiome_Grasslands` tiles** — the Pyrelands exist because we stamp
+          them, not because the generator is allowed to roll them. The edit is harmless
+          and costs one line if BUILD is in the file anyway; nothing depends on it.
+          **(b) ASH STORMS — UNAFFECTED, and it is the real content here.**
+          `weatherCommonalities` is read at RUNTIME, every day of play, on whatever tiles
+          carry `ZBiome_Grasslands`. It has nothing to do with worldgen and never did.
+          ⇒ ⛔ **The `⏳ ORDER: this rides on top of B63/D29(b)` line above is DEAD** — B63(2)
+          is demoted and (b) never needed `biomeConfigs` to work. Build (b) whenever.
+          ⇒ `criteria:` restated: stormy-savanna tiles exist and sit between the wet
+          biomes and the desert **because the authored map puts them there** — that is now
+          a property of `world/ASHKARR_WORLDMAP_tiles.csv`, not of the seed the owner
+          rolls. The live half of the criterion is the one that still means something:
+          **an ash storm occurs on one, labelled `ash storm`, with a grey sky.**
 
 ## btd-jawa-has-no-merge-to-wait-for-8c40b2
 row:      4

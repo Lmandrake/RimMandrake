@@ -663,8 +663,17 @@ on a tile that already has one, which is what sets `isComboLandmark` in the save
 ### 13.3 Ash'karr's landmarks are NAMED PLACES, not scenery
 
 ⭐ **Vanilla rolls the scenery; we hand-place only what the gazetteer already names.**
-§12.4 lets `Landmarks` (650) and `Mutators` (700) run, because by order 20 they are
-picking against our biomes and our hilliness. A second step at **order 660** adds ours.
+
+| ~~§12.4 lets `Landmarks` (650) and `Mutators` (700) run, because by order 20 they are picking against our biomes and our hilliness. A second step at **order 660** adds ours.~~ | ⛔ **DEAD 2026-08-19 — written on the `WorldGenStep_Ashkarr` route.** There is no order 20 and no order 660; there are no worldgen steps at all |
+
+🔴 **Under the bridge route the scenery rolls against the VANILLA planet, not ours.**
+Landmarks (650) and Mutators (700) have already finished by the time the importer
+stamps a single tile, so every one of them was chosen from a biome and a hilliness we
+are about to overwrite. §12.3 states this correctly and calls it **the one that bites**;
+this section used to state the opposite three hundred lines later. ⇒ **The importer
+clears and re-rolls landmarks and mutators AFTER the stamp, then adds ours** — there is
+no generator ordering left to lean on. Decide the re-roll by LOOKING at the first
+render, per §12.3.
 
 **Cap the hand-placed set at ~16.** A landmark that is everywhere is wallpaper; the
 whole value of one is that it means a specific place on this specific planet.
