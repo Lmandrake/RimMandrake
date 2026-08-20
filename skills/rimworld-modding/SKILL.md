@@ -49,6 +49,35 @@ When you find the ground truth, **quote its file path and the exact snippet in a
 comment at the top of the patch**, with a date. Future-you re-reads that comment
 instead of re-doing the search.
 
+### 1b. Three sources of truth, and the one question each answers
+
+Added 2026-08-19 with the `rimsage` MCP server. Pick by the QUESTION, not by habit:
+
+| question | source |
+|---|---|
+| *How does vanilla implement this? What is the real class/method/signature?* | **`rimsage`** MCP tools (`search_source`, `read_csharp_symbol`, `search_defs`, `get_def_details`) |
+| *What did OUR 579-mod stack actually load?* | the **def dump**, `…\LocalLow\…\DefDump\defs\*.json` |
+| *What is true in the running game right now?* | the **bridge** — see `skills/rimbridge/SKILL.md` |
+
+🔴 **`rimsage` indexes VANILLA + DLC ONLY. It never scans mod folders.** A "not
+found" from `search_defs` or `get_def_details` is **not** evidence that a def
+does not exist — every `OuterRim_`, `BTD_`, `AB_`, `GarryFlowers_` def in our
+campaign is invisible to it by construction. For anything we author or patch,
+the def dump is the authority and rimsage cannot help.
+
+✅ **Use it before inventing a Harmony patch target**, and before reimplementing
+vanilla behaviour. That is the case CLAUDE.md's *"never guess a defName, field,
+or namespace"* was written for, and until now the only route was `strings -a -el`
+over an assembly.
+
+⚠️ **A `merged` def view is not the engine's merge.** Its resolver concatenates
+parent and child lists, which RimWorld does not always do. Settle inheritance
+arguments against the def dump, not against `get_def_details`.
+
+📎 Full study: `research\RimMandrake\reference\rimsage_rimcp_source_index_mcp.md`.
+The decompiled C# it indexes is at `D:\Luke\dev\reference\rimworld-decompiled`
+(provenance: `research\RimMandrake\reference\rimworld_decompiled_source.md`).
+
 ---
 
 ## 2. The game restart is the scarce resource
