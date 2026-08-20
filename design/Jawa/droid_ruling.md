@@ -175,34 +175,64 @@ rebuilt from the queue files and carries neither this item nor a retired seat's 
 (that work is now BUILD's). Refile it in `infrastructure/state/queue/BUILD.md` if it
 still matters.
 
-## Mechanoids are OFF
+## ~~Mechanoids are OFF~~ 🔴 REVERSED — MECHANOIDS ARE ON. They are the Forgotten Arsenal.
 
-> Owner: *"Mechanoids for now should be turned off in the scenario: we just don't
-> need them, and they bring in a lot of strange content we'd have to heavily
-> augment."*
+> 🔴 **OWNER'S RULING, 2026-08-20, and it is final:** *"Mechanoids are absolutely ON
+> and are called the Forgotten Arsenal or the Forsaken Arsenal of the ancient Rakata
+> race that built this place. Period."*
 
-Vanilla mechanoids and mechanitor content are **out**. Not reskinned — **off**.
-The droid roster is JDS (enemy, scuttles) + KotOR (capture line) + Droid Depot.
+**This section used to rule the opposite**, off a 2026-08-13 quote (*"Mechanoids for
+now should be turned off in the scenario"*). ⛔ **That is dead, and it had already died
+once** — the owner deprecated it on **2026-08-15** (*"We are keeping the mechanoids.
+Deprecate any action about turning mechanoids off"*, recorded in
+`design/Jawa/worldbuilding/cherrypick_inbox.md`), and this file was never told. It is
+now told.
 
-### ⚠️ This forces the gravship pursuit decision — the two are not independent
+### What the mechanoids ARE
 
-`ScenPart_PursuingMechanoids` sets `incidentParms.faction = Faction.OfMechanoids`
-in **hardcoded C#**, and its `ScenPartDef` carries `preventRemovalOfFaction:
-Mechanoid` — a guard that exists precisely to stop the faction being removed out
-from under the pursuit.
+**Faction 13, `FactionDef Mechanoid`, relabelled — `design/Jawa/worldbuilding/FACTION_SPEC.md` §13.**
+`hidden`, no settlements, not a polity.
 
-⇒ **"Mechanoids off" and "keep the vanilla pursuit" are mutually incompatible, and
-the engine actively guards against the combination.** So the build is now
-determined rather than chosen:
+- **The Forgotten Arsenal** (also *the Forsaken Arsenal*) — the campaign's name for
+  **self-replicating defensive systems** that never learned the war ended.
+  `design/Jawa/worldbuilding/the_forgotten_war.md` R-W1.
+- **Built by the Rakata**, the ancient precursor race that made this world.
+  Named in v1 in full, owner 2026-08-20 —
+  `design/Jawa/worldbuilding/ANCIENTS_AS_RAKATA_SPEC.md`. The sleepers in the vaults
+  are Rakatan, and the Utinni is their vessel.
+- **They are found buried**, guarding fortified vaults. They have a perimeter, not a
+  grudge: approach and they respond, leave and they do not pursue.
 
-1. **Remove** the `ScenPart_PursuingMechanoids` part from the scenario.
-2. **Add `Ruthless Faction Pursuit`** (WS `3621784437`, owner-adopted 2026-08-13)
-   pointed at the **Imperial Desert Directorate**.
-3. Only then suppress the Mechanoid faction.
+⇒ **The droid roster is JDS (enemy, scuttles) + KotOR (capture line) + Droid Depot
++ the Forgotten Arsenal.** Vanilla mechs are not competition for the droid families;
+they are a different register entirely — a *what*, not a *who*.
 
-**And this kills the "reskin the Mechanoid faction into an Imperial droid army"
-route outright** — you cannot reskin a faction you are removing. That route was
-already ranked last for its global blast radius; it is now simply unavailable.
+⚠️ **Mechanitor content is a separate question and this ruling does not decide it.**
+The owner's objection in 2026-08-13 was to *strange content we'd have to heavily
+augment*; keeping the faction does not oblige us to hand the player a mech workforce.
+Judge the player-side mechanitor payload on the anti-exponential pillars, as
+`design/Jawa/mods/required_mods.md` already does.
+
+### 🔓 The gravship pursuit decision is REOPENED, not determined
+
+`ScenPart_PursuingMechanoids` sets `incidentParms.faction = Faction.OfMechanoids` in
+**hardcoded C#**, and its `ScenPartDef` carries `preventRemovalOfFaction: Mechanoid` —
+a guard that stops the faction being removed out from under the pursuit.
+
+**That guard was the whole argument here, and with the faction staying it no longer
+forces anything.** The old three-step build (remove the vanilla part → add `Ruthless
+Faction Pursuit` WS `3621784437` → suppress the Mechanoid faction) **had step 3 deleted
+by this ruling, which removes the reason for steps 1 and 2.**
+
+⇒ **Genuinely open, and a flavour choice rather than a constraint:** who chases the
+gravship? The pursuit is redirectable to any `ValidFactionDef`
+(`required_mods.md` — the finding stands even though the conclusion built on it does
+not). Keeping the vanilla Mechanoid pursuit is now *available*, and it arguably reads
+better than it did: **the thing that follows you is the Arsenal noticing you moved.**
+
+⚠️ **Unchecked before locking** (from `required_mods.md`): whether it double-pursues if
+the vanilla part is left in, and how it interacts with **VGE Chapter 1's transpiler
+patch** on `ScenPart_PursuingMechanoids_Tick`, which is live in this stack.
 
 Mechanism and the decompiled proof:
 `file:///D:/Luke/dev/Rimworld/design/Jawa/worldbuilding/gravship_pursuer_mechanism.md`

@@ -1,22 +1,25 @@
-> 🔴 **§1 (DEADLIER MECHANOIDS) IS DEAD — SUPERSEDED BY AN OWNER RULING, 2026-08-13.**
-> Verbatim: *"Mechanoids for now should be turned off in the scenario: we just don't need
-> them, and they bring in a lot of strange content we'd have to heavily augment."*
-> (`design/Jawa/droid_ruling.md` §"Mechanoids are OFF".)
+> 🔴 **§1 (DEADLIER MECHANOIDS) IS LIVE. Read this before acting on the older
+> banner history in git — it said the opposite for about an hour on 2026-08-20 and was
+> wrong.**
 >
-> ⛔ **Do not adopt anything from §1** — Reinforced Mechanoids 2, Mechanoids: Total
-> Warfare, Mechanoid Invaders, More Mechanoids, Odyssey Mechanoid Raid Adjustment, or
-> the VFE-Mechanoids enemy-side keep. They tune a mech-raid threat the campaign no longer
-> has. §7's "Recommended adopt set" is dead for its mech half for the same reason.
+> **OWNER'S RULING, 2026-08-20:** *"Mechanoids are absolutely ON and are called the
+> Forgotten Arsenal or the Forsaken Arsenal of the ancient Rakata race that built this
+> place. Period."* This confirms the 2026-08-15 ruling (*"We are keeping the
+> mechanoids"*) that `design/Jawa/droid_ruling.md` had failed to record.
 >
-> **What replaced it:** mechs are no longer a faction or a raid source. They are the
-> Forsakens' automatic defence grid, met in ancient dangers, sealed complexes and
-> clusters on the player's initiative — `design/Jawa/worldbuilding/what_the_machines_are.md`.
-> Removing the Mechanoid raid roster is deliberate and the ruins keep their guards
-> regardless (measured: 21 of 93 mech kinds are already cluster-eligible with zero raid
-> slots — `design/Jawa/worldbuilding/data/mech_control_axes.md`).
+> ✅ **§1's candidates are back in play** — Reinforced Mechanoids 2, Mechanoids: Total
+> Warfare, Mechanoid Invaders, More Mechanoids, Odyssey Mechanoid Raid Adjustment, and
+> the VFE-Mechanoids enemy-side keep. §7's recommended adopt set stands as written.
 >
-> ✅ **STILL LIVE:** §2 (animals), §3 (events/threats), §4 (the four named mods), §5, §6.
-> Nothing in this banner touches them.
+> 🔑 **But judge them against what the mechs now ARE.** They are faction 13, the
+> **Forgotten Arsenal** (`design/Jawa/worldbuilding/FACTION_SPEC.md` §13): `hidden`, no
+> settlements, self-replicating vault guardians built by the **Rakata**
+> (`design/Jawa/worldbuilding/the_forgotten_war.md` R-W1;
+> `design/Jawa/worldbuilding/ANCIENTS_AS_RAKATA_SPEC.md`). **A hostile with a perimeter,
+> not a grudge.** So §0's lens gets sharper rather than looser: prefer mods that make a
+> guarded vault frightening to crack — area denial, breaching, sealed-complex garrisons —
+> over mods that push more mech bodies at the colony as a marching army. That is a
+> content filter on §1, not a suspension of it.
 
 > "Faction Filter" never existed; the live equivalents are **Sensible Factions** (3531306011) and **Faction Control** (2882785581).
 

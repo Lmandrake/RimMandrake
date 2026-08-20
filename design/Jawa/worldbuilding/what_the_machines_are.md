@@ -1,5 +1,27 @@
 # What the machines are
 
+> 🔴 **RULED, owner 2026-08-20 — read this first; it settles the open question this
+> document spends its length arguing.**
+>
+> *"Mechanoids are absolutely ON and are called the Forgotten Arsenal or the Forsaken
+> Arsenal of the ancient Rakata race that built this place. Period."*
+>
+> ✅ **The doc's central recommendation WON** — the machines are a dead civilisation's
+> automatic defences, not a faction, an army or more Empire. Everything below about
+> *why* still holds and is worth reading.
+>
+> ⛔ **Two things below are now wrong:**
+> 1. **"Whose world was it?" is answered: the RAKATA.** Not the Forsakens. The final
+>    section of this doc picks the Forsakens and rejects the Rakata for being Legends;
+>    the owner has since named the Rakata in full for v1 —
+>    `design/Jawa/worldbuilding/ANCIENTS_AS_RAKATA_SPEC.md`. The sleepers in the vaults
+>    are Rakatan and the Utinni is a Rakatan vessel.
+> 2. **The mechs do NOT leave the raid roster.** "Empty the Mechanoid raid roster
+>    entirely" was a proposal, never a ruling, and the owner killed it twice
+>    (2026-08-15, 2026-08-20). They are **faction 13, the Forgotten Arsenal**,
+>    `hidden`, no settlements — `design/Jawa/worldbuilding/FACTION_SPEC.md` §13,
+>    `design/Jawa/worldbuilding/the_forgotten_war.md` R-W1.
+
 _A retired seat, 2026-08-13. **The owner asked the right question at the right moment:**
 if we keep some mechanoids, what are they *in fiction* — a fourth invading
 faction, an orbital exterminator, a dead civilisation's automatic defences, or
@@ -64,8 +86,7 @@ populated by a predicate over pawn kinds (`allowInMechClusters`, `isFighter`,
 `combatPower`), **never by `pawnGroupMakers`**. 21 of 93 mech kinds already sit in
 exactly that state: eligible for a sealed complex, present in **zero** raid
 groups (the census is `design/Jawa/worldbuilding/data/mech_control_axes.md` — 93 rows,
-21 with `clusterAndAncientEligible=True` and `raidOptionSlots=0`). **So we can empty the Mechanoid raid roster entirely and the ruins keep
-their guards.** The fiction and the engine want the same thing.
+21 with `clusterAndAncientEligible=True` and `raidOptionSlots=0`). **So the ruins keep their guards no matter what the raid roster holds** — the two are independent mechanisms. ⛔ *This was once read as a licence to empty the raid roster. The owner ruled otherwise (2026-08-15, 2026-08-20): the mechanoids stay.* The fiction and the engine want the same thing.
 
 ⭐ **3. "Triggered by the player flying their ship about" is the best part of the
 owner's version, and it should be built.** Movement is currently free. If flying
@@ -89,7 +110,11 @@ the "qualitative not quantitative" discipline the design already claims.
 
 **They stop being a faction and become a hazard.** Concretely:
 
-- **Out of the raid roster.** No mech raids arrive at the colony as an army.
+- ⛔ ~~**Out of the raid roster.** No mech raids arrive at the colony as an army.~~
+  **DEAD — the mechanoids stay in full** (owner, 2026-08-15 and 2026-08-20). What
+  survives is a matter of *emphasis*: the Arsenal is most itself when met at a vault it
+  is guarding, so weight the encounter toward complexes and clusters rather than
+  deleting the raids.
 - **Kept in ancient dangers, sealed complexes and clusters** — which is where the
   player meets them, on the player's initiative, by opening something.
 - **Kept as wreckage.** Map decoration is a separate def type entirely
@@ -168,8 +193,9 @@ the better scene. The name exists in the world; the explanation does not.
 
 ## What follows mechanically
 
-- **Rename the Mechanoid faction to the Forsakens' garrison** — one label
-  operation, and it now *means* something.
+- **Rename the Mechanoid faction to the Forgotten Arsenal** — one label operation,
+  and it now *means* something. ⚠️ *This said "the Forsakens' garrison"; the name is
+  settled as **the Forgotten Arsenal** (also *the Forsaken Arsenal*) — `FACTION_SPEC.md` §13.*
 - **"Secret Compound" becomes "Forsaken compound"**, answering the owner's
   naming instinct with a word the game already uses.
 - **The dark biome is their heartland**, not a random hazard tile.
