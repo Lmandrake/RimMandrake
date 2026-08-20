@@ -671,6 +671,24 @@ spec:     `TribalWarriorBase` asks for `weaponTags: NeolithicMeleeDecent` and **
           about to be authored with `weaponTags`: **a tag is only real if a SURVIVING
           weapon carries it.** BUILD is building the tag -> surviving-weapon index now and
           will refuse to write a tag that resolves to nothing.
+          ⭐ **NARROWED 2026-08-19, twice, and the fix got cheaper both times.**
+          (i) The owner: *"I think we still have some kind of bow enabled actually."* Correct
+              — six bows survive, including `MA_CapryakScatterbow` on
+              `NeolithicRangedAdvanced`. Only the VANILLA bow set was cut.
+          (ii) Re-measured off the def dump rather than raw XML — post-inheritance and
+              post-patch, per the owner's ruling on which instrument to trust — the damage
+              is **kinds that list exactly ONE tag**, not a whole tier. Two vanilla tribal
+              kinds qualify (`Tribal_Warrior`, `Tribal_Hunter`) and two of ours
+              (`Jawa_Tribal_Scavenger`, `Jawa_Gamorrean_Enforcer`); 49 across the stack.
+          ⇒ 🔑 **NEW OPTION (d), and it is now the cheapest and least invasive: give each
+          single-tag kind a SECOND tag that already resolves.** `NeolithicMeleeAdvanced`
+          (8 survivors) for the warrior and scavenger, `NeolithicRangedAdvanced` (the
+          scatterbow) or `NeolithicRangedHeavy` (3) for the hunter. One patch, no cut
+          reversed, no vanilla weapon restored, and the ladder does the rest.
+          ⛔ (a) un-cutting the ikwa is no longer recommended — it fixes one rung of one
+          ladder and reverses a deliberate decision to do it.
+          ⚠️ The census is PROVISIONAL until the dump matches the mod list: the current
+          dump is `modCount 579` against 578 active. Re-run after the restore and load.
 verify:   n/a — a ruling.
 criteria: n/a
 state:    ready
