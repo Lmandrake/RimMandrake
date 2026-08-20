@@ -619,7 +619,43 @@ verify:   `validate_patch.py --defs` clean; the six kinds resolve `RimMandrakeRa
           spawns the same count and gear as before.
 criteria: a cracked casket produces a Rakatan, the encounter plays identically, and no
           `Could not resolve cross-reference` names the xenotype.
-state:    ready
+state:    done 2026-08-20 (offline half). One new file,
+          `src/Jawa/Jawa_Patches/Patches/AncientsAreRakata.xml`, deployed and in sync.
+          verify output: `validate_patch.py --defs` against the 578-mod load set —
+            `OK - 0 errors, 18 warning(s)`
+          ⚠️ **All 18 warnings are the same benign class** and the spec predicted them:
+          *"0 nodes in the on-disk Defs, but this node appears in a PatchOperation in
+          <16 other mods> — probably CREATED at runtime, make sure your mod loads AFTER
+          it."* `mandrake.jawa.patches` sits near the end of `ModsConfig.xml`, so it does.
+          🔴 **ONE MEASUREMENT IN THE SPEC NEEDED CORRECTING, and it caused 6 hard errors
+          on the first attempt.** R-A4 says to Remove-then-Add `useFactionXenotypes`
+          "if a node for it already exists — check each of the six rather than assuming".
+          Checked: **the def dump reports `useFactionXenotypes: True` on all six, and that
+          is the FIELD DEFAULT, not a written node.** Parsing the raw source shows no
+          `<useFactionXenotypes>` element on any of them, and no mod patches one in. So it
+          is an **Add only**; a Remove there matches nothing and the validator correctly
+          calls it an operation that would silently do nothing.
+          ⇒ The op shape now differs per node, and the file says why in a table:
+            `xenotypeSet` Remove+Add (16 mods patch it at runtime) ·
+            `useFactionXenotypes` Add only · `label` Replace on the two Core/Odyssey kinds
+            (verified present in raw source) · Remove+Add on the urban-ruins kinds, whose
+            defs the validator cannot see at all.
+          ⭐ **LABELS: shipped as "Forsaken", NOT "Rakatan".** The item put labels in scope;
+          the owner's naming ruling the same day decides the string — `Rakata` is the
+          ENDONYM, *"modern people on this planet just call them the Forgotten or the
+          Forsaken"*, and *"the word Rakata in a modern mouth is a scholar's word"*. A pawn
+          label is read by a player who is playing a Jawa. ⭐ **It also preserves the
+          discovery, which was R-A9's strongest argument against renaming at all** — the
+          xenotype label still reads "Rakata" in the bio and gene tab.
+            `ancient soldier` → **Forsaken soldier** · `ancient captain` → **Forsaken
+            captain** · `ancient special unit` ×2 → **Forsaken special unit**
+          ⛔ `AncientMallGuards` ("Fashion guy") and `AncientSlaughter` ("slaughter") keep
+          their labels — renaming a joke label is authoring and DECIDE's register call.
+          Their xenotype is patched exactly like the other four. Filed to DECIDE.
+          R-A9 has been superseded in place, in its own file.
+          ⏳ **The live half is owed and is CHECK's**: the def dump must read the xenotype
+          set back, and a cracked casket must produce a Rakatan with the encounter playing
+          identically. Filed as `RAKATA_SLEEPERS_LOOK_RIGHT_1` in `queue/CHECK.md`.
 
 ## ROLE_KINDS_UNARMED_1
 row:      7

@@ -1,0 +1,294 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ============================================================================
+  AncientsAreRakata.xml                     Jawa_Patches - new file 2026-08-20
+  ============================================================================
+
+  Builds ANCIENTS_AS_RAKATA_SPEC.md (R-A2..R-A6, R-A9) under the owner's ruling:
+  "let's go all out for v1 here. 'Ancients' is so boring! Let's get us some
+  precursor Rakata in cold storage."
+
+  WHAT THIS IS. Every ancient soldier a player thaws out of a cryptosleep casket
+  generates today as an ordinary baseline human, so the whole emotional payload
+  of the frozen-precursor beat lands on a pawn indistinguishable from a pirate.
+  This makes them LOOK like what they are.
+
+  🔴 IT IS AN APPEARANCE CHANGE TO PAWNS. Not a faction change, not a balance
+  change, not new content. The `Ancients` FactionDef is not touched at all -
+  ancient sleepers are caskets you open, not a faction you meet, so the pawn
+  kinds' xenotype is the entire surface. `hidden`, `settlementGenerationWeight`
+  and `canMakeRandomly` are all left alone, and no combat field is altered.
+
+  WHO THE RAKATA ARE, because a label must not contradict it (owner, 2026-08-20):
+  terraformers and mega-builders. They made this world habitable, brought the
+  metal down from the asteroids, and built the Utinni. Then something attacked
+  them with self-replicating flesh and nearly finished them, and what survives is
+  in the caskets. ⛔ THEY DID NOT MAKE THE BIOWEAPON. Its author is unnamed and
+  no string here may imply otherwise.
+
+  ============================================================================
+  WHY THE LABELS SAY "Forsaken" AND NOT "Rakatan"
+  ============================================================================
+  R-A9 held labels back as the owner's separate call; he has since made it and
+  the queue item puts them in scope. But his NAMING ruling, the same day, is what
+  decides the actual string:
+
+    "Rakata is the ancient's name for themselves. Modern people on this planet
+     just call them the Forgotten or the Forsaken."
+    "The word Rakata in a modern mouth is a scholar's word, or a sleeper's."
+
+  ⇒ Rakata is the ENDONYM; the Forsaken is the EXONYM. A pawn label is read by a
+  player who is playing a Jawa, so the exonym is the correct register - and it
+  satisfies all three constraints at once:
+    * it stops them reading as generic "ancients", which is what the ruling asked
+    * it uses the word our own people would use, per the register rule
+    * ⭐ it does NOT leak "Rakata", which was R-A9's strongest argument against
+      renaming at all. The sleepers are meant to be a DISCOVERY, and the xenotype
+      label in the bio and gene tab still reads "Rakata" for a curious player who
+      goes looking. The information stays present without being announced.
+
+  ⛔ TWO LABELS ARE DELIBERATELY NOT TOUCHED: `AncientMallGuards` ("Fashion guy")
+  and `AncientSlaughter` ("slaughter"), both from Ancient urban ruins. Renaming a
+  joke label is authoring, not mechanics, and it is DECIDE's register call. Their
+  XENOTYPE is patched here exactly like the other four; only the label is left.
+
+  ============================================================================
+  THE MECHANISM, and why both halves are required (R-A3)
+  ============================================================================
+  1. `RimMandrakeRakata` at chance 1.0, alone in the set. A `xenotypeChances`
+     list summing below 1 leaves the remainder to fall through. 1.0 is the only
+     value that means ALWAYS - do not write 0.95 "for variety"; variety here is
+     a bug.
+  2. `useFactionXenotypes` false. The field DEFAULTS to true, which falls the
+     generator through to the FACTION's set whenever the kind's own set misses -
+     and that fallback is not empty: `det.avaloi` injects `DV_Avaloi` into
+     `Ancients` at 0.15 and `AncientsHostile` at 0.10, so today roughly one
+     ancient soldier in ten already generates as an Avaloi. Chance 1.0 SHOULD
+     shadow it, but the generator's precedence between a kind's set and a
+     faction's set is assumed rather than measured, and a visible campaign beat
+     does not rest on an assumption.
+
+  🔴 TWO XML TRAPS, BOTH OF WHICH HAVE ALREADY SHIPPED BROKEN IN THIS REPO:
+    * `xenotypeChances` is DICTIONARY-KEYED. An `<li>` there discards the WHOLE
+      def silently. Every entry below is a `<DefName>value</DefName>` node.
+    * A child's list is APPENDED to its parent's, not substituted, so
+      `Inherit="False"` is load-bearing on BOTH nodes. `AncientSoldier_Leader`
+      inherits from `MercenaryEliteTierBase`, so this is not hypothetical.
+
+  ============================================================================
+  WHY THE OPERATION SHAPE DIFFERS PER NODE - measured, not guessed
+  ============================================================================
+  The def dump reports `useFactionXenotypes: True` for all six. That is the
+  FIELD DEFAULT, not a written node: parsing the raw source shows no
+  `<useFactionXenotypes>` element on any of them, and no mod patches one in.
+  ⇒ it is an ADD. A Remove-then-Add there matches nothing and the validator
+  correctly calls it an operation that would silently do nothing.
+
+    node                  shape            why
+    xenotypeSet           Remove + Add     absent in source, but SIXTEEN mods
+                                           patch this node at runtime, so a bare
+                                           Add would duplicate or lose the race.
+                                           `success Always` covers both cases.
+    useFactionXenotypes   Add only         absent in source, patched by nobody.
+    label (Core/Odyssey)  Replace          verified PRESENT in the raw def.
+    label (urban ruins)   Remove + Add     presence not verifiable offline; the
+                                           validator cannot see those defs at all.
+
+  ⚠️ LOAD ORDER IS ON OUR SIDE AND MUST STAY THAT WAY. `mandrake.jawa.patches`
+  sits near the end of ModsConfig.xml, after `mandrake.starwarsraces`,
+  `xmb.ancienturbanruins.mo` and `xylthixlm.races.titan`, so our Remove runs last
+  and wins. Moving these operations into an earlier-loading mod breaks that.
+
+  ============================================================================
+  GUARDING (R-A6) - and a guard that "passes" proves nothing
+  ============================================================================
+    the RimMandrakeRakata entry   MayRequire="mandrake.starwarsraces"
+    AncientSoldier_Leader         MayRequire="Ludeon.RimWorld.Odyssey"
+    the four urban-ruins kinds    PatchOperationFindMod "Ancient urban ruins"
+
+  ⚠️ `MayRequire` takes a packageId; `PatchOperationFindMod` takes the mod's
+  DISPLAY NAME. They are not interchangeable and a swapped pair fails silently in
+  the friendliest possible way.
+
+  🔴 `PatchOperationFindMod` returns TRUE on no match, so a clean log proves the
+  guard ran and never that the patch landed. The only proof is the def dump
+  reading the xenotype set back, and then a pawn on a map.
+  ============================================================================
+-->
+<Patch>
+
+  <!-- Mandatory tier: Core and Odyssey. These are what a cryptosleep casket and
+       an ancient danger actually spawn. -->
+  <Operation Class="PatchOperationSequence">
+    <operations>
+
+      <!-- AncientSoldier -->
+      <li Class="PatchOperationSequence">
+        <operations>
+          <li Class="PatchOperationRemove">
+            <xpath>Defs/PawnKindDef[defName="AncientSoldier"]/xenotypeSet</xpath>
+            <success>Always</success>
+          </li>
+          <li Class="PatchOperationAdd">
+            <xpath>Defs/PawnKindDef[defName="AncientSoldier"]</xpath>
+            <value>
+                  <xenotypeSet Inherit="False">
+                    <xenotypeChances Inherit="False">
+                      <RimMandrakeRakata MayRequire="mandrake.starwarsraces">1.0</RimMandrakeRakata>
+                    </xenotypeChances>
+                  </xenotypeSet>
+                  <useFactionXenotypes>false</useFactionXenotypes>
+            </value>
+          </li>
+          <li Class="PatchOperationReplace">
+            <xpath>Defs/PawnKindDef[defName="AncientSoldier"]/label</xpath>
+            <value><label>Forsaken soldier</label></value>
+          </li>
+        </operations>
+      </li>
+
+      <!-- AncientSoldier_Leader -->
+      <li Class="PatchOperationSequence" MayRequire="Ludeon.RimWorld.Odyssey">
+        <operations>
+          <li Class="PatchOperationRemove">
+            <xpath>Defs/PawnKindDef[defName="AncientSoldier_Leader"]/xenotypeSet</xpath>
+            <success>Always</success>
+          </li>
+          <li Class="PatchOperationAdd">
+            <xpath>Defs/PawnKindDef[defName="AncientSoldier_Leader"]</xpath>
+            <value>
+                  <xenotypeSet Inherit="False">
+                    <xenotypeChances Inherit="False">
+                      <RimMandrakeRakata MayRequire="mandrake.starwarsraces">1.0</RimMandrakeRakata>
+                    </xenotypeChances>
+                  </xenotypeSet>
+                  <useFactionXenotypes>false</useFactionXenotypes>
+            </value>
+          </li>
+          <li Class="PatchOperationReplace">
+            <xpath>Defs/PawnKindDef[defName="AncientSoldier_Leader"]/label</xpath>
+            <value><label>Forsaken captain</label></value>
+          </li>
+        </operations>
+      </li>
+
+    </operations>
+  </Operation>
+
+  <!-- Ancient urban ruins tier. Same faction, same fiction, same encounters -
+       leaving them out produces a room where two sleepers are Rakatan and four
+       are human, which reads as a bug rather than as variety. Wrapped so the
+       whole block no-ops silently if that mod is ever cut, while the mandatory
+       tier above still applies. -->
+  <Operation Class="PatchOperationFindMod">
+    <mods>
+      <li>Ancient urban ruins</li>
+    </mods>
+    <match Class="PatchOperationSequence">
+      <operations>
+
+          <!-- AncientSoldierBoss -->
+          <li Class="PatchOperationSequence">
+            <operations>
+              <li Class="PatchOperationRemove">
+                <xpath>Defs/PawnKindDef[defName="AncientSoldierBoss"]/xenotypeSet</xpath>
+                <success>Always</success>
+              </li>
+              <li Class="PatchOperationRemove">
+                <xpath>Defs/PawnKindDef[defName="AncientSoldierBoss"]/label</xpath>
+                <success>Always</success>
+              </li>
+              <li Class="PatchOperationAdd">
+                <xpath>Defs/PawnKindDef[defName="AncientSoldierBoss"]</xpath>
+                <value>
+                      <xenotypeSet Inherit="False">
+                        <xenotypeChances Inherit="False">
+                          <RimMandrakeRakata MayRequire="mandrake.starwarsraces">1.0</RimMandrakeRakata>
+                        </xenotypeChances>
+                      </xenotypeSet>
+                      <useFactionXenotypes>false</useFactionXenotypes>
+                </value>
+              </li>
+              <li Class="PatchOperationAdd">
+                <xpath>Defs/PawnKindDef[defName="AncientSoldierBoss"]</xpath>
+                <value><label>Forsaken special unit</label></value>
+              </li>
+            </operations>
+          </li>
+
+          <!-- AncientSoldierBossN -->
+          <li Class="PatchOperationSequence">
+            <operations>
+              <li Class="PatchOperationRemove">
+                <xpath>Defs/PawnKindDef[defName="AncientSoldierBossN"]/xenotypeSet</xpath>
+                <success>Always</success>
+              </li>
+              <li Class="PatchOperationRemove">
+                <xpath>Defs/PawnKindDef[defName="AncientSoldierBossN"]/label</xpath>
+                <success>Always</success>
+              </li>
+              <li Class="PatchOperationAdd">
+                <xpath>Defs/PawnKindDef[defName="AncientSoldierBossN"]</xpath>
+                <value>
+                      <xenotypeSet Inherit="False">
+                        <xenotypeChances Inherit="False">
+                          <RimMandrakeRakata MayRequire="mandrake.starwarsraces">1.0</RimMandrakeRakata>
+                        </xenotypeChances>
+                      </xenotypeSet>
+                      <useFactionXenotypes>false</useFactionXenotypes>
+                </value>
+              </li>
+              <li Class="PatchOperationAdd">
+                <xpath>Defs/PawnKindDef[defName="AncientSoldierBossN"]</xpath>
+                <value><label>Forsaken special unit</label></value>
+              </li>
+            </operations>
+          </li>
+
+          <!-- AncientMallGuards -->
+          <li Class="PatchOperationSequence">
+            <operations>
+              <li Class="PatchOperationRemove">
+                <xpath>Defs/PawnKindDef[defName="AncientMallGuards"]/xenotypeSet</xpath>
+                <success>Always</success>
+              </li>
+              <li Class="PatchOperationAdd">
+                <xpath>Defs/PawnKindDef[defName="AncientMallGuards"]</xpath>
+                <value>
+                      <xenotypeSet Inherit="False">
+                        <xenotypeChances Inherit="False">
+                          <RimMandrakeRakata MayRequire="mandrake.starwarsraces">1.0</RimMandrakeRakata>
+                        </xenotypeChances>
+                      </xenotypeSet>
+                      <useFactionXenotypes>false</useFactionXenotypes>
+                </value>
+              </li>
+            </operations>
+          </li>
+
+          <!-- AncientSlaughter -->
+          <li Class="PatchOperationSequence">
+            <operations>
+              <li Class="PatchOperationRemove">
+                <xpath>Defs/PawnKindDef[defName="AncientSlaughter"]/xenotypeSet</xpath>
+                <success>Always</success>
+              </li>
+              <li Class="PatchOperationAdd">
+                <xpath>Defs/PawnKindDef[defName="AncientSlaughter"]</xpath>
+                <value>
+                      <xenotypeSet Inherit="False">
+                        <xenotypeChances Inherit="False">
+                          <RimMandrakeRakata MayRequire="mandrake.starwarsraces">1.0</RimMandrakeRakata>
+                        </xenotypeChances>
+                      </xenotypeSet>
+                      <useFactionXenotypes>false</useFactionXenotypes>
+                </value>
+              </li>
+            </operations>
+          </li>
+
+      </operations>
+    </match>
+  </Operation>
+
+</Patch>

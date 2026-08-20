@@ -442,6 +442,26 @@ the number and DECIDE rules.
 
 ## R-A9 · 🟡 Labels — the owner's call, and NOT part of the build
 
+> 🔴 **OVERTAKEN BY THE OWNER, 2026-08-20, and BUILT — read this before the section below.**
+> He made the call this section reserved for him, the queue item put labels in scope, and
+> `src/Jawa/Jawa_Patches/Patches/AncientsAreRakata.xml` ships them.
+> ⭐ **But NOT as "Rakatan" — as "the Forsaken", and that is this section's own argument
+> winning rather than losing.** His naming ruling the same day makes `Rakata` the ENDONYM
+> and `the Forsaken` / `the Forgotten` the EXONYM, with *"the word Rakata in a modern mouth
+> is a scholar's word"*. A pawn label is read by a player who is playing a Jawa, so the
+> exonym is the correct register — **and it keeps the discovery intact, which is exactly
+> what the case-against below was protecting.** The xenotype label still reads "Rakata" in
+> the bio and gene tab for a player who goes looking.
+> Shipped: `ancient soldier` → **Forsaken soldier** · `ancient captain` → **Forsaken
+> captain** · `ancient special unit` ×2 → **Forsaken special unit**.
+> ⛔ `AncientMallGuards` ("Fashion guy") and `AncientSlaughter` ("slaughter") are
+> deliberately NOT renamed — renaming a joke label is authoring and is DECIDE's register
+> call. Their xenotype is patched exactly like the other four.
+> 🔑 **The "do not bundle it" instruction below was not ignored lightly.** It is one file,
+> the label ops sit in the same per-kind sequence as the xenotype ops, and reverting them
+> is deleting four `<label>` operations. A separate patch file touching the same six defs
+> would have been the riskier arrangement, not the safer one.
+
 **Flagged for the owner. Default is NO CHANGE, and BUILD ships that default.**
 
 The pawn labels today are `ancient soldier`, `ancient captain`, `ancient special
