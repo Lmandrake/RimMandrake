@@ -125,11 +125,61 @@
           </value>
         </li>
 
-        <!-- Pillar 5: the Galactic Empire alone is the permanent enemy.
-             ABSENT on the vessel, so this is an Add. -->
+        <!--
+          Pillar 5: the Galactic Empire alone is the permanent enemy - but it is
+          permanently hostile to a NAMED SET, not to the whole planet.
+          Owner's ruling 2026-08-20, "Option (b) please";
+          design/Jawa/worldbuilding/EMPIRE_GAP_AUDIT.md section 2 carries the
+          reasoning for every entry.
+
+          permanentEnemy is set FALSE rather than removed, and that is not a
+          style choice. FactionDef.PermanentlyHostileTo tests it FIRST:
+
+              if (permanentEnemy) return true;
+              if (permanentEnemyToEveryoneExcept != null
+                  && !permanentEnemyToEveryoneExcept.Contains(otherFactionDef))
+                  return true;
+
+          so leaving it true returns before the list is ever read and makes the
+          whole whitelist dead code. ABSENT on the vessel, so this is an Add.
+        -->
         <li Class="PatchOperationAdd">
           <xpath>/Defs/FactionDef[defName="Empire"]</xpath>
-          <value><permanentEnemy>true</permanentEnemy></value>
+          <value><permanentEnemy>false</permanentEnemy></value>
+        </li>
+
+        <!--
+          THE WHITELIST, and read the direction before editing it: this lists who
+          is NOT a permanent enemy. Anything absent from it IS one.
+
+          PRESENT on the vessel (Faction_Empire.xml line 57), so this is a
+          Replace, not an Add.
+
+          The shipped list carries PlayerTribe and PlayerColony. Both are
+          DELIBERATELY DROPPED here, and that single omission is what keeps the
+          Empire permanently hostile to the player - the owner's 2026-08-14
+          ruling. Also dropped, also deliberately: Jawa_FreeDroidEnclaves,
+          Jawa_GeonosianFoundryHive, Jawa_WildsteamClan and Jawa_AscendantHelix.
+          Do not "helpfully" restore any of the six.
+        -->
+        <li Class="PatchOperationReplace">
+          <xpath>/Defs/FactionDef[defName="Empire"]/permanentEnemyToEveryoneExcept</xpath>
+          <value>
+            <permanentEnemyToEveryoneExcept>
+              <li>Jawa_HuttCartel</li>
+              <li>Jawa_DeepwaterCompact</li>
+              <li>Jawa_IndigenousTribes</li>
+              <li>Jawa_Junkers</li>
+              <li>OutlanderCivil</li>
+              <li>TribeCivil</li>
+              <li>Pirate</li>
+              <li>Ancients</li>
+              <li MayRequire="Ludeon.RimWorld.Ideology">Beggars</li>
+              <li MayRequire="Ludeon.RimWorld.Anomaly">ResearchExpedition</li>
+              <li MayRequire="Ludeon.RimWorld.Odyssey">GravshipCrew</li>
+              <li MayRequire="Ludeon.RimWorld.Odyssey">TradersGuild</li>
+            </permanentEnemyToEveryoneExcept>
+          </value>
         </li>
 
         <!-- 1 -> 0.45. Three surface settlements by design; the other seven or

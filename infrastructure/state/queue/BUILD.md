@@ -542,7 +542,39 @@ verify:   `validate_patch.py --defs` clean; the live def reads `permanentEnemy f
 criteria: at the owner's worldgen run the Empire generates permanently hostile to the player
           and to the four omitted factions, and NOT permanently hostile to the Hutt Cartel —
           confirmable on the faction relations screen without loading a map.
-state:    ready
+state:    done 2026-08-20. Both ops written to
+          `src/Jawa/Jawa_Patches/Patches/GalacticEmpire.xml` and deployed.
+          verify output: `validate_patch.py --defs` against the 578-mod load set —
+            `OK - 0 errors, 0 warning(s)`, and **every one of the 15 ops reports
+            `1 match(es)`**, including the new `permanentEnemy` Add and the
+            `permanentEnemyToEveryoneExcept` Replace.
+          ✅ The spec's Replace-vs-Add call was right and I checked it rather than trusting
+          it: `permanentEnemyToEveryoneExcept` IS present on the shipped vessel
+          (`Data/Royalty/Defs/FactionDefs/Faction_Empire.xml:57`), so Replace is correct;
+          `permanentEnemy` is absent, so that one stays an Add.
+          ✅ The shipped list carries `PlayerTribe` and `PlayerColony`. Dropping exactly
+          those two is what makes the Empire permanently hostile to the player — that is
+          the mechanism behind the 2026-08-14 ruling, and it is now commented in the file.
+          12 entries, neither player faction among them.
+
+          🔴 **WHAT THIS DOES AND DOES NOT DO TO THE WORLD THAT ALREADY EXISTS.** The item
+          is marked worldgen-critical, which is true but incomplete, and the difference
+          decides whether anyone should expect to see a change:
+            ❌ **NOT retroactive.** `Faction.TryMakeInitialRelationsWith` opens
+               `if (RelationWith(other, allowNull: true) == null)` — it sets goodwill ONCE,
+               when two factions first meet. Existing relation values will not be
+               recomputed, so the Empire's current standing with anyone is unchanged.
+            ✅ **But it is LIVE from now on, and that is the half that matters.**
+               `Faction.CanChangeGoodwillFor` (`Faction.cs:535`) reads
+               `permanentEnemyToEveryoneExcept` **every time goodwill would change**. Under
+               the old `permanentEnemy: true` every faction's goodwill with the Empire was
+               frozen; now the twelve on the list can move and everyone else stays locked.
+               `PermanentlyHostileTo` is likewise consulted live by at least eight quest
+               roots, so quest eligibility changes immediately.
+            ✅ And any faction CREATED later — see `BLACKSTAR_NEVER_GENERATES_1` — gets its
+               initial relations under the new list.
+          ⇒ The criteria's "at the owner's worldgen run" is the right test for the initial
+          VALUES. Do not read "no change on the relations screen today" as a failure.
 
 ## the-ancients-are-rakata-and-it-is-v1-now-9d40a7
 row:      1
