@@ -1298,8 +1298,18 @@ criteria: place the four Blackstar settlements on a live world and watch the wor
 📌        WHY IT WAS INVISIBLE UNTIL NOW: worldgen never created a Blackstar settlement,
           because the faction had none. No settlement, no draw, no throw. The authored
           roster is the first thing that ever made one exist.
-state:    ready
-
+state:    void 2026-08-20 — closed by `BLACKSTAR_NEVER_GENERATES_1` rather than by a patch,
+          exactly as this item's own superseding header says. `AM_EnemyPirate` is the wrong
+          def to be using at all; the real Blackstar Company is vanilla `Pirate`, which
+          already carries `World/WorldObjects/DefaultSettlement`. REP repointed the four
+          CSV rows, so no `settlementTexturePath` patch is needed and none was written.
+          ⛔ **The `PatchOperationAdd` described below was NOT shipped. Do not ship it.**
+          ⚠️ The crash it describes was real and its diagnosis was right — a null
+          `settlementTexturePath` throws once per settlement per frame and took TPS to 3.7.
+          It simply cannot happen once nothing points at that faction.
+          ⏳ It stays open in one sense only: nobody has SEEN the four Blackstar holdings
+          render, because `Pirate` is not in the live world at all. That is tracked in
+          `BLACKSTAR_NEVER_GENERATES_1` and in `queue/CHECK.md`.
 
 ## BLACKSTAR_NEVER_GENERATES_1 The roster names a hidden zero-weight def; the real Blackstar is vanilla Pirate
 row:      9

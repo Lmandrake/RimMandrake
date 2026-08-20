@@ -123,6 +123,25 @@ it does not belong here.
   world that already has one. *Measured live 2026-08-20: ten of eleven campaign factions
   were wearing generated names.*
 
+- 🔴 **`weaponMoney` is a CEILING rolled ONCE, and `min` is what decides whether a kind
+  arms RELIABLY.** `PawnWeaponGenerator.TryGenerateWeaponFor` rolls
+  `weaponMoney.RandomInRange`, keeps every weapon priced **at or below** that roll, and if
+  the pool comes back empty **the pawn spawns bare, silently**. ⇒ `max >= cheapest` means
+  the kind *can* arm; **`min >= cheapest` is what makes it always arm.** A `min` below the
+  cheapest tagged weapon leaves a band of rolls that arm nobody — this project's own notes
+  had it backwards twice. Check with
+  `python3 src/RimMandrake/Utils/weapon_affordability.py`. *1.6 decompile + the 578 dump,
+  2026-08-20.*
+- 🔴 **A weapon with no `MarketValue` statBase is not cheap — it is COMPUTED, and the def
+  dump cannot show you the number.** `StatWorker_MarketValue` falls through to
+  `CalculatedBaseMarketValue`, which prices the thing from its recipe:
+  `Σ(costList.count × ingredient.BaseMarketValue)` plus `WorkToMake × 0.0036`, over the
+  product count. **Every Outer Rim weapon is in this state** — they declare MaxHitPoints,
+  Flammability, DeteriorationRate and Beauty and nothing else — so "read the value off the
+  def" returns nothing and treating a missing number as 0 makes an empty pool look like the
+  cheapest one. `OuterRim_DroidWeapon_BlasterCannon` computes to **982.5**.
+  `weapon_affordability.py` reproduces the formula. *2026-08-20.*
+
 ## Deploy targets that are not `Mods/`
 
 - **`Xenotypes/*.xtp` and `Ideos/*.rid` are deploy targets.** They live under
