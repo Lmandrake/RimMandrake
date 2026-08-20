@@ -819,3 +819,49 @@ result from the log.**
 | T6a | log line count — record it; ~2% of the previous ~99,700 corroborates | | |
 | T6b | `jawa/list_factions` — which of the 8 the quicktest world actually holds | | |
 | T5 | zero `Could not load reference to` (nothing was loaded from a save) | | |
+
+---
+
+## S7 — BUILD's items, 2026-08-20. Eight greps, all decided from the startup log or the dump.
+
+**Run these on `Player.log` the moment the main menu appears, before anything touches the
+game.** Every one is a number that already has a known "before", so a result is a verdict
+rather than a reading.
+
+```bash
+LOG="/mnt/c/Users/Mandrake/AppData/LocalLow/Ludeon Studios/RimWorld by Ludeon Studios/Player.log"
+
+grep -c "Failed to find any textures at"        "$LOG"   # D-CHK2 magenta heads. was 3, want 0
+grep -c "not <li>.*biomeConfigs"                "$LOG"   # B63 biome mix.       was 28, want 0
+grep -c "OuterRim_Jawa"                         "$LOG"   # B58 dead defName.    want 0
+grep -nE "Jawa_Patches|mandrake\.jawa\.patches" "$LOG" | grep -i error   # want nothing
+grep -c "Could not resolve cross-reference"     "$LOG"   # the re-tag + 48 kinds. see below
+```
+
+🔴 **THE ONE THAT MATTERS MOST IS NOT A GREP.** After the load, run
+
+```bash
+python3 src/RimMandrake/Utils/weapon_tag_audit.py
+```
+
+with **no `--anyway`**. It refuses unless the dump's mod set matches `ModsConfig.xml`, so a
+clean run is itself the proof that the census is finally authoritative. Then read two
+numbers off it:
+* **pawn kinds with every weapon tag empty** — was **49** provisionally. Want it in the
+  low teens, and 🔴 **zero of ours**.
+* **emptied tags** — was 35. The re-tag patch adds 154 weapons' worth of vanilla role
+  tags, so most of the vanilla rungs should be full again.
+
+⚠️ **THE MOD LIST IS 583, NOT THE 578 EVERY EARLIER NUMBER ASSUMED.** Five mods joined
+since the audit ran. **Expect the counts to move, and do not treat a difference as a
+regression** — re-derive, do not compare against the provisional figures above.
+
+⚠️ `Could not resolve cross-reference` has a known pre-existing floor from the cherrypick
+(25 across 2 defs at the last measurement). What matters is whether any line names a
+`Jawa_*` pawn kind, a `Jawa_Ion*` tag or a stormtrooper/Mandalorian apparel defName — those
+would be MINE, and `apparelRequired` is the loud half of the 48-kind build.
+
+**On the Configure Factions page, before generating:**
+* all eight `Jawa_*` factions arrive at a count of **at least 1** untouched.
+* Configure Planet reads **Scale 7 · Coverage 100%**. 🔴 If Scale reads 10 the Worldbuilder
+  preset lost its parameters — ABORT, do not generate.
