@@ -326,3 +326,19 @@ criteria: the shipped mod description matches what the mod actually patches.
           the next rebuild.** Fold it into whatever rebuild comes next; do not spend a
           game-down window on it alone.
 state:    open — raised by REP, 2026-08-20; unblocked same day by the owner.
+
+## B-FIX1 `make_vehicle_mask.py` adds a path that does not exist
+row:      0
+spec:     `src/RimMandrake/Utils/make_vehicle_mask.py:67` inserts
+          `src/RimMandrake/skills/...` into `sys.path`. There is no such directory, so
+          `import pnglib` fails — which breaks **both**
+          `DesertVehicleReskin/Source/build_eopie_sled_north.py` and
+          `...south.py`, since each imports this module.
+          Found by the 2026-08-20 cleanup audit
+          (`infrastructure/output/audit_2026-08-20_code.md`). **Fix it; do not
+          quarantine it** — it has live callers, it is just pointing at a path that
+          moved.
+verify:   `python3 -c "import sys; sys.path.insert(0,'src/RimMandrake/Utils'); import make_vehicle_mask"`
+          succeeds, and both sled build scripts import clean.
+criteria: the two sled scripts run again.
+state:    open — raised by REP, 2026-08-20.
