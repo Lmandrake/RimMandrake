@@ -189,8 +189,15 @@ observed/inventory/*
 observed/*/inventory/*
 !observed/*/inventory/decisions_*.json
 
-# genome scan outputs are derived: regenerate with genome_scan.py
-observed/genome/
+# genome scan outputs are derived: regenerate with genome_scan.py.
+# ⚠️ Written as /** with a negation, NOT as `observed/genome/`. Excluding the
+# DIRECTORY makes every negation below it unreachable — git never descends into an
+# excluded dir — which is how this line silently untracked scan_manifest.json from
+# 2026-08-15 until the cleanup audit found it on 2026-08-20. The manifest is the
+# only record of which mod set produced the cache, so losing it makes the 340 MB
+# of art_cache/ unregenerable rather than derived.
+observed/genome/**
+!observed/genome/scan_manifest.json
 
 # skill eval run outputs are derived; fixtures and evals.json are kept
 skills/skills-workspace/iteration-*/
