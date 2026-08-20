@@ -990,7 +990,30 @@ criteria: 🔴 READ BACK OFF THE ENGINE, never the setter returning — every se
               reads back, and E1's raid path still aims at a named faction afterwards.
           ⚠️ FALSE PASS: `list_factions` will keep reporting sensible player-relative numbers
           no matter how wrong the pairwise matrix is. Never close this on `list_factions`.
-state:    ready
+state:    ready — ⭐ HALF BUILT AND THE PREMISE IS NOW PROVEN, 2026-08-20.
+built:    `jawa/faction_relations_get` + `jawa/faction_relations_set` written into
+          `JawaBenchWorldTools.cs`, build 0/0, both names verified in the assembly bytes.
+          NOT deployed — the game came up before the shutdown window. Commit 7ee7bac.
+measured: 🔴 THE EXISTING TOOL CANNOT MAKE A FACTION HOSTILE. Proven live on the 577-mod
+          set, game loaded, against `Jawa_HuttCartel` and `Jawa_DeepwaterCompact`:
+            * `set_faction_relation kind=Hostile` -> **success FALSE**, kind stayed Neutral.
+              This is `SetRelationDirect` refusing: it bails with a Log.Error when BOTH
+              factions have goodwill, which is nearly every pair. The tool's own read-back
+              guard caught it, which is the guard doing its job.
+            * `set_faction_relation goodwill=-100` -> **success TRUE**, and kind stayed
+              **Neutral**, `hostile=False`. A faction sitting at -100 goodwill that raid
+              code does not treat as an enemy. The engine never produces that state:
+              `CheckKindThresholds` forces Hostile at <= -75, and the tool bypasses it by
+              assigning `rel.baseGoodwill` directly. ⇒ a SILENT FAILURE, success and all.
+          📌 The tool's stated reason for existing is "unblock aimed raids". It cannot.
+          E1's raid passed against `Empire`, which worldgen had ALREADY set hostile at
+          -100 — so the tool's premise was never actually exercised.
+          ⇒ **SUPERSEDE, do not extend.** `faction_relations_set` writes both records and
+          fires `Notify_RelationKindChanged`, and clamps goodwill into the sustaining band.
+remaining: deploy at the next shutdown window (`build.py --gm --apply`), restart, then the
+          criteria below. Criterion (c) is AMENDED: one-sided writes are not a feature the
+          engine offers — the engine mirrors both records itself — so `both=false` exists to
+          TEST the asymmetry, and the tool labels the result desynced rather than normal.
 
 ## B59 the MegafaunaYield fix — root cause found in the live log and repaired
 row:      —
