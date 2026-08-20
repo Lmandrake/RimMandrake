@@ -529,13 +529,10 @@ row:      9
 from:     BUILD, 2026-08-19, while closing B45–B51. All five are DESIGN calls with no
           value anywhere in the repo, so BUILD did not invent one. None of them blocks
           the files, which are otherwise built and validate clean.
-spec:     (a) 🔴 **`maxCountAtGameStart` is on the authored-faction contract and is absent
-              from seven of the eight defs.** `FACTION_SPEC.md` §"An authored faction"
-              lists it in the generation group but no per-faction section gives a number.
-              Only `Jawa_HuttCartel` (1) and `Jawa_IndigenousTribes` (2) have one. Every
-              faction now carries `requiredCountAtGameStart 1`, which is the FLOOR;
-              nothing caps them, so worldgen may field several Foundry Hives.
-              ⇒ needs a number per faction, or a ruling that uncapped is intended.
+spec:     (a) VOID - owner, 2026-08-19: "Does this maxcountatgamestart thing even matter?
+              We're going to manually write these settlements ourselves via the live
+              bridge." => settlement counts are not a worldgen output we care about, so an
+              uncapped faction costs nothing. Do not rule on it, do not add the field.
           (b) 🔴 **The Geonosian Foundry Hive's TWO OUTPOSTS ruling is not expressed in
               the def**, and no `FactionDef` field expresses it. The 2026-08-17 ruling
               gives the hive two distinct outposts (ore seam · plateau);
@@ -544,6 +541,11 @@ spec:     (a) 🔴 **`maxCountAtGameStart` is on the authored-faction contract a
               unexpressed, and R1 forbids a goodwill number, so it needs a hard-coded
               relation somewhere. ⇒ either the ruling needs a mechanism or it needs
               downgrading to fiction.
+              ⭐ LARGELY ANSWERED BY THE SAME OWNER LINE AS (a): the settlements are
+              hand-written over the live bridge, so "two outposts, one on an ore seam and
+              one on a plateau" is something the operator PLACES, not something a
+              `FactionDef` has to express. What is left for DECIDE is only the alliance
+              reversal, which is a relation and not a settlement.
           (c) **`Jawa_HuttCartel`'s `ideoDescription` is NOT the text in
               `faction_religions_spec.md` entry 2**, though the file's comment claims it
               is verbatim. Spec: "Everything on this world evaporates, freezes, or is
@@ -588,4 +590,14 @@ spec:     `faction_religions_spec.md` has eleven entries and says section 12, th
           They do now.
 verify:   n/a — a ruling, not a build.
 criteria: n/a
-state:    ready
+state:    ANSWERED AND BUILT 2026-08-19 - no ruling needed. Owner, in his own words:
+          *"We DID author a document describing the Jawa faith, and yes both the Trade Moot
+          and the player faction should share it."*
+          The document is `design/Jawa/worldbuilding/ideoligion/the_salvation_description.md`
+          and it had reached NEITHER artifact - the `.rid` was still carrying RimWorld's
+          stock generated blurb. Both carry the authored text now, byte-identical:
+          `JawaTribes.xml` `<ideoDescription>`, and `The Salvation.rid` `<description>` AND
+          `<descriptionTemplate>` (a mismatch between those two makes the in-game editor
+          re-roll the text). 2,374 characters, verified equal all three ways.
+          The nine gods live in the description because they have nowhere else to live:
+          `AM_Structure_Scavenger` is `deityCount 0` and cannot seat a deity.
