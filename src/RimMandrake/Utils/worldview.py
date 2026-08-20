@@ -962,11 +962,15 @@ def draw_panel(svg, pv, proj, y0, layer, show, tooltips, corners, shade):
     if "labels" in show and pv.features:
         svg.add('<g font-family="DejaVu Sans, sans-serif" fill="#f2ead2" '
                 'opacity="0.88" text-anchor="middle">')
-        # 🔴 Labels crowd. The rule the project already settled: keep the earlier
-        # (higher priority) label and drop anything within MIN_SEP of it - sorting by
-        # tile count instead lets generic tracts crowd out the Scald.
-        MIN_SEP = 11.0
+        # 🔴 Labels crowd, and the anchor is not what collides - the TEXT is.
+        # An 11 deg separation between anchors let "The Dew Horn", "The Scald" and
+        # "The Dew Belt" print on top of each other, because a 20-word-wide italic
+        # is far wider than 11 deg of sphere. So: keep the anchor rule only to stop
+        # two names for one place, then test the PROJECTED PIXEL BOX, and walk a
+        # short ladder of vertical offsets before giving a name up entirely.
+        MIN_SEP = 6.0
         drawn = []
+        placed = []      # (x0, y0, x1, y1) pixel boxes already taken
         for f in pv.features:
             idx = np.where(pv.feature_idx == f["index"])[0]
             if len(idx) < 8:
@@ -981,9 +985,21 @@ def draw_panel(svg, pv, proj, y0, layer, show, tooltips, corners, shade):
             if not vis:
                 continue
             size = max(11.0, min(28.0, 5.6 * math.sqrt(len(idx)))) * sc
-            svg.add('<text x="%.1f" y="%.1f" font-size="%.1f" font-style="italic" '
-                    'stroke="#101014" stroke-width="%.1f" paint-order="stroke">%s</text>'
-                    % (xy[0][0], xy[0][1], size, 2.2 * sc, esc(f["name"] or f["def"])))
+            name = f["name"] or f["def"]
+            # DejaVu Sans Oblique averages ~0.52 em per character over mixed case.
+            half_w = 0.26 * size * len(name) + 3.0 * sc
+            x0, y0 = float(xy[0][0]), float(xy[0][1])
+            for step in (0.0, -1.25, 1.25, -2.5, 2.5, -3.75, 3.75, -5.0, 5.0):
+                cy = y0 + step * size
+                box = (x0 - half_w, cy - 0.80 * size, x0 + half_w, cy + 0.28 * size)
+                if any(box[0] < q[2] and q[0] < box[2] and box[1] < q[3] and q[1] < box[3]
+                       for q in placed):
+                    continue
+                placed.append(box)
+                svg.add('<text x="%.1f" y="%.1f" font-size="%.1f" font-style="italic" '
+                        'stroke="#101014" stroke-width="%.1f" paint-order="stroke">%s</text>'
+                        % (x0, cy, size, 2.2 * sc, esc(name)))
+                break
         svg.add("</g>")
     svg.add("</g>")
 
