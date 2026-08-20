@@ -82,23 +82,14 @@ The decompiled C# it indexes is at `D:\Luke\dev\reference\rimworld-decompiled`
 
 ## 2. The game restart is the scarce resource
 
-A cold load is **23–30 minutes** past ~500 mods — every mod's XML is parsed and
-the texture atlases are rebuilt. **Arrive at the restart already confident.**
+A cold load is **23–30 minutes** past ~500 mods. **Arrive at the restart already
+confident** - a restart confirms a prediction, it does not conduct an experiment,
+and **"restart and see" is never an answer.**
 
-- **Verify everything verifiable offline first.** A restart confirms a
-  prediction; it does not conduct an experiment.
-- **Batch by ambiguity, not by count.** Anything whose effects are
-  distinguishable rides along; a new C# assembly goes solo.
-- **Harvest the whole log**, not just your change.
-- **Never say "restart and see".** Propose a load when the queue justifies it,
-  say what the batch contains, and name in advance the log strings that will
-  decide each item.
-- **Three failed hypotheses deep, stop bisecting and build a MINIMAL load** — the
-  ~20 mods that can possibly be involved, one load, answering *does this work at
-  all in isolation?*
-
-`references/spending-a-load.md` (planning a load) and `references/minimal-load.md`
-(deriving the reduced set) have these in full.
+**→ `skills/rimworld-load-round/SKILL.md` is the whole subject** and owns it: the
+13-mod minimal list that loads in 22 seconds, `modlist_swap.py`, batching by
+ambiguity, naming the log strings in advance, and harvesting the log. Read it before
+calling or queueing any load.
 
 ---
 
@@ -311,27 +302,14 @@ touching a sorter's rules database.
 
 ### Teach the mod manager, or it will keep undoing you
 
-Fixing a scattered order by hand treats the symptom. Write **one `loadAfter` edge
-per mod you patch** into the manager's user-rules database (RimSort:
-`%LOCALAPPDATA%/RimSort/dbs/userRules.json`) — `loadAfter` is a *constraint* a
-topological sort cannot violate, whereas **`loadBottom` is only a hint and creates
-no edge at all**. (The full distinction: `references/load-order.md`.)
+Fixing a scattered order by hand treats the symptom — the manager will re-sort over
+you. The durable fix is a rule in its user-rules database, and **`loadAfter` is the
+edge you want.**
 
-⚠️ Two traps in the rules file itself. It is keyed by `packageId`, so **renaming
-your mod silently orphans every rule** — a stale rule for a dead packageId is
-indistinguishable from no rule, which is exactly how this went unnoticed for
-days. ❌ **Corrected 2026-08-13 — "the manager rewrites the file on exit, so close
-it before editing" is FALSE for RimSort**, and it contradicted this skill's own
-trap entry. RimSort saves only when the owner clicks Save; **"close RimSort first"
-is never a precondition.** The real hazard is the reverse and it is live: after an
-external edit RimSort's in-memory view is stale, so a later Save writes the OLD
-list back. Mitigation is one sentence — *"RimSort is open, hit Refresh"*.
-🔴 **Do not block on it either. Owner's ruling, 2026-08-15:** *"You NEVER have to
-ask if RimSort is open. It does not autosave, and I will never save without asking.
-Nobody blocks on RimSort or game close for config files of any kind."* No mtime
-check, no window, no question — `ModsConfig.xml`, load order and user rules are
-writable game up or down. Only **assemblies** wait, and only because the OS locks
-them while the game runs.
+**→ `skills/rimworld-start-prep/SKILL.md` owns this** — `userRules.json`, `loadAfter`
+vs `loadBottom`, Refresh-reads/Save-writes, and why a rule keyed by `packageId` is
+orphaned by a rename. 🔴 And you never block on it: `ModsConfig.xml`, load order and
+user rules are writable game up or down (owner, 2026-08-15). Only **assemblies** wait.
 
 ---
 
@@ -346,56 +324,15 @@ version control.
 `--pull`, `DEPLOY_HOLD.txt`, the minimum viable mod folder, why compatibility
 patches must be enabled LAST in load order, and the restart that follows.
 
+🔴 **Deployed is not live.** RimWorld reads defs **once, at launch**, so the process
+start time is the def-read time and anything newer under `Mods/` is not loaded. Before
+you call anything live, inspect the CONSUMER, and run the pre-flight of the deployed
+copy against the mod list it will actually load with:
+**`references/deploying-and-liveness.md`** — the mtime check, map-gen defs needing a
+NEW map, the `MayRequire` gate that outlived its mod, and why `validate_patch.py`'s
+`0 errors` cannot prove independence from a mod you are about to remove.
+
 ---
-
-## 6b. 🔴 Inspect the CONSUMER, not the artifact
-
-**Ask what the consumer last read, and when.** The process start time IS the
-def-read time — RimWorld reads defs **once, at launch** — so anything under
-`Mods/` newer than that StartTime is not loaded. **The three commands, and two
-measured cases (a `GenStepDef` and a DLL) that both reported done and were both
-false, are in `references/traps-mods-and-managers.md`.** Run them before calling
-anything live.
-
-⚠️ **Map-generation defs need MORE than a restart: they need a map generated after
-it.** Loading a save re-runs no GenStep, so a correct fix is invisible on an old map.
-The same holds one layer up: `xenotypeSet` is read at **pawn generation**, so a
-patch landing after a world exists never fixes that world's colonists — and it
-lives on the `PawnKindDef`, not on the `XenotypeDef` of the same name.
-
-⚠️ **The bridge cannot answer this for you** — `jawa/get_def` returns the def that was
-*loaded* and does not expose most fields, so a successful read is not proof the def is
-current. **The mtime is the evidence.**
-
-⭐ **Say which one you checked.** "Deployed" is a claim about disk; "live" is a claim
-about a process. A report that does not distinguish them will be read as the stronger
-of the two.
-
-## 6c. Pre-flight: check the DEPLOYED copy against the LIVE mod list
-
-Before a load you cannot repeat, run the check that neither the repo nor the
-validator can do — **the game copy against the mod list it will actually load
-with**. Both halves are needed; each hides a different failure.
-
-1. **`deploy_custom_mods.py` with no `--apply`**, and read every mod's line. A def
-   repointed in the repo and never deployed leaves the GAME holding the old
-   reference. Six faction defs sat in exactly that state an hour before a launch.
-2. **Resolve every `MayRequire` in the deployed defs against the live list.** 🔴 **A
-   rename pass has to move the GATE as well as the name.** `<RimMandrakeGeonosianVariants
-   MayRequire="btd.xenotyperemix.starwars">` names our def behind a mod that was
-   just switched off, so the node is dropped at load and the faction's
-   `xenotypeChances` is silently empty. The defName was right and the gate was a
-   corpse. A dead gate on a mod that was NEVER active is fine — that is
-   optional-compat working.
-3. **Parse `activeMods`; never quote a number you read earlier.** With several
-   seats sharing one install the count moved 582 → 580 → 578 → 576 inside an hour.
-   `grep -c "<li>"` also over-counts by the 5 `knownExpansions`.
-
-⚠️ **`validate_patch.py` resolves against the CURRENT load set, so `0 errors` cannot
-prove independence from a mod you are about to REMOVE** — every stale reference
-still resolves while the donor is installed. If you are retiring a mod, the check
-is a separate pass that drops each departing packageId and asserts nothing points
-there. Ours prints `references that die 0`.
 
 ## 7. Debugging from Player.log
 
@@ -494,6 +431,7 @@ durable: edit the copy in the user's project, re-package, and say it has been
 | └ `traps-diagnosis.md` | Before trusting a diagnosis, or calling into a running game. |
 | `references/patch-operations.md` | An xpath won't match; you need the operation table, inheritance, worked examples, `LoadFolders.xml` (§9), the validator's blind spots (§10) or why an `<li>` destroys a def (§11). |
 | `references/player-log-triage.md` | **Whenever you are reading a `Player.log`.** The five severity rungs in full, what each error actually costs, and the judged-safe list. |
+| `references/deploying-and-liveness.md` | A deploy "did not take", or before calling any def live — inspecting the consumer, and the pre-flight against the mod list the game will actually load. |
 | `references/load-order.md` | An inheritance error appeared, you are writing the order assertion, or you are about to touch a sorter's rules database. |
 | `references/spending-a-load.md` | You are planning a load — what to verify offline, what may ride along in the batch, what to harvest. |
 | `references/csharp-and-loading.md` | Before writing any C# — Harmony, entry points, `LoadFolders.xml`. |
