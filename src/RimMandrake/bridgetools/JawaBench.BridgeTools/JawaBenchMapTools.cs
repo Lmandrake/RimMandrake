@@ -43,7 +43,7 @@ namespace JawaBench.BridgeTools
         {
             err = null;
             var m = Find.CurrentMap;
-            if (m == null) { err = "No current map. These tools are map-scoped; use the jawa/world_* family at the planet screen."; return null; }
+            if (m == null) { err = "No current map. These tools are map-scoped; use the planet-scoped world tool family instead."; return null; }
             return m;
         }
 
@@ -930,6 +930,247 @@ namespace JawaBench.BridgeTools
                     added, removed, alreadyPresent = already,
                     onThings, problems,
                     totalNow = dm.AllDesignations.Count(),
+                    ticksGame = TicksGameSafe(),
+                };
+            });
+        }
+
+
+        // ================================================================
+        //  M3 - PREFAB CAPTURE AND REPLAY. Copy/paste regions of map.
+        //  Base 1.6, ungated. PrefabUtility.CreatePrefab(CellRect, copyAllThings,
+        //  copyTerrain) captures; SpawnPrefab stamps it back.
+        //  ⇒ authored set-pieces become DATA: build one wreck by hand, capture
+        //  it, stamp it anywhere. This is what makes scene templates cheap.
+        //
+        //  Captures live in a static registry for the session. They are NOT
+        //  registered into DefDatabase and do NOT survive a restart - that is
+        //  deliberate, because a half-formed PrefabDef in the database would be
+        //  visible to vanilla systems that never asked for it.
+        // ================================================================
+        private static readonly Dictionary<string, PrefabDef> JawaPrefabs =
+            new Dictionary<string, PrefabDef>(StringComparer.OrdinalIgnoreCase);
+
+        /// <summary>PrefabDef.things is internal; GetThings() is the public route.</summary>
+        private static int CountPrefabThings(PrefabDef pf)
+        {
+            if (pf == null) return 0;
+            try { return pf.GetThings().Count(); }
+            catch { return -1; }
+        }
+
+        [Tool(
+            "jawa/prefab_capture",
+            Description =
+                "Capture a rectangle of the live map - its things and optionally its terrain - " +
+                "into a named prefab held for this session. Build a scene by hand once, " +
+                "capture it, then stamp it anywhere with jawa/prefab_place. " +
+                "copyAllThings=false captures only buildings and natural features; true also " +
+                "takes loose items, filth and pawnless clutter. " +
+                "⚠️ Captures are SESSION-ONLY - they are not written to DefDatabase and do " +
+                "not survive a restart, deliberately.",
+            ResultDescription = "success, name, size, thingCount, and the captured contents summary.")]
+        public static async Task<object> PrefabCapture(
+            IRimBridgeContext ctx,
+            CancellationToken cancellationToken,
+            [ToolParameter(Description = "Name to file the capture under.")] string name = null,
+            [ToolParameter(Description = "Rect 'x,z,w,h' to capture.")] string rect = null,
+            [ToolParameter(Description = "Also capture loose items and filth. Default false.")] bool copyAllThings = false,
+            [ToolParameter(Description = "Also capture terrain. Default true.")] bool copyTerrain = true,
+            [ToolParameter(Description = "Overwrite an existing capture of the same name.")] bool overwrite = false)
+        {
+            return await ctx.MainThread.InvokeAsync(() =>
+            {
+                string err; var map = MapOrNull(out err);
+                if (map == null) return Fail(err);
+                if (string.IsNullOrEmpty(name)) return Fail("Give a name for the capture.");
+                name = name.Trim();
+                if (JawaPrefabs.ContainsKey(name) && !overwrite)
+                    return Fail("A capture named '" + name + "' already exists. Pass overwrite=true to replace it.");
+                CellRect r;
+                if (!TryRect(rect, map, out r, out err)) return Fail(err);
+
+                PrefabDef pf;
+                try { pf = PrefabUtility.CreatePrefab(r, copyAllThings, copyTerrain); }
+                catch (Exception e) { return Fail("CreatePrefab failed: " + e.GetType().Name + ": " + e.Message); }
+                if (pf == null) return Fail("CreatePrefab returned null for " + rect + ".");
+
+                pf.defName = "JawaPrefab_" + name;
+
+                // 🔴 VANILLA GAP, measured 2026-08-19: PrefabUtility.CreatePrefab builds
+                // `things` and `terrain` but NEVER SETS `size`. It comes back (0,0), and
+                // size is what drives GetRoot and every bounds check - so CanSpawnPrefab
+                // refuses and SpawnPrefab cannot place. A captured prefab is unusable
+                // until the caller sets this. Read out of CreatePrefab's own body.
+                if (pf.size.x <= 0 || pf.size.z <= 0)
+                    pf.size = new IntVec2(r.Width, r.Height);
+
+                JawaPrefabs[name] = pf;
+
+                var byDef = new Dictionary<string, int>();
+                int things = 0;
+                // PrefabDef.things is INTERNAL; GetThings() is the public route and it
+                // expands rects and position lists into one entry per cell.
+                try
+                {
+                    foreach (var pair in pf.GetThings())
+                    {
+                        things++;
+                        var d = pair.data != null ? pair.data.def : null;
+                        var dn = d != null ? d.defName : "(null)";
+                        int c; byDef.TryGetValue(dn, out c); byDef[dn] = c + 1;
+                    }
+                }
+                catch (Exception e) { Log.Warning("[JawaBench] prefab_capture: GetThings threw: " + e.Message); }
+
+                return (object)new
+                {
+                    success = true,
+                    name,
+                    defName = pf.defName,
+                    size = new { x = pf.size.x, z = pf.size.z },
+                    capturedFrom = new { x = r.minX, z = r.minZ, w = r.Width, h = r.Height },
+                    thingCount = things,
+                    copyAllThings, copyTerrain,
+                    contents = byDef.OrderByDescending(k => k.Value).Take(25).ToDictionary(k => k.Key, k => k.Value),
+                    note = "Session-only. Not in DefDatabase; does not survive a restart.",
+                    ticksGame = TicksGameSafe(),
+                };
+            });
+        }
+
+        [Tool(
+            "jawa/prefab_place",
+            Description =
+                "Stamp a captured prefab (or any shipped PrefabDef) onto the map at a " +
+                "position and rotation. Checks PrefabUtility.CanSpawnPrefab first and " +
+                "refuses with a reason rather than half-placing. faction assigns ownership " +
+                "of everything spawned. blueprint=true places BLUEPRINTS instead of finished " +
+                "things, so colonists build it themselves. Call jawa/map_commit after.",
+            ResultDescription = "success, placed, spawnedCount, and a read-back of what landed.")]
+        public static async Task<object> PrefabPlace(
+            IRimBridgeContext ctx,
+            CancellationToken cancellationToken,
+            [ToolParameter(Description = "Name of a session capture, or a shipped PrefabDef defName.")] string name = null,
+            [ToolParameter(Description = "Position 'x,z'.")] string pos = null,
+            [ToolParameter(Description = "Rotation 0-3 or name.")] string rot = null,
+            [ToolParameter(Description = "Faction defName to own what is placed.")] string faction = null,
+            [ToolParameter(Description = "Place blueprints instead of finished things.")] bool blueprint = false,
+            [ToolParameter(Description = "Check only, do not place.")] bool checkOnly = false,
+            [ToolParameter(Description = "Read back at most this many things. Default 8.")] int readBack = 8)
+        {
+            return await ctx.MainThread.InvokeAsync(() =>
+            {
+                string err; var map = MapOrNull(out err);
+                if (map == null) return Fail(err);
+                if (string.IsNullOrEmpty(name)) return Fail("Give a prefab name.");
+                name = name.Trim();
+
+                PrefabDef pf = null;
+                if (!JawaPrefabs.TryGetValue(name, out pf))
+                    pf = DefDatabase<PrefabDef>.GetNamedSilentFail(name);
+                if (pf == null)
+                    return Fail("No capture and no PrefabDef named '" + name + "'. Session captures: " +
+                                (JawaPrefabs.Count == 0 ? "(none)" : string.Join(", ", JawaPrefabs.Keys.ToArray())));
+
+                int x, z; var b = (pos ?? "").Split(',');
+                if (b.Length != 2 || !int.TryParse(b[0].Trim(), out x) || !int.TryParse(b[1].Trim(), out z))
+                    return Fail("Give pos as 'x,z'.");
+                var c0 = new IntVec3(x, 0, z);
+                if (!c0.InBounds(map)) return Fail("Position out of bounds.");
+                Rot4 rr;
+                if (!TryRot(rot, out rr)) return Fail("Bad rot '" + rot + "'.");
+                rr = PrefabUtility.ValidateRotation(pf, rr);
+
+                Faction fac = null;
+                if (!string.IsNullOrEmpty(faction))
+                {
+                    var fd = DefDatabase<FactionDef>.GetNamedSilentFail(faction.Trim());
+                    if (fd == null) return Fail("No FactionDef '" + faction + "'.", DefSuggestions<FactionDef>(faction));
+                    fac = Find.FactionManager.FirstFactionOfDef(fd);
+                    if (fac == null) return Fail("FactionDef '" + faction + "' exists but no such faction is in this world.");
+                }
+
+                bool can;
+                try { can = PrefabUtility.CanSpawnPrefab(pf, map, c0, rr); }
+                catch (Exception e) { return Fail("CanSpawnPrefab threw: " + e.GetType().Name + ": " + e.Message); }
+
+                if (checkOnly || !can)
+                    return (object)new
+                    {
+                        success = can,
+                        checkedOnly = true,
+                        canSpawn = can,
+                        message = can ? null : "CanSpawnPrefab refused at " + pos + " rot " + rr.AsInt + " - blocked cells or unsuitable terrain.",
+                        prefab = pf.defName,
+                        size = new { x = pf.size.x, z = pf.size.z },
+                        ticksGame = TicksGameSafe(),
+                    };
+
+                var spawned = new List<Thing>();
+                try { PrefabUtility.SpawnPrefab(pf, map, c0, rr, fac, spawned, null, null, blueprint); }
+                catch (Exception e) { return Fail("SpawnPrefab failed: " + e.GetType().Name + ": " + e.Message); }
+
+                var back = new List<object>();
+                foreach (var t in spawned)
+                {
+                    if (back.Count >= Math.Max(0, readBack)) break;
+                    if (t == null) continue;
+                    back.Add(new
+                    {
+                        def = t.def.defName,
+                        stuff = t.Stuff != null ? t.Stuff.defName : null,
+                        x = t.Position.x, z = t.Position.z, rot = t.Rotation.AsInt,
+                        faction = t.Faction != null ? t.Faction.def.defName : null,
+                    });
+                }
+
+                return (object)new
+                {
+                    success = true,
+                    prefab = pf.defName, placedAt = new { x, z }, rot = rr.AsInt,
+                    blueprint,
+                    spawnedCount = spawned.Count,
+                    things = back,
+                    note = "Run jawa/map_commit.",
+                    ticksGame = TicksGameSafe(),
+                };
+            });
+        }
+
+        [Tool(
+            "jawa/prefab_list",
+            Description =
+                "List the prefabs available to jawa/prefab_place: this session's captures " +
+                "plus every shipped PrefabDef. Read-only.",
+            ResultDescription = "success, captures[], shipped[].")]
+        public static async Task<object> PrefabList(
+            IRimBridgeContext ctx,
+            CancellationToken cancellationToken,
+            [ToolParameter(Description = "Max shipped defs listed. Default 60.")] int limit = 60)
+        {
+            return await ctx.MainThread.InvokeAsync(() =>
+            {
+                var caps = JawaPrefabs.Select(kv => new
+                {
+                    name = kv.Key,
+                    defName = kv.Value.defName,
+                    size = new { x = kv.Value.size.x, z = kv.Value.size.z },
+                    thingCount = CountPrefabThings(kv.Value),
+                }).ToList();
+
+                var shipped = DefDatabase<PrefabDef>.AllDefsListForReading
+                    .Take(Math.Max(1, limit))
+                    .Select(d => new { defName = d.defName, size = new { x = d.size.x, z = d.size.z },
+                                       thingCount = CountPrefabThings(d) })
+                    .ToList();
+
+                return (object)new
+                {
+                    success = true,
+                    sessionCaptures = caps.Count, captures = caps,
+                    shippedTotal = DefDatabase<PrefabDef>.AllDefsListForReading.Count(),
+                    shipped,
                     ticksGame = TicksGameSafe(),
                 };
             });

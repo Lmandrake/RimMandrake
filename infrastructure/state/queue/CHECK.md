@@ -557,7 +557,30 @@ spec:     ⭐ The single highest-leverage thing on the roster for "spew out enti
 verify:   capture a hand-built rect, stamp it elsewhere, diff the two regions cell by cell.
 criteria: a captured region replays with the same terrain and things at the new origin.
           A visual diff is not enough - compare cell contents.
-state:    ready
+state:    ✅ DONE — PASSED 2026-08-19, by cell diff, not by eye.
+result:   SHIPPED: `prefab_capture` · `prefab_place` · `prefab_list`.
+          ✅ **63 of 63 TERRAIN CELLS IDENTICAL** between the source rect and the replay.
+          ✅ CONTENTS IDENTICAL: 34 things both sides - 27 Wall, 3 Marble, Door, Bed,
+             StandingLamp, Table2x2c - placed twice, once rotated, both from one capture.
+          ✅ `CanSpawnPrefab` refuses with a reason before any partial placement.
+          ✅ `prefab_list` sees the session captures plus all **183 shipped PrefabDefs**.
+
+          🔴 **A VANILLA GAP, FOUND BY IT FAILING AND FIXED IN OUR TOOL.**
+          `PrefabUtility.CreatePrefab` builds `things` and `terrain` but **NEVER SETS
+          `size`** - it comes back `(0,0)`. `size` is what drives `GetRoot` and every
+          bounds check, so `CanSpawnPrefab` refuses and `SpawnPrefab` cannot place.
+          **A prefab captured with vanilla's own API is unusable until the caller sets
+          size themselves.** Read out of `CreatePrefab`'s body after the first attempt
+          returned `size {0,0}` and `canSpawn false`. `prefab_capture` now fills it from
+          the captured rect.
+
+          🔑 **`SpawnPrefab` CENTRES ON `pos`; it is NOT the min corner.** Measured twice:
+          pos 160,120 size 9x7 -> min corner 156,117; pos 200,160 -> 196,157. Both are
+          `pos - ((size-1)/2)`. Anyone placing to an exact corner must offset.
+          📌 `copyAllThings=false` still captures natural rock (3 `Marble` edifices came
+             along). The flag governs loose items and filth, not edifices.
+          ⚠️ Captures are SESSION-ONLY by design - not registered in DefDatabase, gone on
+             restart. Persisting them means writing PrefabDef XML, which is its own item.
 
 ## M4 Map grids — fog, snow, sand, gas, deep resource, zones and areas
 row:      bridge-13
