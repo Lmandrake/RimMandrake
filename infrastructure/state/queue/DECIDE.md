@@ -826,3 +826,54 @@ constraints:
           ⛔ Do not spec art for `AM_EnemyPirate` that BUILD cannot ship — it is a
           THIRD-PARTY def and must be reached by patch, not by editing the mod.
 state:    ready
+
+## BLACKSTAR_VESSEL_DECISION_1 Blackstar Company has no faction to be
+spec:     BUILD, 2026-08-20, measured on the live world. **Four settlements never landed**
+          because their vessel does not exist in the world:
+            `world/ASHKARR_WORLDMAP_settlements.csv` gives Blackstar Company
+            `faction_def = AM_EnemyPirate`, and `jawa/list_factions` reports 16 factions
+            with no such entry. The four are Blackstar Field (tile 18266), The Contract
+            Camp (8898), Toll Rock (2236) and Hardpan Yard (7497).
+          Every other faction's settlement count matches the CSV exactly — 68 of 72 landed
+          and the missing four are all Blackstar's, so this is one cause, not four.
+          ⚠️ **`VFEP_Junkers` IS in the world** ("The Crushers") and `AM_EnemyPirate` is not,
+          so a pirate-flavoured vessel is available in principle. Whether Blackstar should
+          wear one is authoring: the faction's whole joke is that it is predatory but
+          **contractual** — professionals, paperwork before violence — and a generic pirate
+          def may carry raid behaviour that contradicts that.
+          THE CHOICE:
+            (a) point Blackstar at a faction that exists, and say which;
+            (b) author a `Jawa_BlackstarCompany` FactionDef like the other eight;
+            (c) strike the four rows from the CSV and accept a 68-holding planet.
+          🔴 **This is a bake-in decision.** The world is built once and frozen; a faction
+          absent when the owner builds it is absent from every player's game forever.
+verify:   after the ruling, the settlement import lands every row in the CSV.
+criteria: —
+state:    ready — for DECIDE
+
+## FACTION_FIXEDNAME_DOCTRINE_1 Should the ten defs carry `fixedName`, or only this world be repaired?
+spec:     BUILD, 2026-08-20. Ten factions in the live world wear generated names; the
+          repair is filed as `FACTION_NAMES_ARE_GENERATED_1` in `queue/CHECK.md` and needs
+          no def change — clearing the stored name makes each fall through to its
+          `def.LabelCap`, which is already correct.
+          ⇒ **The repair is settled. This item is only about RECURRENCE.**
+          `FACTION_SPEC.md:71` says `fixedName` is for *"only where the world must say a
+          specific name"* — a deliberate restraint, and BUILD is not overriding it
+          unilaterally. But the evidence is now in: **without `fixedName`, a newly
+          generated world names these factions at random**, and this one did.
+          THE QUESTION: does the restraint survive that? Two readings, both defensible:
+            (a) **Add `fixedName` to all ten.** The campaign names these factions
+                everywhere; a generated name is never wanted. Costs ten one-line patches.
+            (b) **Leave the defs alone.** The world is generated ONCE and then frozen, so
+                a repair-after-generation is sufficient and the restraint stands. Costs
+                nothing now, and costs the same repair again if the world is ever rebuilt.
+          ⚠️ `FACTION_SPEC.md:124` is relevant and easy to miss: *"Do NOT patch
+          `factionNameMaker` away — `fixedName` overrides it for the faction, and the namer
+          is still used for settlements."* So (a) is safe for settlement naming.
+          ⚠️ One nuance either way: `def.LabelCap` capitalises, so `the Junkers` presents as
+          **"The Junkers"**. If the lower-case article is wanted, that faction needs an
+          explicit name regardless of which reading wins.
+verify:   whichever is chosen, written into `FACTION_SPEC.md` beside the existing
+          `fixedName` line so the next reader is not left with the bare restraint.
+criteria: —
+state:    ready — for DECIDE

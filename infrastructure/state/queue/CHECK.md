@@ -1556,3 +1556,94 @@ criteria: a load with ZERO `ErrorWhileLoadingGame`, and `list_debug_action_child
           returning its 642 children. 🔴 That second check is the cheap canary for this whole
           class of failure and costs one call — run it FIRST on every future load.
 state:    ready
+
+## FACTION_NAMES_ARE_GENERATED_1 🔴 Ten factions are wearing names the dice picked
+row:      world-1
+from:     BUILD, 2026-08-20, found read-only over the bridge on the live authored world.
+          🔑 **The tool you need did not exist and now does. It is BUILT and NOT YET
+          DEPLOYED** — a companion DLL cannot be written while the game runs.
+spec:     🔴 **Ten of the eleven campaign factions carry a randomly generated name.** Only
+          `Empire` is right, and only because it is the one def with a `fixedName`.
+            `Jawa_Junkers` -> "Marina's Asteroids" · `Jawa_HuttCartel` -> "Southeast
+            Thiourhium" · `Jawa_IndigenousTribes` -> "Union of Aloisa" ·
+            `Jawa_AscendantHelix` -> "Empire of the Sun" · `Jawa_DeepwaterCompact` ->
+            "Menussia Coalition" · `Jawa_FreeDroidEnclaves` -> "Northeast Notthdos" ·
+            `Jawa_GeonosianFoundryHive` -> "The Latovas Union" · `Jawa_WildsteamClan` ->
+            "The Banastra Nation" · `OutlanderCivil` -> "Treaty of Haor" · `TribeCivil` ->
+            "The Lánéa Nation"
+          Every def's `label` is CORRECT. `label` is what the def is called; `fixedName` is
+          what the world object carries; with no `fixedName` the name generator names the
+          faction at world creation.
+          🔴 **A def patch cannot fix a world that already exists:**
+            `public string Name { get { if (HasName) return name; return def.LabelCap; } }`
+            `public bool HasName => name != null;`
+          The generated string is stored on the faction object and shadows the def forever.
+          ⭐ **THE REPAIR WRITES NO NAMES AT ALL.** Clearing the stored name makes `Name`
+          fall through to `def.LabelCap`, which is already the authored label — so there is
+          no list to retype and no chance of a typo putting a THIRD name into the world.
+          🔑 **THE FIRST STEP IS A DEPLOY, AND IT NEEDS THE GAME DOWN:**
+            `python.exe src/RimMandrake/bridgetools/build.py --gm --apply`
+          🔴 `--gm` or the deploy strips every player-acting tool; `build.py` refuses and
+          names them, which is the guard working. Expect **114** `jawa/` tools afterwards,
+          up from 112.
+          THEN, on the world screen:
+            1. `jawa/faction_name_get`  -> read `generatedCount`. Expect **10**.
+            2. `jawa/faction_name_set` with `action=clear` and NO `defNames`
+               — that targets exactly the factions wearing a generated name.
+               ⚠️ It defaults to `dryRun=true`. Read the plan FIRST, confirm it lists ten
+               and touches nothing else, then re-run with `dryRun=false`.
+            3. `jawa/faction_name_get` again -> `generatedCount` must be **0**.
+          ⚠️ `def.LabelCap` capitalises the first letter, so `the Junkers` will read
+          **"The Junkers"**. If the lower-case `the` matters, that one needs
+          `action=set` with an explicit name — but ask DECIDE before typing one.
+          ⛔ The player faction is protected by default and must stay that way; the owner
+          named his own colony.
+verify:   `jawa/faction_name_get` reports `generatedCount: 0` and every `currentName`
+          equals its `defLabel`.
+criteria: 🔴 **LOOK AT THE WORLD MAP.** Click a Junkers settlement and the faction reads
+          "The Junkers", not "Marina's Asteroids". A numeric pass with the wrong string
+          still on screen is the number being wrong.
+          ⚠️ **Then SAVE.** This edit lives on the faction object, so it is only permanent
+          once the world is saved.
+state:    ready — blocked only on the next game-down window for the deploy
+
+## BLACKSTAR_HAS_NO_VESSEL_1 Four settlements are missing and they are all one faction's
+row:      world-2
+from:     BUILD, 2026-08-20, read-only over the bridge.
+spec:     `world/ASHKARR_WORLDMAP_settlements.csv` holds **72** rows; the live world has
+          **68** settlements. The gap is not scattered — it is exactly Blackstar Company's
+          four: **Blackstar Field** (tile 18266) · **The Contract Camp** (8898) ·
+          **Toll Rock** (2236) · **Hardpan Yard** (7497).
+          **Cause:** their `faction_def` is `AM_EnemyPirate`, and that faction is **not in
+          the world**. `jawa/list_factions` reports 16 factions and it is not among them.
+          Every other faction's count matches the CSV exactly, so the importer skipped
+          these four individually rather than refusing the whole import.
+          ⛔ **NOT BUILD's to decide and not CHECK's either** — whether Blackstar Company
+          gets a vessel that exists, or those four rows come out of the CSV, is DECIDE's.
+          Filed alongside as `BLACKSTAR_VESSEL_DECISION_1` in `queue/DECIDE.md`.
+verify:   once DECIDE rules: re-run `world_settlements_import`, then
+          `jawa/world_objects_get` with `limit` above 100 and count `Settlement`.
+          ⚠️ **`limit` defaults to 100 and 167 world objects exist**, so a default query
+          silently truncates. That nearly became a false alarm here.
+criteria: settlement count matches the CSV row count, whatever that number ends up being.
+state:    blocked on DECIDE
+
+## INHABITED_DLL_FIX_AT_SHUTDOWN_1 One assembly is built and waiting for the game to close
+row:      inhabited-6
+from:     BUILD, 2026-08-20.
+spec:     Two assemblies are built, proven to compile, and CANNOT be deployed while
+          RimWorld runs because the OS holds them memory-mapped. Both land in the next
+          shutdown window and neither needs a decision:
+            1. `python3 src/RimMandrake/Utils/deploy_custom_mods.py --mod Inhabited --apply`
+               `CharacterDef.ConfigErrors` now names any pair of conflicting traits at load,
+               and `CharacterApplier` refuses the second rather than building a pawn no
+               vanilla generation could produce. **14 of the 269 need this** — see
+               `CAST_TRAIT_CONFLICTS_1` in `queue/DECIDE.md`.
+            2. `python.exe src/RimMandrake/bridgetools/build.py --gm --apply`
+               adds `jawa/faction_name_get` and `jawa/faction_name_set`, 112 -> **114**.
+          🔴 **`--gm` on the second one, or the deploy strips every player-acting tool.**
+verify:   after the next launch, `Player.log` carries `[Inhabited] ready:` with 269
+          characters, and the bridge reports 114 `jawa/` tools.
+criteria: both deploys report in sync, and nothing regressed against
+          `EXPECTED_FAILURES_next_load.md` §4.
+state:    ready — waiting on a game-down window only
