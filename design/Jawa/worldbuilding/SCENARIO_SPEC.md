@@ -7,7 +7,18 @@ having brought it to life. We may create a custom map with other broken ships in
 v2, but for v1 it's just a ship on a map ready to go. Fixed pawns. Fixed ship.
 Fixed map."*
 
-## R25 · The scenario is a SAVED GAME, not a `ScenarioDef`
+## R25 · The scenario is a SAVED GAME — and, since 2026-08-19, a `ScenarioDef` TOO
+
+⚠️ **AMENDED 2026-08-19. The heading used to read *"not a `ScenarioDef`"* and that half is
+now wrong.** Everything below about PAWNS is unchanged and still correct — a `ScenarioDef`
+cannot force named pawns with authored skills, and the save is what carries the six
+founders. What changed is the OTHER half: R-S2 in `SCENARIO_SETTINGS_SPEC.md` was reversed
+when the owner banned savegame writing (2026-08-18). **Only the engine may write our save
+now, and starting a game FROM a scenario is the only way ongoing `ScenPart`s get embedded
+in it.** ⇒ **we author a `ScenarioDef` as well, the owner starts his campaign from it, and
+the engine writes both the parts and the pawns into one save.** The part list is
+`queue/DECIDE.md` item `the-scenariodef-part-list-and-what-a-jawa-may-never-do-8d4c07`,
+and it must exist BEFORE he starts.
 
 `ScenPart_ConfigPage_ConfigureStartingPawns` sets a pawn **count**. It cannot
 force named pawns with authored skills, traits and backstories — no `ScenarioDef`
@@ -184,8 +195,51 @@ from a supply drop.
 ```
 steel 300 · components 20 · packaged survival meals 30 · medicine 15
 ion sidearm ×2 · one rifle · pack animal ×1
+one ikee (AA_Eyeling), bonded to Yeku
 NO advanced components, NO glitterworld medicine, NO prebuilt turrets
 ```
+
+### 🔴 The ikee — the clan's eye. Owner's ruling 2026-08-15, designed 2026-08-19
+
+**Owner, from the animal contact sheet:** *"AA_Eyeling MUST be made into a star-wars-style
+pet for the starting Jawa clan to keep!"* ⇒ v1, in the starting save.
+
+**The name is `ikee`.** From the canon Jawaese *"Ikee ikee!"* — the cry a Jawa gives on
+spotting something worth taking. ⭐ It pairs with the ship: **the *Utinni* is named for the
+find, the ikee for the looking.**
+
+**The fiction, replacing Alpha Animals' text** (*"A grotesquely enlarged eye… Not very
+useful at all. Created by infusing an animal with the strange energies from an
+extradimensional corruption."* — the sprite stays, the identity changes):
+
+> *A single great eye walking on soft tentacles, warm to the touch and blind to nothing.
+> The clans keep them because an ikee sees the glint of buried metal long before a Jawa
+> does — and because a people known across the desert by their own glowing eyes cannot
+> help but read one as a good omen. It eats what the waste offers.*
+
+**Why it is mechanically a Jawa animal already — read from `Races_Eyeling.xml`, not
+invented:**
+
+| shipped field | value | why it fits |
+|---|---|---|
+| `ComfyTemperatureMax` | **60 °C** | ⭐ already built for the dune sea. No adaptation needed |
+| `foodType` | `OmnivoreRoughAnimal` | ⭐ eats rough forage — **needs no crops**, on a clan forbidden from sowing |
+| `wildness` | 0.2 | easily tamed, so a lost ikee is replaceable |
+| `trainability` | `Intermediate` | Obedience and Release only — **it can fight, it cannot haul or rescue** |
+| `baseBodySize` · `MoveSpeed` | 0.4 · 3.0 | small and slow. It is a companion, not an asset |
+| `lifeExpectancy` | 12 | it will plausibly outlive the campaign |
+
+**Ruling on the three open questions:**
+1. **Bonded to Yeku**, in addition to his pack animal — he is the `Animals 5` founder, and
+   a bond puts real weight on the pet's death. A trigger-happy, volatile nineteen-year-old
+   with a beloved animal is free characterisation.
+2. **Starts trained to Obedience only.** It *can* be Released to fight and the player may
+   train that; the clan does not use it as a weapon. It is a spotter that happens to bite.
+3. **It appears in the wild** — see `fauna_placement.md`. ⛔ A clan pet the player can never
+   find a second one of is a dead end, so findability is part of the ruling, not a nicety.
+
+✅ `AA_Eyeling` is **not** in the Cherry Picker cut list — verified 2026-08-19 against both
+the live config and `deployed/config/v1_freeze/Mod_3521312241_Mod_CherryPicker.xml`.
 
 ## Open, and deliberately not decided here
 

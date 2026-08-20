@@ -93,3 +93,22 @@ ships a +20 °C comfort band is a dayside animal wearing a costume.
 Nothing walks across the terminator. That is why the poison forest and the decay
 gradient are so strange — they are what evolved in the only band where anything
 can live at all.
+
+## The ikee (`AA_Eyeling`) — the clan's pet, and it must be findable
+
+**Ruled 2026-08-19 (D26).** The starting clan is given one ikee. ⛔ **A pet the player can
+never replace is a dead end**, so the species has to exist in the world as well as in the
+save.
+
+Placement follows the shipped `ComfyTemperatureRange` **0–60 °C**, which decides this for
+us: the ikee belongs to the **hot, dry side** and 🔴 **must NOT be placed on the frozen
+nightside** — its comfortable minimum is 0 °C.
+
+| where | commonality | why |
+|---|---|---|
+| `Wasteland` — the salt pans and deep waste | the main population | 7.8% of the planet, hot and empty. An eye that finds buried metal belongs where things are buried |
+| `ExtremeDesert` — the dune sea | sparse | it survives there; little else does |
+| `ZBiome_DesertOasis` | uncommon | where a scavenger would actually encounter one, near water and traffic |
+
+⛔ **Not** on the nightside, not in `Ocean`/`Lake`, and not in the wet biomes.
+⚠️ Keep it genuinely uncommon. The ikee reads as an omen; a herd of them reads as vermin.
