@@ -37,11 +37,15 @@ sessions be recorded here for DESIGN to pick up later.
   in the strange biomes at the peaks. Probably a weather restriction plus biome placement.
 - **Breathable everywhere** is a deliberate scope CUT, recorded so nobody adds vac suits:
   all other atmospheric gases stay gaseous across the frozen range. Insulation only.
-- **TOOLING, not content: `worldmap.py` cannot write tile mutators.** Its docstring lumps
-  them with roads and rivers as untouchable, but they are arrays — `tileMutatorTilesDeflate`
-  (4 bytes, tile index) paired with `tileMutatorDefsDeflate` (2 bytes, shortHash). Painting
-  `WindyMutator` for the high-wind belts needs that pair implemented. Small job, blocks the
-  wind half of Axis 1.
+- ⛔ ~~**TOOLING: `worldmap.py` cannot write tile mutators** … Painting `WindyMutator` for
+  the high-wind belts needs that pair implemented. Small job, blocks the wind half of
+  Axis 1.~~ **DEAD 2026-08-19 — do not implement this.** The owner killed savegame writing
+  on 2026-08-18 and `worldmap.py` now refuses to write; nine save-writers were deleted.
+  The encodings named are still correct as a description of the SAVE FORMAT.
+  ⭐ **The live route:** mutators are written into the running world through the
+  companion's batch tile setter, like every other tile field — `ASHKARR_WORLD_DEFINITION.md`
+  §12.2. And ⚠️ vanilla's Mutators step (700) has already run by then (§12.3), so ours go
+  on after a clear-and-re-roll, not into a generator slot. **Nothing is blocked.**
 - **The Rust Cathedral at the substellar centre** — already ruled as the one mega-structure
   (`the_forgotten_war.md`, 2026-08-15). Now sited: the Rakatan terraforming works, irregular
   but one solid mass, surviving at higher elevation where sand never buried it. The map
