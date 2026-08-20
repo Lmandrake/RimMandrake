@@ -194,3 +194,6 @@ observed/genome/
 
 # skill eval run outputs are derived; fixtures and evals.json are kept
 skills/skills-workspace/iteration-*/
+
+# modlist_swap.py archives one PRESWAP copy per swap - pure churn, and FULL.LATEST is the one that matters
+infrastructure/state/modlists/ModsConfig.PRESWAP.*.xml
