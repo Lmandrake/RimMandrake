@@ -401,3 +401,39 @@ verify:   run a swap twice with no mod-list change; `ls infrastructure/state/mod
           gains no new PRESWAP file on the second run.
 criteria: the backup store holds one copy of each DISTINCT list, and nothing else.
 state:    open — raised by REP, 2026-08-20, from the cleanup audit.
+
+## empire-permanent-enemy-becomes-a-whitelist-7c31d9
+row:      1
+from:     DECIDE, 2026-08-20, on the owner's ruling *"Option (b) please."* Full reasoning
+          and the design rationale for every entry: `design/Jawa/worldbuilding/EMPIRE_GAP_AUDIT.md` §2.
+          ⚠️ **Worldgen-critical — faction relations are set at world creation.**
+spec:     In `src/Jawa/Jawa_Patches/Patches/ImperialDesertDirectorate.xml`:
+          **(1)** change the `permanentEnemy` operation from `true` to **`false`**.
+          🔴 **Do NOT merely delete it — set it false.** `FactionDef.PermanentlyHostileTo`
+          (`FactionDef.cs:463`) tests `if (permanentEnemy) return true;` FIRST and returns
+          before the list is read, so leaving it true keeps the whole list dead code.
+          **(2)** REPLACE `/Defs/FactionDef[defName="Empire"]/permanentEnemyToEveryoneExcept`
+          with exactly this list. ⚠️ It is a **whitelist of who is NOT a permanent enemy** —
+          anything absent is hostile:
+          ```
+          Jawa_HuttCartel · Jawa_DeepwaterCompact · OutlanderCivil · TribeCivil · Pirate
+          Jawa_IndigenousTribes · Jawa_Junkers · Ancients
+          Beggars           MayRequire="Ludeon.RimWorld.Ideology"
+          ResearchExpedition MayRequire="Ludeon.RimWorld.Anomaly"
+          GravshipCrew      MayRequire="Ludeon.RimWorld.Odyssey"
+          TradersGuild      MayRequire="Ludeon.RimWorld.Odyssey"
+          ```
+          ⛔ **DELIBERATELY OMITTED — do not "helpfully" add them back:** `PlayerColony` and
+          `PlayerTribe` (this is what keeps the Empire permanently hostile to the player, the
+          owner's 2026-08-14 ruling), plus `Jawa_FreeDroidEnclaves`,
+          `Jawa_GeonosianFoundryHive`, `Jawa_WildsteamClan`, `Jawa_AscendantHelix`.
+          🪤 Keep the four DLC entries' `MayRequire` attributes — all four DLCs are active
+          here, but the attribute is correct and costs nothing.
+          ⚠️ No `PatchOperationFindMod` wrapper anywhere in this file: Royalty is always
+          loaded on this stack.
+verify:   `validate_patch.py --defs` clean; the live def reads `permanentEnemy false` and a
+          12-entry `permanentEnemyToEveryoneExcept`; neither player faction appears in it.
+criteria: at the owner's worldgen run the Empire generates permanently hostile to the player
+          and to the four omitted factions, and NOT permanently hostile to the Hutt Cartel —
+          confirmable on the faction relations screen without loading a map.
+state:    ready

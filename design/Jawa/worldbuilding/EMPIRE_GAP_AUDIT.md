@@ -104,7 +104,47 @@ it sets hostility for everybody, from a def, in one boolean.**
 | **(b) Swap to `permanentEnemyToEveryoneExcept`** and list who MAY deal with the Empire | the player stays permanently hostile *if* `PlayerColony` is omitted; chosen factions may collaborate | ⚠️ **must be re-derived carefully** — the list is a whitelist of who is NOT a permanent enemy, and omitting the player is what keeps the ruling intact |
 | **(c) Keep the flag, add collaborators over the bridge** | importer sets specific friendly relations after worldgen | ⛔ **does not work** — `PermanentlyHostileTo` is consulted continuously, not once; a bridge-set relation would be overridden |
 
-**DECIDE's recommendation: (b).** It is the only option that preserves the owner's ruling
+### 🔴 RULED 2026-08-20 — **OPTION (b). Owner: *"Option (b) please."*** 
+
+⇒ **Set `permanentEnemy false` and author the exception list.** The player stays permanently
+hostile by being **omitted**, which is the same outcome by a different mechanism and keeps
+the owner's 2026-08-14 ruling exactly intact.
+
+**THE LIST — who the Empire is permitted to tolerate.** Every omission is a deliberate
+design statement, so both halves are reasoned:
+
+| ✅ IN the list — not a permanent enemy | why the Empire tolerates them |
+|---|---|
+| `Jawa_HuttCartel` | ⭐ the whole point of the ruling. Their own `ideoDescription` sells *"to the fleet that burned the farmer"* — the old flag forbade the sentence their faith is built on |
+| `Jawa_DeepwaterCompact` | ⭐ their def says they sell to the Imperial tanker fleet **by name**. Same defect, same fix |
+| `OutlanderCivil` *(Homestead Defense League)* | an occupier taxes farmers, it does not wage permanent war on them. They are subjects, not enemies |
+| `TribeCivil` *(Deep Desert Tribes)* | a nuisance to be suppressed, not a war to be prosecuted. Let ordinary goodwill carry it |
+| `Pirate` *(Blackstar Company)* | contractors. A company whose faith is *the Contract* is exactly who an Empire hires |
+| `Jawa_IndigenousTribes` *(Trade Moot)* | vermin who fix things, and useful for it — which is also an uncomfortable position for the player's own kin, deliberately |
+| `Jawa_Junkers` | they sell scrap to whoever pays |
+| `Ancients` | vanilla's own entry. No reason for permanent war with sleepers |
+| `Beggars` · `ResearchExpedition` · `GravshipCrew` · `TradersGuild` | vanilla's DLC entries, kept with their `MayRequire` attributes intact |
+
+| ⛔ OMITTED — permanent enemies | why |
+|---|---|
+| **`PlayerColony`** and **`PlayerTribe`** | 🔴 **THE RULING.** Omitting them is what makes the Empire permanently hostile to the player. *"This is the Galactic Empire, not a patron you petition."* |
+| `Jawa_FreeDroidEnclaves` | ⭐ machines that declared themselves people. To a `HumanPrimacy` · `Supremacist` Empire this is not a faction, it is property in revolt |
+| `Jawa_GeonosianFoundryHive` | ⭐ **the Empire sterilised their species.** Canon says Geonosians are considered extinct; every one of them here is a refugee from that. Permanent enmity is the only honest setting |
+| `Jawa_WildsteamClan` | already specced hostile to the Empire (`FACTION_SPEC.md` relations table). Consistent |
+| `Jawa_AscendantHelix` | a religion of engineered improvement, under forced memes `HumanPrimacy` and `Supremacist`. They are an affront by doctrine |
+
+⚠️ **BUILD MUST READ THIS BEFORE PATCHING** — the semantics invert:
+`permanentEnemyToEveryoneExcept` is a **whitelist of who is NOT a permanent enemy**. Anything
+absent is hostile. So the list must name **every** faction the Empire tolerates, and a
+faction added to the world later and forgotten here becomes a permanent enemy silently.
+🔑 And `permanentEnemy` **must be set to `false`**, not merely left — `FactionDef.cs:463`
+returns on it first and would keep the list dead.
+
+⇒ Filed to BUILD as `empire-permanent-enemy-becomes-a-whitelist-7c31d9`.
+
+---
+
+~~**DECIDE's recommendation: (b).**~~ *(ruled above)* It is the only option that preserves the owner's ruling
 about the *player* while letting the planet's politics exist. The player is kept hostile by
 **omitting `PlayerColony` from the exception list**, which is the same outcome by a
 different mechanism.
