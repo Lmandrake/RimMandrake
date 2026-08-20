@@ -82,6 +82,10 @@ def main():
     ap.add_argument("--load", default=None, help="load this save first and wait for it")
     ap.add_argument("--report", default=None)
     ap.add_argument("--skip-links", action="store_true")
+    ap.add_argument("--despite-abort", action="store_true",
+                    help="proceed even though the load aborted. Records it loudly in the "
+                         "report. Only justified when the WORLD layer has been shown to be "
+                         "readable and the abort is downstream of it.")
     a = ap.parse_args()
     apply = bool(a.apply)
 
@@ -118,8 +122,20 @@ def main():
         if gi.get("status") != "game_loaded":
             w(out, "- 🔴 no game loaded. Stopping.")
             return 2
+        # ⏳ The abort is written AFTER `status` flips to game_loaded, so checking
+        # immediately reads a clean log and passes a broken load. Measured twice
+        # on 2026-08-20: canary passed at t+0 and failed at t+60 on the same load.
+        time.sleep(20)
         if not canary(rb, out):
-            return 3
+            if not a.despite_abort:
+                w(out, "  (pass --despite-abort to proceed anyway, if the world layer has been "
+                       "shown to read back correctly and the abort is downstream of it)")
+                return 3
+            w(out, "- ⚠️ **PROCEEDING ANYWAY (--despite-abort).** Everything below is PROVISIONAL "
+                   "and must be re-proven by a save→reload before it is believed. The abort is "
+                   "in a Harmony POSTFIX on ResolveAllCrossReferences, i.e. downstream of the "
+                   "engine's own cross-reference resolution, which is why the world layer still "
+                   "reads back correctly.")
 
         wi = rb.call("jawa/world_info_get", {})
         info = wi.get("info") or {}
