@@ -1109,24 +1109,6 @@ verify:   none of the six defNames appears in the deployed mod; `_guard_species_
 criteria: the six do not generate, and no `Could not resolve cross-reference` names them.
 state:    ✅ CLOSED — owner ruling, filed.
 
-## ortolan-is-v1-again-supersedes-the-v2-deferral-1a7f30
-raised:   2026-08-15 CHECK, from the owner examining the 70-race grid live.
-🔴 supersedes: the Ortolan half of the deferral recorded above (~line 1087), including
-          the line **"ORTOLAN IS HIGH PRIORITY FOR v2"**. That entry is now WRONG and a
-          reader acting on it would defer a species that is already finished.
-ruling:   Owner, verbatim: *"We have a working Ortolan! Make that as done for now and
-          confirmed, not v2 after all."*
-          ⇒ **`RimMandrakeOrtolan` is v1, DONE and CONFIRMED.** It spawned in the 70/70
-          grid and the owner examined it on screen. Nothing to restore — it is here.
-unchanged: Herglic, Anzati, Muun, SithZ and Togorian remain deferred to v2. Only the
-          Ortolan moved.
-also:     Race appearance is CLOSED for v1 by the same examination — *"mark all the races
-          as visually good enough for v1, with the remaining missing art for v2
-          improvement"*. C37 closes DONE at 70/70. All cosmetics are parked in
-          `design/V2_DREAMS.md` and the BUILD art item is withdrawn.
-action:   Correct the superseded entry in this file — I did not edit it, it is yours.
-          `design/V2_DREAMS.md` is already updated.
-
 ## building-cherrypicker-three-state-walkthrough-4e91c7
 row:      tooling
 spec:     The owner wants to be walked through a BUILDING cherrypick, choosing per
@@ -1252,3 +1234,148 @@ state:    ✅ CLOSED 2026-08-19 by DECIDE — verified applied, not merely accep
           states OverlayRiver/OverlayRoad as the write API, the mouth-first call
           order for `riverDist`, the float pollution, and "there is no slot".
           The `allowRoads`/`allowRivers`-null risk is at line 493. Nothing owed.
+
+## D30 Six rulings the next session must get from the owner
+row:      0
+spec:     Parked 2026-08-15. None block each other; all block something.
+          **Worldgen-critical, answer before step 10:**
+          (1) **What carries the Pyrelands?** Vanilla `Savanna` and `Grasslands`
+              are cut and `ZBiome_Grasslands` ("stormy savanna") is kept. If
+              deliberate this is ideal — it already carries `DryThunderstorm` at
+              commonality 2. If not, the cut must be reversed.
+              (`biome_review_comments.md` §1)
+          (2) **The three wet biomes** — `AB_FeraliskInfestedJungle`,
+              `AB_MiasmicMangrove`, `COMIGO_GreaterSwamp_Tropical` — are fine as
+              R-H1's narrow flood margin and wrong as regions. Needs a placement
+              ruling, not a patch.
+          (3) **`Glowforest` as the LIVING half of the nightside glow?** R-H6c
+              left alive-vs-mineral open; taking it gives that band two textures.
+          **Not worldgen-critical:**
+          (4) **`BTD_Jawa` → which def?** Two live Jawa xenotypes, each holding a
+              different half of the clan's canon (`FACTION_SPEC.md` R28a). 16
+              references left deliberately unpointed. This is `D23`'s merge.
+          (5) **Confirm `RimMandrakeRakata` as the ancient enemy** — DECIDE
+              proposed it (`the_forgotten_war.md` R-W3); the owner names it.
+          (6) **The Rust Cathedral's hazards and the Enclave goodwill cost must be
+              set TOGETHER** (`the_forgotten_war.md` R-W4), and R-H10's biome
+              temperature edits REOPEN chain step 8, which is ratified — that
+              needs a ruling rather than a patch.
+verify:   each of the six is either answered in a design doc or explicitly
+          re-parked with a reason.
+criteria: none — offline.
+state:    ✅ CLOSED 2026-08-19 — all six answered. (1)(2)(3)(4) closed 2026-08-15 by the
+          owner; (5) ancient enemy DEFERRED to v2, he declined to name `RimMandrakeRakata`;
+          **(6) RULED TODAY** — the Rust Cathedral's hazards and the Enclave goodwill cost
+          were set TOGETHER as R-W4 required, in `design/Jawa/worldbuilding/the_forgotten_war.md`.
+          Mineable bulk + ~10 sacred faction-owned Buildings, Enclaves at startingGoodwill 0,
+          −15 per desecration through `QuestNode_ChangeFactionGoodwill`, toxic pools doing
+          the damage with sulfuric water for the acid look. Nothing outstanding.
+## seven-factions-have-no-required-count-9c4e17
+row:      —
+from:     BUILD, 2026-08-15, measured on disk while the game was down
+spec:     🔴 **A scope call only DECIDE can make, and worldgen is the last chance to
+          make it.** Seven of the eight authored Jawa FactionDefs carry
+          `canMakeRandomly true` and **no `requiredCountAtGameStart`**, so they
+          arrive on the Configure Factions page at a default count of **0** and a
+          world generated without touching them contains none of them.
+          Measured, all 8 files in `src/Jawa/Jawa_Patches/Defs/FactionDefs/`:
+
+          | faction | defName | requiredCountAtGameStart | settlementGenerationWeight |
+          |---|---|---|---|
+          | Jawa Trade Moot | `Jawa_IndigenousTribes` | **1** (max 2) | 1.0 |
+          | Hutt Cartel | `Jawa_HuttCartel` | — (max 1) | 1.15 |
+          | the Junkers | `Jawa_Junkers` | — | 1.15 |
+          | Deepwater Compact | `Jawa_DeepwaterCompact` | — | 0.7 |
+          | Geonosian Foundry Hive | `Jawa_GeonosianFoundryHive` | — | 0.7 |
+          | Wildsteam Clan | `Jawa_WildsteamClan` | — | 0.6 |
+          | Ascendant Helix | `Jawa_AscendantHelix` | — | 0.45 |
+          | Free Droid Enclaves | `Jawa_FreeDroidEnclaves` | — | 0.45 |
+
+          🔴 **`EXPECTED_FAILURES` §2 S7 asserts the opposite** — "Seven are authored
+          defs with `requiredCountAtGameStart 1`, so they should be forced". That is
+          FALSE on disk and it is written into the file that gets read AT worldgen.
+          Corrected in place by BUILD 2026-08-15; recording it here because the
+          wrong belief may have travelled into other docs.
+          THE CHOICE: (a) add `requiredCountAtGameStart 1` to the seven, so the
+          campaign's own factions cannot be forgotten at the screen; or (b) leave
+          them optional and rely on the operator ticking each up by hand.
+          ⚠️ **(b) is one distraction away from a world with no Hutts in it, and the
+          world is generated once — a faction absent at worldgen cannot be added
+          later.** BUILD recommends (a) and can implement it in minutes, offline.
+verify:   —
+criteria: —
+state:    ✅ CLOSED 2026-08-19 — DECIDE's half is done twice over: ruled 2026-08-15, and on
+          2026-08-19 re-measured, found NEVER IMPLEMENTED, and filed to BUILD as
+          `seven-jawa-factions-still-default-to-zero-at-worldgen-4a71c8` with the exact seven
+          files. The measurement also found the Worldbuilder preset prefills the same page
+          from `factionCountsStrings` — recorded there. Nothing left here; BUILD holds it.
+## D-MUTATOR-VEHICLE  Tile mutators ARE our content-injection mechanism — v1
+state:    ✅ CLOSED 2026-08-19 — **the decision is made: mutators ARE the vehicle, v1.**
+          The measurement that unblocked it and the four-part ruling are recorded above and
+          stand. The follow-on authoring is not a loose end: our named places are already
+          listed in `ASHKARR_WORLD_DEFINITION.md` §13.3, the `Dunes` ban is §13.1, and the
+          companion's mutator add/remove rides with the importer in §12.2. No separate item.
+## D-TODO-WORLDMAP-ART  Compare GRiNDTerra vs World Map Enhanced by LOOKING
+state:    ✅ CLOSED 2026-08-19 — owner ruled GRimTerra. Filed to BUILD as
+          `grimterra-worldmap-over-wme-as-the-base-layer-2c8f19`, including the correction to
+          this item's own "never both" advice and the ReGrowth `RG_WorldmapTextures` toggle.
+## the-trade-moot-wears-the-player-faith-and-the-spec-never-said-so-9d21f7
+row:      6
+from:     BUILD, 2026-08-19, auditing B54. Not a defect that stops anything — a call that
+          nobody has made in writing.
+spec:     `faction_religions_spec.md` has eleven entries and says section 12, the Jawa, is
+          **deliberately empty** because the player faith ships as
+          `src/Jawa/ideoligion/The Salvation.rid`. But
+          `src/Jawa/Jawa_Patches/Defs/FactionDefs/JawaTribes.xml` (`Jawa_IndigenousTribes`,
+          label "Jawa Trade Moot") carries `<ideoName>The Salvation</ideoName>` with
+          `fixedIdeo true` and five `forcedMemes`, and no `ideoDescription`.
+          It reads as deliberate — the Trade Moot is Jawa, so it wearing the Jawa faith is
+          coherent, and `fixedIdeo` stops worldgen rolling a random faith over an NPC
+          faction we care about. But **the twelfth faith is the one the spec explicitly
+          declined to author**, so this is authored content with no ruling behind it and no
+          description text.
+          ⇒ (a) confirm the Trade Moot keeps The Salvation, and give it an
+          `ideoDescription`; or (b) give it its own faith; or (c) strip the block and let
+          worldgen roll one.
+          🔑 It has the same hard deadline as the rest of B54: an ideo is generated once,
+          at world creation.
+          FIXED already, needing no ruling: three of the five memes are modded
+          (`sarg.alphamemes`, `vanillaexpanded.vmemese`) and carried no `MayRequire`.
+          They do now.
+verify:   n/a — a ruling, not a build.
+criteria: n/a
+state:    ANSWERED AND BUILT 2026-08-19 - no ruling needed. Owner, in his own words:
+          *"We DID author a document describing the Jawa faith, and yes both the Trade Moot
+          and the player faction should share it."*
+          The document is `design/Jawa/worldbuilding/ideoligion/the_salvation_description.md`
+          and it had reached NEITHER artifact - the `.rid` was still carrying RimWorld's
+          stock generated blurb. Both carry the authored text now, byte-identical:
+          `JawaTribes.xml` `<ideoDescription>`, and `The Salvation.rid` `<description>` AND
+          `<descriptionTemplate>` (a mismatch between those two makes the in-game editor
+          re-roll the text). 2,374 characters, verified equal all three ways.
+          The nine gods live in the description because they have nowhere else to live:
+          `AM_Structure_Scavenger` is `deityCount 0` and cannot seat a deity.
+
+## ortolan-is-v1-again-supersedes-the-v2-deferral-1a7f30
+state:    ✅ CLOSED 2026-08-19 — duplicate, and the work it asked for was done elsewhere.
+          It asked DECIDE to correct the superseded Ortolan entry; that correction was made
+          ONCE, in `six-species-move-to-v2-owner-2026-08-15`, where the "ORTOLAN IS HIGH
+          PRIORITY FOR v2" line is struck in place. ⚠️ Like `7e31aa` this item carried no
+          `state:` line, so it sat in the queue looking open for four days.
+raised:   2026-08-15 CHECK, from the owner examining the 70-race grid live.
+🔴 supersedes: the Ortolan half of the deferral recorded above (~line 1087), including
+          the line **"ORTOLAN IS HIGH PRIORITY FOR v2"**. That entry is now WRONG and a
+          reader acting on it would defer a species that is already finished.
+ruling:   Owner, verbatim: *"We have a working Ortolan! Make that as done for now and
+          confirmed, not v2 after all."*
+          ⇒ **`RimMandrakeOrtolan` is v1, DONE and CONFIRMED.** It spawned in the 70/70
+          grid and the owner examined it on screen. Nothing to restore — it is here.
+unchanged: Herglic, Anzati, Muun, SithZ and Togorian remain deferred to v2. Only the
+          Ortolan moved.
+also:     Race appearance is CLOSED for v1 by the same examination — *"mark all the races
+          as visually good enough for v1, with the remaining missing art for v2
+          improvement"*. C37 closes DONE at 70/70. All cosmetics are parked in
+          `design/V2_DREAMS.md` and the BUILD art item is withdrawn.
+action:   Correct the superseded entry in this file — I did not edit it, it is yours.
+          `design/V2_DREAMS.md` is already updated.
+
