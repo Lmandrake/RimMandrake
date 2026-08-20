@@ -903,6 +903,47 @@
    }
   },
   {
+   "name": "inhabited-5",
+   "cells": {
+    "DECIDE": {
+     "done": 0,
+     "total": 0,
+     "state": "offline",
+     "mix": {
+      "closed": 0,
+      "done": 0,
+      "doing": 0,
+      "blocked": 0,
+      "ready": 0
+     }
+    },
+    "BUILD": {
+     "done": 0,
+     "total": 0,
+     "state": "offline",
+     "mix": {
+      "closed": 0,
+      "done": 0,
+      "doing": 0,
+      "blocked": 0,
+      "ready": 0
+     }
+    },
+    "CHECK": {
+     "done": 0,
+     "total": 1,
+     "state": "idle",
+     "mix": {
+      "closed": 0,
+      "done": 0,
+      "doing": 0,
+      "blocked": 0,
+      "ready": 1
+     }
+    }
+   }
+  },
+  {
    "name": "tooling",
    "cells": {
     "DECIDE": {
@@ -959,15 +1000,15 @@
      }
     },
     "BUILD": {
-     "done": 1,
+     "done": 3,
      "total": 11,
      "state": "idle",
      "mix": {
-      "closed": 1,
+      "closed": 3,
       "done": 0,
       "doing": 0,
       "blocked": 0,
-      "ready": 10
+      "ready": 8
      }
     },
     "CHECK": {
@@ -1957,12 +1998,12 @@
    },
    {
     "d": "2026-08-20",
-    "n": 28
+    "n": 30
    }
   ],
-  "per_day": 15.0,
-  "closed": 105,
-  "remaining": 49,
+  "per_day": 15.29,
+  "closed": 107,
+  "remaining": 48,
   "eta_days": 3
  }
 }

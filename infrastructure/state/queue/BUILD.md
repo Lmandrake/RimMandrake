@@ -919,7 +919,22 @@ verify:   `dotnet build` clean; the transpiler/postfix reports a patch target fo
           one is loud. Good.
 criteria: burn out a cast, wait for a beggar event, and at least one beggar is a pawn from
           the pool by name.
-state:    ready
+state:    built 2026-08-20, `8fd8fbd`. `src/Jawa/Inhabited/Source/Patch_BeggarsFromPool.cs`.
+          All three of the item's corrections were taken: the target is
+          `QuestGen_Pawns.GeneratePawn(Quest, PawnGenerationRequest, bool)`, the drawn pawn
+          is moved into the quest's hidden generated faction with `SetFaction`, and the
+          Ideology gate is noted at the class.
+          ⭐ **The verify is stronger than the item asked for: the target is proven by the
+          COMPILER, not by Harmony at startup.** Binding the method group to a
+          `Func<Quest, PawnGenerationRequest, bool, Pawn>` makes C# check the signature
+          against the real `Assembly-CSharp.dll`, so a target that has moved fails the
+          BUILD in half a second instead of costing a 25-minute cold load to discover. The
+          same proof is on the `Game.DeinitAndRemoveMap` patch.
+          verify output: `Build succeeded. 0 Warning(s) 0 Error(s)` with both proofs in.
+          ⚠️ The draw is `DrawAny`, not the faction-scoped `Draw` — beggars belong to a
+          hidden temporary faction, so a faction-scoped draw would always return nobody.
+          That is new API on `DisplacedPool`, added for this.
+          Live half filed to CHECK inside `INHABITED_POOL_ROUND_TRIP_1`.
 
 ## CAST_ROSTER_MACHINE_READABLE_1 269 prose characters become data
 spec:     ⚠️ **The blocker nobody has looked at.** The eleven cast files hold 269 authored
@@ -951,4 +966,30 @@ verify:   the parser emits 269 `CharacterDef`s across 11 files, and
           the ONE thing here that must fail loudly.
 criteria: the defs load with 0 red errors, and a named character from the roster can be
           spawned by defName through the bridge.
-state:    ready
+state:    done 2026-08-20, `2cbb3ed` + `fca27b6`. `src/RimMandrake/Utils/cast_to_xml.py`
+          -> `src/Jawa/Inhabited/Defs/CastRosters/CastRoster_<FACTION>.xml`.
+          verify output:
+            `269 characters across 11 files`
+            `every trait and degree resolved against the dump.`  (807 traits, 0 failures)
+            25 each except HUTT 19; 269 unique defNames, 0 collisions; all 11 files parse.
+          🔴 **ONE MEASUREMENT IN THE SPEC IS WRONG AND IT MATTERED.** *"present on every
+          entry: … age (int)"* — it is not. Eleven files write age EIGHT ways:
+            `101` · `~90` · `60ish` · `300+` · `312 service-years` ·
+            `61 years since activation` / `since assembly` / `since salvage` ·
+            `six hems (33)` — the Jawa count age in robe-hems, years in the gloss ·
+            `claims 40,000; is 90` — a droid who lies about his age ·
+            `unknown` — authored deliberately, on 5 people
+          🔑 **The last integer in the string is the right answer in all eight**, including
+          the two that look like exceptions, because a writer puts the real number last and
+          the clause before it is the flavour. ⛔ **The verbatim text is kept on the def as
+          `ageText` regardless** — "six hems" IS the characterisation and reducing it to 33
+          throws the interesting half away.
+          ⛔ xenotype, pawnKind, apparel and skills are emitted EMPTY and were not guessed.
+          ⚠️ Deepwater Compact is reported as missing, cleanly, every run. Authoring debt.
+          ⭐ **Beyond the item, because its own criteria needed it:** `CharacterApplier`
+          turns a generated pawn into an authored person — NAME and TRAITS, nothing else —
+          and a debug action spawns any of the 269 by name. Traits are REPLACED rather than
+          added, because a character written `Ascetic` who also rolled `Greedy` is a hook
+          the mechanics do not back. `InhabitedCastDef.characters` wires them into a cast,
+          and a pawn drawn from the displaced pool is never overwritten.
+          Live half filed to CHECK as `CAST_ROSTER_269_LOAD_1`.
