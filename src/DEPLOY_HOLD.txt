@@ -36,9 +36,16 @@ WreckedMachines/*                                 # owner: parked to v2, 2026-08
 # WHY three facings sat undeployed for a day, and the next person to hold a whole
 # mod pre-review should see that it ended in one line from the owner.
 #
-# ⚠️ Deployed is not loaded: mandrake.desertvehiclereskin still needs a
-# ModsConfig entry AFTER sarg.alphavehiclesneolithic — the donor ships LOOSE art,
-# so order decides whether the reskin is visible at all. Filed with a retired seat.
+# ✅ RESOLVED 2026-08-20 (REP), measured — no owner action needed. The order
+# concern below is already satisfied in both saved full lists:
+# ModsConfig.PRESWAP.resort_20260820.xml puts sarg.alphavehiclesneolithic at line
+# 541 and mandrake.desertvehiclereskin at 554; FULL.LATEST.xml has the same
+# relative order. Restoring either list loads the reskin after the donor.
+#
+# ⚠️ (superseded, kept for provenance) Deployed is not loaded:
+# mandrake.desertvehiclereskin still needs a ModsConfig entry AFTER
+# sarg.alphavehiclesneolithic — the donor ships LOOSE art, so order decides
+# whether the reskin is visible at all. Filed with a retired seat.
 
 # --- Art pulled pending the owner's verification ------------------------------
 # Owner's standing directive 2026-08-14: stop fixing art until the owner has
