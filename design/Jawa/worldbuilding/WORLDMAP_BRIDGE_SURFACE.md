@@ -231,3 +231,34 @@ Rivers, Mutators, Landmarks, AncientSites, AncientRoads, Pollution, Factions, Ro
 * **`world_commit` is separate from every writer.** Regenerating a draw layer per write
   would be pathological over 21,872 tiles; and it is the one place the renderer recipe
   lives, so it can be fixed once.
+
+---
+
+## 12. MEASURED LIVE, 2026-08-19 — what the source read did not tell us
+
+Everything above came from source. These came from the running game and are the facts
+that source alone would have got wrong.
+
+* ✅ **The renderer recipe is confirmed end to end.** All 8 commit steps succeed,
+  including `WorldDrawLayer_Roads.RegenerateNow` and `_Rivers` — which the source read
+  could only mark ⚠️ UNCERTAIN because vanilla has no call site for them. Proven.
+* ⚡ **Writing all 21,872 tiles takes 0.1 seconds** and reading them back to validate takes
+  about as long. Bulk world editing is not expensive; the expensive part was always the load.
+* 🔴 **`BiomeDef.allowRivers` / `allowRoads` do not exist in the offline def dump.** All 80
+  biomes report neither field, yet live they are `False` on `Ocean`, `IceSheet` and
+  `GlacialPlain`. **This question cannot be answered offline.**
+* 🔴 **Biome-hiding is common, not theoretical.** An untouched quicktest world carries 20+
+  tiles whose rivers or roads exist in `potential*` and are invisible because the biome
+  forbids them. Paint water over a river and the river is still there, silently.
+* 🔴 **A contiguous tile-ID range is NOT a contiguous region on the globe.** Painting ids
+  20000–23999 produced scattered rosettes; importing ids 0–21871 into a 119,904-tile grid
+  produced a hard diagonal seam. Anything geographic must go through the neighbour graph,
+  never id arithmetic.
+* ⚠️ **`CameraJumper.TryShowWorld()` returns false unless `ProgramState == Playing`**, and
+  `start_debug_game_ready` at `readiness=mapData` does not guarantee that. Wait for Playing.
+* ⚠️ **The debug log has Auto-open ON and reopens on any warning**, obscuring screenshots.
+  Close-and-recheck in a loop immediately before every capture.
+* ⚠️ **`rimworld/search_debug_actions` timed out at 30s even on the 13-mod list.** The
+  documented debug-discovery hang is not only a heavy-modlist problem. Do not call it.
+* 🔑 **`build.py --apply` without `--gm` silently drops `jawa/fire_incident` and
+  `jawa/send_letter`.** It refuses and names them, but the flag must be `--gm --apply`.

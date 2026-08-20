@@ -193,7 +193,36 @@ verify:   lay a 3-tile river, read both endpoints of each link, clear the middle
 criteria: add, downgrade and REMOVE all three demonstrated with read-back, and a river
           laid under a biome with allowRivers=false is proven present in potentialRivers
           while absent from Rivers. That asymmetry is the whole point of the item.
-state:    ready
+state:    ✅ DONE — PASSED 2026-08-19. Every clause, with read-back.
+result:   SHIPPED: `world_links_get` · `world_links_set` · `world_links_clear` ·
+          `world_links_import` · `world_links_validate`.
+          ✅ ADD: a Creek laid along a 4-tile chain wrote BOTH endpoints of all 3 segments,
+             and `riverDist` accumulated 0 -> 1 -> 2 -> 3, which is the mouth-first order
+             working exactly as the source said.
+          ✅ UPGRADE: Creek -> HugeRiver took.
+          ✅ DOWNGRADE REFUSED: HugeRiver -> Creek left it HugeRiver. The silent
+             priority refusal is real and now demonstrated rather than assumed.
+          ✅ REMOVE — THE CAPABILITY VANILLA LACKS: clearing the middle segment removed
+             exactly **2 entries across 2 tiles** (the link and its mirror). Read-back
+             confirms each surviving tile keeps only its other link. This is the whole
+             reason the item existed: `OverlayRiver(from,to,null)` only logs ErrorOnce.
+          ✅ BIOME HIDING, PROVEN ON A REAL CASE rather than a manufactured one — the
+             validator found **20 live instances on an untouched quicktest world**.
+             Tile 139: biome `Ocean`, `allowRivers False`, `potentialRivers` holds TWO
+             `River` links, `visibleRivers 0`, `hiddenByBiome True`.
+             📌 And it caught my own test doing it: chain tile 5000 is Ocean, so the
+             river I had just laid was invisible the moment it was written.
+          ✅ NETWORK INTEGRITY after all that editing: **0 asymmetric, 0 non-adjacent**
+             across 4,226 river entries and 4,448 road entries.
+          🔴 DEF-DUMP BLIND SPOT FOUND, worth publishing: `BiomeDef.allowRivers` and
+             `allowRoads` are **absent from the offline def dump** - all 80 biomes report
+             neither field - yet live they are False on Ocean, IceSheet and GlacialPlain.
+             ⇒ this question CANNOT be answered offline. Anyone reasoning about which
+             biomes suppress links must ask the running game.
+          📌 `landlockedRiverTiles` came back 2,006 on the vanilla world. Reported as a
+             COUNT, never as a defect - the owner ruled low-accumulation rivers MAY die in
+             playas and salt pans, and only high-accumulation trunks must reach a sea.
+             W8's linter is where that distinction gets made.
 
 ## W5 G3 — tile mutators and landmarks
 row:      bridge-5

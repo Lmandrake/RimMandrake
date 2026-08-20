@@ -800,5 +800,474 @@ namespace JawaBench.BridgeTools
             });
         }
 
+
+        // ================================================================
+        //  W4 - G2 LINKS: rivers and roads.
+        //
+        //  Links live on SurfaceTile, not Tile:
+        //     struct RoadLink  { PlanetTile neighbor; RoadDef  road;  }
+        //     struct RiverLink { PlanetTile neighbor; RiverDef river; }
+        //  and BOTH endpoints carry an entry, so a through-tile appears twice.
+        //
+        //  🔴 Roads/Rivers are biome-FILTERED VIEWS:
+        //     Roads  => PrimaryBiome.allowRoads  ? potentialRoads  : null
+        //     Rivers => PrimaryBiome.allowRivers ? potentialRivers : null
+        //  A biome with allowRivers=false HIDES existing links without deleting
+        //  them. Validate against potential*; read the views to answer "what
+        //  does the player see". Two different questions, both needed.
+        //
+        //  🔴 OverlayRoad/OverlayRiver CANNOT REMOVE - null only logs ErrorOnce,
+        //  and a lower-priority overlay is silently refused. Removal and
+        //  downgrade are ours to build, and must touch BOTH endpoints.
+        // ================================================================
+
+        private static object LinkRows(SurfaceTile t, int id)
+        {
+            var roads = new List<object>();
+            if (t.potentialRoads != null)
+                foreach (var r in t.potentialRoads)
+                    roads.Add(new { neighbor = r.neighbor.tileId, def = r.road != null ? r.road.defName : null });
+            var rivers = new List<object>();
+            if (t.potentialRivers != null)
+                foreach (var r in t.potentialRivers)
+                    rivers.Add(new { neighbor = r.neighbor.tileId, def = r.river != null ? r.river.defName : null });
+
+            var b = t.PrimaryBiome;
+            return new
+            {
+                tile = id,
+                biome = b != null ? b.defName : null,
+                allowRoads = b != null && b.allowRoads,
+                allowRivers = b != null && b.allowRivers,
+                riverDist = t.riverDist,
+                potentialRoads = roads,
+                potentialRivers = rivers,
+                // The biome-filtered views - what the PLAYER sees.
+                visibleRoads = (t.Roads != null) ? t.Roads.Count : 0,
+                visibleRivers = (t.Rivers != null) ? t.Rivers.Count : 0,
+                hiddenByBiome = ((t.Roads == null && roads.Count > 0) || (t.Rivers == null && rivers.Count > 0)),
+            };
+        }
+
+        [Tool(
+            "jawa/world_links_get",
+            Description =
+                "Read river and road links on world tiles. Reports BOTH the raw " +
+                "potentialRoads/potentialRivers lists AND the biome-filtered Roads/Rivers " +
+                "views the player actually sees, plus a hiddenByBiome flag when they " +
+                "disagree - a biome with allowRivers=false hides links without deleting " +
+                "them, which looks exactly like a missing river. Also reports riverDist.",
+            ResultDescription = "success, count, tiles[] with potential* and visible* counts.")]
+        public static async Task<object> WorldLinksGet(
+            IRimBridgeContext ctx,
+            CancellationToken cancellationToken,
+            [ToolParameter(Description = "Comma-separated tile ids.")] string tiles = null,
+            [ToolParameter(Description = "Inclusive range 'from-to'.")] string range = null,
+            [ToolParameter(Description = "Only return tiles that HAVE at least one link.")] bool onlyLinked = false,
+            [ToolParameter(Description = "Max rows. Default 100.")] int limit = 100)
+        {
+            return await ctx.MainThread.InvokeAsync(() =>
+            {
+                if (Find.World == null || Find.WorldGrid == null) return Fail("No world is loaded.");
+
+                var ids = new List<int>(); var errors = new List<string>();
+                if (!string.IsNullOrEmpty(tiles))
+                    foreach (var part in tiles.Split(','))
+                    { int v; if (int.TryParse(part.Trim(), out v)) ids.Add(v); }
+                if (!string.IsNullOrEmpty(range))
+                {
+                    var bits = range.Split('-'); int a, b;
+                    if (bits.Length == 2 && int.TryParse(bits[0].Trim(), out a) && int.TryParse(bits[1].Trim(), out b))
+                        for (int i = Math.Min(a, b); i <= Math.Max(a, b); i++) ids.Add(i);
+                }
+                if (ids.Count == 0) return Fail("Give 'tiles' and/or 'range'.");
+
+                var outp = new List<object>(); int hidden = 0;
+                foreach (var id in ids)
+                {
+                    if (outp.Count >= Math.Max(1, limit)) break;
+                    string e; var t = SurfaceTileAt(id, out e);
+                    if (t == null) { errors.Add(e); continue; }
+                    bool has = (t.potentialRoads != null && t.potentialRoads.Count > 0)
+                            || (t.potentialRivers != null && t.potentialRivers.Count > 0);
+                    if (onlyLinked && !has) continue;
+                    var row = LinkRows(t, id);
+                    if ((bool)row.GetType().GetProperty("hiddenByBiome").GetValue(row, null)) hidden++;
+                    outp.Add(row);
+                }
+                return (object)new
+                {
+                    success = true, count = outp.Count, requested = ids.Count,
+                    hiddenByBiomeCount = hidden, errors, tiles = outp, ticksGame = TicksGameSafe(),
+                };
+            });
+        }
+
+        [Tool(
+            "jawa/world_links_set",
+            Description =
+                "Lay a river or road between adjacent tiles using RimWorld's own " +
+                "WorldGrid.OverlayRiver / OverlayRoad, which write BOTH endpoints and " +
+                "maintain riverDist. Takes a path of tile ids: '14,7367,7368' lays a link " +
+                "along each consecutive pair. " +
+                "RIVERS MUST BE LAID MOUTH FIRST, THEN UPSTREAM - OverlayRiver sets " +
+                "riverDist = max(riverDist, previous+1), so the wrong order gives wrong " +
+                "distances. " +
+                "NOTE Overlay* silently REFUSES a lower-priority def over a higher one " +
+                "(road.priority, river.degradeThreshold): to downgrade, use " +
+                "jawa/world_links_clear first. Does not redraw; call jawa/world_commit.",
+            ResultDescription = "success, laid, refused[], and a read-back of each touched tile.")]
+        public static async Task<object> WorldLinksSet(
+            IRimBridgeContext ctx,
+            CancellationToken cancellationToken,
+            [ToolParameter(Description = "'river' or 'road'.")] string kind = "river",
+            [ToolParameter(Description = "Ordered tile ids, comma separated. Consecutive pairs are linked. Rivers: MOUTH FIRST.")] string path = null,
+            [ToolParameter(Description = "RiverDef (Creek|River|LargeRiver|HugeRiver) or RoadDef (DirtPath|DirtRoad|StoneRoad|AncientAsphaltRoad|AncientAsphaltHighway).")] string def = null,
+            [ToolParameter(Description = "Read back at most this many tiles. Default 8.")] int readBack = 8)
+        {
+            return await ctx.MainThread.InvokeAsync(() =>
+            {
+                if (Find.World == null || Find.WorldGrid == null) return Fail("No world is loaded.");
+                var grid = Find.WorldGrid;
+                bool river = string.Equals(kind, "river", StringComparison.OrdinalIgnoreCase);
+                if (!river && !string.Equals(kind, "road", StringComparison.OrdinalIgnoreCase))
+                    return Fail("kind must be 'river' or 'road'.");
+                if (string.IsNullOrEmpty(def)) return Fail("Give a def.");
+
+                RiverDef rv = null; RoadDef rd = null;
+                if (river)
+                {
+                    rv = DefDatabase<RiverDef>.GetNamedSilentFail(def.Trim());
+                    if (rv == null) return Fail("No RiverDef '" + def + "'.", DefSuggestions<RiverDef>(def));
+                }
+                else
+                {
+                    rd = DefDatabase<RoadDef>.GetNamedSilentFail(def.Trim());
+                    if (rd == null) return Fail("No RoadDef '" + def + "'.", DefSuggestions<RoadDef>(def));
+                }
+
+                var ids = new List<int>();
+                foreach (var part in (path ?? "").Split(','))
+                { int v; if (int.TryParse(part.Trim(), out v)) ids.Add(v); }
+                if (ids.Count < 2) return Fail("Give at least two tile ids in 'path'.");
+
+                var refused = new List<object>(); int laid = 0;
+                var nbrs = new List<PlanetTile>();
+                for (int i = 0; i + 1 < ids.Count; i++)
+                {
+                    int a = ids[i], b = ids[i + 1];
+                    string e1, e2;
+                    var ta = SurfaceTileAt(a, out e1); var tb = SurfaceTileAt(b, out e2);
+                    if (ta == null || tb == null) { refused.Add(new { from = a, to = b, why = e1 ?? e2 }); continue; }
+
+                    nbrs.Clear(); grid.GetTileNeighbors(a, nbrs);
+                    bool adjacent = nbrs.Any(n => n.tileId == b);
+                    if (!adjacent) { refused.Add(new { from = a, to = b, why = "not adjacent" }); continue; }
+
+                    if (river) grid.OverlayRiver(a, b, rv); else grid.OverlayRoad(a, b, rd);
+                    laid++;
+                }
+
+                var back = new List<object>();
+                foreach (var id in ids)
+                {
+                    if (back.Count >= Math.Max(0, readBack)) break;
+                    string e; var t = SurfaceTileAt(id, out e);
+                    if (t != null) back.Add(LinkRows(t, id));
+                }
+
+                return (object)new
+                {
+                    success = true, kind, def, laid, pairs = Math.Max(0, ids.Count - 1),
+                    refused,
+                    note = "Overlay* refuses a lower-priority def silently. Nothing is visible until jawa/world_commit.",
+                    tiles = back, ticksGame = TicksGameSafe(),
+                };
+            });
+        }
+
+        [Tool(
+            "jawa/world_links_clear",
+            Description =
+                "REMOVE river or road links - capability RimWorld itself does not have. " +
+                "WorldGrid.OverlayRiver/OverlayRoad refuse a null def (Log.ErrorOnce " +
+                "'Attempted to remove road with overlayRoad; not supported'), so removal " +
+                "means editing SurfaceTile.potentialRivers / potentialRoads directly, and " +
+                "on BOTH endpoints or the link survives from the other side. " +
+                "Clears every link on the named tiles, or only the segment between a " +
+                "specific pair when 'to' is given. Does not redraw; call jawa/world_commit.",
+            ResultDescription = "success, removedEntries, tilesTouched, and a read-back.")]
+        public static async Task<object> WorldLinksClear(
+            IRimBridgeContext ctx,
+            CancellationToken cancellationToken,
+            [ToolParameter(Description = "'river', 'road', or 'both'. Default both.")] string kind = "both",
+            [ToolParameter(Description = "Comma-separated tile ids to clear.")] string tiles = null,
+            [ToolParameter(Description = "Inclusive range 'from-to'.")] string range = null,
+            [ToolParameter(Description = "If given with a single tile in 'tiles', remove only the segment between them (both directions).")] int to = -1,
+            [ToolParameter(Description = "Read back at most this many tiles. Default 8.")] int readBack = 8)
+        {
+            return await ctx.MainThread.InvokeAsync(() =>
+            {
+                if (Find.World == null || Find.WorldGrid == null) return Fail("No world is loaded.");
+                bool doRivers = kind == "both" || string.Equals(kind, "river", StringComparison.OrdinalIgnoreCase);
+                bool doRoads = kind == "both" || string.Equals(kind, "road", StringComparison.OrdinalIgnoreCase);
+                if (!doRivers && !doRoads) return Fail("kind must be 'river', 'road' or 'both'.");
+
+                var ids = new List<int>();
+                if (!string.IsNullOrEmpty(tiles))
+                    foreach (var part in tiles.Split(','))
+                    { int v; if (int.TryParse(part.Trim(), out v)) ids.Add(v); }
+                if (!string.IsNullOrEmpty(range))
+                {
+                    var bits = range.Split('-'); int a, b;
+                    if (bits.Length == 2 && int.TryParse(bits[0].Trim(), out a) && int.TryParse(bits[1].Trim(), out b))
+                        for (int i = Math.Min(a, b); i <= Math.Max(a, b); i++) ids.Add(i);
+                }
+                if (ids.Count == 0) return Fail("Give 'tiles' and/or 'range'.");
+
+                int removed = 0; var touched = new HashSet<int>();
+
+                // Removing one entry always means removing its mirror on the other
+                // endpoint too, or the link is still there when read from that side.
+                Action<int, int> clearPair = (a, b) =>
+                {
+                    string e; var ta = SurfaceTileAt(a, out e);
+                    if (ta == null) return;
+                    if (doRivers && ta.potentialRivers != null)
+                    {
+                        int n = ta.potentialRivers.RemoveAll(l => b < 0 || l.neighbor.tileId == b);
+                        if (n > 0) { removed += n; touched.Add(a); }
+                    }
+                    if (doRoads && ta.potentialRoads != null)
+                    {
+                        int n = ta.potentialRoads.RemoveAll(l => b < 0 || l.neighbor.tileId == b);
+                        if (n > 0) { removed += n; touched.Add(a); }
+                    }
+                };
+
+                if (to >= 0 && ids.Count == 1)
+                {
+                    clearPair(ids[0], to);
+                    clearPair(to, ids[0]);
+                }
+                else
+                {
+                    foreach (var id in ids)
+                    {
+                        // Collect the far endpoints first, then clear their mirrors.
+                        string e; var t = SurfaceTileAt(id, out e);
+                        if (t == null) continue;
+                        var far = new List<int>();
+                        if (doRivers && t.potentialRivers != null) far.AddRange(t.potentialRivers.Select(l => l.neighbor.tileId));
+                        if (doRoads && t.potentialRoads != null) far.AddRange(t.potentialRoads.Select(l => l.neighbor.tileId));
+                        clearPair(id, -1);
+                        foreach (var f in far.Distinct()) clearPair(f, id);
+                    }
+                }
+
+                var back = new List<object>();
+                foreach (var id in ids)
+                {
+                    if (back.Count >= Math.Max(0, readBack)) break;
+                    string e; var t = SurfaceTileAt(id, out e);
+                    if (t != null) back.Add(LinkRows(t, id));
+                }
+
+                return (object)new
+                {
+                    success = true, kind, removedEntries = removed,
+                    tilesTouched = touched.Count,
+                    note = "Both endpoints were cleared. Nothing is visible until jawa/world_commit.",
+                    tiles = back, ticksGame = TicksGameSafe(),
+                };
+            });
+        }
+
+        private static TileCsv ReadTileCsv2(string path, out string err) { return ReadTileCsv(path, out err); }
+
+        [Tool(
+            "jawa/world_links_import",
+            Description =
+                "Import rivers and roads from a CSV file with columns kind,a,b,def " +
+                "(kind is 'river' or 'road'; a and b are adjacent tile ids). Rivers are " +
+                "laid before roads, and rivers are applied IN FILE ORDER so the file must " +
+                "already be mouth-first. Dry run by default; pass apply=true. " +
+                "Optionally clears existing links on the touched tiles first. " +
+                "Does not redraw; call jawa/world_commit after.",
+            ResultDescription = "success, dryRun, rows, rivers, roads, refused[], unknownDefs[].")]
+        public static async Task<object> WorldLinksImport(
+            IRimBridgeContext ctx,
+            CancellationToken cancellationToken,
+            [ToolParameter(Description = "Absolute path to the links CSV.")] string path = null,
+            [ToolParameter(Description = "Write for real. Default false.")] bool apply = false,
+            [ToolParameter(Description = "Refuse unless WorldGrid.TilesCount equals this. 0 = no check.")] int expectTiles = 0,
+            [ToolParameter(Description = "Clear existing links on every touched tile first.")] bool clearFirst = false)
+        {
+            return await ctx.MainThread.InvokeAsync(() =>
+            {
+                if (Find.World == null || Find.WorldGrid == null) return Fail("No world is loaded.");
+                var grid = Find.WorldGrid;
+                if (expectTiles > 0 && grid.TilesCount != expectTiles)
+                    return Fail("REFUSING: grid has " + grid.TilesCount + " tiles, expected " + expectTiles + ".");
+
+                string err; var csv = ReadTileCsv2(path, out err);
+                if (csv == null) return Fail(err);
+                if (!csv.Col.ContainsKey("kind") || !csv.Col.ContainsKey("a") || !csv.Col.ContainsKey("b") || !csv.Col.ContainsKey("def"))
+                    return Fail("Links CSV needs columns kind,a,b,def. Header: " + string.Join(",", csv.Header.ToArray()));
+
+                var unknown = new HashSet<string>(); var refused = new List<object>();
+                int rivers = 0, roads = 0, rows = 0;
+                var pending = new List<Tuple<bool, int, int, string>>();
+
+                foreach (var row in csv.Rows)
+                {
+                    rows++;
+                    var k = Cell(csv, row, "kind"); var aS = Cell(csv, row, "a");
+                    var bS = Cell(csv, row, "b"); var dS = Cell(csv, row, "def");
+                    int a, b;
+                    if (k == null || aS == null || bS == null || dS == null
+                        || !int.TryParse(aS, out a) || !int.TryParse(bS, out b))
+                    { refused.Add(new { row = rows, why = "malformed" }); continue; }
+                    bool isRiver = k.Equals("river", StringComparison.OrdinalIgnoreCase);
+                    pending.Add(Tuple.Create(isRiver, a, b, dS));
+                }
+
+                if (clearFirst && apply)
+                {
+                    var touched = new HashSet<int>();
+                    foreach (var p in pending) { touched.Add(p.Item2); touched.Add(p.Item3); }
+                    foreach (var id in touched)
+                    {
+                        string e; var t = SurfaceTileAt(id, out e);
+                        if (t == null) continue;
+                        if (t.potentialRivers != null) t.potentialRivers.Clear();
+                        if (t.potentialRoads != null) t.potentialRoads.Clear();
+                    }
+                }
+
+                // Rivers first, in file order (mouth-first is the file's responsibility),
+                // then roads - matching the order vanilla's own worldgen steps use.
+                foreach (var pass in new[] { true, false })
+                    foreach (var p in pending)
+                    {
+                        if (p.Item1 != pass) continue;
+                        string e1, e2;
+                        var ta = SurfaceTileAt(p.Item2, out e1); var tb = SurfaceTileAt(p.Item3, out e2);
+                        if (ta == null || tb == null) { if (refused.Count < 30) refused.Add(new { from = p.Item2, to = p.Item3, why = e1 ?? e2 }); continue; }
+
+                        if (p.Item1)
+                        {
+                            var rv = DefDatabase<RiverDef>.GetNamedSilentFail(p.Item4);
+                            if (rv == null) { unknown.Add(p.Item4); continue; }
+                            if (apply) grid.OverlayRiver(p.Item2, p.Item3, rv);
+                            rivers++;
+                        }
+                        else
+                        {
+                            var rd = DefDatabase<RoadDef>.GetNamedSilentFail(p.Item4);
+                            if (rd == null) { unknown.Add(p.Item4); continue; }
+                            if (apply) grid.OverlayRoad(p.Item2, p.Item3, rd);
+                            roads++;
+                        }
+                    }
+
+                return (object)new
+                {
+                    success = true, dryRun = !apply, path, rows, rivers, roads,
+                    clearedFirst = clearFirst && apply,
+                    unknownDefs = unknown.ToList(), refused,
+                    note = apply ? "Written. Call jawa/world_commit." : "DRY RUN - pass apply=true.",
+                    ticksGame = TicksGameSafe(),
+                };
+            });
+        }
+
+        [Tool(
+            "jawa/world_links_validate",
+            Description =
+                "Check the integrity of the live river/road network. Reports: links whose " +
+                "mirror entry is MISSING on the far endpoint (asymmetric, the classic " +
+                "corruption), links to non-adjacent tiles, links HIDDEN by their tile's " +
+                "biome (allowRoads/allowRivers false), and river mouths - river tiles with " +
+                "no water-covered neighbour. Optionally compares against a links CSV.",
+            ResultDescription = "success, riverEntries, roadEntries, asymmetric[], nonAdjacent[], hidden[], landlockedRivers.")]
+        public static async Task<object> WorldLinksValidate(
+            IRimBridgeContext ctx,
+            CancellationToken cancellationToken,
+            [ToolParameter(Description = "Optional links CSV to compare against.")] string path = null,
+            [ToolParameter(Description = "Max examples per category. Default 15.")] int limit = 15)
+        {
+            return await ctx.MainThread.InvokeAsync(() =>
+            {
+                if (Find.World == null || Find.WorldGrid == null) return Fail("No world is loaded.");
+                var grid = Find.WorldGrid;
+                int n = grid.TilesCount;
+
+                var asym = new List<object>(); var nonAdj = new List<object>(); var hidden = new List<object>();
+                int riverEntries = 0, roadEntries = 0, riverTiles = 0, landlocked = 0;
+                var nbrs = new List<PlanetTile>();
+
+                for (int i = 0; i < n; i++)
+                {
+                    var t = grid[i] as SurfaceTile;
+                    if (t == null) continue;
+                    bool hasRiver = t.potentialRivers != null && t.potentialRivers.Count > 0;
+                    if (hasRiver) riverTiles++;
+
+                    var b = t.PrimaryBiome;
+                    if (b != null)
+                    {
+                        if (!b.allowRivers && hasRiver && hidden.Count < limit)
+                            hidden.Add(new { tile = i, kind = "river", biome = b.defName, links = t.potentialRivers.Count });
+                        if (!b.allowRoads && t.potentialRoads != null && t.potentialRoads.Count > 0 && hidden.Count < limit)
+                            hidden.Add(new { tile = i, kind = "road", biome = b.defName, links = t.potentialRoads.Count });
+                    }
+
+                    nbrs.Clear(); grid.GetTileNeighbors(i, nbrs);
+
+                    if (t.potentialRivers != null)
+                        foreach (var l in t.potentialRivers)
+                        {
+                            riverEntries++;
+                            int far = l.neighbor.tileId;
+                            if (!nbrs.Any(x => x.tileId == far)) { if (nonAdj.Count < limit) nonAdj.Add(new { tile = i, to = far, kind = "river" }); continue; }
+                            var tf = (far >= 0 && far < n) ? grid[far] as SurfaceTile : null;
+                            bool mirror = tf != null && tf.potentialRivers != null && tf.potentialRivers.Any(x => x.neighbor.tileId == i);
+                            if (!mirror && asym.Count < limit) asym.Add(new { tile = i, to = far, kind = "river", def = l.river != null ? l.river.defName : null });
+                        }
+
+                    if (t.potentialRoads != null)
+                        foreach (var l in t.potentialRoads)
+                        {
+                            roadEntries++;
+                            int far = l.neighbor.tileId;
+                            if (!nbrs.Any(x => x.tileId == far)) { if (nonAdj.Count < limit) nonAdj.Add(new { tile = i, to = far, kind = "road" }); continue; }
+                            var tf = (far >= 0 && far < n) ? grid[far] as SurfaceTile : null;
+                            bool mirror = tf != null && tf.potentialRoads != null && tf.potentialRoads.Any(x => x.neighbor.tileId == i);
+                            if (!mirror && asym.Count < limit) asym.Add(new { tile = i, to = far, kind = "road", def = l.road != null ? l.road.defName : null });
+                        }
+
+                    // A river tile with no water neighbour is a candidate "reaches no sea".
+                    // The owner's ruling: only HIGH-accumulation trunks must reach a sea,
+                    // so this is a count to look at, never an automatic defect.
+                    if (hasRiver && !nbrs.Any(x => { var q = grid[x.tileId] as SurfaceTile; return q != null && q.WaterCovered; }))
+                        landlocked++;
+                }
+
+                return (object)new
+                {
+                    success = true,
+                    tilesScanned = n,
+                    riverEntries, roadEntries, riverTiles,
+                    asymmetricCount = asym.Count, nonAdjacentCount = nonAdj.Count,
+                    hiddenByBiomeCount = hidden.Count,
+                    landlockedRiverTiles = landlocked,
+                    landlockedNote = "Not automatically a defect - the owner ruled low-accumulation rivers MAY die in playas or salt pans; only high-accumulation trunks must reach a sea.",
+                    asymmetric = asym, nonAdjacent = nonAdj, hiddenByBiome = hidden,
+                    ticksGame = TicksGameSafe(),
+                };
+            });
+        }
+
     }
 }
