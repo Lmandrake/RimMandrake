@@ -1,6 +1,6 @@
 ---
 name: rimbridge
-description: Drive a live RimWorld from outside via the RimBridgeServer GABP bridge and its 91-tool JawaBench companion - author the planet (tiles, biomes, rivers, roads, mutators, landmarks, settlements, regions), author the map (terrain, substructure, buildings, prefab copy-paste, fog, snow, zones), deep-edit pawns (name, backstory, traits, skills, gear, health, faction, ideoligion, genes, age), and drive weather, game conditions and raids. Use when automating in-game testing, building map or world content, debugging mods without clicking, or whenever a bridge call reports success and the game did not move.
+description: Drive a live RimWorld from outside via the RimBridgeServer GABP bridge and its JawaBench companion - author the planet, author the map, deep-edit pawns, and drive weather, game conditions and raids. Use when automating in-game testing, building map or world content, debugging mods without clicking, and above all whenever a bridge call reports success and the game did not move.
 ---
 
 # Driving RimWorld from the outside
@@ -9,12 +9,13 @@ Every claim here was **verified against a running game**. Nothing is repeated
 from documentation without a live test. Guesses are marked ❓, provisional
 findings ⚠️.
 
-**Skim the contents of `references/traps.md` before your first mutation, then
-read the entries that match what you are about to do.** It is far too long to
-read whole and every entry cost a real debugging cycle — so it opens with a
-table of contents. **Read that, not the whole file**, and open only what matches
-your task. The entries marked 🔴 have each destroyed something real; read those
-whatever else you skip.
+**`references/traps.md` is ~45 KB and deliberately has no index** — it is appended to, not
+curated. Do not read it whole. **Grep it for your verb** (`grep -i -n "roof\|spawn\|screenshot" traps.md`)
+and read the hits, plus every entry marked 🔴 — those have each destroyed something real.
+
+🔴 **Before your first WRITE of any session, read `references/silent-failures.md` instead.**
+That is the catalogue of engine calls that report success and change nothing, and it is the
+single most expensive knowledge in this project.
 
 ⚠️ **If you are about to unpause or spawn a hostile, read §4b first; if you are
 about to enumerate debug actions, read §4. Those are the ones that have destroyed
@@ -22,7 +23,25 @@ things** — a colony and a 568-mod game respectively.
 
 ---
 
-## 0. 🔴 You probably may not drive this. The bridge belongs to CHECK.
+## 0. Where to go — read this row, then that file
+
+| you are about to | read |
+|---|---|
+| 🔴 **write ANYTHING to the game** | **`references/silent-failures.md`** — 30+ engine calls that report success and change nothing. The most expensive knowledge in the project |
+| author the **planet** — tiles, biomes, rivers, roads, mutators, landmarks, settlements, regions | `references/world-authoring.md` |
+| author a **map** — terrain, substructure, buildings, prefab copy/paste, fog, snow, zones | `references/map-authoring.md` |
+| edit **pawns**, or make pawns that live somewhere | `references/pawn-authoring.md` |
+| **add a tool the bridge does not have** | the `rimbridge-companion` skill |
+| something "worked" and did not | grep `references/traps.md` for your verb |
+| optimise, or quote a timing | `references/performance.md` |
+
+**The house rule everything collapses to:**
+> **Write → read back the RAW field → look at the screen.**
+> ⛔ A tool returning `success: true` is not evidence. It never was.
+
+---
+
+## 0b. 🔴 You probably may not drive this. The bridge belongs to CHECK.
 
 **Owner's ruling, 2026-08-15.** Bridge rights are **AGENT CHECK's at all times**.
 No other seat connects and drives the game on its own initiative.
@@ -123,16 +142,17 @@ Guessing `jawa/` is wrong about 84% of the time by count.
 
 ### Census the companion before you trust any `jawa/` call
 
-**The companion is 91 `jawa/` tools as of 2026-08-19** (was 32 that morning), across four
-source files:
+**The companion was 91 `jawa/` tools on 2026-08-19** (32 that morning), across five source
+files. 🔴 **That number rots — count it, never quote it.** This table is a map of WHERE
+things live, not an authority on how many:
 
 | file | tools | reference |
 |---|---|---|
-| `JawaBenchTerrainTools.cs` | 32 | the original map/pawn/terrain set |
+| `JawaBenchTerrainTools.cs` | 32 | the original terrain/pawn/thing set — incl. `set_faction_relation`, `ideo_of`, `fire_quest`, `world_neighbors` |
 | `JawaBenchWorldTools.cs` | 25 | `references/world-authoring.md` |
-| `JawaBenchMapTools.cs` | 16 | `references/map-authoring.md` |
+| `JawaBenchMapTools.cs` | 15 | `references/map-authoring.md` |
 | `JawaBenchPawnTools.cs` | 14 | `references/pawn-authoring.md` |
-| `JawaBenchEventTools.cs` | 5 | weather · conditions · raids · storyteller |
+| `JawaBenchEventTools.cs` | 5 | `weather_get` · `raid_preview` (reads) · `weather_set` · `game_condition` · `fire_raid` (GM-gated) |
 
 **First call of any session: count the `jawa/` names the bridge reports.** Companions
 register only at RimBridgeServer startup, so a low count means the deploy did not take,
@@ -296,7 +316,7 @@ on `"<defName>\t (<label>)"`, with a real tab:
 
 ```python
 ch = rb.call("rimworld/list_debug_action_children", {"path": node})["children"]
-P  = next(c["path"] for c in ch if c["path"].split(chr(92))[-1].startswith("BTD_Jawa"))
+P  = next(c["path"] for c in ch if c["path"].split(chr(92))[-1].startswith("MandrakeJawa"))
 ```
 
 `Actions\Spawn Pawn...\<Kind>` takes the bare defName and works, so the tab
@@ -331,7 +351,7 @@ wrong; only the combination was.
 ## 5. Map authoring
 
 Building structures, painting terrain, batching spawns, clearing ground, staging
-a pawn for a photograph, and the full table of the companion's `jawa/` tools:
+a pawn for a photograph, and the map-scoped tools (15 of the companion's total; the world, pawn and event families have their own reference files):
 **`references/map-authoring.md`**. Read it before your first
 `apply_architect_designator`, `jawa/set_terrain*` or `jawa/spawn_batch` call —
 four of the things in it are one-way doors:
@@ -367,6 +387,18 @@ hundred, and the load is seconds rather than half an hour.
 ---
 
 ## 7. Keep this skill learning
+
+**Where a new finding goes — decide by WHAT FAILED, not by which file you read last:**
+
+| the finding | file |
+|---|---|
+| an **engine API** reported success and changed nothing | 🔴 `references/silent-failures.md` |
+| the **bridge, client, build or workflow** misled you | `references/traps.md` |
+| a `jawa/world_*` behaviour | `references/world-authoring.md` |
+| a `jawa/`-map or building behaviour | `references/map-authoring.md` |
+| a pawn-editing behaviour | `references/pawn-authoring.md` |
+| a timing number | `references/performance.md` |
+
 
 After any RimBridge task, ask **what surprised you**.
 
@@ -420,20 +452,3 @@ documented, supported path, not a hack** — it is where all 91 `jawa/` tools ca
 edit→build→deploy→test cycle (about **one minute** on a minimal mod list), the build
 guards, and the traps that make a new tool silently absent.
 `references/extending.md` keeps the lower-level assembly and csproj detail.
-
-
-## 10. Read these before you author anything
-
-| read | when |
-|---|---|
-| 🔴 **`references/silent-failures.md`** | **before your first write of any session.** Every entry is an engine call that reports success and changes nothing. This is the most expensive knowledge in the project |
-| `references/world-authoring.md` | authoring the planet — tiles, links, mutators, landmarks, regions, settlements |
-| `references/map-authoring.md` | authoring a map — terrain, substructure, buildings, prefabs, grids, zones |
-| `references/pawn-authoring.md` | editing pawns, or making pawns that live somewhere |
-| `references/traps.md` | before your first mutation, and when something "worked" and did not |
-| `references/performance.md` | before you optimise or quote a timing |
-| `references/capability-matrix.md` | "can the bridge do X" |
-
-**The house rule that all of it collapses to:**
-> **Write → read back the RAW field → look at the screen.**
-> ⛔ A tool returning `success: true` is not evidence. It never was.

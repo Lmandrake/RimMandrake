@@ -131,7 +131,7 @@ RimWorld's own `Set terrain (rect)` and `Clear area (rect)` still return
 |---|---|
 | `jawa/set_pawn_rotation` | turn pawns to a named facing and **freeze them there** with `debugRotLocked`. A bare rotation write does not survive: the rotation tracker re-faces every pawn each tick from its job and drafted state. `dir='unlock'` releases. 🔴 **Always unlock when done** — `debugRotLocked` is written by `Thing.ExposeData`, so a pawn left locked stays locked across a save and load |
 | `jawa/set_pawn_style` | hair, hair colour, beard, face and body tattoo, head type, body type, fur, skin colour. Every field optional; all defNames resolve **before** anything is written, so a typo changes nothing. Calls `Notify_StyleItemChanged()`, which is what rebuilds the graphics — without it the change is correct in the save and stale on screen |
-| `jawa/set_pawn_xenotype` | convert spawned pawns to a XenotypeDef in place — what the vanilla dev "Set xenotype" action does, which is `pawn.genes?.SetXenotype(def)` and nothing else. ⚠️ It clears **xenogenes only**: an inheritable xenotype's genes land as endogenes and survive a later conversion, so pass `clearEndogenes` when converting a pawn that already has one. Jawa xenotypes on this stack: `BTD_Jawa` (the one our patches target), `OuterRim_Jawa`, `guy762_xenotype_jawa` |
+| `jawa/set_pawn_xenotype` | convert spawned pawns to a XenotypeDef in place — what the vanilla dev "Set xenotype" action does, which is `pawn.genes?.SetXenotype(def)` and nothing else. ⚠️ It clears **xenogenes only**: an inheritable xenotype's genes land as endogenes and survive a later conversion, so pass `clearEndogenes` when converting a pawn that already has one. Jawa xenotypes on this stack, re-measured 2026-08-19: `MandrakeJawa` (35 genes, the owner's hand-built set and the only active one) and `RimMandrakeJawa` (24, generator output), both from `mandrake.starwarsraces`. ⚠️ `BTD_Jawa`, `OuterRim_Jawa` and `guy762_xenotype_jawa` are ALL GONE — the donor mods were switched off. Both live ones are labelled "Jawa", so read the defName, never the label |
 
 ⚠️ **All three refuse rather than pretend when the DLC is absent** — tattoos need
 Ideology and xenotypes need Biotech, and RimWorld's own setters *return silently*
@@ -202,7 +202,7 @@ reversible". On a colony that matters, **the save is the undo.**
 
 ---
 
-# The 16 map tools — added 2026-08-19
+# The 15 map tools — added 2026-08-19
 
 Everything below is proven live. Silent-failure catalogue: `silent-failures.md`.
 

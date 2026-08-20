@@ -289,6 +289,17 @@ Its `BTD_Data/XenotypeEquivalencies.xml` maps each species to its BTD, SWX and O
 equivalents, and it keeps its own. So `OuterRim_Jawa` and `guy762_xenotype_jawa`
 load and are then removed; `BTD_Jawa` survives.
 
+🔴 **AND THE SURVIVOR EXPIRES.** That sentence was measured with the three donor
+mods active. They were later switched off in favour of one authored species mod,
+and today **none of those three names loads** — the live Jawa xenotypes are
+`MandrakeJawa` and `RimMandrakeJawa`, from `mandrake.starwarsraces`. Patches still
+aimed at `BTD_Jawa` had been matching nothing for days without logging a thing,
+because a `PatchOperationConditional` on a missing def is a silent no-op.
+
+⇒ **"X is the one that survives dedup" is a fact about a MOD LIST, not about a
+def.** Re-measure it after any change to the active set, and treat a survivor name
+written in a doc as a claim with an expiry date, not as a constant.
+
 ⇒ **A def dump captures pre-deletion state; the live process is post-deletion.**
 Both readings are correct about their own moment, and no mod-list check finds
 this — all three mods are active and all three files are on disk.

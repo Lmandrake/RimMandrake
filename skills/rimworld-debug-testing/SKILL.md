@@ -248,6 +248,12 @@ A def dump taken before that ran showed **three** Jawa xenotypes and named
 not exist** — BTD deduped it away and remapped the pins onto `BTD_Jawa`. Two
 rulings were made on the dump and both were wrong.
 
+⚠️ **Read that example for its MECHANISM, not its answer.** The donors were later
+switched off for one authored species mod, so `BTD_Jawa` does not exist either any
+more. A dedup winner is a property of the active mod list and it expires when the
+list changes — which makes the point sharper, not weaker: the dump could not tell
+you the winner then, and a doc recording the old winner cannot tell you now.
+
 > **When the question is "what does the game HAVE?", only the live game or the
 > log can answer it.** The dump answers "what is on disk", which is a different
 > question wearing the same words.
@@ -285,8 +291,10 @@ all three together.
 **How to settle one of these live, cheaply:** ask the running game to USE the def,
 do not just look it up, and put a known-good def through the same call as a
 control. `jawa/set_pawn_xenotype` returning *"No XenotypeDef named 'X'"* while
-converting a live pawn to `BTD_Jawa` in the same call rules out tool, spelling and
-plumbing in one move. ⚠️ `No <DefType> named '<defName>'` is real absence;
+converting a live pawn to a def you KNOW loads in the same call rules out tool,
+spelling and plumbing in one move. ⚠️ Pick that control fresh from the current def
+dump — a known-good defName goes stale the moment the mod list changes, and the one
+this example used to name (`BTD_Jawa`) is itself gone now. ⚠️ `No <DefType> named '<defName>'` is real absence;
 `No def type named '<defType>'` is a typo in YOUR question.
 
 ## 6. Choosing: bridge test, quicktest, or a real load
