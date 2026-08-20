@@ -39,10 +39,15 @@ a **user rules** database — for RimSort,
 `%LOCALAPPDATA%/RimSort/dbs/userRules.json` — and the distinction that matters
 is:
 
-- **`loadBottom`** is a *hint*. It asks for "near the end" and creates no edge,
-  so nothing prevents another mod landing after you. Several mods claim it and
-  it cannot order them among themselves.
-- **`loadAfter`** is a *constraint*. A topological sort cannot violate it.
+- **`loadAfter`** is a *constraint* — it compiles to a real edge in the dependency
+  graph, and a topological sort cannot violate it. **This is the one you want.**
+- **`loadBottom`** is neither a hint nor a stronger constraint. It compiles to
+  membership in a **tier**, and RimSort sorts four tiers independently then
+  concatenates them. ⚠️ **The tier split silently DELETES any `loadAfter` /
+  `loadBefore` edge that crosses a tier boundary** (`app/sort/dependencies.py`
+  intersects each tier's subgraph with `& tier_mods`). Nothing is logged.
+  🔑 Read out of RimSort's own source, 2026-08-19 — see
+  `skills/rimworld-start-prep/SKILL.md`, which owns this and carries the code.
 
 Write one `loadAfter` edge per mod you patch. After that the manager produces the
 right order unaided and your assertion becomes a cheap safety net rather than a
