@@ -48,13 +48,34 @@ def describe(p, label):
 
 
 def which_is_live():
+    """
+    Which stored list the live file IS -- by the MOD LIST, not by the bytes.
+
+    🔴 It used to compare md5 of the whole file, and that cried wolf. RimSort
+    rewrites ModsConfig.xml with its own formatting every time it saves, so on
+    2026-08-20 the live file and FULL.LATEST held the SAME 578 mods in the SAME
+    order and still reported "someone edited it" -- measured: same set True,
+    order differences 0, different md5. A status line that says the owner's list
+    has been tampered with when nothing has changed is worse than no status line,
+    because the next real tampering reads as more of the same.
+
+    So: compare activeMods, in order. Byte-identical is reported too, because
+    "identical" and "same mods, reformatted" are different facts and the second
+    one is the one somebody will want to know about.
+    """
     if not os.path.exists(LIVE):
         return "NO LIVE FILE"
-    lm = md5(LIVE)
+    live_ids = mods(LIVE)
+    if live_ids is None:
+        return "LIVE FILE UNREADABLE"
     for path, name in ((FULL, "FULL"), (MINIMAL, "MINIMAL")):
-        if os.path.exists(path) and md5(path) == lm:
-            return name
-    return "UNRECOGNISED (neither FULL nor MINIMAL - someone edited it)"
+        if not os.path.exists(path):
+            continue
+        if mods(path) == live_ids:
+            if md5(path) == md5(LIVE):
+                return name
+            return "%s (same mods and order; file reformatted, e.g. by RimSort)" % name
+    return "UNRECOGNISED (neither FULL nor MINIMAL - the MOD LIST differs, not just the bytes)"
 
 
 def snapshot():
