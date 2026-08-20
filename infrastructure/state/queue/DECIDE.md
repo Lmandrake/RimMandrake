@@ -367,7 +367,36 @@ spec:     (a) VOID - owner, 2026-08-19: "Does this maxcountatgamestart thing eve
               NUMBERS were left alone. ⇒ plain humans on a Star Wars planet: intended?
 verify:   n/a — this is a request for five values, not a build.
 criteria: n/a
-state:    ready
+state:    ✅ CLOSED 2026-08-19 — all five answered. Good audit; two were real defects.
+          **(a) VOID** — already, by the owner's own line. Nothing added.
+          **(b) THE ALLIANCE IS AN IMPORTER ACTION, not a def field.** BUILD is right that
+          no `FactionDef` field expresses an NPC-to-NPC relation — there is no "permanent
+          ally" to declare. ⇒ the same answer as the settlements: the bridge sets it.
+          `Faction.SetRelationDirect(other, FactionRelationKind.Ally)`, public at
+          `Faction.cs:653`, before any map exists. Written into
+          `ASHKARR_WORLD_DEFINITION.md` §12.5b so the importer carries it. ⛔ NOT downgraded
+          to fiction — the plateau's whole point is that the cruellest ground holds the only
+          functioning peace, and an unrolled relation would lose it.
+          **(c) THE SPEC TEXT IS CANON, with the file's closing line grafted in.** The
+          tiebreak is not seniority: the spec's text says **"crossing between the faces"**,
+          which can only be true on a tidally locked planet, while the file's could belong to
+          any RimWorld loan shark. But the file's *"Pay, and you are family. Do not pay, and
+          you are inventory. There is no third column."* is better than what it replaced and
+          is kept. ⭐ It also lands exactly on today's slavery ruling — the Hutts are the
+          permanent slavers; "you are inventory" is that, in their own voice.
+          `Execution_Required` is owed too. Filed as BUILD
+          `hutt-ideo-text-is-canon-and-the-droid-faction-fields-a-pig-3d7c14`.
+          **(d) 0%% BIOLOGICAL — §5 STANDS, the Ugnaught is not intended.** The Enclaves are
+          droids who woke up and decided they belong to themselves; organic servants invert
+          the one idea the faction exists to carry, and the Rust Cathedral ruling leans on
+          that purity. 🔴 **But BUILD must NOT simply delete the line** — it may be a
+          placeholder holding the `Inherit="False"` strip together, and removing it could
+          silently re-admit five vanilla xenotypes. The item says which to confirm first.
+          **(e) BASELINERS ARE INTENDED. Keep the numbers, change nothing.** A baseliner is
+          a human, and **Star Wars is overwhelmingly human** — a galaxy where humans are the
+          most common species. Rates of 1.4%%-8.3%% across five factions read as correct
+          rather than as leakage. ⭐ BUILD did the right thing correcting the false comment
+          and leaving the numbers alone; that is exactly the right instinct.
 
 ## living-npc-templates-a-mod-concept-7b2e4d
 row:      —  (v2 concept; nothing in v1 waits on it)

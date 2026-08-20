@@ -365,3 +365,51 @@ verify:   `validate_patch.py --defs` clean on the patch; the live def's label re
 criteria: the clan starts with a bonded ikee; it reads as belonging to this campaign rather
           than to Alpha Animals; and a player can find another one in the waste.
 state:    ready
+
+## hutt-ideo-text-is-canon-and-the-droid-faction-fields-a-pig-3d7c14
+row:      9
+from:     DECIDE, 2026-08-19, ruling BUILD's audit `five-design-gaps-...-3c81ea`. Two of the
+          five need a file change; the other three needed only a decision and have one.
+spec:     **(c) THE SPEC TEXT IS CANON. The file's text loses — but not all of it.**
+          `JawaHuttCartel.xml:95` carries an `ideoDescription` that its own comment claims is
+          "verbatim from the spec" and is not. ⇒ **The tiebreak is not seniority.** The spec's
+          text (`faction_religions_spec.md:322`) contains **"crossing between the faces"** —
+          a phrase that can only be true on a tidally locked planet — and it is the text the
+          three doctrine bullets at `:355-359` were written from. The file's text is good
+          prose that could belong to any RimWorld loan shark.
+          ⭐ **The file's closing line is better than the spec's and is GRAFTED IN.** Replace
+          `ideoDescription` with exactly this:
+
+          `Everything on this world evaporates, freezes, or is stolen. A debt does none of these. It is the only object that survives crossing between the faces, and so it is the only true account of a person: what you owe is what you are. We do not forgive - forgiving destroys value that belonged to everyone. Pay, and you are family. Do not pay, and you are inventory. There is no third column, and what the book cannot settle, the pit does.`
+
+          Also add the missing Decision precept: the spec rules **`Execution_Required`**
+          (`faction_religions_spec.md:366`, and `:601` notes it encodes "prisoners: no").
+          Only the blacklist is present in the file today.
+          ⚠️ `Execution_Required` is `defaultSelectionWeight: 0` (`:386`) — that is fine here
+          because `requiredPreceptsOnly` is deliberately FALSE for the Cartel, but do not
+          copy this pattern to the Empire, where it is TRUE.
+          ⇒ Then correct the comment at `:72-73` so it stops claiming verbatim-ness it did
+          not have. That false claim is what let the drift survive an audit.
+
+          **(d) THE FREE DROID ENCLAVES ARE 0% BIOLOGICAL. The Ugnaught is not intended.**
+          `JawaFreeDroidEnclaves.xml:94-101` has a comment reading *"EMPTY ON PURPOSE, not an
+          oversight: the dossier is 0% biological"* and then, three lines later, a
+          `xenotypeChances` block containing `RimMandrakeUgnaught 1.000`. The comment and the
+          content contradict each other in adjacent lines. §5 stands: they are droids who woke
+          up and decided they belong to themselves, and organic servants would invert that.
+          🔴 **DO NOT JUST DELETE THE LINE — measure first, and this is the whole point of the
+          item.** The Ugnaught may be a placeholder someone needed to make the block valid.
+          **Confirm whether `<xenotypeSet Inherit="False">` with an EMPTY `xenotypeChances`
+          still strips the five vanilla xenotypes `OutlanderFactionBase` appends.** If it does
+          — delete the Ugnaught line and keep the empty block. If it does NOT, the strip needs
+          a different mechanism and deleting the line silently re-admits five vanilla
+          xenotypes into a droid faction, which is worse than the pig.
+          🪤 `xenotypeChances` is dictionary-keyed. An `<li>` there discards the WHOLE
+          FactionDef silently — that is B56's bug and it must not be reintroduced here.
+verify:   the Hutt `ideoDescription` matches the canon text byte for byte and the file's
+          comment no longer claims verbatim; `Execution_Required` is present; the Enclaves
+          field no biological xenotype AND the vanilla five are still stripped (state which
+          of the two mechanisms you confirmed).
+criteria: at worldgen the Cartel's faith reads as this planet's, and no Free Droid Enclave
+          pawn generates as an Ugnaught or as a vanilla xenotype.
+state:    ready
