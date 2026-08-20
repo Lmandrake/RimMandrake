@@ -414,3 +414,23 @@ disk and in git but is NOT in the installed skill** — including today's fix to
 
 The fix is six lines of prose moved from `SKILL.md` into `references/`. That is REP's
 file, not BUILD's, which is why it is here rather than done.
+
+## Four species still render magenta, and two rulings disagree about it — 2026-08-19, BUILD
+`queue/BUILD.md`'s deploy-pass item says *"CHECK is waiting on the D-CHK2 generator fix
+from you — Gand, Selkath, female Chagrian, Jawa mask"*. But D-CHK2 and B66, which folds
+it, are both marked `⛔ v2` by your 2026-08-15 blanket triage. Same day, opposite
+instructions, so I did not start it.
+
+**It is smaller than the item makes it sound.** Measured today: the broken paths are 4
+families, about 25 lines — `OuterRim/Genes/Headbone/ChagrianF`,
+`Pawn/HeadAttachments/gand/mask_*`, `Pawn/HeadAttachments/selkath/fishyjowls_female`,
+`Pawn/HeadAttachments/yelloweyes/YellowEyes_Female`, and 16 `OuterRim/GeneIcons/*BG`.
+The donors still hold every texture, so nothing is lost — only unmigrated.
+
+⚠️ D-CHK2's own offline test is WRONG as written. It says no path may start `UI/`
+without the `RimMandrakeSW/` prefix; but `UI/Icons/Xenotypes/Baseliner`,
+`UI/Icons/Genes/Gene_Furskin` and a dozen more are **vanilla** paths that must stay
+un-prefixed. Only donor-owned paths get rewritten.
+
+Say the word and it is an afternoon in `gen_races_mod.py` plus a re-run. Left alone
+otherwise.

@@ -212,8 +212,22 @@ verify:   `deploy_custom_mods.py --mod <name>` (bare = dry run) read before ever
           `queue/CHECK.md` with a non-empty `criteria:` before you call the pass done.
 criteria: CHECK accepts all four items without bouncing one for an empty field, and the
           next load attributes each result to exactly one deploy.
-state:    ready
-
+state:    done 2026-08-19 — the deploy half is complete and MEASURED, not asserted.
+          `deploy_custom_mods.py` with no `--mod` (dry run over every custom mod) reports
+          **"Everything in sync"**: every mod's game copy matches the repo, the only
+          differences being the 14 files `WreckedMachines` holds back on purpose via
+          `DEPLOY_HOLD.txt`. C36, C38, C39 and C41 carry no open item in `queue/CHECK.md`
+          either, so there is nothing owed there.
+          ⚠️ POINT 4 IS NOT DONE AND IS NOT MINE TO START. The D-CHK2 generator fix —
+          Gand, Selkath, female Chagrian, Jawa mask — is parked `⛔ v2` twice over, on
+          D-CHK2 itself and on B66, both by the owner's 2026-08-15 blanket triage. This
+          item asks for it in the same breath. Raised with the owner rather than resolved
+          here; the measurement is in the reply and in
+          `queue/HUMAN.md`.
+          ✅ The other half of that thread IS done and was checked rather than assumed:
+          the owner's "strip any gene that does not resolve" ruling has landed — the
+          generated mod ships **69 xenotypes**, including all six species the old
+          skip-on-missing-gene behaviour dropped, with Miraluka correctly absent.
 ## pyrelands-off-the-blacklist-and-ash-storms-5d2e71
 row:      10
 from:     DECIDE, 2026-08-15, on the owner's D30 (1) ruling.
