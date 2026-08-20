@@ -8570,14 +8570,21 @@
           <xpath>/Defs/ThingDef[defName="MA_Duskhorn"]/comps/li[woolAmount]/woolAmount</xpath>
           <value><woolAmount>90</woolAmount></value>
         </li>
-        <!-- MA_Harpeagle woolAmount: bodySize 2.50, 9 -> 75 -->
+        <!-- MA_Harpeagle woolAmount: bodySize 2.50, 9 -> 75.
+             🔴 THIS PAIR IS WHAT KILLED THE WHOLE MYTHIC AGES BLOCK. It was generated
+             when the mod gave MA_Harpeagle TWO comps carrying woolAmount (9 and 2), and
+             emitted `li[woolAmount][1]` and `[2]`. The mod has since dropped the second:
+             `MA_Harpeagle` now has `CompProperties_Shearable` (woolAmount 9) and
+             `CompProperties_EggLayer` (no woolAmount). So `[2]` matched nothing, a
+             PatchOperationReplace that matches nothing THROWS, and
+             `PatchOperationSequence: Error in the operation at position=47` aborted the
+             sequence — taking every yield change after it with it. Measured in the
+             2026-08-20 log; this is B59's "the fix did not apply".
+             ⇒ Named by its own value, not by position. A positional predicate in a
+             GENERATED patch is a time bomb: it is correct on the day it is written and
+             wrong the next time the target mod ships. -->
         <li Class="PatchOperationReplace">
-          <xpath>/Defs/ThingDef[defName="MA_Harpeagle"]/comps/li[woolAmount][1]/woolAmount</xpath>
-          <value><woolAmount>75</woolAmount></value>
-        </li>
-        <!-- MA_Harpeagle woolAmount: bodySize 2.50, 2 -> 75 -->
-        <li Class="PatchOperationReplace">
-          <xpath>/Defs/ThingDef[defName="MA_Harpeagle"]/comps/li[woolAmount][2]/woolAmount</xpath>
+          <xpath>/Defs/ThingDef[defName="MA_Harpeagle"]/comps/li[woolDef="MA_HarpeagleFeather"]/woolAmount</xpath>
           <value><woolAmount>75</woolAmount></value>
         </li>
         <!-- MA_Plastemmoth woolAmount: bodySize 3.70, 10 -> 111 -->

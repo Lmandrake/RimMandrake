@@ -169,3 +169,37 @@ findings before they were caught:
 ⇒ Write `<tag(\s[^>]*)?>` and handle `<tag ... />` as a separate case, or use a real XML
 parser. And when a def "has nothing", **print the raw block before believing it** — the
 def was fine every single time; the pattern was not.
+
+---
+
+## A `PatchOperationSequence` aborts at the first failure, taking the rest with it
+
+`PatchOperationReplace` **throws** when its xpath matches nothing — it does not quietly
+skip. Inside a `PatchOperationSequence` that ends the sequence, so **every operation after
+the failure never runs**, and the log names only the one that threw:
+
+```
+PatchOperationReplace(xpath=".../comps/li[woolAmount][2]/woolAmount"): Failed to find a node
+PatchOperationSequence: Error in the operation at position=47
+PatchOperationFindMod(Mythic Ages: Megafauna Bestiary): Error in <match>
+```
+
+Read that outside-in and it looks like the FindMod guard missed the mod. It did not — the
+mod resolved, the sequence ran, and op 47 killed it. **The visible symptom is at the
+outside; the cause is `position=N`.** One dead op in a 300-op sequence silently discards
+everything downstream of it, which is why this presented as "the whole patch file did
+nothing".
+
+🪤 **The op that rots is a POSITIONAL PREDICATE in a GENERATED patch.** This one was
+emitted when the target mod gave the animal two comps carrying `woolAmount`, so the
+generator wrote `li[woolAmount][1]` and `li[woolAmount][2]`. The mod later dropped one.
+`[1]` still matched, `[2]` matched nothing, and a file that had been correct for months
+began discarding half its own operations the day the donor updated.
+
+⇒ **Name a list entry by a value it carries, never by its index** —
+`li[woolDef="MA_HarpeagleFeather"]` cannot drift. This is the same rule that applies to
+`pawnGroupMakers/li[kindDef="Combat"][commonality="100"]`, and it matters most in files a
+script wrote, because nobody re-reads 14,000 generated lines.
+
+✅ **Cheap standing check:** `grep -oE '<xpath>[^<]*\]\[[0-9]+\]'` over your patch folder.
+Every hit is a time bomb waiting for the next mod update.

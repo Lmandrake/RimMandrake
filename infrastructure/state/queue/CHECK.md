@@ -991,3 +991,37 @@ criteria: 🔴 READ BACK OFF THE ENGINE, never the setter returning — every se
           ⚠️ FALSE PASS: `list_factions` will keep reporting sensible player-relative numbers
           no matter how wrong the pairwise matrix is. Never close this on `list_factions`.
 state:    ready
+
+## B59 the MegafaunaYield fix — root cause found in the live log and repaired
+row:      —
+spec:     🔴 **THE FindMod GUARD NEVER MISSED. That diagnosis was wrong and it survived
+          two loads.** Read off the 2026-08-20 log, stack trace at lines 781-784:
+          ```
+          PatchOperationReplace(xpath=".../MA_Harpeagle/comps/li[woolAmount][2]/woolAmount")
+              : Failed to find a node with the given xpath
+          PatchOperationSequence: Error in the operation at position=47
+          PatchOperationFindMod(Mythic Ages: Megafauna Bestiary): Error in <match>
+          ```
+          The mod resolved and the sequence ran; **operation 47 threw and aborted it**, so
+          every yield change after position 47 never applied. The FindMod line is the
+          outermost frame, not the cause — which is exactly why it read as "the guard
+          missed" for two loads running.
+          🪤 WHY OP 47 ROTTED. It was generated when the mod gave `MA_Harpeagle` two comps
+          carrying `woolAmount` (9 and 2), so the generator emitted `li[woolAmount][1]` and
+          `[2]`. The mod has since dropped the second: it now ships
+          `CompProperties_Shearable` (woolAmount 9) and `CompProperties_EggLayer` (none).
+          `[1]` still matched; `[2]` matched nothing; `PatchOperationReplace` THROWS on no
+          match rather than skipping.
+          ⇒ Rewritten as `li[woolDef="MA_HarpeagleFeather"]/woolAmount` — named by a value
+          it carries, so it cannot drift when the donor updates again. The duplicate op is
+          gone. Swept the rest of `src/Jawa/` for `]​[N]` predicates: none left.
+          Deployed.
+verify:   done offline — the file parses and `validate_patch.py` was re-run scoped to the
+          577-mod list. The definitive check is the next load's log.
+criteria: 🔴 `harvest_log.py` shows **`patch operations failed` back at baseline 5**, with
+          no `[Jawa Doctrine Patches]` line among them, and no `Error in the operation at
+          position=` anywhere.
+          Then the thing the item actually exists for: a Mythic Ages megafauna corpse
+          butchers for its INTENDED yield. Everything after op 47 in that sequence has
+          never once applied, so this is the first load where those numbers are real.
+state:    ready
