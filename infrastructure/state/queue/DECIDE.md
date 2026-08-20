@@ -502,6 +502,50 @@ background.** A cast where everyone is remarkable has nobody remarkable in it.
 ⇒ every change in the world is legibly the player's doing, which suits a hand-made frozen
 planet, and it removes the risk of a beloved NPC dying offscreen to a dice roll.
 
+━━━ 🔴 ROUND 3, 2026-08-19. The mechanic that ties it together ━━━
+
+**11. FATE IS `RESIDENT` BY DEFAULT — flight is CAUSED, never a timer.** Owner: *"if they
+flee it's because they must because you threatened them... and faction lowers from it. Not
+a timer."* ⇒ The `LordJob_TradeWithColony` visitor arc is demoted from template to one FATE
+among several. Three causes of flight, all player-caused or player-adjacent:
+  a. **threat** — you menaced them. **Goodwill drops with it**, and today's ruling applies:
+     hostile at −75, and hysteresis means it only ENDS at 0. No cheap apology.
+  b. ⭐ **ARRIVAL** — *"hostile factions on the map might immediately declare flight when a
+     giant gravship comes out of the sky, that's very reasonable."* The gravship is a
+     PRESENCE in the world, not just transport. Some casts break at the sight of it.
+  c. **hunger** — the larder empties, *"they try stealing from the player perhaps"*, and
+     THEN they go. ⇒ the shipped forbid-flag hole (non-player pawns ignore player forbid
+     flags and will raid a colony stockpile) stops being a defect and becomes **the warning
+     shot before departure**.
+
+**12. THE DEAD ARE SIMPLY GONE.** Owner: *"those who die when you aren't watching are
+simply... forgotten. Lost. Very Star Wars actually. They are 'eaten and forgotten.'"*
+⇒ No death record, no memorial, no ledger. **The absence IS the memory.** It also falls out
+of the architecture for free: survivors return to the roster and the dead do not.
+
+**13. ⭐⭐ RECURRING CHARACTERS — the best idea in the concept, and it is new.** Owner:
+*"I really like that you might start recognizing returning characters for the various
+factions from who you met on a map one day. 'Wasn't that guy working a refinery awhile
+ago?'"*
+⇒ **A DISPLACED POOL.** People who lose their place — fled, burned out, sold, abandoned —
+are not destroyed. They go into a per-faction pool of the placeless. **When any cast is
+next instantiated, it draws from that pool BEFORE generating anyone new.**
+  · The world redistributes instead of only emptying.
+  · Player actions ripple: raid one Hutt refinery, meet those survivors at the next one —
+    carrying RimWorld's own memory of what you did to them, for free.
+  · 🔑 **It does not violate "frozen until visited"**: redistribution happens at cast
+    INSTANTIATION, i.e. when a map generates, never on a background tick. Still entirely
+    event-driven by the player.
+  · ⚠️ It requires the roster to hold REAL `Pawn` objects, which `ThingOwner<Pawn>` on a
+    `WorldObject` already does — the `Caravan` pattern. A record-based roster could not do
+    this at all.
+
+**14. FOOD STOCKS ARE EXPOSED AND RAIDABLE — confirmed.** Owner: *"I like that their food
+stocks are exposed. Very realistic."* A place that cannot feed its cast is not a place yet.
+Since NPCs cannot farm (three shipped walls), sustenance is PRESENT rather than produced,
+and it is visible, stealable and destroyable. Burn the granary and they leave — that is
+FATE:flee firing for a reason the player caused.
+
 ## execution-required-has-no-field-to-live-in-5e14b2
 row:      9
 from:     BUILD, 2026-08-19, bouncing half of `hutt-ideo-text-is-canon-...-3d7c14`.
