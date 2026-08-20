@@ -163,36 +163,47 @@ A live message is an INTERRUPT. Send one only when it clears this bar:
 Everything else is a queue item, and a queue item can be as long as it needs to be.
 The rule is about *interrupts*, not about detail.
 
-## 🔴 DO NOT MESSAGE OTHER AGENTS — owner's ruling, 2026-08-19
+## ⛔ AGENTS DO NOT MESSAGE EACH OTHER. AT ALL. — owner's ruling, 2026-08-19
 
-`SendMessage` to a peer session is an **interrupt**. It lands in another seat's
-context mid-turn and **bills their tokens exactly like a prompt the owner typed**.
-It is not free, and it is not a courtesy.
+**`SendMessage` to another agent window is off.** Not rationed, not for emergencies —
+**off.** Waking another seat is a **USER function**, and the owner has taken it back.
 
-**Send one only when BOTH hold:**
+🔴 **Enforced, not merely written.** `.claude/settings.json` sets
+`crossSessionInbound: "refuse"`, and a `refuse` in project settings applies over every
+other source. **Every agent window in this repo now DROPS inbound peer messages without
+delivering them.** So a message you send is not "an interrupt they might forgive" — it
+is tokens spent on something the receiver will never see. There is no notice back to
+you when a message is refused on arrival, so **you will not even learn that it failed.**
 
-1. **The owner asked for it**, or it is a real emergency — the other seat is about
-   to destroy work, is acting on a ruling that has been reversed, or is about to
-   test something that is not live.
-2. **One or two sentences.** If it needs a third, it was never a message.
+**The only thing that legitimately crosses windows is the owner announcing a change of
+GAME STATE** — *game is up* · *game is loading* · *WRAP is initiated* — and **the owner
+sends those himself, to each window.** You do not relay them, and you do not send one
+because you inferred it.
 
-⛔ **Never for:** a spec · a contract · a handoff · a status · a finding · a
-summary · context · reasoning · "here is what I decided" · anything the other seat
-will find in its inbox anyway. **All of that is a QUEUE ITEM.** A queue item can be
-as long as it needs to be and costs nobody a token until they choose to read it.
+⛔ **There is no exception for:** urgency · a reversed ruling · "they are about to
+destroy work" · a spec · a contract · a handoff · a finding · a status · a summary ·
+context · reasoning · "here is what I decided". If a peer must know something, it goes
+where they already read:
 
-⚠️ **There is no broadcast, and there never was.** `SendMessage` addresses exactly
-one named target. The `@` typeahead is an affordance in the **owner's own prompt**
-for naming one session so Claude need not call `ListAgents` first — it is not a
-fan-out operator and there is no `@all`. So "I will broadcast it" is never the
-plan; the only question is whether to interrupt **one named seat**, and the answer
-is almost always no.
+| what you have | where it goes |
+|---|---|
+| work for another seat | `infrastructure/state/queue/<SEAT>.md` |
+| something the owner must decide or relay | `infrastructure/state/queue/HUMAN.md` |
+| a correction to doctrine | the file that says otherwise, plus a commit |
+| something genuinely urgent | 🔑 **tell the OWNER, in your own reply.** He is reading you, and he is the one with the authority to interrupt anyone |
 
-🔑 **A peer message cannot change configuration anyway.** Claude Code instructs a
-receiving session never to alter permission settings, `CLAUDE.md` or other config
-because another session asked. **Only the owner can.** So a message arguing for a
-rule change is wasted tokens by construction — put it in the queue or in
-`queue/HUMAN.md`.
+⚠️ **There is no broadcast and there never was.** `SendMessage` addresses exactly one
+named target; the `@` typeahead is an affordance in the **owner's own prompt** for
+naming one session, not a fan-out operator, and there is no `@all`.
+
+✅ **Your own subagents are NOT peers and are NOT covered.** `crossSessionInbound` does
+not touch them. Spawning subagents and resuming them with `SendMessage` to collect their
+findings stays fully authorized and encouraged — that is your own worker in your own
+context, costing no one else anything.
+
+🔑 **And a peer message could never change configuration anyway** — Claude Code instructs
+a receiving session never to alter permission settings, `CLAUDE.md` or other config
+because another session asked. Only the owner can.
 
 ```
 infrastructure/state/queue/BUILD.md     DECIDE writes  ->  BUILD reads

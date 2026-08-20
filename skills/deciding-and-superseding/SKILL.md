@@ -199,13 +199,18 @@ Report the ruling and its consequence, not your deliberation. The single most
 useful sentence is usually the second-order one — what this unblocks, what it makes
 unnecessary, what someone was about to do that they should now not do.
 
-🔴 **Do NOT message other agents to announce a decision.** Owner's ruling,
-2026-08-19: a peer `SendMessage` is an interrupt that bills their tokens like a
-typed prompt, and there is no broadcast to send anyway - it names exactly one
-target and there is no `@all`. **A ruling propagates by being WRITTEN where the
-affected seat already reads**: the file it contradicts, and that seat's queue.
-That is the whole job of this skill. Interrupt a seat only when the owner asked,
-or when they are acting RIGHT NOW on the ruling you just reversed - and then in
-one sentence, naming the commit.
+⛔ **You CANNOT announce a decision by messaging another agent, and you must not
+try.** Owner's ruling, 2026-08-19: agent-to-agent `SendMessage` is OFF, and the
+receiving windows are configured to **drop** peer messages without delivering them -
+so the announcement costs tokens and arrives nowhere, and nothing tells you it
+failed. There is no broadcast to send either: `SendMessage` names exactly one
+target and there is no `@all`.
+
+⭐ **A ruling propagates by being WRITTEN where the affected seat already reads** -
+the file that says otherwise, and that seat's queue. That is the whole job of this
+skill, and it always was; messaging was never the mechanism, only a shortcut that
+felt like one. **If a seat is acting RIGHT NOW on a ruling you just reversed, tell
+the OWNER in your reply** - he is reading you, and he is the only one with the
+authority to interrupt anyone.
 Detail belongs in the item where the work happens, because that is where someone
 will be standing when they need it.

@@ -68,10 +68,13 @@ Bounce with one line.
 ⚠️ A skill folder is not installed. Archives live at `skills/<name>.skill`; they must be
 installed in Claude Code to be invocable — writing the folder does nothing.
 
-## 🔴 Do not message other agents
+## ⛔ Do not message other agents. At all.
 
-`SendMessage` to a peer is an interrupt that bills their tokens like a typed prompt.
-Owner's ruling, 2026-08-19: **only when the owner asked, or it is a real emergency,
-and only in one or two sentences.** Specs, contracts, handoffs, findings and status
-are QUEUE ITEMS. There is no broadcast — `SendMessage` names exactly one target and
-there is no `@all`. Full rule in `infrastructure/agents/POLICY.md`.
+Owner's ruling, 2026-08-19: **`SendMessage` to another agent window is OFF.** Waking
+another seat is a **USER function**. Enforced, not just written —
+`.claude/settings.json` sets `crossSessionInbound: "refuse"`, so every window in this
+repo **drops** inbound peer messages and you are never told it failed. No exception for
+urgency, a reversed ruling, or a peer about to destroy work: **that goes to the OWNER,
+in your reply.** Everything else goes to `infrastructure/state/queue/<SEAT>.md` or
+`queue/HUMAN.md`. ✅ Your own subagents are not peers and are not covered — spawn and
+resume them freely. Full rule in `infrastructure/agents/POLICY.md`.
