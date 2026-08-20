@@ -49,6 +49,76 @@ until the owner personally verifies art is broken. Art *observation* is welcome 
 
 ---
 
+## 0. ⏱️ PRE-LOAD BRIEF — 2026-08-20 07:35, assembled by DECIDE on the owner's *"prepare for game load"*
+
+**Measured, not remembered.** ⚠️ **First written 07:35 while the game was still UP and BUILD
+was mid-commit in this same tree; RE-MEASURED 07:5x with the game DOWN. Three rows moved and
+the corrections are marked — read the right-hand column, not a number you remember.**
+
+| check | reading (game DOWN, 07:5x) | consequence |
+|---|---|---|
+| RimWorld process | **not in `tasklist`** — the game is down | ⭐ **The deploy window is OPEN RIGHT NOW.** Assemblies are writable |
+| deploy planner | 🟢 **"Everything in sync"** — 0 pending, 14 held (WreckedMachines, parked to v2 2026-08-12) | nothing is waiting on the window; it is open and empty |
+| `modlist_swap.py --status` | LIVE **578 active**, md5 `deefb393…`, matches **FULL** | 🔴 the ~25-minute cold load, not the 22-second minimal one |
+| `ModsConfig.xml` | **578**, mtime **07:37** — rewritten during this session | ⛔ ~~577 / mtime 00:49~~ was my 07:35 reading and is DEAD. `mandrake.inhabited` was enabled in `1254026` |
+| 🔴 new assembly riding | **`Inhabited.dll` — 39,936 bytes, md5-identical repo↔game, and THE ENGINE HAS NEVER LOADED IT** | ⛔ ~~"no assemblies riding"~~ was my 07:35 reading and is DEAD. In-sync copies are not the same claim as *has run*. See the §4 correction in `EXPECTED_FAILURES_next_load.md` |
+| live def dump | 🔴 **STALE** — `+ mandrake.inhabited` since the dump | ⛔ ~~"CURRENT, do not arm"~~ is DEAD: adding a mod lapses the dump. ✅ **Already armed** — `dump_request.txt` reads `all`. Leave it; **delete it after**, the marker is not consumed |
+| offline artefacts | rebuilt — 6 CSVs written to `observed/2026-08-13/inventory` | current |
+| previous `Player.log` | copied to `observed/2026-08-20/Player.log.pre-reload` (707 KB) | overwritten at next launch; tonight's evidence is safe |
+
+🔑 **The lesson worth keeping, because it cost this brief its accuracy:** *four seats share
+one working tree.* A measurement taken while a peer is committing describes a repo that
+stopped existing. **Re-measure immediately before launch, never at the top of the session.**
+
+### 🔴 Verified before launch, because generating on a stub is unrecoverable
+
+`C:\Users\Mandrake\AppData\LocalLow\Ludeon Studios\RimWorld by Ludeon Studios\Worldbuilder\TidallyLocked\Preset.xml`
+— **PRESENT**, 3,895 bytes, mtime 2026-08-20 00:59, **16 `Jawa_` lines**,
+`myLittlePlanetSubcount 7`, `planetCoverage 1`, `saveGenerationParameters True`.
+Matches the state recorded at handover in
+`worldbuilder-preset-is-wiped-at-every-launch-not-just-on-steam-updates-6b1e4d`.
+⚠️ **This is a READ, not a deploy** — that item is BUILD's by the owner's 2026-08-20 ruling
+and DECIDE is not touching the file again.
+🔴 **On the world-creation page, Configure Planet must read Scale 7 / Coverage 100%. If it
+reads Scale 10 the preset lost its parameters — ABORT, do not generate.**
+
+### What this load is FOR, in priority order
+
+1. 🔴 **The 82 ideoligion precepts** — `sequence-the-ideoligion-check-before-the-faction-work-e3f1a7`.
+   The largest unmeasured surface on the board, and an ideoligion **bakes at world creation
+   and cannot be retrofitted**. ⚠️ **There is no offline route**: `validate_ideoligion.py`
+   reads IdeoPresetDef and FactionDef XML and answers *"no religions found"* on a `.rid`.
+   **Decision string: none — this one is a DIALOG, not a log line.** Load `The Salvation.rid`
+   and read the precept list on screen. PASS = all 82 present by defName. ⚠️ *"71 missing"*
+   was CHECK's own scrape bug — the block nests `RitualBehavior` / `RitualOutcomeEffect` /
+   `RitualObligationTargetFilter` names, which are not `PreceptDef`s. Do not re-derive it.
+2. **The xenotype, live** — `the-shipping-xenotype-drops-four-of-our-own-genes-7e31aa`.
+   Fixed on disk 2026-08-15, **never confirmed live.** 🔴 The superseded wrong claim was
+   *also* "36/36 references resolve" from an offline check, so **disk evidence cannot close
+   this item** — only a spawn.
+3. **`seven-jawa-factions-still-default-to-zero-at-worldgen-4a71c8`** — on the worldgen clock.
+4. Everything already in §2–§6 below.
+
+⛔ **NOT riding this load, and here is why, so nobody re-derives it:** the eight `INHABITED_*`
+items filed to BUILD today have **no compiled assembly yet** — `ROSTER_SURVIVES_OFFMAP_PROOF_1`
+is a soak that needs a DLL that does not exist. The river and rainfall work is authored into
+`world/ASHKARR_WORLDMAP_tiles.csv` and reaches the game over the **bridge**, not through a
+load.
+
+### At launch, while it grinds
+```
+python3 src/RimMandrake/Utils/whats_new.py --seat <SEAT> --mark
+```
+**Launch, not close** — close is when work lands, so the deltas are not written yet.
+
+### After it
+```
+python.exe src/RimMandrake/Utils/harvest_log.py
+```
+You paid for a full load; harvest the WHOLE log, not only what you changed.
+
+---
+
 ## 1. 🔻 WHILE THE GAME IS DOWN — the only window for a deploy
 
 Everything in this section is inert or refused while RimWorld runs. If the game is

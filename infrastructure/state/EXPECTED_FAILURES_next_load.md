@@ -980,3 +980,35 @@ not a log string. The one thing a log can settle that eyes cannot:
 ## §4 Results
 
 _(blank — fill after the load; do not edit the signatures above once the log exists)_
+
+## §4 CORRECTION — written by DECIDE 2026-08-20 07:5x, BEFORE the log exists
+
+⚠️ **Legitimate under this file's rule 1.** That rule forbids editing signatures *after that
+load's log exists*; this load has not started. E1, E2, E5 and E6 stand unchanged. **E3 and
+E4 were overtaken by the owner while the block was being written** and both are now false in
+a way that changes what is collectable.
+
+| # | ⛔ what it says | ✅ what is true at 07:5x, game DOWN |
+|---|---|---|
+| **E3** | ~~`<activeMods>` **577**, mtime 00:49, md5 `5cb6857188…`~~ | **578**, mtime **07:37**, md5 **`deefb393e95824c48a700efa0fa734bb`**. `ModsConfig.FULL.LATEST.xml` moved with it, so LIVE still matches FULL — this is the owner's real list, not a spike |
+| **E4** | ~~**DEPLOYED BUT NOT ENABLED — deliberately, the owner's call.** The packageId is absent from `ModsConfig.xml`. ⇒ `Inhabited.dll` has still never been loaded. Every `Inhabited` debug action is uncollectable until he ticks it~~ | 🔴 **HE TICKED IT.** `mandrake.inhabited` is in `<activeMods>` (commit `1254026`, *"the set is 578 for this load"*). ⇒ **Every `Inhabited` debug action IS collectable on this load**, and `ROSTER_SURVIVES_OFFMAP_PROOF_1` — the architecture gate — can be started tonight rather than next cycle |
+
+### 🔴 The signature E2 does not carry, and this load needs it
+
+E2 reasons from **md5 repo↔game** and concludes *"this load carries no new DLL."* That is
+true about *drift* and false about *risk*: `Inhabited.dll` is 16 source files that the engine
+has **never once loaded**. A first load of an assembly is exactly the case the
+load-round skill says to run **solo**, and it is not solo — it rides a 578-mod list.
+⇒ The waiver's condition applies, so the signature goes here, before launch:
+
+| signature in `Player.log` | verdict |
+|---|---|
+| no `Inhabited` line at all, anywhere | ⛔ **the mod did not load.** Check the packageId resolved; do not interpret any other Inhabited result this load |
+| `Could not load reference to` naming an `Inhabited.*` type | 🔴 a Def references a class the DLL does not export — name mismatch between XML and C#. Expected first-run failure #1 |
+| `Exception in static constructor` / `Harmony` + `Patch_BeggarsFromPool` | 🔴 the beggars patch missed its target. **Expected first-run failure #2, and the most likely of the three** — the design doc named a class (`GiveQuest_Beggars`) that does not exist, and the real one is `QuestNode_Root_Beggars` at `:103`, Ideology-gated at `:44` |
+| `XML error` / `Could not find type named Inhabited.` in a `WorldObjectDef` or `CharacterDef` | 🔴 def↔class binding. Expected first-run failure #3 |
+| ⭐ **expected-PRESENT:** the `Inhabited` debug actions appear in the dev menu | ✅ absence of errors is necessary and NOT sufficient — a mod that loads and does nothing logs nothing. This is the positive sighting that makes a clean log mean something |
+
+## §4 CORRECTION Results
+
+_(blank — fill after the load)_
