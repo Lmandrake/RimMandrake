@@ -225,3 +225,59 @@ pictures of the CSV above.
    file. It was ordered rewritten and never was.
 4. Is the mod's `TidallyLocked` PlanetTypeDef keyed on latitude at runtime? If so it
    disagrees with the measured point-lock and one of them has to move.
+
+---
+
+## 11. State of play — handoff, 2026-08-19
+
+**Done and committed.** The map exists, is complete, and renders. Nine rounds of
+owner review are folded into §1–§10 above. Commits: `808e181` (viewer) →
+`f421383` → `f769c49` → `1458964` → `ce41ab1` → `f672372` → `66e6c93`.
+
+**The whole pipeline, three commands:**
+
+```
+python3 src/RimMandrake/Utils/ashkarr_paint.py                  # rebuild the map (~30 s)
+python3 src/RimMandrake/Utils/worldview.py world/ASHKARR_WORLDMAP --png --no-tooltips
+python3 src/RimMandrake/Utils/worldgeom.py --selftest           # prove the geometry
+```
+
+`ashkarr_paint.py` holds every design decision and is the only file to edit for content.
+`ashkarr_settle.py` holds the faction plan. `worldview.py` is the renderer and knows
+nothing about Ash'karr. **Nothing opens a `.rws`.**
+
+**🔴 The loop is LOOK, not measure.** Change the recipe, rebuild, render, open the PNG,
+judge it by eye. Every defect that mattered in this work — compass-circle seas, comb
+rivers, rectangular roads, bullseye biomes, rivers that could not die — passed its
+numeric checks while the picture was obviously wrong.
+
+### What is NOT done, in the order it probably matters
+
+1. **The player start is unsited.** Nothing in the docs places the Jawa clan beyond
+   *"the habitable ring is ~34–57° of arc"*. Needs an owner call, then a tile.
+2. **Region labels collide** on the render — `The Dew Horn` / `The Scald` / `The Dew
+   Belt` overlap, and `The Fall Line Barrens` runs into `Ashfall Range`. The 11°
+   minimum separation is applied to label ANCHORS; the text is wider than that.
+3. **`AB_GelatinousSuperorganism` smears across the top** of the rectangular map. It is
+   honest — the poles genuinely sit on the terminator at arc 90 — but it reads as a
+   band. Mollweide shows its true size (0.2%).
+4. **Landmarks and tile mutators are not authored at all.** The map has biomes,
+   elevation, rivers, roads and settlements; it has no landmarks.
+5. **Nothing has been tested in game**, because nothing writes a savegame any more.
+   How this map reaches RimWorld is an open design question, not a solved one.
+6. The four questions in §10 are still open.
+
+### Traps a fresh agent will otherwise walk into
+
+- ⛔ **Do not "fix" the Scald's roundness.** It is a crater and it is the one shape
+  ruled round.
+- ⛔ **Do not fill every depression** in the hydrology. That silently makes dying
+  rivers impossible and produced zero salt pans for two rounds.
+- ⛔ **Do not threshold anything against raw `arc`.** Warp it first (`thb`), or the
+  zone comes out as a ring around the planet.
+- ⛔ **Do not warp a placed mass additively.** `blob + 0.22*noise` painted one
+  mechanoid cluster over 6.7% of the planet. Multiply.
+- ⛔ **Do not site settlements by habitability.** It puts all of them on the terminator
+  and contradicts the faction plan.
+- ⚠️ `faction_world_spec.md` §4 is still written in latitude bands and contradicts this
+  file. It was ordered rewritten and never was.
