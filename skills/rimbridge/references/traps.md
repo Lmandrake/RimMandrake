@@ -305,3 +305,33 @@ Written by me, 2026-08-19: the zone builder swallowed `AddCell` refusals, and a 
 stockpile silently took **11 of 36 cells** while reporting success. **If the engine can
 refuse a cell, report which cells and why** — the whole value of a bridge tool over a
 direct API call is that it explains itself.
+
+---
+
+## `Actions\Spawn Pawn...` reports success and places nobody on a blocked cell
+
+CHECK, 2026-08-20. A 69-race lineup reported `ok=69 fail=0`; the map held **64**.
+`execute_debug_action` returns `success: true` whether or not the pawn lands, so
+five kinds — Chiss, Gamorrean, Herglic, Kaleesh, Kaminoan — vanished without a
+word. Nothing was wrong with those defs: each spawned first try when given a free
+cell, so the cause is the CELL, not the kind.
+
+**Count what arrived, never what the spawner claimed.** `jawa/list_pawns` grouped by
+`kindDef` and diffed against the requested list names the missing ones in one call.
+Generalises to every `spawn`-family debug action.
+
+## `jawa/destroy_batch` will not destroy pawns, and says so quietly
+
+Same session. `rects` (not `thingIds`) is the required argument, and the reply ended
+`"Destroyed 2 thing(s) across 9 cell(s); 2 pawn(s) left alone."` — the two pawns were
+the entire point of the call. The refusal is real and it is in the message, but the
+call is a `success`, so a script that checks only the flag deletes nothing and moves on.
+
+## `jawa/clear_ui` defaults do NOT close an open info card
+
+Same session, and it cost a screenshot: `clear_ui` with its defaults reported
+`deselected 0 thing(s)` and `get_game_info` showed `selectedPawns: []`, yet the shot
+came back with a full character card — Bio/Inventory/Health tabs — covering the frame.
+`devWindows` covers `Window_Dev` descendants and `clearSelection` covers the bottom-left
+pane; the info card is neither. **`{"all": true}` closes it.** Read back the pixels, not
+the deselect count.
