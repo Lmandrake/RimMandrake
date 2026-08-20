@@ -22,8 +22,8 @@ collect from it. This hook draws the line where the ruling actually draws it.
 
 WHAT IS BLOCKED
 ===============
-  a target naming an agent WINDOW / seat: BUILD, CHECK, DECIDE, REP, WORLD,
-  BRIDGE, CREATE, PROJECT, HUMAN, ALL  (any case, any surrounding punctuation)
+  a target naming an agent WINDOW / seat: BUILD, CHECK, DECIDE, REP, HUMAN,
+  ALL  (any case, any surrounding punctuation)
 
 WHAT IS ALLOWED
 ===============
@@ -58,8 +58,7 @@ import sys
 # The agent windows in this repo. A message aimed at one of these is the thing
 # the ruling forbids.
 SEATS = {
-    "build", "check", "decide", "rep", "world",
-    "bridge", "create", "project", "human", "all",
+    "build", "check", "decide", "rep", "human", "all",
 }
 
 # The handle the Agent tool returns for a subagent this session spawned.

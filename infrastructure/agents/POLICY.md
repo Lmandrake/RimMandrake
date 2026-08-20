@@ -168,9 +168,8 @@ rule was never about detail; it was about interrupts.
 
 🔴 **Enforced, not merely written — but at the SENDING end.** `.claude/settings.json`
 runs `.claude/hooks/block_peer_messages.py` as a `PreToolUse` hook on `SendMessage`: a
-message whose target names a seat (BUILD · CHECK · DECIDE · REP · WORLD · BRIDGE ·
-CREATE · PROJECT) is refused before it is sent, with the queue files named in the
-refusal. `ListAgents` stays denied outright, so peers cannot be enumerated either.
+message whose target names a seat (BUILD · CHECK · DECIDE · REP) is refused before it
+is sent, with the queue files named in the refusal. `ListAgents` stays denied outright, so peers cannot be enumerated either.
 
 ⚠️ **`crossSessionInbound` is `accept`, and that is DELIBERATE — do not "fix" it to
 `refuse`.** Corrected 2026-08-19 after three docs, this one included, claimed it read
