@@ -3202,6 +3202,7 @@ namespace JawaBench.BridgeTools
                 }
 
                 var noTags = new List<object>(); int noTagsN = 0;
+                var zeroBudget = new List<object>(); int zeroBudgetN = 0;
                 var emptyPool = new List<object>(); int emptyPoolN = 0;
                 var cannotAfford = new List<object>(); int cannotAffordN = 0;
                 var healthy = new List<object>(); int healthyN = 0;
@@ -3219,12 +3220,27 @@ namespace JawaBench.BridgeTools
                     if (rp == null || !rp.ToolUser) { skippedNonCombat++; continue; }
                     considered++;
 
+                    // 🔑 A kind with NO weaponTags is not broken - TryGenerateWeaponFor
+                    // returns early for it BY DESIGN. Traders, councilmen, children and
+                    // haulers are supposed to be empty-handed. Counting them as defects
+                    // made the first run of this tool report 339 broken kinds out of 710,
+                    // of which 294 were working exactly as intended.
                     var tags = k.weaponTags;
                     if (tags == null || tags.Count == 0)
                     {
                         noTagsN++;
                         if (noTags.Count < limit)
                             noTags.Add(new { kind = k.defName, label = k.label, race = k.race.defName });
+                        continue;
+                    }
+                    // Same for a deliberate zero budget: weaponMoney.max == 0 cannot admit
+                    // any weapon and is how a child is kept unarmed while still inheriting
+                    // its parent's tags.
+                    if (k.weaponMoney.max <= 0f)
+                    {
+                        zeroBudgetN++;
+                        if (zeroBudget.Count < limit)
+                            zeroBudget.Add(new { kind = k.defName, label = k.label, tags = tags.ToList() });
                         continue;
                     }
 
@@ -3268,22 +3284,30 @@ namespace JawaBench.BridgeTools
                                           cheapestPrice = bestPrice, weaponMoneyMax = money.max });
                 }
 
-                int broken = noTagsN + emptyPoolN + cannotAffordN;
+                // 🔴 BROKEN is ONLY the kinds that INTEND to arm and cannot. The two
+                // categories above are design, and are reported without scoring.
+                int broken = emptyPoolN + cannotAffordN;
                 return new
                 {
                     success = true,
                     message = broken == 0
-                        ? considered + " tool-using kind(s) audited; every one can arm itself."
-                        : broken + " of " + considered + " tool-using kind(s) CANNOT arm themselves: " +
-                          noTagsN + " with no weaponTags, " + emptyPoolN + " whose tags match no loaded weapon, " +
-                          cannotAffordN + " that cannot afford the cheapest weapon their tags allow.",
+                        ? considered + " tool-using kind(s) audited; every kind that intends to arm can. " +
+                          "(" + noTagsN + " carry no weaponTags and " + zeroBudgetN + " have a zero budget - " +
+                          "both are design, not defects.)"
+                        : broken + " of " + considered + " tool-using kind(s) INTEND to arm and CANNOT: " +
+                          emptyPoolN + " whose tags match no loaded weapon, " +
+                          cannotAffordN + " that cannot afford the cheapest weapon their tags allow. " +
+                          "(Not counted: " + noTagsN + " with no weaponTags and " + zeroBudgetN +
+                          " with weaponMoney.max 0 - both are how a civilian or a child is kept unarmed.)",
                     weaponPairsInGame = pairs.Count,
                     distinctWeaponTags = cheapestByTag.Count,
                     kindsChecked = considered,
                     skippedNonToolUser = skippedNonCombat,
-                    counts = new { noWeaponTags = noTagsN, emptyTagPool = emptyPoolN,
-                                   cannotAfford = cannotAffordN, healthy = healthyN },
-                    noWeaponTags = noTags,
+                    counts = new { emptyTagPool = emptyPoolN, cannotAfford = cannotAffordN,
+                                   healthy = healthyN,
+                                   byDesign_noWeaponTags = noTagsN, byDesign_zeroBudget = zeroBudgetN },
+                    byDesign_noWeaponTags = noTags,
+                    byDesign_zeroBudget = zeroBudget,
                     emptyTagPool = emptyPool,
                     cannotAfford,
                     healthy = includeHealthy ? healthy : null,
@@ -3350,6 +3374,13 @@ namespace JawaBench.BridgeTools
                 // A Multi graphic stores <path>_north/_east/_south; a Single
                 // stores <path> itself. Missing means NONE of them resolve -
                 // the same bar the engine's own error uses.
+                // 🔴 THE FOLDER CASE IS NOT OPTIONAL, and leaving it out made the first
+                // version of this tool report 3,816 dead paths on a healthy game -
+                // including vanilla Beer, Ambrosia and Luciferium. Graphic_Random and
+                // Graphic_StackCount resolve a path as a FOLDER OF VARIANTS
+                // (Beer_a, Beer_b, Beer_c) via GetAllInFolder, not as a file and not
+                // as a directional set. A checker that only probes files calls every
+                // stack-count item in the game broken.
                 Func<string, bool> resolves = path =>
                 {
                     if (string.IsNullOrEmpty(path)) return true;
@@ -3357,6 +3388,12 @@ namespace JawaBench.BridgeTools
                     if (ContentFinder<UnityEngine.Texture2D>.Get(path + "_south", false) != null) return true;
                     if (ContentFinder<UnityEngine.Texture2D>.Get(path + "_north", false) != null) return true;
                     if (ContentFinder<UnityEngine.Texture2D>.Get(path + "_east", false) != null) return true;
+                    try
+                    {
+                        var folder = ContentFinder<UnityEngine.Texture2D>.GetAllInFolder(path);
+                        if (folder != null && folder.Any()) return true;
+                    }
+                    catch { /* a malformed path is a miss, not a crash */ }
                     return false;
                 };
 
