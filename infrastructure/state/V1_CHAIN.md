@@ -77,7 +77,7 @@ for this order; it is not a preference.
 
 | # | domain | needs | state |
 |---|---|---|---|
-| 0 | **Mod freeze** | — | ✅ done — **575** active, two files frozen |
+| 0 | **Mod freeze** | — | ⛔ **UNFROZEN 2026-08-19 — owner: *"Unfreeze mod count, let's not treat this as a criteria to monitor for v1."*** The set moves and that is fine. Live reads **578** today against the 575 freeze copy (8 added, 5 removed). ⇒ **Do not reconcile it, do not police it, do not file drift as a defect.** The list that matters is whatever is active the moment the owner generates his world — captured THEN, from `ModsConfig.xml`, as shipping documentation |
 | 1 | **Item cherrypick** | 0 | ✅ **FROZEN AND CLOSED for v1 — owner, 2026-08-15.** Armour, weapons, items, beasts and others done; 1,308 keys live. Remaining categories return later **if needed** |
 | 2 | **Normalize weapons · armour · beasts** | 1 | open — balance pass over what survives |
 | 3 | **Equipment types → pawns** | 2 | open — the tags a `PawnKindDef` actually consumes |
@@ -122,9 +122,14 @@ activeMods in the freeze copy        575   (identical, order included)
 listed but not installed               0
 ```
 
-⇒ **These 575 ARE the frozen set.** The owner's 2026-08-14 ruling stands
-unchanged — a mod ships unless it is explicitly cut, and the freeze is a
-reconciliation of the decision docs against this list, not an audit of 575 mods.
+⛔ ~~**These 575 ARE the frozen set.**~~ **REPEALED 2026-08-19 by the owner.** The count
+is no longer a v1 criterion and no seat monitors it. What survives of the 2026-08-14
+ruling, and it is the useful half: **a mod ships unless it is explicitly cut.** That is a
+policy about intent, not a number to hold still.
+🔑 **The consequence to remember instead:** we ship a savegame, so the recipient needs
+whatever mod list was live when it was made. That is a **capture step at worldgen time**,
+recorded on the run sheet — not a standing reconciliation. Everything below this line is
+history of a number that is no longer tracked.
 
 ⚠️ **The number moved and this file said 585.** Raised by BUILD 2026-08-15 and
 reconciled by DECIDE against

@@ -757,8 +757,14 @@ spec:     Reported by BUILD from `refresh.py` (fingerprint `7256c128a43117a5`), 
 verify:   the four unattributed removals are named, and every doc that states the frozen
           count states the same number.
 criteria: EMPTY — offline.
-state:    ⛔ v2 — **OWNER RULING 2026-08-15, blanket triage.** Produces no content and does not
-          reach the frozen world. Parked, not lost.
+state:    ⛔ DROPPED 2026-08-19 — **owner: *"Unfreeze mod count, let's not treat this as
+          a criteria to monitor for v1."*** The item asked for four unattributed removals to
+          be named and every doc to state the same number. Neither is wanted. The premise
+          also decayed while it sat: live is **578** today, not the 575 this item was
+          reconciling to, and not the 585 it was raised against. ⇒ Chain step 0 is
+          UNFROZEN in `V1.md` and `V1_CHAIN.md`; the "these N ARE the frozen set" ruling is
+          repealed in place. **The mod list is captured at worldgen time as shipping
+          documentation, not policed as a standing number.**
 
 ## promote-the-defdump-arming-out-of-optional-6ea3c7
 row:      10
@@ -1347,7 +1353,31 @@ action:   Correct the superseded entry in this file — I did not edit it, it is
           `design/V2_DREAMS.md` is already updated.
 
 ## D-V2-RAIN  Ban rainfall planet-wide, except violent rain in the high mountains
-state:    v2 — SPEC ONLY. Do not implement. Not scheduled.
+state:    ⭐ **v1 — OWNER RULING 2026-08-19.** *"Ban rainfall: v1 (but might still happen
+          on highly mountainous terrain!)"* ⇒ The ban is v1 content and the mountain
+          exception is CONFIRMED as part of it, not a maybe.
+          ⚠️ **The `D-V2-` in this item's name is now wrong and is kept anyway** — POLICY
+          forbids retitling an item, because the board counts items by name out of git.
+          Read the state line, not the name.
+          **What v1 owes, and it is small because the route changed:**
+          (a) **The ban is one authored column.** Rainfall is set per tile in
+              `world/ASHKARR_WORLDMAP_tiles.csv` and stamped over the bridge. No mutators,
+              no worldgen, no per-tile placement work. DECIDE picks the value.
+          (b) **The mountain exception is a predicate over two columns we already author**
+              — `tileElevation` and `tileHilliness`. "Highly mountainous" is computable, so
+              the wet band is drawn, not hand-placed.
+          (c) **The violent weather is ONE patch**, the same shape as the Pyrelands ash
+              storm: `weatherCommonalities` on the biomes that occupy the high country,
+              plus label/description work. `weatherCommonalities` is read at RUNTIME, so it
+              needs nothing from worldgen and can land any time.
+          ⛔ **Still out, and the line has not moved:** anything that makes the GENERATOR
+          produce this. The rule is authored into our tiles and our defs; it is not a
+          worldgen feature and must not become one.
+          🔑 **The one open question is the number, and it is an economy question, not a
+          biome one.** Biome eligibility no longer keys off rainfall for us — we assign
+          biomes directly — so the old worry ("which biomes survive at zero rainfall") is
+          void. What survives: plant growth and fertility read rainfall during PLAY, so a
+          hard 0 may starve the Jawa economy. DECIDE proposes a floor.
 owner:    2026-08-16, verbatim: *"spec out banning rainfall on any biome except those
           that occur in high mountain areas where instead it is torrential, boiling, red,
           or otherwise violent and bizarre, otherwise we have to add mutators everywhere
@@ -1414,7 +1444,17 @@ the spec should answer:
           side of that line.
 
 ## D-MUTATOR-VEHICLE  Tile mutators ARE our content-injection mechanism — v1
-state:    v1 — DECISION WANTED. Blocks nothing today, shapes everything after.
+state:    blocked — needs a measurement. **OWNER 2026-08-19: "Leave this until we know
+          whether we can change mutators via the live bridge."** ⇒ The vehicle question is
+          not answerable until we know the vehicle exists. The measurement is offline and
+          costs no game: can a companion DLL place an arbitrary `TileMutatorDef` on an
+          arbitrary tile at RUNTIME, does it persist into the save, and does it take effect
+          when the player later generates that map? Read it off `Assembly-CSharp.dll` —
+          `Tile`/`SurfaceTile` mutator storage, any public add/remove, what the mutator
+          generation step assigns, and what consumes the list at map generation.
+          ⇒ **If YES**, this item resumes as a live v1 decision and the proposal below
+          stands. **If NO**, the whole item is dead and content injection needs a different
+          vehicle — say so rather than looking for a workaround.
 owner:    2026-08-16: *"use tile mutators to simulate 'content injection/tilemap editing'
           that we will develop later. Map tile mutators are the game's current method for
           doing this. Might even be sufficient later on, TBD."*
@@ -1522,7 +1562,16 @@ spec:     The owner wants to be walked through a BUILDING cherrypick, choosing p
           one, including pre-filling the decisions so the owner only disagrees.
 verify:   EMPTY
 criteria: EMPTY
-state:    ready
+state:    ⛔ CLOSED 2026-08-19 — **OWNER: "Freeze buildings cherrypick, that's huge."**
+          ⇒ The buildings pass is NOT v1. It joins the seven un-run categories under the
+          2026-08-15 freeze and is `[v2]` *if needed at all*. ⛔ Do not build the sheet, do
+          not fill the EMPTY `verify:`/`criteria:` — they die with the item.
+          ⚠️ **What this does NOT close, because it was never a cherrypick:** the
+          VFE-Insectoids 2 strip ruled in `design/Jawa/mods/forbidden_mods.md` (3 research
+          + 30 buildables + 5 pherocore recipes) has still never been applied. It is a
+          `designationCategory` strip on defs we KEEP — the "state 2" mechanism — not a
+          cut list, so the freeze does not reach it. Left where it is, unscheduled, rather
+          than smuggled back in under this item.
 
 ## ashkarr-import-the-four-uncertains-are-settled-off-the-assembly-c91d02
 from:     CHECK, 2026-08-19
