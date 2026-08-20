@@ -1444,22 +1444,63 @@ the spec should answer:
           side of that line.
 
 ## D-MUTATOR-VEHICLE  Tile mutators ARE our content-injection mechanism — v1
-state:    blocked — needs a measurement. **OWNER 2026-08-19: "Leave this until we know
-          whether we can change mutators via the live bridge."** ⇒ The vehicle question is
-          not answerable until we know the vehicle exists. The measurement is offline and
-          costs no game: can a companion DLL place an arbitrary `TileMutatorDef` on an
-          arbitrary tile at RUNTIME, does it persist into the save, and does it take effect
-          when the player later generates that map? Read it off `Assembly-CSharp.dll` —
-          `Tile`/`SurfaceTile` mutator storage, any public add/remove, what the mutator
-          generation step assigns, and what consumes the list at map generation.
-          ⇒ **If YES**, this item resumes as a live v1 decision and the proposal below
-          stands. **If NO**, the whole item is dead and content injection needs a different
-          vehicle — say so rather than looking for a workaround.
-owner:    2026-08-16: *"use tile mutators to simulate 'content injection/tilemap editing'
-          that we will develop later. Map tile mutators are the game's current method for
-          doing this. Might even be sufficient later on, TBD."*
-          Related: `D-V2-RAIN` above, which is the first thing that would be built this
-          way — or deliberately NOT, if mutators turn out to be the wrong vehicle.
+state:    ✅ **v1 — RULED 2026-08-19. The measurement came back YES, so the owner's
+          condition is met.** *"Leave this until we know whether we can change mutators via
+          the live bridge."* We know. Read off `Assembly-CSharp.dll`, 2026-08-19:
+
+          🔑 **THE MEASUREMENT — mutators are writable at runtime, and it is not close.**
+          · `Tile.mutatorsNullable` is a **public, directly settable** `List<TileMutatorDef>`.
+          · `Tile.AddMutator(def)` and `Tile.RemoveMutator(def)` are **public**.
+          · **Worldgen itself uses the same public method** — `WorldGenStep_Mutators` →
+            `AddMutatorsFromTile` → `TryAddMutator`, whose body is `tile.AddMutator(...)`.
+            We are not sneaking in a side door; we are using the front one.
+          · **The game already does this outside worldgen**: `Site.cs:310`,
+            `QuestNode_Root_AncientStructure`, `QuestNode_Root_AncientMercenaries`, and the
+            dev menu's add/remove-mutator actions. This is a supported runtime operation.
+          · **Nothing snapshots at worldgen.** `MapGenerator.GenerateMap` reads
+            `map.TileInfo.Mutators` LIVE to concat `extraGenSteps` and filter
+            `preventGenSteps`; so do `GenStep_Mutator*`, `WildPlantSpawner`,
+            `WeatherDecider` and `RaidStrategyWorker`.
+          · **It serializes.** `SurfaceLayer.tileMutatorTiles` / `tileMutatorDefs`, written
+            through `SerializeMutators()` on save and rebuilt on load. Our writes ship.
+
+          🔴 **AND THE LEGALITY GATE DOES NOT APPLY TO US.** `TileMutatorDef.IsValidTile`
+          — every biome whitelist, hilliness, temperature and `canSpawnOnRiver/Road/Landmark`
+          check — is called **only from `TryAddMutator`, the ROLL path. `AddMutator` never
+          calls it.** It enforces category/priority arbitration and nothing else. ⇒ We can
+          place mutators the generator would never roll. That is precisely the injection
+          hook this item was asking for, **and it is a footgun in the same breath.**
+
+          ⇒ **RULING, the four questions this item posed:**
+          1. **SUFFICIENT, not a stopgap — for this campaign.** The real limit is that
+             mutators act at MAP generation and cannot alter a map already generated. On a
+             frozen shipped world every tile but the start is unvisited, so that limit costs
+             us almost nothing. ⭐ `extraGenSteps` / `preventGenSteps` mean anything a
+             GenStep can build, a mutator can summon on a chosen tile.
+          2. **Whitelist: our own defNames are auto-whitelisted, by default, from the day
+             the first one is authored.** The trap is real and unchanged.
+          3. **BOTH, and the split is a rule, not a preference: a NAMED place is a
+             `LandmarkDef`** (it forces its mutators and puts a name on the world map);
+             **unnamed regional character is a bare `TileMutatorDef`.** §13.2 —
+             a landmark has no biome field, so its legality is its Required mutator's.
+          4. **Frozen-world consequence: resolved.** Reads are live at map-gen, so a mutator
+             added at any point before the player reaches a tile takes full effect. Placement
+             after shipping reaches every unvisited tile — which is nearly the whole planet.
+          🔴 **NEW STANDING RULE, because the engine will not stop us:** the importer
+          **validates against `IsValidTile` itself before placing**, and any deliberate
+          violation is recorded as deliberate. An illegal placement is silent — no error, no
+          log line — and its `Worker.Init` may expect state worldgen would have set.
+          ⭐ **This also closes §13.1's open end.** `RemoveMutator` is public, so the ban on
+          `Dunes` at the setdown and its neighbours is enforceable exactly as
+          `ASHKARR_WORLD_DEFINITION.md` §13.1 requires — clear it after vanilla's order-700
+          roll, which under the bridge route has already happened when we arrive.
+          ⚠️ Two caveats, both cosmetic and both measured: `Tile.hillinessLabelCached` is
+          not invalidated by `AddMutator`, so a late add can show a stale label until
+          reload; and a mutator whose worker expects worldgen-set state (coast direction,
+          say) may render oddly on an unsuited tile.
+          ⇒ **Follow-on, now unblocked:** the companion's batch tile setter gains mutator
+          add/remove (§12.2), and DECIDE authors the first defs. Filed to BUILD as part of
+          the importer, not as a separate pipeline.
 
 the proposal:
           Do not invent a content-injection system. **`TileMutatorDef` is already the
