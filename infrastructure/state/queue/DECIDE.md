@@ -615,22 +615,3 @@ criteria: the Empire is buildable from one document without anyone re-deriving w
           Neither breaks anything today. Both are checks that were passed against a def
           we do not use.
 state:    open — raised by REP, 2026-08-20, relaying the owner.
-
-## pick-the-weaponmoney-ranges-for-sixteen-bare-handed-kinds-5e12b7
-row:      7
-from:     CHECK, 2026-08-20. Measured live, not inferred: `queue/CHECK.md`
-          `sixteen-authored-role-kinds-spawn-bare-handed-on-weaponmoney-7c31a9`.
-what:     16 of the 48 authored `Jawa_*` role kinds spawn with no weapon, 5/5 samples each,
-          because `weaponMoney` excludes every weapon their `weaponTags` resolve to. The
-          tags are healthy; the money is not. Raising it is mechanical, but the NUMBERS are
-          a content call — whether a Droid Grunt fields a 5,000 silver weapon is a design
-          question, and setting it to "whatever makes the filter pass" silently decides how
-          rich every faction's line troops look.
-decide:   for each of the sixteen, the intended weapon tier — then BUILD sets the range to
-          bracket it. Also three kinds have NO `weaponTags` at all (`Jawa_Droid_Leader`,
-          `Jawa_Droid_Specialist`, `Jawa_TradeMoot_Specialist`) and two carry
-          `weaponMoney 0-0` (`Jawa_Droid_Grunt`, `Jawa_Droid_Heavy`) — those need a tag
-          chosen, not just a range widened.
-⚠️        `the-tribal-melee-tag-is-empty-pick-the-weapon-4a72e8` is MOOT — that finding was
-          refuted live today. Do not spend a decision on it.
-state:    ready

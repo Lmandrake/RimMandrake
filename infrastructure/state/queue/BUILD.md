@@ -475,3 +475,48 @@ verify:   `validate_patch.py --defs` clean; the six kinds resolve `RimMandrakeRa
 criteria: a cracked casket produces a Rakatan, the encounter plays identically, and no
           `Could not resolve cross-reference` names the xenotype.
 state:    ready
+
+## sixteen-authored-role-kinds-spawn-bare-handed-on-weaponmoney-5e12b7
+row:      7
+from:     CHECK, 2026-08-20. Measured live on the full 577-mod set, not inferred.
+          🔁 Filed to DECIDE first; the OWNER re-routed it here 2026-08-20 — BUILD
+          implements, the tiers are not a decision to wait on.
+spec:     `src/Jawa/Jawa_Patches/Defs/PawnKindDefs/JawaFactionRoster.xml`.
+          **16 of the 48 `Jawa_*` role kinds spawn with NO weapon, 5/5 samples each.**
+          The `weaponTags` are HEALTHY — `ORDroidWeapon` 5 weapons, `Jawa_IonWeapon` 7,
+          `KotORBowcaster` 3. RimWorld then filters those by MarketValue against
+          `weaponMoney`, and not one weapon falls inside the range.
+          (a) RAISE `weaponMoney` to bracket the real weapon values. Measured off the
+              577-mod dump, which MATCHES the live list, so these numbers are not
+              provisional — `min` must be at or below the cheapest tagged weapon:
+                Jawa_TradeMoot_Grunt        120-144    cheapest  800   (Jawa_IonWeaponLight/Jawa_IonWeapon, 800-2000)
+                Jawa_TradeMoot_Leader       450-540    cheapest  800   (Jawa_IonWeapon, 800-2000)
+                Jawa_Wildsteam_Grunt        200-240    cheapest 1250   (KotORBowcaster, 1250-13750)
+                Jawa_Wildsteam_Leader       800-960    cheapest 1250   (KotORBowcaster, 1250-13750)
+                Jawa_Wildsteam_Heavy        400-480    cheapest  550   (+SWKotORWeaponCategoryTag_heavyranged, 550-99999)
+                Jawa_DeepDesert_Specialist  300-360    only     1977   (SaV_tusken)
+                Jawa_Helix_Leader          2200-2640   cheapest 12000  (KotORRanged_legendary, 12000-80000)
+                Jawa_Hutt_Leader           2500-3000   cheapest 12000  (KotORRanged_legendary/rare, 12000-80000)
+              ⚠️ `Jawa_DeepDesert_Grunt` (90-108, ORTuskenMelee+ORMeleeBlunt),
+              `Jawa_Empire_Grunt` (350-420, ORImperialStandard+ORImperialLight) and
+              `Jawa_Empire_Heavy` (700-840, ORImperialHeavy+ORHeavyWeapon) are bare live,
+              but their tagged weapons report NO `MarketValue` statBase in the dump —
+              inherited from a parent it does not resolve. The VALUES ARE UNMEASURED;
+              read them off the weapon defs directly rather than trusting a number here.
+          (b) `Jawa_Droid_Grunt` and `Jawa_Droid_Heavy` carry `weaponMoney 0-0`, which no
+              weapon can ever satisfy. Give them a real range over `ORDroidWeapon`.
+          (c) `Jawa_Droid_Leader`, `Jawa_Droid_Specialist` and `Jawa_TradeMoot_Specialist`
+              have **no `weaponTags` field at all**. They need a tag chosen, not a range
+              widened — `ORDroidWeapon` for the two droids, an ion tag for the TradeMoot.
+          📌 Tier intent, so the numbers are not picked blind: Grunt = cheapest tier its
+          tag offers · Specialist/Heavy = mid · Leader = top. Widening `max` is harmless;
+          it is `min` sitting above every candidate that empties the pool.
+verify:   offline, off the regenerated dump: for each of the 48 kinds, at least one
+          ThingDef carrying one of its `weaponTags` has a MarketValue inside `weaponMoney`.
+          A kind with no `weaponTags` fails this check by definition.
+criteria: spawn each of the 48 kinds 5x live and read `jawa/pawn_get` -> `pawns[0].equipment`.
+          🔴 5/5 non-empty, for all 48. ONE SAMPLE IS NOT ENOUGH — `Jawa_Geonosian_Specialist`
+          reached the suspect list on a single bare roll and is fine at 5/5.
+          ⚠️ FALSE PASS: `jawa/pawn_gear` is a WRITER and answers a read with
+          "Give a ThingDef." Reading equipment off it reports every pawn as bare.
+state:    ready
