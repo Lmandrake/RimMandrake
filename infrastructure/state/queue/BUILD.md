@@ -68,7 +68,25 @@ a regenerate would delete · Deepwater's non-existent harpoon · the lightsaber
 `armorPenetration` reading CHECK owes.
 
 ⛔ **Do not re-derive the lightsaber damage analysis from the dump.** It was retracted:
-`Lightsaber.dll` computes penetration in C#. The reading comes back from CHECK first.
+`Lightsaber.dll` computes penetration in C#. The reading comes back from CHECK first —
+`lightsaber-armour-penetration-...-6a91d3` in `queue/CHECK.md` asks for ONE number off the
+weapon info card. The AP-2.0 patch was built and deleted; regenerating it is minutes.
+
+**Later on 2026-08-20, after the state block above was written:**
+- 🔴 **The game had been loading a RETIRED Empire patch.** A peer renamed
+  `ImperialDesertDirectorate.xml` to `GalacticEmpire.xml`, but a rename is a delete plus an
+  add and `deploy_custom_mods.py` will NOT delete on its own — it reports the orphan as a
+  `-` line and keeps it. The old file sat in the Steam copy while the new one had never
+  shipped. Fixed with `--prune --apply`. 🪤 **Check for a `-` line after every rename.**
+- ✅ **Skills are SYMLINKS, not installs.** `.claude/skills/<name>` points at
+  `skills/<name>` — same inode. Editing the repo folder IS installing it; the `.skill` zips
+  are for handoff and a fresh clone only. I claimed the opposite three times before
+  checking. `rimbridge-companion` was the one skill with no symlink and never invocable;
+  linked now, 27 of 27.
+- ✅ Everything deploys clean: `deploy_custom_mods.py` reports **"Everything in sync"**
+  across all 22 mods, only the 17 deliberate `DEPLOY_HOLD` entries held.
+- ✅ The dump still matches the live list (577 = 577). Bringing the game down does not
+  lapse the ratification; only a mod-set change does.
 
 ## B-V2 Park any v2 idea in design/V2_DREAMS.md yourself — no permission needed
 row:      doctrine
