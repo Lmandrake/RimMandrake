@@ -1,0 +1,325 @@
+#!/usr/bin/env python3
+r"""weapon_tag_audit.py - which weapon tags the cherrypick emptied, and who that disarms.
+
+WHY THIS EXISTS. A PawnKindDef asks for weapons by TAG, never by defName. Cut the last
+weapon carrying a tag and the tag resolves to an empty set - and a pawn kind whose tags
+have ALL gone empty spawns BARE-HANDED, with no red error and nothing in Player.log. The
+kind is valid, the tag is valid, the set is just empty. This campaign cut the entire
+vanilla firearm line in favour of blasters and disarmed 49 pawn kinds doing it, including
+vanilla tribals, the Mechanitor, and two of our own.
+
+🔴 READ THE TAGS FROM THE DEF DUMP, NOT FROM MOD XML. Owner's ruling 2026-08-19: a dump
+regenerated under the full list is "much more accurate than scanning the XML defs,
+provided that its version matches the current modlist." The dump is post-inheritance,
+post-PatchOperation and post-dedup; a raw XML scan is none of those, so it cannot see a
+tag a kind inherits from an abstract parent or is handed by another mod's patch.
+⚠️ The proviso is the point: this tool REFUSES to report unless the dump's mod set
+matches ModsConfig.xml, because a dump captured under a different list describes a
+different game. --anyway downgrades that to a loud warning.
+
+    python3 src/RimMandrake/Utils/weapon_tag_audit.py                 # report
+    python3 src/RimMandrake/Utils/weapon_tag_audit.py --emit-patch <out.xml>
+"""
+from __future__ import annotations
+import argparse, json, os, sys, xml.etree.ElementTree as ET
+from pathlib import Path
+
+sys.path.insert(0, str(Path(__file__).resolve().parent))
+from game_paths import LOCALLOW, MODS_CONFIG            # noqa: E402
+
+DUMP = Path(LOCALLOW) / "DefDump"
+REPO = Path(__file__).resolve().parents[3]
+CUTS = REPO / "observed" / "inventory"
+
+# The vanilla tag vocabulary a pawn kind is likely to ask for. A surviving weapon that
+# carries none of these is invisible to every vanilla and most modded pawn kinds.
+VANILLA_ROLE_TAGS = {
+    "SimpleGun", "Autopistol", "Revolver", "PumpShotgun", "AssaultRifle", "SniperRifle",
+    "Minigun", "IndustrialGunAdvanced", "ShortShots", "LongShots", "MakeshiftGun",
+    "Flamethrower", "GunHeavy", "SpacerGun", "GunSingleUse",
+    "NeolithicMeleeBasic", "NeolithicMeleeDecent", "NeolithicMeleeAdvanced",
+    "NeolithicRangedBasic", "NeolithicRangedDecent", "NeolithicRangedAdvanced",
+    "NeolithicRangedHeavy", "NeolithicRangedChief",
+    "MedievalMeleeBasic", "MedievalMeleeDecent", "MedievalMeleeAdvanced",
+}
+
+# defName/label substrings -> role. Order matters: the first hit wins, so the more
+# specific words come first. This is a heuristic and the report prints it, because a
+# misfiled weapon is a raid holding the wrong thing rather than a silent failure.
+ROLE_WORDS = [
+    ("bowcaster", "rifle"), ("holdout", "pistol"), ("revolver", "pistol"),
+    ("pistol", "pistol"), ("sidearm", "pistol"), ("smg", "smg"),
+    ("submachine", "smg"), ("shotgun", "shotgun"), ("scattergun", "shotgun"),
+    ("sniper", "sniper"), ("marksman", "sniper"), ("dmr", "sniper"),
+    ("minigun", "heavy"), ("cannon", "heavy"), ("launcher", "heavy"),
+    ("repeating", "heavy"), ("lmg", "heavy"), ("hmg", "heavy"),
+    ("carbine", "rifle"), ("rifle", "rifle"), ("blaster", "rifle"),
+    ("repeater", "rifle"), ("musket", "rifle"),
+]
+
+# role -> the vanilla tags a weapon of that role should answer to. Two tiers, split at
+# the role's median market value, because a pawn kind asking for `IndustrialGunAdvanced`
+# means "a good gun" and one asking for `SimpleGun` means "any gun".
+ROLE_TAGS = {
+    "pistol":  (["SimpleGun", "Autopistol", "Revolver", "ShortShots"],
+                ["SimpleGun", "Revolver", "ShortShots", "IndustrialGunAdvanced"]),
+    "smg":     (["SimpleGun", "ShortShots", "MakeshiftGun"],
+                ["ShortShots", "IndustrialGunAdvanced", "AssaultRifle"]),
+    "shotgun": (["SimpleGun", "PumpShotgun", "ShortShots"],
+                ["PumpShotgun", "ShortShots", "IndustrialGunAdvanced"]),
+    "rifle":   (["SimpleGun", "AssaultRifle"],
+                ["AssaultRifle", "IndustrialGunAdvanced"]),
+    "sniper":  (["SniperRifle", "LongShots"],
+                ["SniperRifle", "LongShots", "IndustrialGunAdvanced"]),
+    "heavy":   (["IndustrialGunAdvanced", "GunHeavy"],
+                ["IndustrialGunAdvanced", "GunHeavy", "Minigun"]),
+    # The pre-industrial ladders. Their empty rungs disarm tribal kinds, which is the
+    # half of this the owner noticed first: the vanilla bows were cut but modded ones
+    # survive, so the tier a kind asks for is what decides whether it is armed.
+    "n_melee":  (["NeolithicMeleeBasic", "NeolithicMeleeDecent"],
+                 ["NeolithicMeleeDecent", "NeolithicMeleeAdvanced", "MedievalMeleeDecent"]),
+    "n_ranged": (["NeolithicRangedBasic", "NeolithicRangedDecent"],
+                 ["NeolithicRangedDecent", "NeolithicRangedAdvanced",
+                  "NeolithicRangedHeavy", "NeolithicRangedChief"]),
+}
+
+
+def f(d, k, dflt=None):
+    return (d.get("fields") or {}).get(k, dflt)
+
+
+def market_value(d):
+    for sm in (f(d, "statBases") or []):
+        if isinstance(sm, dict) and sm.get("stat") == "MarketValue":
+            return sm.get("value")
+    return None
+
+
+NEO_MELEE = ("club", "spear", "axe", "knife", "dagger", "sword", "mace", "hammer",
+             "blade", "staff", "cleaver", "machete", "shiv", "scythe", "claw", "fang")
+NEO_RANGED = ("bow", "sling", "javelin", "throw", "dart", "blowgun", "boomerang")
+
+
+def role_of(d):
+    """Which tag ladder does this weapon belong on?
+
+    Pre-industrial weapons are classified first and separately, because the vanilla
+    firearm words ("rifle", "cannon") appear in modded neolithic labels often enough
+    that running the gun list first mislabels them."""
+    s = (d["defName"] + " " + str(f(d, "label") or "")).lower()
+    tl = f(d, "techLevel")
+    if tl in ("Neolithic", "Medieval"):
+        cls = set(f(d, "weaponClasses") or [])
+        if "Melee" in cls or any(w in s for w in NEO_MELEE):
+            return "n_melee"
+        if "Ranged" in cls or any(w in s for w in NEO_RANGED):
+            return "n_ranged"
+        return None
+    for word, role in ROLE_WORDS:
+        if word in s:
+            return role
+    return None
+
+
+def load_dump():
+    defs = DUMP / "defs"
+    if not defs.is_dir():
+        sys.exit("no def dump at %s - the game must write one before this can run" % defs)
+    things = json.loads((defs / "ThingDef.json").read_text(encoding="utf-8"))["defs"]
+    kinds = json.loads((defs / "PawnKindDef.json").read_text(encoding="utf-8"))["defs"]
+    man = json.loads((DUMP / "manifest.json").read_text(encoding="utf-8"))
+    return things, kinds, man
+
+
+def check_modlist(man, anyway):
+    """🔴 The proviso on the owner's ruling. A dump from a different mod set is a
+    measurement of a different game, and every count below would be quietly wrong."""
+    try:
+        live = {li.text.strip().lower() for li in ET.parse(MODS_CONFIG).getroot()
+                .find("activeMods") if li.text}
+    except Exception as e:
+        print("!! cannot read ModsConfig.xml (%s) - cannot verify the dump matches" % e)
+        live = None
+    n = man.get("modCount")
+    if live is None:
+        return
+    if n != len(live):
+        msg = ("dump modCount %s != %d active mods in ModsConfig.xml.\n"
+               "   The dump describes a DIFFERENT mod set, so every number below would "
+               "be a measurement of a game you are not running.\n"
+               "   Regenerate the dump under the list you intend to ship, or pass "
+               "--anyway to see the numbers as PROVISIONAL." % (n, len(live)))
+        if not anyway:
+            sys.exit("REFUSING: " + msg)
+        print("⚠️  PROVISIONAL: " + msg + "\n")
+    else:
+        print("dump matches the live list: %d mods, captured %s\n"
+              % (n, man.get("capturedUtc", "?")))
+
+
+def cut_set(category):
+    p = CUTS / ("decisions_%s.json" % category)
+    if not p.is_file():
+        return set()
+    return {c["defName"] for c in json.loads(p.read_text(encoding="utf-8"))["cut"]}
+
+
+def audit(anyway=False):
+    things, kinds, man = load_dump()
+    check_modlist(man, anyway)
+    cut = cut_set("weapons")
+
+    tags = {}
+    for d in things:
+        for t in (f(d, "weaponTags") or []):
+            e = tags.setdefault(t, {"all": [], "kept": []})
+            e["all"].append(d["defName"])
+            if d["defName"] not in cut:
+                e["kept"].append(d["defName"])
+
+    empty = sorted(t for t, v in tags.items() if not v["kept"])
+    disarmed = []
+    for k in kinds:
+        wt = f(k, "weaponTags") or []
+        if wt and all(not tags.get(t, {}).get("kept") for t in wt):
+            disarmed.append((k["defName"], wt))
+
+    def eligible(d):
+        if d["defName"] in cut:
+            return False
+        cls = set(f(d, "weaponClasses") or [])
+        wt = set(f(d, "weaponTags") or [])
+        if "TurretGun" in wt or "ImprovisedMelee" in wt:
+            return False
+        tl = f(d, "techLevel")
+        if tl in ("Industrial", "Spacer"):
+            return "Ranged" in cls and not (wt & VANILLA_ROLE_TAGS)
+        if tl in ("Neolithic", "Medieval"):
+            # A pre-industrial weapon already on a full rung needs nothing; one whose
+            # only rungs are EMPTY is exactly the case that disarms a tribal.
+            rungs = wt & VANILLA_ROLE_TAGS
+            return bool(cls) and (not rungs or all(not tags[t]["kept"] for t in rungs))
+        return False
+
+    untagged = [d for d in things if eligible(d)]
+    return tags, empty, sorted(disarmed), untagged
+
+
+def plan(untagged):
+    """Group the untagged survivors by role and split each role at its median value."""
+    by_role = {}
+    for d in untagged:
+        r = role_of(d)
+        if r in ROLE_TAGS:
+            by_role.setdefault(r, []).append(d)
+    out = {}
+    for r, ds in by_role.items():
+        vals = sorted(v for v in (market_value(x) for x in ds) if v)
+        mid = vals[len(vals) // 2] if vals else 0
+        low, high = ROLE_TAGS[r]
+        for d in ds:
+            v = market_value(d) or 0
+            # A Unique is a quest reward. Tagging it into a common pool puts a
+            # legendary weapon in an ordinary raid, so it only ever gets the top tier.
+            uniq = "Unique" in d["defName"]
+            out[d["defName"]] = (r, sorted(set(high if (v >= mid or uniq) else low)))
+    return out
+
+
+# Tags this campaign needs that no weapon carries. A pawn kind naming one of these is
+# asking for a weapon that does not exist; putting the tag on the right survivor is
+# cheaper than rewriting the kind, and it survives a regenerate of the kind.
+EXTRA_TAGS = {
+    "guy762_vaxe": ["Jawa_GamorreanAxe"],
+    "guy762_vaxe_hutt": ["Jawa_GamorreanAxe"],
+}
+
+
+def emit_patch(mapping, path):
+    for dn, tg in EXTRA_TAGS.items():
+        role, have = mapping.get(dn, ("extra", []))
+        mapping[dn] = (role, sorted(set(have) | set(tg)))
+    lines = ['<?xml version="1.0" encoding="utf-8"?>', "<Patch>", "", "<!--", """
+    WeaponTags_Renormalise.xml            Jawa_Patches = generated, do not hand-edit
+    ============================================================================
+    Regenerate with weapon_tag_audit.py, passing it this file as the patch to emit:
+        python3 src/RimMandrake/Utils/weapon_tag_audit.py  (see its docstring)
+
+    🔴 WHY. A PawnKindDef asks for weapons by TAG. This campaign cut the whole vanilla
+    firearm line in favour of blasters, and the blasters carry their own mods' tags
+    (`Gun`, `SpacerGun`, `StarWarsRange`) but none of the vanilla ones. So every kind
+    asking for `SimpleGun`, `Autopistol`, `AssaultRifle`, `ShortShots` or
+    `IndustrialGunAdvanced` found an EMPTY set and spawned its pawns BARE-HANDED - 49
+    kinds, silently, with nothing in the log.
+
+    ⇒ This re-tags the SURVIVORS into the vanilla vocabulary instead of un-cutting the
+    weapons. The cut stands; the ladders refill. Fixing it at the weapon end also fixes
+    every future pawn kind, where patching 49 kinds would not.
+
+    Tier split is each role's median market value. A `_Unique` always takes the top
+    tier - it is a quest reward, and tagging one into a common pool puts a legendary
+    weapon in an ordinary raid.
+  """.rstrip(), "-->", ""]
+    for dn, (role, tg) in sorted(mapping.items()):
+        lines += [
+            '  <Operation Class="PatchOperationConditional">',
+            '    <xpath>/Defs/ThingDef[defName="%s"]/weaponTags</xpath>' % dn,
+            '    <match Class="PatchOperationAdd">',
+            '      <xpath>/Defs/ThingDef[defName="%s"]/weaponTags</xpath>' % dn,
+            "      <value>%s</value>" % "".join("<li>%s</li>" % t for t in tg),
+            "    </match>",
+            '    <nomatch Class="PatchOperationAdd">',
+            '      <xpath>/Defs/ThingDef[defName="%s"]</xpath>' % dn,
+            "      <value><weaponTags>%s</weaponTags></value>"
+            % "".join("<li>%s</li>" % t for t in tg),
+            "    </nomatch>",
+            "  </Operation>",
+            "",
+        ]
+    lines += ["</Patch>", ""]
+    # 🪤 An XML comment may not contain '--' ANYWHERE in its BODY - not in a rule line,
+    # not in a CLI flag it quotes. One occurrence does not spoil the comment, it kills
+    # the FILE: the parser aborts and every operation below is lost. Sanitise the body
+    # only; doing it to the whole document eats the '<!--' delimiter itself.
+    out = []
+    inside = False
+    for ln in lines:
+        if ln.strip() == "<!--":
+            inside = True
+        elif ln.strip() == "-->":
+            inside = False
+        elif inside:
+            ln = ln.replace("--", "=")
+        out.append(ln)
+    Path(path).write_text("\n".join(out), encoding="utf-8")
+    return len(mapping)
+
+
+def main():
+    ap = argparse.ArgumentParser(description=__doc__,
+                                 formatter_class=argparse.RawDescriptionHelpFormatter)
+    ap.add_argument("--emit-patch", metavar="OUT")
+    ap.add_argument("--anyway", action="store_true",
+                    help="report even though the dump does not match the live mod list")
+    a = ap.parse_args()
+
+    tags, empty, disarmed, untagged = audit(a.anyway)
+    print("weapon tags in the dump: %d   emptied by the cut: %d" % (len(tags), len(empty)))
+    for t in empty:
+        print("   %-32s lost all %d" % (t, len(tags[t]["all"])))
+    print("\n🔴 pawn kinds with EVERY weapon tag empty: %d" % len(disarmed))
+    for n, w in disarmed:
+        print("   %-34s %s" % (n, w))
+    print("\nsurviving Industrial/Spacer guns carrying NO vanilla role tag: %d" % len(untagged))
+    m = plan(untagged)
+    from collections import Counter
+    print("   classified by role: %s" % dict(Counter(r for r, _ in m.values())))
+    print("   unclassified (left alone): %d" % (len(untagged) - len(m)))
+    if a.emit_patch:
+        n = emit_patch(m, a.emit_patch)
+        print("\nwrote %s - %d weapons re-tagged" % (a.emit_patch, n))
+    return 0
+
+
+if __name__ == "__main__":
+    sys.exit(main())

@@ -1,0 +1,1791 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Patch>
+
+<!--
+
+    WeaponTags_Renormalise.xml            Jawa_Patches = generated, do not hand-edit
+    ============================================================================
+    Regenerate with weapon_tag_audit.py, passing it this file as the patch to emit:
+        python3 src/RimMandrake/Utils/weapon_tag_audit.py  (see its docstring)
+
+    🔴 WHY. A PawnKindDef asks for weapons by TAG. This campaign cut the whole vanilla
+    firearm line in favour of blasters, and the blasters carry their own mods' tags
+    (`Gun`, `SpacerGun`, `StarWarsRange`) but none of the vanilla ones. So every kind
+    asking for `SimpleGun`, `Autopistol`, `AssaultRifle`, `ShortShots` or
+    `IndustrialGunAdvanced` found an EMPTY set and spawned its pawns BARE-HANDED - 49
+    kinds, silently, with nothing in the log.
+
+    ⇒ This re-tags the SURVIVORS into the vanilla vocabulary instead of un-cutting the
+    weapons. The cut stands; the ladders refill. Fixing it at the weapon end also fixes
+    every future pawn kind, where patching 49 kinds would not.
+
+    Tier split is each role's median market value. A `_Unique` always takes the top
+    tier - it is a quest reward, and tagging one into a common pool puts a legendary
+    weapon in an ordinary raid.
+-->
+
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/ThingDef[defName="AG_ForsakenBow"]/weaponTags</xpath>
+    <match Class="PatchOperationAdd">
+      <xpath>/Defs/ThingDef[defName="AG_ForsakenBow"]/weaponTags</xpath>
+      <value><li>NeolithicRangedBasic</li><li>NeolithicRangedDecent</li></value>
+    </match>
+    <nomatch Class="PatchOperationAdd">
+      <xpath>/Defs/ThingDef[defName="AG_ForsakenBow"]</xpath>
+      <value><weaponTags><li>NeolithicRangedBasic</li><li>NeolithicRangedDecent</li></weaponTags></value>
+    </nomatch>
+  </Operation>
+
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/ThingDef[defName="AG_ForsakenSpear"]/weaponTags</xpath>
+    <match Class="PatchOperationAdd">
+      <xpath>/Defs/ThingDef[defName="AG_ForsakenSpear"]/weaponTags</xpath>
+      <value><li>NeolithicMeleeBasic</li><li>NeolithicMeleeDecent</li></value>
+    </match>
+    <nomatch Class="PatchOperationAdd">
+      <xpath>/Defs/ThingDef[defName="AG_ForsakenSpear"]</xpath>
+      <value><weaponTags><li>NeolithicMeleeBasic</li><li>NeolithicMeleeDecent</li></weaponTags></value>
+    </nomatch>
+  </Operation>
+
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/ThingDef[defName="AM_BeamGraserCannon"]/weaponTags</xpath>
+    <match Class="PatchOperationAdd">
+      <xpath>/Defs/ThingDef[defName="AM_BeamGraserCannon"]/weaponTags</xpath>
+      <value><li>GunHeavy</li><li>IndustrialGunAdvanced</li></value>
+    </match>
+    <nomatch Class="PatchOperationAdd">
+      <xpath>/Defs/ThingDef[defName="AM_BeamGraserCannon"]</xpath>
+      <value><weaponTags><li>GunHeavy</li><li>IndustrialGunAdvanced</li></weaponTags></value>
+    </nomatch>
+  </Operation>
+
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/ThingDef[defName="AM_Gun_GoliathChargeBlaster"]/weaponTags</xpath>
+    <match Class="PatchOperationAdd">
+      <xpath>/Defs/ThingDef[defName="AM_Gun_GoliathChargeBlaster"]/weaponTags</xpath>
+      <value><li>AssaultRifle</li><li>SimpleGun</li></value>
+    </match>
+    <nomatch Class="PatchOperationAdd">
+      <xpath>/Defs/ThingDef[defName="AM_Gun_GoliathChargeBlaster"]</xpath>
+      <value><weaponTags><li>AssaultRifle</li><li>SimpleGun</li></weaponTags></value>
+    </nomatch>
+  </Operation>
+
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/ThingDef[defName="AM_Gun_SuperHeavyChargeBlaster"]/weaponTags</xpath>
+    <match Class="PatchOperationAdd">
+      <xpath>/Defs/ThingDef[defName="AM_Gun_SuperHeavyChargeBlaster"]/weaponTags</xpath>
+      <value><li>AssaultRifle</li><li>SimpleGun</li></value>
+    </match>
+    <nomatch Class="PatchOperationAdd">
+      <xpath>/Defs/ThingDef[defName="AM_Gun_SuperHeavyChargeBlaster"]</xpath>
+      <value><weaponTags><li>AssaultRifle</li><li>SimpleGun</li></weaponTags></value>
+    </nomatch>
+  </Operation>
+
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/ThingDef[defName="AM_Gun_TacticalShotgun"]/weaponTags</xpath>
+    <match Class="PatchOperationAdd">
+      <xpath>/Defs/ThingDef[defName="AM_Gun_TacticalShotgun"]/weaponTags</xpath>
+      <value><li>IndustrialGunAdvanced</li><li>PumpShotgun</li><li>ShortShots</li></value>
+    </match>
+    <nomatch Class="PatchOperationAdd">
+      <xpath>/Defs/ThingDef[defName="AM_Gun_TacticalShotgun"]</xpath>
+      <value><weaponTags><li>IndustrialGunAdvanced</li><li>PumpShotgun</li><li>ShortShots</li></weaponTags></value>
+    </nomatch>
+  </Operation>
+
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/ThingDef[defName="AM_MechanoidGunRotaryNeedle"]/weaponTags</xpath>
+    <match Class="PatchOperationAdd">
+      <xpath>/Defs/ThingDef[defName="AM_MechanoidGunRotaryNeedle"]/weaponTags</xpath>
+      <value><li>GunHeavy</li><li>IndustrialGunAdvanced</li></value>
+    </match>
+    <nomatch Class="PatchOperationAdd">
+      <xpath>/Defs/ThingDef[defName="AM_MechanoidGunRotaryNeedle"]</xpath>
+      <value><weaponTags><li>GunHeavy</li><li>IndustrialGunAdvanced</li></weaponTags></value>
+    </nomatch>
+  </Operation>
+
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/ThingDef[defName="AM_StarfireTurret"]/weaponTags</xpath>
+    <match Class="PatchOperationAdd">
+      <xpath>/Defs/ThingDef[defName="AM_StarfireTurret"]/weaponTags</xpath>
+      <value><li>GunHeavy</li><li>IndustrialGunAdvanced</li></value>
+    </match>
+    <nomatch Class="PatchOperationAdd">
+      <xpath>/Defs/ThingDef[defName="AM_StarfireTurret"]</xpath>
+      <value><weaponTags><li>GunHeavy</li><li>IndustrialGunAdvanced</li></weaponTags></value>
+    </nomatch>
+  </Operation>
+
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/ThingDef[defName="AlphaThrumboHorn"]/weaponTags</xpath>
+    <match Class="PatchOperationAdd">
+      <xpath>/Defs/ThingDef[defName="AlphaThrumboHorn"]/weaponTags</xpath>
+      <value><li>MedievalMeleeDecent</li><li>NeolithicMeleeAdvanced</li><li>NeolithicMeleeDecent</li></value>
+    </match>
+    <nomatch Class="PatchOperationAdd">
+      <xpath>/Defs/ThingDef[defName="AlphaThrumboHorn"]</xpath>
+      <value><weaponTags><li>MedievalMeleeDecent</li><li>NeolithicMeleeAdvanced</li><li>NeolithicMeleeDecent</li></weaponTags></value>
+    </nomatch>
+  </Operation>
+
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/ThingDef[defName="BMT_BlastSpore"]/weaponTags</xpath>
+    <match Class="PatchOperationAdd">
+      <xpath>/Defs/ThingDef[defName="BMT_BlastSpore"]/weaponTags</xpath>
+      <value><li>NeolithicRangedBasic</li><li>NeolithicRangedDecent</li></value>
+    </match>
+    <nomatch Class="PatchOperationAdd">
+      <xpath>/Defs/ThingDef[defName="BMT_BlastSpore"]</xpath>
+      <value><weaponTags><li>NeolithicRangedBasic</li><li>NeolithicRangedDecent</li></weaponTags></value>
+    </nomatch>
+  </Operation>
+
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/ThingDef[defName="BMT_BunkerClaw"]/weaponTags</xpath>
+    <match Class="PatchOperationAdd">
+      <xpath>/Defs/ThingDef[defName="BMT_BunkerClaw"]/weaponTags</xpath>
+      <value><li>MedievalMeleeDecent</li><li>NeolithicMeleeAdvanced</li><li>NeolithicMeleeDecent</li></value>
+    </match>
+    <nomatch Class="PatchOperationAdd">
+      <xpath>/Defs/ThingDef[defName="BMT_BunkerClaw"]</xpath>
+      <value><weaponTags><li>MedievalMeleeDecent</li><li>NeolithicMeleeAdvanced</li><li>NeolithicMeleeDecent</li></weaponTags></value>
+    </nomatch>
+  </Operation>
+
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/ThingDef[defName="BMT_CaveSpiderHead"]/weaponTags</xpath>
+    <match Class="PatchOperationAdd">
+      <xpath>/Defs/ThingDef[defName="BMT_CaveSpiderHead"]/weaponTags</xpath>
+      <value><li>MedievalMeleeDecent</li><li>NeolithicMeleeAdvanced</li><li>NeolithicMeleeDecent</li></value>
+    </match>
+    <nomatch Class="PatchOperationAdd">
+      <xpath>/Defs/ThingDef[defName="BMT_CaveSpiderHead"]</xpath>
+      <value><weaponTags><li>MedievalMeleeDecent</li><li>NeolithicMeleeAdvanced</li><li>NeolithicMeleeDecent</li></weaponTags></value>
+    </nomatch>
+  </Operation>
+
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/ThingDef[defName="BMT_CrystalMantisClaw"]/weaponTags</xpath>
+    <match Class="PatchOperationAdd">
+      <xpath>/Defs/ThingDef[defName="BMT_CrystalMantisClaw"]/weaponTags</xpath>
+      <value><li>NeolithicMeleeBasic</li><li>NeolithicMeleeDecent</li></value>
+    </match>
+    <nomatch Class="PatchOperationAdd">
+      <xpath>/Defs/ThingDef[defName="BMT_CrystalMantisClaw"]</xpath>
+      <value><weaponTags><li>NeolithicMeleeBasic</li><li>NeolithicMeleeDecent</li></weaponTags></value>
+    </nomatch>
+  </Operation>
+
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/ThingDef[defName="BMT_FungalMantisClaw"]/weaponTags</xpath>
+    <match Class="PatchOperationAdd">
+      <xpath>/Defs/ThingDef[defName="BMT_FungalMantisClaw"]/weaponTags</xpath>
+      <value><li>NeolithicMeleeBasic</li><li>NeolithicMeleeDecent</li></value>
+    </match>
+    <nomatch Class="PatchOperationAdd">
+      <xpath>/Defs/ThingDef[defName="BMT_FungalMantisClaw"]</xpath>
+      <value><weaponTags><li>NeolithicMeleeBasic</li><li>NeolithicMeleeDecent</li></weaponTags></value>
+    </nomatch>
+  </Operation>
+
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/ThingDef[defName="BMT_MushroomLog"]/weaponTags</xpath>
+    <match Class="PatchOperationAdd">
+      <xpath>/Defs/ThingDef[defName="BMT_MushroomLog"]/weaponTags</xpath>
+      <value><li>NeolithicMeleeBasic</li><li>NeolithicMeleeDecent</li></value>
+    </match>
+    <nomatch Class="PatchOperationAdd">
+      <xpath>/Defs/ThingDef[defName="BMT_MushroomLog"]</xpath>
+      <value><weaponTags><li>NeolithicMeleeBasic</li><li>NeolithicMeleeDecent</li></weaponTags></value>
+    </nomatch>
+  </Operation>
+
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/ThingDef[defName="BMT_PustuleHornetStinger"]/weaponTags</xpath>
+    <match Class="PatchOperationAdd">
+      <xpath>/Defs/ThingDef[defName="BMT_PustuleHornetStinger"]/weaponTags</xpath>
+      <value><li>NeolithicMeleeBasic</li><li>NeolithicMeleeDecent</li></value>
+    </match>
+    <nomatch Class="PatchOperationAdd">
+      <xpath>/Defs/ThingDef[defName="BMT_PustuleHornetStinger"]</xpath>
+      <value><weaponTags><li>NeolithicMeleeBasic</li><li>NeolithicMeleeDecent</li></weaponTags></value>
+    </nomatch>
+  </Operation>
+
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/ThingDef[defName="BMT_ResourceBlueCrystal"]/weaponTags</xpath>
+    <match Class="PatchOperationAdd">
+      <xpath>/Defs/ThingDef[defName="BMT_ResourceBlueCrystal"]/weaponTags</xpath>
+      <value><li>NeolithicMeleeBasic</li><li>NeolithicMeleeDecent</li></value>
+    </match>
+    <nomatch Class="PatchOperationAdd">
+      <xpath>/Defs/ThingDef[defName="BMT_ResourceBlueCrystal"]</xpath>
+      <value><weaponTags><li>NeolithicMeleeBasic</li><li>NeolithicMeleeDecent</li></weaponTags></value>
+    </nomatch>
+  </Operation>
+
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/ThingDef[defName="BMT_RoyalRhinoHorn"]/weaponTags</xpath>
+    <match Class="PatchOperationAdd">
+      <xpath>/Defs/ThingDef[defName="BMT_RoyalRhinoHorn"]/weaponTags</xpath>
+      <value><li>MedievalMeleeDecent</li><li>NeolithicMeleeAdvanced</li><li>NeolithicMeleeDecent</li></value>
+    </match>
+    <nomatch Class="PatchOperationAdd">
+      <xpath>/Defs/ThingDef[defName="BMT_RoyalRhinoHorn"]</xpath>
+      <value><weaponTags><li>MedievalMeleeDecent</li><li>NeolithicMeleeAdvanced</li><li>NeolithicMeleeDecent</li></weaponTags></value>
+    </nomatch>
+  </Operation>
+
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/ThingDef[defName="BMT_ThrumbungusShroom"]/weaponTags</xpath>
+    <match Class="PatchOperationAdd">
+      <xpath>/Defs/ThingDef[defName="BMT_ThrumbungusShroom"]/weaponTags</xpath>
+      <value><li>NeolithicRangedAdvanced</li><li>NeolithicRangedChief</li><li>NeolithicRangedDecent</li><li>NeolithicRangedHeavy</li></value>
+    </match>
+    <nomatch Class="PatchOperationAdd">
+      <xpath>/Defs/ThingDef[defName="BMT_ThrumbungusShroom"]</xpath>
+      <value><weaponTags><li>NeolithicRangedAdvanced</li><li>NeolithicRangedChief</li><li>NeolithicRangedDecent</li><li>NeolithicRangedHeavy</li></weaponTags></value>
+    </nomatch>
+  </Operation>
+
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/ThingDef[defName="BMT_Toxwood"]/weaponTags</xpath>
+    <match Class="PatchOperationAdd">
+      <xpath>/Defs/ThingDef[defName="BMT_Toxwood"]/weaponTags</xpath>
+      <value><li>NeolithicMeleeBasic</li><li>NeolithicMeleeDecent</li></value>
+    </match>
+    <nomatch Class="PatchOperationAdd">
+      <xpath>/Defs/ThingDef[defName="BMT_Toxwood"]</xpath>
+      <value><weaponTags><li>NeolithicMeleeBasic</li><li>NeolithicMeleeDecent</li></weaponTags></value>
+    </nomatch>
+  </Operation>
+
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/ThingDef[defName="BS_GiantHammer"]/weaponTags</xpath>
+    <match Class="PatchOperationAdd">
+      <xpath>/Defs/ThingDef[defName="BS_GiantHammer"]/weaponTags</xpath>
+      <value><li>NeolithicMeleeBasic</li><li>NeolithicMeleeDecent</li></value>
+    </match>
+    <nomatch Class="PatchOperationAdd">
+      <xpath>/Defs/ThingDef[defName="BS_GiantHammer"]</xpath>
+      <value><weaponTags><li>NeolithicMeleeBasic</li><li>NeolithicMeleeDecent</li></weaponTags></value>
+    </nomatch>
+  </Operation>
+
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/ThingDef[defName="BS_GiantMedievalHammer"]/weaponTags</xpath>
+    <match Class="PatchOperationAdd">
+      <xpath>/Defs/ThingDef[defName="BS_GiantMedievalHammer"]/weaponTags</xpath>
+      <value><li>NeolithicMeleeBasic</li><li>NeolithicMeleeDecent</li></value>
+    </match>
+    <nomatch Class="PatchOperationAdd">
+      <xpath>/Defs/ThingDef[defName="BS_GiantMedievalHammer"]</xpath>
+      <value><weaponTags><li>NeolithicMeleeBasic</li><li>NeolithicMeleeDecent</li></weaponTags></value>
+    </nomatch>
+  </Operation>
+
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/ThingDef[defName="BS_GiantPrimitiveBow"]/weaponTags</xpath>
+    <match Class="PatchOperationAdd">
+      <xpath>/Defs/ThingDef[defName="BS_GiantPrimitiveBow"]/weaponTags</xpath>
+      <value><li>NeolithicRangedBasic</li><li>NeolithicRangedDecent</li></value>
+    </match>
+    <nomatch Class="PatchOperationAdd">
+      <xpath>/Defs/ThingDef[defName="BS_GiantPrimitiveBow"]</xpath>
+      <value><weaponTags><li>NeolithicRangedBasic</li><li>NeolithicRangedDecent</li></weaponTags></value>
+    </nomatch>
+  </Operation>
+
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/ThingDef[defName="BS_GiantSalvageClub"]/weaponTags</xpath>
+    <match Class="PatchOperationAdd">
+      <xpath>/Defs/ThingDef[defName="BS_GiantSalvageClub"]/weaponTags</xpath>
+      <value><li>NeolithicMeleeBasic</li><li>NeolithicMeleeDecent</li></value>
+    </match>
+    <nomatch Class="PatchOperationAdd">
+      <xpath>/Defs/ThingDef[defName="BS_GiantSalvageClub"]</xpath>
+      <value><weaponTags><li>NeolithicMeleeBasic</li><li>NeolithicMeleeDecent</li></weaponTags></value>
+    </nomatch>
+  </Operation>
+
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/ThingDef[defName="BS_GiantScythe"]/weaponTags</xpath>
+    <match Class="PatchOperationAdd">
+      <xpath>/Defs/ThingDef[defName="BS_GiantScythe"]/weaponTags</xpath>
+      <value><li>NeolithicMeleeBasic</li><li>NeolithicMeleeDecent</li></value>
+    </match>
+    <nomatch Class="PatchOperationAdd">
+      <xpath>/Defs/ThingDef[defName="BS_GiantScythe"]</xpath>
+      <value><weaponTags><li>NeolithicMeleeBasic</li><li>NeolithicMeleeDecent</li></weaponTags></value>
+    </nomatch>
+  </Operation>
+
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/ThingDef[defName="BS_GiantShard"]/weaponTags</xpath>
+    <match Class="PatchOperationAdd">
+      <xpath>/Defs/ThingDef[defName="BS_GiantShard"]/weaponTags</xpath>
+      <value><li>NeolithicMeleeBasic</li><li>NeolithicMeleeDecent</li></value>
+    </match>
+    <nomatch Class="PatchOperationAdd">
+      <xpath>/Defs/ThingDef[defName="BS_GiantShard"]</xpath>
+      <value><weaponTags><li>NeolithicMeleeBasic</li><li>NeolithicMeleeDecent</li></weaponTags></value>
+    </nomatch>
+  </Operation>
+
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/ThingDef[defName="BS_JotunHammer"]/weaponTags</xpath>
+    <match Class="PatchOperationAdd">
+      <xpath>/Defs/ThingDef[defName="BS_JotunHammer"]/weaponTags</xpath>
+      <value><li>NeolithicMeleeBasic</li><li>NeolithicMeleeDecent</li></value>
+    </match>
+    <nomatch Class="PatchOperationAdd">
+      <xpath>/Defs/ThingDef[defName="BS_JotunHammer"]</xpath>
+      <value><weaponTags><li>NeolithicMeleeBasic</li><li>NeolithicMeleeDecent</li></weaponTags></value>
+    </nomatch>
+  </Operation>
+
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/ThingDef[defName="BS_OgreClub"]/weaponTags</xpath>
+    <match Class="PatchOperationAdd">
+      <xpath>/Defs/ThingDef[defName="BS_OgreClub"]/weaponTags</xpath>
+      <value><li>NeolithicMeleeBasic</li><li>NeolithicMeleeDecent</li></value>
+    </match>
+    <nomatch Class="PatchOperationAdd">
+      <xpath>/Defs/ThingDef[defName="BS_OgreClub"]</xpath>
+      <value><weaponTags><li>NeolithicMeleeBasic</li><li>NeolithicMeleeDecent</li></weaponTags></value>
+    </nomatch>
+  </Operation>
+
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/ThingDef[defName="BS_OgreThrowinRock"]/weaponTags</xpath>
+    <match Class="PatchOperationAdd">
+      <xpath>/Defs/ThingDef[defName="BS_OgreThrowinRock"]/weaponTags</xpath>
+      <value><li>NeolithicRangedAdvanced</li><li>NeolithicRangedChief</li><li>NeolithicRangedDecent</li><li>NeolithicRangedHeavy</li></value>
+    </match>
+    <nomatch Class="PatchOperationAdd">
+      <xpath>/Defs/ThingDef[defName="BS_OgreThrowinRock"]</xpath>
+      <value><weaponTags><li>NeolithicRangedAdvanced</li><li>NeolithicRangedChief</li><li>NeolithicRangedDecent</li><li>NeolithicRangedHeavy</li></weaponTags></value>
+    </nomatch>
+  </Operation>
+
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/ThingDef[defName="BS_OniClub"]/weaponTags</xpath>
+    <match Class="PatchOperationAdd">
+      <xpath>/Defs/ThingDef[defName="BS_OniClub"]/weaponTags</xpath>
+      <value><li>NeolithicMeleeBasic</li><li>NeolithicMeleeDecent</li></value>
+    </match>
+    <nomatch Class="PatchOperationAdd">
+      <xpath>/Defs/ThingDef[defName="BS_OniClub"]</xpath>
+      <value><weaponTags><li>NeolithicMeleeBasic</li><li>NeolithicMeleeDecent</li></weaponTags></value>
+    </nomatch>
+  </Operation>
+
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/ThingDef[defName="BS_SkrymirHammer"]/weaponTags</xpath>
+    <match Class="PatchOperationAdd">
+      <xpath>/Defs/ThingDef[defName="BS_SkrymirHammer"]/weaponTags</xpath>
+      <value><li>MedievalMeleeDecent</li><li>NeolithicMeleeAdvanced</li><li>NeolithicMeleeDecent</li></value>
+    </match>
+    <nomatch Class="PatchOperationAdd">
+      <xpath>/Defs/ThingDef[defName="BS_SkrymirHammer"]</xpath>
+      <value><weaponTags><li>MedievalMeleeDecent</li><li>NeolithicMeleeAdvanced</li><li>NeolithicMeleeDecent</li></weaponTags></value>
+    </nomatch>
+  </Operation>
+
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/ThingDef[defName="BS_SurtrSword"]/weaponTags</xpath>
+    <match Class="PatchOperationAdd">
+      <xpath>/Defs/ThingDef[defName="BS_SurtrSword"]/weaponTags</xpath>
+      <value><li>MedievalMeleeDecent</li><li>NeolithicMeleeAdvanced</li><li>NeolithicMeleeDecent</li></value>
+    </match>
+    <nomatch Class="PatchOperationAdd">
+      <xpath>/Defs/ThingDef[defName="BS_SurtrSword"]</xpath>
+      <value><weaponTags><li>MedievalMeleeDecent</li><li>NeolithicMeleeAdvanced</li><li>NeolithicMeleeDecent</li></weaponTags></value>
+    </nomatch>
+  </Operation>
+
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/ThingDef[defName="BX_BloodletterBlade"]/weaponTags</xpath>
+    <match Class="PatchOperationAdd">
+      <xpath>/Defs/ThingDef[defName="BX_BloodletterBlade"]/weaponTags</xpath>
+      <value><li>MedievalMeleeDecent</li><li>NeolithicMeleeAdvanced</li><li>NeolithicMeleeDecent</li></value>
+    </match>
+    <nomatch Class="PatchOperationAdd">
+      <xpath>/Defs/ThingDef[defName="BX_BloodletterBlade"]</xpath>
+      <value><weaponTags><li>MedievalMeleeDecent</li><li>NeolithicMeleeAdvanced</li><li>NeolithicMeleeDecent</li></weaponTags></value>
+    </nomatch>
+  </Operation>
+
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/ThingDef[defName="CAFakeGun_ChargeBlasterHeavy"]/weaponTags</xpath>
+    <match Class="PatchOperationAdd">
+      <xpath>/Defs/ThingDef[defName="CAFakeGun_ChargeBlasterHeavy"]/weaponTags</xpath>
+      <value><li>AssaultRifle</li><li>SimpleGun</li></value>
+    </match>
+    <nomatch Class="PatchOperationAdd">
+      <xpath>/Defs/ThingDef[defName="CAFakeGun_ChargeBlasterHeavy"]</xpath>
+      <value><weaponTags><li>AssaultRifle</li><li>SimpleGun</li></weaponTags></value>
+    </nomatch>
+  </Operation>
+
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/ThingDef[defName="DA_DrogTusk"]/weaponTags</xpath>
+    <match Class="PatchOperationAdd">
+      <xpath>/Defs/ThingDef[defName="DA_DrogTusk"]/weaponTags</xpath>
+      <value><li>MedievalMeleeDecent</li><li>NeolithicMeleeAdvanced</li><li>NeolithicMeleeDecent</li></value>
+    </match>
+    <nomatch Class="PatchOperationAdd">
+      <xpath>/Defs/ThingDef[defName="DA_DrogTusk"]</xpath>
+      <value><weaponTags><li>MedievalMeleeDecent</li><li>NeolithicMeleeAdvanced</li><li>NeolithicMeleeDecent</li></weaponTags></value>
+    </nomatch>
+  </Operation>
+
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/ThingDef[defName="DA_GoldiloxHorn"]/weaponTags</xpath>
+    <match Class="PatchOperationAdd">
+      <xpath>/Defs/ThingDef[defName="DA_GoldiloxHorn"]/weaponTags</xpath>
+      <value><li>MedievalMeleeDecent</li><li>NeolithicMeleeAdvanced</li><li>NeolithicMeleeDecent</li></value>
+    </match>
+    <nomatch Class="PatchOperationAdd">
+      <xpath>/Defs/ThingDef[defName="DA_GoldiloxHorn"]</xpath>
+      <value><weaponTags><li>MedievalMeleeDecent</li><li>NeolithicMeleeAdvanced</li><li>NeolithicMeleeDecent</li></weaponTags></value>
+    </nomatch>
+  </Operation>
+
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/ThingDef[defName="DV_Gun_PrecisionLongrifle"]/weaponTags</xpath>
+    <match Class="PatchOperationAdd">
+      <xpath>/Defs/ThingDef[defName="DV_Gun_PrecisionLongrifle"]/weaponTags</xpath>
+      <value><li>AssaultRifle</li><li>SimpleGun</li></value>
+    </match>
+    <nomatch Class="PatchOperationAdd">
+      <xpath>/Defs/ThingDef[defName="DV_Gun_PrecisionLongrifle"]</xpath>
+      <value><weaponTags><li>AssaultRifle</li><li>SimpleGun</li></weaponTags></value>
+    </nomatch>
+  </Operation>
+
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/ThingDef[defName="DV_MeleeWeapon_CeremonialBlade"]/weaponTags</xpath>
+    <match Class="PatchOperationAdd">
+      <xpath>/Defs/ThingDef[defName="DV_MeleeWeapon_CeremonialBlade"]/weaponTags</xpath>
+      <value><li>NeolithicMeleeBasic</li><li>NeolithicMeleeDecent</li></value>
+    </match>
+    <nomatch Class="PatchOperationAdd">
+      <xpath>/Defs/ThingDef[defName="DV_MeleeWeapon_CeremonialBlade"]</xpath>
+      <value><weaponTags><li>NeolithicMeleeBasic</li><li>NeolithicMeleeDecent</li></weaponTags></value>
+    </nomatch>
+  </Operation>
+
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/ThingDef[defName="DV_MeleeWeapon_SerratedScimitar"]/weaponTags</xpath>
+    <match Class="PatchOperationAdd">
+      <xpath>/Defs/ThingDef[defName="DV_MeleeWeapon_SerratedScimitar"]/weaponTags</xpath>
+      <value><li>NeolithicMeleeBasic</li><li>NeolithicMeleeDecent</li></value>
+    </match>
+    <nomatch Class="PatchOperationAdd">
+      <xpath>/Defs/ThingDef[defName="DV_MeleeWeapon_SerratedScimitar"]</xpath>
+      <value><weaponTags><li>NeolithicMeleeBasic</li><li>NeolithicMeleeDecent</li></weaponTags></value>
+    </nomatch>
+  </Operation>
+
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/ThingDef[defName="FungusBeer"]/weaponTags</xpath>
+    <match Class="PatchOperationAdd">
+      <xpath>/Defs/ThingDef[defName="FungusBeer"]/weaponTags</xpath>
+      <value><li>NeolithicMeleeBasic</li><li>NeolithicMeleeDecent</li></value>
+    </match>
+    <nomatch Class="PatchOperationAdd">
+      <xpath>/Defs/ThingDef[defName="FungusBeer"]</xpath>
+      <value><weaponTags><li>NeolithicMeleeBasic</li><li>NeolithicMeleeDecent</li></weaponTags></value>
+    </nomatch>
+  </Operation>
+
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/ThingDef[defName="GS_Gaffi"]/weaponTags</xpath>
+    <match Class="PatchOperationAdd">
+      <xpath>/Defs/ThingDef[defName="GS_Gaffi"]/weaponTags</xpath>
+      <value><li>NeolithicMeleeBasic</li><li>NeolithicMeleeDecent</li></value>
+    </match>
+    <nomatch Class="PatchOperationAdd">
+      <xpath>/Defs/ThingDef[defName="GS_Gaffi"]</xpath>
+      <value><weaponTags><li>NeolithicMeleeBasic</li><li>NeolithicMeleeDecent</li></weaponTags></value>
+    </nomatch>
+  </Operation>
+
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/ThingDef[defName="Gun_ArchotechChargeBlasterHeavyTurret"]/weaponTags</xpath>
+    <match Class="PatchOperationAdd">
+      <xpath>/Defs/ThingDef[defName="Gun_ArchotechChargeBlasterHeavyTurret"]/weaponTags</xpath>
+      <value><li>AssaultRifle</li><li>SimpleGun</li></value>
+    </match>
+    <nomatch Class="PatchOperationAdd">
+      <xpath>/Defs/ThingDef[defName="Gun_ArchotechChargeBlasterHeavyTurret"]</xpath>
+      <value><weaponTags><li>AssaultRifle</li><li>SimpleGun</li></weaponTags></value>
+    </nomatch>
+  </Operation>
+
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/ThingDef[defName="Gun_ChargeBlasterHeavy"]/weaponTags</xpath>
+    <match Class="PatchOperationAdd">
+      <xpath>/Defs/ThingDef[defName="Gun_ChargeBlasterHeavy"]/weaponTags</xpath>
+      <value><li>AssaultRifle</li><li>SimpleGun</li></value>
+    </match>
+    <nomatch Class="PatchOperationAdd">
+      <xpath>/Defs/ThingDef[defName="Gun_ChargeBlasterHeavy"]</xpath>
+      <value><weaponTags><li>AssaultRifle</li><li>SimpleGun</li></weaponTags></value>
+    </nomatch>
+  </Operation>
+
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/ThingDef[defName="Gun_ChargeBlasterHeavyTurret"]/weaponTags</xpath>
+    <match Class="PatchOperationAdd">
+      <xpath>/Defs/ThingDef[defName="Gun_ChargeBlasterHeavyTurret"]/weaponTags</xpath>
+      <value><li>AssaultRifle</li><li>SimpleGun</li></value>
+    </match>
+    <nomatch Class="PatchOperationAdd">
+      <xpath>/Defs/ThingDef[defName="Gun_ChargeBlasterHeavyTurret"]</xpath>
+      <value><weaponTags><li>AssaultRifle</li><li>SimpleGun</li></weaponTags></value>
+    </nomatch>
+  </Operation>
+
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/ThingDef[defName="Gun_EmpLauncher"]/weaponTags</xpath>
+    <match Class="PatchOperationAdd">
+      <xpath>/Defs/ThingDef[defName="Gun_EmpLauncher"]/weaponTags</xpath>
+      <value><li>GunHeavy</li><li>IndustrialGunAdvanced</li></value>
+    </match>
+    <nomatch Class="PatchOperationAdd">
+      <xpath>/Defs/ThingDef[defName="Gun_EmpLauncher"]</xpath>
+      <value><weaponTags><li>GunHeavy</li><li>IndustrialGunAdvanced</li></weaponTags></value>
+    </nomatch>
+  </Operation>
+
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/ThingDef[defName="Gun_HellsphereCannon"]/weaponTags</xpath>
+    <match Class="PatchOperationAdd">
+      <xpath>/Defs/ThingDef[defName="Gun_HellsphereCannon"]/weaponTags</xpath>
+      <value><li>GunHeavy</li><li>IndustrialGunAdvanced</li></value>
+    </match>
+    <nomatch Class="PatchOperationAdd">
+      <xpath>/Defs/ThingDef[defName="Gun_HellsphereCannon"]</xpath>
+      <value><weaponTags><li>GunHeavy</li><li>IndustrialGunAdvanced</li></weaponTags></value>
+    </nomatch>
+  </Operation>
+
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/ThingDef[defName="Gun_IncendiaryLauncher"]/weaponTags</xpath>
+    <match Class="PatchOperationAdd">
+      <xpath>/Defs/ThingDef[defName="Gun_IncendiaryLauncher"]/weaponTags</xpath>
+      <value><li>GunHeavy</li><li>IndustrialGunAdvanced</li></value>
+    </match>
+    <nomatch Class="PatchOperationAdd">
+      <xpath>/Defs/ThingDef[defName="Gun_IncendiaryLauncher"]</xpath>
+      <value><weaponTags><li>GunHeavy</li><li>IndustrialGunAdvanced</li></weaponTags></value>
+    </nomatch>
+  </Operation>
+
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/ThingDef[defName="Gun_InfernoCannon"]/weaponTags</xpath>
+    <match Class="PatchOperationAdd">
+      <xpath>/Defs/ThingDef[defName="Gun_InfernoCannon"]/weaponTags</xpath>
+      <value><li>GunHeavy</li><li>IndustrialGunAdvanced</li></value>
+    </match>
+    <nomatch Class="PatchOperationAdd">
+      <xpath>/Defs/ThingDef[defName="Gun_InfernoCannon"]</xpath>
+      <value><weaponTags><li>GunHeavy</li><li>IndustrialGunAdvanced</li></weaponTags></value>
+    </nomatch>
+  </Operation>
+
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/ThingDef[defName="Gun_MiniFlameblaster"]/weaponTags</xpath>
+    <match Class="PatchOperationAdd">
+      <xpath>/Defs/ThingDef[defName="Gun_MiniFlameblaster"]/weaponTags</xpath>
+      <value><li>AssaultRifle</li><li>SimpleGun</li></value>
+    </match>
+    <nomatch Class="PatchOperationAdd">
+      <xpath>/Defs/ThingDef[defName="Gun_MiniFlameblaster"]</xpath>
+      <value><weaponTags><li>AssaultRifle</li><li>SimpleGun</li></weaponTags></value>
+    </nomatch>
+  </Operation>
+
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/ThingDef[defName="Gun_MiniShotgun"]/weaponTags</xpath>
+    <match Class="PatchOperationAdd">
+      <xpath>/Defs/ThingDef[defName="Gun_MiniShotgun"]/weaponTags</xpath>
+      <value><li>PumpShotgun</li><li>ShortShots</li><li>SimpleGun</li></value>
+    </match>
+    <nomatch Class="PatchOperationAdd">
+      <xpath>/Defs/ThingDef[defName="Gun_MiniShotgun"]</xpath>
+      <value><weaponTags><li>PumpShotgun</li><li>ShortShots</li><li>SimpleGun</li></weaponTags></value>
+    </nomatch>
+  </Operation>
+
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/ThingDef[defName="Gun_NeedleLauncher"]/weaponTags</xpath>
+    <match Class="PatchOperationAdd">
+      <xpath>/Defs/ThingDef[defName="Gun_NeedleLauncher"]/weaponTags</xpath>
+      <value><li>GunHeavy</li><li>IndustrialGunAdvanced</li></value>
+    </match>
+    <nomatch Class="PatchOperationAdd">
+      <xpath>/Defs/ThingDef[defName="Gun_NeedleLauncher"]</xpath>
+      <value><weaponTags><li>GunHeavy</li><li>IndustrialGunAdvanced</li></weaponTags></value>
+    </nomatch>
+  </Operation>
+
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/ThingDef[defName="Gun_SmokeLauncher"]/weaponTags</xpath>
+    <match Class="PatchOperationAdd">
+      <xpath>/Defs/ThingDef[defName="Gun_SmokeLauncher"]/weaponTags</xpath>
+      <value><li>GunHeavy</li><li>IndustrialGunAdvanced</li></value>
+    </match>
+    <nomatch Class="PatchOperationAdd">
+      <xpath>/Defs/ThingDef[defName="Gun_SmokeLauncher"]</xpath>
+      <value><weaponTags><li>GunHeavy</li><li>IndustrialGunAdvanced</li></weaponTags></value>
+    </nomatch>
+  </Operation>
+
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/ThingDef[defName="Gun_ThumpCannon"]/weaponTags</xpath>
+    <match Class="PatchOperationAdd">
+      <xpath>/Defs/ThingDef[defName="Gun_ThumpCannon"]/weaponTags</xpath>
+      <value><li>GunHeavy</li><li>IndustrialGunAdvanced</li></value>
+    </match>
+    <nomatch Class="PatchOperationAdd">
+      <xpath>/Defs/ThingDef[defName="Gun_ThumpCannon"]</xpath>
+      <value><weaponTags><li>GunHeavy</li><li>IndustrialGunAdvanced</li></weaponTags></value>
+    </nomatch>
+  </Operation>
+
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/ThingDef[defName="Gun_ToxbombLauncher"]/weaponTags</xpath>
+    <match Class="PatchOperationAdd">
+      <xpath>/Defs/ThingDef[defName="Gun_ToxbombLauncher"]/weaponTags</xpath>
+      <value><li>GunHeavy</li><li>IndustrialGunAdvanced</li></value>
+    </match>
+    <nomatch Class="PatchOperationAdd">
+      <xpath>/Defs/ThingDef[defName="Gun_ToxbombLauncher"]</xpath>
+      <value><weaponTags><li>GunHeavy</li><li>IndustrialGunAdvanced</li></weaponTags></value>
+    </nomatch>
+  </Operation>
+
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/ThingDef[defName="JakobeastHorn"]/weaponTags</xpath>
+    <match Class="PatchOperationAdd">
+      <xpath>/Defs/ThingDef[defName="JakobeastHorn"]/weaponTags</xpath>
+      <value><li>MedievalMeleeDecent</li><li>NeolithicMeleeAdvanced</li><li>NeolithicMeleeDecent</li></value>
+    </match>
+    <nomatch Class="PatchOperationAdd">
+      <xpath>/Defs/ThingDef[defName="JakobeastHorn"]</xpath>
+      <value><weaponTags><li>MedievalMeleeDecent</li><li>NeolithicMeleeAdvanced</li><li>NeolithicMeleeDecent</li></weaponTags></value>
+    </nomatch>
+  </Operation>
+
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/ThingDef[defName="JawaIon_Blaster"]/weaponTags</xpath>
+    <match Class="PatchOperationAdd">
+      <xpath>/Defs/ThingDef[defName="JawaIon_Blaster"]/weaponTags</xpath>
+      <value><li>AssaultRifle</li><li>SimpleGun</li></value>
+    </match>
+    <nomatch Class="PatchOperationAdd">
+      <xpath>/Defs/ThingDef[defName="JawaIon_Blaster"]</xpath>
+      <value><weaponTags><li>AssaultRifle</li><li>SimpleGun</li></weaponTags></value>
+    </nomatch>
+  </Operation>
+
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/ThingDef[defName="MA_AminoxHorn"]/weaponTags</xpath>
+    <match Class="PatchOperationAdd">
+      <xpath>/Defs/ThingDef[defName="MA_AminoxHorn"]/weaponTags</xpath>
+      <value><li>MedievalMeleeDecent</li><li>NeolithicMeleeAdvanced</li><li>NeolithicMeleeDecent</li></value>
+    </match>
+    <nomatch Class="PatchOperationAdd">
+      <xpath>/Defs/ThingDef[defName="MA_AminoxHorn"]</xpath>
+      <value><weaponTags><li>MedievalMeleeDecent</li><li>NeolithicMeleeAdvanced</li><li>NeolithicMeleeDecent</li></weaponTags></value>
+    </nomatch>
+  </Operation>
+
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/ThingDef[defName="MA_Brontorhin"]/weaponTags</xpath>
+    <match Class="PatchOperationAdd">
+      <xpath>/Defs/ThingDef[defName="MA_Brontorhin"]/weaponTags</xpath>
+      <value><li>MedievalMeleeDecent</li><li>NeolithicMeleeAdvanced</li><li>NeolithicMeleeDecent</li></value>
+    </match>
+    <nomatch Class="PatchOperationAdd">
+      <xpath>/Defs/ThingDef[defName="MA_Brontorhin"]</xpath>
+      <value><weaponTags><li>MedievalMeleeDecent</li><li>NeolithicMeleeAdvanced</li><li>NeolithicMeleeDecent</li></weaponTags></value>
+    </nomatch>
+  </Operation>
+
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/ThingDef[defName="MA_CapryakHorn"]/weaponTags</xpath>
+    <match Class="PatchOperationAdd">
+      <xpath>/Defs/ThingDef[defName="MA_CapryakHorn"]/weaponTags</xpath>
+      <value><li>NeolithicMeleeBasic</li><li>NeolithicMeleeDecent</li></value>
+    </match>
+    <nomatch Class="PatchOperationAdd">
+      <xpath>/Defs/ThingDef[defName="MA_CapryakHorn"]</xpath>
+      <value><weaponTags><li>NeolithicMeleeBasic</li><li>NeolithicMeleeDecent</li></weaponTags></value>
+    </nomatch>
+  </Operation>
+
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/ThingDef[defName="MA_DeermossHorn"]/weaponTags</xpath>
+    <match Class="PatchOperationAdd">
+      <xpath>/Defs/ThingDef[defName="MA_DeermossHorn"]/weaponTags</xpath>
+      <value><li>NeolithicMeleeBasic</li><li>NeolithicMeleeDecent</li></value>
+    </match>
+    <nomatch Class="PatchOperationAdd">
+      <xpath>/Defs/ThingDef[defName="MA_DeermossHorn"]</xpath>
+      <value><weaponTags><li>NeolithicMeleeBasic</li><li>NeolithicMeleeDecent</li></weaponTags></value>
+    </nomatch>
+  </Operation>
+
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/ThingDef[defName="MA_DuskhornHorn"]/weaponTags</xpath>
+    <match Class="PatchOperationAdd">
+      <xpath>/Defs/ThingDef[defName="MA_DuskhornHorn"]/weaponTags</xpath>
+      <value><li>NeolithicMeleeBasic</li><li>NeolithicMeleeDecent</li></value>
+    </match>
+    <nomatch Class="PatchOperationAdd">
+      <xpath>/Defs/ThingDef[defName="MA_DuskhornHorn"]</xpath>
+      <value><weaponTags><li>NeolithicMeleeBasic</li><li>NeolithicMeleeDecent</li></weaponTags></value>
+    </nomatch>
+  </Operation>
+
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/ThingDef[defName="MA_GnautHorn"]/weaponTags</xpath>
+    <match Class="PatchOperationAdd">
+      <xpath>/Defs/ThingDef[defName="MA_GnautHorn"]/weaponTags</xpath>
+      <value><li>NeolithicMeleeBasic</li><li>NeolithicMeleeDecent</li></value>
+    </match>
+    <nomatch Class="PatchOperationAdd">
+      <xpath>/Defs/ThingDef[defName="MA_GnautHorn"]</xpath>
+      <value><weaponTags><li>NeolithicMeleeBasic</li><li>NeolithicMeleeDecent</li></weaponTags></value>
+    </nomatch>
+  </Operation>
+
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/ThingDef[defName="MA_PlastemmothTusk"]/weaponTags</xpath>
+    <match Class="PatchOperationAdd">
+      <xpath>/Defs/ThingDef[defName="MA_PlastemmothTusk"]/weaponTags</xpath>
+      <value><li>MedievalMeleeDecent</li><li>NeolithicMeleeAdvanced</li><li>NeolithicMeleeDecent</li></value>
+    </match>
+    <nomatch Class="PatchOperationAdd">
+      <xpath>/Defs/ThingDef[defName="MA_PlastemmothTusk"]</xpath>
+      <value><weaponTags><li>MedievalMeleeDecent</li><li>NeolithicMeleeAdvanced</li><li>NeolithicMeleeDecent</li></weaponTags></value>
+    </nomatch>
+  </Operation>
+
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/ThingDef[defName="MA_SivatheriumHorn"]/weaponTags</xpath>
+    <match Class="PatchOperationAdd">
+      <xpath>/Defs/ThingDef[defName="MA_SivatheriumHorn"]/weaponTags</xpath>
+      <value><li>MedievalMeleeDecent</li><li>NeolithicMeleeAdvanced</li><li>NeolithicMeleeDecent</li></value>
+    </match>
+    <nomatch Class="PatchOperationAdd">
+      <xpath>/Defs/ThingDef[defName="MA_SivatheriumHorn"]</xpath>
+      <value><weaponTags><li>MedievalMeleeDecent</li><li>NeolithicMeleeAdvanced</li><li>NeolithicMeleeDecent</li></weaponTags></value>
+    </nomatch>
+  </Operation>
+
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/ThingDef[defName="MankaTooth"]/weaponTags</xpath>
+    <match Class="PatchOperationAdd">
+      <xpath>/Defs/ThingDef[defName="MankaTooth"]/weaponTags</xpath>
+      <value><li>MedievalMeleeDecent</li><li>NeolithicMeleeAdvanced</li><li>NeolithicMeleeDecent</li></value>
+    </match>
+    <nomatch Class="PatchOperationAdd">
+      <xpath>/Defs/ThingDef[defName="MankaTooth"]</xpath>
+      <value><weaponTags><li>MedievalMeleeDecent</li><li>NeolithicMeleeAdvanced</li><li>NeolithicMeleeDecent</li></weaponTags></value>
+    </nomatch>
+  </Operation>
+
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/ThingDef[defName="MastmotTusk"]/weaponTags</xpath>
+    <match Class="PatchOperationAdd">
+      <xpath>/Defs/ThingDef[defName="MastmotTusk"]/weaponTags</xpath>
+      <value><li>MedievalMeleeDecent</li><li>NeolithicMeleeAdvanced</li><li>NeolithicMeleeDecent</li></value>
+    </match>
+    <nomatch Class="PatchOperationAdd">
+      <xpath>/Defs/ThingDef[defName="MastmotTusk"]</xpath>
+      <value><weaponTags><li>MedievalMeleeDecent</li><li>NeolithicMeleeAdvanced</li><li>NeolithicMeleeDecent</li></weaponTags></value>
+    </nomatch>
+  </Operation>
+
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/ThingDef[defName="MeleeWeapon_BreachAxe"]/weaponTags</xpath>
+    <match Class="PatchOperationAdd">
+      <xpath>/Defs/ThingDef[defName="MeleeWeapon_BreachAxe"]/weaponTags</xpath>
+      <value><li>NeolithicMeleeBasic</li><li>NeolithicMeleeDecent</li></value>
+    </match>
+    <nomatch Class="PatchOperationAdd">
+      <xpath>/Defs/ThingDef[defName="MeleeWeapon_BreachAxe"]</xpath>
+      <value><weaponTags><li>NeolithicMeleeBasic</li><li>NeolithicMeleeDecent</li></weaponTags></value>
+    </nomatch>
+  </Operation>
+
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/ThingDef[defName="NerveSpiker"]/weaponTags</xpath>
+    <match Class="PatchOperationAdd">
+      <xpath>/Defs/ThingDef[defName="NerveSpiker"]/weaponTags</xpath>
+      <value><li>NeolithicRangedBasic</li><li>NeolithicRangedDecent</li></value>
+    </match>
+    <nomatch Class="PatchOperationAdd">
+      <xpath>/Defs/ThingDef[defName="NerveSpiker"]</xpath>
+      <value><weaponTags><li>NeolithicRangedBasic</li><li>NeolithicRangedDecent</li></weaponTags></value>
+    </nomatch>
+  </Operation>
+
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/ThingDef[defName="OuterRim_CyclerRifle"]/weaponTags</xpath>
+    <match Class="PatchOperationAdd">
+      <xpath>/Defs/ThingDef[defName="OuterRim_CyclerRifle"]/weaponTags</xpath>
+      <value><li>AssaultRifle</li><li>SimpleGun</li></value>
+    </match>
+    <nomatch Class="PatchOperationAdd">
+      <xpath>/Defs/ThingDef[defName="OuterRim_CyclerRifle"]</xpath>
+      <value><weaponTags><li>AssaultRifle</li><li>SimpleGun</li></weaponTags></value>
+    </nomatch>
+  </Operation>
+
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/ThingDef[defName="OuterRim_DLT19HeavyBlasterRifle"]/weaponTags</xpath>
+    <match Class="PatchOperationAdd">
+      <xpath>/Defs/ThingDef[defName="OuterRim_DLT19HeavyBlasterRifle"]/weaponTags</xpath>
+      <value><li>AssaultRifle</li><li>SimpleGun</li></value>
+    </match>
+    <nomatch Class="PatchOperationAdd">
+      <xpath>/Defs/ThingDef[defName="OuterRim_DLT19HeavyBlasterRifle"]</xpath>
+      <value><weaponTags><li>AssaultRifle</li><li>SimpleGun</li></weaponTags></value>
+    </nomatch>
+  </Operation>
+
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/ThingDef[defName="OuterRim_DroidWeapon_BlasterCannon"]/weaponTags</xpath>
+    <match Class="PatchOperationAdd">
+      <xpath>/Defs/ThingDef[defName="OuterRim_DroidWeapon_BlasterCannon"]/weaponTags</xpath>
+      <value><li>GunHeavy</li><li>IndustrialGunAdvanced</li></value>
+    </match>
+    <nomatch Class="PatchOperationAdd">
+      <xpath>/Defs/ThingDef[defName="OuterRim_DroidWeapon_BlasterCannon"]</xpath>
+      <value><weaponTags><li>GunHeavy</li><li>IndustrialGunAdvanced</li></weaponTags></value>
+    </nomatch>
+  </Operation>
+
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/ThingDef[defName="OuterRim_DroidWeapon_TwinWristBlaster"]/weaponTags</xpath>
+    <match Class="PatchOperationAdd">
+      <xpath>/Defs/ThingDef[defName="OuterRim_DroidWeapon_TwinWristBlaster"]/weaponTags</xpath>
+      <value><li>AssaultRifle</li><li>SimpleGun</li></value>
+    </match>
+    <nomatch Class="PatchOperationAdd">
+      <xpath>/Defs/ThingDef[defName="OuterRim_DroidWeapon_TwinWristBlaster"]</xpath>
+      <value><weaponTags><li>AssaultRifle</li><li>SimpleGun</li></weaponTags></value>
+    </nomatch>
+  </Operation>
+
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/ThingDef[defName="OuterRim_DroidWeapon_WristBlaster"]/weaponTags</xpath>
+    <match Class="PatchOperationAdd">
+      <xpath>/Defs/ThingDef[defName="OuterRim_DroidWeapon_WristBlaster"]/weaponTags</xpath>
+      <value><li>AssaultRifle</li><li>SimpleGun</li></value>
+    </match>
+    <nomatch Class="PatchOperationAdd">
+      <xpath>/Defs/ThingDef[defName="OuterRim_DroidWeapon_WristBlaster"]</xpath>
+      <value><weaponTags><li>AssaultRifle</li><li>SimpleGun</li></weaponTags></value>
+    </nomatch>
+  </Operation>
+
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/ThingDef[defName="OuterRim_DroidWeapon_WristBlasterIon"]/weaponTags</xpath>
+    <match Class="PatchOperationAdd">
+      <xpath>/Defs/ThingDef[defName="OuterRim_DroidWeapon_WristBlasterIon"]/weaponTags</xpath>
+      <value><li>AssaultRifle</li><li>SimpleGun</li></value>
+    </match>
+    <nomatch Class="PatchOperationAdd">
+      <xpath>/Defs/ThingDef[defName="OuterRim_DroidWeapon_WristBlasterIon"]</xpath>
+      <value><weaponTags><li>AssaultRifle</li><li>SimpleGun</li></weaponTags></value>
+    </nomatch>
+  </Operation>
+
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/ThingDef[defName="OuterRim_HH12RocketLauncher"]/weaponTags</xpath>
+    <match Class="PatchOperationAdd">
+      <xpath>/Defs/ThingDef[defName="OuterRim_HH12RocketLauncher"]/weaponTags</xpath>
+      <value><li>GunHeavy</li><li>IndustrialGunAdvanced</li></value>
+    </match>
+    <nomatch Class="PatchOperationAdd">
+      <xpath>/Defs/ThingDef[defName="OuterRim_HH12RocketLauncher"]</xpath>
+      <value><weaponTags><li>GunHeavy</li><li>IndustrialGunAdvanced</li></weaponTags></value>
+    </nomatch>
+  </Operation>
+
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/ThingDef[defName="OuterRim_T21RepeatingBlaster"]/weaponTags</xpath>
+    <match Class="PatchOperationAdd">
+      <xpath>/Defs/ThingDef[defName="OuterRim_T21RepeatingBlaster"]/weaponTags</xpath>
+      <value><li>GunHeavy</li><li>IndustrialGunAdvanced</li></value>
+    </match>
+    <nomatch Class="PatchOperationAdd">
+      <xpath>/Defs/ThingDef[defName="OuterRim_T21RepeatingBlaster"]</xpath>
+      <value><weaponTags><li>GunHeavy</li><li>IndustrialGunAdvanced</li></weaponTags></value>
+    </nomatch>
+  </Operation>
+
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/ThingDef[defName="OuterRim_TL50HeavyRepeaterBlaster"]/weaponTags</xpath>
+    <match Class="PatchOperationAdd">
+      <xpath>/Defs/ThingDef[defName="OuterRim_TL50HeavyRepeaterBlaster"]/weaponTags</xpath>
+      <value><li>AssaultRifle</li><li>SimpleGun</li></value>
+    </match>
+    <nomatch Class="PatchOperationAdd">
+      <xpath>/Defs/ThingDef[defName="OuterRim_TL50HeavyRepeaterBlaster"]</xpath>
+      <value><weaponTags><li>AssaultRifle</li><li>SimpleGun</li></weaponTags></value>
+    </nomatch>
+  </Operation>
+
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/ThingDef[defName="RBME_EpsilonAxe"]/weaponTags</xpath>
+    <match Class="PatchOperationAdd">
+      <xpath>/Defs/ThingDef[defName="RBME_EpsilonAxe"]/weaponTags</xpath>
+      <value><li>NeolithicMeleeBasic</li><li>NeolithicMeleeDecent</li></value>
+    </match>
+    <nomatch Class="PatchOperationAdd">
+      <xpath>/Defs/ThingDef[defName="RBME_EpsilonAxe"]</xpath>
+      <value><weaponTags><li>NeolithicMeleeBasic</li><li>NeolithicMeleeDecent</li></weaponTags></value>
+    </nomatch>
+  </Operation>
+
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/ThingDef[defName="SkalderTusk"]/weaponTags</xpath>
+    <match Class="PatchOperationAdd">
+      <xpath>/Defs/ThingDef[defName="SkalderTusk"]/weaponTags</xpath>
+      <value><li>NeolithicMeleeBasic</li><li>NeolithicMeleeDecent</li></value>
+    </match>
+    <nomatch Class="PatchOperationAdd">
+      <xpath>/Defs/ThingDef[defName="SkalderTusk"]</xpath>
+      <value><weaponTags><li>NeolithicMeleeBasic</li><li>NeolithicMeleeDecent</li></weaponTags></value>
+    </nomatch>
+  </Operation>
+
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/ThingDef[defName="TarisianAle"]/weaponTags</xpath>
+    <match Class="PatchOperationAdd">
+      <xpath>/Defs/ThingDef[defName="TarisianAle"]/weaponTags</xpath>
+      <value><li>NeolithicMeleeBasic</li><li>NeolithicMeleeDecent</li></value>
+    </match>
+    <nomatch Class="PatchOperationAdd">
+      <xpath>/Defs/ThingDef[defName="TarisianAle"]</xpath>
+      <value><weaponTags><li>NeolithicMeleeBasic</li><li>NeolithicMeleeDecent</li></weaponTags></value>
+    </nomatch>
+  </Operation>
+
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/ThingDef[defName="VFEPGun_MiniBlaster"]/weaponTags</xpath>
+    <match Class="PatchOperationAdd">
+      <xpath>/Defs/ThingDef[defName="VFEPGun_MiniBlaster"]/weaponTags</xpath>
+      <value><li>AssaultRifle</li><li>SimpleGun</li></value>
+    </match>
+    <nomatch Class="PatchOperationAdd">
+      <xpath>/Defs/ThingDef[defName="VFEPGun_MiniBlaster"]</xpath>
+      <value><weaponTags><li>AssaultRifle</li><li>SimpleGun</li></weaponTags></value>
+    </nomatch>
+  </Operation>
+
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/ThingDef[defName="VFEP_WarcasketGun_ChargeBlaster"]/weaponTags</xpath>
+    <match Class="PatchOperationAdd">
+      <xpath>/Defs/ThingDef[defName="VFEP_WarcasketGun_ChargeBlaster"]/weaponTags</xpath>
+      <value><li>AssaultRifle</li><li>SimpleGun</li></value>
+    </match>
+    <nomatch Class="PatchOperationAdd">
+      <xpath>/Defs/ThingDef[defName="VFEP_WarcasketGun_ChargeBlaster"]</xpath>
+      <value><weaponTags><li>AssaultRifle</li><li>SimpleGun</li></weaponTags></value>
+    </nomatch>
+  </Operation>
+
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/ThingDef[defName="VFEP_WarcasketGun_GrenadeLauncher"]/weaponTags</xpath>
+    <match Class="PatchOperationAdd">
+      <xpath>/Defs/ThingDef[defName="VFEP_WarcasketGun_GrenadeLauncher"]/weaponTags</xpath>
+      <value><li>GunHeavy</li><li>IndustrialGunAdvanced</li><li>Minigun</li></value>
+    </match>
+    <nomatch Class="PatchOperationAdd">
+      <xpath>/Defs/ThingDef[defName="VFEP_WarcasketGun_GrenadeLauncher"]</xpath>
+      <value><weaponTags><li>GunHeavy</li><li>IndustrialGunAdvanced</li><li>Minigun</li></weaponTags></value>
+    </nomatch>
+  </Operation>
+
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/ThingDef[defName="VFEP_WarcasketGun_UraniumSlugRifle"]/weaponTags</xpath>
+    <match Class="PatchOperationAdd">
+      <xpath>/Defs/ThingDef[defName="VFEP_WarcasketGun_UraniumSlugRifle"]/weaponTags</xpath>
+      <value><li>AssaultRifle</li><li>SimpleGun</li></value>
+    </match>
+    <nomatch Class="PatchOperationAdd">
+      <xpath>/Defs/ThingDef[defName="VFEP_WarcasketGun_UraniumSlugRifle"]</xpath>
+      <value><weaponTags><li>AssaultRifle</li><li>SimpleGun</li></weaponTags></value>
+    </nomatch>
+  </Operation>
+
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/ThingDef[defName="guy762_bowcaster"]/weaponTags</xpath>
+    <match Class="PatchOperationAdd">
+      <xpath>/Defs/ThingDef[defName="guy762_bowcaster"]/weaponTags</xpath>
+      <value><li>AssaultRifle</li><li>SimpleGun</li></value>
+    </match>
+    <nomatch Class="PatchOperationAdd">
+      <xpath>/Defs/ThingDef[defName="guy762_bowcaster"]</xpath>
+      <value><weaponTags><li>AssaultRifle</li><li>SimpleGun</li></weaponTags></value>
+    </nomatch>
+  </Operation>
+
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/ThingDef[defName="guy762_bowcaster_ceremonial"]/weaponTags</xpath>
+    <match Class="PatchOperationAdd">
+      <xpath>/Defs/ThingDef[defName="guy762_bowcaster_ceremonial"]/weaponTags</xpath>
+      <value><li>AssaultRifle</li><li>IndustrialGunAdvanced</li></value>
+    </match>
+    <nomatch Class="PatchOperationAdd">
+      <xpath>/Defs/ThingDef[defName="guy762_bowcaster_ceremonial"]</xpath>
+      <value><weaponTags><li>AssaultRifle</li><li>IndustrialGunAdvanced</li></weaponTags></value>
+    </nomatch>
+  </Operation>
+
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/ThingDef[defName="guy762_bowcaster_merc"]/weaponTags</xpath>
+    <match Class="PatchOperationAdd">
+      <xpath>/Defs/ThingDef[defName="guy762_bowcaster_merc"]/weaponTags</xpath>
+      <value><li>AssaultRifle</li><li>SimpleGun</li></value>
+    </match>
+    <nomatch Class="PatchOperationAdd">
+      <xpath>/Defs/ThingDef[defName="guy762_bowcaster_merc"]</xpath>
+      <value><weaponTags><li>AssaultRifle</li><li>SimpleGun</li></weaponTags></value>
+    </nomatch>
+  </Operation>
+
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/ThingDef[defName="guy762_bowcaster_war"]/weaponTags</xpath>
+    <match Class="PatchOperationAdd">
+      <xpath>/Defs/ThingDef[defName="guy762_bowcaster_war"]/weaponTags</xpath>
+      <value><li>AssaultRifle</li><li>SimpleGun</li></value>
+    </match>
+    <nomatch Class="PatchOperationAdd">
+      <xpath>/Defs/ThingDef[defName="guy762_bowcaster_war"]</xpath>
+      <value><weaponTags><li>AssaultRifle</li><li>SimpleGun</li></weaponTags></value>
+    </nomatch>
+  </Operation>
+
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/ThingDef[defName="guy762_bowcaster_zaalbar"]/weaponTags</xpath>
+    <match Class="PatchOperationAdd">
+      <xpath>/Defs/ThingDef[defName="guy762_bowcaster_zaalbar"]/weaponTags</xpath>
+      <value><li>AssaultRifle</li><li>IndustrialGunAdvanced</li></value>
+    </match>
+    <nomatch Class="PatchOperationAdd">
+      <xpath>/Defs/ThingDef[defName="guy762_bowcaster_zaalbar"]</xpath>
+      <value><weaponTags><li>AssaultRifle</li><li>IndustrialGunAdvanced</li></weaponTags></value>
+    </nomatch>
+  </Operation>
+
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/ThingDef[defName="guy762_bpistol_bendak"]/weaponTags</xpath>
+    <match Class="PatchOperationAdd">
+      <xpath>/Defs/ThingDef[defName="guy762_bpistol_bendak"]/weaponTags</xpath>
+      <value><li>IndustrialGunAdvanced</li><li>Revolver</li><li>ShortShots</li><li>SimpleGun</li></value>
+    </match>
+    <nomatch Class="PatchOperationAdd">
+      <xpath>/Defs/ThingDef[defName="guy762_bpistol_bendak"]</xpath>
+      <value><weaponTags><li>IndustrialGunAdvanced</li><li>Revolver</li><li>ShortShots</li><li>SimpleGun</li></weaponTags></value>
+    </nomatch>
+  </Operation>
+
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/ThingDef[defName="guy762_bpistol_genoharadan"]/weaponTags</xpath>
+    <match Class="PatchOperationAdd">
+      <xpath>/Defs/ThingDef[defName="guy762_bpistol_genoharadan"]/weaponTags</xpath>
+      <value><li>Autopistol</li><li>Revolver</li><li>ShortShots</li><li>SimpleGun</li></value>
+    </match>
+    <nomatch Class="PatchOperationAdd">
+      <xpath>/Defs/ThingDef[defName="guy762_bpistol_genoharadan"]</xpath>
+      <value><weaponTags><li>Autopistol</li><li>Revolver</li><li>ShortShots</li><li>SimpleGun</li></weaponTags></value>
+    </nomatch>
+  </Operation>
+
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/ThingDef[defName="guy762_bpistol_mandalorian"]/weaponTags</xpath>
+    <match Class="PatchOperationAdd">
+      <xpath>/Defs/ThingDef[defName="guy762_bpistol_mandalorian"]/weaponTags</xpath>
+      <value><li>Autopistol</li><li>Revolver</li><li>ShortShots</li><li>SimpleGun</li></value>
+    </match>
+    <nomatch Class="PatchOperationAdd">
+      <xpath>/Defs/ThingDef[defName="guy762_bpistol_mandalorian"]</xpath>
+      <value><weaponTags><li>Autopistol</li><li>Revolver</li><li>ShortShots</li><li>SimpleGun</li></weaponTags></value>
+    </nomatch>
+  </Operation>
+
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/ThingDef[defName="guy762_bpistol_micropulse"]/weaponTags</xpath>
+    <match Class="PatchOperationAdd">
+      <xpath>/Defs/ThingDef[defName="guy762_bpistol_micropulse"]/weaponTags</xpath>
+      <value><li>IndustrialGunAdvanced</li><li>Revolver</li><li>ShortShots</li><li>SimpleGun</li></value>
+    </match>
+    <nomatch Class="PatchOperationAdd">
+      <xpath>/Defs/ThingDef[defName="guy762_bpistol_micropulse"]</xpath>
+      <value><weaponTags><li>IndustrialGunAdvanced</li><li>Revolver</li><li>ShortShots</li><li>SimpleGun</li></weaponTags></value>
+    </nomatch>
+  </Operation>
+
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/ThingDef[defName="guy762_bpistol_onasi"]/weaponTags</xpath>
+    <match Class="PatchOperationAdd">
+      <xpath>/Defs/ThingDef[defName="guy762_bpistol_onasi"]/weaponTags</xpath>
+      <value><li>IndustrialGunAdvanced</li><li>Revolver</li><li>ShortShots</li><li>SimpleGun</li></value>
+    </match>
+    <nomatch Class="PatchOperationAdd">
+      <xpath>/Defs/ThingDef[defName="guy762_bpistol_onasi"]</xpath>
+      <value><weaponTags><li>IndustrialGunAdvanced</li><li>Revolver</li><li>ShortShots</li><li>SimpleGun</li></weaponTags></value>
+    </nomatch>
+  </Operation>
+
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/ThingDef[defName="guy762_bpistol_republic"]/weaponTags</xpath>
+    <match Class="PatchOperationAdd">
+      <xpath>/Defs/ThingDef[defName="guy762_bpistol_republic"]/weaponTags</xpath>
+      <value><li>Autopistol</li><li>Revolver</li><li>ShortShots</li><li>SimpleGun</li></value>
+    </match>
+    <nomatch Class="PatchOperationAdd">
+      <xpath>/Defs/ThingDef[defName="guy762_bpistol_republic"]</xpath>
+      <value><weaponTags><li>Autopistol</li><li>Revolver</li><li>ShortShots</li><li>SimpleGun</li></weaponTags></value>
+    </nomatch>
+  </Operation>
+
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/ThingDef[defName="guy762_bpistol_zabrak"]/weaponTags</xpath>
+    <match Class="PatchOperationAdd">
+      <xpath>/Defs/ThingDef[defName="guy762_bpistol_zabrak"]/weaponTags</xpath>
+      <value><li>Autopistol</li><li>Revolver</li><li>ShortShots</li><li>SimpleGun</li></value>
+    </match>
+    <nomatch Class="PatchOperationAdd">
+      <xpath>/Defs/ThingDef[defName="guy762_bpistol_zabrak"]</xpath>
+      <value><weaponTags><li>Autopistol</li><li>Revolver</li><li>ShortShots</li><li>SimpleGun</li></weaponTags></value>
+    </nomatch>
+  </Operation>
+
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/ThingDef[defName="guy762_brifle_dmr"]/weaponTags</xpath>
+    <match Class="PatchOperationAdd">
+      <xpath>/Defs/ThingDef[defName="guy762_brifle_dmr"]/weaponTags</xpath>
+      <value><li>LongShots</li><li>SniperRifle</li></value>
+    </match>
+    <nomatch Class="PatchOperationAdd">
+      <xpath>/Defs/ThingDef[defName="guy762_brifle_dmr"]</xpath>
+      <value><weaponTags><li>LongShots</li><li>SniperRifle</li></weaponTags></value>
+    </nomatch>
+  </Operation>
+
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/ThingDef[defName="guy762_brifle_jurgan"]/weaponTags</xpath>
+    <match Class="PatchOperationAdd">
+      <xpath>/Defs/ThingDef[defName="guy762_brifle_jurgan"]/weaponTags</xpath>
+      <value><li>AssaultRifle</li><li>IndustrialGunAdvanced</li></value>
+    </match>
+    <nomatch Class="PatchOperationAdd">
+      <xpath>/Defs/ThingDef[defName="guy762_brifle_jurgan"]</xpath>
+      <value><weaponTags><li>AssaultRifle</li><li>IndustrialGunAdvanced</li></weaponTags></value>
+    </nomatch>
+  </Operation>
+
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/ThingDef[defName="guy762_brifle_mandalorian"]/weaponTags</xpath>
+    <match Class="PatchOperationAdd">
+      <xpath>/Defs/ThingDef[defName="guy762_brifle_mandalorian"]/weaponTags</xpath>
+      <value><li>AssaultRifle</li><li>SimpleGun</li></value>
+    </match>
+    <nomatch Class="PatchOperationAdd">
+      <xpath>/Defs/ThingDef[defName="guy762_brifle_mandalorian"]</xpath>
+      <value><weaponTags><li>AssaultRifle</li><li>SimpleGun</li></weaponTags></value>
+    </nomatch>
+  </Operation>
+
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/ThingDef[defName="guy762_brifle_plasma"]/weaponTags</xpath>
+    <match Class="PatchOperationAdd">
+      <xpath>/Defs/ThingDef[defName="guy762_brifle_plasma"]/weaponTags</xpath>
+      <value><li>AssaultRifle</li><li>IndustrialGunAdvanced</li></value>
+    </match>
+    <nomatch Class="PatchOperationAdd">
+      <xpath>/Defs/ThingDef[defName="guy762_brifle_plasma"]</xpath>
+      <value><weaponTags><li>AssaultRifle</li><li>IndustrialGunAdvanced</li></weaponTags></value>
+    </nomatch>
+  </Operation>
+
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/ThingDef[defName="guy762_brifle_rohlan"]/weaponTags</xpath>
+    <match Class="PatchOperationAdd">
+      <xpath>/Defs/ThingDef[defName="guy762_brifle_rohlan"]/weaponTags</xpath>
+      <value><li>AssaultRifle</li><li>IndustrialGunAdvanced</li></value>
+    </match>
+    <nomatch Class="PatchOperationAdd">
+      <xpath>/Defs/ThingDef[defName="guy762_brifle_rohlan"]</xpath>
+      <value><weaponTags><li>AssaultRifle</li><li>IndustrialGunAdvanced</li></weaponTags></value>
+    </nomatch>
+  </Operation>
+
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/ThingDef[defName="guy762_brifle_sith"]/weaponTags</xpath>
+    <match Class="PatchOperationAdd">
+      <xpath>/Defs/ThingDef[defName="guy762_brifle_sith"]/weaponTags</xpath>
+      <value><li>IndustrialGunAdvanced</li><li>LongShots</li><li>SniperRifle</li></value>
+    </match>
+    <nomatch Class="PatchOperationAdd">
+      <xpath>/Defs/ThingDef[defName="guy762_brifle_sith"]</xpath>
+      <value><weaponTags><li>IndustrialGunAdvanced</li><li>LongShots</li><li>SniperRifle</li></weaponTags></value>
+    </nomatch>
+  </Operation>
+
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/ThingDef[defName="guy762_brifle_zabrak"]/weaponTags</xpath>
+    <match Class="PatchOperationAdd">
+      <xpath>/Defs/ThingDef[defName="guy762_brifle_zabrak"]/weaponTags</xpath>
+      <value><li>GunHeavy</li><li>IndustrialGunAdvanced</li><li>Minigun</li></value>
+    </match>
+    <nomatch Class="PatchOperationAdd">
+      <xpath>/Defs/ThingDef[defName="guy762_brifle_zabrak"]</xpath>
+      <value><weaponTags><li>GunHeavy</li><li>IndustrialGunAdvanced</li><li>Minigun</li></weaponTags></value>
+    </nomatch>
+  </Operation>
+
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/ThingDef[defName="guy762_brifle_zersium"]/weaponTags</xpath>
+    <match Class="PatchOperationAdd">
+      <xpath>/Defs/ThingDef[defName="guy762_brifle_zersium"]/weaponTags</xpath>
+      <value><li>AssaultRifle</li><li>IndustrialGunAdvanced</li></value>
+    </match>
+    <nomatch Class="PatchOperationAdd">
+      <xpath>/Defs/ThingDef[defName="guy762_brifle_zersium"]</xpath>
+      <value><weaponTags><li>AssaultRifle</li><li>IndustrialGunAdvanced</li></weaponTags></value>
+    </nomatch>
+  </Operation>
+
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/ThingDef[defName="guy762_carbine_hogra"]/weaponTags</xpath>
+    <match Class="PatchOperationAdd">
+      <xpath>/Defs/ThingDef[defName="guy762_carbine_hogra"]/weaponTags</xpath>
+      <value><li>AssaultRifle</li><li>IndustrialGunAdvanced</li></value>
+    </match>
+    <nomatch Class="PatchOperationAdd">
+      <xpath>/Defs/ThingDef[defName="guy762_carbine_hogra"]</xpath>
+      <value><weaponTags><li>AssaultRifle</li><li>IndustrialGunAdvanced</li></weaponTags></value>
+    </nomatch>
+  </Operation>
+
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/ThingDef[defName="guy762_carbine_kalta"]/weaponTags</xpath>
+    <match Class="PatchOperationAdd">
+      <xpath>/Defs/ThingDef[defName="guy762_carbine_kalta"]/weaponTags</xpath>
+      <value><li>AssaultRifle</li><li>IndustrialGunAdvanced</li></value>
+    </match>
+    <nomatch Class="PatchOperationAdd">
+      <xpath>/Defs/ThingDef[defName="guy762_carbine_kalta"]</xpath>
+      <value><weaponTags><li>AssaultRifle</li><li>IndustrialGunAdvanced</li></weaponTags></value>
+    </nomatch>
+  </Operation>
+
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/ThingDef[defName="guy762_carbine_repcom"]/weaponTags</xpath>
+    <match Class="PatchOperationAdd">
+      <xpath>/Defs/ThingDef[defName="guy762_carbine_repcom"]/weaponTags</xpath>
+      <value><li>AssaultRifle</li><li>IndustrialGunAdvanced</li></value>
+    </match>
+    <nomatch Class="PatchOperationAdd">
+      <xpath>/Defs/ThingDef[defName="guy762_carbine_repcom"]</xpath>
+      <value><weaponTags><li>AssaultRifle</li><li>IndustrialGunAdvanced</li></weaponTags></value>
+    </nomatch>
+  </Operation>
+
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/ThingDef[defName="guy762_carbine_sith"]/weaponTags</xpath>
+    <match Class="PatchOperationAdd">
+      <xpath>/Defs/ThingDef[defName="guy762_carbine_sith"]/weaponTags</xpath>
+      <value><li>AssaultRifle</li><li>SimpleGun</li></value>
+    </match>
+    <nomatch Class="PatchOperationAdd">
+      <xpath>/Defs/ThingDef[defName="guy762_carbine_sith"]</xpath>
+      <value><weaponTags><li>AssaultRifle</li><li>SimpleGun</li></weaponTags></value>
+    </nomatch>
+  </Operation>
+
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/ThingDef[defName="guy762_carbine_stun"]/weaponTags</xpath>
+    <match Class="PatchOperationAdd">
+      <xpath>/Defs/ThingDef[defName="guy762_carbine_stun"]/weaponTags</xpath>
+      <value><li>AssaultRifle</li><li>IndustrialGunAdvanced</li></value>
+    </match>
+    <nomatch Class="PatchOperationAdd">
+      <xpath>/Defs/ThingDef[defName="guy762_carbine_stun"]</xpath>
+      <value><weaponTags><li>AssaultRifle</li><li>IndustrialGunAdvanced</li></weaponTags></value>
+    </nomatch>
+  </Operation>
+
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/ThingDef[defName="guy762_carbine_zabrak"]/weaponTags</xpath>
+    <match Class="PatchOperationAdd">
+      <xpath>/Defs/ThingDef[defName="guy762_carbine_zabrak"]/weaponTags</xpath>
+      <value><li>AssaultRifle</li><li>IndustrialGunAdvanced</li></value>
+    </match>
+    <nomatch Class="PatchOperationAdd">
+      <xpath>/Defs/ThingDef[defName="guy762_carbine_zabrak"]</xpath>
+      <value><weaponTags><li>AssaultRifle</li><li>IndustrialGunAdvanced</li></weaponTags></value>
+    </nomatch>
+  </Operation>
+
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/ThingDef[defName="guy762_dispistol_disintegrator"]/weaponTags</xpath>
+    <match Class="PatchOperationAdd">
+      <xpath>/Defs/ThingDef[defName="guy762_dispistol_disintegrator"]/weaponTags</xpath>
+      <value><li>IndustrialGunAdvanced</li><li>Revolver</li><li>ShortShots</li><li>SimpleGun</li></value>
+    </match>
+    <nomatch Class="PatchOperationAdd">
+      <xpath>/Defs/ThingDef[defName="guy762_dispistol_disintegrator"]</xpath>
+      <value><weaponTags><li>IndustrialGunAdvanced</li><li>Revolver</li><li>ShortShots</li><li>SimpleGun</li></weaponTags></value>
+    </nomatch>
+  </Operation>
+
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/ThingDef[defName="guy762_dispistol_luxa"]/weaponTags</xpath>
+    <match Class="PatchOperationAdd">
+      <xpath>/Defs/ThingDef[defName="guy762_dispistol_luxa"]/weaponTags</xpath>
+      <value><li>Autopistol</li><li>Revolver</li><li>ShortShots</li><li>SimpleGun</li></value>
+    </match>
+    <nomatch Class="PatchOperationAdd">
+      <xpath>/Defs/ThingDef[defName="guy762_dispistol_luxa"]</xpath>
+      <value><weaponTags><li>Autopistol</li><li>Revolver</li><li>ShortShots</li><li>SimpleGun</li></weaponTags></value>
+    </nomatch>
+  </Operation>
+
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/ThingDef[defName="guy762_dispistol_ripper"]/weaponTags</xpath>
+    <match Class="PatchOperationAdd">
+      <xpath>/Defs/ThingDef[defName="guy762_dispistol_ripper"]/weaponTags</xpath>
+      <value><li>Autopistol</li><li>Revolver</li><li>ShortShots</li><li>SimpleGun</li></value>
+    </match>
+    <nomatch Class="PatchOperationAdd">
+      <xpath>/Defs/ThingDef[defName="guy762_dispistol_ripper"]</xpath>
+      <value><weaponTags><li>Autopistol</li><li>Revolver</li><li>ShortShots</li><li>SimpleGun</li></weaponTags></value>
+    </nomatch>
+  </Operation>
+
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/ThingDef[defName="guy762_dispistol_sith"]/weaponTags</xpath>
+    <match Class="PatchOperationAdd">
+      <xpath>/Defs/ThingDef[defName="guy762_dispistol_sith"]/weaponTags</xpath>
+      <value><li>Autopistol</li><li>Revolver</li><li>ShortShots</li><li>SimpleGun</li></value>
+    </match>
+    <nomatch Class="PatchOperationAdd">
+      <xpath>/Defs/ThingDef[defName="guy762_dispistol_sith"]</xpath>
+      <value><weaponTags><li>Autopistol</li><li>Revolver</li><li>ShortShots</li><li>SimpleGun</li></weaponTags></value>
+    </nomatch>
+  </Operation>
+
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/ThingDef[defName="guy762_disrifle_baragwin"]/weaponTags</xpath>
+    <match Class="PatchOperationAdd">
+      <xpath>/Defs/ThingDef[defName="guy762_disrifle_baragwin"]/weaponTags</xpath>
+      <value><li>AssaultRifle</li><li>IndustrialGunAdvanced</li></value>
+    </match>
+    <nomatch Class="PatchOperationAdd">
+      <xpath>/Defs/ThingDef[defName="guy762_disrifle_baragwin"]</xpath>
+      <value><weaponTags><li>AssaultRifle</li><li>IndustrialGunAdvanced</li></weaponTags></value>
+    </nomatch>
+  </Operation>
+
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/ThingDef[defName="guy762_disrifle_charric"]/weaponTags</xpath>
+    <match Class="PatchOperationAdd">
+      <xpath>/Defs/ThingDef[defName="guy762_disrifle_charric"]/weaponTags</xpath>
+      <value><li>AssaultRifle</li><li>IndustrialGunAdvanced</li></value>
+    </match>
+    <nomatch Class="PatchOperationAdd">
+      <xpath>/Defs/ThingDef[defName="guy762_disrifle_charric"]</xpath>
+      <value><weaponTags><li>AssaultRifle</li><li>IndustrialGunAdvanced</li></weaponTags></value>
+    </nomatch>
+  </Operation>
+
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/ThingDef[defName="guy762_disrifle_droid"]/weaponTags</xpath>
+    <match Class="PatchOperationAdd">
+      <xpath>/Defs/ThingDef[defName="guy762_disrifle_droid"]/weaponTags</xpath>
+      <value><li>AssaultRifle</li><li>IndustrialGunAdvanced</li></value>
+    </match>
+    <nomatch Class="PatchOperationAdd">
+      <xpath>/Defs/ThingDef[defName="guy762_disrifle_droid"]</xpath>
+      <value><weaponTags><li>AssaultRifle</li><li>IndustrialGunAdvanced</li></weaponTags></value>
+    </nomatch>
+  </Operation>
+
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/ThingDef[defName="guy762_disrifle_tenloss"]/weaponTags</xpath>
+    <match Class="PatchOperationAdd">
+      <xpath>/Defs/ThingDef[defName="guy762_disrifle_tenloss"]/weaponTags</xpath>
+      <value><li>AssaultRifle</li><li>SimpleGun</li></value>
+    </match>
+    <nomatch Class="PatchOperationAdd">
+      <xpath>/Defs/ThingDef[defName="guy762_disrifle_tenloss"]</xpath>
+      <value><weaponTags><li>AssaultRifle</li><li>SimpleGun</li></weaponTags></value>
+    </nomatch>
+  </Operation>
+
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/ThingDef[defName="guy762_disrifle_zabrak"]/weaponTags</xpath>
+    <match Class="PatchOperationAdd">
+      <xpath>/Defs/ThingDef[defName="guy762_disrifle_zabrak"]/weaponTags</xpath>
+      <value><li>GunHeavy</li><li>IndustrialGunAdvanced</li><li>Minigun</li></value>
+    </match>
+    <nomatch Class="PatchOperationAdd">
+      <xpath>/Defs/ThingDef[defName="guy762_disrifle_zabrak"]</xpath>
+      <value><weaponTags><li>GunHeavy</li><li>IndustrialGunAdvanced</li><li>Minigun</li></weaponTags></value>
+    </nomatch>
+  </Operation>
+
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/ThingDef[defName="guy762_holdout_jawa"]/weaponTags</xpath>
+    <match Class="PatchOperationAdd">
+      <xpath>/Defs/ThingDef[defName="guy762_holdout_jawa"]/weaponTags</xpath>
+      <value><li>Autopistol</li><li>Revolver</li><li>ShortShots</li><li>SimpleGun</li></value>
+    </match>
+    <nomatch Class="PatchOperationAdd">
+      <xpath>/Defs/ThingDef[defName="guy762_holdout_jawa"]</xpath>
+      <value><weaponTags><li>Autopistol</li><li>Revolver</li><li>ShortShots</li><li>SimpleGun</li></weaponTags></value>
+    </nomatch>
+  </Operation>
+
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/ThingDef[defName="guy762_holdout_sith"]/weaponTags</xpath>
+    <match Class="PatchOperationAdd">
+      <xpath>/Defs/ThingDef[defName="guy762_holdout_sith"]/weaponTags</xpath>
+      <value><li>Autopistol</li><li>Revolver</li><li>ShortShots</li><li>SimpleGun</li></value>
+    </match>
+    <nomatch Class="PatchOperationAdd">
+      <xpath>/Defs/ThingDef[defName="guy762_holdout_sith"]</xpath>
+      <value><weaponTags><li>Autopistol</li><li>Revolver</li><li>ShortShots</li><li>SimpleGun</li></weaponTags></value>
+    </nomatch>
+  </Operation>
+
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/ThingDef[defName="guy762_holdout_sithofficer"]/weaponTags</xpath>
+    <match Class="PatchOperationAdd">
+      <xpath>/Defs/ThingDef[defName="guy762_holdout_sithofficer"]/weaponTags</xpath>
+      <value><li>IndustrialGunAdvanced</li><li>Revolver</li><li>ShortShots</li><li>SimpleGun</li></value>
+    </match>
+    <nomatch Class="PatchOperationAdd">
+      <xpath>/Defs/ThingDef[defName="guy762_holdout_sithofficer"]</xpath>
+      <value><weaponTags><li>IndustrialGunAdvanced</li><li>Revolver</li><li>ShortShots</li><li>SimpleGun</li></weaponTags></value>
+    </nomatch>
+  </Operation>
+
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/ThingDef[defName="guy762_hvypistol_cassus"]/weaponTags</xpath>
+    <match Class="PatchOperationAdd">
+      <xpath>/Defs/ThingDef[defName="guy762_hvypistol_cassus"]/weaponTags</xpath>
+      <value><li>IndustrialGunAdvanced</li><li>Revolver</li><li>ShortShots</li><li>SimpleGun</li></value>
+    </match>
+    <nomatch Class="PatchOperationAdd">
+      <xpath>/Defs/ThingDef[defName="guy762_hvypistol_cassus"]</xpath>
+      <value><weaponTags><li>IndustrialGunAdvanced</li><li>Revolver</li><li>ShortShots</li><li>SimpleGun</li></weaponTags></value>
+    </nomatch>
+  </Operation>
+
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/ThingDef[defName="guy762_hvypistol_mandalorian"]/weaponTags</xpath>
+    <match Class="PatchOperationAdd">
+      <xpath>/Defs/ThingDef[defName="guy762_hvypistol_mandalorian"]/weaponTags</xpath>
+      <value><li>Autopistol</li><li>Revolver</li><li>ShortShots</li><li>SimpleGun</li></value>
+    </match>
+    <nomatch Class="PatchOperationAdd">
+      <xpath>/Defs/ThingDef[defName="guy762_hvypistol_mandalorian"]</xpath>
+      <value><weaponTags><li>Autopistol</li><li>Revolver</li><li>ShortShots</li><li>SimpleGun</li></weaponTags></value>
+    </nomatch>
+  </Operation>
+
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/ThingDef[defName="guy762_hvypistol_nadd"]/weaponTags</xpath>
+    <match Class="PatchOperationAdd">
+      <xpath>/Defs/ThingDef[defName="guy762_hvypistol_nadd"]/weaponTags</xpath>
+      <value><li>IndustrialGunAdvanced</li><li>Revolver</li><li>ShortShots</li><li>SimpleGun</li></value>
+    </match>
+    <nomatch Class="PatchOperationAdd">
+      <xpath>/Defs/ThingDef[defName="guy762_hvypistol_nadd"]</xpath>
+      <value><weaponTags><li>IndustrialGunAdvanced</li><li>Revolver</li><li>ShortShots</li><li>SimpleGun</li></weaponTags></value>
+    </nomatch>
+  </Operation>
+
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/ThingDef[defName="guy762_hvypistol_zabraktystel"]/weaponTags</xpath>
+    <match Class="PatchOperationAdd">
+      <xpath>/Defs/ThingDef[defName="guy762_hvypistol_zabraktystel"]/weaponTags</xpath>
+      <value><li>IndustrialGunAdvanced</li><li>Revolver</li><li>ShortShots</li><li>SimpleGun</li></value>
+    </match>
+    <nomatch Class="PatchOperationAdd">
+      <xpath>/Defs/ThingDef[defName="guy762_hvypistol_zabraktystel"]</xpath>
+      <value><weaponTags><li>IndustrialGunAdvanced</li><li>Revolver</li><li>ShortShots</li><li>SimpleGun</li></weaponTags></value>
+    </nomatch>
+  </Operation>
+
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/ThingDef[defName="guy762_hvyrepeater_baragwin"]/weaponTags</xpath>
+    <match Class="PatchOperationAdd">
+      <xpath>/Defs/ThingDef[defName="guy762_hvyrepeater_baragwin"]/weaponTags</xpath>
+      <value><li>GunHeavy</li><li>IndustrialGunAdvanced</li><li>Minigun</li></value>
+    </match>
+    <nomatch Class="PatchOperationAdd">
+      <xpath>/Defs/ThingDef[defName="guy762_hvyrepeater_baragwin"]</xpath>
+      <value><weaponTags><li>GunHeavy</li><li>IndustrialGunAdvanced</li><li>Minigun</li></weaponTags></value>
+    </nomatch>
+  </Operation>
+
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/ThingDef[defName="guy762_hvyrepeater_mando"]/weaponTags</xpath>
+    <match Class="PatchOperationAdd">
+      <xpath>/Defs/ThingDef[defName="guy762_hvyrepeater_mando"]/weaponTags</xpath>
+      <value><li>AssaultRifle</li><li>IndustrialGunAdvanced</li></value>
+    </match>
+    <nomatch Class="PatchOperationAdd">
+      <xpath>/Defs/ThingDef[defName="guy762_hvyrepeater_mando"]</xpath>
+      <value><weaponTags><li>AssaultRifle</li><li>IndustrialGunAdvanced</li></weaponTags></value>
+    </nomatch>
+  </Operation>
+
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/ThingDef[defName="guy762_hvyrepeater_massdriver"]/weaponTags</xpath>
+    <match Class="PatchOperationAdd">
+      <xpath>/Defs/ThingDef[defName="guy762_hvyrepeater_massdriver"]/weaponTags</xpath>
+      <value><li>AssaultRifle</li><li>IndustrialGunAdvanced</li></value>
+    </match>
+    <nomatch Class="PatchOperationAdd">
+      <xpath>/Defs/ThingDef[defName="guy762_hvyrepeater_massdriver"]</xpath>
+      <value><weaponTags><li>AssaultRifle</li><li>IndustrialGunAdvanced</li></weaponTags></value>
+    </nomatch>
+  </Operation>
+
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/ThingDef[defName="guy762_hvyrepeater_ordo"]/weaponTags</xpath>
+    <match Class="PatchOperationAdd">
+      <xpath>/Defs/ThingDef[defName="guy762_hvyrepeater_ordo"]/weaponTags</xpath>
+      <value><li>GunHeavy</li><li>IndustrialGunAdvanced</li><li>Minigun</li></value>
+    </match>
+    <nomatch Class="PatchOperationAdd">
+      <xpath>/Defs/ThingDef[defName="guy762_hvyrepeater_ordo"]</xpath>
+      <value><weaponTags><li>GunHeavy</li><li>IndustrialGunAdvanced</li><li>Minigun</li></weaponTags></value>
+    </nomatch>
+  </Operation>
+
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/ThingDef[defName="guy762_ionpistol_aratech"]/weaponTags</xpath>
+    <match Class="PatchOperationAdd">
+      <xpath>/Defs/ThingDef[defName="guy762_ionpistol_aratech"]/weaponTags</xpath>
+      <value><li>IndustrialGunAdvanced</li><li>Revolver</li><li>ShortShots</li><li>SimpleGun</li></value>
+    </match>
+    <nomatch Class="PatchOperationAdd">
+      <xpath>/Defs/ThingDef[defName="guy762_ionpistol_aratech"]</xpath>
+      <value><weaponTags><li>IndustrialGunAdvanced</li><li>Revolver</li><li>ShortShots</li><li>SimpleGun</li></weaponTags></value>
+    </nomatch>
+  </Operation>
+
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/ThingDef[defName="guy762_ionrifle_baragwin"]/weaponTags</xpath>
+    <match Class="PatchOperationAdd">
+      <xpath>/Defs/ThingDef[defName="guy762_ionrifle_baragwin"]/weaponTags</xpath>
+      <value><li>AssaultRifle</li><li>IndustrialGunAdvanced</li></value>
+    </match>
+    <nomatch Class="PatchOperationAdd">
+      <xpath>/Defs/ThingDef[defName="guy762_ionrifle_baragwin"]</xpath>
+      <value><weaponTags><li>AssaultRifle</li><li>IndustrialGunAdvanced</li></weaponTags></value>
+    </nomatch>
+  </Operation>
+
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/ThingDef[defName="guy762_ionrifle_verpine"]/weaponTags</xpath>
+    <match Class="PatchOperationAdd">
+      <xpath>/Defs/ThingDef[defName="guy762_ionrifle_verpine"]/weaponTags</xpath>
+      <value><li>AssaultRifle</li><li>SimpleGun</li></value>
+    </match>
+    <nomatch Class="PatchOperationAdd">
+      <xpath>/Defs/ThingDef[defName="guy762_ionrifle_verpine"]</xpath>
+      <value><weaponTags><li>AssaultRifle</li><li>SimpleGun</li></weaponTags></value>
+    </nomatch>
+  </Operation>
+
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/ThingDef[defName="guy762_lgtrepeater_baragwin"]/weaponTags</xpath>
+    <match Class="PatchOperationAdd">
+      <xpath>/Defs/ThingDef[defName="guy762_lgtrepeater_baragwin"]/weaponTags</xpath>
+      <value><li>AssaultRifle</li><li>IndustrialGunAdvanced</li></value>
+    </match>
+    <nomatch Class="PatchOperationAdd">
+      <xpath>/Defs/ThingDef[defName="guy762_lgtrepeater_baragwin"]</xpath>
+      <value><weaponTags><li>AssaultRifle</li><li>IndustrialGunAdvanced</li></weaponTags></value>
+    </nomatch>
+  </Operation>
+
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/ThingDef[defName="guy762_lgtrepeater_enforcer"]/weaponTags</xpath>
+    <match Class="PatchOperationAdd">
+      <xpath>/Defs/ThingDef[defName="guy762_lgtrepeater_enforcer"]/weaponTags</xpath>
+      <value><li>AssaultRifle</li><li>IndustrialGunAdvanced</li></value>
+    </match>
+    <nomatch Class="PatchOperationAdd">
+      <xpath>/Defs/ThingDef[defName="guy762_lgtrepeater_enforcer"]</xpath>
+      <value><weaponTags><li>AssaultRifle</li><li>IndustrialGunAdvanced</li></weaponTags></value>
+    </nomatch>
+  </Operation>
+
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/ThingDef[defName="guy762_lgtrepeater_mandalore"]/weaponTags</xpath>
+    <match Class="PatchOperationAdd">
+      <xpath>/Defs/ThingDef[defName="guy762_lgtrepeater_mandalore"]/weaponTags</xpath>
+      <value><li>AssaultRifle</li><li>IndustrialGunAdvanced</li></value>
+    </match>
+    <nomatch Class="PatchOperationAdd">
+      <xpath>/Defs/ThingDef[defName="guy762_lgtrepeater_mandalore"]</xpath>
+      <value><weaponTags><li>AssaultRifle</li><li>IndustrialGunAdvanced</li></weaponTags></value>
+    </nomatch>
+  </Operation>
+
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/ThingDef[defName="guy762_lgtrepeater_onderon"]/weaponTags</xpath>
+    <match Class="PatchOperationAdd">
+      <xpath>/Defs/ThingDef[defName="guy762_lgtrepeater_onderon"]/weaponTags</xpath>
+      <value><li>GunHeavy</li><li>IndustrialGunAdvanced</li><li>Minigun</li></value>
+    </match>
+    <nomatch Class="PatchOperationAdd">
+      <xpath>/Defs/ThingDef[defName="guy762_lgtrepeater_onderon"]</xpath>
+      <value><weaponTags><li>GunHeavy</li><li>IndustrialGunAdvanced</li><li>Minigun</li></weaponTags></value>
+    </nomatch>
+  </Operation>
+
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/ThingDef[defName="guy762_microrepeater_mando"]/weaponTags</xpath>
+    <match Class="PatchOperationAdd">
+      <xpath>/Defs/ThingDef[defName="guy762_microrepeater_mando"]/weaponTags</xpath>
+      <value><li>AssaultRifle</li><li>SimpleGun</li></value>
+    </match>
+    <nomatch Class="PatchOperationAdd">
+      <xpath>/Defs/ThingDef[defName="guy762_microrepeater_mando"]</xpath>
+      <value><weaponTags><li>AssaultRifle</li><li>SimpleGun</li></weaponTags></value>
+    </nomatch>
+  </Operation>
+
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/ThingDef[defName="guy762_microrepeater_narshaddaa"]/weaponTags</xpath>
+    <match Class="PatchOperationAdd">
+      <xpath>/Defs/ThingDef[defName="guy762_microrepeater_narshaddaa"]/weaponTags</xpath>
+      <value><li>AssaultRifle</li><li>SimpleGun</li></value>
+    </match>
+    <nomatch Class="PatchOperationAdd">
+      <xpath>/Defs/ThingDef[defName="guy762_microrepeater_narshaddaa"]</xpath>
+      <value><weaponTags><li>AssaultRifle</li><li>SimpleGun</li></weaponTags></value>
+    </nomatch>
+  </Operation>
+
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/ThingDef[defName="guy762_slugrifle_SovTusken"]/weaponTags</xpath>
+    <match Class="PatchOperationAdd">
+      <xpath>/Defs/ThingDef[defName="guy762_slugrifle_SovTusken"]/weaponTags</xpath>
+      <value><li>AssaultRifle</li><li>SimpleGun</li></value>
+    </match>
+    <nomatch Class="PatchOperationAdd">
+      <xpath>/Defs/ThingDef[defName="guy762_slugrifle_SovTusken"]</xpath>
+      <value><weaponTags><li>AssaultRifle</li><li>SimpleGun</li></weaponTags></value>
+    </nomatch>
+  </Operation>
+
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/ThingDef[defName="guy762_slugrifle_tusken"]/weaponTags</xpath>
+    <match Class="PatchOperationAdd">
+      <xpath>/Defs/ThingDef[defName="guy762_slugrifle_tusken"]/weaponTags</xpath>
+      <value><li>AssaultRifle</li><li>SimpleGun</li></value>
+    </match>
+    <nomatch Class="PatchOperationAdd">
+      <xpath>/Defs/ThingDef[defName="guy762_slugrifle_tusken"]</xpath>
+      <value><weaponTags><li>AssaultRifle</li><li>SimpleGun</li></weaponTags></value>
+    </nomatch>
+  </Operation>
+
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/ThingDef[defName="guy762_slugrifle_verpine"]/weaponTags</xpath>
+    <match Class="PatchOperationAdd">
+      <xpath>/Defs/ThingDef[defName="guy762_slugrifle_verpine"]/weaponTags</xpath>
+      <value><li>AssaultRifle</li><li>IndustrialGunAdvanced</li></value>
+    </match>
+    <nomatch Class="PatchOperationAdd">
+      <xpath>/Defs/ThingDef[defName="guy762_slugrifle_verpine"]</xpath>
+      <value><weaponTags><li>AssaultRifle</li><li>IndustrialGunAdvanced</li></weaponTags></value>
+    </nomatch>
+  </Operation>
+
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/ThingDef[defName="guy762_sonpistol_dashade"]/weaponTags</xpath>
+    <match Class="PatchOperationAdd">
+      <xpath>/Defs/ThingDef[defName="guy762_sonpistol_dashade"]/weaponTags</xpath>
+      <value><li>IndustrialGunAdvanced</li><li>Revolver</li><li>ShortShots</li><li>SimpleGun</li></value>
+    </match>
+    <nomatch Class="PatchOperationAdd">
+      <xpath>/Defs/ThingDef[defName="guy762_sonpistol_dashade"]</xpath>
+      <value><weaponTags><li>IndustrialGunAdvanced</li><li>Revolver</li><li>ShortShots</li><li>SimpleGun</li></weaponTags></value>
+    </nomatch>
+  </Operation>
+
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/ThingDef[defName="guy762_sonrifle_arkanian"]/weaponTags</xpath>
+    <match Class="PatchOperationAdd">
+      <xpath>/Defs/ThingDef[defName="guy762_sonrifle_arkanian"]/weaponTags</xpath>
+      <value><li>AssaultRifle</li><li>IndustrialGunAdvanced</li></value>
+    </match>
+    <nomatch Class="PatchOperationAdd">
+      <xpath>/Defs/ThingDef[defName="guy762_sonrifle_arkanian"]</xpath>
+      <value><weaponTags><li>AssaultRifle</li><li>IndustrialGunAdvanced</li></weaponTags></value>
+    </nomatch>
+  </Operation>
+
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/ThingDef[defName="guy762_sonrifle_nagai"]/weaponTags</xpath>
+    <match Class="PatchOperationAdd">
+      <xpath>/Defs/ThingDef[defName="guy762_sonrifle_nagai"]/weaponTags</xpath>
+      <value><li>AssaultRifle</li><li>IndustrialGunAdvanced</li></value>
+    </match>
+    <nomatch Class="PatchOperationAdd">
+      <xpath>/Defs/ThingDef[defName="guy762_sonrifle_nagai"]</xpath>
+      <value><weaponTags><li>AssaultRifle</li><li>IndustrialGunAdvanced</li></weaponTags></value>
+    </nomatch>
+  </Operation>
+
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/ThingDef[defName="guy762_vaxe"]/weaponTags</xpath>
+    <match Class="PatchOperationAdd">
+      <xpath>/Defs/ThingDef[defName="guy762_vaxe"]/weaponTags</xpath>
+      <value><li>Jawa_GamorreanAxe</li></value>
+    </match>
+    <nomatch Class="PatchOperationAdd">
+      <xpath>/Defs/ThingDef[defName="guy762_vaxe"]</xpath>
+      <value><weaponTags><li>Jawa_GamorreanAxe</li></weaponTags></value>
+    </nomatch>
+  </Operation>
+
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/ThingDef[defName="guy762_vaxe_hutt"]/weaponTags</xpath>
+    <match Class="PatchOperationAdd">
+      <xpath>/Defs/ThingDef[defName="guy762_vaxe_hutt"]/weaponTags</xpath>
+      <value><li>Jawa_GamorreanAxe</li></value>
+    </match>
+    <nomatch Class="PatchOperationAdd">
+      <xpath>/Defs/ThingDef[defName="guy762_vaxe_hutt"]</xpath>
+      <value><weaponTags><li>Jawa_GamorreanAxe</li></weaponTags></value>
+    </nomatch>
+  </Operation>
+
+</Patch>

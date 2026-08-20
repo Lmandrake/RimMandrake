@@ -128,8 +128,16 @@
       <li>SaV_apparel_huttgoon</li>
     </apparelTags>
     <weaponMoney>1900~2200</weaponMoney>
+    <!-- 🔴 `HC_gamorreanaxe` was carried by NO weapon in the load set — not a cut one,
+         not any one — so this kind spawned BARE-HANDED and nothing logged it. Measured
+         2026-08-19 with `weapon_tag_audit.py`. `Jawa_GamorreanAxe` is put on the two
+         vibro-axes by `Patches/WeaponTags_Renormalise.xml`; `HC_gamorrean_melee` is the
+         donor's own tag and carries 4 surviving weapons.
+         ⭐ TWO TAGS ON PURPOSE. A kind with one tag has no fallback, which is exactly
+         how 49 kinds in this stack ended up empty-handed. -->
     <weaponTags>
-      <li>HC_gamorreanaxe</li>
+      <li>Jawa_GamorreanAxe</li>
+      <li>HC_gamorrean_melee</li>
     </weaponTags>
     <initialWillRange>2~4</initialWillRange>
     <initialResistanceRange>14~22</initialResistanceRange>
