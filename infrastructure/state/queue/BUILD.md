@@ -713,7 +713,60 @@ criteria: spawn each of the 48 kinds 5x live and read `jawa/pawn_get` -> `pawns[
           reached the suspect list on a single bare roll and is fine at 5/5.
           ⚠️ FALSE PASS: `jawa/pawn_gear` is a WRITER and answers a read with
           "Give a ThingDef." Reading equipment off it reports every pawn as bare.
-state:    ready
+state:    done 2026-08-20 (offline half). Table fixed in
+          `src/RimMandrake/Utils/gen_pawnkind_roster.py`, 48 defs regenerated into
+          `src/Jawa/Jawa_Patches/Defs/PawnKindDefs/JawaFactionRoster.xml`, deployed.
+          verify output:
+            `python3 src/RimMandrake/Utils/weapon_affordability.py`
+            `always arms 48 · sometimes 0 · never 0 · no tags 0 · unmeasured 0`
+            `validate_patch.py --defs` -> `OK - 0 errors, 0 warning(s)`
+            48 PawnKindDefs · 48 with `weaponTags` · **0** with `weaponMoney 0~0`
+
+          ⭐ **THE "AFFORDABILITY PASS" THE GENERATOR TELLS YOU TO RUN DID NOT EXIST.**
+          `gen_pawnkind_roster.py:55` said *"Re-check with the affordability pass whenever
+          a tag or a price changes"* and there was no such tool in the repo. Built it:
+          `src/RimMandrake/Utils/weapon_affordability.py`. It reads the roster table out of
+          the generator itself, so it cannot drift from the thing it checks.
+
+          🔴 **THE ITEM'S OWN CORRECTION IS STILL HALF WRONG, AND THE HALF THAT IS WRONG
+          IS THE ONE THAT DECIDES THE 5/5 CRITERION.** It says *"`min` must be at or below
+          the cheapest tagged weapon"*. Read out of `TryGenerateWeaponFor`: the engine
+          rolls `weaponMoney.RandomInRange` **once**, keeps every weapon priced at or below
+          that roll, and if the pool is empty **the pawn gets nothing**. So:
+            `max >= cheapest`  ->  the kind CAN arm
+            `min >= cheapest`  ->  the kind ALWAYS arms
+          A `min` *below* the cheapest weapon means every roll under that price arms
+          nobody. ⇒ **for 5/5, `min` must be at or ABOVE the cheapest**, not below.
+          The pass reports the middle case as `ARMS ONLY SOMETIMES` with its odds rather
+          than as a pass — `Jawa_Wildsteam_Specialist` was armed on 62% of rolls.
+
+          ⭐ **AND THE 9 "UNMEASURED" KINDS ARE NOW MEASURED — the item's advice to "read
+          them off the weapon defs directly" could not have worked.** Every Outer Rim
+          weapon declares MaxHitPoints, Flammability, DeteriorationRate and Beauty and **no
+          `MarketValue` at all**; there is nothing on the def to read. The engine computes
+          it via `StatWorker_MarketValue.CalculatedBaseMarketValue` from the recipe, and
+          the pass now reproduces that formula from `costList` + `WorkToMake`:
+            `OuterRim_DroidWeapon_BlasterCannon` = **982.5**, which is why
+            `weaponMoney 0~0` on the two droid kinds was never the whole story — even 900
+            would have armed nobody.
+          ⚠️ **This also corrected MY OWN first run.** Before computed pricing, five kinds
+          were reported as NEVER ARMS purely because their cheaper weapons had no declared
+          price and were excluded from the minimum. `Jawa_Homestead_Specialist`,
+          `Jawa_Deepwater_Leader`, `Jawa_Helix_Specialist`, `Jawa_Blackstar_Specialist` and
+          `Jawa_Blackstar_Leader` are all fine and needed no change.
+
+          WHAT CHANGED, 9 kinds:
+            `Empire_Grunt` 350->650 · `Empire_Heavy` 700->1000 · `DeepDesert_Grunt` 90->150
+            `Wildsteam_Specialist` 500->620
+            `Droid_Grunt` 0->1100 · `Droid_Heavy` 0->1400   (cheapest droid weapon 982.5)
+            `Droid_Specialist` 0->1200 + `ORDroidWeapon` · `Droid_Leader` 0->1800 +
+            `ORDroidWeapon` · `TradeMoot_Specialist` 300->900 + `Jawa_IonWeapon`,
+            `KotORRanged_ion`
+          ⚠️ **`combatPower` moved with the money, by the generator's own rule** — the four
+          droid kinds went 35/40/38/46 to 90/124/108/176. That is the roster's intent (a
+          kind is as dangerous as its kit) but it IS a difficulty change to droid raids,
+          and it is the one thing here somebody may want to argue with.
+          ⏳ Live half is CHECK's: `ROLE_KINDS_ARMED_5_OF_5_1` in `queue/CHECK.md`.
 
 ## GRIMTERRA_TEXPATH_TYPOS_1 Three broken texPaths in GRiNDTerra Biomes, juveniles only
 row:      unassigned

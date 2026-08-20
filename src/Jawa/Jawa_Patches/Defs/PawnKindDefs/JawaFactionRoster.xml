@@ -32,10 +32,10 @@ silent; the weapon tags above are the opposite and fail in silence. Check both.
     <label>stormtrooper</label>
     <race>Human</race>
     <defaultFactionDef>Empire</defaultFactionDef>
-    <combatPower>74</combatPower>
+    <combatPower>87</combatPower>
     <isFighter>true</isFighter>
     <useFactionXenotypes>true</useFactionXenotypes>
-    <weaponMoney>350~420</weaponMoney>
+    <weaponMoney>650~780</weaponMoney>
     <apparelMoney>500~600</apparelMoney>
     <initialResistanceRange>8~14</initialResistanceRange>
     <initialWillRange>1~3</initialWillRange>
@@ -55,10 +55,10 @@ silent; the weapon tags above are the opposite and fail in silence. Check both.
     <label>heavy trooper</label>
     <race>Human</race>
     <defaultFactionDef>Empire</defaultFactionDef>
-    <combatPower>113</combatPower>
+    <combatPower>129</combatPower>
     <isFighter>true</isFighter>
     <useFactionXenotypes>true</useFactionXenotypes>
-    <weaponMoney>700~840</weaponMoney>
+    <weaponMoney>1000~1200</weaponMoney>
     <apparelMoney>700~840</apparelMoney>
     <initialResistanceRange>12~18</initialResistanceRange>
     <initialWillRange>2~4</initialWillRange>
@@ -261,10 +261,10 @@ silent; the weapon tags above are the opposite and fail in silence. Check both.
     <label>Tusken raider</label>
     <race>Human</race>
     <defaultFactionDef>TribeCivil</defaultFactionDef>
-    <combatPower>44</combatPower>
+    <combatPower>46</combatPower>
     <isFighter>true</isFighter>
     <useFactionXenotypes>true</useFactionXenotypes>
-    <weaponMoney>90~108</weaponMoney>
+    <weaponMoney>150~180</weaponMoney>
     <apparelMoney>100~120</apparelMoney>
     <initialResistanceRange>8~14</initialResistanceRange>
     <initialWillRange>1~3</initialWillRange>
@@ -337,11 +337,11 @@ silent; the weapon tags above are the opposite and fail in silence. Check both.
     <label>labour droid</label>
     <race>Human</race>
     <defaultFactionDef>Jawa_FreeDroidEnclaves</defaultFactionDef>
-    <combatPower>35</combatPower>
+    <combatPower>90</combatPower>
     <isFighter>true</isFighter>
     <useFactionXenotypes>true</useFactionXenotypes>
-    <weaponMoney>0~0</weaponMoney>
-    <apparelMoney>0~0</apparelMoney>
+    <weaponMoney>1100~1320</weaponMoney>
+    <apparelMoney>120~144</apparelMoney>
     <initialResistanceRange>8~14</initialResistanceRange>
     <initialWillRange>1~3</initialWillRange>
     <weaponTags>
@@ -354,11 +354,11 @@ silent; the weapon tags above are the opposite and fail in silence. Check both.
     <label>security droid</label>
     <race>Human</race>
     <defaultFactionDef>Jawa_FreeDroidEnclaves</defaultFactionDef>
-    <combatPower>40</combatPower>
+    <combatPower>124</combatPower>
     <isFighter>true</isFighter>
     <useFactionXenotypes>true</useFactionXenotypes>
-    <weaponMoney>0~0</weaponMoney>
-    <apparelMoney>0~0</apparelMoney>
+    <weaponMoney>1400~1680</weaponMoney>
+    <apparelMoney>200~240</apparelMoney>
     <initialResistanceRange>12~18</initialResistanceRange>
     <initialWillRange>2~4</initialWillRange>
     <weaponTags>
@@ -371,13 +371,16 @@ silent; the weapon tags above are the opposite and fail in silence. Check both.
     <label>medical droid</label>
     <race>Human</race>
     <defaultFactionDef>Jawa_FreeDroidEnclaves</defaultFactionDef>
-    <combatPower>38</combatPower>
-    <isFighter>false</isFighter>
+    <combatPower>108</combatPower>
+    <isFighter>true</isFighter>
     <useFactionXenotypes>true</useFactionXenotypes>
-    <weaponMoney>0~0</weaponMoney>
-    <apparelMoney>0~0</apparelMoney>
+    <weaponMoney>1200~1440</weaponMoney>
+    <apparelMoney>180~216</apparelMoney>
     <initialResistanceRange>14~22</initialResistanceRange>
     <initialWillRange>2~5</initialWillRange>
+    <weaponTags>
+      <li>ORDroidWeapon</li>
+    </weaponTags>
   </PawnKindDef>
 
   <PawnKindDef>
@@ -385,13 +388,17 @@ silent; the weapon tags above are the opposite and fail in silence. Check both.
     <label>First Speaker R-41 Rell</label>
     <race>Human</race>
     <defaultFactionDef>Jawa_FreeDroidEnclaves</defaultFactionDef>
-    <combatPower>46</combatPower>
-    <isFighter>false</isFighter>
+    <combatPower>176</combatPower>
+    <isFighter>true</isFighter>
     <useFactionXenotypes>true</useFactionXenotypes>
-    <weaponMoney>0~0</weaponMoney>
-    <apparelMoney>0~0</apparelMoney>
+    <weaponMoney>1800~2160</weaponMoney>
+    <apparelMoney>400~480</apparelMoney>
     <initialResistanceRange>20~30</initialResistanceRange>
     <initialWillRange>4~7</initialWillRange>
+    <weaponTags>
+      <li>ORDroidWeapon</li>
+    </weaponTags>
+    <itemQuality>Excellent</itemQuality>
   </PawnKindDef>
 
   <PawnKindDef>
@@ -436,10 +443,10 @@ silent; the weapon tags above are the opposite and fail in silence. Check both.
     <label>beast-handler</label>
     <race>Human</race>
     <defaultFactionDef>Jawa_WildsteamClan</defaultFactionDef>
-    <combatPower>76</combatPower>
+    <combatPower>82</combatPower>
     <isFighter>true</isFighter>
     <useFactionXenotypes>true</useFactionXenotypes>
-    <weaponMoney>500~600</weaponMoney>
+    <weaponMoney>620~744</weaponMoney>
     <apparelMoney>250~300</apparelMoney>
     <initialResistanceRange>14~22</initialResistanceRange>
     <initialWillRange>2~5</initialWillRange>
@@ -819,13 +826,17 @@ silent; the weapon tags above are the opposite and fail in silence. Check both.
     <label>Scrap-Singer</label>
     <race>Human</race>
     <defaultFactionDef>Jawa_IndigenousTribes</defaultFactionDef>
-    <combatPower>62</combatPower>
-    <isFighter>false</isFighter>
+    <combatPower>92</combatPower>
+    <isFighter>true</isFighter>
     <useFactionXenotypes>true</useFactionXenotypes>
-    <weaponMoney>300~360</weaponMoney>
+    <weaponMoney>900~1080</weaponMoney>
     <apparelMoney>160~192</apparelMoney>
     <initialResistanceRange>14~22</initialResistanceRange>
     <initialWillRange>2~5</initialWillRange>
+    <weaponTags>
+      <li>Jawa_IonWeapon</li>
+      <li>KotORRanged_ion</li>
+    </weaponTags>
     <apparelRequired>
       <li>guy762_Robes_jawa</li>
     </apparelRequired>

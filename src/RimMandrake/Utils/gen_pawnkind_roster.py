@@ -52,12 +52,27 @@ FACTIONS = {
 # all - and just as silent about it. Measured 2026-08-20: five kinds were in that state,
 # including the Jawa scavenger, whose ion weapons all cost 800+ against a budget of 120.
 # ⇒ Every number below has been checked against the CHEAPEST member of its own pool.
-# Re-check with the affordability pass whenever a tag or a price changes.
+#
+# 🔴 AND "CEILING" IS ONLY HALF THE RULE. weaponMoney is rolled ONCE and every weapon
+# priced at or below that roll is eligible, so:
+#     max >= cheapest  ->  the kind CAN arm
+#     min >= cheapest  ->  the kind ALWAYS arms
+# The roster's acceptance criterion is 5 spawns out of 5 armed, so the bar is the
+# SECOND one. The number in each row below IS the min - this file emits `wm ~ wm*1.2` -
+# so every wm must sit at or above its pool's cheapest member, with headroom.
+# ⚠️ Headroom is not padding: the engine prices a ThingStuffPair, which includes STUFF
+# cost, while the audit reads an unstuffed value. The real price is higher, never lower.
+#
+# ✅ THE AFFORDABILITY PASS NOW EXISTS - it did not when the line below was written:
+#     python3 src/RimMandrake/Utils/weapon_affordability.py
+# Run it after ANY change to a tag or a number here. It reports every kind as always /
+# sometimes / never arming, and it PRICES the Outer Rim weapons, which declare no
+# MarketValue at all and are computed by the engine from their recipe.
 # (faction, role, label, weaponMoney, apparelMoney, quality, [weaponTags], [apparelRequired])
 # quality: ("force",) | ("max", Q) | ("min", Q) | ("item", Q) | None
 R = [
- ("Empire","Grunt","stormtrooper",350,500,("force",),["ORImperialStandard","ORImperialLight"],["OuterRim_StormtrooperCuirass","OuterRim_StormtrooperHelmet"]),
- ("Empire","Heavy","heavy trooper",700,700,("force",),["ORImperialHeavy","ORHeavyWeapon"],[]),
+ ("Empire","Grunt","stormtrooper",650,500,("force",),["ORImperialStandard","ORImperialLight"],["OuterRim_StormtrooperCuirass","OuterRim_StormtrooperHelmet"]),
+ ("Empire","Heavy","heavy trooper",1000,700,("force",),["ORImperialHeavy","ORHeavyWeapon"],[]),
  ("Empire","Specialist","Imperial officer",900,700,("force",),["ORPistol","ORImperialLight"],[]),
  ("Empire","Leader","Emperor Palpatine",1600,1200,("item","Excellent"),["ORImperialSniper","ORPistol"],[]),
 
@@ -71,19 +86,19 @@ R = [
  ("Homestead","Specialist","water warden",450,300,("max","Good"),["SniperRifle","ORSniper"],[]),
  ("Homestead","Leader","High Marshal Taren Voss",700,500,("max","Excellent"),["ORPistol","SWKotORWeaponCategoryTag_pistol"],[]),
 
- ("DeepDesert","Grunt","Tusken raider",90,100,("max","Normal"),["ORTuskenMelee","ORMeleeBlunt","NeolithicMeleeAdvanced"],[]),
+ ("DeepDesert","Grunt","Tusken raider",150,100,("max","Normal"),["ORTuskenMelee","ORMeleeBlunt","NeolithicMeleeAdvanced"],[]),
  ("DeepDesert","Heavy","Tusken brute",200,150,("max","Normal"),["ORMeleeBlunt","NeolithicMeleeAdvanced"],[]),
  ("DeepDesert","Specialist","Tusken marksman",2000,200,("max","Normal"),["SaV_tusken"],[]),
  ("DeepDesert","Leader","War Chief Torr'gan",500,350,("max","Good"),["ORTuskenMelee","NeolithicMeleeAdvanced"],[]),
 
- ("Droid","Grunt","labour droid",0,0,None,["ORDroidWeapon"],[]),
- ("Droid","Heavy","security droid",0,0,None,["ORDroidWeapon"],[]),
- ("Droid","Specialist","medical droid",0,0,None,[],[]),
- ("Droid","Leader","First Speaker R-41 Rell",0,0,None,[],[]),
+ ("Droid","Grunt","labour droid",1100,120,None,["ORDroidWeapon"],[]),
+ ("Droid","Heavy","security droid",1400,200,None,["ORDroidWeapon"],[]),
+ ("Droid","Specialist","medical droid",1200,180,None,["ORDroidWeapon"],[]),
+ ("Droid","Leader","First Speaker R-41 Rell",1800,400,("item","Excellent"),["ORDroidWeapon"],[]),
 
  ("Wildsteam","Grunt","Wildsteam hunter",1300,150,("min","Good"),["KotORBowcaster"],[]),
  ("Wildsteam","Heavy","pod-warden",900,200,("min","Good"),["KotORBowcaster","SWKotORWeaponCategoryTag_heavyranged"],[]),
- ("Wildsteam","Specialist","beast-handler",500,250,("min","Good"),["ORMeleeSharp","ORVibroweapon"],[]),
+ ("Wildsteam","Specialist","beast-handler",620,250,("min","Good"),["ORMeleeSharp","ORVibroweapon"],[]),
  ("Wildsteam","Leader","Elder Rroowaak",2100,400,("min","Excellent"),["KotORBowcaster"],[]),
 
  ("Deepwater","Grunt","shore guard",300,400,("min","Good"),["KotORRanged_mid","SWKotORWeaponCategoryTag_rifle"],[]),
@@ -108,7 +123,7 @@ R = [
 
  ("TradeMoot","Grunt","Jawa scavenger",250,100,("max","Poor"),["KotORRanged_ion","SaV_jawaheavy","Jawa_IonWeaponLight"],["guy762_Robes_jawa"]),
  ("TradeMoot","Heavy","crawler guard",450,130,("max","Normal"),["KotORRanged_ion","Jawa_IonWeapon","KotORRanged_weak"],["guy762_Robes_jawa"]),
- ("TradeMoot","Specialist","Scrap-Singer",300,160,("max","Normal"),[],["guy762_Robes_jawa"]),
+ ("TradeMoot","Specialist","Scrap-Singer",900,160,("max","Normal"),["Jawa_IonWeapon","KotORRanged_ion"],["guy762_Robes_jawa"]),
  ("TradeMoot","Leader","First Bargainer Kiknik the Wealthy",900,250,("max","Good"),["KotORRanged_ion","Jawa_IonWeapon"],["guy762_Robes_jawa"]),
 
  ("Junkers","Grunt","Junker scrapper",60,400,("max","Awful"),["ORMeleeBlunt","NeolithicMeleeBasic"],[]),
