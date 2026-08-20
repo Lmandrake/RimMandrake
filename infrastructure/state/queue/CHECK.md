@@ -1583,7 +1583,29 @@ correction:
           enumerated fine (13 children) on a game that had definitely aborted. It is
           replaced by grepping Player.log for `ErrorWhileLoadingGame`, which the engine
           writes only when it has given up. `w9_run.py` now blocks on that.
-ab:       🧪 RUNNING 2026-08-20: `mandrake.inhabited` DISABLED (577 active, md5
+ab:       🧪 RAN 2026-08-20 AND WAS REFUSED BEFORE IT COULD START — which is itself the
+          answer to a different question. With `mandrake.inhabited` disabled,
+          `rimworld/load_game` REFUSED outright:
+            *"Save 'WORLDMAP_gen_sub7b' cannot be loaded because 1 mod(s) recorded by the
+              save are not currently active: Inhabited (local) (mandrake.inhabited)."*
+          ⇒ 🔑 **A/B BY MOD REMOVAL IS NOT AVAILABLE ON A SAVE THAT RECORDS THE MOD.** The
+          bridge has an `ignoreModCompatibility` escape hatch, but forcing a load with a
+          recorded mod missing generates its own missing-def errors and CONFOUNDS the very
+          attribution the A/B exists to make. Refused on those grounds, not attempted.
+          ⇒ 📌 And it means both candidate saves were written THIS MORNING with Inhabited
+          active — `rt_probe.rws` has an mtime of 07:42, not last night. Neither is the
+          clean pre-Inhabited artifact I took them for.
+          ⇒ To attribute this properly the A/B has to run the other way: a save made
+          WITHOUT Inhabited, loaded on a stack without it. None exists yet.
+severity: ⚠️ **The abort is real but its BLAST RADIUS is narrow, and that matters.** It
+          throws in a Harmony POSTFIX on `ResolveAllCrossReferences` — the engine's own
+          cross-reference resolution has already completed by then. Consistent with
+          observation: the world layer read back perfectly all morning (21,872 tiles, 38
+          settlements, 27 features, 100% tile validate). What did NOT complete is whatever
+          FactionControl intended to do to the faction roster.
+          ⇒ world authoring can proceed on such a game, but every result from it is
+          PROVISIONAL and must be re-proven by a save→reload.
+old_ab:   🧪 RUNNING 2026-08-20: `mandrake.inhabited` DISABLED (577 active, md5
           6fef68dcbb43f132243a0569bb5de2f5; the 578 file is archived as
           `*.ab-test-inhabited-on.xml`) and the game relaunched. Loading
           `WORLDMAP_gen_sub7b` again decides it:
