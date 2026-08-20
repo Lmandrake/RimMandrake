@@ -291,23 +291,31 @@ criteria: the clan starts with a bonded ikee; it reads as belonging to this camp
 state:    ready
 
 
-## B-EMP1 Dead patches aiming at `OuterRim_GalacticEmpire`
+## B-EMP1 Stale Empire-vessel prose in `Jawa_Patches/About/About.xml`
 row:      1
 spec:     🔴 **OWNER RULING 2026-08-20** (`OWNER_DECISIONS.md`, end of file): the
-          Galactic Empire's vessel is **vanilla `Empire`**; `OuterRim_GalacticEmpire`
-          is not patched.
-          `src/Jawa/JawaFactionSlate/Patches/OnlyOurFactions.xml` (~lines 770-793)
-          carries six xpaths on `OuterRim_GalacticEmpire`, and
-          `src/Jawa/Jawa_Patches/About/About.xml` declares
-          `Neronix17.OuterRim.GalacticEmpire` with two comment lines describing the
-          reskin. ⚠️ **A patch that matches nothing logs nothing** — these report
-          success and do nothing.
-          ⏸️ **HOLD until the owner answers the question in `queue/HUMAN.md`**: whether
-          the Outer Rim Galactic Empire MOD is leaving the 578-mod list, or only ceasing
-          to be the vessel. Delete-the-patches and retarget-the-patches are different
-          jobs and the answer picks one.
-          🔑 Blast radius: the vessel only. Other `OuterRim_*` defs stay.
-verify:   `git grep -n 'OuterRim_GalacticEmpire' -- src/` returns no live patch xpath
-          and no dependency declaration.
-criteria: no patch in the tree aims at a def we have ruled we do not patch.
-state:    blocked on HUMAN.md — raised by REP, 2026-08-20.
+          Galactic Empire's vessel is **vanilla `Empire`**. Owner, same day: **the Outer
+          Rim mod is NOT leaving the list** — it keeps shipping its own pawn kinds, gear
+          and droid factions.
+          ✅ **The patch itself is already correct.** `Patches/ImperialDesertDirectorate.xml`
+          targets `/Defs/FactionDef[defName="Empire"]` at every xpath. Nothing to change
+          there.
+          ❌ **`About/About.xml` still describes the old vessel**, in two places:
+          the `ImperialDesertDirectorate.xml` bullet in `<description>` says it "reskins
+          OuterRim_GalacticEmpire", and the `<loadAfter>` comment on
+          `Neronix17.OuterRim.GalacticEmpire` still credits that file. ⚠️ The `loadAfter`
+          ENTRY stays — other patches in this mod do touch Outer Rim defs; only its
+          trailing comment is wrong.
+          ⚠️ The bullet also carries a fixedName trap written against the OLD def
+          ("the shipped def sets BOTH to Galactic Empire"). Re-read it against vanilla
+          `Empire` before rewriting — the trap may or may not still apply, and this is
+          shipped user-facing text, so correct it rather than deleting it.
+          ✅ **`JawaFactionSlate/Patches/OnlyOurFactions.xml` is CORRECT AS IS** — REP's
+          first draft of this item was wrong about it. Its six `OuterRim_GalacticEmpire`
+          xpaths are worldgen SUPPRESSION (`startingCountAtWorldCreation` 0), not a
+          reskin, and with the mod staying they are exactly what we want. It is a
+          generated file ("Do not hand-edit"); leave it alone.
+verify:   `About.xml` names vanilla `Empire` as the Directorate's vessel, and no prose in
+          `src/Jawa/Jawa_Patches/` claims we patch `OuterRim_GalacticEmpire`.
+criteria: the shipped mod description matches what the mod actually patches.
+state:    open — raised by REP, 2026-08-20; unblocked same day by the owner.

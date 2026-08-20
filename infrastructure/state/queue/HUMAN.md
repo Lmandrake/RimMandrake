@@ -435,7 +435,13 @@ un-prefixed. Only donor-owned paths get rewritten.
 Say the word and it is an afternoon in `gen_races_mod.py` plus a re-run. Left alone
 otherwise.
 
-## 🔴 Q (REP, 2026-08-20): "no longer in the game" — is the MOD leaving, or just the vessel?
+## ~~🔴 Q (REP, 2026-08-20): is the MOD leaving, or just the vessel?~~ ✅ ANSWERED — B, the mod STAYS
+
+🟢 **OWNER, 2026-08-20: *"The mod is not leaving, no."*** ⇒ Option B. The patches are
+not deleted, the saved worlds keep valid faction references, and Outer Rim keeps shipping
+its pawn kinds and gear. `queue/BUILD.md` B-EMP1 is unblocked and rescoped — the only
+real defect turned out to be stale prose in `About.xml`; the reskin patch already targets
+vanilla `Empire`, and the `OnlyOurFactions.xml` suppression block is correct as written.
 
 Your ruling is recorded and propagating: the Galactic Empire is authored on vanilla
 `Empire`, and `OuterRim_GalacticEmpire` is not patched. That part needs nothing from you.
