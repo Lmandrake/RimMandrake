@@ -1518,3 +1518,41 @@ predictions:
 criteria: each prediction met or not met, with the number read back. A prediction that turns
           out wrong is a finding, not an embarrassment — say which one moved and by how much.
 state:    ready
+
+## RT_PROBE_LOAD_ABORTS_ON_578_1 The save aborts loading, and the engine's own handler then NREs
+row:      bridge-9
+from:     CHECK, 2026-08-20, live. Found only because `list_debug_action_children("Actions")`
+          threw — everything else about the session looked healthy.
+spec:     🔴 **`rt_probe.rws` DOES NOT FINISH LOADING on the 578-mod set.** Read out of the
+          live stack, in order:
+            `CrossRefHandler.ResolveAllCrossReferences()`
+            → POSTFIX `com.rimworld.mod.factioncontrol` →
+              `FactionControl.CrossRefHandler_ResolveAllCrossReferences.Postfix()`
+            → `List.Enumerator.MoveNextRare()` — the shape of a collection modified
+              while it is being enumerated
+            → `GameAndMapInitExceptionHandlers.ErrorWhileLoadingGame`
+            → `GenScene.GoToMainMenu` → `Game.Dispose` → `Map.Dispose`
+            → `MapDrawer.Dispose` → **NullReferenceException**
+          ⇒ the load aborts, the engine tries to bail to the main menu, and **the bail
+          itself throws**, leaving a half-disposed game that still reports
+          `status: game_loaded` and still answers the bridge.
+          📌 That zombie state is why `Outputs` (233) and `Settings` (184) enumerate fine
+          while `Actions` throws, and why `Vehicle-Framework`'s ColonistBar patch then
+          spams `KeyNotFoundException: key '0'` every OnGUI.
+          ⚠️ It loaded FINE last night on 577. The set changed by exactly one mod
+          (`mandrake.inhabited`) — but do not conclude Inhabited is the culprit from that
+          alone. FactionControl is the thing that actually threw, and the save also carries
+          ~250 scratch pawns and `Could not find think node with key ...` on dozens of them.
+consequence:
+          🔑 **Everything today ran on a corpse.** The tool results remain real evidence that
+          the TOOLS work — 21,872 tiles at 100%, 72 settlements created, 23 regions assigned,
+          817 mutators cleared — but the GAME STATE is not trustworthy and must not be saved.
+          The owner independently ruled "scratch, don't save" before this was known, which
+          turns out to be the right call for a second reason.
+verify:   next load, do NOT load `rt_probe`. Load `WORLDMAP_gen_sub7b` (the MLP-7 geometry
+          the CSVs are named for) and grep the log for `ErrorWhileLoadingGame` BEFORE
+          trusting anything. If it aborts too, the fault is the mod set, not the save.
+criteria: a load with ZERO `ErrorWhileLoadingGame`, and `list_debug_action_children("Actions")`
+          returning its 642 children. 🔴 That second check is the cheap canary for this whole
+          class of failure and costs one call — run it FIRST on every future load.
+state:    ready
