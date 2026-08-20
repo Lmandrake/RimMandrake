@@ -46,7 +46,7 @@ using Verse.AI;
 
 namespace JawaBench.BridgeTools
 {
-    public sealed class JawaBenchTerrainTools
+    public sealed partial class JawaBenchTerrainTools
     {
         [Tool(
             "jawa/set_terrain",

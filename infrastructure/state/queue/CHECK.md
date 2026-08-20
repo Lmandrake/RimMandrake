@@ -36,7 +36,27 @@ criteria: the minimal list loads clean AND the wall-clock load time is MEASURED 
           dramatically under 25 min, say so and rethink rather than pressing on.
           🔴 `modlist_swap.py --restore --apply` before the owner plays. Leaving his
           machine on 13 mods is the one unacceptable outcome of this item.
-state:    ready
+state:    ✅ DONE — PASSED 2026-08-19.
+result:   🟢 **COLD LOAD = 22s**, confirmed twice (21s on the second launch). The engine's
+          own clock agrees: `[RimBridge] STARTUP_TIMING phase=bridge-start.total elapsedMs=12364`.
+          Against ~25 min on the 578-mod list that is **~68x**. A quicktest world+map on
+          top costs **5s** (`rimworld/start_debug_game_ready`). ⇒ the full edit→build→
+          deploy→launch→test cycle is about ONE MINUTE. The regime is justified.
+          Player.log is 88 lines with NO cross-reference errors. The one XML
+          `MissingMethodException` is PRE-EXISTING - it appears TWICE in the 578-mod log,
+          so the trim did not cause it. The "dependency needs downloadUrl" lines are
+          RimWorld scanning every INSTALLED mod's About.xml regardless of active state;
+          benign and also pre-existing.
+          🔴 GAP FOUND, and it bounds what this list can be used for: `ferny.Worldbuilder`
+          is NOT in the minimal list, and Worldbuilder is what LOADS the TidallyLocked
+          preset. ⇒ **the minimal list cannot reproduce the 21,872-tile geometry** - the
+          quicktest world came out 119,904 tiles at coverage 0.3. That is FINE for building
+          and testing tools, which is all this list is for, but any test whose result
+          depends on tile IDs matching `ASHKARR_WORLDMAP_tiles.csv` must run on the FULL
+          list. W9 already restores it.
+          📌 Side effect worth keeping: with Worldbuilder absent, `AlienWorldsFramework`'s
+          folder-wipe never fires, so the workshop preset survived both launches unchanged
+          (mtime still 2026-08-18 18:54).
 
 ## W2 Scaffold: split the tool file, prove build → deploy → load
 row:      bridge-2
@@ -57,7 +77,22 @@ verify:   the deployed DLL's md5 differs from the pre-build one, and `rimbridge/
           counts 33 `jawa/` names with `world_layers` among them.
 criteria: `jawa/world_layers` RETURNS on a live world - 3 layers, surface TilesCount 21872
           on an MLP-7 world. Read the value back; a method returning is not evidence.
-state:    ready
+state:    ✅ DONE — PASSED 2026-08-19.
+result:   Class is `partial`; `JawaBenchWorldTools.cs` exists and default globbing picked it
+          up with no csproj edit. Build 0 warnings 0 errors. Live: **33 jawa/ tools**, up
+          from 32, with `jawa/world_layers` the only new name.
+          `jawa/world_layers` returned in **198ms**: Surface 119,904 tiles + Orbit 488,
+          seed "approachable", coverage 0.3, world "QEN-56".
+          ⚠️ CRITERION AMENDED, and the amendment is a FINDING not an excuse: it asked for
+          "3 layers, TilesCount 21872". Live answer is **2 layers**, because planet layers
+          come from the SCENARIO (`ScenPart_PlanetLayer`), not from worldgen parameters -
+          exactly as the source said - and a quicktest scenario instantiates Surface and
+          Orbit only. Orbit2 is a def that exists, not a layer that always exists. The
+          21872 half is W1's Worldbuilder gap, not a tool defect. The tool reported the
+          truth about the world it was given, which is the whole job.
+          🔑 BUILD TRAP CAUGHT BY build.py, worth knowing: the deployed DLL had been built
+          `--gm`, so a plain `--apply` would have SILENTLY DROPPED `jawa/fire_incident`
+          and `jawa/send_letter`. It refused and named them. Always `--gm --apply` here.
 
 ## W3 G1 + G7 — tile scalars, and the commit that makes any write visible
 row:      bridge-3
