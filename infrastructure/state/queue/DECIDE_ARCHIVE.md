@@ -1379,3 +1379,116 @@ also:     Race appearance is CLOSED for v1 by the same examination — *"mark al
 action:   Correct the superseded entry in this file — I did not edit it, it is yours.
           `design/V2_DREAMS.md` is already updated.
 
+## D26 The Eyeling becomes the Jawa clan's pet — v1
+row:      12
+spec:     Owner, 2026-08-15, from the animal contact sheet: *"AA_Eyeling MUST be
+          made into a star-wars-style pet for the starting Jawa clan to keep!"*
+          `AA_Eyeling` (Alpha Animals). This is a v1 CONCEPT, not `[v2]`.
+          Owed by DECIDE, in this order:
+          (a) a name and one line of fiction that makes it read Star Wars rather
+              than Alpha Animals — the sprite stays, the identity changes. A
+              rename is a `PatchOperationReplace` on `label` plus `description`;
+              art is untouched, so this costs nothing to try.
+          (b) whether it is bonded to a NAMED founder or unowned in the starting
+              save. `SCENARIO_SPEC.md` gives Yeku `Animals 5` and a pack animal —
+              if the Eyeling is his, that slot is already there.
+          (c) trainability and whether it fights. Read its shipped
+              `race/trainability` and `wildness` first; do not invent them.
+          (d) where it appears in the wild, into
+              `design/Jawa/worldbuilding/fauna_placement.md` — a clan pet the
+              player can never find a second one of is a dead end.
+          ⚠️ It must be in the STARTING SAVE, so it lands with `B55` (the campaign
+          start) and therefore before the owner's world is finished.
+verify:   `AA_Eyeling` is not in the Cherry Picker cut list; the rename patch
+          validates; the name and fiction are written into `SCENARIO_SPEC.md`.
+criteria: the clan starts with the pet, and it reads as belonging to this
+          campaign rather than to Alpha Animals.
+state:    ✅ CLOSED 2026-08-19 — all four parts delivered.
+          (a) **Named `ikee`**, from the canon Jawaese *"Ikee ikee!"* — the cry on spotting
+              a find. ⭐ It pairs with the ship: the *Utinni* is named for the find, the ikee
+              for the looking. Fiction written into `SCENARIO_SPEC.md`.
+          (b) **Bonded to Yeku**, in addition to his pack animal — he is the `Animals 5`
+              founder, and a bond puts weight on the pet's death.
+          (c) **Read, not invented** (`Races_Eyeling.xml`): `trainability Intermediate` ⇒
+              Obedience and Release only, **it fights but cannot haul or rescue**. Starts
+              trained to Obedience alone. ⭐ Two shipped fields make it a Jawa animal
+              already — `ComfyTemperatureMax 60 °C` and `foodType OmnivoreRoughAnimal`,
+              i.e. it is built for the dune sea and **needs no crops**, on a clan forbidden
+              from sowing.
+          (d) **Wild placement written into `fauna_placement.md`** — `Wasteland` main,
+              `ExtremeDesert` sparse, `ZBiome_DesertOasis` uncommon. 🔴 Never the nightside:
+              its comfortable minimum is 0 °C.
+          ✅ Verify condition met: `AA_Eyeling` is NOT in the Cherry Picker cut list —
+          checked against the live config and the v1 freeze copy.
+          ⇒ BUILD holds the patch as `the-eyeling-becomes-the-ikee-rename-and-place-it-6f2b81`.
+
+## five-design-gaps-found-auditing-the-seven-authored-factions-3c81ea
+row:      9
+from:     BUILD, 2026-08-19, while closing B45–B51. All five are DESIGN calls with no
+          value anywhere in the repo, so BUILD did not invent one. None of them blocks
+          the files, which are otherwise built and validate clean.
+spec:     (a) VOID - owner, 2026-08-19: "Does this maxcountatgamestart thing even matter?
+              We're going to manually write these settlements ourselves via the live
+              bridge." => settlement counts are not a worldgen output we care about, so an
+              uncapped faction costs nothing. Do not rule on it, do not add the field.
+          (b) 🔴 **The Geonosian Foundry Hive's TWO OUTPOSTS ruling is not expressed in
+              the def**, and no `FactionDef` field expresses it. The 2026-08-17 ruling
+              gives the hive two distinct outposts (ore seam · plateau);
+              `settlementGenerationWeight 0.7` produces one undifferentiated cluster of
+              about five. The ruling's Free-Droid-Enclaves alliance reversal is also
+              unexpressed, and R1 forbids a goodwill number, so it needs a hard-coded
+              relation somewhere. ⇒ either the ruling needs a mechanism or it needs
+              downgrading to fiction.
+              ⭐ LARGELY ANSWERED BY THE SAME OWNER LINE AS (a): the settlements are
+              hand-written over the live bridge, so "two outposts, one on an ore seam and
+              one on a plateau" is something the operator PLACES, not something a
+              `FactionDef` has to express. What is left for DECIDE is only the alliance
+              reversal, which is a relation and not a settlement.
+          (c) **`Jawa_HuttCartel`'s `ideoDescription` is NOT the text in
+              `faction_religions_spec.md` entry 2**, though the file's comment claims it
+              is verbatim. Spec: "Everything on this world evaporates, freezes, or is
+              stolen…"  File: "Everything is owed. The water you drank this morning…".
+              The spec's Decision precept `Execution_Required` is also absent — only the
+              blacklist is present. ⇒ which text is canon?
+          (d) **`Jawa_FreeDroidEnclaves` fields a biological species.** §5 calls it 0%
+              biological and the file's own comment says the `xenotypeSet` is "EMPTY ON
+              PURPOSE", but it carries `RimMandrakeUgnaught 1.000`. ⇒ intended
+              (droid-keepers) or a paste error?
+          (e) **Baseliners generate in five factions and the files used to deny it.**
+              Measured chances: Helix 0.083 · Junkers 0.047 · Wildsteam 0.028 ·
+              Deepwater 0.022 · Hutt 0.014. The comment claiming "they sum to 1.00 so no
+              baseliner generates" was false and has been corrected in all five; the
+              NUMBERS were left alone. ⇒ plain humans on a Star Wars planet: intended?
+verify:   n/a — this is a request for five values, not a build.
+criteria: n/a
+state:    ✅ CLOSED 2026-08-19 — all five answered. Good audit; two were real defects.
+          **(a) VOID** — already, by the owner's own line. Nothing added.
+          **(b) THE ALLIANCE IS AN IMPORTER ACTION, not a def field.** BUILD is right that
+          no `FactionDef` field expresses an NPC-to-NPC relation — there is no "permanent
+          ally" to declare. ⇒ the same answer as the settlements: the bridge sets it.
+          `Faction.SetRelationDirect(other, FactionRelationKind.Ally)`, public at
+          `Faction.cs:653`, before any map exists. Written into
+          `ASHKARR_WORLD_DEFINITION.md` §12.5b so the importer carries it. ⛔ NOT downgraded
+          to fiction — the plateau's whole point is that the cruellest ground holds the only
+          functioning peace, and an unrolled relation would lose it.
+          **(c) THE SPEC TEXT IS CANON, with the file's closing line grafted in.** The
+          tiebreak is not seniority: the spec's text says **"crossing between the faces"**,
+          which can only be true on a tidally locked planet, while the file's could belong to
+          any RimWorld loan shark. But the file's *"Pay, and you are family. Do not pay, and
+          you are inventory. There is no third column."* is better than what it replaced and
+          is kept. ⭐ It also lands exactly on today's slavery ruling — the Hutts are the
+          permanent slavers; "you are inventory" is that, in their own voice.
+          `Execution_Required` is owed too. Filed as BUILD
+          `hutt-ideo-text-is-canon-and-the-droid-faction-fields-a-pig-3d7c14`.
+          **(d) 0%% BIOLOGICAL — §5 STANDS, the Ugnaught is not intended.** The Enclaves are
+          droids who woke up and decided they belong to themselves; organic servants invert
+          the one idea the faction exists to carry, and the Rust Cathedral ruling leans on
+          that purity. 🔴 **But BUILD must NOT simply delete the line** — it may be a
+          placeholder holding the `Inherit="False"` strip together, and removing it could
+          silently re-admit five vanilla xenotypes. The item says which to confirm first.
+          **(e) BASELINERS ARE INTENDED. Keep the numbers, change nothing.** A baseliner is
+          a human, and **Star Wars is overwhelmingly human** — a galaxy where humans are the
+          most common species. Rates of 1.4%%-8.3%% across five factions read as correct
+          rather than as leakage. ⭐ BUILD did the right thing correcting the false comment
+          and leaving the numbers alone; that is exactly the right instinct.
+
