@@ -2371,3 +2371,31 @@ criteria: on the world-creation page, the **tidally locked world** preset appear
           Configure Planet reads **Scale 7** and **Coverage 100%**. 🔴 If Scale reads 10,
           the preset lost its parameters — ABORT, do not generate.
 state:    ready
+
+## seven-jawa-factions-still-default-to-zero-at-worldgen-4a71c8
+row:      9
+from:     DECIDE, 2026-08-19. The ruling is four days old and was never carried out; this
+          item exists so it stops being a ruling and becomes a file on disk.
+spec:     Add `<requiredCountAtGameStart>1</requiredCountAtGameStart>` to these seven, in
+          `src/Jawa/Jawa_Patches/Defs/FactionDefs/`:
+            JawaHuttCartel.xml · JawaJunkers.xml · JawaDeepwaterCompact.xml
+            JawaGeonosianFoundryHive.xml · JawaWildsteamClan.xml
+            JawaAscendantHelix.xml · JawaFreeDroidEnclaves.xml
+          ⛔ **Do NOT touch `JawaTribes.xml`** — it already carries the field at 1 (max 2)
+          and is the only one that does. Measured 2026-08-19.
+          Ruling: `queue/DECIDE.md`, `seven-factions-have-no-required-count-9c4e17`, choice
+          (a), 2026-08-15. Reason: a world is generated ONCE, and a faction absent at
+          worldgen can never be added; relying on the operator ticking seven counters up by
+          hand on the Configure Factions screen is one distraction away from a campaign with
+          no Hutts in it.
+          🔑 **This is the BACKSTOP, not the primary mechanism, and build it anyway.** The
+          Worldbuilder preset prefills the same page from `factionCountsStrings` (15 `Jawa_*`
+          entries). The def field costs nothing, survives independently of the preset, and is
+          all that is left if the preset is lost — which is a live risk, see
+          `worldbuilder-preset-is-wiped-at-every-launch-not-just-on-steam-updates-6b1e4d`.
+          ⚠️ Deploy after editing — the repo copy is not what the game loads.
+verify:   `grep -c requiredCountAtGameStart src/Jawa/Jawa_Patches/Defs/FactionDefs/*.xml`
+          returns 8 files with one each; `validate_patch.py --defs` clean on all eight.
+criteria: on the Configure Factions page at the owner's worldgen run, all eight Jawa
+          factions arrive at a count of at least 1 without him touching a counter.
+state:    ready

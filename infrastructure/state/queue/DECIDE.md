@@ -1271,12 +1271,28 @@ spec:     🔴 **A scope call only DECIDE can make, and worldgen is the last cha
           later.** BUILD recommends (a) and can implement it in minutes, offline.
 verify:   —
 criteria: —
-state:    ✅ RULED (DECIDE, 2026-08-15) — **(a). Add `requiredCountAtGameStart 1` to all
-          seven.** A world is generated ONCE and a faction absent at worldgen can never
-          be added; relying on the operator ticking seven counters up by hand on the
-          Configure Factions screen is one distraction away from a campaign with no
-          Hutts in it. BUILD implements offline. `EXPECTED_FAILURES` §2 S7 already
-          corrected on disk.
+state:    ready — 🔴 **RULED 2026-08-15 AND NEVER IMPLEMENTED. Re-measured 2026-08-19.**
+          The ruling was (a): add `requiredCountAtGameStart 1` to all seven. Measured on
+          disk today across all 8 files in `src/Jawa/Jawa_Patches/Defs/FactionDefs/`:
+          **only `JawaTribes.xml` carries the field — and it is the one that already had
+          it.** Seven still default to 0. Filed to BUILD as
+          `seven-jawa-factions-still-default-to-zero-at-worldgen-4a71c8`.
+          A world is generated ONCE and a faction absent at worldgen can never be added.
+          ⭐ **BUT THE MEASUREMENT FOUND A SECOND, STRONGER MECHANISM, and it changes what
+          this item is.** The Worldbuilder preset carries an explicit faction roster —
+          `factionCountsStrings`, 27 entries, **15 of them ours**: Jawa_IndigenousTribes 3,
+          Jawa_WildsteamClan 2, Jawa_Junkers 2, Jawa_HuttCartel 2, Jawa_FreeDroidEnclaves 2,
+          Jawa_DeepwaterCompact 2, Jawa_GeonosianFoundryHive 1, Jawa_AscendantHelix 1.
+          ⇒ **The preset PREFILLS the Configure Factions page. That is the primary
+          mechanism and `requiredCountAtGameStart` is the backstop.** Both should be right:
+          the def field costs nothing, survives independently, and is the only one left if
+          the preset is ever lost.
+          🔴 **AND THE PRESET IS EXACTLY WHAT IS BEING LOST.** It is destroyed at every
+          launch where it currently sits (BUILD
+          `worldbuilder-preset-is-wiped-at-every-launch-not-just-on-steam-updates-6b1e4d`).
+          Losing it silently loses **the faction roster, MLP subcount 7 and coverage 1.0 —
+          all three at once.** That one file is now the most load-bearing artifact in the
+          campaign, and it lives in a directory another program deletes on startup.
 
 ## the-shipping-xenotype-drops-four-of-our-own-genes-7e31aa
 🔧 **FIXED ON DISK 2026-08-15 by BUILD — NOT YET CONFIRMED LIVE.** The repo copy had been
