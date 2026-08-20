@@ -47,6 +47,44 @@ Owner's ruled endpoints, interpolated on arc, minus a **5.5 °C/km** lapse:
 |---|---|---|---|---|---|---|---|
 | °C | +70 | +58 | +38 | **+14** | −22 | −58 | **−80** |
 
+## 2b. The mod agrees about the point, and disagrees about the terminator
+
+**`Alien Worlds - Tidally Locked`** (`7f.alienworlds.tidallylocked`, ACTIVE, requires
+`7f.alienworlds`) is **point-keyed, not latitude-keyed** — confirmed from its shipped
+C# source, `.../294100/3631364335/Source/PlanetTypeDef.cs`:
+
+```csharp
+var effectiveLat = Mathf.Acos(Mathf.Cos(pos.x*Deg2Rad) * Mathf.Cos(pos.y*Deg2Rad)) * Rad2Deg;
+return AvgTempByLatitudeCurve.Evaluate(effectiveLat / 90f);
+```
+
+That is great-circle distance from **(lat 0, lon 0)**. **Its substellar point and ours
+are the same point, computed the same way.** The measured −0.98 correlation in §1 is
+this formula, seen from the outside.
+
+🔑 **And the per-tile temperatures we paint SURVIVE.** `tileTemperature` is persisted
+world state — `<tileTemperatureDeflate>` sits in the save beside `tileBiomeDeflate` —
+not a value recomputed on demand. The mod's only base-temperature patch is on
+`WorldGenStep_Terrain.GenerateTileFor`, which runs **once, at order 0**. Its one runtime
+patch merely suppresses the day/night swing. Nothing overwrites us at play time.
+
+🔴 **But its curve is much colder than ours in the middle, and that is not cosmetic:**
+
+| | arc 0 | **arc 90 (terminator)** | arc 180 |
+|---|---|---|---|
+| the mod's `AvgTempByLatitudeCurve` | +70 | **−37** | −80 |
+| **§2, ours** | +70 | **+14** | −80 |
+
+Same endpoints, **51 °C apart at the terminator.** Ours is the one that can be right:
+the entire faction plan stands on a habitable terminator — the Homestead Defense League
+lives on *"the arable margin of the terminator"*, and thirteen of the 72 holdings are
+there. A −37 °C terminator deletes them.
+
+⇒ **The importer MUST overwrite `temperature` on every tile.** If it stamps biome and
+elevation but leaves temperature to the mod, the world will look right and be
+uninhabitable where the people are. This is exactly the kind of defect that passes every
+numeric check.
+
 ## 3. The gazetteer — every named place, in (arc, bearing)
 
 ### Water — 8.1% of the planet, three bodies
@@ -262,8 +300,8 @@ pictures of the CSV above.
 3. ~~`faction_world_spec.md` §4 is still written in latitude bands.~~ **CLOSED
    2026-08-19** — §4 now carries a SUPERSEDED banner with the latitude→arc
    substitution and the two statements in it that are outright false.
-4. Is the mod's `TidallyLocked` PlanetTypeDef keyed on latitude at runtime? If so it
-   disagrees with the measured point-lock and one of them has to move.
+4. ~~Is the mod's `TidallyLocked` PlanetTypeDef keyed on latitude at runtime?~~
+   **CLOSED 2026-08-19 — it is POINT-keyed, and it agrees with us.** See §2b.
 
 ---
 
@@ -451,20 +489,88 @@ Vanilla Expanded Framework, Fortified Features, GravTide) and sit above them.
    elevation and biome **together, in both directions**, or you get an `Ocean` tile that
    behaves like ground.
 
-### 12.6 What is NOT yet answered, and must be read off the DLL before writing
+### 12.6 The complete per-tile gap list
 
-- ⚠️ **Rivers and roads.** `SurfaceTile` carries nested `RiverLink` / `RoadLink` structs
-  (confirmed present in the assembly; field `riverDist` too), but **their exact fields
-  and the list names are UNVERIFIED.** The expected `{ RiverDef; PlanetTile neighbor; }`
-  shape written on *both* endpoints is inference. Decompile before writing.
-- ⚠️ **Neighbour-slot ordering is a known-unsolved problem in this repo** — an earlier
-  attempt scored 0.197 against a 0.161 random baseline, i.e. indistinguishable from
-  random. **Do not assume `_links.csv` ordering maps to engine neighbour indices.**
-- ⚠️ **Settlement placement** — `WorldObjectMaker.MakeWorldObject(WorldObjectDefOf.Settlement)`
-  then `SetFaction` / `Tile` / `Find.WorldObjects.Add` is the expected call and is
-  **unverified this session**. WorldEdit 2.0 does it at runtime, so the capability
-  certainly exists.
-- The CSV does **not** carry hilliness, swampiness, pollution, feature ids, landmarks or
-  mutators. Hilliness in particular is a real gap: the renderer derives it from local
-  relief, but the game wants the enum. Either the recipe starts writing it, or the
-  importer derives it — **and that derivation is then a design decision nobody has made.**
+Confirmed against the 1.6 assembly and the on-disk save schema, 2026-08-19. ⚠️ In 1.6
+the arrays no longer live on one flat `WorldGrid` — they live on a **`PlanetLayer`**,
+and only `Class="SurfaceLayer"` carries the real ones (the two `OrbitLayer`s carry
+`tileBiomeDeflate` and nothing else). A naive search for `tileBiomeDeflate` finds the
+orbit layers first.
+
+| per-tile state | in the bundle? | who supplies it |
+|---|---|---|
+| `tileBiome` · `tileElevation` · `tileTemperature` · `tileRainfall` | ✅ | authored |
+| **`tileHilliness`** (uint8 enum `Undefined 0, Flat 1, SmallHills 2, LargeHills 3, Mountainous 4, Impassable 5`) | ✅ **added 2026-08-19** | authored — see §12.7 |
+| **`tileSwampiness`** (byte/255 → 0.0–1.0) | ✅ **added 2026-08-19** | authored — see §12.7 |
+| `tilePollution` (uint16/65535) | ❌ | **zero everywhere.** Ruled: this planet's problem is heat and thirst, not toxin |
+| `tileFeature` (uint16 WorldFeature id, **65535 = none**) | ⚠️ names only | ⭐ **UNAUTHORED — the real remaining gap.** See below |
+| `tileRiverOrigins` / `…Adjacency` / `…Def` | ⚠️ `_links.csv` gives (a, b, def) | the **slot index** is supplied by the engine at import time |
+| `tileRoadOrigins` / `…Adjacency` / `…Def` | ⚠️ same | same |
+| `tileRiverDistances` (uint8, hops to nearest river) | ❌ | **derived** — a BFS from the river links. Cheap, but must be written |
+| `tileMutatorTiles` / `tileMutatorDefs` | ❌ | **let vanilla roll them** (§12.4). The old save carried ~1.4 per tile |
+| `World.landmarks` — `Dictionary<PlanetTile,Landmark>`, keys `"<tileId>,<layerId>"`, values `{def, name}` | ❌ | vanilla places them; we add a named few |
+
+🔑 **The neighbour-slot problem dissolves, and this is worth saying plainly.** An earlier
+attempt to reconstruct the engine's `GetTileNeighbors` ordering *offline* scored 0.197
+against a 0.161 random baseline — indistinguishable from random, and it was recorded as
+a blocker. **It is not one.** The importer runs **inside the game**, so it never has to
+reconstruct anything: for a link (a, b) it asks the engine for a's neighbours and takes
+the index of b. Each entry is one undirected edge **owned by the lower-index tile**
+(verified: origin < target on 1.000 of engine entries, reciprocity 0.000).
+RiverDefs `Creek/River/LargeRiver/HugeRiver`; RoadDefs `DirtPath/DirtRoad/StoneRoad/
+AncientAsphaltRoad/AncientAsphaltHighway`.
+
+⭐ **`tileFeature` is the one genuinely unauthored piece.** Our 24 region names exist only
+as CSV text. A `WorldFeature` is a *runtime object*, not a def:
+`{def (FeatureDef), uniqueID (int), name (string), drawCenter (Vector3 on the unit
+sphere, where the label is drawn), maxDrawSizeInTiles (float), layer}`. `FeatureDef`
+(25 ship) supplies `workerClass`, `minSize`/`maxSize`, `rootBiomes` and a `nameMaker`
+RulePack. So the recipe must emit, per region: a `FeatureDef` to borrow, a centroid, an
+angular extent — and the importer must build the records and the per-tile uint16 map.
+**Until it does, `WorldGenStep_Features` at order 1000 will name our 24 regions at
+random.** That is why §12.4 rules Features as ours to own.
+
+⚠️ Still unverified and worth one calibration pass: whether `tileFeature` stores the
+`uniqueID` or the list index (they coincide in the sample save), and the `tilePollution`
+/65535 scale — `worldmap.py` marks it HYPOTHESIS and `apply_world.py` calls it
+calibrated. **The two disagree; nobody has settled it.**
+
+Also still to be read off the DLL before writing:
+
+- ⚠️ `SurfaceTile`'s nested `RiverLink` / `RoadLink` struct **fields** and the list names.
+  Their existence is confirmed; their shape is inference.
+- ⚠️ **Settlement placement** —
+  `WorldObjectMaker.MakeWorldObject(WorldObjectDefOf.Settlement)` then `SetFaction` /
+  `Tile` / `Find.WorldObjects.Add` is expected and **unverified**. WorldEdit 2.0 does it
+  at runtime, so the capability certainly exists.
+
+### 12.7 Hilliness and swampiness — the rulings behind the two new columns
+
+Neither is a function of elevation in vanilla; `WorldGenStep_Terrain` rolls both from
+their own noise stacks. On a hand-authored planet they are ours, and **nothing
+recomputes them at load — unwritten, hilliness stays `Undefined`.**
+
+**Hilliness is LOCAL RELIEF, not height.** A 2 km plateau is flat to stand on; a 400 m
+escarpment is not. Calibrated against this planet: land relief runs p50 = 132,
+p80 = 231, p90 = 325, p95 = 439, so cuts at **110 / 210 / 380** give
+
+| Flat | SmallHills | LargeHills | Mountainous | Impassable |
+|---|---|---|---|---|
+| 36.4% | 37.6% | 19.3% | 6.5% | **0.2% (42 tiles)** |
+
+⭐ **The crags floor to SmallHills regardless of relief.** `AB_RockyCrags` is 26% of the
+planet and its relief p50 is only 140 — by relief alone, most of the broken country
+printed *Flat*. Biome sets a floor; relief only raises it.
+
+🔴 **Impassable exists in exactly one place: the Scald Spine crest, outside the Gate.**
+It makes the Spine expensive to cross and bends traffic toward the one breach.
+⚠️ **It does not seal the crater, and this file will not pretend it does** — the ring is
+broken, and manufacturing a contiguous wall would be inventing terrain to serve a
+sentence. Everywhere else Impassable is banned: this is a caravan game whose distances
+are the story, and stray impassable tiles just break routes.
+
+**Swampiness is a property of the green, and the green is a property of the rivers.**
+A table on biome, zero on everything else — mangrove 0.85, greater swamp 0.80,
+feralisk jungle 0.45, mycotic 0.40, poison forest 0.35, propane lakes 0.30, fungal 0.25,
+oasis 0.20, grassland 0.05. **The desert is 0.0 and the salt pans are 0.0.**
+Result: 5,010 tiles non-zero, planet mean 0.081.
