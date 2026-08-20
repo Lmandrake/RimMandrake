@@ -283,3 +283,111 @@ the IL was not.
 `get_PipeNetManager`, `<PipeNetManager>k__BackingField`. That is .NET `#Strings` heap
 **suffix compression**, not absence. Raw byte counts: `PipeNetManager` 4, `PipeNet` 14,
 `CompResource` 11. **Absent from `strings` is not absent from the assembly.**
+
+---
+
+## 5. ⭐ CAN LORDED PAWNS WALK A PATROL ROUTE? — owner's question, 2026-08-19
+
+**YES, BUT only by writing our own `LordJob`. Nothing shipped patrols a route.**
+Every piece exists; none of them is assembled that way in the base game.
+
+**What ships and is NOT what we want:**
+* `CompSentryDrone` (Odyssey) is the only thing actually named "patrol" — and it is **not
+  lord-driven at all.** It is a `ThingComp` doing a *random room-to-room walk*:
+  `GetNextPatrolDest()` picks a random cell in a random adjacent room, avoids
+  `lastPatrolDest`, 10% chance to backtrack. No waypoint list, no ordering. Its
+  `JobGiver_SentryPatrol` hard-checks `comp.Mode`, so it is useless without forcing the
+  comp onto the pawn's ThingDef.
+* Mechanoids reporting "Patrolling." are **cosmetic** — `JobGiver_WanderColony` with a
+  `<reportStringOverride>` in `Mechanoid.xml`.
+
+**`PawnDuty` has NO `List<IntVec3>`.** The ceiling is three focus slots — `focus`,
+`focusSecond`, `focusThird` — which `JobGiver_GotoTravelDestination` switches between via
+`destinationFocusIndex`. So a route cannot be expressed as a duty; it has to be expressed
+as a **graph of toils**.
+
+**The two facts that make it easy:**
+1. `LordToil_Travel.LordToilTick()` already fires `lord.ReceiveMemo("TravelArrived")` every
+   205 ticks once all pawns are within `AllArrivedCheckRadius` (virtual, 10f) and can reach.
+   `LordJob_TravelAndExit` is the shipped two-node example.
+   ⚠️ **`Trigger_PawnArrivedNearDestination` does not exist** — the mechanism is that memo,
+   caught by `new Trigger_Memo("TravelArrived")`.
+2. **`StateGraph` has no acyclic constraint.** `ErrorCheck()` only complains about
+   *unregistered* toils, never about cycles. **A ring of travel toils is legal.**
+
+```csharp
+public class LordJob_Patrol : LordJob {
+    private List<IntVec3> waypoints;            // ExposeData: Scribe_Collections.Look
+    public override StateGraph CreateGraph() {
+        var g = new StateGraph();
+        var toils = waypoints.Select(w => new LordToil_Travel(w)).ToList();
+        g.StartingToil = toils[0];
+        for (int i = 1; i < toils.Count; i++) g.AddToil(toils[i]);
+        for (int i = 0; i < toils.Count; i++)                     // ring: i -> (i+1) % N
+            g.AddTransition(new Transition(toils[i], toils[(i + 1) % toils.Count])
+                { triggers = { new Trigger_Memo("TravelArrived") } });
+        return g;
+    }
+}
+```
+
+**Three real gotchas:**
+1. **`LordToil_Travel` waits for the WHOLE GROUP** — all pawns within 10f and all reachable.
+   Fine for a solo guard; for a squad **one blocked pawn stalls the circuit forever**.
+   Override `AllArrivedCheckRadius` or put a `Trigger_TicksPassed` escape on each leg.
+2. **`DutyDefOf.TravelOrLeave` carries leave-the-map behaviour.** For a perimeter guard,
+   author our own `DutyDef` (XML: `ThinkNode_Priority` → `JobGiver_GotoTravelDestination`
+   + `JobGiver_WanderNearDutyLocation`) and override `LordToil_Travel.UpdateAllDuties()`,
+   **or the pawn walks off the map.**
+3. The ring's closing transition has different source and target, so `canMoveToSameState`
+   stays false. Only a single-waypoint "patrol" would need it true.
+
+⚠️ **UNCERTAIN — a cyclic StateGraph is untested in game.** The code path reads clean and
+nothing forbids it, but **no shipped `LordJob` contains a cycle**, so this is a hypothesis
+until a quicktest runs it. That test costs ~1 minute on the minimal list.
+
+📌 **Queued goto jobs are NOT a patrol.** `TryTakeOrderedJob(job, tag, requestQueueing:true)`
+does beat the lord duty — `ThinkNode_QueuedJob` sits at line 89 of `Humanlike.xml` and the
+`LordDuty` subtree at ~116 — but the queue **drains and never repeats**, and any
+interruption above line 89 (combat, needs, mental state) clears it. One-shot route, not a beat.
+
+📌 **A roaming beat with no fixed route is easier and IS shipped-adjacent:**
+`LordToil_VoidAwakeningWander.LordToilTick()` reassigns each pawn a fresh
+`PawnDuty(DutyDefOf.VoidAwakeningWander, newSpot)` every 1800 ticks within 50 cells. Copy
+that pattern for "wander this district", no custom graph needed.
+
+| tool | what it does | anchor | risk |
+|---|---|---|---|
+| `pawns_patrol_route` | ⭐ lord walks a closed circuit of waypoints | **our own `LordJob_Patrol`** + `Trigger_Memo("TravelArrived")` | med — needs the cycle proven |
+| `pawns_roam_district` | roaming beat, no fixed route, reassigned periodically | `LordToil` reassigning `PawnDuty` on a tick, per `VoidAwakeningWander` | low |
+| `lord_travel_to` | move a travelling lord's destination live | `LordToil_Travel.SetDestination` (public) | low |
+
+**Effort: LOW.** One `LordJob`, optionally one `DutyDef` in XML. No Harmony, no new Trigger
+class. This is the single highest-value custom class on the whole roster.
+
+---
+
+## 6. ALREADY BUILT — do not re-roster these
+
+**Roofs are DONE and more complete than they look.** `jawa/set_roof_batch` /
+`get_roof_batch` resolve **any** `RoofDef` by name through
+`DefDatabase<RoofDef>.GetNamedSilentFail` — not just the three named in the docstring — and
+the literal `None` / `Clear` removes a roof (open sky). Every cell is read back off
+`roofGrid` after writing and reported as `cellsFailedVerify`, so it cannot claim a success
+it did not get. Six RoofDefs live on the owner's stack:
+
+| def | thick? | natural? | |
+|---|---|---|---|
+| `RoofConstructed` | thin | no | player-built |
+| `RoofRockThin` | thin | yes | |
+| `RoofRockThick` | **THICK** | yes | drop-pod-proof; leaves `CollapsedRocks` |
+| `VoidmetalRoof` | **THICK** | yes | Anomaly |
+| `VGE_VacBarrierRoof` | thin | no | modded |
+| `BMT_RockRoofStable` | **THICK** | yes | modded |
+
+⚠️ `isThickRoof` lives under the `fields` sub-object in the def dump, not at top level —
+easy to read as absent and conclude the dump does not carry it. It does.
+
+Also already built: terrain painting, plants, thing spawning (incl. vehicles), destroy,
+damage, pawn spawn/style/xenotype/rotation, faction relations, quests, letters, incidents,
+and the whole 25-tool world surface.
