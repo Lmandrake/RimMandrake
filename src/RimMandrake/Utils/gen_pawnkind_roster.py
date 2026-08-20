@@ -113,6 +113,10 @@ R = [
 # combatPower FOLLOWS THE MONEY, per the roster's own instruction - a kind is dangerous
 # in proportion to what it is carrying. Anchored on vanilla: a Mercenary_Gunner is 90
 # at roughly 600 of gear, a Grunt-tier tribal 40 at nearly none.
+RESIST = {"Grunt": (8, 14), "Heavy": (12, 18), "Specialist": (14, 22), "Leader": (20, 30)}
+WILL   = {"Grunt": (1, 3),  "Heavy": (2, 4),   "Specialist": (2, 5),   "Leader": (4, 7)}
+
+
 def combat_power(wm, am, role):
     base = 35 + (wm + am) / 22.0
     return int(round(base * {"Grunt": 1.0, "Heavy": 1.15, "Specialist": 1.1, "Leader": 1.3}[role]))
@@ -134,7 +138,15 @@ def emit():
               # kind's name and a faction's look is edited in one place.
               "    <useFactionXenotypes>true</useFactionXenotypes>",
               "    <weaponMoney>%d~%d</weaponMoney>" % (wm, int(wm * 1.2)),
-              "    <apparelMoney>%d~%d</apparelMoney>" % (am, int(am * 1.2))]
+              "    <apparelMoney>%d~%d</apparelMoney>" % (am, int(am * 1.2)),
+              # 🔴 REQUIRED ON EVERY HUMANLIKE KIND. Omitting them is not fatal but the
+              # game logs `initial resistance range is undefined for humanlike pawn kind`
+              # and `initial will range is undefined` for EACH one, every load - measured
+              # 2026-08-20 as 108 red lines from this file alone. They are what recruiting
+              # and enslaving a captured pawn cost, so a kind without them is also
+              # meaningless to capture. Scaled by role: a leader is harder to turn.
+              "    <initialResistanceRange>%d~%d</initialResistanceRange>" % RESIST[role],
+              "    <initialWillRange>%d~%d</initialWillRange>" % WILL[role]]
         if wt:
             L.append("    <weaponTags>")
             L += ["      <li>%s</li>" % t for t in wt]

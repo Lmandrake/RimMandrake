@@ -5,12 +5,33 @@ Everything here was read out of a running game or off an artifact a running game
 
 ## The def dump
 
+🔴 **RATIFIED AS DEFINITIVE BY THE OWNER, 2026-08-20:** *"Please keep this thingdef dump
+as definitive until I say otherwise. I don't plan on adding new mods for some time now, so
+let's go with these dumps and do some real normalization and later v1 freezing."*
+
 - **Current dump: `C:\Users\Mandrake\AppData\LocalLow\Ludeon Studios\RimWorld by Ludeon Studios\DefDump`,
-  captured `2026-08-15T15:10:11Z` (08:10 local), `mode: all`, game `1.6.4871 rev591`.**
-  576 mods, 529 files under `defs/`, `animals.json` alongside. Taken during the C37
-  load, so it carries `mandrake.starwarsraces` and does NOT carry the three donors
-  (`btd.xenotyperemix.starwars`, `guy762.starwarsxenotypes`,
-  `neronix17.outerrim.galacticdiversity`).
+  captured `2026-08-20T08:06:19Z`, `mode: all`, game `1.6.4871 rev591`, **577 mods**.
+  `ThingDef 24,878 · PawnKindDef 1,735 · FactionDef 86`.
+- ✅ **FRESH ON BOTH AXES, which is the first time that has been true.** The dump holds 577
+  and `ModsConfig.xml` `activeMods` holds **577** — the same set, not a superset. That is
+  what makes it usable as a reference rather than as a hint, and it is the condition the
+  owner's ruling above depends on.
+- 🔑 **THE FINGERPRINT IS THE MOD SET, NOT THE CLOCK.** The pair to compare is dump
+  `modCount` against the count of `<activeMods>` children — never a file or folder mtime,
+  and never `grep -c '<li>'`, which also sweeps in the five `<knownExpansions>` entries and
+  reads five too high. `src/RimMandrake/Utils/weapon_tag_audit.py` refuses to report at all
+  when the two disagree; that refusal is the check working, not an obstacle.
+- ⇒ **Until the owner says otherwise, a def question is answered from THIS dump.** If a
+  mod is added or removed, the ruling lapses and the dump must be retaken — the set
+  changing is precisely what "otherwise" means.
+- ⚠️ **What the dump still cannot tell you** is unchanged and matters for the
+  normalization work: it is post-inheritance, post-PatchOperation and post-dedup, so it
+  describes what LOADED — but a `PatchOperationConditional` that matched nothing left no
+  trace in it or in the log, and 79 def types come through empty (see
+  `rimworld-def-dump-blind-spots`). Absent from the dump is not the same as absent from
+  the game.
+
+### History: the two-axis trap that produced this rule
 - 🔴 **FRESHNESS HAS TWO AXES AND THEY DISAGREE RIGHT NOW: fresh in TIME, stale in SET.**
   The dump holds **576** mods; `ModsConfig.xml` `activeMods` holds **575**. The single
   difference is `regrowth.botr.boilingforest`, deprecated at 11:58 — *after* the 08:10
