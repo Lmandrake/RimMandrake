@@ -546,6 +546,39 @@ Since NPCs cannot farm (three shipped walls), sustenance is PRESENT rather than 
 and it is visible, stealable and destroyable. Burn the granary and they leave — that is
 FATE:flee firing for a reason the player caused.
 
+━━━ 🔴 ROUND 4, 2026-08-19. Drift needs a reason, and the loop closes on the player ━━━
+
+**15. CROSS-FACTION DRIFT: POSSIBLE, RARE, AND IT MUST CARRY A STORY.** Owner: *"Drift
+between factions should be possible but rare and have a story... a reason. Enslavement.
+Escape from their old owner. A lost battle."*
+⇒ **A displaced person carries a REASON, and the reason is what licenses a faction change.**
+Drift is never random; it is narratively caused and the player can read the cause.
+
+| reason | may change faction? |
+|---|---|
+| **Enslaved** | ✅ yes — to the new owner's faction. Ties to `Slavery_Acceptable` and the Jawa-trader / Hutt-keeper split |
+| **Escaped an owner** | ✅ yes — to factionless, or to whoever shelters them |
+| **Lost a battle** | ✅ yes — absorbed by the victor |
+| **Sold by the player** | ✅ yes — to the buyer's cast. This is the owner's own sale mechanic |
+| **Fled a threat** | ⛔ no — stays in faction, resurfaces at another of its sites |
+| **Starved out** | ⛔ no — same |
+
+**16. ⭐⭐ THE LOOP CLOSES ON THE PLAYER — and this is the emotional keystone of the whole
+system.** Owner: *"I love the recruitment story... it makes beggars suddenly much more
+heartwrenching when they're the people you destroyed the livelihoods of recently."*
+⇒ **The displaced pool feeds THREE consumers, not one:**
+  1. **new casts** — the recurring-character effect (round 3)
+  2. ⭐ **BEGGARS AND REFUGEES AT THE PLAYER'S OWN COLONY.** `GiveQuest_Beggars`
+     ("beggars arrive") ships in this build. Draw its pawns from the displaced pool and
+     **the beggars at your gate are the people whose livelihood you burned down last
+     month.** The game already tells you their name and their history; it does not need to
+     tell you whose fault it is.
+  3. **recruitment** — you can hire out of the same pool. *"I burned down his refinery and
+     now he works for me"* is the most Star Wars sentence this system can produce.
+⇒ 🔑 **The design has no morality system, no karma meter and no reputation number for this,
+and it must not grow one.** The consequence is delivered entirely by RimWorld's existing
+name, backstory and memory systems plus the player's own recognition. That is why it works.
+
 ## execution-required-has-no-field-to-live-in-5e14b2
 row:      9
 from:     BUILD, 2026-08-19, bouncing half of `hutt-ideo-text-is-canon-...-3d7c14`.
