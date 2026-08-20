@@ -425,3 +425,35 @@ GM      weather_set · game_condition · fire_raid    #if JAWA_GM_TOOLS
 * ⚠️ **`Planetkiller` is hard-blocked** by the tool, and says why: it ends the game.
 * 📌 `weather_get` exposes what nothing else does — `threatPoints` (35 on a fresh colony)
   and the wealth split (total / items / buildings).
+
+## Six new companion tools, deployed and UNTESTED — CHECK, 2026-08-20 overnight
+
+Deployed and byte-verified while the game was down; **none has run in a live process.**
+The assembly carries **112 distinct `jawa/` tool names** against 106 live in the last
+session. Treat every one as a hypothesis until a load exercises it.
+
+| tool | what it answers |
+|---|---|
+| `jawa/faction_relations_get` | the pairwise faction matrix, BOTH directions, with an `asymmetric` list |
+| `jawa/faction_relations_set` | any pair including `Player`; writes both records and fires `Notify_RelationKindChanged` |
+| `jawa/pawnkind_audit` | which PawnKindDefs can never arm, split into noWeaponTags / emptyTagPool / cannotAfford |
+| `jawa/texture_audit` | every texPath that resolves to nothing, incl. per-lifeStage and FEMALE variants |
+| `jawa/world_settlements_import` | W9 stage 5; refuses the whole import if any faction is unresolvable |
+| `jawa/world_features_import` | W9 stage 7; the 23 named regions, from the tiles CSV's own `region` column |
+
+🔑 **`weaponMoney` is a CEILING, not a bracket.** `PawnWeaponGenerator.TryGenerateWeaponFor`
+keeps every pair whose `Price` is not greater than ONE roll of `weaponMoney.RandomInRange`.
+`min` never excludes a weapon; only `max` can empty the pool. And the comparison is
+`ThingStuffPair.Price`, which includes stuff — bare `MarketValue` understates it.
+
+🔑 **A texPath question cannot be settled from a shell.** Windows' filesystem is
+case-insensitive; RimWorld's content index is not. `GRimPinkBird` resolves from `ls` and
+fails in game. Only the running game can answer it — hence `texture_audit`.
+
+⚠️ **`world_lint` no longer counts `Lake` as sea-level water.** It did, and fired 312 times
+on the Ash'karr import — exactly once per authored lake. A lake at altitude is ordinary
+geography. Ocean and SeaIce still score; lakes are reported separately at zero weight.
+
+📌 **One command for a fresh load:** `python.exe src/RimMandrake/Utils/first_light.py`
+— tool census, arming audit, texture sweep, world identity, tile validate, lint. All reads,
+about a minute, writes `infrastructure/output/first_light_<date>.md`.
