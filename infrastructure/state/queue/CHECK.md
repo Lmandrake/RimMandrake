@@ -485,7 +485,23 @@ spec:     The map-side twin of W3. `world_commit` made world edits visible; noth
 verify:   paint substructure over a rect, read it back off `FoundationAt`, screenshot.
 criteria: substructure written and read back, AND visible after `map_commit`. Both halves,
           same standard as W3.
-state:    ready
+state:    ✅ DONE — PASSED 2026-08-19. Both halves.
+result:   SHIPPED: `map_commit` · `get_terrain_layers` · `set_substructure_batch` ·
+          `set_terrain_layer` (under / temp / color / removeTop).
+          ✅ FIVE LAYERS READ: top, under, foundation, temp and base all reported per cell.
+             The existing `get_terrain_batch` only ever saw `top`, so it could not tell a
+             floor laid over substructure from bare ground.
+          ✅ SUBSTRUCTURE: 100/100 cells laid, 0 refused; read back `foundation:
+             "Substructure", isSubstructure: true`; removed again cleanly back to 0.
+          ✅ **VISIBLE** — `observed/w3/m1_m4_grids.png` shows a 22x22 slab with the
+             panelled substructure texture sitting in open desert.
+          ✅ UNDER-TERRAIN: Sand written *beneath* Limestone_Rough - a layer the original
+             `set_terrain` cannot reach at all.
+          ✅ `map_commit`: all six steps green (regions enabled + rebuilt, path costs,
+             reachability, power-net flush, WholeMapChanged).
+          🔑 The `SetFoundation` guard earns its place: the engine ERRORS if the cell has
+             under-terrain, so the tool checks first and returns a reason per cell instead
+             of emitting red log lines.
 
 ## M2 Buildings — place, check, wipe, designate
 row:      bridge-11
@@ -536,7 +552,22 @@ spec:     TOOLS: `unfog_rect`/`unfog_all`/`refog_rect` · `set_snow`/`add_snow_r
 verify:   pile snow and sand, read depth back, screenshot.
 criteria: each grid written and read back; the two DLC-gated ones report their gate cleanly
           when the DLC is absent rather than erroring.
-state:    ready
+state:    🔵 MOSTLY DONE 2026-08-19. Fog, snow, sand and deep resource all PASS.
+          Gas, zones and areas are NOT built yet - item stays open on those three.
+result:   SHIPPED: `set_fog` (unfog / unfogAll / refog / floodUnfog) ·
+          `set_weather_buildup` (snow + sand, set / add / radial) · `set_deep_resource`.
+          ✅ FOG: `unfogAll` took the map from partly fogged to **0 fogged of 62,500**.
+             ⭐ This is the enabler for every map screenshot - a slab in unvisited
+             territory is invisible under fog however correctly it was written, and that
+             is exactly what defeated M1's first screenshot attempt.
+          ✅ SNOW: 400 cells to depth 0.9, read back 0.9.
+          ✅ SAND: 400 cells, succeeded - Odyssey is active so the gate did not fire.
+             ⚠️ The DLC-absent branch is therefore written but **NOT exercised**; it is a
+             claim, not a measurement, until something runs without Odyssey.
+          ✅ DEEP RESOURCE: 36 cells set to MineableGold 300, read back def and count.
+             This is how a map is given an ore body worldgen never placed.
+          📌 `sandGrid` is genuinely the twin of `snowGrid` - same SetDepth/AddDepth shape,
+             same radial helper. Dune piling costs nothing extra.
 
 ## C-V2 Park any v2 idea in design/V2_DREAMS.md yourself — no permission needed
 row:      doctrine
