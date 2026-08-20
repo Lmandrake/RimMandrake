@@ -3608,5 +3608,177 @@ namespace JawaBench.BridgeTools
             }, cancellationToken).ConfigureAwait(false);
         }
 
+        // ================================================================
+        //  jawa/world_features_import - W9 STAGE 7, the named regions
+        //
+        //  The source is the `region` column of the SAME tiles CSV the
+        //  biome import reads - 23 names over ~10,765 of 21,872 tiles on
+        //  Ash'karr, with the rest deliberately unnamed. No second file to
+        //  keep in step, which is the point.
+        //
+        //  🔑 TWO THINGS THAT ARE NOT OPTIONAL, both learned in W6:
+        //   1. `Find.WorldFeatures.textsCreated = false` is the commit step
+        //      FOR LABELS and is separate from draw-layer regeneration.
+        //      Without it the OLD text keeps drawing over the new regions.
+        //   2. Membership is a field on the tile (`tile.feature`), and
+        //      `WorldFeature.Tiles` is a full-grid scan. So every count and
+        //      every clear here is done in ONE pass over the grid, not once
+        //      per feature - 23 features x 21,872 tiles is a half-million
+        //      tile reads for a number nobody needed that precisely.
+        // ================================================================
+        [Tool(
+            "jawa/world_features_import",
+            Description =
+                "Create the authored named regions from the `region` column of the tiles CSV " +
+                "and assign every tile to its region. Blank region cells are left unnamed on " +
+                "purpose - an unnamed tile is a design choice, not a gap. Existing features " +
+                "are cleared first by default so the roster matches the file exactly rather " +
+                "than accumulating. Dry run by default.",
+            ResultDescription =
+                "created, tilesAssigned, and a per-region tile count READ BACK off the grid " +
+                "after the write. Run jawa/world_commit afterwards; label text is invalidated " +
+                "here via textsCreated, which world_commit does not do.")]
+        public static async Task<object> WorldFeaturesImport(
+            IRimBridgeContext ctx,
+            CancellationToken cancellationToken,
+            [ToolParameter(Description = "Absolute path to the tiles CSV (the one with a `region` column).")]
+            string path = null,
+            [ToolParameter(Description = "Write for real. Default false (dry run).", DefaultValue = false)]
+            bool apply = false,
+            [ToolParameter(Description =
+                "Refuse unless WorldGrid.TilesCount equals this. 0 = no check.", DefaultValue = 0)]
+            int expectTiles = 0,
+            [ToolParameter(Description =
+                "FeatureDef to create each region as. Default 'Region'.", DefaultValue = "Region")]
+            string featureDef = "Region",
+            [ToolParameter(Description =
+                "Delete every existing feature first so the roster matches the file exactly. " +
+                "On by default - leaving the generated regions in place gives a planet with " +
+                "two overlapping naming schemes.", DefaultValue = true)]
+            bool clearExisting = true)
+        {
+            return await ctx.MainThread.InvokeAsync<object>(() =>
+            {
+                var grid = Find.WorldGrid;
+                if (grid == null) return Fail("No WorldGrid. This needs a WORLD loaded.");
+                if (expectTiles > 0 && grid.TilesCount != expectTiles)
+                    return Fail("REFUSING: WorldGrid.TilesCount is " + grid.TilesCount + ", expected " +
+                                expectTiles + ".");
+                var wf = Find.World.features;
+                if (wf == null || wf.features == null) return Fail("No feature manager on this world.");
+
+                var fd = DefDatabase<FeatureDef>.GetNamedSilentFail((featureDef ?? "Region").Trim());
+                if (fd == null) return Fail("No FeatureDef '" + featureDef + "'.", DefSuggestions<FeatureDef>(featureDef));
+
+                string err; var csv = ReadTileCsv2(path, out err);
+                if (csv == null) return Fail(err);
+                if (!csv.Col.ContainsKey("region"))
+                    return Fail("CSV has no 'region' column. Header: " + string.Join(",", csv.Header.ToArray()));
+
+                // name -> tile ids, in one pass over the file.
+                var byName = new Dictionary<string, List<int>>(StringComparer.Ordinal);
+                int blank = 0, badTile = 0;
+                for (int r = 0; r < csv.Rows.Count; r++)
+                {
+                    var row = csv.Rows[r];
+                    int tile;
+                    if (!int.TryParse(Cell(csv, row, "tile"), out tile) || tile < 0 || tile >= grid.TilesCount)
+                    { badTile++; continue; }
+                    var nm = (Cell(csv, row, "region") ?? "").Trim();
+                    if (nm.Length == 0) { blank++; continue; }
+                    List<int> lst;
+                    if (!byName.TryGetValue(nm, out lst)) { lst = new List<int>(); byName[nm] = lst; }
+                    lst.Add(tile);
+                }
+
+                if (!apply)
+                    return new
+                    {
+                        success = true, dryRun = true,
+                        rows = csv.Rows.Count, regions = byName.Count,
+                        tilesNamed = byName.Values.Sum(q => q.Count),
+                        tilesLeftUnnamed = blank, unparseableTiles = badTile,
+                        existingFeatures = wf.features.Count,
+                        wouldDeleteExisting = clearExisting ? wf.features.Count : 0,
+                        preview = byName.OrderByDescending(q => q.Value.Count)
+                                        .Take(12).Select(q => new { region = q.Key, tiles = q.Value.Count }).ToList(),
+                        note = "DRY RUN - nothing was written. Pass apply=true.",
+                        ticksGame = TicksGameSafe(),
+                    };
+
+                int n = grid.TilesCount;
+                int removed = 0;
+                if (clearExisting)
+                {
+                    // Clear membership in ONE grid pass, then drop the features.
+                    for (int i = 0; i < n; i++) { var t = grid[i]; if (t != null) t.feature = null; }
+                    removed = wf.features.Count;
+                    wf.features.Clear();
+                }
+
+                var made = new Dictionary<string, WorldFeature>(StringComparer.Ordinal);
+                foreach (var kv in byName)
+                {
+                    var f = new WorldFeature(fd, grid.Surface);
+                    f.name = kv.Key;
+                    wf.features.Add(f);
+                    made[kv.Key] = f;
+                }
+
+                int assigned = 0;
+                foreach (var kv in byName)
+                {
+                    var f = made[kv.Key];
+                    foreach (var tile in kv.Value)
+                    {
+                        var t = grid[tile];
+                        if (t == null) continue;
+                        t.feature = f;
+                        assigned++;
+                    }
+                    // Centre the label on the region's own tiles, or every label
+                    // draws at the origin and the planet reads as one big blur.
+                    if (kv.Value.Count > 0)
+                    {
+                        var mid = kv.Value[kv.Value.Count / 2];
+                        f.drawCenter = grid.GetTileCenter(mid);
+                    }
+                }
+
+                // 🔴 The label commit. Separate from world_commit on purpose.
+                wf.textsCreated = false;
+
+                // Read back off the grid, one pass, not once per feature.
+                var counts = new Dictionary<int, int>();
+                for (int i = 0; i < n; i++)
+                {
+                    var t = grid[i];
+                    if (t == null || t.feature == null) continue;
+                    int id = t.feature.uniqueID;
+                    counts[id] = counts.ContainsKey(id) ? counts[id] + 1 : 1;
+                }
+                int liveNamed = counts.Values.Sum();
+
+                return new
+                {
+                    success = liveNamed == assigned && wf.features.Count == byName.Count,
+                    message = "created " + byName.Count + " region(s), removed " + removed +
+                              ", assigned " + assigned + " tile(s); grid reports " + liveNamed +
+                              " named tile(s) across " + wf.features.Count + " feature(s).",
+                    regionsCreated = byName.Count, featuresRemoved = removed,
+                    tilesAssigned = assigned, tilesNamedOnGrid = liveNamed,
+                    tilesLeftUnnamed = n - liveNamed,
+                    regions = wf.features.Select(q => new
+                    {
+                        id = q.uniqueID, name = q.name,
+                        tiles = counts.ContainsKey(q.uniqueID) ? counts[q.uniqueID] : 0,
+                    }).OrderByDescending(q => q.tiles).ToList(),
+                    note = "textsCreated was reset here, which is what rebuilds the DRAWN labels. " +
+                           "Still run jawa/world_commit for the draw layers themselves.",
+                    ticksGame = TicksGameSafe(),
+                };
+            }, cancellationToken).ConfigureAwait(false);
+        }
+
     }
 }
