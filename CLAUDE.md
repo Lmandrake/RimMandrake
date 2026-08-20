@@ -73,12 +73,25 @@ from design and discussion."*
 **`SendMessage` to another agent window is off.** Not rationed, not for emergencies —
 **off.** Waking another seat is a **USER function**, and the owner has taken it back.
 
-🔴 **Enforced, not merely written.** `.claude/settings.json` sets
-`crossSessionInbound: "refuse"`, and a `refuse` in project settings applies over every
-other source. **Every agent window in this repo now DROPS inbound peer messages without
-delivering them.** So a message you send is not "an interrupt they might forgive" — it
-is tokens spent on something the receiver will never see. There is no notice back to
-you when a message is refused on arrival, so **you will not even learn that it failed.**
+🔴 **Enforced, not merely written — but at the SENDING end.** `.claude/settings.json`
+runs `.claude/hooks/block_peer_messages.py` as a `PreToolUse` hook on `SendMessage`: a
+message whose target names a seat (BUILD · CHECK · DECIDE · REP · WORLD · BRIDGE ·
+CREATE · PROJECT) is refused before it is sent, with the queue files named in the
+refusal. `ListAgents` stays denied outright, so peers cannot be enumerated either.
+
+⚠️ **`crossSessionInbound` is `accept`, and that is DELIBERATE — do not "fix" it to
+`refuse`.** Corrected 2026-08-19 after three docs, this one included, claimed it read
+`refuse`. It never did, and it must not: the owner's `broadcast.py` reaches every window
+through that same inbound socket, which Claude Code runs through the same inbound
+controls as any other peer message. `refuse` would silence **the owner's own game-state
+announcements** — the one class of message that is supposed to get through.
+
+🔑 **Why a hook and not a deny rule.** `permissions.deny: ["SendMessage"]` was the old
+mechanism and it was too blunt: Claude Code's docs are explicit that *"denying
+SendMessage also removes messaging to subagents, since the same tool serves both"*, and
+there is no scoped syntax to separate them. It enforced "no peer messaging" by also
+breaking every subagent resume — a seat could spawn a worker and never collect from it.
+The owner ruled 2026-08-19: *"Sub-agents should function normally."*
 
 **The only thing that legitimately crosses windows is the owner announcing a change of
 GAME STATE** — *game is up* · *game is loading* · *WRAP is initiated* — and **the owner

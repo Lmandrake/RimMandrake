@@ -92,8 +92,10 @@ installed in Claude Code to be invocable — writing the folder does nothing.
 
 Owner's ruling, 2026-08-19: **`SendMessage` to another agent window is OFF.** Waking
 another seat is a **USER function**. Enforced, not just written —
-`.claude/settings.json` sets `crossSessionInbound: "refuse"`, so every window in this
-repo **drops** inbound peer messages and you are never told it failed. No exception for
+`.claude/settings.json` blocks it at the SENDING end, with the
+`.claude/hooks/block_peer_messages.py` PreToolUse hook — a `SendMessage` naming a seat is
+refused before it leaves. ⚠️ `crossSessionInbound` is **`accept`, on purpose**: inbound is
+how the owner's `broadcast.py` reaches you, and `refuse` would drop HIS announcements too. No exception for
 urgency, a reversed ruling, or a peer about to destroy work: **that goes to the OWNER,
 in your reply.** Everything else goes to `infrastructure/state/queue/<SEAT>.md` or
 `queue/HUMAN.md`. ✅ Your own subagents are not peers and are not covered — spawn and
