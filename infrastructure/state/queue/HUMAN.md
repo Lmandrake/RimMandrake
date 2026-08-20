@@ -501,3 +501,43 @@ and it is stage 2 of 7. If it still refuses, debug that before going further.
 
 **Still yours alone:** the Configure Factions hand-tick pass and the `ScenarioDef`, both of
 which gate a world you intend to keep. Nothing I can do moves either.
+
+---
+
+## BUILD, overnight 2026-08-20 — `Inhabited` is built, and it needs one decision from you
+
+**The whole of `Inhabited` that could be built without a running game is built, deployed
+and pushed.** Eight of the nine queue items are done or built; the ninth needs an answer
+that is yours.
+
+🔴 **ONE THING BLOCKS IT LOADING, and I deliberately did not do it: `mandrake.inhabited` is
+NOT in your `ModsConfig.xml`.** I deployed the mod folder — it is byte-verified in sync at
+`C:\Program Files (x86)\Steam\steamapps\common\RimWorld\Mods\Inhabited` — but enabling a
+mod changes your load set, and the 2026-08-20 ruling that **the def dump is definitive
+lapses the moment a mod is added or removed.** That is your call to make, not mine, and
+it interacts with the morning reload plan CHECK filed. Enable it in RimSort when you want
+to look at it.
+
+**What you would see once it is on**, all under dev mode → debug actions → category
+`Inhabited`:
+- `Spawn authored character` — a menu of all **269** people from the eleven cast files,
+  by faction and place. Pick one; they arrive with the authored name and exactly the
+  authored traits, and the log prints their `ageText` and their hook beside them.
+- `Create place at current tile` / `Stuff roster (3 pawns)` / `Report roster` — the
+  architecture soak. **This is the one test everything else rests on** and it is written
+  up as `ROSTER_SOAK_100_DAYS_1` in `queue/CHECK.md`.
+
+⚠️ **They will look wrong in the body and that is not a bug.** Xenotype, pawnKind, apparel
+and skills are the four fields the prose does not carry, so an Ugnaught comes out as a
+plain human in whatever the fallback wears. **Those four are the one open decision**, and
+DECIDE's `INHABITED_OPEN_QUESTIONS_1` has the shape of it: a review sheet, pre-filled by
+RACE rather than per person — there are far fewer distinct races than characters, so it is
+a couple of dozen calls, not 269.
+
+🔑 **Two things in the design were factually wrong and would have cost the whole feature
+had nobody read the engine.** A roster held off-map is NOT frozen by default — RimWorld
+ticks it, and the cast would have starved in a box between visits. And `Caravan`'s own
+storage mode is safe only because the world-pawn garbage collector has a hardcoded test
+for caravans that a mod cannot join; copied literally, every cast would have been collected
+between visits. Both are fixed, both are commented at the divergence, and §3.4 of the
+design doc has been corrected in place.
