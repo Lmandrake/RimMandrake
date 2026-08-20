@@ -2400,3 +2400,44 @@ criteria: on the Configure Factions page at the owner's worldgen run, all eight 
           factions arrive at a count of at least 1 without him touching a counter.
 state:    done 2026-08-19 — seven files edited, validated (8 files, 0 errors) and
           deployed. Live half filed to CHECK.md under the same name.
+
+## grimterra-worldmap-over-wme-as-the-base-layer-2c8f19
+row:      tooling
+from:     DECIDE, 2026-08-19, on the owner's ruling *"Use GrindTerra, close out."* plus
+          *"[ReGrowth worldmap textures] Agreed, need to do this. Deactivate."*
+spec:     ⚠️ **This is a mod-list change, so read `skills/rimworld-start-prep/SKILL.md`
+          first** — RimWorld, RimSort and Steam do not tell each other anything, and a
+          change made in the wrong order does not take.
+          (a) **ACTIVATE `GRimTerra.Worldmap`** — already subscribed at
+              `C:\Program Files (x86)\Steam\steamapps\workshop\content\294100\3546956014`.
+              No Steam subscribe needed. ⚠️ It is **GRimTerra**, not GRiNDTerra, and it is
+              NOT `grimterra.biomesmod` (3537211820), which is a different mod and already
+              active — do not confuse them.
+          (b) 🔴 **KEEP `zal.worldmapenhanced` ACTIVE, loaded EARLIER than GRimTerra.**
+              DECIDE ruling: WME is the base coat, GRimTerra is the top coat. RimWorld
+              resolves textures per file and the later mod wins per file, so GRimTerra's 40
+              PNGs win where it has an opinion and WME's 231 cover the rest. **Do not
+              deactivate WME** — GRimTerra covers only 76.1% of our authored planet, and
+              the 23.9% gap is Wasteland 7.8%, **Ocean 6.7%**, PoisonForest 2.9%,
+              ZBiome_DesertOasis 2.1%, Lake 1.4% and five smaller. Without WME those render
+              in VANILLA art, including every sea on the planet.
+          (c) **ORDER.** `GRimTerra.Worldmap` must load after `zylle.MoreVanillaBiomes`,
+              `sarg.alphabiomes`, `grimterra.biomesmod`, `regrowth.botr.core` **and**
+              `zal.worldmapenhanced`. Its two `<texture>` repoints (AridShrubland ->
+              `World/Biomes/AridShrubland1`, Tundra -> `Tundra1`) target the same two fields
+              ReGrowth's patch rewrites, and last patch applied wins.
+          (d) 🔴 **TURN OFF ReGrowth's `RG_WorldmapTextures`** — owner's explicit ruling.
+              It defaults **True** and repoints AridShrubland and Tundra to ReGrowth's own
+              art. AridShrubland is **9.1% of our planet**. ⚠️ **There is no config file to
+              edit** — it is a ModSettingsFramework option under category
+              `RG_RetexturesSettings`, has never been saved (no `RG_WorldmapTextures`
+              anywhere in `Config\`), so it exists only as an in-game toggle. **This one
+              needs the owner at the settings screen, or a bridge action.** Do not write a
+              file and assume it took.
+verify:   `ModsConfig.xml` lists `GRimTerra.Worldmap` and `zal.worldmapenhanced` both
+          active, with GRimTerra strictly later. Then confirm the ReGrowth setting reads
+          off at the settings screen.
+criteria: on the world map, ExtremeDesert / Desert / AridShrubland / AB_RockyCrags render
+          in GRimTerra's art, and Ocean / Wasteland / the oases still render in WME's
+          rather than vanilla's. Judged by LOOKING, per `the_one_map.md`.
+state:    ready

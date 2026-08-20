@@ -467,7 +467,40 @@ what the decision has to settle:
           defNames to the whitelist by default.
 
 ## D-TODO-WORLDMAP-ART  Compare GRiNDTerra vs World Map Enhanced by LOOKING
-state:    TODO — a taste call, and only the owner's eyes settle it.
+state:    ✅ CLOSED 2026-08-19 — **OWNER: *"Use GrindTerra, close out."*** Filed to BUILD
+          as `grimterra-worldmap-over-wme-as-the-base-layer-2c8f19`.
+🔴 **AND MY OWN ADVICE IN THIS ITEM WAS WRONG. Correcting it rather than quietly
+          dropping it, because the wrong half is the memorable half.** This item said
+          *"They CONFLICT — both ship a PNG at the same literal path, so running both
+          silently mixes two artists across one planet. **Never both.**"* ⛔ The conflict is
+          real; **"never both" does not follow, and it is the wrong call.**
+          The two are not competing full sets. Measured 2026-08-19:
+          · **GRimTerra World Map ships 40 PNGs. WME ships 231.** GRimTerra is a partial
+            set with a strong opinion; WME is broad coverage.
+          · Against OUR authored planet, GRimTerra covers **76.1%** of tiles and leaves
+            **23.9%** — and the gap is not obscure filler:
+              Wasteland 7.8% (the salt pans) · **Ocean 6.7% — every sea we have** ·
+              PoisonForest 2.9% · ZBiome_DesertOasis 2.1% (the Hutts' oases) · Lake 1.4% ·
+              BMT_FungalForest 1.1% · AB_MechanoidIntrusion 1.1% (the Rust Cathedral) ·
+              BMT_CrystalCaverns 0.6% · Volcano · LavaField.
+          ⇒ Removing WME does not give one artist. It gives **GRimTerra plus VANILLA**
+          across a quarter of the planet, including all the water — which is the most
+          eye-catching thing on a desert world's map.
+          ⭐ **RimWorld resolves textures PER FILE, last mod wins per file — which is a
+          LAYERING mechanism, not only a collision.** ⇒ **Load WME first as the base coat,
+          GRimTerra after it.** GRimTerra wins on all 40 it ships; WME covers the rest
+          instead of vanilla. That delivers the owner's ruling exactly — GRimTerra's art is
+          what he sees wherever GRimTerra has an opinion — without dropping the seas.
+          ⚠️ Two name corrections that will otherwise waste someone's time: the mod is
+          **GRimTerra**, not GRiNDTerra, and the world-map mod is `GRimTerra.Worldmap`
+          (3546956014, **not currently active**) — NOT `grimterra.biomesmod` (3537211820),
+          which is a different, already-active mod that adds biomes.
+          ✅ **The dependency worry that drove the old recommendation was FALSE.**
+          `GRimTerra.Worldmap` declares an **EMPTY `modDependencies`**, ships no assemblies,
+          and gates its Odyssey/AlphaBiomes folders with `IfModActive`. **A recipient of our
+          savegame needs nothing new.** The Odyssey+Biotech+VEF requirement belongs to the
+          sibling *Biomes* mod, which is already active anyway.
+          ⭐ The ReGrowth free win is confirmed and folded into the BUILD item.
 why it is open:
           Researched 2026-08-16: **nobody has ever compared them.** GRiNDTerra (3546956014)
           has 8 comments, none about appearance, 1,687 subs. World Map Enhanced
