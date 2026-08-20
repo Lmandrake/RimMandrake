@@ -225,7 +225,7 @@ terminator. 🔑 **Small story-critical zones fill first**, or they starve.
 | Geonosian Foundry Hive | `Jawa_GeonosianFoundryHive` | 5 | **two clusters**: the ore seams, and the plateau beside the Rust Cathedral |
 | Deepwater Compact | `Jawa_DeepwaterCompact` | 5 | the seas; **two on the Scald** despite the Empire |
 | Wildsteam Clan | `Jawa_WildsteamClan` | 4 | 2 on the Scald's jungles, 2 in the meridian's poison marsh |
-| Blackstar Company | `AM_EnemyPirate` | 4 | road junctions and ruins; they follow the money |
+| Blackstar Company | `Pirate` | 4 | road junctions and ruins; they follow the money |
 | Free Droid Enclaves | `Jawa_FreeDroidEnclaves` | 3 | volcanic springs, plus the ruled plateau seat beside the Cathedral |
 | Ascendant Helix | `Jawa_AscendantHelix` | 3 | the nightside edge — near the strange biomes, not near the people |
 | the Forgotten Arsenal | `Mechanoid` | 0 | hidden; no world-map site, which is the intent |

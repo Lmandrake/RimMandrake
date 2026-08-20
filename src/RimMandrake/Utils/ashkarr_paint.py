@@ -806,7 +806,7 @@ def temperature_curve(th, elev):
 # occupies in the source save's faction list
 FACTION_LABEL = {
     "Empire": "The Galactic Empire", "OutlanderCivil": "Homestead Defense League",
-    "TribeCivil": "Deep Desert Tribes", "AM_EnemyPirate": "Blackstar Company",
+    "TribeCivil": "Deep Desert Tribes", "Pirate": "Blackstar Company",
     "Jawa_HuttCartel": "Hutt Cartel", "Jawa_FreeDroidEnclaves": "Free Droid Enclaves",
     "Jawa_WildsteamClan": "Wildsteam Clan", "Jawa_DeepwaterCompact": "Deepwater Compact",
     "Jawa_GeonosianFoundryHive": "Geonosian Foundry Hive",

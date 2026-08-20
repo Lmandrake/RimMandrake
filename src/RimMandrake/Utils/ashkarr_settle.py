@@ -83,7 +83,7 @@ def PLAN(s):
         "cold, isolated research seats on the nightside edge, next to what is strange")
 
     # --- 4 Blackstar Company. "Everywhere; they follow the money."
-    add("AM_EnemyPirate", ["Blackstar Field", "The Contract Camp", "Toll Rock",
+    add("Pirate", ["Blackstar Field", "The Contract Camp", "Toll Rock",
                            "Hardpan Yard"],
         (A > 24) & (A < 96) & isB(("Desert", "ZBiome_Badlands", "AridShrubland",
                                    "Wasteland")),

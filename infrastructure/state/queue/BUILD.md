@@ -1230,4 +1230,17 @@ criteria: 🔴 **The owner opens Configure Factions and SEES a row reading `Blac
           `settlementGenerationWeight`. **A planet with 4 Blackstar holdings is therefore
           NOT evidence the faction generates.** Judge it on a world where the roster import
           has NOT run, or by reading the field.
-state:    ready
+🔑        SOURCE HALF DONE — REP, 2026-08-20, on the owner's "fix it ASAP" and "go as far
+          as you can yourself". **All four source files repointed to `Pirate`; zero
+          occurrences of `AM_EnemyPirate` remain in any of them.** 72 CSV rows preserved,
+          4 now `Pirate`/`Blackstar Company`, both python tools still compile.
+          ⛔ **BUILD: do NOT redo the find-and-replace.** What is left is not source work:
+            1. the LIVE world still carries the old faction — `world_settlements_import`
+               must be re-run for the planet to change. **That is bridge work and CHECK
+               holds the bridge.**
+            2. `world/*.rws` still contain `AM_EnemyPirate` **and should** — they are
+               generated worlds, re-imported from the CSV, not sources. Do not edit them.
+          ✅ Precondition verified before the edit, offline: the generated world already
+          contains `<def>Pirate</def>`, so the repointed import RESOLVES rather than
+          refusing the whole file the way an unresolvable faction would.
+state:    source repointed; live world pending a re-import (CHECK's bridge)
