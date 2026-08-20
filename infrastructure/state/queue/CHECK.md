@@ -248,7 +248,30 @@ verify:   add and remove a landmark on a known tile; confirm the rolled mutators
 criteria: mutators and landmarks both round-trip, AND the landmark-after-settlement
           rejection is OBSERVED rather than assumed - place a settlement, try to add a
           landmark on it, confirm the refusal.
-state:    ready
+state:    ✅ DONE — PASSED 2026-08-19, and the criterion's own premise turned out FALSE.
+result:   SHIPPED: `world_mutators_get` · `world_mutators_set` · `world_mutators_audit` ·
+          `world_landmarks_get` · `world_landmarks_set`.
+          ✅ MUTATORS round-trip: add `Caves` -> present, remove -> gone.
+          ✅ AUDIT works planet-wide: **37,401 of 119,904 tiles carry mutators**; histogram
+             tops out Mountain 7,303 · Coast 3,903 · Caves 3,758 · AB_AmbientRadiation 2,991.
+             Stale-Coast offenders on a VANILLA world: **0** - correct, and it calibrates the
+             instrument. Vanilla places Coast consistently; Ash'karr's 4,831 bad Coasts came
+             from repainting water AFTER Coast was placed, which is exactly what this finds.
+          ✅ LANDMARKS: 266 placed by worldgen, Odyssey active, real generated names
+             (Pond "Lousa Puddle", Chasm "Youpatidio Chasm", CoastalAtoll "Walium Atoll").
+             Add -> `Oasis` named "Hedgehogcheek Haven"; remove -> gone.
+          ✅ THE DOCUMENTED SIDE EFFECT IS REAL: AddLandmark rolled `AnimalLife_Increased`
+             onto the tile. Adding a landmark IS a mutator write, and the read-back shows it.
+          🔴 **THE CRITERION WAS WRONG AND THE TRUTH IS WORSE.** There IS no refusal.
+             On settlement tile 63540: `IsValidTile` **False**, `settlementAtOrAdjacent`
+             **True**, and `AddLandmark` **added the Oasis regardless**.
+             ⇒ `LandmarkDef.IsValidTile` is the GENERATOR's placement rule; nothing calls it
+             from the setter. The landmarks-before-settlements ordering is real but **ours to
+             enforce** - nothing stops us stacking them and there is no error when we do.
+             `world_landmarks_set` reports the verdict in `validity[]` and lets the caller
+             decide. `WORLDMAP_BRIDGE_SURFACE.md` §10 corrected.
+             📌 Recorded as PASSED rather than failed because the item's job was to find out
+             whether the rejection happens, and it did - the answer is just "no".
 
 ## W6 G4 + G5 — named regions, and the world objects that carry our 72 holdings
 row:      bridge-6
@@ -277,7 +300,26 @@ criteria: a region renamed and repositioned is VISIBLE on the world map, and a r
           settlement survives a save→load round trip with its faction intact. The
           save→load half is not optional - it is the only thing that proves the null-faction
           trap was avoided.
-state:    ready
+state:    🔵 HALF DONE 2026-08-19 — G5 (world objects) is SHIPPED AND PROVEN.
+          G4 (named regions / WorldFeatures) is NOT built yet, and the save→load round
+          trip is NOT run. Item stays open on those two.
+result:   SHIPPED: `world_objects_get` · `world_objects_set` · `world_objects_validate`.
+          ✅ READ: 113 world objects - 100 Settlement, 8 AsteroidBasic, 5 SpaceSettlement -
+             with faction histogram (Empire 19, PirateYttakin 18, OutlanderCivil 15...).
+          ✅ RE-SITE, THE §12 OVERWRITE ROUTE: moved settlement id 0 from tile 63540 to
+             63547 and renamed it, read back correct, then restored. Ids and the reference
+             graph untouched - no delete-and-remake.
+          ✅ VALIDATE found real faults on a VANILLA world: **3 settlements on water,
+             3 on impassable terrain**, 0 stacked, 0 bad tiles.
+          ✅ THE NULL-FACTION TRAP IS INSTRUMENTED: `objectsWithNoFaction` reported 8, and
+             the validator correctly scored `nullFactionSettlements: 0` - the 8 are
+             AsteroidBasic, which legitimately have none. Scoping it to Settlements is the
+             difference between a useful check and 8 false alarms every run.
+          ⚠️ HONEST LIMIT on the faction refusal test: I asked for `Jawa_HuttCartel` and it
+             was refused at the FIRST guard ("No FactionDef") because the 13-mod test list
+             does not have that def. The deeper branch - def exists but no such faction was
+             GENERATED in this world - is written but **not exercised**. Test it on the full
+             list, where the Jawa defs are present.
 
 ## W7 G6 — world info and layers
 row:      bridge-7

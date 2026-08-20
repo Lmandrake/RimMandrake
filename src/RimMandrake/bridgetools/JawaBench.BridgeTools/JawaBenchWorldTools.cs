@@ -1679,5 +1679,256 @@ namespace JawaBench.BridgeTools
             });
         }
 
+
+        // ================================================================
+        //  W6 - G5 WORLD OBJECTS (settlements and everything else on the globe)
+        //
+        //  Creation is TWO steps and the second is easy to forget:
+        //     var wo = WorldObjectMaker.MakeWorldObject(def);  // def, ID, PostMake
+        //     wo.Tile = tile; wo.SetFaction(f); ((Settlement)wo).Name = "...";
+        //     Find.WorldObjects.Add(wo);                       // placement
+        //
+        //  🔴 A Settlement whose faction is NULL on load is DESTROYED with a
+        //     warning. Our 72 holdings must each carry a live faction before
+        //     the owner saves, or they vanish on his next load and he will not
+        //     find out until then. world_objects_validate checks exactly this.
+        //  §12 rules these OVERWRITE: re-Tile what vanilla placed rather than
+        //  deleting and remaking, so ids and references stay intact.
+        // ================================================================
+
+        private static object WorldObjectRow(WorldObject o)
+        {
+            var st = o as Settlement;
+            return new
+            {
+                id = o.ID,
+                def = o.def != null ? o.def.defName : null,
+                label = o.Label,
+                tile = o.Tile.tileId,
+                layer = o.Tile.Layer != null && o.Tile.Layer.Def != null ? o.Tile.Layer.Def.defName : null,
+                faction = o.Faction != null ? o.Faction.def.defName : null,
+                factionName = o.Faction != null ? o.Faction.Name : null,
+                hasFaction = o.Faction != null,
+                isSettlement = st != null,
+                name = st != null ? st.Name : null,
+                namedByPlayer = st != null && st.namedByPlayer,
+                spawned = o.Spawned,
+            };
+        }
+
+        [Tool(
+            "jawa/world_objects_get",
+            Description =
+                "List the world objects on the planet - settlements, sites, caravans and the " +
+                "rest. Reports id, def, tile, faction and (for settlements) the name and " +
+                "whether the player named it. Filter by def, by faction, or by tile. " +
+                "Use onlyMissingFaction=true to find the ones that will be DESTROYED on the " +
+                "next load: a Settlement with a null faction does not survive Scribe.",
+            ResultDescription = "success, count, byDef{}, byFaction{}, objects[].")]
+        public static async Task<object> WorldObjectsGet(
+            IRimBridgeContext ctx,
+            CancellationToken cancellationToken,
+            [ToolParameter(Description = "Only this WorldObjectDef.")] string def = null,
+            [ToolParameter(Description = "Only this faction defName.")] string faction = null,
+            [ToolParameter(Description = "Only objects on these comma-separated tile ids.")] string tiles = null,
+            [ToolParameter(Description = "Only objects with a NULL faction - these die on load.")] bool onlyMissingFaction = false,
+            [ToolParameter(Description = "Max rows. Default 100.")] int limit = 100)
+        {
+            return await ctx.MainThread.InvokeAsync(() =>
+            {
+                if (Find.World == null || Find.WorldObjects == null) return Fail("No world is loaded.");
+
+                var want = new HashSet<int>();
+                if (!string.IsNullOrEmpty(tiles))
+                    foreach (var part in tiles.Split(',')) { int v; if (int.TryParse(part.Trim(), out v)) want.Add(v); }
+
+                var byDef = new Dictionary<string, int>();
+                var byFaction = new Dictionary<string, int>();
+                var outp = new List<object>(); int total = 0, missingFaction = 0;
+
+                foreach (var o in Find.WorldObjects.AllWorldObjects)
+                {
+                    if (o == null) continue;
+                    var dn = o.def != null ? o.def.defName : "(null)";
+                    var fn = o.Faction != null ? o.Faction.def.defName : "(none)";
+                    if (o.Faction == null) missingFaction++;
+
+                    if (!string.IsNullOrEmpty(def) && !dn.Equals(def, StringComparison.OrdinalIgnoreCase)) continue;
+                    if (!string.IsNullOrEmpty(faction) && !fn.Equals(faction, StringComparison.OrdinalIgnoreCase)) continue;
+                    if (want.Count > 0 && !want.Contains(o.Tile.tileId)) continue;
+                    if (onlyMissingFaction && o.Faction != null) continue;
+
+                    total++;
+                    int c;
+                    byDef.TryGetValue(dn, out c); byDef[dn] = c + 1;
+                    byFaction.TryGetValue(fn, out c); byFaction[fn] = c + 1;
+                    if (outp.Count < Math.Max(1, limit)) outp.Add(WorldObjectRow(o));
+                }
+
+                return (object)new
+                {
+                    success = true,
+                    count = total,
+                    returned = outp.Count,
+                    allObjectsOnPlanet = Find.WorldObjects.AllWorldObjects.Count,
+                    settlements = Find.WorldObjects.Settlements.Count,
+                    objectsWithNoFaction = missingFaction,
+                    factionWarning = missingFaction > 0
+                        ? "A Settlement with a null faction is DESTROYED on load. Fix before saving."
+                        : null,
+                    byDef = byDef.OrderByDescending(k => k.Value).ToDictionary(k => k.Key, k => k.Value),
+                    byFaction = byFaction.OrderByDescending(k => k.Value).ToDictionary(k => k.Key, k => k.Value),
+                    objects = outp,
+                    ticksGame = TicksGameSafe(),
+                };
+            });
+        }
+
+        [Tool(
+            "jawa/world_objects_set",
+            Description =
+                "Re-site, re-faction or rename EXISTING world objects, addressed by their " +
+                "object id. This is the OVERWRITE route §12 rules for our 72 holdings: move " +
+                "what vanilla already placed rather than deleting and remaking it, so ids and " +
+                "the reference graph stay intact. Any field left null is untouched. " +
+                "Setting a faction that does not exist is refused rather than nulling it.",
+            ResultDescription = "success, changed, objects[] read back.")]
+        public static async Task<object> WorldObjectsSet(
+            IRimBridgeContext ctx,
+            CancellationToken cancellationToken,
+            [ToolParameter(Description = "Comma-separated world object ids.")] string ids = null,
+            [ToolParameter(Description = "Move to this tile id. -1 leaves it.")] int tile = -1,
+            [ToolParameter(Description = "Faction defName to assign.")] string faction = null,
+            [ToolParameter(Description = "New name (settlements only).")] string name = null)
+        {
+            return await ctx.MainThread.InvokeAsync(() =>
+            {
+                if (Find.World == null || Find.WorldObjects == null) return Fail("No world is loaded.");
+
+                Faction fac = null;
+                if (!string.IsNullOrEmpty(faction))
+                {
+                    var fd = DefDatabase<FactionDef>.GetNamedSilentFail(faction.Trim());
+                    if (fd == null) return Fail("No FactionDef '" + faction + "'.", DefSuggestions<FactionDef>(faction));
+                    fac = Find.FactionManager.FirstFactionOfDef(fd);
+                    if (fac == null)
+                        return Fail("FactionDef '" + faction + "' exists but no such faction was generated in THIS world. " +
+                                    "Refusing rather than leaving the object factionless - a null-faction Settlement is destroyed on load.");
+                }
+
+                var want = new HashSet<int>();
+                foreach (var part in (ids ?? "").Split(',')) { int v; if (int.TryParse(part.Trim(), out v)) want.Add(v); }
+                if (want.Count == 0) return Fail("Give 'ids'.");
+
+                if (tile >= 0 && (Find.WorldGrid == null || tile >= Find.WorldGrid.TilesCount))
+                    return Fail("Tile " + tile + " out of range.");
+
+                int changed = 0; var back = new List<object>(); var errors = new List<string>();
+                foreach (var o in Find.WorldObjects.AllWorldObjects.ToList())
+                {
+                    if (o == null || !want.Contains(o.ID)) continue;
+                    try
+                    {
+                        if (tile >= 0) o.Tile = new PlanetTile(tile, Find.WorldGrid.Surface);
+                        if (fac != null) o.SetFaction(fac);
+                        if (name != null)
+                        {
+                            var st = o as Settlement;
+                            if (st != null) st.Name = name;
+                            else errors.Add("Object " + o.ID + " is not a Settlement; name ignored.");
+                        }
+                        changed++;
+                        back.Add(WorldObjectRow(o));
+                    }
+                    catch (Exception e) { errors.Add("Object " + o.ID + ": " + e.GetType().Name + ": " + e.Message); }
+                }
+
+                return (object)new
+                {
+                    success = true, changed, requested = want.Count, errors,
+                    note = "Call jawa/world_commit - FastTileFinder caches settlement tiles.",
+                    objects = back, ticksGame = TicksGameSafe(),
+                };
+            });
+        }
+
+        [Tool(
+            "jawa/world_objects_validate",
+            Description =
+                "Check every world object for the faults that only show up after a save/load: " +
+                "a NULL faction (a Settlement with one is destroyed by Scribe with a warning), " +
+                "an invalid or out-of-range tile, two settlements stacked on one tile, and " +
+                "settlements sitting on impassable or water-covered terrain. Read-only. " +
+                "Run this BEFORE the owner saves, because afterwards the objects are simply gone.",
+            ResultDescription = "success, nullFaction[], badTile[], stacked[], onWater[], onImpassable[].")]
+        public static async Task<object> WorldObjectsValidate(
+            IRimBridgeContext ctx,
+            CancellationToken cancellationToken,
+            [ToolParameter(Description = "Max examples per category. Default 15.")] int limit = 15)
+        {
+            return await ctx.MainThread.InvokeAsync(() =>
+            {
+                if (Find.World == null || Find.WorldObjects == null) return Fail("No world is loaded.");
+                var grid = Find.WorldGrid;
+                var nullFac = new List<object>(); var badTile = new List<object>();
+                var onWater = new List<object>(); var onImpass = new List<object>();
+                var stacked = new List<object>();
+                var perTile = new Dictionary<int, int>();
+                int nullFacN = 0, badTileN = 0, waterN = 0, impassN = 0;
+
+                foreach (var o in Find.WorldObjects.AllWorldObjects)
+                {
+                    if (o == null) continue;
+                    bool isSettlement = o is Settlement;
+
+                    if (o.Faction == null && o.def != null && o.def.canHaveFaction && isSettlement)
+                    {
+                        nullFacN++;
+                        if (nullFac.Count < limit) nullFac.Add(WorldObjectRow(o));
+                    }
+
+                    int tid = o.Tile.tileId;
+                    if (tid < 0 || grid == null || tid >= grid.TilesCount)
+                    {
+                        badTileN++;
+                        if (badTile.Count < limit) badTile.Add(WorldObjectRow(o));
+                        continue;
+                    }
+
+                    if (isSettlement)
+                    {
+                        int c; perTile.TryGetValue(tid, out c); perTile[tid] = c + 1;
+                        var t = grid[tid] as SurfaceTile;
+                        if (t != null)
+                        {
+                            if (t.WaterCovered) { waterN++; if (onWater.Count < limit) onWater.Add(WorldObjectRow(o)); }
+                            if (t.hilliness == Hilliness.Impassable || (t.PrimaryBiome != null && t.PrimaryBiome.impassable))
+                            { impassN++; if (onImpass.Count < limit) onImpass.Add(WorldObjectRow(o)); }
+                        }
+                    }
+                }
+
+                foreach (var kv in perTile)
+                    if (kv.Value > 1 && stacked.Count < limit)
+                        stacked.Add(new { tile = kv.Key, settlements = kv.Value });
+
+                return (object)new
+                {
+                    success = true,
+                    totalObjects = Find.WorldObjects.AllWorldObjects.Count,
+                    settlements = Find.WorldObjects.Settlements.Count,
+                    nullFactionSettlements = nullFacN,
+                    nullFactionNote = "A Settlement with a null faction is DESTROYED on load with a warning. This is the one fault that is invisible until it is too late.",
+                    badTileCount = badTileN,
+                    settlementsOnWater = waterN,
+                    settlementsOnImpassable = impassN,
+                    stackedTiles = stacked.Count,
+                    nullFaction = nullFac, badTile = badTile,
+                    onWater = onWater, onImpassable = onImpass, stacked,
+                    ticksGame = TicksGameSafe(),
+                };
+            });
+        }
+
     }
 }

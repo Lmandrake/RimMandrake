@@ -194,9 +194,17 @@ Rivers, Mutators, Landmarks, AncientSites, AncientRoads, Pollution, Factions, Ro
 
 ## 10. ORDERING CONSTRAINTS discovered in source
 
-1. **Landmarks before settlements.** `LandmarkDef.IsValidTile` rejects any tile that
-   already holds a settlement (also impassable biome/hilliness, an existing landmark,
-   and `TileMutatorDef.preventsLandmarks`).
+1. **Landmarks before settlements — but NOTHING ENFORCES IT.**
+   🔴 **CORRECTED 2026-08-19 by live measurement.** `LandmarkDef.IsValidTile` does reject a
+   tile holding a settlement (also impassable biome/hilliness, an existing landmark, and
+   `TileMutatorDef.preventsLandmarks`) — but **`WorldLandmarks.AddLandmark` never calls it.**
+   Measured: on settlement tile 63540, `IsValidTile` returned **False** with
+   `settlementAtOrAdjacent True`, and `AddLandmark` **added the Oasis anyway**.
+   ⇒ `IsValidTile` is the GENERATOR's placement rule, not a guard on the setter. The
+   ordering constraint is real but it is **ours to enforce**; nothing will stop us
+   stacking a landmark on a settlement, and there is no error when we do.
+   `jawa/world_landmarks_set` therefore reports the verdict in `validity[]` and leaves
+   the decision to the caller.
 2. **Biome before links.** `Roads`/`Rivers` are filtered by `PrimaryBiome.allowRoads` /
    `allowRivers`; painting a biome after laying a river can hide the river.
 3. **Rivers mouth-first**, so `riverDist` accumulates correctly.
