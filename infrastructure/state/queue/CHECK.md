@@ -1543,3 +1543,37 @@ criteria: `grep -c "Failed to find any textures at" <Player.log>` returns **0** 
           🔴 Gendered fields make this look intermittent — male Chagrians always rendered.
           Do not test one sex and call a species clean.
 state:    ready
+
+## neolithicmeleedecent-is-empty-so-every-tribal-spawns-bare-handed-9c02d5
+row:      unassigned
+from:     BUILD, 2026-08-19. This is C40(a)'s missing check — the workshop-wide scan that
+          timed out twice on 2026-08-15 and was abandoned. It has now run to completion and
+          the suspicion is PROVEN.
+spec:     `TribalWarriorBase` asks for `weaponTags: NeolithicMeleeDecent`.
+          🔴 **In our 578-mod load set, NOTHING carries that tag.**
+          Scanned every file under the workshop, then narrowed to weapon defs that really
+          carry the tag rather than merely naming it: **exactly two defs in the world do.**
+            `MeleeWeapon_Ikwa`   — vanilla Core, and it is in our **CUT** list
+            `MPW_Bladelink_Ikwa` — kept, but it belongs to `Arquebus.MedievalPersonaWeapons`
+                                   which is **NOT in the active list**, and it is a persona
+                                   weapon besides.
+          ⇒ the tag resolves to an empty set. **A pawnkind whose only weapon tag is empty
+          spawns bare-handed** — the same failure mode as B65's Autopistol.
+          ⚠️ **The blast radius is every kind inheriting `TribalWarriorBase`**, which
+          includes vanilla tribal warriors AND our Deep Desert Tribes water raid (B42 uses
+          `Tribal_Hunter` · `Tribal_Archer` · `Tribal_Warrior`). The signature raid of a
+          faction arrives with no weapons.
+          🔴 `weaponTags` IS INVISIBLE ON EVERY OFFLINE CHANNEL — absent from all 1,706
+          PawnKindDefs in the def dump, absent from ALL ThingDefs in it, and not returned
+          by `jawa/get_def`. **Raw mod XML is the only source**, which is why this took a
+          full-tree scan and why no dump-based check would ever have caught it.
+verify:   done offline: the scan output and the cut list. `MeleeWeapon_Ikwa` is present in
+          `observed/inventory/decisions_weapons.json` `cut`; `Arquebus.MedievalPersonaWeapons`
+          is absent from `ModsConfig.FULL.LATEST.xml`.
+criteria: spawn a `Tribal_Warrior` and a Deep Desert Tribes raid and look at their hands.
+          🔴 If they are armed, something supplies the tag that this scan did not see and
+          the finding is wrong — say so, because the fix below would then be unnecessary.
+          THE FIX IS A CONTENT CALL AND IS FILED TO DECIDE as
+          `the-tribal-melee-tag-is-empty-pick-the-weapon-4a72e8`: un-cut the ikwa, add the
+          tag to a kept neolithic melee weapon, or give our own kinds explicit weaponTags.
+state:    ready

@@ -613,3 +613,31 @@ spec:     `RimMandrake - Star Wars Races` ships **69** xenotypes. They break dow
 verify:   n/a — a ruling.
 criteria: n/a
 state:    ready
+
+## the-tribal-melee-tag-is-empty-pick-the-weapon-4a72e8
+row:      unassigned
+from:     BUILD, 2026-08-19, off the completed C40(a) scan. Measured, not suspected.
+spec:     `TribalWarriorBase` asks for `weaponTags: NeolithicMeleeDecent` and **nothing in
+          the 578-mod load set carries it.** Vanilla's `MeleeWeapon_Ikwa` is the only Core
+          weapon with the tag and it is in our CUT list; the one other def in the entire
+          workshop that carries it belongs to a mod we do not run. An empty weapon tag
+          spawns pawns bare-handed.
+          ⇒ every kind inheriting `TribalWarriorBase` is unarmed, including the Deep Desert
+          Tribes water raid — B42's signature raid, and the reason B42 exists.
+          THE CHOICES, all one line of XML:
+          (a) **Un-cut `MeleeWeapon_Ikwa`.** Smallest change, restores vanilla behaviour
+              everywhere at once, and the ikwa is a plausible desert-tribal weapon. ⚠️ it
+              was cut deliberately; this reverses that.
+          (b) **Add `NeolithicMeleeDecent` to a kept neolithic melee weapon** via a patch —
+              spear, club, mace, whatever survived. Keeps the cut and fills the tag. Needs
+              a pick, which is why this is here.
+          (c) **Give our own kinds explicit `weaponTags`** and leave vanilla tribals
+              unarmed. Narrowest blast radius, but it leaves a known-broken vanilla
+              inheritance in a campaign we are freezing.
+          🔑 Whichever is chosen, the same trap applies to B53's 48 pawn kinds, which are
+          about to be authored with `weaponTags`: **a tag is only real if a SURVIVING
+          weapon carries it.** BUILD is building the tag -> surviving-weapon index now and
+          will refuse to write a tag that resolves to nothing.
+verify:   n/a — a ruling.
+criteria: n/a
+state:    ready
