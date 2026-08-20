@@ -164,8 +164,8 @@ Nobody needs a live game to re-derive these; they need `ilspycmd`.
 
 ## Companion DLL and mod list — CHECK, 2026-08-19
 
-- ~~The companion is 32 `jawa/` tools~~ ⇒ **the companion is now 47 `jawa/` tools**, and
-  **15 of them WRITE the world**. See "The worldmap bridge" below. Verified live by
+- ~~The companion is 32 `jawa/` tools~~ ⇒ **the companion is now 57 `jawa/` tools** (32 in
+  `JawaBenchTerrainTools.cs` + **25 new world tools**), and 15 of them WRITE the world. See "The worldmap bridge" below. Verified live by
   `tools/list`, not by `strings`.
   ⚠️ The companion lives in `<gamedir>\BridgeTools\`, a **sibling of `Mods\`**, not inside it,
   and it is discovered by the RimBridgeServer MOD at startup — so `brrainz.rimbridgeserver`
@@ -191,7 +191,7 @@ Nobody needs a live game to re-derive these; they need `ilspycmd`.
   untouched, and `src/RimMandrake/Utils/rimbench/savemap.py` is kept whole — it refuses
   to overwrite its source and passes `fogGrid` through undecoded.
 
-## The worldmap bridge — CHECK, 2026-08-19. 15 new tools, all proven live
+## The worldmap bridge — CHECK, 2026-08-19. 25 new tools, all proven live
 
 Full element census and every API signature:
 `design/Jawa/worldbuilding/WORLDMAP_BRIDGE_SURFACE.md`. **Do not re-derive it.**
