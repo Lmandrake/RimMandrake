@@ -595,8 +595,7 @@ spec:     TOOLS: `unfog_rect`/`unfog_all`/`refog_rect` · `set_snow`/`add_snow_r
 verify:   pile snow and sand, read depth back, screenshot.
 criteria: each grid written and read back; the two DLC-gated ones report their gate cleanly
           when the DLC is absent rather than erroring.
-state:    🔵 MOSTLY DONE 2026-08-19. Fog, snow, sand and deep resource all PASS.
-          Gas, zones and areas are NOT built yet - item stays open on those three.
+state:    ✅ DONE — PASSED 2026-08-19. All six grids plus zones and areas.
 result:   SHIPPED: `set_fog` (unfog / unfogAll / refog / floodUnfog) ·
           `set_weather_buildup` (snow + sand, set / add / radial) · `set_deep_resource`.
           ✅ FOG: `unfogAll` took the map from partly fogged to **0 fogged of 62,500**.
@@ -611,6 +610,20 @@ result:   SHIPPED: `set_fog` (unfog / unfogAll / refog / floodUnfog) ·
              This is how a map is given an ore body worldgen never placed.
           📌 `sandGrid` is genuinely the twin of `snowGrid` - same SetDepth/AddDepth shape,
              same radial helper. Dune piling costs nothing extra.
+          ✅ GAS: 64 cells of ToxGas added and cleared. Four types:
+             BlindSmoke · ToxGas · RotStink · DeadlifeDust.
+          ✅ ZONES: stockpile created 36/36 cells, growing zone 25/25 with
+             `Plant_Potato` set, painted, deleted. `CheckContiguous()` runs after every
+             bulk `AddCell`.
+          ✅ AREAS: Home and NoRoof painted, `trueCount` following.
+             📌 The 1.6 name really is `Area_SnowOrSandClear`, renamed from `Area_SnowClear`.
+          🔴 **A FLAW IN MY OWN FIRST CUT, caught by testing and fixed.** The zone builder
+             wrapped `AddCell` in a bare `catch { }`. On one quicktest map a 6x6 stockpile
+             silently took only **11 of 36 cells** and reported success - the precise
+             anti-pattern this whole session has been documenting, written by me.
+             ⇒ it now reports `cellsRequested`, `refusedCount` and a `refusedCells[]` list
+             with the terrain of each, and says plainly when NOTHING changed. On a clean
+             rect it now reads 36 of 36, refused 0.
 
 ## P1 Pawn identity — name, title, backstory, traits, skills, appearance
 row:      bridge-14

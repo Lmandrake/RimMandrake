@@ -1176,5 +1176,219 @@ namespace JawaBench.BridgeTools
             });
         }
 
+
+        // ================================================================
+        //  M4 remainder - GAS, ZONES, AREAS
+        // ================================================================
+        [Tool(
+            "jawa/set_gas",
+            Description =
+                "Add or clear gas on map cells - tox, smoke, rot stink, deadlife dust. " +
+                "action='add' | 'clear'. Density is 0-255 per cell. " +
+                "Gas is what makes a room read as poisoned or burning without setting " +
+                "anything on fire.",
+            ResultDescription = "success, cellsChanged, and the gas type used.")]
+        public static async Task<object> SetGas(
+            IRimBridgeContext ctx,
+            CancellationToken cancellationToken,
+            [ToolParameter(Description = "'add' | 'clear'.")] string action = "add",
+            [ToolParameter(Description = "Rect 'x,z,w,h'.")] string rect = null,
+            [ToolParameter(Description = "ToxGas | BlindSmoke | RotStink | DeadlifeDust.")] string gasType = "ToxGas",
+            [ToolParameter(Description = "Density 1-255.")] int density = 255)
+        {
+            return await ctx.MainThread.InvokeAsync(() =>
+            {
+                string err; var map = MapOrNull(out err);
+                if (map == null) return Fail(err);
+                CellRect r;
+                if (!TryRect(rect, map, out r, out err)) return Fail(err);
+
+                GasType gt;
+                try { gt = (GasType)Enum.Parse(typeof(GasType), (gasType ?? "").Trim(), true); }
+                catch { return Fail("Bad gasType '" + gasType + "'. Valid: " + string.Join(", ", Enum.GetNames(typeof(GasType)))); }
+
+                bool add = string.Equals(action, "add", StringComparison.OrdinalIgnoreCase);
+                bool clr = string.Equals(action, "clear", StringComparison.OrdinalIgnoreCase);
+                if (!add && !clr) return Fail("action must be add|clear.");
+
+                int changed = 0;
+                foreach (var c in r)
+                {
+                    try
+                    {
+                        if (add) { map.gasGrid.AddGas(c, gt, Math.Max(1, Math.Min(255, density))); changed++; }
+                        else { map.gasGrid.ClearCellUnsafe(c); changed++; }
+                    }
+                    catch (Exception e) { return Fail("Gas op failed at " + c + ": " + e.GetType().Name + ": " + e.Message); }
+                }
+
+                return (object)new
+                {
+                    success = true, action, gasType = gt.ToString(), cellsChanged = changed,
+                    validGasTypes = Enum.GetNames(typeof(GasType)),
+                    ticksGame = TicksGameSafe(),
+                };
+            });
+        }
+
+        [Tool(
+            "jawa/map_zones",
+            Description =
+                "Create, paint or delete STOCKPILE and GROWING zones, and paint the player " +
+                "AREAS (home, no-roof, build-roof, allowed). " +
+                "action='listZones' | 'createZone' | 'paintZone' | 'deleteZone' | " +
+                "'listAreas' | 'paintArea'. " +
+                "⚠️ Bulk AddCell needs CheckContiguous() afterwards or a zone can end up " +
+                "internally inconsistent - this tool calls it. " +
+                "📌 The 1.6 name is Area_SnowOrSandClear, renamed from Area_SnowClear.",
+            ResultDescription = "success, zones[] or areas[] with cell counts.")]
+        public static async Task<object> MapZones(
+            IRimBridgeContext ctx,
+            CancellationToken cancellationToken,
+            [ToolParameter(Description = "'listZones'|'createZone'|'paintZone'|'deleteZone'|'listAreas'|'paintArea'.")] string action = "listZones",
+            [ToolParameter(Description = "'stockpile' or 'growing' for createZone.")] string zoneType = "stockpile",
+            [ToolParameter(Description = "Zone label for paint/delete.")] string zone = null,
+            [ToolParameter(Description = "Rect 'x,z,w,h'.")] string rect = null,
+            [ToolParameter(Description = "Area name for paintArea: Home | NoRoof | BuildRoof | SnowOrSandClear.")] string area = null,
+            [ToolParameter(Description = "For paintArea/paintZone: true adds, false removes.")] bool value = true,
+            [ToolParameter(Description = "Plant def for a growing zone.")] string plant = null)
+        {
+            return await ctx.MainThread.InvokeAsync(() =>
+            {
+                string err; var map = MapOrNull(out err);
+                if (map == null) return Fail(err);
+                string A = (action ?? "listZones").Trim();
+                var zm = map.zoneManager; var am = map.areaManager;
+                var notes = new List<string>();
+
+                Func<object> zoneList = () => zm.AllZones.Select(z => new
+                {
+                    label = z.label, type = z.GetType().Name, cells = z.Cells.Count,
+                }).ToList();
+
+                if (A.Equals("listZones", StringComparison.OrdinalIgnoreCase))
+                    return (object)new { success = true, action = A, zones = zoneList(), ticksGame = TicksGameSafe() };
+
+                if (A.Equals("listAreas", StringComparison.OrdinalIgnoreCase))
+                    return (object)new
+                    {
+                        success = true, action = A,
+                        areas = am.AllAreas.Select(a => new { label = a.Label, type = a.GetType().Name, trueCount = a.TrueCount }).ToList(),
+                        ticksGame = TicksGameSafe(),
+                    };
+
+                if (A.Equals("createZone", StringComparison.OrdinalIgnoreCase))
+                {
+                    CellRect r;
+                    if (!TryRect(rect, map, out r, out err)) return Fail(err);
+                    Zone z;
+                    if (zoneType.Equals("growing", StringComparison.OrdinalIgnoreCase))
+                    {
+                        var gz = new Zone_Growing(zm);
+                        if (!string.IsNullOrEmpty(plant))
+                        {
+                            var pd = DefDatabase<ThingDef>.GetNamedSilentFail(plant.Trim());
+                            if (pd == null) return Fail("No plant ThingDef '" + plant + "'.", DefSuggestions<ThingDef>(plant));
+                            try { gz.SetPlantDefToGrow(pd); notes.Add("plant set to " + pd.defName); }
+                            catch (Exception e) { notes.Add("SetPlantDefToGrow failed: " + e.Message); }
+                        }
+                        z = gz;
+                    }
+                    else z = new Zone_Stockpile(StorageSettingsPreset.DefaultStockpile, zm);
+
+                    zm.RegisterZone(z);
+                    // Report refusals rather than swallowing them: a cell can be refused
+                    // for impassable terrain, an existing zone, or a blocking edifice, and
+                    // a silently short zone is exactly the kind of failure that reads as
+                    // success. Measured: a 6x6 stockpile took only 11 of 36 cells.
+                    var refusedCells = new List<object>();
+                    foreach (var c in r)
+                    {
+                        try { z.AddCell(c); }
+                        catch (Exception ex)
+                        {
+                            if (refusedCells.Count < 12)
+                                refusedCells.Add(new { x = c.x, z = c.z, why = ex.Message, terrain = c.GetTerrain(map) != null ? c.GetTerrain(map).defName : null });
+                        }
+                    }
+                    try { z.CheckContiguous(); notes.Add("CheckContiguous run after bulk AddCell"); } catch { }
+                    int wanted1 = r.Area;
+                    if (z.Cells.Count < wanted1)
+                        notes.Add("ONLY " + z.Cells.Count + " of " + wanted1 + " cells were accepted - see refusedCells");
+                    return (object)new
+                    {
+                        success = true, action = A, created = z.label,
+                        cells = z.Cells.Count, cellsRequested = wanted1,
+                        refusedCount = wanted1 - z.Cells.Count, refusedCells,
+                        notes, zones = zoneList(), ticksGame = TicksGameSafe()
+                    };
+                }
+
+                if (A.Equals("paintZone", StringComparison.OrdinalIgnoreCase) || A.Equals("deleteZone", StringComparison.OrdinalIgnoreCase))
+                {
+                    if (string.IsNullOrEmpty(zone)) return Fail("Give a zone label.");
+                    var z = zm.AllZones.FirstOrDefault(x => string.Equals(x.label, zone.Trim(), StringComparison.OrdinalIgnoreCase));
+                    if (z == null) return Fail("No zone labelled '" + zone + "'. Have: " +
+                        string.Join(", ", zm.AllZones.Select(x => x.label).ToArray()));
+
+                    if (A.Equals("deleteZone", StringComparison.OrdinalIgnoreCase))
+                    {
+                        z.Delete(false);
+                        return (object)new { success = true, action = A, deleted = zone, zones = zoneList(), ticksGame = TicksGameSafe() };
+                    }
+
+                    CellRect r;
+                    if (!TryRect(rect, map, out r, out err)) return Fail(err);
+                    int n = 0, before2 = z.Cells.Count;
+                    var refused2 = new List<object>();
+                    foreach (var c in r)
+                    {
+                        try { if (value) z.AddCell(c); else z.RemoveCell(c); n++; }
+                        catch (Exception ex)
+                        {
+                            if (refused2.Count < 12)
+                                refused2.Add(new { x = c.x, z = c.z, why = ex.Message, terrain = c.GetTerrain(map) != null ? c.GetTerrain(map).defName : null });
+                        }
+                    }
+                    try { z.CheckContiguous(); } catch { }
+                    return (object)new
+                    {
+                        success = true, action = A, zone = z.label,
+                        cellsAttempted = r.Area, cellsAccepted = n,
+                        zoneCellsBefore = before2, zoneCellsAfter = z.Cells.Count,
+                        refusedCount = refused2.Count, refusedCells = refused2,
+                        note = z.Cells.Count == before2 && r.Area > 0
+                            ? "NOTHING CHANGED - every cell was refused. Stockpile zones reject impassable terrain, cells already zoned, and blocking edifices."
+                            : null,
+                        zones = zoneList(), ticksGame = TicksGameSafe()
+                    };
+                }
+
+                if (A.Equals("paintArea", StringComparison.OrdinalIgnoreCase))
+                {
+                    CellRect r;
+                    if (!TryRect(rect, map, out r, out err)) return Fail(err);
+                    Area target = null;
+                    var an = (area ?? "Home").Trim();
+                    if (an.Equals("Home", StringComparison.OrdinalIgnoreCase)) target = am.Home;
+                    else if (an.Equals("NoRoof", StringComparison.OrdinalIgnoreCase)) target = am.NoRoof;
+                    else if (an.Equals("BuildRoof", StringComparison.OrdinalIgnoreCase)) target = am.BuildRoof;
+                    else target = am.AllAreas.FirstOrDefault(a => string.Equals(a.Label, an, StringComparison.OrdinalIgnoreCase));
+                    if (target == null) return Fail("No area '" + an + "'. Have: " +
+                        string.Join(", ", am.AllAreas.Select(a => (string)a.Label).ToArray()));
+
+                    int n = 0;
+                    foreach (var c in r) { target[c] = value; n++; }
+                    return (object)new
+                    {
+                        success = true, action = A, area = target.Label, cellsTouched = n,
+                        trueCount = target.TrueCount, ticksGame = TicksGameSafe(),
+                    };
+                }
+
+                return Fail("action must be listZones|createZone|paintZone|deleteZone|listAreas|paintArea.");
+            });
+        }
+
     }
 }
