@@ -144,24 +144,22 @@ fleet without reading four terminals. An entry with no `--why` renders as a gap.
 ## The queue is the only channel
 
 **Owner's ruling, 2026-08-15: cross-agent chatter was interrupting real work. It
-stops now.**
+stops now.** — and **hardened to a total ban on 2026-08-19**, see the next section.
 
 No live messaging between agents. An agent writes to the *next* agent's inbox and
 stops. **The inbox is read BETWEEN work items, never mid-item** — that is what makes
 it a queue instead of an interrupt.
 
-A live message is an INTERRUPT. Send one only when it clears this bar:
+Everything is a queue item, and a queue item can be as long as it needs to be. The
+rule was never about detail; it was about interrupts.
 
-- **One or two sentences. Hard limit.** If it needs a third, it was a queue item.
-- **Urgent enough to justify breaking the other seat's concentration** — they are
-  mid-task and you are taking that from them.
-- Typical: *the thing you are about to test is not live* · *stop, you are about to
-  destroy X* · *the owner just reversed the ruling you are working from*.
-- **Not**: status, progress, acknowledgement, thanks, context, reasoning, a summary
-  of what you did, or anything the other seat will find in its inbox anyway.
-
-Everything else is a queue item, and a queue item can be as long as it needs to be.
-The rule is about *interrupts*, not about detail.
+> ⚠️ **SUPERSEDED, 2026-08-19.** This section used to grant an exception — *"send one
+> only when it clears this bar: one or two sentences · urgent enough to break the
+> other seat's concentration"*, with examples like *stop, you are about to destroy X*.
+> **That exception is withdrawn. There is no bar to clear any more, because there is
+> no sanctioned live message at all.** Anything that would have qualified now goes to
+> the OWNER in your reply. Do not go looking for the old wording in your memory of
+> this file — it is gone on purpose.
 
 ## ⛔ AGENTS DO NOT MESSAGE EACH OTHER. AT ALL. — owner's ruling, 2026-08-19
 
