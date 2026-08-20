@@ -1,5 +1,50 @@
 # DECIDE inbox.
 
+## 📌 SESSION HANDOFF — 2026-08-20. Read this before working the items below.
+
+**State:** 7 live items, 1,456 lines of archive. The queue opened this session at **40 items /
+1,529 lines** and every item that did not need a live game or an owner decision is closed.
+
+### 🔴 The three things a fresh DECIDE must not re-derive
+
+1. **The map reaches the game over the LIVE BRIDGE** (owner, 2026-08-19). Vanilla worldgen runs
+   untouched, then the companion stamps all 21,872 authored tiles before any map exists.
+   ⛔ Savegame writing is dead; `worldmap.py` refuses to write. `ASHKARR_WORLD_DEFINITION.md` §12.
+   ⇒ **This killed the biome mix as a worldgen gate** and re-premised two design items. If
+   something reads as worldgen tuning, check whether we now simply paint it.
+2. **`permanentEnemy` short-circuits before the exception list** (`FactionDef.cs:463`). Ruled
+   2026-08-20: the Empire's enmity becomes a whitelist, filed as
+   `empire-permanent-enemy-becomes-a-whitelist-7c31d9`. ⚠️ It is a whitelist of who is NOT an
+   enemy — anything absent is hostile, silently.
+3. **The Rakata are the VICTIMS.** Terraformers and mega-builders, nearly wiped out by an
+   assailant whose technology **rots** — which is why nobody can name them and why everything
+   scavengeable on this planet is Rakatan. `the_forgotten_war.md` R-W6. ⛔ DECIDE asserted the
+   opposite on 2026-08-20 and propagated it into four files before the owner corrected it; the
+   wrong version is the intuitive one and is struck in place, not deleted.
+
+### ⏱️ What is on the worldgen clock, and what is not
+
+**ON:** B40–B54 (factions + ideos are read ONCE at world creation) · the Empire whitelist ·
+`seven-jawa-factions-still-default-to-zero-at-worldgen-4a71c8` · the Worldbuilder preset
+(CHECK's) · Imperial **name makers** still generate Sophian names into the shipped save.
+**OFF, ruled 2026-08-20:** `pawnGroupMakers` are read at raid time, not world creation — so the
+16 orphaned roster kinds can be fixed after the world is frozen. The biome mix, likewise, gates
+nothing.
+
+### 📄 `Inhabited` — the mod designed this session
+
+`design/Jawa/bridge/INHABITED_DESIGN.md` (526 ln) · `_SPECIES_TEXTURE.md` (248 ln) · **eleven
+cast files, ~300 characters, all twelve factions.** Owner's scope: **v1 for the DESIGN, v2 for
+the code** — the world is built as though the people will arrive; ⛔ do not file BUILD items for
+the code. The remaining DECIDE work is the placement pass onto the gazetteer.
+
+### ❓ Open, and waiting on the owner
+- `8d4c07` — the `Rule_Disallow*` set for the ScenarioDef. His principle is recorded (*a Jawa may
+  not personally sow or dig; machines may do both*); the per-building judgements are not.
+- `D-V2-RAIN` — spec written and measured; needs a BUILD item filing.
+- Whether the Sith rumour ever hardens. **Current ruling: it never does.**
+
+
 📁 **Settled items live in `infrastructure/state/queue/DECIDE_ARCHIVE.md`** — 31 of them,
 moved 2026-08-19 verbatim on the owner's instruction so this file holds only live work.
 Read them as records, not instructions: several carry premises the live-bridge ruling
