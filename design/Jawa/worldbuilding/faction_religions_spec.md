@@ -150,7 +150,7 @@ Empire. The Empire uses `requiredMemes` + `structureMemeWeights`, which
 ```xml
 <fixedIdeo>true</fixedIdeo>          <!-- do not generate; use what follows -->
 <ideoName>...</ideoName>
-<ideoDescription>...</ideoDescription>
+<ideoDescription>Everything on this world evaporates, freezes, or is stolen. A debt does none of these. It is the only object that survives crossing between the faces, and so it is the only true account of a person: what you owe is what you are. The water you drank this morning, the air in the dome, the years your mother did not work — all of it is on the ledger. We do not forgive, because forgiving destroys value that belonged to everyone, and because forgiveness is a rounding error and we do not round. We sell the smoke and we breathe the smoke. Pay, and you are family. Do not pay, and you are inventory. What the book cannot settle, the pit does. There is no third column.</ideoDescription>
 <forcedMemes>...</forcedMemes>       <!-- the COMPLETE meme set, structure first -->
 <requiredPreceptsOnly>true</requiredPreceptsOnly>   <!-- suppress random precepts -->
 <deityPresets>...</deityPresets>     <!-- only if the structure has deityCount > 0 -->
@@ -337,7 +337,13 @@ overrule, and the deity block this entry wrongly claimed it did not need is adde
 <requiredPreceptsOnly>false</requiredPreceptsOnly>
 ```
 
-*(388 characters, inside the 250–500 band.)*
+*(665 characters — over the 250–500 band, deliberately. Owner, 2026-08-19: the spec
+paragraph and the one the def had grown separately were **"both exceptional… entirely in
+synchrony"**, so they are blended rather than one being cut. Every image from both
+survives: the three ways a thing is lost, crossing between the faces, the ledger of the
+water and the air and the mother's unworked years, both statements of why forgiveness is
+refused, the smoke, family-or-inventory, the pit, and the third column. The ideo panel
+scrolls.)*
 
 🔴 **"Deity: none" was wrong and this entry needed a `deityPresets` block too.**
 `VME_Structure_Corporate` carries `deityCount` `IntRange(min 1, max 1)` —

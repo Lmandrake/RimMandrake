@@ -70,7 +70,10 @@
       THE RECKONING OF DEBTS — faction_religions_spec.md entry 2 (B54)
       ================================================================
       `ideoName` and `ideoDescription` verbatim from the spec; they are the only
-      strings the engine renders.
+      strings the engine renders. ⭐ CHECKED, NOT ASSUMED: they had drifted apart —
+      this file and the spec each carried a different, complete paragraph. Reconciled
+      2026-08-19 by BLENDING them, on the owner's ruling that both were exceptional and
+      entirely in synchrony. The spec now carries the identical 665-character string.
 
       ⛔ `hiddenIdeo` MUST STAY UNSET — it suppresses the description entirely.
 
@@ -92,7 +95,7 @@
     <fixedIdeo>true</fixedIdeo>
     <requiredPreceptsOnly>false</requiredPreceptsOnly>
     <ideoName>the Reckoning of Debts</ideoName>
-    <ideoDescription>Everything is owed. The water you drank this morning, the air in the dome, the years your mother did not work — all of it is on the ledger, and the ledger does not forgive, because forgiveness is a rounding error and we do not round. Pay, and you are family. Do not pay, and you are inventory. There is no third column.</ideoDescription>
+    <ideoDescription>Everything on this world evaporates, freezes, or is stolen. A debt does none of these. It is the only object that survives crossing between the faces, and so it is the only true account of a person: what you owe is what you are. The water you drank this morning, the air in the dome, the years your mother did not work — all of it is on the ledger. We do not forgive, because forgiving destroys value that belonged to everyone, and because forgiveness is a rounding error and we do not round. We sell the smoke and we breathe the smoke. Pay, and you are family. Do not pay, and you are inventory. What the book cannot settle, the pit does. There is no third column.</ideoDescription>
     <forcedMemes>
       <li MayRequire="vanillaexpanded.vmemese">VME_Structure_Corporate</li>
       <li MayRequire="vanillaexpanded.vmemese">VME_Trader</li>
