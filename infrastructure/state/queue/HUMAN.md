@@ -702,3 +702,29 @@ importer refused all 72 rather than silently placing 68.
 
 ⚠️ I did **not** force a load past the mod guard (`ignoreModCompatibility`), because a
 forced load generates its own missing-def errors and would destroy the attribution.
+
+---
+
+## BUILD, 2026-08-20 midday — one `pip install` unblocks two stalled things
+
+**Pillow is not installed in any Python on this machine**, and it is quietly blocking work
+that reads as "not started":
+
+```
+pip install Pillow
+```
+
+- `refresh.py --offline` has **never been able to complete**. It dies in
+  `animal_contact_sheet.py` on `from PIL import Image`, so the offline artefacts have shown
+  **STALE** all day and will keep doing so however often anyone runs it. The failure is
+  reported as one line in a long output and reads like a nit.
+- **All 12 vehicle facings** in `NEOLITHIC_VEHICLE_BEAST_RESKIN_1` are unbuildable — every
+  sled builder imports PIL at the top. The beast art is already generated and committed;
+  only the compositing is stuck.
+
+I did not install it. Adding a dependency to your interpreter is your call, and I would
+rather flag it than quietly change your environment.
+
+⚠️ While I was there: the item said the north and east sled builders both ignore their
+arguments. **East was fine; north was not** — it silently wrote the OLD eopie pair to the
+shipped path with a success message. Fixed, but not run, for the reason above.
