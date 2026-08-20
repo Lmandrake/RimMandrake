@@ -1136,3 +1136,37 @@ criteria: stack raw potatoes beside an ox cart with zero hay on the map; a haule
           🔴 The FALSE PASS to watch: the cart already had fuel, so nothing was hauled and the
           test proves nothing. Drain it to 0 first and confirm the gizmo reads empty.
 state:    ready — ⛔ spec only tonight, by the owner's own framing
+
+## BLACKSTAR_HAS_NO_SETTLEMENT_ART_1 AM_EnemyPirate draws nothing and throws every frame
+row:      9
+from:     CHECK, 2026-08-20, live. Found by LOOKING at the planet after the authored
+          settlement roster went in — every numeric check passed while this was happening.
+spec:     `AM_EnemyPirate` is the FactionDef the **Blackstar Company** is built on, and its
+          `settlementTexturePath` is **null**. Every other faction in the roster has one
+          (`World/WorldObjects/DefaultSettlement`, or `TribalSettlement` for the tribes).
+          The engine path, read out of the live stack trace, not guessed:
+            `Settlement.get_Material()` → `MaterialPool.MatFrom(null, ...)`
+            → `ContentFinder.Get(null)` → `ModContentHolder.Get(null)`
+            → `Dictionary.FindEntry(null)` → **ArgumentNullException: Parameter name: key**
+          ⇒ **once per settlement, per frame.** Four Blackstar holdings took TPS from 60 to
+          **3.7 (273 ms/tick)** and flooded the debug log. The game is effectively unusable
+          on the world map while they exist.
+          FIX: a `PatchOperationAdd` in `Jawa_Patches` giving `AM_EnemyPirate` a
+          `settlementTexturePath`. ⛔ `AM_EnemyPirate` is a THIRD-PARTY def — patch it, do
+          not edit the mod. `World/WorldObjects/DefaultSettlement` is what every other
+          faction in our roster uses and it is vanilla, so it cannot go missing.
+          📌 Relates to B43 (turn vanilla pirates into the Blackstar Company). If B43 ends up
+          defining our OWN FactionDef the field belongs there instead — but until then the
+          roster names `AM_EnemyPirate` and the patch is the shortest fix.
+verify:   `validate_patch.py --defs` 0 errors and the xpath reports 1 hit, not 0.
+          Then off the regenerated dump: `AM_EnemyPirate.settlementTexturePath` is non-null.
+criteria: place the four Blackstar settlements on a live world and watch the world map for
+          ten seconds. 🔴 ZERO `Error while drawing Settlement` lines, and TPS stays at 60.
+          ⚠️ THIS IS WHY THE ITEM EXISTS AND HOW IT LIES: **nothing numeric caught it.**
+          `world_settlements_import` reported success and read 72 back off the engine;
+          `world_lint` reported 76 findings and none of them was this. It was visible only
+          in a screenshot. Do not close it on a count.
+📌        WHY IT WAS INVISIBLE UNTIL NOW: worldgen never created a Blackstar settlement,
+          because the faction had none. No settlement, no draw, no throw. The authored
+          roster is the first thing that ever made one exist.
+state:    ready
