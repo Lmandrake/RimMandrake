@@ -1521,4 +1521,9 @@ verify:   Read the bodies yourself: full decompile is at
 criteria: §12.6 no longer carries UNCERTAIN on RiverLink/RoadLink, tileFeature,
           settlement placement or the pollution scale, and §12.6 states OverlayRiver /
           OverlayRoad as the write API rather than the raw lists.
-state:    ready
+state:    ✅ CLOSED 2026-08-19 by DECIDE — verified applied, not merely accepted.
+          `ASHKARR_WORLD_DEFINITION.md` §12.5 carries the settlement recipe with
+          `layer.Def.SettlementWorldObjectDef` and the FeatureWorker recipe; §12.6
+          states OverlayRiver/OverlayRoad as the write API, the mouth-first call
+          order for `riverDist`, the float pollution, and "there is no slot".
+          The `allowRoads`/`allowRivers`-null risk is at line 493. Nothing owed.
