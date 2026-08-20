@@ -579,7 +579,18 @@ criteria: on the NEXT load, `Player.log` carries NO `mod settings data for 35213
           it no longer appears in game. ⚠️ Cherry Picker NEUTERS ThingDef/PawnKindDef/
           IncidentDef in place rather than deleting them, so check the trade/craft/spawn
           lists, not the def database.
-state:    ready
+state:    🔵 HALF PASSES 2026-08-20; the second half is suggestive, not proven.
+result:   ✅ **`grep -c "mod settings data for 3521312241"` = 0.** The settings exception
+          the item was filed for is gone on this load. That half is clean.
+          ⚠️ **The cut def: `rimworld/spawn_thing Gun_BlastCharge` returns
+          `success: false, "Object reference not set to an instance of an object"` and the
+          target cell stays empty.** Consistent with Cherry Picker neutering the def in
+          place — a gutted def throws rather than refusing politely. But an NRE is a scruffy
+          instrument: it proves something is broken about that def, not specifically that
+          Cherry Picker is what broke it. 🔑 The item's own warning says to check the
+          trade/craft/spawn LISTS rather than the def database, and a spawn CALL is not a
+          spawn LIST. Close it by confirming the gun is absent from a trader's stock or a
+          crafting bill, which needs neither a new load nor a new tool.
 
 ## seven-jawa-factions-still-default-to-zero-at-worldgen-4a71c8
 row:      9
