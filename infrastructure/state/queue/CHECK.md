@@ -1108,6 +1108,21 @@ spec:     ⛔ 2026-08-19 — SAVEGAME WRITING IS OUT. Every "run X" in this item
              "did the script run". Check: stranded coasts, biomes without their climate,
              rivers that reach no sea, single-tile islands, settlements unreachable by road,
              lush terrain off-river.
+
+          ✅ THE HOLE IS SMALLER THAN IT LOOKS (CHECK, 2026-08-19). Deleting the nine
+          savegame writers did NOT take this item's tooling with it. Everything above is
+          an OFFLINE authoring judgement and the offline painter is intact:
+          `ashkarr_paint.py`, `ashkarr_settle.py` and `world_relief/hydro/biomes/settle.py`
+          still emit the whole bundle (`world/ASHKARR_WORLDMAP_*`), and `worldview.py`
+          still renders it. What died was only the tail - splicing that bundle into a
+          `.rws`. That tail is now `worldpaint-live-bridge-route-9d41c7`: the same arrays,
+          pushed into the live WorldGrid over the bridge. Settlement conversion and
+          faction/region naming, which `populate_ashkarr.py` and the two `name_*` scripts
+          used to do IN the save, are bundle fields today and become importer work.
+          ⚠️ One thing genuinely cannot be re-measured by anything in the repo: the
+          Blackstar Company faction swap (was `swap_faction_def.py`) and the final
+          21,872-tile world-stats histogram. Treat both as historical, not as checks.
+
 verify:   EMPTY
 criteria: the owner looks at the planet and does not immediately name a defect.
 state:    ready
