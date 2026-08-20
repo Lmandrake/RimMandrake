@@ -1269,5 +1269,415 @@ namespace JawaBench.BridgeTools
             });
         }
 
+
+        // ================================================================
+        //  W5 - G3 TILE MUTATORS (336 defs) AND LANDMARKS (113 defs)
+        //
+        //  Mutators: ALWAYS go through Tile.AddMutator / RemoveMutator, never
+        //  mutatorsNullable directly. AddMutator resolves category conflicts,
+        //  sorts by genOrder, and calls def.Worker?.OnAddedToTile(tile) - the
+        //  worker callback is where the side effects live.
+        //
+        //  Landmarks: Find.World.landmarks, a Dictionary<PlanetTile, Landmark>.
+        //  🔴 Odyssey-gated: Tile.Landmark returns null when !OdysseyActive.
+        //  🔴 AddLandmark ALSO rolls the def's mutatorChances / comboLandmark-
+        //     Mutators onto the tile, so adding a landmark is a mutator write too.
+        //  🔴 ORDERING: LandmarkDef.IsValidTile REJECTS any tile that already
+        //     holds a settlement. Landmarks BEFORE settlements, always.
+        // ================================================================
+
+        private static object MutatorRow(SurfaceTile t, int id)
+        {
+            var ms = new List<object>();
+            if (t.mutatorsNullable != null)
+                foreach (var m in t.mutatorsNullable)
+                    ms.Add(new
+                    {
+                        def = m != null ? m.defName : null,
+                        label = m != null ? m.label : null,
+                        genOrder = m != null ? m.genOrder : 0f,
+                    });
+
+            Landmark lm = null;
+            try { lm = t.Landmark; } catch { }
+
+            return new
+            {
+                tile = id,
+                biome = t.PrimaryBiome != null ? t.PrimaryBiome.defName : null,
+                waterCovered = t.WaterCovered,
+                isCoastal = SafeIsCoastal(id),
+                mutatorCount = ms.Count,
+                mutators = ms,
+                landmark = lm != null ? lm.def.defName : null,
+                landmarkName = lm != null ? lm.name : null,
+                landmarkIsCombo = lm != null && lm.isComboLandmark,
+            };
+        }
+
+        private static bool SafeIsCoastal(int id)
+        {
+            try { return Find.World.CoastDirectionAt(id) != Rot4.Invalid; }
+            catch { return false; }
+        }
+
+        [Tool(
+            "jawa/world_mutators_get",
+            Description =
+                "Read the TileMutatorDefs and the Landmark on world tiles. Mutators are what " +
+                "give a tile its caves, coast, cliffs, mixed biome and so on - 336 defs ship. " +
+                "Also reports whether the tile is genuinely coastal by real adjacency " +
+                "(World.CoastDirectionAt), which is how a stale Coast mutator is spotted.",
+            ResultDescription = "success, count, tiles[] with mutators[] and landmark.")]
+        public static async Task<object> WorldMutatorsGet(
+            IRimBridgeContext ctx,
+            CancellationToken cancellationToken,
+            [ToolParameter(Description = "Comma-separated tile ids.")] string tiles = null,
+            [ToolParameter(Description = "Inclusive range 'from-to'.")] string range = null,
+            [ToolParameter(Description = "Only tiles carrying at least one mutator.")] bool onlyWithMutators = false,
+            [ToolParameter(Description = "Max rows. Default 100.")] int limit = 100)
+        {
+            return await ctx.MainThread.InvokeAsync(() =>
+            {
+                if (Find.World == null || Find.WorldGrid == null) return Fail("No world is loaded.");
+                var ids = new List<int>(); var errors = new List<string>();
+                if (!string.IsNullOrEmpty(tiles))
+                    foreach (var part in tiles.Split(',')) { int v; if (int.TryParse(part.Trim(), out v)) ids.Add(v); }
+                if (!string.IsNullOrEmpty(range))
+                {
+                    var bits = range.Split('-'); int a, b;
+                    if (bits.Length == 2 && int.TryParse(bits[0].Trim(), out a) && int.TryParse(bits[1].Trim(), out b))
+                        for (int i = Math.Min(a, b); i <= Math.Max(a, b); i++) ids.Add(i);
+                }
+                if (ids.Count == 0) return Fail("Give 'tiles' and/or 'range'.");
+
+                var outp = new List<object>();
+                foreach (var id in ids)
+                {
+                    if (outp.Count >= Math.Max(1, limit)) break;
+                    string e; var t = SurfaceTileAt(id, out e);
+                    if (t == null) { errors.Add(e); continue; }
+                    if (onlyWithMutators && (t.mutatorsNullable == null || t.mutatorsNullable.Count == 0)) continue;
+                    outp.Add(MutatorRow(t, id));
+                }
+                return (object)new
+                {
+                    success = true, count = outp.Count, requested = ids.Count,
+                    odysseyActive = ModsConfig.OdysseyActive,
+                    errors, tiles = outp, ticksGame = TicksGameSafe(),
+                };
+            });
+        }
+
+        [Tool(
+            "jawa/world_mutators_set",
+            Description =
+                "Add or remove TileMutatorDefs on world tiles. Uses Tile.AddMutator / " +
+                "RemoveMutator, never the raw list - AddMutator resolves category conflicts, " +
+                "sorts by genOrder and fires the def's Worker.OnAddedToTile, which is where " +
+                "the actual effect lives. Writing mutatorsNullable directly would skip all of " +
+                "that. Use action='clear' to strip every mutator from the named tiles. " +
+                "Does not redraw; call jawa/world_commit.",
+            ResultDescription = "success, added, removed, and a read-back of each tile.")]
+        public static async Task<object> WorldMutatorsSet(
+            IRimBridgeContext ctx,
+            CancellationToken cancellationToken,
+            [ToolParameter(Description = "'add', 'remove' or 'clear'.")] string action = "add",
+            [ToolParameter(Description = "Comma-separated TileMutatorDef names. Ignored for 'clear'.")] string mutators = null,
+            [ToolParameter(Description = "Comma-separated tile ids.")] string tiles = null,
+            [ToolParameter(Description = "Inclusive range 'from-to'.")] string range = null,
+            [ToolParameter(Description = "Read back at most this many tiles. Default 8.")] int readBack = 8)
+        {
+            return await ctx.MainThread.InvokeAsync(() =>
+            {
+                if (Find.World == null || Find.WorldGrid == null) return Fail("No world is loaded.");
+                bool add = string.Equals(action, "add", StringComparison.OrdinalIgnoreCase);
+                bool rem = string.Equals(action, "remove", StringComparison.OrdinalIgnoreCase);
+                bool clr = string.Equals(action, "clear", StringComparison.OrdinalIgnoreCase);
+                if (!add && !rem && !clr) return Fail("action must be add|remove|clear.");
+
+                var defs = new List<TileMutatorDef>(); var unknown = new List<string>();
+                if (!clr)
+                {
+                    if (string.IsNullOrEmpty(mutators)) return Fail("Give 'mutators'.");
+                    foreach (var mname in mutators.Split(','))
+                    {
+                        var nm = mname.Trim(); if (nm.Length == 0) continue;
+                        var d = DefDatabase<TileMutatorDef>.GetNamedSilentFail(nm);
+                        if (d == null) unknown.Add(nm); else defs.Add(d);
+                    }
+                    if (defs.Count == 0) return Fail("No known TileMutatorDef in '" + mutators + "'.", unknown);
+                }
+
+                var ids = new List<int>();
+                if (!string.IsNullOrEmpty(tiles))
+                    foreach (var part in tiles.Split(',')) { int v; if (int.TryParse(part.Trim(), out v)) ids.Add(v); }
+                if (!string.IsNullOrEmpty(range))
+                {
+                    var bits = range.Split('-'); int a, b;
+                    if (bits.Length == 2 && int.TryParse(bits[0].Trim(), out a) && int.TryParse(bits[1].Trim(), out b))
+                        for (int i = Math.Min(a, b); i <= Math.Max(a, b); i++) ids.Add(i);
+                }
+                if (ids.Count == 0) return Fail("Give 'tiles' and/or 'range'.");
+
+                int added = 0, removed = 0; var errors = new List<string>();
+                foreach (var id in ids)
+                {
+                    string e; var t = SurfaceTileAt(id, out e);
+                    if (t == null) { errors.Add(e); continue; }
+                    try
+                    {
+                        if (clr)
+                        {
+                            if (t.mutatorsNullable != null)
+                            {
+                                foreach (var m in t.mutatorsNullable.ToList()) { t.RemoveMutator(m); removed++; }
+                            }
+                        }
+                        else if (add)
+                        {
+                            foreach (var d in defs)
+                            {
+                                if (t.mutatorsNullable != null && t.mutatorsNullable.Contains(d)) continue;
+                                t.AddMutator(d); added++;
+                            }
+                        }
+                        else
+                        {
+                            foreach (var d in defs)
+                            {
+                                if (t.mutatorsNullable != null && t.mutatorsNullable.Contains(d)) { t.RemoveMutator(d); removed++; }
+                            }
+                        }
+                    }
+                    catch (Exception ex) { errors.Add("tile " + id + ": " + ex.GetType().Name + ": " + ex.Message); }
+                }
+
+                var back = new List<object>();
+                foreach (var id in ids)
+                {
+                    if (back.Count >= Math.Max(0, readBack)) break;
+                    string e; var t = SurfaceTileAt(id, out e);
+                    if (t != null) back.Add(MutatorRow(t, id));
+                }
+                return (object)new
+                {
+                    success = true, action, added, removed,
+                    unknownDefs = unknown, errors,
+                    note = "Nothing is visible until jawa/world_commit.",
+                    tiles = back, ticksGame = TicksGameSafe(),
+                };
+            });
+        }
+
+        [Tool(
+            "jawa/world_mutators_audit",
+            Description =
+                "Sweep the whole planet for mutators that contradict the terrain under them - " +
+                "the defect class that survives a repaint. Reports tiles carrying a named " +
+                "marine/coastal mutator that are NOT coastal by real adjacency " +
+                "(World.CoastDirectionAt), and optionally how deep inland they sit. " +
+                "This is how 'Coast on a tile 2,000 tiles from any sea' is found. Read-only.",
+            ResultDescription = "success, histogram of every mutator by count, and offenders[].")]
+        public static async Task<object> WorldMutatorsAudit(
+            IRimBridgeContext ctx,
+            CancellationToken cancellationToken,
+            [ToolParameter(Description = "Comma-separated mutator defNames that imply water adjacency. Default 'Coast'.")]
+            string marineMutators = "Coast",
+            [ToolParameter(Description = "Max offender rows. Default 30.")] int limit = 30,
+            [ToolParameter(Description = "Also return the full mutator histogram. Default true.")] bool histogram = true)
+        {
+            return await ctx.MainThread.InvokeAsync(() =>
+            {
+                if (Find.World == null || Find.WorldGrid == null) return Fail("No world is loaded.");
+                var grid = Find.WorldGrid; int n = grid.TilesCount;
+
+                var marine = new HashSet<string>((marineMutators ?? "").Split(',')
+                                .Select(x => x.Trim()).Where(x => x.Length > 0), StringComparer.OrdinalIgnoreCase);
+
+                var hist = new Dictionary<string, int>();
+                var offenders = new List<object>();
+                int offenderCount = 0, withMutators = 0;
+
+                for (int i = 0; i < n; i++)
+                {
+                    var t = grid[i] as SurfaceTile;
+                    if (t == null || t.mutatorsNullable == null || t.mutatorsNullable.Count == 0) continue;
+                    withMutators++;
+                    bool coastal = SafeIsCoastal(i);
+                    foreach (var m in t.mutatorsNullable)
+                    {
+                        if (m == null) continue;
+                        if (histogram) { int c; hist.TryGetValue(m.defName, out c); hist[m.defName] = c + 1; }
+                        if (marine.Contains(m.defName) && !coastal)
+                        {
+                            offenderCount++;
+                            if (offenders.Count < Math.Max(0, limit))
+                                offenders.Add(new
+                                {
+                                    tile = i,
+                                    mutator = m.defName,
+                                    biome = t.PrimaryBiome != null ? t.PrimaryBiome.defName : null,
+                                    waterCovered = t.WaterCovered,
+                                    elevation = t.elevation,
+                                });
+                        }
+                    }
+                }
+
+                return (object)new
+                {
+                    success = true,
+                    tilesScanned = n,
+                    tilesWithMutators = withMutators,
+                    marineChecked = marine.ToList(),
+                    offenderCount,
+                    offenders,
+                    mutatorHistogram = histogram
+                        ? hist.OrderByDescending(k => k.Value).Take(60).ToDictionary(k => k.Key, k => k.Value)
+                        : null,
+                    ticksGame = TicksGameSafe(),
+                };
+            });
+        }
+
+        [Tool(
+            "jawa/world_landmarks_get",
+            Description =
+                "List the landmarks on the planet (Find.World.landmarks). 113 LandmarkDefs " +
+                "ship with Odyssey. Reports each landmark's tile, def, generated name and " +
+                "whether it is a combo landmark. " +
+                "🔴 Landmarks are ODYSSEY-GATED: without Odyssey active Tile.Landmark is " +
+                "always null and this returns an empty set, which is not the same as a " +
+                "world with no landmarks - the odysseyActive flag tells you which you have.",
+            ResultDescription = "success, odysseyActive, count, landmarks[].")]
+        public static async Task<object> WorldLandmarksGet(
+            IRimBridgeContext ctx,
+            CancellationToken cancellationToken,
+            [ToolParameter(Description = "Only landmarks of this LandmarkDef.")] string def = null,
+            [ToolParameter(Description = "Max rows. Default 100.")] int limit = 100)
+        {
+            return await ctx.MainThread.InvokeAsync(() =>
+            {
+                if (Find.World == null) return Fail("No world is loaded.");
+                var wl = Find.World.landmarks;
+                if (wl == null || wl.landmarks == null)
+                    return (object)new { success = true, odysseyActive = ModsConfig.OdysseyActive, count = 0, landmarks = new List<object>(), note = "No landmark manager on this world." };
+
+                var outp = new List<object>(); int total = 0;
+                foreach (var kv in wl.landmarks)
+                {
+                    if (kv.Value == null) continue;
+                    if (!string.IsNullOrEmpty(def) && (kv.Value.def == null || !kv.Value.def.defName.Equals(def, StringComparison.OrdinalIgnoreCase))) continue;
+                    total++;
+                    if (outp.Count >= Math.Max(1, limit)) continue;
+                    outp.Add(new
+                    {
+                        tile = kv.Key.tileId,
+                        layer = kv.Key.Layer != null && kv.Key.Layer.Def != null ? kv.Key.Layer.Def.defName : null,
+                        def = kv.Value.def != null ? kv.Value.def.defName : null,
+                        label = kv.Value.def != null ? kv.Value.def.label : null,
+                        name = kv.Value.name,
+                        isCombo = kv.Value.isComboLandmark,
+                    });
+                }
+                return (object)new
+                {
+                    success = true, odysseyActive = ModsConfig.OdysseyActive,
+                    count = total, returned = outp.Count, landmarks = outp, ticksGame = TicksGameSafe(),
+                };
+            });
+        }
+
+        [Tool(
+            "jawa/world_landmarks_set",
+            Description =
+                "Add or remove a landmark on a world tile via WorldLandmarks.AddLandmark / " +
+                "RemoveLandmark. " +
+                "⚠️ AddLandmark ALSO rolls the def's mutatorChances and comboLandmarkMutators " +
+                "onto the tile, so this is a mutator write as well - the read-back shows both. " +
+                "⚠️ It no-ops entirely without Odyssey. " +
+                "🔴 LandmarkDef.IsValidTile refuses a tile that already holds a SETTLEMENT, an " +
+                "existing landmark, an impassable biome or hilliness, or a mutator with " +
+                "preventsLandmarks. Place landmarks BEFORE settlements. Pass checkValid=true " +
+                "to have that verdict reported rather than discovering it as a silent no-op.",
+            ResultDescription = "success, added, removed, validity[], and a read-back per tile.")]
+        public static async Task<object> WorldLandmarksSet(
+            IRimBridgeContext ctx,
+            CancellationToken cancellationToken,
+            [ToolParameter(Description = "'add' or 'remove'.")] string action = "add",
+            [ToolParameter(Description = "LandmarkDef name. Required for 'add'.")] string def = null,
+            [ToolParameter(Description = "Comma-separated tile ids.")] string tiles = null,
+            [ToolParameter(Description = "Bypass LandmarkDef validity (AddLandmark 'forced').")] bool forced = false,
+            [ToolParameter(Description = "Report IsValidTile for each tile before acting.")] bool checkValid = true)
+        {
+            return await ctx.MainThread.InvokeAsync(() =>
+            {
+                if (Find.World == null || Find.WorldGrid == null) return Fail("No world is loaded.");
+                if (!ModsConfig.OdysseyActive)
+                    return Fail("Odyssey is not active. Landmarks do not exist in this game - AddLandmark would no-op silently.");
+
+                var wl = Find.World.landmarks;
+                if (wl == null) return Fail("No landmark manager on this world.");
+                bool add = string.Equals(action, "add", StringComparison.OrdinalIgnoreCase);
+                bool rem = string.Equals(action, "remove", StringComparison.OrdinalIgnoreCase);
+                if (!add && !rem) return Fail("action must be add|remove.");
+
+                LandmarkDef ld = null;
+                if (add)
+                {
+                    if (string.IsNullOrEmpty(def)) return Fail("Give a LandmarkDef for 'add'.");
+                    ld = DefDatabase<LandmarkDef>.GetNamedSilentFail(def.Trim());
+                    if (ld == null) return Fail("No LandmarkDef '" + def + "'.", DefSuggestions<LandmarkDef>(def));
+                }
+
+                var ids = new List<int>();
+                foreach (var part in (tiles ?? "").Split(',')) { int v; if (int.TryParse(part.Trim(), out v)) ids.Add(v); }
+                if (ids.Count == 0) return Fail("Give 'tiles'.");
+
+                int added = 0, removed = 0;
+                var validity = new List<object>(); var errors = new List<string>();
+                var surface = Find.WorldGrid.Surface;
+
+                foreach (var id in ids)
+                {
+                    string e; var t = SurfaceTileAt(id, out e);
+                    if (t == null) { errors.Add(e); continue; }
+                    PlanetTile pt = new PlanetTile(id, surface);
+
+                    if (add && checkValid)
+                    {
+                        bool ok = false; string why = null;
+                        try { ok = ld.IsValidTile(pt, surface, false); }
+                        catch (Exception ex) { why = ex.GetType().Name + ": " + ex.Message; }
+                        bool hasSettlement = Find.WorldObjects != null && Find.WorldObjects.AnySettlementBaseAtOrAdjacent(pt);
+                        validity.Add(new { tile = id, isValidTile = ok, settlementAtOrAdjacent = hasSettlement, error = why });
+                    }
+
+                    try
+                    {
+                        if (add) { wl.AddLandmark(ld, pt, surface, forced); if (wl[pt] != null) added++; }
+                        else { if (wl[pt] != null) { wl.RemoveLandmark(pt); removed++; } }
+                    }
+                    catch (Exception ex) { errors.Add("tile " + id + ": " + ex.GetType().Name + ": " + ex.Message); }
+                }
+
+                var back = new List<object>();
+                foreach (var id in ids)
+                {
+                    if (back.Count >= 8) break;
+                    string e; var t = SurfaceTileAt(id, out e);
+                    if (t != null) back.Add(MutatorRow(t, id));
+                }
+                return (object)new
+                {
+                    success = true, action, def, added, removed, forced,
+                    validity, errors,
+                    note = "AddLandmark also rolls the def's mutators onto the tile - see the read-back. Call jawa/world_commit.",
+                    tiles = back, ticksGame = TicksGameSafe(),
+                };
+            });
+        }
+
     }
 }
