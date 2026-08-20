@@ -224,7 +224,27 @@ verify:   `validate_patch.py --defs` scoped to the active list, 0 errors; the
 criteria: the Empire raids with stormtroopers, not cataphracts, and the faction
           reads `Galactic Empire` with an `Emperor`. 🔴 This REDOES v1 row 1,
           which was closed on a label seen live on the abandoned vessel.
-state:    ready
+state:    ready — **THE FILE IS ALREADY WRITTEN AND VALIDATES CLEAN, but do not close
+          it on that.** Measured by BUILD 2026-08-19, `validate_patch.py --defs` scoped
+          to the 578-mod active list plus the 2026-08-15 defnames: **0 errors, 0
+          warnings**, xpath hits `Empire` and not `OuterRim_GalacticEmpire`, all six
+          `OuterRim_Imp*` kinds resolve.
+          ⚠️ **ONE UNRESOLVED DISCREPANCY, and it is the deliverable itself.** The two
+          combat-group ops are identical but for the predicate index, and they do not
+          measure the same:
+            `pawnGroupMakers/li[kindDef="Combat"][1]/options`  -> **0 matches**
+            `pawnGroupMakers/li[kindDef="Combat"][2]/options`  ->   1 match
+          Reproduced in isolation, so it is not contamination from the surrounding
+          sequence. Yet a bare lxml evaluation of BOTH xpaths against the shipped
+          `Royalty/Defs/FactionDefs/Faction_Empire.xml` returns 1 each — the def really
+          does carry two Combat groups (commonality 100 and 10), each with an `options`
+          child. ⇒ **either the validator is wrong about `[1]`, or RimWorld's own engine
+          will be, and the common raid silently keeps its cataphracts.** The rare raid
+          would still convert, which is exactly the shape of a bug nobody notices.
+          🔑 NEXT STEP, before this item closes: settle which by testing the predicate
+          form, and prefer the unambiguous rewrite if it is at all in doubt —
+          `li[kindDef="Combat"][commonality=100]/options` names the group by its own
+          value instead of by position, and cannot drift when a mod inserts a group.
 
 ## B41 Turn vanilla outlanders into the Homestead Defense League
 row:      9
