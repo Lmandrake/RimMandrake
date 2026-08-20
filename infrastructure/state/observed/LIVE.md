@@ -164,8 +164,7 @@ Nobody needs a live game to re-derive these; they need `ilspycmd`.
 
 ## Companion DLL and mod list — CHECK, 2026-08-19
 
-- ~~The companion is 32 `jawa/` tools~~ ⇒ **the companion is now 79 `jawa/` tools** (32 terrain + 25 world +
-  13 map + 9 pawn), and most of them WRITE. See "The worldmap bridge" below. Verified live by
+- ~~The companion is 32 `jawa/` tools~~ ⇒ **the companion is now 106 `jawa/` tools** — count it, never quote it. See "The worldmap bridge" below. Verified live by
   `tools/list`, not by `strings`.
   ⚠️ The companion lives in `<gamedir>\BridgeTools\`, a **sibling of `Mods\`**, not inside it,
   and it is discovered by the RimBridgeServer MOD at startup — so `brrainz.rimbridgeserver`
@@ -318,3 +317,42 @@ PAWN    pawn_get · set_pawn_identity · set_pawn_backstory · pawn_traits · se
   as nothing. `jawa/set_fog action=unfogAll` first.
 * 📌 **Never guess a defName** — 1,225 BackstoryDefs, 2,129 ThoughtDefs, 265 TraitDefs, 41
   PawnRelationDefs. Four of my test names were invented and all four failed. Read the dump.
+
+## Routing, effects, pawn systems and social events — CHECK, 2026-08-20
+
+```
+ROUTE    connect_cells        strict | mine | bridge, atomic, never half-laid
+EFFECTS  map_explosion · map_fire · map_skyfaller
+PAWN     pawn_psychic · pawn_pregnancy · pawn_mental · pawn_romance
+WORLD    world_objects_add · world_objects_remove
+SOCIAL   social_list · social_gathering_start · social_marry · ritual_start · social_cancel
+```
+
+* 🔑 **Mountain is EXPENSIVE; deep water is IMPOSSIBLE.** `WaterDeep` has no terrain
+  affordances and is not Bridgeable. Wall → `mine` goes straight through (45 cells);
+  shallow water → `strict` routes *around* (49), `bridge` goes through (45).
+* 🔴 **Vanilla routes conduits with a FLOOD FILL over placeability, not a pathfinder**
+  (`GenStep_Power`). `FloodFiller` is **4-connected**, `PathFinder` is **8-connected** — a
+  pathfinder route must be densified to cardinal steps or **the net breaks at every diagonal**.
+* 🔴 **Maps are NOT square and quicktest sizes vary** — one was 100×400, the next 250×250.
+* 🔴 **`ChangePsylinkLevel` never reads its offset on the first call** — one call can only
+  reach level 1.
+* 🔴 **Gestation IS the pregnancy hediff's Severity.** No separate field; 1.0 starts labour.
+* 🔴 **`TryStartMentalState` returns false silently** on ~6 conditions. Surface the bool.
+* 🔴 **Opinion is purely COMPUTED** from relations + memories. A memory is the only lever —
+  a bare relation change produces no thought at all.
+* 🔴 **`TryStartMarriageCeremony` IGNORES its second argument** and re-derives the partner
+  from the **Fiance** relation, which is mandatory.
+* 🔴 **Funerals are NOT Ideology-only.** `FuneralBase` is `<classic>true</classic>`, so
+  Funeral, FuneralNoCorpse and the `Classic_` parties exist with Ideology uninstalled.
+  Gate on the precept being present, never on the DLC flag.
+* 🔴 **`RitualBehaviorWorker.TryExecuteOn` is void and fails silently.** Call
+  `CanStartRitualNow` first; use the lord count as evidence.
+* 🔴 **Gathering game-conditions live in `GatheringDef.CanExecute`, not `Worker.TryExecute`** —
+  calling the worker bypasses them all, as vanilla's debug action does. But
+  **`respectTimetable` is NOT bypassable**: a forced party during a Work block stays empty.
+* ⭐ **Gathering attendees are PULL, not push** — the lord starts with zero pawns and
+  colonists self-join. Proven: 0 → 3 pawns after 400 ticks.
+* ⚠️ **`PsychicShock` is a HediffDef and `Bioferrite` a ThingDef** — neither is a DamageDef.
+* 📌 A quicktest map can spawn mid-**fleshbeast assault**, which blocks every social event.
+  The tools were telling the truth; the environment was hostile.

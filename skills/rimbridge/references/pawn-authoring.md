@@ -69,3 +69,21 @@ it into an assault unprompted.
 ⛔ **A duty without a lord is inert** (`ThinkNode_ConditionalHasLordDuty`).
 🔴 **Farming is blocked three ways** for non-colonists. Full analysis and 36 scene templates:
 `design/Jawa/bridge/LIVING_NPC_TEMPLATES.md`.
+
+## Psychic, pregnancy, mental states, romance and social events
+
+`pawn_psychic` · `pawn_pregnancy` · `pawn_mental` · `pawn_romance` ·
+`social_list` · `social_gathering_start` · `social_marry` · `ritual_start` · `social_cancel`
+
+* 🔴 **`ChangePsylinkLevel` never reads its offset on the first call** — it creates the
+  hediff at level 1 and returns. One call can only ever reach 1.
+* 🔴 **Gestation IS the hediff Severity.** 1.0 begins labour next tick.
+* 🔴 **`TryStartMentalState` returns false silently.** `BerserkPermanent` never recovers alone.
+* 🔴 **Opinion is purely computed** — a bare relation change produces **no thought**. A
+  memory is the only lever. Proven: breakup left opinion at 70/**−5**.
+* 🔴 **`MarriageCeremonyUtility.Married` ≠ the ceremony.** Married() is instant and skips the
+  party; the ceremony calls it from inside its own job. `TryStartMarriageCeremony`
+  **ignores its second argument** — the **Fiance** relation is mandatory.
+* 🔴 **Funerals are NOT Ideology-only** — `FuneralBase` is `<classic>true</classic>`.
+* ⭐ **Gathering attendees self-join.** The lord starts with zero pawns; never assign them.
+* ⚠️ A quicktest can spawn mid-assault, which blocks every social event.

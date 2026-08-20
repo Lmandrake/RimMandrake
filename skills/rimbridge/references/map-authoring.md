@@ -277,3 +277,20 @@ identically** in the proving run.
 
 A slab written correctly in unvisited territory **photographs as nothing**. Run
 `set_fog action=unfogAll` before any map capture. This cost one wasted screenshot cycle.
+
+## `connect_cells` — routing A to B
+
+Copies vanilla's own conduit router (`GenStep_Power`): a **4-connected flood fill over
+placeability**, not a pathfinder, so the route is placeable end-to-end by construction.
+
+| in the way | `strict` | `mine` | `bridge` |
+|---|---|---|---|
+| wall / rock | refuses, names the cells | **straight through** | — |
+| shallow water | **routes around** | — | **bridges through** |
+| **deep water** | around | around | **will not bridge — impossible** |
+
+🔴 `WaterDeep` has **no terrain affordances** and is not Bridgeable. No mode forces it.
+🔴 A `PathFinder` route is **8-connected** and must be densified to cardinal steps, or the
+conduit net breaks at every diagonal — it looks connected and is not.
+🔴 **Maps are not square.** One quicktest was 100×400. `map_commit` reports `mapSize`.
+✅ **Atomic** — the whole route is validated before anything is placed.
