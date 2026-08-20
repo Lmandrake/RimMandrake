@@ -501,3 +501,27 @@ Afterwards: triage anything new into `vendor/wisdom/benign_log_errors.md`, appen
 anything that surprised you to the matching
 `skills/rimworld-modding/references/traps-*.md`, and file the rest into the
 per-seat queues.
+
+## 9. 🧪 INHABITED — first run. Owner: *"full 578 now, minimal after"*, 2026-08-20
+
+**On THIS load (578).** Reach a quicktest colony, then dev menu → **Inhabited**:
+`Create place at current tile` → `Stuff roster (3 pawns)` → `Report roster`.
+Write down the three **ThingIDs, names, relations count, hediff count** — that is the
+baseline the whole architecture gate is measured against.
+⭐ **The positive sighting matters more than a clean log**: a mod that loads and does
+nothing logs nothing. If the `Inhabited` category is absent from the dev menu, the DLL did
+not load and no other Inhabited result this load means anything.
+Three first-run failure signatures are written at §4 of `EXPECTED_FAILURES_next_load.md`.
+
+**AFTER, on minimal.** `ModsConfig.MINIMAL.xml` is now **14** — `mandrake.inhabited` added
+last (it patches vanilla and needs Harmony). Ideology and `brrainz.rimbridgeserver` were
+already in it, so `Patch_BeggarsFromPool` has a real target and the bridge works.
+```
+python3 src/RimMandrake/Utils/modlist_swap.py --minimal --apply
+```
+🔴 **Disarm the dump before that swap** — `rm DefDump/dump_request.txt`. A dump captured on
+a 14-mod debug list reports every real mod's defs as *"does not exist in the live game"*.
+🔴 **`--restore` before the owner plays.** Leaving his machine on 14 mods is the one
+unacceptable outcome.
+**Why minimal, in one number:** `ROSTER_SURVIVES_OFFMAP_PROOF_1` needs save → quit → RELOAD,
+so it costs **two** loads. ~45 s on minimal against ~50 min on the 578.
