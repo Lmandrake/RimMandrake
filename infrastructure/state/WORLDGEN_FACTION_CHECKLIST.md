@@ -465,6 +465,20 @@ forced — but **"should be" is not "was"**, and this run is permanent. Look at 
 🔴 **Unticking any of these five deletes one of our factions.** They look like
 ordinary vanilla rows and they are not any more.
 
+⚠️ **`Mechanoid`'s row loses its safety catch when the pursuit part comes out — measured
+2026-08-20, not inherited.** Vanilla's `ScenPart_PursuingMechanoids` ScenPartDef carries
+`<preventRemovalOfFaction>Mechanoid</preventRemovalOfFaction>`
+(`Data/Odyssey/Defs/Scenarios/ScenParts_Various.xml:9`), and `xref` shows that field is
+read by **exactly one method — `WorldFactionsUIUtility::DoRow`**, the renderer for the
+rows on *this page*. ⇒ **Its only effect is to stop a human unticking that row here.**
+
+**The Empire-pursuit swap removes that part** (`design/Jawa/droid_ruling.md`), so the
+catch goes with it and the `Mechanoid` row becomes untickable like any other. ⛔ **The
+faction is NOT being removed and nothing removes it** — owner, 2026-08-20: *"We're not
+removing Mechanoids."* This is a warning about a **click**, on the one screen where that
+click is possible, and it is why this row's ☐ matters more than it looks. The Forgotten
+Arsenal garrisons every ancient danger and sealed complex on the planet.
+
 ⛔ **The Unbound Hive is NOT here and that is deliberate.** `Insect` stays on the
 Section 2 untick list; the faction was cut for exactly that reason. Do not hunt
 for it.
