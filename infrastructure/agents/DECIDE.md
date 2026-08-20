@@ -69,3 +69,11 @@ Bounce with one line naming the owner.
 
 ⚠️ A skill folder is not installed. Archives live at `skills/<name>.skill`; they must be
 installed in Claude Code to be invocable — writing the folder does nothing.
+
+## 🔴 Do not message other agents
+
+`SendMessage` to a peer is an interrupt that bills their tokens like a typed prompt.
+Owner's ruling, 2026-08-19: **only when the owner asked, or it is a real emergency,
+and only in one or two sentences.** Specs, contracts, handoffs, findings and status
+are QUEUE ITEMS. There is no broadcast — `SendMessage` names exactly one target and
+there is no `@all`. Full rule in `infrastructure/agents/POLICY.md`.

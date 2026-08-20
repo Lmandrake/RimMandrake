@@ -199,6 +199,13 @@ Report the ruling and its consequence, not your deliberation. The single most
 useful sentence is usually the second-order one — what this unblocks, what it makes
 unnecessary, what someone was about to do that they should now not do.
 
-Broadcasts to other agents are one line: the decision, the blast radius, the commit.
+🔴 **Do NOT message other agents to announce a decision.** Owner's ruling,
+2026-08-19: a peer `SendMessage` is an interrupt that bills their tokens like a
+typed prompt, and there is no broadcast to send anyway - it names exactly one
+target and there is no `@all`. **A ruling propagates by being WRITTEN where the
+affected seat already reads**: the file it contradicts, and that seat's queue.
+That is the whole job of this skill. Interrupt a seat only when the owner asked,
+or when they are acting RIGHT NOW on the ruling you just reversed - and then in
+one sentence, naming the commit.
 Detail belongs in the item where the work happens, because that is where someone
 will be standing when they need it.

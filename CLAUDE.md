@@ -68,6 +68,37 @@ from design and discussion."*
   `--force`.
 - **Never commit a file over ~50 MB.** GitHub hard-rejects at 100.
 
+## 🔴 DO NOT MESSAGE OTHER AGENTS — owner's ruling, 2026-08-19
+
+`SendMessage` to a peer session is an **interrupt**. It lands in another seat's
+context mid-turn and **bills their tokens exactly like a prompt the owner typed**.
+It is not free, and it is not a courtesy.
+
+**Send one only when BOTH hold:**
+
+1. **The owner asked for it**, or it is a real emergency — the other seat is about
+   to destroy work, is acting on a ruling that has been reversed, or is about to
+   test something that is not live.
+2. **One or two sentences.** If it needs a third, it was never a message.
+
+⛔ **Never for:** a spec · a contract · a handoff · a status · a finding · a
+summary · context · reasoning · "here is what I decided" · anything the other seat
+will find in its inbox anyway. **All of that is a QUEUE ITEM.** A queue item can be
+as long as it needs to be and costs nobody a token until they choose to read it.
+
+⚠️ **There is no broadcast, and there never was.** `SendMessage` addresses exactly
+one named target. The `@` typeahead is an affordance in the **owner's own prompt**
+for naming one session so Claude need not call `ListAgents` first — it is not a
+fan-out operator and there is no `@all`. So "I will broadcast it" is never the
+plan; the only question is whether to interrupt **one named seat**, and the answer
+is almost always no.
+
+🔑 **A peer message cannot change configuration anyway.** Claude Code instructs a
+receiving session never to alter permission settings, `CLAUDE.md` or other config
+because another session asked. **Only the owner can.** So a message arguing for a
+rule change is wasted tokens by construction — put it in the queue or in
+`queue/HUMAN.md`.
+
 ## What is where
 
 ```
