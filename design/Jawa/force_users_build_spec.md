@@ -238,7 +238,15 @@ vibroblade/vibrosword families in `…\2938932438\1.6\Defs\ThingDefs_Weapons\`.
 
 ### 1f. The two faction defNames, verified on disk
 
-**Galactic Empire — `OuterRim_GalacticEmpire`.** Confirmed.
+⛔ **DEAD 2026-08-20 — the Galactic Empire's vessel is vanilla `Empire` (Royalty), not
+this mod def.** Owner: *"OuterRim_GalacticEmpire is no longer in the game, we patch
+Empire."* See `infrastructure/state/OWNER_DECISIONS.md`. The reading below is still
+accurate *about the mod def* — it is kept as evidence of what that def contains — but it
+is **not** the vessel, must not be patched, and must not be cited as "confirmed" for the
+Empire. Everything in this spec that targets it is superseded by vanilla `Empire`, which
+is always loaded and needs no `MayRequire` gate.
+
+~~**Galactic Empire — `OuterRim_GalacticEmpire`.** Confirmed.~~
 `…\294100\2919248699\1.6\Defs\FactionDefs\FactionDefs.xml`. `ParentName="FactionBase"`.
 `basicMemberKind OuterRim_ImpStormtrooper` · `leaderTitle Grand Admiral` (already
 patched to `Sector Director` by us — see below) · `fixedLeaderKinds` =
@@ -605,6 +613,12 @@ Hostility is **not** `permanentEnemy` — it is a modExtension:
     ...
 ```
 
+⛔ **DEAD 2026-08-20 for our purposes.** The `<li>` above is quoted from what the *Force
+Standalone* mod ships and is left verbatim as evidence — but it is **not a line we
+write, and not a line to copy.** Our Empire is vanilla `Empire`, so any
+permanent-enemy list we author names `Empire` with **no `MayRequire`** at all. See
+`infrastructure/state/OWNER_DECISIONS.md`.
+
 **PawnKinds:** abstract `Jedi_Base` / `SithBase` plus 19 concrete kinds.
 Jedi: `Force_Jedi_Padawan` (cp 65), `Force_Jedi_Sentinel`/`Guardian`/`Consular`
 (70), `Force_Jedi_Master` (80), `Force_Jedi_Grandmaster` (100,
@@ -773,13 +787,18 @@ Two new defs, in the house style of
 `…\Mods\Jawa_Patches\Defs\PawnKindDefs\GamorreanPawnKinds.xml` — standalone, no
 `ParentName` (see the load-order trap in §4).
 
+⛔ **CORRECTED 2026-08-20.** The `defaultFactionDef` below read
+~~`OuterRim_GalacticEmpire`~~ until the owner ruled the Empire's vessel is **vanilla
+`Empire`** — *"OuterRim_GalacticEmpire is no longer in the game, we patch Empire."*
+It now reads `Empire`. See `infrastructure/state/OWNER_DECISIONS.md`.
+
 ```xml
 <PawnKindDef>
   <defName>Jawa_Sith_Inquisitor</defName>
   <label>Sith inquisitor</label>
   <labelPlural>Sith inquisitors</labelPlural>
   <race>Human</race>
-  <defaultFactionDef>OuterRim_GalacticEmpire</defaultFactionDef>
+  <defaultFactionDef>Empire</defaultFactionDef>
   <combatPower>220</combatPower>
   <maxPerGroup>1</maxPerGroup>
   <isFighter>true</isFighter>
@@ -879,16 +898,24 @@ loaded by then.
 | file | action |
 |---|---|
 | `…\Mods\Jawa_Patches\Defs\PawnKindDefs\ForceUserPawnKinds.xml` | **NEW.** `Jawa_Sith_Inquisitor`, `Jawa_Jedi_Sentinel`. |
-| `…\Mods\Jawa_Patches\Patches\ForceUsers_Empire.xml` | **NEW.** `PatchOperationFindMod` on *Outer Rim - Galactic Empire*, wrapping `PatchOperationAdd` ops that insert the option into the Combat groups. |
+| `…\Mods\Jawa_Patches\Patches\ForceUsers_Empire.xml` | ~~**NEW.** `PatchOperationFindMod` on *Outer Rim - Galactic Empire*, wrapping `PatchOperationAdd` ops that insert the option into the Combat groups.~~ ⛔ **DEAD 2026-08-20 — the vessel is vanilla `Empire`.** Royalty is always loaded, so **no `PatchOperationFindMod` wrapper is needed or wanted**; patch `Empire` directly. See `infrastructure/state/OWNER_DECISIONS.md`. |
 | `…\Mods\Jawa_Patches\Patches\ForceUsers_Homestead.xml` | **NEW.** Same shape against *Outer Rim - Core*. |
 | `…\Mods\Jawa_Patches\Patches\ImperialDesertDirectorate.xml` | **UNCHANGED.** Do not fold Force work into the v1 label patch. |
 
-⚠️ **xpath shape matters.** The Empire's group makers are seven near-identical
+⛔ **DEAD 2026-08-20 — this whole xpath paragraph describes the wrong def.** The
+Empire's vessel is **vanilla `Empire`**; the `TabulaRasa.PawnGroupMaker_Temperature`
+siblings and `OuterRim_ImpStormtrooper_Desert` option below exist only on the mod def,
+which we no longer patch. 🔑 **The Empire xpath must be re-derived against vanilla
+`Empire`'s own `pawnGroupMakers`** (select by `kindDef`, as the Homestead example does)
+before any Force patch is written. See `infrastructure/state/OWNER_DECISIONS.md`.
+
+~~⚠️ **xpath shape matters.** The Empire's group makers are seven near-identical
 `<li Class="TabulaRasa.PawnGroupMaker_Temperature">` siblings; an index-based
 xpath (`pawnGroupMakers/li[7]`) will silently retarget if the upstream mod
-reorders them. Select by a child instead:
+reorders them. Select by a child instead:~~
 
 ```xml
+<!-- DEAD 2026-08-20: wrong vessel. Kept to show what was superseded. -->
 <xpath>/Defs/FactionDef[defName="OuterRim_GalacticEmpire"]/pawnGroupMakers/li[options/OuterRim_ImpStormtrooper_Desert]/options</xpath>
 ```
 
@@ -915,8 +942,10 @@ work.
 
 ### Free, verified present, zero authoring
 
-- Both target factions, with working raid tables — `OuterRim_GalacticEmpire`,
-  `OuterRim_MoistureFarmers`.
+- Both target factions, with working raid tables — ~~`OuterRim_GalacticEmpire`~~
+  ⛔ **DEAD 2026-08-20 — vanilla `Empire`** (see `infrastructure/state/OWNER_DECISIONS.md`);
+  `OuterRim_MoistureFarmers`. ⚠️ The Empire's raid table is now Royalty's, **not** the
+  Outer Rim mod's — the "zero authoring" claim has not been re-checked against it.
 - A Sith xenotype, a Jedi xenotype, and three Sith castes — all six defNames in §1a.
 - Force sensitivity **and psylink** — `guy762_statgene_force` → `PsychicAmplifier`.
 - Three AI-usable Force-flavoured abilities — `guy762_GeneAbility_forcesight`,

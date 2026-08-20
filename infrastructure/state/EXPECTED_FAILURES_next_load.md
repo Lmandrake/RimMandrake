@@ -141,10 +141,19 @@ sufficient** — it prints before `PatchAll`, so pair it with the negative grep.
 ```bash
 grep -nE "Outer Rim - Galactic Empire|OuterRimGalacticEmpire|Patch_OuterRimCoreMod_Settings|TabulaRasa|OuterRim_GalacticEmpire|OuterRim_ImpStorm" "$LOG"
 ```
-Live gate: `jawa/list_factions` returns `OuterRim_GalacticEmpire`,
-`jawa/get_def PawnKindDef OuterRim_ImpStormtrooper` resolves, **and a settlement
-actually exists on the world map** — `OuterRim_RebelAlliance` was configured,
-present, and never generated, so "the faction resolves" ≠ "it is in the world".
+⛔ **GATE CORRECTED 2026-08-20 — the vessel is vanilla `Empire`.** Owner:
+*"OuterRim_GalacticEmpire is no longer in the game, we patch Empire."*
+~~Live gate: `jawa/list_factions` returns `OuterRim_GalacticEmpire`,~~ → **live gate:
+`jawa/list_factions` returns `Empire`, and a settlement of it actually exists on the
+world map.** 🔑 **The rest of this A3 section stands unchanged** — the *Outer Rim -
+Galactic Empire* MOD is still in the stack and still required, because
+`ImperialDesertDirectorate.xml` puts its `OuterRim_ImpStorm*` pawn kinds into vanilla
+`Empire`'s combat groups. So `jawa/get_def PawnKindDef OuterRim_ImpStormtrooper` **must
+still resolve**; only the FACTION half of the gate moved. The grep line above is also
+still correct — it is looking for the mod's own load failures, not for the faction.
+**And a settlement actually exists on the world map** — `OuterRim_RebelAlliance` was
+configured, present, and never generated, so "the faction resolves" ≠ "it is in the
+world". See `infrastructure/state/OWNER_DECISIONS.md`.
 
 ---
 
@@ -387,7 +396,7 @@ Evidence: eyes on the page plus `rimworld/take_screenshot`.
 | check | pass | fail |
 |---|---|---|
 | 🔴 **CORRECTED B23.** Vanilla **`Empire`** renders as **"The Galactic Empire"** with an **Emperor** | R15/R11 landed. The Empire moved onto the VANILLA Royalty vessel; `label` "The Galactic Empire", `fixedName` "Galactic Empire", `leaderTitle` "Emperor" | reads **"shattered empire"** with a **"high stellarch"** → `ImperialDesertDirectorate.xml` did not land. Record and carry on; do NOT abort |
-| ⚠️ **`OuterRim_GalacticEmpire` now reads "Galactic Empire" and THAT IS CORRECT** | **This block used to demand "Imperial Desert Directorate" here, and that is now the FAILING string.** B40 re-pointed the file off this def onto vanilla `Empire`; nothing patches `OuterRim_GalacticEmpire` any more, so it shows its own shipped label. **Do not read this as a deploy miss and do not regenerate.** | reads "Imperial Desert Directorate" → an OLD `Jawa_Patches` is deployed; the current one has not landed |
+| ~~⚠️ **`OuterRim_GalacticEmpire` now reads "Galactic Empire" and THAT IS CORRECT**~~ ⛔ **DEAD ROW 2026-08-20 — do not check it at all.** The def is not the vessel and not in the design; whatever label it shows is not a signal. See `infrastructure/state/OWNER_DECISIONS.md`. Original text kept below. | **This block used to demand "Imperial Desert Directorate" here, and that is now the FAILING string.** B40 re-pointed the file off this def onto vanilla `Empire`; nothing patches `OuterRim_GalacticEmpire` any more, so it shows its own shipped label. **Do not read this as a deploy miss and do not regenerate.** | reads "Imperial Desert Directorate" → an OLD `Jawa_Patches` is deployed; the current one has not landed |
 | `OuterRim_RebelAlliance` is **ABSENT** from the page | `RebelAlliance_Suppress.xml` set `maxConfigurableAtWorldCreation` to 0 — **absence is the DESIRED outcome, not a defect** | **present and settable** → the patch did not land; file it. **Present but locked at 0** → harmless, worth a line. **Do not revert the patch at the screen.** |
 
 **Also record, as an observation with no pass/fail:** vanilla `Empire`'s name is
@@ -459,7 +468,10 @@ active-mod list twice per run (measured in §1: 6687 and 8241). §1's "any secon
 is the failure" rule was wrong; it is corrected here so nobody re-raises it.
 
 **No live gate is booked for either.** A2's is closed (`ad3e9b0`); A3's live half
-is now S3's KEEP check on `OuterRim_GalacticEmpire`.
+is now S3's KEEP check on ~~`OuterRim_GalacticEmpire`~~ ⛔ **vanilla `Empire`**
+(re-pointed 2026-08-20; `infrastructure/state/OWNER_DECISIONS.md`) — plus the
+`OuterRim_ImpStormtrooper` pawnkind resolve, which is what actually proves the *Outer
+Rim - Galactic Empire* mod loaded.
 
 ---
 
@@ -579,7 +591,8 @@ reconstruct a result from the log.**
 | S3 | `jawa/list_factions` vs checklist — 20 CUT absent | | |
 | S3 | `jawa/list_factions` vs checklist — 6 KEEP present | | |
 | S3 | downstream over-exclusion grep = 0 (at session end) | | |
-| S4 | `OuterRim_GalacticEmpire` label reads "Imperial Desert Directorate" (observation, not a gate) | | |
+| ~~S4~~ | ~~`OuterRim_GalacticEmpire` label reads "Imperial Desert Directorate" (observation, not a gate)~~ ⛔ **DEAD 2026-08-20 — the vessel is vanilla `Empire`; nothing patches this def. Do not record it.** See OWNER_DECISIONS.md. | — | — |
+| S4 | ⭐ **vanilla `Empire`** label reads **"The Galactic Empire"**, `fixedName` **"Galactic Empire"**, `leaderTitle` **"Emperor"** (replaces the struck row above) | | |
 | S4 | `OuterRim_RebelAlliance` absent from the page | | |
 | S5 | `.rws` `anomalyPlaystyleDef` = `AmbientHorror` AND `overrideAnomalyThreatsFraction` = `0` | | |
 | S6 | A2 / A3 log greps unchanged | | |

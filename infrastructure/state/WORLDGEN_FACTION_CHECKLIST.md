@@ -275,7 +275,7 @@ time.
 |---|---|---|---|---|
 | ☐ | **binary star raiders** | `OuterRim_BinaryStarRaiders` | Outer Rim - Core (2919227155) | ordinary row, permanent enemy |
 | ☐ | **Confederacy of Independent Systems** | `JDSCIS_CIS_Faction` | [JDS] Separatist Droid Army (3276499495) | **hidden checkbox**, not a row |
-| ☐ | **`OuterRim_GalacticEmpire`** — *expect its own shipped label, NOT "Imperial Desert Directorate"* | `OuterRim_GalacticEmpire` | Outer Rim - Galactic Empire (2919248699) | 🔴 **NOTHING PATCHES IT ANY MORE.** The Galactic Empire moved to vanilla `Empire` (R10, 2026-08-14). Not a blocker either way — untick or keep as you please. |
+| ~~☐~~ | ~~**`OuterRim_GalacticEmpire`**~~ | ~~`OuterRim_GalacticEmpire`~~ | ~~Outer Rim - Galactic Empire (2919248699)~~ | ⛔ **DEAD ROW 2026-08-20 — do not check it, do not expect it.** Owner: *"OuterRim_GalacticEmpire is no longer in the game, we patch Empire."* The Galactic Empire's vessel is **vanilla `Empire`** (the ⭐ row below) and nothing patches this def. Whatever this row does or does not say at worldgen is **not a signal about anything**. See `infrastructure/state/OWNER_DECISIONS.md`. |
 | ☐ | **moisture farmers** | `OuterRim_MoistureFarmers` | Outer Rim - Core | ordinary row |
 | ☐ | **rogue droid collective** *("Droid Collective")* | `guy762_KotORFaction_RogueDroids` | Star Wars KotOR Droids (3047371944) | **hidden checkbox**, not a row. 🔴 **quest-critical — antagonist of the KotOR distress call. Never untick.** |
 | ☐ | ⭐ **vanilla `Empire`** — *name will be GENERATED, expect a different string* | `Empire` | **vanilla (Royalty)** | 🔴 **ADDED TO KEEP by R3 above.** Not on any untick list, so it survives by default — **confirm it anyway, count ≥ 1, and SCREENSHOT the generated name.** |
@@ -291,22 +291,31 @@ disgraced local aristocracy, and nothing on this page turns on that reading.
 `fixedName` patch lands. That is expected, not a failure.** Whatever it generates
 is the working name. **Screenshot it — that string is the only record.**
 
-🔴 **On the `OuterRim_GalacticEmpire` row, expect "Imperial Desert Directorate" —
+⛔ **THIS WHOLE PARAGRAPH IS DEAD, 2026-08-20 — it tells you to expect a string that
+can no longer appear.** `ImperialDesertDirectorate.xml` was re-pointed on 2026-08-14 and
+**every xpath in it now targets vanilla `Empire`**; it does not mention
+`OuterRim_GalacticEmpire` outside its own comment header. Nothing patches that mod def
+any more, so there is **no expectation to check** on it. The string to look at is on the
+⭐ vanilla `Empire` row above — the patch adds `fixedName` **"Galactic Empire"**, so that
+row should read *Galactic Empire* rather than a generated name once the deploy has
+landed. See `infrastructure/state/OWNER_DECISIONS.md`.
+
+~~🔴 **On the `OuterRim_GalacticEmpire` row, expect "Imperial Desert Directorate" —
 and do not stop for it.**
 `C:\Program Files (x86)\Steam\steamapps\common\RimWorld\Mods\Jawa_Patches\Patches\ImperialDesertDirectorate.xml`
 (repo copy: `D:\Luke\dev\Rimworld\src\Jawa\Jawa_Patches\Patches\ImperialDesertDirectorate.xml`,
 byte-identical on disk 2026-08-13) replaces `label` **and** `fixedName` on
 `OuterRim_GalacticEmpire` with **"Imperial Desert Directorate"**, and `leaderTitle`
-with **"Sector Director"**. That is the string that will be on the page.
+with **"Sector Director"**. That is the string that will be on the page.~~
 
-**It is superseded scaffolding, not a defect.** The Directorate reskin predates
+~~**It is superseded scaffolding, not a defect.** The Directorate reskin predates
 a retired seat's strike of the two-Empire split and has not been redeployed, so the old
 string simply survives. ⚠️ **Seeing "Imperial Desert Directorate" is EXPECTED and
 is NOT evidence of a bad deploy — do not abort worldgen over it.** If the row
 instead reads the stock **"Galactic Empire"**, that only means the Jawa_Patches
 deploy did not land; **record which of the two strings you saw and carry on** —
 neither blocks generation, because this faction is no longer the antagonist the
-design hangs on.
+design hangs on.~~
 
 ---
 
@@ -406,6 +415,8 @@ were. Record what you see.
   Flag for DECIDE alongside the Section 5 contradiction.
 
 **Additive only, no action:** ReGrowth 2 (2260097569) patches both `OuterRim_GalacticEmpire`
+(⛔ **not our Empire** — the vessel is vanilla `Empire`, 2026-08-20; this is a third-party
+patch on a def we do not use, and it is listed here only for completeness)
 and `OuterRim_RebelAlliance` biome/settlement data, and three mods patch `HoraxCult`
 (2661356814, 2893432492, 3407831843). All are `PatchOperation`s against defs that
 still exist; unticking a faction does not delete its def.

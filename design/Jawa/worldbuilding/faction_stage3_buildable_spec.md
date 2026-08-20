@@ -207,6 +207,8 @@ the vanilla defs are what the trade, raid and quest economies are wired to.
 `OuterRim_GalacticEmpire`, a mod def. **Re-point it at vanilla `Empire`.** v1 row 1
 was closed on a label seen live on a vessel we are abandoning, so it has to be
 redone — cheap, but not already done.
+✅ **Confirmed by owner ruling, 2026-08-20** — *"OuterRim_GalacticEmpire is no longer
+in the game, we patch Empire."* `infrastructure/state/OWNER_DECISIONS.md`.
 
 **Four factions ride vanilla vessels** (2, 3, 4, 10) and are the cheap ones.
 **Eight are authored** (1, 5, 6, 7, 8, 9, 11, 12).

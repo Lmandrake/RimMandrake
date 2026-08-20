@@ -5624,8 +5624,8 @@ namespace JawaBench.BridgeTools
             IRimBridgeContext ctx,
             CancellationToken cancellationToken,
             [ToolParameter(Description =
-                "Faction defName, e.g. OuterRim_GalacticEmpire. ⚠️ The defName, not the " +
-                "generated name — 'Imperial Desert Directorate' is a name, not a def.")]
+                "Faction defName, e.g. Empire (the Galactic Empire's vessel). ⚠️ The " +
+                "defName, not the generated name — 'Galactic Empire' is a name, not a def.")]
             string faction,
             [ToolParameter(Description =
                 "Hostile, Neutral or Ally. Case-insensitive. Omit to change goodwill only.",

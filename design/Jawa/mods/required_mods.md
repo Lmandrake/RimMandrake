@@ -768,13 +768,21 @@ source, and it settles the question outright:
   by `CommonUtil.ValidFactionDef` and assigns `pursuitFactionDef`.
 
 **Eligibility is `displayInFactionSelection && !isPlayer && canStageAttacks &&
-defName != "PColony"`.** Checked against the live dump: `OuterRim_GalacticEmpire`
-(the Imperial Desert Directorate) reads **true / false / true** ⇒ **ELIGIBLE.**
+defName != "PColony"`.** ~~Checked against the live dump: `OuterRim_GalacticEmpire`
+(the Imperial Desert Directorate) reads **true / false / true** ⇒ **ELIGIBLE.**~~
+⛔ **DEAD 2026-08-20 — the Empire's vessel is vanilla `Empire`, not that mod def.**
+Owner: *"OuterRim_GalacticEmpire is no longer in the game, we patch Empire."* See
+`infrastructure/state/OWNER_DECISIONS.md`. The eligibility **rule** above is
+unaffected, but the worked example is on a def we do not use — 🔎 **vanilla `Empire`
+has not been checked against those three flags.** Do not assume it passes: `Empire`
+ships Royalty's own `canStageAttacks`/`displayInFactionSelection` values, which nobody
+has read for this purpose.
 
 ⇒ ~~**Mechanoids can therefore be switched off completely and dropped from
 evaluation.**~~ ⛔ **CONCLUSION DEPRECATED — owner, 2026-08-15: "We are keeping
 the mechanoids."** The *finding above it stands and is still useful*: pursuit is
-redirectable to any `ValidFactionDef`, and `OuterRim_GalacticEmpire` is eligible.
+redirectable to any `ValidFactionDef`. ~~and `OuterRim_GalacticEmpire` is eligible.~~
+⛔ **DEAD 2026-08-20 — wrong vessel; re-check vanilla `Empire` instead.**
 What is dead is the inference that this licenses switching mechanoids off. The
 redirect is now a flavour choice about *who chases the gravship*, not a route to
 removing the Mechanoid faction.

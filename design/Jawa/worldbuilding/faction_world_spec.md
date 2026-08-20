@@ -156,7 +156,7 @@ says.**
 
 | our faction | vanilla def | what the wiring buys us |
 |---|---|---|
-| **The Galactic Empire** | vanilla `Empire` | Royalty's titles, permits, gear tiers and quest surface. 🔴 **Not `OuterRim_GalacticEmpire`** — the shipped patch targets that mod def and must be re-pointed |
+| **The Galactic Empire** | vanilla `Empire` | Royalty's titles, permits, gear tiers and quest surface. 🔴 **Not `OuterRim_GalacticEmpire`** — the shipped patch targets that mod def and must be re-pointed. ✅ **Owner ruling 2026-08-20 confirms this** — `infrastructure/state/OWNER_DECISIONS.md` |
 | **Homestead Defense League** | vanilla `OutlanderCivil` | the trade and caravan economy the whole game assumes |
 | **Deep Desert Tribes** | vanilla `TribeCivil` | tribal incidents, neolithic pawn kinds, the raid tier below the Empire |
 | **Blackstar Company** | vanilla `Pirate` | the default hostile-raid backbone — and it ships `permanentEnemy: true`, which it keeps |

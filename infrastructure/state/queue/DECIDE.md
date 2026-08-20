@@ -742,4 +742,16 @@ verify:   a single audit doc exists naming vanilla `Empire` as the vessel, listi
           is missing for v1, and citing no quarantined file.
 criteria: the Empire is buildable from one document without anyone re-deriving which
           faction def it is.
+          🔴 **Two checks were "closed" against the wrong def and are now genuinely
+          open** — found while propagating the ruling, 2026-08-20:
+          1. **The Force-patch xpath for the Empire does not exist.** The old one
+             selected on `TabulaRasa` pawnGroupMaker classes; vanilla `Empire` has none
+             of them, so the xpath must be re-derived against `Empire`'s own
+             `pawnGroupMakers`. ✅ No `PatchOperationFindMod` wrapper is needed — Royalty
+             is always loaded.
+          2. **`Empire`'s three pursuit-eligibility flags have never been read** —
+             `displayInFactionSelection`, `canStageAttacks`, `defName != "PColony"`. The
+             eligibility rule survives; only the worked example died with the old def.
+          Neither breaks anything today. Both are checks that were passed against a def
+          we do not use.
 state:    open — raised by REP, 2026-08-20, relaying the owner.

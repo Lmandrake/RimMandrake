@@ -257,8 +257,19 @@ def i_factions(s, cfg):
     "ABSENT is the DESIRED outcome ... do NOT revert the patch at the screen."
 
     So PRESENT is the failure here: it means the suppression patch did not take.
-    The control is `OuterRim_GalacticEmpire`, which must be present -- that also
-    closes the EXPECTED_FAILURES A3 gate in the same call.
+    The control is vanilla `Empire`, which must be present -- that also closes the
+    EXPECTED_FAILURES A3 live half in the same call.
+
+    🔴 CONTROL RE-POINTED 2026-08-20, owner's ruling: "OuterRim_GalacticEmpire is
+    no longer in the game, we patch Empire." The control USED to be
+    `OuterRim_GalacticEmpire`; that def is a mod faction nothing patches and nothing
+    in the design uses, so its presence or absence proved nothing about our world.
+    The Galactic Empire is vanilla `Empire` (Royalty), reskinned by
+    `Jawa_Patches/Patches/ImperialDesertDirectorate.xml`.
+    See infrastructure/state/OWNER_DECISIONS.md.
+
+    ⚠️ The substitution is a plain string membership test against the defNames
+    `jawa/list_factions` returns -- nothing else in this item depends on the value.
 
     ⚠️ Nothing in Player.log reports a faction that simply fails to appear. That
     cuts both ways, which is why this is checked by name rather than inferred.
@@ -267,7 +278,7 @@ def i_factions(s, cfg):
     rows = (r or {}).get("factions") or []
     names = {f.get("defName") for f in rows}
     want = "OuterRim_RebelAlliance"
-    control = "OuterRim_GalacticEmpire"
+    control = "Empire"          # vanilla Royalty vessel; see docstring (2026-08-20)
     here, ctrl = want in names, control in names
     record("A1", "Rebel Alliance stays suppressed", FAIL if here else PASS,
            "%s %s (absent is CORRECT, ruling R2); %d factions, "

@@ -283,8 +283,12 @@ goes 7 → 8. Do not book a feasibility check; it is answered.
 
 **R10 · The shipped Empire patch is on the wrong vessel.**
 `Jawa_Patches/Patches/ImperialDesertDirectorate.xml` targets
-`OuterRim_GalacticEmpire`, a mod def. R9 and `WORLDGEN_FACTION_CHECKLIST` R3 both
+~~`OuterRim_GalacticEmpire`, a mod def.~~ R9 and `WORLDGEN_FACTION_CHECKLIST` R3 both
 put the Galactic Empire on vanilla `Empire`. ⇒ **Re-point the patch.**
+✅ **DONE, and ratified by owner ruling 2026-08-20** — *"OuterRim_GalacticEmpire is no
+longer in the game, we patch Empire."* (`infrastructure/state/OWNER_DECISIONS.md`).
+Every xpath in `ImperialDesertDirectorate.xml` now targets vanilla `Empire`; the mod def
+is not patched by anything and is not the vessel.
 ⚠️ **Consequence: v1 row 1 was closed on a label seen live on a vessel we are
 abandoning. It has to be redone.** Cheap, but it is not already done.
 
@@ -320,7 +324,7 @@ AUTHORED factions owe them.** Measured across every candidate vessel:
 | vessel | settleW | groupMakers | nameMaker |
 |---|---|---|---|
 | `Empire` | 1 | 5 | `NamerFactionEmpire` |
-| `OuterRim_GalacticEmpire` | 0.3 | 12 | **none** |
+| ~~`OuterRim_GalacticEmpire`~~ ⛔ **not a candidate vessel, 2026-08-20** — kept only as the measurement that argued against it | 0.3 | 12 | **none** |
 | `OutlanderCivil` | 1 | 8 | `NamerFactionOutlander` |
 | `TribeCivil` | 1 | 12 | `NamerFactionTribal` |
 | `Pirate` | 1 | 8 | `NamerFactionPirate` |
@@ -339,7 +343,8 @@ is strictly better than either half:
   `NamerFactionEmpire`, and it satisfies the ratified checklist R3.
 - its combat kinds are `Empire_Fighter_Cataphract` / `Janissary` / `Champion` —
   Royalty's medieval imperials, wrong for this campaign.
-- `OuterRim_GalacticEmpire` ships `OuterRim_ImpDeathTrooper`, `ImpISBAgent`,
+- the *Outer Rim - Galactic Empire* **mod** (whose `OuterRim_GalacticEmpire` FactionDef
+  we do **not** use — see R10) ships `OuterRim_ImpDeathTrooper`, `ImpISBAgent`,
   `ImpRangeTrooper`, `ImpStormArty`, `ImpStormIncinerator`, `ImpStormJump`.
 
 ⇒ **Patch vanilla `Empire`'s combat `pawnGroupMakers` options to the

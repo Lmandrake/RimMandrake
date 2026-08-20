@@ -318,4 +318,11 @@ spec:     🔴 **OWNER RULING 2026-08-20** (`OWNER_DECISIONS.md`, end of file): 
 verify:   `About.xml` names vanilla `Empire` as the Directorate's vessel, and no prose in
           `src/Jawa/Jawa_Patches/` claims we patch `OuterRim_GalacticEmpire`.
 criteria: the shipped mod description matches what the mod actually patches.
+          ⚠️ **Also, low priority, and it needs YOUR hands not REP's:**
+          `bridgetools/JawaBench.BridgeTools/JawaBenchTerrainTools.cs` had one
+          `SetFactionRelation` parameter DESCRIPTION re-pointed to `Empire` (it told
+          users to aim at the dead def). No behaviour change — but it is in a compiled
+          assembly, so **the repo and the deployed DLL now differ by that string until
+          the next rebuild.** Fold it into whatever rebuild comes next; do not spend a
+          game-down window on it alone.
 state:    open — raised by REP, 2026-08-20; unblocked same day by the owner.
