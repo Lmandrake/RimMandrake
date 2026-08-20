@@ -124,3 +124,64 @@ Everything here was read out of a running game or off an artifact a running game
 - **No config file waits for anything** — not RimSort, not game close. Owner ruling
   `0460ee4`, 2026-08-15. **Assemblies are the only exception**, because the OS locks a
   loaded DLL. This retires every "check whether RimSort is open" step.
+
+## The planet, read off the assembly — CHECK, 2026-08-19
+
+Decompiled, not inferred, from
+`C:\Program Files (x86)\Steam\steamapps\common\RimWorld\RimWorldWin64_Data\Managed\Assembly-CSharp.dll`.
+Nobody needs a live game to re-derive these; they need `ilspycmd`.
+
+- **How to decompile here.** `ilspycmd` installs via `C:\Program Files\dotnet\dotnet.exe
+  tool install -g ilspycmd`, but ships targeting net6 while this machine has net8 only —
+  it will not launch until `rollForward: LatestMajor` is added to its
+  `ilspycmd.runtimeconfig.json` under `C:\Users\Mandrake\.dotnet\tools\.store\`.
+  `ilspycmd -p -o <dir> <dll>` writes the whole assembly as a C# project. There is no
+  `dotnet` on the WSL PATH; use the Windows exe.
+- 🔴 **Rivers and roads: use `WorldGrid.OverlayRiver(from, to, def)` /
+  `OverlayRoad(...)`, never `SurfaceTile.potentialRivers` / `potentialRoads` directly.**
+  Both are public and both append to **BOTH** endpoints. The save stores each undirected
+  edge once (origin < target, reciprocity 0.000) — that is a serialization fact and it is
+  FALSE of the live object graph.
+- **There is no neighbour-slot index at runtime.** `SurfaceTile.RiverLink` is
+  `{ PlanetTile neighbor; RiverDef river; }`, `RoadLink` is `{ PlanetTile neighbor;
+  RoadDef road; }`. The link holds the tile. The 0.197-vs-0.161 offline reconstruction
+  result is moot, not a blocker.
+- **`riverDist` needs no BFS.** `OverlayRiver` ends
+  `to.riverDist = max(to.riverDist, from.riverDist + 1)` and nothing else in the assembly
+  writes it — so it is order-dependent: call rivers **mouth first, upstream after**.
+- **Settlements:** `WorldObjectMaker.MakeWorldObject(layer.Def.SettlementWorldObjectDef)`
+  → `SetFaction` → `.Tile` → `INameableWorldObject.Name` → `Find.WorldObjects.Add`.
+  ⚠️ It is `layer.Def.SettlementWorldObjectDef`, **not** `WorldObjectDefOf.Settlement`.
+- **Features:** `new WorldFeature(def, layer)` → `.name` → `grid[t].feature = f` per member
+  tile → `drawCenter` / `maxDrawSizeInTiles` → append to `Find.WorldFeatures.features`.
+  `FeatureWorker.AssignBestDrawPos` is `protected`; supply the centroid yourself.
+- **`Tile.feature` is a `WorldFeature` object reference**, not a ushort (the save stores
+  the **uniqueID**). **`Tile.pollution` is a `float`** — the `/65535` scale argument is a
+  save-format question only.
+- ⚠️ **`SurfaceTile.Roads` / `.Rivers` return `null`** when the tile's biome sets
+  `allowRoads` / `allowRivers` false. An authored road across such a biome is stored and
+  invisible — it is not a missing write.
+
+## Companion DLL and mod list — CHECK, 2026-08-19
+
+- **The companion is 32 `jawa/` tools, not 26.** Verified by `strings -a` on the deployed
+  `C:\Program Files (x86)\Steam\steamapps\common\RimWorld\BridgeTools\JawaBench\JawaBench.BridgeTools.dll`,
+  and the repo source matches it. `skills/rimbridge/SKILL.md` still says 26 — stale.
+  ⚠️ The companion lives in `<gamedir>\BridgeTools\`, a **sibling of `Mods\`**, not inside it.
+- **All four world tools are READ-ONLY** — `world_stats`, `world_tile_export`,
+  `world_neighbors`, `biome_probe`. Nothing in the companion writes a tile. The batch tile
+  setter and link setter are the work in `queue/CHECK.md worldpaint-live-bridge-route-9d41c7`.
+- **`ModsConfig.xml` is now 583 active mods**, down from 584: `mandrake.jawaseashaper`
+  removed 2026-08-19 by owner ruling. Backup at `...\Config\ModsConfig.xml.bak-preseashaper`.
+- **Scale 7 / coverage 100% is a PRESET FILE, not a mod of ours** —
+  `C:\Program Files (x86)\Steam\steamapps\workshop\content\294100\3626210061\Worldbuilder\TidallyLocked\Preset.xml`
+  carries `<myLittlePlanetSubcount>7</myLittlePlanetSubcount>` and `<planetCoverage>1</planetCoverage>`.
+  Confirmed present 2026-08-19. The four mods behind it — `oblitus.mylittleplanet`,
+  `ferny.worldbuilder`, `7f.alienworlds`, `7f.alienworlds.tidallylocked` — are all active.
+  🔴 **`AlienWorldsFramework.Refresh()` deletes and rewrites that folder, and an ABSENT
+  `myLittlePlanetSubcount` Scribes back as 10, not 7** — it fails silently to the wrong
+  planet. Rewrite with `python3 src/RimMandrake/Utils/set_planet_subcount.py 7`.
+- **Savegame WRITING is gone** (owner, 2026-08-19): nine scripts deleted and
+  `worldmap.py`'s two `write()` methods now raise. Reading, decoding and rendering are
+  untouched, and `src/RimMandrake/Utils/rimbench/savemap.py` is kept whole — it refuses
+  to overwrite its source and passes `fogGrid` through undecoded.
