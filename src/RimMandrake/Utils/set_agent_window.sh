@@ -58,9 +58,9 @@
 # with `--apply`; it takes effect at each seat's NEXT launch and cannot be
 # applied mid-session by anything.
 #
-# So ALWAYS confirm an address with `python3 src/RimMandrake/Utils/peers.py` before initiating
-# contact. It joins the role file to the live registry and prints both columns:
-# send to NAME, read SEAT to know who that is.
+# Addressing a peer is moot: agent-to-agent messaging is OFF (owner, 2026-08-19)
+# and hook-enforced by .claude/hooks/block_peer_messages.py. The old `peers.py`
+# registry reader is quarantined in infrastructure/disposing/code_2026-08-20/.
 #
 # ⚠️ The conversation and messaging names land on your NEXT prompt, not this
 # turn: the role is declared mid-turn and no post-tool hook event accepts a
@@ -192,7 +192,7 @@ if [ -n "$SID" ]; then
     echo "  (both apply on your NEXT prompt — immediate on a resume)"
     echo "messaging   : UNCHANGED — this cannot set the name peers address."
     echo "  That is fixed at launch by --name; see ADDRESSABILITY in this file."
-    echo "  Peers still reach you at your generated name: python3 src/RimMandrake/Utils/peers.py"
+    echo "  Peers still reach you at your generated name, but peer messaging is OFF."
 else
     echo "conversation: NOT SET — CLAUDE_CODE_SESSION_ID is unset." >&2
     echo "  The window is named, but peers cannot address you by seat and your" >&2

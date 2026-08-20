@@ -356,3 +356,51 @@ SOCIAL   social_list · social_gathering_start · social_marry · ritual_start �
 * ⚠️ **`PsychicShock` is a HediffDef and `Bioferrite` a ThingDef** — neither is a DamageDef.
 * 📌 A quicktest map can spawn mid-**fleshbeast assault**, which blocks every social event.
   The tools were telling the truth; the environment was hostile.
+
+## Gas, zones, areas — M4, commit `669be9e` — CHECK, 2026-08-19
+
+```
+GRID    set_gas          add | clear, four types only:
+                         BlindSmoke · ToxGas · RotStink · DeadlifeDust
+ZONE    map_zones        listZones · createZone (stockpile | growing) · paintZone ·
+                         deleteZone · listAreas · paintArea
+```
+
+* ✅ 64 cells of `ToxGas` added and cleared; stockpile created 36/36 cells, growing zone
+  25/25 with `Plant_Potato` set, painted and deleted; `Home` and `NoRoof` painted with
+  `trueCount` following.
+* 🔴 **A bulk `AddCell` REFUSES cells silently** — the first cut wrapped it in a bare
+  `catch {}` and a 6×6 stockpile took **11 of 36 cells while reporting success**. The tool
+  now returns `cellsRequested`, `refusedCount` and `refusedCells[]` with each refused
+  cell's terrain, and says plainly when nothing changed. Read those, never the bare success.
+* ⚠️ `CheckContiguous()` runs after every bulk `AddCell` — a rect that straddles an
+  obstacle does not stay one zone.
+* 📌 The 1.6 area name really is **`Area_SnowOrSandClear`**, renamed from `Area_SnowClear`.
+
+## Weather, game conditions and raids — E1, commit `a5b0f2d` — CHECK, 2026-08-19
+
+```
+READ    weather_get · raid_preview            ungated
+GM      weather_set · game_condition · fire_raid    #if JAWA_GM_TOOLS
+```
+
+* ⭐ **A REAL RAID FIRED AND ARRIVED.** RaidEnemy, 1,200 pts, `ImmediateAttack`,
+  `EdgeWalkIn` → **14 `TribeSavageImpid` raiders**, pawn count 10 → 24. Confirmed by
+  counting pawns, not by `executed: true`.
+* 🔴 **`CanFireNow` being FALSE does NOT block `TryExecute`.** It reported false throughout
+  and the raid fired anyway — it carries storyteller pacing the executor never consults.
+  It is not a gate.
+* 🔴 **`RaidStrategyDef.Worker.CanUseWith` is MEANINGLESS while `parms.faction` is null** —
+  all 11 strategies then report unusable at every point value, which reads as "raids are
+  impossible". Resolve an attacker first. With one resolved the point gating is visible:
+  35 → none · 250 → ImmediateAttack, ImmediateAttackSmart, StageThenAttack ·
+  1000 → + ImmediateAttackBreaching(Smart), ImmediateAttackSappers · 3000 → + Siege.
+* 🔴 **Ending a condition LOOKS like it failed while paused.** `Duration = TicksPassed`
+  expires on the NEXT tick, so a paused game still lists it; stepping 5 ticks cleared it.
+  The tools report `endsNextTick` and `gamePaused`.
+* 🔑 **A plain `TransitionTo` is temporary; only `lockWeather=true` is durable** — it
+  registers a permanent `GameCondition_ForceWeather` and `WeatherController` appears in the
+  active condition list. That is the only durable weather control in the game.
+* ⚠️ **`Planetkiller` is hard-blocked** by the tool, and says why: it ends the game.
+* 📌 `weather_get` exposes what nothing else does — `threatPoints` (35 on a fresh colony)
+  and the wealth split (total / items / buildings).
