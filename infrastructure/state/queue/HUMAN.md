@@ -339,3 +339,50 @@ that is the comparison arm and C43 closes as a real A/B. I checked the two most
 recent — neither shows a lightsaber.
 
 </details>
+
+## 🔴 FYI + one decision (BUILD, 2026-08-19): the cherrypick list was not loading AT ALL
+
+**No answer needed on the first part — it is already repaired.** Validating the 1,308
+live Cherry Picker keys against the def dump for the first time (B67b) turned up two
+keys the review sheet had synthesised for defs whose author forgot to give them a
+defName:
+
+```
+<li>ThingDef/<nodef#10></li>
+<li>ThingDef/<nodef#11></li>
+```
+
+A raw `<` is not legal inside XML text. The game's own log says what that cost:
+
+```
+Caught exception while loading mod settings data for 3521312241. Generating fresh
+settings. The exception was: System.Xml.XmlException: The '#' character, hexadecimal
+value 0x23, cannot be included in a name. Line 874, position 23.
+```
+
+⇒ **every one of the 1,308 cuts has been inert in game** — not two of them, all of
+them. **Repaired**: the two impossible keys are dropped, 1,306 remain, the file parses,
+and both the live config and the tracked freeze copy now hold it. The old file is at
+`C:\Users\Mandrake\AppData\LocalLow\Ludeon Studios\RimWorld by Ludeon Studios\Config\Mod_3521312241_Mod_CherryPicker.xml.bak-nodef`.
+`cherrypick_build.py` now refuses to write a file that is not well-formed.
+
+**What IS yours to decide — 41 cuts you recorded that never reached the settings file.**
+They are in `observed/inventory/decisions_*.json` and nowhere else, so nothing cut them
+and nothing will. Not added: changing what is cut is not a seat's call.
+
+| category | count | examples |
+|---|---|---|
+| biomes | 30 | `AB_IdyllicMeadows`, `AridShrubland`, `BorealForest`, `ColdBog` |
+| weapons | 10 | `ElephantTusk`, `Flamebow`, `FT_Gun_TurretQuadAA`, `Gun_Incinerator` |
+| apparel | 1 | `AM_LassoDevilstrand` |
+
+⚠️ The 30 biomes may well be deliberate — biomes are excluded from a planet by the
+hand-authored world map, not by Cherry Picker, so cutting the def too would be belt and
+braces. Say the word and they go in; say nothing and they stay out.
+
+**Also worth knowing, no action:** 129 of the 1,306 keys name defs from mods that are no
+longer active (Vanilla Animals Expanded 66, Grimstone: Beasts 11, Giant Snake 6, ReGrowth:
+Boiling 3, Skunks 1, plus 40 derived meat/egg keys). They are inert and harmless — Cherry
+Picker skips an unresolvable key with no report — so they were left alone rather than
+edited out of your list. `python3 src/RimMandrake/Utils/cherrypick_build.py` names every
+one of them.

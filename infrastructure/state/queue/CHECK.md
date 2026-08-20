@@ -1256,3 +1256,21 @@ verify:   EMPTY
 criteria: the painted world is visible in a live game and the owner does not immediately
           name a defect. NOT "the tool returned success".
 state:    ready
+
+## cherrypick-settings-actually-load-3b71ae
+row:      10
+spec:     The Cherry Picker settings file has never loaded. Two synthesised keys,
+          `ThingDef/<nodef#10>` and `<nodef#11>`, put a raw `<` in the XML; the game
+          logged `Caught exception while loading mod settings data for 3521312241.
+          Generating fresh settings.` and discarded ALL 1,308 cuts. Repaired offline:
+          1,306 keys, well-formed, written to the live config and the tracked freeze.
+verify:   done offline — output parses, and is the ratified list minus exactly those
+          two lines (`diff <(grep -v nodef <freeze>) <new>` empty). See the closing
+          commit.
+criteria: on the NEXT load, `Player.log` carries NO `mod settings data for 3521312241`
+          exception, and a cut def is actually gone — pick one that resolves in the
+          dump and is not from a dead mod, e.g. `ThingDef/Gun_BlastCharge`, and confirm
+          it no longer appears in game. ⚠️ Cherry Picker NEUTERS ThingDef/PawnKindDef/
+          IncidentDef in place rather than deleting them, so check the trade/craft/spawn
+          lists, not the def database.
+state:    ready

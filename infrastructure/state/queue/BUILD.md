@@ -1861,9 +1861,21 @@ verify:   (a) `git check-ignore -v observed/inventory/decisions_weapons.json` re
           the freeze copy and the live config already agree at 1,308 and are the
           reference, not the output.
 criteria: none — offline. Nothing here touches the game and nothing waits on a load.
-state:    🔴 **DO IT NOW — OWNER, 2026-08-15. Ahead of the worldgen critical path.**
-          *"Do it now — not a scope call."* ~1,300 owner judgements on one disk with no
-          version control is data-loss exposure, not v1/v2 scope. Offline, no game.
+state:    done 2026-08-19, both halves.
+          (a) `.gitignore` negates `decisions_*.json` — the `/*` form, because git
+          cannot re-include a file whose parent directory is excluded. Seven files,
+          160 KB, tracked and pushed; the 678 MB of sheets stay out.
+          (b) `cherrypick_build.py` now sources ratified XML + KEYS + decisions,
+          validates all 1,306 and reports by name.
+          🔴 **The verify clause was unsatisfiable and the reason matters more than
+          the item did.** It demanded output byte-identical to the freeze at 1,308 —
+          but the freeze is not well-formed XML. `ThingDef/<nodef#10>` and `<nodef#11>`
+          put a raw `<` in the file and the game log reads *"Caught exception while
+          loading mod settings data for 3521312241. Generating fresh settings."* ⇒
+          **none of the 1,308 cuts has ever applied.** Output is 1,306: the ratified
+          list minus exactly those two impossible keys. Filed to HUMAN.md with the 41
+          recorded-but-unapplied cuts (30 of them biomes) that are the owner's call.
+          Live half -> CHECK `cherrypick-settings-actually-load-3b71ae`.
 
 ## drive-the-batched-deploy-pass-8ad4f1
 row:      10

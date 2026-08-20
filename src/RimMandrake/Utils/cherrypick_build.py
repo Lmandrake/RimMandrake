@@ -29,6 +29,20 @@ WHAT IT CHECKS
     not a blueprint, frame or unfinished thing; PawnKindDef must not be Colonist;
     QuestScriptDef must not be referenced by any IncidentDef.
 
+WHERE THE LIST COMES FROM. Three sources, unioned:
+
+  1. RATIFIED — `deployed/config/v1_freeze/Mod_3521312241_Mod_CherryPicker.xml`,
+     the owner's ratified cut list, tracked in git and byte-identical to the live
+     config. It is the ANCHOR: this script never drops a key that is in it.
+  2. KEYS — the hand-authored Anomaly + GravTech picks below. All of them are
+     already inside (1); the list is kept because it carries the reasoning.
+  3. `observed/inventory/decisions_*.json` — the owner's per-category keep/cut
+     calls, made by hand through cherrypick_review.py. Untyped: a def TYPE is
+     resolved for each name from the live dump.
+
+⛔ A cut recorded in (3) but absent from (1) is REPORTED, never added. Changing
+what is cut is the owner's decision, not this script's — see queue/HUMAN.md.
+
     python3 cherrypick_build.py                 # validate only
     python3 cherrypick_build.py --write         # validate, then write the file
 """
@@ -45,6 +59,18 @@ import game_paths as GP                       # noqa: E402
 
 DUMP = os.path.join(GP.LOCALLOW, "DefDump", "defs")
 OUT = os.path.join(GP.LOCALLOW, "Config", "Mod_3521312241_Mod_CherryPicker.xml")
+REPO = os.path.abspath(os.path.join(HERE, "..", "..", ".."))
+RATIFIED = os.path.join(REPO, "deployed", "config", "v1_freeze",
+                        "Mod_3521312241_Mod_CherryPicker.xml")
+DECISIONS = os.path.join(REPO, "observed", "inventory", "decisions_*.json")
+
+# Which def type a review category's names are expected to be. The dump is asked
+# first; this is the tie-break when a name exists as more than one type.
+CATEGORY_TYPE = {
+    "animals": "ThingDef", "weapons": "ThingDef", "apparel": "ThingDef",
+    "items": "ThingDef", "buildings": "ThingDef", "plants": "ThingDef",
+    "biomes": "BiomeDef",
+}
 
 # Every def type Cherry Picker's Setup() puts into allDefs. Anything not here is
 # unreachable — a key naming it is accepted and silently does nothing.
@@ -161,6 +187,52 @@ KEYS = [
 ]
 
 
+def load_ratified():
+    """The owner's ratified key list, in file order. This is the anchor: every
+    key here survives into the output, whether or not it still resolves."""
+    import re
+    with open(RATIFIED, encoding="utf-8") as fh:
+        return re.findall(r"<li>(.*?)</li>", fh.read())
+
+
+def load_decisions():
+    """defName -> {"category":..., "mod":...} for every CUT entry the owner made
+    through cherrypick_review.py. Untyped by design — the review sheet works in
+    defNames, and the type is recovered from the dump."""
+    out = {}
+    for path in sorted(glob.glob(DECISIONS)):
+        try:
+            with open(path, encoding="utf-8") as fh:
+                data = json.load(fh)
+        except (OSError, ValueError) as exc:
+            sys.stderr.write("warning: unreadable %s: %s\n" % (path, exc))
+            continue
+        cat = data.get("category") or os.path.basename(path)[10:-5]
+        for entry in data.get("cut") or []:
+            if isinstance(entry, str):
+                name, mod = entry, "?"
+            else:
+                name = entry.get("key") or entry.get("defName")
+                mod = entry.get("mod") or "?"
+            if name:
+                out[name] = {"category": cat, "mod": mod}
+    return out
+
+
+def type_of(name, category, index):
+    """Best def type for an untyped decision name: the dump's answer if it has
+    one, else the category's expected type, else None."""
+    got = sorted(index.get(name, {}))
+    want = CATEGORY_TYPE.get(category)
+    if want and want in got:
+        return want
+    if len(got) == 1:
+        return got[0]
+    if got:
+        return got[0]
+    return want
+
+
 def load_index(types_needed):
     """defName -> {defType: record} for the types we care about, plus the set of
     QuestScriptDefs referenced by an IncidentDef (that gate needs a whole-type
@@ -264,6 +336,17 @@ def check(keys):
 
     problems = []
     for key in keys:
+        # 0. 🔴 XML-illegal characters. WORSE than the no-slash case, and it is
+        # not hypothetical: `<nodef#10>` shipped in the live config and the game
+        # log reads "Caught exception while loading mod settings data for
+        # 3521312241. Generating fresh settings." — the ENTIRE file is discarded
+        # and every other cut in it silently stops existing.
+        if any(c in key for c in "<>&"):
+            problems.append((key, "FATAL", "contains XML-illegal <, > or & — the "
+                                           "game cannot parse the settings file at "
+                                           "all and DISCARDS EVERY KEY IN IT"))
+            continue
+
         # 1. shape. This is the one that can destroy the whole list.
         parts = key.split("/")
         if len(parts) < 2 or not parts[0] or not parts[1]:
@@ -312,35 +395,102 @@ def check(keys):
     return problems
 
 
-def write_file(keys):
+def write_file(keys, out=None):
+    out = out or OUT
     lines = ['<?xml version="1.0" encoding="utf-8"?>',
              "<SettingsBlock>",
              '\t<ModSettings Class="CherryPicker.ModSettings_CherryPicker">',
              "\t\t<keys>"]
     lines += ["\t\t\t<li>%s</li>" % k for k in keys]
     lines += ["\t\t</keys>", "\t</ModSettings>", "</SettingsBlock>", ""]
-    if os.path.exists(OUT):
-        backup = OUT + ".bak-create"
+    text = "\n".join(lines)
+
+    # 🔴 The last gate, and the one that was missing. An unparseable settings file
+    # is not a bad key — it is the loss of the whole list, silently, at load.
+    import xml.etree.ElementTree as ET
+    try:
+        ET.fromstring(text)
+    except ET.ParseError as exc:
+        raise SystemExit("REFUSING TO WRITE: the file would not be well-formed "
+                         "XML (%s). The game would discard every key in it." % exc)
+
+    if os.path.exists(out):
+        backup = out + ".bak-create"
         if not os.path.exists(backup):
-            with open(OUT, "rb") as src, open(backup, "wb") as dst:
+            with open(out, "rb") as src, open(backup, "wb") as dst:
                 dst.write(src.read())
             print("  existing file backed up -> %s" % backup)
-    with open(OUT, "w", encoding="utf-8") as fh:
-        fh.write("\n".join(lines))
-    print("  wrote %d keys -> %s" % (len(keys), OUT))
+    with open(out, "w", encoding="utf-8") as fh:
+        fh.write(text)
+    print("  wrote %d keys -> %s" % (len(keys), out))
 
 
 def main():
-    print("validating %d keys against the live dump..." % len(KEYS))
-    problems = check(KEYS)
-    for key, kind, why in problems:
-        print("  %-7s %-46s %s" % (kind, key, why))
-    if problems:
-        print("\n%d problem(s). NOTHING WRITTEN." % len(problems))
-        return 1
-    print("  all %d keys resolve, are in scope, and pass their gates." % len(KEYS))
+    ratified = load_ratified()
+    decided = load_decisions()
+
+    # The union, in a deterministic order: the ratified list exactly as the owner
+    # left it, then anything hand-authored that is somehow not already in it.
+    keys, seen = list(ratified), set(ratified)
+    for k in KEYS:
+        if k not in seen:
+            keys.append(k)
+            seen.add(k)
+
+    print("sources: %d ratified + %d hand-authored (%d of them new) "
+          "+ %d recorded cut decisions"
+          % (len(ratified), len(KEYS), len(keys) - len(ratified), len(decided)))
+    print("validating %d keys against the live dump..." % len(keys))
+
+    problems = check(keys)
+    fatal = [p for p in problems if p[1] == "FATAL"]
+    silent = [p for p in problems if p[1] != "FATAL"]
+
+    if silent:
+        print("\n%d key(s) DO NOT RESOLVE against the current mod set. They are "
+              "kept — this script never edits the owner's list — but each one is "
+              "inert in game and reports nothing there:" % len(silent))
+        by_mod = {}
+        for key, _kind, _why in silent:
+            by_mod.setdefault(decided.get(key.split("/")[-1], {}).get(
+                "mod", "not in any decisions_*.json"), []).append(key)
+        for mod in sorted(by_mod):
+            print("  %-42s %4d  %s" % (mod, len(by_mod[mod]),
+                                       ", ".join(sorted(by_mod[mod])[:3]) +
+                                       (" ..." if len(by_mod[mod]) > 3 else "")))
+
+    # Cuts the owner recorded that never reached the settings file.
+    listed = {k.split("/")[1] for k in keys if "/" in k}
+    unapplied = sorted(n for n in decided if n not in listed)
+    if unapplied:
+        cats = {}
+        for n in unapplied:
+            cats.setdefault(decided[n]["category"], []).append(n)
+        print("\n%d cut(s) recorded in decisions_*.json are NOT in the settings "
+              "file. ⛔ NOT added — changing what is cut is the owner's call:"
+              % len(unapplied))
+        for cat in sorted(cats):
+            print("  %-12s %4d  %s" % (cat, len(cats[cat]),
+                                       ", ".join(cats[cat][:4]) +
+                                       (" ..." if len(cats[cat]) > 4 else "")))
+
+    if fatal:
+        dead = {k for k, _, _ in fatal}
+        print("\n🔴 %d key(s) are structurally impossible and are DROPPED from the "
+              "output. Keeping one costs the whole list, so this is a repair, not "
+              "a change to what is cut — none of them can ever match a def:"
+              % len(dead))
+        for key, _kind, why in fatal:
+            print("    %-40s %s" % (key, why))
+        keys = [k for k in keys if k not in dead]
+    if not problems and not unapplied:
+        print("  all %d keys resolve, are in scope, and pass their gates." % len(keys))
+
     if "--write" in sys.argv:
-        write_file(KEYS)
+        out = None
+        if "--out" in sys.argv:
+            out = sys.argv[sys.argv.index("--out") + 1]
+        write_file(keys, out)
     else:
         print("\n(dry run — pass --write to create the settings file)")
     return 0
