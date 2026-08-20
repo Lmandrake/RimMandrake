@@ -38,7 +38,7 @@ IN_NPZ = os.path.join(REPO, "world", "relief.npz")
 OUT_NPZ = os.path.join(REPO, "world", "hydro.npz")
 OUT_PNG = os.path.join(REPO, "world", "hydro.png")
 
-# owner's ruled endpoints, same as paint_ashkarr
+# owner's ruled endpoints, same as the deleted paint_ashkarr (gone 2026-08-19)
 T_HOT, T_COLD = 80.0, -80.0
 LAPSE = 6.5 / 1000.0          # degC per metre
 SUPERROTATION = 32.0          # degrees the surface wind is deflected toward Gray

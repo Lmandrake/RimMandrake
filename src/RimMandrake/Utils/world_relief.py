@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """Step 1+2 of the causal repaint: ONE continuous elevation field, then sea level.
 
-🔴 WHY THIS EXISTS. `paint_ashkarr.py` set elevation from a per-region table -
+🔴 WHY THIS EXISTS. `paint_ashkarr.py` (deleted 2026-08-19) set elevation from a per-region table -
 `("scald_rim", 2150, +/-620)` - so two neighbouring tiles differed by a coin flip.
 There was no slope anywhere on the planet, which means "downhill" was UNDEFINED,
 which means rivers could not be derived and were left as fossils of vanilla's
@@ -47,7 +47,7 @@ OCEAN_FLOOR = -350.0     # what the save's water tiles hold today
 # ---------------------------------------------------------------- geometry
 # arc  = degrees from the substellar point (long 0, lat 0)
 # bear = degrees around it; 0 -> the GRAY flank (downwind), 180 -> the TWILIGHT flank
-# Identical convention to paint_ashkarr.py. Do not diverge from it.
+# Identical convention to ashkarr_paint.py. Do not diverge from it.
 
 
 def arc_bear(lat_deg, lon_deg):

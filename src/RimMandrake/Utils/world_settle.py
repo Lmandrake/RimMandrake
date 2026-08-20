@@ -48,7 +48,7 @@ MIN_SPACING = 4             # tiles between settlements
 # the terminator ring, because that is where the water is - and the faction plan does
 # not ask for that. The Geonosians live at an ore seam, the Junkers in the Sunreach,
 # the Free Droids on the volcanics. People live in hostile places FOR REASONS, and the
-# reasons are in populate_ashkarr.py's PLAN.
+# reasons were in populate_ashkarr.py's PLAN (deleted 2026-08-19; see git history).
 #
 # ⚠️ These counts mirror PLAN. If PLAN changes, change them: nothing enforces it.
 ZONE_DEMAND = [
@@ -120,7 +120,7 @@ def site(hab, nb, zmask, spacing=MIN_SPACING):
     """Best habitable tile inside each zone the plan asks for, with a spacing veto.
 
     Zones are filled in demand order and the small, story-critical ones go FIRST -
-    the same lesson populate_ashkarr.py already learned when the Geonosians and the
+    the same lesson populate_ashkarr.py already learned (deleted 2026-08-19) when the Geonosians and the
     Ascendant Helix ended up with zero settlements because they were last in line.
     """
     taken, blocked = [], np.zeros(len(hab), dtype=bool)

@@ -275,7 +275,8 @@ def despeckle(labels, nbl, minsize=4):
 #
 # 🔑 arc  = degrees from the substellar point (lat 0, long 0)
 #    bear = degrees around it; 0 -> the GRAY flank (downwind), 180 -> TWILIGHT.
-# Identical convention to world_relief.py and paint_ashkarr.py. DO NOT DIVERGE.
+# Identical convention to world_relief.py. DO NOT DIVERGE.
+# (paint_ashkarr.py held the same convention; deleted 2026-08-19 as a save writer.)
 # Every position below is the owner's, recovered from those files - the fiction
 # already fixes where the Scald and the Fall Line are, so they are an input.
 # ===========================================================================
@@ -739,7 +740,8 @@ def temperature_curve(th, elev):
         - np.clip(elev, 0, None) / 1000.0 * 5.5
 
 
-# the ratified faction labels (name_ashkarr_factions.py), and the slot each one
+# the ratified faction labels (was name_ashkarr_factions.py, deleted 2026-08-19),
+# and the slot each one
 # occupies in the source save's faction list
 FACTION_LABEL = {
     "Empire": "The Galactic Empire", "OutlanderCivil": "Homestead Defense League",
