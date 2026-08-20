@@ -1644,8 +1644,13 @@ spec:     🔴 **Ten of the eleven campaign factions carry a randomly generated 
           🔑 **THE FIRST STEP IS A DEPLOY, AND IT NEEDS THE GAME DOWN:**
             `python.exe src/RimMandrake/bridgetools/build.py --gm --apply`
           🔴 `--gm` or the deploy strips every player-acting tool; `build.py` refuses and
-          names them, which is the guard working. Expect **114** `jawa/` tools afterwards,
-          up from 112.
+          names them, which is the guard working. Expect **115** `jawa/` tools afterwards.
+          ⚠️ **THE DISK COPY IS ALREADY AT 114 AND THAT CHANGES NOTHING YET.** Measured
+          2026-08-20: the deployed DLL carries `faction_name_get` and `faction_name_set`
+          (someone deployed mid-session), but **the RUNNING bridge reported 112** — a
+          companion registers its tools only at RimBridgeServer STARTUP, so a DLL replaced
+          under a live game is inert until the next launch. `faction_create` is the 115th
+          and is not on disk yet at all. ⇒ **one deploy, then one launch, then all three.**
           THEN, on the world screen:
             1. `jawa/faction_name_get`  -> read `generatedCount`. Expect **10**.
             2. `jawa/faction_name_set` with `action=clear` and NO `defNames`
