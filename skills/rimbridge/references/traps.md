@@ -356,3 +356,16 @@ it does, because `fileName` is not a parameter it has, and **an unknown paramete
 dropped before the tool runs** — the documented failure mode, mistaken for a tool quirk.
 Generalises: before recording "tool X ignores argument Y", check Y is spelled the way the
 schema spells it.
+
+## An unasserted string-replace in a patch script is a silent no-op
+
+CHECK, 2026-08-20, correcting my own work from the night before. I "fixed"
+`world_links_import` with a Python `s.replace(old, new)` whose `old` did not match the
+file. `replace` does not raise when it matches nothing — it returns the string unchanged.
+The build succeeded, the commit went out claiming a fix, the deploy was byte-verified, and
+the tool was still broken. Only running it proved otherwise, a load later.
+
+**Every scripted edit asserts its target exists before writing**, and asserts something
+about the CONTEXT too — `assert old in s` catches a typo, but checking that the line sits
+next to `ContainsKey("kind")` is what proves you are editing the call site you meant. A
+build succeeding says the file still compiles, not that your change is in it.
