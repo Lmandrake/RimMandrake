@@ -374,26 +374,26 @@
    "cells": {
     "DECIDE": {
      "done": 4,
-     "total": 4,
+     "total": 5,
      "state": "idle",
      "mix": {
       "closed": 4,
       "done": 0,
       "doing": 0,
       "blocked": 0,
-      "ready": 0
+      "ready": 1
      }
     },
     "BUILD": {
      "done": 16,
-     "total": 16,
+     "total": 18,
      "state": "idle",
      "mix": {
       "closed": 16,
       "done": 0,
       "doing": 0,
       "blocked": 0,
-      "ready": 0
+      "ready": 2
      }
     },
     "CHECK": {
@@ -685,14 +685,14 @@
     },
     "CHECK": {
      "done": 0,
-     "total": 2,
+     "total": 3,
      "state": "idle",
      "mix": {
       "closed": 0,
       "done": 0,
       "doing": 0,
       "blocked": 0,
-      "ready": 2
+      "ready": 3
      }
     }
    }
@@ -734,6 +734,47 @@
       "doing": 0,
       "blocked": 0,
       "ready": 1
+     }
+    }
+   }
+  },
+  {
+   "name": "inhabited",
+   "cells": {
+    "DECIDE": {
+     "done": 0,
+     "total": 1,
+     "state": "idle",
+     "mix": {
+      "closed": 0,
+      "done": 0,
+      "doing": 0,
+      "blocked": 0,
+      "ready": 1
+     }
+    },
+    "BUILD": {
+     "done": 0,
+     "total": 0,
+     "state": "offline",
+     "mix": {
+      "closed": 0,
+      "done": 0,
+      "doing": 0,
+      "blocked": 0,
+      "ready": 0
+     }
+    },
+    "CHECK": {
+     "done": 0,
+     "total": 0,
+     "state": "offline",
+     "mix": {
+      "closed": 0,
+      "done": 0,
+      "doing": 0,
+      "blocked": 0,
+      "ready": 0
      }
     }
    }
@@ -1001,14 +1042,14 @@
     },
     "BUILD": {
      "done": 3,
-     "total": 11,
+     "total": 12,
      "state": "idle",
      "mix": {
       "closed": 3,
       "done": 0,
       "doing": 0,
       "blocked": 0,
-      "ready": 8
+      "ready": 9
      }
     },
     "CHECK": {
@@ -2003,7 +2044,7 @@
   ],
   "per_day": 15.71,
   "closed": 110,
-  "remaining": 45,
+  "remaining": 51,
   "eta_days": 3
  }
 }
