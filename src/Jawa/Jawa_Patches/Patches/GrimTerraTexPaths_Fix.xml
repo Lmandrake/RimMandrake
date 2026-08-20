@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ============================================================================
+  GrimTerraTexPaths_Fix.xml                 Jawa_Patches - new file 2026-08-20
+  ============================================================================
+
+  GRiNDTerra Biomes (GRimTerra.Biomesmod, workshop 3537211820) ships three
+  texPaths pointing at folders that do not exist. THE ART IS ALL PRESENT -
+  only the paths are wrong, and all three are in the SECOND lifeStages entry,
+  i.e. the JUVENILE stage. Baby and adult render correctly, which is why this
+  went unnoticed.
+
+  Verified against the mod's own Textures tree, 2026-08-20:
+    Things/Pawn/Animal/GRimTortoise/   holds GRimTortoiseA_*.png
+                                       and Dessicated_GRimTortoiseA_*.png
+    Things/Pawn/Animal/GRimPinkbird/   holds GRimPinkbird_*.png
+
+    is    Things/Pawn/Animal/TortoiseGRim/GRimTortoiseA        words transposed
+    want  Things/Pawn/Animal/GRimTortoise/GRimTortoiseA
+
+    is    Things/Pawn/Animal/Tortoise/Dessicated_GRimTortoiseA
+    want  Things/Pawn/Animal/GRimTortoise/Dessicated_GRimTortoiseA
+          ⚠️ that one points at VANILLA's Tortoise folder. It logs nothing until
+          a dessicated corpse exists, so it never appears in a load harvest.
+
+    is    Things/Pawn/Animal/GRimPinkBird/GRimPinkbird          capital B
+    want  Things/Pawn/Animal/GRimPinkbird/GRimPinkbird
+
+  🔑 THE CAPITAL-B ONE IS THE INSTRUCTIVE CASE. Windows' filesystem is
+  case-insensitive but RimWorld's content index is NOT, so that path resolves
+  perfectly from a shell and still fails in game. Never settle a texPath
+  question with `ls`.
+
+  🪤 THEY ARE ON PawnKindDef, NOT ThingDef. The animal's ThingDef carries
+  race/lifeStages; these three sit on the PAWNKIND's own lifeStages, which is a
+  different node on a different def with the same-looking shape. An xpath aimed
+  at ThingDef matches nothing here - and a PatchOperation that matches nothing
+  logs nothing, so it would have looked exactly like a fix.
+
+  Each operation targets the node BY ITS CURRENT VALUE rather than by position.
+  li[2] would be correct today and wrong the moment anything inserts a life
+  stage, and a value predicate cannot drift: only the broken node carries the
+  broken string, so the op either hits the thing it names or hits nothing.
+
+  🪤 THE PREDICATE GOES ON THE PARENT, NOT ON THE texPath ITSELF. The obvious
+  form, texPath[.="..."], is XPath 1.0 and RimWorld would accept it - but the
+  offline validator walks the defs with ElementTree, which does not implement a
+  self-predicate and reports 0 matches. The form below,
+  bodyGraphicData[texPath="..."]/texPath, is a CHILD-VALUE predicate and is the
+  house form both engines agree on, the same shape as li[kindDef="Combat"].
+
+  ⛔ DO NOT EDIT THE WORKSHOP FOLDER. Steam overwrites it on the next update.
+  ============================================================================
+-->
+<Patch>
+
+  <Operation Class="PatchOperationFindMod">
+    <mods>
+      <li>GRiNDTerra Biomes</li>
+    </mods>
+    <match Class="PatchOperationSequence">
+      <operations>
+
+        <li Class="PatchOperationReplace">
+          <xpath>Defs/PawnKindDef[defName="GRimTortoise"]/lifeStages/li/bodyGraphicData[texPath="Things/Pawn/Animal/TortoiseGRim/GRimTortoiseA"]/texPath</xpath>
+          <value><texPath>Things/Pawn/Animal/GRimTortoise/GRimTortoiseA</texPath></value>
+        </li>
+
+        <li Class="PatchOperationReplace">
+          <xpath>Defs/PawnKindDef[defName="GRimTortoise"]/lifeStages/li/dessicatedBodyGraphicData[texPath="Things/Pawn/Animal/Tortoise/Dessicated_GRimTortoiseA"]/texPath</xpath>
+          <value><texPath>Things/Pawn/Animal/GRimTortoise/Dessicated_GRimTortoiseA</texPath></value>
+        </li>
+
+        <li Class="PatchOperationReplace">
+          <xpath>Defs/PawnKindDef[defName="GRimPinkbird"]/lifeStages/li/bodyGraphicData[texPath="Things/Pawn/Animal/GRimPinkBird/GRimPinkbird"]/texPath</xpath>
+          <value><texPath>Things/Pawn/Animal/GRimPinkbird/GRimPinkbird</texPath></value>
+        </li>
+
+      </operations>
+    </match>
+  </Operation>
+
+</Patch>

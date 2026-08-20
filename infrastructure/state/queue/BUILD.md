@@ -748,39 +748,40 @@ criteria: a load whose `Player.log` carries **0** `Failed to find any textures a
           available. Strengthen it by spawning a JUVENILE tortoise and looking — adults
           render fine and prove nothing. `jawa/set_pawn_age` cannot help: DebugSetAge is
           FORWARD-ONLY and refuses to walk a debug-spawned adult back to a juvenile.
-state:    ready
-
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-# 🔴 `Inhabited` — SHIPPED TO BUILD 2026-08-20. The code is v1 now.
-
-**Owner, 2026-08-20, in the DECIDE window:** *"Please ship the Inhabited spec to BUILD for
-actual v1 construction, we have spare time tonight."*
-
-⛔ **This REVERSES the standing ruling you may remember** — *"v1 for the DESIGN, v2 for the
-code. Do not file BUILD items for the code."* That sentence is struck in place at the head
-of `design/Jawa/bridge/INHABITED_DESIGN.md` and in `queue/DECIDE.md`. Build from the eight
-items below; the design doc is the spec and it has not otherwise changed.
-
-**The spec is `design/Jawa/bridge/INHABITED_DESIGN.md` (564 lines).** Read §2, §3, §4 and §6
-before starting. Two corrections to it, found 2026-08-20 while filing these and NOT yet
-folded into the doc's prose:
-
-🔴 **The doc names `GiveQuest_Beggars`. NO SUCH SYMBOL EXISTS.** The real class is
-`RimWorld.QuestGen.QuestNode_Root_Beggars`, and it (a) hard-requires Ideology via
-`ModLister.CheckIdeology("Beggars")` at `:44`, and (b) builds a **hidden generated faction**
-from `FactionDefOf.Beggars` at `:73` — beggars do not belong to an existing faction. That
-changes `INHABITED_BEGGARS_FROM_POOL_1` from "draw from the pool" to "draw from the pool AND
-reassign faction". See that item.
-
-⚠️ **The casts are PROSE, not data.** 269 characters across 11 files, fields
-`Name · race · gender · age` / `traits:` / `childhood:` / `adult:` / `hook:`. Only `traits:`
-holds real defNames. There is no xenotype, pawnKind, faction defName, apparel or skill on
-any entry. ⇒ `CAST_ROSTER_MACHINE_READABLE_1` exists because of this and everything that
-instantiates a named person depends on it.
-
-**Order.** `INHABITED_MOD_SKELETON_1` → `INHABITED_WORLD_OBJECT_CORE_1` →
-🔴 `ROSTER_SURVIVES_OFFMAP_PROOF_1` (**stop here until it passes — it can invalidate the
-architecture**) → the rest in any order.
+state:    done 2026-08-20 (offline half). One new file,
+          `src/Jawa/Jawa_Patches/Patches/GrimTerraTexPaths_Fix.xml`, deployed and in sync.
+          verify output: `validate_patch.py --defs` -> `OK - 0 errors, 3 warning(s)`, all
+          three of the "this node is probably CREATED by another mod's patch at runtime,
+          make sure your mod loads AFTER it" class.
+          ⚠️ **THE ITEM'S VERIFY ASKED FOR "3 hits, not 0" AND I CANNOT GIVE YOU THAT
+          NUMBER. Read this before treating it as passed.** The offline validator reports
+          **0 on-disk nodes** for all three. I could not settle whether that is the
+          validator failing to index that mod's defs or the nodes genuinely being
+          runtime-created, and I am not going to claim a diagnosis I do not have.
+          **What I ruled out, so nobody repeats it:** the mod IS active (its packageId is
+          stored lower-case as `grimterra.biomesmod`, so a case-sensitive check says
+          "inactive" and lies); its `LoadFolders.xml` resolves correctly — I called the
+          validator's own `resolve_load_folders` and it returns `<mod>/1.6`; and
+          `<mod>/1.6/Defs/ThingDefs_Races/` exists and parses. A hand-built probe file was
+          NOT usable as evidence either way: it reported 0 for `AncientSoldier`, a **Core**
+          def that certainly exists, so the probe method is wrong rather than the mods.
+          ✅ **What IS verified, directly against the authoritative source — the mod's own
+          XML on disk, parsed, not grepped:** each of the three xpaths selects **exactly
+          one node**, and the target folders exist with the exact casing the fix writes.
+          🪤 **THEY ARE ON `PawnKindDef`, NOT `ThingDef`.** The item did not say which, and
+          the animal's ThingDef carries a `race/lifeStages` node of the same shape. An
+          xpath aimed at ThingDef matches nothing — and a PatchOperation that matches
+          nothing logs nothing, so it would have looked exactly like a fix.
+          🪤 **And the obvious xpath form is the wrong one here.** `texPath[.="..."]` is
+          valid XPath 1.0 and RimWorld would take it, but the validator walks the defs with
+          ElementTree, which has no self-predicate and silently reports 0. The shipped form
+          puts the predicate on the PARENT — `bodyGraphicData[texPath="..."]/texPath` —
+          which is the house form both engines agree on, the same shape as
+          `li[kindDef="Combat"]`. Value-predicated rather than `li[2]`, so it cannot drift
+          if anything ever inserts a life stage.
+          ⏳ **The live half is owed and is CHECK's**, and the item is right that absence is
+          a weak signal: spawn a JUVENILE tortoise and look. Adults render fine and prove
+          nothing. Filed as `GRIMTERRA_JUVENILES_RENDER_1` in `queue/CHECK.md`.
 
 ## INHABITED_MOD_SKELETON_1 The mod folder, About.xml and csproj
 spec:     Create `src/Jawa/Inhabited/`, mirroring `src/Jawa/JawaPlantGrowth/` exactly —
