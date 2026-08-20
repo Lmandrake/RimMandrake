@@ -6,8 +6,13 @@ specced and pillar-checked._
 
 **Salvaged from `RimMaster.md` when that spec was retired.** The dead part was the *mechanism*
 (an external save-editing agent behind a GABP relay). The catalogue below never depended on it:
-every entry is an authoring intent, and the pipes that execute one are now
-`skills/rimbridge/SKILL.md` (live map) and `skills/rimworld-savegame/SKILL.md` (`.rws`).
+every entry is an authoring intent, and the pipe that executes one is now
+`skills/rimbridge/SKILL.md` (the live game) ~~and `skills/rimworld-savegame/SKILL.md` (`.rws`)~~.
+
+🔴 **SUPERSEDED 2026-08-19 — the `.rws` pipe is dead; `rimbridge` is the only one.** Owner,
+2026-08-18: *"Please don't write to the savegame file anymore."* `skills/rimworld-savegame/SKILL.md`
+survives as a **read-only** reference for the `.rws` format (grepping, decoding, diagnosing a save);
+it is no longer a route for executing an enrichment. Everything here lands over the live bridge.
 
 **Sibling files:** `concept.md` (pillars + the 7-question test) · `desert_world_design.md` (the
 terrain/discovery layer these populate) · `jawa_xenotype_and_religion.md` §2.0b (the pantheon §5
@@ -86,10 +91,24 @@ procedural encounter) into authored, on-theme beats — high enrichment leverage
 
 Legend: **◇ user-seeded**; all others are extrapolations to grow the space.
 
-> **Cross-cutting rule — prefer setup-time to live.** Phases A–C are almost all **offline**
+> ~~**Cross-cutting rule — prefer setup-time to live.** Phases A–C are almost all **offline**
 > (`.rws`/def/texture editing) — safe, backup-able, re-runnable. Phase D is the **live/fragile**
 > frontier and carries the §7.1 save/reload-survival unknown. **When an idea can be done at
-> setup-time instead of live, do it at setup-time.** The reusable skeleton for nearly all of these
+> setup-time instead of live, do it at setup-time.**~~
+>
+> 🔴 **SUPERSEDED 2026-08-19 — this rule was exactly backwards, and it is now the banned route.**
+> Owner, 2026-08-18: *"Please don't write to the savegame file anymore."* Two offline `.rws`
+> writers passed every invariant check and still killed the game on load; on 2026-08-19 nine
+> save-writing scripts were deleted and `worldmap.py` was cut back to decoders that refuse to
+> write. **Offline `.rws` editing is not "safe" — it is dead.** The live route is the only one:
+> vanilla worldgen runs untouched, then a companion DLL stamps our authored state into the LIVE
+> game over the bridge before any map exists (`ASHKARR_WORLD_DEFINITION.md` §12). The engine —
+> never us — writes the save, when the owner saves his game.
+> **Def and texture editing in Phases A–C remains fully alive**; only the `.rws` half of "offline"
+> died. So: **when an idea touches world/save state, do it LIVE over the bridge**; only asset and
+> def work is still a setup-time job.
+>
+> The reusable skeleton for nearly all of these
 > is *read → propose → human-approve → write-with-V&V → re-verify*; most are **interactive**
 > (human-in-the-loop before commit), not fire-and-forget.
 

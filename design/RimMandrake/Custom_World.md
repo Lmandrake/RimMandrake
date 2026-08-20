@@ -57,7 +57,7 @@ These ~10 "director" mods do the world-shaping. Learn these, not the content mod
 | **Wild animal roster** | Choose Wild Animal Spawns (2564042934) | Control which fauna appear (theme flavor). |
 | **Custom named characters** | Backstory Constructor (2907131508) | Author personas: hand-written lore + skillGains table + workDisables map. Characters, not colonists. |
 | **Custom races** | native `savedXenotype` export | Vanilla xenotype editor → save `.xml` → import. No special mod needed. |
-| **Scenario delivery** | starting save + ScenarioDef pruning | Bake generated world + placed factions + authored pawns + map into a save. Configs reproduce rules; save reproduces authored state. |
+| **Scenario delivery** | authored `ScenarioDef` + companion DLL over the live bridge | ~~Bake generated world + placed factions + authored pawns + map into a save.~~ 🔴 **SUPERSEDED 2026-08-19 — there is no bake step.** Owner, 2026-08-18: *"Please don't write to the savegame file anymore."* Two offline `.rws` writers passed every invariant check and still killed the game on load; nine save-writing scripts were deleted 2026-08-19. **The ENGINE writes the save, when the owner saves his game.** Route: vanilla worldgen runs untouched → a companion DLL stamps the hand-authored tiles, factions and pawns into the LIVE world over the bridge before any map exists → the owner saves. Scenario parts get in by starting the game from an authored `ScenarioDef` (ruling R-S2 in `design/Jawa/worldbuilding/SCENARIO_SETTINGS_SPEC.md`, reversed 2026-08-19). Full route: `design/Jawa/worldbuilding/ASHKARR_WORLD_DEFINITION.md` §12. Configs reproduce rules; the resulting save reproduces authored state. |
 
 ---
 
