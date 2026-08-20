@@ -300,9 +300,30 @@ criteria: a region renamed and repositioned is VISIBLE on the world map, and a r
           settlement survives a save→load round trip with its faction intact. The
           save→load half is not optional - it is the only thing that proves the null-faction
           trap was avoided.
-state:    🔵 HALF DONE 2026-08-19 — G5 (world objects) is SHIPPED AND PROVEN.
-          G4 (named regions / WorldFeatures) is NOT built yet, and the save→load round
-          trip is NOT run. Item stays open on those two.
+state:    🔵 NEARLY DONE 2026-08-19 — G4 AND G5 BOTH SHIPPED AND PROVEN, INCLUDING THE
+          VISUAL. The ONLY thing still owed is the save→load round trip, which is the
+          clause that proves the null-faction trap was actually avoided. Stays open on that.
+g4:       SHIPPED: `world_features_get` · `world_features_set` (create/update/assign/delete).
+          ✅ READ: 68 named regions on the generated world, with per-feature tile counts
+             computed in ONE grid pass - `WorldFeature.Tiles` is a full-grid scan and doing
+             it per feature would be O(n x features).
+          ✅ RENAME + ROTATE + RESIZE, AND IT IS **VISIBLE**:
+             `observed/w3/w6_whole_planet.png` shows **"THE DUNE SEA" drawn across the
+             ocean at the 30 degrees I set**. ⭐ `drawAngle` is control the base game never
+             uses - all 68 generated features read `drawAngle 0.0`, exactly as the source
+             said, so every rotated label on this planet is ours.
+          ✅ CREATE + ASSIGN: new `Peninsula` region, 121 tiles assigned, reads back.
+          ✅ DELETE CLEARS MEMBERSHIP FIRST: 121 tiles cleared, and the featureless count
+             moved 3,328 -> 3,446, i.e. +118 with 3 of the 121 already featureless. The
+             arithmetic closes, so no tile keeps a dangling feature reference.
+          🔑 `Find.WorldFeatures.textsCreated = false` is the COMMIT STEP FOR LABELS and is
+             separate from draw-layer regeneration. Without it the OLD text keeps drawing
+             however the data changed. `world_features_set` sets it every time.
+          🔑 NEW: `jawa/world_view` now takes `altitude` (125 min .. 550 entry .. 1100 max)
+             and `northUp`. ⚠️ `altitude` is a public field but `WorldCameraDriver.Update`
+             lerps it toward the PRIVATE `desiredAltitude` every frame, so setting only the
+             public one snaps back - the tool sets both, the private one by reflection.
+             At 1100 you get the whole globe, which is what W9's "the owner looks" needs.
 result:   SHIPPED: `world_objects_get` · `world_objects_set` · `world_objects_validate`.
           ✅ READ: 113 world objects - 100 Settlement, 8 AsteroidBasic, 5 SpaceSettlement -
              with faction histogram (Empire 19, PirateYttakin 18, OutlanderCivil 15...).
@@ -336,7 +357,23 @@ spec:     TOOLS: `world_info_get/set` (`world_layers` already shipped in W2).
 verify:   rename the planet, read it back, save, reload, read it back again.
 criteria: the persistent fields survive a save→load and the two non-persistent ones are
           either refused or flagged. Both.
-state:    ready
+state:    🔵 NEARLY DONE 2026-08-19 — the refusal half PASSES; the save→load half is owed.
+result:   SHIPPED: `world_info_get` · `world_info_set` (`world_layers` came in W2).
+          ✅ READ: name, seedString, seed, planetCoverage, persistentRandomValue,
+             overallRainfall/Temperature/Population, landmarkDensity, initialMapSize,
+             pollution and the FactionDef list.
+          ✅ THE REFUSAL WORKS, WHICH IS THE POINT OF THE ITEM: asking to set
+             `overallPopulation` came back **refused** - "not scribed - pass
+             allowNonPersistent=true" - and with the override it wrote and tagged the
+             change `[NOT PERSISTED]`. So nobody can build on a value that evaporates
+             without being told twice.
+          ✅ RENAME took ("Sadalmelik-830" -> "Ash'karr Test").
+          ⚠️ STILL OWED: the save→load round trip proving the persistent fields survive.
+             Batch it with W6's settlement round trip - one save, one load, both clauses.
+          📌 `factionCount` read 0 on a quicktest world. `WorldInfo.factions` is the
+             generation-parameter list, not the live roster - `jawa/list_factions` and
+             `world_objects_get` are where the real factions are. Do not read 0 here as
+             "this world has no factions".
 
 ## W8 G8 — the in-engine sanity linter
 row:      bridge-8

@@ -38,6 +38,7 @@ using System.Threading.Tasks;
 using RimBridgeServer.Sdk;
 using RimWorld;
 using RimWorld.Planet;
+using UnityEngine;
 using Verse;
 
 namespace JawaBench.BridgeTools
@@ -477,7 +478,11 @@ namespace JawaBench.BridgeTools
             [ToolParameter(Description = "True shows the planet, false returns to the map. Default true.")]
             bool show = true,
             [ToolParameter(Description = "Optional tile id to centre the globe on.")]
-            int centerTile = -1)
+            int centerTile = -1,
+            [ToolParameter(Description = "Camera altitude. ~125 = min (close), 550 = entry default, 1100 = max (whole planet). -1 leaves it.")]
+            float altitude = -1f,
+            [ToolParameter(Description = "Rotate so north is up.")]
+            bool northUp = false)
         {
             return await ctx.MainThread.InvokeAsync(() =>
             {
@@ -496,11 +501,35 @@ namespace JawaBench.BridgeTools
                 }
 
                 int centered = -1;
+                var cam = Find.WorldCameraDriver;
                 if (show && centerTile >= 0 && Find.WorldGrid != null
-                    && centerTile < Find.WorldGrid.TilesCount && Find.WorldCameraDriver != null)
+                    && centerTile < Find.WorldGrid.TilesCount && cam != null)
                 {
-                    try { Find.WorldCameraDriver.JumpTo(centerTile); centered = centerTile; }
+                    try { cam.JumpTo(centerTile); centered = centerTile; }
                     catch (Exception e) { Log.Warning("[JawaBench] world_view: JumpTo failed: " + e.Message); }
+                }
+
+                // `altitude` is a public field but WorldCameraDriver.Update lerps it
+                // toward the PRIVATE desiredAltitude every frame, so setting only the
+                // public one snaps back within a frame or two. Both, or neither.
+                float altAfter = -1f;
+                if (show && altitude > 0f && cam != null)
+                {
+                    try
+                    {
+                        float a = Mathf.Clamp(altitude, WorldCameraDriver.MinAltitude, 1100f);
+                        cam.altitude = a;
+                        var fi = typeof(WorldCameraDriver).GetField("desiredAltitude",
+                            System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance);
+                        if (fi != null) fi.SetValue(cam, a);
+                        altAfter = cam.altitude;
+                    }
+                    catch (Exception e) { Log.Warning("[JawaBench] world_view: altitude failed: " + e.Message); }
+                }
+
+                if (show && northUp && cam != null)
+                {
+                    try { cam.RotateSoNorthIsUp(false); } catch { }
                 }
 
                 return (object)new
@@ -512,6 +541,9 @@ namespace JawaBench.BridgeTools
                     worldSelectedAfter = WorldRendererUtility.WorldSelected,
                     wantedMode = Find.World.renderer != null ? Find.World.renderer.wantedMode.ToString() : null,
                     centeredOn = centered,
+                    altitude = altAfter,
+                    altitudeRange = new { min = WorldCameraDriver.MinAltitude, max = 1100f, entryDefault = 550f },
+                    northUp,
                     ticksGame = TicksGameSafe(),
                 };
             });
@@ -1925,6 +1957,324 @@ namespace JawaBench.BridgeTools
                     stackedTiles = stacked.Count,
                     nullFaction = nullFac, badTile = badTile,
                     onWater = onWater, onImpassable = onImpass, stacked,
+                    ticksGame = TicksGameSafe(),
+                };
+            });
+        }
+
+
+        // ================================================================
+        //  G4 - NAMED REGIONS (WorldFeature). Our 24 regions live here.
+        //
+        //  🔑 Tile membership is stored ON THE TILE (Tile.feature), not in the
+        //     feature. Assigning a region = writing `feature` on each member tile.
+        //  ⚠️ WorldFeature.Tiles is a FULL-GRID SCAN - O(n) per feature. Never
+        //     call it in a loop over 24 regions; this file builds one map in a
+        //     single pass instead.
+        //  ⭐ drawAngle is NEVER set by vanilla's generator (stays 0). We get
+        //     label rotation the base game does not use.
+        //  🔑 After renaming or moving a label, set Find.WorldFeatures.textsCreated
+        //     = false or the OLD text keeps drawing - that is the commit step for
+        //     features, and it is separate from the draw-layer regeneration.
+        // ================================================================
+
+        [Tool(
+            "jawa/world_features_get",
+            Description =
+                "List the planet's named regions (WorldFeature) - the text drawn across the " +
+                "globe. Reports uniqueID, def, name, drawCenter, drawAngle, maxDrawSizeInTiles " +
+                "and the tile COUNT of each. Tile membership lives on Tile.feature, so the " +
+                "counts are computed in ONE pass over the grid rather than per-feature " +
+                "(WorldFeature.Tiles is a full-grid scan and would be O(n*features)).",
+            ResultDescription = "success, count, features[] with tileCount each.")]
+        public static async Task<object> WorldFeaturesGet(
+            IRimBridgeContext ctx,
+            CancellationToken cancellationToken,
+            [ToolParameter(Description = "Include up to this many member tile ids per feature. Default 0.")] int sampleTiles = 0,
+            [ToolParameter(Description = "Max features. Default 100.")] int limit = 100)
+        {
+            return await ctx.MainThread.InvokeAsync(() =>
+            {
+                if (Find.World == null || Find.WorldGrid == null) return Fail("No world is loaded.");
+                var wf = Find.World.features;
+                if (wf == null || wf.features == null)
+                    return (object)new { success = true, count = 0, features = new List<object>(), note = "No feature manager." };
+
+                var grid = Find.WorldGrid; int n = grid.TilesCount;
+                var counts = new Dictionary<int, int>();
+                var samples = new Dictionary<int, List<int>>();
+                for (int i = 0; i < n; i++)
+                {
+                    var t = grid[i];
+                    if (t == null || t.feature == null) continue;
+                    int id = t.feature.uniqueID;
+                    int c; counts.TryGetValue(id, out c); counts[id] = c + 1;
+                    if (sampleTiles > 0)
+                    {
+                        List<int> l;
+                        if (!samples.TryGetValue(id, out l)) { l = new List<int>(); samples[id] = l; }
+                        if (l.Count < sampleTiles) l.Add(i);
+                    }
+                }
+
+                var outp = new List<object>();
+                foreach (var f in wf.features)
+                {
+                    if (f == null) continue;
+                    if (outp.Count >= Math.Max(1, limit)) break;
+                    int c; counts.TryGetValue(f.uniqueID, out c);
+                    List<int> sm; samples.TryGetValue(f.uniqueID, out sm);
+                    outp.Add(new
+                    {
+                        uniqueID = f.uniqueID,
+                        def = f.def != null ? f.def.defName : null,
+                        name = f.name,
+                        tileCount = c,
+                        drawCenter = new { x = f.drawCenter.x, y = f.drawCenter.y, z = f.drawCenter.z },
+                        drawAngle = f.drawAngle,
+                        maxDrawSizeInTiles = f.maxDrawSizeInTiles,
+                        effectiveDrawSize = f.EffectiveDrawSize,
+                        alpha = f.alpha,
+                        layer = f.layer != null && f.layer.Def != null ? f.layer.Def.defName : null,
+                        sampleTiles = sm,
+                    });
+                }
+                return (object)new
+                {
+                    success = true,
+                    count = wf.features.Count,
+                    returned = outp.Count,
+                    textsCreated = wf.textsCreated,
+                    tilesWithNoFeature = n - counts.Values.Sum(),
+                    features = outp,
+                    ticksGame = TicksGameSafe(),
+                };
+            });
+        }
+
+        [Tool(
+            "jawa/world_features_set",
+            Description =
+                "Create, rename, reposition or delete a named region, and assign tiles to it. " +
+                "Membership is written to Tile.feature on each named tile. " +
+                "drawAngle rotates the label - vanilla never sets it, so this is control the " +
+                "base game does not expose. drawCenter is a world-space Vector3; pass " +
+                "centerOnTile to have it computed from a tile instead. " +
+                "Sets Find.WorldFeatures.textsCreated=false so the label text is rebuilt - " +
+                "without that the OLD text keeps drawing however the data changed.",
+            ResultDescription = "success, action, featureId, tilesAssigned, feature read back.")]
+        public static async Task<object> WorldFeaturesSet(
+            IRimBridgeContext ctx,
+            CancellationToken cancellationToken,
+            [ToolParameter(Description = "'create', 'update', 'assign' or 'delete'.")] string action = "update",
+            [ToolParameter(Description = "Existing feature uniqueID. Required except for 'create'.")] int featureId = -1,
+            [ToolParameter(Description = "FeatureDef name. Required for 'create'.")] string def = null,
+            [ToolParameter(Description = "Region name.")] string name = null,
+            [ToolParameter(Description = "Label rotation in degrees.")] float? drawAngle = null,
+            [ToolParameter(Description = "Label size in tiles.")] float? maxDrawSizeInTiles = null,
+            [ToolParameter(Description = "Put the label at this tile's centre. -1 leaves it.")] int centerOnTile = -1,
+            [ToolParameter(Description = "Comma-separated tile ids to assign to this feature.")] string tiles = null,
+            [ToolParameter(Description = "Inclusive range 'from-to' to assign.")] string range = null)
+        {
+            return await ctx.MainThread.InvokeAsync(() =>
+            {
+                if (Find.World == null || Find.WorldGrid == null) return Fail("No world is loaded.");
+                var wf = Find.World.features;
+                if (wf == null || wf.features == null) return Fail("No feature manager on this world.");
+                var grid = Find.WorldGrid;
+
+                bool create = string.Equals(action, "create", StringComparison.OrdinalIgnoreCase);
+                bool del = string.Equals(action, "delete", StringComparison.OrdinalIgnoreCase);
+
+                WorldFeature f = null;
+                if (create)
+                {
+                    if (string.IsNullOrEmpty(def)) return Fail("Give a FeatureDef for 'create'.");
+                    var fd = DefDatabase<FeatureDef>.GetNamedSilentFail(def.Trim());
+                    if (fd == null) return Fail("No FeatureDef '" + def + "'.", DefSuggestions<FeatureDef>(def));
+                    f = new WorldFeature(fd, grid.Surface);
+                    f.name = name ?? fd.LabelCap;
+                    wf.features.Add(f);
+                }
+                else
+                {
+                    f = wf.features.FirstOrDefault(x => x != null && x.uniqueID == featureId);
+                    if (f == null) return Fail("No feature with uniqueID " + featureId + ".");
+                }
+
+                int assigned = 0;
+                if (del)
+                {
+                    // Clear membership first or tiles keep a dangling reference.
+                    int n = grid.TilesCount;
+                    for (int i = 0; i < n; i++)
+                    {
+                        var t = grid[i];
+                        if (t != null && t.feature == f) { t.feature = null; assigned++; }
+                    }
+                    wf.features.Remove(f);
+                    wf.textsCreated = false;
+                    return (object)new
+                    {
+                        success = true, action = "delete", featureId,
+                        tilesCleared = assigned,
+                        note = "Membership cleared before removal so no tile keeps a dangling feature reference.",
+                        ticksGame = TicksGameSafe(),
+                    };
+                }
+
+                if (name != null) f.name = name;
+                if (drawAngle.HasValue) f.drawAngle = drawAngle.Value;
+                if (maxDrawSizeInTiles.HasValue) f.maxDrawSizeInTiles = maxDrawSizeInTiles.Value;
+                if (centerOnTile >= 0 && centerOnTile < grid.TilesCount)
+                    f.drawCenter = grid.GetTileCenter(centerOnTile);
+
+                var ids = new List<int>();
+                if (!string.IsNullOrEmpty(tiles))
+                    foreach (var part in tiles.Split(',')) { int v; if (int.TryParse(part.Trim(), out v)) ids.Add(v); }
+                if (!string.IsNullOrEmpty(range))
+                {
+                    var bits = range.Split('-'); int a, b;
+                    if (bits.Length == 2 && int.TryParse(bits[0].Trim(), out a) && int.TryParse(bits[1].Trim(), out b))
+                        for (int i = Math.Min(a, b); i <= Math.Max(a, b); i++) ids.Add(i);
+                }
+                foreach (var id in ids)
+                {
+                    string e; var t = SurfaceTileAt(id, out e);
+                    if (t == null) continue;
+                    t.feature = f; assigned++;
+                }
+
+                wf.textsCreated = false;   // rebuild the drawn text, or the old label persists
+
+                int count = 0;
+                { int n = grid.TilesCount; for (int i = 0; i < n; i++) { var t = grid[i]; if (t != null && t.feature == f) count++; } }
+
+                return (object)new
+                {
+                    success = true, action = create ? "create" : "update",
+                    featureId = f.uniqueID,
+                    tilesAssigned = assigned,
+                    feature = new
+                    {
+                        uniqueID = f.uniqueID,
+                        def = f.def != null ? f.def.defName : null,
+                        name = f.name,
+                        tileCount = count,
+                        drawAngle = f.drawAngle,
+                        maxDrawSizeInTiles = f.maxDrawSizeInTiles,
+                        drawCenter = new { x = f.drawCenter.x, y = f.drawCenter.y, z = f.drawCenter.z },
+                    },
+                    note = "textsCreated set false so the label rebuilds. Call jawa/world_commit for the terrain layers.",
+                    ticksGame = TicksGameSafe(),
+                };
+            });
+        }
+
+        // ================================================================
+        //  W7 - G6 WORLD INFO
+        //  🔴 overallPopulation and landmarkDensity are NOT SCRIBED - they do
+        //  not survive save/load. The setter REFUSES them unless forced, and
+        //  says so, rather than letting a caller build on a value that evaporates.
+        // ================================================================
+        [Tool(
+            "jawa/world_info_get",
+            Description =
+                "Read Find.World.info: planet name, seed, coverage, overall rainfall / " +
+                "temperature / population, landmark density, initial map size, pollution and " +
+                "the FactionDef list the world was generated with. Also reports which fields " +
+                "do NOT survive a save/load.",
+            ResultDescription = "success, info{}, notPersisted[].")]
+        public static async Task<object> WorldInfoGet(
+            IRimBridgeContext ctx,
+            CancellationToken cancellationToken)
+        {
+            return await ctx.MainThread.InvokeAsync(() =>
+            {
+                if (Find.World == null || Find.World.info == null) return Fail("No world is loaded.");
+                var w = Find.World.info;
+                return (object)new
+                {
+                    success = true,
+                    info = new
+                    {
+                        name = w.name,
+                        seedString = w.seedString,
+                        seed = w.Seed,
+                        planetCoverage = w.planetCoverage,
+                        persistentRandomValue = w.persistentRandomValue,
+                        overallRainfall = w.overallRainfall.ToString(),
+                        overallTemperature = w.overallTemperature.ToString(),
+                        overallPopulation = w.overallPopulation.ToString(),
+                        landmarkDensity = w.landmarkDensity.ToString(),
+                        initialMapSize = new { x = w.initialMapSize.x, y = w.initialMapSize.y, z = w.initialMapSize.z },
+                        pollution = w.pollution,
+                        factionCount = w.factions != null ? w.factions.Count : 0,
+                        factions = w.factions != null ? w.factions.Select(f => f != null ? f.defName : null).ToList() : null,
+                    },
+                    tilesCount = Find.WorldGrid != null ? Find.WorldGrid.TilesCount : -1,
+                    notPersisted = new List<string> { "overallPopulation", "landmarkDensity" },
+                    notPersistedNote = "WorldInfo.ExposeData does not scribe these two. Whatever they read now, they revert on the next load.",
+                    ticksGame = TicksGameSafe(),
+                };
+            });
+        }
+
+        [Tool(
+            "jawa/world_info_set",
+            Description =
+                "Rename the planet or change its recorded generation parameters. " +
+                "🔴 overallPopulation and landmarkDensity are NOT SCRIBED by " +
+                "WorldInfo.ExposeData - they revert on the next load - so this tool REFUSES " +
+                "them unless allowNonPersistent=true, and flags them in the result when it " +
+                "does write them. Changing seedString or planetCoverage does NOT regenerate " +
+                "anything; it only edits the label the save carries.",
+            ResultDescription = "success, changed[], refused[], info read back.")]
+        public static async Task<object> WorldInfoSet(
+            IRimBridgeContext ctx,
+            CancellationToken cancellationToken,
+            [ToolParameter(Description = "Planet name.")] string name = null,
+            [ToolParameter(Description = "Seed string (label only - regenerates nothing).")] string seedString = null,
+            [ToolParameter(Description = "Planet-wide pollution 0-1.")] float? pollution = null,
+            [ToolParameter(Description = "overallPopulation - NOT PERSISTED.")] string overallPopulation = null,
+            [ToolParameter(Description = "landmarkDensity - NOT PERSISTED.")] string landmarkDensity = null,
+            [ToolParameter(Description = "Permit writing the two non-persisted fields.")] bool allowNonPersistent = false)
+        {
+            return await ctx.MainThread.InvokeAsync(() =>
+            {
+                if (Find.World == null || Find.World.info == null) return Fail("No world is loaded.");
+                var w = Find.World.info;
+                var changed = new List<string>(); var refused = new List<string>();
+
+                if (name != null) { w.name = name; changed.Add("name"); }
+                if (seedString != null) { w.seedString = seedString; changed.Add("seedString"); }
+                if (pollution.HasValue) { w.pollution = pollution.Value; changed.Add("pollution"); }
+
+                if (overallPopulation != null)
+                {
+                    if (!allowNonPersistent) refused.Add("overallPopulation (not scribed - pass allowNonPersistent=true)");
+                    else
+                    {
+                        try { w.overallPopulation = (OverallPopulation)Enum.Parse(typeof(OverallPopulation), overallPopulation, true); changed.Add("overallPopulation [NOT PERSISTED]"); }
+                        catch { refused.Add("overallPopulation: '" + overallPopulation + "' is not an OverallPopulation value"); }
+                    }
+                }
+                if (landmarkDensity != null)
+                {
+                    if (!allowNonPersistent) refused.Add("landmarkDensity (not scribed - pass allowNonPersistent=true)");
+                    else
+                    {
+                        try { w.landmarkDensity = (LandmarkDensity)Enum.Parse(typeof(LandmarkDensity), landmarkDensity, true); changed.Add("landmarkDensity [NOT PERSISTED]"); }
+                        catch { refused.Add("landmarkDensity: '" + landmarkDensity + "' is not a LandmarkDensity value"); }
+                    }
+                }
+
+                return (object)new
+                {
+                    success = true, changed, refused,
+                    info = new { name = w.name, seedString = w.seedString, pollution = w.pollution,
+                                 overallPopulation = w.overallPopulation.ToString(),
+                                 landmarkDensity = w.landmarkDensity.ToString() },
                     ticksGame = TicksGameSafe(),
                 };
             });

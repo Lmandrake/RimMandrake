@@ -11,7 +11,9 @@ def call(t, **p):
     return r
 name = sys.argv[1] if len(sys.argv) > 1 else "planet"
 tile = int(sys.argv[2]) if len(sys.argv) > 2 else -1
-call("jawa/world_view", show=True, centerTile=tile)
+alt  = float(sys.argv[3]) if len(sys.argv) > 3 else -1.0
+v = call("jawa/world_view", show=True, centerTile=tile, altitude=alt, northUp=True)
+print("view:", {k: v.get(k) for k in ("worldSelectedAfter", "centeredOn", "altitude")})
 # The debug log AUTO-REOPENS on any warning ("Auto-open is ON"), and an open
 # dialog obscures or blanks the shot. Closing once is not enough - something
 # can log between the close and the capture. Retry until the frame is clean.
