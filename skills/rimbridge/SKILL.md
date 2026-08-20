@@ -1,6 +1,6 @@
 ---
 name: rimbridge
-description: Drive a live RimWorld from outside via the RimBridgeServer GABP bridge - spawn pawns and things, set stuff and quality, build structures, control time, screenshot and measure results. Use when automating in-game testing, building map content, or debugging mods without clicking.
+description: Drive a live RimWorld from outside via the RimBridgeServer GABP bridge and its 91-tool JawaBench companion - author the planet (tiles, biomes, rivers, roads, mutators, landmarks, settlements, regions), author the map (terrain, substructure, buildings, prefab copy-paste, fog, snow, zones), deep-edit pawns (name, backstory, traits, skills, gear, health, faction, ideoligion, genes, age), and drive weather, game conditions and raids. Use when automating in-game testing, building map or world content, debugging mods without clicking, or whenever a bridge call reports success and the game did not move.
 ---
 
 # Driving RimWorld from the outside
@@ -123,20 +123,28 @@ Guessing `jawa/` is wrong about 84% of the time by count.
 
 ### Census the companion before you trust any `jawa/` call
 
-⏳ **The companion is 26 tools and NINE of them have never run in a live game** —
-the roof pair, the pawn-appearance three in `references/map-authoring.md`, and `jawa/get_defs`,
-`jawa/fire_quest`, `jawa/list_things` and `jawa/clear_ui` (all deployed
-2026-08-14 in the shutdown window, game copy md5 `55b2362`). They compile; nothing more is claimed. `jawa/list_factions` and
-`jawa/order_pawn` **drove live 2026-08-14** and are no longer on this list;
-`jawa/world_stats` was called and its answer was thrown away by a harness bug, so
-it is unproven for a different reason. Companions register only at RimBridgeServer
-startup. **First call of the next session: count the `jawa/` tools the bridge
-reports — 26 means the current deploy took, 24 means the build before
-`list_things`/`clear_ui`, 22 means before `get_defs`/`fire_quest`, 21 means before
-`world_stats`, 7 means an older companion, 0 means the bundle did not load.** Every
-other check is uninformative until that reads 26. 🔴 **The deploy must use
-`--gm`**, or the game copy loses `jawa/fire_incident` and `jawa/send_letter` and
-the census reads 24.
+**The companion is 91 `jawa/` tools as of 2026-08-19** (was 32 that morning), across four
+source files:
+
+| file | tools | reference |
+|---|---|---|
+| `JawaBenchTerrainTools.cs` | 32 | the original map/pawn/terrain set |
+| `JawaBenchWorldTools.cs` | 25 | `references/world-authoring.md` |
+| `JawaBenchMapTools.cs` | 16 | `references/map-authoring.md` |
+| `JawaBenchPawnTools.cs` | 14 | `references/pawn-authoring.md` |
+| `JawaBenchEventTools.cs` | 5 | weather · conditions · raids · storyteller |
+
+**First call of any session: count the `jawa/` names the bridge reports.** Companions
+register only at RimBridgeServer startup, so a low count means the deploy did not take,
+not that a tool is missing. **0 means the bundle did not load at all.**
+
+🔴 **The deploy must use `--gm`** or the game copy loses every player-acting tool —
+`fire_incident`, `send_letter`, `weather_set`, `game_condition`, `fire_raid`. `build.py`
+refuses and names them, which is the guard working.
+
+🔴 **`brrainz.rimbridgeserver` must be ACTIVE in ModsConfig.** The companion lives in
+`<gamedir>\BridgeTools\`, a **sibling of `Mods\`**, and is discovered *by the bridge
+mod at startup* — deploying the DLL is not enough if the mod is off.
 
 ⚠️ **Three documents disagreed about this number on 2026-08-13** — 17 in
 `EXPECTED_FAILURES_next_load.md`, 20 in `NEXT_RELOAD.md`, 21 here — and the
@@ -402,12 +410,30 @@ optimise anything, before you quote a timing, and when a loop is slower than you
 expected.
 
 
-## 9. Extending the bridge
+## 9. Extending the bridge — now its own skill
 
-When the bridge cannot do something, **adding a `[Tool]` method to a companion
-DLL is a documented, supported path, not a hack** — it is where every `jawa/`
-tool came from. **`references/extending.md`** has the source and build paths, the
-compile-against-the-running-game's-own-assemblies pattern that makes a guessed
-API a compiler error instead of a live failure, `IRimBridgeContext`'s composition
-surface, and the `ExcludeAssets="runtime"` gotcha. Read it before you conclude
-"the bridge cannot do X".
+When the bridge cannot do something, **adding a `[Tool]` method to a companion DLL is a
+documented, supported path, not a hack** — it is where all 91 `jawa/` tools came from, and
+59 of them were written in a single day.
+
+⇒ **Use the `rimbridge-companion` skill.** It has the tool pattern, the
+edit→build→deploy→test cycle (about **one minute** on a minimal mod list), the build
+guards, and the traps that make a new tool silently absent.
+`references/extending.md` keeps the lower-level assembly and csproj detail.
+
+
+## 10. Read these before you author anything
+
+| read | when |
+|---|---|
+| 🔴 **`references/silent-failures.md`** | **before your first write of any session.** Every entry is an engine call that reports success and changes nothing. This is the most expensive knowledge in the project |
+| `references/world-authoring.md` | authoring the planet — tiles, links, mutators, landmarks, regions, settlements |
+| `references/map-authoring.md` | authoring a map — terrain, substructure, buildings, prefabs, grids, zones |
+| `references/pawn-authoring.md` | editing pawns, or making pawns that live somewhere |
+| `references/traps.md` | before your first mutation, and when something "worked" and did not |
+| `references/performance.md` | before you optimise or quote a timing |
+| `references/capability-matrix.md` | "can the bridge do X" |
+
+**The house rule that all of it collapses to:**
+> **Write → read back the RAW field → look at the screen.**
+> ⛔ A tool returning `success: true` is not evidence. It never was.

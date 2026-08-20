@@ -253,3 +253,47 @@ rect"*. Passing `thingIds` as a JSON array throws
 `UnicodeEncodeError: 'charmap' codec` on a tool message containing an em-dash — the
 call had already SUCCEEDED, so this destroys the report, not the work. Open every
 bridge script with `sys.stdout.reconfigure(encoding="utf-8", errors="replace")`.
+
+---
+
+## 🔴 `Player.log` PERSISTS between runs — the readiness grep matches the LAST session
+
+Grepping `Player.log` for `GABP server running standalone` to know the bridge is up
+**returns instantly on a stale line from the previous run**, before the new game has even
+started. You then connect, get `ConnectionRefused`, and go looking for a bridge fault that
+does not exist.
+
+**Wait for the log to TRUNCATE first.** `src/RimMandrake/bridgetools/launch_and_wait.sh`
+records the size, waits for it to shrink, and only then looks for the marker.
+
+## 🔴 Kill RimWorld BEFORE building the companion
+
+`build.py` cannot overwrite a memory-mapped DLL and says so clearly — but a piped `grep`
+can hide the refusal, and you then spend a whole cycle testing **stale code** and
+concluding a new tool "was not found". Always `taskkill` first, and check for the word
+`deployed` in the output rather than assuming.
+
+## ⚠️ A docstring containing `jawa/world_*` made build.py report a phantom lost tool
+
+`build.py` extracts tool names by scanning the assembly for `jawa/...` literals. A
+docstring saying *"use the `jawa/world_*` family"* produced a phantom tool named
+`jawa/world_`, and the next build "lost" it and refused to deploy. **Avoid `jawa/` prefixes
+in prose inside tool descriptions.** The guard is right; the input was ambiguous.
+
+## ⚠️ `rimworld/search_debug_actions` timed out at 30 s even on a 13-mod list
+
+The documented debug-discovery hang is **not** only a heavy-modlist problem. Do not call
+the four `*_debug_action*` discovery tools as if they were reads.
+
+## ⚠️ An "ended" GameCondition still lists while the game is PAUSED
+
+There is no `EndNow()`. Ending sets `Duration = TicksPassed`, which expires on the **next
+tick** — so a paused game still shows it in `ActiveConditions` and it reads as a failed
+end. Step a few ticks and it clears. Measured.
+
+## ⚠️ A bare `catch {}` in your own tool is the same bug you are hunting
+
+Written by me, 2026-08-19: the zone builder swallowed `AddCell` refusals, and a 6×6
+stockpile silently took **11 of 36 cells** while reporting success. **If the engine can
+refuse a cell, report which cells and why** — the whole value of a bridge tool over a
+direct API call is that it explains itself.

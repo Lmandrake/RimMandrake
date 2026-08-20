@@ -199,3 +199,81 @@ replaces flooring as the way to clear ground.
 not come back. Say "terrain is exactly restorable", never "the paint is
 reversible". On a colony that matters, **the save is the undo.**
 
+
+---
+
+# The 16 map tools — added 2026-08-19
+
+Everything below is proven live. Silent-failure catalogue: `silent-failures.md`.
+
+```
+TERRAIN   get_terrain_layers · set_terrain_layer · set_substructure_batch
+GRIDS     set_fog · set_weather_buildup · set_deep_resource · set_gas
+BUILD     build_batch · build_check · designate_batch
+PREFAB    prefab_capture · prefab_place · prefab_list
+ZONES     map_zones (listZones/createZone/paintZone/deleteZone/listAreas/paintArea)
+COMMIT    map_commit            ⬅ the map twin of world_commit
+```
+
+## 🔑 1.6 has FIVE terrain layers, not two
+
+**top · under · FOUNDATION · TEMP · plus a colour grid.** The original `set_terrain` /
+`get_terrain_batch` only ever reach `top`, so they cannot tell a floor laid over
+substructure from bare ground. `get_terrain_layers` reads all five.
+
+**SUBSTRUCTURE IS NOT A GRID.** It is a foundation-layer `TerrainDef`
+(`TerrainDefOf.Substructure`, `IsSubstructure => HasTag("Substructure")`) in
+`TerrainGrid.foundationGrid`. `Map.substructureGrid` is **only an overlay drawer** — its
+sole state-changing method is `MarkDirty()`. Odyssey-gated.
+⚠️ `SetFoundation` **errors** if the cell has under-terrain; `set_substructure_batch`
+checks first and returns a per-cell reason instead of red log lines.
+
+## `map_commit` — what it actually does
+
+```csharp
+map.regionAndRoomUpdater.Enabled = true;
+map.regionAndRoomUpdater.RebuildAllRegionsAndRooms();   // also resets the temp/vacuum cache
+map.pathing.RecalculateAllPerceivedPathCosts();
+map.reachability.ClearCache();
+map.powerNetManager.UpdatePowerNetsAndConnections_First();   // Notify_* only QUEUE; this flushes
+map.mapDrawer.WholeMapChanged(Buildings|Things|Terrain|Roofs|GroundGlow|Snow|PowerGrid);
+```
+
+✅ **Everything else is automatic.** `Thing.SpawnSetup` already handles listerThings,
+listerBuildings, thingGrid, edificeGrid, coverGrid, linkGrid, glowGrid, fertilityGrid,
+attackTargetsCache, snow/sand, exitMapGrid, mapTemperature, gasGrid, zoneManager, per-cell
+mesh dirtying and region dirtying.
+
+For speed on a big batch, wrap the spawn loop in `regionAndRoomUpdater.Enabled = false` and
+`using (map.pathing.DisableIncrementalScope())`.
+
+## ⭐ Prefabs — copy and paste regions of map
+
+Base 1.6 and ungated. `prefab_capture` takes a `CellRect` into a named capture;
+`prefab_place` stamps it back. **63 of 63 terrain cells and all 34 things replayed
+identically** in the proving run.
+
+* 🔴 **`CreatePrefab` never sets `size`** — vanilla's own capture is unusable until you
+  fill it in. `prefab_capture` does.
+* 🔑 **`SpawnPrefab` CENTRES on `pos`** — min corner is `pos - ((size-1)/2)`.
+* ⚠️ Captures are **session-only** by design: not in `DefDatabase`, gone on restart.
+* 📌 `copyAllThings=false` still captures natural rock — the flag governs loose items and
+  filth, not edifices.
+
+## Building
+
+`build_batch` takes `'ThingDef:x,z[,rot]'` ops separated by `;`. It is the god-mode path
+`Designator_Build` itself takes: `MakeThing` → `SetFactionDirect` → `GenSpawn.Spawn`.
+
+* 🔴 **Set HitPoints AFTER the spawn** — `MakeThing` calls `PostMake`, which randomises
+  them from `startingHpRange`. Proven: asked 175, got 175/300 on every wall.
+* 🔴 **WALLS CREATE NO ROOF.** Confirmed by building a room and finding it open sky.
+* ⛔ **Do not drive `Designator_Build`** — `placingRot` is protected and it reads
+  `Find.CurrentMap` plus tutor/sound/fleck state.
+* `build_check` returns the engine's own `AcceptanceReport`, so a refusal explains itself.
+* `designate_batch` queries before adding — `AddDesignation` logs a red error on double-add.
+
+## Fog defeats screenshots
+
+A slab written correctly in unvisited territory **photographs as nothing**. Run
+`set_fog action=unfogAll` before any map capture. This cost one wasted screenshot cycle.

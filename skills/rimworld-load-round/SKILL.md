@@ -1,6 +1,6 @@
 ---
 name: rimworld-load-round
-description: How to spend a RimWorld cold load — the ~23–30 minute game restart that is the scarcest resource in this project. Arriving already confident instead of "restart and see", writing the Player.log strings that will decide each item before launching, batching by ambiguity, what ModsConfig.xml is and is not authoritative about, src/RimMandrake/Utils/refresh.py and whether a load is needed at all, the shutdown window where companion DLLs deploy, the doctrine delta at launch, and harvesting the whole log. Use before calling or queueing a restart, when the game is about to close or has just launched, after any mod-list change, and whenever you are tempted to say "restart and see".
+description: How to spend a RimWorld cold load — and how to stop needing one. A 13-mod minimal list loads in 22 SECONDS against ~25 minutes on the full 578, making a full edit-build-deploy-test cycle about a minute; modlist_swap.py does the swap and restore. Covers what that minimal list cannot prove. Arriving already confident instead of "restart and see", writing the Player.log strings that will decide each item before launching, batching by ambiguity, what ModsConfig.xml is and is not authoritative about, src/RimMandrake/Utils/refresh.py and whether a load is needed at all, the shutdown window where companion DLLs deploy, the doctrine delta at launch, and harvesting the whole log. Use before calling or queueing a restart, when the game is about to close or has just launched, after any mod-list change, and whenever you are tempted to say "restart and see".
 ---
 
 # The load round
@@ -8,6 +8,46 @@ description: How to spend a RimWorld cold load — the ~23–30 minute game rest
 A cold load costs **~23–30 minutes** and there is one game shared by five seats.
 So a load is never spent on one question, and never spent to learn something that
 could have been read off disk.
+
+## 0. 🟢 FIRST: does this load have to be expensive at all?
+
+**Measured 2026-08-19 — a cold load on a 13-mod MINIMAL list is 22 SECONDS**, against ~25
+minutes on the owner's 578. The engine's own clock agrees:
+`[RimBridge] STARTUP_TIMING phase=bridge-start.total elapsedMs=12364`. A quicktest world on
+top costs **5 s**. ⇒ **the whole edit → build → deploy → launch → test cycle is about ONE
+MINUTE.** Everything below about hoarding a load still applies to the owner's real stack —
+but for *tool and mechanism* work the scarcity is gone. Do not spend a 25-minute load
+proving something a 22-second one can prove.
+
+```
+python3 src/RimMandrake/Utils/modlist_swap.py --status
+python3 src/RimMandrake/Utils/modlist_swap.py --minimal --restore   # add --apply
+```
+Plan-only by default; it archives the live file before every write. The owner's real list
+is frozen at `infrastructure/state/modlists/ModsConfig.FULL.LATEST.xml`.
+
+**The 13 and why each one is there:** harmony · core + all five expansions · VEF (Alpha
+Biomes' hard dep) · `brrainz.rimbridgeserver` · alienworlds + tidallylocked · alphabiomes ·
+mylittleplanet.
+🔴 **Odyssey is NOT optional** — `Tile.Landmark` returns null without `OdysseyActive`, and
+PlanetLayer/Orbit are Odyssey types. A leaner list silently has no landmarks.
+🔴 **`brrainz.rimbridgeserver` is not optional** — without it there is no bridge at all,
+however the companion DLL is deployed.
+
+### ⚠️ What the minimal list CANNOT do
+
+* **It cannot reproduce the 21,872-tile geometry.** `ferny.Worldbuilder` is absent, and
+  Worldbuilder is what loads the TidallyLocked preset. A quicktest comes out 119,904 tiles.
+  Anything depending on real tile IDs needs the full list.
+* **It does not have the content mods.** A 21,872-row import validated at 81.6% on it, and
+  **every** mismatch was one of 8 biome defs the 13-mod list lacks — not a tool defect.
+* 🔴 **While it is installed, the live `ModsConfig.xml` is NOT evidence about the owner's
+  stack.** A research thread read it and reported Gravship Exporter inactive; it is active
+  in the real 578. Read `ModsConfig.FULL.LATEST.xml` instead.
+* 🔴 **Restore before the owner plays.** `--status` prints a loud warning while minimal is
+  live. Leaving his machine on 13 mods is the one unacceptable outcome.
+
+---
 
 ## 1. Never "restart and see"
 

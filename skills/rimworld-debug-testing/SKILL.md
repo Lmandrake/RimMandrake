@@ -5,6 +5,20 @@ description: Testing anything in RimWorld without spending a cold load — start
 
 # Debug testing: never wait for a map you can make
 
+> 🟢 **UPDATED 2026-08-19 — the economics changed.** On the 13-mod minimal list
+> (`modlist_swap.py`, see the `rimworld-load-round` skill) a **cold load is 22 seconds** and
+> `rimworld/start_debug_game_ready` produces a full quicktest world+map in **5 seconds**.
+> The whole edit → build → deploy → launch → test cycle is about **one minute**. Everything
+> below about protecting a load still holds for the owner's real 578-mod stack; for tool and
+> mechanism work, just relaunch.
+>
+> ⚠️ **What a minimal-list quicktest still cannot prove:** anything depending on real tile
+> IDs (it generates 119,904 tiles, not 21,872), anything needing the content mods, and
+> anything about the owner's actual mod interactions. It proves MECHANISM, not CONTENT.
+>
+> ⚠️ **`rimworld/search_debug_actions` timed out at 30 s even on 13 mods** — the debug
+> discovery hang is not only a heavy-modlist problem.
+
 ⚠️ **This skill is METHOD, not mechanics.** How to drive the bridge — the call
 palette, debug actions, map authoring, speed, the companion DLL — is
 `skills/rimbridge/SKILL.md`, and its hard-won failure catalogue is

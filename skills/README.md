@@ -17,7 +17,7 @@ it, and the `.skill` zips are gitignored.
 
 | owner | skills |
 |---|---|
-| **CHECK** — the live game | `rimbridge` · `rimworld-world-editing` · `rimworld-debug-testing` · `rimworld-load-round` · `rimworld-savegame` |
+| **CHECK** — the live game | `rimbridge` · `rimbridge-companion` · `rimworld-world-editing` · `rimworld-debug-testing` · `rimworld-load-round` · `rimworld-savegame` |
 | **BUILD** — artifacts and art | `rimworld-modding` · `rimworld-deploy` · `rimworld-ideoligion` · `rimworld-quests` · `rimworld-xenotypes` · `rimworld-start-prep` · `gravship-layout` · `generating-rimworld-sprites` · `generating-images` · `editing-images` |
 | **DECIDE** — what ships | `deciding-and-superseding` (issuing a ruling that survives contact) · `rimworld-content-moderation` (the cherrypick method — a keep/cut call is a scope call) |
 | **REP** — shared | `verify-before-you-escalate` (every seat reads docs and every seat escalates) · `efficient-subagents` · `agent-fanout-research` · `calibrating-binary-formats` · `frozen-artifacts` · `reading-rimworld-graphics` (art, contact sheets and audits all reach for it), and this README |
@@ -38,6 +38,7 @@ it should write directly and say so.
 | `rimworld-deploy` | putting a build on the game copy. Plan-first, `--mod` scoping, `DEPLOY_HOLD.txt`. |
 | `rimworld-load-round` | calling or queueing a game load. How to spend 25 minutes. |
 | `rimbridge` | driving a live game — spawn, build, screenshot, measure. |
+| `rimbridge-companion` | writing NEW bridge tools — the companion DLL, the one-minute build cycle, the design rules. |
 | `rimworld-debug-testing` | reproducing a defect in-game without a full campaign. |
 | `review-sheets` | building an interactive sheet so the owner curates hundreds of elements by disagreeing, not by answering questions. |
 | `rimworld-world-editing` | the WORLD screen — biomes, landmarks, auditing a generated faction roster before committing to a landing site. Different rules from the map screen. |
