@@ -2339,7 +2339,7 @@ namespace JawaBench.BridgeTools
                 var lush = new HashSet<string>((lushBiomes ?? "").Split(',').Select(x => x.Trim()).Where(x => x.Length > 0), StringComparer.OrdinalIgnoreCase);
 
                 var staleMarine = new List<object>(); int staleMarineN = 0;
-                var waterBiomeOnLand = new List<object>(); int wbolN = 0;
+                var waterBiomeOnLand = new List<object>(); int wbolN = 0; int lakesAboveSeaLevelN = 0;
                 var landBiomeSubmerged = new List<object>(); int lbsN = 0;
                 var lonelyIsland = new List<object>(); int islandN = 0;
                 var lushOffRiver = new List<object>(); int lushN = 0;
@@ -2376,7 +2376,14 @@ namespace JawaBench.BridgeTools
                     // were written by different passes that never read each other.
                     if (b != null)
                     {
-                        bool biomeIsWater = b.defName == "Ocean" || b.defName == "Lake" || b.defName == "SeaIce";
+                        // 🔴 Lake is NOT in this test, deliberately - corrected
+                        // 2026-08-20 after it produced 312 findings on the Ash'karr
+                        // import, exactly the CSV's Lake count. A lake at positive
+                        // elevation is ordinary geography; vanilla lakes sit on
+                        // land. Only Ocean and SeaIce are genuinely sea level.
+                        // Lakes are counted separately below and do NOT score.
+                        bool biomeIsWater = b.defName == "Ocean" || b.defName == "SeaIce";
+                        if (b.defName == "Lake" && t.elevation > 0f) lakesAboveSeaLevelN++;
                         if (biomeIsWater && t.elevation > 0f)
                         {
                             wbolN++;
@@ -2491,7 +2498,8 @@ namespace JawaBench.BridgeTools
                     checks = new
                     {
                         staleMarineMutators = new { count = staleMarineN, note = "Marine mutator on a tile that is not coastal by real adjacency - the classic survivor of a repaint.", examples = staleMarine },
-                        waterBiomeOnRaisedLand = new { count = wbolN, note = "Ocean/Lake/SeaIce biome with elevation > 0.", examples = waterBiomeOnLand },
+                        waterBiomeOnRaisedLand = new { count = wbolN, note = "Ocean or SeaIce biome with elevation > 0. Lake is EXCLUDED - a lake at altitude is ordinary geography, and including it made this check fire once per authored lake.", examples = waterBiomeOnLand },
+                        lakesAboveSeaLevel = new { count = lakesAboveSeaLevelN, note = "INFORMATIONAL, scores ZERO. Lake tiles above sea level, which is normal. Here so a genuinely suspicious count is still visible.", },
                         landBiomeSubmerged = new { count = lbsN, note = "Land biome with elevation <= 0.", examples = landBiomeSubmerged },
                         singleTileIslands = new { count = islandN, note = "Land tile with every neighbour water.", examples = lonelyIsland },
                         riverSystems = new
@@ -3113,5 +3121,492 @@ namespace JawaBench.BridgeTools
                 };
             }, cancellationToken).ConfigureAwait(false);
         }
+        // ================================================================
+        //  jawa/pawnkind_audit - WHICH KINDS CAN NEVER ARM THEMSELVES
+        //
+        //  Born from a live finding on 2026-08-20: 16 of 48 authored Jawa
+        //  role kinds spawned bare-handed, 5/5 samples. The cause was not an
+        //  empty weaponTag - it was `weaponMoney` sitting under the price of
+        //  every weapon carrying the tag.
+        //
+        //  🔑 THIS TOOL DOES NOT RE-DERIVE THE RULE. It reflects the engine's
+        //  own `PawnWeaponGenerator.allWeaponPairs` and applies the engine's
+        //  own predicate, read out of TryGenerateWeaponFor:
+        //      if (!(w.Price > weaponMoney.RandomInRange) && tagsIntersect) ...
+        //  ⇒ weaponMoney is a CEILING, not a bracket. `min` never excludes a
+        //  weapon; only `max` can empty the pool. A tool that reimplemented
+        //  this from the defs would have got that backwards - the first
+        //  hand analysis did.
+        //
+        //  ⚠️ Price includes STUFF. Comparing bare MarketValue understates it.
+        // ================================================================
+        [Tool(
+            "jawa/pawnkind_audit",
+            Description =
+                "Find every PawnKindDef that CANNOT arm itself, and say which of the three " +
+                "reasons it is. Uses the engine's own weapon-pair table and the engine's own " +
+                "eligibility test, so it cannot drift from what generation actually does. " +
+                "Reasons: `noWeaponTags` (the kind lists none - it will never carry anything), " +
+                "`emptyTagPool` (tags are listed but no weapon in the loaded game carries one), " +
+                "`cannotAfford` (weapons exist but every one costs more than weaponMoney.max). " +
+                "Run it against the FULL mod list; a reduced list makes healthy kinds look broken.",
+            ResultDescription =
+                "counts per reason, and per-kind rows carrying weaponMoney, the cheapest " +
+                "eligible weapon and its price, so the fix is a number rather than a guess. " +
+                "`checked` says how many kinds were actually testable.")]
+        public static async Task<object> PawnKindAudit(
+            IRimBridgeContext ctx,
+            CancellationToken cancellationToken,
+            [ToolParameter(Description =
+                "Only audit kinds whose defName contains this (case-insensitive). Empty = all.",
+                DefaultValue = null)]
+            string filter = null,
+            [ToolParameter(Description = "Max example rows per reason. Default 40.", DefaultValue = 40)]
+            int limit = 40,
+            [ToolParameter(Description =
+                "Include kinds that are fine, for a full census. Off by default.", DefaultValue = false)]
+            bool includeHealthy = false)
+        {
+            return await ctx.MainThread.InvokeAsync<object>(() =>
+            {
+                // The pair table is private static and is built by
+                // PawnWeaponGenerator.Reset() at startup. Reflection is the only
+                // route, and a null here means the game has not finished loading
+                // rather than that the audit found nothing - say so.
+                var f = typeof(PawnWeaponGenerator).GetField(
+                    "allWeaponPairs",
+                    System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Static);
+                if (f == null)
+                    return Fail("PawnWeaponGenerator.allWeaponPairs not found - the field was " +
+                                "renamed in this RimWorld build. Re-read the source before trusting " +
+                                "any weapon audit.");
+                var pairs = f.GetValue(null) as List<ThingStuffPair>;
+                if (pairs == null || pairs.Count == 0)
+                    return Fail("allWeaponPairs is empty. That is a NOT-READY signal, not a finding - " +
+                                "the table is built during startup. Try again once a game is loaded.");
+
+                // tag -> cheapest price carrying it, computed once. Doing it per
+                // kind would be O(kinds x pairs) over ~400 kinds and thousands
+                // of pairs.
+                var cheapestByTag = new Dictionary<string, KeyValuePair<string, float>>();
+                foreach (var w in pairs)
+                {
+                    var tags = w.thing != null ? w.thing.weaponTags : null;
+                    if (tags == null) continue;
+                    foreach (var tag in tags)
+                    {
+                        KeyValuePair<string, float> cur;
+                        if (!cheapestByTag.TryGetValue(tag, out cur) || w.Price < cur.Value)
+                            cheapestByTag[tag] = new KeyValuePair<string, float>(w.thing.defName, w.Price);
+                    }
+                }
+
+                var noTags = new List<object>(); int noTagsN = 0;
+                var emptyPool = new List<object>(); int emptyPoolN = 0;
+                var cannotAfford = new List<object>(); int cannotAffordN = 0;
+                var healthy = new List<object>(); int healthyN = 0;
+                int considered = 0, skippedNonCombat = 0;
+
+                foreach (var k in DefDatabase<PawnKindDef>.AllDefsListForReading)
+                {
+                    if (k == null || k.race == null) continue;
+                    if (!string.IsNullOrWhiteSpace(filter) &&
+                        k.defName.IndexOf(filter.Trim(), StringComparison.OrdinalIgnoreCase) < 0) continue;
+
+                    // Only tool users can hold a weapon at all. An animal with no
+                    // weaponTags is not a defect and must not pollute the count.
+                    var rp = k.race.race;
+                    if (rp == null || !rp.ToolUser) { skippedNonCombat++; continue; }
+                    considered++;
+
+                    var tags = k.weaponTags;
+                    if (tags == null || tags.Count == 0)
+                    {
+                        noTagsN++;
+                        if (noTags.Count < limit)
+                            noTags.Add(new { kind = k.defName, label = k.label, race = k.race.defName });
+                        continue;
+                    }
+
+                    string bestDef = null; float bestPrice = float.MaxValue;
+                    foreach (var tag in tags)
+                    {
+                        KeyValuePair<string, float> c;
+                        if (cheapestByTag.TryGetValue(tag, out c) && c.Value < bestPrice)
+                        { bestPrice = c.Value; bestDef = c.Key; }
+                    }
+
+                    var money = k.weaponMoney;
+                    if (bestDef == null)
+                    {
+                        emptyPoolN++;
+                        if (emptyPool.Count < limit)
+                            emptyPool.Add(new { kind = k.defName, label = k.label, tags = tags.ToList(),
+                                                weaponMoneyMax = money.max });
+                        continue;
+                    }
+
+                    // The engine's test, verbatim in shape: eligible iff price is
+                    // NOT GREATER than the roll, and the roll cannot exceed max.
+                    if (bestPrice > money.max)
+                    {
+                        cannotAffordN++;
+                        if (cannotAfford.Count < limit)
+                            cannotAfford.Add(new
+                            {
+                                kind = k.defName, label = k.label, tags = tags.ToList(),
+                                weaponMoneyMin = money.min, weaponMoneyMax = money.max,
+                                cheapestEligible = bestDef, cheapestPrice = bestPrice,
+                                raiseMaxTo = (float)Math.Ceiling(bestPrice),
+                            });
+                        continue;
+                    }
+
+                    healthyN++;
+                    if (includeHealthy && healthy.Count < limit)
+                        healthy.Add(new { kind = k.defName, cheapestEligible = bestDef,
+                                          cheapestPrice = bestPrice, weaponMoneyMax = money.max });
+                }
+
+                int broken = noTagsN + emptyPoolN + cannotAffordN;
+                return new
+                {
+                    success = true,
+                    message = broken == 0
+                        ? considered + " tool-using kind(s) audited; every one can arm itself."
+                        : broken + " of " + considered + " tool-using kind(s) CANNOT arm themselves: " +
+                          noTagsN + " with no weaponTags, " + emptyPoolN + " whose tags match no loaded weapon, " +
+                          cannotAffordN + " that cannot afford the cheapest weapon their tags allow.",
+                    weaponPairsInGame = pairs.Count,
+                    distinctWeaponTags = cheapestByTag.Count,
+                    kindsChecked = considered,
+                    skippedNonToolUser = skippedNonCombat,
+                    counts = new { noWeaponTags = noTagsN, emptyTagPool = emptyPoolN,
+                                   cannotAfford = cannotAffordN, healthy = healthyN },
+                    noWeaponTags = noTags,
+                    emptyTagPool = emptyPool,
+                    cannotAfford,
+                    healthy = includeHealthy ? healthy : null,
+                    note = "weaponMoney is a CEILING - raise `max` above cheapestPrice. `min` only " +
+                           "shifts the roll and never excludes a weapon. Price includes stuff.",
+                    ticksGame = TicksGameSafe(),
+                };
+            }, cancellationToken).ConfigureAwait(false);
+        }
+
+        // ================================================================
+        //  jawa/texture_audit - EVERY texPath THAT RESOLVES TO NOTHING
+        //
+        //  Born from the GrimTerra swap on 2026-08-20: two animals logged
+        //  "Failed to find any textures at ..." and the cause was a typo in
+        //  a lifeStage texPath - `TortoiseGRim` for `GRimTortoise`, and a
+        //  capital B in `GRimPinkBird`.
+        //
+        //  🔴 THE CASE TRAP IS WHY THIS IS A TOOL AND NOT A SHELL SCRIPT.
+        //  Windows' filesystem is case-INsensitive; RimWorld's content index
+        //  is case-SENSITIVE. `ls` resolves a path the game cannot. Only the
+        //  running game can answer this question.
+        //
+        //  ⚠️ The log only reports a failure when ALL directions are missing
+        //  AND something actually tried to draw it. This sweeps every path
+        //  whether or not anything has been spawned.
+        // ================================================================
+        [Tool(
+            "jawa/texture_audit",
+            Description =
+                "Sweep ThingDef graphics for texPaths that resolve to NO texture in the " +
+                "running game, including per-lifeStage paths, which is where the typos hide. " +
+                "Asks ContentFinder directly, so it answers the question the GAME asks - a " +
+                "shell `ls` cannot, because Windows is case-insensitive and RimWorld is not. " +
+                "Reports the owning mod so the fix can be aimed.",
+            ResultDescription =
+                "missing[] with def, mod, which graphic (main or lifeStage N), and the dead " +
+                "path. `checked` counts paths actually tested. Empty missing[] with a large " +
+                "`checked` is the pass.")]
+        public static async Task<object> TextureAudit(
+            IRimBridgeContext ctx,
+            CancellationToken cancellationToken,
+            [ToolParameter(Description =
+                "Only defs whose defName contains this (case-insensitive). Empty = all.",
+                DefaultValue = null)]
+            string filter = null,
+            [ToolParameter(Description =
+                "Only defs from mods whose packageId or name contains this. Empty = all.",
+                DefaultValue = null)]
+            string mod = null,
+            [ToolParameter(Description = "Max rows returned. Default 60.", DefaultValue = 60)]
+            int limit = 60,
+            [ToolParameter(Description =
+                "Stop after testing this many paths. 0 = no cap. A full stack is tens of " +
+                "thousands of paths; the sweep is fast but not free.", DefaultValue = 0)]
+            int maxPaths = 0)
+        {
+            return await ctx.MainThread.InvokeAsync<object>(() =>
+            {
+                var missing = new List<object>();
+                int tested = 0, missingN = 0, defsSeen = 0;
+                var sw = new System.Diagnostics.Stopwatch(); sw.Start();
+
+                // A Multi graphic stores <path>_north/_east/_south; a Single
+                // stores <path> itself. Missing means NONE of them resolve -
+                // the same bar the engine's own error uses.
+                Func<string, bool> resolves = path =>
+                {
+                    if (string.IsNullOrEmpty(path)) return true;
+                    if (ContentFinder<UnityEngine.Texture2D>.Get(path, false) != null) return true;
+                    if (ContentFinder<UnityEngine.Texture2D>.Get(path + "_south", false) != null) return true;
+                    if (ContentFinder<UnityEngine.Texture2D>.Get(path + "_north", false) != null) return true;
+                    if (ContentFinder<UnityEngine.Texture2D>.Get(path + "_east", false) != null) return true;
+                    return false;
+                };
+
+                foreach (var d in DefDatabase<ThingDef>.AllDefsListForReading)
+                {
+                    if (d == null) continue;
+                    if (maxPaths > 0 && tested >= maxPaths) break;
+                    if (!string.IsNullOrWhiteSpace(filter) &&
+                        d.defName.IndexOf(filter.Trim(), StringComparison.OrdinalIgnoreCase) < 0) continue;
+                    var modName = d.modContentPack != null ? d.modContentPack.Name : "(core?)";
+                    var modId = d.modContentPack != null ? d.modContentPack.PackageId : "";
+                    if (!string.IsNullOrWhiteSpace(mod) &&
+                        modName.IndexOf(mod.Trim(), StringComparison.OrdinalIgnoreCase) < 0 &&
+                        modId.IndexOf(mod.Trim(), StringComparison.OrdinalIgnoreCase) < 0) continue;
+                    defsSeen++;
+
+                    Action<string, string> check = (path, which) =>
+                    {
+                        if (string.IsNullOrEmpty(path)) return;
+                        if (maxPaths > 0 && tested >= maxPaths) return;
+                        tested++;
+                        if (resolves(path)) return;
+                        missingN++;
+                        if (missing.Count < limit)
+                            missing.Add(new { def = d.defName, label = d.label, mod = modName,
+                                              packageId = modId, graphic = which, texPath = path });
+                    };
+
+                    if (d.graphicData != null) check(d.graphicData.texPath, "graphicData");
+
+                }
+
+                // 🔑 THE LIFESTAGE PATHS ARE THE ONES THAT HIDE, and they live on
+                // PawnKindDef.lifeStages, NOT on the ThingDef. Both GrimTerra typos
+                // were in the SECOND li while the main graphic and the other stages
+                // were correct - so the animal renders fine as an adult and the bug
+                // only appears on a juvenile nobody spawns on purpose.
+                // ⚠️ The female* fields are swept too, deliberately. A path that is
+                // wrong only on the female variant reads as an INTERMITTENT bug -
+                // it is why male Chagrians always rendered and females did not.
+                foreach (var pk in DefDatabase<PawnKindDef>.AllDefsListForReading)
+                {
+                    if (pk == null || pk.lifeStages == null) continue;
+                    if (maxPaths > 0 && tested >= maxPaths) break;
+                    if (!string.IsNullOrWhiteSpace(filter) &&
+                        pk.defName.IndexOf(filter.Trim(), StringComparison.OrdinalIgnoreCase) < 0) continue;
+                    var pkMod = pk.modContentPack != null ? pk.modContentPack.Name : "(core?)";
+                    var pkId = pk.modContentPack != null ? pk.modContentPack.PackageId : "";
+                    if (!string.IsNullOrWhiteSpace(mod) &&
+                        pkMod.IndexOf(mod.Trim(), StringComparison.OrdinalIgnoreCase) < 0 &&
+                        pkId.IndexOf(mod.Trim(), StringComparison.OrdinalIgnoreCase) < 0) continue;
+                    defsSeen++;
+
+                    for (int i = 0; i < pk.lifeStages.Count; i++)
+                    {
+                        var ls = pk.lifeStages[i];
+                        if (ls == null) continue;
+                        Action<GraphicData, string> lcheck = (gd, which) =>
+                        {
+                            if (gd == null || string.IsNullOrEmpty(gd.texPath)) return;
+                            if (maxPaths > 0 && tested >= maxPaths) return;
+                            tested++;
+                            if (resolves(gd.texPath)) return;
+                            missingN++;
+                            if (missing.Count < limit)
+                                missing.Add(new { def = pk.defName, label = pk.label, mod = pkMod,
+                                                  packageId = pkId,
+                                                  graphic = "lifeStages[" + i + "]." + which,
+                                                  texPath = gd.texPath });
+                        };
+                        lcheck(ls.bodyGraphicData, "body");
+                        lcheck(ls.femaleGraphicData, "female");
+                        lcheck(ls.dessicatedBodyGraphicData, "dessicated");
+                        lcheck(ls.femaleDessicatedBodyGraphicData, "femaleDessicated");
+                        lcheck(ls.corpseGraphicData, "corpse");
+                        lcheck(ls.femaleCorpseGraphicData, "femaleCorpse");
+                    }
+                }
+                sw.Stop();
+
+                return new
+                {
+                    success = true,
+                    message = missingN == 0
+                        ? "No dead texPaths in " + tested + " path(s) across " + defsSeen + " def(s)."
+                        : missingN + " DEAD texPath(s) in " + tested + " path(s) across " + defsSeen + " def(s).",
+                    defsScanned = defsSeen,
+                    pathsChecked = tested,
+                    missingCount = missingN,
+                    truncated = missingN > missing.Count,
+                    elapsedMs = sw.ElapsedMilliseconds,
+                    missing,
+                    note = "A dead path here is invisible to `ls`: Windows is case-insensitive, " +
+                           "RimWorld's content index is not. Fix by PATCH, never by editing a " +
+                           "workshop folder - Steam overwrites it.",
+                    ticksGame = TicksGameSafe(),
+                };
+            }, cancellationToken).ConfigureAwait(false);
+        }
+
+        // ================================================================
+        //  jawa/world_settlements_import - W9 STAGE 5, the authored 72
+        //
+        //  The tile importer paints biomes; this places the holdings that
+        //  make the planet a SETTING rather than a terrain map.
+        //
+        //  🔴 ALL-OR-NOTHING ON FACTIONS, and that is the whole design.
+        //  A Settlement whose faction is null is DESTROYED on load with
+        //  only a warning in the log - the loudest silent failure on the
+        //  world layer. So every row's faction_def is resolved to a LIVE
+        //  faction BEFORE anything is created, and one unresolvable row
+        //  refuses the entire import. A half-painted roster that loses
+        //  eleven holdings on the next load is worse than no import.
+        // ================================================================
+        [Tool(
+            "jawa/world_settlements_import",
+            Description =
+                "Place the authored settlement roster from a CSV with columns " +
+                "faction_def,name,tile (extra columns are ignored). Resolves EVERY row's " +
+                "faction to a live faction first and refuses the whole import if any row " +
+                "cannot be resolved, because a Settlement with a null faction is destroyed " +
+                "on load with only a warning. Dry run by default.",
+            ResultDescription =
+                "created, removed, refused[] with the reason per row, and the settlement " +
+                "count before and after - read back off Find.WorldObjects, not counted from " +
+                "the file. Run jawa/world_commit afterwards.")]
+        public static async Task<object> WorldSettlementsImport(
+            IRimBridgeContext ctx,
+            CancellationToken cancellationToken,
+            [ToolParameter(Description = "Absolute path to the settlements CSV.")]
+            string path = null,
+            [ToolParameter(Description = "Write for real. Default false (dry run).", DefaultValue = false)]
+            bool apply = false,
+            [ToolParameter(Description =
+                "Refuse unless WorldGrid.TilesCount equals this. 0 = no check.", DefaultValue = 0)]
+            int expectTiles = 0,
+            [ToolParameter(Description =
+                "Remove EVERY existing settlement first. Off by default - leaves the " +
+                "generated roster in place and adds to it, which is almost never what an " +
+                "authored import wants. Turn it on for a clean roster.", DefaultValue = false)]
+            bool clearExisting = false)
+        {
+            return await ctx.MainThread.InvokeAsync<object>(() =>
+            {
+                var grid = Find.WorldGrid;
+                if (grid == null) return Fail("No WorldGrid. This needs a WORLD loaded.");
+                if (expectTiles > 0 && grid.TilesCount != expectTiles)
+                    return Fail("REFUSING: WorldGrid.TilesCount is " + grid.TilesCount + ", expected " +
+                                expectTiles + ". A tile id means a different place on a different " +
+                                "subdivision - importing here would paint the wrong planet.");
+
+                string err; var csv = ReadTileCsv2(path, out err, requireTileColumn: false);
+                if (csv == null) return Fail(err);
+                foreach (var need in new[] { "faction_def", "name", "tile" })
+                    if (!csv.Col.ContainsKey(need))
+                        return Fail("Settlements CSV needs a '" + need + "' column. Header: " +
+                                    string.Join(",", csv.Header.ToArray()));
+
+                // PASS 1 - resolve everything, create nothing.
+                var plan = new List<KeyValuePair<Faction, KeyValuePair<int, string>>>();
+                var refused = new List<object>();
+                var factionCache = new Dictionary<string, Faction>(StringComparer.OrdinalIgnoreCase);
+                for (int r = 0; r < csv.Rows.Count; r++)
+                {
+                    var row = csv.Rows[r];
+                    var fdName = Cell(csv, row, "faction_def");
+                    var nm = Cell(csv, row, "name");
+                    var tileS = Cell(csv, row, "tile");
+                    int tile;
+                    if (!int.TryParse(tileS, out tile) || tile < 0 || tile >= grid.TilesCount)
+                    { refused.Add(new { row = r + 2, name = nm, reason = "tile '" + tileS + "' is not a valid tile id" }); continue; }
+
+                    Faction fac;
+                    if (!factionCache.TryGetValue(fdName ?? "", out fac))
+                    {
+                        var fd = DefDatabase<FactionDef>.GetNamedSilentFail((fdName ?? "").Trim());
+                        fac = fd == null ? null : Find.FactionManager.FirstFactionOfDef(fd);
+                        factionCache[fdName ?? ""] = fac;
+                    }
+                    if (fac == null)
+                    { refused.Add(new { row = r + 2, name = nm, factionDef = fdName,
+                                        reason = "no LIVE faction of that def in this world - a settlement " +
+                                                 "with a null faction is destroyed on load" }); continue; }
+                    plan.Add(new KeyValuePair<Faction, KeyValuePair<int, string>>(
+                        fac, new KeyValuePair<int, string>(tile, nm)));
+                }
+
+                int before = Find.WorldObjects.Settlements.Count;
+                if (refused.Count > 0)
+                    return Fail("REFUSING the whole import: " + refused.Count + " of " + csv.Rows.Count +
+                                " row(s) do not resolve. Nothing was created. Fix the rows, or the " +
+                                "factions they name are not in this world.",
+                                new { refused, wouldCreate = plan.Count, settlementsNow = before });
+
+                if (!apply)
+                    return new
+                    {
+                        success = true, dryRun = true, rows = csv.Rows.Count,
+                        wouldCreate = plan.Count, wouldRemove = clearExisting ? before : 0,
+                        settlementsNow = before,
+                        factions = plan.Select(q => q.Key.def.defName).Distinct().ToList(),
+                        note = "DRY RUN - nothing was written. Every row resolved to a live faction. Pass apply=true.",
+                        ticksGame = TicksGameSafe(),
+                    };
+
+                int removed = 0;
+                if (clearExisting)
+                {
+                    foreach (var st in Find.WorldObjects.Settlements.ToList())
+                    { try { st.Destroy(); removed++; } catch { } }
+                }
+
+                int created = 0; var failures = new List<object>();
+                foreach (var kv in plan)
+                {
+                    try
+                    {
+                        var wo = WorldObjectMaker.MakeWorldObject(WorldObjectDefOf.Settlement);
+                        wo.Tile = new PlanetTile(kv.Value.Key, grid.Surface);
+                        wo.SetFaction(kv.Key);
+                        var st = wo as Settlement;
+                        if (st != null && !string.IsNullOrEmpty(kv.Value.Value)) st.Name = kv.Value.Value;
+                        Find.WorldObjects.Add(wo);
+                        created++;
+                    }
+                    catch (Exception e)
+                    { failures.Add(new { tile = kv.Value.Key, name = kv.Value.Value,
+                                         error = e.GetType().Name + ": " + e.Message }); }
+                }
+
+                // 🔴 Read back off the engine, not off the loop counter.
+                int after = Find.WorldObjects.Settlements.Count;
+                int nullFaction = Find.WorldObjects.Settlements.Count(q => q.Faction == null);
+                return new
+                {
+                    success = failures.Count == 0 && nullFaction == 0,
+                    message = "created " + created + ", removed " + removed + "; settlements " +
+                              before + " -> " + after +
+                              (nullFaction > 0 ? "  🔴 " + nullFaction + " HAVE A NULL FACTION and will be " +
+                                                 "destroyed on the next load." : ""),
+                    rows = csv.Rows.Count, created, removed,
+                    settlementsBefore = before, settlementsAfter = after,
+                    nullFactionSettlements = nullFaction,
+                    failures,
+                    note = "Run jawa/world_commit - FastTileFinder caches settlement tiles. Then SAVE " +
+                           "AND RELOAD before trusting this: the null-faction trap only fires on load.",
+                    ticksGame = TicksGameSafe(),
+                };
+            }, cancellationToken).ConfigureAwait(false);
+        }
+
     }
 }
