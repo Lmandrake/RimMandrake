@@ -2624,5 +2624,483 @@ namespace JawaBench.BridgeTools
             });
         }
 
+        // ================================================================
+        //  FACTION RELATIONS - the pairwise matrix.
+        //
+        //  WHY THESE EXIST. `jawa/set_faction_relation` is hardcoded to
+        //  Faction.OfPlayer and `jawa/list_factions` reports PlayerGoodwill,
+        //  so before this file NOTHING on the bridge could read or write a
+        //  relation between two NON-PLAYER factions. Authoring a faction web
+        //  for a frozen world needs exactly that.
+        //
+        //  FIVE THINGS READ OUT OF 1.6 Faction.cs, EVERY ONE OF WHICH CHANGES
+        //  WHAT THE TOOL MUST DO:
+        //
+        //  1. RelationWith(other) LOGS A RED ERROR when no record exists, and
+        //     again when other == this. Enumerating a 30-faction matrix the
+        //     naive way spams ~900 errors into Player.log. Always allowNull:true,
+        //     always skip self.
+        //  2. SetRelationDirect REFUSES OUTRIGHT when both factions have
+        //     goodwill - `if (HasGoodwill && other.HasGoodwill) { Log.Error; return; }`.
+        //     That is most pairs. It is the no-goodwill path (mechanoids,
+        //     insects, permanent enemies), NOT the general one.
+        //  3. Relations are stored PER FACTION, two records per pair, and the
+        //     engine keeps them in lockstep itself: TryAffectGoodwillWith
+        //     assigns `factionRelation2.baseGoodwill = factionRelation.baseGoodwill`
+        //     and copies the kind. ⇒ a one-sided write is not a feature the
+        //     engine offers; it is a corrupt state. `both` defaults to true and
+        //     one-sided writes are labelled DESYNCED in the reply.
+        //  4. Notify_RelationKindChanged IS NOT COSMETIC. It rebuilds
+        //     attackTargetsCache, re-notifies every Lord, and flips guest
+        //     status to Prisoner. A bare `rel.kind = Hostile` assignment leaves
+        //     pawns on a live map calmly ignoring their new enemies - the tool
+        //     reports success and the game does not move.
+        //  5. CheckKindThresholds SNAPS KIND BACK from goodwill: <= -75 forces
+        //     Hostile, >= 75 forces Ally, and a Hostile pair at goodwill >= 0
+        //     is dragged to Neutral at the next goodwill event. Setting kind
+        //     without moving goodwill into the matching band buys a relation
+        //     with a half-life. Hence clampGoodwillToKind, defaulted ON.
+        // ================================================================
+
+        // Accepts a defName, or "Player"/"PlayerColony" for Faction.OfPlayer.
+        // The defName/name split has already cost calls in this project, so the
+        // failure path names the difference rather than leaving it to a guess.
+        private static Faction ResolveFactionArg(string s)
+        {
+            if (string.IsNullOrWhiteSpace(s)) return null;
+            s = s.Trim();
+            if (string.Equals(s, "Player", StringComparison.OrdinalIgnoreCase)
+                || string.Equals(s, "PlayerColony", StringComparison.OrdinalIgnoreCase))
+                return Faction.OfPlayer;
+            var fm = Find.FactionManager;
+            if (fm == null) return null;
+            return fm.AllFactions.FirstOrDefault(
+                q => string.Equals(q?.def?.defName, s, StringComparison.OrdinalIgnoreCase));
+        }
+
+        private static object FactionNotFound(string asked)
+        {
+            var fm = Find.FactionManager;
+            return Fail($"No faction with defName '{asked}'.", new
+            {
+                hint = "Use the DEFNAME, or the literal 'Player'. jawa/list_factions returns both.",
+                suggestions = fm?.AllFactions.Where(q => q?.def != null)
+                    .Select(q => q.def.defName)
+                    .Where(q => q.IndexOf(asked, StringComparison.OrdinalIgnoreCase) >= 0)
+                    .Take(12).ToList()
+            });
+        }
+
+        // One ordered cell, measured. Everything here is read off the faction
+        // pair after any write, never inferred.
+        private static object RelationCell(Faction a, Faction b)
+        {
+            var rel = a.RelationWith(b, true);          // allowNull - see note 1
+            return new
+            {
+                from = a.def?.defName,
+                fromName = a.Name,
+                to = b.def?.defName,
+                toName = b.Name,
+                kind = a.RelationKindWith(b).ToString(),
+                goodwill = a.GoodwillWith(b),
+                baseGoodwill = rel?.baseGoodwill,
+                hasRecord = rel != null,
+                hostile = a.HostileTo(b),
+                // Why a write may be refused, stated BEFORE it is attempted.
+                canChangeGoodwill = a.CanChangeGoodwillFor(b, 1),
+                bothHaveGoodwill = a.HasGoodwill && b.HasGoodwill,
+                permanentEnemy = a.def != null && a.def.permanentEnemy,
+                defeated = a.defeated,
+                hidden = a.Hidden
+            };
+        }
+
+        [Tool(
+            "jawa/faction_relations_get",
+            Description =
+                "Read the FACTION-TO-FACTION relation matrix - every pair, not just pairs " +
+                "with the player. No args returns the whole matrix; `faction` alone returns " +
+                "that faction's row; `faction`+`other` returns the single cell. Pass " +
+                "'Player' for the player colony. Relations are stored per faction, TWO " +
+                "records per pair, so every pair is reported in BOTH directions and any " +
+                "disagreement between them is called out - that disagreement is a corrupt " +
+                "state, and finding it is half of why this tool exists.",
+            ResultDescription =
+                "`pairs` holds ordered cells (from -> to) with kind, goodwill, baseGoodwill, " +
+                "hostile, and the flags that decide whether a WRITE would be refused: " +
+                "canChangeGoodwill, bothHaveGoodwill, permanentEnemy, defeated. " +
+                "`asymmetric` lists pairs whose two directions disagree on kind or goodwill. " +
+                "`counts` summarises the matrix. ⚠️ Neutral pairs are omitted unless " +
+                "includeNeutral - a 30-faction world is 870 ordered pairs and almost all " +
+                "of them are Neutral.")]
+        public static async Task<object> FactionRelationsGet(
+            IRimBridgeContext ctx,
+            CancellationToken cancellationToken,
+            [ToolParameter(Description =
+                "Faction defName, or 'Player'. Omit for the whole matrix.", DefaultValue = null)]
+            string faction = null,
+            [ToolParameter(Description =
+                "Second faction defName, or 'Player'. With `faction`, returns one cell.",
+                DefaultValue = null)]
+            string other = null,
+            [ToolParameter(Description =
+                "Include Neutral pairs. Off by default - they are the overwhelming majority " +
+                "and they are the uninteresting ones.", DefaultValue = false)]
+            bool includeNeutral = false,
+            [ToolParameter(Description =
+                "Include hidden factions (the ones the player never sees listed).",
+                DefaultValue = true)]
+            bool includeHidden = true,
+            [ToolParameter(Description =
+                "Include defeated factions.", DefaultValue = false)]
+            bool includeDefeated = false)
+        {
+            return await ctx.MainThread.InvokeAsync<object>(() =>
+            {
+                var fm = Find.FactionManager;
+                if (fm == null) return Fail("No FactionManager. This needs a GAME loaded.");
+
+                Faction fa = null, fb = null;
+                if (!string.IsNullOrWhiteSpace(faction))
+                {
+                    fa = ResolveFactionArg(faction);
+                    if (fa == null) return FactionNotFound(faction);
+                }
+                if (!string.IsNullOrWhiteSpace(other))
+                {
+                    fb = ResolveFactionArg(other);
+                    if (fb == null) return FactionNotFound(other);
+                }
+                if (fa != null && fb != null && fa == fb)
+                    return Fail("faction and other are the same faction; a faction has no relation with itself.");
+
+                var all = fm.AllFactions
+                    .Where(q => q?.def != null)
+                    .Where(q => includeHidden || !q.Hidden)
+                    .Where(q => includeDefeated || !q.defeated)
+                    .ToList();
+
+                // The single-cell case: report it in both directions and stop.
+                if (fa != null && fb != null)
+                {
+                    var ab = RelationCell(fa, fb);
+                    var ba = RelationCell(fb, fa);
+                    return new
+                    {
+                        success = true,
+                        message = $"{fa.def.defName} -> {fb.def.defName}: " +
+                                  $"{fa.RelationKindWith(fb)} ({fa.GoodwillWith(fb)}); reverse " +
+                                  $"{fb.RelationKindWith(fa)} ({fb.GoodwillWith(fa)}).",
+                        pairs = new List<object> { ab, ba },
+                        asymmetric = PairAsymmetry(fa, fb),
+                        ticksGame = TicksGameSafe()
+                    };
+                }
+
+                var lefts = fa != null ? new List<Faction> { fa } : all;
+                var cells = new List<object>();
+                var asym = new List<object>();
+                int considered = 0, hostilePairs = 0, allyPairs = 0, neutralPairs = 0, noRecord = 0;
+
+                foreach (var a in lefts)
+                {
+                    foreach (var b in all)
+                    {
+                        if (a == b) continue;                    // note 1: self errors
+                        considered++;
+                        var kind = a.RelationKindWith(b);
+                        if (kind == FactionRelationKind.Hostile) hostilePairs++;
+                        else if (kind == FactionRelationKind.Ally) allyPairs++;
+                        else neutralPairs++;
+                        if (a.RelationWith(b, true) == null) noRecord++;
+
+                        if (kind != FactionRelationKind.Neutral || includeNeutral)
+                            cells.Add(RelationCell(a, b));
+
+                        // Only walk each unordered pair once for the asymmetry
+                        // check, or every disagreement is reported twice.
+                        if (string.CompareOrdinal(a.def.defName, b.def.defName) < 0)
+                        {
+                            var d = PairAsymmetry(a, b);
+                            if (d != null) asym.Add(d);
+                        }
+                    }
+                }
+
+                return new
+                {
+                    success = true,
+                    message = $"{cells.Count} pair(s) reported out of {considered} ordered pair(s) " +
+                              $"over {all.Count} faction(s). " +
+                              $"{hostilePairs} hostile, {allyPairs} ally, {neutralPairs} neutral" +
+                              (includeNeutral ? "" : " (neutral omitted; pass includeNeutral)") +
+                              (asym.Count > 0
+                                  ? $". ⚠️ {asym.Count} ASYMMETRIC pair(s) - the two stored records disagree."
+                                  : "."),
+                    counts = new
+                    {
+                        factions = all.Count,
+                        orderedPairs = considered,
+                        hostile = hostilePairs,
+                        ally = allyPairs,
+                        neutral = neutralPairs,
+                        missingRecord = noRecord,
+                        asymmetric = asym.Count
+                    },
+                    pairs = cells,
+                    asymmetric = asym,
+                    ticksGame = TicksGameSafe()
+                };
+            }, cancellationToken).ConfigureAwait(false);
+        }
+
+        // null when the two stored records agree. Kind AND goodwill are both
+        // checked: SetRelation mirrors kind but leaves the mirror's baseGoodwill
+        // at the FactionRelation default of 100, so agreeing on kind proves
+        // nothing about goodwill.
+        private static object PairAsymmetry(Faction a, Faction b)
+        {
+            var ka = a.RelationKindWith(b);
+            var kb = b.RelationKindWith(a);
+            var ga = a.GoodwillWith(b);
+            var gb = b.GoodwillWith(a);
+            if (ka == kb && ga == gb) return null;
+            return new
+            {
+                a = a.def?.defName,
+                b = b.def?.defName,
+                kindA = ka.ToString(),
+                kindB = kb.ToString(),
+                goodwillA = ga,
+                goodwillB = gb,
+                kindDisagrees = ka != kb,
+                goodwillDisagrees = ga != gb
+            };
+        }
+
+        [Tool(
+            "jawa/faction_relations_set",
+            Description =
+                "Set the relation between ANY two factions - pass 'Player' for the player " +
+                "colony. Writes both stored records by default, because the engine itself " +
+                "keeps them in lockstep and a one-sided write is a corrupt state, not a " +
+                "feature. Picks the write path off the pair: SetRelationDirect when either " +
+                "side lacks goodwill (mechanoids, insects, permanent enemies - it REFUSES " +
+                "when both sides have goodwill), otherwise a direct record write followed " +
+                "by Notify_RelationKindChanged, which is what actually makes pawns on a " +
+                "live map re-target. Setting kind also moves goodwill into the matching " +
+                "band by default, or CheckKindThresholds snaps the kind back at the next " +
+                "goodwill event.",
+            ResultDescription =
+                "`was` and `now` for kind and goodwill, in BOTH directions, each read back " +
+                "off the pair after the call - every setter involved returns void, so a " +
+                "method completing is not evidence. success means the read-back matches the " +
+                "request. `dryRun` reports the current relation and changes nothing.")]
+        public static async Task<object> FactionRelationsSet(
+            IRimBridgeContext ctx,
+            CancellationToken cancellationToken,
+            [ToolParameter(Description = "First faction defName, or 'Player'.")]
+            string faction,
+            [ToolParameter(Description = "Second faction defName, or 'Player'.")]
+            string other,
+            [ToolParameter(Description =
+                "Hostile, Neutral or Ally. Case-insensitive. Omit to change goodwill only.",
+                DefaultValue = null)]
+            string kind = null,
+            [ToolParameter(Description =
+                "Base goodwill, -100..100. Omit to leave it alone (or to let " +
+                "clampGoodwillToKind choose a value consistent with `kind`).",
+                DefaultValue = -9999)]
+            int goodwill = -9999,
+            [ToolParameter(Description =
+                "Write both stored records. Leave ON. Turning it off writes one direction " +
+                "only and produces a state the engine never creates - offered so the " +
+                "asymmetry can be TESTED, not because it is useful.", DefaultValue = true)]
+            bool both = true,
+            [ToolParameter(Description =
+                "When `kind` is set and `goodwill` is not, move goodwill into the band that " +
+                "sustains that kind (Hostile -100, Ally 100, Neutral 0). Off means the kind " +
+                "is live only until the next goodwill event re-derives it.",
+                DefaultValue = true)]
+            bool clampGoodwillToKind = true,
+            [ToolParameter(Description =
+                "Let RimWorld send its hostility letter. Off by default: a test should not " +
+                "narrate itself.", DefaultValue = false)]
+            bool sendLetter = false,
+            [ToolParameter(Description = "Report the current relation and change nothing.",
+                DefaultValue = false)]
+            bool dryRun = false)
+        {
+            if (string.IsNullOrWhiteSpace(faction)) return Fail("faction is required.");
+            if (string.IsNullOrWhiteSpace(other)) return Fail("other is required.");
+
+            return await ctx.MainThread.InvokeAsync<object>(() =>
+            {
+                var fm = Find.FactionManager;
+                if (fm == null) return Fail("No FactionManager. This needs a GAME loaded.");
+
+                var a = ResolveFactionArg(faction);
+                if (a == null) return FactionNotFound(faction);
+                var b = ResolveFactionArg(other);
+                if (b == null) return FactionNotFound(other);
+                if (a == b) return Fail("A faction has no relation with itself.");
+
+                var wantKind = !string.IsNullOrWhiteSpace(kind);
+                FactionRelationKind parsed = default;
+                if (wantKind && !Enum.TryParse(kind.Trim(), true, out parsed))
+                    return Fail($"'{kind}' is not a FactionRelationKind.",
+                        new { valid = Enum.GetNames(typeof(FactionRelationKind)) });
+
+                var wantGoodwill = goodwill != -9999;
+                if (wantGoodwill && (goodwill < -100 || goodwill > 100))
+                    return Fail($"goodwill must be -100..100, got {goodwill}.");
+
+                // Kind with no goodwill asked for: pick the value that SUSTAINS
+                // the kind rather than leaving it to decay. See note 5.
+                var effGoodwill = goodwill;
+                var derivedGoodwill = false;
+                if (wantKind && !wantGoodwill && clampGoodwillToKind)
+                {
+                    effGoodwill = parsed == FactionRelationKind.Hostile ? -100
+                                : parsed == FactionRelationKind.Ally ? 100
+                                : 0;
+                    derivedGoodwill = true;
+                }
+                var writeGoodwill = wantGoodwill || derivedGoodwill;
+
+                if (!wantKind && !writeGoodwill && !dryRun)
+                    return Fail("Nothing to do: pass `kind`, `goodwill`, or both.");
+
+                var wasKindA = a.RelationKindWith(b).ToString();
+                var wasKindB = b.RelationKindWith(a).ToString();
+                var wasGoodwillA = a.GoodwillWith(b);
+                var wasGoodwillB = b.GoodwillWith(a);
+
+                var notes = new List<string>();
+                var usedSetRelationDirect = false;
+
+                if (!dryRun)
+                {
+                    var relAB = a.RelationWith(b, true);
+                    var relBA = b.RelationWith(a, true);
+                    if (relAB == null || (both && relBA == null))
+                        return Fail(
+                            "One side has no FactionRelation record, so there is nothing to " +
+                            "write. This happens with factions that were never registered " +
+                            "against each other.",
+                            new { hasAB = relAB != null, hasBA = relBA != null });
+
+                    if (writeGoodwill)
+                    {
+                        // Direct record assignment, deliberately: this is what
+                        // TryAffectGoodwillWith itself does to the mirror record,
+                        // and unlike TryAffectGoodwillWith it is EXACT - that
+                        // path runs the ask through CalculateAdjustedGoodwillChange
+                        // and clamps, so asking for -60 can land somewhere else.
+                        // An authoring tool must put the number where it was told.
+                        relAB.baseGoodwill = effGoodwill;
+                        if (both && relBA != null) relBA.baseGoodwill = effGoodwill;
+                        if (!a.CanChangeGoodwillFor(b, 1))
+                            notes.Add("CanChangeGoodwillFor is FALSE for this pair (permanent " +
+                                      "enemy, defeated, no goodwill, or quest-locked). The " +
+                                      "record was written directly; the engine's own goodwill " +
+                                      "events will refuse to move it.");
+                    }
+
+                    if (wantKind)
+                    {
+                        if (!a.HasGoodwill || !b.HasGoodwill)
+                        {
+                            // The sanctioned path for no-goodwill pairs. It
+                            // mirrors and notifies on its own.
+                            a.SetRelationDirect(b, parsed, sendLetter,
+                                "Set by jawa/faction_relations_set.", null);
+                            usedSetRelationDirect = true;
+                        }
+                        else
+                        {
+                            // SetRelationDirect would Log.Error and return here
+                            // (note 2), so write the records and fire the
+                            // notification ourselves - note 4, the difference
+                            // between a number changing and the game moving.
+                            var prevA = relAB.kind;
+                            relAB.kind = parsed;
+                            if (both && relBA != null) relBA.kind = parsed;
+
+                            bool sentA;
+                            a.Notify_RelationKindChanged(b, prevA, sendLetter,
+                                "Set by jawa/faction_relations_set.",
+                                GlobalTargetInfo.Invalid, out sentA);
+                            if (both && relBA != null)
+                            {
+                                bool sentB;
+                                b.Notify_RelationKindChanged(a, prevA, sendLetter,
+                                    "Set by jawa/faction_relations_set.",
+                                    GlobalTargetInfo.Invalid, out sentB);
+                            }
+                        }
+                    }
+
+                    if (!both)
+                        notes.Add("⚠️ one-sided write (both=false). The two stored records may " +
+                                  "now DISAGREE, which is a state the engine never produces. " +
+                                  "jawa/faction_relations_get will report this pair as asymmetric.");
+                }
+
+                // 🔴 Read back, both directions. Every setter above returns void.
+                var nowKindA = a.RelationKindWith(b).ToString();
+                var nowKindB = b.RelationKindWith(a).ToString();
+                var nowGoodwillA = a.GoodwillWith(b);
+                var nowGoodwillB = b.GoodwillWith(a);
+
+                var kindOk = !wantKind || dryRun
+                             || string.Equals(nowKindA, parsed.ToString(), StringComparison.OrdinalIgnoreCase);
+                var goodwillOk = !writeGoodwill || dryRun || nowGoodwillA == effGoodwill;
+                if (both && !dryRun)
+                {
+                    if (wantKind && !string.Equals(nowKindB, parsed.ToString(), StringComparison.OrdinalIgnoreCase))
+                        kindOk = false;
+                    if (writeGoodwill && nowGoodwillB != effGoodwill)
+                        goodwillOk = false;
+                }
+
+                return new
+                {
+                    success = kindOk && goodwillOk,
+                    message = dryRun
+                        ? $"{a.def.defName} <-> {b.def.defName}: {nowKindA}/{nowKindB}, " +
+                          $"goodwill {nowGoodwillA}/{nowGoodwillB}. (dry run, nothing changed.)"
+                        : $"{a.def.defName} <-> {b.def.defName}: kind {wasKindA}->{nowKindA} " +
+                          $"(reverse {wasKindB}->{nowKindB}), goodwill {wasGoodwillA}->{nowGoodwillA} " +
+                          $"(reverse {wasGoodwillB}->{nowGoodwillB})." +
+                          (kindOk && goodwillOk
+                              ? ""
+                              : " ⚠️ READ-BACK DOES NOT MATCH THE REQUEST - the engine overrode " +
+                                "it. Do not treat this pair as set."),
+                    dryRun,
+                    both,
+                    usedSetRelationDirect,
+                    goodwillDerivedFromKind = derivedGoodwill ? (int?)effGoodwill : null,
+                    forward = new
+                    {
+                        from = a.def.defName, to = b.def.defName,
+                        kind = new { was = wasKindA, now = nowKindA, asked = wantKind ? parsed.ToString() : null },
+                        goodwill = new { was = wasGoodwillA, now = nowGoodwillA, asked = writeGoodwill ? (int?)effGoodwill : null },
+                        hostile = a.HostileTo(b)
+                    },
+                    reverse = new
+                    {
+                        from = b.def.defName, to = a.def.defName,
+                        kind = new { was = wasKindB, now = nowKindB },
+                        goodwill = new { was = wasGoodwillB, now = nowGoodwillB },
+                        hostile = b.HostileTo(a)
+                    },
+                    asymmetric = PairAsymmetry(a, b),
+                    notes,
+                    ticksGame = TicksGameSafe()
+                };
+            }, cancellationToken).ConfigureAwait(false);
+        }
     }
 }
