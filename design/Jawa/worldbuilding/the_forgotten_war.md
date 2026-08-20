@@ -179,6 +179,36 @@ shrug off the diplomacy has a free mine.
 ⚠️ **Terrain and chemical hazards are chain step 8 work and step 8 is ratified.**
 Reopening it for one hand-placed map needs a ruling, not a patch.
 
+### 🔴 RULED 2026-08-19 — the two costs of the Rust Cathedral, set together
+
+**Owner's rulings this session, and the numbers behind them are measured, not guessed.**
+
+⚠️ **A correction is recorded here on purpose:** DECIDE first proposed these numbers
+against a hostility threshold of −10. **The real threshold is −75** (`FactionRelation.cs:28`,
+`if (kind != FactionRelationKind.Hostile && num <= -75)`). The first proposal was put to
+the owner with wrong arithmetic and re-put with right arithmetic; this is the second set.
+
+| decision | ruling |
+|---|---|
+| **the form of the metal** | ⭐ **Mineable bulk PLUS sacred Buildings.** The ordinary metal is mineable rock the player strips freely — the whole map really is the reward. The Cathedral proper is **faction-owned Buildings**, and that is the half that costs goodwill. 🔑 This is load-bearing: `Mineable.DestroyMined` destroys with no `DamageInfo`, so mining notifies nobody. Make it all mineable and the second cost of R-W4 does not exist |
+| **`Jawa_FreeDroidEnclaves` startingGoodwill** | **0 — neutral**, and it is a HISTORY, not a dial. Owner: *"They were hostile due to Jawa tendency to enslave and sell droids, but then they stole the ship and angered the Hutts… so now it's up to neutral."* The droids' grudge is real and was partly paid off by the clan making an enemy of the Cartel |
+| **cost per desecration** | **−15 per sacred structure**, applied through `QuestNode_AddTag` + `QuestNode_ChangeFactionGoodwill` on the shipped `<tag>.Destroyed` signal. Pure XML, no C# |
+| **the sacred core** | ⭐ **~10 structures.** This — not the per-strip cost — is the real dial. At −15 from neutral the player has **five** strips before −75. Ten structures means half the Cathedral is takeable on arrival and finishing it costs the war |
+| **hazards** | toxic pools do the work, sulfuric does the look. `ToxicWaterShallow`/`Deep` (factor 3) as the main pools, a few `VEE_IrradiatedWater*` (factor 8) as the ones that teach, `VEE_SulfuricWater*` (factor 1) dressed around the edges for the acid read. ⛔ Never `AB_Tar`/`AB_PropaneLake`/`AB_LiquidSlime` — measured as pure theatre |
+| **the Hutts** | **strongly negative but recoverable.** They want the ship back and they want paying, which is very Hutt. Canon already has the theft from a Hutt salvage yard (`FACTION_SPEC.md:800`) |
+
+⭐ **THE MECHANIC THAT MAKES THIS WORK, and it was found rather than designed:
+hostility has enormous hysteresis.** `FactionRelation.cs:38` — a faction becomes hostile at
+**−75** but stops being hostile only at **0**. ⇒ **A player who tips the Enclaves into war
+must gift back 75 goodwill to undo it.** There is no cheap apology. Desecration is
+survivable and repentance is expensive, which is a better expression of sacrilege than any
+number we could have picked.
+Side effects on the flip (`Faction.Notify_RelationKindChanged`): guests become prisoners,
+active trade requests die, passing ships vanish, and the quest signal
+`"BecameHostileToPlayer"` fires — **which is where the droids' response should hang.**
+🔑 **No raid is auto-scheduled.** The punishment is isolation, not an army, unless we
+author one.
+
 ### 📐 MEASURED 2026-08-19 — what actually ships, before anyone builds this
 
 **Facts only. The numbers and the final shape are DECIDE's proposal, not yet ruled.**
