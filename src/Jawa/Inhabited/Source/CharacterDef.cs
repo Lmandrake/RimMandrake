@@ -159,6 +159,31 @@ namespace Inhabited
                     yield return "trait " + t.def.defName + " has no degree " + t.degree
                                  + " (authored as '" + (t.degreeName ?? "-") + "')";
                 }
+
+                // RimWorld enforces NOTHING here: TraitSet.GainTrait checks no
+                // conflicts and has no trait cap, so a character authored with
+                // Kind AND Psychopath would simply be built, and no vanilla pawn
+                // generation could ever have produced them. TraitDef.ConflictsWith
+                // is bidirectional and also consults exclusionTags, so ask IT
+                // rather than reading conflictingTraits off one side.
+                for (int j = i + 1; j < traits.Count; j++)
+                {
+                    CharacterTrait other = traits[j];
+                    if (other?.def == null)
+                    {
+                        continue;
+                    }
+                    if (t.def == other.def)
+                    {
+                        yield return "trait " + t.def.defName + " is listed twice";
+                    }
+                    else if (t.def.ConflictsWith(other.def))
+                    {
+                        yield return "IMPOSSIBLE PAIR: " + t.def.defName + " + " + other.def.defName
+                                     + " conflict, so this person cannot exist. Pick one in "
+                                     + "design/Jawa/bridge/INHABITED_CAST_*.md and re-run cast_to_xml.py";
+                    }
+                }
             }
         }
     }

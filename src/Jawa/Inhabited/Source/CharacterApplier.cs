@@ -64,7 +64,36 @@ namespace Inhabited
                     {
                         continue;
                     }
-                    pawn.story.traits.GainTrait(new Trait(t.def, t.degree), suppressConflicts: true);
+
+                    // ⛔ DO NOT LET AN AUTHORING MISTAKE BUILD AN IMPOSSIBLE PAWN.
+                    // TraitSet.GainTrait checks no conflicts and enforces no cap,
+                    // and suppressConflicts:true here would mean a character
+                    // authored Kind AND Psychopath simply becomes both -- something
+                    // no vanilla pawn generation could ever produce, and which the
+                    // player would read as a bug in the game rather than in us.
+                    // The first trait wins and the second is refused, loudly. We do
+                    // NOT pick a winner on the author's behalf beyond that: the real
+                    // fix is in the cast file, and CharacterDef.ConfigErrors already
+                    // names the pair at load.
+                    Trait blocker = null;
+                    List<Trait> held = pawn.story.traits.allTraits;
+                    for (int j = 0; j < held.Count; j++)
+                    {
+                        if (held[j]?.def != null && held[j].def.ConflictsWith(t.def))
+                        {
+                            blocker = held[j];
+                            break;
+                        }
+                    }
+                    if (blocker != null)
+                    {
+                        Log.Warning("[Inhabited] " + character.defName + " (" + character.label
+                                    + ") authors " + t.def.defName + " alongside "
+                                    + blocker.def.defName + ", which conflict. "
+                                    + t.def.defName + " was NOT applied. Fix the cast file.");
+                        continue;
+                    }
+                    pawn.story.traits.GainTrait(new Trait(t.def, t.degree));
                 }
             }
 
