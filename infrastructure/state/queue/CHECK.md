@@ -814,6 +814,48 @@ result:   ✅ **A REAL RAID FIRED AND ARRIVED.** RaidEnemy, 1,200 pts, Immediate
              pawns 4,030 - which is what the storyteller actually sizes raids from.
           📌 Fired on a THROWAWAY quicktest colony. Nothing of value was raided.
 
+## E2 Routing, explosions and fire — the owner's "expand!" batch
+row:      bridge-18
+spec:     Owner, 2026-08-19: *"higher-level path-finding-type routines like 'connect X,Y to
+          X,Y with conduit'... consider challenges if mountain or ocean is in the way, or no
+          path at all... can we just force it, or does it error out, or just not place it
+          properly?"* plus explosions, fire and skyfallers.
+          TOOLS: `connect_cells` · `map_explosion` · `map_fire` · `map_skyfaller`.
+verify:   route over open ground, a steel wall, shallow water and deep water; and an
+          endpoint that cannot hold the thing at all.
+criteria: each obstacle class produces a DIFFERENT and correct outcome, and nothing is ever
+          half-laid.
+state:    ✅ DONE — PASSED 2026-08-19.
+result:   ⭐ **THE OBSTACLE QUESTION, ANSWERED BY RUNNING IT:**
+          | obstacle | strict | mine | bridge |
+          |---|---|---|---|
+          | open ground | route len 45 | — | — |
+          | **steel wall** | REFUSES, names 1 cell to clear | **len 45, mine=1 — straight through** | — |
+          | **shallow water** | **len 49 — routes AROUND** | — | **len 45, bridge=1 — straight through** |
+          | **deep water** | len 49 — routes around | routes around | **routes around; will NOT bridge it** |
+          | endpoint unbuildable | refuses, names terrain + affordance + "NOT bridgeable" | same | same |
+          ⇒ **mountain/wall is merely EXPENSIVE; deep water is genuinely IMPOSSIBLE.**
+          `WaterDeep` declares no terrain affordances at all and is not Bridgeable, so no
+          mode forces it. Nothing is ever half-laid: the whole route is computed and
+          validated before a single thing is placed.
+          🔑 **VANILLA DOES NOT USE THE PATHFINDER FOR CONDUITS.** `GenStep_Power` flood-fills
+          over PLACEABILITY and reconstructs the parent chain. We copy that, so the route is
+          placeable end-to-end by construction.
+          🔴 **`FloodFiller` is 4-CONNECTED; `PathFinder` is 8-CONNECTED.** A pathfinder route
+          must be DENSIFIED into cardinal steps or **the conduit net breaks at every
+          diagonal** - it looks connected and is not. The tool inserts the corner cell.
+          🔴 **MAPS ARE NOT SQUARE, AND QUICKTEST SIZES VARY.** One measured **100 x 400**
+          (area 40,000) and the next **250 x 250**. An "out of bounds" that does not name the
+          size sends the reader hunting for a router bug instead of a coordinate mistake -
+          so the error now prints the map dimensions, and `map_commit` reports `mapSize`.
+          📌 TWO OF MY OWN GUESSES WERE WRONG and the research caught them: `PsychicShock` is
+          a **HediffDef** and `Bioferrite` a **ThingDef** - neither is a DamageDef. The
+          explosion tool refuses them and, for a HediffDef, points at `jawa/pawn_health`.
+          ✅ ALSO SHIPPED: `map_explosion` (17 explosive DamageDefs, radius clamped to 50
+          because ~80 makes RimWorld's own radial pattern error and return 20,000 cells),
+          `map_fire` (reports how many cells refused - `ChanceToStartFireIn` gates on
+          flammability and wetness, which is not a failure), `map_skyfaller`.
+
 ## C-V2 Park any v2 idea in design/V2_DREAMS.md yourself — no permission needed
 row:      doctrine
 spec:     Any idea for new content that is not v1 — including one a live session

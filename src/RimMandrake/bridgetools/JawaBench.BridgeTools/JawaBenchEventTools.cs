@@ -23,6 +23,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using RimWorld;
 using RimBridgeServer.Sdk;
+using UnityEngine;
 using Verse;
 
 namespace JawaBench.BridgeTools
@@ -452,5 +453,247 @@ namespace JawaBench.BridgeTools
             });
         }
 #endif // JAWA_GM_TOOLS
+
+        // ================================================================
+        //  EXPLOSIONS, FIRE AND DIRECT DAMAGE
+        //  GenExplosion.DoExplosion has 38 parameters; only 5 are required.
+        //  ⚠️ radius >= GenRadial.MaxRadialPatternRadius (~80) makes
+        //     NumCellsInRadius log an error and return 20,000 cells. Clamped.
+        //  🔴 PsychicShock is a HediffDef and Bioferrite a ThingDef - NEITHER
+        //     is a DamageDef. The whitelist below is read from the def database
+        //     at call time rather than remembered.
+        // ================================================================
+
+        private static readonly HashSet<string> ExplosiveDamageDefs =
+            new HashSet<string>(StringComparer.OrdinalIgnoreCase)
+            {
+                "Bomb","BombSuper","MiningBomb","Thump","Flame","Burn","AcidBurn","ElectricalBurn",
+                "Vaporize","NociosphereVaporize","EMP","Stun","MechBandShockwave","Smoke","ToxGas",
+                "DeadlifeDust","Extinguish"
+            };
+
+#if JAWA_GM_TOOLS
+        [Tool(
+            "jawa/map_explosion",
+            Description =
+                "*** ACTS ON THE LIVE MAP *** Detonate an explosion of any type at a cell. " +
+                "damType is a DamageDef: Bomb · BombSuper · Thump · Flame · Burn · AcidBurn · " +
+                "Vaporize · EMP · Stun · Smoke · ToxGas · DeadlifeDust · Extinguish and more. " +
+                "damage<0 uses the def's own defaultDamage. Optional gas cloud, fire chance, " +
+                "falloff, neighbour spill and per-cell spawns (filth, chunks, firefoam). " +
+                "⚠️ radius is CLAMPED to 50 - at ~80 RimWorld's own radial pattern errors and " +
+                "returns 20,000 cells. " +
+                "🔴 PsychicShock and Bioferrite are NOT DamageDefs and are refused with an " +
+                "explanation; list them with listTypes=true.",
+            ResultDescription = "success, the resolved parameters, and the explosive DamageDefs available.")]
+        public static async Task<object> MapExplosion(
+            IRimBridgeContext ctx,
+            CancellationToken cancellationToken,
+            [ToolParameter(Description = "Centre 'x,z'.")] string center = null,
+            [ToolParameter(Description = "DamageDef name. Default Bomb.")] string damType = "Bomb",
+            [ToolParameter(Description = "Radius in cells. Clamped to 50.")] float radius = 3.9f,
+            [ToolParameter(Description = "Damage amount. -1 uses the def default.")] int damage = -1,
+            [ToolParameter(Description = "0-1 chance to start a fire per cell.")] float chanceToStartFire = 0f,
+            [ToolParameter(Description = "Linear damage falloff to the edge.")] bool damageFalloff = false,
+            [ToolParameter(Description = "Also damage the ring of cells just outside.")] bool spillToNeighbors = false,
+            [ToolParameter(Description = "GasType to leave behind: BlindSmoke|ToxGas|RotStink|DeadlifeDust.")] string gas = null,
+            [ToolParameter(Description = "ThingDef to scatter after the blast, e.g. Filth_Ash.")] string spawnThing = null,
+            [ToolParameter(Description = "0-1 chance per cell for spawnThing.")] float spawnChance = 0f,
+            [ToolParameter(Description = "Screen shake multiplier. Clamped 0-1.")] float screenShake = 1f,
+            [ToolParameter(Description = "Just list the valid damage types and do nothing.")] bool listTypes = false)
+        {
+            return await ctx.MainThread.InvokeAsync(() =>
+            {
+                string err; var map = MapOrNull(out err);
+                if (map == null) return Fail(err);
+
+                var available = DefDatabase<DamageDef>.AllDefsListForReading
+                    .Where(d => ExplosiveDamageDefs.Contains(d.defName))
+                    .Select(d => new { def = d.defName, defaultDamage = d.defaultDamage, isExplosive = d.isExplosive })
+                    .ToList();
+
+                if (listTypes)
+                    return (object)new { success = true, listing = true, explosiveDamageDefs = available, gasTypes = Enum.GetNames(typeof(GasType)), ticksGame = TicksGameSafe() };
+
+                int x, z; var b = (center ?? "").Split(',');
+                if (b.Length != 2 || !int.TryParse(b[0].Trim(), out x) || !int.TryParse(b[1].Trim(), out z))
+                    return Fail("Give centre as 'x,z'.");
+                var c0 = new IntVec3(x, 0, z);
+                if (!c0.InBounds(map)) return Fail("Centre " + center + " is out of bounds.");
+
+                var dd = DefDatabase<DamageDef>.GetNamedSilentFail((damType ?? "Bomb").Trim());
+                if (dd == null)
+                {
+                    var hint = DefDatabase<HediffDef>.GetNamedSilentFail((damType ?? "").Trim()) != null
+                        ? " ('" + damType + "' is a HediffDef, not a DamageDef - use jawa/pawn_health to apply it.)"
+                        : "";
+                    return Fail("No DamageDef '" + damType + "'." + hint, available);
+                }
+                if (!ExplosiveDamageDefs.Contains(dd.defName))
+                    return Fail("'" + dd.defName + "' is a DamageDef but not one that produces a sensible explosion. " +
+                                "Use one of the listed types, or listTypes=true to see them.", available);
+
+                float r = Mathf.Clamp(radius, 0.1f, 50f);
+                if (r != radius) err = "radius clamped from " + radius + " to " + r;
+
+                GasType? gt = null;
+                if (!string.IsNullOrEmpty(gas))
+                {
+                    try { gt = (GasType)Enum.Parse(typeof(GasType), gas.Trim(), true); }
+                    catch { return Fail("Bad gas '" + gas + "'. Valid: " + string.Join(", ", Enum.GetNames(typeof(GasType)))); }
+                }
+
+                ThingDef spawn = null;
+                if (!string.IsNullOrEmpty(spawnThing))
+                {
+                    spawn = DefDatabase<ThingDef>.GetNamedSilentFail(spawnThing.Trim());
+                    if (spawn == null) return Fail("No ThingDef '" + spawnThing + "'.", DefSuggestions<ThingDef>(spawnThing));
+                }
+
+                try
+                {
+                    GenExplosion.DoExplosion(
+                        c0, map, r, dd, null,
+                        damAmount: damage,
+                        postExplosionSpawnThingDef: spawn,
+                        postExplosionSpawnChance: Mathf.Clamp01(spawnChance),
+                        postExplosionGasType: gt,
+                        applyDamageToExplosionCellsNeighbors: spillToNeighbors,
+                        chanceToStartFire: Mathf.Clamp01(chanceToStartFire),
+                        damageFalloff: damageFalloff,
+                        screenShakeFactor: Mathf.Clamp01(screenShake));
+                }
+                catch (Exception e) { return Fail("DoExplosion threw: " + e.GetType().Name + ": " + e.Message); }
+
+                return (object)new
+                {
+                    success = true,
+                    center = new { x, z }, damType = dd.defName, radius = r,
+                    damage = damage < 0 ? (object)("def default (" + dd.defaultDamage + ")") : damage,
+                    gas = gt.HasValue ? gt.Value.ToString() : null,
+                    clampNote = err,
+                    explosiveDamageDefs = available,
+                    ticksGame = TicksGameSafe(),
+                };
+            });
+        }
+
+        [Tool(
+            "jawa/map_fire",
+            Description =
+                "*** ACTS ON THE LIVE MAP *** Start or extinguish fire. " +
+                "action='start' seeds fires over a rect (each cell is gated by RimWorld's own " +
+                "ChanceToStartFireIn, so wet or non-flammable cells legitimately refuse and " +
+                "the result reports how many took); 'extinguish' destroys every Fire in the " +
+                "rect. " +
+                "⚠️ Fire SPREAD cannot be forced - Fire.TrySpread is protected. A fireSize " +
+                "above 1.0 makes spread far likelier, which is the only lever.",
+            ResultDescription = "success, cellsTried, firesStarted, firesExtinguished.")]
+        public static async Task<object> MapFire(
+            IRimBridgeContext ctx,
+            CancellationToken cancellationToken,
+            [ToolParameter(Description = "'start' or 'extinguish'.")] string action = "start",
+            [ToolParameter(Description = "Rect 'x,z,w,h'.")] string rect = null,
+            [ToolParameter(Description = "Fire size 0.1-1.75. Above 1.0 spreads readily.")] float fireSize = 0.5f)
+        {
+            return await ctx.MainThread.InvokeAsync(() =>
+            {
+                string err; var map = MapOrNull(out err);
+                if (map == null) return Fail(err);
+                CellRect r;
+                if (!TryRect(rect, map, out r, out err)) return Fail(err);
+                bool start = string.Equals(action, "start", StringComparison.OrdinalIgnoreCase);
+                bool ext = string.Equals(action, "extinguish", StringComparison.OrdinalIgnoreCase);
+                if (!start && !ext) return Fail("action must be start|extinguish.");
+
+                int tried = 0, started = 0, doused = 0;
+                foreach (var c in r)
+                {
+                    tried++;
+                    try
+                    {
+                        if (start)
+                        {
+                            if (FireUtility.TryStartFireIn(c, map, Mathf.Clamp(fireSize, 0.1f, 1.75f), null)) started++;
+                        }
+                        else
+                        {
+                            foreach (var t in map.thingGrid.ThingsListAtFast(c).ToList())
+                            {
+                                var f = t as Fire;
+                                if (f != null) { f.Destroy(); doused++; }
+                            }
+                        }
+                    }
+                    catch (Exception e) { return Fail("Fire op failed at " + c + ": " + e.Message); }
+                }
+
+                return (object)new
+                {
+                    success = true, action, cellsTried = tried,
+                    firesStarted = started, firesExtinguished = doused,
+                    note = start && started < tried
+                        ? (tried - started) + " cells refused - RimWorld's ChanceToStartFireIn gates on flammability and wetness. Not a failure."
+                        : null,
+                    ticksGame = TicksGameSafe(),
+                };
+            });
+        }
+
+        [Tool(
+            "jawa/map_skyfaller",
+            Description =
+                "*** ACTS ON THE LIVE MAP *** Drop a skyfaller - meteorite, drop pod, shuttle - " +
+                "at a cell. Default is a mineral meteorite with generated contents. " +
+                "⚠️ A skyfaller def given the wrong kind of inner thing destroys it with a " +
+                "Log.Error, so innerThing is validated against the def first.",
+            ResultDescription = "success, what was dropped and where.")]
+        public static async Task<object> MapSkyfaller(
+            IRimBridgeContext ctx,
+            CancellationToken cancellationToken,
+            [ToolParameter(Description = "Cell 'x,z'.")] string cell = null,
+            [ToolParameter(Description = "Skyfaller ThingDef. Default MeteoriteIncoming.")] string skyfaller = "MeteoriteIncoming",
+            [ToolParameter(Description = "Optional ThingDef to carry inside.")] string innerThing = null,
+            [ToolParameter(Description = "Stack count of innerThing.")] int count = 1)
+        {
+            return await ctx.MainThread.InvokeAsync(() =>
+            {
+                string err; var map = MapOrNull(out err);
+                if (map == null) return Fail(err);
+                int x, z; var b = (cell ?? "").Split(',');
+                if (b.Length != 2 || !int.TryParse(b[0].Trim(), out x) || !int.TryParse(b[1].Trim(), out z))
+                    return Fail("Give cell as 'x,z'.");
+                var c0 = new IntVec3(x, 0, z);
+                if (!c0.InBounds(map)) return Fail("Cell out of bounds.");
+
+                var sd = DefDatabase<ThingDef>.GetNamedSilentFail((skyfaller ?? "").Trim());
+                if (sd == null) return Fail("No skyfaller ThingDef '" + skyfaller + "'.", DefSuggestions<ThingDef>(skyfaller));
+                if (sd.skyfaller == null)
+                    return Fail("'" + sd.defName + "' is not a skyfaller (its def has no <skyfaller> block).");
+
+                try
+                {
+                    if (!string.IsNullOrEmpty(innerThing))
+                    {
+                        var it = DefDatabase<ThingDef>.GetNamedSilentFail(innerThing.Trim());
+                        if (it == null) return Fail("No ThingDef '" + innerThing + "'.", DefSuggestions<ThingDef>(innerThing));
+                        var t = ThingMaker.MakeThing(it, it.MadeFromStuff ? GenStuff.DefaultStuffFor(it) : null);
+                        t.stackCount = Math.Max(1, count);
+                        SkyfallerMaker.SpawnSkyfaller(sd, t, c0, map);
+                    }
+                    else SkyfallerMaker.SpawnSkyfaller(sd, c0, map);
+                }
+                catch (Exception e) { return Fail("SpawnSkyfaller threw: " + e.GetType().Name + ": " + e.Message); }
+
+                return (object)new
+                {
+                    success = true, skyfaller = sd.defName,
+                    at = new { x, z }, innerThing, count,
+                    ticksGame = TicksGameSafe(),
+                };
+            });
+        }
+#endif // JAWA_GM_TOOLS
+
     }
 }

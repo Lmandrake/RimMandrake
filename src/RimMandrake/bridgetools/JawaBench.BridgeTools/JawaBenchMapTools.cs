@@ -32,6 +32,7 @@ using RimWorld;
 using RimBridgeServer.Sdk;
 using UnityEngine;
 using Verse;
+using Verse.AI;
 
 namespace JawaBench.BridgeTools
 {
@@ -143,6 +144,7 @@ namespace JawaBench.BridgeTools
                     success = failed == 0,
                     failedSteps = failed,
                     map = map.Index,
+                    mapSize = new { x = map.Size.x, z = map.Size.z, area = map.Area },
                     note = "Thing.SpawnSetup already handles listers, thingGrid, edificeGrid, coverGrid, linkGrid, glowGrid, fertility, snow/sand, temperature, gas, zones and per-cell mesh dirtying. This covers the rest.",
                     steps,
                     ticksGame = TicksGameSafe(),
@@ -1387,6 +1389,277 @@ namespace JawaBench.BridgeTools
                 }
 
                 return Fail("action must be listZones|createZone|paintZone|deleteZone|listAreas|paintArea.");
+            });
+        }
+
+
+        // ================================================================
+        //  CONNECT A TO B — the routing tool.
+        //
+        //  🔑 Vanilla does NOT use the pathfinder for conduits. GenStep_Power
+        //  flood-fills over PLACEABILITY and reconstructs the parent chain:
+        //     FloodFill(start, c => CanBuildOnTerrain(def,c) || already a transmitter,
+        //               stopWhen: c == end, rememberParents: true)
+        //     ReconstructLastFloodFillPath(end, cells)
+        //  That route is placeable end-to-end by construction, so there is no
+        //  failure handling downstream. We copy it.
+        //
+        //  🔴 FloodFiller is 4-CONNECTED; PathFinder is 8-CONNECTED. A path from
+        //  the pathfinder MUST be densified into cardinal steps before laying
+        //  conduit or THE NET BREAKS AT EVERY DIAGONAL - it looks connected and
+        //  is not.
+        //
+        //  🔴 MOUNTAIN vs OCEAN is the whole obstacle policy:
+        //   * rock is a DESTROYABLE EDIFICE - PassAllDestroyableThings prices it
+        //     at 70 + 0.2/hp, so a path EXISTS. Merely expensive; mode='mine'.
+        //   * WaterDeep / WaterOceanDeep declare NO affordances at all and are
+        //     not even Bridgeable. Genuinely impossible - refuse, do not pretend.
+        // ================================================================
+        [Tool(
+            "jawa/connect_cells",
+            Description =
+                "Route and lay a connected line of things (power conduit, wall, floor) from " +
+                "one cell to another, so that after the call they really are connected. " +
+                "Copies vanilla's own conduit router: a 4-connected flood fill over " +
+                "PLACEABILITY, not a pathfinder, so the route is placeable end-to-end by " +
+                "construction and conduit never breaks at a diagonal. " +
+                "mode='strict' refuses if anything is in the way and names the obstacles; " +
+                "'mine' destroys blocking rock and walls first; 'bridge' additionally lays " +
+                "bridges over BRIDGEABLE water. " +
+                "🔴 DEEP WATER IS UNFIXABLE at any mode - WaterDeep has no terrain " +
+                "affordances and is not bridgeable, so it is reported as impossible rather " +
+                "than half-built. " +
+                "ATOMIC: the whole route is computed and validated before ANYTHING is " +
+                "placed. A half-laid conduit is worse than a refusal. dryRun by default.",
+            ResultDescription = "success, route, routeLength, placed, cleared, blockedAt[], and why.")]
+        public static async Task<object> ConnectCells(
+            IRimBridgeContext ctx,
+            CancellationToken cancellationToken,
+            [ToolParameter(Description = "Start cell 'x,z'.")] string from = null,
+            [ToolParameter(Description = "End cell 'x,z'.")] string to = null,
+            [ToolParameter(Description = "ThingDef to lay. Default PowerConduit.")] string thing = "PowerConduit",
+            [ToolParameter(Description = "Stuff for the thing, if it needs it.")] string stuff = null,
+            [ToolParameter(Description = "'strict' | 'mine' | 'bridge'.")] string mode = "strict",
+            [ToolParameter(Description = "Faction to own what is laid. Default player.")] string faction = null,
+            [ToolParameter(Description = "Compute and report without placing. Default TRUE.")] bool dryRun = true)
+        {
+            return await ctx.MainThread.InvokeAsync(() =>
+            {
+                string err; var map = MapOrNull(out err);
+                if (map == null) return Fail(err);
+
+                int ax, az, bx, bz;
+                var fa = (from ?? "").Split(','); var fb = (to ?? "").Split(',');
+                if (fa.Length != 2 || !int.TryParse(fa[0].Trim(), out ax) || !int.TryParse(fa[1].Trim(), out az)
+                 || fb.Length != 2 || !int.TryParse(fb[0].Trim(), out bx) || !int.TryParse(fb[1].Trim(), out bz))
+                    return Fail("Give from and to as 'x,z'.");
+                var A = new IntVec3(ax, 0, az); var B = new IntVec3(bx, 0, bz);
+                // ⚠️ MAPS ARE NOT NECESSARILY SQUARE. A quicktest map measured 100 x 400
+                // on 2026-08-19, and an "out of bounds" that does not say the size sends
+                // the reader hunting for a bug in the router instead of in their coords.
+                if (!A.InBounds(map) || !B.InBounds(map))
+                    return Fail("Cell out of bounds. This map is " + map.Size.x + " x " + map.Size.z +
+                                " (x 0.." + (map.Size.x - 1) + ", z 0.." + (map.Size.z - 1) + "). " +
+                                "from=" + A.x + "," + A.z + (A.InBounds(map) ? " OK" : " OUT") +
+                                "  to=" + B.x + "," + B.z + (B.InBounds(map) ? " OK" : " OUT") +
+                                ". Maps are not always square - do not assume.",
+                                new { mapSizeX = map.Size.x, mapSizeZ = map.Size.z });
+
+                var td = DefDatabase<ThingDef>.GetNamedSilentFail((thing ?? "PowerConduit").Trim());
+                if (td == null) return Fail("No ThingDef '" + thing + "'.", DefSuggestions<ThingDef>(thing));
+                ThingDef sd = null;
+                if (!string.IsNullOrEmpty(stuff)) sd = DefDatabase<ThingDef>.GetNamedSilentFail(stuff.Trim());
+                if (td.MadeFromStuff && sd == null) sd = GenStuff.DefaultStuffFor(td);
+                if (!td.MadeFromStuff) sd = null;
+
+                string M = (mode ?? "strict").Trim().ToLowerInvariant();
+                if (M != "strict" && M != "mine" && M != "bridge") return Fail("mode must be strict|mine|bridge.");
+
+                Faction fac = Faction.OfPlayer;
+                if (!string.IsNullOrEmpty(faction))
+                {
+                    var fd = DefDatabase<FactionDef>.GetNamedSilentFail(faction.Trim());
+                    if (fd == null) return Fail("No FactionDef '" + faction + "'.");
+                    fac = Find.FactionManager.FirstFactionOfDef(fd);
+                    if (fac == null) return Fail("Faction '" + faction + "' is not in this world.");
+                }
+
+                // ---- pass 1: vanilla's own router - flood fill over placeability -------
+                var route = new List<IntVec3>();
+                bool clean = false;
+                // 🔴 CHECK THE ENDPOINTS FIRST. Measured 2026-08-19: a run over marsh and
+                // shallow water reported "NO PATH ... deep water or the map edge", which was
+                // WRONG and unhelpful - PowerConduit needs the `Light` terrain affordance,
+                // which marsh and shallow water lack. They ARE Bridgeable, so mode='bridge'
+                // fixes them; deep water is the only genuinely hopeless case.
+                Func<IntVec3, bool> isBridgeable = c =>
+                { try { return c.GetAffordances(map).Any(a => a.defName == "Bridgeable"); } catch { return false; } };
+
+                foreach (var pair in new[] { new { c = A, which = "from" }, new { c = B, which = "to" } })
+                {
+                    if (GenConstruct.CanBuildOnTerrain(td, pair.c, map, Rot4.North)) continue;
+                    var terr = pair.c.GetTerrain(map);
+                    bool br = isBridgeable(pair.c);
+                    return Fail("The " + pair.which.ToUpperInvariant() + " cell itself cannot hold '" + td.defName +
+                        "'. Terrain there is '" + (terr != null ? terr.defName : "?") + "'" +
+                        (td.terrainAffordanceNeeded != null ? ", which does not provide the '" + td.terrainAffordanceNeeded.defName + "' affordance it needs" : "") +
+                        (br ? ". That terrain IS Bridgeable - re-run with mode='bridge'." :
+                              ". That terrain is NOT bridgeable, so no mode can fix it."),
+                        new { cell = new { pair.c.x, pair.c.z }, terrain = terr != null ? terr.defName : null,
+                              affordanceNeeded = td.terrainAffordanceNeeded != null ? td.terrainAffordanceNeeded.defName : null,
+                              bridgeable = br });
+                }
+
+                // passCheck is a Predicate<IntVec3>, NOT a Func<IntVec3,bool> - the
+                // overloads differ and the compiler will not coerce between them.
+                // In bridge mode a Bridgeable cell counts as passable, because we can make
+                // it placeable before laying anything.
+                bool bridgeMode = (mode ?? "").Trim().Equals("bridge", StringComparison.OrdinalIgnoreCase);
+                Predicate<IntVec3> placeable = c =>
+                    c.InBounds(map) && (GenConstruct.CanBuildOnTerrain(td, c, map, Rot4.North)
+                                        || (bridgeMode && isBridgeable(c)));
+                try
+                {
+                    bool reached = false;
+                    map.floodFiller.FloodFill(A, placeable,
+                        (Func<IntVec3, bool>)(c => { if (c == B) { reached = true; return true; } return false; }),
+                        int.MaxValue, true, null);
+                    // ⚠️ FloodFiller forbids NESTED calls ("This will cause bugs") - never
+                    // call another flood fill from inside a passCheck or processor.
+                    if (reached)
+                    {
+                        map.floodFiller.ReconstructLastFloodFillPath(B, route);
+                        clean = route.Count > 0;
+                    }
+                }
+                catch (Exception e) { return Fail("FloodFill router threw: " + e.GetType().Name + ": " + e.Message); }
+
+                var blocked = new List<object>();
+                string routeKind = clean ? "clear" : null;
+
+                // ---- pass 2: obstacles allowed, then densify to cardinal steps --------
+                if (!clean)
+                {
+                    PawnPath path = null;
+                    try
+                    {
+                        var parms = TraverseParms.For(TraverseMode.PassAllDestroyableThingsNotWater, Danger.Deadly, false, false, false);
+                        path = map.pathFinder.FindPathNow(A, B, parms, null, PathEndMode.OnCell);
+                        if (path == null || !path.Found)
+                        {
+                            // Say what is ACTUALLY in the way rather than assuming deep water.
+                            var sample = new Dictionary<string, int>();
+                            int bridgeableCells = 0, n = 0;
+                            foreach (var c in GenSight.PointsOnLineOfSight(A, B))
+                            {
+                                if (!c.InBounds(map)) continue;
+                                n++;
+                                if (GenConstruct.CanBuildOnTerrain(td, c, map, Rot4.North)) continue;
+                                var t2 = c.GetTerrain(map);
+                                var key = t2 != null ? t2.defName : "(none)";
+                                int k; sample.TryGetValue(key, out k); sample[key] = k + 1;
+                                if (isBridgeable(c)) bridgeableCells++;
+                            }
+                            return Fail("NO ROUTE for '" + td.defName + "' from " + from + " to " + to + ". " +
+                                (bridgeableCells > 0
+                                    ? bridgeableCells + " cell(s) on the direct line are BRIDGEABLE - re-run with mode='bridge'."
+                                    : "Nothing on the direct line is bridgeable, so no mode can fix it.") +
+                                (td.terrainAffordanceNeeded != null
+                                    ? " '" + td.defName + "' needs the '" + td.terrainAffordanceNeeded.defName + "' terrain affordance."
+                                    : ""),
+                                new { blockingTerrain = sample, bridgeableCells, cellsSampled = n });
+                        }
+                        var raw = new List<IntVec3>();
+                        for (int i = path.NodesLeftCount - 1; i >= 0; i--) raw.Add(path.Peek(i));
+                        // 🔴 densify: the pathfinder is 8-connected, conduit needs 4-connected
+                        route.Clear();
+                        for (int i = 0; i < raw.Count; i++)
+                        {
+                            if (i == 0) { route.Add(raw[0]); continue; }
+                            var prev = route[route.Count - 1]; var cur = raw[i];
+                            if (prev.x != cur.x && prev.z != cur.z)
+                                route.Add(new IntVec3(cur.x, 0, prev.z));   // insert the corner
+                            route.Add(cur);
+                        }
+                        routeKind = "through-obstacles";
+                    }
+                    finally { if (path != null) { try { path.ReleaseToPool(); } catch { } } }
+                }
+
+                // ---- classify every cell BEFORE placing anything ----------------------
+                var needMine = new List<IntVec3>(); var needBridge = new List<IntVec3>();
+                foreach (var c in route)
+                {
+                    if (GenConstruct.CanBuildOnTerrain(td, c, map, Rot4.North))
+                    {
+                        var ed = c.GetEdifice(map);
+                        if (ed != null && ed.def != td) needMine.Add(c);
+                        continue;
+                    }
+                    var terr = c.GetTerrain(map);
+                    bool bridgeable = isBridgeable(c);
+                    if (bridgeable) needBridge.Add(c);
+                    else blocked.Add(new { x = c.x, z = c.z, terrain = terr != null ? terr.defName : null,
+                                           why = "terrain has no affordance for " + td.defName + " and is not Bridgeable - IMPOSSIBLE at any mode" });
+                }
+
+                if (blocked.Count > 0)
+                    return Fail("IMPOSSIBLE: " + blocked.Count + " cell(s) on the only route cannot carry '" + td.defName +
+                                "' and cannot be bridged. This is deep water or equivalent - refusing rather than laying a broken line.",
+                                blocked);
+                if (M == "strict" && (needMine.Count > 0 || needBridge.Count > 0))
+                    return Fail("REFUSING in mode 'strict': the route needs " + needMine.Count + " cell(s) cleared and " +
+                                needBridge.Count + " bridged. Re-run with mode='mine' or 'bridge'.",
+                                new { needMine = needMine.Select(c => new { c.x, c.z }).ToList(),
+                                      needBridge = needBridge.Select(c => new { c.x, c.z }).ToList() });
+                if (M == "mine" && needBridge.Count > 0)
+                    return Fail("REFUSING: the route crosses " + needBridge.Count + " bridgeable water cell(s). Use mode='bridge'.");
+
+                if (dryRun)
+                    return (object)new
+                    {
+                        success = true, dryRun = true, route = routeKind, routeLength = route.Count,
+                        wouldMine = needMine.Count, wouldBridge = needBridge.Count,
+                        firstCells = route.Take(6).Select(c => new { c.x, c.z }).ToList(),
+                        note = "DRY RUN - nothing placed. Pass dryRun=false.",
+                        ticksGame = TicksGameSafe(),
+                    };
+
+                // ---- commit -----------------------------------------------------------
+                int cleared = 0, bridged = 0, placed = 0, skipped = 0;
+                foreach (var c in needMine)
+                {
+                    var ed = c.GetEdifice(map);
+                    if (ed != null) { ed.Destroy(DestroyMode.KillFinalize); cleared++; }
+                }
+                var bridgeDef = DefDatabase<TerrainDef>.GetNamedSilentFail("Bridge");
+                foreach (var c in needBridge)
+                {
+                    if (bridgeDef == null) break;
+                    map.terrainGrid.SetTerrain(c, bridgeDef); bridged++;
+                }
+                foreach (var c in route)
+                {
+                    var existing = map.thingGrid.ThingsListAtFast(c).FirstOrDefault(t => t.def == td);
+                    if (existing != null) { skipped++; continue; }
+                    try
+                    {
+                        var t = ThingMaker.MakeThing(td, sd);
+                        t.SetFactionDirect(fac);
+                        GenSpawn.Spawn(t, c, map, Rot4.North, WipeMode.Vanish);
+                        placed++;
+                    }
+                    catch (Exception e) { blocked.Add(new { x = c.x, z = c.z, why = e.Message }); }
+                }
+
+                return (object)new
+                {
+                    success = true, dryRun = false, route = routeKind, routeLength = route.Count,
+                    placed, skipped, cleared, bridged,
+                    problems = blocked,
+                    note = "Run jawa/map_commit. For power, consumers within 6 cells auto-connect; conduits themselves must be CONTIGUOUS, which the 4-connected route guarantees.",
+                    ticksGame = TicksGameSafe(),
+                };
             });
         }
 

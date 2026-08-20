@@ -1023,7 +1023,8 @@ namespace JawaBench.BridgeTools
             [ToolParameter(Description = "Pawn id or name.")] string pawn = null,
             [ToolParameter(Description = "'add' | 'remove' | 'list'.")] string action = "list",
             [ToolParameter(Description = "PawnRelationDef, e.g. Spouse, Lover, Parent, Sibling.")] string relation = null,
-            [ToolParameter(Description = "The other pawn's id or name.")] string otherPawn = null)
+            [ToolParameter(Description = "The other pawn's id or name.")] string otherPawn = null,
+            [ToolParameter(Description = "Add a love relation even though the pawn already holds one. RimWorld does not enforce exclusivity; this tool does.")] bool force = false)
         {
             return await ctx.MainThread.InvokeAsync(() =>
             {
@@ -1051,6 +1052,27 @@ namespace JawaBench.BridgeTools
 
                     if (A == "add")
                     {
+                        // 🔴 Measured 2026-08-19: nothing in RimWorld stops a pawn holding
+                        // Fiance AND Spouse AND ExSpouse with the SAME person at once - the
+                        // test produced exactly that. The love relations are meant to be
+                        // mutually exclusive, so refuse by default the way pawn_traits does
+                        // for conflicting traits.
+                        var loveRels = new HashSet<string>(StringComparer.OrdinalIgnoreCase)
+                            { "Lover", "Fiance", "Spouse", "ExLover", "ExSpouse" };
+                        if (loveRels.Contains(rd.defName) && !force)
+                        {
+                            var held = p.relations.DirectRelations
+                                .Where(x => x.def != null && loveRels.Contains(x.def.defName))
+                                .Select(x => x.def.defName + " (" + (x.otherPawn != null ? x.otherPawn.LabelShort : "?") + ")")
+                                .ToList();
+                            if (held.Count > 0)
+                                return Fail("REFUSING: this pawn already holds a love relation - " + string.Join(", ", held.ToArray()) +
+                                            ". Lover/Fiance/Spouse/ExLover/ExSpouse are meant to be mutually exclusive and RimWorld does NOT enforce it, " +
+                                            "so adding '" + rd.defName + "' would leave the pawn holding several at once. " +
+                                            "Remove the existing one first, or pass force=true if a deliberately incoherent state is what you want.",
+                                            held);
+                        }
+
                         if (p.relations.DirectRelationExists(rd, other)) notes.Add("relation already exists");
                         else { p.relations.AddDirectRelation(rd, other); added++; if (rd.reflexive) notes.Add("reflexive - mirrored onto the other pawn automatically"); }
                     }
