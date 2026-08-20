@@ -1,6 +1,10 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
-"""worldmap.py - read and REWRITE the planet inside a RimWorld savegame.
+"""worldmap.py - READ the planet inside a RimWorld savegame. Writing is retired.
+
+Both write() methods refuse (2026-08-18/19 rulings): nothing writes a painted world
+into a .rws, and the map now reaches the game over the live bridge. Every DECODER
+below is correct and still in use - worldview.py, worldmap_review.py, ashkarr_paint.py.
 
 The world grid lives at savegame/game/world/grid/layers, as a list of PlanetLayers.
 Only the SurfaceLayer carries real tile data; the two OrbitLayers are stubs. Each
@@ -215,23 +219,15 @@ class WorldGrid(object):
         return len(tile_ids)
 
     def write(self, out_path):
-        """Splice every modified array back into the original XML, byte for byte
-        elsewhere. Done high to low so earlier offsets stay valid."""
-        text = self.text
-        spans = []
-        for name, width in SCALARS.items():
-            if name not in self.arrays:
-                continue
-            sp = self._span(name)
-            if sp is None:
-                continue
-            fmt = "<%d%s" % (len(self.arrays[name]), "H" if width == 2 else "B")
-            spans.append((sp, _encode(struct.pack(fmt, *self.arrays[name]))))
-        for (a, b), payload in sorted(spans, key=lambda s: -s[0][0]):
-            text = text[:a] + payload + text[b:]
-        with open(out_path, "w", encoding="utf-8", errors="surrogateescape") as fh:
-            fh.write(text)
-        return out_path
+        raise SystemExit(
+            "worldmap.write() is RETIRED. Owner's ruling 2026-08-18: nothing writes a\n"
+            "painted world into a .rws - two attempts, two dead loads, every invariant\n"
+            "check passed and the game still died. Owner's ruling 2026-08-19: the map\n"
+            "reaches the game through the LIVE BRIDGE, not a file.\n"
+            "This module stays because its DECODERS are correct and still used by\n"
+            "worldview.py, worldmap_review.py and ashkarr_paint.py. Reading is fine.\n"
+            "See ASHKARR_WORLD_DEFINITION.md 12 and queue/CHECK.md\n"
+            "worldpaint-live-bridge-route-9d41c7.")
 
 
 def _selftest(save_path, dump_dir=DEFAULT_DUMP):
@@ -365,9 +361,15 @@ class WorldObjects(object):
         return {"tile": tile, "was": marks[idx]["def"], "now": new_defname}
 
     def write(self, out_path):
-        with open(out_path, "w", encoding="utf-8", errors="surrogateescape") as fh:
-            fh.write(self.text)
-        return out_path
+        raise SystemExit(
+            "worldmap.write() is RETIRED. Owner's ruling 2026-08-18: nothing writes a\n"
+            "painted world into a .rws - two attempts, two dead loads, every invariant\n"
+            "check passed and the game still died. Owner's ruling 2026-08-19: the map\n"
+            "reaches the game through the LIVE BRIDGE, not a file.\n"
+            "This module stays because its DECODERS are correct and still used by\n"
+            "worldview.py, worldmap_review.py and ashkarr_paint.py. Reading is fine.\n"
+            "See ASHKARR_WORLD_DEFINITION.md 12 and queue/CHECK.md\n"
+            "worldpaint-live-bridge-route-9d41c7.")
 
     # -- world FEATURES: the named regions drawn across the planet ---------
     # <li><def>Island</def><name>Caxigo Island</name>
