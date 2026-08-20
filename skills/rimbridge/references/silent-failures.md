@@ -4,6 +4,17 @@
 returning `success: true` while the game did not move, and every one is a call the RimWorld
 API offers you with no warning. Measured live 2026-08-19 unless noted.
 
+📁 **Which file am I in?** This one catalogues **ENGINE APIs** that mislead you.
+`traps.md` catalogues **BRIDGE, CLIENT, BUILD and WORKFLOW** mistakes. If the thing that
+lied to you was a RimWorld method, you are in the right place.
+
+🔎 **This is a lookup, not a read.** `grep -i -n "<the method you called>" silent-failures.md`
+— every entry names the call.
+
+⚡ **The two that catch most people, before you go further:** nothing you write to a WORLD
+is visible until `jawa/world_commit`, and nothing bulk-written to a MAP is consistent until
+`jawa/map_commit`. If your write "did nothing", check that first.
+
 🔑 **The pattern to internalise:** RimWorld's setters are frequently *advisory*. They write
 a field and leave the consequences to a refresh you must know to call, or they refuse
 conditions you must know to check. **Nothing throws.** So the discipline is always the

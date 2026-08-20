@@ -1,5 +1,9 @@
 # Extending the bridge — writing a companion DLL
 
+⚠️ **This file is the low-level assembly and csproj detail. For the actual workflow —
+the tool pattern, the one-minute build cycle, the design rules — use the
+`rimbridge-companion` skill.**
+
 Read this when you are about to conclude "the bridge cannot do X".
 
 ---
@@ -14,7 +18,7 @@ folders. This is documented and supported, not a hack:
   authoring pattern, validation checklist)
 
 **This stopped being a proposal.** The three methods sketched here originally —
-`set_terrain`, `destroy_at`, `damage` — became the 14 tools in §5; `destroy_at`
+`set_terrain`, `destroy_at`, `damage` — became the companion's tools; `destroy_at`
 generalised into `jawa/destroy_batch`, because call count turned out to be the
 only cost that matters (§8). Source and build:
 

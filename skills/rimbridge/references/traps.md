@@ -1,5 +1,13 @@
 # RimBridge traps
 
+📁 **Which file am I in?** This one catalogues **BRIDGE, CLIENT, BUILD and WORKFLOW**
+mistakes. If a RimWorld ENGINE method reported success and changed nothing, you want
+`silent-failures.md` instead — that is a different, larger catalogue.
+
+🔎 **No index, by design — this file is appended to, not curated.** Grep it for your verb
+and read the hits, plus every 🔴 entry.
+
+
 Quick append log. Symptom, cause, fix, **recurs when**. Append and move on — no index, no numbering, no line anchors. Cite it as "as per the trap file". Every entry cost a real cycle. Promote into
 `SKILL.md` anything that should change default behaviour, and delete it from here
 when you do. Admission test and entry format:

@@ -7,11 +7,11 @@ behaviour: the `rimworld-world-editing` skill.
 ⚡ **Writing all 21,872 tiles takes 0.1 seconds.** Bulk world editing is not expensive.
 
 ```
-READ      world_layers · world_tile_get · world_links_get · world_mutators_get
+READ      world_layers · world_neighbors · world_tile_get · world_links_get · world_mutators_get
           world_landmarks_get · world_objects_get · world_features_get · world_info_get
 WRITE     world_tile_set · world_tile_import · world_links_set · world_links_clear
           world_links_import · world_mutators_set · world_landmarks_set
-          world_objects_set · world_objects_add · world_features_set · world_info_set
+          world_objects_set · world_features_set · world_info_set
 VALIDATE  world_tile_validate · world_links_validate · world_objects_validate
           world_mutators_audit · world_lint
 COMMIT    world_commit          ⬅ nothing you write is visible without it
