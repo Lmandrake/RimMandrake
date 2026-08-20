@@ -28,11 +28,29 @@
       <maxConfigurableAtWorldCreation>9999</maxConfigurableAtWorldCreation>
 
   requiredCountAtGameStart=1 is the one that matters. It does not merely make
-  the faction likely, it makes it MANDATORY: RimWorld forces the count at world
-  generation, and also tops up missing required factions when an existing save
-  is loaded. Enabling this mod without suppression therefore plants the faction
-  whether or not a new world is rolled. Weight 0.3 then keeps placing bases and
-  canMakeRandomly=true lets more appear later.
+  the faction likely, it makes it MANDATORY at WORLD GENERATION: RimWorld forces
+  the count there. Weight 0.3 then keeps placing bases and canMakeRandomly=true
+  lets more appear later, so suppression before a world is rolled is the point.
+
+  CORRECTED 2026-08-20, read out of the 1.6 decompile. This note used to add
+  "and also tops up missing required factions when an existing save is loaded".
+  THAT IS FALSE and it matters in both directions.
+  requiredCountAtGameStart is read in exactly one place, FactionGenerator
+  .InitializeFactions, reached only from WorldGenStep_Factions - i.e. worldgen.
+  The only load-time top-up is BackCompatibility.cs, and it is a HARDCODED list
+  of five vanilla factions: Empire, HoraxCult, Entities, TradersGuild,
+  Salvagers. Nothing sweeps requiredCountAtGameStart on load.
+  So: this suppression is still correct and still worth having, but a faction
+  that was ABSENT when a world was generated can never appear by patching a def
+  afterwards. It has to be created by hand or the world regenerated - which is
+  the same rule as "a faction absent when he builds it is absent forever",
+  wearing its mechanism.
+
+  AND THE SAME METHOD CARRIES A SECOND TRAP, which cost the Blackstar Company:
+  InitializeFactions SKIPS a def entirely when any other def declares
+  replacesFaction pointing at it with requiredCountAtGameStart > 0. Biotech's
+  PirateWaster replaces Pirate, so vanilla Pirate - which our BlackstarCompany
+  .xml reskins - is never generated at all while Biotech is active.
 
   The parent, OuterRimDiverseFactionBase (Outer Rim Core, WS 2919227155,
   1.6/Defs/FactionDefs/Faction__Base.xml line 4), is Abstract and declares only

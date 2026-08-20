@@ -1607,26 +1607,32 @@ criteria: 🔴 **LOOK AT THE WORLD MAP.** Click a Junkers settlement and the fac
           once the world is saved.
 state:    ready — blocked only on the next game-down window for the deploy
 
-## BLACKSTAR_HAS_NO_VESSEL_1 Four settlements are missing and they are all one faction's
-row:      world-2
-from:     BUILD, 2026-08-20, read-only over the bridge.
-spec:     `world/ASHKARR_WORLDMAP_settlements.csv` holds **72** rows; the live world has
-          **68** settlements. The gap is not scattered — it is exactly Blackstar Company's
-          four: **Blackstar Field** (tile 18266) · **The Contract Camp** (8898) ·
-          **Toll Rock** (2236) · **Hardpan Yard** (7497).
-          **Cause:** their `faction_def` is `AM_EnemyPirate`, and that faction is **not in
-          the world**. `jawa/list_factions` reports 16 factions and it is not among them.
-          Every other faction's count matches the CSV exactly, so the importer skipped
-          these four individually rather than refusing the whole import.
-          ⛔ **NOT BUILD's to decide and not CHECK's either** — whether Blackstar Company
-          gets a vessel that exists, or those four rows come out of the CSV, is DECIDE's.
-          Filed alongside as `BLACKSTAR_VESSEL_DECISION_1` in `queue/DECIDE.md`.
-verify:   once DECIDE rules: re-run `world_settlements_import`, then
-          `jawa/world_objects_get` with `limit` above 100 and count `Settlement`.
-          ⚠️ **`limit` defaults to 100 and 167 world objects exist**, so a default query
-          silently truncates. That nearly became a false alarm here.
-criteria: settlement count matches the CSV row count, whatever that number ends up being.
-state:    blocked on DECIDE
+## BLACKSTAR_HAS_NO_VESSEL_1 ⛔ SUPERSEDED — but read the warning, it is new
+⛔ **Folded into `BLACKSTAR_NEVER_GENERATES_1` (`queue/BUILD.md`), 2026-08-20.** My
+original text named `AM_EnemyPirate` as the missing vessel; REP had already repointed the
+source to vanilla `Pirate` while I was measuring, so that half is done and must not be
+redone.
+🔴 **BUT DO NOT RUN THE RE-IMPORT YET. One thing I found is not in that item and it
+would waste the run:**
+**`Pirate` IS NOT IN THE LIVE WORLD EITHER.** Measured in the 08:36 autosave:
+`<def>Pirate</def>` appears **0** times, `<def>PirateWaster</def>` **0** times.
+`BLACKSTAR_NEVER_GENERATES_1` says the importer *"refuses the WHOLE import if any faction
+is unresolvable"* — so a re-import against the repointed CSV could now fail **all 72
+rows**, where before it merely skipped 4.
+⚠️ REP's precondition check was sound but aimed at a different artifact: `world/
+WORLDMAP_gen.rws` does contain `<def>Pirate</def>`. **The world that is loaded is not that
+file.** Check the world you are about to import into, not a world on disk.
+🔑 **AND THE ROOT CAUSE, which explains why no amount of def patching fixes this:**
+Biotech's `PirateWaster` declares `replacesFaction: Pirate` with
+`requiredCountAtGameStart: 1`, and `FactionGenerator.InitializeFactions` **skips any def
+another required faction replaces**. Vanilla `Pirate` is therefore never generated at all
+while Biotech is active. And `requiredCountAtGameStart` is read **only at worldgen** —
+there is no load-time top-up except a hardcoded list of five vanilla factions — so it
+cannot arrive later on its own.
+⇒ **The faction has to be CREATED, not configured.** `FactionGenerator
+.CreateFactionAndAddToManager(FactionDef)` is public and is what a companion tool would
+call; none exists yet. Filed to BUILD.
+state:    superseded — the live-world warning above is the part that is still live
 
 ## INHABITED_DLL_FIX_AT_SHUTDOWN_1 One assembly is built and waiting for the game to close
 row:      inhabited-6

@@ -685,14 +685,14 @@
     },
     "CHECK": {
      "done": 0,
-     "total": 4,
+     "total": 5,
      "state": "idle",
      "mix": {
       "closed": 0,
       "done": 0,
       "doing": 0,
       "blocked": 0,
-      "ready": 4
+      "ready": 5
      }
     }
    }
@@ -1071,85 +1071,44 @@
    "cells": {
     "DECIDE": {
      "done": 8,
-     "total": 14,
+     "total": 15,
      "state": "idle",
      "mix": {
       "closed": 8,
       "done": 0,
       "doing": 0,
       "blocked": 0,
-      "ready": 6
+      "ready": 7
      }
     },
     "BUILD": {
      "done": 3,
-     "total": 12,
+     "total": 13,
      "state": "idle",
      "mix": {
       "closed": 3,
       "done": 0,
       "doing": 0,
       "blocked": 0,
-      "ready": 9
+      "ready": 10
      }
     },
     "CHECK": {
      "done": 1,
-     "total": 2,
+     "total": 3,
      "state": "idle",
      "mix": {
       "closed": 1,
       "done": 0,
       "doing": 0,
       "blocked": 0,
-      "ready": 1
+      "ready": 2
      }
     }
    }
   },
   {
    "name": "world-1",
-   "cells": {
-    "DECIDE": {
-     "done": 0,
-     "total": 0,
-     "state": "offline",
-     "mix": {
-      "closed": 0,
-      "done": 0,
-      "doing": 0,
-      "blocked": 0,
-      "ready": 0
-     }
-    },
-    "BUILD": {
-     "done": 0,
-     "total": 0,
-     "state": "offline",
-     "mix": {
-      "closed": 0,
-      "done": 0,
-      "doing": 0,
-      "blocked": 0,
-      "ready": 0
-     }
-    },
-    "CHECK": {
-     "done": 0,
-     "total": 1,
-     "state": "idle",
-     "mix": {
-      "closed": 0,
-      "done": 0,
-      "doing": 0,
-      "blocked": 0,
-      "ready": 1
-     }
-    }
-   }
-  },
-  {
-   "name": "world-2",
    "cells": {
     "DECIDE": {
      "done": 0,
@@ -2143,10 +2102,6 @@
    {
     "label": "no `InhabitedPlaceDef`/`InhabitedCastDef` instances exist",
     "count": 1
-   },
-   {
-    "label": "unexplained",
-    "count": 1
    }
   ]
  },
@@ -2171,7 +2126,7 @@
   ],
   "per_day": 15.71,
   "closed": 110,
-  "remaining": 57,
+  "remaining": 60,
   "eta_days": 4
  }
 }

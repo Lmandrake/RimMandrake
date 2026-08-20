@@ -98,6 +98,31 @@ it does not belong here.
   a graph of exactly one toil, forever, and put the schedule in ordinary C# inside it.
   *`Verse.AI.Group/Lord.cs`, 1.6 decompile, 2026-08-20.*
 
+- 🔴 **`requiredCountAtGameStart` is a WORLDGEN-ONLY field. There is NO load-time top-up.**
+  It is read in exactly one place — `FactionGenerator.InitializeFactions`, reached only
+  from `WorldGenStep_Factions`. The only load-time faction top-up is
+  `BackCompatibility.cs`, and it is a **hardcoded list of five**: `Empire`, `HoraxCult`,
+  `Entities`, `TradersGuild`, `Salvagers`. ⇒ **A faction absent when the world was
+  generated can NEVER appear by patching a def afterwards** — it must be created by hand
+  or the world regenerated. This is the owner's *"absent when he builds it is absent
+  forever"* wearing its mechanism. *1.6 decompile, 2026-08-20. It corrects a claim that
+  was written into `RebelAlliance_Suppress.xml` and `Jawa_Patches/About/About.xml`; both
+  are fixed.*
+- 🔴 **`replacesFaction` SILENTLY DELETES a faction from worldgen, and it is another mod's
+  field.** `InitializeFactions` skips def X entirely when ANY def Y has
+  `requiredCountAtGameStart > 0 && Y.replacesFaction == X`. **Biotech's `PirateWaster`
+  replaces vanilla `Pirate`** — the def our `BlackstarCompany.xml` reskins — so the
+  Blackstar Company can never be generated while Biotech is active, no matter what weight
+  or count we patch onto it. **Before reskinning ANY vanilla faction, check what replaces
+  it:** six defs in this 578-mod build declare `replacesFaction`, three of them aimed at
+  `OutlanderRough`. *1.6 decompile + the 578 def dump, 2026-08-20.*
+- **A faction's NAME is not its def's label.** `Faction.Name` returns a stored name if one
+  was generated and only falls back to `def.LabelCap` when that is null, so patching
+  `label` after worldgen changes nothing the player sees. `fixedName` on the def prevents
+  the generated name in the first place; `jawa/faction_name_set action=clear` repairs a
+  world that already has one. *Measured live 2026-08-20: ten of eleven campaign factions
+  were wearing generated names.*
+
 ## Deploy targets that are not `Mods/`
 
 - **`Xenotypes/*.xtp` and `Ideos/*.rid` are deploy targets.** They live under

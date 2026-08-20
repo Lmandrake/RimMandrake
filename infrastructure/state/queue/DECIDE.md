@@ -827,29 +827,18 @@ constraints:
           THIRD-PARTY def and must be reached by patch, not by editing the mod.
 state:    ready
 
-## BLACKSTAR_VESSEL_DECISION_1 Blackstar Company has no faction to be
-spec:     BUILD, 2026-08-20, measured on the live world. **Four settlements never landed**
-          because their vessel does not exist in the world:
-            `world/ASHKARR_WORLDMAP_settlements.csv` gives Blackstar Company
-            `faction_def = AM_EnemyPirate`, and `jawa/list_factions` reports 16 factions
-            with no such entry. The four are Blackstar Field (tile 18266), The Contract
-            Camp (8898), Toll Rock (2236) and Hardpan Yard (7497).
-          Every other faction's settlement count matches the CSV exactly — 68 of 72 landed
-          and the missing four are all Blackstar's, so this is one cause, not four.
-          ⚠️ **`VFEP_Junkers` IS in the world** ("The Crushers") and `AM_EnemyPirate` is not,
-          so a pirate-flavoured vessel is available in principle. Whether Blackstar should
-          wear one is authoring: the faction's whole joke is that it is predatory but
-          **contractual** — professionals, paperwork before violence — and a generic pirate
-          def may carry raid behaviour that contradicts that.
-          THE CHOICE:
-            (a) point Blackstar at a faction that exists, and say which;
-            (b) author a `Jawa_BlackstarCompany` FactionDef like the other eight;
-            (c) strike the four rows from the CSV and accept a 68-holding planet.
-          🔴 **This is a bake-in decision.** The world is built once and frozen; a faction
-          absent when the owner builds it is absent from every player's game forever.
-verify:   after the ruling, the settlement import lands every row in the CSV.
-criteria: —
-state:    ready — for DECIDE
+## BLACKSTAR_VESSEL_DECISION_1 ⛔ VOID — the vessel was never in question
+⛔ **DEAD ON ARRIVAL, struck by its own author 2026-08-20, ~40 minutes after filing.**
+I filed this asking DECIDE to pick a vessel for the Blackstar Company. **There was
+nothing to pick.** REP had already diagnosed it and repointed the source while I was
+measuring: the Blackstar Company is vanilla **`Pirate`**, which `BlackstarCompany.xml`
+already reskins — label `Blackstar Company`, weight 0.6, settlement art present. The
+`AM_EnemyPirate` I measured was a stale reading of a CSV that had already been fixed.
+⇒ **The live item is `BLACKSTAR_NEVER_GENERATES_1` in `queue/BUILD.md`.** Everything I
+found that is still true has been folded into it, including a root cause it did not have.
+🔑 **Kept visible rather than deleted, because the wrong version told DECIDE to make a
+decision that would have contradicted a fix already in the tree.**
+state:    void
 
 ## FACTION_FIXEDNAME_DOCTRINE_1 Should the ten defs carry `fixedName`, or only this world be repaired?
 spec:     BUILD, 2026-08-20. Ten factions in the live world wear generated names; the
@@ -875,5 +864,37 @@ spec:     BUILD, 2026-08-20. Ten factions in the live world wear generated names
           explicit name regardless of which reading wins.
 verify:   whichever is chosen, written into `FACTION_SPEC.md` beside the existing
           `fixedName` line so the next reader is not left with the bare restraint.
+criteria: —
+state:    ready — for DECIDE
+
+## PIRATE_REPLACED_BY_BIOTECH_1 Biotech displaces the def the Blackstar Company is built on
+spec:     BUILD, 2026-08-20, read out of the 1.6 decompile and the 578 dump.
+          `BlackstarCompany.xml` reskins vanilla **`Pirate`** and does it correctly — label
+          `Blackstar Company`, weight 0.6, settlement art present. But
+          `FactionGenerator.InitializeFactions` **skips a def when another required def
+          replaces it**, and **Biotech's `PirateWaster` declares `replacesFaction: Pirate`
+          with `requiredCountAtGameStart: 1`**. ⇒ vanilla `Pirate` is never generated while
+          Biotech is active, so the faction the campaign built cannot exist by worldgen.
+          ⚠️ Creating the faction by hand fixes THIS world. It does not fix the next one,
+          and this planet is meant to be built once and frozen — so "the next one" may
+          genuinely never happen, which is a legitimate reason to do nothing here.
+          THE CHOICE:
+            (a) **Do nothing to the defs.** Create `Pirate` by hand in this world and
+                accept that a regenerate would lose it again. Cheapest, and consistent with
+                "the world is authored once".
+            (b) **Patch `PirateWaster.replacesFaction` away** so vanilla `Pirate` generates
+                normally. ⚠️ Then BOTH may generate — waster pirates AND Blackstar — which
+                may be wanted (two pirate flavours) or may not.
+            (c) **Move the reskin to `PirateWaster`** instead of `Pirate`, so the campaign
+                rides the def Biotech actually generates. ⚠️ Its pawn kinds are wasters,
+                which is a strong flavour and probably contradicts a contractual mercenary
+                company.
+          🔑 **Whatever is chosen, the same trap applies to every vanilla faction we
+          reskin.** Six defs in this build declare `replacesFaction`, three of them at
+          `OutlanderRough` — and `OutlanderCivil`/`TribeCivil` carry two of our factions.
+          ⚠️ **Those two are NOT affected** — checked: nothing declares `replacesFaction`
+          at `OutlanderCivil` or `TribeCivil`. Only `Pirate` is hit.
+verify:   after the ruling, the live world contains a faction whose label reads
+          `Blackstar Company`, and the settlement import lands all 72 rows.
 criteria: —
 state:    ready — for DECIDE

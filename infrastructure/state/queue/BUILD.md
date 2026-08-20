@@ -1243,6 +1243,51 @@ criteria: 🔴 **The owner opens Configure Factions and SEES a row reading `Blac
           ✅ Precondition verified before the edit, offline: the generated world already
           contains `<def>Pirate</def>`, so the repointed import RESOLVES rather than
           refusing the whole file the way an unresolvable faction would.
+🔴        **ROOT CAUSE FOUND — BUILD, 2026-08-20, after REP's source fix. The diagnosis
+          above is RIGHT and INCOMPLETE, and the missing half is why the repoint alone will
+          not produce a Blackstar Company.**
+
+          **1. Vanilla `Pirate` is never generated either, and it is not our doing.**
+          `FactionGenerator.InitializeFactions` skips a def entirely when ANY other def
+          declares `replacesFaction` at it with `requiredCountAtGameStart > 0`:
+            `if (!ordered.Any(x => x.requiredCountAtGameStart > 0 && x.replacesFaction == facDef) && ...)`
+          **Biotech's `PirateWaster` declares `replacesFaction: Pirate`, req 1.** So while
+          Biotech is active — and it always is here — vanilla `Pirate` is displaced at
+          worldgen no matter what label, weight or count we patch onto it. The faction the
+          campaign reskinned is a faction the engine never creates.
+
+          **2. It cannot arrive later.** `requiredCountAtGameStart` is read in exactly one
+          place, reached only from `WorldGenStep_Factions`. **There is no load-time top-up**
+          — the only one is `BackCompatibility.cs`, a hardcoded list of five vanilla
+          factions (Empire, HoraxCult, Entities, TradersGuild, Salvagers). ⚠️ This
+          CORRECTS a claim our own `RebelAlliance_Suppress.xml` and `Jawa_Patches/About/
+          About.xml` both made; both are fixed, and the fact is in `BUILDABLE.md`.
+
+          **3. Measured, not inferred, in the 08:36 autosave of the live world:**
+            `<def>Pirate</def>` **0** · `<def>PirateWaster</def>` **0** ·
+            `<def>AM_EnemyPirate</def>` **1** (hidden, which is why a non-hidden faction
+            listing does not show it)
+          ⚠️ **REP's precondition check was sound but aimed at a different artifact.**
+          `world/WORLDMAP_gen.rws` DOES contain `<def>Pirate</def>` — but the world that is
+          LOADED is not that file. Check the world you are importing into.
+
+          🔴 **CONSEQUENCE FOR THE NEXT RE-IMPORT, and it is worse than the bug it fixes:**
+          this item's own spec says the importer *"refuses the WHOLE import if any faction
+          is unresolvable"*. The CSV now points 4 rows at `Pirate`, which is **not in the
+          live world** — so a re-import could fail **all 72 rows** where it previously
+          skipped 4. **Do not run it until the faction exists.**
+
+          ✅ **THE FIX IS TO CREATE THE FACTION, NOT TO CONFIGURE IT.**
+          `FactionGenerator.CreateFactionAndAddToManager(FactionDef)` is public and is
+          exactly what `BackCompatibility` calls for its five. No bridge tool exposes it.
+          ⇒ BUILD is adding `jawa/faction_create`. Until it deploys, the four Blackstar
+          rows cannot land in this world by any route.
+          ⚠️ **And decide which def before creating one:** `Pirate` carries our reskin and
+          the right label, but Biotech will keep displacing it in any FUTURE worldgen, so
+          creating it here fixes this world and not the next one. Whether to also patch
+          `PirateWaster.replacesFaction` away is DECIDE's — filed as
+          `PIRATE_REPLACED_BY_BIOTECH_1` in `queue/DECIDE.md`.
+
 state:    doing
 
 ## NEOLITHIC_VEHICLE_BEAST_RESKIN_1 The four vehicles after the sled — beasts drawn, compositing left
