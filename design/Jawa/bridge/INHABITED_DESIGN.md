@@ -300,7 +300,74 @@ into the format rather than trusted to care:
    joke and a bewilderment are different shapes, not different topics.
 3. **A sameness pass** across the whole set, read by someone who did not write them.
 
-## 5.6 Sources of texture
+## 5.6 🔑 THE CRAFT RULES — what actually makes a background character land
+
+_From a research pass on Star Wars production design and background writing, 2026-08-19.
+⚠️ **Attribution honesty:** these citations reached DECIDE through a research summary; the
+quotes are specific and plausible but DECIDE has not read the primary sources. Treat the
+RULES as sound and the QUOTES as reported._
+
+**1. The range is held by the CROWD, not by any single character.**
+The Dickens comic-ironic model: mostly banality, spiked with the grotesque-comic, **one
+unremarked tragic figure per crowd**. ⭐ This is a sharper statement of §5.3's distribution
+rule and it supersedes the loose version — no individual carries the tonal range; the cast
+does. A character trying to be interesting on their own is the failure mode.
+
+**2. "Unremarked" is the whole trick.** The tragic figure in a crowd is not pointed at.
+Nobody in the scene comments on him. ⛔ Never write a character who is *presented* as sad,
+strange or funny — write one who simply is, while everyone around them gets on with it.
+
+**3. Do not explain. Withholding IS the characterisation.**
+Boba Fett: four lines, 6m32s of screen time, and *"most of what we think we know is
+assumption."* The counter-example is midi-chlorians, which turned the Force into *"a
+numbers game."* ⇒ **A background character gets ONE unexplained fact.** Do not resolve it.
+Tolkien's Letter 247 is the same principle — *"towers of a distant city gleaming in a
+sunset mist"* — and Grybauskas's gloss on it, *"checking the pen"*, is exactly what
+over-explaining does.
+
+**4. One line of friction can encode an entire social order.**
+Wuher's *"We don't serve their kind here."* ⇒ Where a character has a line, prefer a line
+that implies a society over one that describes a self. **This is the single highest-value
+instruction in the list for our purposes**, because our characters exist to make a planet
+feel inhabited, not to have arcs.
+
+**5. The used universe.** Mollo on costume: *"he didn't want anyone to notice the
+costumes."* Roger Christian dressed sets from aircraft scrap and drainpipes; Lucas's own
+term is the **"used universe."** ⇒ **Every possession a character has was owned by someone
+else first, and shows it.** Nothing is new, nothing is bespoke, nothing is clean.
+
+**6. Flat characters are a legitimate craft object, not a shortfall.** Forster's defence of
+the flat character stands behind the **Flat family** in §5.3. A character who is exactly one
+thing, sharply, is doing real work in a crowd. ⇒ Keep the Flat quota; do not let the
+authoring drift it upward into "interesting".
+
+**7. Interrupt the ordinary rather than announce the exotic.** The cantina was staged *"not
+to explain who they were, but to interrupt the ordinary."* ⇒ The strange character works
+because the boring ones are there first. **Write the dull half of a cast BEFORE the
+standouts**, or the standouts have nothing to stand against.
+
+**8. Structure a character as name → archetype → want → social weakness.**
+The tabletop NPC method (Sly Flourish). Terse, generative, and it forces a *want*, which is
+what makes a background character playable rather than decorative.
+
+**9. Occupational interdependence makes a society legible.** Koster's *"weak-tie
+interdependence"* from Star Wars Galaxies — the one Star Wars product that had to invent
+hundreds of ordinary jobs and make them feel like a society. ⇒ **Characters should need
+each other's jobs.** The sump-clearer's work is why the refiner's work is possible.
+
+**10. ⛔ The Andor line, and why we do NOT take it.** Andor's labour economics are excellent
+(*"cheaper than droids and easier to replace"*; Gilroy: *"a billion beings… they don't all
+have to do with lightsabers"*) — but the owner ruled explicitly **against** that register:
+*"not the dark gritty Andor-type stuff."* ⇒ Take the *observation* that ordinary work exists
+and is exploited; leave the *tone* of grim seriousness. Our world is impossible and cheerful
+about it.
+
+**11. Names accrete mythology.** Kenner and Topps invented nicknames for unnamed background
+figures and fans built mythologies on them. ⇒ **A good name plus a job is often enough**;
+the player will do the rest. This is the argument for naming everyone even when the entry is
+short.
+
+## 5.7 Sources of texture
 
 - **Star Wars canon — for texture.** Mine the **background, not the notables**: a moisture
   farmer, a docking-bay clerk, a spice-dock tallyman. Canon background characters accreted
