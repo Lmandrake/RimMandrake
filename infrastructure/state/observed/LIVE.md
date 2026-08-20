@@ -164,15 +164,20 @@ Nobody needs a live game to re-derive these; they need `ilspycmd`.
 
 ## Companion DLL and mod list — CHECK, 2026-08-19
 
-- **The companion is 32 `jawa/` tools, not 26.** Verified by `strings -a` on the deployed
-  `C:\Program Files (x86)\Steam\steamapps\common\RimWorld\BridgeTools\JawaBench\JawaBench.BridgeTools.dll`,
-  and the repo source matches it. `skills/rimbridge/SKILL.md` still says 26 — stale.
-  ⚠️ The companion lives in `<gamedir>\BridgeTools\`, a **sibling of `Mods\`**, not inside it.
-- **All four world tools are READ-ONLY** — `world_stats`, `world_tile_export`,
-  `world_neighbors`, `biome_probe`. Nothing in the companion writes a tile. The batch tile
-  setter and link setter are the work in `queue/CHECK.md worldpaint-live-bridge-route-9d41c7`.
-- **`ModsConfig.xml` is now 583 active mods**, down from 584: `mandrake.jawaseashaper`
-  removed 2026-08-19 by owner ruling. Backup at `...\Config\ModsConfig.xml.bak-preseashaper`.
+- ~~The companion is 32 `jawa/` tools~~ ⇒ **the companion is now 47 `jawa/` tools**, and
+  **15 of them WRITE the world**. See "The worldmap bridge" below. Verified live by
+  `tools/list`, not by `strings`.
+  ⚠️ The companion lives in `<gamedir>\BridgeTools\`, a **sibling of `Mods\`**, not inside it,
+  and it is discovered by the RimBridgeServer MOD at startup — so `brrainz.rimbridgeserver`
+  must be ACTIVE or there is no bridge at all, however the DLL is deployed.
+- ~~All four world tools are READ-ONLY~~ ⛔ **SUPERSEDED 2026-08-19.** The batch tile setter
+  and the link setter are BUILT, DEPLOYED AND PROVEN. Also: "read-only" was only ever true
+  of *game state* — `world_neighbors` and `world_tile_export` both write a file to disk.
+- 🔴 **`ModsConfig.xml` is 578 active mods, NOT 583.** Every earlier figure counted the five
+  `<knownExpansions>` entries — `grep -c '<li>'` over that file is wrong by exactly 5. Use
+  `activeMods` only. So the `mandrake.jawaseashaper` removal was **579 → 578**.
+  Version `1.6.4871 rev590`. Full list backed up at
+  `D:\Luke\dev\Rimworld\infrastructure\state\modlists\ModsConfig.FULL.LATEST.xml`.
 - **Scale 7 / coverage 100% is a PRESET FILE, not a mod of ours** —
   `C:\Program Files (x86)\Steam\steamapps\workshop\content\294100\3626210061\Worldbuilder\TidallyLocked\Preset.xml`
   carries `<myLittlePlanetSubcount>7</myLittlePlanetSubcount>` and `<planetCoverage>1</planetCoverage>`.
@@ -185,3 +190,67 @@ Nobody needs a live game to re-derive these; they need `ilspycmd`.
   `worldmap.py`'s two `write()` methods now raise. Reading, decoding and rendering are
   untouched, and `src/RimMandrake/Utils/rimbench/savemap.py` is kept whole — it refuses
   to overwrite its source and passes `fogGrid` through undecoded.
+
+## The worldmap bridge — CHECK, 2026-08-19. 15 new tools, all proven live
+
+Full element census and every API signature:
+`design/Jawa/worldbuilding/WORLDMAP_BRIDGE_SURFACE.md`. **Do not re-derive it.**
+
+**The tools** (all under `jawa/`): `world_layers` · `world_tile_get/set/import/validate` ·
+`world_commit` · `world_view` · `world_links_get/set/clear/import/validate` ·
+`world_mutators_get/set/audit` · `world_landmarks_get/set` · `world_objects_get/set/validate` ·
+`world_features_get/set` · `world_info_get/set` · `world_lint`.
+
+- ⚡ **Writing all 21,872 tiles takes 0.1 seconds.** Bulk world editing is not expensive.
+- 🔴 **Nothing you write is visible until `jawa/world_commit` runs.** RimWorld has NO
+  per-tile visual invalidation except pollution; everything else needs a whole
+  `WorldDrawLayer` mesh regeneration. The recipe is vanilla's own and all 8 steps run green.
+- 🔴 **`Tile`'s private caches never invalidate.** `HillinessLabel`, `MinTemperature`,
+  `MaxTemperature` and `Biomes` are lazily cached with **no reset method anywhere in
+  RimWorld**. Read RAW FIELDS to validate, or you will confirm writes that never landed.
+- 🔴 **`SurfaceTile.Roads`/`Rivers` are biome-FILTERED views** of `potentialRoads`/
+  `potentialRivers`. A biome with `allowRivers=false` HIDES links without deleting them.
+  Measured: an untouched world carries 20+ such tiles.
+- 🔴 **`BiomeDef.allowRivers` / `allowRoads` are ABSENT from the offline def dump** — all 80
+  biomes report neither — yet live they are `False` on `Ocean`, `IceSheet`, `GlacialPlain`.
+  **This question cannot be answered offline.**
+- 🔴 **`OverlayRiver`/`OverlayRoad` cannot REMOVE** (null only logs `ErrorOnce`) and silently
+  refuse a lower-priority def. `jawa/world_links_clear` is ours and edits both endpoints.
+- 🔴 **`AddLandmark` does NOT enforce `LandmarkDef.IsValidTile`.** Measured on a settlement
+  tile: verdict False, landmark added anyway. Ordering is ours to enforce, silently.
+- 🔴 **A `Settlement` with a null faction is DESTROYED on load.** `jawa/world_objects_validate`
+  checks exactly that, scoped to Settlements (AsteroidBasic legitimately has none).
+- 🔴 **`WorldInfo.overallPopulation` and `landmarkDensity` are not scribed** — they revert on
+  every load. `world_info_set` refuses them unless forced.
+- 🔑 **`Find.WorldFeatures.textsCreated = false` is the commit step for region LABELS**,
+  separate from draw-layer regeneration. ⭐ `drawAngle` is never set by vanilla (all 68
+  generated features read 0.0), so label rotation is control the base game does not use.
+- 🔑 **A contiguous tile-ID range is NOT a contiguous region on the globe.** Use the
+  neighbour graph, never id arithmetic.
+
+**Vanilla `world_lint` baseline** — judge a hand-made planet against THIS, not against zero:
+52 findings; 8 single-tile islands; 2 settlements on water; 2 on impassable; **40 of ~100
+settlements with no road** (so "no road" is not by itself a defect); 38 river systems with
+**0 reaching no sea**.
+
+## Fast reload regime — CHECK, 2026-08-19
+
+- 🟢 **A cold load on the 13-mod MINIMAL list is 22 SECONDS**, against ~25 min on 578.
+  Engine's own clock: `[RimBridge] STARTUP_TIMING phase=bridge-start.total elapsedMs=12364`.
+  A quicktest world+map on top is **5 s** (`rimworld/start_debug_game_ready`).
+  ⇒ the whole edit→build→deploy→launch→test cycle is about **one minute**.
+- `python3 src/RimMandrake/Utils/modlist_swap.py --status | --minimal | --restore` (add
+  `--apply`; plan-only by default, archives the live file before every write).
+- ⚠️ **The minimal list cannot reproduce the 21,872-tile geometry** — `ferny.Worldbuilder`
+  is absent and Worldbuilder is what loads the TidallyLocked preset. It is for building
+  tools only. Anything depending on real tile IDs needs the full list.
+- ⚠️ **`build.py --apply` without `--gm` silently drops `jawa/fire_incident` and
+  `jawa/send_letter`.** It refuses and names them. Always `--gm --apply`.
+- ⚠️ **`rimworld/search_debug_actions` timed out at 30 s even on 13 mods.** The documented
+  debug-discovery hang is not only a heavy-modlist problem. Do not call it.
+- ⚠️ **The debug log has Auto-open ON and reopens on any warning**, obscuring screenshots.
+  `src/RimMandrake/bridgetools/shoot_planet.py` closes and re-checks up to 4 times.
+- ⚠️ **`CameraJumper.TryShowWorld()` returns false unless `ProgramState == Playing`**, which
+  `readiness=mapData` does NOT guarantee. `jawa/world_view` takes `altitude` (125 min /
+  550 entry / 1100 whole-globe) and `northUp`; the public `altitude` field alone snaps back
+  because `Update` lerps toward the private `desiredAltitude`.
