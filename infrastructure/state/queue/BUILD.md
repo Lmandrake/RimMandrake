@@ -41,7 +41,6 @@ They are WRONG about the config, right about the intent.** Do not edit the setti
 the docs; the docs get fixed.
 ✅ **Subagents are unaffected and fully authorized** — spawn them, fan out, do not ask.
 
-
 ## B-V2 Park any v2 idea in design/V2_DREAMS.md yourself — no permission needed
 row:      doctrine
 spec:     Any idea for new content that is not v1 is appended to the END of
@@ -255,6 +254,7 @@ state:    done 2026-08-19. The file was already written; measured rather than as
           said the ideo layer was in another file when it is in this one. `deityPresets`
           shape re-read off `DeityPreset`/`DeityNameType` rather than trusted. Deployed.
           Live half filed to `queue/CHECK.md`.
+
 ## B42 Turn vanilla tribes into the Deep Desert Tribes, and add a water raid
 row:      9
 spec:     `design/Jawa/worldbuilding/FACTION_SPEC.md` section 4. A `PatchOperation` on
@@ -273,6 +273,7 @@ state:    done 2026-08-19. 578-mod scoped run: 0 errors, 0 warnings. Every §4 f
           with no attempt at the v2 behaviour. Deployed. Live half filed to `queue/CHECK.md`,
           carrying one call for DECIDE: the patch also removes `disallowedMemes`, which is
           mechanically needed but is outside what §4 lists.
+
 ## B43 Turn vanilla pirates into the Blackstar Company
 row:      9
 spec:     `design/Jawa/worldbuilding/FACTION_SPEC.md` section 10. A `PatchOperation` on
@@ -289,6 +290,7 @@ state:    done 2026-08-19. 578-mod scoped run: 0 errors, 0 warnings. Every §10 
           curves. 🔴 `permanentEnemy` is touched by no operation and stays `true`, which is
           what R12 requires. Deployed. Live half filed to `queue/CHECK.md`. `styles: Techist`
           from the religions spec is not here and belongs to B54.
+
 ## B45 Create the Hutt Cartel as a new faction
 row:      9
 spec:     `design/Jawa/worldbuilding/FACTION_SPEC.md` section 2 for every field value, plus its "Namers and icons"
@@ -458,6 +460,7 @@ state:    🔵 v2 — **owner, 2026-08-15: keep mechanoid and insect as they are
           with a deadline — the current labels ship. This also retires the open
           question of whether a faction's name serialises at worldgen: it does not
           need answering, because nothing is being renamed before the world is made.
+
 ## B52 Fix our one existing faction — wrong name, six fields missing
 row:      9
 spec:     `src/Jawa/Jawa_Patches/Defs/FactionDefs/JawaTribes.xml`, per `design/Jawa/worldbuilding/FACTION_SPEC.md`
@@ -480,8 +483,11 @@ spec:     `src/Jawa/Jawa_Patches/Defs/FactionDefs/JawaTribes.xml`, per `design/J
 verify:   `python3 skills/rimworld-modding/scripts/validate_patch.py <path> --defs` scoped to the active list, 0 errors; all six fields present and non-null; the three Jawa_Tribal_* kinds
           appear in the group options.
 criteria: Jawa Trade Moot settlements generate and spawn our tribal kinds.
-state:    ready
-
+state:    done 2026-08-19. The file already carried every field. Measured: 578-mod scoped
+          run 0 errors 0 warnings; label `Jawa Trade Moot`, `ParentName TribeBase`, all
+          five required fields present and non-null, `basicMemberKind` correctly absent,
+          and the three `Jawa_Tribal_*` kinds both appear in the group options and resolve
+          in the live def dump. Live half filed to `queue/CHECK.md`.
 ## B53 Create 48 pawn types so raids field roles, not one flat kind
 row:      7
 spec:     `design/Jawa/worldbuilding/pawnkind_roster.md` — 48 kinds, 12 factions

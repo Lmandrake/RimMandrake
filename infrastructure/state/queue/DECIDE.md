@@ -523,3 +523,42 @@ the facts that do NOT need taste:
           overriding WME. On a desert planet AridShrubland is a main tile. **Turn that
           ReGrowth setting OFF and WME's arid art appears.**
 
+
+## five-design-gaps-found-auditing-the-seven-authored-factions-3c81ea
+row:      9
+from:     BUILD, 2026-08-19, while closing B45–B51. All five are DESIGN calls with no
+          value anywhere in the repo, so BUILD did not invent one. None of them blocks
+          the files, which are otherwise built and validate clean.
+spec:     (a) 🔴 **`maxCountAtGameStart` is on the authored-faction contract and is absent
+              from seven of the eight defs.** `FACTION_SPEC.md` §"An authored faction"
+              lists it in the generation group but no per-faction section gives a number.
+              Only `Jawa_HuttCartel` (1) and `Jawa_IndigenousTribes` (2) have one. Every
+              faction now carries `requiredCountAtGameStart 1`, which is the FLOOR;
+              nothing caps them, so worldgen may field several Foundry Hives.
+              ⇒ needs a number per faction, or a ruling that uncapped is intended.
+          (b) 🔴 **The Geonosian Foundry Hive's TWO OUTPOSTS ruling is not expressed in
+              the def**, and no `FactionDef` field expresses it. The 2026-08-17 ruling
+              gives the hive two distinct outposts (ore seam · plateau);
+              `settlementGenerationWeight 0.7` produces one undifferentiated cluster of
+              about five. The ruling's Free-Droid-Enclaves alliance reversal is also
+              unexpressed, and R1 forbids a goodwill number, so it needs a hard-coded
+              relation somewhere. ⇒ either the ruling needs a mechanism or it needs
+              downgrading to fiction.
+          (c) **`Jawa_HuttCartel`'s `ideoDescription` is NOT the text in
+              `faction_religions_spec.md` entry 2**, though the file's comment claims it
+              is verbatim. Spec: "Everything on this world evaporates, freezes, or is
+              stolen…"  File: "Everything is owed. The water you drank this morning…".
+              The spec's Decision precept `Execution_Required` is also absent — only the
+              blacklist is present. ⇒ which text is canon?
+          (d) **`Jawa_FreeDroidEnclaves` fields a biological species.** §5 calls it 0%
+              biological and the file's own comment says the `xenotypeSet` is "EMPTY ON
+              PURPOSE", but it carries `RimMandrakeUgnaught 1.000`. ⇒ intended
+              (droid-keepers) or a paste error?
+          (e) **Baseliners generate in five factions and the files used to deny it.**
+              Measured chances: Helix 0.083 · Junkers 0.047 · Wildsteam 0.028 ·
+              Deepwater 0.022 · Hutt 0.014. The comment claiming "they sum to 1.00 so no
+              baseliner generates" was false and has been corrected in all five; the
+              NUMBERS were left alone. ⇒ plain humans on a Star Wars planet: intended?
+verify:   n/a — this is a request for five values, not a build.
+criteria: n/a
+state:    ready

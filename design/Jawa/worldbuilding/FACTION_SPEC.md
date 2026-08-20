@@ -523,6 +523,15 @@ desert terrain.
 
 The six reskins keep their vessel's spectrum. Do not patch it.
 
+**R23 · ✅ SPENT, 2026-08-19. The ideo blocks have landed — do not strip them.**
+R23 was a sequencing device for a time when the faith text did not exist. It does now
+(`faction_religions_spec.md`), and every authored faction file carries its own ideo
+group rather than a separate pass in a separate file. **A file carrying `fixedIdeo` /
+`ideoName` / `ideoDescription` / `forcedMemes` / `deityPresets` is finished, not in
+violation** — and the owner's 2026-08-19 ruling makes it all eleven faiths before the
+freeze, not a named few. What survives from R23 is only its deadline, restated below.
+The original text follows as the reasoning, not as an instruction:
+
 **R23 · BUILD THE FACTION WITHOUT ITS IDEO BLOCK. The ideo lands second.**
 Chain step 9 formally needs step 6, and **9 of 11 faiths have no
 `ideoDescription`** — so a strict reading blocks every authored faction behind a
