@@ -1260,38 +1260,49 @@ spec:     DROPPED before anyone picked it up. It was filed on a premise the owne
           that unticking it deletes one of our factions. Nothing here needed a load.
 state:    dropped — premise rejected by the owner; no live check is owed
 
-## MORNING_RELOAD_PLAN_1 What to do with tomorrow's cold load, in order
+## MORNING_RELOAD_PLAN_1 Two loads, and the quit between them serves both jobs
 row:      bridge-9
-from:     CHECK, overnight 2026-08-20. The owner is asleep; he reloads in the morning.
-spec:     The companion is DEPLOYED and byte-verified. **112 distinct `jawa/` tool names are
-          in the assembly, against 106 live in the last session** — six new, none of them
-          exercised in a running game yet. Everything below is the first exercise.
-          RUN THIS FIRST, it costs about a minute and answers most of it:
-            `python.exe src/RimMandrake/Utils/first_light.py`
-          🔴 `python.exe`, never WSL `python3` — the bridge is on Windows loopback.
-          It writes `infrastructure/output/first_light_<date>.md` and prints one line.
-          THEN, in this order — it is W9 §12's order and the order matters:
-            1. tiles      `world_tile_import` (already proven 100%, re-run after any reload)
-            2. links      `world_links_import` world/ASHKARR_WORLDMAP_links.csv — 🔴 THE FIX
-                          FOR THIS IS UNTESTED. It could never read its own format until
-                          tonight. If it still refuses, that is the first thing to debug.
-            3. mutators   no authored source exists. The 817 stale `Coast` mutators from the
-                          repaint need CLEARING, not importing — `world_mutators_set`.
-            4. landmarks  no authored source. `landmarks.count = 0` in the report json. SKIP.
-            5. settlements `world_settlements_import` world/ASHKARR_WORLDMAP_settlements.csv
-                          — 72 rows. It refuses the WHOLE import if any faction is unresolvable.
-            6. features   `world_features_import` — reads the `region` column of the TILES csv,
-                          23 named regions. No second file.
-            7. `world_commit`, then `world_lint`, then LOOK.
-verify:   `first_light.py` reports 112 `jawa/` tools and a clean tile validate.
-criteria: 🔴 THE OWNER LOOKS AT THE PLANET AND DOES NOT IMMEDIATELY NAME A DEFECT, compared
-          against `world/view/ASHKARR_WORLDMAP.biome.equirect.png`. Not "the tools returned
-          success" — every defect that has mattered in this work passed its numeric check
-          while the picture was obviously wrong.
-          ⚠️ Last night's planet failed exactly this: 100% tile match, and it still did not
-          read as Ash'karr, because stages 2-7 had not run.
-state:    ready
+from:     CHECK, 2026-08-20. Owner enabled `mandrake.inhabited` and then said to try
+          Inhabited this session as well. That merges two plans into one, and the merge
+          SAVES A LOAD rather than costing one.
+spec:     🔑 **THE WHOLE POINT: three Inhabited items need `save → quit to desktop → reload`,
+          and the W9 world edits want exactly the same cycle to prove they persist. One quit
+          serves both.** Doing them separately costs two extra cold loads at ~25 min each.
+          ⚠️ And the Inhabited chain has an order forced on it: `INHABITED_ROUTE_ONE_DAY_1`
+          and `INHABITED_POOL_ROUND_TRIP_1` both say "depends on ROSTER_SOAK_100_DAYS_1
+          passing". They are not runnable today unless the gate clears in load 2.
 
+          ── LOAD 1 ────────────────────────────────────────────────────────────
+          0. `python.exe src/RimMandrake/Utils/first_light.py` — one minute, all reads.
+             Then score `PRELOAD_PREDICTIONS_578_1`, all seven, before touching anything.
+          1. FREE AT LOAD TIME, costs nothing extra, do it while reading the log:
+               `INHABITED_DEFS_LOAD_CLEAN_1`  — the four defs load, the Harmony patch binds
+               `CAST_ROSTER_269_LOAD_1`       — the 269 load and one can be looked at
+          2. W9 stages, in §12 order — the order is not a preference:
+               tiles → links → mutators(CLEAR the 817 stale Coast, not import) →
+               landmarks(SKIP, no source) → settlements → features → `world_commit`
+             🔴 `world_links_import` is stage 2 and its fix is untested. If it refuses,
+             stop and debug it there; everything downstream assumes rivers exist.
+          3. `world_lint`, then LOOK, against `world/view/ASHKARR_WORLDMAP.biome.equirect.png`.
+          4. Inhabited soak SETUP: dev mode, debug category `Inhabited` —
+               `Create place at current tile` · `Stuff roster (3 pawns)` · `Report roster`
+             🔴 **KEEP THE REPORT OUTPUT. It is the baseline and it cannot be recovered
+             after the quit.** Write it to a file, not to a chat window.
+          5. **SAVE.** Then quit to desktop.
+
+          ── LOAD 2 ────────────────────────────────────────────────────────────
+          6. `Report roster` again → `ROSTER_SOAK_100_DAYS_1`. Compare field by field
+             against the baseline: the sibling relation, the missing eye, the Abrasive trait.
+          7. Re-read the world: `world_tile_validate`, settlement count, named regions.
+             That is W6/W7's proof repeated on a world that has actually been authored.
+          8. Only if step 6 PASSES: `INHABITED_ROUTE_ONE_DAY_1`, and
+             `INHABITED_POOL_ROUND_TRIP_1` — which needs a THIRD quit of its own.
+verify:   `first_light.py` reports 112 `jawa/` tools and the dump regenerates at 578.
+criteria: load 1 ends with a saved game and a written baseline; load 2 decides the gate.
+          🔴 The gate is the one that matters: everything else in `Inhabited` rests on a
+          deep-held, deliberately un-ticked pawn coming back whole. If it fails, the four
+          items behind it are not "blocked", they are waiting on an architecture change.
+state:    ready
 ## ROSTER_SOAK_100_DAYS_1 🔴 THE ARCHITECTURE GATE — everything in `Inhabited` rests on this
 row:      inhabited-1
 from:     BUILD, 2026-08-20, `f0a9f6c`. Harness only; BUILD cannot run this.
