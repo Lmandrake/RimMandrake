@@ -34,6 +34,15 @@ namespace Inhabited
     [HarmonyPatch(typeof(Game), nameof(Game.DeinitAndRemoveMap))]
     public static class Patch_Game_DeinitAndRemoveMap
     {
+        /// <summary>
+        /// Compile-time proof that `Game.DeinitAndRemoveMap(Map, bool)` still has
+        /// exactly this signature. See Patch_BeggarsFromPool for why: a Harmony
+        /// target that has moved costs a cold load to discover, and the compiler
+        /// can be made to answer it for free.
+        /// </summary>
+        private static readonly System.Action<Game, Map, bool> TargetSignatureProof =
+            (game, map, notifyPlayer) => game.DeinitAndRemoveMap(map, notifyPlayer);
+
         [HarmonyPrefix]
         public static void RecallInhabitants(Map map)
         {

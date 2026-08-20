@@ -188,6 +188,42 @@ namespace Inhabited
             return drawn;
         }
 
+        /// <summary>
+        /// Remove and return up to <paramref name="count"/> of the placeless
+        /// REGARDLESS of faction, longest-waiting first.
+        ///
+        /// For the beggars at the player's own gate. Beggars do not belong to an
+        /// existing faction -- the quest builds a hidden temporary one -- so the
+        /// faction-scoped Draw above cannot serve them, and the point of the
+        /// feature is precisely that the people at the gate came from anywhere the
+        /// player has been.
+        /// </summary>
+        public List<Pawn> DrawAny(int count)
+        {
+            List<Pawn> drawn = new List<Pawn>();
+            if (count <= 0 || placeless == null || placeless.Count == 0)
+            {
+                return drawn;
+            }
+            List<Pawn> candidates = placeless.InnerListForReading
+                .Where(p => p != null && !p.Dead && p.RaceProps != null && p.RaceProps.Humanlike)
+                .OrderBy(p => displacedAt.TryGetValue(p.thingIDNumber, out int o) ? o : int.MaxValue)
+                .ToList();
+            for (int i = 0; i < candidates.Count && drawn.Count < count; i++)
+            {
+                Pawn p = candidates[i];
+                if (!placeless.Remove(p))
+                {
+                    continue;
+                }
+                reasons.Remove(p.thingIDNumber);
+                origins.Remove(p.thingIDNumber);
+                displacedAt.Remove(p.thingIDNumber);
+                drawn.Add(p);
+            }
+            return drawn;
+        }
+
         /// <summary>How many of a faction are waiting. Used to size a draw.</summary>
         public int CountFor(Faction faction)
         {
