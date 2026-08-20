@@ -206,9 +206,42 @@ verify:   all six pawns are `MandrakeJawa`, carry the robe and hood, and match
 criteria: the save loads into a playable colony aboard the ship. This IS chain
           step 12 and it is the artifact v1 ships.
 state:    ready (partial) — 🔴 **UNBLOCKED IN HALF BY THE OWNER, 2026-08-19: "Do both B58
-          and B55."** Everything here that does not need the final world is owed NOW —
-          the six founders authored to spec, the gravship layout staged, the terrain
-          replay batch prepared. Only the placement steps (a)/(b) still wait on the world.
+          and B55."** Only the placement steps (a)/(b) wait on the final world.
+
+          ✅ **STEP (b)'s BATCH IS PREPARED, 2026-08-20** —
+          `src/RimMandrake/Utils/gravship_terrain_ops.py` turns any
+          `ShipLayoutDefV2` into ready-to-run `jawa/set_terrain_batch` ops.
+          On `Gravship_v1.xml` (88x135, **4,057 populated cells**):
+            foundation  4,057 cells -> **303** rect ops   `Substructure`
+            terrain     4,057 cells -> **355** rect ops   `MetalTile`, `WoodPlankFloor`,
+                                                          `SterileTile`, `CarpetMarine`
+          ⇒ **two bridge calls instead of 8,114.** Cost on that bridge tracks CALL COUNT,
+          not cell count. Verified by expanding the rectangles back out: they reconstruct
+          the source cell set **exactly**, 4,057 = 4,057, with no overlapping op.
+          ⛔ The ops FILES are not committed — they regenerate from the layout in one
+          command, and derived artifacts do not belong in the repo. Run the tool.
+
+          🔴 **AND IT IS TWO GRIDS, NOT ONE. The item says "the layout's `terrainDef`
+          cells"; every cell also carries a `foundationDef` of `Substructure`, and the
+          ORDER IS NOT OPTIONAL.** `SetFoundation` is refused — silently, at the write — on
+          any cell that already carries a floor. There is no retrofit, nothing can see
+          afterwards that it is missing, and buildings needing
+          `terrainAffordanceNeeded=Substructure` then simply cannot be placed. **Paint
+          `layer=foundation` FIRST, then `layer=top`.** The tool prints them in that order
+          and says why.
+          🔑 **The free orientation check:** the layout records `gravEngineX=45`,
+          `gravEngineZ=92`. After painting, the engine cell must sit at
+          `(offsetX + 45, offsetZ + 92)`. If it does not, the row order is flipped and so is
+          everything else. `--offset x,z` bakes the landing position into the ops.
+          ⚠️ `success: true` is not evidence here either — read `cellsFailedVerify`, which
+          the tool computes by reading every cell back off the grid.
+
+          ⏳ **STILL OWED and all of it needs the game:** (a) placing the layout, (c) the six
+          founders via Character Editor, (d) the starting stock, and the carried-in
+          "The Sundered" string in `ScenPart_GameStartDialog` — which lives in the SAVE's
+          embedded parts, so it cannot be authored offline at all.
+          ⏳ Half (c) of `the-eyeling-becomes-the-ikee-...` also rides here: one tamed ikee,
+          bonded to Yeku, trained to Obedience only.
 
 ## pyrelands-off-the-blacklist-and-ash-storms-5d2e71
 row:      10
