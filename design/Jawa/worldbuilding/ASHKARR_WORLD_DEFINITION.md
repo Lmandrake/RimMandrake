@@ -352,6 +352,11 @@ Before trusting any future rebuild, run it twice and `md5sum` the three CSVs.
    wrong test — what collides is the projected **text box**. `worldview.py` now tests
    pixel boxes and walks a ladder of vertical offsets, and the looser anchor rule
    surfaced names that had been silently dropped (The Scorch, The Anvil, The Pyrelands).
+   Settlement names and region names also share **one** box list now; they used to
+   declutter only against their own kind, which is why `The Ashfall Range` printed
+   through `The Claim Jump`. ⚠️ The tradeoff is real and deliberate: with one list, a
+   crowded region name can lose its slot entirely rather than overprint. `The Scald
+   Spine` is the current casualty.
 3. **`AB_GelatinousSuperorganism` smears across the top** of the rectangular map. It is
    honest — the poles genuinely sit on the terminator at arc 90 — but it reads as a
    band. Mollweide shows its true size (0.2%).
