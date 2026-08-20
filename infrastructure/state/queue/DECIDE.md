@@ -419,3 +419,38 @@ verify:   EMPTY - nothing to verify until DECIDE has cut the list.
 criteria: EMPTY - DECIDE sets the pass condition when it rules on scope. CHECK will not
           invent one, and will not start building until it does.
 state:    ready — for DECIDE
+
+━━━ 🔴 OWNER'S ANSWERS, 2026-08-19 Q/A. Captured verbatim before they are lost ━━━
+
+**1. SCOPE — *"v1 for the DESIGN, v2 for the code."*** ⇒ The templates, routes and casts are
+authored NOW as design, so **the hand-built world is built as though the people will
+arrive**; the code that animates them is v2. Nothing blocks worldgen and nothing has to be
+retrofitted. ⛔ Do not file BUILD items for the code.
+
+**2. THE WORLD REMEMBERS — world-level state.** The refinery crew flees and the tile is
+marked; the next visit finds the place empty, looted, or squatted. ⇒ This is the load-bearing
+choice and everything else bends around it. RimWorld discards a map when the player leaves,
+so the state cannot live on the map.
+
+**3. TRADE IS THREE LAYERS, and the owner expanded past what was offered.** Verbatim:
+*"they have a little 'oil shop' they officially offer for their faction, but you can also
+talk to individuals to buy/sell their personal inventory (very little silver of course),
+and I also love that some faction lords may sell their own people to you right there. Or
+buy yours, and then they stay!"*
+  a. **faction stock** — the official shop, a `TraderKindDef` on the place
+  b. **personal inventory** — any individual can be traded with, tiny silver
+  c. ⭐ **PEOPLE, both directions** — a lord may sell you their own, or BUY yours,
+     **and the bought pawn STAYS WITH THE CAST.** ⇒ cast membership is MUTABLE THROUGH
+     TRADE, which means the roster is persistent state, not a spawn list. This is the
+     single most demanding requirement in the whole concept.
+
+**4. CAST DEPTH — all four taken:** daily ROUTE · ROLES within a cast · RELATIONSHIPS and
+names · ANIMALS and property they defend.
+  ⭐ **Everyone gets a name.** Owner: *"I think everyone deserves a name and at least some
+  backstory, it can just be more generic for the 'lessers.'"* ⇒ named is the RULE, not the
+  exception — CHECK's "one named pawn per template, rest generated" is **overturned**.
+  Backstory DEPTH tiers; naming does not.
+  🔴 **And his question back, which is a design ruling in disguise:** *"But are there really
+  little people in the world? Remember we're playing Jawa..."* ⇒ see the ruling below.
+
+**5. MOD NAME** — the concept is to ship as an independent mod. Naming in progress.
