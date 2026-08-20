@@ -411,6 +411,63 @@ the toy line named the cantina extras — "Walrus Man", "Hammerhead" — *before
 did, and fans built mythologies on those names. ⇒ Design the silhouette and the job, then
 name. One physical or verbal tic per character, **unrepeated across the whole roster**.
 
+## 5.8 🔑 THE ATTACHMENT FORMAT — measured against players, not assumed
+
+_Evidence: ~70 first-person "favourite pawn" accounts from r/RimWorld recovered via
+PullPush, a Ludeon forum topic via Wayback, title-frequency over **15,115** archived
+r/RimWorld slugs, plus a disk measurement of vanilla backstory prose. 2026-08-19._
+
+### 🔴 The finding that sets our format
+
+**Authored text IS credited by players — in exactly one place: the unique/backer pawns.**
+Players hunt them by name across runs — *"Very memorable pawn, awesome backstory."* And the
+tell they use to spot one is explicit:
+
+> *"A dead giveaway that a backstory belongs to a unique pawn is that it has **2 paragraphs
+> instead of one**."*
+
+Confirmed on disk: **34% of vanilla descriptions carry a `\n\n` break**, and the
+backer-authored set averages **38.4 words against 31.9** for Ludeon's shuffled generic set.
+
+⇒ ⭐ **THE RULE SPLITS.**
+- **Generic filler** — ~50 words, 2–3 sentences, one paragraph.
+- **Every one of our authored characters — TWO PARAGRAPHS, and conspicuously specific.**
+  Two paragraphs is not padding; **it is the signal of authorship that players actively look
+  for and credit.** This is measured evidence for the owner's instinct that everyone should
+  be documented deeply.
+
+### The recipe, corrected against the evidence
+
+**One strong skill · one trait that visibly causes trouble · at least one RELATIONSHIP · a
+survivable injury · a name worth saying.**
+
+| element | verdict |
+|---|---|
+| ⭐ **relationship** | **the single most load-bearing element, above everything else.** Most long player stories are really about a pair or a family. Every character needs at least one tie |
+| **a trouble-trait** | one of the two strongest drivers, and usually *the stated reason*: *"a legendary plasteel sword, 20 melee. **But she is alcoholic.** A literal warmachine running on booze."* Also abrasive, volatile, nudist |
+| ⛔ **pyromaniac specifically** | **DO NOT USE as the trouble-trait.** It appears in disaster anecdotes and **never** in affection ones |
+| **a name worth saying** | stronger than expected. Players *rename*: *"I immediately named her Curly because of her hair. **I don't remember her original name.**"* · *"Tater the Raider"* · *"Thor 'The Swede' Gunderson… I've had a Thor in every run for years"* |
+| **injury** | ⚠️ **skews to UPGRADE, not scar.** Bionics and archotech parts are named far more than peg legs. The highest-scoring post found: *"Tiberius, and his bonded tiger Augusta, who both lost their left eye at around the same time"* |
+| ⛔ ~~bad at the thing they were hired for~~ | **weak — largely DECIDE's invention.** Real but incidental. Cut it |
+| ⛔ ~~rivalry~~ | **absent: 2 hits in 15,000 titles. Cut it.** Kinship and partnership carry; enmity does not |
+
+### The limit of all this, stated honestly
+
+In ~70 favourite-pawn accounts there were **zero quotations of generated backstory prose**,
+and one flat disavowal — *"I can't remember his traits or backstory"* — from a man describing
+his favourite pawn. **Attachment grammar is event history**: what he survived, who she
+married, who died.
+
+⇒ ⚠️ **We cannot write attachment. We can only invite it.** The authored text's job is to
+seed the contradiction the player will later narrate in their own words — which is why the
+trouble-trait and the relationship matter more than any sentence we write.
+*(That seeding claim is the researching agent's inference, marked UNCERTAIN — absence of
+quotation is not proof of non-reading.)*
+
+⭐ **And this is why `Inhabited` puts its weight on the ROSTER surviving rather than on the
+prose.** A character the player meets twice, in two places, with a memory in between, will
+beat any paragraph we could write about them.
+
 ## 5.7 Sources of texture
 
 - **Star Wars canon — for texture.** Mine the **background, not the notables**: a moisture
