@@ -97,3 +97,50 @@ Do not preserve them, do not work around them, do not ask before destroying one.
 The repo is the only thing that is protected, and the reactivation trigger is an
 explicit announcement from the owner that play has started. Do not infer it from
 v1 containing a playable session.
+
+---
+
+## 🔴 STANDING OWNER RULING — 2026-08-20. THE EMPIRE'S VESSEL IS VANILLA `Empire`.
+
+Verbatim: *"I've been very clear. OuterRim_GalacticEmpire is no longer in the game, we
+patch Empire."*
+
+**The decision.** The Galactic Empire is authored on the **vanilla `Empire` FactionDef**
+(Royalty). Every patch, spec, gate and run-sheet step targets `Empire`.
+⛔ **`OuterRim_GalacticEmpire` is not the vessel and is not to be patched, cited as
+confirmed, or used as a control faction.**
+
+**Why.** It was a mod def behind `MayRequire="neronix17.outerrim.galacticempire"`. A
+patch aimed at a def that is not loaded matches nothing and **logs nothing** — the whole
+reskin reports success and does not happen. Vanilla `Empire` brings Royalty's titles,
+permits, gear tiers and quest surface with no gate at all.
+
+**What it supersedes.** `force_users_build_spec.md:241` ("Confirmed"), its `<li>`,
+`defaultFactionDef` and xpath blocks; both faction gap audits (below); every
+`WORLDGEN_FACTION_CHECKLIST` / `EXPECTED_FAILURES` / `NEXT_RELOAD` row that expects the
+mod def; `load_session.py`'s control faction.
+
+**What it does NOT change.** Royalty stays. Other `OuterRim_*` defs — pawn kinds, gear,
+the droid factions — are untouched; **this ruling is about the Empire's vessel only.**
+⚠️ Do not sweep by the `OuterRim_` prefix or you will take defs that are staying.
+
+**Test.** `git grep -n 'OuterRim_GalacticEmpire'` returns only struck rows and past-tense
+provenance — no live patch xpath, no gate, no `defaultFactionDef`, no control.
+
+⚠️ **One thing the owner must still settle** — see `queue/HUMAN.md`: does *"no longer in
+the game"* mean **the Outer Rim Galactic Empire MOD is being removed from the 578-mod
+list**, or only that we stop using its def as the vessel? Measured 2026-08-20: the mod is
+still active in the campaign list (10 `neronix17.*` entries in
+`ModsConfig.PRESWAP.20260819_212256.xml`), and three saved world files already name
+`OuterRim_GalacticEmpire`. The answer decides whether the dead patches get deleted or
+merely retargeted.
+
+## ⛔ Both faction gap audits are RETIRED — 2026-08-20, same ruling
+
+*"I'm not sure we need either of those gap audits... we may instead need to perform a
+new one."*
+
+`faction_engine_gap_audit.md` and `faction_stage2_gap_audit.md` were two independent
+audits of the same Stage 2 question, reaching the same conclusion, neither citing the
+other — and both reasoned from the wrong vessel. **Quarantined, not deleted.** A fresh
+audit against vanilla `Empire` is queued to DECIDE.

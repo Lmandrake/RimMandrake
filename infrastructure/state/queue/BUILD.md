@@ -290,3 +290,24 @@ criteria: the clan starts with a bonded ikee; it reads as belonging to this camp
           than to Alpha Animals; and a player can find another one in the waste.
 state:    ready
 
+
+## B-EMP1 Dead patches aiming at `OuterRim_GalacticEmpire`
+row:      1
+spec:     🔴 **OWNER RULING 2026-08-20** (`OWNER_DECISIONS.md`, end of file): the
+          Galactic Empire's vessel is **vanilla `Empire`**; `OuterRim_GalacticEmpire`
+          is not patched.
+          `src/Jawa/JawaFactionSlate/Patches/OnlyOurFactions.xml` (~lines 770-793)
+          carries six xpaths on `OuterRim_GalacticEmpire`, and
+          `src/Jawa/Jawa_Patches/About/About.xml` declares
+          `Neronix17.OuterRim.GalacticEmpire` with two comment lines describing the
+          reskin. ⚠️ **A patch that matches nothing logs nothing** — these report
+          success and do nothing.
+          ⏸️ **HOLD until the owner answers the question in `queue/HUMAN.md`**: whether
+          the Outer Rim Galactic Empire MOD is leaving the 578-mod list, or only ceasing
+          to be the vessel. Delete-the-patches and retarget-the-patches are different
+          jobs and the answer picks one.
+          🔑 Blast radius: the vessel only. Other `OuterRim_*` defs stay.
+verify:   `git grep -n 'OuterRim_GalacticEmpire' -- src/` returns no live patch xpath
+          and no dependency declaration.
+criteria: no patch in the tree aims at a def we have ruled we do not patch.
+state:    blocked on HUMAN.md — raised by REP, 2026-08-20.

@@ -4,27 +4,27 @@
    "name": "0 Mod freeze",
    "cells": {
     "DECIDE": {
-     "done": 3,
+     "done": 5,
      "total": 5,
      "state": "idle",
      "mix": {
-      "closed": 3,
+      "closed": 5,
       "done": 0,
       "doing": 0,
       "blocked": 0,
-      "ready": 2
+      "ready": 0
      }
     },
     "BUILD": {
      "done": 0,
-     "total": 2,
-     "state": "idle",
+     "total": 0,
+     "state": "offline",
      "mix": {
       "closed": 0,
       "done": 0,
       "doing": 0,
       "blocked": 0,
-      "ready": 2
+      "ready": 0
      }
     },
     "CHECK": {
@@ -45,27 +45,27 @@
    "name": "1 Item cherrypick",
    "cells": {
     "DECIDE": {
-     "done": 0,
-     "total": 2,
+     "done": 2,
+     "total": 3,
      "state": "idle",
      "mix": {
-      "closed": 0,
+      "closed": 2,
       "done": 0,
       "doing": 0,
       "blocked": 0,
-      "ready": 2
+      "ready": 1
      }
     },
     "BUILD": {
-     "done": 0,
+     "done": 1,
      "total": 2,
      "state": "idle",
      "mix": {
-      "closed": 0,
+      "closed": 1,
       "done": 0,
       "doing": 0,
       "blocked": 0,
-      "ready": 2
+      "ready": 1
      }
     },
     "CHECK": {
@@ -99,26 +99,26 @@
     },
     "BUILD": {
      "done": 1,
-     "total": 3,
+     "total": 1,
      "state": "idle",
      "mix": {
       "closed": 1,
       "done": 0,
       "doing": 0,
       "blocked": 0,
-      "ready": 2
+      "ready": 0
      }
     },
     "CHECK": {
      "done": 0,
-     "total": 2,
+     "total": 1,
      "state": "idle",
      "mix": {
       "closed": 0,
       "done": 0,
       "doing": 0,
       "blocked": 0,
-      "ready": 2
+      "ready": 1
      }
     }
    }
@@ -152,14 +152,14 @@
     },
     "CHECK": {
      "done": 0,
-     "total": 1,
-     "state": "idle",
+     "total": 0,
+     "state": "offline",
      "mix": {
       "closed": 0,
       "done": 0,
       "doing": 0,
       "blocked": 0,
-      "ready": 1
+      "ready": 0
      }
     }
    }
@@ -180,15 +180,15 @@
      }
     },
     "BUILD": {
-     "done": 0,
-     "total": 3,
+     "done": 1,
+     "total": 1,
      "state": "idle",
      "mix": {
-      "closed": 0,
+      "closed": 1,
       "done": 0,
       "doing": 0,
       "blocked": 0,
-      "ready": 3
+      "ready": 0
      }
     },
     "CHECK": {
@@ -222,14 +222,14 @@
     },
     "BUILD": {
      "done": 0,
-     "total": 1,
-     "state": "idle",
+     "total": 0,
+     "state": "offline",
      "mix": {
       "closed": 0,
       "done": 0,
       "doing": 0,
       "blocked": 0,
-      "ready": 1
+      "ready": 0
      }
     },
     "CHECK": {
@@ -250,11 +250,11 @@
    "name": "6 Religions",
    "cells": {
     "DECIDE": {
-     "done": 1,
-     "total": 1,
+     "done": 2,
+     "total": 2,
      "state": "idle",
      "mix": {
-      "closed": 1,
+      "closed": 2,
       "done": 0,
       "doing": 0,
       "blocked": 0,
@@ -291,11 +291,11 @@
    "name": "7 Pawntypes",
    "cells": {
     "DECIDE": {
-     "done": 0,
-     "total": 1,
+     "done": 1,
+     "total": 2,
      "state": "idle",
      "mix": {
-      "closed": 0,
+      "closed": 1,
       "done": 0,
       "doing": 0,
       "blocked": 0,
@@ -303,27 +303,27 @@
      }
     },
     "BUILD": {
-     "done": 0,
+     "done": 2,
      "total": 2,
      "state": "idle",
      "mix": {
-      "closed": 0,
+      "closed": 2,
       "done": 0,
       "doing": 0,
       "blocked": 0,
-      "ready": 2
+      "ready": 0
      }
     },
     "CHECK": {
      "done": 0,
-     "total": 2,
-     "state": "idle",
+     "total": 0,
+     "state": "offline",
      "mix": {
       "closed": 0,
       "done": 0,
       "doing": 0,
       "blocked": 0,
-      "ready": 2
+      "ready": 0
      }
     }
    }
@@ -345,14 +345,14 @@
     },
     "BUILD": {
      "done": 0,
-     "total": 1,
-     "state": "idle",
+     "total": 0,
+     "state": "offline",
      "mix": {
       "closed": 0,
       "done": 0,
       "doing": 0,
       "blocked": 0,
-      "ready": 1
+      "ready": 0
      }
     },
     "CHECK": {
@@ -373,39 +373,39 @@
    "name": "9 Factions",
    "cells": {
     "DECIDE": {
-     "done": 0,
-     "total": 2,
+     "done": 3,
+     "total": 4,
      "state": "idle",
      "mix": {
-      "closed": 0,
+      "closed": 3,
       "done": 0,
       "doing": 0,
       "blocked": 0,
-      "ready": 2
+      "ready": 1
      }
     },
     "BUILD": {
-     "done": 9,
-     "total": 15,
+     "done": 16,
+     "total": 16,
      "state": "idle",
      "mix": {
-      "closed": 9,
+      "closed": 16,
       "done": 0,
       "doing": 0,
       "blocked": 0,
-      "ready": 6
+      "ready": 0
      }
     },
     "CHECK": {
      "done": 1,
-     "total": 6,
+     "total": 3,
      "state": "idle",
      "mix": {
       "closed": 1,
       "done": 0,
       "doing": 0,
       "blocked": 0,
-      "ready": 5
+      "ready": 2
      }
     }
    }
@@ -414,27 +414,27 @@
    "name": "10 Worldmap",
    "cells": {
     "DECIDE": {
-     "done": 0,
+     "done": 8,
      "total": 10,
      "state": "idle",
      "mix": {
-      "closed": 0,
+      "closed": 8,
       "done": 0,
       "doing": 0,
       "blocked": 0,
-      "ready": 10
+      "ready": 2
      }
     },
     "BUILD": {
-     "done": 2,
-     "total": 8,
+     "done": 5,
+     "total": 6,
      "state": "idle",
      "mix": {
-      "closed": 2,
+      "closed": 5,
       "done": 0,
       "doing": 0,
       "blocked": 0,
-      "ready": 6
+      "ready": 1
      }
     },
     "CHECK": {
@@ -496,11 +496,11 @@
    "name": "12 Scenario",
    "cells": {
     "DECIDE": {
-     "done": 1,
-     "total": 2,
+     "done": 2,
+     "total": 3,
      "state": "idle",
      "mix": {
-      "closed": 1,
+      "closed": 2,
       "done": 0,
       "doing": 0,
       "blocked": 0,
@@ -508,15 +508,56 @@
      }
     },
     "BUILD": {
+     "done": 1,
+     "total": 3,
+     "state": "idle",
+     "mix": {
+      "closed": 1,
+      "done": 0,
+      "doing": 0,
+      "blocked": 0,
+      "ready": 2
+     }
+    },
+    "CHECK": {
      "done": 0,
-     "total": 2,
-     "state": "blocked",
+     "total": 1,
+     "state": "idle",
      "mix": {
       "closed": 0,
       "done": 0,
       "doing": 0,
-      "blocked": 1,
+      "blocked": 0,
       "ready": 1
+     }
+    }
+   }
+  },
+  {
+   "name": "13 Quests",
+   "cells": {
+    "DECIDE": {
+     "done": 0,
+     "total": 0,
+     "state": "offline",
+     "mix": {
+      "closed": 0,
+      "done": 0,
+      "doing": 0,
+      "blocked": 0,
+      "ready": 0
+     }
+    },
+    "BUILD": {
+     "done": 0,
+     "total": 0,
+     "state": "offline",
+     "mix": {
+      "closed": 0,
+      "done": 0,
+      "doing": 0,
+      "blocked": 0,
+      "ready": 0
      }
     },
     "CHECK": {
@@ -534,7 +575,786 @@
    }
   },
   {
-   "name": "13 Quests",
+   "name": "bridge-1",
+   "cells": {
+    "DECIDE": {
+     "done": 0,
+     "total": 0,
+     "state": "offline",
+     "mix": {
+      "closed": 0,
+      "done": 0,
+      "doing": 0,
+      "blocked": 0,
+      "ready": 0
+     }
+    },
+    "BUILD": {
+     "done": 0,
+     "total": 0,
+     "state": "offline",
+     "mix": {
+      "closed": 0,
+      "done": 0,
+      "doing": 0,
+      "blocked": 0,
+      "ready": 0
+     }
+    },
+    "CHECK": {
+     "done": 0,
+     "total": 1,
+     "state": "idle",
+     "mix": {
+      "closed": 0,
+      "done": 0,
+      "doing": 0,
+      "blocked": 0,
+      "ready": 1
+     }
+    }
+   }
+  },
+  {
+   "name": "bridge-10",
+   "cells": {
+    "DECIDE": {
+     "done": 0,
+     "total": 0,
+     "state": "offline",
+     "mix": {
+      "closed": 0,
+      "done": 0,
+      "doing": 0,
+      "blocked": 0,
+      "ready": 0
+     }
+    },
+    "BUILD": {
+     "done": 0,
+     "total": 0,
+     "state": "offline",
+     "mix": {
+      "closed": 0,
+      "done": 0,
+      "doing": 0,
+      "blocked": 0,
+      "ready": 0
+     }
+    },
+    "CHECK": {
+     "done": 0,
+     "total": 1,
+     "state": "idle",
+     "mix": {
+      "closed": 0,
+      "done": 0,
+      "doing": 0,
+      "blocked": 0,
+      "ready": 1
+     }
+    }
+   }
+  },
+  {
+   "name": "bridge-11",
+   "cells": {
+    "DECIDE": {
+     "done": 0,
+     "total": 0,
+     "state": "offline",
+     "mix": {
+      "closed": 0,
+      "done": 0,
+      "doing": 0,
+      "blocked": 0,
+      "ready": 0
+     }
+    },
+    "BUILD": {
+     "done": 0,
+     "total": 0,
+     "state": "offline",
+     "mix": {
+      "closed": 0,
+      "done": 0,
+      "doing": 0,
+      "blocked": 0,
+      "ready": 0
+     }
+    },
+    "CHECK": {
+     "done": 0,
+     "total": 1,
+     "state": "idle",
+     "mix": {
+      "closed": 0,
+      "done": 0,
+      "doing": 0,
+      "blocked": 0,
+      "ready": 1
+     }
+    }
+   }
+  },
+  {
+   "name": "bridge-12",
+   "cells": {
+    "DECIDE": {
+     "done": 0,
+     "total": 0,
+     "state": "offline",
+     "mix": {
+      "closed": 0,
+      "done": 0,
+      "doing": 0,
+      "blocked": 0,
+      "ready": 0
+     }
+    },
+    "BUILD": {
+     "done": 0,
+     "total": 0,
+     "state": "offline",
+     "mix": {
+      "closed": 0,
+      "done": 0,
+      "doing": 0,
+      "blocked": 0,
+      "ready": 0
+     }
+    },
+    "CHECK": {
+     "done": 0,
+     "total": 1,
+     "state": "idle",
+     "mix": {
+      "closed": 0,
+      "done": 0,
+      "doing": 0,
+      "blocked": 0,
+      "ready": 1
+     }
+    }
+   }
+  },
+  {
+   "name": "bridge-13",
+   "cells": {
+    "DECIDE": {
+     "done": 0,
+     "total": 0,
+     "state": "offline",
+     "mix": {
+      "closed": 0,
+      "done": 0,
+      "doing": 0,
+      "blocked": 0,
+      "ready": 0
+     }
+    },
+    "BUILD": {
+     "done": 0,
+     "total": 0,
+     "state": "offline",
+     "mix": {
+      "closed": 0,
+      "done": 0,
+      "doing": 0,
+      "blocked": 0,
+      "ready": 0
+     }
+    },
+    "CHECK": {
+     "done": 0,
+     "total": 1,
+     "state": "idle",
+     "mix": {
+      "closed": 0,
+      "done": 0,
+      "doing": 0,
+      "blocked": 0,
+      "ready": 1
+     }
+    }
+   }
+  },
+  {
+   "name": "bridge-14",
+   "cells": {
+    "DECIDE": {
+     "done": 0,
+     "total": 0,
+     "state": "offline",
+     "mix": {
+      "closed": 0,
+      "done": 0,
+      "doing": 0,
+      "blocked": 0,
+      "ready": 0
+     }
+    },
+    "BUILD": {
+     "done": 0,
+     "total": 0,
+     "state": "offline",
+     "mix": {
+      "closed": 0,
+      "done": 0,
+      "doing": 0,
+      "blocked": 0,
+      "ready": 0
+     }
+    },
+    "CHECK": {
+     "done": 0,
+     "total": 1,
+     "state": "idle",
+     "mix": {
+      "closed": 0,
+      "done": 0,
+      "doing": 0,
+      "blocked": 0,
+      "ready": 1
+     }
+    }
+   }
+  },
+  {
+   "name": "bridge-15",
+   "cells": {
+    "DECIDE": {
+     "done": 0,
+     "total": 0,
+     "state": "offline",
+     "mix": {
+      "closed": 0,
+      "done": 0,
+      "doing": 0,
+      "blocked": 0,
+      "ready": 0
+     }
+    },
+    "BUILD": {
+     "done": 0,
+     "total": 0,
+     "state": "offline",
+     "mix": {
+      "closed": 0,
+      "done": 0,
+      "doing": 0,
+      "blocked": 0,
+      "ready": 0
+     }
+    },
+    "CHECK": {
+     "done": 0,
+     "total": 1,
+     "state": "idle",
+     "mix": {
+      "closed": 0,
+      "done": 0,
+      "doing": 0,
+      "blocked": 0,
+      "ready": 1
+     }
+    }
+   }
+  },
+  {
+   "name": "bridge-16",
+   "cells": {
+    "DECIDE": {
+     "done": 0,
+     "total": 0,
+     "state": "offline",
+     "mix": {
+      "closed": 0,
+      "done": 0,
+      "doing": 0,
+      "blocked": 0,
+      "ready": 0
+     }
+    },
+    "BUILD": {
+     "done": 0,
+     "total": 0,
+     "state": "offline",
+     "mix": {
+      "closed": 0,
+      "done": 0,
+      "doing": 0,
+      "blocked": 0,
+      "ready": 0
+     }
+    },
+    "CHECK": {
+     "done": 0,
+     "total": 1,
+     "state": "idle",
+     "mix": {
+      "closed": 0,
+      "done": 0,
+      "doing": 0,
+      "blocked": 0,
+      "ready": 1
+     }
+    }
+   }
+  },
+  {
+   "name": "bridge-17",
+   "cells": {
+    "DECIDE": {
+     "done": 0,
+     "total": 0,
+     "state": "offline",
+     "mix": {
+      "closed": 0,
+      "done": 0,
+      "doing": 0,
+      "blocked": 0,
+      "ready": 0
+     }
+    },
+    "BUILD": {
+     "done": 0,
+     "total": 0,
+     "state": "offline",
+     "mix": {
+      "closed": 0,
+      "done": 0,
+      "doing": 0,
+      "blocked": 0,
+      "ready": 0
+     }
+    },
+    "CHECK": {
+     "done": 0,
+     "total": 1,
+     "state": "idle",
+     "mix": {
+      "closed": 0,
+      "done": 0,
+      "doing": 0,
+      "blocked": 0,
+      "ready": 1
+     }
+    }
+   }
+  },
+  {
+   "name": "bridge-18",
+   "cells": {
+    "DECIDE": {
+     "done": 0,
+     "total": 0,
+     "state": "offline",
+     "mix": {
+      "closed": 0,
+      "done": 0,
+      "doing": 0,
+      "blocked": 0,
+      "ready": 0
+     }
+    },
+    "BUILD": {
+     "done": 0,
+     "total": 0,
+     "state": "offline",
+     "mix": {
+      "closed": 0,
+      "done": 0,
+      "doing": 0,
+      "blocked": 0,
+      "ready": 0
+     }
+    },
+    "CHECK": {
+     "done": 0,
+     "total": 1,
+     "state": "idle",
+     "mix": {
+      "closed": 0,
+      "done": 0,
+      "doing": 0,
+      "blocked": 0,
+      "ready": 1
+     }
+    }
+   }
+  },
+  {
+   "name": "bridge-19",
+   "cells": {
+    "DECIDE": {
+     "done": 0,
+     "total": 0,
+     "state": "offline",
+     "mix": {
+      "closed": 0,
+      "done": 0,
+      "doing": 0,
+      "blocked": 0,
+      "ready": 0
+     }
+    },
+    "BUILD": {
+     "done": 0,
+     "total": 0,
+     "state": "offline",
+     "mix": {
+      "closed": 0,
+      "done": 0,
+      "doing": 0,
+      "blocked": 0,
+      "ready": 0
+     }
+    },
+    "CHECK": {
+     "done": 0,
+     "total": 1,
+     "state": "idle",
+     "mix": {
+      "closed": 0,
+      "done": 0,
+      "doing": 0,
+      "blocked": 0,
+      "ready": 1
+     }
+    }
+   }
+  },
+  {
+   "name": "bridge-2",
+   "cells": {
+    "DECIDE": {
+     "done": 0,
+     "total": 0,
+     "state": "offline",
+     "mix": {
+      "closed": 0,
+      "done": 0,
+      "doing": 0,
+      "blocked": 0,
+      "ready": 0
+     }
+    },
+    "BUILD": {
+     "done": 0,
+     "total": 0,
+     "state": "offline",
+     "mix": {
+      "closed": 0,
+      "done": 0,
+      "doing": 0,
+      "blocked": 0,
+      "ready": 0
+     }
+    },
+    "CHECK": {
+     "done": 0,
+     "total": 1,
+     "state": "idle",
+     "mix": {
+      "closed": 0,
+      "done": 0,
+      "doing": 0,
+      "blocked": 0,
+      "ready": 1
+     }
+    }
+   }
+  },
+  {
+   "name": "bridge-20",
+   "cells": {
+    "DECIDE": {
+     "done": 0,
+     "total": 0,
+     "state": "offline",
+     "mix": {
+      "closed": 0,
+      "done": 0,
+      "doing": 0,
+      "blocked": 0,
+      "ready": 0
+     }
+    },
+    "BUILD": {
+     "done": 0,
+     "total": 0,
+     "state": "offline",
+     "mix": {
+      "closed": 0,
+      "done": 0,
+      "doing": 0,
+      "blocked": 0,
+      "ready": 0
+     }
+    },
+    "CHECK": {
+     "done": 0,
+     "total": 1,
+     "state": "idle",
+     "mix": {
+      "closed": 0,
+      "done": 0,
+      "doing": 0,
+      "blocked": 0,
+      "ready": 1
+     }
+    }
+   }
+  },
+  {
+   "name": "bridge-3",
+   "cells": {
+    "DECIDE": {
+     "done": 0,
+     "total": 0,
+     "state": "offline",
+     "mix": {
+      "closed": 0,
+      "done": 0,
+      "doing": 0,
+      "blocked": 0,
+      "ready": 0
+     }
+    },
+    "BUILD": {
+     "done": 0,
+     "total": 0,
+     "state": "offline",
+     "mix": {
+      "closed": 0,
+      "done": 0,
+      "doing": 0,
+      "blocked": 0,
+      "ready": 0
+     }
+    },
+    "CHECK": {
+     "done": 0,
+     "total": 1,
+     "state": "idle",
+     "mix": {
+      "closed": 0,
+      "done": 0,
+      "doing": 0,
+      "blocked": 0,
+      "ready": 1
+     }
+    }
+   }
+  },
+  {
+   "name": "bridge-4",
+   "cells": {
+    "DECIDE": {
+     "done": 0,
+     "total": 0,
+     "state": "offline",
+     "mix": {
+      "closed": 0,
+      "done": 0,
+      "doing": 0,
+      "blocked": 0,
+      "ready": 0
+     }
+    },
+    "BUILD": {
+     "done": 0,
+     "total": 0,
+     "state": "offline",
+     "mix": {
+      "closed": 0,
+      "done": 0,
+      "doing": 0,
+      "blocked": 0,
+      "ready": 0
+     }
+    },
+    "CHECK": {
+     "done": 0,
+     "total": 1,
+     "state": "idle",
+     "mix": {
+      "closed": 0,
+      "done": 0,
+      "doing": 0,
+      "blocked": 0,
+      "ready": 1
+     }
+    }
+   }
+  },
+  {
+   "name": "bridge-5",
+   "cells": {
+    "DECIDE": {
+     "done": 0,
+     "total": 0,
+     "state": "offline",
+     "mix": {
+      "closed": 0,
+      "done": 0,
+      "doing": 0,
+      "blocked": 0,
+      "ready": 0
+     }
+    },
+    "BUILD": {
+     "done": 0,
+     "total": 0,
+     "state": "offline",
+     "mix": {
+      "closed": 0,
+      "done": 0,
+      "doing": 0,
+      "blocked": 0,
+      "ready": 0
+     }
+    },
+    "CHECK": {
+     "done": 0,
+     "total": 1,
+     "state": "idle",
+     "mix": {
+      "closed": 0,
+      "done": 0,
+      "doing": 0,
+      "blocked": 0,
+      "ready": 1
+     }
+    }
+   }
+  },
+  {
+   "name": "bridge-6",
+   "cells": {
+    "DECIDE": {
+     "done": 0,
+     "total": 0,
+     "state": "offline",
+     "mix": {
+      "closed": 0,
+      "done": 0,
+      "doing": 0,
+      "blocked": 0,
+      "ready": 0
+     }
+    },
+    "BUILD": {
+     "done": 0,
+     "total": 0,
+     "state": "offline",
+     "mix": {
+      "closed": 0,
+      "done": 0,
+      "doing": 0,
+      "blocked": 0,
+      "ready": 0
+     }
+    },
+    "CHECK": {
+     "done": 0,
+     "total": 1,
+     "state": "idle",
+     "mix": {
+      "closed": 0,
+      "done": 0,
+      "doing": 0,
+      "blocked": 0,
+      "ready": 1
+     }
+    }
+   }
+  },
+  {
+   "name": "bridge-7",
+   "cells": {
+    "DECIDE": {
+     "done": 0,
+     "total": 0,
+     "state": "offline",
+     "mix": {
+      "closed": 0,
+      "done": 0,
+      "doing": 0,
+      "blocked": 0,
+      "ready": 0
+     }
+    },
+    "BUILD": {
+     "done": 0,
+     "total": 0,
+     "state": "offline",
+     "mix": {
+      "closed": 0,
+      "done": 0,
+      "doing": 0,
+      "blocked": 0,
+      "ready": 0
+     }
+    },
+    "CHECK": {
+     "done": 0,
+     "total": 1,
+     "state": "idle",
+     "mix": {
+      "closed": 0,
+      "done": 0,
+      "doing": 0,
+      "blocked": 0,
+      "ready": 1
+     }
+    }
+   }
+  },
+  {
+   "name": "bridge-8",
+   "cells": {
+    "DECIDE": {
+     "done": 0,
+     "total": 0,
+     "state": "offline",
+     "mix": {
+      "closed": 0,
+      "done": 0,
+      "doing": 0,
+      "blocked": 0,
+      "ready": 0
+     }
+    },
+    "BUILD": {
+     "done": 0,
+     "total": 0,
+     "state": "offline",
+     "mix": {
+      "closed": 0,
+      "done": 0,
+      "doing": 0,
+      "blocked": 0,
+      "ready": 0
+     }
+    },
+    "CHECK": {
+     "done": 0,
+     "total": 1,
+     "state": "idle",
+     "mix": {
+      "closed": 0,
+      "done": 0,
+      "doing": 0,
+      "blocked": 0,
+      "ready": 1
+     }
+    }
+   }
+  },
+  {
+   "name": "bridge-9",
    "cells": {
     "DECIDE": {
      "done": 0,
@@ -578,11 +1398,93 @@
    "name": "doctrine",
    "cells": {
     "DECIDE": {
-     "done": 0,
+     "done": 4,
      "total": 4,
      "state": "idle",
      "mix": {
+      "closed": 4,
+      "done": 0,
+      "doing": 0,
+      "blocked": 0,
+      "ready": 0
+     }
+    },
+    "BUILD": {
+     "done": 0,
+     "total": 1,
+     "state": "idle",
+     "mix": {
       "closed": 0,
+      "done": 0,
+      "doing": 0,
+      "blocked": 0,
+      "ready": 1
+     }
+    },
+    "CHECK": {
+     "done": 0,
+     "total": 2,
+     "state": "idle",
+     "mix": {
+      "closed": 0,
+      "done": 0,
+      "doing": 0,
+      "blocked": 0,
+      "ready": 2
+     }
+    }
+   }
+  },
+  {
+   "name": "tooling",
+   "cells": {
+    "DECIDE": {
+     "done": 2,
+     "total": 2,
+     "state": "idle",
+     "mix": {
+      "closed": 2,
+      "done": 0,
+      "doing": 0,
+      "blocked": 0,
+      "ready": 0
+     }
+    },
+    "BUILD": {
+     "done": 0,
+     "total": 1,
+     "state": "idle",
+     "mix": {
+      "closed": 0,
+      "done": 0,
+      "doing": 0,
+      "blocked": 0,
+      "ready": 1
+     }
+    },
+    "CHECK": {
+     "done": 0,
+     "total": 1,
+     "state": "idle",
+     "mix": {
+      "closed": 0,
+      "done": 0,
+      "doing": 0,
+      "blocked": 0,
+      "ready": 1
+     }
+    }
+   }
+  },
+  {
+   "name": "unassigned",
+   "cells": {
+    "DECIDE": {
+     "done": 6,
+     "total": 10,
+     "state": "idle",
+     "mix": {
+      "closed": 6,
       "done": 0,
       "doing": 0,
       "blocked": 0,
@@ -604,13 +1506,136 @@
     "CHECK": {
      "done": 0,
      "total": 2,
-     "state": "working",
+     "state": "idle",
      "mix": {
       "closed": 0,
       "done": 0,
-      "doing": 1,
+      "doing": 0,
+      "blocked": 0,
+      "ready": 2
+     }
+    }
+   }
+  },
+  {
+   "name": "\u2014",
+   "cells": {
+    "DECIDE": {
+     "done": 1,
+     "total": 1,
+     "state": "idle",
+     "mix": {
+      "closed": 1,
+      "done": 0,
+      "doing": 0,
+      "blocked": 0,
+      "ready": 0
+     }
+    },
+    "BUILD": {
+     "done": 0,
+     "total": 0,
+     "state": "offline",
+     "mix": {
+      "closed": 0,
+      "done": 0,
+      "doing": 0,
+      "blocked": 0,
+      "ready": 0
+     }
+    },
+    "CHECK": {
+     "done": 0,
+     "total": 1,
+     "state": "idle",
+     "mix": {
+      "closed": 0,
+      "done": 0,
+      "doing": 0,
       "blocked": 0,
       "ready": 1
+     }
+    }
+   }
+  },
+  {
+   "name": "\u2014  (v2 concept; nothing in v1 waits on it)",
+   "cells": {
+    "DECIDE": {
+     "done": 0,
+     "total": 1,
+     "state": "idle",
+     "mix": {
+      "closed": 0,
+      "done": 0,
+      "doing": 0,
+      "blocked": 0,
+      "ready": 1
+     }
+    },
+    "BUILD": {
+     "done": 0,
+     "total": 0,
+     "state": "offline",
+     "mix": {
+      "closed": 0,
+      "done": 0,
+      "doing": 0,
+      "blocked": 0,
+      "ready": 0
+     }
+    },
+    "CHECK": {
+     "done": 0,
+     "total": 0,
+     "state": "offline",
+     "mix": {
+      "closed": 0,
+      "done": 0,
+      "doing": 0,
+      "blocked": 0,
+      "ready": 0
+     }
+    }
+   }
+  },
+  {
+   "name": "dead",
+   "cells": {
+    "DECIDE": {
+     "done": 1,
+     "total": 1,
+     "state": "idle",
+     "mix": {
+      "closed": 1,
+      "done": 0,
+      "doing": 0,
+      "blocked": 0,
+      "ready": 0
+     }
+    },
+    "BUILD": {
+     "done": 0,
+     "total": 0,
+     "state": "offline",
+     "mix": {
+      "closed": 0,
+      "done": 0,
+      "doing": 0,
+      "blocked": 0,
+      "ready": 0
+     }
+    },
+    "CHECK": {
+     "done": 0,
+     "total": 0,
+     "state": "offline",
+     "mix": {
+      "closed": 0,
+      "done": 0,
+      "doing": 0,
+      "blocked": 0,
+      "ready": 0
      }
     }
    }
@@ -632,14 +1657,14 @@
     },
     "BUILD": {
      "done": 7,
-     "total": 8,
+     "total": 7,
      "state": "idle",
      "mix": {
       "closed": 7,
       "done": 0,
       "doing": 0,
       "blocked": 0,
-      "ready": 1
+      "ready": 0
      }
     },
     "CHECK": {
@@ -660,30 +1685,18 @@
    "name": "repo",
    "cells": {
     "DECIDE": {
-     "done": 0,
+     "done": 1,
      "total": 1,
      "state": "idle",
      "mix": {
-      "closed": 0,
+      "closed": 1,
       "done": 0,
       "doing": 0,
       "blocked": 0,
-      "ready": 1
+      "ready": 0
      }
     },
     "BUILD": {
-     "done": 0,
-     "total": 3,
-     "state": "idle",
-     "mix": {
-      "closed": 0,
-      "done": 0,
-      "doing": 0,
-      "blocked": 0,
-      "ready": 3
-     }
-    },
-    "CHECK": {
      "done": 0,
      "total": 0,
      "state": "offline",
@@ -693,76 +1706,6 @@
       "doing": 0,
       "blocked": 0,
       "ready": 0
-     }
-    }
-   }
-  },
-  {
-   "name": "tooling",
-   "cells": {
-    "DECIDE": {
-     "done": 0,
-     "total": 1,
-     "state": "idle",
-     "mix": {
-      "closed": 0,
-      "done": 0,
-      "doing": 0,
-      "blocked": 0,
-      "ready": 1
-     }
-    },
-    "BUILD": {
-     "done": 0,
-     "total": 1,
-     "state": "idle",
-     "mix": {
-      "closed": 0,
-      "done": 0,
-      "doing": 0,
-      "blocked": 0,
-      "ready": 1
-     }
-    },
-    "CHECK": {
-     "done": 1,
-     "total": 1,
-     "state": "idle",
-     "mix": {
-      "closed": 0,
-      "done": 1,
-      "doing": 0,
-      "blocked": 0,
-      "ready": 0
-     }
-    }
-   }
-  },
-  {
-   "name": "unassigned",
-   "cells": {
-    "DECIDE": {
-     "done": 0,
-     "total": 4,
-     "state": "idle",
-     "mix": {
-      "closed": 0,
-      "done": 0,
-      "doing": 0,
-      "blocked": 0,
-      "ready": 4
-     }
-    },
-    "BUILD": {
-     "done": 0,
-     "total": 2,
-     "state": "idle",
-     "mix": {
-      "closed": 0,
-      "done": 0,
-      "doing": 0,
-      "blocked": 0,
-      "ready": 2
      }
     },
     "CHECK": {
@@ -783,11 +1726,11 @@
    "name": "v2",
    "cells": {
     "DECIDE": {
-     "done": 0,
-     "total": 0,
-     "state": "offline",
+     "done": 1,
+     "total": 1,
+     "state": "idle",
      "mix": {
-      "closed": 0,
+      "closed": 1,
       "done": 0,
       "doing": 0,
       "blocked": 0,
@@ -816,47 +1759,6 @@
       "doing": 0,
       "blocked": 0,
       "ready": 0
-     }
-    }
-   }
-  },
-  {
-   "name": "\u2014",
-   "cells": {
-    "DECIDE": {
-     "done": 0,
-     "total": 1,
-     "state": "idle",
-     "mix": {
-      "closed": 0,
-      "done": 0,
-      "doing": 0,
-      "blocked": 0,
-      "ready": 1
-     }
-    },
-    "BUILD": {
-     "done": 0,
-     "total": 0,
-     "state": "offline",
-     "mix": {
-      "closed": 0,
-      "done": 0,
-      "doing": 0,
-      "blocked": 0,
-      "ready": 0
-     }
-    },
-    "CHECK": {
-     "done": 0,
-     "total": 1,
-     "state": "idle",
-     "mix": {
-      "closed": 0,
-      "done": 0,
-      "doing": 0,
-      "blocked": 0,
-      "ready": 1
      }
     }
    }
@@ -866,7 +1768,11 @@
   "on_human": 0,
   "classes": [
    {
-    "label": "unexplained",
+    "label": "needs a live game. **Fix deployed to the game copy 2026-08-15, never",
+    "count": 1
+   },
+   {
+    "label": "raised by REP, 2026-08-20.",
     "count": 1
    }
   ]
@@ -880,11 +1786,19 @@
    {
     "d": "2026-08-15",
     "n": 11
+   },
+   {
+    "d": "2026-08-19",
+    "n": 48
+   },
+   {
+    "d": "2026-08-20",
+    "n": 1
    }
   ],
-  "per_day": 14.5,
-  "closed": 29,
-  "remaining": 80,
-  "eta_days": 6
+  "per_day": 11.14,
+  "closed": 78,
+  "remaining": 50,
+  "eta_days": 4
  }
 }

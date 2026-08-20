@@ -434,3 +434,26 @@ un-prefixed. Only donor-owned paths get rewritten.
 
 Say the word and it is an afternoon in `gen_races_mod.py` plus a re-run. Left alone
 otherwise.
+
+## 🔴 Q (REP, 2026-08-20): "no longer in the game" — is the MOD leaving, or just the vessel?
+
+Your ruling is recorded and propagating: the Galactic Empire is authored on vanilla
+`Empire`, and `OuterRim_GalacticEmpire` is not patched. That part needs nothing from you.
+
+**But one word decides a different job.** Measured today: the Outer Rim Galactic Empire
+mod is **still active in the campaign list** — 10 `neronix17.*` entries in
+`infrastructure/state/modlists/ModsConfig.PRESWAP.20260819_212256.xml`, the 578-mod
+snapshot. (The live `ModsConfig.xml` currently holds the 13-mod minimal list, so it is
+not evidence either way.)
+
+| if you meant | then |
+|---|---|
+| **A. The mod is being REMOVED from the list** | The six xpaths in `OnlyOurFactions.xml` and the `About.xml` dependency get **deleted**, not retargeted. ⚠️ And three saved world files — `world\WORLDMAP_gen.rws`, `WORLDMAP_source.rws`, `WORLDMAP_sub7b_source.rws` — already name `OuterRim_GalacticEmpire` in their faction lists. Removing the mod makes those **dead references in the save**, which no mod change fixes. |
+| **B. The mod stays; it is simply not our vessel** | The patches get **retargeted or dropped**, the mod keeps shipping its own pawn kinds and gear, and the saved worlds are fine. Nothing else moves. |
+
+**Recommendation: B**, unless you specifically want the mod gone. The vessel ruling gets
+you everything you asked for, and A additionally costs a mod-list change plus a save
+repair pass on the frozen world.
+
+`queue/BUILD.md` B-EMP1 is **held** on this answer. `queue/DECIDE.md` D-EMP1 (the fresh
+gap audit) is **not** blocked and can start now.
