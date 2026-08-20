@@ -1153,7 +1153,7 @@ namespace JawaBench.BridgeTools
                 if (expectTiles > 0 && grid.TilesCount != expectTiles)
                     return Fail("REFUSING: grid has " + grid.TilesCount + " tiles, expected " + expectTiles + ".");
 
-                string err; var csv = ReadTileCsv2(path, out err);
+                string err; var csv = ReadTileCsv2(path, out err, requireTileColumn: false);
                 if (csv == null) return Fail(err);
                 if (!csv.Col.ContainsKey("kind") || !csv.Col.ContainsKey("a") || !csv.Col.ContainsKey("b") || !csv.Col.ContainsKey("def"))
                     return Fail("Links CSV needs columns kind,a,b,def. Header: " + string.Join(",", csv.Header.ToArray()));
