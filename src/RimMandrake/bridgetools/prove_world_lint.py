@@ -1,5 +1,7 @@
 """W8: calibrate the linter by INJECTING known defects and checking it finds exactly them."""
 import sys, json, time
+try: sys.stdout.reconfigure(encoding="utf-8", errors="replace")
+except Exception: pass
 sys.path.insert(0, r"D:\Luke\dev\Rimworld\src\RimMandrake\Utils")
 import rimbridge_client as rb
 host, port, token = rb.resolve_endpoint()

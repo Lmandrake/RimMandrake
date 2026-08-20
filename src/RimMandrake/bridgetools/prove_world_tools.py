@@ -3,6 +3,8 @@
 Run under Windows python:  python.exe src/RimMandrake/bridgetools/prove_world_tools.py
 """
 import sys, json
+try: sys.stdout.reconfigure(encoding="utf-8", errors="replace")
+except Exception: pass
 sys.path.insert(0, r"D:\Luke\dev\Rimworld\src\RimMandrake\Utils")
 import rimbridge_client as rb
 

@@ -903,6 +903,55 @@ result:   ✅ **PSYLINK, AND THE 0->N QUIRK IS HANDLED.** `PawnUtility.ChangePsy
              LISTING that has no gender, age or traits. My first pregnancy run read gender
              from it, found none, and skipped. Fetch the full snapshot per pawn.
 
+## E3 Social events — parties, marriages, funerals, rituals
+row:      bridge-20
+spec:     Owner, 2026-08-20: *"Please also add events like marriage, party, funeral."*
+          TOOLS: `social_list` · `social_gathering_start` · `social_marry` · `ritual_start` ·
+          `social_cancel`.
+verify:   start each on a live map and confirm a LORD appears and pawns actually join.
+criteria: each starts, attendees arrive, and every refusal names the gate that refused.
+state:    ✅ DONE — PASSED 2026-08-20.
+result:   ✅ **PARTY:** forced start -> lords 1 -> 2, and after stepping 400 ticks the
+             `LordJob_Joinable_Party` **had 3 pawns**. ⭐ Attendees are PULL, not push - the
+             lord begins with ZERO owned pawns and colonists self-join through
+             `ThinkNode_JoinVoluntarilyJoinableLord`. A tool never assigns them.
+          ✅ **MARRIAGE CEREMONY:** lord created, pair walking to the site.
+             🔴 **`TryStartMarriageCeremony` IGNORES ITS SECOND ARGUMENT.**
+             `GatheringWorker_MarriageCeremony` re-derives the partner from the organizer's
+             **Fiance** relation, so that relation is MANDATORY and the tool sets it first,
+             clearing Lover/Spouse - exactly as vanilla's own debug action does.
+             🔑 The ceremony and the marriage are SEPARABLE: `Married()` is called from
+             inside the ceremony's own job, so `ceremony=false` marries instantly with no
+             party, and a ceremony with no Fiance never advances.
+          ✅ **FUNERAL:** `ritual_start ritual=Funeral` -> **started, 3 participants**, ritual
+             lord created. Festival likewise.
+          🔴 **I HAD THIS WRONG AND CORRECTED IT:** my first cut refused rituals outright
+             when Ideology was off, saying "there is no vanilla funeral". **False.**
+             `FuneralBase` carries `<classic>true</classic>` and
+             `IdeoGenerator.GenerateClassicIdeo` adds EVERY classic precept to the ideo a
+             no-expansion game builds - so **Funeral, FuneralNoCorpse, Classic_DrumParty and
+             Classic_DanceParty exist with Ideology uninstalled.** The gate is whether the
+             PRECEPT is on the ideo, never the DLC flag.
+          🔑 **THE GAME-CONDITION GATES ARE NOT IN `Worker.TryExecute`** - they live in
+             `GatheringDef.CanExecute`. Calling the worker directly bypasses hour-of-day,
+             danger rating, the 4-colonist floor, bleeding, the drafted ratio and the guest
+             count, which is exactly what vanilla's debug action does. `force=false` honours
+             them and names which refused.
+          🔴 **`respectTimetable` IS NOT BYPASSABLE.** It filters attendees at JOIN time, so
+             a forced party during a Work block starts and stays EMPTY while burning its
+             timer. The tool warns when the def has it.
+          🔴 **`RitualBehaviorWorker.TryExecuteOn` IS VOID AND FAILS SILENTLY** - no lord, no
+             letter, no error. The tool calls `CanStartRitualNow` first and returns its
+             reason string, and uses the LORD COUNT as the evidence of success.
+          📌 The first proof run failed on everything social because the quicktest map had
+             spawned a **fleshbeast assault** - danger rating blocked parties and both
+             fiances failed `PawnCanStartOrContinueGathering`. The tools were reporting the
+             truth; the environment was hostile. Worth remembering before blaming a tool.
+          ⚠️ CONTESTED between two research passes: whether an unattended gathering lord is
+             auto-culled (`Lord.ShouldExist`) or lives to its timeout
+             (`ShouldExistWithoutPawns => true`). Not settled here, so `social_cancel` ships
+             regardless - it is cheap and it is the escape hatch either way.
+
 ## C-V2 Park any v2 idea in design/V2_DREAMS.md yourself — no permission needed
 row:      doctrine
 spec:     Any idea for new content that is not v1 — including one a live session

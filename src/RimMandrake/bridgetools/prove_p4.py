@@ -1,5 +1,7 @@
 """P4: psylink (incl. the 0->N quirk), pregnancy, mental states, romance."""
 import sys, json, time
+try: sys.stdout.reconfigure(encoding="utf-8", errors="replace")
+except Exception: pass
 sys.path.insert(0, r"D:\Luke\dev\Rimworld\src\RimMandrake\Utils")
 import rimbridge_client as rb
 host, port, token = rb.resolve_endpoint()

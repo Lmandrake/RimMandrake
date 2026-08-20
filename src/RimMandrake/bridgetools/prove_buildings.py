@@ -1,5 +1,7 @@
 """M2 proof: build_batch, build_check, designate_batch."""
 import sys, json, time
+try: sys.stdout.reconfigure(encoding="utf-8", errors="replace")
+except Exception: pass
 sys.path.insert(0, r"D:\Luke\dev\Rimworld\src\RimMandrake\Utils")
 import rimbridge_client as rb
 host, port, token = rb.resolve_endpoint()

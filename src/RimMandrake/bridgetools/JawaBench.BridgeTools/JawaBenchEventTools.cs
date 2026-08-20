@@ -25,6 +25,7 @@ using RimWorld;
 using RimBridgeServer.Sdk;
 using UnityEngine;
 using Verse;
+using Verse.AI.Group;
 
 namespace JawaBench.BridgeTools
 {
@@ -690,6 +691,392 @@ namespace JawaBench.BridgeTools
                     success = true, skyfaller = sd.defName,
                     at = new { x, z }, innerThing, count,
                     ticksGame = TicksGameSafe(),
+                };
+            });
+        }
+#endif // JAWA_GM_TOOLS
+
+
+        // ================================================================
+        //  SOCIAL EVENTS — parties, marriages, funerals, rituals
+        //
+        //  🔑 Only THREE GatheringDefs ship: Party, MarriageCeremony, Concert.
+        //     There is no Speech gathering - speech is a RITUAL.
+        //  🔑 The game-condition gates are NOT in Worker.TryExecute. They live in
+        //     GatheringDef.CanExecute, so calling the worker directly bypasses
+        //     hour-of-day, danger rating, the 4-colonist minimum, bleeding, the
+        //     drafted ratio and the guest count - which is exactly what vanilla's
+        //     own debug action does.
+        //  🔴 respectTimetable is NOT one of those gates. It filters attendees at
+        //     JOIN time, so a forced party during a Work block starts and STAYS
+        //     EMPTY while burning its timer.
+        //  🔴 Gathering lords have ShouldExistWithoutPawns => true, so an empty
+        //     one is NOT auto-culled. jawa/social_cancel is the escape hatch and
+        //     ships alongside deliberately.
+        // ================================================================
+
+        [Tool(
+            "jawa/social_list",
+            Description =
+                "List what social events this game can run: every GatheringDef with whether " +
+                "it CAN execute right now and which gate is failing, plus every ritual " +
+                "precept on the player ideoligion with its CanStartRitualNow reason. " +
+                "Read-only, and the fastest way to find out why a party will not start.",
+            ResultDescription = "success, gatherings[], rituals[], ideologyActive.")]
+        public static async Task<object> SocialList(
+            IRimBridgeContext ctx,
+            CancellationToken cancellationToken)
+        {
+            return await ctx.MainThread.InvokeAsync(() =>
+            {
+                string err; var map = MapOrNull(out err);
+                if (map == null) return Fail(err);
+
+                var gs = new List<object>();
+                foreach (var d in DefDatabase<GatheringDef>.AllDefsListForReading)
+                {
+                    bool canNow = false, canIgnoring = false;
+                    try { canNow = d.CanExecute(map, null); } catch { }
+                    try { canIgnoring = d.CanExecute(map, null, true); } catch { }
+                    gs.Add(new
+                    {
+                        def = d.defName,
+                        canExecuteNow = canNow,
+                        canExecuteIgnoringConditions = canIgnoring,
+                        respectTimetable = d.respectTimetable,
+                        hasDuty = d.duty != null,
+                    });
+                }
+
+                var rs = new List<object>();
+                bool ideo = ModsConfig.IdeologyActive;
+                try
+                {
+                    var primary = Faction.OfPlayer != null && Faction.OfPlayer.ideos != null
+                        ? Faction.OfPlayer.ideos.PrimaryIdeo : null;
+                    if (primary != null)
+                        foreach (var pr in primary.PreceptsListForReading.OfType<Precept_Ritual>())
+                        {
+                            string why = null;
+                            try { why = pr.behavior != null ? pr.behavior.CanStartRitualNow(TargetInfo.Invalid, pr) : "no behavior"; }
+                            catch (Exception e) { why = e.GetType().Name + ": " + e.Message; }
+                            rs.Add(new { precept = pr.def.defName, label = pr.LabelCap, blockedBecause = why });
+                        }
+                }
+                catch (Exception e) { Log.Warning("[JawaBench] social_list rituals: " + e.Message); }
+
+                return (object)new
+                {
+                    success = true,
+                    ideologyActive = ideo,
+                    note = "Only Party, MarriageCeremony and Concert ship as GatheringDefs. Funerals are an IDEOLOGY RITUAL, not a gathering.",
+                    gatherings = gs,
+                    ritualCount = rs.Count,
+                    rituals = rs,
+                    activeLords = map.lordManager.lords.Count,
+                    ticksGame = TicksGameSafe(),
+                };
+            });
+        }
+
+#if JAWA_GM_TOOLS
+        [Tool(
+            "jawa/social_gathering_start",
+            Description =
+                "*** ACTS ON THE LIVE COLONY *** Throw a party or a concert. " +
+                "force=true (default) calls GatheringWorker.TryExecute directly, which is " +
+                "what vanilla's own debug action does and bypasses hour-of-day, danger " +
+                "rating, the 4-colonist minimum, bleeding, the drafted ratio and the guest " +
+                "count. force=false honours all of them and reports which one refused. " +
+                "🔴 WHAT FORCE CANNOT BYPASS: an eligible organizer must exist and a spot " +
+                "must be found. No party building is needed - the finder falls back to a " +
+                "random cell within 25 of the organizer. " +
+                "🔴 `respectTimetable` is NOT bypassable: a forced party during a Work block " +
+                "starts and stays EMPTY. Attendees are PULL, not push - the lord begins with " +
+                "zero pawns and colonists self-join.",
+            ResultDescription = "success, started, the gathering, and the lord count after.")]
+        public static async Task<object> SocialGatheringStart(
+            IRimBridgeContext ctx,
+            CancellationToken cancellationToken,
+            [ToolParameter(Description = "GatheringDef: Party or Concert. Not MarriageCeremony - use jawa/social_marry.")] string gathering = "Party",
+            [ToolParameter(Description = "Organizer pawn id. Empty lets the game pick.")] string organizer = null,
+            [ToolParameter(Description = "Bypass the game-condition gates. Default true.")] bool force = true)
+        {
+            return await ctx.MainThread.InvokeAsync(() =>
+            {
+                string err; var map = MapOrNull(out err);
+                if (map == null) return Fail(err);
+                var gd = DefDatabase<GatheringDef>.GetNamedSilentFail((gathering ?? "Party").Trim());
+                if (gd == null) return Fail("No GatheringDef '" + gathering + "'. Only Party, MarriageCeremony and Concert ship.",
+                                            DefDatabase<GatheringDef>.AllDefsListForReading.Select(d => d.defName).ToList());
+                if (gd.defName == "MarriageCeremony")
+                    return Fail("MarriageCeremony has no `duty` of its own and its LordJob hardcodes Party's toils. Use jawa/social_marry, which also handles the mandatory Fiance relation.");
+
+                Pawn org = null;
+                if (!string.IsNullOrEmpty(organizer)) { string e2; org = FindPawn(organizer, out e2); if (org == null) return Fail(e2); }
+
+                var notes = new List<string>();
+                if (!force)
+                {
+                    bool ok = false;
+                    try { ok = gd.CanExecute(map, org); } catch { }
+                    if (!ok) return Fail("GatheringDef.CanExecute refused and force=false. The gates are: hour 4-21, no blocking lord, " +
+                                         "danger rating None, at least 4 free colonists, nobody bleeding, under half drafted, and enough " +
+                                         "willing guests. Pass force=true to bypass all of them.");
+                }
+
+                int lordsBefore = map.lordManager.lords.Count;
+                bool started;
+                try { started = gd.Worker.TryExecute(map, org); }
+                catch (Exception e) { return Fail("TryExecute threw: " + e.GetType().Name + ": " + e.Message); }
+
+                if (!started)
+                    notes.Add("TryExecute returned FALSE. force cannot bypass these two: an eligible organizer must exist " +
+                              "(humanlike, not already in a lord, not in bed or a mental state), and a spot must be found.");
+                if (started && gd.respectTimetable)
+                    notes.Add("⚠️ this gathering respects the timetable - if colonists are on a Work block they will NOT join and the party will be empty.");
+
+                return (object)new
+                {
+                    success = true, started, gathering = gd.defName, forced = force, notes,
+                    organizer = org != null ? org.LabelShort : "(game picked)",
+                    lordsBefore, lordsAfter = map.lordManager.lords.Count,
+                    hint = "Attendees self-join over the next ticks - step time to see them gather. jawa/social_cancel clears a stuck one.",
+                    ticksGame = TicksGameSafe(),
+                };
+            });
+        }
+
+        [Tool(
+            "jawa/social_marry",
+            Description =
+                "*** ACTS ON THE LIVE COLONY *** Marry two pawns, with or without a ceremony. " +
+                "ceremony=true starts the real wedding gathering; false marries them instantly " +
+                "via MarriageCeremonyUtility.Married. " +
+                "🔴 A `Fiance` DIRECT RELATION IS MANDATORY for the ceremony, and the second " +
+                "pawn argument is IGNORED by RimWorld - GatheringWorker_MarriageCeremony " +
+                "re-derives the partner from the organizer's Fiance relation. This tool sets " +
+                "that relation first (clearing Lover/Spouse), exactly as the debug action does. " +
+                "🔑 The ceremony and the marriage are SEPARABLE: the state change happens " +
+                "inside the ceremony's own job, so a ceremony with no Fiance never advances, " +
+                "and Married() alone gives a marriage with no party.",
+            ResultDescription = "success, married, ceremonyStarted, relations after.")]
+        public static async Task<object> SocialMarry(
+            IRimBridgeContext ctx,
+            CancellationToken cancellationToken,
+            [ToolParameter(Description = "First pawn id or name.")] string pawn = null,
+            [ToolParameter(Description = "Second pawn id or name.")] string otherPawn = null,
+            [ToolParameter(Description = "Run the wedding gathering. false marries instantly.")] bool ceremony = true)
+        {
+            return await ctx.MainThread.InvokeAsync(() =>
+            {
+                string err; var a = FindPawn(pawn, out err);
+                if (a == null) return Fail(err);
+                string e2; var b = FindPawn(otherPawn, out e2);
+                if (b == null) return Fail(e2);
+                if (a == b) return Fail("A pawn cannot marry itself.");
+                var map = a.Map ?? b.Map;
+                if (map == null) return Fail("Neither pawn is on a map.");
+
+                var notes = new List<string>();
+                bool married = false, started = false;
+
+                try
+                {
+                    if (!ceremony)
+                    {
+                        MarriageCeremonyUtility.Married(a, b);
+                        married = true;
+                        notes.Add("MarriageCeremonyUtility.Married - instant, no party. Ex-spouses cleared, thoughts both ways, renamed, bed shared.");
+                    }
+                    else
+                    {
+                        // The ceremony re-derives the partner from the Fiance relation and
+                        // IGNORES the second argument, so the relation must exist first.
+                        foreach (var d in new[] { PawnRelationDefOf.Lover, PawnRelationDefOf.Spouse })
+                            if (a.relations.DirectRelationExists(d, b)) { a.relations.TryRemoveDirectRelation(d, b); notes.Add("cleared " + d.defName + " so Fiance can be set"); }
+                        if (!a.relations.DirectRelationExists(PawnRelationDefOf.Fiance, b))
+                        { a.relations.AddDirectRelation(PawnRelationDefOf.Fiance, b); notes.Add("set the mandatory Fiance relation"); }
+
+                        started = map.lordsStarter.TryStartMarriageCeremony(a, b);
+                        if (!started)
+                            notes.Add("TryStartMarriageCeremony returned FALSE. It already bypasses the game conditions, so what is left is: " +
+                                      "both fiances must pass PawnCanStartOrContinueGathering (not bleeding, not drafted, not asleep, not in a lord), " +
+                                      "and a marriage site must be findable.");
+                        else
+                            notes.Add("ceremony lord created - the pair walk to the site and the marriage happens in the ceremony's own job, not here");
+                    }
+                }
+                catch (Exception ex) { return Fail(ex.GetType().Name + ": " + ex.Message); }
+
+                return (object)new
+                {
+                    success = true, ceremony, married, ceremonyStarted = started, notes,
+                    relations = a.relations.DirectRelations
+                        .Select(r => new { def = r.def.defName, with = r.otherPawn != null ? r.otherPawn.LabelShort : null }).ToList(),
+                    lords = map.lordManager.lords.Count,
+                    ticksGame = TicksGameSafe(),
+                };
+            });
+        }
+
+        [Tool(
+            "jawa/ritual_start",
+            Description =
+                "*** ACTS ON THE LIVE COLONY *** Start an Ideology ritual by precept name - " +
+                "Funeral, Festival, Trial, Conversion, GladiatorDuel, ScarificationCeremony, " +
+                "LeaderSpeech and the rest. " +
+                "🔑 A FUNERAL IS A RITUAL, NOT A GATHERING - but it is NOT Ideology-only: " +
+                "FuneralBase is <classic>true</classic>, so Funeral, FuneralNoCorpse and the " +
+                "Classic_ parties are present even with Ideology uninstalled. The gate is " +
+                "whether the PRECEPT is on the ideo, never the DLC flag. " +
+                "🔴 RitualBehaviorWorker.TryExecuteOn is VOID AND FAILS SILENTLY, so this " +
+                "calls CanStartRitualNow first and returns its reason string rather than " +
+                "claiming success. Roles are auto-filled via FillPawns.",
+            ResultDescription = "success, started, blockedBecause, participants, lords after.")]
+        public static async Task<object> RitualStart(
+            IRimBridgeContext ctx,
+            CancellationToken cancellationToken,
+            [ToolParameter(Description = "Precept defName, e.g. Funeral, Festival, Trial.")] string ritual = null,
+            [ToolParameter(Description = "Target thing id (a grave for a funeral, an altar for a festival). Empty uses the organizer's cell.")] string targetThingId = null,
+            [ToolParameter(Description = "Organizer pawn id. Empty picks a colonist.")] string organizer = null)
+        {
+            return await ctx.MainThread.InvokeAsync(() =>
+            {
+                // 🔴 CORRECTED 2026-08-20: rituals are NOT all Ideology-only. `FuneralBase`
+                // carries <classic>true</classic>, and IdeoGenerator.GenerateClassicIdeo adds
+                // EVERY classic precept to the single ideo a no-expansion game builds - so
+                // Funeral, FuneralNoCorpse, Classic_DrumParty and Classic_DanceParty exist
+                // with Ideology uninstalled. Gate on the PRECEPT being present, never on the
+                // DLC flag.
+                string err; var map = MapOrNull(out err);
+                if (map == null) return Fail(err);
+                if (string.IsNullOrEmpty(ritual)) return Fail("Give a ritual precept defName.");
+
+                var ideo = Faction.OfPlayer != null && Faction.OfPlayer.ideos != null ? Faction.OfPlayer.ideos.PrimaryIdeo : null;
+                if (ideo == null) return Fail("The player faction has no primary ideoligion.");
+
+                var pr = ideo.PreceptsListForReading.OfType<Precept_Ritual>()
+                    .FirstOrDefault(x => string.Equals(x.def.defName, ritual.Trim(), StringComparison.OrdinalIgnoreCase));
+                if (pr == null)
+                    return Fail("The player ideoligion has no ritual precept '" + ritual + "'. It has: " +
+                        string.Join(", ", ideo.PreceptsListForReading.OfType<Precept_Ritual>().Select(x => x.def.defName).ToArray()) +
+                        (ModsConfig.IdeologyActive ? "" :
+                         " (Ideology is OFF, so only <classic> precepts are present - Funeral, FuneralNoCorpse, " +
+                         "Classic_DrumParty and Classic_DanceParty survive; Festival, Trial, Conversion and the rest do not.)"));
+
+                Pawn org = null;
+                if (!string.IsNullOrEmpty(organizer)) { string e2; org = FindPawn(organizer, out e2); }
+                if (org == null) org = map.mapPawns.FreeColonistsSpawned.FirstOrDefault();
+                if (org == null) return Fail("No free colonist to organise it.");
+
+                TargetInfo target = new TargetInfo(org.Position, map);
+                if (!string.IsNullOrEmpty(targetThingId))
+                {
+                    var t = map.listerThings.AllThings.FirstOrDefault(x =>
+                        string.Equals(x.ThingID, targetThingId.Trim(), StringComparison.OrdinalIgnoreCase));
+                    if (t == null) return Fail("No thing with id '" + targetThingId + "' on this map.");
+                    target = new TargetInfo(t);
+                }
+
+                string blocked = null;
+                try { blocked = pr.behavior != null ? pr.behavior.CanStartRitualNow(target, pr) : "the precept has no behavior worker"; }
+                catch (Exception e) { blocked = e.GetType().Name + ": " + e.Message; }
+                if (!string.IsNullOrEmpty(blocked))
+                    return Fail("CanStartRitualNow refused: " + blocked, new { precept = pr.def.defName, target = target.ToString() });
+
+                int before = map.lordManager.lords.Count;
+                int participants = 0;
+                try
+                {
+                    var assignments = RitualRoleAssignments_Create(pr, target, map, out participants);
+                    if (participants <= 0)
+                        return Fail("No participants could be assigned. Starting a ritual with an empty participant list risks leaving a lord " +
+                                    "on the map that nothing culls, so refusing.");
+                    pr.behavior.TryExecuteOn(target, org, pr, null, assignments, true);
+                }
+                catch (Exception e) { return Fail("Starting the ritual threw: " + e.GetType().Name + ": " + e.Message); }
+
+                int after = map.lordManager.lords.Count;
+                return (object)new
+                {
+                    success = true,
+                    started = after > before,
+                    precept = pr.def.defName,
+                    organizer = org.LabelShort,
+                    participants,
+                    lordsBefore = before, lordsAfter = after,
+                    note = after > before
+                        ? "Ritual lord created. TryExecuteOn is void, so the lord count is the evidence, not a return value."
+                        : "No new lord appeared - TryExecuteOn fails SILENTLY. Treat this as a failure.",
+                    ticksGame = TicksGameSafe(),
+                };
+            });
+        }
+
+        /// <summary>Auto-fill ritual roles. Isolated so a signature change is one edit.</summary>
+        private static RitualRoleAssignments RitualRoleAssignments_Create(
+            Precept_Ritual pr, TargetInfo target, Map map, out int participants)
+        {
+            participants = 0;
+            var a = Dialog_BeginRitual.CreateRitualRoleAssignments(pr, target, map, null, null, null, null);
+            if (a != null)
+            {
+                try { a.FillPawns(null, target); } catch (Exception e) { Log.Warning("[JawaBench] FillPawns: " + e.Message); }
+                try { participants = a.Participants != null ? a.Participants.Count() : 0; } catch { }
+            }
+            return a;
+        }
+
+        [Tool(
+            "jawa/social_cancel",
+            Description =
+                "Clear a stuck gathering or ritual lord. " +
+                "🔴 THIS IS NOT OPTIONAL HOUSEKEEPING. Voluntarily-joinable lords have " +
+                "ShouldExistWithoutPawns => true, so a party or ritual that nobody joined is " +
+                "NOT culled - it sits on the map until its timer expires, blocking new " +
+                "gatherings (AllowStartNewGatherings). List first, then remove by index.",
+            ResultDescription = "success, lords[] before, removed.")]
+        public static async Task<object> SocialCancel(
+            IRimBridgeContext ctx,
+            CancellationToken cancellationToken,
+            [ToolParameter(Description = "'list' or 'remove'.")] string action = "list",
+            [ToolParameter(Description = "Remove every gathering/ritual lord.")] bool all = false,
+            [ToolParameter(Description = "Lord index from 'list'.")] int index = -1)
+        {
+            return await ctx.MainThread.InvokeAsync(() =>
+            {
+                string err; var map = MapOrNull(out err);
+                if (map == null) return Fail(err);
+                var lm = map.lordManager;
+
+                Func<Lord, bool> isSocial = l => l != null && l.LordJob != null &&
+                    (l.LordJob is LordJob_VoluntarilyJoinable || l.LordJob.GetType().Name.Contains("Ritual"));
+
+                var rows = lm.lords.Select((l, i) => new
+                {
+                    index = i,
+                    job = l.LordJob != null ? l.LordJob.GetType().Name : "(null)",
+                    pawns = l.ownedPawns != null ? l.ownedPawns.Count : 0,
+                    social = isSocial(l),
+                    faction = l.faction != null ? l.faction.def.defName : null,
+                }).ToList();
+
+                int removed = 0;
+                if (string.Equals(action, "remove", StringComparison.OrdinalIgnoreCase))
+                {
+                    var targets = all
+                        ? lm.lords.Where(l => isSocial(l)).ToList()
+                        : (index >= 0 && index < lm.lords.Count ? new List<Lord> { lm.lords[index] } : new List<Lord>());
+                    if (targets.Count == 0) return Fail("Nothing to remove. Give all=true or a valid index from 'list'.", rows);
+                    foreach (var l in targets) { try { lm.RemoveLord(l); removed++; } catch (Exception e) { Log.Warning("[JawaBench] RemoveLord: " + e.Message); } }
+                }
+
+                return (object)new
+                {
+                    success = true, action, removed,
+                    lordsBefore = rows.Count, lordsAfter = lm.lords.Count,
+                    lords = rows, ticksGame = TicksGameSafe(),
                 };
             });
         }
