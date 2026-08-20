@@ -117,42 +117,42 @@
 
         <biomeConfigs>
           <!-- ABUNDANT -->
-          <ExtremeDesert><scoreOffset>12</scoreOffset></ExtremeDesert>
-          <Desert><scoreOffset>12</scoreOffset></Desert>
+          <li><key>ExtremeDesert</key><value><scoreOffset>12</scoreOffset></value></li>
+          <li><key>Desert</key><value><scoreOffset>12</scoreOffset></value></li>
 
           <!-- COMMON -->
-          <ZBiome_Badlands><scoreOffset>4</scoreOffset></ZBiome_Badlands>
-          <AridShrubland><scoreOffset>4</scoreOffset></AridShrubland>
-          <Wasteland><scoreOffset>4</scoreOffset></Wasteland>
-          <AB_RockyCrags><scoreOffset>4</scoreOffset></AB_RockyCrags>
+          <li><key>ZBiome_Badlands</key><value><scoreOffset>4</scoreOffset></value></li>
+          <li><key>AridShrubland</key><value><scoreOffset>4</scoreOffset></value></li>
+          <li><key>Wasteland</key><value><scoreOffset>4</scoreOffset></value></li>
+          <li><key>AB_RockyCrags</key><value><scoreOffset>4</scoreOffset></value></li>
 
           <!-- RARE -->
-          <ZBiome_DesertOasis><scoreOffset>-4</scoreOffset></ZBiome_DesertOasis>
-          <AB_FeraliskInfestedJungle><scoreOffset>-4</scoreOffset></AB_FeraliskInfestedJungle>
-          <AB_MiasmicMangrove><scoreOffset>-4</scoreOffset></AB_MiasmicMangrove>
-          <AB_MycoticJungle><scoreOffset>-4</scoreOffset></AB_MycoticJungle>
-          <COMIGO_GreaterSwamp_Tropical><scoreOffset>-4</scoreOffset></COMIGO_GreaterSwamp_Tropical>
-          <AB_OcularForest><scoreOffset>-4</scoreOffset></AB_OcularForest>
-          <AB_TarPits><scoreOffset>-4</scoreOffset></AB_TarPits>
-          <AB_PropaneLakes><scoreOffset>-4</scoreOffset></AB_PropaneLakes>
-          <AB_MechanoidIntrusion><scoreOffset>-4</scoreOffset></AB_MechanoidIntrusion>
-          <AB_GallatrossGraveyard><scoreOffset>-4</scoreOffset></AB_GallatrossGraveyard>
-          <AB_PyroclasticConflagration><scoreOffset>-4</scoreOffset></AB_PyroclasticConflagration>
-          <Volcano><scoreOffset>-4</scoreOffset></Volcano>
-          <LavaField><scoreOffset>-4</scoreOffset></LavaField>
-          <Scarlands><scoreOffset>-4</scoreOffset></Scarlands>
-          <IronScruff_PrimordialGeysers><scoreOffset>-4</scoreOffset></IronScruff_PrimordialGeysers>
+          <li><key>ZBiome_DesertOasis</key><value><scoreOffset>-4</scoreOffset></value></li>
+          <li><key>AB_FeraliskInfestedJungle</key><value><scoreOffset>-4</scoreOffset></value></li>
+          <li><key>AB_MiasmicMangrove</key><value><scoreOffset>-4</scoreOffset></value></li>
+          <li><key>AB_MycoticJungle</key><value><scoreOffset>-4</scoreOffset></value></li>
+          <li><key>COMIGO_GreaterSwamp_Tropical</key><value><scoreOffset>-4</scoreOffset></value></li>
+          <li><key>AB_OcularForest</key><value><scoreOffset>-4</scoreOffset></value></li>
+          <li><key>AB_TarPits</key><value><scoreOffset>-4</scoreOffset></value></li>
+          <li><key>AB_PropaneLakes</key><value><scoreOffset>-4</scoreOffset></value></li>
+          <li><key>AB_MechanoidIntrusion</key><value><scoreOffset>-4</scoreOffset></value></li>
+          <li><key>AB_GallatrossGraveyard</key><value><scoreOffset>-4</scoreOffset></value></li>
+          <li><key>AB_PyroclasticConflagration</key><value><scoreOffset>-4</scoreOffset></value></li>
+          <li><key>Volcano</key><value><scoreOffset>-4</scoreOffset></value></li>
+          <li><key>LavaField</key><value><scoreOffset>-4</scoreOffset></value></li>
+          <li><key>Scarlands</key><value><scoreOffset>-4</scoreOffset></value></li>
+          <li><key>IronScruff_PrimordialGeysers</key><value><scoreOffset>-4</scoreOffset></value></li>
           <!-- RG_BoilingForest CUT 2026-08-15 — owner: "WE ARE NOT USING BOILING
                BIOME." regrowth.botr.boilingforest left the mod list in the
                585→575 descope, so this scored a def that no longer loads: it
                validated clean against the dump (which still carries 576 mods)
                and matched nothing in game. Do not re-add without the mod. -->
-          <BMT_CrystalCaverns><scoreOffset>-4</scoreOffset></BMT_CrystalCaverns>
-          <BMT_EarthenDepths><scoreOffset>-4</scoreOffset></BMT_EarthenDepths>
-          <BMT_FungalForest><scoreOffset>-4</scoreOffset></BMT_FungalForest>
-          <HorrorWastes><scoreOffset>-4</scoreOffset></HorrorWastes>
-          <Glowforest><scoreOffset>-4</scoreOffset></Glowforest>
-          <PoisonForest><scoreOffset>-4</scoreOffset></PoisonForest>
+          <li><key>BMT_CrystalCaverns</key><value><scoreOffset>-4</scoreOffset></value></li>
+          <li><key>BMT_EarthenDepths</key><value><scoreOffset>-4</scoreOffset></value></li>
+          <li><key>BMT_FungalForest</key><value><scoreOffset>-4</scoreOffset></value></li>
+          <li><key>HorrorWastes</key><value><scoreOffset>-4</scoreOffset></value></li>
+          <li><key>Glowforest</key><value><scoreOffset>-4</scoreOffset></value></li>
+          <li><key>PoisonForest</key><value><scoreOffset>-4</scoreOffset></value></li>
         </biomeConfigs>
 
       </value>

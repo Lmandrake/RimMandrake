@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Patch>
+
+  <!--
+    The planet is Ash'karr. Owner's NAMES ruling, design/Jawa/SCENARIO_SPEC.md (f88b2ac).
+
+    🔑 WITH ferny.worldbuilder ACTIVE THE NAME *IS* TYPEABLE — and this patch is
+    what makes the field arrive already correct. Worldbuilder's
+    Page_CreateWorldParams_DoWindowContents_Patch draws a "WB_PlanetName" text
+    field (:243-245), seeds it from NamerWorld on Reset
+    (Page_CreateWorldParams_Reset_Patch.cs:30) and WorldGenerator_GenerateWorld_Patch
+    :42-44 writes it straight to WorldInfo.info.name. Vanilla has no such field and
+    generates the name from this rule pack instead.
+    ⇒ Patching the rule pack covers BOTH routes, and on the Worldbuilder route it
+    removes the one real hazard: the owner retyping the apostrophe and getting
+    U+2019.
+
+    ⭐ It renames throwaway dev worlds too, which is how you know it landed without
+    spending the one irreversible worldgen run to find out.
+
+    The apostrophe is U+0027 APOSTROPHE, not U+2019 RIGHT SINGLE QUOTATION MARK.
+    They render alike and compare unequal. It is legal unescaped in XML text. It
+    appears here and in labels only — never in a defName or a translation key.
+  -->
+
+  <Operation Class="PatchOperationReplace">
+    <xpath>/Defs/RulePackDef[defName="NamerWorld"]/rulePack/rulesStrings</xpath>
+    <value>
+      <rulesStrings>
+        <li>r_name->Ash'karr</li>
+      </rulesStrings>
+    </value>
+  </Operation>
+
+</Patch>
