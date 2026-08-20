@@ -14,8 +14,9 @@ order every time and getting it wrong once.
 🔴 IT REFUSES TO START ON A ZOMBIE. A save can abort mid-load, the engine's own bail
 handler can throw, and the process will then report `game_loaded` and answer every call
 while being half-disposed. Measured 2026-08-20: hours of work landed on a corpse. The
-canary is that the debug `Actions` tree will not enumerate while `Outputs` and `Settings`
-do, and this script checks it before touching anything.
+canary greps Player.log for `ErrorWhileLoadingGame`, which the engine writes only when it
+has given up on a load. ⚠️ Do NOT go back to using the debug `Actions` tree for this - it
+was tried, and it was wrong in both directions.
 
 WHAT IT DOES NOT DO: decide. It writes a report and takes a picture. Whether the planet
 is RIGHT is a human looking at it against world/view/ASHKARR_WORLDMAP.biome.equirect.png.
@@ -26,6 +27,8 @@ import json
 import os
 import sys
 import time
+
+sys.stdout = io.TextIOWrapper(sys.stdout.buffer, encoding='utf-8', errors='replace')
 
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 from rimbridge_client import RimBridge, resolve_endpoint
@@ -42,16 +45,34 @@ def w(out, line):
     print(line)
 
 
+PLAYER_LOG = r"C:\Users\Mandrake\AppData\LocalLow\Ludeon Studios\RimWorld by Ludeon Studios\Player.log"
+
+
 def canary(rb, out):
-    """One call. A zombie answers everything else normally."""
-    act = rb.call("rimworld/list_debug_action_children", {"path": "Actions"})
-    n = len(act.get("children") or [])
-    if act.get("success") and n > 0:
-        w(out, "- canary: debug `Actions` enumerates %d children -> the game is genuinely alive" % n)
+    """Did this load actually finish?
+
+    🔴 THE AUTHORITATIVE SIGNAL IS THE LOG, not the debug tree. An earlier version
+    of this check used `list_debug_action_children("Actions")` and it was WRONG in
+    both directions: the tree legitimately reports few or no VISIBLE children when
+    no map is loaded, and it enumerated fine on a game that had definitely aborted.
+    A canary that fires on healthy games and stays silent on broken ones is worse
+    than none. `ErrorWhileLoadingGame` in Player.log is unambiguous - the engine
+    only writes it when it has given up on a load and is bailing to the main menu.
+    """
+    try:
+        with io.open(PLAYER_LOG, encoding="utf-8", errors="replace") as fh:
+            log = fh.read()
+    except Exception as e:
+        w(out, "- ⚠️ canary could not read Player.log (%s); proceeding UNVERIFIED" % e)
         return True
-    w(out, "- 🔴 CANARY FAILED: `Actions` will not enumerate (%s). The game aborted its load "
-           "and is half-disposed. NOTHING measured here would count. Stopping."
-           % str(act.get("message"))[:120])
+    n = log.count("ErrorWhileLoadingGame")
+    if n == 0:
+        w(out, "- canary: no `ErrorWhileLoadingGame` in Player.log -> the load finished")
+        return True
+    w(out, "- 🔴 CANARY FAILED: Player.log carries %d `ErrorWhileLoadingGame`. The load "
+           "ABORTED and the engine bailed; the process may still answer and report "
+           "`game_loaded` while being half-disposed. NOTHING measured here would count. "
+           "Stopping." % n)
     return False
 
 
