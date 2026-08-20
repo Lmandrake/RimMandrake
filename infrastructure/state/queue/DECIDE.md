@@ -1340,9 +1340,24 @@ why v1's shape is wrong:
           in per-tile decoration.**
 
 what we already know, so the spec starts from fact not guesswork:
-          · Rainfall is a per-tile array in the save, stored as **raw mm/year**, and it is
-            already writable offline — `src/RimMandrake/Utils/worldmap.py`, verified.
-            Land on a test world spanned **233–2584 mm**.
+          · ⛔ ~~Rainfall is a per-tile array in the save… already writable offline —
+            `worldmap.py`, verified.~~ **DEAD 2026-08-19 — `worldmap.py` refuses to write
+            and the save-writers are deleted.** ⭐ **REPLACED BY SOMETHING STRONGER:
+            rainfall is AUTHORED PER TILE in `world/ASHKARR_WORLDMAP_tiles.csv` and
+            stamped into the live world over the bridge.** Land on a test world spanned
+            233–2584 mm.
+          🔴 **⇒ THIS ITEM'S REASON FOR BEING v2 IS GONE.** It was parked because *"v1 can
+            only express this by hanging a mutator on every tile that should be dry"* —
+            thousands of placements to say one planetary rule. **We now set all 21,872
+            tiles' rainfall by hand, in one column of a CSV.** The dry half of this spec
+            is a v1 authoring decision costing one edit. Only the violent-mountain-rain
+            half needs building, and that is a `weatherCommonalities` patch of exactly the
+            shape already specced for the Pyrelands ash storm. ⚠️ Question 4 below ("which
+            biomes survive at zero rainfall") is **also void** — biome eligibility is not
+            computed any more; we assign biomes directly. What survives of question 4 is
+            the real one: **plant growth and fertility read rainfall during PLAY**, so the
+            Jawa economy is the constraint, not biome legality. ⇒ DECIDE owes the owner a
+            v1/v2 call on this rather than leaving it parked on a dead premise.
           · **Biome selection keys off rainfall.** Zeroing it does not just change a
             number; it changes which biomes are eligible, which is the real lever and
             also the real risk.
@@ -1398,10 +1413,20 @@ why it is credible — measured today, not assumed:
             arbitrary `GenStepDef`s.** That is the actual injection hook: anything a
             GenStep can build, a mutator can summon on a chosen tile. This is the single
             strongest argument that mutators may be sufficient on their own.
-          · Placement is already solved offline. They live in the save as paired arrays
-            (`tileMutatorTiles` 4 bytes/tile-index + `tileMutatorDefs` 2 bytes/shortHash)
-            and `src/RimMandrake/Utils/worldmap.py` reads them today. Writing them is the
-            same shape as the biome write that is already proven end to end.
+          · ⛔ ~~Placement is already solved offline… writing them is the same shape as the
+            biome write that is already proven end to end.~~ **FALSE, twice over, and
+            struck 2026-08-19.** The offline biome write was never proven — it produced
+            **two dead loads** and the owner killed savegame writing on 2026-08-18;
+            `worldmap.py` now refuses to write. The encodings above are still accurate as
+            a description of the SAVE FORMAT and are worth keeping for that.
+            ⇒ **Placement is a BRIDGE write, like every other tile field.**
+          🔴 **AND THE ORDERING CHANGED, which bears directly on question 1.** Vanilla's
+            Mutators step (700) and Landmarks step (650) run against the VANILLA planet
+            and have finished before we stamp a single tile — `ASHKARR_WORLD_DEFINITION.md`
+            §12.3, and §13.3 has been corrected to agree. So our mutators are not competing
+            with vanilla's roll at generation time; the importer clears and re-rolls after
+            the stamp. That removes the arbitration worry from question 1 and replaces it
+            with a plainer one: **whatever we place, we place last.**
           · Authoring one is ordinary XML; a custom `workerClass` is optional C#.
 
 what the decision has to settle:
@@ -1417,8 +1442,10 @@ what the decision has to settle:
              wrapper when the thing should be VISIBLE and named on the world map.
           4. **Frozen-world consequence.** Placements bake into the shipped save. A
              mutator added after the world is built reaches only unvisited tiles.
-⇒ if YES, the follow-on work is small and known: author defs, extend `worldmap.py` to
-          write the mutator arrays, and add our defNames to the whitelist by default.
+⇒ if YES, the follow-on work is small and known: author defs, ⛔ ~~extend `worldmap.py` to
+          write the mutator arrays~~ **— no: add a mutator write to the companion's batch
+          tile setter (§12.2), the same door every other tile field uses** — and add our
+          defNames to the whitelist by default.
 
 ## D-TODO-WORLDMAP-ART  Compare GRiNDTerra vs World Map Enhanced by LOOKING
 state:    TODO — a taste call, and only the owner's eyes settle it.
