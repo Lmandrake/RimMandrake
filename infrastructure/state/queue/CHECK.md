@@ -1563,7 +1563,37 @@ verify:   next load, do NOT load `rt_probe`. Load `WORLDMAP_gen_sub7b` (the MLP-
 criteria: a load with ZERO `ErrorWhileLoadingGame`, and `list_debug_action_children("Actions")`
           returning its 642 children. 🔴 That second check is the cheap canary for this whole
           class of failure and costs one call — run it FIRST on every future load.
-state:    ready
+state:    🔵 IN PROGRESS — WIDER THAN FILED, and the exception is now named exactly.
+correction:
+          The title says `rt_probe`. **BOTH saves abort.** `WORLDMAP_gen_sub7b` aborts the
+          same way, so this is NOT a property of one save.
+          🔴 THE EXCEPTION, in full, from the second load:
+            `System.InvalidOperationException: Collection was modified; enumeration
+             operation may not execute.`
+            at `FactionControl.CrossRefHandler_ResolveAllCrossReferences.Postfix()`
+            ⇒ `thereallemon.factioncontrol` enumerates a list and mutates it mid-enumeration
+            during `CrossRefHandler.ResolveAllCrossReferences`, which aborts `FinalizeLoading`.
+          ⚠️ **AND MY OFFLINE PRE-FLIGHT WAS WRONG.** I read `WORLDMAP_gen_sub7b` as having
+          0 pawns and 0 settlements by regexing the raw `.rws`; the live world reports 38
+          settlements and 27 features. The regex looked for a serialised class name that is
+          not how those are written. A save's contents are not safely read by grep —
+          `savemap.py` exists for that reason.
+          ⚠️ **AND THE FIRST CANARY WAS WRONG IN BOTH DIRECTIONS.** `list_debug_action_children
+          ("Actions")` reports few or no VISIBLE children with no map loaded, and it
+          enumerated fine (13 children) on a game that had definitely aborted. It is
+          replaced by grepping Player.log for `ErrorWhileLoadingGame`, which the engine
+          writes only when it has given up. `w9_run.py` now blocks on that.
+ab:       🧪 RUNNING 2026-08-20: `mandrake.inhabited` DISABLED (577 active, md5
+          6fef68dcbb43f132243a0569bb5de2f5; the 578 file is archived as
+          `*.ab-test-inhabited-on.xml`) and the game relaunched. Loading
+          `WORLDMAP_gen_sub7b` again decides it:
+            abort GONE    ⇒ Inhabited trips a latent FactionControl bug. Inhabited is the
+                            variable; FactionControl is the fault.
+            abort REMAINS ⇒ Inhabited is exonerated and FactionControl breaks on these saves
+                            regardless — which makes it a shipping-stack problem, not a
+                            new-mod problem, and much more serious.
+          🔑 Either answer is worth the load. **Restore `mandrake.inhabited` afterwards
+          either way — the owner enabled it deliberately this morning.**
 
 ## FACTION_NAMES_ARE_GENERATED_1 🔴 Ten factions are wearing names the dice picked
 row:      world-1
