@@ -331,10 +331,21 @@ that implies a society over one that describes a self. **This is the single high
 instruction in the list for our purposes**, because our characters exist to make a planet
 feel inhabited, not to have arcs.
 
-**5. The used universe.** Mollo on costume: *"he didn't want anyone to notice the
-costumes."* Roger Christian dressed sets from aircraft scrap and drainpipes; Lucas's own
-term is the **"used universe."** ⇒ **Every possession a character has was owned by someone
-else first, and shows it.** Nothing is new, nothing is bespoke, nothing is clean.
+**5. The used universe.** ⚠️ **ATTRIBUTION CORRECTED 2026-08-19.** An earlier draft of this
+rule credited Mollo with *"he didn't want anyone to notice the costumes."* **That phrasing
+has no locatable primary source and must not be attributed to him.** The sourced equivalent
+is **Lucas's** brief, as reported: *"I don't want the audience to notice any of the
+costumes. I just want to see light versus dark."* Likewise ⛔ **do not attribute "used
+universe" to Gary Kurtz** — no direct quote is locatable; the doctrine traces to Lucas and
+to Roger Christian, who dressed the sets from airfield scrap that *"cost nothing"*.
+⇒ The rule itself stands and is well evidenced: **every possession a character has was
+owned by someone else first, and shows it.** Nothing is new, nothing is bespoke, nothing is
+clean.
+🔑 **Christian's qualifier is the part that matters and the part usually missed:** *"You
+can't just stick pieces randomly, it has to be done with an aesthetic of what looks real
+and works mechanically."* ⇒ **Random damage means nothing. Every flaw must imply someone's
+decision to patch it** — not *"his hand is scarred"* but *"he still works the same bench
+that took the hand."*
 
 **6. Flat characters are a legitimate craft object, not a shortfall.** Forster's defence of
 the flat character stands behind the **Flat family** in §5.3. A character who is exactly one
@@ -366,6 +377,39 @@ about it.
 figures and fans built mythologies on them. ⇒ **A good name plus a job is often enough**;
 the player will do the rest. This is the argument for naming everyone even when the entry is
 short.
+
+
+**12. The memorable detail should be WORTHLESS.** Christian bought the airfield scrap that
+became the Star Wars aesthetic because *"no one wanted this scrap... it was cheap as
+chips"*, coming in $100,000 under budget. ⇒ The one detail that makes a background
+character land should be something nobody would pay for — a rent arrangement, a smell, a
+debt of forty credits, a nickname born of a misheard word. **Treasure and titles are the
+enemy of texture.**
+
+**13. Break symmetry across the WHOLE roster.** Lucas: *"I was working very hard to keep
+everything nonsymmetrical. Nothing looks like it belongs with anything else... It's a very
+common thing in science fiction to see a set that has one influence."* ⇒ Across 300
+characters, **no two neighbours may share a naming convention, an origin logic or a design
+influence.** A settlement where everyone's name rhymes is a set with one influence.
+
+**14. Build tics from physical DISCOMFORT, not from personality.** The performers in the
+Saurin masks discovered on set that you could breathe better by putting a hand inside the
+mask's mouth to ventilate it — producing a "characteristic gesture" for entirely
+non-characterful reasons. ⇒ A Chagrian files his horns, a Selkath's armour hisses mist, an
+Ortolan flinches at the compressor. **The body first; the personality is what the body made
+of them.**
+
+**15. Write what they do when something terrible happens three metres away.** From the
+cantina: the aliens stop, look at the severed arm, and go back to their business *as if
+nothing had happened*. ⇒ ⭐ **The two men playfighting over lunch on the far side of the
+rancor door tell you more about that palace than the rancor does.** For every character,
+know their reaction to horror at close range. It is usually the most characterising line
+they have.
+
+**16. The name comes FROM the trade or the tic, never before it.** The historical mechanism:
+the toy line named the cantina extras — "Walrus Man", "Hammerhead" — *before* any fiction
+did, and fans built mythologies on those names. ⇒ Design the silhouette and the job, then
+name. One physical or verbal tic per character, **unrepeated across the whole roster**.
 
 ## 5.7 Sources of texture
 
