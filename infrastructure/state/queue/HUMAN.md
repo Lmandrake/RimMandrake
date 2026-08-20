@@ -548,3 +548,62 @@ storage mode is safe only because the world-pawn garbage collector has a hardcod
 for caravans that a mod cannot join; copied literally, every cast would have been collected
 between visits. Both are fixed, both are commented at the divergence, and §3.4 of the
 design doc has been corrected in place.
+
+---
+
+## 🔴 BUILD, 2026-08-20 09:xx — TWO BAKE-IN DEFECTS IN THE WORLD THAT IS UP RIGHT NOW
+
+Found read-only over the bridge. **I wrote nothing to the game.** Both are the
+build-it-once-and-freeze-it class, which is why they are here and not only in a queue.
+
+### 1. Ten of your eleven factions are wearing names the dice picked
+
+`jawa/list_factions` on the live world, against the 578-mod def dump:
+
+| defName | authored `label` | what the WORLD calls it |
+|---|---|---|
+| `Jawa_Junkers` | the Junkers | **Marina's Asteroids** |
+| `Jawa_HuttCartel` | Hutt Cartel | **Southeast Thiourhium** |
+| `Jawa_IndigenousTribes` | Jawa Trade Moot | **Union of Aloisa** |
+| `Jawa_AscendantHelix` | Ascendant Helix | **Empire of the Sun** |
+| `Jawa_DeepwaterCompact` | Deepwater Compact | **Menussia Coalition** |
+| `Jawa_FreeDroidEnclaves` | Free Droid Enclaves | **Northeast Notthdos** |
+| `Jawa_GeonosianFoundryHive` | Geonosian Foundry Hive | **The Latovas Union** |
+| `Jawa_WildsteamClan` | Wildsteam Clan | **The Banastra Nation** |
+| `OutlanderCivil` | Homestead Defense League | **Treaty of Haor** |
+| `TribeCivil` | Deep Desert Tribes | **The Lánéa Nation** |
+| ⭐ `Empire` | The Galactic Empire | ✅ **Galactic Empire** |
+
+🔑 **The Empire is right for exactly one reason: it is the only faction with a
+`fixedName`.** Every other def has `label` correct and `fixedName` **None**, so RimWorld's
+name generator named them at world creation. **This is precisely the trap that
+`GalacticEmpire.xml` exists to avoid**, and which I rewrote into
+`Jawa_Patches/About/About.xml` this morning — `label` is the def's display label,
+`fixedName` is the name the world object actually carries.
+
+🔴 **AND ADDING `fixedName` NOW WILL NOT FIX THIS WORLD.** `Faction.Name` returns the
+STORED name if one is set, and these have one:
+```
+public string Name { get { if (HasName) return name; return def.LabelCap; } ... }
+public bool HasName => name != null;
+```
+The generated strings are already baked onto the faction objects in this save. So it needs
+**two** fixes, and the second one does not substitute for the first:
+  1. **rename the ten live factions in this world** — nothing on the 237-tool bridge does
+     it (`jawa/` has `list_factions`, `faction_relations_*`, `set_pawn_faction`, and no
+     rename), so it is a debug action or a small companion tool;
+  2. **add `fixedName` to the ten defs**, so this cannot recur if the world is ever rebuilt.
+
+### 2. Four settlements are missing, and they are all one faction's
+
+`world/ASHKARR_WORLDMAP_settlements.csv` holds **72** rows. The live world has **68**.
+The gap is not scattered — **it is exactly Blackstar Company's four**: Blackstar Field
+(tile 18266), The Contract Camp (8898), Toll Rock (2236), Hardpan Yard (7497).
+**Cause:** their `faction_def` is `AM_EnemyPirate`, and that faction **is not in the
+world** — the world has 16 factions and it is not one of them. Every other faction's count
+matches the CSV exactly, so the importer skipped these four rather than failing.
+⇒ Either Blackstar needs a vessel that exists, or those four rows come out of the CSV.
+
+⚠️ **Not a defect, checked and cleared:** 80 world objects have a null faction and the tool
+warns those "die on load" — **all 80 are asteroids and one derelict station**, which
+legitimately have no faction. **Zero settlements among them.** No action.
