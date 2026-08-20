@@ -391,3 +391,93 @@ easy to read as absent and conclude the dump does not carry it. It does.
 Also already built: terrain painting, plants, thing spawning (incl. vehicles), destroy,
 damage, pawn spawn/style/xenotype/rotation, faction relations, quests, letters, incidents,
 and the whole 25-tool world surface.
+
+---
+
+## 7. BUILDINGS AND CONSTRUCTION
+
+⭐ **The headline capability here is COPY AND PASTE OF MAP REGIONS**, and it is base 1.6,
+ungated: `PrefabUtility.CreatePrefab(CellRect, copyAllThings, copyTerrain)` captures a
+rect into a `PrefabDef`, and `PrefabUtility.SpawnPrefab(def, map, pos, rot, faction, …)`
+stamps it back down. That is "spew out entities at will" with the engine doing the work.
+
+| tool | what it does | anchor | risk |
+|---|---|---|---|
+| `build_batch` | ⭐ god-mode instant build: stuff, rot, faction, style | `ThingMaker.MakeThing(def, stuff)` → `SetFactionDirect` → `GenSpawn.Spawn(thing, c, map, rot, WipeMode)` | low |
+| `build_check` | pre-flight a cell without placing | `GenConstruct.CanPlaceBlueprintAt(...) → AcceptanceReport`, `GenSpawn.CanSpawnAt` | low |
+| `wipe_cell` | clear what a placement would overwrite, with/without refund | `GenSpawn.WipeExistingThings` / `WipeAndRefundExistingThings` / `WouldWipeAnythingWith` | med |
+| `set_thing_props` | quality / HP / faction / style on spawned things | `CompQuality.SetQuality`, `Thing.HitPoints`, `Thing.SetFaction` | low |
+| `place_blueprint_batch` | leave real blueprints for colonists to build | `GenConstruct.PlaceBlueprintForBuild(...)` | low |
+| `frame_complete` | finish a frame as a colonist would | `Frame.CompleteConstruction(Pawn worker)` | **high** |
+| `minify` / `uninstall` | pop a building into a haulable crate | `MinifyUtility.MakeMinified` / `Uninstall` | med |
+| `designate_batch` | Mine/Deconstruct/Harvest/Haul/Plan… with no cursor | `designationManager.AddDesignation(new Designation(target, def))` | low |
+| `designation_clear` / `designation_query` | | `TryRemoveDesignation`, `RemoveAllDesignationsOn`, `DesignationAt/On` | low |
+| `prefab_capture` | ⭐ capture a CellRect into a PrefabDef | `PrefabUtility.CreatePrefab(CellRect, copyAllThings, copyTerrain)` | low |
+| `prefab_place` | ⭐ stamp a prefab down | `PrefabUtility.SpawnPrefab(def, map, pos, rot, faction, …)`, guard `CanSpawnPrefab` | low |
+| `layout_generate` | a whole multi-room complex | `layoutDef.Worker.GenerateStructureSketch` → `LayoutWorker.Spawn(...)` | high |
+| `sketch_spawn` | ruins / monuments | `SketchGen.Generate(SketchResolverDef, params)` → `Sketch.Spawn(...)` | med |
+| `gravship_place` | drop a lifted gravship | `GravshipUtility.GenerateGravship` → `GravshipPlacementUtility.PlaceGravshipInMap` | high |
+| `kcsg_place` | place a VE structure layout | `KCSG.LayoutUtils.Generate(...)` then `ReconnectAllPowerBuildings(map)` | high |
+| `power_net_query` | net at a cell, gain rate, stored, members | `map.powerNetGrid.TransmittedPowerNetAt(c)`, `PowerNet.CurrentEnergyGainRate()` | low |
+| `battery_set` | force-charge / drain (watt-days) | `CompPowerBattery.SetStoredEnergyPct/AddEnergy/DrawPower` | low |
+| `power_reconnect` | flush queued net rebuilds after bulk spawn | `map.powerNetManager.UpdatePowerNetsAndConnections_First()` | low |
+
+### 🔴 `map_commit` — the map-side equivalent of `world_commit`
+
+```csharp
+map.regionAndRoomUpdater.Enabled = true;
+map.regionAndRoomUpdater.RebuildAllRegionsAndRooms();      // also resets the temp cache
+// walls create NO roof - set it per cell yourself:
+map.roofGrid.SetRoof(c, RoofDefOf.RoofConstructed);
+map.pathing.RecalculateAllPerceivedPathCosts();
+map.reachability.ClearCache();
+map.powerNetManager.UpdatePowerNetsAndConnections_First();
+map.mapDrawer.WholeMapChanged((ulong)MapMeshFlagDefOf.Buildings | Things | Terrain
+                              | Roofs | GroundGlow | Snow | PowerGrid);
+```
+For speed, wrap the spawn loop in `map.regionAndRoomUpdater.Enabled = false` and
+`using (map.pathing.DisableIncrementalScope())`.
+
+✅ **Everything else is automatic.** `Thing.SpawnSetup` + `Building.SpawnSetup` already
+handle listerThings, listerBuildings, thingGrid, edificeGrid, coverGrid, linkGrid,
+glowGrid, fertilityGrid, attackTargetsCache, snowGrid/sandGrid, exitMapGrid,
+mapTemperature, gasGrid, zoneManager, per-cell MapMeshDirty, region dirtying and both
+power `Notify_*`s.
+
+### Traps
+
+* ⚠️ **`ThingMaker.MakeThing` already calls `PostMake`, which randomises HP from
+  `def.startingHpRange`.** Set `HitPoints` AFTER, or buildings spawn damaged.
+* ⚠️ Run `entDef.PlaceWorkers[i].PostPlace(map, entDef, c, rot)` after spawn or some defs
+  (wind turbines) skip their side effects.
+* 🔴 **`Frame.CompleteConstruction` hard-requires a non-null worker** — it touches
+  `worker.records`, `worker.GetLord()`, `QualityUtility.GenerateQualityCreatedByPawn`.
+  No pawn = NRE. Take a `worker_pawn_id` or replicate the body.
+* ⚠️ **`Blueprint.TryReplaceWithSolidThing` also requires a real Pawn** and calls
+  `EndCurrentJob` on block.
+* ⚠️ **`AddDesignation` logs a red error on double-add** — query first.
+* ⛔ **Do not drive `Designator_Build` itself** — `placingRot` is `protected` and it reads
+  `Find.CurrentMap` plus tutor/sound/fleck state. Replicate `DesignateSingleCell`'s body.
+* ⚠️ **Walls create no roof.** Building a room leaves it open to the sky until you set it.
+* ⚠️ `PowerNet.CurrentEnergyGainRate()` / `CurrentStoredEnergy()` are **methods, not
+  properties**. `CompPowerTrader.PowerOutput` is overwritten each tick on plants.
+* ⚠️ `PowerNetManager.Notfiy_TransmitterTransmitsPowerNowChanged` — the typo is real.
+* ⚠️ `RegionDirtyer`'s mutators are `internal` (reflection only). There is no
+  `RebuildDirtyRegionsAndRooms()`, only `TryRebuildDirtyRegionsAndRooms()`.
+  1.6 renamed the cache to `map.TemperatureVacuumCache` — there is no `map.temperatureCache`.
+
+### Corrections to my own brief, from source
+
+* **`StructureGenerator`, `AncientUtility` and `RoomContentsDef` do not exist.** Room
+  contents come via `LayoutRoomDef.roomContentsWorkerType` → `RoomContentsWorker.FillRoom`.
+* **KCSG's def is `CustomGenOption`, not `CustomGenDef`.**
+* ⚠️ **`ShipLayoutDefV2` is NOT vanilla** — it belongs to the *Gravship Exporter* mod
+  (`arcjc007.gravshipexporter`).
+  🔑 **VERIFIED 2026-08-19: that mod IS ACTIVE in the owner's real 578-mod list.** A
+  research thread reported it inactive because it read the LIVE `ModsConfig.xml`, which is
+  currently the 13-mod TEST list. **V1 chain row 11 ("Gravship — built and exported")
+  stands untouched.** 📌 Standing lesson: while the minimal list is installed, the live
+  `ModsConfig.xml` is NOT evidence about the owner's stack — read
+  `infrastructure/state/modlists/ModsConfig.FULL.LATEST.xml` instead.
+* All whole-structure routes need a Map. Wrap in `Rand.PushState(seed)` for
+  reproducibility — KCSG has no seeded path.
