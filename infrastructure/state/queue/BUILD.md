@@ -442,6 +442,13 @@ state:    ready
 row:      1
 from:     DECIDE, 2026-08-20, on the owner's ruling *"let's go all out for v1 here.
           'Ancients' is so boring! Let's get us some precursor Rakata in cold storage."*
+          ⚠️ **LORE CORRECTION, same day — read it before writing any label text.** DECIDE
+          first recorded the Rakata as the AUTHOR of the ancient bioweapon. **That is wrong.**
+          Owner: *"The Rakata were nearly wiped out by their bioweapon-wielding ASSAILANT,
+          they didn't release the bioweapons themselves. **They were terraformers and mega
+          builders.**"* ⇒ they are the **victims and the makers** — the people who terraformed
+          this world, brought the metal down from the asteroids and built the *Utinni*. The
+          bioweapon's author remains UNNAMED. ⛔ No label or description may imply otherwise.
           ⭐ **This REVERSES the v2 deferral in `D30 (5)`.** B61 has been struck in
           `design/V2_DREAMS.md` and returned to v1; do not action it from that row.
 spec:     📄 **The whole build is already written: `design/Jawa/worldbuilding/ANCIENTS_AS_RAKATA_SPEC.md`,

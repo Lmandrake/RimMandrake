@@ -57,7 +57,18 @@ should be visible in all three.
 
 ## R-W3 · The enemy weapon was self-replicating FLESH — and it is still running
 
-> 🔴 **THE AUTHOR IS NAMED — owner, 2026-08-20: the ancient enemy is the RAKATA.**
+> ⛔ ~~**THE AUTHOR IS NAMED — owner, 2026-08-20: the ancient enemy is the RAKATA.**~~
+> 🔴 **RETRACTED THE SAME DAY. DECIDE GOT THIS BACKWARDS.** Owner: *"The Rakata were nearly
+> wiped out by their bioweapon-wielding ASSAILANT, they didn't release the bioweapons
+> themselves. They were terraformers and mega builders."*
+> ⇒ **R-W3's author remains UNNAMED.** The self-replicating flesh belongs to whoever
+> attacked the Rakata. R-H8's deliberate blank stays blank, and this section is unchanged
+> from its original ruling.
+> ⭐ **What IS ruled v1:** the frozen sleepers are Rakata — the terraformers and
+> mega-builders who made this world and were nearly destroyed for it. See
+> `ANCIENTS_AS_RAKATA_SPEC.md`. **They are the victims in this war, not its authors.**
+>
+> ~~Original erroneous text follows.~~
 > *"Let's go all out for v1 here. 'Ancients' is so boring! Let's get us some precursor
 > Rakata in cold storage for all this time..."* ⭐ This reverses the 2026-08-15 deferral in
 > `D30 (5)`, which declined to name them and sent it to v2.

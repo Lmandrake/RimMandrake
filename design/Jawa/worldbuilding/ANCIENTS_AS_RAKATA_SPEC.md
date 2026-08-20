@@ -23,17 +23,41 @@ This is why the ruling is worth more than a reskin:
 1. **`the_forgotten_war.md` R-W5** — the ancient sleepers in the vaults are **the same people
    who built the Utinni**, and she was one of the vessels that helped start this world.
    ⇒ **The player flies a ship built by the people they are cracking out of cold storage.**
-2. **R-W3** — the ancient enemy's weapon was self-replicating flesh, still running, and it is
-   the same bioweapon whose residue is the poison forest, the mycotic jungle and the
-   gelatinous superorganism (`hydrology_and_fire_ecology.md` R-H8 left the author blank on
-   purpose). ⇒ **The Rakata are now that author.**
+2. ⛔ ~~**R-W3** — the ancient enemy's weapon was self-replicating flesh… ⇒ **The Rakata are
+   now that author.**~~ 🔴 **WRONG, AND CORRECTED BY THE OWNER 2026-08-20, SAME DAY:**
+   > *"The Rakata were nearly wiped out by their bioweapon-wielding ASSAILANT, they didn't
+   > release the bioweapons themselves. They were terraformers and mega builders."*
+   ⇒ **The Rakata are the VICTIMS, not the perpetrators.** The self-replicating flesh in the
+   vaults — and its residue in the poison forest, the mycotic jungle and the gelatinous
+   superorganism — belongs to **whoever attacked them**, and that assailant remains
+   **UNNAMED**. `hydrology_and_fire_ecology.md` R-H8's blank stays blank.
+   ⚠️ DECIDE asserted the opposite and propagated it into four files before the correction.
+   Struck in place rather than deleted, because the wrong version is the intuitive one and
+   someone will reach for it again.
 3. **`FACTION_SPEC.md` §8 / the Geonosian plateau** — the splinter hive worships **Rakatan
    ruins** that revealed the true origins of the subsolar Founder machinery, and has been
    trying to commune with its AI for nine years. ⇒ **They are praying to the builders of the
    thing in the vaults.**
 
-⇒ One name closes the Utinni's origin, the bioweapon's author and the plateau cult's god.
-⛔ **Do not re-open any of the three as separate questions.**
+⇒ **One name closes the Utinni's origin and the plateau cult's god.** ⛔ It does **NOT**
+close the bioweapon's author — that is a separate and still-open question.
+
+### 🔑 WHO THE RAKATA ARE — owner, 2026-08-20
+
+**Terraformers and mega-builders.** They made this world habitable, they brought the metal
+down from the asteroids, they built the works the Geonosians now worship, and they built the
+*Utinni*. Then **something attacked them with self-replicating flesh and nearly finished
+them**, and what survives is in the caskets.
+
+⭐ **DECIDE'S READING, offered for correction rather than asserted: the Rakata ARE the
+Forsakens.** `the_forgotten_war.md:7` — *"this was the **Forsakens'** world, that they
+partly terraformed"* — and the Utinni came as a *"Forsaken initiator"*; `FACTION_SPEC.md:783`
+has **Rakatan ruins revealing the true origins of the subsolar Founder machinery.** Same
+role, same works, two names. If they are two peoples, say so and this line comes out.
+
+⇒ **The campaign's shape, restated:** the Jawa are scavenging the corpse of a terraforming
+project, its makers are asleep in boxes, **and the weapon that killed them is still running
+in the biomes.**
 
 ### ⚠️ AND THE MECHANISM IS STILL NOT A FACTION RESKIN
 
