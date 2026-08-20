@@ -93,12 +93,13 @@
 
     <!-- R27. EMPTY ON PURPOSE, not an oversight: the dossier is 0% biological.
          `Inherit="False"` with no `xenotypeChances` strips the five vanilla
-         xenotypes `OutlanderFactionBase` would otherwise append. -->
-    <xenotypeSet Inherit="False">
-      <xenotypeChances>
-        <RimMandrakeUgnaught MayRequire="mandrake.starwarsraces">1.000</RimMandrakeUgnaught>
-      </xenotypeChances>
-    </xenotypeSet>
+         xenotypes `OutlanderFactionBase` would otherwise append.
+         🔴 The comment said EMPTY and the block was not: it carried
+         `RimMandrakeUgnaught` at 1.000, i.e. every biological pawn this faction ever
+         generated was an Ugnaught, against a dossier that says it has none. Removed on
+         the owner's ruling, 2026-08-19. The droid kinds are unaffected — they carry
+         their own non-human races and never consulted this field. -->
+    <xenotypeSet Inherit="False" />
 
     <!-- Inherit="False" IS LOAD-BEARING. RimWorld resolves inheritance AFTER
          patches, and a child `li` list is APPENDED to the parent's, not
