@@ -561,5 +561,301 @@ namespace JawaBench.BridgeTools
                 };
             });
         }
+
+        // ================================================================
+        //  P2 - LOADOUT AND BODY
+        //  🔴 equipment.AddEquipment Log.Errors and does NOTHING if a Primary
+        //     already exists. MakeRoomFor first, or the tool reports success
+        //     having changed nothing.
+        //  ✅ apparel.Wear DOES enforce CanWearTogether, drops conflicts and
+        //     refreshes graphics itself.
+        //  🔴 health.RestorePart is RECURSIVE into child parts, wipes their
+        //     hediffs and does not drop what it removed.
+        // ================================================================
+
+        private static BodyPartRecord FindBodyPart(Pawn p, string partDefName, out string err)
+        {
+            err = null;
+            if (string.IsNullOrEmpty(partDefName)) return null;
+            var name = partDefName.Trim();
+            var all = p.RaceProps != null && p.RaceProps.body != null ? p.RaceProps.body.AllParts : null;
+            if (all == null) { err = "Pawn has no body definition."; return null; }
+            var hit = all.FirstOrDefault(bp => bp.def != null && bp.def.defName.Equals(name, StringComparison.OrdinalIgnoreCase));
+            if (hit == null)
+            {
+                var near = all.Where(bp => bp.def != null && bp.def.defName.IndexOf(name, StringComparison.OrdinalIgnoreCase) >= 0)
+                              .Select(bp => bp.def.defName).Distinct().Take(8).ToList();
+                err = "No body part '" + name + "' on this pawn. Nearby: " + (near.Count == 0 ? "(none)" : string.Join(", ", near.ToArray()));
+            }
+            return hit;
+        }
+
+        [Tool(
+            "jawa/pawn_gear",
+            Description =
+                "Give, wear or clear a pawn's EQUIPMENT, APPAREL and INVENTORY. " +
+                "action='equip' puts a weapon in the primary slot, 'wear' puts on apparel, " +
+                "'inventory' stuffs an item into the pack, 'clear' empties one or all three. " +
+                "🔴 EQUIP HANDLES THE PRIMARY-SLOT TRAP: RimWorld's AddEquipment logs an " +
+                "error and silently does nothing when a primary already exists, so this " +
+                "calls MakeRoomFor first and reports what it displaced. " +
+                "✅ WEAR uses PawnApparelGenerator.GenerateApparelOfDefFor so the garment " +
+                "arrives stuffed, coloured and quality-rolled, and apparel.Wear itself " +
+                "enforces CanWearTogether and drops real conflicts.",
+            ResultDescription = "success, action, displaced[], and the pawn's gear after.")]
+        public static async Task<object> PawnGear(
+            IRimBridgeContext ctx,
+            CancellationToken cancellationToken,
+            [ToolParameter(Description = "Pawn id or name.")] string pawn = null,
+            [ToolParameter(Description = "'equip' | 'wear' | 'inventory' | 'clear'.")] string action = "equip",
+            [ToolParameter(Description = "ThingDef of the weapon/apparel/item.")] string def = null,
+            [ToolParameter(Description = "Stuff ThingDef.")] string stuff = null,
+            [ToolParameter(Description = "Quality for the item.")] string quality = null,
+            [ToolParameter(Description = "Stack count for inventory. Default 1.")] int count = 1,
+            [ToolParameter(Description = "For clear: 'equipment' | 'apparel' | 'inventory' | 'all'.")] string clearWhat = "all")
+        {
+            return await ctx.MainThread.InvokeAsync(() =>
+            {
+                string err; var p = FindPawn(pawn, out err);
+                if (p == null) return Fail(err);
+                string A = (action ?? "").Trim().ToLowerInvariant();
+                var displaced = new List<object>();
+                var notes = new List<string>();
+
+                if (A == "clear")
+                {
+                    string W = (clearWhat ?? "all").Trim().ToLowerInvariant();
+                    if (W == "all" || W == "equipment") { if (p.equipment != null) { p.equipment.DestroyAllEquipment(); notes.Add("equipment destroyed"); } }
+                    if (W == "all" || W == "apparel") { if (p.apparel != null) { p.apparel.DestroyAll(); notes.Add("apparel destroyed"); } }
+                    if (W == "all" || W == "inventory") { if (p.inventory != null) { p.inventory.DestroyAll(); notes.Add("inventory destroyed"); } }
+                    if (notes.Count == 0) return Fail("clearWhat must be equipment|apparel|inventory|all.");
+                }
+                else
+                {
+                    if (string.IsNullOrEmpty(def)) return Fail("Give a ThingDef.");
+                    var td = DefDatabase<ThingDef>.GetNamedSilentFail(def.Trim());
+                    if (td == null) return Fail("No ThingDef '" + def + "'.", DefSuggestions<ThingDef>(def));
+
+                    ThingDef sd = null;
+                    if (!string.IsNullOrEmpty(stuff)) sd = DefDatabase<ThingDef>.GetNamedSilentFail(stuff.Trim());
+                    if (td.MadeFromStuff && sd == null) sd = GenStuff.DefaultStuffFor(td);
+                    if (!td.MadeFromStuff) sd = null;
+
+                    QualityCategory q = QualityCategory.Normal; bool setQ = false;
+                    if (!string.IsNullOrEmpty(quality))
+                    {
+                        try { q = (QualityCategory)Enum.Parse(typeof(QualityCategory), quality.Trim(), true); setQ = true; }
+                        catch { return Fail("Bad quality '" + quality + "'."); }
+                    }
+
+                    if (A == "equip")
+                    {
+                        if (p.equipment == null) return Fail("Pawn has no equipment tracker.");
+                        if (!td.IsWeapon) notes.Add("WARNING: '" + td.defName + "' is not flagged IsWeapon.");
+                        var t = ThingMaker.MakeThing(td, sd) as ThingWithComps;
+                        if (t == null) return Fail("'" + td.defName + "' did not make a ThingWithComps, so it cannot be equipment.");
+                        if (setQ) { var cq = t.TryGetComp<CompQuality>(); if (cq != null) cq.SetQuality(q, ArtGenerationContext.Outsider); }
+
+                        // 🔴 THE TRAP: AddEquipment Log.Errors and does nothing when a
+                        // primary exists. MakeRoomFor first and say what was displaced.
+                        var prior = p.equipment.Primary;
+                        if (prior != null)
+                        {
+                            displaced.Add(new { def = prior.def.defName, stuff = prior.Stuff != null ? prior.Stuff.defName : null });
+                            p.equipment.MakeRoomFor(t);
+                            notes.Add("displaced the existing primary via MakeRoomFor - without this AddEquipment would have silently no-opped");
+                        }
+                        p.equipment.AddEquipment(t);
+                    }
+                    else if (A == "wear")
+                    {
+                        if (p.apparel == null) return Fail("Pawn has no apparel tracker.");
+                        if (!td.IsApparel) return Fail("'" + td.defName + "' is not apparel.");
+                        Apparel ap = null;
+                        try { ap = PawnApparelGenerator.GenerateApparelOfDefFor(p, td); } catch { }
+                        if (ap == null) ap = (Apparel)ThingMaker.MakeThing(td, sd);
+                        if (setQ) { var cq = ap.TryGetComp<CompQuality>(); if (cq != null) cq.SetQuality(q, ArtGenerationContext.Outsider); }
+                        var beforeCount = p.apparel.WornApparelCount;
+                        p.apparel.Wear(ap, true, false);
+                        if (p.apparel.WornApparelCount <= beforeCount)
+                            notes.Add("worn count did not rise - Wear may have dropped a conflicting garment, which is its documented behaviour");
+                    }
+                    else if (A == "inventory")
+                    {
+                        if (p.inventory == null) return Fail("Pawn has no inventory tracker.");
+                        var t = ThingMaker.MakeThing(td, sd);
+                        t.stackCount = Math.Max(1, count);
+                        if (setQ) { var cq = t.TryGetComp<CompQuality>(); if (cq != null) cq.SetQuality(q, ArtGenerationContext.Outsider); }
+                        // TryAddOrTransfer returns the COUNT transferred, not a bool.
+                        int moved = p.inventory.innerContainer.TryAddOrTransfer(t, Math.Max(1, count));
+                        notes.Add("inventory transferred " + moved + " of " + Math.Max(1, count));
+                        if (moved <= 0) notes.Add("nothing moved - inventory may be full or the def unstorable");
+                    }
+                    else return Fail("action must be equip|wear|inventory|clear.");
+                }
+
+                var snap = PawnSnapshot(p);
+                return (object)new
+                {
+                    success = true, action = A, displaced, notes,
+                    pawn = snap, ticksGame = TicksGameSafe(),
+                };
+            });
+        }
+
+        [Tool(
+            "jawa/pawn_health",
+            Description =
+                "Add or remove a hediff, install a bionic, or restore a body part. " +
+                "action='add' | 'remove' | 'bionic' | 'restore'. " +
+                "⭐ 'bionic' needs NO RecipeDef and no surgeon: it does RestorePart(part) " +
+                "then AddHediff(def, part), which is exactly what " +
+                "Recipe_InstallArtificialBodyPart does with a null billDoer. " +
+                "🔴 'restore' is DESTRUCTIVE AND RECURSIVE - RestorePart walks into child " +
+                "parts, wipes their hediffs, and does not drop whatever it removed. It is " +
+                "gated behind confirmDestructive=true.",
+            ResultDescription = "success, action, hediffs after, and the affected part.")]
+        public static async Task<object> PawnHealth(
+            IRimBridgeContext ctx,
+            CancellationToken cancellationToken,
+            [ToolParameter(Description = "Pawn id or name.")] string pawn = null,
+            [ToolParameter(Description = "'add' | 'remove' | 'bionic' | 'restore'.")] string action = "add",
+            [ToolParameter(Description = "HediffDef (add/remove) or the bionic's HediffDef.")] string hediff = null,
+            [ToolParameter(Description = "BodyPartDef name, e.g. Leg, Eye, Hand. Empty = whole body.")] string bodyPart = null,
+            [ToolParameter(Description = "Severity for 'add'. -1 uses the def default.")] float severity = -1f,
+            [ToolParameter(Description = "Required for 'restore' - it is recursive and destructive.")] bool confirmDestructive = false)
+        {
+            return await ctx.MainThread.InvokeAsync(() =>
+            {
+                string err; var p = FindPawn(pawn, out err);
+                if (p == null) return Fail(err);
+                if (p.health == null) return Fail("Pawn has no health tracker.");
+                string A = (action ?? "").Trim().ToLowerInvariant();
+
+                BodyPartRecord part = null;
+                if (!string.IsNullOrEmpty(bodyPart))
+                {
+                    string perr;
+                    part = FindBodyPart(p, bodyPart, out perr);
+                    if (part == null) return Fail(perr);
+                }
+
+                string didWhat;
+                if (A == "restore")
+                {
+                    if (!confirmDestructive)
+                        return Fail("RestorePart is RECURSIVE into child parts, wipes their hediffs and does not drop what it removes. Pass confirmDestructive=true if that is what you want.");
+                    if (part == null) return Fail("Give a bodyPart to restore.");
+                    p.health.RestorePart(part);
+                    didWhat = "restored " + part.def.defName + " (and its children)";
+                }
+                else
+                {
+                    if (string.IsNullOrEmpty(hediff)) return Fail("Give a HediffDef.");
+                    var hd = DefDatabase<HediffDef>.GetNamedSilentFail(hediff.Trim());
+                    if (hd == null) return Fail("No HediffDef '" + hediff + "'.", DefSuggestions<HediffDef>(hediff));
+
+                    if (A == "add")
+                    {
+                        var h = p.health.AddHediff(hd, part);
+                        if (h != null && severity >= 0f) h.Severity = severity;
+                        didWhat = "added " + hd.defName + (part != null ? " to " + part.def.defName : " (whole body)");
+                    }
+                    else if (A == "remove")
+                    {
+                        var h = p.health.hediffSet.hediffs.FirstOrDefault(x => x.def == hd && (part == null || x.Part == part));
+                        if (h == null) return Fail("Pawn has no hediff '" + hd.defName + "'" + (part != null ? " on " + part.def.defName : "") + ".");
+                        p.health.RemoveHediff(h);
+                        didWhat = "removed " + hd.defName;
+                    }
+                    else if (A == "bionic")
+                    {
+                        if (part == null) return Fail("Give a bodyPart for a bionic.");
+                        p.health.RestorePart(part);
+                        p.health.AddHediff(hd, part);
+                        didWhat = "installed " + hd.defName + " on " + part.def.defName + " (RestorePart then AddHediff - no RecipeDef needed)";
+                    }
+                    else return Fail("action must be add|remove|bionic|restore.");
+                }
+
+                var hediffs = p.health.hediffSet.hediffs
+                    .Select(h => new { def = h.def.defName, part = h.Part != null ? h.Part.def.defName : null, severity = h.Severity })
+                    .Take(40).ToList();
+
+                return (object)new
+                {
+                    success = true, action = A, didWhat,
+                    partsAvailable = part == null && A != "restore"
+                        ? p.RaceProps.body.AllParts.Select(bp => bp.def.defName).Distinct().Take(20).ToList()
+                        : null,
+                    hediffCount = p.health.hediffSet.hediffs.Count,
+                    hediffs,
+                    ticksGame = TicksGameSafe(),
+                };
+            });
+        }
+
+        [Tool(
+            "jawa/pawn_need",
+            Description =
+                "Set a pawn's need level (food, rest, joy, comfort, beauty, outdoors...) or " +
+                "give it a memory thought. action='need' writes CurLevel 0-1; " +
+                "action='thought' calls TryGainMemory. " +
+                "⚠️ Social thoughts REQUIRE an otherPawn - without one they are dropped " +
+                "silently, so this refuses instead.",
+            ResultDescription = "success, needs after, and the thought list.")]
+        public static async Task<object> PawnNeed(
+            IRimBridgeContext ctx,
+            CancellationToken cancellationToken,
+            [ToolParameter(Description = "Pawn id or name.")] string pawn = null,
+            [ToolParameter(Description = "'need' | 'thought' | 'list'.")] string action = "list",
+            [ToolParameter(Description = "NeedDef name for 'need'.")] string need = null,
+            [ToolParameter(Description = "Level 0-1 for 'need'.")] float level = 0.5f,
+            [ToolParameter(Description = "ThoughtDef name for 'thought'.")] string thought = null,
+            [ToolParameter(Description = "Other pawn id for a social thought.")] string otherPawn = null)
+        {
+            return await ctx.MainThread.InvokeAsync(() =>
+            {
+                string err; var p = FindPawn(pawn, out err);
+                if (p == null) return Fail(err);
+                if (p.needs == null) return Fail("Pawn has no needs tracker.");
+                string A = (action ?? "list").Trim().ToLowerInvariant();
+                var notes = new List<string>();
+
+                if (A == "need")
+                {
+                    if (string.IsNullOrEmpty(need)) return Fail("Give a NeedDef.");
+                    var nd = DefDatabase<NeedDef>.GetNamedSilentFail(need.Trim());
+                    if (nd == null) return Fail("No NeedDef '" + need + "'.", DefSuggestions<NeedDef>(need));
+                    var n = p.needs.TryGetNeed(nd);
+                    if (n == null) return Fail("This pawn has no '" + nd.defName + "' need. It has: " +
+                        string.Join(", ", p.needs.AllNeeds.Select(z => z.def.defName).ToArray()));
+                    n.CurLevelPercentage = Mathf.Clamp01(level);
+                    notes.Add("set " + nd.defName + " to " + n.CurLevelPercentage);
+                }
+                else if (A == "thought")
+                {
+                    if (string.IsNullOrEmpty(thought)) return Fail("Give a ThoughtDef.");
+                    var td = DefDatabase<ThoughtDef>.GetNamedSilentFail(thought.Trim());
+                    if (td == null) return Fail("No ThoughtDef '" + thought + "'.", DefSuggestions<ThoughtDef>(thought));
+                    if (p.needs.mood == null) return Fail("Pawn has no mood need, so it cannot hold thoughts.");
+                    Pawn other = null;
+                    if (!string.IsNullOrEmpty(otherPawn)) { string e2; other = FindPawn(otherPawn, out e2); }
+                    if (td.IsSocial && other == null)
+                        return Fail("'" + td.defName + "' is a SOCIAL thought and needs an otherPawn. Without one RimWorld drops it silently.");
+                    p.needs.mood.thoughts.memories.TryGainMemory(td, other);
+                    notes.Add("gained memory " + td.defName);
+                }
+                else if (A != "list") return Fail("action must be need|thought|list.");
+
+                var needs = p.needs.AllNeeds.Select(n => new { need = n.def.defName, level = n.CurLevel, pct = n.CurLevelPercentage }).ToList();
+                var memories = p.needs.mood != null
+                    ? p.needs.mood.thoughts.memories.Memories.Select(m => new { def = m.def.defName, age = m.age }).Take(20).ToList()
+                    : null;
+
+                return (object)new { success = true, action = A, notes, needs, memories, ticksGame = TicksGameSafe() };
+            });
+        }
+
     }
 }

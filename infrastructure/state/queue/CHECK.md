@@ -684,7 +684,29 @@ spec:     TOOLS: `give_pawn_equipment` · `give_pawn_apparel` · `clear_pawn_gea
 verify:   equip, wear, add a hediff, install a bionic; read all back off the pawn.
 criteria: gear round-trips AND the AddEquipment primary-slot trap is demonstrated - equip
           twice and show the second is handled rather than silently lost.
-state:    ready
+state:    ✅ DONE — PASSED 2026-08-19. Both clauses.
+result:   SHIPPED: `pawn_gear` (equip/wear/inventory/clear) · `pawn_health`
+          (add/remove/bionic/restore) · `pawn_need` (need/thought/list).
+          ✅ **THE PRIMARY-SLOT TRAP IS DEMONSTRATED, not described.** Equipped a bolt-action
+             rifle; equipping a longsword second reported
+             `displaced: [Gun_BoltActionRifle]` and the pawn ended holding the SWORD.
+             RimWorld's own `AddEquipment` would have kept the rifle and logged an error -
+             a silent no-op that reads as success. `MakeRoomFor` first is the fix.
+          ✅ APPAREL: parka + pants + shirt all worn, `Wear` handling layering itself.
+          ✅ INVENTORY: 42 of 42 transferred. 📌 `TryAddOrTransfer` returns the COUNT moved,
+             NOT a bool - I wrote `if (!...)` and the compiler caught it. Reporting the
+             count is strictly better anyway.
+          ✅ HEDIFF add/remove round-trips (Flu on/off, hediffCount 1 -> 2 -> 1).
+          ✅ **BIONIC WITH NO RecipeDef AND NO SURGEON**: `BionicEye` installed on `Eye` via
+             RestorePart-then-AddHediff, read back on the right part.
+          ✅ **`restore` REFUSES without `confirmDestructive`** and names why - it is
+             recursive into child parts, wipes their hediffs, and drops nothing.
+          ✅ SOCIAL-THOUGHT GUARD PROVEN BOTH WAYS: `Insulted` refused with "needs an
+             otherPawn. Without one RimWorld drops it silently", then succeeded when given
+             one. That is a silent vanilla failure turned into a loud one.
+          📌 Two of my test def names were INVENTED again (`RebuffedMyKindWords`,
+             `ColonyScavenger`). 2,129 ThoughtDefs and 1,225 BackstoryDefs ship. Read the
+             dump; never guess a defName - the project's own rule, re-learned twice today.
 
 ## C-V2 Park any v2 idea in design/V2_DREAMS.md yourself — no permission needed
 row:      doctrine
