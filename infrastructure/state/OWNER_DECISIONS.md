@@ -160,6 +160,11 @@ historical records nobody acts on.
 🔑 **If you meet the old name in an archived doc, it means the Galactic Empire.** Do not
 reintroduce it, and do not "restore" it when editing an old file.
 
-⚠️ **Build note:** `Jawa_Patches/Patches/ImperialDesertDirectorate.xml` was renamed to
-`GalacticEmpire.xml`. **Jawa_Patches needs a redeploy**, and the deployed Steam copy will
-keep the old filename until a deploy plan removes it — check for a `-` line.
+✅ **Build note, DISCHARGED 2026-08-20.** The rename left the OLD file sitting in the
+deployed Steam copy while the new one had never been deployed — so the game was loading
+the retired patch and not the current one. `deploy_custom_mods.py --mod Jawa_Patches
+--prune --apply` deleted it and shipped `GalacticEmpire.xml`. The game folder now holds
+exactly one Empire patch.
+🪤 **A rename is a DELETE plus an ADD, and the deploy tool will not delete on its own** —
+it reports the orphan as a `-` line and keeps it, so a renamed file leaves both versions
+live until someone passes `--prune`. Check for a `-` line after every rename.

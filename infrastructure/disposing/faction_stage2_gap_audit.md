@@ -14,7 +14,7 @@ title, colour). 🔴 **NO LONGER v2 — all of it is v1 and DEPLOYED: the 11 dos
 ideoligions, the relations matrix.**
 
 🔴 **v1's faction row is NOT done — the patch is on the wrong vessel.**
-`src/Jawa/Jawa_Patches/Patches/ImperialDesertDirectorate.xml` (`27a3cfe`) sets
+`src/Jawa/Jawa_Patches/Patches/GalacticEmpire.xml` (`27a3cfe`) sets
 `label`, `fixedName`, `leaderTitle` and `colorSpectrum` (`RGB(74,84,96)` /
 `RGB(108,118,128)`) on **`OuterRim_GalacticEmpire`**, a mod def. The Galactic
 Empire's vessel is **vanilla `Empire`** (R10). **Re-point the patch**, set
@@ -183,7 +183,7 @@ Recorded so they are not re-found:
 
 ## What this changes
 
-- 🔴 **v1's faction row has to be redone.** `ImperialDesertDirectorate.xml` targets
+- 🔴 **v1's faction row has to be redone.** `GalacticEmpire.xml` targets
   `OuterRim_GalacticEmpire`; the Galactic Empire's vessel is **vanilla `Empire`**
   (R10). The patch was closed on a label seen live on a vessel we are abandoning.
 - **D1–D6 are all disposed** and written into `faction_roster_v2.md`. None of them
