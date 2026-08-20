@@ -13,6 +13,41 @@ is stale.
 | **Xenotype** | **`MandrakeJawa` is the ONLY active Jawa xenotype.** `OuterRim_Jawa`, `guy762_xenotype_jawa` and `BTD_Jawa` are stood down. |
 | **Religion** | **"The Salvation" is the approved ideoligion**, for the player faction **and** the indigenous Jawa tribes. |
 
+## 🔴 THE SLAVERY PRECEPTS ARE RATIFIED AS-IS. DO NOT CHANGE THEM.
+
+**Owner's ruling, 2026-08-19, and it is recorded here specifically because DECIDE raised
+it as a suspected contradiction and was wrong.** `The Salvation.rid` carries:
+
+```
+<def>Slavery_Acceptable</def>
+<def>HAR_AlienSlavery_Honorable</def>
+```
+
+⛔ **Both STAY, exactly as they are.** Owner, verbatim: *"Slavery IS ACCEPTABLE stays, and
+alien slavery is HONORABLE stays. Just like it is."*
+
+**Why the apparent contradiction is not one.** The owner also said *"we shouldn't keep
+permanent slaves, it angers the gods"* — which reads at first like a call for
+`Slavery_Disapproved`. It is not. Clarified the same session:
+
+> *"keeping them is honorable… but we should sell them soon, not just keep them
+> permanently. **We are slave traders, not just slavers. That's the Hutt role: permanent
+> slavers.** I only meant in a role-playing sense we will be selling them swiftly, this
+> does not need to be enforced in the game rules."*
+
+⭐ **And that is a faction-differentiation fact worth more than the precept question it
+came from:** the Jawa **trade** slaves; the **Hutt Cartel keeps** them. Same institution,
+opposite relationship to it, and it separates the two factions morally without either of
+them being the good one. Free characterisation for both.
+
+🔑 **The rule for anyone who reads this later:** "sell swiftly, do not hoard" is
+**ROLEPLAY, deliberately unenforced.** RimWorld's four slavery precepts are
+Abhorrent / Disapproved / Acceptable / Honorable and **none of them can express "may
+trade, may not keep"** — so no precept change could capture the owner's meaning, and the
+attempt would only weaken what the ideo says correctly today.
+⚠️ An ideoligion **bakes at world creation**. A well-meaning "fix" here is unrecoverable,
+which is why this is written down rather than left to memory.
+
 ## Where the artifacts live — committed, so they survive the AppData folder
 
 | what | path |
