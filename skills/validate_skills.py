@@ -65,9 +65,15 @@ def main():
         refdir = os.path.join(d, "references")
         on_disk = {f for f in os.listdir(refdir) if f.endswith(".md")} if os.path.isdir(refdir) else set()
         mentioned = set(re.findall(r"(?<!/)\breferences/([A-Za-z0-9._-]+\.md)", raw))
-        # ...and an absolute path to our own reference counts as a mention too
+        # ...an absolute path to our own reference counts...
         mentioned |= {os.path.basename(m) for m in
                       re.findall(r"skills/%s/references/([A-Za-z0-9._-]+\.md)" % re.escape(sk), raw)}
+        # ...so does a BARE filename in a routing table (`├ traps-art.md`)...
+        mentioned |= {f for f in on_disk if f in raw}
+        # ...and so does a glob (`references/traps-*.md`).
+        for g in re.findall(r"references/([A-Za-z0-9._-]*)\*([A-Za-z0-9._-]*\.md)", raw):
+            pre, suf = g
+            mentioned |= {f for f in on_disk if f.startswith(pre) and f.endswith(suf)}
         for m in mentioned - on_disk:
             add(sk, "ERROR", "points at references/%s which does not exist" % m)
         for o in on_disk - mentioned:
