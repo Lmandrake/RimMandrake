@@ -522,7 +522,20 @@ spec:     `src/Jawa/Jawa_Patches/Defs/PawnKindDefs/JawaFactionRoster.xml`.
           The `weaponTags` are HEALTHY — `ORDroidWeapon` 5 weapons, `Jawa_IonWeapon` 7,
           `KotORBowcaster` 3. RimWorld then filters those by MarketValue against
           `weaponMoney`, and not one weapon falls inside the range.
-          (a) RAISE `weaponMoney` to bracket the real weapon values. Measured off the
+          🔴 **CORRECTION 2026-08-20, read out of `PawnWeaponGenerator.TryGenerateWeaponFor`
+          after this item was filed. The rule is a CEILING, not a bracket.** The engine
+          rolls `weaponMoney.RandomInRange` once, then keeps every weapon pair whose
+          `Price` is **not greater than** that roll:
+              `if (!(w.Price > randomInRange) && <tags match> && ...)`
+          ⇒ **`min` is not a floor on eligibility.** It only shifts the roll. What empties
+          the pool is `max` sitting below the cheapest tagged weapon. So the fix is to
+          raise `max` above the cheapest candidate — raising `min` as well is a
+          separate, cosmetic choice about how rich the tier looks.
+          ⚠️ And the engine compares `ThingStuffPair.Price`, which includes STUFF cost, not
+          the bare `MarketValue` the numbers below are taken from. Treat them as a floor:
+          the real price of a stuffed weapon is higher, never lower.
+          (a) RAISE `weaponMoney` (the `max` especially) to clear the real weapon values.
+          Measured off the
               577-mod dump, which MATCHES the live list, so these numbers are not
               provisional — `min` must be at or below the cheapest tagged weapon:
                 Jawa_TradeMoot_Grunt        120-144    cheapest  800   (Jawa_IonWeaponLight/Jawa_IonWeapon, 800-2000)
