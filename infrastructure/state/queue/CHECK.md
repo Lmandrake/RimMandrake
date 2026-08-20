@@ -464,6 +464,80 @@ criteria: the owner looks at the planet and does not immediately name a defect. 
           in this work passed its numeric check while the picture was obviously wrong.
 state:    ready
 
+## M1 Map foundation — map_commit, terrain layers, and substructure
+row:      bridge-10
+spec:     The map-side twin of W3. `world_commit` made world edits visible; nothing yet does
+          that for a MAP, and every builder below is useless without it.
+          TOOLS: `map_commit` · `get_terrain_layers` · `set_substructure_batch` ·
+                 `remove_substructure` · `set_temp_terrain` · `set_terrain_color`
+          🔑 1.6 has FIVE terrain layers, not two: top · under · **foundation** · **temp** ·
+          plus a colour grid. The existing `set_terrain*` tools only reach `top`.
+          🔑 SUBSTRUCTURE IS NOT A GRID. It is a foundation-layer `TerrainDef`
+          (`TerrainDefOf.Substructure`, `IsSubstructure => HasTag("Substructure")`) living in
+          `TerrainGrid.foundationGrid`. `Map.substructureGrid` is ONLY an overlay drawer -
+          its one state-changing method is `MarkDirty()`. Odyssey-gated.
+          `map_commit` runs, in order: `regionAndRoomUpdater.RebuildAllRegionsAndRooms()` ·
+          `pathing.RecalculateAllPerceivedPathCosts()` · `reachability.ClearCache()` ·
+          `powerNetManager.UpdatePowerNetsAndConnections_First()` ·
+          `mapDrawer.WholeMapChanged(Buildings|Things|Terrain|Roofs|GroundGlow|Snow|PowerGrid)`.
+          ⛔ Do NOT expose `RemoveGravshipTerrainUnsafe` or `RemoveRoofUnsafe` - they skip
+          every notification.
+verify:   paint substructure over a rect, read it back off `FoundationAt`, screenshot.
+criteria: substructure written and read back, AND visible after `map_commit`. Both halves,
+          same standard as W3.
+state:    ready
+
+## M2 Buildings — place, check, wipe, designate
+row:      bridge-11
+spec:     TOOLS: `build_batch` · `build_check` · `wipe_cell` · `set_thing_props` ·
+                 `designate_batch` · `designation_clear` · `designation_query`
+          `ThingMaker.MakeThing(def, stuff)` -> `SetFactionDirect` -> `GenSpawn.Spawn(...)` -
+          the path `Designator_Build` itself takes under god mode.
+          ⚠️ `MakeThing` already calls `PostMake`, which RANDOMISES HitPoints from
+          `def.startingHpRange`. **Set HitPoints AFTER, or buildings spawn damaged.**
+          ⚠️ Run `PlaceWorkers[i].PostPlace(...)` after spawn or some defs skip side effects.
+          ⚠️ **Walls create NO roof** - a built room is open to the sky until roofed.
+          ⚠️ `AddDesignation` logs a red error on double-add - query first.
+          ⛔ Do NOT drive `Designator_Build` itself: `placingRot` is protected and it reads
+          `Find.CurrentMap` plus tutor/sound/fleck state. Replicate `DesignateSingleCell`.
+          ⛔ `Frame.CompleteConstruction` and `Blueprint.TryReplaceWithSolidThing` both
+          hard-require a non-null worker Pawn - NRE otherwise. Either take a worker id or
+          leave them out of this item.
+verify:   build a small structure, read back def/stuff/faction/quality/HP, screenshot.
+criteria: a building placed through the tool is read back correct AND visible, and its
+          HitPoints are what was asked for rather than the PostMake roll.
+state:    ready
+
+## M3 Prefab capture and replay — copy/paste regions of map
+row:      bridge-12
+spec:     ⭐ The single highest-leverage thing on the roster for "spew out entities at will",
+          and it is BASE 1.6 and ungated.
+          TOOLS: `prefab_capture` · `prefab_place` · `prefab_list`
+          `PrefabUtility.CreatePrefab(CellRect, bool copyAllThings, bool copyTerrain)`
+          captures a rect; `PrefabUtility.SpawnPrefab(def, map, pos, rot, faction, spawned)`
+          stamps it back. Guard with `CanSpawnPrefab`.
+          ⇒ authored set-pieces become data: build one sandcrawler wreck by hand, capture it,
+          stamp it anywhere. This is what makes the living-NPC templates cheap.
+verify:   capture a hand-built rect, stamp it elsewhere, diff the two regions cell by cell.
+criteria: a captured region replays with the same terrain and things at the new origin.
+          A visual diff is not enough - compare cell contents.
+state:    ready
+
+## M4 Map grids — fog, snow, sand, gas, deep resource, zones and areas
+row:      bridge-13
+spec:     TOOLS: `unfog_rect`/`unfog_all`/`refog_rect` · `set_snow`/`add_snow_radial` ·
+                 `set_sand`/`add_sand_radial` · `set_deep_resource` · `add_gas`/`clear_gas` ·
+                 `create_zone`/`paint_zone_cells`/`delete_zone` · `paint_area`
+          🔑 `sandGrid` is new in 1.6 and is the twin of `snowGrid` - dune piling.
+          `Area_SnowOrSandClear` is the 1.6 rename of `Area_SnowClear`.
+          ⚠️ `Zone.AddCell` in bulk needs `CheckContiguous()` afterwards.
+          ⚠️ `PollutionGrid` is Biotech-gated; `sandGrid`/`substructureGrid`/`freezeManager`
+          are Odyssey-gated. Report the gate rather than throwing.
+verify:   pile snow and sand, read depth back, screenshot.
+criteria: each grid written and read back; the two DLC-gated ones report their gate cleanly
+          when the DLC is absent rather than erroring.
+state:    ready
+
 ## C-V2 Park any v2 idea in design/V2_DREAMS.md yourself — no permission needed
 row:      doctrine
 spec:     Any idea for new content that is not v1 — including one a live session
