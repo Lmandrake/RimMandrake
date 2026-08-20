@@ -457,3 +457,26 @@ geography. Ocean and SeaIce still score; lakes are reported separately at zero w
 📌 **One command for a fresh load:** `python.exe src/RimMandrake/Utils/first_light.py`
 — tool census, arming audit, texture sweep, world identity, tile validate, lint. All reads,
 about a minute, writes `infrastructure/output/first_light_<date>.md`.
+
+## A game can fail to load and keep answering — CHECK, 2026-08-20
+
+🔴 **`status: game_loaded` is not proof the game loaded.** On 2026-08-20 `rt_probe.rws`
+aborted mid-load — `FactionControl`'s postfix on `CrossRefHandler.ResolveAllCrossReferences`
+threw with the signature of a collection modified during enumeration — the engine called
+`ErrorWhileLoadingGame` → `GoToMainMenu`, and **that bail handler itself NREd** in
+`MapDrawer.Dispose`. The process then ran for hours in a half-disposed state, reporting
+`game_loaded`, answering every bridge call, and returning plausible numbers.
+
+🔑 **THE CANARY, and it costs one call:** `rimworld/list_debug_action_children("Actions")`.
+In a zombie it throws `NullReferenceException` while `Outputs` (233 children) and
+`Settings` (184) answer normally. `first_light.py` now runs this automatically. Run it
+FIRST on any load, before believing anything else.
+
+📌 Secondary tells, all present that day and all easy to explain away individually:
+Vehicle Framework's ColonistBar patch spamming `KeyNotFoundException: key '0'` every
+OnGUI; dozens of `Could not find think node with key …`; and a `Could not get load ID …
+never added during LoadingVars` above the abort.
+
+⚠️ **What still counts from a zombie session:** results about the TOOLS. A tile import that
+reports 21,872/21,872 and validates at 100% really did do that. What does NOT count is any
+claim about the game's state, its save, or its behaviour.

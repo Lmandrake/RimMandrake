@@ -369,3 +369,15 @@ the tool was still broken. Only running it proved otherwise, a load later.
 about the CONTEXT too — `assert old in s` catches a typo, but checking that the line sits
 next to `ContainsKey("kind")` is what proves you are editing the call site you meant. A
 build succeeding says the file still compiles, not that your change is in it.
+
+## `.get("children") or []` turns a FAILED call into "zero results"
+
+CHECK, 2026-08-20. `list_debug_action_children("Actions")` was returning
+`success: false` with a NullReferenceException, and my reader did
+`len(r.get("children") or [])` — printing "Actions children: 0". I read that as an empty
+tree and went looking for why dev mode was off. Dev mode was on; the call was failing.
+
+**Assert on `success` before reading the payload.** `or []` is the same defect as ignoring
+an exit code: it converts "I could not answer" into "the answer is nothing", and those need
+completely different responses. Generalises to every `.get(x) or default` over a bridge
+reply.
