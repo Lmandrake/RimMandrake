@@ -852,12 +852,31 @@ numbers off it:
 * **emptied tags** — was 35. The re-tag patch adds 154 weapons' worth of vanilla role
   tags, so most of the vanilla rungs should be full again.
 
-✅ **THE MOD LIST IS 578, exactly what the audit assumed** — so the provisional counts
-above are directly comparable and a difference IS meaningful.
-🪤 It reads 583 if you count `<li>` elements in `ModsConfig.xml`, because five of them are
-in the `<knownExpansions>` block, not `<activeMods>`. Count the children of `activeMods`,
-or you will chase five mods that were never added. (Same family as the knownExpansions
-overcount already recorded in the deploy skill.)
+🔴 **THE MOD LIST IS 576 AS OF 2026-08-20 — the owner swapped the terrain and world-map
+retexture mods, and this is now the current set.** Recorded in
+`infrastructure/state/modlists/ModsConfig.FULL.LATEST.xml`.
+
+```
+OUT (4)  zal.worldmapenhanced · noxilie.regrow.wmb.advancedbiomes
+         noxilie.regrow.wmb.alphabiomes · noxilie.regrow.wmb.morevanillabiomes
+IN  (2)  grimterra.terrainretexturemod · grimterra.worldmap
+```
+
+⇒ **The provisional counts above were taken at 578 and are now one mod-set stale.**
+They remain the right ORDER of magnitude and the right list of names to look for, but
+re-derive rather than diffing against them. This is exactly why
+`weapon_tag_audit.py` refuses to run when the dump and the list disagree.
+⭐ Retextures, so no def should change: all four removed mods and both added ones ship
+textures, not weapons or pawn kinds. If the weapon census moves by more than a rounding
+of the counts, something else changed and it is worth finding out what.
+✅ Checked already: nothing under `src/` references the removed packageIds except the
+provenance blocks of `The Salvation.rid` and `MandrakeJawa.xtp`, which record the mod
+list at SAVE time and are not functional references. `validate_save_artifact.py` re-run
+against the new set: **251/267 resolve, no dangling names.**
+🪤 **Count the children of `<activeMods>`, never `<li>` elements in the file.** A bare
+`grep -c '<li>'` also sweeps in the five `<knownExpansions>` entries and reports a number
+five too high — which I did, and it would have sent someone hunting five mods that were
+never added. Same family as the knownExpansions overcount recorded in the deploy skill.
 
 ✅ **LOAD ORDER CHECKED, and it is clean.** `mandrake.jawa.patches` sits at **573/578** with
 `jawafactionslate`, `zal.worldmapenhanced`, `guy762.kotordroids`,
