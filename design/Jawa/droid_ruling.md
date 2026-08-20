@@ -23,17 +23,48 @@ work — but the *choices* are made now.
 | **KotOR** (`guy762.KotORDroids`) | ✅ both | ✅ **THE capture target. Must NOT detonate on ion.** |
 | **Outer Rim Droid Depot** (`Neronix17.OuterRim.DroidDepot`) | ✅ both | unchanged by this ruling; still capturable via data spike |
 
-### JDS droids blow up, and that is the point
+### JDS droids are never taken alive — and that is the point
 
 > Owner: *"JDS droids are all seriously battle droids, and it's totally ok if they
 > blow up when downed and cannot be captured by Jawa. It actually makes sense,
 > since they are built for combat and would not want the enemy just reprogramming
 > them."*
 
+🔴 **THE RULING HOLDS. THE MECHANISM BELOW IS THE CORRECTED ONE — measured
+2026-08-13, merged here 2026-08-20 (closes `design/V2_DREAMS.md` B19).** This
+section used to be headed *"JDS droids blow up, and that is the point"*, which read
+as a description of the mod. **It is not one.** Measured across all three active
+droid mods:
+
+- **`M3.Continued.JangoDsoul.StarWars.TSDA` contains no `deathAction`, no
+  `CompExplosive` and no DLL at all.** No JDS droid self-destructs.
+- **Exactly one droid in the entire stack self-destructs** —
+  `guy762_DroidRace_KX12APD`, the K-X12 assassin probe, via
+  `DeathActionWorker_BigExplosion` (`AlienRace_KX12probe.xml:479`). That is a
+  KotOR def, not a JDS one.
+- **The real mechanism is `fleshType Mechanoid`.** `Pawn_HealthTracker::CheckForStateChange`
+  forces `deathOnDownedChance = 1.0` when `IsMechanoid` — see §2. A JDS droid that
+  *would* be downed is **killed instead**. Uncapturable by force-kill, not by blast.
+- **The wreck is ordinary salvage and the mod ships its own repair recipes**
+  (`JDSCIS_ResurrectDroid_Light` / `_Heavy`, 1 corpse + 150 steel) that rebuild it
+  into a working droid.
+
+⭐ **The owner's intent survives the correction intact, and gains something.** JDS
+droids still cannot be captured and still must not be ion-stunned for capture —
+but their wrecks rebuild, so the Jawa fantasy applies to the *corpse* rather than
+to the standing chassis. **Nothing has to be removed from the mod to get the ruled
+behaviour; it is already the shipped behaviour.**
+
+⚠️ **The explosion tier in §6 is OUR DESIGN, not a claim about this mod.** §6
+authors an `explodeOnKilled` tier for energy-dense units. That is additive and
+unaffected by the above — do not read §6 as evidence that JDS droids already explode.
+
 ⚠️ **So `fleshType Mechanoid` on JDS droids is no longer a GAP — stop filing it as
 one.** §4's gap table and §11 treat "JDS cannot be downed" as a problem to solve.
-It is not. It is the designed behaviour of a purpose-built combat droid that
-scuttles rather than be captured, and the fiction is better for it.
+It is not. It is the designed behaviour of a purpose-built combat droid, and the
+fiction is better for it.
+
+_Measurement of record: `design/Jawa/worldbuilding/droid_taxonomy.md`._
 
 This also **retroactively vindicates the ion guard shipped on 2026-08-12**, which
 used `IsMechanoid` rather than `!IsFlesh` and thereby excluded JDS droids. That was

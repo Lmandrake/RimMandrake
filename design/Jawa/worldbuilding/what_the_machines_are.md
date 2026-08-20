@@ -63,7 +63,8 @@ mechanism from raids — measured today.** Ancient dangers and sealed complexes 
 populated by a predicate over pawn kinds (`allowInMechClusters`, `isFighter`,
 `combatPower`), **never by `pawnGroupMakers`**. 21 of 93 mech kinds already sit in
 exactly that state: eligible for a sealed complex, present in **zero** raid
-groups. **So we can empty the Mechanoid raid roster entirely and the ruins keep
+groups (the census is `design/Jawa/worldbuilding/data/mech_control_axes.md` — 93 rows,
+21 with `clusterAndAncientEligible=True` and `raidOptionSlots=0`). **So we can empty the Mechanoid raid roster entirely and the ruins keep
 their guards.** The fiction and the engine want the same thing.
 
 ⭐ **3. "Triggered by the player flying their ship about" is the best part of the

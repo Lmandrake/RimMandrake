@@ -77,8 +77,12 @@ humanlike, 99999 for every animal-race droid — including the mouse droid). Its
 classification rests on automaton comp flags and authored skills alone. **If a
 build decision turns on it, check it live first.**
 
-## Filed, not fixed
+## ✅ Filed AND fixed — 2026-08-20
 
-**`design/Jawa/droid_ruling.md` needs its mechanism corrected** — the ruling it
-reaches (JDS uncapturable, do not bother ion-stunning them) still holds, but the
-stated reason is wrong. **Not my file.** The correction is the paragraph above.
+**`design/Jawa/droid_ruling.md` has been corrected.** Its §"JDS droids are never
+taken alive" now carries the measured mechanism from this document, and the old
+heading *"JDS droids blow up, and that is the point"* is gone. `design/V2_DREAMS.md`
+B19, which tracked the discrepancy, is closed.
+
+**This file stays the measurement of record** — the three-family table below is
+what `droid_ruling.md` cites.

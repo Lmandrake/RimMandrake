@@ -123,10 +123,10 @@ spec:     W3–W7 live only in `water_doctrine.md`. Junker doctrine still assume
 verify:   no dossier contradicts `water_doctrine.md`.
 criteria: EMPTY
 
-## B19 `design/Jawa/droid_ruling.md` states a mechanism that is not in the defs
+## ~~B19 `design/Jawa/droid_ruling.md` states a mechanism that is not in the defs~~ — ✅ **CLOSED 2026-08-20**
 spec:     JDS droids do not explode — they are force-killed on downing and their wrecks are repairable. The ruling holds; the stated reason is wrong. Rewrite the mechanism.
 verify:   the stated mechanism matches the defs.
-criteria: EMPTY
+criteria: MET. `droid_ruling.md` §"JDS droids are never taken alive" now states the measured mechanism (`fleshType Mechanoid` → `deathOnDownedChance = 1.0`), records that the mod ships no `deathAction`/`CompExplosive`/DLL, names the one droid in the stack that does self-destruct (`guy762_DroidRace_KX12APD`, a KotOR def), and warns that §6's explosion tier is our design rather than the mod's behaviour. The old heading is gone. **Do not action from this row.**
 
 ## B24 Armoury mid-tier reference `[v2]`
 spec:     Echani Foil (AP **1.33**) vs Excellent durasteel heavy armour (Sharp **1.05**) -> effective armour **zero**; the lightsaber got only **27.5** through the same suit. Add a Yautja blade (AP **0.60**) to land a tier between them. If the Yautja mod is cut, re-anchor on another mid-tier weapon.

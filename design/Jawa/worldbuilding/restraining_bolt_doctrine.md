@@ -1,5 +1,11 @@
 # The restraint bolt — making the campaign's moral problem cost something
 
+> 🔑 **This is the FICTION and the INTENT. The build spec is
+> `design/Jawa/worldbuilding/restraining_bolt_technical.md`, and where the two
+> disagree about a number, the technical doc wins** — it was written against the
+> disassembled engine and it changed the accounting from an offset to a ceiling.
+> Everything about *why* the mechanic exists is here and is unchanged.
+
 _A retired seat, 2026-08-13. **Owner's concept**, recorded the moment it was raised:_
 
 > *"We should drop faction goodwill every time we use a restraint bolt, to the
@@ -188,7 +194,24 @@ and no tuning fixes it because what is missing is the equilibrium itself.
 **There is no outcome in which this concept cannot ship.** Only the accounting
 moves.
 
-## The curve — specified now, so the build is not waiting on me
+## 🔴 SUPERSEDED BELOW — the curve is a CEILING, not an offset
+
+> **The numbers in this section were answered and CHANGED by
+> `design/Jawa/worldbuilding/restraining_bolt_technical.md`, 2026-08-13.**
+> Read that file before building or quoting anything from here.
+>
+> **What changed:** the offset-and-clamp shape below cannot work — vanilla goodwill
+> drift is **constant** (±10 at most once per 3,000,000 ticks, and zero inside ±50
+> of natural), so 2, 12 and 40 bolts would all land at the same place. The build is a
+> `GoodwillSituationDef` whose worker returns **`maxGoodwill = 100 − 2.5N`, floored at
+> −70** — a ceiling. And **−70, not −100**: hostility fires at ≤−75, so a −100 clamp
+> declares war at 30 bolted droids, which §R2 below explicitly forbids.
+>
+> **What survives unchanged:** the coefficient 2.5, the HELD-not-ever-fitted rule
+> (§R1), the clamp-above-hostility requirement (§R2), and every design intent in this
+> document. Only the accounting moved.
+
+## The curve — as originally specified (⚠️ numbers superseded, intent intact)
 
 **If a continuously-recomputed standing offset is available** (a retired seat's
 `GoodwillSituationWorker` lead — unconfirmed), the offset should be computed from
@@ -258,9 +281,10 @@ raid**, off a cliff, with no guarantee that freeing droids walks it back.
 > **Bolt count sets how much they will HELP you. It never sets whether they
 > SHOOT at you.**
 
-- **Clamp the offset above the hostility threshold** — a retired seat supplies the exact
-  number; the design requirement is that the worst reachable state is *"coldest
-  possible, still trading"*.
+- **Clamp the offset above the hostility threshold.** ✅ **The number arrived:
+  hostility fires at effective goodwill ≤ −75** (`FactionRelation::CheckKindThresholds`,
+  IL_0021), so the floor is **−70** — see `restraining_bolt_technical.md`. The design
+  requirement is that the worst reachable state is *"coldest possible, still trading"*.
 - **Hostility with the Enclaves remains reachable — by doing something to them.**
   Raiding them, refusing them, siding against them. **A war should be a decision,
   not something that accrues while you are thinking about water.**

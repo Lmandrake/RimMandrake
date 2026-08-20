@@ -1,3 +1,23 @@
+> 🔴 **§1 (DEADLIER MECHANOIDS) IS DEAD — SUPERSEDED BY AN OWNER RULING, 2026-08-13.**
+> Verbatim: *"Mechanoids for now should be turned off in the scenario: we just don't need
+> them, and they bring in a lot of strange content we'd have to heavily augment."*
+> (`design/Jawa/droid_ruling.md` §"Mechanoids are OFF".)
+>
+> ⛔ **Do not adopt anything from §1** — Reinforced Mechanoids 2, Mechanoids: Total
+> Warfare, Mechanoid Invaders, More Mechanoids, Odyssey Mechanoid Raid Adjustment, or
+> the VFE-Mechanoids enemy-side keep. They tune a mech-raid threat the campaign no longer
+> has. §7's "Recommended adopt set" is dead for its mech half for the same reason.
+>
+> **What replaced it:** mechs are no longer a faction or a raid source. They are the
+> Forsakens' automatic defence grid, met in ancient dangers, sealed complexes and
+> clusters on the player's initiative — `design/Jawa/worldbuilding/what_the_machines_are.md`.
+> Removing the Mechanoid raid roster is deliberate and the ruins keep their guards
+> regardless (measured: 21 of 93 mech kinds are already cluster-eligible with zero raid
+> slots — `design/Jawa/worldbuilding/data/mech_control_axes.md`).
+>
+> ✅ **STILL LIVE:** §2 (animals), §3 (events/threats), §4 (the four named mods), §5, §6.
+> Nothing in this banner touches them.
+
 > "Faction Filter" never existed; the live equivalents are **Sensible Factions** (3531306011) and **Faction Control** (2882785581).
 
 # Making the World More Interesting — Deadlier Mechs, Crazy Animals, Unusual Threats
