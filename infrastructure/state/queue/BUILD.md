@@ -69,6 +69,40 @@ verify:   `validate_patch.py --defs` 0 errors; every `weaponTags` string appears
           on at least one live weapon def; every `apparelRequired` defName
           resolves.
 criteria: each faction's raids field the intended roles, not one flat kind.
+🔴 **UNBLOCKED, AND PROMOTED — 2026-08-19. This is not a polish item; four factions
+          currently field raids that ARRIVE UNARMED.** Measured off the def dump, which is
+          post-inheritance and post-patch:
+
+          | faction | combat slots | that cannot hold a weapon |
+          |---|---|---|
+          | Jawa_AscendantHelix | 3 | **3** |
+          | Jawa_DeepwaterCompact | 3 | **3** |
+          | Jawa_FreeDroidEnclaves | 6 | **6** |
+          | Jawa_WildsteamClan | 2 | **2** |
+          | Jawa_HuttCartel | 4 | 3 |
+          | Jawa_GeonosianFoundryHive | 6 | 2 |
+          | Jawa_Junkers · Jawa_IndigenousTribes | 7 · 3 | 1 each, both now fixed |
+
+          🔑 THE CAUSE IS NOT THE CHERRYPICK. Every one of those entries is a SPECIES
+          SAMPLER, not a soldier: `RimMandrake_Arkanian`, `_Kaminoan`, `_Quarren`,
+          `_MonCalamari`, `_Wookiee`, `_Nikto`, `_Geonosian`, `OuterRim_*Droid` all read
+          `isFighter: false`, `combatPower: 40`, `weaponMoney: 0~0` and **no `weaponTags`
+          at all**. They are dev-spawn scaffolding that the FactionDefs put into Combat
+          `pawnGroupMakers`. A kind with no weapon tags is handed no weapon.
+          ⇒ **This is precisely what the roster said** — *"every donor kind is a flat
+          species kind at combatPower 40 … there is no lieutenant, elite or specialist to
+          borrow"* — and it is why the 48 kinds are REQUIRED (R20), not optional.
+
+          ✅ **THE BLOCKER IS GONE.** Chain step 3 owed "the actual tag strings carried by
+          the surviving weapon and apparel defs". They are now derivable in one command:
+          `python3 src/RimMandrake/Utils/weapon_tag_audit.py`, which reads the dump,
+          refuses unless its mod set matches `ModsConfig.xml`, and reports every tag the
+          cut emptied plus every kind left with nothing. **Write no tag that it does not
+          show as having a surviving carrier.**
+          ⚠️ Its numbers are PROVISIONAL until a dump is regenerated under the full list —
+          the current one is `modCount 579` against 578 active.
+          ⏭️ `combatPower` still has to be assigned per the roster; the samplers' flat 40
+          is exactly the thing being replaced.
 state:    ready — 🔴 **SEQUENCING REVERSED BY THE OWNER, 2026-08-19: BUILD IT ALONGSIDE
           THE ROSTER.** Pawn kinds and FactionDefs reference each other, so building them
           together avoids authoring every `pawnGroupMaker` twice. The superseded 2026-08-15
