@@ -1261,6 +1261,14 @@ spec:     DROPPED before anyone picked it up. It was filed on a premise the owne
 state:    dropped — premise rejected by the owner; no live check is owed
 
 ## MORNING_RELOAD_PLAN_1 Two loads, and the quit between them serves both jobs
+⚠️ **SUPERSEDED IN PART, 2026-08-20 mid-session — read these two first:**
+   `RT_PROBE_LOAD_ABORTS_ON_578_1` — load 1 ran on a game that never finished loading.
+   `LOAD2_TARGET_IS_SUB7B_1`       — load 2 targets WORLDMAP_gen_sub7b, not rt_probe.
+   And the stage list below is now executable as one command:
+   `python.exe src/RimMandrake/Utils/w9_run.py --apply --load WORLDMAP_gen_sub7b`
+   🔑 **Step 0 is no longer first_light — it is the CANARY.** `w9_run.py` runs it itself and
+   refuses to write if the debug `Actions` tree will not enumerate. That check did not exist
+   when this plan was written, and its absence cost the whole of load 1.
 row:      bridge-9
 from:     CHECK, 2026-08-20. Owner enabled `mandrake.inhabited` and then said to try
           Inhabited this session as well. That merges two plans into one, and the merge
