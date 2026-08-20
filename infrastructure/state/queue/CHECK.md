@@ -1126,37 +1126,26 @@ state:    ready — 🔴 THE VALUES ARE A CONTENT CALL. Raising weaponMoney to b
 
 ## lightsaber-armour-penetration-reads-zero-offline-but-the-mod-computes-it-in-c-sharp-6a91d3
 row:      —
-from:     BUILD, 2026-08-20, after the owner said a lightsaber "should really just chop-chop
-          through" stormtrooper armour. He may well be right; I could not prove it offline
-          and I am not shipping a patch on an unproven premise.
-spec:     🔴 WHAT IS MEASURED. In the 577-mod dump, **all 14 `Force_*` lightsabers carry
-          blade tools at power 92-120 with `armorPenetration` 0.** Their own abstract
-          parent `Force_LightsaberBase` declares point and edge at power 28 with
+from:     BUILD, 2026-08-20.
+spec:     🔴 **ONE READING IS ASKED FOR. Nothing else, and no build decision rides on this
+          item** — the number comes back here, BUILD decides what to do with it.
+          WHAT IS MEASURED OFFLINE: in the 577-mod dump, all 14 `Force_*` lightsabers carry
+          blade tools at power 92-120 with `armorPenetration` **0**. Their abstract parent
+          `Force_LightsaberBase` declares point and edge at power 28 with
           `armorPenetration 1`, so the shipped values are neither the parent's power nor
-          the parent's penetration — something replaces both.
-          ⛔ WHY I STOPPED. `Lightsaber.dll` exports `AdjustedArmorPenetration`,
-          `GetArmorPenetration`, `get_ArmorPenetrationInt` and `SelectWeightedTool`. **The
-          mod computes armour penetration in C# at runtime**, so the 0 in the tool field
-          may simply not be the number the game uses. A def dump is XML state; it is not
-          evidence about a value a comp calculates.
-          ⇒ I built the patch (29 ops, AP 2.0, blade tools only) and then deleted it: every
-          op reported 0 matches offline because only the ABSTRACT declares `<tools>` on
-          disk, and correcting that would have shipped a real change on top of a premise I
-          had not established.
+          its penetration — something replaces both.
+          ⛔ WHY OFFLINE CANNOT SETTLE IT: `Lightsaber.dll` exports
+          `AdjustedArmorPenetration`, `GetArmorPenetration`, `get_ArmorPenetrationInt` and
+          `SelectWeightedTool`. **The mod computes armour penetration in C# at runtime**,
+          so the 0 in the tool field may not be the number the game uses. A def dump is XML
+          state; it is not evidence about a value a comp calculates.
 verify:   n/a offline — that is the finding.
-criteria: 🔴 SETTLE IT IN GAME, and it is one look, not a load: equip any lightsaber and
-          read **Armor Penetration** off the weapon's info card. The card shows the value
-          the game will actually use, comp included.
-          - If it reads ~0%, the finding stands: a lightsaber is negated roughly half the
-            time by stormtrooper plate (Heat 0.98) and **cannot damage the heaviest armour
-            in the set at all** (2.00 = 100% negation). The fix is the patch above,
-            regenerated in minutes.
-          - If it reads high, nothing is wrong and the dump's tool field is simply not the
-            operative number — which is itself worth writing down, because every offline
-            damage calculation this project makes about melee would inherit the same error.
-          ⚠️ Either way, the SECOND half of the measurement is unaffected and stands: the
-          armour ratings are real, so the shots-to-kill table for RANGED weapons (blaster
-          2.8 hits, bowcaster 2.1, slugrifle 1.6, sonic 8.7) does not depend on this.
+criteria: **Equip any lightsaber and read the `Armor Penetration` figure off the weapon's
+          info card. Report the number.** That is the whole ask; it needs no map, no
+          spawn and no combat.
+          ⚠️ Report it even if it looks unremarkable — an ordinary-looking number is the
+          result that tells BUILD the offline reading was wrong, which is worth as much as
+          a bad one and is the more likely outcome.
 state:    ready
 
 ## ANCIENT_DANGER_GARRISON_1 Prove mechs still garrison ancient dangers once PursuingMechanoids is removed
