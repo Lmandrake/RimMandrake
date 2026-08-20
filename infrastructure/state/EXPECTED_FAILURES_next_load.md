@@ -961,9 +961,10 @@ cannot be recovered after launch: **the state the machine was in before it start
 |---|---|---|
 | **E1** | `JawaBench.BridgeTools.dll` — `C:\Program Files (x86)\Steam\steamapps\common\RimWorld\BridgeTools\JawaBench\` | md5 **`04cb0977e66af0cb58d9c6f6ecf40acc`**, byte-identical to CHECK's build claim. **112 `jawa/` tool names in the assembly against 106 live last session — six new, none ever exercised in a running game.** |
 | **E2** | all four mod assemblies | `Inhabited.dll`, `JawaIonWeapons.dll`, `JawaPlantGrowth.dll`, `RimDefDump.dll` — **every one md5-identical repo↔game.** No assembly is ahead of its deployed copy, so this load carries **no new DLL** and nothing needs the shutdown window |
-| **E3** | `ModsConfig.xml` | `<activeMods>` **577**, mtime 2026-08-20 00:49. Matches `ModsConfig.FULL.LATEST.xml` md5 `5cb6857188b284243c1c628f17cd0120` — **the owner's real list, not the minimal spike** |
-| **E4** | `mandrake.inhabited` | 🔴 **DEPLOYED BUT NOT ENABLED — deliberately, and it is the owner's call.** The folder is byte-verified in `Mods\Inhabited`; the packageId is absent from `ModsConfig.xml`. ⇒ **`Inhabited.dll` has still never been loaded by the engine.** Every `Inhabited` debug action is uncollectable until he ticks it |
-| **E5** | def dump | 🔴 **ARMED** — `DefDump\dump_request.txt` reads `all`, and **the marker is not consumed**. The dump on disk is **already current** (fingerprint `fcdc0322cf61d672`), so if the list is unchanged this costs ~27 s and ~1.2 GB for nothing. ⚠️ **But it is CORRECT insurance if E4 is ticked** — adding a mod lapses the dump the instant it loads. Leave it armed; delete it after, or every future load pays again |
+| **E3** | `ModsConfig.xml` | `<activeMods>` **578**, md5 `deefb393e95824c48a700efa0fa734bb`, rewritten **07:37:24** — ⚠️ **updated after this block was first written: the owner enabled Inhabited himself in RimSort.** Frozen `ModsConfig.FULL.LATEST.xml` matches, so a later `modlist_swap --restore` will NOT silently switch it back off |
+| **E4** | `mandrake.inhabited` | 🟢 **NOW ENABLED — index 577 of 578, last in load order, after `brrainz.harmony` (1) as its `loadAfter` requires.** 17 files in sync, 269 `CharacterDef`s across 11 cast rosters. 🔴 **This is a C# assembly the engine has NEVER loaded**, so it rides with the world stages against the skill's solo rule — signatures below are what make that affordable |
+| **E5** | def dump | 🟢 **ARMED, and now unambiguously CORRECT.** The dump on disk (`fcdc0322cf61d672`) described the 577-mod set and **lapsed the moment E4 was ticked**; this load must retake it or every `--live` check afterwards is measured against a game that no longer exists. ⚠️ **The marker is not consumed — delete `dump_request.txt` after this load** or every future one pays ~27 s and ~1.2 GB again |
+| **E7** | savegame mod records | `sync_mod_state.py --apply` reconciled 6 files to **578 mods / rev591** (`WORLDMAP_gen`, `_sub7`, `_sub7b`, `_sub8`, `rt_probe`, plus `ModsConfig`'s `<version>`). Backups alongside as `*.bak-sync_mod_state`. ⇒ **no mod-list mismatch warning when a WORLDMAP save is opened** |
 | **E6** | `Jawa_Patches` and every other deployed mod | plan reports **in sync**, no `-` line anywhere. `GalacticEmpire.xml` validates **0 errors, 14/14 operations matching exactly 1 node** against the full 577-mod def set |
 
 ## §4 the one signature worth writing down in advance
@@ -976,6 +977,32 @@ not a log string. The one thing a log can settle that eyes cannot:
 | `first_light.py` reports **112** `jawa/` tools | ✅ the deployed companion is the one measured; every `jawa/*` result this load is evidence |
 | it reports **106**, or any other number | ⛔ **STOP.** The game loaded a different companion than the one byte-verified at E1 — most likely a stale copy elsewhere on the path. Nothing from the six new tools counts until that is explained |
 | `world_links_import` refuses `world/ASHKARR_WORLDMAP_links.csv` | 🔴 **the known risk, stage 2 of 7.** The format fix landed in `47dcaf0` and has **never run**. Debug it before stages 3–7; do not skip past it, because every later stage renders on top of links |
+
+## §4 the Inhabited signatures — MANDATORY, it is an assembly that has never run
+
+🔴 **Written before launch, per the waiver condition.** `Inhabited` calls
+`PatchAll` on two Harmony patches whose targets resolve **at startup**, so the
+dangerous failures all land in the first seconds and are distinguishable from the
+world-stage work by their prefix alone. Every line below is `[Inhabited]` or names
+the mod's own types — **nothing here can be confused with a `jawa/world_*` failure**,
+which is what makes batching it with the seven world stages affordable.
+
+| signature | verdict |
+|---|---|
+| **nothing at all with an `[Inhabited]` prefix, anywhere in the log** | 🔴 **NOT LOADED — not "no effect".** The mod is last in load order and its defs are inert. Check the packageId survived RimSort's write before concluding anything else |
+| `HarmonyException` / `AmbiguousMatchException` naming `QuestGen_Pawns.GeneratePawn` | 🔴 **the predicted failure, and the most likely one.** `Patch_BeggarsFromPool` pins a specific overload by parameter list; the source comment flags that a wrong list throws at startup. **The whole mod's patches fail together** — `PatchAll` is not per-patch |
+| `HarmonyException` naming `Game.DeinitAndRemoveMap` | 🔴 same class, `Patch_MapRemoval`. Survivors would not return to the roster |
+| `[Inhabited] WorldObjectDef Inhabited_Place did not load.` | 🔴 the def half failed while the assembly loaded. Places cannot be created; every debug action below is uncollectable |
+| `[Inhabited] no CharacterDefs loaded. Run cast_to_xml.py --write and redeploy.` | 🔴 the 269 cast defs did not parse. **Predict 269** — any other number is a partial parse and the roster is not what was authored |
+| `[Inhabited] created <name> at tile <N>` | ✅ **the positive observation.** Dev mode → debug actions → `Inhabited` → *Create place at current tile* |
+| `[Inhabited] roster of <place> now holds 3.` | ✅ *Stuff roster (3 pawns)* worked; the `ThingOwner<Pawn>` accepted real pawns |
+| `[Inhabited] roster refused <pawn>` | 🔴 the container rejected a pawn — the architecture claim itself is in doubt |
+
+⚠️ **The false pass.** `PatchAll` throwing does **not** stop the defs loading, so
+`Spawn authored character` can still list all 269 people and look healthy while
+**both Harmony patches are dead** — meaning nothing returns to a roster and no
+beggar is ever drawn from the pool. **A working spawn menu is not evidence the
+patches bound.** Only the absence of a `HarmonyException` is.
 
 ## §4 Results
 
