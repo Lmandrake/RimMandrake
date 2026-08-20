@@ -639,7 +639,32 @@ verify:   change each field on a spawned pawn and read it back RAW; screenshot t
 criteria: every field round-trips, AND the conflict check refuses a genuinely conflicting
           trait rather than silently stacking it, AND the skill read-back is verified
           against `GetLevel(false)` rather than the aptitude-inflated getter.
-state:    ready
+state:    ✅ DONE — PASSED 2026-08-19. Every clause including both hard ones.
+result:   SHIPPED: `pawn_get` · `set_pawn_identity` · `set_pawn_backstory` · `pawn_traits` ·
+          `set_pawn_skill` · `set_pawn_appearance`.  (new file `JawaBenchPawnTools.cs`)
+          ✅ IDENTITY: "Peter 'Merandil' Von Bergen" -> **"Kel 'Rustjaw' Vex"**, title
+             "lost soldier" -> "keeper of the third crawler".
+          ✅ **THE TRAIT CONFLICT CHECK WORKS AND IS OURS.** Added `Kind`; adding
+             `Psychopath` was **refused** with `conflictsWith: ['Kind']`; `force=true` then
+             stacked it deliberately; remove took it back out; and degree 99 on `Kind` was
+             refused with the valid list `[0]`. RimWorld's own `GainTrait` would have
+             stacked all of that silently - there is no cap and no check in `TraitSet`.
+          ✅ **THE BACKSTORY REFRESH IS PROVEN LOAD-BEARING, not theoretical.**
+             SoldierExperiment50/LostSoldier13 -> MedievalSlave49/Novelist7, and the
+             pawn's DISABLED SKILL SET MOVED from `['Cooking']` to `['Social']` with
+             `disabledWorkTypes` becoming Warden/Hauling/Cleaning/Childcare. All four
+             refresh calls reported success. ⚠️ The game's own debug tool runs only
+             `MeditationFocusTypeAvailabilityCache.ClearFor` - the other three are why the
+             disabled set actually moved.
+          ✅ SKILL: Shooting 4 -> 14, passion Major, `readBackMatches` TRUE against
+             `GetLevel(false)`. `pawn_get` reports `levelRaw` AND `levelEffective` side by
+             side so the aptitude inflation can never be mistaken for a failed write.
+          ✅ APPEARANCE: hair and skin colour written, `rendererDirtied: true`.
+             skinColorOverride is used deliberately - `SkinColorBase` is `[Unsaved]`.
+          ⭐ REFUSAL WORTH KEEPING: `set_pawn_skill` refuses outright on a TOTALLY DISABLED
+             skill rather than writing a level nothing will ever read.
+          📌 My first backstory attempt failed on two INVENTED defNames. 1,225 BackstoryDefs
+             ship; they are `MedievalSlave49`-style, never guessable. Read the dump.
 
 ## P2 Pawn loadout and body — equipment, apparel, inventory, health, needs
 row:      bridge-15
