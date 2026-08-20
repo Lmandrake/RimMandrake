@@ -852,9 +852,19 @@ numbers off it:
 * **emptied tags** — was 35. The re-tag patch adds 154 weapons' worth of vanilla role
   tags, so most of the vanilla rungs should be full again.
 
-⚠️ **THE MOD LIST IS 583, NOT THE 578 EVERY EARLIER NUMBER ASSUMED.** Five mods joined
-since the audit ran. **Expect the counts to move, and do not treat a difference as a
-regression** — re-derive, do not compare against the provisional figures above.
+✅ **THE MOD LIST IS 578, exactly what the audit assumed** — so the provisional counts
+above are directly comparable and a difference IS meaningful.
+🪤 It reads 583 if you count `<li>` elements in `ModsConfig.xml`, because five of them are
+in the `<knownExpansions>` block, not `<activeMods>`. Count the children of `activeMods`,
+or you will chase five mods that were never added. (Same family as the knownExpansions
+overcount already recorded in the deploy skill.)
+
+✅ **LOAD ORDER CHECKED, and it is clean.** `mandrake.jawa.patches` sits at **573/578** with
+`jawafactionslate`, `zal.worldmapenhanced`, `guy762.kotordroids`,
+`btd.gbp.shippack.kotor.vge` and `rimdefdump` after it. Every `defName` targeted by every
+patch in `Jawa_Patches/Patches/` was resolved to its owning mod and compared against that
+position: **0 targets are owned by a mod that loads later.** A patch whose target has not
+loaded yet matches nothing and logs nothing, so this was worth the two minutes.
 
 ⚠️ `Could not resolve cross-reference` has a known pre-existing floor from the cherrypick
 (25 across 2 defs at the last measurement). What matters is whether any line names a
