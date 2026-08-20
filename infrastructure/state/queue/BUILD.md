@@ -342,3 +342,34 @@ verify:   `python3 -c "import sys; sys.path.insert(0,'src/RimMandrake/Utils'); i
           succeeds, and both sled build scripts import clean.
 criteria: the two sled scripts run again.
 state:    open — raised by REP, 2026-08-20.
+
+## B-SWAP1 `modlist_swap.py` never prunes its own backups
+row:      0
+spec:     `src/RimMandrake/Utils/modlist_swap.py:60-64`. `snapshot()` stamps a new
+          `ModsConfig.PRESWAP.<ts>.xml` on **every** swap and never compares it to
+          anything:
+
+              stamp = datetime.datetime.now().strftime("%Y%m%d_%H%M%S")
+              dst = os.path.join(STORE, "ModsConfig.PRESWAP.%s.xml" % stamp)
+              shutil.copy2(LIVE, dst)
+
+          Measured 2026-08-20: **five** PRESWAP files had accumulated, and md5 proved
+          **all five were exact duplicates** of the tracked `FULL.LATEST` / `MINIMAL`
+          already sitting beside them. The cleanup pass deleted them; without a fix
+          they come back at the next swap, one per swap, forever.
+          🔑 **The fix is small and the tool already has the piece it needs** — `md5()`
+          is defined at line 27. Before writing, hash `LIVE` against every file already
+          in `STORE`; if it matches one, skip the copy and return that path instead.
+          A backup identical to a file we already keep is not a backup.
+          ⚠️ **Also a tracked duplicate, same class:**
+          `infrastructure/state/modlists/ModsConfig.FULL.20260819_201527.xml` is
+          md5-identical to `ModsConfig.FULL.LATEST.xml` (`5a9a4d3a…`). Both are
+          committed. Decide whether the timestamped copy earns its place or whether
+          `FULL.LATEST` is the only one worth keeping — REP did not delete a tracked
+          file on its own judgement.
+          ⚠️ PRESWAP files are gitignored (`.gitignore:206`), so this was only ever a
+          disk problem, never repo bloat.
+verify:   run a swap twice with no mod-list change; `ls infrastructure/state/modlists/`
+          gains no new PRESWAP file on the second run.
+criteria: the backup store holds one copy of each DISTINCT list, and nothing else.
+state:    open — raised by REP, 2026-08-20, from the cleanup audit.
