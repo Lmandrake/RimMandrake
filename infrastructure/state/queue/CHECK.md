@@ -643,3 +643,21 @@ verify:   done offline — `grep -c requiredCountAtGameStart …/FactionDefs/*.x
 criteria: on the Configure Factions page at the owner's worldgen run, all eight Jawa
           factions arrive at a count of at least 1 without him touching a counter.
 state:    ready
+
+## worldbuilder-preset-is-wiped-at-every-launch-not-just-on-steam-updates-6b1e4d
+row:      10
+spec:     `design/Jawa/worldbuilding/TidallyLocked_Preset.xml` copied verbatim to
+          `C:\Users\Mandrake\AppData\LocalLow\Ludeon Studios\RimWorld by Ludeon Studios\Worldbuilder\TidallyLocked\Preset.xml`.
+          LocalLow is scanned before mod folders and `TryLoadPreset` is first-wins, so this
+          copy outranks the workshop one — which AWF's `[StaticConstructorOnStartup]`
+          `Refresh()` deletes and regenerates as a parameterless stub at EVERY launch.
+verify:   done offline — file present, parses, 15 `Jawa_*` faction entries (a 16th match is
+          the comment header), `myLittlePlanetSubcount 7`, `planetCoverage 1`,
+          `saveGenerationParameters True`.
+criteria: on the world-creation page, the **tidally locked world** preset appears, and
+          Configure Planet reads **Scale 7** and **Coverage 100%**. 🔴 If Scale reads 10,
+          the preset lost its parameters — ABORT, do not generate.
+          Second half, after the next launch: the LocalLow file is still intact and
+          unchanged. The workshop copy WILL have been regenerated as a stub; that is
+          expected and is not a failure.
+state:    ready

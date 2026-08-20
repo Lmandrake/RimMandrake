@@ -2370,7 +2370,8 @@ verify:   the LocalLow file exists and `grep -c Jawa_` returns 15, with
 criteria: on the world-creation page, the **tidally locked world** preset appears, and
           Configure Planet reads **Scale 7** and **Coverage 100%**. 🔴 If Scale reads 10,
           the preset lost its parameters — ABORT, do not generate.
-state:    ready
+state:    done 2026-08-19 — installed in LocalLow before the next launch. 15 `Jawa_*`
+          entries, subcount 7, coverage 1, parses. Live halves filed to CHECK.md.
 
 ## seven-jawa-factions-still-default-to-zero-at-worldgen-4a71c8
 row:      9
