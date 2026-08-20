@@ -12,7 +12,8 @@ could have been read off disk.
 ## 0. 🟢 FIRST: does this load have to be expensive at all?
 
 **Measured 2026-08-19 — a cold load on a 13-mod MINIMAL list is 22 SECONDS**, against ~25
-minutes on the owner's 578. The engine's own clock agrees:
+minutes on the owner's full list (576 as of 2026-08-20 — read
+`ModsConfig.FULL.LATEST.xml`, never a number in a doc). The engine's own clock agrees:
 `[RimBridge] STARTUP_TIMING phase=bridge-start.total elapsedMs=12364`. A quicktest world on
 top costs **5 s**. ⇒ **the whole edit → build → deploy → launch → test cycle is about ONE
 MINUTE.** Everything below about hoarding a load still applies to the owner's real stack —

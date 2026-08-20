@@ -9,7 +9,7 @@ description: Testing anything in RimWorld without spending a cold load — start
 > (`modlist_swap.py`, see the `rimworld-load-round` skill) a **cold load is 22 seconds** and
 > `rimworld/start_debug_game_ready` produces a full quicktest world+map in **5 seconds**.
 > The whole edit → build → deploy → launch → test cycle is about **one minute**. Everything
-> below about protecting a load still holds for the owner's real 578-mod stack; for tool and
+> below about protecting a load still holds for the owner's real full stack (`ModsConfig.FULL.LATEST.xml`); for tool and
 > mechanism work, just relaunch.
 >
 > ⚠️ **What a minimal-list quicktest still cannot prove:** anything depending on real tile

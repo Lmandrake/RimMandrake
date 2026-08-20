@@ -389,12 +389,12 @@ spec:     `src/RimMandrake/Utils/modlist_swap.py:60-64`. `snapshot()` stamps a n
           is defined at line 27. Before writing, hash `LIVE` against every file already
           in `STORE`; if it matches one, skip the copy and return that path instead.
           A backup identical to a file we already keep is not a backup.
-          ⚠️ **Also a tracked duplicate, same class:**
-          `infrastructure/state/modlists/ModsConfig.FULL.20260819_201527.xml` is
-          md5-identical to `ModsConfig.FULL.LATEST.xml` (`5a9a4d3a…`). Both are
-          committed. Decide whether the timestamped copy earns its place or whether
-          `FULL.LATEST` is the only one worth keeping — REP did not delete a tracked
-          file on its own judgement.
+          ~~⚠️ Also a tracked duplicate: `ModsConfig.FULL.20260819_201527.xml` is
+          md5-identical to `FULL.LATEST`.~~ ⛔ **VOID 2026-08-20** — the owner changed the
+          worldmap/terrain texture mods that same day, `FULL.LATEST` became the 576 list,
+          and the timestamped file is now **the only copy of the 578 list**. It is not a
+          duplicate and must not be deleted. The pruning half of this item stands; this
+          half does not.
           ⚠️ PRESWAP files are gitignored (`.gitignore:206`), so this was only ever a
           disk problem, never repo bloat.
 verify:   run a swap twice with no mod-list change; `ls infrastructure/state/modlists/`

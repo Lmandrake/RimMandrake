@@ -453,7 +453,9 @@ spec:     Everything above, used in anger, in the order §12 fixes:
             📌 V1 row 0 (Mod freeze) was UNFROZEN by the owner 2026-08-19 - not a v1
               criterion, not monitored. Capture the live list at worldgen time as shipping
               documentation instead of treating drift as a defect.
-          ⚠️ RESTORE THE FULL 578-MOD LIST FIRST. The frozen world the owner keeps must be
+          ⚠️ RESTORE THE FULL LIST FIRST — `modlist_swap.py --restore`, which reads
+          `ModsConfig.FULL.LATEST.xml`. ⛔ Do not hard-code the count: it was 578, it is
+          576 since 2026-08-20, and it will move again. The frozen world the owner keeps must be
           built on his real stack, not the 13-mod test list. W1's minimal regime is for
           DEVELOPING the tools, never for building the shipped planet.
 verify:   `world_lint` clean, then five tile IDs drawn from the CSV spot-checked against
