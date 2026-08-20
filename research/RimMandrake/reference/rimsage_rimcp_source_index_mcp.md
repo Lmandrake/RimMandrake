@@ -89,7 +89,7 @@ bun run start            # stdio        (or: bun run start:http)
 | `bun` | 🔴 **not installed**, neither in WSL nor on Windows |
 | `node` / `npm` | 🔴 not installed either (irrelevant here — Bun is mandatory) |
 | RimWorld install with `Version.txt` | ✅ `C:\Program Files (x86)\Steam\steamapps\common\RimWorld`, version `1.6.4871 rev590` |
-| decompiled C# source tree | ✅ **already exists** — see §7 |
+| decompiled C# source tree | ✅ `D:\Luke\dev\reference\rimworld-decompiled` — see §7 |
 | `ilspycmd` (to regenerate it) | ✅ `C:\Users\Mandrake\.dotnet\tools\ilspycmd.exe`, v8.2.0.7535 |
 
 ⭐ **The hosted endpoint needs none of this.** `https://mcp.rimsage.com/mcp` requires no Bun,
@@ -119,7 +119,7 @@ against which game version. Treat hosted answers as *unversioned*.
 - **The HTTP transport has no auth, no rate limit, no CORS config** (`src/http.ts:7`). Fine on
   loopback; do not expose it.
 
-## 7. 🔴 The decompiled tree already exists — and it is in Temp
+## 7. The decompiled tree — rescued from Temp, 2026-08-19
 
 Self-hosting needs a decompiled `Assembly-CSharp` source tree (the README notes this is
 permitted under the RimWorld EULA). **We have one already:**
@@ -133,16 +133,17 @@ C:\Users\Mandrake\AppData\Local\Temp\rwdec
 `Verse\ThingDef.cs` and `Verse\Map.cs`) and `RimWorld\` (5,913 files). This is the genuine
 full decompilation, not a sample.
 
-🔴 **It is under `%TEMP%`.** A reboot or any cleanup wipes it, and nothing in this project
-records that it exists or how it was made. That is the same class of exposure as the
-cherrypick decisions were: a real asset on one disk with nothing pointing at it. Two honest
-options — copy it somewhere durable (it is 44 MB of *derived* data, so **not** into git), or
-write down the one command that regenerates it. `ilspycmd.exe` v8.2.0.7535 is installed at
-`C:\Users\Mandrake\.dotnet\tools\ilspycmd.exe`, so regeneration is cheap and provenance
-beats bulk.
+🔴 **It was under `%TEMP%`** — one reboot from gone, with nothing in the project recording
+that it existed. Owner's call, 2026-08-19: copy it somewhere durable AND record its
+provenance. Done:
 
-⚠️ Unverified: whether that tree matches the current `Assembly-CSharp.dll` (DLL dated
-2026-06-30, tree 2026-08-15 — likely current, but nothing checks it).
+```
+D:\Luke\dev\reference\rimworld-decompiled
+```
+
+Outside the repo, so its 42 MB of derived data never enters git. Provenance, the regeneration
+command and the currency check live in
+`research\RimMandrake\reference\rimworld_decompiled_source.md`.
 
 **For contrast, what is NOT usable:** Ludeon's shipped `RimWorld\Source` folder holds only 43
 `.cs` reference examples, 488 KB. And the 6,280 `.cs` under
