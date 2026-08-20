@@ -360,10 +360,10 @@ Before trusting any future rebuild, run it twice and `md5sum` the three CSVs.
 3. **`AB_GelatinousSuperorganism` smears across the top** of the rectangular map. It is
    honest — the poles genuinely sit on the terminator at arc 90 — but it reads as a
    band. Mollweide shows its true size (0.2%).
-4. **Landmarks and tile mutators are not authored at all.** The map has biomes,
-   elevation, rivers, roads and settlements; it has no landmarks. **§12.4 rules how
-   they get there** — vanilla places them, we add a named few — but the named few are
-   not written yet.
+4. **Landmarks and tile mutators.** ⭐ **§13 now rules them** — the ~16 hand-placed
+   named places, the ban list, and the `Dunes` trap that would have stripped the
+   player's own start map of junk, plants and ruins. **The placements are specified
+   but not yet written into the recipe.**
 5. ~~How this map reaches RimWorld is an open design question.~~ **DECIDED — §12.**
    A custom `WorldGenStep` stamps the CSV at worldgen time. CHECK is building it.
    Still untested in game, which is now a build item and not a design one.
@@ -579,3 +579,111 @@ A table on biome, zero on everything else — mangrove 0.85, greater swamp 0.80,
 feralisk jungle 0.45, mycotic 0.40, poison forest 0.35, propane lakes 0.30, fungal 0.25,
 oasis 0.20, grassland 0.05. **The desert is 0.0 and the salt pans are 0.0.**
 Result: 5,010 tiles non-zero, planet mean 0.081.
+
+---
+
+## 13. LANDMARKS AND TILE MUTATORS — ruled 2026-08-19
+
+**114 LandmarkDefs and 336 TileMutatorDefs are live** on this install (45 + 87 vanilla;
+the rest from Vanilla Landmarks Expanded, Alpha Biomes, Geological Landforms, Star Wars
+Animal Collection and others). About **62 landmarks and 110 mutators survive** a filter
+for our biomes. This is not a shortage; it is a curation problem.
+
+### 13.1 🔴 The trap that matters most: `Dunes` is the anti-Jawa mutator
+
+Read straight out of
+`...\RimWorld\Data\Odyssey\Defs\TileMutators\TileMutators_Natural.xml`:
+
+```xml
+<defName>Dunes</defName>
+<preventsLandmarks>true</preventsLandmarks>
+<biomeWhitelist><li>ExtremeDesert</li></biomeWhitelist>
+<maxHilliness>Flat</maxHilliness>
+<junkDensityFactor>0</junkDensityFactor>
+<plantDensityFactor>0</plantDensityFactor>
+<geyserCountFactor>0</geyserCountFactor>
+<preventGenSteps>
+  <li>ScatterRuinsSimple</li> <li>ScatterShrines</li>
+  <li>AncientUtilityBuilding</li> <li>AncientLandingPad</li>
+</preventGenSteps>
+```
+
+A `Dunes` tile has **no junk, no plants, no ruins, no shrines, no ancient structures, no
+geysers and no landmark.** On a campaign whose entire economy is scavenging wrecks, that
+is not "harsh terrain" — it is the mutator that deletes the game's content from the tile.
+
+**Our exposure: 1,083 tiles — 5.0% of the planet — are `ExtremeDesert` AND `Flat`, and
+🔴 THE SETDOWN IS ONE OF THEM.** Tile 2476 is `ExtremeDesert`, hilliness `Flat`. If
+vanilla's Mutators step at order 700 rolls `Dunes` there, the player's opening map has
+nothing on it to scavenge. Exactly one faction holding sits on eligible ground.
+
+⇒ **RULING. `Dunes` is banned on the start tile and every tile adjacent to it,
+unconditionally. Everywhere else it stays.** A dune sea that is genuinely empty is
+correct — the Dune Sea *should* punish anyone who crosses it, and that is 5% of the
+planet doing its job. The defect is not the mutator; it is that the player's home was
+about to be one of them.
+⚠️ The importer must enforce this, because it cannot be enforced by a def.
+
+### 13.2 🔑 A LandmarkDef has no biome field. The legality gate is elsewhere.
+
+`LandmarkDef` has **13 fields and not one of them is `biomeWhitelist`, `minHilliness`
+or `averageTemperatureRange`.** A landmark is legal exactly where its `mutatorChances`
+entry marked `Required="True"` is legal — **the mutator carries the constraints, and
+the landmark inherits them.** Anyone reading `LandmarkDef` alone to decide "can this go
+here" will get the wrong answer every time.
+
+`comboLandmarkMutators` is the merge case: extra mutators applied when a landmark lands
+on a tile that already has one, which is what sets `isComboLandmark` in the save.
+`category` is a free string for world-UI grouping and is **not** a constraint.
+
+### 13.3 Ash'karr's landmarks are NAMED PLACES, not scenery
+
+⭐ **Vanilla rolls the scenery; we hand-place only what the gazetteer already names.**
+§12.4 lets `Landmarks` (650) and `Mutators` (700) run, because by order 20 they are
+picking against our biomes and our hilliness. A second step at **order 660** adds ours.
+
+**Cap the hand-placed set at ~16.** A landmark that is everywhere is wallpaper; the
+whole value of one is that it means a specific place on this specific planet.
+
+| our named place | landmark | note |
+|---|---|---|
+| **The Setdown**, one tile adjacent — never the home tile itself | `Ruins` or `AbandonedColonyOutlander` | ⭐ **where the dead gravship was found and woken.** The campaign's own backstory, on the map. Not on 2476: the ship needs 4,057 clear substructure cells |
+| **The Scald Gate** | `Valley` | the one breach in the Spine. No biome list — gated on `minHilliness: Mountainous` only, which the Spine satisfies |
+| **The Ore Moot** | `AncientQuarry` | *the mine the sandcrawlers were stolen from.* Mountainous; ore-rich |
+| **Sarlacc Ground** | `sw_Sarlacc` | ships in Star Wars Animal Collection; blacklists ice only, `maxHilliness: Mountainous`, and combos onto Dunes/Sandy/Hollow/Chasm/Valley/Cavern — authored for exactly this |
+| **The Rust Cathedral** | `AncientLaunchSite` / `AncientGarrison` | mechanoid, permanently at war |
+| the Scald rim volcanics | `LavaLake` · `LavaCrater` | `LavaField` only — the one volcanic province |
+| the salt pans (`Wasteland`) | `DryLake` or `VEE_SaltPlains` | ⚠️ **verify**: `DryLake` whitelists Desert/ExtremeDesert/AridShrubland, and our salt pans are `Wasteland`. It may not be legal there |
+| the oases (`ZBiome_DesertOasis`) | `Oasis` | temp range **20–60 °C**; our arc 30–60 band runs 38–58 °C, so it fits — but it does **not** fit sunward of that |
+| the deep waste, a few | `AncientHeatVent` | desert-exclusive, and a heat plume on the hottest world in the setting is the right kind of joke |
+| the Junkers' fields | `Ruins` · `AbandonedColonyTribal` | wherever things fell |
+
+⛔ **Never place:** `Iceberg`, `IceDunes`, `Crevasse`, `FrozenRuins`, `VEE_DetachedIceberg`,
+`VEE_IceSpires`, `VEE_GlacialMoraine`, `VEE_PermafrostBasin` (all ice-gated) ·
+`VEE_Cenotes` (explicitly blacklists all three deserts) · `VEE_Mangrove`,
+`VEE_TemperateGrasslands`, `VEE_CoralReef`, `VEE_BurnedForest` (temperate/wet) ·
+`AB_MagmaticQuagmire`, `AB_MutagenicSprings` (need biomes we do not have).
+🔑 The coastal shapes — `Bay`, `Cove`, `Fjord`, `Peninsula`, `Harbor`, `CoastalAtoll` —
+**are** whitelisted for dry biomes, so they are legal, but only on a tile touching one
+of the three waters. They should be rare: this planet is 8.1% water.
+
+### 13.4 What is NOT settled
+
+- ⚠️ **The shortlist cannot be read from `Data/` alone.** Six ACTIVE mods patch the
+  vanilla biome whitelists — More Vanilla Biomes, Star Wars KotOR Resources, GRiNDTerra
+  Biomes, Advanced Biomes (Continued), Comigo's Greater Swamps, Vanilla Gravship
+  Expanded — adding and removing `ZBiome_*`, `AB_*` and `VEE_*` entries. Any legality
+  call must be made against the **patched** defs, not the shipped ones.
+- ⚠️ **Mutator arbitration is inferred, not decompiled.** A conflict appears to be a
+  shared string in `categories`, resolved by `priority` (Oasis 1, DryLake/lava 2,
+  coastal and mountain 5, Cavern 10), with `overrideCategories` letting a mutator claim
+  a different category — every coastal mutator declares `overrideCategories: Mountain`
+  so it beats plain `Mountain`. The resolving method body was **not** read.
+- ⚠️ Whether `preventsLandmarks` stops a mutator landing on a tile that already has a
+  landmark, or the reverse, is untested — and it decides whether our order-660
+  placements survive the order-700 roll.
+- **The Sarlacc is designed twice.** `research/Jawa/rimworld_sarlacc_encounter_current_design.md`
+  specifies a bespoke C# encounter controller, while `sw_SarlaccLair` already ships as a
+  landmark with `extraGenSteps: sw_SarlaccPit`. 🔑 **v1 takes the mod's landmark**; the
+  bespoke encounter is v2 and belongs in `design/V2_DREAMS.md`, not in a queue.
+
