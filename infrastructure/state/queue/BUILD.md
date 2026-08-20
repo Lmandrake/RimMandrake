@@ -247,8 +247,14 @@ verify:   `python3 skills/rimworld-modding/scripts/validate_patch.py <path> --de
           a def from another mod carries the correct `MayRequire`.
 criteria: the faction reads as Homestead Defense League in the world faction list, with the
           leaderTitle from the spec.
-state:    ready
-
+state:    done 2026-08-19. The file was already written; measured rather than assumed.
+          578-mod scoped run: 0 errors, 0 warnings. Every §3 field at its spec value, the
+          three forbidden fields untouched, `raidsForbidden`/`settlementGenerationWeight`
+          correctly `Add`s onto the child. Two header claims were stale and were corrected:
+          it said no `MayRequire` was owed (`AM_WaterPrimacy` needs one and has it), and it
+          said the ideo layer was in another file when it is in this one. `deityPresets`
+          shape re-read off `DeityPreset`/`DeityNameType` rather than trusted. Deployed.
+          Live half filed to `queue/CHECK.md`.
 ## B42 Turn vanilla tribes into the Deep Desert Tribes, and add a water raid
 row:      9
 spec:     `design/Jawa/worldbuilding/FACTION_SPEC.md` section 4. A `PatchOperation` on
@@ -260,8 +266,13 @@ verify:   `python3 skills/rimworld-modding/scripts/validate_patch.py <path> --de
           a def from another mod carries the correct `MayRequire`.
 criteria: the faction reads as Deep Desert Tribes in the world faction list, with the
           leaderTitle from the spec.
-state:    ready
-
+state:    done 2026-08-19. 578-mod scoped run: 0 errors, 0 warnings. Every §4 field at
+          its spec value; `factionNameMaker` and the raid curves untouched. The water raid
+          is one APPENDED group — Combat, commonality 30, maxTotalPoints 800, Tribal_Hunter
+          10 / Tribal_Archer 8 / Tribal_Warrior 4 — which is R26's v1 composition verbatim,
+          with no attempt at the v2 behaviour. Deployed. Live half filed to `queue/CHECK.md`,
+          carrying one call for DECIDE: the patch also removes `disallowedMemes`, which is
+          mechanically needed but is outside what §4 lists.
 ## B43 Turn vanilla pirates into the Blackstar Company
 row:      9
 spec:     `design/Jawa/worldbuilding/FACTION_SPEC.md` section 10. A `PatchOperation` on
@@ -273,8 +284,11 @@ verify:   `python3 skills/rimworld-modding/scripts/validate_patch.py <path> --de
           a def from another mod carries the correct `MayRequire`.
 criteria: the faction reads as Blackstar Company in the world faction list, with the
           leaderTitle from the spec.
-state:    ready
-
+state:    done 2026-08-19. 578-mod scoped run: 0 errors, 0 warnings. Every §10 field at
+          its spec value; no `pawnGroupMakers`, no `factionNameMaker`, no raid or loot
+          curves. 🔴 `permanentEnemy` is touched by no operation and stays `true`, which is
+          what R12 requires. Deployed. Live half filed to `queue/CHECK.md`. `styles: Techist`
+          from the religions spec is not here and belongs to B54.
 ## B45 Create the Hutt Cartel as a new faction
 row:      9
 spec:     `design/Jawa/worldbuilding/FACTION_SPEC.md` section 2 for every field value, plus its "Namers and icons"

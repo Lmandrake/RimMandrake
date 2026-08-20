@@ -806,3 +806,57 @@ criteria: the Empire raids with stormtroopers, not cataphracts, and the faction 
           ⚠️ Both raid tiers must be checked. The common raid (commonality 100) is the one
           that would have silently kept its cataphracts, and it is the one nobody looks at.
 state:    ready
+
+## B41 Turn vanilla outlanders into the Homestead Defense League
+row:      9
+spec:     `src/Jawa/Jawa_Patches/Patches/HomesteadDefenseLeague.xml`, a conditional patch on
+          `FactionDef[defName="OutlanderCivil"]`. Deployed.
+verify:   done offline against the 578-mod list: **0 errors, 0 warnings**; the xpath matches
+          `OutlanderCivil` and nothing else; every field FACTION_SPEC.md §3 lists is set to
+          the spec value. `raidsForbidden true` and `settlementGenerationWeight 1.9` are
+          `Add`s onto the child, which is correct — both live on `OutlanderFactionBase` and
+          a `Replace` would match zero. `pawnGroupMakers`, `factionNameMaker` and the raid
+          curves are untouched. `AM_WaterPrimacy` carries `MayRequire="sarg.alphamemes"`.
+criteria: the faction reads as Homestead Defense League in the world faction list, with
+          leaderTitle `High Marshal`.
+          ⚠️ Also worth one look: `raidsForbidden` is R2's whole mechanism, so the League
+          must never raid. That is only observable over play, not at the faction list.
+state:    ready
+
+## B42 Turn vanilla tribes into the Deep Desert Tribes, and add a water raid
+row:      9
+spec:     `src/Jawa/Jawa_Patches/Patches/DeepDesertTribes.xml`, a conditional patch on
+          `FactionDef[defName="TribeCivil"]`. Deployed.
+verify:   done offline against the 578-mod list: **0 errors, 0 warnings**; xpath matches
+          `TribeCivil` alone; every §4 field at its spec value; `factionNameMaker` and the
+          raid curves untouched. The water raid is exactly one APPENDED `pawnGroupMakers`
+          li — `kindDef Combat · commonality 30 · maxTotalPoints 800`, options
+          `Tribal_Hunter 10 · Tribal_Archer 8 · Tribal_Warrior 4`, no chiefs and no heavies
+          — which is R26's v1 composition verbatim. No behaviour is attempted: "targets
+          containers, disengages once loaded" is a raid strategy a `pawnGroupMaker` cannot
+          express, and R26 puts it in v2.
+criteria: the faction reads as Deep Desert Tribes with leaderTitle `War Chief`, and a raid
+          arrives that is all light infantry — no chief, no heavy. 🔴 The appended group is
+          the 13th; confirm the inherited twelve still fire, because R24a's append is the
+          whole reason this was not a Replace.
+          ⚠️ One call for DECIDE, not a defect: the patch also carries a
+          `PatchOperationRemove` on `disallowedMemes`. It is mechanically needed — the def
+          disallows `Raider` and `PainIsVirtue`, which this faith forces — but it deletes a
+          vanilla node the spec section does not mention.
+state:    ready
+
+## B43 Turn vanilla pirates into the Blackstar Company
+row:      9
+spec:     `src/Jawa/Jawa_Patches/Patches/BlackstarCompany.xml`, a conditional patch on
+          `FactionDef[defName="Pirate"]`. Deployed.
+verify:   done offline against the 578-mod list: **0 errors, 0 warnings**; xpath matches
+          `Pirate` alone; every §10 field at its spec value; no `pawnGroupMakers`, no
+          `factionNameMaker`, no raid or loot curves. 🔴 `permanentEnemy` is not touched by
+          any operation, so it stays `true` as R12 requires. `VME_Bushido` and
+          `VME_Anonymity` carry `MayRequire="vanillaexpanded.vmemese"`. The faith forces no
+          Raider meme, deliberately.
+criteria: the faction reads as Blackstar Company with leaderTitle `Captain`, and it is
+          still permanently hostile.
+          ⏭️ Not implemented and not a defect here: `styles: Techist` from
+          `faction_religions_spec.md` §10. It belongs to B54, the faith pass.
+state:    ready

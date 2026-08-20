@@ -40,15 +40,21 @@
   ⚠️ `raidsForbidden` is the MECHANISM for R2, not a precept. It is what makes
   the League never raid the player, and it has no vanilla default here.
 
-  ⚠️ The ideo layer (`fixedIdeo` / `ideoName` "the Covenant of Free Wells" /
-  `deityPresets`) is NOT in this file. It lands in `FactionReligions.xml` in
-  its own pass, the same way the Empire's did.
+  ✅ The ideo layer (`fixedIdeo` / `ideoName` "the Covenant of Free Wells" /
+  `deityPresets`) IS in this file, at the end of the sequence. It was going to
+  land in a separate `FactionReligions.xml`; it did not, and keeping the faith
+  beside the faction it belongs to is the arrangement that stands.
+  `deityPresets/li` takes `nameType` (`name` + `type`), `gender` and `iconPath` —
+  read off `DeityPreset` and `DeityNameType`, not guessed.
 
   SAFETY
   ======
   Everything sits inside a conditional on the def existing, so the file is a
-  silent no-op rather than a wall of red if the vessel ever moves. Every
-  defName written here is vanilla Core, so no `MayRequire` is owed.
+  silent no-op rather than a wall of red if the vessel ever moves. One defName
+  here is not Core - `AM_WaterPrimacy`, which carries `MayRequire="sarg.alphamemes"`.
+  The Ideology memes are left bare, which is the house convention across every
+  faction file: the DLC is in the frozen list and the whole ideo block is inert
+  without it, so the exposure is a red line at load, not wrong behaviour.
   ============================================================================
 -->
 <Patch>
