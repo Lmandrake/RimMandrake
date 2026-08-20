@@ -265,7 +265,7 @@ def i_factions(s, cfg):
     `OuterRim_GalacticEmpire`; that def is a mod faction nothing patches and nothing
     in the design uses, so its presence or absence proved nothing about our world.
     The Galactic Empire is vanilla `Empire` (Royalty), reskinned by
-    `Jawa_Patches/Patches/ImperialDesertDirectorate.xml`.
+    `Jawa_Patches/Patches/GalacticEmpire.xml`.
     See infrastructure/state/OWNER_DECISIONS.md.
 
     ⚠️ The substitution is a plain string membership test against the defNames

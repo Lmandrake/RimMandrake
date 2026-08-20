@@ -340,7 +340,7 @@ Clan · Deepwater Compact · Geonosian Foundry Hive · **Ascendant Helix** · Ja
 Trade Moot · the Junkers.
 
 🔴 **The shipped Empire patch is on the wrong vessel.**
-`src/Jawa/Jawa_Patches/Patches/ImperialDesertDirectorate.xml` targets
+`src/Jawa/Jawa_Patches/Patches/GalacticEmpire.xml` targets
 `OuterRim_GalacticEmpire`, a mod def. **Re-point it at vanilla `Empire`.**
 ✅ **Confirmed by owner ruling, 2026-08-20** — *"OuterRim_GalacticEmpire is no longer
 in the game, we patch Empire."* `infrastructure/state/OWNER_DECISIONS.md`.
@@ -563,7 +563,7 @@ The Galactic Empire does not site on hydrology. It settles on roads, strategic p
 | Parameter | Setting |
 |---|---|
 | Tech level | Spacer |
-| Vessel | 🔴 **vanilla `Empire`** — measured: `hidden false`, settles. **NOT `OuterRim_GalacticEmpire`.** The shipped patch `src/Jawa/Jawa_Patches/Patches/ImperialDesertDirectorate.xml` targets that mod def and must be re-pointed. ✅ **Owner ruling 2026-08-20 confirms this** — `infrastructure/state/OWNER_DECISIONS.md` |
+| Vessel | 🔴 **vanilla `Empire`** — measured: `hidden false`, settles. **NOT `OuterRim_GalacticEmpire`.** The shipped patch `src/Jawa/Jawa_Patches/Patches/GalacticEmpire.xml` targets that mod def and must be re-pointed. ✅ **Owner ruling 2026-08-20 confirms this** — `infrastructure/state/OWNER_DECISIONS.md` |
 | ~~Starting goodwill~~ | ~~−100~~ **CUT FROM V1** — `FactionDef` has no goodwill field. Hostility is `permanentEnemy: true`. |
 | Permanent enemy | **Yes** |
 | Target settlements | **3** (surface). The **10** in the strategic-balance table is the fiction total across both layers — see the † note there. ~7–8 Imperial holdings are **orbital** and are not world tiles. |

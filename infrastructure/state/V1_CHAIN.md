@@ -282,12 +282,12 @@ takes effect: **the Ascendant Helix is authored from scratch.** Authored count
 goes 7 → 8. Do not book a feasibility check; it is answered.
 
 **R10 · The shipped Empire patch is on the wrong vessel.**
-`Jawa_Patches/Patches/ImperialDesertDirectorate.xml` targets
+`Jawa_Patches/Patches/GalacticEmpire.xml` targets
 ~~`OuterRim_GalacticEmpire`, a mod def.~~ R9 and `WORLDGEN_FACTION_CHECKLIST` R3 both
 put the Galactic Empire on vanilla `Empire`. ⇒ **Re-point the patch.**
 ✅ **DONE, and ratified by owner ruling 2026-08-20** — *"OuterRim_GalacticEmpire is no
 longer in the game, we patch Empire."* (`infrastructure/state/OWNER_DECISIONS.md`).
-Every xpath in `ImperialDesertDirectorate.xml` now targets vanilla `Empire`; the mod def
+Every xpath in `GalacticEmpire.xml` now targets vanilla `Empire`; the mod def
 is not patched by anything and is not the vessel.
 ⚠️ **Consequence: v1 row 1 was closed on a label seen live on a vessel we are
 abandoning. It has to be redone.** Cheap, but it is not already done.
@@ -339,7 +339,7 @@ Rim Imperial pawn kinds as its troops.** Neither document proposed this and it
 is strictly better than either half:
 
 - vanilla `Empire` keeps `settlementGenerationWeight 1` (against 0.3, which is
-  why the Directorate held 1 settlement to the Fallen Dominion's 4) and a working
+  why the Galactic Empire held 1 settlement to the Fallen Dominion's 4) and a working
   `NamerFactionEmpire`, and it satisfies the ratified checklist R3.
 - its combat kinds are `Empire_Fighter_Cataphract` / `Janissary` / `Champion` —
   Royalty's medieval imperials, wrong for this campaign.

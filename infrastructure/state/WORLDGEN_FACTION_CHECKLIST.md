@@ -292,7 +292,7 @@ disgraced local aristocracy, and nothing on this page turns on that reading.
 is the working name. **Screenshot it — that string is the only record.**
 
 ⛔ **THIS WHOLE PARAGRAPH IS DEAD, 2026-08-20 — it tells you to expect a string that
-can no longer appear.** `ImperialDesertDirectorate.xml` was re-pointed on 2026-08-14 and
+can no longer appear.** `GalacticEmpire.xml` was re-pointed on 2026-08-14 and
 **every xpath in it now targets vanilla `Empire`**; it does not mention
 `OuterRim_GalacticEmpire` outside its own comment header. Nothing patches that mod def
 any more, so there is **no expectation to check** on it. The string to look at is on the
@@ -300,17 +300,17 @@ any more, so there is **no expectation to check** on it. The string to look at i
 row should read *Galactic Empire* rather than a generated name once the deploy has
 landed. See `infrastructure/state/OWNER_DECISIONS.md`.
 
-~~🔴 **On the `OuterRim_GalacticEmpire` row, expect "Imperial Desert Directorate" —
+~~🔴 **On the `OuterRim_GalacticEmpire` row, expect "the Galactic Empire" —
 and do not stop for it.**
-`C:\Program Files (x86)\Steam\steamapps\common\RimWorld\Mods\Jawa_Patches\Patches\ImperialDesertDirectorate.xml`
-(repo copy: `D:\Luke\dev\Rimworld\src\Jawa\Jawa_Patches\Patches\ImperialDesertDirectorate.xml`,
+`C:\Program Files (x86)\Steam\steamapps\common\RimWorld\Mods\Jawa_Patches\Patches\GalacticEmpire.xml`
+(repo copy: `D:\Luke\dev\Rimworld\src\Jawa\Jawa_Patches\Patches\GalacticEmpire.xml`,
 byte-identical on disk 2026-08-13) replaces `label` **and** `fixedName` on
-`OuterRim_GalacticEmpire` with **"Imperial Desert Directorate"**, and `leaderTitle`
+`OuterRim_GalacticEmpire` with **"the Galactic Empire"**, and `leaderTitle`
 with **"Sector Director"**. That is the string that will be on the page.~~
 
-~~**It is superseded scaffolding, not a defect.** The Directorate reskin predates
+~~**It is superseded scaffolding, not a defect.** The Galactic Empire reskin predates
 a retired seat's strike of the two-Empire split and has not been redeployed, so the old
-string simply survives. ⚠️ **Seeing "Imperial Desert Directorate" is EXPECTED and
+string simply survives. ⚠️ **Seeing "the Galactic Empire" is EXPECTED and
 is NOT evidence of a bad deploy — do not abort worldgen over it.** If the row
 instead reads the stock **"Galactic Empire"**, that only means the Jawa_Patches
 deploy did not land; **record which of the two strings you saw and carry on** —

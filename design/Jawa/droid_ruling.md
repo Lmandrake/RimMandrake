@@ -231,7 +231,7 @@ Judge the player-side mechanitor payload on the anti-exponential pillars, as
 1. **Remove the vanilla `PursuingMechanoids` ScenPart** from the scenario. It is
    `canBePlayerAddedRemoved: true`, so this is a scenario edit, not a patch.
 2. **Add the `Ruthless Faction Pursuit` part, aimed at the Empire.**
-   ⚠️ **Which Empire is NOT settled** — `required_mods.md` says the Directorate, then
+   ⚠️ **Which Empire is NOT settled** — `required_mods.md` says the Galactic Empire, then
    kills `OuterRim_GalacticEmpire` as the wrong vessel (2026-08-20) and says re-check
    vanilla `Empire`. **Read the live def before pointing the part at anything.**
    Eligibility is `displayInFactionSelection && !isPlayer && canStageAttacks &&

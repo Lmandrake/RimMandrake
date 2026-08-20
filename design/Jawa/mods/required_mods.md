@@ -620,7 +620,7 @@ _Evidence tier: [WS-CONFIRMED] = the Workshop page / packageId / GitHub org veri
 - **✅ KEEP: Vanilla Psycasts Expanded (VPE)** (WS `2842502659`, Jan-2026 → **1.6 CONFIRMED**) — the sole Force substrate. VPE ships the **built-in enemy-cast AI + a storyteller that force-spawns enemy psycasters**, which is *why* enemy casters actually cast rather than stand inert (vanilla enemies never psycast — confirmed `2026-08-05_enemy_psycast_ai`). Deps (from VPE About.xml, verified `2026-08-06_force_and_or_sources_corrected`): **Harmony + Royalty DLC + VEF Core** (all in stack; Royalty is the psylink/psycast base VPE builds on). supportedVersions lists **1.4/1.5/1.6** — 1.6 confirmed. **Do NOT also run Powerful Psycast AI (Continued)** — C#-incompatible with VPE and redundant.
 - **THE GATE — WHO GETS THE FORCE, AND WHICH TREES (all NPC-only; players & Jawa get NONE):**
   - **Dark side → the Empire's Sith-race elite ONLY.** Restrict VPE psylink + a curated **dark-side tree** to the typical Sith xenotypes serving the Empire — **Sith / Massassi / Dathomirian-Nightsister**. Signature powers: **Force lightning** (VPE has a chain-lightning/"Discharge"-type effect to map to this), plus destructive/telekinetic-throw and fear/berserk-style debuffs. These pawns appear in **Empire pawnGroupMakers** only, via Sensible Factions (3531306011) / Faction Control (2882785581) — the Act-III "red-skinned Force elite" tier.
-  - **Light/neutral side → BOTH channels are true [user ruling 2026-08-06, v2 reconciliation].** (1) **Primary: factionless, Empire-hunted lone Jedi wanderers** — hidden individuals belonging to NO faction (psylink 3–6, ≤1 per encounter), actively hunted by the Imperial Directorate; the canon Imperial-purge-era fugitive. (2) **Also: a rare Jedi may shelter within a sympathetic Moisture-Farmer / Homestead faction** — a *rare* spawn (low pawnGroupMaker weight). Both get the curated **light + telekinesis tree**: **healing, telekinetic push/pull, non-lethal disables, deflection/self-buffs.** Uncommon, memorable, a reason to be careful who you raid.
+  - **Light/neutral side → BOTH channels are true [user ruling 2026-08-06, v2 reconciliation].** (1) **Primary: factionless, Empire-hunted lone Jedi wanderers** — hidden individuals belonging to NO faction (psylink 3–6, ≤1 per encounter), actively hunted by the Imperial Galactic Empire; the canon Imperial-purge-era fugitive. (2) **Also: a rare Jedi may shelter within a sympathetic Moisture-Farmer / Homestead faction** — a *rare* spawn (low pawnGroupMaker weight). Both get the curated **light + telekinesis tree**: **healing, telekinetic push/pull, non-lethal disables, deflection/self-buffs.** Uncommon, memorable, a reason to be careful who you raid.
   - **Miraluka → FOUR-ROLE placement [user ruling].** Miraluka are NOT an Empire Sith-elite tier. They appear as: (a) **Imperial prisoners / rescue-quest targets** (captured Force-sensitives the player can free); (b) **rare Homestead "seers" (~1%)**; (c) **Gene Consortium research subjects (~2%)**; (d) a **Jedi-eligible race** for the factionless wanderers (Global-system-5 light/control loadout). Rationale: Force sensitivity leaks quietly into fringe factions, while *trained* Jedi stay factionless.
   - **Players get NO Force acquisition path** (no buildable/researchable neuroformer, psytrainer, anima-tree, or force-sensitive recruit route), and **Jawa are explicitly excluded** — no Jawa pawnkind carries psylink or any Force tree. Grant enemy Force via fixed hediff/psylink on the specific PAWNKINDS; Cherry-Pick/suppress any player-facing acquisition, but NEVER delete the AbilityDefs/Hediffs the enemy AI needs to cast. Passes the anti-exponential 7-question test by construction: NPC-only Force raises no player ceiling.
 - **IMPLEMENTATION NOTE:** this is now a **curation/patch job on VPE**, not a mod adoption — (1) define/duplicate the two curated ability sets (dark: lightning+throw+fear; light: heal+telekinesis+deflect), (2) attach them to the chosen pawnkinds as fixed loadouts, (3) restrict those pawnkinds to the right factions via Sensible Factions (3531306011) / Faction Control (2882785581), (4) leave VPE's enemy-cast AI on. Prefer VPE's existing AbilityDefs (already AI-flagged) so the AI casts them competently; only custom-flavor labels/graphics if wanted.
@@ -743,7 +743,7 @@ in, not a candidate.**
   dates are post-Odyssey.)
 - **It SUPPLEMENTS rather than replaces vanilla.** The vanilla ScenPart is
   `canBePlayerAddedRemoved: true`, so the clean setup is **remove
-  `PursuingMechanoids`, then add the Ruthless part aimed at the Directorate** —
+  `PursuingMechanoids`, then add the Ruthless part aimed at the Galactic Empire** —
   otherwise expect to be pursued twice.
 
 ⚠️ **This supersedes the route ruling recorded below.** The 2026-08-02 analysis
@@ -769,7 +769,7 @@ source, and it settles the question outright:
 
 **Eligibility is `displayInFactionSelection && !isPlayer && canStageAttacks &&
 defName != "PColony"`.** ~~Checked against the live dump: `OuterRim_GalacticEmpire`
-(the Imperial Desert Directorate) reads **true / false / true** ⇒ **ELIGIBLE.**~~
+(the Galactic Empire) reads **true / false / true** ⇒ **ELIGIBLE.**~~
 ⛔ **DEAD 2026-08-20 — the Empire's vessel is vanilla `Empire`, not that mod def.**
 Owner: *"OuterRim_GalacticEmpire is no longer in the game, we patch Empire."* See
 `infrastructure/state/OWNER_DECISIONS.md`. The eligibility **rule** above is
@@ -791,7 +791,7 @@ removing the Mechanoid faction.
 left in; (2) how it interacts with **VGE Chapter 1's transpiler patch** on
 `ScenPart_PursuingMechanoids_Tick`, which is live in this stack; (3) whether it
 moots the Mechanoid-faction reskin entirely — pointing pursuit at the *real*
-Directorate sidesteps the mech-cluster leak, because nothing is pretending to be
+Galactic Empire sidesteps the mech-cluster leak, because nothing is pretending to be
 a mechanoid.
 
 **Full mechanism, all four routes, and the decompiled proof:**

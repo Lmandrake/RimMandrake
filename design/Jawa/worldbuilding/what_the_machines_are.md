@@ -37,7 +37,7 @@ just more Empire?_
 
 **Cheapest, and it contradicts the Empire we have already written.**
 
-The Directorate's doctrine (`faction_roster_v2.md:603`) is that *"only one ordered
+The Galactic Empire's doctrine (`faction_roster_v2.md:603`) is that *"only one ordered
 hierarchy — human, centralised, obedient — holds the chaos back. Every alien
 species, every deviation, every act of independent thought is disorder to be
 corrected."* **A human-supremacist state does not hand its wars to machines.**

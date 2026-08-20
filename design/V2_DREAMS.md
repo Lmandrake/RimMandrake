@@ -157,7 +157,7 @@ verify:   `validate_patch.py --defs`; the xpath matches the intended xenotypes.
 criteria: no wanderer arrives as a non-campaign Twi'lek xenotype.
 
 ## B32 Read the shipped `OuterRim_GalacticEmpire` FactionDef
-spec:     `src/Jawa/Jawa_Patches/About/About.xml:36` records that the shipped def has `permanentEnemy false` while the faction dossier says permanent enemy YES — that single field plausibly explains `goodwill 0` AND `canFireNow:false`. Already checked: the live faction list (`hostile:false`, `goodwill:0`, name "Imperial Desert Directorate") and the About.xml note. NOT checked: the shipped `FactionDef` itself — a workshop-tree grep timed out at 120 s twice, so scope it.
+spec:     `src/Jawa/Jawa_Patches/About/About.xml:36` records that the shipped def has `permanentEnemy false` while the faction dossier says permanent enemy YES — that single field plausibly explains `goodwill 0` AND `canFireNow:false`. Already checked: the live faction list (`hostile:false`, `goodwill:0`, name "the Galactic Empire") and the About.xml note. NOT checked: the shipped `FactionDef` itself — a workshop-tree grep timed out at 120 s twice, so scope it.
 verify:   quote `permanentEnemy` and the hostility fields from the shipped `FactionDef` file, with path and line.
 criteria: EMPTY
 
@@ -507,7 +507,7 @@ alone. Ship the XML first.
 🔴 **The two-Empire fusion is STRUCK.** Owner ruled one Empire, one Emperor
 (`a8768c7`, `78a0967`): vanilla `Empire` (Royalty) reskinned as the Galactic Empire,
 Palpatine, the one permanent enemy, ~3 surface seats near the spaceport with the rest
-orbital. The *Imperial Desert Directorate*, the *Fallen Dominion*, the
+orbital. The *the Galactic Empire*, the *Fallen Dominion*, the
 disgraced-local-aristocracy reading and any office called *Sector Director* must not
 return in any doc. Canon: `design/Jawa/worldbuilding/faction_world_spec.md` §5.
 

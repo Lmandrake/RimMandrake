@@ -1,18 +1,29 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ============================================================================
-  ImperialDesertDirectorate.xml          Jawa_Patches · re-pointed 2026-08-14
+  GalacticEmpire.xml                     Jawa_Patches · re-pointed 2026-08-14
+                                         renamed 2026-08-20
   ============================================================================
 
   Builds FACTION_SPEC.md section 1, "Galactic Empire - PATCH vanilla `Empire`",
   under V1_CHAIN R15 and R11.
 
-  🔴 THE VESSEL CHANGED. This file used to reskin `OuterRim_GalacticEmpire`
-  into the "Imperial Desert Directorate". It now patches VANILLA `Empire`
-  (Royalty), and the faction is the Galactic Empire. R15's reason is
-  `settlementGenerationWeight`: vanilla `Empire` sits at 1 against the Outer Rim
-  def's 0.3, which is why the Directorate held one settlement while the Fallen
-  Dominion held four. The occupier has to outweigh the locals to read as one.
+  🔴 THE VESSEL CHANGED, AND SO DID THE NAME. This file used to reskin
+  `OuterRim_GalacticEmpire` into a differently-named sector occupier. ⛔ THAT
+  FACTION IS STRUCK FROM THE RECORDS — owner, 2026-08-20: "Doesn't exist
+  anymore." Its name is deliberately not repeated here or anywhere else; the
+  file was renamed to match on the same day. The Empire is the Galactic Empire
+  and has no other name.
+
+  It now patches VANILLA `Empire` (Royalty), and the faction is the Galactic
+  Empire. R15's reason is `settlementGenerationWeight`: vanilla `Empire` sits at
+  1 against the Outer Rim def's 0.3, which is why the old faction held one
+  settlement while the Fallen Dominion held four. The occupier has to outweigh
+  the locals to read as one.
+
+  ⚠️ It still references `OuterRim_Imp*` PAWN KINDS under MayRequire, so the
+  Neronix17.OuterRim.GalacticEmpire dependency stays. The Outer Rim FACTION def
+  is no longer touched.
 
   READ FROM THE SHIPPED DEF, game up, 2026-08-14 — not inferred:
   C:\Program Files (x86)\Steam\steamapps\common\RimWorld\Data\Royalty\Defs\

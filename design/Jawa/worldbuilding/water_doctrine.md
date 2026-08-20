@@ -206,7 +206,7 @@ invented: it matters only when water becomes a tracked good, which is v2.
 
 | verdict | factions |
 |---|---|
-| **consistent, no change** | Hutt Cartel · Imperial Directorate · Free Droid Enclaves · Geonosian Hive · Blackstar Company · player expedition |
+| **consistent, no change** | Hutt Cartel · Imperial Galactic Empire · Free Droid Enclaves · Geonosian Hive · Blackstar Company · player expedition |
 | **fixed by W1 (elevated band)** | Wildsteam Clan · Deepwater Compact |
 | **fixed by W2 (Jawa tier)** | Jawa Trade Moot |
 | **fixed by W3 (doctrinal range)** | Deep Desert Tribes |

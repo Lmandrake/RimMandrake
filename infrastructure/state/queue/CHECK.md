@@ -638,7 +638,7 @@ state:    ready
 
 ## B40 Give the Empire stormtroopers instead of medieval knights
 row:      9
-spec:     `src/Jawa/Jawa_Patches/Patches/ImperialDesertDirectorate.xml` targets
+spec:     `src/Jawa/Jawa_Patches/Patches/GalacticEmpire.xml` targets
           `FactionDef[defName="Empire"]`, sets `leaderTitle` `Emperor` and adds `fixedName`
           `Galactic Empire`, and replaces the two COMBAT `pawnGroupMakers` options with the
           six `OuterRim_Imp*` kinds. Trader and Settlement groups untouched. Deployed.
@@ -763,7 +763,7 @@ state:    ready
 ## B54 Add the faith text to the eleven factions, before worldgen
 row:      6
 spec:     All eleven faiths are in the mod files and deployed — entries 1–3 in
-          `Patches/ImperialDesertDirectorate.xml`, `Defs/FactionDefs/JawaHuttCartel.xml`,
+          `Patches/GalacticEmpire.xml`, `Defs/FactionDefs/JawaHuttCartel.xml`,
           `Patches/HomesteadDefenseLeague.xml`; 4 and 10 in `Patches/DeepDesertTribes.xml`
           and `Patches/BlackstarCompany.xml`; 5–9 and 11 in the remaining
           `Defs/FactionDefs/*.xml`.

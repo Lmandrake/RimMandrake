@@ -354,11 +354,11 @@ spec:     🔴 **OWNER RULING 2026-08-20** (`OWNER_DECISIONS.md`, end of file): 
           Galactic Empire's vessel is **vanilla `Empire`**. Owner, same day: **the Outer
           Rim mod is NOT leaving the list** — it keeps shipping its own pawn kinds, gear
           and droid factions.
-          ✅ **The patch itself is already correct.** `Patches/ImperialDesertDirectorate.xml`
+          ✅ **The patch itself is already correct.** `Patches/GalacticEmpire.xml`
           targets `/Defs/FactionDef[defName="Empire"]` at every xpath. Nothing to change
           there.
           ❌ **`About/About.xml` still describes the old vessel**, in two places:
-          the `ImperialDesertDirectorate.xml` bullet in `<description>` says it "reskins
+          the `GalacticEmpire.xml` bullet in `<description>` says it "reskins
           OuterRim_GalacticEmpire", and the `<loadAfter>` comment on
           `Neronix17.OuterRim.GalacticEmpire` still credits that file. ⚠️ The `loadAfter`
           ENTRY stays — other patches in this mod do touch Outer Rim defs; only its
@@ -372,7 +372,7 @@ spec:     🔴 **OWNER RULING 2026-08-20** (`OWNER_DECISIONS.md`, end of file): 
           xpaths are worldgen SUPPRESSION (`startingCountAtWorldCreation` 0), not a
           reskin, and with the mod staying they are exactly what we want. It is a
           generated file ("Do not hand-edit"); leave it alone.
-verify:   `About.xml` names vanilla `Empire` as the Directorate's vessel, and no prose in
+verify:   `About.xml` names vanilla `Empire` as the Galactic Empire's vessel, and no prose in
           `src/Jawa/Jawa_Patches/` claims we patch `OuterRim_GalacticEmpire`.
 criteria: the shipped mod description matches what the mod actually patches.
           ⚠️ **Also, low priority, and it needs YOUR hands not REP's:**
@@ -436,7 +436,7 @@ row:      1
 from:     DECIDE, 2026-08-20, on the owner's ruling *"Option (b) please."* Full reasoning
           and the design rationale for every entry: `design/Jawa/worldbuilding/EMPIRE_GAP_AUDIT.md` §2.
           ⚠️ **Worldgen-critical — faction relations are set at world creation.**
-spec:     In `src/Jawa/Jawa_Patches/Patches/ImperialDesertDirectorate.xml`:
+spec:     In `src/Jawa/Jawa_Patches/Patches/GalacticEmpire.xml`:
           **(1)** change the `permanentEnemy` operation from `true` to **`false`**.
           🔴 **Do NOT merely delete it — set it false.** `FactionDef.PermanentlyHostileTo`
           (`FactionDef.cs:463`) tests `if (permanentEnemy) return true;` FIRST and returns

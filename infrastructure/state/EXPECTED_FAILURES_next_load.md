@@ -147,7 +147,7 @@ grep -nE "Outer Rim - Galactic Empire|OuterRimGalacticEmpire|Patch_OuterRimCoreM
 `jawa/list_factions` returns `Empire`, and a settlement of it actually exists on the
 world map.** 🔑 **The rest of this A3 section stands unchanged** — the *Outer Rim -
 Galactic Empire* MOD is still in the stack and still required, because
-`ImperialDesertDirectorate.xml` puts its `OuterRim_ImpStorm*` pawn kinds into vanilla
+`GalacticEmpire.xml` puts its `OuterRim_ImpStorm*` pawn kinds into vanilla
 `Empire`'s combat groups. So `jawa/get_def PawnKindDef OuterRim_ImpStormtrooper` **must
 still resolve**; only the FACTION half of the gate moved. The grep line above is also
 still correct — it is looking for the mod's own load failures, not for the faction.
@@ -395,8 +395,8 @@ Evidence: eyes on the page plus `rimworld/take_screenshot`.
 
 | check | pass | fail |
 |---|---|---|
-| 🔴 **CORRECTED B23.** Vanilla **`Empire`** renders as **"The Galactic Empire"** with an **Emperor** | R15/R11 landed. The Empire moved onto the VANILLA Royalty vessel; `label` "The Galactic Empire", `fixedName` "Galactic Empire", `leaderTitle` "Emperor" | reads **"shattered empire"** with a **"high stellarch"** → `ImperialDesertDirectorate.xml` did not land. Record and carry on; do NOT abort |
-| ~~⚠️ **`OuterRim_GalacticEmpire` now reads "Galactic Empire" and THAT IS CORRECT**~~ ⛔ **DEAD ROW 2026-08-20 — do not check it at all.** The def is not the vessel and not in the design; whatever label it shows is not a signal. See `infrastructure/state/OWNER_DECISIONS.md`. Original text kept below. | **This block used to demand "Imperial Desert Directorate" here, and that is now the FAILING string.** B40 re-pointed the file off this def onto vanilla `Empire`; nothing patches `OuterRim_GalacticEmpire` any more, so it shows its own shipped label. **Do not read this as a deploy miss and do not regenerate.** | reads "Imperial Desert Directorate" → an OLD `Jawa_Patches` is deployed; the current one has not landed |
+| 🔴 **CORRECTED B23.** Vanilla **`Empire`** renders as **"The Galactic Empire"** with an **Emperor** | R15/R11 landed. The Empire moved onto the VANILLA Royalty vessel; `label` "The Galactic Empire", `fixedName` "Galactic Empire", `leaderTitle` "Emperor" | reads **"shattered empire"** with a **"high stellarch"** → `GalacticEmpire.xml` did not land. Record and carry on; do NOT abort |
+| ~~⚠️ **`OuterRim_GalacticEmpire` now reads "Galactic Empire" and THAT IS CORRECT**~~ ⛔ **DEAD ROW 2026-08-20 — do not check it at all.** The def is not the vessel and not in the design; whatever label it shows is not a signal. See `infrastructure/state/OWNER_DECISIONS.md`. Original text kept below. | **This block used to demand "the Galactic Empire" here, and that is now the FAILING string.** B40 re-pointed the file off this def onto vanilla `Empire`; nothing patches `OuterRim_GalacticEmpire` any more, so it shows its own shipped label. **Do not read this as a deploy miss and do not regenerate.** | reads "the Galactic Empire" → an OLD `Jawa_Patches` is deployed; the current one has not landed |
 | `OuterRim_RebelAlliance` is **ABSENT** from the page | `RebelAlliance_Suppress.xml` set `maxConfigurableAtWorldCreation` to 0 — **absence is the DESIRED outcome, not a defect** | **present and settable** → the patch did not land; file it. **Present but locked at 0** → harmless, worth a line. **Do not revert the patch at the screen.** |
 
 **Also record, as an observation with no pass/fail:** vanilla `Empire`'s name is
@@ -591,7 +591,7 @@ reconstruct a result from the log.**
 | S3 | `jawa/list_factions` vs checklist — 20 CUT absent | | |
 | S3 | `jawa/list_factions` vs checklist — 6 KEEP present | | |
 | S3 | downstream over-exclusion grep = 0 (at session end) | | |
-| ~~S4~~ | ~~`OuterRim_GalacticEmpire` label reads "Imperial Desert Directorate" (observation, not a gate)~~ ⛔ **DEAD 2026-08-20 — the vessel is vanilla `Empire`; nothing patches this def. Do not record it.** See OWNER_DECISIONS.md. | — | — |
+| ~~S4~~ | ~~`OuterRim_GalacticEmpire` label reads "the Galactic Empire" (observation, not a gate)~~ ⛔ **DEAD 2026-08-20 — the vessel is vanilla `Empire`; nothing patches this def. Do not record it.** See OWNER_DECISIONS.md. | — | — |
 | S4 | ⭐ **vanilla `Empire`** label reads **"The Galactic Empire"**, `fixedName` **"Galactic Empire"**, `leaderTitle` **"Emperor"** (replaces the struck row above) | | |
 | S4 | `OuterRim_RebelAlliance` absent from the page | | |
 | S5 | `.rws` `anomalyPlaystyleDef` = `AmbientHorror` AND `overrideAnomalyThreatsFraction` = `0` | | |

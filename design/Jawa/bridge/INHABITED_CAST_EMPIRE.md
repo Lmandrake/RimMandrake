@@ -1,7 +1,7 @@
 # `Inhabited` — cast 11: the Galactic Empire
 
 _Authored 2026-08-20. **Faith: The Rising Order**, read from the shipped patch
-`src/Jawa/Jawa_Patches/Patches/ImperialDesertDirectorate.xml`, not the roster table:_
+`src/Jawa/Jawa_Patches/Patches/GalacticEmpire.xml`, not the roster table:_
 > *"We have never seen him. We will never see him. He is rising, and we are the ground he
 > rises from. Take the helmet: it is the last thing you will ever choose. There is no doubt
 > among us — only disorder, and disorder is corrected. Say the name once when you are given

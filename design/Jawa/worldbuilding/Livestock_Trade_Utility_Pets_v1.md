@@ -37,7 +37,7 @@ The single most Star Wars category in the game. In a setting where the player fa
 | Creature | Mod | What it actually does | SW name | Why it's shocking |
 |---|---|---|---|---|
 | **Slurrypede** | Alpha Animals | Mechanoid-built prisoner-feeding unit. Devours almost anything and processes it into homogeneous organic slurry — barely edible. Harvests 10 Disgusting Nutrient Paste Meals every 1.5 days. Docile, near-never hostile, and uniquely tameable *despite being a mechanoid*. | **slurrik** — nickname *"looks like a baby dianoga"* (⚠ it is NOT one; the real Dianoga is a separate SW-Collection creature — nickname only) | It was built to feed prisoners. Anyone keeping one is either feeding prisoners or has decided not to think about where the design came from. Jawa clans keep them because they eat garbage and produce food, which is the entire Jawa economic philosophy in one animal. |
-| **Tetraslug** | Alpha Animals | A massive slug used across Glitterworld territory as a glorified power plant, and deployed as mobile power for research expeditions. Recharges batteries directly. Rarely spawns wild — usually bought from farming merchants. | **vokka** | A settlement whose lights are on because of a slug. The Directorate finds this offensive on principle; the Free Droid Enclaves find it fascinating. |
+| **Tetraslug** | Alpha Animals | A massive slug used across Glitterworld territory as a glorified power plant, and deployed as mobile power for research expeditions. Recharges batteries directly. Rarely spawns wild — usually bought from farming merchants. | **vokka** | A settlement whose lights are on because of a slug. The Galactic Empire finds this offensive on principle; the Free Droid Enclaves find it fascinating. |
 | **Aerofleet** | Alpha Animals | Small floating gelatinous creature propelled by hydrogen collected from water and plant matter, bouncing aimlessly off obstacles. Genderless, reproduces by strobilation (asexual fission). Explodes on death. Tamed ones produce **Blue Gel** → refined to **hexagel** → a hexagel core reactor consuming uranium and gel for large power. Trainables: *Cycle Severance* (stop fission) and *Controlled detonation* (kill itself on command). | **hessa** | A herd of drifting bombs that powers your base and can be ordered to explode. "Controlled detonation" as a *training option* is the darkest line item in any RimWorld animal tab. |
 | **Radyak** | Alpha Animals | Produces unrefined uranium crystals at 1 per 10 days; each refines into 15 uranium. | **urrak** | A domestic animal that excretes fissile material. Every faction wants one and none of them want to explain why. |
 | **Shock Goat** | Alpha Animals | Domesticated cattle that store static electricity in bony structures and discharge it defensively. | **zharn** | Livestock that shocks you. Comedy until a herd is between you and the door. |
@@ -74,7 +74,7 @@ Every settlement has a problem it doesn't discuss. On a desert world with a wate
 
 ## 3. Weaponized companions — the bodyguard trade
 
-The Blackstar Company and the Directorate both buy here.
+The Blackstar Company and the Galactic Empire both buy here.
 
 | Creature | Mod | What it does | SW name | The shock |
 |---|---|---|---|---|
@@ -148,7 +148,7 @@ Mapping to `faction_roster_v2.md`:
 | **Blackstar Company** | Weaponized companions, sentience catalysts | `thrass`, `grissk`, `vokkir` |
 | **Geonosian Foundry Hive** | Castes, not animals — and regards `karramat` ownership as atrocity | `karrak`, `karrik` |
 | **Ascendant Helix** | The catalysts themselves, and anything that shouldn't exist | `vissarath`, labour-line Models |
-| **Imperial Directorate** | Officially nothing; unofficially `thrass` suppression | — |
+| **Imperial Galactic Empire** | Officially nothing; unofficially `thrass` suppression | — |
 | **Free Droid Enclaves** | Buy `vokka` for power; fear `thrass` existentially | `dunnik` |
 
 The `thrass` line is the good one. An animal that EMPs machines is simultaneously a Jawa tool, an Enclave nightmare, and an Imperial counter-droid asset. Three factions with incompatible interests in one dog.
@@ -260,7 +260,7 @@ The Salacious-Crumb category's big brother: creatures kept not for utility but t
 | **Nexu** | SW Animal Collection | Fast, vicious arena cat. | Cartel arena, exotic-pet buyers | The feline apex of the spectacle tier. |
 | **Wampa** | SW Animal Collection | Cold-biome ambush predator. | (wild threat; trophy trade) | Belongs to the Glowforest/cavern/cold tiles as a wild ④-threat more than a kept animal — its "trade" is the pelt and the story. |
 | **Krayt Dragon** + **Greater Krayt Dragon** | SW Animal Collection | The desert apex. | (wild; the pearl is the trade) | Deep-desert / forsaken-crags apex. Not kept — *hunted*. The gut-pearl is the exotic-treasure payoff, tying to the bestiary's `krayt dragon` = thrumbolizard elder-form ruling (real Krayt + wild krayt-kin both exist). |
-| **Varactyl / Reek / Nexu as "tamed prestige"** | — | — | Cartel bosses, wealthy Directorate officers | The common thread: a tamed arena-tier animal on a leash is a *status display*, and its market price should be absurd (d20 roll 17-tier). |
+| **Varactyl / Reek / Nexu as "tamed prestige"** | — | — | Cartel bosses, wealthy Galactic Empire officers | The common thread: a tamed arena-tier animal on a leash is a *status display*, and its market price should be absurd (d20 roll 17-tier). |
 
 ### 10.3 The small canon fauna (vermin, pets, ambient life)
 
@@ -358,7 +358,7 @@ On this world, **vegetation regrows fast everywhere, and the water gradient is e
 | **Blackstar Company** | Weaponized companions, trained predator packs, sentience catalysts | `thrass`, `grissk`, `vokkir`, **raptor pack**, **Nexu** |
 | **Geonosian Foundry Hive** | Castes, not animals — plus the **arena monsters** (Acklay canon) | `karrak`, `karrik`, **Acklay** |
 | **Ascendant Helix** | The catalysts + anything that shouldn't exist + the JP-apex "we made it" set-pieces | `vissarath`, labour-line Models, **Indominus/Indoraptor** |
-| **Imperial Directorate** | Officially nothing; unofficially `thrass` suppression + prestige tamed arena beasts for officers | — |
+| **Imperial Galactic Empire** | Officially nothing; unofficially `thrass` suppression + prestige tamed arena beasts for officers | — |
 | **Free Droid Enclaves / cavern-dwellers** | Buy `vokka` for power; cave-adapted fauna trade | `dunnik`, **Tauntaun**, Biomes! Caverns fauna |
 | **Rogue-android faction (wasteland)** | Sours tiles → deals implicitly in the polluted fauna that follow | tox-wool sheep (wild), waste hounds, wasteland scavengers |
 
@@ -460,11 +460,11 @@ Design layer, built on the verified tags in §16.1. The important discipline the
 | **Blackstar Company** | ✅ Yes — **weaponized companions** | `AnimalFighter, AnimalPet` | `thrass`, `grissk`, **Anooba, Strill, CorellianHound**, trained **raptor packs**, **sentience catalysts** | Farm/food animals (beneath them) |
 | **Ascendant Helix** | ✅ Rarely — **specimens, not livestock** | `Sithspawn, AnimalExotic` | `Gundark`, `Tukata`, VGE aberrations, `vissarath`, the `nessik`/black-market tier, "we made it" JP-apexes | Anything honest or useful |
 | **Geonosian Foundry Hive** | ❌ **No — sells no animals** | — | Deals in *castes*, not property; regards a kept `karramat` (hive queen) as atrocity | **Everything** — the refusal *is* the characterization |
-| **Imperial Directorate** | ❌ **Officially no** | — (unofficial `thrass` suppression only) | Officers privately buy prestige arena beasts; the state sells none | Publicly, all livestock (beneath imperial dignity) |
+| **Imperial Galactic Empire** | ❌ **Officially no** | — (unofficial `thrass` suppression only) | Officers privately buy prestige arena beasts; the state sells none | Publicly, all livestock (beneath imperial dignity) |
 | **Free Droid Enclaves** | ❌ **No — they buy, don't sell** | — (buyer of `vokka` for power) | Fear `thrass` existentially; have no herds to sell | They're droids — livestock is alien to them |
 | **Rogue-android wasteland** | ~ Implicitly — **poisoned-ground fauna** | `AnimalCommon` (polluted-tile) | Tox-wool sheep (wild), waste hounds, wasteland scavengers follow their soured tiles | Anything clean or healthy |
 
-**The design payoffs:** (1) *Frequency + faction filter = flavor.* "A livestock merchant arrived" now resolves to five very different sentences. (2) *Three factions selling nothing* (Foundry, Directorate, Enclaves) is as characterful as the seven that do — the Foundry's refusal to treat life as property is a whole worldview in one empty stock list. (3) *The buy-not-breed loop:* because the Compact reliably sells working stock and the Cartel reliably sells the strange beasts, the player's correct move is almost always **buy the one you need and fly on** — which is precisely the §1 anti-exponential posture, now delivered by the *economy* rather than by a rule.
+**The design payoffs:** (1) *Frequency + faction filter = flavor.* "A livestock merchant arrived" now resolves to five very different sentences. (2) *Three factions selling nothing* (Foundry, Galactic Empire, Enclaves) is as characterful as the seven that do — the Foundry's refusal to treat life as property is a whole worldview in one empty stock list. (3) *The buy-not-breed loop:* because the Compact reliably sells working stock and the Cartel reliably sells the strange beasts, the player's correct move is almost always **buy the one you need and fly on** — which is precisely the §1 anti-exponential posture, now delivered by the *economy* rather than by a rule.
 
 ### 16.4 Encounter tables per merchant (keeping the horror ratio)
 
@@ -474,7 +474,7 @@ Each archetype gets its own d20-style stock lean, but **all of them preserve the
 
 **The mechanic.** The same faction-flavored trade layer that governs beasts (§16.1–§16.4) runs in parallel over *people*: **factions that practice slavery will frequently have slaves for sale.** RimWorld already models this natively — slaves are `Pawn`s traded via `StockGenerator_Slaves` (vanilla, Ideology-gated), and the adopted stack deepens it (memory: **More Slavery Stuff** `2896845138`, **Tribute Demand** `3711373966`, **Raid Protection Fee** `3650927927`, plus the Jawa precept *"one does not beg!" → enslave*). So a slaver faction's `visitor/caravan/baseTraderKinds` can carry a `StockGenerator_Slaves` line the same way the beast-mongers carry `StockGenerator_Animals`. ⚠ **Confirm before build:** the exact `StockGenerator_Slaves` field spelling, the trader-kind pattern, and each faction's Ideology slavery stance need an in-hand source read from the installed slavery mods before this goes to `Defs/` — this subsection is *design*, resting on verified-elsewhere trade plumbing.
 
-**Which factions sell slaves** (design, aligned to `faction_roster_v2.md`): the **Hutt Cartel** (chattel is core to the vice economy), the **Blackstar Company** (captives are inventory), the **Imperial Directorate** (penal/"labor assignment" framing — sells officially where beasts were beneath dignity), and the **Geonosian Foundry Hive** (which sells *no animals* precisely because it treats *life* as property — so it is exactly the faction that would traffic sapients). The **Homestead Defense League** and **Free Droid Enclaves** do not. This inverts the beast table interestingly: the Foundry's empty animal-stock and its full slave-stock are the *same* worldview read two ways.
+**Which factions sell slaves** (design, aligned to `faction_roster_v2.md`): the **Hutt Cartel** (chattel is core to the vice economy), the **Blackstar Company** (captives are inventory), the **Imperial Galactic Empire** (penal/"labor assignment" framing — sells officially where beasts were beneath dignity), and the **Geonosian Foundry Hive** (which sells *no animals* precisely because it treats *life* as property — so it is exactly the faction that would traffic sapients). The **Homestead Defense League** and **Free Droid Enclaves** do not. This inverts the beast table interestingly: the Foundry's empty animal-stock and its full slave-stock are the *same* worldview read two ways.
 
 **The Jawa imperative (the heart of the directive).** Jawa appearing on a slave block should be **rare but possible** — the galaxy occasionally traffics the little scavengers. When it happens, and **when we have the resources, we MUST buy them out** from under the non-Jawa seller. This is not optional opportunism; it is a **standing moral law of the clan** — kin do not stay in alien hands. Encode it three ways:
 - **As a custom Ideology precept** (belongs in `design/Jawa/worldbuilding/jawa_society.md`): *"A Jawa in chains is a debt on the whole clan"* — buying out an enslaved Jawa is a **required** act (mood buff on redemption; mood penalty / precept violation if we can afford it and walk away). This makes the "MUST" a *game-enforced pull*, not just a roleplay note.

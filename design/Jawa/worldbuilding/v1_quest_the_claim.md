@@ -17,7 +17,7 @@ nobody re-proposes them and so the choice does not look timid:
 |---|---|---|
 | A Homestead well fails; sell them water | water and thirst doctrine | **v2, zero implementation** |
 | Free a bolted droid for the Enclaves | Free Droid Enclaves faction | **v2, unbuilt** |
-| The Directorate demands tribute | a hostile Directorate | **the antagonist does not exist yet** (V6/V7) |
+| The Galactic Empire demands tribute | a hostile Galactic Empire | **the antagonist does not exist yet** (V6/V7) |
 | Rival clan bounty | faction relations matrix | **v2** |
 
 **"The Claim" needs a world tile, a stash, a timer, and text.** That is all. It is

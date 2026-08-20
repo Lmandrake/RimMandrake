@@ -235,7 +235,7 @@ Space · Orbit              — not surface tiles; leave to Odyssey's own system
 ```
 
 ⚠️ **`Space` and `Orbit` are marked OUT here only in the sense of "not a surface
-worldgen weight".** The Directorate's power is explicitly *vertical*
+worldgen weight".** The Galactic Empire's power is explicitly *vertical*
 (`faction_roster_v2.md` §2 — ~7–8 orbital holdings), so the orbital layer matters
 enormously to the campaign. It is simply not governed by this table.
 
@@ -446,6 +446,6 @@ urgent.
 3. **Does the oasis density idea survive contact with RimWorld's spawner?** Biome
    animal density is a biome-level field; "everything crowds the water" may need
    the per-biome commonalities rather than a density multiplier.
-4. **`Space` / `Orbit`** — out of scope here, but the Directorate's orbital layer
+4. **`Space` / `Orbit`** — out of scope here, but the Galactic Empire's orbital layer
    needs its own treatment and nothing currently covers it.
 5. **Dark Ages / Grimstone trims** — small, taste-dependent, listed for a yes/no.

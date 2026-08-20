@@ -293,8 +293,7 @@ The two-Empire split is struck from the design completely.**
 | **presence** | ~3 surface seats near the spaceport; the rest of its reach is orbital — the tower ladder |
 | **character** | not hateful, **procedural**. You are a logistics problem being closed out |
 
-**What is struck, and must not return in any doc:** the *Imperial Desert
-Directorate* as a separate faction, the *Fallen Dominion*, the "disgraced local
+**What is struck, and must not return in any doc:** the *the Galactic Empire* as a separate faction, the *Fallen Dominion*, the "disgraced local
 aristocracy" reading, and any Imperial office called **Sector Director** — that
 word belongs to the Ascendant Helix now.
 

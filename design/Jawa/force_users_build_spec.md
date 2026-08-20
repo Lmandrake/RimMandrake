@@ -291,7 +291,7 @@ Empire pawnkinds and their weapon tags (all `Inherit="false"`), from
 Abstract base: `OuterRim_EMPStormBase`.
 
 Our existing patch on this faction:
-`C:\Program Files (x86)\Steam\steamapps\common\RimWorld\Mods\Jawa_Patches\Patches\ImperialDesertDirectorate.xml`
+`C:\Program Files (x86)\Steam\steamapps\common\RimWorld\Mods\Jawa_Patches\Patches\GalacticEmpire.xml`
 replaces `label`, `fixedName`, `leaderTitle` (→ `Sector Director`), `pawnsPlural`,
 `description` and `colorSpectrum`. It is deliberately label-level only.
 
@@ -700,7 +700,7 @@ duplicate.
 of the moisture-farmer faction; the **Sith** is a rare raid leader of the Galactic
 Empire; both are best expressed as a **xenotype with preferential equipment**.
 Consistent with `faction_roster_v2.md:229-233` and with `OWNER_DECISIONS.md` row
-10 — there is **no separate Imperial Droid Army**; the Directorate fields
+10 — there is **no separate Imperial Droid Army**; the Galactic Empire fields
 stormtroopers, purge units and lightsaber-bearing Sith together.
 
 ### 3.0 The one decision that must be made first
@@ -880,7 +880,7 @@ constantly" on the Homestead. **Do not use the same weight on both.**
 already have leader kinds — `OuterRim_ImpStormCommander` (Empire, also named in
 `fixedLeaderKinds`) and `OuterRim_TownCouncilman` (Homestead) — and the Empire's
 world leader is deliberately the *Sector Director* under
-`ImperialDesertDirectorate.xml`. Adding a second `factionLeader` kind would put a
+`GalacticEmpire.xml`. Adding a second `factionLeader` kind would put a
 Sith in the pool for that role and undercut a ratified design decision.
 
 "Raid leader" in the owner's sense is achieved by **high `combatPower` + low
@@ -900,7 +900,7 @@ loaded by then.
 | `…\Mods\Jawa_Patches\Defs\PawnKindDefs\ForceUserPawnKinds.xml` | **NEW.** `Jawa_Sith_Inquisitor`, `Jawa_Jedi_Sentinel`. |
 | `…\Mods\Jawa_Patches\Patches\ForceUsers_Empire.xml` | ~~**NEW.** `PatchOperationFindMod` on *Outer Rim - Galactic Empire*, wrapping `PatchOperationAdd` ops that insert the option into the Combat groups.~~ ⛔ **DEAD 2026-08-20 — the vessel is vanilla `Empire`.** Royalty is always loaded, so **no `PatchOperationFindMod` wrapper is needed or wanted**; patch `Empire` directly. See `infrastructure/state/OWNER_DECISIONS.md`. |
 | `…\Mods\Jawa_Patches\Patches\ForceUsers_Homestead.xml` | **NEW.** Same shape against *Outer Rim - Core*. |
-| `…\Mods\Jawa_Patches\Patches\ImperialDesertDirectorate.xml` | **UNCHANGED.** Do not fold Force work into the v1 label patch. |
+| `…\Mods\Jawa_Patches\Patches\GalacticEmpire.xml` | **UNCHANGED.** Do not fold Force work into the v1 label patch. |
 
 ⛔ **DEAD 2026-08-20 — this whole xpath paragraph describes the wrong def.** The
 Empire's vessel is **vanilla `Empire`**; the `TabulaRasa.PawnGroupMaker_Temperature`
@@ -927,7 +927,7 @@ and mirror that for the Homestead:
 
 The repo's own precedent for wrapping everything in `PatchOperationFindMod` so
 the file is a silent no-op when the host mod is absent is
-`ImperialDesertDirectorate.xml` — follow it.
+`GalacticEmpire.xml` — follow it.
 
 **And do not deploy from the repo without reading the plan first**
 (`skills/rimworld-deploy/SKILL.md`): the game reads

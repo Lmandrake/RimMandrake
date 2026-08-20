@@ -79,7 +79,7 @@ after already being answered._
   yours (`infrastructure/state/queue/DECIDE.md`).
 - **Where the seat identity files live** — answered by `infrastructure/agents/` existing.
 - **The mines, the Warcasket retune, `MissingArtFixes`** — all ruled.
-- **Directorate leader title, "Sector governor" vs `Sector Director`** — a retired seat
+- **Galactic Empire leader title, "Sector governor" vs `Sector Director`** — a retired seat
   owned design and could rule it. Not escalated.
 
 ## ANSWERED 2026-08-15 — map protection is REPEALED, not suspended
@@ -144,3 +144,22 @@ new one."*
 audits of the same Stage 2 question, reaching the same conclusion, neither citing the
 other — and both reasoned from the wrong vessel. **Quarantined, not deleted.** A fresh
 audit against vanilla `Empire` is queued to DECIDE.
+
+## 2026-08-20 — the sector occupier's old name is STRUCK
+
+> *"Strike The Directorate from the records. Doesn't exist anymore."*
+
+**There is one Empire and it is the Galactic Empire** — `FACTION_SPEC.md` §1, a patch on
+vanilla `Empire` (Royalty), `label` and `fixedName` both "Galactic Empire".
+
+⛔ **The earlier name for it is gone from every design doc, queue file, state file and
+source comment** (69 references across 29 files, swept 2026-08-20). It survives only in
+`infrastructure/archive/`, `infrastructure/output/` and generated HTML, which are
+historical records nobody acts on.
+
+🔑 **If you meet the old name in an archived doc, it means the Galactic Empire.** Do not
+reintroduce it, and do not "restore" it when editing an old file.
+
+⚠️ **Build note:** `Jawa_Patches/Patches/ImperialDesertDirectorate.xml` was renamed to
+`GalacticEmpire.xml`. **Jawa_Patches needs a redeploy**, and the deployed Steam copy will
+keep the old filename until a deploy plan removes it — check for a `-` line.

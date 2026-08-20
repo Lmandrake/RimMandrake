@@ -37,7 +37,7 @@ apparel, name makers, and the ~140 Keyed strings.
 
 ## 1. What our shipped patch already delivers — VERIFIED
 
-`src/Jawa/Jawa_Patches/Patches/ImperialDesertDirectorate.xml`, **deployed**
+`src/Jawa/Jawa_Patches/Patches/GalacticEmpire.xml`, **deployed**
 2026-08-19 20:38. Every field the spec calls for is present and correct:
 
 | specced | in the patch |
@@ -212,6 +212,6 @@ always loaded.
 ## 6. Verify
 
 - `grep -c "OuterRim_GalacticEmpire" src/Jawa/**` → the faction def is not the vessel anywhere
-- `ImperialDesertDirectorate.xml` patches `FactionDef[defName="Empire"]` and nothing else
+- `GalacticEmpire.xml` patches `FactionDef[defName="Empire"]` and nothing else
 - `validate_patch.py --defs` clean on the patch
 - **this document cites no path under `infrastructure/disposing/`**

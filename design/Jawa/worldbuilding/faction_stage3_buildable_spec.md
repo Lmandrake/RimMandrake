@@ -203,7 +203,7 @@ the vanilla defs are what the trade, raid and quest economies are wired to.
 | 12 | the Junkers | — | **AUTHOR** | scavenges others' kinds |
 
 🔴 **The shipped Empire patch is on the wrong vessel.**
-`src/Jawa/Jawa_Patches/Patches/ImperialDesertDirectorate.xml` targets
+`src/Jawa/Jawa_Patches/Patches/GalacticEmpire.xml` targets
 `OuterRim_GalacticEmpire`, a mod def. **Re-point it at vanilla `Empire`.** v1 row 1
 was closed on a label seen live on a vessel we are abandoning, so it has to be
 redone — cheap, but not already done.
