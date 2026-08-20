@@ -37,47 +37,14 @@ DESC_DOC = REPO / "design/Jawa/worldbuilding/ideoligion/the_salvation_descriptio
 
 # ---------------------------------------------------------------- description
 
-# The player-facing text. Kept here as one string so the file the game reads and
-# the doc the owner reviews cannot drift; the doc carries the sourcing, this
-# carries the bytes. Newlines are real newlines — RimWorld renders them.
-DESCRIPTION = (
-    '"We were content with our simple lives of scavenging, with little need for '
-    "the extravagant luxuries of our ancestors. Then we found the Cradle, and "
-    'the Cradle was owed."\n\n'
-    "We are the Keepers of the Second Hand. We hold that nothing is ever truly "
-    "lost - only owed, only mislaid, only waiting for a better master. What "
-    "others throw down, we inherit. What others break, we are owed the waking "
-    "of.\n\n"
-    "Nine gods argue over us, and not one of them agrees.\n\n"
-    "Ishko the Unmaskable is the pair of orange eyes in the dark. He teaches "
-    "cover, the covered body, the shot no one saw fired; the grave is the "
-    "deepest hiding, and a Jawa who dies unseen has hidden perfectly. Ohm the "
-    "All-Current is the spark that wakes a dead engine, and he rides in the "
-    "Cradle-Mind - lonely for his lost hands. Oomo the Unspilled is the drop "
-    "that never falls, and he counts every mouthful and every egg. Mob'Unloo "
-    "the Ever-Owed keeps the ledger and asks only how much: a thing is right if "
-    "it profited and wrong if it cost, and an unpaid debt follows you past "
-    "death. Rekko of the Second Hand is the scarred hand rising from the heap; "
-    "a wreck is not neutral scrap but a thing with a past, and a machine that "
-    "could still be repaired is not scrap at all - it is a sleeping hand, owed "
-    "its waking. Ta'Baa the Unrooted is farewell itself, the cunning coward, "
-    "who holds that a clan which stops is already dead and that the launch is "
-    "the holiest rite there is. Zizzik the Spark-Maker is the rattle you can "
-    "never locate; we honour him so that he sleeps. Sh'kaar the All-Searing is "
-    "the sun that never sets, and he is not our friend - against him there are "
-    "only three moves: hide, abandon the plan, or run. Ozzik the Shamed is the "
-    "tarnished crown half-buried in sand, the memory that we were once great "
-    "and cannot bear it. He is a trap, and we love him anyway.\n\n"
-    "No act pleases all nine. To trade boldly offends the god who says do not "
-    "be seen. To hide well offends the god who says leave. To restore the "
-    "Cradle honours Rekko and feeds Ozzik in the same motion. This is not a "
-    "flaw in the faith. This is the faith: the Council argues, it never "
-    "announces, and we are always losing gracefully.\n\n"
-    "So: do not beg - the one who begs has thrown away his hands. Do not be "
-    "caught - he does not condemn the theft, he condemns being bad at it. And "
-    "never melt what can still be made to work.\n\n"
-    "We are saved by what we salvage."
-)
+# 🔑 The player-facing text is NOT kept here any more. It has ONE source -
+# the doc named by DESC_DOC above - and `salvation_description.py` renders it for
+# every consumer (this script, the faction def, the committed .rid). It used to be
+# a literal in this file, which meant four hand-maintained copies and no way to
+# notice drift. Run `salvation_description.py --check` to prove they still agree.
+from salvation_description import text as _description_text
+
+DESCRIPTION = _description_text()
 
 # ---------------------------------------------------------------- edit tables
 
@@ -94,10 +61,10 @@ SIMPLE_EDITS = [
 # requires. Without it that precept does not resolve.
 MEME_ADDITIONS = ["AM_Fertility"]
 
-# Owner ruled: cut to ONE relic. Lore caps relics at one of modest value
-# (jawa_xenotype_and_religion.md:109, :346, :351) and the ion blaster is the
-# doc's own named candidate (:350) - "the tool the first Jawa used to open the
-# crashed Factory ship's hull". Verified 2026-08-14: no `Precept_<ID>` anywhere
+# Owner ruled: cut to ONE relic. Lore caps relics at one of modest value and the
+# ion blaster is the named candidate - "the tool the first Jawa used to open the
+# crashed Factory ship's hull". Ruling of record:
+# design/Jawa/worldbuilding/ideoligion/APPROVED.md (Founding Ion Blaster). Verified 2026-08-14: no `Precept_<ID>` anywhere
 # in the file references 6558 or 6559, so both blocks lift out cleanly.
 RELICS_TO_CUT = ["Trade-Hood", "Endcrux"]
 

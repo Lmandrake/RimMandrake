@@ -58,6 +58,28 @@ from design and discussion."*
 - **A patch that matches nothing logs nothing.** `PatchOperationConditional` and
   `PatchOperationFindMod` both return true on no match.
 
+## Superseding a doc means writing INTO the doc you superseded
+
+**Owner's rule, 2026-08-20**, issued after an audit of two doc clusters. Across 14
+files only three items had actually gone wrong, and all three were the same failure:
+a doc was answered by a better one and never told.
+
+- 🔑 **When you supersede, correct or measure against another file, put ONE line at
+  the top of THAT file** naming the successor and what changed. The successor
+  citing its predecessor is not enough — **nobody reads backwards.**
+  `restraining_bolt_technical.md` cited the doctrine doc it overruled; the doctrine
+  doc had never heard of it, so every reader arriving from the ideoligion rubric got
+  the dead numbers.
+- ⛔ **"Not my file" does not discharge it.** `droid_taxonomy.md` filed a correction
+  that way on 2026-08-13; `droid_ruling.md` was then edited three times by
+  reorganisation sweeps and kept the wrong mechanism until 2026-08-20.
+- ✅ **Prose that agrees with itself is fine.** Restating a ruling in the doc whose
+  argument depends on it is good writing, not duplication. Only a **number, roster or
+  ruling that differs between two files** is a defect.
+- 🔑 **Single-source only what a GENERATOR can enforce.** Four hand-kept copies of one
+  text is a drift machine; one source plus a script is not. Where only discipline
+  enforces it, expect decay and write the pointer instead.
+
 ## Git
 
 - **Commit explicit paths. Never `git add -A`, `git add .`, or `git commit -a`.**
