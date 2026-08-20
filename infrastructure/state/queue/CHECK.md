@@ -40,7 +40,20 @@ criteria: a region renamed and repositioned is VISIBLE on the world map, and a r
           settlement survives a save→load round trip with its faction intact. The
           save→load half is not optional - it is the only thing that proves the null-faction
           trap was avoided.
-state:    🔵 NEARLY DONE 2026-08-19 — G4 AND G5 BOTH SHIPPED AND PROVEN, INCLUDING THE
+state:    ✅ DONE — the owed save→load round trip PASSED 2026-08-20, 7/7 clauses.
+roundtrip: One save, one load, both items. Settlement id 4 (`Handshaw`, Jawa_HuttCartel)
+          re-sited 10299 → 10336 and renamed ROUNDTRIP_PROBE; world renamed
+          "Ash'karr RT-PROBE"; `world_commit`; `save_game` → `rt_probe.rws`; `load_game`;
+          then read back off the reloaded world:
+            ✅ world name survived            ✅ settlement kept its new tile 10336
+            ✅ seedString survived ('lane')   ✅ settlement kept its name
+            ✅ persistentRandomValue survived ✅ settlement kept faction Jawa_HuttCartel
+            ✅ 38 settlements, 0 with a null faction
+          🔑 **The null-faction trap did not fire.** That is the clause the whole round
+          trip existed for: a Settlement with a null faction is destroyed on load with only
+          a warning, so a re-sited settlement that comes back with its faction intact is
+          the only proof `world_objects_set` does not orphan it.
+prior:    🔵 NEARLY DONE 2026-08-19 — G4 AND G5 BOTH SHIPPED AND PROVEN, INCLUDING THE
           VISUAL. The ONLY thing still owed is the save→load round trip, which is the
           clause that proves the null-faction trap was actually avoided. Stays open on that.
 g4:       SHIPPED: `world_features_get` · `world_features_set` (create/update/assign/delete).
@@ -97,7 +110,20 @@ spec:     TOOLS: `world_info_get/set` (`world_layers` already shipped in W2).
 verify:   rename the planet, read it back, save, reload, read it back again.
 criteria: the persistent fields survive a save→load and the two non-persistent ones are
           either refused or flagged. Both.
-state:    🔵 NEARLY DONE 2026-08-19 — the refusal half PASSES; the save→load half is owed.
+state:    ✅ DONE — the owed save→load round trip PASSED 2026-08-20, 7/7 clauses.
+roundtrip: One save, one load, both items. Settlement id 4 (`Handshaw`, Jawa_HuttCartel)
+          re-sited 10299 → 10336 and renamed ROUNDTRIP_PROBE; world renamed
+          "Ash'karr RT-PROBE"; `world_commit`; `save_game` → `rt_probe.rws`; `load_game`;
+          then read back off the reloaded world:
+            ✅ world name survived            ✅ settlement kept its new tile 10336
+            ✅ seedString survived ('lane')   ✅ settlement kept its name
+            ✅ persistentRandomValue survived ✅ settlement kept faction Jawa_HuttCartel
+            ✅ 38 settlements, 0 with a null faction
+          🔑 **The null-faction trap did not fire.** That is the clause the whole round
+          trip existed for: a Settlement with a null faction is destroyed on load with only
+          a warning, so a re-sited settlement that comes back with its faction intact is
+          the only proof `world_objects_set` does not orphan it.
+prior:    🔵 NEARLY DONE 2026-08-19 — the refusal half PASSES; the save→load half is owed.
 result:   SHIPPED: `world_info_get` · `world_info_set` (`world_layers` came in W2).
           ✅ READ: name, seedString, seed, planetCoverage, persistentRandomValue,
              overallRainfall/Temperature/Population, landmarkDensity, initialMapSize,
