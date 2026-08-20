@@ -934,3 +934,32 @@ criteria: each of the seven appears on the Configure Factions page, generates se
           Free Droid Enclaves field a biological species against a 0%-biological dossier,
           and baseliners generate in five factions. None of them stops this check.
 state:    ready
+
+## B54 Add the faith text to the eleven factions, before worldgen
+row:      6
+spec:     All eleven faiths are in the mod files and deployed — entries 1–3 in
+          `Patches/ImperialDesertDirectorate.xml`, `Defs/FactionDefs/JawaHuttCartel.xml`,
+          `Patches/HomesteadDefenseLeague.xml`; 4 and 10 in `Patches/DeepDesertTribes.xml`
+          and `Patches/BlackstarCompany.xml`; 5–9 and 11 in the remaining
+          `Defs/FactionDefs/*.xml`.
+verify:   done offline — `validate_ideoligion.py --xml <dir> --mods-config
+          infrastructure/state/modlists/ModsConfig.FULL.LATEST.xml`: **8/8 VALID** on the
+          FactionDefs and **4/4 VALID** on the patches, no errors.
+          `deityPresets` is on exactly entries 1, 2 and 3 and on nothing else, which is
+          what the structures' `deityCount` allows (2 for `Structure_TheistEmbodied`, 1 for
+          `VME_Structure_Corporate`, 1 for `Structure_TheistAbstract`). `hiddenIdeo` is set
+          nowhere. Every `<li>` was checked against the live dump's packageId rather than
+          by eye: one bare modded entry existed — `Trader`, which is
+          `mlie.preceptsandmemes` and NOT vanilla — and now carries its `MayRequire`.
+          The item's own caveat on entry 5 is CLEARED: every `OuterRim_*Droid` race reads
+          `intelligence: Humanlike`, so the Free Droid Enclaves' ideo runs.
+criteria: `jawa/ideo_of` reads the eleven back and the names and descriptions match the
+          spec. 🔴 MUST be true at the worldgen click — an ideo is generated once at world
+          creation and cannot be retrofitted.
+          ⚠️ One text mismatch is known and filed to DECIDE, not fixed here: the Hutt
+          Cartel's `ideoDescription` in the def is NOT the paragraph in
+          `faction_religions_spec.md` entry 2, though the file comment claims verbatim.
+          A twelfth faith also exists that the spec never authorised — the Jawa Trade Moot
+          carries `The Salvation` — filed as
+          `the-trade-moot-wears-the-player-faith-and-the-spec-never-said-so-9d21f7`.
+state:    ready

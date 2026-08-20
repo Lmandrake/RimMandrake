@@ -562,3 +562,30 @@ spec:     (a) 🔴 **`maxCountAtGameStart` is on the authored-faction contract a
 verify:   n/a — this is a request for five values, not a build.
 criteria: n/a
 state:    ready
+
+## the-trade-moot-wears-the-player-faith-and-the-spec-never-said-so-9d21f7
+row:      6
+from:     BUILD, 2026-08-19, auditing B54. Not a defect that stops anything — a call that
+          nobody has made in writing.
+spec:     `faction_religions_spec.md` has eleven entries and says section 12, the Jawa, is
+          **deliberately empty** because the player faith ships as
+          `src/Jawa/ideoligion/The Salvation.rid`. But
+          `src/Jawa/Jawa_Patches/Defs/FactionDefs/JawaTribes.xml` (`Jawa_IndigenousTribes`,
+          label "Jawa Trade Moot") carries `<ideoName>The Salvation</ideoName>` with
+          `fixedIdeo true` and five `forcedMemes`, and no `ideoDescription`.
+          It reads as deliberate — the Trade Moot is Jawa, so it wearing the Jawa faith is
+          coherent, and `fixedIdeo` stops worldgen rolling a random faith over an NPC
+          faction we care about. But **the twelfth faith is the one the spec explicitly
+          declined to author**, so this is authored content with no ruling behind it and no
+          description text.
+          ⇒ (a) confirm the Trade Moot keeps The Salvation, and give it an
+          `ideoDescription`; or (b) give it its own faith; or (c) strip the block and let
+          worldgen roll one.
+          🔑 It has the same hard deadline as the rest of B54: an ideo is generated once,
+          at world creation.
+          FIXED already, needing no ruling: three of the five memes are modded
+          (`sarg.alphamemes`, `vanillaexpanded.vmemese`) and carried no `MayRequire`.
+          They do now.
+verify:   n/a — a ruling, not a build.
+criteria: n/a
+state:    ready

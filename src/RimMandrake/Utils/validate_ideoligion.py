@@ -115,9 +115,15 @@ class Dump:
         return "?"
 
 
+# Overridden by --mods-config. 🔴 Without it a run during a minimal-list window
+# reports every modded meme as `def/inactive-mod` and the whole religion INVALID —
+# a fact about the LIVE list, not about the file being checked.
+MODS_CONFIG_OVERRIDE: Path | None = None
+
+
 def _active_mods() -> set[str]:
     try:
-        root = ET.parse(MODS_CONFIG).getroot()
+        root = ET.parse(MODS_CONFIG_OVERRIDE or MODS_CONFIG).getroot()
     except Exception:
         return set()
     out = set()
@@ -517,7 +523,18 @@ def main() -> int:
     ap.add_argument("--impact-budget", type=int, default=DEFAULT_IMPACT_BUDGET,
                     help="fail when total meme impact exceeds N (only pass a MEASURED cap)")
     ap.add_argument("--only", help="check just the religion whose name contains this")
+    ap.add_argument("--mods-config", type=Path, default=None,
+                    help="read activeMods from THIS ModsConfig.xml instead of the live "
+                         "one. Use it whenever the live list is not the campaign list — "
+                         "e.g. infrastructure/state/modlists/ModsConfig.FULL.LATEST.xml "
+                         "while a minimal list is swapped in.")
     a = ap.parse_args()
+
+    if a.mods_config:
+        if not a.mods_config.is_file():
+            sys.exit(f"--mods-config: no such file {a.mods_config}")
+        global MODS_CONFIG_OVERRIDE
+        MODS_CONFIG_OVERRIDE = a.mods_config
 
     D = Dump()
     if a.spec:

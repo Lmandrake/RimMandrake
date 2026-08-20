@@ -573,8 +573,16 @@ verify:   `python3 src/RimMandrake/Utils/validate_ideoligion.py <xml>` VALID for
 criteria: `jawa/ideo_of` reads the eleven back and the names and descriptions
           match the spec. 🔴 MUST land before the worldgen click — an ideo is
           generated once at world creation and cannot be retrofitted.
-state:    ready
-
+state:    done 2026-08-19. All eleven had already landed, inside the faction files rather
+          than a separate pass. Audited: 8/8 and 4/4 VALID under
+          `validate_ideoligion.py` scoped to the campaign mod list; `deityPresets` on
+          exactly entries 1-3 and nowhere else; `hiddenIdeo` set nowhere; one bare modded
+          meme found and fixed (`Trader` is `mlie.preceptsandmemes`, not vanilla). Entry
+          5's caveat cleared — every droid race is `intelligence: Humanlike`.
+          🔑 The validator could not be scoped to an archived mod list at all, so it
+          reported every modded meme INVALID during CHECK's minimal-list window. It takes
+          `--mods-config` now. Two text questions went to DECIDE rather than being decided
+          here. Live half filed to `queue/CHECK.md`.
 ## B55 Build the campaign start — fixed map, fixed ship, fixed pawns
 row:      12
 spec:     ⏭️ CARRIED IN FROM B63, 2026-08-19: **"The Sundered" must appear in

@@ -93,11 +93,11 @@
     <ideoName>The Salvation</ideoName>
     <fixedIdeo>true</fixedIdeo>
     <forcedMemes>
-      <li>AM_Structure_Scavenger</li>
-      <li>Trader</li>
-      <li>VME_Scrapper</li>
-      <li>VME_Trader</li>
-      <li>VME_Nomad</li>
+      <li MayRequire="sarg.alphamemes">AM_Structure_Scavenger</li>
+      <li MayRequire="mlie.preceptsandmemes">Trader</li>  <!-- NOT vanilla: the only vanilla `Trader` defName is a PawnGroupKindDef. -->
+      <li MayRequire="vanillaexpanded.vmemese">VME_Scrapper</li>
+      <li MayRequire="vanillaexpanded.vmemese">VME_Trader</li>
+      <li MayRequire="vanillaexpanded.vmemese">VME_Nomad</li>
     </forcedMemes>
 
     <!-- Every member is a Jawa. Without this the faction generates baseliners
