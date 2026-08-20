@@ -112,5 +112,409 @@ namespace JawaBench.BridgeTools
                 };
             });
         }
+
+        // ================================================================
+        //  W3 - G1 TILE SCALARS + G7 COMMIT
+        //  The first complete vertical slice: read, write, import, validate,
+        //  and the one tool that makes any of it visible.
+        // ================================================================
+
+        /// <summary>Resolve the surface tile for an id, or null with a reason.</summary>
+        private static SurfaceTile SurfaceTileAt(int id, out string err)
+        {
+            err = null;
+            var grid = Find.WorldGrid;
+            if (grid == null) { err = "No world grid."; return null; }
+            if (id < 0 || id >= grid.TilesCount)
+            { err = "Tile " + id + " out of range 0.." + (grid.TilesCount - 1) + "."; return null; }
+            var t = grid[id] as SurfaceTile;
+            if (t == null) { err = "Tile " + id + " is not a SurfaceTile."; return null; }
+            return t;
+        }
+
+        /// <summary>
+        /// RAW read. Deliberately avoids HillinessLabel / MinTemperature / MaxTemperature /
+        /// Biomes: those are lazily cached on Tile with NO reset method anywhere in the
+        /// codebase, so after a write they report the OLD value for the rest of the session.
+        /// A validator built on them would confirm its own writes while the planet stayed wrong.
+        /// </summary>
+        private static object TileRaw(SurfaceTile t, int id)
+        {
+            return new
+            {
+                tile = id,
+                biome = t.PrimaryBiome != null ? t.PrimaryBiome.defName : null,
+                elevation = t.elevation,
+                hilliness = t.hilliness.ToString(),
+                hillinessInt = (int)t.hilliness,
+                temperature = t.temperature,
+                rainfall = t.rainfall,
+                swampiness = t.swampiness,
+                pollution = t.pollution,
+                riverDist = t.riverDist,
+                feature = t.feature != null ? t.feature.name : null,
+                featureId = t.feature != null ? t.feature.uniqueID : -1,
+                waterCovered = t.WaterCovered,
+                roadCount = t.potentialRoads != null ? t.potentialRoads.Count : 0,
+                riverCount = t.potentialRivers != null ? t.potentialRivers.Count : 0,
+                mutatorCount = t.mutatorsNullable != null ? t.mutatorsNullable.Count : 0,
+            };
+        }
+
+        private static bool TryHilliness(string s, out Hilliness h)
+        {
+            h = Hilliness.Flat;
+            if (string.IsNullOrEmpty(s)) return false;
+            s = s.Trim();
+            int n;
+            if (int.TryParse(s, out n))
+            {
+                if (n < 0 || n > 5) return false;
+                h = (Hilliness)n; return true;
+            }
+            try { h = (Hilliness)Enum.Parse(typeof(Hilliness), s, true); return true; }
+            catch { return false; }
+        }
+
+        [Tool(
+            "jawa/world_tile_get",
+            Description =
+                "Read the RAW per-tile scalars for one or more world tiles: biome, elevation, " +
+                "hilliness, temperature, rainfall, swampiness, pollution, riverDist, feature, " +
+                "plus road/river/mutator counts. Accepts a comma-separated id list and/or a " +
+                "'from-to' range. READS RAW FIELDS ON PURPOSE - Tile.HillinessLabel, " +
+                "MinTemperature, MaxTemperature and Biomes are lazily cached with no reset " +
+                "anywhere in RimWorld, so they lie after a write. Use this to validate, not those.",
+            ResultDescription = "success, count, tiles[] of raw scalar records.")]
+        public static async Task<object> WorldTileGet(
+            IRimBridgeContext ctx,
+            CancellationToken cancellationToken,
+            [ToolParameter(Description = "Comma-separated tile ids, e.g. '0,17,4720'.")]
+            string tiles = null,
+            [ToolParameter(Description = "Inclusive range 'from-to', e.g. '0-99'. Combines with 'tiles'.")]
+            string range = null,
+            [ToolParameter(Description = "Cap on returned rows. Default 200.")]
+            int limit = 200)
+        {
+            return await ctx.MainThread.InvokeAsync(() =>
+            {
+                if (Find.World == null || Find.WorldGrid == null)
+                    return Fail("No world is loaded.");
+
+                var ids = new List<int>();
+                var errors = new List<string>();
+
+                if (!string.IsNullOrEmpty(tiles))
+                    foreach (var part in tiles.Split(','))
+                    {
+                        int v;
+                        if (int.TryParse(part.Trim(), out v)) ids.Add(v);
+                        else errors.Add("Not a tile id: '" + part.Trim() + "'");
+                    }
+
+                if (!string.IsNullOrEmpty(range))
+                {
+                    var bits = range.Split('-');
+                    int a, b;
+                    if (bits.Length == 2 && int.TryParse(bits[0].Trim(), out a) && int.TryParse(bits[1].Trim(), out b))
+                    { for (int i = Math.Min(a, b); i <= Math.Max(a, b); i++) ids.Add(i); }
+                    else errors.Add("Bad range '" + range + "', expected 'from-to'.");
+                }
+
+                if (ids.Count == 0 && errors.Count == 0)
+                    return Fail("Give 'tiles' and/or 'range'.");
+
+                if (limit < 1) limit = 1;
+                var outp = new List<object>();
+                int skipped = 0;
+                foreach (var id in ids)
+                {
+                    if (outp.Count >= limit) { skipped++; continue; }
+                    string e;
+                    var t = SurfaceTileAt(id, out e);
+                    if (t == null) { errors.Add(e); continue; }
+                    outp.Add(TileRaw(t, id));
+                }
+
+                return (object)new
+                {
+                    success = true,
+                    count = outp.Count,
+                    requested = ids.Count,
+                    truncated = skipped,
+                    tilesCount = Find.WorldGrid.TilesCount,
+                    errors,
+                    tiles = outp,
+                    ticksGame = TicksGameSafe(),
+                };
+            });
+        }
+
+        [Tool(
+            "jawa/world_tile_set",
+            Description =
+                "Write per-tile scalars over a list and/or range of world tiles. Any field left " +
+                "null is untouched. Fields: biome (BiomeDef defName), elevation, hilliness " +
+                "(Flat|SmallHills|LargeHills|Mountainous|Impassable, or 0-5), temperature, " +
+                "rainfall, swampiness, pollution. " +
+                "DOES NOT REDRAW: RimWorld has no per-tile visual invalidation except pollution, " +
+                "so call jawa/world_commit once after a batch. Doing it per write would " +
+                "regenerate the whole planet mesh every tile.",
+            ResultDescription = "success, written, tiles[] read back RAW after the write.")]
+        public static async Task<object> WorldTileSet(
+            IRimBridgeContext ctx,
+            CancellationToken cancellationToken,
+            [ToolParameter(Description = "Comma-separated tile ids.")] string tiles = null,
+            [ToolParameter(Description = "Inclusive range 'from-to'.")] string range = null,
+            [ToolParameter(Description = "BiomeDef defName.")] string biome = null,
+            [ToolParameter(Description = "Elevation in metres. <= 0 reads as water-covered.")] float? elevation = null,
+            [ToolParameter(Description = "Flat|SmallHills|LargeHills|Mountainous|Impassable, or 0-5.")] string hilliness = null,
+            [ToolParameter(Description = "Temperature C.")] float? temperature = null,
+            [ToolParameter(Description = "Rainfall mm.")] float? rainfall = null,
+            [ToolParameter(Description = "Swampiness 0-1.")] float? swampiness = null,
+            [ToolParameter(Description = "Pollution 0-1.")] float? pollution = null,
+            [ToolParameter(Description = "Read back at most this many rows. Default 10.")] int readBack = 10)
+        {
+            return await ctx.MainThread.InvokeAsync(() =>
+            {
+                if (Find.World == null || Find.WorldGrid == null)
+                    return Fail("No world is loaded.");
+
+                BiomeDef biomeDef = null;
+                if (!string.IsNullOrEmpty(biome))
+                {
+                    biomeDef = DefDatabase<BiomeDef>.GetNamedSilentFail(biome.Trim());
+                    if (biomeDef == null)
+                        return Fail("No BiomeDef named '" + biome + "'.", DefSuggestions<BiomeDef>(biome));
+                }
+
+                Hilliness hill = Hilliness.Flat; bool setHill = false;
+                if (!string.IsNullOrEmpty(hilliness))
+                {
+                    if (!TryHilliness(hilliness, out hill))
+                        return Fail("Bad hilliness '" + hilliness + "'. Use Flat|SmallHills|LargeHills|Mountainous|Impassable or 0-5.");
+                    setHill = true;
+                }
+
+                if (biomeDef == null && !setHill && !elevation.HasValue && !temperature.HasValue
+                    && !rainfall.HasValue && !swampiness.HasValue && !pollution.HasValue)
+                    return Fail("Nothing to write - every field was null.");
+
+                var ids = new List<int>();
+                var errors = new List<string>();
+                if (!string.IsNullOrEmpty(tiles))
+                    foreach (var part in tiles.Split(','))
+                    { int v; if (int.TryParse(part.Trim(), out v)) ids.Add(v); else errors.Add("Not a tile id: '" + part.Trim() + "'"); }
+                if (!string.IsNullOrEmpty(range))
+                {
+                    var bits = range.Split('-'); int a, b;
+                    if (bits.Length == 2 && int.TryParse(bits[0].Trim(), out a) && int.TryParse(bits[1].Trim(), out b))
+                    { for (int i = Math.Min(a, b); i <= Math.Max(a, b); i++) ids.Add(i); }
+                    else errors.Add("Bad range '" + range + "'.");
+                }
+                if (ids.Count == 0) return Fail("Give 'tiles' and/or 'range'.", errors);
+
+                int written = 0;
+                foreach (var id in ids)
+                {
+                    string e;
+                    var t = SurfaceTileAt(id, out e);
+                    if (t == null) { errors.Add(e); continue; }
+                    if (biomeDef != null) t.PrimaryBiome = biomeDef;
+                    if (setHill) t.hilliness = hill;
+                    if (elevation.HasValue) t.elevation = elevation.Value;
+                    if (temperature.HasValue) t.temperature = temperature.Value;
+                    if (rainfall.HasValue) t.rainfall = rainfall.Value;
+                    if (swampiness.HasValue) t.swampiness = swampiness.Value;
+                    if (pollution.HasValue) t.pollution = pollution.Value;
+                    written++;
+                }
+
+                var back = new List<object>();
+                foreach (var id in ids)
+                {
+                    if (back.Count >= Math.Max(0, readBack)) break;
+                    string e; var t = SurfaceTileAt(id, out e);
+                    if (t != null) back.Add(TileRaw(t, id));
+                }
+
+                return (object)new
+                {
+                    success = true,
+                    written,
+                    requested = ids.Count,
+                    errors,
+                    note = "Nothing is visible until jawa/world_commit runs.",
+                    tiles = back,
+                    ticksGame = TicksGameSafe(),
+                };
+            });
+        }
+
+
+        // ================================================================
+        //  G7 - COMMIT. The recipe below is not invented: it is what
+        //  vanilla's OWN debug tools call. DebugToolsMisc.SetBiome does
+        //  Terrain.RegenerateNow(); the landmark tools add Landmarks and
+        //  Hills. There is NO per-tile invalidation in RimWorld except
+        //  pollution, so a whole-layer mesh regeneration is the only route.
+        // ================================================================
+        [Tool(
+            "jawa/world_commit",
+            Description =
+                "Make pending world-tile edits VISIBLE and consistent. Regenerates the world " +
+                "draw layers and clears the non-visual caches that otherwise keep answering " +
+                "with the pre-edit planet. Call this ONCE after a batch of writes, never per " +
+                "write - each call regenerates whole meshes. " +
+                "Runs, in order: WorldDrawLayer_Terrain, _Hills, _Landmarks, _Roads, _Rivers " +
+                "RegenerateNow; FastTileFinder.DirtyCache (else site/settlement queries keep the " +
+                "old biome); WorldPathGrid.RecalculateLayerPerceivedPathCosts (movement " +
+                "difficulty is a cached float[] built from biome + hilliness); and " +
+                "WorldReachability.ClearCache. " +
+                "NOTE it cannot fix Tile's OWN private caches (hillinessLabelCached, " +
+                "cachedMaxTemp, cachedMinTemp, tmpSecondaryBiome) - those have no reset method " +
+                "anywhere in RimWorld and clear only on reload.",
+            ResultDescription = "success, and a steps[] naming each action with ok/skipped/failed.")]
+        public static async Task<object> WorldCommit(
+            IRimBridgeContext ctx,
+            CancellationToken cancellationToken,
+            [ToolParameter(Description = "Regenerate draw layers. Default true.")] bool redraw = true,
+            [ToolParameter(Description = "Clear FastTileFinder + reachability caches. Default true.")] bool clearCaches = true,
+            [ToolParameter(Description = "Recalculate world path costs. Default true.")] bool recalcPaths = true,
+            [ToolParameter(Description = "Use SetAllLayersDirty instead of targeted RegenerateNow. Async, cheaper, next frame.")] bool lazy = false)
+        {
+            return await ctx.MainThread.InvokeAsync(() =>
+            {
+                if (Find.World == null || Find.WorldGrid == null)
+                    return Fail("No world is loaded.");
+
+                var steps = new List<object>();
+                var grid = Find.WorldGrid;
+                var surface = grid.Surface;
+                var renderer = Find.World.renderer;
+
+                Action<string, Action> step = (name, act) =>
+                {
+                    try { act(); steps.Add(new { step = name, status = "ok" }); }
+                    catch (Exception e) { steps.Add(new { step = name, status = "failed", error = e.GetType().Name + ": " + e.Message }); }
+                };
+
+                if (redraw && renderer != null)
+                {
+                    if (lazy)
+                    {
+                        step("SetAllLayersDirty", () => renderer.SetAllLayersDirty());
+                    }
+                    else
+                    {
+                        // Order matches vanilla's landmark debug tool.
+                        step("WorldDrawLayer_Terrain.RegenerateNow",
+                            () => renderer.GetLayer<WorldDrawLayer_Terrain>(surface).RegenerateNow());
+                        step("WorldDrawLayer_Hills.RegenerateNow",
+                            () => renderer.GetLayer<WorldDrawLayer_Hills>(surface).RegenerateNow());
+                        step("WorldDrawLayer_Landmarks.RegenerateNow",
+                            () => renderer.GetLayer<WorldDrawLayer_Landmarks>(surface).RegenerateNow());
+                        // No vanilla call site exists for these two - inferred from the
+                        // WorldDrawLayer_Paths subclassing. They are wrapped, so a failure
+                        // is reported rather than taking the whole commit down.
+                        step("WorldDrawLayer_Roads.RegenerateNow",
+                            () => renderer.GetLayer<WorldDrawLayer_Roads>(surface).RegenerateNow());
+                        step("WorldDrawLayer_Rivers.RegenerateNow",
+                            () => renderer.GetLayer<WorldDrawLayer_Rivers>(surface).RegenerateNow());
+                    }
+                }
+                else steps.Add(new { step = "redraw", status = "skipped" });
+
+                if (clearCaches)
+                {
+                    step("FastTileFinder.DirtyCache", () => surface.FastTileFinder.DirtyCache());
+                    step("WorldReachability.ClearCache", () => Find.WorldReachability.ClearCache());
+                }
+                else steps.Add(new { step = "clearCaches", status = "skipped" });
+
+                if (recalcPaths)
+                    step("WorldPathGrid.RecalculateLayerPerceivedPathCosts",
+                        () => Find.WorldPathGrid.RecalculateLayerPerceivedPathCosts(surface));
+                else steps.Add(new { step = "recalcPaths", status = "skipped" });
+
+                int failed = steps.Count(o => o.GetType().GetProperty("status").GetValue(o, null) as string == "failed");
+
+                return (object)new
+                {
+                    success = failed == 0,
+                    failedSteps = failed,
+                    lazy,
+                    warning = "Tile's own private caches (HillinessLabel, Min/MaxTemperature, Biomes) " +
+                              "have no reset anywhere in RimWorld and survive this. Read raw fields.",
+                    steps,
+                    ticksGame = TicksGameSafe(),
+                };
+            });
+        }
+
+
+        // ================================================================
+        //  jawa/world_view - get the PLANET on screen so it can be
+        //  photographed. RimWorld's world button is drawn immediate-mode
+        //  and is not exposed as a click target, so without this there is
+        //  no bridge route to the world map from a running colony - and
+        //  every "look at the planet" criterion in this project needs one.
+        //  Verse.CameraJumper.TryShowWorld(), read from source 2026-08-19.
+        // ================================================================
+        [Tool(
+            "jawa/world_view",
+            Description =
+                "Switch the camera between the colony map and the PLANET, and optionally " +
+                "centre the globe on a tile. This is the only bridge route to the world map " +
+                "from a running game - RimWorld's own world button is immediate-mode and is " +
+                "not a clickable target. Use before jawa/world_commit screenshots. " +
+                "Close any open dialog first: a modal blanks the screenshot to pure black.",
+            ResultDescription = "success, worldSelected before/after, wantedMode, centeredOn.")]
+        public static async Task<object> WorldView(
+            IRimBridgeContext ctx,
+            CancellationToken cancellationToken,
+            [ToolParameter(Description = "True shows the planet, false returns to the map. Default true.")]
+            bool show = true,
+            [ToolParameter(Description = "Optional tile id to centre the globe on.")]
+            int centerTile = -1)
+        {
+            return await ctx.MainThread.InvokeAsync(() =>
+            {
+                if (Find.World == null) return Fail("No world is loaded.");
+
+                bool before = WorldRendererUtility.WorldSelected;
+                bool acted;
+
+                if (show)
+                {
+                    acted = CameraJumper.TryShowWorld();
+                }
+                else
+                {
+                    acted = CameraJumper.TryHideWorld();
+                }
+
+                int centered = -1;
+                if (show && centerTile >= 0 && Find.WorldGrid != null
+                    && centerTile < Find.WorldGrid.TilesCount && Find.WorldCameraDriver != null)
+                {
+                    try { Find.WorldCameraDriver.JumpTo(centerTile); centered = centerTile; }
+                    catch (Exception e) { Log.Warning("[JawaBench] world_view: JumpTo failed: " + e.Message); }
+                }
+
+                return (object)new
+                {
+                    success = true,
+                    requested = show ? "planet" : "map",
+                    acted,
+                    worldSelectedBefore = before,
+                    worldSelectedAfter = WorldRendererUtility.WorldSelected,
+                    wantedMode = Find.World.renderer != null ? Find.World.renderer.wantedMode.ToString() : null,
+                    centeredOn = centered,
+                    ticksGame = TicksGameSafe(),
+                };
+            });
+        }
+
     }
 }
