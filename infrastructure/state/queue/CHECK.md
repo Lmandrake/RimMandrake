@@ -1385,4 +1385,9 @@ verify:   `ls -l` the file against its siblings; confirm the `Jawa_*` faction en
           are present.
 criteria: the faction roster and coverage settings live somewhere in the repo, and the
           workshop copy is reproducible from it rather than being the only copy.
-state:    ready
+state:    ✅ DONE 2026-08-19 (f427f3a). `design/Jawa/worldbuilding/TidallyLocked_Preset.xml`
+          is the repo copy, annotated at the top with its deploy path and why it matters.
+          Read back from the copy: 15 `Jawa_*` lines, `myLittlePlanetSubcount 7`,
+          `planetCoverage 1` — which independently cross-confirms the pin recorded in
+          `worldmap-import-is-pinned-to-mlp-subcount-7-4c9e1a`. Steam can now revert the
+          workshop file without costing us the authoring.
