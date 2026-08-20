@@ -27,6 +27,7 @@ from rimbridge_client import RimBridge, resolve_endpoint
 
 REPO = os.path.abspath(os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "..", ".."))
 TILES_CSV = os.path.join(REPO, "world", "ASHKARR_WORLDMAP_tiles.csv")
+PLAYER_LOG = r"C:\Users\Mandrake\AppData\LocalLow\Ludeon Studios\RimWorld by Ludeon Studios\Player.log"
 
 # The count the deployed assembly carries. Read it off the DLL rather than
 # trusting a literal here -- but a literal is still useful as a "did the deploy
@@ -85,28 +86,29 @@ def main():
         if gi.get("status") != "game_loaded":
             out.append("- ⚠️ no game loaded; the world and map checks below will be skipped.")
 
-        # 🔴 THE ZOMBIE CANARY, and it costs one call.
-        # On 2026-08-20 a save aborted mid-load (a mod's cross-ref postfix threw),
-        # the engine's own bail handler NREd in MapDrawer.Dispose, and the process
-        # carried on reporting `game_loaded` and answering the bridge for HOURS.
-        # Everything measured on it was measured on a corpse. The one cheap tell is
-        # that the debug Actions tree will not enumerate: Outputs and Settings
-        # answered fine while Actions threw a NullReferenceException.
+        # 🔴 THE ZOMBIE CANARY — and it reads the LOG, not the debug tree.
+        # A save can abort mid-load, the engine's own bail handler can throw, and
+        # the process then reports `game_loaded` and answers every call for hours
+        # while half-disposed. Measured 2026-08-20.
+        # ⚠️ An earlier version of this check asked whether the debug `Actions`
+        # tree enumerated. That was WRONG IN BOTH DIRECTIONS: the tree reports few
+        # or no VISIBLE children when no map is loaded, and it enumerated fine on
+        # a game that had definitely aborted. `ErrorWhileLoadingGame` is written
+        # by the engine only when it has given up on a load.
         try:
-            act = rb.call("rimworld/list_debug_action_children", {"path": "Actions"})
-            n = len(act.get("children") or [])
-            if act.get("success") and n > 0:
-                out.append("- debug `Actions` tree: %d children ✓ (game is genuinely alive)" % n)
+            with io.open(PLAYER_LOG, encoding="utf-8", errors="replace") as fh:
+                _log = fh.read()
+            _n = _log.count("ErrorWhileLoadingGame")
+            if _n:
+                out.append("- 🔴 **THE LOAD ABORTED** — Player.log carries %d "
+                           "`ErrorWhileLoadingGame`. The process may still say `game_loaded` "
+                           "and answer every call while being half-disposed. Nothing measured "
+                           "on it counts. Find the exception above that line." % _n)
+                headline.append("LOAD ABORTED — game is a zombie")
             else:
-                out.append("- 🔴 **`Actions` WILL NOT ENUMERATE — the game is a ZOMBIE.** A load "
-                           "aborted and the engine's bail handler threw; the process still says "
-                           "`game_loaded` and still answers, but nothing measured on it counts. "
-                           "Check Player.log for `ErrorWhileLoadingGame`. Message: %s"
-                           % str(act.get("message"))[:120])
-                headline.append("ZOMBIE GAME - Actions tree dead")
-        except Exception as e:
-            out.append("- 🔴 `Actions` enumeration raised: %s — treat as zombie until disproven." % e)
-            headline.append("ZOMBIE GAME - Actions tree dead")
+                out.append("- load finished cleanly (no `ErrorWhileLoadingGame`)")
+        except Exception as _e:
+            out.append("- ⚠️ could not read Player.log for the abort check: %s" % _e)
 
         # ---- 2. can every pawn kind arm itself ------------------------------
         section(out, "Pawn kinds that cannot arm themselves")
