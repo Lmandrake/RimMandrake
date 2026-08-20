@@ -3569,9 +3569,24 @@ namespace JawaBench.BridgeTools
                     { try { st.Destroy(); removed++; } catch { } }
                 }
 
-                int created = 0; var failures = new List<object>();
+                int created = 0, skippedOccupied = 0; var failures = new List<object>();
                 foreach (var kv in plan)
                 {
+                    // ⚠️ Without this, importing onto a world that still has its
+                    // generated roster STACKS two settlements on one tile. The lint
+                    // catches it afterwards, but a tool that creates a defect its
+                    // sibling then reports is a poor trade. clearExisting=true makes
+                    // this branch unreachable, which is the intended path.
+                    if (Find.WorldObjects.ObjectsAt(new PlanetTile(kv.Value.Key, grid.Surface))
+                                         .Any(o => o is Settlement))
+                    {
+                        skippedOccupied++;
+                        if (failures.Count < 25)
+                            failures.Add(new { tile = kv.Value.Key, name = kv.Value.Value,
+                                               error = "a settlement already occupies this tile - skipped rather " +
+                                                       "than stacked. Re-run with clearExisting=true for a clean roster." });
+                        continue;
+                    }
                     try
                     {
                         var wo = WorldObjectMaker.MakeWorldObject(WorldObjectDefOf.Settlement);
@@ -3592,12 +3607,12 @@ namespace JawaBench.BridgeTools
                 int nullFaction = Find.WorldObjects.Settlements.Count(q => q.Faction == null);
                 return new
                 {
-                    success = failures.Count == 0 && nullFaction == 0,
+                    success = failures.Count == 0 && nullFaction == 0 && skippedOccupied == 0,
                     message = "created " + created + ", removed " + removed + "; settlements " +
                               before + " -> " + after +
                               (nullFaction > 0 ? "  🔴 " + nullFaction + " HAVE A NULL FACTION and will be " +
                                                  "destroyed on the next load." : ""),
-                    rows = csv.Rows.Count, created, removed,
+                    rows = csv.Rows.Count, created, removed, skippedOccupied,
                     settlementsBefore = before, settlementsAfter = after,
                     nullFactionSettlements = nullFaction,
                     failures,
@@ -3742,6 +3757,11 @@ namespace JawaBench.BridgeTools
                     {
                         var mid = kv.Value[kv.Value.Count / 2];
                         f.drawCenter = grid.GetTileCenter(mid);
+                        // Scale the label to the region it names. Left unset, every
+                        // label draws at the same size and a 63-tile region shouts
+                        // as loudly as a 1,692-tile sea. sqrt because the label is a
+                        // LENGTH across an AREA of tiles.
+                        f.maxDrawSizeInTiles = Math.Max(6f, (float)Math.Sqrt(kv.Value.Count) * 2.2f);
                     }
                 }
 
