@@ -857,5 +857,402 @@ namespace JawaBench.BridgeTools
             });
         }
 
+
+        // ================================================================
+        //  P3 - ALLEGIANCE AND BODY PLAN
+        // ================================================================
+        [Tool(
+            "jawa/set_pawn_faction",
+            Description =
+                "Change a pawn's faction, or recruit a prisoner/guest into the colony. " +
+                "✅ Pawn.SetFaction is SELF-REFRESHING and does a great deal for you: lord " +
+                "Notify_PawnLost, jobs.StopAll, drafter, guest status, mapPawns " +
+                "re/de-registration, needs, relations, the colonist bar, surgery bills and " +
+                "ChangeKind. " +
+                "⭐ Use recruit=true for prisoner/guest -> player: RecruitUtility.Recruit " +
+                "also unlocks apparel and replaces royal titles, which raw SetFaction does not. " +
+                "⚠️ Changing faction on a pawn in an active raid removes it from its lord.",
+            ResultDescription = "success, before/after faction, and the pawn snapshot.")]
+        public static async Task<object> SetPawnFaction(
+            IRimBridgeContext ctx,
+            CancellationToken cancellationToken,
+            [ToolParameter(Description = "Pawn id or name.")] string pawn = null,
+            [ToolParameter(Description = "FactionDef name. 'none' makes it factionless. 'player' is the colony.")] string faction = null,
+            [ToolParameter(Description = "Use RecruitUtility.Recruit instead of raw SetFaction.")] bool recruit = false)
+        {
+            return await ctx.MainThread.InvokeAsync(() =>
+            {
+                string err; var p = FindPawn(pawn, out err);
+                if (p == null) return Fail(err);
+                if (string.IsNullOrEmpty(faction)) return Fail("Give a FactionDef, 'player' or 'none'.");
+
+                var before = p.Faction != null ? p.Faction.def.defName : null;
+                Faction target = null;
+                var f = faction.Trim();
+
+                if (f.Equals("none", StringComparison.OrdinalIgnoreCase)) target = null;
+                else if (f.Equals("player", StringComparison.OrdinalIgnoreCase)) target = Faction.OfPlayer;
+                else
+                {
+                    var fd = DefDatabase<FactionDef>.GetNamedSilentFail(f);
+                    if (fd == null) return Fail("No FactionDef '" + f + "'.", DefSuggestions<FactionDef>(f));
+                    target = Find.FactionManager.FirstFactionOfDef(fd);
+                    if (target == null)
+                        return Fail("FactionDef '" + f + "' exists but no such faction was GENERATED in this world. " +
+                                    "Live factions: " + string.Join(", ", Find.FactionManager.AllFactionsVisible.Select(z => z.def.defName).Take(20).ToArray()));
+                }
+
+                if (p.Faction == target)
+                    return Fail("Pawn is already in " + (target == null ? "no faction" : target.def.defName) + " - SetFaction warns and returns on a no-op.");
+
+                var notes = new List<string>();
+                try
+                {
+                    if (recruit && target != null) { RecruitUtility.Recruit(p, target); notes.Add("RecruitUtility.Recruit - apparel unlock + royal title replace"); }
+                    else { p.SetFaction(target); notes.Add("Pawn.SetFaction - self-refreshing"); }
+                }
+                catch (Exception e) { return Fail("Faction change threw: " + e.GetType().Name + ": " + e.Message); }
+
+                return (object)new
+                {
+                    success = true,
+                    before, after = p.Faction != null ? p.Faction.def.defName : null,
+                    isColonist = p.IsColonist, isPrisoner = p.IsPrisoner,
+                    notes,
+                    pawn = PawnSnapshot(p), ticksGame = TicksGameSafe(),
+                };
+            });
+        }
+
+        [Tool(
+            "jawa/set_pawn_ideo",
+            Description =
+                "Set a pawn's ideoligion, adjust certainty, or assign an ideo role. " +
+                "action='set' | 'certainty' | 'role' | 'list'. " +
+                "⚠️ SetIdeo is NOT a quiet field write: it RANDOMISES certainty, unclaims " +
+                "ideo-forbidden beds, may strip spouse and bond relations, and can send a " +
+                "letter. It also no-ops on babies. " +
+                "⚠️ Certainty's setter is PRIVATE - this uses OffsetCertainty.",
+            ResultDescription = "success, before/after ideo and certainty, available ideos.")]
+        public static async Task<object> SetPawnIdeo(
+            IRimBridgeContext ctx,
+            CancellationToken cancellationToken,
+            [ToolParameter(Description = "Pawn id or name.")] string pawn = null,
+            [ToolParameter(Description = "'set' | 'certainty' | 'role' | 'list'.")] string action = "list",
+            [ToolParameter(Description = "Ideo NAME (they are runtime objects, not defs).")] string ideo = null,
+            [ToolParameter(Description = "Certainty offset, e.g. 0.2 or -0.3.")] float certaintyOffset = 0f,
+            [ToolParameter(Description = "Precept role label for action='role'. 'none' unassigns.")] string role = null)
+        {
+            return await ctx.MainThread.InvokeAsync(() =>
+            {
+                if (!ModsConfig.IdeologyActive)
+                    return Fail("Ideology is not active. Ideoligions do not exist in this game - this is a loud failure, not a count of zero.");
+                string err; var p = FindPawn(pawn, out err);
+                if (p == null) return Fail(err);
+
+                var all = Find.IdeoManager != null ? Find.IdeoManager.IdeosListForReading : null;
+                var available = all != null ? all.Select(i => new { name = i.name, memes = i.memes.Select(m => m.defName).Take(6).ToList(), believers = i.ColonistBelieverCountCached }).ToList() : null;
+                string A = (action ?? "list").Trim().ToLowerInvariant();
+
+                var beforeIdeo = p.Ideo != null ? p.Ideo.name : null;
+                float beforeCert = p.ideo != null ? p.ideo.Certainty : -1f;
+                var notes = new List<string>();
+
+                if (A == "set")
+                {
+                    if (p.ideo == null) return Fail("Pawn has no ideo tracker.");
+                    if (string.IsNullOrEmpty(ideo)) return Fail("Give an ideo NAME.");
+                    var target = all != null ? all.FirstOrDefault(i => string.Equals(i.name, ideo.Trim(), StringComparison.OrdinalIgnoreCase)) : null;
+                    if (target == null) return Fail("No ideoligion named '" + ideo + "'. Available: " +
+                        (all == null ? "(none)" : string.Join(" | ", all.Select(i => i.name).ToArray())));
+                    p.ideo.SetIdeo(target);
+                    notes.Add("SetIdeo randomises certainty and may strip spouse/bond relations - that is vanilla, not us");
+                }
+                else if (A == "certainty")
+                {
+                    if (p.ideo == null) return Fail("Pawn has no ideo tracker.");
+                    p.ideo.OffsetCertainty(certaintyOffset);
+                    notes.Add("Certainty's setter is private; used OffsetCertainty");
+                }
+                else if (A == "role")
+                {
+                    if (p.Ideo == null) return Fail("Pawn has no ideoligion, so it cannot hold a role.");
+                    if (string.IsNullOrEmpty(role)) return Fail("Give a role label or 'none'.");
+                    var roles = p.Ideo.RolesListForReading;
+                    if (role.Trim().Equals("none", StringComparison.OrdinalIgnoreCase))
+                    {
+                        var held = roles.FirstOrDefault(r => r.IsAssigned(p));
+                        if (held == null) return Fail("Pawn holds no role to unassign.");
+                        held.Unassign(p, false); notes.Add("unassigned " + held.LabelCap);
+                    }
+                    else
+                    {
+                        var r = roles.FirstOrDefault(z => string.Equals(z.LabelCap, role.Trim(), StringComparison.OrdinalIgnoreCase)
+                                                       || string.Equals(z.def.defName, role.Trim(), StringComparison.OrdinalIgnoreCase));
+                        if (r == null) return Fail("No role '" + role + "' in ideoligion '" + p.Ideo.name + "'. Roles: " +
+                            string.Join(", ", roles.Select(z => (string)z.LabelCap).ToArray()));
+                        r.Assign(p, true); notes.Add("assigned " + r.LabelCap + " (a single-occupant role replaces the previous holder and letters)");
+                    }
+                }
+                else if (A != "list") return Fail("action must be set|certainty|role|list.");
+
+                return (object)new
+                {
+                    success = true, action = A, notes,
+                    before = new { ideo = beforeIdeo, certainty = beforeCert },
+                    after = new { ideo = p.Ideo != null ? p.Ideo.name : null, certainty = p.ideo != null ? p.ideo.Certainty : -1f },
+                    role = p.Ideo != null ? p.Ideo.RolesListForReading.Where(r => r.IsAssigned(p)).Select(r => (string)r.LabelCap).FirstOrDefault() : null,
+                    availableIdeos = available,
+                    ticksGame = TicksGameSafe(),
+                };
+            });
+        }
+
+        [Tool(
+            "jawa/pawn_relations",
+            Description =
+                "Add, remove or list DIRECT relations between two pawns, and read opinion. " +
+                "⚠️ RimWorld REFUSES `implied` relations - Kin, Cousin, Grand*, Great*, " +
+                "Uncle/Nephew and friends are COMPUTED from the family graph, not stored - so " +
+                "this reports that clearly instead of letting it look like a failed write. " +
+                "✅ Reflexive relations auto-mirror onto the other pawn.",
+            ResultDescription = "success, added/removed, opinion both ways, relations[].")]
+        public static async Task<object> PawnRelations(
+            IRimBridgeContext ctx,
+            CancellationToken cancellationToken,
+            [ToolParameter(Description = "Pawn id or name.")] string pawn = null,
+            [ToolParameter(Description = "'add' | 'remove' | 'list'.")] string action = "list",
+            [ToolParameter(Description = "PawnRelationDef, e.g. Spouse, Lover, Parent, Sibling.")] string relation = null,
+            [ToolParameter(Description = "The other pawn's id or name.")] string otherPawn = null)
+        {
+            return await ctx.MainThread.InvokeAsync(() =>
+            {
+                string err; var p = FindPawn(pawn, out err);
+                if (p == null) return Fail(err);
+                if (p.relations == null) return Fail("Pawn has no relations tracker.");
+                string A = (action ?? "list").Trim().ToLowerInvariant();
+                var notes = new List<string>();
+                int added = 0, removed = 0;
+                Pawn other = null;
+
+                if (A != "list")
+                {
+                    if (string.IsNullOrEmpty(relation)) return Fail("Give a PawnRelationDef.");
+                    if (string.IsNullOrEmpty(otherPawn)) return Fail("Give otherPawn.");
+                    string e2; other = FindPawn(otherPawn, out e2);
+                    if (other == null) return Fail(e2);
+                    if (other == p) return Fail("A pawn cannot hold a direct relation to itself.");
+                    var rd = DefDatabase<PawnRelationDef>.GetNamedSilentFail(relation.Trim());
+                    if (rd == null) return Fail("No PawnRelationDef '" + relation + "'.", DefSuggestions<PawnRelationDef>(relation));
+
+                    if (rd.implied)
+                        return Fail("'" + rd.defName + "' is an IMPLIED relation - RimWorld computes it from the family graph and refuses to store it directly. " +
+                                    "Add the underlying blood relations instead (Parent, Sibling, Child) and this one will appear on its own.");
+
+                    if (A == "add")
+                    {
+                        if (p.relations.DirectRelationExists(rd, other)) notes.Add("relation already exists");
+                        else { p.relations.AddDirectRelation(rd, other); added++; if (rd.reflexive) notes.Add("reflexive - mirrored onto the other pawn automatically"); }
+                    }
+                    else if (A == "remove")
+                    {
+                        if (!p.relations.DirectRelationExists(rd, other)) notes.Add("no such relation to remove");
+                        else { p.relations.RemoveDirectRelation(rd, other); removed++; }
+                    }
+                    else return Fail("action must be add|remove|list.");
+                }
+
+                var rels = p.relations.DirectRelations.Select(r => new
+                {
+                    def = r.def.defName,
+                    otherPawn = r.otherPawn != null ? r.otherPawn.LabelShort : null,
+                    otherId = r.otherPawn != null ? r.otherPawn.thingIDNumber : -1,
+                }).ToList();
+
+                return (object)new
+                {
+                    success = true, action = A, added, removed, notes,
+                    opinionOfOther = other != null ? (object)p.relations.OpinionOf(other) : null,
+                    opinionOfMe = other != null ? (object)other.relations.OpinionOf(p) : null,
+                    relationCount = rels.Count, relations = rels,
+                    ticksGame = TicksGameSafe(),
+                };
+            });
+        }
+
+        [Tool(
+            "jawa/pawn_genes",
+            Description =
+                "Add or remove genes, or set a whole xenotype. " +
+                "✅ AddGene/RemoveGene are FULLY SELF-REFRESHING via Notify_GenesChanged - " +
+                "colours, body and head, needs, hediff cache, aptitudes, work types and " +
+                "graphics all update. xenogene=true adds it as a xenogene rather than an " +
+                "endogene, which is what determines inheritance.",
+            ResultDescription = "success, xenotype, endogenes[], xenogenes[].")]
+        public static async Task<object> PawnGenes(
+            IRimBridgeContext ctx,
+            CancellationToken cancellationToken,
+            [ToolParameter(Description = "Pawn id or name.")] string pawn = null,
+            [ToolParameter(Description = "'add' | 'remove' | 'xenotype' | 'list'.")] string action = "list",
+            [ToolParameter(Description = "GeneDef name.")] string gene = null,
+            [ToolParameter(Description = "XenotypeDef name for action='xenotype'.")] string xenotype = null,
+            [ToolParameter(Description = "Add as a xenogene rather than an endogene. Default true.")] bool xenogene = true)
+        {
+            return await ctx.MainThread.InvokeAsync(() =>
+            {
+                if (!ModsConfig.BiotechActive)
+                    return Fail("Biotech is not active. Genes and xenotypes do not exist in this game.");
+                string err; var p = FindPawn(pawn, out err);
+                if (p == null) return Fail(err);
+                if (p.genes == null) return Fail("Pawn has no gene tracker.");
+                string A = (action ?? "list").Trim().ToLowerInvariant();
+                var notes = new List<string>();
+
+                if (A == "add" || A == "remove")
+                {
+                    if (string.IsNullOrEmpty(gene)) return Fail("Give a GeneDef.");
+                    var gd = DefDatabase<GeneDef>.GetNamedSilentFail(gene.Trim());
+                    if (gd == null) return Fail("No GeneDef '" + gene + "'.", DefSuggestions<GeneDef>(gene));
+                    if (A == "add") { p.genes.AddGene(gd, xenogene); notes.Add("added as " + (xenogene ? "xenogene" : "endogene") + "; Notify_GenesChanged handles every refresh"); }
+                    else
+                    {
+                        var g = p.genes.GenesListForReading.FirstOrDefault(z => z.def == gd);
+                        if (g == null) return Fail("Pawn does not have gene '" + gd.defName + "'.");
+                        p.genes.RemoveGene(g); notes.Add("removed");
+                    }
+                }
+                else if (A == "xenotype")
+                {
+                    if (string.IsNullOrEmpty(xenotype)) return Fail("Give a XenotypeDef.");
+                    var xd = DefDatabase<XenotypeDef>.GetNamedSilentFail(xenotype.Trim());
+                    if (xd == null) return Fail("No XenotypeDef '" + xenotype + "'.", DefSuggestions<XenotypeDef>(xenotype));
+                    p.genes.SetXenotype(xd);
+                    notes.Add("SetXenotype clears existing xenogenes and re-adds the def's list");
+                }
+                else if (A != "list") return Fail("action must be add|remove|xenotype|list.");
+
+                var endo = p.genes.Endogenes.Select(g => g.def.defName).ToList();
+                var xeno = p.genes.Xenogenes.Select(g => g.def.defName).ToList();
+                return (object)new
+                {
+                    success = true, action = A, notes,
+                    xenotype = p.genes.Xenotype != null ? p.genes.Xenotype.defName : null,
+                    xenotypeName = p.genes.xenotypeName,
+                    endogeneCount = endo.Count, xenogeneCount = xeno.Count,
+                    endogenes = endo, xenogenes = xeno,
+                    ticksGame = TicksGameSafe(),
+                };
+            });
+        }
+
+        [Tool(
+            "jawa/set_pawn_age",
+            Description =
+                "Set a pawn's biological and/or chronological age in YEARS. " +
+                "🔴 Uses ageTracker.DebugSetAge, NOT the raw AgeBiologicalTicks setter - " +
+                "DebugSetAge fires each BirthdayBiological along the way, which is what " +
+                "applies life-stage hediffs and growth moments. The raw setter skips all of " +
+                "that and leaves a pawn in a state nothing produced. " +
+                "⚠️ BODY TYPE IS NOT AUTO-CORRECTED. The result reports whether the body " +
+                "type now mismatches the life stage so you can fix it with " +
+                "jawa/set_pawn_appearance.",
+            ResultDescription = "success, before/after age, life stage, and a bodyTypeMismatch flag.")]
+        public static async Task<object> SetPawnAge(
+            IRimBridgeContext ctx,
+            CancellationToken cancellationToken,
+            [ToolParameter(Description = "Pawn id or name.")] string pawn = null,
+            [ToolParameter(Description = "Biological age in years. -1 leaves it.")] float biologicalYears = -1f,
+            [ToolParameter(Description = "Chronological age in years. -1 leaves it.")] float chronologicalYears = -1f,
+            [ToolParameter(Description = "Permit aging DOWN. DebugSetAge is forward-only, so this uses the raw setter and SKIPS every birthday.")] bool allowBackwards = false)
+        {
+            return await ctx.MainThread.InvokeAsync(() =>
+            {
+                string err; var p = FindPawn(pawn, out err);
+                if (p == null) return Fail(err);
+                if (p.ageTracker == null) return Fail("Pawn has no age tracker.");
+                const long YEAR = 3600000L;
+
+                var before = new
+                {
+                    biologicalYears = p.ageTracker.AgeBiologicalYears,
+                    chronologicalYears = p.ageTracker.AgeChronologicalYears,
+                    lifeStage = p.ageTracker.CurLifeStage != null ? p.ageTracker.CurLifeStage.defName : null,
+                    bodyType = p.story != null && p.story.bodyType != null ? p.story.bodyType.defName : null,
+                    developmental = p.DevelopmentalStage.ToString(),
+                };
+
+                var ageNotes = new List<string>();
+                if (biologicalYears >= 0f)
+                {
+                    long wantTicks = (long)(biologicalYears * YEAR);
+                    long haveTicks = p.ageTracker.AgeBiologicalTicks;
+
+                    // 🔴 MEASURED 2026-08-19: DebugSetAge is FORWARD-ONLY. It walks
+                    // birthdays forward and silently does NOTHING when asked to go down
+                    // (54 -> 8 left the pawn at 54). Refuse loudly rather than report a
+                    // success that changed nothing.
+                    if (wantTicks < haveTicks && !allowBackwards)
+                        return Fail("DebugSetAge is FORWARD-ONLY - it walks birthdays forward and silently does nothing when asked to age DOWN. " +
+                                    "Pawn is " + p.ageTracker.AgeBiologicalYears + ", you asked for " + biologicalYears + ". " +
+                                    "Pass allowBackwards=true to use the RAW setter instead, which works but SKIPS every BirthdayBiological - " +
+                                    "so life-stage hediffs and growth moments never fire and the pawn ends in a state nothing produced.");
+
+                    try
+                    {
+                        if (wantTicks < haveTicks)
+                        {
+                            p.ageTracker.AgeBiologicalTicks = wantTicks;
+                            ageNotes.Add("aged DOWN via the raw setter - every BirthdayBiological was SKIPPED");
+                        }
+                        else
+                        {
+                            p.ageTracker.DebugSetAge(wantTicks);
+                            ageNotes.Add("aged up via DebugSetAge - birthdays fired normally");
+                        }
+                    }
+                    catch (Exception e) { return Fail("Age set threw: " + e.GetType().Name + ": " + e.Message); }
+                }
+                if (chronologicalYears >= 0f)
+                {
+                    try { p.ageTracker.AgeChronologicalTicks = (long)(chronologicalYears * YEAR); }
+                    catch (Exception e) { return Fail("AgeChronologicalTicks threw: " + e.Message); }
+                }
+                if (biologicalYears < 0f && chronologicalYears < 0f) return Fail("Give a biological and/or chronological age.");
+
+                try { p.Drawer.renderer.SetAllGraphicsDirty(); } catch { }
+
+                var stage = p.ageTracker.CurLifeStage;
+                var bt = p.story != null && p.story.bodyType != null ? p.story.bodyType.defName : null;
+                bool mismatch = false;
+                var dev = p.DevelopmentalStage;
+                if (bt != null)
+                {
+                    bool bodyIsChild = bt == "Child" || bt == "Baby";
+                    bool stageIsChild = dev == DevelopmentalStage.Child || dev == DevelopmentalStage.Baby || dev == DevelopmentalStage.Newborn;
+                    mismatch = bodyIsChild != stageIsChild;
+                }
+
+                return (object)new
+                {
+                    success = true,
+                    before,
+                    after = new
+                    {
+                        biologicalYears = p.ageTracker.AgeBiologicalYears,
+                        chronologicalYears = p.ageTracker.AgeChronologicalYears,
+                        lifeStage = stage != null ? stage.defName : null,
+                        bodyType = bt,
+                        developmental = dev.ToString(),
+                    },
+                    ageNotes,
+                    bodyTypeMismatch = mismatch,
+                    warning = mismatch
+                        ? "BODY TYPE NOW MISMATCHES THE LIFE STAGE. RimWorld does not correct this on an age change - fix it with jawa/set_pawn_appearance."
+                        : null,
+                    ticksGame = TicksGameSafe(),
+                };
+            });
+        }
+
     }
 }

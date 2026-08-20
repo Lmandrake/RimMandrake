@@ -708,6 +708,57 @@ result:   SHIPPED: `pawn_gear` (equip/wear/inventory/clear) · `pawn_health`
              `ColonyScavenger`). 2,129 ThoughtDefs and 1,225 BackstoryDefs ship. Read the
              dump; never guess a defName - the project's own rule, re-learned twice today.
 
+## P3 Pawn allegiance and body plan — faction, ideoligion, relations, genes, age
+row:      bridge-16
+spec:     Completes the owner's *"religions, faction... everything"*.
+          TOOLS: `set_pawn_faction` · `set_pawn_ideo` · `pawn_relations` ·
+                 `pawn_genes` · `set_pawn_age` · `pawn_abilities` · `set_pawn_guest_status`
+          ✅ `pawn.SetFaction(f, recruiter)` is SELF-REFRESHING and handles a lot: lord
+          `Notify_PawnLost`, `jobs.StopAll`, drafter, guest status, mapPawns re/de-register,
+          needs, relations, colonist bar, surgery bills, ChangeKind. Prefer
+          `RecruitUtility.Recruit` for prisoner/guest -> player: it also unlocks apparel and
+          replaces royal titles.
+          ⚠️ `SetIdeo` RANDOMISES certainty, unclaims ideo-forbidden beds and may strip
+          spouse/bond relations plus send a letter. Not a quiet field write. `Certainty`'s
+          setter is PRIVATE - use `OffsetCertainty`.
+          ⚠️ `AddDirectRelation` REFUSES `def.implied` relations (Kin, Cousin, Grand*,
+          Great*, Uncle/Nephew) - those are computed, not stored. Report that rather than
+          letting it look like a failure.
+          ✅ `genes.AddGene/RemoveGene` are fully self-refreshing via Notify_GenesChanged.
+          🔴 `set_pawn_age` must use `ageTracker.DebugSetAge(ticks)`, NOT the raw
+          `AgeBiologicalTicks` setter - DebugSetAge fires each `BirthdayBiological`, which is
+          what applies life-stage hediffs and growth moments. 1 year = 3,600,000 ticks.
+          ⚠️ Body type is NOT auto-corrected on an age change - expect a life-stage/body
+          mismatch and say so.
+verify:   change each on a spawned pawn and read it back; save/load for the faction half.
+criteria: each round-trips, AND the implied-relation refusal is OBSERVED rather than
+          assumed, AND an age change reports the body-type mismatch rather than hiding it.
+state:    ✅ DONE — PASSED 2026-08-19. Both hard clauses, plus a finding that changed the tool.
+result:   SHIPPED: `set_pawn_faction` · `set_pawn_ideo` · `pawn_relations` · `pawn_genes` ·
+          `set_pawn_age`.
+          ✅ **THE IMPLIED-RELATION REFUSAL IS OBSERVED**, and it corrected MY expectation,
+             not the tool's. `Sibling` was refused - and it turns out **`Sibling` and `Child`
+             ARE implied**, computed from the family graph. Of 41 PawnRelationDefs only
+             `Parent`, `Spouse`, `Fiance`, `Lover`, `ExSpouse`, `ExLover`, `Bond`,
+             `ParentBirth`, `Overseer` (+ mod ones) are storable. `Parent` added cleanly and
+             opinion moved 0 / +30 across the pair.
+          ✅ IDEOLIGION: 13 live ideoligions listed; certainty 0.694 -> 0.421 via
+             `OffsetCertainty` (the setter is private).
+          ✅ GENES: `Skin_Green` added as a xenogene, self-refreshing.
+          ✅ FACTION: colonist -> factionless -> PlayerColony, `isColonist` following each
+             way, and a same-faction no-op REFUSED rather than silently warning.
+          🔴 **NEW FINDING THAT CHANGED THE TOOL: `ageTracker.DebugSetAge` IS FORWARD-ONLY.**
+             Measured: 34 -> 54 worked; 54 -> 8 left the pawn at 54 and reported success.
+             A silent no-op that reads as a successful write - exactly the class of failure
+             this project keeps being bitten by.
+             ⇒ `set_pawn_age` now REFUSES a backwards age and explains why, and
+             `allowBackwards=true` uses the raw `AgeBiologicalTicks` setter while saying
+             plainly that **every BirthdayBiological is skipped**, so life-stage hediffs and
+             growth moments never fire.
+          ✅ AND THE MISMATCH DETECTOR EARNED ITS PLACE: aging 36 -> 9 produced
+             `HumanlikePreTeenager` with a `Female` adult body and
+             **`bodyTypeMismatch: true`** with the warning. RimWorld does not correct this.
+
 ## C-V2 Park any v2 idea in design/V2_DREAMS.md yourself — no permission needed
 row:      doctrine
 spec:     Any idea for new content that is not v1 — including one a live session
