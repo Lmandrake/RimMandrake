@@ -97,22 +97,22 @@
    "id": 4,
    "name": "The Rust Cathedral",
    "kind": "waste",
-   "tiles": 237,
-   "mass": 237,
+   "tiles": 236,
+   "mass": 236,
    "drawCenter": [
-    0.992144,
-    0.08794,
-    0.088974
+    0.992031,
+    0.088949,
+    0.089229
    ],
-   "lat": 5.0451,
-   "lon": 5.1245,
-   "maxDrawSizeInTiles": 20.9
+   "lat": 5.1031,
+   "lon": 5.1397,
+   "maxDrawSizeInTiles": 20.7
   },
   {
    "id": 5,
    "name": "The Scorch",
    "kind": "waste",
-   "tiles": 91,
+   "tiles": 90,
    "mass": 58,
    "drawCenter": [
     0.956039,
@@ -322,16 +322,16 @@
    "id": 19,
    "name": "The Pyrelands",
    "kind": "waste",
-   "tiles": 422,
-   "mass": 101,
+   "tiles": 233,
+   "mass": 47,
    "drawCenter": [
-    0.62584,
-    -0.652982,
-    -0.426542
+    0.532827,
+    0.318319,
+    -0.784072
    ],
-   "lat": -40.7668,
-   "lon": -34.2765,
-   "maxDrawSizeInTiles": 40.8
+   "lat": 18.5613,
+   "lon": -55.8014,
+   "maxDrawSizeInTiles": 20.8
   },
   {
    "id": 20,
@@ -382,16 +382,16 @@
    "id": 23,
    "name": "The Salt Gate",
    "kind": "waste",
-   "tiles": 131,
-   "mass": 51,
+   "tiles": 97,
+   "mass": 36,
    "drawCenter": [
-    0.228163,
-    -0.363989,
-    0.903025
+    0.457672,
+    0.52351,
+    -0.718661
    ],
-   "lat": -21.3454,
-   "lon": 75.8201,
-   "maxDrawSizeInTiles": 9.9
+   "lat": 31.568,
+   "lon": -57.5094,
+   "maxDrawSizeInTiles": 9.0
   }
  ],
  "factions": [

@@ -65,6 +65,13 @@ BUNDLE = os.path.join(REPO, "world", "ASHKARR_WORLDMAP")
 # derived here from the design docs.
 SEED = 20260818          # frozen. Changing it is building a different planet - don't.
 
+# 🔑 RIVER SCARCITY - a multiplier on the accumulation a tile needs before it counts
+# as a river. Owner's ruling 2026-08-20 was "1/3 the current rivers"; this is the
+# number that delivers it, found by rendering and looking. ⛔ It is NOT a knob and
+# there is no argument for it: like SEED it is part of the one map's definition.
+RIVER_SCARCITY = 0.16
+
+
 # ---------------------------------------------------------------------------
 # ⭐ THE PLAYER'S HOME. Sited 2026-08-19; the docs had only "the habitable ring
 # is ~34-57 degrees of arc" and left it open. This is the whole decision:
@@ -499,16 +506,65 @@ def build():
         erodible = ~sea
         elev[erodible] = np.clip(elev[erodible] - cut[erodible], 12.0, 3800.0)
     filled = fill_depressions(elev, nbl, sink)
-    down, acc = flow(filled, nbl, rain_src, sink)
+    # 🔴 `evap` BELONGS HERE AND WAS MISSING until 2026-08-20. The erosion cycles above
+    # passed it; THIS call - the one whose `acc` decides where a river IS - did not, so
+    # no branch ever dried out and the Scald's trunk crossed the planet to the far seas.
+    # That is why the owner's 2026-08-19 ruling ("the rivers shouldn't connect the
+    # basins, they should peter out into salt flats") was written into the comment above
+    # and never happened. The comment inside flow() always said a desert river loses
+    # water as it goes; the call that mattered was the one not asking for it.
+    down, acc = flow(filled, nbl, rain_src, sink, evap)
     outs = [acc[u] for t in np.nonzero(scald_water)[0] for u in nbl[t]
             if not scald_water[u]]
     print("    Scald: lake %d tiles at %.0f m, outflow trunk carries %.0f"
           % (scald_water.sum(), elev[scald_water].mean() if scald_water.any() else 0,
              max(outs) if outs else 0))
     need = 60.0 + 520.0 * np.clip((70.0 - arc) / 50.0, 0, 1) ** 1.6
-    need = np.where(d_scald_pt < 46.0, 60.0, need)   # the Scald basin is wet
+    # 🔴 OWNER, 2026-08-20, looking at the render: "You can't have rivers going along
+    # the whole shore of the Scald. That looks too strange. Fewer rivers, and the three
+    # bodies of water should not be interconnected by rivers at all. 1/3 the current
+    # rivers." Measured before this change: 712 channel tiles; 70 of the Scald's 79
+    # shore tiles (89%) carried a river, against 2% on the Twilight and the Gray.
+    # The cause was THIS line, which used to read `60.0` - the bare floor - across a
+    # 46 deg radius, so every trickle in the crater qualified as a river.
+    need = np.where(d_scald_pt < 46.0, 0.60 * need, need)   # the Scald basin is wet,
+    need *= RIVER_SCARCITY                                  # but it is not a delta
     chan = (acc > need) & (~sea) & (arc < NIGHT_ARC + 8)
-    print("    channel tiles %d" % chan.sum())
+    # ⛔ A RIVER MAY NOT RUN ALONG A SHORE. A stream beside a body of water that sits
+    # lower than it drains INTO that water; it does not parallel the beach for 70
+    # tiles. So a channel touching water survives only where it is that river's own
+    # mouth - which is also what stops one system reaching from one sea to the next.
+    # ⚠️ Two shore contacts are LEGITIMATE and must survive: a river's MOUTH, which
+    # flows in, and a lake's OUTFLOW, which flows out - the Scald is a source, and the
+    # owner ruled on 2026-08-18 that the planet's largest river starts at it. The
+    # outflow is discriminated by height: the notch is the one shore tile the lake
+    # stands ABOVE, everywhere else the crater rim is above the water.
+    # ⚠️ Two shore contacts are LEGITIMATE and must survive: a river's MOUTH, which
+    # flows in, and a lake's OUTFLOW, which flows out - the Scald is a source, and the
+    # owner ruled 2026-08-18 that the planet's largest river starts at it. But a body
+    # gets ONE outflow, not a ring of them: the notch is the shore channel carrying the
+    # most water, and every other shore channel on that body is the artifact.
+    # ⛔ Height cannot discriminate here - the Scald is a crater lake on a plateau, so
+    # its water stands above most of its own rim and a height test keeps all 70.
+    shore_cut = 0
+    body_of = np.full(n, -1, np.int32)
+    for bi, comp in enumerate(components(sea, nbl)):
+        body_of[comp] = bi
+    outflow = {}
+    for t in np.nonzero(chan)[0]:
+        for u in nbl[t]:
+            if sea[u] and (outflow.get(body_of[u], (-1.0, -1))[0] < acc[t]):
+                outflow[body_of[u]] = (float(acc[t]), int(t))
+    keep_out = {v[1] for v in outflow.values()}
+    for t in np.nonzero(chan)[0]:
+        if not any(sea[u] for u in nbl[t]):
+            continue
+        if (down[t] >= 0 and sea[down[t]]) or int(t) in keep_out:
+            continue
+        chan[t] = False
+        shore_cut += 1
+    print("    channel tiles %d  (shore-hugging reaches cut: %d)"
+          % (chan.sum(), shore_cut))
 
     # 🔴 Owner: "each branch ending in dead salt plains or tiny hyper saline pools."
     # A terminus is a channel tile whose downstream neighbour is NOT a channel and NOT
@@ -584,7 +640,12 @@ def build():
             gate = lobe[t] + 0.55 * lobe2[t]
             if a < 138 and gate > 0.35 and p > -0.6:
                 B[t] = "PoisonForest"
-            elif 124 < a < 162 and gate < -0.45 and p2 > -0.4:
+            # 🔴 OWNER, 2026-08-20: "The Mycotic Jungle should only be on the
+            # terminator, like PoisonForest. It's far too cold on the night side
+            # otherwise." It used to read `124 < a < 162`, which put its median tile at
+            # arc 131 and -40 C - a jungle in the deep dark. PoisonForest's ceiling is
+            # 138, so mycoid now shares it and sits on the opposite lobe, not deeper in.
+            elif a < 138 and gate < -0.45 and p2 > -0.4:
                 B[t] = "BMT_FungalForest" if p2 > 1.1 else "AB_MycoticJungle"
             if p2 > 1.5 and gate > 0.9:
                 B[t] = "HorrorWastes"
