@@ -250,3 +250,119 @@ resolve into those rects with `parentFaction` inherited unless overridden.
 ⚠️ **Two mechanics in this catalogue are NOT in the verified vocabulary** and DECIDE should
 know before cutting: the **day/night behaviour switch** (4) and the **permanent no-home
 ring** (34). Both likely need a custom `LordJob` variant.
+
+---
+
+# ARCHITECTURE — what the engine will and will not do
+
+Read from 1.6 source. **Three of the four requested behaviours are nearly free. One —
+"tends nearby structures" as FARMING — is hard-blocked and needs Harmony.**
+
+## Feasibility, per behaviour
+
+| behaviour | verdict |
+|---|---|
+| Named, detailed, persistent pawns | ✅ **SHIPPED** |
+| Confined to a home area | ✅ **SHIPPED** — `ThinkNode_ForbidOutsideFlagRadius` |
+| Eats when hungry | ✅ **SHIPPED** ⚠️ *will raid player food* |
+| Sleeps when tired, in an owned bed | ✅ **SHIPPED** — but the bed's faction must match the pawn's |
+| Sleeps **at night** specifically | 🔵 **SMALL CUSTOM** — one JobGiver, ~30 lines |
+| Wanders / goes on walks | ✅ **SHIPPED** — `JobGiver_WanderNearDutyLocation` |
+| Day/night duty schedule | 🔵 **SMALL CUSTOM** — one LordToil tick, no state graph |
+| Repairs & builds nearby structures | ✅ **SHIPPED** |
+| Hauls / cleans / cooks | 🔵 **SMALL CUSTOM** — Harmony prefix |
+| **Farms (sow/harvest)** | 🔴 **LARGE CUSTOM** — three stacked blocks |
+| Survives save/load | ✅ **SHIPPED** — override `LordJob.ExposeData` |
+
+## 🔴 Why farming is blocked — three independent walls
+
+1. **The WorkGiver whitelist.** `JobGiver_Work.PawnCanUseWorkGiver` refuses unless
+   `giver.def.nonColonistsCanDo`. Exactly **7 shipped WorkGiverDefs** carry it, and **all
+   seven are construction or repair** — `ConstructFinishFrames`,
+   `ConstructDeliverResourcesToFrames/Blueprints`, `Replant`, `Repair`,
+   `DeliverResourcesToFrames/Blueprints`. **No growing, no hauling, no cleaning, no cooking.**
+2. **A lord-specific veto.** `WorkGiver_GrowerHarvest.ShouldSkip` opens with
+   `if (pawn.GetLord() != null) return true;` — **any lorded pawn skips harvest, even a
+   colonist.** The farmer concept collides with the Lord system itself.
+3. **Player-only data.** `WorkGiver_Grower` sources its cells from `zoneManager.AllZones`
+   and `allBuildingsColonist`. An NPC "farm" that is not a player growing zone yields **no
+   work cells at all**.
+
+⇒ **Recommendation: reframe "tends the farm" as "dwells near it and repairs it", which is
+FREE.** Real farming roughly doubles the surface and pulls in Harmony — scope it separately.
+
+## 🔑 The four facts that shape the build
+
+* **`pawn.workSettings` exists but is uninitialised on NPCs.** `PawnGenerator` calls
+  `EnableAndInitialize()` only when `request.Faction.IsPlayer`. `EverWork => priorities != null`,
+  so `JobGiver_Work` returns priority 0 and the sorter skips it — **which is also why a null
+  `workSettings` never NREs.** The shipped precedent is `LordToil_Siege`, which calls
+  `EnableAndInitialize()` then `SetPriority(Construction, 1)` and disables everything else.
+* **Bed ownership works for non-colonists**, and the gate is not "is player". It is
+  `RestUtility.IsValidBedFor`: `bed.Faction == pawn.Faction`. ⇒ **set the bed's faction to
+  the NPC's own faction and call `ClaimBedIfNonMedical` at spawn.** A player-faction bed
+  AND a null-faction bed both fail. `BedOwnerType.Colonist` means "not prisoner/slave", not
+  "player".
+* **"At night" does not come free.** `Pawn_TimetableTracker.CurrentAssignment` returns
+  `Anything` unless `pawn.IsColonist`, and `pawn.timetable` is **null on NPCs** anyway.
+  Under `Anything`, `JobGiver_GetRest` fires only when `rest.CurLevel < 0.3` — so pawns
+  sleep **when tired**, drifting out of phase with the day.
+* ⚠️ **Non-player pawns ignore player forbid flags entirely.** `Thing.IsForbidden(faction)`
+  returns false for any non-player faction. **They will walk into a player stockpile and eat
+  the colony's lavish meals.** That is a gameplay problem, not a bug. Mitigate by giving the
+  NPC faction its own food inside the radius, or accept it. 🔑 The confinement radius is the
+  real leash and the same mechanism — `maxDistToSquadFlag` makes distant cells forbidden,
+  which prunes food, bed and work search at once.
+
+## 🔴 DO NOT build a StateGraph with transitions
+
+`Lord.ExposeData_StateGraph` serialises only `curLordToilIdx` plus toil and trigger
+dictionaries keyed by **POSITIONAL INDEX**, then re-runs `lordJob.CreateGraph()` on load.
+**Any later change to toil ordering silently corrupts existing saves.**
+
+⇒ **Use one toil that reassigns duty on a tick** — the `LordToil_VoidAwakeningWander`
+pattern. Zero transitions, zero index fragility, and the schedule becomes ordinary C#.
+
+⚠️ **This revises the `LordJob_Patrol` ring proposed in `BRIDGE_CAPABILITY_ROSTER.md` §5.**
+The ring is a transition graph and therefore carries this save-fragility. It is still the
+right shape for a *pure* patrol whose waypoint count never changes after a save exists —
+but for anything that might be re-tuned, prefer a single toil that walks an index through a
+waypoint list it owns and scribes. **DECIDE should rule on which.**
+
+## Minimal class list — everything except farming
+
+| # | class | kind | role |
+|---|---|---|---|
+| 1 | `LordJob_Settler` | custom `LordJob` | one toil; `ExposeData` scribes home cell, worksite cell, radii |
+| 2 | `LordToil_SettlerDay` | custom `LordToil` | `LordToilTick()` reads `GenLocalDate.HourOfDay(Map)` and reassigns `PawnDuty` per pawn |
+| 3 | `JobGiver_RestAtHomeAtNight` | custom `JobGiver` | night → `LayDown` on `pawn.ownership.OwnedBed` |
+| 4 | `NPC_Dwell` | **DutyDef XML** | rest-at-night → `ForbidOutsideFlagRadius` → `SatisfyBasicNeedsAndWork` → `WanderNearDutyLocation` |
+| 5 | `NPC_Tend` | **DutyDef XML** | clone of shipped `Build`: `JobGiver_Work` in a flag radius |
+| 6 | `SettlerSetupUtility` | static helper | `EnableAndInitialize()` + priorities; set bed faction; claim bed |
+
+**Total: 1 LordJob, 1 LordToil, 1 JobGiver, 2 DutyDef XML, 1 utility.** No Harmony.
+
+## Persistence and failure modes
+
+* ✅ Lords survive save/load. `LordManager` holds them `LookMode.Deep`; `Lord.ExposeData`
+  scribes faction, `ownedPawns` by reference, and the LordJob deep. Override
+  `LordJob.ExposeData` for our fields. **Bed ownership persists independently.**
+* ✅ **Mental states do NOT strip duty** — the mental-state node simply outranks the duty
+  subtree, and recovery is automatic.
+* ✅ **Drafting** breaks only `LordJob_VoluntarilyJoinable` lords. Ours is unaffected, and a
+  non-player pawn cannot be drafted anyway.
+* ⚠️ **A faction turning hostile does not dissolve the lord** — there is no
+  `Notify_FactionRelationChanged`. But the pawns become valid targets and the `Defend`
+  duty's `JobGiver_AIDefendPoint` makes them fight. For non-combatants, use a custom duty
+  without that node.
+* ⚠️ **`Lord.ShouldExist` returns false when `ownedPawns.Count <= 0`.** Base
+  `LordJob.ShouldRemovePawn` returns true for *every* condition — **override it** or a
+  downed or mentally-broken pawn is dropped from the lord and never comes back.
+* 📌 `ThinkNode_ConditionalLordDutyActive` **does not exist** in 1.6. The real gate is
+  `ThinkNode_ConditionalHasLordDuty` → `pawn.GetLord().CurLordToil.AssignsDuties`, which
+  checks the **toil**, not the duty field.
+
+**UNCERTAIN, and worth one quicktest each:** whether `StateGraph` cycles behave in game;
+whether a bed spawned by the bridge keeps `Faction == NPC faction` through the spawn path;
+whether `HaulToStorageJob` resolves a destination for a non-player pawn even with the
+whitelist patched.
