@@ -108,11 +108,30 @@ of a rule: your patch has to see the target's defs already loaded. Express it as
 `loadAfter` naming the target's packageId. **"Just after the thing it modifies" is the
 correct placement and it is a *relative* claim** — which is why the absolute one fails.
 
-🔴 **`loadBottom: true` defeats `loadAfter`.** `loadBottom` sinks the mod to the very
-end of the order, which is a *stronger* constraint than "after X" — so the `loadAfter`
-list is satisfied trivially and exerts no placement force at all. A rule carrying both
-does not place the mod after its target; it dumps it at the bottom and the `loadAfter`
-entries become decoration. **Use one or the other**, and prefer `loadAfter`.
+🔴 **`loadBottom` and `loadAfter` are two different mechanisms, and the one you want is
+`loadAfter`.** Corrected 2026-08-19 by reading RimSort's own sort code — the previous
+text here ("loadBottom is a *stronger* constraint that defeats loadAfter") and
+`rimworld-modding`'s ("loadBottom is only a hint and creates no edge") were **both
+wrong**, in opposite directions.
+
+What the code does: `loadAfter` compiles to a real edge in `deps_graph`; `loadBottom`
+compiles to nothing but membership in `tier_three_mods`
+(`app/models/metadata/metadata_structure.py`). The sort then splits the active list
+into **four tiers, sorts each independently, and concatenates them**
+(`app/controllers/sort_controller.py`). ⚠️ **The tier split silently DELETES every
+`loadAfter` edge that crosses a tier boundary** — `app/sort/dependencies.py` builds
+each tier's subgraph as `full_graph.get(mod_id, set()) & tier_mods`, so an edge
+pointing outside the tier is intersected away with no warning.
+
+⇒ **`loadBottom` + `loadAfter Y`** (Y not at the bottom): the edge is dropped, but the
+mod still lands after Y because tier three is emitted last. The rule was **redundant,
+not defeated.** ⇒ **The genuinely broken pairing is `loadBottom` + `loadBefore` a
+non-bottom mod** (and its mirror, `loadTop` + `loadAfter`): tier order wins, the rule
+vanishes, nothing is logged.
+
+**So: to place a mod after its target, write `loadAfter` and leave `loadBottom` off.**
+`loadBottom` cannot express "after Y" at all — it only says "last", and the section
+below is why "last" is worthless.
 
 ### 🔴 "Load at end" does not scale, because everyone claims it
 
