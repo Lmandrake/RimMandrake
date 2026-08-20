@@ -454,3 +454,50 @@ names · ANIMALS and property they defend.
   little people in the world? Remember we're playing Jawa..."* ⇒ see the ruling below.
 
 **5. MOD NAME** — the concept is to ship as an independent mod. Naming in progress.
+
+━━━ 🔴 ROUND 2 OF THE Q/A, 2026-08-19. Four more rulings ━━━
+
+**6. STATE LIVES IN A `WorldObject` PER INHABITED PLACE.** Not a dictionary. It already
+survives save/load, already carries a faction, already holds a pawn list, and ⭐ **it draws
+on the world map** — so an inhabited place is visible from orbit before the player lands,
+and the world map becomes a census. After a raid the same object reads *abandoned*.
+
+**7. EVERY PERSON IS DOCUMENTED DEEPLY. NOBODY IS FLAT.** Owner: *"I want ALL of the people
+documented deeply... it matters."* ⛔ The tier CHECK proposed (one named pawn, rest
+generated) and the tier DECIDE proposed (deep for leaders, shallow for drudges) are BOTH
+overturned. What varies is REGISTER, never depth.
+🔑 **And the reason is the campaign's own point.** The owner: *"But are there really little
+people in the world? Remember we're playing Jawa..."* ⇒ A Jawa clan is exactly who every
+other faction calls an extra. A system that renders other people's crowds as anonymous
+spawns asserts the hierarchy this campaign exists to look at from below. **No anonymous
+pawns anywhere in the system.** It also pays off mechanically: buying a person only lands
+as a decision if that person is someone.
+
+**8. THE METHOD IS A POOL, NOT A BOOK.** ~300 people is a book of prose; instead author
+**150–250 tagged fragments** — backstories, traits, tics, grudges, job-specific miseries —
+keyed by role and faction, and let the generator combine them. Every pawn deep and
+specific, authoring bounded. The writing effort goes into fragments, which is where it is
+easiest to write well.
+
+**9. 🔴 THE TONAL BRIEF, and it corrects DECIDE's framing rather than choosing from it.**
+DECIDE offered "comic drudges under a grave world". The owner's answer, verbatim:
+> *"There should be heartbreaking cases, hilarious examples, bizarre characters, utterly
+> boring dweebs... they should not just be 'real people' with complexity, but
+> **theatrically interesting**. One or two of them should be REALLY strange and
+> interesting, while the rest are just the bizarre background that Star Wars usually has.
+> We're recreating the **traditional Star Wars movie feel**, not the dark gritty
+> Andor-type stuff. This isn't a WW2 recreation, it's a living breathing impossibly sci-fi
+> world with **contradictory ethics living side by side in a way that seems utterly
+> ridiculous and yet entrancing**."*
+
+⇒ **THE CANTINA PRINCIPLE.** Not comedy versus gravity — *all registers at once, none of
+them ironic*. Four registers to tag the fragment pool with: **heartbreaking · hilarious ·
+bizarre · utterly boring**. "Utterly boring dweeb" is a REGISTER, deliberately dull people
+are part of the texture, and they are still documented deeply.
+⭐ **Distribution rule: one or two REALLY strange standouts per cast; the rest is bizarre
+background.** A cast where everyone is remarkable has nobody remarkable in it.
+⛔ **Not Andor.** No grit-as-seriousness. The world is impossible and cheerful about it.
+
+**10. TIME — FROZEN UNTIL VISITED.** A roster changes only through the player's actions.
+⇒ every change in the world is legibly the player's doing, which suits a hand-made frozen
+planet, and it removes the risk of a beloved NPC dying offscreen to a dice roll.
