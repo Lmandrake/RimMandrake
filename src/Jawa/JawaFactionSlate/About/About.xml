@@ -4,5 +4,12 @@
   <name>Jawa Faction Slate</name>
   <author>Mandrake</author>
   <supportedVersions><li>1.6</li></supportedVersions>
-  <description>Takes every faction except the campaign's own off the Configure Factions page, so a generated world contains exactly the intended slate.</description>
+  <description>Takes every faction except the campaign's own off the Configure Factions page, so a generated world contains exactly the intended slate.
+
+🔴 THIS MOD MUST LOAD LAST, OR IT SILENTLY DOES HALF ITS JOB. Every operation is a PatchOperationConditional testing that the FactionDef exists, with no &lt;nomatch&gt; - which is deliberate, because a def belonging to a dropped mod would otherwise throw a red error every load. The cost of that choice is that a faction whose mod has NOT LOADED YET is also a silent no-op. Measured 2026-08-20 after a RimSort re-sort put this mod at 184 of 577: 24 of the 48 factions it patches were defined by mods loading after it, so half the slate would have appeared on the Configure Factions page anyway - and a world generates ONCE.</description>
+  <!-- loadBottom is what stops a re-sort from undoing that. It is normally bad manners,
+       because a load order where everything claims the bottom has no bottom = but this mod
+       does nothing except patch other mods' FactionDefs, so it has no legitimate position
+       other than after all of them. -->
+  <loadBottom>true</loadBottom>
 </ModMetaData>

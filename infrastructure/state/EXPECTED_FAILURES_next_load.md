@@ -894,3 +894,46 @@ would be MINE, and `apparelRequired` is the loud half of the 48-kind build.
 * all eight `Jawa_*` factions arrive at a count of **at least 1** untouched.
 * Configure Planet reads **Scale 7 · Coverage 100%**. 🔴 If Scale reads 10 the Worldbuilder
   preset lost its parameters — ABORT, do not generate.
+
+### S7b — the re-sort after WME went back in, 2026-08-20. Two faults found, both fixed.
+
+The list is **577** (WME restored). RimSort's re-sort broke two orderings that nothing in
+the mod metadata was defending:
+
+🔴 **`mandrake.jawafactionslate` had been moved to 184 of 577, and it must be LAST.**
+It patches `startingCountAtWorldCreation` to 0 on every faction that is not ours, and every
+operation is a `PatchOperationConditional` with **no `<nomatch>`** — deliberate, so a def
+from a dropped mod is silent instead of a red error, but the price is that a faction whose
+mod has not loaded yet is *also* silent. Measured at position 184: **24 of the 48 factions
+it patches were defined by mods loading after it**, so half the slate would have appeared
+on the Configure Factions page anyway — and a world generates once.
+⇒ Moved to **576/577**, and `<loadBottom>true</loadBottom>` added to its `About.xml` so a
+future re-sort cannot undo it. Re-measured: **0 factions missed.**
+
+🔴 **`grimterra.worldmap` was at 443, before `regrowth.botr.core` at 461.** ReGrowth
+rewrites the same two `<texture>` fields GRimTerra repoints (AridShrubland, Tundra) and the
+last patch applied wins, so ReGrowth was overwriting GRimTerra on AridShrubland — **9.1% of
+the planet**. Moved to 460, immediately after ReGrowth at 459. This is the SECOND time this
+pair has come out wrong from a sort; if it happens again, the durable fix is a `loadAfter`
+on GRimTerra rather than another manual move.
+
+✅ WME is back at 411, below GRimTerra at 460 — the base-coat/top-coat arrangement DECIDE
+ruled for, so the 23.9% GRimTerra does not cover (Ocean, Wasteland, PoisonForest…) renders
+in WME's art rather than vanilla's.
+✅ Re-checked after the sort: **0** `Jawa_Patches` targets are owned by a mod that loads
+later.
+
+### The Tidal Lock settings: in place, and there is nothing else to write
+
+* **The Worldbuilder preset IS the planet type**, and it is installed at LocalLow
+  `Worldbuilder/TidallyLocked/Preset.xml` — byte-identical to
+  `design/Jawa/worldbuilding/TidallyLocked_Preset.xml`, carrying `myLittlePlanetSubcount 7`,
+  `planetCoverage 1`, `saveGenerationParameters True` and the 15 `Jawa_*` faction counts.
+* ⛔ **There is no AlienWorlds settings file to deploy, and writing one would be inert.**
+  Read off `AlienWorldsFramework.cs:34-42`: when the backend is anything but `Standalone` —
+  i.e. whenever Worldbuilder is present — `selectedPlanetType` is unconditionally
+  overwritten with `"Unknown"`. `ferny.worldbuilder` is active at 412.
+* ⛔ **There is no MyLittlePlanet setting file either.** `WorldGenRules.subcount` is a static
+  field defaulting to **10** (`TileSize.cs:16`), set at runtime from the world page. The
+  preset is what drives it to 7 — which is exactly why **Scale 7 is an ABORT check** and not
+  a formality.
