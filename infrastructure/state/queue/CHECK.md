@@ -1290,16 +1290,22 @@ spec:     Two facts about the LIVE mod stack are load-bearing for any DLL that s
              subcount is anything but 7, EVERY tile ID in the CSV shifts and the import
              silently paints the wrong planet.** The importer must ASSERT
              `grid.TilesCount == 21872` and refuse, loudly, otherwise.
-          2. 🔴 **`<order>` will not save you from Geological Landforms.**
-             (`2773943594`, ACTIVE) Harmony-patches `WorldGenStep_Terrain` itself —
-             `Patch_RimWorld_WorldGenStep_Terrain`, `WorldGenStep_Landforms`,
-             `WorldTileInfoHook` in `1.6/Lunar/Components/GeologicalLandforms.dll`.
-             `<order>` sorts our step only against other *defs*, never against a Harmony
-             patch on a step. Four other mods also register their own WorldGenStepDefs:
-             BiomesKit Continued (`3333951497`), Vanilla Expanded Framework
+          2. **Other mods are in the same pipeline, but they are NOT the reason to
+             pick an order.** Geological Landforms (`2773943594`, ACTIVE, packageId
+             `m00nl1ght.GeologicalLandforms`) Harmony-patches `WorldGenStep_Terrain`
+             itself, in `1.6/Lunar/Components/GeologicalLandforms.dll`. Terrain is
+             **order 0**, so anything of ours above 0 already lands after it. Four other
+             mods register their own WorldGenStepDefs — BiomesKit Continued
+             (`3333951497`, `zal.biomeskit`, ACTIVE), Vanilla Expanded Framework
              (`2023507013`, `KCSG.WorldGenStep_SpawnWorldObjects`), Fortified Features
-             Framework (`3498575851`), GravTide (`3779600989`).
-             ⇒ A **total-stamp** step must run LAST, after every one of them.
+             Framework (`3498575851`), GravTide (`3779600989`) — **check each one's
+             `<order>` and make sure ours is higher**, which is the only lever that
+             sorts def against def.
+             ⚠️ **CORRECTION to the first version of this item, which said the step must
+             run LAST. It must not.** See the ORDER ruling in
+             `ASHKARR_WORLD_DEFINITION.md` §12: stamping after order 700 would leave
+             rivers, landmarks and mutators chosen against a planet that no longer
+             exists. **Order 20.**
           3. `JawaSeaShaper` already sits in
              `C:\Program Files (x86)\Steam\steamapps\common\RimWorld\Mods\JawaSeaShaper\`
              and is active — the WorldGenStepDef + `PatchOperationConditional`

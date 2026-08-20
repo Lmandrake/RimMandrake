@@ -259,8 +259,9 @@ pictures of the CSV above.
    tile 2476. The one thing left to confirm by play is `ExtremeDesert` vs `Desert`.
 2. The Empire's three seats are choke points by inference; the docs say only *"roads,
    strategic passes"* and the spaceport.
-3. `faction_world_spec.md` §4 is still written in latitude bands and contradicts this
-   file. It was ordered rewritten and never was.
+3. ~~`faction_world_spec.md` §4 is still written in latitude bands.~~ **CLOSED
+   2026-08-19** — §4 now carries a SUPERSEDED banner with the latitude→arc
+   substitution and the two statements in it that are outright false.
 4. Is the mod's `TidallyLocked` PlanetTypeDef keyed on latitude at runtime? If so it
    disagrees with the measured point-lock and one of them has to move.
 
@@ -317,9 +318,12 @@ Before trusting any future rebuild, run it twice and `md5sum` the three CSVs.
    honest — the poles genuinely sit on the terminator at arc 90 — but it reads as a
    band. Mollweide shows its true size (0.2%).
 4. **Landmarks and tile mutators are not authored at all.** The map has biomes,
-   elevation, rivers, roads and settlements; it has no landmarks.
-5. **Nothing has been tested in game**, because nothing writes a savegame any more.
-   How this map reaches RimWorld is an open design question, not a solved one.
+   elevation, rivers, roads and settlements; it has no landmarks. **§12.4 rules how
+   they get there** — vanilla places them, we add a named few — but the named few are
+   not written yet.
+5. ~~How this map reaches RimWorld is an open design question.~~ **DECIDED — §12.**
+   A custom `WorldGenStep` stamps the CSV at worldgen time. CHECK is building it.
+   Still untested in game, which is now a build item and not a design one.
 6. The four questions in §10 are still open.
 
 ### Traps a fresh agent will otherwise walk into
@@ -334,5 +338,133 @@ Before trusting any future rebuild, run it twice and `md5sum` the three CSVs.
   mechanoid cluster over 6.7% of the planet. Multiply.
 - ⛔ **Do not site settlements by habitability.** It puts all of them on the terminator
   and contradicts the faction plan.
-- ⚠️ `faction_world_spec.md` §4 is still written in latitude bands and contradicts this
-  file. It was ordered rewritten and never was.
+- ⚠️ `faction_world_spec.md` is written on 2026-08-13 premises throughout. §4 is now
+  bannered, but the rest of that file still argues from *"worlds are disposable, so we
+  will generate many"*. **There is one world and it is frozen.** Read it for reasoning,
+  never for coordinates or for scope.
+
+---
+
+## 12. 🔑 HOW THIS MAP REACHES RIMWORLD — decided 2026-08-19
+
+A hand-painted CSV is not a planet. This is the contract that turns it into one.
+CHECK is building the assembly; **this section is what it is built against.**
+
+### 12.1 The route: a custom `WorldGenStep` that stamps the CSV. Nothing else.
+
+The owner still creates the world in game, exactly as `SCENARIO_SPEC.md` describes —
+but with our mod active, **what generates is Ash'karr regardless of seed**, because our
+step overwrites the generated tiles with the authored ones.
+
+⚠️ **This does not reopen worldgen and it is not a generator.** The step has no
+parameters and no seed; it is a *file copy* that happens to run during worldgen because
+that is the only moment the engine will accept tile data. It can produce exactly one
+planet.
+
+🔑 **And it does not contradict the ⛔ banner at the top of this file.** The ban is on
+*the pipeline* writing `.rws`. The campaign-start save that `SCENARIO_SPEC.md` ships is
+still made by the owner, in game, by hand, and it is still v1's one artifact:
+
+```
+mod active  ->  owner creates a world  ->  our step stamps Ash'karr over it
+            ->  owner places the gravship and the six founders
+            ->  owner saves  ->  THAT save is v1's campaign start
+```
+
+Rejected: shipping a `.rws` (owner's ruling); WorldEdit 2.0 (a manual in-game tool —
+sculpting 21,872 tiles by hand is not a route); BiomesKit hooks (declarative, unproven
+here); a Worldbuilder preset (least code, but a permanent hard dependency on someone
+else's mod and never round-tripped here — **keep as the fallback**).
+
+### 12.2 The shape, confirmed against the installed assembly
+
+`JawaSeaShaper`, already deployed and active at
+`C:\Program Files (x86)\Steam\steamapps\common\RimWorld\Mods\JawaSeaShaper\`,
+is this pattern working end to end. **Copy it; do not reinvent it.**
+
+```csharp
+public class WorldGenStep_Ashkarr : WorldGenStep      // Verse.WorldGenStep
+{
+    public override int SeedPart => <any const int>;
+    public override void GenerateFresh(string seed, PlanetLayer layer)
+}
+```
+
+```csharp
+if (layer == null || layer != Find.WorldGrid.Surface) return;   // guard
+PlanetTile t = layer.PlanetTileForID(i);   // i is LAYER-LOCAL, 0..layer.TilesCount
+Tile info = layer[t];                      // t.tileId is GLOBAL and != i
+```
+
+🔴 **A `WorldGenStepDef` on its own is a silent no-op.** `PlanetLayerDef.GenStepsInOrder`
+iterates the *layer def's* own `worldGenSteps` list, not `DefDatabase<WorldGenStepDef>`.
+Register with a load-time `PatchOperationAdd` into
+`/Defs/PlanetLayerDef[defName="Surface"]/worldGenSteps`, wrapped in the idempotence
+guard `JawaSeaShaper` already uses. Position in that list does **not** set order;
+`<order>` does. The list is cached on first read, so this must be load-time.
+
+### 12.3 🔴 ORDER 20. Not last.
+
+Vanilla's steps, confirmed from `Data/{Core,Odyssey,Biotech}/Defs/WorldGeneration/WorldGenerator.xml`:
+
+```
+Terrain 0 · (Tiles 5, orbit only) · Lakes 150 · Rivers 200 · AncientSites 300
+AncientRoads 400 · Pollution 450 · Factions 500 · Roads 600 · Landmarks 650
+Mutators 700 · Features 1000 (last)
+```
+
+⚠️ **There is no `WorldGenStep_Biomes`.** Biome, elevation, temperature, rainfall and
+hilliness are *all* written by `WorldGenStep_Terrain` at order **0**. Everything after
+0 merely consumes them — so nothing recomputes them behind us.
+
+⇒ **Stamp at order 20**, in the free gap 1–149. Late enough to be after Terrain and
+after Geological Landforms' Harmony patch on it; early enough that **every downstream
+step sees our planet instead of the one it replaced.** Stamping after 700 would leave
+rivers, landmarks and mutators chosen against a world that no longer exists.
+🔑 Check the `<order>` of the other mods that register steps (BiomesKit Continued,
+Vanilla Expanded Framework, Fortified Features, GravTide) and sit above them.
+
+### 12.4 Which steps we own, and which we let run
+
+| step | verdict |
+|---|---|
+| **Terrain 0** | let it run, then overwrite it. It is what makes the tiles exist |
+| **Lakes 150 · Rivers 200 · Roads 600** | ⭐ **OWN.** We authored all three, and §4.6 rules that rivers must NOT connect the basins — vanilla's river step would reconnect them. Drop them from the Surface list rather than racing them |
+| **Factions 500** | ⭐ **OWN.** 72 holdings are placed by lore in `_settlements.csv`; siting by habitability is explicitly banned (§7) |
+| AncientSites 300 · AncientRoads 400 | ⚠️ AncientRoads draws roads we did not author. **Decide by LOOKING** at the first render out of the game |
+| Pollution 450 | let it run; we stamp pollution to zero anyway |
+| **Landmarks 650 · Mutators 700** | ⭐ **LET THEM RUN.** These are the one thing we have *not* authored, and they pick from biome and terrain — which by order 20 are ours. Free content that already respects the map. Then add **our named few** in a second step at order 660 |
+| **Features 1000** | ⭐ **OWN.** We have 24 named regions in `_tiles.csv`; vanilla would name them at random |
+
+### 12.5 What the importer must assert before it writes anything
+
+1. 🔴 `layer.TilesCount == 21872`, or **refuse loudly**. The tile IDs in the CSV are not
+   vanilla's: `My Little Planet` (`oblitus.mylittleplanet`, ACTIVE) must be at
+   **subcount 7** with **`planetCoverage 1`**. Verified 2026-08-19 in
+   `.../workshop/content/294100/3626210061/Worldbuilder/TidallyLocked/Preset.xml`.
+   Any other subcount shifts **every** tile ID and silently paints the wrong planet.
+2. The CSV's row count is 21,872 plus a header. Verified: the file is 21,873 lines.
+3. Write through the **`Tile` object** — `info.PrimaryBiome`, `.elevation`,
+   `.temperature`, `.rainfall`, `.hilliness`, `.swampiness`, `.pollution` — never the
+   raw `tileBiome[]`-style arrays.
+4. 🔴 **`WaterCovered` is `elevation <= 0`, and there is no sea-level setting.** Write
+   elevation and biome **together, in both directions**, or you get an `Ocean` tile that
+   behaves like ground.
+
+### 12.6 What is NOT yet answered, and must be read off the DLL before writing
+
+- ⚠️ **Rivers and roads.** `SurfaceTile` carries nested `RiverLink` / `RoadLink` structs
+  (confirmed present in the assembly; field `riverDist` too), but **their exact fields
+  and the list names are UNVERIFIED.** The expected `{ RiverDef; PlanetTile neighbor; }`
+  shape written on *both* endpoints is inference. Decompile before writing.
+- ⚠️ **Neighbour-slot ordering is a known-unsolved problem in this repo** — an earlier
+  attempt scored 0.197 against a 0.161 random baseline, i.e. indistinguishable from
+  random. **Do not assume `_links.csv` ordering maps to engine neighbour indices.**
+- ⚠️ **Settlement placement** — `WorldObjectMaker.MakeWorldObject(WorldObjectDefOf.Settlement)`
+  then `SetFaction` / `Tile` / `Find.WorldObjects.Add` is the expected call and is
+  **unverified this session**. WorldEdit 2.0 does it at runtime, so the capability
+  certainly exists.
+- The CSV does **not** carry hilliness, swampiness, pollution, feature ids, landmarks or
+  mutators. Hilliness in particular is a real gap: the renderer derives it from local
+  relief, but the game wants the enum. Either the recipe starts writing it, or the
+  importer derives it — **and that derivation is then a design decision nobody has made.**
