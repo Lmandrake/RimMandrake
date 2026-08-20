@@ -443,6 +443,16 @@ spec:     Everything above, used in anger, in the order §12 fixes:
               underneath a live map is what killed two saves and ~2 cold loads on 2026-08-18.
             * the faction roster was hand-ticked per `WORLDGEN_FACTION_CHECKLIST.md`
               BEFORE the world was created. That pass is one-shot and unfixable afterwards.
+            * 🔴 **THE `ScenarioDef` MUST EXIST BEFORE THIS RUNS.** V1 chain row 12, reversed
+              2026-08-19 (R-S2). Picked up from `V1.md` on 2026-08-19 - it is not my call
+              and it is not negotiable by me, but W9 is the step it gates. Confirm with
+              DECIDE/BUILD that the scenario is shipped before asking the owner to generate.
+            📌 V1 row 10 now reads as TWO ACTS and names this work: he generates a seed,
+              the companion stamps the 21,872 authored tiles over the bridge before any map
+              exists, then he saves. ⚠️ "a saved vanilla world is not this step."
+            📌 V1 row 0 (Mod freeze) was UNFROZEN by the owner 2026-08-19 - not a v1
+              criterion, not monitored. Capture the live list at worldgen time as shipping
+              documentation instead of treating drift as a defect.
           ⚠️ RESTORE THE FULL 578-MOD LIST FIRST. The frozen world the owner keeps must be
           built on his real stack, not the 13-mod test list. W1's minimal regime is for
           DEVELOPING the tools, never for building the shipped planet.
