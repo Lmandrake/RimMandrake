@@ -516,6 +516,30 @@ object reference** at runtime, so the old "uniqueID or list index" question is m
 for the record it is the **uniqueID** (`WorldFeatures.ExposeData` →
 `GetFeatureWithID`).
 
+### 12.5b Faction RELATIONS are ours to set too — ruled 2026-08-19
+
+⭐ **The same logic that made settlements ours makes NPC↔NPC relations ours.** Owner,
+2026-08-19: *"We're going to manually write these settlements ourselves via the live
+bridge."* A relation between two NPC factions has **no `FactionDef` field at all** — there
+is no "permanent ally" to declare — so it is either an importer action or it is fiction.
+
+🔴 **The one that must be set: `Jawa_GeonosianFoundryHive` ↔ `Jawa_FreeDroidEnclaves` are
+FORMALLY ALLIED, with trade.** Ruled 2026-08-17 (`FACTION_SPEC.md` §"the Geonosian Foundry
+Hive's story"), and it **supersedes** `faction_roster_v2.md`'s *"Cold / no trade"*. The
+shared history stands — they worked the same company site — but it produces alliance, not
+grievance. ⇒ *"The cruellest ground on Ash'karr is the one place with a functioning
+peace."* If the importer does not set it, worldgen rolls something arbitrary and the
+plateau's whole point is lost.
+
+**The API:** `Faction.SetRelationDirect(other, FactionRelationKind.Ally)` — public,
+read off the assembly at `Faction.cs:653`. ⚠️ It runs the same
+`Notify_RelationKindChanged` notifier as an organic change, so set it **before any map
+exists**, exactly like every other import write (§12.4 rule 3).
+⚠️ And remember the thresholds (`FactionRelation.cs:28,33,38`): Ally is `goodwill >= 75`,
+Hostile is `<= -75`, and hostility only *ends* at 0. Setting the kind directly avoids
+having to reason about the number, but anything that later damages the relation is
+subject to that hysteresis.
+
 ### 12.6 The complete per-tile gap list
 
 Confirmed against the 1.6 assembly and the on-disk save schema, 2026-08-19. ⚠️ In 1.6
