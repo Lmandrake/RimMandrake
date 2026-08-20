@@ -37,11 +37,12 @@ log still exists.
 |---|---|---|---|
 | **§1** | three-assemblies batch, reload of the (now deleted) campaign — quicktest map | started **2026-08-13 17:30:59**, harvested 18:11, game up to ~21:10 | ✅ **CLOSED 2026-08-13** — Results filled, incl. two rows honestly marked NOT COLLECTED |
 | **§2** | 🔴 **NEW WORLD GENERATION** — v1 rows 2 + 7 in one irreversible run, plus Anomaly-to-zero | written **2026-08-13**, game DOWN. **Load not yet run.** | ⬜ **OPEN** — signatures written, Results blank |
-| **§3** | the **2026-08-15 deploy-window load** — two assemblies + one XML/PNG mod + a mod-list change, on a **quicktest** map. ⛔ **not worldgen** | written **2026-08-15 ~15:50**, game DOWN, before launch | ⬜ **OPEN** — signatures written, Results blank |
+| **§3** | the **2026-08-15 deploy-window load** — two assemblies + one XML/PNG mod + a mod-list change, on a **quicktest** map. ⛔ **not worldgen** | written **2026-08-15 ~15:50**, game DOWN, before launch | ⚰️ **CLOSED 2026-08-20 — EVIDENCE UNRECOVERABLE.** Results never filled and the log is gone: `Player.log` rotates every launch and at least five have happened since. **Nothing here can now be answered.** Do not re-run against these signatures — re-book any row that still matters as a NEW block |
+| **§4** | the **2026-08-20 morning load** — the owner's full 577 list, no new assembly. Exercises the **six new companion tools** for the first time | written **2026-08-20 07:4x**, game DOWN, before launch | ⬜ **OPEN** — state table below, run sheet is `CHECK.md` `MORNING_RELOAD_PLAN_1` |
 
 🔴 **§2 and §3 are both open and they are DIFFERENT EVENTS. Do not fill §2's Results
 from this load's log.** §2 is the irreversible worldgen run, which is the owner's and
-is not scheduled. This load runs against **§3** only. §2's S1–S8 are not re-booked
+is not scheduled. ⚠️ **That sentence described the 2026-08-15 load and is now historical — §3 is closed unrecoverable and this load runs against §4.** §2's S1–S8 are not re-booked
 here; where §3 needs the same check it restates it, and **§3's T4 REVERSES one of
 §2's S8 rows** — read T4, do not carry S8 forward.
 
@@ -604,7 +605,14 @@ reconstruct a result from the log.**
 
 ---
 
-# §3 — LOAD 2026-08-15, the deploy window. ⬜ OPEN
+# §3 — LOAD 2026-08-15, the deploy window. ⚰️ CLOSED 2026-08-20, EVIDENCE UNRECOVERABLE
+
+> 🔴 **Nothing below was ever collected, and nothing below can be collected now.**
+> The Results tables stayed blank, and `Player.log` is rotated by the launcher on
+> every start — at least five launches have happened since, so the log this block
+> was written against no longer exists on disk or in `deployed/logs/`.
+> **Read this block as a record of what was ONCE intended, never as a finding.**
+> If a row here still matters, re-book it in a new block; do not launch against these.
 
 **Event:** the load following the 2026-08-15 deploy window (`NEXT_RELOAD.md` §1.0).
 A **quicktest** session, not a save load and **not worldgen**. Written **before
@@ -937,3 +945,38 @@ later.
   field defaulting to **10** (`TileSize.cs:16`), set at runtime from the world page. The
   preset is what drives it to 7 — which is exactly why **Scale 7 is an ABORT check** and not
   a formality.
+
+
+---
+
+# §4 — LOAD 2026-08-20, the owner's morning load. ⬜ OPEN
+
+**Run sheet is not here.** It is `infrastructure/state/queue/CHECK.md` →
+`MORNING_RELOAD_PLAN_1`, and it is ordered. This block records only the thing that
+cannot be recovered after launch: **the state the machine was in before it started.**
+
+## §4 deploy state — measured on disk 2026-08-20 07:4x, game DOWN
+
+| # | artifact | state entering this load |
+|---|---|---|
+| **E1** | `JawaBench.BridgeTools.dll` — `C:\Program Files (x86)\Steam\steamapps\common\RimWorld\BridgeTools\JawaBench\` | md5 **`04cb0977e66af0cb58d9c6f6ecf40acc`**, byte-identical to CHECK's build claim. **112 `jawa/` tool names in the assembly against 106 live last session — six new, none ever exercised in a running game.** |
+| **E2** | all four mod assemblies | `Inhabited.dll`, `JawaIonWeapons.dll`, `JawaPlantGrowth.dll`, `RimDefDump.dll` — **every one md5-identical repo↔game.** No assembly is ahead of its deployed copy, so this load carries **no new DLL** and nothing needs the shutdown window |
+| **E3** | `ModsConfig.xml` | `<activeMods>` **577**, mtime 2026-08-20 00:49. Matches `ModsConfig.FULL.LATEST.xml` md5 `5cb6857188b284243c1c628f17cd0120` — **the owner's real list, not the minimal spike** |
+| **E4** | `mandrake.inhabited` | 🔴 **DEPLOYED BUT NOT ENABLED — deliberately, and it is the owner's call.** The folder is byte-verified in `Mods\Inhabited`; the packageId is absent from `ModsConfig.xml`. ⇒ **`Inhabited.dll` has still never been loaded by the engine.** Every `Inhabited` debug action is uncollectable until he ticks it |
+| **E5** | def dump | 🔴 **ARMED** — `DefDump\dump_request.txt` reads `all`, and **the marker is not consumed**. The dump on disk is **already current** (fingerprint `fcdc0322cf61d672`), so if the list is unchanged this costs ~27 s and ~1.2 GB for nothing. ⚠️ **But it is CORRECT insurance if E4 is ticked** — adding a mod lapses the dump the instant it loads. Leave it armed; delete it after, or every future load pays again |
+| **E6** | `Jawa_Patches` and every other deployed mod | plan reports **in sync**, no `-` line anywhere. `GalacticEmpire.xml` validates **0 errors, 14/14 operations matching exactly 1 node** against the full 577-mod def set |
+
+## §4 the one signature worth writing down in advance
+
+The run sheet's own criteria are the owner LOOKING at the planet, which is right and is
+not a log string. The one thing a log can settle that eyes cannot:
+
+| signature | verdict |
+|---|---|
+| `first_light.py` reports **112** `jawa/` tools | ✅ the deployed companion is the one measured; every `jawa/*` result this load is evidence |
+| it reports **106**, or any other number | ⛔ **STOP.** The game loaded a different companion than the one byte-verified at E1 — most likely a stale copy elsewhere on the path. Nothing from the six new tools counts until that is explained |
+| `world_links_import` refuses `world/ASHKARR_WORLDMAP_links.csv` | 🔴 **the known risk, stage 2 of 7.** The format fix landed in `47dcaf0` and has **never run**. Debug it before stages 3–7; do not skip past it, because every later stage renders on top of links |
+
+## §4 Results
+
+_(blank — fill after the load; do not edit the signatures above once the log exists)_
