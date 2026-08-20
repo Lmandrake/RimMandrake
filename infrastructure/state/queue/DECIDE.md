@@ -53,7 +53,24 @@ verify:   `AA_Eyeling` is not in the Cherry Picker cut list; the rename patch
           validates; the name and fiction are written into `SCENARIO_SPEC.md`.
 criteria: the clan starts with the pet, and it reads as belonging to this
           campaign rather than to Alpha Animals.
-state:    ready
+state:    ✅ CLOSED 2026-08-19 — all four parts delivered.
+          (a) **Named `ikee`**, from the canon Jawaese *"Ikee ikee!"* — the cry on spotting
+              a find. ⭐ It pairs with the ship: the *Utinni* is named for the find, the ikee
+              for the looking. Fiction written into `SCENARIO_SPEC.md`.
+          (b) **Bonded to Yeku**, in addition to his pack animal — he is the `Animals 5`
+              founder, and a bond puts weight on the pet's death.
+          (c) **Read, not invented** (`Races_Eyeling.xml`): `trainability Intermediate` ⇒
+              Obedience and Release only, **it fights but cannot haul or rescue**. Starts
+              trained to Obedience alone. ⭐ Two shipped fields make it a Jawa animal
+              already — `ComfyTemperatureMax 60 °C` and `foodType OmnivoreRoughAnimal`,
+              i.e. it is built for the dune sea and **needs no crops**, on a clan forbidden
+              from sowing.
+          (d) **Wild placement written into `fauna_placement.md`** — `Wasteland` main,
+              `ExtremeDesert` sparse, `ZBiome_DesertOasis` uncommon. 🔴 Never the nightside:
+              its comfortable minimum is 0 °C.
+          ✅ Verify condition met: `AA_Eyeling` is NOT in the Cherry Picker cut list —
+          checked against the live config and the v1 freeze copy.
+          ⇒ BUILD holds the patch as `the-eyeling-becomes-the-ikee-rename-and-place-it-6f2b81`.
 
 ## sequence-the-ideoligion-check-before-the-faction-work-e3f1a7
 row:      10

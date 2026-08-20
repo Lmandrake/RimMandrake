@@ -333,3 +333,35 @@ criteria: on the world map, ExtremeDesert / Desert / AridShrubland / AB_RockyCra
           in GRimTerra's art, and Ocean / Wasteland / the oases still render in WME's
           rather than vanilla's. Judged by LOOKING, per `the_one_map.md`.
 state:    ready
+
+## the-eyeling-becomes-the-ikee-rename-and-place-it-6f2b81
+row:      12
+from:     DECIDE, 2026-08-19, closing D26 on the owner's 2026-08-15 ruling
+          *"AA_Eyeling MUST be made into a star-wars-style pet for the starting Jawa clan
+          to keep!"* Design is settled in `design/Jawa/worldbuilding/SCENARIO_SPEC.md`
+          ("The ikee") and `fauna_placement.md`. ⛔ Do not re-decide any of it.
+spec:     (a) **RENAME ONLY — the art is untouched.** `PatchOperationReplace` on
+              `ThingDef[defName="AA_Eyeling"]/label` -> `ikee`
+              and on `/description` -> the text in `SCENARIO_SPEC.md` §"The ikee".
+              ⚠️ `Races_Eyeling.xml` declares `AA_Eyeling` **twice** (the ThingDef at
+              line 4 and a second block at line 82 — check what the second one is before
+              patching, it may be a PawnKindDef sharing the defName).
+              Source: `...\workshop\content\294100\1541721856\1.5\Defs\ThingDefs_Races\Races_Eyeling.xml`
+          (b) **WILD PLACEMENT.** `PatchOperationAdd` into `BiomeDef/wildAnimals` for
+              `Wasteland` (main), `ExtremeDesert` (sparse), `ZBiome_DesertOasis` (uncommon).
+              🔴 **NOT the nightside** — the shipped `ComfyTemperatureRange` is 0–60 °C, so
+              it freezes there. Not in `Ocean`/`Lake`, not in the wet biomes.
+              🪤 `wildAnimals` is a LIST of `<li><animal>X</animal><commonality>N</commonality></li>`
+              — NOT the dictionary shorthand that killed `biomeConfigs` in B63 and the
+              FactionDefs in B56.
+          (c) **STARTING SAVE** — one ikee, tamed, **bonded to Yeku**, trained to Obedience
+              only (Release left untrained). Rides with `B55`, not with this item.
+          ⛔ Do NOT change `race/trainability`, `wildness`, `baseBodySize`, `foodType` or any
+          stat. Every one of them was checked and is already right for this campaign; the
+          identity is what changes, not the animal.
+verify:   `validate_patch.py --defs` clean on the patch; the live def's label reads `ikee`
+          and its description contains no "extradimensional corruption"; `AA_Eyeling`
+          appears in exactly the three BiomeDefs named and no others.
+criteria: the clan starts with a bonded ikee; it reads as belonging to this campaign rather
+          than to Alpha Animals; and a player can find another one in the waste.
+state:    ready
