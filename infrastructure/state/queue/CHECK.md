@@ -759,6 +759,48 @@ result:   SHIPPED: `set_pawn_faction` · `set_pawn_ideo` · `pawn_relations` · 
              `HumanlikePreTeenager` with a `Female` adult body and
              **`bodyTypeMismatch: true`** with the warning. RimWorld does not correct this.
 
+## E1 Weather, game conditions, raids and the storyteller
+row:      bridge-17
+spec:     Owner, 2026-08-19: *"Causing weather events, raids."*
+          TOOLS: `weather_get` · `raid_preview` (both READ-ONLY, ungated) ·
+                 `weather_set` · `game_condition` · `fire_raid` (all `#if JAWA_GM_TOOLS`,
+                 the same gate `fire_incident` and `send_letter` already use).
+verify:   read the state, lock the weather, start and end a condition, fire a real raid and
+          count the pawns that arrive.
+criteria: each round-trips; the weather LOCK is shown to differ from a plain transition;
+          Planetkiller is refused; and a fired raid is confirmed by pawns on the map, not
+          by the tool returning success.
+state:    ✅ DONE — PASSED 2026-08-19. Every clause.
+result:   ✅ **A REAL RAID FIRED AND ARRIVED.** RaidEnemy, 1,200 pts, ImmediateAttack,
+             EdgeWalkIn -> **14 `TribeSavageImpid` raiders on the map**, pawn count
+             10 -> 24. Confirmed by counting pawns, not by `executed: true`.
+          🔑 **`CanFireNow` being FALSE does NOT block `TryExecute`.** It reported false
+             throughout and the raid fired anyway - `CanFireNow` carries storyteller pacing
+             that `TryExecute` simply does not consult. Do not treat it as a gate.
+          🔴 **A BUG IN MY FIRST CUT, worth recording:** `RaidStrategyDef.Worker.CanUseWith`
+             is MEANINGLESS while `parms.faction` is null - every one of the 11 strategies
+             reported unusable at every point value, which reads as "raids are impossible".
+             Both tools now resolve an attacker first. With that fixed the point-gating is
+             visible and sensible:
+               35 pts   -> none
+               250 pts  -> ImmediateAttack · ImmediateAttackSmart · StageThenAttack
+               1000 pts -> + ImmediateAttackBreaching(Smart) · ImmediateAttackSappers
+               3000 pts -> + Siege
+          ✅ WEATHER: a plain `TransitionTo` is marked as temporary in the result, and
+             `lockWeather=true` registers a PERMANENT `GameCondition_ForceWeather` -
+             `WeatherController` appeared in the active list. That is the only durable
+             weather control in the game.
+          ✅ CONDITIONS: Eclipse started for 60,000 ticks and ended.
+          🔑 **ENDING A CONDITION LOOKS LIKE IT FAILED WHILE PAUSED.** `Duration =
+             TicksPassed` expires on the NEXT TICK, so a paused game still lists it. The
+             tools now report `endsNextTick` and `gamePaused` and say so. Stepping 5 ticks
+             cleared it - measured.
+          ✅ **`Planetkiller` IS HARD-BLOCKED** and says why: it ends the game.
+          ✅ `weather_get` exposes what nothing else does: `threatPoints` (35 on the fresh
+             colony) and the wealth split - total 16,339 / items 9,739 / buildings 2,570 /
+             pawns 4,030 - which is what the storyteller actually sizes raids from.
+          📌 Fired on a THROWAWAY quicktest colony. Nothing of value was raided.
+
 ## C-V2 Park any v2 idea in design/V2_DREAMS.md yourself — no permission needed
 row:      doctrine
 spec:     Any idea for new content that is not v1 — including one a live session
