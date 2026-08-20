@@ -989,7 +989,11 @@ which is what makes batching it with the seven world stages affordable.
 
 | signature | verdict |
 |---|---|
-| **nothing at all with an `[Inhabited]` prefix, anywhere in the log** | 🔴 **NOT LOADED — not "no effect".** The mod is last in load order and its defs are inert. Check the packageId survived RimSort's write before concluding anything else |
+| 🔑 **`[Inhabited] ready: 2 patches, 269 characters, 0 places, 0 casts.`** | ✅ **THE PASS. Predicted in full, before launch.** BUILD added this line at 07:44 for exactly this purpose — a successful load is otherwise completely silent. **Derived, not guessed:** 2 `[HarmonyPatch(typeof(…))]` classes (`Game`, `QuestGen_Pawns`); 269 `Inhabited.CharacterDef` instances across 11 cast rosters; and `Defs/` ships **no** `InhabitedPlaceDef` or `InhabitedCastDef` instance at all |
+| ⚠️ **`0 places, 0 casts` is CORRECT and must not be read as a fault** | The C# classes exist (`InhabitedPlaceDef.cs`, `InhabitedCastDef.cs`) but no XML instance ships. Places are made at runtime by *Create place at current tile*. **Zero here means "none authored yet", never "the def type failed to load"** — and the two are indistinguishable from the number alone, which is why it is written down before the log exists |
+| `2 patches` reads **0** or **1** | 🔴 **the patches did not bind.** The counts after it can still be right, so the rest of the line looks healthy — this field is the only one that proves Harmony worked |
+| `269 characters` reads anything else | 🔴 partial parse of the cast rosters. The roster is not what was authored; do not judge the cast from a spawn menu |
+| **nothing at all with an `[Inhabited]` prefix, anywhere in the log** | 🔴 **NOT LOADED — not "no effect".** The `ready:` line is unconditional in a `[StaticConstructorOnStartup]` constructor, so its absence means the assembly never ran. Check the packageId survived RimSort's write before concluding anything else |
 | `HarmonyException` / `AmbiguousMatchException` naming `QuestGen_Pawns.GeneratePawn` | 🔴 **the predicted failure, and the most likely one.** `Patch_BeggarsFromPool` pins a specific overload by parameter list; the source comment flags that a wrong list throws at startup. **The whole mod's patches fail together** — `PatchAll` is not per-patch |
 | `HarmonyException` naming `Game.DeinitAndRemoveMap` | 🔴 same class, `Patch_MapRemoval`. Survivors would not return to the roster |
 | `[Inhabited] WorldObjectDef Inhabited_Place did not load.` | 🔴 the def half failed while the assembly loaded. Places cannot be created; every debug action below is uncollectable |
@@ -998,11 +1002,20 @@ which is what makes batching it with the seven world stages affordable.
 | `[Inhabited] roster of <place> now holds 3.` | ✅ *Stuff roster (3 pawns)* worked; the `ThingOwner<Pawn>` accepted real pawns |
 | `[Inhabited] roster refused <pawn>` | 🔴 the container rejected a pawn — the architecture claim itself is in doubt |
 
-⚠️ **The false pass.** `PatchAll` throwing does **not** stop the defs loading, so
-`Spawn authored character` can still list all 269 people and look healthy while
-**both Harmony patches are dead** — meaning nothing returns to a roster and no
-beggar is ever drawn from the pool. **A working spawn menu is not evidence the
-patches bound.** Only the absence of a `HarmonyException` is.
+⚠️ **The false pass, and BUILD closed it at 07:44.** `PatchAll` throwing does **not**
+stop the defs loading, so `Spawn authored character` can still list all 269 people and
+look perfectly healthy while **both Harmony patches are dead** — nothing returns to a
+roster, no beggar is ever drawn from the pool. **A working spawn menu is not evidence
+the patches bound.** Before this morning the only counter-evidence was the *absence* of
+a `HarmonyException`, which is the weakest kind. Now the `ready:` line carries
+`<n> patches` as a positive count. 🔑 **Read that field first; it is the one number
+that cannot be faked by a healthy-looking menu.**
+
+⚠️ **E2 is superseded and this is deliberate.** `Inhabited.dll` was rebuilt and
+redeployed at **07:44:23** while this block was being written — repo and game both
+md5 `f362b782942f6b4e83ef36f2c16a93b9`, verified after the change, so the deploy is
+current. The DLL the game will load is **not** the one E2 recorded. Trust this
+paragraph over E2's hash.
 
 ## §4 Results
 
