@@ -58,10 +58,33 @@ def which_is_live():
 
 
 def snapshot():
-    """Archive whatever is live right now before overwriting it."""
+    """
+    Archive whatever is live right now before overwriting it -- but only if we
+    are not already keeping an identical copy.
+
+    A backup identical to a file we already hold is not a backup. Before this
+    check, every single swap stamped a new PRESWAP file unconditionally; five had
+    accumulated by 2026-08-20 and md5 proved all five were byte-identical to the
+    FULL.LATEST / MINIMAL sitting beside them. They were pure noise, one per swap,
+    forever.
+
+    ⚠️ The check is against EVERY .xml already in the store, not just FULL and
+    MINIMAL, so a genuinely distinct earlier snapshot still counts as kept. That
+    matters: `ModsConfig.FULL.20260819_201527.xml` looked like a duplicate for a
+    day and is in fact the only surviving copy of the 578-mod list.
+    """
+    live_hash = md5(LIVE)
+    for name in sorted(os.listdir(STORE)):
+        if not name.lower().endswith(".xml"):
+            continue
+        existing = os.path.join(STORE, name)
+        if os.path.isfile(existing) and md5(existing) == live_hash:
+            print("  snapshot : skipped, identical to %s" % name)
+            return existing
     stamp = datetime.datetime.now().strftime("%Y%m%d_%H%M%S")
     dst = os.path.join(STORE, "ModsConfig.PRESWAP.%s.xml" % stamp)
     shutil.copy2(LIVE, dst)
+    print("  snapshot : %s" % os.path.basename(dst))
     return dst
 
 

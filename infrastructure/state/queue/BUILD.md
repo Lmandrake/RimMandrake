@@ -401,7 +401,34 @@ criteria: the shipped mod description matches what the mod actually patches.
           assembly, so **the repo and the deployed DLL now differ by that string until
           the next rebuild.** Fold it into whatever rebuild comes next; do not spend a
           game-down window on it alone.
-state:    open — raised by REP, 2026-08-20; unblocked same day by the owner.
+state:    done 2026-08-20. `About/About.xml` rewritten and deployed.
+          ⚠️ **TWO OF THE ITEM'S THREE CLAIMS WERE ALREADY STALE WHEN I GOT HERE, and the
+          real defect was bigger than the one described.**
+          ✅ Already correct, no change needed: the bullet already said *vanilla `Empire`*,
+          not `OuterRim_GalacticEmpire`; and the `<loadAfter>` comment on
+          `Neronix17.OuterRim.GalacticEmpire` reads `OuterRim_Imp* pawn kinds
+          GalacticEmpire.xml`, which is **true** — the file still re-points those pawn
+          kinds. Nothing to fix in either.
+          🔴 **What WAS wrong, and the item did not know:** the bullet claimed the patch is
+          *"label-level only"* and that *"everything mechanical is deliberately untouched —
+          no goodwill, no settlement counts, no pawnGroupMakers, no memes"*. Read against
+          the file: it sets `permanentEnemy true`, drops `settlementGenerationWeight` 1 →
+          0.45, REMOVES `requiredMemes` and `structureMemeWeights`, and replaces two
+          `pawnGroupMakers` option lists. **Every clause of that sentence was false.**
+          🔴 **And the fixedName trap was written against the DEAD def, exactly as the item
+          warned.** It said *"the shipped def sets BOTH to Galactic Empire"*. Read off
+          `Data/Royalty/Defs/FactionDefs/Faction_Empire.xml`: vanilla `Empire` ships
+          `label` **"shattered empire"** and **NO `fixedName` at all** — which is why our
+          op is a `PatchOperationAdd` and not a Replace. ⚠️ **Do not read this off the def
+          dump; the dump is post-patch and shows our own values back.** The trap still
+          applies and is now stated correctly.
+          ⛔ There is no colour op in the file. The old text described one at length.
+          verify: `About.xml` well-formed; the only `OuterRim_GalacticEmpire` string left
+          under `src/Jawa/Jawa_Patches/` is the patch header saying it USED to reskin that
+          def and no longer does. `deploy --apply` -> `VERIFIED in sync`.
+          ⏳ **The `JawaBenchTerrainTools.cs` half is NOT done** — it needs a bridgetools
+          rebuild, the item says not to spend a window on it alone, and another seat has
+          been in that assembly tonight. Left for whoever rebuilds next.
 
 ## B-FIX1 `make_vehicle_mask.py` adds a path that does not exist
 row:      0
@@ -417,7 +444,26 @@ spec:     `src/RimMandrake/Utils/make_vehicle_mask.py:67` inserts
 verify:   `python3 -c "import sys; sys.path.insert(0,'src/RimMandrake/Utils'); import make_vehicle_mask"`
           succeeds, and both sled build scripts import clean.
 criteria: the two sled scripts run again.
-state:    open — raised by REP, 2026-08-20.
+state:    done 2026-08-20. `make_vehicle_mask.py` now resolves `pnglib` at
+          `<repo root>/skills/generating-images/scripts` — the old path went up ONE level
+          to `src/RimMandrake/skills`, which has never existed. It also raises a named
+          `ImportError` if the directory is missing, so the next move fails loudly instead
+          of silently.
+          verify output:
+            `make_vehicle_mask imports clean; pnglib from
+             /mnt/d/Luke/dev/Rimworld/skills/generating-images/scripts/pnglib.py`
+          ⚠️ **THE ITEM'S BLAST RADIUS WAS WRONG.** It says the break took down
+          `build_eopie_sled_north.py` and `south.py` *"since each imports this module"*.
+          **Neither imports it.** Grepped all three sled builders: `make_vehicle_mask` is
+          named only inside COMMENTS explaining the warm-hide rule. The path bug was real;
+          the two casualties were not.
+          🔴 **A separate and larger problem, found while checking: none of the three sled
+          builders can run here at all.** All three open with `from PIL import Image,
+          ImageDraw` and **Pillow is not installed** in this Python (`ModuleNotFoundError:
+          No module named 'PIL'`), nor is there a Windows Python beside it carrying one.
+          `refresh.py`'s header lists contact sheets as "offline + Pillow, seconds", so
+          something used to have it. Not fixed — installing a dependency is not mine to
+          decide — but nobody should record the sled scripts as working until it is.
 
 ## B-SWAP1 `modlist_swap.py` never prunes its own backups
 row:      0
@@ -448,7 +494,19 @@ spec:     `src/RimMandrake/Utils/modlist_swap.py:60-64`. `snapshot()` stamps a n
 verify:   run a swap twice with no mod-list change; `ls infrastructure/state/modlists/`
           gains no new PRESWAP file on the second run.
 criteria: the backup store holds one copy of each DISTINCT list, and nothing else.
-state:    open — raised by REP, 2026-08-20, from the cleanup audit.
+state:    done 2026-08-20. `modlist_swap.py` `snapshot()` now hashes the live file
+          against **every** `.xml` already in the store and returns the existing path
+          instead of writing a duplicate.
+          verify output, two consecutive calls with no mod-list change:
+            `snapshot : skipped, identical to ModsConfig.FULL.LATEST.xml`
+            `snapshot : skipped, identical to ModsConfig.FULL.LATEST.xml`
+            `same: True`   — and `ls infrastructure/state/modlists/` is unchanged.
+          🔑 **The check is against the WHOLE store, not just FULL and MINIMAL**, which is
+          what makes the void half of this item safe: `ModsConfig.FULL.20260819_201527.xml`
+          is the only surviving copy of the 578 list, and a store-wide comparison keeps it
+          as a distinct kept file rather than treating it as a duplicate to prune.
+          It also now prints one line saying which path it took, so a swap says whether it
+          archived anything.
 
 ## empire-permanent-enemy-becomes-a-whitelist-7c31d9
 row:      1

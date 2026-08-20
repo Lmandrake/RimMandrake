@@ -64,8 +64,19 @@ import argparse
 import os
 import sys
 
-sys.path.insert(0, os.path.join(os.path.dirname(os.path.abspath(__file__)),
-                                "..", "skills", "generating-images", "scripts"))
+# pnglib lives at <repo root>/skills/generating-images/scripts/. This file is
+# three levels down, at src/RimMandrake/Utils/ -- an earlier version went up only
+# ONE level, at src/RimMandrake/skills/, which has never existed. The import then
+# failed and took both DesertVehicleReskin sled builders down with it, silently,
+# because nothing imports this module at test time.
+_SKILL_SCRIPTS = os.path.normpath(os.path.join(
+    os.path.dirname(os.path.abspath(__file__)),
+    "..", "..", "..", "skills", "generating-images", "scripts"))
+if not os.path.isdir(_SKILL_SCRIPTS):
+    raise ImportError(
+        "pnglib's directory is missing: " + _SKILL_SCRIPTS + "\n"
+        "If the skills tree moved, fix this path rather than vendoring a copy.")
+sys.path.insert(0, _SKILL_SCRIPTS)
 import pnglib                                                    # noqa: E402
 
 WARM = 18          # r-b at or above this is hide rather than grey metal/wood
