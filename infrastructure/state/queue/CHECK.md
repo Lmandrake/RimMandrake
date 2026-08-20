@@ -1135,3 +1135,26 @@ criteria: 🔴 SETTLE IT IN GAME, and it is one look, not a load: equip any ligh
           armour ratings are real, so the shots-to-kill table for RANGED weapons (blaster
           2.8 hits, bowcaster 2.1, slugrifle 1.6, sonic 8.7) does not depend on this.
 state:    ready
+
+## ANCIENT_DANGER_GARRISON_1 Prove mechs still garrison ancient dangers once PursuingMechanoids is removed
+spec:     Owner, 2026-08-20: the Empire pursues via `Ruthless Faction Pursuit` (WS
+          `3621784437`) and the vanilla `PursuingMechanoids` ScenPart comes out of the
+          scenario — but "the mechanoids still show up in ancient horrors, so we need a
+          mechanism for that". The mechanism is that ancient dangers and sealed
+          complexes populate by a PREDICATE over pawn kinds (`allowInMechClusters`,
+          `isFighter`, `combatPower`), never by `pawnGroupMakers` — 21 of 93 mech kinds
+          are cluster-eligible with zero raid slots
+          (`design/Jawa/worldbuilding/data/mech_control_axes.md`).
+          🔴 THE RISK: the vanilla ScenPartDef carries `preventRemovalOfFaction:
+          Mechanoid`. Removing the part removes that guard, and ancient-danger mechs
+          still need `Faction.OfMechanoids` to EXIST.
+          `infrastructure/state/WORLDGEN_FACTION_CHECKLIST.md` treats `Mechanoid` as a
+          hidden checkbox that generates regardless — untested with the part removed.
+          This must be answered BEFORE the world is frozen; it is hand-made once.
+verify:   generate a throwaway world with `PursuingMechanoids` removed and the Ruthless
+          part aimed at the Empire, then confirm the Mechanoid faction exists in the
+          world's faction list.
+criteria: a live map with an ancient danger / sealed complex spawns mechanoid guards,
+          and `Faction.OfMechanoids` is non-null. Read it back off the bridge, not off
+          the def dump.
+state:    ready

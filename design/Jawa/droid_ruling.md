@@ -213,26 +213,60 @@ augment*; keeping the faction does not oblige us to hand the player a mech workf
 Judge the player-side mechanitor payload on the anti-exponential pillars, as
 `design/Jawa/mods/required_mods.md` already does.
 
-### 🔓 The gravship pursuit decision is REOPENED, not determined
+### ✅ DECIDED — the EMPIRE pursues. The mechanoids stay for the ancient dangers.
 
-`ScenPart_PursuingMechanoids` sets `incidentParms.faction = Faction.OfMechanoids` in
-**hardcoded C#**, and its `ScenPartDef` carries `preventRemovalOfFaction: Mechanoid` —
-a guard that stops the faction being removed out from under the pursuit.
+> 🔴 **OWNER, 2026-08-20:** *"Yes, we will use Ruthless Pursuit mod to have the
+> Empire pursue the player... but the mechanoids still show up in ancient horrors, so we
+> need a mechanism for that."*
 
-**That guard was the whole argument here, and with the faction staying it no longer
-forces anything.** The old three-step build (remove the vanilla part → add `Ruthless
-Faction Pursuit` WS `3621784437` → suppress the Mechanoid faction) **had step 3 deleted
-by this ruling, which removes the reason for steps 1 and 2.**
+**Both halves at once, and they are independent mechanisms — which is why this works.**
 
-⇒ **Genuinely open, and a flavour choice rather than a constraint:** who chases the
-gravship? The pursuit is redirectable to any `ValidFactionDef`
-(`required_mods.md` — the finding stands even though the conclusion built on it does
-not). Keeping the vanilla Mechanoid pursuit is now *available*, and it arguably reads
-better than it did: **the thing that follows you is the Arsenal noticing you moved.**
+| | |
+|---|---|
+| **who chases the gravship** | the **Empire**, via `Ruthless Faction Pursuit` (WS `3621784437`, owner-adopted 2026-08-13) |
+| **who is in the ancient dangers** | the **Forgotten Arsenal** — vanilla `Mechanoid`, faction intact, untouched by the above |
 
-⚠️ **Unchecked before locking** (from `required_mods.md`): whether it double-pursues if
-the vanilla part is left in, and how it interacts with **VGE Chapter 1's transpiler
-patch** on `ScenPart_PursuingMechanoids_Tick`, which is live in this stack.
+#### The build
+
+1. **Remove the vanilla `PursuingMechanoids` ScenPart** from the scenario. It is
+   `canBePlayerAddedRemoved: true`, so this is a scenario edit, not a patch.
+2. **Add the `Ruthless Faction Pursuit` part, aimed at the Empire.**
+   ⚠️ **Which Empire is NOT settled** — `required_mods.md` says the Directorate, then
+   kills `OuterRim_GalacticEmpire` as the wrong vessel (2026-08-20) and says re-check
+   vanilla `Empire`. **Read the live def before pointing the part at anything.**
+   Eligibility is `displayInFactionSelection && !isPlayer && canStageAttacks &&
+   !permanentEnemy`-class filtering via `CommonUtil.ValidFactionDef`; the mod's picker
+   iterates `DefDatabase<FactionDef>.AllDefs`.
+3. **Do NOT keep both parts.** The Ruthless part *supplements* vanilla rather than
+   replacing it — leave `PursuingMechanoids` in and the player is pursued twice.
+
+#### 🔑 The mechanism the owner asked for — and the trap inside it
+
+**Ancient dangers do not need the pursuit, the raid roster, or `pawnGroupMakers`.** They
+are populated by a **predicate over pawn kinds** — `allowInMechClusters`, `isFighter`,
+`combatPower` — which is a different mechanism entirely from raids. Measured: **21 of 93
+mech kinds are cluster-eligible with zero raid slots**
+(`design/Jawa/worldbuilding/data/mech_control_axes.md`). ⇒ **Nothing in step 1 or 2 can
+stop mechs appearing in ancient dangers.** That is the mechanism, and it is already in
+the engine.
+
+🔴 **The trap: step 1 deletes the guard that guaranteed the faction exists.** The vanilla
+`ScenPartDef` carries **`preventRemovalOfFaction: Mechanoid`** — a guard whose entire
+purpose is to stop the Mechanoid faction being removed out from under the pursuit.
+**Remove the part and the guard leaves with it.** Ancient-danger mechs still need
+`Faction.OfMechanoids` to exist, so the faction's presence at world creation is no longer
+protected by anything.
+
+⚠️ **This is the one thing to verify before the world is frozen**, because the world is
+hand-made once and shipped. `infrastructure/state/WORLDGEN_FACTION_CHECKLIST.md` records
+`Mechanoid` as a **hidden checkbox** — hidden factions are expected to generate
+regardless of the Configure Factions screen — **but that expectation has not been tested
+with the pursuit part removed.** Filed as `ANCIENT_DANGER_GARRISON_1` in
+`infrastructure/state/queue/CHECK.md`.
+
+⚠️ **Also unchecked, from `required_mods.md`:** how the removal interacts with **VGE
+Chapter 1's transpiler patch** on `ScenPart_PursuingMechanoids_Tick`, which is live in
+this stack and patches a method that will no longer be running.
 
 Mechanism and the decompiled proof:
 `file:///D:/Luke/dev/Rimworld/design/Jawa/worldbuilding/gravship_pursuer_mechanism.md`
