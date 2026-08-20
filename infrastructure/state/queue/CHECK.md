@@ -177,7 +177,39 @@ criteria: the owner looks at the planet and does not immediately name a defect. 
           tool returned success". 🔑 Then compare it against
           `world/view/ASHKARR_WORLDMAP.biome.equirect.png` - every defect that has mattered
           in this work passed its numeric check while the picture was obviously wrong.
-state:    ready
+state:    🔵 STAGE 1 OF 7 RUN AND VERIFIED 2026-08-20, at the owner's "run it, let's just
+          see". Exploratory, on a disposable world with a map already instantiated —
+          W9's `Find.CurrentMap == null` precondition was knowingly waived by him, not met.
+result:   ✅ **TILES: 21,872 / 21,872 imported, 0 skipped, 0 unknown biomes, in 0.1 s.**
+          `world_tile_validate` reports **matched 21872, mismatched 0, 100.0%**. Spot-check
+          6/6 against the CSV by hand. Water moved 32.87% → 6.71%. The tile importer works
+          and the CSV resolves completely against the 577-mod set.
+          🔴 **THE OTHER SIX STAGES DID NOT RUN, and the planet does not read as Ash'karr
+          because of it.** The globe shows authored BIOMES under a vanilla everything-else:
+          vanilla road and river networks crossing the new biomes arbitrarily, vanilla
+          region names (`Lake Erelania`, `Rock Othdiu`) where the reference has `The Scald`
+          and `The Twilight Sea`, and the generated settlement roster rather than the
+          authored 72.
+          🔴 **`jawa/world_links_import` CANNOT READ ITS OWN DOCUMENTED FORMAT** — it calls
+          the TILE csv reader, which hard-requires a `tile` column, then checks for
+          kind/a/b/def. The links CSV is edge-shaped (`kind,a,b,def`, 1,075 rows) and is
+          refused before the links check is reached. ⇒ **W4 passed on `world_links_set`;
+          the `_import` sibling shipped untested.** Fixed in source (47dcaf0), built 0/0,
+          NOT deployed — the game is up.
+lint:     1,160 findings, and the shape of them is the story:
+            817  staleMarineMutators   — Coast mutators surviving the repaint. Exactly what
+                                         §12's ordering exists to prevent; mutators are
+                                         stage 3 and did not run.
+            312  waterBiomeOnRaisedLand — equals the CSV's Lake count precisely. ⚠️ Probably
+                                         a LINT defect, not a world defect: the check treats
+                                         a Lake like an Ocean, and a lake at altitude is
+                                         ordinary geography. Confirm before "fixing" the map.
+             23  settlementsWithNoRoad ·  4 settlementsOnImpassable · 1 settlementsOnWater
+                                       — generated settlements stranded by the repaint, all
+                                         downstream of stages 5-6 not running.
+              0  lushBiomesOffRiver · 0 landBiomeSubmerged · 0 stackedSettlements
+next:     deploy the links fix at the next shutdown, then run stages 2-7 in §12 order.
+          Stage 1 is proven and is no longer the risk.
 
 ## C-V2 Park any v2 idea in design/V2_DREAMS.md yourself — no permission needed
 row:      doctrine
