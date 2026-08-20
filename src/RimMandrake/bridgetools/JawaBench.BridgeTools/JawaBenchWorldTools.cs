@@ -2502,5 +2502,127 @@ namespace JawaBench.BridgeTools
             });
         }
 
+
+        [Tool(
+            "jawa/world_objects_add",
+            Description =
+                "CREATE a new world object - a settlement, site or camp - rather than " +
+                "re-siting one that already exists. Two steps, and the second is easy to " +
+                "forget: WorldObjectMaker.MakeWorldObject sets def/ID/creationGameTicks and " +
+                "calls PostMake, then Find.WorldObjects.Add PLACES it. " +
+                "🔴 A Settlement whose faction is NULL is DESTROYED on load with only a " +
+                "warning, so a factionless settlement is refused outright. " +
+                "📌 §12 rules that for Ash'karr we OVERWRITE what vanilla generated rather " +
+                "than adding - use jawa/world_objects_set for that. This tool is for scenes " +
+                "vanilla never placed.",
+            ResultDescription = "success, the created object, and the world object counts after.")]
+        public static async Task<object> WorldObjectsAdd(
+            IRimBridgeContext ctx,
+            CancellationToken cancellationToken,
+            [ToolParameter(Description = "WorldObjectDef, e.g. Settlement, Site, Camp.")] string def = "Settlement",
+            [ToolParameter(Description = "Tile id to place it on.")] int tile = -1,
+            [ToolParameter(Description = "FactionDef that owns it. Required for settlements.")] string faction = null,
+            [ToolParameter(Description = "Name for a settlement. Empty lets the game name it.")] string name = null)
+        {
+            return await ctx.MainThread.InvokeAsync(() =>
+            {
+                if (Find.World == null || Find.WorldGrid == null) return Fail("No world is loaded.");
+                var grid = Find.WorldGrid;
+                if (tile < 0 || tile >= grid.TilesCount)
+                    return Fail("Tile " + tile + " out of range 0.." + (grid.TilesCount - 1) + ".");
+
+                var wd = DefDatabase<WorldObjectDef>.GetNamedSilentFail((def ?? "").Trim());
+                if (wd == null) return Fail("No WorldObjectDef '" + def + "'.", DefSuggestions<WorldObjectDef>(def));
+
+                Faction fac = null;
+                if (!string.IsNullOrEmpty(faction))
+                {
+                    var fd = DefDatabase<FactionDef>.GetNamedSilentFail(faction.Trim());
+                    if (fd == null) return Fail("No FactionDef '" + faction + "'.", DefSuggestions<FactionDef>(faction));
+                    fac = Find.FactionManager.FirstFactionOfDef(fd);
+                    if (fac == null)
+                        return Fail("FactionDef '" + faction + "' exists but no such faction was generated in THIS world. " +
+                                    "Live: " + string.Join(", ", Find.FactionManager.AllFactionsVisible.Select(z => z.def.defName).Take(20).ToArray()));
+                }
+
+                bool isSettlement = typeof(Settlement).IsAssignableFrom(wd.worldObjectClass);
+                if (isSettlement && fac == null)
+                    return Fail("REFUSING: a Settlement with a null faction is DESTROYED on load, with only a warning in the log. " +
+                                "Give a faction that exists in this world.");
+
+                var already = Find.WorldObjects.ObjectsAt(tile).ToList();
+                if (already.Any(o => o.def == wd))
+                    return Fail("A '" + wd.defName + "' already exists on tile " + tile + ". Use jawa/world_objects_set to move or re-faction it.");
+
+                WorldObject wo;
+                try
+                {
+                    wo = WorldObjectMaker.MakeWorldObject(wd);
+                    wo.Tile = new PlanetTile(tile, grid.Surface);
+                    if (fac != null) wo.SetFaction(fac);
+                    var st = wo as Settlement;
+                    if (st != null && !string.IsNullOrEmpty(name)) st.Name = name;
+                    Find.WorldObjects.Add(wo);          // placement is a SEPARATE step
+                }
+                catch (Exception e) { return Fail("Creating the world object threw: " + e.GetType().Name + ": " + e.Message); }
+
+                return (object)new
+                {
+                    success = true,
+                    created = WorldObjectRow(wo),
+                    totalWorldObjects = Find.WorldObjects.AllWorldObjects.Count,
+                    totalSettlements = Find.WorldObjects.Settlements.Count,
+                    note = "Run jawa/world_commit - FastTileFinder caches settlement tiles.",
+                    ticksGame = TicksGameSafe(),
+                };
+            });
+        }
+
+        [Tool(
+            "jawa/world_objects_remove",
+            Description =
+                "Remove a world object by its id. Uses WorldObject.Destroy() where the object " +
+                "supports it so the reference graph is cleaned up, rather than yanking it out " +
+                "of the holder list. Read-back confirms it is gone.",
+            ResultDescription = "success, removed, and the counts after.")]
+        public static async Task<object> WorldObjectsRemove(
+            IRimBridgeContext ctx,
+            CancellationToken cancellationToken,
+            [ToolParameter(Description = "Comma-separated world object ids.")] string ids = null)
+        {
+            return await ctx.MainThread.InvokeAsync(() =>
+            {
+                if (Find.World == null || Find.WorldObjects == null) return Fail("No world is loaded.");
+                var want = new HashSet<int>();
+                foreach (var part in (ids ?? "").Split(',')) { int v; if (int.TryParse(part.Trim(), out v)) want.Add(v); }
+                if (want.Count == 0) return Fail("Give 'ids'.");
+
+                int removed = 0; var errors = new List<string>(); var gone = new List<object>();
+                foreach (var o in Find.WorldObjects.AllWorldObjects.ToList())
+                {
+                    if (o == null || !want.Contains(o.ID)) continue;
+                    gone.Add(WorldObjectRow(o));
+                    try
+                    {
+                        if (!o.Destroyed) o.Destroy();
+                        if (Find.WorldObjects.Contains(o)) Find.WorldObjects.Remove(o);
+                        removed++;
+                    }
+                    catch (Exception e)
+                    {
+                        try { Find.WorldObjects.Remove(o); removed++; errors.Add("Destroy() threw (" + e.Message + "); removed from the holder instead"); }
+                        catch (Exception e2) { errors.Add("id " + o.ID + ": " + e2.Message); }
+                    }
+                }
+                return (object)new
+                {
+                    success = true, removed, requested = want.Count, errors,
+                    removedObjects = gone,
+                    totalWorldObjects = Find.WorldObjects.AllWorldObjects.Count,
+                    ticksGame = TicksGameSafe(),
+                };
+            });
+        }
+
     }
 }
