@@ -365,8 +365,10 @@ Before trusting any future rebuild, run it twice and `md5sum` the three CSVs.
    player's own start map of junk, plants and ruins. **The placements are specified
    but not yet written into the recipe.**
 5. ~~How this map reaches RimWorld is an open design question.~~ **DECIDED — §12.**
-   A custom `WorldGenStep` stamps the CSV at worldgen time. CHECK is building it.
-   Still untested in game, which is now a build item and not a design one.
+   ⛔ The `WorldGenStep` answer lasted one hour: owner ruled 2026-08-19 that every
+   in-game worldgen hook is stripped. **The route is the LIVE BRIDGE** — two companion
+   tool methods write the tiles into a generated world before any map exists, and the
+   owner saves. CHECK is building it. Untested in game, a build item not a design one.
 6. The four questions in §10 are still open.
 
 ### Traps a fresh agent will otherwise walk into
@@ -388,111 +390,128 @@ Before trusting any future rebuild, run it twice and `md5sum` the three CSVs.
 
 ---
 
-## 12. 🔑 HOW THIS MAP REACHES RIMWORLD — decided 2026-08-19
+## 12. 🔑 HOW THIS MAP REACHES RIMWORLD — the LIVE BRIDGE. Ruled by the owner, 2026-08-19
 
-A hand-painted CSV is not a planet. This is the contract that turns it into one.
-CHECK is building the assembly; **this section is what it is built against.**
+⛔ **THE `WorldGenStep` ROUTE IS DEAD.** Owner's ruling, 2026-08-19, verbatim:
+*"anything aimed at the in-game worldgen should be stripped, anything importing
+external worldmaps through the bridge or configuring the game to generate the inputs
+for the external worldmap creation should be kept."*
 
-### 12.1 The route: a custom `WorldGenStep` that stamps the CSV. Nothing else.
+This section used to specify `WorldGenStep_Ashkarr` at order 20, registered by a
+`PatchOperationAdd` into the Surface `PlanetLayerDef`. **Struck in full.** It was never
+wrong about the DATA — §12.6 and §12.7 stand unchanged and are now more load-bearing,
+not less. It was wrong about the DOOR. A `WorldGenStep` is an in-game worldgen hook,
+and there are to be none, whether it generates or merely overwrites.
 
-The owner still creates the world in game, exactly as `SCENARIO_SPEC.md` describes —
-but with our mod active, **what generates is Ash'karr regardless of seed**, because our
-step overwrites the generated tiles with the authored ones.
+⚠️ **Kept as a struck section rather than deleted**, so that nobody reads §12.6's
+`GenerateFresh` vocabulary and reconstructs the step from the evidence. Everything
+below the strike is the live route.
 
-⚠️ **This does not reopen worldgen and it is not a generator.** The step has no
-parameters and no seed; it is a *file copy* that happens to run during worldgen because
-that is the only moment the engine will accept tile data. It can produce exactly one
-planet.
+| ~~12.1–12.5, as written 2026-08-19~~ | ⛔ **DEAD** — `WorldGenStep_Ashkarr`, order 20, `PatchOperationAdd` into `/Defs/PlanetLayerDef[defName="Surface"]/worldGenSteps`. Owner's ruling above. Do not rebuild it; the pattern is in git at `16767eb~1` if it is ever needed for something that is not worldgen |
 
-🔑 **And it does not contradict the ⛔ banner at the top of this file.** The ban is on
-*the pipeline* writing `.rws`. The campaign-start save that `SCENARIO_SPEC.md` ships is
-still made by the owner, in game, by hand, and it is still v1's one artifact:
-
-```
-mod active  ->  owner creates a world  ->  our step stamps Ash'karr over it
-            ->  owner places the gravship and the six founders
-            ->  owner saves  ->  THAT save is v1's campaign start
-```
-
-Rejected: shipping a `.rws` (owner's ruling); WorldEdit 2.0 (a manual in-game tool —
-sculpting 21,872 tiles by hand is not a route); BiomesKit hooks (declarative, unproven
-here); a Worldbuilder preset (least code, but a permanent hard dependency on someone
-else's mod and never round-tripped here — **keep as the fallback**).
-
-### 12.2 The shape, confirmed against the installed assembly
-
-`JawaSeaShaper`, already deployed and active at
-`C:\Program Files (x86)\Steam\steamapps\common\RimWorld\Mods\JawaSeaShaper\`,
-is this pattern working end to end. **Copy it; do not reinvent it.**
-
-```csharp
-public class WorldGenStep_Ashkarr : WorldGenStep      // Verse.WorldGenStep
-{
-    public override int SeedPart => <any const int>;
-    public override void GenerateFresh(string seed, PlanetLayer layer)
-}
-```
-
-```csharp
-if (layer == null || layer != Find.WorldGrid.Surface) return;   // guard
-PlanetTile t = layer.PlanetTileForID(i);   // i is LAYER-LOCAL, 0..layer.TilesCount
-Tile info = layer[t];                      // t.tileId is GLOBAL and != i
-```
-
-🔴 **A `WorldGenStepDef` on its own is a silent no-op.** `PlanetLayerDef.GenStepsInOrder`
-iterates the *layer def's* own `worldGenSteps` list, not `DefDatabase<WorldGenStepDef>`.
-Register with a load-time `PatchOperationAdd` into
-`/Defs/PlanetLayerDef[defName="Surface"]/worldGenSteps`, wrapped in the idempotence
-guard `JawaSeaShaper` already uses. Position in that list does **not** set order;
-`<order>` does. The list is cached on first read, so this must be load-time.
-
-### 12.3 🔴 ORDER 20. Not last.
-
-Vanilla's steps, confirmed from `Data/{Core,Odyssey,Biotech}/Defs/WorldGeneration/WorldGenerator.xml`:
+### 12.1 The route: the companion DLL writes the tiles into a world that already exists
 
 ```
-Terrain 0 · (Tiles 5, orbit only) · Lakes 150 · Rivers 200 · AncientSites 300
-AncientRoads 400 · Pollution 450 · Factions 500 · Roads 600 · Landmarks 650
-Mutators 700 · Features 1000 (last)
+mod stack active, MLP subcount 7 / coverage 1.0, factions per WORLDGEN_FACTION_CHECKLIST
+   -> owner creates a world in game, any seed          (vanilla worldgen runs, untouched)
+   -> world screen is up, NO map instantiated yet
+   -> CHECK pushes the 21,872 authored tiles over the bridge into the live WorldGrid
+   -> owner places the gravship and the six founders
+   -> owner saves  ->  THAT save is v1's campaign start
 ```
 
-⚠️ **There is no `WorldGenStep_Biomes`.** Biome, elevation, temperature, rainfall and
-hilliness are *all* written by `WorldGenStep_Terrain` at order **0**. Everything after
-0 merely consumes them — so nothing recomputes them behind us.
+🔑 **Why this and not a savegame writer.** Ruled 2026-08-18 after two dead loads and
+~2 cold loads burned: an offline `.rws` writer can only validate the parts it already
+understands, and both attempts passed every invariant check and still killed the game
+on load. The engine writing its own save is consistent by construction, and a bad write
+costs a reload rather than a cold load. Full post-mortem in
+`infrastructure/state/queue/CHECK.md`, item `worldpaint-live-bridge-route-9d41c7`.
 
-⇒ **Stamp at order 20**, in the free gap 1–149. Late enough to be after Terrain and
-after Geological Landforms' Harmony patch on it; early enough that **every downstream
-step sees our planet instead of the one it replaced.** Stamping after 700 would leave
-rivers, landmarks and mutators chosen against a world that no longer exists.
-🔑 Check the `<order>` of the other mods that register steps (BiomesKit Continued,
-Vanilla Expanded Framework, Fortified Features, GravTide) and sit above them.
+🔑 **Why the world screen and not a live colony.** Both save-editing failures had a
+`Map-0-PlayerHome` in the save. Repainting a planet underneath an instantiated map is
+the thing that broke; do the write before any map exists.
 
-### 12.4 Which steps we own, and which we let run
+### 12.2 What the companion needs — two tool methods beside `jawa/world_neighbors`
 
-| step | verdict |
+1. **A batch tile setter** — biome, elevation, hilliness, temperature, rainfall,
+   swampiness, pollution, over a run of tile indices.
+2. **A link setter** — rivers and roads.
+
+🔴 **The link setter must call `WorldGrid.OverlayRiver(from, to, def)` and
+`OverlayRoad(from, to, def)`, never the raw lists.** Read off the assembly 2026-08-19,
+not inferred: both are public, both write **BOTH endpoints**, and both maintain the
+priority rules. `SurfaceTile.RiverLink` is `{ PlanetTile neighbor; RiverDef river; }` —
+`neighbor` is the tile itself, so there is no neighbour-slot index to reconstruct at
+all. Hand-writing `potentialRivers` one-sided gives a river the engine only half-sees.
+Call rivers **mouth first, then upstream**: `OverlayRiver` ends with
+`to.riverDist = max(to.riverDist, from.riverDist + 1)`, so `riverDist` is maintained
+incrementally and is order-dependent. No BFS is needed.
+
+Adding a companion tool measured ~10 min plus a ~2 min deploy in a **game-down** window.
+The unknown, to be found by doing: **which live caches need explicit invalidation after
+a tile write** — the world mesh, the pathfinder's perceived costs, the feature text
+meshes. `jawa/refresh_rect` is the map-side precedent for exactly this class of bug.
+
+### 12.3 🔴 THE COST OF THE RULING, and it is real: downstream steps ran against the OTHER planet
+
+The dead route's whole argument for order 20 was that every later worldgen step would
+see *our* planet. **The bridge route loses that**, and the loss must be handled rather
+than discovered:
+
+| generated against the vanilla world, then we overwrite the ground under it | what to do |
 |---|---|
-| **Terrain 0** | let it run, then overwrite it. It is what makes the tiles exist |
-| **Lakes 150 · Rivers 200 · Roads 600** | ⭐ **OWN.** We authored all three, and §4.6 rules that rivers must NOT connect the basins — vanilla's river step would reconnect them. Drop them from the Surface list rather than racing them |
-| **Factions 500** | ⭐ **OWN.** 72 holdings are placed by lore in `_settlements.csv`; siting by habitability is explicitly banned (§7) |
-| AncientSites 300 · AncientRoads 400 | ⚠️ AncientRoads draws roads we did not author. **Decide by LOOKING** at the first render out of the game |
-| Pollution 450 | let it run; we stamp pollution to zero anyway |
-| **Landmarks 650 · Mutators 700** | ⭐ **LET THEM RUN.** These are the one thing we have *not* authored, and they pick from biome and terrain — which by order 20 are ours. Free content that already respects the map. Then add **our named few** in a second step at order 660 |
-| **Features 1000** | ⭐ **OWN.** We have 24 named regions in `_tiles.csv`; vanilla would name them at random |
+| **Rivers 200 · Roads 600** | ⭐ **OVERWRITE.** We authored both in `_links.csv`. Vanilla's flow into vanilla's coastlines. Push ours after clearing theirs |
+| **Factions 500** | ⭐ **OVERWRITE.** 72 holdings are placed by lore in `_settlements.csv`; siting by habitability is banned (§7). Re-`Tile` the existing world objects rather than deleting and remaking them |
+| **Landmarks 650 · Mutators 700** | ⚠️ **THE ONE THAT BITES.** These were picked from the vanilla tile's biome and terrain, so after our stamp a Landmark can sit on a biome that forbids it. Decide by LOOKING at the first render; the fallback is to clear and re-roll them after the stamp |
+| **Features 1000** | ⭐ **OVERWRITE.** We have 24 named regions in `_tiles.csv`; vanilla named them at random |
+| Pollution 450 | harmless; we stamp pollution to zero anyway |
+| AncientSites 300 · AncientRoads 400 | ⚠️ decide by LOOKING at the first render |
 
-### 12.5 What the importer must assert before it writes anything
+### 12.4 What the importer must assert before it writes anything
 
-1. 🔴 `layer.TilesCount == 21872`, or **refuse loudly**. The tile IDs in the CSV are not
-   vanilla's: `My Little Planet` (`oblitus.mylittleplanet`, ACTIVE) must be at
+1. 🔴 `Find.WorldGrid.TilesCount == 21872`, or **refuse loudly**. The tile IDs in the CSV
+   are not vanilla's: `My Little Planet` (`oblitus.mylittleplanet`, ACTIVE) must be at
    **subcount 7** with **`planetCoverage 1`**. Verified 2026-08-19 in
    `.../workshop/content/294100/3626210061/Worldbuilder/TidallyLocked/Preset.xml`.
    Any other subcount shifts **every** tile ID and silently paints the wrong planet.
+   ✅ **These are exactly the slider settings the owner keeps** — they are what makes the
+   external pipeline's inputs match the game's grid. See `SCENARIO_SETTINGS_SPEC.md`.
 2. The CSV's row count is 21,872 plus a header. Verified: the file is 21,873 lines.
-3. Write through the **`Tile` object** — `info.PrimaryBiome`, `.elevation`,
-   `.temperature`, `.rainfall`, `.hilliness`, `.swampiness`, `.pollution` — never the
-   raw `tileBiome[]`-style arrays.
-4. 🔴 **`WaterCovered` is `elevation <= 0`, and there is no sea-level setting.** Write
+3. 🔴 **No map may be instantiated.** Refuse if `Find.CurrentMap != null`.
+4. Write through the **`Tile` object** — `.PrimaryBiome`, `.elevation`, `.temperature`,
+   `.rainfall`, `.hilliness`, `.swampiness`, `.pollution` — never the raw
+   `tileBiome[]`-style arrays. Confirmed off the assembly: `Tile.pollution` is a
+   **`float`**, so the old `/65535` scale dispute between `worldmap.py` and
+   `apply_world.py` does not arise on this route.
+5. 🔴 **`WaterCovered` is `elevation <= 0`, and there is no sea-level setting.** Write
    elevation and biome **together, in both directions**, or you get an `Ocean` tile that
    behaves like ground.
+6. ⚠️ **`SurfaceTile.Roads` / `.Rivers` return `null`** when the tile's biome sets
+   `allowRoads` / `allowRivers` false. An authored road crossing such a biome is stored
+   and invisible. Check `_links.csv` against the biome table before debugging a
+   "missing" road.
+
+### 12.5 Settlements and features — the two APIs, read off the assembly
+
+**Settlements**, from `FactionGenerator` lines 41–48 — note the def is **not**
+`WorldObjectDefOf.Settlement`:
+
+```csharp
+WorldObject wo = WorldObjectMaker.MakeWorldObject(layer.Def.SettlementWorldObjectDef);
+wo.SetFaction(faction);
+wo.Tile = <PlanetTile>;
+if (wo is INameableWorldObject n) n.Name = <our name>;
+Find.WorldObjects.Add(wo);
+```
+
+**Features**, from `FeatureWorker.AddFeature`: `new WorldFeature(def, layer)` → set
+`.name` → set `grid[t].feature = f` for every member tile → set `drawCenter` and
+`maxDrawSizeInTiles` → append to `Find.WorldFeatures.features`. `AssignBestDrawPos` is
+`protected`, so we supply the centroid ourselves — `_meta.json` already carries
+`drawCenter` and `extent` for all 24 regions. `Tile.feature` is a **`WorldFeature`
+object reference** at runtime, so the old "uniqueID or list index" question is moot;
+for the record it is the **uniqueID** (`WorldFeatures.ExposeData` →
+`GetFeatureWithID`).
 
 ### 12.6 The complete per-tile gap list
 
@@ -509,19 +528,23 @@ orbit layers first.
 | **`tileSwampiness`** (byte/255 → 0.0–1.0) | ✅ **added 2026-08-19** | authored — see §12.7 |
 | `tilePollution` (uint16/65535) | ❌ | **zero everywhere.** Ruled: this planet's problem is heat and thirst, not toxin |
 | `tileFeature` (uint16 WorldFeature id, **65535 = none**) | ⚠️ names only | ⭐ **UNAUTHORED — the real remaining gap.** See below |
-| `tileRiverOrigins` / `…Adjacency` / `…Def` | ⚠️ `_links.csv` gives (a, b, def) | the **slot index** is supplied by the engine at import time |
+| `tileRiverOrigins` / `…Adjacency` / `…Def` | ⚠️ `_links.csv` gives (a, b, def) | ⭐ **not written at all.** Call `WorldGrid.OverlayRiver(a, b, def)`; the engine builds these on save. See §12.2 |
 | `tileRoadOrigins` / `…Adjacency` / `…Def` | ⚠️ same | same |
-| `tileRiverDistances` (uint8, hops to nearest river) | ❌ | **derived** — a BFS from the river links. Cheap, but must be written |
-| `tileMutatorTiles` / `tileMutatorDefs` | ❌ | **let vanilla roll them** (§12.4). The old save carried ~1.4 per tile |
+| `tileRiverDistances` (uint8, hops to nearest river) | ❌ | ⭐ **no BFS needed.** `OverlayRiver` maintains `riverDist` itself — but call mouth-first, upstream-after, or the numbers are wrong |
+| `tileMutatorTiles` / `tileMutatorDefs` | ❌ | **let vanilla roll them** (§12.3). The old save carried ~1.4 per tile |
 | `World.landmarks` — `Dictionary<PlanetTile,Landmark>`, keys `"<tileId>,<layerId>"`, values `{def, name}` | ❌ | vanilla places them; we add a named few |
 
-🔑 **The neighbour-slot problem dissolves, and this is worth saying plainly.** An earlier
-attempt to reconstruct the engine's `GetTileNeighbors` ordering *offline* scored 0.197
-against a 0.161 random baseline — indistinguishable from random, and it was recorded as
-a blocker. **It is not one.** The importer runs **inside the game**, so it never has to
-reconstruct anything: for a link (a, b) it asks the engine for a's neighbours and takes
-the index of b. Each entry is one undirected edge **owned by the lower-index tile**
-(verified: origin < target on 1.000 of engine entries, reciprocity 0.000).
+🔑 **There is no neighbour-slot problem. There is no slot.** An earlier attempt to
+reconstruct the engine's `GetTileNeighbors` ordering *offline* scored 0.197 against a
+0.161 random baseline and was recorded as a blocker. It was never one, and the reason
+is stronger than "the importer runs in-game so it can ask": read off the assembly
+2026-08-19, `SurfaceTile.RiverLink` is `{ PlanetTile neighbor; RiverDef river; }` — the
+link holds **the tile**, not an index into anything. The slot exists only in the
+serialized save, which we no longer write.
+⚠️ **And the save's "one undirected edge owned by the lower-index tile" (origin < target
+on 1.000, reciprocity 0.000) is FALSE of the live object graph.** `OverlayRiver` and
+`OverlayRoad` append to **both** endpoints. Write the lists by hand, one-sided, and the
+engine half-sees the river. Use the Overlay methods — §12.2.
 RiverDefs `Creek/River/LargeRiver/HugeRiver`; RoadDefs `DirtPath/DirtRoad/StoneRoad/
 AncientAsphaltRoad/AncientAsphaltHighway`.
 
@@ -532,23 +555,20 @@ sphere, where the label is drawn), maxDrawSizeInTiles (float), layer}`. `Feature
 (25 ship) supplies `workerClass`, `minSize`/`maxSize`, `rootBiomes` and a `nameMaker`
 RulePack. So the recipe must emit, per region: a `FeatureDef` to borrow, a centroid, an
 angular extent — and the importer must build the records and the per-tile uint16 map.
-**Until it does, `WorldGenStep_Features` at order 1000 will name our 24 regions at
-random.** That is why §12.4 rules Features as ours to own.
+**Until it does, vanilla's `WorldGenStep_Features` will already have named our 24
+regions at random** — under the bridge route it has *finished* by the time we write.
+That is why §12.3 rules Features as ours to overwrite. The exact API is in §12.5.
 
-⚠️ Still unverified and worth one calibration pass: whether `tileFeature` stores the
-`uniqueID` or the list index (they coincide in the sample save), and the `tilePollution`
-/65535 scale — `worldmap.py` marks it HYPOTHESIS and `apply_world.py` calls it
-calibrated. **The two disagree; nobody has settled it.**
-
-Also still to be read off the DLL before writing:
-
-- ⚠️ `SurfaceTile`'s nested `RiverLink` / `RoadLink` struct **fields** and the list names.
-  Their existence is confirmed; their shape is inference.
-- ⚠️ **Settlement placement** —
-  `WorldObjectMaker.MakeWorldObject(WorldObjectDefOf.Settlement)` then `SetFaction` /
-  `Tile` / `Find.WorldObjects.Add` is expected and **unverified**. WorldEdit 2.0 does it
-  at runtime, so the capability certainly exists.
-
+✅ **The four things this section used to flag as UNCERTAIN are settled**, read out of
+`Assembly-CSharp.dll` on 2026-08-19 rather than inferred — `RiverLink`/`RoadLink` shape,
+`tileFeature` (it is the **uniqueID**, and moot anyway: `Tile.feature` is a
+`WorldFeature` object reference at runtime), settlement placement (§12.5), and the
+pollution scale (`Tile.pollution` is a **`float`**; the `/65535` disagreement between
+`worldmap.py` and `apply_world.py` is a save-format question that this route never
+asks). Decompile with `ilspycmd -p`; the bodies that matter are
+`RimWorld.Planet/WorldGrid.cs` lines 390–511, `RimWorld.Planet/SurfaceTile.cs`,
+`RimWorld.Planet/Tile.cs`, `RimWorld/FactionGenerator.cs` lines 41–48 and
+`RimWorld/FeatureWorker.cs` line 30.
 ### 12.7 Hilliness and swampiness — the rulings behind the two new columns
 
 Neither is a function of elevation in vanilla; `WorldGenStep_Terrain` rolls both from
