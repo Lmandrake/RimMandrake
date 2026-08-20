@@ -87,7 +87,19 @@ BUDGETS = [
     # NEXT_RELOAD.md is a queue for ONE event. It should be harvested and cleared
     # after each load, so accumulation here is the symptom, not the content.
     ("infrastructure/state/NEXT_RELOAD.md", 400),
+    # 🔴 Added 2026-08-20. Until today this file measured NOTHING directly under
+    # infrastructure/state/ except the three per-file entries above, so 2,596 lines
+    # were invisible to the budget — including the 939-line EXPECTED_FAILURES and the
+    # 486-line WORLDGEN_FACTION_CHECKLIST, the two biggest run sheets in the repo.
+    # A budget tool with a hand-maintained allowlist measures whatever someone
+    # remembered to add, which is not the same as measuring the repo.
+    ("infrastructure/state/*.md", 250),
 ]
+
+# Append-only work logs. Their length is a function of how much work exists, not of
+# rot, so they are reported SEPARATELY — mixing them in made every run show six
+# unactionable OVER lines and trained everyone to ignore the output.
+QUEUE_CLASSES = ("infrastructure/state/queue/",)
 
 # Lines that record HOW WE LEARNED something rather than WHAT IS TRUE. They earn
 # their place in a commit message; in a doc they are the thing that accumulates.
@@ -120,15 +132,31 @@ def main():
     args = ap.parse_args()
 
     rows, over = scan()
-    print(f"{'file':<34}{'lines':>7}{'budget':>8}{'prov/100':>10}  status")
-    for path, n, budget, prov in rows:
-        density = 100 * prov / n if n else 0
-        flag = "OVER" if n > budget else "ok"
-        bar = f"+{n - budget}" if n > budget else ""
-        print(f"{path:<34}{n:>7}{budget:>8}{density:>9.1f}  {flag} {bar}")
+
+    def show(title, subset):
+        if not subset:
+            return
+        print(f"\n{title}")
+        print(f"{'file':<44}{'lines':>7}{'budget':>8}{'prov/100':>10}  status")
+        for path, n, budget, prov in subset:
+            density = 100 * prov / n if n else 0
+            flag = "OVER" if n > budget else "ok"
+            bar = f"+{n - budget}" if n > budget else ""
+            print(f"{path:<44}{n:>7}{budget:>8}{density:>9.1f}  {flag} {bar}")
+
+    docs = [r for r in rows if not r[0].startswith(QUEUE_CLASSES)]
+    queues = [r for r in rows if r[0].startswith(QUEUE_CLASSES)]
+    show("DOCS — an OVER here is rot, and actionable", docs)
+    show("QUEUES — append-only; length tracks open work, not rot", queues)
+    print(f"\nactionable overruns: {sum(1 for p, n, b, _ in docs if n > b)}"
+          f"  (queues over: {sum(1 for p, n, b, _ in queues if n > b)}, not counted)")
 
     md = glob.glob("**/*.md", recursive=True)
-    md = [p for p in md if ".git" not in p]
+    # ⚠️ disposing/ is quarantine — nothing there may be cited, so counting it in the
+    # repo total made the corpus look bigger than the corpus a seat can actually read.
+    md = [p for p in md
+          if ".git" not in p
+          and not p.startswith(("infrastructure/disposing/", "vendor/", "research/"))]
     total = sum(sum(1 for _ in open(p, encoding="utf-8", errors="replace"))
                 for p in md)
     print(f"\nrepo total: {len(md)} markdown files, {total:,} lines "
@@ -148,10 +176,13 @@ def main():
         except Exception:
             pass
 
-    if over:
-        print(f"\n{over} file(s) over budget. Delete the body of anything closed; "
+    doc_over = sum(1 for p_, n, b, _ in docs if n > b)
+    if doc_over:
+        print(f"\n{doc_over} DOC(s) over budget. Delete the body of anything closed; "
               f"provenance belongs in the commit message.")
         return 1
+    # 🔑 A queue over budget is not a failure and must not fail the exit code — that
+    # is what trained everyone to ignore this tool. It is reported, never enforced.
     return 0
 
 

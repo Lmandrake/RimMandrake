@@ -6,6 +6,13 @@ game does anything. If a document's claim can only be settled by looking at a
 running game or a shipped file, its *conclusion* belongs in `observed/` or
 `deployed/` and only its *reasoning* belongs here.
 
+## Where everything is
+
+📇 **`design/INDEX.md` lists every document in this tier, grouped by directory and
+titled by its own H1.** It is generated — `python3 src/RimMandrake/Utils/doc_roster.py
+--write` — so it cannot drift the way a hand-kept list does. Do not hand-edit it, and
+do not restate it here.
+
 ## The split
 
 | | |

@@ -32,35 +32,39 @@ skill. A seat that finds a defect in another seat's skill files a queue item
 rather than editing it — except where the fix is a fact it just measured, which
 it should write directly and say so.
 
-| skill | when |
+<!-- doc_roster:BEGIN — generated, do not hand-edit -->
+| skill | when it loads |
 |---|---|
-| `rimworld-modding` | any def, patch, xpath, load-order or `Player.log` question. Read before writing into a mod folder — RimWorld XML has silent-failure modes. |
-| `rimworld-deploy` | putting a build on the game copy. Plan-first, `--mod` scoping, `DEPLOY_HOLD.txt`. |
-| `rimworld-load-round` | calling or queueing a game load. How to spend 25 minutes. |
-| `rimbridge` | driving a live game — spawn, build, screenshot, measure. |
-| `rimbridge-companion` | writing NEW bridge tools — the companion DLL, the one-minute build cycle, the design rules. |
-| `rimworld-debug-testing` | reproducing a defect in-game without a full campaign. |
-| `review-sheets` | building an interactive sheet so the owner curates hundreds of elements by disagreeing, not by answering questions. |
-| `rimworld-world-editing` | the WORLD screen — biomes, landmarks, auditing a generated faction roster before committing to a landing site. Different rules from the map screen. |
-| `rimworld-savegame` | editing a `.rws`. Rarely the right route. |
-| `rimworld-quests` | `QuestScriptDef` authoring and firing. |
-| `rimworld-ideoligion` | memes, precepts, ideoligion authoring. |
-| `rimworld-xenotypes` | xenotypes, genes, head types, species mods. A XenotypeDef is only a gene list; spawning needs a PawnKindDef, and most failures here are silent. |
-| `rimworld-start-prep` | scenario and starting-state setup. |
-| `gravship-layout` | gravship deck design and export. |
-| `generating-rimworld-sprites` | any PNG destined for a `Textures/` folder. Wraps the two image skills with the game's constraints and an offline validator. |
-| `rimworld-content-moderation` | Curating a big mod stack down to one campaign — contact sheets built from the defs, cutting with Cherry Picker, and the traps that make a cut do nothing |
-| `reading-rimworld-graphics` | Finding and reading texture assets from disk — loose PNGs, AssetBundles, and the base game's resources.assets |
-| `generating-images` · `editing-images` | raster art from or onto an existing image. |
-| `deciding-and-superseding` | ruling on scope, closing or reopening an item, relaying an owner decision, or reversing what someone was told to do. Propagation is the work, not the ruling. Bundles `stale_directives.py` |
-| `verify-before-you-escalate` | before escalating on a claim a doc makes — a count, a date, a staleness, a flag. Run the one command that settles it |
-| `efficient-subagents` | before spawning one. Bounded ask, minimal inputs, stated return. |
-| `agent-fanout-research` | launching several agents at once on different evidence domains, and composing returns that contradict. The disk thread beats the web thread on any fact about this machine. |
-| `calibrating-binary-formats` | an opaque blob, packed array or savegame reads as nonsense numbers. Make the producing app print its own value instead of guessing at float16. |
-| `frozen-artifacts` | a file holding a human's decisions, and a generator that would silently rewrite it. Mostly about WHEN NOT to freeze — unfreezing must stay one obvious step. |
+| _(generated from each skill's own `description` — the text that actually decides when it loads, so no second copy can disagree)_ | |
+| `agent-fanout-research` | Answer a broad question by launching several agents at once on different evidence domains, then compose returns that contradict… |
+| `calibrating-binary-formats` | Decode an opaque binary or packed numeric format by making the producing application print its own value for a record you can… |
+| `deciding-and-superseding` | Issuing a ruling that survives contact with other agents — recording a decision so it is executable, propagating it into every… |
+| `editing-images` | Modifies an existing image with a text prompt by attaching it to Codex's built-in $imagegen tool, then verifies what actually… |
+| `efficient-subagents` | Decide whether to spawn a subagent, and how to scope, feed and bound it so it returns 1-2k tokens instead of flooding the parent.… |
+| `frozen-artifacts` | Protect a file that holds a human's decisions from the generator that would silently regenerate over it — and, more often, decide… |
+| `generating-images` | Generates raster images from a text prompt by driving the Codex CLI's built-in $imagegen tool, then retrieves, inspects and… |
+| `generating-rimworld-sprites` | Produces RimWorld-ready sprite art that matches an existing reference asset — correct canvas, real alpha, silhouette inside the… |
+| `gravship-layout` | Author, save and load RimWorld gravship layouts (ShipLayoutDefV2) as XML — write a ship directly with no map, no build and no… |
+| `reading-rimworld-graphics` | Finding and reading RimWorld texture assets from disk — loose PNGs, Unity AssetBundles, and the base game's resources.assets — so… |
+| `review-sheets` | Build an interactive HTML sheet so a human can review, curate and record preferences over hundreds of game elements — sprites… |
+| `rimbridge` | Drive a live RimWorld from outside via the RimBridgeServer GABP bridge and its JawaBench companion - author the planet, author… |
+| `rimbridge-companion` | Write, build, deploy and prove new [Tool] methods in the JawaBench companion DLL so the RimBridge bridge can do something it… |
+| `rimworld-content-moderation` | Deciding what content stays in a RimWorld campaign out of a large mod stack — building contact sheets of real sprites straight… |
+| `rimworld-debug-testing` | Testing anything in RimWorld without spending a cold load — starting and destroying throwaway dev quicktest colonies through the… |
+| `rimworld-deploy` | Writing a file is not deploying it — RimWorld loads C:\Program Files (x86)\Steam\steamapps\common\RimWorld\Mods\<ModName>, never… |
+| `rimworld-ideoligion` | Design, author, validate and judge RimWorld ideoligions. There is no IdeoDef — an Ideo is a runtime object, and the only XML… |
+| `rimworld-load-round` | How to spend a RimWorld cold load — and how to stop needing one. A 13-mod minimal list loads in 22 SECONDS against ~25 minutes on… |
+| `rimworld-modding` | Author, patch, validate and debug RimWorld mods — XML PatchOperations, custom Defs, C#/Harmony assemblies, load-order problems… |
+| `rimworld-quests` | Design, author, validate and debug RimWorld quests. A quest is a QuestScriptDef whose node tree runs ONCE at offer time and… |
+| `rimworld-savegame` | Reading, grepping and editing a RimWorld `.rws` savegame — plain XML plus base64/raw-DEFLATE map grids of 2-byte def shortHashes.… |
+| `rimworld-scenario-building` | Authoring a RimWorld scenario and the game-creation settings around it — ScenarioDefs, .rsc scenario files, ScenParts, Custom… |
+| `rimworld-start-prep` | Getting the mod list and load order into the state you actually intend BEFORE RimWorld launches — the three uncoordinated writers… |
+| `rimworld-world-editing` | Drive RimWorld's WORLD screen from the bridge - the planet map at Page_SelectStartingSite, after a world is generated and before… |
+| `rimworld-xenotypes` | Authoring, moving, spawning and debugging RimWorld xenotypes and the genes that give them a face. A XenotypeDef is a list of gene… |
+| `verify-before-you-escalate` | Run the one command that settles a written claim before acting on it, escalating it, or raising an alarm about it. Use when a… |
+<!-- doc_roster:END -->
 
 ⚠️ **Editing `skills/<name>/` is not shipping it.** Claude Code installs from a
 `.skill` zip and those are gitignored. Rebuild at hand-off:
 `python3 src/RimMandrake/Utils/package_skill.py --all` — read its exit code and the
 named failures, never the directory listing.
-- **`rimworld-scenario-building`** — authoring the campaign start and the game-creation settings around it: ScenarioDefs, `.rsc` files, ScenParts, Custom difficulty fields, storyteller, the Anomaly playstyle, and 🔴 which choices are PERMANENT at world creation.
