@@ -288,7 +288,7 @@ never run.**
 | **The `questScriptDef`-referenced-by-`IncidentDef` gate** in the cherry-pick builder | `D:\Luke\dev\Rimworld\src\RimMandrake\Utils\cherrypick_build.py:30,166-180,300` |
 | **The grammar-bracket failure with verbatim log trace**, and the guarded-patch rationale | `D:\Luke\dev\Rimworld\src\Jawa\Jawa_Patches\Patches\BTDGravshipQuest_GrammarFix.xml` |
 | **Row 3's gate, and why "blocked on a human" was the wrong conclusion** | `D:\Luke\dev\Rimworld\infrastructure\state\V1_CHAIN.md` |
-| **The step-by-step in-game verification script** for rumour → quest (3 screenshots; PASS = any end state) | `D:\Luke\dev\Rimworld\infrastructure\state\CREATE_TEST_PLAN.md:103-118` |
+| **The step-by-step in-game verification script** for rumour → quest (3 screenshots; PASS = any end state) | `D:\Luke\dev\Rimworld\infrastructure\state\TEST_PLAN.md:103-118` |
 | `rimworld/right_click_cell` **is measured broken** — reports success, does nothing; why the float-menu route needed replacing | `D:\Luke\dev\Rimworld\skills\rimbridge\references\traps.md` |
 
 ⚠️ **`skills\rimworld-modding\` currently says nothing about quests** — grepped

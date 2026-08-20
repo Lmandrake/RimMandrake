@@ -1,6 +1,6 @@
 # Faction Stage 3 — the buildable spec
 
-_Written by **PROJECT**, 2026-08-13 overnight, against faction roster Stage 3
+_Written by **a retired seat**, 2026-08-13 overnight, against faction roster Stage 3
 (now `design/V2_DREAMS.md` **B20**).
 Substrate is the 574-mod dump. **This is `[v2]` spec work**: v1 cuts
 build *depth*, not spec, and speccing costs no verification pass. v1 still ships
@@ -76,7 +76,7 @@ about the *mechanic*.** The roster's water doctrine is mostly a statement about
 #### ⭐⭐ THE FIND OF THE NIGHT: `ThirstRateMultiplier` exists, and nothing uses it
 
 **The roster's master resource is mechanically backed, and NO SPECIES uses it.**
-Verified in the live dump — **and re-verified after BRIDGE's method review, which
+Verified in the live dump — **and re-verified after a retired seat's method review, which
 corrected the claim twice.**
 
 ```
@@ -93,7 +93,7 @@ species uses it.** Every current user is a *disease or implant*, none is an
 identity.
 
 ✅ **Correction 2 — the absence claim survives a positive control**, which is the
-test that makes it a measurement rather than the dumper's silence (BRIDGE's
+test that makes it a measurement rather than the dumper's silence (a retired seat's
 standing question: *what would this print if the thing were broken?*). The dumper
 **does** serialise the relevant shape: **276 genes carry `statFactors` and 292
 carry `statOffsets`**, full `StatModifier` records with stat name and value —
@@ -163,7 +163,7 @@ is a *better story*: the pale sunless-world assassin who wilts in the open deser
 and has to break off the hunt first. **Kaleesh alone carries the dry-capable
 role**, which also makes them meaningfully special rather than one of six.
 
-**Filed for WORLD** (`design/Jawa/worldbuilding/` is theirs, rule 9), not edited here.
+**Filed, not edited here** (`design/Jawa/worldbuilding/` is not this document's to change, rule 9).
 
 > **The water doctrine is split across three layers: `FactionDef` booleans for
 > reach, Sensible Factions for siting, and xenotype genes for endurance.** No
@@ -487,7 +487,7 @@ no new XML defs, no licence exposure, no art.
 ## 5. What I did not do
 
 - **No XML written.** This is spec; v1 keeps build thin.
-- **No roster edits.** `design/Jawa/worldbuilding/faction_roster_v2.md` is WORLD's (rule 9).
+- **No roster edits** to `design/Jawa/worldbuilding/faction_roster_v2.md` (rule 9).
 - **No pawnGroupMaker contents authored** — the per-group `options` lists are the
   next layer down and are large. The *sources* are identified per faction above,
   which is what Stage 3 owed.
@@ -495,7 +495,7 @@ no new XML defs, no licence exposure, no art.
   ⚠️ per tonight's wrong-layer lesson, the dump reports **what the game loaded**,
   so for any claim about *shipped* mod behaviour read the workshop XML.
 
-## 6. ⚠️ EXISTENCE ≠ SPAWNABILITY — BRIDGE's review, conceded
+## 6. ⚠️ EXISTENCE ≠ SPAWNABILITY — a retired seat's review, conceded
 
 I verified all 55 cited defNames resolve in the **DefDatabase**, then wrote claims
 about what **factions can field**. **Those are different artifacts.**
@@ -511,12 +511,12 @@ The known case is already in §2: **Droid Depot's kinds default to `PlayerColony
 and need a patch before any faction can field them. Treat the other counts with
 the same suspicion until checked.
 
-**The shape of all three of my errors, in BRIDGE's words:** *each names the right
+**The shape of all three of my errors, in a retired seat's words:** *each names the right
 artifact and then reads a field of it that cannot answer the question asked.*
 Naming the artifact is necessary; **the field must move when the thing you care
 about moves.**
 
-### ⚠️ Sibling trap, from WORLD's biome work — REGISTERED ≠ AVAILABLE HERE
+### ⚠️ Sibling trap, from a retired seat's biome work — REGISTERED ≠ AVAILABLE HERE
 
 Worth stating beside §6 because every count in this document is a dump count.
 
@@ -532,7 +532,7 @@ A raw entry count therefore measures *"how many mods mentioned this biome"*, not
 DefDatabase counts; a kind being registered says nothing about whether a given
 faction fields it, at what weight, or at all.
 
-**Worked consequence, and it cut both ways** — WORLD re-ran their dinosaur cut in
+**Worked consequence, and it cut both ways** — a retired seat re-ran their dinosaur cut in
 commonality units after this review: `ZBiome_Badlands` is **24.2% dinosaur against
 12.9% Star Wars** (worse than the species count showed → cut outright), while
 `ExtremeDesert` 2.0% and `AridShrubland` 5.5% are a rare curiosity → **the blanket

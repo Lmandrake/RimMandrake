@@ -1,6 +1,6 @@
 # row8_build_order.md — the gravship build, step by step
 
-_Written offline 2026-08-13 by CREATE, during the worldgen load window, for CREATE
+_Written offline 2026-08-13 by a retired seat, during the worldgen load window, for the same seat
 to read **line by line while driving the bridge**. It is an execution sheet, not a
 design. Every number carries the file it was read from; nothing here is
 remembered._
@@ -25,7 +25,7 @@ text downstream still reads as a choice, this section wins.**
 |---|---|---|---|
 | **D1** | the design describes a **wreck**; the plan builds the finished ship | **BUILD IT FINISHED** | the damage pass is not in scope. `ship_deck_plan.md:274-277` calls placing a pre-broken ship *"the one true blocker"* — it stays blocked, and stays **v2**. Do not partially break anything "for flavour". |
 | **D2** | which map, given step 9 destroys everything in 11,438 cells and the hull lands on a fresh colony's arrival site | **A SCRATCH QUICKTEST MAP**, then export and bring the export to the campaign | step 9 is now **free** — nothing on that map is worth keeping. The campaign map is **not touched** this session. |
-| **D3** | two of eight heatsinks conflict with the hull footprint | **BUILD WITH SIX** | do **not** regenerate the sheet, so BRIDGE's `SHEET_SHA256` pin stands untouched. Ship runs hotter than designed; one-line fix later. |
+| **D3** | two of eight heatsinks conflict with the hull footprint | **BUILD WITH SIX** | do **not** regenerate the sheet, so a retired seat's `SHEET_SHA256` pin stands untouched. Ship runs hotter than designed; one-line fix later. |
 | **D4** | east or west for the four `needsManualRotation` machines | **spawn at `rot=1`** rather than rotating afterwards — my recommendation, unopposed | one call per machine instead of two; no reliance on a manual rotation step |
 | **D5** | does the export happen this session | **YES — it is the point.** D2 makes the build worthless without it | step 20 is now load-bearing, not optional. See the fallback note on its gizmo route. |
 
@@ -66,7 +66,7 @@ sealed interior), no `PilotConsole`, no thrusters, no fuel, no power source, no
 water tank; and `SWC_CarboniteRack`, "scanner", "gravlite panels", "astrofuel",
 the Spirit Shrine and the oculus floor are **labels with no def behind them**.
 `ship_build.md:311` files all of that under "interior detail", which is doing
-heavy lifting for a door. **Named for VISION, not invented here.**
+heavy lifting for a door. **Named for a retired seat, not invented here.**
 
 ---
 
@@ -87,7 +87,7 @@ heavy lifting for a door. **Named for VISION, not invented here.**
 |---|---|---|
 | P1 | The world has been generated and a colony map is loaded | `jawa/list_pawns` answers instead of `{"success": false, "message": "No current map. Load a game first."}` (`skills/rimbridge/references/traps.md`, timeout entry) |
 | P2 | The owner has given the traffic light | you asked — only they see every window |
-| P3 | `LIVE BRIDGE TAKEN — CREATE, row 8 gravship build` sent to every peer | `CLAUDE.md` §"The Live Bridge"; the RELEASED half is owed at the end whatever happens |
+| P3 | `LIVE BRIDGE TAKEN — a retired seat, row 8 gravship build` sent to every peer | `CLAUDE.md` §"The Live Bridge"; the RELEASED half is owed at the end whatever happens |
 | P4 | Bigger Gravships' settings still read 34 / 30 / 12 / 85 — ⚠️ but the **85 is not what the game enforces**; the resolved extender def says `maxDistance: 34`. Check the file for drift, do not plan against 85 | read the FILE, not the panel: `C:\Users\Mandrake\AppData\LocalLow\Ludeon Studios\RimWorld by Ludeon Studios\Config\Mod_3522759531_GravshipSizeSettings.xml` — see §2 |
 | P5 | The companion reports **20** `jawa/` tools | step 2 below. Every later check is uninformative until this reads 20 (`skills/rimbridge/SKILL.md:266-275`) |
 | P6 | `runInBackground` is on, or the game window has focus | otherwise every main-thread call times out at 30 s while `ping` answers in 0.5 ms (`traps.md`, `runInBackground` entry) |
@@ -108,9 +108,9 @@ go.**
 | grav engine connection radius | **34** | `Config\Mod_3522759531_GravshipSizeSettings.xml` → `BG_gravEngineMaxDistance`; mirrored `src/RimMandrake/mapsynth/ship_designs.py:64` |
 | field extender radius | **30** | same file, `BG_gravExtenderMaxDistance`; `ship_designs.py:65` |
 | max field extenders | **12** | same file, `BG_gravExtenderMax`; `ship_designs.py:66` |
-| max extender distance from engine | 🔴 **34, NOT 85** | **The resolved def, verified twice.** `DefDump/defs/ThingDef.json` byte ~29005500 `"maxDistance":34`, and BRIDGE's live `jawa/get_def GravFieldExtender` returns `34.0`. **The 85 in `BG_gravExtenderMaxDistanceFromEngine` appears in the settings file and in NO resolved def.** `ship_designs.py:67` plans against 85 and is wrong. |
+| max extender distance from engine | 🔴 **34, NOT 85** | **The resolved def, verified twice.** `DefDump/defs/ThingDef.json` byte ~29005500 `"maxDistance":34`, and a live `jawa/get_def GravFieldExtender` call returns `34.0`. **The 85 in `BG_gravExtenderMaxDistanceFromEngine` appears in the settings file and in NO resolved def.** `ship_designs.py:67` plans against 85 and is wrong. |
 | engine substructure support | **632.8** | same file, `BG_gravEngineSupport` = 632.79541 (`ship_designs.py:72`, `:80`) |
-| extender substructure support | **500** | 🔴 **NOT in that file. There is no `BG_gravExtenderSupport` key.** 500 is Bigger Gravships' *compiled mod default* (`ship_designs.py:73-74`, queue `CREATE.md` C4) |
+| extender substructure support | **500** | 🔴 **NOT in that file. There is no `BG_gravExtenderSupport` key.** 500 is Bigger Gravships' *compiled mod default* (`ship_designs.py:73-74`, a retired seat's queue, item C4) |
 | capacity cap | **6,632** = 632.8 + 500×12 | `ship_designs.py:82` |
 | hull tiles | **4,057** | `ship_bridge.json` → `foundation.cells`; matches `ship_build.md:20` |
 | extenders needed | **8** of 12 | `ship_bridge.json` → spawn call 1, 8 ops; `ship_build.md:84` |
@@ -140,7 +140,7 @@ guards.
 |---|---|---|
 | **D1** 🔴 | **Where does the ship go?** The plan centres an 86×133 hull on a 250×250 map at x 82–167 / z 58–190. On a fresh colony the player's own arrival gravship and starting pawns are at the map centre — i.e. **inside this footprint**. | **Survey first (step 5), then choose.** If the arrival ship is in the rect, offset the build clear of it and regenerate: `python3 src/RimMandrake/Utils/rimbench/shipbuild.py --origin X,Z`. Do not build over the colony. |
 | **D2** ⚪ **MOOT — see the ruling below the table** | **Is this map disposable?** `jawa/destroy_batch categories=All` over 11,438 cells destroys every building, item and plant in the rect, and the terrain reset destroys plants. On the *shipping* colony that is not reversible by restore — `capture()/restore()` puts the TerrainDef back and does not bring the plants back (`skills/rimbridge/SKILL.md:315-320`). | **Say out loud which map this is.** If it is the shipping colony, take the save at step 6 and treat it as the only undo. If it is a dev quicktest map, skip step 6 and go fast. |
-| **D3** | **Two heatsinks are held back** as footprint conflicts — (26,126) inside Mincer, (66,126) inside Neutro Synth (`ship_bridge.json` → `footprintConflicts`). Fixing regenerates `build_sheet_15.json`, trips BRIDGE's `SHEET_SHA256` pin and moves five machines. | **Build with 6 of 8 and file the other two `[v2]`.** The ship does not need them to fly and the regeneration cost lands on another seat mid-session. |
+| **D3** | **Two heatsinks are held back** as footprint conflicts — (26,126) inside Mincer, (66,126) inside Neutro Synth (`ship_bridge.json` → `footprintConflicts`). Fixing regenerates `build_sheet_15.json`, trips a retired seat's `SHEET_SHA256` pin and moves five machines. | **Build with 6 of 8 and file the other two `[v2]`.** The ship does not need them to fly and the regeneration cost lands on another seat mid-session. |
 | **D4** | **Four machines have an undetermined facing** — `Autofarmer`, `Autoloom`, `ConveyorOven`, `AutomatedCannery` are emitted `rot=0` with `needsManualRotation` because a footprint cannot tell east from west (`ship_bridge.json`; `NEXT_RELOAD.md:279-281`). | **Spawn each at `rot=1` (East), screenshot, flip to 3 if it reads wrong.** Each is its own single-op call, so the facing is a call parameter — there is no "rotate by hand" step, and no reason to leave four machines facing north. |
 | **D5** | **Does the export happen this session?** The exporter's button is a gizmo on the grav engine; it writes to the *Config* folder, not the repo. | **Yes, and copy the output into the repo the same hour** (step 21). An export left in `Config\GravshipExport\` is one reinstall from gone. |
 
@@ -515,7 +515,7 @@ console and the power supply*. **Furniture is v2; a door is not furniture.**
 
 ## 🔴 STEP 19b — CUT A DOOR. PROMOTED FROM "IF TIME REMAINS" TO A GATE STEP.
 
-**PROJECT named the open criterion for row 8 as BOARDABLE, 2026-08-13. A sealed
+**A retired seat named the open criterion for row 8 as BOARDABLE, 2026-08-13. A sealed
 hull is not boardable, so this stopped being optional the moment that was said.**
 782 continuous hull tiles means no colonist can ever get inside; the ship would
 pass every flight check and fail the only criterion left.
@@ -551,7 +551,7 @@ improvised.
 
 ### 6.3 Named by label, or not a def at all
 
-Things CREATE would have to guess. Each needs a decision, not a guess:
+Things a retired seat would have to guess. Each needs a decision, not a guess:
 
 - `ship_deck_plan.md:93` **"scanner"** — no candidate def named anywhere.
 - `ship_deck_plan.md:221` **"gravlite panels"** — a material label.
@@ -569,7 +569,7 @@ Things CREATE would have to guess. Each needs a decision, not a guess:
 
 ### 6.4 Numbers in the design that contradict the build
 
-If CREATE reads the design docs mid-session instead of this sheet, these are the
+If a retired seat reads the design docs mid-session instead of this sheet, these are the
 lines that will mislead:
 
 | stale | says | truth |
@@ -581,9 +581,9 @@ lines that will mislead:
 | `ship_designs.md:101` vs `:113` | cap **6,632** vs cap **4,800**, in one file | 6,632 is the live figure; 4,800 is what every per-design check was run against |
 | `ship_deck_plan.md:122` vs `ship_build.md:254` vs `ship_bridge.json` | **4** heatsinks vs **8** vs **6** | **6 are spawned** (D3) |
 
-⇒ **Recommendation: this sheet is authoritative during the session.** VISION owns
-`design/Jawa/worldbuilding/` now (`AGENT_CREATE_state.md:92-93`) — file the stale
-lines at VISION rather than editing them, and note the extender count and the tile
+⇒ **Recommendation: this sheet is authoritative during the session.** File the
+stale lines against `design/Jawa/worldbuilding/` rather than editing them,
+and note the extender count and the tile
 cap as the two that would actually change a decision.
 
 ---
@@ -669,7 +669,7 @@ does not belong inside the build.
 bridge occupied forever:
 
 ```
-LIVE BRIDGE RELEASED — CREATE, <what got built, which step it stopped at,
+LIVE BRIDGE RELEASED — a retired seat, <what got built, which step it stopped at,
                        and that an 86x133 sanded rect / hull is left at x82-167 z58-190>
 ```
 

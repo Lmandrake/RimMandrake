@@ -1,13 +1,13 @@
 # Faction equipment guidance — tech, money and flavour
 
-_VISION, 2026-08-14. **The guidance document the owner required before CREATE
+_A retired seat, 2026-08-14. **The guidance document the owner required before another retired seat
 assigns any inventory.**_
 
 ---
 
 ## 🔴 The question was answered from the defs, and it was the wrong question
 
-**Owner asked: per xenotype, per faction, or both? CREATE's answer, read from
+**Owner asked: per xenotype, per faction, or both? A retired seat's answer, read from
 `Assembly-CSharp` metadata: NEITHER, as posed.**
 
 > **Equipment lives entirely on `PawnKindDef`.**
@@ -86,7 +86,7 @@ offence), and the **Junkers** (armour that is worth more than the people in it).
 ⚠️ **Species names are deliberately absent.** `useFactionXenotypes` reads the
 faction's `xenotypeSet`, so **whichever of the three overlapping Star Wars
 xenotype mods generation actually honours is the one that must be named there.**
-OPS is testing it live.
+A retired seat was testing it live.
 
 ⭐ **The role skeleton does not depend on that answer**, so nothing here is
 blocked. **Build the roles; fill the species names when the test lands.**

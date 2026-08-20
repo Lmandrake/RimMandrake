@@ -1,6 +1,6 @@
 # The pawn-kind roster — 48 kinds, and what each one carries
 
-_VISION, 2026-08-14. **The buildable half of `faction_equipment_guidance.md`.**
+_A retired seat, 2026-08-14. **The buildable half of `faction_equipment_guidance.md`.**
 BUILD builds from this; nothing here should require a decision from them._
 
 ---

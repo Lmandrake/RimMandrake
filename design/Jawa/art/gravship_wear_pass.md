@@ -1,6 +1,6 @@
 # gravship_wear_pass.md — making the Kolyska read "old, rusty brown, and terrible"
 
-_CREATE, 2026-08-13. **This is a proposal. Nothing here has been deployed and no shipping
+_A retired seat, 2026-08-13. **This is a proposal. Nothing here has been deployed and no shipping
 texture or def has been changed.** Every claim is evidenced from the live `DefDump/`, the
 shipped XML, or a rendered offline preview whose script is committed beside this file._
 
@@ -276,7 +276,7 @@ desert soil and sand satisfy — it does **not** require a foundation underneath
 **It is not confined to a ship footprint.** A ground hulk is possible.
 
 **3. Walkable, and free.** `passability: Standable`, `pathCost: 0` — no movement penalty at
-all. The clan picks over its own wreck at full speed. (VISION ranked this first; it passes.)
+all. The clan picks over its own wreck at full speed. (a retired seat ranked this first; it passes.)
 
 **4. Player-buildable? NO — spawn-only, deliberately.** Lines 16-17 null both hooks:
 `<designationCategory />` and `<designatorDropdown />`, and `WorkToBuild` is **60000**
@@ -333,7 +333,7 @@ lay subscaffold instead of substructure where the ship is meant to be wounded.
 
 ### 2.2b Two uses for the broken deck, and they are different projects
 
-VISION's ruling splits `BrokenSubstructure` into two applications that share a def and
+A retired seat's ruling splits `BrokenSubstructure` into two applications that share a def and
 share nothing else.
 
 **Use A — the flying hull carries its scars.** Because the tag is present, damaged deck
@@ -357,7 +357,7 @@ this document.
 
 ### 2.3b Where the salvage value has to live — the layer split
 
-VISION's arc: the clan lives in the wreck, builds into its dead sections, and **strips it
+A retired seat's arc: the clan lives in the wreck, builds into its dead sections, and **strips it
 for steel over years** — high total yield, poor rate, never regrows. When it is stripped,
 nothing holds them to the tile and they fly. The map ends itself with no scripting.
 
@@ -390,7 +390,7 @@ playthrough, hours in. Hence the explicit do-not-place list in §2.3c.
 30, ComponentIndustrial 10, Gold 2, Plasteel 1) and
 `<resourcesFractionWhenDeconstructed>0.00025</...>` onto vanilla `RubblePile`, with no new
 art. **Patching salvage economics onto the ruins kit is known-good here, not novel** — and
-that fraction is exactly the "high total yield, poor rate" shape VISION described.
+that fraction is exactly the "high total yield, poor rate" shape a retired seat described.
 
 ### 2.3c The filtered salvage palette — 🔴 PROMOTED TO ITS OWN v1 DELIVERABLE
 
@@ -443,7 +443,7 @@ others. This is the whole reason the filter exists:
   **1.0**, `Graphic_Random` so it never repeats, and it is a ship chunk on a ship wreck.
   If the hulk has one salvage currency, this is it.
 
-**On "does it read as broken at 64 px" (VISION's item 3) — partly blocked, and the block
+**On "does it read as broken at 64 px" (a retired seat's item 3) — partly blocked, and the block
 is itself the finding.** `Data/*/Textures` **does not exist for any DLC**: Core, Royalty,
 Ideology, Biotech, Anomaly and Odyssey all pack their art into `AssetBundles`. **Zero
 loose PNGs ship with the base game**, so the vanilla wreck props cannot be rendered
@@ -552,7 +552,7 @@ Read what that buys:
 </ThingDef>
 ```
 
-### 3.2 What to draw — VISION has already written the iconography
+### 3.2 What to draw — a retired seat has already written the iconography
 
 I am following the fiction, not inventing it. `jawa_xenotype_and_religion.md` §2.0b gives
 each of the nine gods of **The Salvation** an explicit visual **form**. These are not my
@@ -610,7 +610,7 @@ one is a ritual object, the other is a sticker.
 ⚠️ Not yet checked: whether The Salvation's ideoligion can be given a `StyleCategoryDef`
 carrying our `ThingStyleDef`s without disturbing the fixed-ideology rule
 (`jawa_xenotype_and_religion.md` §2.0 — no fluid development). Styles are cosmetic and
-should be safe, but that is PROJECT's call, not mine.
+should be safe, but that is a retired seat's call, not mine.
 
 ### 3.3 Where the sigils go, from the deck plan
 
@@ -767,7 +767,7 @@ placeholder PNG answers it, and the bridge can place substructure without a relo
 | **4** | **Unlock ~20 `Ancient*` wreck props** with a `PatchOperationAdd` of `designationCategory` + `costList`. | one XML file + a 5-def bench test | Converts ~170 pieces of shipped, pre-rusted art from invisible to placeable. The single largest art library gain available, and we do not draw any of it. Ranked below 3 only because it needs verification first. |
 | **5** | **Subscaffold the dead prong.** Lay `VGE_GravshipSubscaffold` instead of `Substructure` on the un-repaired wing. | zero — in game | Delivers `ship_distinctive_features.md` §4 with a build choice. Exposed ribbing reads as a wound at every zoom. |
 | **6** | **Differentiate the Falcon arm's `<color>`** from the ring hull. | ~6 lines | §3 "asymmetry as identity", made legible from orbit. Cheap, and it is the one thing that makes the ship read as *assembled* rather than merely dirty. |
-| **6b** | ⭐ **The ground hulk** — `BrokenSubstructure` on desert ground on the STARTING MAP, dressed with deconstructible wreck props from §2.3c. | map-gen / bridge authoring, **zero art** | VISION's arc: the clan lives in the wreck, strips it over years, then flies. Every gate passes — walkable at `pathCost 0`, sits on ordinary ground, full build affordances, reads as broken at 64 px. ⚠️ **Different pipeline** (§2.2b): starting map, not ship layout, not the export XML. |
+| **6b** | ⭐ **The ground hulk** — `BrokenSubstructure` on desert ground on the STARTING MAP, dressed with deconstructible wreck props from §2.3c. | map-gen / bridge authoring, **zero art** | a retired seat's arc: the clan lives in the wreck, strips it over years, then flies. Every gate passes — walkable at `pathCost 0`, sits on ordinary ground, full build affordances, reads as broken at 64 px. ⚠️ **Different pipeline** (§2.2b): starting map, not ship layout, not the export XML. |
 | **6c** | **Patch `costList`s onto the 89 ruins props that currently return nothing** (§2.3c). | one XML file | This is where the salvage economy actually lives — the terrain layer can never carry it. Two working precedents already installed (Salvage Rubble, Vanilla Vehicles Expanded). |
 | **7** | **Deck-wear scatter** — patch a `scatterType` onto `Substructure` + 3–4 rust/scorch/oil-smear `ScatterableDef` textures (§4.2b). | 1 patch + 1 placeholder PNG **to test**; 3–4 small PNGs if it works | Potentially the best age-per-pixel in the document — random non-tiling stains up to 7 cells wide, across the whole ship, automatically. Ranked here **only** because the C# may not run scatter over a foundation terrain. **Cheap to falsify: do the test before the art.** If it passes, this jumps to #3. |
 | **8** | **Hand-drawn damage overlays** — torn plating, blown panels as placeable props. | real art, several pieces | Only worth starting after 1–7 land, because 1–7 may make it unnecessary. |
@@ -810,7 +810,7 @@ placeholder PNG answers it, and the bridge can place substructure without a relo
 
 ---
 
-## 7. Open questions the fiction does not yet decide — for VISION
+## 7. Open questions the fiction does not yet decide — for a retired seat
 
 These are places where I would be inventing lore if I proceeded, so I have stopped.
 

@@ -1,6 +1,6 @@
 # What the machines are
 
-_VISION, 2026-08-13. **The owner asked the right question at the right moment:**
+_A retired seat, 2026-08-13. **The owner asked the right question at the right moment:**
 if we keep some mechanoids, what are they *in fiction* — a fourth invading
 faction, an orbital exterminator, a dead civilisation's automatic defences, or
 just more Empire?_

@@ -31,7 +31,7 @@ IDEOS = Path(
     "RimWorld by Ludeon Studios/Ideos"
 )
 SRC = IDEOS / "The Salvation.rid"
-OUT = IDEOS / "The Salvation (CREATE).rid"
+OUT = IDEOS / "The Salvation (built).rid"
 REPO = Path("/mnt/d/Luke/dev/Rimworld")
 DESC_DOC = REPO / "design/Jawa/worldbuilding/ideoligion/the_salvation_description.md"
 

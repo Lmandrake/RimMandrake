@@ -227,7 +227,7 @@ on PATH"* — **is now false.**
 needs was never about `python` being absent; it is about what each script can
 reach. Test the old premise, find `python` works, conclude the section has
 expired, and you make **exactly the swap it exists to prevent**. Caught by
-PROJECT the hour the premise changed.
+a retired seat the hour the premise changed.
 
 What still holds, measured after the install: **the interpreter is per-script,
 and the obvious repair — swap in `python3` — is wrong for this script**, in a way
@@ -252,13 +252,13 @@ So for this script, keep using the venv from the recipe above:
 
 _This block previously said `python3` on both lines — a mechanical `python` →
 `python3` swap made while fixing the `command not found`, sitting directly below
-a correct venv invocation. Caught by WORLD, 2026-08-13._
+a correct venv invocation. Caught by a retired seat, 2026-08-13._
 
 ⭐ **This reopened a blind spot recorded as closed-by-game-load above, and the
-row is now CLOSED offline — no cold load was spent.** Flagged by CREATE, who
+row is now CLOSED offline — no cold load was spent.** Flagged by a retired seat, who
 verified the route by extracting 28 Eopie and 4 Massiff textures from Star Wars
 Animal Collection and reproducing a day-old decision to within 0.01 of subject
-aspect. WORLD then ran the audit itself, 2026-08-13:
+aspect. Another retired seat then ran the audit itself, 2026-08-13:
 
 | bundle | Texture2D | sizes | direction sets |
 |---|---|---|---|

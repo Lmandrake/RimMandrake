@@ -14,7 +14,7 @@ Proposal only. Nothing was moved. The owner picks; execution is a separate job.
 | `mods\` | 419M | 17M | 46 | **430M is `mod_sources\` (61 third-party mods, gitignored)**. Tracked = 12 loose `.md`, `inventory\` (17M generated CSV), `dumps\`, `dev\RimDefDump`, `inspiration\` |
 | `Utils\` | 49M | 48M | 95 | **47M is one research PDF.** Real content: 64 flat `.py`, 3 `.sh`, 4 sub-benches (`rimbench`, `jawavoice`, `ilprobe`, `_speakup_src_1p6`) |
 | `savegame\` | 33M | 31M | 2 | 2 binary `.rws` (13.6M + 17.7M) tracked; the 6 report files beside them are gitignored |
-| `runtime\` | 28M | 27M | 97 | **Four unrelated classes**: 17 design `.md`, `backups\` (25M salvaged game DLLs), `art\` (CREATE bench), `logs\` (ignored), latency JSON |
+| `runtime\` | 28M | 27M | 97 | **Four unrelated classes**: 17 design `.md`, `backups\` (25M salvaged game DLLs), `art\` (the art bench), `logs\` (ignored), latency JSON |
 | `custom_patches\` | 28M | 27M | 165 | 7 authored mod folders + `README.md` + `DEPLOY_HOLD.txt`. Only one (`Jawa_Patches`) is patches |
 | `worldbuilding\` | 23M | 23M | 34 | Campaign fiction + design, 5 PNG/PDF (16M atlas), 2 rendered `.html` |
 | `samuel_streamer_study\` | 20M | 20M | 62 | Downloaded mod-lists + config zips. Research |
@@ -41,7 +41,7 @@ matter.** By tracked bytes: research ≈ 36M, third-party salvage ≈ 20M, gener
 | 1 | `runtime\` is a drawer, not a subject | 17 design `.md` sit beside 25M of salvaged DLLs, an art bench and ignored logs. Already ratified as such: *"`runtime/` was the case that forced the rule — it is a decision-doc drawer, not one subject"* (`STRUCTURE.md`) |
 | 2 | `Utils\` is 97% not-tooling by bytes | one 47M research PDF in a folder `STRUCTURE.md` §7 calls **"Tooling only."** `STALE_FILE_AUDIT.md` A:39 already votes DELETE |
 | 3 | `custom_patches\` is misnamed | it holds 7 complete **mods**, not patches. Its own deploy script's docstring calls it *"the SOURCE of our authored mods"* |
-| 4 | `agents\` and `queue\` share all five basenames | `BRIDGE.md CREATE.md OPS.md PROJECT.md VISION.md` exist twice. A bare-basename reference is ambiguous |
+| 4 | `agents\` and `queue\` share all five basenames | the five per-seat `.md` basenames exist twice. A bare-basename reference is ambiguous |
 | 5 | `agents\`, `queue\`, `disposing\` are absent from the manifest | zero mentions of `queue/` and `agents/` in `STRUCTURE.md`; `disposing/RimMaster.md` is filed under the **`runtime/`** heading |
 | 6 | binaries live in git | 274M `.git` for a repo whose text is a few MB. `savegame\*.rws`, the two PDFs and `promo\` are 100M+ of tracked, never-diffed blobs |
 | 7 | `player_maps\` is an unswept bench at root | scripts, plans, outputs and 8 already-convicted orphan reports in one flat folder |
@@ -99,7 +99,7 @@ shared\      Utils\, skills\
 | | |
 |---|---|
 | **Obvious** | Where new work goes *if you already know your seat*. Review scope. Which seat to ping. |
-| **Hides** | That anything is third-party, generated or research — every trust class appears in every seat dir, so gitignore and backup rules can no longer be stated per-directory. Also hides shared artifacts: `custom_patches\` is CREATE-authored, OPS-validated, BRIDGE-deployed. |
+| **Hides** | That anything is third-party, generated or research — every trust class appears in every seat dir, so gitignore and backup rules can no longer be stated per-directory. Also hides shared artifacts: `custom_patches\` is authored by one seat, validated by another, deployed by a third. |
 | **Helps** | A new seat on day one. |
 | **Cost** | **~930 refs.** `Utils\` (322) cannot be assigned — it lands in `shared\`, which is the axis conceding defeat on its largest directory. |
 
@@ -121,7 +121,7 @@ coord\       agents\, queue\, disposing\, root spine
 |---|---|
 | **Obvious** | What is regenerable — `observed\` is disposable wholesale, which makes gitignore, backup and `.git` weight one rule per top dir. Also makes the **"writing a file is not deploying it"** trap structural rather than a warning in `CLAUDE.md`: `src\` and `deployed\` are visibly different tiers. |
 | **Hides** | Subject. The gravship is spread across `design\`, `src\` and `observed\`; so is the armoury. Seat ownership becomes invisible. |
-| **Helps** | PROJECT (staleness, `.git` weight) and OPS (what can be thrown away and rebuilt). |
+| **Helps** | the docs seat (staleness, `.git` weight) and a retired seat (what can be thrown away and rebuilt). |
 | **Cost** | **~1066 refs** — everything except `skills\`, which must stay pinned by the `.claude\skills\` symlinks and therefore breaks the scheme's own tidiness. |
 
 ### C — By trust class

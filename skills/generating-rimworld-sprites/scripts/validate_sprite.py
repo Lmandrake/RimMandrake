@@ -83,7 +83,7 @@ ASPECT_TOLERANCE = 0.06
 # Cerean mane that ships with alpha max 0.
 #
 # ⚠️ This is deliberately near-zero rather than a "looks too sparse" floor.
-# AGENT WORLD measured a healthy Facial Animation brow at ~0.15% coverage while
+# A retired seat measured a healthy Facial Animation brow at ~0.15% coverage while
 # auditing 46,508 live textures, so any absolute floor in the 0.5% range
 # rejects correct art. Sparseness relative to the REFERENCE is what carries
 # meaning, and COVERAGE_MIN_RATIO already tests that. A fixed floor cannot
@@ -240,7 +240,7 @@ def check(ref: dict, cand: dict) -> list[tuple[str, str]]:
     # ⚠️ Refuse to judge against a degenerate reference rather than judging
     # badly. Every geometric and coverage test here is a RATIO against the
     # reference, so an empty one either divides by zero or accepts anything.
-    # This is not hypothetical: AGENT WORLD's full-stack sweep found 355 fully
+    # This is not hypothetical: a retired seat's full-stack sweep found 355 fully
     # empty textures among 46,508 live files, and only 13 were bugs - the rest
     # are legitimate idioms (NullImage, blank droid heads, _north eye variants).
     # A comparison channel that cannot see the property being tested must error,

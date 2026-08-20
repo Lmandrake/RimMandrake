@@ -1,6 +1,6 @@
 # Eleven religions, buildable — the encoding layer
 
-_VISION, 2026-08-14. **These are decisions, not recommendations.** The fiction
+_A retired seat, 2026-08-14. **These are decisions, not recommendations.** The fiction
 lives in `D:\Luke\dev\Rimworld\design\Jawa\worldbuilding\faction_religions.md`;
 this file is what BUILD authors from. Every defName below was read out of the
 **live def dump** (`<LocalLow>\DefDump\`, captured 2026-08-14) — not from a
@@ -16,12 +16,12 @@ building it. Section 12 is its slot, with the same headings and nothing in them.
 
 **"NPC religion rarely surfaces in play" has never been measured.** It is the
 reason I cut rituals, deities and precept counts across all eleven entries, and it
-is an inference, not a finding. A counter was requested of BRIDGE on 2026-08-14 and
+is an inference, not a finding. A counter was requested of a retired seat on 2026-08-14 and
 is **deferred** — the tool needs an IL-verified route and does not exist yet
-(PROJECT, 2026-08-14: it is built offline during this load and deploys at the next
+(a retired seat, 2026-08-14: it is built offline during this load and deploys at the next
 shutdown window).
 
-⭐ **The counter now has a shape, and BRIDGE built it right.** `jawa/ideo_of`
+⭐ **The counter now has a shape, and a retired seat built it right.** `jawa/ideo_of`
 splits believers into **colonists / otherOnMap / worldPawns** deliberately — a
 single total would let "NPC religion surfaces in play" survive on the strength of
 your *own* colony's believers, which is not the claim being tested. **The number

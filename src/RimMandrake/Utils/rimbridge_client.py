@@ -113,7 +113,7 @@ DEFAULT_PLAYER_LOG = os.path.join(
 # ⚠️ Finding the log does NOT make WSL work. RimBridge binds Windows loopback
 # and WSL2 is NAT-mode, so the socket is refused regardless. The fallback exists
 # so the error you get is the TRUE one (connection refused, wrong interpreter)
-# instead of a false one that sends you looking at the game. Reported by WORLD,
+# instead of a false one that sends you looking at the game. Reported by a retired seat,
 # 2026-08-12, after it cost them the hunt twice.
 WSL = sys.platform.startswith("linux") and os.path.isdir("/mnt/c")
 

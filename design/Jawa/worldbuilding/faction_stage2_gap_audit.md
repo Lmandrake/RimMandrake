@@ -1,6 +1,6 @@
 # Faction Stage 2 — gap audit
 
-_PROJECT, 2026-08-13. Faction roster Stage 2 (now `design/V2_DREAMS.md` **B20**). Offline audit of
+_A retired seat, 2026-08-13. Faction roster Stage 2 (now `design/V2_DREAMS.md` **B20**). Offline audit of
 `faction_roster_v2.md` against the live `FactionDef` surface. **Stage 2 was
 specified as a gap audit, not an authoring pass** — nothing here proposes a value._
 
@@ -43,7 +43,7 @@ field on the type whether or not an author set it, so all 88 live `FactionDef`s
 across the 88 gives **92 of 125** as the real decision surface; the other 33 are
 fields every faction in the game leaves at default.
 
-This is WORLD's *registered ≠ available* trap (`d6927fd`) in a new place, and it
+This is a retired seat's *registered ≠ available* trap (`d6927fd`) in a new place, and it
 matters: an audit against 125 fields invents 33 fields of work nobody needs.
 
 The 92 were grouped into **8 checks** rather than audited loose, because the
@@ -67,7 +67,7 @@ the 88 live defs), `xenotypeSet` (38), `basicMemberKind` (27), `backstoryFilters
 ## Readiness — 12 factions, not 10
 
 ⚠️ **The roster holds TWELVE factions.** The Stage 2 brief (now `design/V2_DREAMS.md`
-**B20**) and the retired `AGENT_PROJECT_state.md` both said ten. **11. Jawa Trade Moot** (line 1809) and **12. Junker
+**B20**) and a retired seat's state file both said ten. **11. Jawa Trade Moot** (line 1809) and **12. Junker
 Scrap-Warrens** (line 1932) were added later and several global sections were
 never updated to match — which is the direct cause of defect **D5** below.
 

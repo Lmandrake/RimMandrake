@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """Build AV_DogSled_east with a team of TWO EOPIES in place of four dogs.
 
-CREATE, 2026-08-13. Third and last facing of the sled. Same method as its north
+A retired seat, 2026-08-13. Third and last facing of the sled. Same method as its north
 and south siblings: the animals are GENERATED once, committed at
 Source/art/eopie_pair_gen_east.png, and composited here.
 

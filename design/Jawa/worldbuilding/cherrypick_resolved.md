@@ -1,6 +1,6 @@
 # Cherry Picker — the resolved target list
 
-_CREATE, 2026-08-14. **VISION's `cherrypick_inbox.md` names races and objects;
+_A retired seat, 2026-08-14. **Another retired seat's `cherrypick_inbox.md` names races and objects;
 this resolves every one to the def the game actually keys on.** Every row below
 was read from the live def dump, not from the design doc and not from memory._
 
@@ -226,7 +226,7 @@ carrier and leaves the gene selectable.
 | `ThingDef/RevenantSpine` | |
 | `ThingDef/VoidNode` | artwork retained — removing a def does not delete a texture, so this is satisfied by construction |
 
-### The two fleshbeast genes (VISION follow-on 2)
+### The two fleshbeast genes (a retired seat follow-on 2)
 
 | key | note |
 |---|---|

@@ -137,15 +137,6 @@ DETAIL="${2:-}"
 
 case "$ROLE" in
     DECIDE|BUILD|CHECK|REP) ;;
-    BRIDGE|OPS|CREATE|VISION|PROJECT|WORLD)
-        echo "$ROLE was retired on 2026-08-14. The seats are DECIDE, BUILD, CHECK, REP." >&2
-        echo "  VISION  -> DECIDE" >&2
-        echo "  PROJECT -> DECIDE, except reporting to the human, which is REP" >&2
-        echo "  CREATE  -> BUILD" >&2
-        echo "  OPS     -> BUILD" >&2
-        echo "  BRIDGE  -> CHECK" >&2
-        exit 2
-        ;;
     *)
         usage; exit 2 ;;
 esac

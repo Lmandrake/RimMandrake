@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """harvest_log.py — one-command triage of a RimWorld Player.log.
 
-Written 2026-08-12 by AGENT WORLD. A cold load costs ~23-30 minutes, so the
+Written 2026-08-12 by a retired seat. A cold load costs ~23-30 minutes, so the
 greps that decide each queued item are written down BEFORE the load, not
 invented after it. Run this the moment the game reaches the main menu.
 
@@ -314,7 +314,7 @@ def provenance(path, lines, since=None, stale_ok=False):
     # A log from a load that is 10% done under-counts everything, and
     # under-counting prints as BETTER-than-baseline: the same
     # failure-that-looks-like-success as reading the wrong run, arriving from
-    # the other direction. Found by PROJECT 2026-08-12 23:15, while the gate
+    # the other direction. Found by a retired seat 2026-08-12 23:15, while the gate
     # above was being written - a 10%-loaded log passes BOTH mtime and
     # not-exited.
     #

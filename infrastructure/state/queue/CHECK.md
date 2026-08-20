@@ -908,8 +908,8 @@ spec:     Owner ruling 2026-08-14. `infrastructure/agents/CHECK.md` updated: the
           `infrastructure/state/status/game.json` is yours to keep true. Stamp it
           on every transition — game up, state change, game down. Fields:
           state (PLAYABLE|LOADING|DOWN) · by: CHECK · at: epoch · note · left · lease.
-          Its stale `by: BRIDGE` is already corrected to CHECK; `at` is still
-          1786744923 and the note still reads "BRIDGE idle" — restamp it yourself.
+          Its stale `by:` value, a retired seat, is already corrected to CHECK; `at` is
+          still 1786744923 and the note still reads "<that seat> idle" — restamp it yourself.
 verify:   `python3 -c "import json;d=json.load(open('infrastructure/state/status/game.json'));print(d['by'],d['state'],d['at'])"`
           shows CHECK, a current state, and an `at` you wrote.
 criteria: The board's GAME panel matches the real game across one up→down
@@ -934,8 +934,8 @@ resume:   The DOWN half is still unproven - the game was still up when this sess
           file is mine, `by: CHECK`, and I restamped it through DOWN/LOADING/PLAYABLE
           transitions all session.
 
-note:     2026-08-14 CHECK. Restamped: `by CHECK`, `at 1786770877` (was BRIDGE's
-          1786744923), note no longer "BRIDGE idle", and `left` refreshed — the old
+note:     2026-08-14 CHECK. Restamped: `by CHECK`, `at 1786770877` (was a retired seat's
+          1786744923), note no longer "<that seat> idle", and `left` refreshed — the old
           one claimed "0 pawns" when the map now has Alex (PlayerColony), plus the
           moved thruster bank and the rewired power net. `verify:` PASSES
           (`CHECK PLAYABLE 1786770877`). **Not done:** the criteria needs one

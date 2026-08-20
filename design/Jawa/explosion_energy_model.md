@@ -254,7 +254,7 @@ anchor: E0 = the mini-turret, R0 = 3.9
 **`E = 0` must mean silence.** The failure mode of this whole idea is a colony where
 every chair and wooden table is a grenade.
 
-⚠️ **Read CURRENT power state, not a def-time maximum** (CREATE, 2026-08-12).
+⚠️ **Read CURRENT power state, not a def-time maximum** (a retired seat, 2026-08-12).
 `basePowerConsumption` is a property of the *def*, so a switched-off or derelict
 machine reads as a bomb. The proxy must be what the thing is actually drawing or
 holding — otherwise a wreck reads identically to a live reactor, which is exactly

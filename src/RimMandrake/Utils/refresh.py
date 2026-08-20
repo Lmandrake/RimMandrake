@@ -528,7 +528,7 @@ def do_patches():
          # absent under WSL, validate_patch loaded 0 defs, skipped every live
          # xpath check, warned, and exited 0 — which this function rendered as
          # "validate (with --live) ok". 29c89f0 dual-formed D_CONFIG and D_DUMP
-         # and missed exactly these three. Found by CREATE.
+         # and missed exactly these three. Found by a retired seat.
          "--defs", _GP.WORKSHOP,
          "--defs", _GP.LOCAL_MODS,
          "--defs", _GP.GAME_DATA,

@@ -109,51 +109,12 @@ criteria: the campaign starts as designed rather than as a vanilla crashlanding.
 state:    done — SCENARIO_SPEC.md now names the mechanism (a saved game, R25), all
           six founders and the starting stock. That is the verify condition met.
 
-## D20 You inherit every sign-off the retired seats held
+## D21 Rule on TEST_PLAN.md: still useful, rewrite, or retire
 row:      0
-spec:     🔴 **The authoritative retired-seat mapping, owner 2026-08-15. Use this
-          verbatim; earlier looser wording sent CREATE/OPS to CHECK and all of
-          PROJECT to DECIDE, and both are wrong:**
-
-              VISION  -> DECIDE
-              PROJECT -> DECIDE, EXCEPT some small elements which go to REP
-              CREATE  -> BUILD
-              OPS     -> BUILD
-              BRIDGE  -> CHECK
-
-          The PROJECT split, since it is the only one that needs judgement: REP is
-          the human's interface and owns the status board,
-          `infrastructure/state/status_matrix.json`,
-          `infrastructure/state/queue/HUMAN.md` and `infrastructure/state/MODE`.
-          PROJECT was "technical writer + IA, MVP seat". So a PROJECT
-          responsibility about REPORTING TO THE HUMAN, the board, or status
-          presentation goes to REP; a PROJECT responsibility about scope,
-          sequencing, specs or document architecture goes to DECIDE. Where a
-          PROJECT reference is ambiguous, file it in `queue/HUMAN.md` rather than
-          guessing.
-
-          Live docs still gate on a seat that cannot sign:
-          `infrastructure/state/WORLDGEN_FACTION_CHECKLIST.md` :3, :124, :126, :169,
-          :230, :379 ("If VISION has not signed off, do not execute the untick
-          list"); `infrastructure/state/EXPECTED_FAILURES_next_load.md` :163, :248,
-          :307, :324; `infrastructure/state/WORLDGEN_RUN.md` :29, :30, :32, :53,
-          :63, :69, :72 (owner column assigns steps to CREATE/BRIDGE/OPS);
-          `design/V2_DREAMS.md` :386-397, :401, :430, :509, :543, :618, :633, :650
-          (routing table headed [PROJECT], [CREATE], [WORLD/OPS], [VISION]).
-          Past-tense attributions are history — leave them. Rewrite only the
-          conditions and owner columns that must be actionable by a live seat.
-verify:   `grep -rn "VISION\|PROJECT\|OPS\|CREATE\|BRIDGE" ` over those four files
-          returns only past-tense provenance, no unassignable gate or owner cell.
-criteria: none — offline.
-state:    ⛔ v2 — **OWNER RULING 2026-08-15, blanket triage.** Produces no content and does not
-          reach the frozen world. Parked, not lost.
-
-## D21 Rule on CREATE_TEST_PLAN.md: still useful, rewrite, or retire
-row:      0
-spec:     `infrastructure/state/CREATE_TEST_PLAN.md`, 20,435 B. Written by the
-          retired CREATE seat about BRIDGE driving; cites `V1_SCOPE.md`'s gate as
+spec:     `infrastructure/state/TEST_PLAN.md`, 20,435 B. Written by the
+          retired seat about another retired seat driving; cites `V1_SCOPE.md`'s gate as
           authority, which `V1_CHAIN.md` superseded. NOT orphaned — `:267` tells
-          readers to file at the deleted `queue/CREATE.md`, live code
+          readers to file at a deleted retired seat's queue, live code
           `src/RimMandrake/bridgetools/load_session.py` references it, and
           `design/V2_DREAMS.md` C23 says to run it with nine pre-flight
           corrections that lived in the deleted `AGENT_BRIDGE_state.md`
@@ -184,7 +145,8 @@ spec:     `infrastructure/state/NEXT_RELOAD.md`. Over budget per
           `python3 src/RimMandrake/Utils/doc_budget.py`. At least one claim is
           already contradicted by `src/RimMandrake/bridgetools/execute_ship_plan.py:54`.
           Three dangling refs at :161, :228, :652 point at deleted queues
-          (`queue/OPS.md:127`, `queue/BRIDGE.md`, `queue/CREATE.md` C11).
+          (a retired seat's queue at :127, and two more retired seats' queues,
+          one of them item C11).
           Pruning means deciding what still matters for the next load, which is a
           scope call — owner assigned it here 2026-08-14 rather than to a cleanup
           pass. Raising the budget instead is a legitimate outcome; say so if it is
@@ -195,10 +157,10 @@ criteria: none — offline.
 state:    done — 2026-08-15. The 657-line premise was already stale; the file was
           pruned to 318 before this item was read. `doc_budget.py` now reports
           **378 / 400 ok**, and that is AFTER today's rewrite added §1.0 and six
-          live items. All three dangling queue refs (`queue/OPS.md`,
-          `queue/BRIDGE.md`, `queue/CREATE.md`) are gone. The budget stands as
+          live items. All three dangling queue refs, each to a
+          retired seat's queue, are gone. The budget stands as
           written; it did not need raising. ⚠️ The one live ref out of this file is
-          `CREATE_TEST_PLAN.md` Part 5 at §7 — that is D21's ruling, not this one.
+          `TEST_PLAN.md` Part 5 at §7 — that is D21's ruling, not this one.
 
 ## D2 Owner: may we generate throwaway worlds purely to measure?
 row:      v2
@@ -226,7 +188,7 @@ spec:     `infrastructure/agents_def.md` was dissolved into `POLICY.md` (deleted
           ✅ **Map protection is REPEALED — owner 2026-08-15, do not re-home it.**
           Recorded in `OWNER_DECISIONS.md` and `POLICY.md`: nothing outside the
           repo is precious. Both docs that ordered a reader to the dead source are
-          already struck (`row8_build_order.md`, `CREATE_TEST_PLAN.md`).
+          already struck (`row8_build_order.md`, `TEST_PLAN.md`).
           ✅ **Every dangling citation is repointed** — no live doc now sends a
           reader to the deleted `agents_def.md`. Only the rules are unhomed:
           rule 1, taking the bridge is announced — probably dead, CHECK holds the
@@ -236,7 +198,7 @@ spec:     `infrastructure/agents_def.md` was dissolved into `POLICY.md` (deleted
           `POLICY.md` §"Nothing outside the repo is precious", which is a superset,
           confirm that is the home; rule 0.5, never ignore a problem, especially one
           that is not yours — `DOC_BUDGET.md` now files to `queue/HUMAN.md`, i.e.
-          REP, since reporting-to-the-human is the half of PROJECT that went to REP
+          REP, since reporting-to-the-human is the half of a retired seat's remit that went to REP
           (D20); the rule itself still needs writing into `POLICY.md`.
           Anything about the live game lands on CHECK, per the 2026-08-14 ruling.
 verify:   Each of the five is either written into `POLICY.md`/`CHECK.md` or recorded

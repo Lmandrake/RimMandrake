@@ -184,7 +184,7 @@ class Session(object):
         ⚠️ This used to verify with `things_at()`, which **cannot ever work**:
         `get_cell_info`'s `things` list does not include pawns. So every
         successful spawn reported a no-op, and under `strict=True` raised
-        `Unchanged` on a spawn that had actually happened. Found by WORLD
+        `Unchanged` on a spawn that had actually happened. Found by a retired seat
         2026-08-12 while spawning Jawas; see traps.md.
 
         `Actions\\Spawn Pawn...` spawns player-side, so the roster is a real

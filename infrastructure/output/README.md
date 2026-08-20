@@ -35,7 +35,7 @@ output\ → acted on → conclusion lands in its durable home → disposing\ →
 is still doing work: its question is open, or its evidence is still being read.
 It moves on to `disposing\` only once the conclusion has a durable home.
 
-## PROJECT sweeps it
+## The stale-file audit sweeps it
 
 Same as `disposing\`, and on the same cadence as the stale-file audit. **A report
 still in `output\` after its question is answered is a report nobody closed** —

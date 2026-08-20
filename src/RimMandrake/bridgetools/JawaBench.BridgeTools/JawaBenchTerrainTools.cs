@@ -981,7 +981,7 @@ namespace JawaBench.BridgeTools
                         // ⚠️ ALIAS, deliberate. Callers reach for `kindDef`
                         // because the SPAWN side takes a `kindDef` parameter, and
                         // filtering on the absent key returns zero rows — which
-                        // reads exactly like "nothing spawned". WORLD hit this,
+                        // reads exactly like "nothing spawned". A retired seat hit this,
                         // logged it, and hit it AGAIN in the same file on
                         // 2026-08-13. A trap logged twice and still recurring is
                         // not a documentation problem; the shape was wrong.
@@ -1282,7 +1282,7 @@ namespace JawaBench.BridgeTools
                     // 🔴 NO TARGET AT ALL. This used to fall through with the
                     // x/z defaults of -1, pass a bounds check that only tested
                     // the UPPER bound, hit an empty cell list and report
-                    // "damaged 0 things" -- which OPS read as "the weapon is
+                    // "damaged 0 things" -- which a retired seat read as "the weapon is
                     // broken" and nearly filed against a weapon that works on
                     // the first hit. The real cause was a parameter named
                     // `targetId`, which this tool does not have: the SDK drops
@@ -1373,7 +1373,7 @@ namespace JawaBench.BridgeTools
                     harmsHealth = ddef.harmsHealth,
                     targetsHit = hit,
                     colonistsSkipped = skipped,
-                    // ⚠️ `results` is the per-thing list. WORLD parsed `targets`,
+                    // ⚠️ `results` is the per-thing list. A retired seat parsed `targets`,
                     // got nothing, and read it as "the ion did nothing" -- caught
                     // only because the CONTROL row was empty too. Aliased so the
                     // obvious name works, and count exposed so an empty list
@@ -1453,7 +1453,7 @@ namespace JawaBench.BridgeTools
                             // class of question unanswerable: "what radius did the mod
                             // actually apply?" lives in a FIELD on
                             // CompProperties_SubstructureFootprint, and nothing
-                            // surfaced it. WORLD hit exactly that trying to confirm
+                            // surfaced it. A retired seat hit exactly that trying to confirm
                             // whether Bigger Gravships' 34/30/12/85 had reached the
                             // live defs, and had to report the question unresolved.
                             //
@@ -1737,7 +1737,7 @@ namespace JawaBench.BridgeTools
                     fac = null;
                 else if (string.Equals(f, "hostile", StringComparison.OrdinalIgnoreCase))
                 {
-                    // ⚠️ ROOT CAUSE OF THE SetIdeo NRE, found by WORLD in the log:
+                    // ⚠️ ROOT CAUSE OF THE SetIdeo NRE, found by a retired seat in the log:
                     //   "Humanlike pawn SA-6422 was added to non-humanlike faction hive"
                     //   "Error while generating pawn. Rethrowing. NullReferenceException"
                     // FirstOrDefault picked Insect/Hive -- a NON-humanlike faction --
@@ -1781,7 +1781,7 @@ namespace JawaBench.BridgeTools
                         return Fail("Cell is outside the map.");
 
                     // ⚠️ GeneratePawn can throw an NRE inside Pawn_IdeoTracker.SetIdeo
-                    // for some kind/faction pairs. WORLD 2026-08-13, one clean
+                    // for some kind/faction pairs. A retired seat, 2026-08-13, one clean
                     // variable: KotORDroidGood_3C at the same cell in the same run
                     // FAILED with faction="hostile" and SUCCEEDED with "none".
                     //
@@ -3080,10 +3080,10 @@ namespace JawaBench.BridgeTools
                 // into forty blobs" -- two worlds that report an identical
                 // waterPct and are nothing alike. A percentage alone cannot
                 // answer the owner's question.
-                // 🔴 Per-body SHAPE, not just size. VISION's sea gate has five
+                // 🔴 Per-body SHAPE, not just size. A retired seat's sea gate has five
                 // numeric criteria and two of them were uncollectable from tile
                 // counts alone: perimeter²/area (the "is it a sea or a smear"
-                // test, and the one VISION flagged as most likely to be quietly
+                // test, and the one that seat flagged as most likely to be quietly
                 // failed) and the body's centroid latitude. Worldgen is an
                 // IRREVERSIBLE click, so a candidate that cannot be measured
                 // before it is kept is a candidate kept on hope.
@@ -3115,7 +3115,7 @@ namespace JawaBench.BridgeTools
                     // 25 whose reference is a circle at 4pi = 12.57.
                     // ⇒ both are reported, and `raggedness` is computed from the
                     // TILE count, because that is the one the gate is written
-                    // against. VISION checked the threshold against this grid
+                    // against. That seat checked the threshold against this grid
                     // rather than assuming: for a hex disc of radius r, tiles
                     // 3r^2+3r+1 and boundary 6r give P^2/A -> ~12 as r grows, so
                     // "beat 25" still means "twice as ragged as round".
@@ -3795,7 +3795,7 @@ namespace JawaBench.BridgeTools
         // Compiled OUT unless the build defines JAWA_GM_TOOLS (build.py --gm).
         // Every other tool on this bridge changes only what the caller named.
         // These two let the world act on the player, so they ship only on an
-        // explicit ruling. Rationale in the csproj; state in AGENT_BRIDGE_state.md.
+        // explicit ruling. Rationale in the csproj; state in a retired seat's state file.
         [Tool(
             "jawa/fire_incident",
             Description =
@@ -4592,7 +4592,7 @@ namespace JawaBench.BridgeTools
                     success = true,
                     factions = rows,
                     // ⚠️ `count` is HOW MANY WERE RETURNED, not how many exist.
-                    // Reported 2026-08-13 by WORLD after BRIDGE -- the author of
+                    // Reported 2026-08-13 by a retired seat after another -- the author of
                     // this tool and of the warning above -- printed `count` alone,
                     // called it "34 factions", and missed 20 hidden ones including
                     // Mechanoid. The prose warning in `message` was correct and
@@ -4901,13 +4901,13 @@ namespace JawaBench.BridgeTools
         // jawa/ideo_of — read the ideoligions the game ACTUALLY built, and count
         // who believes them.
         //
-        // WHY. VISION authored eleven ideoligions and has never seen one after
+        // WHY. A retired seat authored eleven ideoligions and never saw one after
         // generation: "the game built the ideoligion I specified" is an
         // inference off the XML. An Ideo is not a Def — it is a runtime object
         // assembled by the generator from memes, a structure and a precept
         // roll — so there is no def to read and `jawa/get_defs` cannot reach it.
         //
-        // 🔴 THE SECOND HALF IS THE ONE THAT MATTERS. VISION disciplined the
+        // 🔴 THE SECOND HALF IS THE ONE THAT MATTERS. That seat disciplined the
         // whole religions design around "NPC religion rarely surfaces in play"
         // and cut rituals and deities because of it — a belief that has NEVER
         // been measured. `believers` counts pawns per ideo across every map and
@@ -5093,7 +5093,7 @@ namespace JawaBench.BridgeTools
                                     impact = q.def.impact.ToString(),
                                     // The field that decides whether this
                                     // precept is ever visible off the player's
-                                    // own colony. VISION's counter question
+                                    // own colony. That seat's counter question
                                     // lives here as much as in the pawn counts.
                                     enabledForNPCFactions = q.def.enabledForNPCFactions
                                 }).Cast<object>().ToList()
@@ -5148,7 +5148,7 @@ namespace JawaBench.BridgeTools
         // jawa/biome_probe — what a biome RESOLVES to spawn, not what its XML says.
         //
         // WHY, and it is not a convenience wrapper over get_defs.
-        // VISION judged 29 biome removals from def fields alone and looked at
+        // A retired seat judged 29 biome removals from def fields alone and looked at
         // exactly one. I went to check whether get_defs could have answered the
         // other 28 and it CANNOT, for a reason worth writing down:
         //
@@ -5343,7 +5343,7 @@ namespace JawaBench.BridgeTools
                             {
                                 defName = q,
                                 // Kept as its own column even when every entry
-                                // is false — VISION's ask. `present` means WILL
+                                // is false — a retired seat's ask. `present` means WILL
                                 // SPAWN, nothing weaker.
                                 present = spawning,
                                 state = spawning ? "spawning"
@@ -5423,7 +5423,7 @@ namespace JawaBench.BridgeTools
         // inspect pane, and nothing here could read it. Measured examples from
         // one evening:
         //   · a SmallThruster reports WarningThrusterInside / ThrusterBlockedBy
-        //     / ThrusterNotConnected — CREATE's whole L1 gate — and
+        //     / ThrusterNotConnected — a retired seat's whole L1 gate — and
         //     get_cell_info returns only `className: Verse.Building`.
         //   · CompGravshipThruster::get_CanBeActive folds FOUR conditions
         //     (base, Blocked, BrokenDown, outdoors) into one bool that no tool
@@ -5578,7 +5578,7 @@ namespace JawaBench.BridgeTools
         // jawa/set_faction_relation — make a faction hostile so a raid can be
         // aimed at it.
         //
-        // WHY, and it is a blocked gate rather than an itch. VISION's biggest
+        // WHY, and it is a blocked gate rather than an itch. A retired seat's biggest
         // open design question is whether the Galactic Empire READS as an
         // antagonist, and the only way to find out is to look at one of its
         // raids. `jawa/fire_incident RaidEnemy faction=OuterRim_GalacticEmpire`

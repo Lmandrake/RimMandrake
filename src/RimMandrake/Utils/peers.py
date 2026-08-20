@@ -11,7 +11,7 @@ session name. For *initiating* contact it pointed at the state files:
     grep -A1 'Cross-session address' AGENT_*_state.md
 
 That reads a CLAIM. The addresses there are PID-based, republished by hand on
-resume, and on 2026-08-12 BRIDGE reported all four stale at once — every agent
+resume, and on 2026-08-12 a seat reported all four stale at once — every agent
 had rebooted and the files still advertised dead sockets. A stale address is
 worse than none: it routes silently to nothing, or to whoever inherited the PID.
 
@@ -30,7 +30,7 @@ They are separate fields and the hook cannot bridge them: `sessionTitle` sets
 the CONVERSATION title, while the addressable name lives in
 `~/.claude/sessions/<pid>.json` and is only written by `--name`, `/rename` or
 the agent-name setter. Measured with three seats live: all three role files read
-`AGENT OPS` / `AGENT CREATE` / `AGENT PROJECT` while all three names were
+`AGENT <retired seat>` / `AGENT <retired seat>` / `AGENT <retired seat>` while all three names were
 `rimworld-*` with `nameSource: "derived"`.
 
 **So SEAT is the column you read, and NAME is the column you send to.** A seat
@@ -114,11 +114,11 @@ def main():
     mismatched = False
     # 🔴 The name is QUOTED and the column is wide enough for the longest seat
     # name (`AGENT DECIDE`, 12 chars). It used to be a bare "%-12s", and the
-    # then-longest name 'AGENT BRIDGE' is exactly 12 chars
+    # then-longest name, a retired seat's, was itself exactly 12 chars
     # — so the field consumed its own padding and the PID ran onto the end of the
-    # name: `AGENT BRIDGE 932`. A seat read that as the address and the send
-    # bounced. Only `AGENT OPS` (9 chars) ever rendered correctly, which is why
-    # the bug hid: replying to OPS worked, so the format looked fine.
+    # name: `AGENT <SEAT> 932`. A seat read that as the address and the send
+    # bounced. Only a retired seat's name (9 chars) ever rendered correctly, which is why
+    # the bug hid: replying to that seat worked, so the format looked fine.
     print("%-9s %-17s %-8s %-9s %s"
           % ("SEAT", "NAME (send to this)", "PID", "STATUS", "ADDRESS"))
     for s in rows:

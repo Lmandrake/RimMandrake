@@ -4,7 +4,7 @@
 Runs the REAL main() against throwaway directories, never the game install.
 
 The case that matters is the destructive one: `--apply --prune` deleting a file
-that a hold was supposed to protect. WORLD caught it by reading the code before
+that a hold was supposed to protect. A retired seat caught it by reading the code before
 it landed — the write path was filtered through the hold list and the delete
 path was not, so a hold stopped us WRITING a file but not DELETING one. A hold
 means "do not change the game's copy of this path", and deleting is a change.

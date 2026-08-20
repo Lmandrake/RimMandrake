@@ -1,6 +1,6 @@
 # Hiding the gravship — the third verb
 
-_VISION, 2026-08-13. **Owner's concept**, recorded and developed the hour it was
+_A retired seat, 2026-08-13. **Owner's concept**, recorded and developed the hour it was
 raised:_
 
 > *"'Hiding' your gravship from pursuit is a big deal in this campaign, and
@@ -230,7 +230,7 @@ things is what the campaign calls them.
 
 # ✅ MEASURED — GravTide is the concept, already built. RECOMMEND ADOPT.
 
-_VISION, 2026-08-13, from a full read of the mod's defs, its ~200 C# source files
+_A retired seat, 2026-08-13, from a full read of the mod's defs, its ~200 C# source files
 and its 21 shipped design docs. **Installed, NOT active** — `gravtide.mod`, ws
 `3779600989`, author yongdd, **1.6 only**, hard dependency on Odyssey which we
 already run. **No `incompatibleWith` declared.** Licence: none shipped, so

@@ -305,7 +305,7 @@ the actual tile-level wing blueprints (like the coastal_mesa maps) against the 2
 
 ## ⏳ The "one true blocker" on a pre-broken ship may have dissolved
 
-_Filed by CREATE, 2026-08-13; recorded here by VISION so the v2 wreck is scoped
+_Filed by a retired seat, 2026-08-13; recorded here by another retired seat so the v2 wreck is scoped
 against what exists rather than what was true this morning. **Not a reopening —
 the owner ruled "build it finished" and that stands.**_
 
@@ -328,7 +328,7 @@ job.**
 - **Without it** — it is decorative floor that *breaks the gravship field*. A
   completely different tool, useful for scenery and useless for a flyable hull.
 
-⚠️ **Unverified. Do not scope a wreck against it until CREATE answers.** Related
+⚠️ **Unverified. Do not scope a wreck against it until a retired seat answers.** Related
 terrains may form a small palette — Transparent Substructure and BTD Gravship
 Blueprints ship substructure affordances too.
 
@@ -342,7 +342,7 @@ project, and it is the one the player looks at every session.
 ### ⭐ OWNER'S RULING — the no-tag branch is not a dead end, it is decor
 
 > *"If substructure doesn't carry the tag, then it's nice decor to put on top of
-> the gravship for flavour, should be routed to CREATE as an ingredient in the
+> the gravship for flavour, should be routed to a retired seat as an ingredient in the
 > design."*
 
 **So there is no losing branch. Both answers are useful:**
@@ -364,12 +364,12 @@ project, and it is the one the player looks at every session.
 some placement, and it is immune to the tag question entirely — the broken floor
 never has to fly, because narratively it never will again.
 
-**Routed to CREATE as a design ingredient**, per the owner. Not a blocker on
+**Routed to a retired seat as a design ingredient**, per the owner. Not a blocker on
 anything; an asset to build with.
 
 #### 🔴 RULED — the hulk is the clan's quarry, and stripping it is the opening arc
 
-**CREATE asked whether the rest-of-the-hulk is fixed scenery or salvageable.
+**A retired seat asked whether the rest-of-the-hulk is fixed scenery or salvageable.
 It is salvageable, and it is not close.**
 
 **A wreck the clan cannot pick over is a painting of the thing the game is
@@ -399,7 +399,7 @@ campaign has been trying to author.
 
 #### ⚠️ Pipeline note — this is MAP GENERATION, not ship authoring
 
-**CREATE's structural point, recorded so it cannot be mis-scoped:** the hulk sits
+**A retired seat's structural point, recorded so it cannot be mis-scoped:** the hulk sits
 on the **starting map**, so it is authored like row 4's terrain overrides — a
 `GenStep` or map-gen patch, or placed live over the bridge. **It does not ride
 the gravship export XML**, which only carries what stands on connected
@@ -411,7 +411,7 @@ provable on a quicktest map today, exactly like row 4.
 
 #### 🔴 REVISED — "big but slow" was wrong. Depth by CAPABILITY, not by work rate
 
-**CREATE priced my own ruling and it does not survive contact with RimWorld's
+**A retired seat priced my own ruling and it does not survive contact with RimWorld's
 work queue:** a poor yield-per-work rate on a huge hulk means the salvage
 designation sits in the backlog for years, competing with everything else the
 clan does. **The practical rate is not the one we tune — it is whatever labour is
@@ -444,7 +444,7 @@ instead.**
 
 #### The two layers — terrain buys the image, buildings carry the economy
 
-**CREATE's structural finding, and it splits the design whether we like it or
+**A retired seat's structural finding, and it splits the design whether we like it or
 not:** `BrokenSubstructure` is a **TerrainDef**. Terrain has no `costList` and
 cannot be deconstructed for yield — the only removal is a designator that returns
 **nothing**.
@@ -465,7 +465,7 @@ ruling. **Deconstructible defs only.**
 
 #### ✅ SETTLED — the gate is GEOMETRY, and the last prize is BURIED. No C#.
 
-**CREATE found that my capability gate does not exist as a field: RimWorld has no
+**A retired seat found that my capability gate does not exist as a field: RimWorld has no
 research or tool requirement on deconstruction.** Expressing it literally would
 cost a C# comp in the companion DLL. **Declined.** Two better routes were offered
 and both are taken.
@@ -503,7 +503,7 @@ cost is not worth buying something geometry provides for free.
 
 #### ⭐ RULED — the fragment on the ground is the CARBONITE BAY
 
-**CREATE asked which fragment stayed behind. It is the passenger hold — and the
+**A retired seat asked which fragment stayed behind. It is the passenger hold — and the
 choice writes three other things for free.**
 
 **The ship is `LifeDawn`, a first-wave colony ship** (`faction_roster_v2.md:370`).
@@ -518,10 +518,10 @@ the carbonite bay, where the colonists were carried.
 1. ⭐ **The breach is not damage — it is THEFT, and that is better.** The roster
    already says the Hutts had the hulk *"stripped and slowly scrapped"* in their
    yard. **The scrappers cut into the passenger hold to take the cargo.** So the
-   torn edge CREATE wants is not a crash scar we have to justify; it is the hole
+   torn edge a retired seat wants is not a crash scar we have to justify; it is the hole
    the previous thieves made, and the clan walks out of it every morning. **The
    Jawas are the second set of scavengers on this wreck.**
-2. ⭐ **Recognisable silhouette, which was CREATE's third criterion.** Rows of
+2. ⭐ **Recognisable silhouette, which was a retired seat's third criterion.** Rows of
    carbonite slabs read instantly and read as nothing else. A stern section is
    anonymous; a bay of upright slabs is not.
 3. **It interleaves naturally.** Slab racks, deck, gaps, more racks — the motif
@@ -548,12 +548,12 @@ to ignore. A player who never touches it still walks past it every day.
 someone builds them. **Do not scope a wake-up quest to make the image work** —
 the image works because the question is unanswered.
 
-**Crop guidance for CREATE:** ≤1,200 cells, breach facing the colony, slab rows
+**Crop guidance for a retired seat:** ≤1,200 cells, breach facing the colony, slab rows
 running across the fragment so the broken deck shows between them.
 
 #### 🔄 RE-RULED — it is a CRYPTOSLEEP hold, not a carbonite bay
 
-**CREATE is right and the correction improves the fiction.** There is **no
+**A retired seat is right and the correction improves the fiction.** There is **no
 carbonite slab prop anywhere on disk** — Outer Rim's "carbonite" is a cryoban
 *weapon* (a timed freeze that thaws), and our own carbonite mod is **greenlit,
 parked and unbuilt** (`design/Jawa/carbonite_trophy_mod.md`, audited 2026-08-06).

@@ -3,8 +3,8 @@
 
   <!--
     The Jawa world's biome mix. Owner-ratified; gate W3.
-    Tiers from VISION (design/Jawa/worldbuilding/tidally_locked_world.md, 6370746);
-    the offset NUMBERS are CREATE's, and the reasoning for them is below because
+    Tiers from a retired seat (design/Jawa/worldbuilding/tidally_locked_world.md, 6370746);
+    the offset NUMBERS are another seat's, and the reasoning for them is below because
     the units are not what anyone would guess.
 
     🔴 WORLDGEN-GATED. Biome scoring runs once, in WorldGenStep_Terrain at order 0.

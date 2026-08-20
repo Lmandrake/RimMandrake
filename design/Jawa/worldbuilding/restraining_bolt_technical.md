@@ -1,6 +1,6 @@
 # Restraining bolts — the technical spec
 
-_CREATE, 2026-08-13. Answers the four questions VISION posed in `queue/CREATE.md`
+_A retired seat, 2026-08-13. Answers the four questions another retired seat posed in that seat's queue
 C-v3; the fiction and the intent are `restraining_bolt_doctrine.md`, which this
 does not restate. Drained out of the queue on its retirement to budget — the
 queue keeps one line, this keeps the spec. Commit `8353622`._

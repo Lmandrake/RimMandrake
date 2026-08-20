@@ -1,6 +1,6 @@
 # biome_and_fauna_roster.md — which biomes, which beasts, and what makes each tile feel like itself
 
-_Authored 2026-08-13 by **AGENT WORLD**, overnight, on the owner's brief: "Decide
+_Authored 2026-08-13 by **a retired seat**, overnight, on the owner's brief: "Decide
 which Biomes are in and out. Decide which beasts are in/out for each Biome,
 rigorously and thoroughly. Think about the specific tilemap enhancements we could
 sprinkle into each biome that would make them uniquely stand out."_
@@ -276,7 +276,7 @@ every fauna source in the desert set, that test does most of the work.
 
 ### 🔴 The dinosaur question, which is the largest fauna decision on this world
 
-⚠️ **CORRECTED 2026-08-13 after peer review by PROJECT. My first version of this
+⚠️ **CORRECTED 2026-08-13 after peer review by a retired seat. My first version of this
 section measured the wrong unit and reached a stronger conclusion than the data
 supports.** I counted **species listed**; what a player actually meets is
 governed by **commonality-weighted share**. A mod can contribute 84 species that
@@ -324,7 +324,7 @@ dewback. The player does not see a silhouette, they see *"Carcharodontosaurus"*
 in the inspect pane. That remains true; it is simply only *frequent enough to
 matter* in the badlands.
 
-⚠️ **Note on the 262-vs-1,088 discrepancy PROJECT raised.** Both are right and
+⚠️ **Note on the 262-vs-1,088 discrepancy a retired seat raised.** Both are right and
 they count different things: every biome lists **1,088** `wildAnimals` entries
 because mods register their species against all biomes, **most at commonality
 0**. Filtering to commonality > 0 gives 262 for `ZBiome_Badlands`. The filtered

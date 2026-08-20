@@ -39,10 +39,10 @@ doctrine, not a spec, not a source. Treat it as absent.
 back with the command above and say why in the commit message — that "why" is the
 reference the audit missed, and it is worth more than the file.
 
-## Dwell time: 7 days, and PROJECT empties it
+## Dwell time: 7 days, and the stale-file audit empties it
 
 Nothing leaves `disposing/` for real until it has sat here **unreferenced for 7
-days**. Deleting is **PROJECT's to enforce** as part of the stale-file audit; no
+days**. Deleting is enforced as part of the **stale-file audit**; no
 other seat empties this directory, and no file skips the wait.
 
 **Seven days, not thirty, because this project moves fast enough that a 30-day

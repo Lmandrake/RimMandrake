@@ -1,6 +1,6 @@
 # Eleven religions, seeded — every one a position on the light
 
-_VISION, 2026-08-14. **Seeds for the owner to modify.** The Jawa faith is the
+_A retired seat, 2026-08-14. **Seeds for the owner to modify.** The Jawa faith is the
 owner's and is not attempted here. Where the roster already has belief material,
 this builds on it and says so._
 

@@ -134,7 +134,7 @@ def main():
     # a new local mod is deployed. Falling back to the disk keeps a stale index
     # from raising a false "listed but absent" — which is the one alarm that
     # must never cry wolf, because the real thing silently drops a mod.
-    # 🔴 THREE COMPOUNDING BUGS LIVED HERE, found by OPS. Recorded because the
+    # 🔴 THREE COMPOUNDING BUGS LIVED HERE, found by a retired seat. Recorded because the
     # shape recurs: an ABSENT INPUT TREATED AS AN EMPTY ONE.
     #   1. It probed `GP.STEAM_WORKSHOP`, which does not exist — the attribute is
     #      `GP.WORKSHOP`. So the hasattr was False 100% of the time and the

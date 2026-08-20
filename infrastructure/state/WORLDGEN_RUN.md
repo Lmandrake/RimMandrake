@@ -27,7 +27,7 @@
 > on.** That is why the faction roster and the faith text stay v1.
 
 
-_Assembled by PROJECT, 2026-08-14, because the single event that closes **half the
+_Assembled by a retired seat, 2026-08-14, because the single event that closes **half the
 remaining v1 rows** had no document. `WORLDGEN_FACTION_CHECKLIST.md` covers ONE
 page of it, box by box, and is ratified. **This file is everything around that
 page**, and its real job is §2: forcing the undecided inputs into the open
@@ -136,7 +136,7 @@ lat 45 / lon 0 is warm; **lat 45 / lon 120 is ≈ −62 °C.** Same latitude, op
 worlds. → **the owner's fiction call, on arc distance.**
 
 ### D. ✅ `isJunk` — DECIDED: dropped from both defs, `de1018b`. Not open.
-CREATE removed it after OPS IL-confirmed that `GenStep_ScatterGroupPrefabs :
+A retired seat removed it after another retired seat IL-confirmed that `GenStep_ScatterGroupPrefabs :
 GenStep_Scatterer` inherits `GetPlacementFactor`. **With `isJunk` gone the factor
 returns 1 unconditionally and `junkDensityFactor` never enters the product — on
 any tile, dunes included.**

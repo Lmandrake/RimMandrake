@@ -1,6 +1,6 @@
 # The three droid families, and what each is FOR
 
-_VISION, 2026-08-13. Measured across all 57 droids in the three active droid
+_A retired seat, 2026-08-13. Measured across all 57 droids in the three active droid
 mods. **The headline finding contradicts a belief this project has been designing
 against.**_
 

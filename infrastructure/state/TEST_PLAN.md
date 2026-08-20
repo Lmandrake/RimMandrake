@@ -1,4 +1,4 @@
-# CREATE_TEST_PLAN.md — how to prove deployed material actually works
+# TEST_PLAN.md — how to prove deployed material actually works
 
 **Owned by CHECK.** It is the in-game verification script for material that is
 already deployed and enabled: the art-fix mods, the rumour quest, the terrain
@@ -220,8 +220,8 @@ unknown params silently before the tool runs**, so `def=` would not have errored
 it would have painted nothing and cost live minutes to notice.
 
 ⚠️ **The art is REUSED, not drawn.** `Jawa_SaltCrust` points at Odyssey's own
-`Terrain/Surfaces/DryLakeBed`, which Odyssey declares but never generates. VISION
-ruled purpose-drawn salt art is **v2** and this is fine for v1. If it looks like
+`Terrain/Surfaces/DryLakeBed`, which Odyssey declares but never generates. A retired
+seat ruled purpose-drawn salt art is **v2** and this is fine for v1. If it looks like
 a dry lake bed, that is correct, not a bug.
 
 ⚠️ **Geological Landforms wins on landform tiles.** It hard-writes terrain there,

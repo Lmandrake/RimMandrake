@@ -162,7 +162,7 @@ Beyond the faction-level states, individual desert-evolved species carry a **red
 
 | Species | Thirst rate | Basis |
 |---|---|---|
-| **Jawa** | **Low** | 🔴 **Added 2026-08-13, VISION (W2).** Desert-native, and the owner's water ruling names Jawa first. **The table omitted the setting's most desert-adapted species entirely**, while the player section asserted "dry-adapted" with nothing behind it. This is the line that makes that true — and it corrects the Jawa Trade Moot's "normal raid range" by the same stroke |
+| **Jawa** | **Low** | 🔴 **Added 2026-08-13, a retired seat (W2).** Desert-native, and the owner's water ruling names Jawa first. **The table omitted the setting's most desert-adapted species entirely**, while the player section asserted "dry-adapted" with nothing behind it. This is the line that makes that true — and it corrects the Jawa Trade Moot's "normal raid range" by the same stroke |
 | **Tusken** | Very low | Full moisture-retention wrappings and filtered masks; desert-native |
 | **Desert alien (Impid)** | Very low | Heat-adapted xenotype; fire-affiliated |
 | **Geonosian** | Very low | Arid-rock native; subterranean hive metabolism |
@@ -173,7 +173,7 @@ Beyond the faction-level states, individual desert-evolved species carry a **red
 
 Conversely, **Wookiee, Wookiee-kin, Herglic, Mon Calamari, Quarren, Selkath, Gungan, Chagrian, Aqualish, Trandoshan, Rodian, Ithorian, and Ewok** carry an **elevated** thirst rate. They are the pawns that make a faction slow.
 
-⭐ **`elevated` is a full band, not an aside (VISION 2026-08-13, W1).** Four bands
+⭐ **`elevated` is a full band, not an aside (a retired seat 2026-08-13, W1).** Four bands
 exist and the doctrine document now names all four — **none · very low/low ·
 normal · elevated**. Two faction designs rest on this band and would be
 incoherent without it: the **Wildsteam Clan** (devastating at home,
@@ -613,7 +613,7 @@ Imperial settlements always generate a slave/prisoner population, drawn from **W
 - **Memes:** Supremacist, Collectivist, **Human primacy**, Proselytizer
 - **Styles:** Techist, Morbid
 - **Preferred xenotypes:** None at the precept level; uniformity comes from the 78% baseliner weight and apparel tags
-- **Primary role:** Emperor — **Emperor Palpatine** _(canon, VISION 2026-08-13 — matches the
+- **Primary role:** Emperor — **Emperor Palpatine** _(canon, a retired seat 2026-08-13 — matches the
   deployed patch and echoes "Galactic Empire"; "Sector governor" is retired)_
 - **Specialists:** Shooting specialist, production specialist
 
@@ -1693,7 +1693,7 @@ A 3–10 pawn hunting party carries no logistics tail. It brings what it brings.
   composition tells the player how long they have.
 
 ⚠️ **CORRECTED 2026-08-13 — Chiss and Umbaran are NOT dry-capable, and the genes
-say so.** Found by PROJECT in the Stage 3 audit, verified here against the live
+say so.** Found by a retired seat in the Stage 3 audit, verified here against the live
 gene lists rather than taken on report:
 
 | xenotype | temperature genes (BTD) | reading |
@@ -1706,7 +1706,7 @@ gene lists rather than taken on report:
 so both species being poor in desert heat is correct twice over. Listing them as
 *dry-capable* was the error.
 
-⇒ **`Kaleesh` is the ONLY dry-capable species of the six.** PROJECT checked the
+⇒ **`Kaleesh` is the ONLY dry-capable species of the six.** A retired seat checked the
 remaining three and they are **not merely unverified — they are unsupported**:
 
 | xenotype | temperature genes | reading |

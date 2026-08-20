@@ -1153,7 +1153,7 @@ Workshop page, or memory. Where a fact could not be read, §7 says so.
 **Checked and fine — recorded rather than deleted, so the next seat does not
 re-find it.** `lee.theforce.lightsaber` is **installed at workshop `3466124712`**,
 verified against its own `<packageId>` in `About.xml`, and `ModsConfig.xml:575` is
-correct. **No startup complaint is coming.** OPS closed the same item on the same
+correct. **No startup complaint is coming.** A retired seat closed the same item on the same
 evidence.
 
 **Nothing in the spec below was ever at risk**, and the design consequence I drew
@@ -1165,7 +1165,7 @@ _Superseded alarm, kept for the trail:_
 
 ## ~~🔴 DEPENDENCY ALERT — the saber mod is GONE from disk~~ (WITHDRAWN)
 
-**This spec was written against a gap, not against the mod** (`b5796eb`). OPS has
+**This spec was written against a gap, not against the mod** (`b5796eb`). A retired seat has
 since established the mod was **real and running**: Workshop `3466124712`,
 `lee.theforce.lightsaber`, **333 defs including 14 wieldable lightsabers**, live
 in the 10:04 session. Its folder has since been deleted and it is absent from

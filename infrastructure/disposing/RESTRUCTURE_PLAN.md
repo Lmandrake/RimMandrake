@@ -1,7 +1,7 @@
 # RESTRUCTURE_PLAN.md — executable migration to option B (revised)
 
 Target chosen by the owner from `output/RESTRUCTURE_OPTIONS.md` §5 B.
-**This document moves nothing.** Execution is `queue/PROJECT.md` P5.
+**This document moves nothing.** Execution is a retired seat's queue, item P5.
 
 Reference counts below are `output/RESTRUCTURE_OPTIONS.md` §4's baseline.
 `python3 Utils/check_refs.py` is the measure. **Baseline re-measured for this
@@ -219,7 +219,7 @@ recovery and is **out of scope** — it invalidates every seat's clone at once.
 
 The owner ruled: **convention on new work now, renames later.** New work only:
 generic is **`RimMandrake.<name>`**, scenario-specific is **`Jawa.<name>`**.
-The backlog item is `queue/PROJECT.md` P6. Measured scope, for when it is picked up:
+The backlog item is a retired seat's queue, item P6. Measured scope, for when it is picked up:
 
 | target | blast radius |
 |---|---|

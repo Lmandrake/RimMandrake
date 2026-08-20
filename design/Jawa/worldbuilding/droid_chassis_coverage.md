@@ -1,6 +1,6 @@
 # Droid chassis — what we have, what one subscribe buys, what needs art
 
-_VISION, 2026-08-13. Measured against the owner's canon-lineage brief. **The
+_A retired seat, 2026-08-13. Measured against the owner's canon-lineage brief. **The
 headline is that coverage is far better than it looked, and the reason it looked
 worse is a search method.**_
 

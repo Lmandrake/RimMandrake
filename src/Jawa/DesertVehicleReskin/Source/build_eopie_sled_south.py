@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """Build AV_DogSled_south with a team of TWO EOPIES in place of four dogs.
 
-CREATE, 2026-08-13. Supersedes draw_eopie_sled_south.py, which drew the animals
+A retired seat, 2026-08-13. Supersedes draw_eopie_sled_south.py, which drew the animals
 as polygons and could not make them read as animals -- two attempts produced a
 bread loaf and then a slug. Hand-coding an organic body was fighting the medium.
 

@@ -100,7 +100,7 @@ RESULTS = []
 # This used to be a hardcoded list and it drifted three times. The failure is
 # always the same shape and it is always wired to a FAIL verdict: ship a tool,
 # forget the list, and the census reads "24 of 22" -- a FAIL on a CORRECT
-# deploy, which is exactly how a census stops being believed. OPS caught the
+# deploy, which is exactly how a census stops being believed. A retired seat caught the
 # fourth instance before it landed on the irreversible worldgen run.
 #
 # The right invariant is not "the game has the tools I remembered". It is

@@ -84,7 +84,7 @@ def installed(mod_roots=None):
             # here registers every Harmony-dependent mod under Harmony's id and
             # then reports its real id as MISSING.
             #
-            # This is not hypothetical: OPS made exactly this mistake earlier on
+            # This is not hypothetical: a retired seat made exactly this mistake earlier on
             # 2026-08-13 and reported 3 phantom absent mods, and THIS TOOL —
             # written to catch silent errors — shipped with the same bug and
             # produced 8 false alarms on its first run. The mod's own id is the

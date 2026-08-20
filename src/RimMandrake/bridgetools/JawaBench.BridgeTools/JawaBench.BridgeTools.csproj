@@ -59,7 +59,7 @@
     tool that is present announces itself as a raid. Opt IN, never out, by
     passing the "gm" flag to bridgetools/build.py (or /p:JawaGmTools=true).
 
-    Owner ruling required before that ships. See AGENT_BRIDGE_state.md.
+    Owner ruling required before that ships. See a retired seat's state file.
   -->
   <PropertyGroup>
     <JawaGmTools Condition="'$(JawaGmTools)' == ''">false</JawaGmTools>

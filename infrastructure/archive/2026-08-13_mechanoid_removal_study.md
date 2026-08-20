@@ -8,8 +8,8 @@
 > what Cherry Picker can and cannot reach) remain accurate and may be cited; its
 > recommendations may not be revived.
 
-**Seat:** OPS · **Date:** 2026-08-13 · **Game state:** DOWN (offline study only)
-**Ask:** owner, relayed by VISION as O-v2 — cherry-pick out the mechanoid defs *and*
+**Seat:** a retired seat · **Date:** 2026-08-13 · **Game state:** DOWN (offline study only)
+**Ask:** owner, relayed by a retired seat as O-v2 — cherry-pick out the mechanoid defs *and*
 the `Mechanoid` faction; answer three questions.
 
 **Nothing was changed.** No `ModsConfig.xml` edit, no Cherry Picker config written,

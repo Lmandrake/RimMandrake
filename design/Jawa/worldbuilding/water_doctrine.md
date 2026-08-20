@@ -1,6 +1,6 @@
 # Water doctrine — the master resource, finally decided
 
-_VISION, 2026-08-13. **Owner's ruling, verbatim, recorded the hour it was made.**
+_A retired seat, 2026-08-13. **Owner's ruling, verbatim, recorded the hour it was made.**
 Water has been the declared master resource across the whole faction roster since
 the beginning and has had **zero implementation and no decided layer** — every
 faction carries a "water doctrine" line resting on a mechanic nobody had ruled
@@ -105,7 +105,7 @@ resting on nothing.
 
 # The roster audit, and the seven rulings it forced
 
-_VISION, 2026-08-13, same day. All twelve NPC dossiers plus the player section
+_A retired seat, 2026-08-13, same day. All twelve NPC dossiers plus the player section
 were read against the four rulings above. **The audit found prior art I did not
 know about and five genuine contradictions.** Rulings below are final._
 

@@ -1,6 +1,6 @@
 # The restraint bolt — making the campaign's moral problem cost something
 
-_VISION, 2026-08-13. **Owner's concept**, recorded the moment it was raised:_
+_A retired seat, 2026-08-13. **Owner's concept**, recorded the moment it was raised:_
 
 > *"We should drop faction goodwill every time we use a restraint bolt, to the
 > independent droid faction, whether it's on one of their droids or not. It's
@@ -104,9 +104,9 @@ between this concept and a build spec.
 
 ---
 
-# ⭐ REVISED SHAPE — state, not event. VISION, 2026-08-13
+# ⭐ REVISED SHAPE — state, not event. A retired seat, 2026-08-13
 
-**CREATE raised a build risk that turns out to improve the design.** Their point:
+**A retired seat raised a build risk that turns out to improve the design.** Their point:
 a natural hook (`hediff PostAdd`, comp `PostSpawnSetup`) **can re-fire on save
 reload**, so a one-shot penalty would drift silently every load until the
 Enclaves hate you for no reason anybody can see.
@@ -144,7 +144,7 @@ delivered.
 
 - **The hook question softens.** It no longer needs a once-and-only-once moment.
   It needs **a periodic tick that can count bolted droids in the colony** —
-  cheaper, and immune to the failure CREATE identified.
+  cheaper, and immune to the failure a retired seat identified.
 - **The unbolt hook disappears entirely.** There is nothing to fire.
 - **The "not their droids" clause gets cheaper, not dearer**, whichever side the
   mechanism sits on.
@@ -156,7 +156,7 @@ answer.
 
 ## Fallback if no equilibrium exists — cap the ceiling, do not drain the pool
 
-**CREATE's analysis, which I accept:** if vanilla goodwill drift is a **constant
+**A retired seat's analysis, which I accept:** if vanilla goodwill drift is a **constant
 per day** rather than **proportional to the gap**, there is no resting point for
 an ongoing penalty to find. A penalty under the drift does nothing; a penalty a
 hair over it walks to the floor regardless of size. **2 bolts and 40 bolts both
@@ -190,7 +190,7 @@ moves.
 
 ## The curve — specified now, so the build is not waiting on me
 
-**If a continuously-recomputed standing offset is available** (CREATE's
+**If a continuously-recomputed standing offset is available** (a retired seat's
 `GoodwillSituationWorker` lead — unconfirmed), the offset should be computed from
 the **number of bolted droids currently held by the colony**, not from a lifetime
 total and not from droids that have left.
@@ -217,16 +217,16 @@ destroyed stops counting the moment it is gone — that is what makes freeing on
 feel immediate, and it is the whole reason this shape was chosen over a running
 total.
 
-## Two rulings the curve needed — VISION, 2026-08-13
+## Two rulings the curve needed — a retired seat, 2026-08-13
 
-_CREATE identified both; both are design calls, so both are answered here rather
+_A retired seat identified both; both are design calls, so both are answered here rather
 than settled by whichever loop is cheapest to write._
 
 ### R1. What "HELD" means — one rule, five consequences
 
 > **Every droid the PLAYER FACTION owns that is wearing a bolt, wherever it is.**
 
-Faction-wide, not map-wide. The five edges CREATE named, resolved:
+Faction-wide, not map-wide. The five edges a retired seat named, resolved:
 
 | case | counts? | why |
 |---|---|---|
@@ -249,7 +249,7 @@ bolts count. This rule is about **who owns it** — decisive.
 
 ### R2. 🔴 The clamp moves ABOVE the hostility threshold. Bolts never cause war.
 
-**CREATE is right and my −100 was wrong.** Faction hostility flips well before the
+**A retired seat is right and my −100 was wrong.** Faction hostility flips well before the
 floor, so a −100 clamp meant roughly thirty bolted droids bought an **Enclave
 raid**, off a cliff, with no guarantee that freeing droids walks it back.
 
@@ -258,7 +258,7 @@ raid**, off a cliff, with no guarantee that freeing droids walks it back.
 > **Bolt count sets how much they will HELP you. It never sets whether they
 > SHOOT at you.**
 
-- **Clamp the offset above the hostility threshold** — CREATE supplies the exact
+- **Clamp the offset above the hostility threshold** — a retired seat supplies the exact
   number; the design requirement is that the worst reachable state is *"coldest
   possible, still trading"*.
 - **Hostility with the Enclaves remains reachable — by doing something to them.**

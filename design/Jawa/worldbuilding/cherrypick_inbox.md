@@ -1,6 +1,6 @@
 # Cherry Picker inbox — everything ruled OFF so far
 
-_VISION, 2026-08-13. **Explicit defNames and source mods for every "turn it off"
+_A retired seat, 2026-08-13. **Explicit defNames and source mods for every "turn it off"
 verdict this session.** Owner's rulings unless marked as a recommendation._
 
 ---
@@ -98,7 +98,7 @@ Genebulb would burst into a shower of pets. **Neither outcome is intended.**
 
 ## ✅ RESOLVED — the Genebulb / Trispike dependency. Remove Trispike.
 
-_CREATE, 2026-08-13, read from `Data/Anomaly/Defs/ThingDefs_Races/Races_Fleshbeasts.xml:63-70`
+_A retired seat, 2026-08-13, read from `Data/Anomaly/Defs/ThingDefs_Races/Races_Fleshbeasts.xml:63-70`
 and confirmed against the live dump._
 
 **Bulbfreak's `race.deathAction` is `DeathActionProperties_Divide`, count 4,
@@ -206,7 +206,7 @@ either by label.**
 
 ## 🔴 CORRECTION OF THE RECORD — the Anomaly picks were NEVER withdrawn by the owner
 
-_2026-08-14. **A withdrawal was relayed to me and to CREATE as an owner ruling. It
+_2026-08-14. **A withdrawal was relayed to me and to a retired seat as an owner ruling. It
 was not one.** The owner's actual position, in their words:_
 
 > **"I did NOT agree to that anomaly ruling! I want to use some of those
@@ -247,7 +247,7 @@ Those are different instructions and only the first was ever true.
 ore def can point at the same `texPath`. **So picking it is safe, but record the
 texture path before you do**, because the whole point of keeping it is to reuse it.
 
-✅ **Trispike is confirmed correct to remove** — CREATE established Bulbfreak
+✅ **Trispike is confirmed correct to remove** — a retired seat established Bulbfreak
 divides into `{Toughspike, Trispike}` and Trispike divides into `Fingerspike`, so
 **removing Trispike closes the tame-pet leak rather than opening it.**
 
@@ -279,7 +279,7 @@ fields and labels. This is the first one anyone has LOOKED at, and looking
 confirmed it in about two seconds.** Where a cheap look is available, take it —
 `PoisonForest` is already filed for exactly that treatment.
 
-🔴 **Sharpened 2026-08-14 by BRIDGE, and it is worse than "un-looked-at": the
+🔴 **Sharpened 2026-08-14 by a retired seat, and it is worse than "un-looked-at": the
 fields were never readable in the first place.** `Scalars()`, the reflective
 reader behind `jawa/get_defs`, walks **public instance FIELDS only**. On
 `BiomeDef`, `wildAnimals`, `coastalWildAnimals`, `pollutionWildAnimals`,
@@ -304,7 +304,7 @@ When `jawa/biome_probe` runs, a removal comes back in one of three states, and
 | `zeroed` | record still declared, weight 0 | **will not spawn today, and comes straight back if anything re-weights it.** A latent removal, not a finished one — worth converting to a real cut on the whitelist route. |
 | `absent` | no record at all | done. |
 
-🔴 **The tool as first built could not have told `zeroed` from `absent`, and BRIDGE
+🔴 **The tool as first built could not have told `zeroed` from `absent`, and a retired seat
 found that only after being asked to keep the columns separate.** The engine's own
 resolved accessors *drop a zeroed record exactly like a deleted one* —
 `get_AllWildAnimals` yields a kind only where commonality (or its pollution or
@@ -319,4 +319,4 @@ feels like the truth because the engine produced it. Check the engine's filter
 before trusting any list to be the whole set.
 
 _Probe rebuilt 2026-08-14, 28 tools, md5 `e47ea3d`. **Not deployed and never
-called** — treat every state above as pending until BRIDGE says it has run._
+called** — treat every state above as pending until a retired seat says it has run._

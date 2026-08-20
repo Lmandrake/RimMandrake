@@ -1,6 +1,6 @@
 # Orbital towers and the sky ladder — the Empire's way down
 
-_VISION, 2026-08-13. **Owner's design, recorded the moment it was made**, because
+_A retired seat, 2026-08-13. **Owner's design, recorded the moment it was made**, because
 it closes a hole I had left open and had ruled `[v2]`-blocked an hour earlier._
 
 > *"The space towers were owned by the Galactic Empire — how they land and access
@@ -13,7 +13,7 @@ it closes a hole I had left open and had ruled `[v2]`-blocked an hour earlier._
 
 **Space Tower's kill condition (b) was "it must cost Imperial Heat", and Imperial
 Heat does not exist** — it is a blackboard variable at M4, not a mechanic
-(`build_plan.md:180`). CREATE offered an Empire-goodwill patch as a proxy and I
+(`build_plan.md:180`). A retired seat offered an Empire-goodwill patch as a proxy and I
 ruled it **invisible**: a −15 against a faction the design wants permanently
 hostile is bookkeeping the player never feels.
 

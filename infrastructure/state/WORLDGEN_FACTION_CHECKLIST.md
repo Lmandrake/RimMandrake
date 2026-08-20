@@ -27,12 +27,12 @@
 > on.** That is why the faction roster and the faith text stay v1.
 
 
-> # ✅ RATIFIED — VISION, 2026-08-13. EXECUTE THE LIST.
+> # ✅ RATIFIED — a retired seat, 2026-08-13. EXECUTE THE LIST.
 >
 > **21 untick / 6 keep is RATIFIED as written.** Nothing in the tick-list changes.
 > Four rulings ride with it; read them, they take ten seconds each.
 >
-> ## R1. Dangling references: OPS is RIGHT, and blanket "accepted cost" is REFUSED
+> ## R1. Dangling references: a retired seat was RIGHT, and blanket "accepted cost" is REFUSED
 >
 > **The line is not "faction gone = cost accepted". The line is what the player is
 > asked to DO about it:**
@@ -48,7 +48,7 @@
 > faction, `guy762_KotORFaction_RogueDroids` (antagonist of the KotOR droid
 > distress call), is **already on the KEEP list**. Yautja and Caravan Adventures
 > are *scenario* references that only bite if you pick that scenario, plus
-> incident thinning — not dead-end quests. **OPS: the objection was right, it is
+> incident thinning — not dead-end quests. **The objection was right, it is
 > now doctrine, and it does not block this run. Stop raising it.**
 >
 > ## R2. `OuterRim_RebelAlliance` — STAYS SUPPRESSED
@@ -104,7 +104,7 @@ Dominion" and "a disgraced local aristocracy" are STRUCK — see the ruling at t
 top of this section. Vanilla `Empire` **is** the Galactic Empire; there is no
 second Empire. The keep itself stands: confirm vanilla `Empire` present, count ≥ 1.
 
-> ✅ **OPS note — RESOLVED, nothing here blocks execution.**
+> ✅ **A retired seat's note — RESOLVED, nothing here blocks execution.**
 >
 > **The tick-list is measured:** 21 untick / 6 keep / 0 not found, every defName
 > read off disk, labels taken from the defs because the page shows labels, not
@@ -148,7 +148,7 @@ Predator clans, and the horror/bug factions that have no SW reading. Work down t
 list at the screen, tick the boxes, and **record what you actually saw** in the
 `observed` column — the page is the ground truth, this file is a prediction.
 
-> 🔴 **This is a PROPOSAL from OPS. DECIDE ratifies it.** OPS is player zero here,
+> 🔴 **This is a PROPOSAL from a retired seat. DECIDE ratifies it.** That seat was player zero here,
 > not the designer. Nothing below is authority to change the design; it is evidence
 > in, decision out. If DECIDE has not signed off, do not execute the untick list —
 > generate with it in hand and ask.
@@ -193,7 +193,7 @@ These have settlements, appear as normal rows, and are the loudest offenders on 
 | ☐ | **Augmented Clan** | `ABYautjaModderClan` | [AB] Xenotype: Yautja | |
 | ☐ | **Berserk Clan** | `ABYautjaBerserkClan` | [AB] Xenotype: Yautja | |
 | ☐ | **Jungle Hunter Clan** | `ABYautjaClan` | [AB] Xenotype: Yautja | |
-| ☐ | **A little people union** | `BS_LittlePeople` | Big and Small - Races (2894397737) | 🔴 **STOP after unticking — VISION R4.** It declares `replacesFaction OutlanderRough`. **Confirm a rough-outlander row exists at ≥ 1. If none appears, PUT THIS BACK TO 1** — a smallfolk union is a smaller fiction hole than an empty outlander tier. |
+| ☐ | **A little people union** | `BS_LittlePeople` | Big and Small - Races (2894397737) | 🔴 **STOP after unticking — R4 above.** It declares `replacesFaction OutlanderRough`. **Confirm a rough-outlander row exists at ≥ 1. If none appears, PUT THIS BACK TO 1** — a smallfolk union is a smaller fiction hole than an empty outlander tier. |
 | ☐ | **Dvergr Trade Union** | `BS_Dvergr_Medieval_Union` | Big and Small - Races | |
 | ☐ | **Kingdom of Muspelheim** | `BS_Muspelheim` | Big and Small - Races | |
 | ☐ | **Tribes of Niflheim** | `BS_Niflheim` | Big and Small - Races | |
@@ -254,7 +254,7 @@ spend ten minutes scrolling for a row that does not exist.
 ✅ **The vanilla two are RESOLVED, not open.** The owner ruled 2026-08-13 that
 **Anomaly content is set to zero**, so `HoraxCult` and `Entities` are handled by
 that setting and need nothing from this checklist. *(This was carried here as "a
-separate proposition for VISION/PROJECT"; it is decided.)* The DLC stays enabled —
+separate proposition for two now-retired seats"; it is decided.)* The DLC stays enabled —
 its creatures and abilities remain available to us for reskinning.
 
 | in-game label | defName | source | the only lever |
@@ -278,10 +278,10 @@ time.
 | ☐ | **`OuterRim_GalacticEmpire`** — *expect its own shipped label, NOT "Imperial Desert Directorate"* | `OuterRim_GalacticEmpire` | Outer Rim - Galactic Empire (2919248699) | 🔴 **NOTHING PATCHES IT ANY MORE.** The Galactic Empire moved to vanilla `Empire` (R10, 2026-08-14). Not a blocker either way — untick or keep as you please. |
 | ☐ | **moisture farmers** | `OuterRim_MoistureFarmers` | Outer Rim - Core | ordinary row |
 | ☐ | **rogue droid collective** *("Droid Collective")* | `guy762_KotORFaction_RogueDroids` | Star Wars KotOR Droids (3047371944) | **hidden checkbox**, not a row. 🔴 **quest-critical — antagonist of the KotOR distress call. Never untick.** |
-| ☐ | ⭐ **vanilla `Empire`** — *name will be GENERATED, expect a different string* | `Empire` | **vanilla (Royalty)** | 🔴 **ADDED TO KEEP by VISION R3.** Not on any untick list, so it survives by default — **confirm it anyway, count ≥ 1, and SCREENSHOT the generated name.** |
-| ☐ | ~~**Rebel Alliance**~~ — **RETIRED from KEEP** | `OuterRim_RebelAlliance` | Outer Rim - Rebel Alliance (2919249903) | 🔴 **ABSENT is the DESIRED outcome (VISION R2). Record absent and move on — do NOT revert the patch at the screen.** |
+| ☐ | ⭐ **vanilla `Empire`** — *name will be GENERATED, expect a different string* | `Empire` | **vanilla (Royalty)** | 🔴 **ADDED TO KEEP by R3 above.** Not on any untick list, so it survives by default — **confirm it anyway, count ≥ 1, and SCREENSHOT the generated name.** |
+| ☐ | ~~**Rebel Alliance**~~ — **RETIRED from KEEP** | `OuterRim_RebelAlliance` | Outer Rim - Rebel Alliance (2919249903) | 🔴 **ABSENT is the DESIRED outcome (R2 above). Record absent and move on — do NOT revert the patch at the screen.** |
 
-⭐ **On vanilla `Empire` (VISION R3, owner's ruling).** Vanilla `Empire` **is** the
+⭐ **On vanilla `Empire` (R3 above, owner's ruling).** Vanilla `Empire` **is** the
 Galactic Empire — the campaign's one permanent enemy, led by Emperor Palpatine.
 🔴 **The "Fallen Dominion" and the two-Empire split are STRUCK from the design**
 (see the header of this file). There is no local or planetside Empire, no
@@ -300,7 +300,7 @@ byte-identical on disk 2026-08-13) replaces `label` **and** `fixedName` on
 with **"Sector Director"**. That is the string that will be on the page.
 
 **It is superseded scaffolding, not a defect.** The Directorate reskin predates
-VISION's strike of the two-Empire split and has not been redeployed, so the old
+a retired seat's strike of the two-Empire split and has not been redeployed, so the old
 string simply survives. ⚠️ **Seeing "Imperial Desert Directorate" is EXPECTED and
 is NOT evidence of a bad deploy — do not abort worldgen over it.** If the row
 instead reads the stock **"Galactic Empire"**, that only means the Jawa_Patches

@@ -158,7 +158,7 @@ def pretty(path, start=None):
     drives — "path is on mount 'C:', start on mount 'D:'". That is the standard
     layout here (repo on D:, game install on C:), and this is display code:
     a cosmetic shortening must never be able to abort a deploy. Reported by
-    WORLD 2026-08-13, who hit it running the selftest under python.exe while
+    A retired seat, 2026-08-13, who hit it running the selftest under python.exe while
     python3 passed, because a temp dir landed on the other drive.
     """
     try:
@@ -325,7 +325,7 @@ def main():
         # A hold means "do not change the game's copy of this path" — writing
         # and deleting are both changes. Without this, --apply --prune would
         # DELETE a held file that exists in the game but not the repo, which is
-        # a plausible way to park something. Found by WORLD reviewing this code
+        # a plausible way to park something. Found by a retired seat reviewing this code
         # before it landed; the write path was filtered and the delete path was
         # not, so the hold protected against writing only.
         gone, held_gone = split_held(holds, name, gone)

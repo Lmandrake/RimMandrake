@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 # shutdown_deploy.sh — the deploys that need RimWorld DOWN, in order, with guards.
 #
-# Written by OPS 2026-08-14 at wrap, when the game was STILL UP and the window never
+# Written by a retired seat, 2026-08-14, at wrap, when the game was STILL UP and the window never
 # opened. Everything below was staged and verified that day; nothing was shipped.
 #
 #   S8  BridgeTools companion   (CHECK's, --gm REQUIRED, rides free)

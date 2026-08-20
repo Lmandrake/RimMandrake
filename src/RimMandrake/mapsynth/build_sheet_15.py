@@ -55,7 +55,7 @@ sk          = json.load(open('skeleton_15.json'))
 # orientations, so a machine may land rotated and the placed rect records which.
 # Autofarmer was ('Autofarmer',3,7) — the transpose of the real def (7,3) — which
 # made the sheet and the placement agree with each other and both disagree with
-# the game. Caught by BRIDGE (7a5ab88); shipbuild's rotation check now reads the
+# the game. Caught by a retired seat (7a5ab88); shipbuild's rotation check now reads the
 # def sizes directly and treats this table only as a fallback.
 # All 18 re-checked against the defs; Autofarmer was the only one wrong.
 MACHINES = {
@@ -87,7 +87,7 @@ def spaced_pack(sub, rects):
         # design intent. It used to read `{(w,h),(h,w)}` -- a set, so hash order
         # picked the winner and nothing chose it.
         #
-        # ⚠️ It was reproducible, contrary to what I first claimed: BRIDGE measured
+        # ⚠️ It was reproducible, contrary to what I first claimed: a retired seat measured
         # 5 interpreters x 5 PYTHONHASHSEEDs and got identical order every time,
         # because Python randomises hashing for str/bytes only, never for ints or
         # tuples of ints. The defect was never determinism -- it was that the code

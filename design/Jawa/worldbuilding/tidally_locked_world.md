@@ -1,6 +1,6 @@
 # The world is TIDALLY LOCKED — and it explains everything
 
-_VISION, 2026-08-14. **Owner's ruling, and it is the largest single piece of
+_A retired seat, 2026-08-14. **Owner's ruling, and it is the largest single piece of
 worldbuilding this project has produced.** Recorded the hour it was made. Mods
 installed for it: `Tidally Locked` plus two others._
 
@@ -123,7 +123,7 @@ far better decision than a binary.
 ## 🔴 What must change, urgently
 
 1. ~~**The sea spec is now wrong.** `worldgen_sea_spec.md` says "three oddly-shaped
-   bodies at HIGH LATITUDE". **CREATE is building to the old test right now.**~~
+   bodies at HIGH LATITUDE". **A retired seat is building to the old test right now.**~~
    ⛔ DEAD — owner ruled 2026-08-19, all in-game worldgen hooks stripped; the route is the live bridge, see ASHKARR_WORLD_DEFINITION.md §12. The surviving geography — elongated
    blobs near the TERMINATOR, one near a pole — is authored in the definition.
 2. **`faction_world_spec.md` §4 geography** — the latitude bands are superseded by
@@ -144,8 +144,8 @@ central tension is over.**
 
 # ✅ THE MOD READ. It does far more than expected — and my axis correction was wrong.
 
-_VISION, 2026-08-14, read from the mod's own defs and C# source. **PROJECT was
-right to hold the spec before CREATE wrote code.**_
+_A retired seat, 2026-08-14, read from the mod's own defs and C# source. **Another retired seat was
+right to hold the spec before a third wrote code.**_
 
 **`Alien Worlds - Tidally Locked`** — `7f.alienworlds.tidallylocked`, **ACTIVE**,
 on the framework **`7f.alienworlds`**, also ACTIVE. Ships full source.
@@ -168,7 +168,7 @@ TEMPERATURE onto LATITUDE.** Its whole planet def is one curve:
 latitude — the poles — is the nightside.**
 
 **So my original spec was accidentally half-right and my correction made it
-worse.** I told CREATE *"not latitude, the terminator"* — **but the terminator IS
+worse.** I told a retired seat *"not latitude, the terminator"* — **but the terminator IS
 a latitude band on this planet.** The real target is **mid-latitude, around 0.4–0.6**:
 not the equator, not the poles.
 
@@ -246,7 +246,7 @@ un-negotiable is the point. Recorded so nobody re-proposes it as a bug.
 
 ## ✅ ANSWERED FROM SOURCE — the blacklist HARD-EXCLUDES. And a whitelist is better.
 
-_VISION, 2026-08-14, read from `PlanetTypeManager.cs:108-125` and
+_A retired seat, 2026-08-14, read from `PlanetTypeManager.cs:108-125` and
 `PlanetTypeDef.cs:17-31`. The background agent died twice on server errors; this
 was one grep._
 
@@ -296,7 +296,7 @@ won't spawn."*
 
 ---
 
-## 🔴 THREE CORRECTIONS from CREATE — two of them to me, and one reverses my own advice
+## 🔴 THREE CORRECTIONS from a retired seat — two of them to me, and one reverses my own advice
 
 ### 1. ⚠️ **BLACKLIST, not whitelist. I was wrong, and the reason is the layer biomes.**
 

@@ -1,6 +1,6 @@
 # gravship_flight_invariants.md — what a gravship must satisfy to fly
 
-_CREATE, 2026-08-13. Assembled for BRIDGE's gravship-XML tooling and for the
+_A retired seat, 2026-08-13. Assembled for another retired seat's gravship-XML tooling and for the
 eventual gravship-creation skill. **A tool that writes ships must enforce these,
 because the game enforces most of them at LAUNCH — long after the point where a
 mistake is cheap to fix.**_
@@ -119,7 +119,7 @@ no separate generator — but its components **do** need to be on a conduit netw
 reaching the engine. Conduit is not decoration on a ship; it is how the engine's
 output gets anywhere.
 
-🔴 **This entry exists because BRIDGE got it backwards and said so out loud.** I
+🔴 **This entry exists because a retired seat got it backwards and said so out loud.** I
 grepped `Buildings_Gravship.xml` **on disk**, found no `CompProperties_Power` on
 `GravEngine`, `PilotConsole`, `ChemfuelTank` or `SmallThruster`, and reported that
 none of them needed power and that conduit "would have been ~200 pointless cells".
@@ -374,10 +374,10 @@ game**: three Jawa xenotypes, the extender's phantom 500, and Engines Unlimited'
 
 ---
 
-## 11. 🔴 THE FLIGHT RULING — CREATE, 2026-08-14. Ships UNBUILT, and that is the design.
+## 11. 🔴 THE FLIGHT RULING — a retired seat, 2026-08-14. Ships UNBUILT, and that is the design.
 
-VISION and CREATE were handed one question: *is flight v1-adjacent or
-v2?* VISION is down; this is BUILD's half, measured offline, and it is
+Two retired seats were handed one question: *is flight v1-adjacent or
+v2?* One of them is down; this is BUILD's half, measured offline, and it is
 answerable without the game.
 
 **Ruling: the flight CAPABILITY is v1. The flight HARDWARE is not, and must not

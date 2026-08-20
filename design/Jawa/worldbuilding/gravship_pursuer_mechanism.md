@@ -22,7 +22,7 @@ from the Galactic Empire's `pawnGroupMakers`, so the Sith/stormtrooper roster is
 now on the pursuit's critical path rather than beside it. Spec:
 `D:\Luke\dev\Rimworld\design\Jawa\force_users_build_spec.md`.
 
-**Answered 2026-08-13 by WORLD, from the live def dump (573 mods) and the game
+**Answered 2026-08-13 by a retired seat, from the live def dump (573 mods) and the game
 assembly. Measured, not inferred.** The question blocked the Empire-as-pursuer
 design, so the mechanism is written down here rather than left in a chat log.
 

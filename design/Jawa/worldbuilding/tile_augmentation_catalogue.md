@@ -74,7 +74,7 @@ free is defenders from the owning faction** — §6.1.
 
 > **Placement is a solved mechanism. Verification of placement is not the gap; *reading
 > world/faction state* is.** That read is `jawa/list_factions`, which already
-> ranks BRIDGE #1 / V1-CRITICAL and gates on a **shutdown** window.
+> is already ranked #1 / V1-CRITICAL in a retired seat's queue and gates on a **shutdown** window.
 
 ---
 
@@ -145,7 +145,7 @@ content.** That is the useful answer.
 1. **F1 — Sarlacc pit.** Zero XML. `sw_Sarlacc` is a live `LandmarkDef`, `commonality 0.1` on
    `Sandy`/`DryGround`/`Dunes` — **already on the desert world**. Cost = find one, screenshot it.
    **A v1 gate pass for the price of a bridge call.**
-2. **C3 — Junkyard drift.** ⛔ **PREMISE CORRECTED, CREATE 2026-08-14 — read the def before
+2. **C3 — Junkyard drift.** ⛔ **PREMISE CORRECTED, a retired seat 2026-08-14 — read the def before
    patching it.** `TileMutatorDef Junkyard` (`Data/Odyssey/Defs/TileMutators/TileMutators_Modifiers.xml:153-163`)
    has **NO `biomeWhitelist` and NO `biomeBlacklist` at all.** There is nothing to add desert
    biomes to: it **already fires on every biome**, deserts included, at
@@ -278,7 +278,7 @@ owns it** — it is *not* CHECK's, since the bridge drives a running game and ca
 
 # 7. THE SECOND AUGMENTABLE SURFACE — authored interior maps
 
-_Added 2026-08-13 by VISION, from the owner's observation that the Space Tower
+_Added 2026-08-13 by a retired seat, from the owner's observation that the Space Tower
 "dungeon" is itself a tile we could augment on approach. **It is, and it is a
 better one than the world tile.** Measured from the mod on disk, not inferred._
 

@@ -1,6 +1,6 @@
 # "The Claim" — the v1 quest, specified
 
-_VISION, 2026-08-13. **This is row 3.** The row reads *"One
+_A retired seat, 2026-08-13. **This is row 3.** The row reads *"One
 `QuestScriptDef` that fires and resolves. Any premise."* — BUILD owns the build,
 and "any premise" left the one part that is mine unwritten. This is the premise,
 the player-facing text, and the shape. **BUILD picks the nodes; nothing here
@@ -105,7 +105,7 @@ and unsentimental about property*. No exclamation, no adventure-speak, no
 
 ## 🔴 Standing design rule for EVERY quest we author — not just this one
 
-_Added 2026-08-13 after CREATE found the first build defaulted to
+_Added 2026-08-13 after a retired seat found the first build defaulted to
 `everAcceptableInSpace` unset, i.e. **not offerable while the colony is aboard the
 ship**._
 
@@ -127,7 +127,7 @@ kept apart on purpose:
   separate decision, and for "The Claim" the site *is* ground. A wreck on a tile
   you walk to is the point.
 
-### ✅ MECHANISM ESTABLISHED — CREATE, 2026-08-13, three independent ways
+### ✅ MECHANISM ESTABLISHED — a retired seat, 2026-08-13, three independent ways
 
 **`everAcceptableInSpace` gates ACCEPTANCE by the player, not site placement.**
 Set it `true` and the offer reaches the ship. Core's `Script_BanditCamp.xml`
@@ -209,9 +209,9 @@ it. **None of that is v1. All of it is reachable from this text unchanged.**
 
 ---
 
-# The rumour item — ruled 2026-08-13, VISION
+# The rumour item — ruled 2026-08-13, a retired seat
 
-_CREATE found the pattern in Space Tower's `ST_TowerMap`: a **tradeable item that
+_A retired seat found the pattern in Space Tower's `ST_TowerMap`: a **tradeable item that
 hands you the quest when you read it** — `CompProperties_Usable` +
 `UseEffectDestroySelf` + `UseEffectGiveQuest`, all Core classes. They asked
 whether it stays a bare test object or becomes fiction. **It becomes fiction**,

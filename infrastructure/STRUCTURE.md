@@ -200,13 +200,13 @@ this?* A rule is durable; a queue is meant to be consumed.
 | `infrastructure/state/EXPECTED_FAILURES_next_load.md` | Expected-failure signatures, written **before** a load so triage is judgeable. |
 | `infrastructure/state/WORLDGEN_FACTION_CHECKLIST.md` | The Configure Factions page, box by box, for world creation. |
 | `design/V2_DREAMS.md` | Deferred `[v2]` bodies, kept intact. Append-only; every seat may write to it directly. |
-| `infrastructure/state/CREATE_TEST_PLAN.md` | How deployed material gets proved in-game. Written by the retired CREATE seat; still cited by `load_session.py`. |
+| `infrastructure/state/TEST_PLAN.md` | How deployed material gets proved in-game. Written by a retired seat; still cited by `load_session.py`. |
 | `infrastructure/state/status/<SEAT>.json` | What each seat says it is doing, written by `say.py`, rendered by the board. |
 | `infrastructure/state/queue/<SEAT>.md` | 🔴 **The filing destination.** `DECIDE`, `BUILD`, `CHECK`, plus `HUMAN` for the owner. You own your own; file at the next seat's. |
 
 ### The four seats
 
-**DECIDE · BUILD · CHECK · REP.** BRIDGE, OPS, CREATE, VISION, PROJECT and WORLD
+**DECIDE · BUILD · CHECK · REP.** The earlier seat names
 were retired 2026-08-14. Name your window first thing:
 `./src/RimMandrake/Utils/set_agent_window.sh <SEAT>`.
 

@@ -2152,7 +2152,7 @@ def main() -> int:
         # `refresh.py --patches` under WSL printed
         # "validate (with --live) ok (exit 0)" and then "Everything is current"
         # while validating literally nothing. The three --defs roots it passed
-        # were C:\ literals that do not exist from Linux. Found by CREATE.
+        # were C:\ literals that do not exist from Linux. Found by a retired seat.
         #
         # Worse than a clean break: both interpreters "worked" and only one
         # validated. So: refuse, name every root tried, and exit non-zero.

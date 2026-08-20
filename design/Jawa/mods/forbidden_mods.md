@@ -171,7 +171,7 @@ the folder while RimWorld holds it open, so **the folder** is not authoritative
 until a clean exit. Do not report "the removal didn't land" before then.
 
 ❌ **The `ModsConfig.xml` half of that warning was WRONG and is removed. The game
-does NOT rewrite `ModsConfig.xml` on exit.** Measured by OPS 2026-08-13: the file
+does NOT rewrite `ModsConfig.xml` on exit.** Measured by a retired seat, 2026-08-13: the file
 carried mtime **17:26**, the game ran **17:30 → 21:10**, and the mtime was
 **unchanged** after a clean exit — 3h40m of play, including a mod-settings
 session, wrote nothing. RimWorld writes that file when the **mod list is changed

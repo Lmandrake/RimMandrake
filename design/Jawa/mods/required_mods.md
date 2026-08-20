@@ -284,8 +284,8 @@ _Note (2026-08-05): **Interaction Bubbles** (WS `1516158345`) is also the anchor
 ⛔ **NOT `search_debug_actions`** — on the full 568 stack it walks the entire tree and has
 livelocked the game twice, costing a 23-minute load and, separately, a colony plus another
 thread's unsaved work. `limit` bounds the *response*, not the search.
-_(Safety correction by [PROJECT] 2026-08-12 — this line previously instructed the fatal call.
-Wording only; the verdict above it is untouched. WORLD owns this file — review at will.)_
+_(Safety correction by a retired seat, 2026-08-12 — this line previously instructed the fatal call.
+Wording only; the verdict above it is untouched.)_
 
 ### WorldEdit 2.0 — ✅ ADOPTED as the human setup-repair / heavy-authoring tool (Workshop 3590928058) ⚠️ USE THE WORKSHOP BUILD, NOT the GitHub fork
 - **Why:** The most comprehensive world editor — edits any tile parameter (biome, temperature, rainfall, swampiness), mountains/rocks/caves, **create/delete rivers and roads**, world features with custom text, and a **Faction Editor** (place/rename/re-own faction bases). The human will need this at setup to **repair blunders** and do heavier authoring the lighter tools can't.
@@ -595,7 +595,7 @@ _Evidence tier: [WS-CONFIRMED] = the Workshop page / packageId / GitHub org veri
 >
 > ⚠️ **Licence, checked because the retraction invites porting:** Outer Rim is **CC BY-NC-ND 4.0** (stated on the Workshop page; no LICENSE file ships with the mod or its repo). **ND forbids distributing derivatives.** Loading the mod is fine; our own `PatchOperation`s against its defs are fine — we ship only the patch. **Copying its defs or textures into a mod of ours is a derivative.** `outer_rim_cherrypick_list.md:54` assumes a *"general tweak license"*; that assumption is unverified and should not be relied on.
 >
-> _(Retraction by [PROJECT] on the owner's instruction, 2026-08-12. BUILD owns this file — the evidence is above so the verdict can be re-checked rather than taken on trust.)_
+> _(Retraction by a retired seat on the owner's instruction, 2026-08-12. BUILD owns this file — the evidence is above so the verdict can be re-checked rather than taken on trust.)_
 
 - **Outer Rim – Galactic Empire** (WS `2919248699`, `Neronix17.OuterRim.GalacticEmpire`) — ✅ **ADOPTED 2026-08-12, 1.6 VERIFIED ON DISK.** Dependency `Neronix17.OuterRim.Core` already active. Ships the Galactic Empire faction, the trooper ladder (`PawnKinds_Stormtroopers/ArmyTroopers/DeathTroopers/RangeTroopers`), the full stormtrooper wardrobe and **`Imp_OfficerUniform_Black`** — the black officer uniform the owner asked for — plus ISB, scout/snow/range variants, `TraderKindDefs` and training hediffs. `FactionDef` ships `permanentEnemy false`, `settlementGenerationWeight 0.3`, `requiredCountAtGameStart 1`, techLevel Ultra; the roster wants permanent-enemy, so that is a patch. Carries a **10.7 KB** Harmony assembly — **solo-load requirement waived by the owner 2026-08-12**, it may batch. Design + jobs: `design/V2_DREAMS.md` §3.
 - **Outer Rim – Galactic Republic** (WS 2971930101) — ⚠️ **INSPIRATION ONLY (1.4/1.5, SRC-AUDITED).** Ships Republic faction + 122 pawnkinds + the **Fett clone** xenotype (also 1.4/1.5-gated).

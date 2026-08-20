@@ -368,7 +368,7 @@ would produce the evidence does not exist or is measured broken.**
 the style and you photograph a default and record it as passed. **Spawn, THEN set
 style, THEN set rotation.** Only ONE rotation is broken in each, so a shot from the
 wrong side is a false pass. Which facing per mod:
-`infrastructure/state/CREATE_TEST_PLAN.md` Part 5.
+`infrastructure/state/TEST_PLAN.md` Part 5.
 📌 Generalises: *the call existing is not the same as the call being sufficient* —
 name the call **and** the state it must be in.
 

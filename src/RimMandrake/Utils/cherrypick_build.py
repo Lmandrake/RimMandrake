@@ -207,7 +207,7 @@ KEYS = [
     # ⚠️ ResearchProjectDef/GravForge and /GravEngineBuild deliberately NOT here:
     # neutralising a research project risks dangling another project's
     # prerequisite, and unreachable research is harmless once the building is
-    # gone. (OPS's call, kept.)
+    # gone. (a retired seat's call, kept.)
 ]
 
 

@@ -3,7 +3,7 @@
 # WHY THIS EXISTS
 # ===============
 # A stalled seat is invisible if the only channel is a terminal pane the owner
-# is not looking at. On 2026-08-14 BRIDGE sat stopped at the main menu waiting
+# is not looking at. On 2026-08-14 a seat sat stopped at the main menu waiting
 # for the owner's word while the owner believed work was in flight; nothing
 # left the terminal to say so. The fix in every comparable system is the same:
 # push, do not wait to be polled.

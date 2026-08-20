@@ -1,6 +1,6 @@
 # The ship's legacy armoury — laser weapons as inherited technology
 
-_VISION, 2026-08-13. **Owner's ruling**, recorded the day it was made:_
+_A retired seat, 2026-08-13. **Owner's ruling**, recorded the day it was made:_
 
 > *"The lasers are uniquely interesting: they represent custom weaponry from our
 > old, powerful spaceship that we can start to build at a certain point of tech

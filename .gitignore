@@ -25,7 +25,7 @@ Thumbs.db
 __pycache__/
 *.pyc
 
-# src/Jawa/art_bench/<machine>/ is CREATE's image-generation bench, not an archive. The
+# src/Jawa/art_bench/<machine>/ is the image-generation bench, not an archive. The
 # pipeline writes _raw (model output) then _cut (chroma-keyed) for every attempt,
 # at 2-3 MB each; the smelter bench reached 143 MB in about ninety minutes. The
 # finals get copied into the mod's own Textures/ and are tracked there, so these
@@ -80,7 +80,7 @@ src/RimMandrake/bridgetools/artifacts/
 # machine-local and dies with the session — never shared, never committed.
 .claude/session_roles/
 
-# CREATE art review sheets — working images for the owner to eyeball, not
+# Art review sheets — working images for the owner to eyeball, not
 # deliverables. Regenerated freely and often; never part of a mod.
 src/Jawa/art_bench/_review/
 

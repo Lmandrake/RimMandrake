@@ -281,7 +281,7 @@
                     "name": [
                         "Alpha Vehicles - Neolithic"
                     ],
-                    "comment": "loose art: donor ships textures loose, not in an AssetBundle, so load ORDER alone decides which wins. Placed before the donor the reskin loads, throws nothing, and is simply invisible - no log line. Added by OPS 2026-08-13."
+                    "comment": "loose art: donor ships textures loose, not in an AssetBundle, so load ORDER alone decides which wins. Placed before the donor the reskin loads, throws nothing, and is simply invisible - no log line. Added by a retired seat, 2026-08-13."
                 }
             }
         },
@@ -291,7 +291,7 @@
                     "name": [
                         "Vanilla Apparel Expanded - Accessories"
                     ],
-                    "comment": "loose art: donor ships textures loose, not in an AssetBundle, so load ORDER alone decides which wins. Placed before the donor the reskin loads, throws nothing, and is simply invisible - no log line. Added by OPS 2026-08-13."
+                    "comment": "loose art: donor ships textures loose, not in an AssetBundle, so load ORDER alone decides which wins. Placed before the donor the reskin loads, throws nothing, and is simply invisible - no log line. Added by a retired seat, 2026-08-13."
                 }
             }
         },
@@ -301,7 +301,7 @@
                     "name": [
                         "Doors Expanded"
                     ],
-                    "comment": "loose art: donor ships textures loose, not in an AssetBundle, so load ORDER alone decides which wins. Placed before the donor the reskin loads, throws nothing, and is simply invisible - no log line. Added by OPS 2026-08-13."
+                    "comment": "loose art: donor ships textures loose, not in an AssetBundle, so load ORDER alone decides which wins. Placed before the donor the reskin loads, throws nothing, and is simply invisible - no log line. Added by a retired seat, 2026-08-13."
                 }
             }
         },
@@ -311,7 +311,7 @@
                     "name": [
                         "Vanilla Gravship Expanded"
                     ],
-                    "comment": "loose art: donor ships textures loose, not in an AssetBundle, so load ORDER alone decides which wins. Placed before the donor the reskin loads, throws nothing, and is simply invisible - no log line. Added by OPS 2026-08-13."
+                    "comment": "loose art: donor ships textures loose, not in an AssetBundle, so load ORDER alone decides which wins. Placed before the donor the reskin loads, throws nothing, and is simply invisible - no log line. Added by a retired seat, 2026-08-13."
                 }
             }
         },
@@ -321,7 +321,7 @@
                     "name": [
                         "Vanilla Races Expanded - Saurid"
                     ],
-                    "comment": "loose art: donor ships textures loose, not in an AssetBundle, so load ORDER alone decides which wins. Placed before the donor the reskin loads, throws nothing, and is simply invisible - no log line. Added by OPS 2026-08-13."
+                    "comment": "loose art: donor ships textures loose, not in an AssetBundle, so load ORDER alone decides which wins. Placed before the donor the reskin loads, throws nothing, and is simply invisible - no log line. Added by a retired seat, 2026-08-13."
                 }
             }
         },
@@ -331,13 +331,13 @@
                     "name": [
                         "Research Reinvented"
                     ],
-                    "comment": "loose art: donor ships textures loose, not in an AssetBundle, so load ORDER alone decides which wins. Placed before the donor the reskin loads, throws nothing, and is simply invisible - no log line. Added by OPS 2026-08-13."
+                    "comment": "loose art: donor ships textures loose, not in an AssetBundle, so load ORDER alone decides which wins. Placed before the donor the reskin loads, throws nothing, and is simply invisible - no log line. Added by a retired seat, 2026-08-13."
                 },
                 "aw.researchreinvented.retextured": {
                     "name": [
                         "Research Reinvented Retextured"
                     ],
-                    "comment": "loose art: donor ships textures loose, not in an AssetBundle, so load ORDER alone decides which wins. Placed before the donor the reskin loads, throws nothing, and is simply invisible - no log line. Added by OPS 2026-08-13."
+                    "comment": "loose art: donor ships textures loose, not in an AssetBundle, so load ORDER alone decides which wins. Placed before the donor the reskin loads, throws nothing, and is simply invisible - no log line. Added by a retired seat, 2026-08-13."
                 }
             }
         }

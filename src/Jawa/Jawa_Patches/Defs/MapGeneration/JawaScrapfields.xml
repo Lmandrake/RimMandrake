@@ -84,7 +84,7 @@
       v=7 -> 10000/7 = 1429, 62500/1429 = 44
       v=9 -> 10000/9 = 1111, 62500/1111 = 56
   clusterSize 10 turns that into 4-6 readable CLUMPS rather than 50 chunks
-  spread evenly and invisibly. VISION's call and the reason for it: one clump
+  spread evenly and invisibly. A retired seat's call and the reason for it: one clump
   reads as a crashed thing; several read as A FIELD SOMEBODY HAS BEEN WORKING
   OVER, which is the fiction we are selling. ⭐ Tune this on the screenshot,
   not on the number.
@@ -125,7 +125,7 @@
            that is `nearPlayerStart` (ScatterAt IL_00bd), which we never set and
            did not touch. ⚠️ Do not record a tradeoff here — there isn't one.
            ⚠️ THIS IS NOT THE EXPLANATION FOR THE MEASURED 11. That reading was
-           WITHDRAWN by OPS the same night (queue/OPS.md O15) and it was wrong:
+           WITHDRAWN by a retired seat the same night (a retired seat's queue, item O15) and it was wrong:
            Jawa_StampGroundHulk is also isJunk, shares the tile, and inherits
            CalculateFinalCount unchanged — yet the hulk DID warn, and a zeroed
            count never enters the placement loop and so cannot warn. ⇒ the

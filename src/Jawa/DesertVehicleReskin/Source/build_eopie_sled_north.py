@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """Build AV_DogSled_north with a team of TWO EOPIES in place of four dogs.
 
-CREATE, 2026-08-13. Sibling of build_eopie_sled_south.py. Same method: the
+A retired seat, 2026-08-13. Sibling of build_eopie_sled_south.py. Same method: the
 animals are GENERATED once and composited, and the generated pair is committed at
 Source/art/eopie_pair_gen_north.png so this reproduces without the image model.
 

@@ -250,8 +250,8 @@ def i_factions(s, cfg):
     """OuterRim_RebelAlliance: ABSENT IS THE DESIRED OUTCOME.
 
     🔴 I had this backwards and it would have raised a false alarm on a correct
-    world. `queue/BRIDGE.md` B-new was written when the Rebel Alliance failing
-    to generate was an unexplained mystery. It is not one any more: VISION R2
+    world. A retired seat's queue, item B-new, was written when the Rebel Alliance failing
+    to generate was an unexplained mystery. It is not one any more: ruling R2
     ruled it stays suppressed, and `Jawa_Patches\\Patches\\RebelAlliance_Suppress.xml`
     exists to do exactly that. `WORLDGEN_FACTION_CHECKLIST.md:244` --
     "ABSENT is the DESIRED outcome ... do NOT revert the patch at the screen."
@@ -270,7 +270,7 @@ def i_factions(s, cfg):
     control = "OuterRim_GalacticEmpire"
     here, ctrl = want in names, control in names
     record("A1", "Rebel Alliance stays suppressed", FAIL if here else PASS,
-           "%s %s (absent is CORRECT, VISION R2); %d factions, "
+           "%s %s (absent is CORRECT, ruling R2); %d factions, "
            "countAllIncludingHidden=%s"
            % (want, "PRESENT -- suppression patch did not take" if here
               else "absent",
@@ -281,7 +281,7 @@ def i_factions(s, cfg):
 
 
 def i_pilot_console(s, cfg):
-    """CREATE item 6. The cheapest gate we have: a predicate on a paused game.
+    """A retired seat's item 6. The cheapest gate we have: a predicate on a paused game.
 
     RimWorld's own launch gate is
       ReachabilityUtility.CanReach(pawn, console, PathEndMode.InteractionCell,
@@ -329,7 +329,7 @@ def i_pilot_console(s, cfg):
 
 
 def i_cherry_picker(s, cfg):
-    """Filed by CREATE. SILENCE IS NOT CONFIRMATION here.
+    """Filed by a retired seat. SILENCE IS NOT CONFIRMATION here.
 
     Cherry Picker logs `" - FAILED: <key>"` only when a def was FOUND and
     RemoveDef threw. An unresolvable key and a def outside its `allDefs` scope
@@ -545,7 +545,7 @@ def i_desert_worldgen(s, cfg):
     record("F1b", "  ...and it READS as desert", NEEDS_EYES, "", shot)
 
 
-# CREATE_TEST_PLAN.md Part 1. CREATE owns WHAT to look at; this table owns the
+# TEST_PLAN.md Part 1. That plan owns WHAT to look at; this table owns the
 # driving. Names are the corrected ones -- `ToolBelt` does not exist anywhere and
 # the research kits are APPAREL, whose fix touches wornGraphicPath, not the
 # directionless ground texPath.
@@ -688,7 +688,7 @@ ITEMS = [
     # (row 4, "1 of 3 SEEN"), so re-proving the def
     # and the art would be spending live time on a closed row. What is still
     # open is DECIDE's B-v1 CAPABILITY question, which is a different thing.
-    # Row 5 was RULED CLOSED by PROJECT -- BTD_Jawa
+    # Row 5 was RULED CLOSED by a retired seat -- BTD_Jawa
     # survives the BTD dedup and the pawnkind pins were remapped onto it,
     # measured live from Player.log. `i_row5_xenotype` stays in this file
     # because the read is now free and would turn "measured from the log" into
@@ -697,11 +697,11 @@ ITEMS = [
     ("A5", ANY_MAP, "dune seas: BiomeDef terrainPatchMakers", i_dune_seas),
     ("A6", ANY_MAP, "Cherry Picker actually removed things", i_cherry_picker),
     ("A7", ANY_MAP, "world_stats: the sea, measured", i_world_stats),
-    ("P", ANY_MAP, "CREATE_TEST_PLAN Part 1 - the art rows", i_art_rows),
+    ("P", ANY_MAP, "TEST_PLAN Part 1 - the art rows", i_art_rows),
     # ⛔ Row 7 / rows 2 / Configure Factions are HELD BY THE OWNER -- the sea
     # spec is unsolved and the click is irreversible. Not this session.
     # FRESH_MAP now means a QUICKTEST, which rule 1c permits freely and which
-    # `CREATE_TEST_PLAN.md:99-101` accepts for the map-generation overrides.
+    # `TEST_PLAN.md:99-101` accepts for the map-generation overrides.
     # The ground hulk and the scrapfields are both registered on
     # MapGeneratorDef[Base_Player] with NO biome filter, so they fire on any
     # quicktest. Salt pans and dune seas are biome-patched and only appear if
@@ -714,7 +714,7 @@ ITEMS = [
 
 # ------------------------------------------------------------------- run
 
-# CREATE's list, 2026-08-14. 🔴 Cherry Picker DELETES only 13 def types and
+# A retired seat's list, 2026-08-14. 🔴 Cherry Picker DELETES only 13 def types and
 # NEUTERS the rest, so `get_def` returns almost every key whether the pick
 # worked or not. **Absence is the right test for exactly two of them.** For the
 # others the tell is a FIELD VALUE, which is why `get_def` grew combatPower,

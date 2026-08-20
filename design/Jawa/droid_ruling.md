@@ -140,8 +140,8 @@ that could make a downed chassis resolve as a corpse instead of a prisoner.
 
 45 KotOR pawnkinds are installed to test with (`KotORDroidGood_*`,
 `KotORDroidBad_*`). ⚠️ **No longer filed anywhere** — `NEXT_RELOAD.md` was
-rebuilt from the queue files and carries neither this item nor the `[WORLD]` tag
-(that seat is now BUILD). Refile it in `infrastructure/state/queue/BUILD.md` if it
+rebuilt from the queue files and carries neither this item nor a retired seat's tag
+(that work is now BUILD's). Refile it in `infrastructure/state/queue/BUILD.md` if it
 still matters.
 
 ## Mechanoids are OFF
@@ -419,7 +419,7 @@ rather than by special-casing: a wreck is not exempted from detonation, it simpl
 fails the test. Attributed carefully because this project has a documented case
 of a claim gaining authority purely by being restated.
 
-⚠️ **Two consequences, raised by CREATE 2026-08-12:**
+⚠️ **Two consequences, raised by a retired seat, 2026-08-12:**
 
 * **Read CURRENT power state, not a def-time maximum.** `basePowerConsumption` is
   a property of the def, so an unpowered or switched-off machine would read as a

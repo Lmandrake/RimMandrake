@@ -1,7 +1,7 @@
 # The Salvation — ideo description text
 
 _The player-facing `<description>` for the Jawa ideoligion, written 2026-08-14 by
-CREATE on the owner's ruling: **the nine gods stay in fiction** (the structure meme
+A retired seat on the owner's ruling: **the nine gods stay in fiction** (the structure meme
 `AM_Structure_Scavenger` is `deityCount 0` and cannot seat a deity), **so the
 pantheon has to live in the description.**_
 

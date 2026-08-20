@@ -32,7 +32,7 @@ VAN_R_ENG, VAN_R_EXT, VAN_CAP, VAN_N_EXT = 19, 16, 2000, 6
 # ✅ NO LONGER ASSUMED. This block used to say "generous ASSUMED values pending
 # the real slider ranges (Fetcher 2026-08-06_bigger_gravships_ranges)" while its
 # own footer said they were read from the stored floats. Both halves were in the
-# file at once. Verified offline 2026-08-13 (CREATE, queue C4): all four match
+# file at once. Verified offline 2026-08-13 (a retired seat, queue C4): all four match
 # the config exactly, so the ASSUMED framing is retired, not just amended.
 #
 # ⚠️ DO NOT "verify" THESE AGAINST THE DEF. They will not match and are not
@@ -68,7 +68,7 @@ D_MAX   = 85     # max extender distance FROM THE ENGINE (BG default 25.9)
 
 # Substructure support. ⚠️ THE TWO NUMBERS HAVE DIFFERENT PROVENANCE -- this
 # comment used to claim both came "from the same settings file" and that was
-# wrong for the second one (CREATE, 2026-08-13, queue C4):
+# wrong for the second one (a retired seat, 2026-08-13, queue C4):
 #   ENG_SUPPORT  IS in the config: BG_gravEngineSupport = 632.79541
 #   EXT_SUPPORT  is NOT in the config. There is no BG_gravExtenderSupport key.
 #                500 is Bigger Gravships' compiled MOD DEFAULT.

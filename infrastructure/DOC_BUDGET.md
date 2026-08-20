@@ -11,7 +11,7 @@ quote the snapshot below**; it is dated evidence for the diagnosis, nothing more
 **As measured 2026-08-13:** 271 markdown files, 61,053 lines (~670k tokens if read
 whole), **+5,555 net in one day**; commit bodies 5,137 lines across 177 commits
 (29 each); worst provenance density `design/Jawa/mods/required_mods.md` at 19.7
-marks per 100 lines; longest state file was the retired `AGENT_BRIDGE_state.md` at
+marks per 100 lines; longest state file was a retired seat's `AGENT_<SEAT>_state.md` at
 923 — *since fixed, and the per-seat state files are gone, so do not go looking
 for that problem there.*
 
@@ -89,9 +89,9 @@ deliverable and keeps only the receipt.
 > and gets a home.
 
 ⚠️ **`git show` is not a home.** It preserves the bytes and loses the findability,
-which is the whole value of a spec. *(Precedent: CREATE's 350-line restraint-bolt
+which is the whole value of a spec. *(Precedent: a retired seat's 350-line restraint-bolt
 answer, drained 2026-08-13 to
-`design/Jawa/worldbuilding/restraining_bolt_technical.md` — VISION was still
+`design/Jawa/worldbuilding/restraining_bolt_technical.md` — another seat was still
 waiting on its IL thresholds at the time.)*
 
 ---

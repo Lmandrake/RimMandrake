@@ -24,7 +24,7 @@ That matters because a mask that disagrees with its art fails **silently** — t
 new animal simply does not tint, with no error anywhere. Deriving removes the
 whole failure mode instead of relying on remembering to edit two files in step.
 
-⚠️ WHERE THIS TOOL DOES NOT WORK — measured 2026-08-13, CREATE
+⚠️ WHERE THIS TOOL DOES NOT WORK — measured 2026-08-13 by a retired seat
 ==============================================================
 The animal is located by looking for **warm hide pixels**, so the rule breaks on
 art whose *rigging* is the same temperature as its animals.

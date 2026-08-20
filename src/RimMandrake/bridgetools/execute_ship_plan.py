@@ -113,7 +113,7 @@ def steps_from(plan, only=None):
                 # ⚠️ The plan writes rot: 0 for everything, including the four
                 # machines it ALSO flags needsManualRotation -- the flag is the
                 # emitter saying "I could not decide this, a human must".
-                # CREATE's ruling (row8_build_order.md): those four spawn at
+                # A retired seat's ruling (row8_build_order.md): those four spawn at
                 # rot=1, one call each, no separate rotation step. Honour the
                 # FLAG over the zero, or they land facing the wrong way and
                 # nothing errors.

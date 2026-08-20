@@ -45,7 +45,7 @@ its own eyes on a pawn FA is not drawing.
 
 ## 🖼️ MOVED OUT 2026-08-13 — the three typo'd-filename repairs no longer live here
 
-_Added 2026-08-12 by WORLD, removed 2026-08-13 by CREATE._
+_Added 2026-08-12, removed 2026-08-13; both by retired seats._
 
 This mod used to ship three loose texture overrides repairing misnamed files in
 other people's mods. They are **gone from here** and now ship in their own

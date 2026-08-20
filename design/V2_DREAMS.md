@@ -69,7 +69,7 @@ verify:   scoped `validate_patch.py --defs` sweep reports 0 double-match `Replac
 criteria: EMPTY
 
 ## B7 Repair the approved ideoligion .rid
-spec:     `C:\Users\Mandrake\AppData\LocalLow\Ludeon Studios\RimWorld by Ludeon Studios\Ideos\The Salvation (CREATE).rid`. Two defects: `AM_Fertility` was dropped while two precepts still require it; `VME_Nomad` is IN and must come out — its own description says non-vanilla movement systems will not register and it inflicts −50 mood at 60 days. `Nomadic_Preferred` is a PRECEPT (`requiredMemes` empty), zero slot cost, already in the file, and does the job: `GravshipUtility::ArriveNewMap` unconditionally stamps `IdeoManager.lastResettledTick`, the only field its ThoughtWorker reads. (`ArriveExistingMap` does NOT write it.) Rebuild with `python3 src/RimMandrake/Utils/build_salvation_rid.py --check|--write`; it never rewrites the source. Do not delete the owner's original `The Salvation.rid` beside it. Do not "fix" `AM_Structure_Scavenger`'s `deityCount 0` by swapping the structure — no installed structure meme allows more than 4, which is why the nine gods live in the description.
+spec:     `C:\Users\Mandrake\AppData\LocalLow\Ludeon Studios\RimWorld by Ludeon Studios\Ideos\The Salvation (built).rid`. Two defects: `AM_Fertility` was dropped while two precepts still require it; `VME_Nomad` is IN and must come out — its own description says non-vanilla movement systems will not register and it inflicts −50 mood at 60 days. `Nomadic_Preferred` is a PRECEPT (`requiredMemes` empty), zero slot cost, already in the file, and does the job: `GravshipUtility::ArriveNewMap` unconditionally stamps `IdeoManager.lastResettledTick`, the only field its ThoughtWorker reads. (`ArriveExistingMap` does NOT write it.) Rebuild with `python3 src/RimMandrake/Utils/build_salvation_rid.py --check|--write`; it never rewrites the source. Do not delete the owner's original `The Salvation.rid` beside it. Do not "fix" `AM_Structure_Scavenger`'s `deityCount 0` by swapping the structure — no installed structure meme allows more than 4, which is why the nine gods live in the description.
 verify:   `--check` passes: IDs unique, no dangling `Precept_<ID>`, re-run byte-identical; no `VME_Nomad`; `AM_Fertility` present or its two dependent precepts dropped.
 criteria: the ideo browser loads it with 0 rejected precepts; the description renders as scripture, not a wall; the six added precepts show a position (barracks · lighting · combat in darkness · combat prowess · weapons noble *Ranged* / despised *Melee* · apparel desire); one relic, "The Founding Ion Blaster".
 
@@ -232,7 +232,7 @@ spec:     Remove hull at (45,132) and place a `SmallThruster` at (45,131) rot 2;
 verify:   EMPTY
 criteria: (45,131) reads ACTIVE with no warning; the control reads `WarningThrusterInside`. Read it with `jawa/inspect_string` (`Thing.GetInspectString()`) — `get_cell_info` returns a className and stops.
 
-## C14 The sealed-room thruster test (CREATE's L8)
+## C14 The sealed-room thruster test (a retired seat's L8)
 spec:     Sealed roofed room with a thruster inside -> predict INACTIVE. Thruster in the wall line with open sky aft -> predict ACTIVE.
 verify:   EMPTY
 criteria: send BUILD the RAW `jawa/inspect_string` lines, not a verdict — the whole roof derivation hangs off which sentence fires.
@@ -248,12 +248,12 @@ verify:   EMPTY
 criteria: twelve screenshots with the subject in frame and no dev window over it.
 
 ## C22 The ten art-fix mods — one spawn, one look each
-spec:     Eight deployed and enabled; the two newest are `mandrake.phytokinbarkheadfix` @562 (donor @388) and `mandrake.kotorbandoliernorthfix` @**579** — deliberately outside the 556–563 art-fix slot because its donor `guy762.mm.kotorcore` sits at 572 and ships loose art. A loose PNG beats an AssetBundle regardless of order, but between two LOOSE files order decides, so a loose-art donor must be in `loadAfter` or the fix is invisible with no log line. Routes and click paths: `infrastructure/state/CREATE_TEST_PLAN.md`.
+spec:     Eight deployed and enabled; the two newest are `mandrake.phytokinbarkheadfix` @562 (donor @388) and `mandrake.kotorbandoliernorthfix` @**579** — deliberately outside the 556–563 art-fix slot because its donor `guy762.mm.kotorcore` sits at 572 and ships loose art. A loose PNG beats an AssetBundle regardless of order, but between two LOOSE files order decides, so a loose-art donor must be in `loadAfter` or the fix is invisible with no log line. Routes and click paths: `infrastructure/state/TEST_PLAN.md`.
 verify:   EMPTY
 criteria: each fix renders in the facing it targets. Judge at DISPLAY size and render the tint — art can be correct at source and broken at render. Observation only.
 
-## C23 Run `CREATE_TEST_PLAN.md` with its nine pre-flight corrections
-spec:     `D:\Luke\dev\Rimworld\infrastructure\state\CREATE_TEST_PLAN.md` — eight art-fix mods, v1 row 3's `Jawa_ClaimRumour`, row 4's terrain plus the 619-cell ground hulk. Part 3 needs a FRESHLY GENERATED Desert / ExtremeDesert / AridShrubland map; a quicktest counts. The nine pre-flight corrections are now **inside that file**, in its PRE-FLIGHT table — read them before typing at a live console. The terrain part is closed and art is observation-only; check `V1_CHAIN.md` before spending a load on any of it.
+## C23 Run `TEST_PLAN.md` with its nine pre-flight corrections
+spec:     `D:\Luke\dev\Rimworld\infrastructure\state\TEST_PLAN.md` — eight art-fix mods, v1 row 3's `Jawa_ClaimRumour`, row 4's terrain plus the 619-cell ground hulk. Part 3 needs a FRESHLY GENERATED Desert / ExtremeDesert / AridShrubland map; a quicktest counts. The nine pre-flight corrections are now **inside that file**, in its PRE-FLIGHT table — read them before typing at a live console. The terrain part is closed and art is observation-only; check `V1_CHAIN.md` before spending a load on any of it.
 verify:   EMPTY
 criteria: a screenshot is the evidence, a def query is not — every failure mode in the plan is silent.
 
@@ -411,7 +411,7 @@ moves back. **v2 starts the day v1's gate passes.**
 | **4a** | W7 — re-cast rebel gear onto the scavenger factions | DECIDE | "Junker Scrap-Warrens" has no defName | **no — needs the game up** |
 | **4b** | U2 — balance-audit the live JDS droid weapons | DECIDE | nothing | yes |
 | **4c** | U3 — build the **Free Droid Enclaves** `FactionDef` | BUILD | worldgen (faction #5 in the spec) | yes — and it unblocks C-v3 |
-| **4d** | U4 — the rare Homestead Jedi `pawnGroupMaker` | DECIDE+BUILD | joint Sith/Jedi build (VISION V-new) | yes |
+| **4d** | U4 — the rare Homestead Jedi `pawnGroupMaker` | DECIDE+BUILD | joint Sith/Jedi build (a retired seat's V-new) | yes |
 | **5** | V2 Ideology lines — does the Jawaese actually reach Suppress/ReduceWill? | DECIDE | 🛑 owner STOP WORK | yes — and it needs the game up |
 
 ---
@@ -601,7 +601,7 @@ is the work that is actually owed instead, and it is the same effort.**
 ### 4a. [DECIDE] W7 — re-cast the rebel gear onto the scavenger factions
 
 **This is what converts a suppressed faction into a salvage layer.** Without it the
-gear exists but nobody wears it. Duplicated as VISION **V13** `[v2]`.
+gear exists but nobody wears it. Duplicated as a retired seat's **V13** `[v2]`.
 
 ⚠️ **Three of the four premises in the original filing were wrong. Checked from disk:**
 1. **The named tool is NOT installed.** WS `3635005747` (Faction Weapons and Apparel
@@ -656,7 +656,7 @@ with the curated light + telekinesis VPE loadout. `OuterRim_MoistureFarmers` is 
 Outer Rim Core, so the vessel exists.
 
 **Spec exists:** `design/Jawa/force_users_build_spec.md`. Owner has flagged Jedi-for-
-Homestead and Sith-for-Empire as **one joint build** (VISION V-new), so U4
+Homestead and Sith-for-Empire as **one joint build** (a retired seat's V-new), so U4
 should not be built alone.
 
 ⚠️ `force_users_build_spec.md` cites this item as `TODO_v2.md:1081`. **That line number

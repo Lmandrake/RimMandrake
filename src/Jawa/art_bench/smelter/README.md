@@ -1,6 +1,6 @@
 # src/Jawa/art_bench/smelter — the survivors, and why only these
 
-Pruned 2026-08-12 by CREATE, at the owner's request: **89 files → 4, 143 MB →
+Pruned 2026-08-12 by a retired seat, at the owner's request: **89 files → 4, 143 MB →
 2.1 MB.** Everything deleted was untracked scratch from the generation pipeline.
 
 Nothing was lost. Before deleting, all 89 files were SHA-256'd against every

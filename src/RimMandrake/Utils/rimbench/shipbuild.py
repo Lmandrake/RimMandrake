@@ -59,7 +59,7 @@ chose that placement; it was the absence of a choice, and it is invisible in the
 output because corner coordinates look exactly like intended coordinates.
 
 So `ship_bridge.json` now REFUSES to emit without an explicit origin. Found by
-CREATE reading the emitter rather than the output.
+A retired seat reading the emitter rather than the output.
 
 USAGE
 =====
@@ -184,7 +184,7 @@ def load_elements():
 
 # ---------------------------------- the build sheet is PINNED, and here is why
 # ⚠️ `build_sheet_15.json` and its generator `build_sheet_15.py` have DIVERGED,
-# deliberately, as of 2026-08-13 (CREATE, e95eb26). The generator's orientation
+# deliberately, as of 2026-08-13 (a retired seat, e95eb26). The generator's orientation
 # choice used to fall out of set-iteration order — reproducible but unintentional,
 # and not even self-consistent: the wider form won for five machines and the
 # taller form for Autofarmer. Making it explicit with sorted() was the right fix
@@ -220,7 +220,7 @@ NOT_EMITTED = {
     "apron": "floor area, not a building — the tiles get terrain, nothing spawns",
     "belt_stub": "conveyor stubs; VFEFactory_Conveyor exists but the sheet does "
                  "not say which way each stub runs, and a conveyor placed at the "
-                 "wrong facing is worse than none. CREATE's call, not mine.",
+                 "wrong facing is worse than none. A retired seat's call, not mine.",
 }
 
 
@@ -761,7 +761,7 @@ def selftest():
         "%d ops for %d sheet element(s), %d held back as conflicts"
         % (machine_ops, expect_vfe, len(getattr(build, "conflicts", []))))
 
-    # --- the three findings from PROJECT's review, asserted not assumed ---
+    # --- the three findings from a retired seat's review, asserted not assumed ---
     chk("machine sizes were read from source", len(MACHINE_DECL) == 18,
         "%d declared sizes parsed" % len(MACHINE_DECL))
     # ⚠️ This asserted `== 3` and was WRONG rather than stale: the real count is 4.

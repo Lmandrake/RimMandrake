@@ -1,6 +1,6 @@
 # Faction engine gap audit — Stage 2
 
-_Written by **PROJECT**, 2026-08-12, against the faction roster Stage 2 work
+_Written by **a retired seat**, 2026-08-12, against the faction roster Stage 2 work
 (now `design/V2_DREAMS.md` **B20**). Audits
 `D:\Luke\dev\Rimworld\design\Jawa\worldbuilding\faction_roster_v2.md` (2,433 lines,
 12 faction dossiers) against what RimWorld's `FactionDef` actually accepts._
@@ -43,7 +43,7 @@ differs completely between "author our own" and "patch theirs".
 | 11 | Jawa Trade Moot | the player faction | different problem |
 | 12 | the Junkers | none identified | **unassigned** |
 
-⚠️ **The "plausible vessel" column is PROJECT's inference, not a ruling.** Only
+⚠️ **The "plausible vessel" column is a retired seat's inference, not a ruling.** Only
 #3 and #5 rest on recorded work. Do not treat the blanks as "no vessel exists" —
 they mean **nobody has looked**, and 88 live `FactionDef`s were never searched
 for candidates.
@@ -147,8 +147,8 @@ correct. This is the load-bearing kind of error: it is the sentence that
 authorised twelve dossiers to specify a goodwill number, so the mistake is
 upstream of all twelve.
 
-**Recommended action: WORLD (who owns `design/Jawa/worldbuilding/`) strikes `goodwill` from
-line 42 and adds a pointer to §3 here.** Not fixed by PROJECT — rule 9, the doc
+**Recommended action: strike `goodwill` from
+line 42 and add a pointer to §3 here.** Not fixed here — rule 9, the doc
 is owned by whoever owns the subject. Filed, not edited.
 
 ---
@@ -174,7 +174,7 @@ finding, already recorded in §0.
 
 ### 🔴 The def dump is a POST-PATCH artifact — wrong layer for "what does the mod ship?"
 
-**PROJECT filed a wrong finding from this and WORLD caught it in five minutes.**
+**A retired seat filed a wrong finding from this and another retired seat caught it in five minutes.**
 Recorded here because this audit's data comes from that dump.
 
 The dump's identity is **"what the game loaded"** — and that includes *our own

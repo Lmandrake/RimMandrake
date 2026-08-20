@@ -1,6 +1,6 @@
 # The world we want — faction specification
 
-_VISION, 2026-08-13. **This states the desired end state only.** No instructions,
+_A retired seat, 2026-08-13. **This states the desired end state only.** No instructions,
 no UI steps, no "how to get there". Everything here is a claim about what should
 be true of the finished world; how to make each line true is a separate problem
 for whoever configures the mods._

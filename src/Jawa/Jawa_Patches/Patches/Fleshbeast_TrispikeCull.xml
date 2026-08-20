@@ -4,7 +4,7 @@
   <!--
     Strike Trispike out of the two DEATH-SPAWN lists that name it directly.
 
-    VISION ruled Trispike removed (cherrypick_inbox.md §A). This patch is the
+    A retired seat ruled Trispike removed (cherrypick_inbox.md §A). This patch is the
     half a cherry-pick cannot do, and it is NOT belt-and-braces:
 
     🔴 CHERRY PICKER NEUTRALISES A PawnKindDef; IT DOES NOT DELETE IT.
@@ -28,7 +28,7 @@
         deathAction Class="DeathActionProperties_Divide"
         dividePawnCount 4, dividePawnKindOptions { Toughspike, Trispike }
         ⇒ with Trispike gone the list drops to one entry and a Genebulb bursts
-          into FOUR Toughspikes. VISION rules that a flavour gain, not a loss:
+          into FOUR Toughspikes. That seat rules it a flavour gain, not a loss:
           one gene-line, one mistake, four copies.
 
       Dreadmeld (kept, renamed Genemeld), :526-532
