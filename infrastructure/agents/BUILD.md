@@ -32,8 +32,9 @@ verification yourself — an artifact graded by its own author proves nothing.
 2. `verify:` passes, and you paste its output — not your assertion that it passed.
 3. The item is appended to `queue/CHECK.md` with its `## <name>` and `criteria:`
    carried through unchanged, and the closing commit's `Closes:` trailer repeats that
-   name verbatim. Any item you file yourself gets a unique kebab-case name saying what
-   the work is plus a short random suffix — never a number. POLICY.md has the rule.
+   name verbatim. Any item you file yourself is named
+   `THREE_DESCRIPTIVE_WORDS_#` — three UPPER_SNAKE words plus a number, never a number
+   alone and never the old kebab-plus-hex form (owner, 2026-08-20). POLICY.md has the rule.
 4. Deployed if the item needs a live check, because the game reads the Steam folder,
    never this repo.
 

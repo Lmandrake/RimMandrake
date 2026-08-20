@@ -25,11 +25,18 @@ Rejected push → `git pull --rebase`, never `--force`. Commit explicit paths.
 **That commit carries a trailer naming the item, verbatim:**
 
 ```
-Closes: queue-ids-become-names-7f3a2c
+Closes: QUEUE_IDS_BECOME_NAMES_1
 ```
 
-One per item, own line, at the end of the message. Copy the name exactly as filed —
-a legacy item closes under its number (`Closes: B58`), never a renamed form. This is the only durable record
+One per item, own line, at the end of the message. Copy the ID exactly as filed —
+a legacy item closes under its number (`Closes: B58`), never a renamed form.
+
+🔴 **New items are NAMED, not numbered — owner, 2026-08-20:**
+`THREE_DESCRIPTIVE_WORDS_#`, three UPPER_SNAKE words plus a disambiguating number.
+⛔ **No new `B*` / `C*` / `D*` / `W*` IDs; that scheme is closed.** The reason is the
+owner reading commit trailers: `Closes: SANDSTORM_WEATHER_TUNING_1` says what happened,
+`Closes: D55` does not. Full rule and examples in `CLAUDE.md`. ✅ **When you cite a
+legacy ID, write its title beside it** — `B58 (the dead Jawa pawnkind)`. This is the only durable record
 that the work happened — the item itself is about to leave the queue, and
 `derive_matrix.py` reads the trailer back out of git to count progress. No trailer
 means the board never learns, and 70 items have already been lost that way.
@@ -238,16 +245,23 @@ criteria: <the LIVE pass/fail CHECK will apply.>
 state:    ready | doing | done | blocked | dropped
 ```
 
-**`<name>` is a unique kebab-case NAME, never a number.** Four seats append to these
-files with no locking, so a number that is free when you read it is taken by the time
-you write, and the blind write drops a peer's item silently.
+🔴 **`<name>` is `THREE_DESCRIPTIVE_WORDS_#` — owner's ruling, 2026-08-20.**
+Never a number. Four seats append to these files with no locking, so a number that is
+free when you read it is taken by the time you write, and the blind write drops a peer's
+item silently.
 
-- **It says what the work is.** Transparent enough that the name alone identifies the
-  item. No opaque labels, no initials, no hashes standing alone.
-- **It ends in a short random suffix** to guarantee uniqueness:
-  `queue-ids-become-names-7f3a2c`.
+- **Three UPPER_SNAKE words that say what the work is, then a disambiguating number:**
+  `QUEUE_IDS_BECOME_NAMES_1`, `SANDSTORM_WEATHER_TUNING_1`. Three is the target — if it
+  takes six words to say, the extra words go in the title after the ID, not inside it.
+- **The name alone must identify the item**, cold, with no queue file open. No opaque
+  labels, no initials, no hashes standing alone.
+- **Uniqueness comes from the trailing number**, not from randomness. Start at `1` and
+  go up only when those three words are already taken. ⛔ **The old
+  `kebab-case-plus-random-hex` form (`queue-ids-become-names-7f3a2c`) is retired** — the
+  hex was noise the owner had to read past.
 - **Items already filed under a number keep it.** They close under the ID they were
-  filed with. Never rename one.
+  filed with. Never rename one. ✅ **But cite them with their title attached** —
+  `B58 (the dead Jawa pawnkind)`, never a bare `B58`.
 
 **A blocked item names WHY, after an em-dash:**
 

@@ -121,7 +121,9 @@ live instructions versus historical records. It does not judge — it hands you 
 list you would otherwise have to remember to build.
 
 Run it on **the phrase someone would act on**, not on the item ID. Agents act on
-"turn mechanoids off", not on "B25(c)".
+"turn mechanoids off", not on "B25(c)" or "MECHANOIDS_STAY_ON_1" — a well-named item
+tells you which phrase to search for, but it is still the phrase that finds the
+directives.
 
 ### The unblocking sweep — the half everyone forgets
 

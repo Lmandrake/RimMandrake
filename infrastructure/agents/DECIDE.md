@@ -30,9 +30,17 @@ criteria: what CHECK will look for in the live game. Pass/fail.
 state:    ready
 ```
 
-**`<name>` is a unique kebab-case name that says what the work is, plus a short
-random suffix — `queue-ids-become-names-7f3a2c`. Never a number.** POLICY.md has the
-rule; you file more items than anyone, so you hit the collision first.
+🔴 **`<name>` is `THREE_DESCRIPTIVE_WORDS_#` — owner's ruling, 2026-08-20.**
+Three UPPER_SNAKE words that say what the work is, then a disambiguating number:
+`QUEUE_IDS_BECOME_NAMES_1`, `SANDSTORM_WEATHER_TUNING_1`. Start at `1`; go up only when
+those three words are already taken.
+
+⛔ **This replaces the kebab-case-plus-random-hex form** (`queue-ids-become-names-7f3a2c`)
+that this file used to mandate, and it replaces numbers outright — **no new `B*` / `C*` /
+`D*` / `W*`.** The owner's reason, verbatim: *"It's killing me having to guess what D55
+is."* A hex suffix failed the same test from the other side — it is noise he has to read
+past. **You file more items than anyone, so you set the tone here.** Full rule in
+`CLAUDE.md`; `POLICY.md` carries it for the commit trailer.
 
 **An item without all three fields is not ready and BUILD will bounce it.** Writing
 `verify:` is your work, not BUILD's — you know what "correct" means; they know how

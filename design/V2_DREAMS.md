@@ -43,7 +43,10 @@ doc. The point is to offload it: write it down, let it go, get back to the v1 wo
 **It is drained only when v1 has shipped and someone opens it deliberately.**
 
 Items keep their original queue IDs (`B*`, `C*`, `D*`) so older citations still
-resolve. The `row:` and `state:` fields were queue plumbing and were dropped on the
+resolve. 🔴 **New appends do NOT get one** — owner, 2026-08-20: name them
+`THREE_DESCRIPTIVE_WORDS_#` (three UPPER_SNAKE words plus a number), because nobody can
+remember what `D55` was. See `CLAUDE.md`. The no-format rule above still holds for
+everything after the heading. The `row:` and `state:` fields were queue plumbing and were dropped on the
 way in; everything else is verbatim.
 
 _Created 2026-08-14 by draining `queue/BUILD.md`, `queue/CHECK.md`, `queue/DECIDE.md`

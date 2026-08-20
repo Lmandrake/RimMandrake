@@ -58,6 +58,41 @@ from design and discussion."*
 - **A patch that matches nothing logs nothing.** `PatchOperationConditional` and
   `PatchOperationFindMod` both return true on no match.
 
+## 🔴 Queue items are NAMED, not numbered — owner's ruling, 2026-08-20
+
+> *"When queue actions are created, they are named `THREE_DESCRIPTIVE_WORDS_#` rather
+> than B104 or D5. It's killing me having to guess what D55 is."*
+
+**Every NEW item in `infrastructure/state/queue/*.md` and every new append to
+`design/V2_DREAMS.md` gets a name that says what it is:**
+
+```
+## MECHANOIDS_STAY_ON_1 Keep the Mechanoid faction; it is the Forgotten Arsenal
+## PAWN_KIND_ROSTER_2 Create 48 pawn types so raids field roles
+```
+
+- **Three UPPER_SNAKE words, then `_#`.** Three is the target, not a hard cap — but if
+  you need six words to say it, the extra words belong in the title after the ID, not
+  inside it. The trailing number disambiguates reuse of the same three words; start at
+  `1` and only go up when the name is already taken.
+- 🔑 **The name must be guessable cold.** The whole point is that a seat reading
+  `Closes: SANDSTORM_WEATHER_TUNING_1` in a commit knows what happened without opening
+  a queue file. Name it after **what the work is**, never after the seat, the file or
+  the sprint.
+- ⛔ **No new `B*` / `C*` / `D*` / `W*` IDs.** That scheme is closed. It reads as
+  precedence it does not have, and nobody can remember what `D55` was.
+
+**The tooling already accepts it — verified 2026-08-20, no change needed.**
+`src/RimMandrake/Utils/derive_matrix.py` takes the first whitespace-delimited token
+after `## ` as the ID, and its `Closes:` trailer regex is
+`[A-Za-z][A-Za-z0-9._-]*`, which admits underscores and digits.
+
+⚠️ **Legacy IDs stay exactly as they are. Do not rename them.** `POLICY.md` is right
+that renumbering an item away breaks the board's count and cannot be recovered — a
+legacy item still closes under its own ID (`Closes: B58`). ✅ **But whenever you WRITE
+a legacy ID anywhere — a report, a commit body, a queue cross-reference — put its title
+beside it:** `B58 (the dead Jawa pawnkind)`, never a bare `B58`.
+
 ## Superseding a doc means writing INTO the doc you superseded
 
 **Owner's rule, 2026-08-20**, issued after an audit of two doc clusters. Across 14
