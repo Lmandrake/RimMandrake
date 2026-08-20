@@ -1,6 +1,6 @@
 ---
 name: rimworld-content-moderation
-description: Deciding what content stays in a RimWorld campaign out of a large mod stack — building contact sheets of real sprites straight from the defs so a keep/cut call is made by looking, cutting with Cherry Picker rather than uninstalling, and the traps that make a cut do nothing or break a pawn. Use when curating, trimming or cherrypicking items, weapons, apparel, creatures or any graphical asset; when someone asks "which of these do we keep"; or before proposing that a mod be removed.
+description: Deciding what content stays in a RimWorld campaign out of a large mod stack — building contact sheets of real sprites straight from the defs so a keep/cut call is made by looking, cutting with Cherry Picker rather than uninstalling, and the traps that make a cut do nothing or break a pawn. Includes the one that is invisible offline: cutting the last weapon carrying a tag silently disarms every pawn kind that asks for it, and weaponTags appear in no def dump and on no bridge call, so raw mod XML is the only source. Use when curating, trimming or cherrypicking items, weapons, apparel, creatures or any graphical asset; when someone asks "which of these do we keep"; after any cut, to find tags that went to zero; and before proposing that a mod be removed.
 ---
 
 # RimWorld content moderation
@@ -198,3 +198,34 @@ Windows `python.exe` has it, and relative paths work from the repo root:
 ```
 python.exe src/RimMandrake/Utils/animal_contact_sheet.py --csv <csv> --out <dir>
 ```
+
+---
+
+## 🔴 A cut item can disarm a pawn kind that never named it, and nothing logs
+
+This is the failure mode that survives every check a cut list can run on itself.
+
+A `PawnKindDef` asks for weapons by **tag**, not by defName —
+`weaponTags: NeolithicMeleeDecent`. Cut the last surviving weapon carrying that tag
+and the tag resolves to an empty set. **A pawn kind whose weapon tag is empty spawns
+bare-handed.** No red error, no cross-reference warning, nothing in `Player.log`:
+the kind is valid, the tag is valid, the set is just empty.
+
+Measured in this repo: vanilla `MeleeWeapon_Ikwa` is the only Core weapon carrying
+`NeolithicMeleeDecent`; the one other def in the entire workshop that carries it
+belongs to an inactive mod. Cutting the ikwa silently disarmed **every pawn kind
+inheriting `TribalWarriorBase`** — vanilla tribal warriors and an authored faction's
+signature raid alike. Nobody noticed for four days.
+
+🔴 **AND THE TAGS ARE INVISIBLE TO EVERY OFFLINE CHANNEL YOU WOULD REACH FOR FIRST.**
+`weaponTags` is absent from all PawnKindDefs in the def dump, absent from every
+ThingDef in it, and not returned by the bridge's `get_def`. **Raw mod XML is the only
+source.** Two read paths hiding the same field is not evidence the field is empty —
+it is evidence you are asking the wrong thing.
+
+⇒ **After any weapon or apparel cut, rebuild the tag → surviving-item index and look
+for tags that went to zero.** Scan the ACTIVE mod folders' XML (resolve them from
+`ModsConfig.xml` and each `About.xml` packageId — 578 folders, not the 1,200+ on
+disk), collect every `<weaponTags>` and `<apparel><tags>`, subtract the cut list, and
+report the empty tags. The same index is what makes authoring new pawn kinds safe:
+**a tag you write is only real if a surviving item carries it.**

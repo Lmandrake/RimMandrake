@@ -1,6 +1,6 @@
 ---
 name: frozen-artifacts
-description: Protect a file that holds a human's decisions from the generator that would silently regenerate over it — and, more often, decide NOT to. Covers the three tests a file must pass before it deserves a freeze, writing the frozen flag and its meaning into the artifact itself, making only the overwriting generator refuse while the reading one stays free, putting the unfreeze instructions in the refusal message, and the whole-file auto-writer that deletes top-level keys it does not recognise. Use when a curation export, spec, roster, prefill or hand-built artifact is finished and something else can rewrite it, or when someone proposes locking a file.
+description: Protect a file that holds a human's decisions from the generator that would silently regenerate over it — and, more often, decide NOT to. Covers the three tests a file must pass before it deserves a freeze, writing the frozen flag and its meaning into the artifact itself, making only the overwriting generator refuse while the reading one stays free, putting the unfreeze instructions in the refusal message, the whole-file auto-writer that deletes top-level keys it does not recognise, and the generated file that has quietly accumulated entries the generator can no longer rebuild — where a count is not a roster and regenerating deletes them for good. Use when a curation export, spec, roster, prefill or hand-built artifact is finished and something else can rewrite it, when someone proposes locking a file, and before re-running any generator whose output is committed — especially when a regression guard has refused to write.
 ---
 
 # Frozen artifacts
@@ -147,6 +147,35 @@ drifted, every future diff is noise, and a deletion is hiding in it.
 ⚠️ The generalisation is bigger than freezing: **any component that serialises a whole
 document from a partial model is a deletion engine.** The freeze marker is just the case
 where you notice.
+
+## 6b. 🔴 A GENERATED file can hold content the generator cannot rebuild
+
+The whole-file auto-writer in §6 deletes keys it does not recognise. The sharper
+version of that trap is a file everyone *believes* is generated, which has quietly
+accumulated entries with no upstream source at all.
+
+Measured here: a species mod ships 69 xenotypes. The generator can rebuild **63**
+from the donor mods' XML. The other **six exist nowhere but in the generator's own
+previous output** — no donor tree defines them, and no re-run, re-dump or
+re-install can bring them back. Any regenerate deletes them permanently. What had
+been protecting them was a regression guard that refused to write a smaller
+catalogue than the one on disk, and every time it fired somebody read it as the
+guard being broken.
+
+🔑 **A count is not a roster.** Before trusting "it ships N" — and certainly before
+regenerating — diff the three sets: what is ON DISK, what the generator would
+BUILD, and what it says it SKIPPED. The interesting number is `on_disk - built`,
+and if it is not zero the file is part hand-made whether anyone intended that or
+not.
+
+⇒ Then make the split explicit rather than relying on a guard to catch it: move the
+unbuildable entries into a sibling file the generator never writes, and carry across
+anything they depend on that the generator DOES write. A guard that fires is a
+warning; a file the generator cannot touch is a fix.
+
+⚠️ And read a refusal as data. `REFUSING TO WRITE: would ship 57, disk has 69` is
+the guard reporting a real difference — the honest response is to find out what the
+12 are, not to lower the bar to get a build out.
 
 ## 7. Candidates in this repo
 

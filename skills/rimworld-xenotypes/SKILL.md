@@ -228,6 +228,35 @@ A child's list is **appended to its parent's**, not substituted. Measured:
 meant to be exactly what you wrote**, or your Star Wars outlanders field
 Hussars. Same rule as `pawnGroupMakers`.
 
+⚠️ **An EMPTY set is not "no opinion" — it is 100% baseliner.**
+`XenotypeSet.BaselinerChance` returns `1f` when the list is empty
+(`RimWorld/XenotypeSet.cs`), so `<xenotypeSet Inherit="False" />` on a faction of
+ordinary humanlikes means plain humans, every time. That is usually what you want
+for a faction whose pawn kinds carry their own races — droids, mechanoids, insects —
+because `PawnGenerator` iterates the faction set by `Count` and an empty one simply
+contributes nothing, leaving the kind to decide. It is rarely what you want on a
+faction of people.
+
+🔑 **The two questions are separate, and conflating them is the trap.** *Does the
+parent's list still arrive?* is answered by `Inherit="False"`. *What happens when
+mine is empty?* is answered by `BaselinerChance`. An empty set with the attribute
+strips the parent AND yields baseliners; an empty set without it inherits the
+parent's five and yields those.
+
+### 🔴 Two xenotypes can share a `label`, and then the label proves nothing
+
+One mod can ship two xenotypes for the same species — a hand-built set and a
+generated one, both labelled "Jawa". Nothing in play distinguishes them: the pawn
+inspect panel shows the label, not the defName. Measured in this repo: a
+`defaultFactionDef PlayerColony` pawn kind had been rolling the 24-gene generated
+one for weeks while the owner's ratified 35-gene set sat unused, and it was
+invisible because both said "Jawa".
+
+**Settle which one a pawn actually has by defName or by gene count, never by
+reading the label.** And when a ruling names "the only active xenotype", grep every
+`xenotypeChances` in the repo for the OTHER one — a def-keyed dictionary hides the
+name inside an element tag, so a plain search for `<xenotype>` will not find it.
+
 ### 🔴 `factionlessGenerationWeight` and `canGenerateAsCombatant` do not discriminate
 
 Unset defaults are `0` and `false`, and a runtime field read cannot tell an unset
