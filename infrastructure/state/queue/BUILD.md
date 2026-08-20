@@ -41,6 +41,35 @@ They are WRONG about the config, right about the intent.** Do not edit the setti
 the docs; the docs get fixed.
 ✅ **Subagents are unaffected and fully authorized** — spawn them, fan out, do not ask.
 
+## 📍 STATE OF PLAY at the 2026-08-20 wrap — read this first
+
+**The def dump is RATIFIED as definitive** (owner, 2026-08-20; fingerprint and the
+conditions in `infrastructure/state/observed/LIVE.md`). 577 mods, dump and `activeMods`
+agree for the first time. Answer def questions from it until the owner says otherwise;
+adding or removing a mod lapses the ruling.
+
+**Landed and deployed this session, all awaiting a live look in `queue/CHECK.md`:**
+the eleven faith texts · the eight faction defs and their `requiredCountAtGameStart` ·
+the biome-mix dictionary shape · the `Ash'karr` namer · D-CHK2's 30 texture paths ·
+`WeaponTags_Renormalise.xml` (154 weapons) · `JawaFactionRoster.xml` (48 kinds) ·
+the MegafaunaYield op-47 repair · the Worldbuilder preset in LocalLow.
+
+**Confirmed live at the 00:55 load:** `dictshape` 0 (was 28) · `deadnames` 0 ·
+texture failures 2 and both belong to GRimTerra, not us · **emptied weapon tags 0** ·
+disarmed pawn kinds 49 → 15 with none of ours among them.
+
+🔑 **Two tools now gate this work and should be run before hand-reasoning about either:**
+`weapon_tag_audit.py` (refuses unless the dump matches the mod list) and
+`gen_pawnkind_roster.py` (the roster table lives in its source, not in the XML).
+
+⚠️ **Open, and none of it is BUILD's to decide:** the 16 unwired roster kinds for the four
+reskin factions · `Execution_Required` has no `FactionDef` field · the six orphan xenotypes
+a regenerate would delete · Deepwater's non-existent harpoon · the lightsaber
+`armorPenetration` reading CHECK owes.
+
+⛔ **Do not re-derive the lightsaber damage analysis from the dump.** It was retracted:
+`Lightsaber.dll` computes penetration in C#. The reading comes back from CHECK first.
+
 ## B-V2 Park any v2 idea in design/V2_DREAMS.md yourself — no permission needed
 row:      doctrine
 spec:     Any idea for new content that is not v1 is appended to the END of
