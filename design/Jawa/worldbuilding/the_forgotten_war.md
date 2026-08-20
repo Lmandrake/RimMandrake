@@ -179,6 +179,65 @@ shrug off the diplomacy has a free mine.
 ⚠️ **Terrain and chemical hazards are chain step 8 work and step 8 is ratified.**
 Reopening it for one hand-placed map needs a ruling, not a patch.
 
+### 📐 MEASURED 2026-08-19 — what actually ships, before anyone builds this
+
+**Facts only. The numbers and the final shape are DECIDE's proposal, not yet ruled.**
+
+🔴 **1. "Lakes of battery acid" do not exist. There is no acid terrain in this stack.**
+`AB_AcidWater` is not a def. Acid ships **only as weather** — `AB_AcidRainWeather` and
+`AB_AcidRainCondition`. AlphaBiomes.dll carries **no terrain-damage class at all** (20
+Harmony patches, every one worldgen or biome-worker). The hazard the ruling names has to
+be built from something else.
+
+⚠️ **2. And most of what LOOKS like a chemical hazard is theatre.** Measured across
+1,338 `TerrainDef`s — these are bare water or rock reskins with a path cost and **no
+damage of any kind**: `AB_Tar` · `AB_PropaneLake` · `AB_LiquidSlime` · `AB_ArtificialTar`
+· `AB_SolidifiedLava` · `NuclearWaste` (Advanced Biomes — unbuildable, but harmless to
+walk on). `AB_Quicksand` slows and never damages. **Choosing by name would produce a map
+that reads lethal and is not**, which is the exact opposite of the "stationary and
+legible" brief.
+
+✅ **What actually damages, all stationary, all visible:**
+
+| terrain | source | mechanism |
+|---|---|---|
+| `VEE_IrradiatedWater*` (6 variants) | Vanilla Landmarks Expanded | `toxicBuildupFactor 8` — the hardest-hitting shipped |
+| `ToxicWaterShallow` / `Deep` / `MovingShallow` / `ToxicFlood` | Odyssey | `toxicBuildupFactor 3` |
+| `VEE_SulfuricWater*` (5) | Vanilla Landmarks Expanded | `toxicBuildupFactor 1` — closest by NAME to the ruling's "acid", weakest in effect |
+| `LavaShallow` / `LavaDeep` | Odyssey | `dangerous`, heat 0.25/tick, `burnDamage 3`, ignites pawns |
+
+⭐ **3. `AB_MechanoidIntrusion` is ALREADY a map made of metal.** The owner's ruling —
+*"it is not a place that contains metal, it is built of it"* — is **true of the shipped
+biome before we touch it.** `forceRockTypes: GU_AncientMetals` (`isNaturalRock`,
+`deconstructible: false`, smooths to `AB_SmoothedAncientMetals`) — **the map's walls are
+metal.** Ground is `GU_MetalFloor1/2/3` with `AB_SoilOnCrackedMetal` and `GU_Piping`
+where a biome would normally put mud and gravel. Animal density 0.1 and effectively no
+fauna; ambient `Ambient_Wind_Desolate`; `movementDifficulty 1.5`. It needs a rename and a
+hazard pass, not a build.
+⚠️ **One trap in it:** the `AncientRuins` tile mutator **blacklists**
+`AB_MechanoidIntrusion`, so ordinary ruins will not generate there.
+`AncientChemfuelRefinery` and `TerraformingScar` **do** whitelist it; `AncientToxVent`
+does not.
+
+🔑 **4. THE GOODWILL COST CAN BE BUILT WITH NO C# — but only if the metal is BUILDINGS.**
+- `Faction.Notify_BuildingTookDamage` fires automatically for any **Building** carrying a
+  non-hostile `.Faction` when the player damages it: `goodwill -= min(100, damage)`,
+  reason `AttackedBuilding`. No code, no def field.
+- `QuestNode_ChangeFactionGoodwill` + `QuestNode_AddTag` on the sacred thing gives an
+  **explicitly chosen** penalty on the shipped `<tag>.Destroyed` signal — pure XML.
+- ⛔ **`SitePartDef` and `WorldObjectDef` have no goodwill field.** A new
+  `GoodwillSituationDef` needs a `workerClass`, i.e. C#.
+- 🔴 **THE GAP THAT DECIDES THE DESIGN: MINING DOES NOT FIRE ANY OF IT.**
+  `Mineable.DestroyMined` destroys without a `DamageInfo`, so nothing notifies the owner
+  faction. Ideology's `Mined` / `DestroyedMineable` events feed **colonist mood precepts
+  only, never goodwill.** ⇒ **If the Cathedral's metal is mineable rock, stripping it is
+  free and silent, and the entire second cost of R-W4 evaporates.** The sacred material
+  must be faction-owned **Buildings**. (Plain deconstruct is also not enough on its own —
+  `Notify_BuildingRemoved` changes no goodwill — so deconstruction needs the quest-signal
+  route above.)
+
+
+
 ## 🔴 R-W5 · The Utinni is a FORSAKEN ship, and she was here at the beginning
 
 **Owner's ruling, 2026-08-15, and it is the largest single addition to the
