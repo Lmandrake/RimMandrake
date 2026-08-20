@@ -393,7 +393,40 @@ criteria: the linter finds the KNOWN defects on a world we have already diagnose
           linter that passes a world we know is broken is the linter being wrong. Run it
           against the known-bad state FIRST; a clean sheet on the first run is a red flag,
           not a result.
-state:    ready
+state:    ✅ DONE — PASSED 2026-08-19, calibrated by INJECTION rather than by hoping.
+result:   SHIPPED: `jawa/world_lint`.
+          ✅ CALIBRATION: injected three defect classes at named tiles and the linter moved
+             by exactly what went in - waterBiomeOnRaisedLand **0 -> 3**, landBiomeSubmerged
+             **0 -> 2**, staleMarineMutators **0 -> 3**, and it named the tiles back
+             (7001/7002/7003 Ocean at elevation 800; 7010/7011 TemperateForest at -50).
+          ⭐ THE BEST EVIDENCE IS THE ONE IT DIDN'T COUNT. I added `Coast` to FOUR tiles and
+             it reported THREE - 7022 was genuinely coastal by real adjacency, so a Coast
+             mutator there is correct and it declined to flag it. That is the check doing
+             the actual work rather than counting my writes back at me.
+          ✅ NO CLEAN SHEET: baseline on an UNTOUCHED vanilla world is **52 findings**, which
+             is what a real planet looks like. A linter returning 0 on its first run would
+             have been the red flag the criterion warns about.
+          🔑 VANILLA BASELINE, and this is what Ash'karr must be judged AGAINST rather than
+             against zero:
+               single-tile islands           8
+               settlements on water          2
+               settlements on impassable     2
+               settlements with NO ROAD     40   <- of ~100. Vanilla does not road-connect
+                                                    most settlements, so "unreachable by
+                                                    road" is NOT by itself a defect. The
+                                                    owner has to set the threshold he cares
+                                                    about; the tool reports, it does not judge.
+               river systems                38, **0 reaching no sea**, 0 trunk systems orphaned
+          🔑 That last line is the useful calibration: vanilla rivers ALL reach the sea. So
+             if Ash'karr shows trunk systems reaching no sea, that is anomalous against the
+             engine's own generator, not just against our spec.
+          ✅ THE OWNER'S CONDITIONAL RIVER RULING IS IMPLEMENTED: river SYSTEMS are flooded
+             into components and judged by their largest river def. Only trunks
+             (HugeRiver/LargeRiver by default, configurable) must reach a sea; low-
+             accumulation rivers are allowed to die in playas and salt pans. A linter that
+             cried wolf on 44 legitimate rivers would be worse than none.
+          ⚠️ `lushBiomesOffRiver` needs the owner's lush list passed in (`lushBiomes=`); it
+             is skipped when empty rather than guessing which biomes count as lush.
 
 ## W9 The full 21,872-tile import, and the owner looks at his planet
 row:      bridge-9

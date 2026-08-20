@@ -2280,5 +2280,227 @@ namespace JawaBench.BridgeTools
             });
         }
 
+
+        // ================================================================
+        //  W8 - G8 THE SANITY LINTER
+        //
+        //  The owner's words: evaluate "how sane is this planet?", not "did the
+        //  script run". It runs IN the engine against the live grid so it sees
+        //  what the game sees - not what an offline array says.
+        //
+        //  🔑 The river rule is CONDITIONAL by the owner's ruling: high-
+        //  accumulation TRUNKS must reach a sea; low-accumulation rivers MAY
+        //  die in playas and salt pans. So river components are judged by their
+        //  biggest river def, not by existing. A linter that cried wolf on 44
+        //  legitimate rivers would be worse than no linter.
+        // ================================================================
+        [Tool(
+            "jawa/world_lint",
+            Description =
+                "Sweep the live planet for things that read as WRONG rather than things that " +
+                "failed to run - the owner's sanity pass. Checks: marine mutators on tiles " +
+                "that are not coastal by real adjacency; water biome on raised land and land " +
+                "biome on submerged tiles; single-tile islands; river systems that reach no " +
+                "sea (judged by their largest river def, because low-accumulation rivers are " +
+                "ALLOWED to die inland); settlements on water, on impassable terrain, stacked, " +
+                "or with no road; and lush biomes sitting off-river when a lush list is given. " +
+                "Read-only. Calibrate it on a world you already know is broken before " +
+                "trusting a clean sheet.",
+            ResultDescription = "success, checks{} each with a count and examples[].")]
+        public static async Task<object> WorldLint(
+            IRimBridgeContext ctx,
+            CancellationToken cancellationToken,
+            [ToolParameter(Description = "Mutators implying water adjacency. Default 'Coast'.")]
+            string marineMutators = "Coast",
+            [ToolParameter(Description = "River defs counted as TRUNKS that must reach a sea. Default 'HugeRiver,LargeRiver'.")]
+            string trunkRivers = "HugeRiver,LargeRiver",
+            [ToolParameter(Description = "Comma-separated biome defNames that must sit on or beside a river. Empty skips the check.")]
+            string lushBiomes = null,
+            [ToolParameter(Description = "Max examples per check. Default 12.")] int limit = 12)
+        {
+            return await ctx.MainThread.InvokeAsync(() =>
+            {
+                if (Find.World == null || Find.WorldGrid == null) return Fail("No world is loaded.");
+                var grid = Find.WorldGrid; int n = grid.TilesCount;
+
+                var marine = new HashSet<string>((marineMutators ?? "").Split(',').Select(x => x.Trim()).Where(x => x.Length > 0), StringComparer.OrdinalIgnoreCase);
+                var trunks = new HashSet<string>((trunkRivers ?? "").Split(',').Select(x => x.Trim()).Where(x => x.Length > 0), StringComparer.OrdinalIgnoreCase);
+                var lush = new HashSet<string>((lushBiomes ?? "").Split(',').Select(x => x.Trim()).Where(x => x.Length > 0), StringComparer.OrdinalIgnoreCase);
+
+                var staleMarine = new List<object>(); int staleMarineN = 0;
+                var waterBiomeOnLand = new List<object>(); int wbolN = 0;
+                var landBiomeSubmerged = new List<object>(); int lbsN = 0;
+                var lonelyIsland = new List<object>(); int islandN = 0;
+                var lushOffRiver = new List<object>(); int lushN = 0;
+
+                var nbrs = new List<PlanetTile>();
+                var water = new bool[n];
+                var hasRiver = new bool[n];
+                for (int i = 0; i < n; i++)
+                {
+                    var t = grid[i] as SurfaceTile;
+                    if (t == null) continue;
+                    water[i] = t.WaterCovered;
+                    hasRiver[i] = t.potentialRivers != null && t.potentialRivers.Count > 0;
+                }
+
+                for (int i = 0; i < n; i++)
+                {
+                    var t = grid[i] as SurfaceTile;
+                    if (t == null) continue;
+                    var b = t.PrimaryBiome;
+                    bool coastal = SafeIsCoastal(i);
+
+                    if (t.mutatorsNullable != null)
+                        foreach (var m in t.mutatorsNullable)
+                            if (m != null && marine.Contains(m.defName) && !coastal)
+                            {
+                                staleMarineN++;
+                                if (staleMarine.Count < limit)
+                                    staleMarine.Add(new { tile = i, mutator = m.defName, biome = b != null ? b.defName : null, elevation = t.elevation });
+                            }
+
+                    // A water biome on a raised tile, or land biome under water, is the
+                    // classic repaint artefact: the biome field and the elevation field
+                    // were written by different passes that never read each other.
+                    if (b != null)
+                    {
+                        bool biomeIsWater = b.defName == "Ocean" || b.defName == "Lake" || b.defName == "SeaIce";
+                        if (biomeIsWater && t.elevation > 0f)
+                        {
+                            wbolN++;
+                            if (waterBiomeOnLand.Count < limit) waterBiomeOnLand.Add(new { tile = i, biome = b.defName, elevation = t.elevation });
+                        }
+                        if (!biomeIsWater && t.elevation <= 0f)
+                        {
+                            lbsN++;
+                            if (landBiomeSubmerged.Count < limit) landBiomeSubmerged.Add(new { tile = i, biome = b.defName, elevation = t.elevation });
+                        }
+                        if (lush.Count > 0 && lush.Contains(b.defName))
+                        {
+                            nbrs.Clear(); grid.GetTileNeighbors(i, nbrs);
+                            bool nearRiver = hasRiver[i] || nbrs.Any(x => x.tileId >= 0 && x.tileId < n && hasRiver[x.tileId]);
+                            if (!nearRiver)
+                            {
+                                lushN++;
+                                if (lushOffRiver.Count < limit) lushOffRiver.Add(new { tile = i, biome = b.defName });
+                            }
+                        }
+                    }
+
+                    if (!water[i])
+                    {
+                        nbrs.Clear(); grid.GetTileNeighbors(i, nbrs);
+                        if (nbrs.Count > 0 && nbrs.All(x => x.tileId >= 0 && x.tileId < n && water[x.tileId]))
+                        {
+                            islandN++;
+                            if (lonelyIsland.Count < limit) lonelyIsland.Add(new { tile = i, biome = b != null ? b.defName : null, elevation = t.elevation });
+                        }
+                    }
+                }
+
+                // River SYSTEMS, not river tiles: flood the river graph into components,
+                // then ask whether each component ever touches water. A component whose
+                // biggest def is a trunk and never reaches a sea is the real defect.
+                var seen = new bool[n];
+                int systems = 0, systemsNoSea = 0, trunkSystemsNoSea = 0;
+                var orphanTrunks = new List<object>();
+                var stack = new List<int>();
+                for (int i = 0; i < n; i++)
+                {
+                    if (seen[i] || !hasRiver[i]) continue;
+                    systems++;
+                    stack.Clear(); stack.Add(i); seen[i] = true;
+                    bool touchesSea = false; string biggest = null; int biggestRank = -1; int size = 0; int sample = i;
+                    while (stack.Count > 0)
+                    {
+                        int cur = stack[stack.Count - 1]; stack.RemoveAt(stack.Count - 1);
+                        size++;
+                        var t = grid[cur] as SurfaceTile;
+                        if (t == null) continue;
+                        nbrs.Clear(); grid.GetTileNeighbors(cur, nbrs);
+                        foreach (var x in nbrs)
+                            if (x.tileId >= 0 && x.tileId < n && water[x.tileId]) { touchesSea = true; break; }
+                        if (t.potentialRivers != null)
+                            foreach (var l in t.potentialRivers)
+                            {
+                                if (l.river != null)
+                                {
+                                    int rank = trunks.Contains(l.river.defName) ? 2 : 1;
+                                    if (rank > biggestRank) { biggestRank = rank; biggest = l.river.defName; }
+                                }
+                                int far = l.neighbor.tileId;
+                                if (far >= 0 && far < n && hasRiver[far] && !seen[far]) { seen[far] = true; stack.Add(far); }
+                            }
+                    }
+                    if (!touchesSea)
+                    {
+                        systemsNoSea++;
+                        if (biggestRank == 2)
+                        {
+                            trunkSystemsNoSea++;
+                            if (orphanTrunks.Count < limit)
+                                orphanTrunks.Add(new { sampleTile = sample, systemTiles = size, largestRiver = biggest });
+                        }
+                    }
+                }
+
+                // Settlements
+                var settOnWater = new List<object>(); var settImpass = new List<object>();
+                var settNoRoad = new List<object>(); var stacked = new List<object>();
+                int sW = 0, sI = 0, sNR = 0;
+                var perTile = new Dictionary<int, int>();
+                if (Find.WorldObjects != null)
+                    foreach (var st in Find.WorldObjects.Settlements)
+                    {
+                        if (st == null) continue;
+                        int tid = st.Tile.tileId;
+                        if (tid < 0 || tid >= n) continue;
+                        int c; perTile.TryGetValue(tid, out c); perTile[tid] = c + 1;
+                        var t = grid[tid] as SurfaceTile;
+                        if (t == null) continue;
+                        if (t.WaterCovered) { sW++; if (settOnWater.Count < limit) settOnWater.Add(new { tile = tid, name = st.Name, faction = st.Faction != null ? st.Faction.def.defName : null }); }
+                        if (t.hilliness == Hilliness.Impassable || (t.PrimaryBiome != null && t.PrimaryBiome.impassable))
+                        { sI++; if (settImpass.Count < limit) settImpass.Add(new { tile = tid, name = st.Name }); }
+                        bool road = t.potentialRoads != null && t.potentialRoads.Count > 0;
+                        if (!road) { sNR++; if (settNoRoad.Count < limit) settNoRoad.Add(new { tile = tid, name = st.Name, faction = st.Faction != null ? st.Faction.def.defName : null }); }
+                    }
+                foreach (var kv in perTile) if (kv.Value > 1 && stacked.Count < limit) stacked.Add(new { tile = kv.Key, settlements = kv.Value });
+
+                int totalFindings = staleMarineN + wbolN + lbsN + islandN + lushN + trunkSystemsNoSea + sW + sI + sNR + stacked.Count;
+
+                return (object)new
+                {
+                    success = true,
+                    tilesScanned = n,
+                    totalFindings,
+                    verdict = totalFindings == 0
+                        ? "CLEAN - and treat that with suspicion until this linter has been calibrated on a world you KNOW is broken."
+                        : totalFindings + " findings across " + n + " tiles.",
+                    checks = new
+                    {
+                        staleMarineMutators = new { count = staleMarineN, note = "Marine mutator on a tile that is not coastal by real adjacency - the classic survivor of a repaint.", examples = staleMarine },
+                        waterBiomeOnRaisedLand = new { count = wbolN, note = "Ocean/Lake/SeaIce biome with elevation > 0.", examples = waterBiomeOnLand },
+                        landBiomeSubmerged = new { count = lbsN, note = "Land biome with elevation <= 0.", examples = landBiomeSubmerged },
+                        singleTileIslands = new { count = islandN, note = "Land tile with every neighbour water.", examples = lonelyIsland },
+                        riverSystems = new
+                        {
+                            total = systems,
+                            reachingNoSea = systemsNoSea,
+                            trunkSystemsReachingNoSea = trunkSystemsNoSea,
+                            note = "Only TRUNK systems (" + string.Join("/", trunks.ToArray()) + ") are defects. Low-accumulation rivers are ALLOWED to die in playas and salt pans - owner's ruling.",
+                            orphanTrunks,
+                        },
+                        settlementsOnWater = new { count = sW, examples = settOnWater },
+                        settlementsOnImpassable = new { count = sI, examples = settImpass },
+                        settlementsWithNoRoad = new { count = sNR, examples = settNoRoad },
+                        stackedSettlements = new { count = stacked.Count, examples = stacked },
+                        lushBiomesOffRiver = new { count = lushN, checked_ = lush.ToList(), note = "Nile-style ruling: a 1-2 tile lush band follows EVERY river. Lush terrain away from one is the defect.", examples = lushOffRiver },
+                    },
+                    ticksGame = TicksGameSafe(),
+                };
+            });
+        }
+
     }
 }
