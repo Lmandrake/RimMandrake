@@ -591,7 +591,7 @@ namespace JawaBench.BridgeTools
             return outp.ToArray();
         }
 
-        private static TileCsv ReadTileCsv(string path, out string err)
+        private static TileCsv ReadTileCsv(string path, out string err, bool requireTileColumn = true)
         {
             err = null;
             if (string.IsNullOrEmpty(path)) { err = "No path given."; return null; }
@@ -605,7 +605,7 @@ namespace JawaBench.BridgeTools
             csv.Header = SplitCsvLine(lines[0]).Select(h => h.Trim()).ToList();
             for (int i = 0; i < csv.Header.Count; i++)
                 if (!csv.Col.ContainsKey(csv.Header[i])) csv.Col[csv.Header[i]] = i;
-            if (!csv.Col.ContainsKey("tile")) { err = "CSV has no 'tile' column. Header: " + string.Join(",", csv.Header.ToArray()); return null; }
+            if (requireTileColumn && !csv.Col.ContainsKey("tile")) { err = "CSV has no 'tile' column. Header: " + string.Join(",", csv.Header.ToArray()); return null; }
             for (int i = 1; i < lines.Length; i++)
             {
                 if (string.IsNullOrEmpty(lines[i])) continue;
@@ -1115,7 +1115,18 @@ namespace JawaBench.BridgeTools
             });
         }
 
-        private static TileCsv ReadTileCsv2(string path, out string err) { return ReadTileCsv(path, out err); }
+        // 🔴 `requireTileColumn: false` is why this wrapper exists at all.
+        // `ReadTileCsv` hard-requires a `tile` column, which is right for
+        // world_tile_import and WRONG for the links CSV, whose rows are EDGES
+        // (kind,a,b,def) and have no single tile. Calling the tile reader from
+        // WorldLinksImport made that tool unable to read its own documented
+        // format: it refused with "CSV has no 'tile' column" before ever
+        // reaching its kind/a/b/def check. Found live 2026-08-20.
+        private static TileCsv ReadTileCsv2(string path, out string err, bool requireTileColumn = true)
+        {
+            var csv = ReadTileCsv(path, out err, requireTileColumn);
+            return csv;
+        }
 
         [Tool(
             "jawa/world_links_import",
