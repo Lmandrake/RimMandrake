@@ -46,6 +46,7 @@
     <pawnsPlural>curators</pawnsPlural>
     <leaderTitle>Director</leaderTitle>
     <categoryTag>Outlander</categoryTag>
+    <requiredCountAtGameStart>1</requiredCountAtGameStart>
     <techLevel>Spacer</techLevel>
     <canMakeRandomly>true</canMakeRandomly>
     <!-- 3 settlements, isolated and secure. -->

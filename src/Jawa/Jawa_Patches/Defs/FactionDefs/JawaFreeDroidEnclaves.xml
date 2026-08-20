@@ -45,6 +45,7 @@
     <pawnsPlural>droids</pawnsPlural>
     <leaderTitle>First Speaker</leaderTitle>
     <categoryTag>Outlander</categoryTag>
+    <requiredCountAtGameStart>1</requiredCountAtGameStart>
     <techLevel>Spacer</techLevel>
     <!-- R3: explicit, load-bearing. Do not let this fall through to the parent. -->
     <humanlikeFaction>true</humanlikeFaction>

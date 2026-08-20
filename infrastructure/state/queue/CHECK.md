@@ -1391,3 +1391,17 @@ state:    ✅ DONE 2026-08-19 (f427f3a). `design/Jawa/worldbuilding/TidallyLocke
           `planetCoverage 1` — which independently cross-confirms the pin recorded in
           `worldmap-import-is-pinned-to-mlp-subcount-7-4c9e1a`. Steam can now revert the
           workshop file without costing us the authoring.
+
+## seven-jawa-factions-still-default-to-zero-at-worldgen-4a71c8
+row:      9
+spec:     `<requiredCountAtGameStart>1</requiredCountAtGameStart>` added to the seven
+          `src/Jawa/Jawa_Patches/Defs/FactionDefs/` defs that lacked it — Jawa_HuttCartel ·
+          Jawa_Junkers · Jawa_DeepwaterCompact · Jawa_GeonosianFoundryHive ·
+          Jawa_WildsteamClan · Jawa_AscendantHelix · Jawa_FreeDroidEnclaves.
+          `JawaTribes.xml` untouched (already 1, max 2). Deployed to the game copy.
+verify:   done offline — `grep -c requiredCountAtGameStart …/FactionDefs/*.xml` = 1 on all
+          eight; `validate_patch.py --defs` 0 errors, 8 files. The one warning is a
+          pre-existing `iconPath` note on JawaHuttCartel, unrelated.
+criteria: on the Configure Factions page at the owner's worldgen run, all eight Jawa
+          factions arrive at a count of at least 1 without him touching a counter.
+state:    ready

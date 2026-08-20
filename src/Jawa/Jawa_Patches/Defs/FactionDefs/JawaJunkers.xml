@@ -44,6 +44,7 @@
     <pawnsPlural>Junkers</pawnsPlural>
     <leaderTitle>Scraplord</leaderTitle>
     <categoryTag>Pirate</categoryTag>
+    <requiredCountAtGameStart>1</requiredCountAtGameStart>
     <techLevel>Industrial</techLevel>
     <canMakeRandomly>true</canMakeRandomly>
     <!-- 8 settlements, wreck fields and tailings. -->

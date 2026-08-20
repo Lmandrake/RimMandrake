@@ -2398,4 +2398,5 @@ verify:   `grep -c requiredCountAtGameStart src/Jawa/Jawa_Patches/Defs/FactionDe
           returns 8 files with one each; `validate_patch.py --defs` clean on all eight.
 criteria: on the Configure Factions page at the owner's worldgen run, all eight Jawa
           factions arrive at a count of at least 1 without him touching a counter.
-state:    ready
+state:    done 2026-08-19 — seven files edited, validated (8 files, 0 errors) and
+          deployed. Live half filed to CHECK.md under the same name.

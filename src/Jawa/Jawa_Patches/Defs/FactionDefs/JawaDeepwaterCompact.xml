@@ -43,6 +43,7 @@
     <pawnsPlural>water wardens</pawnsPlural>
     <leaderTitle>High Warden</leaderTitle>
     <categoryTag>Outlander</categoryTag>
+    <requiredCountAtGameStart>1</requiredCountAtGameStart>
     <techLevel>Industrial</techLevel>
     <canMakeRandomly>true</canMakeRandomly>
     <!-- 5 settlements, every oasis and coast. -->

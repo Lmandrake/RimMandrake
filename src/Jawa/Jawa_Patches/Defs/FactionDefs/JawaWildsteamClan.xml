@@ -47,6 +47,7 @@
     <pawnsPlural>freehold warriors</pawnsPlural>
     <leaderTitle>Elder</leaderTitle>
     <categoryTag>Outlander</categoryTag>
+    <requiredCountAtGameStart>1</requiredCountAtGameStart>
     <techLevel>Industrial</techLevel>
     <canMakeRandomly>true</canMakeRandomly>
     <!-- 4 settlements, wooded/upland/spring tiles. -->

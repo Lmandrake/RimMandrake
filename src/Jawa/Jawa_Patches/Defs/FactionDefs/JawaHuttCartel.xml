@@ -42,6 +42,7 @@
     <pawnsPlural>Cartel enforcers</pawnsPlural>
     <leaderTitle>Lord</leaderTitle>
     <categoryTag>Outlander</categoryTag>
+    <requiredCountAtGameStart>1</requiredCountAtGameStart>
     <techLevel>Industrial</techLevel>
     <humanlikeFaction>true</humanlikeFaction>
     <canMakeRandomly>true</canMakeRandomly>
