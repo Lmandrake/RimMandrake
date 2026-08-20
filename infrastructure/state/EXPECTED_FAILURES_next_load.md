@@ -1017,9 +1017,38 @@ md5 `f362b782942f6b4e83ef36f2c16a93b9`, verified after the change, so the deploy
 current. The DLL the game will load is **not** the one E2 recorded. Trust this
 paragraph over E2's hash.
 
-## §4 Results
+## §4 Results — filled 2026-08-20 from the live load. ✅ **PASS**
 
-_(blank — fill after the load; do not edit the signatures above once the log exists)_
+**The prediction landed character for character.** Recorded here before the log rotates.
+
+```
+[Inhabited] ready: 2 patches, 269 characters, 0 places, 0 casts.
+```
+
+| # | predicted | observed | verdict |
+|---|---|---|---|
+| **patches** | 2 | **2** | ✅ **both Harmony patches bound.** This is the field that could not be faked by a healthy spawn menu, and it is green. `Game.DeinitAndRemoveMap` and `QuestGen_Pawns.GeneratePawn` both resolved their targets at startup |
+| **characters** | 269 | **269** | ✅ every authored `CharacterDef` across the 11 cast rosters parsed. No partial parse |
+| **places** | 0 | **0** | ✅ correct, and correctly NOT a fault — no `InhabitedPlaceDef` instance ships; places are made at runtime |
+| **casts** | 0 | **0** | ✅ same |
+| `HarmonyException` / `AmbiguousMatchException` | absent | **0 occurrences** | ✅ the predicted most-likely failure did not occur |
+| any error naming `Inhabited` | absent | **none** | ✅ clean |
+
+**E5 — the def dump retook itself as required.** `[RimDefDump] wrote 532 def-type files
+… done in 16397 ms`, against 529 types before: **Inhabited's three new def types are in
+the dump**, so `--live` checks now measure the 578-mod game rather than the lapsed
+577-mod one. 🔑 **`dump_request.txt` deleted after the load** — the marker does not
+consume itself and would otherwise have charged every future load ~16 s and ~1.2 GB.
+
+⚠️ **NOT closed by this block: 16 red errors in the load, none of them Inhabited's.**
+Triage belongs to whoever harvests (`harvest_log.py`), not here — this block only ever
+claimed the Inhabited assembly and the dump. **Do not read this ✅ as "the load was
+clean."**
+
+⚠️ **What this does NOT prove.** The patches *bound*; nothing here shows they *work*.
+No pawn has entered or left a roster, and no beggar has been drawn from the displaced
+pool. `ROSTER_SOAK_100_DAYS_1` in `CHECK.md` is the architecture gate and it is
+untouched by this result.
 
 ## §4 CORRECTION — written by DECIDE 2026-08-20 07:5x, BEFORE the log exists
 
