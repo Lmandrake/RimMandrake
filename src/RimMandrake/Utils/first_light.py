@@ -32,7 +32,7 @@ TILES_CSV = os.path.join(REPO, "world", "ASHKARR_WORLDMAP_tiles.csv")
 # trusting a literal here -- but a literal is still useful as a "did the deploy
 # take" tripwire, because a LOW count means the bundle did not load, not that a
 # tool is missing.
-EXPECT_JAWA_AT_LEAST = 111
+EXPECT_JAWA_AT_LEAST = 112
 
 
 def section(out, title):

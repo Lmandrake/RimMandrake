@@ -1259,3 +1259,35 @@ spec:     DROPPED before anyone picked it up. It was filed on a premise the owne
           `infrastructure/state/WORLDGEN_FACTION_CHECKLIST.md`, which lists it and warns
           that unticking it deletes one of our factions. Nothing here needed a load.
 state:    dropped — premise rejected by the owner; no live check is owed
+
+## MORNING_RELOAD_PLAN_1 What to do with tomorrow's cold load, in order
+row:      bridge-9
+from:     CHECK, overnight 2026-08-20. The owner is asleep; he reloads in the morning.
+spec:     The companion is DEPLOYED and byte-verified. **112 distinct `jawa/` tool names are
+          in the assembly, against 106 live in the last session** — six new, none of them
+          exercised in a running game yet. Everything below is the first exercise.
+          RUN THIS FIRST, it costs about a minute and answers most of it:
+            `python.exe src/RimMandrake/Utils/first_light.py`
+          🔴 `python.exe`, never WSL `python3` — the bridge is on Windows loopback.
+          It writes `infrastructure/output/first_light_<date>.md` and prints one line.
+          THEN, in this order — it is W9 §12's order and the order matters:
+            1. tiles      `world_tile_import` (already proven 100%, re-run after any reload)
+            2. links      `world_links_import` world/ASHKARR_WORLDMAP_links.csv — 🔴 THE FIX
+                          FOR THIS IS UNTESTED. It could never read its own format until
+                          tonight. If it still refuses, that is the first thing to debug.
+            3. mutators   no authored source exists. The 817 stale `Coast` mutators from the
+                          repaint need CLEARING, not importing — `world_mutators_set`.
+            4. landmarks  no authored source. `landmarks.count = 0` in the report json. SKIP.
+            5. settlements `world_settlements_import` world/ASHKARR_WORLDMAP_settlements.csv
+                          — 72 rows. It refuses the WHOLE import if any faction is unresolvable.
+            6. features   `world_features_import` — reads the `region` column of the TILES csv,
+                          23 named regions. No second file.
+            7. `world_commit`, then `world_lint`, then LOOK.
+verify:   `first_light.py` reports 112 `jawa/` tools and a clean tile validate.
+criteria: 🔴 THE OWNER LOOKS AT THE PLANET AND DOES NOT IMMEDIATELY NAME A DEFECT, compared
+          against `world/view/ASHKARR_WORLDMAP.biome.equirect.png`. Not "the tools returned
+          success" — every defect that has mattered in this work passed its numeric check
+          while the picture was obviously wrong.
+          ⚠️ Last night's planet failed exactly this: 100% tile match, and it still did not
+          read as Ash'karr, because stages 2-7 had not run.
+state:    ready
