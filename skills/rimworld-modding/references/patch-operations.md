@@ -85,6 +85,38 @@ read the node you are about to write into. Known dictionary-keyed fields include
 and `terrainsByFertility`, but treat that list as a reminder to check rather than
 as the answer.
 
+### 🔑 The one-line test, so you never have to trust a list
+
+A `List<Foo>` is dictionary-keyed **exactly when `Foo` declares
+`LoadDataFromXmlCustom` and that method reads the NODE NAME as a def reference.**
+Open the record class and look:
+
+```csharp
+public class BiomeAnimalRecord            // and WeatherCommonalityRecord, identically
+{
+    public PawnKindDef animal;
+    public float commonality;
+
+    public void LoadDataFromXmlCustom(XmlNode xmlRoot)
+    {
+        DirectXmlCrossRefLoader.RegisterObjectWantsCrossRef(this, "animal", xmlRoot);
+        commonality = ParseHelper.FromString<float>(xmlRoot.FirstChild.Value);
+    }
+}
+```
+
+`xmlRoot` **is** the entry, so its NAME is the def and its TEXT is the number:
+`<AA_Eyeling>1.2</AA_Eyeling>`. Write `<li><animal>…</animal></li>` instead and
+`FirstChild.Value` reads an element rather than text, and the entry misparses.
+No `LoadDataFromXmlCustom` → ordinary `<li>` list.
+
+⚠️ **This is worth the thirty seconds because the plausible-sounding warning goes
+the other way.** Two separate queue items in this project instructed BUILD to use
+the `<li>` form for `wildAnimals` and for `baseWeatherCommonalities` — both
+"generalising" from the real `biomeConfigs` / FactionDef trap, which is a
+different field. Both would have shipped silently broken XML. **The record class
+is the authority; another field's shape is not evidence.**
+
 ---
 
 ## 3. xpath idioms that matter
