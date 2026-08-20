@@ -112,7 +112,7 @@ R = [
  ("TradeMoot","Leader","First Bargainer Kiknik the Wealthy",900,250,("max","Good"),["KotORRanged_ion","Jawa_IonWeapon"],["guy762_Robes_jawa"]),
 
  ("Junkers","Grunt","Junker scrapper",60,400,("max","Awful"),["ORMeleeBlunt","NeolithicMeleeBasic"],[]),
- ("Junkers","Heavy","warcasket Junker",140,700,None,["SimpleGun","KotORRanged_weak"],[]),
+ ("Junkers","Heavy","warcasket Junker",140,700,None,["SimpleGun","KotORRanged_weak"],["VFEP_WarcasketHelmet_Warcasket"]),
  ("Junkers","Specialist","claim-jumper",200,900,("max","Poor"),["AssaultRifle","KotORRanged_mid"],[]),
  ("Junkers","Leader","Scraplord Tarn Vox the Brutal",350,1400,("item","Masterwork"),["ORMeleeBlunt"],[]),
 ]
@@ -120,6 +120,14 @@ R = [
 # combatPower FOLLOWS THE MONEY, per the roster's own instruction - a kind is dangerous
 # in proportion to what it is carrying. Anchored on vanilla: a Mercenary_Gunner is 90
 # at roughly 600 of gear, a Grunt-tier tribal 40 at nearly none.
+# 🔴 THE WARCASKET IS THE PAWN, and until 2026-08-20 the Junker heavy asked for no
+# apparel at all - no `apparelRequired`, no `apparelTags` - so it drew generic gear and
+# the encounter the whole Junker design rests on never happened. The armour existed (55
+# surviving pieces), the counter existed (19 vibro weapons), and the two never met.
+# `apparelRequired` pins the helmet; the tag brings the matching body plate, because a
+# casket is a SET and requiring every piece by name would break the moment VFEP renames one.
+APPAREL_TAGS = {"Junkers": ["WarcasketAll"]}
+
 RESIST = {"Grunt": (8, 14), "Heavy": (12, 18), "Specialist": (14, 22), "Leader": (20, 30)}
 WILL   = {"Grunt": (1, 3),  "Heavy": (2, 4),   "Specialist": (2, 5),   "Leader": (4, 7)}
 
@@ -162,6 +170,10 @@ def emit():
             L.append("    <apparelRequired>")
             L += ["      <li>%s</li>" % r for r in req]
             L.append("    </apparelRequired>")
+        if fac in APPAREL_TAGS:
+            L.append("    <apparelTags>")
+            L += ["      <li>%s</li>" % t for t in APPAREL_TAGS[fac]]
+            L.append("    </apparelTags>")
         if q:
             if q[0] == "force":
                 L.append("    <forceNormalGearQuality>true</forceNormalGearQuality>")

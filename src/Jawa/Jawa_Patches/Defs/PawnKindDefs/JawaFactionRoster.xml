@@ -870,6 +870,9 @@ silent; the weapon tags above are the opposite and fail in silence. Check both.
       <li>ORMeleeBlunt</li>
       <li>NeolithicMeleeBasic</li>
     </weaponTags>
+    <apparelTags>
+      <li>WarcasketAll</li>
+    </apparelTags>
     <maxApparelQuality>Awful</maxApparelQuality>
   </PawnKindDef>
 
@@ -889,6 +892,12 @@ silent; the weapon tags above are the opposite and fail in silence. Check both.
       <li>SimpleGun</li>
       <li>KotORRanged_weak</li>
     </weaponTags>
+    <apparelRequired>
+      <li>VFEP_WarcasketHelmet_Warcasket</li>
+    </apparelRequired>
+    <apparelTags>
+      <li>WarcasketAll</li>
+    </apparelTags>
   </PawnKindDef>
 
   <PawnKindDef>
@@ -907,6 +916,9 @@ silent; the weapon tags above are the opposite and fail in silence. Check both.
       <li>AssaultRifle</li>
       <li>KotORRanged_mid</li>
     </weaponTags>
+    <apparelTags>
+      <li>WarcasketAll</li>
+    </apparelTags>
     <maxApparelQuality>Poor</maxApparelQuality>
   </PawnKindDef>
 
@@ -925,6 +937,9 @@ silent; the weapon tags above are the opposite and fail in silence. Check both.
     <weaponTags>
       <li>ORMeleeBlunt</li>
     </weaponTags>
+    <apparelTags>
+      <li>WarcasketAll</li>
+    </apparelTags>
     <itemQuality>Masterwork</itemQuality>
   </PawnKindDef>
 
