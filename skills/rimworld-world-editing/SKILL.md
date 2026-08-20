@@ -1,6 +1,6 @@
 ---
 name: rimworld-world-editing
-description: Drive RimWorld's WORLD screen from the bridge - the planet map at Page_SelectStartingSite, after a world is generated and before a map exists. Covers what the bridge can read and change about a generated world, the debug-menu route that works there, the map-scoped tools that all refuse, and the one missing primitive (world-tile targeting) that makes bulk tile editing impossible today. Use when editing biomes or landmarks on the planet, auditing a generated faction roster before committing to a landing site, or automating anything a human would otherwise click tile by tile.
+description: Drive RimWorld's WORLD screen from the bridge - the planet map at Page_SelectStartingSite, after a world is generated and before a map exists. Covers what the bridge can read and change about a generated world, the debug-menu route that works there, the map-scoped tools that all refuse, and the 25 jawa/world_* companion tools that read, write and validate every element of the planet - tiles, biomes, elevation, rivers, roads, mutators, landmarks, settlements, named regions and world info - plus the world_commit without which no edit is visible. Use when editing biomes or landmarks on the planet, auditing a generated faction roster before committing to a landing site, or automating anything a human would otherwise click tile by tile.
 ---
 
 # Editing the world from outside, at the world screen
