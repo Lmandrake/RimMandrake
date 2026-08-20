@@ -164,8 +164,8 @@ Nobody needs a live game to re-derive these; they need `ilspycmd`.
 
 ## Companion DLL and mod list — CHECK, 2026-08-19
 
-- ~~The companion is 32 `jawa/` tools~~ ⇒ **the companion is now 57 `jawa/` tools** (32 in
-  `JawaBenchTerrainTools.cs` + **25 new world tools**), and 15 of them WRITE the world. See "The worldmap bridge" below. Verified live by
+- ~~The companion is 32 `jawa/` tools~~ ⇒ **the companion is now 79 `jawa/` tools** (32 terrain + 25 world +
+  13 map + 9 pawn), and most of them WRITE. See "The worldmap bridge" below. Verified live by
   `tools/list`, not by `strings`.
   ⚠️ The companion lives in `<gamedir>\BridgeTools\`, a **sibling of `Mods\`**, not inside it,
   and it is discovered by the RimBridgeServer MOD at startup — so `brrainz.rimbridgeserver`
@@ -254,3 +254,67 @@ settlements with no road** (so "no road" is not by itself a defect); 38 river sy
   `readiness=mapData` does NOT guarantee. `jawa/world_view` takes `altitude` (125 min /
   550 entry / 1100 whole-globe) and `northUp`; the public `altitude` field alone snaps back
   because `Update` lerps toward the private `desiredAltitude`.
+
+## The map and pawn tools — CHECK, 2026-08-19. 22 more tools, all proven live
+
+`JawaBenchMapTools.cs` (13) and `JawaBenchPawnTools.cs` (9). Roster and reasoning:
+`design/Jawa/bridge/BRIDGE_CAPABILITY_ROSTER.md`.
+
+```
+MAP     map_commit · get_terrain_layers · set_substructure_batch · set_terrain_layer
+        set_fog · set_weather_buildup · set_deep_resource
+        build_batch · build_check · designate_batch
+        prefab_capture · prefab_place · prefab_list
+PAWN    pawn_get · set_pawn_identity · set_pawn_backstory · pawn_traits · set_pawn_skill
+        set_pawn_appearance · pawn_gear · pawn_health · pawn_need
+        set_pawn_faction · set_pawn_ideo · pawn_relations · pawn_genes · set_pawn_age
+```
+
+### Things the engine does that will cost you a session if you don't know them
+
+* 🔴 **`PrefabUtility.CreatePrefab` NEVER SETS `size`.** It comes back `(0,0)`, and `size`
+  drives `GetRoot` and every bounds check — so a prefab captured with vanilla's own API is
+  **unusable** until the caller fills it in. Found by it refusing to place.
+* 🔴 **`SpawnPrefab` CENTRES on `pos`.** The min corner is `pos - ((size-1)/2)`, measured at
+  two positions. It is not a corner placement.
+* 🔴 **`ageTracker.DebugSetAge` is FORWARD-ONLY.** 34→54 works; 54→8 leaves the pawn at 54
+  **and reports success.** Aging down needs the raw `AgeBiologicalTicks` setter, which
+  skips every `BirthdayBiological` — so life-stage hediffs and growth moments never fire.
+* 🔴 **`equipment.AddEquipment` `Log.Error`s and does NOTHING if a primary exists.**
+  `MakeRoomFor` first or the call reports success having changed nothing.
+* 🔴 **`ThingMaker.MakeThing` calls `PostMake`, which RANDOMISES HitPoints** from
+  `def.startingHpRange`. Set HP *after* the spawn or it is silently lost.
+* 🔴 **Setting a backstory refreshes NOTHING.** Four calls are needed —
+  `Notify_DisabledWorkTypesChanged`, `skills.Notify_SkillDisablesChanged`,
+  `skills.DirtyAptitudes`, `MeditationFocusTypeAvailabilityCache.ClearFor`. **The game's own
+  debug tool runs only the last.** Proven: doing all four moved the pawn's disabled-skill
+  set from `['Cooking']` to `['Social']`.
+* 🔴 **`GainTrait` checks NO conflicts and `TraitSet` has NO cap.** Our refusal is ours.
+* 🔴 **`SkillRecord.Level`'s getter ADDS APTITUDES**, so read-back ≠ what you wrote. Compare
+  against `GetLevel(false)`.
+* 🔴 **`Sibling` and `Child` are IMPLIED relations** — computed from the family graph, not
+  storable. Only 9 of 41 `PawnRelationDef`s can be added directly.
+* 🔴 **`SUBSTRUCTURE` is a foundation-layer `TerrainDef`**, not a grid.
+  `Map.substructureGrid` is only an overlay drawer. 1.6 has **five** terrain layers.
+* 🔴 **Walls create NO roof.** Confirmed by building a room and finding it open to the sky.
+* ⚠️ `health.RestorePart` is **recursive**, wipes child hediffs and drops nothing.
+* ⚠️ Social `ThoughtDef`s require an `otherPawn` or are dropped **silently**.
+* ⚠️ `TryAddOrTransfer` returns the **count** moved, not a bool.
+* ⚠️ Appearance writes do not dirty the renderer — call `SetAllGraphicsDirty()`.
+* ⭐ `install_bionic` needs **no RecipeDef and no surgeon**: `RestorePart` then `AddHediff`.
+* ⭐ `map_commit` is the map twin of `world_commit`. `Thing.SpawnSetup` already handles
+  listers, grids, glow, temperature and region dirtying; `map_commit` covers the rest.
+
+### Two workflow traps that cost real time here
+
+* 🔴 **`Player.log` PERSISTS between runs.** Grepping it for the bridge-ready marker matches
+  the PREVIOUS session and returns instantly, before the new game has started. Wait for the
+  log to **truncate** first — `src/RimMandrake/bridgetools/launch_and_wait.sh` does.
+* 🔴 **Kill RimWorld BEFORE building.** `build.py` cannot overwrite a memory-mapped DLL and
+  says so, but a piped `grep` can hide the refusal and you then test stale code.
+* ⚠️ **A docstring containing `jawa/world_*` made `build.py` report a phantom lost tool.**
+  Its scanner reads `jawa/...` literals out of the assembly. Avoid that pattern in prose.
+* ⚠️ **Fog defeats screenshots.** A slab written correctly in unvisited territory photographs
+  as nothing. `jawa/set_fog action=unfogAll` first.
+* 📌 **Never guess a defName** — 1,225 BackstoryDefs, 2,129 ThoughtDefs, 265 TraitDefs, 41
+  PawnRelationDefs. Four of my test names were invented and all four failed. Read the dump.
