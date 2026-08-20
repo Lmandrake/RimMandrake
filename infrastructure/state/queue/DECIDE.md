@@ -467,10 +467,22 @@ state:    ready — for DECIDE
 
 ━━━ 🔴 OWNER'S ANSWERS, 2026-08-19 Q/A. Captured verbatim before they are lost ━━━
 
-**1. SCOPE — *"v1 for the DESIGN, v2 for the code."*** ⇒ The templates, routes and casts are
-authored NOW as design, so **the hand-built world is built as though the people will
-arrive**; the code that animates them is v2. Nothing blocks worldgen and nothing has to be
-retrofitted. ⛔ Do not file BUILD items for the code.
+**1. SCOPE — 🔴 REVERSED BY THE OWNER, 2026-08-20.** *"Please ship the Inhabited spec to
+BUILD for actual v1 construction, we have spare time tonight."* ⇒ **The code is v1 and is
+being built now**, filed as the eight `INHABITED_*` / `CAST_ROSTER_*` items in
+`infrastructure/state/queue/BUILD.md`. The design in `design/Jawa/bridge/INHABITED_DESIGN.md`
+is unchanged and its §7 open questions are now BLOCKING — see `INHABITED_OPEN_QUESTIONS_1`
+below, which is DECIDE's own debt.
+⚠️ Still true, and not reversed by this: **nothing here blocks worldgen** — an `Inhabited`
+place is a `WorldObject` stamped onto a finished planet, not a worldgen input — and
+🔴 **farming stays NOT ATTEMPTED** (§2.1, blocked three ways in the shipped engine).
+
+~~*"v1 for the DESIGN, v2 for the code."* ⇒ The templates, routes and casts are authored NOW
+as design, so the hand-built world is built as though the people will arrive; the code that
+animates them is v2. Nothing blocks worldgen and nothing has to be retrofitted. ⛔ Do not
+file BUILD items for the code.~~
+⛔ **DEAD — superseded 2026-08-20.** Struck in place, not deleted: "do not file BUILD items
+for the code" is a live instruction a later reader would act on.
 
 **2. THE WORLD REMEMBERS — world-level state.** The refinery crew flees and the tile is
 marked; the next visit finds the place empty, looted, or squatted. ⇒ This is the load-bearing
@@ -660,3 +672,38 @@ criteria: the Empire is buildable from one document without anyone re-deriving w
           Neither breaks anything today. Both are checks that were passed against a def
           we do not use.
 state:    open — raised by REP, 2026-08-20, relaying the owner.
+
+## INHABITED_OPEN_QUESTIONS_1 The five answers BUILD is now waiting on
+spec:     🔴 **Raised by the owner's 2026-08-20 reversal** — the code is v1 and is being
+          built, so `INHABITED_DESIGN.md` §7's open questions stopped being academic. The
+          eight `INHABITED_*` items are filed in `queue/BUILD.md` and seven of them are
+          executable; these are the gaps that are DECIDE's and nobody else's.
+          ✅ **ALREADY RULED while filing, so BUILD is not blocked on it:** cast size
+          distribution, written into `INHABITED_GENSTEP_CAST_SPAWN_1` — hive foundry 14–22,
+          waystation 10–16, refinery 8–14, nomad camp 6–12, trade moot 5–9, homestead 4–7,
+          droid enclave 3–6.
+          ⏳ **STILL OWED, in the order BUILD will hit them:**
+          1. 🔴 **The four missing character fields — xenotype, pawnKind, apparel, skills.**
+             None of the 269 authored characters carries any of them; the prose has name,
+             race-as-a-string, gender, age, traits, two backstory lines and a hook.
+             `CAST_ROSTER_MACHINE_READABLE_1` is building the parser around the gap with
+             those four left optional and empty. ⛔ **Nobody may guess them** — a guessed
+             xenotype ships a wrong-looking person into a world that is frozen.
+             ⚠️ The right instrument here is a `review-sheets` build, not 269 questions in
+             chat: pre-fill every one from the prose and let the owner disagree.
+          2. **The twelfth faction has no cast.** Deepwater Compact (*the Balance*) is
+             tabled at `INHABITED_DESIGN.md:485-497` and has no `INHABITED_CAST_*.md`
+             beside the other eleven. ~25 characters, DECIDE's own authoring.
+          3. **How the player initiates trade** with a cast that is not a settlement (§7).
+          4. **What the gravship's arrival triggers** — which casts break on sight, on what
+             test (§7). This is FATE:flee-arrival and no item can implement it yet.
+          5. **Whether a place can be re-occupied by a DIFFERENT faction** after
+             abandonment. `state: Squatted` is reserved for it in
+             `INHABITED_WORLD_OBJECT_CORE_1` and is unspecified.
+          ⛔ **Do NOT answer 3, 4 or 5 before `ROSTER_SURVIVES_OFFMAP_PROOF_1` reports.**
+          §3.4 says that soak can invalidate the container choice, and all three answers
+          are shaped by whether the roster is genuinely frozen.
+verify:   each of the five is either ruled in writing or struck as void, and the ruling is
+          written INTO the item in `queue/BUILD.md` that waits on it — not only here.
+criteria: —
+state:    ready — for DECIDE

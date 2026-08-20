@@ -622,3 +622,236 @@ criteria: a load whose `Player.log` carries **0** `Failed to find any textures a
           render fine and prove nothing. `jawa/set_pawn_age` cannot help: DebugSetAge is
           FORWARD-ONLY and refuses to walk a debug-spawned adult back to a juvenile.
 state:    ready
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+# 🔴 `Inhabited` — SHIPPED TO BUILD 2026-08-20. The code is v1 now.
+
+**Owner, 2026-08-20, in the DECIDE window:** *"Please ship the Inhabited spec to BUILD for
+actual v1 construction, we have spare time tonight."*
+
+⛔ **This REVERSES the standing ruling you may remember** — *"v1 for the DESIGN, v2 for the
+code. Do not file BUILD items for the code."* That sentence is struck in place at the head
+of `design/Jawa/bridge/INHABITED_DESIGN.md` and in `queue/DECIDE.md`. Build from the eight
+items below; the design doc is the spec and it has not otherwise changed.
+
+**The spec is `design/Jawa/bridge/INHABITED_DESIGN.md` (564 lines).** Read §2, §3, §4 and §6
+before starting. Two corrections to it, found 2026-08-20 while filing these and NOT yet
+folded into the doc's prose:
+
+🔴 **The doc names `GiveQuest_Beggars`. NO SUCH SYMBOL EXISTS.** The real class is
+`RimWorld.QuestGen.QuestNode_Root_Beggars`, and it (a) hard-requires Ideology via
+`ModLister.CheckIdeology("Beggars")` at `:44`, and (b) builds a **hidden generated faction**
+from `FactionDefOf.Beggars` at `:73` — beggars do not belong to an existing faction. That
+changes `INHABITED_BEGGARS_FROM_POOL_1` from "draw from the pool" to "draw from the pool AND
+reassign faction". See that item.
+
+⚠️ **The casts are PROSE, not data.** 269 characters across 11 files, fields
+`Name · race · gender · age` / `traits:` / `childhood:` / `adult:` / `hook:`. Only `traits:`
+holds real defNames. There is no xenotype, pawnKind, faction defName, apparel or skill on
+any entry. ⇒ `CAST_ROSTER_MACHINE_READABLE_1` exists because of this and everything that
+instantiates a named person depends on it.
+
+**Order.** `INHABITED_MOD_SKELETON_1` → `INHABITED_WORLD_OBJECT_CORE_1` →
+🔴 `ROSTER_SURVIVES_OFFMAP_PROOF_1` (**stop here until it passes — it can invalidate the
+architecture**) → the rest in any order.
+
+## INHABITED_MOD_SKELETON_1 The mod folder, About.xml and csproj
+spec:     Create `src/Jawa/Inhabited/`, mirroring `src/Jawa/JawaPlantGrowth/` exactly —
+          that mod is the working reference for this toolchain and its csproj comments
+          carry the build line.
+            `src/Jawa/Inhabited/About/About.xml`
+               `<packageId>mandrake.inhabited</packageId>`, `<name>Inhabited (local)</name>`,
+               `<author>mandrake</author>`, `<supportedVersions><li>1.6</li>`.
+               `<modDependencies>`: `Ludeon.RimWorld`, `brrainz.harmony`.
+               `<loadAfter>`: `brrainz.harmony`, `Ludeon.RimWorld`.
+            `src/Jawa/Inhabited/Source/Inhabited.csproj`
+               `<TargetFramework>net472</TargetFramework>`, `AssemblyName`/`RootNamespace`
+               `Inhabited`, `<OutputPath>..\Assemblies\</OutputPath>`,
+               `<AppendTargetFrameworkToOutputPath>false`,
+               🔴 `<CopyLocalLockFileAssemblies>false</CopyLocalLockFileAssemblies>` —
+               three mods in this load set shipped the base game's assemblies into their
+               own folder and caused silent chaos. Harmony must come from
+               `brrainz.harmony` at runtime, never from us.
+            `src/Jawa/Inhabited/Defs/` — empty for now, created so deploy sees it.
+          Build with the WINDOWS-NATIVE dotnet; it cannot take a `/mnt/d` path:
+            `"%USERPROFILE%\.dotnet\dotnet.exe" build D:\Luke\dev\Rimworld\src\Jawa\Inhabited\Source\Inhabited.csproj -c Release`
+          ⛔ Do NOT deploy while the game is running — the OS locks assemblies. Everything
+          else in this mod (Defs, About) deploys game-up.
+verify:   the build produces `src/Jawa/Inhabited/Assemblies/Inhabited.dll` and
+          `python3 src/RimMandrake/Utils/deploy_custom_mods.py --mod Inhabited` plans a
+          copy with no `-` lines. ⚠️ A mod with no About.xml or packageId is not
+          deployable and deploy will say so rather than failing loudly.
+criteria: the mod appears in RimSort / the in-game mod list under `mandrake.inhabited`.
+state:    ready
+
+## INHABITED_WORLD_OBJECT_CORE_1 `WorldObject_Inhabited` — the roster is real pawns
+spec:     `src/Jawa/Inhabited/Source/WorldObject_Inhabited.cs`. Model on `RimWorld.Planet.Caravan`,
+          which is the settled shipped pattern for people held off-map — do not invent a
+          persistence layer. §3 of the design doc.
+            `class WorldObject_Inhabited : WorldObject, IThingHolder, ILoadReferenceable`
+            fields, all through `Scribe`:
+               `ThingOwner<Pawn> roster`   🔴 ACTUAL `Pawn` OBJECTS, never records. Names,
+                                          skills, relationships, scars and memories then
+                                          survive with no serialisation of ours, and §3.2
+                                          ("sell a pawn and they stay") falls out free.
+               `PlaceDef placeDef` · `CastDef castDef`   archetype + parameters
+               `InhabitedState state`     enum: `Inhabited · Abandoned · Looted · Squatted`
+               `ThingOwner<Thing> stock`  trade goods AND the larder (§2.1)
+            `WorldObjectDef` in `Defs/WorldObjectDefs_Inhabited.xml` with
+               `worldObjectClass="Inhabited.WorldObject_Inhabited"`, an expandingIcon, and
+               `canHaveFaction=true` — faction is inherited from `WorldObject`.
+            `GetInspectString()` renders the census line from §3.3:
+               `12 souls . oil . will trade`  /  `9 souls fled . stock spoiling`
+          ⛔ **No death record, no memorial, no ledger, no counter** (§3.1, owner verbatim:
+          *"eaten and forgotten"*). The roster simply IS the survivors; the absence is the
+          memory. Do not add a `died` int because it would be easy.
+verify:   `dotnet build` clean; the def loads with 0 errors in a def-dump refresh
+          (`python3 src/RimMandrake/Utils/refresh.py`) and `WorldObjectDef` `Inhabited_*`
+          appears in the dump.
+criteria: a `WorldObject_Inhabited` spawned on the world map via the bridge draws its icon
+          and its inspect string on the planet view.
+state:    ready
+
+## ROSTER_SURVIVES_OFFMAP_PROOF_1 🔴 THE ARCHITECTURE GATE — do this before the rest
+spec:     §3.4 names this as *"the one that could invalidate the architecture. Do it first."*
+          `Caravan` is designed to be TRANSIENT and we are using its shape for something
+          PERMANENT. Pawns in a `ThingOwner` off-map are not ticked — which is exactly what
+          "frozen until visited" wants — but vanilla never stress-tests it across years.
+          BUILD writes the harness only:
+            a dev-mode gizmo on `WorldObject_Inhabited`, `[DebugAction]`, that
+            (a) generates 3 pawns into `roster`, one with a named social relation to a
+                colonist and one with a scar and a trait,
+            (b) prints each pawn's `ThingID`, name, age, relations count and hediff count.
+          ⛔ Do not fix anything you find here. Report it — if pawns do not survive
+          intact, §3's container choice is wrong and DECIDE re-specs before more is built.
+verify:   offline: the gizmo compiles and the debug action is listed.
+criteria: 🔴 CHECK's, and it is a soak, not a glance. Stuff the roster, **save, quit to
+          desktop, reload**, let **100+ in-game days** pass without visiting the tile, then
+          print again. PASS = same `ThingID`s, names, relations and hediffs; ages advanced
+          by 0 days (frozen) or by exactly the elapsed time (ticked) — **either is
+          acceptable, but which one it is must be reported**, because §3.4 promises frozen
+          and a ticking roster changes the design.
+          FAIL = any pawn missing, any relation dropped, any `Could not load reference to`
+          in `Player.log` naming a pawn.
+state:    ready — ⚠️ everything below assumes this passes
+
+## INHABITED_DISPLACED_POOL_1 The placeless, per faction
+spec:     §4. `src/Jawa/Inhabited/Source/DisplacedPool.cs`, a `GameComponent` so it is
+          saved with the game and reachable from anywhere.
+            `Dictionary<Faction, ThingOwner<Pawn>> pools`  — people who lost their place
+            `void Absorb(Pawn p, Faction f)`               — on FATE:flee
+            `List<Pawn> Draw(Faction f, int count)`        — removes and returns up to
+                                                             `count`, oldest-displaced first
+          🔑 **Any cast being instantiated draws from the pool BEFORE generating anyone
+          new.** That single ordering rule is the whole recurring-character effect.
+          🔑 **This does NOT violate "frozen until visited"** — redistribution happens at
+          cast INSTANTIATION, when a map generates, never on a background tick. Do not add
+          a `GameComponentTick` that moves people around.
+          ⛔ The dead never enter the pool (§3.1).
+verify:   `dotnet build` clean. A `[DebugAction]` that absorbs 5 pawns and draws 3 returns
+          3 distinct pawns and leaves 2, across a save/load.
+criteria: raid a cast, leave, land on a second place of the same faction, and at least one
+          pawn there is a survivor of the first — same name, and RimWorld's own opinion
+          system already knows what you did to him.
+state:    ready
+
+## INHABITED_GENSTEP_CAST_SPAWN_1 The GenStep that puts the company on the ground
+spec:     §2. The link chain is entirely shipped and verified 2026-08-19:
+          `TileMutatorDef.extraGenSteps` (`TileMutatorDef.cs:26`) → our `GenStepDef` →
+          `LordMaker.MakeNewLord(faction, job, map, pawns)`. `MapGenerator.cs:158` is where
+          mutator gen steps are concatenated, so the hook is real and needs no patch.
+          Seven shipped GenSteps already call `MakeNewLord` in this exact shape —
+          `GenStep_SitePawns` is the closest model.
+            `src/Jawa/Inhabited/Source/GenStep_InhabitedCast.cs`
+              on generate: find the `WorldObject_Inhabited` for `map.Tile`; pull `roster`
+              out; if short of the cast size, `DisplacedPool.Draw` first, then generate
+              fresh from `CastDef`; spawn and `MakeNewLord`.
+              on map destroy: return SURVIVORS to `roster`. The dead do not return.
+          🔴 **CAST SIZE — DECIDE's ruling, 2026-08-20, so this item is executable:**
+            hive foundry (Geonosian)   14–22      fortified waystation   10–16
+            refinery / worksite         8–14      nomad camp (Tusken)     6–12
+            trade moot / post           5–9       homestead / farmstead    4–7
+            droid enclave               3–6
+          A faction's 25 authored characters therefore spread across 2–4 places, which is
+          the intent — a cast is a subset of a roster, not the whole of it.
+          🔴 **FARMING IS NOT ATTEMPTED AND THIS IS NOT AN OVERSIGHT.** §2.1: three
+          independent shipped walls, the worst being `WorkGiver_GrowerHarvest.ShouldSkip`,
+          which opens `if (pawn.GetLord() != null) return true;` — **any lorded pawn skips
+          harvest, even a colonist.** Sustenance is PRESENT, not produced: give the place a
+          larder in `stock` and leave it visible, stealable and destroyable. Owner: *"I
+          like that their food stocks are exposed. Very realistic."*
+verify:   a quicktest map on a tile carrying the mutator spawns the cast, and the Lord
+          exists (`Find.CurrentMap.lordManager.lords` non-empty). Roster count before
+          and after a map cycle with no combat is EQUAL.
+criteria: land, leave, return: the same named people are there. Kill two, leave, return:
+          the roster is short by exactly two and no record of them exists anywhere.
+state:    ready
+
+## INHABITED_DAY_NIGHT_ROUTE_1 One toil that reassigns duty, and a sleep JobGiver
+spec:     §6. ROUTE is barracks → worksite → barracks across a day.
+          🔴 **DO NOT BUILD A StateGraph WITH TRANSITIONS.** `Lord.ExposeData_StateGraph`
+          serialises toils by **positional index** and re-runs `CreateGraph()` on load, so
+          changing toil ORDER silently corrupts existing saves. Vanilla's own graphs are
+          safe only because they never change; ours will be re-tuned.
+          ⇒ **ONE `LordToil` that reassigns duty on a tick.** The schedule becomes ordinary
+          C# inside that toil and can be edited freely forever.
+            `src/Jawa/Inhabited/Source/LordToil_InhabitedRoutine.cs`
+            `src/Jawa/Inhabited/Source/JobGiver_SleepAtNight.cs`  (~30 lines, §6)
+verify:   `dotnet build` clean; a save taken mid-routine reloads with the Lord intact and
+          the same toil index.
+criteria: watch a cast over one in-game day — they work by day and are in the barracks at
+          night, and a save/load mid-day does not scatter them.
+state:    ready
+
+## INHABITED_BEGGARS_FROM_POOL_1 The beggars at your gate are the people you burned out
+spec:     §4.1 consumer 2. ⚠️ **Two corrections to the design doc before you start:**
+          🔴 (a) The doc's `GiveQuest_Beggars` DOES NOT EXIST. The real class is
+             `RimWorld.QuestGen.QuestNode_Root_Beggars`, and the pawns are made at `:103`,
+             `quest2.GeneratePawn(new PawnGenerationRequest(beggar, faction2, ...))`.
+             That is the Harmony target.
+          🔴 (b) `faction2` is a **hidden generated faction** built at `:73` from
+             `FactionDefOf.Beggars` — beggars do NOT belong to an existing faction. So a
+             Hutt refinery survivor cannot simply be handed over; the patch must draw from
+             the pool AND move the pawn into the generated beggar faction, keeping name,
+             traits, backstory, relations and memories. `Pawn.SetFaction` does this.
+          ⚠️ (c) `:44` is `ModLister.CheckIdeology("Beggars")` — **the whole quest is
+             Ideology-gated.** If Ideology is off in the shipped list this item is inert
+             and that is not a bug; confirm against `ModsConfig.xml` before debugging.
+verify:   `dotnet build` clean; the transpiler/postfix reports a patch target found — ⚠️ a
+          Harmony patch that matches nothing throws at startup, unlike an XML one, so this
+          one is loud. Good.
+criteria: burn out a cast, wait for a beggar event, and at least one beggar is a pawn from
+          the pool by name.
+state:    ready
+
+## CAST_ROSTER_MACHINE_READABLE_1 269 prose characters become data
+spec:     ⚠️ **The blocker nobody has looked at.** The eleven cast files hold 269 authored
+          characters as PROSE. Measured 2026-08-20:
+            present on every entry: name · race (a prose string, not a def) · gender
+              (`m`/`f`/`none`/`f-presenting`) · age (int) · `traits:` (REAL `TraitDef`
+              names, some with degree, e.g. `NaturalMood(Sanguine)`,
+              `DrugDesire(ChemicalFascination)`) · `childhood:` · `adult:` · `hook:`
+            absent from ALL of them: xenotype · pawnKind · faction defName · apparel ·
+              skills. Weapons and genes appear only incidentally inside prose.
+            ⚠️ `INHABITED_CAST_DROIDS.md` uses DIFFERENT FIELDS by owner ruling — `chassis`
+              replaces race and `service-years` replaces age. Handle it, do not normalise
+              it away.
+          Write `src/RimMandrake/Utils/cast_to_xml.py`: parse the eleven files into
+          `src/Jawa/Inhabited/Defs/CastRoster_<FACTION>.xml`, one `<Inhabited.CharacterDef>`
+          per character, carrying the authored fields verbatim plus the parsed `traits` as
+          real defNames.
+          🔴 **DECIDE owes you the four fields the prose does not carry** — xenotype,
+          pawnKind, apparel and skills. They are filed as `INHABITED_OPEN_QUESTIONS_1` in
+          `queue/DECIDE.md`. ⇒ **Build the parser and the def for what EXISTS now**; leave
+          those four fields optional and empty. Do not invent values for them — a guessed
+          xenotype ships a wrong-looking person into a frozen world.
+          ⚠️ **The twelfth faction has no cast file.** Deepwater Compact (*the Balance*) is
+          tabled at `INHABITED_DESIGN.md:485-497` but has no `INHABITED_CAST_*.md`. That is
+          DECIDE's authoring debt, not a parser bug. Make the tool skip it cleanly.
+verify:   the parser emits 269 `CharacterDef`s across 11 files, and
+          `python3 skills/rimworld-modding/scripts/validate_patch.py` reports every
+          `traits` entry resolving to a live `TraitDef`. A trait that does not resolve is
+          the ONE thing here that must fail loudly.
+criteria: the defs load with 0 red errors, and a named character from the roster can be
+          spawned by defName through the bridge.
+state:    ready

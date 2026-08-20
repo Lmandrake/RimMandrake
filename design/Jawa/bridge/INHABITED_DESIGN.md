@@ -2,9 +2,22 @@
 
 _An independent RimWorld mod. Designed 2026-08-19 by DECIDE with the owner, in Q/A._
 
-> **Owner's scope ruling: v1 for the DESIGN, v2 for the code.** The templates, casts and
+> 🔴 **REVERSED BY THE OWNER, 2026-08-20: the CODE IS v1 AND IS BEING BUILT NOW.**
+> *"Please ship the Inhabited spec to BUILD for actual v1 construction, we have spare time
+> tonight."* ⇒ The items are filed in `infrastructure/state/queue/BUILD.md` under the
+> `INHABITED_*` names. **What this changes:** §6's "🔵 the real new code" is v1 work with a
+> queue item behind it, and the §7 open questions are now blocking rather than academic —
+> DECIDE owes the answers named there.
+> **What it does NOT change:** the design in this file stands unaltered; the casts and
+> characters are still authored as written; and 🔴 **§2.1 farming stays NOT ATTEMPTED** —
+> it is blocked three ways in the shipped engine and being v1 does not unblock it.
+>
+> ~~**Owner's scope ruling: v1 for the DESIGN, v2 for the code.** The templates, casts and
 > characters are authored NOW, so the hand-built world is built *as though the people will
-> arrive*. The code that animates them is v2. ⛔ Do not file BUILD items for the code.
+> arrive*. The code that animates them is v2. ⛔ Do not file BUILD items for the code.~~
+> ⛔ **DEAD — superseded 2026-08-20 by the ruling above.** Kept visible because the
+> sentence "do not file BUILD items for the code" is exactly what a later reader would
+> otherwise act on.
 
 **The problem it solves.** RimWorld's world map is a set of props. A settlement is a name
 and a loot table; a visitor is a timer with a psylink. Nothing on the planet is anybody's
