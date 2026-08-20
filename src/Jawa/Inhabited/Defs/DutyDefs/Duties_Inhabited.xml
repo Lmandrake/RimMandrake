@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Defs>
+
+  <!--
+    THE ONE DUTY A RESIDENT EVER HOLDS.
+
+    The ROUTE is not a duty change and it is not a state graph: it is
+    LordToil_Inhabited moving this duty's FOCUS between the worksite and the
+    barracks. That keeps the lord's graph at exactly one toil, which is what
+    stops Lord.ExposeData_StateGraph – which serialises toils by positional
+    index – from corrupting saves every time the schedule is re-tuned.
+
+    Modelled on Core's DefendBase duty (Data/Core/Defs/DutyDefs/Duties_NonPlayerHome.xml),
+    with two departures:
+      * alwaysShowWeapon is left false. These are people at work, not sentries.
+      * JobGiver_SleepAtNight sits above the needs subtree, so they turn in at
+        a time rather than when exhaustion finally reaches them.
+
+    ThinkNode_Priority tries its subnodes IN ORDER and takes the first job
+    offered, so the order below is the behaviour:
+      fight back  ->  turn in at night  ->  eat and rest  ->  keep warm  ->  wander
+  -->
+  <DutyDef>
+    <defName>Inhabited_Resident</defName>
+    <thinkNode Class="ThinkNode_Priority">
+      <subNodes>
+
+        <li Class="JobGiver_TakeCombatEnhancingDrug">
+          <onlyIfInDanger>true</onlyIfInDanger>
+        </li>
+
+        <li Class="JobGiver_AIDefendPoint">
+          <targetAcquireRadius>25</targetAcquireRadius>
+          <targetKeepRadius>30</targetKeepRadius>
+          <needLOSToAcquireNonPawnTargets>true</needLOSToAcquireNonPawnTargets>
+        </li>
+
+        <li Class="Inhabited.JobGiver_SleepAtNight">
+          <sleepStartHour>22</sleepStartHour>
+          <wakeHour>6</wakeHour>
+        </li>
+
+        <li Class="ThinkNode_ForbidOutsideFlagRadius">
+          <maxDistToSquadFlag>28</maxDistToSquadFlag>
+          <subNodes>
+            <li Class="ThinkNode_Subtree">
+              <treeDef>SatisfyBasicNeeds</treeDef>
+            </li>
+          </subNodes>
+        </li>
+
+        <li Class="JobGiver_SeekSafeTemperature" />
+
+        <li Class="ThinkNode_ConditionalCloseToDutyTarget">
+          <maxDistToDutyTarget>12</maxDistToDutyTarget>
+          <subNodes>
+            <li Class="JobGiver_WanderAnywhere">
+              <wanderRadius>12</wanderRadius>
+            </li>
+          </subNodes>
+        </li>
+
+        <li Class="JobGiver_WanderNearDutyLocation">
+          <locomotionUrgencyOutsideRadius>Walk</locomotionUrgencyOutsideRadius>
+        </li>
+
+      </subNodes>
+    </thinkNode>
+  </DutyDef>
+
+</Defs>

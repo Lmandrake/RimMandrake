@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<LanguageData>
+
+  <!-- The census line the world map draws under a place.
+       "12 souls . oil . will trade"  /  "9 souls fled . stock spoiling" -->
+  <InhabitedSouls>{0} souls</InhabitedSouls>
+  <InhabitedFled>{0} souls fled</InhabitedFled>
+  <InhabitedStockSpoiling>stock spoiling</InhabitedStockSpoiling>
+  <InhabitedWillTrade>will trade</InhabitedWillTrade>
+  <InhabitedLooted>looted</InhabitedLooted>
+  <InhabitedSquatted>squatted</InhabitedSquatted>
+
+</LanguageData>

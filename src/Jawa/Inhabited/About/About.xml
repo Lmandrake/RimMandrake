@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ModMetaData>
+  <name>Inhabited (local)</name>
+  <packageId>mandrake.inhabited</packageId>
+  <author>mandrake</author>
+  <supportedVersions>
+    <li>1.6</li>
+  </supportedVersions>
+  <description>Somebody lives here.
+
+RimWorld's world map is a set of props: a settlement is a name and a loot table, a visitor is a timer. Inhabited gives places a persistent cast of real pawns who live there, and lets the world remember what the player did to them.
+
+Four nouns:
+- PLACE — a structure on a tile, from the tile-mutator / landmark layer.
+- CAST — the people who belong to it. A persistent roster of real Pawn objects, never a spawn list.
+- ROUTE — what the cast does across a day.
+- FATE — what, if anything, could end them. The default is nothing: they live here.
+
+The roster is held in a WorldObject as a ThingOwner&lt;Pawn&gt;, the same container Caravan uses, so names, skills, relationships, scars and memories survive map destruction with no serialisation of our own. The survivors return to the roster when the player leaves; the dead are simply forgotten. Pawns the player sells into a cast stay there and remember it.
+
+People who lose their place enter a per-faction pool of the placeless, and any cast being instantiated draws from that pool before generating anyone new — so the beggars at the player's gate may be the crew whose refinery they burned.
+
+There is no morality system here and there must never be one. The consequence is delivered entirely by RimWorld's existing name, backstory and memory systems, plus the player's own recognition.
+
+NPCs do not farm — three shipped walls make it impossible — so a place's sustenance is present rather than produced: a mess, a paste vat, a granary, a herd. It is visible, stealable and destroyable, and burning it makes the cast leave rather than starve.
+
+Design: design/Jawa/bridge/INHABITED_DESIGN.md</description>
+  <modDependencies>
+    <li>
+      <packageId>Ludeon.RimWorld</packageId>
+      <displayName>RimWorld</displayName>
+    </li>
+    <li>
+      <packageId>brrainz.harmony</packageId>
+      <displayName>Harmony</displayName>
+      <steamWorkshopUrl>https://steamcommunity.com/sharedfiles/filedetails/?id=2009463077</steamWorkshopUrl>
+    </li>
+  </modDependencies>
+  <loadAfter>
+    <li>brrainz.harmony</li>
+    <li>Ludeon.RimWorld</li>
+  </loadAfter>
+</ModMetaData>

@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Defs>
+
+  <!--
+    A place somebody lives in.
+
+    No <mapGenerator> is named on purpose: MapParent.MapGeneratorDef falls back
+    to MapGeneratorDefOf.Encounter, which lays down terrain and nothing else.
+    The STRUCTURE of a place comes from the tile-mutator layer, which runs its
+    extraGenSteps on whatever map generates on that tile. This def places the
+    company; the mutator places the set.
+  -->
+  <WorldObjectDef>
+    <defName>Inhabited_Place</defName>
+    <label>inhabited place</label>
+    <description>Somebody lives here.</description>
+    <worldObjectClass>Inhabited.WorldObject_Inhabited</worldObjectClass>
+    <texture>World/WorldObjects/TribalSettlement</texture>
+    <expandingIcon>true</expandingIcon>
+    <expandingIconPriority>20</expandingIconPriority>
+    <canHaveFaction>true</canHaveFaction>
+    <canHaveMap>true</canHaveMap>
+    <selectable>true</selectable>
+    <IncidentTargetTags>
+      <li>Map_Misc</li>
+    </IncidentTargetTags>
+    <inspectorTabs>
+      <li>WITab_Terrain</li>
+      <li>WITab_Planet</li>
+    </inspectorTabs>
+  </WorldObjectDef>
+
+</Defs>

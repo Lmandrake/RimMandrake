@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Defs>
+
+  <!--
+    Name this def in a TileMutatorDef's <extraGenSteps> and the cast arrives with
+    the map. MapGenerator.GenerateMap concatenates every active mutator's
+    extraGenSteps into the step list before sorting by <order>, so no patch is
+    needed anywhere.
+
+    order 900 puts this after terrain, structures and scatterers – the company
+    has to have somewhere to stand before it is placed.
+  -->
+  <GenStepDef>
+    <defName>Inhabited_Cast</defName>
+    <order>900</order>
+    <genStep Class="Inhabited.GenStep_InhabitedCast" />
+  </GenStepDef>
+
+</Defs>
