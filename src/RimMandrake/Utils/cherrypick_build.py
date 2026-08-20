@@ -99,6 +99,19 @@ REACHABLE = {
 # ThingDef. That bug was caught by this script running against itself.
 THINGDEF_OK_CATEGORIES = {1, 2, 3, 4, "Pawn", "Item", "Building", "Plant"}
 
+# Cuts the owner RECORDED and then explicitly held back. Keyed by defName, valued
+# by the reason, and printed every run — a silent exception is how a decision gets
+# lost twice.
+# 🔴 BiomeDef is one of the types Cherry Picker genuinely DELETES rather than
+# neuters, and the frozen Ash'karr map stands on both of these: AridShrubland 1,988
+# tiles and Lake 312, together 2,300 of 21,872 (10.5%) plus 4 of the 72 settlements.
+# Cutting them would point the hand-authored world at defs that no longer exist.
+# Owner, 2026-08-19: "Apply 28, keep AridShrubland + Lake".
+OWNER_EXCLUDE = {
+    "AridShrubland": "1,988 tiles of the frozen Ash'karr map are this biome",
+    "Lake": "312 tiles of the frozen Ash'karr map are this biome",
+}
+
 # ---------------------------------------------------------------- the list
 # Resolved in design/Jawa/worldbuilding/cherrypick_resolved.md. Every entry is
 # there with the evidence for why it is that type and not another.
@@ -180,6 +193,17 @@ KEYS = [
     "ThingDef/GravForge",              # the forge, and its bills with it
     "RecipeDef/Make_GravcoreGF",       # "make gravcore" — the scarcity breaker
     "ThingDef/AdvShip_GravReactor",    # "The Singularity Reactor"
+    # --- 🔴 FOUR TURRETS, GUN AND BUILDING TOGETHER. Owner, 2026-08-19, answering
+    # the "11 recorded cuts that never landed" question with "all 11 + the 4 turret
+    # buildings". The guns were on the owner's weapon sheet; the buildings were not,
+    # and cutting a turretGunDef WITHOUT its building leaves a turret whose weapon
+    # does not exist. Each pairing was read out of the dump's building.turretGunDef,
+    # not guessed from the name:
+    "ThingDef/FT_RecoillessGun",       # gun FT_Gun_Recoilless
+    "ThingDef/FT_TurretEmpero",        # gun FT_Gun_TurretEmpero
+    "ThingDef/FT_TurretHexMortar",     # gun FT_Gun_TurretHexMortar
+    "ThingDef/FT_TurretQuadAA",        # gun FT_Gun_TurretQuadAA
+
     # ⚠️ ResearchProjectDef/GravForge and /GravEngineBuild deliberately NOT here:
     # neutralising a research project risks dangling another project's
     # prerequisite, and unreachable research is harmless once the building is
@@ -437,9 +461,36 @@ def main():
             keys.append(k)
             seen.add(k)
 
-    print("sources: %d ratified + %d hand-authored (%d of them new) "
-          "+ %d recorded cut decisions"
-          % (len(ratified), len(KEYS), len(keys) - len(ratified), len(decided)))
+    from_keys = len(keys) - len(ratified)
+
+    # The recorded decisions, typed from the dump. Everything the owner cut goes in
+    # except what they held back by name.
+    index, _ = load_index({t for t in CATEGORY_TYPE.values()})
+    held, untypable, from_dec = [], [], 0
+    for name in sorted(decided):
+        if name in OWNER_EXCLUDE:
+            held.append(name)
+            continue
+        dtype = type_of(name, decided[name]["category"], index)
+        if not dtype:
+            untypable.append(name)
+            continue
+        key = "%s/%s" % (dtype, name)
+        if key not in seen:
+            keys.append(key)
+            seen.add(key)
+            from_dec += 1
+
+    print("sources: %d ratified + %d hand-authored (%d new) + %d recorded "
+          "decisions (%d new)"
+          % (len(ratified), len(KEYS), from_keys, len(decided), from_dec))
+    if held:
+        print("  held back by the owner, NOT cut:")
+        for n in held:
+            print("    %-24s %s" % (n, OWNER_EXCLUDE[n]))
+    if untypable:
+        print("  %d recorded cut(s) with no resolvable def type, skipped: %s"
+              % (len(untypable), ", ".join(untypable)))
     print("validating %d keys against the live dump..." % len(keys))
 
     problems = check(keys)
@@ -459,16 +510,17 @@ def main():
                                        ", ".join(sorted(by_mod[mod])[:3]) +
                                        (" ..." if len(by_mod[mod]) > 3 else "")))
 
-    # Cuts the owner recorded that never reached the settings file.
+    # Anything recorded and still not in the file, that the owner did NOT hold back
+    # on purpose. Should be empty; if it is not, a decision is being lost silently.
     listed = {k.split("/")[1] for k in keys if "/" in k}
-    unapplied = sorted(n for n in decided if n not in listed)
+    unapplied = sorted(n for n in decided
+                       if n not in listed and n not in OWNER_EXCLUDE)
     if unapplied:
         cats = {}
         for n in unapplied:
             cats.setdefault(decided[n]["category"], []).append(n)
-        print("\n%d cut(s) recorded in decisions_*.json are NOT in the settings "
-              "file. ⛔ NOT added — changing what is cut is the owner's call:"
-              % len(unapplied))
+        print("\n⚠️  %d recorded cut(s) reached neither the file nor OWNER_EXCLUDE. "
+              "That is a gap, not a decision:" % len(unapplied))
         for cat in sorted(cats):
             print("  %-12s %4d  %s" % (cat, len(cats[cat]),
                                        ", ".join(cats[cat][:4]) +

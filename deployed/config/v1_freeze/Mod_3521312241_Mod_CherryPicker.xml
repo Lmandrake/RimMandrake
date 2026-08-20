@@ -1308,6 +1308,49 @@
 			<li>ThingDef/ZalmoxesEggUnFertilized</li>
 			<li>ThingDef/ZephyrosaurusEggFertilized</li>
 			<li>ThingDef/ZephyrosaurusEggUnFertilized</li>
+			<li>ThingDef/FT_RecoillessGun</li>
+			<li>ThingDef/FT_TurretEmpero</li>
+			<li>ThingDef/FT_TurretHexMortar</li>
+			<li>ThingDef/FT_TurretQuadAA</li>
+			<li>BiomeDef/AB_IdyllicMeadows</li>
+			<li>BiomeDef/AG_NereidPocketPlane</li>
+			<li>BiomeDef/AG_PocketPlane</li>
+			<li>ThingDef/AM_LassoDevilstrand</li>
+			<li>BiomeDef/BorealForest</li>
+			<li>BiomeDef/COMIGO_GreaterSwamp_Cold</li>
+			<li>BiomeDef/COMIGO_GreaterSwamp_Temperate</li>
+			<li>BiomeDef/ColdBog</li>
+			<li>ThingDef/ElephantTusk</li>
+			<li>ThingDef/FT_Gun_Recoilless</li>
+			<li>ThingDef/FT_Gun_TurretEmpero</li>
+			<li>ThingDef/FT_Gun_TurretHexMortar</li>
+			<li>ThingDef/FT_Gun_TurretQuadAA</li>
+			<li>ThingDef/Flamebow</li>
+			<li>BiomeDef/GlacialPlain</li>
+			<li>BiomeDef/Grasslands</li>
+			<li>ThingDef/Gun_DeadColumn</li>
+			<li>ThingDef/Gun_Incinerator</li>
+			<li>BiomeDef/IceSheet</li>
+			<li>BiomeDef/Labyrinth</li>
+			<li>BiomeDef/MetalHell</li>
+			<li>BiomeDef/RG_BoilingForest</li>
+			<li>BiomeDef/Savanna</li>
+			<li>BiomeDef/SeaIce</li>
+			<li>BiomeDef/TemperateForest</li>
+			<li>BiomeDef/TemperateSwamp</li>
+			<li>BiomeDef/TropicalRainforest</li>
+			<li>BiomeDef/TropicalSwamp</li>
+			<li>BiomeDef/Tundra</li>
+			<li>ThingDef/VWE_Gun_Flamethrower</li>
+			<li>ThingDef/VWE_MeleeWeapon_Axe</li>
+			<li>BiomeDef/Wetland</li>
+			<li>BiomeDef/ZBiome_AlpineMeadow</li>
+			<li>BiomeDef/ZBiome_CloudForest</li>
+			<li>BiomeDef/ZBiome_CoastalDunes</li>
+			<li>BiomeDef/ZBiome_GlacialShield</li>
+			<li>BiomeDef/ZBiome_Iceberg_NoBeach</li>
+			<li>BiomeDef/ZBiome_Marsh</li>
+			<li>BiomeDef/ZBiome_Sandbar_NoBeach</li>
 		</keys>
 	</ModSettings>
 </SettingsBlock>

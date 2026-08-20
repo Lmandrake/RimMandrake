@@ -1267,6 +1267,11 @@ spec:     The Cherry Picker settings file has never loaded. Two synthesised keys
 verify:   done offline — output parses, and is the ratified list minus exactly those
           two lines (`diff <(grep -v nodef <freeze>) <new>` empty). See the closing
           commit.
+          ⭐ Owner answered the two open questions 2026-08-19 and both are applied:
+          all 11 recorded weapon/apparel cuts went in WITH the 4 turret buildings whose
+          guns they are, and 28 of the 30 recorded biome cuts went in. `AridShrubland`
+          and `Lake` are held out by name — 2,300 tiles of the frozen Ash'karr map are
+          those two biomes and BiomeDef is really DELETED, not neutered. Final: **1,349**.
 criteria: on the NEXT load, `Player.log` carries NO `mod settings data for 3521312241`
           exception, and a cut def is actually gone — pick one that resolves in the
           dump and is not from a dead mod, e.g. `ThingDef/Gun_BlastCharge`, and confirm

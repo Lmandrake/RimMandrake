@@ -340,7 +340,7 @@ recent — neither shows a lightsaber.
 
 </details>
 
-## 🔴 FYI + one decision (BUILD, 2026-08-19): the cherrypick list was not loading AT ALL
+## ~~🔴 FYI + one decision (BUILD, 2026-08-19): the cherrypick list was not loading AT ALL~~ ANSWERED
 
 **No answer needed on the first part — it is already repaired.** Validating the 1,308
 live Cherry Picker keys against the def dump for the first time (B67b) turned up two
@@ -366,7 +366,23 @@ and both the live config and the tracked freeze copy now hold it. The old file i
 `C:\Users\Mandrake\AppData\LocalLow\Ludeon Studios\RimWorld by Ludeon Studios\Config\Mod_3521312241_Mod_CherryPicker.xml.bak-nodef`.
 `cherrypick_build.py` now refuses to write a file that is not well-formed.
 
-**What IS yours to decide — 41 cuts you recorded that never reached the settings file.**
+### 🟢 ANSWERED 2026-08-19, both applied — the list is now 1,349 keys
+
+* **the 11 weapons/apparel: "All 11 + the 4 turret buildings".** The four
+  `FT_Gun_Turret*`/`FT_Gun_Recoilless` guns go in WITH `FT_TurretHexMortar`,
+  `FT_TurretEmpero`, `FT_RecoillessGun` and `FT_TurretQuadAA`, so no turret is left
+  holding a weapon that does not exist. Each pairing read out of the dump's
+  `building.turretGunDef`, not guessed from the name.
+* **the 30 biomes: "Apply 28, keep AridShrubland + Lake".** Recorded in
+  `OWNER_EXCLUDE` in `cherrypick_build.py` with the tile counts, and printed on every
+  run — a silent exception is how a decision gets lost twice.
+
+⇒ 1,306 + 28 biomes + 11 weapons/apparel + 4 turret buildings = **1,349**, zero
+removals, file parses. Nothing below is outstanding; it is kept for the reasoning.
+
+<details><summary>the original finding</summary>
+
+**What WAS yours to decide — 41 cuts you recorded that never reached the settings file.**
 They are in `observed/inventory/decisions_*.json` and nowhere else, so nothing cut them
 and nothing will. Not added: changing what is cut is not a seat's call.
 
@@ -386,3 +402,5 @@ Boiling 3, Skunks 1, plus 40 derived meat/egg keys). They are inert and harmless
 Picker skips an unresolvable key with no report — so they were left alone rather than
 edited out of your list. `python3 src/RimMandrake/Utils/cherrypick_build.py` names every
 one of them.
+
+</details>
