@@ -209,7 +209,7 @@
         <nodeClass>PawnRenderNode_AttachmentHead</nodeClass>
         <workerClass>PawnRenderNodeWorker_FlipWhenCrawling</workerClass>
         <texPath>RimMandrakeSW/SWX/Pawn/HeadAttachments/selkath/fishyjowls_male</texPath>
-        <texPathFemale>Pawn/HeadAttachments/selkath/fishyjowls_female</texPathFemale>
+        <texPathFemale>RimMandrakeSW/SWX/Pawn/HeadAttachments/selkath/fishyjowls_female</texPathFemale>
         <narrowCrownHorizontalOffset>0.03</narrowCrownHorizontalOffset>
         <useRottenColor>true</useRottenColor>
         <colorType>Skin</colorType>
@@ -548,7 +548,7 @@
           <li>RimMandrakeSW/OR/OuterRim/Genes/Headbone/Chagrian0</li>
           <li>RimMandrakeSW/OR/OuterRim/Genes/Headbone/Chagrian1</li>
         </texPaths>
-        <texPathFemale>OuterRim/Genes/Headbone/ChagrianF</texPathFemale>
+        <texPathFemale>RimMandrakeSW/OR/OuterRim/Genes/Headbone/ChagrianF</texPathFemale>
         <colorType>Skin</colorType>
         <parentTagDef>Head</parentTagDef>
         <shaderTypeDef>CutoutComplex</shaderTypeDef>
@@ -1242,8 +1242,8 @@
     </exclusionTags>
     <modExtensions>
       <li Class="VEF.Genes.GeneExtension">
-        <backgroundPathEndogenes>OuterRim/GeneIcons/EndogeneBG</backgroundPathEndogenes>
-        <backgroundPathXenogenes>OuterRim/GeneIcons/XenogeneBG</backgroundPathXenogenes>
+        <backgroundPathEndogenes>RimMandrakeSW/OR/OuterRim/GeneIcons/EndogeneBG</backgroundPathEndogenes>
+        <backgroundPathXenogenes>RimMandrakeSW/OR/OuterRim/GeneIcons/XenogeneBG</backgroundPathXenogenes>
         <forGenderOnly>Female</forGenderOnly>
       </li>
     </modExtensions>
@@ -1321,7 +1321,7 @@
     <renderNodeProperties>
       <li Class="PawnRenderNodeProperties_Eye">
         <texPath>RimMandrakeSW/SWX/Pawn/HeadAttachments/yelloweyes/YellowEyes_Male</texPath>
-        <texPathFemale>Pawn/HeadAttachments/yelloweyes/YellowEyes_Female</texPathFemale>
+        <texPathFemale>RimMandrakeSW/SWX/Pawn/HeadAttachments/yelloweyes/YellowEyes_Female</texPathFemale>
         <anchorTag>RightEye</anchorTag>
         <rotDrawMode>Fresh, Rotting</rotDrawMode>
         <parentTagDef>Head</parentTagDef>
@@ -1336,7 +1336,7 @@
       </li>
       <li Class="PawnRenderNodeProperties_Eye">
         <texPath>RimMandrakeSW/SWX/Pawn/HeadAttachments/yelloweyes/YellowEyes_Male</texPath>
-        <texPathFemale>Pawn/HeadAttachments/yelloweyes/YellowEyes_Female</texPathFemale>
+        <texPathFemale>RimMandrakeSW/SWX/Pawn/HeadAttachments/yelloweyes/YellowEyes_Female</texPathFemale>
         <anchorTag>LeftEye</anchorTag>
         <rotDrawMode>Fresh, Rotting</rotDrawMode>
         <parentTagDef>Head</parentTagDef>
@@ -1378,8 +1378,8 @@
     </exclusionTags>
     <modExtensions>
       <li Class="VEF.Genes.GeneExtension">
-        <backgroundPathEndogenes>OuterRim/GeneIcons/EndogeneBG</backgroundPathEndogenes>
-        <backgroundPathXenogenes>OuterRim/GeneIcons/XenogeneBG</backgroundPathXenogenes>
+        <backgroundPathEndogenes>RimMandrakeSW/OR/OuterRim/GeneIcons/EndogeneBG</backgroundPathEndogenes>
+        <backgroundPathXenogenes>RimMandrakeSW/OR/OuterRim/GeneIcons/XenogeneBG</backgroundPathXenogenes>
       </li>
     </modExtensions>
   </GeneDef>
@@ -1387,8 +1387,8 @@
     <canGenerateInGeneSet>false</canGenerateInGeneSet>
     <modExtensions>
       <li Class="VEF.Genes.GeneExtension">
-        <backgroundPathEndogenes>OuterRim/GeneIcons/EndogeneBG</backgroundPathEndogenes>
-        <backgroundPathXenogenes>OuterRim/GeneIcons/XenogeneBG</backgroundPathXenogenes>
+        <backgroundPathEndogenes>RimMandrakeSW/OR/OuterRim/GeneIcons/EndogeneBG</backgroundPathEndogenes>
+        <backgroundPathXenogenes>RimMandrakeSW/OR/OuterRim/GeneIcons/XenogeneBG</backgroundPathXenogenes>
       </li>
     </modExtensions>
   </GeneDef>
@@ -1396,8 +1396,8 @@
     <canGenerateInGeneSet>false</canGenerateInGeneSet>
     <modExtensions>
       <li Class="VEF.Genes.GeneExtension">
-        <backgroundPathEndogenes>OuterRim/GeneIcons/EndogeneBG</backgroundPathEndogenes>
-        <backgroundPathXenogenes>OuterRim/GeneIcons/XenogeneBG</backgroundPathXenogenes>
+        <backgroundPathEndogenes>RimMandrakeSW/OR/OuterRim/GeneIcons/EndogeneBG</backgroundPathEndogenes>
+        <backgroundPathXenogenes>RimMandrakeSW/OR/OuterRim/GeneIcons/XenogeneBG</backgroundPathXenogenes>
       </li>
     </modExtensions>
   </GeneDef>
@@ -1657,8 +1657,8 @@
     <modExtensions>
       <li Class="BigAndSmall.PawnExtension">
         <headPaths>
-          <Female>Pawn/HeadType/gand/gand</Female>
-          <Male>Pawn/HeadType/gand/gand</Male>
+          <Female>RimMandrakeSW/SWX/Pawn/HeadType/gand/gand</Female>
+          <Male>RimMandrakeSW/SWX/Pawn/HeadType/gand/gand</Male>
         </headPaths>
         <headMaterial>
           <shader>CutoutComplex</shader>
@@ -1737,8 +1737,8 @@
     <modExtensions>
       <li Class="BigAndSmall.PawnExtension">
         <headPaths>
-          <Female>Pawn/HeadType/selkath/fishy_female</Female>
-          <Male>Pawn/HeadType/selkath/fishy_male</Male>
+          <Female>RimMandrakeSW/SWX/Pawn/HeadType/selkath/fishy_female</Female>
+          <Male>RimMandrakeSW/SWX/Pawn/HeadType/selkath/fishy_male</Male>
         </headPaths>
         <headMaterial>
           <shader>CutoutComplex</shader>
@@ -1987,8 +1987,8 @@
     </exclusionTags>
     <modExtensions>
       <li Class="VEF.Genes.GeneExtension">
-        <backgroundPathEndogenes>OuterRim/GeneIcons/EndogeneBG</backgroundPathEndogenes>
-        <backgroundPathXenogenes>OuterRim/GeneIcons/XenogeneBG</backgroundPathXenogenes>
+        <backgroundPathEndogenes>RimMandrakeSW/OR/OuterRim/GeneIcons/EndogeneBG</backgroundPathEndogenes>
+        <backgroundPathXenogenes>RimMandrakeSW/OR/OuterRim/GeneIcons/XenogeneBG</backgroundPathXenogenes>
         <forGenderOnly>Male</forGenderOnly>
       </li>
     </modExtensions>
@@ -2006,8 +2006,8 @@
     </exclusionTags>
     <modExtensions>
       <li Class="VEF.Genes.GeneExtension">
-        <backgroundPathEndogenes>OuterRim/GeneIcons/EndogeneBG</backgroundPathEndogenes>
-        <backgroundPathXenogenes>OuterRim/GeneIcons/XenogeneBG</backgroundPathXenogenes>
+        <backgroundPathEndogenes>RimMandrakeSW/OR/OuterRim/GeneIcons/EndogeneBG</backgroundPathEndogenes>
+        <backgroundPathXenogenes>RimMandrakeSW/OR/OuterRim/GeneIcons/XenogeneBG</backgroundPathXenogenes>
         <forGenderOnly>Male</forGenderOnly>
       </li>
     </modExtensions>
@@ -2025,8 +2025,8 @@
     </exclusionTags>
     <modExtensions>
       <li Class="VEF.Genes.GeneExtension">
-        <backgroundPathEndogenes>OuterRim/GeneIcons/EndogeneBG</backgroundPathEndogenes>
-        <backgroundPathXenogenes>OuterRim/GeneIcons/XenogeneBG</backgroundPathXenogenes>
+        <backgroundPathEndogenes>RimMandrakeSW/OR/OuterRim/GeneIcons/EndogeneBG</backgroundPathEndogenes>
+        <backgroundPathXenogenes>RimMandrakeSW/OR/OuterRim/GeneIcons/XenogeneBG</backgroundPathXenogenes>
         <forGenderOnly>Male</forGenderOnly>
       </li>
     </modExtensions>
@@ -2679,8 +2679,8 @@
     </renderNodeProperties>
     <modExtensions Inherit="False">
       <li Class="VEF.Genes.GeneExtension">
-        <backgroundPathEndogenes>OuterRim/GeneIcons/EndogeneBG</backgroundPathEndogenes>
-        <backgroundPathXenogenes>OuterRim/GeneIcons/XenogeneBG</backgroundPathXenogenes>
+        <backgroundPathEndogenes>RimMandrakeSW/OR/OuterRim/GeneIcons/EndogeneBG</backgroundPathEndogenes>
+        <backgroundPathXenogenes>RimMandrakeSW/OR/OuterRim/GeneIcons/XenogeneBG</backgroundPathXenogenes>
         <forGenderOnly>Male</forGenderOnly>
       </li>
     </modExtensions>

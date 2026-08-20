@@ -1511,3 +1511,35 @@ criteria: no `Could not load reference to Verse.XenotypeDef` line naming a Jawa 
           to guarantee are **plain head, no arachnid eyes or fangs** and **male only**. If
           either is wrong the xenotype lost a gene, and the guard did not fire.
 state:    ready
+
+## d-chk2-magenta-heads-fixed-by-path-and-texture-not-by-regenerate-7b3e01
+row:      unassigned
+spec:     D-CHK2's four magenta cases are fixed, on the owner's ruling 2026-08-19 that the
+          fix goes ahead despite the 2026-08-15 v2 triage.
+          30 def paths across `SW_Genes.xml` and `SW_Support.xml` were missing the
+          `RimMandrakeSW/<DONOR>/` namespace, in exactly the four families D-CHK2 named:
+          `backgroundPathEndogenes`/`backgroundPathXenogenes` (16), the gand mask `<li>`s
+          (6), three `texPathFemale` (ChagrianF, YellowEyes_Female, fishyjowls_female) and
+          the gand/selkath `headPaths` `<Male>`/`<Female>` (4). 42 texture files that had
+          never been copied were brought across from the donors — the whole ChagrianF
+          headbone set, all three gand masks, the female yellow eyes, the female selkath
+          jowls and both gene-icon backgrounds.
+          🔑 FIXED IN THE OUTPUT, NOT BY A REGENERATE, AND THAT IS NOT A HAND-EDIT THAT
+          WILL BE LOST: `gen_races_mod.py` already carries the field fix (`texPathFemale`,
+          `backgroundPath*` in `TEXFIELDS`, `headPaths` in `TEXCONTAINERS`), so a future
+          run writes exactly these paths. The edit converges with the generator instead of
+          fighting it. A regenerate is separately blocked — see the DECIDE item.
+verify:   done offline, and it is stronger than D-CHK2's own test: **all 329 namespaced
+          texture paths in the mod were resolved against the files on disk — 0 missing.**
+          No def field anywhere under `Defs/` now starts `Pawn/`, `OuterRim/` or `Genes/`
+          without the namespace. Deployed, 26 files.
+          ⚠️ D-CHK2's written test is WRONG and was not used: it says no path may start
+          `UI/` without the prefix, but `UI/Icons/Xenotypes/Baseliner`,
+          `UI/Icons/Genes/Gene_Furskin` and a dozen more are VANILLA paths that must stay
+          bare. Only donor-owned paths get rewritten.
+criteria: `grep -c "Failed to find any textures at" <Player.log>` returns **0** where it
+          returned 3. Then look at the four cases by eye: Nikolaus (Gand), a Selkath, a
+          FEMALE Chagrian and a Jawa wearing the yuun mask.
+          🔴 Gendered fields make this look intermittent — male Chagrians always rendered.
+          Do not test one sex and call a species clean.
+state:    ready

@@ -79,8 +79,8 @@
         </whitelist>
       </triggerFlags>
       <texturePaths>
-        <li>Pawn/HeadAttachments/gand/mask_KotOR2</li>
-        <li>Pawn/HeadAttachments/gand/mask_yuun</li>
+        <li>RimMandrakeSW/SWX/Pawn/HeadAttachments/gand/mask_KotOR2</li>
+        <li>RimMandrakeSW/SWX/Pawn/HeadAttachments/gand/mask_yuun</li>
       </texturePaths>
     </conditionalGraphics>
   </BigAndSmall.GraphicSetDef>
@@ -93,7 +93,7 @@
         </whitelist>
       </triggerFlags>
       <texturePaths>
-        <li>Pawn/HeadAttachments/gand/mask_yuun</li>
+        <li>RimMandrakeSW/SWX/Pawn/HeadAttachments/gand/mask_yuun</li>
       </texturePaths>
     </conditionalGraphics>
   </BigAndSmall.GraphicSetDef>
@@ -106,7 +106,7 @@
         </whitelist>
       </triggerFlags>
       <texturePaths>
-        <li>Pawn/HeadAttachments/gand/mask_Zuckuss</li>
+        <li>RimMandrakeSW/SWX/Pawn/HeadAttachments/gand/mask_Zuckuss</li>
       </texturePaths>
     </conditionalGraphics>
   </BigAndSmall.GraphicSetDef>
@@ -213,8 +213,8 @@
         <baseLayer>67</baseLayer>
         <conditionalGraphics>
           <texturePaths>
-            <li>Pawn/HeadAttachments/gand/mask_KotOR2</li>
-            <li>Pawn/HeadAttachments/gand/mask_yuun</li>
+            <li>RimMandrakeSW/SWX/Pawn/HeadAttachments/gand/mask_KotOR2</li>
+            <li>RimMandrakeSW/SWX/Pawn/HeadAttachments/gand/mask_yuun</li>
           </texturePaths>
           <altDefs>
             <li>RimMandrake_GandMaskCustomization_default</li>

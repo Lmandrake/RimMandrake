@@ -310,16 +310,36 @@ def index_textures():
 
 # ---------------------------------------------------------------- species
 
-def species_table(x):
+def species_table(x, donor_defs=None):
+    """The roster: every species the donors define, however they are named.
+
+    🔴 THE SECOND LOOP USED TO READ ONLY THE DUMP, AND THAT IS A ONE-WAY LEAK.
+    A dump captured with the donors switched off does not contain their
+    xenotypes, so every BTD-only species that is not in BTD's own equivalencies
+    table simply vanished from the roster — and because the roster is what
+    `pick_species` iterates, the generator would then REFUSE TO WRITE rather
+    than ship a shrunken mod. Measured 2026-08-19: five species were being lost
+    exactly this way (Anzati, Muun, Ortolan, SithZ, Togorian), and the refusal
+    they caused is what had blocked D-CHK2's regenerate since 2026-08-15.
+
+    ⇒ Read the donors' XML ON DISK, the same fallback `_gene_exists` already
+    has. The dump stays as a secondary source so a species is picked up whether
+    the donors are on or off. This permanently removes the dependency on
+    donor-mods-active-at-dump-time.
+    """
     rows = {}
     root = ET.parse(BTD + "/BTD_Data/XenotypeEquivalencies.xml").getroot()
     for grp in root.findall("EquivalentGroup"):
         rows[grp.findtext("Species")] = (grp.findtext("BTD"),
                                          grp.findtext("SWX"),
                                          grp.findtext("OR"))
-    for n in x:
+    names = list(x)
+    if donor_defs:
+        names += [n for n, v in donor_defs.items()
+                  if v[1].tag == "XenotypeDef" and n not in x]
+    for n in names:
         if n.startswith("BTD_") and not any(n == v[0] for v in rows.values()):
-            rows[n[4:]] = (n, None, None)
+            rows.setdefault(n[4:], (n, None, None))
     return rows
 
 
@@ -404,8 +424,8 @@ def pick_species(x, g, donor_defs):
     Read the XML on disk, where all three still exist whatever the load order
     did to them.
     """
-    built, skipped = [], []
-    for species, cand in sorted(species_table(x).items()):
+    built, skipped, stripped = [], [], []
+    for species, cand in sorted(species_table(x, donor_defs).items()):
         if species in DROP_SPECIES:
             skipped.append((species, "dropped by owner ruling"))
             continue
@@ -436,10 +456,25 @@ def pick_species(x, g, donor_defs):
             continue
         missing = [n for n in glist if not _gene_exists(n, g, donor_defs)]
         if missing:
-            skipped.append((species, "genes do not resolve: %s" % missing[:3]))
-            continue
+            # 🔴 OWNER'S RULING 2026-08-15: "Remove any genes from our implementation
+            # of the xenotypes that aren't supported in our mod at this time. We will
+            # investigate what to do later."
+            # ⇒ A SPECIES IS NEVER DROPPED FOR A GENE. This used to `continue`, which
+            # cost six species to four genes — three Force genes that exist in NO donor
+            # tree (so no re-dump could ever surface them) and one that lives in a path
+            # `donor_xml_files` deliberately skips. Stripping was measured safe before it
+            # was written: no species empties and not one loses its head-forcing gene.
+            glist = [n for n in glist if n not in missing]
+            stripped.append((species, missing))
+            if not glist:
+                skipped.append((species, "every gene unresolvable: %s" % missing[:3]))
+                continue
         built.append(dict(species=species, src=src, f=(x.get(src) or {}).get("fields", {}),
                           genes=glist, headless=not [n for n in glist if _forces_head(n, g, donor_defs)]))
+    if stripped:
+        print("== genes STRIPPED (owner's ruling: never drop a species for a gene)")
+        for sp, ms in sorted(stripped):
+            print("  %-14s %s" % (sp, ", ".join(ms)))
     return built, skipped
 
 
