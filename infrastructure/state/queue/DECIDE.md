@@ -221,6 +221,67 @@ the spec should answer:
           OUT of every version by standing ruling — the write-up must stay on the design
           side of that line.
 
+━━━ 📐 SPEC, DECIDE 2026-08-19. Measured, and it is smaller than anyone thought ━━━
+
+🔴 **CORRECTION FIRST, because I told the owner otherwise and he would have decided on it.**
+I said *"plant growth and fertility read rainfall during PLAY, so the Jawa economy is the
+constraint."* **That is FALSE.** Grepped the full 1.6 decompile: the ONLY runtime consumer
+of `Tile.rainfall` is `WeatherDecider.cs:191` —
+`num *= weather.commonalityRainfallFactor.Evaluate(map.TileInfo.rainfall)` — plus
+`WITab_Terrain` (a UI label) and the `BiomeWorker_*` scorers, which are worldgen-only and
+which we overwrite anyway. ⇒ **Tile rainfall does not touch plant growth, fertility, crop
+yield or food at all. It only weights which WEATHERS can be selected.** There is no economy
+question and no floor to agonise over. Zeroing it costs nothing.
+
+⭐ **AND THE BAN IS ALREADY MOSTLY AUTHORED.** Measured over all 21,872 rows of
+`world/ASHKARR_WORLDMAP_tiles.csv`:
+```
+rain    0-50   : 17588   80.4%      elev_m   -30 .. 2266
+rain   50-100  :  2589   11.8%      rain_mm   18 .. 1668, mean 96
+rain  100-200  :   396    1.8%      Mountainous+Impassable: 1459 tiles (6.7%)
+rain  200-400  :   244    1.1%        their rain: 18-1668, mean 571
+rain  400-800  :   224    1.0%      tiles >=400mm: 1055, of which 555 are
+rain  800-2000 :   831    3.8%        Mountainous or Impassable
+```
+The map is already a rainless desert whose wet is already concentrated high. The ruling is
+mostly a **ratification plus a tightening**, not new work.
+
+**THE MECHANISM — the shipped curve does the whole job.** Every vanilla rain weather's
+`commonalityRainfallFactor` starts at **`(0, 0)`** and ramps to `(1300, 1)`. ⇒ **at tile
+rainfall 0 a rain weather's commonality is multiplied by ZERO and it can never be
+selected.** The ban is not a suppression hack; it is the field's designed behaviour.
+
+**(a) THE BAN.** In the authored CSV set `rain_mm = 0` on every tile whose `hilliness` is
+below 4. ⛔ Not 18, not "low" — **0**, because 0 is what makes the multiplier exactly zero.
+
+**(b) THE EXCEPTION, and the discriminator is elegant.** Keep the authored rainfall on
+`hilliness` 4 (`Mountainous`) and 5 (`Impassable`) — 1,459 tiles, 6.7% of the planet,
+mean 571 mm. ⭐ **The per-tile rainfall IS the per-tile gate**, which solves the problem a
+`weatherCommonalities` patch cannot: those biomes also exist at low elevation, and a
+BiomeDef patch is per-biome, but `commonalityRainfallFactor` is evaluated **per tile**. So
+author the violent weather with a curve like `(0,0) (800,0) (1200,1)` and it becomes
+**physically incapable of occurring anywhere except the high country** — no mutators, no
+per-tile placement, no new system.
+
+**(c) THE VIOLENT WEATHER — do not author one.** Same lesson as the sandstorm: it is
+already installed. Of 73 live `WeatherDef`s the two that match the owner's words
+(*"torrential, boiling, red, or otherwise violent and bizarre"*) are **`SW_RedFoggyRain`**
+("red foggy rain") and **`AB_VolcanicAshRain`** ("volcanic ash with rain"). Add them to the
+`weatherCommonalities` of the biomes that appear in the high country — measured as
+`ExtremeDesert` 320 · `AB_FeraliskInfestedJungle` 240 · `AB_RockyCrags` 171 · `Desert` 151
+· `ZBiome_Badlands` 123 · `AB_PropaneLakes` 86 — and let the rainfall curve confine them.
+🪤 `weatherCommonalities` is a LIST of `<li><weather>X</weather><commonality>N</commonality></li>`.
+NOT the dictionary shorthand that killed `biomeConfigs`.
+
+⭐ **A CONSEQUENCE WORTH KEEPING, not a problem to fix:** the river jungles
+(`AB_FeraliskInfestedJungle`, 1,561 tiles) will be lowland tiles at rainfall 0 — **jungle
+where it never rains.** That is not a defect, it is the setting stating itself: on Ash'karr
+the water comes from the rivers and the seas, never from the sky. The owner's own brief was
+*"coat the rivers in jungles"*. Leave it.
+
+⛔ **Still out, unchanged:** anything that makes the GENERATOR produce this. The rule is
+authored into our tiles and our defs. It is not a worldgen feature and must not become one.
+
 ## the-scenariodef-part-list-and-what-a-jawa-may-never-do-8d4c07
 row:      12
 from:     DECIDE, 2026-08-19. Created by the R-S2 reversal — the ScenarioDef went from
