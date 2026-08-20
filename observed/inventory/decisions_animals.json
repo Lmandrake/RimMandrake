@@ -1,0 +1,2374 @@
+{
+ "category": "animals",
+ "updated": "2026-08-15T07:36:28-07:00",
+ "cut": [
+  {
+   "defName": "<nodef#10>",
+   "label": "race-that-the-author-forgot-to-give-a-name",
+   "mod": "Big and Small - Framework",
+   "note": "",
+   "key": "<nodef#10>"
+  },
+  {
+   "defName": "<nodef#11>",
+   "label": "mech",
+   "mod": "Big and Small - Framework",
+   "note": "",
+   "key": "<nodef#11>"
+  },
+  {
+   "defName": "AA_CrystallineCaracal",
+   "label": "crystalline caracal",
+   "mod": "Alpha Animals",
+   "note": "",
+   "key": "AA_CrystallineCaracal"
+  },
+  {
+   "defName": "AA_DevilSheep",
+   "label": "devil sheep",
+   "mod": "Alpha Animals",
+   "note": "",
+   "key": "AA_DevilSheep"
+  },
+  {
+   "defName": "AA_FlamingoPhoenix",
+   "label": "flamingo phoenix",
+   "mod": "Alpha Animals",
+   "note": "",
+   "key": "AA_FlamingoPhoenix"
+  },
+  {
+   "defName": "AA_FrostLynx",
+   "label": "frost lynx",
+   "mod": "Alpha Animals",
+   "note": "",
+   "key": "AA_FrostLynx"
+  },
+  {
+   "defName": "AA_Genix",
+   "label": "genix",
+   "mod": "Alpha Animals",
+   "note": "",
+   "key": "AA_Genix"
+  },
+  {
+   "defName": "AA_PhoenixOwlcat",
+   "label": "phoenix owlcat",
+   "mod": "Alpha Animals",
+   "note": "",
+   "key": "AA_PhoenixOwlcat"
+  },
+  {
+   "defName": "AEXP_Anaconda",
+   "label": "anaconda",
+   "mod": "Vanilla Animals Expanded",
+   "note": "",
+   "key": "AEXP_Anaconda"
+  },
+  {
+   "defName": "AEXP_ArcticCoyote",
+   "label": "arctic coyote",
+   "mod": "Vanilla Animals Expanded",
+   "note": "",
+   "key": "AEXP_ArcticCoyote"
+  },
+  {
+   "defName": "AEXP_Beagle",
+   "label": "beagle",
+   "mod": "Vanilla Animals Expanded",
+   "note": "",
+   "key": "AEXP_Beagle"
+  },
+  {
+   "defName": "AEXP_Beaver",
+   "label": "beaver",
+   "mod": "Vanilla Animals Expanded",
+   "note": "",
+   "key": "AEXP_Beaver"
+  },
+  {
+   "defName": "AEXP_BlackBear",
+   "label": "black bear",
+   "mod": "Vanilla Animals Expanded",
+   "note": "",
+   "key": "AEXP_BlackBear"
+  },
+  {
+   "defName": "AEXP_Boombat",
+   "label": "boombat",
+   "mod": "Vanilla Animals Expanded",
+   "note": "",
+   "key": "AEXP_Boombat"
+  },
+  {
+   "defName": "AEXP_Camel",
+   "label": "camel",
+   "mod": "Vanilla Animals Expanded",
+   "note": "",
+   "key": "AEXP_Camel"
+  },
+  {
+   "defName": "AEXP_CatAbyssinian",
+   "label": "abyssinian cat",
+   "mod": "Vanilla Animals Expanded",
+   "note": "",
+   "key": "AEXP_CatAbyssinian"
+  },
+  {
+   "defName": "AEXP_CatBengal",
+   "label": "bengal cat",
+   "mod": "Vanilla Animals Expanded",
+   "note": "",
+   "key": "AEXP_CatBengal"
+  },
+  {
+   "defName": "AEXP_CatBritishShorthair",
+   "label": "british shorthair cat",
+   "mod": "Vanilla Animals Expanded",
+   "note": "",
+   "key": "AEXP_CatBritishShorthair"
+  },
+  {
+   "defName": "AEXP_CatMaineCoon",
+   "label": "maine coon",
+   "mod": "Vanilla Animals Expanded",
+   "note": "",
+   "key": "AEXP_CatMaineCoon"
+  },
+  {
+   "defName": "AEXP_CatMunchkin",
+   "label": "munchkin cat",
+   "mod": "Vanilla Animals Expanded",
+   "note": "",
+   "key": "AEXP_CatMunchkin"
+  },
+  {
+   "defName": "AEXP_CatNorwegianForest",
+   "label": "norwegian forest cat",
+   "mod": "Vanilla Animals Expanded",
+   "note": "",
+   "key": "AEXP_CatNorwegianForest"
+  },
+  {
+   "defName": "AEXP_CatPersian",
+   "label": "persian cat",
+   "mod": "Vanilla Animals Expanded",
+   "note": "",
+   "key": "AEXP_CatPersian"
+  },
+  {
+   "defName": "AEXP_CatSiamese",
+   "label": "siamese cat",
+   "mod": "Vanilla Animals Expanded",
+   "note": "",
+   "key": "AEXP_CatSiamese"
+  },
+  {
+   "defName": "AEXP_CatSomali",
+   "label": "somali cat",
+   "mod": "Vanilla Animals Expanded",
+   "note": "",
+   "key": "AEXP_CatSomali"
+  },
+  {
+   "defName": "AEXP_CatSphynx",
+   "label": "sphynx cat",
+   "mod": "Vanilla Animals Expanded",
+   "note": "",
+   "key": "AEXP_CatSphynx"
+  },
+  {
+   "defName": "AEXP_Cheetah",
+   "label": "cheetah",
+   "mod": "Vanilla Animals Expanded",
+   "note": "",
+   "key": "AEXP_Cheetah"
+  },
+  {
+   "defName": "AEXP_Chihuahua",
+   "label": "chihuahua",
+   "mod": "Vanilla Animals Expanded",
+   "note": "",
+   "key": "AEXP_Chihuahua"
+  },
+  {
+   "defName": "AEXP_Corgi",
+   "label": "corgi",
+   "mod": "Vanilla Animals Expanded",
+   "note": "",
+   "key": "AEXP_Corgi"
+  },
+  {
+   "defName": "AEXP_Coyote",
+   "label": "coyote",
+   "mod": "Vanilla Animals Expanded",
+   "note": "",
+   "key": "AEXP_Coyote"
+  },
+  {
+   "defName": "AEXP_Crocodile",
+   "label": "crocodile",
+   "mod": "Vanilla Animals Expanded",
+   "note": "",
+   "key": "AEXP_Crocodile"
+  },
+  {
+   "defName": "AEXP_DesertTortoise",
+   "label": "desert tortoise",
+   "mod": "Vanilla Animals Expanded",
+   "note": "",
+   "key": "AEXP_DesertTortoise"
+  },
+  {
+   "defName": "AEXP_FrenchBulldog",
+   "label": "french bulldog",
+   "mod": "Vanilla Animals Expanded",
+   "note": "",
+   "key": "AEXP_FrenchBulldog"
+  },
+  {
+   "defName": "AEXP_GermanShepherd",
+   "label": "german shepherd",
+   "mod": "Vanilla Animals Expanded",
+   "note": "",
+   "key": "AEXP_GermanShepherd"
+  },
+  {
+   "defName": "AEXP_Giraffe",
+   "label": "giraffe",
+   "mod": "Vanilla Animals Expanded",
+   "note": "",
+   "key": "AEXP_Giraffe"
+  },
+  {
+   "defName": "AEXP_GreatDane",
+   "label": "great dane",
+   "mod": "Vanilla Animals Expanded",
+   "note": "",
+   "key": "AEXP_GreatDane"
+  },
+  {
+   "defName": "AEXP_Hedgehog",
+   "label": "hedgehog",
+   "mod": "Vanilla Animals Expanded",
+   "note": "",
+   "key": "AEXP_Hedgehog"
+  },
+  {
+   "defName": "AEXP_Hyena",
+   "label": "hyena",
+   "mod": "Vanilla Animals Expanded",
+   "note": "",
+   "key": "AEXP_Hyena"
+  },
+  {
+   "defName": "AEXP_IndianElephant",
+   "label": "indian elephant",
+   "mod": "Vanilla Animals Expanded",
+   "note": "",
+   "key": "AEXP_IndianElephant"
+  },
+  {
+   "defName": "AEXP_Jaguar",
+   "label": "jaguar",
+   "mod": "Vanilla Animals Expanded",
+   "note": "",
+   "key": "AEXP_Jaguar"
+  },
+  {
+   "defName": "AEXP_Kangaroo",
+   "label": "kangaroo",
+   "mod": "Vanilla Animals Expanded",
+   "note": "",
+   "key": "AEXP_Kangaroo"
+  },
+  {
+   "defName": "AEXP_Koala",
+   "label": "koala",
+   "mod": "Vanilla Animals Expanded",
+   "note": "",
+   "key": "AEXP_Koala"
+  },
+  {
+   "defName": "AEXP_Lemur",
+   "label": "lemur",
+   "mod": "Vanilla Animals Expanded",
+   "note": "",
+   "key": "AEXP_Lemur"
+  },
+  {
+   "defName": "AEXP_Lion",
+   "label": "lion",
+   "mod": "Vanilla Animals Expanded",
+   "note": "",
+   "key": "AEXP_Lion"
+  },
+  {
+   "defName": "AEXP_Mandrill",
+   "label": "mandrill",
+   "mod": "Vanilla Animals Expanded",
+   "note": "",
+   "key": "AEXP_Mandrill"
+  },
+  {
+   "defName": "AEXP_MegaWolverine",
+   "label": "megawolverine",
+   "mod": "Vanilla Animals Expanded",
+   "note": "",
+   "key": "AEXP_MegaWolverine"
+  },
+  {
+   "defName": "AEXP_Megascorpion",
+   "label": "megascorpion",
+   "mod": "Vanilla Animals Expanded",
+   "note": "",
+   "key": "AEXP_Megascorpion"
+  },
+  {
+   "defName": "AEXP_Platypus",
+   "label": "platypus",
+   "mod": "Vanilla Animals Expanded",
+   "note": "",
+   "key": "AEXP_Platypus"
+  },
+  {
+   "defName": "AEXP_Poodle",
+   "label": "poodle",
+   "mod": "Vanilla Animals Expanded",
+   "note": "",
+   "key": "AEXP_Poodle"
+  },
+  {
+   "defName": "AEXP_Pug",
+   "label": "pug",
+   "mod": "Vanilla Animals Expanded",
+   "note": "",
+   "key": "AEXP_Pug"
+  },
+  {
+   "defName": "AEXP_Rattlesnake",
+   "label": "rattlesnake",
+   "mod": "Vanilla Animals Expanded",
+   "note": "",
+   "key": "AEXP_Rattlesnake"
+  },
+  {
+   "defName": "AEXP_RedPanda",
+   "label": "red panda",
+   "mod": "Vanilla Animals Expanded",
+   "note": "",
+   "key": "AEXP_RedPanda"
+  },
+  {
+   "defName": "AEXP_Rottweiler",
+   "label": "rottweiler",
+   "mod": "Vanilla Animals Expanded",
+   "note": "",
+   "key": "AEXP_Rottweiler"
+  },
+  {
+   "defName": "AEXP_Shih-Tzu",
+   "label": "shih-tzu",
+   "mod": "Vanilla Animals Expanded",
+   "note": "",
+   "key": "AEXP_Shih-Tzu"
+  },
+  {
+   "defName": "AEXP_Tapir",
+   "label": "tapir",
+   "mod": "Vanilla Animals Expanded",
+   "note": "",
+   "key": "AEXP_Tapir"
+  },
+  {
+   "defName": "AEXP_WelshTerrier",
+   "label": "welsh terrier",
+   "mod": "Vanilla Animals Expanded",
+   "note": "",
+   "key": "AEXP_WelshTerrier"
+  },
+  {
+   "defName": "AEXP_WildGoose",
+   "label": "wild goose",
+   "mod": "Vanilla Animals Expanded",
+   "note": "",
+   "key": "AEXP_WildGoose"
+  },
+  {
+   "defName": "AEXP_Wildebeest",
+   "label": "wildebeest",
+   "mod": "Vanilla Animals Expanded",
+   "note": "",
+   "key": "AEXP_Wildebeest"
+  },
+  {
+   "defName": "AEXP_Zebra",
+   "label": "zebra",
+   "mod": "Vanilla Animals Expanded",
+   "note": "",
+   "key": "AEXP_Zebra"
+  },
+  {
+   "defName": "Alligator",
+   "label": "alligator",
+   "mod": "Odyssey",
+   "note": "",
+   "key": "Alligator"
+  },
+  {
+   "defName": "AlligatorMan",
+   "label": "alligator man",
+   "mod": "Beasts of the Rim (Continued)",
+   "note": "",
+   "key": "AlligatorMan"
+  },
+  {
+   "defName": "Alphabeaver",
+   "label": "alphabeaver",
+   "mod": "Core",
+   "note": "",
+   "key": "Alphabeaver"
+  },
+  {
+   "defName": "Andrewsarchus",
+   "label": "andrewsarchus",
+   "mod": "Megafauna",
+   "note": "",
+   "key": "Andrewsarchus"
+  },
+  {
+   "defName": "Armadillo",
+   "label": "armadillo",
+   "mod": "Beasts of the Rim (Continued)",
+   "note": "",
+   "key": "Armadillo"
+  },
+  {
+   "defName": "Aurochs",
+   "label": "aurochs",
+   "mod": "Megafauna",
+   "note": "",
+   "key": "Aurochs"
+  },
+  {
+   "defName": "BMT_GlarralPenguin",
+   "label": "glarral penguin",
+   "mod": "Biomes! Caverns",
+   "note": "",
+   "key": "BMT_GlarralPenguin"
+  },
+  {
+   "defName": "BMT_WasteHound",
+   "label": "waste hound",
+   "mod": "Biomes! Polluted Lands",
+   "note": "",
+   "key": "BMT_WasteHound"
+  },
+  {
+   "defName": "BS_Centaur",
+   "label": "centauroid",
+   "mod": "Big and Small - Framework",
+   "note": "",
+   "key": "BS_Centaur"
+  },
+  {
+   "defName": "BS_HumanFouramed",
+   "label": "Four Armed Human",
+   "mod": "Big and Small - Framework",
+   "note": "",
+   "key": "BS_HumanFouramed"
+  },
+  {
+   "defName": "BS_HumanoidWithTail",
+   "label": "tailed humanoid",
+   "mod": "Big and Small - Framework",
+   "note": "",
+   "key": "BS_HumanoidWithTail"
+  },
+  {
+   "defName": "BS_HumanoidWithWings",
+   "label": "winged humanoid",
+   "mod": "Big and Small - Framework",
+   "note": "",
+   "key": "BS_HumanoidWithWings"
+  },
+  {
+   "defName": "BS_JustAHead",
+   "label": "disembodied head",
+   "mod": "Big and Small - Framework",
+   "note": "",
+   "key": "BS_JustAHead"
+  },
+  {
+   "defName": "BS_Marlith",
+   "label": "six-armed snake-person",
+   "mod": "Big and Small - Framework",
+   "note": "",
+   "key": "BS_Marlith"
+  },
+  {
+   "defName": "BS_Naga",
+   "label": "snake-person",
+   "mod": "Big and Small - Framework",
+   "note": "",
+   "key": "BS_Naga"
+  },
+  {
+   "defName": "BS_SixArmedHuman",
+   "label": "Six Armed Human",
+   "mod": "Big and Small - Framework",
+   "note": "",
+   "key": "BS_SixArmedHuman"
+  },
+  {
+   "defName": "BS_SpiderPersonRace",
+   "label": "spider-person",
+   "mod": "Big and Small - Framework",
+   "note": "",
+   "key": "BS_SpiderPersonRace"
+  },
+  {
+   "defName": "Badger",
+   "label": "badger",
+   "mod": "Odyssey",
+   "note": "",
+   "key": "Badger"
+  },
+  {
+   "defName": "BiomesIslands_Flamingo",
+   "label": "rose flamingo",
+   "mod": "Biomes! Core",
+   "note": "",
+   "key": "BiomesIslands_Flamingo"
+  },
+  {
+   "defName": "BlackBear",
+   "label": "black bear",
+   "mod": "Beasts of the Rim (Continued)",
+   "note": "",
+   "key": "BlackBear"
+  },
+  {
+   "defName": "BlackBearMan",
+   "label": "black bear man",
+   "mod": "Beasts of the Rim (Continued)",
+   "note": "",
+   "key": "BlackBearMan"
+  },
+  {
+   "defName": "Bluebird",
+   "label": "bluebird",
+   "mod": "Odyssey",
+   "note": "",
+   "key": "Bluebird"
+  },
+  {
+   "defName": "BogHound",
+   "label": "bog hound",
+   "mod": "Odyssey",
+   "note": "",
+   "key": "BogHound"
+  },
+  {
+   "defName": "Cassowary",
+   "label": "cassowary",
+   "mod": "Core",
+   "note": "",
+   "key": "Cassowary"
+  },
+  {
+   "defName": "Castoroides",
+   "label": "castoroides",
+   "mod": "Megafauna",
+   "note": "",
+   "key": "Castoroides"
+  },
+  {
+   "defName": "Cat",
+   "label": "cat",
+   "mod": "Core",
+   "note": "",
+   "key": "Cat"
+  },
+  {
+   "defName": "Cat_Scimitar",
+   "label": "scimitar cat",
+   "mod": "Odyssey",
+   "note": "",
+   "key": "Cat_Scimitar"
+  },
+  {
+   "defName": "Chalicotherium",
+   "label": "chalicotherium",
+   "mod": "Megafauna",
+   "note": "",
+   "key": "Chalicotherium"
+  },
+  {
+   "defName": "Cobra",
+   "label": "cobra",
+   "mod": "Core",
+   "note": "",
+   "key": "Cobra"
+  },
+  {
+   "defName": "Crow",
+   "label": "crow",
+   "mod": "Odyssey",
+   "note": "",
+   "key": "Crow"
+  },
+  {
+   "defName": "DA_ArcticOwlcat",
+   "label": "arctic owlcat",
+   "mod": "Dark Ages : Beasts and Monsters",
+   "note": "",
+   "key": "DA_ArcticOwlcat"
+  },
+  {
+   "defName": "DA_ForestOwlcat",
+   "label": "forest owlcat",
+   "mod": "Dark Ages : Beasts and Monsters",
+   "note": "",
+   "key": "DA_ForestOwlcat"
+  },
+  {
+   "defName": "DA_SilverMole",
+   "label": "silver mole",
+   "mod": "Dark Ages : Beasts and Monsters",
+   "note": "",
+   "key": "DA_SilverMole"
+  },
+  {
+   "defName": "Daeodon",
+   "label": "daeodon",
+   "mod": "Megafauna",
+   "note": "",
+   "key": "Daeodon"
+  },
+  {
+   "defName": "Deinotherium",
+   "label": "deinotherium",
+   "mod": "Megafauna",
+   "note": "",
+   "key": "Deinotherium"
+  },
+  {
+   "defName": "Dinopithecus",
+   "label": "dinopithecus",
+   "mod": "Megafauna",
+   "note": "",
+   "key": "Dinopithecus"
+  },
+  {
+   "defName": "Diprotodon",
+   "label": "diprotodon",
+   "mod": "Megafauna",
+   "note": "",
+   "key": "Diprotodon"
+  },
+  {
+   "defName": "ERN_BigCarbuncle",
+   "label": "grand carbuncle",
+   "mod": "Erin's Final Fantasy Animals",
+   "note": "",
+   "key": "ERN_BigCarbuncle"
+  },
+  {
+   "defName": "ERN_Carbuncle",
+   "label": "carbuncle",
+   "mod": "Erin's Final Fantasy Animals",
+   "note": "",
+   "key": "ERN_Carbuncle"
+  },
+  {
+   "defName": "ERN_Chocobo",
+   "label": "chocobo",
+   "mod": "Erin's Final Fantasy Animals",
+   "note": "",
+   "key": "ERN_Chocobo"
+  },
+  {
+   "defName": "Emu",
+   "label": "emu",
+   "mod": "Core",
+   "note": "",
+   "key": "Emu"
+  },
+  {
+   "defName": "Enhydriodon",
+   "label": "enhydriodon",
+   "mod": "Megafauna",
+   "note": "",
+   "key": "Enhydriodon"
+  },
+  {
+   "defName": "Flamingo",
+   "label": "flamingo",
+   "mod": "Odyssey",
+   "note": "",
+   "key": "Flamingo"
+  },
+  {
+   "defName": "GR_Bearchicken",
+   "label": "bearchicken",
+   "mod": "Vanilla Genetics Expanded",
+   "note": "",
+   "key": "GR_Bearchicken"
+  },
+  {
+   "defName": "GR_Bearwolf",
+   "label": "bearwolf",
+   "mod": "Vanilla Genetics Expanded",
+   "note": "",
+   "key": "GR_Bearwolf"
+  },
+  {
+   "defName": "GR_Beaverwolf",
+   "label": "beaverwolf",
+   "mod": "Vanilla Genetics Expanded",
+   "note": "",
+   "key": "GR_Beaverwolf"
+  },
+  {
+   "defName": "GR_Boomachicken",
+   "label": "boomachicken",
+   "mod": "Vanilla Genetics Expanded",
+   "note": "",
+   "key": "GR_Boomachicken"
+  },
+  {
+   "defName": "GR_Booman",
+   "label": "booman",
+   "mod": "Vanilla Genetics Expanded",
+   "note": "",
+   "key": "GR_Booman"
+  },
+  {
+   "defName": "GR_Boomhorse",
+   "label": "boomhorse",
+   "mod": "Vanilla Genetics Expanded",
+   "note": "",
+   "key": "GR_Boomhorse"
+  },
+  {
+   "defName": "GR_Boomnotherium",
+   "label": "boomnotherium",
+   "mod": "Vanilla Genetics Expanded",
+   "note": "",
+   "key": "GR_Boomnotherium"
+  },
+  {
+   "defName": "GR_Boomwolf",
+   "label": "boomwolf",
+   "mod": "Vanilla Genetics Expanded",
+   "note": "",
+   "key": "GR_Boomwolf"
+  },
+  {
+   "defName": "GR_Catbear",
+   "label": "catbear",
+   "mod": "Vanilla Genetics Expanded",
+   "note": "",
+   "key": "GR_Catbear"
+  },
+  {
+   "defName": "GR_Catffalo",
+   "label": "catffalo",
+   "mod": "Vanilla Genetics Expanded",
+   "note": "",
+   "key": "GR_Catffalo"
+  },
+  {
+   "defName": "GR_Cathorse",
+   "label": "cathorse",
+   "mod": "Vanilla Genetics Expanded",
+   "note": "",
+   "key": "GR_Cathorse"
+  },
+  {
+   "defName": "GR_Catman",
+   "label": "catman",
+   "mod": "Vanilla Genetics Expanded",
+   "note": "",
+   "key": "GR_Catman"
+  },
+  {
+   "defName": "GR_Catrabbit",
+   "label": "catrabbit",
+   "mod": "Vanilla Genetics Expanded",
+   "note": "",
+   "key": "GR_Catrabbit"
+  },
+  {
+   "defName": "GR_Catwolf",
+   "label": "catwolf",
+   "mod": "Vanilla Genetics Expanded",
+   "note": "",
+   "key": "GR_Catwolf"
+  },
+  {
+   "defName": "GR_Chickenbear",
+   "label": "chickenbear",
+   "mod": "Vanilla Genetics Expanded",
+   "note": "",
+   "key": "GR_Chickenbear"
+  },
+  {
+   "defName": "GR_Chickencat",
+   "label": "chickencat",
+   "mod": "Vanilla Genetics Expanded",
+   "note": "",
+   "key": "GR_Chickencat"
+  },
+  {
+   "defName": "GR_Chickenffalo",
+   "label": "chickenffalo",
+   "mod": "Vanilla Genetics Expanded",
+   "note": "",
+   "key": "GR_Chickenffalo"
+  },
+  {
+   "defName": "GR_Chickenlodon",
+   "label": "chickenlodon",
+   "mod": "Vanilla Genetics Expanded",
+   "note": "",
+   "key": "GR_Chickenlodon"
+  },
+  {
+   "defName": "GR_Chickenwolf",
+   "label": "chickenwolf",
+   "mod": "Vanilla Genetics Expanded",
+   "note": "",
+   "key": "GR_Chickenwolf"
+  },
+  {
+   "defName": "GR_Dogman",
+   "label": "dogman",
+   "mod": "Vanilla Genetics Expanded",
+   "note": "",
+   "key": "GR_Dogman"
+  },
+  {
+   "defName": "GR_Lizardman",
+   "label": "lizardman",
+   "mod": "Vanilla Genetics Expanded",
+   "note": "",
+   "key": "GR_Lizardman"
+  },
+  {
+   "defName": "GR_Manchicken",
+   "label": "manchicken",
+   "mod": "Vanilla Genetics Expanded",
+   "note": "",
+   "key": "GR_Manchicken"
+  },
+  {
+   "defName": "GR_Mansquirrel",
+   "label": "mansquirrel",
+   "mod": "Vanilla Genetics Expanded",
+   "note": "",
+   "key": "GR_Mansquirrel"
+  },
+  {
+   "defName": "GR_Molehorse",
+   "label": "molehorse",
+   "mod": "Vanilla Genetics Expanded",
+   "note": "",
+   "key": "GR_Molehorse"
+  },
+  {
+   "defName": "GR_Muffalobear",
+   "label": "muffalobear",
+   "mod": "Vanilla Genetics Expanded",
+   "note": "",
+   "key": "GR_Muffalobear"
+  },
+  {
+   "defName": "GR_Muffalocat",
+   "label": "muffalocat",
+   "mod": "Vanilla Genetics Expanded",
+   "note": "",
+   "key": "GR_Muffalocat"
+  },
+  {
+   "defName": "GR_Muffalochicken",
+   "label": "muffalochicken",
+   "mod": "Vanilla Genetics Expanded",
+   "note": "",
+   "key": "GR_Muffalochicken"
+  },
+  {
+   "defName": "GR_Muffalohorse",
+   "label": "muffalohorse",
+   "mod": "Vanilla Genetics Expanded",
+   "note": "",
+   "key": "GR_Muffalohorse"
+  },
+  {
+   "defName": "GR_Muffalowolf",
+   "label": "muffalowolf",
+   "mod": "Vanilla Genetics Expanded",
+   "note": "",
+   "key": "GR_Muffalowolf"
+  },
+  {
+   "defName": "GR_ParagonBear",
+   "label": "ursine paragon",
+   "mod": "Vanilla Genetics Expanded",
+   "note": "",
+   "key": "GR_ParagonBear"
+  },
+  {
+   "defName": "GR_ParagonChicken",
+   "label": "avian paragon",
+   "mod": "Vanilla Genetics Expanded",
+   "note": "",
+   "key": "GR_ParagonChicken"
+  },
+  {
+   "defName": "GR_ParagonFeline",
+   "label": "feline paragon",
+   "mod": "Vanilla Genetics Expanded",
+   "note": "",
+   "key": "GR_ParagonFeline"
+  },
+  {
+   "defName": "GR_ParagonHorse",
+   "label": "equine paragon",
+   "mod": "Vanilla Genetics Expanded",
+   "note": "",
+   "key": "GR_ParagonHorse"
+  },
+  {
+   "defName": "GR_ParagonHumanoid",
+   "label": "humanoid paragon",
+   "mod": "Vanilla Genetics Expanded",
+   "note": "",
+   "key": "GR_ParagonHumanoid"
+  },
+  {
+   "defName": "GR_ParagonWolf",
+   "label": "canine paragon",
+   "mod": "Vanilla Genetics Expanded",
+   "note": "",
+   "key": "GR_ParagonWolf"
+  },
+  {
+   "defName": "GR_Rabbitcat",
+   "label": "rabbitcat",
+   "mod": "Vanilla Genetics Expanded",
+   "note": "",
+   "key": "GR_Rabbitcat"
+  },
+  {
+   "defName": "GR_Thrumwolf",
+   "label": "thrumwolf",
+   "mod": "Vanilla Genetics Expanded",
+   "note": "",
+   "key": "GR_Thrumwolf"
+  },
+  {
+   "defName": "GR_Turkeyman",
+   "label": "turkeyman",
+   "mod": "Vanilla Genetics Expanded",
+   "note": "",
+   "key": "GR_Turkeyman"
+  },
+  {
+   "defName": "GR_WolfShrimp",
+   "label": "wolf shrimp",
+   "mod": "Vanilla Genetics Expanded",
+   "note": "",
+   "key": "GR_WolfShrimp"
+  },
+  {
+   "defName": "GR_Wolfalope",
+   "label": "wolfalope",
+   "mod": "Vanilla Genetics Expanded",
+   "note": "",
+   "key": "GR_Wolfalope"
+  },
+  {
+   "defName": "GR_Wolfbear",
+   "label": "wolfbear",
+   "mod": "Vanilla Genetics Expanded",
+   "note": "",
+   "key": "GR_Wolfbear"
+  },
+  {
+   "defName": "GR_Wolfbeaver",
+   "label": "wolfbeaver",
+   "mod": "Vanilla Genetics Expanded",
+   "note": "",
+   "key": "GR_Wolfbeaver"
+  },
+  {
+   "defName": "GR_Wolfcat",
+   "label": "wolfcat",
+   "mod": "Vanilla Genetics Expanded",
+   "note": "",
+   "key": "GR_Wolfcat"
+  },
+  {
+   "defName": "GR_Wolfchicken",
+   "label": "wolfchicken",
+   "mod": "Vanilla Genetics Expanded",
+   "note": "",
+   "key": "GR_Wolfchicken"
+  },
+  {
+   "defName": "GR_Wolffalo",
+   "label": "wolffalo",
+   "mod": "Vanilla Genetics Expanded",
+   "note": "",
+   "key": "GR_Wolffalo"
+  },
+  {
+   "defName": "GR_Wolfsnake",
+   "label": "wolfsnake",
+   "mod": "Vanilla Genetics Expanded",
+   "note": "",
+   "key": "GR_Wolfsnake"
+  },
+  {
+   "defName": "GR_WoolyWolf",
+   "label": "wooly Wolf",
+   "mod": "Vanilla Genetics Expanded",
+   "note": "",
+   "key": "GR_WoolyWolf"
+  },
+  {
+   "defName": "Gazelle",
+   "label": "gazelle",
+   "mod": "Core",
+   "note": "",
+   "key": "Gazelle"
+  },
+  {
+   "defName": "GiantSnake",
+   "label": "giant snake",
+   "mod": "Giant Snake (Continued)",
+   "note": "",
+   "key": "GiantSnake"
+  },
+  {
+   "defName": "Gigantophis",
+   "label": "gigantophis",
+   "mod": "Megafauna",
+   "note": "",
+   "key": "Gigantophis"
+  },
+  {
+   "defName": "Gigantopithecus",
+   "label": "gigantopithecus",
+   "mod": "Megafauna",
+   "note": "",
+   "key": "Gigantopithecus"
+  },
+  {
+   "defName": "Gorilla",
+   "label": "gorilla",
+   "mod": "Odyssey",
+   "note": "",
+   "key": "Gorilla"
+  },
+  {
+   "defName": "Grimstone_Belloceros",
+   "label": "belloceros",
+   "mod": "Grimstone : Beasts",
+   "note": "",
+   "key": "Grimstone_Belloceros"
+  },
+  {
+   "defName": "Grimstone_EmperorVulture",
+   "label": "emperor vulture",
+   "mod": "Grimstone : Beasts",
+   "note": "",
+   "key": "Grimstone_EmperorVulture"
+  },
+  {
+   "defName": "Grimstone_Griffar",
+   "label": "griffar",
+   "mod": "Grimstone : Beasts",
+   "note": "",
+   "key": "Grimstone_Griffar"
+  },
+  {
+   "defName": "Grimstone_NorthernLynx",
+   "label": "northern lynx",
+   "mod": "Grimstone : Beasts",
+   "note": "",
+   "key": "Grimstone_NorthernLynx"
+  },
+  {
+   "defName": "Grimstone_Sheepdog",
+   "label": "sheepdog",
+   "mod": "Grimstone : Beasts",
+   "note": "",
+   "key": "Grimstone_Sheepdog"
+  },
+  {
+   "defName": "Grimstone_Tetras",
+   "label": "tetras",
+   "mod": "Grimstone : Beasts",
+   "note": "",
+   "key": "Grimstone_Tetras"
+  },
+  {
+   "defName": "Heron",
+   "label": "heron",
+   "mod": "Odyssey",
+   "note": "",
+   "key": "Heron"
+  },
+  {
+   "defName": "Hippo",
+   "label": "hippo",
+   "mod": "Odyssey",
+   "note": "",
+   "key": "Hippo"
+  },
+  {
+   "defName": "IronScruff_Flatworm",
+   "label": "flatworm hound",
+   "mod": "Primordial Geysers",
+   "note": "",
+   "key": "IronScruff_Flatworm"
+  },
+  {
+   "defName": "IronScruff_Hydrazoa",
+   "label": "hydrazoa",
+   "mod": "Primordial Geysers",
+   "note": "",
+   "key": "IronScruff_Hydrazoa"
+  },
+  {
+   "defName": "IronScruff_Jellybird",
+   "label": "jellybird",
+   "mod": "Primordial Geysers",
+   "note": "",
+   "key": "IronScruff_Jellybird"
+  },
+  {
+   "defName": "IronScruff_Tardigrade",
+   "label": "giant tardigrade",
+   "mod": "Primordial Geysers",
+   "note": "",
+   "key": "IronScruff_Tardigrade"
+  },
+  {
+   "defName": "JRWAbrictosaurus",
+   "label": "Abrictosaurus",
+   "mod": "Jurassic Rimworld - Dinosaurs Only (Continued)",
+   "note": "",
+   "key": "JRWAbrictosaurus"
+  },
+  {
+   "defName": "JRWAcrocanthosaurus",
+   "label": "Acrocanthosaurus",
+   "mod": "Jurassic Rimworld - Dinosaurs Only (Continued)",
+   "note": "",
+   "key": "JRWAcrocanthosaurus"
+  },
+  {
+   "defName": "JRWAdalia",
+   "label": "Adalia",
+   "mod": "Jurassic Rimworld - Dinosaurs Only (Continued)",
+   "note": "",
+   "key": "JRWAdalia"
+  },
+  {
+   "defName": "JRWAgilisaurus",
+   "label": "Agilisaurus",
+   "mod": "Jurassic Rimworld - Dinosaurs Only (Continued)",
+   "note": "",
+   "key": "JRWAgilisaurus"
+  },
+  {
+   "defName": "JRWAlbertosaurus",
+   "label": "Albertosaurus",
+   "mod": "Jurassic Rimworld - Dinosaurs Only (Continued)",
+   "note": "",
+   "key": "JRWAlbertosaurus"
+  },
+  {
+   "defName": "JRWAllosaurus",
+   "label": "Allosaurus",
+   "mod": "Jurassic Rimworld - Dinosaurs Only (Continued)",
+   "note": "",
+   "key": "JRWAllosaurus"
+  },
+  {
+   "defName": "JRWAnkylosaurus",
+   "label": "Ankylosaurus",
+   "mod": "Jurassic Rimworld - Dinosaurs Only (Continued)",
+   "note": "",
+   "key": "JRWAnkylosaurus"
+  },
+  {
+   "defName": "JRWAntarctopelta",
+   "label": "Antarctopelta",
+   "mod": "Jurassic Rimworld - Dinosaurs Only (Continued)",
+   "note": "",
+   "key": "JRWAntarctopelta"
+  },
+  {
+   "defName": "JRWApatosaurus",
+   "label": "Apatosaurus",
+   "mod": "Jurassic Rimworld - Dinosaurs Only (Continued)",
+   "note": "",
+   "key": "JRWApatosaurus"
+  },
+  {
+   "defName": "JRWArgentinosaurus",
+   "label": "Argentinosaurus",
+   "mod": "Jurassic Rimworld - Dinosaurs Only (Continued)",
+   "note": "",
+   "key": "JRWArgentinosaurus"
+  },
+  {
+   "defName": "JRWBaryonyx",
+   "label": "Baryonyx",
+   "mod": "Jurassic Rimworld - Dinosaurs Only (Continued)",
+   "note": "",
+   "key": "JRWBaryonyx"
+  },
+  {
+   "defName": "JRWBecklespinax",
+   "label": "Becklespinax",
+   "mod": "Jurassic Rimworld - Dinosaurs Only (Continued)",
+   "note": "",
+   "key": "JRWBecklespinax"
+  },
+  {
+   "defName": "JRWBrachiosaurus",
+   "label": "Brachiosaurus",
+   "mod": "Jurassic Rimworld - Dinosaurs Only (Continued)",
+   "note": "",
+   "key": "JRWBrachiosaurus"
+  },
+  {
+   "defName": "JRWCamarasaurus",
+   "label": "Camarasaurus",
+   "mod": "Jurassic Rimworld - Dinosaurs Only (Continued)",
+   "note": "",
+   "key": "JRWCamarasaurus"
+  },
+  {
+   "defName": "JRWCamptosaurus",
+   "label": "Camptosaurus",
+   "mod": "Jurassic Rimworld - Dinosaurs Only (Continued)",
+   "note": "",
+   "key": "JRWCamptosaurus"
+  },
+  {
+   "defName": "JRWCarcharodontosaurus",
+   "label": "Carcharodontosaurus",
+   "mod": "Jurassic Rimworld - Dinosaurs Only (Continued)",
+   "note": "",
+   "key": "JRWCarcharodontosaurus"
+  },
+  {
+   "defName": "JRWCarnotaurus",
+   "label": "Carnotaurus",
+   "mod": "Jurassic Rimworld - Dinosaurs Only (Continued)",
+   "note": "",
+   "key": "JRWCarnotaurus"
+  },
+  {
+   "defName": "JRWCeratosaurus",
+   "label": "Ceratosaurus",
+   "mod": "Jurassic Rimworld - Dinosaurs Only (Continued)",
+   "note": "",
+   "key": "JRWCeratosaurus"
+  },
+  {
+   "defName": "JRWCoahuilaceratops",
+   "label": "Coahuilaceratops",
+   "mod": "Jurassic Rimworld - Dinosaurs Only (Continued)",
+   "note": "",
+   "key": "JRWCoahuilaceratops"
+  },
+  {
+   "defName": "JRWCoelophysis",
+   "label": "Coelophysis",
+   "mod": "Jurassic Rimworld - Dinosaurs Only (Continued)",
+   "note": "",
+   "key": "JRWCoelophysis"
+  },
+  {
+   "defName": "JRWCompsognathus",
+   "label": "Compsognathus",
+   "mod": "Jurassic Rimworld - Dinosaurs Only (Continued)",
+   "note": "",
+   "key": "JRWCompsognathus"
+  },
+  {
+   "defName": "JRWCorythosaurus",
+   "label": "Corythosaurus",
+   "mod": "Jurassic Rimworld - Dinosaurs Only (Continued)",
+   "note": "",
+   "key": "JRWCorythosaurus"
+  },
+  {
+   "defName": "JRWCryolophosaurus",
+   "label": "Cryolophosaurus",
+   "mod": "Jurassic Rimworld - Dinosaurs Only (Continued)",
+   "note": "",
+   "key": "JRWCryolophosaurus"
+  },
+  {
+   "defName": "JRWCyclosphaeroma",
+   "label": "Cyclosphaeroma",
+   "mod": "Jurassic Rimworld - Dinosaurs Only (Continued)",
+   "note": "",
+   "key": "JRWCyclosphaeroma"
+  },
+  {
+   "defName": "JRWDeinonychus",
+   "label": "Deinonychus",
+   "mod": "Jurassic Rimworld - Dinosaurs Only (Continued)",
+   "note": "",
+   "key": "JRWDeinonychus"
+  },
+  {
+   "defName": "JRWDeinosuchus",
+   "label": "Deinosuchus",
+   "mod": "Jurassic Rimworld - Dinosaurs Only (Continued)",
+   "note": "",
+   "key": "JRWDeinosuchus"
+  },
+  {
+   "defName": "JRWDesmatosuchus",
+   "label": "Desmatosuchus",
+   "mod": "Jurassic Rimworld - Dinosaurs Only (Continued)",
+   "note": "",
+   "key": "JRWDesmatosuchus"
+  },
+  {
+   "defName": "JRWDimetrodon",
+   "label": "Dimetrodon",
+   "mod": "Jurassic Rimworld - Dinosaurs Only (Continued)",
+   "note": "",
+   "key": "JRWDimetrodon"
+  },
+  {
+   "defName": "JRWDinilysia",
+   "label": "dinilysia",
+   "mod": "Jurassic Rimworld - Dinosaurs Only (Continued)",
+   "note": "",
+   "key": "JRWDinilysia"
+  },
+  {
+   "defName": "JRWDracorex",
+   "label": "Dracorex",
+   "mod": "Jurassic Rimworld - Dinosaurs Only (Continued)",
+   "note": "",
+   "key": "JRWDracorex"
+  },
+  {
+   "defName": "JRWDrinker",
+   "label": "Drinker",
+   "mod": "Jurassic Rimworld - Dinosaurs Only (Continued)",
+   "note": "",
+   "key": "JRWDrinker"
+  },
+  {
+   "defName": "JRWDromaeosaurus",
+   "label": "Dromaeosaurus",
+   "mod": "Jurassic Rimworld - Dinosaurs Only (Continued)",
+   "note": "",
+   "key": "JRWDromaeosaurus"
+  },
+  {
+   "defName": "JRWDryosaurus",
+   "label": "Dryosaurus",
+   "mod": "Jurassic Rimworld - Dinosaurs Only (Continued)",
+   "note": "",
+   "key": "JRWDryosaurus"
+  },
+  {
+   "defName": "JRWEdaphosaurus",
+   "label": "Edaphosaurus",
+   "mod": "Jurassic Rimworld - Dinosaurs Only (Continued)",
+   "note": "",
+   "key": "JRWEdaphosaurus"
+  },
+  {
+   "defName": "JRWEdmontosaurus",
+   "label": "Edmontosaurus",
+   "mod": "Jurassic Rimworld - Dinosaurs Only (Continued)",
+   "note": "",
+   "key": "JRWEdmontosaurus"
+  },
+  {
+   "defName": "JRWEnigmosaurus",
+   "label": "Enigmosaurus",
+   "mod": "Jurassic Rimworld - Dinosaurs Only (Continued)",
+   "note": "",
+   "key": "JRWEnigmosaurus"
+  },
+  {
+   "defName": "JRWEstemmenosuchus",
+   "label": "Estemmenosuchus",
+   "mod": "Jurassic Rimworld - Dinosaurs Only (Continued)",
+   "note": "",
+   "key": "JRWEstemmenosuchus"
+  },
+  {
+   "defName": "JRWGallimimus",
+   "label": "Gallimimus",
+   "mod": "Jurassic Rimworld - Dinosaurs Only (Continued)",
+   "note": "",
+   "key": "JRWGallimimus"
+  },
+  {
+   "defName": "JRWGasosaurus",
+   "label": "Gasosaurus",
+   "mod": "Jurassic Rimworld - Dinosaurs Only (Continued)",
+   "note": "",
+   "key": "JRWGasosaurus"
+  },
+  {
+   "defName": "JRWGiganotosaurus",
+   "label": "Giganotosaurus",
+   "mod": "Jurassic Rimworld - Dinosaurs Only (Continued)",
+   "note": "",
+   "key": "JRWGiganotosaurus"
+  },
+  {
+   "defName": "JRWHalszkaraptor",
+   "label": "Halszkaraptor",
+   "mod": "Jurassic Rimworld - Dinosaurs Only (Continued)",
+   "note": "",
+   "key": "JRWHalszkaraptor"
+  },
+  {
+   "defName": "JRWHolcorobeus",
+   "label": "Holcorobeus",
+   "mod": "Jurassic Rimworld - Dinosaurs Only (Continued)",
+   "note": "",
+   "key": "JRWHolcorobeus"
+  },
+  {
+   "defName": "JRWHomalocephale",
+   "label": "Homalocephale",
+   "mod": "Jurassic Rimworld - Dinosaurs Only (Continued)",
+   "note": "",
+   "key": "JRWHomalocephale"
+  },
+  {
+   "defName": "JRWHylonomus",
+   "label": "Hylonomus",
+   "mod": "Jurassic Rimworld - Dinosaurs Only (Continued)",
+   "note": "",
+   "key": "JRWHylonomus"
+  },
+  {
+   "defName": "JRWHypsilophodon",
+   "label": "Hypsilophodon",
+   "mod": "Jurassic Rimworld - Dinosaurs Only (Continued)",
+   "note": "",
+   "key": "JRWHypsilophodon"
+  },
+  {
+   "defName": "JRWIndominus",
+   "label": "Indominus rex",
+   "mod": "Jurassic Rimworld - Dinosaurs Only (Continued)",
+   "note": "",
+   "key": "JRWIndominus"
+  },
+  {
+   "defName": "JRWIndoraptor",
+   "label": "Indoraptor",
+   "mod": "Jurassic Rimworld - Dinosaurs Only (Continued)",
+   "note": "",
+   "key": "JRWIndoraptor"
+  },
+  {
+   "defName": "JRWKaprosuchus",
+   "label": "Kaprosuchus",
+   "mod": "Jurassic Rimworld - Dinosaurs Only (Continued)",
+   "note": "",
+   "key": "JRWKaprosuchus"
+  },
+  {
+   "defName": "JRWKentrosaurus",
+   "label": "Kentrosaurus",
+   "mod": "Jurassic Rimworld - Dinosaurs Only (Continued)",
+   "note": "",
+   "key": "JRWKentrosaurus"
+  },
+  {
+   "defName": "JRWKileskus",
+   "label": "Kileskus",
+   "mod": "Jurassic Rimworld - Dinosaurs Only (Continued)",
+   "note": "",
+   "key": "JRWKileskus"
+  },
+  {
+   "defName": "JRWKosmoceratops",
+   "label": "Kosmoceratops",
+   "mod": "Jurassic Rimworld - Dinosaurs Only (Continued)",
+   "note": "",
+   "key": "JRWKosmoceratops"
+  },
+  {
+   "defName": "JRWLycaenops",
+   "label": "Lycaenops",
+   "mod": "Jurassic Rimworld - Dinosaurs Only (Continued)",
+   "note": "",
+   "key": "JRWLycaenops"
+  },
+  {
+   "defName": "JRWMetriacanthosaurus",
+   "label": "Metriacanthosaurus",
+   "mod": "Jurassic Rimworld - Dinosaurs Only (Continued)",
+   "note": "",
+   "key": "JRWMetriacanthosaurus"
+  },
+  {
+   "defName": "JRWMicroceratus",
+   "label": "Microceratus",
+   "mod": "Jurassic Rimworld - Dinosaurs Only (Continued)",
+   "note": "",
+   "key": "JRWMicroceratus"
+  },
+  {
+   "defName": "JRWMochlodon",
+   "label": "Mochlodon",
+   "mod": "Jurassic Rimworld - Dinosaurs Only (Continued)",
+   "note": "",
+   "key": "JRWMochlodon"
+  },
+  {
+   "defName": "JRWNanuqsaurus",
+   "label": "Nanuqsaurus",
+   "mod": "Jurassic Rimworld - Dinosaurs Only (Continued)",
+   "note": "",
+   "key": "JRWNanuqsaurus"
+  },
+  {
+   "defName": "JRWNasutoceratops",
+   "label": "Nasutoceratops",
+   "mod": "Jurassic Rimworld - Dinosaurs Only (Continued)",
+   "note": "",
+   "key": "JRWNasutoceratops"
+  },
+  {
+   "defName": "JRWOphiacodon",
+   "label": "Ophiacodon",
+   "mod": "Jurassic Rimworld - Dinosaurs Only (Continued)",
+   "note": "",
+   "key": "JRWOphiacodon"
+  },
+  {
+   "defName": "JRWOrnithosuchus",
+   "label": "Ornithosuchus",
+   "mod": "Jurassic Rimworld - Dinosaurs Only (Continued)",
+   "note": "",
+   "key": "JRWOrnithosuchus"
+  },
+  {
+   "defName": "JRWOuranosaurus",
+   "label": "Ouranosaurus",
+   "mod": "Jurassic Rimworld - Dinosaurs Only (Continued)",
+   "note": "",
+   "key": "JRWOuranosaurus"
+  },
+  {
+   "defName": "JRWOviraptor",
+   "label": "Oviraptor",
+   "mod": "Jurassic Rimworld - Dinosaurs Only (Continued)",
+   "note": "",
+   "key": "JRWOviraptor"
+  },
+  {
+   "defName": "JRWPachycephalosaurus",
+   "label": "Pachycephalosaurus",
+   "mod": "Jurassic Rimworld - Dinosaurs Only (Continued)",
+   "note": "",
+   "key": "JRWPachycephalosaurus"
+  },
+  {
+   "defName": "JRWPachyrhinosaurus",
+   "label": "Pachyrhinosaurus",
+   "mod": "Jurassic Rimworld - Dinosaurs Only (Continued)",
+   "note": "",
+   "key": "JRWPachyrhinosaurus"
+  },
+  {
+   "defName": "JRWParasaurolophus",
+   "label": "Parasaurolophus",
+   "mod": "Jurassic Rimworld - Dinosaurs Only (Continued)",
+   "note": "",
+   "key": "JRWParasaurolophus"
+  },
+  {
+   "defName": "JRWParksosaurus",
+   "label": "Parksosaurus",
+   "mod": "Jurassic Rimworld - Dinosaurs Only (Continued)",
+   "note": "",
+   "key": "JRWParksosaurus"
+  },
+  {
+   "defName": "JRWPrestosuchus",
+   "label": "Prestosuchus",
+   "mod": "Jurassic Rimworld - Dinosaurs Only (Continued)",
+   "note": "",
+   "key": "JRWPrestosuchus"
+  },
+  {
+   "defName": "JRWProtoceratops",
+   "label": "Protoceratops",
+   "mod": "Jurassic Rimworld - Dinosaurs Only (Continued)",
+   "note": "",
+   "key": "JRWProtoceratops"
+  },
+  {
+   "defName": "JRWPsittacosaurus",
+   "label": "Psittacosaurus",
+   "mod": "Jurassic Rimworld - Dinosaurs Only (Continued)",
+   "note": "",
+   "key": "JRWPsittacosaurus"
+  },
+  {
+   "defName": "JRWRajasaurus",
+   "label": "Rajasaurus",
+   "mod": "Jurassic Rimworld - Dinosaurs Only (Continued)",
+   "note": "",
+   "key": "JRWRajasaurus"
+  },
+  {
+   "defName": "JRWRhabdodon",
+   "label": "Rhabdodon",
+   "mod": "Jurassic Rimworld - Dinosaurs Only (Continued)",
+   "note": "",
+   "key": "JRWRhabdodon"
+  },
+  {
+   "defName": "JRWRhamphorhynchus",
+   "label": "Rhamphorhynchus",
+   "mod": "Jurassic Rimworld - Dinosaurs Only (Continued)",
+   "note": "",
+   "key": "JRWRhamphorhynchus"
+  },
+  {
+   "defName": "JRWSaltasaurus",
+   "label": "Saltasaurus",
+   "mod": "Jurassic Rimworld - Dinosaurs Only (Continued)",
+   "note": "",
+   "key": "JRWSaltasaurus"
+  },
+  {
+   "defName": "JRWSarcosuchus",
+   "label": "Sarcosuchus",
+   "mod": "Jurassic Rimworld - Dinosaurs Only (Continued)",
+   "note": "",
+   "key": "JRWSarcosuchus"
+  },
+  {
+   "defName": "JRWScutosaurus",
+   "label": "Scutosaurus",
+   "mod": "Jurassic Rimworld - Dinosaurs Only (Continued)",
+   "note": "",
+   "key": "JRWScutosaurus"
+  },
+  {
+   "defName": "JRWSegnosaurus",
+   "label": "Segnosaurus",
+   "mod": "Jurassic Rimworld - Dinosaurs Only (Continued)",
+   "note": "",
+   "key": "JRWSegnosaurus"
+  },
+  {
+   "defName": "JRWSpinosaurus",
+   "label": "Spinosaurus",
+   "mod": "Jurassic Rimworld - Dinosaurs Only (Continued)",
+   "note": "",
+   "key": "JRWSpinosaurus"
+  },
+  {
+   "defName": "JRWStaurikosaurus",
+   "label": "Staurikosaurus",
+   "mod": "Jurassic Rimworld - Dinosaurs Only (Continued)",
+   "note": "",
+   "key": "JRWStaurikosaurus"
+  },
+  {
+   "defName": "JRWStegosaurus",
+   "label": "Stegosaurus",
+   "mod": "Jurassic Rimworld - Dinosaurs Only (Continued)",
+   "note": "",
+   "key": "JRWStegosaurus"
+  },
+  {
+   "defName": "JRWStygimoloch",
+   "label": "Stygimoloch",
+   "mod": "Jurassic Rimworld - Dinosaurs Only (Continued)",
+   "note": "",
+   "key": "JRWStygimoloch"
+  },
+  {
+   "defName": "JRWStyracosaurus",
+   "label": "Styracosaurus",
+   "mod": "Jurassic Rimworld - Dinosaurs Only (Continued)",
+   "note": "",
+   "key": "JRWStyracosaurus"
+  },
+  {
+   "defName": "JRWSuchomimus",
+   "label": "Suchomimus",
+   "mod": "Jurassic Rimworld - Dinosaurs Only (Continued)",
+   "note": "",
+   "key": "JRWSuchomimus"
+  },
+  {
+   "defName": "JRWSupersaurus",
+   "label": "Supersaurus",
+   "mod": "Jurassic Rimworld - Dinosaurs Only (Continued)",
+   "note": "",
+   "key": "JRWSupersaurus"
+  },
+  {
+   "defName": "JRWTanystropheus",
+   "label": "Tanystropheus",
+   "mod": "Jurassic Rimworld - Dinosaurs Only (Continued)",
+   "note": "",
+   "key": "JRWTanystropheus"
+  },
+  {
+   "defName": "JRWTenontosaurus",
+   "label": "Tenontosaurus",
+   "mod": "Jurassic Rimworld - Dinosaurs Only (Continued)",
+   "note": "",
+   "key": "JRWTenontosaurus"
+  },
+  {
+   "defName": "JRWTermitotron",
+   "label": "Termitotron",
+   "mod": "Jurassic Rimworld - Dinosaurs Only (Continued)",
+   "note": "",
+   "key": "JRWTermitotron"
+  },
+  {
+   "defName": "JRWTherizinosaurus",
+   "label": "Therizinosaurus",
+   "mod": "Jurassic Rimworld - Dinosaurs Only (Continued)",
+   "note": "",
+   "key": "JRWTherizinosaurus"
+  },
+  {
+   "defName": "JRWTitanoboa",
+   "label": "titanoboa",
+   "mod": "Jurassic Rimworld - Dinosaurs Only (Continued)",
+   "note": "",
+   "key": "JRWTitanoboa"
+  },
+  {
+   "defName": "JRWTorosaurus",
+   "label": "Torosaurus",
+   "mod": "Jurassic Rimworld - Dinosaurs Only (Continued)",
+   "note": "",
+   "key": "JRWTorosaurus"
+  },
+  {
+   "defName": "JRWTriceratops",
+   "label": "Triceratops",
+   "mod": "Jurassic Rimworld - Dinosaurs Only (Continued)",
+   "note": "",
+   "key": "JRWTriceratops"
+  },
+  {
+   "defName": "JRWTroodon",
+   "label": "Troodon",
+   "mod": "Jurassic Rimworld - Dinosaurs Only (Continued)",
+   "note": "",
+   "key": "JRWTroodon"
+  },
+  {
+   "defName": "JRWTupandactylus",
+   "label": "Tupandactylus",
+   "mod": "Jurassic Rimworld - Dinosaurs Only (Continued)",
+   "note": "",
+   "key": "JRWTupandactylus"
+  },
+  {
+   "defName": "JRWTyrannosaurus",
+   "label": "Tyrannosaurus rex",
+   "mod": "Jurassic Rimworld - Dinosaurs Only (Continued)",
+   "note": "",
+   "key": "JRWTyrannosaurus"
+  },
+  {
+   "defName": "JRWUdanoceratops",
+   "label": "Udanoceratops",
+   "mod": "Jurassic Rimworld - Dinosaurs Only (Continued)",
+   "note": "",
+   "key": "JRWUdanoceratops"
+  },
+  {
+   "defName": "JRWValdosaurus",
+   "label": "Valdosaurus",
+   "mod": "Jurassic Rimworld - Dinosaurs Only (Continued)",
+   "note": "",
+   "key": "JRWValdosaurus"
+  },
+  {
+   "defName": "JRWVelociraptor",
+   "label": "Velociraptor",
+   "mod": "Jurassic Rimworld - Dinosaurs Only (Continued)",
+   "note": "",
+   "key": "JRWVelociraptor"
+  },
+  {
+   "defName": "JRWWonambi",
+   "label": "wonambi",
+   "mod": "Jurassic Rimworld - Dinosaurs Only (Continued)",
+   "note": "",
+   "key": "JRWWonambi"
+  },
+  {
+   "defName": "JRWYangchuanosaurus",
+   "label": "Yangchuanosaurus",
+   "mod": "Jurassic Rimworld - Dinosaurs Only (Continued)",
+   "note": "",
+   "key": "JRWYangchuanosaurus"
+  },
+  {
+   "defName": "JRWYi",
+   "label": "Yi",
+   "mod": "Jurassic Rimworld - Dinosaurs Only (Continued)",
+   "note": "",
+   "key": "JRWYi"
+  },
+  {
+   "defName": "JRWYurlunggur",
+   "label": "yurlunggur",
+   "mod": "Jurassic Rimworld - Dinosaurs Only (Continued)",
+   "note": "",
+   "key": "JRWYurlunggur"
+  },
+  {
+   "defName": "JRWYutyrannus",
+   "label": "Yutyrannus",
+   "mod": "Jurassic Rimworld - Dinosaurs Only (Continued)",
+   "note": "",
+   "key": "JRWYutyrannus"
+  },
+  {
+   "defName": "JRWZalmoxes",
+   "label": "Zalmoxes",
+   "mod": "Jurassic Rimworld - Dinosaurs Only (Continued)",
+   "note": "",
+   "key": "JRWZalmoxes"
+  },
+  {
+   "defName": "JRWZephyrosaurus",
+   "label": "Zephyrosaurus",
+   "mod": "Jurassic Rimworld - Dinosaurs Only (Continued)",
+   "note": "",
+   "key": "JRWZephyrosaurus"
+  },
+  {
+   "defName": "Josephoartigasia",
+   "label": "josephoartigasia",
+   "mod": "Megafauna",
+   "note": "",
+   "key": "Josephoartigasia"
+  },
+  {
+   "defName": "MA_Capryak",
+   "label": "Capryak",
+   "mod": "Mythic Ages: Megafauna Bestiary",
+   "note": "",
+   "key": "MA_Capryak"
+  },
+  {
+   "defName": "MA_Direhorse",
+   "label": "direhorse",
+   "mod": "Mythic Ages: Megafauna Bestiary",
+   "note": "",
+   "key": "MA_Direhorse"
+  },
+  {
+   "defName": "MA_Dunbear",
+   "label": "dunbear",
+   "mod": "Mythic Ages: Megafauna Bestiary",
+   "note": "",
+   "key": "MA_Dunbear"
+  },
+  {
+   "defName": "MA_Duskhorn",
+   "label": "duskhorn",
+   "mod": "Mythic Ages: Megafauna Bestiary",
+   "note": "",
+   "key": "MA_Duskhorn"
+  },
+  {
+   "defName": "MA_Furpotamus",
+   "label": "furpotamus",
+   "mod": "Mythic Ages: Megafauna Bestiary",
+   "note": "",
+   "key": "MA_Furpotamus"
+  },
+  {
+   "defName": "MA_Harpeagle",
+   "label": "harpeagle",
+   "mod": "Mythic Ages: Megafauna Bestiary",
+   "note": "",
+   "key": "MA_Harpeagle"
+  },
+  {
+   "defName": "MA_Manehound",
+   "label": "manehound",
+   "mod": "Mythic Ages: Megafauna Bestiary",
+   "note": "",
+   "key": "MA_Manehound"
+  },
+  {
+   "defName": "MA_Plastemmoth",
+   "label": "Plastemmoth",
+   "mod": "Mythic Ages: Megafauna Bestiary",
+   "note": "",
+   "key": "MA_Plastemmoth"
+  },
+  {
+   "defName": "MA_Scarodon",
+   "label": "scarodon",
+   "mod": "Mythic Ages: Megafauna Bestiary",
+   "note": "",
+   "key": "MA_Scarodon"
+  },
+  {
+   "defName": "MA_Simbakub",
+   "label": "Simbakub",
+   "mod": "Mythic Ages: Megafauna Bestiary",
+   "note": "",
+   "key": "MA_Simbakub"
+  },
+  {
+   "defName": "MA_SimbakubAlpha",
+   "label": "Simbakub Alpha",
+   "mod": "Mythic Ages: Megafauna Bestiary",
+   "note": "",
+   "key": "MA_SimbakubAlpha"
+  },
+  {
+   "defName": "Macaw",
+   "label": "macaw",
+   "mod": "Odyssey",
+   "note": "",
+   "key": "Macaw"
+  },
+  {
+   "defName": "Mandrill",
+   "label": "mandrill",
+   "mod": "Beasts of the Rim (Continued)",
+   "note": "",
+   "key": "Mandrill"
+  },
+  {
+   "defName": "MandrillMan",
+   "label": "mandrill man",
+   "mod": "Beasts of the Rim (Continued)",
+   "note": "",
+   "key": "MandrillMan"
+  },
+  {
+   "defName": "Mastodon",
+   "label": "mastodon",
+   "mod": "Odyssey",
+   "note": "",
+   "key": "Mastodon"
+  },
+  {
+   "defName": "Megalania",
+   "label": "megalania",
+   "mod": "Megafauna",
+   "note": "",
+   "key": "Megalania"
+  },
+  {
+   "defName": "Megalochelys",
+   "label": "megalochelys",
+   "mod": "Megafauna",
+   "note": "",
+   "key": "Megalochelys"
+  },
+  {
+   "defName": "Metalhorror",
+   "label": "metalhorror",
+   "mod": "Anomaly",
+   "note": "",
+   "key": "Metalhorror"
+  },
+  {
+   "defName": "Mink",
+   "label": "mink",
+   "mod": "Odyssey",
+   "note": "",
+   "key": "Mink"
+  },
+  {
+   "defName": "MonitorLizard",
+   "label": "monitor lizard",
+   "mod": "Odyssey",
+   "note": "",
+   "key": "MonitorLizard"
+  },
+  {
+   "defName": "Moose",
+   "label": "moose",
+   "mod": "Odyssey",
+   "note": "",
+   "key": "Moose"
+  },
+  {
+   "defName": "Muskox",
+   "label": "muskox",
+   "mod": "Odyssey",
+   "note": "",
+   "key": "Muskox"
+  },
+  {
+   "defName": "MutantCow",
+   "label": "cow",
+   "mod": "Advanced Biomes (Continued)",
+   "note": "",
+   "key": "MutantCow"
+  },
+  {
+   "defName": "Neanderthal",
+   "label": "neanderthal",
+   "mod": "Beasts of the Rim (Continued)",
+   "note": "",
+   "key": "Neanderthal"
+  },
+  {
+   "defName": "Ostrich",
+   "label": "ostrich",
+   "mod": "Core",
+   "note": "",
+   "key": "Ostrich"
+  },
+  {
+   "defName": "Otter",
+   "label": "otter",
+   "mod": "Odyssey",
+   "note": "",
+   "key": "Otter"
+  },
+  {
+   "defName": "Palaeeudyptes",
+   "label": "palaeeudyptes",
+   "mod": "Megafauna",
+   "note": "",
+   "key": "Palaeeudyptes"
+  },
+  {
+   "defName": "Panda",
+   "label": "panda",
+   "mod": "Odyssey",
+   "note": "",
+   "key": "Panda"
+  },
+  {
+   "defName": "Paraceratherium",
+   "label": "paraceratherium",
+   "mod": "Megafauna",
+   "note": "",
+   "key": "Paraceratherium"
+  },
+  {
+   "defName": "Peacock",
+   "label": "peafowl",
+   "mod": "Odyssey",
+   "note": "",
+   "key": "Peacock"
+  },
+  {
+   "defName": "Penguin",
+   "label": "penguin",
+   "mod": "Beasts of the Rim (Continued)",
+   "note": "",
+   "key": "Penguin"
+  },
+  {
+   "defName": "PoisonDeer",
+   "label": "deer",
+   "mod": "Advanced Biomes (Continued)",
+   "note": "",
+   "key": "PoisonDeer"
+  },
+  {
+   "defName": "Porcupine",
+   "label": "porcupine",
+   "mod": "Odyssey",
+   "note": "",
+   "key": "Porcupine"
+  },
+  {
+   "defName": "PrairieDog",
+   "label": "prairie dog",
+   "mod": "Odyssey",
+   "note": "",
+   "key": "PrairieDog"
+  },
+  {
+   "defName": "Procoptodon",
+   "label": "procoptodon",
+   "mod": "Megafauna",
+   "note": "",
+   "key": "Procoptodon"
+  },
+  {
+   "defName": "Purussaurus",
+   "label": "purussaurus",
+   "mod": "Megafauna",
+   "note": "",
+   "key": "Purussaurus"
+  },
+  {
+   "defName": "Quinkana",
+   "label": "quinkana",
+   "mod": "Megafauna",
+   "note": "",
+   "key": "Quinkana"
+  },
+  {
+   "defName": "RG_Hemolope",
+   "label": "hemolope",
+   "mod": "ReGrowth 2",
+   "note": "",
+   "key": "RG_Hemolope"
+  },
+  {
+   "defName": "RG_KiwiBird",
+   "label": "kiwi",
+   "mod": "ReGrowth 2",
+   "note": "",
+   "key": "RG_KiwiBird"
+  },
+  {
+   "defName": "RG_Neutrolope",
+   "label": "neutrolope",
+   "mod": "ReGrowth 2",
+   "note": "",
+   "key": "RG_Neutrolope"
+  },
+  {
+   "defName": "RG_Owlbeast",
+   "label": "owlbeast",
+   "mod": "ReGrowth: Boiling",
+   "note": "",
+   "key": "RG_Owlbeast"
+  },
+  {
+   "defName": "RG_Rabbit",
+   "label": "rabbit",
+   "mod": "ReGrowth 2",
+   "note": "",
+   "key": "RG_Rabbit"
+  },
+  {
+   "defName": "RG_WoollyStegosaurus",
+   "label": "woolly stegosaurus",
+   "mod": "ReGrowth 2",
+   "note": "",
+   "key": "RG_WoollyStegosaurus"
+  },
+  {
+   "defName": "SeaLion",
+   "label": "sea lion",
+   "mod": "Odyssey",
+   "note": "",
+   "key": "SeaLion"
+  },
+  {
+   "defName": "SeaTurtle",
+   "label": "sea turtle",
+   "mod": "Odyssey",
+   "note": "",
+   "key": "SeaTurtle"
+  },
+  {
+   "defName": "Seal",
+   "label": "seal",
+   "mod": "Odyssey",
+   "note": "",
+   "key": "Seal"
+  },
+  {
+   "defName": "ShortfacedBear",
+   "label": "Short-faced bear",
+   "mod": "Megafauna",
+   "note": "",
+   "key": "ShortfacedBear"
+  },
+  {
+   "defName": "Skunk",
+   "label": "skunk",
+   "mod": "Skunks",
+   "note": "",
+   "key": "Skunk"
+  },
+  {
+   "defName": "Smilodon",
+   "label": "smilodon",
+   "mod": "Megafauna",
+   "note": "",
+   "key": "Smilodon"
+  },
+  {
+   "defName": "Sparrow",
+   "label": "sparrow",
+   "mod": "Odyssey",
+   "note": "",
+   "key": "Sparrow"
+  },
+  {
+   "defName": "Swan",
+   "label": "swan",
+   "mod": "Odyssey",
+   "note": "",
+   "key": "Swan"
+  },
+  {
+   "defName": "TYR_KangarooRat",
+   "label": "kangaroo rat",
+   "mod": "Little Critters",
+   "note": "",
+   "key": "TYR_KangarooRat"
+  },
+  {
+   "defName": "TYR_Mouse",
+   "label": "mouse",
+   "mod": "Little Critters",
+   "note": "",
+   "key": "TYR_Mouse"
+  },
+  {
+   "defName": "Tiger",
+   "label": "tiger",
+   "mod": "Odyssey",
+   "note": "",
+   "key": "Tiger"
+  },
+  {
+   "defName": "Titanoboa",
+   "label": "titanoboa",
+   "mod": "Megafauna",
+   "note": "",
+   "key": "Titanoboa"
+  },
+  {
+   "defName": "Tortoise",
+   "label": "tortoise",
+   "mod": "Core",
+   "note": "",
+   "key": "Tortoise"
+  },
+  {
+   "defName": "Trispike",
+   "label": "trispike",
+   "mod": "Anomaly",
+   "note": "",
+   "key": "Trispike"
+  },
+  {
+   "defName": "VAEWaste_Pestigator",
+   "label": "pestigator",
+   "mod": "Vanilla Animals Expanded — Waste Animals",
+   "note": "",
+   "key": "VAEWaste_Pestigator"
+  },
+  {
+   "defName": "VAEWaste_Toxafox",
+   "label": "toxafox",
+   "mod": "Vanilla Animals Expanded — Waste Animals",
+   "note": "",
+   "key": "VAEWaste_Toxafox"
+  },
+  {
+   "defName": "VAEWaste_Toxbear",
+   "label": "toxbear",
+   "mod": "Vanilla Animals Expanded — Waste Animals",
+   "note": "",
+   "key": "VAEWaste_Toxbear"
+  },
+  {
+   "defName": "VAEWaste_Toxlion",
+   "label": "toxlion",
+   "mod": "Vanilla Animals Expanded — Waste Animals",
+   "note": "",
+   "key": "VAEWaste_Toxlion"
+  },
+  {
+   "defName": "VAEWaste_Toxscorpion",
+   "label": "toxscorpion",
+   "mod": "Vanilla Animals Expanded — Waste Animals",
+   "note": "",
+   "key": "VAEWaste_Toxscorpion"
+  },
+  {
+   "defName": "VAEWaste_Wasteboar",
+   "label": "wasteboar",
+   "mod": "Vanilla Animals Expanded — Waste Animals",
+   "note": "",
+   "key": "VAEWaste_Wasteboar"
+  },
+  {
+   "defName": "VAEWaste_Wastedeer",
+   "label": "wastedeer",
+   "mod": "Vanilla Animals Expanded — Waste Animals",
+   "note": "",
+   "key": "VAEWaste_Wastedeer"
+  },
+  {
+   "defName": "VAEWaste_Wasteffalo",
+   "label": "wasteffalo",
+   "mod": "Vanilla Animals Expanded — Waste Animals",
+   "note": "",
+   "key": "VAEWaste_Wasteffalo"
+  },
+  {
+   "defName": "Walrus",
+   "label": "walrus",
+   "mod": "Odyssey",
+   "note": "",
+   "key": "Walrus"
+  },
+  {
+   "defName": "WhiteViper",
+   "label": "white viper",
+   "mod": "Giant Snake (Continued)",
+   "note": "",
+   "key": "WhiteViper"
+  },
+  {
+   "defName": "WoollyMammoth",
+   "label": "woolly mammoth",
+   "mod": "Megafauna",
+   "note": "",
+   "key": "WoollyMammoth"
+  },
+  {
+   "defName": "YorkshireTerrier",
+   "label": "yorkshire terrier",
+   "mod": "Core",
+   "note": "",
+   "key": "YorkshireTerrier"
+  },
+  {
+   "defName": "Zebra",
+   "label": "zebra",
+   "mod": "Beasts of the Rim (Continued)",
+   "note": "",
+   "key": "Zebra"
+  }
+ ],
+ "kept_count": 901,
+ "total_count": 1239
+}

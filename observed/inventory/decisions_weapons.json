@@ -1,0 +1,1292 @@
+{
+ "category": "weapons",
+ "updated": "2026-08-15T07:19:36-07:00",
+ "cut": [
+  {
+   "defName": "AM_ADAR",
+   "label": "civilian rifle",
+   "mod": "Ancient urban ruins",
+   "note": "",
+   "key": "AM_ADAR"
+  },
+  {
+   "defName": "AM_AK101A",
+   "label": "military standard rifle",
+   "mod": "Ancient urban ruins",
+   "note": "",
+   "key": "AM_AK101A"
+  },
+  {
+   "defName": "AM_AK68A",
+   "label": "6.8 short rifle",
+   "mod": "Ancient urban ruins",
+   "note": "",
+   "key": "AM_AK68A"
+  },
+  {
+   "defName": "AM_APS",
+   "label": "Stechkin pistol",
+   "mod": "Ancient urban ruins",
+   "note": "",
+   "key": "AM_APS"
+  },
+  {
+   "defName": "AM_ASVAL",
+   "label": "wave rifle",
+   "mod": "Ancient urban ruins",
+   "note": "",
+   "key": "AM_ASVAL"
+  },
+  {
+   "defName": "AM_AVT",
+   "label": "old auto rifle",
+   "mod": "Ancient urban ruins",
+   "note": "",
+   "key": "AM_AVT"
+  },
+  {
+   "defName": "AM_CPHG",
+   "label": "defense pistol",
+   "mod": "Ancient urban ruins",
+   "note": "",
+   "key": "AM_CPHG"
+  },
+  {
+   "defName": "AM_DTMDR",
+   "label": "urban assault rifle",
+   "mod": "Ancient urban ruins",
+   "note": "",
+   "key": "AM_DTMDR"
+  },
+  {
+   "defName": "AM_FNHG",
+   "label": "armor piercing pistol",
+   "mod": "Ancient urban ruins",
+   "note": "",
+   "key": "AM_FNHG"
+  },
+  {
+   "defName": "AM_Hunter",
+   "label": "Hunter's rifle",
+   "mod": "Ancient urban ruins",
+   "note": "",
+   "key": "AM_Hunter"
+  },
+  {
+   "defName": "AM_M42U",
+   "label": "low visibility short rifle",
+   "mod": "Ancient urban ruins",
+   "note": "",
+   "key": "AM_M42U"
+  },
+  {
+   "defName": "AM_M4A",
+   "label": "custom carbine",
+   "mod": "Ancient urban ruins",
+   "note": "",
+   "key": "AM_M4A"
+  },
+  {
+   "defName": "AM_M4ASOP",
+   "label": "custom military rifle",
+   "mod": "Ancient urban ruins",
+   "note": "",
+   "key": "AM_M4ASOP"
+  },
+  {
+   "defName": "AM_M4C",
+   "label": "short assault rifle",
+   "mod": "Ancient urban ruins",
+   "note": "",
+   "key": "AM_M4C"
+  },
+  {
+   "defName": "AM_M5A3LT",
+   "label": "Heavy Barrel Assault Rifle",
+   "mod": "Ancient urban ruins",
+   "note": "",
+   "key": "AM_M5A3LT"
+  },
+  {
+   "defName": "AM_M700A",
+   "label": "custom sniper rifle",
+   "mod": "Ancient urban ruins",
+   "note": "",
+   "key": "AM_M700A"
+  },
+  {
+   "defName": "AM_MCX",
+   "label": "rattler assault rifle",
+   "mod": "Ancient urban ruins",
+   "note": "",
+   "key": "AM_MCX"
+  },
+  {
+   "defName": "AM_MCXC",
+   "label": "rattler short rifle",
+   "mod": "Ancient urban ruins",
+   "note": "",
+   "key": "AM_MCXC"
+  },
+  {
+   "defName": "AM_MK17A",
+   "label": "combat rifle",
+   "mod": "Ancient urban ruins",
+   "note": "",
+   "key": "AM_MK17A"
+  },
+  {
+   "defName": "AM_MK18M",
+   "label": "Mj\u00f6lnir sniper rifle",
+   "mod": "Ancient urban ruins",
+   "note": "",
+   "key": "AM_MK18M"
+  },
+  {
+   "defName": "AM_MK68A",
+   "label": "6.8 combat rifle",
+   "mod": "Ancient urban ruins",
+   "note": "",
+   "key": "AM_MK68A"
+  },
+  {
+   "defName": "AM_MPX",
+   "label": "copperhead SMG",
+   "mod": "Ancient urban ruins",
+   "note": "",
+   "key": "AM_MPX"
+  },
+  {
+   "defName": "AM_MPXL",
+   "label": "copperhead long SMG",
+   "mod": "Ancient urban ruins",
+   "note": "",
+   "key": "AM_MPXL"
+  },
+  {
+   "defName": "AM_Makarov",
+   "label": "Makarov pistol",
+   "mod": "Ancient urban ruins",
+   "note": "",
+   "key": "AM_Makarov"
+  },
+  {
+   "defName": "AM_PKM",
+   "label": "general machine gun",
+   "mod": "Ancient urban ruins",
+   "note": "",
+   "key": "AM_PKM"
+  },
+  {
+   "defName": "AM_PKP",
+   "label": "modified machine gun",
+   "mod": "Ancient urban ruins",
+   "note": "",
+   "key": "AM_PKP"
+  },
+  {
+   "defName": "AM_R11A",
+   "label": "DMR",
+   "mod": "Ancient urban ruins",
+   "note": "",
+   "key": "AM_R11A"
+  },
+  {
+   "defName": "AM_RM68A",
+   "label": "6.8 bullpup rifle",
+   "mod": "Ancient urban ruins",
+   "note": "",
+   "key": "AM_RM68A"
+  },
+  {
+   "defName": "AM_SR25A",
+   "label": "close combat DMR",
+   "mod": "Ancient urban ruins",
+   "note": "",
+   "key": "AM_SR25A"
+  },
+  {
+   "defName": "AM_STM",
+   "label": "civilian carbine",
+   "mod": "Ancient urban ruins",
+   "note": "",
+   "key": "AM_STM"
+  },
+  {
+   "defName": "AM_STMC",
+   "label": "custom civilian carbine",
+   "mod": "Ancient urban ruins",
+   "note": "",
+   "key": "AM_STMC"
+  },
+  {
+   "defName": "AM_Spear68A",
+   "label": "6.8 spear rifle",
+   "mod": "Ancient urban ruins",
+   "note": "",
+   "key": "AM_Spear68A"
+  },
+  {
+   "defName": "AM_Spear68C",
+   "label": "6.8 spear short rifle",
+   "mod": "Ancient urban ruins",
+   "note": "",
+   "key": "AM_Spear68C"
+  },
+  {
+   "defName": "AM_TKB68A",
+   "label": "6.8 bullpup short rifle",
+   "mod": "Ancient urban ruins",
+   "note": "",
+   "key": "AM_TKB68A"
+  },
+  {
+   "defName": "AM_VSS",
+   "label": "vintorez special rifle",
+   "mod": "Ancient urban ruins",
+   "note": "",
+   "key": "AM_VSS"
+  },
+  {
+   "defName": "Ame_RhodesShotgun",
+   "label": "Quad M399",
+   "mod": "Ideology Scavenger Role",
+   "note": "",
+   "key": "Ame_RhodesShotgun"
+  },
+  {
+   "defName": "Ame_RhodesShotgun_Uniqueya",
+   "label": "aged Quad M399",
+   "mod": "Ideology Scavenger Role",
+   "note": "",
+   "key": "Ame_RhodesShotgun_Uniqueya"
+  },
+  {
+   "defName": "Artillery_AutoMortar",
+   "label": "auto-mortar",
+   "mod": "Core",
+   "note": "",
+   "key": "Artillery_AutoMortar"
+  },
+  {
+   "defName": "Artillery_Mortar",
+   "label": "mortar",
+   "mod": "Core",
+   "note": "",
+   "key": "Artillery_Mortar"
+  },
+  {
+   "defName": "BS_GiantMusket",
+   "label": "Giant Musket",
+   "mod": "Big and Small - Weapons",
+   "note": "",
+   "key": "BS_GiantMusket"
+  },
+  {
+   "defName": "BS_JotunSword",
+   "label": "giant sword",
+   "mod": "Big and Small - Genes & More",
+   "note": "",
+   "key": "BS_JotunSword"
+  },
+  {
+   "defName": "Beer",
+   "label": "beer",
+   "mod": "Core",
+   "note": "",
+   "key": "Beer"
+  },
+  {
+   "defName": "Bow_Great",
+   "label": "greatbow",
+   "mod": "Core",
+   "note": "",
+   "key": "Bow_Great"
+  },
+  {
+   "defName": "Bow_Great_Unique",
+   "label": "unique greatbow",
+   "mod": "Odyssey",
+   "note": "",
+   "key": "Bow_Great_Unique"
+  },
+  {
+   "defName": "Bow_Recurve",
+   "label": "recurve bow",
+   "mod": "Core",
+   "note": "",
+   "key": "Bow_Recurve"
+  },
+  {
+   "defName": "Bow_Short",
+   "label": "short bow",
+   "mod": "Core",
+   "note": "",
+   "key": "Bow_Short"
+  },
+  {
+   "defName": "BreadMoAM_Gun_LargeShotgunTurret",
+   "label": "large shotgun turret",
+   "mod": "Ancient mining industry",
+   "note": "",
+   "key": "BreadMoAM_Gun_LargeShotgunTurret"
+  },
+  {
+   "defName": "BreadMoAM_Gun_ShotgunTurret",
+   "label": "ancient mini-turret shotgun",
+   "mod": "Ancient mining industry",
+   "note": "",
+   "key": "BreadMoAM_Gun_ShotgunTurret"
+  },
+  {
+   "defName": "BreadMoAM_Gun_ShotgunTurretN",
+   "label": "mini-turret shotgun",
+   "mod": "Ancient mining industry",
+   "note": "",
+   "key": "BreadMoAM_Gun_ShotgunTurretN"
+  },
+  {
+   "defName": "DP_CannonNoEquip",
+   "label": "cannon",
+   "mod": "Dungeon Pack (Continued)",
+   "note": "",
+   "key": "DP_CannonNoEquip"
+  },
+  {
+   "defName": "DP_ChainVulcan",
+   "label": "Chain Vulcan",
+   "mod": "Dungeon Pack (Continued)",
+   "note": "",
+   "key": "DP_ChainVulcan"
+  },
+  {
+   "defName": "DP_HolyHandGrenade",
+   "label": "Holy Hand Grenade of Antioch",
+   "mod": "Dungeon Pack (Continued)",
+   "note": "",
+   "key": "DP_HolyHandGrenade"
+  },
+  {
+   "defName": "DP_RocketNoEquip",
+   "label": "RocketLauncher",
+   "mod": "Dungeon Pack (Continued)",
+   "note": "",
+   "key": "DP_RocketNoEquip"
+  },
+  {
+   "defName": "ElephantTusk",
+   "label": "elephant tusk",
+   "mod": "Core",
+   "note": "",
+   "key": "ElephantTusk"
+  },
+  {
+   "defName": "FT_Artillery_Mortar",
+   "label": "mortar",
+   "mod": "Fortifications - Industrial",
+   "note": "",
+   "key": "FT_Artillery_Mortar"
+  },
+  {
+   "defName": "FT_Gun_Autocannon",
+   "label": "autocannon",
+   "mod": "Fortifications - Industrial",
+   "note": "",
+   "key": "FT_Gun_Autocannon"
+  },
+  {
+   "defName": "FT_Gun_MG",
+   "label": "machine gun",
+   "mod": "Fortifications - Industrial",
+   "note": "",
+   "key": "FT_Gun_MG"
+  },
+  {
+   "defName": "FT_Gun_QuadMG",
+   "label": "machine gun 4x mounted",
+   "mod": "Fortifications - Industrial",
+   "note": "",
+   "key": "FT_Gun_QuadMG"
+  },
+  {
+   "defName": "FT_Gun_Recoilless",
+   "label": "recoilless cannon",
+   "mod": "Fortifications - Industrial",
+   "note": "",
+   "key": "FT_Gun_Recoilless"
+  },
+  {
+   "defName": "FT_Gun_TurretAA",
+   "label": "anti air cannon",
+   "mod": "Fortifications - Industrial",
+   "note": "",
+   "key": "FT_Gun_TurretAA"
+  },
+  {
+   "defName": "FT_Gun_TurretAT",
+   "label": "anti-tank cannon",
+   "mod": "Fortifications - Industrial",
+   "note": "",
+   "key": "FT_Gun_TurretAT"
+  },
+  {
+   "defName": "FT_Gun_TurretEmpero",
+   "label": "field cannon",
+   "mod": "Fortifications - Industrial",
+   "note": "",
+   "key": "FT_Gun_TurretEmpero"
+  },
+  {
+   "defName": "FT_Gun_TurretHexMortar",
+   "label": "multi-barrel mortar",
+   "mod": "Fortifications - Industrial",
+   "note": "",
+   "key": "FT_Gun_TurretHexMortar"
+  },
+  {
+   "defName": "FT_Gun_TurretPrince",
+   "label": "heavy howitzer",
+   "mod": "Fortifications - Industrial",
+   "note": "",
+   "key": "FT_Gun_TurretPrince"
+  },
+  {
+   "defName": "FT_Gun_TurretQuadAA",
+   "label": "quad anti air cannon",
+   "mod": "Fortifications - Industrial",
+   "note": "",
+   "key": "FT_Gun_TurretQuadAA"
+  },
+  {
+   "defName": "Flamebow",
+   "label": "flamebow",
+   "mod": "Biotech",
+   "note": "",
+   "key": "Flamebow"
+  },
+  {
+   "defName": "Gun_AncientArmoredTurret",
+   "label": "ancient defender turret gun",
+   "mod": "Odyssey",
+   "note": "",
+   "key": "Gun_AncientArmoredTurret"
+  },
+  {
+   "defName": "Gun_AssaultRifle",
+   "label": "assault rifle",
+   "mod": "Core",
+   "note": "",
+   "key": "Gun_AssaultRifle"
+  },
+  {
+   "defName": "Gun_AssaultRifle_Unique",
+   "label": "unique assault rifle",
+   "mod": "Odyssey",
+   "note": "",
+   "key": "Gun_AssaultRifle_Unique"
+  },
+  {
+   "defName": "Gun_AutocannonTurret",
+   "label": "autocannon",
+   "mod": "Core",
+   "note": "",
+   "key": "Gun_AutocannonTurret"
+  },
+  {
+   "defName": "Gun_Autopistol",
+   "label": "autopistol",
+   "mod": "Core",
+   "note": "",
+   "key": "Gun_Autopistol"
+  },
+  {
+   "defName": "Gun_BoltActionRifle",
+   "label": "bolt-action rifle",
+   "mod": "Core",
+   "note": "",
+   "key": "Gun_BoltActionRifle"
+  },
+  {
+   "defName": "Gun_BoltActionRifle_Unique",
+   "label": "unique bolt-action rifle",
+   "mod": "Odyssey",
+   "note": "",
+   "key": "Gun_BoltActionRifle_Unique"
+  },
+  {
+   "defName": "Gun_ChainShotgun",
+   "label": "chain shotgun",
+   "mod": "Core",
+   "note": "",
+   "key": "Gun_ChainShotgun"
+  },
+  {
+   "defName": "Gun_ChainShotgun_Unique",
+   "label": "unique chain shotgun",
+   "mod": "Odyssey",
+   "note": "",
+   "key": "Gun_ChainShotgun_Unique"
+  },
+  {
+   "defName": "Gun_DeadColumn",
+   "label": "deadlife capsule",
+   "mod": "Utility Columns",
+   "note": "",
+   "key": "Gun_DeadColumn"
+  },
+  {
+   "defName": "Gun_HeavySMG",
+   "label": "heavy SMG",
+   "mod": "Core",
+   "note": "",
+   "key": "Gun_HeavySMG"
+  },
+  {
+   "defName": "Gun_HeavySMG_Unique",
+   "label": "unique heavy SMG",
+   "mod": "Odyssey",
+   "note": "",
+   "key": "Gun_HeavySMG_Unique"
+  },
+  {
+   "defName": "Gun_HellcatRifle",
+   "label": "hellcat rifle",
+   "mod": "Anomaly",
+   "note": "",
+   "key": "Gun_HellcatRifle"
+  },
+  {
+   "defName": "Gun_HellcatRifle_Unique",
+   "label": "unique hellcat rifle",
+   "mod": "Odyssey",
+   "note": "",
+   "key": "Gun_HellcatRifle_Unique"
+  },
+  {
+   "defName": "Gun_Incinerator",
+   "label": "incinerator",
+   "mod": "Anomaly",
+   "note": "",
+   "key": "Gun_Incinerator"
+  },
+  {
+   "defName": "Gun_LMG",
+   "label": "LMG",
+   "mod": "Core",
+   "note": "",
+   "key": "Gun_LMG"
+  },
+  {
+   "defName": "Gun_LMG_Unique",
+   "label": "unique LMG",
+   "mod": "Odyssey",
+   "note": "",
+   "key": "Gun_LMG_Unique"
+  },
+  {
+   "defName": "Gun_MachinePistol",
+   "label": "machine pistol",
+   "mod": "Core",
+   "note": "",
+   "key": "Gun_MachinePistol"
+  },
+  {
+   "defName": "Gun_MiniTurret",
+   "label": "mini-turret gun",
+   "mod": "Core",
+   "note": "",
+   "key": "Gun_MiniTurret"
+  },
+  {
+   "defName": "Gun_MiniTurretMech",
+   "label": "mini-slugger",
+   "mod": "Core",
+   "note": "",
+   "key": "Gun_MiniTurretMech"
+  },
+  {
+   "defName": "Gun_Minigun",
+   "label": "minigun",
+   "mod": "Core",
+   "note": "",
+   "key": "Gun_Minigun"
+  },
+  {
+   "defName": "Gun_Minigun_Unique",
+   "label": "unique minigun",
+   "mod": "Odyssey",
+   "note": "",
+   "key": "Gun_Minigun_Unique"
+  },
+  {
+   "defName": "Gun_Needle",
+   "label": "needle gun",
+   "mod": "Core",
+   "note": "",
+   "key": "Gun_Needle"
+  },
+  {
+   "defName": "Gun_PumpShotgun",
+   "label": "pump shotgun",
+   "mod": "Core",
+   "note": "",
+   "key": "Gun_PumpShotgun"
+  },
+  {
+   "defName": "Gun_Revolver",
+   "label": "revolver",
+   "mod": "Core",
+   "note": "",
+   "key": "Gun_Revolver"
+  },
+  {
+   "defName": "Gun_Revolver_Unique",
+   "label": "unique revolver",
+   "mod": "Odyssey",
+   "note": "",
+   "key": "Gun_Revolver_Unique"
+  },
+  {
+   "defName": "Gun_Scattergun",
+   "label": "scattergun",
+   "mod": "Odyssey",
+   "note": "",
+   "key": "Gun_Scattergun"
+  },
+  {
+   "defName": "Gun_SniperRifle",
+   "label": "sniper rifle",
+   "mod": "Core",
+   "note": "",
+   "key": "Gun_SniperRifle"
+  },
+  {
+   "defName": "Gun_SniperRifle_Unique",
+   "label": "unique sniper rifle",
+   "mod": "Odyssey",
+   "note": "",
+   "key": "Gun_SniperRifle_Unique"
+  },
+  {
+   "defName": "Gun_TurretSniper",
+   "label": "uranium slug cannon",
+   "mod": "Core",
+   "note": "",
+   "key": "Gun_TurretSniper"
+  },
+  {
+   "defName": "HBX_Rapier",
+   "label": "rapier",
+   "mod": "Highborn Xenotype",
+   "note": "",
+   "key": "HBX_Rapier"
+  },
+  {
+   "defName": "HMC_Gun_TurretFoam",
+   "label": "Foam emitter",
+   "mod": "[HMC]Wall Furniture",
+   "note": "",
+   "key": "HMC_Gun_TurretFoam"
+  },
+  {
+   "defName": "HMC_Wall_Emp_Turret_Top",
+   "label": "Emp Turret",
+   "mod": "[HMC]Wall Furniture",
+   "note": "wall turret, not a weapon",
+   "key": "HMC_Wall_Emp_Turret_Top"
+  },
+  {
+   "defName": "HMC_Wall_Emp_Turret_Top_Ship",
+   "label": "Naval Emp Turret",
+   "mod": "[HMC]Wall Furniture",
+   "note": "",
+   "key": "HMC_Wall_Emp_Turret_Top_Ship"
+  },
+  {
+   "defName": "HMC_Wall_FireShotgun_Turret_Top",
+   "label": "Double-barreled heavy shotgun turret",
+   "mod": "[HMC]Wall Furniture",
+   "note": "",
+   "key": "HMC_Wall_FireShotgun_Turret_Top"
+  },
+  {
+   "defName": "HMC_Wall_LightMachinegun_Turret_Top",
+   "label": "Light Machinegun Turret",
+   "mod": "[HMC]Wall Furniture",
+   "note": "",
+   "key": "HMC_Wall_LightMachinegun_Turret_Top"
+  },
+  {
+   "defName": "HMC_Wall_MachineCannon_Turret_Top_Ship",
+   "label": "Machine Cannon Turret",
+   "mod": "[HMC]Wall Furniture",
+   "note": "",
+   "key": "HMC_Wall_MachineCannon_Turret_Top_Ship"
+  },
+  {
+   "defName": "HMC_Wall_Minigun_Turret_Top",
+   "label": "Minigun Turret",
+   "mod": "[HMC]Wall Furniture",
+   "note": "",
+   "key": "HMC_Wall_Minigun_Turret_Top"
+  },
+  {
+   "defName": "HMC_Wall_Minigun_Turret_Top_Ship",
+   "label": "Naval Minigun Turret",
+   "mod": "[HMC]Wall Furniture",
+   "note": "",
+   "key": "HMC_Wall_Minigun_Turret_Top_Ship"
+  },
+  {
+   "defName": "HMC_Wall_Rocket_Turret_Top",
+   "label": "Rocket Turret",
+   "mod": "[HMC]Wall Furniture",
+   "note": "",
+   "key": "HMC_Wall_Rocket_Turret_Top"
+  },
+  {
+   "defName": "MA_VerdantBow",
+   "label": "Verdant Bow",
+   "mod": "Mythic Ages: Megafauna Bestiary",
+   "note": "",
+   "key": "MA_VerdantBow"
+  },
+  {
+   "defName": "MW2_AssaultCarbine",
+   "label": "modular assault carbine",
+   "mod": "ModularWeapons 2",
+   "note": "",
+   "key": "MW2_AssaultCarbine"
+  },
+  {
+   "defName": "MW2_BattleRifle",
+   "label": "modular battle rifle",
+   "mod": "ModularWeapons 2",
+   "note": "",
+   "key": "MW2_BattleRifle"
+  },
+  {
+   "defName": "MW2_HuntingRifle",
+   "label": "modular hunting rifle",
+   "mod": "ModularWeapons 2",
+   "note": "",
+   "key": "MW2_HuntingRifle"
+  },
+  {
+   "defName": "MastodonTusk",
+   "label": "mastodon tusk",
+   "mod": "Odyssey",
+   "note": "",
+   "key": "MastodonTusk"
+  },
+  {
+   "defName": "MeleeWeapon_Axe",
+   "label": "axe",
+   "mod": "Royalty",
+   "note": "",
+   "key": "MeleeWeapon_Axe"
+  },
+  {
+   "defName": "MeleeWeapon_Gladius",
+   "label": "gladius",
+   "mod": "Core",
+   "note": "",
+   "key": "MeleeWeapon_Gladius"
+  },
+  {
+   "defName": "MeleeWeapon_Ikwa",
+   "label": "ikwa",
+   "mod": "Core",
+   "note": "",
+   "key": "MeleeWeapon_Ikwa"
+  },
+  {
+   "defName": "MeleeWeapon_LongSword",
+   "label": "longsword",
+   "mod": "Core",
+   "note": "",
+   "key": "MeleeWeapon_LongSword"
+  },
+  {
+   "defName": "MeleeWeapon_Mace",
+   "label": "mace",
+   "mod": "Core",
+   "note": "",
+   "key": "MeleeWeapon_Mace"
+  },
+  {
+   "defName": "Pila",
+   "label": "pila",
+   "mod": "Core",
+   "note": "",
+   "key": "Pila"
+  },
+  {
+   "defName": "SW_MiniTurretGun",
+   "label": "mini-turret gun",
+   "mod": "[kyzy] Ship Wall Enhanced",
+   "note": "",
+   "key": "SW_MiniTurretGun"
+  },
+  {
+   "defName": "VFEM_Bow_HeavyCrossbow",
+   "label": "heavy crossbow",
+   "mod": "Big and Small - Races",
+   "note": "",
+   "key": "VFEM_Bow_HeavyCrossbow"
+  },
+  {
+   "defName": "VFEP_Artillery_Cannon",
+   "label": "cannon",
+   "mod": "Vanilla Factions Expanded - Pirates",
+   "note": "",
+   "key": "VFEP_Artillery_Cannon"
+  },
+  {
+   "defName": "VFEP_Artillery_FieldGun",
+   "label": "field gun",
+   "mod": "Vanilla Factions Expanded - Pirates",
+   "note": "",
+   "key": "VFEP_Artillery_FieldGun"
+  },
+  {
+   "defName": "VFEP_WarcasketGun_Autorifle",
+   "label": "warcasket autorifle",
+   "mod": "Vanilla Factions Expanded - Pirates",
+   "note": "",
+   "key": "VFEP_WarcasketGun_Autorifle"
+  },
+  {
+   "defName": "VFEP_WarcasketGun_HandheldCannon",
+   "label": "warcasket handheld cannon",
+   "mod": "Vanilla Factions Expanded - Pirates",
+   "note": "",
+   "key": "VFEP_WarcasketGun_HandheldCannon"
+  },
+  {
+   "defName": "VFEP_WarcasketGun_Minigun",
+   "label": "warcasket minigun",
+   "mod": "Vanilla Factions Expanded - Pirates",
+   "note": "",
+   "key": "VFEP_WarcasketGun_Minigun"
+  },
+  {
+   "defName": "VFES_Artillery_ArtilleryGun",
+   "label": "artillery gun",
+   "mod": "Vanilla Furniture Expanded - Security",
+   "note": "",
+   "key": "VFES_Artillery_ArtilleryGun"
+  },
+  {
+   "defName": "VFES_Artillery_Catapult",
+   "label": "catapult",
+   "mod": "Vanilla Furniture Expanded - Security",
+   "note": "",
+   "key": "VFES_Artillery_Catapult"
+  },
+  {
+   "defName": "VFES_ComplexHmg_Top",
+   "label": "HMG",
+   "mod": "Vanilla Furniture Expanded - Security",
+   "note": "",
+   "key": "VFES_ComplexHmg_Top"
+  },
+  {
+   "defName": "VFES_ComplexMinigun_Top",
+   "label": "minigun",
+   "mod": "Vanilla Furniture Expanded - Security",
+   "note": "",
+   "key": "VFES_ComplexMinigun_Top"
+  },
+  {
+   "defName": "VFES_Gun_ArmoredTurret",
+   "label": "military turret gun",
+   "mod": "Vanilla Furniture Expanded - Security",
+   "note": "",
+   "key": "VFES_Gun_ArmoredTurret"
+  },
+  {
+   "defName": "VFES_Gun_BallistaTurret",
+   "label": "ballista",
+   "mod": "Vanilla Furniture Expanded - Security",
+   "note": "",
+   "key": "VFES_Gun_BallistaTurret"
+  },
+  {
+   "defName": "VFES_Gun_ShotgunTurret",
+   "label": "shotgun turret gun",
+   "mod": "Vanilla Furniture Expanded - Security",
+   "note": "",
+   "key": "VFES_Gun_ShotgunTurret"
+  },
+  {
+   "defName": "VFES_TurretDoubleAutocannon_Top",
+   "label": "double autocannon",
+   "mod": "Vanilla Furniture Expanded - Security",
+   "note": "",
+   "key": "VFES_TurretDoubleAutocannon_Top"
+  },
+  {
+   "defName": "VFES_TurretMinigun_Top",
+   "label": "minigun",
+   "mod": "Vanilla Furniture Expanded - Security",
+   "note": "",
+   "key": "VFES_TurretMinigun_Top"
+  },
+  {
+   "defName": "VQE_AncientShieldedTurret_Gun",
+   "label": "ancient shielded turret",
+   "mod": "Vanilla Quests Expanded - Cryptoforge",
+   "note": "",
+   "key": "VQE_AncientShieldedTurret_Gun"
+  },
+  {
+   "defName": "VQE_AncientSpacerAutocannon_Gun",
+   "label": "ancient spacer autocannon",
+   "mod": "Vanilla Quests Expanded - Cryptoforge",
+   "note": "",
+   "key": "VQE_AncientSpacerAutocannon_Gun"
+  },
+  {
+   "defName": "VWE_Bow_Compound",
+   "label": "compound bow",
+   "mod": "Vanilla Weapons Expanded",
+   "note": "",
+   "key": "VWE_Bow_Compound"
+  },
+  {
+   "defName": "VWE_Bow_Compound_Unique",
+   "label": "unique compond bow",
+   "mod": "Vanilla Weapons Expanded",
+   "note": "",
+   "key": "VWE_Bow_Compound_Unique"
+  },
+  {
+   "defName": "VWE_Bow_Crossbow",
+   "label": "crossbow",
+   "mod": "Vanilla Weapons Expanded",
+   "note": "",
+   "key": "VWE_Bow_Crossbow"
+  },
+  {
+   "defName": "VWE_Bow_Crossbow_Unique",
+   "label": "unique crossbow",
+   "mod": "Vanilla Weapons Expanded",
+   "note": "",
+   "key": "VWE_Bow_Crossbow_Unique"
+  },
+  {
+   "defName": "VWE_Bow_Long",
+   "label": "longbow",
+   "mod": "Vanilla Weapons Expanded",
+   "note": "",
+   "key": "VWE_Bow_Long"
+  },
+  {
+   "defName": "VWE_Bow_Long_Unique",
+   "label": "unique longbow",
+   "mod": "Vanilla Weapons Expanded",
+   "note": "",
+   "key": "VWE_Bow_Long_Unique"
+  },
+  {
+   "defName": "VWE_CombatHandgun",
+   "label": "combat handgun",
+   "mod": "Vanilla Weapons Expanded",
+   "note": "",
+   "key": "VWE_CombatHandgun"
+  },
+  {
+   "defName": "VWE_FlashGrenade",
+   "label": "stun grenades",
+   "mod": "Vanilla Weapons Expanded",
+   "note": "",
+   "key": "VWE_FlashGrenade"
+  },
+  {
+   "defName": "VWE_Gun_AntiMaterialRifle",
+   "label": "anti-materiel rifle",
+   "mod": "Vanilla Weapons Expanded",
+   "note": "",
+   "key": "VWE_Gun_AntiMaterialRifle"
+  },
+  {
+   "defName": "VWE_Gun_AntiMaterialRifle_Unique",
+   "label": "unique anti-materiel rifle",
+   "mod": "Vanilla Weapons Expanded",
+   "note": "",
+   "key": "VWE_Gun_AntiMaterialRifle_Unique"
+  },
+  {
+   "defName": "VWE_Gun_BattleRifle",
+   "label": "battle rifle",
+   "mod": "Vanilla Weapons Expanded",
+   "note": "",
+   "key": "VWE_Gun_BattleRifle"
+  },
+  {
+   "defName": "VWE_Gun_BattleRifle_Unique",
+   "label": "unique battle rifle",
+   "mod": "Vanilla Weapons Expanded",
+   "note": "",
+   "key": "VWE_Gun_BattleRifle_Unique"
+  },
+  {
+   "defName": "VWE_Gun_Carbine",
+   "label": "carbine",
+   "mod": "Vanilla Weapons Expanded",
+   "note": "",
+   "key": "VWE_Gun_Carbine"
+  },
+  {
+   "defName": "VWE_Gun_Carbine_Unique",
+   "label": "unique carbine",
+   "mod": "Vanilla Weapons Expanded",
+   "note": "",
+   "key": "VWE_Gun_Carbine_Unique"
+  },
+  {
+   "defName": "VWE_Gun_CombatHandgun_Unique",
+   "label": "unique combat handgun",
+   "mod": "Vanilla Weapons Expanded",
+   "note": "",
+   "key": "VWE_Gun_CombatHandgun_Unique"
+  },
+  {
+   "defName": "VWE_Gun_Flamethrower",
+   "label": "flamethrower",
+   "mod": "Vanilla Weapons Expanded",
+   "note": "",
+   "key": "VWE_Gun_Flamethrower"
+  },
+  {
+   "defName": "VWE_Gun_GrenadeLauncher",
+   "label": "grenade launcher",
+   "mod": "Vanilla Weapons Expanded",
+   "note": "",
+   "key": "VWE_Gun_GrenadeLauncher"
+  },
+  {
+   "defName": "VWE_Gun_HMG",
+   "label": "HMG",
+   "mod": "Vanilla Weapons Expanded",
+   "note": "",
+   "key": "VWE_Gun_HMG"
+  },
+  {
+   "defName": "VWE_Gun_HMG_Unique",
+   "label": "unique HMG",
+   "mod": "Vanilla Weapons Expanded",
+   "note": "",
+   "key": "VWE_Gun_HMG_Unique"
+  },
+  {
+   "defName": "VWE_Gun_HandCannon",
+   "label": "heavy revolver",
+   "mod": "Vanilla Weapons Expanded",
+   "note": "",
+   "key": "VWE_Gun_HandCannon"
+  },
+  {
+   "defName": "VWE_Gun_HandCannon_Unique",
+   "label": "unique heavy revolver",
+   "mod": "Vanilla Weapons Expanded",
+   "note": "",
+   "key": "VWE_Gun_HandCannon_Unique"
+  },
+  {
+   "defName": "VWE_Gun_LeverActionRifle",
+   "label": "lever-action rifle",
+   "mod": "Vanilla Weapons Expanded",
+   "note": "",
+   "key": "VWE_Gun_LeverActionRifle"
+  },
+  {
+   "defName": "VWE_Gun_LeverActionRifle_Unique",
+   "label": "unique lever-action rifle",
+   "mod": "Vanilla Weapons Expanded",
+   "note": "",
+   "key": "VWE_Gun_LeverActionRifle_Unique"
+  },
+  {
+   "defName": "VWE_Gun_LightSMG",
+   "label": "light SMG",
+   "mod": "Vanilla Weapons Expanded",
+   "note": "",
+   "key": "VWE_Gun_LightSMG"
+  },
+  {
+   "defName": "VWE_Gun_LightSMG_Unique",
+   "label": "unique light SMG",
+   "mod": "Vanilla Weapons Expanded",
+   "note": "",
+   "key": "VWE_Gun_LightSMG_Unique"
+  },
+  {
+   "defName": "VWE_Gun_MakeshiftLMG",
+   "label": "makeshift LMG",
+   "mod": "Vanilla Weapons Expanded - Makeshift",
+   "note": "",
+   "key": "VWE_Gun_MakeshiftLMG"
+  },
+  {
+   "defName": "VWE_Gun_MakeshiftPistol",
+   "label": "makeshift pistol",
+   "mod": "Vanilla Weapons Expanded - Makeshift",
+   "note": "",
+   "key": "VWE_Gun_MakeshiftPistol"
+  },
+  {
+   "defName": "VWE_Gun_MakeshiftRevolver",
+   "label": "makeshift revolver",
+   "mod": "Makeshift: Re-Examined",
+   "note": "",
+   "key": "VWE_Gun_MakeshiftRevolver"
+  },
+  {
+   "defName": "VWE_Gun_MakeshiftRifle",
+   "label": "makeshift rifle",
+   "mod": "Vanilla Weapons Expanded - Makeshift",
+   "note": "",
+   "key": "VWE_Gun_MakeshiftRifle"
+  },
+  {
+   "defName": "VWE_Gun_MakeshiftSMG",
+   "label": "makeshift SMG",
+   "mod": "Vanilla Weapons Expanded - Makeshift",
+   "note": "",
+   "key": "VWE_Gun_MakeshiftSMG"
+  },
+  {
+   "defName": "VWE_Gun_MakeshiftShotgun",
+   "label": "makeshift shotgun",
+   "mod": "Vanilla Weapons Expanded - Makeshift",
+   "note": "",
+   "key": "VWE_Gun_MakeshiftShotgun"
+  },
+  {
+   "defName": "VWE_Gun_MarksmanRifle",
+   "label": "marksman rifle",
+   "mod": "Vanilla Weapons Expanded",
+   "note": "",
+   "key": "VWE_Gun_MarksmanRifle"
+  },
+  {
+   "defName": "VWE_Gun_MarksmanRifle_Unique",
+   "label": "unique marksman rifle",
+   "mod": "Vanilla Weapons Expanded",
+   "note": "",
+   "key": "VWE_Gun_MarksmanRifle_Unique"
+  },
+  {
+   "defName": "VWE_Gun_SMG",
+   "label": "SMG",
+   "mod": "Vanilla Weapons Expanded",
+   "note": "",
+   "key": "VWE_Gun_SMG"
+  },
+  {
+   "defName": "VWE_Gun_SMG_Unique",
+   "label": "unique SMG",
+   "mod": "Vanilla Weapons Expanded",
+   "note": "",
+   "key": "VWE_Gun_SMG_Unique"
+  },
+  {
+   "defName": "VWE_Gun_SawedOffShotgun_Unique",
+   "label": "unique sawed-off shotgun",
+   "mod": "Vanilla Weapons Expanded",
+   "note": "",
+   "key": "VWE_Gun_SawedOffShotgun_Unique"
+  },
+  {
+   "defName": "VWE_Gun_SemiAutomaticRifle",
+   "label": "semi-automatic rifle",
+   "mod": "Vanilla Weapons Expanded",
+   "note": "",
+   "key": "VWE_Gun_SemiAutomaticRifle"
+  },
+  {
+   "defName": "VWE_Gun_SemiAutomaticRifle_Unique",
+   "label": "unique semi-automatic rifle",
+   "mod": "Vanilla Weapons Expanded",
+   "note": "",
+   "key": "VWE_Gun_SemiAutomaticRifle_Unique"
+  },
+  {
+   "defName": "VWE_Gun_ServiceRifle",
+   "label": "service rifle",
+   "mod": "Vanilla Weapons Expanded",
+   "note": "",
+   "key": "VWE_Gun_ServiceRifle"
+  },
+  {
+   "defName": "VWE_Gun_ServiceRifle_Unique",
+   "label": "unique service rifle",
+   "mod": "Vanilla Weapons Expanded",
+   "note": "",
+   "key": "VWE_Gun_ServiceRifle_Unique"
+  },
+  {
+   "defName": "VWE_Gun_TrenchGun_Unique",
+   "label": "unique trench gun",
+   "mod": "Vanilla Weapons Expanded",
+   "note": "",
+   "key": "VWE_Gun_TrenchGun_Unique"
+  },
+  {
+   "defName": "VWE_MeleeWeapon_Axe",
+   "label": "hatchet",
+   "mod": "Vanilla Weapons Expanded",
+   "note": "",
+   "key": "VWE_MeleeWeapon_Axe"
+  },
+  {
+   "defName": "VWE_SawedOffShotgun",
+   "label": "sawn-off shotgun",
+   "mod": "Vanilla Weapons Expanded",
+   "note": "",
+   "key": "VWE_SawedOffShotgun"
+  },
+  {
+   "defName": "VWE_SmokeGrenade",
+   "label": "smoke grenades",
+   "mod": "Vanilla Weapons Expanded",
+   "note": "",
+   "key": "VWE_SmokeGrenade"
+  },
+  {
+   "defName": "VWE_Throwing_Rocks",
+   "label": "throwing rocks",
+   "mod": "Vanilla Weapons Expanded",
+   "note": "",
+   "key": "VWE_Throwing_Rocks"
+  },
+  {
+   "defName": "VWE_TrenchGun",
+   "label": "trench gun",
+   "mod": "Vanilla Weapons Expanded",
+   "note": "",
+   "key": "VWE_TrenchGun"
+  },
+  {
+   "defName": "m_Khvostov_7G0X",
+   "label": "khvostov 7G-0X",
+   "mod": "Destiny Exotic Weapons",
+   "note": "",
+   "key": "m_Khvostov_7G0X"
+  },
+  {
+   "defName": "m_RatKing",
+   "label": "rat king",
+   "mod": "Destiny Exotic Weapons",
+   "note": "",
+   "key": "m_RatKing"
+  }
+ ],
+ "kept_count": 616,
+ "total_count": 799,
+ "notes": {
+  "HMC_Wall_Emp_Turret_Top": "wall turret, not a weapon"
+ }
+}

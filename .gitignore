@@ -177,11 +177,17 @@ infrastructure/state/status/
 # derive_matrix.py rebuilds it from the Closes: trailers in git log.
 infrastructure/state/closed_ledger.json
 
-# Derived: regenerated in seconds by animal_inventory.py / *_contact_sheet.py
+# Derived: the 678 MB of contact-sheet PNGs and CSVs regenerate in seconds from
+# animal_inventory.py / *_contact_sheet.py. The decisions_*.json do NOT — they are
+# the owner's hand-made keep/cut calls and are negated back in below.
 # Both paths: the restructure moved this under observed/<stamp>/ and the bare
 # rule stopped matching, leaving 21 MB of sheets staged as untracked.
-observed/inventory/
-observed/**/inventory/
+# Contents, not the directory itself: git cannot re-include a file whose parent
+# directory is excluded, so the negations below only work with the /* form.
+observed/inventory/*
+!observed/inventory/decisions_*.json
+observed/*/inventory/*
+!observed/*/inventory/decisions_*.json
 
 # genome scan outputs are derived: regenerate with genome_scan.py
 observed/genome/

@@ -1,0 +1,156 @@
+{
+ "updated": "2026-08-15T11:40:27-07:00",
+ "total_count": 66,
+ "cut": [
+  {
+   "defName": "AB_IdyllicMeadows",
+   "label": "idyllic meadows",
+   "mod": "Alpha Biomes"
+  },
+  {
+   "defName": "AG_NereidPocketPlane",
+   "label": "nereid pocket plane",
+   "mod": "Alpha Genes"
+  },
+  {
+   "defName": "AG_PocketPlane",
+   "label": "pocket plane",
+   "mod": "Alpha Genes"
+  },
+  {
+   "defName": "AridShrubland",
+   "label": "arid shrubland",
+   "mod": "Core"
+  },
+  {
+   "defName": "BorealForest",
+   "label": "boreal forest",
+   "mod": "Core"
+  },
+  {
+   "defName": "COMIGO_GreaterSwamp_Cold",
+   "label": "greater cold bog",
+   "mod": "Comigo's Greater Swamps (Continued)"
+  },
+  {
+   "defName": "COMIGO_GreaterSwamp_Temperate",
+   "label": "greater temperate swamp",
+   "mod": "Comigo's Greater Swamps (Continued)"
+  },
+  {
+   "defName": "ColdBog",
+   "label": "cold bog",
+   "mod": "Core"
+  },
+  {
+   "defName": "GlacialPlain",
+   "label": "glacial plain",
+   "mod": "Odyssey"
+  },
+  {
+   "defName": "Grasslands",
+   "label": "grassland",
+   "mod": "Odyssey"
+  },
+  {
+   "defName": "IceSheet",
+   "label": "ice sheet",
+   "mod": "Core"
+  },
+  {
+   "defName": "Labyrinth",
+   "label": "labyrinth",
+   "mod": "Anomaly"
+  },
+  {
+   "defName": "Lake",
+   "label": "lake",
+   "mod": "Core"
+  },
+  {
+   "defName": "MetalHell",
+   "label": "metal hell",
+   "mod": "Anomaly"
+  },
+  {
+   "defName": "RG_BoilingForest",
+   "label": "boiling forest",
+   "mod": "ReGrowth: Boiling"
+  },
+  {
+   "defName": "Savanna",
+   "label": "savanna",
+   "mod": "Advanced Biomes (Continued)"
+  },
+  {
+   "defName": "SeaIce",
+   "label": "sea ice",
+   "mod": "Core"
+  },
+  {
+   "defName": "TemperateForest",
+   "label": "temperate forest",
+   "mod": "Core"
+  },
+  {
+   "defName": "TemperateSwamp",
+   "label": "temperate swamp",
+   "mod": "Core"
+  },
+  {
+   "defName": "TropicalRainforest",
+   "label": "tropical rainforest",
+   "mod": "Core"
+  },
+  {
+   "defName": "TropicalSwamp",
+   "label": "tropical swamp",
+   "mod": "Core"
+  },
+  {
+   "defName": "Tundra",
+   "label": "tundra",
+   "mod": "Core"
+  },
+  {
+   "defName": "Wetland",
+   "label": "wetland",
+   "mod": "Advanced Biomes (Continued)"
+  },
+  {
+   "defName": "ZBiome_AlpineMeadow",
+   "label": "alpine meadow",
+   "mod": "More Vanilla Biomes"
+  },
+  {
+   "defName": "ZBiome_CloudForest",
+   "label": "cloud forest",
+   "mod": "More Vanilla Biomes"
+  },
+  {
+   "defName": "ZBiome_CoastalDunes",
+   "label": "coastal dunes",
+   "mod": "More Vanilla Biomes"
+  },
+  {
+   "defName": "ZBiome_GlacialShield",
+   "label": "glacial shield",
+   "mod": "More Vanilla Biomes"
+  },
+  {
+   "defName": "ZBiome_Iceberg_NoBeach",
+   "label": "ice floes",
+   "mod": "More Vanilla Biomes"
+  },
+  {
+   "defName": "ZBiome_Marsh",
+   "label": "marsh",
+   "mod": "More Vanilla Biomes"
+  },
+  {
+   "defName": "ZBiome_Sandbar_NoBeach",
+   "label": "sandbar",
+   "mod": "More Vanilla Biomes"
+  }
+ ]
+}

@@ -1,0 +1,1822 @@
+{
+ "category": "items",
+ "updated": "2026-08-15T07:19:36-07:00",
+ "cut": [
+  {
+   "defName": "AA_EggFlamingoPhoenixFertilized",
+   "label": "flamingo phoenix egg (fert.)",
+   "mod": "Alpha Animals",
+   "note": "",
+   "key": "AA_EggFlamingoPhoenixFertilized"
+  },
+  {
+   "defName": "AEXP_EggAnacondaFertilized",
+   "label": "anaconda egg (fert.)",
+   "mod": "Vanilla Animals Expanded",
+   "note": "",
+   "key": "AEXP_EggAnacondaFertilized"
+  },
+  {
+   "defName": "AEXP_EggAnacondaUnfertilized",
+   "label": "anaconda egg (unfert.)",
+   "mod": "Vanilla Animals Expanded",
+   "note": "",
+   "key": "AEXP_EggAnacondaUnfertilized"
+  },
+  {
+   "defName": "AEXP_EggCrocodileFertilized",
+   "label": "crocodile egg (fert.)",
+   "mod": "Vanilla Animals Expanded",
+   "note": "",
+   "key": "AEXP_EggCrocodileFertilized"
+  },
+  {
+   "defName": "AEXP_EggCrocodileUnfertilized",
+   "label": "crocodile egg (unfert.)",
+   "mod": "Vanilla Animals Expanded",
+   "note": "",
+   "key": "AEXP_EggCrocodileUnfertilized"
+  },
+  {
+   "defName": "AEXP_EggDesertTortoiseFertilized",
+   "label": "desert tortoise egg (fert.)",
+   "mod": "Vanilla Animals Expanded",
+   "note": "",
+   "key": "AEXP_EggDesertTortoiseFertilized"
+  },
+  {
+   "defName": "AEXP_EggDesertTortoiseUnfertilized",
+   "label": "desert tortoise egg (unfert.)",
+   "mod": "Vanilla Animals Expanded",
+   "note": "",
+   "key": "AEXP_EggDesertTortoiseUnfertilized"
+  },
+  {
+   "defName": "AEXP_EggPlatypusFertilized",
+   "label": "platypus egg (fert.)",
+   "mod": "Vanilla Animals Expanded",
+   "note": "",
+   "key": "AEXP_EggPlatypusFertilized"
+  },
+  {
+   "defName": "AEXP_EggPlatypusUnfertilized",
+   "label": "platypus egg (unfert.)",
+   "mod": "Vanilla Animals Expanded",
+   "note": "",
+   "key": "AEXP_EggPlatypusUnfertilized"
+  },
+  {
+   "defName": "AEXP_EggRattlesnakeFertilized",
+   "label": "rattlesnake egg (fert.)",
+   "mod": "Vanilla Animals Expanded",
+   "note": "",
+   "key": "AEXP_EggRattlesnakeFertilized"
+  },
+  {
+   "defName": "AEXP_EggRattlesnakeUnfertilized",
+   "label": "rattlesnake egg (unfert.)",
+   "mod": "Vanilla Animals Expanded",
+   "note": "",
+   "key": "AEXP_EggRattlesnakeUnfertilized"
+  },
+  {
+   "defName": "AEXP_EggWildGooseFertilized",
+   "label": "wild goose egg (fert.)",
+   "mod": "Vanilla Animals Expanded",
+   "note": "",
+   "key": "AEXP_EggWildGooseFertilized"
+  },
+  {
+   "defName": "AEXP_EggWildGooseUnfertilized",
+   "label": "wild goose egg (unfert.)",
+   "mod": "Vanilla Animals Expanded",
+   "note": "",
+   "key": "AEXP_EggWildGooseUnfertilized"
+  },
+  {
+   "defName": "AEXP_Leather_Lion",
+   "label": "lion pelt",
+   "mod": "Vanilla Animals Expanded",
+   "note": "",
+   "key": "AEXP_Leather_Lion"
+  },
+  {
+   "defName": "AEXP_Leather_Platypus",
+   "label": "platypus leather",
+   "mod": "Vanilla Animals Expanded",
+   "note": "",
+   "key": "AEXP_Leather_Platypus"
+  },
+  {
+   "defName": "AEXP_Leather_Wildebeest",
+   "label": "wildebeest pelt",
+   "mod": "Vanilla Animals Expanded",
+   "note": "",
+   "key": "AEXP_Leather_Wildebeest"
+  },
+  {
+   "defName": "AM_AI2A",
+   "label": "AI2A",
+   "mod": "Ancient urban ruins",
+   "note": "",
+   "key": "AM_AI2A"
+  },
+  {
+   "defName": "AM_CreditCard",
+   "label": "credit card",
+   "mod": "Ancient urban ruins",
+   "note": "",
+   "key": "AM_CreditCard"
+  },
+  {
+   "defName": "AM_LEGO_HeavyCrane_NotOpen",
+   "label": "LEGO heavy crane",
+   "mod": "Ancient urban ruins",
+   "note": "",
+   "key": "AM_LEGO_HeavyCrane_NotOpen"
+  },
+  {
+   "defName": "AM_LEGO_LandmarkBuilding_NotOpen",
+   "label": "LEGO landmark building",
+   "mod": "Ancient urban ruins",
+   "note": "",
+   "key": "AM_LEGO_LandmarkBuilding_NotOpen"
+  },
+  {
+   "defName": "AM_LEGO_LightCrane_NotOpen",
+   "label": "LEGO light crane",
+   "mod": "Ancient urban ruins",
+   "note": "",
+   "key": "AM_LEGO_LightCrane_NotOpen"
+  },
+  {
+   "defName": "AM_LEGO_MediumCrane_NotOpen",
+   "label": "LEGO medium crane",
+   "mod": "Ancient urban ruins",
+   "note": "",
+   "key": "AM_LEGO_MediumCrane_NotOpen"
+  },
+  {
+   "defName": "AM_LEGO_Palace_NotOpen",
+   "label": "LEGO palace",
+   "mod": "Ancient urban ruins",
+   "note": "",
+   "key": "AM_LEGO_Palace_NotOpen"
+  },
+  {
+   "defName": "AM_MRE",
+   "label": "military ration",
+   "mod": "Ancient urban ruins",
+   "note": "",
+   "key": "AM_MRE"
+  },
+  {
+   "defName": "AM_PKPMagazineComponents",
+   "label": "PKP components",
+   "mod": "Ancient urban ruins",
+   "note": "",
+   "key": "AM_PKPMagazineComponents"
+  },
+  {
+   "defName": "AM_PackagedCPU",
+   "label": "packaged CPU",
+   "mod": "Ancient urban ruins",
+   "note": "",
+   "key": "AM_PackagedCPU"
+  },
+  {
+   "defName": "AM_PackagedGPU",
+   "label": "packaged GPU",
+   "mod": "Ancient urban ruins",
+   "note": "",
+   "key": "AM_PackagedGPU"
+  },
+  {
+   "defName": "AM_Pepsi",
+   "label": "Pepsi",
+   "mod": "Ancient urban ruins",
+   "note": "",
+   "key": "AM_Pepsi"
+  },
+  {
+   "defName": "AM_PotatoChipsA",
+   "label": "classic potato chips",
+   "mod": "Ancient urban ruins",
+   "note": "",
+   "key": "AM_PotatoChipsA"
+  },
+  {
+   "defName": "AM_PotatoChipsB",
+   "label": "tomato potato chips",
+   "mod": "Ancient urban ruins",
+   "note": "",
+   "key": "AM_PotatoChipsB"
+  },
+  {
+   "defName": "AM_PotatoChipsC",
+   "label": "cucumber potato chips",
+   "mod": "Ancient urban ruins",
+   "note": "",
+   "key": "AM_PotatoChipsC"
+  },
+  {
+   "defName": "AM_PotatoChipsD",
+   "label": "steak potato chips",
+   "mod": "Ancient urban ruins",
+   "note": "",
+   "key": "AM_PotatoChipsD"
+  },
+  {
+   "defName": "AM_PotatoChipsE",
+   "label": "lemon potato chips",
+   "mod": "Ancient urban ruins",
+   "note": "",
+   "key": "AM_PotatoChipsE"
+  },
+  {
+   "defName": "AM_PotatoChipsF",
+   "label": "italian red stew potato chips",
+   "mod": "Ancient urban ruins",
+   "note": "",
+   "key": "AM_PotatoChipsF"
+  },
+  {
+   "defName": "AM_Salewa",
+   "label": "salewa kit",
+   "mod": "Ancient urban ruins",
+   "note": "",
+   "key": "AM_Salewa"
+  },
+  {
+   "defName": "AM_TapeMeasure",
+   "label": "tape measure",
+   "mod": "Ancient urban ruins",
+   "note": "",
+   "key": "AM_TapeMeasure"
+  },
+  {
+   "defName": "BMT_EggGlarralPenguinFertilized",
+   "label": "glarral penguin egg (fert.)",
+   "mod": "Biomes! Caverns",
+   "note": "",
+   "key": "BMT_EggGlarralPenguinFertilized"
+  },
+  {
+   "defName": "BMT_EggGlarralPenguinUnfertilized",
+   "label": "glarral penguin egg (unfert.)",
+   "mod": "Biomes! Caverns",
+   "note": "",
+   "key": "BMT_EggGlarralPenguinUnfertilized"
+  },
+  {
+   "defName": "BS_GiantMinigun_Unique",
+   "label": "Unique Warmech Machinegun",
+   "mod": "Big and Small - Weapons",
+   "note": "",
+   "key": "BS_GiantMinigun_Unique"
+  },
+  {
+   "defName": "BS_IndestructibelApparel",
+   "label": "archotech apparel-integrator",
+   "mod": "Big and Small - Genes & More",
+   "note": "",
+   "key": "BS_IndestructibelApparel"
+  },
+  {
+   "defName": "BS_JotunRifle_Unique",
+   "label": "Unique Warmech Anti-Material Rifle",
+   "mod": "Big and Small - Weapons",
+   "note": "",
+   "key": "BS_JotunRifle_Unique"
+  },
+  {
+   "defName": "BS_JotunRocketLauncher_Unique",
+   "label": "Unique Warmech Rocket Launcher",
+   "mod": "Big and Small - Weapons",
+   "note": "",
+   "key": "BS_JotunRocketLauncher_Unique"
+  },
+  {
+   "defName": "BiomesIslands_EggFlamingoFertilized",
+   "label": "rose flamingo egg (fert.)",
+   "mod": "Biomes! Core",
+   "note": "",
+   "key": "BiomesIslands_EggFlamingoFertilized"
+  },
+  {
+   "defName": "BiomesIslands_EggFlamingoUnfertilized",
+   "label": "rose flamingo egg (unfert.)",
+   "mod": "Biomes! Core",
+   "note": "",
+   "key": "BiomesIslands_EggFlamingoUnfertilized"
+  },
+  {
+   "defName": "BiomesIslands_Leather_Flamingo",
+   "label": "flamingo leather",
+   "mod": "Biomes! Core",
+   "note": "",
+   "key": "BiomesIslands_Leather_Flamingo"
+  },
+  {
+   "defName": "ControlSublink",
+   "label": "control sublink (standard)",
+   "mod": "Biotech",
+   "note": "",
+   "key": "ControlSublink"
+  },
+  {
+   "defName": "ControlSublinkHigh",
+   "label": "control sublink (high)",
+   "mod": "Biotech",
+   "note": "",
+   "key": "ControlSublinkHigh"
+  },
+  {
+   "defName": "DA_Leather_SilverMole",
+   "label": "silverfur",
+   "mod": "Dark Ages : Beasts and Monsters",
+   "note": "",
+   "key": "DA_Leather_SilverMole"
+  },
+  {
+   "defName": "ERN_EggChocoboUnfertilized",
+   "label": "chocobo egg (unfert.)",
+   "mod": "Erin's Final Fantasy Animals",
+   "note": "",
+   "key": "ERN_EggChocoboUnfertilized"
+  },
+  {
+   "defName": "EggAlligatorFertilized",
+   "label": "alligator egg (fert.)",
+   "mod": "Odyssey",
+   "note": "",
+   "key": "EggAlligatorFertilized"
+  },
+  {
+   "defName": "EggAlligatorUnfertilized",
+   "label": "alligator egg (unfert.)",
+   "mod": "Odyssey",
+   "note": "",
+   "key": "EggAlligatorUnfertilized"
+  },
+  {
+   "defName": "EggArcticOwlcatFertilized",
+   "label": "arctic owlcat egg (fert.)",
+   "mod": "Dark Ages : Beasts and Monsters",
+   "note": "",
+   "key": "EggArcticOwlcatFertilized"
+  },
+  {
+   "defName": "EggArcticOwlcatUnfertilized",
+   "label": "arctic owlcat egg (unfert.)",
+   "mod": "Dark Ages : Beasts and Monsters",
+   "note": "",
+   "key": "EggArcticOwlcatUnfertilized"
+  },
+  {
+   "defName": "EggCassowaryFertilized",
+   "label": "cassowary egg (fert.)",
+   "mod": "Core",
+   "note": "",
+   "key": "EggCassowaryFertilized"
+  },
+  {
+   "defName": "EggCassowaryUnfertilized",
+   "label": "cassowary egg (unfert.)",
+   "mod": "Core",
+   "note": "",
+   "key": "EggCassowaryUnfertilized"
+  },
+  {
+   "defName": "EggChocoboFertilized",
+   "label": "chocobo egg (fert.)",
+   "mod": "Erin's Final Fantasy Animals",
+   "note": "",
+   "key": "EggChocoboFertilized"
+  },
+  {
+   "defName": "EggCobraFertilized",
+   "label": "cobra egg (fert.)",
+   "mod": "Core",
+   "note": "",
+   "key": "EggCobraFertilized"
+  },
+  {
+   "defName": "EggCobraUnfertilized",
+   "label": "cobra egg (unfert.)",
+   "mod": "Core",
+   "note": "",
+   "key": "EggCobraUnfertilized"
+  },
+  {
+   "defName": "EggEmuFertilized",
+   "label": "emu egg (fert.)",
+   "mod": "Core",
+   "note": "",
+   "key": "EggEmuFertilized"
+  },
+  {
+   "defName": "EggEmuUnfertilized",
+   "label": "emu egg (unfert.)",
+   "mod": "Core",
+   "note": "",
+   "key": "EggEmuUnfertilized"
+  },
+  {
+   "defName": "EggFlamingoFertilized",
+   "label": "flamingo egg (fert.)",
+   "mod": "Odyssey",
+   "note": "",
+   "key": "EggFlamingoFertilized"
+  },
+  {
+   "defName": "EggFlamingoUnfertilized",
+   "label": "flamingo egg (unfert.)",
+   "mod": "Odyssey",
+   "note": "",
+   "key": "EggFlamingoUnfertilized"
+  },
+  {
+   "defName": "EggGiantSnakeFertilized",
+   "label": "giant snake egg (fert.)",
+   "mod": "Giant Snake (Continued)",
+   "note": "",
+   "key": "EggGiantSnakeFertilized"
+  },
+  {
+   "defName": "EggGiantSnakeUnfertilized",
+   "label": "giant snake egg (unfert.)",
+   "mod": "Giant Snake (Continued)",
+   "note": "",
+   "key": "EggGiantSnakeUnfertilized"
+  },
+  {
+   "defName": "EggGigantophisFertilized",
+   "label": "gigantophis egg (fert.)",
+   "mod": "Megafauna",
+   "note": "",
+   "key": "EggGigantophisFertilized"
+  },
+  {
+   "defName": "EggMegalaniaFertilized",
+   "label": "megalania egg (fert.)",
+   "mod": "Megafauna",
+   "note": "",
+   "key": "EggMegalaniaFertilized"
+  },
+  {
+   "defName": "EggMegalochelysFertilized",
+   "label": "megalochelys egg (fert.)",
+   "mod": "Megafauna",
+   "note": "",
+   "key": "EggMegalochelysFertilized"
+  },
+  {
+   "defName": "EggOstrichFertilized",
+   "label": "ostrich egg (fert.)",
+   "mod": "Core",
+   "note": "",
+   "key": "EggOstrichFertilized"
+  },
+  {
+   "defName": "EggOstrichUnfertilized",
+   "label": "ostrich egg (unfert.)",
+   "mod": "Core",
+   "note": "",
+   "key": "EggOstrichUnfertilized"
+  },
+  {
+   "defName": "EggOwlcatFertilized",
+   "label": "forest owlcat egg (fert.)",
+   "mod": "Dark Ages : Beasts and Monsters",
+   "note": "",
+   "key": "EggOwlcatFertilized"
+  },
+  {
+   "defName": "EggOwlcatUnfertilized",
+   "label": "forest owlcat egg (unfert.)",
+   "mod": "Dark Ages : Beasts and Monsters",
+   "note": "",
+   "key": "EggOwlcatUnfertilized"
+  },
+  {
+   "defName": "EggPalaeeudyptesFertilized",
+   "label": "palaeeudyptes egg (fert.)",
+   "mod": "Megafauna",
+   "note": "",
+   "key": "EggPalaeeudyptesFertilized"
+  },
+  {
+   "defName": "EggPenguinFertilized",
+   "label": "penguin egg (fert.)",
+   "mod": "Odyssey",
+   "note": "",
+   "key": "EggPenguinFertilized"
+  },
+  {
+   "defName": "EggPenguinUnFertilized",
+   "label": "penguin egg (unfert.)",
+   "mod": "Beasts of the Rim (Continued)",
+   "note": "",
+   "key": "EggPenguinUnFertilized"
+  },
+  {
+   "defName": "EggPurussaurusFertilized",
+   "label": "purussaurus egg (fert.)",
+   "mod": "Megafauna",
+   "note": "",
+   "key": "EggPurussaurusFertilized"
+  },
+  {
+   "defName": "EggQuinkanaFertilized",
+   "label": "quinkana egg (fert.)",
+   "mod": "Megafauna",
+   "note": "",
+   "key": "EggQuinkanaFertilized"
+  },
+  {
+   "defName": "EggTitanoboaFertilized",
+   "label": "titanoboa egg (fert.)",
+   "mod": "Megafauna",
+   "note": "",
+   "key": "EggTitanoboaFertilized"
+  },
+  {
+   "defName": "EggTortoiseFertilized",
+   "label": "tortoise egg (fert.)",
+   "mod": "Core",
+   "note": "",
+   "key": "EggTortoiseFertilized"
+  },
+  {
+   "defName": "EggTortoiseUnfertilized",
+   "label": "tortoise egg (unfert.)",
+   "mod": "Core",
+   "note": "",
+   "key": "EggTortoiseUnfertilized"
+  },
+  {
+   "defName": "EggWhiteViperFertilized",
+   "label": "white viper egg (fert.)",
+   "mod": "Giant Snake (Continued)",
+   "note": "",
+   "key": "EggWhiteViperFertilized"
+  },
+  {
+   "defName": "EggWhiteViperUnfertilized",
+   "label": "white viper egg (unfert.)",
+   "mod": "Giant Snake (Continued)",
+   "note": "",
+   "key": "EggWhiteViperUnfertilized"
+  },
+  {
+   "defName": "Fur_Carbuncle",
+   "label": "carbuncle fur",
+   "mod": "Erin's Final Fantasy Animals",
+   "note": "",
+   "key": "Fur_Carbuncle"
+  },
+  {
+   "defName": "GR_BearChickenEggFertilized",
+   "label": "bearchicken egg (fert.)",
+   "mod": "Vanilla Genetics Expanded",
+   "note": "",
+   "key": "GR_BearChickenEggFertilized"
+  },
+  {
+   "defName": "GR_BearChickenEggUnfertilized",
+   "label": "bearchicken egg (unfert.)",
+   "mod": "Vanilla Genetics Expanded",
+   "note": "",
+   "key": "GR_BearChickenEggUnfertilized"
+  },
+  {
+   "defName": "GR_Castoreum",
+   "label": "beaverwolf castoreum",
+   "mod": "Vanilla Genetics Expanded",
+   "note": "",
+   "key": "GR_Castoreum"
+  },
+  {
+   "defName": "GR_ChickenbearEggFertilized",
+   "label": "chickenbear egg (fert.)",
+   "mod": "Vanilla Genetics Expanded",
+   "note": "",
+   "key": "GR_ChickenbearEggFertilized"
+  },
+  {
+   "defName": "GR_ChickenbearEggUnfertilized",
+   "label": "chickenbear egg (unfert.)",
+   "mod": "Vanilla Genetics Expanded",
+   "note": "",
+   "key": "GR_ChickenbearEggUnfertilized"
+  },
+  {
+   "defName": "GR_Chickenbearfeathers",
+   "label": "chickenbear feathers",
+   "mod": "Vanilla Genetics Expanded",
+   "note": "",
+   "key": "GR_Chickenbearfeathers"
+  },
+  {
+   "defName": "GR_ChickencatEggFertilized",
+   "label": "chickencat egg (fert.)",
+   "mod": "Vanilla Genetics Expanded",
+   "note": "",
+   "key": "GR_ChickencatEggFertilized"
+  },
+  {
+   "defName": "GR_ChickencatEggUnfertilized",
+   "label": "chickencat egg (unfert.)",
+   "mod": "Vanilla Genetics Expanded",
+   "note": "",
+   "key": "GR_ChickencatEggUnfertilized"
+  },
+  {
+   "defName": "GR_ChickenffaloEggFertilized",
+   "label": "chickenffalo egg (fert.)",
+   "mod": "Vanilla Genetics Expanded",
+   "note": "",
+   "key": "GR_ChickenffaloEggFertilized"
+  },
+  {
+   "defName": "GR_ChickenffaloEggUnfertilized",
+   "label": "chickenffalo egg (unfert.)",
+   "mod": "Vanilla Genetics Expanded",
+   "note": "",
+   "key": "GR_ChickenffaloEggUnfertilized"
+  },
+  {
+   "defName": "GR_ChickenffaloMilk",
+   "label": "chickenffalo milk",
+   "mod": "Vanilla Genetics Expanded",
+   "note": "",
+   "key": "GR_ChickenffaloMilk"
+  },
+  {
+   "defName": "GR_ChickenlodonEggFertilized",
+   "label": "chickenlodon egg (fert.)",
+   "mod": "Vanilla Genetics Expanded",
+   "note": "",
+   "key": "GR_ChickenlodonEggFertilized"
+  },
+  {
+   "defName": "GR_ChickenlodonEggUnfertilized",
+   "label": "chickenlodon egg (unfert.)",
+   "mod": "Vanilla Genetics Expanded",
+   "note": "",
+   "key": "GR_ChickenlodonEggUnfertilized"
+  },
+  {
+   "defName": "GR_ChickenwolfEggFertilized",
+   "label": "chickenwolf egg (fert.)",
+   "mod": "Vanilla Genetics Expanded",
+   "note": "",
+   "key": "GR_ChickenwolfEggFertilized"
+  },
+  {
+   "defName": "GR_ChickenwolfEggUnfertilized",
+   "label": "chickenwolf egg (unfert.)",
+   "mod": "Vanilla Genetics Expanded",
+   "note": "",
+   "key": "GR_ChickenwolfEggUnfertilized"
+  },
+  {
+   "defName": "GR_MuffalobearMilk",
+   "label": "muffalobear milk",
+   "mod": "Vanilla Genetics Expanded",
+   "note": "",
+   "key": "GR_MuffalobearMilk"
+  },
+  {
+   "defName": "GR_MuffalochickenMilk",
+   "label": "muffalochicken milk",
+   "mod": "Vanilla Genetics Expanded",
+   "note": "",
+   "key": "GR_MuffalochickenMilk"
+  },
+  {
+   "defName": "GR_ParagonChickenEggFertilized",
+   "label": "avian paragon egg (fert.)",
+   "mod": "Vanilla Genetics Expanded",
+   "note": "",
+   "key": "GR_ParagonChickenEggFertilized"
+  },
+  {
+   "defName": "GR_ParagonChickenEggUnfertilized",
+   "label": "avian paragon egg (unfert.)",
+   "mod": "Vanilla Genetics Expanded",
+   "note": "",
+   "key": "GR_ParagonChickenEggUnfertilized"
+  },
+  {
+   "defName": "GR_TurkeymanEggFertilized",
+   "label": "turkeyman egg (fert.)",
+   "mod": "Vanilla Genetics Expanded",
+   "note": "",
+   "key": "GR_TurkeymanEggFertilized"
+  },
+  {
+   "defName": "GR_TurkeymanEggUnfertilized",
+   "label": "turkeyman egg (unfert.)",
+   "mod": "Vanilla Genetics Expanded",
+   "note": "",
+   "key": "GR_TurkeymanEggUnfertilized"
+  },
+  {
+   "defName": "GR_WolfchickenEggFertilized",
+   "label": "wolfchicken egg (fert.)",
+   "mod": "Vanilla Genetics Expanded",
+   "note": "",
+   "key": "GR_WolfchickenEggFertilized"
+  },
+  {
+   "defName": "GR_WolfchickenEggUnfertilized",
+   "label": "wolfchicken egg (unfert.)",
+   "mod": "Vanilla Genetics Expanded",
+   "note": "",
+   "key": "GR_WolfchickenEggUnfertilized"
+  },
+  {
+   "defName": "GR_WolffaloMilk",
+   "label": "hairy milk",
+   "mod": "Vanilla Genetics Expanded",
+   "note": "",
+   "key": "GR_WolffaloMilk"
+  },
+  {
+   "defName": "GigantophisEggFertilized",
+   "label": "Gigantophis egg (fert.)",
+   "mod": "Jurassic Rimworld - Dinosaurs Only (Continued)",
+   "note": "",
+   "key": "GigantophisEggFertilized"
+  },
+  {
+   "defName": "GigantophisEggUnFertilized",
+   "label": "Gigantophis egg (unfert.)",
+   "mod": "Jurassic Rimworld - Dinosaurs Only (Continued)",
+   "note": "",
+   "key": "GigantophisEggUnFertilized"
+  },
+  {
+   "defName": "GoldenCube",
+   "label": "golden cube",
+   "mod": "Anomaly",
+   "note": "",
+   "key": "GoldenCube"
+  },
+  {
+   "defName": "Grimstone_EmperorVulture_EggFertilized",
+   "label": "emperor vulture egg (fert.)",
+   "mod": "Grimstone : Beasts",
+   "note": "",
+   "key": "Grimstone_EmperorVulture_EggFertilized"
+  },
+  {
+   "defName": "Grimstone_EmperorVulture_EggUnfertilized",
+   "label": "emperor vulture egg (unfert.)",
+   "mod": "Grimstone : Beasts",
+   "note": "",
+   "key": "Grimstone_EmperorVulture_EggUnfertilized"
+  },
+  {
+   "defName": "Grimstone_Griffar_EggFertilized",
+   "label": "griffar egg (fert.)",
+   "mod": "Grimstone : Beasts",
+   "note": "",
+   "key": "Grimstone_Griffar_EggFertilized"
+  },
+  {
+   "defName": "Grimstone_Griffar_EggUnfertilized",
+   "label": "griffar egg (unfert.)",
+   "mod": "Grimstone : Beasts",
+   "note": "",
+   "key": "Grimstone_Griffar_EggUnfertilized"
+  },
+  {
+   "defName": "Grimstone_Leather_Griffar",
+   "label": "griffar leather",
+   "mod": "Grimstone : Beasts",
+   "note": "",
+   "key": "Grimstone_Leather_Griffar"
+  },
+  {
+   "defName": "IronScruff_LeatherGerm",
+   "label": "germleather",
+   "mod": "Primordial Geysers",
+   "note": "",
+   "key": "IronScruff_LeatherGerm"
+  },
+  {
+   "defName": "IronScruff_MicrobeSqueezins",
+   "label": "microbe squeezin's",
+   "mod": "Primordial Geysers",
+   "note": "",
+   "key": "IronScruff_MicrobeSqueezins"
+  },
+  {
+   "defName": "Isekai_BigManaCore",
+   "label": "big mana core",
+   "mod": "ISEKAI RPG LEVELING",
+   "note": "",
+   "key": "Isekai_BigManaCore"
+  },
+  {
+   "defName": "Isekai_HerosAwakeningScroll",
+   "label": "hero's awakening scroll",
+   "mod": "ISEKAI RPG LEVELING",
+   "note": "",
+   "key": "Isekai_HerosAwakeningScroll"
+  },
+  {
+   "defName": "Isekai_HugeManaCore",
+   "label": "huge mana core",
+   "mod": "ISEKAI RPG LEVELING",
+   "note": "",
+   "key": "Isekai_HugeManaCore"
+  },
+  {
+   "defName": "Isekai_ManaCore",
+   "label": "mana core",
+   "mod": "ISEKAI RPG LEVELING",
+   "note": "",
+   "key": "Isekai_ManaCore"
+  },
+  {
+   "defName": "Isekai_ManaEssence",
+   "label": "mana essence",
+   "mod": "ISEKAI RPG LEVELING",
+   "note": "",
+   "key": "Isekai_ManaEssence"
+  },
+  {
+   "defName": "Isekai_RegressionOrb",
+   "label": "regression orb",
+   "mod": "ISEKAI RPG LEVELING",
+   "note": "",
+   "key": "Isekai_RegressionOrb"
+  },
+  {
+   "defName": "Isekai_ReincarnationCrystal",
+   "label": "reincarnation crystal",
+   "mod": "ISEKAI RPG LEVELING",
+   "note": "",
+   "key": "Isekai_ReincarnationCrystal"
+  },
+  {
+   "defName": "Isekai_ReinforcementCore",
+   "label": "reinforcement core",
+   "mod": "ISEKAI RPG LEVELING",
+   "note": "",
+   "key": "Isekai_ReinforcementCore"
+  },
+  {
+   "defName": "Isekai_RespecOrb",
+   "label": "rebirth orb",
+   "mod": "ISEKAI RPG LEVELING",
+   "note": "",
+   "key": "Isekai_RespecOrb"
+  },
+  {
+   "defName": "Isekai_Rune_Bulwark",
+   "label": "rune of bulwark I",
+   "mod": "ISEKAI RPG LEVELING",
+   "note": "",
+   "key": "Isekai_Rune_Bulwark"
+  },
+  {
+   "defName": "Isekai_Rune_Bulwark_II",
+   "label": "rune of bulwark II",
+   "mod": "ISEKAI RPG LEVELING",
+   "note": "",
+   "key": "Isekai_Rune_Bulwark_II"
+  },
+  {
+   "defName": "Isekai_Rune_Bulwark_III",
+   "label": "rune of bulwark III",
+   "mod": "ISEKAI RPG LEVELING",
+   "note": "",
+   "key": "Isekai_Rune_Bulwark_III"
+  },
+  {
+   "defName": "Isekai_Rune_Bulwark_IV",
+   "label": "rune of bulwark IV",
+   "mod": "ISEKAI RPG LEVELING",
+   "note": "",
+   "key": "Isekai_Rune_Bulwark_IV"
+  },
+  {
+   "defName": "Isekai_Rune_Devastation",
+   "label": "rune of devastation I",
+   "mod": "ISEKAI RPG LEVELING",
+   "note": "",
+   "key": "Isekai_Rune_Devastation"
+  },
+  {
+   "defName": "Isekai_Rune_Devastation_II",
+   "label": "rune of devastation II",
+   "mod": "ISEKAI RPG LEVELING",
+   "note": "",
+   "key": "Isekai_Rune_Devastation_II"
+  },
+  {
+   "defName": "Isekai_Rune_Devastation_III",
+   "label": "rune of devastation III",
+   "mod": "ISEKAI RPG LEVELING",
+   "note": "",
+   "key": "Isekai_Rune_Devastation_III"
+  },
+  {
+   "defName": "Isekai_Rune_Devastation_IV",
+   "label": "rune of devastation IV",
+   "mod": "ISEKAI RPG LEVELING",
+   "note": "",
+   "key": "Isekai_Rune_Devastation_IV"
+  },
+  {
+   "defName": "Isekai_Rune_Devastation_V",
+   "label": "rune of devastation V",
+   "mod": "ISEKAI RPG LEVELING",
+   "note": "",
+   "key": "Isekai_Rune_Devastation_V"
+  },
+  {
+   "defName": "Isekai_Rune_Evasion",
+   "label": "rune of evasion I",
+   "mod": "ISEKAI RPG LEVELING",
+   "note": "",
+   "key": "Isekai_Rune_Evasion"
+  },
+  {
+   "defName": "Isekai_Rune_Evasion_II",
+   "label": "rune of evasion II",
+   "mod": "ISEKAI RPG LEVELING",
+   "note": "",
+   "key": "Isekai_Rune_Evasion_II"
+  },
+  {
+   "defName": "Isekai_Rune_Evasion_III",
+   "label": "rune of evasion III",
+   "mod": "ISEKAI RPG LEVELING",
+   "note": "",
+   "key": "Isekai_Rune_Evasion_III"
+  },
+  {
+   "defName": "Isekai_Rune_Evasion_IV",
+   "label": "rune of evasion IV",
+   "mod": "ISEKAI RPG LEVELING",
+   "note": "",
+   "key": "Isekai_Rune_Evasion_IV"
+  },
+  {
+   "defName": "Isekai_Rune_Evasion_V",
+   "label": "rune of evasion V",
+   "mod": "ISEKAI RPG LEVELING",
+   "note": "",
+   "key": "Isekai_Rune_Evasion_V"
+  },
+  {
+   "defName": "Isekai_Rune_Flame",
+   "label": "rune of flame I",
+   "mod": "ISEKAI RPG LEVELING",
+   "note": "",
+   "key": "Isekai_Rune_Flame"
+  },
+  {
+   "defName": "Isekai_Rune_Flame_II",
+   "label": "rune of flame II",
+   "mod": "ISEKAI RPG LEVELING",
+   "note": "",
+   "key": "Isekai_Rune_Flame_II"
+  },
+  {
+   "defName": "Isekai_Rune_Flame_III",
+   "label": "rune of flame III",
+   "mod": "ISEKAI RPG LEVELING",
+   "note": "",
+   "key": "Isekai_Rune_Flame_III"
+  },
+  {
+   "defName": "Isekai_Rune_Flame_IV",
+   "label": "rune of flame IV",
+   "mod": "ISEKAI RPG LEVELING",
+   "note": "",
+   "key": "Isekai_Rune_Flame_IV"
+  },
+  {
+   "defName": "Isekai_Rune_Flame_V",
+   "label": "rune of flame V",
+   "mod": "ISEKAI RPG LEVELING",
+   "note": "",
+   "key": "Isekai_Rune_Flame_V"
+  },
+  {
+   "defName": "Isekai_Rune_Fortitude",
+   "label": "rune of fortitude I",
+   "mod": "ISEKAI RPG LEVELING",
+   "note": "",
+   "key": "Isekai_Rune_Fortitude"
+  },
+  {
+   "defName": "Isekai_Rune_Fortitude_II",
+   "label": "rune of fortitude II",
+   "mod": "ISEKAI RPG LEVELING",
+   "note": "",
+   "key": "Isekai_Rune_Fortitude_II"
+  },
+  {
+   "defName": "Isekai_Rune_Fortitude_III",
+   "label": "rune of fortitude III",
+   "mod": "ISEKAI RPG LEVELING",
+   "note": "",
+   "key": "Isekai_Rune_Fortitude_III"
+  },
+  {
+   "defName": "Isekai_Rune_Fortitude_IV",
+   "label": "rune of fortitude IV",
+   "mod": "ISEKAI RPG LEVELING",
+   "note": "",
+   "key": "Isekai_Rune_Fortitude_IV"
+  },
+  {
+   "defName": "Isekai_Rune_Fortitude_V",
+   "label": "rune of fortitude V",
+   "mod": "ISEKAI RPG LEVELING",
+   "note": "",
+   "key": "Isekai_Rune_Fortitude_V"
+  },
+  {
+   "defName": "Isekai_Rune_Frost",
+   "label": "rune of frost I",
+   "mod": "ISEKAI RPG LEVELING",
+   "note": "",
+   "key": "Isekai_Rune_Frost"
+  },
+  {
+   "defName": "Isekai_Rune_Frost_II",
+   "label": "rune of frost II",
+   "mod": "ISEKAI RPG LEVELING",
+   "note": "",
+   "key": "Isekai_Rune_Frost_II"
+  },
+  {
+   "defName": "Isekai_Rune_Frost_III",
+   "label": "rune of frost III",
+   "mod": "ISEKAI RPG LEVELING",
+   "note": "",
+   "key": "Isekai_Rune_Frost_III"
+  },
+  {
+   "defName": "Isekai_Rune_Frost_IV",
+   "label": "rune of frost IV",
+   "mod": "ISEKAI RPG LEVELING",
+   "note": "",
+   "key": "Isekai_Rune_Frost_IV"
+  },
+  {
+   "defName": "Isekai_Rune_Frost_V",
+   "label": "rune of frost V",
+   "mod": "ISEKAI RPG LEVELING",
+   "note": "",
+   "key": "Isekai_Rune_Frost_V"
+  },
+  {
+   "defName": "Isekai_Rune_Fury",
+   "label": "rune of fury I",
+   "mod": "ISEKAI RPG LEVELING",
+   "note": "",
+   "key": "Isekai_Rune_Fury"
+  },
+  {
+   "defName": "Isekai_Rune_Fury_II",
+   "label": "rune of fury II",
+   "mod": "ISEKAI RPG LEVELING",
+   "note": "",
+   "key": "Isekai_Rune_Fury_II"
+  },
+  {
+   "defName": "Isekai_Rune_Fury_III",
+   "label": "rune of fury III",
+   "mod": "ISEKAI RPG LEVELING",
+   "note": "",
+   "key": "Isekai_Rune_Fury_III"
+  },
+  {
+   "defName": "Isekai_Rune_Fury_IV",
+   "label": "rune of fury IV",
+   "mod": "ISEKAI RPG LEVELING",
+   "note": "",
+   "key": "Isekai_Rune_Fury_IV"
+  },
+  {
+   "defName": "Isekai_Rune_Fury_V",
+   "label": "rune of fury V",
+   "mod": "ISEKAI RPG LEVELING",
+   "note": "",
+   "key": "Isekai_Rune_Fury_V"
+  },
+  {
+   "defName": "Isekai_Rune_Havoc",
+   "label": "rune of havoc I",
+   "mod": "ISEKAI RPG LEVELING",
+   "note": "",
+   "key": "Isekai_Rune_Havoc"
+  },
+  {
+   "defName": "Isekai_Rune_Havoc_II",
+   "label": "rune of havoc II",
+   "mod": "ISEKAI RPG LEVELING",
+   "note": "",
+   "key": "Isekai_Rune_Havoc_II"
+  },
+  {
+   "defName": "Isekai_Rune_Havoc_III",
+   "label": "rune of havoc III",
+   "mod": "ISEKAI RPG LEVELING",
+   "note": "",
+   "key": "Isekai_Rune_Havoc_III"
+  },
+  {
+   "defName": "Isekai_Rune_Havoc_IV",
+   "label": "rune of havoc IV",
+   "mod": "ISEKAI RPG LEVELING",
+   "note": "",
+   "key": "Isekai_Rune_Havoc_IV"
+  },
+  {
+   "defName": "Isekai_Rune_Havoc_V",
+   "label": "rune of havoc V",
+   "mod": "ISEKAI RPG LEVELING",
+   "note": "",
+   "key": "Isekai_Rune_Havoc_V"
+  },
+  {
+   "defName": "Isekai_Rune_Precision",
+   "label": "rune of precision I",
+   "mod": "ISEKAI RPG LEVELING",
+   "note": "",
+   "key": "Isekai_Rune_Precision"
+  },
+  {
+   "defName": "Isekai_Rune_Precision_II",
+   "label": "rune of precision II",
+   "mod": "ISEKAI RPG LEVELING",
+   "note": "",
+   "key": "Isekai_Rune_Precision_II"
+  },
+  {
+   "defName": "Isekai_Rune_Precision_III",
+   "label": "rune of precision III",
+   "mod": "ISEKAI RPG LEVELING",
+   "note": "",
+   "key": "Isekai_Rune_Precision_III"
+  },
+  {
+   "defName": "Isekai_Rune_Precision_IV",
+   "label": "rune of precision IV",
+   "mod": "ISEKAI RPG LEVELING",
+   "note": "",
+   "key": "Isekai_Rune_Precision_IV"
+  },
+  {
+   "defName": "Isekai_Rune_Precision_V",
+   "label": "rune of precision V",
+   "mod": "ISEKAI RPG LEVELING",
+   "note": "",
+   "key": "Isekai_Rune_Precision_V"
+  },
+  {
+   "defName": "Isekai_Rune_Regeneration",
+   "label": "rune of regeneration I",
+   "mod": "ISEKAI RPG LEVELING",
+   "note": "",
+   "key": "Isekai_Rune_Regeneration"
+  },
+  {
+   "defName": "Isekai_Rune_Regeneration_II",
+   "label": "rune of regeneration II",
+   "mod": "ISEKAI RPG LEVELING",
+   "note": "",
+   "key": "Isekai_Rune_Regeneration_II"
+  },
+  {
+   "defName": "Isekai_Rune_Regeneration_III",
+   "label": "rune of regeneration III",
+   "mod": "ISEKAI RPG LEVELING",
+   "note": "",
+   "key": "Isekai_Rune_Regeneration_III"
+  },
+  {
+   "defName": "Isekai_Rune_Regeneration_IV",
+   "label": "rune of regeneration IV",
+   "mod": "ISEKAI RPG LEVELING",
+   "note": "",
+   "key": "Isekai_Rune_Regeneration_IV"
+  },
+  {
+   "defName": "Isekai_Rune_Regeneration_V",
+   "label": "rune of regeneration V",
+   "mod": "ISEKAI RPG LEVELING",
+   "note": "",
+   "key": "Isekai_Rune_Regeneration_V"
+  },
+  {
+   "defName": "Isekai_Rune_Resistance",
+   "label": "rune of resistance I",
+   "mod": "ISEKAI RPG LEVELING",
+   "note": "",
+   "key": "Isekai_Rune_Resistance"
+  },
+  {
+   "defName": "Isekai_Rune_Resistance_II",
+   "label": "rune of resistance II",
+   "mod": "ISEKAI RPG LEVELING",
+   "note": "",
+   "key": "Isekai_Rune_Resistance_II"
+  },
+  {
+   "defName": "Isekai_Rune_Resistance_III",
+   "label": "rune of resistance III",
+   "mod": "ISEKAI RPG LEVELING",
+   "note": "",
+   "key": "Isekai_Rune_Resistance_III"
+  },
+  {
+   "defName": "Isekai_Rune_Resistance_IV",
+   "label": "rune of resistance IV",
+   "mod": "ISEKAI RPG LEVELING",
+   "note": "",
+   "key": "Isekai_Rune_Resistance_IV"
+  },
+  {
+   "defName": "Isekai_Rune_Resistance_V",
+   "label": "rune of resistance V",
+   "mod": "ISEKAI RPG LEVELING",
+   "note": "",
+   "key": "Isekai_Rune_Resistance_V"
+  },
+  {
+   "defName": "Isekai_Rune_Sharpness",
+   "label": "rune of sharpness I",
+   "mod": "ISEKAI RPG LEVELING",
+   "note": "",
+   "key": "Isekai_Rune_Sharpness"
+  },
+  {
+   "defName": "Isekai_Rune_Sharpness_II",
+   "label": "rune of sharpness II",
+   "mod": "ISEKAI RPG LEVELING",
+   "note": "",
+   "key": "Isekai_Rune_Sharpness_II"
+  },
+  {
+   "defName": "Isekai_Rune_Sharpness_III",
+   "label": "rune of sharpness III",
+   "mod": "ISEKAI RPG LEVELING",
+   "note": "",
+   "key": "Isekai_Rune_Sharpness_III"
+  },
+  {
+   "defName": "Isekai_Rune_Sharpness_IV",
+   "label": "rune of sharpness IV",
+   "mod": "ISEKAI RPG LEVELING",
+   "note": "",
+   "key": "Isekai_Rune_Sharpness_IV"
+  },
+  {
+   "defName": "Isekai_Rune_Sharpness_V",
+   "label": "rune of sharpness V",
+   "mod": "ISEKAI RPG LEVELING",
+   "note": "",
+   "key": "Isekai_Rune_Sharpness_V"
+  },
+  {
+   "defName": "Isekai_Rune_Swiftness",
+   "label": "rune of swiftness I",
+   "mod": "ISEKAI RPG LEVELING",
+   "note": "",
+   "key": "Isekai_Rune_Swiftness"
+  },
+  {
+   "defName": "Isekai_Rune_Swiftness_II",
+   "label": "rune of swiftness II",
+   "mod": "ISEKAI RPG LEVELING",
+   "note": "",
+   "key": "Isekai_Rune_Swiftness_II"
+  },
+  {
+   "defName": "Isekai_Rune_Swiftness_III",
+   "label": "rune of swiftness III",
+   "mod": "ISEKAI RPG LEVELING",
+   "note": "",
+   "key": "Isekai_Rune_Swiftness_III"
+  },
+  {
+   "defName": "Isekai_Rune_Swiftness_IV",
+   "label": "rune of swiftness IV",
+   "mod": "ISEKAI RPG LEVELING",
+   "note": "",
+   "key": "Isekai_Rune_Swiftness_IV"
+  },
+  {
+   "defName": "Isekai_Rune_Swiftness_V",
+   "label": "rune of swiftness V",
+   "mod": "ISEKAI RPG LEVELING",
+   "note": "",
+   "key": "Isekai_Rune_Swiftness_V"
+  },
+  {
+   "defName": "Isekai_Rune_Thunder",
+   "label": "rune of thunder I",
+   "mod": "ISEKAI RPG LEVELING",
+   "note": "",
+   "key": "Isekai_Rune_Thunder"
+  },
+  {
+   "defName": "Isekai_Rune_Thunder_II",
+   "label": "rune of thunder II",
+   "mod": "ISEKAI RPG LEVELING",
+   "note": "",
+   "key": "Isekai_Rune_Thunder_II"
+  },
+  {
+   "defName": "Isekai_Rune_Thunder_III",
+   "label": "rune of thunder III",
+   "mod": "ISEKAI RPG LEVELING",
+   "note": "",
+   "key": "Isekai_Rune_Thunder_III"
+  },
+  {
+   "defName": "Isekai_Rune_Thunder_IV",
+   "label": "rune of thunder IV",
+   "mod": "ISEKAI RPG LEVELING",
+   "note": "",
+   "key": "Isekai_Rune_Thunder_IV"
+  },
+  {
+   "defName": "Isekai_Rune_Thunder_V",
+   "label": "rune of thunder V",
+   "mod": "ISEKAI RPG LEVELING",
+   "note": "",
+   "key": "Isekai_Rune_Thunder_V"
+  },
+  {
+   "defName": "Isekai_Rune_Vampirism",
+   "label": "rune of vampirism I",
+   "mod": "ISEKAI RPG LEVELING",
+   "note": "",
+   "key": "Isekai_Rune_Vampirism"
+  },
+  {
+   "defName": "Isekai_Rune_Vampirism_II",
+   "label": "rune of vampirism II",
+   "mod": "ISEKAI RPG LEVELING",
+   "note": "",
+   "key": "Isekai_Rune_Vampirism_II"
+  },
+  {
+   "defName": "Isekai_Rune_Vampirism_III",
+   "label": "rune of vampirism III",
+   "mod": "ISEKAI RPG LEVELING",
+   "note": "",
+   "key": "Isekai_Rune_Vampirism_III"
+  },
+  {
+   "defName": "Isekai_Rune_Vampirism_IV",
+   "label": "rune of vampirism IV",
+   "mod": "ISEKAI RPG LEVELING",
+   "note": "",
+   "key": "Isekai_Rune_Vampirism_IV"
+  },
+  {
+   "defName": "Isekai_Rune_Vampirism_V",
+   "label": "rune of vampirism V",
+   "mod": "ISEKAI RPG LEVELING",
+   "note": "",
+   "key": "Isekai_Rune_Vampirism_V"
+  },
+  {
+   "defName": "Isekai_Rune_Vitality",
+   "label": "rune of vitality I",
+   "mod": "ISEKAI RPG LEVELING",
+   "note": "",
+   "key": "Isekai_Rune_Vitality"
+  },
+  {
+   "defName": "Isekai_Rune_Vitality_II",
+   "label": "rune of vitality II",
+   "mod": "ISEKAI RPG LEVELING",
+   "note": "",
+   "key": "Isekai_Rune_Vitality_II"
+  },
+  {
+   "defName": "Isekai_Rune_Vitality_III",
+   "label": "rune of vitality III",
+   "mod": "ISEKAI RPG LEVELING",
+   "note": "",
+   "key": "Isekai_Rune_Vitality_III"
+  },
+  {
+   "defName": "Isekai_Rune_Vitality_IV",
+   "label": "rune of vitality IV",
+   "mod": "ISEKAI RPG LEVELING",
+   "note": "",
+   "key": "Isekai_Rune_Vitality_IV"
+  },
+  {
+   "defName": "Isekai_Rune_Vitality_V",
+   "label": "rune of vitality V",
+   "mod": "ISEKAI RPG LEVELING",
+   "note": "",
+   "key": "Isekai_Rune_Vitality_V"
+  },
+  {
+   "defName": "Isekai_Rune_Warding",
+   "label": "rune of warding I",
+   "mod": "ISEKAI RPG LEVELING",
+   "note": "",
+   "key": "Isekai_Rune_Warding"
+  },
+  {
+   "defName": "Isekai_Rune_Warding_II",
+   "label": "rune of warding II",
+   "mod": "ISEKAI RPG LEVELING",
+   "note": "",
+   "key": "Isekai_Rune_Warding_II"
+  },
+  {
+   "defName": "Isekai_Rune_Warding_III",
+   "label": "rune of warding III",
+   "mod": "ISEKAI RPG LEVELING",
+   "note": "",
+   "key": "Isekai_Rune_Warding_III"
+  },
+  {
+   "defName": "Isekai_Rune_Warding_IV",
+   "label": "rune of warding IV",
+   "mod": "ISEKAI RPG LEVELING",
+   "note": "",
+   "key": "Isekai_Rune_Warding_IV"
+  },
+  {
+   "defName": "Isekai_Rune_Warding_V",
+   "label": "rune of warding V",
+   "mod": "ISEKAI RPG LEVELING",
+   "note": "",
+   "key": "Isekai_Rune_Warding_V"
+  },
+  {
+   "defName": "Isekai_SmallManaCore",
+   "label": "small mana core",
+   "mod": "ISEKAI RPG LEVELING",
+   "note": "",
+   "key": "Isekai_SmallManaCore"
+  },
+  {
+   "defName": "Isekai_StarFragment",
+   "label": "star fragment",
+   "mod": "ISEKAI RPG LEVELING",
+   "note": "",
+   "key": "Isekai_StarFragment"
+  },
+  {
+   "defName": "Isekai_SummoningCircleScroll",
+   "label": "summoning circle scroll",
+   "mod": "ISEKAI RPG LEVELING",
+   "note": "",
+   "key": "Isekai_SummoningCircleScroll"
+  },
+  {
+   "defName": "Isekai_VillainsMask",
+   "label": "villain's mask",
+   "mod": "ISEKAI RPG LEVELING",
+   "note": "",
+   "key": "Isekai_VillainsMask"
+  },
+  {
+   "defName": "JosephoartigasiaWool",
+   "label": "josephoartigasia wool",
+   "mod": "Megafauna",
+   "note": "",
+   "key": "JosephoartigasiaWool"
+  },
+  {
+   "defName": "LEGO_GiantRockExcavator_Accomplish",
+   "label": "LEGO giant rock excavator",
+   "mod": "Ancient urban ruins",
+   "note": "",
+   "key": "LEGO_GiantRockExcavator_Accomplish"
+  },
+  {
+   "defName": "LEGO_HeavyCrane_Accomplish",
+   "label": "LEGO heavy crane",
+   "mod": "Ancient urban ruins",
+   "note": "",
+   "key": "LEGO_HeavyCrane_Accomplish"
+  },
+  {
+   "defName": "LEGO_LandmarkBuilding_Accomplish",
+   "label": "LEGO landmark building",
+   "mod": "Ancient urban ruins",
+   "note": "",
+   "key": "LEGO_LandmarkBuilding_Accomplish"
+  },
+  {
+   "defName": "LEGO_LightCrane_Accomplish",
+   "label": "LEGO light crane",
+   "mod": "Ancient urban ruins",
+   "note": "",
+   "key": "LEGO_LightCrane_Accomplish"
+  },
+  {
+   "defName": "LEGO_Palace_Accomplish",
+   "label": "LEGO palace",
+   "mod": "Ancient urban ruins",
+   "note": "",
+   "key": "LEGO_Palace_Accomplish"
+  },
+  {
+   "defName": "Leather_AlligatorMan",
+   "label": "alligatorman skin",
+   "mod": "Beasts of the Rim (Continued)",
+   "note": "",
+   "key": "Leather_AlligatorMan"
+  },
+  {
+   "defName": "Leather_Armadillo",
+   "label": "armadillo leather",
+   "mod": "Odyssey",
+   "note": "",
+   "key": "Leather_Armadillo"
+  },
+  {
+   "defName": "Leather_BlackBear",
+   "label": "black bear leather",
+   "mod": "Beasts of the Rim (Continued)",
+   "note": "",
+   "key": "Leather_BlackBear"
+  },
+  {
+   "defName": "Leather_BlackBearMan",
+   "label": "black bear man leather",
+   "mod": "Beasts of the Rim (Continued)",
+   "note": "",
+   "key": "Leather_BlackBearMan"
+  },
+  {
+   "defName": "Leather_Hippo",
+   "label": "hippo leather",
+   "mod": "Odyssey",
+   "note": "",
+   "key": "Leather_Hippo"
+  },
+  {
+   "defName": "Leather_Mandrill",
+   "label": "mandrill leather",
+   "mod": "Beasts of the Rim (Continued)",
+   "note": "",
+   "key": "Leather_Mandrill"
+  },
+  {
+   "defName": "Leather_MandrillMan",
+   "label": "mandrill man leather",
+   "mod": "Beasts of the Rim (Continued)",
+   "note": "",
+   "key": "Leather_MandrillMan"
+  },
+  {
+   "defName": "Leather_Neanderthal",
+   "label": "neanderthal leather",
+   "mod": "Beasts of the Rim (Continued)",
+   "note": "",
+   "key": "Leather_Neanderthal"
+  },
+  {
+   "defName": "Leather_Penguin",
+   "label": "penguin leather",
+   "mod": "Beasts of the Rim (Continued)",
+   "note": "",
+   "key": "Leather_Penguin"
+  },
+  {
+   "defName": "Leather_Zebra",
+   "label": "zebra leather",
+   "mod": "Beasts of the Rim (Continued)",
+   "note": "",
+   "key": "Leather_Zebra"
+  },
+  {
+   "defName": "MA_DirehorseWool",
+   "label": "direhorse wool",
+   "mod": "Mythic Ages: Megafauna Bestiary",
+   "note": "",
+   "key": "MA_DirehorseWool"
+  },
+  {
+   "defName": "MA_DunbearMeat",
+   "label": "dunbear meat",
+   "mod": "Mythic Ages: Megafauna Bestiary",
+   "note": "",
+   "key": "MA_DunbearMeat"
+  },
+  {
+   "defName": "MA_HarpeagleEggFertilized",
+   "label": "harpeagle egg (fert.)",
+   "mod": "Mythic Ages: Megafauna Bestiary",
+   "note": "",
+   "key": "MA_HarpeagleEggFertilized"
+  },
+  {
+   "defName": "MA_HarpeagleEggUnfertilized",
+   "label": "harpeagle egg (unfert.)",
+   "mod": "Mythic Ages: Megafauna Bestiary",
+   "note": "",
+   "key": "MA_HarpeagleEggUnfertilized"
+  },
+  {
+   "defName": "MA_HarpeagleFeather",
+   "label": "Harpeagle Oily Feather",
+   "mod": "Mythic Ages: Megafauna Bestiary",
+   "note": "",
+   "key": "MA_HarpeagleFeather"
+  },
+  {
+   "defName": "MA_HippoMeat",
+   "label": "furpotamus meat",
+   "mod": "Mythic Ages: Megafauna Bestiary",
+   "note": "",
+   "key": "MA_HippoMeat"
+  },
+  {
+   "defName": "MA_HorseBeef",
+   "label": "horse beef",
+   "mod": "Mythic Ages: Megafauna Bestiary",
+   "note": "",
+   "key": "MA_HorseBeef"
+  },
+  {
+   "defName": "MA_Leather_Direhorse",
+   "label": "direhorse hide",
+   "mod": "Mythic Ages: Megafauna Bestiary",
+   "note": "",
+   "key": "MA_Leather_Direhorse"
+  },
+  {
+   "defName": "MA_Leather_Dunbear",
+   "label": "dunbear hide",
+   "mod": "Mythic Ages: Megafauna Bestiary",
+   "note": "",
+   "key": "MA_Leather_Dunbear"
+  },
+  {
+   "defName": "MA_Leather_Furpotamus",
+   "label": "furpotamus leather",
+   "mod": "Mythic Ages: Megafauna Bestiary",
+   "note": "",
+   "key": "MA_Leather_Furpotamus"
+  },
+  {
+   "defName": "MA_Leather_Harpeagle",
+   "label": "Harpeagle leather",
+   "mod": "Mythic Ages: Megafauna Bestiary",
+   "note": "",
+   "key": "MA_Leather_Harpeagle"
+  },
+  {
+   "defName": "MA_Leather_Scarodon",
+   "label": "scarodon hide",
+   "mod": "Mythic Ages: Megafauna Bestiary",
+   "note": "",
+   "key": "MA_Leather_Scarodon"
+  },
+  {
+   "defName": "MA_ScarodonMeat",
+   "label": "scarodon meat",
+   "mod": "Mythic Ages: Megafauna Bestiary",
+   "note": "",
+   "key": "MA_ScarodonMeat"
+  },
+  {
+   "defName": "MammothWool",
+   "label": "mammoth wool",
+   "mod": "Megafauna",
+   "note": "",
+   "key": "MammothWool"
+  },
+  {
+   "defName": "Mechlink",
+   "label": "mechlink",
+   "mod": "Biotech",
+   "note": "",
+   "key": "Mechlink"
+  },
+  {
+   "defName": "RG_DinosaursHideHeavy",
+   "label": "heavy dinosaurs hide",
+   "mod": "ReGrowth 2",
+   "note": "",
+   "key": "RG_DinosaursHideHeavy"
+  },
+  {
+   "defName": "RG_EggOwlbeastFertilized",
+   "label": "owlbeast(fert.)",
+   "mod": "ReGrowth: Boiling",
+   "note": "",
+   "key": "RG_EggOwlbeastFertilized"
+  },
+  {
+   "defName": "RG_EggOwlbeastUnfertilized",
+   "label": "owlbeast(unfert.)",
+   "mod": "ReGrowth: Boiling",
+   "note": "",
+   "key": "RG_EggOwlbeastUnfertilized"
+  },
+  {
+   "defName": "RG_EggWoollyStegosaurusFertilized",
+   "label": "woolly stegosaurus(fert.)",
+   "mod": "ReGrowth 2",
+   "note": "",
+   "key": "RG_EggWoollyStegosaurusFertilized"
+  },
+  {
+   "defName": "RG_EggWoollyStegosaurusUnfertilized",
+   "label": "woolly stegosaurus(unfert.)",
+   "mod": "ReGrowth 2",
+   "note": "",
+   "key": "RG_EggWoollyStegosaurusUnfertilized"
+  },
+  {
+   "defName": "RG_WoolStegosaurus",
+   "label": "woolly stegosaurus wool",
+   "mod": "ReGrowth 2",
+   "note": "",
+   "key": "RG_WoolStegosaurus"
+  },
+  {
+   "defName": "RemoteRepairer",
+   "label": "remote repairer",
+   "mod": "Biotech",
+   "note": "",
+   "key": "RemoteRepairer"
+  },
+  {
+   "defName": "RemoteShielder",
+   "label": "remote shielder",
+   "mod": "Biotech",
+   "note": "",
+   "key": "RemoteShielder"
+  },
+  {
+   "defName": "RevenantSpine",
+   "label": "revenant spine",
+   "mod": "Anomaly",
+   "note": "",
+   "key": "RevenantSpine"
+  },
+  {
+   "defName": "TitanoboaEggFertilized",
+   "label": "Titanoboa egg (fert.)",
+   "mod": "Jurassic Rimworld - Dinosaurs Only (Continued)",
+   "note": "",
+   "key": "TitanoboaEggFertilized"
+  },
+  {
+   "defName": "TitanoboaEggUnFertilized",
+   "label": "Titanoboa egg (unfert.)",
+   "mod": "Jurassic Rimworld - Dinosaurs Only (Continued)",
+   "note": "",
+   "key": "TitanoboaEggUnFertilized"
+  },
+  {
+   "defName": "UnfinishedLEGO",
+   "label": "unfinished Lego",
+   "mod": "Ancient urban ruins",
+   "note": "",
+   "key": "UnfinishedLEGO"
+  },
+  {
+   "defName": "Unfinished_VerdantBow",
+   "label": "unfinished verdant bow",
+   "mod": "Mythic Ages: Megafauna Bestiary",
+   "note": "",
+   "key": "Unfinished_VerdantBow"
+  },
+  {
+   "defName": "WoolCamel",
+   "label": "camel wool",
+   "mod": "Vanilla Animals Expanded",
+   "note": "",
+   "key": "WoolCamel"
+  },
+  {
+   "defName": "WoolMuskox",
+   "label": "muskox wool",
+   "mod": "Odyssey",
+   "note": "",
+   "key": "WoolMuskox"
+  }
+ ],
+ "kept_count": 2477,
+ "total_count": 2736,
+ "notes": {}
+}
