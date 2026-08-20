@@ -85,6 +85,29 @@ def main():
         if gi.get("status") != "game_loaded":
             out.append("- ⚠️ no game loaded; the world and map checks below will be skipped.")
 
+        # 🔴 THE ZOMBIE CANARY, and it costs one call.
+        # On 2026-08-20 a save aborted mid-load (a mod's cross-ref postfix threw),
+        # the engine's own bail handler NREd in MapDrawer.Dispose, and the process
+        # carried on reporting `game_loaded` and answering the bridge for HOURS.
+        # Everything measured on it was measured on a corpse. The one cheap tell is
+        # that the debug Actions tree will not enumerate: Outputs and Settings
+        # answered fine while Actions threw a NullReferenceException.
+        try:
+            act = rb.call("rimworld/list_debug_action_children", {"path": "Actions"})
+            n = len(act.get("children") or [])
+            if act.get("success") and n > 0:
+                out.append("- debug `Actions` tree: %d children ✓ (game is genuinely alive)" % n)
+            else:
+                out.append("- 🔴 **`Actions` WILL NOT ENUMERATE — the game is a ZOMBIE.** A load "
+                           "aborted and the engine's bail handler threw; the process still says "
+                           "`game_loaded` and still answers, but nothing measured on it counts. "
+                           "Check Player.log for `ErrorWhileLoadingGame`. Message: %s"
+                           % str(act.get("message"))[:120])
+                headline.append("ZOMBIE GAME - Actions tree dead")
+        except Exception as e:
+            out.append("- 🔴 `Actions` enumeration raised: %s — treat as zombie until disproven." % e)
+            headline.append("ZOMBIE GAME - Actions tree dead")
+
         # ---- 2. can every pawn kind arm itself ------------------------------
         section(out, "Pawn kinds that cannot arm themselves")
         try:
