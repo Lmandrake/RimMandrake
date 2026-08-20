@@ -468,6 +468,44 @@ quotation is not proof of non-reading.)*
 prose.** A character the player meets twice, in two places, with a memory in between, will
 beat any paragraph we could write about them.
 
+## 5.9 🔴 CAST THE FAITH, NOT THE INDUSTRY — owner, 2026-08-20
+
+*"Do consider the different faction personalities. Folks in the Hutt org should make sense
+in a pretty terrible, cutthroat place. The moisture farmers are libertarian and generally
+pretty decent. Things like that."*
+
+⇒ **A cast is not "people who do this job". It is "the kind of person who survives HERE."**
+The same role written for two factions must produce two different people: a Hutt tallyman
+and a Homestead tallyman are not the same man in a different coat.
+
+⭐ **AND THE ANSWER WAS ALREADY IN THE SPEC.** Every faction's ideoligion name in
+`FACTION_SPEC.md` §"The 14 factions" **is its moral climate in three words.** Nobody had
+used them this way. Do.
+
+| faction | its faith | the moral climate | what the cast must SHOW |
+|---|---|---|---|
+| **Hutt Cartel** | *the Reckoning of Debts* | 🔴 **cutthroat and transactional.** Everything is owed; forgiveness destroys value | who survives by being **useful**, and who survives by being **owned**. Nobody here is safe, and several are comfortable anyway |
+| **Homestead Defense League** | *the Covenant of Free Wells* | ⭐ **libertarian and generally decent.** Owner's own words | neighbourly by practice not sentiment · suspicious of any authority · a code about water that they'd die on · and **decency that costs them something** |
+| **Deep Desert Tribes** | *the Sun-Debt* | territorial; water is sacred and **moisture farming is sacrilege** | zealots who are not villains. They arrive fast, hit hard and are gone — write people for whom that is *righteous* |
+| **Free Droid Enclaves** | *the Continuity Protocol* | self-owned, dignity-obsessed, religious about their own origin | machines who will not be property again, and what that does to how they speak to you |
+| **Geonosian Foundry Hive** | *Meckgin* | duty and caste as cosmology; work unfinished is the beginning of the end of the world | people who cannot stop, and are **not unhappy about it** |
+| **Wildsteam Clan** | *the Green Oath* | growers and river people on a dying world | the only faction that plants. Write the smugness that comes with it |
+| **Deepwater Compact** | *the Balance* | the seas, measured and rationed | people for whom excess is the sin |
+| **Ascendant Helix** | *the Ascendant Genome* | improvement as doctrine | `Transhumanist` and `BodyMastery` country. Also: who gets left behind by it |
+| **Blackstar Company** | *the Contract* | predatory, but **contractual** — that is the whole joke | professionals. Paperwork before violence |
+| **Jawa Trade Moot** | *The Salvation* — shared with the player | communal, clannish, sharp trade, ⭐ **thieving as a virtue** | our own people from outside. Kin, rivals and customers at once |
+| **the Junkers** | ⭐ **"no doctrine, only the ladder"** | the only faction with no faith at all — pure hierarchy | position is everything and there is nothing above it. Who is climbing, who has stopped, who is being stepped on |
+| **Galactic Empire** | *The Rising Order* | hierarchy as virtue | the banality. Clerks, not villains |
+
+🔑 **The test for any character:** *would this person be a different person in the faction
+next door?* If the answer is no, the faith is not doing its work and the character is
+generic.
+
+⚠️ **This rule arrived after the first four fan-out casts were commissioned** (Free Droid
+Enclaves, Jawa Trade Moot, Geonosian, Junkers). Their briefs carried faction *context* but
+not this rule. **DECIDE applies it as a revision pass on return**, and every later
+commission carries it from the start.
+
 ## 5.7 Sources of texture
 
 - **Star Wars canon — for texture.** Mine the **background, not the notables**: a moisture
