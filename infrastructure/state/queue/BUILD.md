@@ -1530,4 +1530,53 @@ criteria: Architect ▸ Vehicles, then spawn each of the four and rotate north/s
           any patch ran, so seeing new art proves nothing about the def work. Only the LABEL
           and the per-def colour are evidence, and the **architect menu is the tell** because
           the blueprint is a third def the reskin never touches.
-state:    ready
+state:    ready — ⭐ **TWO SIDE JOBS DONE 2026-08-20; THE 12-FACING COMPOSITING IS
+          BLOCKED ON A MISSING DEPENDENCY AND THAT IS THE REAL NEWS.**
+
+          🔴 **PILLOW IS NOT INSTALLED, SO NONE OF THE COMPOSITING CAN RUN AT ALL.**
+          All three sled builders open with `from PIL import Image, ImageDraw` and
+          `python3 -c "import PIL"` fails with `ModuleNotFoundError`. There is no Windows
+          Python beside it carrying one either. ⇒ **The 12 facings cannot be built by
+          anybody until Pillow is installed** — this is not a "hard" item, it is a blocked
+          one, and it will read as unstarted until somebody notices why.
+          ⚠️ Same root cause as `refresh.py --offline` never completing:
+          `animal_contact_sheet.py` dies on the same import, which is why the offline
+          artefacts have stayed STALE all day. **One `pip install Pillow` unblocks both.**
+          ⛔ Not installed by me — adding a dependency to the owner's interpreter is his
+          call, not mine.
+
+          ✅ **DONE (1): the north builder silently ignored its arguments.** The item says
+          *"only the south script parses argv; north and east hardcode their paths"* —
+          **east actually parses argv fine; only NORTH did not.** Fixed:
+          `build_eopie_sled_north.py` now takes `[pair.png [out.png [cx0,cx1
+          [attach_y_frac]]]]`, the same shape as the other two. Before this, a peer
+          compositing a new species for the north facing got the OLD eopie pair written to
+          the SHIPPED path with a success message and byte-identical output — exactly the
+          no-op the item warned about, one script narrower than it said.
+          ⚠️ Verified by `ast.parse` on all three, NOT by running them — see Pillow above.
+
+          ✅ **DONE (2): the labels.** `src/Jawa/Jawa_Patches/Patches/VehicleBeastLabels.xml`,
+          deployed. 11 component labels across the five vehicles, following DECIDE's
+          bodySize ladder: Front/Rear Left/Right **Eopie** · **Dewback** · Left/Right
+          **Dewback** · Left/Right **Bantha** · Left/Right **Ronto**.
+          `validate_patch.py --defs` -> `OK - 0 errors, 11 warning(s)`.
+          🔑 **`label` is patched and `key` is NOT** — `key` is the component's identifier,
+          addressed by the vehicle's code and by its own `tags` list, so renaming it would
+          be a mechanical change wearing a cosmetic hat. `<tags><li>Dog</li></tags>` left
+          alone for the same reason.
+          🪤 `PatchOperationFindMod` takes the mod's DISPLAY NAME and this one is
+          **"Alpha Vehicles - Neolithic"**, not any of the Vanilla Vehicles names.
+          ⚠️ **The sled has FOUR components and TWO eopies.** Component count is structural
+          health, not a headcount, and changing it is out of scope; the four are named
+          Front/Rear Left/Right Eopie, which reads for a two-by-two team. Flagged to DECIDE
+          rather than resolved quietly.
+
+          ⏳ **NOT DONE: the hurt sound, and it is not laziness.** The sled's fleshType
+          `AV_WoodenAndDogVehicle` points at SoundDef `AV_BulletImpact_Wood_And_Dogs`,
+          whose grain list carries `Pawn/Animal/Dog/Dog_Injured`. **The replacement path
+          cannot be verified offline: vanilla ships its sounds inside Unity asset bundles,
+          not as loose files**, so no herbivore clip folder can be confirmed to exist from
+          disk — and a wrong clip path is a silent no-sound, which is the failure mode this
+          project keeps paying for. Needs a live check or a known-good path.
+          ⛔ Only the DogSled uses that flesh type, so the fix is one SoundDef and affects
+          nothing else.

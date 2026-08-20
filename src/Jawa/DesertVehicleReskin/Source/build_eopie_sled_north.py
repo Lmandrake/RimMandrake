@@ -143,6 +143,27 @@ def _premultiplied_resize(img, w, h):
 
 
 def main():
+    # Optional overrides so a regenerated pair can be built to a scratch path
+    # and judged at sprite scale BEFORE it replaces the shipped texture.
+    #   build_eopie_sled_north.py [pair.png [out.png [cx0,cx1 [attach_y_frac]]]]
+    # Defaults are the shipped values, so a bare run is unchanged.
+    #
+    # 🔴 THIS WAS MISSING AND IT FAILED SILENTLY. The south and east builders both
+    # took these arguments; this one ignored them, so a peer compositing a new
+    # species here got the OLD eopie pair written to the SHIPPED path, with a
+    # success message and byte-identical output. Nothing said no.
+    global PAIR, OUT, OUT_MASK, ANIMAL_CX_FRACS, ATTACH_Y_FRAC
+    argv = sys.argv[1:]
+    if len(argv) >= 1:
+        PAIR = os.path.abspath(argv[0])
+    if len(argv) >= 2:
+        OUT = os.path.abspath(argv[1])
+        OUT_MASK = OUT.replace(".png", "m.png")
+    if len(argv) >= 3:
+        ANIMAL_CX_FRACS = tuple(float(v) for v in argv[2].split(","))
+    if len(argv) >= 4:
+        ATTACH_Y_FRAC = float(argv[3])
+
     art = Image.open(SRC_ART).convert("RGBA")
     if art.size != (CANVAS, CANVAS):
         sys.exit(f"unexpected source canvas {art.size}")

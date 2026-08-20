@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ============================================================================
+  VehicleBeastLabels.xml                    Jawa_Patches - new file 2026-08-20
+  ============================================================================
+
+  The four draught vehicles and the sled are drawn pulled by Tatooine beasts.
+  Their HEALTH TAB still named the donor animals, so a player looking at a
+  damaged sled read "Front Left Dog" over a picture of an eopie.
+
+  This is the "separate, cheap job" NEOLITHIC_VEHICLE_BEAST_RESKIN_1 names.
+  ⛔ LABELS ONLY. No texture work, no stat, no geometry, and nothing that
+  changes what any vehicle does.
+
+  The assignment is DECIDE's, ruled from measured baseBodySize, and the ladder
+  is the point - do not swap one beast for another without redoing all of it:
+      AV_DogSled          eopie   x2   bodySize 1.4
+      AV_Chariot          dewback x1   bodySize 3.0
+      AV_WarChariot       dewback x2   bodySize 3.0
+      AV_OxCart           bantha  x2   bodySize 4.0
+      AV_CoveredCarriage  ronto   x2   bodySize 6.0
+
+  🔑 THE `label` IS PATCHED AND THE `key` IS NOT. `key` is the component's
+  identifier - the vehicle's own code and its `tags` list address components by
+  it - so renaming it would be a mechanical change wearing a cosmetic hat.
+  `<tags><li>Dog</li></tags>` is likewise left alone for the same reason.
+
+  ⚠️ THE SLED HAS FOUR COMPONENTS AND TWO EOPIES. The donor sled was pulled by
+  four dogs and the art now shows a pair, but the component COUNT is structural
+  health, not a headcount, and changing it is out of scope here. The four are
+  named Front/Rear Left/Right Eopie, which reads correctly for a two-by-two
+  team. Flagged to DECIDE rather than resolved quietly.
+
+  ⏳ NOT DONE HERE - THE HURT SOUND. The sled's flesh type
+  `AV_WoodenAndDogVehicle` points at SoundDef `AV_BulletImpact_Wood_And_Dogs`,
+  whose grain list includes `Pawn/Animal/Dog/Dog_Injured`, so a shot sled still
+  yelps like a dog. It is NOT patched here because the replacement path cannot
+  be verified offline: vanilla ships its sounds inside Unity asset bundles, not
+  as loose files, so no herbivore clip folder can be confirmed to exist from
+  disk - and a wrong clip path is a silent no-sound. Filed separately.
+  ============================================================================
+-->
+<Patch>
+
+  <Operation Class="PatchOperationFindMod">
+    <mods>
+      <li>Alpha Vehicles - Neolithic</li>
+    </mods>
+    <match Class="PatchOperationSequence">
+      <operations>
+
+        <!-- AV_DogSled -->
+        <li Class="PatchOperationReplace">
+          <xpath>Defs/Vehicles.VehicleDef[defName="AV_DogSled"]/components/li[key="FrontLeftDog"]/label</xpath>
+          <value><label>Front Left Eopie</label></value>
+        </li>
+        <li Class="PatchOperationReplace">
+          <xpath>Defs/Vehicles.VehicleDef[defName="AV_DogSled"]/components/li[key="FrontRightDog"]/label</xpath>
+          <value><label>Front Right Eopie</label></value>
+        </li>
+        <li Class="PatchOperationReplace">
+          <xpath>Defs/Vehicles.VehicleDef[defName="AV_DogSled"]/components/li[key="RearLeftDog"]/label</xpath>
+          <value><label>Rear Left Eopie</label></value>
+        </li>
+        <li Class="PatchOperationReplace">
+          <xpath>Defs/Vehicles.VehicleDef[defName="AV_DogSled"]/components/li[key="RearRightDog"]/label</xpath>
+          <value><label>Rear Right Eopie</label></value>
+        </li>
+
+        <!-- AV_Chariot -->
+        <li Class="PatchOperationReplace">
+          <xpath>Defs/Vehicles.VehicleDef[defName="AV_Chariot"]/components/li[key="Horse"]/label</xpath>
+          <value><label>Dewback</label></value>
+        </li>
+
+        <!-- AV_WarChariot -->
+        <li Class="PatchOperationReplace">
+          <xpath>Defs/Vehicles.VehicleDef[defName="AV_WarChariot"]/components/li[key="LeftHorse"]/label</xpath>
+          <value><label>Left Dewback</label></value>
+        </li>
+        <li Class="PatchOperationReplace">
+          <xpath>Defs/Vehicles.VehicleDef[defName="AV_WarChariot"]/components/li[key="RightHorse"]/label</xpath>
+          <value><label>Right Dewback</label></value>
+        </li>
+
+        <!-- AV_OxCart -->
+        <li Class="PatchOperationReplace">
+          <xpath>Defs/Vehicles.VehicleDef[defName="AV_OxCart"]/components/li[key="LeftOx"]/label</xpath>
+          <value><label>Left Bantha</label></value>
+        </li>
+        <li Class="PatchOperationReplace">
+          <xpath>Defs/Vehicles.VehicleDef[defName="AV_OxCart"]/components/li[key="RightOx"]/label</xpath>
+          <value><label>Right Bantha</label></value>
+        </li>
+
+        <!-- AV_CoveredCarriage -->
+        <li Class="PatchOperationReplace">
+          <xpath>Defs/Vehicles.VehicleDef[defName="AV_CoveredCarriage"]/components/li[key="LeftHorse"]/label</xpath>
+          <value><label>Left Ronto</label></value>
+        </li>
+        <li Class="PatchOperationReplace">
+          <xpath>Defs/Vehicles.VehicleDef[defName="AV_CoveredCarriage"]/components/li[key="RightHorse"]/label</xpath>
+          <value><label>Right Ronto</label></value>
+        </li>
+
+      </operations>
+    </match>
+  </Operation>
+
+</Patch>
