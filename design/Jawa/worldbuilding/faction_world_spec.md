@@ -181,6 +181,34 @@ and `Ancients` keeps its vanilla name. Authored count is eight.
 
 ## 4. Geography — where they live
 
+# 🔴 SUPERSEDED, 2026-08-19. Do not author from this section.
+
+**Everything below §4 that is written in LATITUDE is wrong about Ash'karr**, and it
+was ordered rewritten on 2026-08-15 and never was. The single source of truth for
+where anyone lives is now
+**`design/Jawa/worldbuilding/ASHKARR_WORLD_DEFINITION.md` §7**, and the actual tile
+of every one of the 72 holdings is in `world/ASHKARR_WORLDMAP_settlements.csv`.
+
+Two things below are not merely out of date, they are **false**:
+
+| this section says | measured truth |
+|---|---|
+| *"the only variable that matters is **latitude**"* | The tidal lock is a **POINT**, not a band. Temperature correlates **−0.98** with **arc** — angular distance from the substellar point (lat 0, lon 0) — and **+0.10** with latitude. "Polar" is meaningless here; **the poles sit on the terminator** |
+| *"It may be amusing to put these bodies near the **poles**"* | The three waters are at **arc 35 (the Scald), arc 91 (the Twilight Sea), arc 92 (the Grey Sea)** — i.e. one in the hottest place on the planet and two on the terminator. Water is **8.1%**, not 25% |
+
+🔑 **Translate as you read: wherever this section says "equatorial" read LOW ARC
+(sunward), and wherever it says "polar" or "high-latitude" read HIGH ARC (toward the
+terminator).** With that substitution the *reasoning* below is still good and is why
+the faction table in the definition looks the way it does. The *coordinates* are not.
+
+⛔ The **route** section further down (*"ROUTE CHOSEN — a custom `WorldGenStep`"*) is
+also written on dead premises — it argues from *"worlds are disposable, so we will
+generate many"* and from letting **vanilla's river step run after ours**. Both are
+now excluded: there is **one** frozen world, and its rivers are authored. The
+conclusion may survive; the argument does not. See the definition's §12.
+
+---
+
 **One planet, one desert, and the only variable that matters is latitude.**
 
 | band | terrain | water | who lives there |
