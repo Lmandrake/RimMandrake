@@ -1138,6 +1138,13 @@ criteria: stack raw potatoes beside an ox cart with zero hay on the map; a haule
 state:    ready — ⛔ spec only tonight, by the owner's own framing
 
 ## BLACKSTAR_HAS_NO_SETTLEMENT_ART_1 AM_EnemyPirate draws nothing and throws every frame
+🔴 **THE FIX BELOW IS SUPERSEDED — read `BLACKSTAR_NEVER_GENERATES_1` first (2026-08-20).**
+The crash is real and the diagnosis is right, but `AM_EnemyPirate` is the WRONG DEF to be
+using at all: it is `hidden=True` with `settlementGenerationWeight=0`, from a third-party
+mod, while the actually-reskinned `Blackstar Company` is vanilla **`Pirate`** — which
+already has `World/WorldObjects/DefaultSettlement`. ⇒ **Repoint the roster instead of
+patching a texture onto a hidden faction.** Doing that closes this item as a side effect
+and costs no patch. ⛔ Do not ship the `PatchOperationAdd` described below.
 row:      9
 from:     CHECK, 2026-08-20, live. Found by LOOKING at the planet after the authored
           settlement roster went in — every numeric check passed while this was happening.
@@ -1169,4 +1176,58 @@ criteria: place the four Blackstar settlements on a live world and watch the wor
 📌        WHY IT WAS INVISIBLE UNTIL NOW: worldgen never created a Blackstar settlement,
           because the faction had none. No settlement, no draw, no throw. The authored
           roster is the first thing that ever made one exist.
+state:    ready
+
+
+## BLACKSTAR_NEVER_GENERATES_1 The roster names a hidden zero-weight def; the real Blackstar is vanilla Pirate
+row:      9
+from:     OWNER, 2026-08-20, verbatim: *"We really need to figure out why Blackstar, of all
+          the factions, does not generate. That's not acceptable and we should fix it ASAP
+          so it stops being a carried item. It's a fully specced faction, it's time it acted
+          like it."* Diagnosed by REP the same hour off the **fresh 578-mod dump**.
+spec:     🔑 **THERE ARE TWO DIFFERENT FACTIONS BOTH CALLED "Blackstar Company", and the
+          world roster names the one that cannot generate.** Measured, not inferred:
+
+          | field | `AM_EnemyPirate` (what the roster names) | `Pirate` (what B43 actually reskinned) |
+          |---|---|---|
+          | label | `pirate scavenger` | **`Blackstar Company`** |
+          | modName | `Ancient urban ruins` (third-party) | `Core` |
+          | `settlementGenerationWeight` | 🔴 **0** | **0.6** |
+          | `hidden` | 🔴 **True** | False |
+          | `settlementTexturePath` | 🔴 **absent** | `World/WorldObjects/DefaultSettlement` |
+          | `requiredCountAtGameStart` | 1 | 1 |
+
+          ⇒ **`AM_EnemyPirate` is a HIDDEN faction with ZERO settlement weight.** It is
+          designed never to appear on the Configure Factions screen and never to place a
+          settlement. Pointing the campaign's pirate faction at it is the entire defect.
+          Meanwhile `BlackstarCompany.xml` correctly patched vanilla `Pirate` — that def
+          **already** reads `Blackstar Company`, already generates at weight 0.6, already
+          has settlement art, and is one of the five reskinned rows in
+          `WORLDGEN_FACTION_CHECKLIST.md`. **Nothing is wrong with the faction. The roster
+          points at the wrong def.**
+
+          FIX — repoint `faction_def` from `AM_EnemyPirate` to `Pirate` in all four places
+          that carry it, and nowhere else:
+            `world/ASHKARR_WORLDMAP_settlements.csv`      4 rows (the `faction_def` column)
+            `src/RimMandrake/Utils/ashkarr_settle.py`
+            `src/RimMandrake/Utils/ashkarr_paint.py`
+            `design/Jawa/worldbuilding/ASHKARR_WORLD_DEFINITION.md`
+          ⚠️ `world/*.rws` also contain the string; those are **generated worlds, not
+          sources** — they are re-imported from the CSV, so do not hand-edit them.
+          ⛔ **Do NOT "fix" `AM_EnemyPirate` by patching a texture onto it.** That is the
+          route `BLACKSTAR_HAS_NO_SETTLEMENT_ART_1` proposed before this was understood; it
+          would silence the crash and leave the faction **still hidden and still
+          non-generating**. See that item's superseding note.
+verify:   Off the dump, `Pirate.label` is `Blackstar Company` and its
+          `settlementGenerationWeight` is 0.6 — **already true today, no patch needed.**
+          Then: zero occurrences of `AM_EnemyPirate` remain in the four source files above.
+criteria: 🔴 **The owner opens Configure Factions and SEES a row reading `Blackstar
+          Company`, and after worldgen the planet carries Blackstar holdings he did not
+          place by hand.** Neither is possible today: `hidden=True` keeps it off that
+          screen and weight 0 keeps it off the map.
+          ⚠️ HOW THIS LIES: the authored settlement import places 4 Blackstar holdings
+          regardless, because an import writes settlements directly and never consults
+          `settlementGenerationWeight`. **A planet with 4 Blackstar holdings is therefore
+          NOT evidence the faction generates.** Judge it on a world where the roster import
+          has NOT run, or by reading the field.
 state:    ready
