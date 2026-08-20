@@ -1108,7 +1108,20 @@ anything less means def files failed to parse and the exact count says how many.
 | F4 | `Config error in Inhabited_` | 0 | a `CharacterDef` failed its own `ConfigErrors`. ⚠️ **The most likely single failure in this block**, because all 807 traits were resolved against a **577**-mod dump and the live set is now 578. The defName in the message names the person |
 | F5 | `mandrake.inhabited` near `Exception` \| `HarmonyException` \| `patching` | 0 | a Harmony target moved. ⚠️ **Should be impossible** — both targets are bound to a delegate of the same signature at compile time, so a moved target fails the BUILD. If this fires, that proof was wrong and it is the more interesting finding |
 | F6 | `CastRoster_` near `XML error` \| `Exception loading` | 0 | a generated roster file is malformed. All eleven parse under Python; this would mean RimWorld's parser disagrees |
-| F7 | `Could not resolve cross-reference` naming a `TraitDef` | **33 total cross-ref lines in the 2026-08-20 02:58 log**, archived at `infrastructure/state/observed/logs/Player.2026-08-20_0258_preload.log` | a trait in a roster does not exist in the live set. Compare against that archived baseline — **33 is the number to beat, not zero** |
+| F7 | `Could not resolve cross-reference` naming a `TraitDef` | 🔴 **25**, not 33 — see the correction below | a trait in a roster does not exist in the live set. **25 is the number to beat, not zero** |
+
+🔴 **CORRECTION, made before launch and before any log existed: the F7 baseline was
+written as 33 and 33 was two errors added together.** Re-counted on the archived
+`Player.2026-08-20_0258_preload.log`:
+
+| string | count | what it actually is |
+|---|---|---|
+| `Could not resolve cross-reference` | **25** | the DEF LOADER, against the live mod set |
+| `Could not load reference to` | **8** | **Scribe** — the SAVE holds a name no def provides. No mod change fixes it |
+
+They have different causes and different remedies, and adding them produced a
+baseline that would have scored a real regression as a pass. F7 tracks the **25**.
+The 8 belong to the save, not to the load set, and are not Inhabited's business.
 
 ```bash
 grep -nE "Inhabited|mandrake\.inhabited" "$LOG" | grep -viE "\[Inhabited\] ready" | head -40
