@@ -164,7 +164,7 @@ All pillar-clean (environment/info-side, no buildable economy). **Route = MOD, �
 The permanently-dark/obscured terrain is not just low-visibility — it must be **actively frightening to
 be caught in**, seeded with **truly awful creatures of the fleshbeast type** so that *leaving the ship is
 scary and staying hidden is safe.* This is the world-design that makes **Ishko's "stay in the dark
-forever" vision** (`jawa_xenotype_and_religion.md` ① Ishko) viscerally correct rather than a mere
+forever" vision** (`design/Jawa/divine_satiation_engine.md` ① Ishko) viscerally correct rather than a mere
 preference: the things that seek never to be seen are down there *for a reason*, and the clan learns to
 sortie only for a resource raid and flee back before the dark answers. **Candidate rosters (all pillar-
 clean — pure threat, no buildable economy; commonality LOW):** vanilla **Fleshbeasts** (Anomaly DLC — if

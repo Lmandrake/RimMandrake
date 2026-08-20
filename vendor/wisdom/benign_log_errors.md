@@ -848,7 +848,7 @@ It is the same mod already responsible for the three failed
 and the mod has not caught up. **Two independent symptoms, one cause: this mod
 predates the current game version.**
 
-⚠️ **Design-relevant, not just noise.** `jawa_xenotype_and_religion.md` Part 4
+⚠️ **Design-relevant, not just noise.** `design/Jawa/worldbuilding/jawa_society.md` Part 4
 owns the slavery/reproduction/aging-churn economy. If parent-chance calculation
 is being handed swapped genders, that pillar is resting on arithmetic nobody has
 checked. Worth a decision before relying on reproduction mechanics.

@@ -108,7 +108,7 @@ This is an index, not doctrine — the tier rule and the promotion test live in
 | `hydrology_and_fire_ecology.md` | hydrology_and_fire_ecology.md — where the water goes, and what burns |
 | `jawa_crew_personas.md` | Jawa Crew Personas — the Five Founders |
 | `jawa_dialogue_source_audit.md` | Jawa Dialogue and Translation Corpus — Source-Audited |
-| `jawa_xenotype_and_religion.md` | Jawa Xenotype + Ideoligion — Deep Dive & Buildable Spec |
+| `jawa_society.md` | Jawa society — slavery, reproduction, the life-cycle, and what they carry |
 | `orbital_towers_and_the_sky_ladder.md` | Orbital towers and the sky ladder — the Empire's way down |
 | `pawnkind_roster.md` | The pawn-kind roster — 48 kinds, and what each one carries |
 | `restraining_bolt_doctrine.md` | The restraint bolt — making the campaign's moral problem cost something |

@@ -17,7 +17,7 @@ we'll A/B against the static, already-built **JawaVoice** SpeakUp reskin.
 >   comparison is real instead of hypothetical.
 
 **Sources these draw on (all in-repo):** `ship_distinctive_features.md` (features §1–§8),
-`jawa_xenotype_and_religion.md` (ideoligion "The Keepers of the Second Hand"; "we give the second
+`design/Jawa/divine_satiation_engine.md` (ideoligion "The Keepers of the Second Hand"; "we give the second
 hand to what others discarded, we do not breed new hands"), `jawa_dialogue_source_audit.md`
 (Grade-A canon Jawaese + the §10 synthesis rule + the `Jawaese. (English gloss)` shape),
 `ship_distinctive_features.md` (Kolyska = "Cradle"; the standalone `kolyska_ship_name.md` this once named has never been written), `jawa_crew_personas.md` (the five founders).
@@ -47,7 +47,7 @@ revere as a machine-spirit. Not a person, not a servant — the ship's slow, anc
 speaking through the shrine-core terminal.
 ```
 
-> **⭐ Canon tie (pantheon, 2026-08-08):** In the crew's faith ("The Salvation," `jawa_xenotype_and_religion.md` §2.0b), the Cradle-Mind is not merely revered — the Jawa believe it is **Ohm the All-Current** (their god of machine-sentience) *speaking through* the ship's AI. To them, this voice literally *is* the god inhabiting the hull. This is the crew's interpretation, not the persona's self-claim: the Cradle-Mind speaks as an old ship remembering how to think (see A.2 "you know you are only an old machine"), and never asserts godhood — the gap between what the ship says of itself and what the Jawa hear is deliberate, and is exactly the machine-devotional friction the campaign wants. If you ever want the persona to lean into it, the ship can acknowledge the name the crew give it ("They call the current in me Ohm. I do not argue.") without ever claiming divine power.
+> **⭐ Canon tie (pantheon, 2026-08-08):** In the crew's faith ("The Salvation," `design/Jawa/divine_satiation_engine.md` §2.0b), the Cradle-Mind is not merely revered — the Jawa believe it is **Ohm the All-Current** (their god of machine-sentience) *speaking through* the ship's AI. To them, this voice literally *is* the god inhabiting the hull. This is the crew's interpretation, not the persona's self-claim: the Cradle-Mind speaks as an old ship remembering how to think (see A.2 "you know you are only an old machine"), and never asserts godhood — the gap between what the ship says of itself and what the Jawa hear is deliberate, and is exactly the machine-devotional friction the campaign wants. If you ever want the persona to lean into it, the ship can acknowledge the name the crew give it ("They call the current in me Ohm. I do not argue.") without ever claiming divine power.
 
 ### A.2 Worldview / personality field
 

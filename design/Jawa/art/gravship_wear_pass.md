@@ -554,7 +554,7 @@ Read what that buys:
 
 ### 3.2 What to draw — a retired seat has already written the iconography
 
-I am following the fiction, not inventing it. `jawa_xenotype_and_religion.md` §2.0b gives
+I am following the fiction, not inventing it. `design/Jawa/divine_satiation_engine.md` §2.0b gives
 each of the nine gods of **The Salvation** an explicit visual **form**. These are not my
 inventions; they are quoted:
 
@@ -609,7 +609,7 @@ one is a ritual object, the other is a sticker.
 
 ⚠️ Not yet checked: whether The Salvation's ideoligion can be given a `StyleCategoryDef`
 carrying our `ThingStyleDef`s without disturbing the fixed-ideology rule
-(`jawa_xenotype_and_religion.md` §2.0 — no fluid development). Styles are cosmetic and
+(`design/Jawa/divine_satiation_engine.md` §2.0 — no fluid development). Styles are cosmetic and
 should be safe, but that is a retired seat's call, not mine.
 
 ### 3.3 Where the sigils go, from the deck plan
@@ -859,7 +859,7 @@ These are places where I would be inventing lore if I proceeded, so I have stopp
 - Terrain/wreckage census (fan-out subagent, 2026-08-13): swept Core + 5 DLCs + all 1,242 workshop mods. Key negatives established there: **zero** `TerrainDef` subclasses anywhere, `TerrainDef` has no `graphicClass`/`graphicData`/`drawSize` field, and **zero** `Ancient*` defs carry a `designationCategory`.
 - Salvage census: `D:\Luke\dev\Rimworld\design\Jawa\art\salvage_filter.py` -> `salvage_palette.tsv` (1,104 wreck defs, 73 non-deconstructible). Derived + expiring, so gitignored; regenerate with `python3 design/Jawa/art/salvage_filter.py`.
 - `BrokenSubstructure` read from source: `C:\Program Files (x86)\Steam\steamapps\workshop\content\294100\3578515873\1.6\Defs\Terrain\Terrain_Foundation.xml` lines 4-35 (`Arcjc007.GravshipCrashes`, ACTIVE).
-- Fiction followed, not invented: `D:\Luke\dev\Rimworld\design\Jawa\worldbuilding\jawa_xenotype_and_religion.md` §2.0b/§2.0c/§2.0d, `D:\Luke\dev\Rimworld\design\Jawa\worldbuilding\ship_distinctive_features.md` §1/§3/§4/§5/§6/§7.
+- Fiction followed, not invented: `design/Jawa/divine_satiation_engine.md` §2.0b/§2.0c/§2.0d, `D:\Luke\dev\Rimworld\design\Jawa\worldbuilding\ship_distinctive_features.md` §1/§3/§4/§5/§6/§7.
 - Method precedent: `D:\Luke\dev\Rimworld\src\Jawa\DesertVehicleReskin\Source\preview_tint.py` and `...\Patches\DogSledTint_Brown.xml`.
 - Scale discipline: as per the trap file (`D:\Luke\dev\Rimworld\skills\rimworld-modding\references\traps-art.md`).
 

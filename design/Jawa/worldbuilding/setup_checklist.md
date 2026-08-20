@@ -8,7 +8,7 @@ save. Check items off as they're settled. Governed by the anti-exponential princ
 **Started:** 2026-08-04. **How to use:** each item is `[ ]` open / `[x]` decided / `[~]`
 decided-but-verify-in-game. A **DECIDED** line records the choice + where it's authored; an
 **OPEN** line is a decision still to make together. Sources of truth referenced: `required_mods.md`
-(mod stack), `forbidden_mods.md` (anathema), `jawa_xenotype_and_religion.md` (xeno + ideoligion),
+(mod stack), `forbidden_mods.md` (anathema), `design/Jawa/worldbuilding/ideoligion/APPROVED.md` (xeno + ideoligion),
 `world_interest_and_mech_danger.md` (threats/biome interest), `save_authoring_pipeline.md`
 (how the start gets built), `Custom_World.md` (director-mod toolkit), `desert_world_design.md`
 (consequential-landing risk/reward per terrain — the "why land here?" design layer).
@@ -63,7 +63,7 @@ decided-but-verify-in-game. A **DECIDED** line records the choice + where it's a
 ## 2. Ideology (Jawa ideoligion) — mostly authored, confirm in creator
 - [~] **Fixed ideology** (no fluid development) — DECIDED (`forbidden_mods.md`).
 - [~] **Ideoligion:** "The Articles of Passage" / in-fiction "Keepers of the Second Hand".
-  **Memes: Nomad (primary) + Tunneler (secondary)** — DECIDED (`jawa_xenotype_and_religion.md` §2.6).
+  **Memes: Nomad (primary) + Tunneler (secondary)** — DECIDED (`design/Jawa/worldbuilding/ideoligion/APPROVED.md` §2.6).
   - [x] Final call: **Nomad primary** + Tunneler secondary (user, 2026-08-04).
 - [~] **Roles (two, non-multiplying):** Leader = Chief/Captain (self-limit its production-buff
   ability); Moral Guide = "Keeper of the Articles". DECIDED. No Production/Combat specialist roles.
@@ -79,7 +79,7 @@ decided-but-verify-in-game. A **DECIDED** line records the choice + where it's a
 
 ## 3. Races & xenotypes
 - [~] **Player crew xenotype = Jawa (`OuterRim_Jawa`)** from Outer Rim Galactic Diversity 1.6 —
-  adopt unchanged (DECIDED, `jawa_xenotype_and_religion.md`). [ ] Verify genes resolve clean in a
+  adopt unchanged (DECIDED, `design/Jawa/worldbuilding/ideoligion/APPROVED.md`). [ ] Verify genes resolve clean in a
   dev world (esp. the 3 `Outland_*` genes — magnitudes are inferred until installed).
 - [~] **Genetics stays FIXED** — no gene extractors/assemblers/xenogerms/breeding-for-genes
   (anti-exponential). DECIDED.
@@ -271,7 +271,7 @@ decided-but-verify-in-game. A **DECIDED** line records the choice + where it's a
   - **Territory behavior sanity:** confirm territory regions draw around faction settlements and in-turf ambush/patrol density rises inside a faction's ground. Watch for reported bugs (friendly troops loitering on the player map eating food / fighting each other; wrong-tech-tier bases spawning during map-gen).
   - **§19.5 in-turf ambush audit** (no public source to read): confirm in-turf ambush raises **qualitative** threat (better-positioned/more-coordinated attackers on held ground), NOT inflated raid points. Tune per-faction ambush/caravan density so Imperial turf bites hardest on Empire-held tiles; keep the *primary* pursuit timer on the orbital model, not on territory.
 
-- [ ] **⭐ Relationship-complexity stack — install-time load + version audit** (ADOPTED; `required_mods.md` "Relationship-complexity stack" §, `jawa_xenotype_and_religion.md` §4.3b). The stack = **Way Better Romance** (backbone) + **Romance On The Rim** + **Intimacy - Friends n' Lovers** (+Gender Works) bridged by **Romance & Intimacy On The Rim (R_IOTR)** + More Slavery Stuff (already in stack).
+- [ ] **⭐ Relationship-complexity stack — install-time load + version audit** (ADOPTED; `required_mods.md` "Relationship-complexity stack" §, `design/Jawa/worldbuilding/ideoligion/APPROVED.md` §4.3b). The stack = **Way Better Romance** (backbone) + **Romance On The Rim** + **Intimacy - Friends n' Lovers** (+Gender Works) bridged by **Romance & Intimacy On The Rim (R_IOTR)** + More Slavery Stuff (already in stack).
   - **1.6 tags:** WayBetterRomance (`divineDerivative.Romance`) + R_IOTR (`mianreplicate.romanceandintimacyontherim`) are **About.xml-confirmed 1.6** (no re-check needed). **Confirm in RimSort that these still show 1.6:** Romance On The Rim (WS `2654432921`), Intimacy - Friends n' Lovers (WS `3498422643`), Intimacy - Gender Works (WS `3534254491`, needs Biotech), Polyamory Beds (WS `3276496684`) — all four had their Steam pages 429'd during verification, so their 1.6 tag is store-text-only until seen in RimSort.
   - **No double romance-overhaul:** WayBetterRomance's About.xml lists Rational Romance / Psychology / Everyone Is Queer / Open Polyamory etc. as incompatible — confirm none of those are also active. (Open Polyamory is already rejected: it deletes jealousy AND is 1.2-only.)
   - **Load order:** R_IOTR after both Romance On The Rim and Intimacy (it bridges them); WayBetterRomance per its own guidance. Confirm no red errors on splash / in Player.log.

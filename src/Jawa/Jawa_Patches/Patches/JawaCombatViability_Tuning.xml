@@ -35,7 +35,7 @@
   ⚠️ IT GETS WORSE OVER TIME, NOT BETTER. Fainting frequency scales with the
   surrounding Terror level, and the gene multiplies Terror by 1.5. Terror comes
   from corpses, prisoners and slaves — and this is a slaver campaign
-  (jawa_xenotype_and_religion.md §4). So the exact conditions the campaign is
+  (design/Jawa/worldbuilding/jawa_society.md §4). So the exact conditions the campaign is
   built around are the conditions that make this gene fire most often. It would
   have degraded steadily and looked like a difficulty curve rather than a gene.
 
@@ -70,7 +70,7 @@
   xenotype, and most of the drawback is now gone — claiming the full +2 would
   be quietly buying a free point. Deliberately NOT compensating elsewhere;
   rebalancing BTD_Jawa's totals is a decision for
-  jawa_xenotype_and_religion.md, not for a mechanism patch.
+  design/Jawa/worldbuilding/jawa_society.md, not for a mechanism patch.
 
   SAFETY AND LOAD ORDER
   =====================

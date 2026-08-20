@@ -1098,7 +1098,7 @@ explicable. ⭐ **Keep them unexplained.** Every other faction on this map answe
 🔴 **Deliberately empty.** The player's own religion is the only one on this list
 that will be *played* rather than met, and it is the owner's to build. The material
 that already exists is in
-`D:\Luke\dev\Rimworld\design\Jawa\worldbuilding\jawa_xenotype_and_religion.md`
+`design/Jawa/worldbuilding/ideoligion/APPROVED.md`
 — the nine-god pantheon, the skill-resonance grid, and the four pressure-clocks.
 
 **Two things in that file need closing before it can be built, and neither is mine:**

@@ -355,7 +355,7 @@ background detail. **That is the campaign arc.**
 
 ### What this does to the pantheon that already exists
 
-The nine of `jawa_xenotype_and_religion.md` are unchanged — **they have simply
+The nine of `design/Jawa/divine_satiation_engine.md` are unchanged — **they have simply
 been given a location.** Every relation already written is now a fight happening
 inside the walls the colony lives in:
 

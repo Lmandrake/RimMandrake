@@ -517,7 +517,7 @@ source + Steam page so we can read its real mechanics/defs/deps before wiring it
 by our own dead*. Both are optional flavor layers, not load-bearing on any system.
 
 > **★ IDENTITY RESOLVED 2026-08-08 (user) — the ghosts are the AI's holographic hallucinations.** The
-> semi-sane Cradle-Mind (Persona Core patterned off a Jawa mind, `jawa_xenotype_and_religion.md` §②)
+> semi-sane Cradle-Mind (Persona Core patterned off a Jawa mind, `design/Jawa/divine_satiation_engine.md` §②)
 > **projects out members of its own old pre-Jawa crew** — EGI (projection tech) + Afterlife (haunting
 > behavior) fuse into ONE fiction: the ship can't stop rendering its dead. This makes the ghosts a
 > **read-out of Ohm's state** and the delivery vehicle for divine kindness/wrath via the Oracle. Full
@@ -631,7 +631,7 @@ find something have told you their entire theology in one word.
   the gravship, quests, faction dialogue.
 - **`Kolyska` survives INSIDE the hull.** The Cradle nursery is named for it. So
   is the **Cradle-Mind**, the ship AI that Ohm is believed to possess
-  (`jawa_xenotype_and_religion.md` §2.0b) — and which was patterned off a Jawa
+  (`design/Jawa/divine_satiation_engine.md` §2.0b) — and which was patterned off a Jawa
   mind and inherited that cosmology whole.
 - ⭐ **The machine never accepted the rename.** The Cradle-Mind still calls the
   ship *Kolyska*, and calls itself the Cradle. It is the only voice aboard that

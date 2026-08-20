@@ -15,7 +15,7 @@ survives as a **read-only** reference for the `.rws` format (grepping, decoding,
 it is no longer a route for executing an enrichment. Everything here lands over the live bridge.
 
 **Sibling files:** `concept.md` (pillars + the 7-question test) · `desert_world_design.md` (the
-terrain/discovery layer these populate) · `jawa_xenotype_and_religion.md` §2.0b (the pantheon §5
+terrain/discovery layer these populate) · `design/Jawa/divine_satiation_engine.md` §2.0b (the pantheon §5
 leans on) · `design/Jawa/mods/required_mods.md` (which of these a mod already does, and the 1.6 pins).
 
 > **Discipline:** mark claims ✅ verified / 🔎 inference / ❓ unknown. Never write a defName,
@@ -159,7 +159,7 @@ one coherent, pillar-compliant ruleset. All offline def-patch generation._
   per faction/race so procedurally-named pawns already read on-theme.
 - **Precept/meme consistency agent.** Validate that our buildable Jawa ideoligion + the leveled-up NPC
   belief systems have no contradictory precepts and that custom ThoughtDefs (mourn-death, "a clan is not
-  a crowd") are wired correctly — a pre-launch lint of `jawa_xenotype_and_religion.md` against the save.
+  a crowd") are wired correctly — a pre-launch lint of `design/Jawa/divine_satiation_engine.md` against the save.
 
 ### Phase C — Tile-map-start agents (each time a new map is generated)
 
@@ -217,7 +217,7 @@ one coherent, pillar-compliant ruleset. All offline def-patch generation._
 
 _Two user seeds ("more interesting outcomes from religious observances" + "monitor HeDiffs and make
 them visible in behavior AND a colony overview the ship-voice speaks to") fanned into 8 agents. All
-lean on "The Salvation" pantheon (`jawa_xenotype_and_religion.md` §2.0b — Ohm=ship-AI/Cradle-Mind,
+lean on "The Salvation" pantheon (`design/Jawa/divine_satiation_engine.md` §2.0b — Ohm=ship-AI/Cradle-Mind,
 Zizzik=malfunction, Mob'Unloo=ship-ghosts, Oomo=water/atonement, Ta'Baa=leave, Rekko=salvage,
 Sh'kaar=evil light). **Pillar bar (§19.5): every ritual/atonement payoff stays in the
 narrative/mood/quest register — never material power; any loot routes through the balance-bar gate.**

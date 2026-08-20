@@ -6,7 +6,7 @@ A retired seat on the owner's ruling: **the nine gods stay in fiction** (the str
 pantheon has to live in the description.**_
 
 **Sources, all quoted or paraphrased from
-`design/Jawa/worldbuilding/jawa_xenotype_and_religion.md`:** the nine gods and
+`design/Jawa/divine_satiation_engine.md`:** the nine gods and
 their epithets (J:122–228), the name lock "The Salvation" / "Keepers of the Second
 Hand" (J:114), the tug-of-war principle (J:253), the fall-triad (J:263), `Kolyska`
 = Cradle and the Cradle-Mind (J:136, J:152), sacred scrap (J:314), "one does not

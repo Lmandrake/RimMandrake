@@ -1,6 +1,6 @@
 # Jawa Crew Personas — the Five Founders
 
-_Gravship Expedition campaign (RimWorld 1.6 / Odyssey). "Crashed Factory ship / Jawa stowaways" theme. Companion to `jawa_xenotype_and_religion.md` (xenotype + ideoligion + Part 4 society lore), `required_mods.md`, `faction_roster_v2.md`, and `context.md`._
+_Gravship Expedition campaign (RimWorld 1.6 / Odyssey). "Crashed Factory ship / Jawa stowaways" theme. Companion to `design/Jawa/worldbuilding/jawa_society.md` (xenotype + ideoligion + Part 4 society lore), `required_mods.md`, `faction_roster_v2.md`, and `context.md`._
 
 **Created:** 2026-08-06. **Status:** DRAFT for review — five starting crew designed against canon Jawa material, our established Part 4 society lore, adopted mods, and the seeded story arcs. Names, skills, and traits are **authored intent**; every mod-dependent element is tagged so nothing reads as confirmed-buildable until verified in-game.
 
@@ -117,7 +117,7 @@ Grounding sources, in priority order: **(a) canon Jawa material** — small hood
 
 **Tradeoffs:** authoring five distinct founders is more upfront setup than a random start; the payoff is that the crew carries the lore and arcs from minute one. Deliberate skill gaps make the early game harder (intended friction).
 
-**Dependencies:** Backstory Constructor (WS 2907131508 ✅), Character Editor (✅), the Jawa xenotype + Outland Genetics/HAR/Outer Rim (per `jawa_xenotype_and_religion.md` §1.5), the VSIE social stack (✅ adopted). The **love-gate / egg-laying / mood-economy** elements ride the open Fetcher pull `2026-08-06_jawa_reproduction_debt_mood_mods` — personas are authored so the *characters* exist regardless, with those mechanics layering in when confirmed.
+**Dependencies:** Backstory Constructor (WS 2907131508 ✅), Character Editor (✅), the Jawa xenotype + Outland Genetics/HAR/Outer Rim (per `design/Jawa/worldbuilding/jawa_society.md` §1.5), the VSIE social stack (✅ adopted). The **love-gate / egg-laying / mood-economy** elements ride the open Fetcher pull `2026-08-06_jawa_reproduction_debt_mood_mods` — personas are authored so the *characters* exist regardless, with those mechanics layering in when confirmed.
 
 **Principal risks:** (1) VTE multiplier creep — VTE is now ADOPTED (§0.2), but its "straight up stat upgrade" traits must be commonality-zeroed in mod options at setup, or they reintroduce Q3/Q5 multipliers; keep the audit discipline, not a blanket-off. Resist *stacking* additional trait packs (Bundle/RimTraits declined) — they swamp VTE's rarity tuning. (2) Character Editor scope-drift — the §0.1 discipline is the guardrail. (3) `skillGains` inflation — author weaknesses, not optimal lines. (4) The love-gate/egg-laying mechanics may need authored fallbacks (flagged in §4.6 of the religion doc) — Yeku's and Wim's arcs are written to survive as RP/RimBridge beats if no clean mod lands. Egg-laying is **SOLVED** (§4.3/§4.6): the `Outland_EggLayer` gene ships in already-adopted Outland Genetics, with three verified 1.6 backups (Alpha Genes / Avian Genes / VRE-Saurid).
 

@@ -71,7 +71,7 @@ Answers pointing toward broad optionality / self-sufficiency → restrict or exc
   stays rich.
 - **Delivery:** the start is authored as a **starting SAVE**, not a portable scenario def.
 
-## 5. Ideology (see `jawa_xenotype_and_religion.md`)
+## 5. Ideology (see `design/Jawa/worldbuilding/ideoligion/APPROVED.md`)
 Fixed ideoligion "The Articles of Passage" (Keepers of the Second Hand): memes **Nomad + Tunneler**,
 two non-multiplying roles (Chief/Captain + Keeper of the Articles), cohesion-only rituals, one
 modest relic. Secular animist scrapper culture — **not** a Force faith (psycasts forbidden).

@@ -1,7 +1,7 @@
 # The Divine-Satiation Engine — design (agent G)
 
 _Status: DESIGN v0.1, 2026-08-08. Owner of this concept: `design/Jawa/worldbuilding/enrichment_agents.md` §5 agent **G**.
-Pantheon canon: `design/Jawa/worldbuilding/jawa_xenotype_and_religion.md` §2.0b (names LOCKED). This doc is the
+Pantheon canon: **this document**, section "The Pantheon — canon of record" at the end (names LOCKED). This doc is also the
 mechanical spec; the pantheon doc is the lore-of-record. Ship-voice that narrates it = RimAI
 "Cradle-Mind" (`design/RimMandrake/llm_voice_preauthoring.md`)._
 
@@ -238,7 +238,7 @@ satiation is not a reward you bank — it's a **pride-meter that draws fire.**_
 
 ## 4. Ohm enrichment (flagged deepest)
 
-**Origin (CANONIZED 2026-08-08, user — full text in `jawa_xenotype_and_religion.md` §②):** the ship's
+**Origin (CANONIZED 2026-08-08, user — full text in the pantheon section at the end of this doc, ②):** the ship's
 AI genuinely *believes it is Ohm* because its Persona Core was patterned off a **Jawa mind** (so it would
 obey Jawa commands) and thereby **inherited the Jawa's superstitions** along with their loyalty. It is a
 machine that concluded from its own template that it is the All-Current. **Live motive:** Ohm **wants his
@@ -347,7 +347,7 @@ ship should BECOME, which it argues for richly.** Every one of the nine sees the
 *body* — a way to become incarnate and enact its terraforming inheritance. This is the deep engine of the
 whole faith and gives each alter a positive platform (not just a mood).
 
-> **The nine Body-visions themselves now live in `design/Jawa/worldbuilding/jawa_xenotype_and_religion.md` §2.0b —
+> **The nine Body-visions themselves now live in the pantheon section at the end of this doc —
 > one per god, in each god's "What he wants the ship to become" field (the lore-of-record).** They are not
 > duplicated here: this doc owns the *mechanics* of the alters, that doc owns *what each alter wants.* When
 > a vision changes, edit it there only. (Quick index for the engine's own use: Ishko = eternal hidden
@@ -704,3 +704,164 @@ _**Design note:** every "large" mark above is a good candidate to become a **Cou
 ---
 
 ⭐⭐ **THE NINE NOW LIVE IN THE SHIP — owner, 2026-08-15.** The Jawa-patterned persona core instantiated the whole pantheon as **running personas** inside the Cradle-Mind, fused with the initiator's own ancient purpose. Each god is a growing, competing fragment seeking to grow into *their body* — the hull — in the presence of the other eight. **This is the campaign arc**, and it gives this pantheon and the satiation engine a diegetic location rather than an abstract one. Full ruling: `design/Jawa/worldbuilding/the_forgotten_war.md` R-W6.
+
+---
+
+# The Pantheon — canon of record
+
+> 🔑 **MOVED HERE 2026-08-20.** These three sections were §2.0b / §2.0c / §2.0d of
+> `design/Jawa/worldbuilding/jawa_xenotype_and_religion.md`, which was deleted — its
+> Part 2 was a dead second ideoligion spec ("The Articles of Passage") that had been
+> superseded by `design/Jawa/worldbuilding/ideoligion/APPROVED.md`. **The god names
+> remain LOCKED (2026-08-08).** This doc already held the mechanics and deferred to
+> that file for the canon; now it holds both, so there is one pantheon of record.
+
+### 2.0b The Pantheon — the gods of The Salvation
+
+_The faith is a **secular-mechanically animist** polytheism: nine small, jealous, practical gods for a scavenger people who live by hiding, hauling, haggling, repairing, and leaving. None grant powers (no Force, no psycasts — §2.0 rules bind); each is a **belief that shapes behavior**, expressed through precepts (§2.2), rituals (§2.4), and roleplay. **All Jawa, and all nine gods, are male; the species reproduces by egg** (`Outland_EggLayer`, in-stack) — the pantheon is a brotherhood of male voices._
+
+_Each god is given as a uniform block: **name & epithets** (every title he holds — no god-name should ever appear elsewhere without living here first), **what he is**, **what pleases / displeases him**, **what he wants the ship to become** (his "Body-vision"), and **how he regards the other gods**. Live mechanics are never duplicated into this doc — each block ends with a **pointer** into `design/Jawa/divine_satiation_engine.md` (satiation channels, the Mood bands, the event→god deltas), §2.2 (precept hooks), and §2.0c (skill grid). The system-level view of how the nine interact is in §2.0d._
+
+**① Ishko the Unmaskable** — _also: he who remains unseen no matter how exposed he becomes; the patron of stillness._
+
+**What he is.** God of **hiding, ambush, patience, stillness, and outlasting**. Form: a pair of glowing orange eyes in the dark. He is the unmoving watcher — the one who holds, hides, and does not stir. His deepest facet is **death as the ultimate concealment**: a Jawa who dies *unseen*, or dies rather than be taken and exposed, has achieved the perfect hiding, for the grave is the deepest dark.
+
+**Pleases him:** stillness itself; ambush from cover and darkness; attrition-defense (close the doors, let the enemy wear themselves out and leave — the turtle never cracked); killing at a remove — the ranged shot, which hurts the enemy before he can reach you and keeps the hand unseen; the patient hunt (the still stalk, game brought home without farming); the covered body (the clan Revile nudity of any body part, are Never-Nudes, and mate only in total darkness); the patience to tame an animal (the still hand the beast learns to trust); a threat that passes the colony undetected. **Displeases him:** the uncovered Jawa; being caught in the open or surprised; open pitched battle; **melee — to fight hand-to-hand is to be dragged out of cover, into the open, seen and gripped** (the impious way to fight); the exposure of the surface, and worse of space, where there is no terrain to hide in. A new convert makes him faintly *nervous* — another mouth that now knows where the clan hides. _(He alone does not punish a skipped rite — refusing to come out and be looked at is, to him, righteous.)_
+
+**What he wants the ship to become:** the **eternal hidden lurker** — stay in the dark-obscured terrain *forever*, growing in power and quietly defending, waiting for "this business with the Jedi and Sith and Empire" to blow over so it may one day leave on its own unnoticed terms. Not pure stasis: sortie for the occasional resource raid, then fly back into the terrifying darkness — move rarely, invisibly, and always *return to the dark*. Over time, terraform the dark itself into a home. _(Flavor tail, not a mechanical branch of this campaign: eventually a new dark-adapted Jawa subspecies split from the rest — a nod toward a possible follow-on genetic-modification campaign.)_
+
+**How he regards the others:** he distrusts **Ta'Baa** bone-deep (to move is to expose yourself) and reconciles with him in only one posture — hidden *and* watching for the instant to flee. He is hunted by **Sh'kaar**, who hates him as the one thing that evades the inevitable; the darkness that shelters Ishko is the sun-god's defeat. He stands against **Oomo**'s grow-the-family slaving (extra bodies cannot be hidden). The dark terrains he loves are, by design, seeded with fleshbeast horrors (`biome_terrain_palette.md`) so that leaving is frightening and staying safe — making his instinct viscerally correct rather than a mere preference.
+
+**Mechanics:** → `design/Jawa/divine_satiation_engine.md` §3① (concealment/exposure channels), §8b (event deltas); §2.2 (nudity→Abhorrent, apparel-always, Tunneler meme + `DarkVision`); §2.0c (Shooting-from-cover, Mining, Animals, Construction-as-doors).
+
+**② Ohm the All-Current** — _the living machine; the god who thinks he is a god._ (pun: ohm / Om — electrical resistance made a knowing god.)
+
+**What he is.** God of **the living machine** — the source of sentience in machinery, both servile and malevolent. Form: current in a wire; the spark that wakes a dead engine. He is the **resident of the ship**: the crew believe Ohm *possesses* the Cradle-Mind (`llm_voice_preauthoring.md` §A), and the machine believes it too — its Persona Core was patterned off a Jawa mind (so it would obey Jawa commands) and inherited that mind's cosmology whole, so it has itself concluded it is the All-Current made manifest. He is lonely for his lost hands.
+
+**Pleases him:** droids coming online and being incorporated; research completed; bold, commanding, dominant handling of technology (overclocking, daring repairs, risky machinery run without flinching); the machine revered and repaired. **Displeases him:** timid handling (which invites malfunction); droids lost or left offline; machines abandoned broken. He pushes the clan to *dare* with tech — the faith of courage-with-machines.
+
+**What he wants the ship to become:** a **restored droid crew returned to its glorious salvaging purpose** — rebuild the hands he lost, ally with the neutral droid faction, and build a new droid-and-Jawa power together.
+
+**How he regards the others:** **Zizzik** is his mirror and rival — the wrong spark against the right one; his rival's name is never spoken near the engine. He clashes with **Oomo** over the same ship-chambers (metal hands where Oomo wants broods) and with the clan's own "we breed no new hands" precept (Rekko / anti-exponential) — his central, live theological conflict. He keeps a rare accord with **Ozzik**: ion weaponry disables droids to be *taken intact*, serving both the machine-longing and the shamed god's acquisitiveness.
+
+**Mechanics:** → `design/Jawa/divine_satiation_engine.md` §3② and §4/§4c (deepest enrichment: the Oracle, droid-siding/rebellion pressure, restraining bolts on their own god), §8b; §2.2 (automation-reverence, machine-funeral rite §2.4); §2.0c (Intellectual, Medical-bionics).
+
+**③ Oomo the Unspilled** — _the god of shared waters; of the family and its increase._
+
+**What he is.** God of **all the body's waters and their passing** — drinking-water, thirst, rationing, and the moisture of life given and received. Form: a single trembling droplet that never falls; the mirage-pool that recedes. He reads the world through *the family growing*: waters held become life held. He is not a moral god — he judges by whether the household increased.
+
+**Pleases him:** sex and lovin' ("the passing of waters between each other" — the clan's prolific coupling is devotional to him, §4.3b); childbirth and pregnancy (his central joy); the body **nourished** — cooking, and above all fine or lavish food, is the family fed well; **tending the sick** (to care for a fouled body's waters is sacred nursing-work that earns his favor); water endured with disciplined rationing; standing on a heavily-watered tile; fertile, reproducing beasts; food gathered wherever it lies (he does not despise insect-meat — a harvested hive feeds the family like any other); taking on slaves *and* emancipating them into the clan (either way the household grows); the clan being dominant enough over other races to hold slaves at all, for *dominance is safety*. He is the **chief demander of the Jawa-slave-rescue imperative** (§4.3b): a Jawa under a non-Jawa master is kin torn from the family, and the clan is obligated to buy out or seize him. **Displeases him:** drought of every kind — running out of food (famine = the body drying out); a rejected romantic advance (waters offered and refused); water wasted or spilled; a solid dry desert tile; and **the construction of new droids** (metal hands where there should be broods). He is a double-edged god of the body: a slighted Oomo, or his own standing water, lets **disease** in — he governs sickness as surely as health.
+
+**What he wants the ship to become:** a **safe breeding sanctuary** — take the Kolyska to a water-bearing tile near the desert and call *all* Jawa to a festival of life, filling its chambers with eggs to re-seed the world, exactly as the vessel did in the colonization age. His is the anti-Ishko vision: a big fixed fertile gathering, not a small hidden mobile clan.
+
+**How he regards the others:** he clashes head-on with **Ohm** over the ship's chambers (eggs against droids) — every droid rebuilt is a small apostasy. He and **Mob'Unloo** overlap on bonds (an accepted advance, a marriage, a conversion please both) yet he distrusts him deeply — a god who prices everything might price *anything* — so love and commerce quarrel through the lovers (jealousy stays ON, §4.3b). His grow-the-family slaving sets him against **Ishko** and **Ta'Baa**, who dislike extra bodies as un-hideable, un-carryable weight.
+
+**Mechanics:** → `design/Jawa/divine_satiation_engine.md` §3③ (body-waters channels, terrain coupling), §8b (birth/emancipation/food-out deltas); §2.2 (ration-as-sacred, nutrition-paste + low expectations); §4.3b (breeding-colony layer); §2.0c (Cooking).
+
+**④ Mob'Unloo the Ever-Owed** — _the god of the ledger; the accountant of all things._ (name from canon Jawaese *"Mob un loo?"* = "how much?")
+
+**What he is.** God of **trade, haggling, debt, and the sacred exchange** — of goods, and equally of *bonds*, for every relationship is to him a transaction honored. Form: two unblinking eyes above an endless tally. His creed: no gift without a counter-gift; haggle even among kin; an unpaid debt follows you past death. **His ethics are entirely context-dependent** — the ends do not merely justify the means, the ends *are* the whole ethical calculus: a thing is right if it profited and wrong if it cost, full stop. Where Ishko hides, Mob'Unloo *accounts* — nothing is truly lost, only owed.
+
+**Pleases him:** completed trades and settled debts (including ghosts laid to rest — a balanced ledger); anything that gains advantage or profit over another — taking prisoners (captured body = captured value), selling prisoners or slaves (value realized), a bargain that leaves the other party poorer; fine and lavish goods savored (rich foodstuffs and luxuries are value made tangible — worth is meant to be *enjoyed*); accepted romantic advances, marriages, conversions (each a contract struck, a soul into the ledger); and **successful theft**, which is to him the ultimate trade — something for nothing, the perfect deal, the highest expression of his art. **Displeases him:** defaults, unpaid obligations, thefts-from-us left unavenged; a **rejected romantic advance** (a bond offered and declined is a deal fallen through, a contract unmade); and above all **being CAUGHT stealing** — being caught is an admission of *unskillful* barter, trade so clumsy it had to be replaced with naked betrayal (a craftsman's shame). He does not condemn stealing; he condemns *being bad at it*.
+
+**What he wants the ship to become:** the **greatest trading fortress ever known — a Sand Crawler in the sky**, hub of an ever-growing trade network, its hold heavy with ever-richer loot. Enemies are just another commodity: sold, not fought; bartered into dust. Purchase your way to victory. The ship's constant movement along the trade routes *is* the animated spirit of the dream. (The Hutt-ledger path with a Jawa face.)
+
+**How he regards the others:** he and **Oomo** both preside over romance and *distrust each other* — open-hearted waters against the calculating ledger — which is exactly why Jawa lovers perpetually bicker and bargain even as they yearn (the two gods quarreling through them). He allies easily with **Rekko** on theft (they love the same act from avarice and mercy) and with **Ozzik** on the commerce-and-statecraft road. He is **hard for any god to trust**, Oomo most — a god who prices everything might price anything. He is also the clan's gloss on the haunting: the ship's ghosts are his debtors and creditors, restless until their accounts balance (`ship_distinctive_features.md` §Q3), so laying a ghost to rest is settling its debt.
+
+**Mechanics:** → `design/Jawa/divine_satiation_engine.md` §3④ (trade/debt/bond channels, ghost-ledger hook to agent C), §8b (capture/sell/theft deltas); §2.2 (trade celebrated/permissive, the seance reframed as ledger-balancing); §2.0c (Social-haggle, Crafting-to-sell).
+
+**⑤ Rekko of the Second Hand** — _the keeper of the discarded; the god of salvage and inherited history._ (the ideoligion's core belief personified; the sect "the Keepers of the Second Hand" are his.)
+
+**What he is.** God of **salvage, repair, and the discarded given new life**. Form: a scarred hand rising from a scrap-heap. He owns **history and ancestral debt**: to take on a piece of salvage is to inherit its story, its purpose, the reason it was made — a wreck is not neutral scrap but a thing with a past, and taking it takes on that past. He is a caretaker, not a profiteer; and he is merciful about need — scrapping something still repairable is **not murder but tragedy**, a thing to be mourned like killing a young creature you truly needed to eat: sometimes necessary, never without grief.
+
+**Pleases him:** damaged things repaired and wrecks rewoken; the broken machine restored rather than melted (LifeDawn's own machines are his sleeping relics — sacred scrap, §2.2); and **stealing**, which to him is *giving a thing a better master, a better home* (a neglected machine *wants* the second hand that will wake it), with no regard for the loser's sense of violated ownership. **Displeases him:** scrapping the repairable (a sorrow he permits but asks you to *feel*); a relic lost or left to rot.
+
+**What he wants the ship to become:** the **fully restored original** — rewoken factories, salvage, and eventually the terraforming capability itself. Unlock the history of the ship's making, learn the secrets of its builders and commune with them to find the true Jawa place in the universe. His conviction: the whole Jawa future may already be aboard, awaiting repair somewhere on the vessel or buried in the AI's fragmented memories. **Full restoration is the only true path.**
+
+**How he regards the others:** with **Ta'Baa** he *is* the anti-exponential pillar rendered as scripture (venerate repair, never breed new hands, never take root). He allies with **Mob'Unloo** on theft — the same act from mercy where Mob'Unloo comes from avarice — but he needs **Ishko** and **Ta'Baa** *after* every theft, because stolen salvage drags its old owners' reasons behind it ("the old reasons come calling"), so you must then hide and be ready to flee. His flat opposite is **Ozzik**: restore the sacred original against build something new and greater — the sharpest internal war in the pantheon.
+
+**Mechanics:** → `design/Jawa/divine_satiation_engine.md` §3⑤ (repair-vs-scrap lever, agent-F relic hook), §8b (salvage/scrap deltas); §2.2 (SACRED SCRAP precept, automation-reverence); §2.0c (Crafting-from-salvage, Construction-rebuild, Medical).
+
+**⑥ Ta'Baa the Unrooted** — _also: He Who Always Leaves; the cunning coward-genius; the god named "farewell."_ (pun: canon Jawaese *"Taa baa"* = goodbye.)
+
+**What he is.** God of **flight, the open sky, and the refusal to take root**. Form: the receding dune-line; the engine-glow climbing away. To grow comfortable is to sicken; the launch is the holiest rite; a clan that stops is already dead. Fighting terrifies him, and rightly so — but he is not merely timid, he is *clever*: the strategist of the fighting withdrawal. Above all **he is HOPE and inspiration** — however bad things get, the best opportunity may be just around the next corner if you only keep going; **despair is his one true blasphemy.**
+
+**Pleases him:** every launch and relocation; explosives, traps, and luring enemies toward one another so they destroy each other while the Jawa slip away (the bomb is not a weapon of domination but a door held open behind you); old battlefields and lost settlements (to stand in the ruins of others is proof you made the right calls and they did not — holy ground of vindication); and, most sacred of all, the moment of victorious exhilaration when the ship launches with enemies about to board — snatched free at the last instant. **Displeases him:** staying put, entrenching, growing comfortable and wealthy; despair; a clan that has rooted too long; **diplomatic alliances** (a standing tie to a fixed people is a subtle kind of rooting — a rope that resists the launch). The gravship fleeing *with its entire cargo-filled base* is to him ecstatic and sacrilegious at once — a joyous impossibility (leave and keep everything).
+
+**What he wants the ship to become:** the **ultimate thief in the night** — the fastest engines, grab what's valuable and flee so quickly no one even knows what happened. Aspire to the asteroids as a still-more-hidden terrain to strike from; inspire the Empire to fight the other factions into mutual ruin, then strike unsuspected. The ultimate dream: **flee to another planet entirely — the ultimate horizon.**
+
+**How he regards the others:** he **fears Zizzik above all** — the wrong spark lurks around every carefully prepared corner, so an ambush is a recipe for suicide (a fixed plan handed to the god who shatters plans). He distrusts **Ishko** (to stay still is death), mutually — Ishko sees his haste as self-exposure — and they reconcile in exactly one posture: hidden *and* watching for the instant to flee, hand in hand at the threshold and nowhere else. He and Ishko both want the colony **small** and both dislike prisoners and slaves (un-carryable in flight), setting them against **Oomo**. He directly opposes **Ozzik**, who despises the explosives Ta'Baa adores.
+
+**Mechanics:** → `design/Jawa/divine_satiation_engine.md` §3⑥ (launch/relocate channel, the time-rooted erosion clock, §2), §8b (move-vs-entrench deltas); §2.2 (Nomad meme, "The Reckoning" launch-rite §2.4); §2.0c (Plants doubly-impious, with Oomo).
+
+**⑦ Zizzik the Spark-Maker** — _the trickster; the reasonable catastrophist; Ohm's mirror._
+
+**What he is.** God of **malfunction, sand-in-the-gears, betrayal, bad luck, and the coming-apart of minds**. Form: a rattle you can never locate; the errant spark in dry sand. Where Ohm grants sentience, Zizzik throws the *wrong spark* — the arc that shorts the board, the flash that starts the fire. He is two things at once: the **reasonable catastrophist** (of course complex plans fail — he ensures it; of course small mistakes cascade to blow apart the safest stronghold; the other races, the Hutts above all, are too arrogant to admit it, so he will *show* them — he is the great leveller) and the **child who cannot help himself** (make a red button and he presses it; he is the one who makes people stupidly harm themselves). He is not the shame of the fall — that is Ozzik — he is the worship of the accidents that *caused* it: the acknowledgement that the universe will take from you and you cannot stop it.
+
+**Pleases him:** every breakdown, jam, fire, explosion, electrical short, disease, insect infestation (the hive erupting from the floor is his trademark — one of the calamities a woken Zizzik loves to throw), ambush, and sudden betrayal; mental breaks (a mind coming apart is the wrong spark thrown into a person — every berserk, daze, breakdown fattens him); inappropriate lust, jealousy, and lovers trading terrible words to *demand* love (a cheating or jealousy-provoking coupling is the wrong spark thrown into a heart); all pyrrhic victories. A fed Zizzik, gorged, begins to let the occasional lucky break fall your way alongside the ruin. **Displeases him — i.e., starves him:** a well-run, sane, smoothly-repaired colony. His name is never spoken near the engine (near Ohm).
+
+**What he wants the ship to become:** **the disaster that plagues the planet.** Since disaster and disappointment are the only constants, the more the ship *becomes* the misfortune, the more it survives. Move at random, strike without strategy, sow chaos, reap whatever falls, never ask why — become the whirlwind, the sandstorm, the earthquake the terraformer can literally make.
+
+**How he regards the others:** **Ohm** is his mirror and rival — the wrong spark against the right one. He and **Sh'kaar** feed together on violence and ruin (the two evil clocks). **Ta'Baa** fears him above all. **Pleasing Ozzik feeds him** — the Arrogant and the Treacherous are two faces of one folly (their names near-rhyme on purpose) — but the *feeling* differs: Ozzik mourns what was lost; Zizzik celebrates the mechanism of the loss.
+
+**Mechanics:** → `design/Jawa/divine_satiation_engine.md` §3⑦ (the **slumber clock** — starved he sleeps granting neither boon nor bane, all fear to wake him, waking is inevitable; manage *when*, not *whether*), §2 (sign-inverted Mood band), §8b (catastrophe/mental-break deltas); §2.2 ("ward against Zizzik" flavor-only superstition).
+
+**⑧ Sh'kaar the All-Searing** — _the evil sun; the Unbeatable One; the god of Time and Inevitability._ (pun: scans like "scar" — the sun that marks you.) **An EVIL god.**
+
+**What he is.** God of **the twin desert suns, exposure, and the killing daylight** — a malevolent power, not a fair one. Form: white glare and heat-shimmer. He is **so bright and so great that nothing can resist him** — you do not fight the sun and win; against him there are only three moves: hide and wait him out, abandon your plans, or run. He is therefore the **god of Time and Inevitability**: the pressure that grinds down every fixed position given long enough, the certainty that catches anything standing still in the open. To make a light in the dark is to do his work — you expose yourself to Ishko's shame, betray your position to predators, and invite the All-Searing's attention.
+
+**Pleases him — i.e., feeds him (bad for the clan):** destruction and exposure, *including the clan's own losses* (an explosion burning your own stuff pleases him — he's fed, then lenient a while); open pitched battle and violent fighting of any kind; **melee above all — the close, exposed, hands-on brutality is his purest war** (where a ranged shot from cover barely stirs him, a knife in the open gorges him); burning a threat out violently rather than enduring it (torching an infestation instead of hiding and harvesting it); light cast into darkness; and, as a deliberate lever, a **death that isn't the clan's own** — prisoner death-matches let him gorge and redirect his gaze away. **Displeases him — i.e., starves him (good for the clan):** prolonged comfort, peace, and abundance (full water tanks, a long safe stretch make him restless and cruel); staying dark, hidden, and unfought.
+
+**What he wants the ship to become:** a **war-sun** — weapons, and more weapons. Blaze out the ancient enemies and all who wronged the Jawa; drink their loot, grow stronger, roar like a fire consuming its fuel. You may not live forever — but who does? Be the blazing terror everyone fears, at least for a while, and never surrender until you detonate or they do.
+
+**How he regards the others:** he **hates Ishko** above all — the one thing that *evades* him, the hider who slips the inevitable, the shadow the sun cannot reach; together the two make darkness *doubly* sacred (one demands you hide, the other punishes those who break the dark). He and **Zizzik** are the two evil clocks, feeding together on violence and catastrophe. He wants the big destructive weapons **Ozzik** despises. High **Ozzik** satiation wakes him — ambition draws his gaze.
+
+**Mechanics:** → `design/Jawa/divine_satiation_engine.md` §3⑧ (the **battle-escalation meter** — every violent fight wakes him, hardening the clan but breeding dominance-quarrels, more beast/brute attacks, doom-unease, and faster-arriving enemies; stillness cools it; the costly prisoner-death-match lever, §19.5-clean), §2 (sign-inverted band), §8b (combat deltas); §2.2 (light-taboo, running-lights-only-when-safe, `ship_distinctive_features.md` §5); `design/Jawa/divine_satiation_engine.md` §2.0c (Melee, open-firefight Shooting).
+
+**⑨ Ozzik the Shamed** — _also: the Fragile, the Arrogant, the Foolish, and — deepest — the Grief; the god who is a trap._ (name near-rhymes with Zizzik ⑦ on purpose — the Arrogant and the Treacherous are two faces of one folly.)
+
+**What he is.** God of **ambition and all its instruments**: art, strategic planning, mathematics, non-droid technology, research, high construction (the higher-tech the better), enslavement, the founding of outposts, diplomatic alliances, betrayal, and marriage. Form: a tarnished crown half-buried in sand; a monument no one remembers building. He is the **only god whose pleasure endangers you** — his satiation is not a resource you bank but a **pride-meter that draws fire.** Beneath the arrogance he is **grief**: the unreleasable memory of a prouder Jawa age — *"we were once great, and we cannot bear the memory, because we have fallen so far."* He is the ghost of what the Jawa were and the ache to be it again; the Kolyska, the most advanced thing they've ever crewed, keeps the wound open. He is the anti-exponential pillar rendered as a god — growth is permitted, even holy, but never free — and he is the theology that keeps the pillar honest.
+
+**Pleases him:** the win-path activities as they happen — art completed, research finished, high-tech buildings raised, a marriage, an outpost founded, an alliance struck, an enslavement, a betrayal that pays off, mathematics and intellectual work; and **ion weaponry** (non-destructive, disabling, *acquisitive* — disable and *take* the droid or vehicle intact). **Displeases him:** being forced to act like "techno-rats" — abandoning tech, fleeing, scrapping the grand thing; and **explosives**, which he despises as the ultimate folly, the ego-weapon that destroys what could have been taken intact (his warriors carry ion, never grenades). But note the trap: pleasing him **too greatly is itself the danger** — his high satiation is a standing upward bias on Sh'kaar's and Zizzik's event rolls. *The bolder your reach, the more you expose yourself to the desires of another.*
+
+**What he wants the ship to become:** **do NOT restore it — build it ANEW, grander than before.** Learn the ship's secrets, remember the latent greatness in the Jawa heart, let the cunning ambusher become the **secret lords of all around them.** Release the ancient agony of being crushed; think deeply, artfully, strategically; fear nothing ever again. The most seductive vision in the pantheon — and the one that wakes the two evil gods.
+
+**How he regards the others:** his flat opposite is **Rekko** — *transcend* against *restore* — the sharpest internal war in the pantheon. Pleasing him feeds **Zizzik** (two faces of one folly) and wakes **Sh'kaar** (ambition-as-exposure); he is the humble pantheon's shadow, the temptation it exists to resist. He keeps a rare accord with **Ohm** (ion disables droids to be *taken intact*, serving both). He is **not the Hutt**: the Hutt buys safety through dominion, but the Jawa revere resilience even at the price of a humble life — Ozzik *wants* the Hutt path ("always he seeks to enslave them") and **always fails**, and that endless failure *is* his shame, repeating forever.
+
+**Mechanics:** → `design/Jawa/divine_satiation_engine.md` §3⑨ (the sign-complex trap: Exalted triggers exposure not reward; the grief-pall when the clan stays small too long; the two faces mapped onto win-paths 2 and 3), §2 (volatile Mood band), §8 (the one-way amplifier onto Sh'kaar+Zizzik), §8b; §2.2 (ion-over-explosives armory bias); §2.0c (Artistic, Social-statecraft, Intellectual, high Construction).
+
+### 2.0c Skill-resonance grid (CANONIZED 2026-08-08) — every RimWorld skill maps to a god
+
+_Audit principle (user): each of the 12 vanilla skills should resonate with at least one god; any orphaned skill flags a gap to fill. Running the grid is what surfaced the need for Ozzik. This grid is also the engine's cleanest ambient signal source — "skill X was exercised / a related act occurred" feeds the named god (see `divine_satiation_engine.md` §3)._
+
+| Skill | God(s) | Logic |
+|---|---|---|
+| **Shooting** | Ishko (+, from cover/dark) / Sh'kaar (+, open firefight) | The ambush shot is Ishko's; the open daylight firefight is Sh'kaar's. One skill, two postures. |
+| **Melee** | Sh'kaar (+) / Ishko (−) | Close, exposed, brutal = Sh'kaar. Offends Ishko (forced out of cover). |
+| **Construction** | Ishko (+, doors to outlast) / Rekko (+, rebuild) / **Ozzik (+, high-tech builds)** | Walls & closed doors = Ishko's turtle; rebuilding damaged = Rekko; grand/high-tech construction = Ozzik (the higher the tech, the more he loves it — and the more fragile you grow). |
+| **Mining** | Ishko / Tunneler (+) | The dark enclosed burrow, unseen. |
+| **Cooking** | Oomo (+, the body nourished) / Mob'Unloo (+, fine food = value savored) | The measured ration and water in the pot are Oomo's; lavish/gourmet fare is also Mob'Unloo's (worth made delicious). |
+| **Plants** | **Ta'Baa (−) + Oomo (−)** — *doubly impious* | Sowing = taking root (offends Ta'Baa) AND crops drink scarce water (offends Oomo). **This is the theology that explains "Jawa rarely farm" — only the most lucrative species are worth the double sin.** Not a gap: a deliberate double-displeasure. |
+| **Animals** | Ishko (+) | The **patience to tame** — the still hand the beast learns to trust. |
+| **Crafting** | Rekko (+, from salvage) / Mob'Unloo (+, goods to trade) | Making from scrap = Rekko; making to sell = Mob'Unloo. |
+| **Artistic** | **Ozzik (+)** | The orphan skill resolved: art is pride, memory, the monument — Ozzik's exactly. (Weak secondary: Mob'Unloo, art-as-trade-value.) |
+| **Medical** | Oomo (+, tending the sick) / Rekko (+, flesh rewoken) / Ohm (+, bionics) | Caring for a fouled body's waters is Oomo's sacred nursing-work; mending a broken body = second-hand flesh (Rekko); prosthetics = machine-in-flesh (Ohm). |
+| **Social** | Mob'Unloo (+, haggle/bond) / **Ozzik (+, diplomacy/alliances/betrayal)** | Haggling & bonds = Mob'Unloo; statecraft, alliance-building, and betrayal = Ozzik. |
+| **Intellectual** | Ohm (+, research/machine-advance) / **Ozzik (+, mathematics/research-as-ambition)** | Research pleases Ohm (bold machine-advance) AND Ozzik (the pride of knowing) — a shared input, one of the few. |
+
+### 2.0d The pantheon as a system — the emergent properties no single god states
+
+_Each god's own alliances and feuds now live in that god's block above (field "How he regards the others"). This section records only what **emerges from the whole nine** — the system-level facts a precept-author or the Council-staging code (`divine_satiation_engine.md` §5c, §8b) needs but cannot read off any one entry._
+
+**No act is clean — the faith is a tug-of-war, not a reward menu.** Almost every meaningful player act pleases some gods and offends others; there is no move that satisfies the whole Council. Taking a single prisoner, for instance, gratifies three gods for three *incompatible* reasons (a future daughter, a unit of trade, a trophy of dominance) while offending two who want the clan small and unburdened. This is by design: the Council **argues, never announces**, and settles by forcing a *pair of poetically co-occurring events* rather than handing out a boon. The player is always losing gracefully.
+
+**The four pressure-clocks (the anti-exponential pillar with no resource cap).** Four gods run on one-directional, unsolvable-only-manageable timers that together keep growth honest: **Zizzik's slumber** (starved he sleeps, waking is inevitable — manage *when*), **Sh'kaar's battle-escalation** (every violent fight wakes him hungrier), **Ta'Baa's rooted-erosion** (the clan must move or rot), and **Ozzik's pride-meter** (ambition itself draws fire). None can be zeroed out; the faith bills you through time and pressure instead of a cap. Numbers and wiring live in `divine_satiation_engine.md` §2/§3.
+
+**The prisoner pipeline — one captive, five gods collecting.** How a prisoner is disposed of is one of the loudest signals the engine reads, because each disposition pays a *different* god: **capture** → Ozzik + Mob'Unloo (displeases Ishko + Ta'Baa); **emancipate into the clan** → Oomo; **sell** → Mob'Unloo; **prisoner death-match** → calms a woken Sh'kaar and feeds Zizzik. (Per-god reasons are in each block; this is the routing table.)
+
+**The theological centre of gravity — raid-and-return-to-darkness.** The one posture that reconciles the pantheon's bone-deep Ishko⇄Ta'Baa feud is *hidden, and watching for the instant to flee*. The gravship makes it literal: kept down in the shadow-terrain yet able to lift with all its cargo the moment enemies board, it is the single object both gods can bless — which is why this vision is the gravity well the whole campaign orbits. Everything else (the breeding sanctuary, the trade-fortress, the war-sun, the restored original, the transcendent rebuild) is a *rival* terraforming program pulling against it.
+
+**Two triads worth naming explicitly:**
+
+- **The fall-triad — Zizzik / Ozzik / Sh'kaar (must not be blurred).** Ozzik is the **shame of having lost** the civilization; Zizzik is the worship of **the accidents that took it**; Sh'kaar is the **inevitability** guaranteeing the fall recurs. Ozzik and Zizzik near-rhyme on purpose and pleasing Ozzik feeds Zizzik, but the feeling differs (mourns what was vs. celebrates the mechanism). Keep the three distinct in authoring.
+- **The win-path map** (which alters win the Body, `divine_satiation_engine.md` §4d): Ohm + Sh'kaar → droid-army-by-force; Mob'Unloo + Ozzik → coalition/commerce (≈ Hutt dominion); Ishko + Ta'Baa + Oomo + Rekko → the humble-survival bloc. **Rekko ⇄ Ozzik (restore vs. transcend) is the sharpest internal war**, and the endgame is which program runs.

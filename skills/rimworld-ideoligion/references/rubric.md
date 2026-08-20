@@ -82,7 +82,7 @@ of its eight precepts have `comps: []`, including `Cannibalism_Acceptable`,
 **Measure.** The **player-contact issue set** is fixed — nine `IssueDef`s where the
 clan's practice is settled in
 `D:\Luke\dev\Rimworld\design\Jawa\worldbuilding\restraining_bolt_doctrine.md` and
-`D:\Luke\dev\Rimworld\design\Jawa\worldbuilding\jawa_xenotype_and_religion.md`:
+`design/Jawa/worldbuilding/ideoligion/APPROVED.md`:
 
 | issue | the clan's side |
 |---|---|
