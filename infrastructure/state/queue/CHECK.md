@@ -612,6 +612,55 @@ result:   SHIPPED: `set_fog` (unfog / unfogAll / refog / floodUnfog) ·
           📌 `sandGrid` is genuinely the twin of `snowGrid` - same SetDepth/AddDepth shape,
              same radial helper. Dune piling costs nothing extra.
 
+## P1 Pawn identity — name, title, backstory, traits, skills, appearance
+row:      bridge-14
+spec:     Owner, 2026-08-19: *"Finely modify pawns especially their traits, backgrounds,
+          names, backstories and notes, religions, faction, equipment... everything."*
+          TOOLS: `pawn_get` (deep read) · `set_pawn_name` · `set_pawn_title` ·
+                 `set_pawn_backstory` · `pawn_traits` (add/remove/list) · `set_pawn_skill` ·
+                 `set_pawn_appearance`
+          🔴 **NOTES DO NOT EXIST.** No free-text field on `Pawn` or any tracker in 1.6;
+          `Pawn` is not `IRenameable`; `Pawn_RecordsTracker` is numeric and RecordDef-keyed.
+          The ONLY writable free text is `pawn.story.Title`. Real per-pawn notes need our
+          own `GameComponent` and are a separate item - do NOT fake it.
+          🔴 REFRESH TRAPS, all measured:
+          * `set_pawn_backstory` refreshes NOTHING. Must call
+            `Notify_DisabledWorkTypesChanged()`, `skills.Notify_SkillDisablesChanged()`,
+            `skills.DirtyAptitudes()`, `MeditationFocusTypeAvailabilityCache.ClearFor()`.
+            ⚠️ The game's OWN debug tool only does the last one.
+          * `GainTrait` does NOT check conflicts and there is NO trait cap in `TraitSet`.
+            Check `TraitDef.ConflictsWith` and `BackstoryDef.DisallowsTrait` ourselves.
+          * `SkillRecord.Level` READ-BACK != what you wrote - the getter adds aptitudes.
+            Verify against `GetLevel(false)`.
+          * Appearance writes do not dirty the renderer - call
+            `Drawer.renderer.SetAllGraphicsDirty()`.
+          ✅ Self-refreshing and safe: `GainTrait`/`RemoveTrait`.
+verify:   change each field on a spawned pawn and read it back RAW; screenshot the pawn.
+criteria: every field round-trips, AND the conflict check refuses a genuinely conflicting
+          trait rather than silently stacking it, AND the skill read-back is verified
+          against `GetLevel(false)` rather than the aptitude-inflated getter.
+state:    ready
+
+## P2 Pawn loadout and body — equipment, apparel, inventory, health, needs
+row:      bridge-15
+spec:     TOOLS: `give_pawn_equipment` · `give_pawn_apparel` · `clear_pawn_gear` ·
+                 `add_pawn_inventory` · `pawn_hediff` (add/remove) · `install_bionic` ·
+                 `set_pawn_need` · `add_pawn_thought`
+          🔴 `equipment.AddEquipment` **`Log.Error`s and does nothing if a Primary exists** -
+          call `MakeRoomFor(eq)` first or the tool reports success having changed nothing.
+          ✅ `apparel.Wear` DOES enforce `CanWearTogether` and drops conflicts, and refreshes
+          graphics itself. Use `PawnApparelGenerator.GenerateApparelOfDefFor` so it arrives
+          stuffed, coloured and quality-rolled.
+          ⭐ `install_bionic` needs NO RecipeDef: `health.RestorePart(part)` then
+          `health.AddHediff(def, part)` - what `Recipe_InstallArtificialBodyPart` does with a
+          null billDoer.
+          🔴 `RestorePart` is RECURSIVE into child parts, wipes their hediffs and does not
+          drop the removed bionic. Destructive and silent - guard it.
+verify:   equip, wear, add a hediff, install a bionic; read all back off the pawn.
+criteria: gear round-trips AND the AddEquipment primary-slot trap is demonstrated - equip
+          twice and show the second is handled rather than silently lost.
+state:    ready
+
 ## C-V2 Park any v2 idea in design/V2_DREAMS.md yourself — no permission needed
 row:      doctrine
 spec:     Any idea for new content that is not v1 — including one a live session
