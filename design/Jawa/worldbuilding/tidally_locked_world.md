@@ -224,8 +224,10 @@ solved the campaign's central threat — and it would force us to detect and pri
 detection and no escalation ladder: the nightside is a reprieve, and reprieves
 expire on their own.**
 
-**2. 🔴 Jawa heat tolerance: RE-POINT the faction xenotypeSets at `BTD_Jawa`
-(+20 °C).**
+**2. ⛔ SUPERSEDED 2026-08-19. `BTD_Jawa` no longer loads, so there is nothing to
+re-point at.** The Jawa xenotype is `MandrakeJawa`; whether it carries the +20 °C
+heat tolerance is a question about that def, not about BTD.
+~~Jawa heat tolerance: RE-POINT the faction xenotypeSets at `BTD_Jawa` (+20 °C).~~
 
 The sets currently name `OuterRim_Jawa`, which grants only +10 °C. **On a planet
 whose subsolar point is +70 °C, halving the clan's heat tolerance would have

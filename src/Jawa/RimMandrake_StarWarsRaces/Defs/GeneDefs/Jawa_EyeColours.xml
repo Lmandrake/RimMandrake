@@ -76,7 +76,8 @@
 
   USAGE
   =====
-  These ARE added to BTD_Jawa by Patches/JawaAppearance_Tuning.xml, and RimWorld
+  These ARE added to MandrakeJawa by Patches/JawaAppearance_Tuning.xml (the patch
+  named BTD_Jawa until 2026-08-19; that def no longer loads), and RimWorld
   will roll between them per pawn.
 
   Corrected 2026-08-10: an earlier version of this note claimed a XenotypeDef

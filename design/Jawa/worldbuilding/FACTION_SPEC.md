@@ -649,8 +649,11 @@ each dossier's own composition table.
 **Use the `BTD_` prefix.** Three packs ship overlapping xenotypes —
 `btd.xenotyperemix.starwars` (70), `guy762.starwarsxenotypes` (58),
 `neronix17.outerrim.galacticdiversity` (44). **BTD Remix dedups at load and BTD_
-is what survives**: measured live, `BTD_Jawa` survived and `OuterRim_Jawa` does
-not exist at runtime. Wrap every `<li>` with
+is what survives** — 🔴 BUT NOT FOR THE JAWA, and not any more (2026-08-19):
+`BTD_Jawa` no longer loads either, and neither does `OuterRim_Jawa`. Both were
+replaced when the three donors went off and `mandrake.starwarsraces` came on. The
+live Jawa xenotypes are `MandrakeJawa` (35 genes, the only active one) and
+`RimMandrakeJawa` (24). Check any `BTD_` name against the dump before writing it. Wrap every `<li>` with
 `MayRequire="btd.xenotyperemix.starwars"`.
 
 Shape, read from the live `Ancients` def:
@@ -720,11 +723,25 @@ needed judgement and are recorded here rather than guessed:
 `BTD_QuestScript_DroidDistressCall`. That prefix still belongs to a different,
 live mod. **Do not "finish the job" on those.**
 
-### 🔴 R28a · `BTD_Jawa` is a REAL DECISION, not a rename — 16 references, unresolved
+### ✅ R28a · RESOLVED BY MEASUREMENT, 2026-08-19 — `MandrakeJawa`, and it was never a choice
 
-There are **two live Jawa xenotypes, both labelled "Jawa", both from our own
-`RimMandrake - Star Wars Races`**, and each carries a different half of the
-campaign's canon:
+**The premise below is false and the decision it describes does not exist.**
+`BTD_Jawa` no longer loads at all, so it cannot be the answer; and the two surviving
+Jawa xenotypes do NOT carry "a different half of the canon". Read off the live dump:
+`MandrakeJawa` (35 genes) contains **32 of `RimMandrakeJawa`'s 24**, including the
+`Outland_AllMale` and `DarkVision` the table below awards to the smaller set alone.
+
+The only three genes `RimMandrakeJawa` has that `MandrakeJawa` lacks are
+`Hair_DarkBlack`, `Hair_Grayless` and `Outland_Chest_Fur` — hair and body hair, on a
+species this campaign has already ruled bald, beardless and hooded.
+
+⇒ **`MandrakeJawa` outright**, which is what `ideoligion/APPROVED.md` already said.
+Every reference is repointed and the guard patches now name it.
+The table below is kept because its per-gene detail is still useful; **read it as a
+gene inventory, not as a decision.**
+
+There are two live Jawa xenotypes, both labelled "Jawa", both from our own
+`RimMandrake - Star Wars Races`:
 
 | | `MandrakeJawa` (35 genes) | `RimMandrakeJawa` (24 genes) |
 |---|---|---|

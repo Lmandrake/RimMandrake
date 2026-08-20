@@ -95,8 +95,9 @@
          Starjack) and `PirateBandBase` ships nine; a child set is APPENDED to
          them, so without this opt-out the faction fields Hussars in a Star Wars
          campaign. `BTD_` and not `OuterRim_`: three packs ship overlapping
-         xenotypes and BTD Remix DEDUPS AT LOAD, so `BTD_Jawa` survives live
-         while `OuterRim_Jawa` does not exist at runtime.
+         xenotypes. 🔴 THAT NOTE IS OUT OF DATE (2026-08-19): `BTD_Jawa` no longer
+         loads either. The surviving Jawa xenotypes are `MandrakeJawa` and
+         `RimMandrakeJawa`, both from `mandrake.starwarsraces`.
          ⚠️ The CHANCES are BUILD's, not the spec's — R27 gives species, not
          numbers. They sum to ~1.00, with the dossier
          lead species heaviest.

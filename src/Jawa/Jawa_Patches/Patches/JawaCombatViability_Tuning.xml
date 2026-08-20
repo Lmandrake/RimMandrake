@@ -90,6 +90,16 @@
     * Expect the xenotype's metabolism total to read 1 lower than before.
     * Spawn a Neimoidian: it should STILL have "terrified".
   ============================================================================
+
+  🔴 RETARGETED 2026-08-19 (B58 / btd-jawa-has-no-merge). Every operation below named
+  `BTD_Jawa`, and that def NO LONGER LOADS — measured against the live def dump, where
+  the surviving Jawa xenotypes are `MandrakeJawa` (35 genes, the owner's hand-built set
+  and by `ideoligion/APPROVED.md` the ONLY active one) and `RimMandrakeJawa` (24,
+  generator output). Every op was matching zero and doing nothing.
+  ⭐ They are retargeted rather than deleted, and they are all no-ops TODAY: `MandrakeJawa`
+  already satisfies all six conditions. They stay as the guard that keeps the ratified
+  appearance and viability decisions true if the xenotype is ever regenerated from the
+  `.xtp` and loses one.
 -->
 <Patch>
 
@@ -97,9 +107,9 @@
        1. Drop the fainting gene from Jawa (left intact for Neimoidians)
        ================================================================== -->
   <Operation Class="PatchOperationConditional">
-    <xpath>/Defs/XenotypeDef[defName="BTD_Jawa"]/genes/li[text()="Turn_Gene_Terrified"]</xpath>
+    <xpath>/Defs/XenotypeDef[defName="MandrakeJawa"]/genes/li[text()="Turn_Gene_Terrified"]</xpath>
     <match Class="PatchOperationRemove">
-      <xpath>/Defs/XenotypeDef[defName="BTD_Jawa"]/genes/li[text()="Turn_Gene_Terrified"]</xpath>
+      <xpath>/Defs/XenotypeDef[defName="MandrakeJawa"]/genes/li[text()="Turn_Gene_Terrified"]</xpath>
     </match>
   </Operation>
 
@@ -107,9 +117,9 @@
        2. Put our own skittish gene in its place
        ================================================================== -->
   <Operation Class="PatchOperationConditional">
-    <xpath>/Defs/XenotypeDef[defName="BTD_Jawa"]/genes[not(li[text()="RimMandrake_Jawa_Skittish"])]</xpath>
+    <xpath>/Defs/XenotypeDef[defName="MandrakeJawa"]/genes[not(li[text()="RimMandrake_Jawa_Skittish"])]</xpath>
     <match Class="PatchOperationAdd">
-      <xpath>/Defs/XenotypeDef[defName="BTD_Jawa"]/genes[not(li[text()="RimMandrake_Jawa_Skittish"])]</xpath>
+      <xpath>/Defs/XenotypeDef[defName="MandrakeJawa"]/genes[not(li[text()="RimMandrake_Jawa_Skittish"])]</xpath>
       <value>
         <li>RimMandrake_Jawa_Skittish</li>
       </value>

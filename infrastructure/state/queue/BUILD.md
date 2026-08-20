@@ -283,8 +283,16 @@ verify:   `grep -rn 'BTD_Jawa' design/ src/Jawa/` shows no reference that fails 
           touched.
 criteria: no `Could not load reference to Verse.XenotypeDef` line naming a Jawa xenotype in
           the next load's `harvest_log.py --show scribe`.
-state:    ready
-
+state:    done 2026-08-19. The item asked which of two Jawa xenotypes to resolve 16
+          references to. Measured instead of chosen, and the question dissolved twice over:
+          `BTD_Jawa` does not load at all any more, and `MandrakeJawa` is not "half the
+          canon" — it carries 32 of `RimMandrakeJawa`'s 24 genes, missing only three hair
+          genes on a species already ruled bald, beardless and hooded. So `MandrakeJawa`
+          outright, which `ideoligion/APPROVED.md` had said all along.
+          12 xpaths retargeted across the two tuning patches, deployed, 0 errors 0 warnings,
+          and every "0 nodes on disk" notice cleared. R28a rewritten as resolved; the stale
+          "`BTD_Jawa` survived" claim struck from `FACTION_SPEC.md`, `JawaJunkers.xml`,
+          `Jawa_EyeColours.xml` and `tidally_locked_world.md`. Live half filed to CHECK.
 ## grimterra-worldmap-over-wme-as-the-base-layer-2c8f19
 row:      tooling
 from:     DECIDE, 2026-08-19, on the owner's ruling *"Use GrindTerra, close out."* plus
