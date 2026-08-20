@@ -1,0 +1,65 @@
+<!-- REPO COPY. Deploys to:
+     C:\Program Files (x86)\Steam\steamapps\workshop\content\294100\3626210061\Worldbuilder\TidallyLocked\Preset.xml
+     Steam owns that directory and will silently revert it on any Workshop update
+     to Alien Worlds (3626210061). Copy this file back after any such update.
+     myLittlePlanetSubcount=7 + planetCoverage=1 are what produce the 21,872 tiles
+     that world/ASHKARR_WORLDMAP_tiles.csv is indexed against. Do not change either. -->
+<worldPreset>
+  <name>TidallyLocked</name>
+  <label>tidally locked world</label>
+  <planetType>Rimworld</planetType>
+  <description>Worlds of extremes whose rotational periods perfectly match their orbital periods. On these planets, the sun never sets and never rises. Their night side is extremely cold due to the complete lack of sunlight, but there is usually a habitable sliver of land on their day side.
+
+Difficulty depends heavily on landing spot, and ranges from easy to nigh impossible.
+Generating at least 50% of the planet is recommended.</description>
+  <difficulty>3</difficulty>
+  <sortPriority>1000</sortPriority>
+  <scenParts />
+  <myLittlePlanetSubcount>7</myLittlePlanetSubcount>
+  <saveGenerationParameters>True</saveGenerationParameters>
+  <disableExtraBiomes>False</disableExtraBiomes>
+  <generationData>
+    <factionCountsStrings>
+      <li>Empire</li>
+      <li>Empire</li>
+      <li>Empire</li>
+      <li>OutlanderCivil</li>
+      <li>OutlanderCivil</li>
+      <li>OutlanderCivil</li>
+      <li>OutlanderCivil</li>
+      <li>TribeCivil</li>
+      <li>TribeCivil</li>
+      <li>TribeCivil</li>
+      <li>Pirate</li>
+      <li>Pirate</li>
+      <li>Jawa_IndigenousTribes</li>
+      <li>Jawa_IndigenousTribes</li>
+      <li>Jawa_IndigenousTribes</li>
+      <li>Jawa_HuttCartel</li>
+      <li>Jawa_HuttCartel</li>
+      <li>Jawa_Junkers</li>
+      <li>Jawa_Junkers</li>
+      <li>Jawa_WildsteamClan</li>
+      <li>Jawa_WildsteamClan</li>
+      <li>Jawa_DeepwaterCompact</li>
+      <li>Jawa_DeepwaterCompact</li>
+      <li>Jawa_AscendantHelix</li>
+      <li>Jawa_FreeDroidEnclaves</li>
+      <li>Jawa_FreeDroidEnclaves</li>
+      <li>Jawa_GeonosianFoundryHive</li>
+    </factionCountsStrings>
+    <planetCoverage>1</planetCoverage>
+    <rainfall>Normal</rainfall>
+    <temperature>Normal</temperature>
+    <population>High</population>
+    <pollution>0.05</pollution>
+    <riverDensity>1</riverDensity>
+    <ancientRoadDensity>1</ancientRoadDensity>
+    <settlementRoadDensity>1</settlementRoadDensity>
+    <mountainDensity>1</mountainDensity>
+    <seaLevel>1</seaLevel>
+    <axialTilt>Normal</axialTilt>
+    <landmarkDensity>Normal</landmarkDensity>
+  </generationData>
+  <biomes />
+</worldPreset>
