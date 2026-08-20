@@ -387,13 +387,13 @@
     "BUILD": {
      "done": 16,
      "total": 18,
-     "state": "idle",
+     "state": "working",
      "mix": {
       "closed": 16,
       "done": 0,
-      "doing": 0,
+      "doing": 1,
       "blocked": 0,
-      "ready": 2
+      "ready": 1
      }
     },
     "CHECK": {

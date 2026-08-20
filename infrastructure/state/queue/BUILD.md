@@ -1243,4 +1243,4 @@ criteria: 🔴 **The owner opens Configure Factions and SEES a row reading `Blac
           ✅ Precondition verified before the edit, offline: the generated world already
           contains `<def>Pirate</def>`, so the repointed import RESOLVES rather than
           refusing the whole file the way an unresolvable faction would.
-state:    source repointed; live world pending a re-import (CHECK's bridge)
+state:    doing
