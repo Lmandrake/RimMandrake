@@ -1,0 +1,1323 @@
+{
+ "save": "WORLDMAP_ashkarr.rws",
+ "planet": {
+  "name": "Arich VII",
+  "seedString": "consortium",
+  "planetCoverage": "1",
+  "overallRainfall": "Normal",
+  "overallTemperature": "Normal",
+  "pollution": "0.0500000007",
+  "gameVersion": "1.6.4871 rev591",
+  "subdivisions": "7",
+  "radius": "100",
+  "mods": 579,
+  "startingTile": 21583,
+  "tiles": 21872
+ },
+ "hexgrid": {
+  "tiles": 21872,
+  "degree_histogram": {
+   "5": 12,
+   "6": 21860
+  },
+  "pentagons": 12,
+  "mean_tile_arc_deg": 1.4752,
+  "edges": 65610,
+  "lat_range": [
+   -88.84,
+   88.84
+  ],
+  "geometry_verified": true
+ },
+ "biomes": {
+  "unresolved_hashes": [],
+  "distinct": 22,
+  "census": [
+   {
+    "biome": "ExtremeDesert",
+    "tiles": 5157,
+    "pct": 23.578,
+    "water": false,
+    "temp_c": 60.5
+   },
+   {
+    "biome": "Desert",
+    "tiles": 4102,
+    "pct": 18.755,
+    "water": false,
+    "temp_c": 37.1
+   },
+   {
+    "biome": "AB_RockyCrags",
+    "tiles": 2655,
+    "pct": 12.139,
+    "water": false,
+    "temp_c": -46.9
+   },
+   {
+    "biome": "AridShrubland",
+    "tiles": 1982,
+    "pct": 9.062,
+    "water": false,
+    "temp_c": 16.2
+   },
+   {
+    "biome": "AB_MycoticJungle",
+    "tiles": 1821,
+    "pct": 8.326,
+    "water": false,
+    "temp_c": -22.5
+   },
+   {
+    "biome": "BMT_FungalForest",
+    "tiles": 1085,
+    "pct": 4.961,
+    "water": false,
+    "temp_c": -14.1
+   },
+   {
+    "biome": "PoisonForest",
+    "tiles": 1079,
+    "pct": 4.933,
+    "water": false,
+    "temp_c": 4.2
+   },
+   {
+    "biome": "Ocean",
+    "tiles": 812,
+    "pct": 3.713,
+    "water": true,
+    "temp_c": 40.1
+   },
+   {
+    "biome": "Glowforest",
+    "tiles": 751,
+    "pct": 3.434,
+    "water": false,
+    "temp_c": -0.8
+   },
+   {
+    "biome": "AB_FeraliskInfestedJungle",
+    "tiles": 568,
+    "pct": 2.597,
+    "water": false,
+    "temp_c": 39.4
+   },
+   {
+    "biome": "ZBiome_Badlands",
+    "tiles": 364,
+    "pct": 1.664,
+    "water": false,
+    "temp_c": 40.3
+   },
+   {
+    "biome": "SeaIce",
+    "tiles": 265,
+    "pct": 1.212,
+    "water": true,
+    "temp_c": -54.3
+   },
+   {
+    "biome": "AB_GelatinousSuperorganism",
+    "tiles": 261,
+    "pct": 1.193,
+    "water": false,
+    "temp_c": -3.2
+   },
+   {
+    "biome": "ZBiome_DesertOasis",
+    "tiles": 212,
+    "pct": 0.969,
+    "water": false,
+    "temp_c": 63.0
+   },
+   {
+    "biome": "AB_MechanoidIntrusion",
+    "tiles": 173,
+    "pct": 0.791,
+    "water": false,
+    "temp_c": 69.2
+   },
+   {
+    "biome": "AB_PropaneLakes",
+    "tiles": 168,
+    "pct": 0.768,
+    "water": false,
+    "temp_c": -54.1
+   },
+   {
+    "biome": "Scarlands",
+    "tiles": 123,
+    "pct": 0.562,
+    "water": false,
+    "temp_c": 67.8
+   },
+   {
+    "biome": "Volcano",
+    "tiles": 120,
+    "pct": 0.549,
+    "water": false,
+    "temp_c": 56.6
+   },
+   {
+    "biome": "Wasteland",
+    "tiles": 110,
+    "pct": 0.503,
+    "water": false,
+    "temp_c": 7.4
+   },
+   {
+    "biome": "LavaField",
+    "tiles": 38,
+    "pct": 0.174,
+    "water": false,
+    "temp_c": 60.2
+   },
+   {
+    "biome": "AB_GallatrossGraveyard",
+    "tiles": 17,
+    "pct": 0.078,
+    "water": false,
+    "temp_c": 39.5
+   },
+   {
+    "biome": "HorrorWastes",
+    "tiles": 9,
+    "pct": 0.041,
+    "water": false,
+    "temp_c": -4.7
+   }
+  ]
+ },
+ "water": {
+  "definition": "biome in ['Lake', 'Ocean', 'SeaIce']",
+  "water_tiles": 1077,
+  "water_pct": 4.92,
+  "below_sea_level_tiles": 1065,
+  "coastline_edges": 478,
+  "bodies": [
+   {
+    "kind": "water",
+    "tiles": 390,
+    "pct": 1.783,
+    "centroid": [
+     9.18,
+     -89.43
+    ],
+    "named": [
+     "Raerados Islands",
+     "Almalium Island",
+     "Cape Hinstthberon"
+    ],
+    "biomes": {
+     "Ocean": 390
+    }
+   },
+   {
+    "kind": "water",
+    "tiles": 265,
+    "pct": 1.212,
+    "centroid": [
+     18.03,
+     169.34
+    ],
+    "named": [
+     "Trarro Peninsula",
+     "Aardvarkhip Archipelago",
+     "Gray Pelican Islet"
+    ],
+    "biomes": {
+     "SeaIce": 265
+    }
+   },
+   {
+    "kind": "water",
+    "tiles": 220,
+    "pct": 1.006,
+    "centroid": [
+     -2.8,
+     -37.38
+    ],
+    "named": [
+     "Raerados Islands",
+     "Hadum Island",
+     "Reinum Cape"
+    ],
+    "biomes": {
+     "Ocean": 220
+    }
+   },
+   {
+    "kind": "water",
+    "tiles": 202,
+    "pct": 0.924,
+    "centroid": [
+     8.02,
+     91.54
+    ],
+    "named": [
+     "Gua Mountains"
+    ],
+    "biomes": {
+     "Ocean": 202
+    }
+   }
+  ],
+  "body_count": 4,
+  "landmasses": [
+   {
+    "kind": "land",
+    "tiles": 20795,
+    "pct": 95.076,
+    "centroid": [
+     -0.45,
+     72.27
+    ],
+    "named": [
+     "Raerados Islands",
+     "Aardvarkhip Archipelago",
+     "Vefenera Mountains"
+    ],
+    "biomes": {
+     "ExtremeDesert": 5157,
+     "Desert": 4102,
+     "AB_RockyCrags": 2655,
+     "AridShrubland": 1982
+    }
+   }
+  ],
+  "landmass_count": 1
+ },
+ "terrain": {
+  "elevation_m": {
+   "min": -350.0,
+   "mean": 680.3,
+   "max": 3556.0
+  },
+  "elevation_land_m": {
+   "min": 1.0,
+   "mean": 730.7,
+   "max": 3556.0
+  },
+  "temperature_c": {
+   "min": -84.1,
+   "mean": 18.7,
+   "max": 75.7
+  },
+  "rainfall_mm": {
+   "min": 18.0,
+   "mean": 437.7,
+   "max": 1768.0
+  },
+  "hilliness": {
+   "Flat": 3142,
+   "SmallHills": 10329,
+   "LargeHills": 5853,
+   "Mountainous": 2117,
+   "Impassable": 431
+  },
+  "swampiness_mean": 0.053
+ },
+ "rivers": {
+  "edges": 956,
+  "broken_entries": [],
+  "by_def": {
+   "Creek": 771,
+   "River": 156,
+   "HugeRiver": 29
+  },
+  "tiles_touched": 1037,
+  "networks": 81,
+  "largest": [
+   {
+    "edges": 250,
+    "tiles": 251,
+    "defs": {
+     "Creek": 184,
+     "River": 57,
+     "HugeRiver": 9
+    },
+    "head": 3635,
+    "head_elev_m": 2195.0,
+    "reaches_sea": true
+   },
+   {
+    "edges": 172,
+    "tiles": 173,
+    "defs": {
+     "Creek": 154,
+     "River": 18
+    },
+    "head": 19409,
+    "head_elev_m": 2038.0,
+    "reaches_sea": false
+   },
+   {
+    "edges": 172,
+    "tiles": 173,
+    "defs": {
+     "Creek": 140,
+     "HugeRiver": 20,
+     "River": 12
+    },
+    "head": 3218,
+    "head_elev_m": 2130.0,
+    "reaches_sea": true
+   },
+   {
+    "edges": 22,
+    "tiles": 23,
+    "defs": {
+     "Creek": 17,
+     "River": 5
+    },
+    "head": 1607,
+    "head_elev_m": 1711.0,
+    "reaches_sea": true
+   },
+   {
+    "edges": 22,
+    "tiles": 23,
+    "defs": {
+     "Creek": 20,
+     "River": 2
+    },
+    "head": 16926,
+    "head_elev_m": 1679.0,
+    "reaches_sea": true
+   },
+   {
+    "edges": 20,
+    "tiles": 21,
+    "defs": {
+     "River": 8,
+     "Creek": 12
+    },
+    "head": 15063,
+    "head_elev_m": 1973.0,
+    "reaches_sea": true
+   },
+   {
+    "edges": 19,
+    "tiles": 20,
+    "defs": {
+     "River": 4,
+     "Creek": 15
+    },
+    "head": 3224,
+    "head_elev_m": 2023.0,
+    "reaches_sea": true
+   },
+   {
+    "edges": 15,
+    "tiles": 16,
+    "defs": {
+     "Creek": 11,
+     "River": 4
+    },
+    "head": 3274,
+    "head_elev_m": 1961.0,
+    "reaches_sea": true
+   }
+  ],
+  "mouths": 154
+ },
+ "roads": {
+  "edges": 1027,
+  "broken_entries": [],
+  "by_def": {
+   "DirtPath": 617,
+   "DirtRoad": 410
+  },
+  "tiles_touched": 996,
+  "networks": 1,
+  "largest": [
+   {
+    "edges": 1027,
+    "tiles": 996,
+    "defs": {
+     "DirtPath": 617,
+     "DirtRoad": 410
+    },
+    "settlements": 37
+   }
+  ]
+ },
+ "settlements": {
+  "count": 37,
+  "by_faction": {
+   "Cai Alliance": 7,
+   "The Iracam Nation": 5,
+   "Hive": 4,
+   "Nebium": 4,
+   "Eli's Moons": 3,
+   "Waora": 3,
+   "Herinor Covenant": 2,
+   "The Tolodore Kinship": 2,
+   "Artedlior Federation": 1,
+   "Faction_22": 1,
+   "Galactic Empire": 1,
+   "People of Mabo": 1,
+   "Sacrileg Hunters": 1,
+   "The Exodus Empire": 1,
+   "The Murderous Pack": 1
+  },
+  "by_biome": {
+   "AridShrubland": 10,
+   "Desert": 9,
+   "AB_FeraliskInfestedJungle": 8,
+   "ZBiome_DesertOasis": 7,
+   "PoisonForest": 3
+  },
+  "coastal": 9,
+  "on_river": 11,
+  "on_road": 37,
+  "list": [
+   {
+    "id": 2,
+    "tile": 9590,
+    "name": "Witwas",
+    "faction": "Artedlior Federation",
+    "factionDef": "Jawa_FreeDroidEnclaves",
+    "biome": "ZBiome_DesertOasis",
+    "lat": -7.95,
+    "lon": -22.51,
+    "elevation_m": 2023.0,
+    "temp_c": 63.1,
+    "rain_mm": 863,
+    "hilliness": "Flat",
+    "coastal": false,
+    "on_river": true,
+    "on_road": true,
+    "region": null
+   },
+   {
+    "id": 21,
+    "tile": 15040,
+    "name": "Black Biatobrí",
+    "faction": "Cai Alliance",
+    "factionDef": "TribeCivil",
+    "biome": "Desert",
+    "lat": 19.85,
+    "lon": -59.03,
+    "elevation_m": 2159.0,
+    "temp_c": 41.8,
+    "rain_mm": 172,
+    "hilliness": "SmallHills",
+    "coastal": false,
+    "on_river": false,
+    "on_road": true,
+    "region": "Raerados Islands"
+   },
+   {
+    "id": 22,
+    "tile": 9424,
+    "name": "Breixo",
+    "faction": "Cai Alliance",
+    "factionDef": "TribeCivil",
+    "biome": "AB_FeraliskInfestedJungle",
+    "lat": 26.17,
+    "lon": -94.46,
+    "elevation_m": 24.0,
+    "temp_c": 24.9,
+    "rain_mm": 1076,
+    "hilliness": "LargeHills",
+    "coastal": true,
+    "on_river": true,
+    "on_road": true,
+    "region": "Raerados Islands"
+   },
+   {
+    "id": 8,
+    "tile": 7065,
+    "name": "Iñororo",
+    "faction": "Cai Alliance",
+    "factionDef": "TribeCivil",
+    "biome": "ZBiome_DesertOasis",
+    "lat": 13.39,
+    "lon": -34.78,
+    "elevation_m": 1675.0,
+    "temp_c": 60.1,
+    "rain_mm": 620,
+    "hilliness": "Flat",
+    "coastal": false,
+    "on_river": false,
+    "on_road": true,
+    "region": "Raerados Islands"
+   },
+   {
+    "id": 24,
+    "tile": 18541,
+    "name": "Rodaballo Field",
+    "faction": "Cai Alliance",
+    "factionDef": "TribeCivil",
+    "biome": "AB_FeraliskInfestedJungle",
+    "lat": 19.02,
+    "lon": -76.11,
+    "elevation_m": 69.0,
+    "temp_c": 41.8,
+    "rain_mm": 1738,
+    "hilliness": "LargeHills",
+    "coastal": true,
+    "on_river": true,
+    "on_road": true,
+    "region": "Cape Hinstthberon"
+   },
+   {
+    "id": 25,
+    "tile": 1290,
+    "name": "Toxos",
+    "faction": "Cai Alliance",
+    "factionDef": "TribeCivil",
+    "biome": "AB_FeraliskInfestedJungle",
+    "lat": -2.32,
+    "lon": 97.42,
+    "elevation_m": 135.0,
+    "temp_c": 20.4,
+    "rain_mm": 685,
+    "hilliness": "Mountainous",
+    "coastal": true,
+    "on_river": false,
+    "on_road": true,
+    "region": "Gua Mountains"
+   },
+   {
+    "id": 14,
+    "tile": 13043,
+    "name": "White Quarry",
+    "faction": "Cai Alliance",
+    "factionDef": "TribeCivil",
+    "biome": "AridShrubland",
+    "lat": -14.76,
+    "lon": 90.0,
+    "elevation_m": 624.0,
+    "temp_c": 25.2,
+    "rain_mm": 352,
+    "hilliness": "SmallHills",
+    "coastal": false,
+    "on_river": false,
+    "on_road": true,
+    "region": null
+   },
+   {
+    "id": 29,
+    "tile": 14767,
+    "name": "White Rock",
+    "faction": "Cai Alliance",
+    "factionDef": "TribeCivil",
+    "biome": "AB_FeraliskInfestedJungle",
+    "lat": 3.09,
+    "lon": 81.32,
+    "elevation_m": 35.0,
+    "temp_c": 37.8,
+    "rain_mm": 1747,
+    "hilliness": "Mountainous",
+    "coastal": true,
+    "on_river": true,
+    "on_road": true,
+    "region": null
+   },
+   {
+    "id": 13,
+    "tile": 20033,
+    "name": "Deadbeat's Cave",
+    "faction": "Eli's Moons",
+    "factionDef": "Jawa_Junkers",
+    "biome": "PoisonForest",
+    "lat": -75.96,
+    "lon": 152.35,
+    "elevation_m": 424.0,
+    "temp_c": 12.9,
+    "rain_mm": 1147,
+    "hilliness": "Flat",
+    "coastal": false,
+    "on_river": false,
+    "on_road": true,
+    "region": null
+   },
+   {
+    "id": 9,
+    "tile": 3637,
+    "name": "Sinner's Basin",
+    "faction": "Eli's Moons",
+    "factionDef": "Jawa_Junkers",
+    "biome": "ZBiome_DesertOasis",
+    "lat": 9.34,
+    "lon": -27.86,
+    "elevation_m": 1792.0,
+    "temp_c": 62.7,
+    "rain_mm": 1608,
+    "hilliness": "Flat",
+    "coastal": false,
+    "on_river": true,
+    "on_road": true,
+    "region": "Raerados Islands"
+   },
+   {
+    "id": 20,
+    "tile": 6932,
+    "name": "Sword Tree",
+    "faction": "Eli's Moons",
+    "factionDef": "Jawa_Junkers",
+    "biome": "Desert",
+    "lat": 14.77,
+    "lon": -63.2,
+    "elevation_m": 2257.0,
+    "temp_c": 38.7,
+    "rain_mm": 182,
+    "hilliness": "SmallHills",
+    "coastal": false,
+    "on_river": false,
+    "on_road": true,
+    "region": "Raerados Islands"
+   },
+   {
+    "id": 134,
+    "tile": 7499,
+    "name": "Lobo",
+    "faction": "Faction_22",
+    "factionDef": null,
+    "biome": "ZBiome_DesertOasis",
+    "lat": 41.68,
+    "lon": -73.98,
+    "elevation_m": 393.0,
+    "temp_c": 38.6,
+    "rain_mm": 295,
+    "hilliness": "Flat",
+    "coastal": false,
+    "on_river": true,
+    "on_road": true,
+    "region": null
+   },
+   {
+    "id": 10,
+    "tile": 6450,
+    "name": "Magna",
+    "faction": "Galactic Empire",
+    "factionDef": "Empire",
+    "biome": "ZBiome_DesertOasis",
+    "lat": 17.28,
+    "lon": -28.23,
+    "elevation_m": 1456.0,
+    "temp_c": 63.4,
+    "rain_mm": 522,
+    "hilliness": "Flat",
+    "coastal": false,
+    "on_river": true,
+    "on_road": true,
+    "region": null
+   },
+   {
+    "id": 23,
+    "tile": 4569,
+    "name": "Dadinness",
+    "faction": "Herinor Covenant",
+    "factionDef": "Jawa_HuttCartel",
+    "biome": "AB_FeraliskInfestedJungle",
+    "lat": 25.38,
+    "lon": -84.1,
+    "elevation_m": 64.0,
+    "temp_c": 34.3,
+    "rain_mm": 1767,
+    "hilliness": "LargeHills",
+    "coastal": true,
+    "on_river": true,
+    "on_road": true,
+    "region": null
+   },
+   {
+    "id": 4,
+    "tile": 14714,
+    "name": "Surgeon's Settlement",
+    "faction": "Herinor Covenant",
+    "factionDef": "Jawa_HuttCartel",
+    "biome": "ZBiome_DesertOasis",
+    "lat": -19.48,
+    "lon": 60.61,
+    "elevation_m": 1373.0,
+    "temp_c": 45.8,
+    "rain_mm": 549,
+    "hilliness": "Flat",
+    "coastal": false,
+    "on_river": false,
+    "on_road": true,
+    "region": null
+   },
+   {
+    "id": 17,
+    "tile": 8133,
+    "name": "Hissing Nithtikkrak",
+    "faction": "Hive",
+    "factionDef": "Insect",
+    "biome": "AridShrubland",
+    "lat": 8.0,
+    "lon": -67.21,
+    "elevation_m": 2065.0,
+    "temp_c": 37.2,
+    "rain_mm": 151,
+    "hilliness": "SmallHills",
+    "coastal": false,
+    "on_river": false,
+    "on_road": true,
+    "region": null
+   },
+   {
+    "id": 11,
+    "tile": 5716,
+    "name": "Skritslekswarm Klakkraxkrak",
+    "faction": "Hive",
+    "factionDef": "Insect",
+    "biome": "AridShrubland",
+    "lat": -66.56,
+    "lon": 118.92,
+    "elevation_m": 373.0,
+    "temp_c": 14.7,
+    "rain_mm": 1024,
+    "hilliness": "Flat",
+    "coastal": false,
+    "on_river": false,
+    "on_road": true,
+    "region": "Raerados Islands"
+   },
+   {
+    "id": 18,
+    "tile": 6997,
+    "name": "The Clawed Xaskritzlik",
+    "faction": "Hive",
+    "factionDef": "Insect",
+    "biome": "Desert",
+    "lat": -6.93,
+    "lon": -79.85,
+    "elevation_m": 324.0,
+    "temp_c": 37.3,
+    "rain_mm": 112,
+    "hilliness": "SmallHills",
+    "coastal": false,
+    "on_river": false,
+    "on_road": true,
+    "region": null
+   },
+   {
+    "id": 34,
+    "tile": 5306,
+    "name": "Winged Grixskritthak",
+    "faction": "Hive",
+    "factionDef": "Insect",
+    "biome": "AB_FeraliskInfestedJungle",
+    "lat": 33.7,
+    "lon": -73.84,
+    "elevation_m": 406.0,
+    "temp_c": 39.9,
+    "rain_mm": 296,
+    "hilliness": "Flat",
+    "coastal": false,
+    "on_river": false,
+    "on_road": true,
+    "region": "Raerados Islands"
+   },
+   {
+    "id": 27,
+    "tile": 6662,
+    "name": "Arden",
+    "faction": "Nebium",
+    "factionDef": "OutlanderCivil",
+    "biome": "AB_FeraliskInfestedJungle",
+    "lat": -2.33,
+    "lon": 85.05,
+    "elevation_m": 191.0,
+    "temp_c": 33.1,
+    "rain_mm": 1767,
+    "hilliness": "Mountainous",
+    "coastal": true,
+    "on_river": true,
+    "on_road": true,
+    "region": null
+   },
+   {
+    "id": 15,
+    "tile": 10136,
+    "name": "Hope's Sound",
+    "faction": "Nebium",
+    "factionDef": "OutlanderCivil",
+    "biome": "Desert",
+    "lat": 41.42,
+    "lon": -82.9,
+    "elevation_m": 541.0,
+    "temp_c": 31.2,
+    "rain_mm": 183,
+    "hilliness": "SmallHills",
+    "coastal": false,
+    "on_river": false,
+    "on_road": true,
+    "region": null
+   },
+   {
+    "id": 32,
+    "tile": 14744,
+    "name": "Ouithou",
+    "faction": "Nebium",
+    "factionDef": "OutlanderCivil",
+    "biome": "AridShrubland",
+    "lat": -3.07,
+    "lon": 78.84,
+    "elevation_m": 575.0,
+    "temp_c": 36.7,
+    "rain_mm": 385,
+    "hilliness": "Flat",
+    "coastal": false,
+    "on_river": false,
+    "on_road": true,
+    "region": null
+   },
+   {
+    "id": 7,
+    "tile": 2234,
+    "name": "Zucchiniden",
+    "faction": "Nebium",
+    "factionDef": "OutlanderCivil",
+    "biome": "AridShrubland",
+    "lat": -16.19,
+    "lon": 81.84,
+    "elevation_m": 584.0,
+    "temp_c": 33.4,
+    "rain_mm": 215,
+    "hilliness": "Flat",
+    "coastal": false,
+    "on_river": false,
+    "on_road": true,
+    "region": "Gua Mountains"
+   },
+   {
+    "id": 6,
+    "tile": 18458,
+    "name": "Barma Stream",
+    "faction": "People of Mabo",
+    "factionDef": "Jawa_WildsteamClan",
+    "biome": "AridShrubland",
+    "lat": 31.41,
+    "lon": -86.85,
+    "elevation_m": 436.0,
+    "temp_c": 29.2,
+    "rain_mm": 311,
+    "hilliness": "Flat",
+    "coastal": false,
+    "on_river": false,
+    "on_road": true,
+    "region": null
+   },
+   {
+    "id": 133,
+    "tile": 10151,
+    "name": "Colony",
+    "faction": "Sacrileg Hunters",
+    "factionDef": "PlayerColony</def>\n\t\t\t\t\t\t<loadID>21</loadID>\n\t\t\t\t\t\t<randomKey>1532974494</randomKey>\n\t\t\t\t\t\t<colorFromSpectrum>0.63151741</colorFromSpectrum>\n\t\t\t\t\t\t<relations>\n\t\t\t\t\t\t\t<li>\n\t\t\t\t\t\t\t\t<other>Faction_0</other>\n\t\t\t\t\t\t\t</li>\n\t\t\t\t\t\t\t<li>\n\t\t\t\t\t\t\t\t<other>Faction_1</other>\n\t\t\t\t\t\t\t</li>\n\t\t\t\t\t\t\t<li>\n\t\t\t\t\t\t\t\t<other>Faction_2</other>\n\t\t\t\t\t\t\t</li>\n\t\t\t\t\t\t\t<li>\n\t\t\t\t\t\t\t\t<other>Faction_3</other>\n\t\t\t\t\t\t\t</li>\n\t\t\t\t\t\t\t<li>\n\t\t\t\t\t\t\t\t<other>Faction_4</other>\n\t\t\t\t\t\t\t</li>\n\t\t\t\t\t\t\t<li>\n\t\t\t\t\t\t\t\t<other>Faction_5</other>\n\t\t\t\t\t\t\t</li>\n\t\t\t\t\t\t\t<li>\n\t\t\t\t\t\t\t\t<other>Faction_6</other>\n\t\t\t\t\t\t\t</li>\n\t\t\t\t\t\t\t<li>\n\t\t\t\t\t\t\t\t<other>Faction_7</other>\n\t\t\t\t\t\t\t</li>\n\t\t\t\t\t\t\t<li>\n\t\t\t\t\t\t\t\t<other>Faction_8</other>\n\t\t\t\t\t\t\t</li>\n\t\t\t\t\t\t\t<li>\n\t\t\t\t\t\t\t\t<other>Faction_9</other>\n\t\t\t\t\t\t\t</li>\n\t\t\t\t\t\t\t<li>\n\t\t\t\t\t\t\t\t<other>Faction_10</other>\n\t\t\t\t\t\t\t\t<kind>Hostile</kind>\n\t\t\t\t\t\t\t\t<goodwill>-100</goodwill>\n\t\t\t\t\t\t\t</li>\n\t\t\t\t\t\t\t<li>\n\t\t\t\t\t\t\t\t<other>Faction_11</other>\n\t\t\t\t\t\t\t\t<kind>Hostile</kind>\n\t\t\t\t\t\t\t\t<goodwill>-100</goodwill>\n\t\t\t\t\t\t\t</li>\n\t\t\t\t\t\t\t<li>\n\t\t\t\t\t\t\t\t<other>Faction_12</other>\n\t\t\t\t\t\t\t\t<kind>Hostile</kind>\n\t\t\t\t\t\t\t\t<goodwill>-100</goodwill>\n\t\t\t\t\t\t\t</li>\n\t\t\t\t\t\t\t<li>\n\t\t\t\t\t\t\t\t<other>Faction_13</other>\n\t\t\t\t\t\t\t\t<kind>Hostile</kind>\n\t\t\t\t\t\t\t\t<goodwill>-100</goodwill>\n\t\t\t\t\t\t\t</li>\n\t\t\t\t\t\t\t<li>\n\t\t\t\t\t\t\t\t<other>Faction_14</other>\n\t\t\t\t\t\t\t</li>\n\t\t\t\t\t\t\t<li>\n\t\t\t\t\t\t\t\t<other>Faction_15</other>\n\t\t\t\t\t\t\t\t<kind>Hostile</kind>\n\t\t\t\t\t\t\t\t<goodwill>-100</goodwill>\n\t\t\t\t\t\t\t</li>\n\t\t\t\t\t\t\t<li>\n\t\t\t\t\t\t\t\t<other>Faction_16</other>\n\t\t\t\t\t\t\t\t<kind>Hostile</kind>\n\t\t\t\t\t\t\t\t<goodwill>-100</goodwill>\n\t\t\t\t\t\t\t</li>\n\t\t\t\t\t\t\t<li>\n\t\t\t\t\t\t\t\t<other>Faction_17</other>\n\t\t\t\t\t\t\t\t<kind>Hostile</kind>\n\t\t\t\t\t\t\t\t<goodwill>-100</goodwill>\n\t\t\t\t\t\t\t</li>\n\t\t\t\t\t\t\t<li>\n\t\t\t\t\t\t\t\t<other>Faction_18</other>\n\t\t\t\t\t\t\t\t<kind>Hostile</kind>\n\t\t\t\t\t\t\t\t<goodwill>-100</goodwill>\n\t\t\t\t\t\t\t</li>\n\t\t\t\t\t\t\t<li>\n\t\t\t\t\t\t\t\t<other>Faction_19</other>\n\t\t\t\t\t\t\t\t<kind>Hostile</kind>\n\t\t\t\t\t\t\t\t<goodwill>-100</goodwill>\n\t\t\t\t\t\t\t</li>\n\t\t\t\t\t\t\t<li>\n\t\t\t\t\t\t\t\t<other>Faction_20</other>\n\t\t\t\t\t\t\t\t<kind>Hostile</kind>\n\t\t\t\t\t\t\t\t<goodwill>-100</goodwill>\n\t\t\t\t\t\t\t</li>\n\t\t\t\t\t\t\t<li>\n\t\t\t\t\t\t\t\t<other>Faction_22</other>\n\t\t\t\t\t\t\t</li>\n\t\t\t\t\t\t</relations>\n\t\t\t\t\t\t<kidnapped>\n\t\t\t\t\t\t\t<kidnappedPawns />\n\t\t\t\t\t\t</kidnapped>\n\t\t\t\t\t\t<ideos>\n\t\t\t\t\t\t\t<primaryIdeo>Ideo_18</primaryIdeo>\n\t\t\t\t\t\t\t<ideosMinor />\n\t\t\t\t\t\t</ideos>\n\t\t\t\t\t\t<predatorThreats />\n\t\t\t\t\t\t<questTags IsNull=\"True\" />\n\t\t\t\t\t\t<mechColor>RGBA(0.000, 0.737, 0.847, 1.000)</mechColor>\n\t\t\t\t\t</li>\n\t\t\t\t\t<li>\n\t\t\t\t\t\t<leader>Thing_Human20791</leader>\n\t\t\t\t\t\t<def>CASacrilegHunters",
+    "biome": "Desert",
+    "lat": 47.43,
+    "lon": -69.24,
+    "elevation_m": 441.0,
+    "temp_c": 40.1,
+    "rain_mm": 102,
+    "hilliness": "Flat",
+    "coastal": false,
+    "on_river": false,
+    "on_road": true,
+    "region": "Raerados Islands"
+   },
+   {
+    "id": 0,
+    "tile": 241,
+    "name": "Troy",
+    "faction": "The Exodus Empire",
+    "factionDef": "Jawa_AscendantHelix",
+    "biome": "AridShrubland",
+    "lat": -7.02,
+    "lon": 90.0,
+    "elevation_m": 511.0,
+    "temp_c": 26.0,
+    "rain_mm": 507,
+    "hilliness": "Flat",
+    "coastal": false,
+    "on_river": false,
+    "on_road": true,
+    "region": null
+   },
+   {
+    "id": 31,
+    "tile": 5099,
+    "name": "Chemartoma",
+    "faction": "The Iracam Nation",
+    "factionDef": "Jawa_IndigenousTribes",
+    "biome": "AridShrubland",
+    "lat": 20.65,
+    "lon": 78.71,
+    "elevation_m": 560.0,
+    "temp_c": 36.2,
+    "rain_mm": 177,
+    "hilliness": "Flat",
+    "coastal": false,
+    "on_river": false,
+    "on_road": true,
+    "region": null
+   },
+   {
+    "id": 16,
+    "tile": 5463,
+    "name": "Goco Thicket",
+    "faction": "The Iracam Nation",
+    "factionDef": "Jawa_IndigenousTribes",
+    "biome": "PoisonForest",
+    "lat": 46.98,
+    "lon": 105.0,
+    "elevation_m": 798.0,
+    "temp_c": 13.0,
+    "rain_mm": 1118,
+    "hilliness": "Flat",
+    "coastal": false,
+    "on_river": false,
+    "on_road": true,
+    "region": null
+   },
+   {
+    "id": 5,
+    "tile": 16872,
+    "name": "Gray Comareiro",
+    "faction": "The Iracam Nation",
+    "factionDef": "Jawa_IndigenousTribes",
+    "biome": "Desert",
+    "lat": -4.74,
+    "lon": 62.75,
+    "elevation_m": 2286.0,
+    "temp_c": 39.5,
+    "rain_mm": 157,
+    "hilliness": "SmallHills",
+    "coastal": false,
+    "on_river": false,
+    "on_road": true,
+    "region": "Gua Mountains"
+   },
+   {
+    "id": 33,
+    "tile": 20658,
+    "name": "Louracan Stream",
+    "faction": "The Iracam Nation",
+    "factionDef": "Jawa_IndigenousTribes",
+    "biome": "AridShrubland",
+    "lat": -22.01,
+    "lon": 75.73,
+    "elevation_m": 536.0,
+    "temp_c": 38.9,
+    "rain_mm": 143,
+    "hilliness": "Flat",
+    "coastal": false,
+    "on_river": false,
+    "on_road": true,
+    "region": "Gua Mountains"
+   },
+   {
+    "id": 19,
+    "tile": 19139,
+    "name": "Tretrocam",
+    "faction": "The Iracam Nation",
+    "factionDef": "Jawa_IndigenousTribes",
+    "biome": "Desert",
+    "lat": -12.44,
+    "lon": -91.32,
+    "elevation_m": 397.0,
+    "temp_c": 25.3,
+    "rain_mm": 368,
+    "hilliness": "Flat",
+    "coastal": false,
+    "on_river": false,
+    "on_road": true,
+    "region": "Raerados Islands"
+   },
+   {
+    "id": 12,
+    "tile": 3742,
+    "name": "Torment Boulder",
+    "faction": "The Murderous Pack",
+    "factionDef": "VFEP_Junkers",
+    "biome": "PoisonForest",
+    "lat": -72.66,
+    "lon": 131.84,
+    "elevation_m": 453.0,
+    "temp_c": 13.8,
+    "rain_mm": 1086,
+    "hilliness": "Flat",
+    "coastal": false,
+    "on_river": false,
+    "on_road": true,
+    "region": null
+   },
+   {
+    "id": 28,
+    "tile": 4036,
+    "name": "Tasca",
+    "faction": "The Tolodore Kinship",
+    "factionDef": "Jawa_GeonosianFoundryHive",
+    "biome": "AB_FeraliskInfestedJungle",
+    "lat": 13.86,
+    "lon": 80.66,
+    "elevation_m": 189.0,
+    "temp_c": 37.2,
+    "rain_mm": 1761,
+    "hilliness": "Mountainous",
+    "coastal": true,
+    "on_river": true,
+    "on_road": true,
+    "region": null
+   },
+   {
+    "id": 3,
+    "tile": 7403,
+    "name": "Toxo Gorge",
+    "faction": "The Tolodore Kinship",
+    "factionDef": "Jawa_GeonosianFoundryHive",
+    "biome": "ZBiome_DesertOasis",
+    "lat": 0.0,
+    "lon": -22.43,
+    "elevation_m": 2045.0,
+    "temp_c": 63.3,
+    "rain_mm": 1728,
+    "hilliness": "Flat",
+    "coastal": false,
+    "on_river": true,
+    "on_road": true,
+    "region": "Hadum Island"
+   },
+   {
+    "id": 30,
+    "tile": 14996,
+    "name": "Arhenhad",
+    "faction": "Waora",
+    "factionDef": "Jawa_DeepwaterCompact",
+    "biome": "AridShrubland",
+    "lat": 3.07,
+    "lon": 101.16,
+    "elevation_m": 64.0,
+    "temp_c": 16.7,
+    "rain_mm": 645,
+    "hilliness": "Mountainous",
+    "coastal": true,
+    "on_river": false,
+    "on_road": true,
+    "region": null
+   },
+   {
+    "id": 1,
+    "tile": 8089,
+    "name": "Canyonland-by-the-Crag",
+    "faction": "Waora",
+    "factionDef": "Jawa_DeepwaterCompact",
+    "biome": "Desert",
+    "lat": 5.76,
+    "lon": 66.27,
+    "elevation_m": 2525.0,
+    "temp_c": 35.1,
+    "rain_mm": 204,
+    "hilliness": "LargeHills",
+    "coastal": false,
+    "on_river": false,
+    "on_road": true,
+    "region": null
+   },
+   {
+    "id": 26,
+    "tile": 986,
+    "name": "Grasslanddale",
+    "faction": "Waora",
+    "factionDef": "Jawa_DeepwaterCompact",
+    "biome": "Desert",
+    "lat": 18.58,
+    "lon": 85.84,
+    "elevation_m": 120.0,
+    "temp_c": 32.6,
+    "rain_mm": 177,
+    "hilliness": "Mountainous",
+    "coastal": true,
+    "on_river": false,
+    "on_road": true,
+    "region": null
+   }
+  ]
+ },
+ "landmarks": {
+  "count": 46,
+  "by_def": {
+   "AB_PropaneLakes": 2,
+   "Wetland": 2,
+   "VEE_AlluvialFan": 2,
+   "Plateau": 2,
+   "Cove": 2,
+   "VEE_ToxicCrater": 2,
+   "VEE_CoralReef": 2,
+   "VEE_CraterLake": 2,
+   "ToxicLake": 2,
+   "VEE_Volcano": 1,
+   "VEE_GlacialMoraine": 1,
+   "HotSprings": 1,
+   "VEE_JaggedRocks": 1,
+   "VEE_SulfuricRiver": 1,
+   "VEE_CalmBasin": 1,
+   "Chasm": 1,
+   "DryLake": 1,
+   "VEE_SaltPlains": 1,
+   "VEE_ResurgentCaldera": 1,
+   "VEE_RisingWaters": 1
+  }
+ },
+ "regions": {
+  "count": 27,
+  "by_def": {
+   "Island": 14,
+   "Peninsula": 6,
+   "MountainRange": 4,
+   "Archipelago": 2,
+   "Desert": 1
+  },
+  "named": [
+   {
+    "name": "Almalium Island",
+    "def": "Island",
+    "tiles": 246
+   },
+   {
+    "name": "Hadum Island",
+    "def": "Island",
+    "tiles": 251
+   },
+   {
+    "name": "Terberon Island",
+    "def": "Island",
+    "tiles": 21
+   },
+   {
+    "name": "Erebium Reef",
+    "def": "Island",
+    "tiles": 53
+   },
+   {
+    "name": "Hadseler Isle",
+    "def": "Island",
+    "tiles": 19
+   },
+   {
+    "name": "Chatonne Island",
+    "def": "Island",
+    "tiles": 15
+   },
+   {
+    "name": "Hamemenla Island",
+    "def": "Island",
+    "tiles": 42
+   },
+   {
+    "name": "Xostrabust Point",
+    "def": "Island",
+    "tiles": 96
+   },
+   {
+    "name": "Gnu Island",
+    "def": "Island",
+    "tiles": 17
+   },
+   {
+    "name": "Hardy Jaguar Island",
+    "def": "Island",
+    "tiles": 35
+   },
+   {
+    "name": "Gray Pelican Islet",
+    "def": "Island",
+    "tiles": 29
+   },
+   {
+    "name": "Artheistan Rock",
+    "def": "Island",
+    "tiles": 17
+   },
+   {
+    "name": "Isle Ballerrei",
+    "def": "Island",
+    "tiles": 19
+   },
+   {
+    "name": "Wabum Point",
+    "def": "Island",
+    "tiles": 18
+   },
+   {
+    "name": "Raerados Islands",
+    "def": "Archipelago",
+    "tiles": 3814
+   },
+   {
+    "name": "Aardvarkhip Archipelago",
+    "def": "Archipelago",
+    "tiles": 1905
+   },
+   {
+    "name": "Staslior Peninsula",
+    "def": "Peninsula",
+    "tiles": 122
+   },
+   {
+    "name": "Cagaro Peninsula",
+    "def": "Peninsula",
+    "tiles": 333
+   },
+   {
+    "name": "Trarro Peninsula",
+    "def": "Peninsula",
+    "tiles": 138
+   },
+   {
+    "name": "Cape Hinstthberon",
+    "def": "Peninsula",
+    "tiles": 139
+   },
+   {
+    "name": "Tracamborro Peninsula",
+    "def": "Peninsula",
+    "tiles": 223
+   },
+   {
+    "name": "Reinum Cape",
+    "def": "Peninsula",
+    "tiles": 81
+   },
+   {
+    "name": "Gua Mountains",
+    "def": "MountainRange",
+    "tiles": 854
+   },
+   {
+    "name": "Josephine's Pride Mountains",
+    "def": "MountainRange",
+    "tiles": 961
+   },
+   {
+    "name": "Vefenera Mountains",
+    "def": "MountainRange",
+    "tiles": 990
+   },
+   {
+    "name": "Butwitdos Mountains",
+    "def": "MountainRange",
+    "tiles": 219
+   },
+   {
+    "name": "Rogabandos Desert",
+    "def": "Desert",
+    "tiles": 106
+   }
+  ]
+ },
+ "other_world_objects": {
+  "Settlement": 37,
+  "Site": 18,
+  "BasicAsteroidMapParent": 38,
+  "VanillaGravshipExpanded.IceAsteroidMapParent": 2,
+  "DeepOrbit.BigAsteroidMapParent": 40
+ }
+}

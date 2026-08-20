@@ -752,6 +752,71 @@ FACTION_LABEL = {
 }
 
 
+# ---------------------------------------------------------------------------
+# HILLINESS and SWAMPINESS. Both are per-tile state the engine stores and NEVER
+# recomputes - if we do not write them, hilliness stays 0/Undefined. Neither is a
+# function of elevation in vanilla (Terrain rolls them from their own noise), so on
+# a hand-authored planet they are ours to decide. These two functions are that
+# decision; they used to live in the renderer, which was the wrong place.
+# ---------------------------------------------------------------------------
+HILLINESS = {"Flat": 1, "SmallHills": 2, "LargeHills": 3, "Mountainous": 4,
+             "Impassable": 5}
+
+
+def hilliness(w, reg):
+    """Roughness is LOCAL RELIEF - the drop between a tile and its neighbours - not
+    height. A 2 km plateau is flat to stand on; a 400 m escarpment is not."""
+    n, elev, sea, nbl = w["n"], w["elev"], w["sea"], w["nbl"]
+    rel = np.zeros(n)
+    for t in range(n):
+        vals = [elev[t]] + [elev[u] for u in nbl[t]]
+        rel[t] = max(vals) - min(vals)
+
+    # 🔑 Calibrated against THIS planet's relief, not against a guess. Land relief
+    # runs p50=132 p80=231 p90=325 p95=439, so the old 190/430/780 cuts made 73% of
+    # the planet Flat - a pancake with eight named ranges on it. These cuts give
+    # Flat 36 / SmallHills 38 / LargeHills 19 / Mountainous 7, which is a desert
+    # world with real bones: vast plains AND broken country.
+    out = np.where(rel < 110, 1, np.where(rel < 210, 2, np.where(rel < 380, 3, 4)))
+
+    # ⭐ The crags are DEFINED as broken ground, and their relief alone (p50 = 140)
+    # would print most of them Flat. Biome floors the roughness; relief only raises it.
+    crag = np.array([b in ("AB_RockyCrags", "ZBiome_Badlands") for b in w["biome"]])
+    out = np.where(crag & (out < 2), 2, out)
+    out = np.where(crag & (rel > 170) & (out < 3), 3, out)
+    out = np.where(sea, 1, out)           # water is Flat; the engine expects that
+
+    # 🔴 IMPASSABLE EXISTS ON THIS PLANET IN EXACTLY ONE PLACE: the Scald Spine crest,
+    # outside the Gate - 53 tiles. It makes the Spine genuinely expensive to cross and
+    # bends traffic toward the Scald Gate, which is the lore's one breach.
+    # ⚠️ It does NOT seal the crater and this file will not pretend it does: the ring
+    # is broken, and manufacturing a contiguous wall would be inventing terrain to
+    # serve a sentence. Everywhere else Impassable is banned - this is a caravan game
+    # whose distances are the story, and stray impassable tiles just break routes.
+    gate = point_dist(w["geo"].vec, 49.0, 180.0) < 9.0
+    spine = np.array([reg.get(t) == "The Scald Spine" for t in range(n)])
+    out = np.where(spine & (elev > 900) & ~gate & ~sea, 5, out)
+    return out.astype(np.uint8)
+
+
+# Swampiness drives how much marsh and standing water a landing map gets. On Ash'karr
+# that is a property of the GREEN, and the green is a property of the rivers - the
+# desert has none of it and the salt pans least of all.
+SWAMPINESS = {
+    "AB_MiasmicMangrove": 0.85, "COMIGO_GreaterSwamp_Tropical": 0.80,
+    "AB_FeraliskInfestedJungle": 0.45, "AB_MycoticJungle": 0.40,
+    "PoisonForest": 0.35, "ZBiome_DesertOasis": 0.20, "AB_PropaneLakes": 0.30,
+    "BMT_FungalForest": 0.25, "ZBiome_Grasslands": 0.05,
+}
+
+
+def swampiness(w):
+    out = np.zeros(w["n"])
+    for t, b in enumerate(w["biome"]):
+        out[t] = 0.0 if w["sea"][t] else SWAMPINESS.get(b, 0.0)
+    return out
+
+
 def write_bundle(w):
     """⭐ THE MAP, as data. Four files, all committed, all readable without RimWorld."""
     import csv as _csv
@@ -790,16 +855,20 @@ def write_bundle(w):
     print("home       t%d %s  %s %dm  arc %.1f"
           % (home, HOME_NAME, w["biome"][home], round(w["elev"][home]), w["arc"][home]))
 
+    hilly, swamp = hilliness(w, reg), swampiness(w)
+
     with open(BUNDLE + "_tiles.csv", "w", newline="", encoding="utf-8") as fh:
         wr = _csv.writer(fh)
         wr.writerow(["tile", "lat", "lon", "arc", "bearing", "elev_m", "temp_c",
-                     "rain_mm", "biome", "water", "river_flow", "region"])
+                     "rain_mm", "biome", "water", "river_flow", "region",
+                     "hilliness", "swampiness"])
         for t in range(n):
             wr.writerow([t, round(float(geo.lat[t]), 4), round(float(geo.lon[t]), 4),
                          round(float(w["arc"][t]), 2), round(float(w["bear"][t]), 2),
                          int(round(w["elev"][t])), round(float(temp[t]), 1),
                          int(round(rain[t])), w["biome"][t], int(bool(w["sea"][t])),
-                         int(w["acc"][t]) if w["chan"][t] else 0, reg.get(t, "")])
+                         int(w["acc"][t]) if w["chan"][t] else 0, reg.get(t, ""),
+                         int(hilly[t]), round(float(swamp[t]), 3)])
 
     with open(BUNDLE + "_settlements.csv", "w", newline="", encoding="utf-8") as fh:
         wr = _csv.writer(fh)

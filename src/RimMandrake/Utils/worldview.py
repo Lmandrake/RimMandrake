@@ -638,18 +638,24 @@ class BundlePlanet(object):
         self.rain = np.array([float(r["rain_mm"]) for r in rows])
         self.arc = np.array([float(r["arc"]) for r in rows])
         self.is_water = np.array([r["water"] == "1" for r in rows])
-        self.swamp = np.zeros(self.n)
         self.grid = type("G", (), {"arrays": {"tilePollution": [0] * self.n}})()
-        # hilliness from local relief, same rule the writer used
-        self.hilly = np.ones(self.n, np.uint8)
-        for t in range(self.n):
-            if self.is_water[t]:
-                continue
-            vals = [self.elev[t]] + [self.elev[u] for u in g.neighbours(t)]
-            rel = max(vals) - min(vals)
-            self.hilly[t] = (5 if rel > 1150 and self.elev[t] > 2400 else
-                             4 if rel > 780 else 3 if rel > 430 else
-                             2 if rel > 190 else 1)
+        # 🔑 Hilliness and swampiness are DESIGN, so they come from the bundle. They
+        # used to be derived here, which put a decision about the planet inside the
+        # renderer - and this renderer is supposed to know nothing about Ash'karr.
+        # The fallback below exists only for older bundles that predate the columns.
+        if "hilliness" in rows[0]:
+            self.hilly = np.array([int(r["hilliness"]) for r in rows], np.uint8)
+            self.swamp = np.array([float(r["swampiness"]) for r in rows])
+        else:
+            self.swamp = np.zeros(self.n)
+            self.hilly = np.ones(self.n, np.uint8)
+            for t in range(self.n):
+                if self.is_water[t]:
+                    continue
+                vals = [self.elev[t]] + [self.elev[u] for u in g.neighbours(t)]
+                rel = max(vals) - min(vals)
+                self.hilly[t] = (4 if rel > 780 else 3 if rel > 430 else
+                                 2 if rel > 190 else 1)
         names, idx = [], {}
         self.feature_idx = np.full(self.n, 0xFFFF, np.uint16)
         for t, r in enumerate(rows):
