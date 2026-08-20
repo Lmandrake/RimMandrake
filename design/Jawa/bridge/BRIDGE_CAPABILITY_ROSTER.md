@@ -167,3 +167,119 @@ Counts: 24 `WeatherDef` · 38 `GameConditionDef` · 11 `RaidStrategyDef` ·
 `difficulty.threatScale` + `allowBigThreats=false`.
 ⚠️ `AlertsReadout.activeAlerts` is **private** — `list_alerts` needs reflection. UNCERTAIN.
 
+
+---
+
+## 3. DEEP PAWN EDITING
+
+🔴 **"Notes" DO NOT EXIST — NOT FOUND, and this is a definite negative, not a gap in the
+search.** There is no free-text note field on `Pawn` or any `Pawn_*Tracker` in 1.6/Odyssey.
+`Pawn` does not implement `IRenameable`; there is no `Dialog_Note`. `Pawn_RecordsTracker`
+is a `DefMap<RecordDef,float>` — numeric and RecordDef-keyed only.
+**The only writable free text on a pawn is `pawn.story.title`** (the custom title after the
+name), which is unvalidated when set from code. The other option is
+`TaleRecorder.RecordTale(TaleDef, args).customLabel` — free text, but it lives on a *Tale*,
+not on the pawn. ⇒ If the owner wants per-pawn notes we must **build the storage
+ourselves** (a `GameComponent` keyed by pawn id); nothing in the game will carry it.
+
+| tool | what it does | anchor | risk |
+|---|---|---|---|
+| `set_pawn_name` | first / nick / last, or single | `pawn.Name = new NameTriple(f,n,l)` — props are get-only, build a new object. Check `name.IsValid` | low |
+| `set_pawn_title` | ⭐ the only free text on a pawn | `pawn.story.Title` (setter drops a value equal to the default) | low |
+| `set_pawn_backstory` | childhood / adulthood | `pawn.story.Childhood/Adulthood = BackstoryDef` | **med** |
+| `add_pawn_trait` / `remove_pawn_trait` | | `story.traits.GainTrait(new Trait(def,degree,forced))` / `RemoveTrait` | low |
+| `set_pawn_skill` | level + passion + xp | `skills.GetSkill(def).Level / .passion / .xpSinceLastLevel` | med |
+| `set_pawn_appearance` | head, body, hair, beard, fur, tattoos, hair + skin colour | `story.headType/bodyType/hairDef/furDef/HairColor/skinColorOverride`, `style.beardDef/FaceTattoo/BodyTattoo` | low |
+| `set_pawn_faction` | | `pawn.SetFaction(faction, recruiter)` | **med** |
+| `recruit_pawn` | prisoner/guest → player, properly | `RecruitUtility.Recruit(pawn, faction, recruiter)` | low |
+| `set_pawn_ideo` / `set_pawn_certainty` | | `pawn.ideo.SetIdeo(ideo)`; certainty via `OffsetCertainty/Reassure` | med |
+| `assign_ideo_role` | | `Precept_Role.Assign(pawn, addThoughts)` / `Unassign` | med |
+| `add_pawn_relation` | | `relations.AddDirectRelation(def, other)` | low |
+| `add_pawn_gene` / `remove_pawn_gene` | | `pawn.genes.AddGene(GeneDef, xenogene)` / `RemoveGene` | low |
+| `give_pawn_equipment` | | `ThingMaker.MakeThing` + `CompQuality.SetQuality` → `equipment.AddEquipment` | med |
+| `give_pawn_apparel` | | `PawnApparelGenerator.GenerateApparelOfDefFor(pawn, def)` → `apparel.Wear(...)` | low |
+| `clear_pawn_gear` | | `equipment.DestroyAllEquipment()`, `apparel.DestroyAll()`, `inventory.DestroyAll()` | low |
+| `add_pawn_inventory` | | `inventory.innerContainer.TryAddOrTransfer` | low |
+| `add_pawn_hediff` / `remove_pawn_hediff` | | `health.AddHediff(def, part, dinfo, result)` / `RemoveHediff` | med |
+| `install_bionic` | ⭐ no RecipeDef needed | `health.RestorePart(part); health.AddHediff(bionicDef, part)` | med |
+| `restore_body_part` | | `health.RestorePart(part)` | **high** |
+| `set_pawn_need` | | `needs.TryGetNeed(def).CurLevel` | low |
+| `add_pawn_thought` | | `needs.mood.thoughts.memories.TryGainMemory(def, otherPawn, sourcePrecept)` | low |
+| `set_pawn_age` | | `ageTracker.DebugSetAge(ticks)` — 1 yr = 3,600,000 | **high** |
+| `set_pawn_gender` | | `pawn.gender` — plain field | med |
+| `give_pawn_ability` / `set_pawn_psylink` | | `abilities.GainAbility(def)`; `pawn.ChangePsylinkLevel(offset, sendLetter)` | med |
+
+### 🔴 The refresh and silent-failure traps — these are what make pawn editing dangerous
+
+* **`set_pawn_backstory` refreshes NOTHING for you.** The setters only null
+  `backstoriesCache`. You must call `pawn.Notify_DisabledWorkTypesChanged()`,
+  `pawn.skills.Notify_SkillDisablesChanged()`, `pawn.skills.DirtyAptitudes()` and
+  `MeditationFocusTypeAvailabilityCache.ClearFor(pawn)`. **The game's own debug tool only
+  does the last one.**
+* **`GainTrait` does NOT check conflicts, and there is no trait cap in `TraitSet`.** We must
+  check `TraitDef.ConflictsWith(TraitDef)` (conflictingTraits + exclusionTags) and
+  `BackstoryDef.DisallowsTrait(def, degree)` ourselves. A duplicate def logs a warning and
+  silently does not add.
+* **`SkillRecord.Level` read-back ≠ what you wrote** — the getter returns `GetLevel()`
+  *including aptitudes*. Verify against `levelInt` / `GetLevel(false)`. And the setter does
+  **not** reset `xpSinceLastLevel`, so a pawn can insta-level after a write.
+* **`equipment.AddEquipment` `Log.Error`s and does nothing if a Primary already exists.**
+  Call `MakeRoomFor(eq)` first, or the tool reports success having changed nothing.
+* **Appearance changes do not dirty the renderer.** Call
+  `pawn.Drawer.renderer.SetAllGraphicsDirty()` (or `style.Notify_StyleItemChanged()`).
+* **`health.RestorePart` is RECURSIVE into child parts**, wipes their hediffs, and does not
+  drop the bionic it removed. Destructive and silent.
+* **`ChangePsylinkLevel` 0 → N needs TWO calls** — the first creates the hediff at level 1
+  and returns. Each level grants a **random** psycast.
+* **`SetIdeo` randomises certainty**, unclaims ideo-forbidden beds, and may strip spouse or
+  bond relations and send a letter. It is not a quiet field write.
+* ✅ **Self-refreshing and safe:** `GainTrait`/`RemoveTrait`, `AddGene`/`RemoveGene`,
+  `apparel.Wear`, `pawn.SetFaction` (handles lord loss, jobs, drafter, guest status,
+  mapPawns, needs, relations, colonist bar, surgery bills).
+* ⚠️ Nothing guards direct appearance assignment — off-gender head types, gene-requiring
+  heads and an adult body on a child all "work". Child body is forced only at load.
+
+---
+
+## 4. CONDUITS, WATER AND FUEL PIPES
+
+Vanilla RimWorld has **power conduits only**. Everything else is modded. Measured against
+the owner's real 578-mod list, there are exactly **three resource-network runtimes active**:
+
+| framework | packageId | assembly | manager type |
+|---|---|---|---|
+| **VEF PipeSystem** | `oskarpotocki.vanillafactionsexpanded.core` | `…\2023507013\1.6\Assemblies\PipeSystem.dll` | `PipeSystem.PipeNetManager` |
+| **Rimefeller** (oil/fuel) | `dubwise.rimefeller` | `…\1321849735\1.6\Assemblies\Rimefeller.dll` | `Rimefeller.MapComponent_Rimefeller` |
+| **Dubs Bad Hygiene Lite** | `dubwise.dubsbadhygiene.lite` | `…\2570319432\1.6\Assemblies\BadHygiene.dll` | `DubsBadHygiene.MapComponent_Hygiene` |
+
+Consumers riding on VEF PipeSystem: Vanilla Chemfuel Expanded, Vanilla Helixien Gas
+Expanded, Reel's Turret Pipeline. `PipeSystem.PipeNetDef`, `Building_Pipe` and
+`Building_PipeValve` are **CONFIRMED public** — they appear as XML `<thingClass>` and def
+root nodes in those mods' Defs.
+
+🔴 **DBH is the LITE package and plumbing is behind a runtime flag.** The DLL carries
+`DBHLiteMode`, `LiteMode`, `Plumbing_Active` and a check on `Dubwise.DubsBadHygiene.Plumbing`.
+**Water pipes may be disabled in this install even though the types load.** Verify
+`Plumbing_Active` at runtime before shipping any water tool. The full DBH
+(`dubwise.dubsbadhygiene`, 836308268) is present but **INACTIVE**.
+
+📌 `flangopink.metalpipe` / `metalpipehorseshoe` are **decorative textures, not networks**.
+No Project RimFactory, no SRTS.
+
+| tool | what it does | anchor | risk |
+|---|---|---|---|
+| `power_net_info` | vanilla: nets, gen/consumption/stored, connectivity | `Map.powerNetManager`, `PowerNet`, `CompPower` | low |
+| `place_conduit_line` | vanilla conduits along a path | `GenSpawn.Spawn(ThingDefOf.PowerConduit, …)` | low |
+| `pipe_net_info` | ⭐ generic reflective reader over all three frameworks | `map.GetComponent<PipeSystem.PipeNetManager>()` etc. | med |
+| `place_pipe_line` | lay a modded pipe along a path, any framework | `Building_Pipe` via `GenSpawn.Spawn`, then dirty the grid | med |
+| `pipe_grid_rebuild` | after bulk placement | `Rimefeller.RebuildPipeGrid` / `DirtyAllPipeGrids`; DBH `DirtyPipeGrid` | low |
+
+⚠️ **UNCERTAIN and must be settled before writing these:** whether the correct handle is
+`map.GetComponent<PipeSystem.PipeNetManager>()` or the static `CachedPipeNetManager`, and
+whether `MapComponent_Rimefeller` is `public`. The type NAMES are read from the binaries;
+the IL was not.
+🔑 **A `strings` caveat that would have misled us:** plain `strings` shows ZERO standalone
+`PipeNetManager` / `PipeNet` / `CompResource` lines — only `CachedPipeNetManager`,
+`get_PipeNetManager`, `<PipeNetManager>k__BackingField`. That is .NET `#Strings` heap
+**suffix compression**, not absence. Raw byte counts: `PipeNetManager` 4, `PipeNet` 14,
+`CompResource` 11. **Absent from `strings` is not absent from the assembly.**
