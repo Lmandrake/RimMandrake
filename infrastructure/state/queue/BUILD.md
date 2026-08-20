@@ -2210,4 +2210,10 @@ criteria: 🔴 OFFLINE VALIDATION IS NOT ENOUGH HERE — it is what got `Mandrak
           wrong the first time. Closes only when the NEXT load's startup log carries zero
           `Could not load reference to Verse.GeneDef named Jawa_*` lines
           (`harvest_log.py --show scribe`).
-state:    ready
+state:    ⛔ DEAD 2026-08-19 — **the file does not exist.** Owner ruled 2026-08-15
+          *"Kill softshadow, it was a mistake"* and REP deleted it the same day; the
+          Xenotypes folder now holds only `MandrakeJawa.xtp` (fixed), `pokean.xtp`
+          (clean), `Dark Glutton`, `Dark Troll`, `mimic`. Verified on disk 2026-08-19.
+          Nothing to fix, nothing to validate, no load needed. Filed by DECIDE, killed
+          by DECIDE. The `MandrakeJawa.xtp` half is unaffected and still closes on the
+          next load's clean scribe log.
