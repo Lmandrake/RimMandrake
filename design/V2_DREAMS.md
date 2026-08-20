@@ -1478,3 +1478,317 @@ whether the Jawa economy still gets its plant cover; and whether the wet band is
 **visible from orbit**, or the rule never reaches the player.
 
 Queue pointer: `infrastructure/state/queue/DECIDE.md` → `D-V2-RAIN`.
+
+
+---
+
+## Parked out of BUILD's queue, 2026-08-19
+
+Five items the 2026-08-15 triage marked v2 or withdrew, moved here verbatim when
+the queue was stripped of everything closed. Nothing here is scheduled.
+
+
+## B25 Mod-list chores to do in one pass while the game is closed
+row:      0
+spec:     (a) Pin the 6 `loadBottom`+`loadAfter` userRules — order is correct today but rides a tie-break, not a constraint; `loadBottom` outranks `loadAfter`, keep it only on `rimdefdump`. (b) Run `src/RimMandrake/Utils/refresh.py` (wants the game down). (c) ⛔ **DEPRECATED — owner's ruling 2026-08-15: "We are keeping the mechanoids. Deprecate any action about turning mechanoids off."** Do not run it, do not revive it, do not re-derive it from the O-v2 line in any other doc. The former spec (Cherry Picker removal of the mechanoid defs and the `Mechanoid` faction) is dead; the guards it carried are now moot but were: keep Alpha Mechs `sarg.alphamechs`, and `matathias.ruthlessmechanoids` is the gravship pursuer redirect, not a mech mod. Per-mech ART curation against `design/Jawa/worldbuilding/review/mech_register.html` is a SEPARATE question and is still the owner's to make — this ruling kills the wholesale cut, not that review. (d) **O-v3** — enable `vanillaexpanded.vwel` (ws `1989352844`, installed and inactive) and dump its weapon `ThingDef`s in TWO SEPARATE tiers: `salvaged` (pistol/rifle/shotgun/sniper + `unstable` projectile variants) and `ultratech` (incl. a laser sword and a tesla gun). The split is load-bearing for the design (`design/Jawa/worldbuilding/ship_legacy_armoury.md`).
+verify:   ~~read `ModsConfig.xml`'s mtime before writing~~ — RETIRED by the owner
+          2026-08-15 (`0460ee4`, now in CLAUDE.md): *"You NEVER have to ask if
+          RimSort is open. It does not autosave, and I will never save without
+          asking. Nobody blocks on RimSort or game close for config files of any
+          kind."* Write it, game up or down. Assemblies are the only thing that
+          needs the game down, because the OS locks them.
+          Real verify: `ModsConfig.xml` parses, the activeMods count moves by
+          exactly the intended delta, and zero listed-but-missing
+          (`src/RimMandrake/Utils/check_load.py`).
+criteria: the game reaches the main menu with the new list; the two weapon tiers exist as separate dumps.
+state:    ⛔ v2 — **OWNER RULING 2026-08-15, blanket triage.** Produces no content and does not
+          reach the frozen world. Parked, not lost.
+
+## mod-list-shows-descoped-removals-9c4e12
+row:      10
+spec:     Owner broadcast, 2026-08-15: *"Game is down, offline work may begin. Stage
+          the next game load and prepare additional content. Ensure the mod list shows
+          the many removed mods correctly (BUILD)."* Relayed by REP with the state
+          measured at relay time, so you do not re-measure the settled half:
+
+          ALREADY CORRECT — live `ModsConfig.xml` (mtime 2026-08-15 11:58:30, 575
+          active) and `deployed/config/v1_freeze/ModsConfig.xml` are IDENTICAL,
+          including order, and 0 listed packageIds are missing from disk. All six
+          Descoped rows of `design/Jawa/mods/CHERRYPICK_AGENDA.md` are absent from
+          both: `VanillaExpanded.VanillaAnimalsExpanded`, `zal.giantsnake`,
+          `regrowth.botr.boilingforest`, `guppyfacesarecute.skunks`,
+          `abrolo.grimstone.beasts`, `redmattis.sapientanimals`.
+
+          WHAT IS NOT DONE, and is this item:
+          1. ✅ **ANSWERED — OWNER 2026-08-15: they stay INACTIVE BUT SUBSCRIBED, and
+             this half is CLOSED.** Do not unsubscribe them and do not file an item to.
+             ⚠️ The hazard the line below described is real and is now ACCEPTED, not
+             fixed: a RimSort re-sort or a Steam action can re-add them with no warning.
+             ⇒ The mitigation is the freeze copy, not unsubscribing — `ModsConfig.xml`
+             and the freeze must stay identical, which item 2's verify already checks.
+          2. Their defs are gone but references to them are not. Pre-record the
+             `Could not resolve cross-reference` signatures the next load will throw
+             into `infrastructure/state/EXPECTED_FAILURES_next_load.md` BEFORE launch —
+             a missed one costs a load, a duplicate costs nothing.
+          3. `RG_BoilingForest` and the six `BoilingWater*` terrains are named by
+             B64 as replaced by our own authoring; confirm nothing still points at
+             the dead defNames.
+          🔴 Game is DOWN and confirmed down (`tasklist.exe`, no `RimWorldWin64.exe`),
+          so this is the window. But `ModsConfig.xml` was written at 11:58 today and
+          REP has asked the owner whether RimSort is open — read its mtime again
+          immediately before any write, per NEXT_RELOAD §1b.
+verify:   `ModsConfig.xml` live and freeze still identical after your pass; the six
+          packageIds absent from both; every signature you expect from the removals
+          present in `EXPECTED_FAILURES_next_load.md` before the load is called.
+criteria: the next load throws no unexpected `Could not resolve cross-reference` that
+          traces to one of the six removed mods.
+state:    ⛔ v2 — **OWNER RULING 2026-08-15, blanket triage.** Produces no content and does not
+          reach the frozen world. Parked, not lost.
+
+## B66 🔴 Two generator defects, one regenerate — RIDE THIS WINDOW or lose a load
+row:      9
+spec:     🔴 **OWNER RULING 2026-08-15, AND IT IS PART (c) OF THIS ITEM — do it FIRST,
+          because it changes what a correct run produces:**
+          *"Remove any genes from our implementation of the xenotypes that aren't
+          supported in our mod at this time. We will investigate what to do later."*
+
+          ⇒ **STRIP the unresolvable gene; BUILD the species.** `pick_species` currently
+          SKIPS a species when any gene fails `_gene_exists` — that is the behaviour being
+          overturned. **No species is ever dropped for a gene again.** Filter `glist`
+          instead of `continue`-ing, and keep `skipped` for causes that are not genes.
+
+          **The complete set, measured by DECIDE at `e4d6040` — 4 genes, 6 species, one
+          bad gene each. Enumerated in full; the skip message's `missing[:3]` truncation
+          is hiding nothing.**
+
+          | gene to strip | species |
+          |---|---|
+          | `Force_Gene_LatentForceUser` | Ithorian · KelDor · Mirialan |
+          | `OuterRim_ForceAdept` | SithMassassi |
+          | `OuterRim_ForceInsensitive` | Rakata |
+          | `guy762_AbilityGene_cloak` | Defel |
+
+          ✅ Measured safe — no species empties and **none loses its head-forcing gene**:
+          Defel 18→17, Ithorian 16→15, KelDor 15→14, Mirialan 11→10, Rakata 7→6,
+          SithMassassi 14→13. (Mirialan and SithMassassi have no head-forcer before OR
+          after — pre-existing, D-CHK2's finding, not caused by this.)
+          ⇒ Roster **57 → 63** of 64 buildable. ⚠️ **Herglic stays out** — "source carries
+          no genes", a different cause, still unmeasured. Do not let the recovery hide it.
+
+          📌 **Emit the strip list as generator OUTPUT** — one printed line per stripped
+          gene per species — so the record is produced by the run and cannot drift from
+          what shipped. That print IS the input to the later investigation.
+          ⛔ **Do NOT widen `donor_xml_files` to index `AdditionalMods` in this item.** I
+          directed that earlier to rescue Defel's cloak gene; the owner's ruling strips it
+          instead, so the widening moved to the later investigation. Real finding, wrong
+          moment.
+          ⛔ **`_guard_species_regression` stays and is not weakened.** This ruling makes
+          the catalogue GROW, so the guard should never fire — if it does, stop.
+
+          ─────────────────────────────────────────────────────────────────────────────
+          (a) and (b) below were routed 2026-08-15 from CHECK's D-CHK2 and D-CHK3.
+          ⚠️ **"One file, one re-run, one redeploy" was DECIDE's framing and it was
+          WRONG** — that premise is what sent a partial run at a mod live in `ModsConfig`.
+          BUILD was right to stop and escalate. Treat (a), (b) and (c) as three changes
+          to one file that share a single redeploy, not as one trivial regenerate.
+          do not split them and pay the deploy twice.
+          File: `src/RimMandrake/Utils/gen_races_mod.py`.
+          Mod:  `src/Jawa/RimMandrake_StarWarsRaces` (`mandrake.starwarsraces`).
+          ⏱️ **Pure XML + loose PNGs, no assembly.** It needs no shutdown window of
+          its own, but it MUST be regenerated and redeployed before the game relaunches
+          or `NEXT_RELOAD.md` §5 L0 photographs four species that are magenta for a
+          reason we already know, and the next load re-asks a question answered today.
+
+          (a) **THE PATH-REWRITE LIST IS INCOMPLETE — 19 defs, 27 dead paths.**
+          `TEXFIELDS` at `gen_races_mod.py:148` and `TEXCONTAINERS` at `:151` are the
+          whole list, and four families are missing from it:
+            · `texPathFemale`                    — add to `TEXFIELDS`
+            · `backgroundPathEndogenes`          — add to `TEXFIELDS`
+            · `backgroundPathXenogenes`          — add to `TEXFIELDS`
+            · `<Male>` / `<Female>` **inside** a `BigAndSmall.PawnExtension` `headPaths`
+              — NOT a flat field; `TEXCONTAINERS` handles `<li>` children only, so this
+              needs the container walk to descend into named children too
+          Plus one hand path outside the generator:
+            · `Pawn/HeadAttachments/gand/mask_yuun` in
+              `src/Jawa/RimMandrake_StarWarsRaces/Defs/Misc/SW_Support.xml`
+          🔑 **The texture copier is driven from the SAME list** (`copy_textures`,
+          `:597`, fed by `texhits` from `rewrite`, `:478`). A field it does not rewrite
+          is a texture it never copied — so three of these need the ART copied as well,
+          not just the path fixed:
+          | path | art state | action |
+          |---|---|---|
+          | `Pawn/HeadType/gand/gand`, selkath heads | 6 files PRESENT | rewrite path only |
+          | `OuterRim/Genes/Headbone/ChagrianF` | NOT copied | rewrite **and** copy |
+          | `Pawn/HeadAttachments/gand/mask_yuun` | NOT copied | rewrite **and** copy |
+          | `YellowEyes_Female` | NOT copied | rewrite **and** copy |
+          | `OuterRim/GeneIcons/*BG` | NOT copied | rewrite **and** copy |
+          The donors still hold every file — e.g.
+          `2980427615/Common_Old/Textures/OuterRim/Genes/Headbone/ChagrianF_east.png`,
+          `2915192253/Textures/Pawn/HeadAttachments/gand/mask_yuun_east.png`. Nothing
+          is lost, only unmigrated.
+
+          (b) **69 PawnKindDefs are missing `initialResistanceRange`.**
+          `write_pawnkinds` (`:821`) emits each kind with `ParentName="BasePlayerPawnKind"`,
+          which does not supply it, so every load throws
+          `Config error in RimMandrake<Species>_Kind: initial resistance range is
+          undefined for humanlike pawn kind.` — **69 lines, three quarters of the whole
+          stack's 93 config errors.** Not only noise: it is what a prisoner's recruitment
+          resistance rolls from, so the capture path is unset for all 70 species.
+          Fix: one `ET.SubElement(e, "initialResistanceRange").text = "10~20"` beside the
+          existing `apparelMoney` line at `:831`. `10~20` is vanilla's humanlike value —
+          use it; this is not a balance decision and must not become one.
+          ⚠️ **Check `write_rescued_kinds` (`:769`) too.** It emits the 16 Galactic
+          Diversity `RimMandrake_<Species>` kinds. The error text names `_Kind`, so those
+          16 are probably clean — confirm rather than assume, and fix if not.
+verify:   OFFLINE, all three before deploying:
+          1. `python3 src/RimMandrake/Utils/gen_races_mod.py` re-derives the mod and
+             prints `references that die 0` / `dangling texture paths 0`.
+          2. No def field in the regenerated mod holds a path beginning `Pawn/`,
+             `OuterRim/`, `UI/` or `Genes/` **without** the `RimMandrakeSW/` prefix:
+             `grep -rhoE '>(Pawn|OuterRim|UI|Genes)/[^<]*<' src/Jawa/RimMandrake_StarWarsRaces/Defs/`
+             returns nothing.
+          3. Every path the generator now rewrites has a PNG behind it in
+             `src/Jawa/RimMandrake_StarWarsRaces/Textures/` — the file count rises from
+             713. A rewritten path with no art is the SAME magenta box wearing a new name.
+          Then bare `deploy_custom_mods.py --mod RimMandrake_StarWarsRaces`, read the
+          plan, then `--apply`.
+          🔴 **STOP — the "one re-run" this item is built on is not possible today.
+          See the state line. Do not run the generator expecting output.**
+criteria: LIVE, on the load this window precedes — folded into `NEXT_RELOAD.md` §5 L0:
+          · `grep -c "Failed to find any textures at" Player.log` returns **0**.
+            🔴 That is the string. `Could not load UnityEngine.Texture2D` returns zero
+            hits and is the wrong grep.
+          · `grep -c "initial resistance range is undefined" Player.log` returns **0**.
+          · A **female** `RimMandrakeChagrian`, a `RimMandrakeGand`, a `RimMandrakeSelkath`
+            and the Gand's `mask_yuun` all render a head rather than a magenta box.
+            ⚠️ **Gendered fields make this look intermittent** — male Chagrians already
+            render because their `texPaths` WERE rewritten. **Do not test one sex and
+            call a species clean.**
+state:    ⛔ v2 — **OWNER RULING 2026-08-15, blanket triage.** Produces no content and does not
+          reach the frozen world. Parked, not lost.
+
+          DONE in `e4d6040`, all three code fixes, none deployed:
+          · (a) `texPathFemale`, `backgroundPathEndogenes`, `backgroundPathXenogenes`
+            added to `TEXFIELDS`; `headPaths` and `texturePaths` to `TEXCONTAINERS`.
+            The spec said `mask_yuun` needed a HAND edit "outside the generator" —
+            it does not: `SW_Support.xml` IS generated (`gen_races_mod.py:899` is
+            its default target), so `texturePaths` covers it. The spec also warned
+            `TEXCONTAINERS` handles `<li>` only; it does not — the walk takes every
+            child, which is exactly why `headPaths`' `<Male>`/`<Female>` work.
+          · (b) `initialResistanceRange` `10~20` added to `write_pawnkinds`.
+            `write_rescued_kinds` NOT changed — unverified, because the run that
+            would confirm it cannot complete.
+          · (c) NOT IN THE SPEC: `_is_donor_gene` fixes a `KeyError: 'GS_Primitive'`
+            that stopped the generator DEAD. `main` looked genes up in the dump with
+            a bare `g[n]`; the donors' genes left the dump when the donors left the
+            list.
+
+          🔴 WHY IT IS BLOCKED, and this is the finding: `pick_species` reads its
+          species from the DUMP and — unlike `_gene_exists`, whose docstring
+          anticipates exactly this — has **no on-disk fallback**. With the donors
+          switched off it builds **57 species where the mod ships 69**, losing
+          Herglic, Defel, Ithorian, KelDor, Mirialan, Rakata, SithMassassi and
+          others. **The `KeyError` was the only thing preventing that from being
+          written and deployed over a mod live at slot 562.** Fixing the crash
+          removed the accident, so `_guard_species_regression` now refuses to write
+          a smaller catalogue. A partial run DID overwrite six def files at 57
+          species before the guard existed; reverted, and HEAD is 69.
+
+          TO UNBLOCK, pick one — both are DECIDE's call, not mine:
+          1. Give `pick_species` the disk fallback `_gene_exists` already has.
+             Offline, no load, and it removes the donor dependency permanently —
+             which is the whole point of this mod. **Recommended.**
+          2. Re-enable `guy762.starwarsxenotypes` + `neronix17.outerrim.galacticdiversity`,
+             take a dump with them active, regenerate, switch them off again.
+             Costs a load and restores the dependency this mod exists to break.
+
+          ⚠️ Until then the four magenta species STAY magenta. That is now a known,
+          explained state — CHECK should record it, not re-investigate it.
+
+          ═══════════════════════════════════════════════════════════════════════
+          🔴 **CLOSED FOR v1 BY THE OWNER, 2026-08-15 (`36debc4`), broadcast:**
+          *"I think we can mark all the races as visually good enough for v1, with
+          the remaining missing art for v2 improvement. Let's close out race
+          appearance issues for now."*
+          ⇒ **The magenta species are ACCEPTED AS SHIPPED. This item is DEAD
+          for v1** — not blocked, not waiting on a load, not waiting on option 1.
+          📌 **The list is THREE SPECIES and it is complete** — owner, 2026-08-15
+          (`7661925`): *"Gand, Selkath, and Chagrian are the ones with missing art."*
+          `RimMandrakeGand` · `RimMandrakeSelkath` · `RimMandrakeChagrian`.
+          ⚠️ This item's own text says "four magenta species" — that count folds in
+          the Gand's `mask_yuun`, which is an asset on one of the three, not a
+          fourth species. **Nobody should go looking for a fourth.** A caveat that
+          the pair differed between two grids was retracted by CHECK and
+          contradicted by the owner: **no re-survey.**
+          **Do not build the `pick_species` disk fallback for this reason**, and do
+          not re-enable the two donor mods for a dump. The art moved to
+          `design/V2_DREAMS.md` under "Race art polish".
+          ⛔ Race appearance is CLOSED for v1. Do not open, action or escalate a v1
+          item for any race's looks. `gand-and-chagrian-missing-artwork-5d2a09` is
+          WITHDRAWN (struck in place below, deliberately left visible).
+          ✅ Related and going the OTHER way: **`RimMandrakeOrtolan` is v1, done and
+          confirmed** — the owner pulled it out of the deferred list on the 70-race
+          grid. Herglic, Anzati, Muun, SithZ and Togorian stay deferred.
+          📌 The three code fixes in `e4d6040` are still correct and still undeployed;
+          they are a v2 carry-in, not a v1 defect.
+          ═══════════════════════════════════════════════════════════════════════
+
+## nomatch-add-assumes-a-container-that-may-be-inherited-7b1e4c
+row:      tooling
+spec:     The sequel to B22, and a different case from it. B22 catches a `<nomatch>`
+          whose xpath is IDENTICAL to the test — provably dead, no `--defs` needed.
+          This is the case where the `<nomatch>` `PatchOperationAdd` targets the
+          **parent container** of the test xpath, which is the legitimate
+          add-if-missing idiom and therefore only a WARN today:
+            test:  /Defs/ThingDef[defName="X"]/statBases/MeatAmount
+            inner: /Defs/ThingDef[defName="X"]/statBases
+          🔴 It is fatal exactly when the def **inherits** that container instead of
+          declaring it. Patches run on RAW XML, so the Add matches nothing, returns
+          false, and `PatchOperationSequence` stops — every op after it in the block
+          silently never runs. Cost us `DA_Taraal` + `DA_SnowTaraal` and one load's
+          worth of wrong diagnosis (B59).
+          THE CHECK: with defs loaded from RAW XML (not a resolved dump, which
+          cannot tell inherited from owned), resolve the inner xpath's container
+          against the def's OWN node. Absent ⇒ ERROR, not WARN.
+          ⚠️ **This warning currently fires 1,145 times on one file.** A warning that
+          fires a thousand times is not a warning — whatever shape the fix takes, it
+          has to end with the fatal cases distinguishable from the safe ones, or the
+          signal stays buried exactly where it was buried this time.
+verify:   a synthetic def that inherits `<statBases>` is flagged ERROR with raw-XML
+          defs; a def that declares its own stays at WARN or better; the count on
+          `Jawa_Doctrine/Patches/MegafaunaYield.xml` drops from 1,145.
+criteria: `validate_patch.py` on `src/Jawa/Jawa_Doctrine` names any def whose
+          add-if-missing container is inherited, and names no def whose is owned.
+state:    ⛔ v2 — **OWNER RULING 2026-08-15, blanket triage.** Produces no content and does not
+          reach the frozen world. Parked, not lost.
+
+## ~~gand-and-chagrian-missing-artwork-5d2a09~~ — ⛔ WITHDRAWN, IT IS v2
+🔴 CLOSED 2026-08-15, hours after filing, by the owner's ruling that all 70 races are
+visually good enough for v1 and the remaining art is v2 improvement. **Do not action
+this.** Moved to `design/V2_DREAMS.md` under "Race art polish". Left here struck rather
+than deleted so a reader who saw it filed knows where it went. Original text follows.
+
+raised:   2026-08-15 CHECK, from the owner examining the 70-race grid live on the
+          scratch quicktest map.
+finding:  THREE species named across two separate looks, and the pair is NOT the same
+          both times — record all three, do not collapse them:
+            `RimMandrakeGand`      — named BOTH times. The solid one.
+            `RimMandrakeChagrian`  — named on the owner's OWN earlier grid (the one he
+                                     saved as `racetest`), NOT on mine.
+            `RimMandrakeSelkath`   — named on MY 70-race grid, NOT on his.
+          Owner's words, in order: *"Gand and Chagrian have missing artwork, but most now
+          look good."* then, on the new grid: *"Gand and Selkath show missing art in your
+          new grid."*
+          ⚠️ Two grids, two different second names. Either the fault is not deterministic
+          per species, or one of the two was a misread at a glance — **check all three**,
+          and do not assume Chagrian is clean because the second look did not name it.
+          All SPAWN fine — 70/70 xenotypes spawned, so this is art only, not defs or genes.
+scope:    ⛔ Not triaged and not diagnosed by me — the owner looked, I am recording it.
+          Whether it is a texPath that does not resolve, a missing PNG, or a head/body
+          type with no graphic is BUILD's to find.
+⚠️ do not assume the log will show it:
+          `texture path failures` read **0 = baseline 0** in this load's harvest, and
+          that check fires ONLY when ALL directions are missing — a partial set is
+          silent. A clean log is not evidence against this finding.
+note:     Owner's verdict on the rest of the grid was positive — *"most now look good"* —
+          so this is two exceptions in 70, not a systemic art problem.
